@@ -1,0 +1,23 @@
+// Misconception heatmap — top misconceptions for this class, last 7 days
+supa.from('responses').select('misconception_tag,question_id,bank')
+  .eq('class_id', classId)
+  .eq('is_correct', false)
+  .gte('created_at', sevenDaysAgo)
+  .then(function(rows) {
+    // Count by misconception_tag, sort descending
+  });
+
+// Class overview — per-student accuracy
+supa.from('responses').select('student_id,is_correct')
+  .eq('class_id', classId)
+  .then(function(rows) {
+    // Group by student_id, calculate accuracy %
+  });
+
+// Student drill-down — all responses for one student
+supa.from('responses').select('*')
+  .eq('student_id', studentId)
+  .order('created_at', { ascending: false })
+  .then(function(rows) {
+    // Show misconception history, reforge success rate
+  });
