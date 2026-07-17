@@ -1,0 +1,1566 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Forge — Quiz</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,700;12..96,800&family=Sora:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--coal:#141210;--panel:#211E1B;--panel-2:#2A2622;--line:#3A342E;--ember:#FF6B2C;--hot:#FFC93C;--slate:#B8B4AD;--white:#F5F1EA;--good:#7FD98A;--bad:#FF5A5A}
+[data-theme="light"]{--coal:#FAFAF8;--panel:#FFFFFF;--panel-2:#F3F2EF;--line:#E0DDD8;--ember:#E5550F;--hot:#C88500;--slate:#6B6660;--white:#1A1816;--good:#1B8C2A;--bad:#D42D2D}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--coal);color:var(--slate);font-family:'Sora',sans-serif;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100vh}
+h1,h2,h3{font-family:'Bricolage Grotesque',sans-serif;color:var(--white);line-height:1.1;letter-spacing:-.015em}
+.mono{font-family:'JetBrains Mono',monospace}
+.wrap{max-width:680px;margin:0 auto;padding:28px 20px}
+.tag{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ember)}
+.logo{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:20px;color:var(--white);text-decoration:none;display:inline-flex;align-items:center;gap:8px;margin-bottom:28px}
+.logo .spark{width:9px;height:9px;background:linear-gradient(135deg,var(--hot),var(--ember));border-radius:2px;transform:rotate(45deg);box-shadow:0 0 10px rgba(255,107,44,.7)}
+.subject-list{display:flex;flex-direction:column;gap:12px;margin-top:28px}
+.subject-btn{padding:20px 22px;border-radius:12px;border:2px solid transparent;background:var(--panel);cursor:pointer;text-align:left;font-family:'Sora',sans-serif;transition:border-color .15s}
+.subject-btn:hover{border-color:var(--ember)}
+.subject-btn h3{font-size:18px;margin-bottom:2px}
+.subject-btn .sub{font-size:13px;color:var(--slate)}
+.subject-btn .count{font-size:12px;color:#8A857E;margin-top:3px}
+.back-btn{background:none;border:none;cursor:pointer;font-size:13px;color:#8A857E;font-family:'Sora',sans-serif;margin-bottom:16px;padding:0}
+.back-btn:hover{color:var(--white)}
+.bank-list{display:flex;flex-direction:column;gap:8px;margin-top:20px}
+.bank-btn{padding:14px 18px;border-radius:10px;border:1.5px solid var(--line);background:var(--panel);cursor:pointer;text-align:left;font-family:'Sora',sans-serif;transition:border-color .15s}
+.bank-btn:hover{border-color:var(--ember)}
+.bank-btn .code{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+.bank-btn .name{font-size:16px;font-weight:700;color:var(--white);margin-top:1px}
+.bank-btn .qcount{font-size:12px;color:#8A857E;margin-top:1px}
+.progress-bar{height:3px;background:var(--line);border-radius:2px;margin-bottom:24px}
+.progress-fill{height:3px;border-radius:2px;transition:width .3s}
+.quiz-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;font-size:13px;color:#8A857E}
+.quiz-header .bank-name{font-weight:700;font-size:14px}
+.q-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;font-size:13px;color:#8A857E}
+.q-id{font-weight:600;padding:2px 10px;border-radius:4px;font-size:12px}
+.stem{font-size:16px;line-height:1.55;color:var(--white);margin-bottom:20px}
+.options{display:flex;flex-direction:column;gap:8px}
+.opt{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;border-radius:10px;border:1.5px solid var(--line);background:var(--panel-2);color:var(--white);cursor:pointer;text-align:left;font-family:'Sora',sans-serif;font-size:15px;line-height:1.45;transition:border-color .15s,background .15s,opacity .15s;width:100%}
+.opt:hover:not(.answered){border-color:var(--ember)}
+.opt .letter{font-weight:700;min-width:20px;color:#8A857E}
+.opt.answered{cursor:default}
+.opt.correct{border-color:var(--good);background:rgba(127,217,138,.08);opacity:1}
+.opt.correct .letter{color:var(--good)}
+.opt.wrong{border-color:var(--bad);background:rgba(255,90,90,.07);opacity:1}
+.opt.wrong .letter{color:var(--bad)}
+.opt.dimmed{opacity:.5}
+.scaffold-box{margin-top:16px;padding:14px 16px;border-radius:12px;border:1px solid rgba(255,201,60,.4);background:linear-gradient(180deg,rgba(255,107,44,.10),rgba(255,201,60,.05));animation:heat .5s ease}
+@keyframes heat{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.scaffold-box .stag{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--coal);background:var(--hot);padding:2px 8px;border-radius:5px;font-weight:600;margin-bottom:8px}
+.scaffold-box p{font-size:14px;color:var(--white);line-height:1.5}
+.praise-box{margin-top:16px;padding:14px 16px;border-radius:12px;border:1px solid var(--good);background:rgba(127,217,138,.08);color:var(--good);font-weight:600;font-size:14px}
+.reforge-trigger{margin-top:14px;padding:10px 20px;border-radius:8px;background:var(--ember);color:var(--coal);border:none;cursor:pointer;font-weight:600;font-size:14px;font-family:'Sora',sans-serif}
+.reforge-box{margin-top:20px;padding:18px 16px;border-radius:10px;border:1.5px solid var(--line);background:var(--panel)}
+.reforge-box .rf-tag{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+.reforge-box .rf-stem{font-size:15px;line-height:1.5;color:var(--white);margin-bottom:14px}
+.reforge-box .opt{font-size:14px;padding:10px 12px;border-radius:8px}
+.rf-scaffold{margin-top:12px;padding:12px 14px;border-radius:8px;border:1px solid rgba(255,201,60,.4);background:linear-gradient(180deg,rgba(255,107,44,.08),rgba(255,201,60,.04));font-size:13px;line-height:1.5}
+.rf-scaffold .stag{font-size:10px;margin-bottom:6px;display:inline-block;font-family:'JetBrains Mono',monospace;color:var(--coal);background:var(--hot);padding:2px 6px;border-radius:4px;font-weight:600}
+.rf-scaffold p{color:var(--white);font-size:13px}
+.next-btn{margin-top:18px;padding:10px 24px;border-radius:8px;background:var(--white);color:var(--coal);border:none;cursor:pointer;font-weight:600;font-size:14px;font-family:'Sora',sans-serif;float:right}
+.clear{clear:both}
+.results{text-align:center;padding-top:80px}
+.results .pct{font-size:72px;font-weight:900;font-family:'Bricolage Grotesque',sans-serif}
+.results .detail{font-size:17px;color:#8A857E;margin:4px 0 28px}
+.results .btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.results .btns button{padding:10px 20px;border-radius:8px;border:none;cursor:pointer;font-weight:600;font-size:14px;font-family:'Sora',sans-serif}
+.btn-primary{background:var(--ember);color:var(--coal)}
+.btn-secondary{background:var(--panel);color:var(--white);border:1px solid var(--line)!important}
+.center{text-align:center}
+.hidden{display:none}
+/* join screen */
+.join-input{width:100%;padding:12px 14px;border-radius:9px;border:1px solid var(--line);background:var(--panel);color:var(--white);font-family:'Sora',sans-serif;font-size:15px;margin-bottom:14px}
+.join-input::placeholder{color:#7A756E}
+.join-input:focus{outline:none;border-color:var(--ember)}
+.join-btn{width:100%;padding:13px;border-radius:9px;background:var(--ember);color:var(--coal);border:none;font-family:'Sora',sans-serif;font-weight:600;font-size:15px;cursor:pointer}
+.join-btn:hover{background:var(--hot)}
+.join-btn:disabled{opacity:.5;cursor:wait}
+.skip-btn{background:none;border:none;color:var(--slate);font-size:13px;margin-top:16px;cursor:pointer;width:100%;text-align:center;font-family:'Sora',sans-serif}
+.skip-btn:hover{color:var(--white)}
+.join-err{color:var(--bad);font-size:13px;margin-top:10px;display:none}
+.join-badge{display:inline-flex;align-items:center;gap:6px;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:4px 12px;font-size:12px;color:var(--slate);margin-bottom:8px}
+.join-badge .dot{width:6px;height:6px;border-radius:50%;background:var(--good)}
+/* light mode overrides */
+[data-theme="light"] .scaffold-box{border-color:rgba(200,133,0,.4);background:linear-gradient(180deg,rgba(229,85,15,.06),rgba(200,133,0,.03))}
+[data-theme="light"] .stag,[data-theme="light"] .heat-tag{color:#fff}
+[data-theme="light"] .reforge-trigger,.btn-primary{color:#fff}
+[data-theme="light"] .rf-scaffold .stag{color:#fff}
+.theme-toggle{background:var(--panel);border:1px solid var(--line);color:var(--slate);font-family:'JetBrains Mono',monospace;font-size:12px;padding:6px 12px;border-radius:7px;cursor:pointer;position:fixed;top:20px;right:20px;z-index:99}
+.theme-toggle:hover{color:var(--white);border-color:var(--ember)}
+</style>
+</head>
+<body>
+<button class="theme-toggle" onclick="(function(){var h=document.documentElement,b=document.querySelector('.theme-toggle');if(h.getAttribute('data-theme')==='light'){h.removeAttribute('data-theme');b.textContent='\u2600 Light';localStorage.setItem('forge-theme','dark');}else{h.setAttribute('data-theme','light');b.textContent='\u263E Dark';localStorage.setItem('forge-theme','light');}})()">☀ Light</button>
+<script>if(localStorage.getItem('forge-theme')==='light'){document.documentElement.setAttribute('data-theme','light');document.querySelector('.theme-toggle').textContent='\u263E Dark';}</script>
+<div class="wrap">
+  <a class="logo" href="index.html"><span class="spark"></span>Forge</a>
+  <div id="app"></div>
+</div>
+
+<script>
+// ===== SUPABASE =====
+// Replace these with your Supabase project values (Settings > API)
+var SUPABASE_URL = 'https://crysulmbaadjkymcjrew.supabase.co';
+var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNyeXN1bG1iYWFkamt5bWNqcmV3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQyNDUzMzAsImV4cCI6MjA5OTgyMTMzMH0.Q69MKJR6_iEYkqJYXjn8RBhKhstAZShtmf0NiYM-8Vk';
+
+var supa = {
+  _headers: function() {
+    return {
+      'Content-Type': 'application/json',
+      'apikey': SUPABASE_KEY,
+      'Authorization': 'Bearer ' + SUPABASE_KEY,
+      'Prefer': 'return=representation'
+    };
+  },
+  _configured: function() {
+    return SUPABASE_URL.indexOf('YOUR-PROJECT') === -1;
+  },
+  insert: function(table, row) {
+    if (!this._configured()) return Promise.resolve(null);
+    return fetch(SUPABASE_URL + '/rest/v1/' + table, {
+      method: 'POST',
+      headers: this._headers(),
+      body: JSON.stringify(row)
+    }).then(function(r) { return r.json(); }).catch(function() { return null; });
+  },
+  select: function(table, filters) {
+    if (!this._configured()) return Promise.resolve([]);
+    var params = ['select=*'];
+    if (filters) {
+      for (var k in filters) { params.push(k + '=eq.' + filters[k]); }
+    }
+    return fetch(SUPABASE_URL + '/rest/v1/' + table + '?' + params.join('&'), {
+      headers: this._headers()
+    }).then(function(r) { return r.json(); }).catch(function() { return []; });
+  }
+};
+
+function getSubjectForBank(bankKey) {
+  for (var s in SUBJECTS) {
+    if (SUBJECTS[s].banks.indexOf(bankKey) !== -1) return s;
+  }
+  return 'unknown';
+}
+
+function logResponse(q, selectedKey, isCorrect, isReforge, reforgeCorrect) {
+  if (!state.studentId) return;
+  supa.insert('responses', {
+    student_id: state.studentId,
+    class_id: state.classId,
+    question_id: isReforge ? q.id + '-RF' : q.id,
+    bank: state.bank,
+    subject: getSubjectForBank(state.bank),
+    selected_option: selectedKey,
+    is_correct: isCorrect,
+    misconception_tag: isCorrect ? null : (q.tag || null),
+    reforge_attempted: isReforge || false,
+    reforge_correct: isReforge ? reforgeCorrect : null
+  });
+}
+
+// ===== DATA =====
+const BANKS = {
+  "2.1.1": {
+    label: "Economic Growth",
+    color: "#2563eb",
+    questions: [
+      {
+        id:"GRO-01",stem:"UK real GDP was £2.1tn in 2022 and £2.15tn in 2023. A student says: 'The UK has high economic growth because GDP is over £2 trillion.' What is wrong with this statement?",
+        options:{A:"Nothing — a GDP above £2 trillion does indicate high growth.",B:"The student is describing the level of GDP, not the rate of growth; growth here is approximately 2.4%.",C:"The student should have used nominal GDP, not real GDP.",D:"Growth can only be measured using GDP per capita."},
+        correct:"B",tag:"MC-GRO-01",
+        scaffold:"Growth is a rate of change, not a level. A country can have a massive GDP but near-zero growth. Calculate: ((2.15 − 2.1) / 2.1) × 100 ≈ 2.4%.",
+        reforge:{stem:"Country X has GDP of $500bn growing at 6% p.a. Country Y has GDP of $15tn growing at 1.2% p.a. Which has higher economic growth?",options:{A:"Country Y, because its GDP is larger.",B:"Country X, because 6% > 1.2% — growth is about the rate, not the level.",C:"They are equal because both are growing.",D:"It cannot be determined without knowing population."},correct:"B"}
+      },
+      {
+        id:"GRO-02",stem:"A government cuts income tax to boost consumer spending, raising short-run real GDP. Which best describes what has occurred?",
+        options:{A:"Potential growth — productive capacity has increased.",B:"Actual growth — real GDP rose due to higher AD, but productive capacity is unchanged.",C:"Both actual and potential growth, since GDP increased.",D:"Neither, because tax cuts don't affect growth."},
+        correct:"B",tag:"MC-GRO-02",
+        scaffold:"Actual growth = using more existing capacity (AD shifts right). Potential growth = expanding capacity itself (LRAS shifts right). A tax cut stimulates demand — it doesn't build new factories.",
+        reforge:{stem:"A government invests in broadband and STEM education over 10 years. Which type of growth does this primarily represent?",options:{A:"Actual growth — AD increases immediately.",B:"Potential growth — productive capacity shifts outward over time.",C:"Neither — it's fiscal policy, not growth.",D:"Actual growth, because G is a component of AD."},correct:"B"}
+      },
+      {
+        id:"GRO-03",stem:"The economy is producing above its trend level of output. What type of output gap does this represent?",
+        options:{A:"A negative output gap — spare capacity exists.",B:"A positive output gap — actual GDP exceeds potential GDP.",C:"A positive output gap — spare capacity for further growth.",D:"No output gap exists when the economy is growing."},
+        correct:"B",tag:"MC-GRO-03",
+        scaffold:"Positive output gap = actual > potential → overheating, inflationary pressure. Negative = actual < potential → spare capacity, higher unemployment. 'Positive' means the gap is above zero, not that it's good.",
+        reforge:{stem:"Unemployment is rising and factories run below capacity. Which is correct?",options:{A:"Positive output gap because production is positive.",B:"Negative output gap — actual output is below potential.",C:"Positive output gap — spare capacity means room to grow.",D:"Output gaps only exist during recessions."},correct:"B"}
+      },
+      {
+        id:"GRO-04",stem:"On a trade cycle diagram, which phase shows real GDP rising back toward the trend line after a trough?",
+        options:{A:"Boom",B:"Recession",C:"Recovery",D:"Slowdown"},
+        correct:"C",tag:"MC-GRO-04",
+        scaffold:"Trade cycle: boom → recession → trough → recovery. Recovery is the upswing from the trough — real GDP is increasing back toward (and eventually past) trend.",
+        reforge:{stem:"During recovery, which is most likely?",options:{A:"Real GDP falling toward the trough.",B:"Real GDP flat at trend.",C:"Real GDP rising; the negative output gap narrowing.",D:"Inflation at its highest — economy overheating."},correct:"C"}
+      },
+      {
+        id:"GRO-05",stem:"Between 2010 and 2023, UK GDP per capita grew more slowly than total GDP. Which factor best explains this?",
+        options:{A:"The UK experienced deflation.",B:"Population growth meant output was shared among more people.",C:"GDP per capita only measures services.",D:"Total GDP was nominal while per capita was real."},
+        correct:"B",tag:"MC-GRO-01",
+        scaffold:"GDP per capita = GDP ÷ population. If population grows alongside GDP, per-capita growth will be lower than headline GDP growth.",
+        reforge:{stem:"Country Z's GDP grows at 4% but population also grows at 3.5%. What can we say about living standards?",options:{A:"Rising rapidly at 4%.",B:"Broadly stagnant — per-capita growth is only ~0.5%.",C:"Falling because population growth is unsustainable.",D:"We cannot comment using GDP data."},correct:"B"}
+      },
+      {
+        id:"GRO-06",stem:"LRAS shifts right through investment in education and technology. What happens to long-run price level and real output?",
+        options:{A:"Price level rises, output rises.",B:"Price level falls (or rises more slowly), output rises.",C:"Both unchanged.",D:"Price level falls, output falls."},
+        correct:"B",tag:"MC-GRO-02",
+        scaffold:"A rightward LRAS shift increases productive capacity. With the same AD, more output is produced at a lower price level — non-inflationary growth.",
+        reforge:{stem:"Which correctly matches growth type to its AD/AS effect?",options:{A:"Actual = LRAS right; Potential = AD right.",B:"Actual = AD right (along SRAS); Potential = LRAS right.",C:"Both shift AD right.",D:"Actual growth has no diagram."},correct:"B"}
+      },
+      {
+        id:"GRO-08",stem:"The UK's PPF shifts outward. Which could have caused this?",
+        options:{A:"A rise in consumer confidence.",B:"Net migration of skilled workers and new capital investment.",C:"A cut in interest rates by the BoE.",D:"A rise in the exchange rate making imports cheaper."},
+        correct:"B",tag:"MC-GRO-02",
+        scaffold:"PPF shifts outward when quantity/quality of factors of production increases. Demand-side changes move the economy along/toward the PPF, not outward.",
+        reforge:{stem:"Which represents a movement FROM inside the PPF TO the boundary, not a shift?",options:{A:"Discovery of new oil reserves.",B:"Reducing structural unemployment, putting idle workers back into production.",C:"AI breakthrough raising all-sector productivity.",D:"Large-scale apprenticeship programme."},correct:"B"}
+      },
+      {
+        id:"GRO-09",stem:"UK real GDP grew by 0.1% in 2023. A student writes: 'The economy shrank because growth was almost zero.' Is this correct?",
+        options:{A:"Yes — 0.1% is effectively a contraction.",B:"No — the economy still grew, just slowly. Contraction requires negative growth.",C:"Yes — growth below 2% counts as recession.",D:"No — but only because 0.1% is above the inflation target."},
+        correct:"B",tag:"MC-GRO-01",
+        scaffold:"Growth means real GDP increased. Even 0.1% is growth, not contraction. A recession = two consecutive quarters of negative GDP growth.",
+        reforge:{stem:"GDP growth: −0.3% (Q1), −0.1% (Q2), +0.4% (Q3). Which is accurate?",options:{A:"Recession for all three quarters.",B:"Recession in Q1–Q2 (two consecutive negative quarters), then growth returned in Q3.",C:"No recession because the annual total is positive.",D:"Recession only applies below −1%."},correct:"B"}
+      }
+    ]
+  },
+  "2.1.2": {
+    label: "Inflation",
+    color: "#dc2626",
+    questions: [
+      {
+        id:"INF-01",stem:"UK CPI rose from 120 to 126 over a year. A student says: 'Prices are high.' What is the correct interpretation?",
+        options:{A:"The student is right — 126 is a high price level.",B:"The student is confusing the price level with inflation. Inflation is the rate of change: prices rose by 5%, which is the inflation rate.",C:"The CPI doesn't measure prices.",D:"126 means prices fell."},
+        correct:"B",tag:"MC-INF-01",
+        scaffold:"Inflation = the rate of change of the price level, not the level itself. A CPI of 126 tells you the level; the inflation rate is ((126−120)/120)×100 = 5%. High prices ≠ high inflation — prices could be high but stable (0% inflation).",
+        reforge:{stem:"A country's CPI is 200 but hasn't changed in 3 years. What is the inflation rate?",options:{A:"200% — the CPI is very high.",B:"0% — the price level is unchanged, so inflation is zero.",C:"100% — it has doubled from a base of 100.",D:"It cannot be calculated from CPI data."},correct:"B"}
+      },
+      {
+        id:"INF-02",stem:"A student says the CPI basket 'always contains the same goods.' Why is this wrong?",
+        options:{A:"It's not wrong — the basket is fixed by law.",B:"The basket is updated annually to reflect changing consumer spending patterns, e.g. streaming services replacing DVD purchases.",C:"The basket only contains food and fuel.",D:"The basket changes daily."},
+        correct:"B",tag:"MC-INF-02",
+        scaffold:"The ONS updates the CPI basket every year. Items are added (e.g. oat milk, smartwatches) and removed (e.g. CD players) to reflect how households actually spend. A fixed basket would quickly become unrepresentative.",
+        reforge:{stem:"Which is a valid limitation of CPI despite annual basket updates?",options:{A:"It never changes so it's always outdated.",B:"It reflects average spending patterns, so it may not represent any individual household's experience of inflation.",C:"It only measures food prices.",D:"It includes housing costs in the same way as RPI."},correct:"B"}
+      },
+      {
+        id:"INF-03",stem:"A student writes: 'Demand-pull inflation is too much money chasing too few goods' but cannot explain it using a diagram. Which diagram explanation is correct?",
+        options:{A:"SRAS shifts left, pushing the price level up.",B:"AD shifts right (e.g. from higher consumer spending, government spending, or money supply), moving the economy along SRAS and raising the price level.",C:"LRAS shifts right, reducing the price level.",D:"AD shifts left, creating deflation."},
+        correct:"B",tag:"MC-INF-03",
+        scaffold:"Demand-pull inflation: AD shifts right → economy moves along the SRAS → higher price level AND higher real output (up to full capacity). Causes include: rising consumer confidence, fiscal stimulus, lower interest rates, weaker exchange rate boosting net exports.",
+        reforge:{stem:"Which of these would cause demand-pull inflation?",options:{A:"A rise in oil prices increasing firms' costs.",B:"A large cut in income tax boosting disposable income and shifting AD right.",C:"New regulations increasing the cost of production.",D:"A fall in consumer confidence."},correct:"B"}
+      },
+      {
+        id:"INF-04",stem:"A student explains cost-push inflation using only wage increases. Which additional cost factors should they include?",
+        options:{A:"None — wages are the only cost-push factor.",B:"Raw material prices (e.g. oil), energy costs, exchange rate depreciation (raising import prices), and indirect taxes.",C:"Consumer confidence and government spending.",D:"Interest rates and money supply."},
+        correct:"B",tag:"MC-INF-04",
+        scaffold:"Cost-push inflation = SRAS shifts left due to higher production costs. Wages are ONE factor, but also: commodity/energy prices (oil shocks), exchange rate depreciation (imports cost more in domestic currency), higher indirect taxes (VAT), supply chain disruptions.",
+        reforge:{stem:"Sterling depreciates by 15%. How might this cause cost-push inflation?",options:{A:"It can't — exchange rates only affect the current account.",B:"Imported raw materials and components cost more in pounds, raising firms' production costs and shifting SRAS left.",C:"It makes exports cheaper, reducing costs.",D:"It increases consumer confidence, causing demand-pull inflation."},correct:"B"}
+      },
+      {
+        id:"INF-05",stem:"A student claims: 'All deflation is bad for the economy.' How should this be evaluated?",
+        options:{A:"The student is correct — deflation always causes recession.",B:"Deflation from falling demand (malign) can cause debt spirals and recession, but deflation from productivity improvements (benign) can raise real incomes and living standards.",C:"Deflation is always good because prices are falling.",D:"Deflation and disinflation are the same thing."},
+        correct:"B",tag:"MC-INF-05",
+        scaffold:"Malign deflation: falling AD → lower prices, but also falling output, rising unemployment, rising real debt burden → deflationary spiral (Japan 1990s–2000s). Benign deflation: technological progress / productivity gains → costs fall → prices fall while output rises (e.g. consumer electronics). Context matters.",
+        reforge:{stem:"The price of electronics falls by 8% over a year due to improved manufacturing technology, while the overall economy grows at 3%. Is this harmful deflation?",options:{A:"Yes — any falling prices are dangerous.",B:"No — this is benign deflation driven by productivity gains; output is still rising and the economy is growing.",C:"Yes — it will cause a deflationary spiral.",D:"No — because 8% is below the 10% danger threshold."},correct:"B"}
+      },
+      {
+        id:"INF-06",stem:"A student uses RPI and CPI interchangeably. Which key difference should they know?",
+        options:{A:"There is no difference — they measure the same thing.",B:"CPI uses a geometric mean (capturing substitution effects) and excludes most housing costs; RPI uses an arithmetic mean and includes mortgage interest payments, making it typically higher.",C:"RPI is updated annually but CPI is not.",D:"CPI measures wholesale prices while RPI measures retail."},
+        correct:"B",tag:"MC-INF-06",
+        scaffold:"CPI: geometric mean, excludes mortgage interest payments and council tax. RPI: arithmetic mean (tends to give higher figure), includes mortgage interest payments. RPI is no longer an official National Statistic due to formula flaws, but is still used for some contracts (e.g. rail fares, student loans).",
+        reforge:{stem:"Interest rates rise sharply. What happens to RPI relative to CPI?",options:{A:"RPI falls below CPI.",B:"RPI rises relative to CPI because it includes mortgage interest payments, which have increased.",C:"Both move identically.",D:"Neither is affected by interest rates."},correct:"B"}
+      },
+      {
+        id:"INF-07",stem:"What is the Bank of England's current inflation target?",
+        options:{A:"0% — price stability means no inflation.",B:"2% CPI, as set by the government. The BoE must write a letter to the Chancellor if inflation deviates by more than 1 percentage point either way.",C:"5% — a moderate level of inflation.",D:"2% RPI."},
+        correct:"B",tag:"MC-INF-07",
+        scaffold:"The target is 2% CPI (symmetric — undershooting is as much a concern as overshooting). Set by the Chancellor, pursued by the MPC. The letter-writing threshold is ±1pp (i.e. below 1% or above 3%). The target is NOT 0% — moderate inflation greases the wheels of the economy.",
+        reforge:{stem:"UK CPI inflation reaches 0.8%. What is the BoE required to do?",options:{A:"Nothing — inflation is low, which is good.",B:"The Governor must write an open letter to the Chancellor explaining why inflation is more than 1pp below the 2% target and what action the MPC is taking.",C:"Immediately raise interest rates.",D:"Change the target to 1%."},correct:"B"}
+      },
+      {
+        id:"INF-08",stem:"In 2015, the price of a basket of goods was £80. In 2023, it was £104. Using 2015 as the base year (= 100), what is the index number for 2023?",
+        options:{A:"104",B:"130",C:"24",D:"80"},
+        correct:"B",tag:"MC-INF-08",
+        scaffold:"Index number = (value in current year / value in base year) × 100 = (104/80) × 100 = 130. This means prices are 30% higher than the base year. Common error: using the raw price (104) as the index.",
+        reforge:{stem:"Base year index = 100 (price: £200). Current year price: £230. What is the index number?",options:{A:"230",B:"115",C:"30",D:"130"},correct:"B"}
+      },
+      {
+        id:"INF-09",stem:"A country's inflation rate reaches 12%. A student labels this 'hyperinflation.' Is this correct?",
+        options:{A:"Yes — any double-digit inflation is hyperinflation.",B:"No — 12% is high inflation, but hyperinflation typically refers to extremely rapid, out-of-control price rises (often 50%+ per month), such as Zimbabwe in 2008 or Weimar Germany in 1923.",C:"Yes — hyperinflation begins above 10%.",D:"No — hyperinflation only occurs in wartime."},
+        correct:"B",tag:"MC-INF-09",
+        scaffold:"Hyperinflation is extreme: prices doubling every few weeks/months. Cagan's threshold: 50% per month. 12% annually is high but manageable with normal monetary policy. Zimbabwe peaked at ~79.6 billion % per month in 2008. Don't conflate uncomfortable inflation with hyperinflation.",
+        reforge:{stem:"Which scenario best illustrates hyperinflation?",options:{A:"UK inflation at 11% in 2022.",B:"Prices in Venezuela rising so fast that the currency becomes worthless within weeks and people switch to foreign currency or barter.",C:"Japan experiencing 3% inflation after decades near 0%.",D:"The US Federal Reserve raising rates to 5%."},correct:"B"}
+      },
+      {
+        id:"INF-10",stem:"Explain how a wage-price spiral develops. (2 marks)",
+        type:"short_answer",
+        model_answer:"Workers demand higher wages to keep up with rising prices (knowledge). Firms pass on higher wage costs through higher prices, which triggers further wage demands, creating a self-reinforcing cycle of rising wages and prices (analysis).",
+        tag:"MC-INF-10",
+        scaffold:"The spiral: prices rise → workers demand higher wages to maintain real income → firms face higher costs → firms raise prices to protect margins → prices rise further → workers demand even higher wages → repeat. It requires a mechanism that sustains the loop (e.g. strong trade unions, accommodative monetary policy).",
+        reforge:{stem:"Which factor would most likely BREAK a wage-price spiral?",options:{A:"Trade unions negotiating even larger pay rises.",B:"The central bank raising interest rates sharply, reducing AD and weakening firms' ability to pass on costs.",C:"Government increasing the minimum wage.",D:"A further depreciation of the exchange rate."},correct:"B"}
+      }
+    ]
+  },
+  "2.1.3": {
+    label: "Employment & Unemployment",
+    color: "#7c3aed",
+    questions: [
+      {
+        id:"EMP-01",stem:"A 45-year-old leaves work to care for an elderly parent. Under the ILO definition, this person is:",
+        options:{A:"Unemployed — they don't have a job.",B:"Employed — caring is work.",C:"Economically inactive — not seeking or available for paid work.",D:"Underemployed — they want more hours."},
+        correct:"C",tag:"MC-EMP-01",
+        scaffold:"ILO unemployed = without work + available within 2 weeks + actively seeking. Someone who voluntarily leaves the labour market is economically inactive, not unemployed.",
+        reforge:{stem:"Which person counts as unemployed (ILO)?",options:{A:"A retired teacher, 63, not looking for work.",B:"A graduate applying for jobs for 3 months, available immediately.",C:"A stay-at-home parent not seeking employment.",D:"A full-time university student."},correct:"B"}
+      },
+      {
+        id:"EMP-02",stem:"A region's coal mines close permanently due to the shift to renewables. Workers can't find jobs because their skills don't match tech-sector vacancies. This is:",
+        options:{A:"Frictional — workers are between jobs.",B:"Cyclical — demand fell in a recession.",C:"Structural — skills mismatch due to economic change.",D:"Seasonal — coal demand falls in summer."},
+        correct:"C",tag:"MC-EMP-02",
+        scaffold:"Structural unemployment = long-term economic change (deindustrialisation, tech change, geographical immobility). The cause is sectoral decline, not a temporary demand dip (cyclical) or normal job search (frictional).",
+        reforge:{stem:"A newly qualified teacher takes 6 weeks to find a post, turning down two unsuitable offers. This is best classified as:",options:{A:"Structural — skills mismatch.",B:"Frictional — short-term search between entering the market and finding a role.",C:"Cyclical — low aggregate demand.",D:"Voluntary — they chose not to accept."},correct:"B"}
+      },
+      {
+        id:"EMP-03",stem:"A student draws a Phillips curve showing a permanent trade-off. What critique should they consider?",
+        options:{A:"The Phillips curve is always vertical — there's never a trade-off.",B:"Friedman/Phelps: the trade-off is only short-run; in the long run, expectations adjust and the curve is vertical at the natural rate.",C:"It only applies to developing economies.",D:"Inflation and unemployment always move together."},
+        correct:"B",tag:"MC-EMP-03",
+        scaffold:"Short-run Phillips curve suggests a trade-off. But expectations-augmented model: workers adjust wage expectations → SRPC shifts up → unemployment returns to the natural rate. LRPC is vertical.",
+        reforge:{stem:"Government pushes unemployment below the natural rate via expansionary fiscal policy. What does the expectations-augmented Phillips curve predict over time?",options:{A:"Inflation falls as the economy adjusts.",B:"Unemployment stays low permanently with stable higher inflation.",C:"Workers revise expectations upward; SRPC shifts up; unemployment returns to the natural rate at higher inflation.",D:"The natural rate itself falls."},correct:"C"}
+      },
+      {
+        id:"EMP-04",stem:"UK claimant count: 1.6m. ILO unemployment: 1.4m. Which best explains the difference?",
+        options:{A:"ILO is always higher.",B:"Claimant count includes some benefit recipients not actively seeking (ILO criteria); ILO captures some jobseekers who don't claim benefits. The two can diverge either way.",C:"They always produce the same figure.",D:"ILO only surveys London."},
+        correct:"B",tag:"MC-EMP-04",
+        scaffold:"Claimant count = receiving unemployment-related benefits. ILO = survey-based (without work + available + seeking). They differ because some claimants don't meet ILO 'seeking' criteria, and some ILO-unemployed don't claim.",
+        reforge:{stem:"Government tightens benefit eligibility, removing 200k from UC. What happens?",options:{A:"Both measures fall by 200k.",B:"Claimant count falls, but ILO is largely unaffected — those people may still be jobless and seeking.",C:"ILO falls but claimant count unchanged.",D:"Both unaffected by benefit policy."},correct:"B"}
+      },
+      {
+        id:"EMP-05",stem:"On a labour market diagram, the real wage is set above equilibrium by a minimum wage. The gap between Qs and Qd represents:",
+        options:{A:"A labour shortage.",B:"Real-wage unemployment — Qs exceeds Qd at that wage.",C:"Frictional unemployment.",D:"Full employment."},
+        correct:"B",tag:"MC-EMP-05",
+        scaffold:"Wage above equilibrium: Qs > Qd → surplus of labour → real-wage (classical) unemployment. More people want to work but fewer firms will hire at that price.",
+        reforge:{stem:"What would reduce real-wage unemployment caused by a minimum wage?",options:{A:"Raising the minimum wage further.",B:"Increasing labour productivity (shifting demand right) so firms hire more at the prevailing wage.",C:"Increasing labour supply.",D:"Reducing the retirement age."},correct:"B"}
+      },
+      {
+        id:"EMP-07",stem:"Which policy would most directly reduce structural unemployment?",
+        options:{A:"Cutting interest rates to boost AD.",B:"Increasing government infrastructure spending.",C:"Funding retraining programmes and improving geographical mobility through housing reform.",D:"Raising unemployment benefits."},
+        correct:"C",tag:"MC-EMP-02",
+        scaffold:"Structural unemployment = skills mismatch + immobility. Demand-side fixes target cyclical unemployment. Structural solutions: retraining (occupational immobility), housing/transport reform (geographical immobility).",
+        reforge:{stem:"Cyclical unemployment rising in a recession. Which policy directly addresses it?",options:{A:"Retraining coal miners for tech.",B:"Expansionary fiscal or monetary policy to increase AD.",C:"Deregulating the labour market.",D:"Reducing trade union power."},correct:"B"}
+      },
+      {
+        id:"EMP-08",stem:"The natural rate of unemployment best refers to:",
+        options:{A:"Zero unemployment.",B:"Unemployment at full capacity: frictional + structural, but no cyclical.",C:"The unemployment rate during a recession.",D:"The rate at which inflation reaches 0%."},
+        correct:"B",tag:"MC-EMP-03",
+        scaffold:"Natural rate (NAIRU) = unemployment that persists at potential output. Frictional and structural always exist. Cyclical = 0 at this point. Full employment ≠ 0%.",
+        reforge:{stem:"If a government reduces occupational immobility through retraining, what happens to the natural rate?",options:{A:"Rises — more enter the labour force.",B:"Falls — structural unemployment decreases.",C:"Unchanged — only demand-side policy affects it.",D:"Falls to zero."},correct:"B"}
+      },
+      {
+        id:"EMP-10",stem:"An increase in immigration of skilled workers would shift:",
+        options:{A:"Labour demand right — firms demand more.",B:"Labour supply right — more workers available at each wage.",C:"Labour supply left — immigrants compete for fewer jobs.",D:"Neither — immigration has no labour market effect."},
+        correct:"B",tag:"MC-EMP-05",
+        scaffold:"Immigration increases available workers → supply shifts right → at any given wage, more people willing and able to work. Downward wage pressure, higher employment.",
+        reforge:{stem:"An ageing population with rising retirements and no offsetting immigration would shift:",options:{A:"Labour supply right.",B:"Labour supply left — fewer workers at each wage.",C:"Labour demand left.",D:"Both curves right."},correct:"B"}
+      }
+    ]
+  },
+  "2.1.4": {
+    label: "Balance of Payments",
+    color: "#059669",
+    questions: [
+      {
+        id:"BOP-01",stem:"UK current account deficit: 3.1% of GDP (2023). A student writes: 'This is very bad for the UK economy.' Which best evaluates this?",
+        options:{A:"Correct — any deficit is harmful.",B:"Partly right: a persistent deficit can signal uncompetitiveness, but may also reflect strong inward investment or consumer confidence. Context matters.",C:"Wrong — deficits are always beneficial.",D:"Wrong — the current account doesn't matter."},
+        correct:"B",tag:"MC-BOP-01",
+        scaffold:"A current account deficit could signal weak competitiveness — or strong domestic demand. The US runs persistent deficits while remaining the world's largest economy. Significance depends on size, persistence, and financing.",
+        reforge:{stem:"A developing country's deficit is 2% of GDP, driven by importing capital machinery for new infrastructure. Is this necessarily a problem?",options:{A:"Yes — all deficits reduce GDP.",B:"Not necessarily — the imports are productive investments that may boost future export capacity.",C:"Yes — only domestic machinery should be used.",D:"No — deficits never matter."},correct:"B"}
+      },
+      {
+        id:"BOP-02",stem:"A student writes: 'The UK's budget deficit widened to 5% of GDP, worsening the current account deficit.' The error is:",
+        options:{A:"No error — they're the same thing.",B:"The fiscal deficit (G − T) and current account deficit (broadly M − X) are different concepts. One doesn't automatically cause the other.",C:"Fiscal deficit can't be expressed as % of GDP.",D:"Current account only measures goods."},
+        correct:"B",tag:"MC-BOP-02",
+        scaffold:"Fiscal deficit = G > T. Current account deficit = M > X broadly. They CAN be linked (twin deficits hypothesis) but are distinct and don't always move together.",
+        reforge:{stem:"Which pair correctly identifies two separate deficits?",options:{A:"Fiscal = exports − imports; Current account = G − T.",B:"Fiscal = G − T; Current account = trade balance + primary + secondary income (when negative).",C:"Both the same concept.",D:"Fiscal = national debt; Current account = trade deficit."},correct:"B"}
+      },
+      {
+        id:"BOP-03",stem:"After sterling depreciates, a student draws the J-curve starting with an immediate improvement. What's wrong?",
+        options:{A:"Nothing — depreciation always improves immediately.",B:"The J-curve shows the current account worsening first (import prices rise, volumes haven't adjusted) before improving as export demand rises and import substitution occurs.",C:"It gets worse and never recovers.",D:"J-curve only applies to fixed exchange rates."},
+        correct:"B",tag:"MC-BOP-03",
+        scaffold:"Short run: import prices rise but contracts are fixed → import bill increases → current account worsens (downward dip). Medium/long run: exports cheaper abroad, imports dearer at home → volumes adjust → improvement (upward stroke).",
+        reforge:{stem:"Six months after a 15% peso depreciation, the current account deficit has widened. Which is most accurate?",options:{A:"The depreciation has failed.",B:"Expected — the economy is in the initial worsening phase; improvement may follow as volumes adjust.",C:"The J-curve predicts immediate improvement, so something else is wrong.",D:"The current account always worsens permanently after depreciation."},correct:"B"}
+      },
+      {
+        id:"BOP-04",stem:"A student argues: 'If the pound depreciates, the UK current account will definitely improve.' What critical condition are they ignoring?",
+        options:{A:"The inflation target must be met first.",B:"The Marshall-Lerner condition — improvement only if PEDx + PEDm > 1.",C:"The government must run a budget surplus.",D:"Interest rates must be cut simultaneously."},
+        correct:"B",tag:"MC-BOP-04",
+        scaffold:"Marshall-Lerner: depreciation improves the current account ONLY if the combined price elasticities of demand for exports and imports exceed 1. If demand is inelastic (essentials, few substitutes), volume changes are too small to offset the price effect.",
+        reforge:{stem:"A country importing mostly essential energy and food sees its currency depreciate 20%. Why might the current account NOT improve?",options:{A:"Energy and food are price-inelastic — demand barely falls, so the import bill rises. Marshall-Lerner not met.",B:"Depreciation always improves the current account.",C:"Energy isn't counted in the current account.",D:"Exports are too cheap."},correct:"A"}
+      },
+      {
+        id:"BOP-05",stem:"The current account of the balance of payments is made up of:",
+        options:{A:"Trade in goods only.",B:"Trade in goods, trade in services, primary income, and secondary income.",C:"FDI and portfolio investment.",D:"Government borrowing and lending."},
+        correct:"B",tag:"MC-BOP-05",
+        scaffold:"Four components: (1) trade in goods, (2) trade in services, (3) primary income (investment income, wages abroad), (4) secondary income (transfers — aid, remittances). FDI/portfolio flows go in the financial account.",
+        reforge:{stem:"A UK pension fund receives £2bn in dividends from US shares. This appears in:",options:{A:"Trade in services.",B:"Primary income on the current account — investment income from abroad.",C:"The financial account.",D:"Secondary income."},correct:"B"}
+      },
+      {
+        id:"BOP-06",stem:"Which policy could reduce a persistent current account deficit?",
+        options:{A:"Raise interest rates to strengthen the currency and make exports more competitive.",B:"Supply-side policies to improve productivity and reduce unit labour costs.",C:"Increase government spending to boost AD.",D:"Abolish all tariffs to encourage more imports."},
+        correct:"B",tag:"MC-BOP-01",
+        scaffold:"Reducing a deficit: expenditure-reducing (deflation), expenditure-switching (depreciation, tariffs), or supply-side (productivity gains → lower unit costs → more competitive exports). B addresses the root cause without demand-reduction trade-offs.",
+        reforge:{stem:"A government uses contractionary fiscal policy to reduce a current account deficit. This is:",options:{A:"Expenditure-switching.",B:"Expenditure-reducing — lower national income reduces import demand.",C:"Supply-side policy.",D:"Protectionism."},correct:"B"}
+      },
+      {
+        id:"BOP-08",stem:"The balance of payments must always balance overall. This means:",
+        options:{A:"The current account must be zero.",B:"A current account deficit must be offset by a surplus on the financial/capital accounts, because any net outflow for goods/services must be financed by a net inflow of capital.",C:"Exports must equal imports.",D:"The government must intervene to ensure balance."},
+        correct:"B",tag:"MC-BOP-05",
+        scaffold:"BoP identity: Current + Capital + Financial + Net Errors = 0. If a country imports more than it exports (current account deficit), foreigners invest that money back (financial account surplus).",
+        reforge:{stem:"UK current account deficit: £80bn. What must be true?",options:{A:"Financial account deficit of £80bn too.",B:"Corresponding surplus on financial/capital accounts of ~£80bn — capital flowing in.",C:"Government must borrow £80bn.",D:"BoP doesn't need to balance."},correct:"B"}
+      },
+      {
+        id:"BOP-10",stem:"Which would be a credit (positive entry) on the UK's current account?",
+        options:{A:"A UK consumer buying a German car.",B:"A UK university receiving tuition fees from an international student.",C:"A UK investor buying Japanese shares.",D:"The UK government sending foreign aid."},
+        correct:"B",tag:"MC-BOP-05",
+        scaffold:"Credits = money flowing IN. A UK uni earning fees from abroad = export of educational services → credit on trade in services. Debits = money flowing OUT (imports, buying foreign assets, sending aid).",
+        reforge:{stem:"A French tourist spends £3,000 in London. This is recorded as:",options:{A:"Debit on trade in goods.",B:"Credit on trade in services — tourism is a UK service export.",C:"Credit on the financial account.",D:"Debit on secondary income."},correct:"B"}
+      }
+    ]
+  }
+};
+
+BANKS["2.2.1"] = {
+  label: "Aggregate Demand",
+  color: "#0891b2",
+  questions: [
+    {
+      id:"AD-01",stem:"Which of the following is the correct formula for aggregate demand?",
+      options:{A:"AD = C + I + G + (X − M)",B:"AD = C + S + G + X",C:"AD = C + I + T + (X − M)",D:"AD = GDP − inflation"},
+      correct:"A",tag:"MC-AD-01",
+      scaffold:"AD = Consumer spending (C) + Investment (I) + Government spending (G) + Net exports (X−M). Savings (S) and taxation (T) are withdrawals from the circular flow, not components of AD.",
+      reforge:{stem:"A government increases G by £10bn while imports rise by £10bn. What is the net effect on AD?",options:{A:"AD rises by £20bn.",B:"AD is unchanged — the rise in G is offset by the rise in M (which reduces net exports).",C:"AD falls by £10bn.",D:"AD rises by £10bn because imports don't count."},correct:"B"}
+    },
+    {
+      id:"AD-02",stem:"Interest rates fall from 5% to 3%. Explain the likely effect on TWO components of AD. (4 marks)",
+      type:"short_answer",
+      model_answer:"Consumption (C) is likely to rise: lower interest rates reduce the cost of borrowing and the reward for saving, encouraging households to spend more, especially on credit-financed purchases like cars (K+An). Investment (I) is likely to rise: firms face a lower cost of borrowing, making more investment projects profitable (expected rate of return now exceeds the interest rate), so capital spending increases (K+An).",
+      tag:"MC-AD-02",
+      scaffold:"Interest rate transmission: lower rates → cheaper borrowing + lower saving reward → C rises. Also: lower cost of capital for firms → more projects profitable → I rises. Could also discuss: mortgage costs fall → disposable income rises → C rises; exchange rate may depreciate → X rises / M falls."
+    },
+    {
+      id:"AD-03",stem:"A fall in consumer confidence would shift:",
+      options:{A:"AD right — worried consumers spend more.",B:"AD left — lower confidence reduces consumption, a major component of AD.",C:"SRAS left — confidence affects costs.",D:"LRAS right — confidence drives long-run growth."},
+      correct:"B",tag:"MC-AD-03",
+      scaffold:"Consumer confidence affects willingness to spend. Lower confidence → households save more (precautionary saving) → C falls → AD shifts left. Confidence is a demand-side factor — it doesn't change firms' costs (SRAS) or the economy's productive capacity (LRAS).",
+      reforge:{stem:"House prices rise significantly. Which component of AD is most directly affected and in which direction?",options:{A:"G rises — government collects more stamp duty.",B:"C rises — the wealth effect means homeowners feel wealthier and spend more.",C:"I falls — houses are too expensive for firms.",D:"X rises — foreigners buy UK houses."},correct:"B"}
+    },
+    {
+      id:"AD-04",stem:"A student draws AD shifting right and labels the result 'economic growth and lower inflation.' On a standard AD/AS diagram with an upward-sloping SRAS, why is this wrong?",
+      options:{A:"It's correct — AD shifts always lower inflation.",B:"An AD shift right along an upward-sloping SRAS increases BOTH real output AND the price level. Growth comes with inflationary pressure, not lower inflation.",C:"AD shifts don't affect the price level.",D:"AD shifts only affect inflation, not output."},
+      correct:"B",tag:"MC-AD-04",
+      scaffold:"On a standard diagram: AD shifts right → moves along upward-sloping SRAS → higher real GDP (growth) BUT also higher price level (inflationary pressure). The only way to get growth WITHOUT inflation is an LRAS/SRAS shift right (supply-side improvement).",
+      reforge:{stem:"Which combination correctly shows the effect of an AD shift RIGHT on a standard AD/SRAS diagram?",options:{A:"Output falls, price level falls.",B:"Output rises, price level rises.",C:"Output rises, price level unchanged.",D:"Output unchanged, price level rises."},correct:"B"}
+    },
+    {
+      id:"AD-05",stem:"The UK's exchange rate depreciates. Trace the effect on AD through net exports. (2 marks)",
+      type:"short_answer",
+      model_answer:"A weaker pound makes UK exports cheaper in foreign currency, increasing demand for exports (X rises) (knowledge). It also makes imports more expensive in pounds, reducing demand for imports (M falls). Net exports (X−M) improve, shifting AD to the right (analysis).",
+      tag:"MC-AD-05",
+      scaffold:"Depreciation → exports cheaper abroad (more competitive) → X rises. Imports dearer at home → consumers switch to domestic goods → M falls. Both effects improve net exports (X−M), a component of AD. Assumes Marshall-Lerner holds."
+    },
+    {
+      id:"AD-06",stem:"Which factor would cause a movement ALONG the AD curve rather than a SHIFT of it?",
+      options:{A:"A change in consumer confidence.",B:"A change in the price level.",C:"A change in government spending.",D:"A change in the exchange rate."},
+      correct:"B",tag:"MC-AD-06",
+      scaffold:"A change in the price level causes a movement along AD (the real balance effect, interest rate effect, and trade effect explain why AD slopes down). Changes in C, I, G, or (X−M) caused by anything OTHER than the price level shift the whole AD curve.",
+      reforge:{stem:"Government announces a £20bn infrastructure programme. On an AD/AS diagram, this causes:",options:{A:"A movement along AD to the right.",B:"A shift of AD to the right — G has increased independently of the price level.",C:"A shift of SRAS to the right.",D:"A movement along SRAS to the left."},correct:"B"}
+    },
+    {
+      id:"AD-07",stem:"A student lists 'higher wages' as a factor that shifts AD right. Is this always correct?",
+      options:{A:"Yes — higher wages always boost AD.",B:"Not necessarily. Higher wages increase C (consumption) but also raise firms' costs, potentially reducing I and shifting SRAS left. The net effect on AD depends on which effect dominates.",C:"No — wages have no effect on AD.",D:"Yes — but only if wages rise above inflation."},
+      correct:"B",tag:"MC-AD-07",
+      scaffold:"Higher wages → more disposable income → C rises → AD shifts right. BUT higher wages → higher costs for firms → may reduce profits/investment (I falls) and shift SRAS left. The net AD effect is ambiguous. This is why examiners reward nuanced analysis over blanket statements.",
+      reforge:{stem:"Oil prices fall globally. What is the most likely combined effect on AD and SRAS?",options:{A:"AD shifts left, SRAS shifts left.",B:"AD shifts right (lower fuel costs boost disposable income → C rises) AND SRAS shifts right (lower production costs for firms).",C:"Only AD shifts right.",D:"Only SRAS shifts left."},correct:"B"}
+    },
+    {
+      id:"AD-08",stem:"The multiplier effect means that an initial injection of spending leads to:",
+      options:{A:"An equal increase in GDP.",B:"A larger final increase in GDP, because each round of spending generates income that is partly re-spent.",C:"A smaller increase in GDP due to inflation.",D:"No change in GDP if the economy is at full capacity."},
+      correct:"B",tag:"MC-TECH-05",
+      scaffold:"Multiplier: initial injection (e.g. £1bn G) → becomes income → recipients spend a fraction (MPC) → that spending becomes someone else's income → repeat. Final ΔY = injection × multiplier. Multiplier = 1/(1−MPC) or 1/MPW. The effect is larger than the initial injection because of successive rounds of re-spending.",
+      reforge:{stem:"MPC = 0.8. The government injects £5bn. What is the final increase in national income?",options:{A:"£5bn",B:"£25bn (multiplier = 1/(1−0.8) = 5; 5 × £5bn = £25bn)",C:"£4bn",D:"£10bn"},correct:"B"}
+    }
+  ]
+};
+
+BANKS["2.2.2"] = {
+  label: "Aggregate Supply",
+  color: "#ca8a04",
+  questions: [
+    {
+      id:"AS-01",stem:"What is the key difference between SRAS and LRAS?",
+      options:{A:"SRAS shows total spending; LRAS shows total output.",B:"SRAS reflects current costs of production (and slopes upward); LRAS reflects the economy's full productive capacity (and is vertical in the classical model).",C:"SRAS is always vertical; LRAS always slopes upward.",D:"There is no difference — they are the same curve."},
+      correct:"B",tag:"MC-AS-01",
+      scaffold:"SRAS slopes upward: as the price level rises, firms supply more because revenues rise relative to (sticky) costs. LRAS is vertical at potential output (classical view): in the long run, output is determined by factors of production and technology, not the price level.",
+      reforge:{stem:"In the Keynesian model, what shape is the AS curve?",options:{A:"Always vertical.",B:"Horizontal at low output (spare capacity), then increasingly steep, becoming vertical at full capacity.",C:"Always downward-sloping.",D:"A straight 45° line."},correct:"B"}
+    },
+    {
+      id:"AS-02",stem:"Which of the following would shift SRAS to the LEFT?",
+      options:{A:"A fall in oil prices.",B:"An increase in labour productivity.",C:"A rise in the national minimum wage increasing firms' costs.",D:"Improved technology reducing production costs."},
+      correct:"C",tag:"MC-AS-02",
+      scaffold:"SRAS shifts left when production costs rise: higher wages, higher raw material/energy costs, higher indirect taxes, exchange rate depreciation raising import costs. SRAS shifts right when costs fall. Think: anything that makes it more expensive for firms to produce at every price level.",
+      reforge:{stem:"The government cuts employers' national insurance contributions. What happens to SRAS?",options:{A:"Shifts left — firms pay less tax so produce less.",B:"Shifts right — lower labour costs for firms mean they can supply more at every price level.",C:"No effect — NI is paid by workers.",D:"LRAS shifts right instead."},correct:"B"}
+    },
+    {
+      id:"AS-03",stem:"A student labels the vertical axis on an AD/AS diagram as 'price.' Why does this lose marks?",
+      options:{A:"It shouldn't — 'price' is acceptable.",B:"The correct label is 'price level' (or 'general price level'). 'Price' implies a single good's price, not the average of all prices in the economy.",C:"The axis should be labelled 'inflation rate.'",D:"The axis should be labelled 'GDP.'"},
+      correct:"B",tag:"MC-TECH-04",
+      scaffold:"AD/AS diagrams show the GENERAL price level (an index of all prices, like CPI) on the y-axis and real GDP/output on the x-axis. 'Price' = one good. 'Price level' = economy-wide average. Examiners consistently flag this as a diagram error.",
+      reforge:{stem:"Which pair of axis labels is correct for an AD/AS diagram?",options:{A:"Price (y-axis), Quantity (x-axis).",B:"Price level (y-axis), Real GDP (x-axis).",C:"Inflation rate (y-axis), Nominal GDP (x-axis).",D:"CPI (y-axis), Output (x-axis)."},correct:"B"}
+    },
+    {
+      id:"AS-04",stem:"Which of the following would shift LRAS to the RIGHT?",
+      options:{A:"A cut in interest rates.",B:"A rise in consumer confidence.",C:"Investment in education and training improving the quality of the labour force.",D:"An increase in government current spending on public sector wages."},
+      correct:"C",tag:"MC-AS-04",
+      scaffold:"LRAS shifts right when productive capacity increases: better education/skills (human capital), new technology, more capital stock (investment), discovery of resources, institutional improvements (property rights, deregulation). Demand-side changes (interest rates, confidence, G) shift AD, not LRAS.",
+      reforge:{stem:"Which combination would shift BOTH SRAS right AND LRAS right?",options:{A:"A tax cut for consumers.",B:"A technological breakthrough that reduces production costs AND increases potential output.",C:"Higher government spending on benefits.",D:"A rise in the exchange rate."},correct:"B"}
+    },
+    {
+      id:"AS-05",stem:"Explain the difference between a movement along SRAS and a shift of SRAS. (2 marks)",
+      type:"short_answer",
+      model_answer:"A movement along SRAS is caused by a change in the price level (driven by an AD shift), as firms adjust output in response to changing revenues relative to sticky costs (knowledge). A shift of SRAS is caused by a change in production costs (e.g. oil prices, wages, indirect taxes) that alters how much firms are willing to supply at EVERY price level (analysis).",
+      tag:"MC-AS-05",
+      scaffold:"Movement along = price level changes (AD shifts, economy moves along existing SRAS). Shift of SRAS = costs change independently of the price level (e.g. oil shock, wage rise, tax change)."
+    },
+    {
+      id:"AS-06",stem:"An economy experiences rising unit labour costs due to wages growing faster than productivity. What is the effect on SRAS?",
+      options:{A:"SRAS shifts right — higher wages mean more spending.",B:"SRAS shifts left — higher unit costs mean firms supply less at every price level.",C:"LRAS shifts right — wages drive long-run growth.",D:"No effect on AS — wages only affect AD."},
+      correct:"B",tag:"MC-AS-06",
+      scaffold:"Unit labour costs = wage costs per unit of output. If wages rise faster than productivity, each unit of output costs more to produce → firms' costs increase → SRAS shifts left → inflationary pressure (cost-push). This was flagged in the 2019 examiner report on Estonia's competitiveness.",
+      reforge:{stem:"A country's productivity grows at 4% while wages grow at 2%. What happens to unit labour costs and SRAS?",options:{A:"Unit costs rise, SRAS shifts left.",B:"Unit costs fall (productivity outpaces wages), SRAS shifts right — firms can produce more cheaply.",C:"No change — they cancel out.",D:"LRAS shifts left."},correct:"B"}
+    },
+    {
+      id:"AS-07",stem:"A student draws SRAS as a vertical line. When is this appropriate?",
+      options:{A:"Always — SRAS is vertical like LRAS.",B:"Never — SRAS must always slope upward.",C:"Only in the classical/monetarist model where all markets clear instantly, meaning output is always at full capacity regardless of the price level. In most A-level contexts, SRAS slopes upward.",D:"Only during a recession."},
+      correct:"C",tag:"MC-AS-01",
+      scaffold:"Classical model: both SRAS and LRAS are vertical — prices and wages adjust instantly, so output is always at potential. Keynesian/standard model: SRAS slopes upward (sticky wages/prices in the short run). For Edexcel A-level, draw SRAS as upward-sloping unless specifically discussing the classical model.",
+      reforge:{stem:"In the Keynesian model, why does SRAS slope upward rather than being vertical?",options:{A:"Because firms always produce more when prices rise.",B:"Because wages and other input costs are 'sticky' in the short run — they don't adjust immediately to price changes, so rising prices increase profit margins and incentivise higher output.",C:"Because the government controls output.",D:"Because LRAS determines the slope of SRAS."},correct:"B"}
+    },
+    {
+      id:"AS-08",stem:"The government introduces a carbon tax on all manufacturing. Which curves are affected and in which direction?",
+      options:{A:"AD shifts right — firms pass costs to consumers who spend more.",B:"SRAS shifts left — the tax raises production costs; LRAS is unaffected in the short run.",C:"LRAS shifts left — productive capacity falls immediately.",D:"AD and SRAS both shift right."},
+      correct:"B",tag:"MC-AS-02",
+      scaffold:"A carbon tax raises firms' costs → SRAS shifts left (cost-push). LRAS isn't immediately affected unless the tax causes permanent capacity reduction. AD isn't directly shifted (though the resulting price rise may reduce real incomes and feed back into lower C). The primary, first-round effect is SRAS left.",
+      reforge:{stem:"The government removes VAT on energy bills. First-round effect?",options:{A:"AD shifts right.",B:"SRAS shifts right — lower indirect tax reduces firms'/households' energy costs.",C:"LRAS shifts right.",D:"SRAS shifts left."},correct:"B"}
+    }
+  ]
+};
+
+BANKS["2.2.3"] = {
+  label: "National Income",
+  color: "#6366f1",
+  questions: [
+    {
+      id:"NI-01",stem:"In the circular flow model, which of the following is an injection?",
+      options:{A:"Savings",B:"Taxation",C:"Investment",D:"Imports"},
+      correct:"C",tag:"MC-NI-01",
+      scaffold:"Injections ADD spending to the circular flow: Investment (I), Government spending (G), Exports (X). Withdrawals REMOVE spending: Savings (S), Taxation (T), Imports (M). The economy is in equilibrium when total injections = total withdrawals (I + G + X = S + T + M).",
+      reforge:{stem:"For national income to be in equilibrium:",options:{A:"AD must exceed AS.",B:"Total injections (I + G + X) must equal total withdrawals (S + T + M).",C:"Exports must equal imports.",D:"Savings must be zero."},correct:"B"}
+    },
+    {
+      id:"NI-02",stem:"The multiplier is 4. The government increases spending by £3bn. What is the final increase in national income?",
+      options:{A:"£3bn",B:"£7bn",C:"£12bn",D:"£0.75bn"},
+      correct:"C",tag:"MC-TECH-05",
+      scaffold:"Final ΔY = multiplier × initial injection = 4 × £3bn = £12bn. The multiplier amplifies the initial injection through successive rounds of re-spending.",
+      reforge:{stem:"MPT = 0.1, MPS = 0.15, MPM = 0.25. What is the multiplier?",options:{A:"10",B:"2 (multiplier = 1/MPW = 1/(0.1+0.15+0.25) = 1/0.5 = 2)",C:"4",D:"0.5"},correct:"B"}
+    },
+    {
+      id:"NI-03",stem:"A student says: 'GDP and GNI are the same thing.' What is the key difference?",
+      options:{A:"There is no difference.",B:"GDP measures output produced within a country's borders. GNI measures income earned by a country's residents, including net income from abroad.",C:"GDP includes inflation; GNI does not.",D:"GNI only measures government income."},
+      correct:"B",tag:"MC-NI-03",
+      scaffold:"GDP = output produced within borders (regardless of who owns the factors). GNI = GDP + net primary income from abroad (income UK residents earn overseas minus income foreign residents earn in the UK). For countries with large overseas investments (e.g. UK), GNI can differ significantly from GDP.",
+      reforge:{stem:"A country has many citizens working abroad who send remittances home, but few foreign workers within its borders. Which is likely larger?",options:{A:"GDP — domestic output is always bigger.",B:"GNI — because net income from abroad is positive (large inflows from citizens overseas, small outflows to foreign workers).",C:"They must be equal.",D:"Neither — remittances aren't counted."},correct:"B"}
+    },
+    {
+      id:"NI-04",stem:"What is the difference between nominal GDP and real GDP?",
+      options:{A:"Nominal GDP is per person; real GDP is total.",B:"Nominal GDP is measured in current prices; real GDP is adjusted for inflation (measured in constant prices), giving a more accurate picture of changes in output.",C:"Real GDP includes imports; nominal does not.",D:"They are calculated using different formulas for AD."},
+      correct:"B",tag:"MC-NI-04",
+      scaffold:"Nominal GDP can rise simply because prices rose (inflation), even if actual output is unchanged. Real GDP strips out inflation by using a base-year price level, isolating genuine changes in output. Always use real GDP when comparing across time periods.",
+      reforge:{stem:"Nominal GDP rises from £2tn to £2.1tn (5%) while inflation is 4%. What is approximate real GDP growth?",options:{A:"5%",B:"Approximately 1% — real growth = nominal growth minus inflation.",C:"9%",D:"4%"},correct:"B"}
+    },
+    {
+      id:"NI-05",stem:"Which of the following would increase the size of the multiplier?",
+      options:{A:"An increase in the marginal propensity to import.",B:"An increase in the marginal rate of tax.",C:"An increase in the marginal propensity to consume.",D:"An increase in the marginal propensity to save."},
+      correct:"C",tag:"MC-TECH-05",
+      scaffold:"Multiplier = 1/MPW where MPW = MPS + MPT + MPM. A higher MPC means a lower MPS (since MPC + MPS = 1 in a simple model), so MPW falls and the multiplier rises. Anything that increases withdrawals (higher tax, saving, or imports) reduces the multiplier.",
+      reforge:{stem:"A government raises income tax rates. What happens to the multiplier and why?",options:{A:"Multiplier rises — more tax revenue means more G.",B:"Multiplier falls — higher MPT increases the marginal propensity to withdraw, so less of each round of income is re-spent.",C:"No change — tax doesn't affect the multiplier.",D:"Multiplier rises — higher taxes reduce inflation."},correct:"B"}
+    },
+    {
+      id:"NI-06",stem:"Explain one limitation of using GDP to compare living standards between countries. (2 marks)",
+      type:"short_answer",
+      model_answer:"GDP does not account for differences in the cost of living between countries (knowledge). A country with a high GDP per capita may have very high prices, meaning residents' purchasing power is lower than the headline figure suggests — this is why economists use PPP (Purchasing Power Parity) adjusted figures for international comparisons (analysis).",
+      tag:"MC-NI-06",
+      scaffold:"Limitations: doesn't account for PPP/cost of living differences, ignores income distribution, excludes the informal/shadow economy, ignores environmental degradation, doesn't capture non-market activity (household work), and says nothing about quality of life or leisure."
+    },
+    {
+      id:"NI-07",stem:"In the circular flow, a rise in the savings ratio (MPS) would, other things equal:",
+      options:{A:"Increase national income — savings fund investment.",B:"Decrease national income in the short run — higher withdrawals reduce spending in the circular flow, creating a negative multiplier effect.",C:"Have no effect — savings always equal investment.",D:"Increase exports."},
+      correct:"B",tag:"MC-NI-01",
+      scaffold:"Higher MPS → more income is withdrawn as savings → less re-spent each round → smaller multiplier → national income falls (paradox of thrift in the short run). Note: in the long run, higher savings COULD fund investment, but the immediate circular-flow effect is contractionary.",
+      reforge:{stem:"The 'paradox of thrift' suggests that:",options:{A:"Saving is always good for the economy.",B:"If everyone tries to save more simultaneously, total spending falls, reducing national income — potentially leaving everyone worse off and unable to save as much as intended.",C:"Thrift only matters in developing countries.",D:"Higher savings always lead to higher investment immediately."},correct:"B"}
+    },
+    {
+      id:"NI-08",stem:"Which of the three methods of measuring GDP counts the value added at each stage of production?",
+      options:{A:"The income method.",B:"The expenditure method.",C:"The output (production) method.",D:"The employment method."},
+      correct:"C",tag:"MC-NI-08",
+      scaffold:"Three methods, all yielding the same GDP figure: (1) Output/production — sum of value added by each industry (avoids double counting). (2) Income — sum of all factor incomes (wages, profits, rent, interest). (3) Expenditure — sum of all final spending (C + I + G + X − M). Value added = output minus intermediate inputs.",
+      reforge:{stem:"Why does the output method use 'value added' rather than total sales revenue at each stage?",options:{A:"Sales revenue is confidential.",B:"Using total revenue would double-count intermediate goods — e.g. counting wheat, then flour, then bread would triple-count the wheat's value.",C:"Value added is always larger than revenue.",D:"The government requires it for tax purposes."},correct:"B"}
+    }
+  ]
+};
+
+BANKS["2.3.1"] = {
+  label: "Fiscal Policy",
+  color: "#b45309",
+  questions: [
+    {
+      id:"FIS-01",stem:"Which of the following best defines fiscal policy?",
+      options:{A:"The Bank of England adjusting interest rates.",B:"The use of government spending and taxation to influence aggregate demand and the economy.",C:"Policies to improve the supply side of the economy.",D:"The central bank buying government bonds."},
+      correct:"B",tag:"MC-FIS-01",
+      scaffold:"Fiscal policy = government spending (G) and taxation (T) decisions, set by the Chancellor in the Budget. It directly affects AD (G is a component; T affects C and I). Don't confuse with monetary policy (interest rates, set by the BoE) or supply-side policies (structural reforms).",
+      reforge:{stem:"The Chancellor announces a £15bn increase in NHS spending funded by higher income tax. This is an example of:",options:{A:"Monetary policy.",B:"Fiscal policy — it involves changes to both government spending and taxation.",C:"Supply-side policy.",D:"Quantitative easing."},correct:"B"}
+    },
+    {
+      id:"FIS-02",stem:"A student cannot explain the difference between automatic stabilisers and discretionary fiscal policy. Which answer correctly distinguishes them?",
+      options:{A:"They are the same thing — both require government decisions.",B:"Automatic stabilisers (e.g. welfare spending, progressive tax) adjust automatically as the economy changes, without new legislation. Discretionary policy requires deliberate government action (e.g. a new infrastructure programme or tax cut).",C:"Automatic stabilisers only work in booms; discretionary only in recessions.",D:"Discretionary policy is automatic; stabilisers require decisions."},
+      correct:"B",tag:"MC-FIS-02",
+      scaffold:"Automatic stabilisers kick in without any new policy decision. In a recession: tax receipts fall automatically (less income to tax), welfare spending rises automatically (more claimants) → this cushions the fall in AD. Discretionary = a deliberate new action: 'the Chancellor announced...' The 2022 examiner report flagged this as a question many candidates found challenging.",
+      reforge:{stem:"During a recession, unemployment benefit payments rise without any new legislation. This is an example of:",options:{A:"Discretionary fiscal policy.",B:"An automatic stabiliser — welfare spending increases automatically as unemployment rises, partially offsetting the fall in AD.",C:"Monetary policy.",D:"Supply-side policy."},correct:"B"}
+    },
+    {
+      id:"FIS-03",stem:"A student writes about methods of 'raising tax revenue' but focuses entirely on what the government could SPEND the revenue on. What has gone wrong?",
+      options:{A:"Nothing — spending is relevant.",B:"The student has not answered the question. 'Methods of raising tax revenue' requires discussion of tax instruments (income tax, VAT, corporation tax, new taxes) and their merits, not spending plans.",C:"The student should have discussed monetary policy instead.",D:"Spending and revenue are the same thing."},
+      correct:"B",tag:"MC-TECH-01",
+      scaffold:"The 2022 examiner report explicitly flagged this: many candidates discussed what government could spend revenue on, rather than evaluating the methods of raising it. Answer the question set. Methods = which taxes, at what rates, on whom, with what economic effects (incentives, equity, Laffer curve).",
+      reforge:{stem:"'Evaluate methods of increasing tax revenue.' Which response is on-task?",options:{A:"The government could spend more on hospitals and schools.",B:"Raising the top rate of income tax would target high earners but may reduce work incentives; alternatively, broadening the VAT base would raise revenue but is regressive.",C:"Tax revenue is not important for the economy.",D:"The Bank of England should raise interest rates to increase revenue."},correct:"B"}
+    },
+    {
+      id:"FIS-04",stem:"What is the difference between the fiscal (budget) deficit and the national debt?",
+      options:{A:"They are the same thing.",B:"The fiscal deficit is the annual shortfall (G > T in one year). The national debt is the total accumulated borrowing over time — the sum of all past deficits minus surpluses.",C:"The national debt is always smaller than the deficit.",D:"The deficit is what we owe to other countries; the debt is domestic."},
+      correct:"B",tag:"MC-BOP-02",
+      scaffold:"Deficit = a flow (this year's gap between spending and revenue). Debt = a stock (total accumulated over decades). Running a deficit of £100bn this year adds £100bn to the national debt. You can run a deficit while the debt-to-GDP ratio falls if GDP grows faster than borrowing. The 2019 examiner report flagged students confusing fiscal deficit with current account deficit.",
+      reforge:{stem:"A government runs a surplus of £10bn. What happens to the national debt?",options:{A:"It increases by £10bn.",B:"It decreases by £10bn — the surplus is used to pay down accumulated debt.",C:"It is unaffected — surpluses and debt are unrelated.",D:"It doubles."},correct:"B"}
+    },
+    {
+      id:"FIS-05",stem:"Evaluate whether expansionary fiscal policy is the most effective way to reduce unemployment. (12 marks — 8 KAA + 4 EV)",
+      type:"extended_answer",
+      model_answer_outline:{
+        KAA_strand_1:"Expansionary fiscal policy (higher G or lower T) → AD shifts right → firms produce more → derived demand for labour rises → unemployment falls. Multiplier amplifies the effect. Apply: UK furlough scheme during COVID or 2008 fiscal stimulus. Draw AD/AS diagram showing rightward AD shift.",
+        KAA_strand_2:"However, fiscal policy may cause demand-pull inflation if the economy is near full capacity. Also: time lags (recognition, implementation, impact), crowding out (higher G funded by borrowing → higher interest rates → lower private I), and it only addresses cyclical unemployment — structural unemployment requires supply-side solutions.",
+        EV_strand:"Depends on: (1) type of unemployment — fiscal policy tackles cyclical but not structural (need retraining/mobility); (2) position in the cycle — effective when there's spare capacity, inflationary near full employment; (3) alternatives — monetary policy (faster, no political lag), supply-side (addresses root causes but slow). Judgement: fiscal policy is effective for demand-deficient unemployment but must be complemented by supply-side reform for structural unemployment; no single policy is 'most effective' in all contexts."
+      },
+      tag:["MC-FIS-01","MC-EMP-02","MC-TECH-02"],
+      scaffold:"Top-level answers need: AD/AS diagram, multiplier reference, real-world application, AND evaluation that distinguishes cyclical from structural unemployment and weighs fiscal against monetary and supply-side alternatives."
+    },
+    {
+      id:"FIS-06",stem:"The Laffer curve suggests that:",
+      options:{A:"Higher tax rates always raise more revenue.",B:"Beyond a certain tax rate, further increases actually reduce total tax revenue because they discourage work, investment, and encourage tax avoidance.",C:"Tax revenue is unrelated to tax rates.",D:"Tax rates should always be zero."},
+      correct:"B",tag:"MC-FIS-06",
+      scaffold:"The Laffer curve is an inverted U: at 0% tax, revenue is zero. At 100%, revenue is also zero (no one works). Somewhere in between is the revenue-maximising rate. Beyond that point, higher rates are counterproductive. The debate is about WHERE the peak is — not whether the relationship exists.",
+      reforge:{stem:"A country has a top income tax rate of 75% and is experiencing significant tax avoidance and brain drain. Using the Laffer curve, what might happen if it reduces the rate to 50%?",options:{A:"Revenue must fall because the rate is lower.",B:"Revenue could actually rise if the lower rate incentivises more work and reduces avoidance — the country may have been beyond the peak of the Laffer curve.",C:"Revenue is unchanged — rates don't matter.",D:"The Laffer curve only applies to VAT."},correct:"B"}
+    },
+    {
+      id:"FIS-07",stem:"Which of the following is a problem with using fiscal policy to manage aggregate demand?",
+      options:{A:"It works too quickly — the economy overheats before the policy can be reversed.",B:"Time lags: recognition lag (identifying the problem), implementation lag (passing legislation), and impact lag (policy feeding through to AD) mean fiscal policy may take effect when conditions have already changed.",C:"Fiscal policy has no effect on AD.",D:"Only the Bank of England can change government spending."},
+      correct:"B",tag:"MC-FIS-07",
+      scaffold:"Three lags: (1) Recognition — takes time to confirm a recession is happening. (2) Implementation — budgets are annual; emergency measures need political approval. (3) Impact — spending takes time to feed through (contracts, hiring). By the time the stimulus hits, the economy may have already recovered → pro-cyclical rather than counter-cyclical.",
+      reforge:{stem:"Compared to fiscal policy, monetary policy has one key advantage in terms of timing. What is it?",options:{A:"Monetary policy has no time lags at all.",B:"The MPC meets regularly and can change interest rates quickly without needing parliamentary approval, reducing the implementation lag.",C:"Monetary policy works instantly on the economy.",D:"Fiscal policy is always faster."},correct:"B"}
+    },
+    {
+      id:"FIS-08",stem:"Crowding out occurs when:",
+      options:{A:"Government spending replaces private spending — e.g. higher G funded by borrowing pushes up interest rates, reducing private investment.",B:"The government spends less than it taxes.",C:"Exports crowd out imports.",D:"The private sector spends more than the government."},
+      correct:"A",tag:"MC-FIS-08",
+      scaffold:"Government borrows to fund higher G → increased demand for loanable funds → interest rates rise → private firms face higher borrowing costs → private I falls. The government spending 'crowds out' private investment. This is a key evaluation point against expansionary fiscal policy. Note: crowding out is weaker when there's spare capacity (interest rates don't rise as much).",
+      reforge:{stem:"When is crowding out LEAST likely to occur?",options:{A:"When the economy is at full capacity.",B:"During a deep recession with very low interest rates and spare capacity — government borrowing doesn't push rates up significantly because demand for private borrowing is already weak.",C:"When the government runs a surplus.",D:"Crowding out always occurs regardless of conditions."},correct:"B"}
+    }
+  ]
+};
+
+BANKS["2.3.2"] = {
+  label: "Monetary Policy",
+  color: "#0d9488",
+  questions: [
+    {
+      id:"MON-01",stem:"Monetary policy in the UK is set by:",
+      options:{A:"The Chancellor of the Exchequer.",B:"The Monetary Policy Committee (MPC) of the Bank of England, which is operationally independent of government.",C:"The Prime Minister.",D:"The House of Commons."},
+      correct:"B",tag:"MC-MON-01",
+      scaffold:"The BoE has been operationally independent since 1997. The government sets the inflation target (2% CPI); the MPC decides HOW to hit it (interest rates, QE). This independence is meant to remove political short-termism from monetary decisions.",
+      reforge:{stem:"Why was the Bank of England given operational independence in 1997?",options:{A:"To allow the government to set interest rates more frequently.",B:"To remove the temptation for politicians to cut rates before elections for short-term popularity, improving the credibility of inflation targeting.",C:"Because the EU required it.",D:"To allow the BoE to set tax rates."},correct:"B"}
+    },
+    {
+      id:"MON-02",stem:"The MPC cuts the base rate from 5% to 4%. Trace the transmission mechanism to AD. (4 marks)",
+      type:"short_answer",
+      model_answer:"Lower base rate → commercial banks lower lending rates → cost of borrowing falls for households and firms (K). Households: cheaper mortgages increase disposable income, lower saving reward → consumption (C) rises (An). Firms: more investment projects become profitable (expected return > cost of borrowing) → investment (I) rises (An). Also: lower rates may weaken the exchange rate (less attractive for hot money) → exports cheaper → net exports improve (X−M) → AD shifts right (An).",
+      tag:"MC-MON-02",
+      scaffold:"Transmission mechanism: base rate → commercial rates → borrowing/saving decisions → C and I → AD. Also: rate cut → exchange rate may depreciate → net exports improve → AD. Also: asset prices may rise (lower discount rate) → wealth effect → C."
+    },
+    {
+      id:"MON-03",stem:"A student writes: 'Raising interest rates will solve inflation without any trade-offs.' Why is this an oversimplification?",
+      options:{A:"It's correct — higher rates always solve inflation painlessly.",B:"Higher rates reduce AD (lower C and I), which reduces demand-pull inflation — but also slows growth, may increase unemployment, raises mortgage costs, and can cause a recession if overdone. There is a trade-off between inflation control and economic activity.",C:"Interest rates have no effect on inflation.",D:"Only fiscal policy can control inflation."},
+      correct:"B",tag:"MC-MON-03",
+      scaffold:"The 2019 examiner report flagged this: students discussed 'conflicts that can occur as the central bank attempts to keep inflation on target.' Higher rates → lower inflation BUT also: lower growth, higher unemployment (Phillips curve trade-off), higher mortgage payments reducing living standards, exchange rate appreciation hurting exporters.",
+      reforge:{stem:"The MPC raises rates to combat 10% inflation. Which conflict is most likely?",options:{A:"Inflation rises further.",B:"Unemployment rises as firms cut costs in response to lower demand — the classic inflation-unemployment trade-off.",C:"The exchange rate depreciates.",D:"Government spending increases automatically."},correct:"B"}
+    },
+    {
+      id:"MON-04",stem:"Quantitative easing (QE) involves:",
+      options:{A:"The government printing money to fund spending.",B:"The central bank creating new money electronically to buy government bonds (and other assets) from financial institutions, increasing the money supply and lowering long-term interest rates.",C:"Raising the base rate to tighten monetary conditions.",D:"Reducing government spending to control the money supply."},
+      correct:"B",tag:"MC-MON-04",
+      scaffold:"QE: BoE creates money → buys gilts from banks/pension funds → sellers deposit cash in banks → banks have more reserves → lend more → money supply rises → long-term rates fall → asset prices rise (wealth effect) → C and I stimulated → AD shifts right. Used when base rate is near zero (zero lower bound) and conventional rate cuts are exhausted.",
+      reforge:{stem:"Why was QE introduced after 2009 rather than further base rate cuts?",options:{A:"The government banned rate cuts.",B:"The base rate was already near zero (the zero lower bound), so conventional rate cuts had been exhausted — QE was an unconventional tool to provide further stimulus.",C:"QE is cheaper than rate cuts.",D:"Rate cuts only work during booms."},correct:"B"}
+    },
+    {
+      id:"MON-05",stem:"A limitation of monetary policy is that it may be ineffective when:",
+      options:{A:"Inflation is high.",B:"Interest rates are near zero (liquidity trap) — further cuts are impossible, and even QE may push on a string if banks don't lend or firms/consumers lack confidence to borrow.",C:"The exchange rate is floating.",D:"The economy is growing."},
+      correct:"B",tag:"MC-MON-05",
+      scaffold:"Liquidity trap: rates at/near zero → can't cut further. QE injects liquidity but banks may hoard it (risk aversion) rather than lend. Firms may not invest even at 0% if expected returns are negative (low confidence). Japan's 'lost decades' illustrate this. Monetary policy is 'pushing on a string.'",
+      reforge:{stem:"During the 2008 crisis, despite very low interest rates, bank lending remained subdued. Which concept explains this?",options:{A:"The multiplier was too large.",B:"A liquidity trap — banks were reluctant to lend due to risk aversion, and borrowers lacked confidence, so low rates failed to stimulate lending and spending.",C:"Interest rates were too high.",D:"Fiscal policy was too tight."},correct:"B"}
+    },
+    {
+      id:"MON-06",stem:"Higher interest rates tend to cause the exchange rate to:",
+      options:{A:"Depreciate — investors move money out.",B:"Appreciate — higher rates attract hot money inflows, increasing demand for the currency.",C:"Stay the same — interest rates don't affect exchange rates.",D:"Depreciate in the short run but appreciate in the long run."},
+      correct:"B",tag:"MC-MON-06",
+      scaffold:"Higher UK rates → higher return on UK assets → hot money flows in (foreign investors buy sterling to invest) → demand for £ rises → £ appreciates. This strengthens the currency, making imports cheaper (reducing inflation) but exports more expensive (worsening net exports).",
+      reforge:{stem:"The ECB raises eurozone interest rates while UK rates stay unchanged. What is the likely effect on the £/€ exchange rate?",options:{A:"Sterling appreciates against the euro.",B:"Sterling depreciates against the euro — hot money flows toward the higher eurozone rates, reducing demand for sterling.",C:"No effect on the exchange rate.",D:"Both currencies appreciate."},correct:"B"}
+    },
+    {
+      id:"MON-07",stem:"A student says: 'Monetary policy can solve cost-push inflation.' Evaluate this claim. (4 marks)",
+      type:"short_answer",
+      model_answer:"Monetary policy (raising rates) reduces AD, which can lower the price level — but cost-push inflation is caused by SRAS shifting left (higher costs), not excess demand (K). Raising rates would reduce output and increase unemployment without addressing the cost shock (An). This creates a dilemma: the BoE must choose between tolerating above-target inflation or causing a recession — this is why central banks often 'look through' temporary supply shocks rather than responding aggressively (Ev).",
+      tag:["MC-MON-03","MC-INF-04"],
+      scaffold:"Cost-push = supply-side problem. Monetary policy is a demand-side tool. Using demand restriction to fight a supply shock risks stagflation (rising prices AND falling output). The BoE's 2022 dilemma with energy-driven inflation illustrates this tension."
+    },
+    {
+      id:"MON-08",stem:"Forward guidance is a monetary policy tool where the central bank:",
+      options:{A:"Sets interest rates 10 years in advance.",B:"Communicates its future policy intentions to influence expectations, helping businesses and consumers plan and reducing uncertainty.",C:"Forces banks to lend at specific rates.",D:"Pegs the exchange rate."},
+      correct:"B",tag:"MC-MON-08",
+      scaffold:"Forward guidance: the BoE signals where it expects rates to go (e.g. 'rates will remain low until unemployment falls below 7%'). This manages expectations — if firms believe rates will stay low, they're more likely to invest now. It works through the expectations channel rather than direct rate changes.",
+      reforge:{stem:"The BoE announces: 'We do not expect to raise rates for at least 12 months.' What is this intended to achieve?",options:{A:"Force banks to lower rates immediately.",B:"Reduce uncertainty and encourage spending/investment now — businesses and households can plan knowing borrowing costs will remain stable.",C:"Increase inflation expectations to dangerous levels.",D:"Replace QE entirely."},correct:"B"}
+    }
+  ]
+};
+
+BANKS["2.3.3"] = {
+  label: "Supply-Side Policies",
+  color: "#e11d48",
+  questions: [
+    {
+      id:"SSP-01",stem:"Supply-side policies aim to:",
+      options:{A:"Shift AD to the right by increasing government spending.",B:"Increase the productive capacity of the economy by shifting LRAS to the right.",C:"Reduce the money supply to control inflation.",D:"Increase imports to improve consumer choice."},
+      correct:"B",tag:"MC-SSP-01",
+      scaffold:"Supply-side policies target the economy's potential output — shifting LRAS right. They improve the quantity or quality of factors of production (labour, capital, enterprise, land/resources) or remove barriers to efficient resource allocation. They are about the capacity to produce, not the level of demand.",
+      reforge:{stem:"On an AD/AS diagram, successful supply-side policies would show:",options:{A:"AD shifting right along a fixed LRAS.",B:"LRAS shifting right, enabling higher output at a lower (or stable) price level — non-inflationary growth.",C:"SRAS shifting left as costs rise.",D:"AD shifting left to reduce inflation."},correct:"B"}
+    },
+    {
+      id:"SSP-02",stem:"Which of the following is a market-based (interventionist vs free-market) supply-side policy?",
+      options:{A:"Government-funded retraining programmes.",B:"Deregulation — removing bureaucratic barriers to make it easier for firms to enter markets and compete.",C:"Increased spending on state education.",D:"Building new public infrastructure."},
+      correct:"B",tag:"MC-SSP-02",
+      scaffold:"Free-market/market-based: deregulation, privatisation, trade union reform, reducing income tax/corporation tax, flexible labour markets. Interventionist: government spending on education/training, infrastructure investment, R&D subsidies, regional policy. Both shift LRAS right but through different mechanisms.",
+      reforge:{stem:"A government invests £5bn in apprenticeship programmes for young people. This is:",options:{A:"A free-market supply-side policy.",B:"An interventionist supply-side policy — direct government spending to improve human capital.",C:"Fiscal policy only — it has no supply-side effect.",D:"Monetary policy."},correct:"B"}
+    },
+    {
+      id:"SSP-03",stem:"A student lists 'cutting interest rates' as a supply-side policy. Why is this incorrect?",
+      options:{A:"It's correct — lower rates boost the supply side.",B:"Cutting interest rates is monetary policy aimed at boosting AD (demand-side). While it may indirectly stimulate investment, it's classified as demand management, not supply-side policy.",C:"Interest rates have no economic effect.",D:"Only the government can implement supply-side policies."},
+      correct:"B",tag:"MC-SSP-03",
+      scaffold:"Supply-side policies specifically target productive capacity (LRAS). Interest rate cuts target AD through the monetary transmission mechanism. Yes, lower rates may encourage I (which builds capacity over time), but the primary classification is monetary/demand-side. Examiners want clean categorisation.",
+      reforge:{stem:"Which of these is correctly classified as a supply-side policy?",options:{A:"Quantitative easing.",B:"Reducing corporation tax to incentivise business investment and attract FDI — targeting the productive capacity of the economy.",C:"Increasing government spending on benefits.",D:"Cutting VAT to boost consumer spending."},correct:"B"}
+    },
+    {
+      id:"SSP-04",stem:"Evaluate the effectiveness of supply-side policies in reducing unemployment. (12 marks — 8 KAA + 4 EV)",
+      type:"extended_answer",
+      model_answer_outline:{
+        KAA_strand_1:"Supply-side policies (e.g. retraining, education reform, deregulation) can reduce structural unemployment by addressing skills mismatches and occupational/geographical immobility. They can also reduce the natural rate of unemployment by making labour markets more flexible. Example: UK apprenticeship levy aimed at closing skills gaps.",
+        KAA_strand_2:"However, supply-side policies take a long time to work (education reform may take 5-10 years), are expensive (infrastructure, training programmes), and may increase inequality in the short term (e.g. deregulation/trade union reform can suppress wages). They also do not address cyclical unemployment caused by deficient demand.",
+        EV_strand:"Depends on: (1) type of unemployment — supply-side is effective for structural/natural rate but irrelevant for demand-deficient unemployment (need fiscal/monetary); (2) time horizon — long-run benefits vs short-run costs; (3) type of supply-side policy — interventionist (education) may be more equitable but slower; market-based (deregulation) may be faster but increase inequality. Judgement: supply-side policies are necessary for sustainably low unemployment but insufficient alone — demand management is needed in recessions, and the choice between interventionist and market-based approaches involves trade-offs between efficiency and equity."
+      },
+      tag:["MC-SSP-01","MC-EMP-02","MC-TECH-02"],
+      scaffold:"Top-level: distinguish structural from cyclical, give real examples, weigh interventionist vs market-based, and reach a judgement about when supply-side works and when it doesn't."
+    },
+    {
+      id:"SSP-05",stem:"Trade union reform (reducing union power) is argued to improve labour market flexibility. Which is a valid counter-argument?",
+      options:{A:"There are no counter-arguments — weaker unions are always better.",B:"Weaker unions may lead to lower wages and worse working conditions, increasing inequality and potentially reducing AD if workers' spending power falls.",C:"Trade unions have no effect on the labour market.",D:"Union reform only affects the public sector."},
+      correct:"B",tag:"MC-SSP-05",
+      scaffold:"Weaker unions → wages determined more by market forces → potentially lower wages for low-skilled workers → higher inequality. Also: reduced bargaining power may worsen working conditions, reduce job security. Counter: lower wages may reduce costs and increase employment. This is a classic efficiency vs equity trade-off.",
+      reforge:{stem:"Privatisation of a state-owned monopoly is expected to increase efficiency. Which is a valid concern?",options:{A:"Private firms are always less efficient.",B:"The firm may become a private monopoly, exploiting consumers with higher prices unless effective regulation is in place.",C:"Privatisation has no effect on efficiency.",D:"Only public firms can make profits."},correct:"B"}
+    },
+    {
+      id:"SSP-06",stem:"A key advantage of supply-side policies over demand-side policies is:",
+      options:{A:"They work immediately.",B:"They can increase output without causing inflation — LRAS shifts right, meaning higher GDP at a stable or lower price level.",C:"They are free to implement.",D:"They always reduce unemployment to zero."},
+      correct:"B",tag:"MC-SSP-01",
+      scaffold:"Demand-side (fiscal/monetary) shifts AD right → higher output BUT also higher price level (inflationary). Supply-side shifts LRAS right → higher output at same or lower price level = non-inflationary growth. This is the key comparative advantage. The trade-off: supply-side takes much longer to work.",
+      reforge:{stem:"An economy is at full capacity with high inflation. Which policy approach can increase output WITHOUT worsening inflation?",options:{A:"Expansionary fiscal policy.",B:"Supply-side policies — expanding productive capacity (LRAS right) allows more output without demand-pull price pressure.",C:"Cutting interest rates.",D:"Increasing government spending."},correct:"B"}
+    },
+    {
+      id:"SSP-07",stem:"Which of the following is NOT a supply-side policy?",
+      options:{A:"Investment in transport infrastructure.",B:"Deregulation of markets.",C:"An increase in Job Seekers' Allowance to support unemployed workers.",D:"Reducing income tax to increase incentives to work."},
+      correct:"C",tag:"MC-SSP-02",
+      scaffold:"Increasing JSA is a fiscal transfer (automatic stabiliser) that supports incomes — it doesn't improve productive capacity. In fact, higher benefits could arguably REDUCE labour supply if they weaken the incentive to find work. Infrastructure, deregulation, and tax incentives all aim to expand capacity or improve efficiency.",
+      reforge:{stem:"A government reduces the top rate of income tax from 50% to 40%. Supply-side economists argue this will:",options:{A:"Reduce tax revenue with no other effects.",B:"Increase incentives to work, earn, and invest — potentially increasing labour supply and entrepreneurship, shifting LRAS right.",C:"Shift AD left because people pay less tax.",D:"Only benefit the wealthy with no macroeconomic impact."},correct:"B"}
+    },
+    {
+      id:"SSP-08",stem:"Infrastructure investment is sometimes classified as BOTH a demand-side AND supply-side policy. Why?",
+      options:{A:"This is incorrect — it can only be one or the other.",B:"In the short run, the spending injects demand into the economy (G rises → AD shifts right). In the long run, better infrastructure improves productivity and reduces costs, increasing productive capacity (LRAS shifts right).",C:"Because infrastructure only affects imports.",D:"Because it is funded by taxation."},
+      correct:"B",tag:"MC-SSP-08",
+      scaffold:"Infrastructure is dual-impact: Short run = demand injection (construction workers hired, materials bought → G increases → AD right). Long run = capacity expansion (better transport reduces costs, improves connectivity, boosts productivity → LRAS right). The 2022 examiner report used the Bow Street station example to illustrate this dual effect.",
+      reforge:{stem:"A government builds a new high-speed rail line. In year 1 of construction, the primary macroeconomic effect is:",options:{A:"LRAS shifts right immediately.",B:"AD shifts right — construction spending is an injection of government expenditure (G), creating jobs and income in the short run.",C:"SRAS shifts left due to higher costs.",D:"No macroeconomic effect until the line opens."},correct:"B"}
+    }
+  ]
+};
+
+BANKS["2.4.1"] = {
+  label: "Inequality",
+  color: "#9333ea",
+  questions: [
+    {
+      id:"INQ-01",stem:"A student draws a Lorenz curve but labels the axes 'income' (y) and 'people' (x). Why does this lose marks?",
+      options:{A:"The labels are correct.",B:"The correct labels are 'cumulative % of income' (y-axis) and 'cumulative % of population' (x-axis). Without 'cumulative %' the diagram doesn't convey that it shows shares, not absolute values.",C:"The axes should be 'GDP' and 'time'.",D:"Lorenz curves don't have labelled axes."},
+      correct:"B",tag:"MC-TECH-04",
+      scaffold:"The 2022 examiner report explicitly flagged Lorenz curve axis labelling as a common error. Both axes must show cumulative percentages. The 45° line of equality shows what perfect equality looks like (bottom 20% earn 20% of income, etc). The further the curve bows from this line, the greater the inequality.",
+      reforge:{stem:"On a Lorenz curve, the 45° diagonal line represents:",options:{A:"Average income.",B:"Perfect equality — each percentage of the population earns exactly that percentage of total income.",C:"Perfect inequality — one person earns everything.",D:"The poverty line."},correct:"B"}
+    },
+    {
+      id:"INQ-02",stem:"The UK's Gini coefficient is 0.34. What does this mean?",
+      options:{A:"34% of people are in poverty.",B:"The Gini coefficient ranges from 0 (perfect equality) to 1 (perfect inequality). 0.34 indicates moderate inequality — closer to equality than inequality, but with a notable gap.",C:"The UK is the 34th most equal country.",D:"34% of income goes to the top 1%."},
+      correct:"B",tag:"MC-INQ-02",
+      scaffold:"Gini coefficient = Area between Lorenz curve and 45° line ÷ total area under the 45° line. 0 = perfect equality (Lorenz curve IS the 45° line). 1 = perfect inequality (one person has everything). UK at 0.34 means moderate inequality — for comparison, Nordics are ~0.25, South Africa ~0.63.",
+      reforge:{stem:"Country A has a Gini of 0.28; Country B has 0.52. Which has greater income inequality?",options:{A:"Country A — higher Gini means more equality.",B:"Country B — a higher Gini coefficient indicates greater inequality (the Lorenz curve is further from the line of equality).",C:"They are equally unequal.",D:"Gini coefficients can't be compared across countries."},correct:"B"}
+    },
+    {
+      id:"INQ-03",stem:"A student explains causes of income inequality but offers no evaluation. In an 8-mark question, how many marks are they likely to lose?",
+      options:{A:"None — evaluation is optional on 8-mark questions.",B:"Up to 2 marks — the 8-mark structure awards 2 marks each for K, Ap, An, and Ev. Missing evaluation entirely sacrifices a quarter of available marks.",C:"All 8 marks.",D:"1 mark at most."},
+      correct:"B",tag:"MC-TECH-02",
+      scaffold:"The 2022 examiner report stressed this repeatedly: on 8-mark questions, marks are split equally (2K + 2Ap + 2An + 2Ev). Many candidates scored 6/8 with strong KAA but zero evaluation. Evaluation means questioning significance, considering counter-arguments, or weighing causes against each other.",
+      reforge:{stem:"On a 12-mark levels question (8 KAA + 4 EV), a student writes excellent analysis but no evaluation. What is their likely maximum mark?",options:{A:"12 — analysis is enough.",B:"8 — they can access full KAA marks but score zero on the 4 evaluation marks.",C:"4 — no evaluation means no marks at all.",D:"10 — they lose only 2 marks."},correct:"B"}
+    },
+    {
+      id:"INQ-04",stem:"Explain one cause of income inequality within the UK. (2 marks)",
+      type:"short_answer",
+      model_answer:"Regional differences in educational attainment mean that workers in some areas have lower skills and qualifications (knowledge). This limits their access to high-paying professional jobs, trapping them in lower-wage employment and widening the income gap between regions like London and the North East (analysis).",
+      tag:"MC-INQ-04",
+      scaffold:"Causes include: education/skills disparities, regional economic imbalances, discrimination, globalisation (skilled workers gain, unskilled lose), technological change (automation replacing routine jobs), tax and benefit policy, inheritance. K for identifying; An for explaining the mechanism."
+    },
+    {
+      id:"INQ-05",stem:"What is the difference between income and wealth?",
+      options:{A:"They are the same thing.",B:"Income is a flow — earnings received over a period (wages, rent, dividends). Wealth is a stock — the total value of assets owned at a point in time (property, savings, shares).",C:"Income is only wages; wealth is only property.",D:"Wealth is always larger than income."},
+      correct:"B",tag:"MC-INQ-05",
+      scaffold:"The 2019 examiner report flagged students confusing these. Income = flow (£ per year — salary, benefits, investment returns). Wealth = stock (£ at a point — house value, pension pot, savings, shares minus debts). You can have high income but low wealth (spend everything), or low income but high wealth (retiree with a paid-off house).",
+      reforge:{stem:"A retired homeowner has no salary but owns a £500,000 house and £200,000 in savings. They have:",options:{A:"High income and high wealth.",B:"Low income (no earnings flow) but high wealth (£700,000 in assets).",C:"No wealth because they have no income.",D:"High income because their house is valuable."},correct:"B"}
+    },
+    {
+      id:"INQ-06",stem:"A question asks about rising WEALTH inequality, but a student discusses INCOME inequality throughout. What mark impact does this have?",
+      options:{A:"None — they are the same concept.",B:"Significant — the student has not answered the question set. While some points may overlap, wealth inequality has distinct causes (inheritance, asset price inflation, property ownership) and the answer will lack precision and relevance.",C:"Minimal — examiners don't distinguish them.",D:"The student gains extra marks for breadth."},
+      correct:"B",tag:"MC-INQ-05",
+      scaffold:"The 2019 examiner report flagged this directly: candidates discussed income inequality when asked about wealth inequality. Wealth inequality causes: inheritance, house price appreciation (owners vs renters), pension differences, share ownership concentrated among the wealthy. Answer the question SET.",
+      reforge:{stem:"Which factor specifically drives WEALTH inequality rather than income inequality?",options:{A:"Differences in hourly wages.",B:"Rising house prices — homeowners see their asset values increase while non-owners are locked out, widening the wealth gap independently of income.",C:"Different working hours.",D:"Regional differences in job availability."},correct:"B"}
+    },
+    {
+      id:"INQ-07",stem:"Progressive taxation means:",
+      options:{A:"Everyone pays the same percentage of their income in tax.",B:"The marginal rate of tax increases as income rises — higher earners pay a larger proportion of their income in tax.",C:"Tax rates decrease as income rises.",D:"Only the wealthy pay tax."},
+      correct:"B",tag:"MC-INQ-07",
+      scaffold:"Progressive: marginal rate rises with income (UK: 20% basic → 40% higher → 45% additional). Proportional: same rate for all. Regressive: takes a larger proportion from lower incomes (e.g. VAT — same rate but represents a larger share of a poorer person's income). Progressive taxation is the main fiscal tool for reducing income inequality.",
+      reforge:{stem:"VAT is often described as regressive because:",options:{A:"It charges a higher rate to the wealthy.",B:"Although the rate is the same for everyone, it takes a larger proportion of income from lower earners, who spend more of their income on consumption.",C:"Only poor people pay VAT.",D:"It is progressive in disguise."},correct:"B"}
+    },
+    {
+      id:"INQ-08",stem:"Evaluate whether government redistribution (taxes and benefits) is the most effective way to reduce inequality. (12 marks — 8 KAA + 4 EV)",
+      type:"extended_answer",
+      model_answer_outline:{
+        KAA_strand_1:"Progressive taxation takes more from higher earners; transfer payments (benefits, tax credits, state pension) boost incomes at the bottom. Together they compress the income distribution. Apply: UK Gini before taxes/benefits is ~0.52, after redistribution ~0.34 — redistribution reduces inequality significantly.",
+        KAA_strand_2:"However, high marginal tax rates may create disincentive effects (Laffer curve), encourage avoidance/evasion, and reduce enterprise. Means-tested benefits can create poverty traps (withdrawal of benefits as income rises → effective marginal tax rates over 60%).",
+        EV_strand:"Depends on: (1) pre-distribution vs redistribution — investing in education and skills addresses root causes (human capital) but takes decades; (2) minimum/living wage — raises floor incomes but may cause unemployment if set too high; (3) type of inequality — redistribution addresses income but not wealth (need wealth taxes, inheritance reform). Judgement: redistribution is effective short-term but insufficient alone — sustainable equality requires investment in education and opportunity alongside fiscal transfers."
+      },
+      tag:["MC-INQ-04","MC-INQ-07","MC-TECH-02"],
+      scaffold:"Top-level: use before/after Gini data, distinguish income from wealth inequality, weigh redistribution against pre-distribution (education, minimum wage), and consider unintended consequences (disincentives, poverty traps)."
+    }
+  ]
+};
+
+BANKS["2.4.2"] = {
+  label: "Poverty",
+  color: "#64748b",
+  questions: [
+    {
+      id:"POV-01",stem:"What is the difference between absolute and relative poverty?",
+      options:{A:"They are the same concept measured differently.",B:"Absolute poverty = inability to afford basic necessities for survival (food, shelter, clean water). Relative poverty = income below a threshold relative to the median (e.g. below 60% of median income) — it measures inequality rather than destitution.",C:"Absolute poverty only exists in developing countries.",D:"Relative poverty is always more severe than absolute."},
+      correct:"B",tag:"MC-POV-01",
+      scaffold:"Absolute: fixed standard — can you survive? (World Bank: $2.15/day). Relative: moving standard — how far below the typical income are you? (UK: 60% of median). A country can eliminate absolute poverty while relative poverty rises (if median incomes grow but bottom incomes grow slower). They measure different things.",
+      reforge:{stem:"GDP per capita doubles over 20 years but the bottom 10% see only a 20% income rise while the median doubles. What happens to each type of poverty?",options:{A:"Both fall equally.",B:"Absolute poverty likely falls (incomes rose 20%), but relative poverty may rise or stay the same (the bottom 10% fell further behind the median).",C:"Both rise because growth causes poverty.",D:"Relative poverty falls but absolute rises."},correct:"B"}
+    },
+    {
+      id:"POV-02",stem:"A student says: 'Economic growth will automatically eliminate poverty.' Evaluate this. (4 marks)",
+      type:"short_answer",
+      model_answer:"Growth increases national income and can reduce absolute poverty by raising incomes across the distribution (K). However, if growth is unevenly distributed — e.g. captured by the wealthy or concentrated in certain regions — relative poverty may persist or worsen despite rising GDP (An). Furthermore, 'trickle-down' effects are contested: supply-side growth may take decades to benefit the poorest, and without targeted redistribution (benefits, minimum wage) growth alone does not guarantee poverty reduction (Ev).",
+      tag:["MC-POV-01","MC-GRO-01"],
+      scaffold:"Growth is necessary but not sufficient. It helps with absolute poverty (more output) but not automatically with relative poverty (distribution matters). Evaluation: type of growth (inclusive vs extractive), redistribution policy, and whether benefits reach the poorest."
+    },
+    {
+      id:"POV-03",stem:"The poverty trap (or unemployment trap) occurs when:",
+      options:{A:"People are too lazy to work.",B:"The withdrawal of means-tested benefits as income rises creates very high effective marginal tax rates, meaning there is little financial incentive to move from benefits into work or to earn more.",C:"Everyone in poverty remains there forever.",D:"Only universal benefits cause traps."},
+      correct:"B",tag:"MC-POV-03",
+      scaffold:"Example: a person on benefits earns £100 extra → loses £65 in withdrawn benefits + pays £20 tax/NI → keeps only £15. Effective marginal rate = 85%. Rational response: why bother? This traps people in benefit dependency. Solutions include: Universal Credit taper (gradual withdrawal), raising personal allowance, in-work benefits.",
+      reforge:{stem:"A government replaces means-tested benefits with a Universal Basic Income (flat payment to all, not withdrawn as income rises). How does this affect the poverty trap?",options:{A:"It worsens the trap because everyone gets money.",B:"It eliminates the poverty trap caused by benefit withdrawal — since UBI isn't means-tested, there's no loss of benefits as income rises, improving work incentives.",C:"It has no effect on the poverty trap.",D:"It creates a new trap because no one would work."},correct:"B"}
+    },
+    {
+      id:"POV-04",stem:"Which government policy would most directly reduce absolute poverty?",
+      options:{A:"Cutting the top rate of income tax.",B:"Increasing the National Living Wage and strengthening the social safety net (housing benefit, free school meals, energy support).",C:"Privatising state-owned industries.",D:"Reducing corporation tax."},
+      correct:"B",tag:"MC-POV-04",
+      scaffold:"Absolute poverty = can't afford basics. Direct interventions: raise floor incomes (minimum/living wage), provide essentials directly (social housing, free school meals, NHS), strengthen safety net (UC, housing benefit). Supply-side policies may help long-run but don't address immediate deprivation.",
+      reforge:{stem:"A charity argues: 'The best anti-poverty policy is a job.' Which economic concept supports this, and what is a limitation?",options:{A:"No concept supports it — jobs don't reduce poverty.",B:"Employment provides earned income, reducing benefit dependency. But in-work poverty exists: low-paid, insecure, or part-time work may leave households below the poverty line even with a job — the quality of employment matters, not just the quantity.",C:"All jobs automatically lift people above the poverty line.",D:"Only public sector jobs reduce poverty."},correct:"B"}
+    },
+    {
+      id:"POV-05",stem:"The UK measures relative poverty as income below 60% of median household income. A limitation of this measure is:",
+      options:{A:"It is too generous — the threshold is too high.",B:"It measures inequality rather than actual hardship. If median income falls (e.g. in a recession), relative poverty can DECREASE even though no one is better off — people are equally poor.",C:"It only measures wealth, not income.",D:"60% is an arbitrary figure with no policy relevance."},
+      correct:"B",tag:"MC-POV-01",
+      scaffold:"Relative poverty is tied to the median, so it moves with the distribution. In a recession: median income drops → 60% threshold drops → some people 'escape' relative poverty despite being no better off. This is why we need both absolute and relative measures. Relative poverty is really an inequality measure wearing poverty's label.",
+      reforge:{stem:"During COVID-19, median incomes fell sharply. What likely happened to the UK's relative poverty rate?",options:{A:"It rose sharply as everyone got poorer.",B:"It may have fallen paradoxically — the 60% threshold dropped with the median, pulling some households above the lower bar even though their actual circumstances hadn't improved.",C:"It was unchanged — poverty doesn't respond to recessions.",D:"It doubled immediately."},correct:"B"}
+    },
+    {
+      id:"POV-06",stem:"Explain one cause of poverty in a developed country like the UK. (2 marks)",
+      type:"short_answer",
+      model_answer:"Structural unemployment caused by deindustrialisation has left former industrial regions with fewer well-paid jobs (knowledge). Workers in these areas who lack transferable skills face long-term worklessness or are confined to low-wage service-sector employment, pushing households below the poverty line (analysis).",
+      tag:["MC-POV-04","MC-EMP-02"],
+      scaffold:"Causes: unemployment (structural, cyclical), low wages, insecure work (gig economy), regional deprivation, low educational attainment, family breakdown, disability/ill health, housing costs. K for cause; An for mechanism linking it to poverty."
+    }
+  ]
+};
+
+BANKS["2.5.1"] = {
+  label: "Financial Markets",
+  color: "#0369a1",
+  questions: [
+    {
+      id:"FMK-01",stem:"Which of the following is a role of financial markets?",
+      options:{A:"Setting the inflation target.",B:"Facilitating saving — allowing individuals and firms to store wealth and earn a return, channelling funds from savers to borrowers.",C:"Printing physical currency.",D:"Collecting taxes on behalf of the government."},
+      correct:"B",tag:"MC-FMK-01",
+      scaffold:"Roles of financial markets: (1) Facilitate saving (deposit accounts, bonds). (2) Lend to individuals and firms (mortgages, business loans). (3) Facilitate exchange of goods/services (payment systems). (4) Provide forward markets for currencies and commodities (manage risk). (5) Provide a market for equities (shares — raising capital for firms).",
+      reforge:{stem:"A wheat farmer uses a forward contract to sell next season's harvest at a fixed price today. Which role of financial markets does this illustrate?",options:{A:"Facilitating saving.",B:"Providing forward markets in commodities — allowing the farmer to manage the risk of price fluctuations.",C:"Lending to businesses.",D:"Currency exchange."},correct:"B"}
+    },
+    {
+      id:"FMK-02",stem:"A student explains forward markets in currencies but struggles to explain HOW they work. Which is the correct explanation?",
+      options:{A:"Forward markets allow you to buy currency at today's spot rate at any future date.",B:"A forward contract locks in an exchange rate for a future transaction — a firm agrees today to buy/sell a currency at a set rate on a specific future date, eliminating exchange rate uncertainty.",C:"Forward markets predict future exchange rates with certainty.",D:"Forward markets are the same as the stock market."},
+      correct:"B",tag:"MC-FMK-02",
+      scaffold:"The 2019 examiner report flagged lack of clarity on forward markets. Key: a forward contract is a binding agreement to exchange currency at a pre-agreed rate on a future date. This protects firms from adverse exchange rate movements between agreeing a deal and payment. Example: a UK importer agrees to buy $1m of goods, delivery in 3 months. They buy dollars forward at $1.25/£ — even if sterling falls to $1.10, they're protected.",
+      reforge:{stem:"A UK exporter expects to receive €500,000 in 6 months. Why might they use a forward contract?",options:{A:"To speculate on the euro rising.",B:"To lock in today's exchange rate, guaranteeing the sterling value of their future euro receipts — protecting against the risk of sterling appreciating (which would reduce the pound value of their euros).",C:"Forward contracts increase their profit.",D:"They are legally required to."},correct:"B"}
+    },
+    {
+      id:"FMK-03",stem:"Market failure in financial markets can occur because of:",
+      options:{A:"Perfect information among all participants.",B:"Asymmetric information — borrowers know more about their ability to repay than lenders, leading to adverse selection and moral hazard.",C:"Too much regulation.",D:"Low interest rates."},
+      correct:"B",tag:"MC-FMK-03",
+      scaffold:"Asymmetric info: borrowers know their risk; lenders don't. Adverse selection: riskier borrowers are more likely to seek loans. Moral hazard: once insured/bailed out, firms take excessive risks (banks before 2008 — 'too big to fail'). Also: speculation creating asset bubbles, externalities from bank failures (systemic risk).",
+      reforge:{stem:"After the 2008 bailout, some argued banks would take even more risks in future because they expected to be rescued again. This is an example of:",options:{A:"Adverse selection.",B:"Moral hazard — the expectation of being bailed out reduces the incentive to manage risk carefully.",C:"Perfect competition.",D:"Efficient markets."},correct:"B"}
+    },
+    {
+      id:"FMK-04",stem:"Why might a stock market crash have wider macroeconomic consequences?",
+      options:{A:"It doesn't — share prices only affect shareholders.",B:"Falling share prices reduce household wealth (negative wealth effect → lower C), reduce firms' ability to raise capital (lower I), damage confidence, and can trigger banking problems if banks hold shares as assets — creating a negative multiplier effect on AD.",C:"Stock markets are separate from the real economy.",D:"Share prices only matter for inflation."},
+      correct:"B",tag:"MC-FMK-04",
+      scaffold:"Transmission: share prices fall → (1) wealth effect: shareholders feel poorer → C falls. (2) Firms: harder/more expensive to raise capital via equity → I falls. (3) Confidence: negative sentiment spreads → precautionary saving rises. (4) Banks: if holding shares, their balance sheets weaken → lending tightens. All feed into lower AD.",
+      reforge:{stem:"During a stock market boom, household spending rises even among people who don't own shares. Which concept explains this?",options:{A:"The multiplier.",B:"The wealth effect and confidence channel — rising markets boost general economic optimism, encouraging spending even among non-shareholders.",C:"Fiscal policy.",D:"Cost-push inflation."},correct:"B"}
+    },
+    {
+      id:"FMK-05",stem:"Explain one way financial markets contribute to economic growth. (2 marks)",
+      type:"short_answer",
+      model_answer:"Financial markets channel funds from savers to borrowers, enabling firms to access capital for investment (knowledge). For example, a company can issue shares on the stock market to raise funds for new factories or R&D, increasing productive capacity and shifting LRAS to the right over time (analysis).",
+      tag:"MC-FMK-01",
+      scaffold:"Financial markets → growth link: (1) Channel savings into productive investment (allocative efficiency). (2) Reduce risk through diversification and insurance → firms more willing to invest. (3) Provide liquidity → assets can be bought/sold easily → encourages participation. (4) Price discovery → signals where capital should flow."
+    }
+  ]
+};
+
+BANKS["2.5.2"] = {
+  label: "Role of Banks",
+  color: "#7c3aed",
+  questions: [
+    {
+      id:"BNK-01",stem:"The primary function of commercial banks is:",
+      options:{A:"Setting interest rates for the economy.",B:"Financial intermediation — accepting deposits from savers and lending to borrowers, profiting from the interest rate spread.",C:"Printing money.",D:"Regulating other financial institutions."},
+      correct:"B",tag:"MC-BNK-01",
+      scaffold:"Commercial banks are intermediaries: they pool deposits (liabilities) and lend them out (assets), earning the spread between deposit and lending rates. They also: provide payment systems, offer financial products (insurance, investments), and — crucially — create money through the credit creation multiplier.",
+      reforge:{stem:"A bank pays 2% interest on savings accounts and charges 6% on loans. The 4% difference is called:",options:{A:"Inflation.",B:"The interest rate spread (or margin) — this is how the bank earns profit from its core intermediation role.",C:"The base rate.",D:"Quantitative easing."},correct:"B"}
+    },
+    {
+      id:"BNK-02",stem:"How do commercial banks 'create' money?",
+      options:{A:"They print banknotes in their vaults.",B:"Through the credit creation multiplier: when a bank receives a deposit, it keeps a fraction as reserves and lends the rest. That loan becomes a deposit elsewhere, which is partly re-lent, and so on — multiplying the original deposit into a larger money supply.",C:"They cannot create money — only the central bank can.",D:"By raising interest rates."},
+      correct:"B",tag:"MC-BNK-02",
+      scaffold:"Example: £1,000 deposited, 10% reserve ratio. Bank lends £900 → deposited elsewhere → that bank lends £810 → and so on. Total money created = £1,000 × (1/0.1) = £10,000. Banks don't print money — they create it through lending. This is why bank regulation matters: excessive lending inflates the money supply.",
+      reforge:{stem:"If the reserve ratio increases from 10% to 20%, what happens to the credit creation multiplier?",options:{A:"It doubles.",B:"It halves — from 10 (1/0.1) to 5 (1/0.2) — banks must hold more reserves, so less is available to lend at each stage.",C:"It is unchanged.",D:"It becomes zero."},correct:"B"}
+    },
+    {
+      id:"BNK-03",stem:"Evaluate whether the government was right to bail out the banks in 2008. (4 marks)",
+      type:"short_answer",
+      model_answer:"Banks are 'systemically important' — their failure would have frozen lending, collapsing the payment system and triggering widespread business failures and unemployment (K+An). However, the bailout cost taxpayers billions, created moral hazard (banks expect future rescues, incentivising risk-taking), and diverted public funds from other priorities like health and education — the opportunity cost was significant (Ev).",
+      tag:["MC-BNK-03","MC-FMK-03"],
+      scaffold:"The 2019 examiner report noted top answers discussed: systemic risk (bank failure spreads through the economy), the run on Northern Rock, moral hazard from the expectation of bailouts, and the opportunity cost of public funds. Both sides needed, with context."
+    },
+    {
+      id:"BNK-04",stem:"Which of the following is a regulatory measure introduced after the 2008 financial crisis?",
+      options:{A:"Abolishing all banking regulation.",B:"Higher capital requirements (e.g. Basel III) — banks must hold more capital as a buffer against losses, reducing the risk of insolvency.",C:"Allowing banks to lend without any reserves.",D:"Merging all banks into one state bank."},
+      correct:"B",tag:"MC-BNK-04",
+      scaffold:"Post-2008 reforms: (1) Higher capital/liquidity requirements (Basel III) — more reserves, less leverage. (2) Ring-fencing — separating retail banking from investment banking. (3) Stress testing — regulators check if banks can survive hypothetical shocks. (4) Living wills — plans for orderly failure without taxpayer bailouts. All aim to prevent 'too big to fail.'",
+      reforge:{stem:"Ring-fencing requires banks to:",options:{A:"Close all overseas branches.",B:"Separate their retail operations (deposits, mortgages) from riskier investment banking activities, so that speculative losses don't threaten ordinary customers' savings.",C:"Merge with competitors.",D:"Stop lending entirely."},correct:"B"}
+    },
+    {
+      id:"BNK-05",stem:"Why are banks sometimes described as 'too big to fail'?",
+      options:{A:"Because large banks are always profitable.",B:"Because their failure would cause systemic risk — interconnected with other banks, businesses, and households, their collapse would cascade through the economy, making government intervention (bailout) feel unavoidable despite the moral hazard it creates.",C:"Because the government owns them.",D:"Because they hold all the country's gold reserves."},
+      correct:"B",tag:"MC-BNK-03",
+      scaffold:"Systemic risk: banks lend to each other (interbank market). If one large bank fails → other banks lose money → they can't lend → credit freezes → businesses can't borrow → layoffs, closures, recession. This interconnectedness makes government reluctant to let them fail — but bailouts create moral hazard.",
+      reforge:{stem:"A policy of 'too big to fail' creates moral hazard because:",options:{A:"Banks become too cautious.",B:"Banks take excessive risks knowing they'll be rescued if things go wrong — the implicit government guarantee removes the downside, incentivising reckless behaviour.",C:"Small banks are unfairly treated.",D:"It increases competition."},correct:"B"}
+    }
+  ]
+};
+
+BANKS["2.5.3"] = {
+  label: "Central Banks",
+  color: "#475569",
+  questions: [
+    {
+      id:"CB-01",stem:"Which of the following is NOT a function of the Bank of England?",
+      options:{A:"Setting the base rate via the MPC.",B:"Acting as lender of last resort to commercial banks.",C:"Setting government spending and tax rates.",D:"Issuing banknotes and maintaining financial stability."},
+      correct:"C",tag:"MC-CB-01",
+      scaffold:"BoE functions: (1) Monetary policy — setting the base rate (MPC). (2) Lender of last resort — providing emergency liquidity to banks. (3) Issuing banknotes. (4) Financial stability — macro-prudential regulation (FPC). (5) Banker to the government. Fiscal policy (G and T) is set by the Treasury/Chancellor, not the BoE.",
+      reforge:{stem:"During a banking crisis, the BoE provides emergency loans to a struggling bank to prevent its collapse. This is the BoE acting as:",options:{A:"Fiscal authority.",B:"Lender of last resort — providing liquidity when no other lender will, to prevent a systemic crisis.",C:"Tax collector.",D:"Regulator of the stock market."},correct:"B"}
+    },
+    {
+      id:"CB-02",stem:"Central bank independence means:",
+      options:{A:"The central bank sets its own inflation target.",B:"The central bank has operational independence to decide HOW to meet the inflation target (set by government), free from political interference in day-to-day monetary policy decisions.",C:"The central bank is a private company.",D:"The government has no role in monetary policy at all."},
+      correct:"B",tag:"MC-CB-02",
+      scaffold:"Key distinction: the GOVERNMENT sets the target (2% CPI). The BOE decides how to hit it (base rate, QE). This prevents politicians cutting rates before elections. The BoE is accountable (Governor reports to Parliament, letters when target missed) but operationally free. Independence ≠ no oversight.",
+      reforge:{stem:"A politician says: 'The Bank of England should cut rates to help my constituency before the election.' Why does central bank independence prevent this?",options:{A:"The BoE always ignores politicians.",B:"Operational independence means the MPC sets rates based on economic data and the inflation target, not political pressure — removing the temptation to use monetary policy for short-term electoral gain.",C:"Politicians are banned from discussing interest rates.",D:"The BoE can only raise rates, never cut them."},correct:"B"}
+    },
+    {
+      id:"CB-03",stem:"The Financial Policy Committee (FPC) is responsible for:",
+      options:{A:"Setting interest rates.",B:"Macro-prudential regulation — identifying and addressing systemic risks to the UK financial system as a whole, e.g. by setting capital buffers or restricting risky lending.",C:"Collecting taxes.",D:"Running the stock exchange."},
+      correct:"B",tag:"MC-CB-03",
+      scaffold:"MPC = monetary policy (interest rates, QE). FPC = financial stability (macro-prudential — looking at the system as a whole). PRA = micro-prudential (supervising individual firms). The FPC can impose counter-cyclical capital buffers, restrict loan-to-value ratios on mortgages, etc. Created after 2008 to fill the regulatory gap.",
+      reforge:{stem:"The FPC notices that mortgage lending is growing rapidly with very high loan-to-income ratios. What action might it take?",options:{A:"Cut interest rates to encourage more lending.",B:"Impose limits on loan-to-income ratios to prevent a housing bubble and protect financial stability.",C:"Print more money.",D:"Reduce government spending."},correct:"B"}
+    },
+    {
+      id:"CB-04",stem:"Why might controlling inflation conflict with other macroeconomic objectives? (4 marks)",
+      type:"short_answer",
+      model_answer:"To control inflation, the BoE raises interest rates, which reduces AD and dampens price pressures (K). However, this also slows economic growth and may increase unemployment — the Phillips curve trade-off (An). Furthermore, higher rates strengthen the exchange rate, making exports less competitive and potentially worsening the current account deficit (An). The central bank faces a dilemma: prioritising inflation control comes at the cost of growth, jobs, and trade competitiveness — particularly when inflation is cost-push rather than demand-pull, since rate rises address demand but not supply-side causes (Ev).",
+      tag:["MC-MON-03","MC-EMP-03"],
+      scaffold:"The 2019 examiner report stressed: top answers started from the inflation control objective and then showed how pursuing it creates conflicts with growth, employment, and the current account. Don't just list conflicts — show the causal chain from monetary tightening to each trade-off."
+    },
+    {
+      id:"CB-05",stem:"Which of the following best describes the role of the central bank in maintaining financial stability?",
+      options:{A:"Ensuring all banks make a profit.",B:"Monitoring systemic risks, regulating bank capital requirements, stress-testing institutions, and acting as lender of last resort to prevent contagion and bank runs.",C:"Setting prices for all financial products.",D:"Guaranteeing all investments against loss."},
+      correct:"B",tag:"MC-CB-05",
+      scaffold:"Financial stability ≠ guaranteeing profits. It means: (1) preventing systemic collapse (lender of last resort). (2) Macro-prudential oversight (FPC monitors risks like asset bubbles, excessive leverage). (3) Stress tests (can banks survive a severe recession scenario?). (4) Resolution planning (living wills — how to wind down a failing bank without a bailout). Goal: a resilient system, not zero risk.",
+      reforge:{stem:"A stress test reveals that a bank would become insolvent if house prices fell 30%. What is the likely regulatory response?",options:{A:"Nothing — house prices won't fall that much.",B:"The regulator requires the bank to raise additional capital, reduce its exposure to property lending, or restructure — building resilience before a crisis rather than reacting during one.",C:"The government guarantees the bank's mortgage portfolio.",D:"The bank is immediately closed."},correct:"B"}
+    }
+  ]
+};
+
+BANKS["PSY-SI"] = {
+  label: "Social Influence",
+  color: "#be185d",
+  questions: [
+    {
+      id:"SI-01",stem:"Asch's (1951) line study found that approximately what percentage of participants conformed at least once?",
+      options:{A:"5%",B:"75%",C:"50%",D:"100%"},
+      correct:"B",tag:"MC-SI-01",
+      scaffold:"About 75% conformed at least once, but the overall conformity rate (across all trials) was ~37%. Students often confuse these two figures. 25% never conformed at all. Key: most people conformed sometimes, not always — suggesting situational pressure rather than permanent trait.",
+      reforge:{stem:"A student writes: 'Asch proved that most people always conform.' Why is this an oversimplification?",options:{A:"It's correct — Asch proved universal conformity.",B:"While 75% conformed at least once, the per-trial rate was only ~37%, and 25% never conformed — conformity was situational, not absolute.",C:"Asch's study was about obedience, not conformity.",D:"Only 5% ever conformed."},correct:"B"}
+    },
+    {
+      id:"SI-02",stem:"A student defines compliance as 'genuinely changing your mind to agree with the group.' What type of conformity are they actually describing?",
+      options:{A:"Compliance — they are correct.",B:"Internalisation — genuine, private acceptance of the group's views. Compliance is publicly going along while privately disagreeing.",C:"Identification — adopting views to fit into a group role.",D:"Obedience — following an authority figure."},
+      correct:"B",tag:"MC-SI-02",
+      scaffold:"Three types (Kelman): Compliance = public agreement, private disagreement (shallowest — changes behaviour not beliefs). Identification = conforming to a valued group's norms while part of it (moderate). Internalisation = genuine belief change, persists even without the group (deepest). Students constantly swap compliance and internalisation.",
+      reforge:{stem:"A person converts to their partner's religion and continues practising it sincerely even after they separate. This is best described as:",options:{A:"Compliance — they only did it for the relationship.",B:"Internalisation — they genuinely adopted the beliefs, which persist independently of the group that introduced them.",C:"Identification — they took on a group role.",D:"Obedience — they followed instructions."},correct:"B"}
+    },
+    {
+      id:"SI-03",stem:"In Milgram's (1963) baseline study, what percentage of participants delivered the maximum 450V shock?",
+      options:{A:"10%",B:"35%",C:"65%",D:"100%"},
+      correct:"C",tag:"MC-SI-03",
+      scaffold:"65% went to 450V — a finding that shocked the psychology community. 100% went to at least 300V. Key: participants showed extreme distress (sweating, trembling, nervous laughter) but still obeyed. This demonstrates the power of situational factors (authority, graduated commitment) over personality.",
+      reforge:{stem:"In Milgram's variation where the experimenter gave instructions by telephone rather than in person, obedience dropped to ~21%. What does this suggest?",options:{A:"The study lacked validity.",B:"Proximity of the authority figure is a key situational variable — reduced authority presence weakens the agentic state and increases the likelihood of defiance.",C:"Obedience is entirely determined by personality.",D:"Telephone instructions are always ignored."},correct:"B"}
+    },
+    {
+      id:"SI-04",stem:"A student explains obedience using the term 'agentic state' but cannot define it. The correct definition is:",
+      options:{A:"A state where a person acts on their own conscience.",B:"A mental state where a person sees themselves as an agent carrying out another person's wishes — they shift responsibility to the authority figure, reducing moral strain.",C:"A state of total free will.",D:"A personality type that is always obedient."},
+      correct:"B",tag:"MC-SI-04",
+      scaffold:"Agentic state (Milgram): the person acts as an 'agent' of the authority, giving up personal responsibility. Opposite = autonomous state (acting on own free will). The 'agentic shift' occurs when someone perceives a legitimate authority and enters the agentic state. This explains WHY people obey even when distressed — they don't feel personally responsible.",
+      reforge:{stem:"A nurse administers a drug she thinks is too high a dose because the doctor ordered it. She says: 'I was just following orders.' This illustrates:",options:{A:"The autonomous state — she made her own decision.",B:"The agentic state — she has shifted responsibility to the doctor (the authority figure) and sees herself as merely carrying out instructions.",C:"Internalisation — she genuinely believes the dose is correct.",D:"Minority influence."},correct:"B"}
+    },
+    {
+      id:"SI-05",stem:"Moscovici's (1969) blue-green slide study investigated minority influence. What was his key finding about consistency?",
+      options:{A:"Consistency had no effect on the minority's influence.",B:"When the minority consistently called blue slides 'green' (on every trial), they influenced about 8% of the majority's answers — but an inconsistent minority had almost no effect.",C:"The majority always resisted the minority.",D:"Only majorities can influence individuals."},
+      correct:"B",tag:"MC-SI-05",
+      scaffold:"Consistency is key: a consistent minority makes the majority engage in deeper processing ('maybe they have a point'). An inconsistent minority is dismissed. Also important: commitment (the minority is seen as principled) and flexibility (rigid minorities are less persuasive than those who bend slightly).",
+      reforge:{stem:"According to the snowball effect, how does minority influence lead to wider social change?",options:{A:"The minority forces the majority to agree immediately.",B:"The consistent minority converts a few individuals, who convert others, gradually shifting the majority position over time — like a snowball gathering mass.",C:"Social change only happens through majority pressure.",D:"The minority gives up after being rejected."},correct:"B"}
+    },
+    {
+      id:"SI-06",stem:"A student confuses normative social influence (NSI) and informational social influence (ISI). Which correctly distinguishes them?",
+      options:{A:"NSI = conforming because you want to be right; ISI = conforming because you want to be liked.",B:"NSI = conforming to be accepted/avoid rejection (need for social approval); ISI = conforming because you believe the group is correct (need for information in ambiguous situations).",C:"They are the same concept.",D:"NSI only applies to Milgram; ISI only applies to Asch."},
+      correct:"B",tag:"MC-SI-06",
+      scaffold:"NSI = 'I'll go along so they like me' (driven by desire to fit in — leads to compliance). ISI = 'They probably know better than me' (driven by uncertainty — more likely to lead to internalisation). NSI operates most strongly when: group is important, fear of rejection. ISI operates most strongly when: task is ambiguous, experts present.",
+      reforge:{stem:"During a fire alarm, you're unsure if it's real. You see everyone calmly staying in their seats, so you stay too. This is most likely:",options:{A:"NSI — you want them to like you.",B:"ISI — the situation is ambiguous and you look to others for information about the correct response, concluding it must be a drill.",C:"Obedience — someone told you to stay.",D:"Minority influence."},correct:"B"}
+    },
+    {
+      id:"SI-07",stem:"Evaluate Milgram's research in terms of ethical issues. (4 marks)",
+      type:"short_answer",
+      model_answer:"Milgram's participants experienced significant psychological distress — trembling, sweating, and nervous breakdowns — violating the ethical principle of protection from harm (AO1). He also deceived participants about the true nature of the study (they believed shocks were real), preventing fully informed consent (AO1). However, Milgram debriefed all participants afterward and followed up: 84% said they were glad to have participated, and a psychiatrist found no lasting harm — suggesting the ethical cost may be outweighed by the study's enormous contribution to understanding destructive obedience (AO3).",
+      tag:["MC-SI-03","MC-TECH-02"],
+      scaffold:"Ethics: deception (fake shocks), lack of informed consent, psychological harm, right to withdraw compromised (prods like 'you must continue'). Counter: debriefing, no lasting harm found, huge social value (explaining Holocaust obedience). A balanced evaluation acknowledges both."
+    },
+    {
+      id:"SI-08",stem:"Which of the following is a limitation of Asch's conformity research?",
+      options:{A:"It has no limitations — it is a perfect study.",B:"It lacks ecological validity — the task (comparing line lengths) is trivial and unambiguous, unlike real-life conformity situations. Also, the sample (all male US students) limits generalisability.",C:"Too many participants were used.",D:"It was a field experiment with no controls."},
+      correct:"B",tag:"MC-SI-08",
+      scaffold:"Asch limitations: (1) Artificial task — conforming about line lengths ≠ conforming about opinions/behaviour. (2) Androcentric sample — all male, potentially different results with women. (3) Cultural/temporal bias — 1950s America (McCarthyism) may have increased conformity. (4) Demand characteristics — participants may have guessed the aim. Strengths: high control, replicable, clear operationalised DV.",
+      reforge:{stem:"A student says: 'Asch's findings prove that conformity is universal across all cultures.' Why is this claim problematic?",options:{A:"It's correct — conformity is universal.",B:"Asch used only American male participants. Cross-cultural replications (e.g. Smith & Bond, 1993) found higher conformity in collectivist cultures and lower in individualist ones — conformity rates vary by culture.",C:"Asch didn't study conformity.",D:"Culture has no effect on behaviour."},correct:"B"}
+    }
+  ]
+};
+
+BANKS["PSY-MEM"] = {
+  label: "Memory",
+  color: "#0e7490",
+  questions: [
+    {
+      id:"MEM-01",stem:"According to the multi-store model (Atkinson & Shiffrin, 1968), information flows through memory in which order?",
+      options:{A:"Long-term memory → short-term memory → sensory register.",B:"Sensory register → short-term memory → long-term memory.",C:"Short-term memory → sensory register → long-term memory.",D:"All three stores operate simultaneously with no sequence."},
+      correct:"B",tag:"MC-MEM-01",
+      scaffold:"MSM is a linear model: Sensory register (brief, large capacity, modality-specific) → attention → STM (limited: ~7 items, ~30 seconds) → rehearsal → LTM (unlimited capacity and duration). Without attention, information decays from the sensory register. Without rehearsal, it's lost from STM.",
+      reforge:{stem:"A student hears a phone number, repeats it several times, and then remembers it the next day. According to the MSM, what process transferred it to LTM?",options:{A:"Decay.",B:"Maintenance rehearsal — repeated rehearsal in STM strengthened the memory trace and transferred it to LTM.",C:"Retrieval failure.",D:"Proactive interference."},correct:"B"}
+    },
+    {
+      id:"MEM-02",stem:"A student says STM has a capacity of 'about 5 items.' What is the more accurate description?",
+      options:{A:"STM has unlimited capacity.",B:"Miller (1956) found STM capacity is 7±2 items (5–9), and this can be extended through chunking — grouping items into meaningful units.",C:"STM holds exactly 3 items.",D:"STM capacity depends on the colour of the items."},
+      correct:"B",tag:"MC-MEM-02",
+      scaffold:"Miller's magic number: 7±2. Not a fixed limit — chunking increases effective capacity (e.g. BBCITVFBI = 9 letters or 3 chunks). Cowan (2001) later suggested 4 chunks is more accurate. Students often forget the ±2 range or the role of chunking.",
+      reforge:{stem:"A person remembers the sequence 1-9-1-4-1-9-4-5-2-0-0-1 as '1914, 1945, 2001' (three historical dates). This demonstrates:",options:{A:"That STM has unlimited capacity.",B:"Chunking — grouping individual items into meaningful units increases the effective capacity of STM.",C:"That LTM has a limited capacity.",D:"Retroactive interference."},correct:"B"}
+    },
+    {
+      id:"MEM-03",stem:"The working memory model (Baddeley & Hitch, 1974) was proposed because:",
+      options:{A:"The MSM was too complex.",B:"The MSM treated STM as a single, passive store — the WMM replaced it with an active, multi-component system that better explains how we process information while temporarily holding it.",C:"LTM doesn't exist.",D:"Baddeley disagreed with Ebbinghaus."},
+      correct:"B",tag:"MC-MEM-03",
+      scaffold:"MSM limitation: STM is unitary (one store). But evidence shows we can do two verbal tasks less well than one verbal + one visual → suggests separate processing systems. The WMM: Central executive (attention controller) + phonological loop (verbal) + visuo-spatial sketchpad (visual) + episodic buffer (integration).",
+      reforge:{stem:"You can drive a car (visual-spatial) while having a conversation (verbal) but struggle to listen to a podcast while reading. The WMM explains this because:",options:{A:"Driving doesn't use memory.",B:"The tasks use different slave systems (visuo-spatial sketchpad for driving, phonological loop for conversation) so they don't compete — but two verbal tasks overload the same component (phonological loop).",C:"The central executive has unlimited capacity.",D:"The MSM explains this better."},correct:"B"}
+    },
+    {
+      id:"MEM-04",stem:"A student describes the central executive as 'a big memory store with lots of capacity.' Why is this wrong?",
+      options:{A:"It's correct — the CE stores information.",B:"The central executive is an attentional control system with limited capacity — it directs attention, coordinates the slave systems, and allocates resources, but it does not store information itself.",C:"The central executive doesn't exist.",D:"The central executive only processes visual information."},
+      correct:"B",tag:"MC-MEM-04",
+      scaffold:"The CE is the 'boss' — it decides what to attend to and delegates to the slave systems (phonological loop, visuo-spatial sketchpad). It has limited capacity (you can't attend to everything at once) but is NOT a store. Students often describe it as a large memory warehouse — this misses its role as a processor/allocator, not a container.",
+      reforge:{stem:"Which component of the WMM is responsible for integrating information from the slave systems and linking it to LTM?",options:{A:"The phonological loop.",B:"The episodic buffer — it combines information from different sources into coherent episodes and has links to LTM.",C:"The central executive — because it's the biggest store.",D:"The visuo-spatial sketchpad."},correct:"B"}
+    },
+    {
+      id:"MEM-05",stem:"Loftus and Palmer (1974) asked participants to estimate the speed of cars in a filmed accident. The verb used ('smashed' vs 'hit') significantly affected estimates. This demonstrates:",
+      options:{A:"That participants have poor eyesight.",B:"The effect of leading questions on eyewitness testimony — the verb acted as post-event information that altered the memory of the event, showing that memory is reconstructive rather than a perfect recording.",C:"That all eyewitnesses are unreliable.",D:"That speed estimates are always accurate."},
+      correct:"B",tag:"MC-MEM-05",
+      scaffold:"'Smashed' → higher speed estimates (~41mph) vs 'contacted' (~32mph). Experiment 2: 'smashed' group also more likely to report (non-existent) broken glass. This suggests the leading question didn't just bias the response — it altered the stored memory itself (memory reconstruction). Key concept: post-event discussion/information can contaminate the original memory.",
+      reforge:{stem:"After witnessing a robbery, a witness reads a newspaper report describing the thief as 'tall and bearded.' At a later identity parade, the witness selects a tall, bearded suspect. This illustrates:",options:{A:"Accurate recall.",B:"Post-event information contaminating the original memory — the newspaper report (misleading information) has been integrated into the witness's memory of the event, consistent with Loftus's research.",C:"The multi-store model.",D:"Proactive interference."},correct:"B"}
+    },
+    {
+      id:"MEM-06",stem:"The cognitive interview (Fisher & Geiselman, 1992) includes four techniques. Which of the following is NOT one of them?",
+      options:{A:"Report everything — even seemingly trivial details.",B:"Mental reinstatement of context — imagine the environment and emotions at the time.",C:"Leading questions — use specific prompts to guide the witness.",D:"Change perspective — recall events from a different viewpoint."},
+      correct:"C",tag:"MC-MEM-06",
+      scaffold:"Four CI techniques: (1) Report everything (even partial/trivial details). (2) Mental reinstatement (recreate the context — place, weather, feelings). (3) Change temporal order (recall events in reverse or from a different starting point). (4) Change perspective (describe from another person's viewpoint). Leading questions are EXCLUDED — they contaminate memory (Loftus). Students sometimes include 'ask specific questions' which is wrong.",
+      reforge:{stem:"A police officer asks a witness to describe the robbery scene starting from the moment they left, rather than from the beginning. This uses which CI technique?",options:{A:"Report everything.",B:"Change temporal order — recalling in a different sequence can trigger forgotten details and reduces the influence of schemas on recall.",C:"Leading questions.",D:"Mental reinstatement."},correct:"B"}
+    },
+    {
+      id:"MEM-07",stem:"Evaluate the multi-store model of memory. (6 marks — AO1 + AO3)",
+      type:"short_answer",
+      model_answer:"The MSM proposes three separate stores: sensory register, STM, and LTM, with information flowing linearly between them via attention and rehearsal (AO1). Support comes from case studies like HM, whose hippocampal damage destroyed the ability to form new LTMs while leaving STM intact — suggesting they are separate stores (AO3). However, the MSM oversimplifies STM as a single unitary store — the working memory model showed STM has multiple components (phonological loop, visuo-spatial sketchpad). It also overstates rehearsal: we form long-term memories without deliberate rehearsal (e.g. flashbulb memories), and not all rehearsal leads to LTM transfer — elaborative rehearsal is more effective than maintenance rehearsal (AO3).",
+      tag:["MC-MEM-01","MC-MEM-03"],
+      scaffold:"AO1: describe the model clearly (3 stores, flow, encoding/capacity/duration differences). AO3: use evidence (HM, Baddeley, Craik & Lockhart) and explain what it shows. Both strengths AND limitations needed. Don't just list — explain the significance."
+    },
+    {
+      id:"MEM-08",stem:"A student confuses proactive and retroactive interference. Which correctly defines each?",
+      options:{A:"Proactive = new learning interferes with old; Retroactive = old learning interferes with new.",B:"Proactive = old learning interferes with recall of new information; Retroactive = new learning interferes with recall of old information.",C:"They are the same thing.",D:"Proactive = forgetting from STM; Retroactive = forgetting from LTM."},
+      correct:"B",tag:"MC-MEM-08",
+      scaffold:"Proactive: previously learned material interferes FORWARD in time (old disrupts new). Example: you learned French first, now Spanish vocab keeps coming out as French. Retroactive: newly learned material interferes BACKWARD in time (new disrupts old). Example: you learn a new phone number and can no longer remember the old one. PRO = forward, RETRO = backward.",
+      reforge:{stem:"A teacher learns 200 new student names in September. By October, she struggles to recall last year's students' names. This is:",options:{A:"Proactive interference — old names disrupt new.",B:"Retroactive interference — the newly learned names (new learning) are interfering with recall of the old names (old learning).",C:"Decay — time has passed.",D:"Retrieval failure."},correct:"B"}
+    }
+  ]
+};
+
+BANKS["SOC-EDU"] = {
+  label: "Education",
+  color: "#b91c1c",
+  questions: [
+    {
+      id:"EDU-01",stem:"Functionalists argue that education performs the function of 'role allocation.' This means:",
+      options:{A:"Teachers allocate students to friendship groups.",B:"Education sifts and sorts individuals into roles best suited to their talents, ensuring the most able fill the most important positions in society (meritocracy).",C:"Schools decide which jobs students will do after leaving.",D:"Role allocation only benefits working-class students."},
+      correct:"B",tag:"MC-EDU-01",
+      scaffold:"Davis and Moore (1945): education is a mechanism for role allocation — it grades people through exams and qualifications, placing the most talented into the most functionally important (and highest-rewarded) roles. This assumes meritocracy: that success reflects ability + effort. Marxists challenge this — they argue role allocation reproduces class inequality, not talent.",
+      reforge:{stem:"Marxists criticise the functionalist view of role allocation because:",options:{A:"They agree education is meritocratic.",B:"They argue education allocates roles based on class background rather than talent — reproducing existing inequalities and legitimating them as 'natural' through the myth of meritocracy.",C:"They believe schools should abolish exams.",D:"They think role allocation only happens in private schools."},correct:"B"}
+    },
+    {
+      id:"EDU-02",stem:"Bowles and Gintis (1976) argue that there is a 'correspondence principle' between school and work. This means:",
+      options:{A:"Schools teach students the specific skills their future jobs require.",B:"The social relationships in school mirror those in the capitalist workplace — hierarchy, obedience, extrinsic motivation, fragmented tasks — producing a compliant workforce.",C:"Schools and workplaces have identical timetables.",D:"The correspondence principle only applies to grammar schools."},
+      correct:"B",tag:"MC-EDU-02",
+      scaffold:"Correspondence principle: school mirrors work. Students follow orders (teachers → bosses), are motivated by grades not learning (extrinsic rewards → wages), and experience alienation (no control over curriculum → no control over production). This produces the 'hidden curriculum' — the unwritten lessons of obedience and conformity capitalism needs. Evaluation: deterministic, ignores pupil resistance (Willis).",
+      reforge:{stem:"Paul Willis's (1977) study of 'the lads' challenges Bowles and Gintis because:",options:{A:"It proves the correspondence principle is correct.",B:"Willis found that working-class boys actively resisted school authority rather than passively accepting it — yet this resistance ironically led them into manual labour, still reproducing class inequality.",C:"Willis studied middle-class students.",D:"The lads all became professionals."},correct:"B"}
+    },
+    {
+      id:"EDU-03",stem:"A student writes: 'Working-class pupils underachieve because they are less intelligent.' Which sociological response best challenges this?",
+      options:{A:"It's correct — IQ determines achievement.",B:"This is a culturally and structurally reductionist view. Material deprivation (poverty, poor housing, diet), cultural deprivation (language codes, parental attitudes), and in-school factors (labelling, streaming, self-fulfilling prophecy) all explain class differences in achievement without reducing them to innate ability.",C:"Intelligence doesn't exist.",D:"Only in-school factors matter."},
+      correct:"B",tag:"MC-EDU-03",
+      scaffold:"Class and achievement: External factors — material deprivation (Flaherty: low income → no books, tutors, quiet space), cultural deprivation (Bernstein: restricted vs elaborated code; Sugarman: fatalism, present-time orientation). Internal factors — labelling (Becker: ideal pupil), streaming (Lacey: differentiation-polarisation), self-fulfilling prophecy. A full answer addresses BOTH internal and external.",
+      reforge:{stem:"Bernstein's (1971) concept of 'elaborated code' refers to:",options:{A:"The language of texting and social media.",B:"A style of speech that is context-free, grammatically complex, and used in education and middle-class homes — giving middle-class pupils an advantage because the school curriculum is delivered in elaborated code.",C:"A type of secret code used by teachers.",D:"Working-class dialect that schools should adopt."},correct:"B"}
+    },
+    {
+      id:"EDU-04",stem:"Interactionist sociologists focus on which level of analysis when studying education?",
+      options:{A:"Macro — large-scale structures and their functions for society.",B:"Micro — small-scale interactions within schools, such as teacher-pupil relationships, labelling, and the negotiation of identity in classrooms.",C:"Global — comparing education systems across countries.",D:"They don't study education."},
+      correct:"B",tag:"MC-EDU-04",
+      scaffold:"Interactionists (Becker, Hargreaves, Rosenthal & Jacobson) study what happens INSIDE schools: how teachers label pupils, how labels create self-fulfilling prophecies, how streaming polarises subcultures. Strength: reveals processes behind statistics. Weakness: ignores wider structural causes (poverty, policy) — accused of being too micro.",
+      reforge:{stem:"Rosenthal and Jacobson's (1968) 'Pygmalion in the Classroom' study demonstrated:",options:{A:"That streaming has no effect on achievement.",B:"The self-fulfilling prophecy — when teachers were told certain pupils were 'spurters' (chosen at random), those pupils made more progress, suggesting teacher expectations directly influence pupil performance.",C:"That IQ tests are perfectly reliable.",D:"That labelling only affects girls."},correct:"B"}
+    },
+    {
+      id:"EDU-05",stem:"Evaluate the view that material deprivation is the main cause of working-class underachievement. (10 marks — AO1 + AO2 + AO3)",
+      type:"extended_answer",
+      model_answer_outline:{
+        AO1:"Material deprivation = poverty and its direct educational consequences. Smith and Noble (1995): 'costs of free schooling' — uniforms, trips, equipment, tutoring. Flaherty (2004): low income → overcrowded housing → no quiet study space, poor diet → illness and absence. Eligibility for free school meals correlates strongly with lower GCSE results.",
+        AO2:"Apply to contemporary UK: pupil premium policy attempts to address material deprivation directly. Post-COVID widening of the gap (device poverty, lost learning concentrated among disadvantaged).",
+        AO3:"However, material deprivation alone cannot explain the gap. Cultural deprivation (Bernstein, Sugarman) — values and language, not just money. In-school factors (Becker's labelling, Gillborn and Youdell's educational triage) actively disadvantage working-class pupils regardless of material circumstances. Also: some materially deprived pupils DO succeed — individual agency, cultural capital from other sources. Judgement: material deprivation is significant but works alongside cultural and institutional factors — it's a necessary but not sufficient explanation."
+      },
+      tag:["MC-EDU-03","MC-TECH-02"],
+      scaffold:"10-mark essays need: knowledge of the named concept (material deprivation), application to education, THEN sustained evaluation using alternative explanations and evidence. The examiner wants you to WEIGH the view, not just describe it."
+    },
+    {
+      id:"EDU-06",stem:"Which education policy introduced a 'marketisation' of schools in England?",
+      options:{A:"The Butler Education Act (1944).",B:"The Education Reform Act (1988) — introducing league tables, open enrolment, formula funding, and the National Curriculum, creating competition between schools.",C:"The Raising of the School Leaving Age (1972).",D:"The Comprehensive School system (1960s–70s)."},
+      correct:"B",tag:"MC-EDU-06",
+      scaffold:"ERA 1988 (New Right / Thatcher): schools compete for pupils → funding follows the pupil → league tables rank schools → parents 'choose' (market forces in education). Supporters: drives up standards. Critics (Ball): 'myth of parentocracy' — middle-class parents exploit choice better (cultural/economic capital), widening inequality.",
+      reforge:{stem:"Ball (1994) argued that marketisation benefits middle-class parents because:",options:{A:"League tables are too complicated for working-class parents.",B:"Middle-class parents possess the cultural and economic capital to navigate the system — researching schools, moving near them, appealing admissions — making 'parental choice' a mechanism for reproducing class advantage rather than genuine equality of opportunity.",C:"Working-class parents don't care about education.",D:"All schools are identical so choice is meaningless."},correct:"B"}
+    },
+    {
+      id:"EDU-07",stem:"A student applies only ONE perspective (e.g. Marxism) when answering a question about the role of education. What mark-scheme issue does this create?",
+      options:{A:"None — one perspective is enough for full marks.",B:"The answer lacks evaluation and competing perspectives. The mark scheme rewards analysing the issue from multiple viewpoints (functionalist, Marxist, feminist, interactionist, New Right) and reaching a substantiated judgement about which is most convincing.",C:"Only Marxism is relevant to education questions.",D:"The student should have used common sense instead."},
+      correct:"B",tag:"MC-TECH-02",
+      scaffold:"AQA Sociology mark schemes for 10- and 20-mark questions explicitly require evaluation. A one-perspective answer typically caps at AO1/AO2 marks and scores zero AO3. Even if the perspective is well-explained, you MUST consider alternatives and reach a judgement. Breadth of perspectives + depth of evaluation = top band.",
+      reforge:{stem:"In a 20-mark essay on 'Assess the functionalist view of education,' a top-band answer would:",options:{A:"Only describe functionalist ideas in great detail.",B:"Explain functionalist views (Durkheim, Parsons, Davis & Moore), then evaluate using Marxist, feminist, interactionist, and/or New Right critiques, with evidence, reaching a reasoned conclusion about the strength of the functionalist position.",C:"Reject all perspectives as equally valid.",D:"Focus entirely on research methods."},correct:"B"}
+    },
+    {
+      id:"EDU-08",stem:"Durkheim argued that education performs two main functions for society. Which pair is correct?",
+      options:{A:"Childcare and economic training.",B:"Creating social solidarity (shared norms and values binding society together) and teaching specialist skills needed for the economy.",C:"Social control and religious instruction.",D:"Babysitting and exam preparation."},
+      correct:"B",tag:"MC-EDU-01",
+      scaffold:"Durkheim (functionalist): (1) Social solidarity — school is 'society in miniature'; teaches shared norms, values, history, creating cohesion. (2) Specialist skills — industrial society needs a skilled, specialised workforce; education provides this. Parsons added: universalistic standards (judged on achievement, not ascription) and the bridge between family (particularistic) and wider society.",
+      reforge:{stem:"Parsons described education as the 'focal socialising agency' bridging family and society. By this he meant:",options:{A:"Schools replace families entirely.",B:"Education transitions children from the particularistic standards of the family (judged as individuals) to the universalistic standards of wider society (judged by the same criteria as everyone else) — preparing them for adult roles.",C:"Families and schools teach identical values.",D:"Education only socialises middle-class children."},correct:"B"}
+    }
+  ]
+};
+
+const SUBJECTS = {
+  "econ": {
+    label: "A Level Economics",
+    sub: "Edexcel 9EC0 — Theme 2",
+    color: "#1e3a5f",
+    banks: ["2.1.1","2.1.2","2.1.3","2.1.4","2.2.1","2.2.2","2.2.3","2.3.1","2.3.2","2.3.3","2.4.1","2.4.2","2.5.1","2.5.2","2.5.3"]
+  },
+  "psych": {
+    label: "A Level Psychology",
+    sub: "AQA 7182 — Paper 1",
+    color: "#831843",
+    banks: ["PSY-SI","PSY-MEM"]
+  },
+  "soc": {
+    label: "A Level Sociology",
+    sub: "AQA 7192 — Paper 1",
+    color: "#7f1d1d",
+    banks: ["SOC-EDU"]
+  }
+};
+
+// ===== END DATA =====
+
+function shuffle(a){var b=[...a];for(var i=b.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
+
+var state = {
+  subject: null, bank: null, questions: [], idx: 0, score: 0,
+  phase: 'join',
+  studentId: null,
+  classId: null,
+  studentName: null
+};
+
+var app = document.getElementById('app');
+
+function render() {
+  if (state.phase === 'join') renderJoin();
+  else if (state.phase === 'subjects') renderSubjects();
+  else if (state.phase === 'banks') renderBanks();
+  else if (state.phase === 'quiz') renderQuiz();
+  else if (state.phase === 'results') renderResults();
+}
+
+function renderJoin() {
+  var h = '<div class="center" style="padding-top:40px">';
+  h += '<p class="tag" style="margin-bottom:6px">FORGE</p>';
+  h += '<h1 style="font-size:28px;margin-bottom:8px">Join your class</h1>';
+  h += '<p style="color:#8A857E;font-size:14px;margin-bottom:28px">Enter your name and class code to start tracking your progress</p>';
+  h += '</div>';
+  h += '<div style="max-width:340px;margin:0 auto">';
+  h += '<label style="font-size:13px;color:var(--slate);display:block;margin-bottom:4px">Your first name</label>';
+  h += '<input id="join-name" class="join-input" type="text" placeholder="e.g. Alex">';
+  h += '<label style="font-size:13px;color:var(--slate);display:block;margin-bottom:4px">Class code</label>';
+  h += '<input id="join-code" class="join-input" type="text" placeholder="e.g. ECON-Y12-A" style="text-transform:uppercase">';
+  h += '<button class="join-btn" id="join-btn">Join class →</button>';
+  h += '<p class="join-err" id="join-err"></p>';
+  h += '<button class="skip-btn" id="skip-btn">Practice without a class →</button>';
+  h += '</div>';
+  app.innerHTML = h;
+
+  document.getElementById('join-btn').onclick = function() {
+    var name = document.getElementById('join-name').value.trim();
+    var code = document.getElementById('join-code').value.trim().toUpperCase();
+    var err = document.getElementById('join-err');
+    var btn = document.getElementById('join-btn');
+
+    if (!name) { err.textContent = 'Enter your first name.'; err.style.display = 'block'; return; }
+    if (!code) { err.textContent = 'Enter your class code.'; err.style.display = 'block'; return; }
+
+    if (!supa._configured()) {
+      // Supabase not set up yet — store locally and proceed
+      state.studentName = name;
+      state.phase = 'subjects';
+      render();
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Joining...';
+    err.style.display = 'none';
+
+    fetch(SUPABASE_URL + '/rest/v1/classes?select=*&code=eq.' + encodeURIComponent(code), {
+      headers: {
+        'apikey': SUPABASE_KEY,
+        'Authorization': 'Bearer ' + SUPABASE_KEY
+      }
+    }).then(function(r) {
+      return r.json();
+    }).then(function(classes) {
+
+      if (!Array.isArray(classes) || classes.length === 0) {
+        err.textContent = 'Class code not found. Check with your teacher.';
+        err.style.display = 'block';
+        btn.disabled = false;
+        btn.textContent = 'Join class \u2192';
+        return;
+      }
+      var cls = classes[0];
+      supa.insert('students', { name: name, class_id: cls.id }).then(function(students) {
+        if (students && Array.isArray(students) && students.length > 0) {
+          state.studentId = students[0].id;
+          state.classId = cls.id;
+        }
+        state.studentName = name;
+        state.phase = 'subjects';
+        render();
+      });
+    }).catch(function(e) {
+      err.textContent = 'Connection error. Try again.';
+      err.style.display = 'block';
+      btn.disabled = false;
+      btn.textContent = 'Join class \u2192';
+    });
+  };
+
+  document.getElementById('skip-btn').onclick = function() {
+    state.studentName = null;
+    state.studentId = null;
+    state.classId = null;
+    state.phase = 'subjects';
+    render();
+  };
+}
+
+function renderSubjects(){
+  var h = '';
+  if (state.studentName) {
+    h += '<div class="join-badge"><span class="dot"></span> ' + state.studentName + (state.classId ? ' · connected' : ' · offline') + '</div>';
+  }
+  h += '<div class="center"><p class="tag" style="margin-bottom:6px">FORGE</p>';
+  h += '<h1 style="font-size:28px;margin-bottom:6px">Pick a subject</h1>';
+  h += '<p style="color:#8A857E;font-size:15px">Choose what to practise</p></div>';
+  h += '<div class="subject-list">';
+  for(var k in SUBJECTS){
+    var s=SUBJECTS[k];
+    var n=s.banks.reduce(function(t,b){return t+BANKS[b].questions.length},0);
+    h+='<button class="subject-btn" data-key="'+k+'" style="border-color:'+s.color+'25">';
+    h+='<h3 style="color:'+s.color+'">'+s.label+'</h3>';
+    h+='<div class="sub">'+s.sub+'</div>';
+    h+='<div class="count">'+s.banks.length+' banks \u00b7 '+n+' questions</div>';
+    h+='</button>';
+  }
+  h+='</div>';
+  app.innerHTML=h;
+  app.querySelectorAll('.subject-btn').forEach(function(b){
+    b.onclick=function(){state.subject=b.dataset.key;state.phase='banks';render();};
+  });
+}
+
+function renderBanks(){
+  var subj=SUBJECTS[state.subject];
+  var h='<button class="back-btn" id="back-subj">\u2190 Subjects</button>';
+  h+='<div class="center"><p class="tag" style="color:'+subj.color+';margin-bottom:4px">FORGE</p>';
+  h+='<h2 style="font-size:24px;margin-bottom:4px">'+subj.label+'</h2>';
+  h+='<p style="color:#8A857E;font-size:14px">'+subj.sub+'</p></div>';
+  h+='<div class="bank-list">';
+  subj.banks.forEach(function(key){
+    var b=BANKS[key];
+    h+='<button class="bank-btn" data-key="'+key+'">';
+    h+='<div class="code" style="color:'+b.color+'">'+key+'</div>';
+    h+='<div class="name">'+b.label+'</div>';
+    h+='<div class="qcount">'+b.questions.length+' questions</div>';
+    h+='</button>';
+  });
+  h+='</div>';
+  app.innerHTML=h;
+  document.getElementById('back-subj').onclick=function(){state.phase='subjects';render();};
+  app.querySelectorAll('.bank-btn').forEach(function(b){
+    b.onclick=function(){
+      state.bank=b.dataset.key;
+      state.questions=shuffle(BANKS[b.dataset.key].questions.filter(function(q){return !q.type;}));
+      state.idx=0;state.score=0;state.phase='quiz';render();
+    };
+  });
+}
+
+function renderQuiz(){
+  var bk=BANKS[state.bank];
+  var q=state.questions[state.idx];
+  if(!q){state.phase='results';render();return;}
+  var keys=Object.keys(q.options);
+
+  var h='<div class="quiz-header">';
+  h+='<button class="back-btn" id="back-banks">\u2190 Banks</button>';
+  h+='<span class="bank-name" style="color:'+bk.color+'">'+bk.label+'</span>';
+  h+='<span>'+state.score+' \u2713</span></div>';
+  h+='<div class="progress-bar"><div class="progress-fill" style="width:'+((state.idx/state.questions.length)*100)+'%;background:'+bk.color+'"></div></div>';
+  h+='<div class="q-meta"><span class="q-id" style="color:'+bk.color+';background:'+bk.color+'14">'+q.id+'</span><span>'+(state.idx+1)+' / '+state.questions.length+'</span></div>';
+  h+='<div class="stem">'+q.stem+'</div>';
+  h+='<div class="options" id="opts">';
+  keys.forEach(function(k){
+    h+='<button class="opt" data-k="'+k+'"><span class="letter">'+k+'</span><span>'+q.options[k]+'</span></button>';
+  });
+  h+='</div>';
+  h+='<div id="feedback"></div>';
+  h+='<div class="clear"></div>';
+
+  app.innerHTML=h;
+  document.getElementById('back-banks').onclick=function(){state.phase='banks';render();};
+
+  var opts=app.querySelectorAll('.opt');
+  var answered=false;
+
+  opts.forEach(function(o){
+    o.onclick=function(){
+      if(answered)return;
+      answered=true;
+      var k=o.dataset.k;
+      var isCorrect=k===q.correct;
+      if(isCorrect) state.score++;
+
+      // Log to Supabase
+      logResponse(q, k, isCorrect, false, null);
+
+      opts.forEach(function(x){
+        x.classList.add('answered');
+        if(x.dataset.k===q.correct) x.classList.add('correct');
+        else if(x===o&&!isCorrect) x.classList.add('wrong');
+        else x.classList.add('dimmed');
+      });
+
+      var fb=document.getElementById('feedback');
+      if(isCorrect){
+        fb.innerHTML='<div class="praise-box">\u2713 Nailed it.</div><button class="next-btn" id="next-btn">Next \u2192</button><div class="clear"></div>';
+      }else{
+        var fh='<div class="scaffold-box"><span class="stag">'+q.tag+'</span><p>'+q.scaffold+'</p></div>';
+        fh+='<button class="reforge-trigger" id="rf-btn">Re-forge \u2192</button>';
+        fh+='<div id="rf-area" class="hidden"></div>';
+        fh+='<button class="next-btn" id="next-btn">Next \u2192</button><div class="clear"></div>';
+        fb.innerHTML=fh;
+        document.getElementById('rf-btn').onclick=function(){
+          document.getElementById('rf-btn').classList.add('hidden');
+          renderReforge(q,document.getElementById('rf-area'),bk.color);
+        };
+      }
+
+      document.getElementById('next-btn').onclick=function(){
+        state.idx++;render();
+      };
+    };
+  });
+}
+
+function renderReforge(q,el,color){
+  el.classList.remove('hidden');
+  var rf=q.reforge;
+  var keys=Object.keys(rf.options);
+  var h='<div class="reforge-box" style="border-color:'+color+'30">';
+  h+='<div class="rf-tag" style="color:'+color+'">Re-forge twin</div>';
+  h+='<div class="rf-stem">'+rf.stem+'</div>';
+  h+='<div class="options" id="rf-opts">';
+  keys.forEach(function(k){
+    h+='<button class="opt" data-k="'+k+'" style="font-size:14px;padding:10px 12px;border-radius:8px"><span class="letter">'+k+'</span><span>'+rf.options[k]+'</span></button>';
+  });
+  h+='</div><div id="rf-feedback"></div></div>';
+  el.innerHTML=h;
+
+  var opts=el.querySelectorAll('.opt');
+  var done=false;
+  opts.forEach(function(o){
+    o.onclick=function(){
+      if(done)return;
+      done=true;
+      var k=o.dataset.k;
+      var isCorrect=k===rf.correct;
+
+      // Log re-forge to Supabase
+      logResponse(q, k, isCorrect, true, isCorrect);
+
+      opts.forEach(function(x){
+        x.classList.add('answered');
+        if(x.dataset.k===rf.correct) x.classList.add('correct');
+        else if(x===o&&!isCorrect) x.classList.add('wrong');
+        else x.classList.add('dimmed');
+      });
+      var rfb=document.getElementById('rf-feedback');
+      if(isCorrect){
+        rfb.innerHTML='<div style="margin-top:10px;font-size:14px;color:var(--good);font-weight:600">\u2713 Reforged.</div>';
+      }else{
+        rfb.innerHTML='<div style="margin-top:12px"><div style="font-size:14px;color:var(--bad);margin-bottom:10px">Not quite \u2014 the answer is <strong>'+rf.correct+'</strong>.</div><div class="rf-scaffold"><span class="stag">Re-read the scaffold</span><p>'+q.scaffold+'</p></div></div>';
+      }
+    };
+  });
+}
+
+function renderResults(){
+  var bk=BANKS[state.bank];
+  var pct=Math.round((state.score/state.questions.length)*100);
+  var col=pct>=75?'var(--good)':pct>=50?'var(--hot)':'var(--bad)';
+  var h='<div class="results">';
+  h+='<p class="tag" style="color:'+bk.color+';margin-bottom:6px">'+state.bank+' \u2014 '+bk.label+'</p>';
+  h+='<div class="pct" style="color:'+col+'">'+pct+'%</div>';
+  h+='<div class="detail">'+state.score+' / '+state.questions.length+' correct</div>';
+  h+='<div class="btns">';
+  h+='<button class="btn-primary" id="retry">Retry</button>';
+  h+='<button class="btn-secondary" id="all-banks">All banks</button>';
+  h+='<button class="btn-secondary" id="all-subj">Subjects</button>';
+  h+='</div>';
+  h+='<a href="teacher.html" style="display:inline-block;margin-top:18px;font-size:13px;color:var(--slate);text-decoration:none;font-family:JetBrains Mono,monospace">Teacher? View dashboard \u2192</a>';
+  h+='<br><a href="anvil.html" style="display:inline-block;margin-top:8px;font-size:13px;color:var(--ember);text-decoration:none;font-family:JetBrains Mono,monospace">Open your Anvil \u2192</a>';
+  h+='</div>';
+  app.innerHTML=h;
+  document.getElementById('retry').onclick=function(){
+    state.questions=shuffle(BANKS[state.bank].questions.filter(function(q){return !q.type;}));
+    state.idx=0;state.score=0;state.phase='quiz';render();
+  };
+  document.getElementById('all-banks').onclick=function(){state.phase='banks';render();};
+  document.getElementById('all-subj').onclick=function(){state.phase='subjects';render();};
+}
+
+render();
+</script>
+</body>
+</html>
