@@ -36,6 +36,49 @@ h1,h2,h3{font-family:'Bricolage Grotesque',sans-serif;color:var(--white);line-he
 .bank-btn .name{font-size:16px;font-weight:700;color:var(--white);margin-top:1px}
 .bank-btn .qcount{font-size:12px;color:#8A857E;margin-top:1px}
 
+  // Supabase config — replace with your values from Step 1
+var SUPABASE_URL = 'https://YOUR-PROJECT.supabase.co';
+var SUPABASE_KEY = 'YOUR-ANON-KEY';
+
+// Minimal Supabase client (no npm needed — uses the REST API directly)
+var supa = {
+  from: function(table) {
+    return {
+      insert: function(row) {
+        return fetch(SUPABASE_URL + '/rest/v1/' + table, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'apikey': SUPABASE_KEY,
+            'Authorization': 'Bearer ' + SUPABASE_KEY,
+            'Prefer': 'return=representation'
+          },
+          body: JSON.stringify(row)
+        }).then(function(r) { return r.json(); });
+      },
+      select: function(query) {
+        var url = SUPABASE_URL + '/rest/v1/' + table + '?select=' + (query || '*');
+        var filters = [];
+        var obj = {
+          eq: function(col, val) { filters.push(col + '=eq.' + val); return obj; },
+          gte: function(col, val) { filters.push(col + '=gte.' + val); return obj; },
+          order: function(col, opts) { filters.push('order=' + col + '.' + (opts.ascending ? 'asc' : 'desc')); return obj; },
+          then: function(cb) {
+            var finalUrl = url + (filters.length ? '&' + filters.join('&') : '');
+            return fetch(finalUrl, {
+              headers: {
+                'apikey': SUPABASE_KEY,
+                'Authorization': 'Bearer ' + SUPABASE_KEY
+              }
+            }).then(function(r) { return r.json(); }).then(cb);
+          }
+        };
+        return obj;
+      }
+    };
+  }
+};
+        
 /* quiz */
 .progress-bar{height:3px;background:var(--line);border-radius:2px;margin-bottom:24px}
 .progress-fill{height:3px;border-radius:2px;transition:width .3s}
@@ -1228,6 +1271,64 @@ function render(){
   else if(state.phase==='results') renderResults();
 }
 
+// Add to the state object at the top
+var state = {
+  subject: null, bank: null, questions: [], idx: 0, score: 0,
+  phase: 'join',          // NEW — start here
+  studentId: null,        // NEW
+  classId: null,          // NEW
+  studentName: null       // NEW
+};
+
+function render() {
+  if (state.phase === 'join') renderJoin();      // NEW
+  else if (state.phase === 'subjects') renderSubjects();
+  // ... rest unchanged
+}
+
+function renderJoin() {
+  var h = '<div class="center" style="padding-top:60px">';
+  h += '<p class="tag" style="margin-bottom:6px">FORGE</p>';
+  h += '<h1 style="font-size:28px;margin-bottom:20px">Join your class</h1>';
+  h += '<div style="max-width:320px;margin:0 auto;text-align:left">';
+  h += '<label style="font-size:13px;color:var(--slate);display:block;margin-bottom:4px">Your first name</label>';
+  h += '<input id="join-name" type="text" placeholder="e.g. Alex" style="width:100%;padding:12px 14px;border-radius:9px;border:1px solid var(--line);background:var(--panel);color:var(--white);font-family:Sora,sans-serif;font-size:15px;margin-bottom:14px">';
+  h += '<label style="font-size:13px;color:var(--slate);display:block;margin-bottom:4px">Class code <span style="color:var(--slate);font-size:11px">(your teacher will give you this)</span></label>';
+  h += '<input id="join-code" type="text" placeholder="e.g. ECON-Y12-A" style="width:100%;padding:12px 14px;border-radius:9px;border:1px solid var(--line);background:var(--panel);color:var(--white);font-family:Sora,sans-serif;font-size:15px;margin-bottom:18px;text-transform:uppercase">';
+  h += '<button id="join-btn" style="width:100%;padding:13px;border-radius:9px;background:var(--ember);color:var(--coal);border:none;font-family:Sora,sans-serif;font-weight:600;font-size:15px;cursor:pointer">Join →</button>';
+  h += '<p id="join-err" style="color:var(--bad);font-size:13px;margin-top:10px;display:none"></p>';
+  h += '<button id="skip-btn" style="background:none;border:none;color:var(--slate);font-size:13px;margin-top:16px;cursor:pointer;width:100%;text-align:center">or skip — practice without a class</button>';
+  h += '</div></div>';
+  app.innerHTML = h;
+
+  document.getElementById('join-btn').onclick = function() {
+    var name = document.getElementById('join-name').value.trim();
+    var code = document.getElementById('join-code').value.trim().toUpperCase();
+    var err = document.getElementById('join-err');
+    if (!name || !code) { err.textContent = 'Enter your name and class code.'; err.style.display = 'block'; return; }
+
+    // Look up the class
+    supa.from('classes').select('*').eq('code', code).then(function(classes) {
+      if (!classes || classes.length === 0) { err.textContent = 'Class code not found. Check with your teacher.'; err.style.display = 'block'; return; }
+      var cls = classes[0];
+
+      // Create the student record
+      supa.from('students').insert({ name: name, class_id: cls.id }).then(function(students) {
+        state.studentId = students[0].id;
+        state.classId = cls.id;
+        state.studentName = name;
+        state.phase = 'subjects';
+        render();
+      });
+    });
+  };
+
+  document.getElementById('skip-btn').onclick = function() {
+    state.phase = 'subjects';
+    render();
+  };
+}
+
 function renderSubjects(){
   var h='<div class="center"><p class="tag" style="margin-bottom:6px">FORGE</p>';
   h+='<h1 style="font-size:28px;margin-bottom:6px">Smoke Test</h1>';
@@ -1311,6 +1412,22 @@ function renderQuiz(){
       var isCorrect=k===q.correct;
       if(isCorrect) state.score++;
 
+      // Log to Supabase (only if student is joined to a class)
+if (state.studentId) {
+  supa.from('responses').insert({
+    student_id: state.studentId,
+    class_id: state.classId,
+    question_id: q.id,
+    bank: state.bank,
+    subject: Object.keys(SUBJECTS).find(function(s) {
+      return SUBJECTS[s].banks.indexOf(state.bank) !== -1;
+    }),
+    selected_option: k,
+    is_correct: isCorrect,
+    misconception_tag: isCorrect ? null : q.tag
+  });
+}
+
       opts.forEach(function(x){
         x.classList.add('answered');
         if(x.dataset.k===q.correct) x.classList.add('correct');
@@ -1353,6 +1470,25 @@ function renderReforge(q,el,color){
   });
   h+='</div><div id="rf-feedback"></div></div>';
   el.innerHTML=h;
+
+  // Update the response with re-forge result
+if (state.studentId) {
+  // We don't update — we insert a second row flagged as reforge
+  supa.from('responses').insert({
+    student_id: state.studentId,
+    class_id: state.classId,
+    question_id: q.id + '-RF',
+    bank: state.bank,
+    subject: Object.keys(SUBJECTS).find(function(s) {
+      return SUBJECTS[s].banks.indexOf(state.bank) !== -1;
+    }),
+    selected_option: k,
+    is_correct: isCorrect,
+    misconception_tag: isCorrect ? null : q.tag,
+    reforge_attempted: true,
+    reforge_correct: isCorrect
+  });
+}
 
   var opts=el.querySelectorAll('.opt');
   var done=false;
