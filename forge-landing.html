@@ -1,0 +1,1392 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Forge — GCSE &amp; A Level exam readiness</title>
+<meta name="description" content="Forge your knowledge. Face any exam. Misconception-triggered practice for GCSE and A Level, mapped to your exam board's spec.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,700;12..96,800&family=Sora:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --coal:#141210;
+  --panel:#211E1B;
+  --panel-2:#2A2622;
+  --line:#3A342E;
+  --ember:#FF6B2C;
+  --hot:#FFC93C;
+  --slate:#B8B4AD;
+  --white:#F5F1EA;
+  --good:#7FD98A;
+  --bad:#FF5A5A;
+}
+[data-theme="light"]{
+  --coal:#FAFAF8;
+  --panel:#FFFFFF;
+  --panel-2:#F3F2EF;
+  --line:#E0DDD8;
+  --ember:#E5550F;
+  --hot:#C88500;
+  --slate:#6B6660;
+  --white:#1A1816;
+  --good:#1B8C2A;
+  --bad:#D42D2D;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--coal);color:var(--slate);font-family:'Sora',sans-serif;font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:'Bricolage Grotesque',sans-serif;color:var(--white);line-height:1.08;letter-spacing:-.015em}
+.mono{font-family:'JetBrains Mono',monospace}
+a{color:var(--hot)}
+.wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+.tag{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--ember)}
+:focus-visible{outline:2px solid var(--hot);outline-offset:3px;border-radius:4px}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+
+/* nav */
+nav{display:flex;align-items:center;justify-content:space-between;padding:22px 0}
+.logo{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:22px;color:var(--white);text-decoration:none;display:flex;align-items:center;gap:9px}
+.logo .spark{width:10px;height:10px;background:linear-gradient(135deg,var(--hot),var(--ember));border-radius:2px;transform:rotate(45deg);box-shadow:0 0 12px rgba(255,107,44,.7)}
+nav .cta{font-size:14px;font-weight:600;color:var(--coal);background:var(--ember);padding:9px 18px;border-radius:8px;text-decoration:none}
+.theme-toggle{background:var(--panel);border:1px solid var(--line);color:var(--slate);font-family:'JetBrains Mono',monospace;font-size:12px;padding:7px 14px;border-radius:8px;cursor:pointer;transition:background .15s,color .15s;display:flex;align-items:center;gap:6px}
+.theme-toggle:hover{color:var(--white);border-color:var(--ember)}
+.nav-right{display:flex;align-items:center;gap:10px}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;padding:64px 0 88px}
+.hero h1{font-size:clamp(38px,5.4vw,60px);font-weight:800;margin:14px 0 18px}
+.hero h1 em{font-style:normal;background:linear-gradient(100deg,var(--hot) 10%,var(--ember) 70%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p.lede{font-size:18px;max-width:44ch}
+.hero .ctas{display:flex;gap:14px;margin-top:30px;flex-wrap:wrap}
+.btn{display:inline-block;font-weight:600;font-size:15px;padding:13px 24px;border-radius:9px;text-decoration:none;border:1px solid transparent}
+.btn-hot{background:var(--ember);color:var(--coal)}
+.btn-hot:hover{background:var(--hot)}
+.btn-ghost{border-color:var(--line);color:var(--white)}
+.hero .sub{margin-top:16px;font-size:13px;color:#8A857E}
+
+/* demo card — the signature */
+.demo{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:26px;position:relative;box-shadow:0 30px 80px rgba(0,0,0,.45)}
+.demo::before{content:"";position:absolute;inset:-1px;border-radius:16px;padding:1px;background:linear-gradient(160deg,rgba(255,201,60,.55),rgba(255,107,44,.25) 40%,transparent 70%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
+.demo .head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;gap:10px;flex-wrap:wrap}
+.demo .head .spec{font-size:12px;color:var(--slate)}
+.demo .head .spec b{color:var(--hot);font-weight:600}
+.stimulus{font-size:13.5px;color:var(--slate);border-left:2px solid var(--ember);padding:2px 0 2px 12px;margin-bottom:14px}
+.demo .q{color:var(--white);font-weight:600;font-size:16.5px;margin-bottom:16px}
+.opt{display:block;width:100%;text-align:left;background:var(--panel-2);border:1px solid var(--line);color:var(--white);font-family:'Sora',sans-serif;font-size:14.5px;line-height:1.5;padding:12px 14px;border-radius:10px;margin-bottom:9px;cursor:pointer;transition:border-color .15s,background .15s}
+.opt:hover:not(:disabled){border-color:var(--ember)}
+.opt:disabled{cursor:default;opacity:.55}
+.opt.correct{border-color:var(--good);background:rgba(127,217,138,.08);opacity:1}
+.opt.wrong{border-color:var(--bad);background:rgba(255,90,90,.07);opacity:1}
+.scaffold{display:none;margin-top:14px;border-radius:12px;border:1px solid rgba(255,201,60,.4);background:linear-gradient(180deg,rgba(255,107,44,.10),rgba(255,201,60,.05));padding:16px}
+.scaffold.show{display:block;animation:heat .5s ease}
+@keyframes heat{from{opacity:0;transform:translateY(6px);box-shadow:0 0 0 rgba(255,107,44,0)}to{opacity:1;transform:none;box-shadow:0 0 34px rgba(255,107,44,.18)}}
+.scaffold .stag{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--coal);background:var(--hot);padding:2px 8px;border-radius:5px;font-weight:600;margin-bottom:8px}
+.scaffold p{font-size:14px;color:var(--white)}
+.scaffold .next{margin-top:12px}
+.scaffold .next button{background:var(--ember);border:none;color:var(--coal);font-family:'Sora',sans-serif;font-weight:600;font-size:13.5px;padding:9px 16px;border-radius:8px;cursor:pointer}
+.praise{display:none;margin-top:14px;font-size:14px;color:var(--good);font-weight:600}
+.praise.show{display:block}
+.demo .foot{margin-top:14px;font-size:12px;color:#8A857E}
+
+/* sections */
+section{padding:84px 0;border-top:1px solid var(--line)}
+.eyebrow{margin-bottom:10px}
+h2{font-size:clamp(28px,3.6vw,40px);font-weight:800;margin-bottom:14px}
+.sect-lede{max-width:60ch;font-size:17px}
+
+/* loop */
+.loop{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:44px}
+.loop .step{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:24px}
+.loop .step .n{font-family:'JetBrains Mono',monospace;color:var(--ember);font-size:13px;margin-bottom:10px}
+.loop .step h3{font-size:18px;margin-bottom:8px}
+.loop .step p{font-size:14px}
+
+/* modes */
+.modes{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:44px}
+.mode{background:linear-gradient(180deg,var(--panel),var(--coal));border:1px solid var(--line);border-radius:14px;padding:26px}
+.mode h3{font-size:20px;margin-bottom:8px}
+.mode h3 span{color:var(--hot)}
+.mode p{font-size:14px}
+.mode .who{margin-top:14px;font-family:'JetBrains Mono',monospace;font-size:11px;color:#8A857E;text-transform:uppercase;letter-spacing:.07em}
+
+/* teachers */
+.split{display:grid;grid-template-columns:1fr 1fr;gap:44px;margin-top:44px;align-items:start}
+.report{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:22px}
+.report .rt{font-family:'JetBrains Mono',monospace;font-size:11px;color:#8A857E;text-transform:uppercase;letter-spacing:.07em;margin-bottom:12px}
+.report .them{color:#8A857E;font-size:14px;text-decoration:line-through;text-decoration-color:rgba(255,90,90,.6);margin-bottom:14px}
+.report .us{color:var(--white);font-size:15px}
+.report .us b{color:var(--hot)}
+.report .dl{margin-top:16px;display:inline-block;font-size:13.5px;font-weight:600;color:var(--hot);text-decoration:none;border:1px solid rgba(255,201,60,.4);padding:8px 14px;border-radius:8px}
+.tlist{list-style:none;display:grid;gap:14px}
+.tlist li{padding-left:26px;position:relative;font-size:15px}
+.tlist li::before{content:"";position:absolute;left:0;top:8px;width:10px;height:10px;background:linear-gradient(135deg,var(--hot),var(--ember));transform:rotate(45deg);border-radius:2px}
+.tlist li b{color:var(--white)}
+
+/* subjects */
+.level-tabs{display:inline-flex;gap:4px;margin-top:36px;background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:4px}
+.ltab{font-family:'Sora',sans-serif;font-weight:600;font-size:14.5px;color:var(--slate);background:transparent;border:none;padding:9px 22px;border-radius:8px;cursor:pointer;transition:background .15s,color .15s}
+.ltab:hover{color:var(--white)}
+.ltab.active{background:linear-gradient(100deg,var(--hot),var(--ember));color:var(--coal)}
+.level-panel[hidden]{display:none}
+.subjects{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:28px}
+.subj{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:26px;display:flex;flex-direction:column;gap:12px}
+.subj.live{border-color:rgba(255,107,44,.45)}
+.subj.soon{opacity:.75}
+.subj-top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.pill{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:3px 10px;border-radius:99px;border:1px solid var(--line);color:#8A857E}
+.pill.hot{border-color:rgba(255,201,60,.5);color:var(--hot)}
+.boards{font-size:12px;color:#8A857E}
+.subj h3{font-size:21px}
+.subj p{font-size:14px}
+.progress-row{display:flex;flex-direction:column;gap:3px;font-size:12.5px;border-top:1px solid var(--line);padding-top:12px}
+.progress-row b{color:var(--hot)}
+.progress-row .dim{color:#8A857E}
+.subj-link{font-size:13.5px;font-weight:600;text-decoration:none}
+
+/* spec breakdown mini-grid */
+.spec-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:6px;margin-top:10px}
+.spec-chip{font-family:'JetBrains Mono',monospace;font-size:10.5px;padding:5px 9px;border-radius:7px;background:var(--panel-2);border:1px solid var(--line);color:var(--slate);line-height:1.35}
+.spec-chip b{color:var(--hot);font-weight:600;display:block;font-size:11px}
+.spec-chip.done{border-color:rgba(127,217,138,.35)}
+.spec-chip.done b{color:var(--good)}
+
+/* question bank */
+.bank{display:grid;gap:18px;margin-top:44px}
+.bq{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:24px}
+.bq .bq-head{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.bq .bq-head .spec{font-size:12px;color:var(--slate)}
+.bq .bq-head .spec b{color:var(--hot);font-weight:600}
+.bq .bq-head .fmt{font-family:'JetBrains Mono',monospace;font-size:11px;color:#8A857E;text-transform:uppercase;letter-spacing:.06em}
+.bq table.data{width:auto;margin:0 0 14px;font-size:13px;border:1px solid var(--line);border-radius:8px;border-collapse:separate;border-spacing:0;overflow:hidden}
+.bq table.data th,.bq table.data td{padding:7px 14px;border-bottom:1px solid var(--line)}
+.bq table.data tr:last-child td{border-bottom:none}
+.bq table.data th{background:var(--panel-2)}
+.crucible-note{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--coal);background:linear-gradient(100deg,var(--hot),var(--ember));padding:3px 10px;border-radius:99px;font-weight:600}
+
+/* compare */
+table{width:100%;border-collapse:collapse;margin-top:40px;font-size:14px}
+th,td{padding:13px 12px;text-align:left;border-bottom:1px solid var(--line)}
+th{font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:#8A857E;font-weight:600}
+td:first-child{color:var(--white)}
+th.forge,td.forge{background:rgba(255,107,44,.06);border-left:1px solid rgba(255,107,44,.3);border-right:1px solid rgba(255,107,44,.3)}
+th.forge{color:var(--hot)}
+.y{color:var(--good)}.n{color:#6B665F}.p{color:var(--slate)}.star{color:var(--hot);font-weight:700}
+.legend{margin-top:12px;font-size:12px;color:#8A857E}
+
+.stab{font-family:'Sora',sans-serif;font-weight:600;font-size:13px;color:var(--slate);background:transparent;border:none;padding:9px 18px;border-radius:8px;cursor:pointer;transition:background .15s,color .15s;white-space:nowrap;position:relative;z-index:3}
+.stab:hover{color:var(--white)}
+.stab.active{background:linear-gradient(100deg,var(--hot),var(--ember));color:var(--coal)}
+
+/* student dashboard */
+.stu-split{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.stu-col{}
+.stu-focus-item{background:var(--panel-2);border:1px solid var(--line);border-radius:10px;padding:14px;margin-bottom:8px}
+.stu-focus-head{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap}
+.stu-acc{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600}
+.stu-focus-detail{font-size:13px;color:var(--slate);line-height:1.5}
+.stu-strength-item{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border-bottom:1px solid var(--line);font-size:13px}
+.stu-strength-item:last-child{border-bottom:none}
+.stu-strength-tag{color:var(--white);font-size:12px}
+.stu-strength-acc{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:13px}
+.stu-session-mock{background:var(--panel-2);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.stu-session-head{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border-bottom:1px solid var(--line)}
+.stu-session-row{display:flex;align-items:center;gap:10px;padding:9px 16px;border-bottom:1px solid rgba(58,52,46,.5);font-size:13px;color:var(--slate)}
+.stu-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.stu-sq-label{flex:1;color:var(--white)}
+.stu-sq-result{font-family:'JetBrains Mono',monospace;font-size:11px;text-align:right}
+.stu-session-summary{padding:12px 16px;font-size:13px;background:rgba(255,107,44,.04)}
+.anvil-list{display:flex;flex-direction:column;gap:12px}
+.anvil-item{background:var(--panel-2);border:1px solid var(--line);border-radius:12px;padding:18px}
+.anvil-item.active-anvil{border-color:rgba(255,90,90,.3)}
+.anvil-item.resolved-anvil{border-color:rgba(127,217,138,.25);opacity:.7}
+.anvil-top{display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap}
+.anvil-label{color:var(--white);font-size:14px}
+.anvil-meta{display:flex;gap:18px;font-size:12px;color:#8A857E;margin-bottom:10px;flex-wrap:wrap}
+.anvil-action{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+.anvil-status{font-family:'JetBrains Mono',monospace;font-size:12px}
+.anvil-btn{background:var(--ember);border:none;color:var(--coal);font-family:'Sora',sans-serif;font-weight:600;font-size:12px;padding:7px 14px;border-radius:7px;cursor:pointer}
+.crucible-mock{background:var(--panel-2);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.crucible-header{display:flex;justify-content:space-between;align-items:center;padding:16px 18px;border-bottom:1px solid var(--line);background:rgba(255,90,90,.04)}
+.crucible-timer{text-align:center}
+.crucible-time{font-family:'Bricolage Grotesque',sans-serif;font-size:32px;font-weight:800;color:var(--bad);display:block}
+.crucible-timer-label{font-size:11px;color:#8A857E;text-transform:uppercase;font-family:'JetBrains Mono',monospace;letter-spacing:.06em}
+.crucible-qn{font-size:13px;color:#8A857E;margin-bottom:4px;display:block}
+.crucible-q{padding:18px}
+.crucible-stem{color:var(--white);font-size:15px;font-weight:600;margin-bottom:14px;line-height:1.5}
+.crucible-opts{display:flex;flex-direction:column;gap:6px}
+.crucible-opt{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:10px 14px;font-size:13px;color:var(--slate)}
+.crucible-opt.highlight{border-color:var(--ember);color:var(--white);background:rgba(255,107,44,.06)}
+.crucible-result-mock{border-top:1px solid var(--line);padding:18px}
+.crucible-result-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
+.crucible-pct{font-family:'Bricolage Grotesque',sans-serif;font-size:24px;font-weight:800}
+.crucible-result-detail{font-size:13px;color:#8A857E;margin-bottom:14px}
+.crucible-result-row{display:flex;align-items:center;gap:10px;padding:6px 0;font-size:13px;color:var(--white)}
+@media (max-width:860px){
+  .stu-split{grid-template-columns:1fr}
+  .crucible-header{flex-direction:column;gap:10px}
+  .anvil-meta{flex-direction:column;gap:4px}
+}
+
+/* teacher dashboard mockup */
+.dash-tabs{display:inline-flex;gap:4px;background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:4px;flex-wrap:wrap;position:relative;z-index:2}
+.dtab{font-family:'Sora',sans-serif;font-weight:600;font-size:13px;color:var(--slate);background:transparent;border:none;padding:9px 18px;border-radius:8px;cursor:pointer;transition:background .15s,color .15s;white-space:nowrap;position:relative;z-index:3}
+.dtab:hover{color:var(--white)}
+.dtab.active{background:linear-gradient(100deg,var(--hot),var(--ember));color:var(--coal)}
+.dash-panel{margin-top:24px}
+.dash-panel.hidden{display:none}
+.dash-card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:28px;position:relative;box-shadow:0 20px 60px rgba(0,0,0,.35)}
+.dash-card::before{content:"";position:absolute;inset:-1px;border-radius:16px;padding:1px;background:linear-gradient(160deg,rgba(255,201,60,.4),rgba(255,107,44,.15) 40%,transparent 70%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
+.dash-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px}
+.dash-desc{font-size:14px;color:var(--slate);margin-bottom:20px;max-width:60ch}
+.dash-footer{margin-top:20px;font-size:14px;color:var(--slate);border-top:1px solid var(--line);padding-top:14px}
+.heatmap-grid{display:flex;flex-direction:column;gap:10px}
+.heat-row{display:grid;grid-template-columns:100px 1fr 80px 120px 70px;gap:10px;align-items:center;padding:10px 14px;border-radius:10px;background:var(--panel-2);border:1px solid var(--line);font-size:13px}
+.heat-row.high{border-color:rgba(255,90,90,.35)}
+.heat-row.med{border-color:rgba(255,201,60,.25)}
+.heat-row.low{border-color:var(--line)}
+.heat-tag{font-size:11px;color:var(--coal);background:var(--hot);padding:2px 8px;border-radius:5px;font-weight:600;white-space:nowrap}
+.heat-label{color:var(--white);font-size:13px}
+.heat-spec{color:#8A857E;font-size:11px}
+.heat-bar{height:6px;background:var(--line);border-radius:3px;overflow:hidden}
+.heat-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--hot),var(--ember))}
+.heat-row.low .heat-fill{background:var(--slate)}
+.heat-count{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--slate);text-align:right}
+.class-table{border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.ct-header,.ct-row{display:grid;grid-template-columns:1fr 70px 70px 120px 1fr;gap:8px;padding:10px 14px;font-size:13px;align-items:center}
+.ct-header{background:var(--panel-2);font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:#8A857E;font-weight:600}
+.ct-row{border-top:1px solid var(--line)}
+.ct-row .ct-name{color:var(--white)}
+.ct-row.struggle{background:rgba(255,90,90,.04)}
+.sp-stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
+.sp-stat{background:var(--panel-2);border:1px solid var(--line);border-radius:10px;padding:16px;text-align:center}
+.sp-n{font-family:'Bricolage Grotesque',sans-serif;font-size:28px;font-weight:800;display:block}
+.sp-l{font-size:11px;color:#8A857E;margin-top:4px;display:block;font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.04em}
+.sp-section{margin-bottom:20px}
+.sp-title{font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:#8A857E;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--line)}
+.sp-item{display:flex;align-items:center;gap:12px;padding:8px 0;font-size:13px}
+.sp-detail{color:var(--slate)}
+.starter-card{background:var(--panel-2);border:1px solid var(--line);border-radius:12px;padding:22px}
+.starter-top{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.starter-fires{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--bad)}
+.starter-title{font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:700;color:var(--white);margin-bottom:14px}
+.starter-body{font-size:14px;line-height:1.6}
+.starter-body p{margin-bottom:10px}
+.starter-prompt{color:#8A857E;font-size:13px}
+.starter-scenario{border-left:2px solid var(--ember);padding:2px 0 2px 14px;margin:8px 0 14px;color:var(--white);font-size:15px}
+.starter-task{color:var(--white)}
+.starter-reveal{color:var(--slate);background:rgba(255,201,60,.06);border:1px solid rgba(255,201,60,.2);border-radius:8px;padding:12px;margin-top:8px}
+.starter-foot{margin-top:14px;font-size:12px}
+@media (max-width:860px){
+  .heat-row{grid-template-columns:1fr;gap:4px}
+  .heat-bar{display:none}
+  .ct-header,.ct-row{grid-template-columns:1fr 50px 50px;font-size:12px}
+  .ct-weak,.ct-mc,.ct-header .ct-weak,.ct-header .ct-mc{display:none}
+  .sp-stat-row{grid-template-columns:1fr 1fr}
+}
+
+[data-theme="light"] .logo .spark{box-shadow:0 0 8px rgba(229,85,15,.5)}
+[data-theme="light"] .demo::before,[data-theme="light"] .dash-card::before{background:linear-gradient(160deg,rgba(200,133,0,.3),rgba(229,85,15,.1) 40%,transparent 70%)}
+[data-theme="light"] .demo{box-shadow:0 20px 60px rgba(0,0,0,.08)}
+[data-theme="light"] .hero h1 em{background:linear-gradient(100deg,var(--hot) 10%,var(--ember) 70%);-webkit-background-clip:text;background-clip:text}
+[data-theme="light"] .scaffold{border-color:rgba(200,133,0,.4);background:linear-gradient(180deg,rgba(229,85,15,.06),rgba(200,133,0,.03))}
+[data-theme="light"] .mode{background:linear-gradient(180deg,var(--panel),var(--coal))}
+[data-theme="light"] .wait{background:linear-gradient(180deg,rgba(229,85,15,.05),transparent 60%);border-top-color:rgba(229,85,15,.2)}
+[data-theme="light"] .heat-fill{background:linear-gradient(90deg,var(--hot),var(--ember))}
+[data-theme="light"] .dtab.active,[data-theme="light"] .stab.active,[data-theme="light"] .ltab.active{background:linear-gradient(100deg,var(--hot),var(--ember))}
+[data-theme="light"] .btn-hot{background:var(--ember);color:#fff}
+[data-theme="light"] .btn-hot:hover{background:var(--hot);color:#fff}
+[data-theme="light"] nav .cta{color:#fff}
+[data-theme="light"] .heat-tag{color:#fff}
+[data-theme="light"] .stag{color:#fff}
+[data-theme="light"] .crucible-note{color:#fff}
+[data-theme="light"] .anvil-btn{color:#fff}
+[data-theme="light"] .scaffold .next button{color:#fff}
+[data-theme="light"] .opt:hover:not(:disabled){border-color:var(--ember)}
+[data-theme="light"] .dash-card{box-shadow:0 10px 40px rgba(0,0,0,.06)}
+
+/* waitlist */
+.wait{background:linear-gradient(180deg,rgba(255,107,44,.08),transparent 60%);border-top:1px solid rgba(255,107,44,.35)}
+.wait .inner{max-width:620px;margin:0 auto;text-align:center}
+.wait form{display:flex;gap:10px;margin-top:28px;flex-wrap:wrap;justify-content:center}
+.wait input[type=email]{flex:1;min-width:240px;background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:13px 16px;color:var(--white);font-family:'Sora',sans-serif;font-size:15px}
+.wait input::placeholder{color:#7A756E}
+.wait button{background:var(--ember);border:none;color:var(--coal);font-family:'Sora',sans-serif;font-weight:600;font-size:15px;padding:13px 24px;border-radius:9px;cursor:pointer}
+.wait button:hover{background:var(--hot)}
+.wait .note{margin-top:14px;font-size:13px;color:#8A857E}
+.wait .done{display:none;margin-top:24px;color:var(--good);font-weight:600}
+
+footer{padding:36px 0;border-top:1px solid var(--line);font-size:13px;color:#8A857E;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+
+@media (max-width:860px){
+  .hero{grid-template-columns:1fr;padding-top:32px}
+  .loop,.modes,.subjects{grid-template-columns:1fr}
+  .split{grid-template-columns:1fr}
+  .table-scroll{overflow-x:auto}
+  table{min-width:640px}
+  .spec-grid{grid-template-columns:repeat(auto-fill,minmax(120px,1fr))}
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+<nav>
+  <a class="logo" href="#"><span class="spark"></span>Forge</a>
+  <div class="nav-right">
+    <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()">☀ Light</button>
+    <a class="cta" href="forge-quiz.html" style="margin-right:0;background:transparent;border:1px solid var(--line);color:var(--white)">Try the quiz</a>
+    <a class="cta" href="anvil.html" style="margin-right:0;background:transparent;border:1px solid var(--line);color:var(--white)">The Anvil</a>
+    <a class="cta" href="crucible.html" style="margin-right:0;background:transparent;border:1px solid rgba(255,90,90,.5);color:var(--bad)">The Crucible</a>
+    <a class="cta" href="teacher.html" style="margin-right:0;background:transparent;border:1px solid var(--line);color:var(--white)">Teacher dashboard</a>
+    <a class="cta" href="#waitlist">Join the waiting list</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div>
+    <span class="tag">GCSE &amp; A Level · Spec-mapped · Built by a practising teacher</span>
+    <h1>Forge your knowledge.<br><em>Face any exam.</em></h1>
+    <p class="lede">Revision apps get students to remember. Forge gets them to the grade — by catching the exact misconception behind every wrong answer and reworking it on the spot.</p>
+    <div class="ctas">
+      <a class="btn btn-hot" href="forge-quiz.html">Try the quiz — free</a>
+      <a class="btn btn-ghost" href="#waitlist">Join the waiting list</a>
+    </div>
+    <p class="sub">Launching with Edexcel A Level Economics, AQA Psychology &amp; AQA Sociology. <a href="#subjects">See the subjects ↓</a></p>
+  </div>
+
+  <!-- SIGNATURE: live demo -->
+  <div class="demo" id="demo" aria-live="polite">
+    <div class="head">
+      <span class="spec mono">A Level Economics · <b>2.1.2</b> Inflation</span>
+      <span class="tag">Try one — tap an answer</span>
+    </div>
+    <div id="demo-body">
+      <p class="stimulus">UK inflation falls from 4.2% to 2.1%. A headline reads: <em>"Prices tumble as inflation halves."</em></p>
+      <p class="q">Which statement about this economy is correct?</p>
+      <button class="opt" data-mc="MC-INF-01" data-s="Disinflation is a slowdown in the <b>rate</b> of inflation — prices are still rising, just more slowly. Deflation only occurs when the rate goes below zero and the price level actually falls.">The average price level is falling</button>
+      <button class="opt" data-right="1">The average price level is rising, but more slowly than before</button>
+      <button class="opt" data-mc="MC-INF-02" data-s="If inflation is positive at all, the cost of living is still going <b>up</b>. A fall from 4.2% to 2.1% means living costs rose 2.1% — the headline is wrong, and examiners test exactly this.">The cost of living has fallen by 2.1%</button>
+      <button class="opt" data-mc="MC-INF-01" data-s="Disinflation is a slowdown in the <b>rate</b> of inflation — prices are still rising, just more slowly. Deflation only occurs when the rate goes below zero and the price level actually falls.">The economy has entered deflation</button>
+
+      <div class="scaffold" id="scaffold">
+        <span class="stag" id="stag">MC-INF-01</span>
+        <p id="stext"></p>
+        <div class="next"><button id="reforge">Re-forge it → same concept, new question</button></div>
+      </div>
+      <p class="praise" id="praise">Solid. Prices rising more slowly is disinflation — most students miss this. ✦</p>
+    </div>
+    <p class="foot">Every wrong answer is tagged to a real misconception from examiners' reports. This is one live question from the Forge bank.</p>
+  </div>
+</header>
+</div>
+
+<section id="how">
+<div class="wrap">
+  <p class="tag eyebrow">The Forge loop</p>
+  <h2>A wrong answer isn't a fail. It's raw material.</h2>
+  <p class="sect-lede">Flashcard apps show you the right answer and move on. Forge treats the wrong answer as the most useful data in the session — and works it, there and then.</p>
+  <div class="loop">
+    <div class="step">
+      <p class="n mono">01 · TRIGGER</p>
+      <h3>The misconception fires</h3>
+      <p>Every distractor is written from documented examiner-report errors and tagged to a specific misconception — not "wrong", but <em>why</em> it's wrong.</p>
+    </div>
+    <div class="step">
+      <p class="n mono">02 · SCAFFOLD</p>
+      <h3>A 30-second correction</h3>
+      <p>Instead of just revealing the answer, Forge shows a two-sentence scaffold that dismantles that exact logic trap while it's still hot.</p>
+    </div>
+    <div class="step">
+      <p class="n mono">03 · RE-FORGE</p>
+      <h3>Prove it, reframed</h3>
+      <p>A twin question tests the same concept in a new scenario, immediately — so the fix is understood, not memorised.</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<section>
+<div class="wrap">
+  <p class="tag eyebrow">Three ways to train</p>
+  <h2>Daily heat. Weekly pressure.</h2>
+  <div class="modes">
+    <div class="mode">
+      <h3><span>Forge</span> Mode</h3>
+      <p>The daily session: a few minutes of exam-style micro-scenarios, spec-mapped and spaced so it sticks. Habit beats heroics.</p>
+      <p class="who">Every day · 3 minutes</p>
+    </div>
+    <div class="mode">
+      <h3>The <span>Anvil</span></h3>
+      <p>Your personal pile of misconceptions that keep firing. Return, rework, and reshape them until they stop costing marks.</p>
+      <p class="who">Whenever a weakness persists</p>
+    </div>
+    <div class="mode">
+      <h3>The <span>Crucible</span></h3>
+      <p>A weekly timed sprint. No hints, no scaffolds — real exam pressure. Results are yours alone; surviving it tempers your rank.</p>
+      <p class="who">Weekly · 5 minutes · private</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<section id="students">
+<div class="wrap">
+  <p class="tag eyebrow">For students</p>
+  <h2>Your exam profile. Always honest.</h2>
+  <p class="sect-lede">Other apps show you a streak. Forge shows you exactly where you'll lose marks — and what to do about it before the exam.</p>
+
+  <div class="dash-tabs" role="tablist" style="margin-top:32px">
+    <button class="stab active" onclick="switchStudent('overview',this)">My overview</button>
+    <button class="stab" onclick="switchStudent('forge',this)">Forge mode</button>
+    <button class="stab" onclick="switchStudent('anvil',this)">The Anvil</button>
+    <button class="stab" onclick="switchStudent('crucible',this)">The Crucible</button>
+  </div>
+
+  <!-- STUDENT VIEW 1: Overview -->
+  <div class="dash-panel" id="stu-overview">
+    <div class="dash-card">
+      <div class="dash-head">
+        <span class="rt">Your profile · A Level Economics</span>
+        <span class="tag">Always updating</span>
+      </div>
+
+      <div class="sp-stat-row">
+        <div class="sp-stat"><span class="sp-n" style="color:var(--good)">72%</span><span class="sp-l">Overall accuracy</span></div>
+        <div class="sp-stat"><span class="sp-n" style="color:var(--white)">156</span><span class="sp-l">Questions answered</span></div>
+        <div class="sp-stat"><span class="sp-n" style="color:var(--hot)">4</span><span class="sp-l">Active misconceptions</span></div>
+        <div class="sp-stat"><span class="sp-n" style="color:var(--good)">11</span><span class="sp-l">Reforged &amp; resolved</span></div>
+      </div>
+
+      <div class="stu-split">
+        <div class="stu-col">
+          <div class="sp-title" style="color:var(--bad)">⚠ Focus areas — where you're losing marks</div>
+          <div class="stu-focus-item">
+            <div class="stu-focus-head">
+              <span class="heat-tag mono">2.1.2 Inflation</span>
+              <span class="stu-acc" style="color:var(--bad)">48% accuracy</span>
+            </div>
+            <div class="stu-focus-detail">MC-INF-01 keeps firing — you're confusing disinflation with deflation. Hit the <b style="color:var(--hot)">Anvil</b> to rework it.</div>
+          </div>
+          <div class="stu-focus-item">
+            <div class="stu-focus-head">
+              <span class="heat-tag mono">2.1.4 Balance of Payments</span>
+              <span class="stu-acc" style="color:var(--bad)">52% accuracy</span>
+            </div>
+            <div class="stu-focus-detail">You're mixing up the fiscal deficit and the current account deficit. The J-curve direction is also catching you out.</div>
+          </div>
+          <div class="stu-focus-item">
+            <div class="stu-focus-head">
+              <span class="heat-tag mono">Exam technique</span>
+              <span class="stu-acc" style="color:var(--hot)">60% accuracy</span>
+            </div>
+            <div class="stu-focus-detail">You're writing breadth over depth on 8-mark questions. Two developed chains beat five thin points.</div>
+          </div>
+        </div>
+        <div class="stu-col">
+          <div class="sp-title" style="color:var(--good)">✓ Strengths — ready for the exam</div>
+          <div class="stu-strength-item">
+            <span class="stu-strength-tag mono">2.2.1 Aggregate Demand</span>
+            <span class="stu-strength-acc" style="color:var(--good)">91%</span>
+          </div>
+          <div class="stu-strength-item">
+            <span class="stu-strength-tag mono">2.3.2 Monetary Policy</span>
+            <span class="stu-strength-acc" style="color:var(--good)">88%</span>
+          </div>
+          <div class="stu-strength-item">
+            <span class="stu-strength-tag mono">2.1.3 Employment</span>
+            <span class="stu-strength-acc" style="color:var(--good)">85%</span>
+          </div>
+          <div class="stu-strength-item">
+            <span class="stu-strength-tag mono">2.2.2 Aggregate Supply</span>
+            <span class="stu-strength-acc" style="color:var(--good)">84%</span>
+          </div>
+          <div class="stu-strength-item">
+            <span class="stu-strength-tag mono">2.2.3 National Income</span>
+            <span class="stu-strength-acc" style="color:var(--good)">82%</span>
+          </div>
+        </div>
+      </div>
+
+      <p class="dash-footer">→ Your overview updates after every session. Focus areas tell you where to spend time — strengths confirm what's already locked in.</p>
+    </div>
+  </div>
+
+  <!-- STUDENT VIEW 2: Forge mode -->
+  <div class="dash-panel hidden" id="stu-forge">
+    <div class="dash-card">
+      <div class="dash-head">
+        <span class="rt">Forge mode · Daily session</span>
+        <span class="tag">3 minutes</span>
+      </div>
+      <p class="dash-desc">Your daily session pulls questions from across the spec, weighted toward the topics you're weakest on. The worse you're doing on a spec point, the more often it appears.</p>
+
+      <div class="stu-session-mock">
+        <div class="stu-session-head">
+          <span style="color:var(--white);font-weight:600">Today's session</span>
+          <span class="mono" style="color:#8A857E;font-size:12px">8 questions · ~3 mins</span>
+        </div>
+        <div class="stu-session-row">
+          <span class="stu-dot" style="background:var(--good)"></span>
+          <span class="stu-sq-label">2.2.1 AD shift vs movement</span>
+          <span class="stu-sq-result" style="color:var(--good)">✓</span>
+        </div>
+        <div class="stu-session-row">
+          <span class="stu-dot" style="background:var(--bad)"></span>
+          <span class="stu-sq-label">2.1.2 Disinflation vs deflation</span>
+          <span class="stu-sq-result" style="color:var(--bad)">✗ → scaffold → re-forge ✓</span>
+        </div>
+        <div class="stu-session-row">
+          <span class="stu-dot" style="background:var(--good)"></span>
+          <span class="stu-sq-label">2.3.1 Automatic stabilisers</span>
+          <span class="stu-sq-result" style="color:var(--good)">✓</span>
+        </div>
+        <div class="stu-session-row">
+          <span class="stu-dot" style="background:var(--good)"></span>
+          <span class="stu-sq-label">2.1.3 ILO vs claimant count</span>
+          <span class="stu-sq-result" style="color:var(--good)">✓</span>
+        </div>
+        <div class="stu-session-row">
+          <span class="stu-dot" style="background:var(--bad)"></span>
+          <span class="stu-sq-label">2.1.4 J-curve direction</span>
+          <span class="stu-sq-result" style="color:var(--bad)">✗ → scaffold → re-forge ✗ → Anvil</span>
+        </div>
+        <div class="stu-session-row">
+          <span class="stu-dot" style="background:var(--good)"></span>
+          <span class="stu-sq-label">2.4.1 Gini coefficient</span>
+          <span class="stu-sq-result" style="color:var(--good)">✓</span>
+        </div>
+        <div class="stu-session-row">
+          <span class="stu-dot" style="background:var(--good)"></span>
+          <span class="stu-sq-label">2.3.3 LRAS shift</span>
+          <span class="stu-sq-result" style="color:var(--good)">✓</span>
+        </div>
+        <div class="stu-session-row">
+          <span class="stu-dot" style="background:var(--bad)"></span>
+          <span class="stu-sq-label">2.1.2 CPI calculation</span>
+          <span class="stu-sq-result" style="color:var(--bad)">✗ → scaffold → re-forge ✓</span>
+        </div>
+        <div class="stu-session-summary">
+          <span style="color:var(--white);font-weight:600">5/8 correct</span>
+          <span style="color:#8A857E">· 2 reforged successfully · 1 sent to Anvil</span>
+        </div>
+      </div>
+
+      <p class="dash-footer">→ Wrong answers aren't just marked wrong — they're caught, scaffolded, and re-tested. If the re-forge fails too, it goes to your Anvil for focused rework.</p>
+    </div>
+  </div>
+
+  <!-- STUDENT VIEW 3: Anvil -->
+  <div class="dash-panel hidden" id="stu-anvil">
+    <div class="dash-card">
+      <div class="dash-head">
+        <span class="rt">The Anvil · Your persistent weaknesses</span>
+        <span class="tag">Rework until resolved</span>
+      </div>
+      <p class="dash-desc">Misconceptions that survive the re-forge land here. They don't leave until you prove you've beaten them — not once, but consistently.</p>
+
+      <div class="anvil-list">
+        <div class="anvil-item active-anvil">
+          <div class="anvil-top">
+            <span class="heat-tag mono">MC-INF-01</span>
+            <span class="anvil-label">Confuses disinflation with deflation</span>
+          </div>
+          <div class="anvil-meta">
+            <span>Fired <b style="color:var(--bad)">6 times</b></span>
+            <span>Reforged <b>1/6</b></span>
+            <span>On your Anvil since <b>3 days ago</b></span>
+          </div>
+          <div class="anvil-action">
+            <span class="anvil-status" style="color:var(--bad)">● Still active</span>
+            <button class="anvil-btn">Rework this now →</button>
+          </div>
+        </div>
+        <div class="anvil-item active-anvil">
+          <div class="anvil-top">
+            <span class="heat-tag mono">MC-BOP-03</span>
+            <span class="anvil-label">Draws J-curve improving immediately</span>
+          </div>
+          <div class="anvil-meta">
+            <span>Fired <b style="color:var(--bad)">4 times</b></span>
+            <span>Reforged <b>0/4</b></span>
+            <span>On your Anvil since <b>5 days ago</b></span>
+          </div>
+          <div class="anvil-action">
+            <span class="anvil-status" style="color:var(--bad)">● Still active</span>
+            <button class="anvil-btn">Rework this now →</button>
+          </div>
+        </div>
+        <div class="anvil-item resolved-anvil">
+          <div class="anvil-top">
+            <span class="heat-tag mono" style="background:var(--good)">MC-EMP-01</span>
+            <span class="anvil-label" style="text-decoration:line-through;color:#8A857E">Everyone without a job is unemployed</span>
+          </div>
+          <div class="anvil-meta">
+            <span>Was active for <b>4 days</b></span>
+            <span>Reforged <b>3/3</b> consecutively</span>
+          </div>
+          <div class="anvil-action">
+            <span class="anvil-status" style="color:var(--good)">✓ Resolved — cleared from Anvil</span>
+          </div>
+        </div>
+      </div>
+
+      <p class="dash-footer">→ The Anvil only clears a misconception after you get it right <b style="color:var(--hot)">three times in a row</b> across different sessions. One lucky guess doesn't count.</p>
+    </div>
+  </div>
+
+  <!-- STUDENT VIEW 4: Crucible -->
+  <div class="dash-panel hidden" id="stu-crucible">
+    <div class="dash-card">
+      <div class="dash-head">
+        <span class="rt">The Crucible · Weekly exam pressure</span>
+        <span class="tag">5 minutes · No scaffolds</span>
+      </div>
+      <p class="dash-desc">Once a week, no safety net. No scaffolds, no re-forges — just the question and the clock. This is how the exam feels.</p>
+
+      <div class="crucible-mock">
+        <div class="crucible-header">
+          <div class="crucible-timer">
+            <span class="crucible-time">3:42</span>
+            <span class="crucible-timer-label">remaining</span>
+          </div>
+          <div class="crucible-progress">
+            <span class="crucible-qn">Question 7 of 12</span>
+            <div class="heat-bar" style="width:160px"><div class="heat-fill" style="width:58%"></div></div>
+          </div>
+        </div>
+
+        <div class="crucible-q">
+          <p class="crucible-stem">A country's Marshall-Lerner condition is not met. Following a depreciation of its currency, the current account will:</p>
+          <div class="crucible-opts">
+            <div class="crucible-opt">A · Improve, as exports become cheaper</div>
+            <div class="crucible-opt highlight">B · Worsen, because volume changes are too small to offset higher import prices</div>
+            <div class="crucible-opt">C · Be unaffected by exchange rate changes</div>
+            <div class="crucible-opt">D · Improve after a J-curve delay</div>
+          </div>
+        </div>
+
+        <div class="crucible-result-mock">
+          <div class="crucible-result-head">
+            <span style="color:var(--white);font-weight:700;font-size:18px">Crucible result</span>
+            <span class="crucible-pct" style="color:var(--hot)">67%</span>
+          </div>
+          <div class="crucible-result-detail">
+            <span>8/12 correct · 4 misconceptions fired</span>
+          </div>
+          <div class="crucible-result-row">
+            <span style="color:var(--bad)">✗</span>
+            <span class="mono" style="font-size:12px">MC-BOP-04</span>
+            <span style="font-size:13px">Marshall-Lerner missing</span>
+            <span style="color:#8A857E;font-size:12px">→ sent to Anvil</span>
+          </div>
+          <div class="crucible-result-row">
+            <span style="color:var(--bad)">✗</span>
+            <span class="mono" style="font-size:12px">MC-INF-01</span>
+            <span style="font-size:13px">Disinflation vs deflation</span>
+            <span style="color:var(--hot);font-size:12px">→ already on Anvil</span>
+          </div>
+          <div class="crucible-result-row">
+            <span style="color:var(--bad)">✗</span>
+            <span class="mono" style="font-size:12px">MC-TECH-04</span>
+            <span style="font-size:13px">Diagram axis error</span>
+            <span style="color:#8A857E;font-size:12px">→ sent to Anvil</span>
+          </div>
+          <div class="crucible-result-row">
+            <span style="color:var(--bad)">✗</span>
+            <span class="mono" style="font-size:12px">MC-FIS-02</span>
+            <span style="font-size:13px">Auto stabilisers vs discretionary</span>
+            <span style="color:#8A857E;font-size:12px">→ sent to Anvil</span>
+          </div>
+        </div>
+      </div>
+
+      <p class="dash-footer">→ No hints during the Crucible — but every wrong answer is tagged and sent to your <b style="color:var(--hot)">Anvil</b> afterward, so the pressure reveals weaknesses and the Anvil fixes them.</p>
+    </div>
+  </div>
+
+</div>
+</section>
+
+<section id="teachers">
+<div class="wrap">
+  <p class="tag eyebrow">For teachers</p>
+  <h2>Readiness, not completion.</h2>
+  <p class="sect-lede">Most dashboards tell you who logged in. Forge tells you what to teach on Monday. Click through the views below.</p>
+
+  <!-- dashboard tabs -->
+  <div class="dash-tabs" role="tablist" style="margin-top:32px">
+    <button class="dtab active" onclick="switchDash('heatmap',this)">Misconception heatmap</button>
+    <button class="dtab" onclick="switchDash('class',this)">Class overview</button>
+    <button class="dtab" onclick="switchDash('student',this)">Student drill-down</button>
+    <button class="dtab" onclick="switchDash('starter',this)">Corrective starters</button>
+  </div>
+
+  <!-- VIEW 1: Misconception heatmap -->
+  <div class="dash-panel" id="dash-heatmap">
+    <div class="dash-card">
+      <div class="dash-head">
+        <span class="rt">Year 12 Economics · This week</span>
+        <span class="tag">Live data</span>
+      </div>
+      <p class="dash-desc">The misconceptions your class is firing most, ranked by frequency. Red = high volume. Each tag links to the spec point it belongs to.</p>
+      <div class="heatmap-grid">
+        <div class="heat-row high">
+          <span class="heat-tag mono">MC-INF-01</span>
+          <span class="heat-label">Confuses disinflation with deflation</span>
+          <span class="heat-spec mono">2.1.2</span>
+          <div class="heat-bar"><div class="heat-fill" style="width:92%"></div></div>
+          <span class="heat-count">23 fires</span>
+        </div>
+        <div class="heat-row high">
+          <span class="heat-tag mono">MC-BOP-02</span>
+          <span class="heat-label">Confuses fiscal deficit with current account deficit</span>
+          <span class="heat-spec mono">2.1.4</span>
+          <div class="heat-bar"><div class="heat-fill" style="width:76%"></div></div>
+          <span class="heat-count">19 fires</span>
+        </div>
+        <div class="heat-row med">
+          <span class="heat-tag mono">MC-GRO-02</span>
+          <span class="heat-label">Cannot distinguish actual from potential growth</span>
+          <span class="heat-spec mono">2.1.1</span>
+          <div class="heat-bar"><div class="heat-fill" style="width:56%"></div></div>
+          <span class="heat-count">14 fires</span>
+        </div>
+        <div class="heat-row med">
+          <span class="heat-tag mono">MC-TECH-04</span>
+          <span class="heat-label">Diagram axis errors (price vs price level)</span>
+          <span class="heat-spec mono">Cross-cutting</span>
+          <div class="heat-bar"><div class="heat-fill" style="width:44%"></div></div>
+          <span class="heat-count">11 fires</span>
+        </div>
+        <div class="heat-row low">
+          <span class="heat-tag mono">MC-EMP-03</span>
+          <span class="heat-label">Treats the Phillips curve as permanent</span>
+          <span class="heat-spec mono">2.1.3</span>
+          <div class="heat-bar"><div class="heat-fill" style="width:24%"></div></div>
+          <span class="heat-count">6 fires</span>
+        </div>
+      </div>
+      <p class="dash-footer">→ You'd plan Monday's starter around <b style="color:var(--hot)">MC-INF-01</b> — 23 students hit the same trap this week.</p>
+    </div>
+  </div>
+
+  <!-- VIEW 2: Class overview -->
+  <div class="dash-panel hidden" id="dash-class">
+    <div class="dash-card">
+      <div class="dash-head">
+        <span class="rt">Year 12 Economics · Class of 24</span>
+        <span class="tag">This week</span>
+      </div>
+      <p class="dash-desc">Per-student accuracy and which spec points are weakest — sorted so the students who need the most support surface first.</p>
+      <div class="class-table">
+        <div class="ct-header">
+          <span class="ct-name">Student</span>
+          <span class="ct-qs">Qs done</span>
+          <span class="ct-acc">Accuracy</span>
+          <span class="ct-weak">Weakest spec point</span>
+          <span class="ct-mc">Top misconception</span>
+        </div>
+        <div class="ct-row struggle">
+          <span class="ct-name">Student A</span>
+          <span class="ct-qs">34</span>
+          <span class="ct-acc" style="color:var(--bad)">38%</span>
+          <span class="ct-weak mono">2.1.2</span>
+          <span class="ct-mc mono">MC-INF-01 ×6</span>
+        </div>
+        <div class="ct-row struggle">
+          <span class="ct-name">Student B</span>
+          <span class="ct-qs">28</span>
+          <span class="ct-acc" style="color:var(--bad)">42%</span>
+          <span class="ct-weak mono">2.1.4</span>
+          <span class="ct-mc mono">MC-BOP-02 ×5</span>
+        </div>
+        <div class="ct-row mid">
+          <span class="ct-name">Student C</span>
+          <span class="ct-qs">41</span>
+          <span class="ct-acc" style="color:var(--hot)">64%</span>
+          <span class="ct-weak mono">2.2.1</span>
+          <span class="ct-mc mono">MC-TECH-04 ×3</span>
+        </div>
+        <div class="ct-row strong">
+          <span class="ct-name">Student D</span>
+          <span class="ct-qs">45</span>
+          <span class="ct-acc" style="color:var(--good)">87%</span>
+          <span class="ct-weak mono">2.3.1</span>
+          <span class="ct-mc mono">MC-FIS-02 ×1</span>
+        </div>
+        <div class="ct-row strong">
+          <span class="ct-name">Student E</span>
+          <span class="ct-qs">50</span>
+          <span class="ct-acc" style="color:var(--good)">92%</span>
+          <span class="ct-weak mono">—</span>
+          <span class="ct-mc mono">—</span>
+        </div>
+      </div>
+      <p class="dash-footer">→ Students A and B need intervention on <b style="color:var(--hot)">2.1.2</b> and <b style="color:var(--hot)">2.1.4</b>. Student E is exam-ready on Theme 2.</p>
+    </div>
+  </div>
+
+  <!-- VIEW 3: Student drill-down -->
+  <div class="dash-panel hidden" id="dash-student">
+    <div class="dash-card">
+      <div class="dash-head">
+        <span class="rt">Student A · Year 12 Economics</span>
+        <span class="tag">Individual profile</span>
+      </div>
+      <p class="dash-desc">Every misconception this student has triggered, with frequency and whether the re-forge corrected it.</p>
+      <div class="student-profile">
+        <div class="sp-stat-row">
+          <div class="sp-stat"><span class="sp-n" style="color:var(--bad)">38%</span><span class="sp-l">Accuracy</span></div>
+          <div class="sp-stat"><span class="sp-n" style="color:var(--white)">34</span><span class="sp-l">Questions</span></div>
+          <div class="sp-stat"><span class="sp-n" style="color:var(--hot)">6</span><span class="sp-l">Unique misconceptions</span></div>
+          <div class="sp-stat"><span class="sp-n" style="color:var(--good)">2</span><span class="sp-l">Reforged successfully</span></div>
+        </div>
+        <div class="sp-section">
+          <div class="sp-title">Anvil — misconceptions that keep firing</div>
+          <div class="sp-item anvil">
+            <span class="heat-tag mono">MC-INF-01</span>
+            <span class="sp-detail">Fired 6 times · Reforged 1/6 · <b style="color:var(--bad)">Still active</b></span>
+          </div>
+          <div class="sp-item anvil">
+            <span class="heat-tag mono">MC-BOP-02</span>
+            <span class="sp-detail">Fired 4 times · Reforged 0/4 · <b style="color:var(--bad)">Still active</b></span>
+          </div>
+          <div class="sp-item anvil">
+            <span class="heat-tag mono">MC-GRO-01</span>
+            <span class="sp-detail">Fired 3 times · Reforged 1/3 · <b style="color:var(--bad)">Still active</b></span>
+          </div>
+        </div>
+        <div class="sp-section">
+          <div class="sp-title">Resolved — misconceptions corrected through re-forging</div>
+          <div class="sp-item resolved">
+            <span class="heat-tag mono" style="background:var(--good)">MC-EMP-01</span>
+            <span class="sp-detail">Fired 2 times · Reforged 2/2 · <b style="color:var(--good)">Resolved</b></span>
+          </div>
+          <div class="sp-item resolved">
+            <span class="heat-tag mono" style="background:var(--good)">MC-TECH-05</span>
+            <span class="sp-detail">Fired 1 time · Reforged 1/1 · <b style="color:var(--good)">Resolved</b></span>
+          </div>
+        </div>
+      </div>
+      <p class="dash-footer">→ Student A needs targeted work on <b style="color:var(--hot)">inflation concepts</b> and <b style="color:var(--hot)">BoP definitions</b>. Their employment knowledge is solid.</p>
+    </div>
+  </div>
+
+  <!-- VIEW 4: Corrective starters -->
+  <div class="dash-panel hidden" id="dash-starter">
+    <div class="dash-card">
+      <div class="dash-head">
+        <span class="rt">Corrective starters · Auto-generated</span>
+        <span class="tag">Ready to use</span>
+      </div>
+      <p class="dash-desc">Each high-frequency misconception pairs with a ready-made 5-minute starter activity — projected on the board, worked through as a class, targeting the exact error.</p>
+      <div class="starter-preview">
+        <div class="starter-card">
+          <div class="starter-top">
+            <span class="heat-tag mono">MC-INF-01</span>
+            <span class="starter-fires">23 fires this week</span>
+          </div>
+          <div class="starter-title">Starter: "Is it deflation?"</div>
+          <div class="starter-body">
+            <p class="starter-prompt">Project this scenario:</p>
+            <div class="starter-scenario">
+              <p><em>"UK inflation falls from 6.1% to 1.8%. The BBC reports that 'the cost of living crisis is easing.' A student in your class says prices are now falling."</em></p>
+            </div>
+            <p class="starter-task"><b>Task (2 mins):</b> On your whiteboard, write whether prices are rising, falling, or stable — and the correct term for what has happened to inflation.</p>
+            <p class="starter-reveal"><b>Reveal:</b> Prices are still <em>rising</em> (inflation is positive at 1.8%). The rate has slowed — this is <em>disinflation</em>. Prices would only be falling if inflation were negative (deflation).</p>
+          </div>
+          <div class="starter-foot">
+            <span style="color:var(--good)">✦ Based on 23 students hitting this exact error</span>
+          </div>
+        </div>
+      </div>
+      <p class="dash-footer">→ One starter, five minutes, and the most common error in your class this week is addressed before the lesson begins.</p>
+    </div>
+  </div>
+
+</div>
+</section>
+
+<section id="subjects">
+<div class="wrap">
+  <p class="tag eyebrow">Subjects</p>
+  <h2>Deep, not wide.</h2>
+  <p class="sect-lede">Other platforms cover thirteen subjects at flashcard depth. Forge builds spec point by spec point, from examiners' reports — starting where the exam pressure is highest.</p>
+
+  <div class="level-tabs" role="tablist" aria-label="Choose level">
+    <button class="ltab active" role="tab" aria-selected="true" data-level="alevel">A Level</button>
+    <button class="ltab" role="tab" aria-selected="false" data-level="gcse">GCSE</button>
+  </div>
+
+  <!-- A LEVEL -->
+  <div class="subjects level-panel" id="panel-alevel" role="tabpanel">
+
+    <div class="subj live">
+      <div class="subj-top">
+        <span class="pill hot">Theme 2 complete</span>
+        <span class="mono boards">Edexcel 9EC0</span>
+      </div>
+      <h3>Economics</h3>
+      <p>Themes 1–4: markets and market failure, the UK economy, business behaviour, and the global economy. Micro-scenarios, chain-of-reasoning builders, data-response and calculation questions — mapped to every numbered spec point.</p>
+      <div class="progress-row">
+        <span class="mono"><b>Theme 1 — Supply &amp; Demand</b> · 1 bank · 8 questions</span>
+        <span class="mono dim">+ Theme 2 complete · 15 banks · 117 questions · Themes 3 &amp; 4 in authoring</span>
+      </div>
+      <a class="subj-link" href="#demo-2">Try three real questions from the bank ↓</a>
+    </div>
+
+    <div class="subj live">
+      <div class="subj-top">
+        <span class="pill hot">Building now</span>
+        <span class="mono boards">AQA 7182</span>
+      </div>
+      <h3>Psychology</h3>
+      <p>Paper 1 compulsory content: Social Influence, Memory, and Attachment. Misconception-tagged MCQs covering the studies, concepts, and evaluation points examiners reward — and the errors they penalise.</p>
+      <div class="progress-row">
+        <span class="mono"><b>Paper 1 — Social Influence, Memory &amp; Attachment</b> · 3 banks · 24 questions</span>
+        <span class="mono dim">Papers 2 &amp; 3 option content to follow</span>
+      </div>
+      <a class="subj-link" href="#waitlist">Pilot it first — join the list →</a>
+    </div>
+
+    <div class="subj live">
+      <div class="subj-top">
+        <span class="pill hot">Building now</span>
+        <span class="mono boards">AQA 7192</span>
+      </div>
+      <h3>Sociology</h3>
+      <p>Paper 1 compulsory content: Education with Theory and Methods. Perspective application, not name-dropping — linking functionalist, Marxist, feminist, and interactionist views to items and building the evaluation examiners reward.</p>
+      <div class="progress-row">
+        <span class="mono"><b>Paper 1 — Education &amp; Methods in Context</b> · 2 banks · 16 questions</span>
+        <span class="mono dim">Theory &amp; Methods and Paper 3 Crime to follow</span>
+      </div>
+      <a class="subj-link" href="#waitlist">Pilot it first — join the list →</a>
+    </div>
+
+    <div class="subj live">
+      <div class="subj-top">
+        <span class="pill hot">Building now</span>
+        <span class="mono boards">Board confirmed at pilot</span>
+      </div>
+      <h3>Geography</h3>
+      <p>Full continuity from GCSE Geography: your profile, misconception history and habits carry straight into sixth form — so the 20-mark essay skills build on foundations Forge already knows.</p>
+      <div class="progress-row">
+        <span class="mono dim">Misconception registers in authoring</span>
+      </div>
+      <a class="subj-link" href="#waitlist">Pilot it first — join the list →</a>
+    </div>
+
+
+    <div class="subj live">
+      <div class="subj-top">
+        <span class="pill hot">Building now</span>
+        <span class="mono boards">Edexcel 9BS0</span>
+      </div>
+      <h3>Business</h3>
+      <p>Theme 1: Marketing and People — the marketing mix, financial calculations, motivation theories, business structures and growth strategies.</p>
+      <div class="progress-row">
+        <span class="mono"><b>Marketing &amp; People</b> · 1 bank · 8 questions</span>
+        <span class="mono dim">Themes 2, 3 &amp; 4 to follow</span>
+      </div>
+      <a class="subj-link" href="#waitlist">Pilot it first — join the list →</a>
+    </div>
+
+    <div class="subj live">
+      <div class="subj-top">
+        <span class="pill hot">Building now</span>
+        <span class="mono boards">AQA 7405</span>
+      </div>
+      <h3>Chemistry</h3>
+      <p>Physical Chemistry starting with Atomic Structure and Bonding — isotopes, ionisation energies, VSEPR theory, bonding types, and calculations.</p>
+      <div class="progress-row">
+        <span class="mono"><b>Atomic Structure &amp; Bonding</b> · 1 bank · 8 questions</span>
+        <span class="mono dim">Organic, Physical and Inorganic topics to follow</span>
+      </div>
+      <a class="subj-link" href="#waitlist">Pilot it first — join the list →</a>
+    </div>
+
+    <div class="subj live">
+      <div class="subj-top">
+        <span class="pill hot">Building now</span>
+        <span class="mono boards">WJEC Level 3</span>
+      </div>
+      <h3>Criminology</h3>
+      <p>Unit 1: Changing Awareness of Crime — definitions of crime, dark figure, official statistics, moral panics, white-collar crime, and criminological theories.</p>
+      <div class="progress-row">
+        <span class="mono"><b>Changing Awareness of Crime</b> · 1 bank · 8 questions</span>
+        <span class="mono dim">Units 2, 3 &amp; 4 to follow</span>
+      </div>
+      <a class="subj-link" href="#waitlist">Pilot it first — join the list →</a>
+    </div>
+
+    <div class="subj live">
+      <div class="subj-top">
+        <span class="pill hot">Building now</span>
+        <span class="mono boards">OCR-A H420</span>
+      </div>
+      <h3>Biology</h3>
+      <p>Cell Biology — cell structure, DNA replication, membrane transport, cell division, and enzyme action. Precise terminology and calculation questions.</p>
+      <div class="progress-row">
+        <span class="mono"><b>Cell Biology</b> · 1 bank · 8 questions</span>
+        <span class="mono dim">Genetics, Ecology, and Physiology to follow</span>
+      </div>
+      <a class="subj-link" href="#waitlist">Pilot it first — join the list →</a>
+    </div>
+
+    <div class="subj live">
+      <div class="subj-top">
+        <span class="pill hot">Building now</span>
+        <span class="mono boards">AQA</span>
+      </div>
+      <h3>History</h3>
+      <p>Germany 1919–45 — Weimar Republic, Hitler's rise, consolidation of power, and the Holocaust. Source evaluation and historiographical debate.</p>
+      <div class="progress-row">
+        <span class="mono"><b>Germany 1919–45</b> · 1 bank · 8 questions</span>
+        <span class="mono dim">Other periods and papers to follow</span>
+      </div>
+      <a class="subj-link" href="#waitlist">Pilot it first — join the list →</a>
+    </div>
+
+    <div class="subj live">
+      <div class="subj-top">
+        <span class="pill hot">Building now</span>
+        <span class="mono boards">OCR</span>
+      </div>
+      <h3>Law</h3>
+      <p>Criminal Law — actus reus, mens rea, murder, defences, theft. Case law application and evaluating whether the law achieves justice.</p>
+      <div class="progress-row">
+        <span class="mono"><b>Criminal Law</b> · 1 bank · 8 questions</span>
+        <span class="mono dim">Tort, Contract, and Civil Law to follow</span>
+      </div>
+      <a class="subj-link" href="#waitlist">Pilot it first — join the list →</a>
+    </div>
+
+    <div class="subj soon">
+      <div class="subj-top"><span class="pill">In development</span></div>
+      <h3>Maths</h3>
+      <p>Method-mark reasoning and the errors examiners flag every year — misread demands, sign slips, unjustified steps.</p>
+    </div>
+
+
+
+
+    <div class="subj soon">
+      <div class="subj-top"><span class="pill">In development</span></div>
+      <h3>Politics</h3>
+      <p>Applying up-to-date examples to synoptic essay questions, with the comparative analysis Paper 3 demands.</p>
+    </div>
+
+
+    <div class="subj soon">
+      <div class="subj-top"><span class="pill">In development</span></div>
+      <h3>Computing</h3>
+      <p>Trace tables, algorithmic reasoning and the applied theory questions where recall alone scores half marks.</p>
+    </div>
+
+  </div>
+
+  <!-- GCSE -->
+  <div class="subjects level-panel" id="panel-gcse" role="tabpanel" hidden>
+
+    <div class="subj live">
+      <div class="subj-top">
+        <span class="pill hot">Building now</span>
+        <span class="mono boards">Board confirmed at pilot</span>
+      </div>
+      <h3>Geography</h3>
+      <p>Physical, human and fieldwork skills — with the 6- and 9-mark extended answers treated as a skill to train, not a lottery. Case-study application, data and map-skills questions, and command-word drills built from examiner-report evidence.</p>
+      <div class="progress-row">
+        <span class="mono dim">Misconception registers in authoring</span>
+      </div>
+      <a class="subj-link" href="#waitlist">Pilot it first — join the list →</a>
+    </div>
+
+    <div class="subj soon">
+      <div class="subj-top"><span class="pill">In development</span></div>
+      <h3>Maths</h3>
+      <p>Beyond drilling: problem-solving and reasoning questions where the misconception behind each wrong route is caught and reworked.</p>
+    </div>
+
+    <div class="subj soon">
+      <div class="subj-top"><span class="pill">In development</span></div>
+      <h3>Science</h3>
+      <p>Combined and separate sciences — required-practical application, graph and data questions, and the maths skills papers punish most.</p>
+    </div>
+
+    <div class="subj soon">
+      <div class="subj-top"><span class="pill">In development</span></div>
+      <h3>History</h3>
+      <p>Source utility, interpretations and the second-order concepts behind every question stem — trained, not memorised.</p>
+    </div>
+
+    <div class="subj soon">
+      <div class="subj-top"><span class="pill">In development</span></div>
+      <h3>Religious Studies</h3>
+      <p>Applying beliefs and teachings to evaluation questions — building the balanced 12-mark argument, not reciting quotes.</p>
+    </div>
+
+    <div class="subj soon">
+      <div class="subj-top"><span class="pill">In development</span></div>
+      <h3>Business</h3>
+      <p>Calculations, case-study application and justified recommendations — the skills the 9- and 12-markers actually test.</p>
+    </div>
+
+    <div class="subj soon">
+      <div class="subj-top"><span class="pill">In development</span></div>
+      <h3>Psychology</h3>
+      <p>Research methods, evaluation of studies and applying concepts to novel scenarios — where most marks are lost.</p>
+    </div>
+
+  </div>
+
+</div>
+</section>
+
+<section id="demo-2">
+<div class="wrap">
+  <p class="tag eyebrow">Straight from the bank</p>
+  <h2>Three more. No sign-up.</h2>
+  <p class="sect-lede">Real questions from the Economics and Psychology banks — including the kind the Crucible asks. Every distractor below is tagged to a documented misconception.</p>
+  <div class="bank" id="bank"></div>
+</div>
+</section>
+
+<section>
+<div class="wrap">
+  <p class="tag eyebrow">How we compare</p>
+  <h2>Recall is the floor. We built the rest.</h2>
+  <div class="table-scroll">
+  <table>
+    <thead><tr><th>Capability</th><th>Quizlet</th><th>Seneca</th><th>Educator</th><th class="forge">Forge</th></tr></thead>
+    <tbody>
+      <tr><td>Spec-mapped recall practice</td><td class="p">~</td><td class="y">✓</td><td class="y">✓</td><td class="forge y">✓</td></tr>
+      <tr><td>Daily habit loop &amp; streaks</td><td class="n">✗</td><td class="n">✗</td><td class="y">✓</td><td class="forge y">✓</td></tr>
+      <tr><td>Misconception-tagged distractors</td><td class="n">✗</td><td class="n">✗</td><td class="p">~</td><td class="forge star">★</td></tr>
+      <tr><td>Instant scaffold + re-forged twin question</td><td class="n">✗</td><td class="n">✗</td><td class="n">✗</td><td class="forge star">★</td></tr>
+      <tr><td>Timed exam-pressure mode</td><td class="n">✗</td><td class="n">✗</td><td class="n">✗</td><td class="forge star">★</td></tr>
+      <tr><td>A Level depth (application &amp; technique)</td><td class="p">~</td><td class="p">~</td><td class="n">✗</td><td class="forge star">★</td></tr>
+      <tr><td>Examiner-report-sourced content</td><td class="n">✗</td><td class="n">✗</td><td class="p">~</td><td class="forge y">✓</td></tr>
+      <tr><td>Teacher corrective starters per misconception</td><td class="n">✗</td><td class="n">✗</td><td class="n">✗</td><td class="forge star">★</td></tr>
+      <tr><td>Multi-subject on one platform</td><td class="p">~</td><td class="p">~</td><td class="n">✗</td><td class="forge y">✓</td></tr>
+      <tr><td>GCSE → A Level continuity</td><td class="p">~</td><td class="p">~</td><td class="n">✗</td><td class="forge y">✓</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="legend">✓ built · ★ unique to Forge · ~ partial · ✗ not available. Full breakdown available on request.</p>
+</div>
+</section>
+
+<section class="wait" id="waitlist">
+<div class="wrap">
+  <div class="inner">
+    <p class="tag eyebrow">Early access</p>
+    <h2>The first 50 teachers get in free.</h2>
+    <p class="sect-lede" style="margin:0 auto">Forge is being built in a working classroom, launching with Edexcel A Level Economics, AQA Psychology and AQA Sociology. Join the list to shape it and pilot it first.</p>
+    <form id="waitform">
+      <input type="email" id="email" placeholder="you@school.org.uk" required aria-label="Email address">
+      <button type="submit">Join the waiting list</button>
+    </form>
+    <p class="done" id="waitdone">You're on the list. We'll be in touch when the first pilot opens. ✦</p>
+    <p class="note">Teachers and students welcome. No spam — one email when pilots open.</p>
+  </div>
+</div>
+</section>
+
+<div class="wrap">
+<footer>
+  <span>© 2026 Forge · Built by a teacher, for the exam room.</span>
+  <span class="mono">forge · GCSE &amp; A Level</span>
+</footer>
+</div>
+
+<script>
+(function(){
+  var opts=document.querySelectorAll('.opt');
+  var scaffold=document.getElementById('scaffold');
+  var stag=document.getElementById('stag');
+  var stext=document.getElementById('stext');
+  var praise=document.getElementById('praise');
+  var reforge=document.getElementById('reforge');
+  var body=document.getElementById('demo-body');
+
+  opts.forEach(function(o){
+    o.addEventListener('click',function(){
+      opts.forEach(function(x){x.disabled=true;});
+      if(o.dataset.right){
+        o.classList.add('correct');
+        praise.classList.add('show');
+      }else{
+        o.classList.add('wrong');
+        document.querySelector('[data-right]').classList.add('correct');
+        stag.textContent=o.dataset.mc;
+        stext.innerHTML=o.dataset.s;
+        scaffold.classList.add('show');
+      }
+    });
+  });
+
+  reforge.addEventListener('click',function(){
+    body.innerHTML=''+
+      '<p class="stimulus">Inflation in Japan moves from −0.5% to +0.8%.</p>'+
+      '<p class="q">Which term describes the −0.5% period, and what happened to prices?</p>'+
+      '<button class="opt r2">Disinflation; prices rose slowly</button>'+
+      '<button class="opt r2" data-right="1">Deflation; prices fell</button>'+
+      '<button class="opt r2">Disinflation; prices fell</button>'+
+      '<button class="opt r2">Deflation; prices rose slowly</button>'+
+      '<p class="praise" id="praise2">Re-forged. Same concept, new frame — now it\u0027s yours. ✦</p>'+
+      '<p class="praise" id="miss2" style="color:var(--bad)">Not yet — below zero means deflation: the price level itself fell. In the full app, this goes to your Anvil.</p>';
+    var o2=body.querySelectorAll('.r2');
+    o2.forEach(function(b){
+      b.addEventListener('click',function(){
+        o2.forEach(function(x){x.disabled=true;});
+        if(b.dataset.right){b.classList.add('correct');document.getElementById('praise2').classList.add('show');}
+        else{b.classList.add('wrong');body.querySelector('[data-right]').classList.add('correct');document.getElementById('miss2').classList.add('show');}
+      });
+    });
+  });
+
+  /* ---- theme toggle ---- */
+  window.toggleTheme=function(){
+    var html=document.documentElement;
+    var btn=document.getElementById('theme-toggle');
+    if(html.getAttribute('data-theme')==='light'){
+      html.removeAttribute('data-theme');
+      btn.textContent='☀ Light';
+      localStorage.setItem('forge-theme','dark');
+    }else{
+      html.setAttribute('data-theme','light');
+      btn.textContent='☾ Dark';
+      localStorage.setItem('forge-theme','light');
+    }
+  };
+  // restore saved preference
+  if(localStorage.getItem('forge-theme')==='light'){
+    document.documentElement.setAttribute('data-theme','light');
+    document.getElementById('theme-toggle').textContent='☾ Dark';
+  }
+
+  /* ---- student dashboard tabs ---- */
+  window.switchStudent=function(view,btn){
+    document.querySelectorAll('#students .stab').forEach(function(x){x.classList.remove('active');});
+    btn.classList.add('active');
+    document.querySelectorAll('#students .dash-panel').forEach(function(p){p.classList.add('hidden');});
+    document.getElementById('stu-'+view).classList.remove('hidden');
+  };
+
+  /* ---- teacher dashboard tabs ---- */
+  window.switchDash=function(view,btn){
+    document.querySelectorAll('#teachers .dtab').forEach(function(x){x.classList.remove('active');});
+    btn.classList.add('active');
+    document.querySelectorAll('#teachers .dash-panel').forEach(function(p){p.classList.add('hidden');});
+    document.getElementById('dash-'+view).classList.remove('hidden');
+  };
+
+  /* ---- level tabs ---- */
+  var tabs=document.querySelectorAll('.ltab');
+  tabs.forEach(function(t){
+    t.addEventListener('click',function(){
+      tabs.forEach(function(x){x.classList.remove('active');x.setAttribute('aria-selected','false');});
+      t.classList.add('active');t.setAttribute('aria-selected','true');
+      document.getElementById('panel-alevel').hidden=t.dataset.level!=='alevel';
+      document.getElementById('panel-gcse').hidden=t.dataset.level!=='gcse';
+    });
+  });
+
+  /* ---- question bank: three real items ---- */
+  var BANK=[
+    {
+      spec:'Economics · 2.1.2 · CPI calculation', fmt:'Calculation',
+      stim:'The CPI index stands at 130 in 2025 and 133.9 in 2026.',
+      q:'What is the inflation rate for 2026?',
+      opts:[
+        {t:'33.9%', mc:'MC-INF-03', s:'CPI is an <b>index</b>; the inflation rate is the <b>percentage change</b> in it over 12 months — not the gap between the numbers read as a percent. (133.9 − 130) ÷ 130 × 100 = 3.0%.'},
+        {t:'3.0%', right:true},
+        {t:'3.9%', mc:'MC-INF-03', s:'Close — 3.9 is the raw point change, but a rate needs a base: divide by the starting index. (133.9 − 130) ÷ 130 × 100 = 3.0%.'},
+        {t:'130%', mc:'MC-INF-03', s:'That\'s the index level itself, not a rate of change. Inflation compares the index with the same month last year: (133.9 − 130) ÷ 130 × 100 = 3.0%.'}
+      ],
+      praise:'3.0% — change over base, times 100. That\'s the whole method. ✦'
+    },
+    {
+      spec:'Psychology · Social Influence', fmt:'Key study',
+      stim:'In Asch\'s (1951) line study, participants were asked to match a standard line to one of three comparison lines in the presence of confederates who deliberately gave wrong answers.',
+      q:'Approximately what percentage of participants conformed at least once?',
+      opts:[
+        {t:'37% — that was the overall conformity rate across all trials', mc:'MC-SI-01', s:'37% is the <b>per-trial</b> rate (how often people conformed on any given trial). The question asks about participants who conformed <b>at least once</b> — that figure is 75%. Students constantly swap these two numbers.'},
+        {t:'75%', right:true},
+        {t:'100% — everyone conformed eventually', mc:'MC-SI-01', s:'25% of participants <b>never</b> conformed at all. The figure who conformed at least once was 75% — but not everyone.'},
+        {t:'50% — about half gave in to group pressure', mc:'MC-SI-01', s:'The figure is higher: about 75% conformed at least once. The per-trial rate was 37%. These two numbers are the key distinction.'}
+      ],
+      praise:'75% at least once, 37% per trial — you know the difference. That\'s the Asch question examiners love. ✦'
+    },
+    {
+      spec:'Economics · 2.1.2 · Synoptic', fmt:'Crucible-grade · multi-concept', crucible:true,
+      table:[['','2024','2025','2026'],['CPI inflation','5.0%','2.0%','−0.5%'],['Pay growth','4.0%','3.5%','1.0%']],
+      q:'Which statement is supported by the data?',
+      opts:[
+        {t:'Prices fell continuously from 2024 to 2026', mc:'MC-INF-01', s:'Prices only fall when inflation is <b>negative</b>. In 2024 and 2025 inflation was positive — prices rose. Only 2026 (−0.5%) is deflation.'},
+        {t:'Real pay fell in 2024 but rose in 2025 and 2026', right:true},
+        {t:'Workers were worse off in 2026 because pay growth was only 1%', mc:'MC-INF-10', s:'Compare nominal with inflation to get <b>real</b>. Pay +1.0% against inflation of −0.5% is a real pay rise of ~1.5% — the strongest year in the table.'},
+        {t:'The cost of living fell in 2025', mc:'MC-INF-02', s:'Inflation of 2.0% is positive — the cost of living still <b>rose</b> in 2025, just more slowly than in 2024. Falling inflation is not falling prices.'}
+      ],
+      praise:'Real = nominal − inflation, applied three times. That\'s a Crucible answer. ✦'
+    }
+  ];
+
+  var bankEl=document.getElementById('bank');
+  BANK.forEach(function(item,i){
+    var card=document.createElement('div');card.className='bq';
+    var h='<div class="bq-head"><span class="spec mono"><b>'+item.spec+'</b></span>';
+    h+=item.crucible?'<span class="crucible-note">Crucible</span>':'<span class="fmt">'+item.fmt+'</span>';
+    h+='</div>';
+    if(item.table){
+      h+='<table class="data">';
+      item.table.forEach(function(row,r){
+        h+='<tr>'+row.map(function(c){return r===0?'<th>'+c+'</th>':'<td>'+c+'</td>';}).join('')+'</tr>';
+      });
+      h+='</table>';
+    }
+    if(item.stim){h+='<p class="stimulus">'+item.stim+'</p>';}
+    h+='<p class="q">'+item.q+'</p>';
+    item.opts.forEach(function(o,j){
+      h+='<button class="opt" data-i="'+i+'" data-j="'+j+'">'+o.t+'</button>';
+    });
+    h+='<div class="scaffold" id="sc'+i+'"><span class="stag" id="scτ'+i+'"></span><p id="scp'+i+'"></p></div>';
+    h+='<p class="praise" id="pr'+i+'">'+item.praise+'</p>';
+    card.innerHTML=h;
+    bankEl.appendChild(card);
+  });
+
+  bankEl.addEventListener('click',function(e){
+    var b=e.target.closest('.opt');if(!b||b.disabled)return;
+    var i=+b.dataset.i,j=+b.dataset.j,item=BANK[i];
+    var card=b.closest('.bq');
+    card.querySelectorAll('.opt').forEach(function(x){x.disabled=true;});
+    var rightIdx=item.opts.findIndex(function(o){return o.right;});
+    card.querySelectorAll('.opt')[rightIdx].classList.add('correct');
+    if(item.opts[j].right){
+      document.getElementById('pr'+i).classList.add('show');
+    }else{
+      b.classList.add('wrong');
+      if(item.crucible){
+        var sc=document.getElementById('sc'+i);
+        document.getElementById('scτ'+i).textContent='CRUCIBLE MODE';
+        document.getElementById('scp'+i).innerHTML='No scaffold here — the Crucible is pressure training. In the full app this misconception ('+item.opts[j].mc+') is sent to your <b>Anvil</b> to rework after.';
+        sc.classList.add('show');
+      }else{
+        var sc2=document.getElementById('sc'+i);
+        document.getElementById('scτ'+i).textContent=item.opts[j].mc;
+        document.getElementById('scp'+i).innerHTML=item.opts[j].s;
+        sc2.classList.add('show');
+      }
+    }
+  });
+
+  document.getElementById('waitform').addEventListener('submit',function(e){
+    e.preventDefault();
+    this.style.display='none';
+    document.getElementById('waitdone').style.display='block';
+  });
+})();
+</script>
+</body>
+</html>
