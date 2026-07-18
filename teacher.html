@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Forge — Teacher Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,700;12..96,800&family=Sora:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--coal:#141210;--panel:#211E1B;--panel-2:#2A2622;--line:#3A342E;--ember:#FF6B2C;--hot:#FFC93C;--slate:#B8B4AD;--white:#F5F1EA;--good:#7FD98A;--bad:#FF5A5A}
+[data-theme="light"]{--coal:#FAFAF8;--panel:#FFFFFF;--panel-2:#F3F2EF;--line:#E0DDD8;--ember:#E5550F;--hot:#C88500;--slate:#6B6660;--white:#1A1816;--good:#1B8C2A;--bad:#D42D2D}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--coal);color:var(--slate);font-family:'Sora',sans-serif;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100vh}
+h1,h2,h3{font-family:'Bricolage Grotesque',sans-serif;color:var(--white);line-height:1.1;letter-spacing:-.015em}
+.mono{font-family:'JetBrains Mono',monospace}
+.wrap{max-width:860px;margin:0 auto;padding:28px 20px}
+.tag{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ember)}
+.logo{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:20px;color:var(--white);text-decoration:none;display:inline-flex;align-items:center;gap:8px;margin-bottom:28px}
+.logo .spark{width:9px;height:9px;background:linear-gradient(135deg,var(--hot),var(--ember));border-radius:2px;transform:rotate(45deg);box-shadow:0 0 10px rgba(255,107,44,.7)}
+.theme-toggle{background:var(--panel);border:1px solid var(--line);color:var(--slate);font-family:'JetBrains Mono',monospace;font-size:12px;padding:6px 12px;border-radius:7px;cursor:pointer;position:fixed;top:20px;right:20px;z-index:99}
+.theme-toggle:hover{color:var(--white);border-color:var(--ember)}
+
+/* join */
+.join-input{width:100%;padding:12px 14px;border-radius:9px;border:1px solid var(--line);background:var(--panel);color:var(--white);font-family:'Sora',sans-serif;font-size:15px;margin-bottom:14px;text-transform:uppercase}
+.join-input:focus{outline:none;border-color:var(--ember)}
+.join-input::placeholder{color:#7A756E;text-transform:none}
+.join-btn{width:100%;padding:13px;border-radius:9px;background:var(--ember);color:#fff;border:none;font-family:'Sora',sans-serif;font-weight:600;font-size:15px;cursor:pointer}
+.join-btn:hover{background:var(--hot)}
+.join-btn:disabled{opacity:.5;cursor:wait}
+.join-err{color:var(--bad);font-size:13px;margin-top:10px;display:none}
+
+/* dashboard */
+.dash-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;flex-wrap:wrap;gap:10px}
+.dash-header h1{font-size:24px}
+.dash-meta{font-size:13px;color:var(--slate)}
+.dash-meta b{color:var(--hot)}
+
+.tabs{display:inline-flex;gap:4px;background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:4px;margin-bottom:24px;flex-wrap:wrap}
+.tab{font-family:'Sora',sans-serif;font-weight:600;font-size:13px;color:var(--slate);background:transparent;border:none;padding:9px 18px;border-radius:8px;cursor:pointer;white-space:nowrap}
+.tab:hover{color:var(--white)}
+.tab.active{background:linear-gradient(100deg,var(--hot),var(--ember));color:var(--coal)}
+
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:24px;margin-bottom:18px}
+.card-title{font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:#8A857E;margin-bottom:14px}
+
+.stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px;text-align:center}
+.stat-n{font-family:'Bricolage Grotesque',sans-serif;font-size:28px;font-weight:800;display:block}
+.stat-l{font-size:11px;color:#8A857E;margin-top:4px;display:block;font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.04em}
+
+/* heatmap */
+.heat-row{display:grid;grid-template-columns:110px 1fr 80px 100px 60px;gap:10px;align-items:center;padding:10px 14px;border-radius:10px;background:var(--panel-2);border:1px solid var(--line);font-size:13px;margin-bottom:6px}
+.heat-row.high{border-color:rgba(255,90,90,.35)}
+.heat-row.med{border-color:rgba(255,201,60,.25)}
+.heat-tag{font-size:11px;color:var(--coal);background:var(--hot);padding:2px 8px;border-radius:5px;font-weight:600;white-space:nowrap;font-family:'JetBrains Mono',monospace}
+.heat-label{color:var(--white);font-size:13px}
+.heat-spec{color:#8A857E;font-size:11px;font-family:'JetBrains Mono',monospace}
+.heat-bar{height:6px;background:var(--line);border-radius:3px;overflow:hidden}
+.heat-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--hot),var(--ember))}
+.heat-count{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--slate);text-align:right}
+
+/* class table */
+.class-table{width:100%;border-collapse:collapse;font-size:13px}
+.class-table th{font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:#8A857E;font-weight:600;padding:8px 10px;text-align:left;border-bottom:1px solid var(--line)}
+.class-table td{padding:10px;border-bottom:1px solid var(--line);color:var(--white)}
+.class-table tr:hover{background:var(--panel-2)}
+.class-table tr{cursor:pointer}
+.class-table .acc{font-family:'JetBrains Mono',monospace;font-weight:700}
+
+/* student detail */
+.back-btn{background:none;border:none;cursor:pointer;font-size:13px;color:#8A857E;font-family:'Sora',sans-serif;margin-bottom:16px;padding:0}
+.back-btn:hover{color:var(--white)}
+.mc-item{display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:10px;background:var(--panel-2);border:1px solid var(--line);margin-bottom:6px;font-size:13px}
+.mc-item .mc-detail{flex:1;color:var(--slate)}
+.mc-item .mc-fires{font-family:'JetBrains Mono',monospace;font-size:12px}
+
+/* empty state */
+.empty{text-align:center;padding:48px 20px;color:var(--slate)}
+.empty h3{color:var(--white);margin-bottom:8px}
+
+.panel{display:none}
+.panel.active{display:block}
+
+[data-theme="light"] .heat-tag{color:#fff}
+[data-theme="light"] .tab.active{color:#fff}
+[data-theme="light"] .join-btn{color:#fff}
+
+@media(max-width:700px){
+  .stat-row{grid-template-columns:1fr 1fr}
+  .heat-row{grid-template-columns:1fr;gap:4px}
+  .heat-bar,.heat-spec{display:none}
+  .class-table{font-size:12px}
+}
+</style>
+</head>
+<body>
+<button class="theme-toggle" onclick="(function(){var h=document.documentElement,b=document.querySelector('.theme-toggle');if(h.getAttribute('data-theme')==='light'){h.removeAttribute('data-theme');b.textContent='\u2600 Light';localStorage.setItem('forge-theme','dark');}else{h.setAttribute('data-theme','light');b.textContent='\u263E Dark';localStorage.setItem('forge-theme','light');}})()">&#9728; Light</button>
+<script>if(localStorage.getItem('forge-theme')==='light'){document.documentElement.setAttribute('data-theme','light');document.querySelector('.theme-toggle').textContent='\u263E Dark';}</script>
+
+<div class="wrap">
+  <a class="logo" href="index.html"><span class="spark"></span>Forge</a>
+  <div id="app"></div>
+</div>
+
+<script>
+var SUPABASE_URL = 'https://crysulmbaadjkymcjrew.supabase.co';
+var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNyeXN1bG1iYWFkamt5bWNqcmV3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQyNDUzMzAsImV4cCI6MjA5OTgyMTMzMH0.Q69MKJR6_iEYkqJYXjn8RBhKhstAZShtmf0NiYM-8Vk';
+
+var headers = {
+  'apikey': SUPABASE_KEY,
+  'Authorization': 'Bearer ' + SUPABASE_KEY
+};
+
+function supaGet(table, params) {
+  var url = SUPABASE_URL + '/rest/v1/' + table + '?select=*';
+  if (params) url += '&' + params;
+  return fetch(url, { headers: headers }).then(function(r) { return r.json(); });
+}
+
+// Misconception label lookup
+var MC_LABELS = {
+  "MC-INF-01":"Confuses disinflation with deflation","MC-INF-02":"CPI basket treated as static",
+  "MC-INF-03":"Demand-pull: no diagram link","MC-INF-04":"Cost-push = only wages",
+  "MC-INF-05":"Deflation always harmful","MC-INF-06":"RPI and CPI used interchangeably",
+  "MC-INF-07":"BoE target is 0%","MC-INF-08":"Index number calculation error",
+  "MC-INF-09":"Any double-digit = hyperinflation","MC-INF-10":"Wage-price spiral trigger unknown",
+  "MC-GRO-01":"Growth confused with GDP level","MC-GRO-02":"Actual vs potential growth blurred",
+  "MC-GRO-03":"Output gap direction swapped","MC-GRO-04":"Trade cycle recovery drawn flat",
+  "MC-EMP-01":"Unemployed = everyone without a job","MC-EMP-02":"Unemployment types without causes",
+  "MC-EMP-03":"Phillips curve treated as permanent","MC-EMP-04":"Claimant count = ILO measure",
+  "MC-EMP-05":"Real wage diagram gap mislabelled",
+  "MC-BOP-01":"Current account deficit always bad","MC-BOP-02":"Fiscal deficit = current account deficit",
+  "MC-BOP-03":"J-curve drawn improving immediately","MC-BOP-04":"Marshall-Lerner condition omitted",
+  "MC-BOP-05":"Capital/financial account ignored",
+  "MC-AD-01":"AD formula wrong","MC-AD-02":"Interest rate transmission mechanism",
+  "MC-AD-03":"Confidence and AD direction","MC-AD-04":"AD shift causes lower inflation",
+  "MC-AD-05":"Exchange rate to net exports chain","MC-AD-06":"Movement along vs shift of AD",
+  "MC-AD-07":"Wage rise always increases AD",
+  "MC-AS-01":"SRAS vs LRAS distinction","MC-AS-02":"SRAS shift factors confused",
+  "MC-AS-04":"LRAS shift factors confused","MC-AS-05":"Movement along vs shift of SRAS",
+  "MC-AS-06":"Unit labour costs and SRAS",
+  "MC-NI-01":"Circular flow injections/withdrawals","MC-NI-03":"GDP vs GNI confused",
+  "MC-NI-04":"Nominal vs real GDP","MC-NI-06":"GDP limitations for comparisons",
+  "MC-NI-08":"Output method value added",
+  "MC-FIS-01":"Fiscal vs monetary policy confused","MC-FIS-02":"Automatic stabilisers vs discretionary",
+  "MC-FIS-06":"Laffer curve direction","MC-FIS-07":"Fiscal policy time lags",
+  "MC-FIS-08":"Crowding out mechanism",
+  "MC-MON-01":"MPC role and independence","MC-MON-02":"Interest rate transmission",
+  "MC-MON-03":"Rate rise trade-offs ignored","MC-MON-04":"QE mechanism misunderstood",
+  "MC-MON-05":"Liquidity trap","MC-MON-06":"Interest rates and exchange rate",
+  "MC-MON-08":"Forward guidance purpose",
+  "MC-SSP-01":"Supply-side aim misunderstood","MC-SSP-02":"Market-based vs interventionist",
+  "MC-SSP-03":"Interest rates classified as supply-side","MC-SSP-05":"Trade union reform trade-offs",
+  "MC-SSP-08":"Infrastructure dual AD/AS effect",
+  "MC-INQ-02":"Gini coefficient misread","MC-INQ-04":"Causes of income inequality",
+  "MC-INQ-05":"Income vs wealth confused","MC-INQ-07":"Progressive taxation definition",
+  "MC-POV-01":"Absolute vs relative poverty","MC-POV-03":"Poverty trap mechanism",
+  "MC-POV-04":"Anti-poverty policy effectiveness",
+  "MC-FMK-01":"Financial markets roles","MC-FMK-02":"Forward markets mechanism",
+  "MC-FMK-03":"Asymmetric information in financial markets","MC-FMK-04":"Stock market macro effects",
+  "MC-BNK-01":"Commercial bank intermediation","MC-BNK-02":"Credit creation multiplier",
+  "MC-BNK-03":"Bank bailout evaluation","MC-BNK-04":"Post-2008 regulation",
+  "MC-CB-01":"Bank of England functions","MC-CB-02":"Central bank independence",
+  "MC-CB-03":"FPC vs MPC roles","MC-CB-05":"Financial stability definition",
+  "MC-SD-01":"Demand vs quantity demanded","MC-SD-02":"Supply curve shift factors",
+  "MC-SD-03":"Equilibrium and price mechanism","MC-SD-04":"PED and inelastic demand",
+  "MC-SD-05":"Substitutes and complements","MC-SD-08":"PES and housing supply",
+  "MC-SI-01":"Asch conformity stats (75% vs 37%)","MC-SI-02":"Compliance vs internalisation",
+  "MC-SI-03":"Milgram 65% obedience","MC-SI-04":"Agentic state definition",
+  "MC-SI-05":"Moscovici consistency principle","MC-SI-06":"NSI vs ISI distinction",
+  "MC-SI-08":"Asch ecological validity",
+  "MC-MEM-01":"MSM flow and sequence","MC-MEM-02":"Miller 7 plus or minus 2 and chunking",
+  "MC-MEM-03":"WMM purpose and evidence","MC-MEM-04":"Central executive as store (wrong)",
+  "MC-MEM-05":"Loftus post-event information","MC-MEM-06":"Cognitive interview techniques",
+  "MC-MEM-08":"Proactive vs retroactive interference",
+  "MC-ATT-01":"Bowlby monotropic theory","MC-ATT-02":"Strange Situation procedure",
+  "MC-ATT-03":"Secure attachment = no distress (wrong)","MC-ATT-04":"Strange Situation validity",
+  "MC-ATT-05":"Internal working model","MC-ATT-06":"Maternal deprivation hypothesis",
+  "MC-ATT-08":"Harlow and contact comfort",
+  "MC-EDU-01":"Role allocation (Davis and Moore)","MC-EDU-02":"Correspondence principle (Bowles and Gintis)",
+  "MC-EDU-03":"Class and underachievement causes","MC-EDU-04":"Interactionist micro-level analysis",
+  "MC-EDU-06":"ERA 1988 and marketisation",
+  "MC-MET-01":"Covert observation ethical issues","MC-MET-02":"Interpretivist preference for qualitative",
+  "MC-MET-03":"Official statistics as social construction","MC-MET-04":"Questionnaire strengths",
+  "MC-MET-05":"Triangulation definition","MC-MET-06":"Practical problems in school research",
+  "MC-MET-08":"Feminist methodology in schools",
+  "MC-TEC-01":"Subduction - oceanic plate density","MC-TEC-02":"Development vs physical hazard size",
+  "MC-TEC-03":"Composite volcano explosion cause","MC-TEC-04":"Earthquakes at all boundary types",
+  "MC-TEC-06":"Focus vs epicentre confused","MC-TEC-07":"Iceland hot spot and constructive boundary",
+  "MC-BUS-01":"Product vs market orientation","MC-BUS-02":"Break-even calculation (contribution)",
+  "MC-BUS-03":"Price skimming vs penetration","MC-BUS-04":"Sole trader vs Ltd liability",
+  "MC-BUS-05":"Herzberg hygiene vs motivators","MC-BUS-06":"Ansoff Matrix - product vs market dev",
+  "MC-BUS-07":"Net profit margin calculation",
+  "MC-CHEM-01":"Relative atomic mass misunderstood","MC-CHEM-02":"Ionisation energy jumps",
+  "MC-CHEM-03":"Lone pairs in dot-and-cross diagrams","MC-CHEM-04":"Giant covalent vs simple molecular",
+  "MC-CHEM-05":"Empirical vs molecular formula","MC-CHEM-06":"Electronegativity trends",
+  "MC-CHEM-07":"Mass spectrometer m/z ratio","MC-CHEM-08":"Ionic conduction - ions not electrons",
+  "MC-CRIM-01":"Crime vs deviance vs immorality","MC-CRIM-02":"Dark figure of crime",
+  "MC-CRIM-03":"Official statistics limitations","MC-CRIM-04":"Moral panic and folk devils",
+  "MC-CRIM-05":"White-collar crime definition","MC-CRIM-06":"Merton strain theory",
+  "MC-CRIM-08":"Situational crime prevention displacement",
+  "MC-BIO-01":"Aerobic respiration stages","MC-BIO-02":"Prokaryote vs eukaryote",
+  "MC-BIO-03":"DNA replication enzymes","MC-BIO-04":"Facilitated vs active transport",
+  "MC-BIO-05":"Magnification formula","MC-BIO-06":"Fluid mosaic model",
+  "MC-BIO-07":"S phase vs mitosis stages","MC-BIO-08":"Denaturation vs inhibition",
+  "MC-HIST-01":"Weimar structural weakness vs contingency","MC-HIST-02":"Munich Putsch long-term benefit",
+  "MC-HIST-03":"Hitler never won a majority","MC-HIST-04":"Reichstag Fire to Enabling Act chain",
+  "MC-HIST-05":"Browning vs Goldhagen perpetrator debate",
+  "MC-LAW-01":"Actus reus and omissions","MC-LAW-02":"Direct vs oblique intent (Woollin)",
+  "MC-LAW-03":"Criminal standard of proof","MC-LAW-04":"Murder mens rea (GBH intent)",
+  "MC-LAW-05":"Loss of control vs provocation","MC-LAW-06":"Self-defence and excessive force",
+  "MC-LAW-07":"Theft actus reus (appropriation)",
+  "MC-PHYS-01":"Constant velocity = no forces (wrong)","MC-PHYS-02":"Projectile horizontal velocity decreases (wrong)",
+  "MC-PHYS-03":"Work-energy theorem","MC-PHYS-04":"SUVAT sign convention errors",
+  "MC-PHYS-05":"Stiffer spring stores more energy (context-dependent)","MC-PHYS-06":"Momentum vs KE conservation",
+  "MC-PHYS-07":"Scalar vs vector distinction","MC-PHYS-08":"Heavier objects fall faster (wrong)",
+  "MC-POL-01":"UK constitution is codified (wrong)","MC-POL-02":"FPTP disproportionality",
+  "MC-POL-03":"Parliamentary sovereignty definition","MC-POL-04":"Lords equal to Commons (wrong)",
+  "MC-POL-05":"Pluralism vs elitism","MC-POL-07":"Pressure group vs political party",
+  "MC-CS-01":"Off-by-one loop errors","MC-CS-02":"Compiler vs interpreter",
+  "MC-CS-03":"Binary search complexity","MC-CS-04":"Big O notation O(n squared)",
+  "MC-CS-05":"Stack vs queue LIFO/FIFO","MC-CS-06":"Subroutine vs program",
+  "MC-CS-07":"TCP/IP protocol roles","MC-CS-08":"Encryption definition",
+  "MC-TECH-01":"Application missing - no context","MC-TECH-02":"Evaluation absent on 8+ mark questions",
+  "MC-TECH-04":"Diagram axis labelling errors","MC-TECH-05":"Multiplier formula unknown"
+};;
+
+var app = document.getElementById('app');
+var dashState = { classId: null, className: null, responses: [], students: [] };
+
+function renderLogin() {
+  var h = '<div style="max-width:380px;margin:60px auto 0;text-align:center">';
+  h += '<p class="tag" style="margin-bottom:6px">FORGE</p>';
+  h += '<h1 style="font-size:28px;margin-bottom:8px">Teacher Dashboard</h1>';
+  h += '<p style="color:#8A857E;font-size:14px;margin-bottom:28px">Enter your class code to view student data</p>';
+  h += '<input id="t-code" class="join-input" type="text" placeholder="e.g. ECON-Y12">';
+  h += '<button class="join-btn" id="t-btn">View dashboard \u2192</button>';
+  h += '<p class="join-err" id="t-err"></p>';
+  h += '</div>';
+  app.innerHTML = h;
+
+  document.getElementById('t-btn').onclick = function() {
+    var code = document.getElementById('t-code').value.trim().toUpperCase();
+    var err = document.getElementById('t-err');
+    var btn = document.getElementById('t-btn');
+    if (!code) { err.textContent = 'Enter a class code.'; err.style.display = 'block'; return; }
+    btn.disabled = true; btn.textContent = 'Loading...';
+
+    supaGet('classes', 'code=eq.' + encodeURIComponent(code)).then(function(classes) {
+      if (!Array.isArray(classes) || classes.length === 0) {
+        err.textContent = 'Class not found.'; err.style.display = 'block';
+        btn.disabled = false; btn.textContent = 'View dashboard \u2192'; return;
+      }
+      var cls = classes[0];
+      dashState.classId = cls.id;
+      dashState.className = cls.name;
+
+      // Load students and responses in parallel
+      Promise.all([
+        supaGet('students', 'class_id=eq.' + cls.id),
+        supaGet('responses', 'class_id=eq.' + cls.id + '&order=created_at.desc')
+      ]).then(function(results) {
+        dashState.students = results[0] || [];
+        dashState.responses = results[1] || [];
+        renderDashboard();
+      });
+    });
+  };
+}
+
+function renderDashboard() {
+  var responses = dashState.responses;
+  var students = dashState.students;
+  var studentMap = {};
+  students.forEach(function(s) { studentMap[s.id] = s.name; });
+
+  // Stats
+  var totalQs = responses.length;
+  var correct = responses.filter(function(r) { return r.is_correct; }).length;
+  var accuracy = totalQs > 0 ? Math.round((correct / totalQs) * 100) : 0;
+  var wrongResponses = responses.filter(function(r) { return !r.is_correct && r.misconception_tag; });
+  var uniqueMCs = {};
+  wrongResponses.forEach(function(r) { uniqueMCs[r.misconception_tag] = true; });
+  var reforgeAttempts = responses.filter(function(r) { return r.reforge_attempted; });
+  var reforgeCorrect = reforgeAttempts.filter(function(r) { return r.reforge_correct; });
+
+  var h = '<div class="dash-header">';
+  h += '<div><p class="tag" style="margin-bottom:4px">Teacher Dashboard</p>';
+  h += '<h1>' + dashState.className + '</h1></div>';
+  h += '<div class="dash-meta"><b>' + students.length + '</b> students \u00b7 <b>' + totalQs + '</b> responses \u00b7 <button class="back-btn" onclick="renderLogin()" style="display:inline;font-size:12px">\u2190 Change class</button></div>';
+  h += '</div>';
+
+  // Stats row
+  h += '<div class="stat-row">';
+  h += '<div class="stat"><span class="stat-n" style="color:' + (accuracy >= 70 ? 'var(--good)' : accuracy >= 50 ? 'var(--hot)' : 'var(--bad)') + '">' + accuracy + '%</span><span class="stat-l">Class accuracy</span></div>';
+  h += '<div class="stat"><span class="stat-n" style="color:var(--white)">' + totalQs + '</span><span class="stat-l">Total answers</span></div>';
+  h += '<div class="stat"><span class="stat-n" style="color:var(--hot)">' + Object.keys(uniqueMCs).length + '</span><span class="stat-l">Unique misconceptions</span></div>';
+  h += '<div class="stat"><span class="stat-n" style="color:var(--good)">' + reforgeCorrect.length + '/' + reforgeAttempts.length + '</span><span class="stat-l">Reforges passed</span></div>';
+  h += '</div>';
+
+  // Tabs
+  h += '<div class="tabs">';
+  h += '<button class="tab active" onclick="switchTab(\'heatmap\',this)">Misconception Heatmap</button>';
+  h += '<button class="tab" onclick="switchTab(\'class\',this)">Class Overview</button>';
+  h += '</div>';
+
+  h += '<div class="panel active" id="panel-heatmap"></div>';
+  h += '<div class="panel" id="panel-class"></div>';
+  h += '<div id="panel-student" style="display:none"></div>';
+
+  app.innerHTML = h;
+
+  renderHeatmap(wrongResponses);
+  renderClassOverview(responses, students);
+}
+
+window.switchTab = function(view, btn) {
+  document.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('active'); });
+  btn.classList.add('active');
+  document.querySelectorAll('.panel').forEach(function(p) { p.classList.remove('active'); });
+  document.getElementById('panel-' + view).classList.add('active');
+  document.getElementById('panel-student').style.display = 'none';
+};
+
+function renderHeatmap(wrongResponses) {
+  var el = document.getElementById('panel-heatmap');
+  if (wrongResponses.length === 0) {
+    el.innerHTML = '<div class="empty"><h3>No misconceptions yet</h3><p>Once students answer questions, their errors will appear here.</p></div>';
+    return;
+  }
+
+  // Count by misconception tag
+  var counts = {};
+  wrongResponses.forEach(function(r) {
+    var tag = r.misconception_tag;
+    if (!counts[tag]) counts[tag] = { count: 0, banks: {}, students: {} };
+    counts[tag].count++;
+    counts[tag].banks[r.bank] = true;
+    counts[tag].students[r.student_id] = true;
+  });
+
+  // Sort by count descending
+  var sorted = Object.keys(counts).sort(function(a, b) { return counts[b].count - counts[a].count; });
+  var maxCount = counts[sorted[0]].count;
+
+  var h = '<div class="card"><div class="card-title">Misconceptions ranked by frequency</div>';
+  sorted.forEach(function(tag) {
+    var c = counts[tag];
+    var pct = Math.round((c.count / maxCount) * 100);
+    var level = pct > 60 ? 'high' : pct > 30 ? 'med' : '';
+    var label = MC_LABELS[tag] || tag;
+    var banks = Object.keys(c.banks).join(', ');
+    var studentCount = Object.keys(c.students).length;
+
+    h += '<div class="heat-row ' + level + '">';
+    h += '<span class="heat-tag">' + tag + '</span>';
+    h += '<span class="heat-label">' + label + '</span>';
+    h += '<span class="heat-spec">' + banks + '</span>';
+    h += '<div class="heat-bar"><div class="heat-fill" style="width:' + pct + '%"></div></div>';
+    h += '<span class="heat-count">' + c.count + ' \u00d7 ' + studentCount + 's</span>';
+    h += '</div>';
+  });
+  h += '</div>';
+
+  // Top recommendation
+  var topTag = sorted[0];
+  var topLabel = MC_LABELS[topTag] || topTag;
+  h += '<div class="card" style="border-color:rgba(255,107,44,.4)">';
+  h += '<div class="card-title" style="color:var(--ember)">Recommended Monday starter</div>';
+  h += '<p style="color:var(--white);font-size:15px;margin-bottom:6px">Target <b style="color:var(--hot)">' + topTag + '</b> \u2014 ' + topLabel + '</p>';
+  h += '<p style="font-size:14px">' + counts[topTag].count + ' fires across ' + Object.keys(counts[topTag].students).length + ' students this period. Build a 5-minute starter around this specific error.</p>';
+  h += '</div>';
+
+  el.innerHTML = h;
+}
+
+function renderClassOverview(responses, students) {
+  var el = document.getElementById('panel-class');
+  if (students.length === 0) {
+    el.innerHTML = '<div class="empty"><h3>No students yet</h3><p>Students join using the class code on the quiz page.</p></div>';
+    return;
+  }
+
+  // Per-student stats
+  var perStudent = {};
+  students.forEach(function(s) {
+    perStudent[s.id] = { name: s.name, total: 0, correct: 0, misconceptions: {}, topMC: null, topMCcount: 0, weakBank: null, weakBankAcc: 101 };
+  });
+
+  responses.forEach(function(r) {
+    var ps = perStudent[r.student_id];
+    if (!ps) return;
+    ps.total++;
+    if (r.is_correct) ps.correct++;
+    if (!r.is_correct && r.misconception_tag) {
+      ps.misconceptions[r.misconception_tag] = (ps.misconceptions[r.misconception_tag] || 0) + 1;
+    }
+  });
+
+  // Calculate per-student bank accuracy
+  var bankByStudent = {};
+  responses.forEach(function(r) {
+    var key = r.student_id + '|' + r.bank;
+    if (!bankByStudent[key]) bankByStudent[key] = { total: 0, correct: 0, bank: r.bank, student_id: r.student_id };
+    bankByStudent[key].total++;
+    if (r.is_correct) bankByStudent[key].correct++;
+  });
+
+  // Find weakest bank and top MC per student
+  Object.keys(perStudent).forEach(function(sid) {
+    var ps = perStudent[sid];
+    // Top MC
+    var maxMC = 0;
+    for (var mc in ps.misconceptions) {
+      if (ps.misconceptions[mc] > maxMC) { maxMC = ps.misconceptions[mc]; ps.topMC = mc; ps.topMCcount = maxMC; }
+    }
+    // Weakest bank (min accuracy, at least 2 answers)
+    for (var key in bankByStudent) {
+      var bs = bankByStudent[key];
+      if (bs.student_id === sid && bs.total >= 2) {
+        var bAcc = Math.round((bs.correct / bs.total) * 100);
+        if (bAcc < ps.weakBankAcc) { ps.weakBankAcc = bAcc; ps.weakBank = bs.bank; }
+      }
+    }
+  });
+
+  // Sort by accuracy ascending (struggling students first)
+  var sorted = Object.keys(perStudent).sort(function(a, b) {
+    var accA = perStudent[a].total > 0 ? perStudent[a].correct / perStudent[a].total : 1;
+    var accB = perStudent[b].total > 0 ? perStudent[b].correct / perStudent[b].total : 1;
+    return accA - accB;
+  });
+
+  var h = '<div class="card"><div class="card-title">Students \u2014 sorted by accuracy (lowest first)</div>';
+  h += '<table class="class-table"><thead><tr>';
+  h += '<th>Student</th><th>Answered</th><th>Accuracy</th><th>Weakest topic</th><th>Top misconception</th>';
+  h += '</tr></thead><tbody>';
+
+  sorted.forEach(function(sid) {
+    var ps = perStudent[sid];
+    var acc = ps.total > 0 ? Math.round((ps.correct / ps.total) * 100) : 0;
+    var accColor = acc >= 75 ? 'var(--good)' : acc >= 50 ? 'var(--hot)' : 'var(--bad)';
+
+    h += '<tr onclick="renderStudent(\'' + sid + '\')">';
+    h += '<td>' + ps.name + '</td>';
+    h += '<td>' + ps.total + '</td>';
+    h += '<td class="acc" style="color:' + accColor + '">' + acc + '%</td>';
+    h += '<td class="mono" style="font-size:12px">' + (ps.weakBank || '\u2014') + '</td>';
+    h += '<td class="mono" style="font-size:12px">' + (ps.topMC ? ps.topMC + ' \u00d7' + ps.topMCcount : '\u2014') + '</td>';
+    h += '</tr>';
+  });
+
+  h += '</tbody></table></div>';
+  el.innerHTML = h;
+}
+
+window.renderStudent = function(studentId) {
+  // Hide tabs panels, show student detail
+  document.querySelectorAll('.panel').forEach(function(p) { p.classList.remove('active'); });
+  var el = document.getElementById('panel-student');
+  el.style.display = 'block';
+
+  var studentName = '';
+  dashState.students.forEach(function(s) { if (s.id === studentId) studentName = s.name; });
+
+  var studentResponses = dashState.responses.filter(function(r) { return r.student_id === studentId; });
+  var total = studentResponses.length;
+  var correct = studentResponses.filter(function(r) { return r.is_correct; }).length;
+  var acc = total > 0 ? Math.round((correct / total) * 100) : 0;
+
+  // Misconception breakdown
+  var mcData = {};
+  studentResponses.forEach(function(r) {
+    if (!r.is_correct && r.misconception_tag && !r.reforge_attempted) {
+      if (!mcData[r.misconception_tag]) mcData[r.misconception_tag] = { fires: 0, reforgeAttempts: 0, reforgeCorrect: 0 };
+      mcData[r.misconception_tag].fires++;
+    }
+    if (r.reforge_attempted && r.misconception_tag) {
+      if (!mcData[r.misconception_tag]) mcData[r.misconception_tag] = { fires: 0, reforgeAttempts: 0, reforgeCorrect: 0 };
+      mcData[r.misconception_tag].reforgeAttempts++;
+      if (r.reforge_correct) mcData[r.misconception_tag].reforgeCorrect++;
+    }
+  });
+
+  var reforgeTotal = studentResponses.filter(function(r) { return r.reforge_attempted; }).length;
+  var reforgePass = studentResponses.filter(function(r) { return r.reforge_attempted && r.reforge_correct; }).length;
+  var activeMCs = Object.keys(mcData).filter(function(mc) { return mcData[mc].reforgeCorrect < mcData[mc].fires; });
+  var resolvedMCs = Object.keys(mcData).filter(function(mc) { return mcData[mc].fires > 0 && mcData[mc].reforgeCorrect >= mcData[mc].fires; });
+
+  var h = '<button class="back-btn" onclick="document.getElementById(\'panel-student\').style.display=\'none\';document.getElementById(\'panel-class\').classList.add(\'active\');document.querySelectorAll(\'.tab\')[1].classList.add(\'active\')">\u2190 Back to class</button>';
+
+  h += '<div class="dash-header" style="margin-bottom:16px"><div><p class="tag" style="margin-bottom:4px">Student Profile</p><h1>' + studentName + '</h1></div></div>';
+
+  h += '<div class="stat-row">';
+  h += '<div class="stat"><span class="stat-n" style="color:' + (acc >= 70 ? 'var(--good)' : acc >= 50 ? 'var(--hot)' : 'var(--bad)') + '">' + acc + '%</span><span class="stat-l">Accuracy</span></div>';
+  h += '<div class="stat"><span class="stat-n" style="color:var(--white)">' + total + '</span><span class="stat-l">Questions</span></div>';
+  h += '<div class="stat"><span class="stat-n" style="color:var(--hot)">' + activeMCs.length + '</span><span class="stat-l">Active misconceptions</span></div>';
+  h += '<div class="stat"><span class="stat-n" style="color:var(--good)">' + reforgePass + '/' + reforgeTotal + '</span><span class="stat-l">Reforges passed</span></div>';
+  h += '</div>';
+
+  // Active misconceptions (Anvil)
+  if (activeMCs.length > 0) {
+    h += '<div class="card" style="border-color:rgba(255,90,90,.3)"><div class="card-title" style="color:var(--bad)">Anvil \u2014 still active</div>';
+    activeMCs.sort(function(a, b) { return mcData[b].fires - mcData[a].fires; });
+    activeMCs.forEach(function(mc) {
+      var d = mcData[mc];
+      var label = MC_LABELS[mc] || mc;
+      h += '<div class="mc-item">';
+      h += '<span class="heat-tag">' + mc + '</span>';
+      h += '<span class="mc-detail">' + label + '</span>';
+      h += '<span class="mc-fires" style="color:var(--bad)">Fired ' + d.fires + '\u00d7 \u00b7 Reforged ' + d.reforgeCorrect + '/' + d.reforgeAttempts + '</span>';
+      h += '</div>';
+    });
+    h += '</div>';
+  }
+
+  // Resolved
+  if (resolvedMCs.length > 0) {
+    h += '<div class="card" style="border-color:rgba(127,217,138,.3)"><div class="card-title" style="color:var(--good)">Resolved \u2014 reforged successfully</div>';
+    resolvedMCs.forEach(function(mc) {
+      var d = mcData[mc];
+      var label = MC_LABELS[mc] || mc;
+      h += '<div class="mc-item" style="opacity:.7">';
+      h += '<span class="heat-tag" style="background:var(--good)">' + mc + '</span>';
+      h += '<span class="mc-detail" style="text-decoration:line-through">' + label + '</span>';
+      h += '<span class="mc-fires" style="color:var(--good)">Resolved \u2713</span>';
+      h += '</div>';
+    });
+    h += '</div>';
+  }
+
+  if (activeMCs.length === 0 && resolvedMCs.length === 0) {
+    h += '<div class="empty"><h3>No misconception data yet</h3><p>This student needs to answer more questions.</p></div>';
+  }
+
+  el.innerHTML = h;
+};
+
+renderLogin();
+</script>
+</body>
+</html>
