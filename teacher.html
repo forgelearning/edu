@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Forge — Teacher Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,700;12..96,800&family=Sora:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--coal:#141210;--panel:#211E1B;--panel-2:#2A2622;--line:#3A342E;--ember:#FF6B2C;--hot:#FFC93C;--slate:#B8B4AD;--white:#F5F1EA;--good:#7FD98A;--bad:#FF5A5A}
+[data-theme="light"]{--coal:#FAFAF8;--panel:#FFFFFF;--panel-2:#F3F2EF;--line:#E0DDD8;--ember:#E5550F;--hot:#C88500;--slate:#6B6660;--white:#1A1816;--good:#1B8C2A;--bad:#D42D2D}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--coal);color:var(--slate);font-family:Sora,sans-serif;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100vh}
+h1,h2,h3{font-family:'Bricolage Grotesque',sans-serif;color:var(--white);line-height:1.1;letter-spacing:-.015em}
+.mono{font-family:'JetBrains Mono',monospace}
+.wrap{max-width:860px;margin:0 auto;padding:28px 20px}
+.tag{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ember)}
+.logo{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:20px;color:var(--white);text-decoration:none;display:inline-flex;align-items:center;gap:8px;margin-bottom:28px}
+.logo .spark{width:9px;height:9px;background:linear-gradient(135deg,var(--hot),var(--ember));border-radius:2px;transform:rotate(45deg);box-shadow:0 0 10px rgba(255,107,44,.7)}
+.theme-toggle{background:var(--panel);border:1px solid var(--line);color:var(--slate);font-family:'JetBrains Mono',monospace;font-size:12px;padding:6px 12px;border-radius:7px;cursor:pointer;position:fixed;top:20px;right:20px;z-index:99}
+.theme-toggle:hover{color:var(--white);border-color:var(--ember)}
+
+/* join */
+.join-input{width:100%;padding:12px 14px;border-radius:9px;border:1px solid var(--line);background:var(--panel);color:var(--white);font-family:Sora,sans-serif;font-size:15px;margin-bottom:14px;text-transform:uppercase}
+.join-input:focus{outline:none;border-color:var(--ember)}
+.join-input::placeholder{color:#7A756E;text-transform:none}
+.join-btn{width:100%;padding:13px;border-radius:9px;background:var(--ember);color:#fff;border:none;font-family:Sora,sans-serif;font-weight:600;font-size:15px;cursor:pointer}
+.join-btn:hover{background:var(--hot)}
+.join-btn:disabled{opacity:.5;cursor:wait}
+.join-err{color:var(--bad);font-size:13px;margin-top:10px;display:none}
+
+/* dashboard */
+.dash-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;flex-wrap:wrap;gap:10px}
+.dash-header h1{font-size:24px}
+.dash-meta{font-size:13px;color:var(--slate)}
+.dash-meta b{color:var(--hot)}
+
+.tabs{display:inline-flex;gap:4px;background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:4px;margin-bottom:24px;flex-wrap:wrap}
+.tab{font-family:Sora,sans-serif;font-weight:600;font-size:13px;color:var(--slate);background:transparent;border:none;padding:9px 18px;border-radius:8px;cursor:pointer;white-space:nowrap}
+.tab:hover{color:var(--white)}
+.tab.active{background:linear-gradient(100deg,var(--hot),var(--ember));color:var(--coal)}
+
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:24px;margin-bottom:18px}
+.card-title{font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:#8A857E;margin-bottom:14px}
+
+.stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px;text-align:center}
+.stat-n{font-family:'Bricolage Grotesque',sans-serif;font-size:28px;font-weight:800;display:block}
+.stat-l{font-size:11px;color:#8A857E;margin-top:4px;display:block;font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.04em}
+
+/* heatmap */
+.heat-row{display:grid;grid-template-columns:110px 1fr 80px 100px 60px;gap:10px;align-items:center;padding:10px 14px;border-radius:10px;background:var(--panel-2);border:1px solid var(--line);font-size:13px;margin-bottom:6px}
+.heat-row.high{border-color:rgba(255,90,90,.35)}
+.heat-row.med{border-color:rgba(255,201,60,.25)}
+.heat-tag{font-size:11px;color:var(--coal);background:var(--hot);padding:2px 8px;border-radius:5px;font-weight:600;white-space:nowrap;font-family:'JetBrains Mono',monospace}
+.heat-label{color:var(--white);font-size:13px}
+.heat-spec{color:#8A857E;font-size:11px;font-family:'JetBrains Mono',monospace}
+.heat-bar{height:6px;background:var(--line);border-radius:3px;overflow:hidden}
+.heat-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--hot),var(--ember))}
+.heat-count{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--slate);text-align:right}
+
+/* class table */
+.class-table{width:100%;border-collapse:collapse;font-size:13px}
+.class-table th{font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:#8A857E;font-weight:600;padding:8px 10px;text-align:left;border-bottom:1px solid var(--line)}
+.class-table td{padding:10px;border-bottom:1px solid var(--line);color:var(--white)}
+.class-table tr:hover{background:var(--panel-2)}
+.class-table tr{cursor:pointer}
+.class-table .acc{font-family:'JetBrains Mono',monospace;font-weight:700}
+
+/* student detail */
+.back-btn{background:none;border:none;cursor:pointer;font-size:13px;color:#8A857E;font-family:Sora,sans-serif;margin-bottom:16px;padding:0}
+.back-btn:hover{color:var(--white)}
+.mc-item{display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:10px;background:var(--panel-2);border:1px solid var(--line);margin-bottom:6px;font-size:13px}
+.mc-item .mc-detail{flex:1;color:var(--slate)}
+.mc-item .mc-fires{font-family:'JetBrains Mono',monospace;font-size:12px}
+
+/* empty state */
+.empty{text-align:center;padding:48px 20px;color:var(--slate)}
+.empty h3{color:var(--white);margin-bottom:8px}
+
+.panel{display:none}
+.panel.active{display:block}
+
+[data-theme="light"] .heat-tag{color:#fff}
+[data-theme="light"] .tab.active{color:#fff}
+[data-theme="light"] .join-btn{color:#fff}
+
+@media(max-width:700px){
+  .stat-row{grid-template-columns:1fr 1fr}
+  .heat-row{grid-template-columns:1fr;gap:4px}
+  .heat-bar,.heat-spec{display:none}
+  .class-table{font-size:12px}
+}
+</style>
+</head>
+<body>
+<button class="theme-toggle" onclick="(function(){var h=document.documentElement,b=document.querySelector('.theme-toggle');if(h.getAttribute('data-theme')==='light'){h.removeAttribute('data-theme');b.textContent='\u2600 Light';localStorage.setItem('forge-theme','dark');}else{h.setAttribute('data-theme','light');b.textContent='\u263E Dark';localStorage.setItem('forge-theme','light');}})()">&#9728; Light</button>
+<script>if(localStorage.getItem('forge-theme')==='light'){document.documentElement.setAttribute('data-theme','light');document.querySelector('.theme-toggle').textContent='\u263E Dark';}</script>
+
+<div class="wrap">
+  <a class="logo" href="index.html"><span class="spark"></span>Forge</a>
+  <div id="app"></div>
+</div>
+
+<script>
+var SUPABASE_URL = 'https://crysulmbaadjkymcjrew.supabase.co';
+var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNyeXN1bG1iYWFkamt5bWNqcmV3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQyNDUzMzAsImV4cCI6MjA5OTgyMTMzMH0.Q69MKJR6_iEYkqJYXjn8RBhKhstAZShtmf0NiYM-8Vk';
+
+var headers = {
+  'apikey': SUPABASE_KEY,
+  'Authorization': 'Bearer ' + SUPABASE_KEY
+};
+
+function supaGet(table, params) {
+  var url = SUPABASE_URL + '/rest/v1/' + table + '?select=*';
+  if (params) url += '&' + params;
+  return fetch(url, { headers: headers }).then(function(r) { return r.json(); });
+}
+
+// Misconception label lookup
+var MC_LABELS = {
+  "MC-INF-01":"Confuses disinflation with deflation","MC-INF-02":"CPI basket treated as static",
+  "MC-INF-03":"Demand-pull: no diagram link","MC-INF-04":"Cost-push = only wages",
+  "MC-INF-05":"Deflation always harmful","MC-INF-06":"RPI and CPI used interchangeably",
+  "MC-INF-07":"BoE target is 0%","MC-INF-08":"Index number calculation error",
+  "MC-INF-09":"Any double-digit = hyperinflation","MC-INF-10":"Wage-price spiral trigger unknown",
+  "MC-GRO-01":"Growth confused with GDP level","MC-GRO-02":"Actual vs potential growth blurred",
+  "MC-GRO-03":"Output gap direction swapped","MC-GRO-04":"Trade cycle recovery drawn flat",
+  "MC-EMP-01":"Unemployed = everyone without a job","MC-EMP-02":"Unemployment types without causes",
+  "MC-EMP-03":"Phillips curve treated as permanent","MC-EMP-04":"Claimant count = ILO measure",
+  "MC-EMP-05":"Real wage diagram gap mislabelled",
+  "MC-BOP-01":"Current account deficit always bad","MC-BOP-02":"Fiscal deficit = current account deficit",
+  "MC-BOP-03":"J-curve drawn improving immediately","MC-BOP-04":"Marshall-Lerner condition omitted",
+  "MC-BOP-05":"Capital/financial account ignored",
+  "MC-AD-01":"AD formula wrong","MC-AD-02":"Interest rate transmission mechanism",
+  "MC-AD-03":"Confidence and AD direction","MC-AD-04":"AD shift causes lower inflation",
+  "MC-AD-05":"Exchange rate to net exports chain","MC-AD-06":"Movement along vs shift of AD",
+  "MC-AD-07":"Wage rise always increases AD",
+  "MC-AS-01":"SRAS vs LRAS distinction","MC-AS-02":"SRAS shift factors confused",
+  "MC-AS-04":"LRAS shift factors confused","MC-AS-05":"Movement along vs shift of SRAS",
+  "MC-AS-06":"Unit labour costs and SRAS",
+  "MC-NI-01":"Circular flow injections/withdrawals","MC-NI-03":"GDP vs GNI confused",
+  "MC-NI-04":"Nominal vs real GDP","MC-NI-06":"GDP limitations for comparisons",
+  "MC-NI-08":"Output method value added",
+  "MC-FIS-01":"Fiscal vs monetary policy confused","MC-FIS-02":"Automatic stabilisers vs discretionary",
+  "MC-FIS-06":"Laffer curve direction","MC-FIS-07":"Fiscal policy time lags",
+  "MC-FIS-08":"Crowding out mechanism",
+  "MC-MON-01":"MPC role and independence","MC-MON-02":"Interest rate transmission",
+  "MC-MON-03":"Rate rise trade-offs ignored","MC-MON-04":"QE mechanism misunderstood",
+  "MC-MON-05":"Liquidity trap","MC-MON-06":"Interest rates and exchange rate",
+  "MC-MON-08":"Forward guidance purpose",
+  "MC-SSP-01":"Supply-side aim misunderstood","MC-SSP-02":"Market-based vs interventionist",
+  "MC-SSP-03":"Interest rates classified as supply-side","MC-SSP-05":"Trade union reform trade-offs",
+  "MC-SSP-08":"Infrastructure dual AD/AS effect",
+  "MC-INQ-02":"Gini coefficient misread","MC-INQ-04":"Causes of income inequality",
+  "MC-INQ-05":"Income vs wealth confused","MC-INQ-07":"Progressive taxation definition",
+  "MC-POV-01":"Absolute vs relative poverty","MC-POV-03":"Poverty trap mechanism",
+  "MC-POV-04":"Anti-poverty policy effectiveness",
+  "MC-FMK-01":"Financial markets roles","MC-FMK-02":"Forward markets mechanism",
+  "MC-FMK-03":"Asymmetric information in financial markets","MC-FMK-04":"Stock market macro effects",
+  "MC-BNK-01":"Commercial bank intermediation","MC-BNK-02":"Credit creation multiplier",
+  "MC-BNK-03":"Bank bailout evaluation","MC-BNK-04":"Post-2008 regulation",
+  "MC-CB-01":"Bank of England functions","MC-CB-02":"Central bank independence",
+  "MC-CB-03":"FPC vs MPC roles","MC-CB-05":"Financial stability definition",
+  "MC-SD-01":"Demand vs quantity demanded","MC-SD-02":"Supply curve shift factors",
+  "MC-SD-03":"Equilibrium and price mechanism","MC-SD-04":"PED and inelastic demand",
+  "MC-SD-05":"Substitutes and complements","MC-SD-08":"PES and housing supply",
+  "MC-SI-01":"Asch conformity stats (75% vs 37%)","MC-SI-02":"Compliance vs internalisation",
+  "MC-SI-03":"Milgram 65% obedience","MC-SI-04":"Agentic state definition",
+  "MC-SI-05":"Moscovici consistency principle","MC-SI-06":"NSI vs ISI distinction",
+  "MC-SI-08":"Asch ecological validity",
+  "MC-MEM-01":"MSM flow and sequence","MC-MEM-02":"Miller 7 plus or minus 2 and chunking",
+  "MC-MEM-03":"WMM purpose and evidence","MC-MEM-04":"Central executive as store (wrong)",
+  "MC-MEM-05":"Loftus post-event information","MC-MEM-06":"Cognitive interview techniques",
+  "MC-MEM-08":"Proactive vs retroactive interference",
+  "MC-ATT-01":"Bowlby monotropic theory","MC-ATT-02":"Strange Situation procedure",
+  "MC-ATT-03":"Secure attachment = no distress (wrong)","MC-ATT-04":"Strange Situation validity",
+  "MC-ATT-05":"Internal working model","MC-ATT-06":"Maternal deprivation hypothesis",
+  "MC-ATT-08":"Harlow and contact comfort",
+  "MC-EDU-01":"Role allocation (Davis and Moore)","MC-EDU-02":"Correspondence principle (Bowles and Gintis)",
+  "MC-EDU-03":"Class and underachievement causes","MC-EDU-04":"Interactionist micro-level analysis",
+  "MC-EDU-06":"ERA 1988 and marketisation",
+  "MC-MET-01":"Covert observation ethical issues","MC-MET-02":"Interpretivist preference for qualitative",
+  "MC-MET-03":"Official statistics as social construction","MC-MET-04":"Questionnaire strengths",
+  "MC-MET-05":"Triangulation definition","MC-MET-06":"Practical problems in school research",
+  "MC-MET-08":"Feminist methodology in schools",
+  "MC-TEC-01":"Subduction - oceanic plate density","MC-TEC-02":"Development vs physical hazard size",
+  "MC-TEC-03":"Composite volcano explosion cause","MC-TEC-04":"Earthquakes at all boundary types",
+  "MC-TEC-06":"Focus vs epicentre confused","MC-TEC-07":"Iceland hot spot and constructive boundary",
+  "MC-BUS-01":"Product vs market orientation","MC-BUS-02":"Break-even calculation (contribution)",
+  "MC-BUS-03":"Price skimming vs penetration","MC-BUS-04":"Sole trader vs Ltd liability",
+  "MC-BUS-05":"Herzberg hygiene vs motivators","MC-BUS-06":"Ansoff Matrix - product vs market dev",
+  "MC-BUS-07":"Net profit margin calculation",
+  "MC-CHEM-01":"Relative atomic mass misunderstood","MC-CHEM-02":"Ionisation energy jumps",
+  "MC-CHEM-03":"Lone pairs in dot-and-cross diagrams","MC-CHEM-04":"Giant covalent vs simple molecular",
+  "MC-CHEM-05":"Empirical vs molecular formula","MC-CHEM-06":"Electronegativity trends",
+  "MC-CHEM-07":"Mass spectrometer m/z ratio","MC-CHEM-08":"Ionic conduction - ions not electrons",
+  "MC-CRIM-01":"Crime vs deviance vs immorality","MC-CRIM-02":"Dark figure of crime",
+  "MC-CRIM-03":"Official statistics limitations","MC-CRIM-04":"Moral panic and folk devils",
+  "MC-CRIM-05":"White-collar crime definition","MC-CRIM-06":"Merton strain theory",
+  "MC-CRIM-08":"Situational crime prevention displacement",
+  "MC-BIO-01":"Aerobic respiration stages","MC-BIO-02":"Prokaryote vs eukaryote",
+  "MC-BIO-03":"DNA replication enzymes","MC-BIO-04":"Facilitated vs active transport",
+  "MC-BIO-05":"Magnification formula","MC-BIO-06":"Fluid mosaic model",
+  "MC-BIO-07":"S phase vs mitosis stages","MC-BIO-08":"Denaturation vs inhibition",
+  "MC-HIST-01":"Weimar structural weakness vs contingency","MC-HIST-02":"Munich Putsch long-term benefit",
+  "MC-HIST-03":"Hitler never won a majority","MC-HIST-04":"Reichstag Fire to Enabling Act chain",
+  "MC-HIST-05":"Browning vs Goldhagen perpetrator debate",
+  "MC-LAW-01":"Actus reus and omissions","MC-LAW-02":"Direct vs oblique intent (Woollin)",
+  "MC-LAW-03":"Criminal standard of proof","MC-LAW-04":"Murder mens rea (GBH intent)",
+  "MC-LAW-05":"Loss of control vs provocation","MC-LAW-06":"Self-defence and excessive force",
+  "MC-LAW-07":"Theft actus reus (appropriation)",
+  "MC-PHYS-01":"Constant velocity = no forces (wrong)","MC-PHYS-02":"Projectile horizontal velocity decreases (wrong)",
+  "MC-PHYS-03":"Work-energy theorem","MC-PHYS-04":"SUVAT sign convention errors",
+  "MC-PHYS-05":"Stiffer spring stores more energy (context-dependent)","MC-PHYS-06":"Momentum vs KE conservation",
+  "MC-PHYS-07":"Scalar vs vector distinction","MC-PHYS-08":"Heavier objects fall faster (wrong)",
+  "MC-POL-01":"UK constitution is codified (wrong)","MC-POL-02":"FPTP disproportionality",
+  "MC-POL-03":"Parliamentary sovereignty definition","MC-POL-04":"Lords equal to Commons (wrong)",
+  "MC-POL-05":"Pluralism vs elitism","MC-POL-07":"Pressure group vs political party",
+  "MC-CS-01":"Off-by-one loop errors","MC-CS-02":"Compiler vs interpreter",
+  "MC-CS-03":"Binary search complexity","MC-CS-04":"Big O notation O(n squared)",
+  "MC-CS-05":"Stack vs queue LIFO/FIFO","MC-CS-06":"Subroutine vs program",
+  "MC-CS-07":"TCP/IP protocol roles","MC-CS-08":"Encryption definition",
+  "MC-TECH-01":"Application missing - no context","MC-TECH-02":"Evaluation absent on 8+ mark questions",
+  "MC-TECH-04":"Diagram axis labelling errors","MC-TECH-05":"Multiplier formula unknown",
+  "MC-MATH-01":"Chain rule — forgets to multiply by inner derivative","MC-MATH-02":"Integration constant C omitted on indefinite integrals",
+  "MC-MATH-03":"Sign error when differentiating a negative term","MC-MATH-04":"Completing the square — sign error on constant",
+  "MC-MATH-05":"Confuses f(x) = 0 roots with turning points","MC-MATH-06":"Logs — log(a+b) treated as log(a)+log(b)",
+  "MC-MATH-07":"Binomial expansion — incorrect coefficient calculation","MC-MATH-08":"Proof by contradiction — fails to state assumption explicitly",
+  "MC-DE-01":"Nominative used instead of accusative after direct object","MC-DE-02":"Adjective endings wrong in accusative masculine",
+  "MC-DE-03":"Sein vs werden confused in passive constructions","MC-DE-04":"Word order in subordinate clauses — verb not sent to end",
+  "MC-DE-05":"False cognate errors (e.g. bekommen not become)","MC-DE-06":"Modal verb position — infinitive not placed at end",
+  "MC-DE-07":"Gender assignment errors on common nouns","MC-DE-08":"Imperfect vs perfect tense — wrong tense in written register",
+  "MC-RS-01":"Infinite regress logic confused with other cosmological forms","MC-RS-02":"Hume's analogical critique of Paley confused with Darwin's",
+  "MC-RS-03":"Kant's existence-not-a-predicate confused with Gaunilo's island","MC-RS-04":"Logical vs evidential Problem of Evil conflated",
+  "MC-RS-05":"Categorical Imperative formulations mixed up","MC-RS-06":"Bentham vs Mill — quantitative vs qualitative distinction",
+  "MC-RS-07":"Swinburne's principles confused","MC-RS-08":"Natural Law as 'whatever is natural' — teleological purpose missed",
+  "MC-HSC-01":"Intellectual PIES domain reduced to IQ","MC-HSC-02":"Critical period confused with any early childhood relationship",
+  "MC-HSC-03":"Identity vs Role Confusion conflated with adjacent stages","MC-HSC-04":"'Assess' command word used as synonym for 'describe'",
+  "MC-HSC-05":"Esteem needs addressed before lower-order needs met","MC-HSC-06":"Person-centred care not linked to specific values",
+  "MC-HSC-07":"Physical changes in late adulthood not linked to care implications","MC-HSC-08":"Generic 'service user' language used",
+  "MC-FR-01":"Avoir used as auxiliary with movement verbs instead of être","MC-FR-02":"Passé composé used for habitual past instead of imparfait",
+  "MC-FR-03":"Indicative used instead of subjunctive after trigger expressions","MC-FR-04":"Qui/que relative pronouns confused",
+  "MC-FR-05":"Conditionnel used in si clause instead of imparfait","MC-FR-06":"Quantity expressions retain article incorrectly",
+  "MC-FR-07":"Malgré followed by conjugated verb instead of noun phrase","MC-FR-08":"Attitude questions answered without textual evidence",
+  "MC-RS-09":"Situation Ethics — agape as sole intrinsic good missed","MC-RS-10":"Euthyphro dilemma horns confused",
+  "MC-RS-11":"Golden mean read as arithmetic moderation","MC-RS-12":"Sanctity vs quality of life positions conflated",
+  "MC-RS-13":"Emotivism treated as truth-claims about morality","MC-RS-14":"Naturalistic fallacy confused with is/ought gap",
+  "MC-RS-15":"Compatibilism treated as weak middle ground","MC-RS-16":"AO2 evaluation replaced by juxtaposed description",
+  "MC-HSC-09":"Empathy and sympathy conflated","MC-HSC-10":"Confidentiality treated as absolute in safeguarding",
+  "MC-HSC-11":"Active listening reduced to eye contact or note-taking","MC-HSC-12":"Barriers named without matched adjustments",
+  "MC-HSC-13":"Whistleblowing confused with grievance","MC-HSC-14":"Equality read as identical treatment",
+  "MC-HSC-15":"Capacity-based refusal treated as neglect","MC-HSC-16":"Care values named without individual application",
+  "MC-FR-09":"y/en chosen by surface word not grammatical role","MC-FR-10":"Direct pronoun used with indirect-object verbs",
+  "MC-FR-11":"Double pronoun order errors","MC-FR-12":"ne...que read as negation not restriction",
+  "MC-FR-13":"Passé composé with depuis for continuing actions","MC-FR-14":"venir de recent past replaced by anglicism juste",
+  "MC-FR-15":"Après + bare infinitive instead of perfect infinitive","MC-FR-16":"Causative faire + infinitive unknown",
+  "MC-DE-09":"Fixed-case prepositions confused with two-way group","MC-DE-10":"Two-way prepositions — motion vs location case choice",
+  "MC-DE-11":"Relative pronoun case taken from main clause not its own","MC-DE-12":"Konjunktiv II — würde doubled or wrong forms",
+  "MC-DE-13":"Werden-passive vs sein-passive (process vs state)","MC-DE-14":"Perfect tense with seit for continuing actions",
+  "MC-DE-15":"um...zu vs damit — same vs different subjects","MC-DE-16":"Time-Manner-Place order copied from English",
+  "MC-MATH-09":"Second derivative zero read as point of inflection","MC-MATH-10":"Constant of integration omitted",
+  "MC-MATH-11":"Discriminant inequalities — strict vs non-strict confusion","MC-MATH-12":"f(x+a) shifted right instead of left",
+  "MC-MATH-13":"Completed square sign error on turning point","MC-MATH-14":"Binomial expansion — power of first term dropped",
+  "MC-MATH-15":"Invented log rule: log(a+b) split into log a + log b","MC-MATH-16":"Quotients differentiated top-over-bottom",
+  "MC-BUS-09":"PED direction misread from revenue changes","MC-BUS-10":"Profit and cash flow treated as the same thing",
+  "MC-BUS-11":"Margin of safety confused with break-even level","MC-BUS-12":"Segmentation purpose not linked to marketing mix",
+  "MC-BUS-13":"Boston Matrix — share and growth axes confused","MC-BUS-14":"Gross vs operating margin deductions mixed up",
+  "MC-BUS-15":"Sources of finance not matched to gearing context","MC-BUS-16":"Extension strategies confused with product deletion"
+};
+
+var MC_STARTERS = {
+  "MC-INF-01":{type:"sort",title:"Inflation or Disinflation?",instruction:"Sort these statements into Inflation, Disinflation, or Deflation. One fits two categories — be ready to justify.",items:["Price level rising at 4%","Price level rising at 2%, down from 4%","Price level falling","CPI at 103, up from 101","The rate of inflation is slowing","Prices are lower than last year"]},
+  "MC-INF-03":{type:"diagnose",title:"Diagnose the Diagram",instruction:"A student drew AD/AS to show demand-pull inflation but made two errors. Identify both and correct them.",prompt:"Student labelled the shift 'AD moves right' and wrote 'result: higher prices AND higher output', showing the new equilibrium on a vertical LRAS."},
+  "MC-INF-07":{type:"correct",title:"Spot the Error",instruction:"Find and correct the error in this student sentence.",prompt:"'The Bank of England's MPC must keep inflation at 0%, as higher prices damage the economy.'",answer:"Target is 2% CPI (symmetric). The MPC writes to the Chancellor if inflation exceeds 3% or falls below 1%."},
+  "MC-GRO-01":{type:"distinguish",title:"Level vs Rate",instruction:"Label each GDP figure as 'level of GDP', 'rate of growth', or 'both'. Write one sentence explaining the difference.",items:["UK GDP: £2.2 trillion","GDP grew by 0.4% last quarter","GDP per capita rose from £32,000 to £33,500","The economy is 18% larger than in 2010"]},
+  "MC-GRO-03":{type:"diagram",title:"Gap Check",instruction:"Draw an AD/AS diagram showing a positive output gap. Label actual GDP, potential GDP, and the price level. Explain in one sentence why it is called 'positive'.",prompt:"Common error: students draw actual GDP below potential and still call it positive."},
+  "MC-EMP-01":{type:"classify",title:"Who Counts?",instruction:"Decide whether each person is ILO unemployed, claimant count unemployed, or economically inactive. One person may fit two categories.",items:["Jake, 19, not working but looking and available","Priya, 35, left work to care for children","Marcus, 24, working 3 hours/week (wants more)","Aisha, 28, claiming Universal Credit while job hunting","Lena, 67, retired"]},
+  "MC-EMP-03":{type:"evaluate",title:"Short Run or Long Run?",instruction:"Mark each claim T (true in short run), L (long run only), or F (false). Justify each.",items:["Lower unemployment always means higher inflation","The long-run Phillips curve is vertical","The MPC can reduce unemployment permanently by cutting rates","Worker expectations adjust — removing the permanent trade-off"]},
+  "MC-BOP-02":{type:"correct",title:"Spot the Confusion",instruction:"Identify the conceptual error and rewrite correctly.",prompt:"'The UK's current account deficit is the same as the government's fiscal deficit — both measure the gap between government income and spending.'"},
+  "MC-BOP-03":{type:"diagram",title:"Draw the J-Curve",instruction:"Sketch a J-curve showing the effect of sterling depreciation on the current account over time. Label the initial worsening phase, turning point, and improvement phase. Add a 6-word explanation of why it worsens first.",prompt:"Common error: students draw immediate improvement after depreciation."},
+  "MC-AD-01":{type:"correct",title:"Fix the Formula",instruction:"A student wrote: AD = C + S + G + (X − M). Identify the error and correct it. Explain why savings belongs in a different model.",answer:"AD = C + I + G + (X − M). Savings is a withdrawal from the circular flow, not a component of AD."},
+  "MC-AD-04":{type:"diagram",title:"What Happens to Prices?",instruction:"On an AD/AS diagram, show a rightward shift in AD. Mark the new equilibrium. Does the price level rise or fall? Why does the answer depend on where the economy is on the SRAS curve?",prompt:"Common error: students state AD shifting right always causes lower prices."},
+  "MC-AS-01":{type:"sort",title:"SRAS or LRAS?",instruction:"Sort these factors into 'shifts SRAS only', 'shifts LRAS only', or 'shifts both'. Justify one controversial placement.",items:["Oil price rise","Worker productivity improvement","Infrastructure investment","Rise in nominal wages","Technological innovation","Consumer confidence falls"]},
+  "MC-FIS-01":{type:"distinguish",title:"Policy Match",instruction:"Match each action to 'fiscal' or 'monetary'. Three are ambiguous — annotate why.",items:["MPC cuts the base rate","Chancellor raises income tax","Government increases road spending","BoE buys government bonds (QE)","Government introduces Help to Buy","MPC raises rates to 5.25%"]},
+  "MC-MON-04":{type:"chain",title:"QE Transmission Chain",instruction:"Complete the chain from start to finish. Each arrow must be a specific mechanism, not 'the economy improves'.",prompt:"BoE buys £60bn of government bonds → [step] → [step] → [step] → aggregate demand rises. Common error: students say QE 'prints money that goes straight to consumers'."},
+  "MC-NI-01":{type:"classify",title:"Injection or Withdrawal?",instruction:"Classify each item as Injection (J) or Withdrawal (W). Then write the equilibrium condition using I, G, X, S, T, M.",items:["Consumer spending on imports","Government NHS spending","Household savings","Export revenue from UK services","Corporation tax receipts","Business investment"]},
+  "MC-SI-01":{type:"correct",title:"Fix the Stat",instruction:"A student wrote: 'Asch found that 37% of participants conformed.' Identify the error and write the three correct Asch statistics.",answer:"37% = conformity on critical trials. 75% = participants who conformed at least once. ~32% = overall conformity rate across all trials."},
+  "MC-SI-03":{type:"correct",title:"Milgram: Check the Figure",instruction:"A student wrote: 'Milgram showed that most people refused to obey.' Correct this and name one variation that significantly reduced obedience.",answer:"65% delivered maximum 450V in the baseline. Obedience fell to 40% when authority gave orders by phone; to 20% when the study moved from Yale."},
+  "MC-MEM-01":{type:"diagram",title:"Reconstruct the MSM",instruction:"From memory, draw the Multi-Store Model. Label all three stores with capacity and duration. Mark the two processes between them. Identify one criticism.",prompt:"Common error: students reverse transfer direction or omit the rehearsal loop."},
+  "MC-MEM-08":{type:"scenario",title:"Which Type of Interference?",instruction:"State whether proactive or retroactive interference is operating in each scenario. Write one sentence explaining the direction of disruption.",items:["You learned French first — your Spanish keeps coming out as French","You learn a new phone PIN and can no longer recall the old one","New revision notes keep pushing out the original version","Old work password resurfaces instead of the current one"]},
+  "MC-ATT-01":{type:"correct",title:"Bowlby: Spot the Error",instruction:"Find and correct the error.",prompt:"'Bowlby argued that infants form equal attachments to all caregivers simultaneously and that any of these can serve as the primary attachment figure.'",answer:"Bowlby argued for monotropy — one primary attachment that is qualitatively stronger. This forms the internal working model; other attachments are secondary."},
+  "MC-EDU-02":{type:"apply",title:"Hidden Curriculum in Practice",instruction:"Read this extract: 'Students line up in silence, are rewarded for punctuality, and are streamed by assessed ability from Year 7.' Link each feature to a specific element of the correspondence principle (Bowles & Gintis). Which social class does each element benefit?"},
+  "MC-MET-01":{type:"evaluate",title:"Ethical Matrix",instruction:"Complete this matrix for covert participant observation. Then decide: is it ever justifiable? Apply one BPS ethical guideline.",headers:["Ethical issue","Problem for covert obs","How researcher might respond"],rows:[["Informed consent","",""],["Right to withdraw","",""],["Deception","",""],["Protection from harm",""," "]]},
+  "MC-TEC-01":{type:"diagram",title:"Boundary Types",instruction:"Draw cross-sections of a destructive boundary and a constructive boundary. Label plate types, direction of movement, crust destroyed/created, and hazards at each. Explain why oceanic crust subducts rather than continental.",prompt:"Common error: students reverse which plate subducts or omit oceanic vs continental labelling."},
+  "MC-BUS-02":{type:"calculate",title:"Break-Even Check",instruction:"Selling price: £20, variable cost per unit: £12, fixed costs: £40,000. Show full workings using the contribution method. Explain why the formula uses contribution, not profit.",prompt:"Common error: students divide price by fixed costs rather than fixed costs by contribution per unit."},
+  "MC-CHEM-02":{type:"graph",title:"Ionisation Energy Jumps",instruction:"Sketch a graph of successive ionisation energies for sodium. Mark the large jump and explain why it occurs where it does.",prompt:"Common error: students describe all jumps as equal or fail to link the large jump to a new electron shell."},
+  "MC-CRIM-01":{type:"sort",title:"Crime, Deviance, or Both?",instruction:"Sort each behaviour and explain your reasoning. Identify one example where the classification has changed over time.",items:["Shoplifting","Wearing pyjamas to a funeral","Cheating on a partner","Cannabis possession","Tax avoidance (legal schemes)","Honour-based violence"]},
+  "MC-BIO-03":{type:"sequence",title:"Replication Steps",instruction:"Put these events in the correct order, then annotate each with the enzyme responsible and its specific function.",items:["DNA polymerase adds complementary nucleotides","Helicase unwinds the double helix","Free nucleotides are activated","Two identical double helices produced","Hydrogen bonds between base pairs break","DNA ligase joins Okazaki fragments"]},
+  "MC-HIST-04":{type:"chain",title:"Fire to Dictatorship",instruction:"Complete the causal chain. Each link must be a specific event or law.",prompt:"Reichstag Fire (Feb 1933) → [step] → [step] → [step] → Hitler has dictatorial powers (July 1933). Common error: jumping from fire directly to Enabling Act without naming the Decree of the Reich President."},
+  "MC-LAW-02":{type:"apply",title:"Intent or Recklessness?",instruction:"Classify each scenario as direct intent, oblique intent (Woollin), or Cunningham recklessness. Cite the defining case.",items:["D shoots V with aim of killing","D blows up plane for insurance — passengers die","D throws stone at window knowing it might break — it does","D drives at high speed in residential area — child killed"]},
+  "MC-PHYS-01":{type:"correct",title:"Forces vs Motion",instruction:"A student wrote: 'When an object moves at constant velocity, a net forward force must be acting.' Correct this using Newton's First Law and draw a free body diagram for a car at constant speed.",prompt:"Common error: students assume motion requires ongoing force — confusing Aristotelian with Newtonian mechanics."},
+  "MC-CS-01":{type:"trace",title:"Trace the Loop",instruction:"Trace through this loop for i = 1 to 5 and record the output. Then identify the off-by-one error and rewrite to print only values 2, 3, 4.",prompt:"FOR i ← 1 TO 5\n  IF i MOD 2 ≠ 0 THEN OUTPUT i\nENDFOR"},
+  "MC-MATH-01":{type:"correct",title:"Chain Rule Check",instruction:"A student differentiated y = sin(3x²) and wrote dy/dx = cos(3x²). Find the error and write the correct derivative showing all steps.",prompt:"Common error: differentiating the outer function only, not multiplying by the derivative of the inner function."},
+  "MC-DE-04":{type:"correct",title:"Word Order Fix",instruction:"Each sentence has a subordinate clause word-order error. Underline and rewrite correctly.",items:["Ich denke, dass er kommt morgen.","Sie sagt, obwohl sie ist müde.","Wir wissen, weil er hat das gemacht.","Er hofft, dass sie kommt nicht."]},
+  "MC-RS-04":{type:"distinguish",title:"Which Problem of Evil?",instruction:"Label each argument as Logical PoE, Evidential PoE, or theodicy. Identify the philosopher and write one counter-argument for the theodicy.",items:["God and evil are logically incompatible (Mackie)","The quantity of suffering makes God's existence improbable (Rowe)","Evil is necessary for soul-making (Hick)","Evil entered through free will and original sin (Augustine)"]},
+  "MC-HSC-03":{type:"match",title:"Erikson Stage Match",instruction:"Match each behaviour to the correct Erikson stage and conflict. Write one consequence of failing to resolve each.",items:["A toddler insists on dressing themselves","A 6-year-old compares their reading to classmates","A teenager changes friendship group every term","A 40-year-old mentors junior colleagues","A 75-year-old writes their memoirs with pride"]},
+  "MC-FR-03":{type:"trigger",title:"Subjunctive Triggers",instruction:"Highlight the trigger in each sentence and conjugate the verb correctly. Then write your own sentence using 'il faut que' with an irregular subjunctive.",items:["Je veux que tu (venir) avec moi.","Il est possible qu'elle (être) absente.","Nous partons avant qu'il (pleuvoir).","Bien qu'il (faire) froid, ils sont sortis."]},
+  "MC-RS-06":{type:"compare",title:"Bentham vs Mill",instruction:"Complete this comparison table. Then write two sentences evaluating where Mill's qualitative distinction creates a practical problem.",headers:["Feature","Bentham","Mill"],rows:[["Basis of judgement","",""],["How pleasures counted","",""],["Type of utilitarianism","",""],["Key criticism","",""]]},
+  "MC-HSC-04":{type:"rewrite",title:"Command Word Upgrade",instruction:"Rewrite this student answer at the 'assess' level. Question: 'Assess the effectiveness of person-centred care for an elderly patient with dementia.'",prompt:"Student: 'Person-centred care means putting the patient at the centre. It involves respecting their wishes and dignity. It is used in care homes across the UK.'"},
+  "MC-FR-05":{type:"correct",title:"Si Clause Fix",instruction:"Find and correct the error in each conditional sentence. Write the rule in your own words below each.",items:["Si j'aurais de l'argent, j'achèterais une voiture.","Si tu viendrais, je serais content.","S'il pleuvrait, nous resterons à la maison.","Si j'aurais su, je n'aurais pas dit ça."]}
+};
+
+function getDefaultStarter(tag, label) {
+  return {
+    type:"correct",
+    title:"Targeted Misconception Drill",
+    instruction:"The most common error this period is: <strong>" + label + "</strong>. Write the correct version on the board with key terms blanked out. Students fill in the gaps before you reveal.",
+    prompt:"Tag: " + tag + " — Students who selected wrong answers on this concept should revisit the scaffold on their Forge profile."
+  };
+}
+
+var app = document.getElementById('app');
+var dashState = { classId: null, className: null, responses: [], students: [] };
+
+function renderLogin() {
+  var h = '<div style="max-width:380px;margin:60px auto 0;text-align:center">';
+  h += '<p class="tag" style="margin-bottom:6px">FORGE</p>';
+  h += '<h1 style="font-size:28px;margin-bottom:8px">Teacher Dashboard</h1>';
+  h += '<p style="color:#8A857E;font-size:14px;margin-bottom:28px">Enter your class code to view student data</p>';
+  h += '<input id="t-code" class="join-input" type="text" placeholder="e.g. ECON-Y12">';
+  h += '<button class="join-btn" id="t-btn">View dashboard \u2192</button>';
+  h += '<p class="join-err" id="t-err"></p>';
+  h += '</div>';
+  app.innerHTML = h;
+
+  document.getElementById('t-btn').onclick = function() {
+    var code = document.getElementById('t-code').value.trim().toUpperCase();
+    var err = document.getElementById('t-err');
+    var btn = document.getElementById('t-btn');
+    if (!code) { err.textContent = 'Enter a class code.'; err.style.display = 'block'; return; }
+    btn.disabled = true; btn.textContent = 'Loading...';
+
+    supaGet('classes', 'code=eq.' + encodeURIComponent(code)).then(function(classes) {
+      if (!Array.isArray(classes) || classes.length === 0) {
+        err.textContent = 'Class not found.'; err.style.display = 'block';
+        btn.disabled = false; btn.textContent = 'View dashboard \u2192'; return;
+      }
+      var cls = classes[0];
+      dashState.classId = cls.id;
+      dashState.className = cls.name;
+
+      // Load students and responses in parallel
+      Promise.all([
+        supaGet('students', 'class_id=eq.' + cls.id),
+        supaGet('responses', 'class_id=eq.' + cls.id + '&order=created_at.desc')
+      ]).then(function(results) {
+        dashState.students = results[0] || [];
+        dashState.responses = results[1] || [];
+        renderDashboard();
+      });
+    });
+  };
+}
+
+function renderDashboard() {
+  var responses = dashState.responses;
+  var students = dashState.students;
+  var studentMap = {};
+  students.forEach(function(s) { studentMap[s.id] = s.name; });
+
+  // Stats
+  var totalQs = responses.length;
+  var correct = responses.filter(function(r) { return r.is_correct; }).length;
+  var accuracy = totalQs > 0 ? Math.round((correct / totalQs) * 100) : 0;
+  var wrongResponses = responses.filter(function(r) { return !r.is_correct && r.misconception_tag; });
+  var uniqueMCs = {};
+  wrongResponses.forEach(function(r) { uniqueMCs[r.misconception_tag] = true; });
+  var reforgeAttempts = responses.filter(function(r) { return r.reforge_attempted; });
+  var reforgeCorrect = reforgeAttempts.filter(function(r) { return r.reforge_correct; });
+
+  var h = '<div class="dash-header">';
+  h += '<div><p class="tag" style="margin-bottom:4px">Teacher Dashboard</p>';
+  h += '<h1>' + dashState.className + '</h1></div>';
+  h += '<div class="dash-meta"><b>' + students.length + '</b> students \u00b7 <b>' + totalQs + '</b> responses \u00b7 <button class="back-btn" onclick="renderLogin()" style="display:inline;font-size:12px">\u2190 Change class</button></div>';
+  h += '</div>';
+
+  // Stats row
+  h += '<div class="stat-row">';
+  h += '<div class="stat"><span class="stat-n" style="color:' + (accuracy >= 70 ? 'var(--good)' : accuracy >= 50 ? 'var(--hot)' : 'var(--bad)') + '">' + accuracy + '%</span><span class="stat-l">Class accuracy</span></div>';
+  h += '<div class="stat"><span class="stat-n" style="color:var(--white)">' + totalQs + '</span><span class="stat-l">Total answers</span></div>';
+  h += '<div class="stat"><span class="stat-n" style="color:var(--hot)">' + Object.keys(uniqueMCs).length + '</span><span class="stat-l">Unique misconceptions</span></div>';
+  h += '<div class="stat"><span class="stat-n" style="color:var(--good)">' + reforgeCorrect.length + '/' + reforgeAttempts.length + '</span><span class="stat-l">Reforges passed</span></div>';
+  h += '</div>';
+
+  // Tabs
+  h += '<div class="tabs">';
+  h += '<button class="tab active" onclick="switchTab(\'heatmap\',this)">Misconception Heatmap</button>';
+  h += '<button class="tab" onclick="switchTab(\'class\',this)">Class Overview</button>';
+  h += '</div>';
+
+  h += '<div class="panel active" id="panel-heatmap"></div>';
+  h += '<div class="panel" id="panel-class"></div>';
+  h += '<div id="panel-student" style="display:none"></div>';
+
+  app.innerHTML = h;
+
+  renderHeatmap(wrongResponses);
+  renderClassOverview(responses, students);
+}
+
+window.switchTab = function(view, btn) {
+  document.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('active'); });
+  btn.classList.add('active');
+  document.querySelectorAll('.panel').forEach(function(p) { p.classList.remove('active'); });
+  document.getElementById('panel-' + view).classList.add('active');
+  document.getElementById('panel-student').style.display = 'none';
+};
+
+function renderStarterCard(tag, h, context) {
+  // context: {fires, students} from real data, or null for browse mode
+  var label = MC_LABELS[tag] || tag;
+  var starterData = MC_STARTERS[tag] || getDefaultStarter(tag, label);
+  var typeLabels = {sort:"Sort activity",diagnose:"Diagnose",correct:"Spot the error",distinguish:"Distinguish",classify:"Classify",evaluate:"Evaluate",diagram:"Diagram task",chain:"Causal chain",calculate:"Calculation",graph:"Graph task",sequence:"Sequence",apply:"Application",compare:"Comparison table",match:"Match activity",trigger:"Trigger hunt",rewrite:"Rewrite task",trace:"Trace activity",scenario:"Scenario"};
+  var typeLabel = typeLabels[starterData.type] || "Starter activity";
+
+  h += '<div class="card" id="starter-card" style="border-color:rgba(255,107,44,.4);margin-top:20px">';
+  h += '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">';
+  h += '<div class="card-title" style="color:var(--ember)">' + (context ? 'Recommended starter' : 'Starter activity') + ' — ' + typeLabel + '</div>';
+  h += '<span style="font-family:monospace;font-size:11px;color:#8A857E;padding:3px 8px;border:1px solid var(--line);border-radius:4px">' + tag + '</span>';
+  h += '</div>';
+  h += '<p style="color:var(--white);font-size:15px;font-weight:600;margin-bottom:4px">' + starterData.title + '</p>';
+  if (context) {
+    h += '<p style="font-size:13px;color:#8A857E;margin-bottom:14px">' + context.fires + ' error' + (context.fires !== 1 ? 's' : '') + ' across ' + context.students + ' student' + (context.students !== 1 ? 's' : '') + ' this period</p>';
+  } else {
+    h += '<p style="font-size:13px;color:#8A857E;margin-bottom:14px">Preview — no class data loaded</p>';
+  }
+  h += '<p style="font-size:14px;color:var(--slate);margin-bottom:14px">' + starterData.instruction + '</p>';
+
+  if (starterData.prompt) {
+    h += '<div style="background:var(--panel-2);border-left:3px solid var(--ember);padding:10px 14px;border-radius:0 8px 8px 0;margin-bottom:12px">';
+    h += '<p style="font-size:13px;color:var(--slate);font-style:italic">' + starterData.prompt + '</p>';
+    h += '</div>';
+  }
+  if (starterData.items) {
+    h += '<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px">';
+    starterData.items.forEach(function(item) {
+      h += '<span style="font-size:13px;padding:4px 10px;background:var(--panel-2);border:1px solid var(--line);border-radius:6px;color:var(--white)">' + item + '</span>';
+    });
+    h += '</div>';
+  }
+  if (starterData.headers && starterData.rows) {
+    h += '<div style="overflow-x:auto;margin-bottom:12px"><table style="width:100%;border-collapse:collapse;font-size:13px">';
+    h += '<thead><tr>';
+    starterData.headers.forEach(function(hdr) {
+      h += '<th style="text-align:left;padding:6px 10px;border-bottom:1px solid var(--line);color:var(--white)">' + hdr + '</th>';
+    });
+    h += '</tr></thead><tbody>';
+    starterData.rows.forEach(function(row) {
+      h += '<tr>';
+      row.forEach(function(cell, ci) {
+        h += '<td style="padding:6px 10px;border-bottom:1px solid var(--panel-2);color:' + (ci===0 ? 'var(--white)' : 'var(--slate)') + '">' + (cell || '<span style="color:#3A342E">—</span>') + '</td>';
+      });
+      h += '</tr>';
+    });
+    h += '</tbody></table></div>';
+  }
+  if (starterData.answer) {
+    h += '<div style="display:flex;align-items:flex-start;gap:10px;padding:10px 14px;background:rgba(127,217,138,.08);border:1px solid var(--good);border-radius:8px;margin-bottom:4px">';
+    h += '<span style="color:var(--good);font-weight:700;font-size:16px">✓</span>';
+    h += '<p style="font-size:13px;color:var(--white)">' + starterData.answer + '</p>';
+    h += '</div>';
+  }
+  h += '</div>';
+  return h;
+}
+
+function renderBrowseStarters() {
+  // Always-visible starter browser — no class data required
+  var el = document.getElementById('panel-heatmap');
+  var allTags = Object.keys(MC_STARTERS);
+
+  var h = '<div class="card" style="margin-bottom:20px">';
+  h += '<div class="card-title">Browse starter activities</div>';
+  h += '<p style="font-size:13px;color:#8A857E;margin-bottom:14px">No class data loaded — pick any misconception tag to preview its starter activity. Once students complete questions, the top-firing tag will be recommended automatically.</p>';
+  h += '<select id="tag-picker" style="width:100%;padding:10px 12px;background:var(--panel-2);border:1px solid var(--line);border-radius:8px;color:var(--white);font-family:Sora,sans-serif;font-size:14px;cursor:pointer">';
+  h += '<option value="">— pick a misconception tag —</option>';
+
+  // Group by subject prefix
+  var groups = {};
+  allTags.forEach(function(tag) {
+    var parts = tag.split('-');
+    var grp = parts[0] + '-' + parts[1];
+    if (!groups[grp]) groups[grp] = [];
+    groups[grp].push(tag);
+  });
+  Object.keys(groups).sort().forEach(function(grp) {
+    h += '<optgroup label="' + grp + '">';
+    groups[grp].forEach(function(tag) {
+      h += '<option value="' + tag + '">' + tag + ' — ' + (MC_LABELS[tag] || tag) + '</option>';
+    });
+    h += '</optgroup>';
+  });
+
+  h += '</select></div>';
+  h += '<div id="browse-starter-slot"></div>';
+
+  el.innerHTML = h;
+
+  document.getElementById('tag-picker').addEventListener('change', function() {
+    var tag = this.value;
+    var slot = document.getElementById('browse-starter-slot');
+    if (!tag) { slot.innerHTML = ''; return; }
+    var out = '';
+    out = renderStarterCard(tag, out, null);
+    slot.innerHTML = out;
+  });
+}
+
+function renderHeatmap(wrongResponses) {
+  var el = document.getElementById('panel-heatmap');
+  if (wrongResponses.length === 0) {
+    renderBrowseStarters();
+    return;
+  }
+
+  // Count by misconception tag
+  var counts = {};
+  wrongResponses.forEach(function(r) {
+    var tag = r.misconception_tag;
+    if (!counts[tag]) counts[tag] = { count: 0, banks: {}, students: {} };
+    counts[tag].count++;
+    counts[tag].banks[r.bank] = true;
+    counts[tag].students[r.student_id] = true;
+  });
+
+  // Sort by count descending
+  var sorted = Object.keys(counts).sort(function(a, b) { return counts[b].count - counts[a].count; });
+  var maxCount = counts[sorted[0]].count;
+
+  var h = '<div class="card"><div class="card-title">Misconceptions ranked by frequency</div>';
+  sorted.forEach(function(tag) {
+    var c = counts[tag];
+    var pct = Math.round((c.count / maxCount) * 100);
+    var level = pct > 60 ? 'high' : pct > 30 ? 'med' : '';
+    var label = MC_LABELS[tag] || tag;
+    var banks = Object.keys(c.banks).join(', ');
+    var studentCount = Object.keys(c.students).length;
+
+    h += '<div class="heat-row ' + level + '">';
+    h += '<span class="heat-tag">' + tag + '</span>';
+    h += '<span class="heat-label">' + label + '</span>';
+    h += '<span class="heat-spec">' + banks + '</span>';
+    h += '<div class="heat-bar"><div class="heat-fill" style="width:' + pct + '%"></div></div>';
+    h += '<span class="heat-count">' + c.count + ' \u00d7 ' + studentCount + 's</span>';
+    h += '</div>';
+  });
+  h += '</div>';
+
+  // Top recommendation — use shared renderStarterCard function
+  var topTag = sorted[0];
+  var topFires = counts[topTag].count;
+  var topStudents = Object.keys(counts[topTag].students).length;
+  h = renderStarterCard(topTag, h, {fires: topFires, students: topStudents});
+
+  // Also firing
+  var otherTags = sorted.slice(1, 4);
+  if (otherTags.length > 0) {
+    h += '<div class="card" style="margin-top:12px;padding:12px 16px">';
+    h += '<p style="font-size:12px;color:#8A857E">Also firing this period: ';
+    otherTags.forEach(function(t, i) {
+      h += '<span style="font-family:monospace;color:var(--ember)">' + t + '</span> (' + counts[t].count + '×)';
+      if (i < otherTags.length - 1) h += ' · ';
+    });
+    h += '</p></div>';
+  }
+
+  el.innerHTML = h;
+}
+
+function renderClassOverview(responses, students) {
+  var el = document.getElementById('panel-class');
+  if (students.length === 0) {
+    el.innerHTML = '<div class="empty"><h3>No students yet</h3><p>Students join using the class code on the quiz page.</p></div>';
+    return;
+  }
+
+  // Per-student stats
+  var perStudent = {};
+  students.forEach(function(s) {
+    perStudent[s.id] = { name: s.name, total: 0, correct: 0, misconceptions: {}, topMC: null, topMCcount: 0, weakBank: null, weakBankAcc: 101 };
+  });
+
+  responses.forEach(function(r) {
+    var ps = perStudent[r.student_id];
+    if (!ps) return;
+    ps.total++;
+    if (r.is_correct) ps.correct++;
+    if (!r.is_correct && r.misconception_tag) {
+      ps.misconceptions[r.misconception_tag] = (ps.misconceptions[r.misconception_tag] || 0) + 1;
+    }
+  });
+
+  // Calculate per-student bank accuracy
+  var bankByStudent = {};
+  responses.forEach(function(r) {
+    var key = r.student_id + '|' + r.bank;
+    if (!bankByStudent[key]) bankByStudent[key] = { total: 0, correct: 0, bank: r.bank, student_id: r.student_id };
+    bankByStudent[key].total++;
+    if (r.is_correct) bankByStudent[key].correct++;
+  });
+
+  // Find weakest bank and top MC per student
+  Object.keys(perStudent).forEach(function(sid) {
+    var ps = perStudent[sid];
+    // Top MC
+    var maxMC = 0;
+    for (var mc in ps.misconceptions) {
+      if (ps.misconceptions[mc] > maxMC) { maxMC = ps.misconceptions[mc]; ps.topMC = mc; ps.topMCcount = maxMC; }
+    }
+    // Weakest bank (min accuracy, at least 2 answers)
+    for (var key in bankByStudent) {
+      var bs = bankByStudent[key];
+      if (bs.student_id === sid && bs.total >= 2) {
+        var bAcc = Math.round((bs.correct / bs.total) * 100);
+        if (bAcc < ps.weakBankAcc) { ps.weakBankAcc = bAcc; ps.weakBank = bs.bank; }
+      }
+    }
+  });
+
+  // Sort by accuracy ascending (struggling students first)
+  var sorted = Object.keys(perStudent).sort(function(a, b) {
+    var accA = perStudent[a].total > 0 ? perStudent[a].correct / perStudent[a].total : 1;
+    var accB = perStudent[b].total > 0 ? perStudent[b].correct / perStudent[b].total : 1;
+    return accA - accB;
+  });
+
+  var h = '<div class="card"><div class="card-title">Students \u2014 sorted by accuracy (lowest first)</div>';
+  h += '<table class="class-table"><thead><tr>';
+  h += '<th>Student</th><th>Answered</th><th>Accuracy</th><th>Weakest topic</th><th>Top misconception</th>';
+  h += '</tr></thead><tbody>';
+
+  sorted.forEach(function(sid) {
+    var ps = perStudent[sid];
+    var acc = ps.total > 0 ? Math.round((ps.correct / ps.total) * 100) : 0;
+    var accColor = acc >= 75 ? 'var(--good)' : acc >= 50 ? 'var(--hot)' : 'var(--bad)';
+
+    h += '<tr onclick="renderStudent(\'' + sid + '\')">';
+    h += '<td>' + ps.name + '</td>';
+    h += '<td>' + ps.total + '</td>';
+    h += '<td class="acc" style="color:' + accColor + '">' + acc + '%</td>';
+    h += '<td class="mono" style="font-size:12px">' + (ps.weakBank || '\u2014') + '</td>';
+    h += '<td class="mono" style="font-size:12px">' + (ps.topMC ? ps.topMC + ' \u00d7' + ps.topMCcount : '\u2014') + '</td>';
+    h += '</tr>';
+  });
+
+  h += '</tbody></table></div>';
+  el.innerHTML = h;
+}
+
+window.renderStudent = function(studentId) {
+  // Hide tabs panels, show student detail
+  document.querySelectorAll('.panel').forEach(function(p) { p.classList.remove('active'); });
+  var el = document.getElementById('panel-student');
+  el.style.display = 'block';
+
+  var studentName = '';
+  dashState.students.forEach(function(s) { if (s.id === studentId) studentName = s.name; });
+
+  var studentResponses = dashState.responses.filter(function(r) { return r.student_id === studentId; });
+  var total = studentResponses.length;
+  var correct = studentResponses.filter(function(r) { return r.is_correct; }).length;
+  var acc = total > 0 ? Math.round((correct / total) * 100) : 0;
+
+  // Misconception breakdown
+  var mcData = {};
+  studentResponses.forEach(function(r) {
+    if (!r.is_correct && r.misconception_tag && !r.reforge_attempted) {
+      if (!mcData[r.misconception_tag]) mcData[r.misconception_tag] = { fires: 0, reforgeAttempts: 0, reforgeCorrect: 0 };
+      mcData[r.misconception_tag].fires++;
+    }
+    if (r.reforge_attempted && r.misconception_tag) {
+      if (!mcData[r.misconception_tag]) mcData[r.misconception_tag] = { fires: 0, reforgeAttempts: 0, reforgeCorrect: 0 };
+      mcData[r.misconception_tag].reforgeAttempts++;
+      if (r.reforge_correct) mcData[r.misconception_tag].reforgeCorrect++;
+    }
+  });
+
+  var reforgeTotal = studentResponses.filter(function(r) { return r.reforge_attempted; }).length;
+  var reforgePass = studentResponses.filter(function(r) { return r.reforge_attempted && r.reforge_correct; }).length;
+  var activeMCs = Object.keys(mcData).filter(function(mc) { return mcData[mc].reforgeCorrect < mcData[mc].fires; });
+  var resolvedMCs = Object.keys(mcData).filter(function(mc) { return mcData[mc].fires > 0 && mcData[mc].reforgeCorrect >= mcData[mc].fires; });
+
+  var h = '<button class="back-btn" onclick="document.getElementById(\'panel-student\').style.display=\'none\';document.getElementById(\'panel-class\').classList.add(\'active\');document.querySelectorAll(\'.tab\')[1].classList.add(\'active\')">\u2190 Back to class</button>';
+
+  h += '<div class="dash-header" style="margin-bottom:16px"><div><p class="tag" style="margin-bottom:4px">Student Profile</p><h1>' + studentName + '</h1></div></div>';
+
+  h += '<div class="stat-row">';
+  h += '<div class="stat"><span class="stat-n" style="color:' + (acc >= 70 ? 'var(--good)' : acc >= 50 ? 'var(--hot)' : 'var(--bad)') + '">' + acc + '%</span><span class="stat-l">Accuracy</span></div>';
+  h += '<div class="stat"><span class="stat-n" style="color:var(--white)">' + total + '</span><span class="stat-l">Questions</span></div>';
+  h += '<div class="stat"><span class="stat-n" style="color:var(--hot)">' + activeMCs.length + '</span><span class="stat-l">Active misconceptions</span></div>';
+  h += '<div class="stat"><span class="stat-n" style="color:var(--good)">' + reforgePass + '/' + reforgeTotal + '</span><span class="stat-l">Reforges passed</span></div>';
+  h += '</div>';
+
+  // Active misconceptions (Anvil)
+  if (activeMCs.length > 0) {
+    h += '<div class="card" style="border-color:rgba(255,90,90,.3)"><div class="card-title" style="color:var(--bad)">Anvil \u2014 still active</div>';
+    activeMCs.sort(function(a, b) { return mcData[b].fires - mcData[a].fires; });
+    activeMCs.forEach(function(mc) {
+      var d = mcData[mc];
+      var label = MC_LABELS[mc] || mc;
+      h += '<div class="mc-item">';
+      h += '<span class="heat-tag">' + mc + '</span>';
+      h += '<span class="mc-detail">' + label + '</span>';
+      h += '<span class="mc-fires" style="color:var(--bad)">Fired ' + d.fires + '\u00d7 \u00b7 Reforged ' + d.reforgeCorrect + '/' + d.reforgeAttempts + '</span>';
+      h += '</div>';
+    });
+    h += '</div>';
+  }
+
+  // Resolved
+  if (resolvedMCs.length > 0) {
+    h += '<div class="card" style="border-color:rgba(127,217,138,.3)"><div class="card-title" style="color:var(--good)">Resolved \u2014 reforged successfully</div>';
+    resolvedMCs.forEach(function(mc) {
+      var d = mcData[mc];
+      var label = MC_LABELS[mc] || mc;
+      h += '<div class="mc-item" style="opacity:.7">';
+      h += '<span class="heat-tag" style="background:var(--good)">' + mc + '</span>';
+      h += '<span class="mc-detail" style="text-decoration:line-through">' + label + '</span>';
+      h += '<span class="mc-fires" style="color:var(--good)">Resolved \u2713</span>';
+      h += '</div>';
+    });
+    h += '</div>';
+  }
+
+  if (activeMCs.length === 0 && resolvedMCs.length === 0) {
+    h += '<div class="empty"><h3>No misconception data yet</h3><p>This student needs to answer more questions.</p></div>';
+  }
+
+  el.innerHTML = h;
+};
+
+renderLogin();
+</script>
+</body>
+</html>
