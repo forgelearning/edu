@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Forge — My Profile</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,700;12..96,800&family=Sora:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--coal:#141210;--panel:#211E1B;--panel-2:#2A2622;--line:#3A342E;--ember:#FF6B2C;--hot:#FFC93C;--slate:#B8B4AD;--white:#F5F1EA;--good:#7FD98A;--bad:#FF5A5A}
+[data-theme="light"]{--coal:#FAFAF8;--panel:#FFFFFF;--panel-2:#F3F2EF;--line:#E0DDD8;--ember:#E5550F;--hot:#C88500;--slate:#6B6660;--white:#1A1816;--good:#1B8C2A;--bad:#D42D2D}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--coal);color:var(--slate);font-family:'Sora',sans-serif;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100vh}
+h1,h2,h3{font-family:'Bricolage Grotesque',sans-serif;color:var(--white);line-height:1.1;letter-spacing:-.015em}
+.mono{font-family:'JetBrains Mono',monospace}
+.wrap{max-width:860px;margin:0 auto;padding:28px 20px}
+.tag{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ember)}
+.logo{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:20px;color:var(--white);text-decoration:none;display:inline-flex;align-items:center;gap:8px;margin-bottom:28px}
+.logo .spark{width:9px;height:9px;background:linear-gradient(135deg,var(--hot),var(--ember));border-radius:2px;transform:rotate(45deg);box-shadow:0 0 10px rgba(255,107,44,.7)}
+.theme-toggle{background:var(--panel);border:1px solid var(--line);color:var(--slate);font-family:'JetBrains Mono',monospace;font-size:12px;padding:6px 12px;border-radius:7px;cursor:pointer;position:fixed;top:20px;right:20px;z-index:99}
+.join-input{width:100%;padding:12px 14px;border-radius:9px;border:1px solid var(--line);background:var(--panel);color:var(--white);font-family:'Sora',sans-serif;font-size:15px;margin-bottom:14px;text-transform:uppercase}
+.join-input:focus{outline:none;border-color:var(--ember)}
+.join-input::placeholder{color:#7A756E;text-transform:none}
+.join-btn{width:100%;padding:13px;border-radius:9px;background:var(--ember);color:#fff;border:none;font-family:'Sora',sans-serif;font-weight:600;font-size:15px;cursor:pointer}
+.join-btn:hover{background:var(--hot)}
+.join-btn:disabled{opacity:.5;cursor:wait}
+.join-err{color:var(--bad);font-size:13px;margin-top:10px;display:none}
+.stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px;text-align:center}
+.stat-n{font-family:'Bricolage Grotesque',sans-serif;font-size:28px;font-weight:800;display:block}
+.stat-l{font-size:11px;color:#8A857E;margin-top:4px;display:block;font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.04em}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:22px;margin-bottom:16px}
+.card-title{font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:#8A857E;margin-bottom:14px}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.focus-item{background:var(--panel-2);border:1px solid var(--line);border-radius:10px;padding:14px;margin-bottom:8px}
+.focus-head{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap}
+.focus-tag{font-size:11px;color:var(--coal);background:var(--hot);padding:2px 8px;border-radius:5px;font-weight:600;font-family:'JetBrains Mono',monospace}
+.focus-acc{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700}
+.focus-detail{font-size:13px;color:var(--slate);line-height:1.5}
+.strength-item{display:flex;justify-content:space-between;align-items:center;padding:9px 14px;border-bottom:1px solid var(--line);font-size:13px}
+.strength-item:last-child{border-bottom:none}
+.strength-label{color:var(--white)}
+.strength-acc{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:13px;color:var(--good)}
+.rank-display{text-align:center;padding:24px;background:var(--panel);border:1px solid var(--line);border-radius:14px;margin-bottom:16px}
+.rank-title{font-family:'Bricolage Grotesque',sans-serif;font-size:32px;font-weight:800}
+.rank-xp{font-family:'JetBrains Mono',monospace;font-size:14px;color:#8A857E;margin-top:4px}
+.xp-bar-wrap{height:6px;background:var(--line);border-radius:3px;margin:12px 0 4px}
+.xp-bar-fill{height:6px;border-radius:3px;background:linear-gradient(90deg,var(--hot),var(--ember))}
+.xp-bar-label{display:flex;justify-content:space-between;font-size:11px;font-family:'JetBrains Mono',monospace;color:#8A857E}
+.mc-item{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:10px;background:var(--panel-2);border:1px solid var(--line);margin-bottom:6px;font-size:13px}
+.mc-detail{flex:1;color:var(--slate)}
+.mc-fires{font-family:'JetBrains Mono',monospace;font-size:12px}
+.nav-links{display:flex;gap:12px;margin-bottom:24px;flex-wrap:wrap}
+.nav-link{font-size:13px;color:var(--slate);text-decoration:none;font-family:'JetBrains Mono',monospace;padding:6px 12px;border-radius:7px;border:1px solid var(--line)}
+.nav-link:hover{color:var(--white);border-color:var(--ember)}
+.nav-link.active-link{color:var(--white);border-color:var(--ember)}
+.empty{text-align:center;padding:32px 20px;color:var(--slate)}
+.empty h3{color:var(--white);margin-bottom:8px}
+[data-theme="light"] .focus-tag{color:#fff}
+[data-theme="light"] .join-btn{color:#fff}
+@media(max-width:600px){.stat-row{grid-template-columns:1fr 1fr}.two-col{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<button class="theme-toggle" onclick="(function(){var h=document.documentElement,b=document.querySelector('.theme-toggle');if(h.getAttribute('data-theme')==='light'){h.removeAttribute('data-theme');b.textContent='\u2600 Light';localStorage.setItem('forge-theme','dark');}else{h.setAttribute('data-theme','light');b.textContent='\u263E Dark';localStorage.setItem('forge-theme','light');}})()">&#9728; Light</button>
+<script>if(localStorage.getItem('forge-theme')==='light'){document.documentElement.setAttribute('data-theme','light');document.querySelector('.theme-toggle').textContent='\u263E Dark';}</script>
+
+<div class="wrap">
+  <a class="logo" href="index.html"><span class="spark"></span>Forge</a>
+  <div id="app"></div>
+</div>
+
+<script>
+var SUPABASE_URL = 'https://crysulmbaadjkymcjrew.supabase.co';
+var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNyeXN1bG1iYWFkamt5bWNqcmV3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQyNDUzMzAsImV4cCI6MjA5OTgyMTMzMH0.Q69MKJR6_iEYkqJYXjn8RBhKhstAZShtmf0NiYM-8Vk';
+var hdrs = {'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY};
+function supaGet(t,p){return fetch(SUPABASE_URL+'/rest/v1/'+t+'?select=*'+(p?'&'+p:''),{headers:hdrs}).then(function(r){return r.json();});}
+
+var MC_LABELS = {"MC-INF-01":"Confuses disinflation with deflation","MC-INF-02":"CPI basket treated as static","MC-INF-03":"Demand-pull: no diagram link","MC-INF-04":"Cost-push = only wages","MC-INF-05":"Deflation always harmful","MC-INF-06":"RPI and CPI used interchangeably","MC-INF-07":"BoE target is 0%","MC-INF-08":"Index number calculation error","MC-INF-09":"Any double-digit = hyperinflation","MC-INF-10":"Wage-price spiral trigger unknown","MC-GRO-01":"Growth confused with GDP level","MC-GRO-02":"Actual vs potential growth blurred","MC-GRO-03":"Output gap direction swapped","MC-GRO-04":"Trade cycle recovery drawn flat","MC-EMP-01":"Unemployed = everyone without a job","MC-EMP-02":"Unemployment types without causes","MC-EMP-03":"Phillips curve treated as permanent","MC-EMP-04":"Claimant count = ILO measure","MC-EMP-05":"Real wage diagram gap mislabelled","MC-BOP-01":"Current account deficit always bad","MC-BOP-02":"Fiscal deficit = current account deficit","MC-BOP-03":"J-curve drawn improving immediately","MC-BOP-04":"Marshall-Lerner condition omitted","MC-BOP-05":"Capital/financial account ignored","MC-AD-01":"AD formula wrong","MC-AD-02":"Interest rate transmission mechanism","MC-AD-03":"Confidence and AD direction","MC-AD-04":"AD shift causes lower inflation","MC-AD-05":"Exchange rate to net exports chain","MC-AD-06":"Movement along vs shift of AD","MC-AD-07":"Wage rise always increases AD","MC-AS-01":"SRAS vs LRAS distinction","MC-AS-02":"SRAS shift factors confused","MC-AS-04":"LRAS shift factors confused","MC-AS-05":"Movement along vs shift of SRAS","MC-AS-06":"Unit labour costs and SRAS","MC-NI-01":"Circular flow injections/withdrawals","MC-NI-03":"GDP vs GNI confused","MC-NI-04":"Nominal vs real GDP","MC-NI-06":"GDP limitations for comparisons","MC-NI-08":"Output method value added","MC-FIS-01":"Fiscal vs monetary policy confused","MC-FIS-02":"Automatic stabilisers vs discretionary","MC-FIS-06":"Laffer curve direction","MC-FIS-07":"Fiscal policy time lags","MC-FIS-08":"Crowding out mechanism","MC-MON-01":"MPC role and independence","MC-MON-02":"Interest rate transmission","MC-MON-03":"Rate rise trade-offs ignored","MC-MON-04":"QE mechanism misunderstood","MC-MON-05":"Liquidity trap","MC-MON-06":"Interest rates and exchange rate","MC-MON-08":"Forward guidance purpose","MC-SSP-01":"Supply-side aim misunderstood","MC-SSP-02":"Market-based vs interventionist","MC-SSP-03":"Interest rates classified as supply-side","MC-SSP-05":"Trade union reform trade-offs","MC-SSP-08":"Infrastructure dual AD/AS effect","MC-INQ-02":"Gini coefficient misread","MC-INQ-04":"Causes of income inequality","MC-INQ-05":"Income vs wealth confused","MC-INQ-07":"Progressive taxation definition","MC-POV-01":"Absolute vs relative poverty","MC-POV-03":"Poverty trap mechanism","MC-POV-04":"Anti-poverty policy effectiveness","MC-FMK-01":"Financial markets roles","MC-FMK-02":"Forward markets mechanism","MC-FMK-03":"Asymmetric information in financial markets","MC-FMK-04":"Stock market macro effects","MC-BNK-01":"Commercial bank intermediation","MC-BNK-02":"Credit creation multiplier","MC-BNK-03":"Bank bailout evaluation","MC-BNK-04":"Post-2008 regulation","MC-CB-01":"Bank of England functions","MC-CB-02":"Central bank independence","MC-CB-03":"FPC vs MPC roles","MC-CB-05":"Financial stability definition","MC-SD-01":"Demand vs quantity demanded","MC-SD-02":"Supply curve shift factors","MC-SD-03":"Equilibrium and price mechanism","MC-SD-04":"PED and inelastic demand","MC-SD-05":"Substitutes and complements","MC-SD-08":"PES and housing supply","MC-SI-01":"Asch conformity stats (75% vs 37%)","MC-SI-02":"Compliance vs internalisation","MC-SI-03":"Milgram 65% obedience","MC-SI-04":"Agentic state definition","MC-SI-05":"Moscovici consistency principle","MC-SI-06":"NSI vs ISI distinction","MC-SI-08":"Asch ecological validity","MC-MEM-01":"MSM flow and sequence","MC-MEM-02":"Miller's 7\u00b12 and chunking","MC-MEM-03":"WMM purpose and evidence","MC-MEM-04":"Central executive as store (wrong)","MC-MEM-05":"Loftus post-event information","MC-MEM-06":"Cognitive interview techniques","MC-MEM-08":"Proactive vs retroactive interference","MC-ATT-01":"Bowlby monotropic theory","MC-ATT-02":"Strange Situation procedure","MC-ATT-03":"Secure attachment = no distress (wrong)","MC-ATT-04":"Strange Situation validity","MC-ATT-05":"Internal working model","MC-ATT-06":"Maternal deprivation hypothesis","MC-ATT-08":"Harlow and contact comfort","MC-EDU-01":"Role allocation (Davis & Moore)","MC-EDU-02":"Correspondence principle (Bowles & Gintis)","MC-EDU-03":"Class and underachievement causes","MC-EDU-04":"Interactionist micro-level analysis","MC-EDU-06":"ERA 1988 and marketisation","MC-MET-01":"Covert observation ethical issues","MC-MET-02":"Interpretivist preference for qualitative","MC-MET-03":"Official statistics as social construction","MC-MET-04":"Questionnaire strengths","MC-MET-05":"Triangulation definition","MC-MET-06":"Practical problems in school research","MC-MET-08":"Feminist methodology in schools","MC-TEC-01":"Subduction — oceanic plate density","MC-TEC-02":"Development vs physical hazard size","MC-TEC-03":"Composite volcano explosion cause","MC-TEC-04":"Earthquakes at all boundary types","MC-TEC-06":"Focus vs epicentre confused","MC-TEC-07":"Iceland hot spot and constructive boundary","MC-BUS-01":"Product vs market orientation","MC-BUS-02":"Break-even calculation (contribution)","MC-BUS-03":"Price skimming vs penetration","MC-BUS-04":"Sole trader vs Ltd liability","MC-BUS-05":"Herzberg hygiene vs motivators","MC-BUS-06":"Ansoff Matrix — product vs market dev","MC-BUS-07":"Net profit margin calculation","MC-CHEM-01":"Relative atomic mass misunderstood","MC-CHEM-02":"Ionisation energy jumps","MC-CHEM-03":"Lone pairs in dot-and-cross diagrams","MC-CHEM-04":"Giant covalent vs simple molecular","MC-CHEM-05":"Empirical vs molecular formula","MC-CHEM-06":"Electronegativity trends","MC-CHEM-07":"Mass spectrometer m/z ratio","MC-CHEM-08":"Ionic conduction — ions not electrons","MC-CRIM-01":"Crime vs deviance vs immorality","MC-CRIM-02":"Dark figure of crime","MC-CRIM-03":"Official statistics limitations","MC-CRIM-04":"Moral panic and folk devils","MC-CRIM-05":"White-collar crime definition","MC-CRIM-06":"Merton's strain theory","MC-CRIM-08":"SCP displacement","MC-BIO-01":"Aerobic respiration stages","MC-BIO-02":"Prokaryote vs eukaryote","MC-BIO-03":"DNA replication enzymes","MC-BIO-04":"Facilitated vs active transport","MC-BIO-05":"Magnification formula","MC-BIO-06":"Fluid mosaic model","MC-BIO-07":"S phase vs mitosis stages","MC-BIO-08":"Denaturation vs inhibition","MC-HIST-01":"Weimar structural weakness vs contingency","MC-HIST-02":"Munich Putsch long-term benefit","MC-HIST-03":"Hitler never won a majority","MC-HIST-04":"Reichstag Fire to Enabling Act chain","MC-HIST-05":"Browning vs Goldhagen perpetrator debate","MC-LAW-01":"Actus reus and omissions","MC-LAW-02":"Direct vs oblique intent (Woollin)","MC-LAW-03":"Criminal standard of proof","MC-LAW-04":"Murder mens rea (GBH intent)","MC-LAW-05":"Loss of control vs provocation","MC-LAW-06":"Self-defence and excessive force","MC-LAW-07":"Theft actus reus (appropriation)","MC-TECH-01":"Application missing — no context","MC-TECH-02":"Evaluation absent on 8+ mark questions","MC-TECH-04":"Diagram axis labelling errors","MC-TECH-05":"Multiplier formula unknown","MC-MATH-01":"Chain rule — forgets to multiply by inner derivative","MC-MATH-02":"Integration constant C omitted on indefinite integrals","MC-MATH-03":"Sign error when differentiating a negative term","MC-MATH-04":"Completing the square — sign error on constant","MC-MATH-05":"Confuses f(x) = 0 roots with turning points","MC-MATH-06":"Logs — log(a+b) treated as log(a)+log(b)","MC-MATH-07":"Binomial expansion — incorrect coefficient calculation","MC-MATH-08":"Proof by contradiction — fails to state assumption explicitly","MC-DE-01":"Nominative used instead of accusative after direct object","MC-DE-02":"Adjective endings wrong in accusative masculine","MC-DE-03":"Sein vs werden confused in passive constructions","MC-DE-04":"Word order in subordinate clauses — verb not sent to end","MC-DE-05":"False cognate errors (e.g. bekommen not become)","MC-DE-06":"Modal verb position — infinitive not placed at end","MC-DE-07":"Gender assignment errors on common nouns","MC-DE-08":"Imperfect vs perfect tense — wrong tense in written register",
+  'MC-PHYS-01':'Constant velocity = no forces (wrong)','MC-PHYS-02':'Projectile horizontal velocity decreases (wrong)',
+  'MC-PHYS-03':'Work-energy theorem','MC-PHYS-04':'SUVAT sign convention errors',
+  'MC-PHYS-05':'Stiffer spring stores more energy (context-dependent)','MC-PHYS-06':'Momentum vs KE conservation',
+  'MC-PHYS-07':'Scalar vs vector distinction','MC-PHYS-08':'Heavier objects fall faster (wrong)',
+  'MC-POL-01':'UK constitution is codified (wrong)','MC-POL-02':'FPTP disproportionality',
+  'MC-POL-03':'Parliamentary sovereignty definition','MC-POL-04':'Lords equal to Commons (wrong)',
+  'MC-POL-05':'Pluralism vs elitism','MC-POL-07':'Pressure group vs political party',
+  'MC-CS-01':'Off-by-one loop errors','MC-CS-02':'Compiler vs interpreter',
+  'MC-CS-03':'Binary search complexity','MC-CS-04':'Big O notation O(n²)',
+  'MC-CS-05':'Stack vs queue LIFO/FIFO','MC-CS-06':'Subroutine vs program',
+  'MC-CS-07':'TCP/IP protocol roles','MC-CS-08':'Encryption definition'};
+
+var RANKS = [
+  {name:'Apprentice',min:0,max:300,color:'var(--slate)',bg:'var(--panel-2)'},
+  {name:'Journeyman',min:300,max:1500,color:'var(--hot)',bg:'rgba(255,201,60,.12)'},
+  {name:'Craftsman',min:1500,max:5000,color:'var(--ember)',bg:'rgba(255,107,44,.12)'},
+  {name:'Forged',min:5000,max:15000,color:'var(--good)',bg:'rgba(127,217,138,.12)'},
+  {name:'Master',min:15000,max:99999,color:'var(--coal)',bg:'linear-gradient(100deg,var(--hot),var(--ember))'}
+];
+
+function getRank(xp){
+  for(var i=RANKS.length-1;i>=0;i--){if(xp>=RANKS[i].min)return RANKS[i];}
+  return RANKS[0];
+}
+
+function calcXP(responses){
+  var xp=0;
+  responses.forEach(function(r){
+    if(r.question_id&&r.question_id.endsWith('-CRU')&&r.is_correct) xp+=30;
+    else if(r.reforge_attempted&&r.reforge_correct) xp+=20;
+    else if(r.is_correct&&!r.reforge_attempted) xp+=10;
+    if(r.question_id&&r.question_id.endsWith('-ANVIL')&&r.is_correct) xp+=30; // treat anvil correct as 30
+  });
+  return xp;
+}
+
+var st={studentId:null,classId:null,studentName:null,responses:[]};
+var app=document.getElementById('app');
+
+function renderLogin(){
+  var h='<div style="max-width:340px;margin:40px auto 0;text-align:center">';
+  h+='<p class="tag" style="margin-bottom:6px">MY PROFILE</p>';
+  h+='<h1 style="font-size:26px;margin-bottom:8px">Your Forge profile</h1>';
+  h+='<p style="color:#8A857E;font-size:14px;margin-bottom:28px">Enter your name and class code to see your progress</p>';
+  h+='</div><div style="max-width:340px;margin:0 auto">';
+  h+='<label style="font-size:13px;color:var(--slate);display:block;margin-bottom:4px">Your first name</label>';
+  h+='<input id="p-name" class="join-input" type="text" placeholder="e.g. Alex" style="text-transform:none">';
+  h+='<label style="font-size:13px;color:var(--slate);display:block;margin-bottom:4px">Class code</label>';
+  h+='<input id="p-code" class="join-input" type="text" placeholder="e.g. ECON-Y12-A">';
+  h+='<button class="join-btn" id="p-btn">View my profile \u2192</button>';
+  h+='<p class="join-err" id="p-err"></p></div>';
+  app.innerHTML=h;
+
+  document.getElementById('p-btn').onclick=function(){
+    var name=document.getElementById('p-name').value.trim();
+    var code=document.getElementById('p-code').value.trim().toUpperCase();
+    var err=document.getElementById('p-err');
+    var btn=document.getElementById('p-btn');
+    if(!name||!code){err.textContent='Enter your name and class code.';err.style.display='block';return;}
+    btn.disabled=true;btn.textContent='Loading...';
+    supaGet('classes','code=eq.'+encodeURIComponent(code)).then(function(cls){
+      if(!Array.isArray(cls)||cls.length===0){err.textContent='Class not found.';err.style.display='block';btn.disabled=false;btn.textContent='View my profile \u2192';return;}
+      supaGet('students','class_id=eq.'+cls[0].id+'&name=eq.'+encodeURIComponent(name)).then(function(stus){
+        if(!Array.isArray(stus)||stus.length===0){err.textContent='Name not found. Make sure you\'ve done the quiz first.';err.style.display='block';btn.disabled=false;btn.textContent='View my profile \u2192';return;}
+        st.studentId=stus[0].id;st.classId=cls[0].id;st.studentName=name;
+        try { localStorage.setItem('forge-student', JSON.stringify({studentId: st.studentId, classId: st.classId, studentName: st.studentName, classSubject: null})); } catch(e) {}
+        supaGet('responses','student_id=eq.'+st.studentId+'&order=created_at.desc').then(function(r){
+          st.responses=r||[];
+          renderProfile();
+        });
+      });
+    });
+  };
+}
+
+function renderProfile(){
+  var responses=st.responses;
+  var total=responses.filter(function(r){return !r.reforge_attempted;}).length;
+  var correct=responses.filter(function(r){return !r.reforge_attempted&&r.is_correct;}).length;
+  var acc=total>0?Math.round((correct/total)*100):0;
+  var accCol=acc>=75?'var(--good)':acc>=50?'var(--hot)':'var(--bad)';
+  var xp=calcXP(responses);
+  var rank=getRank(xp);
+  var nextRank=RANKS[RANKS.indexOf(rank)+1];
+  var streak=calcStreak(responses);
+
+  // Active misconceptions
+  var mcData={};
+  responses.forEach(function(r){
+    if(!r.misconception_tag)return;
+    var tag=r.misconception_tag;
+    if(!mcData[tag])mcData[tag]={fires:0,reforgeCorrect:0,streak:0};
+    if(r.reforge_attempted){
+      if(r.reforge_correct){mcData[tag].reforgeCorrect++;mcData[tag].streak++;}
+      else mcData[tag].streak=0;
+    } else if(!r.is_correct){
+      mcData[tag].fires++;mcData[tag].streak=0;
+    }
+  });
+  var activeMCs=Object.keys(mcData).filter(function(t){return mcData[t].fires>0&&mcData[t].streak<3;});
+  activeMCs.sort(function(a,b){return mcData[b].fires-mcData[a].fires;});
+
+  // Bank accuracy
+  var bankStats={};
+  responses.filter(function(r){return !r.reforge_attempted&&r.bank&&!r.bank.endsWith('-MIX');}).forEach(function(r){
+    if(!bankStats[r.bank])bankStats[r.bank]={t:0,c:0};
+    bankStats[r.bank].t++;
+    if(r.is_correct)bankStats[r.bank].c++;
+  });
+  var strengths=Object.keys(bankStats).filter(function(b){return bankStats[b].t>=3;}).map(function(b){
+    return{bank:b,acc:Math.round((bankStats[b].c/bankStats[b].t)*100)};
+  }).sort(function(a,b){return b.acc-a.acc;});
+  var goodBanks=strengths.filter(function(s){return s.acc>=75;});
+  var weakBanks=strengths.filter(function(s){return s.acc<60;}).reverse();
+
+  var h='<div class="nav-links">';
+  h+='<a class="nav-link" href="forge-quiz.html">Quiz</a>';
+  h+='<a class="nav-link" href="anvil.html">Anvil</a>';
+  h+='<a class="nav-link" href="crucible.html">Crucible</a>';
+  h+='<a class="nav-link active-link" href="profile.html">My Profile</a>';
+  h+='</div>';
+
+  // Rank card
+  var xpToNext=nextRank?nextRank.min-xp:0;
+  var pct=nextRank?Math.round(((xp-rank.min)/(nextRank.min-rank.min))*100):100;
+  h+='<div class="rank-display">';
+  h+='<p class="tag" style="margin-bottom:8px">'+st.studentName+'\'s Forge Rank</p>';
+  h+='<div class="rank-title" style="color:'+rank.color+'">'+rank.name+'</div>';
+  h+='<div class="rank-xp">'+xp.toLocaleString()+' XP total</div>';
+  if(nextRank){
+    h+='<div class="xp-bar-wrap"><div class="xp-bar-fill" style="width:'+pct+'%"></div></div>';
+    h+='<div class="xp-bar-label"><span>'+rank.name+'</span><span>'+xpToNext.toLocaleString()+' XP to '+nextRank.name+'</span></div>';
+  } else {
+    h+='<div class="xp-bar-wrap"><div class="xp-bar-fill" style="width:100%"></div></div>';
+    h+='<div style="font-size:12px;color:var(--hot);margin-top:4px">Maximum rank achieved ✦</div>';
+  }
+  h+='</div>';
+
+  // Stats
+  h+='<div class="stat-row">';
+  h+='<div class="stat"><span class="stat-n" style="color:'+accCol+'">'+acc+'%</span><span class="stat-l">Accuracy</span></div>';
+  h+='<div class="stat"><span class="stat-n" style="color:var(--white)">'+total+'</span><span class="stat-l">Questions</span></div>';
+  h+='<div class="stat"><span class="stat-n" style="color:var(--bad)">'+activeMCs.length+'</span><span class="stat-l">Active misconceptions</span></div>';
+  h+='<div class="stat"><span class="stat-n" style="color:var(--ember)">'+streak+'</span><span class="stat-l">Day streak \ud83d\udd25</span></div>';
+  h+='</div>';
+
+  // Focus and strengths
+  h+='<div class="two-col">';
+  h+='<div>';
+  if(weakBanks.length>0||activeMCs.length>0){
+    h+='<div class="card"><div class="card-title" style="color:var(--bad)">\u26a0 Focus areas</div>';
+    weakBanks.slice(0,3).forEach(function(s){
+      h+='<div class="focus-item"><div class="focus-head"><span style="color:var(--white);font-weight:600;font-size:13px">'+s.bank+'</span><span class="focus-acc" style="color:var(--bad)">'+s.acc+'%</span></div>';
+      h+='<div class="focus-detail">Keep practising — accuracy below 60%</div></div>';
+    });
+    if(activeMCs.length>0){
+      h+='<div class="focus-item"><div class="focus-head"><span class="focus-tag">Anvil</span><span class="focus-acc" style="color:var(--hot)">'+activeMCs.length+' active</span></div>';
+      h+='<div class="focus-detail">'+(MC_LABELS[activeMCs[0]]||activeMCs[0])+(activeMCs.length>1?' and '+(activeMCs.length-1)+' more':'')+'</div></div>';
+    }
+    h+='</div>';
+  } else {
+    h+='<div class="card"><div class="empty"><h3>No weak spots yet</h3><p>Answer more questions to see your focus areas.</p></div></div>';
+  }
+  h+='</div>';
+
+  h+='<div>';
+  if(goodBanks.length>0){
+    h+='<div class="card"><div class="card-title" style="color:var(--good)">\u2713 Strengths</div>';
+    goodBanks.slice(0,5).forEach(function(s){
+      h+='<div class="strength-item"><span class="strength-label">'+s.bank+'</span><span class="strength-acc">'+s.acc+'%</span></div>';
+    });
+    h+='</div>';
+  } else {
+    h+='<div class="card"><div class="empty"><h3>Strengths loading</h3><p>Answer at least 3 questions per topic to see your strengths.</p></div></div>';
+  }
+  h+='</div></div>';
+
+  // Active misconceptions detail
+  if(activeMCs.length>0){
+    h+='<div class="card"><div class="card-title" style="color:var(--bad)">Your Anvil — misconceptions to rework</div>';
+    activeMCs.slice(0,6).forEach(function(tag){
+      var d=mcData[tag];
+      var label=MC_LABELS[tag]||tag;
+      h+='<div class="mc-item"><span class="focus-tag">'+tag+'</span>';
+      h+='<span class="mc-detail">'+label+'</span>';
+      h+='<span class="mc-fires" style="color:var(--bad)">'+d.fires+' fires</span></div>';
+    });
+    h+='<a href="anvil.html" style="display:inline-block;margin-top:12px;font-size:13px;color:var(--ember);font-family:JetBrains Mono,monospace;text-decoration:none">Rework these in the Anvil \u2192</a>';
+    h+='</div>';
+  }
+
+  h+='<div style="text-align:center;margin-top:8px"><button onclick="forgeSignOut()" style="background:none;border:none;cursor:pointer;font-size:13px;color:#8A857E;font-family:Sora,sans-serif">Sign out</button></div>';
+  app.innerHTML=h;
+}
+
+function calcStreak(responses){
+  if(!responses.length) return 0;
+  var dates=new Set(responses.map(function(r){return r.created_at?r.created_at.substring(0,10):''}));
+  var today=new Date().toISOString().substring(0,10);
+  var streak=0;
+  var d=new Date();
+  while(true){
+    var key=d.toISOString().substring(0,10);
+    if(dates.has(key)){streak++;d.setDate(d.getDate()-1);}
+    else break;
+  }
+  return streak;
+}
+
+function forgeSignOut(){
+  try { localStorage.removeItem('forge-student'); } catch(e) {}
+  location.reload();
+}
+
+// ===== SHARED SESSION RESTORE =====
+(function(){
+  var saved = null;
+  try { saved = JSON.parse(localStorage.getItem('forge-student') || 'null'); } catch(e) {}
+  if (saved && saved.studentId) {
+    st.studentId = saved.studentId;
+    st.classId = saved.classId;
+    st.studentName = saved.studentName;
+    supaGet('responses','student_id=eq.'+st.studentId+'&order=created_at.desc').then(function(r){
+      st.responses = r || [];
+      renderProfile();
+    }).catch(function(){ renderLogin(); });
+  } else {
+    renderLogin();
+  }
+})();
+</script>
+</body>
+</html>
