@@ -4785,8 +4785,8 @@ function renderJoin() {
       state.paidSubjects = sub.subjects || [];
 
       // Restore class session if student has joined classes
-      var authUser = ForgeAuth.currentUser();
-      var token = ForgeAuth.accessToken();
+      var authUser = ForgeAuth.currentUser() || (result.session && result.session.user);
+      var token = ForgeAuth.accessToken() || (result.session && result.session.access_token);
       if (authUser && token) {
         fetch(SUPABASE_URL + '/rest/v1/students?select=id,class_id&auth_user_id=eq.' + authUser.id + '&class_id=not.is.null&order=created_at.desc&limit=1', {
           headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + token }
@@ -5428,8 +5428,9 @@ if (ForgeAuth.hasSession()) {
         render();
       } else {
         // Look up class enrolments to restore classId and studentId
-        var authUser = ForgeAuth.currentUser();
-        var token = ForgeAuth.accessToken();
+        var sessionData = result.session || {};
+        var authUser = sessionData.user || ForgeAuth.currentUser();
+        var token = sessionData.access_token || ForgeAuth.accessToken();
         if (authUser && token) {
           fetch(SUPABASE_URL + '/rest/v1/students?select=id,class_id&auth_user_id=eq.' + authUser.id + '&class_id=not.is.null&order=created_at.desc&limit=1', {
             headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + token }
