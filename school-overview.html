@@ -92,13 +92,28 @@ var MC_LABELS = {"MC-INF-01":"Confuses disinflation with deflation","MC-INF-02":
   'MC-PHYS-03':'Work-energy theorem','MC-PHYS-04':'SUVAT sign convention errors',
   'MC-PHYS-05':'Stiffer spring stores more energy (context-dependent)','MC-PHYS-06':'Momentum vs KE conservation',
   'MC-PHYS-07':'Scalar vs vector distinction','MC-PHYS-08':'Heavier objects fall faster (wrong)',
+  'MC-PHYS-09':'Zero velocity ≠ zero acceleration at highest point','MC-PHYS-10':'Parallel resistance — reciprocal formula forgotten',
+  'MC-PHYS-11':'Transverse wave — particle motion direction wrong','MC-PHYS-12':'F = ma applied as F × m',
+  'MC-PHYS-13':'Scalars vs vectors — set classification wrong','MC-PHYS-14':'EMF confused with voltage across terminals',
+  'MC-PHYS-15':'Heavier objects fall faster in a vacuum (wrong)','MC-PHYS-16':'Spring constant — wrong mass or extension substitution',
   'MC-POL-01':'UK constitution is codified (wrong)','MC-POL-02':'FPTP disproportionality',
   'MC-POL-03':'Parliamentary sovereignty definition','MC-POL-04':'Lords equal to Commons (wrong)',
   'MC-POL-05':'Pluralism vs elitism','MC-POL-07':'Pressure group vs political party',
   'MC-CS-01':'Off-by-one loop errors','MC-CS-02':'Compiler vs interpreter',
   'MC-CS-03':'Binary search complexity','MC-CS-04':'Big O notation O(n²)',
   'MC-CS-05':'Stack vs queue LIFO/FIFO','MC-CS-06':'Subroutine vs program',
-  'MC-CS-07':'TCP/IP protocol roles','MC-CS-08':'Encryption definition'};
+  'MC-CS-07':'TCP/IP protocol roles','MC-CS-08':'Encryption definition',
+  'MC-CRIM-09':'Merton — anomie vs individual adaptation modes','MC-CRIM-10':'Differential association — learned vs innate crime',
+  'MC-CRIM-11':'Square of crime — wrong or missing elements','MC-CRIM-12':'Labelling theory — deviance as fixed not constructed',
+  'MC-CRIM-13':'Feminist critique of malestream criminology',
+  'MC-RS-01':'Cosmological argument — unmoved mover logical step','MC-RS-02':'Teleological argument — Hume\'s analogy critique',
+  'MC-RS-03':'Ontological argument — Kant\'s existence-as-predicate objection','MC-RS-04':'Problem of evil — theodicy responses omitted',
+  'MC-RS-05':'Categorical imperative — first formulation misapplied','MC-RS-06':'Mill vs Bentham — quality vs quantity of pleasure',
+  'MC-RS-07':'Religious experience — subjectivity and verification','MC-RS-08':'Natural Law — naturalistic fallacy misunderstood',
+  'MC-RS-09':'Situation ethics — agape as sole intrinsic good','MC-RS-10':'Euthyphro dilemma — divine command theory challenge',
+  'MC-RS-11':'Golden mean — moderation misread as always moderate','MC-RS-12':'Sanctity vs quality of life in euthanasia debate',
+  'MC-RS-13':'Emotivism — moral statements as expressions not truths','MC-RS-14':'Naturalistic fallacy — Moore\'s open question argument',
+  'MC-RS-15':'Hard determinism and moral responsibility','MC-RS-16':'Evaluation quality — breadth without depth error'};
 
 function supaGet(table, params) {
   var url = SUPABASE_URL + '/rest/v1/' + table + '?select=*';
