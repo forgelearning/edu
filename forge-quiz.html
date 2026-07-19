@@ -1515,6 +1515,156 @@ BANKS["ECON-1.1"] = {
   ]
 };
 
+// ===== SOCIOLOGY: CRIME & DEVIANCE + STRATIFICATION =====
+
+BANKS["SOC-CRI"] = {
+  label: "Crime & Deviance",
+  color: "#7f1d1d",
+  questions: [
+    {
+      id:"SCRI-01",
+      stem:"Durkheim argued that crime is 'normal' and 'functional' in society. Which best explains this claim?",
+      options:{A:"Durkheim thought crime was inevitable so societies should not try to reduce it.",B:"Crime performs positive functions: it reinforces shared norms and values (boundary maintenance), promotes social cohesion (collective conscience), and allows necessary social change — if conformity is absolute, society cannot adapt.",C:"Crime is only functional in capitalist societies.",D:"Durkheim's functionalism argued crime was caused by inequality."},
+      correct:"B",tag:"MC-SCRI-01",
+      scaffold:"Durkheim's functions of crime: (1) Boundary maintenance — criminal trials publicly reaffirm norms, strengthening social solidarity. (2) Safety valve — some deviance releases tension before it builds into larger unrest. (3) Social change — yesterday's deviant is today's pioneer (e.g. suffragettes, civil rights movement). BUT: Durkheim also identified anomie — normlessness during rapid social change leads to dysfunctional levels of crime. Too little crime = over-rigid society; too much = breakdown. Often contrasted with Merton who adapted anomie for capitalism.",
+      reforge:{stem:"Merton's strain theory adapts Durkheim's concept of anomie. How does Merton's version differ?",options:{A:"Merton argues crime is always functional; Durkheim says it is always dysfunctional.",B:"Merton locates the strain specifically in capitalist society's contradiction between universal goals (wealth, success) and unequal means of achieving them — those blocked from legitimate means adapt in various ways (conformity, innovation, ritualism, retreatism, rebellion). Durkheim's anomie is about norm breakdown during rapid change, not about class inequality.",C:"Merton focuses on white-collar crime; Durkheim on street crime.",D:"They are essentially the same theory with different terminology."},correct:"B"}
+    },
+    {
+      id:"SCRI-02",
+      stem:"Howard Becker's labelling theory argues that deviance is:",
+      options:{A:"Caused by biological or psychological abnormalities in individuals.",B:"Not a quality of the act itself but the result of society's reaction — groups create deviance by making rules whose infraction constitutes deviance and by applying those rules to particular people.",C:"Always a product of poverty and social deprivation.",D:"Inevitable in all societies and serves boundary-maintenance functions."},
+      correct:"B",tag:"MC-SCRI-02",
+      scaffold:"Labelling theory (Becker 1963, Outsiders): social construction of deviance — what counts as deviant varies between cultures, times, groups. Key concepts: moral entrepreneurs (create rules); primary deviance (initial act); secondary deviance (identity formed around label); self-fulfilling prophecy (labelled → treated as deviant → acts deviantly). Master status (overrides all others — 'he's a criminal'). Criticisms: ignores why people commit primary acts; implies labelled people are passive; some acts (murder) harmful regardless of label. Links to: neo-Marxist (Gilroy, Hall) — who gets labelled? Power matters.",
+      reforge:{stem:"A young person arrested for shoplifting is cautioned, which appears on their record. They subsequently struggle to find employment and drift into further crime. Labelling theory would explain this through:",options:{A:"The shoplifting itself causing a permanent change in personality.",B:"The caution operating as a label — creating a master status of 'offender', triggering a self-fulfilling prophecy as legitimate opportunities are blocked (employment refusal) and the individual increasingly identifies with a deviant identity, leading to secondary deviance.",C:"Biological predisposition to crime which the caution reveals.",D:"Poverty being the real cause of all subsequent offending."},correct:"B"}
+    },
+    {
+      id:"SCRI-03",
+      stem:"Marxist criminology argues that crime statistics show an apparent working-class bias because:",
+      options:{A:"Working-class people are inherently more likely to commit crime.",B:"The criminal justice system reflects ruling-class power — laws criminalise working-class behaviours (street crime, benefit fraud) while white-collar and corporate crime (tax evasion, corporate manslaughter) is under-policed, under-prosecuted and under-sentenced.",C:"Working-class communities lack the moral values needed to prevent crime.",D:"Police statistics accurately reflect the true distribution of crime across social classes."},
+      correct:"B",tag:"MC-SCRI-03",
+      scaffold:"Neo-Marxist/Marxist criminology: laws made by and for the ruling class (Chambliss). Corporate crime (Sutherland's white-collar crime) causes far more harm than street crime — the Office for National Statistics estimates fraud costs £190bn annually vs £1bn for 'traditional' acquisitive crime — yet receives fewer prosecutions and lighter sentences. Selective enforcement — police presence concentrated in working-class areas; stop and search disproportionately targets ethnic minorities (Hall et al — Policing the Crisis). Dark figure of crime: unreported crime distorts statistics further.",
+      reforge:{stem:"The Bhopal disaster (1984) killed 3,787+ people. Union Carbide executives received minimal sentences. This supports which criminological argument?",options:{A:"Street crime is more harmful than white-collar crime.",B:"Corporate crime causes enormous harm but is systematically under-prosecuted and under-punished — supporting Sutherland's argument that white-collar crime is 'crime in the suites' that the CJS fails to address with the same vigour as 'crime in the streets', reflecting the power of corporations relative to regulatory agencies.",C:"Indian criminal law is more lenient than UK law.",D:"The Bhopal disaster was an accident, not a crime."},correct:"B"}
+    },
+    {
+      id:"SCRI-04",
+      stem:"Left realism (Lea and Young) focuses on which aspect of crime that previous critical criminologies neglected?",
+      options:{A:"The need to abolish capitalism to reduce crime.",B:"Taking working-class crime seriously as a real problem for working-class victims — not romanticising criminals as proto-revolutionaries. It uses the 'square of crime' (offender, victim, police, public) and focuses on relative deprivation and marginalisation as causes.",C:"The role of the media in creating moral panics about crime.",D:"Corporate crime as the most harmful form of criminality."},
+      correct:"B",tag:"MC-SCRI-04",
+      scaffold:"Left realism (Lea & Young, 1984): critique of left idealism (Marxism) which romanticised working-class crime and ignored real harm to working-class victims. Square of crime: offender × victim × police × community. Causes of crime: relative deprivation (not absolute poverty, but perceived unfairness of gap), marginalisation (excluded from mainstream), subculture (group solution to shared problem). Solutions: multi-agency approaches, community policing, addressing inequality. Criticisms: neglects corporate crime; underestimates impact of wider capitalism.",
+      reforge:{stem:"Right realism (Wilson and Herrnstein) differs from left realism primarily in:",options:{A:"Right realism focuses on white-collar crime; left realism on street crime.",B:"Right realism locates the causes of crime in individual rational choice, inadequate socialisation and lack of deterrence (broken windows theory, zero tolerance policing) rather than structural inequality — favouring situational crime prevention over addressing social conditions.",C:"Right realism argues crime is not a real problem.",D:"Both approaches reach identical policy conclusions."},correct:"B"}
+    },
+    {
+      id:"SCRI-05",
+      stem:"Stan Cohen's concept of 'moral panic' describes a situation where:",
+      options:{A:"The public panics because crime rates have risen sharply.",B:"A group of people, phenomenon or event is defined as a threat to societal values and interests; the nature of this threat is presented in a stereotyped way by the mass media; moral barricades are manned by editors, bishops and politicians; experts pronounce their diagnoses and solutions; and ways of coping are evolved — often resulting in a disproportionate societal reaction.",C:"Politicians use fear of crime to win elections.",D:"Media coverage of crime causes people to commit more crime."},
+      correct:"B",tag:"MC-SCRI-05",
+      scaffold:"Cohen (1972), Folk Devils and Moral Panics — mods and rockers at Clacton 1964. Key elements: folk devils (scapegoated group), moral entrepreneurs (amplify concern), media amplification, disproportionate reaction, increased policing → deviancy amplification spiral (more policing → more arrests → confirms initial 'threat'). Modern examples: refugee 'invasion' coverage, hoodies/ASBOs, gaming addiction. Hall et al (1978) — mugging panic: ruling class used 'crisis' to justify authoritarian state and distract from economic problems (hegemony).",
+      reforge:{stem:"Hall et al's 'Policing the Crisis' (1978) analysed the 1970s mugging panic. Their Marxist interpretation argued that:",options:{A:"Black youth were genuinely more criminal than the media reported.",B:"The mugging panic was manufactured by the media and ruling class to divert attention from economic crisis and justify an authoritarian turn in the state — with black youth as the folk devil in a context of hegemonic crisis, not a genuine crime wave.",C:"Moral panics are always started by tabloid newspapers acting independently.",D:"Mugging had increased significantly in the early 1970s, justifying the police response."},correct:"B"}
+    },
+    {
+      id:"SCRI-06",
+      stem:"Which correctly describes the pattern of female offending in official crime statistics?",
+      options:{A:"Women commit crime at roughly the same rate as men but are not caught as often.",B:"Women are significantly under-represented in official crime statistics — accounting for around 25% of those convicted in England and Wales, with particularly low representation in violent crime and acquisitive crime.",C:"Female offending has been falling while male offending has remained stable.",D:"Official statistics accurately capture true differences in male and female offending rates."},
+      correct:"B",tag:"MC-SCRI-06",
+      scaffold:"Gender and crime: women ~25% of convictions (England and Wales), ~5% of prison population. Explanations for lower female rates: (1) Socialisation — girls socialised toward conformity, cooperation; (2) Social control theory (Heidensohn) — women subject to greater informal social control (domestic role, male supervision, fear of male violence); (3) Chivalry thesis (Pollak) — CJS treats women more leniently; (4) Liberation thesis (Adler) — as gender equality increases, female crime rises. BUT: women's crime rising in some categories (acquisitive crime). Dark figure: domestic violence and sexual assault vastly under-reported.",
+      reforge:{stem:"Pat Carlen's (1988) research on women in prison found that many had experienced:",options:{A:"Superior education and employment opportunities to non-offending women.",B:"Cumulative disadvantages — class deal (poverty, poor education, unemployment) and gender deal (abuse, failed marriages, loss of children to care) both collapsed, leaving crime as a rational adaptation when both mainstream deals had failed them.",C:"Similar backgrounds to male prisoners, undermining gender-specific explanations.",D:"Strong family ties that paradoxically increased rather than decreased offending."},correct:"B"}
+    },
+    {
+      id:"SCRI-07",
+      stem:"Which best describes the 'dark figure of crime'?",
+      options:{A:"The number of crimes committed at night that go undetected.",B:"The gap between actual crime committed and crime recorded in official statistics — caused by non-reporting (victim doesn't report), non-recording (police don't record), and crimes without individual victims (drug use, corporate crime).",C:"Crimes committed by unknown offenders whose identity cannot be established.",D:"The proportion of crimes that are never solved."},
+      correct:"B",tag:"MC-SCRI-07",
+      scaffold:"Dark figure sources: (1) Non-reporting — shame, fear of reprisal, distrust of police, belief police won't help (domestic violence, rape massively under-reported). (2) Non-recording — police discretion, not all reported crimes are recorded. (3) No victim to report — drug offences, corporate crime, consensual illegal acts. Alternative measures: British Crime Survey/CSEW (victim survey — captures unreported crime but misses victimless crime and homicide). Self-report studies (Bowling & Graham). Each measure has own biases. Exam: always question which measure of crime is being used.",
+      reforge:{stem:"The Crime Survey for England and Wales (CSEW) consistently records more crime than police recorded crime statistics. The most important reason is:",options:{A:"CSEW interviewers encourage people to exaggerate their experiences.",B:"The CSEW captures crimes that victims experienced but did not report to police — eliminating the non-reporting element of the dark figure. This means the CSEW, while not perfect, gives a more complete picture of victimisation than police records alone.",C:"Police recorded crime only covers violent crime, not property crime.",D:"CSEW methodology counts attempted crimes as actual crimes."},correct:"B"}
+    },
+    {
+      id:"SCRI-08",
+      stem:"Which explanation of ethnicity and crime would a neo-Marxist sociologist most endorse?",
+      options:{A:"Biological differences between ethnic groups cause differential crime rates.",B:"Cultural factors within minority communities cause higher rates of offending.",C:"Over-representation of ethnic minorities in crime statistics reflects structural racism in the CJS — differential policing (stop and search), prosecution and sentencing — combined with socio-economic disadvantage rooted in historical racism and class position.",D:"Crime rates are identical across all ethnic groups and statistics are fabricated."},
+      correct:"C",tag:"MC-SCRI-08",
+      scaffold:"Ethnicity and crime: Black people 3× more likely to be stopped and searched (Home Office 2022); over-represented in prison. Explanations: (1) Neo-Marxist (Hall, Gilroy) — racialisation of crime; institutional racism (Macpherson); historical context of colonialism. (2) Left realism (Lea & Young) — relative deprivation and marginalisation in context of racism → higher actual offending. (3) Victim surveys — some support for higher victimisation rates of ethnic minorities (not just CJS bias). Multiple causes: structural disadvantage + discriminatory policing = complex interaction. Avoid biological or cultural deficit explanations.",
+      reforge:{stem:"Gilroy's 'The Myth of Black Criminality' (1982) argues that high rates of Black crime in official statistics are:",options:{A:"Explained by cultural factors within Black communities.",B:"A social construction — the product of racist policing and media representation that criminalises Black political resistance, rather than evidence of higher actual offending rates. Crime becomes a form of collective resistance to racism and colonial oppression.",C:"Accurately reflecting higher rates of offending caused by socio-economic deprivation.",D:"Explained by the concentration of Black communities in high-crime urban areas."},correct:"B"}
+    }
+  ]
+};
+
+BANKS["SOC-STR"] = {
+  label: "Stratification & Differentiation",
+  color: "#6b1d1d",
+  questions: [
+    {
+      id:"SSTR-01",
+      stem:"Which best describes the functionalist explanation of social stratification?",
+      options:{A:"Stratification is inevitable because some people are born more talented than others.",B:"Davis and Moore (1945) argue stratification is a functional necessity — unequal rewards (pay, prestige) are needed to motivate talented individuals to fill the most functionally important and demanding positions in society.",C:"Stratification serves the interests of the ruling class by legitimising inequality.",D:"Stratification is created by discrimination and should be eliminated."},
+      correct:"B",tag:"MC-SSTR-01",
+      scaffold:"Davis & Moore functional theory of stratification: (1) Some positions more important to society's survival. (2) These positions require scarce talent and long training. (3) High rewards attract best people to these roles. (4) Stratification motivates performance. Tumin's critique: (1) How do we know which positions are truly 'most important'? (2) Rewards reflect power to demand high wages, not functional importance. (3) Stratification wastes talent (prevents talented working-class from accessing top positions). (4) Low-paid roles (nursing, care work) often highly important. Contrast with Marxist view: stratification serves ruling class, not society as a whole.",
+      reforge:{stem:"Tumin's critique of Davis and Moore most effectively challenges the theory by arguing:",options:{A:"Stratification is necessary but poorly designed in modern societies.",B:"High salaries in top positions reflect the power of occupational groups to restrict entry and demand high rewards rather than the functional importance of those roles — and stratification actively wastes talent by preventing able working-class individuals from accessing high positions regardless of ability.",C:"All positions in society are equally important and should be equally rewarded.",D:"Davis and Moore's theory only applies to pre-industrial societies."},correct:"B"}
+    },
+    {
+      id:"SSTR-02",
+      stem:"Which correctly distinguishes between 'life chances' and 'lifestyle' in Weber's theory of stratification?",
+      options:{A:"Life chances refer to cultural preferences; lifestyle refers to income.",B:"Life chances are the probable outcomes individuals can expect — education, health, income, housing — shaped by their market position. Lifestyle refers to patterns of consumption and cultural practices associated with status groups, which may cut across economic class boundaries.",C:"Weber argued life chances and lifestyle were determined entirely by class position.",D:"Weber used these terms to describe the same concept in different contexts."},
+      correct:"B",tag:"MC-SSTR-02",
+      scaffold:"Weber's three-component stratification: Class (economic — market position, life chances), Status (social honour, lifestyle, consumption patterns — status groups), Party (political power). Key departure from Marx: these dimensions are analytically separate and don't always align (e.g. a lottery winner has class position without status; a professor has status without high income). Life chances (Lebenschancen) — probability of accessing valued social goods (education, health, housing). Lifestyle — consumption choices that signal status group membership. Weber is more multidimensional than Marx.",
+      reforge:{stem:"A university professor earns £55,000 but is invited to dinner parties with business executives earning £500,000. This is best explained by:",options:{A:"The professor's income placing them in the same economic class as the executives.",B:"Weber's concept of status — the professor's educational credentials and cultural capital confer social honour and status group membership that partially transcends their lower income, allowing social interaction across class boundaries.",C:"The executives being poor judges of social hierarchy.",D:"Income being the only determinant of social position in modern societies."},correct:"B"}
+    },
+    {
+      id:"SSTR-03",
+      stem:"Pierre Bourdieu's concept of 'cultural capital' refers to:",
+      options:{A:"The amount of money spent on cultural activities such as museums and theatre.",B:"Non-financial social assets — knowledge, skills, education, tastes and cultural behaviours — that confer advantages in education and the labour market, and are largely transmitted through family socialisation rather than formal schooling.",C:"The economic value of cultural industries such as film and music.",D:"The ability of ethnic minorities to maintain their cultural traditions in mainstream society."},
+      correct:"B",tag:"MC-SSTR-03",
+      scaffold:"Bourdieu's capital forms: Economic capital (money, assets), Cultural capital (3 forms: embodied — dispositions, taste, accent; institutionalised — qualifications; objectified — cultural objects like books, art), Social capital (networks, connections). Habitus: durable dispositions acquired through upbringing — structures how people perceive and act in the world. Field: social arena with its own rules. Education: reproduces inequality by rewarding middle-class cultural capital while devaluing working-class culture. Exam: link Bourdieu to educational underachievement (cultural deprivation criticism vs cultural capital as reproduction mechanism).",
+      reforge:{stem:"A working-class student with strong grades but no knowledge of art, classical music or current affairs performs poorly in a university interview. Bourdieu would explain this as:",options:{A:"The student lacking the intellectual ability for university.",B:"The student lacking the embodied cultural capital — tastes, knowledge and cultural references — that middle-class students acquire through family socialisation and which university interviewers (themselves products of middle-class culture) unconsciously reward, reproducing class inequality through apparently 'meritocratic' selection.",C:"The student having an unfortunate interview experience unrelated to class.",D:"Universities deliberately discriminating against working-class applicants."},correct:"B"}
+    },
+    {
+      id:"SSTR-04",
+      stem:"The 'embourgeoisement thesis' (Goldthorpe and Lockwood, Affluent Worker studies) argued:",
+      options:{A:"That the working class was gradually becoming bourgeois in terms of both income and attitudes.",B:"That despite rising incomes, the affluent workers they studied retained distinctly working-class attitudes and social networks — challenging the thesis. Higher wages had produced instrumental collectivism (joining unions for economic benefit) not middle-class individualism.",C:"That class differences had entirely disappeared in post-war Britain.",D:"That the working class was becoming more politically radical as wages rose."},
+      correct:"B",tag:"MC-SSTR-04",
+      scaffold:"Embourgeoisement thesis (1950s-60s): rising working-class affluence → adoption of middle-class values → weakening class consciousness → end of class politics. Goldthorpe & Lockwood (Luton car workers, 1960s): workers HAD higher incomes but remained working class in identity, voting, social networks. Instrumental attitude to work (means to an end, not intrinsically rewarding). Privatised home-centredness. Rejected embourgeoisement but also rejected traditional proletarian community. 'New' working class: neither old nor middle class. Contemporary relevance: 'Red Wall' voters 2019 — working-class Brexit voters suggest class-party dealignment continues.",
+      reforge:{stem:"Which evidence from contemporary Britain most directly challenges the view that class is no longer relevant?",options:{A:"The fact that many working-class people now own smartphones.",B:"Persistent correlations between social class (measured by NS-SEC), educational attainment, health outcomes, life expectancy and political attitudes — people born into professional classes are disproportionately represented in universities, professions and political leadership, suggesting class remains a powerful structural determinant of life chances.",C:"The increase in women in senior professional roles.",D:"The existence of social mobility between classes in both directions."},correct:"B"}
+    },
+    {
+      id:"SSTR-05",
+      stem:"Feminist sociologists argue that the stratification literature has traditionally suffered from 'the problem of women.' What does this mean?",
+      options:{A:"Women are more difficult to survey than men, making stratification research less reliable.",B:"Traditional stratification research classified family class position by the male head of household's occupation, rendering women's own class position, labour market participation and experience of inequality invisible.",C:"Women occupy all class positions equally, making stratification research unnecessarily gendered.",D:"Feminist sociology argues class is less important than gender in determining life chances."},
+      correct:"B",tag:"MC-SSTR-05",
+      scaffold:"The 'problem of women' (Oakley, Abbott): (1) Traditional measures (registrar general's scale, Hope-Goldthorpe) classified families by male occupation — women's class derived from husband/father. (2) Ignored women's own labour market position. (3) Invisible women problem: women's experience of inequality (domestic labour, glass ceiling, gender pay gap, pink-collar work) not captured. Responses: Stanworth argued for women's own class assignment; Goldthorpe defended conventional unit (families). Resolution: modern NS-SEC (2001) can be applied to individuals. Also: intersectionality (Crenshaw) — class, gender and ethnicity interact; must be studied together.",
+      reforge:{stem:"Intersectionality (Crenshaw) adds to feminist analysis of stratification by arguing:",options:{A:"Gender is more important than class or ethnicity in determining inequality.",B:"Class, gender, ethnicity, disability and other axes of inequality intersect and interact — a Black working-class woman's experience of inequality is not simply the sum of racism + sexism + class disadvantage but a qualitatively different, compounded experience that single-axis analysis misses.",C:"Sociologists should focus on gender inequality before addressing other forms.",D:"Intersectionality shows that class inequalities no longer exist in post-industrial societies."},correct:"B"}
+    },
+    {
+      id:"SSTR-06",
+      stem:"Which best describes the difference between absolute and relative poverty?",
+      options:{A:"Absolute poverty is measured in pounds; relative poverty is a percentage.",B:"Absolute poverty is the lack of resources needed for physical survival (food, shelter, clean water). Relative poverty is defined in relation to the living standards prevailing in a society — typically income below 60% of median household income in the UK.",C:"Absolute poverty only occurs in developing countries; relative poverty is a developed-world concept.",D:"They are different terms for the same concept — both measure the same thing."},
+      correct:"B",tag:"MC-SSTR-06",
+      scaffold:"Absolute poverty (Rowntree, 1899): subsistence threshold — minimum for physical efficiency. Relative poverty (Townsend, 1979): inability to participate in customary life of society — not just survival but social inclusion. UK measure: 60% median income. Debate: Gordon et al (consensual approach) — items majority consider necessities; if you can't afford these, you're poor. Criticisms of relative poverty: always exists unless income perfectly equal; doesn't capture absolute deprivation. Global: World Bank $2.15/day absolute (2022 revised) for extreme global poverty. 700m+ in extreme poverty globally.",
+      reforge:{stem:"Peter Townsend argued that relative poverty is a more sociologically meaningful concept than absolute poverty. His main argument was:",options:{A:"Absolute poverty has been eliminated in all developed countries.",B:"Poverty should be understood in social terms — people are poor when they lack the resources to participate in the normal activities and social customs of their society. A family who cannot afford a birthday cake for their child's party or a coat for winter is poor relative to social expectations, even if their basic survival needs are technically met.",C:"Relative poverty is easier to measure than absolute poverty.",D:"The concept of absolute poverty was invented by governments to undercount the poor."},correct:"B"}
+    },
+    {
+      id:"SSTR-07",
+      stem:"The New Right perspective on poverty and the welfare state argues:",
+      options:{A:"Poverty is caused by structural inequalities in capitalism that must be reformed.",B:"Generous welfare benefits create a 'culture of dependency' (Murray — underclass) — reducing incentives to work, trapping the poor in welfare and undermining family structure and individual responsibility. The welfare state perpetuates rather than alleviates poverty.",C:"The welfare state should be expanded to eliminate poverty completely.",D:"Poverty is caused by employers paying insufficient wages and should be solved through minimum wage legislation."},
+      correct:"B",tag:"MC-SSTR-07",
+      scaffold:"New Right (Murray, Mead): underclass — behaviourally distinct group whose poverty results from welfare dependency, lone parenthood, criminality. Solutions: reduce benefits, enforce conditionality, restore 'traditional' family values. Critics: (1) Blames poor for structural causes; (2) Evidence weak (Nordic countries have generous welfare AND low poverty); (3) Murray's underclass concept applied selectively to ethnic minorities (Bagguley & Mann); (4) Ignores low wages, housing costs as causes. Social democratic response: poverty = structural, welfare reduces it. Feminist critique: policies punish lone mothers, most of whom are working or seeking work.",
+      reforge:{stem:"Which evidence would MOST effectively challenge Murray's 'culture of dependency' thesis?",options:{A:"The existence of long-term unemployed people who have never worked.",B:"Nordic countries (Denmark, Sweden) have more generous welfare states than the UK yet lower poverty rates and higher employment — suggesting generous welfare does not automatically create dependency, and that structural factors (education, childcare, wage levels) matter more than benefit levels in determining work incentives.",C:"The fact that some poor people do not claim all the benefits they are entitled to.",D:"Surveys showing that most poor people aspire to be wealthy."},correct:"B"}
+    },
+    {
+      id:"SSTR-08",
+      stem:"Max Weber identified social closure as a mechanism by which stratified groups maintain their position. Which modern example best illustrates this?",
+      options:{A:"Wealthy people spending money on luxury goods.",B:"Professional bodies (such as the BMA or Law Society) controlling entry to their profession through qualifications, licensing requirements and codes of conduct — restricting supply of qualified practitioners to maintain income and status.",C:"Governments setting minimum wages to protect low-income workers.",D:"Trade unions negotiating higher wages for their members."},
+      correct:"B",tag:"MC-SSTR-08",
+      scaffold:"Weber's social closure: groups monopolise resources by restricting access to outsiders. Exclusionary closure: high-status groups exclude others (professional licensing, old boy networks, inherited wealth). Usurpationary closure: lower-status groups claim resources from those above (trade unions — collective bargaining to capture more of the surplus). Parkin (1979) extended Weber. Modern examples: medicine (GMC licensing), law (SRA/Bar Council), Oxbridge alumni networks, public school networks, property ownership restricting housing access. Links to: social capital (Bourdieu) — networks as a form of capital used in closure strategies.",
+      reforge:{stem:"An aspiring surgeon must complete 5+ years of medical school, 2 years of foundation training and specialist training before independent practice. A Weberian analysis would interpret this as:",options:{A:"Evidence of meritocracy — only the most capable reach senior positions.",B:"Social closure — the medical profession uses lengthy training requirements and GMC licensing to restrict entry, limiting the supply of doctors and maintaining both the income and social status of the profession, whether or not all requirements are strictly necessary for competent practice.",C:"Purely functional necessity — all stages of training are essential for patient safety.",D:"Evidence of educational credentialism with no economic effects."},correct:"B"}
+    }
+  ]
+};
+
+// Update soc subject
+(function() {
+  var s = SUBJECTS["soc"];
+  if (s) { s.banks = ["SOC-EDU","SOC-MET","SOC-CRI","SOC-STR"]; s.sub = "AQA 7192 — Education, Methods, Crime & Stratification"; }
+})();
+
 BANKS["GEO-TEC"] = {
   label: "Tectonic Hazards",
   color: "#0f766e",
@@ -1581,6 +1731,156 @@ BANKS["GEO-TEC"] = {
 };
 
 BANKS["ECON-1.1"].questions.find(function(q){return q.id==="SD-01";}).correct="D";
+
+// ===== GEOGRAPHY: HUMAN GEOGRAPHY =====
+
+BANKS["GEO-HUM"] = {
+  label: "Globalisation",
+  color: "#0f766e",
+  questions: [
+    {
+      id:"GHU-01",
+      stem:"A student defines globalisation as 'the spread of American culture worldwide.' Why is this too narrow?",
+      options:{A:"American culture has not spread globally — only its products have.",B:"Globalisation encompasses the increasing integration of economies, cultures, people and ideas worldwide through trade, investment, migration and technology — cultural flows are multidirectional, not simply American-led.",C:"Globalisation only refers to economic processes, not culture.",D:"American cultural spread is actually the correct definition of globalisation."},
+      correct:"B",tag:"MC-GHU-01",
+      scaffold:"Globalisation dimensions: economic (trade, FDI, MNCs), cultural (media, food, fashion), political (IGOs — UN, WTO, IMF), demographic (migration). Driven by: TNC expansion, containerisation, ICT revolution, trade liberalisation (WTO), deregulation of financial markets. Cultural flows are complex — South Korean K-pop, Japanese anime, Nigerian Nollywood all spread globally. 'Americanisation' is a contested concept — homogenisation vs hybridisation debate (Robertson's 'glocalisation').",
+      reforge:{stem:"McDonald's adapts its menu in India (no beef burgers) and sells McAloo Tikki. This is an example of:",options:{A:"Cultural imperialism — McDonald's imposes American food culture.",B:"Glocalisation — a global brand adapts its product to local cultural preferences, combining global reach with local responsiveness.",C:"Trade liberalisation — reduced tariffs allow McDonald's to enter new markets.",D:"Demographic globalisation — migration brings American food to India."},correct:"B"}
+    },
+    {
+      id:"GHU-02",
+      stem:"Which factor has most directly enabled the rapid expansion of transnational corporations (TNCs) since the 1980s?",
+      options:{A:"Rising tariffs making domestic production more expensive than overseas production.",B:"The ICT revolution and containerisation — reducing communication costs and transport times, making global production chains economically viable.",C:"Government subsidies given exclusively to TNCs operating in multiple countries.",D:"The decline of trade unions globally making labour cheaper in all countries simultaneously."},
+      correct:"B",tag:"MC-GHU-02",
+      scaffold:"TNC expansion drivers: containerisation (1950s-60s) slashed shipping costs by ~90%. ICT revolution — real-time coordination of global supply chains. Financial deregulation — easier capital movement. Trade liberalisation (GATT/WTO). Export processing zones in LEDCs. Newly industrialising countries offering educated, low-cost labour. Result: spatial division of labour — R&D in HICs, manufacturing in LICs/MICs.",
+      reforge:{stem:"Apple designs products in California but manufactures in China through Foxconn. This spatial division of labour reflects:",options:{A:"Apple's preference for Chinese cultural values in product design.",B:"The comparative advantage of different locations — high-skill design work where wages reflect expertise, manufacturing where lower wages and large-scale facilities reduce unit costs, with ICT enabling coordination across this global production network.",C:"US government regulations preventing Apple from manufacturing domestically.",D:"China's superior design capabilities compared to the USA."},correct:"B"}
+    },
+    {
+      id:"GHU-03",
+      stem:"The 'development gap' refers to:",
+      options:{A:"The difference in educational achievement between urban and rural students.",B:"The widening or narrowing difference in economic development and living standards between more developed and less developed countries, measured by indicators such as GDP per capita, HDI and life expectancy.",C:"The gap between what governments spend on development and what is needed.",D:"The difference in aid received by different developing countries."},
+      correct:"B",tag:"MC-GHU-03",
+      scaffold:"Development gap measures: GDP per capita; HDI (income + education + life expectancy); GII (gender inequality); MPI (multidimensional poverty). The gap is uneven — China and South Korea narrowed it rapidly through export-led growth; others have struggled. Globalisation debate: has it narrowed the gap overall but increased inequality within countries? Dependency theory (Frank) vs modernisation theory (Rostow).",
+      reforge:{stem:"China's GDP per capita rose from ~$200 in 1990 to over $12,000 by 2023. This most directly challenges which theory?",options:{A:"Modernisation theory — China did not follow Rostow's stages.",B:"Dependency theory (Frank) — which argued developing countries are locked into underdevelopment by their relationship with the developed world. China's integration into the global economy accelerated development rather than perpetuating dependency.",C:"The demographic transition model.",D:"The Clark-Fisher model of economic development."},correct:"B"}
+    },
+    {
+      id:"GHU-04",
+      stem:"A student argues that all migration is economically motivated. Which evidence most effectively challenges this?",
+      options:{A:"Some migrants are very wealthy and don't need economic reasons.",B:"Forced migration (refugees fleeing conflict, environmental disasters, persecution) and family reunion migration are driven primarily by safety, fear and social ties rather than economic calculation — Ravenstein's laws describe voluntary economic migration but miss this complexity.",C:"All migration produces negative economic outcomes for host countries.",D:"Economic migration only occurs between countries at similar levels of development."},
+      correct:"B",tag:"MC-GHU-04",
+      scaffold:"Migration types: economic (voluntary — seeking better wages, Ravenstein's laws), forced (involuntary — refugees, IDPs, climate), social (family reunion), political (asylum seekers). Lee's push-pull model: push factors (conflict, poverty) + pull factors (jobs, safety) - intervening obstacles. In 2023, 108m+ forcibly displaced globally (UNHCR) — largest number ever, driven by conflict not economics.",
+      reforge:{stem:"By 2050, climate change may displace up to 1.2 billion people (IOM estimate). These people are best classified as:",options:{A:"Economic migrants — they are moving to improve their standard of living.",B:"Environmental/climate migrants — displacement is forced by environmental change (rising sea levels, extreme drought, flooding) rather than economic choice, though the 1951 UN Refugee Convention does not formally recognise 'climate refugees', creating a legal protection gap.",C:"Refugees under the 1951 UN Refugee Convention.",D:"Internal migrants — all climate displacement occurs within national borders."},correct:"B"}
+    },
+    {
+      id:"GHU-05",
+      stem:"Rostow's modernisation theory argues that all countries develop through five stages. What is the most significant critique of this model?",
+      options:{A:"Rostow assumed all countries would eventually become communist.",B:"The model is linear, Eurocentric and based on Western historical experience — it ignores colonial legacies, assumes all countries have the same starting conditions, and suggests the only development path is replicating Western capitalism.",C:"Rostow's model correctly predicted the development of all Asian economies.",D:"The model is too complex to apply to real countries."},
+      correct:"B",tag:"MC-GHU-05",
+      scaffold:"Rostow (1960) — 5 stages: traditional society, preconditions for take-off, take-off, drive to maturity, high mass consumption. Critiques: Eurocentric — assumes Western development = universal template; ignores colonialism (Frank's dependency theory); doesn't explain NICs taking different paths (South Korea: state-led export growth); linear but some countries leapfrog stages (mobile banking in Kenya skipped fixed-line era). Written during Cold War as counter to communist development models.",
+      reforge:{stem:"Frank's dependency theory most directly contradicts Rostow because it argues:",options:{A:"Economic development is impossible without democracy.",B:"The development of rich countries was achieved through, and continues to depend on, the underdevelopment of poor countries — the global capitalist system structurally prevents LDC development rather than eventually delivering it as Rostow predicts.",C:"All countries will eventually reach Rostow's fifth stage if they follow correct policies.",D:"Geography, not economics, determines development outcomes."},correct:"B"}
+    },
+    {
+      id:"GHU-06",
+      stem:"Which best describes the role of the World Trade Organisation (WTO)?",
+      options:{A:"It provides loans to developing countries to fund infrastructure projects.",B:"It is a UN agency that distributes foreign aid to the poorest nations.",C:"It is an intergovernmental organisation that establishes rules for international trade, provides a forum for trade negotiations, and resolves trade disputes between member countries.",D:"It sets global minimum wages to prevent exploitation of workers in developing countries."},
+      correct:"C",tag:"MC-GHU-06",
+      scaffold:"International organisations: WTO (trade rules, dispute resolution — 164 members). IMF (financial stability, emergency loans with conditions). World Bank (development loans, poverty reduction). UN (political coordination, SDGs, peacekeeping). Students often confuse these. WTO criticism: rules favour HICs (agricultural subsidies protected in USA/EU while LDCs pressured to liberalise); Doha Development Round (2001–ongoing) has stalled over agriculture.",
+      reforge:{stem:"A developing country argues that WTO rules requiring it to reduce import tariffs while the EU maintains agricultural subsidies are unfair. This reflects:",options:{A:"Developing countries want higher tariffs on all goods.",B:"'Free trade' rules are applied asymmetrically — HICs secured protections for sensitive sectors in earlier GATT rounds while later agreements required LDCs to liberalise, creating an unlevel playing field that may disadvantage LDC development.",C:"The WTO has no rules on agricultural subsidies.",D:"Developing countries benefit more from free trade than developed countries."},correct:"B"}
+    },
+    {
+      id:"GHU-07",
+      stem:"The 'brain drain' describes:",
+      options:{A:"The negative effects of social media on young people's concentration.",B:"The emigration of highly skilled, educated workers from developing countries to wealthier nations, depriving source countries of the human capital needed for development.",C:"The flow of financial capital from developed to developing countries.",D:"The loss of traditional knowledge as rural areas become urbanised."},
+      correct:"B",tag:"MC-GHU-07",
+      scaffold:"Brain drain examples: African doctors and nurses working in UK/USA, depriving health systems of skilled workers. Philippines — significant nurse and carer emigration. India — IT professionals to Silicon Valley. Counter-arguments: remittances ($831bn globally in 2022, exceeding foreign aid); skills returned if migrants come back; 'brain circulation'. Exam requires balance — not straightforwardly negative.",
+      reforge:{stem:"India loses many IT graduates to the USA, but receives $100bn+ in annual remittances. The net effect of this emigration on India is best described as:",options:{A:"Purely negative — loss of skills outweighs all financial benefits.",B:"Complex and contested — remittances provide significant income for families and foreign exchange for India, but loss of skilled workers may slow domestic technology development. The net effect depends on the rate of brain circulation, domestic job opportunities, and the proportion of remittances invested vs consumed.",C:"Purely positive — remittances always benefit developing economies more than skills.",D:"Irrelevant — international migration has no significant economic impact."},correct:"B"}
+    },
+    {
+      id:"GHU-08",
+      stem:"Which statement most accurately evaluates the impact of TNCs on host developing countries?",
+      options:{A:"TNCs always benefit developing countries by creating jobs and transferring technology.",B:"TNCs always exploit developing countries through low wages and environmental damage.",C:"TNC impacts are mixed and context-dependent — FDI, employment and technology transfer are potential benefits, but profit repatriation, poor working conditions, environmental damage, and crowding out of local firms are potential costs. The balance depends on host country regulations and bargaining power.",D:"TNC impacts are identical in all developing countries regardless of governance."},
+      correct:"C",tag:"MC-GHU-08",
+      scaffold:"TNC case studies — positive: Samsung in South Korea (technology transfer, export growth); Unilever in India (rural supply chains, employment). Negative: Nike/Gap supply chain conditions in Bangladesh (Rana Plaza 2013); Shell in Niger Delta (environmental damage); tax avoidance through transfer pricing. Key variable: host country governance and regulatory capacity. Singapore attracted TNCs with strict regulations → high-quality FDI.",
+      reforge:{stem:"Ethiopia attracted TNC garment manufacturers by offering low wages and tax breaks. Critics argue this is a 'race to the bottom.' What does this mean?",options:{A:"Ethiopian workers are running races to demonstrate their work ethic.",B:"Countries compete for FDI by reducing wages, labour standards and environmental regulations, creating a downward spiral where the 'winner' is the country offering TNCs the worst conditions for workers — short-term investment at the cost of long-term development quality.",C:"Ethiopian manufacturing quality is inferior to other countries.",D:"Tax breaks always reduce long-term economic development."},correct:"B"}
+    }
+  ]
+};
+
+BANKS["GEO-URB"] = {
+  label: "Urban Environments",
+  color: "#0d6b63",
+  questions: [
+    {
+      id:"GUR-01",
+      stem:"Urban regeneration differs from urban redevelopment primarily because:",
+      options:{A:"Regeneration only applies to residential areas; redevelopment applies to commercial zones.",B:"Regeneration involves improving and revitalising existing urban areas while retaining and building on existing communities and structures. Redevelopment involves clearing and rebuilding, often displacing existing communities.",C:"Regeneration is funded by private companies; redevelopment is always government-funded.",D:"Regeneration is only used in LEDCs; redevelopment occurs in HICs."},
+      correct:"B",tag:"MC-GUR-01",
+      scaffold:"Regeneration vs redevelopment: redevelopment = 'slum clearance' model (1950s-60s) — demolish and rebuild, often displacing communities. Regeneration = refurbish, improve, retain communities. UK examples: London Docklands (1980s — property-led), Castlefield Manchester (heritage-led), Ancoats Manchester (gradual, community-involved). Tension: regeneration can also displace through gentrification even without demolition.",
+      reforge:{stem:"The 1980s London Docklands Development Corporation (LDDC) regeneration is often criticised for:",options:{A:"Being too slow to attract private investment.",B:"Property-led regeneration that prioritised office space and luxury housing over the needs of existing working-class dockland communities, who were largely displaced rather than benefiting from the billions invested.",C:"Relying entirely on public funding rather than private investment.",D:"Failing to create any jobs in the regenerated area."},correct:"B"}
+    },
+    {
+      id:"GUR-02",
+      stem:"Gentrification in urban areas is best described as:",
+      options:{A:"The deliberate government policy of moving wealthy people into deprived areas.",B:"The process by which higher-income residents move into a previously lower-income urban neighbourhood, improving the physical environment but often displacing original residents through rising rents and property prices.",C:"The conversion of industrial buildings into cultural spaces.",D:"The movement of young people from cities to rural areas."},
+      correct:"B",tag:"MC-GUR-02",
+      scaffold:"Gentrification process: artists/creatives move in first (low rents) → area becomes fashionable → developers refurbish → prices and rents rise → original residents displaced. Examples: Brixton, Hackney (London); Digbeth (Birmingham); Northern Quarter (Manchester). Arguments for: physical improvement, reduced crime. Arguments against: displacement of established communities, loss of affordable housing, cultural erasure. Ruth Glass coined the term (1964).",
+      reforge:{stem:"A student says gentrification always improves urban areas. What is the most effective counter-argument?",options:{A:"Gentrification never improves physical environments.",B:"While gentrification often improves the built environment and reduces crime, it can displace long-established working-class and minority communities who cannot afford rising rents, destroying social networks and concentrating poverty elsewhere rather than reducing it.",C:"Gentrification only occurs in London.",D:"Gentrification always reduces property values."},correct:"B"}
+    },
+    {
+      id:"GUR-03",
+      stem:"Urban heat islands (UHIs) are created primarily because:",
+      options:{A:"Cities are located in naturally warmer geographic locations than surrounding areas.",B:"Urban surfaces (concrete, tarmac, roofing) absorb and retain heat; lack of vegetation reduces evapotranspiration cooling; waste heat from buildings, vehicles and industry — making cities typically 1-3°C warmer than surrounding rural areas.",C:"Air pollution traps heat inside cities in a physical bubble.",D:"Global warming affects urban areas more than rural areas."},
+      correct:"B",tag:"MC-GUR-03",
+      scaffold:"UHI causes: (1) Dark surfaces (low albedo) absorb solar radiation. (2) Concrete/tarmac store heat and release slowly at night. (3) Buildings trap longwave radiation (canyon effect). (4) Lack of vegetation → less evapotranspiration. (5) Anthropogenic heat from transport, industry, HVAC. Effects: higher energy demand; increased flash flooding; health impacts. Mitigation: green roofs, urban trees, permeable paving, light-coloured surfaces.",
+      reforge:{stem:"A city council plants 10,000 urban trees as part of a climate adaptation strategy. Which UHI mechanism does this primarily address?",options:{A:"Reducing anthropogenic heat from vehicles.",B:"Increasing evapotranspiration and shading — trees cool surrounding air through water vapour release and by blocking solar radiation from reaching heat-absorbing surfaces, directly countering key UHI mechanisms.",C:"Reducing building density in the urban canyon.",D:"Increasing albedo by reflecting solar radiation."},correct:"B"}
+    },
+    {
+      id:"GUR-04",
+      stem:"'Shrinking cities' describes:",
+      options:{A:"Urban areas that are demolishing buildings to create green space.",B:"Cities experiencing population decline, often due to deindustrialisation or migration, leading to vacancy, dereliction and fiscal stress — requiring different planning responses to growth-focused cities.",C:"Cities that are reducing their administrative boundaries.",D:"Any city with a population under 500,000."},
+      correct:"B",tag:"MC-GUR-04",
+      scaffold:"Shrinking cities examples: Detroit (automotive decline, 1.8m → 600k); Youngstown Ohio (steel); Leipzig Germany (post-reunification); Middlesbrough UK. Challenges: vacancy and dereliction, reduced tax base, ageing infrastructure, concentrated poverty. Youngstown 2010 Plan — accepted shrinkage, converted vacant land to green space rather than pursuing growth. Students should avoid assuming all cities face growth pressure.",
+      reforge:{stem:"Detroit's planners in 2010 proposed converting large areas of vacant residential land to agriculture and green space rather than redeveloping for housing. Why was this considered innovative?",options:{A:"Detroit had no alternative because agriculture is more profitable than housing.",B:"It represented an honest acceptance of demographic decline — 'rightsizing' the city to match its actual reduced population rather than maintaining costly infrastructure for a population that no longer exists.",C:"Federal law required Detroit to convert vacant land to agriculture.",D:"The plan was not innovative — all US cities followed this approach."},correct:"B"}
+    },
+    {
+      id:"GUR-05",
+      stem:"Which best describes 'sustainable urban development'?",
+      options:{A:"Urban development that uses only renewable building materials.",B:"Urban development that meets the needs of the present urban population without compromising the ability of future generations to meet their needs — balancing economic development, social equity and environmental protection.",C:"Urban development funded by sustainable finance mechanisms.",D:"Urban development in cities with populations over 1 million."},
+      correct:"B",tag:"MC-GUR-05",
+      scaffold:"Sustainable urban development (Brundtland 1987 adapted): three pillars — economic (productive, efficient land use), social (affordable housing, accessible services, reduced inequality), environmental (low carbon, biodiversity, waste reduction). Examples: Freiburg Germany (60%+ public transport/cycling); BedZED London (zero-carbon housing); Curitiba Brazil (BRT system, green spaces). Tension: economic growth vs environmental limits; affordability vs sustainability premium.",
+      reforge:{stem:"Freiburg, Germany is often cited as a model sustainable city. Which combination of features justifies this?",options:{A:"High GDP per capita and large financial services sector.",B:"High rates of cycling (30%+ modal share), extensive tram network, solar energy adoption, compact mixed-use development, and citizen participation in planning — combining low-carbon transport, renewable energy and inclusive governance.",C:"Zero population growth and no new construction since 1990.",D:"100% renewable electricity grid and no private car ownership."},correct:"B"}
+    },
+    {
+      id:"GUR-06",
+      stem:"Squatter settlements develop in developing-world cities primarily because:",
+      options:{A:"Governments deliberately create zones for informal housing on the urban periphery.",B:"Rapid rural-urban migration outpaces the supply of formal affordable housing — migrants occupy marginal land informally as the only available option, creating self-built communities that may improve incrementally over time.",C:"Squatter settlements are a traditional form of housing in tropical climates.",D:"Property rights do not exist in developing countries, so all housing is informal."},
+      correct:"B",tag:"MC-GUR-06",
+      scaffold:"Informal settlements: Dharavi Mumbai (1m people, 2.1km²); Kibera Nairobi; Rocinha Rio de Janeiro. Causes: rapid urbanisation exceeding housing supply, land speculation, weak planning systems, rural poverty as push factor. Turner (1969): given security of tenure, communities improve their own homes. Solutions: sites and services, slum upgrading (improve in situ rather than clear), land tenure. Forced clearance often counterproductive.",
+      reforge:{stem:"A government clears a major informal settlement to build luxury apartments. Evidence suggests this approach:",options:{A:"Always improves living conditions for former residents.",B:"Typically displaces former residents to other informal areas — without land tenure or affordable formal housing options, cleared residents recreate informal settlements elsewhere. In-situ upgrading with tenure security is generally more effective.",C:"Is the most cost-effective approach to improving urban housing quality.",D:"Is required by UN SDG 11 on sustainable cities."},correct:"B"}
+    },
+    {
+      id:"GUR-07",
+      stem:"The Burgess concentric zone model suggests that:",
+      options:{A:"All cities have identical land use patterns regardless of context.",B:"Cities grow outward in concentric rings from a CBD — with zones of transition (industry/immigration), working-class housing, middle-class suburbs, and commuter zones successively further out, based on 1920s Chicago.",C:"Industrial areas are always located on the urban periphery.",D:"Housing quality increases toward the city centre in all cities."},
+      correct:"B",tag:"MC-GUR-07",
+      scaffold:"Urban models: Burgess (concentric zones, 1925 — Chicago); Hoyt (sector model — sectors extend along transport routes); Mann (UK adaptation — prevailing SW wind pushes high-status housing southwest); Multiple Nuclei (Harris & Ullman — several nodes). Criticisms of Burgess: based on 1920s US city; doesn't fit European cities (Paris: higher-status housing near centre); ignores physical geography; static model. Useful as starting point if treated critically.",
+      reforge:{stem:"The Burgess model is least applicable to which of the following cities?",options:{A:"A 1920s American industrial city like Chicago.",B:"Paris, where the most expensive housing is clustered in central arrondissements close to the CBD — contradicting Burgess's prediction that higher-status housing is in outer zones.",C:"A city that grew rapidly through industrialisation.",D:"A North American city built on flat terrain with a clear CBD."},correct:"B"}
+    },
+    {
+      id:"GUR-08",
+      stem:"Which statement best evaluates UK enterprise zones as a regeneration tool?",
+      options:{A:"Enterprise zones have uniformly succeeded in regenerating deprived urban areas.",B:"Evidence is mixed — enterprise zones can attract investment and create jobs, but often displace economic activity from nearby areas rather than generating genuinely new activity, and benefits may not reach the most deprived local residents.",C:"Enterprise zones have always failed and should be abandoned.",D:"Enterprise zones only work in cities with populations over 500,000."},
+      correct:"B",tag:"MC-GUR-08",
+      scaffold:"Enterprise zones (UK, 1981 — Thatcher; revived 2011): offer tax breaks (business rates relief, capital allowances), simplified planning. Successes: Canary Wharf, MediaCityUK Salford. Criticisms: displacement effect (businesses relocate for tax benefits — net new jobs less than claimed); benefits accrue to businesses not existing residents; 'trickle down' may not reach most deprived. Need to distinguish gross from net job creation.",
+      reforge:{stem:"A new enterprise zone attracts 5,000 jobs. Critics argue this overstates the economic benefit. Why?",options:{A:"Enterprise zones can only attract small businesses.",B:"Many jobs may have relocated from nearby areas seeking tax advantages, meaning the net increase in regional employment is less than the headline figure — genuine additionality must be distinguished from displacement.",C:"Only manufacturing jobs count as genuine economic benefits.",D:"5,000 jobs is too small to have any regional economic impact."},correct:"B"}
+    }
+  ]
+};
+
+// Update geo subject
+(function() {
+  var g = SUBJECTS["geo"];
+  if (g) { g.banks = ["GEO-TEC","GEO-HUM","GEO-URB"]; g.sub = "Edexcel A — Tectonic, Globalisation & Urban"; }
+})();
 
 // ===== BUSINESS, CHEMISTRY, CRIMINOLOGY =====
 
@@ -4048,6 +4348,85 @@ BANKS["POL-3"] = {
     }
   ]
 };
+
+// ===== POLITICS: US & COMPARATIVE =====
+
+BANKS["POL-4"] = {
+  label: "US Politics & Comparative",
+  color: "#1a2f5e",
+  questions: [
+    {
+      id:"PUSC-01",
+      stem:"The US Constitution is described as 'codified' and 'entrenched'. What do these terms mean in combination?",
+      options:{A:"The Constitution is written down and stored in a government archive.",B:"It is written in a single authoritative document (codified) and is deliberately difficult to amend — requiring a two-thirds majority in both chambers of Congress plus ratification by three-quarters of states — making it resistant to change by simple legislative majorities (entrenched).",C:"The Constitution is enforced by the military and cannot be changed at all.",D:"Codified means it was created by the Founding Fathers; entrenched means it predates independence."},
+      correct:"B",tag:"MC-PUSC-01",
+      scaffold:"US Constitution features: codified (single document, 1787); entrenched (Article V — supermajority to amend: 2/3 both Houses + 3/4 states; or 2/3 states can call a convention); supreme (Supremacy Clause — federal law + Constitution > state law); separation of powers (executive, legislative, judicial — checks and balances). Only 27 amendments, last in 1992. Contrast UK: uncodified, unentrenched, parliamentary sovereignty. Article VI Supremacy Clause makes the Constitution 'the supreme law of the land'.",
+      reforge:{stem:"A US state passes a law requiring prayer in public schools. A citizen challenges this under the First Amendment. The Supreme Court can:",options:{A:"Advise Congress to change the law but has no power to strike it down.",B:"Strike down the state law under judicial review — if the law violates the First Amendment's Establishment Clause (Congress shall make no law respecting an establishment of religion), the Supreme Court can declare it unconstitutional and void it, exercising the power established in Marbury v Madison (1803).",C:"Only rule on federal laws, not state laws.",D:"Refer the matter to Congress for a new constitutional amendment."},correct:"B"}
+    },
+    {
+      id:"PUSC-02",
+      stem:"The US Senate and House of Representatives have different roles in legislation. Which correctly identifies a power held exclusively by the Senate?",
+      options:{A:"Initiating revenue bills (bills raising taxes).",B:"Ratifying treaties by a two-thirds majority, confirming presidential appointments (Cabinet, federal judges, ambassadors) by simple majority, and conducting impeachment trials.",C:"Impeaching the President by a simple majority vote.",D:"Overriding a presidential veto by a simple majority."},
+      correct:"B",tag:"MC-PUSC-02",
+      scaffold:"Bicameral differences: House exclusive powers — initiate revenue bills, initiate impeachment, elect President if Electoral College deadlocked. Senate exclusive powers — ratify treaties (2/3), confirm appointments (simple majority), conduct impeachment trial (2/3 to convict). Both needed for legislation. Senate = 2 per state (100 total); House = proportional to population (435). Senate longer terms (6 years), staggered — only 1/3 up for election every 2 years (more insulated from public opinion). Filibuster (Senate only — 60 votes needed to end debate via cloture).",
+      reforge:{stem:"The Senate rejected the SALT II arms control treaty in 1979 despite being negotiated by President Carter. This illustrates which constitutional principle?",options:{A:"The President's power as Commander-in-Chief overrides the Senate on military matters.",B:"Separation of powers and checks and balances — the Senate's exclusive treaty ratification power (2/3 majority required) acts as a check on presidential foreign policy, preventing the executive from binding the nation to international agreements without legislative consent.",C:"The Senate's power to declare war on behalf of the United States.",D:"Congressional power to override presidential foreign policy decisions by simple majority."},correct:"B"}
+    },
+    {
+      id:"PUSC-03",
+      stem:"US Supreme Court justices serve for 'good behaviour' (effectively life tenure). What is the primary justification for this arrangement?",
+      options:{A:"It ensures justices are experienced — young appointees become wise over time.",B:"Lifetime tenure insulates justices from political pressure and electoral accountability, protecting judicial independence — justices can make unpopular but constitutionally correct decisions without fear of removal for political reasons.",C:"It reduces the cost of appointment proceedings.",D:"The Founding Fathers expected justices to retire young and the life expectancy was short."},
+      correct:"B",tag:"MC-PUSC-03",
+      scaffold:"Supreme Court justices: appointed by President, confirmed by Senate, serve for life (or until resignation/impeachment). Currently 9 justices (number not constitutionally fixed — FDR's 'court packing' failed 1937). Criticisms of lifetime tenure: undemocratic; one President can reshape the Court for decades (Trump appointed 3 in 4 years — Gorsuch, Kavanaugh, Barrett); justices increasingly partisan. Arguments for: judicial independence; Hamilton (Federalist 78) argued judiciary 'least dangerous branch' if independent. Marbury v Madison (1803) — established judicial review. Citizens United (2010), Dobbs (2022 — overturned Roe v Wade) show Court's political significance.",
+      reforge:{stem:"President Biden's proposal to expand the Supreme Court to 15 justices was controversial because:",options:{A:"The Constitution fixes the number of justices at 9.",B:"Court expansion could be seen as 'court packing' — using a presidential and congressional majority to add justices likely to share the President's political views, undermining the Court's independence and the principle of judicial review as a check on elected government rather than an extension of it.",C:"Only Congress can propose Supreme Court expansion, not the President.",D:"The 1869 Act permanently fixes the Court at 9 justices."},correct:"B"}
+    },
+    {
+      id:"PUSC-04",
+      stem:"Which correctly describes the main function of the Electoral College in US presidential elections?",
+      options:{A:"The Electoral College is a direct democracy mechanism where all citizens cast equal votes.",B:"It is an indirect election system in which each state is allocated electoral votes (equal to its congressional representation), with a winning candidate needing 270/538 votes. Most states use winner-takes-all, meaning the national popular vote winner can lose the presidency.",C:"The Electoral College selects presidential candidates before the general election.",D:"It is a backup system used only when the popular vote is inconclusive."},
+      correct:"B",tag:"MC-PUSC-04",
+      scaffold:"Electoral College (EC): 538 votes total (435 House + 100 Senate + 3 DC). Need 270 to win. Winner-takes-all in 48 states (Maine/Nebraska use congressional district method). Small states over-represented (Wyoming: 3 EC votes for ~580k people; California: 54 EC votes for 39m). Swing states dominate campaigns (Florida, Pennsylvania, Michigan). Popular vote/EC splits: 2000 (Gore won popular vote, Bush won EC); 2016 (Clinton won popular vote by 2.9m, Trump won EC). Arguments for EC: preserves federalism, encourages geographic breadth of campaigning. Against: undemocratic, swing state focus, small state over-representation.",
+      reforge:{stem:"In 2016, Hillary Clinton received 2.9 million more popular votes than Donald Trump but lost the presidency. This is best explained by:",options:{A:"Vote counting errors in several key states.",B:"The winner-takes-all Electoral College system — Clinton ran up large margins in California and New York but lost several large swing states (Pennsylvania, Michigan, Wisconsin) by narrow margins, meaning Trump won more Electoral College votes (306) despite fewer total votes. The EC rewards geographic distribution of votes, not total national vote share.",C:"Third-party candidates taking votes from Clinton in swing states.",D:"The Senate's role in certifying electoral vote counts."},correct:"B"}
+    },
+    {
+      id:"PUSC-05",
+      stem:"Which best describes the concept of 'bipartisanship' in US politics and why it has become rarer?",
+      options:{A:"Bipartisanship means both parties have identical policies — it has become rarer because parties have grown apart ideologically.",B:"Bipartisanship means cooperation across party lines to pass legislation — it has become rarer due to increased ideological polarisation (parties have moved further apart), the rise of the Tea Party and Freedom Caucus on the right, partisan media (Fox News, MSNBC), social media echo chambers, and the permanent campaign culture.",C:"Bipartisanship refers to both parties sharing the Presidency through rotation.",D:"Bipartisanship has increased in recent years as both parties have moderated their positions."},
+      correct:"B",tag:"MC-PUSC-05",
+      scaffold:"Polarisation: DW-NOMINATE scores show Congress has become steadily more ideologically polarised since 1970s. Few 'moderate' Republicans or Democrats remain who vote across lines. Causes: primary elections reward ideological purity (base voters more extreme); safe districts (gerrymandering); partisan media reinforcing tribalism; sorted party coalitions (Southern Democrats became Republicans post-1965 Civil Rights Act). Consequences: gridlock (government shutdowns — 2013, 2018-19); difficulty passing legislation; 'filibuster' used more aggressively; rise of executive action (Presidential orders) to bypass Congress. Compare UK: whipping system means party discipline achieved differently, but 'big tent' parties theoretically accommodate more internal diversity.",
+      reforge:{stem:"Congress failed to pass comprehensive immigration reform despite bipartisan agreement on many issues. This best illustrates:",options:{A:"Lack of public support for immigration reform.",B:"Polarisation and the difficulty of bipartisan legislation — even when senators from both parties agree on substance, partisan dynamics (primary election fear, media pressure, party leadership opposition) prevent sufficient members from crossing the aisle to achieve the 60 votes needed to overcome a Senate filibuster.",C:"The President having exclusive power over immigration policy.",D:"Immigration being constitutionally reserved to individual states."},correct:"B"}
+    },
+    {
+      id:"PUSC-06",
+      stem:"A student compares the UK Prime Minister and US President and concludes 'the President is more powerful because they have executive power.' What is missing from this analysis?",
+      options:{A:"Nothing — the President does have executive power and is more powerful.",B:"The PM is constrained by the cabinet; the President has full independence.",C:"The analysis ignores that the UK PM typically commands a parliamentary majority and can pass legislation with relative ease (via whipping), while the President faces a separated legislature that may be controlled by the opposing party, creating potential gridlock — making legislative power more constrained for Presidents than for PMs with majorities.",D:"The analysis overestimates the UK PM's power relative to the monarch."},
+      correct:"C",tag:"MC-PUSC-06",
+      scaffold:"UK PM vs US President comparison: PM advantages — fusion of powers means PM leads legislature; whipping system delivers majorities; no separation of executive/legislative. President advantages — fixed term (can't be removed by legislature except impeachment); veto power; commander-in-chief; sole executive. PM constraints — House of Lords, backbench rebellions, coalition partners, vote of no confidence. President constraints — separated Congress (may be hostile), Senate confirmation of appointments, judicial review (Supreme Court), 22nd Amendment (2-term limit), War Powers Resolution. Core comparison: PM more powerful when commanding majority; President constrained by constitutional separation of powers.",
+      reforge:{stem:"In the UK, a Prime Minister with a large majority can pass major legislation relatively quickly. Why is this harder for a US President even with their own party controlling Congress?",options:{A:"US Presidents are not allowed to propose legislation to Congress.",B:"The separation of powers means Congress is an independent institution with its own electoral mandate — individual congresspeople cannot be removed by the President and have their own constituency interests. Party discipline is weaker in the US (no equivalent of the whip system's consequences), meaning Presidents must negotiate with their own party members rather than commanding their votes.",C:"US Presidents must get approval from the Supreme Court before proposing legislation.",D:"The UK Parliament meets more frequently than the US Congress."},correct:"B"}
+    },
+    {
+      id:"PUSC-07",
+      stem:"Which correctly describes how the US Constitution's 'checks and balances' operate between the President and Congress?",
+      options:{A:"The President can dissolve Congress if it fails to pass legislation; Congress can remove the President by a simple majority vote.",B:"Congress passes legislation (both chambers); President can veto; Congress can override with two-thirds majority. Senate confirms presidential appointments; Senate ratifies treaties. Congress declares war; President commands military. Congress controls the budget; President proposes budget. Supreme Court (appointed by President, confirmed by Senate) can strike down acts of either branch.",C:"The President has unlimited executive power; Congress only has advisory functions.",D:"Checks and balances only apply to domestic policy, not foreign affairs."},
+      correct:"B",tag:"MC-PUSC-07",
+      scaffold:"Key checks — President on Congress: veto (Congress overrides by 2/3 both chambers); pocket veto; executive orders bypassing Congress; bully pulpit. Congress on President: override veto; refuse legislation; control of budget (power of purse); advice and consent (Senate); impeachment and removal (House impeaches simple majority; Senate convicts 2/3); War Powers Resolution. Courts on both: judicial review (Marbury v Madison). President on courts: appointment power. Senate on President: confirms judicial appointments. This interlocking system means significant power requires cooperation across branches.",
+      reforge:{stem:"President Obama used executive orders on immigration (DACA 2012) when Congress failed to pass reform. This illustrates:",options:{A:"Presidential overreach — Obama had no constitutional authority over immigration.",B:"The President using executive action to work around a gridlocked Congress — while legal within the executive's authority to direct enforcement priorities, it demonstrates the tension between presidential leadership and congressional power, and the limits of executive orders (which can be reversed by the next President and challenged in courts, as DACA repeatedly has been).",C:"Congress's failure to function as a democratic institution.",D:"Immigration being an area of exclusive presidential jurisdiction."},correct:"B"}
+    },
+    {
+      id:"PUSC-08",
+      stem:"Comparing the UK and US political systems, which statement about federalism vs unitarianism is most accurate?",
+      options:{A:"The UK is federal because it has devolved governments in Scotland, Wales and Northern Ireland.",B:"The USA is a federal system where states retain sovereign powers reserved to them by the 10th Amendment — states can set their own laws on many matters (education, abortion post-Dobbs, gun laws, criminal justice). The UK is a unitary state where Westminster is constitutionally sovereign, and devolution is a grant of power from the centre that Parliament could theoretically reclaim.",C:"Both the UK and USA are federal systems because both have sub-national governments.",D:"The USA is a unitary state because federal law is supreme under the Supremacy Clause."},
+      correct:"B",tag:"MC-PUSC-08",
+      scaffold:"Federalism (USA): constitutional division of power between federal and state governments. 10th Amendment — powers not delegated to federal government reserved to states. States have own constitutions, courts, criminal law, education systems. After Dobbs (2022), abortion policy returned to states — now varies from near-total bans (Texas) to full access (California). Unitarism (UK): Parliament is sovereign — devolution (Scotland Act 1998, Government of Wales Acts) is a constitutional statute but theoretically revocable. Miller cases showed UK Parliament retains sovereignty even over Brexit. Quasi-federalism debate: UK is becoming more federal in practice even if not in theory.",
+      reforge:{stem:"After Dobbs v Jackson (2022), individual US states immediately passed very different abortion laws. This is a direct consequence of:",options:{A:"Congress passing a law returning abortion regulation to states.",B:"Federalism — the Supreme Court's decision removed abortion from constitutional protection (overturning Roe v Wade) and returned the issue to state governments' reserved powers under the 10th Amendment, allowing states to legislate freely, resulting in a patchwork of laws from near-total bans to unrestricted access.",C:"The President signing an executive order on abortion rights.",D:"The Senate voting to allow states to set their own abortion laws."},correct:"B"}
+    }
+  ]
+};
+
+// Update pol subject definition
+(function() {
+  var p = SUBJECTS["pol"];
+  if (p) { p.banks = ["POL-1","POL-2","POL-3","POL-4"]; p.sub = "Edexcel 9PL0 — UK Government, Rights, Democracy & US"; }
+})();
 
 // ===== NEW BANKS: BIO-3, CHEM-3, MATH-3 =====
 
