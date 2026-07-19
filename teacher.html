@@ -678,7 +678,11 @@ function renderLogin(activeTab) {
 }
 
 function renderDashboard() {
-  var responses = dashState.responses;
+  // Filter responses to this class's subject only
+  var allResponses = dashState.responses;
+  var responses = dashState.classSubject
+    ? allResponses.filter(function(r) { return r.subject === dashState.classSubject; })
+    : allResponses;
   var students = dashState.students;
   var studentMap = {};
   students.forEach(function(s) { studentMap[s.id] = s.name; });
@@ -1359,7 +1363,10 @@ window.renderStudent = function(studentId) {
   var studentName = studentObj.display_name || studentObj.name || '';
   var extraTime = studentObj.extra_time || 0;
 
-  var studentResponses = dashState.responses.filter(function(r) { return r.student_id === studentId; });
+  var allStudentResponses = dashState.responses.filter(function(r) { return r.student_id === studentId; });
+  var studentResponses = dashState.classSubject
+    ? allStudentResponses.filter(function(r) { return r.subject === dashState.classSubject; })
+    : allStudentResponses;
   var total = studentResponses.length;
   var correct = studentResponses.filter(function(r) { return r.is_correct; }).length;
   var acc = total > 0 ? Math.round((correct / total) * 100) : 0;
