@@ -3442,38 +3442,63 @@ function restoreSession() {
         state.studentName  = sub.name;
         state.paidSubjects = sub.subjects || [];
         state.classSubject = null;
-        var saved = null;
-        try { saved = JSON.parse(localStorage.getItem('forge-student') || 'null'); } catch(e) {}
-        if (saved && saved.studentId) {
-          state.studentId    = saved.studentId;
-          state.classId      = saved.classId || null;
-          state.classSubject = saved.classSubject || null;
-        }
 
-        // Fetch extra_time using studentId + classId (readable by anon via class policies)
-        if (state.studentId && state.classId) {
-          supaGet('students', 'id=eq.' + state.studentId + '&class_id=eq.' + state.classId).then(function(rows) {
-            if (rows && rows[0]) state.extraTime = rows[0].extra_time || 0;
-            if (state.classSubject && typeof SUBJECTS !== 'undefined' && SUBJECTS[state.classSubject]) {
-              state.subject = state.classSubject;
+        // Look up ALL class enrolments for this auth user
+        var token = ForgeAuth.accessToken();
+        var authUser = ForgeAuth.currentUser();
+        if (!authUser) { checkLocalSessionCrucible(); return; }
+
+        fetch(SUPABASE_URL + '/rest/v1/students?select=id,class_id,extra_time&auth_user_id=eq.' + authUser.id + '&class_id=not.is.null', {
+          headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + (token || SUPABASE_KEY) }
+        }).then(function(r) { return r.json(); }).then(function(rows) {
+          if (!Array.isArray(rows) || rows.length === 0) {
+            // No class enrolments — use paidSubjects or show all
+            state.phase = 'subject';
+            render();
+            return;
+          }
+
+          // Get all class IDs
+          var classIds = rows.map(function(r) { return r.class_id; });
+
+          // Fetch class details to get subjects
+          fetch(SUPABASE_URL + '/rest/v1/classes?select=id,subject&id=in.(' + classIds.join(',') + ')', {
+            headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY }
+          }).then(function(r) { return r.json(); }).then(function(classes) {
+            // Build list of enrolled subjects
+            var enrolledSubjects = [];
+            classes.forEach(function(cls) {
+              if (cls.subject && enrolledSubjects.indexOf(cls.subject) === -1) {
+                enrolledSubjects.push(cls.subject);
+              }
+            });
+
+            // Store enrolled subjects for subject picker
+            state.paidSubjects = enrolledSubjects.length > 0 ? enrolledSubjects : sub.subjects || [];
+
+            // Get max extra_time across all student rows
+            var maxExtraTime = 0;
+            rows.forEach(function(r) { if ((r.extra_time || 0) > maxExtraTime) maxExtraTime = r.extra_time || 0; });
+            state.extraTime = maxExtraTime;
+
+            // Store most recent class for fallback
+            var saved = null;
+            try { saved = JSON.parse(localStorage.getItem('forge-student') || 'null'); } catch(e) {}
+            if (saved && saved.studentId) {
+              state.studentId = saved.studentId;
+              state.classId   = saved.classId || null;
+            }
+
+            if (enrolledSubjects.length === 1) {
+              // Only one subject enrolled — go straight to bank
+              state.subject = enrolledSubjects[0];
               state.phase   = 'bank';
             } else {
               state.phase = 'subject';
             }
             render();
-          }).catch(function() {
-            state.phase = 'subject';
-            render();
-          });
-        } else {
-          if (state.classSubject && typeof SUBJECTS !== 'undefined' && SUBJECTS[state.classSubject]) {
-            state.subject = state.classSubject;
-            state.phase   = 'bank';
-          } else {
-            state.phase = 'subject';
-          }
-          render();
-        }
+          }).catch(function() { state.phase = 'subject'; render(); });
+        }).catch(function() { checkLocalSessionCrucible(); });
       } else {
         checkLocalSessionCrucible();
       }
@@ -3503,18 +3528,60 @@ function checkLocalSessionCrucible() {
       state.classId      = savedSession.classId;
       state.studentName  = savedSession.studentName;
       state.classSubject = savedSession.classSubject || null;
-      // Fetch student record to get extra_time — use class_id filter which anon can read
-      supaGet('students', 'id=eq.' + state.studentId + '&class_id=eq.' + (state.classId || '')).then(function(rows) {
-        if (rows && rows[0]) {
-          state.extraTime = rows[0].extra_time || 0;
-        }
-        if (state.classSubject && typeof SUBJECTS !== 'undefined' && SUBJECTS[state.classSubject]) {
-          state.subject = state.classSubject;
-          state.phase   = 'bank';
-        } else {
-          state.phase = 'subject';
-        }
-        render();
+
+      // Fetch student record for extra_time
+      supaGet('students', 'id=eq.' + state.studentId + (state.classId ? '&class_id=eq.' + state.classId : '')).then(function(rows) {
+        if (rows && rows[0]) state.extraTime = rows[0].extra_time || 0;
+
+        // Look up all other classes this student may be in via their name
+        // by finding all student rows with same name in classes
+        supaGet('students', 'name=eq.' + encodeURIComponent(state.studentName) + '&class_id=not.is.null').then(function(allRows) {
+          var classIds = (allRows || []).map(function(r) { return r.class_id; }).filter(Boolean);
+
+          if (classIds.length <= 1) {
+            // Only one class — proceed as before
+            if (state.classSubject && typeof SUBJECTS !== 'undefined' && SUBJECTS[state.classSubject]) {
+              state.subject = state.classSubject;
+              state.phase   = 'bank';
+            } else {
+              state.phase = 'subject';
+            }
+            render();
+            return;
+          }
+
+          // Multiple classes — fetch subjects
+          fetch(SUPABASE_URL + '/rest/v1/classes?select=id,subject&id=in.(' + classIds.join(',') + ')', {
+            headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY }
+          }).then(function(r) { return r.json(); }).then(function(classes) {
+            var enrolledSubjects = [];
+            classes.forEach(function(cls) {
+              if (cls.subject && enrolledSubjects.indexOf(cls.subject) === -1) enrolledSubjects.push(cls.subject);
+            });
+            state.paidSubjects = enrolledSubjects;
+
+            // Max extra_time across all student rows
+            var maxET = 0;
+            (allRows || []).forEach(function(r) { if ((r.extra_time||0) > maxET) maxET = r.extra_time||0; });
+            if (maxET > state.extraTime) state.extraTime = maxET;
+
+            if (enrolledSubjects.length === 1) {
+              state.subject = enrolledSubjects[0];
+              state.phase   = 'bank';
+            } else {
+              state.phase = 'subject';
+            }
+            render();
+          }).catch(function() { state.phase = 'subject'; render(); });
+        }).catch(function() {
+          if (state.classSubject && typeof SUBJECTS !== 'undefined' && SUBJECTS[state.classSubject]) {
+            state.subject = state.classSubject;
+            state.phase   = 'bank';
+          } else {
+            state.phase = 'subject';
+          }
+          render();
+        });
       }).catch(function() {
         state.phase = 'subject';
         render();
