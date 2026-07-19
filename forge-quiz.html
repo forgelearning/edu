@@ -4896,12 +4896,12 @@ function renderSubjects(){
             }).then(function(r) { return r.json(); }).then(function(studentRows) {
               if (!Array.isArray(studentRows) || studentRows.length === 0) return;
               studentRows.forEach(function(sr) {
-                // Update responses for this subject that either have no class_id OR have a different class_id
-                // This handles the case where student joined Economics first, then Criminology
-                fetch(SUPABASE_URL + '/rest/v1/responses?student_id=eq.' + sr.id + subjectFilter, {
+                // Only update class_id on responses for this subject that have no class_id yet
+                // Never change student_id — that would break other classes
+                fetch(SUPABASE_URL + '/rest/v1/responses?student_id=eq.' + sr.id + subjectFilter + '&class_id=is.null', {
                   method: 'PATCH',
                   headers: userAuthHdrs,
-                  body: JSON.stringify({ class_id: cls.id, student_id: studentId })
+                  body: JSON.stringify({ class_id: cls.id })
                 }).catch(function(e) { console.error('Backfill failed:', sr.id, e); });
               });
             }).catch(function(e) { console.error('Backfill lookup failed:', e); });
