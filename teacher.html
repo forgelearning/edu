@@ -850,17 +850,46 @@ var BANK_LABELS = {
   "2.2.1":"Aggregate Demand","2.2.2":"Aggregate Supply","2.2.3":"National Income",
   "2.3.1":"Fiscal Policy","2.3.2":"Monetary Policy","2.3.3":"Supply-side Policy",
   "2.4.1":"Income Inequality","2.4.2":"Poverty","2.5.1":"Financial Markets","2.5.2":"Role of Banks","2.5.3":"Central Banks",
-  "GEO-TEC":"Tectonic Hazards","PSY-SI":"Social Influence","PSY-MEM":"Memory","PSY-ATT":"Attachment",
+  "GEO-TEC":"Tectonic Hazards",
+  "PSY-SI":"Social Influence","PSY-MEM":"Memory","PSY-ATT":"Attachment","PSY-PSY":"Psychopathology",
   "SOC-EDU":"Education","SOC-MET":"Research Methods",
-  "ECON-1.1":"Microeconomics Foundations"
+  "ECON-1.1":"Microeconomics Foundations",
+  "BUS-1":"Marketing & People","BUS-2":"Finance & Accounts","BUS-3":"Operations & Strategy",
+  "CHEM-1":"Atomic Structure & Bonding","CHEM-2":"Energetics & Redox","CHEM-3":"Organic Chemistry",
+  "BIO-1":"Cell Biology & Microscopy","BIO-2":"Transport & Enzymes","BIO-3":"Genetics & Inheritance",
+  "PHYS-1":"Mechanics & Materials","PHYS-2":"Waves & Electricity","PHYS-3":"Quantum & Nuclear",
+  "HIST-1":"Germany 1919–45","HIST-2":"Cold War Superpower Relations",
+  "LAW-1":"Criminal Law","LAW-2":"Tort Law",
+  "CRIM-1":"Crime & Deviance — Unit 1","CRIM-2":"Criminological Theories",
+  "POL-1":"UK Government & Politics","POL-2":"Rights, Pressure Groups & Judiciary",
+  "MATHS-1":"Pure Mathematics Y1","MATHS-2":"Calculus & Graphs","MATHS-3":"Statistics",
+  "DE-1":"German Language 1","DE-2":"German Language 2",
+  "FR-1":"French Language 1","FR-2":"French Language 2",
+  "CS-1":"Programming Fundamentals","CS-2":"Data Structures & Networks",
+  "RS-1":"Philosophy & Ethics","RS-2":"Applied Ethics",
+  "HSC-1":"Human Lifespan & Health","HSC-2":"Care Practice & Values"
 };
 
 // Subject → banks map (mirrors forge-quiz.html SUBJECTS)
 var SUBJECT_BANKS = {
   econ: ["ECON-1.1","2.1.1","2.1.2","2.1.3","2.1.4","2.2.1","2.2.2","2.2.3","2.3.1","2.3.2","2.3.3","2.4.1","2.4.2","2.5.1","2.5.2","2.5.3"],
   geo:  ["GEO-TEC"],
-  psych:["PSY-SI","PSY-MEM","PSY-ATT"],
-  soc:  ["SOC-EDU","SOC-MET"]
+  psych:["PSY-SI","PSY-MEM","PSY-ATT","PSY-PSY"],
+  soc:  ["SOC-EDU","SOC-MET"],
+  bus:  ["BUS-1","BUS-2","BUS-3"],
+  chem: ["CHEM-1","CHEM-2","CHEM-3"],
+  bio:  ["BIO-1","BIO-2","BIO-3"],
+  phys: ["PHYS-1","PHYS-2","PHYS-3"],
+  hist: ["HIST-1","HIST-2"],
+  law:  ["LAW-1","LAW-2"],
+  crim: ["CRIM-1","CRIM-2"],
+  pol:  ["POL-1","POL-2"],
+  maths: ["MATH-1","MATH-2","MATH-3"],
+  german:["DE-1","DE-2"],
+  french:["FR-1","FR-2"],
+  cs:   ["CS-1","CS-2"],
+  rs:   ["RS-1","RS-2"],
+  hsc:  ["HSC-1","HSC-2"]
 };
 
 function dueBadge(dateStr) {
