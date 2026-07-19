@@ -177,13 +177,21 @@ function getSubjectForBank(bankKey) {
   return 'unknown';
 }
 
-// ── RESPONSE LOGGING WITH RACE-CONDITION GUARD ──────────────────
-// If studentId isn't set yet (e.g. first question answered before
-// ensurePaidStudentId resolves), buffer the log and flush it once
-// the ID arrives. This prevents responses disappearing on new trials.
-var _pendingLogs = [];
-
-function _doLogResponse(row) {
+function logResponse(q, selectedKey, isCorrect, isReforge, reforgeCorrect) {
+  if (!state.studentId) return;
+  var row = {
+    student_id: state.studentId,
+    class_id: state.classId,
+    question_id: isReforge ? q.id + '-RF' : q.id,
+    bank: state.bank,
+    subject: getSubjectForBank(state.bank),
+    selected_option: selectedKey,
+    is_correct: isCorrect,
+    misconception_tag: isCorrect ? null : (q.tag || null),
+    reforge_attempted: isReforge || false,
+    reforge_correct: isReforge ? reforgeCorrect : null
+  };
+  // Use auth token for trial/paid students so RLS policies pass correctly
   var token = (state.isPaid || state.isTrial) ? ForgeAuth.accessToken() : null;
   if (token) {
     fetch(SUPABASE_URL + '/rest/v1/responses', {
@@ -195,45 +203,10 @@ function _doLogResponse(row) {
         'Prefer': 'return=minimal'
       },
       body: JSON.stringify(row)
-    }).catch(function() {
-      // Auth write failed — retry with anon key as fallback
-      supa.insert('responses', row);
-    });
+    }).catch(function(e) { console.error('logResponse failed:', e); });
   } else {
     supa.insert('responses', row);
   }
-}
-
-function _flushPendingLogs() {
-  if (!state.studentId || _pendingLogs.length === 0) return;
-  var toFlush = _pendingLogs.slice();
-  _pendingLogs = [];
-  toFlush.forEach(function(row) {
-    row.student_id = state.studentId; // fill in now that we have it
-    row.class_id   = state.classId;
-    _doLogResponse(row);
-  });
-}
-
-function logResponse(q, selectedKey, isCorrect, isReforge, reforgeCorrect) {
-  var row = {
-    student_id: state.studentId,  // may be null — handled below
-    class_id: state.classId,
-    question_id: isReforge ? q.id + '-RF' : q.id,
-    bank: state.bank,
-    subject: getSubjectForBank(state.bank),
-    selected_option: selectedKey,
-    is_correct: isCorrect,
-    misconception_tag: isCorrect ? null : (q.tag || null),
-    reforge_attempted: isReforge || false,
-    reforge_correct: isReforge ? reforgeCorrect : null
-  };
-  if (!state.studentId) {
-    // Buffer — studentId is still resolving (race condition guard)
-    _pendingLogs.push(row);
-    return;
-  }
-  _doLogResponse(row);
 }
 
 // ===== DATA =====
@@ -3504,12 +3477,123 @@ BANKS["PSY-PATH"] = {
 };
 
 // Update subject definitions to include new banks
-SUBJECTS["law"].banks = ["LAW-1","LAW-2"];
-SUBJECTS["law"].sub = "AQA — Criminal & Tort Law";
+SUBJECTS["law"].banks = ["LAW-1","LAW-2","LAW-3"];
+SUBJECTS["law"].sub = "AQA — Criminal, Tort & Contract Law";
 SUBJECTS["crim"].banks = ["CRIM-1","CRIM-2"];
 SUBJECTS["crim"].sub = "WJEC Criminology — Units 1 & 2";
 SUBJECTS["psych"].banks = ["PSY-SI","PSY-MEM","PSY-ATT","PSY-PATH"];
 SUBJECTS["psych"].sub = "AQA 7182 — Papers 1 & 2";
+
+BANKS["LAW-3"] = {
+  label: "Contract Law",
+  color: "#1e3a8a",
+  questions: [
+    {
+      id:"CON-01",
+      stem:"An offer is made in a shop window: 'Laptop — £299.' A customer enters and says 'I accept.' The shop refuses to sell. Which is correct?",
+      options:{
+        A:"The shop has breached a valid contract — displaying goods is a valid offer.",
+        B:"The customer can sue for breach — the price tag is a binding promise.",
+        C:"The display is an invitation to treat, not an offer. The customer's statement is the offer, which the shop is free to reject.",
+        D:"A contract is formed because the price and goods are clearly identified."
+      },
+      correct:"C",tag:"MC-CON-01",
+      scaffold:"Invitation to treat (ITT) vs offer: shop displays, advertisements and catalogues are ITTs (Fisher v Bell; Pharmaceutical Society v Boots). They invite customers to make offers, which the seller may accept or reject. This protects sellers from being forced to sell at incorrect prices. The customer's 'I accept' is actually an offer to buy — no contract until the shop accepts it.",
+      reforge:{stem:"An advert reads: 'First 10 callers get a free iPhone.' The 11th caller demands one. Is there a contract?",options:{A:"Yes — adverts are always binding offers.",B:"No — the advert is an ITT. However, if it is specific enough (clear terms, limited offerees), it can constitute an offer (Carlill v Carbolic Smoke Ball). Here, the 10-caller limit makes it a specific offer — so callers 1–10 have a contract but caller 11 does not.",C:"Yes — any price promise creates a binding contract.",D:"No — verbal contracts are never enforceable."},correct:"B"}
+    },
+    {
+      id:"CON-02",
+      stem:"A posts an acceptance letter on Monday. The offeror emails to revoke the offer on Tuesday. The letter arrives Wednesday. Is there a contract?",
+      options:{
+        A:"No — the revocation by email is faster and therefore takes priority.",
+        B:"No — acceptance by post is only valid on receipt.",
+        C:"Yes — under the postal rule, acceptance takes effect when posted (Monday), before revocation was communicated (Tuesday).",
+        D:"Yes — but only if the offeror actually reads the letter."
+      },
+      correct:"C",tag:"MC-CON-02",
+      scaffold:"Postal rule (Adams v Lindsell): acceptance by post is complete when the letter is posted, not when received. So contract formed Monday. Revocation is only effective when communicated to offeree — email Tuesday is after Monday's posting. Exceptions: postal rule doesn't apply if it's unreasonable to use post, or if the offer excludes it. Revocation must reach the offeree before they post acceptance.",
+      reforge:{stem:"An offeror sends a revocation letter on Friday. The offeree posts acceptance on Saturday before the revocation arrives on Monday. Is there a contract?",options:{A:"No — revocation was sent first.",B:"Yes — the postal rule means acceptance (Saturday) precedes communication of revocation (Monday). A valid contract exists.",C:"No — you cannot accept an offer once revocation has been sent.",D:"It depends whether the offeror intended the postal rule to apply."},correct:"B"}
+    },
+    {
+      id:"CON-03",
+      stem:"D promises to pay his nephew £100 if he stops smoking for one month. The nephew stops. D refuses to pay, claiming there is no consideration. Is D correct?",
+      options:{
+        A:"Yes — family promises are never enforceable.",
+        B:"Yes — giving up something harmful is not legal consideration.",
+        C:"No — the nephew provided consideration by giving up a legal right (to smoke). This is sufficient detriment to support the promise.",
+        D:"No — but only if the promise was made in writing."
+      },
+      correct:"C",tag:"MC-CON-03",
+      scaffold:"Consideration: something of value given by each party. It need not benefit the promisor — it is sufficient that the promisee suffers a detriment. Giving up a legal right (even smoking) counts (Hamer v Sidway, US authority accepted in principle in English law). Past consideration is no consideration (Re McArdle). Consideration must be sufficient (real value in law) but need not be adequate (equal in market value).",
+      reforge:{stem:"A builder finishes a job, then the client promises a bonus for 'excellent work.' Can the builder enforce the bonus?",options:{A:"Yes — the excellent work is sufficient consideration.",B:"No — this is past consideration. The work was already completed before the bonus was promised, so there is no fresh consideration to support the new promise (Re McArdle).",C:"Yes — verbal bonus promises are always binding.",D:"No — bonuses are never legally enforceable."},correct:"B"}
+    },
+    {
+      id:"CON-04",
+      stem:"A student writes: 'All terms in a contract must be expressly agreed by both parties.' Why is this incomplete?",
+      options:{
+        A:"It is correct — only express terms form part of a contract.",
+        B:"It ignores implied terms — terms inserted by statute (e.g. Consumer Rights Act 2015), by custom, or by the courts to give business efficacy.",
+        C:"It ignores the parol evidence rule, which prevents any written terms from being added.",
+        D:"It ignores that verbal contracts cannot contain express terms."
+      },
+      correct:"B",tag:"MC-CON-04",
+      scaffold:"Contract terms: express (stated by parties, oral or written) and implied. Implied by statute: Consumer Rights Act 2015 (goods must be of satisfactory quality, fit for purpose, as described). Implied by courts: business efficacy test (The Moorcock) — necessary to make contract work; officious bystander test — so obvious it goes without saying. Implied by custom: trade usage in a particular market. Students often ignore implied terms entirely.",
+      reforge:{stem:"A consumer buys a laptop described as 'suitable for video editing.' It crashes when editing. Which implied term is most relevant?",options:{A:"The laptop must be of satisfactory quality — implied by the Consumer Rights Act 2015.",B:"The laptop must be fit for the particular purpose made known to the seller — implied by s.9 Consumer Rights Act 2015 (satisfactory quality) and s.10 (fit for purpose). The description 'suitable for video editing' triggers fitness for purpose.",C:"There are no implied terms in consumer contracts.",D:"Only express written terms apply to electronic goods."},correct:"B"}
+    },
+    {
+      id:"CON-05",
+      stem:"Which correctly distinguishes a condition from a warranty in contract law?",
+      options:{
+        A:"Conditions are written terms; warranties are verbal terms.",
+        B:"A condition is a minor term; breach gives the innocent party the right to damages only. A warranty is a major term; breach allows termination and damages.",
+        C:"A condition is a major term going to the root of the contract; breach entitles the innocent party to terminate and claim damages. A warranty is a minor term; breach gives a right to damages only.",
+        D:"There is no legal distinction — all contract terms have identical remedies."
+      },
+      correct:"C",tag:"MC-CON-05",
+      scaffold:"Conditions vs warranties: condition = so fundamental that breach deprives innocent party of the whole benefit (Poussard v Spiers — opera singer failed to appear, replaced; this was a condition). Warranty = less important term; breach gives damages but not termination (Bettini v Gye — singer missed rehearsals only; warranty breach). Innominate terms: classified by consequences of breach rather than in advance (Hong Kong Fir Shipping).",
+      reforge:{stem:"A tour operator's contract states that a hotel pool 'will be open throughout the stay.' The pool closes for 2 days for repairs. Which type of term is this most likely to be?",options:{A:"A condition — the pool was promised, so breach allows termination.",B:"A warranty or innominate term — the pool closure is a minor inconvenience. Breach gives a right to damages but is unlikely to justify termination of the entire holiday contract.",C:"Not a contract term — verbal promises about facilities are unenforceable.",D:"A condition only if the customer specifically requested the pool in writing."},correct:"B"}
+    },
+    {
+      id:"CON-06",
+      stem:"An exclusion clause is printed on the back of a car park ticket. A car is damaged. The owner claims the clause doesn't apply. Which argument is strongest?",
+      options:{
+        A:"Exclusion clauses in car parks are always void.",
+        B:"The clause was incorporated because the ticket was given before parking began.",
+        C:"The clause may not be incorporated if reasonable notice was not given before or at the time of contracting — not after (Olley v Marlborough Court).",
+        D:"Exclusion clauses only apply to written contracts signed by both parties."
+      },
+      correct:"C",tag:"MC-CON-06",
+      scaffold:"Incorporation of exclusion clauses: (1) By signature — signing binds you even if unread (L'Estrange v Graucob). (2) By notice — must be given before or at the time of contract, not after (Olley — notice in hotel room after key handed over, too late). (3) By course of dealing — if parties have contracted on same terms before. Also UCTA 1977 and Consumer Rights Act 2015: exclusion of liability for negligence causing death/personal injury is void; other clauses subject to reasonableness test.",
+      reforge:{stem:"A hotel guest signs a registration form containing an exclusion clause. The guest later claims they didn't read it. Is the clause binding?",options:{A:"No — you are only bound by terms you have actually read.",B:"Yes — a signature incorporates all terms in the document whether read or not (L'Estrange v Graucob), unless the clause was misrepresented.",C:"No — hotel contracts cannot include exclusion clauses.",D:"It depends on whether the clause was in bold type."},correct:"B"}
+    },
+    {
+      id:"CON-07",
+      stem:"Which of the following is the correct test for remoteness of damage in contract law?",
+      options:{
+        A:"The defendant is liable for all losses that follow naturally from the breach, however unforeseeable.",
+        B:"Losses must be reasonably foreseeable at the time of the tort — the Wagon Mound test.",
+        C:"Losses must either arise naturally from the breach or be within the reasonable contemplation of both parties at the time of contracting as a probable consequence — Hadley v Baxendale.",
+        D:"The claimant must prove the defendant intended the loss to occur."
+      },
+      correct:"C",tag:"MC-CON-07",
+      scaffold:"Hadley v Baxendale (1854): two limbs. Limb 1 — losses arising naturally from the breach (normal consequence). Limb 2 — losses in reasonable contemplation of both parties at time of contracting as a probable consequence of breach (special circumstances must have been communicated). Victoria Laundry v Newman Industries: lost normal profits recoverable (limb 1); exceptional government contracts not recoverable (special, not communicated). Contrast with tort: Wagon Mound (reasonable foreseeability at time of tort).",
+      reforge:{stem:"A courier loses a package containing a unique prototype. The sender didn't mention its value. The courier argues they're only liable for standard parcel rates. Who is correct?",options:{A:"The sender — all loss from breach is recoverable.",B:"The courier — under Hadley v Baxendale limb 2, the exceptional value of the prototype was not communicated at the time of contracting, so it was not in reasonable contemplation. Only normal parcel loss is recoverable.",C:"Neither — couriers are never liable for lost packages.",D:"The sender — the courier should have asked about the contents."},correct:"B"}
+    },
+    {
+      id:"CON-08",
+      stem:"Which best describes the remedy of specific performance in contract law?",
+      options:{
+        A:"A court order requiring the defendant to pay a fixed penalty for breach.",
+        B:"A discretionary equitable remedy ordering the defendant to perform their contractual obligations — typically awarded where damages would be inadequate, such as contracts for unique goods or land.",
+        C:"A remedy available as of right to any innocent party in a breach of contract case.",
+        D:"A remedy that sets aside the contract and restores both parties to their pre-contract position."
+      },
+      correct:"B",tag:"MC-CON-08",
+      scaffold:"Specific performance: equitable, discretionary (court won't always grant it). Available where damages inadequate — land (every piece unique: Beswick v Beswick), rare goods. NOT available for: personal service contracts (can't force employment), contracts requiring constant supervision, where claimant has unclean hands. Contrast with rescission (sets contract aside — misrepresentation remedy) and injunction (restraining order). Damages are the primary remedy in contract — expectation loss (put in position as if contract performed) or reliance loss.",
+      reforge:{stem:"A buyer contracts to purchase a painting by a deceased artist. The seller refuses to deliver. Why might specific performance be appropriate here?",options:{A:"Because the seller breached a written contract.",B:"Because the painting is unique — no substitute is available, so damages (money) would not adequately compensate the buyer for the loss of this specific, irreplaceable item.",C:"Because specific performance is always awarded for art contracts.",D:"Because the buyer has already paid."},correct:"B"}
+    }
+  ]
+};
 
 // ===== NEW BANKS: HIST-2, POL-2, CS-2 =====
 
@@ -3849,10 +3933,121 @@ BANKS["CS-2"] = {
 // Update subject definitions
 SUBJECTS["hist"].banks = ["HIST-1","HIST-2"];
 SUBJECTS["hist"].sub = "AQA — Germany 1919–45 & Cold War";
-SUBJECTS["pol"].banks = ["POL-1","POL-2"];
-SUBJECTS["pol"].sub = "Edexcel 9PL0 — UK Government & Rights";
+SUBJECTS["pol"].banks = ["POL-1","POL-2","POL-3"];
+SUBJECTS["pol"].sub = "Edexcel 9PL0 — UK Government, Rights & Democracy";
 SUBJECTS["cs"].banks = ["CS-1","CS-2"];
 SUBJECTS["cs"].sub = "AQA 7517 — Programming & Systems";
+
+BANKS["POL-3"] = {
+  label: "Political Parties, Voting & Democracy",
+  color: "#1e3a5f",
+  questions: [
+    {
+      id:"POL-17",
+      stem:"A student describes the Conservative Party as 'always supporting free markets and minimal state intervention.' Why is this historically incomplete?",
+      options:{
+        A:"The Conservative Party has always supported nationalisation.",
+        B:"Traditional conservatism (One Nation, Macmillan) accepted a mixed economy and welfare state — the free-market New Right approach (Thatcher) was a significant ideological shift, not a constant position.",
+        C:"The Conservative Party has never supported any form of state intervention.",
+        D:"Free market economics is a left-wing position in UK politics."
+      },
+      correct:"B",tag:"MC-POL-08",
+      scaffold:"Conservative ideology has evolved: Traditional conservatism — pragmatism, organic change, One Nation (Disraeli, Macmillan) — accepted post-war consensus (NHS, mixed economy). New Right Thatcherism (1979–90) — neo-liberal economics (free markets, privatisation) combined with neo-conservative social policy (strong state, law and order). Cameron's modernisation — compassionate conservatism, accepting NHS. Students must avoid treating any party's ideology as fixed.",
+      reforge:{stem:"Which pair correctly matches a Conservative leader to their dominant ideological tendency?",options:{A:"Thatcher — One Nation conservatism; Cameron — New Right.",B:"Macmillan — New Right; Thatcher — One Nation.",C:"Thatcher — New Right (neo-liberalism + neo-conservatism); Macmillan — One Nation (mixed economy, welfare state acceptance).",D:"Both Thatcher and Macmillan supported identical economic policies."},correct:"C"}
+    },
+    {
+      id:"POL-18",
+      stem:"Social democrats within the Labour Party traditionally differ from democratic socialists on which key issue?",
+      options:{
+        A:"Social democrats reject the welfare state; democratic socialists support it.",
+        B:"Social democrats accept capitalism but seek to reform it through redistribution and regulation. Democratic socialists seek more fundamental transformation of the economic system, including public ownership.",
+        C:"Social democrats support electoral politics; democratic socialists reject elections entirely.",
+        D:"There is no meaningful distinction between the two traditions."
+      },
+      correct:"B",tag:"MC-POL-09",
+      scaffold:"Labour ideology spectrum: Democratic socialism (Corbyn wing) — public ownership, wealth redistribution, challenge to capitalist structures. Social democracy (Blair, Starmer) — accept market economy but regulate it, use tax revenue for public services, reduce inequality within capitalism. Third Way (Blair) — embraced markets, PFI, public-private partnerships. Key tension: how far to reform vs transform. Exam often asks about ideological divisions within parties — don't treat Labour as monolithic.",
+      reforge:{stem:"New Labour under Blair is best described as:",options:{A:"Democratic socialist — public ownership and wealth redistribution were central.",B:"Third Way social democracy — accepting free markets while investing in public services, rejecting both Thatcherism and traditional socialism.",C:"Liberal — Blair's policies mirrored the Liberal Democrats.",D:"New Right — Blair adopted Thatcher's economic policies wholesale."},correct:"B"}
+    },
+    {
+      id:"POL-19",
+      stem:"Which factor does academic research most consistently identify as the strongest predictor of UK voting behaviour?",
+      options:{
+        A:"Newspaper readership — voters follow the editorial line of their paper.",
+        B:"Age — older voters consistently favour the Conservatives; younger voters Labour, and this has strengthened since 2017.",
+        C:"Gender — women always vote Labour; men always vote Conservative.",
+        D:"Religion — church attendance determines party preference."
+      },
+      correct:"B",tag:"MC-POL-10",
+      scaffold:"Voting behaviour factors: Age has become the strongest cleavage (replacing class post-1997). 2019 election: under-25s voted 56% Labour, over-65s 62% Conservative. Class dealignment (weakening class-vote link since 1970s). Other factors: education (graduates more Labour since 2017), region (North/Wales Labour; South/rural Conservative), ethnicity (BAME voters disproportionately Labour). Valence voting: competence and leadership matter more than ideology. Don't claim one factor is always decisive — context and election matters.",
+      reforge:{stem:"The 2019 general election saw many traditional Labour-voting working-class seats in the Midlands and North vote Conservative for the first time. Which model of voting behaviour best explains this?",options:{A:"Partisan alignment — voters always support the same party.",B:"Valence voting combined with issue voting — voters judged Labour's leadership (Corbyn) negatively and prioritised 'Get Brexit Done' over traditional class-based loyalty, suggesting class dealignment.",C:"Primacy model — early-life voting decisions determined the outcome.",D:"Rational choice — voters calculated Conservative economic policy would benefit them most."},correct:"B"}
+    },
+    {
+      id:"POL-20",
+      stem:"A student argues: 'The 2016 Brexit referendum showed that referendums are a good way to resolve major constitutional questions.' What is the strongest counter-argument?",
+      options:{
+        A:"Referendums are illegal under the UK constitution.",
+        B:"The 2016 result showed referendums can be divisive, produce a narrow and contested result on a complex question, and create a 'tyranny of the majority' that ignores minority rights and regional variation — Scotland and Northern Ireland voted Remain.",
+        C:"Referendums should only be used for local government issues.",
+        D:"The 2016 referendum was invalid because turnout was below 75%."
+      },
+      correct:"B",tag:"MC-POL-11",
+      scaffold:"Referendums — arguments for: direct democracy, clear mandate, bypass party splits (1975, 2016), legitimate major constitutional change. Arguments against: oversimplify complex issues to binary choice; campaigns dominated by misinformation; advisory but treated as binding; divisive (52/48 not a clear mandate); ignore regional variation; risk tyranny of majority over minorities; Prime Ministers use them for partisan advantage (Cameron). Brexit referendum illustrates both — high turnout legitimacy but deep division and contested implementation.",
+      reforge:{stem:"Which argument SUPPORTS the use of referendums in a parliamentary democracy?",options:{A:"They always produce decisive and unambiguous results.",B:"They allow direct democratic participation on major constitutional issues that transcend normal party lines, providing a popular mandate that Parliament alone cannot easily claim.",C:"They reduce the influence of party leaders on policy.",D:"They are required by the UK constitution for any major change."},correct:"B"}
+    },
+    {
+      id:"POL-21",
+      stem:"The term 'participation crisis' in UK politics refers to:",
+      options:{
+        A:"Too many people standing as candidates, overloading the electoral system.",
+        B:"A decline in traditional forms of political participation (voting, party membership) alongside a rise in newer forms (protests, petitions, social media activism), raising questions about democratic health.",
+        C:"The inability of minority ethnic groups to stand as candidates.",
+        D:"A constitutional crisis caused by low turnout in general elections making results illegitimate."
+      },
+      correct:"B",tag:"MC-POL-12",
+      scaffold:"Participation crisis evidence: general election turnout fell from 77% (1992) to 59% (2001) — lowest since 1918; party membership collapsed (Labour 400k→177k by 2007, then rose under Corbyn); trust in politicians declined (expenses scandal). Counter-evidence: 2016 referendum 72%; 2019 election 67%; rise of single-issue groups; 38 Degrees petitions; Extinction Rebellion; social media political engagement. Debate: is this a crisis of formal participation or a shift to new forms?",
+      reforge:{stem:"Which piece of evidence would MOST challenge the idea that there is a participation crisis in UK democracy?",options:{A:"Falling party membership figures since the 1950s.",B:"The 2016 Brexit referendum achieved 72% turnout and the 2014 Scottish independence referendum 84% — suggesting citizens engage strongly when they feel a vote genuinely matters.",C:"Declining trust in MPs following the expenses scandal.",D:"The fall in trade union membership since the 1980s."},correct:"B"}
+    },
+    {
+      id:"POL-22",
+      stem:"Proportional representation (PR) electoral systems are criticised primarily for:",
+      options:{
+        A:"Producing large majorities that ignore smaller parties.",
+        B:"Giving too much power to minority parties in coalition negotiations, potentially allowing a party with 10% of votes to dictate policy, and producing weak, unstable coalition governments.",
+        C:"Always delivering the same party to power regardless of the vote share.",
+        D:"Being unconstitutional under the Human Rights Act."
+      },
+      correct:"B",tag:"MC-POL-13",
+      scaffold:"PR systems — advantages: more proportional outcome, more parties represented, fewer wasted votes, coalition governments may reflect broader opinion. Disadvantages: coalition instability (Italy, Israel); small parties gain disproportionate influence in coalition bargaining; weaker constituency link (closed list PR); voters may not get the government they want (hung parliaments). FPTP advantages: strong single-party government, clear accountability, strong constituency MP link. AV, STV, d'Hondt — know the different PR variants and where used in UK.",
+      reforge:{stem:"Germany uses a mixed-member proportional system. A small party wins 8% of the vote and ends up in coalition government, reportedly 'punching above its weight.' This illustrates which criticism of PR?",options:{A:"PR always excludes small parties.",B:"In coalition bargaining, small parties can leverage their 'kingmaker' position to extract policy concessions disproportionate to their vote share, giving minority views outsized influence over government.",C:"PR produces too many wasted votes.",D:"PR systems always produce right-wing governments."},correct:"B"}
+    },
+    {
+      id:"POL-23",
+      stem:"Which correctly describes the role of the Electoral Commission in UK democracy?",
+      options:{
+        A:"It counts votes and declares winners in general elections.",
+        B:"It is a government department that sets election dates.",
+        C:"It is an independent body that registers parties and candidates, regulates campaign finance, sets electoral rules, and promotes public awareness of elections.",
+        D:"It is a parliamentary committee that scrutinises electoral law."
+      },
+      correct:"C",tag:"MC-POL-14",
+      scaffold:"Electoral Commission (est. 2000 Political Parties, Elections and Referendums Act): independent of government. Functions: registers political parties (preventing confusion); regulates spending limits (£19.5m per party in 2019 general election); investigates breaches (fined Vote Leave £61,000 for overspending in 2016); reports on electoral integrity; advises on electoral law reform. Returning Officers (locally appointed) actually count votes. Students often confuse these roles.",
+      reforge:{stem:"Vote Leave was fined after the 2016 Brexit referendum. Which body investigated and imposed this sanction?",options:{A:"The House of Commons Standards Committee.",B:"The Electoral Commission — which found Vote Leave had exceeded the campaign spending limit and referred the matter for prosecution.",C:"The Supreme Court.",D:"The Cabinet Office."},correct:"B"}
+    },
+    {
+      id:"POL-24",
+      stem:"'Direct democracy is superior to representative democracy.' Evaluate this claim. Which argument MOST effectively challenges it?",
+      options:{
+        A:"Direct democracy requires all citizens to vote on every issue, which is impractical in a large modern state — voters lack expertise on complex technical legislation, and permanent referendums could be dominated by well-funded campaign groups.",
+        B:"Representative democracy is superior because MPs are always more honest than ordinary citizens.",
+        C:"Direct democracy was used successfully in ancient Athens, proving it works in any context.",
+        D:"Direct democracy is superior because it removes all risk of political corruption."
+      },
+      correct:"A",tag:"MC-POL-15",
+      scaffold:"Direct democracy: citizens vote directly on decisions (referendums, citizens' assemblies, Ancient Athens). Advantages: maximises participation, eliminates representation gap, gives clear mandate. Disadvantages: impractical at scale; voters may lack expertise (complex budget decisions); susceptible to populism and manipulation; 'tyranny of majority'; costly. Representative democracy: elect representatives to decide. Advantages: experts make decisions; stable government; minority protections. Disadvantages: representation gap; safe seats; party whip. Synthesis: UK uses hybrid (representative system + occasional referendums).",
+      reforge:{stem:"Which is the strongest argument IN FAVOUR of direct democracy?",options:{A:"It always produces better policy outcomes than representative systems.",B:"It closes the representation gap — citizens directly decide on issues that affect them, increasing legitimacy and engagement, rather than delegating decisions to politicians who may act in party or personal interest.",C:"It is cheaper to run than representative democracy.",D:"It removes the need for political parties entirely."},correct:"B"}
+    }
+  ]
+};
 
 // ===== NEW BANKS: BIO-3, CHEM-3, MATH-3 =====
 
@@ -4424,8 +4619,119 @@ BANKS["BUS-3"] = {
 // Update subject definitions
 SUBJECTS["phys"].banks = ["PHYS-1","PHYS-2","PHYS-3"];
 SUBJECTS["phys"].sub = "AQA 7408 — Mechanics, Electricity & Waves";
-SUBJECTS["bus"].banks = ["BUS-1","BUS-2","BUS-3"];
+SUBJECTS["bus"].banks = ["BUS-1","BUS-2","BUS-3","BUS-4"];
 SUBJECTS["bus"].sub = "Edexcel 9BS0 — Themes 1–4";
+
+BANKS["BUS-4"] = {
+  label: "Global Business & Ethics",
+  color: "#92400e",
+  questions: [
+    {
+      id:"BUS-17",
+      stem:"Globalisation is best defined as:",
+      options:{
+        A:"The process by which all countries adopt identical economic policies.",
+        B:"The increasing integration and interdependence of national economies through trade, investment, migration, and the spread of technology and ideas.",
+        C:"The dominance of American culture and business practices worldwide.",
+        D:"The removal of all tariffs and trade barriers between countries."
+      },
+      correct:"B",tag:"MC-BUS-16",
+      scaffold:"Globalisation drivers: falling trade barriers (WTO), improved transport (containerisation), digital communication, MNC expansion, financial deregulation, migration. Dimensions: economic (trade, investment), cultural (spread of brands, media), political (international institutions). Impacts vary: LEDCs may gain FDI and jobs but lose sovereignty; developed countries may face deindustrialisation. Students often confuse globalisation with Americanisation or free trade specifically — it is broader than either.",
+      reforge:{stem:"Which development most directly accelerated economic globalisation in the late 20th century?",options:{A:"The invention of the internet increased cultural globalisation only.",B:"The creation of the WTO (1995) and reduction of trade tariffs, combined with containerisation of shipping dramatically reducing transport costs, made international trade faster and cheaper.",C:"The Cold War encouraged all countries to trade freely with each other.",D:"Rising oil prices made international trade more profitable."},correct:"B"}
+    },
+    {
+      id:"BUS-18",
+      stem:"A multinational corporation (MNC) relocates production to a country with lower wages and fewer regulations. Which evaluation point is most important to include?",
+      options:{
+        A:"MNCs always improve living standards in host countries.",
+        B:"While the MNC reduces costs, the host country may experience exploitation of workers, environmental damage, and profit repatriation — benefits must be weighed against these costs, and vary by context.",
+        C:"Relocation always leads to job losses in the home country with no compensating benefits.",
+        D:"Governments should never allow foreign MNCs to operate."
+      },
+      correct:"B",tag:"MC-BUS-17",
+      scaffold:"MNC impacts on host country — benefits: FDI, jobs, tax revenue, technology transfer, skills development, infrastructure. Costs: low wages/poor conditions (race to the bottom), environmental damage, profit repatriation (money leaves country), cultural disruption, crowding out local businesses, tax avoidance (transfer pricing). Impact on home country — benefits: cheaper goods for consumers, profits returned. Costs: job losses, deindustrialisation, loss of tax base. Net assessment requires context: which MNC, which host country, what regulations exist.",
+      reforge:{stem:"Apple manufactures iPhones in China through Foxconn. A student claims this is purely exploitative. What is the most balanced evaluation?",options:{A:"The student is correct — MNCs always exploit workers.",B:"Foxconn provides employment and income for workers who may otherwise have fewer opportunities, and China has benefited from technology transfer and FDI. However, wage levels, working conditions, and profit repatriation remain legitimate concerns. The net impact depends on Chinese labour law enforcement and long-term development effects.",C:"Apple's production in China is beneficial because it keeps iPhone prices low for UK consumers.",D:"MNCs are always beneficial to host countries because they bring investment."},correct:"B"}
+    },
+    {
+      id:"BUS-19",
+      stem:"If the pound depreciates against the dollar, which is the most likely effect on a UK business that exports to the USA?",
+      options:{
+        A:"Its products become more expensive for American buyers — exports fall.",
+        B:"Its products become cheaper for American buyers in dollar terms, potentially increasing demand. However, if the business imports raw materials, its input costs rise.",
+        C:"It must immediately raise its sterling prices to maintain margins.",
+        D:"There is no effect — export prices are set annually in advance."
+      },
+      correct:"B",tag:"MC-BUS-18",
+      scaffold:"Exchange rate impacts: depreciation (£ falls) → exports cheaper in foreign currency → more competitive. Imports more expensive in sterling → higher costs for businesses using imported materials. Net effect depends on: price elasticity of export demand, proportion of imported inputs, whether contracts are in sterling or foreign currency, time horizon (J-curve). Appreciation has opposite effects. Exam question often asks to evaluate whether depreciation is good or bad — it depends on the business model.",
+      reforge:{stem:"A UK car manufacturer exports 60% of output to Europe and imports 40% of components from Germany. Sterling depreciates by 10%. What is the likely net effect?",options:{A:"Purely beneficial — exports become cheaper for European buyers.",B:"Mixed — European buyers find UK cars cheaper (positive for sales), but German components cost more in sterling (raises unit costs). Net effect depends on relative size of these effects and price elasticity of European demand.",C:"Purely harmful — all costs rise with depreciation.",D:"No effect — car prices are set in euros regardless of sterling movements."},correct:"B"}
+    },
+    {
+      id:"BUS-20",
+      stem:"Which correctly describes the difference between free trade and protectionism?",
+      options:{
+        A:"Free trade means governments control all imports; protectionism means no government intervention.",
+        B:"Free trade involves the unrestricted exchange of goods between countries without tariffs or quotas. Protectionism uses measures such as tariffs, quotas, and subsidies to restrict imports and protect domestic industries.",
+        C:"Free trade benefits only large countries; protectionism benefits small countries.",
+        D:"Protectionism is illegal under all international trade agreements."
+      },
+      correct:"B",tag:"MC-BUS-19",
+      scaffold:"Protectionist measures: tariffs (tax on imports — raises price, reduces demand), quotas (limit on quantity imported), subsidies to domestic producers (lower their costs, making imports relatively more expensive), embargoes, bureaucratic barriers. Arguments for protection: infant industry argument, strategic industries (defence), prevent dumping, protect jobs, retaliate against unfair practices. Arguments against: raises prices for consumers, inefficiency, retaliation risk, prevents comparative advantage. WTO generally prohibits protectionism but allows exceptions (national security, anti-dumping).",
+      reforge:{stem:"The US imposed 25% tariffs on steel imports. Which is the most balanced evaluation of this policy?",options:{A:"Purely beneficial — protects American steelworkers' jobs.",B:"US steel producers benefit from reduced competition and job protection. However, US manufacturers using steel (cars, construction) face higher input costs, and trading partners may retaliate with tariffs on US exports — overall welfare effects are likely negative for the US economy as a whole.",C:"Purely harmful — tariffs always reduce economic welfare.",D:"The policy has no effect because steel producers will simply lower their prices."},correct:"B"}
+    },
+    {
+      id:"BUS-21",
+      stem:"Corporate social responsibility (CSR) is best defined as:",
+      options:{
+        A:"A legal requirement for all businesses to donate 1% of profits to charity.",
+        B:"A business approach that integrates social and environmental concerns into operations and stakeholder interactions, going beyond legal minimum obligations.",
+        C:"The obligation of businesses to maximise shareholder returns above all else.",
+        D:"A government scheme that rewards ethical businesses with tax breaks."
+      },
+      correct:"B",tag:"MC-BUS-20",
+      scaffold:"CSR: voluntary actions beyond legal compliance — environmental (reducing carbon footprint, sustainable sourcing), social (fair wages, community investment, diversity), governance (transparency, anti-corruption). Friedman's counter-argument: businesses' sole responsibility is to increase profits for shareholders (shareholders can choose their own charitable giving). Carroll's pyramid: legal → ethical → philanthropic. Business case for CSR: reputation, employee retention, consumer loyalty, risk management, access to ethical investment. Exam requires evaluation: is CSR genuine or 'greenwashing'?",
+      reforge:{stem:"A student argues that CSR is simply good for business profits, not genuinely ethical behaviour. What is the strongest response to this view?",options:{A:"The student is wrong — all CSR is purely altruistic.",B:"The student raises a valid point about motivation, but the distinction may not matter if CSR actions genuinely reduce harm and improve stakeholder welfare. However, where CSR is used as 'greenwashing' to mask harmful practices while claiming ethical credentials, it IS a legitimate concern — the key test is whether actions match claims.",C:"CSR is always legally required so the debate about motivation is irrelevant.",D:"Businesses that act ethically always earn lower profits."},correct:"B"}
+    },
+    {
+      id:"BUS-22",
+      stem:"Business ethics refers to:",
+      options:{
+        A:"The legal rules that businesses must follow under company law.",
+        B:"Moral principles that guide business behaviour — the application of ethical values (honesty, fairness, respect) to decisions about how businesses treat stakeholders, beyond what the law requires.",
+        C:"A set of guidelines produced by the government for FTSE 100 companies.",
+        D:"The same thing as corporate social responsibility."
+      },
+      correct:"B",tag:"MC-BUS-21",
+      scaffold:"Ethics vs law: law sets minimum standards; ethics concerns what is right, not just what is legal. Ethical issues: tax avoidance (legal but arguably unethical — Starbucks, Amazon UK), zero-hours contracts, supplier treatment (Primark and Rana Plaza), executive pay ratios, environmental impact, data privacy. Stakeholder approach (Freeman): businesses should balance interests of all stakeholders (employees, community, suppliers, environment), not just shareholders. Exam tests application to specific business scenarios — avoid claiming legality = ethicality.",
+      reforge:{stem:"Amazon UK paid very little corporation tax despite large UK revenues through legal profit-shifting to Luxembourg. Which is the most precise ethical analysis?",options:{A:"Amazon acted unethically because tax avoidance is illegal.",B:"Amazon's tax arrangements were legal, so there is no ethical issue.",C:"Although legal, Amazon's tax arrangements raise ethical questions — benefiting from UK infrastructure, customers and workforce while minimising UK tax contributions shifts the burden to other taxpayers. From a stakeholder ethics perspective, this prioritises shareholders at the expense of the wider community.",D:"Tax avoidance is ethical because businesses have a duty to minimise costs."},correct:"C"}
+    },
+    {
+      id:"BUS-23",
+      stem:"Which best describes the 'infant industry argument' for protectionism?",
+      options:{
+        A:"Countries should protect industries that employ young workers.",
+        B:"New domestic industries may be too small to compete with established foreign rivals on cost — temporary protection gives them time to achieve economies of scale and become internationally competitive, after which protection is removed.",
+        C:"All new businesses deserve government subsidies regardless of their export potential.",
+        D:"Industries should be protected permanently from foreign competition to preserve employment."
+      },
+      correct:"B",tag:"MC-BUS-22",
+      scaffold:"Infant industry argument (List, Hamilton): in the short run, new industries face cost disadvantages against established foreign competitors. Temporary protection (tariffs, subsidies) allows them to grow, achieve economies of scale, and develop until they can compete without support. Used historically by USA (19th century), South Korea (steel, cars), China. Criticisms: 'temporary' protection often becomes permanent; governments may protect wrong industries (picking winners problem); inefficiency may persist; trading partners retaliate; consumers pay higher prices during protection.",
+      reforge:{stem:"South Korea heavily protected its domestic car industry (Hyundai, Kia) in the 1970s–80s. By the 2000s, Korean cars were competing globally without protection. Which conclusion does this best support?",options:{A:"Protectionism always fails because it prevents competition.",B:"This is a case study often cited in support of the infant industry argument — protection allowed Korean manufacturers to build scale and technical capability until they could compete globally, suggesting temporary protection can succeed if the protected industry eventually becomes competitive.",C:"Korean cars succeeded despite protectionism, not because of it.",D:"All developing countries should permanently protect their manufacturing industries."},correct:"B"}
+    },
+    {
+      id:"BUS-24",
+      stem:"A business operates across multiple countries with different cultures. Which concept is most important for managing this effectively?",
+      options:{
+        A:"Ethnocentrism — assuming the home country's business practices are superior.",
+        B:"Cultural intelligence — the ability to adapt management style, communication, and business practices to different cultural contexts, recognising that practices effective in one culture may be ineffective or offensive in another.",
+        C:"Standardisation — applying identical business practices in every country regardless of culture.",
+        D:"Localisation — completely redesigning every product and service for each new market."
+      },
+      correct:"B",tag:"MC-BUS-23",
+      scaffold:"International business culture: Hofstede's dimensions — power distance (hierarchy acceptance), individualism vs collectivism, uncertainty avoidance, masculinity vs femininity, long-term vs short-term orientation. High power distance cultures (Japan, China) expect hierarchy and formal deference; low power distance (Denmark, Australia) expect flat structures. Negotiation styles differ: relationship-building first in China vs direct deal focus in USA. Product adaptation (McDonald's localises menus) vs standardisation (Apple sells identical products globally). Ethnocentrism = assuming home culture is universal → management failures.",
+      reforge:{stem:"A UK manager chairing a meeting with Japanese colleagues repeatedly interrupts and pushes for a quick decision. The Japanese team becomes noticeably uncomfortable. Which cultural concept explains this?",options:{A:"The Japanese team disagree with the decision being proposed.",B:"Japanese business culture typically involves consensus-building (nemawashi), respect for hierarchy, and indirect communication — direct interruption and pressure for speed conflicts with these norms, causing discomfort and likely damaging the business relationship.",C:"UK managers always behave inappropriately in international meetings.",D:"The discomfort is purely a language barrier issue."},correct:"B"}
+    }
+  ]
+};
 
 function shuffle(a){var b=[...a];for(var i=b.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
 
@@ -4440,7 +4746,6 @@ var state = {
   isTrial: false,
   trialDaysLeft: 0,
   paidSubjects: [],
-  enrolledClasses: [], // [{classId, classSubject, studentId, className}] for multi-class switching
   weightMap: {}        // spaced repetition: questionId → priority weight
 };
 
@@ -4515,7 +4820,6 @@ function ensurePaidStudentId() {
       var id = rows[0].id;
       state.studentId = id;
       try { localStorage.setItem('forge-paid-student', JSON.stringify({ studentId: id, name: state.studentName })); } catch(e) {}
-      _flushPendingLogs();
       return id;
     }
     // No existing row — create one
@@ -4531,7 +4835,6 @@ function ensurePaidStudentId() {
       if (id) {
         state.studentId = id;
         try { localStorage.setItem('forge-paid-student', JSON.stringify({ studentId: id, name: state.studentName })); } catch(e) {}
-        _flushPendingLogs(); // drain any responses buffered before ID was ready
       }
       return id;
     });
@@ -4641,7 +4944,6 @@ function renderJoin() {
   h += '<input id="solo-pass" class="join-input" type="password" placeholder="Your Forge password">';
   h += '<button class="join-btn" id="solo-btn">Log in \u2192</button>';
   h += '<p class="join-err" id="solo-err"></p>';
-  h += '<p style="text-align:center;margin-top:10px;font-size:13px"><a href="reset-password.html" style="color:#8A857E;text-decoration:none;font-family:Sora,sans-serif">Forgot password?</a></p>';
   h += '<div style="text-align:center;margin-top:20px;padding-top:16px;border-top:1px solid var(--line)">';
   h += '<p style="font-size:13px;color:#8A857E;margin-bottom:10px">Don\'t have a subscription yet?</p>';
   h += '<a href="forge-signup.html" style="display:inline-block;padding:10px 22px;border-radius:9px;background:rgba(255,107,44,.1);border:1px solid rgba(255,107,44,.3);color:var(--ember);text-decoration:none;font-family:Sora,sans-serif;font-weight:600;font-size:14px">Subscribe for £2.99/month \u2192</a>';
@@ -4838,35 +5140,6 @@ function renderSubjects(){
     h += '<div class="join-badge"><span class="dot"></span> ' + state.studentName + statusLabel + '</div>';
   }
 
-  // ── MULTI-CLASS SWITCHER ─────────────────────────────────────────
-  // If the student is enrolled in more than one class, show a switcher
-  // so they can move between subjects without re-entering a code.
-  if (state.enrolledClasses && state.enrolledClasses.length > 1) {
-    h += '<div style="background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:14px">';
-    h += '<div style="font-family:\'JetBrains Mono\',monospace;font-size:10px;color:var(--ember);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Your classes</div>';
-    h += '<div style="display:flex;flex-wrap:wrap;gap:7px">';
-    state.enrolledClasses.forEach(function(ec) {
-      var isActive = ec.classId === state.classId;
-      var subLabel = ec.classSubject && SUBJECTS[ec.classSubject] ? SUBJECTS[ec.classSubject].label : (ec.classSubject || 'All subjects');
-      var btnStyle = isActive
-        ? 'background:var(--ember);color:var(--coal);border:none;font-weight:700;'
-        : 'background:var(--panel-2);border:1px solid var(--line);color:var(--slate);cursor:pointer;';
-      h += '<button data-ecid="' + ec.classId + '" style="' + btnStyle + 'padding:6px 13px;border-radius:7px;font-family:Sora,sans-serif;font-size:13px;border-radius:7px">';
-      h += subLabel;
-      if (isActive) h += ' ✓';
-      h += '</button>';
-    });
-    h += '</div></div>';
-  } else if (state.classId && state.classSubject) {
-    // Single class — just show a subtle "switch / add another subject" link
-    h += '<div style="font-size:12px;color:#8A857E;margin-bottom:12px;text-align:right">';
-    h += 'In ' + (SUBJECTS[state.classSubject] ? SUBJECTS[state.classSubject].label : state.classSubject) + ' class';
-    if (state.isPaid || state.isTrial) {
-      h += ' · <button onclick="(function(){state.classId=null;state.classSubject=null;state.studentId=null;render();})()" style="background:none;border:none;color:var(--ember);font-size:12px;cursor:pointer;font-family:Sora,sans-serif;padding:0">Add another class ↓</button>';
-    }
-    h += '</div>';
-  }
-
   // Class link prompt for trial/paid students not yet in a class
   if ((state.isPaid || state.isTrial) && !state.classId) {
     h += '<div id="class-link-banner" style="background:var(--panel);border:1px solid rgba(255,107,44,.25);border-radius:12px;padding:14px 16px;margin-bottom:16px">';
@@ -4915,31 +5188,6 @@ function renderSubjects(){
     b.onclick=function(){state.subject=b.dataset.key;state.phase='banks';render();};
   });
 
-  // Wire up multi-class switcher pills
-  app.querySelectorAll('[data-ecid]').forEach(function(btn) {
-    btn.onclick = function() {
-      var targetClassId = btn.dataset.ecid;
-      if (targetClassId === state.classId) return; // already active
-      var ec = state.enrolledClasses.filter(function(e) { return e.classId === targetClassId; })[0];
-      if (!ec) return;
-      state.classId      = ec.classId;
-      state.studentId    = ec.studentId || null;
-      state.classSubject = ec.classSubject || null;
-      if (state.studentId) {
-        supa.select('responses', { student_id: state.studentId }).then(function(r) {
-          state.weightMap = buildWeightMap(r || []);
-        }).catch(function() { state.weightMap = {}; });
-      }
-      try { localStorage.setItem('forge-student', JSON.stringify({ studentId: state.studentId, classId: state.classId, studentName: state.studentName, classSubject: state.classSubject, enrolledClasses: state.enrolledClasses })); } catch(e) {}
-      // If this class has a locked subject, go straight to banks; otherwise show subjects
-      if (state.classSubject && SUBJECTS[state.classSubject]) {
-        state.subject = state.classSubject;
-        state.phase   = 'banks';
-      }
-      render();
-    };
-  });
-
   // Wire up class link form if visible
   var qlBtn = document.getElementById('ql-btn');
   if (qlBtn) {
@@ -4969,64 +5217,29 @@ function renderSubjects(){
           state.classId      = cls.id;
           state.studentId    = studentId;
           state.classSubject = cls.subject || null;
-
-          // Track all enrolled classes so the student can switch between them
-          // without re-entering a code. De-duplicate by classId.
-          var alreadyEnrolled = state.enrolledClasses.some(function(ec) { return ec.classId === cls.id; });
-          if (!alreadyEnrolled) {
-            state.enrolledClasses.push({
-              classId: cls.id,
-              classSubject: cls.subject || null,
-              studentId: studentId,
-              className: cls.name || cls.code || cls.id
-            });
-          }
-
-          try { localStorage.setItem('forge-student', JSON.stringify({ studentId: studentId, classId: cls.id, studentName: state.studentName, classSubject: cls.subject || null, enrolledClasses: state.enrolledClasses })); } catch(e) {}
+          try { localStorage.setItem('forge-student', JSON.stringify({ studentId: studentId, classId: cls.id, studentName: state.studentName, classSubject: cls.subject || null })); } catch(e) {}
           try { localStorage.setItem('forge-paid-student', JSON.stringify({ studentId: studentId, name: state.studentName })); } catch(e) {}
-          _flushPendingLogs();
 
-          // Backfill responses — update student_id to the new class row AND set class_id.
-          // IMPORTANT: We use the anon key for the PATCH, not the student's bearer token.
-          // The student's RLS policy only allows them to read/write rows where student_id
-          // matches their own — but backfill rows belong to a *different* UUID (the old
-          // anonymous student row). The anon key bypasses that constraint via the teacher
-          // INSERT policy, which already permits anon writes. We PATCH in small batches
-          // to avoid hitting request-size limits, and silently skip 403s (row already gone).
-          if (authUser) {
+          // Backfill responses — update student_id to the new class row AND set class_id
+          // This ensures teacher dashboard shows the student's history correctly
+          if (authUser && token) {
             var subjectFilter = cls.subject ? '&subject=eq.' + encodeURIComponent(cls.subject) : '';
-            // Use anon key — not the user's own auth token — so RLS on old rows doesn't block
-            var backfillHdrs = {
-              'apikey': SUPABASE_KEY,
-              'Authorization': 'Bearer ' + SUPABASE_KEY,
-              'Content-Type': 'application/json',
-              'Prefer': 'return=minimal'
-            };
-            // Find ALL student rows for this auth user (across all classes + unlinked)
+            var userAuthHdrs = { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' };
+            // Find ALL student rows for this auth user
             fetch(SUPABASE_URL + '/rest/v1/students?select=id&auth_user_id=eq.' + authUser.id, {
-              headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + (token || SUPABASE_KEY) }
+              headers: userAuthHdrs
             }).then(function(r) { return r.json(); }).then(function(studentRows) {
               if (!Array.isArray(studentRows) || studentRows.length === 0) return;
-              // For each prior student row (not the new canonical one), migrate matching responses
-              var priorRows = studentRows.filter(function(sr) { return sr.id !== studentId; });
-              priorRows.forEach(function(sr) {
+              // For each existing student row, move matching subject responses to the new class row
+              studentRows.forEach(function(sr) {
+                if (sr.id === studentId) return; // skip the new row itself
                 fetch(SUPABASE_URL + '/rest/v1/responses?student_id=eq.' + sr.id + subjectFilter, {
                   method: 'PATCH',
-                  headers: backfillHdrs,
+                  headers: userAuthHdrs,
                   body: JSON.stringify({ student_id: studentId, class_id: cls.id })
-                }).then(function(r) {
-                  // 403 = RLS blocked (row protected). Silently ignore — student just loses
-                  // that history rather than crashing. Log for diagnostics only.
-                  if (!r.ok && r.status !== 404) {
-                    r.text().then(function(t) {
-                      if (window.location.hostname === 'localhost' || window.FORGE_DEBUG) {
-                        console.warn('Backfill PATCH ' + r.status + ' for row', sr.id, t);
-                      }
-                    });
-                  }
-                }).catch(function() {}); // network error — silently skip
+                }).catch(function(e) { console.error('Backfill failed:', sr.id, e); });
               });
-            }).catch(function() {}); // lookup failed — skip backfill, not fatal
+            }).catch(function(e) { console.error('Backfill lookup failed:', e); });
           }
           var banner = document.getElementById('class-link-banner');
           if (banner) {
@@ -5089,28 +5302,10 @@ function renderSubjects(){
 
 function renderBanks(){
   var subj=SUBJECTS[state.subject];
-  // Guard: if subject is missing from SUBJECTS, fall back to subjects screen
-  if (!subj) { state.phase='subjects'; render(); return; }
   var locked = state.classSubject && state.classSubject === state.subject;
   var h='';
   // Only show back button if not locked to a subject
   if (!locked) h+='<button class="back-btn" id="back-subj">\u2190 Subjects</button>';
-
-  // Multi-class switcher pill bar (shown on banks screen when enrolled in 2+ classes)
-  if (state.enrolledClasses && state.enrolledClasses.length > 1) {
-    h += '<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px">';
-    state.enrolledClasses.forEach(function(ec) {
-      var isActive = ec.classId === state.classId;
-      var subLabel = ec.classSubject && SUBJECTS[ec.classSubject] ? SUBJECTS[ec.classSubject].label : (ec.classSubject || 'Class');
-      var btnStyle = isActive
-        ? 'background:var(--ember);color:var(--coal);border:none;font-weight:700;'
-        : 'background:var(--panel-2);border:1px solid var(--line);color:var(--slate);cursor:pointer;';
-      h += '<button data-ecid="' + ec.classId + '" style="' + btnStyle + 'padding:5px 12px;border-radius:6px;font-family:Sora,sans-serif;font-size:12px">';
-      h += subLabel + (isActive ? ' ✓' : '');
-      h += '</button>';
-    });
-    h += '</div>';
-  }
   h+='<div class="center"><p class="tag" style="color:'+subj.color+';margin-bottom:4px">FORGE</p>';
   h+='<h2 style="font-size:24px;margin-bottom:4px">'+subj.label+'</h2>';
   h+='<p style="color:#8A857E;font-size:14px">'+subj.sub+'</p></div>';
@@ -5138,33 +5333,6 @@ function renderBanks(){
       ensurePaidStudentId().then(function() {
         state.phase='quiz';render();
       });
-    };
-  });
-
-  // Wire up class switcher pills (banks screen)
-  app.querySelectorAll('[data-ecid]').forEach(function(btn) {
-    btn.onclick = function() {
-      var targetClassId = btn.dataset.ecid;
-      if (targetClassId === state.classId) return;
-      var ec = state.enrolledClasses.filter(function(e) { return e.classId === targetClassId; })[0];
-      if (!ec) return;
-      state.classId      = ec.classId;
-      state.studentId    = ec.studentId || null;
-      state.classSubject = ec.classSubject || null;
-      _flushPendingLogs();
-      if (state.studentId) {
-        supa.select('responses', { student_id: state.studentId }).then(function(r) {
-          state.weightMap = buildWeightMap(r || []);
-        }).catch(function() { state.weightMap = {}; });
-      }
-      try { localStorage.setItem('forge-student', JSON.stringify({ studentId: state.studentId, classId: state.classId, studentName: state.studentName, classSubject: state.classSubject, enrolledClasses: state.enrolledClasses })); } catch(e) {}
-      if (state.classSubject && SUBJECTS[state.classSubject]) {
-        state.subject = state.classSubject;
-        state.phase   = 'banks';
-      } else {
-        state.phase = 'subjects';
-      }
-      render();
     };
   });
 
@@ -5298,7 +5466,6 @@ function renderQuiz(){
   }
 
   var bk=BANKS[state.bank];
-  if (!bk) { state.phase='banks'; render(); return; }
   var q=state.questions[state.idx];
   if(!q){state.phase='results';render();return;}
   var keys=Object.keys(q.options);
@@ -5611,12 +5778,11 @@ if (ForgeAuth.hasSession()) {
   try {
     var savedSession = JSON.parse(localStorage.getItem('forge-student') || 'null');
     if (savedSession && savedSession.studentName && savedSession.classId) {
-      state.studentId      = savedSession.studentId    || null;
-      state.classId        = savedSession.classId;
-      state.studentName    = savedSession.studentName;
-      state.classSubject   = savedSession.classSubject || null;
-      state.enrolledClasses = savedSession.enrolledClasses || (savedSession.classId ? [{ classId: savedSession.classId, classSubject: savedSession.classSubject || null, studentId: savedSession.studentId || null, className: savedSession.classId }] : []);
-      state.isPaid         = false;
+      state.studentId    = savedSession.studentId    || null;
+      state.classId      = savedSession.classId;
+      state.studentName  = savedSession.studentName;
+      state.classSubject = savedSession.classSubject || null;
+      state.isPaid       = false;
       state.isTrial      = false;
       if (state.classSubject && SUBJECTS[state.classSubject]) {
         state.subject = state.classSubject;
