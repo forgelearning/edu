@@ -4480,7 +4480,7 @@ function ensurePaidStudentId() {
   };
 
   // Look up existing student row
-  return fetch(SUPABASE_URL + '/rest/v1/students?select=*&auth_user_id=eq.' + authUser.id + '&class_id=is.null', {
+  return fetch(SUPABASE_URL + '/rest/v1/students?select=*&auth_user_id=eq.' + authUser.id + '&order=created_at.asc&limit=1', {
     headers: authHdrs
   }).then(function(r) { return r.json(); }).then(function(rows) {
     if (rows && rows.length > 0) {

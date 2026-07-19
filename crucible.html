@@ -3104,6 +3104,7 @@ function renderJoin(){
         if(!Array.isArray(stus)||stus.length===0){err.textContent='Name not found. Join via the quiz first.';err.style.display='block';btn.disabled=false;btn.textContent='Enter the Crucible \u2192';return;}
         state.studentId=stus[0].id;state.classId=cls[0].id;state.studentName=name;
         state.classSubject=cls[0].subject||null;
+        state.extraTime=stus[0].extra_time||0;
         try { localStorage.setItem('forge-student', JSON.stringify({studentId: state.studentId, classId: state.classId, studentName: state.studentName, classSubject: state.classSubject})); } catch(e) {}
         if(state.classSubject&&SUBJECTS[state.classSubject]){
           state.subject=state.classSubject;
@@ -3448,13 +3449,31 @@ function restoreSession() {
           state.classId      = saved.classId || null;
           state.classSubject = saved.classSubject || null;
         }
-        if (state.classSubject && typeof SUBJECTS !== 'undefined' && SUBJECTS[state.classSubject]) {
-          state.subject = state.classSubject;
-          state.phase   = 'bank';
+
+        // Fetch extra_time from student record
+        if (state.studentId) {
+          supaGet('students', 'id=eq.' + state.studentId).then(function(rows) {
+            if (rows && rows[0]) state.extraTime = rows[0].extra_time || 0;
+            if (state.classSubject && typeof SUBJECTS !== 'undefined' && SUBJECTS[state.classSubject]) {
+              state.subject = state.classSubject;
+              state.phase   = 'bank';
+            } else {
+              state.phase = 'subject';
+            }
+            render();
+          }).catch(function() {
+            state.phase = 'subject';
+            render();
+          });
         } else {
-          state.phase = 'subject';
+          if (state.classSubject && typeof SUBJECTS !== 'undefined' && SUBJECTS[state.classSubject]) {
+            state.subject = state.classSubject;
+            state.phase   = 'bank';
+          } else {
+            state.phase = 'subject';
+          }
+          render();
         }
-        render();
       } else {
         checkLocalSessionCrucible();
       }
