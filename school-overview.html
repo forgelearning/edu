@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Forge — School Overview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,700;12..96,800&family=Sora:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--coal:#141210;--panel:#211E1B;--panel-2:#2A2622;--line:#3A342E;--ember:#FF6B2C;--hot:#FFC93C;--slate:#B8B4AD;--white:#F5F1EA;--good:#7FD98A;--bad:#FF5A5A}
+[data-theme="light"]{--coal:#FAFAF8;--panel:#FFFFFF;--panel-2:#F3F2EF;--line:#E0DDD8;--ember:#E5550F;--hot:#C88500;--slate:#6B6660;--white:#1A1816;--good:#1B8C2A;--bad:#D42D2D}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--coal);color:var(--slate);font-family:Sora,sans-serif;font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100vh}
+h1,h2,h3{font-family:'Bricolage Grotesque',sans-serif;color:var(--white);line-height:1.1;letter-spacing:-.015em}
+.wrap{max-width:980px;margin:0 auto;padding:32px 20px}
+.tag{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ember)}
+.mono{font-family:'JetBrains Mono',monospace}
+.logo{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:20px;color:var(--white);text-decoration:none;display:inline-flex;align-items:center;gap:8px;margin-bottom:28px}
+.logo .spark{width:9px;height:9px;background:linear-gradient(135deg,var(--hot),var(--ember));border-radius:2px;transform:rotate(45deg);box-shadow:0 0 10px rgba(255,107,44,.7)}
+.theme-toggle{background:var(--panel);border:1px solid var(--line);color:var(--slate);font-family:'JetBrains Mono',monospace;font-size:12px;padding:6px 12px;border-radius:7px;cursor:pointer;position:fixed;top:20px;right:20px;z-index:99}
+.theme-toggle:hover{color:var(--white);border-color:var(--ember)}
+
+/* Login */
+.login-wrap{max-width:380px;margin:80px auto 0;text-align:center}
+.login-wrap h1{font-size:26px;margin-bottom:8px}
+.login-wrap p{color:#8A857E;font-size:14px;margin-bottom:28px}
+.code-input{width:100%;padding:14px 16px;border-radius:10px;border:1px solid var(--line);background:var(--panel);color:var(--white);font-family:'JetBrains Mono',monospace;font-size:22px;text-align:center;letter-spacing:.2em;text-transform:uppercase;margin-bottom:12px}
+.code-input:focus{outline:none;border-color:var(--ember)}
+.btn{width:100%;padding:13px;border-radius:9px;background:linear-gradient(100deg,var(--hot),var(--ember));color:var(--coal);border:none;font-family:Sora,sans-serif;font-weight:700;font-size:15px;cursor:pointer}
+.btn:hover{opacity:.9}
+.err{color:var(--bad);font-size:13px;margin-top:8px;display:none}
+
+/* Dashboard */
+.dash-header{margin-bottom:28px}
+.dash-meta{font-size:13px;color:var(--slate);margin-top:4px}
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
+.stat-card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px 16px;text-align:center}
+.stat-n{font-family:'Bricolage Grotesque',sans-serif;font-size:36px;font-weight:800;display:block;line-height:1}
+.stat-l{font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:#8A857E;display:block;margin-top:6px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px;margin-bottom:16px}
+.card-title{font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--ember);margin-bottom:14px}
+.overview-table{width:100%;border-collapse:collapse;font-size:13px}
+.overview-table th{font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:#8A857E;padding:6px 10px;text-align:left;border-bottom:1px solid var(--line)}
+.overview-table td{padding:10px 10px;border-bottom:1px solid var(--line);color:var(--slate)}
+.overview-table tr:last-child td{border-bottom:none}
+.overview-table td:first-child{color:var(--white);font-weight:600}
+.heat-bar{height:6px;background:var(--line);border-radius:3px;overflow:hidden;min-width:80px}
+.heat-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--hot),var(--ember))}
+.mc-tag{display:inline-block;padding:2px 8px;border-radius:5px;font-family:'JetBrains Mono',monospace;font-size:10px;background:rgba(255,90,90,.1);border:1px solid rgba(255,90,90,.25);color:var(--bad);margin:2px}
+.subject-badge{display:inline-block;padding:3px 10px;border-radius:6px;font-family:'JetBrains Mono',monospace;font-size:11px;background:rgba(255,107,44,.08);border:1px solid rgba(255,107,44,.2);color:var(--ember);margin:2px}
+.tabs{display:inline-flex;gap:4px;background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:4px;margin-bottom:20px}
+.tab{padding:7px 16px;border-radius:8px;border:none;background:none;color:var(--slate);font-family:Sora,sans-serif;font-weight:600;font-size:13px;cursor:pointer}
+.tab.active{background:linear-gradient(100deg,var(--hot),var(--ember));color:var(--coal)}
+.export-btn{padding:7px 14px;border-radius:8px;background:var(--panel);border:1px solid var(--line);color:var(--slate);font-family:Sora,sans-serif;font-size:13px;font-weight:600;cursor:pointer;float:right}
+.export-btn:hover{border-color:var(--ember);color:var(--white)}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.signout-btn{padding:7px 14px;border-radius:8px;background:var(--panel);border:1px solid var(--line);color:var(--slate);font-family:Sora,sans-serif;font-size:13px;font-weight:600;cursor:pointer}
+.signout-btn:hover{border-color:var(--ember);color:var(--white)}
+@media(max-width:680px){.stat-grid{grid-template-columns:1fr 1fr}.two-col{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<button class="theme-toggle" onclick="toggleTheme()">☀ Light</button>
+<script>
+window.toggleTheme=function(){var h=document.documentElement,b=document.querySelector('.theme-toggle');if(h.getAttribute('data-theme')==='light'){h.removeAttribute('data-theme');b.textContent='☀ Light';localStorage.setItem('forge-theme','dark');}else{h.setAttribute('data-theme','light');b.textContent='☾ Dark';localStorage.setItem('forge-theme','light');}};
+if(localStorage.getItem('forge-theme')==='light'){document.documentElement.setAttribute('data-theme','light');document.querySelector('.theme-toggle').textContent='☾ Dark';}
+</script>
+
+<div class="wrap">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+    <a class="logo" style="margin-bottom:0" href="index.html"><span class="spark"></span>Forge</a>
+    <a href="teacher.html" style="font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:#8A857E;text-decoration:none;padding:5px 10px;border-radius:7px;border:1px solid var(--line)" onmouseover="this.style.color='var(--ember)';this.style.borderColor='var(--ember)'" onmouseout="this.style.color='#8A857E';this.style.borderColor='var(--line)'">← Teacher dashboard</a>
+  </div>
+  <div id="app"></div>
+</div>
+
+<script>
+var SUPABASE_URL = 'https://crysulmbaadjkymcjrew.supabase.co';
+var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNyeXN1bG1iYWFkamt5bWNqcmV3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQyNDUzMzAsImV4cCI6MjA5OTgyMTMzMH0.Q69MKJR6_iEYkqJYXjn8RBhKhstAZShtmf0NiYM-8Vk';
+
+// ── ACCESS CODE ──────────────────────────────────────────────
+// Change this to your chosen school overview access code
+// Share only with SLT and Heads of Department
+var SCHOOL_OVERVIEW_CODE = 'MAYFIELD-SLT';
+
+var hdrs = { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY };
+var app = document.getElementById('app');
+var activeTab = 'subjects';
+
+function supaGet(table, params) {
+  var url = SUPABASE_URL + '/rest/v1/' + table + '?select=*';
+  if (params) url += '&' + params;
+  return fetch(url, { headers: hdrs }).then(function(r) { return r.json(); });
+}
+
+// ── AUTH ─────────────────────────────────────────────────────
+var SESSION_KEY = 'forge-slt-session';
+function isAuthed() { return localStorage.getItem(SESSION_KEY) === SCHOOL_OVERVIEW_CODE; }
+function signOut() { localStorage.removeItem(SESSION_KEY); renderLogin(); }
+
+// ── ROUTING ──────────────────────────────────────────────────
+if (isAuthed()) {
+  renderLoading();
+  loadData();
+} else {
+  renderLogin();
+}
+
+function renderLogin() {
+  app.innerHTML = '<div class="login-wrap">'
+    + '<p class="tag" style="margin-bottom:8px">School Overview</p>'
+    + '<h1>Leadership Dashboard</h1>'
+    + '<p>Enter your school overview access code to view cross-class analytics. This view is read-only and shows no individual student names.</p>'
+    + '<input class="code-input" id="code-input" type="text" placeholder="SCHOOL-CODE" maxlength="30" autocomplete="off">'
+    + '<button class="btn" id="login-btn">Access dashboard →</button>'
+    + '<p class="err" id="login-err">Incorrect code. Contact your Forge administrator.</p>'
+    + '</div>';
+
+  document.getElementById('login-btn').onclick = function() {
+    var val = document.getElementById('code-input').value.trim().toUpperCase();
+    if (val === SCHOOL_OVERVIEW_CODE) {
+      localStorage.setItem(SESSION_KEY, val);
+      renderLoading();
+      loadData();
+    } else {
+      document.getElementById('login-err').style.display = 'block';
+    }
+  };
+  document.getElementById('code-input').onkeydown = function(e) {
+    if (e.key === 'Enter') document.getElementById('login-btn').click();
+  };
+}
+
+function renderLoading() {
+  app.innerHTML = '<p style="color:#8A857E;padding:40px 0">Loading school data…</p>';
+}
+
+// ── DATA ─────────────────────────────────────────────────────
+var data = { classes: [], students: [], responses: [] };
+
+function loadData() {
+  Promise.all([
+    supaGet('classes', ''),
+    supaGet('students', ''),
+    supaGet('responses', 'order=created_at.desc')
+  ]).then(function(results) {
+    data.classes   = results[0] || [];
+    data.students  = results[1] || [];
+    data.responses = results[2] || [];
+    renderDashboard();
+  }).catch(function() {
+    app.innerHTML = '<p style="color:var(--bad);padding:40px 0">Could not load data. Check your connection.</p>';
+  });
+}
+
+// ── DASHBOARD ────────────────────────────────────────────────
+function renderDashboard() {
+  var classes   = data.classes;
+  var students  = data.students;
+  var responses = data.responses;
+
+  // Aggregate stats
+  var totalClasses  = classes.length;
+  var totalStudents = students.length;
+  var totalResponses = responses.length;
+  var avgAcc = 0;
+  if (totalResponses > 0) {
+    var correct = responses.filter(function(r) { return r.is_correct; }).length;
+    avgAcc = Math.round((correct / totalResponses) * 100);
+  }
+
+  // Last 7 days activity
+  var weekAgo = new Date(); weekAgo.setDate(weekAgo.getDate() - 7);
+  var recentResponses = responses.filter(function(r) { return new Date(r.created_at) > weekAgo; });
+  var activeStudents7d = new Set(recentResponses.map(function(r) { return r.student_id; })).size;
+
+  // Subject breakdown
+  var subjectMap = {};
+  classes.forEach(function(cls) {
+    if (!cls.subject) return;
+    if (!subjectMap[cls.subject]) subjectMap[cls.subject] = { classes: 0, students: 0, responses: 0, correct: 0, mcs: {} };
+    subjectMap[cls.subject].classes++;
+    students.filter(function(s) { return s.class_id === cls.id; }).forEach(function(s) {
+      subjectMap[cls.subject].students++;
+    });
+  });
+  responses.forEach(function(r) {
+    if (!r.subject) return;
+    if (!subjectMap[r.subject]) subjectMap[r.subject] = { classes: 0, students: 0, responses: 0, correct: 0, mcs: {} };
+    subjectMap[r.subject].responses++;
+    if (r.is_correct) subjectMap[r.subject].correct++;
+    if (!r.is_correct && r.misconception_tag) {
+      subjectMap[r.subject].mcs[r.misconception_tag] = (subjectMap[r.subject].mcs[r.misconception_tag] || 0) + 1;
+    }
+  });
+
+  // School-wide misconception league table (top 10)
+  var mcTotals = {};
+  responses.forEach(function(r) {
+    if (!r.is_correct && r.misconception_tag) {
+      mcTotals[r.misconception_tag] = (mcTotals[r.misconception_tag] || 0) + 1;
+    }
+  });
+  var mcLeague = Object.keys(mcTotals).map(function(mc) {
+    return { mc: mc, count: mcTotals[mc] };
+  }).sort(function(a, b) { return b.count - a.count; }).slice(0, 10);
+
+  // Class engagement table
+  var classEngagement = classes.map(function(cls) {
+    var classStudents = students.filter(function(s) { return s.class_id === cls.id; });
+    var classResponses = responses.filter(function(r) { return r.class_id === cls.id; });
+    var activeIds = new Set(recentResponses.filter(function(r) { return r.class_id === cls.id; }).map(function(r) { return r.student_id; }));
+    var acc = 0;
+    if (classResponses.length > 0) {
+      acc = Math.round((classResponses.filter(function(r) { return r.is_correct; }).length / classResponses.length) * 100);
+    }
+    return {
+      name: cls.name || cls.code,
+      code: cls.code,
+      subject: cls.subject || '—',
+      students: classStudents.length,
+      responses: classResponses.length,
+      active7d: activeIds.size,
+      acc: acc
+    };
+  }).sort(function(a, b) { return b.responses - a.responses; });
+
+  // Build HTML
+  var h = '';
+
+  // Header
+  h += '<div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px">';
+  h += '<div><p class="tag" style="margin-bottom:4px">School Overview</p>';
+  h += '<h1 style="font-size:26px">Mayfield Grammar</h1>';
+  h += '<p class="dash-meta">Read-only · no individual student names · updated live</p></div>';
+  h += '<button class="signout-btn" onclick="signOut()">Sign out</button>';
+  h += '</div>';
+
+  // Stat cards
+  h += '<div class="stat-grid">';
+  h += statCard(totalClasses, 'Active classes', 'var(--white)');
+  h += statCard(totalStudents, 'Students enrolled', 'var(--white)');
+  h += statCard(activeStudents7d, 'Active last 7 days', 'var(--hot)');
+  h += statCard(avgAcc + '%', 'School-wide accuracy', avgAcc >= 70 ? 'var(--good)' : avgAcc >= 50 ? 'var(--hot)' : 'var(--bad)');
+  h += '</div>';
+
+  // Tabs
+  h += '<div class="tabs">';
+  h += '<button class="tab' + (activeTab === 'subjects' ? ' active' : '') + '" onclick="switchTab(\'subjects\')">By subject</button>';
+  h += '<button class="tab' + (activeTab === 'classes' ? ' active' : '') + '" onclick="switchTab(\'classes\')">By class</button>';
+  h += '<button class="tab' + (activeTab === 'misconceptions' ? ' active' : '') + '" onclick="switchTab(\'misconceptions\')">Misconception league</button>';
+  h += '</div>';
+
+  // Subject tab
+  h += '<div id="tab-subjects" style="display:' + (activeTab === 'subjects' ? 'block' : 'none') + '">';
+  h += '<div class="card">';
+  h += '<div class="card-title">Subject breakdown <button class="export-btn" onclick="exportCSV(\'subjects\')">Export CSV</button></div>';
+  h += '<table class="overview-table"><thead><tr>';
+  h += '<th>Subject</th><th>Classes</th><th>Students</th><th>Questions answered</th><th>Accuracy</th><th>Top misconception</th>';
+  h += '</tr></thead><tbody>';
+  Object.keys(subjectMap).sort().forEach(function(subj) {
+    var s = subjectMap[subj];
+    var acc = s.responses > 0 ? Math.round((s.correct / s.responses) * 100) : 0;
+    var accCol = acc >= 70 ? 'var(--good)' : acc >= 50 ? 'var(--hot)' : 'var(--bad)';
+    var topMC = Object.keys(s.mcs).sort(function(a,b){return s.mcs[b]-s.mcs[a];})[0] || '—';
+    h += '<tr>';
+    h += '<td>' + subj.toUpperCase() + '</td>';
+    h += '<td>' + s.classes + '</td>';
+    h += '<td>' + s.students + '</td>';
+    h += '<td>' + s.responses + '</td>';
+    h += '<td style="color:' + accCol + ';font-family:\'JetBrains Mono\',monospace;font-weight:600">' + (s.responses > 0 ? acc + '%' : '—') + '</td>';
+    h += '<td>' + (topMC !== '—' ? '<span class="mc-tag">' + topMC + '</span>' : '—') + '</td>';
+    h += '</tr>';
+  });
+  h += '</tbody></table></div></div>';
+
+  // Classes tab
+  h += '<div id="tab-classes" style="display:' + (activeTab === 'classes' ? 'block' : 'none') + '">';
+  h += '<div class="card">';
+  h += '<div class="card-title">Class engagement <button class="export-btn" onclick="exportCSV(\'classes\')">Export CSV</button></div>';
+  h += '<table class="overview-table"><thead><tr>';
+  h += '<th>Class</th><th>Subject</th><th>Students</th><th>Questions answered</th><th>Active last 7d</th><th>Accuracy</th><th>Engagement</th>';
+  h += '</tr></thead><tbody>';
+  classEngagement.forEach(function(cls) {
+    var engPct = cls.students > 0 ? Math.round((cls.active7d / cls.students) * 100) : 0;
+    var accCol = cls.acc >= 70 ? 'var(--good)' : cls.acc >= 50 ? 'var(--hot)' : 'var(--bad)';
+    h += '<tr>';
+    h += '<td>' + cls.name + '</td>';
+    h += '<td><span class="subject-badge">' + cls.subject.toUpperCase() + '</span></td>';
+    h += '<td>' + cls.students + '</td>';
+    h += '<td>' + cls.responses + '</td>';
+    h += '<td>' + cls.active7d + ' / ' + cls.students + '</td>';
+    h += '<td style="color:' + accCol + ';font-family:\'JetBrains Mono\',monospace;font-weight:600">' + (cls.responses > 0 ? cls.acc + '%' : '—') + '</td>';
+    h += '<td style="min-width:90px"><div class="heat-bar"><div class="heat-fill" style="width:' + engPct + '%"></div></div></td>';
+    h += '</tr>';
+  });
+  h += '</tbody></table></div></div>';
+
+  // Misconceptions tab
+  h += '<div id="tab-misconceptions" style="display:' + (activeTab === 'misconceptions' ? 'block' : 'none') + '">';
+  h += '<div class="card">';
+  h += '<div class="card-title">School-wide misconception league — top 10 <button class="export-btn" onclick="exportCSV(\'misconceptions\')">Export CSV</button></div>';
+  if (mcLeague.length === 0) {
+    h += '<p style="color:#8A857E;font-size:14px">No misconception data yet — students need to answer questions first.</p>';
+  } else {
+    var maxCount = mcLeague[0].count;
+    h += '<table class="overview-table"><thead><tr><th>Rank</th><th>Misconception tag</th><th>Total fires across school</th><th>Prevalence</th></tr></thead><tbody>';
+    mcLeague.forEach(function(item, idx) {
+      var pct = Math.round((item.count / maxCount) * 100);
+      h += '<tr>';
+      h += '<td style="color:#8A857E;font-family:\'JetBrains Mono\',monospace">' + (idx + 1) + '</td>';
+      h += '<td><span class="mc-tag">' + item.mc + '</span></td>';
+      h += '<td>' + item.count + '</td>';
+      h += '<td style="min-width:120px"><div class="heat-bar"><div class="heat-fill" style="width:' + pct + '%"></div></div></td>';
+      h += '</tr>';
+    });
+    h += '</tbody></table>';
+  }
+  h += '</div></div>';
+
+  h += '<p style="font-size:12px;color:#8A857E;margin-top:20px;text-align:center">Forge School Overview · read-only · no individual student names are shown in this view</p>';
+
+  app.innerHTML = h;
+}
+
+function statCard(val, label, col) {
+  return '<div class="stat-card"><span class="stat-n" style="color:' + col + '">' + val + '</span><span class="stat-l">' + label + '</span></div>';
+}
+
+window.switchTab = function(tab) {
+  activeTab = tab;
+  ['subjects','classes','misconceptions'].forEach(function(t) {
+    var el = document.getElementById('tab-' + t);
+    if (el) el.style.display = t === tab ? 'block' : 'none';
+  });
+  document.querySelectorAll('.tab').forEach(function(btn) {
+    btn.classList.toggle('active', btn.textContent.toLowerCase().includes(tab.replace('misconceptions','misconception')));
+  });
+};
+
+// ── EXPORT ───────────────────────────────────────────────────
+window.exportCSV = function(type) {
+  var rows = [];
+  if (type === 'subjects') {
+    rows.push(['Subject','Classes','Students','Questions answered','Accuracy','Top misconception']);
+    var subjectMap = {};
+    data.classes.forEach(function(cls) {
+      if (!cls.subject) return;
+      if (!subjectMap[cls.subject]) subjectMap[cls.subject] = { classes:0, students:0, responses:0, correct:0, mcs:{} };
+      subjectMap[cls.subject].classes++;
+      data.students.filter(function(s){return s.class_id===cls.id;}).forEach(function(){subjectMap[cls.subject].students++;});
+    });
+    data.responses.forEach(function(r) {
+      if (!r.subject) return;
+      if (!subjectMap[r.subject]) subjectMap[r.subject] = { classes:0, students:0, responses:0, correct:0, mcs:{} };
+      subjectMap[r.subject].responses++;
+      if (r.is_correct) subjectMap[r.subject].correct++;
+      if (!r.is_correct && r.misconception_tag) subjectMap[r.subject].mcs[r.misconception_tag] = (subjectMap[r.subject].mcs[r.misconception_tag]||0)+1;
+    });
+    Object.keys(subjectMap).sort().forEach(function(s) {
+      var sm = subjectMap[s];
+      var acc = sm.responses > 0 ? Math.round((sm.correct/sm.responses)*100) : 0;
+      var topMC = Object.keys(sm.mcs).sort(function(a,b){return sm.mcs[b]-sm.mcs[a];})[0] || '';
+      rows.push([s, sm.classes, sm.students, sm.responses, acc+'%', topMC]);
+    });
+  } else if (type === 'classes') {
+    rows.push(['Class','Subject','Students','Questions answered','Active last 7d','Accuracy']);
+    var weekAgo = new Date(); weekAgo.setDate(weekAgo.getDate()-7);
+    data.classes.forEach(function(cls) {
+      var cs = data.students.filter(function(s){return s.class_id===cls.id;});
+      var cr = data.responses.filter(function(r){return r.class_id===cls.id;});
+      var activeIds = new Set(data.responses.filter(function(r){return r.class_id===cls.id&&new Date(r.created_at)>weekAgo;}).map(function(r){return r.student_id;}));
+      var acc = cr.length>0?Math.round((cr.filter(function(r){return r.is_correct;}).length/cr.length)*100):0;
+      rows.push([cls.name||cls.code, cls.subject||'', cs.length, cr.length, activeIds.size, acc+'%']);
+    });
+  } else if (type === 'misconceptions') {
+    rows.push(['Rank','Misconception tag','Total fires']);
+    var mcTotals = {};
+    data.responses.forEach(function(r){if(!r.is_correct&&r.misconception_tag)mcTotals[r.misconception_tag]=(mcTotals[r.misconception_tag]||0)+1;});
+    Object.keys(mcTotals).sort(function(a,b){return mcTotals[b]-mcTotals[a];}).slice(0,20).forEach(function(mc,i){
+      rows.push([i+1, mc, mcTotals[mc]]);
+    });
+  }
+
+  var csv = rows.map(function(row){return row.map(function(cell){return '"'+String(cell).replace(/"/g,'""')+'"';}).join(',');}).join('\n');
+  var blob = new Blob([csv], {type:'text/csv'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url; a.download = 'forge-' + type + '-' + new Date().toISOString().slice(0,10) + '.csv';
+  a.click();
+  URL.revokeObjectURL(url);
+};
+</script>
+</body>
+</html>
