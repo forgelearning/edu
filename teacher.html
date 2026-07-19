@@ -550,6 +550,13 @@ function renderLogin(activeTab) {
           dashState.students = results[0] || [];
           dashState.responses = results[1] || [];
           dashState.assignments = results[2] || [];
+          console.log('Dashboard loaded:', {
+            classId: cls.id,
+            classSubject: dashState.classSubject,
+            students: dashState.students.length,
+            responses: dashState.responses.length,
+            firstResponse: dashState.responses[0] || null
+          });
           renderDashboard();
         });
       });
