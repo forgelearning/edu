@@ -3524,7 +3524,26 @@ function startAnvil(){
         }
 
         function loadAnvilWithId() {
-          if (anvilState.studentId) {
+          var token = ForgeAuth.accessToken();
+          var authUser = ForgeAuth.currentUser();
+          if (token && authUser) {
+            fetch(SUPABASE_URL + '/rest/v1/students?select=id&auth_user_id=eq.' + authUser.id, {
+              headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + token }
+            }).then(function(r) { return r.json(); }).then(function(studentRows) {
+              if (!Array.isArray(studentRows) || studentRows.length === 0) {
+                buildMisconceptions(); renderAnvilHome(); return;
+              }
+              var ids = studentRows.map(function(r) { return r.id; });
+              var filter = ids.length === 1
+                ? 'student_id=eq.' + ids[0]
+                : 'student_id=in.(' + ids.join(',') + ')';
+              supaGet('responses', filter + '&order=created_at.asc').then(function(responses) {
+                anvilState.responses = responses || [];
+                buildMisconceptions();
+                renderAnvilHome();
+              }).catch(function() { buildMisconceptions(); renderAnvilHome(); });
+            }).catch(function() { buildMisconceptions(); renderAnvilHome(); });
+          } else if (anvilState.studentId) {
             supaGet('responses','student_id=eq.'+anvilState.studentId+'&order=created_at.asc').then(function(responses){
               anvilState.responses = responses || [];
               buildMisconceptions();
