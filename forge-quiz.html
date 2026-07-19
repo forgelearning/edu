@@ -5088,6 +5088,8 @@ function renderSubjects(){
 
 function renderBanks(){
   var subj=SUBJECTS[state.subject];
+  // Guard: if subject is missing from SUBJECTS, fall back to subjects screen
+  if (!subj) { state.phase='subjects'; render(); return; }
   var locked = state.classSubject && state.classSubject === state.subject;
   var h='';
   // Only show back button if not locked to a subject
@@ -5295,6 +5297,7 @@ function renderQuiz(){
   }
 
   var bk=BANKS[state.bank];
+  if (!bk) { state.phase='banks'; render(); return; }
   var q=state.questions[state.idx];
   if(!q){state.phase='results';render();return;}
   var keys=Object.keys(q.options);
