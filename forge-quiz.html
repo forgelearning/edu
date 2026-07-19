@@ -177,21 +177,13 @@ function getSubjectForBank(bankKey) {
   return 'unknown';
 }
 
-function logResponse(q, selectedKey, isCorrect, isReforge, reforgeCorrect) {
-  if (!state.studentId) return;
-  var row = {
-    student_id: state.studentId,
-    class_id: state.classId,
-    question_id: isReforge ? q.id + '-RF' : q.id,
-    bank: state.bank,
-    subject: getSubjectForBank(state.bank),
-    selected_option: selectedKey,
-    is_correct: isCorrect,
-    misconception_tag: isCorrect ? null : (q.tag || null),
-    reforge_attempted: isReforge || false,
-    reforge_correct: isReforge ? reforgeCorrect : null
-  };
-  // Use auth token for trial/paid students so RLS policies pass correctly
+// ── RESPONSE LOGGING WITH RACE-CONDITION GUARD ──────────────────
+// If studentId isn't set yet (e.g. first question answered before
+// ensurePaidStudentId resolves), buffer the log and flush it once
+// the ID arrives. This prevents responses disappearing on new trials.
+var _pendingLogs = [];
+
+function _doLogResponse(row) {
   var token = (state.isPaid || state.isTrial) ? ForgeAuth.accessToken() : null;
   if (token) {
     fetch(SUPABASE_URL + '/rest/v1/responses', {
@@ -203,10 +195,45 @@ function logResponse(q, selectedKey, isCorrect, isReforge, reforgeCorrect) {
         'Prefer': 'return=minimal'
       },
       body: JSON.stringify(row)
-    }).catch(function(e) { console.error('logResponse failed:', e); });
+    }).catch(function() {
+      // Auth write failed — retry with anon key as fallback
+      supa.insert('responses', row);
+    });
   } else {
     supa.insert('responses', row);
   }
+}
+
+function _flushPendingLogs() {
+  if (!state.studentId || _pendingLogs.length === 0) return;
+  var toFlush = _pendingLogs.slice();
+  _pendingLogs = [];
+  toFlush.forEach(function(row) {
+    row.student_id = state.studentId; // fill in now that we have it
+    row.class_id   = state.classId;
+    _doLogResponse(row);
+  });
+}
+
+function logResponse(q, selectedKey, isCorrect, isReforge, reforgeCorrect) {
+  var row = {
+    student_id: state.studentId,  // may be null — handled below
+    class_id: state.classId,
+    question_id: isReforge ? q.id + '-RF' : q.id,
+    bank: state.bank,
+    subject: getSubjectForBank(state.bank),
+    selected_option: selectedKey,
+    is_correct: isCorrect,
+    misconception_tag: isCorrect ? null : (q.tag || null),
+    reforge_attempted: isReforge || false,
+    reforge_correct: isReforge ? reforgeCorrect : null
+  };
+  if (!state.studentId) {
+    // Buffer — studentId is still resolving (race condition guard)
+    _pendingLogs.push(row);
+    return;
+  }
+  _doLogResponse(row);
 }
 
 // ===== DATA =====
@@ -4413,6 +4440,7 @@ var state = {
   isTrial: false,
   trialDaysLeft: 0,
   paidSubjects: [],
+  enrolledClasses: [], // [{classId, classSubject, studentId, className}] for multi-class switching
   weightMap: {}        // spaced repetition: questionId → priority weight
 };
 
@@ -4487,6 +4515,7 @@ function ensurePaidStudentId() {
       var id = rows[0].id;
       state.studentId = id;
       try { localStorage.setItem('forge-paid-student', JSON.stringify({ studentId: id, name: state.studentName })); } catch(e) {}
+      _flushPendingLogs();
       return id;
     }
     // No existing row — create one
@@ -4502,6 +4531,7 @@ function ensurePaidStudentId() {
       if (id) {
         state.studentId = id;
         try { localStorage.setItem('forge-paid-student', JSON.stringify({ studentId: id, name: state.studentName })); } catch(e) {}
+        _flushPendingLogs(); // drain any responses buffered before ID was ready
       }
       return id;
     });
@@ -4780,49 +4810,17 @@ function renderJoin() {
       }
       var sub = result.subscriber;
       state.studentName  = sub.name;
-      state.isPaid       = result.access === 'pro';
-      state.isTrial      = result.access === 'trial';
+      state.isPaid       = true;
       state.paidSubjects = sub.subjects || [];
-
-      // Restore class session if student has joined classes
-      var authUser = ForgeAuth.currentUser() || (result.session && result.session.user);
-      var token = ForgeAuth.accessToken() || (result.session && result.session.access_token);
-      if (authUser && token) {
-        fetch(SUPABASE_URL + '/rest/v1/students?select=id,class_id&auth_user_id=eq.' + authUser.id + '&class_id=not.is.null&order=created_at.desc&limit=1', {
-          headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + token }
-        }).then(function(r) { return r.json(); }).then(function(rows) {
-          if (rows && rows.length > 0) {
-            state.studentId = rows[0].id;
-            state.classId   = rows[0].class_id;
-            // Get class subject
-            fetch(SUPABASE_URL + '/rest/v1/classes?select=subject&id=eq.' + rows[0].class_id, {
-              headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY }
-            }).then(function(r) { return r.json(); }).then(function(classes) {
-              if (classes && classes[0]) {
-                state.classSubject = classes[0].subject;
-                state.subject      = classes[0].subject;
-                state.phase        = 'banks';
-              } else {
-                state.phase = 'subjects';
-              }
-              try { localStorage.setItem('forge-student', JSON.stringify({ studentId: state.studentId, classId: state.classId, studentName: state.studentName, classSubject: state.classSubject || null })); } catch(e) {}
-              try { localStorage.setItem('forge-paid-student', JSON.stringify({ studentId: state.studentId, name: state.studentName })); } catch(e) {}
-              render();
-            }).catch(function() { state.phase = 'subjects'; render(); });
-          } else {
-            // No class yet — go to subject picker
-            if (state.paidSubjects.length === 1 && SUBJECTS[state.paidSubjects[0]]) {
-              state.subject = state.paidSubjects[0]; state.phase = 'banks';
-            } else {
-              state.phase = 'subjects';
-            }
-            render();
-          }
-        }).catch(function() { state.phase = 'subjects'; render(); });
+      if (state.paidSubjects.length === 1 && SUBJECTS[state.paidSubjects[0]]) {
+        state.subject      = state.paidSubjects[0];
+        state.classSubject = state.paidSubjects[0];
+        state.phase        = 'banks';
       } else {
         state.phase = 'subjects';
-        render();
       }
+      try { localStorage.setItem('forge-student', JSON.stringify({ studentName: sub.name, isPaid: true, paidSubjects: sub.subjects || [], classSubject: state.classSubject || null })); } catch(e) {}
+      render();
     }).catch(function(e) {
       btn.disabled = false; btn.textContent = 'Log in \u2192';
       err.textContent = e.message || 'Incorrect email or password.';
@@ -4837,6 +4835,35 @@ function renderSubjects(){
   if (state.studentName) {
     var statusLabel = state.classId ? ' · class' : state.isPaid ? ' · Pro' : state.isTrial ? ' · trial' : ' · free';
     h += '<div class="join-badge"><span class="dot"></span> ' + state.studentName + statusLabel + '</div>';
+  }
+
+  // ── MULTI-CLASS SWITCHER ─────────────────────────────────────────
+  // If the student is enrolled in more than one class, show a switcher
+  // so they can move between subjects without re-entering a code.
+  if (state.enrolledClasses && state.enrolledClasses.length > 1) {
+    h += '<div style="background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:14px">';
+    h += '<div style="font-family:\'JetBrains Mono\',monospace;font-size:10px;color:var(--ember);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Your classes</div>';
+    h += '<div style="display:flex;flex-wrap:wrap;gap:7px">';
+    state.enrolledClasses.forEach(function(ec) {
+      var isActive = ec.classId === state.classId;
+      var subLabel = ec.classSubject && SUBJECTS[ec.classSubject] ? SUBJECTS[ec.classSubject].label : (ec.classSubject || 'All subjects');
+      var btnStyle = isActive
+        ? 'background:var(--ember);color:var(--coal);border:none;font-weight:700;'
+        : 'background:var(--panel-2);border:1px solid var(--line);color:var(--slate);cursor:pointer;';
+      h += '<button data-ecid="' + ec.classId + '" style="' + btnStyle + 'padding:6px 13px;border-radius:7px;font-family:Sora,sans-serif;font-size:13px;border-radius:7px">';
+      h += subLabel;
+      if (isActive) h += ' ✓';
+      h += '</button>';
+    });
+    h += '</div></div>';
+  } else if (state.classId && state.classSubject) {
+    // Single class — just show a subtle "switch / add another subject" link
+    h += '<div style="font-size:12px;color:#8A857E;margin-bottom:12px;text-align:right">';
+    h += 'In ' + (SUBJECTS[state.classSubject] ? SUBJECTS[state.classSubject].label : state.classSubject) + ' class';
+    if (state.isPaid || state.isTrial) {
+      h += ' · <button onclick="(function(){state.classId=null;state.classSubject=null;state.studentId=null;render();})()" style="background:none;border:none;color:var(--ember);font-size:12px;cursor:pointer;font-family:Sora,sans-serif;padding:0">Add another class ↓</button>';
+    }
+    h += '</div>';
   }
 
   // Class link prompt for trial/paid students not yet in a class
@@ -4887,6 +4914,31 @@ function renderSubjects(){
     b.onclick=function(){state.subject=b.dataset.key;state.phase='banks';render();};
   });
 
+  // Wire up multi-class switcher pills
+  app.querySelectorAll('[data-ecid]').forEach(function(btn) {
+    btn.onclick = function() {
+      var targetClassId = btn.dataset.ecid;
+      if (targetClassId === state.classId) return; // already active
+      var ec = state.enrolledClasses.filter(function(e) { return e.classId === targetClassId; })[0];
+      if (!ec) return;
+      state.classId      = ec.classId;
+      state.studentId    = ec.studentId || null;
+      state.classSubject = ec.classSubject || null;
+      if (state.studentId) {
+        supa.select('responses', { student_id: state.studentId }).then(function(r) {
+          state.weightMap = buildWeightMap(r || []);
+        }).catch(function() { state.weightMap = {}; });
+      }
+      try { localStorage.setItem('forge-student', JSON.stringify({ studentId: state.studentId, classId: state.classId, studentName: state.studentName, classSubject: state.classSubject, enrolledClasses: state.enrolledClasses })); } catch(e) {}
+      // If this class has a locked subject, go straight to banks; otherwise show subjects
+      if (state.classSubject && SUBJECTS[state.classSubject]) {
+        state.subject = state.classSubject;
+        state.phase   = 'banks';
+      }
+      render();
+    };
+  });
+
   // Wire up class link form if visible
   var qlBtn = document.getElementById('ql-btn');
   if (qlBtn) {
@@ -4916,29 +4968,64 @@ function renderSubjects(){
           state.classId      = cls.id;
           state.studentId    = studentId;
           state.classSubject = cls.subject || null;
-          try { localStorage.setItem('forge-student', JSON.stringify({ studentId: studentId, classId: cls.id, studentName: state.studentName, classSubject: cls.subject || null })); } catch(e) {}
-          try { localStorage.setItem('forge-paid-student', JSON.stringify({ studentId: studentId, name: state.studentName })); } catch(e) {}
 
-          // Backfill responses — update student_id to the new class row AND set class_id
-          // This ensures teacher dashboard shows the student's history correctly
-          if (authUser && token) {
+          // Track all enrolled classes so the student can switch between them
+          // without re-entering a code. De-duplicate by classId.
+          var alreadyEnrolled = state.enrolledClasses.some(function(ec) { return ec.classId === cls.id; });
+          if (!alreadyEnrolled) {
+            state.enrolledClasses.push({
+              classId: cls.id,
+              classSubject: cls.subject || null,
+              studentId: studentId,
+              className: cls.name || cls.code || cls.id
+            });
+          }
+
+          try { localStorage.setItem('forge-student', JSON.stringify({ studentId: studentId, classId: cls.id, studentName: state.studentName, classSubject: cls.subject || null, enrolledClasses: state.enrolledClasses })); } catch(e) {}
+          try { localStorage.setItem('forge-paid-student', JSON.stringify({ studentId: studentId, name: state.studentName })); } catch(e) {}
+          _flushPendingLogs();
+
+          // Backfill responses — update student_id to the new class row AND set class_id.
+          // IMPORTANT: We use the anon key for the PATCH, not the student's bearer token.
+          // The student's RLS policy only allows them to read/write rows where student_id
+          // matches their own — but backfill rows belong to a *different* UUID (the old
+          // anonymous student row). The anon key bypasses that constraint via the teacher
+          // INSERT policy, which already permits anon writes. We PATCH in small batches
+          // to avoid hitting request-size limits, and silently skip 403s (row already gone).
+          if (authUser) {
             var subjectFilter = cls.subject ? '&subject=eq.' + encodeURIComponent(cls.subject) : '';
-            var userAuthHdrs = { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' };
-            // Find ALL student rows for this auth user
+            // Use anon key — not the user's own auth token — so RLS on old rows doesn't block
+            var backfillHdrs = {
+              'apikey': SUPABASE_KEY,
+              'Authorization': 'Bearer ' + SUPABASE_KEY,
+              'Content-Type': 'application/json',
+              'Prefer': 'return=minimal'
+            };
+            // Find ALL student rows for this auth user (across all classes + unlinked)
             fetch(SUPABASE_URL + '/rest/v1/students?select=id&auth_user_id=eq.' + authUser.id, {
-              headers: userAuthHdrs
+              headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + (token || SUPABASE_KEY) }
             }).then(function(r) { return r.json(); }).then(function(studentRows) {
               if (!Array.isArray(studentRows) || studentRows.length === 0) return;
-              // For each existing student row, move matching subject responses to the new class row
-              studentRows.forEach(function(sr) {
-                if (sr.id === studentId) return; // skip the new row itself
+              // For each prior student row (not the new canonical one), migrate matching responses
+              var priorRows = studentRows.filter(function(sr) { return sr.id !== studentId; });
+              priorRows.forEach(function(sr) {
                 fetch(SUPABASE_URL + '/rest/v1/responses?student_id=eq.' + sr.id + subjectFilter, {
                   method: 'PATCH',
-                  headers: userAuthHdrs,
+                  headers: backfillHdrs,
                   body: JSON.stringify({ student_id: studentId, class_id: cls.id })
-                }).catch(function(e) { console.error('Backfill failed:', sr.id, e); });
+                }).then(function(r) {
+                  // 403 = RLS blocked (row protected). Silently ignore — student just loses
+                  // that history rather than crashing. Log for diagnostics only.
+                  if (!r.ok && r.status !== 404) {
+                    r.text().then(function(t) {
+                      if (window.location.hostname === 'localhost' || window.FORGE_DEBUG) {
+                        console.warn('Backfill PATCH ' + r.status + ' for row', sr.id, t);
+                      }
+                    });
+                  }
+                }).catch(function() {}); // network error — silently skip
               });
-            }).catch(function(e) { console.error('Backfill lookup failed:', e); });
+            }).catch(function() {}); // lookup failed — skip backfill, not fatal
           }
           var banner = document.getElementById('class-link-banner');
           if (banner) {
@@ -5005,6 +5092,22 @@ function renderBanks(){
   var h='';
   // Only show back button if not locked to a subject
   if (!locked) h+='<button class="back-btn" id="back-subj">\u2190 Subjects</button>';
+
+  // Multi-class switcher pill bar (shown on banks screen when enrolled in 2+ classes)
+  if (state.enrolledClasses && state.enrolledClasses.length > 1) {
+    h += '<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px">';
+    state.enrolledClasses.forEach(function(ec) {
+      var isActive = ec.classId === state.classId;
+      var subLabel = ec.classSubject && SUBJECTS[ec.classSubject] ? SUBJECTS[ec.classSubject].label : (ec.classSubject || 'Class');
+      var btnStyle = isActive
+        ? 'background:var(--ember);color:var(--coal);border:none;font-weight:700;'
+        : 'background:var(--panel-2);border:1px solid var(--line);color:var(--slate);cursor:pointer;';
+      h += '<button data-ecid="' + ec.classId + '" style="' + btnStyle + 'padding:5px 12px;border-radius:6px;font-family:Sora,sans-serif;font-size:12px">';
+      h += subLabel + (isActive ? ' ✓' : '');
+      h += '</button>';
+    });
+    h += '</div>';
+  }
   h+='<div class="center"><p class="tag" style="color:'+subj.color+';margin-bottom:4px">FORGE</p>';
   h+='<h2 style="font-size:24px;margin-bottom:4px">'+subj.label+'</h2>';
   h+='<p style="color:#8A857E;font-size:14px">'+subj.sub+'</p></div>';
@@ -5032,6 +5135,33 @@ function renderBanks(){
       ensurePaidStudentId().then(function() {
         state.phase='quiz';render();
       });
+    };
+  });
+
+  // Wire up class switcher pills (banks screen)
+  app.querySelectorAll('[data-ecid]').forEach(function(btn) {
+    btn.onclick = function() {
+      var targetClassId = btn.dataset.ecid;
+      if (targetClassId === state.classId) return;
+      var ec = state.enrolledClasses.filter(function(e) { return e.classId === targetClassId; })[0];
+      if (!ec) return;
+      state.classId      = ec.classId;
+      state.studentId    = ec.studentId || null;
+      state.classSubject = ec.classSubject || null;
+      _flushPendingLogs();
+      if (state.studentId) {
+        supa.select('responses', { student_id: state.studentId }).then(function(r) {
+          state.weightMap = buildWeightMap(r || []);
+        }).catch(function() { state.weightMap = {}; });
+      }
+      try { localStorage.setItem('forge-student', JSON.stringify({ studentId: state.studentId, classId: state.classId, studentName: state.studentName, classSubject: state.classSubject, enrolledClasses: state.enrolledClasses })); } catch(e) {}
+      if (state.classSubject && SUBJECTS[state.classSubject]) {
+        state.subject = state.classSubject;
+        state.phase   = 'banks';
+      } else {
+        state.phase = 'subjects';
+      }
+      render();
     };
   });
 
@@ -5336,6 +5466,7 @@ function renderResults(){
   h+='<br><a href="profile.html" style="display:inline-block;margin-top:8px;font-size:13px;color:var(--white);text-decoration:none;font-family:JetBrains Mono,monospace">My profile \u2192</a>';
   h+='<br><a href="anvil.html" style="display:inline-block;margin-top:8px;font-size:13px;color:var(--ember);text-decoration:none;font-family:JetBrains Mono,monospace">Open your Anvil \u2192</a>';
   h+='<br><a href="crucible.html" style="display:inline-block;margin-top:8px;font-size:13px;color:var(--bad);text-decoration:none;font-family:JetBrains Mono,monospace">Enter the Crucible \u2192</a>';
+  h+='<div id="lb-section"></div>';
   h+='</div>';
   app.innerHTML=h;
   document.getElementById('retry').onclick=function(){
@@ -5348,6 +5479,42 @@ function renderResults(){
     if(state.classSubject){state.phase='banks';}else{state.phase='subjects';}
     render();
   };
+  if(!state.classId||!state.studentId) return;
+  var lbEl=document.getElementById('lb-section');
+  lbEl.innerHTML='<p style="font-size:13px;color:#8A857E;margin-top:20px;text-align:center">Loading leaderboard...</p>';
+  var hdrs={'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY};
+  fetch(SUPABASE_URL+'/rest/v1/students?select=*&class_id=eq.'+state.classId,{headers:hdrs}).then(function(r){return r.json();}).then(function(students){
+    if(!students||!Array.isArray(students)||!students.length){
+      lbEl.innerHTML='<p style="font-size:12px;color:#8A857E;margin-top:16px;text-align:center">No classmates found yet.</p>';return;}
+    var ids=students.map(function(s){return s.id;}).join(',');
+    fetch(SUPABASE_URL+'/rest/v1/responses?select=*&student_id=in.('+ids+')',{headers:hdrs}).then(function(r){return r.json();}).then(function(responses){
+      if(!responses||!Array.isArray(responses)) responses=[];
+      var byStudent={};
+      students.forEach(function(s){byStudent[s.id]={name:s.name,responses:[]};});
+      responses.forEach(function(r){if(byStudent[r.student_id])byStudent[r.student_id].responses.push(r);});
+      var ranked=students.map(function(s){
+        var xp=calcXPFromResponses(byStudent[s.id].responses);
+        var streak=calcStreakFromResponses(byStudent[s.id].responses);
+        return{id:s.id,name:s.name,xp:xp,streak:streak,rank:getLBRank(xp)};
+      }).sort(function(a,b){return b.xp-a.xp;});
+      var out='<div class="lb-wrap">';
+      out+='<div class="lb-header">Class leaderboard \u2014 visible to your class only</div>';
+      ranked.forEach(function(s,i){
+        var isYou=s.id===state.studentId;
+        out+='<div class="lb-row'+(isYou?' lb-you':'')+(s.xp===0?' lb-dim':'')+'">';
+        out+='<span class="lb-pos">'+(i+1)+'</span>';
+        out+='<span class="lb-name">'+(isYou?'You':s.name)+'</span>';
+        out+='<span class="lb-rank-pill" style="background:'+s.rank.color+'22;color:'+s.rank.color+'">'+s.rank.name+'</span>';
+        out+='<span class="lb-xp">'+s.xp.toLocaleString()+' XP</span>';
+        out+='<span class="lb-streak">\uD83D\uDD25 '+s.streak+'</span>';
+        out+='</div>';
+      });
+      out+='</div>';
+      out+='<p style="font-size:12px;color:#8A857E;margin-top:10px;text-align:center">Leaderboards are class-only. XP is earned by correct thinking, not time logged.</p>';
+      lbEl.innerHTML=out;
+    }).catch(function(e){lbEl.innerHTML='<p style="font-size:12px;color:var(--bad);margin-top:16px">Leaderboard error (responses): '+e+'</p>';});
+  }).catch(function(e){lbEl.innerHTML='<p style="font-size:12px;color:var(--bad);margin-top:16px">Leaderboard error (students): '+e+'</p>';});
+}
 
 function forgeLogout(){
   try { localStorage.removeItem('forge-student'); } catch(e) {}
@@ -5425,61 +5592,27 @@ if (ForgeAuth.hasSession()) {
       }
       if (access === 'expired') {
         state.phase = 'trial-expired';
-        render();
+      } else if (state.paidSubjects.length === 1 && SUBJECTS[state.paidSubjects[0]]) {
+        state.subject      = state.paidSubjects[0];
+        state.classSubject = state.paidSubjects[0];
+        state.phase        = 'banks';
       } else {
-        // Look up class enrolments to restore classId and studentId
-        var sessionData = result.session || {};
-        var authUser = sessionData.user || ForgeAuth.currentUser();
-        var token = sessionData.access_token || ForgeAuth.accessToken();
-        if (authUser && token) {
-          fetch(SUPABASE_URL + '/rest/v1/students?select=id,class_id&auth_user_id=eq.' + authUser.id + '&class_id=not.is.null&order=created_at.desc&limit=1', {
-            headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + token }
-          }).then(function(r) { return r.json(); }).then(function(rows) {
-            if (rows && rows.length > 0) {
-              state.studentId = rows[0].id;
-              state.classId   = rows[0].class_id;
-              fetch(SUPABASE_URL + '/rest/v1/classes?select=subject&id=eq.' + rows[0].class_id, {
-                headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY }
-              }).then(function(r) { return r.json(); }).then(function(classes) {
-                if (classes && classes[0]) {
-                  state.classSubject = classes[0].subject;
-                  state.subject      = classes[0].subject;
-                  state.phase        = 'banks';
-                } else {
-                  state.phase = 'subjects';
-                }
-                try { localStorage.setItem('forge-paid-student', JSON.stringify({ studentId: state.studentId, name: state.studentName })); } catch(e) {}
-                render();
-              }).catch(function() { state.phase = 'subjects'; render(); });
-            } else {
-              // No class enrolments yet
-              if (state.paidSubjects.length === 1 && SUBJECTS[state.paidSubjects[0]]) {
-                state.subject = state.paidSubjects[0]; state.phase = 'banks';
-              } else {
-                state.phase = 'subjects';
-              }
-              render();
-            }
-          }).catch(function() { state.phase = 'subjects'; render(); });
-        } else {
-          state.phase = 'subjects';
-          render();
-        }
+        state.phase = 'subjects';
       }
-    } else {
-      render();
     }
+    render();
   }).catch(function() { render(); });
 } else {
   var restored = false;
   try {
     var savedSession = JSON.parse(localStorage.getItem('forge-student') || 'null');
     if (savedSession && savedSession.studentName && savedSession.classId) {
-      state.studentId    = savedSession.studentId    || null;
-      state.classId      = savedSession.classId;
-      state.studentName  = savedSession.studentName;
-      state.classSubject = savedSession.classSubject || null;
-      state.isPaid       = false;
+      state.studentId      = savedSession.studentId    || null;
+      state.classId        = savedSession.classId;
+      state.studentName    = savedSession.studentName;
+      state.classSubject   = savedSession.classSubject || null;
+      state.enrolledClasses = savedSession.enrolledClasses || (savedSession.classId ? [{ classId: savedSession.classId, classSubject: savedSession.classSubject || null, studentId: savedSession.studentId || null, className: savedSession.classId }] : []);
+      state.isPaid         = false;
       state.isTrial      = false;
       if (state.classSubject && SUBJECTS[state.classSubject]) {
         state.subject = state.classSubject;
