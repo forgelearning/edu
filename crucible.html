@@ -3450,9 +3450,9 @@ function restoreSession() {
           state.classSubject = saved.classSubject || null;
         }
 
-        // Fetch extra_time from student record
-        if (state.studentId) {
-          supaGet('students', 'id=eq.' + state.studentId).then(function(rows) {
+        // Fetch extra_time using studentId + classId (readable by anon via class policies)
+        if (state.studentId && state.classId) {
+          supaGet('students', 'id=eq.' + state.studentId + '&class_id=eq.' + state.classId).then(function(rows) {
             if (rows && rows[0]) state.extraTime = rows[0].extra_time || 0;
             if (state.classSubject && typeof SUBJECTS !== 'undefined' && SUBJECTS[state.classSubject]) {
               state.subject = state.classSubject;
@@ -3503,10 +3503,10 @@ function checkLocalSessionCrucible() {
       state.classId      = savedSession.classId;
       state.studentName  = savedSession.studentName;
       state.classSubject = savedSession.classSubject || null;
-      // Fetch student record to get extra_time
-      supaGet('students', 'id=eq.' + state.studentId).then(function(rows) {
-        if (rows && rows[0] && rows[0].extra_time) {
-          state.extraTime = rows[0].extra_time;
+      // Fetch student record to get extra_time — use class_id filter which anon can read
+      supaGet('students', 'id=eq.' + state.studentId + '&class_id=eq.' + (state.classId || '')).then(function(rows) {
+        if (rows && rows[0]) {
+          state.extraTime = rows[0].extra_time || 0;
         }
         if (state.classSubject && typeof SUBJECTS !== 'undefined' && SUBJECTS[state.classSubject]) {
           state.subject = state.classSubject;

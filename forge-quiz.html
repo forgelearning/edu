@@ -4885,8 +4885,28 @@ function renderSubjects(){
           state.studentId    = studentId;
           state.classSubject = cls.subject || null;
           try { localStorage.setItem('forge-student', JSON.stringify({ studentId: studentId, classId: cls.id, studentName: state.studentName, classSubject: cls.subject || null })); } catch(e) {}
-          // Also update paid student cache so profile/anvil still find the right row
           try { localStorage.setItem('forge-paid-student', JSON.stringify({ studentId: studentId, name: state.studentName })); } catch(e) {}
+
+          // Backfill class_id on ALL existing responses for this subject across all student rows for this user
+          // First get all student IDs for this auth user, then update their unclassed subject responses
+          if (authUser) {
+            var subjectFilter = cls.subject ? '&subject=eq.' + encodeURIComponent(cls.subject) : '';
+            // Find all student rows for this auth user
+            fetch(SUPABASE_URL + '/rest/v1/students?select=id&auth_user_id=eq.' + authUser.id, {
+              headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY }
+            }).then(function(r) { return r.json(); }).then(function(studentRows) {
+              if (!Array.isArray(studentRows) || studentRows.length === 0) return;
+              // Update responses for each student row that match this subject and have no class_id
+              studentRows.forEach(function(sr) {
+                fetch(SUPABASE_URL + '/rest/v1/responses?student_id=eq.' + sr.id + subjectFilter + '&class_id=is.null', {
+                  method: 'PATCH',
+                  headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY, 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ class_id: cls.id, student_id: studentId })
+                }).catch(function(e) { console.error('Backfill responses failed for', sr.id, e); });
+              });
+            }).catch(function(e) { console.error('Student lookup for backfill failed:', e); });
+          }
+
           var banner = document.getElementById('class-link-banner');
           if (banner) {
             banner.innerHTML = '<p style="font-size:13px;color:var(--good)">✓ Linked to <b>' + (cls.name || code) + '</b> — your teacher can now see your progress and your quiz history has carried over.</p>';
@@ -4903,36 +4923,20 @@ function renderSubjects(){
 
         function lookupAndLink() {
           if (!authUser) {
-            // No auth — create new row
             insertNewStudent();
             return;
           }
-          fetch(SUPABASE_URL + '/rest/v1/students?select=*&auth_user_id=eq.' + authUser.id + '&order=created_at.asc&limit=1', {
+          // Look for an existing row already linked to THIS specific class
+          fetch(SUPABASE_URL + '/rest/v1/students?select=*&auth_user_id=eq.' + authUser.id + '&class_id=eq.' + cls.id, {
             headers: lookupHdrs
           }).then(function(r) { return r.json(); }).then(function(rows) {
             if (Array.isArray(rows) && rows.length > 0) {
-              var existingId = rows[0].id;
-              // PATCH using anon key (covered by teacher RLS policy)
-              fetch(SUPABASE_URL + '/rest/v1/students?id=eq.' + existingId, {
-                method: 'PATCH',
-                headers: anonHdrs,
-                body: JSON.stringify({ class_id: cls.id })
-              }).then(function(r) {
-                if (!r.ok) {
-                  return r.text().then(function(t) {
-                    console.error('PATCH failed:', r.status, t);
-                    // Fall back to insert
-                    insertNewStudent();
-                  });
-                }
-                finishLink(existingId);
-              }).catch(function(e) {
-                console.error('PATCH error:', e);
-                insertNewStudent();
-              });
-            } else {
-              insertNewStudent();
+              // Already linked to this class — just finish
+              finishLink(rows[0].id);
+              return;
             }
+            // No row for this class yet — create one
+            insertNewStudent();
           }).catch(function() { insertNewStudent(); });
         }
 
