@@ -282,7 +282,7 @@ function renderStep3() {
       // Save pending state so success page knows subjects
       try { localStorage.setItem('forge-pending', JSON.stringify({ name: formState.name, subjects: formState.subjects })); } catch(e) {}
       // Redirect to Stripe
-      window.location.href = STRIPE_PAYMENT_LINK + '?prefilled_email=' + encodeURIComponent(email);
+     window.location.href = 'forge-signup.html?paid=1';
     }).catch(function(e) {
       btn.disabled = false; btn.textContent = 'Create account & pay →';
       err.textContent = e.message || 'Could not create account. This email may already be registered.';
