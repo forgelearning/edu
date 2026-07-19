@@ -187,23 +187,43 @@ function renderDashboard() {
   var recentResponses = responses.filter(function(r) { return new Date(r.created_at) > weekAgo; });
   var activeStudents7d = new Set(recentResponses.map(function(r) { return r.student_id; })).size;
 
-  // Subject breakdown
+  // Build lookup maps so orphaned responses (class_id = null) can be
+  // attributed to the correct class/subject via student_id -> students -> class_id.
+  var studentClassMap = {}; // student_id -> class_id
+  var classSubjectMap = {}; // class_id -> subject
+  students.forEach(function(s) { if (s.class_id) studentClassMap[s.id] = s.class_id; });
+  classes.forEach(function(cls) { if (cls.subject) classSubjectMap[cls.id] = cls.subject; });
+
+  // Resolve the effective class_id and subject for a response.
+  // Prefers the stored class_id; falls back to the student's class if null.
+  function resolveResponse(r) {
+    var classId = r.class_id || studentClassMap[r.student_id] || null;
+    var subject  = r.subject  || (classId ? classSubjectMap[classId] : null) || null;
+    return { classId: classId, subject: subject };
+  }
+
+  // Subject breakdown - counts and students come from classes (authoritative);
+  // responses are attributed via resolveResponse so orphaned rows don't
+  // create phantom subject entries with 0 classes / 0 students.
   var subjectMap = {};
   classes.forEach(function(cls) {
     if (!cls.subject) return;
     if (!subjectMap[cls.subject]) subjectMap[cls.subject] = { classes: 0, students: 0, responses: 0, correct: 0, mcs: {} };
     subjectMap[cls.subject].classes++;
-    students.filter(function(s) { return s.class_id === cls.id; }).forEach(function(s) {
+    students.filter(function(s) { return s.class_id === cls.id; }).forEach(function() {
       subjectMap[cls.subject].students++;
     });
   });
   responses.forEach(function(r) {
-    if (!r.subject) return;
-    if (!subjectMap[r.subject]) subjectMap[r.subject] = { classes: 0, students: 0, responses: 0, correct: 0, mcs: {} };
-    subjectMap[r.subject].responses++;
-    if (r.is_correct) subjectMap[r.subject].correct++;
+    var resolved = resolveResponse(r);
+    var subj = resolved.subject;
+    if (!subj) return; // genuinely unattributable - skip
+    // Only count against subjects that have a real class (no phantom rows)
+    if (!subjectMap[subj]) return;
+    subjectMap[subj].responses++;
+    if (r.is_correct) subjectMap[subj].correct++;
     if (!r.is_correct && r.misconception_tag) {
-      subjectMap[r.subject].mcs[r.misconception_tag] = (subjectMap[r.subject].mcs[r.misconception_tag] || 0) + 1;
+      subjectMap[subj].mcs[r.misconception_tag] = (subjectMap[subj].mcs[r.misconception_tag] || 0) + 1;
     }
   });
 
@@ -221,8 +241,19 @@ function renderDashboard() {
   // Class engagement table
   var classEngagement = classes.map(function(cls) {
     var classStudents = students.filter(function(s) { return s.class_id === cls.id; });
-    var classResponses = responses.filter(function(r) { return r.class_id === cls.id; });
-    var activeIds = new Set(recentResponses.filter(function(r) { return r.class_id === cls.id; }).map(function(r) { return r.student_id; }));
+    // Include responses logged with this class_id AND orphaned responses
+    // from students in this class (class_id = null but student belongs here)
+    var classStudentIds = new Set(classStudents.map(function(s) { return s.id; }));
+    var classResponses = responses.filter(function(r) {
+      if (r.class_id === cls.id) return true;
+      if (!r.class_id && classStudentIds.has(r.student_id)) return true;
+      return false;
+    });
+    var activeIds = new Set(recentResponses.filter(function(r) {
+      if (r.class_id === cls.id) return true;
+      if (!r.class_id && classStudentIds.has(r.student_id)) return true;
+      return false;
+    }).map(function(r) { return r.student_id; }));
     var acc = 0;
     if (classResponses.length > 0) {
       acc = Math.round((classResponses.filter(function(r) { return r.is_correct; }).length / classResponses.length) * 100);
@@ -357,6 +388,17 @@ window.switchTab = function(tab) {
 // ── EXPORT ───────────────────────────────────────────────────
 window.exportCSV = function(type) {
   var rows = [];
+  // Shared lookup maps (same logic as renderDashboard)
+  var studentClassMapExp = {};
+  var classSubjectMapExp = {};
+  data.students.forEach(function(s) { if (s.class_id) studentClassMapExp[s.id] = s.class_id; });
+  data.classes.forEach(function(cls) { if (cls.subject) classSubjectMapExp[cls.id] = cls.subject; });
+  function resolveExp(r) {
+    var classId = r.class_id || studentClassMapExp[r.student_id] || null;
+    var subject  = r.subject  || (classId ? classSubjectMapExp[classId] : null) || null;
+    return { classId: classId, subject: subject };
+  }
+
   if (type === 'subjects') {
     rows.push(['Subject','Classes','Students','Questions answered','Accuracy','Top misconception']);
     var subjectMap = {};
@@ -367,11 +409,12 @@ window.exportCSV = function(type) {
       data.students.filter(function(s){return s.class_id===cls.id;}).forEach(function(){subjectMap[cls.subject].students++;});
     });
     data.responses.forEach(function(r) {
-      if (!r.subject) return;
-      if (!subjectMap[r.subject]) subjectMap[r.subject] = { classes:0, students:0, responses:0, correct:0, mcs:{} };
-      subjectMap[r.subject].responses++;
-      if (r.is_correct) subjectMap[r.subject].correct++;
-      if (!r.is_correct && r.misconception_tag) subjectMap[r.subject].mcs[r.misconception_tag] = (subjectMap[r.subject].mcs[r.misconception_tag]||0)+1;
+      var resolved = resolveExp(r);
+      var subj = resolved.subject;
+      if (!subj || !subjectMap[subj]) return;
+      subjectMap[subj].responses++;
+      if (r.is_correct) subjectMap[subj].correct++;
+      if (!r.is_correct && r.misconception_tag) subjectMap[subj].mcs[r.misconception_tag] = (subjectMap[subj].mcs[r.misconception_tag]||0)+1;
     });
     Object.keys(subjectMap).sort().forEach(function(s) {
       var sm = subjectMap[s];
@@ -384,8 +427,13 @@ window.exportCSV = function(type) {
     var weekAgo = new Date(); weekAgo.setDate(weekAgo.getDate()-7);
     data.classes.forEach(function(cls) {
       var cs = data.students.filter(function(s){return s.class_id===cls.id;});
-      var cr = data.responses.filter(function(r){return r.class_id===cls.id;});
-      var activeIds = new Set(data.responses.filter(function(r){return r.class_id===cls.id&&new Date(r.created_at)>weekAgo;}).map(function(r){return r.student_id;}));
+      var csIds = new Set(cs.map(function(s){return s.id;}));
+      var cr = data.responses.filter(function(r){
+        return r.class_id===cls.id || (!r.class_id && csIds.has(r.student_id));
+      });
+      var activeIds = new Set(data.responses.filter(function(r){
+        return (r.class_id===cls.id||(!r.class_id&&csIds.has(r.student_id)))&&new Date(r.created_at)>weekAgo;
+      }).map(function(r){return r.student_id;}));
       var acc = cr.length>0?Math.round((cr.filter(function(r){return r.is_correct;}).length/cr.length)*100):0;
       rows.push([cls.name||cls.code, cls.subject||'', cs.length, cr.length, activeIds.size, acc+'%']);
     });
