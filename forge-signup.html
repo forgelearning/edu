@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Forge — Subscribe</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,700;12..96,800&family=Sora:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--coal:#141210;--panel:#211E1B;--panel-2:#2A2622;--line:#3A342E;--ember:#FF6B2C;--hot:#FFC93C;--slate:#B8B4AD;--white:#F5F1EA;--good:#7FD98A;--bad:#FF5A5A}
+[data-theme="light"]{--coal:#FAFAF8;--panel:#FFFFFF;--panel-2:#F3F2EF;--line:#E0DDD8;--ember:#E5550F;--hot:#C88500;--slate:#6B6660;--white:#1A1816;--good:#1B8C2A;--bad:#D42D2D}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--coal);color:var(--slate);font-family:'Sora',sans-serif;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100vh}
+h1,h2,h3{font-family:'Bricolage Grotesque',sans-serif;color:var(--white);line-height:1.1;letter-spacing:-.015em}
+.wrap{max-width:500px;margin:0 auto;padding:28px 20px}
+.tag{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ember)}
+.logo{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:20px;color:var(--white);text-decoration:none;display:inline-flex;align-items:center;gap:8px;margin-bottom:32px}
+.logo .spark{width:9px;height:9px;background:linear-gradient(135deg,var(--hot),var(--ember));border-radius:2px;transform:rotate(45deg);box-shadow:0 0 10px rgba(255,107,44,.7)}
+.theme-toggle{background:var(--panel);border:1px solid var(--line);color:var(--slate);font-family:'JetBrains Mono',monospace;font-size:12px;padding:6px 12px;border-radius:7px;cursor:pointer;position:fixed;top:20px;right:20px;z-index:99}
+.theme-toggle:hover{color:var(--white);border-color:var(--ember)}
+
+/* steps */
+.step{display:none}.step.active{display:block}
+.step-header{text-align:center;margin-bottom:32px}
+.step-header .tag{margin-bottom:8px;display:block}
+.step-header h1{font-size:28px;margin-bottom:8px}
+.step-header p{color:#8A857E;font-size:14px}
+
+/* form */
+.field{margin-bottom:16px}
+.field label{display:block;font-size:13px;color:var(--slate);margin-bottom:5px}
+.field input{width:100%;padding:12px 14px;border-radius:9px;border:1px solid var(--line);background:var(--panel);color:var(--white);font-family:'Sora',sans-serif;font-size:15px}
+.field input:focus{outline:none;border-color:var(--ember)}
+.field input::placeholder{color:#7A756E}
+
+/* subject grid */
+.subj-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:20px}
+.subj-chip{padding:10px 14px;border-radius:9px;border:1.5px solid var(--line);background:var(--panel);cursor:pointer;font-family:'Sora',sans-serif;font-size:13px;color:var(--slate);text-align:left;transition:border-color .15s,color .15s,background .15s}
+.subj-chip:hover{border-color:var(--ember);color:var(--white)}
+.subj-chip.selected{border-color:var(--ember);background:rgba(255,107,44,.08);color:var(--white)}
+.subj-chip .spec{display:block;font-family:'JetBrains Mono',monospace;font-size:10px;color:#8A857E;margin-top:2px}
+
+/* price card */
+.price-card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:24px;margin-bottom:20px;position:relative;overflow:hidden}
+.price-card::before{content:"";position:absolute;inset:-1px;border-radius:14px;padding:1px;background:linear-gradient(135deg,rgba(255,201,60,.4),rgba(255,107,44,.2));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
+.price-main{font-family:'Bricolage Grotesque',sans-serif;font-size:42px;font-weight:800;color:var(--white);line-height:1}
+.price-period{font-size:15px;color:#8A857E;margin-left:4px}
+.price-desc{font-size:13px;color:#8A857E;margin-top:6px}
+.price-features{margin-top:16px;display:flex;flex-direction:column;gap:8px}
+.price-feat{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--slate)}
+.price-feat::before{content:"✓";color:var(--good);font-weight:700;flex-shrink:0}
+
+/* buttons */
+.btn-primary{width:100%;padding:14px;border-radius:10px;background:linear-gradient(100deg,var(--hot),var(--ember));color:var(--coal);border:none;font-family:'Sora',sans-serif;font-weight:700;font-size:15px;cursor:pointer;margin-bottom:10px}
+.btn-primary:hover{opacity:.9}
+.btn-primary:disabled{opacity:.5;cursor:wait}
+.btn-ghost{width:100%;padding:12px;border-radius:10px;background:none;border:1px solid var(--line);color:var(--slate);font-family:'Sora',sans-serif;font-size:14px;cursor:pointer}
+.btn-ghost:hover{border-color:var(--ember);color:var(--white)}
+.err{color:var(--bad);font-size:13px;margin-top:8px;display:none}
+.note{font-size:12px;color:#8A857E;text-align:center;margin-top:10px}
+
+/* success */
+.success-icon{font-size:48px;text-align:center;margin-bottom:16px}
+.success-card{background:rgba(127,217,138,.06);border:1px solid rgba(127,217,138,.3);border-radius:12px;padding:18px;margin-bottom:16px;font-size:14px;color:var(--slate)}
+.success-card b{color:var(--white)}
+
+/* already-subscribed check */
+.already-box{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px;margin-bottom:20px;font-size:14px}
+
+[data-theme="light"] .btn-primary{color:#fff}
+@media(max-width:480px){.subj-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<button class="theme-toggle" onclick="(function(){var h=document.documentElement,b=document.querySelector('.theme-toggle');if(h.getAttribute('data-theme')==='light'){h.removeAttribute('data-theme');b.textContent='\u2600 Light';localStorage.setItem('forge-theme','dark');}else{h.setAttribute('data-theme','light');b.textContent='\u263E Dark';localStorage.setItem('forge-theme','light');}}())">&#9728; Light</button>
+<script>if(localStorage.getItem('forge-theme')==='light'){document.documentElement.setAttribute('data-theme','light');document.querySelector('.theme-toggle').textContent='\u263E Dark';}</script>
+
+<div class="wrap">
+  <a class="logo" href="index.html"><span class="spark"></span>Forge</a>
+  <div id="app"></div>
+</div>
+
+<script>
+// ── CONFIG ─────────────────────────────────────────────────────────────────
+// Paste your Stripe Payment Link here.
+// Add these query params to the link's "After payment" redirect URL in Stripe:
+//   https://forgelearning.github.io/edu/forge-signup.html?paid=1&email={CHECKOUT_SESSION_EMAIL}&name={CUSTOMER_NAME}
+// Stripe passes {CHECKOUT_SESSION_EMAIL} and {CUSTOMER_NAME} automatically.
+var STRIPE_PAYMENT_LINK = 'https://buy.stripe.com/YOUR_PAYMENT_LINK';
+
+// Subject list — must match forge-quiz.html SUBJECTS keys
+var SUBJECTS_LIST = [
+  {key:'econ',   label:'Economics',       spec:'Edexcel 9EC0'},
+  {key:'psych',  label:'Psychology',      spec:'AQA 7182'},
+  {key:'soc',    label:'Sociology',       spec:'AQA 7192'},
+  {key:'geo',    label:'Geography',       spec:'Edexcel 9GE0'},
+  {key:'bus',    label:'Business',        spec:'Edexcel 9BS0'},
+  {key:'chem',   label:'Chemistry',       spec:'Edexcel 9CH0'},
+  {key:'bio',    label:'Biology',         spec:'Edexcel 9BI0'},
+  {key:'phys',   label:'Physics',         spec:'AQA 7408'},
+  {key:'hist',   label:'History',         spec:'AQA 7042'},
+  {key:'law',    label:'Law',             spec:'AQA 7162'},
+  {key:'crim',   label:'Criminology',     spec:'WJEC'},
+  {key:'pol',    label:'Politics',        spec:'Edexcel 9PL0'},
+  {key:'maths',  label:'Maths',          spec:'Edexcel 9MA0'},
+  {key:'german', label:'German',          spec:'Edexcel 9GN0'},
+  {key:'french', label:'French',          spec:'Edexcel 9FR0'},
+  {key:'cs',     label:'Computer Science',spec:'AQA 7517'},
+  {key:'rs',     label:'Religious Studies',spec:'Eduqas'},
+  {key:'hsc',    label:'Health & Social Care',spec:'OCR H604'},
+];
+
+var app = document.getElementById('app');
+var formState = { name: '', email: '', subjects: [] };
+
+// ── HELPERS ─────────────────────────────────────────────────────────────────
+function getParam(key) {
+  return new URLSearchParams(window.location.search).get(key);
+}
+
+function saveSession(name, email, subjects) {
+  try {
+    // Read existing session if present
+    var existing = JSON.parse(localStorage.getItem('forge-student') || 'null') || {};
+    existing.studentName = name;
+    existing.isPaid = true;
+    existing.email = email;
+    existing.paidSubjects = subjects;
+    // If only one subject selected, lock to it like a class code would
+    if (subjects.length === 1) {
+      existing.classSubject = subjects[0];
+    } else {
+      existing.classSubject = null;
+    }
+    localStorage.setItem('forge-student', JSON.stringify(existing));
+  } catch(e) {}
+}
+
+// ── ROUTING ─────────────────────────────────────────────────────────────────
+// Check if returning from Stripe
+if (getParam('paid') === '1') {
+  renderSuccess();
+} else {
+  // Check if already subscribed
+  try {
+    var sess = JSON.parse(localStorage.getItem('forge-student') || 'null');
+    if (sess && sess.isPaid) {
+      renderAlreadySubscribed(sess);
+    } else {
+      renderStep1();
+    }
+  } catch(e) {
+    renderStep1();
+  }
+}
+
+// ── STEP 1: Name + Email ───────────────────────────────────────────────────
+function renderStep1() {
+  var h = '<div class="step-header">';
+  h += '<span class="tag">Student signup</span>';
+  h += '<h1>Start your Forge subscription</h1>';
+  h += '<p>£2.99/month · cancel anytime · no class code needed</p>';
+  h += '</div>';
+
+  h += '<div class="price-card">';
+  h += '<div><span class="price-main">£2.99</span><span class="price-period">/month</span></div>';
+  h += '<div class="price-desc">Full access to all question banks for your subjects</div>';
+  h += '<div class="price-features">';
+  h += '<div class="price-feat">All question banks for your chosen subjects</div>';
+  h += '<div class="price-feat">Forge mode · The Anvil · The Crucible</div>';
+  h += '<div class="price-feat">Personal misconception profile · XP &amp; ranks</div>';
+  h += '<div class="price-feat">Assignment notifications if your teacher uses Forge</div>';
+  h += '<div class="price-feat">Cancel anytime — no contract</div>';
+  h += '</div></div>';
+
+  h += '<div class="field"><label>Your first name</label>';
+  h += '<input id="s-name" type="text" placeholder="e.g. Alex"></div>';
+  h += '<div class="field"><label>Email address</label>';
+  h += '<input id="s-email" type="email" placeholder="e.g. alex@school.ac.uk"></div>';
+  h += '<p class="err" id="s1-err"></p>';
+  h += '<button class="btn-primary" id="s1-next">Choose subjects →</button>';
+  h += '<button class="btn-ghost" onclick="window.location.href=\'forge-quiz.html\'">Already subscribed? Go to quiz</button>';
+  h += '<p class="note">Secure payment by Stripe · your card details never touch Forge servers</p>';
+
+  app.innerHTML = h;
+
+  document.getElementById('s1-next').onclick = function() {
+    var name = document.getElementById('s-name').value.trim();
+    var email = document.getElementById('s-email').value.trim();
+    var err = document.getElementById('s1-err');
+    if (!name) { err.textContent = 'Enter your first name.'; err.style.display = 'block'; return; }
+    if (!email || !email.includes('@')) { err.textContent = 'Enter a valid email address.'; err.style.display = 'block'; return; }
+    formState.name = name;
+    formState.email = email;
+    renderStep2();
+  };
+}
+
+// ── STEP 2: Subject picker ─────────────────────────────────────────────────
+function renderStep2() {
+  var h = '<div class="step-header">';
+  h += '<span class="tag">Step 2 of 3</span>';
+  h += '<h1>Pick your subjects</h1>';
+  h += '<p>Select all the subjects you\'re studying. You can access all their banks.</p>';
+  h += '</div>';
+
+  h += '<div class="subj-grid" id="subj-grid">';
+  SUBJECTS_LIST.forEach(function(s) {
+    var sel = formState.subjects.indexOf(s.key) !== -1;
+    h += '<button class="subj-chip' + (sel ? ' selected' : '') + '" data-key="' + s.key + '">';
+    h += s.label;
+    h += '<span class="spec">' + s.spec + '</span>';
+    h += '</button>';
+  });
+  h += '</div>';
+
+  h += '<p class="err" id="s2-err"></p>';
+  h += '<button class="btn-primary" id="s2-next">Go to payment →</button>';
+  h += '<button class="btn-ghost" onclick="renderStep1()" style="margin-top:8px">← Back</button>';
+
+  app.innerHTML = h;
+
+  document.getElementById('subj-grid').querySelectorAll('.subj-chip').forEach(function(btn) {
+    btn.onclick = function() {
+      var key = btn.getAttribute('data-key');
+      var idx = formState.subjects.indexOf(key);
+      if (idx === -1) {
+        formState.subjects.push(key);
+        btn.classList.add('selected');
+      } else {
+        formState.subjects.splice(idx, 1);
+        btn.classList.remove('selected');
+      }
+    };
+  });
+
+  document.getElementById('s2-next').onclick = function() {
+    var err = document.getElementById('s2-err');
+    if (formState.subjects.length === 0) {
+      err.textContent = 'Select at least one subject.';
+      err.style.display = 'block';
+      return;
+    }
+    renderStep3();
+  };
+}
+
+// ── STEP 3: Confirm + Stripe ───────────────────────────────────────────────
+function renderStep3() {
+  var subjLabels = formState.subjects.map(function(k) {
+    var s = SUBJECTS_LIST.find(function(x) { return x.key === k; });
+    return s ? s.label : k;
+  });
+
+  var h = '<div class="step-header">';
+  h += '<span class="tag">Step 3 of 3</span>';
+  h += '<h1>Confirm &amp; pay</h1>';
+  h += '<p>Check your details then head to checkout.</p>';
+  h += '</div>';
+
+  h += '<div class="already-box">';
+  h += '<div style="margin-bottom:10px"><b style="color:var(--white)">' + formState.name + '</b> · ' + formState.email + '</div>';
+  h += '<div style="font-size:12px;color:#8A857E;margin-bottom:6px">Subjects selected:</div>';
+  h += '<div style="display:flex;flex-wrap:wrap;gap:6px">';
+  subjLabels.forEach(function(l) {
+    h += '<span style="font-size:12px;padding:3px 10px;border-radius:6px;background:rgba(255,107,44,.1);border:1px solid rgba(255,107,44,.25);color:var(--ember)">' + l + '</span>';
+  });
+  h += '</div></div>';
+
+  h += '<div class="price-card" style="margin-bottom:16px">';
+  h += '<div><span class="price-main">£2.99</span><span class="price-period">/month</span></div>';
+  h += '<div class="price-desc">Billed monthly · cancel anytime</div>';
+  h += '</div>';
+
+  h += '<button class="btn-primary" id="s3-pay">Pay £2.99 — go to Stripe →</button>';
+  h += '<button class="btn-ghost" onclick="renderStep2()" style="margin-top:8px">← Change subjects</button>';
+  h += '<p class="note">You\'ll be redirected to Stripe\'s secure checkout. After payment you\'ll return here automatically.</p>';
+
+  app.innerHTML = h;
+
+  document.getElementById('s3-pay').onclick = function() {
+    // Save details to localStorage before leaving — so we can restore on return
+    try {
+      localStorage.setItem('forge-pending', JSON.stringify({
+        name: formState.name,
+        email: formState.email,
+        subjects: formState.subjects
+      }));
+    } catch(e) {}
+
+    // Build Stripe URL with prefill params
+    var url = STRIPE_PAYMENT_LINK;
+    var params = new URLSearchParams({
+      prefilled_email: formState.email,
+      // Pass name and subjects back via the success URL's client_reference_id isn't
+      // possible with Payment Links alone — we use localStorage instead.
+    });
+    // Stripe Payment Links support ?prefilled_email= natively
+    window.location.href = url + '?prefilled_email=' + encodeURIComponent(formState.email);
+  };
+}
+
+// ── SUCCESS: Return from Stripe ────────────────────────────────────────────
+function renderSuccess() {
+  // Restore pending session from localStorage
+  var pending = null;
+  try {
+    pending = JSON.parse(localStorage.getItem('forge-pending') || 'null');
+    localStorage.removeItem('forge-pending');
+  } catch(e) {}
+
+  // Also accept name/email from URL params (if Stripe passes them)
+  var urlName = getParam('name') || (pending && pending.name) || '';
+  var urlEmail = getParam('email') || (pending && pending.email) || '';
+  var subjects = (pending && pending.subjects) || [];
+
+  if (urlName && subjects.length > 0) {
+    saveSession(urlName, urlEmail, subjects);
+  }
+
+  var subjLabels = subjects.map(function(k) {
+    var s = SUBJECTS_LIST.find(function(x) { return x.key === k; });
+    return s ? s.label : k;
+  });
+
+  var h = '<div class="success-icon">🔥</div>';
+  h += '<div class="step-header">';
+  h += '<span class="tag">Welcome to Forge</span>';
+  h += '<h1>' + (urlName ? urlName + ', you\'re in.' : 'You\'re in.') + '</h1>';
+  h += '<p>Your subscription is active. Start practising now.</p>';
+  h += '</div>';
+
+  if (subjLabels.length > 0) {
+    h += '<div class="success-card">';
+    h += '<b>Subjects unlocked:</b><br>';
+    h += '<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px">';
+    subjLabels.forEach(function(l) {
+      h += '<span style="font-size:12px;padding:3px 10px;border-radius:6px;background:rgba(127,217,138,.1);border:1px solid rgba(127,217,138,.3);color:var(--good)">' + l + '</span>';
+    });
+    h += '</div></div>';
+  }
+
+  h += '<div class="success-card">';
+  h += '<b>How it works without a class code:</b><br>';
+  h += 'You\'ll see a subject picker when you open the quiz. Pick your subject, choose a bank, and start. ';
+  h += 'Your Anvil, Crucible, and profile all work exactly as normal. ';
+  h += 'If your teacher sets up a Forge class later, enter their code at any time to link up.';
+  h += '</div>';
+
+  h += '<button class="btn-primary" onclick="window.location.href=\'forge-quiz.html\'">Go to the quiz →</button>';
+  h += '<button class="btn-ghost" onclick="window.location.href=\'profile.html\'" style="margin-top:8px">View my profile</button>';
+
+  app.innerHTML = h;
+}
+
+// ── ALREADY SUBSCRIBED ─────────────────────────────────────────────────────
+function renderAlreadySubscribed(sess) {
+  var h = '<div class="step-header">';
+  h += '<span class="tag">Already subscribed</span>';
+  h += '<h1>You\'re already on Forge' + (sess.studentName ? ', ' + sess.studentName : '') + '.</h1>';
+  h += '<p>Your subscription is active.</p>';
+  h += '</div>';
+
+  if (sess.paidSubjects && sess.paidSubjects.length > 0) {
+    var labels = sess.paidSubjects.map(function(k) {
+      var s = SUBJECTS_LIST.find(function(x) { return x.key === k; });
+      return s ? s.label : k;
+    });
+    h += '<div class="already-box">';
+    h += '<div style="font-size:12px;color:#8A857E;margin-bottom:6px">Your subjects:</div>';
+    h += '<div style="display:flex;flex-wrap:wrap;gap:6px">';
+    labels.forEach(function(l) {
+      h += '<span style="font-size:12px;padding:3px 10px;border-radius:6px;background:rgba(255,107,44,.1);border:1px solid rgba(255,107,44,.25);color:var(--ember)">' + l + '</span>';
+    });
+    h += '</div></div>';
+  }
+
+  h += '<button class="btn-primary" onclick="window.location.href=\'forge-quiz.html\'">Go to the quiz →</button>';
+  h += '<button class="btn-ghost" onclick="renderStep1()" style="margin-top:8px">Subscribe with a different account</button>';
+
+  app.innerHTML = h;
+}
+</script>
+</body>
+</html>
