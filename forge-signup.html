@@ -366,24 +366,26 @@ function renderSuccess() {
       var authUser = ForgeAuth.currentUser();
       if (existingCache && existingCache.studentId) {
         // Patch existing row with class_id — all prior responses carry over
+        var anonHdrs2 = { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY, 'Content-Type': 'application/json', 'Prefer': 'return=representation' };
         fetch(SUPABASE_URL + '/rest/v1/students?id=eq.' + existingCache.studentId, {
-          method: 'PATCH', headers: authHdrs, body: JSON.stringify({ class_id: cls.id })
-        }).then(function() {
+          method: 'PATCH', headers: anonHdrs2, body: JSON.stringify({ class_id: cls.id })
+        }).then(function(r) {
+          if (!r.ok) { console.error('PATCH failed', r.status); return saveAndLink(existingCache.studentId); }
           saveAndLink(existingCache.studentId);
-        }).catch(function() {
-          err.textContent = 'Could not link. Try again.';
-          err.style.display = 'block';
-          btn.disabled = false; btn.textContent = 'Link to class →';
-        });
+        }).catch(function(e) { console.error('PATCH error', e); saveAndLink(existingCache.studentId); });
       } else {
         // First time — look up by auth_user_id first
         var lookupUrl = SUPABASE_URL + '/rest/v1/students?select=*&auth_user_id=eq.' + (authUser ? authUser.id : 'null') + '&order=created_at.asc&limit=1';
         fetch(lookupUrl, { headers: authHdrs }).then(function(r) { return r.json(); }).then(function(rows) {
           if (rows && rows.length > 0) {
             // Existing row — patch it
+            var anonHdrs3 = { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY, 'Content-Type': 'application/json', 'Prefer': 'return=representation' };
             return fetch(SUPABASE_URL + '/rest/v1/students?id=eq.' + rows[0].id, {
-              method: 'PATCH', headers: authHdrs, body: JSON.stringify({ class_id: cls.id })
-            }).then(function() { saveAndLink(rows[0].id); });
+              method: 'PATCH', headers: anonHdrs3, body: JSON.stringify({ class_id: cls.id })
+            }).then(function(r) {
+              if (!r.ok) { console.error('PATCH failed', r.status); }
+              saveAndLink(rows[0].id);
+            });
           }
           // No existing row — create new
           return fetch(SUPABASE_URL + '/rest/v1/students', {
