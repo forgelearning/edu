@@ -244,11 +244,24 @@ function renderDashboard() {
 
   // School-wide misconception league table (top 10)
   var mcTotals = {};
+  var mcSubjectTotals = {}; // tag -> { subject -> count }
   responses.forEach(function(r) {
     if (!r.is_correct && r.misconception_tag) {
       mcTotals[r.misconception_tag] = (mcTotals[r.misconception_tag] || 0) + 1;
+      var resolved = resolveResponse(r);
+      var subj = resolved.subject;
+      if (subj) {
+        if (!mcSubjectTotals[r.misconception_tag]) mcSubjectTotals[r.misconception_tag] = {};
+        mcSubjectTotals[r.misconception_tag][subj] = (mcSubjectTotals[r.misconception_tag][subj] || 0) + 1;
+      }
     }
   });
+  // For each tag, find the subject it fires in most often
+  function topSubjectForTag(tag) {
+    var subs = mcSubjectTotals[tag];
+    if (!subs) return null;
+    return Object.keys(subs).sort(function(a,b){ return subs[b]-subs[a]; })[0] || null;
+  }
   var mcLeague = Object.keys(mcTotals).map(function(mc) {
     return { mc: mc, count: mcTotals[mc] };
   }).sort(function(a, b) { return b.count - a.count; }).slice(0, 10);
@@ -387,7 +400,7 @@ function renderDashboard() {
     mcLeague.forEach(function(item, idx) {
       var pct = Math.round((item.count / maxCount) * 100);
       var label = MC_LABELS[item.mc] || '—';
-      var subj = getSubject(item.mc);
+      var subj = topSubjectForTag(item.mc) || getSubject(item.mc);
       h += '<tr>';
       h += '<td style="color:#8A857E;font-family:\'JetBrains Mono\',monospace;width:32px">' + (idx + 1) + '</td>';
       h += '<td style="white-space:nowrap"><span class="mc-tag">' + item.mc + '</span>' + (subj ? '<br><span style="font-size:10px;color:#8A857E;font-family:\'JetBrains Mono\',monospace;letter-spacing:.05em;text-transform:uppercase;margin-top:2px;display:inline-block;padding-left:2px">' + subj + '</span>' : '') + '</td>';
