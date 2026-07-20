@@ -403,16 +403,28 @@ function renderDashboard() {
 
   var studentsHtml = '<div id="tab-students" style="display:' + (activeTab === 'students' ? 'block' : 'none') + '">';
 
+  // Filter bar for student tab
+  studentsHtml += '<div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;align-items:center">';
+  studentsHtml += '<span style="font-family:\'JetBrains Mono\',monospace;font-size:11px;color:#8A857E;text-transform:uppercase;letter-spacing:.06em">Filter:</span>';
+  studentsHtml += '<select id="filter-stu-subj" onchange="filterStudentTable(this.value,document.getElementById(\'filter-stu-flag\').value)" style="font-size:12px;padding:4px 8px;border-radius:6px;border:1px solid var(--line);background:var(--panel-2);color:var(--slate);font-family:Sora,sans-serif">';
+  studentsHtml += '<option value="">All subjects</option>';
+  allSubjects.forEach(function(s) { studentsHtml += '<option value="' + s.toUpperCase() + '">' + s.toUpperCase() + '</option>'; });
+  studentsHtml += '</select>';
+  studentsHtml += '<select id="filter-stu-flag" onchange="filterStudentTable(document.getElementById(\'filter-stu-subj\').value,this.value)" style="font-size:12px;padding:4px 8px;border-radius:6px;border:1px solid var(--line);background:var(--panel-2);color:var(--slate);font-family:Sora,sans-serif">';
+  studentsHtml += '<option value="">All flags</option><option value="never">Never started</option><option value="inactive">Inactive</option><option value="low">Low questions</option>';
+  studentsHtml += '</select>';
+  studentsHtml += '</div>';
+
   // Top 10%
   studentsHtml += '<div class="card" style="margin-bottom:16px">';
   studentsHtml += '<div class="card-title" style="color:var(--good)">&#9650; Top performers — ' + topStudents.length + ' student' + (topStudents.length !== 1 ? 's' : '') + ' (top 10%, min. 20 questions)</div>';
   if (topStudents.length === 0) {
     studentsHtml += '<p style="color:#8A857E;font-size:14px">Not enough data yet — students need to answer at least 20 questions to appear here.</p>';
   } else {
-    studentsHtml += '<table class="overview-table"><thead><tr><th>Student</th><th>Class</th><th>Subject</th><th>Questions</th><th>Accuracy</th><th>Active 7d</th></tr></thead><tbody>';
+    studentsHtml += '<table class="overview-table"><thead><tr><th>Student</th><th>Class</th><th>Subject</th><th>Questions</th><th>Accuracy</th><th>Active 7d</th></tr></thead><tbody id="student-top-tbody">';
     topStudents.forEach(function(s) {
       var accCol = s.acc >= 70 ? 'var(--good)' : s.acc >= 50 ? 'var(--hot)' : 'var(--bad)';
-      studentsHtml += '<tr>';
+      studentsHtml += '<tr data-subject="' + s.subject + '" data-flag="">';
       studentsHtml += '<td>' + s.name + '</td>';
       studentsHtml += '<td>' + s.class + '</td>';
       studentsHtml += '<td><span class="subject-badge">' + s.subject + '</span></td>';
@@ -431,10 +443,9 @@ function renderDashboard() {
   if (bottomStudents.length === 0) {
     studentsHtml += '<p style="color:#8A857E;font-size:14px">Not enough data yet.</p>';
   } else {
-    studentsHtml += '<table class="overview-table"><thead><tr><th>Student</th><th>Class</th><th>Subject</th><th>Questions</th><th>Accuracy</th><th>Active 7d</th></tr></thead><tbody>';
-    bottomStudents.forEach(function(s) {
+    studentsHtml += '<table class="overview-table"><thead><tr><th>Student</th><th>Class</th><th>Subject</th><th>Questions</th><th>Accuracy</th><th>Active 7d</th></tr></thead><tbody id="student-bottom-tbody">';
       var accCol = s.acc >= 70 ? 'var(--good)' : s.acc >= 50 ? 'var(--hot)' : 'var(--bad)';
-      studentsHtml += '<tr>';
+      studentsHtml += '<tr data-subject="' + s.subject + '" data-flag="">';
       studentsHtml += '<td>' + s.name + '</td>';
       studentsHtml += '<td>' + s.class + '</td>';
       studentsHtml += '<td><span class="subject-badge">' + s.subject + '</span></td>';
@@ -453,7 +464,7 @@ function renderDashboard() {
   if (lowEngagement.length === 0) {
     studentsHtml += '<p style="color:var(--good);font-size:14px">&#10003; All enrolled students are engaging well.</p>';
   } else {
-    studentsHtml += '<table class="overview-table"><thead><tr><th>Student</th><th>Class</th><th>Subject</th><th>Questions answered</th><th>Last active</th><th>Flag</th></tr></thead><tbody>';
+    studentsHtml += '<table class="overview-table"><thead><tr><th>Student</th><th>Class</th><th>Subject</th><th>Questions answered</th><th>Last active</th><th>Flag</th></tr></thead><tbody id="student-low-tbody">';
     lowEngagement.forEach(function(s) {
       var daysAgo = s.lastActive
         ? Math.floor((Date.now() - s.lastActive.getTime()) / (1000 * 60 * 60 * 24))
@@ -466,7 +477,7 @@ function renderDashboard() {
                : s.total < MIN_Q ? 'Low questions'
                : 'Inactive 7+ days';
       var flagCol = s.total === 0 ? 'var(--bad)' : 'var(--hot)';
-      studentsHtml += '<tr>';
+      studentsHtml += '<tr data-subject="' + s.subject + '" data-flag="' + flag.toLowerCase() + '">';
       studentsHtml += '<td>' + s.name + '</td>';
       studentsHtml += '<td>' + s.class + '</td>';
       studentsHtml += '<td><span class="subject-badge">' + s.subject + '</span></td>';
@@ -482,20 +493,30 @@ function renderDashboard() {
 
   h += studentsHtml;
 
+  // Collect unique subjects and classes for filter dropdowns
+  var allSubjects = Object.keys(subjectMap).sort();
+  var allClasses  = classEngagement.map(function(c) { return c.name; });
+
   // Subject tab
   h += '<div id="tab-subjects" style="display:' + (activeTab === 'subjects' ? 'block' : 'none') + '">';
   h += '<div class="card">';
-  h += '<div class="card-title">Subject breakdown <button class="export-btn" onclick="exportCSV(\'subjects\')">Export CSV</button></div>';
+  h += '<div class="card-title">Subject breakdown';
+  h += '<span style="float:right;display:flex;gap:8px;align-items:center">';
+  h += '<select id="filter-subj-acc" onchange="filterTable(\'subjects-tbody\',1,this.value)" style="font-size:12px;padding:4px 8px;border-radius:6px;border:1px solid var(--line);background:var(--panel-2);color:var(--slate);font-family:Sora,sans-serif">';
+  h += '<option value="">All accuracy</option><option value="high">High (70%+)</option><option value="mid">Mid (50–69%)</option><option value="low">Low (&lt;50%)</option>';
+  h += '</select>';
+  h += '<button class="export-btn" onclick="exportCSV(\'subjects\')">Export CSV</button>';
+  h += '</span></div>';
   h += '<table class="overview-table"><thead><tr>';
   h += '<th>Subject</th><th>Classes</th><th>Students</th><th>Questions answered</th><th>Accuracy</th><th>Top misconception</th>';
-  h += '</tr></thead><tbody>';
+  h += '</tr></thead><tbody id="subjects-tbody">';
   Object.keys(subjectMap).sort().forEach(function(subj) {
     var s = subjectMap[subj];
     var acc = s.responses > 0 ? Math.round((s.correct / s.responses) * 100) : 0;
     var accCol = acc >= 70 ? 'var(--good)' : acc >= 50 ? 'var(--hot)' : 'var(--bad)';
     var topMC = Object.keys(s.mcs).sort(function(a,b){return s.mcs[b]-s.mcs[a];})[0] || null;
     var topMCLabel = topMC ? (MC_LABELS[topMC] || topMC) : '—';
-    h += '<tr>';
+    h += '<tr data-acc="' + acc + '">';
     h += '<td>' + subj.toUpperCase() + '</td>';
     h += '<td>' + s.classes + '</td>';
     h += '<td>' + s.students + '</td>';
@@ -509,14 +530,24 @@ function renderDashboard() {
   // Classes tab
   h += '<div id="tab-classes" style="display:' + (activeTab === 'classes' ? 'block' : 'none') + '">';
   h += '<div class="card">';
-  h += '<div class="card-title">Class engagement <button class="export-btn" onclick="exportCSV(\'classes\')">Export CSV</button></div>';
+  h += '<div class="card-title">Class engagement';
+  h += '<span style="float:right;display:flex;gap:8px;align-items:center">';
+  h += '<select id="filter-cls-subj" onchange="filterClassTable(this.value,document.getElementById(\'filter-cls-acc\').value)" style="font-size:12px;padding:4px 8px;border-radius:6px;border:1px solid var(--line);background:var(--panel-2);color:var(--slate);font-family:Sora,sans-serif">';
+  h += '<option value="">All subjects</option>';
+  allSubjects.forEach(function(s) { h += '<option value="' + s.toUpperCase() + '">' + s.toUpperCase() + '</option>'; });
+  h += '</select>';
+  h += '<select id="filter-cls-acc" onchange="filterClassTable(document.getElementById(\'filter-cls-subj\').value,this.value)" style="font-size:12px;padding:4px 8px;border-radius:6px;border:1px solid var(--line);background:var(--panel-2);color:var(--slate);font-family:Sora,sans-serif">';
+  h += '<option value="">All accuracy</option><option value="high">High (70%+)</option><option value="mid">Mid (50–69%)</option><option value="low">Low (&lt;50%)</option>';
+  h += '</select>';
+  h += '<button class="export-btn" onclick="exportCSV(\'classes\')">Export CSV</button>';
+  h += '</span></div>';
   h += '<table class="overview-table"><thead><tr>';
   h += '<th>Class</th><th>Subject</th><th>Students</th><th>Questions answered</th><th>Active last 7d</th><th>Accuracy</th><th>Engagement</th>';
-  h += '</tr></thead><tbody>';
+  h += '</tr></thead><tbody id="classes-tbody">';
   classEngagement.forEach(function(cls) {
     var engPct = cls.students > 0 ? Math.round((cls.active7d / cls.students) * 100) : 0;
     var accCol = cls.acc >= 70 ? 'var(--good)' : cls.acc >= 50 ? 'var(--hot)' : 'var(--bad)';
-    h += '<tr>';
+    h += '<tr data-subject="' + cls.subject.toUpperCase() + '" data-acc="' + cls.acc + '">';
     h += '<td>' + cls.name + '</td>';
     h += '<td><span class="subject-badge">' + cls.subject.toUpperCase() + '</span></td>';
     h += '<td>' + cls.students + '</td>';
@@ -560,6 +591,49 @@ function renderDashboard() {
 function statCard(val, label, col) {
   return '<div class="stat-card"><span class="stat-n" style="color:' + col + '">' + val + '</span><span class="stat-l">' + label + '</span></div>';
 }
+
+// ── TABLE FILTER FUNCTIONS ───────────────────────────────────────
+window.filterTable = function(tbodyId, accColIndex, accFilter) {
+  var tbody = document.getElementById(tbodyId);
+  if (!tbody) return;
+  Array.from(tbody.rows).forEach(function(row) {
+    var acc = parseInt(row.cells[accColIndex] ? row.cells[accColIndex].textContent : '0') || 0;
+    var show = !accFilter
+      || (accFilter === 'high' && acc >= 70)
+      || (accFilter === 'mid'  && acc >= 50 && acc < 70)
+      || (accFilter === 'low'  && acc < 50);
+    row.style.display = show ? '' : 'none';
+  });
+};
+
+window.filterClassTable = function(subjFilter, accFilter) {
+  var tbody = document.getElementById('classes-tbody');
+  if (!tbody) return;
+  Array.from(tbody.rows).forEach(function(row) {
+    var rowSubj = row.getAttribute('data-subject') || '';
+    var rowAcc  = parseInt(row.getAttribute('data-acc') || '0');
+    var showSubj = !subjFilter || rowSubj === subjFilter;
+    var showAcc  = !accFilter
+      || (accFilter === 'high' && rowAcc >= 70)
+      || (accFilter === 'mid'  && rowAcc >= 50 && rowAcc < 70)
+      || (accFilter === 'low'  && rowAcc < 50);
+    row.style.display = (showSubj && showAcc) ? '' : 'none';
+  });
+};
+
+window.filterStudentTable = function(subjFilter, flagFilter) {
+  ['student-top-tbody','student-bottom-tbody','student-low-tbody'].forEach(function(tbodyId) {
+    var tbody = document.getElementById(tbodyId);
+    if (!tbody) return;
+    Array.from(tbody.rows).forEach(function(row) {
+      var rowSubj = row.getAttribute('data-subject') || '';
+      var rowFlag = row.getAttribute('data-flag') || '';
+      var showSubj = !subjFilter || rowSubj === subjFilter;
+      var showFlag = !flagFilter || rowFlag.toLowerCase().includes(flagFilter.toLowerCase());
+      row.style.display = (showSubj && showFlag) ? '' : 'none';
+    });
+  });
+};
 
 window.switchTab = function(tab) {
   activeTab = tab;
