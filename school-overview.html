@@ -376,7 +376,31 @@ function renderDashboard() {
   if (mcLeague.length === 0) {
     h += '<p style="color:#8A857E;font-size:14px">No misconception data yet — students need to answer questions first.</p>';
   } else {
-    var MC_SUBJECT = {
+    var SUBJ_DISPLAY = {
+      'econ':'Economics','economics':'Economics',
+      'psych':'Psychology','psychology':'Psychology',
+      'soc':'Sociology','sociology':'Sociology',
+      'geo':'Geography','geography':'Geography',
+      'bus':'Business','business':'Business',
+      'chem':'Chemistry','chemistry':'Chemistry',
+      'bio':'Biology','biology':'Biology',
+      'phys':'Physics','physics':'Physics',
+      'hist':'History','history':'History',
+      'law':'Law',
+      'pol':'Politics','politics':'Politics',
+      'cs':'Comp Sci','compsci':'Comp Sci',
+      'maths':'Maths','math':'Maths',
+      'de':'German','german':'German',
+      'fr':'French','french':'French',
+      'span':'Spanish','spanish':'Spanish',
+      'media':'Media Studies',
+      'pe':'Physical Education',
+      'rs':'Religious Studies',
+      'hsc':'Health & Social Care',
+      'crim':'Criminology','criminology':'Criminology',
+      'anvil':'','crucible':''  // source pages, not subjects — suppress
+    };
+    var MC_PREFIX_SUBJ = {
       'INF':'Economics','GRO':'Economics','EMP':'Economics','BOP':'Economics',
       'AD':'Economics','AS':'Economics','NI':'Economics','FIS':'Economics',
       'MON':'Economics','SSP':'Economics','INQ':'Economics','POV':'Economics',
@@ -389,18 +413,26 @@ function renderDashboard() {
       'POL':'Politics','CS':'Comp Sci','MATH':'Maths','STAT':'Maths',
       'DE':'German','FR':'French','SP':'Spanish','MED':'Media Studies',
       'PE':'Physical Education','RS':'Religious Studies','HSC':'Health & Social Care',
-      'TECH':'Exam Technique','CON':'Law'
+      'CON':'Law'
     };
+    function normaliseSubject(raw) {
+      if (!raw) return '';
+      var key = raw.toLowerCase().replace(/[^a-z]/g,'');
+      var d = SUBJ_DISPLAY[key];
+      if (d !== undefined) return d; // includes '' for anvil/crucible
+      // capitalise first letter as fallback
+      return raw.charAt(0).toUpperCase() + raw.slice(1).toLowerCase();
+    }
     function getSubject(tag) {
       var m = tag.match(/^MC-([A-Z]+)-/);
-      return m ? (MC_SUBJECT[m[1]] || '') : '';
+      return m ? (MC_PREFIX_SUBJ[m[1]] || '') : '';
     }
     var maxCount = mcLeague[0].count;
     h += '<table class="overview-table"><thead><tr><th>Rank</th><th>Tag</th><th>Misconception</th><th>Fires</th><th>Prevalence</th></tr></thead><tbody>';
     mcLeague.forEach(function(item, idx) {
       var pct = Math.round((item.count / maxCount) * 100);
       var label = MC_LABELS[item.mc] || '—';
-      var subj = topSubjectForTag(item.mc) || getSubject(item.mc);
+      var subj = normaliseSubject(topSubjectForTag(item.mc)) || getSubject(item.mc);
       h += '<tr>';
       h += '<td style="color:#8A857E;font-family:\'JetBrains Mono\',monospace;width:32px">' + (idx + 1) + '</td>';
       h += '<td style="white-space:nowrap"><span class="mc-tag">' + item.mc + '</span>' + (subj ? '<br><span style="font-size:10px;color:#8A857E;font-family:\'JetBrains Mono\',monospace;letter-spacing:.05em;text-transform:uppercase;margin-top:2px;display:inline-block;padding-left:2px">' + subj + '</span>' : '') + '</td>';
