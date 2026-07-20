@@ -145,7 +145,19 @@ var MC_LABELS = {"MC-INF-01":"Confuses disinflation with deflation","MC-INF-02":
   'MC-RS-09':'Situation ethics — agape as sole intrinsic good','MC-RS-10':'Euthyphro dilemma — divine command theory challenge',
   'MC-RS-11':'Golden mean — moderation misread as always moderate','MC-RS-12':'Sanctity vs quality of life in euthanasia debate',
   'MC-RS-13':'Emotivism — moral statements as expressions not truths','MC-RS-14':'Naturalistic fallacy — Moore\'s open question argument',
-  'MC-RS-15':'Hard determinism and moral responsibility','MC-RS-16':'Evaluation quality — breadth without depth error'};
+  'MC-RS-15':'Hard determinism and moral responsibility','MC-RS-16':'Evaluation quality — breadth without depth error',
+  'MC-MED-01':'Hall encoding/decoding — passive audience assumed','MC-MED-02':'Media ownership concentration — Curran & Seaton',
+  'MC-MED-03':'Cultivation theory — mean world syndrome','MC-MED-04':'Representation as reflection not construction',
+  'MC-MED-05':'Digital regulation inadequacy — Livingstone & Lunt','MC-MED-06':'Male gaze and feminist theory — Van Zoonen',
+  'MC-MED-07':'Hypodermic needle model applied uncritically','MC-MED-08':'Uses and gratifications — active audience',
+  'MC-PE-01':'Cardiac output components during exercise','MC-PE-02':'Bohr effect and oxygen dissociation curve',
+  'MC-PE-03':'Sliding filament theory — filaments shorten (wrong)','MC-PE-04':'Energy systems and intensity matching',
+  'MC-PE-05':'VO2 max definition and determinants','MC-PE-06':'EPOC vs oxygen deficit confusion',
+  'MC-PE-07':'Fibre type characteristics and recruitment','MC-PE-08':'Active vs passive mechanics of breathing',
+  'MC-SP-01':'Ser vs estar — temporary vs permanent','MC-SP-02':'Llevar + gerund for duration confused with pluperfect',
+  'MC-SP-03':'Subjunctive trigger not recognised','MC-SP-04':'Preterite vs imperfect — time marker mismatch',
+  'MC-SP-05':'Reflexive verbs for change of state','MC-SP-06':'Passive voice — ser passive vs reflexive passive',
+  'MC-SP-07':'Sequence of tenses with subjunctive — past trigger','MC-SP-08':'Cuanto más... comparative structure'};
 
 function supaGet(table, params) {
   var url = SUPABASE_URL + '/rest/v1/' + table + '?select=*';
@@ -340,7 +352,135 @@ function renderDashboard() {
   h += '<button class="tab' + (activeTab === 'subjects' ? ' active' : '') + '" onclick="switchTab(\'subjects\')">By subject</button>';
   h += '<button class="tab' + (activeTab === 'classes' ? ' active' : '') + '" onclick="switchTab(\'classes\')">By class</button>';
   h += '<button class="tab' + (activeTab === 'misconceptions' ? ' active' : '') + '" onclick="switchTab(\'misconceptions\')">Misconception league</button>';
+  h += '<button class="tab' + (activeTab === 'students' ? ' active' : '') + '" onclick="switchTab(\'students\')">Student performance</button>';
   h += '</div>';
+
+  // ── STUDENT PERFORMANCE TAB ──────────────────────────────────────
+  // Minimum threshold: 20 questions answered before appearing in rankings.
+  // Shows top 10%, bottom 10%, and low-engagement students.
+  var MIN_Q = 20;
+  var weekAgoTs = Date.now() - 7 * 24 * 60 * 60 * 1000;
+
+  // Build per-student stats
+  var studentStats = students.map(function(s) {
+    var sResponses = responses.filter(function(r) {
+      return r.student_id === s.id || (!r.class_id && r.student_id === s.id);
+    });
+    var correct = sResponses.filter(function(r) { return r.is_correct; }).length;
+    var total   = sResponses.length;
+    var acc     = total > 0 ? Math.round((correct / total) * 100) : 0;
+    var lastActive = sResponses.length > 0
+      ? new Date(sResponses.reduce(function(latest, r) {
+          return r.created_at > latest ? r.created_at : latest;
+        }, sResponses[0].created_at))
+      : null;
+    var activeRecently = lastActive && lastActive.getTime() > weekAgoTs;
+    var cls = classes.filter(function(c) { return c.id === s.class_id; })[0];
+    return {
+      name: s.name || 'Unknown',
+      class: cls ? (cls.name || cls.code) : '—',
+      subject: cls ? (cls.subject || '—').toUpperCase() : '—',
+      total: total,
+      acc: acc,
+      activeRecently: activeRecently,
+      lastActive: lastActive,
+      enrolled: true
+    };
+  });
+
+  // Qualifying students (20+ questions)
+  var qualified = studentStats.filter(function(s) { return s.total >= MIN_Q; });
+  qualified.sort(function(a, b) { return b.acc - a.acc; });
+
+  var topN    = Math.max(1, Math.ceil(qualified.length * 0.1));
+  var topStudents    = qualified.slice(0, topN);
+  var bottomStudents = qualified.slice(-topN).reverse();
+
+  // Low engagement: enrolled but fewer than 20 questions OR inactive 7+ days
+  var lowEngagement = studentStats.filter(function(s) {
+    return s.total < MIN_Q || !s.activeRecently;
+  }).sort(function(a, b) { return a.total - b.total });
+
+  var studentsHtml = '<div id="tab-students" style="display:' + (activeTab === 'students' ? 'block' : 'none') + '">';
+
+  // Top 10%
+  studentsHtml += '<div class="card" style="margin-bottom:16px">';
+  studentsHtml += '<div class="card-title" style="color:var(--good)">&#9650; Top performers — ' + topStudents.length + ' student' + (topStudents.length !== 1 ? 's' : '') + ' (top 10%, min. 20 questions)</div>';
+  if (topStudents.length === 0) {
+    studentsHtml += '<p style="color:#8A857E;font-size:14px">Not enough data yet — students need to answer at least 20 questions to appear here.</p>';
+  } else {
+    studentsHtml += '<table class="overview-table"><thead><tr><th>Student</th><th>Class</th><th>Subject</th><th>Questions</th><th>Accuracy</th><th>Active 7d</th></tr></thead><tbody>';
+    topStudents.forEach(function(s) {
+      var accCol = s.acc >= 70 ? 'var(--good)' : s.acc >= 50 ? 'var(--hot)' : 'var(--bad)';
+      studentsHtml += '<tr>';
+      studentsHtml += '<td>' + s.name + '</td>';
+      studentsHtml += '<td>' + s.class + '</td>';
+      studentsHtml += '<td><span class="subject-badge">' + s.subject + '</span></td>';
+      studentsHtml += '<td>' + s.total + '</td>';
+      studentsHtml += '<td style="color:' + accCol + ';font-family:\'JetBrains Mono\',monospace;font-weight:600">' + s.acc + '%</td>';
+      studentsHtml += '<td><span style="color:' + (s.activeRecently ? 'var(--good)' : 'var(--bad)') + ';font-size:12px">' + (s.activeRecently ? '✓ Active' : '✗ Inactive') + '</span></td>';
+      studentsHtml += '</tr>';
+    });
+    studentsHtml += '</tbody></table>';
+  }
+  studentsHtml += '</div>';
+
+  // Bottom 10%
+  studentsHtml += '<div class="card" style="margin-bottom:16px">';
+  studentsHtml += '<div class="card-title" style="color:var(--bad)">&#9660; Needs attention — ' + bottomStudents.length + ' student' + (bottomStudents.length !== 1 ? 's' : '') + ' (bottom 10%, min. 20 questions)</div>';
+  if (bottomStudents.length === 0) {
+    studentsHtml += '<p style="color:#8A857E;font-size:14px">Not enough data yet.</p>';
+  } else {
+    studentsHtml += '<table class="overview-table"><thead><tr><th>Student</th><th>Class</th><th>Subject</th><th>Questions</th><th>Accuracy</th><th>Active 7d</th></tr></thead><tbody>';
+    bottomStudents.forEach(function(s) {
+      var accCol = s.acc >= 70 ? 'var(--good)' : s.acc >= 50 ? 'var(--hot)' : 'var(--bad)';
+      studentsHtml += '<tr>';
+      studentsHtml += '<td>' + s.name + '</td>';
+      studentsHtml += '<td>' + s.class + '</td>';
+      studentsHtml += '<td><span class="subject-badge">' + s.subject + '</span></td>';
+      studentsHtml += '<td>' + s.total + '</td>';
+      studentsHtml += '<td style="color:' + accCol + ';font-family:\'JetBrains Mono\',monospace;font-weight:600">' + s.acc + '%</td>';
+      studentsHtml += '<td><span style="color:' + (s.activeRecently ? 'var(--good)' : 'var(--bad)') + ';font-size:12px">' + (s.activeRecently ? '✓ Active' : '✗ Inactive') + '</span></td>';
+      studentsHtml += '</tr>';
+    });
+    studentsHtml += '</tbody></table>';
+  }
+  studentsHtml += '</div>';
+
+  // Low engagement
+  studentsHtml += '<div class="card">';
+  studentsHtml += '<div class="card-title" style="color:var(--hot)">&#9888; Low engagement — ' + lowEngagement.length + ' student' + (lowEngagement.length !== 1 ? 's' : '') + ' (enrolled but &lt;20 questions or inactive 7+ days)</div>';
+  if (lowEngagement.length === 0) {
+    studentsHtml += '<p style="color:var(--good);font-size:14px">&#10003; All enrolled students are engaging well.</p>';
+  } else {
+    studentsHtml += '<table class="overview-table"><thead><tr><th>Student</th><th>Class</th><th>Subject</th><th>Questions answered</th><th>Last active</th><th>Flag</th></tr></thead><tbody>';
+    lowEngagement.forEach(function(s) {
+      var daysAgo = s.lastActive
+        ? Math.floor((Date.now() - s.lastActive.getTime()) / (1000 * 60 * 60 * 24))
+        : null;
+      var lastActiveStr = s.lastActive
+        ? (daysAgo === 0 ? 'Today' : daysAgo === 1 ? 'Yesterday' : daysAgo + ' days ago')
+        : 'Never';
+      var flag = s.total === 0 ? 'Never started'
+               : s.total < MIN_Q && !s.activeRecently ? 'Low questions + inactive'
+               : s.total < MIN_Q ? 'Low questions'
+               : 'Inactive 7+ days';
+      var flagCol = s.total === 0 ? 'var(--bad)' : 'var(--hot)';
+      studentsHtml += '<tr>';
+      studentsHtml += '<td>' + s.name + '</td>';
+      studentsHtml += '<td>' + s.class + '</td>';
+      studentsHtml += '<td><span class="subject-badge">' + s.subject + '</span></td>';
+      studentsHtml += '<td>' + s.total + '</td>';
+      studentsHtml += '<td style="font-size:12px;color:#8A857E">' + lastActiveStr + '</td>';
+      studentsHtml += '<td><span style="color:' + flagCol + ';font-size:12px;font-family:\'JetBrains Mono\',monospace">' + flag + '</span></td>';
+      studentsHtml += '</tr>';
+    });
+    studentsHtml += '</tbody></table>';
+  }
+  studentsHtml += '</div>';
+  studentsHtml += '</div>'; // close tab-students
+
+  h += studentsHtml;
 
   // Subject tab
   h += '<div id="tab-subjects" style="display:' + (activeTab === 'subjects' ? 'block' : 'none') + '">';
@@ -423,12 +563,12 @@ function statCard(val, label, col) {
 
 window.switchTab = function(tab) {
   activeTab = tab;
-  ['subjects','classes','misconceptions'].forEach(function(t) {
+  ['subjects','classes','misconceptions','students'].forEach(function(t) {
     var el = document.getElementById('tab-' + t);
     if (el) el.style.display = t === tab ? 'block' : 'none';
   });
   document.querySelectorAll('.tab').forEach(function(btn) {
-    btn.classList.toggle('active', btn.textContent.toLowerCase().includes(tab.replace('misconceptions','misconception')));
+    btn.classList.toggle('active', btn.textContent.toLowerCase().includes(tab.replace('misconceptions','misconception').replace('students','student')));
   });
 };
 

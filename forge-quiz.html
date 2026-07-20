@@ -1515,156 +1515,6 @@ BANKS["ECON-1.1"] = {
   ]
 };
 
-// ===== SOCIOLOGY: CRIME & DEVIANCE + STRATIFICATION =====
-
-BANKS["SOC-CRI"] = {
-  label: "Crime & Deviance",
-  color: "#7f1d1d",
-  questions: [
-    {
-      id:"SCRI-01",
-      stem:"Durkheim argued that crime is 'normal' and 'functional' in society. Which best explains this claim?",
-      options:{A:"Durkheim thought crime was inevitable so societies should not try to reduce it.",B:"Crime performs positive functions: it reinforces shared norms and values (boundary maintenance), promotes social cohesion (collective conscience), and allows necessary social change — if conformity is absolute, society cannot adapt.",C:"Crime is only functional in capitalist societies.",D:"Durkheim's functionalism argued crime was caused by inequality."},
-      correct:"B",tag:"MC-SCRI-01",
-      scaffold:"Durkheim's functions of crime: (1) Boundary maintenance — criminal trials publicly reaffirm norms, strengthening social solidarity. (2) Safety valve — some deviance releases tension before it builds into larger unrest. (3) Social change — yesterday's deviant is today's pioneer (e.g. suffragettes, civil rights movement). BUT: Durkheim also identified anomie — normlessness during rapid social change leads to dysfunctional levels of crime. Too little crime = over-rigid society; too much = breakdown. Often contrasted with Merton who adapted anomie for capitalism.",
-      reforge:{stem:"Merton's strain theory adapts Durkheim's concept of anomie. How does Merton's version differ?",options:{A:"Merton argues crime is always functional; Durkheim says it is always dysfunctional.",B:"Merton locates the strain specifically in capitalist society's contradiction between universal goals (wealth, success) and unequal means of achieving them — those blocked from legitimate means adapt in various ways (conformity, innovation, ritualism, retreatism, rebellion). Durkheim's anomie is about norm breakdown during rapid change, not about class inequality.",C:"Merton focuses on white-collar crime; Durkheim on street crime.",D:"They are essentially the same theory with different terminology."},correct:"B"}
-    },
-    {
-      id:"SCRI-02",
-      stem:"Howard Becker's labelling theory argues that deviance is:",
-      options:{A:"Caused by biological or psychological abnormalities in individuals.",B:"Not a quality of the act itself but the result of society's reaction — groups create deviance by making rules whose infraction constitutes deviance and by applying those rules to particular people.",C:"Always a product of poverty and social deprivation.",D:"Inevitable in all societies and serves boundary-maintenance functions."},
-      correct:"B",tag:"MC-SCRI-02",
-      scaffold:"Labelling theory (Becker 1963, Outsiders): social construction of deviance — what counts as deviant varies between cultures, times, groups. Key concepts: moral entrepreneurs (create rules); primary deviance (initial act); secondary deviance (identity formed around label); self-fulfilling prophecy (labelled → treated as deviant → acts deviantly). Master status (overrides all others — 'he's a criminal'). Criticisms: ignores why people commit primary acts; implies labelled people are passive; some acts (murder) harmful regardless of label. Links to: neo-Marxist (Gilroy, Hall) — who gets labelled? Power matters.",
-      reforge:{stem:"A young person arrested for shoplifting is cautioned, which appears on their record. They subsequently struggle to find employment and drift into further crime. Labelling theory would explain this through:",options:{A:"The shoplifting itself causing a permanent change in personality.",B:"The caution operating as a label — creating a master status of 'offender', triggering a self-fulfilling prophecy as legitimate opportunities are blocked (employment refusal) and the individual increasingly identifies with a deviant identity, leading to secondary deviance.",C:"Biological predisposition to crime which the caution reveals.",D:"Poverty being the real cause of all subsequent offending."},correct:"B"}
-    },
-    {
-      id:"SCRI-03",
-      stem:"Marxist criminology argues that crime statistics show an apparent working-class bias because:",
-      options:{A:"Working-class people are inherently more likely to commit crime.",B:"The criminal justice system reflects ruling-class power — laws criminalise working-class behaviours (street crime, benefit fraud) while white-collar and corporate crime (tax evasion, corporate manslaughter) is under-policed, under-prosecuted and under-sentenced.",C:"Working-class communities lack the moral values needed to prevent crime.",D:"Police statistics accurately reflect the true distribution of crime across social classes."},
-      correct:"B",tag:"MC-SCRI-03",
-      scaffold:"Neo-Marxist/Marxist criminology: laws made by and for the ruling class (Chambliss). Corporate crime (Sutherland's white-collar crime) causes far more harm than street crime — the Office for National Statistics estimates fraud costs £190bn annually vs £1bn for 'traditional' acquisitive crime — yet receives fewer prosecutions and lighter sentences. Selective enforcement — police presence concentrated in working-class areas; stop and search disproportionately targets ethnic minorities (Hall et al — Policing the Crisis). Dark figure of crime: unreported crime distorts statistics further.",
-      reforge:{stem:"The Bhopal disaster (1984) killed 3,787+ people. Union Carbide executives received minimal sentences. This supports which criminological argument?",options:{A:"Street crime is more harmful than white-collar crime.",B:"Corporate crime causes enormous harm but is systematically under-prosecuted and under-punished — supporting Sutherland's argument that white-collar crime is 'crime in the suites' that the CJS fails to address with the same vigour as 'crime in the streets', reflecting the power of corporations relative to regulatory agencies.",C:"Indian criminal law is more lenient than UK law.",D:"The Bhopal disaster was an accident, not a crime."},correct:"B"}
-    },
-    {
-      id:"SCRI-04",
-      stem:"Left realism (Lea and Young) focuses on which aspect of crime that previous critical criminologies neglected?",
-      options:{A:"The need to abolish capitalism to reduce crime.",B:"Taking working-class crime seriously as a real problem for working-class victims — not romanticising criminals as proto-revolutionaries. It uses the 'square of crime' (offender, victim, police, public) and focuses on relative deprivation and marginalisation as causes.",C:"The role of the media in creating moral panics about crime.",D:"Corporate crime as the most harmful form of criminality."},
-      correct:"B",tag:"MC-SCRI-04",
-      scaffold:"Left realism (Lea & Young, 1984): critique of left idealism (Marxism) which romanticised working-class crime and ignored real harm to working-class victims. Square of crime: offender × victim × police × community. Causes of crime: relative deprivation (not absolute poverty, but perceived unfairness of gap), marginalisation (excluded from mainstream), subculture (group solution to shared problem). Solutions: multi-agency approaches, community policing, addressing inequality. Criticisms: neglects corporate crime; underestimates impact of wider capitalism.",
-      reforge:{stem:"Right realism (Wilson and Herrnstein) differs from left realism primarily in:",options:{A:"Right realism focuses on white-collar crime; left realism on street crime.",B:"Right realism locates the causes of crime in individual rational choice, inadequate socialisation and lack of deterrence (broken windows theory, zero tolerance policing) rather than structural inequality — favouring situational crime prevention over addressing social conditions.",C:"Right realism argues crime is not a real problem.",D:"Both approaches reach identical policy conclusions."},correct:"B"}
-    },
-    {
-      id:"SCRI-05",
-      stem:"Stan Cohen's concept of 'moral panic' describes a situation where:",
-      options:{A:"The public panics because crime rates have risen sharply.",B:"A group of people, phenomenon or event is defined as a threat to societal values and interests; the nature of this threat is presented in a stereotyped way by the mass media; moral barricades are manned by editors, bishops and politicians; experts pronounce their diagnoses and solutions; and ways of coping are evolved — often resulting in a disproportionate societal reaction.",C:"Politicians use fear of crime to win elections.",D:"Media coverage of crime causes people to commit more crime."},
-      correct:"B",tag:"MC-SCRI-05",
-      scaffold:"Cohen (1972), Folk Devils and Moral Panics — mods and rockers at Clacton 1964. Key elements: folk devils (scapegoated group), moral entrepreneurs (amplify concern), media amplification, disproportionate reaction, increased policing → deviancy amplification spiral (more policing → more arrests → confirms initial 'threat'). Modern examples: refugee 'invasion' coverage, hoodies/ASBOs, gaming addiction. Hall et al (1978) — mugging panic: ruling class used 'crisis' to justify authoritarian state and distract from economic problems (hegemony).",
-      reforge:{stem:"Hall et al's 'Policing the Crisis' (1978) analysed the 1970s mugging panic. Their Marxist interpretation argued that:",options:{A:"Black youth were genuinely more criminal than the media reported.",B:"The mugging panic was manufactured by the media and ruling class to divert attention from economic crisis and justify an authoritarian turn in the state — with black youth as the folk devil in a context of hegemonic crisis, not a genuine crime wave.",C:"Moral panics are always started by tabloid newspapers acting independently.",D:"Mugging had increased significantly in the early 1970s, justifying the police response."},correct:"B"}
-    },
-    {
-      id:"SCRI-06",
-      stem:"Which correctly describes the pattern of female offending in official crime statistics?",
-      options:{A:"Women commit crime at roughly the same rate as men but are not caught as often.",B:"Women are significantly under-represented in official crime statistics — accounting for around 25% of those convicted in England and Wales, with particularly low representation in violent crime and acquisitive crime.",C:"Female offending has been falling while male offending has remained stable.",D:"Official statistics accurately capture true differences in male and female offending rates."},
-      correct:"B",tag:"MC-SCRI-06",
-      scaffold:"Gender and crime: women ~25% of convictions (England and Wales), ~5% of prison population. Explanations for lower female rates: (1) Socialisation — girls socialised toward conformity, cooperation; (2) Social control theory (Heidensohn) — women subject to greater informal social control (domestic role, male supervision, fear of male violence); (3) Chivalry thesis (Pollak) — CJS treats women more leniently; (4) Liberation thesis (Adler) — as gender equality increases, female crime rises. BUT: women's crime rising in some categories (acquisitive crime). Dark figure: domestic violence and sexual assault vastly under-reported.",
-      reforge:{stem:"Pat Carlen's (1988) research on women in prison found that many had experienced:",options:{A:"Superior education and employment opportunities to non-offending women.",B:"Cumulative disadvantages — class deal (poverty, poor education, unemployment) and gender deal (abuse, failed marriages, loss of children to care) both collapsed, leaving crime as a rational adaptation when both mainstream deals had failed them.",C:"Similar backgrounds to male prisoners, undermining gender-specific explanations.",D:"Strong family ties that paradoxically increased rather than decreased offending."},correct:"B"}
-    },
-    {
-      id:"SCRI-07",
-      stem:"Which best describes the 'dark figure of crime'?",
-      options:{A:"The number of crimes committed at night that go undetected.",B:"The gap between actual crime committed and crime recorded in official statistics — caused by non-reporting (victim doesn't report), non-recording (police don't record), and crimes without individual victims (drug use, corporate crime).",C:"Crimes committed by unknown offenders whose identity cannot be established.",D:"The proportion of crimes that are never solved."},
-      correct:"B",tag:"MC-SCRI-07",
-      scaffold:"Dark figure sources: (1) Non-reporting — shame, fear of reprisal, distrust of police, belief police won't help (domestic violence, rape massively under-reported). (2) Non-recording — police discretion, not all reported crimes are recorded. (3) No victim to report — drug offences, corporate crime, consensual illegal acts. Alternative measures: British Crime Survey/CSEW (victim survey — captures unreported crime but misses victimless crime and homicide). Self-report studies (Bowling & Graham). Each measure has own biases. Exam: always question which measure of crime is being used.",
-      reforge:{stem:"The Crime Survey for England and Wales (CSEW) consistently records more crime than police recorded crime statistics. The most important reason is:",options:{A:"CSEW interviewers encourage people to exaggerate their experiences.",B:"The CSEW captures crimes that victims experienced but did not report to police — eliminating the non-reporting element of the dark figure. This means the CSEW, while not perfect, gives a more complete picture of victimisation than police records alone.",C:"Police recorded crime only covers violent crime, not property crime.",D:"CSEW methodology counts attempted crimes as actual crimes."},correct:"B"}
-    },
-    {
-      id:"SCRI-08",
-      stem:"Which explanation of ethnicity and crime would a neo-Marxist sociologist most endorse?",
-      options:{A:"Biological differences between ethnic groups cause differential crime rates.",B:"Cultural factors within minority communities cause higher rates of offending.",C:"Over-representation of ethnic minorities in crime statistics reflects structural racism in the CJS — differential policing (stop and search), prosecution and sentencing — combined with socio-economic disadvantage rooted in historical racism and class position.",D:"Crime rates are identical across all ethnic groups and statistics are fabricated."},
-      correct:"C",tag:"MC-SCRI-08",
-      scaffold:"Ethnicity and crime: Black people 3× more likely to be stopped and searched (Home Office 2022); over-represented in prison. Explanations: (1) Neo-Marxist (Hall, Gilroy) — racialisation of crime; institutional racism (Macpherson); historical context of colonialism. (2) Left realism (Lea & Young) — relative deprivation and marginalisation in context of racism → higher actual offending. (3) Victim surveys — some support for higher victimisation rates of ethnic minorities (not just CJS bias). Multiple causes: structural disadvantage + discriminatory policing = complex interaction. Avoid biological or cultural deficit explanations.",
-      reforge:{stem:"Gilroy's 'The Myth of Black Criminality' (1982) argues that high rates of Black crime in official statistics are:",options:{A:"Explained by cultural factors within Black communities.",B:"A social construction — the product of racist policing and media representation that criminalises Black political resistance, rather than evidence of higher actual offending rates. Crime becomes a form of collective resistance to racism and colonial oppression.",C:"Accurately reflecting higher rates of offending caused by socio-economic deprivation.",D:"Explained by the concentration of Black communities in high-crime urban areas."},correct:"B"}
-    }
-  ]
-};
-
-BANKS["SOC-STR"] = {
-  label: "Stratification & Differentiation",
-  color: "#6b1d1d",
-  questions: [
-    {
-      id:"SSTR-01",
-      stem:"Which best describes the functionalist explanation of social stratification?",
-      options:{A:"Stratification is inevitable because some people are born more talented than others.",B:"Davis and Moore (1945) argue stratification is a functional necessity — unequal rewards (pay, prestige) are needed to motivate talented individuals to fill the most functionally important and demanding positions in society.",C:"Stratification serves the interests of the ruling class by legitimising inequality.",D:"Stratification is created by discrimination and should be eliminated."},
-      correct:"B",tag:"MC-SSTR-01",
-      scaffold:"Davis & Moore functional theory of stratification: (1) Some positions more important to society's survival. (2) These positions require scarce talent and long training. (3) High rewards attract best people to these roles. (4) Stratification motivates performance. Tumin's critique: (1) How do we know which positions are truly 'most important'? (2) Rewards reflect power to demand high wages, not functional importance. (3) Stratification wastes talent (prevents talented working-class from accessing top positions). (4) Low-paid roles (nursing, care work) often highly important. Contrast with Marxist view: stratification serves ruling class, not society as a whole.",
-      reforge:{stem:"Tumin's critique of Davis and Moore most effectively challenges the theory by arguing:",options:{A:"Stratification is necessary but poorly designed in modern societies.",B:"High salaries in top positions reflect the power of occupational groups to restrict entry and demand high rewards rather than the functional importance of those roles — and stratification actively wastes talent by preventing able working-class individuals from accessing high positions regardless of ability.",C:"All positions in society are equally important and should be equally rewarded.",D:"Davis and Moore's theory only applies to pre-industrial societies."},correct:"B"}
-    },
-    {
-      id:"SSTR-02",
-      stem:"Which correctly distinguishes between 'life chances' and 'lifestyle' in Weber's theory of stratification?",
-      options:{A:"Life chances refer to cultural preferences; lifestyle refers to income.",B:"Life chances are the probable outcomes individuals can expect — education, health, income, housing — shaped by their market position. Lifestyle refers to patterns of consumption and cultural practices associated with status groups, which may cut across economic class boundaries.",C:"Weber argued life chances and lifestyle were determined entirely by class position.",D:"Weber used these terms to describe the same concept in different contexts."},
-      correct:"B",tag:"MC-SSTR-02",
-      scaffold:"Weber's three-component stratification: Class (economic — market position, life chances), Status (social honour, lifestyle, consumption patterns — status groups), Party (political power). Key departure from Marx: these dimensions are analytically separate and don't always align (e.g. a lottery winner has class position without status; a professor has status without high income). Life chances (Lebenschancen) — probability of accessing valued social goods (education, health, housing). Lifestyle — consumption choices that signal status group membership. Weber is more multidimensional than Marx.",
-      reforge:{stem:"A university professor earns £55,000 but is invited to dinner parties with business executives earning £500,000. This is best explained by:",options:{A:"The professor's income placing them in the same economic class as the executives.",B:"Weber's concept of status — the professor's educational credentials and cultural capital confer social honour and status group membership that partially transcends their lower income, allowing social interaction across class boundaries.",C:"The executives being poor judges of social hierarchy.",D:"Income being the only determinant of social position in modern societies."},correct:"B"}
-    },
-    {
-      id:"SSTR-03",
-      stem:"Pierre Bourdieu's concept of 'cultural capital' refers to:",
-      options:{A:"The amount of money spent on cultural activities such as museums and theatre.",B:"Non-financial social assets — knowledge, skills, education, tastes and cultural behaviours — that confer advantages in education and the labour market, and are largely transmitted through family socialisation rather than formal schooling.",C:"The economic value of cultural industries such as film and music.",D:"The ability of ethnic minorities to maintain their cultural traditions in mainstream society."},
-      correct:"B",tag:"MC-SSTR-03",
-      scaffold:"Bourdieu's capital forms: Economic capital (money, assets), Cultural capital (3 forms: embodied — dispositions, taste, accent; institutionalised — qualifications; objectified — cultural objects like books, art), Social capital (networks, connections). Habitus: durable dispositions acquired through upbringing — structures how people perceive and act in the world. Field: social arena with its own rules. Education: reproduces inequality by rewarding middle-class cultural capital while devaluing working-class culture. Exam: link Bourdieu to educational underachievement (cultural deprivation criticism vs cultural capital as reproduction mechanism).",
-      reforge:{stem:"A working-class student with strong grades but no knowledge of art, classical music or current affairs performs poorly in a university interview. Bourdieu would explain this as:",options:{A:"The student lacking the intellectual ability for university.",B:"The student lacking the embodied cultural capital — tastes, knowledge and cultural references — that middle-class students acquire through family socialisation and which university interviewers (themselves products of middle-class culture) unconsciously reward, reproducing class inequality through apparently 'meritocratic' selection.",C:"The student having an unfortunate interview experience unrelated to class.",D:"Universities deliberately discriminating against working-class applicants."},correct:"B"}
-    },
-    {
-      id:"SSTR-04",
-      stem:"The 'embourgeoisement thesis' (Goldthorpe and Lockwood, Affluent Worker studies) argued:",
-      options:{A:"That the working class was gradually becoming bourgeois in terms of both income and attitudes.",B:"That despite rising incomes, the affluent workers they studied retained distinctly working-class attitudes and social networks — challenging the thesis. Higher wages had produced instrumental collectivism (joining unions for economic benefit) not middle-class individualism.",C:"That class differences had entirely disappeared in post-war Britain.",D:"That the working class was becoming more politically radical as wages rose."},
-      correct:"B",tag:"MC-SSTR-04",
-      scaffold:"Embourgeoisement thesis (1950s-60s): rising working-class affluence → adoption of middle-class values → weakening class consciousness → end of class politics. Goldthorpe & Lockwood (Luton car workers, 1960s): workers HAD higher incomes but remained working class in identity, voting, social networks. Instrumental attitude to work (means to an end, not intrinsically rewarding). Privatised home-centredness. Rejected embourgeoisement but also rejected traditional proletarian community. 'New' working class: neither old nor middle class. Contemporary relevance: 'Red Wall' voters 2019 — working-class Brexit voters suggest class-party dealignment continues.",
-      reforge:{stem:"Which evidence from contemporary Britain most directly challenges the view that class is no longer relevant?",options:{A:"The fact that many working-class people now own smartphones.",B:"Persistent correlations between social class (measured by NS-SEC), educational attainment, health outcomes, life expectancy and political attitudes — people born into professional classes are disproportionately represented in universities, professions and political leadership, suggesting class remains a powerful structural determinant of life chances.",C:"The increase in women in senior professional roles.",D:"The existence of social mobility between classes in both directions."},correct:"B"}
-    },
-    {
-      id:"SSTR-05",
-      stem:"Feminist sociologists argue that the stratification literature has traditionally suffered from 'the problem of women.' What does this mean?",
-      options:{A:"Women are more difficult to survey than men, making stratification research less reliable.",B:"Traditional stratification research classified family class position by the male head of household's occupation, rendering women's own class position, labour market participation and experience of inequality invisible.",C:"Women occupy all class positions equally, making stratification research unnecessarily gendered.",D:"Feminist sociology argues class is less important than gender in determining life chances."},
-      correct:"B",tag:"MC-SSTR-05",
-      scaffold:"The 'problem of women' (Oakley, Abbott): (1) Traditional measures (registrar general's scale, Hope-Goldthorpe) classified families by male occupation — women's class derived from husband/father. (2) Ignored women's own labour market position. (3) Invisible women problem: women's experience of inequality (domestic labour, glass ceiling, gender pay gap, pink-collar work) not captured. Responses: Stanworth argued for women's own class assignment; Goldthorpe defended conventional unit (families). Resolution: modern NS-SEC (2001) can be applied to individuals. Also: intersectionality (Crenshaw) — class, gender and ethnicity interact; must be studied together.",
-      reforge:{stem:"Intersectionality (Crenshaw) adds to feminist analysis of stratification by arguing:",options:{A:"Gender is more important than class or ethnicity in determining inequality.",B:"Class, gender, ethnicity, disability and other axes of inequality intersect and interact — a Black working-class woman's experience of inequality is not simply the sum of racism + sexism + class disadvantage but a qualitatively different, compounded experience that single-axis analysis misses.",C:"Sociologists should focus on gender inequality before addressing other forms.",D:"Intersectionality shows that class inequalities no longer exist in post-industrial societies."},correct:"B"}
-    },
-    {
-      id:"SSTR-06",
-      stem:"Which best describes the difference between absolute and relative poverty?",
-      options:{A:"Absolute poverty is measured in pounds; relative poverty is a percentage.",B:"Absolute poverty is the lack of resources needed for physical survival (food, shelter, clean water). Relative poverty is defined in relation to the living standards prevailing in a society — typically income below 60% of median household income in the UK.",C:"Absolute poverty only occurs in developing countries; relative poverty is a developed-world concept.",D:"They are different terms for the same concept — both measure the same thing."},
-      correct:"B",tag:"MC-SSTR-06",
-      scaffold:"Absolute poverty (Rowntree, 1899): subsistence threshold — minimum for physical efficiency. Relative poverty (Townsend, 1979): inability to participate in customary life of society — not just survival but social inclusion. UK measure: 60% median income. Debate: Gordon et al (consensual approach) — items majority consider necessities; if you can't afford these, you're poor. Criticisms of relative poverty: always exists unless income perfectly equal; doesn't capture absolute deprivation. Global: World Bank $2.15/day absolute (2022 revised) for extreme global poverty. 700m+ in extreme poverty globally.",
-      reforge:{stem:"Peter Townsend argued that relative poverty is a more sociologically meaningful concept than absolute poverty. His main argument was:",options:{A:"Absolute poverty has been eliminated in all developed countries.",B:"Poverty should be understood in social terms — people are poor when they lack the resources to participate in the normal activities and social customs of their society. A family who cannot afford a birthday cake for their child's party or a coat for winter is poor relative to social expectations, even if their basic survival needs are technically met.",C:"Relative poverty is easier to measure than absolute poverty.",D:"The concept of absolute poverty was invented by governments to undercount the poor."},correct:"B"}
-    },
-    {
-      id:"SSTR-07",
-      stem:"The New Right perspective on poverty and the welfare state argues:",
-      options:{A:"Poverty is caused by structural inequalities in capitalism that must be reformed.",B:"Generous welfare benefits create a 'culture of dependency' (Murray — underclass) — reducing incentives to work, trapping the poor in welfare and undermining family structure and individual responsibility. The welfare state perpetuates rather than alleviates poverty.",C:"The welfare state should be expanded to eliminate poverty completely.",D:"Poverty is caused by employers paying insufficient wages and should be solved through minimum wage legislation."},
-      correct:"B",tag:"MC-SSTR-07",
-      scaffold:"New Right (Murray, Mead): underclass — behaviourally distinct group whose poverty results from welfare dependency, lone parenthood, criminality. Solutions: reduce benefits, enforce conditionality, restore 'traditional' family values. Critics: (1) Blames poor for structural causes; (2) Evidence weak (Nordic countries have generous welfare AND low poverty); (3) Murray's underclass concept applied selectively to ethnic minorities (Bagguley & Mann); (4) Ignores low wages, housing costs as causes. Social democratic response: poverty = structural, welfare reduces it. Feminist critique: policies punish lone mothers, most of whom are working or seeking work.",
-      reforge:{stem:"Which evidence would MOST effectively challenge Murray's 'culture of dependency' thesis?",options:{A:"The existence of long-term unemployed people who have never worked.",B:"Nordic countries (Denmark, Sweden) have more generous welfare states than the UK yet lower poverty rates and higher employment — suggesting generous welfare does not automatically create dependency, and that structural factors (education, childcare, wage levels) matter more than benefit levels in determining work incentives.",C:"The fact that some poor people do not claim all the benefits they are entitled to.",D:"Surveys showing that most poor people aspire to be wealthy."},correct:"B"}
-    },
-    {
-      id:"SSTR-08",
-      stem:"Max Weber identified social closure as a mechanism by which stratified groups maintain their position. Which modern example best illustrates this?",
-      options:{A:"Wealthy people spending money on luxury goods.",B:"Professional bodies (such as the BMA or Law Society) controlling entry to their profession through qualifications, licensing requirements and codes of conduct — restricting supply of qualified practitioners to maintain income and status.",C:"Governments setting minimum wages to protect low-income workers.",D:"Trade unions negotiating higher wages for their members."},
-      correct:"B",tag:"MC-SSTR-08",
-      scaffold:"Weber's social closure: groups monopolise resources by restricting access to outsiders. Exclusionary closure: high-status groups exclude others (professional licensing, old boy networks, inherited wealth). Usurpationary closure: lower-status groups claim resources from those above (trade unions — collective bargaining to capture more of the surplus). Parkin (1979) extended Weber. Modern examples: medicine (GMC licensing), law (SRA/Bar Council), Oxbridge alumni networks, public school networks, property ownership restricting housing access. Links to: social capital (Bourdieu) — networks as a form of capital used in closure strategies.",
-      reforge:{stem:"An aspiring surgeon must complete 5+ years of medical school, 2 years of foundation training and specialist training before independent practice. A Weberian analysis would interpret this as:",options:{A:"Evidence of meritocracy — only the most capable reach senior positions.",B:"Social closure — the medical profession uses lengthy training requirements and GMC licensing to restrict entry, limiting the supply of doctors and maintaining both the income and social status of the profession, whether or not all requirements are strictly necessary for competent practice.",C:"Purely functional necessity — all stages of training are essential for patient safety.",D:"Evidence of educational credentialism with no economic effects."},correct:"B"}
-    }
-  ]
-};
-
-// Update soc subject
-(function() {
-  var s = SUBJECTS["soc"];
-  if (s) { s.banks = ["SOC-EDU","SOC-MET","SOC-CRI","SOC-STR"]; s.sub = "AQA 7192 — Education, Methods, Crime & Stratification"; }
-})();
-
 BANKS["GEO-TEC"] = {
   label: "Tectonic Hazards",
   color: "#0f766e",
@@ -1731,156 +1581,6 @@ BANKS["GEO-TEC"] = {
 };
 
 BANKS["ECON-1.1"].questions.find(function(q){return q.id==="SD-01";}).correct="D";
-
-// ===== GEOGRAPHY: HUMAN GEOGRAPHY =====
-
-BANKS["GEO-HUM"] = {
-  label: "Globalisation",
-  color: "#0f766e",
-  questions: [
-    {
-      id:"GHU-01",
-      stem:"A student defines globalisation as 'the spread of American culture worldwide.' Why is this too narrow?",
-      options:{A:"American culture has not spread globally — only its products have.",B:"Globalisation encompasses the increasing integration of economies, cultures, people and ideas worldwide through trade, investment, migration and technology — cultural flows are multidirectional, not simply American-led.",C:"Globalisation only refers to economic processes, not culture.",D:"American cultural spread is actually the correct definition of globalisation."},
-      correct:"B",tag:"MC-GHU-01",
-      scaffold:"Globalisation dimensions: economic (trade, FDI, MNCs), cultural (media, food, fashion), political (IGOs — UN, WTO, IMF), demographic (migration). Driven by: TNC expansion, containerisation, ICT revolution, trade liberalisation (WTO), deregulation of financial markets. Cultural flows are complex — South Korean K-pop, Japanese anime, Nigerian Nollywood all spread globally. 'Americanisation' is a contested concept — homogenisation vs hybridisation debate (Robertson's 'glocalisation').",
-      reforge:{stem:"McDonald's adapts its menu in India (no beef burgers) and sells McAloo Tikki. This is an example of:",options:{A:"Cultural imperialism — McDonald's imposes American food culture.",B:"Glocalisation — a global brand adapts its product to local cultural preferences, combining global reach with local responsiveness.",C:"Trade liberalisation — reduced tariffs allow McDonald's to enter new markets.",D:"Demographic globalisation — migration brings American food to India."},correct:"B"}
-    },
-    {
-      id:"GHU-02",
-      stem:"Which factor has most directly enabled the rapid expansion of transnational corporations (TNCs) since the 1980s?",
-      options:{A:"Rising tariffs making domestic production more expensive than overseas production.",B:"The ICT revolution and containerisation — reducing communication costs and transport times, making global production chains economically viable.",C:"Government subsidies given exclusively to TNCs operating in multiple countries.",D:"The decline of trade unions globally making labour cheaper in all countries simultaneously."},
-      correct:"B",tag:"MC-GHU-02",
-      scaffold:"TNC expansion drivers: containerisation (1950s-60s) slashed shipping costs by ~90%. ICT revolution — real-time coordination of global supply chains. Financial deregulation — easier capital movement. Trade liberalisation (GATT/WTO). Export processing zones in LEDCs. Newly industrialising countries offering educated, low-cost labour. Result: spatial division of labour — R&D in HICs, manufacturing in LICs/MICs.",
-      reforge:{stem:"Apple designs products in California but manufactures in China through Foxconn. This spatial division of labour reflects:",options:{A:"Apple's preference for Chinese cultural values in product design.",B:"The comparative advantage of different locations — high-skill design work where wages reflect expertise, manufacturing where lower wages and large-scale facilities reduce unit costs, with ICT enabling coordination across this global production network.",C:"US government regulations preventing Apple from manufacturing domestically.",D:"China's superior design capabilities compared to the USA."},correct:"B"}
-    },
-    {
-      id:"GHU-03",
-      stem:"The 'development gap' refers to:",
-      options:{A:"The difference in educational achievement between urban and rural students.",B:"The widening or narrowing difference in economic development and living standards between more developed and less developed countries, measured by indicators such as GDP per capita, HDI and life expectancy.",C:"The gap between what governments spend on development and what is needed.",D:"The difference in aid received by different developing countries."},
-      correct:"B",tag:"MC-GHU-03",
-      scaffold:"Development gap measures: GDP per capita; HDI (income + education + life expectancy); GII (gender inequality); MPI (multidimensional poverty). The gap is uneven — China and South Korea narrowed it rapidly through export-led growth; others have struggled. Globalisation debate: has it narrowed the gap overall but increased inequality within countries? Dependency theory (Frank) vs modernisation theory (Rostow).",
-      reforge:{stem:"China's GDP per capita rose from ~$200 in 1990 to over $12,000 by 2023. This most directly challenges which theory?",options:{A:"Modernisation theory — China did not follow Rostow's stages.",B:"Dependency theory (Frank) — which argued developing countries are locked into underdevelopment by their relationship with the developed world. China's integration into the global economy accelerated development rather than perpetuating dependency.",C:"The demographic transition model.",D:"The Clark-Fisher model of economic development."},correct:"B"}
-    },
-    {
-      id:"GHU-04",
-      stem:"A student argues that all migration is economically motivated. Which evidence most effectively challenges this?",
-      options:{A:"Some migrants are very wealthy and don't need economic reasons.",B:"Forced migration (refugees fleeing conflict, environmental disasters, persecution) and family reunion migration are driven primarily by safety, fear and social ties rather than economic calculation — Ravenstein's laws describe voluntary economic migration but miss this complexity.",C:"All migration produces negative economic outcomes for host countries.",D:"Economic migration only occurs between countries at similar levels of development."},
-      correct:"B",tag:"MC-GHU-04",
-      scaffold:"Migration types: economic (voluntary — seeking better wages, Ravenstein's laws), forced (involuntary — refugees, IDPs, climate), social (family reunion), political (asylum seekers). Lee's push-pull model: push factors (conflict, poverty) + pull factors (jobs, safety) - intervening obstacles. In 2023, 108m+ forcibly displaced globally (UNHCR) — largest number ever, driven by conflict not economics.",
-      reforge:{stem:"By 2050, climate change may displace up to 1.2 billion people (IOM estimate). These people are best classified as:",options:{A:"Economic migrants — they are moving to improve their standard of living.",B:"Environmental/climate migrants — displacement is forced by environmental change (rising sea levels, extreme drought, flooding) rather than economic choice, though the 1951 UN Refugee Convention does not formally recognise 'climate refugees', creating a legal protection gap.",C:"Refugees under the 1951 UN Refugee Convention.",D:"Internal migrants — all climate displacement occurs within national borders."},correct:"B"}
-    },
-    {
-      id:"GHU-05",
-      stem:"Rostow's modernisation theory argues that all countries develop through five stages. What is the most significant critique of this model?",
-      options:{A:"Rostow assumed all countries would eventually become communist.",B:"The model is linear, Eurocentric and based on Western historical experience — it ignores colonial legacies, assumes all countries have the same starting conditions, and suggests the only development path is replicating Western capitalism.",C:"Rostow's model correctly predicted the development of all Asian economies.",D:"The model is too complex to apply to real countries."},
-      correct:"B",tag:"MC-GHU-05",
-      scaffold:"Rostow (1960) — 5 stages: traditional society, preconditions for take-off, take-off, drive to maturity, high mass consumption. Critiques: Eurocentric — assumes Western development = universal template; ignores colonialism (Frank's dependency theory); doesn't explain NICs taking different paths (South Korea: state-led export growth); linear but some countries leapfrog stages (mobile banking in Kenya skipped fixed-line era). Written during Cold War as counter to communist development models.",
-      reforge:{stem:"Frank's dependency theory most directly contradicts Rostow because it argues:",options:{A:"Economic development is impossible without democracy.",B:"The development of rich countries was achieved through, and continues to depend on, the underdevelopment of poor countries — the global capitalist system structurally prevents LDC development rather than eventually delivering it as Rostow predicts.",C:"All countries will eventually reach Rostow's fifth stage if they follow correct policies.",D:"Geography, not economics, determines development outcomes."},correct:"B"}
-    },
-    {
-      id:"GHU-06",
-      stem:"Which best describes the role of the World Trade Organisation (WTO)?",
-      options:{A:"It provides loans to developing countries to fund infrastructure projects.",B:"It is a UN agency that distributes foreign aid to the poorest nations.",C:"It is an intergovernmental organisation that establishes rules for international trade, provides a forum for trade negotiations, and resolves trade disputes between member countries.",D:"It sets global minimum wages to prevent exploitation of workers in developing countries."},
-      correct:"C",tag:"MC-GHU-06",
-      scaffold:"International organisations: WTO (trade rules, dispute resolution — 164 members). IMF (financial stability, emergency loans with conditions). World Bank (development loans, poverty reduction). UN (political coordination, SDGs, peacekeeping). Students often confuse these. WTO criticism: rules favour HICs (agricultural subsidies protected in USA/EU while LDCs pressured to liberalise); Doha Development Round (2001–ongoing) has stalled over agriculture.",
-      reforge:{stem:"A developing country argues that WTO rules requiring it to reduce import tariffs while the EU maintains agricultural subsidies are unfair. This reflects:",options:{A:"Developing countries want higher tariffs on all goods.",B:"'Free trade' rules are applied asymmetrically — HICs secured protections for sensitive sectors in earlier GATT rounds while later agreements required LDCs to liberalise, creating an unlevel playing field that may disadvantage LDC development.",C:"The WTO has no rules on agricultural subsidies.",D:"Developing countries benefit more from free trade than developed countries."},correct:"B"}
-    },
-    {
-      id:"GHU-07",
-      stem:"The 'brain drain' describes:",
-      options:{A:"The negative effects of social media on young people's concentration.",B:"The emigration of highly skilled, educated workers from developing countries to wealthier nations, depriving source countries of the human capital needed for development.",C:"The flow of financial capital from developed to developing countries.",D:"The loss of traditional knowledge as rural areas become urbanised."},
-      correct:"B",tag:"MC-GHU-07",
-      scaffold:"Brain drain examples: African doctors and nurses working in UK/USA, depriving health systems of skilled workers. Philippines — significant nurse and carer emigration. India — IT professionals to Silicon Valley. Counter-arguments: remittances ($831bn globally in 2022, exceeding foreign aid); skills returned if migrants come back; 'brain circulation'. Exam requires balance — not straightforwardly negative.",
-      reforge:{stem:"India loses many IT graduates to the USA, but receives $100bn+ in annual remittances. The net effect of this emigration on India is best described as:",options:{A:"Purely negative — loss of skills outweighs all financial benefits.",B:"Complex and contested — remittances provide significant income for families and foreign exchange for India, but loss of skilled workers may slow domestic technology development. The net effect depends on the rate of brain circulation, domestic job opportunities, and the proportion of remittances invested vs consumed.",C:"Purely positive — remittances always benefit developing economies more than skills.",D:"Irrelevant — international migration has no significant economic impact."},correct:"B"}
-    },
-    {
-      id:"GHU-08",
-      stem:"Which statement most accurately evaluates the impact of TNCs on host developing countries?",
-      options:{A:"TNCs always benefit developing countries by creating jobs and transferring technology.",B:"TNCs always exploit developing countries through low wages and environmental damage.",C:"TNC impacts are mixed and context-dependent — FDI, employment and technology transfer are potential benefits, but profit repatriation, poor working conditions, environmental damage, and crowding out of local firms are potential costs. The balance depends on host country regulations and bargaining power.",D:"TNC impacts are identical in all developing countries regardless of governance."},
-      correct:"C",tag:"MC-GHU-08",
-      scaffold:"TNC case studies — positive: Samsung in South Korea (technology transfer, export growth); Unilever in India (rural supply chains, employment). Negative: Nike/Gap supply chain conditions in Bangladesh (Rana Plaza 2013); Shell in Niger Delta (environmental damage); tax avoidance through transfer pricing. Key variable: host country governance and regulatory capacity. Singapore attracted TNCs with strict regulations → high-quality FDI.",
-      reforge:{stem:"Ethiopia attracted TNC garment manufacturers by offering low wages and tax breaks. Critics argue this is a 'race to the bottom.' What does this mean?",options:{A:"Ethiopian workers are running races to demonstrate their work ethic.",B:"Countries compete for FDI by reducing wages, labour standards and environmental regulations, creating a downward spiral where the 'winner' is the country offering TNCs the worst conditions for workers — short-term investment at the cost of long-term development quality.",C:"Ethiopian manufacturing quality is inferior to other countries.",D:"Tax breaks always reduce long-term economic development."},correct:"B"}
-    }
-  ]
-};
-
-BANKS["GEO-URB"] = {
-  label: "Urban Environments",
-  color: "#0d6b63",
-  questions: [
-    {
-      id:"GUR-01",
-      stem:"Urban regeneration differs from urban redevelopment primarily because:",
-      options:{A:"Regeneration only applies to residential areas; redevelopment applies to commercial zones.",B:"Regeneration involves improving and revitalising existing urban areas while retaining and building on existing communities and structures. Redevelopment involves clearing and rebuilding, often displacing existing communities.",C:"Regeneration is funded by private companies; redevelopment is always government-funded.",D:"Regeneration is only used in LEDCs; redevelopment occurs in HICs."},
-      correct:"B",tag:"MC-GUR-01",
-      scaffold:"Regeneration vs redevelopment: redevelopment = 'slum clearance' model (1950s-60s) — demolish and rebuild, often displacing communities. Regeneration = refurbish, improve, retain communities. UK examples: London Docklands (1980s — property-led), Castlefield Manchester (heritage-led), Ancoats Manchester (gradual, community-involved). Tension: regeneration can also displace through gentrification even without demolition.",
-      reforge:{stem:"The 1980s London Docklands Development Corporation (LDDC) regeneration is often criticised for:",options:{A:"Being too slow to attract private investment.",B:"Property-led regeneration that prioritised office space and luxury housing over the needs of existing working-class dockland communities, who were largely displaced rather than benefiting from the billions invested.",C:"Relying entirely on public funding rather than private investment.",D:"Failing to create any jobs in the regenerated area."},correct:"B"}
-    },
-    {
-      id:"GUR-02",
-      stem:"Gentrification in urban areas is best described as:",
-      options:{A:"The deliberate government policy of moving wealthy people into deprived areas.",B:"The process by which higher-income residents move into a previously lower-income urban neighbourhood, improving the physical environment but often displacing original residents through rising rents and property prices.",C:"The conversion of industrial buildings into cultural spaces.",D:"The movement of young people from cities to rural areas."},
-      correct:"B",tag:"MC-GUR-02",
-      scaffold:"Gentrification process: artists/creatives move in first (low rents) → area becomes fashionable → developers refurbish → prices and rents rise → original residents displaced. Examples: Brixton, Hackney (London); Digbeth (Birmingham); Northern Quarter (Manchester). Arguments for: physical improvement, reduced crime. Arguments against: displacement of established communities, loss of affordable housing, cultural erasure. Ruth Glass coined the term (1964).",
-      reforge:{stem:"A student says gentrification always improves urban areas. What is the most effective counter-argument?",options:{A:"Gentrification never improves physical environments.",B:"While gentrification often improves the built environment and reduces crime, it can displace long-established working-class and minority communities who cannot afford rising rents, destroying social networks and concentrating poverty elsewhere rather than reducing it.",C:"Gentrification only occurs in London.",D:"Gentrification always reduces property values."},correct:"B"}
-    },
-    {
-      id:"GUR-03",
-      stem:"Urban heat islands (UHIs) are created primarily because:",
-      options:{A:"Cities are located in naturally warmer geographic locations than surrounding areas.",B:"Urban surfaces (concrete, tarmac, roofing) absorb and retain heat; lack of vegetation reduces evapotranspiration cooling; waste heat from buildings, vehicles and industry — making cities typically 1-3°C warmer than surrounding rural areas.",C:"Air pollution traps heat inside cities in a physical bubble.",D:"Global warming affects urban areas more than rural areas."},
-      correct:"B",tag:"MC-GUR-03",
-      scaffold:"UHI causes: (1) Dark surfaces (low albedo) absorb solar radiation. (2) Concrete/tarmac store heat and release slowly at night. (3) Buildings trap longwave radiation (canyon effect). (4) Lack of vegetation → less evapotranspiration. (5) Anthropogenic heat from transport, industry, HVAC. Effects: higher energy demand; increased flash flooding; health impacts. Mitigation: green roofs, urban trees, permeable paving, light-coloured surfaces.",
-      reforge:{stem:"A city council plants 10,000 urban trees as part of a climate adaptation strategy. Which UHI mechanism does this primarily address?",options:{A:"Reducing anthropogenic heat from vehicles.",B:"Increasing evapotranspiration and shading — trees cool surrounding air through water vapour release and by blocking solar radiation from reaching heat-absorbing surfaces, directly countering key UHI mechanisms.",C:"Reducing building density in the urban canyon.",D:"Increasing albedo by reflecting solar radiation."},correct:"B"}
-    },
-    {
-      id:"GUR-04",
-      stem:"'Shrinking cities' describes:",
-      options:{A:"Urban areas that are demolishing buildings to create green space.",B:"Cities experiencing population decline, often due to deindustrialisation or migration, leading to vacancy, dereliction and fiscal stress — requiring different planning responses to growth-focused cities.",C:"Cities that are reducing their administrative boundaries.",D:"Any city with a population under 500,000."},
-      correct:"B",tag:"MC-GUR-04",
-      scaffold:"Shrinking cities examples: Detroit (automotive decline, 1.8m → 600k); Youngstown Ohio (steel); Leipzig Germany (post-reunification); Middlesbrough UK. Challenges: vacancy and dereliction, reduced tax base, ageing infrastructure, concentrated poverty. Youngstown 2010 Plan — accepted shrinkage, converted vacant land to green space rather than pursuing growth. Students should avoid assuming all cities face growth pressure.",
-      reforge:{stem:"Detroit's planners in 2010 proposed converting large areas of vacant residential land to agriculture and green space rather than redeveloping for housing. Why was this considered innovative?",options:{A:"Detroit had no alternative because agriculture is more profitable than housing.",B:"It represented an honest acceptance of demographic decline — 'rightsizing' the city to match its actual reduced population rather than maintaining costly infrastructure for a population that no longer exists.",C:"Federal law required Detroit to convert vacant land to agriculture.",D:"The plan was not innovative — all US cities followed this approach."},correct:"B"}
-    },
-    {
-      id:"GUR-05",
-      stem:"Which best describes 'sustainable urban development'?",
-      options:{A:"Urban development that uses only renewable building materials.",B:"Urban development that meets the needs of the present urban population without compromising the ability of future generations to meet their needs — balancing economic development, social equity and environmental protection.",C:"Urban development funded by sustainable finance mechanisms.",D:"Urban development in cities with populations over 1 million."},
-      correct:"B",tag:"MC-GUR-05",
-      scaffold:"Sustainable urban development (Brundtland 1987 adapted): three pillars — economic (productive, efficient land use), social (affordable housing, accessible services, reduced inequality), environmental (low carbon, biodiversity, waste reduction). Examples: Freiburg Germany (60%+ public transport/cycling); BedZED London (zero-carbon housing); Curitiba Brazil (BRT system, green spaces). Tension: economic growth vs environmental limits; affordability vs sustainability premium.",
-      reforge:{stem:"Freiburg, Germany is often cited as a model sustainable city. Which combination of features justifies this?",options:{A:"High GDP per capita and large financial services sector.",B:"High rates of cycling (30%+ modal share), extensive tram network, solar energy adoption, compact mixed-use development, and citizen participation in planning — combining low-carbon transport, renewable energy and inclusive governance.",C:"Zero population growth and no new construction since 1990.",D:"100% renewable electricity grid and no private car ownership."},correct:"B"}
-    },
-    {
-      id:"GUR-06",
-      stem:"Squatter settlements develop in developing-world cities primarily because:",
-      options:{A:"Governments deliberately create zones for informal housing on the urban periphery.",B:"Rapid rural-urban migration outpaces the supply of formal affordable housing — migrants occupy marginal land informally as the only available option, creating self-built communities that may improve incrementally over time.",C:"Squatter settlements are a traditional form of housing in tropical climates.",D:"Property rights do not exist in developing countries, so all housing is informal."},
-      correct:"B",tag:"MC-GUR-06",
-      scaffold:"Informal settlements: Dharavi Mumbai (1m people, 2.1km²); Kibera Nairobi; Rocinha Rio de Janeiro. Causes: rapid urbanisation exceeding housing supply, land speculation, weak planning systems, rural poverty as push factor. Turner (1969): given security of tenure, communities improve their own homes. Solutions: sites and services, slum upgrading (improve in situ rather than clear), land tenure. Forced clearance often counterproductive.",
-      reforge:{stem:"A government clears a major informal settlement to build luxury apartments. Evidence suggests this approach:",options:{A:"Always improves living conditions for former residents.",B:"Typically displaces former residents to other informal areas — without land tenure or affordable formal housing options, cleared residents recreate informal settlements elsewhere. In-situ upgrading with tenure security is generally more effective.",C:"Is the most cost-effective approach to improving urban housing quality.",D:"Is required by UN SDG 11 on sustainable cities."},correct:"B"}
-    },
-    {
-      id:"GUR-07",
-      stem:"The Burgess concentric zone model suggests that:",
-      options:{A:"All cities have identical land use patterns regardless of context.",B:"Cities grow outward in concentric rings from a CBD — with zones of transition (industry/immigration), working-class housing, middle-class suburbs, and commuter zones successively further out, based on 1920s Chicago.",C:"Industrial areas are always located on the urban periphery.",D:"Housing quality increases toward the city centre in all cities."},
-      correct:"B",tag:"MC-GUR-07",
-      scaffold:"Urban models: Burgess (concentric zones, 1925 — Chicago); Hoyt (sector model — sectors extend along transport routes); Mann (UK adaptation — prevailing SW wind pushes high-status housing southwest); Multiple Nuclei (Harris & Ullman — several nodes). Criticisms of Burgess: based on 1920s US city; doesn't fit European cities (Paris: higher-status housing near centre); ignores physical geography; static model. Useful as starting point if treated critically.",
-      reforge:{stem:"The Burgess model is least applicable to which of the following cities?",options:{A:"A 1920s American industrial city like Chicago.",B:"Paris, where the most expensive housing is clustered in central arrondissements close to the CBD — contradicting Burgess's prediction that higher-status housing is in outer zones.",C:"A city that grew rapidly through industrialisation.",D:"A North American city built on flat terrain with a clear CBD."},correct:"B"}
-    },
-    {
-      id:"GUR-08",
-      stem:"Which statement best evaluates UK enterprise zones as a regeneration tool?",
-      options:{A:"Enterprise zones have uniformly succeeded in regenerating deprived urban areas.",B:"Evidence is mixed — enterprise zones can attract investment and create jobs, but often displace economic activity from nearby areas rather than generating genuinely new activity, and benefits may not reach the most deprived local residents.",C:"Enterprise zones have always failed and should be abandoned.",D:"Enterprise zones only work in cities with populations over 500,000."},
-      correct:"B",tag:"MC-GUR-08",
-      scaffold:"Enterprise zones (UK, 1981 — Thatcher; revived 2011): offer tax breaks (business rates relief, capital allowances), simplified planning. Successes: Canary Wharf, MediaCityUK Salford. Criticisms: displacement effect (businesses relocate for tax benefits — net new jobs less than claimed); benefits accrue to businesses not existing residents; 'trickle down' may not reach most deprived. Need to distinguish gross from net job creation.",
-      reforge:{stem:"A new enterprise zone attracts 5,000 jobs. Critics argue this overstates the economic benefit. Why?",options:{A:"Enterprise zones can only attract small businesses.",B:"Many jobs may have relocated from nearby areas seeking tax advantages, meaning the net increase in regional employment is less than the headline figure — genuine additionality must be distinguished from displacement.",C:"Only manufacturing jobs count as genuine economic benefits.",D:"5,000 jobs is too small to have any regional economic impact."},correct:"B"}
-    }
-  ]
-};
-
-// Update geo subject
-(function() {
-  var g = SUBJECTS["geo"];
-  if (g) { g.banks = ["GEO-TEC","GEO-HUM","GEO-URB"]; g.sub = "Edexcel A — Tectonic, Globalisation & Urban"; }
-})();
 
 // ===== BUSINESS, CHEMISTRY, CRIMINOLOGY =====
 
@@ -2864,6 +2564,363 @@ SUBJECTS["french"] = {
   color: "#1d4ed8",
   banks: ["FR-1","FR-2"]
 };
+SUBJECTS["media"] = {
+  label: "A Level Media Studies",
+  sub: "Eduqas A680QS — Theoretical Framework",
+  color: "#7c2d12",
+  banks: ["MEDIA-1"]
+};
+SUBJECTS["pe"] = {
+  label: "A Level Physical Education",
+  sub: "AQA 7582 — Applied Anatomy & Physiology",
+  color: "#14532d",
+  banks: ["PE-1"]
+};
+SUBJECTS["span"] = {
+  label: "A Level Spanish",
+  sub: "Edexcel 9SP0 — Grammar & Translation",
+  color: "#7c3aed",
+  banks: ["SPAN-1"]
+};
+
+// ===== MEDIA STUDIES BANK 1 — Theoretical Framework =====
+
+BANKS["MEDIA-1"] = {
+  label: "Theoretical Framework",
+  color: "#7c2d12",
+  questions: [
+    {
+      id:"MED-01",
+      stem:"Stuart Hall's encoding/decoding model argues that audiences:",
+      options:{
+        A:"Passively receive the single meaning intended by the producer.",
+        B:"Actively decode media texts, and the meaning created depends on the viewer's cultural background — producers encode a preferred reading, but audiences may adopt a negotiated or oppositional reading.",
+        C:"Always reject the preferred reading of media texts.",
+        D:"Decode messages identically regardless of their social position."
+      },
+      correct:"B",tag:"MC-MED-01",
+      scaffold:"Hall (1980) encoding/decoding: producers encode a preferred reading using dominant ideology. Audiences decode from their own cultural position: (1) Dominant/hegemonic — accepts preferred meaning fully; (2) Negotiated — partially accepts, modifies from own position; (3) Oppositional — rejects preferred reading, substitutes their own. Key point: meaning is not fixed in the text but created in the interaction between text and reader. Exam: apply this when analysing audience response, not just representation.",
+      reforge:{stem:"A news broadcast frames immigration negatively. A viewer who is themselves an immigrant rejects this framing and sees the report as biased. Hall would describe this as:",options:{A:"A dominant reading — they accepted the preferred meaning.",B:"An oppositional reading — the viewer's social position (as an immigrant) leads them to reject the preferred meaning and substitute an alternative interpretation based on their own experience.",C:"A negotiated reading — they partially accepted the message.",D:"Evidence that media texts have no fixed meaning at all."},correct:"B"}
+    },
+    {
+      id:"MED-02",
+      stem:"Curran and Seaton's power without responsibility model argues that:",
+      options:{
+        A:"Media diversity increases as ownership concentrates.",
+        B:"The concentration of media ownership in the hands of a few large conglomerates limits the range of ideas and viewpoints in circulation, serving the interests of powerful owners rather than the public.",
+        C:"Public service broadcasting is the greatest threat to media diversity.",
+        D:"Media owners have no influence over editorial content."
+      },
+      correct:"B",tag:"MC-MED-02",
+      scaffold:"Curran & Seaton: media ownership concentrated in a few powerful companies (News Corp, Disney, Comcast). This concentration: reduces diversity of voices; creates commercial pressure prioritising profit over quality/public interest; enables owners to influence editorial line (Murdoch and The Sun's political positions). BUT: Curran also notes digital media has created some diversity (YouTube, podcasting). Hesmondhalgh critique: market logic dominates cultural industries regardless of ownership structure. Exam: evaluate — does concentration always limit diversity?",
+      reforge:{stem:"A media conglomerate that owns a news channel, a film studio and several newspapers is an example of:",options:{A:"Vertical integration only.",B:"Conglomeration — ownership of multiple media forms across different sectors. This creates cross-media synergies (using the newspaper to promote the film) but raises concerns about concentration of cultural power in Curran & Seaton's terms.",C:"Horizontal integration only.",D:"Public service broadcasting."},correct:"B"}
+    },
+    {
+      id:"MED-03",
+      stem:"Gerbner's cultivation theory argues that:",
+      options:{
+        A:"Television audiences are entirely immune to media influence.",
+        B:"Long-term, heavy exposure to television cultivates a shared worldview — heavy viewers develop a distorted perception of social reality that more closely matches the TV world than actual social statistics, particularly regarding crime and danger (the 'mean world syndrome').",
+        C:"Media effects are immediate and direct — one violent programme causes violent behaviour.",
+        D:"Cultivation only affects children, not adult viewers."
+      },
+      correct:"B",tag:"MC-MED-03",
+      scaffold:"Gerbner (1970s+) cultivation theory: TV is the dominant storytelling medium. Heavy viewers (4+ hours/day) develop TV-cultivated perceptions: overestimate crime rates, police violence prevalence, and physical danger. 'Mean world syndrome' — heavy viewers more fearful, more conservative about crime. First-order effects (facts) and second-order effects (values/attitudes). Mainstreaming — heavy viewing homogenises diverse groups toward TV's dominant values. Criticisms: correlation not causation; people choose programmes (reinforcement not cultivation); ignores active audience; pre-digital TV environment.",
+      reforge:{stem:"Research finds heavy TV viewers consistently overestimate the percentage of the population who are criminals. Gerbner would explain this as:",options:{A:"Heavy viewers being less educated and therefore more fearful.",B:"Cultivation — heavy TV exposure leads viewers to perceive social reality as matching TV's overrepresentation of crime, producing first-order cultivation effects on factual beliefs about the world.",C:"Evidence that media has no effect on attitudes, only on factual knowledge.",D:"The result of watching news rather than drama."},correct:"B"}
+    },
+    {
+      id:"MED-04",
+      stem:"In media studies, 'representation' means:",
+      options:{
+        A:"How accurately media texts depict real-world statistics about social groups.",
+        B:"The process by which media construct versions of reality — selecting, combining and presenting elements to produce meanings about social groups, events and ideas. Representations are constructions, not reflections, of reality.",
+        C:"The legal obligation for broadcasters to include diverse characters.",
+        D:"The number of minority groups shown in a media text."
+      },
+      correct:"B",tag:"MC-MED-04",
+      scaffold:"Representation: media don't reflect reality — they RE-present it through selection and construction. Key ideas: (1) Re-presentation — same reality can be constructed differently (tabloid vs broadsheet coverage of same event). (2) Stereotyping — shortcut representations that can reinforce or challenge ideological assumptions. (3) Power — who controls representation? Whose perspective is centred? (4) Stuart Hall's 'the spectacle of the other' — difference is marked, exoticised, othered. Exam always asks for application to specific texts — don't just define, analyse HOW the text constructs representation.",
+      reforge:{stem:"Two newspapers cover the same protest: one uses the headline 'Passionate campaigners demand action' and another uses 'Troublemakers disrupt city'. This illustrates which concept?",options:{A:"Cultivation — both papers are shaping long-term attitudes about protest.",B:"Re-presentation — the same event is constructed differently through language choices, encoding different preferred readings about protesters and their legitimacy. Neither is a neutral 'reflection' of the event.",C:"Hypodermic needle theory — both headlines directly cause readers to hold fixed views.",D:"Conglomeration — both papers are owned by the same company."},correct:"B"}
+    },
+    {
+      id:"MED-05",
+      stem:"Livingstone and Lunt's critique of regulation argues that:",
+      options:{
+        A:"Media regulation is unnecessary in a digital age.",
+        B:"Traditional media regulation models — designed for broadcast media with clear national gatekeepers — are inadequate for converged, digital, global media environments where audiences are also producers and national boundaries are meaningless.",
+        C:"Ofcom is effective at regulating all forms of digital media.",
+        D:"Self-regulation by media companies always protects the public interest."
+      },
+      correct:"B",tag:"MC-MED-05",
+      scaffold:"Livingstone & Lunt (2011): traditional regulation framework built on broadcast model (few producers, many passive consumers, national transmission). Digital convergence undermines this: (1) Audiences become producers (UGC — YouTube, TikTok); (2) Global platforms (Netflix, Google) operate across jurisdictions; (3) Algorithmic curation not 'editorial' in traditional sense; (4) Speed of content creation outpaces regulatory response. Regulatory bodies: Ofcom (UK broadcasting + telecoms), IPSO (press), BBFC (film classification), ASA (advertising). OSA 2023 — new attempt to regulate online harms. Exam: evaluate whether any regulatory model can address these challenges.",
+      reforge:{stem:"A teenager is exposed to harmful content via a recommendation algorithm on a social media platform. This situation most clearly illustrates:",options:{A:"The effectiveness of the hypodermic needle model of media effects.",B:"The limitations of traditional regulation identified by Livingstone and Lunt — no single national regulator can easily hold a global platform accountable for algorithmically generated recommendations, and the content wasn't broadcast but personalised, bypassing conventional gatekeeping.",C:"The need to return to public service broadcasting models.",D:"Cultivation theory — long-term exposure to recommended content shapes worldview."},correct:"B"}
+    },
+    {
+      id:"MED-06",
+      stem:"Van Zoonen's feminist media theory argues that:",
+      options:{
+        A:"Women are never represented positively in media texts.",
+        B:"Gender is a cultural construction performed and perpetuated through representation — media texts produce and reproduce gendered identities by consistently presenting femininity and masculinity in particular ways, often through the 'male gaze'.",
+        C:"Media representation has no impact on real-world gender inequality.",
+        D:"Only texts produced by women can represent gender fairly."
+      },
+      correct:"B",tag:"MC-MED-06",
+      scaffold:"Van Zoonen (1994) feminist media theory: gender is not natural but constructed through cultural practices including media representation. The 'male gaze' (Mulvey — applied to film originally): camera positions women as spectacle for male viewer's pleasure. Women coded as objects rather than subjects. BUT: Van Zoonen acknowledges female audiences actively resist and renegotiate representations. Contemporary relevance: online content creation, OnlyFans debate — exploitation or empowerment? Intersectionality (Crenshaw) — gender intersects with race, class in representations. Exam: avoid stating all representation is negative — evaluate complexity.",
+      reforge:{stem:"A music video features a female artist singing from a stationary position while the camera repeatedly focuses on her body in fragmented close-ups. Van Zoonen and Mulvey would analyse this as:",options:{A:"Empowering representation — the female artist is the centre of attention.",B:"An example of the male gaze — the camera's fragmentation of the female body positions her as visual spectacle for a presumed male viewer's pleasure rather than as a subject with agency, reproducing a patriarchal representation of femininity.",C:"Negotiated representation — audiences will interpret this differently.",D:"Evidence of increasing female representation in the music industry."},correct:"B"}
+    },
+    {
+      id:"MED-07",
+      stem:"The 'hypodermic needle' model of media effects assumes:",
+      options:{
+        A:"Media effects are complex, mediated by audience factors.",
+        B:"Media messages are injected directly into passive audiences who absorb them uncritically, producing immediate, uniform behavioural effects — a simple, direct cause-and-effect relationship.",
+        C:"Audiences actively resist media influence.",
+        D:"Long-term exposure to media gradually shapes worldview."
+      },
+      correct:"B",tag:"MC-MED-07",
+      scaffold:"Hypodermic needle (magic bullet) model: early effects theory (1920s-40s). Assumes: audiences are passive, homogeneous, isolated from social ties; media has direct, powerful, immediate effects. Associated with: Bandura's Bobo doll experiments (children imitated modelled aggression); moral panics about film violence. Criticisms: (1) audiences are NOT passive — two-step flow (Katz & Lazarsfeld), active audience theory; (2) social context mediates effects; (3) laboratory conditions are artificial; (4) correlation ≠ causation. Modern relevance: still cited in political debates (video games/violence) despite weak evidence. Exam: most useful as a model to critique rather than apply.",
+      reforge:{stem:"Research attempting to prove that violent video games cause violent behaviour repeatedly fails to establish a causal link. This most directly undermines:",options:{A:"Cultivation theory — which also relies on long-term effects.",B:"The hypodermic needle model — which predicts direct, measurable behavioural effects from media exposure. The absence of clear causal evidence suggests audiences are not the passive receptacles this model assumes.",C:"Uses and gratifications theory — which predicts people choose violent games to meet aggressive needs.",D:"Reception theory — which predicts all audiences read games the same way."},correct:"B"}
+    },
+    {
+      id:"MED-08",
+      stem:"Blumler and Katz's uses and gratifications theory argues that:",
+      options:{
+        A:"Media producers control how audiences use and interpret texts.",
+        B:"Audiences are active users of media who choose texts purposefully to satisfy specific needs: information/surveillance, personal identity, social integration and entertainment. The audience uses the media, rather than the media using the audience.",
+        C:"Audiences are passive and their gratifications are manufactured by the media industry.",
+        D:"Uses and gratifications only applies to news media, not entertainment."
+      },
+      correct:"B",tag:"MC-MED-08",
+      scaffold:"Blumler & Katz (1974) uses and gratifications: shifts focus from 'what does media DO to audiences?' to 'what do audiences DO with media?' Four needs: (1) Diversion/escape — entertainment, relaxation; (2) Personal relationships — companionship, social interaction via media (parasocial relationships); (3) Personal identity — finding values and role models in texts; (4) Surveillance/information — understanding the world. Modern examples: binge-watching (escape), following influencers (parasocial), using TikTok for news. Criticism: assumes audiences are always rational and purposeful; ignores ideological effects; ignores how industry shapes 'choice'.",
+      reforge:{stem:"A student watches a reality TV show featuring young people from a similar background and identifies with a contestant who overcomes adversity. Uses and gratifications would explain this as:",options:{A:"Cultivation — long-term viewing has shaped the student's worldview.",B:"The personal identity function — the student is actively using the text to explore and reinforce their own values and sense of self by identifying with a character whose experiences resonate with their own.",C:"Diversion — the student is using the text purely for escapism.",D:"Evidence of the hypodermic needle effect — the show is modelling behaviour."},correct:"B"}
+    }
+  ]
+};
+
+// ===== PE BANK 1 — Applied Anatomy & Physiology =====
+
+BANKS["PE-1"] = {
+  label: "Applied Anatomy & Physiology",
+  color: "#14532d",
+  questions: [
+    {
+      id:"PE-01",
+      stem:"During maximal exercise, cardiac output increases dramatically. Which combination of factors is primarily responsible?",
+      options:{
+        A:"Decreased heart rate and increased stroke volume.",
+        B:"Increased heart rate (via sympathetic nervous system) and increased stroke volume (via Starling's law — greater venous return stretches the ventricles, causing a more forceful contraction).",
+        C:"Increased heart rate only — stroke volume remains constant during exercise.",
+        D:"Decreased stroke volume compensated by a very large increase in heart rate."
+      },
+      correct:"B",tag:"MC-PE-01",
+      scaffold:"Cardiac output (Q) = heart rate (HR) × stroke volume (SV). At rest: ~5L/min (70bpm × 70ml). During maximal exercise: up to 20-25L/min in trained athletes. HR increases via sympathetic NS (adrenaline, reduced parasympathetic tone). SV increases via: (1) Starling's law — greater venous return (muscle pump, venoconstriction) → ventricle fills more → stronger contraction; (2) Increased contractility (adrenaline); (3) Reduced afterload (vasodilation in working muscles). Trained athletes: higher SV due to cardiac hypertrophy (eccentric) — HR lower at rest and submaximal exercise.",
+      reforge:{stem:"A trained endurance athlete has a resting heart rate of 40bpm compared to an untrained person's 70bpm, but their cardiac output at rest is similar. What explains this?",options:{A:"The athlete's heart pumps blood faster so needs fewer beats.",B:"The athlete has a significantly higher stroke volume due to cardiac hypertrophy (enlarged left ventricle holds more blood and contracts more forcefully) — so despite fewer beats per minute, the same cardiac output is maintained. This is athlete's heart (eccentric hypertrophy).",C:"The athlete's muscles require less blood at rest.",D:"The athlete has a lower blood volume than an untrained person."},correct:"B"}
+    },
+    {
+      id:"PE-02",
+      stem:"The oxygen dissociation curve shifts to the right during intense exercise. What causes this and what is its effect?",
+      options:{
+        A:"Lower CO₂ and higher pH — haemoglobin becomes better at absorbing oxygen.",
+        B:"Higher CO₂, lower pH (acidosis), higher temperature and higher 2,3-BPG — haemoglobin's affinity for oxygen decreases, so oxygen is offloaded more readily to working muscles (the Bohr effect).",
+        C:"Lower temperature in working muscles increases haemoglobin's oxygen affinity.",
+        D:"The curve shift is caused by increased heart rate, not blood chemistry."
+      },
+      correct:"B",tag:"MC-PE-02",
+      scaffold:"Bohr effect / oxygen dissociation curve: at rest, curve sits in mid-position. During exercise: (1) CO₂↑ (cellular respiration) → carbonic acid → H⁺↑ → pH↓ (acidosis); (2) Temperature↑ in working muscles; (3) 2,3-BPG↑ (produced by red blood cells during high demand). All three shift curve RIGHT: haemoglobin releases O₂ more readily at the same partial pressure. Practical effect: more O₂ unloaded to active muscle fibres. At the lungs: relatively low CO₂, lower temp → curve shifts left → HbO₂ formed more readily. This is a beautiful auto-regulatory mechanism matching O₂ delivery to metabolic demand.",
+      reforge:{stem:"A sprinter's blood becomes more acidic during a 400m race. What is the immediate physiological consequence of this for oxygen delivery?",options:{A:"Haemoglobin binds more tightly to oxygen, reducing delivery to muscles.",B:"The Bohr effect shifts the oxygen dissociation curve to the right — reduced haemoglobin-oxygen affinity means more oxygen is offloaded to active muscles at a given partial pressure, matching oxygen delivery to the increased metabolic demand of the sprint.",C:"Oxygen delivery stops until blood pH normalises.",D:"The lungs compensate by absorbing more oxygen to counteract the acid."},correct:"B"}
+    },
+    {
+      id:"PE-03",
+      stem:"Which correctly describes the sliding filament theory of muscle contraction?",
+      options:{
+        A:"Actin and myosin filaments shorten during contraction, pulling the Z-lines together.",
+        B:"Myosin heads attach to actin binding sites, forming cross-bridges, then pivot (power stroke), pulling actin towards the centre of the sarcomere — shortening the sarcomere without the filaments themselves changing length.",
+        C:"Myosin filaments slide over actin filaments and both increase in length during contraction.",
+        D:"Contraction occurs when calcium ions cause actin filaments to push against each other."
+      },
+      correct:"B",tag:"MC-PE-03",
+      scaffold:"Sliding filament theory (Huxley): actin and myosin filaments don't shorten — they slide past each other. Sequence: (1) Action potential → T-tubules → sarcoplasmic reticulum releases Ca²⁺; (2) Ca²⁺ binds troponin → tropomyosin moves → exposes actin binding sites; (3) Myosin head (loaded with ADP+Pi) attaches → cross-bridge formed; (4) Power stroke — myosin pivots, pulls actin towards M-line; (5) ATP binds myosin head → detaches from actin; (6) ATP hydrolysis re-cocks myosin head. Z-lines pulled together → sarcomere shortens → muscle contracts. Without ATP: cross-bridges remain attached (rigor mortis).",
+      reforge:{stem:"A student states 'muscles contract because the actin and myosin filaments get shorter.' Why is this incorrect?",options:{A:"It is correct — both filaments shorten equally during contraction.",B:"The filaments themselves don't change length — the sarcomere shortens because actin filaments slide towards the centre (M-line) due to myosin cross-bridge power strokes, reducing the H-zone and I-band widths while the A-band stays the same length.",C:"Only myosin shortens; actin stays the same length.",D:"It is incorrect because it is the Z-lines, not the filaments, that shorten."},correct:"B"}
+    },
+    {
+      id:"PE-04",
+      stem:"A marathon runner at 80% VO₂ max is primarily using which energy system, and why?",
+      options:{
+        A:"ATP-PC system — it is the most efficient for sustained effort.",
+        B:"Aerobic glycolysis and fat oxidation via the aerobic system — at this intensity, oxygen supply is sufficient to sustain aerobic metabolism. Fat and carbohydrate are broken down through the Krebs cycle and electron transport chain to produce large amounts of ATP, with CO₂ and water as by-products.",
+        C:"Lactic acid system — all running above walking pace uses anaerobic glycolysis.",
+        D:"ATP-PC system transitioning to lactic acid — the aerobic system is too slow for running."
+      },
+      correct:"B",tag:"MC-PE-04",
+      scaffold:"Energy systems: (1) ATP-PC (phosphocreatine): immediate, anaerobic, 0-10 seconds, high power (sprinting). (2) Lactic acid (anaerobic glycolysis): fast, 10 seconds–2 minutes, moderate-high intensity (800m), produces lactate. (3) Aerobic: slower onset, unlimited duration, low-moderate intensity — uses glycolysis + Krebs + ETC. At 80% VO₂max a marathon runner is below their lactate threshold — aerobic system dominant. Fat provides ~50% of fuel at marathon pace; carbohydrate the rest. VO₂max: maximum rate of O₂ consumption — a key indicator of aerobic capacity. Lactate threshold: intensity at which lactate accumulates faster than it's cleared.",
+      reforge:{stem:"A 400m runner starts fast (ATP-PC), continues through lactic acid threshold, then slows in the final 100m due to lactate accumulation. Which energy system sequence is correct?",options:{A:"Aerobic → lactic acid → ATP-PC.",B:"ATP-PC dominates the opening sprint (0-10 seconds), lactic acid system takes over for the middle section (anaerobic glycolysis, 10s-~90s), with aerobic metabolism contributing increasingly — but the lactic acid system's high lactate production outpaces clearance in the final straight, causing the characteristic 400m 'die'.",C:"All three systems operate sequentially with no overlap.",D:"ATP-PC and aerobic systems only — lactic acid system doesn't operate at 400m pace."},correct:"B"}
+    },
+    {
+      id:"PE-05",
+      stem:"What is VO₂ max and why does it matter for endurance performance?",
+      options:{
+        A:"The maximum heart rate achievable — higher means better endurance.",
+        B:"The maximum rate at which an individual can consume and utilise oxygen during maximal exercise — a key indicator of aerobic capacity. Higher VO₂ max allows athletes to sustain higher absolute workloads aerobically, delaying reliance on anaerobic pathways and lactate accumulation.",
+        C:"The volume of oxygen in the lungs at maximum inspiration.",
+        D:"The oxygen deficit incurred during the first minutes of exercise before aerobic systems activate."
+      },
+      correct:"B",tag:"MC-PE-05",
+      scaffold:"VO₂ max (ml/kg/min): gold standard measure of cardiorespiratory fitness. Elite male endurance athletes: 70-90 ml/kg/min (Kipchoge ~90); untrained males ~35-40. Determined by: (1) Cardiac output (central limitation — heart's ability to pump oxygenated blood); (2) Oxygen-carrying capacity (haemoglobin, blood volume); (3) Peripheral extraction (muscle capillary density, mitochondrial density, oxidative enzyme activity). Training adaptations increase VO₂ max by: increasing stroke volume, plasma volume, mitochondrial density. Limitation as predictor: lactate threshold and running economy better predict elite marathon performance among athletes with similar VO₂ max.",
+      reforge:{stem:"Two athletes have the same VO₂ max of 70 ml/kg/min, but athlete A consistently beats athlete B in marathons. Which factor most likely explains this?",options:{A:"Athlete A has a higher maximum heart rate.",B:"Athlete A has a higher lactate threshold (can sustain a higher percentage of VO₂ max before lactate accumulates) and/or better running economy (uses less oxygen at a given pace) — among elite athletes with similar VO₂ max, these factors are better predictors of endurance performance.",C:"Athlete A has a higher VO₂ max when measured correctly.",D:"Athlete A uses fat more efficiently below 50% VO₂ max."},correct:"B"}
+    },
+    {
+      id:"PE-06",
+      stem:"During the recovery period after intense exercise, oxygen consumption remains elevated above resting levels. This is called:",
+      options:{
+        A:"Oxygen deficit — the oxygen that was lacking during exercise.",
+        B:"Excess Post-Exercise Oxygen Consumption (EPOC) — elevated oxygen uptake after exercise restores the body to its pre-exercise state by replenishing ATP-PC stores, removing lactate (converting to glucose or CO₂/water), lowering elevated body temperature and hormone levels, and restoring oxygen stores in myoglobin and haemoglobin.",
+        C:"The oxygen debt — the body pays back exactly the oxygen it borrowed during the exercise.",
+        D:"Aerobic glycolysis continuing as the body cools down."
+      },
+      correct:"B",tag:"MC-PE-06",
+      scaffold:"EPOC (formerly 'oxygen debt' — now recognised as more complex): Fast component (alactacid, 2-3 min): replenish PC stores (ATP-PC resynthesis), restore O₂ bound to myoglobin/haemoglobin. Slow component (lactacid, 30-60+ min): lactate removal (converted to glucose in liver via Cori cycle, oxidised in heart/slow-twitch fibres, small amount excreted in sweat/urine); elevated metabolic rate (elevated temperature, catecholamines); protein repair and synthesis. Practical implications: active recovery (light exercise) speeds lactate clearance vs passive recovery. Magnitude of EPOC related to exercise intensity and duration.",
+      reforge:{stem:"Why does active recovery (light jogging) after intense exercise reduce recovery time compared to passive rest?",options:{A:"Jogging replenishes PC stores faster than rest.",B:"Continued light exercise maintains elevated blood flow through muscles, increasing the rate at which lactate is transported to the liver and heart for conversion/oxidation, speeding the slow component of EPOC. It also maintains elevated muscle temperature, keeping enzyme activity optimal for metabolic recovery.",C:"Active recovery stops EPOC entirely by returning heart rate to normal faster.",D:"Light jogging allows the aerobic system to continue producing ATP for the PC system to restore itself."},correct:"B"}
+    },
+    {
+      id:"PE-07",
+      stem:"Type I (slow-twitch) and Type IIx (fast-twitch) muscle fibres differ primarily in:",
+      options:{
+        A:"Type I fibres are larger and produce more force; Type IIx fibres are smaller and fatigue-resistant.",
+        B:"Type I fibres are smaller, fatigue-resistant, aerobic, high in mitochondria and myoglobin — suited to endurance. Type IIx fibres are larger, fatigue rapidly, anaerobic, rely on glycolysis — suited to short, high-power activities.",
+        C:"Type IIx fibres are used for all moderate-intensity activity; Type I only activate during maximal effort.",
+        D:"The only difference is contraction speed — both types fatigue at the same rate."
+      },
+      correct:"B",tag:"MC-PE-07",
+      scaffold:"Fibre type comparison: Type I (slow oxidative): small, many mitochondria, high myoglobin (red colour), dense capillary network, fatigue-resistant, low force output, aerobic — endurance athletes (marathon runners). Type IIa (fast oxidative-glycolytic): intermediate — moderate force, moderate fatigue resistance, both aerobic and anaerobic capacity — 400-800m runners. Type IIx (fast glycolytic): large, few mitochondria, low myoglobin (pale), glycolytic, high force output, fatigue rapidly — sprinters, power athletes. Recruitment order (Henneman's size principle): Type I → IIa → IIx as intensity increases. Genetics largely determines fibre ratio; training causes some Type IIx → IIa shift.",
+      reforge:{stem:"An elite 100m sprinter stops after 10 seconds of maximal effort and their muscles fatigue extremely quickly. A marathon runner can maintain effort for 2+ hours. This difference is primarily explained by:",options:{A:"Sprinters having larger hearts and greater cardiac output.",B:"Fibre type composition — elite sprinters have a higher proportion of Type IIx fast-twitch fibres (high power output but rapid fatigue due to reliance on anaerobic glycolysis and limited mitochondria), while marathon runners have predominantly Type I slow-twitch fibres with high aerobic capacity and fatigue resistance.",C:"Sprinters using the ATP-PC system which is less efficient than the aerobic system.",D:"Marathon runners having lower VO₂ max but better lactate tolerance."},correct:"B"}
+    },
+    {
+      id:"PE-08",
+      stem:"Which correctly describes the mechanics of breathing during maximal exercise?",
+      options:{
+        A:"Inspiration is always passive (elastic recoil); only expiration becomes active during exercise.",
+        B:"During maximal exercise, both inspiration and expiration become active processes — additional inspiratory muscles (scalenes, sternocleidomastoid, pectoralis minor) are recruited, and expiration uses the internal intercostals and abdominals to forcibly compress the thorax, maximising tidal volume and breathing rate.",
+        C:"Breathing rate increases but tidal volume stays constant during intense exercise.",
+        D:"The diaphragm relaxes during exercise, and breathing is entirely managed by the intercostal muscles."
+      },
+      correct:"B",tag:"MC-PE-08",
+      scaffold:"Mechanics of breathing: rest — inspiration: diaphragm + external intercostals (active); expiration: passive (elastic recoil). Exercise — increasing demand: additional inspiratory muscles recruited (scalenes, sternocleidomastoid). At maximal intensity: expiration becomes ACTIVE — internal intercostals and abdominals forcibly compress thorax. Result: tidal volume (volume per breath) increases (from ~0.5L at rest to ~3L in trained athletes during max exercise) AND breathing rate increases (from ~12-15 to 40-60 breaths/min). Minute ventilation = tidal volume × breathing rate. Neural control: medullary respiratory centre (rhythmicity); chemoreceptors detect CO₂/H⁺/O₂ changes and adjust ventilation.",
+      reforge:{stem:"During a maximal 1-minute effort, a cyclist's breathing rate increases from 15 to 50 breaths per minute and their tidal volume from 0.5L to 2.5L. What is the approximate increase in minute ventilation?",options:{A:"From 7.5L/min to 12.5L/min — a small increase.",B:"From 7.5L/min to 125L/min — a 16-fold increase, achieved by both increasing breathing rate and tidal volume (both become active processes at maximal exercise), maximising gas exchange to meet the huge increase in metabolic demand.",C:"Minute ventilation stays constant — only the ratio of rate to volume changes.",D:"From 7.5L/min to 50L/min — tidal volume doesn't change during exercise."},correct:"B"}
+    }
+  ]
+};
+
+// ===== SPANISH BANK 1 — Grammar Traps =====
+
+BANKS["SPAN-1"] = {
+  label: "Grammar Traps & Translation",
+  color: "#7c3aed",
+  questions: [
+    {
+      id:"SP-01",
+      stem:"Which sentence uses ser and estar correctly?",
+      options:{
+        A:"'El café está caliente y María es cansada.' (The coffee is hot and María is tired.)",
+        B:"'El café está caliente y María está cansada.' (The coffee is hot and María is tired.)",
+        C:"'El café es caliente y María es cansada.'",
+        D:"'El café es caliente y María está cansada.'"
+      },
+      correct:"B",tag:"MC-SP-01",
+      scaffold:"Ser vs estar: SER — permanent/inherent characteristics: origin, identity, profession, material, time ('Es médico', 'Son las tres', 'Es de España'). ESTAR — temporary states and conditions, location, progressive tenses ('Está cansada', 'Está en Madrid', 'Está comiendo'). Both 'hot coffee' (temporary state, not intrinsic) and 'tired María' (temporary condition) require ESTAR. Common errors: 'La sopa es caliente' (wrong — it's hot NOW, not always), 'María es cansada' (wrong — she's tired at this moment). Exception trap: 'estar muerto' (dead — permanent but usar estar); 'ser aburrido' (boring personality) vs 'estar aburrido' (feeling bored now).",
+      reforge:{stem:"Which is correct: 'El partido (A) es / (B) está muy emocionante esta noche'?",options:{A:"Es — the match's excitement is a permanent characteristic.",B:"Está — the excitement is a temporary condition specific to tonight. Though adjectives describing events can sometimes use ser (inherent nature), 'esta noche' signals a temporary, contextual state requiring estar.",C:"Both are correct with identical meaning.",D:"Neither — 'emocionante' cannot be used with ser or estar."},correct:"B"}
+    },
+    {
+      id:"SP-02",
+      stem:"A student translates 'I had been studying for three hours when he called' as 'Había estudiado tres horas cuando llamó.' What is the error?",
+      options:{
+        A:"'Llamó' should be 'llamaba' — the calling was ongoing.",
+        B:"The pluperfect is correct for 'had been studying' but the duration should use 'llevaba estudiando tres horas' — Spanish uses the imperfect of llevar + gerund for an action that had been ongoing for a period of time when interrupted.",
+        C:"'Había estudiado' should be 'había estado estudiando' to show the ongoing nature.",
+        D:"There is no error — the translation is perfect."
+      },
+      correct:"B",tag:"MC-SP-02",
+      scaffold:"Duration with past tenses: English 'had been doing X for Y time' → Spanish uses LLEVABA + time + gerund. 'Llevaba tres horas estudiando cuando llamó' = I had been studying for three hours when he called. Pluperfect (había + past participle) expresses completed actions before another past action — not ongoing durations. Similarly, present: 'I have been studying for three hours' = 'Llevo tres horas estudiando' (not 'he estado estudiando'). Hace + time + que + present = same meaning for present. Common exam error: using haber + participle for duration where llevar + gerund is required.",
+      reforge:{stem:"How do you say 'She had been living in Madrid for five years when the pandemic began'?",options:{A:"Había vivido en Madrid durante cinco años cuando comenzó la pandemia.",B:"Llevaba cinco años viviendo en Madrid cuando comenzó la pandemia — using imperfect of llevar + gerund to express an action that had been in progress for a specific duration when interrupted by another past event.",C:"Había estado viviendo en Madrid por cinco años cuando comenzó la pandemia.",D:"Vivía en Madrid por cinco años cuando comenzó la pandemia."},correct:"B"}
+    },
+    {
+      id:"SP-03",
+      stem:"Which sentence correctly uses the subjunctive?",
+      options:{
+        A:"'Espero que él viene mañana.'",
+        B:"'Espero que él venga mañana.' — the subjunctive (venga) is required after 'espero que' because it expresses a wish or hope about another person's action, triggering the subjunctive in the subordinate clause.",
+        C:"'Espero que él vendrá mañana.'",
+        D:"'Espero que él vino mañana.'"
+      },
+      correct:"B",tag:"MC-SP-03",
+      scaffold:"Subjunctive triggers (WEIRDO): Wishes (querer que, esperar que, desear que), Emotion (alegrarse de que, temer que), Impersonal expressions (es importante que, es posible que), Requests/Recommendations (pedir que, sugerir que), Doubt/Denial (dudar que, no creer que), Ojalá. Key rule: DIFFERENT subject in main and subordinate clause → subjunctive. Same subject → infinitive ('Espero VENIR' not 'Espero que yo venga'). Exam common errors: using indicative after subjunctive trigger ('Espero que viene' — wrong); using subjunctive when not needed ('Creo que viene' — believe = indicative; 'No creo que venga' — doubt = subjunctive).",
+      reforge:{stem:"Which sentence requires the subjunctive? (A) 'Creo que tiene razón.' (B) 'No creo que tenga razón.'",options:{A:"Sentence A — creer always requires the subjunctive.",B:"Sentence B — 'no creer que' expresses doubt/denial, triggering the subjunctive (tenga). Sentence A uses 'creer que' (positive belief) which takes the indicative (tiene). This is a classic A Level trap: the negative transforms the verb's meaning from belief to doubt, switching from indicative to subjunctive.",C:"Both require the subjunctive.",D:"Neither requires the subjunctive."},correct:"B"}
+    },
+    {
+      id:"SP-04",
+      stem:"A student writes: 'Ayer, cuando era joven, fui al colegio.' What is wrong?",
+      options:{
+        A:"'Fui' should be 'iba' — school attendance was a repeated habit.",
+        B:"The time marker 'ayer' (yesterday) signals a specific completed event requiring the preterite, but 'cuando era joven' (when I was young) signals a habitual/repeated state. The sentence is contradictory — you cannot be young specifically 'yesterday'. If describing habitual childhood school attendance: 'Cuando era joven, iba al colegio' (imperfect throughout).",
+        C:"'Era' should be 'fui' — both verbs should be in the preterite.",
+        D:"There is no error — mixing preterite and imperfect in this way is correct."
+      },
+      correct:"B",tag:"MC-SP-04",
+      scaffold:"Preterite vs imperfect: Preterite — completed, specific, single events ('Ayer fui al supermercado'). Imperfect — habitual/repeated past ('De niño, iba al colegio todos los días'), ongoing background states ('Hacía sol'), interrupted actions ('Dormía cuando sonó el teléfono'). Time markers: ayer/anoche/el año pasado = preterite signals. Siempre/todos los días/de niño/cuando era joven = imperfect signals. The contradiction here: 'ayer' + 'cuando era joven' — these time frames are incompatible. A Level exam: look for time markers to guide tense choice; avoid mixing incompatible time signals.",
+      reforge:{stem:"Translate into Spanish: 'Every summer, we used to go to the beach, but last year we went to the mountains instead.'",options:{A:"Todos los veranos, fuimos a la playa, pero el año pasado fuimos a las montañas.",B:"Todos los veranos íbamos a la playa, pero el año pasado fuimos a las montañas. — 'Todos los veranos' signals habitual repetition (imperfect: íbamos); 'el año pasado' signals a specific completed event that broke the pattern (preterite: fuimos).",C:"Todos los veranos íbamos a la playa, pero el año pasado íbamos a las montañas.",D:"Todos los veranos vamos a la playa, pero el año pasado fuimos a las montañas."},correct:"B"}
+    },
+    {
+      id:"SP-05",
+      stem:"Which sentence correctly uses a reflexive verb to express a change of state?",
+      options:{
+        A:"'María se aburrió durante la conferencia.' (María became bored during the lecture.)",
+        B:"'María aburrió durante la conferencia.'",
+        C:"'María se aburría durante la conferencia siempre.' (María used to be always bored during lectures.) — this uses the reflexive correctly but with imperfect.",
+        D:"'María estaba aburrida durante la conferencia.' — this cannot be expressed with a reflexive verb."
+      },
+      correct:"A",tag:"MC-SP-05",
+      scaffold:"Reflexive verbs for change of state: ponerse + adjective (temporary emotional/physical change): 'Se puso nervioso' (he became nervous). Volverse + adjective (more profound change): 'Se volvió loco' (he went mad). Hacerse + noun (gradual, deliberate change): 'Se hizo médico' (she became a doctor). Quedarse + adjective (resulting state): 'Se quedó embarazada' (she became pregnant). Aburrirse (to become/get bored) — reflexive. Cansarse (to get tired) — reflexive. Common error: 'aburrir' (non-reflexive) = to bore someone else ('La película me aburrió' = the film bored me). A Level exam: ser/estar + adjective vs reflexive verb for change of state carry different nuances.",
+      reforge:{stem:"'Me puse muy nervioso antes del examen.' The verb ponerse here expresses:",options:{A:"A permanent change in personality.",B:"A temporary change of emotional state (becoming nervous) using ponerse + adjective — one of the key reflexive change-of-state constructions. The reflexive pronoun (me) indicates the subject experiences the change themselves.",C:"An action done to someone else.",D:"A habitual state described using the imperfect."},correct:"B"}
+    },
+    {
+      id:"SP-06",
+      stem:"How is the passive voice most commonly expressed in formal Spanish writing?",
+      options:{
+        A:"Using ser + past participle (identical to English: 'La carta fue escrita por Juan').",
+        B:"Using the reflexive passive (se + third person verb) — 'Se construyó el puente en 1990' (The bridge was built in 1990) is more common than 'El puente fue construido en 1990' in spoken and written Spanish, especially when the agent is not mentioned.",
+        C:"Spanish has no passive voice — active voice must always be used.",
+        D:"Using estar + past participle to describe passive actions."
+      },
+      correct:"B",tag:"MC-SP-06",
+      scaffold:"Passive voice in Spanish: (1) Ser + past participle + por (agent): 'La novela fue escrita por Cervantes' — formal, agent specified. Past participle agrees in gender/number with subject. (2) Reflexive passive (se pasiva): 'Se habla español aquí' — very common, agent unknown/unimportant. (3) Active voice with 'se' impersonal subject ('Se dice que...' — it is said that). A Level exam: ser passive = agent mentioned, formal register. Se-passive = agent absent, more natural Spanish. Error: confusing 'estar + past participle' (resultant state — 'La puerta está abierta' = the door is open NOW) with ser passive (action — 'La puerta fue abierta' = the door was opened).",
+      reforge:{stem:"Which is more natural Spanish for 'Spanish is spoken here'?",options:{A:"'El español es hablado aquí.' — using ser passive.",B:"'Se habla español aquí.' — the reflexive/impersonal se construction is far more natural when no specific agent is mentioned. The ser passive ('es hablado') sounds stilted and overly formal in this context, though grammatically correct.",C:"'Están hablando español aquí.'",D:"'Hablan español aquí.' — only the active voice is acceptable."},correct:"B"}
+    },
+    {
+      id:"SP-07",
+      stem:"A student translates 'I asked her to come' as 'Le pedí que venía.' What is the error?",
+      options:{
+        A:"'Le' should be 'la' — direct object pronoun required.",
+        B:"'Venía' (imperfect indicative) should be 'viniera' (imperfect subjunctive) — 'pedir que' is a subjunctive trigger expressing a request; since the main verb is in the preterite, the subordinate clause requires the past/imperfect subjunctive (viniera/viniese).",
+        C:"The sentence should use the infinitive: 'Le pedí venir.'",
+        D:"There is no error — pedir que can take either indicative or subjunctive."
+      },
+      correct:"B",tag:"MC-SP-07",
+      scaffold:"Sequence of tenses with subjunctive: main clause present/future → subordinate present subjunctive ('Quiero que venga'). Main clause preterite/imperfect/conditional → subordinate PAST subjunctive ('Quería que viniera', 'Pedí que viniera'). Past subjunctive forms: -AR verbs: -ara/-ase; -ER/-IR verbs: -iera/-iese. Irregular: tener → tuviera, venir → viniera, ser/ir → fuera, poder → pudiera, hacer → hiciera. Common exam error: using imperfect indicative (venía) instead of imperfect subjunctive (viniera) after past tense trigger. The -iera form is the more standard form in writing; -iese is equally correct but less common.",
+      reforge:{stem:"Complete: 'El profesor quería que los alumnos ______ los deberes antes de clase.' (hacer)",options:{A:"hacían (imperfect indicative)",B:"hicieran (imperfect subjunctive) — quería que triggers subjunctive; since quería is in the imperfect (past), the subordinate clause requires the past subjunctive. Hacer → hiciera/hiciesen.",C:"harían (conditional)",D:"hagan (present subjunctive)"},correct:"B"}
+    },
+    {
+      id:"SP-08",
+      stem:"Which correctly translates 'The more you study, the better you will do'?",
+      options:{
+        A:"'Más estudias, mejor harás.'",
+        B:"'Cuanto más estudies, mejor lo harás.' — Spanish uses 'cuanto más... más/mejor...' for comparative correlations. The subjunctive (estudies) is used in the cuanto-clause when referring to future/hypothetical contexts.",
+        C:"'Más que estudias, mejor que harás.'",
+        D:"'Entre más estudias, mejor haces.' — this is a Latin American variant not used in Peninsular Spanish."
+      },
+      correct:"B",tag:"MC-SP-08",
+      scaffold:"Comparatives and superlatives: más...que (more...than), menos...que (less...than), tan...como (as...as). Cuanto más...más/mejor = the more...the more/better. Cuanto menos...menos/peor = the less...the worse. Note: subjunctive in cuanto-clause for hypothetical/future ('Cuanto más estudies...'). False friends/errors: 'más bueno' → better said 'mejor'; 'más malo' → 'peor'; 'más grande' vs 'mayor' (older/greater in abstract sense). 'El/la más + adjective + de' = superlative ('el más inteligente de la clase'). A Level translation tests: watch for English structures that require different Spanish syntax.",
+      reforge:{stem:"Translate: 'The less she sleeps, the worse her marks are.'",options:{A:"'Menos duerme, peor sus notas son.'",B:"'Cuanto menos duerme, peores son sus notas.' — cuanto menos...peor/peores for 'the less...the worse'. Note: 'peores' agrees with 'notas' (feminine plural). The indicative is used here as it describes an established fact/pattern rather than a future hypothesis.",C:"'Tan poco duerme, tan malas son sus notas.'",D:"'Menos que duerme, más malas son sus notas.'"},correct:"B"}
+    }
+  ]
+};
 
 // ===== RS BANK 2 — Religion & Ethics Applied =====
 BANKS["RS-2"] = {
@@ -3777,123 +3834,12 @@ BANKS["PSY-PATH"] = {
 };
 
 // Update subject definitions to include new banks
-SUBJECTS["law"].banks = ["LAW-1","LAW-2","LAW-3"];
-SUBJECTS["law"].sub = "AQA — Criminal, Tort & Contract Law";
+SUBJECTS["law"].banks = ["LAW-1","LAW-2"];
+SUBJECTS["law"].sub = "AQA — Criminal & Tort Law";
 SUBJECTS["crim"].banks = ["CRIM-1","CRIM-2"];
 SUBJECTS["crim"].sub = "WJEC Criminology — Units 1 & 2";
 SUBJECTS["psych"].banks = ["PSY-SI","PSY-MEM","PSY-ATT","PSY-PATH"];
 SUBJECTS["psych"].sub = "AQA 7182 — Papers 1 & 2";
-
-BANKS["LAW-3"] = {
-  label: "Contract Law",
-  color: "#1e3a8a",
-  questions: [
-    {
-      id:"CON-01",
-      stem:"An offer is made in a shop window: 'Laptop — £299.' A customer enters and says 'I accept.' The shop refuses to sell. Which is correct?",
-      options:{
-        A:"The shop has breached a valid contract — displaying goods is a valid offer.",
-        B:"The customer can sue for breach — the price tag is a binding promise.",
-        C:"The display is an invitation to treat, not an offer. The customer's statement is the offer, which the shop is free to reject.",
-        D:"A contract is formed because the price and goods are clearly identified."
-      },
-      correct:"C",tag:"MC-CON-01",
-      scaffold:"Invitation to treat (ITT) vs offer: shop displays, advertisements and catalogues are ITTs (Fisher v Bell; Pharmaceutical Society v Boots). They invite customers to make offers, which the seller may accept or reject. This protects sellers from being forced to sell at incorrect prices. The customer's 'I accept' is actually an offer to buy — no contract until the shop accepts it.",
-      reforge:{stem:"An advert reads: 'First 10 callers get a free iPhone.' The 11th caller demands one. Is there a contract?",options:{A:"Yes — adverts are always binding offers.",B:"No — the advert is an ITT. However, if it is specific enough (clear terms, limited offerees), it can constitute an offer (Carlill v Carbolic Smoke Ball). Here, the 10-caller limit makes it a specific offer — so callers 1–10 have a contract but caller 11 does not.",C:"Yes — any price promise creates a binding contract.",D:"No — verbal contracts are never enforceable."},correct:"B"}
-    },
-    {
-      id:"CON-02",
-      stem:"A posts an acceptance letter on Monday. The offeror emails to revoke the offer on Tuesday. The letter arrives Wednesday. Is there a contract?",
-      options:{
-        A:"No — the revocation by email is faster and therefore takes priority.",
-        B:"No — acceptance by post is only valid on receipt.",
-        C:"Yes — under the postal rule, acceptance takes effect when posted (Monday), before revocation was communicated (Tuesday).",
-        D:"Yes — but only if the offeror actually reads the letter."
-      },
-      correct:"C",tag:"MC-CON-02",
-      scaffold:"Postal rule (Adams v Lindsell): acceptance by post is complete when the letter is posted, not when received. So contract formed Monday. Revocation is only effective when communicated to offeree — email Tuesday is after Monday's posting. Exceptions: postal rule doesn't apply if it's unreasonable to use post, or if the offer excludes it. Revocation must reach the offeree before they post acceptance.",
-      reforge:{stem:"An offeror sends a revocation letter on Friday. The offeree posts acceptance on Saturday before the revocation arrives on Monday. Is there a contract?",options:{A:"No — revocation was sent first.",B:"Yes — the postal rule means acceptance (Saturday) precedes communication of revocation (Monday). A valid contract exists.",C:"No — you cannot accept an offer once revocation has been sent.",D:"It depends whether the offeror intended the postal rule to apply."},correct:"B"}
-    },
-    {
-      id:"CON-03",
-      stem:"D promises to pay his nephew £100 if he stops smoking for one month. The nephew stops. D refuses to pay, claiming there is no consideration. Is D correct?",
-      options:{
-        A:"Yes — family promises are never enforceable.",
-        B:"Yes — giving up something harmful is not legal consideration.",
-        C:"No — the nephew provided consideration by giving up a legal right (to smoke). This is sufficient detriment to support the promise.",
-        D:"No — but only if the promise was made in writing."
-      },
-      correct:"C",tag:"MC-CON-03",
-      scaffold:"Consideration: something of value given by each party. It need not benefit the promisor — it is sufficient that the promisee suffers a detriment. Giving up a legal right (even smoking) counts (Hamer v Sidway, US authority accepted in principle in English law). Past consideration is no consideration (Re McArdle). Consideration must be sufficient (real value in law) but need not be adequate (equal in market value).",
-      reforge:{stem:"A builder finishes a job, then the client promises a bonus for 'excellent work.' Can the builder enforce the bonus?",options:{A:"Yes — the excellent work is sufficient consideration.",B:"No — this is past consideration. The work was already completed before the bonus was promised, so there is no fresh consideration to support the new promise (Re McArdle).",C:"Yes — verbal bonus promises are always binding.",D:"No — bonuses are never legally enforceable."},correct:"B"}
-    },
-    {
-      id:"CON-04",
-      stem:"A student writes: 'All terms in a contract must be expressly agreed by both parties.' Why is this incomplete?",
-      options:{
-        A:"It is correct — only express terms form part of a contract.",
-        B:"It ignores implied terms — terms inserted by statute (e.g. Consumer Rights Act 2015), by custom, or by the courts to give business efficacy.",
-        C:"It ignores the parol evidence rule, which prevents any written terms from being added.",
-        D:"It ignores that verbal contracts cannot contain express terms."
-      },
-      correct:"B",tag:"MC-CON-04",
-      scaffold:"Contract terms: express (stated by parties, oral or written) and implied. Implied by statute: Consumer Rights Act 2015 (goods must be of satisfactory quality, fit for purpose, as described). Implied by courts: business efficacy test (The Moorcock) — necessary to make contract work; officious bystander test — so obvious it goes without saying. Implied by custom: trade usage in a particular market. Students often ignore implied terms entirely.",
-      reforge:{stem:"A consumer buys a laptop described as 'suitable for video editing.' It crashes when editing. Which implied term is most relevant?",options:{A:"The laptop must be of satisfactory quality — implied by the Consumer Rights Act 2015.",B:"The laptop must be fit for the particular purpose made known to the seller — implied by s.9 Consumer Rights Act 2015 (satisfactory quality) and s.10 (fit for purpose). The description 'suitable for video editing' triggers fitness for purpose.",C:"There are no implied terms in consumer contracts.",D:"Only express written terms apply to electronic goods."},correct:"B"}
-    },
-    {
-      id:"CON-05",
-      stem:"Which correctly distinguishes a condition from a warranty in contract law?",
-      options:{
-        A:"Conditions are written terms; warranties are verbal terms.",
-        B:"A condition is a minor term; breach gives the innocent party the right to damages only. A warranty is a major term; breach allows termination and damages.",
-        C:"A condition is a major term going to the root of the contract; breach entitles the innocent party to terminate and claim damages. A warranty is a minor term; breach gives a right to damages only.",
-        D:"There is no legal distinction — all contract terms have identical remedies."
-      },
-      correct:"C",tag:"MC-CON-05",
-      scaffold:"Conditions vs warranties: condition = so fundamental that breach deprives innocent party of the whole benefit (Poussard v Spiers — opera singer failed to appear, replaced; this was a condition). Warranty = less important term; breach gives damages but not termination (Bettini v Gye — singer missed rehearsals only; warranty breach). Innominate terms: classified by consequences of breach rather than in advance (Hong Kong Fir Shipping).",
-      reforge:{stem:"A tour operator's contract states that a hotel pool 'will be open throughout the stay.' The pool closes for 2 days for repairs. Which type of term is this most likely to be?",options:{A:"A condition — the pool was promised, so breach allows termination.",B:"A warranty or innominate term — the pool closure is a minor inconvenience. Breach gives a right to damages but is unlikely to justify termination of the entire holiday contract.",C:"Not a contract term — verbal promises about facilities are unenforceable.",D:"A condition only if the customer specifically requested the pool in writing."},correct:"B"}
-    },
-    {
-      id:"CON-06",
-      stem:"An exclusion clause is printed on the back of a car park ticket. A car is damaged. The owner claims the clause doesn't apply. Which argument is strongest?",
-      options:{
-        A:"Exclusion clauses in car parks are always void.",
-        B:"The clause was incorporated because the ticket was given before parking began.",
-        C:"The clause may not be incorporated if reasonable notice was not given before or at the time of contracting — not after (Olley v Marlborough Court).",
-        D:"Exclusion clauses only apply to written contracts signed by both parties."
-      },
-      correct:"C",tag:"MC-CON-06",
-      scaffold:"Incorporation of exclusion clauses: (1) By signature — signing binds you even if unread (L'Estrange v Graucob). (2) By notice — must be given before or at the time of contract, not after (Olley — notice in hotel room after key handed over, too late). (3) By course of dealing — if parties have contracted on same terms before. Also UCTA 1977 and Consumer Rights Act 2015: exclusion of liability for negligence causing death/personal injury is void; other clauses subject to reasonableness test.",
-      reforge:{stem:"A hotel guest signs a registration form containing an exclusion clause. The guest later claims they didn't read it. Is the clause binding?",options:{A:"No — you are only bound by terms you have actually read.",B:"Yes — a signature incorporates all terms in the document whether read or not (L'Estrange v Graucob), unless the clause was misrepresented.",C:"No — hotel contracts cannot include exclusion clauses.",D:"It depends on whether the clause was in bold type."},correct:"B"}
-    },
-    {
-      id:"CON-07",
-      stem:"Which of the following is the correct test for remoteness of damage in contract law?",
-      options:{
-        A:"The defendant is liable for all losses that follow naturally from the breach, however unforeseeable.",
-        B:"Losses must be reasonably foreseeable at the time of the tort — the Wagon Mound test.",
-        C:"Losses must either arise naturally from the breach or be within the reasonable contemplation of both parties at the time of contracting as a probable consequence — Hadley v Baxendale.",
-        D:"The claimant must prove the defendant intended the loss to occur."
-      },
-      correct:"C",tag:"MC-CON-07",
-      scaffold:"Hadley v Baxendale (1854): two limbs. Limb 1 — losses arising naturally from the breach (normal consequence). Limb 2 — losses in reasonable contemplation of both parties at time of contracting as a probable consequence of breach (special circumstances must have been communicated). Victoria Laundry v Newman Industries: lost normal profits recoverable (limb 1); exceptional government contracts not recoverable (special, not communicated). Contrast with tort: Wagon Mound (reasonable foreseeability at time of tort).",
-      reforge:{stem:"A courier loses a package containing a unique prototype. The sender didn't mention its value. The courier argues they're only liable for standard parcel rates. Who is correct?",options:{A:"The sender — all loss from breach is recoverable.",B:"The courier — under Hadley v Baxendale limb 2, the exceptional value of the prototype was not communicated at the time of contracting, so it was not in reasonable contemplation. Only normal parcel loss is recoverable.",C:"Neither — couriers are never liable for lost packages.",D:"The sender — the courier should have asked about the contents."},correct:"B"}
-    },
-    {
-      id:"CON-08",
-      stem:"Which best describes the remedy of specific performance in contract law?",
-      options:{
-        A:"A court order requiring the defendant to pay a fixed penalty for breach.",
-        B:"A discretionary equitable remedy ordering the defendant to perform their contractual obligations — typically awarded where damages would be inadequate, such as contracts for unique goods or land.",
-        C:"A remedy available as of right to any innocent party in a breach of contract case.",
-        D:"A remedy that sets aside the contract and restores both parties to their pre-contract position."
-      },
-      correct:"B",tag:"MC-CON-08",
-      scaffold:"Specific performance: equitable, discretionary (court won't always grant it). Available where damages inadequate — land (every piece unique: Beswick v Beswick), rare goods. NOT available for: personal service contracts (can't force employment), contracts requiring constant supervision, where claimant has unclean hands. Contrast with rescission (sets contract aside — misrepresentation remedy) and injunction (restraining order). Damages are the primary remedy in contract — expectation loss (put in position as if contract performed) or reliance loss.",
-      reforge:{stem:"A buyer contracts to purchase a painting by a deceased artist. The seller refuses to deliver. Why might specific performance be appropriate here?",options:{A:"Because the seller breached a written contract.",B:"Because the painting is unique — no substitute is available, so damages (money) would not adequately compensate the buyer for the loss of this specific, irreplaceable item.",C:"Because specific performance is always awarded for art contracts.",D:"Because the buyer has already paid."},correct:"B"}
-    }
-  ]
-};
 
 // ===== NEW BANKS: HIST-2, POL-2, CS-2 =====
 
@@ -4233,200 +4179,10 @@ BANKS["CS-2"] = {
 // Update subject definitions
 SUBJECTS["hist"].banks = ["HIST-1","HIST-2"];
 SUBJECTS["hist"].sub = "AQA — Germany 1919–45 & Cold War";
-SUBJECTS["pol"].banks = ["POL-1","POL-2","POL-3"];
-SUBJECTS["pol"].sub = "Edexcel 9PL0 — UK Government, Rights & Democracy";
+SUBJECTS["pol"].banks = ["POL-1","POL-2"];
+SUBJECTS["pol"].sub = "Edexcel 9PL0 — UK Government & Rights";
 SUBJECTS["cs"].banks = ["CS-1","CS-2"];
 SUBJECTS["cs"].sub = "AQA 7517 — Programming & Systems";
-
-BANKS["POL-3"] = {
-  label: "Political Parties, Voting & Democracy",
-  color: "#1e3a5f",
-  questions: [
-    {
-      id:"POL-17",
-      stem:"A student describes the Conservative Party as 'always supporting free markets and minimal state intervention.' Why is this historically incomplete?",
-      options:{
-        A:"The Conservative Party has always supported nationalisation.",
-        B:"Traditional conservatism (One Nation, Macmillan) accepted a mixed economy and welfare state — the free-market New Right approach (Thatcher) was a significant ideological shift, not a constant position.",
-        C:"The Conservative Party has never supported any form of state intervention.",
-        D:"Free market economics is a left-wing position in UK politics."
-      },
-      correct:"B",tag:"MC-POL-08",
-      scaffold:"Conservative ideology has evolved: Traditional conservatism — pragmatism, organic change, One Nation (Disraeli, Macmillan) — accepted post-war consensus (NHS, mixed economy). New Right Thatcherism (1979–90) — neo-liberal economics (free markets, privatisation) combined with neo-conservative social policy (strong state, law and order). Cameron's modernisation — compassionate conservatism, accepting NHS. Students must avoid treating any party's ideology as fixed.",
-      reforge:{stem:"Which pair correctly matches a Conservative leader to their dominant ideological tendency?",options:{A:"Thatcher — One Nation conservatism; Cameron — New Right.",B:"Macmillan — New Right; Thatcher — One Nation.",C:"Thatcher — New Right (neo-liberalism + neo-conservatism); Macmillan — One Nation (mixed economy, welfare state acceptance).",D:"Both Thatcher and Macmillan supported identical economic policies."},correct:"C"}
-    },
-    {
-      id:"POL-18",
-      stem:"Social democrats within the Labour Party traditionally differ from democratic socialists on which key issue?",
-      options:{
-        A:"Social democrats reject the welfare state; democratic socialists support it.",
-        B:"Social democrats accept capitalism but seek to reform it through redistribution and regulation. Democratic socialists seek more fundamental transformation of the economic system, including public ownership.",
-        C:"Social democrats support electoral politics; democratic socialists reject elections entirely.",
-        D:"There is no meaningful distinction between the two traditions."
-      },
-      correct:"B",tag:"MC-POL-09",
-      scaffold:"Labour ideology spectrum: Democratic socialism (Corbyn wing) — public ownership, wealth redistribution, challenge to capitalist structures. Social democracy (Blair, Starmer) — accept market economy but regulate it, use tax revenue for public services, reduce inequality within capitalism. Third Way (Blair) — embraced markets, PFI, public-private partnerships. Key tension: how far to reform vs transform. Exam often asks about ideological divisions within parties — don't treat Labour as monolithic.",
-      reforge:{stem:"New Labour under Blair is best described as:",options:{A:"Democratic socialist — public ownership and wealth redistribution were central.",B:"Third Way social democracy — accepting free markets while investing in public services, rejecting both Thatcherism and traditional socialism.",C:"Liberal — Blair's policies mirrored the Liberal Democrats.",D:"New Right — Blair adopted Thatcher's economic policies wholesale."},correct:"B"}
-    },
-    {
-      id:"POL-19",
-      stem:"Which factor does academic research most consistently identify as the strongest predictor of UK voting behaviour?",
-      options:{
-        A:"Newspaper readership — voters follow the editorial line of their paper.",
-        B:"Age — older voters consistently favour the Conservatives; younger voters Labour, and this has strengthened since 2017.",
-        C:"Gender — women always vote Labour; men always vote Conservative.",
-        D:"Religion — church attendance determines party preference."
-      },
-      correct:"B",tag:"MC-POL-10",
-      scaffold:"Voting behaviour factors: Age has become the strongest cleavage (replacing class post-1997). 2019 election: under-25s voted 56% Labour, over-65s 62% Conservative. Class dealignment (weakening class-vote link since 1970s). Other factors: education (graduates more Labour since 2017), region (North/Wales Labour; South/rural Conservative), ethnicity (BAME voters disproportionately Labour). Valence voting: competence and leadership matter more than ideology. Don't claim one factor is always decisive — context and election matters.",
-      reforge:{stem:"The 2019 general election saw many traditional Labour-voting working-class seats in the Midlands and North vote Conservative for the first time. Which model of voting behaviour best explains this?",options:{A:"Partisan alignment — voters always support the same party.",B:"Valence voting combined with issue voting — voters judged Labour's leadership (Corbyn) negatively and prioritised 'Get Brexit Done' over traditional class-based loyalty, suggesting class dealignment.",C:"Primacy model — early-life voting decisions determined the outcome.",D:"Rational choice — voters calculated Conservative economic policy would benefit them most."},correct:"B"}
-    },
-    {
-      id:"POL-20",
-      stem:"A student argues: 'The 2016 Brexit referendum showed that referendums are a good way to resolve major constitutional questions.' What is the strongest counter-argument?",
-      options:{
-        A:"Referendums are illegal under the UK constitution.",
-        B:"The 2016 result showed referendums can be divisive, produce a narrow and contested result on a complex question, and create a 'tyranny of the majority' that ignores minority rights and regional variation — Scotland and Northern Ireland voted Remain.",
-        C:"Referendums should only be used for local government issues.",
-        D:"The 2016 referendum was invalid because turnout was below 75%."
-      },
-      correct:"B",tag:"MC-POL-11",
-      scaffold:"Referendums — arguments for: direct democracy, clear mandate, bypass party splits (1975, 2016), legitimate major constitutional change. Arguments against: oversimplify complex issues to binary choice; campaigns dominated by misinformation; advisory but treated as binding; divisive (52/48 not a clear mandate); ignore regional variation; risk tyranny of majority over minorities; Prime Ministers use them for partisan advantage (Cameron). Brexit referendum illustrates both — high turnout legitimacy but deep division and contested implementation.",
-      reforge:{stem:"Which argument SUPPORTS the use of referendums in a parliamentary democracy?",options:{A:"They always produce decisive and unambiguous results.",B:"They allow direct democratic participation on major constitutional issues that transcend normal party lines, providing a popular mandate that Parliament alone cannot easily claim.",C:"They reduce the influence of party leaders on policy.",D:"They are required by the UK constitution for any major change."},correct:"B"}
-    },
-    {
-      id:"POL-21",
-      stem:"The term 'participation crisis' in UK politics refers to:",
-      options:{
-        A:"Too many people standing as candidates, overloading the electoral system.",
-        B:"A decline in traditional forms of political participation (voting, party membership) alongside a rise in newer forms (protests, petitions, social media activism), raising questions about democratic health.",
-        C:"The inability of minority ethnic groups to stand as candidates.",
-        D:"A constitutional crisis caused by low turnout in general elections making results illegitimate."
-      },
-      correct:"B",tag:"MC-POL-12",
-      scaffold:"Participation crisis evidence: general election turnout fell from 77% (1992) to 59% (2001) — lowest since 1918; party membership collapsed (Labour 400k→177k by 2007, then rose under Corbyn); trust in politicians declined (expenses scandal). Counter-evidence: 2016 referendum 72%; 2019 election 67%; rise of single-issue groups; 38 Degrees petitions; Extinction Rebellion; social media political engagement. Debate: is this a crisis of formal participation or a shift to new forms?",
-      reforge:{stem:"Which piece of evidence would MOST challenge the idea that there is a participation crisis in UK democracy?",options:{A:"Falling party membership figures since the 1950s.",B:"The 2016 Brexit referendum achieved 72% turnout and the 2014 Scottish independence referendum 84% — suggesting citizens engage strongly when they feel a vote genuinely matters.",C:"Declining trust in MPs following the expenses scandal.",D:"The fall in trade union membership since the 1980s."},correct:"B"}
-    },
-    {
-      id:"POL-22",
-      stem:"Proportional representation (PR) electoral systems are criticised primarily for:",
-      options:{
-        A:"Producing large majorities that ignore smaller parties.",
-        B:"Giving too much power to minority parties in coalition negotiations, potentially allowing a party with 10% of votes to dictate policy, and producing weak, unstable coalition governments.",
-        C:"Always delivering the same party to power regardless of the vote share.",
-        D:"Being unconstitutional under the Human Rights Act."
-      },
-      correct:"B",tag:"MC-POL-13",
-      scaffold:"PR systems — advantages: more proportional outcome, more parties represented, fewer wasted votes, coalition governments may reflect broader opinion. Disadvantages: coalition instability (Italy, Israel); small parties gain disproportionate influence in coalition bargaining; weaker constituency link (closed list PR); voters may not get the government they want (hung parliaments). FPTP advantages: strong single-party government, clear accountability, strong constituency MP link. AV, STV, d'Hondt — know the different PR variants and where used in UK.",
-      reforge:{stem:"Germany uses a mixed-member proportional system. A small party wins 8% of the vote and ends up in coalition government, reportedly 'punching above its weight.' This illustrates which criticism of PR?",options:{A:"PR always excludes small parties.",B:"In coalition bargaining, small parties can leverage their 'kingmaker' position to extract policy concessions disproportionate to their vote share, giving minority views outsized influence over government.",C:"PR produces too many wasted votes.",D:"PR systems always produce right-wing governments."},correct:"B"}
-    },
-    {
-      id:"POL-23",
-      stem:"Which correctly describes the role of the Electoral Commission in UK democracy?",
-      options:{
-        A:"It counts votes and declares winners in general elections.",
-        B:"It is a government department that sets election dates.",
-        C:"It is an independent body that registers parties and candidates, regulates campaign finance, sets electoral rules, and promotes public awareness of elections.",
-        D:"It is a parliamentary committee that scrutinises electoral law."
-      },
-      correct:"C",tag:"MC-POL-14",
-      scaffold:"Electoral Commission (est. 2000 Political Parties, Elections and Referendums Act): independent of government. Functions: registers political parties (preventing confusion); regulates spending limits (£19.5m per party in 2019 general election); investigates breaches (fined Vote Leave £61,000 for overspending in 2016); reports on electoral integrity; advises on electoral law reform. Returning Officers (locally appointed) actually count votes. Students often confuse these roles.",
-      reforge:{stem:"Vote Leave was fined after the 2016 Brexit referendum. Which body investigated and imposed this sanction?",options:{A:"The House of Commons Standards Committee.",B:"The Electoral Commission — which found Vote Leave had exceeded the campaign spending limit and referred the matter for prosecution.",C:"The Supreme Court.",D:"The Cabinet Office."},correct:"B"}
-    },
-    {
-      id:"POL-24",
-      stem:"'Direct democracy is superior to representative democracy.' Evaluate this claim. Which argument MOST effectively challenges it?",
-      options:{
-        A:"Direct democracy requires all citizens to vote on every issue, which is impractical in a large modern state — voters lack expertise on complex technical legislation, and permanent referendums could be dominated by well-funded campaign groups.",
-        B:"Representative democracy is superior because MPs are always more honest than ordinary citizens.",
-        C:"Direct democracy was used successfully in ancient Athens, proving it works in any context.",
-        D:"Direct democracy is superior because it removes all risk of political corruption."
-      },
-      correct:"A",tag:"MC-POL-15",
-      scaffold:"Direct democracy: citizens vote directly on decisions (referendums, citizens' assemblies, Ancient Athens). Advantages: maximises participation, eliminates representation gap, gives clear mandate. Disadvantages: impractical at scale; voters may lack expertise (complex budget decisions); susceptible to populism and manipulation; 'tyranny of majority'; costly. Representative democracy: elect representatives to decide. Advantages: experts make decisions; stable government; minority protections. Disadvantages: representation gap; safe seats; party whip. Synthesis: UK uses hybrid (representative system + occasional referendums).",
-      reforge:{stem:"Which is the strongest argument IN FAVOUR of direct democracy?",options:{A:"It always produces better policy outcomes than representative systems.",B:"It closes the representation gap — citizens directly decide on issues that affect them, increasing legitimacy and engagement, rather than delegating decisions to politicians who may act in party or personal interest.",C:"It is cheaper to run than representative democracy.",D:"It removes the need for political parties entirely."},correct:"B"}
-    }
-  ]
-};
-
-// ===== POLITICS: US & COMPARATIVE =====
-
-BANKS["POL-4"] = {
-  label: "US Politics & Comparative",
-  color: "#1a2f5e",
-  questions: [
-    {
-      id:"PUSC-01",
-      stem:"The US Constitution is described as 'codified' and 'entrenched'. What do these terms mean in combination?",
-      options:{A:"The Constitution is written down and stored in a government archive.",B:"It is written in a single authoritative document (codified) and is deliberately difficult to amend — requiring a two-thirds majority in both chambers of Congress plus ratification by three-quarters of states — making it resistant to change by simple legislative majorities (entrenched).",C:"The Constitution is enforced by the military and cannot be changed at all.",D:"Codified means it was created by the Founding Fathers; entrenched means it predates independence."},
-      correct:"B",tag:"MC-PUSC-01",
-      scaffold:"US Constitution features: codified (single document, 1787); entrenched (Article V — supermajority to amend: 2/3 both Houses + 3/4 states; or 2/3 states can call a convention); supreme (Supremacy Clause — federal law + Constitution > state law); separation of powers (executive, legislative, judicial — checks and balances). Only 27 amendments, last in 1992. Contrast UK: uncodified, unentrenched, parliamentary sovereignty. Article VI Supremacy Clause makes the Constitution 'the supreme law of the land'.",
-      reforge:{stem:"A US state passes a law requiring prayer in public schools. A citizen challenges this under the First Amendment. The Supreme Court can:",options:{A:"Advise Congress to change the law but has no power to strike it down.",B:"Strike down the state law under judicial review — if the law violates the First Amendment's Establishment Clause (Congress shall make no law respecting an establishment of religion), the Supreme Court can declare it unconstitutional and void it, exercising the power established in Marbury v Madison (1803).",C:"Only rule on federal laws, not state laws.",D:"Refer the matter to Congress for a new constitutional amendment."},correct:"B"}
-    },
-    {
-      id:"PUSC-02",
-      stem:"The US Senate and House of Representatives have different roles in legislation. Which correctly identifies a power held exclusively by the Senate?",
-      options:{A:"Initiating revenue bills (bills raising taxes).",B:"Ratifying treaties by a two-thirds majority, confirming presidential appointments (Cabinet, federal judges, ambassadors) by simple majority, and conducting impeachment trials.",C:"Impeaching the President by a simple majority vote.",D:"Overriding a presidential veto by a simple majority."},
-      correct:"B",tag:"MC-PUSC-02",
-      scaffold:"Bicameral differences: House exclusive powers — initiate revenue bills, initiate impeachment, elect President if Electoral College deadlocked. Senate exclusive powers — ratify treaties (2/3), confirm appointments (simple majority), conduct impeachment trial (2/3 to convict). Both needed for legislation. Senate = 2 per state (100 total); House = proportional to population (435). Senate longer terms (6 years), staggered — only 1/3 up for election every 2 years (more insulated from public opinion). Filibuster (Senate only — 60 votes needed to end debate via cloture).",
-      reforge:{stem:"The Senate rejected the SALT II arms control treaty in 1979 despite being negotiated by President Carter. This illustrates which constitutional principle?",options:{A:"The President's power as Commander-in-Chief overrides the Senate on military matters.",B:"Separation of powers and checks and balances — the Senate's exclusive treaty ratification power (2/3 majority required) acts as a check on presidential foreign policy, preventing the executive from binding the nation to international agreements without legislative consent.",C:"The Senate's power to declare war on behalf of the United States.",D:"Congressional power to override presidential foreign policy decisions by simple majority."},correct:"B"}
-    },
-    {
-      id:"PUSC-03",
-      stem:"US Supreme Court justices serve for 'good behaviour' (effectively life tenure). What is the primary justification for this arrangement?",
-      options:{A:"It ensures justices are experienced — young appointees become wise over time.",B:"Lifetime tenure insulates justices from political pressure and electoral accountability, protecting judicial independence — justices can make unpopular but constitutionally correct decisions without fear of removal for political reasons.",C:"It reduces the cost of appointment proceedings.",D:"The Founding Fathers expected justices to retire young and the life expectancy was short."},
-      correct:"B",tag:"MC-PUSC-03",
-      scaffold:"Supreme Court justices: appointed by President, confirmed by Senate, serve for life (or until resignation/impeachment). Currently 9 justices (number not constitutionally fixed — FDR's 'court packing' failed 1937). Criticisms of lifetime tenure: undemocratic; one President can reshape the Court for decades (Trump appointed 3 in 4 years — Gorsuch, Kavanaugh, Barrett); justices increasingly partisan. Arguments for: judicial independence; Hamilton (Federalist 78) argued judiciary 'least dangerous branch' if independent. Marbury v Madison (1803) — established judicial review. Citizens United (2010), Dobbs (2022 — overturned Roe v Wade) show Court's political significance.",
-      reforge:{stem:"President Biden's proposal to expand the Supreme Court to 15 justices was controversial because:",options:{A:"The Constitution fixes the number of justices at 9.",B:"Court expansion could be seen as 'court packing' — using a presidential and congressional majority to add justices likely to share the President's political views, undermining the Court's independence and the principle of judicial review as a check on elected government rather than an extension of it.",C:"Only Congress can propose Supreme Court expansion, not the President.",D:"The 1869 Act permanently fixes the Court at 9 justices."},correct:"B"}
-    },
-    {
-      id:"PUSC-04",
-      stem:"Which correctly describes the main function of the Electoral College in US presidential elections?",
-      options:{A:"The Electoral College is a direct democracy mechanism where all citizens cast equal votes.",B:"It is an indirect election system in which each state is allocated electoral votes (equal to its congressional representation), with a winning candidate needing 270/538 votes. Most states use winner-takes-all, meaning the national popular vote winner can lose the presidency.",C:"The Electoral College selects presidential candidates before the general election.",D:"It is a backup system used only when the popular vote is inconclusive."},
-      correct:"B",tag:"MC-PUSC-04",
-      scaffold:"Electoral College (EC): 538 votes total (435 House + 100 Senate + 3 DC). Need 270 to win. Winner-takes-all in 48 states (Maine/Nebraska use congressional district method). Small states over-represented (Wyoming: 3 EC votes for ~580k people; California: 54 EC votes for 39m). Swing states dominate campaigns (Florida, Pennsylvania, Michigan). Popular vote/EC splits: 2000 (Gore won popular vote, Bush won EC); 2016 (Clinton won popular vote by 2.9m, Trump won EC). Arguments for EC: preserves federalism, encourages geographic breadth of campaigning. Against: undemocratic, swing state focus, small state over-representation.",
-      reforge:{stem:"In 2016, Hillary Clinton received 2.9 million more popular votes than Donald Trump but lost the presidency. This is best explained by:",options:{A:"Vote counting errors in several key states.",B:"The winner-takes-all Electoral College system — Clinton ran up large margins in California and New York but lost several large swing states (Pennsylvania, Michigan, Wisconsin) by narrow margins, meaning Trump won more Electoral College votes (306) despite fewer total votes. The EC rewards geographic distribution of votes, not total national vote share.",C:"Third-party candidates taking votes from Clinton in swing states.",D:"The Senate's role in certifying electoral vote counts."},correct:"B"}
-    },
-    {
-      id:"PUSC-05",
-      stem:"Which best describes the concept of 'bipartisanship' in US politics and why it has become rarer?",
-      options:{A:"Bipartisanship means both parties have identical policies — it has become rarer because parties have grown apart ideologically.",B:"Bipartisanship means cooperation across party lines to pass legislation — it has become rarer due to increased ideological polarisation (parties have moved further apart), the rise of the Tea Party and Freedom Caucus on the right, partisan media (Fox News, MSNBC), social media echo chambers, and the permanent campaign culture.",C:"Bipartisanship refers to both parties sharing the Presidency through rotation.",D:"Bipartisanship has increased in recent years as both parties have moderated their positions."},
-      correct:"B",tag:"MC-PUSC-05",
-      scaffold:"Polarisation: DW-NOMINATE scores show Congress has become steadily more ideologically polarised since 1970s. Few 'moderate' Republicans or Democrats remain who vote across lines. Causes: primary elections reward ideological purity (base voters more extreme); safe districts (gerrymandering); partisan media reinforcing tribalism; sorted party coalitions (Southern Democrats became Republicans post-1965 Civil Rights Act). Consequences: gridlock (government shutdowns — 2013, 2018-19); difficulty passing legislation; 'filibuster' used more aggressively; rise of executive action (Presidential orders) to bypass Congress. Compare UK: whipping system means party discipline achieved differently, but 'big tent' parties theoretically accommodate more internal diversity.",
-      reforge:{stem:"Congress failed to pass comprehensive immigration reform despite bipartisan agreement on many issues. This best illustrates:",options:{A:"Lack of public support for immigration reform.",B:"Polarisation and the difficulty of bipartisan legislation — even when senators from both parties agree on substance, partisan dynamics (primary election fear, media pressure, party leadership opposition) prevent sufficient members from crossing the aisle to achieve the 60 votes needed to overcome a Senate filibuster.",C:"The President having exclusive power over immigration policy.",D:"Immigration being constitutionally reserved to individual states."},correct:"B"}
-    },
-    {
-      id:"PUSC-06",
-      stem:"A student compares the UK Prime Minister and US President and concludes 'the President is more powerful because they have executive power.' What is missing from this analysis?",
-      options:{A:"Nothing — the President does have executive power and is more powerful.",B:"The PM is constrained by the cabinet; the President has full independence.",C:"The analysis ignores that the UK PM typically commands a parliamentary majority and can pass legislation with relative ease (via whipping), while the President faces a separated legislature that may be controlled by the opposing party, creating potential gridlock — making legislative power more constrained for Presidents than for PMs with majorities.",D:"The analysis overestimates the UK PM's power relative to the monarch."},
-      correct:"C",tag:"MC-PUSC-06",
-      scaffold:"UK PM vs US President comparison: PM advantages — fusion of powers means PM leads legislature; whipping system delivers majorities; no separation of executive/legislative. President advantages — fixed term (can't be removed by legislature except impeachment); veto power; commander-in-chief; sole executive. PM constraints — House of Lords, backbench rebellions, coalition partners, vote of no confidence. President constraints — separated Congress (may be hostile), Senate confirmation of appointments, judicial review (Supreme Court), 22nd Amendment (2-term limit), War Powers Resolution. Core comparison: PM more powerful when commanding majority; President constrained by constitutional separation of powers.",
-      reforge:{stem:"In the UK, a Prime Minister with a large majority can pass major legislation relatively quickly. Why is this harder for a US President even with their own party controlling Congress?",options:{A:"US Presidents are not allowed to propose legislation to Congress.",B:"The separation of powers means Congress is an independent institution with its own electoral mandate — individual congresspeople cannot be removed by the President and have their own constituency interests. Party discipline is weaker in the US (no equivalent of the whip system's consequences), meaning Presidents must negotiate with their own party members rather than commanding their votes.",C:"US Presidents must get approval from the Supreme Court before proposing legislation.",D:"The UK Parliament meets more frequently than the US Congress."},correct:"B"}
-    },
-    {
-      id:"PUSC-07",
-      stem:"Which correctly describes how the US Constitution's 'checks and balances' operate between the President and Congress?",
-      options:{A:"The President can dissolve Congress if it fails to pass legislation; Congress can remove the President by a simple majority vote.",B:"Congress passes legislation (both chambers); President can veto; Congress can override with two-thirds majority. Senate confirms presidential appointments; Senate ratifies treaties. Congress declares war; President commands military. Congress controls the budget; President proposes budget. Supreme Court (appointed by President, confirmed by Senate) can strike down acts of either branch.",C:"The President has unlimited executive power; Congress only has advisory functions.",D:"Checks and balances only apply to domestic policy, not foreign affairs."},
-      correct:"B",tag:"MC-PUSC-07",
-      scaffold:"Key checks — President on Congress: veto (Congress overrides by 2/3 both chambers); pocket veto; executive orders bypassing Congress; bully pulpit. Congress on President: override veto; refuse legislation; control of budget (power of purse); advice and consent (Senate); impeachment and removal (House impeaches simple majority; Senate convicts 2/3); War Powers Resolution. Courts on both: judicial review (Marbury v Madison). President on courts: appointment power. Senate on President: confirms judicial appointments. This interlocking system means significant power requires cooperation across branches.",
-      reforge:{stem:"President Obama used executive orders on immigration (DACA 2012) when Congress failed to pass reform. This illustrates:",options:{A:"Presidential overreach — Obama had no constitutional authority over immigration.",B:"The President using executive action to work around a gridlocked Congress — while legal within the executive's authority to direct enforcement priorities, it demonstrates the tension between presidential leadership and congressional power, and the limits of executive orders (which can be reversed by the next President and challenged in courts, as DACA repeatedly has been).",C:"Congress's failure to function as a democratic institution.",D:"Immigration being an area of exclusive presidential jurisdiction."},correct:"B"}
-    },
-    {
-      id:"PUSC-08",
-      stem:"Comparing the UK and US political systems, which statement about federalism vs unitarianism is most accurate?",
-      options:{A:"The UK is federal because it has devolved governments in Scotland, Wales and Northern Ireland.",B:"The USA is a federal system where states retain sovereign powers reserved to them by the 10th Amendment — states can set their own laws on many matters (education, abortion post-Dobbs, gun laws, criminal justice). The UK is a unitary state where Westminster is constitutionally sovereign, and devolution is a grant of power from the centre that Parliament could theoretically reclaim.",C:"Both the UK and USA are federal systems because both have sub-national governments.",D:"The USA is a unitary state because federal law is supreme under the Supremacy Clause."},
-      correct:"B",tag:"MC-PUSC-08",
-      scaffold:"Federalism (USA): constitutional division of power between federal and state governments. 10th Amendment — powers not delegated to federal government reserved to states. States have own constitutions, courts, criminal law, education systems. After Dobbs (2022), abortion policy returned to states — now varies from near-total bans (Texas) to full access (California). Unitarism (UK): Parliament is sovereign — devolution (Scotland Act 1998, Government of Wales Acts) is a constitutional statute but theoretically revocable. Miller cases showed UK Parliament retains sovereignty even over Brexit. Quasi-federalism debate: UK is becoming more federal in practice even if not in theory.",
-      reforge:{stem:"After Dobbs v Jackson (2022), individual US states immediately passed very different abortion laws. This is a direct consequence of:",options:{A:"Congress passing a law returning abortion regulation to states.",B:"Federalism — the Supreme Court's decision removed abortion from constitutional protection (overturning Roe v Wade) and returned the issue to state governments' reserved powers under the 10th Amendment, allowing states to legislate freely, resulting in a patchwork of laws from near-total bans to unrestricted access.",C:"The President signing an executive order on abortion rights.",D:"The Senate voting to allow states to set their own abortion laws."},correct:"B"}
-    }
-  ]
-};
-
-// Update pol subject definition
-(function() {
-  var p = SUBJECTS["pol"];
-  if (p) { p.banks = ["POL-1","POL-2","POL-3","POL-4"]; p.sub = "Edexcel 9PL0 — UK Government, Rights, Democracy & US"; }
-})();
 
 // ===== NEW BANKS: BIO-3, CHEM-3, MATH-3 =====
 
@@ -4998,119 +4754,8 @@ BANKS["BUS-3"] = {
 // Update subject definitions
 SUBJECTS["phys"].banks = ["PHYS-1","PHYS-2","PHYS-3"];
 SUBJECTS["phys"].sub = "AQA 7408 — Mechanics, Electricity & Waves";
-SUBJECTS["bus"].banks = ["BUS-1","BUS-2","BUS-3","BUS-4"];
+SUBJECTS["bus"].banks = ["BUS-1","BUS-2","BUS-3"];
 SUBJECTS["bus"].sub = "Edexcel 9BS0 — Themes 1–4";
-
-BANKS["BUS-4"] = {
-  label: "Global Business & Ethics",
-  color: "#92400e",
-  questions: [
-    {
-      id:"BUS-17",
-      stem:"Globalisation is best defined as:",
-      options:{
-        A:"The process by which all countries adopt identical economic policies.",
-        B:"The increasing integration and interdependence of national economies through trade, investment, migration, and the spread of technology and ideas.",
-        C:"The dominance of American culture and business practices worldwide.",
-        D:"The removal of all tariffs and trade barriers between countries."
-      },
-      correct:"B",tag:"MC-BUS-16",
-      scaffold:"Globalisation drivers: falling trade barriers (WTO), improved transport (containerisation), digital communication, MNC expansion, financial deregulation, migration. Dimensions: economic (trade, investment), cultural (spread of brands, media), political (international institutions). Impacts vary: LEDCs may gain FDI and jobs but lose sovereignty; developed countries may face deindustrialisation. Students often confuse globalisation with Americanisation or free trade specifically — it is broader than either.",
-      reforge:{stem:"Which development most directly accelerated economic globalisation in the late 20th century?",options:{A:"The invention of the internet increased cultural globalisation only.",B:"The creation of the WTO (1995) and reduction of trade tariffs, combined with containerisation of shipping dramatically reducing transport costs, made international trade faster and cheaper.",C:"The Cold War encouraged all countries to trade freely with each other.",D:"Rising oil prices made international trade more profitable."},correct:"B"}
-    },
-    {
-      id:"BUS-18",
-      stem:"A multinational corporation (MNC) relocates production to a country with lower wages and fewer regulations. Which evaluation point is most important to include?",
-      options:{
-        A:"MNCs always improve living standards in host countries.",
-        B:"While the MNC reduces costs, the host country may experience exploitation of workers, environmental damage, and profit repatriation — benefits must be weighed against these costs, and vary by context.",
-        C:"Relocation always leads to job losses in the home country with no compensating benefits.",
-        D:"Governments should never allow foreign MNCs to operate."
-      },
-      correct:"B",tag:"MC-BUS-17",
-      scaffold:"MNC impacts on host country — benefits: FDI, jobs, tax revenue, technology transfer, skills development, infrastructure. Costs: low wages/poor conditions (race to the bottom), environmental damage, profit repatriation (money leaves country), cultural disruption, crowding out local businesses, tax avoidance (transfer pricing). Impact on home country — benefits: cheaper goods for consumers, profits returned. Costs: job losses, deindustrialisation, loss of tax base. Net assessment requires context: which MNC, which host country, what regulations exist.",
-      reforge:{stem:"Apple manufactures iPhones in China through Foxconn. A student claims this is purely exploitative. What is the most balanced evaluation?",options:{A:"The student is correct — MNCs always exploit workers.",B:"Foxconn provides employment and income for workers who may otherwise have fewer opportunities, and China has benefited from technology transfer and FDI. However, wage levels, working conditions, and profit repatriation remain legitimate concerns. The net impact depends on Chinese labour law enforcement and long-term development effects.",C:"Apple's production in China is beneficial because it keeps iPhone prices low for UK consumers.",D:"MNCs are always beneficial to host countries because they bring investment."},correct:"B"}
-    },
-    {
-      id:"BUS-19",
-      stem:"If the pound depreciates against the dollar, which is the most likely effect on a UK business that exports to the USA?",
-      options:{
-        A:"Its products become more expensive for American buyers — exports fall.",
-        B:"Its products become cheaper for American buyers in dollar terms, potentially increasing demand. However, if the business imports raw materials, its input costs rise.",
-        C:"It must immediately raise its sterling prices to maintain margins.",
-        D:"There is no effect — export prices are set annually in advance."
-      },
-      correct:"B",tag:"MC-BUS-18",
-      scaffold:"Exchange rate impacts: depreciation (£ falls) → exports cheaper in foreign currency → more competitive. Imports more expensive in sterling → higher costs for businesses using imported materials. Net effect depends on: price elasticity of export demand, proportion of imported inputs, whether contracts are in sterling or foreign currency, time horizon (J-curve). Appreciation has opposite effects. Exam question often asks to evaluate whether depreciation is good or bad — it depends on the business model.",
-      reforge:{stem:"A UK car manufacturer exports 60% of output to Europe and imports 40% of components from Germany. Sterling depreciates by 10%. What is the likely net effect?",options:{A:"Purely beneficial — exports become cheaper for European buyers.",B:"Mixed — European buyers find UK cars cheaper (positive for sales), but German components cost more in sterling (raises unit costs). Net effect depends on relative size of these effects and price elasticity of European demand.",C:"Purely harmful — all costs rise with depreciation.",D:"No effect — car prices are set in euros regardless of sterling movements."},correct:"B"}
-    },
-    {
-      id:"BUS-20",
-      stem:"Which correctly describes the difference between free trade and protectionism?",
-      options:{
-        A:"Free trade means governments control all imports; protectionism means no government intervention.",
-        B:"Free trade involves the unrestricted exchange of goods between countries without tariffs or quotas. Protectionism uses measures such as tariffs, quotas, and subsidies to restrict imports and protect domestic industries.",
-        C:"Free trade benefits only large countries; protectionism benefits small countries.",
-        D:"Protectionism is illegal under all international trade agreements."
-      },
-      correct:"B",tag:"MC-BUS-19",
-      scaffold:"Protectionist measures: tariffs (tax on imports — raises price, reduces demand), quotas (limit on quantity imported), subsidies to domestic producers (lower their costs, making imports relatively more expensive), embargoes, bureaucratic barriers. Arguments for protection: infant industry argument, strategic industries (defence), prevent dumping, protect jobs, retaliate against unfair practices. Arguments against: raises prices for consumers, inefficiency, retaliation risk, prevents comparative advantage. WTO generally prohibits protectionism but allows exceptions (national security, anti-dumping).",
-      reforge:{stem:"The US imposed 25% tariffs on steel imports. Which is the most balanced evaluation of this policy?",options:{A:"Purely beneficial — protects American steelworkers' jobs.",B:"US steel producers benefit from reduced competition and job protection. However, US manufacturers using steel (cars, construction) face higher input costs, and trading partners may retaliate with tariffs on US exports — overall welfare effects are likely negative for the US economy as a whole.",C:"Purely harmful — tariffs always reduce economic welfare.",D:"The policy has no effect because steel producers will simply lower their prices."},correct:"B"}
-    },
-    {
-      id:"BUS-21",
-      stem:"Corporate social responsibility (CSR) is best defined as:",
-      options:{
-        A:"A legal requirement for all businesses to donate 1% of profits to charity.",
-        B:"A business approach that integrates social and environmental concerns into operations and stakeholder interactions, going beyond legal minimum obligations.",
-        C:"The obligation of businesses to maximise shareholder returns above all else.",
-        D:"A government scheme that rewards ethical businesses with tax breaks."
-      },
-      correct:"B",tag:"MC-BUS-20",
-      scaffold:"CSR: voluntary actions beyond legal compliance — environmental (reducing carbon footprint, sustainable sourcing), social (fair wages, community investment, diversity), governance (transparency, anti-corruption). Friedman's counter-argument: businesses' sole responsibility is to increase profits for shareholders (shareholders can choose their own charitable giving). Carroll's pyramid: legal → ethical → philanthropic. Business case for CSR: reputation, employee retention, consumer loyalty, risk management, access to ethical investment. Exam requires evaluation: is CSR genuine or 'greenwashing'?",
-      reforge:{stem:"A student argues that CSR is simply good for business profits, not genuinely ethical behaviour. What is the strongest response to this view?",options:{A:"The student is wrong — all CSR is purely altruistic.",B:"The student raises a valid point about motivation, but the distinction may not matter if CSR actions genuinely reduce harm and improve stakeholder welfare. However, where CSR is used as 'greenwashing' to mask harmful practices while claiming ethical credentials, it IS a legitimate concern — the key test is whether actions match claims.",C:"CSR is always legally required so the debate about motivation is irrelevant.",D:"Businesses that act ethically always earn lower profits."},correct:"B"}
-    },
-    {
-      id:"BUS-22",
-      stem:"Business ethics refers to:",
-      options:{
-        A:"The legal rules that businesses must follow under company law.",
-        B:"Moral principles that guide business behaviour — the application of ethical values (honesty, fairness, respect) to decisions about how businesses treat stakeholders, beyond what the law requires.",
-        C:"A set of guidelines produced by the government for FTSE 100 companies.",
-        D:"The same thing as corporate social responsibility."
-      },
-      correct:"B",tag:"MC-BUS-21",
-      scaffold:"Ethics vs law: law sets minimum standards; ethics concerns what is right, not just what is legal. Ethical issues: tax avoidance (legal but arguably unethical — Starbucks, Amazon UK), zero-hours contracts, supplier treatment (Primark and Rana Plaza), executive pay ratios, environmental impact, data privacy. Stakeholder approach (Freeman): businesses should balance interests of all stakeholders (employees, community, suppliers, environment), not just shareholders. Exam tests application to specific business scenarios — avoid claiming legality = ethicality.",
-      reforge:{stem:"Amazon UK paid very little corporation tax despite large UK revenues through legal profit-shifting to Luxembourg. Which is the most precise ethical analysis?",options:{A:"Amazon acted unethically because tax avoidance is illegal.",B:"Amazon's tax arrangements were legal, so there is no ethical issue.",C:"Although legal, Amazon's tax arrangements raise ethical questions — benefiting from UK infrastructure, customers and workforce while minimising UK tax contributions shifts the burden to other taxpayers. From a stakeholder ethics perspective, this prioritises shareholders at the expense of the wider community.",D:"Tax avoidance is ethical because businesses have a duty to minimise costs."},correct:"C"}
-    },
-    {
-      id:"BUS-23",
-      stem:"Which best describes the 'infant industry argument' for protectionism?",
-      options:{
-        A:"Countries should protect industries that employ young workers.",
-        B:"New domestic industries may be too small to compete with established foreign rivals on cost — temporary protection gives them time to achieve economies of scale and become internationally competitive, after which protection is removed.",
-        C:"All new businesses deserve government subsidies regardless of their export potential.",
-        D:"Industries should be protected permanently from foreign competition to preserve employment."
-      },
-      correct:"B",tag:"MC-BUS-22",
-      scaffold:"Infant industry argument (List, Hamilton): in the short run, new industries face cost disadvantages against established foreign competitors. Temporary protection (tariffs, subsidies) allows them to grow, achieve economies of scale, and develop until they can compete without support. Used historically by USA (19th century), South Korea (steel, cars), China. Criticisms: 'temporary' protection often becomes permanent; governments may protect wrong industries (picking winners problem); inefficiency may persist; trading partners retaliate; consumers pay higher prices during protection.",
-      reforge:{stem:"South Korea heavily protected its domestic car industry (Hyundai, Kia) in the 1970s–80s. By the 2000s, Korean cars were competing globally without protection. Which conclusion does this best support?",options:{A:"Protectionism always fails because it prevents competition.",B:"This is a case study often cited in support of the infant industry argument — protection allowed Korean manufacturers to build scale and technical capability until they could compete globally, suggesting temporary protection can succeed if the protected industry eventually becomes competitive.",C:"Korean cars succeeded despite protectionism, not because of it.",D:"All developing countries should permanently protect their manufacturing industries."},correct:"B"}
-    },
-    {
-      id:"BUS-24",
-      stem:"A business operates across multiple countries with different cultures. Which concept is most important for managing this effectively?",
-      options:{
-        A:"Ethnocentrism — assuming the home country's business practices are superior.",
-        B:"Cultural intelligence — the ability to adapt management style, communication, and business practices to different cultural contexts, recognising that practices effective in one culture may be ineffective or offensive in another.",
-        C:"Standardisation — applying identical business practices in every country regardless of culture.",
-        D:"Localisation — completely redesigning every product and service for each new market."
-      },
-      correct:"B",tag:"MC-BUS-23",
-      scaffold:"International business culture: Hofstede's dimensions — power distance (hierarchy acceptance), individualism vs collectivism, uncertainty avoidance, masculinity vs femininity, long-term vs short-term orientation. High power distance cultures (Japan, China) expect hierarchy and formal deference; low power distance (Denmark, Australia) expect flat structures. Negotiation styles differ: relationship-building first in China vs direct deal focus in USA. Product adaptation (McDonald's localises menus) vs standardisation (Apple sells identical products globally). Ethnocentrism = assuming home culture is universal → management failures.",
-      reforge:{stem:"A UK manager chairing a meeting with Japanese colleagues repeatedly interrupts and pushes for a quick decision. The Japanese team becomes noticeably uncomfortable. Which cultural concept explains this?",options:{A:"The Japanese team disagree with the decision being proposed.",B:"Japanese business culture typically involves consensus-building (nemawashi), respect for hierarchy, and indirect communication — direct interruption and pressure for speed conflicts with these norms, causing discomfort and likely damaging the business relationship.",C:"UK managers always behave inappropriately in international meetings.",D:"The discomfort is purely a language barrier issue."},correct:"B"}
-    }
-  ]
-};
 
 function shuffle(a){var b=[...a];for(var i=b.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
 
