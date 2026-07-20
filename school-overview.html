@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Forge — School Overview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,700;12..96,800&family=Sora:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--coal:#141210;--panel:#211E1B;--panel-2:#2A2622;--line:#3A342E;--ember:#FF6B2C;--hot:#FFC93C;--slate:#B8B4AD;--white:#F5F1EA;--good:#7FD98A;--bad:#FF5A5A}
+[data-theme="light"]{--coal:#FAFAF8;--panel:#FFFFFF;--panel-2:#F3F2EF;--line:#E0DDD8;--ember:#E5550F;--hot:#C88500;--slate:#6B6660;--white:#1A1816;--good:#1B8C2A;--bad:#D42D2D}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--coal);color:var(--slate);font-family:Sora,sans-serif;font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100vh}
+h1,h2,h3{font-family:'Bricolage Grotesque',sans-serif;color:var(--white);line-height:1.1;letter-spacing:-.015em}
+.wrap{max-width:980px;margin:0 auto;padding:32px 20px}
+.tag{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ember)}
+.mono{font-family:'JetBrains Mono',monospace}
+.logo{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:20px;color:var(--white);text-decoration:none;display:inline-flex;align-items:center;gap:8px;margin-bottom:28px}
+.logo .spark{width:9px;height:9px;background:linear-gradient(135deg,var(--hot),var(--ember));border-radius:2px;transform:rotate(45deg);box-shadow:0 0 10px rgba(255,107,44,.7)}
+.theme-toggle{background:var(--panel);border:1px solid var(--line);color:var(--slate);font-family:'JetBrains Mono',monospace;font-size:12px;padding:6px 12px;border-radius:7px;cursor:pointer;position:fixed;top:20px;right:20px;z-index:99}
+.theme-toggle:hover{color:var(--white);border-color:var(--ember)}
+
+/* Login */
+.login-wrap{max-width:380px;margin:80px auto 0;text-align:center}
+.login-wrap h1{font-size:26px;margin-bottom:8px}
+.login-wrap p{color:#8A857E;font-size:14px;margin-bottom:28px}
+.code-input{width:100%;padding:14px 16px;border-radius:10px;border:1px solid var(--line);background:var(--panel);color:var(--white);font-family:'JetBrains Mono',monospace;font-size:22px;text-align:center;letter-spacing:.2em;text-transform:uppercase;margin-bottom:12px}
+.code-input:focus{outline:none;border-color:var(--ember)}
+.btn{width:100%;padding:13px;border-radius:9px;background:linear-gradient(100deg,var(--hot),var(--ember));color:var(--coal);border:none;font-family:Sora,sans-serif;font-weight:700;font-size:15px;cursor:pointer}
+.btn:hover{opacity:.9}
+.err{color:var(--bad);font-size:13px;margin-top:8px;display:none}
+
+/* Dashboard */
+.dash-header{margin-bottom:28px}
+.dash-meta{font-size:13px;color:var(--slate);margin-top:4px}
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
+.stat-card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px 16px;text-align:center}
+.stat-n{font-family:'Bricolage Grotesque',sans-serif;font-size:36px;font-weight:800;display:block;line-height:1}
+.stat-l{font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:#8A857E;display:block;margin-top:6px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px;margin-bottom:16px}
+.card-title{font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--ember);margin-bottom:14px}
+.overview-table{width:100%;border-collapse:collapse;font-size:13px}
+.overview-table th{font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:#8A857E;padding:6px 10px;text-align:left;border-bottom:1px solid var(--line)}
+.overview-table td{padding:10px 10px;border-bottom:1px solid var(--line);color:var(--slate)}
+.overview-table tr:last-child td{border-bottom:none}
+.overview-table td:first-child{color:var(--white);font-weight:600}
+.heat-bar{height:6px;background:var(--line);border-radius:3px;overflow:hidden;min-width:80px}
+.heat-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--hot),var(--ember))}
+.mc-tag{display:inline-block;padding:2px 8px;border-radius:5px;font-family:'JetBrains Mono',monospace;font-size:10px;background:rgba(255,90,90,.1);border:1px solid rgba(255,90,90,.25);color:var(--bad);margin:2px}
+.subject-badge{display:inline-block;padding:3px 10px;border-radius:6px;font-family:'JetBrains Mono',monospace;font-size:11px;background:rgba(255,107,44,.08);border:1px solid rgba(255,107,44,.2);color:var(--ember);margin:2px}
+.tabs{display:inline-flex;gap:4px;background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:4px;margin-bottom:20px}
+.tab{padding:7px 16px;border-radius:8px;border:none;background:none;color:var(--slate);font-family:Sora,sans-serif;font-weight:600;font-size:13px;cursor:pointer}
+.tab.active{background:linear-gradient(100deg,var(--hot),var(--ember));color:var(--coal)}
+.export-btn{padding:7px 14px;border-radius:8px;background:var(--panel);border:1px solid var(--line);color:var(--slate);font-family:Sora,sans-serif;font-size:13px;font-weight:600;cursor:pointer;float:right}
+.export-btn:hover{border-color:var(--ember);color:var(--white)}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.signout-btn{padding:7px 14px;border-radius:8px;background:var(--panel);border:1px solid var(--line);color:var(--slate);font-family:Sora,sans-serif;font-size:13px;font-weight:600;cursor:pointer}
+.signout-btn:hover{border-color:var(--ember);color:var(--white)}
+@media(max-width:680px){.stat-grid{grid-template-columns:1fr 1fr}.two-col{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<button class="theme-toggle" onclick="toggleTheme()">☀ Light</button>
+<script>
+window.toggleTheme=function(){var h=document.documentElement,b=document.querySelector('.theme-toggle');if(h.getAttribute('data-theme')==='light'){h.removeAttribute('data-theme');b.textContent='☀ Light';localStorage.setItem('forge-theme','dark');}else{h.setAttribute('data-theme','light');b.textContent='☾ Dark';localStorage.setItem('forge-theme','light');}};
+if(localStorage.getItem('forge-theme')==='light'){document.documentElement.setAttribute('data-theme','light');document.querySelector('.theme-toggle').textContent='☾ Dark';}
+</script>
+
+<div class="wrap">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+    <a class="logo" style="margin-bottom:0" href="index.html"><span class="spark"></span>Forge</a>
+    <a href="teacher.html" style="font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:#8A857E;text-decoration:none;padding:5px 10px;border-radius:7px;border:1px solid var(--line)" onmouseover="this.style.color='var(--ember)';this.style.borderColor='var(--ember)'" onmouseout="this.style.color='#8A857E';this.style.borderColor='var(--line)'">← Teacher dashboard</a>
+  </div>
+  <div id="app"></div>
+</div>
+
+<script>
+var SUPABASE_URL = 'https://crysulmbaadjkymcjrew.supabase.co';
+var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNyeXN1bG1iYWFkamt5bWNqcmV3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQyNDUzMzAsImV4cCI6MjA5OTgyMTMzMH0.Q69MKJR6_iEYkqJYXjn8RBhKhstAZShtmf0NiYM-8Vk';
+
+// ── ACCESS CODE ──────────────────────────────────────────────
+// Change this to your chosen school overview access code
+// Share only with SLT and Heads of Department
+var SCHOOL_OVERVIEW_CODE = 'MAYFIELD-SLT';
+
+var hdrs = { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY };
+var app = document.getElementById('app');
+var activeTab = 'subjects';
+
+var MC_LABELS = {"MC-INF-01":"Confuses disinflation with deflation","MC-INF-02":"CPI basket treated as static","MC-INF-03":"Demand-pull: no diagram link","MC-INF-04":"Cost-push = only wages","MC-INF-05":"Deflation always harmful","MC-INF-06":"RPI and CPI used interchangeably","MC-INF-07":"BoE target is 0%","MC-INF-08":"Index number calculation error","MC-INF-09":"Any double-digit = hyperinflation","MC-INF-10":"Wage-price spiral trigger unknown","MC-GRO-01":"Growth confused with GDP level","MC-GRO-02":"Actual vs potential growth blurred","MC-GRO-03":"Output gap direction swapped","MC-GRO-04":"Trade cycle recovery drawn flat","MC-EMP-01":"Unemployed = everyone without a job","MC-EMP-02":"Unemployment types without causes","MC-EMP-03":"Phillips curve treated as permanent","MC-EMP-04":"Claimant count = ILO measure","MC-EMP-05":"Real wage diagram gap mislabelled","MC-BOP-01":"Current account deficit always bad","MC-BOP-02":"Fiscal deficit = current account deficit","MC-BOP-03":"J-curve drawn improving immediately","MC-BOP-04":"Marshall-Lerner condition omitted","MC-BOP-05":"Capital/financial account ignored","MC-AD-01":"AD formula wrong","MC-AD-02":"Interest rate transmission mechanism","MC-AD-03":"Confidence and AD direction","MC-AD-04":"AD shift causes lower inflation","MC-AD-05":"Exchange rate to net exports chain","MC-AD-06":"Movement along vs shift of AD","MC-AD-07":"Wage rise always increases AD","MC-AS-01":"SRAS vs LRAS distinction","MC-AS-02":"SRAS shift factors confused","MC-AS-04":"LRAS shift factors confused","MC-AS-05":"Movement along vs shift of SRAS","MC-AS-06":"Unit labour costs and SRAS","MC-NI-01":"Circular flow injections/withdrawals","MC-NI-03":"GDP vs GNI confused","MC-NI-04":"Nominal vs real GDP","MC-NI-06":"GDP limitations for comparisons","MC-NI-08":"Output method value added","MC-FIS-01":"Fiscal vs monetary policy confused","MC-FIS-02":"Automatic stabilisers vs discretionary","MC-FIS-06":"Laffer curve direction","MC-FIS-07":"Fiscal policy time lags","MC-FIS-08":"Crowding out mechanism","MC-MON-01":"MPC role and independence","MC-MON-02":"Interest rate transmission","MC-MON-03":"Rate rise trade-offs ignored","MC-MON-04":"QE mechanism misunderstood","MC-MON-05":"Liquidity trap","MC-MON-06":"Interest rates and exchange rate","MC-MON-08":"Forward guidance purpose","MC-SSP-01":"Supply-side aim misunderstood","MC-SSP-02":"Market-based vs interventionist","MC-SSP-03":"Interest rates classified as supply-side","MC-SSP-05":"Trade union reform trade-offs","MC-SSP-08":"Infrastructure dual AD/AS effect","MC-INQ-02":"Gini coefficient misread","MC-INQ-04":"Causes of income inequality","MC-INQ-05":"Income vs wealth confused","MC-INQ-07":"Progressive taxation definition","MC-POV-01":"Absolute vs relative poverty","MC-POV-03":"Poverty trap mechanism","MC-POV-04":"Anti-poverty policy effectiveness","MC-FMK-01":"Financial markets roles","MC-FMK-02":"Forward markets mechanism","MC-FMK-03":"Asymmetric information in financial markets","MC-FMK-04":"Stock market macro effects","MC-BNK-01":"Commercial bank intermediation","MC-BNK-02":"Credit creation multiplier","MC-BNK-03":"Bank bailout evaluation","MC-BNK-04":"Post-2008 regulation","MC-CB-01":"Bank of England functions","MC-CB-02":"Central bank independence","MC-CB-03":"FPC vs MPC roles","MC-CB-05":"Financial stability definition","MC-SD-01":"Demand vs quantity demanded","MC-SD-02":"Supply curve shift factors","MC-SD-03":"Equilibrium and price mechanism","MC-SD-04":"PED and inelastic demand","MC-SD-05":"Substitutes and complements","MC-SD-08":"PES and housing supply","MC-SI-01":"Asch conformity stats (75% vs 37%)","MC-SI-02":"Compliance vs internalisation","MC-SI-03":"Milgram 65% obedience","MC-SI-04":"Agentic state definition","MC-SI-05":"Moscovici consistency principle","MC-SI-06":"NSI vs ISI distinction","MC-SI-08":"Asch ecological validity","MC-MEM-01":"MSM flow and sequence","MC-MEM-02":"Miller's 7\u00b12 and chunking","MC-MEM-03":"WMM purpose and evidence","MC-MEM-04":"Central executive as store (wrong)","MC-MEM-05":"Loftus post-event information","MC-MEM-06":"Cognitive interview techniques","MC-MEM-08":"Proactive vs retroactive interference","MC-ATT-01":"Bowlby monotropic theory","MC-ATT-02":"Strange Situation procedure","MC-ATT-03":"Secure attachment = no distress (wrong)","MC-ATT-04":"Strange Situation validity","MC-ATT-05":"Internal working model","MC-ATT-06":"Maternal deprivation hypothesis","MC-ATT-08":"Harlow and contact comfort","MC-EDU-01":"Role allocation (Davis & Moore)","MC-EDU-02":"Correspondence principle (Bowles & Gintis)","MC-EDU-03":"Class and underachievement causes","MC-EDU-04":"Interactionist micro-level analysis","MC-EDU-06":"ERA 1988 and marketisation","MC-MET-01":"Covert observation ethical issues","MC-MET-02":"Interpretivist preference for qualitative","MC-MET-03":"Official statistics as social construction","MC-MET-04":"Questionnaire strengths","MC-MET-05":"Triangulation definition","MC-MET-06":"Practical problems in school research","MC-MET-08":"Feminist methodology in schools","MC-TEC-01":"Subduction — oceanic plate density","MC-TEC-02":"Development vs physical hazard size","MC-TEC-03":"Composite volcano explosion cause","MC-TEC-04":"Earthquakes at all boundary types","MC-TEC-06":"Focus vs epicentre confused","MC-TEC-07":"Iceland hot spot and constructive boundary","MC-BUS-01":"Product vs market orientation","MC-BUS-02":"Break-even calculation (contribution)","MC-BUS-03":"Price skimming vs penetration","MC-BUS-04":"Sole trader vs Ltd liability","MC-BUS-05":"Herzberg hygiene vs motivators","MC-BUS-06":"Ansoff Matrix — product vs market dev","MC-BUS-07":"Net profit margin calculation","MC-CHEM-01":"Relative atomic mass misunderstood","MC-CHEM-02":"Ionisation energy jumps","MC-CHEM-03":"Lone pairs in dot-and-cross diagrams","MC-CHEM-04":"Giant covalent vs simple molecular","MC-CHEM-05":"Empirical vs molecular formula","MC-CHEM-06":"Electronegativity trends","MC-CHEM-07":"Mass spectrometer m/z ratio","MC-CHEM-08":"Ionic conduction — ions not electrons","MC-CRIM-01":"Crime vs deviance vs immorality","MC-CRIM-02":"Dark figure of crime","MC-CRIM-03":"Official statistics limitations","MC-CRIM-04":"Moral panic and folk devils","MC-CRIM-05":"White-collar crime definition","MC-CRIM-06":"Merton's strain theory","MC-CRIM-08":"SCP displacement","MC-BIO-01":"Aerobic respiration stages","MC-BIO-02":"Prokaryote vs eukaryote","MC-BIO-03":"DNA replication enzymes","MC-BIO-04":"Facilitated vs active transport","MC-BIO-05":"Magnification formula","MC-BIO-06":"Fluid mosaic model","MC-BIO-07":"S phase vs mitosis stages","MC-BIO-08":"Denaturation vs inhibition","MC-HIST-01":"Weimar structural weakness vs contingency","MC-HIST-02":"Munich Putsch long-term benefit","MC-HIST-03":"Hitler never won a majority","MC-HIST-04":"Reichstag Fire to Enabling Act chain","MC-HIST-05":"Browning vs Goldhagen perpetrator debate","MC-LAW-01":"Actus reus and omissions","MC-LAW-02":"Direct vs oblique intent (Woollin)","MC-LAW-03":"Criminal standard of proof","MC-LAW-04":"Murder mens rea (GBH intent)","MC-LAW-05":"Loss of control vs provocation","MC-LAW-06":"Self-defence and excessive force","MC-LAW-07":"Theft actus reus (appropriation)","MC-TECH-01":"Application missing — no context","MC-TECH-02":"Evaluation absent on 8+ mark questions","MC-TECH-04":"Diagram axis labelling errors","MC-TECH-05":"Multiplier formula unknown","MC-MATH-01":"Chain rule — forgets to multiply by inner derivative","MC-MATH-02":"Integration constant C omitted on indefinite integrals","MC-MATH-03":"Sign error when differentiating a negative term","MC-MATH-04":"Completing the square — sign error on constant","MC-MATH-05":"Confuses f(x) = 0 roots with turning points","MC-MATH-06":"Logs — log(a+b) treated as log(a)+log(b)","MC-MATH-07":"Binomial expansion — incorrect coefficient calculation","MC-MATH-08":"Proof by contradiction — fails to state assumption explicitly","MC-DE-01":"Nominative used instead of accusative after direct object","MC-DE-02":"Adjective endings wrong in accusative masculine","MC-DE-03":"Sein vs werden confused in passive constructions","MC-DE-04":"Word order in subordinate clauses — verb not sent to end","MC-DE-05":"False cognate errors (e.g. bekommen not become)","MC-DE-06":"Modal verb position — infinitive not placed at end","MC-DE-07":"Gender assignment errors on common nouns","MC-DE-08":"Imperfect vs perfect tense — wrong tense in written register","MC-PHYS-01":"Constant velocity = no forces (wrong)","MC-PHYS-02":"Projectile horizontal velocity decreases (wrong)","MC-PHYS-03":"Work-energy theorem","MC-PHYS-04":"SUVAT sign convention errors","MC-PHYS-05":"Stiffer spring stores more energy (context-dependent)","MC-PHYS-06":"Momentum vs KE conservation","MC-PHYS-07":"Scalar vs vector distinction","MC-PHYS-08":"Heavier objects fall faster (wrong)","MC-PHYS-09":"Zero velocity ≠ zero acceleration at highest point","MC-PHYS-10":"Parallel resistance — reciprocal formula forgotten","MC-PHYS-11":"Transverse wave — particle motion direction wrong","MC-PHYS-12":"F = ma applied as F × m","MC-PHYS-13":"Scalars vs vectors — set classification wrong","MC-PHYS-14":"EMF confused with voltage across terminals","MC-PHYS-15":"Heavier objects fall faster in a vacuum (wrong)","MC-PHYS-16":"Spring constant — wrong mass or extension substitution","MC-POL-01":"UK constitution is codified (wrong)","MC-POL-02":"FPTP disproportionality","MC-POL-03":"Parliamentary sovereignty definition","MC-POL-04":"Lords equal to Commons (wrong)","MC-POL-05":"Pluralism vs elitism","MC-POL-07":"Pressure group vs political party","MC-POL-08":"Conservative ideology treated as fixed","MC-POL-09":"Social democracy vs democratic socialism confused","MC-POL-10":"Class still treated as dominant voting predictor","MC-POL-11":"Referendum benefits overstated","MC-POL-12":"Participation crisis misunderstood","MC-POL-13":"PR — small party influence underestimated","MC-POL-14":"Electoral Commission role confused","MC-POL-15":"Direct vs representative democracy evaluation","MC-PUSC-01":"US Constitution — codified and entrenched confused","MC-PUSC-02":"Senate vs House exclusive powers","MC-PUSC-03":"Supreme Court lifetime tenure justification","MC-PUSC-04":"Electoral College mechanism and outcomes","MC-PUSC-05":"Bipartisanship and polarisation","MC-PUSC-06":"PM vs President power comparison incomplete","MC-PUSC-07":"Checks and balances mechanisms","MC-PUSC-08":"Federalism vs unitarism — UK and USA","MC-GHU-01":"Globalisation defined as Americanisation","MC-GHU-02":"TNC expansion drivers","MC-GHU-03":"Development gap measurement","MC-GHU-04":"All migration treated as economic","MC-GHU-05":"Rostow model — Eurocentric critique","MC-GHU-06":"WTO role confused with IMF/World Bank","MC-GHU-07":"Brain drain — one-sided analysis","MC-GHU-08":"TNC impact — uncritical analysis","MC-GUR-01":"Regeneration vs redevelopment confused","MC-GUR-02":"Gentrification always beneficial","MC-GUR-03":"Urban heat island causes","MC-GUR-04":"Shrinking cities — growth assumptions applied","MC-GUR-05":"Sustainable urban development definition","MC-GUR-06":"Squatter settlements — clearance assumed best","MC-GUR-07":"Burgess model applied uncritically","MC-GUR-08":"Enterprise zones — gross vs net job creation","MC-SCRI-01":"Crime always dysfunctional — Durkheim misread","MC-SCRI-02":"Labelling — secondary deviance","MC-SCRI-03":"Crime statistics treated as objective","MC-SCRI-04":"Left realism vs left idealism confused","MC-SCRI-05":"Moral panic — Cohen incomplete","MC-SCRI-06":"Female crime rate explanation missing","MC-SCRI-07":"Dark figure of crime not applied","MC-SCRI-08":"Ethnicity and crime — biological explanation","MC-SSTR-01":"Stratification — functionalist theory uncritical","MC-SSTR-02":"Weber life chances vs lifestyle","MC-SSTR-03":"Cultural capital definition too narrow","MC-SSTR-04":"Embourgeoisement thesis — Goldthorpe overlooked","MC-SSTR-05":"Women invisible in stratification research","MC-SSTR-06":"Absolute vs relative poverty confused","MC-SSTR-07":"Welfare dependency — New Right uncritical","MC-SSTR-08":"Social closure mechanisms","MC-CON-01":"Invitation to treat vs offer confused","MC-CON-02":"Postal rule misapplied","MC-CON-03":"Past consideration not recognised","MC-CON-04":"Implied terms ignored","MC-CON-05":"Condition vs warranty distinction wrong","MC-CON-06":"Exclusion clause — notice timing","MC-CON-07":"Remoteness — Hadley v Baxendale limbs confused","MC-CON-08":"Specific performance availability misunderstood","MC-BUS-16":"Globalisation definition too narrow","MC-BUS-17":"MNC impact — one-sided analysis","MC-BUS-18":"Exchange rate effect on exporters — partial","MC-BUS-19":"Free trade vs protectionism confused","MC-BUS-20":"CSR definition confused with legal obligation","MC-BUS-21":"Ethics vs law conflated","MC-BUS-22":"Infant industry argument — temporary vs permanent","MC-BUS-23":"Cultural intelligence — ethnocentrism error","MC-CRIM-09":"Merton — anomie vs individual adaptation modes","MC-CRIM-10":"Differential association — learned vs innate crime","MC-CRIM-11":"Square of crime — wrong or missing elements","MC-CRIM-12":"Labelling theory — deviance as fixed not constructed","MC-CRIM-13":"Feminist critique of malestream criminology","MC-RS-01":"Cosmological argument — unmoved mover logical step","MC-RS-02":"Teleological argument — Hume's analogy critique","MC-RS-03":"Ontological argument — Kant's existence-as-predicate objection","MC-RS-04":"Problem of evil — theodicy responses omitted","MC-RS-05":"Categorical imperative — first formulation misapplied","MC-RS-06":"Mill vs Bentham — quality vs quantity of pleasure","MC-RS-07":"Religious experience — subjectivity and verification","MC-RS-08":"Natural Law — naturalistic fallacy misunderstood","MC-RS-09":"Situation ethics — agape as sole intrinsic good","MC-RS-10":"Euthyphro dilemma — divine command theory challenge","MC-RS-11":"Golden mean — moderation misread as always moderate","MC-RS-12":"Sanctity vs quality of life in euthanasia debate","MC-RS-13":"Emotivism — moral statements as expressions not truths","MC-RS-14":"Naturalistic fallacy — Moore's open question argument","MC-RS-15":"Hard determinism and moral responsibility","MC-RS-16":"Evaluation quality — breadth without depth error","MC-MED-01":"Hall encoding/decoding — passive audience assumed","MC-MED-02":"Media ownership concentration — Curran & Seaton","MC-MED-03":"Cultivation theory — mean world syndrome","MC-MED-04":"Representation as reflection not construction","MC-MED-05":"Digital regulation inadequacy — Livingstone & Lunt","MC-MED-06":"Male gaze and feminist theory — Van Zoonen","MC-MED-07":"Hypodermic needle model applied uncritically","MC-MED-08":"Uses and gratifications — active audience","MC-PE-01":"Cardiac output components during exercise","MC-PE-02":"Bohr effect and oxygen dissociation curve","MC-PE-03":"Sliding filament theory — filaments shorten (wrong)","MC-PE-04":"Energy systems and intensity matching","MC-PE-05":"VO2 max definition and determinants","MC-PE-06":"EPOC vs oxygen deficit confusion","MC-PE-07":"Fibre type characteristics and recruitment","MC-PE-08":"Active vs passive mechanics of breathing","MC-SP-01":"Ser vs estar — temporary vs permanent","MC-SP-02":"Llevar + gerund for duration confused with pluperfect","MC-SP-03":"Subjunctive trigger not recognised","MC-SP-04":"Preterite vs imperfect — time marker mismatch","MC-SP-05":"Reflexive verbs for change of state","MC-SP-06":"Passive voice — ser passive vs reflexive passive","MC-SP-07":"Sequence of tenses with subjunctive — past trigger","MC-SP-08":"Cuanto más... comparative structure"};
+
+window.filterClassTable = function(subjFilter, accFilter) {
+  var tbody = document.getElementById('classes-tbody');
+  if (!tbody) return;
+  Array.from(tbody.rows).forEach(function(row) {
+    var rowSubj = row.getAttribute('data-subject') || '';
+    var rowAcc  = parseInt(row.getAttribute('data-acc') || '0');
+    var showSubj = !subjFilter || rowSubj === subjFilter;
+    var showAcc  = !accFilter
+      || (accFilter === 'high' && rowAcc >= 70)
+      || (accFilter === 'mid'  && rowAcc >= 50 && rowAcc < 70)
+      || (accFilter === 'low'  && rowAcc < 50);
+    row.style.display = (showSubj && showAcc) ? '' : 'none';
+  });
+};
+
+window.filterStudentTable = function(subjFilter, flagFilter) {
+  ['student-top-tbody','student-bottom-tbody','student-low-tbody'].forEach(function(tbodyId) {
+    var tbody = document.getElementById(tbodyId);
+    if (!tbody) return;
+    Array.from(tbody.rows).forEach(function(row) {
+      var rowSubj = row.getAttribute('data-subject') || '';
+      var rowFlag = row.getAttribute('data-flag') || '';
+      var showSubj = !subjFilter || rowSubj === subjFilter;
+      var showFlag = !flagFilter || rowFlag.toLowerCase().includes(flagFilter.toLowerCase());
+      row.style.display = (showSubj && showFlag) ? '' : 'none';
+    });
+  });
+};
+
+window.switchTab = function(tab) {
+  activeTab = tab;
+  ['subjects','classes','misconceptions','students'].forEach(function(t) {
+    var el = document.getElementById('tab-' + t);
+    if (el) el.style.display = t === tab ? 'block' : 'none';
+  });
+  document.querySelectorAll('.tab').forEach(function(btn) {
+    btn.classList.toggle('active', btn.textContent.toLowerCase().includes(tab.replace('misconceptions','misconception').replace('students','student')));
+  });
+};
+
+// ── EXPORT ───────────────────────────────────────────────────
+window.exportCSV = function(type) {
+  var rows = [];
+  // Shared lookup maps (same logic as renderDashboard)
+  var studentClassMapExp = {};
+  var classSubjectMapExp = {};
+  data.students.forEach(function(s) { if (s.class_id) studentClassMapExp[s.id] = s.class_id; });
+  data.classes.forEach(function(cls) { if (cls.subject) classSubjectMapExp[cls.id] = cls.subject; });
+  function resolveExp(r) {
+    var classId = r.class_id || studentClassMapExp[r.student_id] || null;
+    var subject  = r.subject  || (classId ? classSubjectMapExp[classId] : null) || null;
+    return { classId: classId, subject: subject };
+  }
+
+  if (type === 'subjects') {
+    rows.push(['Subject','Classes','Students','Questions answered','Accuracy','Top misconception']);
+    var subjectMap = {};
+    data.classes.forEach(function(cls) {
+      if (!cls.subject) return;
+      if (!subjectMap[cls.subject]) subjectMap[cls.subject] = { classes:0, students:0, responses:0, correct:0, mcs:{} };
+      subjectMap[cls.subject].classes++;
+      data.students.filter(function(s){return s.class_id===cls.id;}).forEach(function(){subjectMap[cls.subject].students++;});
+    });
+    data.responses.forEach(function(r) {
+      var resolved = resolveExp(r);
+      var subj = resolved.subject;
+      if (!subj || !subjectMap[subj]) return;
+      subjectMap[subj].responses++;
+      if (r.is_correct) subjectMap[subj].correct++;
+      if (!r.is_correct && r.misconception_tag) subjectMap[subj].mcs[r.misconception_tag] = (subjectMap[subj].mcs[r.misconception_tag]||0)+1;
+    });
+    Object.keys(subjectMap).sort().forEach(function(s) {
+      var sm = subjectMap[s];
+      var acc = sm.responses > 0 ? Math.round((sm.correct/sm.responses)*100) : 0;
+      var topMC = Object.keys(sm.mcs).sort(function(a,b){return sm.mcs[b]-sm.mcs[a];})[0] || '';
+      rows.push([s, sm.classes, sm.students, sm.responses, acc+'%', topMC]);
+    });
+  } else if (type === 'classes') {
+    rows.push(['Class','Subject','Students','Questions answered','Active last 7d','Accuracy']);
+    var weekAgo = new Date(); weekAgo.setDate(weekAgo.getDate()-7);
+    data.classes.forEach(function(cls) {
+      var cs = data.students.filter(function(s){return s.class_id===cls.id;});
+      var csIds = new Set(cs.map(function(s){return s.id;}));
+      var cr = data.responses.filter(function(r){
+        return r.class_id===cls.id || (!r.class_id && csIds.has(r.student_id));
+      });
+      var activeIds = new Set(data.responses.filter(function(r){
+        return (r.class_id===cls.id||(!r.class_id&&csIds.has(r.student_id)))&&new Date(r.created_at)>weekAgo;
+      }).map(function(r){return r.student_id;}));
+      var acc = cr.length>0?Math.round((cr.filter(function(r){return r.is_correct;}).length/cr.length)*100):0;
+      rows.push([cls.name||cls.code, cls.subject||'', cs.length, cr.length, activeIds.size, acc+'%']);
+    });
+  } else if (type === 'misconceptions') {
+    rows.push(['Rank','Tag','Description','Total fires']);
+    var mcTotals = {};
+    data.responses.forEach(function(r){if(!r.is_correct&&r.misconception_tag)mcTotals[r.misconception_tag]=(mcTotals[r.misconception_tag]||0)+1;});
+    Object.keys(mcTotals).sort(function(a,b){return mcTotals[b]-mcTotals[a];}).slice(0,20).forEach(function(mc,i){
+      rows.push([i+1, mc, MC_LABELS[mc]||'', mcTotals[mc]]);
+    });
+  }
+
+  var csv = rows.map(function(row){return row.map(function(cell){return '"'+String(cell).replace(/"/g,'""')+'"';}).join(',');}).join('\n');
+  var blob = new Blob([csv], {type:'text/csv'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url; a.download = 'forge-' + type + '-' + new Date().toISOString().slice(0,10) + '.csv';
+  a.click();
+  URL.revokeObjectURL(url);
+};
+</script>
+</body>
+</html>
