@@ -250,7 +250,9 @@ function renderDashboard() {
       mcTotals[r.misconception_tag] = (mcTotals[r.misconception_tag] || 0) + 1;
       var resolved = resolveResponse(r);
       var subj = resolved.subject;
-      if (subj) {
+      // Exclude page-source values that aren't real subjects
+      var ignoredSources = ['anvil','crucible','forge',''];
+      if (subj && ignoredSources.indexOf(subj.toLowerCase()) === -1) {
         if (!mcSubjectTotals[r.misconception_tag]) mcSubjectTotals[r.misconception_tag] = {};
         mcSubjectTotals[r.misconception_tag][subj] = (mcSubjectTotals[r.misconception_tag][subj] || 0) + 1;
       }
@@ -413,7 +415,7 @@ function renderDashboard() {
       'POL':'Politics','CS':'Comp Sci','MATH':'Maths','STAT':'Maths',
       'DE':'German','FR':'French','SP':'Spanish','MED':'Media Studies',
       'PE':'Physical Education','RS':'Religious Studies','HSC':'Health & Social Care',
-      'CON':'Law'
+      'CON':'Law','TECH':'Exam Technique'
     };
     function normaliseSubject(raw) {
       if (!raw) return '';
