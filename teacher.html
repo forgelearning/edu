@@ -827,10 +827,11 @@ function renderDashboard() {
   var allResponses = dashState.responses;
   var responses = dashState.classSubject
     ? allResponses.filter(function(r) {
-        return r.subject === dashState.classSubject
-          || r.subject === null
-          || r.subject === 'unknown'
-          || !r.subject;
+        var cs = dashState.classSubject;
+        var rs = r.subject;
+        // treat englit and engll as interchangeable (same banks)
+        var engMatch = (cs === 'englit' || cs === 'engll') && (rs === 'englit' || rs === 'engll');
+        return rs === cs || engMatch || rs === null || rs === 'unknown' || !rs;
       })
     : allResponses;
   var students = dashState.students;
@@ -1545,10 +1546,10 @@ window.renderStudent = function(studentId) {
   var allStudentResponses = dashState.responses.filter(function(r) { return r.student_id === studentId; });
   var studentResponses = dashState.classSubject
     ? allStudentResponses.filter(function(r) {
-        return r.subject === dashState.classSubject
-          || r.subject === null
-          || r.subject === 'unknown'
-          || !r.subject;
+        var cs = dashState.classSubject;
+        var rs = r.subject;
+        var engMatch = (cs === 'englit' || cs === 'engll') && (rs === 'englit' || rs === 'engll');
+        return rs === cs || engMatch || rs === null || rs === 'unknown' || !rs;
       })
     : allStudentResponses;
   var total = studentResponses.length;
