@@ -633,21 +633,23 @@ function renderLogin(activeTab) {
           var byStudents = studentIds.length > 0
             ? supaGet('responses', 'student_id=in.(' + studentIds.join(',') + ')&order=created_at.desc')
             : Promise.resolve([]);
-          // Also look up any other student rows with the same names (handles duplicate rows from re-joining)
-          var byNames = studentNames.length > 0
-            ? supaGet('students', 'name=in.(' + studentNames.map(function(n){ return encodeURIComponent('"' + n + '"'); }).join(',') + ')&select=id,name,class_id')
-            : Promise.resolve([]);
-          Promise.all([byClass, byStudents, byNames]).then(function(rResults) {
+          // Look up all student rows with same names — catches duplicate rows from re-joining
+          // Query each name individually to avoid PostgREST in() quoting issues
+          var nameQueries = studentNames.map(function(n) {
+            return supaGet('students', 'name=eq.' + encodeURIComponent(n) + '&select=id,name');
+          });
+          Promise.all([byClass, byStudents].concat(nameQueries)).then(function(rResults) {
             var classResponses = rResults[0] || [];
             var studentResponses = rResults[1] || [];
-            var nameMatches = rResults[2] || [];
-            // Get all student IDs for same-named students (catches old rows before class join)
-            var allIds = studentIds.slice();
-            nameMatches.forEach(function(s) {
-              if (allIds.indexOf(s.id) === -1) allIds.push(s.id);
+            var nameMatches = [];
+            rResults.slice(2).forEach(function(rows) {
+              (rows || []).forEach(function(s) { nameMatches.push(s); });
             });
-            // Fetch responses for any extra IDs found
-            var extraIds = allIds.filter(function(id) { return studentIds.indexOf(id) === -1; });
+            // Collect any student IDs not already in our class list
+            var extraIds = [];
+            nameMatches.forEach(function(s) {
+              if (s && s.id && studentIds.indexOf(s.id) === -1) extraIds.push(s.id);
+            });
             var byExtra = extraIds.length > 0
               ? supaGet('responses', 'student_id=in.(' + extraIds.join(',') + ')&order=created_at.desc')
               : Promise.resolve([]);
@@ -658,22 +660,25 @@ function renderLogin(activeTab) {
                 if (r && r.id && !seen[r.id]) { seen[r.id] = true; merged.push(r); }
               });
               dashState.responses = merged;
-              // Also patch the student_id on orphaned responses so future loads work by class_id
+              // Self-heal: patch orphaned responses to the class-linked student_id
               if (extraIds.length > 0 && studentIds.length > 0) {
-                var primaryId = studentIds[0];
                 extraIds.forEach(function(oldId) {
+                  // Find which class student this old row belongs to by name
+                  var oldRow = nameMatches.find(function(s){ return s.id === oldId; });
+                  var newRow = oldRow ? dashState.students.find(function(s){ return s.name === oldRow.name; }) : null;
+                  var targetId = newRow ? newRow.id : studentIds[0];
                   fetch(SUPABASE_URL + '/rest/v1/responses?student_id=eq.' + oldId, {
                     method: 'PATCH',
                     headers: Object.assign({}, headers, {'Prefer': 'return=minimal'}),
-                    body: JSON.stringify({ student_id: primaryId, class_id: cls.id })
-                  }).catch(function(e) { console.warn('Patch failed for', oldId, e); });
+                    body: JSON.stringify({ student_id: targetId, class_id: cls.id })
+                  }).catch(function(e) { console.warn('Patch orphan failed:', e); });
                 });
               }
               console.log('Dashboard loaded:', {
                 classId: cls.id, classSubject: dashState.classSubject,
                 students: dashState.students.length, responses: dashState.responses.length,
                 byClass: classResponses.length, byStudents: studentResponses.length,
-                extraIds: extraIds.length, extraResponses: (extraResponses||[]).length
+                extraIds: extraIds, extraResponses: (extraResponses||[]).length
               });
               renderDashboard();
             });
