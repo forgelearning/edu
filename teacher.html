@@ -210,34 +210,793 @@ function supaInsert(table, row) {
   });
 }
 
+// Subject list matching forge-quiz.html SUBJECTS keys
+var SUBJECT_OPTIONS = [
+  { key: 'econ',    label: 'A Level Economics',         spec: 'Edexcel 9EC0' },
+  { key: 'geo',     label: 'A Level Geography',         spec: 'Edexcel 9GE0' },
+  { key: 'psych',   label: 'A Level Psychology',        spec: 'AQA 7182' },
+  { key: 'soc',     label: 'A Level Sociology',         spec: 'AQA 7192' },
+  { key: 'bus',     label: 'A Level Business',          spec: 'Edexcel 9BS0' },
+  { key: 'chem',    label: 'A Level Chemistry',         spec: 'Edexcel 9CH0' },
+  { key: 'bio',     label: 'A Level Biology',           spec: 'Edexcel 9BI0' },
+  { key: 'phys',    label: 'A Level Physics',           spec: 'Edexcel 9PH0' },
+  { key: 'hist',    label: 'A Level History',           spec: 'AQA 7042' },
+  { key: 'law',     label: 'A Level Law',               spec: 'AQA 7162' },
+  { key: 'crim',    label: 'A Level Criminology',       spec: 'WJEC' },
+  { key: 'pol',     label: 'A Level Politics',          spec: 'Edexcel 9PL0' },
+  { key: 'maths',   label: 'A Level Maths',             spec: 'Edexcel 9MA0' },
+  { key: 'german',  label: 'A Level German',            spec: 'Edexcel 9GN0' },
+  { key: 'french',  label: 'A Level French',            spec: 'Edexcel 9FR0' },
+  { key: 'span',    label: 'A Level Spanish',           spec: 'Edexcel 9SP0' },
+  { key: 'mand',    label: 'Mandarin',                  spec: 'IB Language B SL' },
+  { key: 'englit',  label: 'English Literature',        spec: 'AQA 7712' },
+  { key: 'engll',   label: 'English Language & Lit',    spec: 'AQA 7707' },
+  { key: 'cs',      label: 'A Level Computer Science',  spec: 'AQA 7517' },
+  { key: 'rs',      label: 'A Level Religious Studies', spec: 'Eduqas A120QS' },
+  { key: 'hsc',     label: 'Health & Social Care',      spec: 'OCR H604' },
+  { key: 'media',   label: 'A Level Media Studies',     spec: 'Eduqas A680QS' },
+  { key: 'pe',      label: 'A Level Physical Education',spec: 'AQA 7582' },
+];
 
-// Subject → banks map (mirrors forge-quiz.html SUBJECTS)
-var SUBJECT_BANKS = {
-  econ:  ["ECON-1.1","2.1.1","2.1.2","2.1.3","2.1.4","2.2.1","2.2.2","2.2.3","2.3.1","2.3.2","2.3.3","2.4.1","2.4.2","2.5.1","2.5.2","2.5.3"],
-  geo:   ["GEO-TEC"],
-  psych: ["PSY-SI","PSY-MEM","PSY-ATT","PSY-PATH"],
-  soc:   ["SOC-EDU","SOC-MET"],
-  bus:   ["BUS-1","BUS-2","BUS-3"],
-  chem:  ["CHEM-1","CHEM-2","CHEM-3"],
-  bio:   ["BIO-1","BIO-2","BIO-3"],
-  phys:  ["PHYS-1","PHYS-2","PHYS-3"],
-  hist:  ["HIST-1","HIST-2"],
-  law:   ["LAW-1","LAW-2"],
-  crim:  ["CRIM-1","CRIM-2"],
-  pol:   ["POL-1","POL-2"],
-  maths: ["MATH-1","MATH-2","MATH-3"],
-  german:["DE-1","DE-2"],
-  french:["FR-1","FR-2"],
-  cs:    ["CS-1","CS-2"],
-  rs:    ["RS-1","RS-2"],
-  hsc:   ["HSC-1","HSC-2"],
-  media: ["MEDIA-1","MEDIA-2"],
-  pe:    ["PE-1","PE-2"],
-  span:  ["SPAN-1","SPAN-2"],
-  englit:["ENG-TERM-1","ENG-TECH-1"],
-  engll: ["ENG-TERM-1","ENG-TECH-1"],
-  mand:  ["MAND-1"]
+// Misconception label lookup
+var MC_LABELS = {
+  "MC-INF-01":"Confuses disinflation with deflation","MC-INF-02":"CPI basket treated as static",
+  "MC-INF-03":"Demand-pull: no diagram link","MC-INF-04":"Cost-push = only wages",
+  "MC-INF-05":"Deflation always harmful","MC-INF-06":"RPI and CPI used interchangeably",
+  "MC-INF-07":"BoE target is 0%","MC-INF-08":"Index number calculation error",
+  "MC-INF-09":"Any double-digit = hyperinflation","MC-INF-10":"Wage-price spiral trigger unknown",
+  "MC-GRO-01":"Growth confused with GDP level","MC-GRO-02":"Actual vs potential growth blurred",
+  "MC-GRO-03":"Output gap direction swapped","MC-GRO-04":"Trade cycle recovery drawn flat",
+  "MC-EMP-01":"Unemployed = everyone without a job","MC-EMP-02":"Unemployment types without causes",
+  "MC-EMP-03":"Phillips curve treated as permanent","MC-EMP-04":"Claimant count = ILO measure",
+  "MC-EMP-05":"Real wage diagram gap mislabelled",
+  "MC-BOP-01":"Current account deficit always bad","MC-BOP-02":"Fiscal deficit = current account deficit",
+  "MC-BOP-03":"J-curve drawn improving immediately","MC-BOP-04":"Marshall-Lerner condition omitted",
+  "MC-BOP-05":"Capital/financial account ignored",
+  "MC-AD-01":"AD formula wrong","MC-AD-02":"Interest rate transmission mechanism",
+  "MC-AD-03":"Confidence and AD direction","MC-AD-04":"AD shift causes lower inflation",
+  "MC-AD-05":"Exchange rate to net exports chain","MC-AD-06":"Movement along vs shift of AD",
+  "MC-AD-07":"Wage rise always increases AD",
+  "MC-AS-01":"SRAS vs LRAS distinction","MC-AS-02":"SRAS shift factors confused",
+  "MC-AS-04":"LRAS shift factors confused","MC-AS-05":"Movement along vs shift of SRAS",
+  "MC-AS-06":"Unit labour costs and SRAS",
+  "MC-NI-01":"Circular flow injections/withdrawals","MC-NI-03":"GDP vs GNI confused",
+  "MC-NI-04":"Nominal vs real GDP","MC-NI-06":"GDP limitations for comparisons",
+  "MC-NI-08":"Output method value added",
+  "MC-FIS-01":"Fiscal vs monetary policy confused","MC-FIS-02":"Automatic stabilisers vs discretionary",
+  "MC-FIS-06":"Laffer curve direction","MC-FIS-07":"Fiscal policy time lags",
+  "MC-FIS-08":"Crowding out mechanism",
+  "MC-MON-01":"MPC role and independence","MC-MON-02":"Interest rate transmission",
+  "MC-MON-03":"Rate rise trade-offs ignored","MC-MON-04":"QE mechanism misunderstood",
+  "MC-MON-05":"Liquidity trap","MC-MON-06":"Interest rates and exchange rate",
+  "MC-MON-08":"Forward guidance purpose",
+  "MC-SSP-01":"Supply-side aim misunderstood","MC-SSP-02":"Market-based vs interventionist",
+  "MC-SSP-03":"Interest rates classified as supply-side","MC-SSP-05":"Trade union reform trade-offs",
+  "MC-SSP-08":"Infrastructure dual AD/AS effect",
+  "MC-INQ-02":"Gini coefficient misread","MC-INQ-04":"Causes of income inequality",
+  "MC-INQ-05":"Income vs wealth confused","MC-INQ-07":"Progressive taxation definition",
+  "MC-POV-01":"Absolute vs relative poverty","MC-POV-03":"Poverty trap mechanism",
+  "MC-POV-04":"Anti-poverty policy effectiveness",
+  "MC-FMK-01":"Financial markets roles","MC-FMK-02":"Forward markets mechanism",
+  "MC-FMK-03":"Asymmetric information in financial markets","MC-FMK-04":"Stock market macro effects",
+  "MC-BNK-01":"Commercial bank intermediation","MC-BNK-02":"Credit creation multiplier",
+  "MC-BNK-03":"Bank bailout evaluation","MC-BNK-04":"Post-2008 regulation",
+  "MC-CB-01":"Bank of England functions","MC-CB-02":"Central bank independence",
+  "MC-CB-03":"FPC vs MPC roles","MC-CB-05":"Financial stability definition",
+  "MC-SD-01":"Demand vs quantity demanded","MC-SD-02":"Supply curve shift factors",
+  "MC-SD-03":"Equilibrium and price mechanism","MC-SD-04":"PED and inelastic demand",
+  "MC-SD-05":"Substitutes and complements","MC-SD-08":"PES and housing supply",
+  "MC-SI-01":"Asch conformity stats (75% vs 37%)","MC-SI-02":"Compliance vs internalisation",
+  "MC-SI-03":"Milgram 65% obedience","MC-SI-04":"Agentic state definition",
+  "MC-SI-05":"Moscovici consistency principle","MC-SI-06":"NSI vs ISI distinction",
+  "MC-SI-08":"Asch ecological validity",
+  "MC-MEM-01":"MSM flow and sequence","MC-MEM-02":"Miller 7 plus or minus 2 and chunking",
+  "MC-MEM-03":"WMM purpose and evidence","MC-MEM-04":"Central executive as store (wrong)",
+  "MC-MEM-05":"Loftus post-event information","MC-MEM-06":"Cognitive interview techniques",
+  "MC-MEM-08":"Proactive vs retroactive interference",
+  "MC-ATT-01":"Bowlby monotropic theory","MC-ATT-02":"Strange Situation procedure",
+  "MC-ATT-03":"Secure attachment = no distress (wrong)","MC-ATT-04":"Strange Situation validity",
+  "MC-ATT-05":"Internal working model","MC-ATT-06":"Maternal deprivation hypothesis",
+  "MC-ATT-08":"Harlow and contact comfort",
+  "MC-EDU-01":"Role allocation (Davis and Moore)","MC-EDU-02":"Correspondence principle (Bowles and Gintis)",
+  "MC-EDU-03":"Class and underachievement causes","MC-EDU-04":"Interactionist micro-level analysis",
+  "MC-EDU-06":"ERA 1988 and marketisation",
+  "MC-MET-01":"Covert observation ethical issues","MC-MET-02":"Interpretivist preference for qualitative",
+  "MC-MET-03":"Official statistics as social construction","MC-MET-04":"Questionnaire strengths",
+  "MC-MET-05":"Triangulation definition","MC-MET-06":"Practical problems in school research",
+  "MC-MET-08":"Feminist methodology in schools",
+  "MC-TEC-01":"Subduction - oceanic plate density","MC-TEC-02":"Development vs physical hazard size",
+  "MC-TEC-03":"Composite volcano explosion cause","MC-TEC-04":"Earthquakes at all boundary types",
+  "MC-TEC-06":"Focus vs epicentre confused","MC-TEC-07":"Iceland hot spot and constructive boundary",
+  "MC-BUS-01":"Product vs market orientation","MC-BUS-02":"Break-even calculation (contribution)",
+  "MC-BUS-03":"Price skimming vs penetration","MC-BUS-04":"Sole trader vs Ltd liability",
+  "MC-BUS-05":"Herzberg hygiene vs motivators","MC-BUS-06":"Ansoff Matrix - product vs market dev",
+  "MC-BUS-07":"Net profit margin calculation",
+  "MC-CHEM-01":"Relative atomic mass misunderstood","MC-CHEM-02":"Ionisation energy jumps",
+  "MC-CHEM-03":"Lone pairs in dot-and-cross diagrams","MC-CHEM-04":"Giant covalent vs simple molecular",
+  "MC-CHEM-05":"Empirical vs molecular formula","MC-CHEM-06":"Electronegativity trends",
+  "MC-CHEM-07":"Mass spectrometer m/z ratio","MC-CHEM-08":"Ionic conduction - ions not electrons",
+  "MC-CRIM-01":"Crime vs deviance vs immorality","MC-CRIM-02":"Dark figure of crime",
+  "MC-CRIM-03":"Official statistics limitations","MC-CRIM-04":"Moral panic and folk devils",
+  "MC-CRIM-05":"White-collar crime definition","MC-CRIM-06":"Merton strain theory",
+  "MC-CRIM-07":"Right realism — rational choice vs biological factors","MC-CRIM-08":"Situational crime prevention displacement",
+  "MC-CRIM-09":"Merton — anomie vs individual adaptation modes","MC-CRIM-10":"Differential association — learned vs innate crime",
+  "MC-CRIM-11":"Square of crime — wrong or missing elements","MC-CRIM-12":"Labelling theory — deviance as fixed not constructed",
+  "MC-CRIM-13":"Feminist critique of malestream criminology",
+  "MC-BIO-01":"Aerobic respiration stages","MC-BIO-02":"Prokaryote vs eukaryote",
+  "MC-BIO-03":"DNA replication enzymes","MC-BIO-04":"Facilitated vs active transport",
+  "MC-BIO-05":"Magnification formula","MC-BIO-06":"Fluid mosaic model",
+  "MC-BIO-07":"S phase vs mitosis stages","MC-BIO-08":"Denaturation vs inhibition",
+  "MC-HIST-01":"Weimar structural weakness vs contingency","MC-HIST-02":"Munich Putsch long-term benefit",
+  "MC-HIST-03":"Hitler never won a majority","MC-HIST-04":"Reichstag Fire to Enabling Act chain",
+  "MC-HIST-05":"Browning vs Goldhagen perpetrator debate",
+  "MC-LAW-01":"Actus reus and omissions","MC-LAW-02":"Direct vs oblique intent (Woollin)",
+  "MC-LAW-03":"Criminal standard of proof","MC-LAW-04":"Murder mens rea (GBH intent)",
+  "MC-LAW-05":"Loss of control vs provocation","MC-LAW-06":"Self-defence and excessive force",
+  "MC-LAW-07":"Theft actus reus (appropriation)",
+  "MC-PHYS-01":"Constant velocity = no forces (wrong)","MC-PHYS-02":"Projectile horizontal velocity decreases (wrong)",
+  "MC-PHYS-03":"Work-energy theorem","MC-PHYS-04":"SUVAT sign convention errors",
+  "MC-PHYS-05":"Stiffer spring stores more energy (context-dependent)","MC-PHYS-06":"Momentum vs KE conservation",
+  "MC-PHYS-07":"Scalar vs vector distinction","MC-PHYS-08":"Heavier objects fall faster (wrong)",
+  "MC-POL-01":"UK constitution is codified (wrong)","MC-POL-02":"FPTP disproportionality",
+  "MC-POL-03":"Parliamentary sovereignty definition","MC-POL-04":"Lords equal to Commons (wrong)",
+  "MC-POL-05":"Pluralism vs elitism","MC-POL-07":"Pressure group vs political party",
+  "MC-POL-08":"Conservative ideology treated as fixed","MC-POL-09":"Social democracy vs democratic socialism confused",
+  "MC-POL-10":"Class still treated as dominant voting predictor","MC-POL-11":"Referendum benefits overstated",
+  "MC-POL-12":"Participation crisis misunderstood","MC-POL-13":"PR — small party influence underestimated",
+  "MC-POL-14":"Electoral Commission role confused","MC-POL-15":"Direct vs representative democracy evaluation",
+  "MC-PUSC-01":"US Constitution — codified and entrenched confused","MC-PUSC-02":"Senate vs House exclusive powers",
+  "MC-PUSC-03":"Supreme Court lifetime tenure justification","MC-PUSC-04":"Electoral College mechanism and outcomes",
+  "MC-PUSC-05":"Bipartisanship and polarisation","MC-PUSC-06":"PM vs President power comparison incomplete",
+  "MC-PUSC-07":"Checks and balances mechanisms","MC-PUSC-08":"Federalism vs unitarism — UK and USA",
+  "MC-GHU-01":"Globalisation defined as Americanisation","MC-GHU-02":"TNC expansion drivers",
+  "MC-GHU-03":"Development gap measurement","MC-GHU-04":"All migration treated as economic",
+  "MC-GHU-05":"Rostow's model — Eurocentric critique","MC-GHU-06":"WTO role confused with IMF/World Bank",
+  "MC-GHU-07":"Brain drain — one-sided analysis","MC-GHU-08":"TNC impact — uncritical positive or negative",
+  "MC-GUR-01":"Regeneration vs redevelopment confused","MC-GUR-02":"Gentrification always beneficial",
+  "MC-GUR-03":"Urban heat island causes","MC-GUR-04":"Shrinking cities — growth assumptions applied",
+  "MC-GUR-05":"Sustainable urban development definition","MC-GUR-06":"Squatter settlements — clearance assumed best",
+  "MC-GUR-07":"Burgess model applied uncritically","MC-GUR-08":"Enterprise zones — gross vs net job creation",
+  "MC-SCRI-01":"Crime always dysfunctional — Durkheim misread","MC-SCRI-02":"Labelling — primary vs secondary deviance",
+  "MC-SCRI-03":"Crime statistics treated as objective","MC-SCRI-04":"Left realism vs left idealism confused",
+  "MC-SCRI-05":"Moral panic — Cohen's elements incomplete","MC-SCRI-06":"Female crime rate explanation missing",
+  "MC-SCRI-07":"Dark figure of crime not applied","MC-SCRI-08":"Ethnicity and crime — biological explanation",
+  "MC-SSTR-01":"Stratification — functionalist theory uncritical","MC-SSTR-02":"Weber's life chances vs lifestyle",
+  "MC-SSTR-03":"Cultural capital definition too narrow","MC-SSTR-04":"Embourgeoisement thesis — Goldthorpe overlooked",
+  "MC-SSTR-05":"Women invisible in stratification research","MC-SSTR-06":"Absolute vs relative poverty confused",
+  "MC-SSTR-07":"Welfare dependency — New Right uncritical","MC-SSTR-08":"Social closure mechanisms",
+  "MC-CON-01":"Invitation to treat vs offer confused","MC-CON-02":"Postal rule misapplied",
+  "MC-CON-03":"Past consideration not recognised","MC-CON-04":"Implied terms ignored",
+  "MC-CON-05":"Condition vs warranty distinction wrong","MC-CON-06":"Exclusion clause incorporation — notice timing","MC-POL-06":"Devolution — asymmetric settlement","MC-CS-09":"Boolean logic — gate combinations","MC-CS-10":"Binary tree height vs nodes","MC-CS-11":"SQL SELECT — WHERE vs HAVING","MC-CS-12":"Abstraction — hiding detail not removing it","MC-HIST-07":"Berlin Blockade — who won?","MC-HIST-08":"Cuban Missile Crisis — secret deal ignored","MC-HIST-09":"Detente vs containment distinction","MC-HIST-10":"Nixon and China — reasons confused","MC-HIST-11":"Helsinki Accords — human rights underplayed","MC-HIST-12":"USSR collapse — internal vs external causes","MC-HIST-13":"Korea — limited war vs escalation risk","MC-LAW-08":"Actus reus — omissions and causation","MC-LAW-09":"Mens rea — intention vs recklessness","MC-LAW-10":"Strict liability — no mens rea required","MC-LAW-11":"Negligence — duty of care test","MC-LAW-12":"Occupiers liability — visitor vs trespasser","MC-LAW-13":"Vicarious liability — employer responsibility","MC-LAW-14":"Offer vs invitation to treat","MC-LAW-15":"Consideration — past consideration invalid","MC-PATH-01":"Statistical infrequency — abnormality","MC-PATH-02":"Deviation from ideal mental health","MC-PATH-03":"Failure to function adequately","MC-PATH-04":"Phobia — classical vs operant conditioning","MC-PATH-05":"OCD — biological vs psychological","MC-PATH-06":"Depression — Beck cognitive triad","MC-PATH-07":"CBT — challenging negative schemas","MC-PATH-08":"Drug therapy — SSRIs mode of action","MC-STAT-01":"Hypothesis test — one vs two tailed","MC-STAT-02":"Normal distribution standardisation","MC-STAT-03":"Binomial conditions","MC-STAT-04":"PMCC — correlation vs causation","MC-STAT-05":"Mutually exclusive vs independent","MC-STAT-06":"Regression line interpretation","MC-STAT-07":"Conditional probability","MC-STAT-08":"Large data set sampling","MC-BUS-08":"Cash flow vs profit distinction","MC-ENG-01":"Semantic field vs imagery — imprecise terminology","MC-ENG-02":"Free indirect discourse — misidentified or misnamed","MC-ENG-03":"Polysyndeton vs asyndeton — effect confused","MC-ENG-04":"Deixis — definition too narrow or unknown","MC-ENG-05":"Bathos — applied to any anticlimax","MC-ENG-06":"Dramatic irony — confused with character error","MC-ENG-07":"Register — defined as formality only","MC-ENG-08":"Repetition for emphasis — no analytical claim","MC-ENG-09":"AO3 as wallpaper — context not connected to meaning","MC-ENG-10":"Narrating plot instead of analysing method","MC-ENG-11":"Quote-drop-paraphrase — no AO2 analysis","MC-ENG-12":"Command word explore — treated as analyse","MC-ENG-13":"AO4 comparison — similarity asserted not demonstrated","MC-ENG-14":"AO5 absent — no personal evaluative response","MC-ENG-15":"Unseen analysis — technique catalogue not analysis","MC-ENG-16":"Form and structure — micro-analysis only",
+  "MC-CON-07":"Remoteness — Hadley v Baxendale limbs confused","MC-CON-08":"Specific performance availability misunderstood",
+  "MC-BUS-16":"Globalisation definition too narrow","MC-BUS-17":"MNC impact — one-sided analysis",
+  "MC-BUS-18":"Exchange rate effect on exporters — partial analysis","MC-BUS-19":"Free trade vs protectionism confused",
+  "MC-BUS-20":"CSR definition confused with legal obligation","MC-BUS-21":"Ethics vs law conflated",
+  "MC-BUS-22":"Infant industry argument — temporary vs permanent ignored","MC-BUS-23":"Cultural intelligence — ethnocentrism error",
+  "MC-CS-01":"Off-by-one loop errors","MC-CS-02":"Compiler vs interpreter",
+  "MC-CS-03":"Binary search complexity","MC-CS-04":"Big O notation O(n squared)",
+  "MC-CS-05":"Stack vs queue LIFO/FIFO","MC-CS-06":"Subroutine vs program",
+  "MC-CS-07":"TCP/IP protocol roles","MC-CS-08":"Encryption definition",
+  "MC-TECH-01":"Application missing - no context","MC-TECH-02":"Evaluation absent on 8+ mark questions",
+  "MC-TECH-04":"Diagram axis labelling errors","MC-TECH-05":"Multiplier formula unknown",
+  "MC-MATH-01":"Chain rule — forgets to multiply by inner derivative","MC-MATH-02":"Integration constant C omitted on indefinite integrals",
+  "MC-MATH-03":"Sign error when differentiating a negative term","MC-MATH-04":"Completing the square — sign error on constant",
+  "MC-MATH-05":"Confuses f(x) = 0 roots with turning points","MC-MATH-06":"Logs — log(a+b) treated as log(a)+log(b)",
+  "MC-MATH-07":"Binomial expansion — incorrect coefficient calculation","MC-MATH-08":"Proof by contradiction — fails to state assumption explicitly",
+  "MC-DE-01":"Nominative used instead of accusative after direct object","MC-DE-02":"Adjective endings wrong in accusative masculine",
+  "MC-DE-03":"Sein vs werden confused in passive constructions","MC-DE-04":"Word order in subordinate clauses — verb not sent to end",
+  "MC-DE-05":"False cognate errors (e.g. bekommen not become)","MC-DE-06":"Modal verb position — infinitive not placed at end",
+  "MC-DE-07":"Gender assignment errors on common nouns","MC-DE-08":"Imperfect vs perfect tense — wrong tense in written register",
+  "MC-RS-01":"Infinite regress logic confused with other cosmological forms","MC-RS-02":"Hume's analogical critique of Paley confused with Darwin's",
+  "MC-RS-03":"Kant's existence-not-a-predicate confused with Gaunilo's island","MC-RS-04":"Logical vs evidential Problem of Evil conflated",
+  "MC-RS-05":"Categorical Imperative formulations mixed up","MC-RS-06":"Bentham vs Mill — quantitative vs qualitative distinction",
+  "MC-RS-07":"Swinburne's principles confused","MC-RS-08":"Natural Law as 'whatever is natural' — teleological purpose missed",
+  "MC-HSC-01":"Intellectual PIES domain reduced to IQ","MC-HSC-02":"Critical period confused with any early childhood relationship",
+  "MC-HSC-03":"Identity vs Role Confusion conflated with adjacent stages","MC-HSC-04":"'Assess' command word used as synonym for 'describe'",
+  "MC-HSC-05":"Esteem needs addressed before lower-order needs met","MC-HSC-06":"Person-centred care not linked to specific values",
+  "MC-HSC-07":"Physical changes in late adulthood not linked to care implications","MC-HSC-08":"Generic 'service user' language used",
+  "MC-FR-01":"Avoir used as auxiliary with movement verbs instead of être","MC-FR-02":"Passé composé used for habitual past instead of imparfait",
+  "MC-FR-03":"Indicative used instead of subjunctive after trigger expressions","MC-FR-04":"Qui/que relative pronouns confused",
+  "MC-FR-05":"Conditionnel used in si clause instead of imparfait","MC-FR-06":"Quantity expressions retain article incorrectly",
+  "MC-FR-07":"Malgré followed by conjugated verb instead of noun phrase","MC-FR-08":"Attitude questions answered without textual evidence",
+  "MC-RS-09":"Situation Ethics — agape as sole intrinsic good missed","MC-RS-10":"Euthyphro dilemma horns confused",
+  "MC-RS-11":"Golden mean read as arithmetic moderation","MC-RS-12":"Sanctity vs quality of life positions conflated",
+  "MC-RS-13":"Emotivism treated as truth-claims about morality","MC-RS-14":"Naturalistic fallacy confused with is/ought gap",
+  "MC-RS-15":"Compatibilism treated as weak middle ground","MC-RS-16":"AO2 evaluation replaced by juxtaposed description",
+  "MC-HSC-09":"Empathy and sympathy conflated","MC-HSC-10":"Confidentiality treated as absolute in safeguarding",
+  "MC-HSC-11":"Active listening reduced to eye contact or note-taking","MC-HSC-12":"Barriers named without matched adjustments",
+  "MC-HSC-13":"Whistleblowing confused with grievance","MC-HSC-14":"Equality read as identical treatment",
+  "MC-HSC-15":"Capacity-based refusal treated as neglect","MC-HSC-16":"Care values named without individual application",
+  "MC-FR-09":"y/en chosen by surface word not grammatical role","MC-FR-10":"Direct pronoun used with indirect-object verbs",
+  "MC-FR-11":"Double pronoun order errors","MC-FR-12":"ne...que read as negation not restriction",
+  "MC-FR-13":"Passé composé with depuis for continuing actions","MC-FR-14":"venir de recent past replaced by anglicism juste",
+  "MC-FR-15":"Après + bare infinitive instead of perfect infinitive","MC-FR-16":"Causative faire + infinitive unknown",
+  "MC-DE-09":"Fixed-case prepositions confused with two-way group","MC-DE-10":"Two-way prepositions — motion vs location case choice",
+  "MC-DE-11":"Relative pronoun case taken from main clause not its own","MC-DE-12":"Konjunktiv II — würde doubled or wrong forms",
+  "MC-DE-13":"Werden-passive vs sein-passive (process vs state)","MC-DE-14":"Perfect tense with seit for continuing actions",
+  "MC-DE-15":"um...zu vs damit — same vs different subjects","MC-DE-16":"Time-Manner-Place order copied from English",
+  "MC-MATH-09":"Second derivative zero read as point of inflection","MC-MATH-10":"Constant of integration omitted",
+  "MC-MATH-11":"Discriminant inequalities — strict vs non-strict confusion","MC-MATH-12":"f(x+a) shifted right instead of left",
+  "MC-MATH-13":"Completed square sign error on turning point","MC-MATH-14":"Binomial expansion — power of first term dropped",
+  "MC-MATH-15":"Invented log rule: log(a+b) split into log a + log b","MC-MATH-16":"Quotients differentiated top-over-bottom",
+  "MC-BUS-09":"PED direction misread from revenue changes","MC-BUS-10":"Profit and cash flow treated as the same thing",
+  "MC-BUS-11":"Margin of safety confused with break-even level","MC-BUS-12":"Segmentation purpose not linked to marketing mix",
+  "MC-BUS-13":"Boston Matrix — share and growth axes confused","MC-BUS-14":"Gross vs operating margin deductions mixed up",
+  "MC-BUS-15":"Sources of finance not matched to gearing context","MC-BUS-16":"Extension strategies confused with product deletion",
+  "MC-CHEM-09":"Physical properties attributed to covalent not intermolecular bonds","MC-CHEM-10":"Exothermic/endothermic sign of ΔH confused",
+  "MC-CHEM-11":"Le Chatelier temperature shift on exothermic equilibria","MC-CHEM-12":"Ions formed by removing wrong electrons (4s vs 3d)",
+  "MC-CHEM-13":"Concentration effect on rate explained as energy not frequency","MC-CHEM-14":"Dative covalent bond treated as weaker",
+  "MC-CHEM-15":"Titration — cm³ not converted to dm³","MC-CHEM-16":"Electronegativity period/group trend reasoning",
+  "MC-BIO-09":"Osmosis defined by concentration not water potential","MC-BIO-10":"Active transport vs facilitated diffusion confused",
+  "MC-BIO-11":"Lock-and-key used where induced fit needed","MC-BIO-12":"Denaturation explained as enzyme dying or melting",
+  "MC-BIO-13":"Prokaryote vs eukaryote distinguishing features","MC-BIO-14":"Surface area to volume ratio direction reversed",
+  "MC-BIO-15":"Calvin cycle vs light-dependent reactions confused","MC-BIO-16":"Dominant phenotype assumed homozygous",
+  "MC-PHYS-09":"Zero velocity assumed to mean zero acceleration","MC-PHYS-10":"Parallel resistance added directly",
+  "MC-PHYS-11":"Transverse vs longitudinal particle motion confused","MC-PHYS-12":"F=ma applied as F×m or without resultant force",
+  "MC-PHYS-13":"Scalar vs vector classification errors","MC-PHYS-14":"e.m.f. treated as a force not energy per charge",
+  "MC-PHYS-15":"Heavier objects assumed to fall faster in vacuum","MC-PHYS-16":"Hooke's law — weight/units errors in spring constant",
+  "MC-SP-01":"Ser vs estar — temporary states require estar","MC-SP-02":"Preterite vs imperfect — completed vs habitual",
+  "MC-SP-03":"Subjunctive triggers — WEIRDO verb types","MC-SP-04":"Llevar + gerund for ongoing duration",
+  "MC-SP-05":"Por vs para — purpose vs cause","MC-SP-06":"Se impersonal vs reflexive constructions",
+  "MC-SP-07":"TMP word order error from English transfer","MC-SP-08":"Cuanto más... — comparative correlative structure",
+  "MC-SP-09":"Edexcel themes and exam structure overview","MC-SP-10":"Essay register — avoiding informal vocabulary",
+  "MC-SP-11":"Volver — themes of memory and female solidarity","MC-SP-12":"Memoria histórica — Civil War and Francoism",
+  "MC-SP-13":"Third conditional — pluperfect subj. + conditional perfect","MC-SP-14":"Immigration vocabulary — pateras, cayucos, sin papeles",
+  "MC-SP-15":"Spanish political system — Estado de las Autonomías","MC-SP-16":"Subjunctive after es esencial que / asegurar que",
+  "MC-MED-01":"Hall encoding/decoding — preferred reading misunderstood","MC-MED-02":"Curran & Seaton — ownership and diversity link",
+  "MC-MED-03":"Cultivation theory — heavy viewer distortion","MC-MED-04":"Representation as construction not reflection",
+  "MC-MED-05":"Livingstone & Lunt — digital regulation gap","MC-MED-06":"Van Zoonen — male gaze and gender construction",
+  "MC-MED-07":"Hypodermic needle model assumed to still hold","MC-MED-08":"Uses and gratifications — audience agency",
+  "MC-MED-09":"Vertical vs horizontal integration confused","MC-MED-10":"Synergy definition and cross-platform promotion",
+  "MC-MED-11":"Convergence — technological and industrial forms","MC-MED-12":"PSB obligations and commercial broadcasting",
+  "MC-MED-13":"Cultural discount — local specificity reduces export value","MC-MED-14":"Two-step flow — opinion leaders misunderstood",
+  "MC-MED-15":"UGC and gatekeeping disruption","MC-MED-16":"Due impartiality — broadcast vs press distinction",
+  "MC-PE-01":"Cardiac output — HR and SV interaction","MC-PE-02":"Bohr effect and O₂ dissociation curve shift",
+  "MC-PE-03":"Sliding filament — filaments shorten (wrong)","MC-PE-04":"Energy system selection at sustained intensity",
+  "MC-PE-05":"VO₂ max definition and limiting factors","MC-PE-06":"EPOC vs oxygen debt distinction",
+  "MC-PE-07":"Type I vs Type IIx fibre characteristics","MC-PE-08":"Active vs passive breathing mechanics",
+  "MC-PE-09":"ATP-PC stores — depletion and recovery time","MC-PE-10":"Lactic acid system — H⁺ not lactate causes fatigue",
+  "MC-PE-11":"Progressive overload — plateau through insufficient stimulus","MC-PE-12":"Newton's Third Law — ground reaction force",
+  "MC-PE-13":"Third-class levers — mechanical disadvantage in body","MC-PE-14":"Drag forces — frontal area and velocity squared",
+  "MC-PE-15":"Angular momentum conservation — moment of inertia","MC-PE-16":"Inverted-U theory — over-arousal and fine motor tasks",
+  "MC-MAND-01":"Text handling — locating evidence in Human Ingenuity passage","MC-MAND-02":"虽然...但是 — concessive connector in context",
+  "MC-MAND-03":"Text handling — Sharing the Planet environment passage","MC-MAND-04":"Vocabulary in context — 强制推行 and 将近三成",
+  "MC-MAND-05":"Text handling — Identities health & wellbeing diary","MC-MAND-06":"IB diary conventions — date format and register",
+  "MC-MAND-07":"Text handling — Social Organisation education comparison","MC-MAND-08":"IB Criterion C — formal letter vocabulary and structure"
 };
+
+var MC_STARTERS = {
+  "MC-INF-01":{type:"sort",title:"Inflation or Disinflation?",instruction:"Sort these statements into Inflation, Disinflation, or Deflation. One fits two categories — be ready to justify.",items:["Price level rising at 4%","Price level rising at 2%, down from 4%","Price level falling","CPI at 103, up from 101","The rate of inflation is slowing","Prices are lower than last year"]},
+  "MC-INF-03":{type:"diagnose",title:"Diagnose the Diagram",instruction:"A student drew AD/AS to show demand-pull inflation but made two errors. Identify both and correct them.",prompt:"Student labelled the shift 'AD moves right' and wrote 'result: higher prices AND higher output', showing the new equilibrium on a vertical LRAS."},
+  "MC-INF-07":{type:"correct",title:"Spot the Error",instruction:"Find and correct the error in this student sentence.",prompt:"'The Bank of England's MPC must keep inflation at 0%, as higher prices damage the economy.'",answer:"Target is 2% CPI (symmetric). The MPC writes to the Chancellor if inflation exceeds 3% or falls below 1%."},
+  "MC-GRO-01":{type:"distinguish",title:"Level vs Rate",instruction:"Label each GDP figure as 'level of GDP', 'rate of growth', or 'both'. Write one sentence explaining the difference.",items:["UK GDP: £2.2 trillion","GDP grew by 0.4% last quarter","GDP per capita rose from £32,000 to £33,500","The economy is 18% larger than in 2010"]},
+  "MC-GRO-03":{type:"diagram",title:"Gap Check",instruction:"Draw an AD/AS diagram showing a positive output gap. Label actual GDP, potential GDP, and the price level. Explain in one sentence why it is called 'positive'.",prompt:"Common error: students draw actual GDP below potential and still call it positive."},
+  "MC-EMP-01":{type:"classify",title:"Who Counts?",instruction:"Decide whether each person is ILO unemployed, claimant count unemployed, or economically inactive. One person may fit two categories.",items:["Jake, 19, not working but looking and available","Priya, 35, left work to care for children","Marcus, 24, working 3 hours/week (wants more)","Aisha, 28, claiming Universal Credit while job hunting","Lena, 67, retired"]},
+  "MC-EMP-03":{type:"evaluate",title:"Short Run or Long Run?",instruction:"Mark each claim T (true in short run), L (long run only), or F (false). Justify each.",items:["Lower unemployment always means higher inflation","The long-run Phillips curve is vertical","The MPC can reduce unemployment permanently by cutting rates","Worker expectations adjust — removing the permanent trade-off"]},
+  "MC-BOP-02":{type:"correct",title:"Spot the Confusion",instruction:"Identify the conceptual error and rewrite correctly.",prompt:"'The UK's current account deficit is the same as the government's fiscal deficit — both measure the gap between government income and spending.'"},
+  "MC-BOP-03":{type:"diagram",title:"Draw the J-Curve",instruction:"Sketch a J-curve showing the effect of sterling depreciation on the current account over time. Label the initial worsening phase, turning point, and improvement phase. Add a 6-word explanation of why it worsens first.",prompt:"Common error: students draw immediate improvement after depreciation."},
+  "MC-AD-01":{type:"correct",title:"Fix the Formula",instruction:"A student wrote: AD = C + S + G + (X − M). Identify the error and correct it. Explain why savings belongs in a different model.",answer:"AD = C + I + G + (X − M). Savings is a withdrawal from the circular flow, not a component of AD."},
+  "MC-AD-04":{type:"diagram",title:"What Happens to Prices?",instruction:"On an AD/AS diagram, show a rightward shift in AD. Mark the new equilibrium. Does the price level rise or fall? Why does the answer depend on where the economy is on the SRAS curve?",prompt:"Common error: students state AD shifting right always causes lower prices."},
+  "MC-AS-01":{type:"sort",title:"SRAS or LRAS?",instruction:"Sort these factors into 'shifts SRAS only', 'shifts LRAS only', or 'shifts both'. Justify one controversial placement.",items:["Oil price rise","Worker productivity improvement","Infrastructure investment","Rise in nominal wages","Technological innovation","Consumer confidence falls"]},
+  "MC-FIS-01":{type:"distinguish",title:"Policy Match",instruction:"Match each action to 'fiscal' or 'monetary'. Three are ambiguous — annotate why.",items:["MPC cuts the base rate","Chancellor raises income tax","Government increases road spending","BoE buys government bonds (QE)","Government introduces Help to Buy","MPC raises rates to 5.25%"]},
+  "MC-MON-04":{type:"chain",title:"QE Transmission Chain",instruction:"Complete the chain from start to finish. Each arrow must be a specific mechanism, not 'the economy improves'.",prompt:"BoE buys £60bn of government bonds → [step] → [step] → [step] → aggregate demand rises. Common error: students say QE 'prints money that goes straight to consumers'."},
+  "MC-NI-01":{type:"classify",title:"Injection or Withdrawal?",instruction:"Classify each item as Injection (J) or Withdrawal (W). Then write the equilibrium condition using I, G, X, S, T, M.",items:["Consumer spending on imports","Government NHS spending","Household savings","Export revenue from UK services","Corporation tax receipts","Business investment"]},
+  "MC-SI-01":{type:"correct",title:"Fix the Stat",instruction:"A student wrote: 'Asch found that 37% of participants conformed.' Identify the error and write the three correct Asch statistics.",answer:"37% = conformity on critical trials. 75% = participants who conformed at least once. ~32% = overall conformity rate across all trials."},
+  "MC-SI-03":{type:"correct",title:"Milgram: Check the Figure",instruction:"A student wrote: 'Milgram showed that most people refused to obey.' Correct this and name one variation that significantly reduced obedience.",answer:"65% delivered maximum 450V in the baseline. Obedience fell to 40% when authority gave orders by phone; to 20% when the study moved from Yale."},
+  "MC-MEM-01":{type:"diagram",title:"Reconstruct the MSM",instruction:"From memory, draw the Multi-Store Model. Label all three stores with capacity and duration. Mark the two processes between them. Identify one criticism.",prompt:"Common error: students reverse transfer direction or omit the rehearsal loop."},
+  "MC-MEM-08":{type:"scenario",title:"Which Type of Interference?",instruction:"State whether proactive or retroactive interference is operating in each scenario. Write one sentence explaining the direction of disruption.",items:["You learned French first — your Spanish keeps coming out as French","You learn a new phone PIN and can no longer recall the old one","New revision notes keep pushing out the original version","Old work password resurfaces instead of the current one"]},
+  "MC-ATT-01":{type:"correct",title:"Bowlby: Spot the Error",instruction:"Find and correct the error.",prompt:"'Bowlby argued that infants form equal attachments to all caregivers simultaneously and that any of these can serve as the primary attachment figure.'",answer:"Bowlby argued for monotropy — one primary attachment that is qualitatively stronger. This forms the internal working model; other attachments are secondary."},
+  "MC-EDU-02":{type:"apply",title:"Hidden Curriculum in Practice",instruction:"Read this extract: 'Students line up in silence, are rewarded for punctuality, and are streamed by assessed ability from Year 7.' Link each feature to a specific element of the correspondence principle (Bowles & Gintis). Which social class does each element benefit?"},
+  "MC-MET-01":{type:"evaluate",title:"Ethical Matrix",instruction:"Complete this matrix for covert participant observation. Then decide: is it ever justifiable? Apply one BPS ethical guideline.",headers:["Ethical issue","Problem for covert obs","How researcher might respond"],rows:[["Informed consent","",""],["Right to withdraw","",""],["Deception","",""],["Protection from harm",""," "]]},
+  "MC-TEC-01":{type:"diagram",title:"Boundary Types",instruction:"Draw cross-sections of a destructive boundary and a constructive boundary. Label plate types, direction of movement, crust destroyed/created, and hazards at each. Explain why oceanic crust subducts rather than continental.",prompt:"Common error: students reverse which plate subducts or omit oceanic vs continental labelling."},
+  "MC-TEC-02":{type:"compare",title:"Why did Haiti lose more lives than Christchurch?",instruction:"Complete this comparison table for the two earthquakes, then write a two-sentence conclusion explaining why development level mattered more than magnitude.",headers:["Factor","Haiti 2010","Christchurch 2011"],rows:[["Magnitude","7.0","6.3"],["Deaths","~230,000","185"],["Building quality","",""],["Emergency services","",""],["GDP per capita","",""],["Conclusion: why the difference?","",""]]},
+  "MC-TEC-03":{type:"correct",title:"Why do composite volcanoes explode?",instruction:"A student wrote: 'Composite volcanoes erupt explosively because they are very tall and the pressure builds up inside.' Find the two errors in this explanation and write the correct version.",prompt:"Correct explanation must include: silica-rich (acidic) magma from subducted oceanic crust, high viscosity preventing gas escape, pressure builds until explosive release. Tall = shield volcano (basaltic, effusive). Height is a consequence, not a cause.",answer:"Composite volcanoes erupt explosively because silica-rich magma from the subducted plate is highly viscous — it traps gases which build until a violent explosive eruption occurs. The height of the volcano is a result of previous eruptions, not the cause of explosivity."},
+  "MC-TEC-04":{type:"classify",title:"Earthquakes — which boundary?",instruction:"Classify each earthquake example as destructive, constructive, or conservative boundary. One is a trap — be ready to justify.",items:["2010 Haiti — conservative plate boundary (Caribbean/North American plates sliding)",  "2004 Indian Ocean — destructive boundary (subduction triggered megathrust)","San Andreas Fault, California — conservative (transform fault)","Mid-Atlantic Ridge — constructive boundary (can produce earthquakes)","2011 Tohoku, Japan — destructive (Pacific plate subducting under Eurasian)"]},
+  "MC-TEC-06":{type:"diagram",title:"Focus or epicentre?",instruction:"Draw a cross-section diagram of an earthquake. Label: the focus (hypocentre), the epicentre, seismic waves, and the fault line. Then write one sentence defining each term precisely.",prompt:"Common error: students say the epicentre is where the earthquake originates — it is the point on the SURFACE directly ABOVE the focus. The focus (hypocentre) is the underground origin point. Shallow-focus earthquakes (<70km) cause more surface damage than deep-focus events.",answer:"Focus: the point underground where the earthquake originates and energy is released. Epicentre: the point on the Earth's surface directly above the focus — where shaking is usually most intense."},
+  "MC-TEC-07":{type:"explain",title:"Why is Iceland so volcanically active?",instruction:"Iceland sits on the Mid-Atlantic Ridge (constructive boundary). But that alone does not explain its exceptional volcanic activity. Write a two-part explanation: (1) what the constructive boundary contributes, (2) what the hot spot adds — and mark Iceland's position on a blank Atlantic diagram.",prompt:"Constructive boundary: plates diverge → magma rises to fill gap → effusive basaltic eruptions (e.g. Eyjafjallajökull fissure eruptions). Hot spot: a fixed mantle plume of unusually hot material beneath the crust — independently generates extra volcanic activity. Iceland sits above BOTH simultaneously, making it more active than any other constructive boundary location.",answer:"Two factors combine: (1) The Mid-Atlantic Ridge causes plates to diverge, allowing basaltic magma to rise — producing regular effusive eruptions. (2) A mantle hot spot beneath Iceland provides an additional source of heat independent of the boundary, further raising volcanic output. Neither factor alone explains Iceland's exceptional activity."},
+  "MC-BUS-02":{type:"calculate",title:"Break-Even Check",instruction:"Selling price: £20, variable cost per unit: £12, fixed costs: £40,000. Show full workings using the contribution method. Explain why the formula uses contribution, not profit.",prompt:"Common error: students divide price by fixed costs rather than fixed costs by contribution per unit."},
+  "MC-CHEM-02":{type:"graph",title:"Ionisation Energy Jumps",instruction:"Sketch a graph of successive ionisation energies for sodium. Mark the large jump and explain why it occurs where it does.",prompt:"Common error: students describe all jumps as equal or fail to link the large jump to a new electron shell."},
+  "MC-CRIM-01":{type:"sort",title:"Crime, Deviance, or Both?",instruction:"Sort each behaviour and explain your reasoning. Identify one example where the classification has changed over time.",items:["Shoplifting","Wearing pyjamas to a funeral","Cheating on a partner","Cannabis possession","Tax avoidance (legal schemes)","Honour-based violence"]},
+  "MC-BIO-03":{type:"sequence",title:"Replication Steps",instruction:"Put these events in the correct order, then annotate each with the enzyme responsible and its specific function.",items:["DNA polymerase adds complementary nucleotides","Helicase unwinds the double helix","Free nucleotides are activated","Two identical double helices produced","Hydrogen bonds between base pairs break","DNA ligase joins Okazaki fragments"]},
+  "MC-HIST-04":{type:"chain",title:"Fire to Dictatorship",instruction:"Complete the causal chain. Each link must be a specific event or law.",prompt:"Reichstag Fire (Feb 1933) → [step] → [step] → [step] → Hitler has dictatorial powers (July 1933). Common error: jumping from fire directly to Enabling Act without naming the Decree of the Reich President."},
+  "MC-LAW-02":{type:"apply",title:"Intent or Recklessness?",instruction:"Classify each scenario as direct intent, oblique intent (Woollin), or Cunningham recklessness. Cite the defining case.",items:["D shoots V with aim of killing","D blows up plane for insurance — passengers die","D throws stone at window knowing it might break — it does","D drives at high speed in residential area — child killed"]},
+  "MC-PHYS-01":{type:"correct",title:"Forces vs Motion",instruction:"A student wrote: 'When an object moves at constant velocity, a net forward force must be acting.' Correct this using Newton's First Law and draw a free body diagram for a car at constant speed.",prompt:"Common error: students assume motion requires ongoing force — confusing Aristotelian with Newtonian mechanics."},
+  "MC-CS-01":{type:"trace",title:"Trace the Loop",instruction:"Trace through this loop for i = 1 to 5 and record the output. Then identify the off-by-one error and rewrite to print only values 2, 3, 4.",prompt:"FOR i ← 1 TO 5\n  IF i MOD 2 ≠ 0 THEN OUTPUT i\nENDFOR"},
+  "MC-MATH-01":{type:"correct",title:"Chain Rule Check",instruction:"A student differentiated y = sin(3x²) and wrote dy/dx = cos(3x²). Find the error and write the correct derivative showing all steps.",prompt:"Common error: differentiating the outer function only, not multiplying by the derivative of the inner function."},
+  "MC-DE-04":{type:"correct",title:"Word Order Fix",instruction:"Each sentence has a subordinate clause word-order error. Underline and rewrite correctly.",items:["Ich denke, dass er kommt morgen.","Sie sagt, obwohl sie ist müde.","Wir wissen, weil er hat das gemacht.","Er hofft, dass sie kommt nicht."]},
+  "MC-RS-04":{type:"distinguish",title:"Which Problem of Evil?",instruction:"Label each argument as Logical PoE, Evidential PoE, or theodicy. Identify the philosopher and write one counter-argument for the theodicy.",items:["God and evil are logically incompatible (Mackie)","The quantity of suffering makes God's existence improbable (Rowe)","Evil is necessary for soul-making (Hick)","Evil entered through free will and original sin (Augustine)"]},
+  "MC-HSC-03":{type:"match",title:"Erikson Stage Match",instruction:"Match each behaviour to the correct Erikson stage and conflict. Write one consequence of failing to resolve each.",items:["A toddler insists on dressing themselves","A 6-year-old compares their reading to classmates","A teenager changes friendship group every term","A 40-year-old mentors junior colleagues","A 75-year-old writes their memoirs with pride"]},
+  "MC-FR-03":{type:"trigger",title:"Subjunctive Triggers",instruction:"Highlight the trigger in each sentence and conjugate the verb correctly. Then write your own sentence using 'il faut que' with an irregular subjunctive.",items:["Je veux que tu (venir) avec moi.","Il est possible qu'elle (être) absente.","Nous partons avant qu'il (pleuvoir).","Bien qu'il (faire) froid, ils sont sortis."]},
+  "MC-RS-06":{type:"compare",title:"Bentham vs Mill",instruction:"Complete this comparison table. Then write two sentences evaluating where Mill's qualitative distinction creates a practical problem.",headers:["Feature","Bentham","Mill"],rows:[["Basis of judgement","",""],["How pleasures counted","",""],["Type of utilitarianism","",""],["Key criticism","",""]]},
+  "MC-HSC-04":{type:"rewrite",title:"Command Word Upgrade",instruction:"Rewrite this student answer at the 'assess' level. Question: 'Assess the effectiveness of person-centred care for an elderly patient with dementia.'",prompt:"Student: 'Person-centred care means putting the patient at the centre. It involves respecting their wishes and dignity. It is used in care homes across the UK.'"},
+  "MC-FR-05":{type:"correct",title:"Si Clause Fix",instruction:"Find and correct the error in each conditional sentence. Write the rule in your own words below each.",items:["Si j'aurais de l'argent, j'achèterais une voiture.","Si tu viendrais, je serais content.","S'il pleuvrait, nous resterons à la maison.","Si j'aurais su, je n'aurais pas dit ça."]},
+  "MC-HIST-01":{type:"evaluate",title:"Doomed from the Start?",instruction:"A student claims the Weimar Republic was structurally doomed from 1919. Your job: write one paragraph SUPPORTING this view, then one paragraph CHALLENGING it. Each paragraph must cite at least two specific pieces of evidence.",prompt:"Support: Article 48 emergency powers, proportional representation producing unstable coalitions, stab-in-the-back myth undermining legitimacy from the outset, war guilt clause economic damage. Challenge: Republic survived hyperinflation (1923), Stresemann's golden years (1924–29) with GDP recovery, cultural flourishing, Dawes Plan stability. Common error: students list structural factors only and ignore the contingency of the Depression — Weimar was NOT doomed until 1929."},
+  "MC-HIST-02":{type:"chain",title:"Failure to Long-term Gain",instruction:"The Munich Putsch failed. Complete this chain showing how a military failure became a long-term political asset. Each arrow must name a specific consequence or action.",prompt:"16 November 1923: Putsch collapses, Hitler arrested → [step: trial and speech] → [step: Mein Kampf and national platform] → [step: strategic shift] → [outcome by 1933]. Common error: students say Hitler 'learned from his mistakes' without specifying the decision to pursue power through legal means — the key strategic conclusion from the trial."},
+  "MC-HIST-03":{type:"correct",title:"Did Germans Vote Hitler into Power?",instruction:"Find and correct the two factual errors in this student sentence. Then add one sentence that explains how Hitler actually became Chancellor.",prompt:"'Hitler became Chancellor in January 1933 because the Nazi Party won over 50% of the vote in the November 1932 election, giving them a democratic mandate.'",answer:"Error 1: Nazi vote share in November 1932 was 33.1% — their vote had FALLEN from 37.4% in July 1932. Error 2: Hitler was not elected Chancellor — he was appointed by President Hindenburg on 30 January 1933 after backroom deals involving von Papen, who believed he could control Hitler. Correct sentence: Hitler became Chancellor through elite miscalculation, not popular mandate."},
+  "MC-HIST-05":{type:"compare",title:"Browning vs Goldhagen",instruction:"Complete this table comparing the two historians' arguments. Then write a two-sentence judgement: which interpretation has stronger evidential support and why?",headers:["Feature","Browning (Ordinary Men)","Goldhagen (Hitler's Willing Executioners)"],rows:[["Primary cause of killing","",""],["Evidence used","Battalion 101 testimonies",""],["Nature of perpetrators","Ordinary, pressured",""],["Role of ideology","Secondary",""],["Main criticism","","Monocausal, ignores peer pressure"]]},
+  "MC-HIST-06":{type:"chain",title:"Truman Doctrine Transmission",instruction:"The Truman Doctrine (1947) marked a permanent shift in US foreign policy. Complete this chain — each link must be a specific claim, not a vague assertion.",prompt:"Soviet pressure on Greece and Turkey (1946–47) → [step: British withdrawal] → [step: Truman's speech to Congress, March 1947] → [step: the doctrine's key commitment] → [consequence for US foreign policy 1947–1989]. Common error: students describe the Doctrine as 'helping Greece' without stating the universal principle — that the US would support free peoples resisting communist subjugation anywhere in the world. This is what made it a doctrine, not just an aid package."},
+  "MC-HIST-07":{type:"evaluate",title:"Berlin Blockade — Who Won?",instruction:"Write two sentences: one arguing the Blockade was a Soviet victory, one arguing it was a Western victory. Then write a third sentence giving your overall judgement with one piece of supporting evidence.",prompt:"Soviet case: forced Allies to concede German partition was permanent; demonstrated Western vulnerability in Berlin. Western case: airlift succeeded (277,000 flights, 2.3m tonnes), Soviet capitulation in May 1949, NATO formed April 1949, FRG founded May 1949. Common error: students say Soviets 'gave up' without noting the political consequences — the crisis accelerated exactly the Western alliance the Soviets sought to prevent."},
+  "MC-HIST-08":{type:"correct",title:"Cuban Missile Crisis Resolution",instruction:"A student wrote: 'Kennedy stood firm and forced Khrushchev to back down.' Find three problems with this account and rewrite it accurately in three sentences.",prompt:"Problems: (1) 'Stood firm' ignores the secret deal — removal of Jupiter missiles from Turkey was a real US concession; (2) 'forced Khrushchev' implies Soviet defeat — both sides compromised; (3) ignores the public pledge not to invade Cuba. The crisis is better described as a mutual face-saving compromise than a US victory."},
+  "MC-HIST-09":{type:"sort",title:"Détente or Containment?",instruction:"Sort each policy/event as primarily 'détente' (reducing Cold War tensions) or 'containment' (resisting Soviet expansion). Two are genuinely ambiguous — be ready to argue both ways.",items:["SALT I (1972)","Nixon visits China (1972)","Helsinki Accords (1975)","Carter boycotts Moscow Olympics (1980)","US arms mujahideen in Afghanistan","Ford refuses to meet Solzhenitsyn","Jackson-Vanik Amendment (1974)","Reagan 'Evil Empire' speech (1983)"]},
+  "MC-HIST-12":{type:"chain",title:"Why did the USSR Collapse?",instruction:"Historians disagree about the relative weight of internal vs external causes. Complete both chains, then write one sentence judging which was more important.",prompt:"Internal chain: Command economy stagnation → [step] → [step] → [outcome: 1991]. External chain: Arms race cost → [step: Afghanistan] → [step] → [outcome: 1991]. Common error: students attribute collapse solely to Gorbachev's reforms or solely to Reagan's arms race pressure — examiners credit multi-causal analysis that identifies the interaction between economic weakness and political reform."},
+  "MC-HIST-13":{type:"evaluate",title:"Korea — Limited War or Global Crisis?",instruction:"Write one sentence arguing Korea showed Cold War restraint, and one sentence arguing it nearly became World War Three. Then add a judgement: which interpretation better fits the evidence?",prompt:"Restraint case: both superpowers avoided direct confrontation, MacArthur dismissed for wanting to escalate, armistice restored original boundary — war ended where it started. Escalation risk case: MacArthur pushed to Yalu River triggering Chinese intervention (300,000 troops), nuclear weapons considered, Truman declared national emergency. Key judgement: the war demonstrated that both sides feared escalation — limited war became the Cold War norm precisely because Korea showed the alternative."}
+};
+
+function getDefaultStarter(tag, label) {
+  return {
+    type:"correct",
+    title:"Targeted Misconception Drill",
+    instruction:"The most common error this period is: <strong>" + label + "</strong>. Write the correct version on the board with key terms blanked out. Students fill in the gaps before you reveal.",
+    prompt:"Tag: " + tag + " — Students who selected wrong answers on this concept should revisit the scaffold on their Forge profile."
+  };
+}
+
+var app = document.getElementById('app');
+var dashState = { classId: null, className: null, classSubject: null, responses: [], students: [], wrongResponses: [], drillResponses: [], drillStudents: [], assignments: [] };
+
+function renderLogin(activeTab) {
+  activeTab = activeTab || 'view';
+  var h = '<div style="max-width:400px;margin:50px auto 0">';
+  h += '<div style="text-align:center;margin-bottom:24px">';
+  h += '<p class="tag" style="margin-bottom:6px">FORGE</p>';
+  h += '<h1 style="font-size:28px;margin-bottom:6px">Teacher Dashboard</h1>';
+  h += '</div>';
+
+  // Tabs
+  h += '<div class="login-tabs">';
+  h += '<button class="login-tab' + (activeTab === 'view' ? ' active' : '') + '" id="lt-view">View class</button>';
+  h += '<button class="login-tab' + (activeTab === 'create' ? ' active' : '') + '" id="lt-create">Create class</button>';
+  h += '</div>';
+
+  // View panel
+  h += '<div id="lp-view" style="display:' + (activeTab === 'view' ? 'block' : 'none') + '">';
+  h += '<p style="color:#8A857E;font-size:14px;margin-bottom:16px;text-align:center">Enter your class code to view student data</p>';
+  h += '<input id="t-code" class="join-input" type="text" placeholder="e.g. ECON-Y12">';
+  h += '<button class="join-btn" id="t-btn">View dashboard \u2192</button>';
+  h += '<p class="join-err" id="t-err"></p>';
+  h += '</div>';
+
+  // Create panel
+  h += '<div id="lp-create" style="display:' + (activeTab === 'create' ? 'block' : 'none') + '">';
+  h += '<p style="color:#8A857E;font-size:14px;margin-bottom:16px;text-align:center">Create a class and get a code to share with your students</p>';
+  h += '<input id="c-name" class="join-input" type="text" placeholder="Class name — e.g. Year 12 Economics" style="text-transform:none">';
+  h += '<input id="c-teacher" class="join-input" type="text" placeholder="Your name — e.g. Mr Zanier" style="text-transform:none">';
+  h += '<select id="c-subj" class="subj-select"><option value="">— Loading subjects... —</option>';
+  h += '</select>';
+  h += '<button class="join-btn" id="c-btn">Create class \u2192</button>';
+  h += '<p class="join-err" id="c-err"></p>';
+  h += '<div id="c-result" style="display:none;margin-top:18px"></div>';
+  h += '</div>';
+
+  h += '</div>';
+  app.innerHTML = h;
+
+  // Tab switching
+  document.getElementById('lt-view').onclick = function() { renderLogin('view'); };
+  document.getElementById('lt-create').onclick = function() { renderLogin('create'); };
+
+  // Populate subject dropdown — exclude subjects that already have a class
+  if (activeTab === 'create') {
+    supaGet('classes', '').then(function(existing) {
+      var usedSubjects = {};
+      (existing || []).forEach(function(c) { if (c.subject) usedSubjects[c.subject] = true; });
+      var sel = document.getElementById('c-subj');
+      if (!sel) return;
+      var opts = '<option value="">— Select subject —</option>';
+      SUBJECT_OPTIONS.forEach(function(s) {
+        if (!usedSubjects[s.key]) {
+          opts += '<option value="' + s.key + '">' + s.label + ' (' + s.spec + ')</option>';
+        } else {
+          opts += '<option value="" disabled style="color:#555">' + s.label + ' — already created</option>';
+        }
+      });
+      sel.innerHTML = opts;
+    }).catch(function() {
+      var sel = document.getElementById('c-subj');
+      if (!sel) return;
+      var opts = '<option value="">— Select subject —</option>';
+      SUBJECT_OPTIONS.forEach(function(s) {
+        opts += '<option value="' + s.key + '">' + s.label + ' (' + s.spec + ')</option>';
+      });
+      sel.innerHTML = opts;
+    });
+  }
+
+  // View dashboard handler
+  var viewBtn = document.getElementById('t-btn');
+  if (viewBtn) {
+    viewBtn.onclick = function() {
+      var code = document.getElementById('t-code').value.trim().toUpperCase();
+      var err = document.getElementById('t-err');
+      if (!code) { err.textContent = 'Enter a class code.'; err.style.display = 'block'; return; }
+      viewBtn.disabled = true; viewBtn.textContent = 'Loading...';
+      supaGet('classes', 'code=eq.' + encodeURIComponent(code)).then(function(classes) {
+        if (!Array.isArray(classes) || classes.length === 0) {
+          err.textContent = 'Class not found. Check the code and try again.'; err.style.display = 'block';
+          viewBtn.disabled = false; viewBtn.textContent = 'View dashboard \u2192'; return;
+        }
+        var cls = classes[0];
+        dashState.classId = cls.id;
+        dashState.className = cls.name;
+        dashState.classSubject = cls.subject || null;
+        Promise.all([
+          supaGet('students', 'class_id=eq.' + cls.id),
+          supaGet('assignments', 'class_id=eq.' + cls.id + '&order=due_date.asc')
+        ]).then(function(results) {
+          dashState.students = results[0] || [];
+          dashState.assignments = results[1] || [];
+          // Fetch responses by class_id AND by student_id list
+          // This catches responses where class_id is null (student played before class was linked)
+          var studentIds = dashState.students.map(function(s){ return s.id; });
+          var studentNames = dashState.students.map(function(s){ return s.name; });
+          var byClass = supaGet('responses', 'class_id=eq.' + cls.id + '&order=created_at.desc');
+          var byStudents = studentIds.length > 0
+            ? supaGet('responses', 'student_id=in.(' + studentIds.join(',') + ')&order=created_at.desc')
+            : Promise.resolve([]);
+          // Look up all student rows with same names — catches duplicate rows from re-joining
+          // Query each name individually to avoid PostgREST in() quoting issues
+          var nameQueries = studentNames.map(function(n) {
+            return supaGet('students', 'name=eq.' + encodeURIComponent(n) + '&select=id,name');
+          });
+          Promise.all([byClass, byStudents].concat(nameQueries)).then(function(rResults) {
+            var classResponses = rResults[0] || [];
+            var studentResponses = rResults[1] || [];
+            var nameMatches = [];
+            rResults.slice(2).forEach(function(rows) {
+              (rows || []).forEach(function(s) { nameMatches.push(s); });
+            });
+            // Collect any student IDs not already in our class list
+            var extraIds = [];
+            nameMatches.forEach(function(s) {
+              if (s && s.id && studentIds.indexOf(s.id) === -1) extraIds.push(s.id);
+            });
+            var byExtra = extraIds.length > 0
+              ? supaGet('responses', 'student_id=in.(' + extraIds.join(',') + ')&order=created_at.desc')
+              : Promise.resolve([]);
+            byExtra.then(function(extraResponses) {
+              var seen = {};
+              var merged = [];
+              classResponses.concat(studentResponses).concat(extraResponses || []).forEach(function(r) {
+                if (r && r.id && !seen[r.id]) { seen[r.id] = true; merged.push(r); }
+              });
+              dashState.responses = merged;
+              // Self-heal: patch orphaned responses to the class-linked student_id
+              if (extraIds.length > 0 && studentIds.length > 0) {
+                extraIds.forEach(function(oldId) {
+                  // Find which class student this old row belongs to by name
+                  var oldRow = nameMatches.find(function(s){ return s.id === oldId; });
+                  var newRow = oldRow ? dashState.students.find(function(s){ return s.name === oldRow.name; }) : null;
+                  var targetId = newRow ? newRow.id : studentIds[0];
+                  fetch(SUPABASE_URL + '/rest/v1/responses?student_id=eq.' + oldId, {
+                    method: 'PATCH',
+                    headers: Object.assign({}, headers, {'Prefer': 'return=minimal'}),
+                    body: JSON.stringify({ student_id: targetId, class_id: cls.id })
+                  }).catch(function(e) { console.warn('Patch orphan failed:', e); });
+                });
+              }
+              console.log('Dashboard loaded:', {
+                classId: cls.id, classSubject: dashState.classSubject,
+                students: dashState.students.length, responses: dashState.responses.length,
+                byClass: classResponses.length, byStudents: studentResponses.length,
+                extraIds: extraIds, extraResponses: (extraResponses||[]).length
+              });
+              renderDashboard();
+            });
+          });
+        });
+      });
+    };
+  }
+
+  // Create class handler
+  var createBtn = document.getElementById('c-btn');
+  if (createBtn) {
+    createBtn.onclick = function() {
+      var name = document.getElementById('c-name').value.trim();
+      var teacher = document.getElementById('c-teacher').value.trim();
+      var subj = document.getElementById('c-subj').value;
+      var err = document.getElementById('c-err');
+      var result = document.getElementById('c-result');
+      err.style.display = 'none';
+      result.style.display = 'none';
+
+      if (!name) { err.textContent = 'Enter a class name.'; err.style.display = 'block'; return; }
+      if (!teacher) { err.textContent = 'Enter your name.'; err.style.display = 'block'; return; }
+      if (!subj) { err.textContent = 'Select a subject.'; err.style.display = 'block'; return; }
+
+      createBtn.disabled = true; createBtn.textContent = 'Creating...';
+
+      // Generate code: subject prefix + 4-char random alphanumeric
+      var subjLabel = SUBJECT_OPTIONS.find(function(s) { return s.key === subj; });
+      var prefix = (subjLabel ? subjLabel.label.split(' ').filter(function(w){return w.length>3;}).map(function(w){return w[0];}).join('').toUpperCase().slice(0,4) : subj.toUpperCase().slice(0,4));
+      var chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+      var rand = '';
+      for (var i = 0; i < 4; i++) rand += chars[Math.floor(Math.random() * chars.length)];
+      var code = prefix + '-' + rand;
+
+      // Debug: log exactly what we're sending
+      console.log('Inserting:', { name: name, subject: subj, code: code });
+
+      supaInsert('classes', { name: name, subject: subj, code: code, teacher_name: teacher }).then(function(rows) {
+        createBtn.disabled = false; createBtn.textContent = 'Create class \u2192';
+        console.log('Supabase response:', JSON.stringify(rows));
+        var cls = Array.isArray(rows) ? rows[0] : rows;
+        if (!cls || !cls.id) {
+          err.textContent = 'Unexpected response — check browser console (F12) for details.';
+          err.style.display = 'block'; return;
+        }
+        var subjInfo = SUBJECT_OPTIONS.find(function(s) { return s.key === subj; });
+        var createdClassId = cls.id;
+        var createdClassName = name;
+
+        window._openCreatedDash = function() {
+          dashState.classId = createdClassId;
+          dashState.className = createdClassName;
+          dashState.classSubject = subj;
+          dashState.students = [];
+          dashState.responses = [];
+          dashState.assignments = [];
+          Promise.all([
+            supaGet('students', 'class_id=eq.' + createdClassId),
+            supaGet('assignments', 'class_id=eq.' + createdClassId + '&order=due_date.asc')
+          ]).then(function(results) {
+            dashState.students = results[0] || [];
+            dashState.assignments = results[1] || [];
+            var studentIds = dashState.students.map(function(s){ return s.id; });
+            var byClass = supaGet('responses', 'class_id=eq.' + createdClassId + '&order=created_at.desc');
+            var byStudents = studentIds.length > 0
+              ? supaGet('responses', 'student_id=in.(' + studentIds.join(',') + ')&order=created_at.desc')
+              : Promise.resolve([]);
+            Promise.all([byClass, byStudents]).then(function(rResults) {
+              var classResponses = rResults[0] || [];
+              var studentResponses = rResults[1] || [];
+              var seen = {};
+              var merged = [];
+              classResponses.concat(studentResponses).forEach(function(r) {
+                if (r && r.id && !seen[r.id]) { seen[r.id] = true; merged.push(r); }
+              });
+              dashState.responses = merged;
+              renderDashboard();
+            });
+          });
+        };
+
+        var subjName = subjInfo ? subjInfo.label : subj;
+        var shareText = 'Forge — ' + name + '\n'
+          + 'Subject: ' + subjName + '\n'
+          + 'Class code: ' + code + '\n\n'
+          + 'How to join:\n'
+          + '1. Go to https://forgelearning.github.io/edu/forge-quiz.html\n'
+          + '2. Enter your name and the class code above\n'
+          + '3. You\'ll be taken straight to ' + subjName + '\n\n'
+          + 'Forge builds exam technique through targeted questions, misconception feedback, and timed pressure tests. Complete questions regularly — your teacher can see your progress on the dashboard.';
+
+        var r = '<div class="code-display">';
+        r += '<span class="code-sub">Class created \u2713</span>';
+        r += '<span class="code-val">' + code + '</span>';
+        r += '<span class="code-sub">' + name + ' \u00b7 ' + subjName + '</span>';
+        r += '</div>';
+        r += '<button class="copy-btn" id="copy-code-btn">\u2398 Copy code</button>';
+        r += '<button class="copy-btn" id="share-edulink-btn">\uD83D\uDCCB Copy EduLink message</button>';
+        r += '<button class="join-btn" onclick="window._openCreatedDash()">Open dashboard \u2192</button>';
+        result.innerHTML = r;
+        result.style.display = 'block';
+
+        // Remove the newly created subject from the dropdown
+        var sel = document.getElementById('c-subj');
+        if (sel) {
+          var usedOpt = sel.querySelector('option[value="' + subj + '"]');
+          if (usedOpt) {
+            usedOpt.value = '';
+            usedOpt.disabled = true;
+            usedOpt.textContent = subjName + ' — already created';
+          }
+          sel.value = '';
+        }
+
+        document.getElementById('copy-code-btn').onclick = function() {
+          navigator.clipboard.writeText(code).then(function() {
+            document.getElementById('copy-code-btn').textContent = '\u2713 Copied!';
+            setTimeout(function() {
+              var b = document.getElementById('copy-code-btn');
+              if (b) b.textContent = '\u2398 Copy code';
+            }, 2000);
+          });
+        };
+
+        document.getElementById('share-edulink-btn').onclick = function() {
+          navigator.clipboard.writeText(shareText).then(function() {
+            document.getElementById('share-edulink-btn').textContent = '\u2713 Message copied — paste into EduLink!';
+            setTimeout(function() {
+              var b = document.getElementById('share-edulink-btn');
+              if (b) b.textContent = '\uD83D\uDCCB Copy EduLink message';
+            }, 3000);
+          });
+        };
+      }).catch(function(e) {
+        createBtn.disabled = false; createBtn.textContent = 'Create class \u2192';
+        err.textContent = 'Error: ' + (e && e.message ? e.message : 'Connection failed. Try again.');
+        err.style.display = 'block';
+      });
+    };
+  }
+}
+
+function renderDashboard() {
+  // Filter responses to this class's subject only
+  var allResponses = dashState.responses;
+  var responses = dashState.classSubject
+    ? allResponses.filter(function(r) {
+        var cs = dashState.classSubject;
+        var rs = r.subject;
+        var engMatch = (cs === 'englit' || cs === 'engll') && (rs === 'englit' || rs === 'engll');
+        // Always include Anvil/Crucible reforge responses — they belong to the class
+        var isReforge = r.reforge_attempted || rs === 'anvil' || rs === 'crucible';
+        return rs === cs || engMatch || isReforge || rs === null || rs === 'unknown' || !rs;
+      })
+    : allResponses;
+  var students = dashState.students;
+  var studentMap = {};
+  students.forEach(function(s) { studentMap[s.id] = s.name; });
+
+  // Stats
+  var totalQs = responses.length;
+  var correct = responses.filter(function(r) { return r.is_correct; }).length;
+  var accuracy = totalQs > 0 ? Math.round((correct / totalQs) * 100) : 0;
+  var wrongResponses = responses.filter(function(r) { return !r.is_correct && r.misconception_tag; });
+  var uniqueMCs = {};
+  wrongResponses.forEach(function(r) { uniqueMCs[r.misconception_tag] = true; });
+  var reforgeAttempts = responses.filter(function(r) { return r.reforge_attempted; });
+  var reforgeCorrect = reforgeAttempts.filter(function(r) { return r.reforge_correct; });
+
+  var h = '<div class="dash-header">';
+  h += '<div><p class="tag" style="margin-bottom:4px">Teacher Dashboard</p>';
+  h += '<h1>' + dashState.className + '</h1></div>';
+  h += '<div class="dash-meta"><b>' + students.length + '</b> students \u00b7 <b>' + totalQs + '</b> responses \u00b7 <button class="back-btn" onclick="renderLogin(\'view\')" style="display:inline;font-size:12px">\u2190 Change class</button></div>';
+  h += '</div>';
+
+  // Stats row
+  h += '<div class="stat-row">';
+  h += '<div class="stat"><span class="stat-n" style="color:' + (accuracy >= 70 ? 'var(--good)' : accuracy >= 50 ? 'var(--hot)' : 'var(--bad)') + '">' + accuracy + '%</span><span class="stat-l">Class accuracy</span></div>';
+  h += '<div class="stat"><span class="stat-n" style="color:var(--white)">' + totalQs + '</span><span class="stat-l">Total answers</span></div>';
+  h += '<div class="stat"><span class="stat-n" style="color:var(--hot)">' + Object.keys(uniqueMCs).length + '</span><span class="stat-l">Unique misconceptions</span></div>';
+  h += '<div class="stat"><span class="stat-n" style="color:var(--good)">' + reforgeCorrect.length + '/' + reforgeAttempts.length + '</span><span class="stat-l">Reforges passed</span></div>';
+  h += '</div>';
+
+  // Tabs
+  h += '<div class="tabs">';
+  h += '<button class="tab active" onclick="switchTab(\'heatmap\',this)">Misconception Heatmap</button>';
+  h += '<button class="tab" onclick="switchTab(\'class\',this)">Class Overview</button>';
+  h += '<button class="tab" onclick="switchTab(\'assignments\',this)">Assignments</button>';
+  h += '<button class="tab" onclick="switchTab(\'starters\',this)">Corrective starters</button>';
+  h += '</div>';
+
+  h += '<div class="panel active" id="panel-heatmap"></div>';
+  h += '<div class="panel" id="panel-class"></div>';
+  h += '<div class="panel" id="panel-assignments"></div>';
+  h += '<div class="panel" id="panel-starters"></div>';
+  h += '<div id="panel-student" style="display:none"></div>';
+
+  app.innerHTML = h;
+
+  dashState.wrongResponses = wrongResponses;
+  renderHeatmap(wrongResponses);
+  renderClassOverview(responses, students);
+  renderAssignments();
+  renderStarters(wrongResponses);
+}
+
+window.switchTab = function(view, btn) {
+  document.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('active'); });
+  btn.classList.add('active');
+  document.querySelectorAll('.panel').forEach(function(p) { p.classList.remove('active'); });
+  document.getElementById('panel-' + view).classList.add('active');
+  document.getElementById('panel-student').style.display = 'none';
+};
+
+function renderStarterCard(tag, h, context) {
+  // context: {fires, students} from real data, or null for browse mode
+  var label = MC_LABELS[tag] || tag;
+  var starterData = MC_STARTERS[tag] || getDefaultStarter(tag, label);
+  var typeLabels = {sort:"Sort activity",diagnose:"Diagnose",correct:"Spot the error",distinguish:"Distinguish",classify:"Classify",evaluate:"Evaluate",diagram:"Diagram task",chain:"Causal chain",calculate:"Calculation",graph:"Graph task",sequence:"Sequence",apply:"Application",compare:"Comparison table",match:"Match activity",trigger:"Trigger hunt",rewrite:"Rewrite task",trace:"Trace activity",scenario:"Scenario"};
+  var typeLabel = typeLabels[starterData.type] || "Starter activity";
+
+  h += '<div class="card" id="starter-card" style="border-color:rgba(255,107,44,.4);margin-top:20px">';
+  h += '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">';
+  h += '<div class="card-title" style="color:var(--ember)">' + (context ? 'Recommended starter' : 'Starter activity') + ' — ' + typeLabel + '</div>';
+  h += '<span style="font-family:monospace;font-size:11px;color:#8A857E;padding:3px 8px;border:1px solid var(--line);border-radius:4px">' + tag + '</span>';
+  h += '</div>';
+  h += '<p style="color:var(--white);font-size:15px;font-weight:600;margin-bottom:4px">' + starterData.title + '</p>';
+  if (context) {
+    h += '<p style="font-size:13px;color:#8A857E;margin-bottom:14px">' + context.fires + ' error' + (context.fires !== 1 ? 's' : '') + ' across ' + context.students + ' student' + (context.students !== 1 ? 's' : '') + ' this period</p>';
+  } else {
+    h += '<p style="font-size:13px;color:#8A857E;margin-bottom:14px">Preview — no class data loaded</p>';
+  }
+  h += '<p style="font-size:14px;color:var(--slate);margin-bottom:14px">' + starterData.instruction + '</p>';
+
+  if (starterData.prompt) {
+    h += '<div style="background:var(--panel-2);border-left:3px solid var(--ember);padding:10px 14px;border-radius:0 8px 8px 0;margin-bottom:12px">';
+    h += '<p style="font-size:13px;color:var(--slate);font-style:italic">' + starterData.prompt + '</p>';
+    h += '</div>';
+  }
+  if (starterData.items) {
+    h += '<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px">';
+    starterData.items.forEach(function(item) {
+      h += '<span style="font-size:13px;padding:4px 10px;background:var(--panel-2);border:1px solid var(--line);border-radius:6px;color:var(--white)">' + item + '</span>';
+    });
+    h += '</div>';
+  }
+  if (starterData.headers && starterData.rows) {
+    h += '<div style="overflow-x:auto;margin-bottom:12px"><table style="width:100%;border-collapse:collapse;font-size:13px">';
+    h += '<thead><tr>';
+    starterData.headers.forEach(function(hdr) {
+      h += '<th style="text-align:left;padding:6px 10px;border-bottom:1px solid var(--line);color:var(--white)">' + hdr + '</th>';
+    });
+    h += '</tr></thead><tbody>';
+    starterData.rows.forEach(function(row) {
+      h += '<tr>';
+      row.forEach(function(cell, ci) {
+        h += '<td style="padding:6px 10px;border-bottom:1px solid var(--panel-2);color:' + (ci===0 ? 'var(--white)' : 'var(--slate)') + '">' + (cell || '<span style="color:#3A342E">—</span>') + '</td>';
+      });
+      h += '</tr>';
+    });
+    h += '</tbody></table></div>';
+  }
+  if (starterData.answer) {
+    h += '<div style="display:flex;align-items:flex-start;gap:10px;padding:10px 14px;background:rgba(127,217,138,.08);border:1px solid var(--good);border-radius:8px;margin-bottom:4px">';
+    h += '<span style="color:var(--good);font-weight:700;font-size:16px">✓</span>';
+    h += '<p style="font-size:13px;color:var(--white)">' + starterData.answer + '</p>';
+    h += '</div>';
+  }
+  h += '</div>';
+  return h;
+}
+
+function renderBrowseStarters() {
+  // Always-visible starter browser — no class data required
+  var el = document.getElementById('panel-heatmap');
+  var allTags = Object.keys(MC_STARTERS);
+
+  var h = '<div class="card" style="margin-bottom:20px">';
+  h += '<div class="card-title">Browse starter activities</div>';
+  h += '<p style="font-size:13px;color:#8A857E;margin-bottom:14px">No class data loaded — pick any misconception tag to preview its starter activity. Once students complete questions, the top-firing tag will be recommended automatically.</p>';
+  h += '<select id="tag-picker" style="width:100%;padding:10px 12px;background:var(--panel-2);border:1px solid var(--line);border-radius:8px;color:var(--white);font-family:Sora,sans-serif;font-size:14px;cursor:pointer">';
+  h += '<option value="">— pick a misconception tag —</option>';
+
+  // Group by subject prefix
+  var groups = {};
+  allTags.forEach(function(tag) {
+    var parts = tag.split('-');
+    var grp = parts[0] + '-' + parts[1];
+    if (!groups[grp]) groups[grp] = [];
+    groups[grp].push(tag);
+  });
+  Object.keys(groups).sort().forEach(function(grp) {
+    h += '<optgroup label="' + grp + '">';
+    groups[grp].forEach(function(tag) {
+      h += '<option value="' + tag + '">' + tag + ' — ' + (MC_LABELS[tag] || tag) + '</option>';
+    });
+    h += '</optgroup>';
+  });
+
+  h += '</select></div>';
+  h += '<div id="browse-starter-slot"></div>';
+
+  el.innerHTML = h;
+
+  document.getElementById('tag-picker').addEventListener('change', function() {
+    var tag = this.value;
+    var slot = document.getElementById('browse-starter-slot');
+    if (!tag) { slot.innerHTML = ''; return; }
+    var out = '';
+    out = renderStarterCard(tag, out, null);
+    slot.innerHTML = out;
+  });
+}
+
+// ===== ASSIGNMENTS =====
+
+// Bank label lookup — minimal version for teacher side
 var BANK_LABELS = {
   "ECON-1.1":"Microeconomics Foundations",
   "2.1.1":"Economic Growth","2.1.2":"Inflation","2.1.3":"Employment & Unemployment","2.1.4":"Balance of Payments",
@@ -268,40 +1027,33 @@ var BANK_LABELS = {
   "MAND-1":"IB Mandarin Text Handling & Production"
 };
 
-var MC_LABELS = {
-  "MC-INF-01":"Disinflation vs deflation confused","MC-INF-02":"RPI vs CPI difference","MC-INF-03":"Demand-pull vs cost-push causes","MC-INF-04":"Fisher equation — real vs nominal","MC-INF-05":"Hyperinflation causes","MC-INF-06":"Inflation winners and losers","MC-INF-07":"Menu and shoe-leather costs","MC-INF-08":"Central bank independence","MC-INF-09":"Hyperinflation threshold","MC-INF-10":"Inflation and exchange rate link",
-  "MC-GRO-01":"GDP growth rate vs GDP level","MC-GRO-02":"Actual vs potential growth","MC-GRO-03":"Output gap — positive means overheating","MC-GRO-04":"Trade cycle phases","MC-GRO-05":"GDP per capita vs aggregate GDP","MC-GRO-06":"LRAS shift effects","MC-GRO-08":"PPF shift — demand-side cannot shift","MC-GRO-09":"Recession definition — two quarters",
-  "MC-EMP-01":"ILO unemployment — three criteria","MC-EMP-02":"Types of unemployment — policy mismatch","MC-EMP-03":"Phillips curve — expectations-augmented","MC-EMP-04":"Claimant count vs ILO measure","MC-EMP-05":"Minimum wage — real-wage unemployment","MC-EMP-07":"Structural unemployment — supply-side only","MC-EMP-08":"NAIRU — full employment not zero","MC-EMP-10":"Immigration — supply and demand both shift",
-  "MC-BOP-01":"Current account deficit — not inherently bad","MC-BOP-02":"Fiscal vs current account deficit","MC-BOP-03":"J-curve — initial deterioration","MC-BOP-04":"Marshall-Lerner condition","MC-BOP-05":"Current account — four components","MC-BOP-06":"Expenditure-reducing vs switching","MC-BOP-08":"Balance of payments always balances","MC-BOP-10":"Credits vs debits — money flow direction",
-  "MC-AD-01":"AD components — CIGS","MC-AD-02":"AD shift vs movement","MC-AD-03":"Multiplier effect","MC-AD-04":"Interest rate transmission","MC-AD-05":"Exchange rate and net exports","MC-AD-06":"Consumer confidence","MC-AD-07":"Crowding out","MC-AD-08":"Open vs closed economy",
-  "MC-AS-01":"SRAS vs LRAS distinction","MC-AS-02":"Supply-side shock","MC-AS-03":"Wage-price spiral","MC-AS-04":"LRAS and productive capacity","MC-AS-05":"AS and price level","MC-AS-06":"Cost-push on AS diagram","MC-AS-07":"LRAS shift causes","MC-AS-08":"Keynesian vs classical LRAS",
-  "MC-NI-01":"National income — circular flow","MC-NI-02":"Injections and withdrawals","MC-NI-03":"Multiplier formula","MC-NI-04":"Paradox of thrift","MC-NI-05":"GDP vs GNI","MC-NI-06":"Real vs nominal GDP","MC-NI-07":"Output gap and national income","MC-NI-08":"National income and living standards",
-  "MC-FIS-01":"Fiscal policy — automatic vs discretionary","MC-FIS-02":"Budget deficit vs national debt","MC-FIS-03":"Crowding out","MC-FIS-04":"Fiscal multiplier","MC-FIS-05":"Laffer curve","MC-FIS-06":"Austerity effects","MC-FIS-07":"Borrowing and interest rates","MC-FIS-08":"Cyclical vs structural deficit",
-  "MC-MON-01":"Monetary transmission mechanism","MC-MON-02":"Quantitative easing","MC-MON-03":"Interest rates and investment","MC-MON-04":"Exchange rate and monetary policy","MC-MON-05":"Inflation targeting","MC-MON-06":"Real vs nominal rates","MC-MON-07":"Monetary policy time lags","MC-MON-08":"Zero lower bound",
-  "MC-POL-01":"UK constitution is codified (wrong)","MC-POL-02":"FPTP disproportionality","MC-POL-03":"Parliamentary sovereignty","MC-POL-04":"Lords equal to Commons (wrong)","MC-POL-05":"Pluralism vs elitism","MC-POL-06":"Devolution — asymmetric settlement","MC-POL-07":"Pressure group vs political party","MC-POL-08":"Conservative ideology treated as fixed","MC-POL-09":"Social democracy vs democratic socialism","MC-POL-10":"Class still treated as dominant voting predictor","MC-POL-11":"Referendum benefits overstated","MC-POL-12":"Salisbury Convention and Lords reform","MC-POL-13":"Senior judges not politically neutral","MC-POL-18":"Voting behaviour — class dealignment",
-  "MC-HIST-01":"Weimar structural weakness vs contingency","MC-HIST-02":"Munich Putsch long-term benefit","MC-HIST-03":"Hitler never won a majority","MC-HIST-04":"Reichstag Fire to Enabling Act chain","MC-HIST-05":"Browning vs Goldhagen perpetrator debate","MC-HIST-06":"Truman Doctrine — universal principle missed","MC-HIST-07":"Berlin Blockade — who won?","MC-HIST-08":"Cuban Missile Crisis — secret deal ignored","MC-HIST-09":"Detente vs containment distinction","MC-HIST-10":"Nixon and China — reasons confused","MC-HIST-11":"Helsinki Accords — human rights underplayed","MC-HIST-12":"USSR collapse — internal vs external causes","MC-HIST-13":"Korea — limited war vs escalation risk",
-  "MC-PSY-01":"Conformity types","MC-PSY-02":"Obedience — agentic state","MC-PSY-03":"Social influence resistance","MC-PSY-04":"MSM — sensory register vs STM","MC-PSY-05":"Working memory — central executive","MC-PSY-06":"EWT — misleading questions","MC-PSY-07":"Attachment types — Strange Situation","MC-PSY-08":"Bowlby — monotropy",
-  "MC-PATH-01":"Statistical infrequency — abnormality","MC-PATH-02":"Deviation from ideal mental health","MC-PATH-03":"Failure to function adequately","MC-PATH-04":"Phobia — classical vs operant conditioning","MC-PATH-05":"OCD — biological vs psychological","MC-PATH-06":"Depression — Beck cognitive triad","MC-PATH-07":"CBT — challenging negative schemas","MC-PATH-08":"Drug therapy — SSRIs mode of action",
-  "MC-BIO-01":"Prokaryote vs eukaryote","MC-BIO-02":"Mitosis vs meiosis","MC-BIO-03":"Enzyme — induced fit","MC-BIO-04":"Active transport vs diffusion","MC-BIO-05":"Photosynthesis reactions","MC-BIO-06":"Aerobic vs anaerobic respiration","MC-BIO-07":"DNA replication","MC-BIO-08":"Genetic code — triplet codon","MC-BIO-09":"Meiosis and variation","MC-BIO-10":"Hardy-Weinberg","MC-BIO-11":"Natural selection","MC-BIO-12":"Antibiotic resistance — selection not mutation","MC-BIO-13":"Co-dominance vs dominance","MC-BIO-14":"Sex linkage","MC-BIO-15":"Polygenic inheritance","MC-BIO-16":"Speciation",
-  "MC-CHEM-01":"Ionic vs covalent bonding","MC-CHEM-02":"Electronegativity and polarity","MC-CHEM-03":"Enthalpy — exo vs endothermic","MC-CHEM-04":"Le Chatelier equilibrium","MC-CHEM-05":"Rate of reaction — activation energy","MC-CHEM-06":"Oxidation states","MC-CHEM-07":"Organic mechanisms","MC-CHEM-08":"Alcohols — primary secondary tertiary","MC-CHEM-09":"Benzene stability — no addition","MC-CHEM-10":"Esterification — reversible","MC-CHEM-11":"Organic nomenclature","MC-CHEM-12":"Mass spectrometry","MC-CHEM-13":"NMR interpretation","MC-CHEM-14":"Polymers","MC-CHEM-15":"Amino acids","MC-CHEM-16":"Chromatography",
-  "MC-PHYS-01":"Newton laws","MC-PHYS-02":"Momentum conservation","MC-PHYS-03":"Energy — kinetic vs potential","MC-PHYS-04":"Wave properties","MC-PHYS-05":"Interference","MC-PHYS-06":"Photoelectric effect","MC-PHYS-07":"Scalar vs vector","MC-PHYS-08":"Heavier objects fall faster (wrong)","MC-PHYS-09":"Current vs charge flow","MC-PHYS-10":"Resistance — series vs parallel","MC-PHYS-11":"Capacitors","MC-PHYS-12":"Magnetic flux","MC-PHYS-13":"Nuclear decay","MC-PHYS-14":"Half-life","MC-PHYS-15":"Binding energy","MC-PHYS-16":"Particle physics",
-  "MC-BUS-01":"Cash flow vs profit","MC-BUS-02":"Fixed vs variable costs","MC-BUS-03":"Break-even","MC-BUS-04":"Market share vs size","MC-BUS-05":"Motivation theories","MC-BUS-06":"Organisational structure","MC-BUS-07":"Elasticity — business pricing","MC-BUS-08":"Cash flow vs profit distinction",
-  "MC-LAW-01":"Actus reus — voluntary act","MC-LAW-02":"Mens rea — intention levels","MC-LAW-03":"Strict liability","MC-LAW-04":"Negligence — Donoghue v Stevenson","MC-LAW-05":"Contributory negligence","MC-LAW-06":"Offer vs invitation to treat","MC-LAW-07":"Consideration — sufficiency","MC-LAW-08":"Actus reus — omissions and causation","MC-LAW-09":"Mens rea — intention vs recklessness","MC-LAW-10":"Strict liability — no mens rea","MC-LAW-11":"Negligence — duty of care test","MC-LAW-12":"Occupiers liability","MC-LAW-13":"Vicarious liability","MC-LAW-14":"Offer vs invitation to treat","MC-LAW-15":"Consideration — past consideration invalid",
-  "MC-CS-01":"Off-by-one loop errors","MC-CS-02":"Compiler vs interpreter","MC-CS-03":"Binary search complexity","MC-CS-04":"Big O notation","MC-CS-05":"Stack vs queue","MC-CS-06":"Subroutine vs program","MC-CS-07":"TCP/IP protocol roles","MC-CS-08":"Encryption definition","MC-CS-09":"Boolean logic — gate combinations","MC-CS-10":"Binary tree height vs nodes","MC-CS-11":"SQL SELECT — WHERE vs HAVING","MC-CS-12":"Abstraction — hiding detail",
-  "MC-DE-01":"German gender","MC-DE-02":"Case system","MC-DE-03":"Word order — verb second","MC-DE-04":"Subordinate clause — verb to end","MC-DE-05":"Modal verbs","MC-DE-06":"Negation","MC-DE-07":"Gender assignment errors","MC-DE-08":"Imperfect vs perfect tense",
-  "MC-FR-01":"French gender agreement","MC-FR-02":"Subjunctive triggers","MC-FR-03":"Passe compose vs imparfait","MC-FR-04":"Pronoun order","MC-FR-05":"Negation placement","MC-FR-06":"Quantity expressions","MC-FR-07":"Malgre — noun not verb","MC-FR-08":"Conditional formation",
-  "MC-SP-01":"Ser vs estar","MC-SP-02":"Preterite vs imperfect","MC-SP-03":"Subjunctive triggers","MC-SP-04":"Llevar gerund","MC-SP-05":"Por vs para","MC-SP-06":"Se impersonal","MC-SP-07":"TMP word order","MC-SP-08":"Cuanto mas correlative","MC-SP-09":"Edexcel themes","MC-SP-10":"Essay register","MC-SP-11":"Volver a themes","MC-SP-12":"Memoria historica","MC-SP-13":"Third conditional","MC-SP-14":"Immigration vocabulary","MC-SP-15":"Spanish political system","MC-SP-16":"Subjunctive after es esencial",
-  "MC-MAND-01":"Text handling — Human Ingenuity","MC-MAND-02":"Concessive connector","MC-MAND-03":"Text handling — environment","MC-MAND-04":"Vocabulary in context","MC-MAND-05":"Text handling — health diary","MC-MAND-06":"IB diary conventions","MC-MAND-07":"Text handling — education","MC-MAND-08":"IB formal letter structure",
-  "MC-ENG-01":"Semantic field vs imagery","MC-ENG-02":"Free indirect discourse","MC-ENG-03":"Polysyndeton vs asyndeton","MC-ENG-04":"Deixis definition","MC-ENG-05":"Bathos applied incorrectly","MC-ENG-06":"Dramatic irony confused","MC-ENG-07":"Register definition","MC-ENG-08":"Repetition — no analytical claim","MC-ENG-09":"AO3 as wallpaper","MC-ENG-10":"Narrating plot not analysing","MC-ENG-11":"Quote-drop-paraphrase","MC-ENG-12":"Command word explore","MC-ENG-13":"AO4 comparison not demonstrated","MC-ENG-14":"AO5 absent","MC-ENG-15":"Unseen technique catalogue","MC-ENG-16":"Form and structure — micro only",
-  "MC-MED-01":"Hall encoding/decoding","MC-MED-02":"Curran and Seaton — ownership","MC-MED-03":"Cultivation theory","MC-MED-04":"Representation as construction","MC-MED-05":"Livingstone and Lunt","MC-MED-06":"Van Zoonen — male gaze","MC-MED-07":"Hypodermic needle model","MC-MED-08":"Uses and gratifications","MC-MED-09":"Vertical vs horizontal integration","MC-MED-10":"Synergy definition","MC-MED-11":"Convergence forms","MC-MED-12":"PSB obligations","MC-MED-13":"Cultural discount","MC-MED-14":"Two-step flow","MC-MED-15":"UGC and gatekeeping","MC-MED-16":"Due impartiality",
-  "MC-PE-01":"Cardiac output","MC-PE-02":"Bohr effect","MC-PE-03":"Sliding filament — filaments shorten (wrong)","MC-PE-04":"Energy system selection","MC-PE-05":"VO2 max definition","MC-PE-06":"EPOC vs oxygen debt","MC-PE-07":"Fibre type characteristics","MC-PE-08":"Active vs passive breathing","MC-PE-09":"ATP-PC stores","MC-PE-10":"Lactic acid — H+ causes fatigue","MC-PE-11":"Progressive overload — plateau","MC-PE-12":"Newton Third Law","MC-PE-13":"Third-class levers","MC-PE-14":"Drag forces","MC-PE-15":"Angular momentum","MC-PE-16":"Inverted-U theory",
-  "MC-RS-01":"Ontological argument","MC-RS-02":"Teleological — Paley vs Aquinas","MC-RS-03":"Problem of evil","MC-RS-04":"Kant categorical imperative","MC-RS-05":"Utilitarianism — act vs rule","MC-RS-06":"Natural law","MC-RS-07":"Situation ethics","MC-RS-08":"Conscience — Aquinas vs Freud",
-  "MC-HSC-01":"PIES framework","MC-HSC-02":"Bowlby attachment","MC-HSC-03":"Erikson stages","MC-HSC-04":"Maslow hierarchy","MC-HSC-05":"Dementia care","MC-HSC-06":"Safeguarding","MC-HSC-07":"Communication barriers","MC-HSC-08":"Case study application",
-  "MC-STAT-01":"Hypothesis test — one vs two tailed","MC-STAT-02":"Normal distribution standardisation","MC-STAT-03":"Binomial conditions","MC-STAT-04":"PMCC — correlation vs causation","MC-STAT-05":"Mutually exclusive vs independent","MC-STAT-06":"Regression line interpretation","MC-STAT-07":"Conditional probability","MC-STAT-08":"Large data set sampling",
-  "MC-CRIM-01":"Crime — social construction","MC-CRIM-02":"Functionalism and crime","MC-CRIM-03":"Strain theory","MC-CRIM-04":"Subcultural theories","MC-CRIM-05":"Labelling — interactionism","MC-CRIM-06":"Marxism and crime","MC-CRIM-07":"Feminist criminology","MC-CRIM-08":"Right realism","MC-CRIM-09":"Left realism","MC-CRIM-10":"Right realism — rational choice","MC-CRIM-11":"Left realism — relative deprivation","MC-CRIM-12":"Labelling — deviance not fixed","MC-CRIM-13":"Feminist criminology — victimisation",
-  "MC-CON-06":"Contract law — consideration and agreement"
+// Subject → banks map (mirrors forge-quiz.html SUBJECTS)
+var SUBJECT_BANKS = {
+  econ:  ["ECON-1.1","2.1.1","2.1.2","2.1.3","2.1.4","2.2.1","2.2.2","2.2.3","2.3.1","2.3.2","2.3.3","2.4.1","2.4.2","2.5.1","2.5.2","2.5.3"],
+  geo:   ["GEO-TEC"],
+  psych: ["PSY-SI","PSY-MEM","PSY-ATT","PSY-PATH"],
+  soc:   ["SOC-EDU","SOC-MET"],
+  bus:   ["BUS-1","BUS-2","BUS-3"],
+  chem:  ["CHEM-1","CHEM-2","CHEM-3"],
+  bio:   ["BIO-1","BIO-2","BIO-3"],
+  phys:  ["PHYS-1","PHYS-2","PHYS-3"],
+  hist:  ["HIST-1","HIST-2"],
+  law:   ["LAW-1","LAW-2"],
+  crim:  ["CRIM-1","CRIM-2"],
+  pol:   ["POL-1","POL-2"],
+  maths: ["MATH-1","MATH-2","MATH-3"],
+  german:["DE-1","DE-2"],
+  french:["FR-1","FR-2"],
+  cs:    ["CS-1","CS-2"],
+  rs:    ["RS-1","RS-2"],
+  hsc:   ["HSC-1","HSC-2"],
+  media: ["MEDIA-1","MEDIA-2"],
+  pe:    ["PE-1","PE-2"],
+  span:  ["SPAN-1","SPAN-2"],
+  englit:["ENG-TERM-1","ENG-TECH-1"],
+  engll: ["ENG-TERM-1","ENG-TECH-1"],
+  mand:  ["MAND-1"]
 };
-
 
 function dueBadge(dateStr) {
   if (!dateStr) return '';
@@ -524,41 +1276,7 @@ function renderHeatmap(wrongResponses) {
     return;
   }
 
-  var MC_LABELS = {
-  "MC-INF-01":"Disinflation vs deflation confused","MC-INF-02":"RPI vs CPI difference","MC-INF-03":"Demand-pull vs cost-push causes","MC-INF-04":"Fisher equation — real vs nominal interest rates","MC-INF-05":"Hyperinflation causes","MC-INF-06":"Inflation winners and losers","MC-INF-07":"Menu and shoe-leather costs","MC-INF-08":"Central bank independence and inflation targeting","MC-INF-09":"Hyperinflation threshold confused","MC-INF-10":"Inflation and exchange rate link",
-  "MC-GRO-01":"GDP growth rate vs GDP level confused","MC-GRO-02":"Actual vs potential growth — diagram distinction","MC-GRO-03":"Output gap direction — positive means overheating","MC-GRO-04":"Trade cycle phases — recovery vs boom","MC-GRO-05":"GDP per capita vs aggregate GDP","MC-GRO-06":"LRAS shift effects — output and price level","MC-GRO-08":"PPF shift — demand-side cannot shift frontier","MC-GRO-09":"Recession definition — negative growth required",
-  "MC-EMP-01":"ILO unemployment definition — three criteria","MC-EMP-02":"Types of unemployment — policy mismatch","MC-EMP-03":"Phillips curve — expectations-augmented model","MC-EMP-04":"Claimant count vs ILO measure","MC-EMP-05":"Minimum wage — real-wage unemployment","MC-EMP-07":"Structural unemployment — supply-side solutions only","MC-EMP-08":"NAIRU — full employment is not zero unemployment","MC-EMP-10":"Immigration — labour supply and demand both shift",
-  "MC-BOP-01":"Current account deficit — not inherently bad","MC-BOP-02":"Fiscal deficit vs current account deficit","MC-BOP-03":"J-curve — initial deterioration after depreciation","MC-BOP-04":"Marshall-Lerner condition — PED sum > 1","MC-BOP-05":"Current account components — four parts","MC-BOP-06":"Expenditure-reducing vs expenditure-switching","MC-BOP-08":"Balance of payments identity — always balances","MC-BOP-10":"Credits vs debits — money flow direction",
-  "MC-AD-01":"AD components — CIGS formula","MC-AD-02":"AD shift vs movement along","MC-AD-03":"Multiplier effect mechanism","MC-AD-04":"Interest rate transmission mechanism","MC-AD-05":"Exchange rate and net exports link","MC-AD-06":"Consumer confidence and AD","MC-AD-07":"Government spending and crowding out","MC-AD-08":"AD in open vs closed economy",
-  "MC-AS-01":"SRAS vs LRAS distinction","MC-AS-02":"Supply-side shock — SRAS shift","MC-AS-03":"Wage-price spiral mechanism","MC-AS-04":"LRAS and productive capacity","MC-AS-05":"Aggregate supply and price level","MC-AS-06":"Cost-push inflation on AS diagram","MC-AS-07":"LRAS shift causes — supply-side only","MC-AS-08":"Keynesian vs classical LRAS shape",
-  "MC-NI-01":"National income — circular flow","MC-NI-02":"Injections and withdrawals equilibrium","MC-NI-03":"Multiplier formula — 1/(1-MPC)","MC-NI-04":"Paradox of thrift","MC-NI-05":"GDP vs GNI distinction","MC-NI-06":"Real vs nominal GDP","MC-NI-07":"Output gap and national income","MC-NI-08":"National income and living standards",
-  "MC-FIS-01":"Fiscal policy — automatic vs discretionary","MC-FIS-02":"Budget deficit vs national debt","MC-FIS-03":"Crowding out mechanism","MC-FIS-04":"Fiscal multiplier size","MC-FIS-05":"Laffer curve and tax revenue","MC-FIS-06":"Austerity — demand and supply effects","MC-FIS-07":"Government borrowing and interest rates","MC-FIS-08":"Cyclical vs structural deficit",
-  "MC-MON-01":"Monetary policy transmission mechanism","MC-MON-02":"Quantitative easing mechanism","MC-MON-03":"Interest rates and investment","MC-MON-04":"Exchange rate and monetary policy","MC-MON-05":"Inflation targeting — MPC mandate","MC-MON-06":"Real vs nominal interest rates — monetary policy","MC-MON-07":"Time lags in monetary policy","MC-MON-08":"Zero lower bound — liquidity trap",
-  "MC-POL-01":"UK constitution is codified (wrong)","MC-POL-02":"FPTP disproportionality","MC-POL-03":"Parliamentary sovereignty definition","MC-POL-04":"Lords equal to Commons (wrong)","MC-POL-05":"Pluralism vs elitism","MC-POL-06":"Devolution — asymmetric settlement","MC-POL-07":"Pressure group vs political party","MC-POL-08":"Conservative ideology treated as fixed","MC-POL-09":"Social democracy vs democratic socialism confused","MC-POL-10":"Class still treated as dominant voting predictor","MC-POL-11":"Referendum benefits overstated","MC-POL-12":"Salisbury Convention and Lords reform","MC-POL-13":"Senior judges not politically neutral","MC-POL-18":"Voting behaviour — class dealignment",
-  "MC-HIST-01":"Weimar structural weakness vs contingency","MC-HIST-02":"Munich Putsch long-term benefit","MC-HIST-03":"Hitler never won a majority","MC-HIST-04":"Reichstag Fire to Enabling Act chain","MC-HIST-05":"Browning vs Goldhagen perpetrator debate","MC-HIST-06":"Truman Doctrine — universal principle missed","MC-HIST-07":"Berlin Blockade — who won?","MC-HIST-08":"Cuban Missile Crisis — secret deal ignored","MC-HIST-09":"Détente vs containment distinction","MC-HIST-10":"Nixon and China — reasons confused","MC-HIST-11":"Helsinki Accords — human rights clause underplayed","MC-HIST-12":"USSR collapse — internal vs external causes","MC-HIST-13":"Korea — limited war vs escalation risk",
-  "MC-PSY-01":"Conformity types — internalisation vs compliance","MC-PSY-02":"Obedience — agentic state vs autonomous","MC-PSY-03":"Social influence resistance — locus of control","MC-PSY-04":"MSM — sensory register vs STM capacity","MC-PSY-05":"Working memory — central executive role","MC-PSY-06":"EWT — misleading questions effect","MC-PSY-07":"Attachment types — Strange Situation","MC-PSY-08":"Bowlby — monotropy vs multiple attachments",
-  "MC-PATH-01":"Statistical infrequency definition of abnormality","MC-PATH-02":"Deviation from ideal mental health","MC-PATH-03":"Failure to function adequately — Rosenhan","MC-PATH-04":"Phobia — classical vs operant conditioning","MC-PATH-05":"OCD — biological vs psychological explanation","MC-PATH-06":"Depression — Beck cognitive triad","MC-PATH-07":"CBT — challenging negative schemas","MC-PATH-08":"Drug therapy — mode of action for SSRIs",
-  "MC-BIO-01":"Cell structure — prokaryote vs eukaryote","MC-BIO-02":"Mitosis vs meiosis purpose","MC-BIO-03":"Enzyme — induced fit vs lock and key","MC-BIO-04":"Active transport vs diffusion","MC-BIO-05":"Photosynthesis — light vs dark reactions","MC-BIO-06":"Respiration — aerobic vs anaerobic","MC-BIO-07":"DNA replication — semi-conservative","MC-BIO-08":"Genetic code — triplet codon","MC-BIO-09":"Meiosis — crossing over and variation","MC-BIO-10":"Hardy-Weinberg — population genetics","MC-BIO-11":"Natural selection — not goal-directed","MC-BIO-12":"Antibiotic resistance — selection not mutation","MC-BIO-13":"Inheritance — co-dominance vs dominance","MC-BIO-14":"Sex linkage — males one X chromosome","MC-BIO-15":"Polygenic inheritance — normal distribution","MC-BIO-16":"Speciation — reproductive isolation",
-  "MC-CHEM-01":"Ionic vs covalent bonding","MC-CHEM-02":"Electronegativity and polarity","MC-CHEM-03":"Enthalpy — exothermic vs endothermic","MC-CHEM-04":"Le Chatelier — equilibrium shifts","MC-CHEM-05":"Rate of reaction — activation energy","MC-CHEM-06":"Oxidation state changes","MC-CHEM-07":"Organic mechanisms — electrophilic vs nucleophilic","MC-CHEM-08":"Alcohols — primary secondary tertiary","MC-CHEM-09":"Benzene stability — aromatic vs addition","MC-CHEM-10":"Esterification — reversible reaction","MC-CHEM-11":"Organic nomenclature — functional groups","MC-CHEM-12":"Mass spectrometry — fragmentation","MC-CHEM-13":"NMR — chemical shift interpretation","MC-CHEM-14":"Polymers — addition vs condensation","MC-CHEM-15":"Amino acids — peptide bond formation","MC-CHEM-16":"Chromatography — Rf values",
-  "MC-PHYS-01":"Newton laws — action/reaction pairs","MC-PHYS-02":"Momentum conservation","MC-PHYS-03":"Energy — kinetic vs potential","MC-PHYS-04":"Wave properties — transverse vs longitudinal","MC-PHYS-05":"Interference — constructive vs destructive","MC-PHYS-06":"Photoelectric effect — threshold frequency","MC-PHYS-07":"Scalar vs vector distinction","MC-PHYS-08":"Heavier objects fall faster (wrong)","MC-PHYS-09":"Current vs charge flow direction","MC-PHYS-10":"Resistance — series vs parallel","MC-PHYS-11":"Capacitors — charge and discharge","MC-PHYS-12":"Magnetic flux — Faraday and Lenz","MC-PHYS-13":"Nuclear decay — alpha beta gamma","MC-PHYS-14":"Half-life — exponential decay","MC-PHYS-15":"Binding energy — mass defect","MC-PHYS-16":"Particle physics — quarks and leptons",
-  "MC-BUS-01":"Cash flow vs profit distinction","MC-BUS-02":"Fixed vs variable costs","MC-BUS-03":"Break-even — contribution per unit","MC-BUS-04":"Market share vs market size","MC-BUS-05":"Motivation — Maslow vs Herzberg","MC-BUS-06":"Organisational structure — span of control","MC-BUS-07":"Elasticity of demand — business pricing","MC-BUS-08":"Cash flow vs profit distinction",
-  "MC-LAW-01":"Actus reus — voluntary act","MC-LAW-02":"Mens rea — intention levels","MC-LAW-03":"Strict liability — no mens rea","MC-LAW-04":"Negligence — Donoghue v Stevenson","MC-LAW-05":"Contributory negligence — partial defence","MC-LAW-06":"Offer vs invitation to treat","MC-LAW-07":"Consideration — sufficiency not adequacy","MC-LAW-08":"Actus reus — omissions and causation","MC-LAW-09":"Mens rea — intention vs recklessness","MC-LAW-10":"Strict liability — no mens rea required","MC-LAW-11":"Negligence — duty of care test","MC-LAW-12":"Occupiers liability — visitor vs trespasser","MC-LAW-13":"Vicarious liability — employer responsibility","MC-LAW-14":"Offer vs invitation to treat","MC-LAW-15":"Consideration — past consideration invalid",
-  "MC-CS-01":"Off-by-one loop errors","MC-CS-02":"Compiler vs interpreter","MC-CS-03":"Binary search complexity","MC-CS-04":"Big O notation O(n²)","MC-CS-05":"Stack vs queue LIFO/FIFO","MC-CS-06":"Subroutine vs program","MC-CS-07":"TCP/IP protocol roles","MC-CS-08":"Encryption definition","MC-CS-09":"Boolean logic — gate combinations","MC-CS-10":"Binary tree height vs nodes","MC-CS-11":"SQL SELECT — WHERE vs HAVING","MC-CS-12":"Abstraction — hiding detail not removing it",
-  "MC-DE-01":"German gender — der/die/das","MC-DE-02":"Case system — nominative vs accusative","MC-DE-03":"Word order — verb second rule","MC-DE-04":"Subordinate clause — verb to end","MC-DE-05":"Modal verbs — infinitive position","MC-DE-06":"Negation — kein vs nicht","MC-DE-07":"Gender assignment errors on common nouns","MC-DE-08":"Imperfect vs perfect tense — written register",
-  "MC-FR-01":"French gender agreement","MC-FR-02":"Subjunctive triggers","MC-FR-03":"Passé composé vs imparfait","MC-FR-04":"Pronoun order — direct and indirect","MC-FR-05":"Negation — ne...pas placement","MC-FR-06":"Quantity expressions — de not du/des","MC-FR-07":"Malgré — followed by noun not verb","MC-FR-08":"Conditional formation",
-  "MC-SP-01":"Ser vs estar — temporary states","MC-SP-02":"Preterite vs imperfect — completed vs habitual","MC-SP-03":"Subjunctive triggers — WEIRDO","MC-SP-04":"Llevar + gerund for duration","MC-SP-05":"Por vs para","MC-SP-06":"Se impersonal construction","MC-SP-07":"TMP word order","MC-SP-08":"Cuanto más correlative","MC-SP-09":"Edexcel themes overview","MC-SP-10":"Essay register","MC-SP-11":"Volver a themes","MC-SP-12":"Memoria histórica","MC-SP-13":"Third conditional","MC-SP-14":"Immigration vocabulary","MC-SP-15":"Spanish political system","MC-SP-16":"Subjunctive after es esencial",
-  "MC-MAND-01":"Text handling — Human Ingenuity passage","MC-MAND-02":"虽然...但是 connector","MC-MAND-03":"Text handling — environment passage","MC-MAND-04":"Vocabulary in context — 将近三成","MC-MAND-05":"Text handling — health diary","MC-MAND-06":"IB diary conventions","MC-MAND-07":"Text handling — education comparison","MC-MAND-08":"IB formal letter structure",
-  "MC-ENG-01":"Semantic field vs imagery","MC-ENG-02":"Free indirect discourse","MC-ENG-03":"Polysyndeton vs asyndeton","MC-ENG-04":"Deixis definition","MC-ENG-05":"Bathos applied incorrectly","MC-ENG-06":"Dramatic irony confused","MC-ENG-07":"Register — defined as formality only","MC-ENG-08":"Repetition — no analytical claim","MC-ENG-09":"AO3 as wallpaper","MC-ENG-10":"Narrating plot not analysing method","MC-ENG-11":"Quote-drop-paraphrase","MC-ENG-12":"Command word explore","MC-ENG-13":"AO4 comparison not demonstrated","MC-ENG-14":"AO5 absent","MC-ENG-15":"Unseen technique catalogue","MC-ENG-16":"Form and structure — micro only",
-  "MC-MED-01":"Hall encoding/decoding","MC-MED-02":"Curran & Seaton — ownership","MC-MED-03":"Cultivation theory","MC-MED-04":"Representation as construction","MC-MED-05":"Livingstone & Lunt — digital regulation","MC-MED-06":"Van Zoonen — male gaze","MC-MED-07":"Hypodermic needle model","MC-MED-08":"Uses and gratifications","MC-MED-09":"Vertical vs horizontal integration","MC-MED-10":"Synergy definition","MC-MED-11":"Convergence forms","MC-MED-12":"PSB obligations","MC-MED-13":"Cultural discount","MC-MED-14":"Two-step flow","MC-MED-15":"UGC and gatekeeping","MC-MED-16":"Due impartiality",
-  "MC-PE-01":"Cardiac output interaction","MC-PE-02":"Bohr effect and O₂ curve","MC-PE-03":"Sliding filament — filaments shorten (wrong)","MC-PE-04":"Energy system selection","MC-PE-05":"VO₂ max definition","MC-PE-06":"EPOC vs oxygen debt","MC-PE-07":"Fibre type characteristics","MC-PE-08":"Active vs passive breathing","MC-PE-09":"ATP-PC stores","MC-PE-10":"Lactic acid — H⁺ not lactate causes fatigue","MC-PE-11":"Progressive overload — plateau","MC-PE-12":"Newton Third Law","MC-PE-13":"Third-class levers","MC-PE-14":"Drag forces","MC-PE-15":"Angular momentum conservation","MC-PE-16":"Inverted-U theory",
-  "MC-RS-01":"Ontological argument","MC-RS-02":"Teleological — Paley vs Aquinas","MC-RS-03":"Problem of evil — theodicy","MC-RS-04":"Kant categorical imperative","MC-RS-05":"Utilitarianism — act vs rule","MC-RS-06":"Natural law — precepts","MC-RS-07":"Situation ethics — agape","MC-RS-08":"Conscience — Aquinas vs Freud",
-  "MC-HSC-01":"PIES framework","MC-HSC-02":"Bowlby attachment","MC-HSC-03":"Erikson stages","MC-HSC-04":"Maslow hierarchy","MC-HSC-05":"Dementia care","MC-HSC-06":"Safeguarding — duty vs autonomy","MC-HSC-07":"Communication barriers","MC-HSC-08":"Case study application",
-  "MC-STAT-01":"Hypothesis test — one vs two tailed","MC-STAT-02":"Normal distribution standardisation","MC-STAT-03":"Binomial conditions","MC-STAT-04":"PMCC — correlation vs causation","MC-STAT-05":"Mutually exclusive vs independent","MC-STAT-06":"Regression line interpretation","MC-STAT-07":"Conditional probability P(A|B)","MC-STAT-08":"Large data set sampling",
-  "MC-CRIM-01":"Crime — social construction","MC-CRIM-02":"Functionalism and crime","MC-CRIM-03":"Strain theory — Merton","MC-CRIM-04":"Subcultural theories","MC-CRIM-05":"Interactionism — labelling","MC-CRIM-06":"Marxism and crime","MC-CRIM-07":"Feminist criminology","MC-CRIM-08":"Right realism","MC-CRIM-09":"Left realism","MC-CRIM-10":"Right realism — rational choice","MC-CRIM-11":"Left realism — relative deprivation","MC-CRIM-12":"Labelling theory — deviance fixed","MC-CRIM-13":"Feminist criminology — victimisation",
-  "MC-CON-06":"Contract law — consideration and agreement"
-};
-
-// Count by misconception tag
+  // Count by misconception tag
   var counts = {};
   wrongResponses.forEach(function(r) {
     var tag = r.misconception_tag;
