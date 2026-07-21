@@ -275,11 +275,27 @@ function renderDashboard() {
     // from students in this class (class_id = null but student belongs here)
     var classStudentIds = new Set(classStudents.map(function(s) { return s.id; }));
     var classResponses = responses.filter(function(r) {
+      // Only include responses that match this class's subject
+      // (allow null subject, and anvil/crucible responses)
+      var rSubj = (r.subject || '').toLowerCase();
+      var clsSubj = (cls.subject || '').toLowerCase();
+      var subjMatch = !rSubj || rSubj === 'anvil' || rSubj === 'crucible' ||
+        rSubj === clsSubj ||
+        (clsSubj === 'englit' && rSubj === 'engll') ||
+        (clsSubj === 'engll' && rSubj === 'englit');
+      if (!subjMatch) return false;
       if (r.class_id === cls.id) return true;
       if (!r.class_id && classStudentIds.has(r.student_id)) return true;
       return false;
     });
     var activeIds = new Set(recentResponses.filter(function(r) {
+      var rSubj = (r.subject || '').toLowerCase();
+      var clsSubj = (cls.subject || '').toLowerCase();
+      var subjMatch = !rSubj || rSubj === 'anvil' || rSubj === 'crucible' ||
+        rSubj === clsSubj ||
+        (clsSubj === 'englit' && rSubj === 'engll') ||
+        (clsSubj === 'engll' && rSubj === 'englit');
+      if (!subjMatch) return false;
       if (r.class_id === cls.id) return true;
       if (!r.class_id && classStudentIds.has(r.student_id)) return true;
       return false;
