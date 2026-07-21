@@ -765,7 +765,12 @@ function renderDashboard() {
   // Filter responses to this class's subject only
   var allResponses = dashState.responses;
   var responses = dashState.classSubject
-    ? allResponses.filter(function(r) { return r.subject === dashState.classSubject; })
+    ? allResponses.filter(function(r) {
+        return r.subject === dashState.classSubject
+          || r.subject === null
+          || r.subject === 'unknown'
+          || !r.subject;
+      })
     : allResponses;
   var students = dashState.students;
   var studentMap = {};
@@ -1478,7 +1483,12 @@ window.renderStudent = function(studentId) {
 
   var allStudentResponses = dashState.responses.filter(function(r) { return r.student_id === studentId; });
   var studentResponses = dashState.classSubject
-    ? allStudentResponses.filter(function(r) { return r.subject === dashState.classSubject; })
+    ? allStudentResponses.filter(function(r) {
+        return r.subject === dashState.classSubject
+          || r.subject === null
+          || r.subject === 'unknown'
+          || !r.subject;
+      })
     : allStudentResponses;
   var total = studentResponses.length;
   var correct = studentResponses.filter(function(r) { return r.is_correct; }).length;
