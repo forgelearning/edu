@@ -829,9 +829,10 @@ function renderDashboard() {
     ? allResponses.filter(function(r) {
         var cs = dashState.classSubject;
         var rs = r.subject;
-        // treat englit and engll as interchangeable (same banks)
         var engMatch = (cs === 'englit' || cs === 'engll') && (rs === 'englit' || rs === 'engll');
-        return rs === cs || engMatch || rs === null || rs === 'unknown' || !rs;
+        // Always include Anvil/Crucible reforge responses — they belong to the class
+        var isReforge = r.reforge_attempted || rs === 'anvil' || rs === 'crucible';
+        return rs === cs || engMatch || isReforge || rs === null || rs === 'unknown' || !rs;
       })
     : allResponses;
   var students = dashState.students;
@@ -1549,7 +1550,8 @@ window.renderStudent = function(studentId) {
         var cs = dashState.classSubject;
         var rs = r.subject;
         var engMatch = (cs === 'englit' || cs === 'engll') && (rs === 'englit' || rs === 'engll');
-        return rs === cs || engMatch || rs === null || rs === 'unknown' || !rs;
+        var isReforge = r.reforge_attempted || rs === 'anvil' || rs === 'crucible';
+        return rs === cs || engMatch || isReforge || rs === null || rs === 'unknown' || !rs;
       })
     : allStudentResponses;
   var total = studentResponses.length;
