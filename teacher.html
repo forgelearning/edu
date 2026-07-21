@@ -621,20 +621,37 @@ function renderLogin(activeTab) {
         dashState.classSubject = cls.subject || null;
         Promise.all([
           supaGet('students', 'class_id=eq.' + cls.id),
-          supaGet('responses', 'class_id=eq.' + cls.id + '&order=created_at.desc'),
           supaGet('assignments', 'class_id=eq.' + cls.id + '&order=due_date.asc')
         ]).then(function(results) {
           dashState.students = results[0] || [];
-          dashState.responses = results[1] || [];
-          dashState.assignments = results[2] || [];
-          console.log('Dashboard loaded:', {
-            classId: cls.id,
-            classSubject: dashState.classSubject,
-            students: dashState.students.length,
-            responses: dashState.responses.length,
-            firstResponse: dashState.responses[0] || null
+          dashState.assignments = results[1] || [];
+          // Fetch responses by class_id AND by student_id list
+          // This catches responses where class_id is null (student played before class was linked)
+          var studentIds = dashState.students.map(function(s){ return s.id; });
+          var byClass = supaGet('responses', 'class_id=eq.' + cls.id + '&order=created_at.desc');
+          var byStudents = studentIds.length > 0
+            ? supaGet('responses', 'student_id=in.(' + studentIds.join(',') + ')&order=created_at.desc')
+            : Promise.resolve([]);
+          Promise.all([byClass, byStudents]).then(function(rResults) {
+            var classResponses = rResults[0] || [];
+            var studentResponses = rResults[1] || [];
+            // Merge, deduplicate by response id
+            var seen = {};
+            var merged = [];
+            classResponses.concat(studentResponses).forEach(function(r) {
+              if (r && r.id && !seen[r.id]) { seen[r.id] = true; merged.push(r); }
+            });
+            dashState.responses = merged;
+            console.log('Dashboard loaded:', {
+              classId: cls.id,
+              classSubject: dashState.classSubject,
+              students: dashState.students.length,
+              responses: dashState.responses.length,
+              byClass: classResponses.length,
+              byStudents: studentResponses.length
+            });
+            renderDashboard();
           });
-          renderDashboard();
         });
       });
     };
@@ -690,13 +707,26 @@ function renderLogin(activeTab) {
           dashState.assignments = [];
           Promise.all([
             supaGet('students', 'class_id=eq.' + createdClassId),
-            supaGet('responses', 'class_id=eq.' + createdClassId + '&order=created_at.desc'),
             supaGet('assignments', 'class_id=eq.' + createdClassId + '&order=due_date.asc')
           ]).then(function(results) {
             dashState.students = results[0] || [];
-            dashState.responses = results[1] || [];
-            dashState.assignments = results[2] || [];
-            renderDashboard();
+            dashState.assignments = results[1] || [];
+            var studentIds = dashState.students.map(function(s){ return s.id; });
+            var byClass = supaGet('responses', 'class_id=eq.' + createdClassId + '&order=created_at.desc');
+            var byStudents = studentIds.length > 0
+              ? supaGet('responses', 'student_id=in.(' + studentIds.join(',') + ')&order=created_at.desc')
+              : Promise.resolve([]);
+            Promise.all([byClass, byStudents]).then(function(rResults) {
+              var classResponses = rResults[0] || [];
+              var studentResponses = rResults[1] || [];
+              var seen = {};
+              var merged = [];
+              classResponses.concat(studentResponses).forEach(function(r) {
+                if (r && r.id && !seen[r.id]) { seen[r.id] = true; merged.push(r); }
+              });
+              dashState.responses = merged;
+              renderDashboard();
+            });
           });
         };
 
