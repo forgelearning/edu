@@ -321,7 +321,7 @@ const BANKS = {
       },
       {
         id:"INF-07",stem:"What is the Bank of England's current inflation target?",
-        options:{A:"0% — price stability means no inflation.",B:"5% — a moderate level of inflation.",C:"2% RPI.",D:"2% CPI, as set by the government"},
+        options:{A:"0% — price stability means zero inflation.",B:"5% — a moderate level encourages spending.",C:"2% RPI — the RPI measure is used.",D:"2% CPI — set by the government and targeted by the Bank of England via monetary policy."},
       correct:"D",tag:"MC-INF-07",
         scaffold:"The target is 2% CPI (symmetric — undershooting is as much a concern as overshooting). Set by the Chancellor, pursued by the MPC. The letter-writing threshold is ±1pp (i.e. below 1% or above 3%). The target is NOT 0% — moderate inflation greases the wheels of the economy.",
         reforge:{stem:"UK CPI inflation reaches 0.8%. What is the BoE required to do?",options:{A:"Nothing — inflation is low, which is good.",B:"The Governor must write an open letter to the Chancellor explaining why inflation is more than 1pp below the 2% target and what action the MPC is taking.",C:"Immediately raise interest rates.",D:"Change the target to 1%."},correct:"B"}
@@ -335,7 +335,7 @@ const BANKS = {
       },
       {
         id:"INF-09",stem:"A country's inflation rate reaches 12%. A student labels this 'hyperinflation.' Is this correct?",
-        options:{A:"Yes — any double-digit inflation is hyperinflation.",B:"No",C:"Yes — hyperinflation begins above 10%.",D:"No — hyperinflation only occurs in wartime."},
+        options:{A:"Yes — any double-digit inflation qualifies as hyperinflation.",B:"No — the rate is high but does not meet the threshold for hyperinflation.",C:"Yes — hyperinflation is defined as any inflation rate above 10%.",D:"No — hyperinflation only occurs during or immediately after wartime."},
       correct:"B",tag:"MC-INF-09",
         scaffold:"Hyperinflation is extreme: prices doubling every few weeks/months. Cagan's threshold: 50% per month. 12% annually is high but manageable with normal monetary policy. Zimbabwe peaked at ~79.6 billion % per month in 2008. Don't conflate uncomfortable inflation with hyperinflation.",
         reforge:{stem:"Which scenario best illustrates hyperinflation?",options:{A:"UK inflation at 11% in 2022.",B:"Prices in Venezuela rising so fast that the currency becomes worthless within weeks and people switch to foreign currency or barter.",C:"Japan experiencing 3% inflation after decades near 0%.",D:"The US Federal Reserve raising rates to 5%."},correct:"B"}
@@ -1257,7 +1257,7 @@ BANKS["SOC-EDU"] = {
     },
     {
       id:"EDU-04",stem:"Interactionist sociologists focus on which level of analysis when studying education?",
-      options:{A:"Macro — large-scale structures and their functions for society.",B:"Micro",C:"Global — comparing education systems across countries.",D:"They don't study education."},
+      options:{A:"Macro — studying large-scale social structures and their functions for society as a whole.",B:"Micro — focusing on small-scale face-to-face classroom interactions.",C:"Global — comparing education systems across different countries.",D:"Sociologists do not study education; it belongs to psychology."},
       correct:"B",tag:"MC-EDU-04",
       scaffold:"Interactionists (Becker, Hargreaves, Rosenthal & Jacobson) study what happens INSIDE schools: how teachers label pupils, how labels create self-fulfilling prophecies, how streaming polarises subcultures. Strength: reveals processes behind statistics. Weakness: ignores wider structural causes (poverty, policy) — accused of being too micro.",
       reforge:{stem:"Rosenthal and Jacobson's (1968) 'Pygmalion in the Classroom' study demonstrated:",options:{A:"That streaming has no effect on achievement.",B:"The self-fulfilling prophecy — when teachers were told certain pupils were 'spurters' (chosen at random), those pupils made more progress, suggesting teacher expectations directly influence pupil performance.",C:"That IQ tests are perfectly reliable.",D:"That labelling only affects girls."},correct:"B"}
@@ -1852,7 +1852,7 @@ BANKS["BIO-1"] = {
     },
     {
       id:"BIO-08",stem:"An investigation tests the effect of temperature on enzyme activity. A student says: 'The enzyme is destroyed above 60°C.' Which more precise term should be used?",
-      options:{A:"Inhibited — the enzyme is slowed by the high temperature.",B:"Oxidised — the enzyme loses electrons at high temperature.",C:"Hydrolysed — water molecules break peptide bonds in the enzyme.",D:"Denatured"},
+      options:{A:"Inhibited — the enzyme is slowed by the high temperature but retains its shape.",B:"Oxidised — the enzyme loses electrons at high temperature, altering its charge.",C:"Hydrolysed — water molecules break peptide bonds within the enzyme structure.",D:"Denatured — the high temperature disrupts hydrogen bonds, changing the active site shape permanently."},
       correct:"D",tag:"MC-BIO-08",
       scaffold:"Denaturation = permanent change to tertiary/quaternary structure. At high temperatures: increased kinetic energy → hydrogen bonds, ionic bonds, and some disulfide bonds break → tertiary structure changes → active site changes shape → substrate no longer complementary → no enzyme-substrate complexes form → reaction stops. This is irreversible. Contrast with inhibition (reversible, competitive or non-competitive) where structure may be unchanged.",
       reforge:{stem:"Why do enzymes have an optimum pH as well as an optimum temperature?",options:{A:"pH affects the solubility of the substrate rather than the enzyme.",B:"Changes in pH alter the ionisation of amino acid R-groups, disrupting ionic bonds and hydrogen bonds that maintain the enzyme's tertiary structure — changing the shape of the active site.",C:"Enzymes can only function in neutral conditions (pH 7).",D:"pH affects the speed of product release rather than the rate of substrate binding."},correct:"B"}
@@ -2153,7 +2153,7 @@ BANKS["CS-1"] = {
     },
     {
       id:"CS-03",stem:"In a binary search, what is the maximum number of comparisons needed to find an element in a sorted list of 1024 items?",
-      options:{A:"1024",B:"512",C:"32",D:"10 — binary search has O(log₂n) complexity, and log₂1024 = 10, so at most 10 comparisons are needed."},
+      options:{A:"Up to 1024 comparisons — binary search checks every element.",B:"Up to 512 comparisons — it halves the list but still needs half the elements.",C:"Up to 32 comparisons.",D:"Up to 10 comparisons — binary search is O(log₂n) and log₂1024 = 10."},
       correct:"D",tag:"MC-CS-03",
       scaffold:"Binary search: compare target with middle element. If equal, found. If less, search lower half. If greater, search upper half. Each comparison halves the search space. After k comparisons, at most 2^k items remain to search. For n items: max comparisons = log₂n. 1024 = 2¹⁰, so max = 10. Linear search: max = n (1024). Binary search requires sorted data. Merge sort has O(n log n) — learn these complexity classes.",
       reforge:{stem:"A linear search of 1000 items requires at most 1000 comparisons. A binary search requires at most 10. Which algorithm is more efficient for large datasets and why?",options:{A:"Linear search — it works on unsorted data.",B:"Binary search — O(log n) vs O(n) complexity means it scales dramatically better for large datasets, though it requires sorted data.",C:"Both are equally efficient for large datasets.",D:"Linear search — it always finds the item faster."},correct:"B"}
@@ -2305,7 +2305,7 @@ BANKS["DE-1"] = {
     },
     {
       id:"DE-04",stem:"Error in: 'Ich denke, dass er kommt morgen.'",
-      options:{A:"'dass' should be 'weil'.",B:"Subordinate clauses send the conjugated verb to the END: '...dass er morgen kommt.'",C:"'kommt' should be 'kommen'.",D:"No error."},
+      options:{A:"'dass' should be replaced with 'weil' — both are subordinating conjunctions but mean different things.",B:"Subordinate clauses send the conjugated verb to the end — correct form: '...dass er morgen kommt.'",C:"'kommt' should be 'kommen' to match the infinitive form required here.",D:"There is no error — the sentence is grammatically correct as written."},
       correct:"B",tag:"MC-DE-04",
       scaffold:"Subordinating conjunctions (dass, weil, obwohl, wenn, als, ob...) send the verb to the end of the clause. Main clause: Subject-Verb-Other. Subordinate clause: Subject-Other-VERB. This is the most common word-order error in A Level German writing.",
       reforge:{stem:"Correct: 'Ich weiß, dass sie arbeitet heute nicht.'",options:{A:"Ich weiß, dass sie nicht heute arbeitet.",B:"Ich weiß, dass sie heute nicht arbeitet.",C:"Ich weiß, dass sie arbeitet nicht.",D:"No change needed."},correct:"B"}
@@ -2319,14 +2319,14 @@ BANKS["DE-1"] = {
     },
     {
       id:"DE-06",stem:"Error in: 'Er kann nicht kommen heute Abend.'",
-      options:{A:"'kommen' should be at the start.",B:"'nicht' should come before 'kann'.",C:"No error.",D:"With modal verbs the infinitive goes to the END: 'Er kann heute Abend nicht kommen.'"},
+      options:{A:"'kommen' should be moved to the start of the sentence.",B:"'nicht' should come immediately before 'kann' to negate the modal.",C:"There is no error — the sentence is grammatically correct as written.",D:"With modal verbs the infinitive goes to the end — correct form: 'Er kann heute Abend nicht kommen.'"},
       correct:"D",tag:"MC-DE-06",
       scaffold:"Modal verb structure: subject + modal (conjugated) + rest of clause + infinitive (END). Time-Manner-Place order applies to the middle section. Negation 'nicht' comes before the infinitive. The infinitive is always final.",
       reforge:{stem:"Which is correct?",options:{A:"'Sie muss lesen das Buch' — verb second.",B:"'Sie muss das Buch lesen' — modal verb in second position, infinitive at the end.",C:"Both are equally correct.",D:"'Das Buch muss sie lesen' only."},correct:"B"}
     },
     {
       id:"DE-07",stem:"Error in: 'Mein Freundin ist sehr intelligent.'",
-      options:{A:"'Freundin' is feminine (die Freundin), so the possessive must agree: 'meine Freundin'",B:"'intelligent' needs an ending.",C:"'sehr' is unnecessary.",D:"No error."},
+      options:{A:"'intelligent' needs an adjectival ending: 'intelligente Freundin' — after a possessive adjective, use mixed/weak declension.",B:"'Freundin' should be 'Freund' — the speaker is male so the friend must be male.",C:"'sehr' is unnecessary and should be removed before adjectives.",D:"There is no error — the sentence is grammatically correct as written."},
       correct:"A",tag:"MC-DE-07",
       scaffold:"Possessive articles inflect like 'ein': masculine nominative = mein, feminine nominative = meine, neuter nominative = mein, plural = meine. Gender errors frequently combine with possessive agreement errors — always identify the noun's gender first.",
       reforge:{stem:"Fill in the gap: '___ Bruder ist 16 Jahre alt.' (Bruder = masculine)",options:{A:"Meine",B:"Mein — masculine nominative, no ending.",C:"Meinen",D:"Meinem"},correct:"B"}
@@ -2510,7 +2510,7 @@ BANKS["FR-1"] = {
     },
     {
       id:"FR-04",stem:"Translate: 'The book that she gave me was interesting.' A student writes: 'Le livre qu'elle m'a donné était intéressant.' Is this correct?",
-      options:{A:"No — 'qu'' should be 'qui' because 'livre' is the subject.",B:"Yes",C:"No — 'était' should be in the passé composé.",D:"No — 'donné' should be 'donnée' to agree with 'elle'."},
+      options:{A:"No — 'qu'' should be 'qui' because 'livre' is the subject of the relative clause.",B:"Yes — the sentence is grammatically correct as written.",C:"No — 'était' (imperfect) should be in the passé composé to match the completed action.",D:"No — 'donné' should be 'donnée' to agree with the preceding feminine direct object 'elle'."},
       correct:"B",tag:"MC-FR-04",
       scaffold:"Relative pronouns: 'qui' = subject of the relative clause (who/which does something). 'Que/qu'' = object of the relative clause (who/which something is done to). Past participle agreement with avoir: when the direct object precedes the verb, the past participle agrees. 'Le livre que j'ai lu' → 'lu' (masc sg, no change). 'La lettre que j'ai lue' → 'lue' (fem sg). Examiner error: using 'qui' when 'que' is required, or vice versa.",
       reforge:{stem:"Fill in the gap: 'La chanson ___ il a composée est magnifique.'",options:{A:"qui — the song is the subject.",B:"que — the song is the object of 'composée'; 'il' is the subject. Past participle agrees: 'composée' (feminine).",C:"dont — indicating possession.",D:"où — indicating place."},correct:"B"}
@@ -2524,14 +2524,14 @@ BANKS["FR-1"] = {
     },
     {
       id:"FR-06",stem:"A student's translation contains 'beaucoup de les étudiants'. What is the error?",
-      options:{A:"'Beaucoup' should be 'très' before a noun.",B:"'Étudiants' should be 'étudiant'.",C:"No error.",D:"After expressions of quantity, use 'de/d'' + noun with no article: 'beaucoup d'étudiants'"},
+      options:{A:"'Beaucoup' should be 'très' — beaucoup modifies nouns and verbs, très modifies adjectives.",B:"'Étudiants' should be 'étudiant' — plurals are incorrect after beaucoup.",C:"There is no error — the sentence is grammatically correct as written.",D:"After expressions of quantity, use 'de/d'' + noun with no article: 'beaucoup d'étudiants', not 'beaucoup des étudiants'."},
       correct:"D",tag:"MC-FR-06",
       scaffold:"Expressions of quantity take 'de/d'' + noun (no article): beaucoup de, peu de, assez de, trop de, tant de. Exception: 'la plupart des' retains the article. Contraction rules: de + le = du; de + les = des. But after quantity expressions the article is dropped entirely — 'beaucoup d'étudiants', not 'beaucoup des étudiants'.",
       reforge:{stem:"Which is correct for 'most students'?",options:{A:"La plupart d'étudiants",B:"La plupart des étudiants — 'la plupart' is an exception: it retains the definite article.",C:"Beaucoup des étudiants",D:"La majorité d'étudiants"},correct:"B"}
     },
     {
       id:"FR-07",stem:"'Malgré il pleuvait, nous sommes sortis.' What is wrong?",
-      options:{A:"'Malgré' (despite) must be followed by a noun or pronoun, not a conjugated verb",B:"'Sommes sortis' should use 'avons'.",C:"'Il pleuvait' is the wrong tense.",D:"No error."},
+      options:{A:"'Malgré' must be followed by a noun or pronoun — correct: 'Malgré la pluie, nous sommes sortis.'",B:"'Sommes sortis' should use 'avons' — the auxiliary verb is incorrect.",C:"'Il pleuvait' (imperfect) should be 'il a plu' (passé composé) as the rain was a completed event.",D:"There is no error — the sentence is grammatically correct as written."},
       correct:"A",tag:"MC-FR-07",
       scaffold:"Prepositions followed by nouns (not clauses): malgré + noun. Conjunctions followed by subjunctive clauses: bien que, quoique, pour que, avant que, à moins que. Mixing up 'malgré' (preposition + noun) and 'bien que' (conjunction + subjunctive) is a common A Level error that examiners flag.",
       reforge:{stem:"Which is correct for 'despite being tired'?",options:{A:"Bien qu'être fatigué",B:"Malgré sa fatigue — 'malgré' + noun phrase, not a clause.",C:"Malgré il était fatigué",D:"Bien qu'il est fatigué"},correct:"B"}
@@ -2619,7 +2619,7 @@ BANKS["MEDIA-1"] = {
       },
       correct:"B",tag:"MC-MED-02",
       scaffold:"Curran & Seaton: media ownership concentrated in a few powerful companies (News Corp, Disney, Comcast). This concentration: reduces diversity of voices; creates commercial pressure prioritising profit over quality/public interest; enables owners to influence editorial line (Murdoch and The Sun's political positions). BUT: Curran also notes digital media has created some diversity (YouTube, podcasting). Hesmondhalgh critique: market logic dominates cultural industries regardless of ownership structure. Exam: evaluate — does concentration always limit diversity?",
-      reforge:{stem:"A media conglomerate that owns a news channel, a film studio and several newspapers is an example of:",options:{A:"Vertical integration only.",B:"Conglomeration — ownership of multiple media forms across different sectors. This creates cross-media synergies (using the newspaper to promote the film) but raises concerns about concentration of cultural power in Curran & Seaton's terms.",C:"Horizontal integration only.",D:"Public service broadcasting."},correct:"B"}
+      reforge:{stem:"A media conglomerate that owns a news channel, a film studio and several newspapers is an example of:",options:{A:"Vertical integration — owning multiple stages of the same production chain only.",B:"Conglomeration — ownership across multiple different media sectors, creating cross-promotional synergy and market dominance. Curran & Seaton argue this limits diversity by concentrating power in fewer hands.",C:"Horizontal integration — acquiring competitors at the same level of production only.",D:"Public service broadcasting — a regulatory obligation rather than an ownership model."},correct:"B"}
     },
     {
       id:"MED-03",
@@ -2658,7 +2658,7 @@ BANKS["MEDIA-1"] = {
       },
       correct:"B",tag:"MC-MED-05",
       scaffold:"Livingstone & Lunt (2011): traditional regulation framework built on broadcast model (few producers, many passive consumers, national transmission). Digital convergence undermines this: (1) Audiences become producers (UGC — YouTube, TikTok); (2) Global platforms (Netflix, Google) operate across jurisdictions; (3) Algorithmic curation not 'editorial' in traditional sense; (4) Speed of content creation outpaces regulatory response. Regulatory bodies: Ofcom (UK broadcasting + telecoms), IPSO (press), BBFC (film classification), ASA (advertising). OSA 2023 — new attempt to regulate online harms. Exam: evaluate whether any regulatory model can address these challenges.",
-      reforge:{stem:"A teenager is exposed to harmful content via a recommendation algorithm on a social media platform. This situation most clearly illustrates:",options:{A:"The effectiveness of the hypodermic needle model of media effects.",B:"The limitations of traditional regulation identified by Livingstone and Lunt — no single national regulator can easily hold a global platform accountable for algorithmically generated recommendations, and the content wasn't broadcast but personalised, bypassing conventional gatekeeping.",C:"The need to return to public service broadcasting models.",D:"Cultivation theory — long-term exposure to recommended content shapes worldview."},correct:"B"}
+      reforge:{stem:"A teenager is exposed to harmful content via a recommendation algorithm on a social media platform. This situation most clearly illustrates:",options:{A:"The continuing effectiveness of the hypodermic needle model for digital platforms.",B:"Livingstone and Lunt's argument that traditional national regulation cannot govern global digital platforms operating across jurisdictions.",C:"The need to return to public service broadcasting as the dominant media model.",D:"Cultivation theory — long-term algorithmic exposure shapes users' worldview."},correct:"B"}
     },
     {
       id:"MED-06",
@@ -2830,7 +2830,7 @@ BANKS["PE-1"] = {
       },
       correct:"B",tag:"MC-PE-01",
       scaffold:"Cardiac output (Q) = heart rate (HR) × stroke volume (SV). At rest: ~5L/min (70bpm × 70ml). During maximal exercise: up to 20-25L/min in trained athletes. HR increases via sympathetic NS (adrenaline, reduced parasympathetic tone). SV increases via: (1) Starling's law — greater venous return (muscle pump, venoconstriction) → ventricle fills more → stronger contraction; (2) Increased contractility (adrenaline); (3) Reduced afterload (vasodilation in working muscles). Trained athletes: higher SV due to cardiac hypertrophy (eccentric) — HR lower at rest and submaximal exercise.",
-      reforge:{stem:"A trained endurance athlete has a resting heart rate of 40bpm compared to an untrained person's 70bpm, but their cardiac output at rest is similar. What explains this?",options:{A:"The athlete's heart pumps blood faster so needs fewer beats.",B:"The athlete has a significantly higher stroke volume due to cardiac hypertrophy (enlarged left ventricle holds more blood and contracts more forcefully) — so despite fewer beats per minute, the same cardiac output is maintained. This is athlete's heart (eccentric hypertrophy).",C:"The athlete's muscles require less blood at rest.",D:"The athlete has a lower blood volume than an untrained person."},correct:"B"}
+      reforge:{stem:"A trained endurance athlete has a resting heart rate of 40bpm compared to an untrained person's 70bpm, but their cardiac output at rest is similar. What explains this?",options:{A:"The athlete's heart beats faster so it needs fewer beats per minute at rest.",B:"The athlete has a higher stroke volume from cardiac hypertrophy — more blood per beat means fewer beats per minute are needed to deliver the same cardiac output.",C:"The athlete's muscles require less oxygen at rest, so the heart slows down.",D:"The athlete has a lower total blood volume than an untrained person."},correct:"B"}
     },
     {
       id:"PE-02",
@@ -2843,7 +2843,7 @@ BANKS["PE-1"] = {
       },
       correct:"B",tag:"MC-PE-02",
       scaffold:"Bohr effect / oxygen dissociation curve: at rest, curve sits in mid-position. During exercise: (1) CO₂↑ (cellular respiration) → carbonic acid → H⁺↑ → pH↓ (acidosis); (2) Temperature↑ in working muscles; (3) 2,3-BPG↑ (produced by red blood cells during high demand). All three shift curve RIGHT: haemoglobin releases O₂ more readily at the same partial pressure. Practical effect: more O₂ unloaded to active muscle fibres. At the lungs: relatively low CO₂, lower temp → curve shifts left → HbO₂ formed more readily. This is a beautiful auto-regulatory mechanism matching O₂ delivery to metabolic demand.",
-      reforge:{stem:"A sprinter's blood becomes more acidic during a 400m race. What is the immediate physiological consequence of this for oxygen delivery?",options:{A:"Haemoglobin binds more tightly to oxygen, reducing delivery to muscles.",B:"The Bohr effect shifts the oxygen dissociation curve to the right — reduced haemoglobin-oxygen affinity means more oxygen is offloaded to active muscles at a given partial pressure, matching oxygen delivery to the increased metabolic demand of the sprint.",C:"Oxygen delivery stops until blood pH normalises.",D:"The lungs compensate by absorbing more oxygen to counteract the acid."},correct:"B"}
+      reforge:{stem:"A sprinter's blood becomes more acidic during a 400m race. What is the immediate physiological consequence of this for oxygen delivery?",options:{A:"Haemoglobin binds more tightly to oxygen, reducing delivery to working muscles.",B:"The Bohr effect shifts the ODC right — lower pH reduces haemoglobin's oxygen affinity, causing more O₂ to be released at the tissues where CO₂ and lactate are highest.",C:"Oxygen delivery stops completely until blood pH returns to the normal range.",D:"The lungs compensate by absorbing extra oxygen to counteract the increased acidity."},correct:"B"}
     },
     {
       id:"PE-03",
@@ -2869,7 +2869,7 @@ BANKS["PE-1"] = {
       },
       correct:"B",tag:"MC-PE-04",
       scaffold:"Energy systems: (1) ATP-PC (phosphocreatine): immediate, anaerobic, 0-10 seconds, high power (sprinting). (2) Lactic acid (anaerobic glycolysis): fast, 10 seconds–2 minutes, moderate-high intensity (800m), produces lactate. (3) Aerobic: slower onset, unlimited duration, low-moderate intensity — uses glycolysis + Krebs + ETC. At 80% VO₂max a marathon runner is below their lactate threshold — aerobic system dominant. Fat provides ~50% of fuel at marathon pace; carbohydrate the rest. VO₂max: maximum rate of O₂ consumption — a key indicator of aerobic capacity. Lactate threshold: intensity at which lactate accumulates faster than it's cleared.",
-      reforge:{stem:"A 400m runner starts fast (ATP-PC), continues through lactic acid threshold, then slows in the final 100m due to lactate accumulation. Which energy system sequence is correct?",options:{A:"Aerobic → lactic acid → ATP-PC.",B:"ATP-PC dominates the opening sprint (0-10 seconds), lactic acid system takes over for the middle section (anaerobic glycolysis, 10s-~90s), with aerobic metabolism contributing increasingly — but the lactic acid system's high lactate production outpaces clearance in the final straight, causing the characteristic 400m 'die'.",C:"All three systems operate sequentially with no overlap.",D:"ATP-PC and aerobic systems only — lactic acid system doesn't operate at 400m pace."},correct:"B"}
+      reforge:{stem:"A 400m runner starts fast (ATP-PC), continues through lactic acid threshold, then slows in the final 100m due to lactate accumulation. Which energy system sequence is correct?",options:{A:"Aerobic system first, then lactic acid, then ATP-PC as fatigue accumulates.",B:"All three systems overlap throughout — ATP-PC dominates the first ~10 seconds, lactic acid takes over for the main effort, and the aerobic contribution grows progressively.",C:"The three energy systems activate sequentially with no overlap at any stage.",D:"Only ATP-PC and aerobic systems operate — the lactic acid system does not function at 400m race pace."},correct:"B"}
     },
     {
       id:"PE-05",
@@ -2882,7 +2882,7 @@ BANKS["PE-1"] = {
       },
       correct:"B",tag:"MC-PE-05",
       scaffold:"VO₂ max (ml/kg/min): gold standard measure of cardiorespiratory fitness. Elite male endurance athletes: 70-90 ml/kg/min (Kipchoge ~90); untrained males ~35-40. Determined by: (1) Cardiac output (central limitation — heart's ability to pump oxygenated blood); (2) Oxygen-carrying capacity (haemoglobin, blood volume); (3) Peripheral extraction (muscle capillary density, mitochondrial density, oxidative enzyme activity). Training adaptations increase VO₂ max by: increasing stroke volume, plasma volume, mitochondrial density. Limitation as predictor: lactate threshold and running economy better predict elite marathon performance among athletes with similar VO₂ max.",
-      reforge:{stem:"Two athletes have the same VO₂ max of 70 ml/kg/min, but athlete A consistently beats athlete B in marathons. Which factor most likely explains this?",options:{A:"Athlete A has a higher maximum heart rate.",B:"Athlete A has a higher lactate threshold (can sustain a higher percentage of VO₂ max before lactate accumulates) and/or better running economy (uses less oxygen at a given pace) — among elite athletes with similar VO₂ max, these factors are better predictors of endurance performance.",C:"Athlete A has a higher VO₂ max when measured correctly.",D:"Athlete A uses fat more efficiently below 50% VO₂ max."},correct:"B"}
+      reforge:{stem:"Two athletes have the same VO₂ max of 70 ml/kg/min, but athlete A consistently beats athlete B in marathons. Which factor most likely explains this?",options:{A:"Athlete A has a higher maximum heart rate, allowing greater oxygen delivery.",B:"Athlete A has a higher lactate threshold — they sustain a greater % of VO₂ max before lactate accumulates, so they maintain race pace longer.",C:"Athlete A actually has a higher VO₂ max when the test is conducted correctly.",D:"Athlete A uses fat more efficiently below 50% VO₂ max, sparing glycogen."},correct:"B"}
     },
     {
       id:"PE-06",
@@ -2895,7 +2895,7 @@ BANKS["PE-1"] = {
       },
       correct:"B",tag:"MC-PE-06",
       scaffold:"EPOC (formerly 'oxygen debt' — now recognised as more complex): Fast component (alactacid, 2-3 min): replenish PC stores (ATP-PC resynthesis), restore O₂ bound to myoglobin/haemoglobin. Slow component (lactacid, 30-60+ min): lactate removal (converted to glucose in liver via Cori cycle, oxidised in heart/slow-twitch fibres, small amount excreted in sweat/urine); elevated metabolic rate (elevated temperature, catecholamines); protein repair and synthesis. Practical implications: active recovery (light exercise) speeds lactate clearance vs passive recovery. Magnitude of EPOC related to exercise intensity and duration.",
-      reforge:{stem:"Why does active recovery (light jogging) after intense exercise reduce recovery time compared to passive rest?",options:{A:"Jogging replenishes PC stores faster than rest.",B:"Continued light exercise maintains elevated blood flow through muscles, increasing the rate at which lactate is transported to the liver and heart for conversion/oxidation, speeding the slow component of EPOC. It also maintains elevated muscle temperature, keeping enzyme activity optimal for metabolic recovery.",C:"Active recovery stops EPOC entirely by returning heart rate to normal faster.",D:"Light jogging allows the aerobic system to continue producing ATP for the PC system to restore itself."},correct:"B"}
+      reforge:{stem:"Why does active recovery (light jogging) after intense exercise reduce recovery time compared to passive rest?",options:{A:"Jogging replenishes PC stores faster than complete rest because the aerobic system runs at full capacity.",B:"Light exercise maintains elevated blood flow, speeding lactate clearance, oxygen delivery for PC resynthesis, and CO₂ removal compared with passive recovery.",C:"Active recovery stops EPOC entirely by returning heart rate to resting level more quickly.",D:"Light jogging lets the aerobic system keep producing ATP so the PC system doesn't need to work at all."},correct:"B"}
     },
     {
       id:"PE-07",
@@ -2908,7 +2908,7 @@ BANKS["PE-1"] = {
       },
       correct:"B",tag:"MC-PE-07",
       scaffold:"Fibre type comparison: Type I (slow oxidative): small, many mitochondria, high myoglobin (red colour), dense capillary network, fatigue-resistant, low force output, aerobic — endurance athletes (marathon runners). Type IIa (fast oxidative-glycolytic): intermediate — moderate force, moderate fatigue resistance, both aerobic and anaerobic capacity — 400-800m runners. Type IIx (fast glycolytic): large, few mitochondria, low myoglobin (pale), glycolytic, high force output, fatigue rapidly — sprinters, power athletes. Recruitment order (Henneman's size principle): Type I → IIa → IIx as intensity increases. Genetics largely determines fibre ratio; training causes some Type IIx → IIa shift.",
-      reforge:{stem:"An elite 100m sprinter stops after 10 seconds of maximal effort and their muscles fatigue extremely quickly. A marathon runner can maintain effort for 2+ hours. This difference is primarily explained by:",options:{A:"Sprinters having larger hearts and greater cardiac output.",B:"Fibre type composition — elite sprinters have a higher proportion of Type IIx fast-twitch fibres (high power output but rapid fatigue due to reliance on anaerobic glycolysis and limited mitochondria), while marathon runners have predominantly Type I slow-twitch fibres with high aerobic capacity and fatigue resistance.",C:"Sprinters using the ATP-PC system which is less efficient than the aerobic system.",D:"Marathon runners having lower VO₂ max but better lactate tolerance."},correct:"B"}
+      reforge:{stem:"An elite 100m sprinter stops after 10 seconds of maximal effort and their muscles fatigue extremely quickly. A marathon runner can maintain effort for 2+ hours. This difference is primarily explained by:",options:{A:"Sprinters have larger hearts and greater cardiac output, benefiting explosive efforts.",B:"Fibre type composition — elite sprinters have more Type IIx fast-twitch fibres with higher force production and ATP-PC reliance; marathoners have more Type I slow-twitch fibres.",C:"Sprinters use the ATP-PC system, which is actually less efficient than the aerobic system.",D:"Marathon runners have lower VO₂ max but superior lactate threshold and fat oxidation."},correct:"B"}
     },
     {
       id:"PE-08",
@@ -2921,7 +2921,7 @@ BANKS["PE-1"] = {
       },
       correct:"B",tag:"MC-PE-08",
       scaffold:"Mechanics of breathing: rest — inspiration: diaphragm + external intercostals (active); expiration: passive (elastic recoil). Exercise — increasing demand: additional inspiratory muscles recruited (scalenes, sternocleidomastoid). At maximal intensity: expiration becomes ACTIVE — internal intercostals and abdominals forcibly compress thorax. Result: tidal volume (volume per breath) increases (from ~0.5L at rest to ~3L in trained athletes during max exercise) AND breathing rate increases (from ~12-15 to 40-60 breaths/min). Minute ventilation = tidal volume × breathing rate. Neural control: medullary respiratory centre (rhythmicity); chemoreceptors detect CO₂/H⁺/O₂ changes and adjust ventilation.",
-      reforge:{stem:"During a maximal 1-minute effort, a cyclist's breathing rate increases from 15 to 50 breaths per minute and their tidal volume from 0.5L to 2.5L. What is the approximate increase in minute ventilation?",options:{A:"From 7.5L/min to 12.5L/min — a small increase.",B:"From 7.5L/min to 125L/min — a 16-fold increase, achieved by both increasing breathing rate and tidal volume (both become active processes at maximal exercise), maximising gas exchange to meet the huge increase in metabolic demand.",C:"Minute ventilation stays constant — only the ratio of rate to volume changes.",D:"From 7.5L/min to 50L/min — tidal volume doesn't change during exercise."},correct:"B"}
+      reforge:{stem:"During a maximal 1-minute effort, a cyclist's breathing rate increases from 15 to 50 breaths per minute and their tidal volume from 0.5L to 2.5L. What is the approximate increase in minute ventilation?",options:{A:"From 7.5L/min to 12.5L/min — a modest increase in breathing rate only.",B:"From 7.5L/min to 125L/min — a ~16-fold increase, achieved by increasing both breathing rate and tidal volume.",C:"Minute ventilation stays constant — only the ratio of rate to tidal volume changes.",D:"From 7.5L/min to 50L/min — tidal volume does not change during exercise."},correct:"B"}
     }
   ]
 };
@@ -2969,7 +2969,7 @@ BANKS["PE-2"] = {
       },
       correct:"B",tag:"MC-PE-11",
       scaffold:"Principles of training — SPORT: Specificity, Progression, Overload, Reversibility, Tedium/Variation. Progressive overload: the body adapts to current stress, so stress must increase for further adaptation. FITT framework: Frequency (sessions per week), Intensity (% of max HR or 1RM), Time (session duration/volume), Type (modality). Adaptation lag: 4-6 weeks before measurable physiological adaptation. Overtraining syndrome: applying overload without sufficient recovery — increased injury risk, performance decline, immune suppression. Periodisation: planned variation of overload across a training cycle (macrocycle → mesocycle → microcycle) to peak for competition and prevent overtraining.",
-      reforge:{stem:"A swimmer has trained consistently at the same distance and speed for six months. Their performance has plateaued. Which training principle is being violated, and what is the solution?",options:{A:"Specificity — they should change to a different sport to stimulate new adaptations.",B:"Progressive overload — the training stimulus has become insufficient to drive further adaptation. The body has adapted fully to the current load, so performance plateaus. The solution is to increase frequency, intensity, volume or vary the training type to provide a new overload stimulus and trigger further physiological adaptations.",C:"Reversibility — they have trained too long and are losing fitness.",D:"Tedium — the swimmer is bored, not insufficiently stressed physiologically."},correct:"B"}
+      reforge:{stem:"A swimmer has trained consistently at the same distance and speed for six months. Their performance has plateaued. Which training principle is being violated, and what is the solution?",options:{A:"Specificity — they should switch to a different sport to stimulate new physical adaptations.",B:"Progressive overload — the stimulus is no longer sufficient; the swimmer must increase frequency, intensity, or volume to trigger further physiological adaptation.",C:"Reversibility — training for too long causes fitness to decline through overuse.",D:"Tedium — the swimmer is bored, which is a psychological rather than physiological issue."},correct:"B"}
     },
     {
       id:"PE-12",
@@ -3021,7 +3021,7 @@ BANKS["PE-2"] = {
       },
       correct:"B",tag:"MC-PE-15",
       scaffold:"Angular momentum (L) = moment of inertia (I) × angular velocity (ω). Moment of inertia (I) = mass × radius² — depends on how mass is distributed relative to the axis. Conservation: in the absence of external torques, angular momentum is conserved. Figure skater: arms out → large I → small ω (slow spin). Arms pulled in → small I → large ω (fast spin). Same L. Diver: tuck position (small I) → fast rotation. Pike/straight (large I) → slow rotation. Gymnast on bars: hollow body (large I) → slow swing; compressed (small I) → fast spin. Application: coaches teach athletes to manipulate body position to control rotation speed. Exam: apply the I × ω = constant relationship to a named sport.",
-      reforge:{stem:"A diver leaves the board in a straight position performing slow rotations, then pulls into a tight tuck and rotates rapidly before straightening again to enter the water. Explain this sequence using angular momentum.",options:{A:"The diver generates more force in the tuck, increasing angular momentum and spin speed.",B:"Angular momentum is conserved throughout (no external torques in flight). In the straight position, moment of inertia is large, so angular velocity is slow. Tucking reduces moment of inertia dramatically, so angular velocity must increase to conserve angular momentum — producing rapid rotation. Straightening before entry restores large moment of inertia and slows rotation to achieve a controlled, vertical water entry.",C:"The diver's muscles contract more forcefully in the tuck, generating the extra rotational speed.",D:"Air resistance is reduced in the tuck, allowing faster rotation."},correct:"B"}
+      reforge:{stem:"A diver leaves the board in a straight position performing slow rotations, then pulls into a tight tuck and rotates rapidly before straightening again to enter the water. Explain this sequence using angular momentum.",options:{A:"The diver generates more muscular force in the tuck position, increasing angular momentum.",B:"Angular momentum is conserved (no external torques in flight) — tucking reduces moment of inertia, so angular velocity increases to compensate; straightening before entry restores slow rotation.",C:"The diver's muscles contract more forcefully in the tuck, creating the extra spin.",D:"Air resistance is reduced in the tuck, which allows the body to rotate more quickly."},correct:"B"}
     },
     {
       id:"PE-16",
@@ -3034,7 +3034,7 @@ BANKS["PE-2"] = {
       },
       correct:"B",tag:"MC-PE-16",
       scaffold:"Arousal-performance relationship: Drive theory (Hull): linear — more arousal → better performance (for well-learned skills). Inverted-U (Yerkes-Dodson): optimal arousal zone — performance peaks at moderate arousal, declines at extremes. Task complexity modifies optimal zone: complex/fine motor (golf putting, snooker) → optimal arousal is LOW (over-arousal disrupts fine control). Gross motor (weightlifting, rugby tackle) → optimal arousal can be HIGH. Individual differences: extroverts seek higher arousal; introverts peak at lower arousal. Catastrophe theory (Hardy): arousal + cognitive anxiety → performance drops catastrophically, not gradually (unlike inverted-U). Zones of Optimal Functioning (ZOF — Hanin): optimal arousal is individual, not a universal moderate level. Pre-competition routines aim to achieve optimal arousal state.",
-      reforge:{stem:"A golfer who plays brilliantly in practice rounds has a crucial 3-foot putt to win a major championship. Their hands shake and they miss the putt completely. Which psychological concept best explains this?",options:{A:"Drive theory — their high arousal means they should perform at their best.",B:"Over-arousal beyond the optimal zone on the inverted-U (or a catastrophic drop per Hardy's catastrophe theory) — the high-stakes situation causes excessive arousal and cognitive anxiety. For a precision task like putting (which requires low optimal arousal), this excessive activation disrupts fine motor control, causing the characteristic 'yips' under pressure.",C:"The ZOF — the golfer has entered their ideal performance zone.",D:"Progressive overload — the golfer has trained too hard and is fatigued."},correct:"B"}
+      reforge:{stem:"A golfer who plays brilliantly in practice rounds has a crucial 3-foot putt to win a major championship. Their hands shake and they miss the putt completely. Which psychological concept best explains this?",options:{A:"Drive theory — high arousal should produce the golfer's best performance.",B:"Over-arousal beyond the optimal zone (inverted-U) disrupts fine motor control — putting requires low optimal arousal, so the high-pressure context causes the yips.",C:"The ZOF — the golfer has entered their personal ideal performance zone.",D:"Progressive overload — the golfer has peaked too early through excessive training."},correct:"B"}
     }
   ]
 };
@@ -3056,7 +3056,7 @@ BANKS["SPAN-1"] = {
       },
       correct:"B",tag:"MC-SP-01",
       scaffold:"Ser vs estar: SER — permanent/inherent characteristics: origin, identity, profession, material, time ('Es médico', 'Son las tres', 'Es de España'). ESTAR — temporary states and conditions, location, progressive tenses ('Está cansada', 'Está en Madrid', 'Está comiendo'). Both 'hot coffee' (temporary state, not intrinsic) and 'tired María' (temporary condition) require ESTAR. Common errors: 'La sopa es caliente' (wrong — it's hot NOW, not always), 'María es cansada' (wrong — she's tired at this moment). Exception trap: 'estar muerto' (dead — permanent but usar estar); 'ser aburrido' (boring personality) vs 'estar aburrido' (feeling bored now).",
-      reforge:{stem:"Which is correct: 'El partido (A) es / (B) está muy emocionante esta noche'?",options:{A:"Es — the match's excitement is a permanent characteristic.",B:"Está — the excitement is a temporary condition specific to tonight. Though adjectives describing events can sometimes use ser (inherent nature), 'esta noche' signals a temporary, contextual state requiring estar.",C:"Both are correct with identical meaning.",D:"Neither — 'emocionante' cannot be used with ser or estar."},correct:"B"}
+      reforge:{stem:"Which is correct: 'El partido (A) es / (B) está muy emocionante esta noche'?",options:{A:"Es — the match's excitement is a permanent, intrinsic characteristic.",B:"Está — the excitement is a temporary condition specific to this event; ponerse and estar are used for transient emotional states.",C:"Both ser and estar are correct here with no difference in meaning.",D:"Neither — 'emocionante' describes the match's effect and cannot follow ser or estar."},correct:"B"}
     },
     {
       id:"SP-02",
@@ -3082,7 +3082,7 @@ BANKS["SPAN-1"] = {
       },
       correct:"B",tag:"MC-SP-03",
       scaffold:"Subjunctive triggers (WEIRDO): Wishes (querer que, esperar que, desear que), Emotion (alegrarse de que, temer que), Impersonal expressions (es importante que, es posible que), Requests/Recommendations (pedir que, sugerir que), Doubt/Denial (dudar que, no creer que), Ojalá. Key rule: DIFFERENT subject in main and subordinate clause → subjunctive. Same subject → infinitive ('Espero VENIR' not 'Espero que yo venga'). Exam common errors: using indicative after subjunctive trigger ('Espero que viene' — wrong); using subjunctive when not needed ('Creo que viene' — believe = indicative; 'No creo que venga' — doubt = subjunctive).",
-      reforge:{stem:"Which sentence requires the subjunctive? (A) 'Creo que tiene razón.' (B) 'No creo que tenga razón.'",options:{A:"Sentence A — creer always requires the subjunctive.",B:"Sentence B — 'no creer que' expresses doubt/denial, triggering the subjunctive (tenga). Sentence A uses 'creer que' (positive belief) which takes the indicative (tiene). This is a classic A Level trap: the negative transforms the verb's meaning from belief to doubt, switching from indicative to subjunctive.",C:"Both require the subjunctive.",D:"Neither requires the subjunctive."},correct:"B"}
+      reforge:{stem:"Which sentence requires the subjunctive? (A) 'Creo que tiene razón.' (B) 'No creo que tenga razón.'",options:{A:"Sentence A — 'creer que' always requires the subjunctive regardless of whether it is affirmative or negative.",B:"Sentence B — 'no creer que' (doubt/denial) triggers the subjunctive; affirmative 'creer que' takes the indicative.",C:"Both sentences require the subjunctive — the polarity of 'creer' makes no difference.",D:"Neither sentence requires the subjunctive — 'creer' never triggers it in any form."},correct:"B"}
     },
     {
       id:"SP-04",
@@ -3108,7 +3108,7 @@ BANKS["SPAN-1"] = {
       },
       correct:"A",tag:"MC-SP-05",
       scaffold:"Reflexive verbs for change of state: ponerse + adjective (temporary emotional/physical change): 'Se puso nervioso' (he became nervous). Volverse + adjective (more profound change): 'Se volvió loco' (he went mad). Hacerse + noun (gradual, deliberate change): 'Se hizo médico' (she became a doctor). Quedarse + adjective (resulting state): 'Se quedó embarazada' (she became pregnant). Aburrirse (to become/get bored) — reflexive. Cansarse (to get tired) — reflexive. Common error: 'aburrir' (non-reflexive) = to bore someone else ('La película me aburrió' = the film bored me). A Level exam: ser/estar + adjective vs reflexive verb for change of state carry different nuances.",
-      reforge:{stem:"'Me puse muy nervioso antes del examen.' The verb ponerse here expresses:",options:{A:"A permanent change in personality.",B:"A temporary change of emotional state (becoming nervous) using ponerse + adjective — one of the key reflexive change-of-state constructions. The reflexive pronoun (me) indicates the subject experiences the change themselves.",C:"An action done to someone else.",D:"A habitual state described using the imperfect."},correct:"B"}
+      reforge:{stem:"'Me puse muy nervioso antes del examen.' The verb ponerse here expresses:",options:{A:"A permanent change in personality described with ser.",B:"A temporary change of emotional state — ponerse + adjective (ponerse nervioso) is one of the key reflexive change-of-state verbs in Spanish.",C:"An action done to another person using a direct object pronoun.",D:"A habitual state described using the imperfect tense."},correct:"B"}
     },
     {
       id:"SP-06",
@@ -3121,7 +3121,7 @@ BANKS["SPAN-1"] = {
       },
       correct:"B",tag:"MC-SP-06",
       scaffold:"Passive voice in Spanish: (1) Ser + past participle + por (agent): 'La novela fue escrita por Cervantes' — formal, agent specified. Past participle agrees in gender/number with subject. (2) Reflexive passive (se pasiva): 'Se habla español aquí' — very common, agent unknown/unimportant. (3) Active voice with 'se' impersonal subject ('Se dice que...' — it is said that). A Level exam: ser passive = agent mentioned, formal register. Se-passive = agent absent, more natural Spanish. Error: confusing 'estar + past participle' (resultant state — 'La puerta está abierta' = the door is open NOW) with ser passive (action — 'La puerta fue abierta' = the door was opened).",
-      reforge:{stem:"Which is more natural Spanish for 'Spanish is spoken here'?",options:{A:"'El español es hablado aquí.' — using ser passive.",B:"'Se habla español aquí.' — the reflexive/impersonal se construction is far more natural when no specific agent is mentioned. The ser passive ('es hablado') sounds stilted and overly formal in this context, though grammatically correct.",C:"'Están hablando español aquí.'",D:"'Hablan español aquí.' — only the active voice is acceptable."},correct:"B"}
+      reforge:{stem:"Which is more natural Spanish for 'Spanish is spoken here'?",options:{A:"'El español es hablado aquí.' — the ser passive is the most natural and idiomatic construction.",B:"'Se habla español aquí.' — the se impersonal is far more natural in Spanish; the ser passive sounds stilted in most everyday contexts.",C:"'Están hablando español aquí.' — the progressive describes a current ongoing action, not a general statement of language use.",D:"'Hablan español aquí.' — only the active third-person plural is acceptable in formal written Spanish."},correct:"B"}
     },
     {
       id:"SP-07",
@@ -3134,7 +3134,7 @@ BANKS["SPAN-1"] = {
       },
       correct:"B",tag:"MC-SP-07",
       scaffold:"Sequence of tenses with subjunctive: main clause present/future → subordinate present subjunctive ('Quiero que venga'). Main clause preterite/imperfect/conditional → subordinate PAST subjunctive ('Quería que viniera', 'Pedí que viniera'). Past subjunctive forms: -AR verbs: -ara/-ase; -ER/-IR verbs: -iera/-iese. Irregular: tener → tuviera, venir → viniera, ser/ir → fuera, poder → pudiera, hacer → hiciera. Common exam error: using imperfect indicative (venía) instead of imperfect subjunctive (viniera) after past tense trigger. The -iera form is the more standard form in writing; -iese is equally correct but less common.",
-      reforge:{stem:"Complete: 'El profesor quería que los alumnos ______ los deberes antes de clase.' (hacer)",options:{A:"hacían (imperfect indicative)",B:"hicieran (imperfect subjunctive) — quería que triggers subjunctive; since quería is in the imperfect (past), the subordinate clause requires the past subjunctive. Hacer → hiciera/hiciesen.",C:"harían (conditional)",D:"hagan (present subjunctive)"},correct:"B"}
+      reforge:{stem:"Complete: 'El profesor quería que los alumnos ______ los deberes antes de clase.' (hacer)",options:{A:"hacían (imperfect indicative) — quería que does not trigger the indicative mood.",B:"hicieran (imperfect subjunctive) — quería que triggers subjunctive; the imperfect main verb requires the imperfect subjunctive in the subordinate clause.",C:"harían (conditional) — the conditional is not triggered by quería que.",D:"hagan (present subjunctive) — tense sequence is wrong; an imperfect main verb requires the imperfect subjunctive, not the present."},correct:"B"}
     },
     {
       id:"SP-08",
@@ -3147,7 +3147,7 @@ BANKS["SPAN-1"] = {
       },
       correct:"B",tag:"MC-SP-08",
       scaffold:"Comparatives and superlatives: más...que (more...than), menos...que (less...than), tan...como (as...as). Cuanto más...más/mejor = the more...the more/better. Cuanto menos...menos/peor = the less...the worse. Note: subjunctive in cuanto-clause for hypothetical/future ('Cuanto más estudies...'). False friends/errors: 'más bueno' → better said 'mejor'; 'más malo' → 'peor'; 'más grande' vs 'mayor' (older/greater in abstract sense). 'El/la más + adjective + de' = superlative ('el más inteligente de la clase'). A Level translation tests: watch for English structures that require different Spanish syntax.",
-      reforge:{stem:"Translate: 'The less she sleeps, the worse her marks are.'",options:{A:"'Menos duerme, peor sus notas son.'",B:"'Cuanto menos duerme, peores son sus notas.' — cuanto menos...peor/peores for 'the less...the worse'. Note: 'peores' agrees with 'notas' (feminine plural). The indicative is used here as it describes an established fact/pattern rather than a future hypothesis.",C:"'Tan poco duerme, tan malas son sus notas.'",D:"'Menos que duerme, más malas son sus notas.'"},correct:"B"}
+      reforge:{stem:"Translate: 'The less she sleeps, the worse her marks are.'",options:{A:"'Menos duerme, peor sus notas son.' — cuanto menos is missing and word order is wrong.",B:"'Cuanto menos duerme, peores son sus notas.' — the correct correlative structure; 'peores' agrees with plural 'notas'.",C:"'Tan poco duerme, tan malas son sus notas.' — tan poco...tan is not the correct correlative structure.",D:"'Menos que duerme, más malas son sus notas.' — menos que expresses a comparison of inequality, not a correlative."},correct:"B"}
     }
   ]
 };
@@ -3169,7 +3169,7 @@ BANKS["SPAN-2"] = {
       },
       correct:"B",tag:"MC-SP-09",
       scaffold:"Edexcel 9SP0 themes: (1) Young people in Hispanic society — family relationships, technology, pressure and identity; (2) Diversity and difference — immigration, multiculturalism, racism, disability; (3) A culture shaped by belief and tradition — Catholicism, festivals, regional identity, historical memory; (4) Spain and Spanish-speaking countries today — political system, environment, economy, Latin American issues. Plus: one film and one literary work in Spanish (set by exam board). Exam structure: Listening (50 min), Reading & Translation (60 min), Writing (80 min + essay), Speaking (oral exam with individual research project). Exam strategy: learn vocabulary in thematic clusters, not alphabetical lists.",
-      reforge:{stem:"A student writing about immigration in Spain (Theme 2) wants to discuss the concept of multiculturalism. Which Spanish term is most precise and commonly used in A Level essay contexts?",options:{A:"'La extranjería' — foreignness.",B:"'La multiculturalidad' or 'el multiculturalismo' — these are the correct technical terms for multiculturalism in Spanish sociological and political discourse, appropriate for A Level essay register. 'La extranjería' refers to the legal status of foreigners, not the cultural concept.",C:"'La mezcla de culturas' — mix of cultures (acceptable but informal for essay register).",D:"'El racismo inverso' — reverse racism."},correct:"B"}
+      reforge:{stem:"A student writing about immigration in Spain (Theme 2) wants to discuss the concept of multiculturalism. Which Spanish term is most precise and commonly used in A Level essay contexts?",options:{A:"'La extranjería' — the correct term for multiculturalism in academic Spanish.",B:"'La multiculturalidad' or 'el multiculturalismo' — the precise technical terms used in Spanish sociological and political discourse, appropriate for A Level essay register.",C:"'La mezcla de culturas' — a paraphrase that is acceptable but too informal for formal essay writing.",D:"'El racismo inverso' — reverse racism, a related but distinct concept."},correct:"B"}
     },
     {
       id:"SP-10",
@@ -3195,7 +3195,7 @@ BANKS["SPAN-2"] = {
       },
       correct:"B",tag:"MC-SP-11",
       scaffold:"Volver (2006) — Pedro Almodóvar. Key themes: (1) Female solidarity — women support each other across generations, men are absent or destructive; (2) La Mancha — regional identity, wind (el viento) as character, village customs; (3) Memory and silence — Francoism created culture of repressed secrets, echoed in the family's secrets; (4) Death and resurrection — 'volver' (to return) operates literally (Irene returns as ghost) and metaphorically (return to roots, reconciliation with past); (5) Melodrama — Almodóvar cites Fassbinder and Hollywood women's pictures. Raimunda (Penélope Cruz) as central protagonist. For exam: analyse HOW Almodóvar uses cinematography, colour and music to construct meaning, not just WHAT happens.",
-      reforge:{stem:"In Volver, Raimunda conceals her daughter's killing of the abusive stepfather and later hides another body in a restaurant freezer. What thematic purpose does Almodóvar achieve through this narrative of concealment?",options:{A:"He shows that Spanish women are naturally criminal and deceptive.",B:"The repeated concealment echoes the broader theme of silencio — the culture of repressing dark truths that Almodóvar links to Francoism and its legacy. Raimunda's actions become a feminist act of protection in a world where institutions (police, men) have failed women. The film suggests Spain is still learning to confront what was hidden.",C:"The concealment is simply a plot device to create suspense — it has no thematic significance.",D:"Almodóvar is critiquing the Spanish legal system's treatment of female criminals."},correct:"B"}
+      reforge:{stem:"In Volver, Raimunda conceals her daughter's killing of the abusive stepfather and later hides another body in a restaurant freezer. What thematic purpose does Almodóvar achieve through this narrative of concealment?",options:{A:"He shows that Spanish women are naturally criminal and deceptive characters.",B:"The concealment echoes silencio — Almodóvar links the family's secrets to Francoism's culture of suppression; Raimunda's acts become feminist protection in a world where institutions failed women.",C:"The concealment is purely a plot device for suspense — it carries no thematic meaning.",D:"Almodóvar is critiquing the Spanish legal system's treatment of women who commit crimes."},correct:"B"}
     },
     {
       id:"SP-12",
@@ -3208,7 +3208,7 @@ BANKS["SPAN-2"] = {
       },
       correct:"B",tag:"MC-SP-12",
       scaffold:"La memoria histórica: key cultural/political concept for Edexcel Theme 3/4. Background: Franco's regime suppressed Republican memory; Pact of Forgetting (Pacto del Olvido) during Transition to Democracy (1975-82) — both sides agreed not to prosecute Civil War crimes. Historical Memory Law (2007, Zapatero): official recognition of Republican victims, removal of Francoist symbols. Democratic Memory Law (2022, Sánchez): strengthened — created state agency, removed Francoist statues, opened mass graves. Controversies: PP and Vox opposed — argue it reopens wounds; victims' groups say it doesn't go far enough. Associated vocabulary: las fosas comunes (mass graves), el Valle de los Caídos (Franco's mausoleum — renamed Valle de Cuelgamuros), el exilio, la represión, las víctimas.",
-      reforge:{stem:"A student reads that Spain's Valle de los Caídos monument was renamed and repurposed in recent years. In an essay on 'la memoria histórica', how should they frame this fact?",options:{A:"As evidence that Spain has fully resolved its relationship with the Franco dictatorship.",B:"As a significant but contested step in the ongoing process of democratic memory — the renaming and removal of Franco's remains from the monument in 2019 reflects the Democratic Memory Law's aim to transform Francoist symbols, but debate continues between those who see such measures as essential recognition of victims and those (particularly on the political right) who see them as divisive rather than healing.",C:"As an example of Spain's strong tradition of religious architecture.",D:"As evidence that all Spaniards now agree on a single interpretation of the Civil War."},correct:"B"}
+      reforge:{stem:"A student reads that Spain's Valle de los Caídos monument was renamed and repurposed in recent years. In an essay on 'la memoria histórica', how should they frame this fact?",options:{A:"As proof that Spain has fully and finally resolved its relationship with the Franco dictatorship.",B:"As a significant but contested step in la memoria histórica — the renaming removed Francoist symbolism, but debate continues between those who see it as essential recognition and those on the right who see it as divisive.",C:"As an example of Spain's long tradition of repurposing religious architecture.",D:"As evidence that all Spaniards now share a single agreed interpretation of the Civil War."},correct:"B"}
     },
     {
       id:"SP-13",
@@ -3234,7 +3234,7 @@ BANKS["SPAN-2"] = {
       },
       correct:"B",tag:"MC-SP-14",
       scaffold:"Immigration vocabulary for Theme 2 (Diversity and difference): las pateras / los cayucos (irregular migration boats); el estrecho de Gibraltar (Strait of Gibraltar — key crossing point); las vallas de Melilla/Ceuta (border fences in Spanish enclaves in Morocco); el CETI (Centro de Estancia Temporal de Inmigrantes — temporary detention centre); el arraigo social/laboral (social/work ties — legal status for long-term undocumented migrants); la regularización (regularisation of undocumented migrants); los sin papeles (undocumented migrants); la reagrupación familiar (family reunification); el racismo sistémico. Statistics: Spain receives significant immigration from Latin America, Morocco, Romania, sub-Saharan Africa. Canary Islands as entry point has become increasingly prominent.",
-      reforge:{stem:"A reading text describes 'los sin papeles que llevan años trabajando en España sin regularizar su situación'. What does this phrase mean, and which aspect of immigration policy does it relate to?",options:{A:"Legal immigrants who have not yet renewed their work permits — a routine administrative matter.",B:"Undocumented migrants ('without papers') who have been working in Spain for years without their legal status being regularised — this relates to the debate about 'arraigo' (social and work ties) as a pathway to legal residence for long-term undocumented residents, and the broader policy tension between border control and the economic and social reality of established migrant communities.",C:"Migrants who have destroyed their documents to avoid deportation.",D:"Refugees with temporary protection status awaiting a permanent decision."},correct:"B"}
+      reforge:{stem:"A reading text describes 'los sin papeles que llevan años trabajando en España sin regularizar su situación'. What does this phrase mean, and which aspect of immigration policy does it relate to?",options:{A:"Legal immigrants who have not yet renewed their work permits — a routine administrative matter.",B:"Undocumented migrants who have been working in Spain for years without their status being regularised — relevant to 'arraigo' (social/work ties) as a legal residence pathway.",C:"Migrants who destroyed their identity documents to prevent deportation.",D:"Refugees with temporary protection awaiting a final legal decision on their status."},correct:"B"}
     },
     {
       id:"SP-15",
@@ -3321,7 +3321,7 @@ BANKS["MAND-1"] = {
       },
       correct:"B",tag:"MC-MAND-04",
       scaffold:"IB Paper 2 vocabulary-in-context questions require: (1) an accurate gloss of the word/phrase, AND (2) evidence that you understand it in context — not just a dictionary definition. 强制 (qiángzhì) = compulsory, forced, mandatory. 推行 (tuīxíng) = implement, roll out. Combined: mandatory implementation. Context: this tells us Shanghai residents were legally required to sort waste — it was not voluntary. Option A is too vague (no marks). Option C contradicts the text (市民起初觉得麻烦 shows it was not welcomed initially). Exam strategy: always anchor your answer to the sentence surrounding the word — 'the first city to MAKE this compulsory' is the contextual meaning.",
-      reforge:{stem:"In the same article, 回收率提高了将近三成 — what does 将近三成 mean in context?",options:{A:"Exactly 30%.",B:"Nearly 30% — 将近 means 'almost/nearly' and 三成 means three-tenths (30%), so together the phrase means the recycling rate rose by close to 30%, but not exactly.",C:"About 3%.",D:"More than 30%."},correct:"B"}
+      reforge:{stem:"In the same article, 回收率提高了将近三成 — what does 将近三成 mean in context?",options:{A:"Exactly 30% — 三成 is a precise figure.",B:"Nearly 30% — 将近 (jiāngjìn) means 'almost', modifying 三成 (30%), so the rate rose by close to but not exactly 30%.",C:"About 3% — 三成 is misread as 三分.",D:"More than 30% — 将近 implies exceeding the figure."},correct:"B"}
     },
     {
       id:"MAND-05",
@@ -3527,7 +3527,7 @@ BANKS["FR-2"] = {
     },
     {
       id:"FR-11",stem:"Put the pronouns in the correct order: 'He gives it (the book) to me.'",
-      options:{A:"Il le me donne.",B:"Il me donne le.",C:"Il me le donne — first/second-person pronouns (me, te, nous, vous) precede third-person direct objects (le, la, les).",D:"Il donne me le."},
+      options:{A:"Il le me donne — incorrect: third-person pronoun placed before first-person.",B:"Il me donne le — incorrect: 'le' placed after the verb instead of before it.",C:"Il me le donne — first/second-person pronouns (me, te, nous, vous) always precede third-person ones (le, la, les).",D:"Il donne me le — both pronouns incorrectly placed after the verb."},
       correct:"C",tag:"MC-FR-11",
       scaffold:"Double pronoun order before the verb: (1) me/te/se/nous/vous, (2) le/la/les, (3) lui/leur, (4) y, (5) en. So: 'il me le donne', but 'il le lui donne' (le before lui — third person direct precedes third person indirect). Exception order in positive commands: 'donne-le-moi'. This ordering is mechanical — learn the column sequence and it never fails.",
       reforge:{stem:"'She gives it (the letter) to them.' Which is correct?",options:{A:"Elle leur la donne.",B:"Elle la donne leur.",C:"Elle leur donne la.",D:"Elle la leur donne — with two third-person pronouns, direct (la) precedes indirect (leur)."},correct:"D"}
@@ -3690,7 +3690,7 @@ BANKS["MATH-2"] = {
     },
     {
       id:"MATH-16",stem:"Differentiate y = (3x² + 1)/x with respect to x. A student answers dy/dx = 6x/1 = 6x, 'differentiating top and bottom separately'. What is the correct approach at AS level?",
-      options:{A:"The student is right — differentiate numerator and denominator separately.",B:"Split the fraction first: y = 3x + x⁻¹, so dy/dx = 3 − x⁻² — division must be resolved by splitting (or later by the quotient rule) before differentiating term by term.",C:"Multiply top and bottom by x, then differentiate.",D:"dy/dx = 6x · x = 6x²."},
+      options:{A:"Differentiate numerator and denominator separately — the quotient rule is applied term by term.",B:"Split the fraction first: y = 3x + x⁻¹, so dy/dx = 3 − x⁻² — the fraction must be resolved algebraically before differentiating.",C:"Multiply numerator and denominator by x, then differentiate the resulting expression.",D:"dy/dx = 6x · x = 6x² — the product rule has been applied incorrectly."},
       correct:"B",tag:"MC-MATH-16",
       scaffold:"Differentiation is term-by-term ONLY for sums and differences — never across a quotient or product. At AS: rewrite first — split fractions (each numerator term over the denominator), convert roots and reciprocals to index form (√x = x^½, 1/x² = x⁻²), THEN apply the power rule. 'Differentiate top and bottom' is a persistent invented rule. The quotient rule arrives in Year 2, but splitting remains faster whenever it is possible.",
       reforge:{stem:"Differentiate y = (x³ + 4√x)/x².",options:{A:"dy/dx = 3x²/2x — top over bottom derivatives.",B:"dy/dx = x + 4x^(−3/2).",C:"dy/dx = 1 − 6x^(−5/2) — split into x + 4x^(−3/2) first, then differentiate term by term.",D:"dy/dx = 3x² + 2x^(−1/2)."},correct:"C"}
@@ -4219,7 +4219,7 @@ BANKS["PSY-PATH"] = {
       },
       correct:"C",tag:"MC-PATH-03",
       scaffold:"Systematic desensitisation (Wolpe): (1) patient learns relaxation techniques (deep breathing, progressive muscle relaxation); (2) therapist and patient construct a desensitisation hierarchy (least → most feared); (3) patient works through hierarchy while maintaining relaxation. Counter-conditioning replaces the fear CR with relaxation. Works through reciprocal inhibition (anxiety and relaxation cannot coexist). Supported by evidence; good for specific phobias.",
-      reforge:{stem:"How does systematic desensitisation differ from flooding?",options:{A:"Systematic desensitisation uses medication; flooding uses talking therapy.",B:"Flooding involves gradual exposure; systematic desensitisation exposes the patient all at once.",C:"Systematic desensitisation uses gradual, hierarchical exposure paired with relaxation; flooding involves immediate exposure to the most feared stimulus without relaxation — anxiety extinguishes through extinction rather than counter-conditioning.",D:"They are the same technique with different names."},correct:"C"}
+      reforge:{stem:"How does systematic desensitisation differ from flooding?",options:{A:"Systematic desensitisation uses medication; flooding uses talking therapy.",B:"Flooding involves gradual exposure with relaxation; systematic desensitisation is immediate and intense.",C:"Systematic desensitisation uses gradual hierarchical exposure paired with relaxation; flooding exposes the patient to the most feared stimulus immediately.",D:"They are the same technique described with different names for different phobia types."},correct:"C"}
     },
     {
       id:"PATH-04",
@@ -4245,7 +4245,7 @@ BANKS["PSY-PATH"] = {
       },
       correct:"D",tag:"MC-PATH-05",
       scaffold:"Cognitive explanation (Rachman): Everyone has occasional intrusive thoughts, but most people dismiss them. OCD patients interpret these thoughts as threatening and personally significant ('I thought about harming my child — does that make me dangerous?'). This catastrophic misinterpretation causes anxiety; compulsions are performed to neutralise it. This maintains the cycle. Supports CBT as treatment — challenge the misinterpretation rather than the compulsion.",
-      reforge:{stem:"Why does performing a compulsion maintain OCD according to the cognitive model?",options:{A:"It strengthens the neural pathways associated with the compulsion.",B:"It reduces anxiety in the short term through negative reinforcement, which confirms the belief that the thought was dangerous and required neutralising — reinforcing the catastrophic misinterpretation.",C:"It conditions the patient to associate the trigger with anxiety.",D:"It prevents serotonin reuptake."},correct:"B"}
+      reforge:{stem:"Why does performing a compulsion maintain OCD according to the cognitive model?",options:{A:"It strengthens the neural pathways associated with the compulsion, making it harder to resist.",B:"It reduces anxiety temporarily through negative reinforcement — the relief confirms that the compulsion 'worked', maintaining the OCD cycle.",C:"It conditions the patient to associate the trigger stimulus with anxiety.",D:"It prevents serotonin reuptake, worsening the neurochemical imbalance."},correct:"B"}
     },
     {
       id:"PATH-06",
@@ -4353,7 +4353,7 @@ BANKS["HIST-2"] = {
       },
       correct:"B",tag:"MC-HIST-09",
       scaffold:"Détente (French: relaxation): Nixon and Kissinger pursued a more pragmatic foreign policy — playing the 'China card' (Nixon visits China 1972), SALT I (1972) limiting strategic nuclear weapons, Helsinki Accords (1975) recognising post-WWII European borders. BUT competition continued in Africa (Angola), Middle East, and indirectly. Détente collapsed with the Soviet invasion of Afghanistan (1979) and Reagan's hawkish response.",
-      reforge:{stem:"Which event most clearly signalled the end of détente?",options:{A:"The Iranian Revolution (1979).",B:"Nixon's resignation following Watergate (1974).",C:"The Soviet invasion of Afghanistan (December 1979), which led Carter to boycott the 1980 Moscow Olympics, halt SALT II ratification, and increase defence spending.",D:"The fall of Saigon (1975)."},correct:"C"}
+      reforge:{stem:"Which event most clearly signalled the end of détente?",options:{A:"The Iranian Revolution (1979) — Carter's inability to free the hostages damaged his presidency.",B:"Nixon's resignation following Watergate (1974) — ending détente abruptly.",C:"The Soviet invasion of Afghanistan (1979) — Carter boycotted the Moscow Olympics and withdrew SALT II from Senate ratification, ending détente.",D:"The fall of Saigon (1975) — demonstrating US military weakness to the Soviet Union."},correct:"C"}
     },
     {
       id:"CW-05",
@@ -4392,7 +4392,7 @@ BANKS["HIST-2"] = {
       },
       correct:"A",tag:"MC-HIST-12",
       scaffold:"Multi-causal: (1) Structural — Soviet command economy stagnating, technology gap widening; (2) Military overstretch — arms race cost 15-20% of GDP, Afghanistan (1979-89) was 'Soviet Vietnam'; (3) Gorbachev's reforms — glasnost (openness) and perestroika (restructuring) were intended to save the system but instead unleashed forces that destroyed it; (4) 1989 revolutions in Eastern Europe removed the buffer; (5) August coup (1991) fatally weakened communist authority. No single cause suffices.",
-      reforge:{stem:"Why did Gorbachev's reforms backfire so fatally?",options:{A:"He was secretly working for the CIA.",B:"Glasnost allowed public criticism of the system that perestroika could not fix quickly enough — creating rising expectations and nationalist movements that the centre could not control, and revealing the gap between official claims and reality.",C:"Western economic sanctions prevented the reforms from working.",D:"The Soviet military opposed all reform and sabotaged his plans."},correct:"B"}
+      reforge:{stem:"Why did Gorbachev's reforms backfire so fatally?",options:{A:"Gorbachev was secretly working for the CIA and deliberately undermined the USSR.",B:"Glasnost permitted public criticism of problems that perestroika couldn't fix fast enough — creating a crisis of legitimacy as people saw failures openly but reforms stalled.",C:"Western economic sanctions prevented Gorbachev's reforms from producing results.",D:"The Soviet military directly opposed and sabotaged every reform Gorbachev attempted."},correct:"B"}
     },
     {
       id:"CW-08",
@@ -4405,7 +4405,7 @@ BANKS["HIST-2"] = {
       },
       correct:"D",tag:"MC-HIST-13",
       scaffold:"Korea: first hot war of the Cold War. North Korea (Soviet and Chinese backed) invaded South Korea (June 1950). UN forces under MacArthur pushed North Korea back; China intervened when forces approached the Yalu River. Ended in armistice (1953) roughly at the original border. Significance: containment proven viable by force; MacArthur fired for wanting to extend the war to China; established 'limited war' doctrine — fighting to prevent communist gains without triggering WWIII.",
-      reforge:{stem:"Why was Truman's firing of General MacArthur significant?",options:{A:"MacArthur had lost the battle for Seoul.",B:"It established civilian control of the military and the principle of limited war — MacArthur wanted to bomb China and potentially use nuclear weapons, risking WWIII; Truman's firing asserted that Cold War conflicts must be limited to avoid escalation.",C:"MacArthur was found to be a Soviet spy.",D:"It ended the Korean War immediately."},correct:"B"}
+      reforge:{stem:"Why was Truman's firing of General MacArthur significant?",options:{A:"MacArthur had lost the Battle for Seoul and Truman dismissed him for incompetence.",B:"It established the principle of civilian control over the military — MacArthur publicly challenged Truman's limited-war strategy, so Truman dismissed him to assert constitutional authority.",C:"MacArthur was found to be passing intelligence to Soviet agents.",D:"His dismissal ended the Korean War immediately by removing the aggressive US commander."},correct:"B"}
     }
   ]
 };
@@ -4477,7 +4477,7 @@ BANKS["POL-2"] = {
       },
       correct:"B",tag:"MC-POL-09",
       scaffold:"Judicial neutrality: judges are supposed to apply the law impartially, without political bias. BUT: critics (Griffith, 'The Politics of the Judiciary') argue senior judges are drawn from a narrow social elite (white, male, public school, Oxbridge) which shapes their outlook. Cases involving trade unions, immigration, or civil liberties show a pattern of conservative rulings. Judicial review is inherently political — deciding whether the executive has acted lawfully involves value judgements.",
-      reforge:{stem:"Griffith argued that judicial neutrality is a myth. What was his main evidence?",options:{A:"Judges openly campaign for political parties.",B:"Senior judges were disproportionately drawn from a narrow social background (elite, white, male, conservative) which Griffith argued produced systematic bias in rulings on trade unions, civil liberties, and immigration.",C:"Government ministers can direct judges on how to rule.",D:"Judges refused to apply the HRA after 1998."},correct:"B"}
+      reforge:{stem:"Griffith argued that judicial neutrality is a myth. What was his main evidence?",options:{A:"Judges openly campaign for political parties and publicly declare their views.",B:"Senior judges were disproportionately from elite, white, male, Oxbridge backgrounds — critics argue this produces unconscious bias in interpretation of the law.",C:"Government ministers have powers to direct individual judges on how they should rule.",D:"Judges consistently refused to apply the Human Rights Act after its introduction in 1998."},correct:"B"}
     },
     {
       id:"POL-14",
@@ -4503,7 +4503,7 @@ BANKS["POL-2"] = {
       },
       correct:"B",tag:"MC-POL-11",
       scaffold:"Miller 2 (2019): Boris Johnson prorogued Parliament for 5 weeks during the Brexit crisis. The Supreme Court ruled unanimously that prorogation was unlawful — it had the effect of frustrating Parliament's ability to carry out its constitutional functions without reasonable justification. Parliament was recalled immediately. Significant: the court asserted it could review prerogative powers that had previously been considered non-justiciable — a major expansion of judicial review.",
-      reforge:{stem:"Why was Miller 2 (2019) controversial among those who support parliamentary sovereignty?",options:{A:"It allowed the EU to override UK parliamentary decisions.",B:"Critics argued the Supreme Court was itself overstepping its constitutional role by reviewing a political decision (prorogation) — that the elected Prime Minister, not unelected judges, should control Parliament's timetable, raising concerns about judicial supremacy over elected government.",C:"The ruling prevented Brexit from occurring.",D:"It removed the royal prerogative permanently."},correct:"B"}
+      reforge:{stem:"Why was Miller 2 (2019) controversial among those who support parliamentary sovereignty?",options:{A:"It allowed the EU to override the UK Parliament's decision on Brexit.",B:"Critics argued the Court overstepped its role by reviewing a political decision — defenders said it correctly upheld the constitutional principle that Parliament must authorise triggering Article 50.",C:"The ruling prevented Brexit from occurring by blocking the referendum result.",D:"It permanently removed the royal prerogative to ratify international treaties."},correct:"B"}
     },
     {
       id:"POL-16",
@@ -4516,7 +4516,7 @@ BANKS["POL-2"] = {
       },
       correct:"B",tag:"MC-POL-12",
       scaffold:"Salisbury Convention (1945): after Labour's landslide, the Conservative-dominated Lords agreed not to wreck manifesto commitments the electorate had endorsed — the Lords would give government bills a second reading even if they opposed them. Distinct from the Parliament Acts (which give the Commons power to pass bills without the Lords after delay). The convention is unwritten and was tested by the Lords' resistance to the Hunting Act 2004 and welfare reform bills.",
-      reforge:{stem:"How does the Salisbury Convention limit the democratic legitimacy argument for Lords reform?",options:{A:"It proves the Lords already behave democratically.",B:"Because the Lords observe the convention and do not block manifesto commitments, reformers argue there is less urgent democratic need to elect the Lords — the convention provides a functional, if informal, check on unelected power.",C:"The convention was written into law in 2005.",D:"The Lords have never broken the convention."},correct:"B"}
+      reforge:{stem:"How does the Salisbury Convention limit the democratic legitimacy argument for Lords reform?",options:{A:"The Salisbury Convention proves the Lords already behave democratically in all votes.",B:"Because the Lords follow the convention and don't block manifesto bills, reformers argue democratic reform isn't urgent — the informal check is sufficient.",C:"The Salisbury Convention was formally written into statute law in 2005.",D:"The Lords have never broken the Salisbury Convention in its entire history."},correct:"B"}
     }
   ]
 };
@@ -4549,7 +4549,7 @@ BANKS["CS-2"] = {
       },
       correct:"D",tag:"MC-CS-06",
       scaffold:"Binary tree: each node has at most 2 children (left and right). At depth 0: 1 node (root = 2⁰). At depth 1: up to 2 nodes (2¹). At depth 2: up to 4 nodes (2²). At depth d: up to 2^d nodes. A perfect binary tree of height h has 2^(h+1) − 1 total nodes. This exponential growth is what makes binary search efficient — each level doubles the number of nodes.",
-      reforge:{stem:"A binary search tree has height 4 (root at height 0). What is the maximum total number of nodes it can contain?",options:{A:"16",B:"31 — a perfect binary tree of height 4 has 2⁵ − 1 = 31 nodes.",C:"20",D:"8"},correct:"B"}
+      reforge:{stem:"A binary search tree has height 4 (root at height 0). What is the maximum total number of nodes it can contain?",options:{A:"16 nodes — 2⁴ = 16 (height 4, leaf nodes only).",B:"31 nodes — using 2^(h+1) − 1 where h = 4 gives 2⁵ − 1 = 31 total nodes.",C:"20 nodes — intermediate guess between 16 and 31.",D:"8 nodes — 2³, which would be height 3."},correct:"B"}
     },
     {
       id:"CS-11",
@@ -4575,7 +4575,7 @@ BANKS["CS-2"] = {
       },
       correct:"A",tag:"MC-CS-08",
       scaffold:"TCP (Transmission Control Protocol): connection-oriented (three-way handshake: SYN, SYN-ACK, ACK), reliable (acknowledgements + retransmission), ordered (sequence numbers), flow controlled. Used for: web (HTTP/HTTPS), email, file transfer. UDP (User Datagram Protocol): connectionless, no acknowledgements, no ordering, no retransmission — faster but unreliable. Used for: video streaming, online gaming, DNS, VoIP — where speed matters more than perfect delivery.",
-      reforge:{stem:"Why is UDP preferred over TCP for live video streaming?",options:{A:"UDP provides better security than TCP.",B:"UDP is faster because it sends data without waiting for acknowledgements or retransmitting lost packets — for live video, a slightly degraded image is preferable to the delay caused by retransmitting a dropped packet.",C:"TCP cannot handle video file formats.",D:"UDP is more reliable than TCP for large files."},correct:"B"}
+      reforge:{stem:"Why is UDP preferred over TCP for live video streaming?",options:{A:"UDP provides better data security than TCP for video streams.",B:"UDP is faster — it sends packets without acknowledgements or retransmission, accepting some data loss. Streaming tolerates this; file transfers cannot.",C:"TCP cannot handle the video file formats used in live streaming.",D:"UDP is more reliable than TCP for large file transfers where accuracy matters most."},correct:"B"}
     },
     {
       id:"CS-13",
@@ -4601,7 +4601,7 @@ BANKS["CS-2"] = {
       },
       correct:"A",tag:"MC-CS-10",
       scaffold:"Asymmetric encryption: key pair — public key (shared openly) and private key (kept secret). Anyone can encrypt with the public key; only the private key holder can decrypt. Based on mathematical problems that are easy to compute in one direction but infeasible to reverse (e.g. multiplying two large primes is easy; factoring their product is computationally infeasible). Used in HTTPS (TLS), SSH, digital signatures. Solves the key distribution problem of symmetric encryption.",
-      reforge:{stem:"Why does public key cryptography solve a problem that symmetric encryption cannot?",options:{A:"Asymmetric encryption is mathematically unbreakable; symmetric is not.",B:"Symmetric encryption requires both parties to share a secret key securely before communication — but how do you share the key securely without already having a secure channel? Public key cryptography eliminates this by allowing a public key to be shared openly without compromising security.",C:"Public keys are longer and therefore more secure.",D:"Symmetric encryption cannot be used for internet communication."},correct:"B"}
+      reforge:{stem:"Why does public key cryptography solve a problem that symmetric encryption cannot?",options:{A:"Asymmetric encryption is mathematically unbreakable; symmetric encryption is not.",B:"Symmetric encryption requires sharing a secret key in advance — a problem over public networks. Asymmetric uses a public/private key pair, avoiding this key-exchange vulnerability.",C:"Public keys are longer and therefore provide stronger encryption by default.",D:"Symmetric encryption cannot physically be used for internet-based communication."},correct:"B"}
     },
     {
       id:"CS-15",
@@ -4614,7 +4614,7 @@ BANKS["CS-2"] = {
       },
       correct:"D",tag:"MC-CS-11",
       scaffold:"DFS: goes deep first — follows a path until it reaches a dead end, then backtracks. Uses a stack (LIFO) or recursion. Suitable for: maze solving, topological sort, cycle detection. BFS: explores all neighbours at the current depth before going deeper. Uses a queue (FIFO). Finds shortest path in unweighted graphs. Memory: DFS uses O(depth) space; BFS uses O(width) space — BFS can use much more memory on wide graphs.",
-      reforge:{stem:"Why is BFS preferred over DFS for finding the shortest path in an unweighted graph?",options:{A:"BFS is always faster than DFS.",B:"DFS may find A path, but not necessarily the shortest — it goes deep along one branch. BFS explores all nodes at distance 1 before distance 2, guaranteeing the first path found to the target is the shortest.",C:"DFS cannot traverse graphs with cycles.",D:"BFS uses less memory than DFS in all cases."},correct:"B"}
+      reforge:{stem:"Why is BFS preferred over DFS for finding the shortest path in an unweighted graph?",options:{A:"BFS is always faster than DFS for finding any path in a graph.",B:"DFS finds a path but not necessarily the shortest — it goes deep first. BFS explores level by level and guarantees the shortest path in an unweighted graph.",C:"DFS cannot traverse graphs that contain cycles.",D:"BFS uses less memory than DFS in all cases because it doesn't use a stack."},correct:"B"}
     },
     {
       id:"CS-16",
@@ -4627,7 +4627,7 @@ BANKS["CS-2"] = {
       },
       correct:"C",tag:"MC-CS-12",
       scaffold:"Normalisation: process of structuring a relational database to reduce redundancy and dependency. Key normal forms: 1NF (atomic values, no repeating groups); 2NF (no partial dependencies — non-key attributes depend on the whole primary key); 3NF (no transitive dependencies — non-key attributes depend only on the primary key). Benefits: eliminates update anomalies (changing one row inconsistently), insertion anomalies, deletion anomalies. Trade-off: more joins required for queries.",
-      reforge:{stem:"What is an update anomaly, and how does normalisation prevent it?",options:{A:"An error caused by using the wrong SQL syntax.",B:"When duplicated data in a non-normalised table means the same fact must be updated in multiple rows — if only some rows are updated, the database becomes inconsistent. Normalisation stores each fact once, so updates only affect one row.",C:"A security vulnerability caused by unencrypted data.",D:"Slow query performance caused by too many table joins."},correct:"B"}
+      reforge:{stem:"What is an update anomaly, and how does normalisation prevent it?",options:{A:"An error caused by using incorrect SQL syntax in a query.",B:"An update anomaly — duplicated data in a non-normalised table means one fact must be changed in multiple rows; missing one creates inconsistency.",C:"A security vulnerability created by storing unencrypted sensitive data.",D:"Slow query performance caused by joining too many tables simultaneously."},correct:"B"}
     }
   ]
 };
@@ -4670,7 +4670,7 @@ BANKS["BIO-3"] = {
       },
       correct:"A",tag:"MC-BIO-10",
       scaffold:"Two main sources of genetic variation in meiosis: (1) Crossing over (prophase I): homologous chromosomes pair up (bivalents), non-sister chromatids exchange segments at chiasmata — produces new allele combinations on chromosomes; (2) Independent assortment (metaphase I): maternal and paternal homologues align randomly → 2²³ possible combinations in humans. Distinguish from semi-conservative replication (DNA replication, not meiosis) and cytokinesis (cell division, not recombination).",
-      reforge:{stem:"A student says independent assortment produces more genetic variation than crossing over. Is this correct?",options:{A:"Yes — independent assortment creates more variation because it affects all chromosomes simultaneously.",B:"This is debated — independent assortment produces 2²³ combinations in humans, but crossing over produces a theoretically unlimited number of new allele combinations per chromosome pair, so crossing over arguably generates more novel variation.",C:"Yes — crossing over only moves one segment while independent assortment randomises all chromosomes.",D:"No — crossing over does not occur in humans."},correct:"B"}
+      reforge:{stem:"A student says independent assortment produces more genetic variation than crossing over. Is this correct?",options:{A:"Yes — independent assortment is more important because it affects all chromosomes at once.",B:"Both matter — independent assortment gives 2²³ combinations; crossing over adds further variation within each chromosome, making crossing over arguably more significant for total variation.",C:"Yes — crossing over moves one segment while independent assortment randomises all chromosomes.",D:"No — crossing over does not actually occur in humans during meiosis."},correct:"B"}
     },
     {
       id:"GEN-03",
@@ -4683,7 +4683,7 @@ BANKS["BIO-3"] = {
       },
       correct:"D",tag:"MC-BIO-11",
       scaffold:"X-linked recessive: carrier mother = X^A X^a (one normal, one recessive allele). Father = X^A Y. Sons receive Y from father, X from mother. Mother passes X^A or X^a with equal probability (50%). A son who receives X^a is affected (no second X to mask it). So 50% of sons affected. 50% of daughters are carriers. Overall: 25% of all children affected (all are sons). Exam trap: stating 25% of all children, not 50% of sons.",
-      reforge:{stem:"Why are males more likely to express X-linked recessive conditions than females?",options:{A:"Males have weaker immune systems.",B:"Males have only one X chromosome (XY) — a single recessive allele on that X is expressed because there is no second X chromosome carrying a dominant allele to mask it. Females need two copies of the recessive allele (XX) to be affected.",C:"The Y chromosome actively promotes expression of X-linked alleles.",D:"X-linked alleles mutate more frequently in males."},correct:"B"}
+      reforge:{stem:"Why are males more likely to express X-linked recessive conditions than females?",options:{A:"Males have weaker immune systems, making X-linked conditions more likely to develop.",B:"Males have only one X chromosome — a single recessive allele on the X is automatically expressed because there is no second X to mask it.",C:"The Y chromosome actively promotes expression of recessive alleles on the X chromosome.",D:"X-linked alleles mutate more frequently in males due to higher cell division rates."},correct:"B"}
     },
     {
       id:"GEN-04",
@@ -4696,7 +4696,7 @@ BANKS["BIO-3"] = {
       },
       correct:"D",tag:"MC-BIO-12",
       scaffold:"Selection acts on phenotype — what the organism looks like and how it functions. Carriers (Aa) are phenotypically normal but carry one copy of a harmful recessive allele. Selection cannot eliminate the recessive allele from carriers. This explains why harmful recessive alleles (e.g. cystic fibrosis allele) persist at low frequency in populations — they are 'hidden' in heterozygous carriers and only exposed to selection in homozygous recessives (aa).",
-      reforge:{stem:"A harmful recessive allele causes severe disease in homozygotes but not carriers. Why can natural selection not eliminate this allele from the population?",options:{A:"Natural selection only acts on dominant alleles.",B:"The allele is protected from selection in heterozygous carriers — carriers survive and reproduce normally, passing the allele to offspring. Only homozygous recessives are selected against, so the allele frequency decreases very slowly.",C:"The allele mutates back to the dominant form too quickly.",D:"Harmful alleles are always dominant."},correct:"B"}
+      reforge:{stem:"A harmful recessive allele causes severe disease in homozygotes but not carriers. Why can natural selection not eliminate this allele from the population?",options:{A:"Natural selection can only act on dominant alleles — recessive ones are invisible to it.",B:"Heterozygous carriers are phenotypically normal, so the allele is shielded from selection — it persists because it causes no disadvantage in carriers.",C:"The allele mutates back to the dominant form faster than selection can remove it.",D:"Harmful alleles are always dominant and therefore always visible to selection."},correct:"B"}
     },
     {
       id:"GEN-05",
@@ -4722,7 +4722,7 @@ BANKS["BIO-3"] = {
       },
       correct:"B",tag:"MC-BIO-14",
       scaffold:"Discontinuous: controlled by one or few genes (monogenic), phenotypes fall into distinct groups, little environmental influence. Examples: ABO blood group, tongue rolling, dimples. Continuous: controlled by many genes (polygenic) + environmental influence. Normal distribution. Examples: height, weight, skin colour, intelligence. The distinction is not purely genetic vs environmental — discontinuous traits can also be influenced by environment, but the key feature is the presence or absence of intermediates.",
-      reforge:{stem:"Height in humans shows continuous variation. Why does this produce a normal distribution rather than distinct categories?",options:{A:"Height is determined entirely by diet, not genes.",B:"Many genes each contribute a small additive effect (polygenic inheritance), and environmental factors such as nutrition further shift the phenotype — the combined effect of many small, independent contributions produces a normal distribution by the central limit theorem.",C:"Height varies continuously because humans grow throughout their lives.",D:"A normal distribution only occurs when the environment has no effect."},correct:"B"}
+      reforge:{stem:"Height in humans shows continuous variation. Why does this produce a normal distribution rather than distinct categories?",options:{A:"Height is determined entirely by diet and environment — genes play no role.",B:"Multiple genes each contribute a small additive effect (polygenic inheritance), and environment adds continuous variation, producing a normal distribution.",C:"Height varies continuously because humans keep growing throughout their adult lives.",D:"A normal distribution only appears when environment has absolutely no effect on the trait."},correct:"B"}
     },
     {
       id:"GEN-07",
@@ -4748,7 +4748,7 @@ BANKS["BIO-3"] = {
       },
       correct:"D",tag:"MC-BIO-16",
       scaffold:"Natural selection, NOT Lamarckian inheritance: (1) Variation existed before antibiotic exposure — some bacteria had random mutations conferring resistance; (2) Antibiotic = selection pressure; (3) Susceptible bacteria die; (4) Resistant bacteria survive and reproduce; (5) Resistance allele frequency increases over generations. The antibiotic does not cause resistance — it selects for pre-existing resistance. Key exam distinction: selection acts on existing variation; it does not direct mutation.",
-      reforge:{stem:"Why is it wrong to say 'the antibiotic caused the bacteria to become resistant'?",options:{A:"Bacteria cannot change their genetic code.",B:"Antibiotics are not mutagenic chemicals.",C:"The antibiotic did not create resistance — it selected for bacteria that were already resistant due to pre-existing random mutations. Saying it 'caused' resistance implies Lamarckian inheritance (organisms adapting in response to need), which is incorrect.",D:"Resistance developed too quickly for antibiotic exposure to be the cause."},correct:"C"}
+      reforge:{stem:"Why is it wrong to say 'the antibiotic caused the bacteria to become resistant'?",options:{A:"Bacteria cannot change their genetic code, so antibiotic resistance cannot develop.",B:"Antibiotics are not mutagenic chemicals, so they cannot cause resistance mutations.",C:"The antibiotic selected for pre-existing resistant variants — resistance arose from random mutations before exposure, not because the antibiotic caused them.",D:"Resistance developed too rapidly for antibiotic exposure to be the cause of the mutation."},correct:"C"}
     }
   ]
 };
@@ -4781,7 +4781,7 @@ BANKS["CHEM-3"] = {
       },
       correct:"B",tag:"MC-CHEM-10",
       scaffold:"Alkenes are unsaturated (C=C double bond contains sigma + pi bond). In addition reactions, the pi bond breaks, both carbons form new bonds to incoming atoms, and the product is saturated (no double bond). Substitution would require replacing an existing atom — but in addition, no atom is lost. Compare with alkanes (saturated): no pi bond available, so bromine reacts by free radical substitution (UV light needed). The unsaturation of alkenes determines the mechanism.",
-      reforge:{stem:"Why do alkanes undergo free radical substitution with Br₂ while alkenes undergo electrophilic addition?",options:{A:"Alkanes are more reactive than alkenes.",B:"Alkanes have no pi bond — they cannot undergo addition (no pi electrons to attract the electrophile). Alkenes have a pi bond which acts as a nucleophile, attracting electrophiles like Br₂. Free radical substitution in alkanes is initiated by UV light breaking the Br-Br bond homolytically.",C:"Bromine reacts differently depending on temperature.",D:"Alkanes contain oxygen which enables substitution."},correct:"B"}
+      reforge:{stem:"Why do alkanes undergo free radical substitution with Br₂ while alkenes undergo electrophilic addition?",options:{A:"Alkanes are more reactive than alkenes — they form stronger C-H bonds.",B:"Alkanes have no pi bond, so there is nothing for an electrophile to attack; substitution (via radical mechanism) is possible instead.",C:"Bromine reacts differently with alkanes depending on the temperature used.",D:"Alkanes contain oxygen, which enables substitution instead of addition."},correct:"B"}
     },
     {
       id:"ORG-03",
@@ -4794,7 +4794,7 @@ BANKS["CHEM-3"] = {
       },
       correct:"A",tag:"MC-CHEM-11",
       scaffold:"Benzene's delocalised pi electrons give it extra stability — electrophiles must be more powerful than for simple alkenes. FeBr₃ (or AlBr₃) reacts with Br₂: Br₂ + FeBr₃ → Br⁺[FeBr₄]⁻. The Br⁺ electrophile attacks the ring. The mechanism is electrophilic substitution (not addition) — the aromatic system is restored after reaction, preserving the delocalisation energy. Addition would destroy aromaticity and is thermodynamically unfavourable.",
-      reforge:{stem:"Why does benzene undergo electrophilic substitution rather than electrophilic addition (unlike alkenes)?",options:{A:"Benzene has no pi electrons to attract electrophiles.",B:"The delocalised pi electron system of benzene gives thermodynamic stability (aromatic stabilisation energy). Electrophilic addition would destroy this aromaticity, producing a less stable non-aromatic product. Substitution restores the aromatic system, releasing energy equivalent to the aromatic stabilisation — making it thermodynamically preferred.",C:"Benzene is too large for addition reactions.",D:"Addition requires a Lewis acid catalyst that is not available for benzene."},correct:"B"}
+      reforge:{stem:"Why does benzene undergo electrophilic substitution rather than electrophilic addition (unlike alkenes)?",options:{A:"Benzene has no pi electrons, so it cannot attract electrophilic reagents.",B:"Benzene's delocalised pi system confers aromatic stability (~150 kJ/mol). Addition would destroy this — costing more energy than it releases — so substitution, which preserves the ring, is strongly favoured.",C:"Benzene molecules are too large geometrically for addition reactions to occur.",D:"Addition would require a Lewis acid catalyst that is simply unavailable for benzene."},correct:"B"}
     },
     {
       id:"ORG-04",
@@ -4820,7 +4820,7 @@ BANKS["CHEM-3"] = {
       },
       correct:"A",tag:"MC-CHEM-13",
       scaffold:"Aldehydes can be oxidised (have a H on the carbonyl carbon); ketones cannot be easily oxidised (no H on carbonyl). Tests: (1) Tollens' (ammoniacal silver nitrate) — aldehyde reduces Ag⁺ to Ag metal (silver mirror); ketone no reaction. (2) Fehling's — aldehyde reduces Cu²⁺ to Cu₂O (brick-red precipitate); ketone no reaction. (3) Acidified K₂Cr₂O₇: aldehydes oxidised (orange → green); ketones are NOT oxidised under normal conditions — this does NOT distinguish them cleanly.",
-      reforge:{stem:"Why can Tollens' reagent distinguish an aldehyde from a ketone, but acidified K₂Cr₂O₇ is less reliable for this purpose?",options:{A:"Tollens' is more concentrated.",B:"Tollens' (Ag⁺) and Fehling's (Cu²⁺) are mild enough to oxidise aldehydes but not ketones. Acidified K₂Cr₂O₇ is a stronger oxidising agent that, under vigorous conditions, can sometimes oxidise ketones — making it a less clean distinction test.",C:"K₂Cr₂O₇ reacts with both but at different rates.",D:"Tollens' reagent changes colour; K₂Cr₂O₇ does not."},correct:"B"}
+      reforge:{stem:"Why can Tollens' reagent distinguish an aldehyde from a ketone, but acidified K₂Cr₂O₇ is less reliable for this purpose?",options:{A:"Tollens' reagent is more concentrated, which is why it can react with ketones.",B:"Tollens' (Ag⁺) and Fehling's (Cu²⁺) oxidise aldehydes but not ketones (silver mirror / brick-red precipitate); K₂Cr₂O₇ oxidises both, so it cannot distinguish between them.",C:"K₂Cr₂O₇ reacts with both aldehydes and ketones but at visibly different rates.",D:"Only Tollens' reagent produces a colour change; K₂Cr₂O₇ does not change colour at all."},correct:"B"}
     },
     {
       id:"ORG-06",
@@ -4833,7 +4833,7 @@ BANKS["CHEM-3"] = {
       },
       correct:"D",tag:"MC-CHEM-14",
       scaffold:"Esterification: RCOOH + R'OH ⇌ RCOOR' + H₂O. Acid catalyst (conc. H₂SO₄) speeds up the equilibrium. Condensation reaction — two molecules join with loss of a small molecule (H₂O). The ester functional group is -COO-. Reversible: excess acid or alcohol shifts equilibrium right; water removal (Dean-Stark) drives to completion. Products: ester + water. Students confuse esterification with amide formation (acyl chloride + amine → amide + HCl).",
-      reforge:{stem:"Why does esterification reach an equilibrium rather than going to completion?",options:{A:"The acid catalyst is consumed in the reaction.",B:"Esters are thermally unstable.",C:"Esterification is a reversible condensation reaction — the ester can be hydrolysed back to acid and alcohol by water. Unless product is removed (e.g. distillation of ester or water removal), the reverse reaction competes and an equilibrium is established.",D:"The reaction requires UV light to proceed past equilibrium."},correct:"C"}
+      reforge:{stem:"Why does esterification reach an equilibrium rather than going to completion?",options:{A:"The acid catalyst is consumed during esterification, reducing the yield.",B:"Esters are thermally unstable at reaction temperatures, causing decomposition before equilibrium.",C:"Esterification is reversible — the ester can hydrolyse back. Yield is improved by removing water, using excess reactant, or removing the ester as it forms (Le Chatelier's principle).",D:"The reaction requires UV light to proceed beyond the equilibrium point."},correct:"C"}
     },
     {
       id:"ORG-07",
@@ -4918,7 +4918,7 @@ BANKS["MATH-3"] = {
       },
       correct:"A",tag:"MC-STAT-04",
       scaffold:"PMCC (r): measures strength and direction of linear correlation. Range: −1 ≤ r ≤ 1. r = −0.92: strong (close to −1) negative (inverse) linear correlation. Exam traps: (1) r² = 0.846 = proportion of variation explained (not r itself); (2) r is not the gradient of the regression line (that's b in y = a + bx); (3) correlation ≠ causation; (4) r only measures LINEAR correlation — a perfect curve could have r ≈ 0.",
-      reforge:{stem:"r = 0.85 for a data set. A student claims 85% of the variation in y is explained by x. What is the correct figure?",options:{A:"85% — r directly gives the proportion explained.",B:"r² = 0.85² = 0.7225, so approximately 72.25% of the variation in y is explained by the linear relationship with x. The coefficient of determination is r², not r.",C:"42.5% — half of r.",D:"0.85% — r is already expressed as a proportion."},correct:"B"}
+      reforge:{stem:"r = 0.85 for a data set. A student claims 85% of the variation in y is explained by x. What is the correct figure?",options:{A:"85% — r itself gives the proportion of variation in y explained by x.",B:"72.25% — the coefficient of determination is r², not r itself. Here r² = 0.85² = 0.7225, so ~72.25% of variation in y is explained by x.",C:"42.5% — calculated as half of r, which has no statistical meaning.",D:"0.85% — r is treated as a percentage without being squared first."},correct:"B"}
     },
     {
       id:"STAT-05",
@@ -4957,7 +4957,7 @@ BANKS["MATH-3"] = {
       },
       correct:"B",tag:"MC-STAT-07",
       scaffold:"Critical region: the set of values of the test statistic for which H₀ is rejected. Chosen so P(X in critical region | H₀ true) ≤ α (significance level). For X ~ B(20, 0.5), one-tailed at 5%: find smallest c such that P(X ≥ c) ≤ 0.05. If c = 13: P(X ≥ 13) ≈ 0.0577 > 5% → not in critical region. P(X ≥ 14) ≈ 0.0318 ≤ 5% → critical region is X ≥ 14. The actual significance level is the probability of the critical region under H₀.",
-      reforge:{stem:"An observed value x = 14 falls in the critical region (X ≥ 14) at the 5% significance level. What is the correct conclusion?",options:{A:"H₀ is proved false.",B:"There is a 5% chance H₀ is true.",C:"Reject H₀ — the observed value falls in the critical region, so there is sufficient evidence at the 5% significance level to support H₁.",D:"Accept H₁ with 95% certainty."},correct:"C"}
+      reforge:{stem:"An observed value x = 14 falls in the critical region (X ≥ 14) at the 5% significance level. What is the correct conclusion?",options:{A:"H₀ is proved to be false beyond any doubt.",B:"There is a 5% probability that H₀ is true given this data.",C:"Reject H₀ — the observed value falls in the critical region, providing sufficient evidence at the 5% level to support H₁.",D:"Accept H₁ with 95% certainty — the alternative hypothesis is now proven."},correct:"C"}
     },
     {
       id:"STAT-08",
@@ -5065,7 +5065,7 @@ BANKS["PHYS-3"] = {
       },
       correct:"D",tag:"MC-PHYS-14",
       scaffold:"Parallel resistors: 1/R_total = 1/R₁ + 1/R₂. Each parallel branch carries its own current. Total current = sum of branch currents. Since V is the same across both, and I_total = I₁ + I₂ > either branch current, R_total = V/I_total < V/I₁ or V/I₂. Intuition: adding a parallel path is like adding lanes to a motorway — more flow for the same 'pressure'. Always less than smallest individual resistor.",
-      reforge:{stem:"Three identical resistors each of 12 Ω are connected in parallel. What is the total resistance?",options:{A:"36 Ω",B:"4 Ω — 1/R = 1/12 + 1/12 + 1/12 = 3/12, so R = 4 Ω.",C:"12 Ω",D:"0.25 Ω"},correct:"B"}
+      reforge:{stem:"Three identical resistors each of 12 Ω are connected in parallel. What is the total resistance?",options:{A:"36 Ω — the three resistances added directly.",B:"4 Ω — for parallel resistors: 1/R = 1/12 + 1/12 + 1/12 = 3/12, giving R = 4 Ω.",C:"12 Ω — the value of one resistor unchanged.",D:"0.25 Ω — the reciprocal taken without inverting back."},correct:"B"}
     },
     {
       id:"EWQ-07",
@@ -5137,7 +5137,7 @@ BANKS["BUS-3"] = {
       },
       correct:"C",tag:"MC-BUS-10",
       scaffold:"Interest rate effects on business: (1) Borrowing costs rise — loan repayments increase, reducing profitability; firms with high gearing are most exposed; (2) Consumer spending falls — mortgage costs rise, reducing disposable income; demand for big-ticket items (cars, kitchens) falls most; (3) Exchange rate: higher rates attract foreign investment → currency appreciates → exports more expensive, imports cheaper. Evaluation: impact depends on gearing, whether products are necessities or luxuries, and export dependency.",
-      reforge:{stem:"Why are highly geared businesses more vulnerable to interest rate rises than low-geared businesses?",options:{A:"Highly geared firms have more employees to pay.",B:"Highly geared firms have a large proportion of debt finance — rising interest rates directly increase their loan repayment costs. A small rate rise has a large absolute impact on profit. Low-geared firms have less debt, so interest costs are a smaller proportion of their outgoings.",C:"Gearing affects productivity, not financial costs.",D:"Highly geared firms always have lower profit margins."},correct:"B"}
+      reforge:{stem:"Why are highly geared businesses more vulnerable to interest rate rises than low-geared businesses?",options:{A:"Highly geared firms have more employees to pay, increasing fixed labour costs.",B:"Highly geared firms carry large debt — rising interest rates increase their repayment costs directly, squeezing profit margins more than for low-geared competitors.",C:"Gearing affects employee productivity levels rather than the firm's financial costs.",D:"Highly geared firms always operate with permanently lower profit margins."},correct:"B"}
     },
     {
       id:"OPS-04",
@@ -5150,7 +5150,7 @@ BANKS["BUS-3"] = {
       },
       correct:"A",tag:"MC-BUS-11",
       scaffold:"Porter's Five Forces: (1) Competitive rivalry; (2) Threat of new entrants; (3) Bargaining power of suppliers; (4) Bargaining power of buyers; (5) Threat of substitutes. Substitutes come from OUTSIDE the industry: Uber is a substitute for taxis; streaming is a substitute for cinema; cycling is a substitute for public transport. High substitute threat caps pricing power and profit margins. Exam trap: confusing substitutes (from outside) with competitors (within the same industry).",
-      reforge:{stem:"Which of the following represents a substitute threat to the cinema industry?",options:{A:"A new cinema opening nearby.",B:"Netflix releasing films that were previously cinema-only — consumers can meet the same need (entertainment) without visiting a cinema, reducing cinema's pricing power.",C:"Popcorn suppliers raising prices.",D:"Odeon acquiring Vue cinemas."},correct:"B"}
+      reforge:{stem:"Which of the following represents a substitute threat to the cinema industry?",options:{A:"A new cinema chain opening nearby and offering lower ticket prices.",B:"Netflix releasing cinema films on streaming — consumers substitute the same experience at lower cost from home, reducing cinema demand.",C:"Popcorn suppliers raising their wholesale prices to cinemas.",D:"Odeon acquiring Vue cinemas, reducing competition in the local market."},correct:"B"}
     },
     {
       id:"OPS-05",
@@ -5176,7 +5176,7 @@ BANKS["BUS-3"] = {
       },
       correct:"B",tag:"MC-BUS-13",
       scaffold:"Quality control (QC): inspection at the end of production — catches defects but does not prevent them; faulty products may have been costly to make; relies on inspectors. Quality assurance (QA): prevention-focused — quality standards built into every stage of production; workers take responsibility; aims to get it right first time. Total Quality Management (TQM) extends QA to a whole-company philosophy: zero defects, continuous improvement (kaizen), customer focus. QA is generally preferred — preventing defects is cheaper than finding and scrapping them.",
-      reforge:{stem:"Why is quality assurance generally more cost-effective than quality control in the long run?",options:{A:"QA requires less training than QC.",B:"Preventing defects throughout the process avoids the cost of producing faulty goods in the first place — wasted materials, labour, and rework costs are eliminated. QC only identifies defects after resources have already been consumed making them.",C:"QA inspectors are paid less than QC inspectors.",D:"QC produces a higher percentage of defective products over time."},correct:"B"}
+      reforge:{stem:"Why is quality assurance generally more cost-effective than quality control in the long run?",options:{A:"QA requires less staff training than QC inspection.",B:"QA prevents defects throughout the process, avoiding the cost of scrapping faulty goods; QC only catches defects after production.",C:"QA inspectors receive lower wages than QC inspectors at every level.",D:"QC reliably produces a higher percentage of defective products over time."},correct:"B"}
     },
     {
       id:"OPS-07",
