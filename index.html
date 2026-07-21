@@ -530,7 +530,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
 <div class="wrap">
   <p class="tag eyebrow reveal">Three ways to train</p>
   <h2 class="reveal">Daily heat. Weekly pressure.</h2>
-  <div class="modes">
+  <div class="modes reveal">
     <div class="mode">
       <h3><span>Forge</span> Mode</h3>
       <p>The daily session: a few minutes of exam-style micro-scenarios, spec-mapped and spaced so it sticks. Habit beats heroics.</p>
@@ -554,7 +554,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
 <div class="wrap">
   <p class="tag eyebrow reveal">For students</p>
   <h2 class="reveal">Your exam profile. Always honest.</h2>
-  <p class="sect-lede">Other apps show you a streak. Forge shows you exactly where you'll lose marks — and what to do about it before the exam.</p>
+  <p class="sect-lede reveal">Other apps show you a streak. Forge shows you exactly where you'll lose marks — and what to do about it before the exam.</p>
 
   <div class="dash-tabs" role="tablist" style="margin-top:32px">
     <button class="stab active" onclick="switchStudent('overview',this)">My overview</button>
@@ -566,7 +566,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
 
   <!-- STUDENT VIEW 1: Overview -->
   <div class="dash-panel" id="stu-overview">
-    <div class="dash-card">
+    <div class="dash-card reveal">
       <div class="dash-head">
         <span class="rt">Your profile · A Level Economics</span>
         <span class="tag">Always updating</span>
@@ -635,14 +635,14 @@ if (localStorage.getItem('forge-theme') === 'light') {
 
   <!-- STUDENT VIEW 2: Forge mode -->
   <div class="dash-panel hidden" id="stu-forge">
-    <div class="dash-card">
+    <div class="dash-card reveal">
       <div class="dash-head">
         <span class="rt">Forge mode · Daily session</span>
         <span class="tag">3 minutes</span>
       </div>
       <p class="dash-desc">Your daily session pulls questions from across the spec, weighted toward the topics you're weakest on. The worse you're doing on a spec point, the more often it appears.</p>
 
-      <div class="stu-session-mock">
+      <div class="stu-session-mock reveal">
         <div class="stu-session-head">
           <span style="color:var(--white);font-weight:600">Today's session</span>
           <span class="mono" style="color:#8A857E;font-size:12px">10 questions · ~3 mins</span>
@@ -709,14 +709,14 @@ if (localStorage.getItem('forge-theme') === 'light') {
 
   <!-- STUDENT VIEW 3: Anvil -->
   <div class="dash-panel hidden" id="stu-anvil">
-    <div class="dash-card">
+    <div class="dash-card reveal">
       <div class="dash-head">
         <span class="rt">The Anvil · Your persistent weaknesses</span>
         <span class="tag">Rework until resolved</span>
       </div>
       <p class="dash-desc">Misconceptions that survive the re-forge land here. They don't leave until you prove you've beaten them — not once, but consistently.</p>
 
-      <div class="anvil-list">
+      <div class="anvil-list reveal">
         <div class="anvil-item active-anvil">
           <div class="anvil-top">
             <span class="heat-tag mono">MC-MATH-03</span>
@@ -783,14 +783,14 @@ if (localStorage.getItem('forge-theme') === 'light') {
 
   <!-- STUDENT VIEW 4: Crucible -->
   <div class="dash-panel hidden" id="stu-crucible">
-    <div class="dash-card">
+    <div class="dash-card reveal">
       <div class="dash-head">
         <span class="rt">The Crucible · Weekly exam pressure</span>
         <span class="tag">5 minutes · No scaffolds</span>
       </div>
       <p class="dash-desc">Once a week, no safety net. No scaffolds, no re-forges — just the question and the clock. This is how the exam feels.</p>
 
-      <div class="crucible-mock">
+      <div class="crucible-mock reveal">
         <div class="crucible-header">
           <div class="crucible-timer">
             <span class="crucible-time">3:42</span>
@@ -853,7 +853,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
 
   <!-- STUDENT VIEW 5: Assignments -->
   <div class="dash-panel hidden" id="stu-assignments">
-    <div class="dash-card">
+    <div class="dash-card reveal">
       <div class="dash-head">
         <span class="rt">Assignments · Set by your teacher</span>
         <span class="tag">Due dates tracked</span>
@@ -908,7 +908,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
 <div class="wrap">
   <p class="tag eyebrow reveal">For teachers</p>
   <h2 class="reveal">Readiness, not completion.</h2>
-  <p class="sect-lede">Most dashboards tell you who logged in. Forge tells you what to teach on Monday. Click through the views below.</p>
+  <p class="sect-lede reveal">Most dashboards tell you who logged in. Forge tells you what to teach on Monday. Click through the views below.</p>
 
   <!-- dashboard tabs -->
   <div class="dash-tabs" role="tablist" style="margin-top:32px">
@@ -921,7 +921,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
 
   <!-- VIEW 1: Misconception heatmap -->
   <div class="dash-panel" id="dash-heatmap">
-    <div class="dash-card">
+    <div class="dash-card reveal">
       <div class="dash-head">
         <span class="rt">Year 12 Economics · This week</span>
         <span class="tag">Live data</span>
@@ -970,7 +970,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
 
   <!-- VIEW 2: Class overview -->
   <div class="dash-panel hidden" id="dash-class">
-    <div class="dash-card">
+    <div class="dash-card reveal">
       <div class="dash-head">
         <span class="rt">Year 12 Economics · Class of 24</span>
         <span class="tag">This week</span>
@@ -1026,20 +1026,20 @@ if (localStorage.getItem('forge-theme') === 'light') {
 
   <!-- VIEW 3: Student drill-down -->
   <div class="dash-panel hidden" id="dash-student">
-    <div class="dash-card">
+    <div class="dash-card reveal">
       <div class="dash-head">
         <span class="rt">Student A · Year 12 Economics</span>
         <span class="tag">Individual profile</span>
       </div>
       <p class="dash-desc">Every misconception this student has triggered, with frequency and whether the re-forge corrected it.</p>
-      <div class="student-profile">
+      <div class="student-profile reveal">
         <div class="sp-stat-row">
           <div class="sp-stat"><span class="sp-n" style="color:var(--bad)">38%</span><span class="sp-l">Accuracy</span></div>
           <div class="sp-stat"><span class="sp-n" style="color:var(--white)">34</span><span class="sp-l">Questions</span></div>
           <div class="sp-stat"><span class="sp-n" style="color:var(--hot)">6</span><span class="sp-l">Unique misconceptions</span></div>
           <div class="sp-stat"><span class="sp-n" style="color:var(--good)">2</span><span class="sp-l">Reforged successfully</span></div>
         </div>
-        <div class="sp-section">
+        <div class="sp-section reveal">
           <div class="sp-title">Anvil — misconceptions that keep firing</div>
           <div class="sp-item anvil">
             <span class="heat-tag mono">MC-INF-01</span>
@@ -1054,7 +1054,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
             <span class="sp-detail">Fired 3 times · Reforged 1/3 · <b style="color:var(--bad)">Still active</b></span>
           </div>
         </div>
-        <div class="sp-section">
+        <div class="sp-section reveal">
           <div class="sp-title">Resolved — misconceptions corrected through re-forging</div>
           <div class="sp-item resolved">
             <span class="heat-tag mono" style="background:var(--good)">MC-EMP-01</span>
@@ -1072,14 +1072,14 @@ if (localStorage.getItem('forge-theme') === 'light') {
 
   <!-- VIEW 4: Corrective starters -->
   <div class="dash-panel hidden" id="dash-starter">
-    <div class="dash-card">
+    <div class="dash-card reveal">
       <div class="dash-head">
         <span class="rt">Corrective starters · Auto-generated</span>
         <span class="tag">Ready to use</span>
       </div>
       <p class="dash-desc">Each high-frequency misconception pairs with a ready-made 5-minute starter activity — projected on the board, worked through as a class, targeting the exact error.</p>
-      <div class="starter-preview">
-        <div class="starter-card">
+      <div class="starter-preview reveal">
+        <div class="starter-card reveal">
           <div class="starter-top">
             <span class="heat-tag mono">MC-INF-01</span>
             <span class="starter-fires">23 fires this week</span>
@@ -1104,7 +1104,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
 
   <!-- VIEW 5: Assignments -->
   <div class="dash-panel hidden" id="dash-assignments">
-    <div class="dash-card">
+    <div class="dash-card reveal">
       <div class="dash-head">
         <span class="rt">Assignments · Year 12 Economics</span>
         <span class="tag">Set &amp; track</span>
@@ -1191,7 +1191,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
 <div class="wrap">
   <p class="tag eyebrow reveal">Subjects</p>
   <h2 class="reveal">Deep, not wide.</h2>
-  <p class="sect-lede">Other platforms cover thirteen subjects at flashcard depth. Forge builds spec point by spec point, from examiners' reports — starting where the exam pressure is highest.</p>
+  <p class="sect-lede reveal">Other platforms cover thirteen subjects at flashcard depth. Forge builds spec point by spec point, from examiners' reports — starting where the exam pressure is highest.</p>
 
   <div class="level-tabs" role="tablist" aria-label="Choose level">
     <button class="ltab active" role="tab" aria-selected="true" data-level="alevel">A Level</button>
@@ -1600,7 +1600,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
 <div class="wrap">
   <p class="tag eyebrow reveal">Straight from the bank</p>
   <h2 class="reveal">Three questions. No sign-up.</h2>
-  <p class="sect-lede">Real questions from across the Forge banks — Economics, Psychology, Law, Biology, History, Chemistry, Maths, Sociology, and Physics. Refreshes on every visit. Every distractor is tagged to a documented misconception from examiners' reports.</p>
+  <p class="sect-lede reveal">Real questions from across the Forge banks — Economics, Psychology, Law, Biology, History, Chemistry, Maths, Sociology, and Physics. Refreshes on every visit. Every distractor is tagged to a documented misconception from examiners' reports.</p>
   <div class="bank" id="bank"></div>
 </div>
 </section>
@@ -1634,13 +1634,13 @@ if (localStorage.getItem('forge-theme') === 'light') {
 <div class="wrap" style="max-width:1160px">
   <p class="tag eyebrow reveal">Pricing</p>
   <h2 class="reveal">Start free. Go further when it matters.</h2>
-  <p class="sect-lede">Every student gets access to Forge for free. Schools and departments get the full system at a fraction of the per-student cost. One invoice, every subject, every student.</p>
+  <p class="sect-lede reveal">Every student gets access to Forge for free. Schools and departments get the full system at a fraction of the per-student cost. One invoice, every subject, every student.</p>
 
   <div style="text-align:center;margin:28px 0 -8px">
     <span style="font-size:13px;font-family:'JetBrains Mono',monospace;color:#8A857E">Students on annual plans save up to 30% vs monthly · School licences replace £750+ in individual subscriptions</span>
   </div>
 
-  <div class="pricing-grid" style="margin-top:40px">
+  <div class="pricing-grid reveal" style="margin-top:40px">
 
     <!-- FREE -->
     <div class="price-card reveal">
@@ -1663,7 +1663,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
     </div>
 
     <!-- PRO STUDENT -->
-    <div class="price-card price-card-hot">
+    <div class="price-card price-card-hot reveal">
       <div class="price-badge">Most popular</div>
       <div class="price-tier tag" style="color:var(--coal)">Pro — Student</div>
       <div class="price-amount" style="color:var(--coal)">£2.99<span style="font-size:18px;font-weight:600">/mo</span></div>
@@ -1705,10 +1705,10 @@ if (localStorage.getItem('forge-theme') === 'light') {
     </div>
 
   </div><!-- /pricing-grid -->
-  <div class="pricing-grid-bottom">
+  <div class="pricing-grid-bottom reveal">
 
     <!-- WHOLE SCHOOL -->
-    <div class="price-card price-card-school" style="border-color:rgba(255,201,60,.4)">
+    <div class="price-card price-card-school reveal" style="border-color:rgba(255,201,60,.4)">
       <div class="price-badge" style="color:var(--good);border-color:rgba(127,217,138,.4)">Best value</div>
       <div class="price-tier tag" style="color:var(--hot)">Whole School</div>
       <div class="price-amount">£1,499<span style="font-size:18px;font-weight:600">/year</span></div>
@@ -1729,7 +1729,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
     </div>
 
     <!-- DELUXE -->
-    <div class="price-card price-card-deluxe">
+    <div class="price-card price-card-deluxe reveal">
       <div class="price-badge-deluxe">✦ Deluxe — by application</div>
       <div class="price-tier tag" style="color:var(--good);margin-top:6px">Forge Deluxe</div>
       <div class="price-amount" style="color:var(--white)">£4,500<span style="font-size:18px;font-weight:600;color:#8A857E">/year</span></div>
@@ -1769,34 +1769,34 @@ if (localStorage.getItem('forge-theme') === 'light') {
 <div class="wrap">
   <p class="tag eyebrow reveal">XP &amp; Ranks</p>
   <h2 class="reveal">Every question forges something.</h2>
-  <p class="sect-lede">Revision apps reward time spent. Forge rewards correct thinking — and the harder the mode, the more XP you earn.</p>
+  <p class="sect-lede reveal">Revision apps reward time spent. Forge rewards correct thinking — and the harder the mode, the more XP you earn.</p>
 
   <div class="xp-grid">
-    <div class="xp-card">
+    <div class="xp-card reveal">
       <div class="xp-icon">⚡</div>
       <div class="xp-label mono">Quiz — correct</div>
       <div class="xp-val">+10 XP</div>
       <div class="xp-desc">Getting it right first time. The baseline.</div>
     </div>
-    <div class="xp-card">
+    <div class="xp-card reveal">
       <div class="xp-icon">🔁</div>
       <div class="xp-label mono">Re-forge — correct</div>
       <div class="xp-val">+20 XP</div>
       <div class="xp-desc">You got it wrong, then proved you understood why. That's worth more.</div>
     </div>
-    <div class="xp-card">
+    <div class="xp-card reveal">
       <div class="xp-icon">🔥</div>
       <div class="xp-label mono">Crucible — correct</div>
       <div class="xp-val">+30 XP</div>
       <div class="xp-desc">No hints. No scaffolds. Under the clock. This is exam conditions.</div>
     </div>
-    <div class="xp-card">
+    <div class="xp-card reveal">
       <div class="xp-icon">⚒</div>
       <div class="xp-label mono">Anvil cleared</div>
       <div class="xp-val">+50 XP</div>
       <div class="xp-desc">A misconception that survived the re-forge, reworked until it's gone. The hardest XP to earn.</div>
     </div>
-    <div class="xp-card">
+    <div class="xp-card reveal">
       <div class="xp-icon">📅</div>
       <div class="xp-label mono">Daily streak</div>
       <div class="xp-val">+25 XP</div>
@@ -1807,27 +1807,27 @@ if (localStorage.getItem('forge-theme') === 'light') {
   <div class="rank-section">
     <p class="tag" style="margin-bottom:16px">Forge Ranks</p>
     <div class="rank-grid">
-      <div class="rank-row">
+      <div class="rank-row reveal">
         <span class="rank-badge" style="background:var(--panel-2);color:var(--slate)">Apprentice</span>
         <span class="rank-range mono">0 – 300 XP</span>
         <span class="rank-desc">You're starting. The first question is the hardest one.</span>
       </div>
-      <div class="rank-row">
+      <div class="rank-row reveal">
         <span class="rank-badge" style="background:rgba(255,201,60,.15);color:var(--hot)">Journeyman</span>
         <span class="rank-range mono">300 – 1,500 XP</span>
         <span class="rank-desc">The habit is forming. Misconceptions are being tracked and cleared.</span>
       </div>
-      <div class="rank-row">
+      <div class="rank-row reveal">
         <span class="rank-badge" style="background:rgba(255,107,44,.15);color:var(--ember)">Craftsman</span>
         <span class="rank-range mono">1,500 – 5,000 XP</span>
         <span class="rank-desc">The Anvil is shrinking. The Crucible is surviving.</span>
       </div>
-      <div class="rank-row">
+      <div class="rank-row reveal">
         <span class="rank-badge" style="background:rgba(127,217,138,.15);color:var(--good)">Forged</span>
         <span class="rank-range mono">5,000 – 15,000 XP</span>
         <span class="rank-desc">Most misconceptions resolved. Exam conditions feel familiar.</span>
       </div>
-      <div class="rank-row rank-row-master">
+      <div class="rank-row rank-row-master reveal">
         <span class="rank-badge" style="background:linear-gradient(100deg,var(--hot),var(--ember));color:var(--coal)">Master</span>
         <span class="rank-range mono">15,000+ XP</span>
         <span class="rank-desc">The exam is the easy part now.</span>
@@ -1835,7 +1835,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
     </div>
   </div>
 
-  <div class="leaderboard-preview">
+  <div class="leaderboard-preview reveal">
     <p class="tag" style="margin-bottom:12px">Class leaderboard — visible to your class only</p>
     <div class="lb-card">
       <div class="lb-row lb-you">
@@ -1877,7 +1877,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
   <div class="inner">
     <p class="tag eyebrow reveal">Early access</p>
     <h2 class="reveal">The first 25 teachers get in free.</h2>
-    <p class="sect-lede" style="margin:0 auto">Forge is being built in a working classroom, launching with Edexcel A Level Economics, AQA Psychology and AQA Sociology. Join the list to shape it and pilot it first.</p>
+    <p class="sect-lede reveal" style="margin:0 auto">Forge is being built in a working classroom, launching with Edexcel A Level Economics, AQA Psychology and AQA Sociology. Join the list to shape it and pilot it first.</p>
     <form id="waitform">
       <input type="email" id="email" placeholder="you@school.org.uk" required aria-label="Email address">
       <button type="submit">Join the waiting list</button>
@@ -1890,8 +1890,30 @@ if (localStorage.getItem('forge-theme') === 'light') {
 
 <div class="wrap">
 <footer>
-  <span>© 2026 Forge · Built by a teacher, for the exam room.</span>
-  <span class="mono">forge · GCSE &amp; A Level</span>
+  <div style="display:flex;gap:32px;flex-wrap:wrap;margin-bottom:16px">
+    <div>
+      <p class="mono" style="font-size:11px;letter-spacing:.08em;color:var(--slate);margin-bottom:8px">PLATFORM</p>
+      <a href="forge-quiz.html" style="display:block;color:var(--slate);text-decoration:none;font-size:13px;margin-bottom:6px">Quiz</a>
+      <a href="anvil.html" style="display:block;color:var(--slate);text-decoration:none;font-size:13px;margin-bottom:6px">The Anvil</a>
+      <a href="crucible.html" style="display:block;color:var(--slate);text-decoration:none;font-size:13px;margin-bottom:6px">The Crucible</a>
+    </div>
+    <div>
+      <p class="mono" style="font-size:11px;letter-spacing:.08em;color:var(--slate);margin-bottom:8px">SCHOOL</p>
+      <a href="teacher.html" style="display:block;color:var(--slate);text-decoration:none;font-size:13px;margin-bottom:6px">Teacher dashboard</a>
+      <a href="school-overview.html" style="display:block;color:var(--slate);text-decoration:none;font-size:13px;margin-bottom:6px">School overview</a>
+      <a href="faq.html" style="display:block;color:var(--slate);text-decoration:none;font-size:13px;margin-bottom:6px">FAQ for schools</a>
+    </div>
+    <div>
+      <p class="mono" style="font-size:11px;letter-spacing:.08em;color:var(--slate);margin-bottom:8px">INFO</p>
+      <a href="#pricing" style="display:block;color:var(--slate);text-decoration:none;font-size:13px;margin-bottom:6px">Pricing</a>
+      <a href="#subjects" style="display:block;color:var(--slate);text-decoration:none;font-size:13px;margin-bottom:6px">Subjects</a>
+      <a href="privacy.html" style="display:block;color:var(--slate);text-decoration:none;font-size:13px;margin-bottom:6px">Privacy policy</a>
+    </div>
+  </div>
+  <div style="border-top:1px solid var(--line);padding-top:16px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px">
+    <span style="font-size:13px;color:var(--slate)">© 2026 Forge · Built by a teacher, for the exam room.</span>
+    <span class="mono" style="font-size:11px;color:var(--slate)">forge · GCSE &amp; A Level</span>
+  </div>
 </footer>
 </div>
 
