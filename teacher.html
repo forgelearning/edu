@@ -628,29 +628,55 @@ function renderLogin(activeTab) {
           // Fetch responses by class_id AND by student_id list
           // This catches responses where class_id is null (student played before class was linked)
           var studentIds = dashState.students.map(function(s){ return s.id; });
+          var studentNames = dashState.students.map(function(s){ return s.name; });
           var byClass = supaGet('responses', 'class_id=eq.' + cls.id + '&order=created_at.desc');
           var byStudents = studentIds.length > 0
             ? supaGet('responses', 'student_id=in.(' + studentIds.join(',') + ')&order=created_at.desc')
             : Promise.resolve([]);
-          Promise.all([byClass, byStudents]).then(function(rResults) {
+          // Also look up any other student rows with the same names (handles duplicate rows from re-joining)
+          var byNames = studentNames.length > 0
+            ? supaGet('students', 'name=in.(' + studentNames.map(function(n){ return encodeURIComponent('"' + n + '"'); }).join(',') + ')&select=id,name,class_id')
+            : Promise.resolve([]);
+          Promise.all([byClass, byStudents, byNames]).then(function(rResults) {
             var classResponses = rResults[0] || [];
             var studentResponses = rResults[1] || [];
-            // Merge, deduplicate by response id
-            var seen = {};
-            var merged = [];
-            classResponses.concat(studentResponses).forEach(function(r) {
-              if (r && r.id && !seen[r.id]) { seen[r.id] = true; merged.push(r); }
+            var nameMatches = rResults[2] || [];
+            // Get all student IDs for same-named students (catches old rows before class join)
+            var allIds = studentIds.slice();
+            nameMatches.forEach(function(s) {
+              if (allIds.indexOf(s.id) === -1) allIds.push(s.id);
             });
-            dashState.responses = merged;
-            console.log('Dashboard loaded:', {
-              classId: cls.id,
-              classSubject: dashState.classSubject,
-              students: dashState.students.length,
-              responses: dashState.responses.length,
-              byClass: classResponses.length,
-              byStudents: studentResponses.length
+            // Fetch responses for any extra IDs found
+            var extraIds = allIds.filter(function(id) { return studentIds.indexOf(id) === -1; });
+            var byExtra = extraIds.length > 0
+              ? supaGet('responses', 'student_id=in.(' + extraIds.join(',') + ')&order=created_at.desc')
+              : Promise.resolve([]);
+            byExtra.then(function(extraResponses) {
+              var seen = {};
+              var merged = [];
+              classResponses.concat(studentResponses).concat(extraResponses || []).forEach(function(r) {
+                if (r && r.id && !seen[r.id]) { seen[r.id] = true; merged.push(r); }
+              });
+              dashState.responses = merged;
+              // Also patch the student_id on orphaned responses so future loads work by class_id
+              if (extraIds.length > 0 && studentIds.length > 0) {
+                var primaryId = studentIds[0];
+                extraIds.forEach(function(oldId) {
+                  fetch(SUPABASE_URL + '/rest/v1/responses?student_id=eq.' + oldId, {
+                    method: 'PATCH',
+                    headers: Object.assign({}, headers, {'Prefer': 'return=minimal'}),
+                    body: JSON.stringify({ student_id: primaryId, class_id: cls.id })
+                  }).catch(function(e) { console.warn('Patch failed for', oldId, e); });
+                });
+              }
+              console.log('Dashboard loaded:', {
+                classId: cls.id, classSubject: dashState.classSubject,
+                students: dashState.students.length, responses: dashState.responses.length,
+                byClass: classResponses.length, byStudents: studentResponses.length,
+                extraIds: extraIds.length, extraResponses: (extraResponses||[]).length
+              });
+              renderDashboard();
             });
-            renderDashboard();
           });
         });
       });
