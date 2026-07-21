@@ -215,9 +215,12 @@ function renderProfile(){
   var streak=calcStreak(responses);
   var resolved=responses.filter(function(r){return r.reforge_attempted&&r.reforge_correct;}).length;
 
-  // Misconception data
+  // Misconception data — must process chronologically (oldest first) so streak accumulates correctly
   var mcData={};
-  responses.forEach(function(r){
+  var chronological = responses.slice().sort(function(a,b){
+    return (a.created_at||'') < (b.created_at||'') ? -1 : 1;
+  });
+  chronological.forEach(function(r){
     if(!r.misconception_tag)return;
     var tag=r.misconception_tag;
     if(!mcData[tag])mcData[tag]={fires:0,reforgeCorrect:0,streak:0};
