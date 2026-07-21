@@ -5451,6 +5451,15 @@ SUBJECTS["phys"].sub = "AQA 7408 — Mechanics, Electricity & Waves";
 SUBJECTS["bus"].banks = ["BUS-1","BUS-2","BUS-3"];
 SUBJECTS["bus"].sub = "Edexcel 9BS0 — Themes 1–4";
 
+// Mandarin — passage-based reader mode
+SUBJECTS["mandarin"] = {
+  label: "Mandarin Chinese",
+  sub: "IB Language B SL — Passage-based comprehension",
+  color: "#e8472a",
+  banks: [],
+  readerMode: true
+};
+
 function shuffle(a){var b=[...a];for(var i=b.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
 
 var state = {
@@ -5609,6 +5618,7 @@ function render() {
   else if (state.phase === 'banks') renderBanks();
   else if (state.phase === 'quiz') renderQuiz();
   else if (state.phase === 'results') renderResults();
+  else if (state.phase === 'mandarin-reader') renderMandarinReader();
 }
 
 function renderJoin() {
@@ -5903,7 +5913,17 @@ function renderSubjects(){
   h+='</div>';
   app.innerHTML=h + sessionBar();
   app.querySelectorAll('.subject-btn').forEach(function(b){
-    b.onclick=function(){state.subject=b.dataset.key;state.phase='banks';render();};
+    b.onclick=function(){
+      state.subject=b.dataset.key;
+      var s = SUBJECTS[b.dataset.key];
+      if (s && s.readerMode) {
+        state.phase = 'mandarin-reader';
+        state.mrState = { submitted: {}, tfSel: {}, mcqSel: {}, correct: 0, total: MANDARIN_PASSAGES[0].questions.length, passageIdx: 0 };
+      } else {
+        state.phase='banks';
+      }
+      render();
+    };
   });
 
   // Wire up class link form if visible
@@ -6519,6 +6539,7 @@ if (ForgeAuth.hasSession()) {
 
   if (!restored) {
     var freeSession = loadFreeSession();
+
     if (freeSession && freeSession.studentId) {
       state.studentName   = freeSession.name;
       state.studentId     = freeSession.studentId;
@@ -6532,6 +6553,293 @@ if (ForgeAuth.hasSession()) {
       restored = true;
     }
   }
+  render();
+}
+
+// ══════════════════════════════════════════════════════════════
+// MANDARIN READER MODE
+// ══════════════════════════════════════════════════════════════
+
+var MANDARIN_PASSAGES = [
+  {
+    typeTag: "博客 Blog",
+    title: "我的暑假旅行",
+    subtitle: "Theme: Experiences · Leisure Activities & Travel · ~210 characters",
+    theme: "体验 · Experiences",
+    lines: [
+      { n:1,  t:"今年暑假，我和家人一起去了云南旅行。" },
+      { n:2,  t:"云南是中国西南部的一个省，那里有很多" },
+      { n:3,  t:"美丽的自然风景和丰富的少数民族文化。" },
+      { n:4,  t:"我们先去了昆明，参观了著名的石林。" },
+      { n:5,  t:"石林是一个由奇特岩石组成的自然公园，" },
+      { n:6,  t:"非常壮观，让我印象深刻。之后，我们" },
+      { n:7,  t:"乘坐飞机去了大理，欣赏了洱海的美景。" },
+      { n:8,  t:"大理的天气非常舒适，不太热也不太冷。" },
+      { n:9,  t:"当地的食物也很好吃，特别是过桥米线。" },
+      { n:10, t:"这次旅行让我了解了中国各地不同的文化，" },
+      { n:11, t:"我觉得旅行是学习文化最好的方式之一。" }
+    ],
+    vocab: [
+      { zh:"暑假", py:"shǔjià", en:"summer holiday" },
+      { zh:"少数民族", py:"shǎoshù mínzú", en:"ethnic minorities" },
+      { zh:"壮观", py:"zhuàngguān", en:"spectacular" },
+      { zh:"印象深刻", py:"yìnxiàng shēnkè", en:"made a deep impression" },
+      { zh:"欣赏", py:"xīnshǎng", en:"to enjoy / appreciate" },
+      { zh:"过桥米线", py:"guòqiáo mǐxiàn", en:"crossing-the-bridge noodles" }
+    ],
+    questions: [
+      {
+        id:"MAN-01", type:"tf", badge:"True / False + Justification",
+        text:"The writer travelled to Yunnan with friends from school.",
+        tfAnswer:"false", justKeys:["家人"],
+        fb: {
+          correct:"正确 — FALSE. The text says 家人 (family), not school friends. In IB Paper 2, both your tick and your justification quote must be correct to earn the mark.",
+          incorrect:"FALSE. The writer went with 家人 (family members). Correct justification: 我和家人一起去了云南旅行. Always quote the exact characters from the passage."
+        }
+      },
+      {
+        id:"MAN-02", type:"find", badge:"Find the Word",
+        text:"Find the word or phrase in lines 5–6 that means \"impressive and grand in appearance\".",
+        lineRef:"Lines 5–6", answer:"壮观",
+        fb: {
+          correct:"正确。壮观 (zhuàngguān) — spectacular. In IB Paper 2, your answer must come from within the exact line range given.",
+          incorrect:"The answer is 壮观 (zhuàngguān) — spectacular/magnificent. It appears in lines 5–6: 非常壮观。"
+        }
+      },
+      {
+        id:"MAN-03", type:"mcq", badge:"Multiple Choice",
+        text:"According to the text, which best describes Dali's weather?",
+        opts:[
+          {k:"A", t:"Hot and humid during summer"},
+          {k:"B", t:"Mild — neither too hot nor too cold"},
+          {k:"C", t:"Cold with strong mountain winds"}
+        ],
+        answer:"B",
+        fb: {
+          correct:"正确。The text states 大理的天气非常舒适，不太热也不太冷 — comfortable, not too hot and not too cold. Always anchor your answer in the text.",
+          incorrect:"B is correct. The text: 大理的天气非常舒适，不太热也不太冷 — neither too hot nor too cold."
+        }
+      },
+      {
+        id:"MAN-04", type:"format", badge:"Text Type Identification",
+        textZh:true,
+        text:"你想向学校杂志投稿，分享你在国外学习语言的经历。你应该选择哪种文体？",
+        subtext:"You want to submit a piece to the school magazine sharing your experience learning a language abroad. Which text type should you choose?",
+        opts:[
+          {k:"A", t:"正式信件 Formal letter"},
+          {k:"B", t:"文章 Article"},
+          {k:"C", t:"日记 Diary entry"}
+        ],
+        answer:"B",
+        fb: {
+          correct:"正确。文章 (Article) — a magazine submission is public-facing. A formal letter is for a specific recipient; a diary is private. In IB Paper 1: identify audience + purpose first.",
+          incorrect:"B — 文章 (Article). Magazines are public. Formal letters go to one person; diaries are private. Audience + purpose determines text type."
+        }
+      },
+      {
+        id:"MAN-05", type:"grammar", badge:"Grammar in Context",
+        text:"Which sentence correctly uses 不但…而且 to expand on Yunnan's qualities?",
+        opts:[
+          {k:"A", t:"云南不但有美丽的自然风景，而且有丰富的少数民族文化。", zh:true},
+          {k:"B", t:"云南不但有美丽的自然风景，但是它的城市也很现代。", zh:true},
+          {k:"C", t:"虽然云南有美丽的自然风景，而且有丰富的文化。", zh:true}
+        ],
+        answer:"A",
+        fb: {
+          correct:"正确。不但…而且 means 'not only… but also' — both parts add complementary positives. B wrongly pairs 不但 with 但是 (contradiction). C wrongly pairs 虽然 with 而且 — different patterns.",
+          incorrect:"A is correct. 不但…而且 = 'not only… but also'. B misuses 但是 (but/however). C wrongly combines 虽然 (although) with 而且."
+        }
+      }
+    ]
+  }
+];
+
+function renderMandarinReader() {
+  var mrs = state.mrState || { submitted:{}, tfSel:{}, mcqSel:{}, correct:0, total:5, passageIdx:0 };
+  state.mrState = mrs;
+  var p = MANDARIN_PASSAGES[mrs.passageIdx || 0];
+  var qs = p.questions;
+  var done = Object.keys(mrs.submitted).length;
+  var pct = Math.round(done / qs.length * 100);
+
+  var h = '';
+
+  // Back button
+  h += '<button class="back-btn" onclick="(function(){state.phase=\'subjects\';render();})()">\u2190 Subjects</button>';
+
+  // Progress
+  h += '<div class="progress-bar"><div class="progress-fill" style="width:'+pct+'%;background:#e8472a"></div></div>';
+
+  // Layout wrapper
+  h += '<div id="mr-layout" style="display:flex;gap:0;min-height:70vh;border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-top:8px">';
+
+  // PASSAGE PANEL
+  h += '<div style="width:46%;background:#f7f3eb;padding:28px 24px;position:relative;border-right:3px solid #e8472a;overflow-y:auto;flex-shrink:0">';
+  h += '<div style="position:absolute;top:12px;right:16px;font-size:80px;color:rgba(232,71,42,0.06);line-height:1;pointer-events:none;font-family:serif">\u6587</div>';
+  h += '<div style="display:inline-block;background:#e8472a;color:#fff;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:2px 8px;border-radius:4px;margin-bottom:8px">'+p.typeTag+'</div>';
+  h += '<div style="font-size:19px;font-weight:700;color:#1a1a1f;margin-bottom:4px;font-family:\'Noto Serif SC\',STSong,SimSun,serif">'+p.title+'</div>';
+  h += '<div style="font-size:11px;color:#6a6560;margin-bottom:16px">'+p.subtitle+'</div>';
+  h += '<div style="height:1px;background:rgba(232,71,42,0.2);margin-bottom:16px"></div>';
+  h += '<div style="font-family:\'Noto Serif SC\',STSong,SimSun,serif;font-size:16px;line-height:2.1;color:#1a1a1f">';
+  p.lines.forEach(function(l){
+    h += '<span style="font-size:10px;color:#b0a89e;margin-right:6px;display:inline-block;width:16px;text-align:right;font-family:sans-serif">'+l.n+'</span>'+l.t+'<br>';
+  });
+  h += '</div>';
+  h += '<div style="margin-top:20px;padding-top:16px;border-top:1px dashed rgba(74,69,64,0.3)">';
+  h += '<div style="font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#a09890;margin-bottom:10px;font-family:sans-serif">Key Vocabulary</div>';
+  p.vocab.forEach(function(v){
+    h += '<div style="display:flex;gap:8px;font-size:12px;margin-bottom:5px;align-items:baseline">';
+    h += '<span style="font-family:\'Noto Serif SC\',STSong,SimSun,serif;font-weight:700;color:#1a1a1f;min-width:70px">'+v.zh+'</span>';
+    h += '<span style="color:#a09890;font-style:italic;min-width:90px">'+v.py+'</span>';
+    h += '<span style="color:#4a4540">'+v.en+'</span>';
+    h += '</div>';
+  });
+  h += '</div></div>';
+
+  // QUESTIONS PANEL
+  h += '<div style="flex:1;padding:24px 20px;overflow-y:auto">';
+  h += '<div style="font-size:11px;color:#8A857E;margin-bottom:4px">阅读理解 · Reading Comprehension</div>';
+  h += '<div style="font-size:20px;font-weight:700;color:var(--white);letter-spacing:-.3px;margin-bottom:20px">Questions 1–'+qs.length+'</div>';
+
+  // Score panel if complete
+  if (done >= qs.length) {
+    var spct = Math.round(mrs.correct / qs.length * 100);
+    var grade = spct >= 80 ? '🔥 Forged' : spct >= 60 ? '⚒️ Craftsman' : '🔨 Keep forging';
+    h += '<div style="background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:24px;text-align:center;margin-bottom:20px">';
+    h += '<div style="font-size:48px;font-weight:900;color:var(--white);letter-spacing:-2px">'+mrs.correct+'/'+qs.length+'</div>';
+    h += '<div style="font-size:12px;color:#8A857E;margin-bottom:16px">Questions answered correctly</div>';
+    h += '<div style="display:flex;gap:10px;justify-content:center;margin-bottom:16px">';
+    h += '<div style="background:rgba(255,255,255,.04);border-radius:8px;padding:8px 14px;text-align:center"><div style="font-size:18px;font-weight:700;color:var(--white)">'+mrs.correct+'</div><div style="font-size:10px;color:#8A857E">Correct</div></div>';
+    h += '<div style="background:rgba(255,255,255,.04);border-radius:8px;padding:8px 14px;text-align:center"><div style="font-size:18px;font-weight:700;color:var(--white)">'+(qs.length-mrs.correct)+'</div><div style="font-size:10px;color:#8A857E">Review</div></div>';
+    h += '<div style="background:rgba(255,255,255,.04);border-radius:8px;padding:8px 14px;text-align:center"><div style="font-size:18px;font-weight:700;color:var(--white)">'+grade+'</div><div style="font-size:10px;color:#8A857E">Rank</div></div>';
+    h += '</div>';
+    h += '<button onclick="(function(){state.mrState={submitted:{},tfSel:{},mcqSel:{},correct:0,total:'+qs.length+',passageIdx:0};render();})()" style="padding:9px 24px;border-radius:8px;border:1px solid #e8472a;background:transparent;color:#e8472a;font-family:Sora,sans-serif;font-weight:600;font-size:13px;cursor:pointer">Try again</button>';
+    h += '</div>';
+  }
+
+  // Questions
+  qs.forEach(function(q, qi) {
+    var isSubmitted = !!mrs.submitted[q.id];
+    var isCorrect = mrs.submitted[q.id] === true;
+    var borderCol = isSubmitted ? (isCorrect ? 'var(--good)' : 'var(--bad)') : 'var(--line)';
+
+    h += '<div id="mr-card-'+q.id+'" style="background:var(--panel);border:1px solid '+borderCol+';border-radius:10px;padding:20px;margin-bottom:14px">';
+
+    // Header
+    var badgeColors = {tf:'rgba(201,168,76,0.15)|#c9a84c|rgba(201,168,76,0.3)', find:'rgba(99,179,237,0.12)|#63b3ed|rgba(99,179,237,0.25)', mcq:'rgba(154,117,237,0.12)|#b794f4|rgba(154,117,237,0.25)', format:'rgba(232,71,42,0.12)|#e8472a|rgba(232,71,42,0.25)', grammar:'rgba(72,187,120,0.12)|#68d391|rgba(72,187,120,0.25)'};
+    var bc = (badgeColors[q.type]||'rgba(255,255,255,.08)|#8A857E|rgba(255,255,255,.15)').split('|');
+    h += '<div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:14px">';
+    h += '<span style="font-size:11px;font-weight:700;color:#5a5858;padding-top:2px">'+(qi+1)+'.</span>';
+    h += '<span style="font-size:9px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;padding:3px 7px;border-radius:4px;background:'+bc[0]+';color:'+bc[1]+';border:1px solid '+bc[2]+';flex-shrink:0">'+q.badge+'</span>';
+    h += '</div>';
+
+    // Question text
+    var qtext = q.textZh ? '<span style="font-family:\'Noto Sans SC\',STHeiti,SimHei,sans-serif;font-size:15px">'+q.text+'</span>' : q.text;
+    h += '<div style="font-size:14px;line-height:1.6;color:var(--white);margin-bottom:14px">'+qtext+'</div>';
+    if (q.textZh && q.subtext) {
+      h += '<div style="font-size:12px;color:#8A857E;margin-top:-10px;margin-bottom:12px">'+q.subtext+'</div>';
+    }
+
+    // Input
+    if (q.type === 'tf') {
+      var tfVal = mrs.tfSel[q.id] || '';
+      h += '<div style="display:flex;gap:10px;margin-bottom:12px">';
+      ['true','false'].forEach(function(v){
+        var sel = tfVal === v;
+        h += '<button onclick="mrSelectTF(\''+q.id+'\',\''+v+'\')" style="flex:1;padding:9px;border-radius:8px;border:1px solid '+(sel?'#c9a84c':'var(--line)')+';background:'+(sel?'rgba(201,168,76,0.08)':'transparent')+';color:'+(sel?'#c9a84c':'#8A857E')+';font-size:13px;font-weight:600;cursor:pointer;font-family:Sora,sans-serif">'+(v==='true'?'✓ True':'✗ False')+'</button>';
+      });
+      h += '</div>';
+      h += '<div id="mr-just-area-'+q.id+'" style="display:'+(tfVal?'block':'none')+'">';
+      h += '<div style="font-size:11px;color:#8A857E;margin-bottom:5px;font-weight:500">Justify — quote directly from the text (in Chinese):</div>';
+      h += '<textarea id="mr-just-'+q.id+'" style="width:100%;background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:8px;padding:9px 12px;color:var(--white);font-family:\'Noto Sans SC\',STHeiti,SimHei,sans-serif;font-size:14px;resize:none;min-height:56px;outline:none;line-height:1.8" placeholder="Copy the relevant characters from the passage…"></textarea>';
+      h += '</div>';
+      h += '<button onclick="mrSubmit(\''+q.id+'\')" id="mr-sbtn-'+q.id+'" '+(isSubmitted||!tfVal?'disabled':'')+' style="width:100%;padding:10px;border-radius:8px;border:none;background:#e8472a;color:#fff;font-family:Sora,sans-serif;font-size:13px;font-weight:600;cursor:pointer;margin-top:12px;opacity:'+(isSubmitted||!tfVal?'.4':'1')+'">Check answer</button>';
+    } else if (q.type === 'find') {
+      h += '<div style="font-size:11px;color:#5a5858;margin-bottom:8px">📌 '+q.lineRef+'</div>';
+      h += '<input id="mr-find-'+q.id+'" oninput="mrFindInput(\''+q.id+'\')" style="width:100%;background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:8px;padding:9px 12px;color:var(--white);font-family:\'Noto Sans SC\',STHeiti,SimHei,sans-serif;font-size:15px;outline:none" placeholder="Type the character(s) here…">';
+      h += '<button onclick="mrSubmit(\''+q.id+'\')" id="mr-sbtn-'+q.id+'" disabled style="width:100%;padding:10px;border-radius:8px;border:none;background:#e8472a;color:#fff;font-family:Sora,sans-serif;font-size:13px;font-weight:600;cursor:pointer;margin-top:12px;opacity:.4">Check answer</button>';
+    } else {
+      var selK = mrs.mcqSel[q.id] || '';
+      q.opts.forEach(function(o){
+        var sel = selK === o.k;
+        var corr = isSubmitted && o.k === q.answer;
+        var wrong = isSubmitted && sel && !corr;
+        var borderC = corr ? 'var(--good)' : wrong ? 'var(--bad)' : sel ? '#c9a84c' : 'var(--line)';
+        var bgC = corr ? 'rgba(127,217,138,.08)' : wrong ? 'rgba(255,90,90,.07)' : sel ? 'rgba(201,168,76,.06)' : 'var(--panel-2)';
+        var letterC = corr ? 'var(--good)' : wrong ? 'var(--bad)' : sel ? '#c9a84c' : '#8A857E';
+        var textStyle = o.zh ? 'font-family:\'Noto Sans SC\',STHeiti,SimHei,sans-serif;font-size:14px' : '';
+        h += '<button onclick="mrSelectMCQ(\''+q.id+'\',\''+o.k+'\')" style="display:flex;align-items:flex-start;gap:10px;padding:11px 13px;border-radius:8px;border:1px solid '+borderC+';background:'+bgC+';cursor:pointer;text-align:left;width:100%;margin-bottom:7px;font-family:Sora,sans-serif">';
+        h += '<span style="width:20px;height:20px;border-radius:50%;border:1px solid '+letterC+';display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;color:'+letterC+'">'+o.k+'</span>';
+        h += '<span style="font-size:13px;line-height:1.5;color:var(--white);padding-top:1px;'+textStyle+'">'+o.t+'</span>';
+        h += '</button>';
+      });
+      h += '<button onclick="mrSubmit(\''+q.id+'\')" id="mr-sbtn-'+q.id+'" '+(isSubmitted||!selK?'disabled':'')+' style="width:100%;padding:10px;border-radius:8px;border:none;background:#e8472a;color:#fff;font-family:Sora,sans-serif;font-size:13px;font-weight:600;cursor:pointer;margin-top:4px;opacity:'+(isSubmitted||!selK?'.4':'1')+'">Check answer</button>';
+    }
+
+    // Feedback
+    if (isSubmitted) {
+      h += '<div style="margin-top:12px;padding:12px 14px;border-radius:8px;'+(isCorrect?'background:rgba(127,217,138,.1);border:1px solid rgba(127,217,138,.25)':'background:rgba(255,90,90,.08);border:1px solid rgba(255,90,90,.2)')+'">';
+      h += '<div style="font-size:11px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;margin-bottom:5px;color:'+(isCorrect?'var(--good)':'var(--bad)')+'">'+(isCorrect?'✓ Correct':'✗ Review')+'</div>';
+      h += '<div style="font-size:13px;line-height:1.6;color:#8A857E">'+q.fb[isCorrect?'correct':'incorrect']+'</div>';
+      h += '</div>';
+    }
+
+    h += '</div>';
+  });
+
+  h += '</div></div>'; // close questions panel + layout
+
+  app.innerHTML = h;
+}
+
+function mrSelectTF(qid, val) {
+  if (state.mrState.submitted[qid]) return;
+  state.mrState.tfSel[qid] = val;
+  render();
+}
+
+function mrFindInput(qid) {
+  var el = document.getElementById('mr-find-'+qid);
+  var btn = document.getElementById('mr-sbtn-'+qid);
+  if (!el || !btn) return;
+  var hasVal = el.value.trim().length > 0;
+  btn.disabled = !hasVal;
+  btn.style.opacity = hasVal ? '1' : '.4';
+}
+
+function mrSelectMCQ(qid, letter) {
+  if (state.mrState.submitted[qid]) return;
+  state.mrState.mcqSel[qid] = letter;
+  render();
+}
+
+function mrSubmit(qid) {
+  if (state.mrState.submitted[qid]) return;
+  var p = MANDARIN_PASSAGES[state.mrState.passageIdx || 0];
+  var q = p.questions.find(function(x){ return x.id === qid; });
+  var isCorrect = false;
+
+  if (q.type === 'tf') {
+    var tfOk = state.mrState.tfSel[qid] === q.tfAnswer;
+    var just = (document.getElementById('mr-just-'+qid)||{}).value || '';
+    var justOk = just.trim().length > 0 && q.justKeys.some(function(kw){ return just.includes(kw); });
+    isCorrect = tfOk && justOk;
+  } else if (q.type === 'find') {
+    var val = ((document.getElementById('mr-find-'+qid)||{}).value||'').trim();
+    isCorrect = val.includes(q.answer);
+  } else {
+    isCorrect = state.mrState.mcqSel[qid] === q.answer;
+  }
+
+  state.mrState.submitted[qid] = isCorrect;
+  if (isCorrect) state.mrState.correct++;
+
+  // Log to Supabase
+  if (state.studentId) {
+    var row = { student_id: state.studentId, class_id: state.classId, question_id: qid, bank: 'MAN-EXP-1', subject: 'mandarin', selected_option: isCorrect ? q.answer : '?', is_correct: isCorrect, misconception_tag: isCorrect ? null : 'MC-MAN-01', reforge_attempted: false, reforge_correct: null };
+    supa.insert('responses', row);
+  }
+
   render();
 }
 </script>
