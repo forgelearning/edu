@@ -407,7 +407,15 @@ footer{padding:36px 0;border-top:1px solid var(--line);font-size:13px;color:#8A8
   table{min-width:640px}
   .spec-grid{grid-template-columns:repeat(auto-fill,minmax(120px,1fr))}
 }
-[data-theme="light"] .forge-logo-dark{display:none!important}[data-theme="light"] .forge-logo-light{display:inline!important}</style>
+[data-theme="light"] .forge-logo-dark{display:none!important}[data-theme="light"] .forge-logo-light{display:inline!important}
+/* ── Scroll reveal ─────────────────────────────────────── */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .6s ease,transform .6s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-delay-1{transition-delay:.1s}
+.reveal-delay-2{transition-delay:.2s}
+.reveal-delay-3{transition-delay:.3s}
+.reveal-delay-4{transition-delay:.4s}
+</style>
 </head>
 <body>
 <script>
@@ -474,18 +482,18 @@ if (localStorage.getItem('forge-theme') === 'light') {
 
 <header class="hero">
   <div>
-    <span class="tag">GCSE &amp; A Level · Spec-mapped · Built by a practising teacher</span>
-    <h1>Forge your knowledge.<br><em>Face any exam.</em></h1>
-    <p class="lede">Revision apps get students to remember. Forge gets them to the grade — by catching the exact misconception behind every wrong answer and reworking it on the spot.</p>
-    <div class="ctas">
+    <span class="tag reveal">GCSE &amp; A Level · Spec-mapped · Built by a practising teacher</span>
+    <h1 class="reveal reveal-delay-1">Forge your knowledge.<br><em>Face any exam.</em></h1>
+    <p class="lede reveal reveal-delay-2">Revision apps get students to remember. Forge gets them to the grade — by catching the exact misconception behind every wrong answer and reworking it on the spot.</p>
+    <div class="ctas reveal reveal-delay-3">
       <a class="btn btn-hot" href="forge-quiz.html">Try the quiz — free</a>
       <a class="btn btn-ghost" href="#waitlist">Join the waiting list</a>
     </div>
-    <p class="sub">Launching with Edexcel A Level Economics, AQA Psychology &amp; AQA Sociology. <a href="#subjects">See the subjects ↓</a></p>
+    <p class="sub reveal reveal-delay-4">Launching with Edexcel A Level Economics, AQA Psychology &amp; AQA Sociology. <a href="#subjects">See the subjects ↓</a></p>
   </div>
 
   <!-- SIGNATURE: live demo -->
-  <div class="demo" id="demo" aria-live="polite">
+  <div class="demo reveal reveal-delay-2" id="demo" aria-live="polite">
     <div class="head">
       <span class="spec mono">A Level Economics · <b>2.1.2</b> Inflation</span>
       <span class="tag">Try one — tap an answer</span>
@@ -512,21 +520,21 @@ if (localStorage.getItem('forge-theme') === 'light') {
 
 <section id="how">
 <div class="wrap">
-  <p class="tag eyebrow">The Forge loop</p>
-  <h2>A wrong answer isn't a fail. It's raw material.</h2>
-  <p class="sect-lede">Flashcard apps show you the right answer and move on. Forge treats the wrong answer as the most useful data in the session — and works it, there and then.</p>
+  <p class="tag eyebrow reveal">The Forge loop</p>
+  <h2 class="reveal">A wrong answer isn't a fail. It's raw material.</h2>
+  <p class="sect-lede reveal">Flashcard apps show you the right answer and move on. Forge treats the wrong answer as the most useful data in the session — and works it, there and then.</p>
   <div class="loop">
-    <div class="step">
+    <div class="step reveal">
       <p class="n mono">01 · TRIGGER</p>
       <h3>The misconception fires</h3>
       <p>Every distractor is written from documented examiner-report errors and tagged to a specific misconception — not "wrong", but <em>why</em> it's wrong.</p>
     </div>
-    <div class="step">
+    <div class="step reveal">
       <p class="n mono">02 · SCAFFOLD</p>
       <h3>A 30-second correction</h3>
       <p>Instead of just revealing the answer, Forge shows a two-sentence scaffold that dismantles that exact logic trap while it's still hot.</p>
     </div>
-    <div class="step">
+    <div class="step reveal">
       <p class="n mono">03 · RE-FORGE</p>
       <h3>Prove it, reframed</h3>
       <p>A twin question tests the same concept in a new scenario, immediately — so the fix is understood, not memorised.</p>
@@ -2201,6 +2209,19 @@ if (localStorage.getItem('forge-theme') === 'light') {
       alert('Something went wrong — please try again or email forge.educator@gmail.com directly.');
     });
   });
+})();
+</script>
+
+<script>
+(function(){
+  var els = document.querySelectorAll('.reveal');
+  if(!els.length) return;
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){ e.target.classList.add('visible'); io.unobserve(e.target); }
+    });
+  },{threshold:0.12});
+  els.forEach(function(el){ io.observe(el); });
 })();
 </script>
 </body>
