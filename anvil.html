@@ -3502,7 +3502,13 @@ window.startRework=function(tag){
 };
 
 function renderReworkQuestion(tag,questions,qIdx){
-  var q=questions[qIdx % questions.length];
+  // Even indices: serve original question. Odd indices: serve reforge variant.
+  // This doubles the effective pool and prevents identical question repeats.
+  var baseQ = questions[Math.floor(qIdx/2) % questions.length];
+  var useReforge = (qIdx % 2 === 1) && baseQ.reforge;
+  var q = useReforge
+    ? { id: baseQ.id+'-RF', stem: baseQ.reforge.stem, options: baseQ.reforge.options, correct: baseQ.reforge.correct, scaffold: baseQ.scaffold, tag: baseQ.tag }
+    : baseQ;
   var label=MC_LABELS[tag]||tag;
   var m=anvilState.misconceptions[tag];
   var keys=Object.keys(q.options);

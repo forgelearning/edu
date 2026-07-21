@@ -125,7 +125,7 @@ h1,h2,h3{font-family:'Bricolage Grotesque',sans-serif;color:var(--white);line-he
       <a href="anvil.html" style="padding:7px 14px;border-radius:8px;background:var(--panel);border:1px solid var(--line);color:var(--slate);font-family:Sora,sans-serif;font-weight:600;font-size:13px;text-decoration:none">Anvil</a>
       <a href="crucible.html" style="padding:7px 14px;border-radius:8px;background:var(--panel);border:1px solid var(--line);color:var(--slate);font-family:Sora,sans-serif;font-weight:600;font-size:13px;text-decoration:none">Crucible</a>
       <a href="profile.html" style="padding:7px 14px;border-radius:8px;background:var(--panel);border:1px solid var(--line);color:var(--slate);font-family:Sora,sans-serif;font-weight:600;font-size:13px;text-decoration:none">Profile</a>
-      <button onclick="forgeSignOut()" style="padding:7px 14px;border-radius:8px;background:var(--panel);border:1px solid var(--line);color:var(--slate);font-family:Sora,sans-serif;font-weight:600;font-size:13px;cursor:pointer">Sign out</button>
+      <button onclick="forgeLogout()" style="padding:7px 14px;border-radius:8px;background:var(--panel);border:1px solid var(--line);color:var(--slate);font-family:Sora,sans-serif;font-weight:600;font-size:13px;cursor:pointer">Sign out</button>
     </div>
   </div>
   <div id="app"></div>
@@ -293,7 +293,7 @@ const BANKS = {
       },
       {
         id:"INF-03",stem:"A student writes: 'Demand-pull inflation is too much money chasing too few goods' but cannot explain it using a diagram. Which diagram explanation is correct?",
-        options:{A:"SRAS shifts left, pushing the price level up.",B:"LRAS shifts right, reducing the price level.",C:"AD shifts left, creating deflation.",D:"AD shifts right ("},
+        options:{A:"SRAS shifts left, pushing the price level up.",B:"LRAS shifts right, reducing the price level.",C:"AD shifts left, creating deflation.",D:"AD shifts right, increasing real output and the price level — demand-pull inflation."},
       correct:"D",tag:"MC-INF-03",
         scaffold:"Demand-pull inflation: AD shifts right → economy moves along the SRAS → higher price level AND higher real output (up to full capacity). Causes include: rising consumer confidence, fiscal stimulus, lower interest rates, weaker exchange rate boosting net exports.",
         reforge:{stem:"Which of these would cause demand-pull inflation?",options:{A:"A rise in oil prices increasing firms' costs.",B:"A large cut in income tax boosting disposable income and shifting AD right.",C:"New regulations increasing the cost of production.",D:"A fall in consumer confidence."},correct:"B"}
@@ -432,7 +432,7 @@ const BANKS = {
       },
       {
         id:"BOP-03",stem:"After sterling depreciates, a student draws the J-curve starting with an immediate improvement. What's wrong?",
-        options:{A:"depreciation always improves immediately.",B:"The J-curve shows the current account worsening first (import prices rise",C:"It gets worse and never recovers.",D:"J-curve only applies to fixed exchange rates."},
+        options:{A:"The current account improves immediately after depreciation.",B:"The J-curve shows the current account worsening first — import costs rise in sterling before export volumes respond — then gradually improving.",C:"It gets worse and never recovers.",D:"J-curve only applies to fixed exchange rates."},
       correct:"B",tag:"MC-BOP-03",
         scaffold:"Short run: import prices rise but contracts are fixed → import bill increases → current account worsens (downward dip). Medium/long run: exports cheaper abroad, imports dearer at home → volumes adjust → improvement (upward stroke).",
         reforge:{stem:"Six months after a 15% peso depreciation, the current account deficit has widened. Which is most accurate?",options:{A:"The depreciation has failed.",B:"Expected — the economy is in the initial worsening phase; improvement may follow as volumes adjust.",C:"The J-curve predicts immediate improvement, so something else is wrong.",D:"The current account always worsens permanently after depreciation."},correct:"B"}
@@ -678,7 +678,7 @@ BANKS["2.3.1"] = {
     },
     {
       id:"FIS-02",stem:"A student cannot explain the difference between automatic stabilisers and discretionary fiscal policy. Which answer correctly distinguishes them?",
-      options:{A:"Automatic stabilisers (",B:"They are the same thing — both require government decisions.",C:"Automatic stabilisers only work in booms; discretionary only in recessions.",D:"Discretionary policy is automatic; stabilisers require decisions."},
+      options:{A:"Automatic stabilisers respond without a government decision (e.g. benefits rising in a recession); discretionary policy requires an active government choice.",B:"They are the same thing — both require government decisions.",C:"Automatic stabilisers only work in booms; discretionary only in recessions.",D:"Discretionary policy is automatic; stabilisers require decisions."},
       correct:"A",tag:"MC-FIS-02",
       scaffold:"Automatic stabilisers kick in without any new policy decision. In a recession: tax receipts fall automatically (less income to tax), welfare spending rises automatically (more claimants) → this cushions the fall in AD. Discretionary = a deliberate new action: 'the Chancellor announced...' The 2022 examiner report flagged this as a question many candidates found challenging.",
       reforge:{stem:"During a recession, unemployment benefit payments rise without any new legislation. This is an example of:",options:{A:"Discretionary fiscal policy.",B:"An automatic stabiliser — welfare spending increases automatically as unemployment rises, partially offsetting the fall in AD.",C:"Monetary policy.",D:"Supply-side policy."},correct:"B"}
@@ -935,7 +935,7 @@ BANKS["2.4.2"] = {
   questions: [
     {
       id:"POV-01",stem:"What is the difference between absolute and relative poverty?",
-      options:{A:"They are the same concept measured differently.",B:"Absolute poverty only exists in developing countries.",C:"Relative poverty is always more severe than absolute.",D:"Absolute poverty = inability to afford basic necessities for survival (food"},
+      options:{A:"They are the same concept measured differently.",B:"Absolute poverty only exists in developing countries.",C:"Relative poverty is always more severe than absolute.",D:"Absolute poverty means being unable to afford basic necessities (food, shelter, water); relative poverty means having less than 60% of median income."},
       correct:"D",tag:"MC-POV-01",
       scaffold:"Absolute: fixed standard — can you survive? (World Bank: $2.15/day). Relative: moving standard — how far below the typical income are you? (UK: 60% of median). A country can eliminate absolute poverty while relative poverty rises (if median incomes grow but bottom incomes grow slower). They measure different things.",
       reforge:{stem:"GDP per capita doubles over 20 years but the bottom 10% see only a 20% income rise while the median doubles. What happens to each type of poverty?",options:{A:"Both fall equally.",B:"Absolute poverty likely falls (incomes rose 20%), but relative poverty may rise or stay the same (the bottom 10% fell further behind the median).",C:"Both rise because growth causes poverty.",D:"Relative poverty falls but absolute rises."},correct:"B"}
@@ -963,7 +963,7 @@ BANKS["2.4.2"] = {
     },
     {
       id:"POV-05",stem:"The UK measures relative poverty as income below 60% of median household income. A limitation of this measure is:",
-      options:{A:"It is too generous — the threshold is too high.",B:"It only measures wealth, not income.",C:"It measures inequality rather than actual hardship. If median income falls (",D:"60% is an arbitrary figure with no policy relevance."},
+      options:{A:"It is too generous — the threshold is too high.",B:"It only measures wealth, not income.",C:"It measures inequality relative to the median — if median income falls, the poverty line falls too, potentially showing fewer in poverty even when living standards have dropped.",D:"60% is an arbitrary figure with no policy relevance."},
       correct:"C",tag:"MC-POV-01",
       scaffold:"Relative poverty is tied to the median, so it moves with the distribution. In a recession: median income drops → 60% threshold drops → some people 'escape' relative poverty despite being no better off. This is why we need both absolute and relative measures. Relative poverty is really an inequality measure wearing poverty's label.",
       reforge:{stem:"During COVID-19, median incomes fell sharply. What likely happened to the UK's relative poverty rate?",options:{A:"It rose sharply as everyone got poorer.",B:"It may have fallen paradoxically — the 60% threshold dropped with the median, pulling some households above the lower bar even though their actual circumstances hadn't improved.",C:"It was unchanged — poverty doesn't respond to recessions.",D:"It doubled immediately."},correct:"B"}
@@ -1047,7 +1047,7 @@ BANKS["2.5.2"] = {
     },
     {
       id:"BNK-04",stem:"Which of the following is a regulatory measure introduced after the 2008 financial crisis?",
-      options:{A:"Abolishing all banking regulation.",B:"Higher capital requirements (",C:"Allowing banks to lend without any reserves.",D:"Merging all banks into one state bank."},
+      options:{A:"Abolishing all banking regulation.",B:"Higher capital requirements — forcing banks to hold more equity relative to their assets so they can absorb losses without failing.",C:"Allowing banks to lend without any reserves.",D:"Merging all banks into one state bank."},
       correct:"B",tag:"MC-BNK-04",
       scaffold:"Post-2008 reforms: (1) Higher capital/liquidity requirements (Basel III) — more reserves, less leverage. (2) Ring-fencing — separating retail banking from investment banking. (3) Stress testing — regulators check if banks can survive hypothetical shocks. (4) Living wills — plans for orderly failure without taxpayer bailouts. All aim to prevent 'too big to fail.'",
       reforge:{stem:"Ring-fencing requires banks to:",options:{A:"Close all overseas branches.",B:"Separate their retail operations (deposits, mortgages) from riskier investment banking activities, so that speculative losses don't threaten ordinary customers' savings.",C:"Merge with competitors.",D:"Stop lending entirely."},correct:"B"}
@@ -1618,7 +1618,7 @@ BANKS["BUS-1"] = {
     },
     {
       id:"BUS-05",stem:"Herzberg's two-factor theory distinguishes between hygiene factors and motivators. Which correctly identifies each?",
-      options:{A:"Hygiene factors motivate workers; motivators prevent dissatisfaction.",B:"Hygiene factors (",C:"Hygiene factors and motivators are the same concept in different words.",D:"Motivators are only relevant to managers, not shop floor workers."},
+      options:{A:"Hygiene factors motivate workers and motivators prevent dissatisfaction (this is Herzberg reversed).",B:"Hygiene factors (e.g. pay, working conditions, job security) prevent dissatisfaction but do not motivate; motivators (e.g. achievement, recognition, responsibility) actively drive higher performance.",C:"Hygiene factors and motivators are the same concept in different words.",D:"Motivators are only relevant to managers, not shop floor workers."},
       correct:"B",tag:"MC-BUS-05",
       scaffold:"Herzberg: hygiene factors (salary, job security, working conditions, company policy) — adequate = no dissatisfaction, inadequate = dissatisfaction. They do NOT motivate. Motivators (achievement, recognition, the work itself, responsibility, advancement) — presence = motivation and job satisfaction. Implication: paying workers more stops them being unhappy but doesn't make them work harder. Contrast with Taylor (money motivates) and Maslow (hierarchy of needs).",
       reforge:{stem:"A company improves its canteen and increases salaries. According to Herzberg, what is the likely effect on staff motivation?",options:{A:"Motivation will increase significantly — better pay and facilities make staff work harder.",B:"Dissatisfaction may fall (hygiene factors improved) but motivation will not necessarily increase — the company needs to also address motivators like responsibility and recognition.",C:"No effect — Herzberg said nothing about pay.",D:"Motivation will fall because staff become complacent."},correct:"B"}
@@ -1755,7 +1755,7 @@ BANKS["CRIM-1"] = {
     },
     {
       id:"CRIM-06",stem:"According to strain theory (Merton), crime occurs because:",
-      options:{A:"Some people are biologically predisposed to criminality.",B:"Society promotes culturally approved goals (wealth",C:"Criminal values are learned through socialisation in communities.",D:"Inadequate policing allows crime to flourish."},
+      options:{A:"Some people are biologically predisposed to criminality.",B:"Society promotes culturally approved goals (wealth, success) but denies legitimate means to achieve them — Merton's strain theory argues this structural tension produces deviance.",C:"Criminal values are learned through socialisation in communities.",D:"Inadequate policing allows crime to flourish."},
       correct:"B",tag:"MC-CRIM-06",
       scaffold:"Merton's strain theory: American Dream = everyone can succeed (meritocracy). Reality = working-class and minority groups lack access to education/jobs. Strain = gap between cultural goals and structural means. Adaptations: Conformity (accept both), Innovation (adopt goals, reject means → crime), Ritualism, Retreatism (reject both), Rebellion. Innovation explains property crime among the poor. Evaluation: ignores white-collar crime, gender, doesn't explain why only some 'innovate'.",
       reforge:{stem:"A young person from a deprived area cannot access university due to low income and poor schooling but still wants the material success they see advertised. According to Merton, if they turn to drug dealing, they are adopting which adaptation?",options:{A:"Ritualism — they keep trying through legitimate means.",B:"Innovation — they accept the cultural goal of material success but replace legitimate means (education, employment) with illegitimate ones (drug dealing) due to blocked opportunities.",C:"Retreatism — they give up on both goals and means.",D:"Rebellion — they reject society's goals entirely."},correct:"B"}
@@ -2146,14 +2146,14 @@ BANKS["CS-1"] = {
     },
     {
       id:"CS-02",stem:"Which correctly distinguishes a compiler from an interpreter?",
-      options:{A:"Compilers are faster to write programs with; interpreters produce faster programs.",B:"Compilers only work with low-level languages; interpreters only with high-level.",C:"A compiler translates the entire source code into machine code before execution (producing a standalone executable",D:"An interpreter creates object code; a compiler creates source code."},
+      options:{A:"Compilers are faster to write programs with; interpreters produce faster programs.",B:"Compilers only work with low-level languages; interpreters only with high-level.",C:"A compiler translates the entire source code into machine code before execution, producing a standalone executable; an interpreter translates and executes line by line each time the program runs.",D:"An interpreter creates object code; a compiler creates source code."},
       correct:"C",tag:"MC-CS-02",
       scaffold:"Compiler: whole program → machine code → executable. Advantages: fast execution, code protected (source not visible), errors caught before running. Disadvantages: slow compilation, platform-specific. Interpreter: line by line → execute immediately. Advantages: easier to debug (stops at error), cross-platform, no compilation step. Disadvantages: slower runtime, source code visible. Python = interpreted. C/C++ = compiled. Java = compiled to bytecode then interpreted by JVM.",
       reforge:{stem:"Python programs are slower to execute than equivalent C programs. The primary reason is:",options:{A:"Python uses more RAM than C.",B:"Python is interpreted (line by line at runtime) whereas C is compiled to machine code (direct CPU instructions) — interpretation adds overhead on every execution.",C:"Python was designed for beginners and deliberately made slow.",D:"C programs are shorter than Python programs."},correct:"B"}
     },
     {
       id:"CS-03",stem:"In a binary search, what is the maximum number of comparisons needed to find an element in a sorted list of 1024 items?",
-      options:{A:"1024",B:"512",C:"32",D:"10 (log₂1024 = 10"},
+      options:{A:"1024",B:"512",C:"32",D:"10 — binary search has O(log₂n) complexity, and log₂1024 = 10, so at most 10 comparisons are needed."},
       correct:"D",tag:"MC-CS-03",
       scaffold:"Binary search: compare target with middle element. If equal, found. If less, search lower half. If greater, search upper half. Each comparison halves the search space. After k comparisons, at most 2^k items remain to search. For n items: max comparisons = log₂n. 1024 = 2¹⁰, so max = 10. Linear search: max = n (1024). Binary search requires sorted data. Merge sort has O(n log n) — learn these complexity classes.",
       reforge:{stem:"A linear search of 1000 items requires at most 1000 comparisons. A binary search requires at most 10. Which algorithm is more efficient for large datasets and why?",options:{A:"Linear search — it works on unsorted data.",B:"Binary search — O(log n) vs O(n) complexity means it scales dramatically better for large datasets, though it requires sorted data.",C:"Both are equally efficient for large datasets.",D:"Linear search — it always finds the item faster."},correct:"B"}
@@ -2181,7 +2181,7 @@ BANKS["CS-1"] = {
     },
     {
       id:"CS-07",stem:"In the context of networking, what is the role of the TCP/IP protocol suite?",
-      options:{A:"It physically connects computers with cables.",B:"It encrypts all data sent over the internet.",C:"It provides wireless connectivity to devices.",D:"TCP/IP provides the standard rules (protocols) for addressing (IP"},
+      options:{A:"It physically connects computers with cables.",B:"It encrypts all data sent over the internet.",C:"It provides wireless connectivity to devices.",D:"TCP/IP provides the standard protocols for addressing (IP routes packets to the correct destination) and reliable transmission (TCP breaks data into packets and reassembles them)."},
       correct:"D",tag:"MC-CS-07",
       scaffold:"TCP/IP model layers: Application (HTTP, SMTP, FTP), Transport (TCP — reliable/ordered; UDP — fast/unreliable), Internet (IP — addressing and routing), Network Access (physical transmission). IP addresses identify devices; MAC addresses identify hardware. Routers operate at the IP layer. TCP handshake establishes connection. UDP used for streaming/gaming where speed > reliability.",
       reforge:{stem:"A video streaming service uses UDP rather than TCP. The main reason is:",options:{A:"UDP is more secure than TCP.",B:"UDP prioritises speed over reliability — a few dropped packets cause minor video glitches rather than delays. TCP's retransmission of lost packets would cause frustrating pauses, which are worse than minor quality drops.",C:"TCP cannot handle video data.",D:"UDP is required by law for licensed video content."},correct:"B"}
