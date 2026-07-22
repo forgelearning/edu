@@ -165,7 +165,9 @@ h2{font-size:clamp(28px,3.6vw,40px);font-weight:800;margin-bottom:14px}
 .pill.hot{border-color:rgba(255,201,60,.5);color:var(--hot)}
 .boards{font-size:12px;color:#8A857E}
 .subj h3{font-size:19px}
-.subj p{font-size:13px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.subj-stat{font-family:'Sora',sans-serif;font-size:12.5px;color:var(--slate)}
+.subj-stat-n{font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;color:var(--hot)}
+.subj p{font-size:13px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .progress-row{display:flex;flex-direction:column;gap:2px;font-size:12px;border-top:1px solid var(--line);padding-top:8px}
 .progress-row span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .progress-row b{color:var(--hot)}
@@ -1253,6 +1255,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
         <span class="mono boards">Edexcel 9EC0</span>
       </div>
       <h3>Economics</h3>
+      <div class="subj-stat"><span class="subj-stat-n">125</span> questions · 16 banks</div>
       <p>Themes 1–4: markets and market failure, the UK economy, business behaviour, and the global economy. Micro-scenarios, chain-of-reasoning builders, data-response and calculation questions — mapped to every numbered spec point.</p>
       <div class="progress-row">
         <span class="mono"><b>Theme 1 — Supply &amp; Demand</b> · 1 bank · 8 questions</span>
@@ -1267,6 +1270,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
         <span class="mono boards">AQA 7182</span>
       </div>
       <h3>Psychology</h3>
+      <div class="subj-stat"><span class="subj-stat-n">32</span> questions · 4 banks</div>
       <p>Paper 1 compulsory content: Social Influence, Memory, Attachment and Psychopathology. Misconception-tagged MCQs covering the studies, concepts, and evaluation points examiners reward — and the errors they penalise.</p>
       <div class="progress-row">
         <span class="mono"><b>Paper 1 — Social Influence, Memory, Attachment &amp; Psychopathology</b> · 4 banks · 32 questions</span>
@@ -1281,6 +1285,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
         <span class="mono boards">AQA 7192</span>
       </div>
       <h3>Sociology</h3>
+      <div class="subj-stat"><span class="subj-stat-n">40</span> questions · 4 banks</div>
       <p>Papers 1 and 3 compulsory content: Education, Methods, Crime &amp; Deviance, and Stratification. Perspective application, evaluation depth, and the conceptual links examiners reward across all four topic areas.</p>
       <div class="progress-row">
         <span class="mono"><b>Education · Methods in Context · Crime &amp; Deviance · Stratification</b> · 4 banks · 40 questions</span>
@@ -1295,6 +1300,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
         <span class="mono boards">Edexcel 9GE0</span>
       </div>
       <h3>Geography</h3>
+      <div class="subj-stat"><span class="subj-stat-n">24</span> questions · 3 banks</div>
       <p>Physical and Human Geography — tectonic hazards, globalisation and development, and urban environments. Case studies, data questions and the evaluative arguments examiners want to see.</p>
       <div class="progress-row">
         <span class="mono"><b>Tectonic Hazards · Globalisation · Urban Environments</b> · 3 banks · 24 questions</span>
@@ -1309,6 +1315,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
         <span class="mono boards">Edexcel 9BS0</span>
       </div>
       <h3>Business</h3>
+      <div class="subj-stat"><span class="subj-stat-n">32</span> questions · 4 banks</div>
       <p>Across all four themes — marketing mix, break-even, motivation theories, pricing strategy, Boston Matrix, operations management, lean production, Porter's Five Forces, SWOT, economies of scale, and exchange rate impacts on business.</p>
       <div class="progress-row">
         <span class="mono"><b>Marketing &amp; People · Finance · Operations &amp; Strategy · Global Business &amp; Ethics</b> · 4 banks · 32 questions</span>
@@ -1323,6 +1330,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
         <span class="mono boards">AQA 7405</span>
       </div>
       <h3>Chemistry</h3>
+      <div class="subj-stat"><span class="subj-stat-n">24</span> questions · 3 banks</div>
       <p>From atomic structure and bonding through to organic chemistry — isotopes, ionisation energies, VSEPR, equilibria, and mechanisms including electrophilic addition, free radical substitution, and esterification.</p>
       <div class="progress-row">
         <span class="mono"><b>Atomic Structure &amp; Bonding · Energetics &amp; Equilibria · Organic Chemistry</b> · 3 banks · 24 questions</span>
@@ -1337,6 +1345,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
         <span class="mono boards">WJEC Level 3</span>
       </div>
       <h3>Criminology</h3>
+      <div class="subj-stat"><span class="subj-stat-n">16</span> questions · 2 banks</div>
       <p>Changing Awareness of Crime and Criminological Theories — definitions of crime, dark figure, labelling theory, strain theory, Left and Right Realism, feminist criminology, Hirschi's social bond theory, and Marxist perspectives on corporate crime.</p>
       <div class="progress-row">
         <span class="mono"><b>Changing Awareness of Crime · Criminological Theories</b> · 2 banks · 16 questions</span>
@@ -1351,6 +1360,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
         <span class="mono boards">OCR-A H420</span>
       </div>
       <h3>Biology</h3>
+      <div class="subj-stat"><span class="subj-stat-n">24</span> questions · 3 banks</div>
       <p>From cell biology through genetics and evolution — cell structure, transport, enzymes, DNA replication, meiosis, inheritance patterns, natural selection, and Hardy-Weinberg. Precise terminology and calculation questions throughout.</p>
       <div class="progress-row">
         <span class="mono"><b>Cell Biology · Cells, Transport &amp; Enzymes · Genetics &amp; Inheritance</b> · 3 banks · 24 questions</span>
@@ -1365,6 +1375,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
         <span class="mono boards">AQA</span>
       </div>
       <h3>History</h3>
+      <div class="subj-stat"><span class="subj-stat-n">16</span> questions · 2 banks</div>
       <p>Germany 1919–45 and Cold War Superpower Relations — Weimar collapse, Hitler's rise, Cuban Missile Crisis, détente, MAD, and Soviet collapse. Source evaluation, causation, and historiographical debate throughout.</p>
       <div class="progress-row">
         <span class="mono"><b>Germany 1919–45 · Cold War &amp; Superpower Relations</b> · 2 banks · 16 questions</span>
@@ -1379,6 +1390,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
         <span class="mono boards">OCR</span>
       </div>
       <h3>Law</h3>
+      <div class="subj-stat"><span class="subj-stat-n">24</span> questions · 3 banks</div>
       <p>Criminal Law and Tort Law — actus reus, mens rea, murder, defences, negligence (Donoghue, Caparo, Wagon Mound), occupiers' liability, and psychiatric injury. Case law application and evaluation throughout.</p>
       <div class="progress-row">
         <span class="mono"><b>Criminal Law · Tort Law · Contract Law</b> · 3 banks · 24 questions</span>
@@ -1393,6 +1405,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
         <span class="mono boards">AQA 7408</span>
       </div>
       <h3>Physics</h3>
+      <div class="subj-stat"><span class="subj-stat-n">24</span> questions · 3 banks</div>
       <p>Mechanics, electricity, waves, and quantum physics — SUVAT, Newton's laws, momentum, Kirchhoff's laws, potential dividers, wave speed, Young's double-slit, the photoelectric effect, stationary waves, and de Broglie wavelength.</p>
       <div class="progress-row">
         <span class="mono"><b>Mechanics · Electricity &amp; Waves · Electricity, Waves &amp; Quantum</b> · 3 banks · 24 questions</span>
@@ -1407,6 +1420,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
         <span class="mono boards">Edexcel 9PL0</span>
       </div>
       <h3>Politics</h3>
+      <div class="subj-stat"><span class="subj-stat-n">32</span> questions · 4 banks</div>
       <p>UK Government, Rights, and the Judiciary — constitution, Parliament, electoral systems, HRA declarations of incompatibility, insider/outsider pressure groups, judicial independence, and landmark cases including Miller 2 (2019).</p>
       <div class="progress-row">
         <span class="mono"><b>UK Government · Rights &amp; Judiciary · Parties &amp; Voting · US Politics &amp; Comparative</b> · 4 banks · 32 questions</span>
@@ -1421,6 +1435,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
         <span class="mono boards">Eduqas</span>
       </div>
       <h3>Computer Science</h3>
+      <div class="subj-stat"><span class="subj-stat-n">16</span> questions · 2 banks</div>
       <p>Programming fundamentals and systems — algorithms, complexity, sorting, stacks, queues, binary trees, graph traversal, OSI model, TCP vs UDP, public key cryptography, and database normalisation.</p>
       <div class="progress-row">
         <span class="mono"><b>Fundamentals of Programming · Data Structures &amp; Networks</b> · 2 banks · 16 questions</span>
@@ -1435,6 +1450,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
         <span class="mono boards">Edexcel 9GN0</span>
       </div>
       <h3>German</h3>
+      <div class="subj-stat"><span class="subj-stat-n">16</span> questions · 2 banks</div>
       <p>Listening, reading and translation tasks built around the most-penalised errors from examiner reports — gender agreement, case endings, tense confusion and false cognates. Question formats mirror the actual paper: gap-fill, error correction, translation into English and German, and short written responses with model-answer checklists.</p>
       <div class="progress-row">
         <span class="mono"><b>Listening, Reading &amp; Translation · Grammar &amp; Complex Structures</b> · 2 banks · 16 questions</span>
@@ -1449,6 +1465,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
         <span class="mono boards">Edexcel 9MA0</span>
       </div>
       <h3>Maths</h3>
+      <div class="subj-stat"><span class="subj-stat-n">24</span> questions · 3 banks</div>
       <p>Pure mathematics and statistics — differentiation, integration, chain rule, completing the square, graph transformations, hypothesis testing, binomial distribution, normal distribution, PMCC, and regression. Questions target exact steps where examiners report marks are dropped.</p>
       <div class="progress-row">
         <span class="mono"><b>Pure Year 1 · Calculus, Graphs &amp; Algebra · Statistics &amp; Probability</b> · 3 banks · 24 questions</span>
@@ -1463,6 +1480,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
         <span class="mono boards">Eduqas A680QS</span>
       </div>
       <h3>Media Studies</h3>
+      <div class="subj-stat"><span class="subj-stat-n">16</span> questions · 2 banks</div>
       <p>Theoretical frameworks applied under exam conditions — Hall, Curran &amp; Seaton, Gerbner, Van Zoonen, Livingstone &amp; Lunt. Questions target the distinctions examiners penalise: encoding vs decoding, active vs passive audience, representation vs reflection.</p>
       <div class="progress-row">
         <span class="mono"><b>Theoretical Framework · Industry &amp; Audience</b> · 2 banks · 16 questions</span>
@@ -1477,6 +1495,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
         <span class="mono boards">AQA 7582</span>
       </div>
       <h3>Physical Education</h3>
+      <div class="subj-stat"><span class="subj-stat-n">16</span> questions · 2 banks</div>
       <p>Applied anatomy and physiology framed around sporting contexts — cardiac output, oxygen dissociation, sliding filament theory, energy systems, VO₂ max and fibre types. Every question matches the AQA command words that carry the most marks.</p>
       <div class="progress-row">
         <span class="mono"><b>Applied Anatomy &amp; Physiology · Exercise Physiology &amp; Biomechanics</b> · 2 banks · 16 questions</span>
@@ -1491,6 +1510,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
         <span class="mono boards">Edexcel 9SP0</span>
       </div>
       <h3>Spanish</h3>
+      <div class="subj-stat"><span class="subj-stat-n">16</span> questions · 2 banks</div>
       <p>Grammar traps and translation — ser vs estar, subjunctive triggers and sequence of tenses, preterite vs imperfect, llevar + gerund for duration, and the cuanto más comparative. Questions mirror the paper formats that most expose grammar gaps.</p>
       <div class="progress-row">
         <span class="mono"><b>Grammar Traps &amp; Translation · Thematic Vocabulary &amp; Culture</b> · 2 banks · 16 questions</span>
@@ -1505,6 +1525,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
         <span class="mono boards">Eduqas A120QS</span>
       </div>
       <h3>Religious Studies</h3>
+      <div class="subj-stat"><span class="subj-stat-n">16</span> questions · 2 banks</div>
       <p>Philosophy of Religion and Ethics — where students can recall the arguments but can't evaluate them under timed conditions. Questions train the precise application of Aquinas, Kant and Bentham to issues, and the structured comparison examiners reward in the 15-mark extended response.</p>
       <div class="progress-row">
         <span class="mono"><b>Philosophy of Religion &amp; Ethics · Religion &amp; Ethics Applied</b> · 2 banks · 16 questions</span>
@@ -1519,6 +1540,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
         <span class="mono boards">OCR H604</span>
       </div>
       <h3>Health and Social Care</h3>
+      <div class="subj-stat"><span class="subj-stat-n">16</span> questions · 2 banks</div>
       <p>Human Lifespan Development and applying theoretical perspectives to care settings — the gap between knowing Bowlby and using him to justify a care recommendation. Questions target the command words (assess, evaluate, justify) that carry most marks in the examined units.</p>
       <div class="progress-row">
         <span class="mono"><b>Human Lifespan Development · Care Values, Communication &amp; Safeguarding</b> · 2 banks · 16 questions</span>
@@ -1533,6 +1555,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
         <span class="mono boards">Edexcel 9FR0</span>
       </div>
       <h3>French</h3>
+      <div class="subj-stat"><span class="subj-stat-n">16</span> questions · 2 banks</div>
       <p>Listening, reading and translation tasks built from examiner-identified error patterns — tense selection, pronoun placement, subjunctive triggers and register shifts. Question formats mirror the paper: gap-fill, error correction, translation into English and French, and short written responses with model-answer checklists.</p>
       <div class="progress-row">
         <span class="mono"><b>Listening, Reading &amp; Translation · Grammar &amp; Complex Structures</b> · 2 banks · 16 questions</span>
@@ -1547,6 +1570,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
         <span class="mono boards">IB Language B SL Diploma</span>
       </div>
       <h3>Mandarin</h3>
+      <div class="subj-stat"><span class="subj-stat-n">16</span> questions · 2 banks</div>
       <p>Reading comprehension and written production tasks built around the most-penalised errors from IB examiner reports — character accuracy, measure words, aspect markers, and register shifts between formal and informal registers. Question formats mirror the paper: text-handling, short written response, and guided writing tasks with model-answer checklists.</p>
       <div class="progress-row">
         <span class="mono"><b>Text Handling &amp; Comprehension · Written Production &amp; Grammar</b> · 2 banks · 16 questions</span>
@@ -1561,6 +1585,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
         <span class="mono boards">AQA 7712</span>
       </div>
       <h3>English Literature</h3>
+      <div class="subj-stat"><span class="subj-stat-n">16</span> questions · 2 banks</div>
       <p>Craft, terminology and exam technique — the misconceptions that appear in every marked script regardless of which texts your students study. AO-weighting errors, context-as-wallpaper, narrating plot instead of analysing method, and embedding quotation correctly. Text-specific banks (passage analysis, character, context) are available when your school registers its set texts.</p>
       <div class="progress-row">
         <span class="mono"><b>Literary Terminology · Exam Technique &amp; AO Application</b> · 2 banks · 16 questions</span>
@@ -1575,6 +1600,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
         <span class="mono boards">AQA 7707</span>
       </div>
       <h3>English Language &amp; Literature</h3>
+      <div class="subj-stat"><span class="subj-stat-n">16</span> questions · 2 banks</div>
       <p>Linguistic frameworks applied to literary texts — the dual-lens approach that distinguishes 7707 from pure Literature. Deixis, register, discourse, semantic field, mode and tenor, alongside AO-weighting errors specific to comparative and anthology tasks. Text-specific banks available when your school registers its set texts.</p>
       <div class="progress-row">
         <span class="mono"><b>Linguistic Terminology · AO Application &amp; Comparative Technique</b> · 2 banks · 16 questions</span>
