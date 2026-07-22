@@ -2370,21 +2370,39 @@ if (localStorage.getItem('forge-theme') === 'light') {
 
 <script>
 (function(){
+  var els = document.querySelectorAll('.reveal');
+  if(!els.length) return;
+
+  function revealInView(){
+    els.forEach(function(el){
+      var r = el.getBoundingClientRect();
+      if(r.top < window.innerHeight && r.bottom > 0){ el.classList.add('visible'); }
+    });
+  }
+
+  // Absolute safety net, independent of requestAnimationFrame/IntersectionObserver
+  // (both can be paused in backgrounded/occluded tabs) — guarantees in-view
+  // content is never left permanently invisible.
+  setTimeout(revealInView, 1000);
+  window.addEventListener('load', function(){ setTimeout(revealInView, 100); });
+
   // Run after paint so hero elements don't flash in immediately
   requestAnimationFrame(function(){
-    var els = document.querySelectorAll('.reveal');
-    if(!els.length) return;
-    var io = new IntersectionObserver(function(entries){
-      entries.forEach(function(e){
-        if(e.isIntersecting){
-          e.target.classList.add('visible');
-        } else {
-          // Remove when scrolled back above so it re-animates on scroll down
-          e.target.classList.remove('visible');
-        }
-      });
-    },{threshold:0.08, rootMargin:'0px 0px -40px 0px'});
-    els.forEach(function(el){ io.observe(el); });
+    try {
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){
+            e.target.classList.add('visible');
+          } else {
+            // Remove when scrolled back above so it re-animates on scroll down
+            e.target.classList.remove('visible');
+          }
+        });
+      },{threshold:0.08, rootMargin:'0px 0px -40px 0px'});
+      els.forEach(function(el){ io.observe(el); });
+    } catch(err) {
+      els.forEach(function(el){ el.classList.add('visible'); });
+    }
   });
 })();
 </script>
