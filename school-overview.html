@@ -362,6 +362,7 @@ function renderDashboard() {
   h += '<button class="tab' + (activeTab === 'classes' ? ' active' : '') + '" onclick="switchTab(\'classes\')">By class</button>';
   h += '<button class="tab' + (activeTab === 'misconceptions' ? ' active' : '') + '" onclick="switchTab(\'misconceptions\')">Misconception league</button>';
   h += '<button class="tab' + (activeTab === 'performance' ? ' active' : '') + '" onclick="switchTab(\'performance\')">Performance bands</button>';
+  h += '<button class="tab' + (activeTab === 'spec' ? ' active' : '') + '" onclick="switchTab(\'spec\')">Spec points</button>';
   h += '</div>';
 
   // Subject tab
@@ -569,6 +570,47 @@ function renderDashboard() {
   h += '</div>';
   h += '</div>'; // close tab-performance
 
+  // ── Spec points tab ─────────────────────────────────────
+  var specTotals = {};
+  responses.forEach(function(r) {
+    if (!r.spec_point) return;
+    if (!specTotals[r.spec_point]) specTotals[r.spec_point] = { total: 0, correct: 0, students: {} };
+    specTotals[r.spec_point].total++;
+    if (r.is_correct) specTotals[r.spec_point].correct++;
+    if (r.student_id) specTotals[r.spec_point].students[r.student_id] = true;
+  });
+
+  var specKeys = Object.keys(specTotals).sort(function(a, b) {
+    var accA = specTotals[a].correct / specTotals[a].total;
+    var accB = specTotals[b].correct / specTotals[b].total;
+    return accA - accB; // weakest first
+  });
+
+  h += '<div id="tab-spec" style="display:' + (activeTab === 'spec' ? 'block' : 'none') + '">';
+  h += '<div class="card">';
+  h += '<div class="card-title">School-wide Spec Point Accuracy — weakest first</div>';
+  if (specKeys.length === 0) {
+    h += '<p style="font-size:14px;color:#8A857E;margin-top:12px">No spec point data yet. Spec tracking requires questions answered after the latest platform update.</p>';
+  } else {
+    h += '<p style="font-size:12px;color:#8A857E;margin-bottom:16px;margin-top:4px">Only spec points with logged responses shown. Sorted by accuracy, lowest first.</p>';
+    h += '<table class="overview-table"><thead><tr><th>Spec point</th><th>Questions answered</th><th>Students</th><th>Accuracy</th><th>Bar</th></tr></thead><tbody>';
+    specKeys.forEach(function(sp) {
+      var d = specTotals[sp];
+      var acc = Math.round((d.correct / d.total) * 100);
+      var studentCount = Object.keys(d.students).length;
+      var col = acc >= 70 ? 'var(--good)' : acc >= 50 ? 'var(--hot)' : 'var(--bad)';
+      h += '<tr>';
+      h += '<td style="font-family:\'JetBrains Mono\',monospace;font-size:12px;font-weight:700;color:var(--ember)">' + sp + '</td>';
+      h += '<td style="font-family:\'JetBrains Mono\',monospace;font-size:12px;color:var(--slate)">' + d.total + '</td>';
+      h += '<td style="font-size:12px;color:var(--slate)">' + studentCount + '</td>';
+      h += '<td style="font-family:\'JetBrains Mono\',monospace;font-weight:700;color:' + col + '">' + acc + '%</td>';
+      h += '<td><div class="heat-bar"><div class="heat-fill" style="width:' + acc + '%;background:' + col + '"></div></div></td>';
+      h += '</tr>';
+    });
+    h += '</tbody></table>';
+  }
+  h += '</div></div>'; // close card + tab-spec
+
   h += '<p style="font-size:12px;color:#8A857E;margin-top:20px;text-align:center">Forge School Overview · read-only · updated live</p>';
 
   app.innerHTML = h;
@@ -580,7 +622,7 @@ function statCard(val, label, col) {
 
 window.switchTab = function(tab) {
   activeTab = tab;
-  ['subjects','classes','misconceptions','performance'].forEach(function(t) {
+  ['subjects','classes','misconceptions','performance','spec'].forEach(function(t) {
     var el = document.getElementById('tab-' + t);
     if (el) el.style.display = t === tab ? 'block' : 'none';
   });

@@ -196,6 +196,7 @@ function logResponse(q, selectedKey, isCorrect, isReforge, reforgeCorrect) {
     selected_option: selectedKey,
     is_correct: isCorrect,
     misconception_tag: isCorrect ? null : (q.tag || null),
+    spec_point: q.spec || null,
     reforge_attempted: isReforge || false,
     reforge_correct: isReforge ? reforgeCorrect : null
   };
