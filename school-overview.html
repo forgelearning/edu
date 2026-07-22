@@ -510,7 +510,7 @@ function renderDashboard() {
 
   var bandSize = Math.max(1, Math.ceil(rankedStudents.length * 0.1));
   var top10 = rankedStudents.slice(0, bandSize);
-  var bottom10 = rankedStudents.slice(-bandSize);
+  var bottom10 = rankedStudents.slice(-bandSize).sort(function(a,b){ return a.acc - b.acc; });
 
   h += '<div id="tab-performance" style="display:' + (activeTab === 'performance' ? 'block' : 'none') + '">';
 
