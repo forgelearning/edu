@@ -510,7 +510,7 @@ function renderDashboard() {
 
   var bandSize = Math.max(1, Math.ceil(rankedStudents.length * 0.1));
   var top10 = rankedStudents.slice(0, bandSize);
-  var bottom10 = rankedStudents.slice(-bandSize).reverse();
+  var bottom10 = rankedStudents.slice(-bandSize);
 
   h += '<div id="tab-performance" style="display:' + (activeTab === 'performance' ? 'block' : 'none') + '">';
 
@@ -548,7 +548,7 @@ function renderDashboard() {
       var accCol = s.acc >= 80 ? 'var(--good)' : s.acc >= 60 ? 'var(--hot)' : 'var(--bad)';
       var subjDisplay = s.subject ? s.subject.charAt(0).toUpperCase() + s.subject.slice(1).toLowerCase() : '—';
       h += '<tr>';
-      h += '<td style="color:#8A857E;font-family:JetBrains Mono,monospace;width:32px">' + (rankedStudents.length - bottom10.length + i + 1) + '</td>';
+      h += '<td style="color:#8A857E;font-family:JetBrains Mono,monospace;width:32px">' + (i + 1) + '</td>';
       h += '<td style="color:var(--white);font-weight:600">' + s.name + '</td>';
       h += '<td style="font-size:13px">' + s.className + '</td>';
       h += '<td><span class="subject-badge">' + subjDisplay.toUpperCase() + '</span></td>';
