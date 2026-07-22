@@ -116,6 +116,15 @@ h2{font-size:clamp(28px,3.6vw,40px);font-weight:800;margin-bottom:14px}
 .loop .step h3{font-size:18px;margin-bottom:8px}
 .loop .step p{font-size:14px}
 
+/* vs competitors */
+.vs-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:28px;margin-bottom:36px}
+.vs-grid .vs-card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px}
+.vs-grid .vs-card .n{font-family:'JetBrains Mono',monospace;color:var(--ember);font-size:12px;margin-bottom:8px;text-transform:uppercase;letter-spacing:.04em}
+.vs-grid .vs-card h3{font-size:16px;margin-bottom:6px}
+.vs-grid .vs-card p{font-size:13px;line-height:1.45;color:var(--slate)}
+@media(max-width:860px){.vs-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:480px){.vs-grid{grid-template-columns:1fr}}
+
 /* modes */
 .modes{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:32px}
 .mode{background:linear-gradient(180deg,var(--panel),var(--coal));border:1px solid var(--line);border-radius:14px;padding:20px}
@@ -196,6 +205,8 @@ h2{font-size:clamp(28px,3.6vw,40px);font-weight:800;margin-bottom:14px}
 table{width:100%;border-collapse:collapse;margin-top:26px;font-size:14px}
 th,td{padding:9px 12px;text-align:left;border-bottom:1px solid var(--line)}
 th{font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:#8A857E;font-weight:600}
+.group-row td{background:var(--panel);font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--hot);font-weight:700;padding:8px 12px;border-bottom:1px solid var(--line)}
+.group-row:first-child td{padding-top:9px}
 td:first-child{color:var(--white)}
 th.forge,td.forge{background:rgba(255,107,44,.06);border-left:1px solid rgba(255,107,44,.3);border-right:1px solid rgba(255,107,44,.3)}
 th.forge{color:var(--hot)}
@@ -1651,20 +1662,47 @@ if (localStorage.getItem('forge-theme') === 'light') {
 <div class="wrap">
   <p class="tag eyebrow reveal">How we compare</p>
   <h2 class="reveal">Recall is the floor. We built the rest.</h2>
+
+  <div class="vs-grid reveal">
+    <div class="vs-card">
+      <p class="n">VS QUIZLET'S CROWD-SOURCED SETS</p>
+      <h3>Every question mapped to the spec</h3>
+      <p>Not user-uploaded decks of mixed quality. Every distractor is misconception-tagged and sourced from examiners' reports.</p>
+    </div>
+    <div class="vs-card">
+      <p class="n">VS SENECA'S MARK-AND-MOVE-ON</p>
+      <h3>Wrong answers get reworked, not just marked</h3>
+      <p>Seneca tells you it's wrong and continues. Forge scaffolds the exact misconception, then retests it immediately with a twin question.</p>
+    </div>
+    <div class="vs-card">
+      <p class="n">VS EDUCATOR'S GCSE FOCUS</p>
+      <h3>Built for A Level depth, not just recall</h3>
+      <p>Educator covers GCSE &amp; KS3 breadth well. Forge goes deep on A Level application and technique, with a timed exam-pressure mode built in.</p>
+    </div>
+    <div class="vs-card">
+      <p class="n">VS A PAPER MOCK EXAM</p>
+      <h3>You find out today, not in six weeks</h3>
+      <p>A mock gives you a grade weeks later. Forge tags the misconception the moment it fires — every session is a live diagnostic.</p>
+    </div>
+  </div>
+
   <div class="table-scroll">
   <table>
     <thead><tr><th>Capability</th><th>Quizlet</th><th>Seneca</th><th>Educator</th><th class="forge">Forge</th></tr></thead>
     <tbody>
+      <tr class="group-row"><td colspan="5">Content &amp; Coverage</td></tr>
       <tr><td>Spec-mapped recall practice</td><td class="p">~</td><td class="y">✓</td><td class="y">✓</td><td class="forge y">✓</td></tr>
-      <tr><td>Daily habit loop &amp; streaks</td><td class="n">✗</td><td class="n">✗</td><td class="y">✓</td><td class="forge y">✓</td></tr>
-      <tr><td>Misconception-tagged distractors</td><td class="n">✗</td><td class="n">✗</td><td class="p">~</td><td class="forge star">★</td></tr>
-      <tr><td>Instant scaffold + re-forged twin question</td><td class="n">✗</td><td class="n">✗</td><td class="n">✗</td><td class="forge star">★</td></tr>
-      <tr><td>Timed exam-pressure mode</td><td class="n">✗</td><td class="n">✗</td><td class="n">✗</td><td class="forge star">★</td></tr>
-      <tr><td>A Level depth (application &amp; technique)</td><td class="p">~</td><td class="p">~</td><td class="n">✗</td><td class="forge star">★</td></tr>
       <tr><td>Examiner-report-sourced content</td><td class="n">✗</td><td class="n">✗</td><td class="p">~</td><td class="forge y">✓</td></tr>
-      <tr><td>Teacher corrective starters per misconception</td><td class="n">✗</td><td class="n">✗</td><td class="n">✗</td><td class="forge star">★</td></tr>
       <tr><td>Multi-subject on one platform</td><td class="p">~</td><td class="p">~</td><td class="n">✗</td><td class="forge y">✓</td></tr>
       <tr><td>GCSE → A Level continuity</td><td class="p">~</td><td class="p">~</td><td class="n">✗</td><td class="forge y">✓</td></tr>
+      <tr class="group-row"><td colspan="5">Misconception Engine</td></tr>
+      <tr><td>Misconception-tagged distractors</td><td class="n">✗</td><td class="n">✗</td><td class="p">~</td><td class="forge star">★</td></tr>
+      <tr><td>Instant scaffold + re-forged twin question</td><td class="n">✗</td><td class="n">✗</td><td class="n">✗</td><td class="forge star">★</td></tr>
+      <tr><td>Teacher corrective starters per misconception</td><td class="n">✗</td><td class="n">✗</td><td class="n">✗</td><td class="forge star">★</td></tr>
+      <tr class="group-row"><td colspan="5">Daily Habit &amp; Exam Pressure</td></tr>
+      <tr><td>Daily habit loop &amp; streaks</td><td class="n">✗</td><td class="n">✗</td><td class="y">✓</td><td class="forge y">✓</td></tr>
+      <tr><td>Timed exam-pressure mode</td><td class="n">✗</td><td class="n">✗</td><td class="n">✗</td><td class="forge star">★</td></tr>
+      <tr><td>A Level depth (application &amp; technique)</td><td class="p">~</td><td class="p">~</td><td class="n">✗</td><td class="forge star">★</td></tr>
     </tbody>
   </table>
   </div>
