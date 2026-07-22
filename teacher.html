@@ -1016,6 +1016,32 @@ var MC_TO_SPEC = {
   "MC-TECH-05":"2.2.3"
 };
 
+var SPEC_TO_SUBJECT = {
+  "2.1.1":"A Level Economics",
+  "2.1.2":"A Level Economics",
+  "2.1.3":"A Level Economics",
+  "2.1.4":"A Level Economics",
+  "2.2.1":"A Level Economics",
+  "2.2.2":"A Level Economics",
+  "2.2.3":"A Level Economics",
+  "2.3.1":"A Level Economics",
+  "2.3.2":"A Level Economics",
+  "2.3.3":"A Level Economics",
+  "2.4.1":"A Level Economics",
+  "2.4.2":"A Level Economics",
+  "2.5.1":"A Level Economics",
+  "2.5.2":"A Level Economics",
+  "2.5.3":"A Level Economics",
+  "BIO-2.4.1":"A Level Biology",
+  "BIO-2.4.2":"A Level Biology",
+  "BIO-2.4.3":"A Level Biology",
+  "BIO-2.4.4":"A Level Biology",
+  "BIO-2.4.5":"A Level Biology",
+  "BIO-2.4.6":"A Level Biology",
+  "BIO-2.4.7":"A Level Biology",
+  "BIO-2.4.8":"A Level Biology"
+};
+
 function renderSpecBreakdown(responses) {
   var el = document.getElementById('panel-spec');
   if (!el) return;
@@ -1052,7 +1078,7 @@ function renderSpecBreakdown(responses) {
   h += '<p style="font-size:13px;color:#8A857E;margin-bottom:20px">Only spec points with logged responses are shown. Questions answered before the latest update will not appear here.</p>';
   h += '<table style="width:100%;border-collapse:collapse;font-size:13px">';
   h += '<thead><tr style="color:#8A857E;text-align:left;border-bottom:1px solid var(--line)">';
-  h += '<th style="padding:8px 0">Spec point</th><th>Questions</th><th>Students</th><th>Accuracy</th><th style="min-width:120px">Bar</th>';
+  h += '<th style="padding:8px 0">Spec point</th><th>Subject</th><th>Questions</th><th>Students</th><th>Accuracy</th><th style="min-width:120px">Bar</th>';
   h += '</tr></thead><tbody>';
 
   specKeys.forEach(function(sp) {
@@ -1062,6 +1088,7 @@ function renderSpecBreakdown(responses) {
     var col = acc >= 70 ? 'var(--good)' : acc >= 50 ? 'var(--hot)' : 'var(--bad)';
     h += '<tr style="border-top:1px solid var(--line)">';
     h += '<td style="padding:8px 0;font-family:JetBrains Mono,monospace;font-size:12px;color:var(--ember);font-weight:700">' + sp + '</td>';
+    h += '<td style="font-size:12px;color:#8A857E">' + (SPEC_TO_SUBJECT[sp] || '—') + '</td>';
     h += '<td style="color:#8A857E">' + d.total + '</td>';
     h += '<td style="color:#8A857E">' + studentCount + '</td>';
     h += '<td style="font-weight:700;color:' + col + '">' + acc + '%</td>';
@@ -1825,13 +1852,14 @@ window.renderStudent = function(studentId) {
   if (specKeys.length > 0) {
     h += '<div class="card"><div class="card-title">Spec Point Breakdown</div>';
     h += '<table style="width:100%;border-collapse:collapse;font-size:13px">';
-    h += '<thead><tr style="color:#8A857E;text-align:left"><th style="padding:6px 0">Spec</th><th>Questions</th><th>Accuracy</th><th style="min-width:80px">Bar</th></tr></thead><tbody>';
+    h += '<thead><tr style="color:#8A857E;text-align:left"><th style="padding:6px 0">Spec</th><th>Subject</th><th>Questions</th><th>Accuracy</th><th style="min-width:80px">Bar</th></tr></thead><tbody>';
     specKeys.forEach(function(sp) {
       var d = specData[sp];
       var spAcc = Math.round((d.correct / d.total) * 100);
       var col = spAcc >= 70 ? 'var(--good)' : spAcc >= 50 ? 'var(--hot)' : 'var(--bad)';
       h += '<tr style="border-top:1px solid var(--line)">';
       h += '<td style="padding:7px 0;font-family:JetBrains Mono,monospace;font-size:12px;color:var(--ember)">' + sp + '</td>';
+      h += '<td style="font-size:12px;color:#8A857E">' + (SPEC_TO_SUBJECT[sp] || '—') + '</td>';
       h += '<td style="color:#8A857E">' + d.total + '</td>';
       h += '<td style="font-weight:700;color:' + col + '">' + spAcc + '%</td>';
       h += '<td><div style="background:var(--line);border-radius:2px;height:6px;width:80px"><div style="background:' + col + ';border-radius:2px;height:6px;width:' + spAcc + '%"></div></div></td>';

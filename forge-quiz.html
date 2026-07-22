@@ -233,16 +233,16 @@ var MC_TO_SPEC = {
   "MC-AS-04":"2.2.2",
   "MC-AS-05":"2.2.2",
   "MC-AS-06":"2.2.2",
-  "MC-BIO-ENZ-01":"2.4.1",
-  "MC-BIO-ENZ-02":"2.4.2",
-  "MC-BIO-ENZ-03":"2.4.3",
-  "MC-BIO-ENZ-04":"2.4.4",
-  "MC-BIO-ENZ-05":"2.4.4",
-  "MC-BIO-ENZ-06":"2.4.6",
-  "MC-BIO-ENZ-07":"2.4.7",
-  "MC-BIO-ENZ-08":"2.4.8",
-  "MC-BIO-ENZ-09":"2.4.5",
-  "MC-BIO-ENZ-10":"2.4.2",
+  "MC-BIO-ENZ-01":"BIO-2.4.1",
+  "MC-BIO-ENZ-02":"BIO-2.4.2",
+  "MC-BIO-ENZ-03":"BIO-2.4.3",
+  "MC-BIO-ENZ-04":"BIO-2.4.4",
+  "MC-BIO-ENZ-05":"BIO-2.4.4",
+  "MC-BIO-ENZ-06":"BIO-2.4.6",
+  "MC-BIO-ENZ-07":"BIO-2.4.7",
+  "MC-BIO-ENZ-08":"BIO-2.4.8",
+  "MC-BIO-ENZ-09":"BIO-2.4.5",
+  "MC-BIO-ENZ-10":"BIO-2.4.2",
   "MC-BNK-01":"2.5.2",
   "MC-BNK-02":"2.5.2",
   "MC-BNK-03":"2.5.2",
@@ -318,6 +318,32 @@ var MC_TO_SPEC = {
   "MC-TECH-02":"2.4.1",
   "MC-TECH-04":"2.4.1",
   "MC-TECH-05":"2.2.3"
+};
+
+var SPEC_TO_SUBJECT = {
+  "2.1.1":"A Level Economics",
+  "2.1.2":"A Level Economics",
+  "2.1.3":"A Level Economics",
+  "2.1.4":"A Level Economics",
+  "2.2.1":"A Level Economics",
+  "2.2.2":"A Level Economics",
+  "2.2.3":"A Level Economics",
+  "2.3.1":"A Level Economics",
+  "2.3.2":"A Level Economics",
+  "2.3.3":"A Level Economics",
+  "2.4.1":"A Level Economics",
+  "2.4.2":"A Level Economics",
+  "2.5.1":"A Level Economics",
+  "2.5.2":"A Level Economics",
+  "2.5.3":"A Level Economics",
+  "BIO-2.4.1":"A Level Biology",
+  "BIO-2.4.2":"A Level Biology",
+  "BIO-2.4.3":"A Level Biology",
+  "BIO-2.4.4":"A Level Biology",
+  "BIO-2.4.5":"A Level Biology",
+  "BIO-2.4.6":"A Level Biology",
+  "BIO-2.4.7":"A Level Biology",
+  "BIO-2.4.8":"A Level Biology"
 };
 
 // ===== DATA =====
@@ -5333,7 +5359,7 @@ BANKS["BIO-ENZ"] = {
   color: "#15803d",
   questions: [
     {
-      id:"BIO-ENZ-01",spec:"2.4.1",
+      id:"BIO-ENZ-01",spec:"BIO-2.4.1",
       stem:"A student claims: 'The active site of an enzyme is a rigid, fixed shape that is complementary to its substrate.' Which statement best evaluates this claim?",
       options:{A:"The claim is correct — the active site is pre-formed and unchanged by substrate binding.",B:"The claim is partially correct — the active site is complementary but changes shape slightly when the substrate binds.",C:"The claim is incorrect — the active site has no defined shape until the substrate enters.",D:"The claim is correct — complementarity means no conformational change is needed."},
       correct:"B",tag:"MC-BIO-ENZ-01",
@@ -5341,7 +5367,7 @@ BANKS["BIO-ENZ"] = {
       reforge:{stem:"An enzyme's active site changes shape when the substrate binds. This best describes which model of enzyme action?",options:{A:"Lock-and-key model — the active site is a rigid complementary shape.",B:"Induced fit model — the active site moulds around the substrate upon binding.",C:"Competitive inhibition — substrate and inhibitor compete for a rigid active site.",D:"Allosteric model — an inhibitor changes the shape of the active site."},correct:"B"}
     },
     {
-      id:"BIO-ENZ-02",spec:"2.4.2",
+      id:"BIO-ENZ-02",spec:"BIO-2.4.2",
       stem:"At temperatures above 40°C, the rate of an enzyme-controlled reaction decreases sharply. Which explanation is most accurate?",
       options:{A:"The enzyme's active site becomes too cold to bind the substrate.",B:"High temperatures reduce substrate kinetic energy, lowering collision frequency.",C:"Increased thermal energy breaks the bonds maintaining the enzyme's tertiary structure, altering the shape of the active site.",D:"The substrate denatures and can no longer fit the active site."},
       correct:"C",tag:"MC-BIO-ENZ-02",
@@ -5349,7 +5375,7 @@ BANKS["BIO-ENZ"] = {
       reforge:{stem:"Which bonds are disrupted when an enzyme is denatured by high temperature?",options:{A:"Peptide bonds only — these link amino acids in the primary structure.",B:"Glycosidic bonds between glucose monomers in the active site.",C:"Hydrogen bonds, ionic bonds and disulfide bridges that maintain the tertiary structure.",D:"Phosphodiester bonds between nucleotides in the enzyme's DNA."},correct:"C"}
     },
     {
-      id:"BIO-ENZ-03",spec:"2.4.3",
+      id:"BIO-ENZ-03",spec:"BIO-2.4.3",
       stem:"An enzyme has an optimum pH of 7. A student increases the pH to 10. Which of the following correctly explains the effect on enzyme activity?",
       options:{A:"Enzyme activity increases because alkaline conditions provide more OH⁻ ions to speed up the reaction.",B:"Enzyme activity decreases because ionic bonds and hydrogen bonds in the tertiary structure are disrupted, altering the shape of the active site.",C:"Enzyme activity decreases because the substrate denatures and can no longer enter the active site.",D:"Enzyme activity is unchanged because pH only affects prokaryotic enzymes."},
       correct:"B",tag:"MC-BIO-ENZ-03",
@@ -5357,7 +5383,7 @@ BANKS["BIO-ENZ"] = {
       reforge:{stem:"Which bonds are most affected when the pH is changed far from an enzyme's optimum?",options:{A:"Peptide bonds in the primary structure.",B:"Hydrogen bonds and ionic bonds in the tertiary structure.",C:"Ester bonds in the phospholipid bilayer surrounding the enzyme.",D:"Glycosidic bonds in the substrate molecule."},correct:"B"}
     },
     {
-      id:"BIO-ENZ-04",spec:"2.4.4",
+      id:"BIO-ENZ-04",spec:"BIO-2.4.4",
       stem:"As substrate concentration increases, the rate of an enzyme-controlled reaction rises and then levels off into a plateau. What does the plateau represent?",
       options:{A:"All substrate molecules have been used up and the reaction has stopped.",B:"Every enzyme active site is occupied — the enzyme is saturated and working at its maximum rate (Vmax).",C:"The enzyme has denatured due to excess substrate.",D:"High substrate concentration is now inhibiting the enzyme."},
       correct:"B",tag:"MC-BIO-ENZ-04",
@@ -5365,7 +5391,7 @@ BANKS["BIO-ENZ"] = {
       reforge:{stem:"A student adds more substrate to a reaction that has already reached Vmax. What happens to the rate of reaction?",options:{A:"It increases because more substrate molecules can collide with the active sites.",B:"It stays the same because all active sites are already occupied — the enzyme is saturated.",C:"It decreases because excess substrate blocks the active sites.",D:"It increases then decreases due to product inhibition."},correct:"B"}
     },
     {
-      id:"BIO-ENZ-05",spec:"2.4.4",
+      id:"BIO-ENZ-05",spec:"BIO-2.4.4",
       stem:"Enzyme X has a Km of 0.5 mmol dm⁻³ and Enzyme Y has a Km of 5.0 mmol dm⁻³. Both act on the same substrate. Which statement is correct?",
       options:{A:"Enzyme Y has higher affinity because it has a higher Km.",B:"Enzyme X has higher affinity — a lower Km means it reaches half-Vmax at a lower substrate concentration, indicating it binds substrate more easily.",C:"Both enzymes have equal affinity because they share the same substrate.",D:"Km only reflects maximum reaction rate, not affinity."},
       correct:"B",tag:"MC-BIO-ENZ-05",
@@ -5373,7 +5399,7 @@ BANKS["BIO-ENZ"] = {
       reforge:{stem:"Under conditions of very low substrate concentration, which enzyme would be most active — one with Km of 0.2 mmol dm⁻³ or one with Km of 2.0 mmol dm⁻³?",options:{A:"The enzyme with Km of 2.0, because it is adapted to high substrate concentrations.",B:"The enzyme with Km of 0.2, because its high affinity allows it to bind substrate even at low concentrations.",C:"Both would be equally active at low substrate concentrations.",D:"Neither — both enzymes require high substrate concentrations to function."},correct:"B"}
     },
     {
-      id:"BIO-ENZ-06",spec:"2.4.6",
+      id:"BIO-ENZ-06",spec:"BIO-2.4.6",
       stem:"A competitive inhibitor is added to an enzyme-catalysed reaction. Which row correctly describes the effect on Vmax and Km?",
       options:{A:"Vmax: unchanged · Km: increased",B:"Vmax: decreased · Km: unchanged",C:"Vmax: decreased · Km: increased",D:"Vmax: unchanged · Km: unchanged"},
       correct:"A",tag:"MC-BIO-ENZ-06",
@@ -5381,7 +5407,7 @@ BANKS["BIO-ENZ"] = {
       reforge:{stem:"A non-competitive inhibitor is added to the same reaction. How does the effect differ from competitive inhibition?",options:{A:"Vmax decreases, Km unchanged — the inhibitor reduces maximum rate regardless of substrate concentration, because it binds at the allosteric site and cannot be outcompeted.",B:"Vmax unchanged, Km increases — the same as competitive inhibition.",C:"Both Vmax and Km increase.",D:"Vmax decreases, Km decreases — the enzyme binds substrate more tightly."},correct:"A"}
     },
     {
-      id:"BIO-ENZ-07",spec:"2.4.7",
+      id:"BIO-ENZ-07",spec:"BIO-2.4.7",
       stem:"A non-competitive inhibitor binds to the allosteric site of an enzyme. Which statement correctly describes the mechanism?",
       options:{A:"The inhibitor blocks the active site directly, preventing substrate from binding.",B:"The inhibitor changes the shape of the active site by altering the enzyme's tertiary structure, reducing activity even when substrate is present in excess.",C:"The inhibitor increases Km without affecting Vmax — identical to competitive inhibition.",D:"The inhibitor only acts at temperatures above the enzyme's optimum."},
       correct:"B",tag:"MC-BIO-ENZ-07",
@@ -5389,7 +5415,7 @@ BANKS["BIO-ENZ"] = {
       reforge:{stem:"A student says: 'Adding more substrate will reverse the effect of a non-competitive inhibitor.' Is this correct?",options:{A:"Yes — more substrate outcompetes the inhibitor for the active site.",B:"No — the non-competitive inhibitor binds at the allosteric site, not the active site. More substrate cannot displace it.",C:"Yes — high substrate concentration causes the allosteric site to close.",D:"No — but only because the inhibitor also blocks the active site directly."},correct:"B"}
     },
     {
-      id:"BIO-ENZ-08",spec:"2.4.8",
+      id:"BIO-ENZ-08",spec:"BIO-2.4.8",
       stem:"An enzyme requires a zinc ion (Zn²⁺) permanently bound to its structure in order to function. The Zn²⁺ ion is best described as:",
       options:{A:"A coenzyme — a non-protein organic molecule that binds temporarily to the enzyme.",B:"A competitive inhibitor — the ion occupies the active site.",C:"A prosthetic group — a non-protein component permanently and tightly bound to the enzyme.",D:"A substrate — the ion is changed during the reaction."},
       correct:"C",tag:"MC-BIO-ENZ-08",
@@ -5397,7 +5423,7 @@ BANKS["BIO-ENZ"] = {
       reforge:{stem:"NAD⁺ is an organic molecule that temporarily associates with enzymes during respiration and carries hydrogen. NAD⁺ is best described as:",options:{A:"A prosthetic group — permanently bound to the enzyme.",B:"A coenzyme — a non-protein organic molecule that temporarily binds to the enzyme and carries groups between reactions.",C:"A substrate — NAD⁺ is permanently changed during the reaction.",D:"A competitive inhibitor — NAD⁺ competes with the substrate for the active site."},correct:"B"}
     },
     {
-      id:"BIO-ENZ-09",spec:"2.4.5",
+      id:"BIO-ENZ-09",spec:"BIO-2.4.5",
       stem:"An experiment investigates the effect of enzyme concentration on rate of reaction, keeping substrate concentration constant and in excess. As enzyme concentration doubles, what happens to the initial rate of reaction?",
       options:{A:"The rate stays the same — all active sites are already occupied by the excess substrate.",B:"The rate decreases — more enzyme molecules compete for the same substrate molecules.",C:"The rate approximately doubles — more active sites are available to bind substrate molecules simultaneously.",D:"The rate increases then plateaus immediately — doubling enzyme has no effect when substrate is in excess."},
       correct:"C",tag:"MC-BIO-ENZ-09",
@@ -5405,7 +5431,7 @@ BANKS["BIO-ENZ"] = {
       reforge:{stem:"In the same experiment, substrate concentration is then reduced to a very low level. What now limits the rate of reaction?",options:{A:"Enzyme concentration — there are not enough active sites.",B:"Substrate concentration — few substrate molecules are available to enter the active sites.",C:"Temperature — low substrate concentration reduces thermal energy.",D:"pH — reduced substrate concentration changes the ionic environment."},correct:"B"}
     },
     {
-      id:"BIO-ENZ-10",spec:"2.4.2",
+      id:"BIO-ENZ-10",spec:"BIO-2.4.2",
       stem:"The Q₁₀ of an enzyme-controlled reaction is calculated as 2. What does this mean?",
       options:{A:"The reaction requires a temperature of exactly 20°C to function.",B:"For every 10°C rise in temperature, the rate of reaction doubles.",C:"The enzyme has an optimum temperature of 20°C above room temperature.",D:"For every 2°C rise in temperature, the rate doubles."},
       correct:"B",tag:"MC-BIO-ENZ-10",
