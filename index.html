@@ -171,7 +171,16 @@ h2{font-size:clamp(28px,3.6vw,40px);font-weight:800;margin-bottom:14px}
 .spec-chip.done b{color:var(--good)}
 
 /* question bank */
-.bank{display:grid;gap:18px;margin-top:44px}
+.bank{display:grid;gap:18px;margin-top:20px}
+.bank .bq{display:none}
+.bank .bq.active{display:flex;flex-direction:column}
+.bank-nav{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-top:32px;flex-wrap:wrap}
+.bank-progress{font-family:'JetBrains Mono',monospace;font-size:12.5px;color:#8A857E}
+.bank-nav-btns{display:flex;gap:8px}
+.bank-nav-btn{background:var(--panel);border:1px solid var(--line);color:var(--white);font-family:'Sora',sans-serif;font-weight:600;font-size:13px;padding:8px 16px;border-radius:8px;cursor:pointer;transition:border-color .15s,opacity .15s}
+.bank-nav-btn:hover{border-color:var(--ember)}
+.bank-nav-btn:disabled{opacity:.4;cursor:default}
+.bank-nav-btn:disabled:hover{border-color:var(--line)}
 .bq{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:24px}
 .bq .bq-head{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:12px}
 .bq .bq-head .spec{font-size:12px;color:var(--slate)}
@@ -1627,6 +1636,13 @@ if (localStorage.getItem('forge-theme') === 'light') {
   <p class="tag eyebrow reveal">Straight from the bank</p>
   <h2 class="reveal">Three questions. No sign-up.</h2>
   <p class="sect-lede reveal">Real questions from across the Forge banks — Economics, Psychology, Law, Biology, History, Chemistry, Maths, Sociology, and Physics. Refreshes on every visit. Every distractor is tagged to a documented misconception from examiners' reports.</p>
+  <div class="bank-nav">
+    <span class="bank-progress" id="bankProgress">Question 1 of 3</span>
+    <div class="bank-nav-btns">
+      <button type="button" class="bank-nav-btn" id="bankPrev" aria-label="Previous question">← Prev</button>
+      <button type="button" class="bank-nav-btn" id="bankNext" aria-label="Next question">Next →</button>
+    </div>
+  </div>
   <div class="bank" id="bank"></div>
 </div>
 </section>
@@ -2158,6 +2174,20 @@ if (localStorage.getItem('forge-theme') === 'light') {
     card.innerHTML=h;
     bankEl.appendChild(card);
   });
+
+  var bankIndex=0;
+  var bankPrevBtn=document.getElementById('bankPrev');
+  var bankNextBtn=document.getElementById('bankNext');
+  function updateBankNav(){
+    var cards=bankEl.querySelectorAll('.bq');
+    cards.forEach(function(c,idx){ c.classList.toggle('active', idx===bankIndex); });
+    document.getElementById('bankProgress').textContent='Question '+(bankIndex+1)+' of '+cards.length;
+    bankPrevBtn.disabled=bankIndex===0;
+    bankNextBtn.disabled=bankIndex===cards.length-1;
+  }
+  updateBankNav();
+  bankPrevBtn.addEventListener('click',function(){ if(bankIndex>0){bankIndex--;updateBankNav();} });
+  bankNextBtn.addEventListener('click',function(){ var cards=bankEl.querySelectorAll('.bq'); if(bankIndex<cards.length-1){bankIndex++;updateBankNav();} });
 
   bankEl.addEventListener('click',function(e){
     var b=e.target.closest('.opt');if(!b||b.disabled)return;
