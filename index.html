@@ -125,6 +125,16 @@ h2{font-size:clamp(28px,3.6vw,40px);font-weight:800;margin-bottom:14px}
 @media(max-width:860px){.vs-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:480px){.vs-grid{grid-template-columns:1fr}}
 
+/* unique features */
+.unique-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:32px}
+.unique-card{background:var(--panel);border:1px solid rgba(255,201,60,.3);border-radius:14px;padding:20px;position:relative}
+.unique-card .unique-star{position:absolute;top:16px;right:16px;color:var(--hot);font-size:14px}
+.unique-card .unique-icon{font-size:26px;margin-bottom:10px}
+.unique-card h3{font-size:16px;margin-bottom:6px;padding-right:20px}
+.unique-card p{font-size:13px;line-height:1.45;color:var(--slate)}
+@media(max-width:860px){.unique-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:480px){.unique-grid{grid-template-columns:1fr}}
+
 /* modes */
 .modes{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:32px}
 .mode{background:linear-gradient(180deg,var(--panel),var(--coal));border:1px solid var(--line);border-radius:14px;padding:20px}
@@ -1681,6 +1691,41 @@ if (localStorage.getItem('forge-theme') === 'light') {
     </div>
   </div>
   <div class="bank" id="bank"></div>
+</div>
+</section>
+
+<section>
+<div class="wrap">
+  <p class="tag eyebrow reveal">Built differently</p>
+  <h2 class="reveal">What we do that the others don't.</h2>
+  <p class="sect-lede reveal">The features below don't exist on Quizlet, Seneca, or Educator.</p>
+
+  <div class="unique-grid reveal">
+    <div class="unique-card">
+      <span class="unique-star">★</span>
+      <div class="unique-icon">📊</div>
+      <h3>Misconception heatmap</h3>
+      <p>The exact wrong answer your class is picking, ranked by frequency and tagged to the spec point it belongs to — not just "this one was tricky."</p>
+    </div>
+    <div class="unique-card">
+      <span class="unique-star">★</span>
+      <div class="unique-icon">⚒</div>
+      <h3>Scaffold + re-forged twin</h3>
+      <p>A wrong answer gets a 30-second correction, then an immediate twin question in a new scenario — proof it stuck, not just a reveal-and-move-on.</p>
+    </div>
+    <div class="unique-card">
+      <span class="unique-star">★</span>
+      <div class="unique-icon">🔥</div>
+      <h3>The Crucible — timed pressure</h3>
+      <p>No hints, no scaffolds, the clock running. Weekly exam-pressure training that mirrors real exam conditions, not another untimed quiz.</p>
+    </div>
+    <div class="unique-card">
+      <span class="unique-star">★</span>
+      <div class="unique-icon">📋</div>
+      <h3>Corrective starters, auto-built</h3>
+      <p>Every misconception the class fires can generate a ready-to-paste starter activity — Monday's lesson plan, written for you.</p>
+    </div>
+  </div>
 </div>
 </section>
 
