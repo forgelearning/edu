@@ -143,8 +143,7 @@ h2{font-size:clamp(28px,3.6vw,40px);font-weight:800;margin-bottom:14px}
 .ltab:hover{color:var(--white)}
 .ltab.active{background:linear-gradient(100deg,var(--hot),var(--ember));color:var(--coal)}
 .level-panel[hidden]{display:none}
-.subjects{display:grid;grid-auto-flow:column;grid-template-rows:repeat(2,auto);grid-auto-columns:380px;gap:18px;margin-top:28px;overflow-x:auto;padding-bottom:16px;scroll-snap-type:x proximity;scrollbar-color:var(--line) transparent;scrollbar-width:thin}
-.subjects .subj{scroll-snap-align:start}
+.subjects{display:grid;grid-auto-flow:column;grid-template-rows:repeat(2,auto);grid-auto-columns:380px;gap:18px;margin-top:28px;overflow-x:auto;padding-bottom:16px;scrollbar-color:var(--line) transparent;scrollbar-width:thin;width:100vw;position:relative;left:50%;margin-left:-50vw;padding-left:max(24px,calc((100vw - 1080px)/2 + 24px));padding-right:24px;box-sizing:border-box}
 .subjects::-webkit-scrollbar{height:8px}
 .subjects::-webkit-scrollbar-track{background:transparent}
 .subjects::-webkit-scrollbar-thumb{background:var(--line);border-radius:8px}
