@@ -559,6 +559,7 @@ function renderLogin(activeTab) {
   // Create panel
   h += '<div id="lp-create" style="display:' + (activeTab === 'create' ? 'block' : 'none') + '">';
   h += '<p style="color:#8A857E;font-size:14px;margin-bottom:16px;text-align:center">Create a class and get a code to share with your students</p>';
+  h += '<input id="c-school" class="join-input" type="text" placeholder="School name — e.g. Mayfield Grammar School" style="text-transform:none">';
   h += '<input id="c-name" class="join-input" type="text" placeholder="Class name — e.g. Year 12 Economics" style="text-transform:none">';
   h += '<input id="c-teacher" class="join-input" type="text" placeholder="Your name — e.g. Mr Zanier" style="text-transform:none">';
   h += '<select id="c-subj" class="subj-select"><option value="">— Loading subjects... —</option>';
@@ -575,31 +576,39 @@ function renderLogin(activeTab) {
   document.getElementById('lt-view').onclick = function() { renderLogin('view'); };
   document.getElementById('lt-create').onclick = function() { renderLogin('create'); };
 
-  // Populate subject dropdown — exclude subjects that already have a class
+  // Populate subject dropdown — all available by default; grey-out per school once entered
   if (activeTab === 'create') {
-    supaGet('classes', '').then(function(existing) {
-      var usedSubjects = {};
-      (existing || []).forEach(function(c) { if (c.subject) usedSubjects[c.subject] = true; });
-      var sel = document.getElementById('c-subj');
-      if (!sel) return;
-      var opts = '<option value="">— Select subject —</option>';
-      SUBJECT_OPTIONS.forEach(function(s) {
-        if (!usedSubjects[s.key]) {
-          opts += '<option value="' + s.key + '">' + s.label + ' (' + s.spec + ')</option>';
-        } else {
-          opts += '<option value="" disabled style="color:#555">' + s.label + ' — already created</option>';
-        }
-      });
-      sel.innerHTML = opts;
-    }).catch(function() {
-      var sel = document.getElementById('c-subj');
-      if (!sel) return;
+    var sel = document.getElementById('c-subj');
+    if (sel) {
       var opts = '<option value="">— Select subject —</option>';
       SUBJECT_OPTIONS.forEach(function(s) {
         opts += '<option value="' + s.key + '">' + s.label + ' (' + s.spec + ')</option>';
       });
       sel.innerHTML = opts;
-    });
+    }
+    // When school name is blurred, re-filter to grey out subjects already at that school
+    var schoolInput = document.getElementById('c-school');
+    if (schoolInput) {
+      schoolInput.addEventListener('blur', function() {
+        var school = schoolInput.value.trim();
+        if (!school) return;
+        supaGet('classes', 'school=eq.' + encodeURIComponent(school)).then(function(existing) {
+          var usedSubjects = {};
+          (existing || []).forEach(function(c) { if (c.subject) usedSubjects[c.subject] = true; });
+          var sel2 = document.getElementById('c-subj');
+          if (!sel2) return;
+          var opts2 = '<option value="">— Select subject —</option>';
+          SUBJECT_OPTIONS.forEach(function(s) {
+            if (!usedSubjects[s.key]) {
+              opts2 += '<option value="' + s.key + '">' + s.label + ' (' + s.spec + ')</option>';
+            } else {
+              opts2 += '<option value="" disabled style="color:#555">' + s.label + ' — already created at this school</option>';
+            }
+          });
+          sel2.innerHTML = opts2;
+        }).catch(function() {});
+      });
+    }
   }
 
   // View dashboard handler
@@ -692,6 +701,7 @@ function renderLogin(activeTab) {
   var createBtn = document.getElementById('c-btn');
   if (createBtn) {
     createBtn.onclick = function() {
+      var school = document.getElementById('c-school').value.trim();
       var name = document.getElementById('c-name').value.trim();
       var teacher = document.getElementById('c-teacher').value.trim();
       var subj = document.getElementById('c-subj').value;
@@ -700,6 +710,7 @@ function renderLogin(activeTab) {
       err.style.display = 'none';
       result.style.display = 'none';
 
+      if (!school) { err.textContent = 'Enter your school name.'; err.style.display = 'block'; return; }
       if (!name) { err.textContent = 'Enter a class name.'; err.style.display = 'block'; return; }
       if (!teacher) { err.textContent = 'Enter your name.'; err.style.display = 'block'; return; }
       if (!subj) { err.textContent = 'Select a subject.'; err.style.display = 'block'; return; }
@@ -717,7 +728,7 @@ function renderLogin(activeTab) {
       // Debug: log exactly what we're sending
       console.log('Inserting:', { name: name, subject: subj, code: code });
 
-      supaInsert('classes', { name: name, subject: subj, code: code, teacher_name: teacher }).then(function(rows) {
+      supaInsert('classes', { name: name, subject: subj, code: code, teacher_name: teacher, school: school }).then(function(rows) {
         createBtn.disabled = false; createBtn.textContent = 'Create class \u2192';
         console.log('Supabase response:', JSON.stringify(rows));
         var cls = Array.isArray(rows) ? rows[0] : rows;
