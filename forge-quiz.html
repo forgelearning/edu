@@ -315,6 +315,11 @@ var MC_TO_SPEC = {
   "MC-TEC-04":"TECH",
   "MC-TEC-06":"TECH",
   "MC-TEC-07":"TECH",
+  "MC-HAZ-01":"GCSE-HAZ",
+  "MC-HAZ-02":"GCSE-HAZ",
+  "MC-HAZ-03":"GCSE-HAZ",
+  "MC-HAZ-04":"GCSE-HAZ",
+  "MC-MGT-01":"GCSE-HAZ",
   "MC-TECH-01":"2.3.1",
   "MC-TECH-02":"2.4.1",
   "MC-TECH-04":"2.4.1",
@@ -1459,6 +1464,12 @@ const SUBJECTS = {
     sub: "Physical — Tectonic Hazards",
     color: "#0f766e",
     banks: ["GEO-TEC"]
+  },
+  "gcse-geo": {
+    label: "GCSE Geography",
+    sub: "Edexcel B 1GB0 — Hazardous Earth",
+    color: "#0f766e",
+    banks: ["GCSE-GEO-HAZ"]
   }
 };
 
@@ -1714,6 +1725,69 @@ BANKS["GEO-TEC"] = {
       correct:"A",tag:"MC-TEC-02",
       scaffold:"Japan's earthquake preparation DID work — buildings survived, early warning fired. Deaths came from the tsunami, which at 13m overtopped walls built for 5-6m events based on historical data. The lesson: hazard management must plan for worst-case scenarios, not just historical averages. This is the key limitation of purely reactive hazard planning.",
       reforge:{stem:"The key lesson from the 2011 Tohoku tsunami walls being overtopped is:",options:{A:"Tsunami walls are an ineffective technology and should be replaced with other measures.",B:"Hazard management must plan for worst-case scenarios, not historical averages, since underestimating potential magnitude creates critical vulnerability.",C:"All coastal communities in Japan should be permanently relocated to inland areas.",D:"International coordination is the most important factor in reducing tsunami casualties."},correct:"B"}
+    }
+  ]
+};
+
+BANKS["GCSE-GEO-HAZ"] = {
+  label: "Hazardous Earth",
+  color: "#0f766e",
+  questions: [
+    {
+      id:"GCSE-HAZ-01",spec:"GCSE-HAZ",stem:"At a destructive (subduction) plate boundary, what typically happens?",
+      options:{A:"The denser oceanic plate sinks beneath the lighter continental plate, causing earthquakes and volcanic activity",B:"Two plates slide past each other with no vertical movement, causing earthquakes but rarely volcanoes",C:"Two plates move apart, allowing magma to rise and form new crust",D:"Two continental plates collide and neither sinks, forming fold mountains but no volcanoes"},
+      correct:"A",tag:"MC-TEC-01",
+      scaffold:"Destructive = one plate (denser, oceanic) subducts beneath the other — the friction and melting causes both earthquakes and volcanoes. B describes a conservative boundary, C a constructive boundary, D a collision boundary.",
+      reforge:{stem:"At a conservative (transform) plate boundary, why do volcanoes rarely form even though earthquakes do?",options:{A:"Plates slide past each other with no subduction and no gap for magma to rise, so there's no route for magma to reach the surface",B:"The plates move too slowly to generate any heat",C:"Conservative boundaries only exist under the ocean",D:"Volcanoes only form at collision boundaries"},correct:"A"}
+    },
+    {
+      id:"GCSE-HAZ-02",spec:"GCSE-HAZ",stem:"The 2010 Haiti earthquake (magnitude 7.0) occurred on which type of plate boundary?",
+      options:{A:"Destructive",B:"Conservative — the Caribbean and North American plates slide past each other, building up friction that releases suddenly as a shallow, damaging earthquake",C:"Constructive",D:"Collision"},
+      correct:"B",tag:"MC-TEC-04",
+      scaffold:"Conservative (transform) boundary — shallow focus (~13km) meant intense shaking at the surface despite the \"only\" 7.0 magnitude. Destructive boundaries involve subduction (like Japan's); constructive boundaries produce new crust; collision boundaries crumple two continental plates into mountains.",
+      reforge:{stem:"Why did Haiti's shallow-focus earthquake cause such intense surface shaking despite its moderate 7.0 magnitude?",options:{A:"A shallow focus means less energy is absorbed by rock before reaching the surface, intensifying the shaking",B:"Shallow earthquakes are always more powerful in magnitude",C:"Haiti has unusually dense rock that amplifies all seismic waves",D:"The depth of focus has no effect on surface shaking"},correct:"A"}
+    },
+    {
+      id:"GCSE-HAZ-03",spec:"GCSE-HAZ",stem:"Japan's 2011 Tohoku earthquake (magnitude 9.0) killed roughly 18,000 people. Haiti's 2010 earthquake (magnitude 7.0) — far less powerful — killed over 100,000. Which best explains this?",
+      options:{A:"Haiti's poverty meant poorly-built buildings and no tsunami warning system, while Japan's wealth funded earthquake-resistant construction and monitoring — magnitude alone doesn't determine impact",B:"Haiti's earthquake released more energy than Japan's",C:"Japan has fewer people living near the coast",D:"Earthquakes near the Caribbean are always more dangerous than those in the Pacific"},
+      correct:"A",tag:"MC-TEC-02",
+      scaffold:"Development level shapes vulnerability: building codes, early warning systems, and emergency response — the exact contrast this pairing is designed to teach. Magnitude is a direct, logarithmic measure of energy release, so B is factually wrong; Japan actually has one of the world's highest coastal population densities.",
+      reforge:{stem:"A magnitude 8 earthquake strikes both a high-income and a low-income country simultaneously. Which statement best predicts outcomes?",options:{A:"Both countries suffer similar casualties since the magnitude is identical",B:"The low-income country likely suffers far greater loss of life due to weaker buildings, slower emergency response, and less effective warning systems",C:"The high-income country suffers more because its infrastructure is more complex",D:"Casualties are determined entirely by population density, not development level"},correct:"B"}
+    },
+    {
+      id:"GCSE-HAZ-04",spec:"GCSE-HAZ",stem:"Mount Pinatubo's 1991 eruption (VEI 6) occurred on which plate boundary, and what was a major global effect?",
+      options:{A:"A destructive boundary (Philippine Plate subducting beneath the Eurasian Plate); sulfur dioxide released caused global temperatures to fall by about 0.5°C",B:"A constructive boundary; the eruption caused global warming",C:"A conservative boundary; the eruption had no measurable global effect",D:"A destructive boundary; the eruption caused a mega-tsunami across the Pacific"},
+      correct:"A",tag:"MC-HAZ-01",
+      scaffold:"VEI 6, destructive boundary, and a global cooling effect — one eruption, measurable worldwide impact. Pinatubo sits on a destructive (subduction) boundary, not constructive or conservative, and large sulfur dioxide eruptions cause cooling (blocking sunlight), not warming.",
+      reforge:{stem:"Why did Mount Pinatubo's 1991 eruption cause global temperatures to fall rather than rise?",options:{A:"The huge volume of sulfur dioxide released formed a haze that reflected sunlight back into space",B:"Volcanic eruptions always cause long-term warming",C:"The ash cloud trapped heat close to the Earth's surface",D:"Pinatubo's location near the equator has no effect on climate"},correct:"A"}
+    },
+    {
+      id:"GCSE-HAZ-05",spec:"GCSE-HAZ",stem:"Iceland's Eyjafjallajökull eruption in 2010 caused huge economic disruption but almost no deaths. Why?",
+      options:{A:"It sits on a constructive boundary producing relatively low-explosivity activity, but its fine ash cloud grounded European flights for days, costing the airline industry over $1 billion — impact isn't only measured in deaths",B:"The eruption was extremely explosive (VEI 6+) and destroyed nearby towns",C:"It occurred on a destructive boundary similar to Pinatubo",D:"Iceland had no volcanic monitoring in place"},
+      correct:"A",tag:"MC-HAZ-02",
+      scaffold:"Constructive boundary, low death toll, huge economic cost — over 100,000 flights cancelled. Impact isn't only measured in lives lost. Eyjafjallajökull's 2010 eruption was far smaller than Pinatubo's VEI 6 and didn't destroy nearby settlements; Iceland also has extensive volcanic monitoring.",
+      reforge:{stem:"A volcanic eruption causes almost no deaths but costs an industry over $1 billion. What does this show about measuring hazard impact?",options:{A:"Impact can be economic and social, not just measured by death toll",B:"An eruption with no deaths cannot be considered a hazard",C:"Economic impact only matters for earthquakes, not volcanoes",D:"Low death tolls mean an eruption wasn't newsworthy"},correct:"A"}
+    },
+    {
+      id:"GCSE-HAZ-06",spec:"GCSE-HAZ",stem:"A country builds earthquake-resistant buildings and holds regular evacuation drills. Which part of hazard management is this?",
+      options:{A:"Prediction",B:"Protection and planning — reducing vulnerability and preparing a response, rather than predicting exactly when a hazard will strike",C:"Monitoring",D:"Modifying the hazard itself"},
+      correct:"B",tag:"MC-MGT-01",
+      scaffold:"Monitor, predict, protect, plan — four different strategies. Buildings and drills sit under protection and planning. Prediction means forecasting when/where a hazard will strike; monitoring means tracking real-time hazard data; humans can't modify an earthquake or eruption itself.",
+      reforge:{stem:"Seismologists use satellite data to track ground deformation near a volcano before it erupts. Which part of hazard management is this?",options:{A:"Monitoring — tracking real-time hazard data to detect warning signs",B:"Protection — reducing the vulnerability of buildings",C:"Planning — preparing an evacuation response",D:"Modification — changing the hazard itself"},correct:"A"}
+    },
+    {
+      id:"GCSE-HAZ-07",spec:"GCSE-HAZ",stem:"Hurricane Katrina made landfall as a Category 3 storm, yet caused catastrophic flooding in New Orleans. What was the main direct cause of the flooding?",
+      options:{A:"Levees and flood walls protecting the city failed under the storm surge, flooding roughly 80% of New Orleans",B:"Katrina made direct landfall as a Category 5 storm",C:"Extremely high rainfall alone, unrelated to storm surge or levees",D:"A secondary earthquake"},
+      correct:"A",tag:"MC-HAZ-03",
+      scaffold:"Levee failure under storm surge, not wind alone — New Orleans sits below sea level, making flood defences the critical factor. Katrina peaked at Category 5 over open water but weakened to a strong Category 3 by landfall; hurricanes don't trigger earthquakes.",
+      reforge:{stem:"New Orleans sits largely below sea level. Why does this make storm surge, rather than wind speed, the greater flooding risk during a hurricane?",options:{A:"Seawater pushed inland by the surge has nowhere to drain and can overwhelm flood defences protecting low-lying land",B:"Wind speed always causes more flooding than storm surge",C:"Being below sea level has no effect on flood risk",D:"Storm surge only affects cities above sea level"},correct:"A"}
+    },
+    {
+      id:"GCSE-HAZ-08",spec:"GCSE-HAZ",stem:"Typhoon Haiyan (2013) had some of the highest landfall wind speeds ever recorded, yet its roughly 6,300 deaths were caused mainly by:",
+      options:{A:"The storm surge — a wall of seawater around 7.5 metres high that overwhelmed low-lying coastal areas like Tacloban",B:"Wind damage to buildings alone",C:"A secondary earthquake",D:"Cold temperatures following the storm"},
+      correct:"A",tag:"MC-HAZ-04",
+      scaffold:"Storm surge, not wind, was the deadliest element — the same lesson as Katrina, in a lower-income setting with a much higher death toll. Typhoons don't trigger earthquakes, and tropical storms are warm-weather systems, so cold temperatures weren't a factor.",
+      reforge:{stem:"Two tropical storms have similar wind speeds, but one causes far more deaths. Storm surge height is the key difference. What does this tell us about tropical storm hazards?",options:{A:"Storm surge, not wind speed, is often the deadliest element of a tropical storm, especially in low-lying coastal areas",B:"Wind speed is always the best predictor of deaths",C:"Storm surge only matters for storms in the Pacific",D:"Death toll is unrelated to any physical characteristic of the storm"},correct:"A"}
     }
   ]
 };
