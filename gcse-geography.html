@@ -528,12 +528,13 @@ if (localStorage.getItem('forge-theme') === 'light') {
   <p class="tag eyebrow reveal"><a href="index.html#subjects" style="color:var(--slate);text-decoration:none">← All subjects</a></p>
   <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-top:12px">
     <div>
-      <span class="pill reveal" style="border-color:rgba(255,201,60,.5);color:var(--hot)">In development</span>
+      <span class="pill hot reveal">Hazardous Earth live</span>
       <span class="mono boards reveal" style="margin-left:10px">Edexcel B · 1GB0</span>
     </div>
   </div>
   <h1 class="reveal" style="font-size:clamp(32px,4.2vw,48px);font-weight:800;margin-top:14px;margin-bottom:10px">GCSE Geography</h1>
-  <p class="sect-lede reveal">Physical, human and fieldwork skills — with the 8-mark extended answers (and the 12-mark geographical decision question on Paper 3) treated as a skill to train, not a lottery. Mapped to Edexcel B (1GB0): Papers 1, 2 and 3. Launching September, built alongside real classroom teaching.</p>
+  <div class="subj-stat reveal" style="font-size:15px;margin-bottom:14px"><span class="subj-stat-n" style="font-size:26px">8</span> questions · 1 bank live — Hazardous Earth</div>
+  <p class="sect-lede reveal">Physical, human and fieldwork skills — with the 8-mark extended answers (and the 12-mark geographical decision question on Paper 3) treated as a skill to train, not a lottery. Mapped to Edexcel B (1GB0): Papers 1, 2 and 3. The rest is launching September, built alongside real classroom teaching.</p>
   <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:22px" class="reveal">
     <a href="index.html#waitlist" class="btn btn-hot" style="text-decoration:none">Join the waiting list</a>
     <a href="forge-quiz.html" class="cta-ghost" style="text-decoration:none;display:inline-flex;align-items:center;padding:0 18px;height:44px;border-radius:10px;border:1px solid var(--line)">Try a live subject instead</a>
@@ -546,9 +547,9 @@ if (localStorage.getItem('forge-theme') === 'light') {
   <p class="sect-lede reveal">The full Edexcel B (1GB0) specification, so you can see exactly what's coming before term starts.</p>
   <div class="rank-grid reveal" style="margin-top:24px">
     <div class="rank-row reveal">
-      <span class="rank-badge" style="background:var(--panel-2);color:var(--slate)">In authoring</span>
+      <span class="rank-badge" style="background:rgba(255,201,60,.15);color:var(--hot)">Hazardous Earth live</span>
       <span class="rank-range mono">Paper 1 · 1GB0/01 · 94 marks</span>
-      <span class="rank-desc"><b>Global Geographical Issues</b> — Hazardous Earth (30), Development Dynamics (34, incl. SPaG), Challenges of an Urbanising World (30). One 8-mark question per section.</span>
+      <span class="rank-desc"><b>Global Geographical Issues</b> — Hazardous Earth (30, <b style="color:var(--good)">1 bank live</b>), Development Dynamics (34, incl. SPaG, in authoring), Challenges of an Urbanising World (30, in authoring).</span>
     </div>
     <div class="rank-row reveal">
       <span class="rank-badge" style="background:var(--panel-2);color:var(--slate)">In authoring</span>
@@ -563,11 +564,117 @@ if (localStorage.getItem('forge-theme') === 'light') {
   </div>
 </section>
 
+<section style="padding-top:52px">
+  <p class="tag eyebrow reveal">Straight from the bank</p>
+  <h2 class="reveal">Eight real Hazardous Earth questions.</h2>
+  <p class="sect-lede reveal">No sign-up. Plate tectonics, and the case studies most Edexcel B schemes of work use: Tohoku &amp; Haiti (earthquakes), Pinatubo &amp; Eyjafjallajökull (volcanoes), Katrina &amp; Haiyan (tropical storms).</p>
+
+  <div class="bank-nav">
+    <span class="bank-progress" id="ecoProgress">Question 1 of 8</span>
+    <div class="bank-nav-btns">
+      <button type="button" class="bank-nav-btn" id="ecoPrev" aria-label="Previous question">← Prev</button>
+      <button type="button" class="bank-nav-btn" id="ecoNext" aria-label="Next question">Next →</button>
+    </div>
+  </div>
+
+  <div class="bank" id="eco-bank" style="width:auto;position:static;left:auto;margin-left:0;padding:0;display:block">
+
+    <div class="bq active">
+      <div class="bq-head"><span class="spec mono"><b>Hazardous Earth · Plate Tectonics</b></span><span class="fmt">Concept</span></div>
+      <p class="q">At a destructive (subduction) plate boundary, what typically happens?</p>
+      <button class="opt" data-right="1">The denser oceanic plate sinks beneath the lighter continental plate, causing earthquakes and volcanic activity</button>
+      <button class="opt" data-mc="MC-TEC-01a" data-s="That describes a conservative (transform) boundary — plates slide past each other with no subduction, so volcanoes are rare, but earthquakes still occur.">Two plates slide past each other with no vertical movement, causing earthquakes but rarely volcanoes</button>
+      <button class="opt" data-mc="MC-TEC-01b" data-s="That describes a constructive (divergent) boundary, like the Mid-Atlantic Ridge — plates move apart and magma rises to form new crust.">Two plates move apart, allowing magma to rise and form new crust</button>
+      <button class="opt" data-mc="MC-TEC-01c" data-s="That describes a collision boundary between two continental plates of similar density — neither subducts, so fold mountains form (e.g. the Himalayas) but there's little volcanic activity.">Two continental plates collide and neither sinks, forming fold mountains but no volcanoes</button>
+      <div class="scaffold"><span class="stag"></span><p></p></div>
+      <p class="praise">Destructive = one plate (denser, oceanic) subducts beneath the other — the friction and melting causes both earthquakes and volcanoes. ✦</p>
+    </div>
+
+    <div class="bq">
+      <div class="bq-head"><span class="spec mono"><b>Hazardous Earth · Haiti 2010</b></span><span class="fmt">Case study</span></div>
+      <p class="q">The 2010 Haiti earthquake (magnitude 7.0) occurred on which type of plate boundary?</p>
+      <button class="opt" data-mc="MC-HAI-01a" data-s="Destructive boundaries involve subduction and are typically found at ocean-continent margins like Japan's — Haiti's earthquake had a different mechanism.">Destructive</button>
+      <button class="opt" data-right="1">Conservative — the Caribbean and North American plates slide past each other, building up friction that releases suddenly as a shallow, damaging earthquake</button>
+      <button class="opt" data-mc="MC-HAI-01c" data-s="Constructive boundaries produce new crust as plates move apart — that's not what caused the Haiti earthquake.">Constructive</button>
+      <button class="opt" data-mc="MC-HAI-01d" data-s="Collision boundaries involve two continental plates crumpling to form mountains — not the mechanism behind the Haiti earthquake.">Collision</button>
+      <div class="scaffold"><span class="stag"></span><p></p></div>
+      <p class="praise">Conservative (transform) boundary — shallow focus (~13km) meant intense shaking at the surface despite the "only" 7.0 magnitude. ✦</p>
+    </div>
+
+    <div class="bq">
+      <div class="bq-head"><span class="spec mono"><b>Hazardous Earth · Haiti vs Tohoku</b></span><span class="fmt">Evaluation</span></div>
+      <p class="q">Japan's 2011 Tohoku earthquake (magnitude 9.0) killed roughly 18,000 people. Haiti's 2010 earthquake (magnitude 7.0) — far less powerful — killed over 100,000. Which best explains this?</p>
+      <button class="opt" data-right="1">Haiti's poverty meant poorly-built buildings and no tsunami warning system, while Japan's wealth funded earthquake-resistant construction and monitoring — magnitude alone doesn't determine impact</button>
+      <button class="opt" data-mc="MC-CMP-01b" data-s="Magnitude is a direct measure of energy release: 9.0 is far more powerful than 7.0. The Richter/moment magnitude scale is logarithmic, so this comparison isn't close.">Haiti's earthquake released more energy than Japan's</button>
+      <button class="opt" data-mc="MC-CMP-01c" data-s="Japan has one of the world's highest coastal population densities — this isn't why the death toll differed.">Japan has fewer people living near the coast</button>
+      <button class="opt" data-mc="MC-CMP-01d" data-s="Vulnerability depends on development, preparedness and building standards — not simply which ocean or region a country sits in.">Earthquakes near the Caribbean are always more dangerous than those in the Pacific</button>
+      <div class="scaffold"><span class="stag"></span><p></p></div>
+      <p class="praise">Development level shapes vulnerability: building codes, early warning systems, and emergency response — the exact contrast this pairing is designed to teach. ✦</p>
+    </div>
+
+    <div class="bq">
+      <div class="bq-head"><span class="spec mono"><b>Hazardous Earth · Pinatubo 1991</b></span><span class="fmt">Case study</span></div>
+      <p class="q">Mount Pinatubo's 1991 eruption (VEI 6) occurred on which plate boundary, and what was a major global effect?</p>
+      <button class="opt" data-right="1">A destructive boundary (Philippine Plate subducting beneath the Eurasian Plate); sulfur dioxide released caused global temperatures to fall by about 0.5°C</button>
+      <button class="opt" data-mc="MC-PIN-01b" data-s="Pinatubo sits on a destructive, not constructive, boundary — and large sulfur dioxide eruptions cause global cooling (blocking sunlight), not warming.">A constructive boundary; the eruption caused global warming</button>
+      <button class="opt" data-mc="MC-PIN-01c" data-s="Pinatubo is on a destructive boundary, and its 1991 eruption was the second-largest of the 20th century — its effects were measured worldwide.">A conservative boundary; the eruption had no measurable global effect</button>
+      <button class="opt" data-mc="MC-PIN-01d" data-s="Pinatubo's danger came from pyroclastic flows and ashfall, not a mega-tsunami — that's a hazard more associated with major undersea earthquakes.">A destructive boundary; the eruption caused a mega-tsunami across the Pacific</button>
+      <div class="scaffold"><span class="stag"></span><p></p></div>
+      <p class="praise">VEI 6, destructive boundary, and a global cooling effect — one eruption, measurable worldwide impact. ✦</p>
+    </div>
+
+    <div class="bq">
+      <div class="bq-head"><span class="spec mono"><b>Hazardous Earth · Eyjafjallajökull 2010</b></span><span class="fmt">Case study</span></div>
+      <p class="q">Iceland's Eyjafjallajökull eruption in 2010 caused huge economic disruption but almost no deaths. Why?</p>
+      <button class="opt" data-right="1">It sits on a constructive boundary producing relatively low-explosivity activity, but its fine ash cloud grounded European flights for days, costing the airline industry over $1 billion — impact isn't only measured in deaths</button>
+      <button class="opt" data-mc="MC-EYJ-01b" data-s="Eyjafjallajökull's 2010 eruption was far smaller than Pinatubo's VEI 6, and it didn't destroy nearby settlements — its impact was mainly the ash cloud, not explosive destruction.">The eruption was extremely explosive (VEI 6+) and destroyed nearby towns</button>
+      <button class="opt" data-mc="MC-EYJ-01c" data-s="Eyjafjallajökull sits on the Mid-Atlantic Ridge — a constructive boundary — not a destructive one like Pinatubo.">It occurred on a destructive boundary similar to Pinatubo</button>
+      <button class="opt" data-mc="MC-EYJ-01d" data-s="Iceland has extensive volcanic monitoring — that's part of why so few people were harmed despite the disruption.">Iceland had no volcanic monitoring in place</button>
+      <div class="scaffold"><span class="stag"></span><p></p></div>
+      <p class="praise">Constructive boundary, low death toll, huge economic cost — over 100,000 flights cancelled. Impact isn't only measured in lives lost. ✦</p>
+    </div>
+
+    <div class="bq">
+      <div class="bq-head"><span class="spec mono"><b>Hazardous Earth · Hazard Management</b></span><span class="fmt">Concept</span></div>
+      <p class="q">A country builds earthquake-resistant buildings and holds regular evacuation drills. Which part of hazard management is this?</p>
+      <button class="opt" data-mc="MC-MGT-01a" data-s="Prediction means forecasting when and where a hazard will strike — this scenario describes preparing for one, not forecasting it.">Prediction</button>
+      <button class="opt" data-right="1">Protection and planning — reducing vulnerability and preparing a response, rather than predicting exactly when a hazard will strike</button>
+      <button class="opt" data-mc="MC-MGT-01c" data-s="Monitoring means tracking real-time hazard data (e.g. seismometers, satellite imagery) — building codes and drills go further, into protection and planning.">Monitoring</button>
+      <button class="opt" data-mc="MC-MGT-01d" data-s="Humans can't modify the hazard itself (an earthquake or eruption) — only reduce vulnerability to it, which is what protection and planning do.">Modifying the hazard itself</button>
+      <div class="scaffold"><span class="stag"></span><p></p></div>
+      <p class="praise">Monitor, predict, protect, plan — four different strategies. Buildings and drills sit under protection and planning. ✦</p>
+    </div>
+
+    <div class="bq">
+      <div class="bq-head"><span class="spec mono"><b>Hazardous Earth · Hurricane Katrina 2005</b></span><span class="fmt">Case study</span></div>
+      <p class="q">Hurricane Katrina made landfall as a Category 3 storm, yet caused catastrophic flooding in New Orleans. What was the main direct cause of the flooding?</p>
+      <button class="opt" data-right="1">Levees and flood walls protecting the city failed under the storm surge, flooding roughly 80% of New Orleans</button>
+      <button class="opt" data-mc="MC-KAT-01b" data-s="Katrina peaked at Category 5 over open water but weakened to a strong Category 3 by the time it made landfall.">Katrina made direct landfall as a Category 5 storm</button>
+      <button class="opt" data-mc="MC-KAT-01c" data-s="Rainfall contributed, but the catastrophic flooding came from storm surge overwhelming the levee system protecting a city built below sea level.">Extremely high rainfall alone, unrelated to storm surge or levees</button>
+      <button class="opt" data-mc="MC-KAT-01d" data-s="Hurricanes don't trigger earthquakes — the flooding was caused by levee failure under storm surge, a coastal flooding mechanism.">A secondary earthquake</button>
+      <div class="scaffold"><span class="stag"></span><p></p></div>
+      <p class="praise">Levee failure under storm surge, not wind alone — New Orleans sits below sea level, making flood defences the critical factor. ✦</p>
+    </div>
+
+    <div class="bq">
+      <div class="bq-head"><span class="spec mono"><b>Hazardous Earth · Typhoon Haiyan 2013</b></span><span class="fmt">Case study</span></div>
+      <p class="q">Typhoon Haiyan (2013) had some of the highest landfall wind speeds ever recorded, yet its roughly 6,300 deaths were caused mainly by:</p>
+      <button class="opt" data-right="1">The storm surge — a wall of seawater around 7.5 metres high that overwhelmed low-lying coastal areas like Tacloban</button>
+      <button class="opt" data-mc="MC-HAI2-01b" data-s="Wind caused major damage, but it was the storm surge that caused the overwhelming majority of deaths in coastal areas like Tacloban.">Wind damage to buildings alone</button>
+      <button class="opt" data-mc="MC-HAI2-01c" data-s="Typhoons don't trigger earthquakes — Haiyan's deadliest impact was the storm surge, a coastal flooding hazard.">A secondary earthquake</button>
+      <button class="opt" data-mc="MC-HAI2-01d" data-s="Tropical storms are warm-weather systems — cold temperatures weren't a factor in Haiyan's death toll.">Cold temperatures following the storm</button>
+      <div class="scaffold"><span class="stag"></span><p></p></div>
+      <p class="praise">Storm surge, not wind, was the deadliest element — the same lesson as Katrina, in a lower-income setting with a much higher death toll. ✦</p>
+    </div>
+
+  </div>
+</section>
+
 <section style="padding-top:52px;padding-bottom:64px">
   <div class="wait" style="text-align:center">
     <p class="tag eyebrow reveal">Building this now</p>
-    <h2 class="reveal">Question banks are in authoring for September.</h2>
-    <p class="sect-lede reveal" style="margin:0 auto">This subject doesn't have live questions yet — no placeholder questions here, only what's real. Join the waiting list to pilot it as soon as the first bank is ready, or try a subject that's already live.</p>
+    <h2 class="reveal">The rest is in authoring for September.</h2>
+    <p class="sect-lede reveal" style="margin:0 auto">Development Dynamics, Challenges of an Urbanising World, and Papers 2 &amp; 3 don't have live questions yet — no placeholders, only what's real. Join the waiting list to pilot each bank as it's ready.</p>
     <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:20px" class="reveal">
       <a href="index.html#waitlist" class="btn btn-hot" style="text-decoration:none">Join the waiting list</a>
       <a href="forge-quiz.html" class="cta-ghost" style="text-decoration:none;display:inline-flex;align-items:center;padding:0 18px;height:44px;border-radius:10px;border:1px solid var(--line)">Try a live subject</a>
