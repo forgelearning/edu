@@ -49,6 +49,19 @@ h1,h2,h3{font-family:'Bricolage Grotesque',sans-serif;color:var(--white);line-he
 .opt.wrong{border-color:var(--bad);background:rgba(255,90,90,.07);opacity:1}
 .opt.wrong .letter{color:var(--bad)}
 .opt.dimmed{opacity:.5}
+.fb-sentence{font-size:16px;line-height:2.6;color:var(--white)}
+.fb-blank{display:inline-block;min-width:100px;padding:3px 10px;margin:2px 3px;border-radius:6px;border:1.5px dashed var(--line);background:var(--panel-2);text-align:center;cursor:pointer;font-weight:600;color:#8A857E;vertical-align:middle;transition:border-color .15s,background .15s}
+.fb-blank:hover:not(.locked){border-color:var(--ember)}
+.fb-blank.filled{border-style:solid;border-color:var(--ember);color:var(--white);background:rgba(255,107,44,.08)}
+.fb-blank.correct{border-style:solid;border-color:var(--good);background:rgba(127,217,138,.08);color:var(--good)}
+.fb-blank.wrong{border-style:solid;border-color:var(--bad);background:rgba(255,90,90,.07);color:var(--bad)}
+.fb-blank.locked{cursor:default}
+.fb-wordbank{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px}
+.fb-word{padding:8px 16px;border-radius:8px;border:1.5px solid var(--line);background:var(--panel-2);color:var(--white);cursor:pointer;font-family:'Sora',sans-serif;font-size:14px;font-weight:600;transition:border-color .15s,opacity .15s}
+.fb-word:hover:not(.used){border-color:var(--ember)}
+.fb-word.used{opacity:.25;pointer-events:none}
+.fb-check-btn{margin-top:20px;padding:10px 24px;border-radius:8px;background:var(--white);color:var(--coal);border:none;cursor:pointer;font-weight:600;font-size:14px;font-family:'Sora',sans-serif;opacity:.4;pointer-events:none}
+.fb-check-btn.ready{opacity:1;pointer-events:auto}
 .scaffold-box{margin-top:16px;padding:14px 16px;border-radius:12px;border:1px solid rgba(255,201,60,.4);background:linear-gradient(180deg,rgba(255,107,44,.10),rgba(255,201,60,.05));animation:heat .5s ease}
 @keyframes heat{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 .scaffold-box .stag{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--coal);background:var(--hot);padding:2px 8px;border-radius:5px;font-weight:600;margin-bottom:8px}
@@ -1788,6 +1801,78 @@ BANKS["GCSE-GEO-HAZ"] = {
       correct:"A",tag:"MC-HAZ-04",
       scaffold:"Storm surge, not wind, was the deadliest element — the same lesson as Katrina, in a lower-income setting with a much higher death toll. Typhoons don't trigger earthquakes, and tropical storms are warm-weather systems, so cold temperatures weren't a factor.",
       reforge:{stem:"Two tropical storms have similar wind speeds, but one causes far more deaths. Storm surge height is the key difference. What does this tell us about tropical storm hazards?",options:{A:"Storm surge, not wind speed, is often the deadliest element of a tropical storm, especially in low-lying coastal areas",B:"Wind speed is always the best predictor of deaths",C:"Storm surge only matters for storms in the Pacific",D:"Death toll is unrelated to any physical characteristic of the storm"},correct:"A"}
+    },
+    {
+      id:"GCSE-HAZ-FB-01",spec:"GCSE-HAZ",type:"fill_blank",
+      stem:"Complete the explanation of a destructive plate boundary.",
+      template:"At a destructive boundary, the ___ oceanic plate is subducted beneath the ___ continental plate. Friction and melting at the subduction zone cause both ___ and volcanic activity.",
+      blanks:["denser","lighter","earthquakes"],
+      bank:["denser","lighter","earthquakes","thinner","heavier","tsunamis"],
+      tag:"MC-TEC-01",
+      scaffold:"Destructive boundaries: the denser oceanic plate sinks beneath the lighter continental plate. The friction and melting this causes produces both earthquakes and volcanic activity — not just one or the other."
+    },
+    {
+      id:"GCSE-HAZ-FB-02",spec:"GCSE-HAZ",type:"fill_blank",
+      stem:"Complete the sentence about the 2010 Haiti earthquake.",
+      template:"Haiti's 2010 earthquake occurred on a ___ boundary, where the Caribbean and North American plates slide past each other. Its ___ focus meant the shaking at the surface was especially intense.",
+      blanks:["conservative","shallow"],
+      bank:["conservative","shallow","destructive","deep"],
+      tag:"MC-TEC-04",
+      scaffold:"Haiti sits on a conservative (transform) boundary. Because the earthquake's focus was shallow, less energy was absorbed by rock before reaching the surface, intensifying the shaking despite a 'moderate' 7.0 magnitude."
+    },
+    {
+      id:"GCSE-HAZ-FB-03",spec:"GCSE-HAZ",type:"fill_blank",
+      stem:"Complete the comparison between the Tohoku and Haiti earthquakes.",
+      template:"Japan's Tohoku earthquake was far more ___ than Haiti's, yet caused far fewer deaths, because Japan's greater ___ funded earthquake-resistant construction and an effective early warning system.",
+      blanks:["powerful","wealth"],
+      bank:["powerful","wealth","weak","population"],
+      tag:"MC-TEC-02",
+      scaffold:"Magnitude is a direct measure of energy release, so Tohoku (9.0) was far more powerful than Haiti (7.0). But wealth and development level — building codes, warning systems, emergency response — determine vulnerability, which is why Haiti's death toll was so much higher."
+    },
+    {
+      id:"GCSE-HAZ-FB-04",spec:"GCSE-HAZ",type:"fill_blank",
+      stem:"Complete the sentence about Mount Pinatubo's 1991 eruption.",
+      template:"Mount Pinatubo erupted on a ___ boundary. The huge volume of ___ dioxide released formed a haze that reflected sunlight, causing global temperatures to ___ by about 0.5°C.",
+      blanks:["destructive","sulfur","fall"],
+      bank:["destructive","sulfur","fall","constructive","carbon","rise"],
+      tag:"MC-HAZ-01",
+      scaffold:"Pinatubo sits on a destructive boundary. Large sulfur dioxide eruptions form a haze that reflects sunlight back into space, causing global cooling rather than warming."
+    },
+    {
+      id:"GCSE-HAZ-FB-05",spec:"GCSE-HAZ",type:"fill_blank",
+      stem:"Complete the sentence about Eyjafjallajökull's 2010 eruption.",
+      template:"Eyjafjallajökull sits on a ___ boundary and caused almost no deaths, but its fine ash cloud grounded European flights for days — showing that hazard impact can be ___, not just measured in lives lost.",
+      blanks:["constructive","economic"],
+      bank:["constructive","economic","destructive","social"],
+      tag:"MC-HAZ-02",
+      scaffold:"Iceland sits on a constructive boundary, producing relatively low-explosivity activity. Despite almost no deaths, the eruption cost the airline industry over $1 billion — proof that impact isn't only measured in deaths."
+    },
+    {
+      id:"GCSE-HAZ-FB-06",spec:"GCSE-HAZ",type:"fill_blank",
+      stem:"Complete the sentence about hazard management strategies.",
+      template:"Building earthquake-resistant structures and running evacuation drills are examples of ___ and planning, while using satellite data to track ground deformation before an eruption is an example of ___.",
+      blanks:["protection","monitoring"],
+      bank:["protection","monitoring","prediction","modification"],
+      tag:"MC-MGT-01",
+      scaffold:"Hazard management has four strands: monitor, predict, protect, plan. Buildings and drills reduce vulnerability and prepare a response (protection/planning); tracking real-time data like ground deformation is monitoring, not prediction."
+    },
+    {
+      id:"GCSE-HAZ-FB-07",spec:"GCSE-HAZ",type:"fill_blank",
+      stem:"Complete the sentence about Hurricane Katrina's flooding.",
+      template:"Katrina made landfall as 'only' a Category 3 storm, but New Orleans' ___ failed under the storm surge. Because the city sits below sea level, ___ rather than wind speed was the greater flooding risk.",
+      blanks:["levees","storm surge"],
+      bank:["levees","storm surge","bridges","wind"],
+      tag:"MC-HAZ-03",
+      scaffold:"New Orleans' levees and flood walls failed under the storm surge, flooding roughly 80% of the city. Because the city sits below sea level, seawater pushed inland by the surge had nowhere to drain — making storm surge, not wind, the critical factor."
+    },
+    {
+      id:"GCSE-HAZ-FB-08",spec:"GCSE-HAZ",type:"fill_blank",
+      stem:"Complete the sentence about Typhoon Haiyan's death toll.",
+      template:"Despite record landfall wind speeds, most of Typhoon Haiyan's roughly 6,300 deaths were caused by the ___, a wall of seawater around 7.5 metres high that overwhelmed low-lying areas like ___.",
+      blanks:["storm surge","Tacloban"],
+      bank:["storm surge","Tacloban","wind","Manila"],
+      tag:"MC-HAZ-04",
+      scaffold:"As with Katrina, storm surge — not wind — was the deadliest element. A roughly 7.5m wall of seawater overwhelmed low-lying coastal areas like Tacloban, in a lower-income setting with a much higher death toll than Katrina."
     }
   ]
 };
@@ -6363,7 +6448,7 @@ function renderBanks(){
   app.querySelectorAll('.bank-btn').forEach(function(b){
     b.onclick=function(){
       state.bank=b.dataset.key;
-      var rawQs=BANKS[b.dataset.key].questions.filter(function(q){return !q.type;});
+      var rawQs=BANKS[b.dataset.key].questions.filter(function(q){return !q.type||q.type==='fill_blank';});
       state.questions=weightedShuffle(rawQs, state.weightMap||{});
       state.idx=0;state.score=0;
       // Ensure trial/paid students have a studentId so responses log correctly
@@ -6421,7 +6506,7 @@ function renderBanks(){
           btn.onclick = function(){
             var bk = btn.getAttribute('data-asgn-bank');
             state.bank = bk;
-            var rawQs = BANKS[bk].questions.filter(function(q){return !q.type;});
+            var rawQs = BANKS[bk].questions.filter(function(q){return !q.type||q.type==='fill_blank';});
             state.questions = weightedShuffle(rawQs, state.weightMap||{});
             state.idx=0; state.score=0; state.phase='quiz'; render();
           };
@@ -6505,7 +6590,6 @@ function renderQuiz(){
   var bk=BANKS[state.bank];
   var q=state.questions[state.idx];
   if(!q){state.phase='results';render();return;}
-  var keys=Object.keys(q.options);
 
   var h='<div class="quiz-header">';
   h+='<button class="back-btn" id="back-banks">\u2190 Banks</button>';
@@ -6526,6 +6610,13 @@ function renderQuiz(){
   }
   h+='<div class="q-meta"><span class="q-id" style="color:'+bk.color+';background:'+bk.color+'14">'+q.id+'</span><span>'+(state.idx+1)+' / '+state.questions.length+'</span></div>';
   h+='<div class="stem">'+q.stem+'</div>';
+
+  if(q.type==='fill_blank'){
+    renderFillBlankQuiz(q,bk,h);
+    return;
+  }
+
+  var keys=Object.keys(q.options);
   h+='<div class="options" id="opts">';
   keys.forEach(function(k){
     h+='<button class="opt" data-k="'+k+'"><span class="letter">'+k+'</span><span>'+q.options[k]+'</span></button>';
@@ -6586,6 +6677,127 @@ function renderQuiz(){
       };
     };
   });
+}
+
+function renderFillBlankQuiz(q,bk,headerHtml){
+  var parts=q.template.split('___');
+  var sentHtml='<div class="fb-sentence">';
+  parts.forEach(function(part,i){
+    sentHtml+=part.replace(/\n/g,'<br>');
+    if(i<parts.length-1) sentHtml+='<span class="fb-blank" data-idx="'+i+'" data-word=""></span>';
+  });
+  sentHtml+='</div>';
+
+  var bankWords=q.bank.slice();
+  for(var i=bankWords.length-1;i>0;i--){
+    var j=Math.floor(Math.random()*(i+1));
+    var tmp=bankWords[i];bankWords[i]=bankWords[j];bankWords[j]=tmp;
+  }
+
+  var h=headerHtml+sentHtml;
+  h+='<div class="fb-wordbank" id="fb-bank">';
+  bankWords.forEach(function(w,i){
+    h+='<button class="fb-word" data-word="'+w+'" data-wi="'+i+'">'+w+'</button>';
+  });
+  h+='</div>';
+  h+='<button class="fb-check-btn" id="fb-check">Check answer</button>';
+  h+='<div id="feedback"></div>';
+  h+='<div class="clear"></div>';
+
+  app.innerHTML=h;
+  document.getElementById('back-banks').onclick=function(){state.phase='banks';render();};
+
+  var blanks=app.querySelectorAll('.fb-blank');
+  var words=app.querySelectorAll('.fb-word');
+  var checkBtn=document.getElementById('fb-check');
+  var answered=false;
+
+  function nextEmptyBlank(){
+    for(var k=0;k<blanks.length;k++){ if(!blanks[k].dataset.word) return blanks[k]; }
+    return null;
+  }
+  function updateCheckState(){
+    var allFilled=nextEmptyBlank()===null;
+    checkBtn.classList.toggle('ready',allFilled&&!answered);
+  }
+
+  words.forEach(function(w){
+    w.onclick=function(){
+      if(answered||w.classList.contains('used'))return;
+      var target=nextEmptyBlank();
+      if(!target)return;
+      target.textContent=w.dataset.word;
+      target.dataset.word=w.dataset.word;
+      target.dataset.wi=w.dataset.wi;
+      target.classList.add('filled');
+      w.classList.add('used');
+      updateCheckState();
+    };
+  });
+
+  blanks.forEach(function(b){
+    b.onclick=function(){
+      if(answered||!b.dataset.word)return;
+      var wi=b.dataset.wi;
+      var w=app.querySelector('.fb-word[data-wi="'+wi+'"]');
+      if(w) w.classList.remove('used');
+      b.textContent='';
+      b.dataset.word='';
+      b.dataset.wi='';
+      b.classList.remove('filled');
+      updateCheckState();
+    };
+  });
+
+  checkBtn.onclick=function(){
+    if(answered||!checkBtn.classList.contains('ready'))return;
+    answered=true;
+    var allCorrect=true;
+    var given=[];
+    blanks.forEach(function(b){
+      var idx=parseInt(b.dataset.idx,10);
+      var correctWord=q.blanks[idx];
+      given.push(b.dataset.word);
+      b.classList.add('locked');
+      if(b.dataset.word===correctWord){
+        b.classList.add('correct');
+      }else{
+        b.classList.add('wrong');
+        allCorrect=false;
+      }
+    });
+    if(allCorrect) state.score++;
+    if(isFreeTier()) incrementDailyCount();
+    if(state.weightMap){
+      if(allCorrect){ state.weightMap[q.id]=Math.max(0.2,(state.weightMap[q.id]||1)*0.5); }
+      else{ state.weightMap[q.id]=3; }
+    }
+    logResponse(q,given.join('|'),allCorrect,false,null);
+
+    checkBtn.style.display='none';
+
+    var fb=document.getElementById('feedback');
+    if(allCorrect){
+      fb.innerHTML='<div class="praise-box">✓ Nailed it.</div><button class="next-btn" id="next-btn">Next →</button><div class="clear"></div>';
+    }else{
+      var fh='<div class="scaffold-box"><span class="stag">'+q.tag+'</span><p>'+q.scaffold+'</p></div>';
+      if(q.reforge){
+        fh+='<button class="reforge-trigger" id="rf-btn">Re-forge →</button>';
+        fh+='<div id="rf-area" class="hidden"></div>';
+      }
+      fh+='<button class="next-btn" id="next-btn">Next →</button><div class="clear"></div>';
+      fb.innerHTML=fh;
+      if(q.reforge){
+        document.getElementById('rf-btn').onclick=function(){
+          document.getElementById('rf-btn').classList.add('hidden');
+          renderReforge(q,document.getElementById('rf-area'),bk.color);
+        };
+      }
+    }
+    document.getElementById('next-btn').onclick=function(){
+      state.idx++;render();
+    };
+  };
 }
 
 function renderReforge(q,el,color){
@@ -6678,7 +6890,7 @@ function renderResults(){
   h+='</div>';
   app.innerHTML=h;
   document.getElementById('retry').onclick=function(){
-    var rawQs2=BANKS[state.bank].questions.filter(function(q){return !q.type;});
+    var rawQs2=BANKS[state.bank].questions.filter(function(q){return !q.type||q.type==='fill_blank';});
     state.questions=weightedShuffle(rawQs2,state.weightMap||{});
     state.idx=0;state.score=0;state.phase='quiz';render();
   };
