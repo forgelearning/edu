@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Forge — Present</title>
+<meta name="description" content="Class Mode — run Forge question banks from the front of the room, no student devices needed.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,700;12..96,800&family=Sora:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--coal:#141210;--panel:#211E1B;--panel-2:#2A2622;--line:#3A342E;--ember:#D55C13;--hot:#FFC93C;--slate:#B8B4AD;--white:#F5F1EA;--good:#7FD98A;--bad:#FF5A5A}
+[data-theme="light"]{--coal:#FAFAF8;--panel:#FFFFFF;--panel-2:#F3F2EF;--line:#E0DDD8;--ember:#E5550F;--hot:#C88500;--slate:#6B6660;--white:#1A1816;--good:#1B8C2A;--bad:#D42D2D}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--coal);color:var(--slate);font-family:'Sora',sans-serif;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100vh}
+h1,h2,h3{font-family:'Bricolage Grotesque',sans-serif;color:var(--white);line-height:1.1;letter-spacing:-.015em}
+.mono{font-family:'JetBrains Mono',monospace}
+.wrap{max-width:1100px;margin:0 auto;padding:24px 28px}
+.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;gap:12px;flex-wrap:wrap}
+.logo{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:19px;color:var(--white);text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+.logo .spark{width:9px;height:9px;background:linear-gradient(135deg,var(--hot),var(--ember));border-radius:2px;transform:rotate(45deg);box-shadow:0 0 10px rgba(255,107,44,.7)}
+.top-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.pill-link{font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:#8A857E;text-decoration:none;padding:6px 12px;border-radius:8px;border:1px solid var(--line)}
+.pill-link:hover{color:var(--ember);border-color:var(--ember)}
+.theme-toggle{position:fixed;top:16px;right:16px;background:var(--panel);border:1px solid var(--line);color:var(--slate);font-family:'JetBrains Mono',monospace;font-size:12px;padding:6px 12px;border-radius:8px;cursor:pointer;z-index:50}
+
+/* --- setup screen --- */
+.setup-title{font-size:13px}
+.subject-list,.bank-list{display:flex;flex-direction:column;gap:10px;margin-top:22px}
+.pick-btn{padding:18px 20px;border-radius:12px;border:1.5px solid var(--line);background:var(--panel);cursor:pointer;text-align:left;font-family:'Sora',sans-serif;transition:border-color .15s}
+.pick-btn:hover{border-color:var(--ember)}
+.pick-btn h3{font-size:17px;margin-bottom:2px}
+.pick-btn .sub{font-size:13px;color:var(--slate)}
+.pick-btn .count{font-size:12px;color:#8A857E;margin-top:4px}
+.back-btn{background:none;border:none;cursor:pointer;font-size:13px;color:#8A857E;font-family:'Sora',sans-serif;margin-bottom:8px;padding:0}
+.back-btn:hover{color:var(--white)}
+.opts-row{display:flex;gap:14px;margin-top:18px;align-items:center;flex-wrap:wrap}
+.opts-row label{font-size:13px;color:var(--slate);display:flex;align-items:center;gap:6px;cursor:pointer}
+.start-btn{margin-top:22px;padding:13px 28px;border-radius:10px;background:linear-gradient(100deg,var(--hot),var(--ember));color:var(--coal);border:none;cursor:pointer;font-weight:700;font-size:15px;font-family:'Sora',sans-serif}
+
+/* --- present screen --- */
+.present-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;font-size:13px;color:#8A857E}
+.present-header .bank-name{font-weight:700;font-size:15px}
+.progress-bar{height:4px;background:var(--line);border-radius:2px;margin-bottom:34px;overflow:hidden}
+.progress-fill{height:4px;border-radius:2px;transition:width .3s}
+.stage{min-height:56vh;display:flex;flex-direction:column;justify-content:center}
+.q-id-big{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:14px;padding:4px 12px;border-radius:6px;margin-bottom:22px}
+.stem-big{font-size:clamp(26px,4vw,42px);font-weight:700;color:var(--white);font-family:'Bricolage Grotesque',sans-serif;line-height:1.25;letter-spacing:-.01em;margin-bottom:34px}
+.opts-big{display:flex;flex-direction:column;gap:14px}
+.opt-big{display:flex;gap:16px;align-items:flex-start;padding:18px 22px;border-radius:14px;border:2px solid var(--line);background:var(--panel);font-size:clamp(17px,2vw,22px);color:var(--white);transition:border-color .2s,background .2s,opacity .2s}
+.opt-big .letter-big{font-weight:800;color:#8A857E;min-width:28px;font-family:'Bricolage Grotesque',sans-serif;font-size:1.1em}
+.opt-big.reveal-correct{border-color:var(--good);background:rgba(127,217,138,.1)}
+.opt-big.reveal-correct .letter-big{color:var(--good)}
+.opt-big.reveal-dim{opacity:.4}
+.fb-sentence-big{font-size:clamp(22px,3.2vw,32px);line-height:2.1;color:var(--white);font-family:'Bricolage Grotesque',sans-serif;font-weight:600}
+.fb-blank-big{display:inline-block;min-width:120px;border-bottom:3px dashed var(--line);padding:0 8px}
+.fb-blank-big.revealed{border-bottom-style:solid;border-color:var(--good);color:var(--good)}
+.scaffold-big{margin-top:32px;padding:20px 24px;border-radius:14px;border:1px solid rgba(255,201,60,.4);background:linear-gradient(180deg,rgba(255,107,44,.10),rgba(255,201,60,.05));animation:heat .4s ease}
+@keyframes heat{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.scaffold-big .stag{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--coal);background:var(--hot);padding:2px 8px;border-radius:5px;font-weight:600;margin-bottom:10px}
+.scaffold-big p{font-size:clamp(15px,1.6vw,19px);color:var(--white);line-height:1.55}
+.controls{display:flex;justify-content:space-between;align-items:center;margin-top:36px;gap:12px;flex-wrap:wrap}
+.ctrl-btn{padding:12px 22px;border-radius:10px;border:1.5px solid var(--line);background:var(--panel);color:var(--white);font-family:'Sora',sans-serif;font-weight:600;font-size:14px;cursor:pointer}
+.ctrl-btn:hover{border-color:var(--ember)}
+.ctrl-btn:disabled{opacity:.3;cursor:default}
+.reveal-btn{padding:12px 26px;border-radius:10px;border:none;background:var(--white);color:var(--coal);font-family:'Sora',sans-serif;font-weight:700;font-size:14px;cursor:pointer}
+.hint{font-size:12px;color:#6a6560;margin-top:10px;font-family:'JetBrains Mono',monospace}
+.done-box{text-align:center;padding-top:14vh}
+.loading{padding-top:20vh;text-align:center;color:#8A857E;font-family:'JetBrains Mono',monospace;font-size:13px}
+</style>
+</head>
+<body>
+<button class="theme-toggle" onclick="(function(){var h=document.documentElement,b=document.querySelector('.theme-toggle');if(h.getAttribute('data-theme')==='light'){h.removeAttribute('data-theme');b.textContent='☀ Light';localStorage.setItem('forge-theme','dark');}else{h.setAttribute('data-theme','light');b.textContent='☾ Dark';localStorage.setItem('forge-theme','light');}})()">☀ Light</button>
+<script>if(localStorage.getItem('forge-theme')==='light'){document.documentElement.setAttribute('data-theme','light');}</script>
+
+<div class="wrap">
+  <div class="top">
+    <a class="logo" href="index.html"><span class="spark"></span>Forge Learning</a>
+    <div class="top-actions">
+      <span class="pill-link" style="border-color:transparent;color:var(--ember)">Class Mode</span>
+      <a class="pill-link" href="teacher.html">Teacher Dashboard</a>
+      <a class="pill-link" href="forge-quiz.html">Student Quiz</a>
+    </div>
+  </div>
+  <div id="app"><div class="loading">Loading question banks…</div></div>
+</div>
+
+<script>
+var state = { phase:'loading', banks:null, subjects:null, subjectKey:null, bankKey:null, shuffle:true, questions:[], idx:0, revealed:false };
+var app = document.getElementById('app');
+
+fetch('forge-quiz.html').then(function(r){ return r.text(); }).then(function(html){
+  var startMarker = 'const BANKS = {';
+  var endMarker = 'function shuffle(a){var b=[...a]';
+  var startIdx = html.indexOf(startMarker);
+  var endIdx = html.indexOf(endMarker);
+  if (startIdx === -1 || endIdx === -1) throw new Error('Could not locate question bank data in forge-quiz.html');
+  var dataScript = html.substring(startIdx, endIdx) + '\nwindow.__FORGE_DATA__ = {BANKS:BANKS, SUBJECTS:SUBJECTS};';
+  (new Function(dataScript))();
+  state.banks = window.__FORGE_DATA__.BANKS;
+  state.subjects = window.__FORGE_DATA__.SUBJECTS;
+  state.phase = 'subjects';
+  render();
+}).catch(function(e){
+  app.innerHTML = '<div class="loading">Could not load question banks.<br>'+e.message+'</div>';
+});
+
+function shuffleArr(a){var b=a.slice();for(var i=b.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=b[i];b[i]=b[j];b[j]=t;}return b;}
+
+function render(){
+  if (state.phase === 'subjects') return renderSubjects();
+  if (state.phase === 'banks') return renderBanks();
+  if (state.phase === 'present') return renderPresent();
+}
+
+function renderSubjects(){
+  var h = '<p class="tag setup-title">Class Mode — no devices needed</p>';
+  h += '<h1 style="font-size:30px;margin-top:6px;margin-bottom:6px">What are you teaching?</h1>';
+  h += '<p style="font-size:14px;color:#8A857E">Pick a subject, then a bank. Questions display big on the projector — reveal the answer and misconception scaffold when the class is ready.</p>';
+  h += '<div class="subject-list">';
+  Object.keys(state.subjects).forEach(function(key){
+    var s = state.subjects[key];
+    var qCount = s.banks.reduce(function(sum,bk){ return sum + (state.banks[bk] ? state.banks[bk].questions.length : 0); }, 0);
+    h += '<button class="pick-btn" data-key="'+key+'" style="border-left:4px solid '+s.color+'"><h3>'+s.label+'</h3><div class="sub">'+s.sub+'</div><div class="count">'+s.banks.length+' bank'+(s.banks.length!==1?'s':'')+' · '+qCount+' questions</div></button>';
+  });
+  h += '</div>';
+  app.innerHTML = h;
+  app.querySelectorAll('.pick-btn').forEach(function(b){
+    b.onclick = function(){ state.subjectKey = b.dataset.key; state.phase = 'banks'; render(); };
+  });
+}
+
+function renderBanks(){
+  var s = state.subjects[state.subjectKey];
+  var h = '<button class="back-btn" id="back-subj">← Subjects</button>';
+  h += '<h1 style="font-size:26px;margin-bottom:16px">'+s.label+'</h1>';
+  h += '<div class="bank-list">';
+  s.banks.forEach(function(bk){
+    var b = state.banks[bk];
+    if (!b) return;
+    var qs = b.questions.filter(function(q){ return !q.type || q.type==='fill_blank'; });
+    h += '<button class="pick-btn" data-key="'+bk+'" style="border-left:4px solid '+b.color+'"><h3>'+b.label+'</h3><div class="count">'+qs.length+' questions</div></button>';
+  });
+  h += '</div>';
+  h += '<div class="opts-row"><label><input type="checkbox" id="shuffle-cb" '+(state.shuffle?'checked':'')+'> Shuffle question order</label></div>';
+  app.innerHTML = h;
+  document.getElementById('back-subj').onclick = function(){ state.phase='subjects'; render(); };
+  document.getElementById('shuffle-cb').onchange = function(e){ state.shuffle = e.target.checked; };
+  app.querySelectorAll('.pick-btn').forEach(function(b){
+    b.onclick = function(){
+      state.bankKey = b.dataset.key;
+      var qs = state.banks[state.bankKey].questions.filter(function(q){ return !q.type || q.type==='fill_blank'; });
+      state.questions = state.shuffle ? shuffleArr(qs) : qs;
+      state.idx = 0;
+      state.revealed = false;
+      state.phase = 'present';
+      render();
+    };
+  });
+}
+
+function renderPresent(){
+  var bk = state.banks[state.bankKey];
+  var q = state.questions[state.idx];
+
+  if (!q){
+    app.innerHTML = '<div class="done-box"><h1 style="font-size:34px;margin-bottom:14px">Bank complete</h1><p style="color:#8A857E;margin-bottom:24px">'+state.questions.length+' questions covered.</p><button class="reveal-btn" id="restart-btn">Run again</button><br><br><button class="ctrl-btn" id="banks-btn">← Choose a different bank</button></div>';
+    document.getElementById('restart-btn').onclick = function(){ state.idx=0; state.revealed=false; if(state.shuffle) state.questions=shuffleArr(state.questions); render(); };
+    document.getElementById('banks-btn').onclick = function(){ state.phase='banks'; render(); };
+    return;
+  }
+
+  var h = '<div class="present-header"><button class="back-btn" id="back-banks" style="margin-bottom:0">← Banks</button><span class="bank-name" style="color:'+bk.color+'">'+bk.label+'</span><span>'+(state.idx+1)+' / '+state.questions.length+'</span></div>';
+  h += '<div class="progress-bar"><div class="progress-fill" style="width:'+((state.idx/state.questions.length)*100)+'%;background:'+bk.color+'"></div></div>';
+  h += '<div class="stage">';
+  h += '<span class="q-id-big" style="color:'+bk.color+';background:'+bk.color+'1a">'+q.id+'</span>';
+  h += '<div class="stem-big">'+(q.stem||q.template)+'</div>';
+
+  if (q.type === 'fill_blank'){
+    var parts = q.template.split('___');
+    var sent = '<div class="fb-sentence-big">';
+    parts.forEach(function(part,i){
+      sent += part;
+      if (i < parts.length-1){
+        var word = state.revealed ? q.blanks[i] : '';
+        sent += '<span class="fb-blank-big'+(state.revealed?' revealed':'')+'">'+word+'</span>';
+      }
+    });
+    sent += '</div>';
+    h += sent;
+  } else {
+    var keys = Object.keys(q.options);
+    h += '<div class="opts-big">';
+    keys.forEach(function(k){
+      var cls = 'opt-big';
+      if (state.revealed) cls += (k===q.correct) ? ' reveal-correct' : ' reveal-dim';
+      h += '<div class="'+cls+'"><span class="letter-big">'+k+'</span><span>'+q.options[k]+'</span></div>';
+    });
+    h += '</div>';
+  }
+
+  if (state.revealed){
+    h += '<div class="scaffold-big"><span class="stag">'+(q.tag||'')+'</span><p>'+q.scaffold+'</p></div>';
+  }
+
+  h += '</div>'; // stage
+
+  h += '<div class="controls">';
+  h += '<button class="ctrl-btn" id="prev-btn" '+(state.idx===0?'disabled':'')+'>← Previous</button>';
+  if (!state.revealed){
+    h += '<button class="reveal-btn" id="reveal-btn">Reveal answer</button>';
+  } else {
+    h += '<button class="reveal-btn" id="next-btn">Next question →</button>';
+  }
+  h += '<div></div>';
+  h += '</div>';
+  h += '<p class="hint">Space / Enter = reveal or next · ← → = navigate · Esc = choose a different bank</p>';
+
+  app.innerHTML = h;
+
+  document.getElementById('back-banks').onclick = function(){ state.phase='banks'; render(); };
+  document.getElementById('prev-btn').onclick = function(){ if(state.idx>0){ state.idx--; state.revealed=false; render(); } };
+  var revealBtn = document.getElementById('reveal-btn');
+  if (revealBtn) revealBtn.onclick = function(){ state.revealed = true; render(); };
+  var nextBtn = document.getElementById('next-btn');
+  if (nextBtn) nextBtn.onclick = function(){ state.idx++; state.revealed=false; render(); };
+}
+
+document.addEventListener('keydown', function(e){
+  if (state.phase !== 'present') return;
+  if (e.code === 'Space' || e.code === 'Enter'){
+    e.preventDefault();
+    if (!state.revealed){ state.revealed = true; render(); }
+    else { state.idx++; state.revealed = false; render(); }
+  } else if (e.code === 'ArrowRight'){
+    if (state.revealed){ state.idx++; state.revealed = false; render(); }
+  } else if (e.code === 'ArrowLeft'){
+    if (state.idx > 0){ state.idx--; state.revealed = false; render(); }
+  } else if (e.code === 'Escape'){
+    state.phase = 'banks'; render();
+  }
+});
+</script>
+</body>
+</html>
