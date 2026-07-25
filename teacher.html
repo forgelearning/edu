@@ -604,7 +604,7 @@ function renderLogin(activeTab) {
       schoolInput.addEventListener('blur', function() {
         var school = schoolInput.value.trim();
         if (!school) return;
-        supaGet('classes', 'school=eq.' + encodeURIComponent(school)).then(function(existing) {
+        supaGet('classes', 'school=ilike.' + encodeURIComponent(school)).then(function(existing) {
           var usedSubjects = {};
           (existing || []).forEach(function(c) { if (c.subject) usedSubjects[c.subject] = true; });
           var sel2 = document.getElementById('c-subj');
@@ -680,7 +680,13 @@ function renderLogin(activeTab) {
               classResponses.concat(studentResponses).concat(extraResponses || []).forEach(function(r) {
                 if (r && r.id && !seen[r.id]) { seen[r.id] = true; merged.push(r); }
               });
-              dashState.responses = merged;
+              // A student can play other subjects independently of this class —
+              // don't let their unrelated misconceptions/weakest-topic data leak
+              // into this class's dashboard. Keep rows with no subject recorded
+              // (older data predating the subject field) rather than dropping them.
+              dashState.responses = merged.filter(function(r) {
+                return !r.subject || r.subject === dashState.classSubject;
+              });
               // Self-heal: patch orphaned responses to the class-linked student_id
               if (extraIds.length > 0 && studentIds.length > 0) {
                 extraIds.forEach(function(oldId) {
@@ -778,7 +784,10 @@ function renderLogin(activeTab) {
               classResponses.concat(studentResponses).forEach(function(r) {
                 if (r && r.id && !seen[r.id]) { seen[r.id] = true; merged.push(r); }
               });
-              dashState.responses = merged;
+              // Same subject filter as the "view class" flow — see comment there.
+              dashState.responses = merged.filter(function(r) {
+                return !r.subject || r.subject === dashState.classSubject;
+              });
               renderDashboard();
             });
           });

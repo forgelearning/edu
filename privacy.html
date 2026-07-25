@@ -197,14 +197,14 @@ footer a:hover{color:var(--slate)}
             <tr><td><strong>Email address</strong></td><td>Account authentication, login on any device, and transactional communications (trial expiry, subscription confirmation)</td><td>Contract — necessary to provide the subscription service</td></tr>
             <tr><td><strong>Password</strong> (hashed)</td><td>Account authentication. Passwords are hashed by Supabase Auth using bcrypt and are never stored or accessible in plaintext by Forge or Supabase</td><td>Contract</td></tr>
             <tr><td>Display name</td><td>Personalise the experience and identify the student on any linked teacher dashboard</td><td>Contract</td></tr>
-            <tr><td>Chosen subjects (up to 4)</td><td>Restrict the subject picker to their A Level combination and personalise content</td><td>Contract</td></tr>
+            <tr><td>Chosen subjects (up to 4)</td><td>Restrict the subject picker to their subject combination (A Level or GCSE) and personalise content</td><td>Contract</td></tr>
             <tr><td>Trial start date</td><td>Calculate trial expiry (7 days from sign-up)</td><td>Contract</td></tr>
             <tr><td>Subscription status</td><td>Determine access level (trial / Pro / expired)</td><td>Contract</td></tr>
             <tr><td>Question responses, misconception tags, XP</td><td>Same as free and class-joined students</td><td>Contract / Legitimate interests</td></tr>
           </tbody>
         </table>
         <div class="notice">
-          <strong>Age and email addresses:</strong> UK GDPR sets the age of digital consent at 13. Most A Level students are 16–18 and may independently provide their email address. Students under 16 should have parental consent before creating an account. We do not knowingly collect data from children under 13. If you believe a child under 13 has created an account, please contact us for immediate deletion.
+          <strong>Age and email addresses:</strong> UK GDPR sets the age of digital consent at 13. Most A Level students are 16–18 and may independently provide their email address. GCSE students are typically 14–16 — students under 16 should have parental consent before creating a Pro or trial account with an email address. Class-joined and free-tier use requires no email address at any age. We do not knowingly collect data from children under 13. If you believe a child under 13 has created an account, please contact us for immediate deletion.
         </div>
 
         <h3>Teachers (creating a class)</h3>
