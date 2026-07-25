@@ -1874,7 +1874,7 @@ window.renderStudent = function(studentId) {
   el.innerHTML = h;
 };
 
-renderLogin();
+renderLogin(new URLSearchParams(location.search).get('tab') === 'create' ? 'create' : 'view');
 </script>
 </body>
 </html>
