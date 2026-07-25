@@ -25,6 +25,12 @@ h1,h2,h3{font-family:'Bricolage Grotesque',sans-serif;color:var(--white);line-he
 
 /* --- setup screen --- */
 .setup-title{font-size:13px}
+.step-label{font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--ember);margin-bottom:6px}
+.howto{display:flex;gap:16px;flex-wrap:wrap;margin-top:20px;padding:18px 20px;border-radius:12px;background:var(--panel);border:1px solid var(--line)}
+.howto-step{display:flex;gap:10px;align-items:flex-start;flex:1;min-width:180px}
+.howto-num{flex-shrink:0;width:26px;height:26px;border-radius:50%;background:var(--ember);color:var(--coal);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;font-family:'Bricolage Grotesque',sans-serif}
+.howto-text{font-size:13px;color:var(--slate);line-height:1.4;padding-top:3px}
+.howto-text b{color:var(--white)}
 .subject-list,.bank-list{display:flex;flex-direction:column;gap:10px;margin-top:22px}
 .pick-btn{padding:18px 20px;border-radius:12px;border:1.5px solid var(--line);background:var(--panel);cursor:pointer;text-align:left;font-family:'Sora',sans-serif;transition:border-color .15s}
 .pick-btn:hover{border-color:var(--ember)}
@@ -62,8 +68,11 @@ h1,h2,h3{font-family:'Bricolage Grotesque',sans-serif;color:var(--white);line-he
 .ctrl-btn{padding:12px 22px;border-radius:10px;border:1.5px solid var(--line);background:var(--panel);color:var(--white);font-family:'Sora',sans-serif;font-weight:600;font-size:14px;cursor:pointer}
 .ctrl-btn:hover{border-color:var(--ember)}
 .ctrl-btn:disabled{opacity:.3;cursor:default}
-.reveal-btn{padding:12px 26px;border-radius:10px;border:none;background:var(--white);color:var(--coal);font-family:'Sora',sans-serif;font-weight:700;font-size:14px;cursor:pointer}
-.hint{font-size:12px;color:#6a6560;margin-top:10px;font-family:'JetBrains Mono',monospace}
+.reveal-btn{padding:14px 30px;border-radius:10px;border:none;background:linear-gradient(100deg,var(--hot),var(--ember));color:var(--coal);font-family:'Sora',sans-serif;font-weight:800;font-size:16px;cursor:pointer;box-shadow:0 0 0 0 rgba(213,92,19,.4);animation:pulse-btn 2s ease-in-out infinite}
+@keyframes pulse-btn{0%,100%{box-shadow:0 0 0 0 rgba(213,92,19,.35)}50%{box-shadow:0 0 0 10px rgba(213,92,19,0)}}
+.reveal-btn.next-btn-style{animation:none;background:var(--white)}
+.hint{font-size:13px;color:var(--slate);margin-top:14px;font-family:'Sora',sans-serif;text-align:center}
+.hint .mono{font-family:'JetBrains Mono',monospace;font-size:11px;color:#6a6560}
 .done-box{text-align:center;padding-top:14vh}
 .loading{padding-top:20vh;text-align:center;color:#8A857E;font-family:'JetBrains Mono',monospace;font-size:13px}
 </style>
@@ -112,26 +121,57 @@ function render(){
   if (state.phase === 'present') return renderPresent();
 }
 
+function howtoStrip(){
+  var h = '<div class="howto">';
+  h += '<div class="howto-step"><span class="howto-num">1</span><span class="howto-text">Pick your <b>subject</b> and <b>topic</b> below.</span></div>';
+  h += '<div class="howto-step"><span class="howto-num">2</span><span class="howto-text">A question appears big on screen — read it out to the class.</span></div>';
+  h += '<div class="howto-step"><span class="howto-num">3</span><span class="howto-text">Click <b>Reveal answer</b> when they\'ve had a go, then <b>Next question</b> to continue.</span></div>';
+  h += '</div>';
+  return h;
+}
+
+function startBank(bankKey){
+  state.bankKey = bankKey;
+  var qs = state.banks[bankKey].questions.filter(function(q){ return !q.type || q.type==='fill_blank'; });
+  state.questions = state.shuffle ? shuffleArr(qs) : qs;
+  state.idx = 0;
+  state.revealed = false;
+  state.phase = 'present';
+  render();
+}
+
 function renderSubjects(){
-  var h = '<p class="tag setup-title">Class Mode — no devices needed</p>';
-  h += '<h1 style="font-size:30px;margin-top:6px;margin-bottom:6px">What are you teaching?</h1>';
-  h += '<p style="font-size:14px;color:#8A857E">Pick a subject, then a bank. Questions display big on the projector — reveal the answer and misconception scaffold when the class is ready.</p>';
+  var h = '<p class="step-label">Step 1 of 2 — choose a subject</p>';
+  h += '<h1 style="font-size:30px;margin-bottom:6px">Forge Class Mode</h1>';
+  h += '<p style="font-size:14px;color:#8A857E;margin-bottom:6px">Run a question bank from the front of the room — no student devices needed.</p>';
+  h += howtoStrip();
   h += '<div class="subject-list">';
   Object.keys(state.subjects).forEach(function(key){
     var s = state.subjects[key];
     var qCount = s.banks.reduce(function(sum,bk){ return sum + (state.banks[bk] ? state.banks[bk].questions.length : 0); }, 0);
-    h += '<button class="pick-btn" data-key="'+key+'" style="border-left:4px solid '+s.color+'"><h3>'+s.label+'</h3><div class="sub">'+s.sub+'</div><div class="count">'+s.banks.length+' bank'+(s.banks.length!==1?'s':'')+' · '+qCount+' questions</div></button>';
+    h += '<button class="pick-btn" data-key="'+key+'" style="border-left:4px solid '+s.color+'"><h3>'+s.label+'</h3><div class="sub">'+s.sub+'</div><div class="count">'+qCount+' questions</div></button>';
   });
   h += '</div>';
   app.innerHTML = h;
   app.querySelectorAll('.pick-btn').forEach(function(b){
-    b.onclick = function(){ state.subjectKey = b.dataset.key; state.phase = 'banks'; render(); };
+    b.onclick = function(){
+      state.subjectKey = b.dataset.key;
+      var s = state.subjects[state.subjectKey];
+      var validBanks = s.banks.filter(function(bk){ return !!state.banks[bk]; });
+      if (validBanks.length === 1){
+        startBank(validBanks[0]);
+      } else {
+        state.phase = 'banks';
+        render();
+      }
+    };
   });
 }
 
 function renderBanks(){
   var s = state.subjects[state.subjectKey];
-  var h = '<button class="back-btn" id="back-subj">← Subjects</button>';
+  var h = '<button class="back-btn" id="back-subj">← Choose a different subject</button>';
+  h += '<p class="step-label">Step 2 of 2 — choose a topic</p>';
   h += '<h1 style="font-size:26px;margin-bottom:16px">'+s.label+'</h1>';
   h += '<div class="bank-list">';
   s.banks.forEach(function(bk){
@@ -146,15 +186,7 @@ function renderBanks(){
   document.getElementById('back-subj').onclick = function(){ state.phase='subjects'; render(); };
   document.getElementById('shuffle-cb').onchange = function(e){ state.shuffle = e.target.checked; };
   app.querySelectorAll('.pick-btn').forEach(function(b){
-    b.onclick = function(){
-      state.bankKey = b.dataset.key;
-      var qs = state.banks[state.bankKey].questions.filter(function(q){ return !q.type || q.type==='fill_blank'; });
-      state.questions = state.shuffle ? shuffleArr(qs) : qs;
-      state.idx = 0;
-      state.revealed = false;
-      state.phase = 'present';
-      render();
-    };
+    b.onclick = function(){ startBank(b.dataset.key); };
   });
 }
 
@@ -209,11 +241,11 @@ function renderPresent(){
   if (!state.revealed){
     h += '<button class="reveal-btn" id="reveal-btn">Reveal answer</button>';
   } else {
-    h += '<button class="reveal-btn" id="next-btn">Next question →</button>';
+    h += '<button class="reveal-btn next-btn-style" id="next-btn">Next question →</button>';
   }
   h += '<div></div>';
   h += '</div>';
-  h += '<p class="hint">Space / Enter = reveal or next · ← → = navigate · Esc = choose a different bank</p>';
+  h += '<p class="hint">'+(state.revealed ? 'Ready for the next one? Click <b>Next question</b> above.' : 'Give the class a moment, then click <b>Reveal answer</b> above.')+'<br><span class="mono">Shortcuts: Space = reveal/next · ← → = navigate · Esc = change topic</span></p>';
 
   app.innerHTML = h;
 
