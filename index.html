@@ -142,7 +142,6 @@ h2{font-size:clamp(28px,3.6vw,40px);font-weight:800;margin-bottom:14px}
 .unique-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:32px}
 .unique-card{background:var(--panel);border:1px solid rgba(255,201,60,.3);border-radius:14px;padding:20px;position:relative}
 .unique-card .unique-star{position:absolute;top:16px;right:16px;color:var(--hot);font-size:14px}
-.unique-card .unique-icon{font-size:26px;margin-bottom:10px}
 .unique-card h3{font-size:16px;margin-bottom:6px;padding-right:20px}
 .unique-card p{font-size:13px;line-height:1.45;color:var(--slate)}
 @media(max-width:860px){.unique-grid{grid-template-columns:1fr 1fr}}
@@ -1737,7 +1736,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
 <div class="wrap">
   <p class="tag eyebrow reveal">Straight from the bank</p>
   <h2 class="reveal">Three questions. No sign-up.</h2>
-  <p class="sect-lede reveal">Real questions from across the Forge banks — Economics, Psychology, Law, Biology, History, Chemistry, Maths, Sociology, and Physics. Refreshes on every visit. Every distractor is tagged to a documented misconception from examiners' reports.</p>
+  <p class="sect-lede reveal">Real questions from across the Forge banks — GCSE and A Level, spanning Economics, Geography, Psychology, Law, Biology, History, Chemistry, Maths, Sociology, and Physics. Refreshes on every visit. Every distractor is tagged to a documented misconception from examiners' reports.</p>
   <div class="bank-nav">
     <span class="bank-progress" id="bankProgress">Question 1 of 3</span>
     <div class="bank-nav-btns">
@@ -1758,25 +1757,21 @@ if (localStorage.getItem('forge-theme') === 'light') {
   <div class="unique-grid reveal">
     <div class="unique-card">
       <span class="unique-star">★</span>
-      <div class="unique-icon">📊</div>
       <h3>Misconception heatmap</h3>
       <p>The exact wrong answer your class is picking, ranked by frequency and tagged to the spec point it belongs to — not just "this one was tricky."</p>
     </div>
     <div class="unique-card">
       <span class="unique-star">★</span>
-      <div class="unique-icon">⚒</div>
       <h3>Scaffold + re-forged twin</h3>
       <p>A wrong answer gets a 30-second correction, then an immediate twin question in a new scenario — proof it stuck, not just a reveal-and-move-on.</p>
     </div>
     <div class="unique-card">
       <span class="unique-star">★</span>
-      <div class="unique-icon">🔥</div>
       <h3>The Crucible — timed pressure</h3>
       <p>No hints, no scaffolds, the clock running. Weekly exam-pressure training that mirrors real exam conditions, not another untimed quiz.</p>
     </div>
     <div class="unique-card">
       <span class="unique-star">★</span>
-      <div class="unique-icon">📋</div>
       <h3>Corrective starters, auto-built</h3>
       <p>Every misconception the class fires can generate a ready-to-paste starter activity — Monday's lesson plan, written for you.</p>
     </div>
@@ -2310,6 +2305,53 @@ if (localStorage.getItem('forge-theme') === 'light') {
         {t:'UV light does not travel as a wave', mc:'MC-PHYS-03', s:'UV light does travel as a wave in many contexts. The photoelectric effect specifically requires the photon (particle) model to explain the threshold frequency — it introduced wave-particle duality.'}
       ],
       praise:'Threshold frequency kills the wave model. Einstein\'s photons (E = hf) explain it. ✦'
+    },
+    {
+      spec:'GCSE Economics · The UK Economy', fmt:'Concept',
+      q:'Which of the following is NOT one of the UK government\'s four main macroeconomic objectives?',
+      opts:[
+        {t:'Low and stable inflation', mc:'MC-MACRO-01', s:'This is one of the four objectives, alongside growth, low unemployment and balance of payments equilibrium.'},
+        {t:'Low unemployment', mc:'MC-MACRO-01', s:'This is one of the four objectives, alongside growth, inflation and balance of payments equilibrium.'},
+        {t:'Maximising the exchange rate at all times', right:true},
+        {t:'Balance of payments equilibrium', mc:'MC-MACRO-01', s:'This is one of the four objectives, alongside growth, unemployment and inflation.'}
+      ],
+      praise:'A strong pound helps some and hurts others — governments target stability, not a maximum. ✦'
+    },
+    {
+      spec:'GCSE Economics · The UK Economy', fmt:'Concept',
+      stim:'UK CPI inflation falls from 6% to 3%.',
+      q:'A student says: "Prices are now falling." Why is this wrong?',
+      opts:[
+        {t:'Prices are still rising — just more slowly. A lower positive inflation rate means the price level keeps increasing, only at a reduced pace', right:true},
+        {t:'The student is correct — a lower inflation figure always means prices have fallen', mc:'MC-INF-01', s:'Only 0% inflation means stable prices, and only negative inflation means prices are actually falling. 3% is still positive.'},
+        {t:'CPI only measures wages, not prices, so the statement doesn\'t apply', mc:'MC-INF-01', s:'CPI tracks a basket of consumer prices, not wages. The error is about the direction of change, not what CPI measures.'},
+        {t:'Inflation falling to 3% means prices have fallen by exactly 3%', mc:'MC-INF-01', s:'3% inflation means prices rose 3% over the year — the rate of increase slowed, but prices did not fall.'}
+      ],
+      praise:'Falling inflation ≠ falling prices, as long as it\'s still positive. ✦'
+    },
+    {
+      spec:'GCSE Geography · Hazardous Earth', fmt:'Case study',
+      stim:'Japan\'s 2011 Tohoku earthquake (magnitude 9.0) killed roughly 18,000 people. Haiti\'s 2010 earthquake (magnitude 7.0) — far less powerful — killed over 100,000.',
+      q:'Which best explains this?',
+      opts:[
+        {t:'Haiti\'s poverty meant poorly-built buildings and no tsunami warning system, while Japan\'s wealth funded earthquake-resistant construction and monitoring — magnitude alone doesn\'t determine impact', right:true},
+        {t:'Haiti\'s earthquake released more energy than Japan\'s', mc:'MC-TEC-02', s:'Magnitude is a direct, logarithmic measure of energy release — Japan\'s 9.0 released far more energy than Haiti\'s 7.0.'},
+        {t:'Japan has fewer people living near the coast', mc:'MC-TEC-02', s:'Japan actually has one of the world\'s highest coastal population densities. Development level, not coastal population, explains the death toll gap.'},
+        {t:'Earthquakes near the Caribbean are always more dangerous than those in the Pacific', mc:'MC-TEC-02', s:'Location alone doesn\'t determine casualties — building codes, warning systems and emergency response are the deciding factors here.'}
+      ],
+      praise:'Development level shapes vulnerability — building codes and warning systems, not just magnitude. ✦'
+    },
+    {
+      spec:'GCSE Geography · Hazardous Earth', fmt:'Case study',
+      stim:'Mount Pinatubo\'s 1991 eruption (VEI 6) released huge volumes of sulfur dioxide into the atmosphere.',
+      q:'What was a major global effect of this eruption?',
+      opts:[
+        {t:'Global temperatures fell by about 0.5°C as the sulfur dioxide haze reflected sunlight back into space', right:true},
+        {t:'The eruption caused global warming', mc:'MC-HAZ-01', s:'Large sulfur dioxide eruptions cause global cooling, not warming — the haze reflects sunlight away from the Earth\'s surface.'},
+        {t:'The eruption had no measurable global effect', mc:'MC-HAZ-01', s:'Pinatubo\'s eruption measurably cooled the entire planet by roughly 0.5°C for a period — a genuinely global impact.'},
+        {t:'The ash cloud trapped heat close to the Earth\'s surface', mc:'MC-HAZ-01', s:'The opposite happened — the sulfur dioxide haze reflected sunlight away, causing cooling rather than trapping heat.'}
+      ],
+      praise:'One eruption, measurable worldwide cooling — sulfur dioxide blocks sunlight, it doesn\'t trap heat. ✦'
     }
   ];
 
