@@ -147,12 +147,35 @@ function getRank(xp){
   return RANKS[0];
 }
 
-function calcGrade(acc, activeMCs, totalMCs) {
+// Classes are named "<year><letter>/<subject code>" (e.g. "12B/Bs" for a
+// Year 12 A-Level class, "10A/Gg" for a Year 10 GCSE class). There's no
+// separate level column, so level is derived from the year-group prefix:
+// Year 12-13 = A-Level, Year 7-11 = GCSE. See school-overview.html's classLevel.
+function classLevel(className) {
+  var m = /^(\d+)/.exec(className || '');
+  if (!m) return 'alevel';
+  var year = parseInt(m[1], 10);
+  return year >= 12 ? 'alevel' : 'gcse';
+}
+
+function calcGrade(acc, activeMCs, totalMCs, isGCSE) {
   // acc: overall accuracy 0-100
   // activeMCs: number of unresolved misconceptions
   // totalMCs: total unique misconceptions ever fired
   var mcClearance = totalMCs > 0 ? Math.max(0, 1 - (activeMCs / totalMCs)) : 1;
   var score = (acc * 0.6) + (mcClearance * 100 * 0.4);
+  if (isGCSE) {
+    if (score >= 85) return {grade:'9', next:null, color:'#ffd700', desc:'Exam-ready. Maintain accuracy and keep the Anvil clear.'};
+    if (score >= 76) return {grade:'8', next:'9',  color:'var(--good)', desc:'Strong. Clear your remaining misconceptions to break into a 9.'};
+    if (score >= 68) return {grade:'7', next:'8',  color:'var(--good)', desc:'Consistent top-end work. Keep the Anvil clear to push higher.'};
+    if (score >= 60) return {grade:'6', next:'7',  color:'var(--hot)', desc:'Solid. Accuracy and Anvil work will push this into the 7s.'};
+    if (score >= 52) return {grade:'5', next:'6',  color:'var(--hot)', desc:'Strong pass. Focus on the Anvil — misconceptions are costing marks.'};
+    if (score >= 44) return {grade:'4', next:'5',  color:'var(--ember)', desc:'Standard pass. Daily sessions and re-forge work will move this up.'};
+    if (score >= 36) return {grade:'3', next:'4',  color:'#b45309', desc:'Keep going. Daily sessions and re-forge work will move this.'};
+    if (score >= 28) return {grade:'2', next:'3',  color:'var(--slate)', desc:'Early stage. More questions and misconception rework needed.'};
+    if (score >= 18) return {grade:'1', next:'2',  color:'var(--slate)', desc:'Early stage. More questions and misconception rework needed.'};
+    return             {grade:'U', next:'1',  color:'var(--bad)', desc:'Not enough data yet — complete more sessions to get a reliable band.'};
+  }
   if (score >= 85) return {grade:'A*', next:null,    color:'#ffd700', desc:'Exam-ready. Maintain accuracy and keep the Anvil clear.'};
   if (score >= 72) return {grade:'A',  next:'A*',   color:'var(--good)', desc:'Strong. Clear your remaining misconceptions to break into A*.'};
   if (score >= 60) return {grade:'B',  next:'A',    color:'var(--hot)', desc:'Consistent. Accuracy and Anvil work will push this to an A.'};
@@ -173,7 +196,7 @@ function calcXP(responses){
   return xp;
 }
 
-var st={studentId:null,classId:null,studentName:null,responses:[],isPaid:false,isTrial:false,trialDaysLeft:0,paidSubjects:[],activeTab:'overview'};
+var st={studentId:null,classId:null,studentName:null,responses:[],isPaid:false,isTrial:false,trialDaysLeft:0,paidSubjects:[],activeTab:'overview',isGCSE:false};
 var app=document.getElementById('app');
 
 function renderLogin(){
@@ -201,8 +224,8 @@ function renderLogin(){
       if(!Array.isArray(cls)||cls.length===0){err.textContent='Class not found.';err.style.display='block';btn.disabled=false;btn.textContent='View my profile \u2192';return;}
       supaGet('students','class_id=eq.'+cls[0].id+'&name=eq.'+encodeURIComponent(name)).then(function(stus){
         if(!Array.isArray(stus)||stus.length===0){err.textContent='Name not found. Make sure you\'ve done the quiz first.';err.style.display='block';btn.disabled=false;btn.textContent='View my profile \u2192';return;}
-        st.studentId=stus[0].id;st.classId=cls[0].id;st.studentName=name;
-        try { localStorage.setItem('forge-student', JSON.stringify({studentId: st.studentId, classId: st.classId, studentName: st.studentName, classSubject: null})); } catch(e) {}
+        st.studentId=stus[0].id;st.classId=cls[0].id;st.studentName=name;st.isGCSE=classLevel(cls[0].name)==='gcse';
+        try { localStorage.setItem('forge-student', JSON.stringify({studentId: st.studentId, classId: st.classId, studentName: st.studentName, classSubject: null, isGCSE: st.isGCSE})); } catch(e) {}
         supaGet('responses','student_id=eq.'+st.studentId+'&order=created_at.desc').then(function(r){
           st.responses=r||[];
           renderProfile();
@@ -243,7 +266,7 @@ function renderProfile(){
   var activeMCs=Object.keys(mcData).filter(function(t){return mcData[t].fires>0&&mcData[t].streak<3;});
   activeMCs.sort(function(a,b){return mcData[b].fires-mcData[a].fires;});
   var totalMCs=Object.keys(mcData).filter(function(t){return mcData[t].fires>0;}).length;
-  var grade=calcGrade(acc,activeMCs.length,totalMCs);
+  var grade=calcGrade(acc,activeMCs.length,totalMCs,st.isGCSE);
 
   // Bank accuracy
   var bankStats={};
@@ -449,7 +472,7 @@ function renderProfile(){
       h+='<div class="grade-card" style="margin-bottom:0">';
       h+='<div class="grade-letter" style="color:'+grade.color+'">'+grade.grade+'</div>';
       h+='<div class="grade-info">';
-      h+='<div class="grade-eyebrow">Predicted A Level grade</div>';
+      h+='<div class="grade-eyebrow">Predicted '+(st.isGCSE?'GCSE':'A Level')+' grade</div>';
       if(grade.next){
         h+='<div class="grade-tracking">Tracking for <b style="color:'+grade.color+'">'+grade.grade+'</b> &rarr; stretch target: <b style="color:var(--white)">'+grade.next+'</b></div>';
       } else {
@@ -659,10 +682,25 @@ function forgeSignOut(){
       st.studentId   = saved.studentId;
       st.classId     = saved.classId;
       st.studentName = saved.studentName;
-      supaGet('responses','student_id=eq.'+st.studentId+'&order=created_at.desc').then(function(r){
-        st.responses = r || [];
-        renderProfile();
-      }).catch(function(){ renderLogin(); });
+      var applyLevelAndLoad = function(){
+        supaGet('responses','student_id=eq.'+st.studentId+'&order=created_at.desc').then(function(r){
+          st.responses = r || [];
+          renderProfile();
+        }).catch(function(){ renderLogin(); });
+      };
+      if (typeof saved.isGCSE === 'boolean') {
+        st.isGCSE = saved.isGCSE;
+        applyLevelAndLoad();
+      } else if (st.classId) {
+        // Older saved sessions predate level tracking — resolve and cache it.
+        supaGet('classes','id=eq.'+st.classId).then(function(cls){
+          st.isGCSE = Array.isArray(cls) && cls.length>0 && classLevel(cls[0].name)==='gcse';
+          try { saved.isGCSE = st.isGCSE; localStorage.setItem('forge-student', JSON.stringify(saved)); } catch(e) {}
+          applyLevelAndLoad();
+        }).catch(function(){ applyLevelAndLoad(); });
+      } else {
+        applyLevelAndLoad();
+      }
     } else {
       renderLogin();
     }
