@@ -638,9 +638,8 @@ if (localStorage.getItem('forge-theme') === 'light') {
     <button class="stab" onclick="switchStudent('forge',this)">Forge mode</button>
     <button class="stab" onclick="switchStudent('anvil',this)">The Anvil</button>
     <button class="stab" onclick="switchStudent('crucible',this)">The Crucible</button>
-    <button class="stab" onclick="switchStudent('assignments',this)">Assignments</button>
-    <button class="stab" onclick="switchStudent('xp',this)">XP &amp; Ranks</button>
   </div>
+  <p style="font-size:12.5px;color:#8A857E;margin-top:10px">These are the same tabs you'll see on your own profile once you're signed in.</p>
 
   <!-- STUDENT VIEW 1: Overview -->
   <div class="dash-panel" id="stu-overview">
@@ -708,6 +707,54 @@ if (localStorage.getItem('forge-theme') === 'light') {
       </div>
 
       <p class="dash-footer">→ Your overview updates after every session. Focus areas tell you where to spend time — strengths confirm what's already locked in.</p>
+    </div>
+
+    <div class="dash-card reveal" style="margin-top:16px">
+      <div class="dash-head">
+        <span class="rt">Assignments · Set by your teacher</span>
+        <span class="tag">Due dates tracked</span>
+      </div>
+      <p class="dash-desc">When your teacher sets an assignment, it appears as a banner on your quiz page — with the due date and direct links to the right banks.</p>
+
+      <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:20px">
+
+        <!-- Active assignment -->
+        <div style="background:var(--panel-2);border:1px solid rgba(255,107,44,.35);border-radius:12px;padding:16px 18px">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--ember)">📋 Assignment</span>
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--hot)">Due in 2 days</span>
+          </div>
+          <p style="font-family:'Fraunces',sans-serif;font-size:16px;font-weight:700;color:var(--white);margin-bottom:10px">Monetary &amp; Fiscal Policy revision</p>
+          <div style="display:flex;flex-wrap:wrap;gap:6px">
+            <button style="font-size:12px;padding:5px 12px;border-radius:7px;background:rgba(255,107,44,.12);border:1px solid rgba(255,107,44,.3);color:var(--ember);cursor:pointer;font-family:'IBM Plex Sans',sans-serif;font-weight:600">Monetary Policy →</button>
+            <button style="font-size:12px;padding:5px 12px;border-radius:7px;background:rgba(255,107,44,.12);border:1px solid rgba(255,107,44,.3);color:var(--ember);cursor:pointer;font-family:'IBM Plex Sans',sans-serif;font-weight:600">Fiscal Policy →</button>
+          </div>
+        </div>
+
+        <!-- Upcoming assignment -->
+        <div style="background:var(--panel-2);border:1px solid rgba(255,107,44,.2);border-radius:12px;padding:16px 18px">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--ember)">📋 Assignment</span>
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--good)">Due 14 Feb</span>
+          </div>
+          <p style="font-family:'Fraunces',sans-serif;font-size:16px;font-weight:700;color:var(--white);margin-bottom:10px">BoP &amp; Exchange Rates — focus on J-curve</p>
+          <div style="display:flex;flex-wrap:wrap;gap:6px">
+            <button style="font-size:12px;padding:5px 12px;border-radius:7px;background:rgba(255,107,44,.12);border:1px solid rgba(255,107,44,.3);color:var(--ember);cursor:pointer;font-family:'IBM Plex Sans',sans-serif;font-weight:600">Balance of Payments →</button>
+          </div>
+        </div>
+
+        <!-- Completed assignment -->
+        <div style="background:var(--panel-2);border:1px solid rgba(127,217,138,.2);border-radius:12px;padding:16px 18px;opacity:.75">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--good)">✓ Completed</span>
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8A857E">Due 24 Jan</span>
+          </div>
+          <p style="font-family:'Fraunces',sans-serif;font-size:15px;font-weight:700;color:#8A857E;text-decoration:line-through">Inflation &amp; Unemployment fundamentals</p>
+        </div>
+
+      </div>
+
+      <p class="dash-footer">→ Assignment banks appear as orange banners on your quiz page too — so you can't miss them. Due dates show in red when you're running out of time.</p>
     </div>
   </div>
 
@@ -782,6 +829,115 @@ if (localStorage.getItem('forge-theme') === 'light') {
       </div>
 
       <p class="dash-footer">→ Wrong answers aren't just marked wrong — they're caught, scaffolded, and re-tested. If the re-forge fails too, it goes to your Anvil for focused rework.</p>
+    </div>
+
+    <div class="dash-card reveal" style="margin-top:16px">
+      <div class="dash-head">
+        <span class="rt">XP &amp; Ranks · Every question forges something</span>
+        <span class="tag">Correct thinking, not time logged</span>
+      </div>
+      <p class="dash-desc">Revision apps reward time spent. Forge rewards correct thinking — and the harder the mode, the more XP you earn.</p>
+
+      <div class="xp-grid">
+        <div class="xp-card reveal">
+          <div class="xp-icon">⚡</div>
+          <div class="xp-label mono">Quiz — correct</div>
+          <div class="xp-val">+10 XP</div>
+          <div class="xp-desc">Getting it right first time. The baseline.</div>
+        </div>
+        <div class="xp-card reveal">
+          <div class="xp-icon">🔁</div>
+          <div class="xp-label mono">Re-forge — correct</div>
+          <div class="xp-val">+20 XP</div>
+          <div class="xp-desc">You got it wrong, then proved you understood why. That's worth more.</div>
+        </div>
+        <div class="xp-card reveal">
+          <div class="xp-icon">🔥</div>
+          <div class="xp-label mono">Crucible — correct</div>
+          <div class="xp-val">+30 XP</div>
+          <div class="xp-desc">No hints. No scaffolds. Under the clock. This is exam conditions.</div>
+        </div>
+        <div class="xp-card reveal">
+          <div class="xp-icon">⚒</div>
+          <div class="xp-label mono">Anvil cleared</div>
+          <div class="xp-val">+30 XP</div>
+          <div class="xp-desc">A misconception that survived the re-forge, reworked until it's gone.</div>
+        </div>
+        <div class="xp-card reveal">
+          <div class="xp-icon">📅</div>
+          <div class="xp-label mono">Daily streak</div>
+          <div class="xp-val">Tracked</div>
+          <div class="xp-desc">Return the next day. Your streak shows on your profile — the habit is the revision strategy.</div>
+        </div>
+      </div>
+
+      <div class="rank-section">
+        <p class="tag" style="margin-bottom:16px">Forge Ranks</p>
+        <div class="rank-grid">
+          <div class="rank-row reveal">
+            <span class="rank-badge" style="background:var(--panel-2);color:var(--slate)">Apprentice</span>
+            <span class="rank-range mono">0 – 300 XP</span>
+            <span class="rank-desc">You're starting. The first question is the hardest one.</span>
+          </div>
+          <div class="rank-row reveal">
+            <span class="rank-badge" style="background:rgba(255,201,60,.15);color:var(--hot)">Journeyman</span>
+            <span class="rank-range mono">300 – 1,500 XP</span>
+            <span class="rank-desc">The habit is forming. Misconceptions are being tracked and cleared.</span>
+          </div>
+          <div class="rank-row reveal">
+            <span class="rank-badge" style="background:rgba(255,107,44,.15);color:var(--ember)">Craftsman</span>
+            <span class="rank-range mono">1,500 – 5,000 XP</span>
+            <span class="rank-desc">The Anvil is shrinking. The Crucible is surviving.</span>
+          </div>
+          <div class="rank-row reveal">
+            <span class="rank-badge" style="background:rgba(127,217,138,.15);color:var(--good)">Forged</span>
+            <span class="rank-range mono">5,000 – 15,000 XP</span>
+            <span class="rank-desc">Most misconceptions resolved. Exam conditions feel familiar.</span>
+          </div>
+          <div class="rank-row rank-row-master reveal">
+            <span class="rank-badge" style="background:linear-gradient(100deg,var(--hot),var(--ember));color:var(--coal)">Master</span>
+            <span class="rank-range mono">15,000+ XP</span>
+            <span class="rank-desc">The exam is the easy part now.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="leaderboard-preview reveal">
+        <p class="tag" style="margin-bottom:12px">Class leaderboard — visible to your class only</p>
+        <div class="lb-card">
+          <div class="lb-row lb-you">
+            <span class="lb-pos">1</span>
+            <span class="lb-name">You</span>
+            <span class="lb-rank-badge" style="background:rgba(255,107,44,.15);color:var(--ember)">Craftsman</span>
+            <span class="lb-xp mono">3,240 XP</span>
+            <span class="lb-streak">🔥 12</span>
+          </div>
+          <div class="lb-row">
+            <span class="lb-pos">2</span>
+            <span class="lb-name">Student B</span>
+            <span class="lb-rank-badge" style="background:rgba(255,201,60,.15);color:var(--hot)">Journeyman</span>
+            <span class="lb-xp mono">1,980 XP</span>
+            <span class="lb-streak">🔥 7</span>
+          </div>
+          <div class="lb-row">
+            <span class="lb-pos">3</span>
+            <span class="lb-name">Student C</span>
+            <span class="lb-rank-badge" style="background:rgba(255,201,60,.15);color:var(--hot)">Journeyman</span>
+            <span class="lb-xp mono">1,640 XP</span>
+            <span class="lb-streak">🔥 4</span>
+          </div>
+          <div class="lb-row lb-dim">
+            <span class="lb-pos">4</span>
+            <span class="lb-name">Student D</span>
+            <span class="lb-rank-badge" style="background:var(--panel-2);color:var(--slate)">Apprentice</span>
+            <span class="lb-xp mono">420 XP</span>
+            <span class="lb-streak">🔥 2</span>
+          </div>
+        </div>
+        <p style="font-size:13px;color:#8A857E;margin-top:10px">Leaderboards are class-only — students compete within their group, not against the world. XP is earned by correct thinking, not time logged.</p>
+      </div>
+
+      <p class="dash-footer">→ XP is earned by correct thinking, not time logged — the harder the mode, the more it's worth.</p>
     </div>
   </div>
 
@@ -926,169 +1082,6 @@ if (localStorage.getItem('forge-theme') === 'light') {
       </div>
 
       <p class="dash-footer">→ No hints during the Crucible — but every wrong answer is tagged and sent to your <b style="color:var(--hot)">Anvil</b> afterward, so the pressure reveals weaknesses and the Anvil fixes them.</p>
-    </div>
-  </div>
-
-  <!-- STUDENT VIEW 5: Assignments -->
-  <div class="dash-panel hidden" id="stu-assignments">
-    <div class="dash-card reveal">
-      <div class="dash-head">
-        <span class="rt">Assignments · Set by your teacher</span>
-        <span class="tag">Due dates tracked</span>
-      </div>
-      <p class="dash-desc">When your teacher sets an assignment, it appears here and as a banner on your quiz page — with the due date and direct links to the right banks.</p>
-
-      <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:20px">
-
-        <!-- Active assignment -->
-        <div style="background:var(--panel-2);border:1px solid rgba(255,107,44,.35);border-radius:12px;padding:16px 18px">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-            <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--ember)">📋 Assignment</span>
-            <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--hot)">Due in 2 days</span>
-          </div>
-          <p style="font-family:'Fraunces',sans-serif;font-size:16px;font-weight:700;color:var(--white);margin-bottom:10px">Monetary &amp; Fiscal Policy revision</p>
-          <div style="display:flex;flex-wrap:wrap;gap:6px">
-            <button style="font-size:12px;padding:5px 12px;border-radius:7px;background:rgba(255,107,44,.12);border:1px solid rgba(255,107,44,.3);color:var(--ember);cursor:pointer;font-family:'IBM Plex Sans',sans-serif;font-weight:600">Monetary Policy →</button>
-            <button style="font-size:12px;padding:5px 12px;border-radius:7px;background:rgba(255,107,44,.12);border:1px solid rgba(255,107,44,.3);color:var(--ember);cursor:pointer;font-family:'IBM Plex Sans',sans-serif;font-weight:600">Fiscal Policy →</button>
-          </div>
-        </div>
-
-        <!-- Upcoming assignment -->
-        <div style="background:var(--panel-2);border:1px solid rgba(255,107,44,.2);border-radius:12px;padding:16px 18px">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-            <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--ember)">📋 Assignment</span>
-            <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--good)">Due 14 Feb</span>
-          </div>
-          <p style="font-family:'Fraunces',sans-serif;font-size:16px;font-weight:700;color:var(--white);margin-bottom:10px">BoP &amp; Exchange Rates — focus on J-curve</p>
-          <div style="display:flex;flex-wrap:wrap;gap:6px">
-            <button style="font-size:12px;padding:5px 12px;border-radius:7px;background:rgba(255,107,44,.12);border:1px solid rgba(255,107,44,.3);color:var(--ember);cursor:pointer;font-family:'IBM Plex Sans',sans-serif;font-weight:600">Balance of Payments →</button>
-          </div>
-        </div>
-
-        <!-- Completed assignment -->
-        <div style="background:var(--panel-2);border:1px solid rgba(127,217,138,.2);border-radius:12px;padding:16px 18px;opacity:.75">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
-            <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--good)">✓ Completed</span>
-            <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8A857E">Due 24 Jan</span>
-          </div>
-          <p style="font-family:'Fraunces',sans-serif;font-size:15px;font-weight:700;color:#8A857E;text-decoration:line-through">Inflation &amp; Unemployment fundamentals</p>
-        </div>
-
-      </div>
-
-      <p class="dash-footer">→ Assignment banks appear as orange banners on your quiz page too — so you can't miss them. Due dates show in red when you're running out of time.</p>
-    </div>
-  </div>
-
-  <!-- STUDENT VIEW 6: XP & Ranks -->
-  <div class="dash-panel hidden" id="stu-xp">
-    <div class="dash-card reveal">
-      <div class="dash-head">
-        <span class="rt">XP &amp; Ranks · Every question forges something</span>
-        <span class="tag">Correct thinking, not time logged</span>
-      </div>
-      <p class="dash-desc">Revision apps reward time spent. Forge rewards correct thinking — and the harder the mode, the more XP you earn.</p>
-
-      <div class="xp-grid">
-        <div class="xp-card reveal">
-          <div class="xp-icon">⚡</div>
-          <div class="xp-label mono">Quiz — correct</div>
-          <div class="xp-val">+10 XP</div>
-          <div class="xp-desc">Getting it right first time. The baseline.</div>
-        </div>
-        <div class="xp-card reveal">
-          <div class="xp-icon">🔁</div>
-          <div class="xp-label mono">Re-forge — correct</div>
-          <div class="xp-val">+20 XP</div>
-          <div class="xp-desc">You got it wrong, then proved you understood why. That's worth more.</div>
-        </div>
-        <div class="xp-card reveal">
-          <div class="xp-icon">🔥</div>
-          <div class="xp-label mono">Crucible — correct</div>
-          <div class="xp-val">+30 XP</div>
-          <div class="xp-desc">No hints. No scaffolds. Under the clock. This is exam conditions.</div>
-        </div>
-        <div class="xp-card reveal">
-          <div class="xp-icon">⚒</div>
-          <div class="xp-label mono">Anvil cleared</div>
-          <div class="xp-val">+30 XP</div>
-          <div class="xp-desc">A misconception that survived the re-forge, reworked until it's gone.</div>
-        </div>
-        <div class="xp-card reveal">
-          <div class="xp-icon">📅</div>
-          <div class="xp-label mono">Daily streak</div>
-          <div class="xp-val">Tracked</div>
-          <div class="xp-desc">Return the next day. Your streak shows on your profile — the habit is the revision strategy.</div>
-        </div>
-      </div>
-
-      <div class="rank-section">
-        <p class="tag" style="margin-bottom:16px">Forge Ranks</p>
-        <div class="rank-grid">
-          <div class="rank-row reveal">
-            <span class="rank-badge" style="background:var(--panel-2);color:var(--slate)">Apprentice</span>
-            <span class="rank-range mono">0 – 300 XP</span>
-            <span class="rank-desc">You're starting. The first question is the hardest one.</span>
-          </div>
-          <div class="rank-row reveal">
-            <span class="rank-badge" style="background:rgba(255,201,60,.15);color:var(--hot)">Journeyman</span>
-            <span class="rank-range mono">300 – 1,500 XP</span>
-            <span class="rank-desc">The habit is forming. Misconceptions are being tracked and cleared.</span>
-          </div>
-          <div class="rank-row reveal">
-            <span class="rank-badge" style="background:rgba(255,107,44,.15);color:var(--ember)">Craftsman</span>
-            <span class="rank-range mono">1,500 – 5,000 XP</span>
-            <span class="rank-desc">The Anvil is shrinking. The Crucible is surviving.</span>
-          </div>
-          <div class="rank-row reveal">
-            <span class="rank-badge" style="background:rgba(127,217,138,.15);color:var(--good)">Forged</span>
-            <span class="rank-range mono">5,000 – 15,000 XP</span>
-            <span class="rank-desc">Most misconceptions resolved. Exam conditions feel familiar.</span>
-          </div>
-          <div class="rank-row rank-row-master reveal">
-            <span class="rank-badge" style="background:linear-gradient(100deg,var(--hot),var(--ember));color:var(--coal)">Master</span>
-            <span class="rank-range mono">15,000+ XP</span>
-            <span class="rank-desc">The exam is the easy part now.</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="leaderboard-preview reveal">
-        <p class="tag" style="margin-bottom:12px">Class leaderboard — visible to your class only</p>
-        <div class="lb-card">
-          <div class="lb-row lb-you">
-            <span class="lb-pos">1</span>
-            <span class="lb-name">You</span>
-            <span class="lb-rank-badge" style="background:rgba(255,107,44,.15);color:var(--ember)">Craftsman</span>
-            <span class="lb-xp mono">3,240 XP</span>
-            <span class="lb-streak">🔥 12</span>
-          </div>
-          <div class="lb-row">
-            <span class="lb-pos">2</span>
-            <span class="lb-name">Student B</span>
-            <span class="lb-rank-badge" style="background:rgba(255,201,60,.15);color:var(--hot)">Journeyman</span>
-            <span class="lb-xp mono">1,980 XP</span>
-            <span class="lb-streak">🔥 7</span>
-          </div>
-          <div class="lb-row">
-            <span class="lb-pos">3</span>
-            <span class="lb-name">Student C</span>
-            <span class="lb-rank-badge" style="background:rgba(255,201,60,.15);color:var(--hot)">Journeyman</span>
-            <span class="lb-xp mono">1,640 XP</span>
-            <span class="lb-streak">🔥 4</span>
-          </div>
-          <div class="lb-row lb-dim">
-            <span class="lb-pos">4</span>
-            <span class="lb-name">Student D</span>
-            <span class="lb-rank-badge" style="background:var(--panel-2);color:var(--slate)">Apprentice</span>
-            <span class="lb-xp mono">420 XP</span>
-            <span class="lb-streak">🔥 2</span>
-          </div>
-        </div>
-        <p style="font-size:13px;color:#8A857E;margin-top:10px">Leaderboards are class-only — students compete within their group, not against the world. XP is earned by correct thinking, not time logged.</p>
-      </div>
-
-      <p class="dash-footer">→ XP is earned by correct thinking, not time logged — the harder the mode, the more it's worth.</p>
     </div>
   </div>
 
