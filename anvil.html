@@ -141,6 +141,7 @@ var MC_LABELS = {
   'MC-BOP-01':'Current account deficit always bad','MC-BOP-02':'Fiscal deficit = current account deficit',
   'MC-BOP-03':'J-curve drawn improving immediately','MC-BOP-04':'Marshall-Lerner condition omitted',
   'MC-BOP-05':'Capital/financial account ignored',
+  'MC-BOP-GCSE-01':'Budget deficit confused with balance of payments deficit',
   // Economics — AD/AS
   'MC-AD-01':'AD formula wrong','MC-AD-02':'Interest rate transmission mechanism',
   'MC-AD-03':'Confidence and AD direction','MC-AD-04':'AD shift causes lower inflation',
@@ -162,6 +163,13 @@ var MC_LABELS = {
   'MC-MON-03':'Rate rise trade-offs ignored','MC-MON-04':'QE mechanism misunderstood',
   'MC-MON-05':'Liquidity trap','MC-MON-06':'Interest rates and exchange rate',
   'MC-MON-08':'Forward guidance purpose',
+  'MC-MON-GCSE-01':'Interest rate rise assumed to boost spending',
+  // GCSE Economics — The UK Economy
+  'MC-MACRO-01':'Exchange rate maximisation as a policy objective',
+  'MC-UNEMP-01':'Structural vs frictional unemployment confused',
+  'MC-FISC-01':'Fiscal policy direction (expansionary vs contractionary) confused',
+  'MC-EXR-01':'Currency depreciation assumed universally bad',
+  'MC-TRD-01':'Tariffs assumed to benefit everyone',
   // Economics — Supply Side
   'MC-SSP-01':'Supply-side aim misunderstood','MC-SSP-02':'Market-based vs interventionist',
   'MC-SSP-03':'Interest rates classified as supply-side','MC-SSP-05':'Trade union reform trade-offs',
@@ -1507,6 +1515,12 @@ const SUBJECTS = {
     sub: "Edexcel B 1GB0 — Hazardous Earth",
     color: "#0f766e",
     banks: ["GCSE-GEO-HAZ"]
+  },
+  "gcse-econ": {
+    label: "GCSE Economics",
+    sub: "OCR J205 — The UK Economy",
+    color: "#166534",
+    banks: ["GCSE-ECON-UK"]
   }
 };
 
@@ -1804,6 +1818,62 @@ BANKS["GCSE-GEO-HAZ"] = {
       correct:"B",tag:"MC-MGT-01",
       scaffold:"Hazard management has distinct strands: monitoring (tracking real-time data), prediction (forecasting when/where), protection (reducing vulnerability, e.g. building design), and planning (preparing a response, e.g. drills). Buildings and drills sit under protection and planning — not prediction, which examiners frequently see confused with it.",
       reforge:{stem:"Seismologists use satellite data to track ground deformation near a volcano before it erupts. Which part of hazard management is this?",options:{A:"Monitoring — tracking real-time hazard data to detect warning signs",B:"Protection — reducing the vulnerability of buildings",C:"Planning — preparing an evacuation response",D:"Modification — changing the hazard itself"},correct:"A"}
+    }
+  ]
+};
+
+BANKS["GCSE-ECON-UK"] = {
+  label: "The UK Economy",
+  color: "#166534",
+  questions: [
+    {
+      id:"GCSE-ECON-MACRO-01",stem:"Which of the following is NOT one of the UK government's four main macroeconomic objectives?",
+      options:{A:"Low and stable inflation",B:"Low unemployment",C:"Maximising the exchange rate at all times",D:"Balance of payments equilibrium"},
+      correct:"C",tag:"MC-MACRO-01",
+      scaffold:"The four main objectives are: economic growth, low unemployment, low and stable inflation, and balance of payments equilibrium. The exchange rate isn't a fixed target the government tries to maximise — a very strong pound hurts exporters, a very weak pound raises import costs, so governments generally want stability, not a 'maximum' rate.",
+      reforge:{stem:"A government proudly announces the pound has reached its highest value against the dollar in a decade. Why might this NOT be entirely good news?",options:{A:"A stronger pound makes UK exports more expensive for foreign buyers, which can hurt export-dependent businesses and jobs",B:"A stronger pound always benefits every UK business equally",C:"Exchange rates have no effect on the balance of payments",D:"A strong pound automatically causes inflation to rise"},correct:"A"}
+    },
+    {
+      id:"GCSE-ECON-UNEMP-01",stem:"A worker is made redundant when a UK car factory closes because demand has permanently shifted towards electric vehicles made abroad. What type of unemployment is this?",
+      options:{A:"Frictional unemployment — short-term, between jobs",B:"Structural unemployment — caused by a long-term decline in an industry as demand permanently shifts away from it",C:"Seasonal unemployment — tied to a particular time of year",D:"The worker isn't unemployed, they are economically inactive"},
+      correct:"B",tag:"MC-UNEMP-01",
+      scaffold:"Structural unemployment happens when an industry declines permanently, often due to changing demand or technology, leaving workers' skills mismatched with available jobs. Frictional unemployment is brief, between-jobs search; seasonal unemployment is tied to the calendar (e.g. ski instructors in summer) — neither fits a permanent industry-wide shift like this one.",
+      reforge:{stem:"A graduate spends three weeks applying for jobs before accepting a suitable offer. What type of unemployment does this best illustrate?",options:{A:"Frictional unemployment — short-term search between entering the job market and finding a role",B:"Structural unemployment",C:"Cyclical unemployment caused by a recession",D:"Seasonal unemployment"},correct:"A"}
+    },
+    {
+      id:"GCSE-ECON-FISC-01",stem:"The government cuts income tax and increases spending on the NHS during an economic slowdown. What type of fiscal policy is this, and what is its main aim?",
+      options:{A:"Expansionary fiscal policy — increasing aggregate demand to boost growth and reduce unemployment",B:"Contractionary fiscal policy — reducing aggregate demand to control inflation",C:"Monetary policy — using interest rates to influence spending",D:"Supply-side policy — improving the economy's long-run productive capacity"},
+      correct:"A",tag:"MC-FISC-01",
+      scaffold:"Cutting taxes and raising government spending both increase aggregate demand — this is expansionary fiscal policy, typically used to boost growth and employment during a slowdown. Contractionary fiscal policy does the opposite (raising taxes, cutting spending) to cool an overheating economy. Fiscal policy is spending/taxation, decided by the government — not interest rates, which is monetary policy set by the Bank of England.",
+      reforge:{stem:"To bring down high inflation, the government raises income tax and cuts public spending. What type of fiscal policy is this?",options:{A:"Expansionary fiscal policy",B:"Contractionary fiscal policy — reducing aggregate demand to help control inflation",C:"Monetary policy",D:"Trade policy"},correct:"B"}
+    },
+    {
+      id:"GCSE-ECON-MON-01",stem:"The Bank of England raises the base interest rate. A student says: 'This will encourage people to spend more.' Why is this wrong?",
+      options:{A:"Higher interest rates make borrowing more expensive and saving more attractive, which tends to reduce consumer spending, not increase it",B:"The student is correct — higher interest rates always increase spending",C:"Interest rates only affect businesses, never consumers",D:"Interest rates have no effect on borrowing or saving decisions"},
+      correct:"A",tag:"MC-MON-GCSE-01",
+      scaffold:"Raising interest rates makes loans, mortgages and credit card debt more expensive, while making saving more rewarding — both effects tend to reduce spending. This is exactly why the Bank of England raises rates when it wants to bring down inflation: less spending means less pressure on prices.",
+      reforge:{stem:"The Bank of England cuts the base interest rate to boost a slowing economy. What effect is this most likely to have on consumer spending?",options:{A:"It is likely to increase spending, since borrowing becomes cheaper and saving less rewarding",B:"It is likely to decrease spending",C:"Interest rate changes never affect consumer behaviour",D:"It will have no effect because banks ignore the base rate"},correct:"A"}
+    },
+    {
+      id:"GCSE-ECON-BOP-01",stem:"A news headline says: 'UK government budget deficit widens.' A student says: 'This means the UK is importing more than it is exporting.' Why is this wrong?",
+      options:{A:"The government budget deficit (spending vs. tax revenue) and the balance of payments (exports vs. imports) are two completely different measures — a widening budget deficit says nothing directly about trade",B:"The student is correct — the two terms mean exactly the same thing",C:"A budget deficit can only be caused by a trade deficit",D:"The UK cannot have a budget deficit unless it also has a trade deficit"},
+      correct:"A",tag:"MC-BOP-GCSE-01",
+      scaffold:"These are easily confused but distinct: the government budget deficit is the gap between what government spends and what it raises in tax; the balance of payments (current account) measures the value of a country's exports against its imports. A country can run either deficit independently of the other.",
+      reforge:{stem:"The UK's current account deficit widens because imports have risen faster than exports. Does this necessarily mean the government's budget deficit has also widened?",options:{A:"No — the two are separate measures; a current account deficit doesn't automatically mean the government is also overspending relative to tax revenue",B:"Yes, they always move together",C:"Yes, because imports are funded directly out of the government budget",D:"No such distinction exists between the two terms"},correct:"A"}
+    },
+    {
+      id:"GCSE-ECON-EXR-01",stem:"The pound depreciates (falls in value) against the dollar. A student says: 'This is bad news for everyone in the UK.' Why is this an oversimplification?",
+      options:{A:"A weaker pound makes UK exports cheaper for foreign buyers (helping exporters) while making imports more expensive (raising costs for consumers and import-reliant firms) — it creates winners and losers, not a universally bad outcome",B:"A weaker pound only ever benefits UK consumers",C:"Exchange rate changes have no effect on exporters or importers",D:"A weaker pound makes both exports and imports cheaper"},
+      correct:"A",tag:"MC-EXR-01",
+      scaffold:"Depreciation is a mixed picture: UK exporters benefit because their goods become cheaper for foreign buyers, but UK consumers and firms that rely on imported goods or raw materials face higher costs. Whether depreciation is 'good' or 'bad' for the UK overall depends on which groups you're asking about.",
+      reforge:{stem:"The pound appreciates (rises in value) against the euro. Which UK group is most likely to benefit?",options:{A:"UK consumers buying imported goods, and UK tourists travelling to the eurozone, since their money now buys more",B:"UK exporters, since their goods become more competitive abroad",C:"Everyone in the UK equally, with no losers",D:"No one, since appreciation only ever causes harm"},correct:"A"}
+    },
+    {
+      id:"GCSE-ECON-TRD-01",stem:"The government imposes a tariff on imported steel to protect UK steel producers. A student says: 'This benefits everyone in the UK.' Why is this wrong?",
+      options:{A:"While the tariff can protect UK steel jobs, it raises the price of steel for UK businesses that use it (e.g. car manufacturers, construction) and can raise prices for consumers — protectionism creates winners (protected domestic producers) and losers (businesses and consumers facing higher costs)",B:"Tariffs benefit every group in the economy with no downside",C:"Tariffs only affect foreign countries, never UK consumers or businesses",D:"Tariffs automatically lower prices for UK consumers"},
+      correct:"A",tag:"MC-TRD-01",
+      scaffold:"Protectionist measures like tariffs shield a specific domestic industry from foreign competition, which can save jobs in that industry — but the higher price of the protected good raises costs for UK businesses that use it as an input, and often for consumers too. It's a trade-off between groups, not a free win for everyone.",
+      reforge:{stem:"A government scraps tariffs on imported steel as part of a new free trade agreement. Which UK group is most likely to lose out in the short term?",options:{A:"UK steel producers, who now face cheaper foreign competition",B:"UK car manufacturers, who now face higher costs",C:"UK consumers, who now face higher prices for steel-based goods",D:"No one loses out from removing tariffs"},correct:"A"}
     }
   ]
 };
