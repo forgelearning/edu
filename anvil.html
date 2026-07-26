@@ -5932,19 +5932,66 @@ function renderAnvilHome(){
   app.innerHTML=h;
 }
 
+function shuffleArr(arr){
+  var a=arr.slice();
+  for(var i=a.length-1;i>0;i--){
+    var j=Math.floor(Math.random()*(i+1));
+    var tmp=a[i];a[i]=a[j];a[j]=tmp;
+  }
+  return a;
+}
+
+function variantKey(v){ return v.q.id+(v.useReforge?'-RF':''); }
+
+// Build one "lap" of variants (original + reforge for each question, since
+// MC_QUESTIONS only ever contains questions that have a reforge), shuffled.
+// avoidKey, if given, keeps the first item of the new lap from being the
+// exact same rendered question (id + variant) as the last one shown, so
+// laps never visibly repeat the same question back-to-back.
+function buildReworkLap(questions,avoidKey){
+  var variants=[];
+  questions.forEach(function(q){
+    variants.push({q:q,useReforge:false});
+    variants.push({q:q,useReforge:true});
+  });
+  var shuffled=shuffleArr(variants);
+  if(avoidKey && shuffled.length>1){
+    var tries=0;
+    while(variantKey(shuffled[0])===avoidKey && tries<10){
+      shuffled=shuffleArr(variants);
+      tries++;
+    }
+    // Still colliding after retries (only possible with a single-question
+    // pool, where a swap is guaranteed to fix it): swap the clashing first
+    // item with a later one that doesn't match.
+    if(variantKey(shuffled[0])===avoidKey){
+      for(var i=1;i<shuffled.length;i++){
+        if(variantKey(shuffled[i])!==avoidKey){
+          var tmp=shuffled[0];shuffled[0]=shuffled[i];shuffled[i]=tmp;
+          break;
+        }
+      }
+    }
+  }
+  return shuffled;
+}
+
 window.startRework=function(tag){
   var questions=MC_QUESTIONS[tag];
   if(!questions||questions.length===0) return;
-  // Shuffle so questions don't repeat in order
-  var shuffled=questions.slice().sort(function(){return Math.random()-0.5;});
-  renderReworkQuestion(tag,shuffled,0);
+  renderReworkQuestion(tag,questions,buildReworkLap(questions,null),0);
 };
 
-function renderReworkQuestion(tag,questions,qIdx){
-  // Even indices: serve original question. Odd indices: serve reforge variant.
-  // This doubles the effective pool and prevents identical question repeats.
-  var baseQ = questions[Math.floor(qIdx/2) % questions.length];
-  var useReforge = (qIdx % 2 === 1) && baseQ.reforge;
+function renderReworkQuestion(tag,questions,lap,qIdx){
+  // Once a lap (every question, as both original and reforge) is used up,
+  // shuffle a fresh one rather than replaying the same fixed cycle.
+  if(qIdx>=lap.length){
+    lap=buildReworkLap(questions,variantKey(lap[lap.length-1]));
+    qIdx=0;
+  }
+  var variant=lap[qIdx];
+  var baseQ=variant.q;
+  var useReforge=variant.useReforge && baseQ.reforge;
   var q = useReforge
     ? { id: baseQ.id+'-RF', stem: baseQ.reforge.stem, options: baseQ.reforge.options, correct: baseQ.reforge.correct, scaffold: baseQ.scaffold, tag: baseQ.tag }
     : baseQ;
@@ -6025,7 +6072,7 @@ function renderReworkQuestion(tag,questions,qIdx){
         fh+='<button class="next-btn" id="rw-next">Next question \u2192</button><div class="clear"></div>';
         fb.innerHTML=fh;
         document.getElementById('rw-next').onclick=function(){
-          renderReworkQuestion(tag,questions,qIdx+1);
+          renderReworkQuestion(tag,questions,lap,qIdx+1);
         };
       } else {
         fh='<div class="scaffold-box"><span class="stag">'+tag+'</span><p>'+q.scaffold+'</p></div>';
@@ -6033,7 +6080,7 @@ function renderReworkQuestion(tag,questions,qIdx){
         fh+='<button class="next-btn" id="rw-next">Try again \u2192</button><div class="clear"></div>';
         fb.innerHTML=fh;
         document.getElementById('rw-next').onclick=function(){
-          renderReworkQuestion(tag,questions,qIdx+1);
+          renderReworkQuestion(tag,questions,lap,qIdx+1);
         };
       }
     };
