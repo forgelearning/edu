@@ -210,6 +210,10 @@ var MC_LABELS = {
   'MC-TEC-01':'Subduction — oceanic plate density','MC-TEC-02':'Development vs physical hazard size',
   'MC-TEC-03':'Composite volcano explosion cause','MC-TEC-04':'Earthquakes at all boundary types',
   'MC-TEC-06':'Focus vs epicentre confused','MC-TEC-07':'Iceland hot spot and constructive boundary',
+  // GCSE Geography — Hazardous Earth
+  'MC-HAZ-01':'Sulfur dioxide eruption cools, not warms, the climate','MC-HAZ-02':'Hazard impact measured only in deaths',
+  'MC-HAZ-03':'Storm surge vs wind as the deadliest hurricane hazard','MC-HAZ-04':'Storm surge vs wind speed as death-toll predictor',
+  'MC-MGT-01':'Monitor vs protect vs plan confused',
   // Business
   'MC-BUS-01':'Product vs market orientation','MC-BUS-02':'Break-even calculation (contribution)',
   'MC-BUS-03':'Price skimming vs penetration','MC-BUS-04':'Sole trader vs Ltd liability',
@@ -1497,6 +1501,12 @@ const SUBJECTS = {
     sub: "Physical — Tectonic Hazards",
     color: "#0f766e",
     banks: ["GEO-TEC"]
+  },
+  "gcse-geo": {
+    label: "GCSE Geography",
+    sub: "Edexcel B 1GB0 — Hazardous Earth",
+    color: "#0f766e",
+    banks: ["GCSE-GEO-HAZ"]
   }
 };
 
@@ -1752,6 +1762,48 @@ BANKS["GEO-TEC"] = {
       correct:"A",tag:"MC-TEC-02",
       scaffold:"Japan's earthquake preparation DID work — buildings survived, early warning fired. Deaths came from the tsunami, which at 13m overtopped walls built for 5-6m events based on historical data. The lesson: hazard management must plan for worst-case scenarios, not just historical averages. This is the key limitation of purely reactive hazard planning.",
       reforge:{stem:"The key lesson from the 2011 Tohoku tsunami walls being overtopped is:",options:{A:"Tsunami walls are an ineffective technology and should be replaced with other measures.",B:"Hazard management must plan for worst-case scenarios, not historical averages, since underestimating potential magnitude creates critical vulnerability.",C:"All coastal communities in Japan should be permanently relocated to inland areas.",D:"International coordination is the most important factor in reducing tsunami casualties."},correct:"B"}
+    }
+  ]
+};
+
+BANKS["GCSE-GEO-HAZ"] = {
+  label: "Hazardous Earth",
+  color: "#0f766e",
+  questions: [
+    {
+      id:"HAZ-01",stem:"Mount Pinatubo's 1991 eruption released huge amounts of sulfur dioxide. What effect did this have on global temperatures, and why?",
+      options:{A:"Temperatures rose, because the ash cloud trapped heat close to the Earth's surface",B:"Temperatures fell by about 0.5°C, because the sulfur dioxide formed a haze that reflected sunlight back into space",C:"Temperatures were unaffected — volcanic eruptions only have local, not global, effects",D:"Temperatures rose, because volcanic eruptions always cause long-term warming"},
+      correct:"B",tag:"MC-HAZ-01",
+      scaffold:"Large sulfur dioxide eruptions cause global cooling, not warming — the SO2 forms a reflective haze high in the atmosphere that blocks incoming sunlight. Pinatubo's 1991 eruption (VEI 6) measurably cooled global temperatures for about a year.",
+      reforge:{stem:"A large volcanic eruption releases a huge cloud of sulfur dioxide into the upper atmosphere. What is the most likely global climate effect, and why?",options:{A:"Global cooling, because the sulfur dioxide haze reflects sunlight away from the Earth's surface",B:"Global warming, because the ash cloud traps heat near the surface",C:"No effect, since eruptions are always local events",D:"Global warming, because sulfur dioxide is a greenhouse gas"},correct:"A"}
+    },
+    {
+      id:"HAZ-02",stem:"Iceland's Eyjafjallajökull eruption in 2010 caused almost no deaths but cost the airline industry over $1 billion. What does this show about measuring hazard impact?",
+      options:{A:"An eruption with no deaths cannot really be considered a serious hazard",B:"Impact can be economic and social, not just measured by death toll",C:"Economic impact only matters for earthquakes, not volcanic eruptions",D:"A low death toll means an eruption wasn't newsworthy or significant"},
+      correct:"B",tag:"MC-HAZ-02",
+      scaffold:"Hazard impact isn't just a body count. Eyjafjallajökull grounded flights across Europe for days with almost no loss of life — a huge economic and social disruption despite a near-zero death toll. Examiners reward answers that weigh multiple types of impact, not just deaths.",
+      reforge:{stem:"A hazard event causes very few deaths but severely disrupts transport, trade, and daily life for weeks. Which statement best reflects how geographers assess hazard impact?",options:{A:"Impact should be judged across several dimensions — economic, social, and environmental — not death toll alone",B:"If nobody died, the event doesn't count as a significant hazard",C:"Only earthquakes and tropical storms have meaningful economic impacts",D:"Death toll is always the single most important measure of hazard severity"},correct:"A"}
+    },
+    {
+      id:"HAZ-03",stem:"Hurricane Katrina made landfall as a Category 3 storm, yet caused catastrophic flooding in New Orleans. What was the main direct cause?",
+      options:{A:"Levees and flood walls failed under the storm surge, flooding roughly 80% of the city",B:"Katrina made direct landfall as a Category 5 storm",C:"Extremely high rainfall alone, unrelated to storm surge or levees",D:"A secondary earthquake triggered by the storm"},
+      correct:"A",tag:"MC-HAZ-03",
+      scaffold:"New Orleans sits largely below sea level, so when the storm surge overwhelmed its levees, seawater had nowhere to drain. Katrina had actually weakened to a strong Category 3 by landfall — the flooding came from defence failure under storm surge, not from wind or an unusually powerful storm.",
+      reforge:{stem:"New Orleans sits largely below sea level. Why does this make storm surge, rather than wind speed, the greater flooding risk during a hurricane?",options:{A:"Seawater pushed inland by the surge has nowhere to drain and can overwhelm flood defences protecting low-lying land",B:"Wind speed always causes more flooding than storm surge",C:"Being below sea level has no effect on flood risk",D:"Storm surge only affects cities that are above sea level"},correct:"A"}
+    },
+    {
+      id:"HAZ-04",stem:"Typhoon Haiyan (2013) had some of the highest landfall wind speeds ever recorded, yet its roughly 6,300 deaths were caused mainly by:",
+      options:{A:"The storm surge — a wall of seawater around 7.5 metres high that overwhelmed low-lying coastal areas",B:"Wind damage to buildings alone",C:"A secondary earthquake",D:"Cold temperatures following the storm"},
+      correct:"A",tag:"MC-HAZ-04",
+      scaffold:"As with Katrina, storm surge — not wind speed — was the deadliest element of Typhoon Haiyan. Wind speed is often assumed to be the main killer in tropical storms, but low-lying coastal areas are usually most at risk from the surge of seawater it pushes ashore.",
+      reforge:{stem:"Two tropical storms have similar wind speeds, but one causes far more deaths because its storm surge is much higher. What does this tell us about tropical storm hazards?",options:{A:"Storm surge, not wind speed, is often the deadliest element of a tropical storm, especially in low-lying coastal areas",B:"Wind speed is always the best predictor of deaths in a tropical storm",C:"Storm surge only matters for storms that form in the Pacific Ocean",D:"Death toll is unrelated to any physical characteristic of the storm"},correct:"A"}
+    },
+    {
+      id:"MGT-01",stem:"A country builds earthquake-resistant buildings and holds regular evacuation drills. Which part of hazard management is this?",
+      options:{A:"Prediction",B:"Protection and planning — reducing vulnerability and preparing a response, rather than predicting exactly when a hazard will strike",C:"Monitoring",D:"Modifying the hazard itself"},
+      correct:"B",tag:"MC-MGT-01",
+      scaffold:"Hazard management has distinct strands: monitoring (tracking real-time data), prediction (forecasting when/where), protection (reducing vulnerability, e.g. building design), and planning (preparing a response, e.g. drills). Buildings and drills sit under protection and planning — not prediction, which examiners frequently see confused with it.",
+      reforge:{stem:"Seismologists use satellite data to track ground deformation near a volcano before it erupts. Which part of hazard management is this?",options:{A:"Monitoring — tracking real-time hazard data to detect warning signs",B:"Protection — reducing the vulnerability of buildings",C:"Planning — preparing an evacuation response",D:"Modification — changing the hazard itself"},correct:"A"}
     }
   ]
 };
