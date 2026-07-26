@@ -333,6 +333,14 @@ var MC_TO_SPEC = {
   "MC-HAZ-03":"GCSE-HAZ",
   "MC-HAZ-04":"GCSE-HAZ",
   "MC-MGT-01":"GCSE-HAZ",
+  "MC-COAST-01":"GCSE-UKLAND",
+  "MC-COAST-02":"GCSE-UKLAND",
+  "MC-COAST-03":"GCSE-UKLAND",
+  "MC-COAST-04":"GCSE-UKLAND",
+  "MC-COAST-05":"GCSE-UKLAND",
+  "MC-RIV-01":"GCSE-UKLAND",
+  "MC-RIV-02":"GCSE-UKLAND",
+  "MC-RIV-03":"GCSE-UKLAND",
   "MC-TECH-01":"2.3.1",
   "MC-TECH-02":"2.4.1",
   "MC-TECH-04":"2.4.1",
@@ -1480,9 +1488,9 @@ const SUBJECTS = {
   },
   "gcse-geo": {
     label: "GCSE Geography",
-    sub: "Edexcel B 1GB0 — Hazardous Earth",
+    sub: "Edexcel B 1GB0 — Hazardous Earth, UK Physical Landscapes",
     color: "#0f766e",
-    banks: ["GCSE-GEO-HAZ"]
+    banks: ["GCSE-GEO-HAZ", "GCSE-GEO-UKLAND"]
   },
   "gcse-econ": {
     label: "GCSE Economics",
@@ -1879,6 +1887,141 @@ BANKS["GCSE-GEO-HAZ"] = {
       bank:["storm surge","Tacloban","wind","Manila"],
       tag:"MC-HAZ-04",
       scaffold:"As with Katrina, storm surge — not wind — was the deadliest element. A roughly 7.5m wall of seawater overwhelmed low-lying coastal areas like Tacloban, in a lower-income setting with a much higher death toll than Katrina."
+    }
+  ]
+};
+
+BANKS["GCSE-GEO-UKLAND"] = {
+  label: "UK's Evolving Physical Landscape",
+  color: "#0f766e",
+  questions: [
+    {
+      id:"GCSE-UKLAND-01",spec:"GCSE-UKLAND",stem:"On the Holderness Coast, waves attack a section of soft boulder clay cliff by compressing air into cracks until the rock shatters. What process is this?",
+      options:{A:"Hydraulic action",B:"Abrasion — waves hurling sand and pebbles at the cliff, sandpapering it away",C:"Attrition — rocks wearing each other down as they collide",D:"Solution — soluble rock dissolving in seawater"},
+      correct:"A",tag:"MC-COAST-01",
+      scaffold:"Hydraulic action is the sheer force of water and compressed air breaking rock apart — no rock-on-rock contact needed, which is why it's so effective on Holderness's soft, unconsolidated boulder clay. Abrasion needs the waves to be carrying material to throw at the cliff; attrition happens between loose rock fragments, not to the cliff face itself; solution only affects soluble rock like limestone or chalk, not boulder clay.",
+      reforge:{stem:"Further along the Holderness coast, waves carrying sand and shingle scrape against the cliff face, wearing it away like sandpaper. What process is this?",options:{A:"Abrasion — material carried by waves grinding against the cliff",B:"Hydraulic action — compressed air shattering rock",C:"Attrition — pebbles wearing each other down",D:"Solution — rock dissolving"},correct:"A"}
+    },
+    {
+      id:"GCSE-UKLAND-02",spec:"GCSE-UKLAND",stem:"A headland and bay coastline forms where alternating bands of resistant rock (like chalk) and less resistant rock (like clay) meet the sea. What causes the headlands to form?",
+      options:{A:"Differential erosion — the less resistant rock is eroded faster, leaving the resistant rock standing out as a headland",B:"The resistant rock is eroded faster, leaving low-lying bays behind",C:"Longshore drift deposits sand only in front of resistant rock",D:"Headlands are always made of the same rock type as the bays next to them"},
+      correct:"A",tag:"MC-COAST-02",
+      scaffold:"Differential erosion: softer rock (clay) erodes quickly, carving out a bay, while harder rock (chalk or limestone) resists erosion and juts out as a headland. It's the rate of erosion, not the rock forming faster, that creates the shape — and headlands and bays are made of different rock types by definition.",
+      reforge:{stem:"Why do headlands, once formed, typically erode more slowly than the bays beside them?",options:{A:"They're made of more resistant rock, which withstands erosion better than the softer rock of the bay",B:"Headlands are protected from waves entirely",C:"Bays receive no wave energy at all",D:"Headlands and bays erode at exactly the same rate"},correct:"A"}
+    },
+    {
+      id:"GCSE-UKLAND-03",spec:"GCSE-UKLAND",stem:"A student describes a headland's erosional sequence as: 'crack, then arch, then stack, then stump.' What has been missed out?",
+      options:{A:"A cave — hydraulic action and abrasion widen a crack into a cave before it erodes through to form an arch",B:"Nothing — the sequence is complete as stated",C:"A spit, which forms between the crack and the arch",D:"A stack always forms before the cave"},
+      correct:"A",tag:"MC-COAST-03",
+      scaffold:"The correct sequence is crack → cave → arch → stack → stump. Waves widen a weakness into a cave; continued erosion breaks through the headland to form an arch; the arch collapses, isolating a stack; the stack erodes down to a stump. A spit is a depositional feature, not part of this erosional sequence.",
+      reforge:{stem:"An arch's roof eventually collapses because it can no longer support its own weight, isolating a tall column of rock from the headland. What landform has just been created?",options:{A:"A stack",B:"A stump",C:"A spit",D:"A cave"},correct:"A"}
+    },
+    {
+      id:"GCSE-UKLAND-04",spec:"GCSE-UKLAND",stem:"Waves approach a beach at an angle, but the backwash always returns straight down the beach under gravity. What landform does this longshore drift process build over time at a river mouth or bend in the coastline?",
+      options:{A:"A spit — a finger of deposited sand/shingle extending out from the coast, often with a hooked end where the current curves",B:"A headland",C:"A wave-cut platform",D:"A stack"},
+      correct:"A",tag:"MC-COAST-04",
+      scaffold:"Longshore drift moves material along the coast in a zigzag (swash at an angle, backwash straight down the beach). Where the coastline changes direction — like a river mouth — the material keeps being deposited in the same direction, building out a spit, sometimes with a curved/hooked end where wave refraction bends it. Headlands and stacks are erosional features; a wave-cut platform is the flat rock left behind at the base of an eroding cliff.",
+      reforge:{stem:"Why does a spit often develop a hooked or curved end?",options:{A:"A change in the dominant wind/wave direction curves the end of the spit inward",B:"Spits are always straight and never curve",C:"The hook is caused by erosion, not deposition",D:"River currents always create a 90-degree bend"},correct:"A"}
+    },
+    {
+      id:"GCSE-UKLAND-05",spec:"GCSE-UKLAND",stem:"At Mappleton on the Holderness Coast, rock groynes and a rock revetment were built to protect the village and the coast road. A student says: 'This solved erosion for the whole Holderness coast.' Why is this wrong?",
+      options:{A:"Hard engineering at Mappleton starves beaches further down the coast of sediment (since longshore drift can no longer supply it), meaning erosion actually speeds up in unprotected areas nearby",B:"Groynes and revetments stop all erosion everywhere on Holderness",C:"Holderness has no erosion problem elsewhere, so protecting one village was unnecessary",D:"Hard engineering has no effect on longshore drift"},
+      correct:"A",tag:"MC-COAST-05",
+      scaffold:"Groynes trap sediment moving by longshore drift to protect one stretch of coast — but that starves beaches further along, which lose their natural buffer and erode faster. This is exactly why Holderness (one of Europe's fastest-eroding coastlines, ~2m/year on average) still has undefended sections like Cowden losing land rapidly despite Mappleton's defences.",
+      reforge:{stem:"A village protects its coastline with groynes. A neighbouring, undefended village further down the coast reports erosion rates increasing afterwards. What's the most likely explanation?",options:{A:"The groynes trapped sediment that would otherwise have travelled by longshore drift to replenish the neighbouring beach",B:"The two villages' erosion rates are unrelated to each other",C:"Groynes increase wave energy along the whole coastline",D:"Hard engineering always reduces erosion everywhere, with no local trade-offs"},correct:"A"}
+    },
+    {
+      id:"GCSE-UKLAND-06",spec:"GCSE-UKLAND",stem:"A river's long profile runs from source to mouth. A student says: 'Erosion is the dominant process everywhere along a river.' Why is this wrong?",
+      options:{A:"Vertical erosion dominates in the steep upper course, but as gradient and energy fall towards the lower course, deposition becomes dominant as the river drops the material it's carrying",B:"Deposition dominates everywhere along a river",C:"Erosion and deposition never both occur on the same river",D:"A river's energy stays exactly the same from source to mouth"},
+      correct:"A",tag:"MC-RIV-01",
+      scaffold:"A river's energy and gradient are highest near the source, favouring vertical erosion (cutting down, forming V-shaped valleys/waterfalls). Further downstream, gradient flattens, energy falls, and the river deposits the sediment it's carrying, building features like floodplains. It's a gradual shift, not an on/off switch, and both processes can occur at once in different parts of the channel.",
+      reforge:{stem:"Why do meanders (bends) typically develop in a river's middle to lower course rather than close to the source?",options:{A:"Lower gradient and energy there allow lateral (sideways) erosion and deposition to dominate over the vertical erosion seen upstream",B:"Meanders only form where a river is at its steepest",C:"Meanders form randomly with no link to gradient or energy",D:"Rivers only erode in their upper course and never downstream"},correct:"A"}
+    },
+    {
+      id:"GCSE-UKLAND-07",spec:"GCSE-UKLAND",stem:"On the outside bend of a meander, the river is deep and erosion dominates; on the inside bend, the river is shallow and deposition dominates. A student says this is just random. What actually causes it?",
+      options:{A:"Helicoidal flow — a corkscrew-like current that moves faster and erodes on the outside bend, then spirals across to deposit sediment as a slip-off slope on the inside bend",B:"The river bed is naturally deeper on the outside bend with no link to current or flow",C:"Erosion only ever happens on the inside of a bend",D:"Meanders have no consistent pattern of erosion or deposition"},
+      correct:"A",tag:"MC-RIV-02",
+      scaffold:"Helicoidal (corkscrew) flow explains the asymmetry: faster current and greater erosive power hits the outside bend (undercutting it into a river cliff), while slower-moving water on the inside bend deposits sediment as a gently sloping slip-off slope. Over time this exaggerates the bend until it can be cut off, forming an oxbow lake.",
+      reforge:{stem:"Over many years, a meander's neck becomes so narrow that the river cuts straight across it during a flood, leaving the old bend isolated. What landform has just formed?",options:{A:"An oxbow lake",B:"A waterfall",C:"A spit",D:"A floodplain"},correct:"A"}
+    },
+    {
+      id:"GCSE-UKLAND-08",spec:"GCSE-UKLAND",stem:"In July 2007, Tewkesbury (at the confluence of the Severn and Avon) flooded severely, cutting the town off and flooding thousands of homes. A student says this was caused purely by 'too much rain.' What else made it worse?",
+      options:{A:"The ground was already saturated from a very wet preceding month, and Tewkesbury's location at a river confluence meant floodwater from both the Severn and Avon arrived together, overwhelming the town",B:"Tewkesbury has no rivers nearby, so flooding must have come from the sea",C:"The floods were caused entirely by a dam failure upstream",D:"Rainfall was the only factor and location made no difference"},
+      correct:"A",tag:"MC-RIV-03",
+      scaffold:"2007 was one of the wettest summers on record — but Tewkesbury's flood risk is compounded by its confluence location, where the Severn and Avon's floodwaters combine, and by antecedent (prior) rainfall leaving the ground saturated with nowhere for new rainfall to infiltrate, forcing more of it into rapid surface runoff.",
+      reforge:{stem:"Why does a settlement located at the confluence of two rivers face a greater flood risk than one on a single river of similar size?",options:{A:"Floodwater from both rivers can arrive and combine at the same point, increasing the total discharge the settlement must cope with",B:"Confluences always have lower rainfall than other locations",C:"Two rivers meeting always cancel out each other's flood risk",D:"Confluence location has no bearing on flood risk"},correct:"A"}
+    },
+    {
+      id:"GCSE-UKLAND-FB-01",spec:"GCSE-UKLAND",type:"fill_blank",
+      stem:"Complete the sentence about coastal erosion processes on Holderness.",
+      template:"___ ___ is the sheer force of water (and compressed air) breaking rock apart, while ___ is material carried by waves grinding against the cliff like sandpaper.",
+      blanks:["Hydraulic","action","abrasion"],
+      bank:["Hydraulic","action","abrasion","attrition","solution","weathering"],
+      tag:"MC-COAST-01",
+      scaffold:"Hydraulic action is water and compressed air shattering rock with no rock-on-rock contact needed. Abrasion is different — it needs the waves to be carrying sand/pebbles to throw at the cliff, sandpapering it away."
+    },
+    {
+      id:"GCSE-UKLAND-FB-02",spec:"GCSE-UKLAND",type:"fill_blank",
+      stem:"Complete the sentence about headland and bay formation.",
+      template:"Headlands and bays form through ___ erosion: ___ resistant rock like clay erodes quickly to form a bay, while more ___ rock like chalk juts out as a headland.",
+      blanks:["differential","less","resistant"],
+      bank:["differential","less","resistant","uniform","more","soluble"],
+      tag:"MC-COAST-02",
+      scaffold:"Differential erosion means different rock types erode at different rates when exposed to the same wave energy — the softer, less resistant rock (clay) is worn back into a bay while the harder, more resistant rock (chalk) survives as a headland."
+    },
+    {
+      id:"GCSE-UKLAND-FB-03",spec:"GCSE-UKLAND",type:"fill_blank",
+      stem:"Complete the erosional sequence that forms a stack.",
+      template:"The sequence runs: crack → ___ → ___ → stack → ___.",
+      blanks:["cave","arch","stump"],
+      bank:["cave","arch","stump","spit","platform","bay"],
+      tag:"MC-COAST-03",
+      scaffold:"Crack → cave → arch → stack → stump. Hydraulic action and abrasion widen a crack into a cave; continued erosion breaks through to form an arch; the arch's roof collapses, isolating a stack; the stack erodes down to a stump."
+    },
+    {
+      id:"GCSE-UKLAND-FB-04",spec:"GCSE-UKLAND",type:"fill_blank",
+      stem:"Complete the sentence about spit formation.",
+      template:"___ ___ moves material along the coast in a zigzag pattern. Where the coastline changes direction, such as at a river mouth, material builds out into a ___.",
+      blanks:["Longshore","drift","spit"],
+      bank:["Longshore","drift","spit","stack","headland","platform"],
+      tag:"MC-COAST-04",
+      scaffold:"Longshore drift: swash carries material up the beach at an angle (driven by prevailing wind), backwash drags it straight back down under gravity — the net zigzag movement builds a spit wherever the coastline suddenly changes direction."
+    },
+    {
+      id:"GCSE-UKLAND-FB-05",spec:"GCSE-UKLAND",type:"fill_blank",
+      stem:"Complete the sentence about hard engineering at Mappleton on the Holderness Coast.",
+      template:"Rock groynes at Mappleton trap sediment moved by longshore drift, protecting the village — but this ___ beaches further along the coast of sediment, meaning ___ actually speeds up in those undefended areas.",
+      blanks:["starves","erosion"],
+      bank:["starves","erosion","supplies","deposition"],
+      tag:"MC-COAST-05",
+      scaffold:"Groynes trap sediment travelling by longshore drift to protect one stretch of coast, but that starves beaches further down the coast of the sediment they'd otherwise receive — those undefended sections, like Cowden, then erode faster than before."
+    },
+    {
+      id:"GCSE-UKLAND-FB-06",spec:"GCSE-UKLAND",type:"fill_blank",
+      stem:"Complete the sentence about a river's long profile.",
+      template:"In the upper course, high energy and steep gradient favour ___ erosion. Further downstream, gradient and energy fall, and ___ becomes dominant as the river drops its sediment.",
+      blanks:["vertical","deposition"],
+      bank:["vertical","deposition","lateral","erosion"],
+      tag:"MC-RIV-01",
+      scaffold:"Vertical erosion (cutting downwards, forming steep V-shaped valleys and waterfalls) dominates where gradient and energy are highest, near the source. As the river flows towards its mouth, falling energy means it increasingly deposits sediment instead of eroding."
+    },
+    {
+      id:"GCSE-UKLAND-FB-07",spec:"GCSE-UKLAND",type:"fill_blank",
+      stem:"Complete the sentence about meander formation.",
+      template:"___ flow is a corkscrew-like current that erodes the ___ bend of a meander, undercutting it into a river cliff, while depositing sediment as a slip-off slope on the ___ bend.",
+      blanks:["Helicoidal","outside","inside"],
+      bank:["Helicoidal","outside","inside","vertical","upper","lower"],
+      tag:"MC-RIV-02",
+      scaffold:"Helicoidal (corkscrew) flow moves faster on the outside of a bend, eroding it into a steep river cliff, then spirals across the channel to deposit sediment more slowly on the inside bend as a gently sloping slip-off slope — the asymmetry that drives a meander to grow."
+    },
+    {
+      id:"GCSE-UKLAND-FB-08",spec:"GCSE-UKLAND",type:"fill_blank",
+      stem:"Complete the sentence about the July 2007 Tewkesbury floods.",
+      template:"Tewkesbury sits at the ___ of the Severn and Avon, so floodwater from both rivers arrived together. The ground was already ___ from a very wet preceding month, increasing surface ___.",
+      blanks:["confluence","saturated","runoff"],
+      bank:["confluence","saturated","runoff","source","dry","infiltration"],
+      tag:"MC-RIV-03",
+      scaffold:"Tewkesbury's confluence location meant floodwater from both the Severn and Avon combined at the same point. Ground already saturated from a very wet preceding month couldn't absorb (infiltrate) new rainfall, forcing more of it into rapid surface runoff and worsening the flood."
     }
   ]
 };

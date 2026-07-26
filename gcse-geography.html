@@ -535,12 +535,12 @@ if (localStorage.getItem('forge-theme') === 'light') {
   <p class="tag eyebrow reveal"><a href="index.html#subjects" style="color:var(--slate);text-decoration:none">← All subjects</a></p>
   <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-top:12px">
     <div>
-      <span class="pill hot reveal">Hazardous Earth live</span>
+      <span class="pill hot reveal">2 banks live</span>
       <span class="mono boards reveal" style="margin-left:10px">Edexcel B · 1GB0</span>
     </div>
   </div>
   <h1 class="reveal" style="font-size:clamp(32px,4.2vw,48px);font-weight:800;margin-top:14px;margin-bottom:10px">GCSE Geography</h1>
-  <div class="subj-stat reveal" style="font-size:15px;margin-bottom:14px"><span class="subj-stat-n" style="font-size:26px">8</span> questions · 1 bank live — Hazardous Earth</div>
+  <div class="subj-stat reveal" style="font-size:15px;margin-bottom:14px"><span class="subj-stat-n" style="font-size:26px">32</span> questions · 2 banks live — Hazardous Earth, UK's Evolving Physical Landscape</div>
   <p class="sect-lede reveal">Physical, human and fieldwork skills — with the 8-mark extended answers (and the 12-mark geographical decision question on Paper 3) treated as a skill to train, not a lottery. Mapped to Edexcel B (1GB0): Papers 1, 2 and 3. The rest is launching September, built alongside real classroom teaching.</p>
   <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:22px" class="reveal">
     <a href="index.html#waitlist" class="btn btn-hot" style="text-decoration:none">Join the waiting list</a>
@@ -559,9 +559,9 @@ if (localStorage.getItem('forge-theme') === 'light') {
       <span class="rank-desc"><b>Global Geographical Issues</b> — Hazardous Earth (30, <b style="color:var(--good)">1 bank live</b>), Development Dynamics (34, incl. SPaG, in authoring), Challenges of an Urbanising World (30, in authoring).</span>
     </div>
     <div class="rank-row reveal">
-      <span class="rank-badge" style="background:var(--panel-2);color:var(--slate)">In authoring</span>
+      <span class="rank-badge" style="background:rgba(255,201,60,.15);color:var(--hot)">Physical Landscapes live</span>
       <span class="rank-range mono">Paper 2 · 1GB0/02 · 94 marks</span>
-      <span class="rank-desc"><b>UK Geographical Issues</b> — evolving physical landscapes (31, incl. SPaG), evolving human landscapes (27), Geographical Investigations/fieldwork (36, four 8-mark questions).</span>
+      <span class="rank-desc"><b>UK Geographical Issues</b> — evolving physical landscapes (31, incl. SPaG, <b style="color:var(--good)">1 bank live</b> — Holderness Coast &amp; Tewkesbury 2007), evolving human landscapes (27, in authoring), Geographical Investigations/fieldwork (36, four 8-mark questions, in authoring).</span>
     </div>
     <div class="rank-row reveal">
       <span class="rank-badge" style="background:var(--panel-2);color:var(--slate)">In authoring</span>
@@ -573,11 +573,11 @@ if (localStorage.getItem('forge-theme') === 'light') {
 
 <section style="padding-top:52px">
   <p class="tag eyebrow reveal">Straight from the bank</p>
-  <h2 class="reveal">Two sample questions.</h2>
-  <p class="sect-lede reveal">No sign-up. All 8 questions — including the volcano and tropical storm case studies (Pinatubo &amp; Eyjafjallajökull, Katrina &amp; Haiyan) — are live in the full quiz.</p>
+  <h2 class="reveal">Three sample questions.</h2>
+  <p class="sect-lede reveal">No sign-up. All 32 questions — including the volcano and tropical storm case studies (Pinatubo &amp; Eyjafjallajökull, Katrina &amp; Haiyan) and the Holderness Coast &amp; Tewkesbury case studies — are live in the full quiz.</p>
 
   <div class="bank-nav">
-    <span class="bank-progress" id="ecoProgress">Question 1 of 2</span>
+    <span class="bank-progress" id="ecoProgress">Question 1 of 3</span>
     <div class="bank-nav-btns">
       <button type="button" class="bank-nav-btn" id="ecoPrev" aria-label="Previous question">← Prev</button>
       <button type="button" class="bank-nav-btn" id="ecoNext" aria-label="Next question">Next →</button>
@@ -608,6 +608,17 @@ if (localStorage.getItem('forge-theme') === 'light') {
       <p class="praise">Development level shapes vulnerability: building codes, early warning systems, and emergency response — the exact contrast this pairing is designed to teach. ✦</p>
     </div>
 
+    <div class="bq">
+      <div class="bq-head"><span class="spec mono"><b>UK Physical Landscapes · Holderness Coast</b></span><span class="fmt">Application</span></div>
+      <p class="q">At Mappleton on the Holderness Coast, rock groynes and a rock revetment were built to protect the village. A student says: "This solved erosion for the whole Holderness coast." Why is this wrong?</p>
+      <button class="opt" data-right="1">Hard engineering at Mappleton starves beaches further down the coast of sediment (since longshore drift can no longer supply it), meaning erosion actually speeds up in unprotected areas nearby</button>
+      <button class="opt" data-mc="MC-COAST-05a" data-s="Groynes and revetments protect the specific stretch of coast they defend, but the trade-off is sediment starvation further along — they don't stop erosion everywhere on Holderness, one of Europe's fastest-eroding coastlines.">Groynes and revetments stop all erosion everywhere on Holderness</button>
+      <button class="opt" data-mc="MC-COAST-05b" data-s="Holderness is one of Europe's fastest-eroding coastlines (around 2m per year on average) — undefended sections like Cowden still lose significant land each year.">Holderness has no erosion problem elsewhere, so protecting one village was unnecessary</button>
+      <button class="opt" data-mc="MC-COAST-05c" data-s="Groynes work precisely by interrupting longshore drift — trapping the sediment it would otherwise carry further along the coast, which is exactly why neighbouring beaches lose their natural supply.">Hard engineering has no effect on longshore drift</button>
+      <div class="scaffold"><span class="stag"></span><p></p></div>
+      <p class="praise">Groynes trap sediment moving by longshore drift to protect one stretch of coast — but that starves beaches further along, speeding up erosion nearby. ✦</p>
+    </div>
+
   </div>
 </section>
 
@@ -615,7 +626,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
   <div class="wait" style="text-align:center">
     <p class="tag eyebrow reveal">Building this now</p>
     <h2 class="reveal">The rest is in authoring for September.</h2>
-    <p class="sect-lede reveal" style="margin:0 auto">Development Dynamics, Challenges of an Urbanising World, and Papers 2 &amp; 3 don't have live questions yet — no placeholders, only what's real. Join the waiting list to pilot each bank as it's ready.</p>
+    <p class="sect-lede reveal" style="margin:0 auto">Development Dynamics, Challenges of an Urbanising World, UK human landscapes, fieldwork, and all of Paper 3 don't have live questions yet — no placeholders, only what's real. Join the waiting list to pilot each bank as it's ready.</p>
     <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:20px" class="reveal">
       <a href="index.html#waitlist" class="btn btn-hot" style="text-decoration:none">Join the waiting list</a>
       <a href="forge-quiz.html" class="cta-ghost" style="text-decoration:none;display:inline-flex;align-items:center;padding:0 18px;height:44px;border-radius:10px;border:1px solid var(--line)">Try a live subject</a>
