@@ -544,7 +544,7 @@ function getDefaultStarter(tag, label) {
 }
 
 var app = document.getElementById('app');
-var dashState = { classId: null, className: null, classSubject: null, responses: [], students: [], wrongResponses: [], drillResponses: [], drillStudents: [], assignments: [] };
+var dashState = { classId: null, className: null, classSubject: null, classCode: null, responses: [], students: [], wrongResponses: [], drillResponses: [], drillStudents: [], assignments: [] };
 
 function renderLogin(activeTab) {
   activeTab = activeTab || 'view';
@@ -640,6 +640,7 @@ function renderLogin(activeTab) {
         dashState.classId = cls.id;
         dashState.className = cls.name;
         dashState.classSubject = cls.subject || null;
+        dashState.classCode = cls.code || null;
         Promise.all([
           supaGet('students', 'class_id=eq.' + cls.id),
           supaGet('assignments', 'class_id=eq.' + cls.id + '&order=due_date.asc')
@@ -762,6 +763,7 @@ function renderLogin(activeTab) {
           dashState.classId = createdClassId;
           dashState.className = createdClassName;
           dashState.classSubject = subj;
+          dashState.classCode = code;
           dashState.students = [];
           dashState.responses = [];
           dashState.assignments = [];
@@ -883,7 +885,14 @@ function renderDashboard() {
 
   var h = '<div class="dash-header">';
   h += '<div><p class="tag" style="margin-bottom:4px">Teacher Dashboard</p>';
-  h += '<h1>' + dashState.className + '</h1></div>';
+  h += '<h1>' + dashState.className;
+  if (dashState.classCode) {
+    h += ' <button id="class-code-pill" onclick="copyClassCode(this)" title="Copy class code" '
+       + 'style="font-family:\'JetBrains Mono\',monospace;font-size:13px;font-weight:700;letter-spacing:.06em;'
+       + 'color:var(--hot);background:var(--panel-2);border:1px solid var(--line);border-radius:8px;'
+       + 'padding:3px 10px;cursor:pointer;vertical-align:middle">' + dashState.classCode + ' ⎘</button>';
+  }
+  h += '</h1></div>';
   h += '<div class="dash-meta"><b>' + students.length + '</b> students \u00b7 <b>' + totalQs + '</b> responses \u00b7 <button class="back-btn" onclick="renderLogin(\'view\')" style="display:inline;font-size:12px">\u2190 Change class</button></div>';
   h += '</div>';
 
@@ -919,6 +928,26 @@ function renderDashboard() {
   renderAssignments();
   renderStarters(wrongResponses);
 }
+
+window.copyClassCode = function(btn) {
+  var code = dashState.classCode;
+  if (!code) return;
+  var done = function() {
+    var original = code + ' ⎘';
+    btn.textContent = 'Copied ✓';
+    setTimeout(function() { btn.textContent = original; }, 1400);
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(code).then(done).catch(done);
+  } else {
+    var ta = document.createElement('textarea');
+    ta.value = code; ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); } catch (e) {}
+    document.body.removeChild(ta);
+    done();
+  }
+};
 
 window.switchTab = function(view, btn) {
   document.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('active'); });
