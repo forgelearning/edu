@@ -221,6 +221,20 @@ var MC_LABELS = {
   // GCSE Geography — Hazardous Earth
   'MC-HAZ-01':'Sulfur dioxide eruption cools, not warms, the climate','MC-HAZ-02':'Hazard impact measured only in deaths',
   'MC-HAZ-03':'Storm surge vs wind as the deadliest hurricane hazard','MC-HAZ-04':'Storm surge vs wind speed as death-toll predictor',
+  // Geography GCSE — UK Physical Landscape
+  'MC-COAST-01':'Hydraulic action vs abrasion','MC-COAST-02':'Differential erosion and headland/bay formation',
+  'MC-COAST-03':'Erosional sequence: crack, cave, arch, stack, stump','MC-COAST-04':'Longshore drift and spit formation',
+  'MC-COAST-05':'Hard engineering trade-offs (sediment starvation)',
+  'MC-RIV-01':'Vertical vs lateral erosion along the long profile','MC-RIV-02':'Helicoidal flow and meander asymmetry',
+  'MC-RIV-03':'Tewkesbury 2007: confluence and saturated ground',
+  // Geography GCSE — UK Human Landscape
+  'MC-URB-01':'Urban regeneration vs just "new buildings"','MC-URB-02':'Deindustrialisation as cause of urban decline',
+  'MC-URB-03':'International migration reshaping culture, not just population size','MC-URB-04':'Counter-urbanisation and rural landscape change',
+  'MC-URB-05':'Sustainable urban living beyond "eco architecture"','MC-URB-06':'Green belts and leapfrogged urban sprawl',
+  // Geography GCSE — Challenges of an Urbanising World (Mumbai)
+  'MC-MUM-01':'Megacity growth: migration vs natural increase','MC-MUM-02':'Push-pull migration vs the reality migrants find',
+  'MC-MUM-03':'Dharavi: informal economy alongside deprivation','MC-MUM-04':'City-wide strain, not just informal settlements',
+  'MC-MUM-05':'Dharavi Redevelopment Project controversy','MC-MUM-06':'Sites and services (bottom-up) vs top-down redevelopment',
   'MC-MGT-01':'Monitor vs protect vs plan confused',
   // Business
   'MC-BUS-01':'Product vs market orientation','MC-BUS-02':'Break-even calculation (contribution)',
@@ -1512,9 +1526,9 @@ const SUBJECTS = {
   },
   "gcse-geo": {
     label: "GCSE Geography",
-    sub: "Edexcel B 1GB0 — Hazardous Earth",
+    sub: "Edexcel B 1GB0 — Hazardous Earth, Urbanising World, UK Physical & Human Landscapes",
     color: "#0f766e",
-    banks: ["GCSE-GEO-HAZ"]
+    banks: ["GCSE-GEO-HAZ", "GCSE-GEO-URB", "GCSE-GEO-UKLAND", "GCSE-GEO-UKHUMAN"]
   },
   "gcse-econ": {
     label: "GCSE Economics",
@@ -1818,6 +1832,347 @@ BANKS["GCSE-GEO-HAZ"] = {
       correct:"B",tag:"MC-MGT-01",
       scaffold:"Hazard management has distinct strands: monitoring (tracking real-time data), prediction (forecasting when/where), protection (reducing vulnerability, e.g. building design), and planning (preparing a response, e.g. drills). Buildings and drills sit under protection and planning — not prediction, which examiners frequently see confused with it.",
       reforge:{stem:"Seismologists use satellite data to track ground deformation near a volcano before it erupts. Which part of hazard management is this?",options:{A:"Monitoring — tracking real-time hazard data to detect warning signs",B:"Protection — reducing the vulnerability of buildings",C:"Planning — preparing an evacuation response",D:"Modification — changing the hazard itself"},correct:"A"}
+    }
+  ]
+};
+
+BANKS["GCSE-GEO-URB"] = {
+  label: "Challenges of an Urbanising World",
+  color: "#0f766e",
+  questions: [
+    {
+      id:"GCSE-URB-01",spec:"GCSE-URB",stem:"Mumbai has grown from around 3 million people in 1950 to over 20 million in its metropolitan area today, making it a megacity. A student says this growth is purely from births in the city itself. What else is driving it?",
+      options:{A:"Rural-urban migration — people moving from the countryside to Mumbai in search of jobs and better opportunities",B:"Nothing else — natural increase alone explains all megacity growth",C:"International migration from other countries is the only cause",D:"Mumbai's growth is caused entirely by counter-urbanisation"},
+      correct:"A",tag:"MC-MUM-01",
+      scaffold:"Megacity growth (a city with over 10 million people) is driven by both natural increase (births minus deaths) AND rural-urban migration. In Mumbai, and most rapidly urbanising cities in lower and middle income countries, migration is often the dominant factor — people are pulled by the promise of jobs, education and services, and pushed from rural areas by poverty, drought, or lack of opportunity.",
+      reforge:{stem:"A rapidly growing city in a lower income country sees its population double in 15 years, with most of the growth made up of young adults arriving from rural provinces rather than being born in the city. What best explains this?",options:{A:"Rural-urban migration driven by push and pull factors",B:"Natural increase from a falling death rate alone",C:"Counter-urbanisation",D:"International migration only"},correct:"A"}
+    },
+    {
+      id:"GCSE-URB-02",spec:"GCSE-URB",stem:"Migrants moving to Mumbai are often 'pushed' from rural areas by poverty and drought, and 'pulled' by the promise of jobs and services. A student says push and pull factors always come true for migrants. Why might this be wrong for many arriving in Mumbai?",
+      options:{A:"Many migrants cannot find formal jobs or affordable housing, ending up in informal settlements like Dharavi rather than achieving the opportunities that pulled them there",B:"Every migrant to Mumbai finds a well-paid formal job immediately",C:"Push and pull factors don't apply to internal (rural-urban) migration",D:"Mumbai has no housing shortage, so all migrants are easily housed"},
+      correct:"A",tag:"MC-MUM-02",
+      scaffold:"Push factors (rural poverty, drought, lack of land/jobs) and pull factors (perceived jobs, education, healthcare) explain why people move, but the reality often falls short: Mumbai's formal job market and housing supply can't absorb the scale of migration, so many migrants find only informal work and end up in slums like Dharavi rather than the opportunities they expected.",
+      reforge:{stem:"A migrant moves to a megacity expecting factory work and a proper house, but instead finds only casual, informal work and has to build a shelter from scrap materials in an unplanned settlement. What does this show about push-pull migration theory?",options:{A:"The pull factors that attracted the migrant don't always match the reality once they arrive",B:"Push and pull factors guarantee a better outcome for every migrant",C:"This migrant must have moved for climate reasons only",D:"Informal settlements only exist because of natural disasters"},correct:"A"}
+    },
+    {
+      id:"GCSE-URB-03",spec:"GCSE-URB",stem:"Dharavi, one of Asia's largest slums, sits in the middle of Mumbai and is home to around 1 million people in roughly 2.1 km². A student calls it 'just an area of poverty with nothing going on.' Why is this an oversimplification?",
+      options:{A:"Dharavi has a huge, thriving informal economy — recycling, leather goods, pottery and textiles — generating an estimated $1 billion a year, alongside serious challenges like overcrowding and poor sanitation",B:"Dharavi has no economic activity of any kind",C:"Everyone in Dharavi is unemployed",D:"Dharavi is a wealthy, formally planned district of Mumbai"},
+      correct:"A",tag:"MC-MUM-03",
+      scaffold:"Dharavi is often stereotyped as pure deprivation, but it's also a major centre of small-scale, informal industry (recycling, leather, pottery, garments) that contributes hugely to Mumbai's economy — while still facing real challenges: extreme population density, poor sanitation, limited access to clean water, and insecure land tenure. Both things are true at once.",
+      reforge:{stem:"A visitor to Dharavi is surprised to find thousands of small workshops recycling plastic and producing leather goods for export, generating significant income, despite the area's poor infrastructure and sanitation. What does this suggest about informal settlements?",options:{A:"They can combine severe deprivation with genuine, significant economic activity",B:"Informal settlements never have any economic value",C:"Poor infrastructure always means no economic activity exists",D:"Informal settlements are identical to formally planned industrial zones"},correct:"A"}
+    },
+    {
+      id:"GCSE-URB-04",spec:"GCSE-URB",stem:"Rapid urban growth in Mumbai has caused challenges including traffic congestion, air and water pollution, and a severe housing shortage. A student says these problems only affect informal settlements like Dharavi. Why is this wrong?",
+      options:{A:"Congestion, pollution and strain on infrastructure affect the whole city, including wealthier formal areas, because the scale of growth has outpaced planned infrastructure everywhere",B:"Traffic congestion in Mumbai only occurs inside Dharavi",C:"Wealthy areas of Mumbai are completely unaffected by any city-wide infrastructure problems",D:"Air pollution in Mumbai comes only from informal settlements"},
+      correct:"A",tag:"MC-MUM-04",
+      scaffold:"Rapid, often unplanned urban growth strains city-wide systems, not just informal areas: Mumbai's roads, public transport, water supply, and waste management all face pressure from a population that has grown far faster than formal infrastructure could keep pace with, so congestion and pollution affect richer and poorer districts alike, even if the severity of housing/sanitation problems is worse in slums.",
+      reforge:{stem:"A rapidly growing city's commute times triple over two decades, and its air quality index regularly reaches 'hazardous' levels city-wide, not just in its poorest districts. What does this suggest about the nature of these urban challenges?",options:{A:"They stem from city-wide infrastructure struggling to keep pace with growth, not just conditions in informal settlements",B:"Only slum residents ever experience traffic congestion",C:"Air pollution in cities is always confined to informal settlements",D:"Rich areas of a city are structurally immune to congestion"},correct:"A"}
+    },
+    {
+      id:"GCSE-URB-05",spec:"GCSE-URB",stem:"The Dharavi Redevelopment Project proposes demolishing much of the settlement and rehousing residents in high-rise flats, partly funded by selling some of the reclaimed land to private developers. A student says all Dharavi residents support this. Why is this a key controversy?",
+      options:{A:"Many residents and business owners fear losing their livelihoods (informal workshops don't fit easily into high-rise flats), affordable community networks, and central location, so the scheme is contested rather than universally welcomed",B:"Every single resident of Dharavi is fully in favour of demolition with no concerns",C:"The scheme has no effect on informal businesses operating in Dharavi",D:"Redevelopment schemes never affect where people can run a business from"},
+      correct:"A",tag:"MC-MUM-05",
+      scaffold:"Top-down redevelopment schemes like this one are controversial: while they promise improved housing, critics point out that high-rise flats don't easily accommodate ground-floor workshops that Dharavi's informal economy depends on, some residents may not qualify for rehousing (needing proof of long-term residency), and community/social networks built up over decades can be broken up — so support is far from unanimous.",
+      reforge:{stem:"A city government plans to demolish an informal settlement and move residents into apartment blocks, funding the project by selling part of the site to developers. Local workshop owners protest that flats have no space for their ground-floor businesses. What does this illustrate about top-down slum redevelopment schemes?",options:{A:"They can conflict with the informal economic activities that residents depend on, making them controversial rather than universally welcomed",B:"Redevelopment always benefits every resident equally with no downsides",C:"Workshop owners in informal settlements never object to redevelopment",D:"Selling land to developers has no bearing on how a scheme is received"},correct:"A"}
+    },
+    {
+      id:"GCSE-URB-06",spec:"GCSE-URB",stem:"Sites and services schemes provide migrants with a legal plot of land, basic infrastructure (water, electricity, sanitation), and let residents build their own homes gradually. A student says this is identical to the Dharavi Redevelopment Project's approach. What's the key difference?",
+      options:{A:"Sites and services is a bottom-up, low-cost approach that works with residents' own building efforts, rather than a top-down demolition-and-rebuild scheme funded by land sales",B:"Both schemes demolish existing homes and force residents into high-rise flats",C:"Sites and services schemes provide no infrastructure at all",D:"There is no meaningful difference between the two approaches"},
+      correct:"A",tag:"MC-MUM-06",
+      scaffold:"Sites and services is a bottom-up strategy: it gives residents secure land tenure and basic services, then lets them build and improve homes themselves over time at low cost — contrasting with top-down schemes like Dharavi's redevelopment plan, which demolish existing settlements and replace them with formally built high-rise housing, often disrupting existing communities and informal economies.",
+      reforge:{stem:"A city scheme gives informal settlement residents legal ownership of a small plot plus a water connection and basic drainage, then leaves residents to build and upgrade their own housing over several years. What type of urban management strategy is this?",options:{A:"A bottom-up sites and services scheme",B:"A top-down demolition and high-rise redevelopment scheme",C:"Counter-urbanisation policy",D:"A green belt policy"},correct:"A"}
+    },
+    {
+      id:"GCSE-URB-FB-01",spec:"GCSE-URB",type:"fill_blank",
+      stem:"Complete the sentence about Mumbai's growth.",
+      template:"Mumbai's growth into a ___ (over 10 million people) is driven by both natural increase and ___-___ migration, as people move from rural areas in search of jobs.",
+      blanks:["megacity","rural","urban"],
+      bank:["megacity","rural","urban","counter","international","city"],
+      tag:"MC-MUM-01",
+      scaffold:"A megacity has over 10 million people. Mumbai's growth combines natural increase with large-scale rural-urban migration, as people are pushed from the countryside and pulled by the promise of jobs and services in the city."
+    },
+    {
+      id:"GCSE-URB-FB-02",spec:"GCSE-URB",type:"fill_blank",
+      stem:"Complete the sentence about push and pull factors.",
+      template:"Migrants to Mumbai are ___ from rural areas by poverty and drought, and ___ by the promise of jobs — but many end up in ___ work and informal settlements rather than the opportunities they expected.",
+      blanks:["pushed","pulled","informal"],
+      bank:["pushed","pulled","informal","formal","counter-urbanised","regenerated"],
+      tag:"MC-MUM-02",
+      scaffold:"Push factors (rural poverty, drought) and pull factors (perceived jobs and services) drive migration, but the reality often falls short — many migrants find only informal, insecure work rather than the formal jobs they hoped for."
+    },
+    {
+      id:"GCSE-URB-FB-03",spec:"GCSE-URB",type:"fill_blank",
+      stem:"Complete the sentence about Dharavi's economy.",
+      template:"Dharavi has a large ___ economy — including ___, leather goods and textiles — generating an estimated $1 billion a year, despite facing serious challenges like overcrowding and poor ___.",
+      blanks:["informal","recycling","sanitation"],
+      bank:["informal","recycling","sanitation","formal","tourism","transport"],
+      tag:"MC-MUM-03",
+      scaffold:"Dharavi combines a thriving informal economy (recycling, leather, textiles, pottery) worth an estimated $1 billion a year with real challenges — extreme density and poor sanitation — both true at once."
+    },
+    {
+      id:"GCSE-URB-FB-04",spec:"GCSE-URB",type:"fill_blank",
+      stem:"Complete the sentence about urban challenges in Mumbai.",
+      template:"Rapid urban growth strains ___-wide infrastructure in Mumbai, causing traffic ___ and pollution that affect wealthier formal areas as well as ___ settlements.",
+      blanks:["city","congestion","informal"],
+      bank:["city","congestion","informal","rural","regeneration","sustainable"],
+      tag:"MC-MUM-04",
+      scaffold:"Mumbai's rapid growth has outpaced formal infrastructure city-wide, so congestion and pollution affect richer and poorer districts alike, even though housing and sanitation problems are worse in informal settlements."
+    },
+    {
+      id:"GCSE-URB-FB-05",spec:"GCSE-URB",type:"fill_blank",
+      stem:"Complete the sentence about the Dharavi Redevelopment Project.",
+      template:"The Dharavi Redevelopment Project proposes ___ much of the settlement and rehousing residents in ___-rise flats, but is controversial because ___ workshops don't easily fit into flats.",
+      blanks:["demolishing","high","informal"],
+      bank:["demolishing","high","informal","building","low","formal"],
+      tag:"MC-MUM-05",
+      scaffold:"The scheme's top-down demolition-and-rebuild approach is controversial partly because ground-floor informal workshops, central to Dharavi's economy, don't fit easily into high-rise flats — a major source of resident and business opposition."
+    },
+    {
+      id:"GCSE-URB-FB-06",spec:"GCSE-URB",type:"fill_blank",
+      stem:"Complete the sentence about sites and services schemes.",
+      template:"Sites and services is a ___-up approach that gives residents a legal plot and basic ___ (water, electricity, sanitation), letting them build their own homes ___ over time.",
+      blanks:["bottom","infrastructure","gradually"],
+      bank:["bottom","infrastructure","gradually","top","instantly","tourism"],
+      tag:"MC-MUM-06",
+      scaffold:"Sites and services schemes work bottom-up: secure land tenure plus basic infrastructure, with residents building and upgrading housing themselves over time — a contrast to top-down demolition-and-rebuild schemes."
+    }
+  ]
+};
+
+BANKS["GCSE-GEO-UKLAND"] = {
+  label: "UK's Evolving Physical Landscape",
+  color: "#0f766e",
+  questions: [
+    {
+      id:"GCSE-UKLAND-01",spec:"GCSE-UKLAND",stem:"On the Holderness Coast, waves attack a section of soft boulder clay cliff by compressing air into cracks until the rock shatters. What process is this?",
+      options:{A:"Hydraulic action",B:"Abrasion — waves hurling sand and pebbles at the cliff, sandpapering it away",C:"Attrition — rocks wearing each other down as they collide",D:"Solution — soluble rock dissolving in seawater"},
+      correct:"A",tag:"MC-COAST-01",
+      scaffold:"Hydraulic action is the sheer force of water and compressed air breaking rock apart — no rock-on-rock contact needed, which is why it's so effective on Holderness's soft, unconsolidated boulder clay. Abrasion needs the waves to be carrying material to throw at the cliff; attrition happens between loose rock fragments, not to the cliff face itself; solution only affects soluble rock like limestone or chalk, not boulder clay.",
+      reforge:{stem:"Further along the Holderness coast, waves carrying sand and shingle scrape against the cliff face, wearing it away like sandpaper. What process is this?",options:{A:"Abrasion — material carried by waves grinding against the cliff",B:"Hydraulic action — compressed air shattering rock",C:"Attrition — pebbles wearing each other down",D:"Solution — rock dissolving"},correct:"A"}
+    },
+    {
+      id:"GCSE-UKLAND-02",spec:"GCSE-UKLAND",stem:"A headland and bay coastline forms where alternating bands of resistant rock (like chalk) and less resistant rock (like clay) meet the sea. What causes the headlands to form?",
+      options:{A:"Differential erosion — the less resistant rock is eroded faster, leaving the resistant rock standing out as a headland",B:"The resistant rock is eroded faster, leaving low-lying bays behind",C:"Longshore drift deposits sand only in front of resistant rock",D:"Headlands are always made of the same rock type as the bays next to them"},
+      correct:"A",tag:"MC-COAST-02",
+      scaffold:"Differential erosion: softer rock (clay) erodes quickly, carving out a bay, while harder rock (chalk or limestone) resists erosion and juts out as a headland. It's the rate of erosion, not the rock forming faster, that creates the shape — and headlands and bays are made of different rock types by definition.",
+      reforge:{stem:"Why do headlands, once formed, typically erode more slowly than the bays beside them?",options:{A:"They're made of more resistant rock, which withstands erosion better than the softer rock of the bay",B:"Headlands are protected from waves entirely",C:"Bays receive no wave energy at all",D:"Headlands and bays erode at exactly the same rate"},correct:"A"}
+    },
+    {
+      id:"GCSE-UKLAND-03",spec:"GCSE-UKLAND",stem:"A student describes a headland's erosional sequence as: 'crack, then arch, then stack, then stump.' What has been missed out?",
+      options:{A:"A cave — hydraulic action and abrasion widen a crack into a cave before it erodes through to form an arch",B:"Nothing — the sequence is complete as stated",C:"A spit, which forms between the crack and the arch",D:"A stack always forms before the cave"},
+      correct:"A",tag:"MC-COAST-03",
+      scaffold:"The correct sequence is crack → cave → arch → stack → stump. Waves widen a weakness into a cave; continued erosion breaks through the headland to form an arch; the arch collapses, isolating a stack; the stack erodes down to a stump. A spit is a depositional feature, not part of this erosional sequence.",
+      reforge:{stem:"An arch's roof eventually collapses because it can no longer support its own weight, isolating a tall column of rock from the headland. What landform has just been created?",options:{A:"A stack",B:"A stump",C:"A spit",D:"A cave"},correct:"A"}
+    },
+    {
+      id:"GCSE-UKLAND-04",spec:"GCSE-UKLAND",stem:"Waves approach a beach at an angle, but the backwash always returns straight down the beach under gravity. What landform does this longshore drift process build over time at a river mouth or bend in the coastline?",
+      options:{A:"A spit",B:"A headland",C:"A wave-cut platform",D:"A stack"},
+      correct:"A",tag:"MC-COAST-04",
+      scaffold:"Longshore drift moves material along the coast in a zigzag (swash at an angle, backwash straight down the beach). Where the coastline changes direction — like a river mouth — the material keeps being deposited in the same direction, building out a spit, sometimes with a curved/hooked end where wave refraction bends it. Headlands and stacks are erosional features; a wave-cut platform is the flat rock left behind at the base of an eroding cliff.",
+      reforge:{stem:"Why does a spit often develop a hooked or curved end?",options:{A:"A change in the dominant wind/wave direction curves the end of the spit inward",B:"Spits are always straight and never curve",C:"The hook is caused by erosion, not deposition",D:"River currents always create a 90-degree bend"},correct:"A"}
+    },
+    {
+      id:"GCSE-UKLAND-05",spec:"GCSE-UKLAND",stem:"At Mappleton on the Holderness Coast, rock groynes and a rock revetment were built to protect the village and the coast road. A student says: 'This solved erosion for the whole Holderness coast.' Why is this wrong?",
+      options:{A:"Groynes starve beaches further along the coast of sediment, so erosion speeds up nearby.",B:"Groynes and revetments stop all erosion everywhere on Holderness",C:"Holderness has no erosion problem elsewhere, so protecting one village was unnecessary",D:"Hard engineering has no effect on longshore drift"},
+      correct:"A",tag:"MC-COAST-05",
+      scaffold:"Groynes trap sediment moving by longshore drift to protect one stretch of coast — but that starves beaches further along, which lose their natural buffer and erode faster. This is exactly why Holderness (one of Europe's fastest-eroding coastlines, ~2m/year on average) still has undefended sections like Cowden losing land rapidly despite Mappleton's defences.",
+      reforge:{stem:"A village protects its coastline with groynes. A neighbouring, undefended village further down the coast reports erosion rates increasing afterwards. What's the most likely explanation?",options:{A:"The groynes trapped sediment that would otherwise have travelled by longshore drift to replenish the neighbouring beach",B:"The two villages' erosion rates are unrelated to each other",C:"Groynes increase wave energy along the whole coastline",D:"Hard engineering always reduces erosion everywhere, with no local trade-offs"},correct:"A"}
+    },
+    {
+      id:"GCSE-UKLAND-06",spec:"GCSE-UKLAND",stem:"A river's long profile runs from source to mouth. A student says: 'Erosion is the dominant process everywhere along a river.' Why is this wrong?",
+      options:{A:"Vertical erosion dominates upstream; deposition dominates downstream.",B:"Deposition dominates everywhere along a river",C:"Erosion and deposition never both occur on the same river",D:"A river's energy stays exactly the same from source to mouth"},
+      correct:"A",tag:"MC-RIV-01",
+      scaffold:"A river's energy and gradient are highest near the source, favouring vertical erosion (cutting down, forming V-shaped valleys/waterfalls). Further downstream, gradient flattens, energy falls, and the river deposits the sediment it's carrying, building features like floodplains. It's a gradual shift, not an on/off switch, and both processes can occur at once in different parts of the channel.",
+      reforge:{stem:"Why do meanders (bends) typically develop in a river's middle to lower course rather than close to the source?",options:{A:"Lower gradient and energy there allow lateral (sideways) erosion and deposition to dominate over the vertical erosion seen upstream",B:"Meanders only form where a river is at its steepest",C:"Meanders form randomly with no link to gradient or energy",D:"Rivers only erode in their upper course and never downstream"},correct:"A"}
+    },
+    {
+      id:"GCSE-UKLAND-07",spec:"GCSE-UKLAND",stem:"On the outside bend of a meander, the river is deep and erosion dominates; on the inside bend, the river is shallow and deposition dominates. A student says this is just random. What actually causes it?",
+      options:{A:"Helicoidal flow — a corkscrew current that erodes the outside bend, deposits on the inside.",B:"The river bed is naturally deeper on the outside bend with no link to current or flow",C:"Erosion only ever happens on the inside of a bend",D:"Meanders have no consistent pattern of erosion or deposition"},
+      correct:"A",tag:"MC-RIV-02",
+      scaffold:"Helicoidal (corkscrew) flow explains the asymmetry: faster current and greater erosive power hits the outside bend (undercutting it into a river cliff), while slower-moving water on the inside bend deposits sediment as a gently sloping slip-off slope. Over time this exaggerates the bend until it can be cut off, forming an oxbow lake.",
+      reforge:{stem:"Over many years, a meander's neck becomes so narrow that the river cuts straight across it during a flood, leaving the old bend isolated. What landform has just formed?",options:{A:"An oxbow lake",B:"A waterfall",C:"A spit",D:"A floodplain"},correct:"A"}
+    },
+    {
+      id:"GCSE-UKLAND-08",spec:"GCSE-UKLAND",stem:"In July 2007, Tewkesbury (at the confluence of the Severn and Avon) flooded severely, cutting the town off and flooding thousands of homes. A student says this was caused purely by 'too much rain.' What else made it worse?",
+      options:{A:"Saturated ground and its river confluence location meant floodwater overwhelmed the town.",B:"Tewkesbury has no rivers nearby, so flooding must have come from the sea",C:"The floods were caused entirely by a dam failure upstream",D:"Rainfall was the only factor and location made no difference"},
+      correct:"A",tag:"MC-RIV-03",
+      scaffold:"2007 was one of the wettest summers on record — but Tewkesbury's flood risk is compounded by its confluence location, where the Severn and Avon's floodwaters combine, and by antecedent (prior) rainfall leaving the ground saturated with nowhere for new rainfall to infiltrate, forcing more of it into rapid surface runoff.",
+      reforge:{stem:"Why does a settlement located at the confluence of two rivers face a greater flood risk than one on a single river of similar size?",options:{A:"Floodwater from both rivers can arrive and combine at the same point, increasing the total discharge the settlement must cope with",B:"Confluences always have lower rainfall than other locations",C:"Two rivers meeting always cancel out each other's flood risk",D:"Confluence location has no bearing on flood risk"},correct:"A"}
+    },
+    {
+      id:"GCSE-UKLAND-FB-01",spec:"GCSE-UKLAND",type:"fill_blank",
+      stem:"Complete the sentence about coastal erosion processes on Holderness.",
+      template:"___ ___ is the sheer force of water (and compressed air) breaking rock apart, while ___ is material carried by waves grinding against the cliff like sandpaper.",
+      blanks:["Hydraulic","action","abrasion"],
+      bank:["Hydraulic","action","abrasion","attrition","solution","weathering"],
+      tag:"MC-COAST-01",
+      scaffold:"Hydraulic action is water and compressed air shattering rock with no rock-on-rock contact needed. Abrasion is different — it needs the waves to be carrying sand/pebbles to throw at the cliff, sandpapering it away."
+    },
+    {
+      id:"GCSE-UKLAND-FB-02",spec:"GCSE-UKLAND",type:"fill_blank",
+      stem:"Complete the sentence about headland and bay formation.",
+      template:"Headlands and bays form through ___ erosion: ___ resistant rock like clay erodes quickly to form a bay, while more ___ rock like chalk juts out as a headland.",
+      blanks:["differential","less","resistant"],
+      bank:["differential","less","resistant","uniform","more","soluble"],
+      tag:"MC-COAST-02",
+      scaffold:"Differential erosion means different rock types erode at different rates when exposed to the same wave energy — the softer, less resistant rock (clay) is worn back into a bay while the harder, more resistant rock (chalk) survives as a headland."
+    },
+    {
+      id:"GCSE-UKLAND-FB-03",spec:"GCSE-UKLAND",type:"fill_blank",
+      stem:"Complete the erosional sequence that forms a stack.",
+      template:"The sequence runs: crack → ___ → ___ → stack → ___.",
+      blanks:["cave","arch","stump"],
+      bank:["cave","arch","stump","spit","platform","bay"],
+      tag:"MC-COAST-03",
+      scaffold:"Crack → cave → arch → stack → stump. Hydraulic action and abrasion widen a crack into a cave; continued erosion breaks through to form an arch; the arch's roof collapses, isolating a stack; the stack erodes down to a stump."
+    },
+    {
+      id:"GCSE-UKLAND-FB-04",spec:"GCSE-UKLAND",type:"fill_blank",
+      stem:"Complete the sentence about spit formation.",
+      template:"___ ___ moves material along the coast in a zigzag pattern. Where the coastline changes direction, such as at a river mouth, material builds out into a ___.",
+      blanks:["Longshore","drift","spit"],
+      bank:["Longshore","drift","spit","stack","headland","platform"],
+      tag:"MC-COAST-04",
+      scaffold:"Longshore drift: swash carries material up the beach at an angle (driven by prevailing wind), backwash drags it straight back down under gravity — the net zigzag movement builds a spit wherever the coastline suddenly changes direction."
+    },
+    {
+      id:"GCSE-UKLAND-FB-05",spec:"GCSE-UKLAND",type:"fill_blank",
+      stem:"Complete the sentence about hard engineering at Mappleton on the Holderness Coast.",
+      template:"Rock groynes at Mappleton trap sediment moved by longshore drift, protecting the village — but this ___ beaches further along the coast of sediment, meaning ___ actually speeds up in those undefended areas.",
+      blanks:["starves","erosion"],
+      bank:["starves","erosion","supplies","deposition"],
+      tag:"MC-COAST-05",
+      scaffold:"Groynes trap sediment travelling by longshore drift to protect one stretch of coast, but that starves beaches further down the coast of the sediment they'd otherwise receive — those undefended sections, like Cowden, then erode faster than before."
+    },
+    {
+      id:"GCSE-UKLAND-FB-06",spec:"GCSE-UKLAND",type:"fill_blank",
+      stem:"Complete the sentence about a river's long profile.",
+      template:"In the upper course, high energy and steep gradient favour ___ erosion. Further downstream, gradient and energy fall, and ___ becomes dominant as the river drops its sediment.",
+      blanks:["vertical","deposition"],
+      bank:["vertical","deposition","lateral","erosion"],
+      tag:"MC-RIV-01",
+      scaffold:"Vertical erosion (cutting downwards, forming steep V-shaped valleys and waterfalls) dominates where gradient and energy are highest, near the source. As the river flows towards its mouth, falling energy means it increasingly deposits sediment instead of eroding."
+    },
+    {
+      id:"GCSE-UKLAND-FB-07",spec:"GCSE-UKLAND",type:"fill_blank",
+      stem:"Complete the sentence about meander formation.",
+      template:"___ flow is a corkscrew-like current that erodes the ___ bend of a meander, undercutting it into a river cliff, while depositing sediment as a slip-off slope on the ___ bend.",
+      blanks:["Helicoidal","outside","inside"],
+      bank:["Helicoidal","outside","inside","vertical","upper","lower"],
+      tag:"MC-RIV-02",
+      scaffold:"Helicoidal (corkscrew) flow moves faster on the outside of a bend, eroding it into a steep river cliff, then spirals across the channel to deposit sediment more slowly on the inside bend as a gently sloping slip-off slope — the asymmetry that drives a meander to grow."
+    },
+    {
+      id:"GCSE-UKLAND-FB-08",spec:"GCSE-UKLAND",type:"fill_blank",
+      stem:"Complete the sentence about the July 2007 Tewkesbury floods.",
+      template:"Tewkesbury sits at the ___ of the Severn and Avon, so floodwater from both rivers arrived together. The ground was already ___ from a very wet preceding month, increasing surface ___.",
+      blanks:["confluence","saturated","runoff"],
+      bank:["confluence","saturated","runoff","source","dry","infiltration"],
+      tag:"MC-RIV-03",
+      scaffold:"Tewkesbury's confluence location meant floodwater from both the Severn and Avon combined at the same point. Ground already saturated from a very wet preceding month couldn't absorb (infiltrate) new rainfall, forcing more of it into rapid surface runoff and worsening the flood."
+    }
+  ]
+};
+
+BANKS["GCSE-GEO-UKHUMAN"] = {
+  label: "UK's Evolving Human Landscape",
+  color: "#0f766e",
+  questions: [
+    {
+      id:"GCSE-UKHUMAN-01",spec:"GCSE-UKHUMAN",stem:"Salford Quays, once a derelict dock area after Manchester's port declined, was transformed into offices, flats, and MediaCityUK. A student says this just means 'new buildings were put up.' What term better describes this process?",
+      options:{A:"Urban regeneration — long-term investment to reverse economic and environmental decline of a run-down area",B:"Counter-urbanisation — people moving out of cities into the countryside",C:"Suburbanisation — outward growth of housing at the city edge",D:"Deindustrialisation — the decline of manufacturing industry"},
+      correct:"A",tag:"MC-URB-01",
+      scaffold:"Urban regeneration is a planned, long-term attempt to reverse decline in a run-down urban area — improving the economy, environment, and social conditions, not just erecting buildings. Salford Quays' docks fell derelict as shipping declined, then investment brought jobs, housing and the BBC/ITV studios at MediaCityUK. Counter-urbanisation and suburbanisation describe population movement out of cities; deindustrialisation is the decline itself, not the response to it.",
+      reforge:{stem:"Bristol's Harbourside was redeveloped from disused docks into housing, museums, and leisure space, bringing jobs and investment back to the area. What is this an example of?",options:{A:"Urban regeneration",B:"Counter-urbanisation",C:"Rural depopulation",D:"Urban sprawl"},correct:"A"}
+    },
+    {
+      id:"GCSE-UKHUMAN-02",spec:"GCSE-UKHUMAN",stem:"Since the 1980s, many UK cities lost large numbers of manufacturing jobs as factories closed and production moved overseas. What is this process called, and what did it cause in areas like Salford before regeneration?",
+      options:{A:"Deindustrialisation — the decline of manufacturing industry, causing unemployment, dereliction, and urban decline",B:"Reindustrialisation — the growth of new manufacturing industry",C:"Counter-urbanisation — people leaving cities for rural areas",D:"Immigration — international migrants arriving in cities"},
+      correct:"A",tag:"MC-URB-02",
+      scaffold:"Deindustrialisation is the long-term decline of manufacturing industry, driven by cheaper overseas labour, automation, and changing trade patterns. It left many UK docklands and factory areas derelict and unemployed — exactly the problem urban regeneration schemes like Salford Quays were designed to fix.",
+      reforge:{stem:"A former coal-mining town in South Yorkshire lost its main employer in the 1980s-90s as UK coal mining declined sharply. What is the general term for this loss of traditional industry?",options:{A:"Deindustrialisation",B:"Counter-urbanisation",C:"Urbanisation",D:"Regeneration"},correct:"A"}
+    },
+    {
+      id:"GCSE-UKHUMAN-03",spec:"GCSE-UKHUMAN",stem:"London's population includes large numbers of people born outside the UK, drawn by job opportunities, universities, and existing migrant communities. A student says international migration only affects London's population size. What else does it change?",
+      options:{A:"Its social and cultural character — creating ethnically diverse, multicultural areas with a wide range of shops, food, religions and languages",B:"Nothing else — migration only ever changes population totals",C:"It makes London's population entirely homogeneous",D:"It only affects the age structure, not culture"},
+      correct:"A",tag:"MC-URB-03",
+      scaffold:"International migration is a major driver of London's dynamic character: it doesn't just add to the population count, it reshapes the city's ethnic and cultural make-up, creating diverse neighbourhoods (e.g. Brick Lane's Bangladeshi community, Southall's Punjabi community) with distinct shops, places of worship, and cuisines — part of what makes London a 'world city'.",
+      reforge:{stem:"Areas of London such as Brick Lane have a strong South Asian character, with specific cuisines, shops, and mosques reflecting the heritage of migrant communities who settled there. This is best explained as an effect of what process?",options:{A:"International migration shaping local culture and identity",B:"Counter-urbanisation",C:"Rural depopulation",D:"Deindustrialisation"},correct:"A"}
+    },
+    {
+      id:"GCSE-UKHUMAN-04",spec:"GCSE-UKHUMAN",stem:"South Cambridgeshire villages have seen population growth as commuters and tech workers move in, pushing up house prices and closing some services once used mainly by long-term rural residents. A student says rural areas never change. What's actually happening here?",
+      options:{A:"Rural landscape change — counter-urbanisation and commuting are altering the population, housing, and services of villages",B:"Urbanisation — the growth of the whole country's urban population",C:"Deindustrialisation — the decline of manufacturing",D:"Urban regeneration — the renewal of derelict city-centre areas"},
+      correct:"A",tag:"MC-URB-04",
+      scaffold:"Rural landscapes change too, not just cities: counter-urbanisation (city-dwellers moving to villages, often commuting to nearby cities like Cambridge) and growth of tech/science industries (e.g. Cambridge Science Park) raise demand for housing, pushing up prices and sometimes squeezing out lower-income locals, while some traditional village services (post offices, pubs) close as needs change.",
+      reforge:{stem:"A commuter village near Cambridge sees average house prices rise sharply, its village shop close, and a growing share of residents who work in Cambridge but live rurally. Which process best explains this pattern?",options:{A:"Counter-urbanisation linked to commuting",B:"Deindustrialisation",C:"Urban sprawl into the green belt",D:"International migration"},correct:"A"}
+    },
+    {
+      id:"GCSE-UKHUMAN-05",spec:"GCSE-UKHUMAN",stem:"BedZED in Sutton, south London, was built with south-facing windows for solar gain, wind cowls for natural ventilation, and on-site renewable energy, aiming to be one of the UK's most sustainable housing developments. A student says this is 'just eco-friendly architecture.' What wider planning goal does it demonstrate?",
+      options:{A:"Sustainable urban living — reducing a development's ecological footprint through energy, water, waste, and transport design",B:"Urban sprawl — the unplanned outward spread of a city",C:"Deindustrialisation — reducing manufacturing industry",D:"Rural depopulation — people leaving the countryside"},
+      correct:"A",tag:"MC-URB-05",
+      scaffold:"Sustainable urban living aims to reduce a development's overall ecological footprint — not just its buildings' energy use, but water recycling, waste management, and encouraging low-carbon transport (BedZED discourages car use via limited parking and a car club). It's a response to concerns that rapid urban growth is environmentally unsustainable.",
+      reforge:{stem:"A new UK housing development includes car-free zones, greywater recycling, and homes built to very high insulation standards to minimise heating demand. What overall aim does this reflect?",options:{A:"Sustainable urban living",B:"Urban sprawl",C:"Deindustrialisation",D:"Counter-urbanisation"},correct:"A"}
+    },
+    {
+      id:"GCSE-UKHUMAN-06",spec:"GCSE-UKHUMAN",stem:"Around Cambridge, a protected green belt restricts new building on the city's edge to prevent it merging with surrounding villages. A student says green belts stop all UK urban growth everywhere. Why is this wrong?",
+      options:{A:"Green belts only apply around specific cities where they're designated; elsewhere, urban sprawl can still spread outward largely unchecked",B:"Green belts exist around every UK settlement without exception",C:"Green belts have no effect on where new housing is built",D:"Green belts were abolished in the 1990s and no longer apply anywhere"},
+      correct:"A",tag:"MC-URB-06",
+      scaffold:"Green belts are a planning tool used around specific cities (including Cambridge and London) to stop unrestricted outward urban sprawl and protect surrounding countryside — but they don't exist everywhere, and where there's no green belt or where pressure for housing is intense, cities can still spread outward, sometimes pushing development further out (leapfrogging) beyond the protected zone.",
+      reforge:{stem:"A city surrounded by a strict green belt sees new housing developments increasingly built in villages just beyond the green belt boundary rather than closer to the city centre. What does this pattern suggest?",options:{A:"The green belt has pushed ('leapfrogged') development further out rather than stopping urban growth entirely",B:"The green belt has completely eliminated demand for new housing",C:"Green belts always stop population growth in the wider region",D:"City's population must be falling"},correct:"A"}
+    },
+    {
+      id:"GCSE-UKHUMAN-FB-01",spec:"GCSE-UKHUMAN",type:"fill_blank",
+      stem:"Complete the sentence about Salford Quays.",
+      template:"___ ___ is long-term investment to reverse the economic and environmental decline of a run-down area, as seen at Salford Quays where derelict docks became offices, flats and ___.",
+      blanks:["Urban","regeneration","MediaCityUK"],
+      bank:["Urban","regeneration","MediaCityUK","sprawl","counter-urbanisation","green belt"],
+      tag:"MC-URB-01",
+      scaffold:"Urban regeneration reverses decline through planned, long-term investment — Salford Quays' derelict docks were transformed into offices, housing and the MediaCityUK complex (home to BBC and ITV studios)."
+    },
+    {
+      id:"GCSE-UKHUMAN-FB-02",spec:"GCSE-UKHUMAN",type:"fill_blank",
+      stem:"Complete the sentence about deindustrialisation.",
+      template:"___ is the long-term decline of manufacturing industry, caused by factors such as cheaper overseas labour and automation, which left many former industrial areas ___ and unemployed before ___ schemes were introduced.",
+      blanks:["Deindustrialisation","derelict","regeneration"],
+      bank:["Deindustrialisation","derelict","regeneration","urbanisation","booming","migration"],
+      tag:"MC-URB-02",
+      scaffold:"Deindustrialisation — factories closing as production moved overseas or was automated — left docklands and industrial areas derelict and unemployed, creating the need for regeneration schemes like Salford Quays."
+    },
+    {
+      id:"GCSE-UKHUMAN-FB-03",spec:"GCSE-UKHUMAN",type:"fill_blank",
+      stem:"Complete the sentence about migration and London's character.",
+      template:"International ___ has shaped London's social and cultural character, creating ethnically ___ areas such as Brick Lane, with distinctive shops, food and places of ___.",
+      blanks:["migration","diverse","worship"],
+      bank:["migration","diverse","worship","homogeneous","regeneration","sprawl"],
+      tag:"MC-URB-03",
+      scaffold:"International migration doesn't just change population size — it reshapes culture and identity, creating diverse, multicultural neighbourhoods like Brick Lane with their own shops, cuisines and religious buildings."
+    },
+    {
+      id:"GCSE-UKHUMAN-FB-04",spec:"GCSE-UKHUMAN",type:"fill_blank",
+      stem:"Complete the sentence about rural change in South Cambridgeshire.",
+      template:"___ ___ has brought commuters and tech workers into South Cambridgeshire villages, pushing up ___ prices and changing the services villages provide.",
+      blanks:["Counter","urbanisation","house"],
+      bank:["Counter","urbanisation","house","de","industrialisation","land"],
+      tag:"MC-URB-04",
+      scaffold:"Counter-urbanisation — people, often commuters, moving from cities into villages — has changed South Cambridgeshire's population and housing market, raising house prices and shifting local demand for services."
+    },
+    {
+      id:"GCSE-UKHUMAN-FB-05",spec:"GCSE-UKHUMAN",type:"fill_blank",
+      stem:"Complete the sentence about BedZED.",
+      template:"BedZED in Sutton was designed for ___ urban living, using ___-facing windows for solar gain, wind cowls for ventilation, and limited parking to discourage ___ use.",
+      blanks:["sustainable","south","car"],
+      bank:["sustainable","south","car","north","public transport","unsustainable"],
+      tag:"MC-URB-05",
+      scaffold:"BedZED aims to reduce its ecological footprint through south-facing windows for solar gain, natural ventilation via wind cowls, on-site renewable energy, and reduced car dependency — a model of sustainable urban living."
+    },
+    {
+      id:"GCSE-UKHUMAN-FB-06",spec:"GCSE-UKHUMAN",type:"fill_blank",
+      stem:"Complete the sentence about green belts and urban sprawl.",
+      template:"A ___ ___ restricts new building around a city such as Cambridge to prevent ___ ___ into surrounding countryside, though development can still be pushed ('leapfrogged') further out.",
+      blanks:["green","belt","urban","sprawl"],
+      bank:["green","belt","urban","sprawl","regeneration","migration"],
+      tag:"MC-URB-06",
+      scaffold:"Green belts are planning zones designed to stop urban sprawl — the unplanned outward spread of a city — but they only apply where designated, and pressure for housing can push development ('leapfrog') beyond the protected zone instead."
     }
   ]
 };

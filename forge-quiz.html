@@ -1488,9 +1488,9 @@ const SUBJECTS = {
   },
   "gcse-geo": {
     label: "GCSE Geography",
-    sub: "Edexcel B 1GB0 — Hazardous Earth, UK Physical Landscapes",
+    sub: "Edexcel B 1GB0 — Hazardous Earth, Urbanising World, UK Physical & Human Landscapes",
     color: "#0f766e",
-    banks: ["GCSE-GEO-HAZ", "GCSE-GEO-UKLAND"]
+    banks: ["GCSE-GEO-HAZ", "GCSE-GEO-URB", "GCSE-GEO-UKLAND", "GCSE-GEO-UKHUMAN"]
   },
   "gcse-econ": {
     label: "GCSE Economics",
@@ -2027,6 +2027,212 @@ BANKS["GCSE-GEO-UKLAND"] = {
 };
 
 BANKS["ECON-1.1"].questions.find(function(q){return q.id==="SD-01";}).correct="D";
+
+BANKS["GCSE-GEO-UKHUMAN"] = {
+  label: "UK's Evolving Human Landscape",
+  color: "#0f766e",
+  questions: [
+    {
+      id:"GCSE-UKHUMAN-01",spec:"GCSE-UKHUMAN",stem:"Salford Quays, once a derelict dock area after Manchester's port declined, was transformed into offices, flats, and MediaCityUK. A student says this just means 'new buildings were put up.' What term better describes this process?",
+      options:{A:"Urban regeneration — long-term investment to reverse economic and environmental decline of a run-down area",B:"Counter-urbanisation — people moving out of cities into the countryside",C:"Suburbanisation — outward growth of housing at the city edge",D:"Deindustrialisation — the decline of manufacturing industry"},
+      correct:"A",tag:"MC-URB-01",
+      scaffold:"Urban regeneration is a planned, long-term attempt to reverse decline in a run-down urban area — improving the economy, environment, and social conditions, not just erecting buildings. Salford Quays' docks fell derelict as shipping declined, then investment brought jobs, housing and the BBC/ITV studios at MediaCityUK. Counter-urbanisation and suburbanisation describe population movement out of cities; deindustrialisation is the decline itself, not the response to it.",
+      reforge:{stem:"Bristol's Harbourside was redeveloped from disused docks into housing, museums, and leisure space, bringing jobs and investment back to the area. What is this an example of?",options:{A:"Urban regeneration",B:"Counter-urbanisation",C:"Rural depopulation",D:"Urban sprawl"},correct:"A"}
+    },
+    {
+      id:"GCSE-UKHUMAN-02",spec:"GCSE-UKHUMAN",stem:"Since the 1980s, many UK cities lost large numbers of manufacturing jobs as factories closed and production moved overseas. What is this process called, and what did it cause in areas like Salford before regeneration?",
+      options:{A:"Deindustrialisation — the decline of manufacturing industry, causing unemployment, dereliction, and urban decline",B:"Reindustrialisation — the growth of new manufacturing industry",C:"Counter-urbanisation — people leaving cities for rural areas",D:"Immigration — international migrants arriving in cities"},
+      correct:"A",tag:"MC-URB-02",
+      scaffold:"Deindustrialisation is the long-term decline of manufacturing industry, driven by cheaper overseas labour, automation, and changing trade patterns. It left many UK docklands and factory areas derelict and unemployed — exactly the problem urban regeneration schemes like Salford Quays were designed to fix.",
+      reforge:{stem:"A former coal-mining town in South Yorkshire lost its main employer in the 1980s-90s as UK coal mining declined sharply. What is the general term for this loss of traditional industry?",options:{A:"Deindustrialisation",B:"Counter-urbanisation",C:"Urbanisation",D:"Regeneration"},correct:"A"}
+    },
+    {
+      id:"GCSE-UKHUMAN-03",spec:"GCSE-UKHUMAN",stem:"London's population includes large numbers of people born outside the UK, drawn by job opportunities, universities, and existing migrant communities. A student says international migration only affects London's population size. What else does it change?",
+      options:{A:"Its social and cultural character — creating ethnically diverse, multicultural areas with a wide range of shops, food, religions and languages",B:"Nothing else — migration only ever changes population totals",C:"It makes London's population entirely homogeneous",D:"It only affects the age structure, not culture"},
+      correct:"A",tag:"MC-URB-03",
+      scaffold:"International migration is a major driver of London's dynamic character: it doesn't just add to the population count, it reshapes the city's ethnic and cultural make-up, creating diverse neighbourhoods (e.g. Brick Lane's Bangladeshi community, Southall's Punjabi community) with distinct shops, places of worship, and cuisines — part of what makes London a 'world city'.",
+      reforge:{stem:"Areas of London such as Brick Lane have a strong South Asian character, with specific cuisines, shops, and mosques reflecting the heritage of migrant communities who settled there. This is best explained as an effect of what process?",options:{A:"International migration shaping local culture and identity",B:"Counter-urbanisation",C:"Rural depopulation",D:"Deindustrialisation"},correct:"A"}
+    },
+    {
+      id:"GCSE-UKHUMAN-04",spec:"GCSE-UKHUMAN",stem:"South Cambridgeshire villages have seen population growth as commuters and tech workers move in, pushing up house prices and closing some services once used mainly by long-term rural residents. A student says rural areas never change. What's actually happening here?",
+      options:{A:"Rural landscape change — counter-urbanisation and commuting are altering the population, housing, and services of villages",B:"Urbanisation — the growth of the whole country's urban population",C:"Deindustrialisation — the decline of manufacturing",D:"Urban regeneration — the renewal of derelict city-centre areas"},
+      correct:"A",tag:"MC-URB-04",
+      scaffold:"Rural landscapes change too, not just cities: counter-urbanisation (city-dwellers moving to villages, often commuting to nearby cities like Cambridge) and growth of tech/science industries (e.g. Cambridge Science Park) raise demand for housing, pushing up prices and sometimes squeezing out lower-income locals, while some traditional village services (post offices, pubs) close as needs change.",
+      reforge:{stem:"A commuter village near Cambridge sees average house prices rise sharply, its village shop close, and a growing share of residents who work in Cambridge but live rurally. Which process best explains this pattern?",options:{A:"Counter-urbanisation linked to commuting",B:"Deindustrialisation",C:"Urban sprawl into the green belt",D:"International migration"},correct:"A"}
+    },
+    {
+      id:"GCSE-UKHUMAN-05",spec:"GCSE-UKHUMAN",stem:"BedZED in Sutton, south London, was built with south-facing windows for solar gain, wind cowls for natural ventilation, and on-site renewable energy, aiming to be one of the UK's most sustainable housing developments. A student says this is 'just eco-friendly architecture.' What wider planning goal does it demonstrate?",
+      options:{A:"Sustainable urban living — reducing a development's ecological footprint through energy, water, waste, and transport design",B:"Urban sprawl — the unplanned outward spread of a city",C:"Deindustrialisation — reducing manufacturing industry",D:"Rural depopulation — people leaving the countryside"},
+      correct:"A",tag:"MC-URB-05",
+      scaffold:"Sustainable urban living aims to reduce a development's overall ecological footprint — not just its buildings' energy use, but water recycling, waste management, and encouraging low-carbon transport (BedZED discourages car use via limited parking and a car club). It's a response to concerns that rapid urban growth is environmentally unsustainable.",
+      reforge:{stem:"A new UK housing development includes car-free zones, greywater recycling, and homes built to very high insulation standards to minimise heating demand. What overall aim does this reflect?",options:{A:"Sustainable urban living",B:"Urban sprawl",C:"Deindustrialisation",D:"Counter-urbanisation"},correct:"A"}
+    },
+    {
+      id:"GCSE-UKHUMAN-06",spec:"GCSE-UKHUMAN",stem:"Around Cambridge, a protected green belt restricts new building on the city's edge to prevent it merging with surrounding villages. A student says green belts stop all UK urban growth everywhere. Why is this wrong?",
+      options:{A:"Green belts only apply around specific cities where they're designated; elsewhere, urban sprawl can still spread outward largely unchecked",B:"Green belts exist around every UK settlement without exception",C:"Green belts have no effect on where new housing is built",D:"Green belts were abolished in the 1990s and no longer apply anywhere"},
+      correct:"A",tag:"MC-URB-06",
+      scaffold:"Green belts are a planning tool used around specific cities (including Cambridge and London) to stop unrestricted outward urban sprawl and protect surrounding countryside — but they don't exist everywhere, and where there's no green belt or where pressure for housing is intense, cities can still spread outward, sometimes pushing development further out (leapfrogging) beyond the protected zone.",
+      reforge:{stem:"A city surrounded by a strict green belt sees new housing developments increasingly built in villages just beyond the green belt boundary rather than closer to the city centre. What does this pattern suggest?",options:{A:"The green belt has pushed ('leapfrogged') development further out rather than stopping urban growth entirely",B:"The green belt has completely eliminated demand for new housing",C:"Green belts always stop population growth in the wider region",D:"The city's population must be falling"},correct:"A"}
+    },
+    {
+      id:"GCSE-UKHUMAN-FB-01",spec:"GCSE-UKHUMAN",type:"fill_blank",
+      stem:"Complete the sentence about Salford Quays.",
+      template:"___ ___ is long-term investment to reverse the economic and environmental decline of a run-down area, as seen at Salford Quays where derelict docks became offices, flats and ___.",
+      blanks:["Urban","regeneration","MediaCityUK"],
+      bank:["Urban","regeneration","MediaCityUK","sprawl","counter-urbanisation","green belt"],
+      tag:"MC-URB-01",
+      scaffold:"Urban regeneration reverses decline through planned, long-term investment — Salford Quays' derelict docks were transformed into offices, housing and the MediaCityUK complex (home to BBC and ITV studios)."
+    },
+    {
+      id:"GCSE-UKHUMAN-FB-02",spec:"GCSE-UKHUMAN",type:"fill_blank",
+      stem:"Complete the sentence about deindustrialisation.",
+      template:"___ is the long-term decline of manufacturing industry, caused by factors such as cheaper overseas labour and automation, which left many former industrial areas ___ and unemployed before ___ schemes were introduced.",
+      blanks:["Deindustrialisation","derelict","regeneration"],
+      bank:["Deindustrialisation","derelict","regeneration","urbanisation","booming","migration"],
+      tag:"MC-URB-02",
+      scaffold:"Deindustrialisation — factories closing as production moved overseas or was automated — left docklands and industrial areas derelict and unemployed, creating the need for regeneration schemes like Salford Quays."
+    },
+    {
+      id:"GCSE-UKHUMAN-FB-03",spec:"GCSE-UKHUMAN",type:"fill_blank",
+      stem:"Complete the sentence about migration and London's character.",
+      template:"International ___ has shaped London's social and cultural character, creating ethnically ___ areas such as Brick Lane, with distinctive shops, food and places of ___.",
+      blanks:["migration","diverse","worship"],
+      bank:["migration","diverse","worship","homogeneous","regeneration","sprawl"],
+      tag:"MC-URB-03",
+      scaffold:"International migration doesn't just change population size — it reshapes culture and identity, creating diverse, multicultural neighbourhoods like Brick Lane with their own shops, cuisines and religious buildings."
+    },
+    {
+      id:"GCSE-UKHUMAN-FB-04",spec:"GCSE-UKHUMAN",type:"fill_blank",
+      stem:"Complete the sentence about rural change in South Cambridgeshire.",
+      template:"___ ___ has brought commuters and tech workers into South Cambridgeshire villages, pushing up ___ prices and changing the services villages provide.",
+      blanks:["Counter","urbanisation","house"],
+      bank:["Counter","urbanisation","house","de","industrialisation","land"],
+      tag:"MC-URB-04",
+      scaffold:"Counter-urbanisation — people, often commuters, moving from cities into villages — has changed South Cambridgeshire's population and housing market, raising house prices and shifting local demand for services."
+    },
+    {
+      id:"GCSE-UKHUMAN-FB-05",spec:"GCSE-UKHUMAN",type:"fill_blank",
+      stem:"Complete the sentence about BedZED.",
+      template:"BedZED in Sutton was designed for ___ urban living, using ___-facing windows for solar gain, wind cowls for ventilation, and limited parking to discourage ___ use.",
+      blanks:["sustainable","south","car"],
+      bank:["sustainable","south","car","north","public transport","unsustainable"],
+      tag:"MC-URB-05",
+      scaffold:"BedZED aims to reduce its ecological footprint through south-facing windows for solar gain, natural ventilation via wind cowls, on-site renewable energy, and reduced car dependency — a model of sustainable urban living."
+    },
+    {
+      id:"GCSE-UKHUMAN-FB-06",spec:"GCSE-UKHUMAN",type:"fill_blank",
+      stem:"Complete the sentence about green belts and urban sprawl.",
+      template:"A ___ ___ restricts new building around a city such as Cambridge to prevent ___ ___ into surrounding countryside, though development can still be pushed ('leapfrogged') further out.",
+      blanks:["green","belt","urban","sprawl"],
+      bank:["green","belt","urban","sprawl","regeneration","migration"],
+      tag:"MC-URB-06",
+      scaffold:"Green belts are planning zones designed to stop urban sprawl — the unplanned outward spread of a city — but they only apply where designated, and pressure for housing can push development ('leapfrog') beyond the protected zone instead."
+    }
+  ]
+};
+
+BANKS["GCSE-GEO-URB"] = {
+  label: "Challenges of an Urbanising World",
+  color: "#0f766e",
+  questions: [
+    {
+      id:"GCSE-URB-01",spec:"GCSE-URB",stem:"Mumbai has grown from around 3 million people in 1950 to over 20 million in its metropolitan area today, making it a megacity. A student says this growth is purely from births in the city itself. What else is driving it?",
+      options:{A:"Rural-urban migration — people moving from the countryside to Mumbai in search of jobs and better opportunities",B:"Nothing else — natural increase alone explains all megacity growth",C:"International migration from other countries is the only cause",D:"Mumbai's growth is caused entirely by counter-urbanisation"},
+      correct:"A",tag:"MC-MUM-01",
+      scaffold:"Megacity growth (a city with over 10 million people) is driven by both natural increase (births minus deaths) AND rural-urban migration. In Mumbai, and most rapidly urbanising cities in lower and middle income countries, migration is often the dominant factor — people are pulled by the promise of jobs, education and services, and pushed from rural areas by poverty, drought, or lack of opportunity.",
+      reforge:{stem:"A rapidly growing city in a lower income country sees its population double in 15 years, with most of the growth made up of young adults arriving from rural provinces rather than being born in the city. What best explains this?",options:{A:"Rural-urban migration driven by push and pull factors",B:"Natural increase from a falling death rate alone",C:"Counter-urbanisation",D:"International migration only"},correct:"A"}
+    },
+    {
+      id:"GCSE-URB-02",spec:"GCSE-URB",stem:"Migrants moving to Mumbai are often 'pushed' from rural areas by poverty and drought, and 'pulled' by the promise of jobs and services. A student says push and pull factors always come true for migrants. Why might this be wrong for many arriving in Mumbai?",
+      options:{A:"Many migrants cannot find formal jobs or affordable housing, ending up in informal settlements like Dharavi rather than achieving the opportunities that pulled them there",B:"Every migrant to Mumbai finds a well-paid formal job immediately",C:"Push and pull factors don't apply to internal (rural-urban) migration",D:"Mumbai has no housing shortage, so all migrants are easily housed"},
+      correct:"A",tag:"MC-MUM-02",
+      scaffold:"Push factors (rural poverty, drought, lack of land/jobs) and pull factors (perceived jobs, education, healthcare) explain why people move, but the reality often falls short: Mumbai's formal job market and housing supply can't absorb the scale of migration, so many migrants find only informal work and end up in slums like Dharavi rather than the opportunities they expected.",
+      reforge:{stem:"A migrant moves to a megacity expecting factory work and a proper house, but instead finds only casual, informal work and has to build a shelter from scrap materials in an unplanned settlement. What does this show about push-pull migration theory?",options:{A:"The pull factors that attracted the migrant don't always match the reality once they arrive",B:"Push and pull factors guarantee a better outcome for every migrant",C:"This migrant must have moved for climate reasons only",D:"Informal settlements only exist because of natural disasters"},correct:"A"}
+    },
+    {
+      id:"GCSE-URB-03",spec:"GCSE-URB",stem:"Dharavi, one of Asia's largest slums, sits in the middle of Mumbai and is home to around 1 million people in roughly 2.1 km². A student calls it 'just an area of poverty with nothing going on.' Why is this an oversimplification?",
+      options:{A:"Dharavi has a huge, thriving informal economy — recycling, leather goods, pottery and textiles — generating an estimated $1 billion a year, alongside serious challenges like overcrowding and poor sanitation",B:"Dharavi has no economic activity of any kind",C:"Everyone in Dharavi is unemployed",D:"Dharavi is a wealthy, formally planned district of Mumbai"},
+      correct:"A",tag:"MC-MUM-03",
+      scaffold:"Dharavi is often stereotyped as pure deprivation, but it's also a major centre of small-scale, informal industry (recycling, leather, pottery, garments) that contributes hugely to Mumbai's economy — while still facing real challenges: extreme population density, poor sanitation, limited access to clean water, and insecure land tenure. Both things are true at once.",
+      reforge:{stem:"A visitor to Dharavi is surprised to find thousands of small workshops recycling plastic and producing leather goods for export, generating significant income, despite the area's poor infrastructure and sanitation. What does this suggest about informal settlements?",options:{A:"They can combine severe deprivation with genuine, significant economic activity",B:"Informal settlements never have any economic value",C:"Poor infrastructure always means no economic activity exists",D:"Informal settlements are identical to formally planned industrial zones"},correct:"A"}
+    },
+    {
+      id:"GCSE-URB-04",spec:"GCSE-URB",stem:"Rapid urban growth in Mumbai has caused challenges including traffic congestion, air and water pollution, and a severe housing shortage. A student says these problems only affect informal settlements like Dharavi. Why is this wrong?",
+      options:{A:"Congestion, pollution and strain on infrastructure affect the whole city, including wealthier formal areas, because the scale of growth has outpaced planned infrastructure everywhere",B:"Traffic congestion in Mumbai only occurs inside Dharavi",C:"Wealthy areas of Mumbai are completely unaffected by any city-wide infrastructure problems",D:"Air pollution in Mumbai comes only from informal settlements"},
+      correct:"A",tag:"MC-MUM-04",
+      scaffold:"Rapid, often unplanned urban growth strains city-wide systems, not just informal areas: Mumbai's roads, public transport, water supply, and waste management all face pressure from a population that has grown far faster than formal infrastructure could keep pace with, so congestion and pollution affect richer and poorer districts alike, even if the severity of housing/sanitation problems is worse in slums.",
+      reforge:{stem:"A rapidly growing city's commute times triple over two decades, and its air quality index regularly reaches 'hazardous' levels city-wide, not just in its poorest districts. What does this suggest about the nature of these urban challenges?",options:{A:"They stem from city-wide infrastructure struggling to keep pace with growth, not just conditions in informal settlements",B:"Only slum residents ever experience traffic congestion",C:"Air pollution in cities is always confined to informal settlements",D:"Rich areas of a city are structurally immune to congestion"},correct:"A"}
+    },
+    {
+      id:"GCSE-URB-05",spec:"GCSE-URB",stem:"The Dharavi Redevelopment Project proposes demolishing much of the settlement and rehousing residents in high-rise flats, partly funded by selling some of the reclaimed land to private developers. A student says all Dharavi residents support this. Why is this a key controversy?",
+      options:{A:"Many residents and business owners fear losing their livelihoods (informal workshops don't fit easily into high-rise flats), affordable community networks, and central location, so the scheme is contested rather than universally welcomed",B:"Every single resident of Dharavi is fully in favour of demolition with no concerns",C:"The scheme has no effect on informal businesses operating in Dharavi",D:"Redevelopment schemes never affect where people can run a business from"},
+      correct:"A",tag:"MC-MUM-05",
+      scaffold:"Top-down redevelopment schemes like this one are controversial: while they promise improved housing, critics point out that high-rise flats don't easily accommodate ground-floor workshops that Dharavi's informal economy depends on, some residents may not qualify for rehousing (needing proof of long-term residency), and community/social networks built up over decades can be broken up — so support is far from unanimous.",
+      reforge:{stem:"A city government plans to demolish an informal settlement and move residents into apartment blocks, funding the project by selling part of the site to developers. Local workshop owners protest that flats have no space for their ground-floor businesses. What does this illustrate about top-down slum redevelopment schemes?",options:{A:"They can conflict with the informal economic activities that residents depend on, making them controversial rather than universally welcomed",B:"Redevelopment always benefits every resident equally with no downsides",C:"Workshop owners in informal settlements never object to redevelopment",D:"Selling land to developers has no bearing on how a scheme is received"},correct:"A"}
+    },
+    {
+      id:"GCSE-URB-06",spec:"GCSE-URB",stem:"Sites and services schemes provide migrants with a legal plot of land, basic infrastructure (water, electricity, sanitation), and let residents build their own homes gradually. A student says this is identical to the Dharavi Redevelopment Project's approach. What's the key difference?",
+      options:{A:"Sites and services is a bottom-up, low-cost approach that works with residents' own building efforts, rather than a top-down demolition-and-rebuild scheme funded by land sales",B:"Both schemes demolish existing homes and force residents into high-rise flats",C:"Sites and services schemes provide no infrastructure at all",D:"There is no meaningful difference between the two approaches"},
+      correct:"A",tag:"MC-MUM-06",
+      scaffold:"Sites and services is a bottom-up strategy: it gives residents secure land tenure and basic services, then lets them build and improve homes themselves over time at low cost — contrasting with top-down schemes like Dharavi's redevelopment plan, which demolish existing settlements and replace them with formally built high-rise housing, often disrupting existing communities and informal economies.",
+      reforge:{stem:"A city scheme gives informal settlement residents legal ownership of a small plot plus a water connection and basic drainage, then leaves residents to build and upgrade their own housing over several years. What type of urban management strategy is this?",options:{A:"A bottom-up sites and services scheme",B:"A top-down demolition and high-rise redevelopment scheme",C:"Counter-urbanisation policy",D:"A green belt policy"},correct:"A"}
+    },
+    {
+      id:"GCSE-URB-FB-01",spec:"GCSE-URB",type:"fill_blank",
+      stem:"Complete the sentence about Mumbai's growth.",
+      template:"Mumbai's growth into a ___ (over 10 million people) is driven by both natural increase and ___-___ migration, as people move from rural areas in search of jobs.",
+      blanks:["megacity","rural","urban"],
+      bank:["megacity","rural","urban","counter","international","city"],
+      tag:"MC-MUM-01",
+      scaffold:"A megacity has over 10 million people. Mumbai's growth combines natural increase with large-scale rural-urban migration, as people are pushed from the countryside and pulled by the promise of jobs and services in the city."
+    },
+    {
+      id:"GCSE-URB-FB-02",spec:"GCSE-URB",type:"fill_blank",
+      stem:"Complete the sentence about push and pull factors.",
+      template:"Migrants to Mumbai are ___ from rural areas by poverty and drought, and ___ by the promise of jobs — but many end up in ___ work and informal settlements rather than the opportunities they expected.",
+      blanks:["pushed","pulled","informal"],
+      bank:["pushed","pulled","informal","formal","counter-urbanised","regenerated"],
+      tag:"MC-MUM-02",
+      scaffold:"Push factors (rural poverty, drought) and pull factors (perceived jobs and services) drive migration, but the reality often falls short — many migrants find only informal, insecure work rather than the formal jobs they hoped for."
+    },
+    {
+      id:"GCSE-URB-FB-03",spec:"GCSE-URB",type:"fill_blank",
+      stem:"Complete the sentence about Dharavi's economy.",
+      template:"Dharavi has a large ___ economy — including ___, leather goods and textiles — generating an estimated $1 billion a year, despite facing serious challenges like overcrowding and poor ___.",
+      blanks:["informal","recycling","sanitation"],
+      bank:["informal","recycling","sanitation","formal","tourism","transport"],
+      tag:"MC-MUM-03",
+      scaffold:"Dharavi combines a thriving informal economy (recycling, leather, textiles, pottery) worth an estimated $1 billion a year with real challenges — extreme density and poor sanitation — both true at once."
+    },
+    {
+      id:"GCSE-URB-FB-04",spec:"GCSE-URB",type:"fill_blank",
+      stem:"Complete the sentence about urban challenges in Mumbai.",
+      template:"Rapid urban growth strains ___-wide infrastructure in Mumbai, causing traffic ___ and pollution that affect wealthier formal areas as well as ___ settlements.",
+      blanks:["city","congestion","informal"],
+      bank:["city","congestion","informal","rural","regeneration","sustainable"],
+      tag:"MC-MUM-04",
+      scaffold:"Mumbai's rapid growth has outpaced formal infrastructure city-wide, so congestion and pollution affect richer and poorer districts alike, even though housing and sanitation problems are worse in informal settlements."
+    },
+    {
+      id:"GCSE-URB-FB-05",spec:"GCSE-URB",type:"fill_blank",
+      stem:"Complete the sentence about the Dharavi Redevelopment Project.",
+      template:"The Dharavi Redevelopment Project proposes ___ much of the settlement and rehousing residents in ___-rise flats, but is controversial because ___ workshops don't easily fit into flats.",
+      blanks:["demolishing","high","informal"],
+      bank:["demolishing","high","informal","building","low","formal"],
+      tag:"MC-MUM-05",
+      scaffold:"The scheme's top-down demolition-and-rebuild approach is controversial partly because ground-floor informal workshops, central to Dharavi's economy, don't fit easily into high-rise flats — a major source of resident and business opposition."
+    },
+    {
+      id:"GCSE-URB-FB-06",spec:"GCSE-URB",type:"fill_blank",
+      stem:"Complete the sentence about sites and services schemes.",
+      template:"Sites and services is a ___-up approach that gives residents a legal plot and basic ___ (water, electricity, sanitation), letting them build their own homes ___ over time.",
+      blanks:["bottom","infrastructure","gradually"],
+      bank:["bottom","infrastructure","gradually","top","instantly","tourism"],
+      tag:"MC-MUM-06",
+      scaffold:"Sites and services schemes work bottom-up: secure land tenure plus basic infrastructure, with residents building and upgrading housing themselves over time — a contrast to top-down demolition-and-rebuild schemes."
+    }
+  ]
+};
 
 BANKS["GCSE-ECON-UK"] = {
   label: "The UK Economy",
