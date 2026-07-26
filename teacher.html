@@ -1884,6 +1884,24 @@ window.renderStudent = function(studentId) {
     h += '<div class="empty"><h3>No misconception data yet</h3><p>This student needs to answer more questions.</p></div>';
   }
 
+  // Reforge history — every individual reforge attempt, most recent first
+  var reforgeHistory = studentResponses.filter(function(r) { return r.reforge_attempted; })
+    .sort(function(a, b) { return new Date(b.created_at) - new Date(a.created_at); });
+  if (reforgeHistory.length > 0) {
+    h += '<div class="card"><div class="card-title">Reforge history — ' + reforgeHistory.length + ' attempt' + (reforgeHistory.length !== 1 ? 's' : '') + '</div>';
+    reforgeHistory.forEach(function(r) {
+      var mc = r.misconception_tag;
+      var label = mc ? (MC_LABELS[mc] || mc) : (r.bank || 'Unknown topic');
+      var when = r.created_at ? new Date(r.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }) : '';
+      h += '<div class="mc-item" style="' + (r.reforge_correct ? 'opacity:.7' : '') + '">';
+      h += '<span class="heat-tag" style="background:' + (r.reforge_correct ? 'var(--good)' : 'var(--bad)') + '">' + (mc || r.bank || '—') + '</span>';
+      h += '<span class="mc-detail"' + (r.reforge_correct ? ' style="text-decoration:line-through"' : '') + '>' + label + '</span>';
+      h += '<span class="mc-fires" style="color:' + (r.reforge_correct ? 'var(--good)' : 'var(--bad)') + '">' + (r.reforge_correct ? '✓ Passed' : '✗ Failed') + (when ? ' · ' + when : '') + '</span>';
+      h += '</div>';
+    });
+    h += '</div>';
+  }
+
   // Spec point breakdown
   var specData = {};
   studentResponses.forEach(function(r) {
