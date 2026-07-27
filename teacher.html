@@ -180,6 +180,11 @@ var headers = {
   'Authorization': 'Bearer ' + SUPABASE_KEY
 };
 
+// ── SIGN-UP INVITE CODE ──────────────────────────────────────
+// Basic deterrent against open self-signup, not a real secret - anyone
+// can view-source this page. Change this and reshare when it leaks.
+var TEACHER_INVITE_CODE = 'MAYFIELD-STAFF';
+
 // ── Teacher auth (separate session from the student-facing forge-auth.js) ──
 var TEACHER_SESSION_KEY = 'forge-teacher-session';
 var currentTeacher = null; // { id, email } once signed in
@@ -289,6 +294,9 @@ function renderTeacherAuth(mode) {
 
   h += '<input id="ta-email" class="join-input" type="email" placeholder="Email" style="text-transform:none">';
   h += '<input id="ta-password" class="join-input" type="password" placeholder="Password" style="text-transform:none">';
+  if (mode === 'signup') {
+    h += '<input id="ta-invite" class="join-input" type="text" placeholder="Invite code (from your school)" style="text-transform:none">';
+  }
   h += '<button class="join-btn" id="ta-btn">' + (mode === 'signup' ? 'Create account →' : 'Sign in →') + '</button>';
   h += '<p class="join-err" id="ta-err"></p>';
   h += '</div>';
@@ -305,6 +313,14 @@ function renderTeacherAuth(mode) {
     var btn = document.getElementById('ta-btn');
     err.style.display = 'none';
     if (!email || !password) { err.textContent = 'Enter your email and password.'; err.style.display = 'block'; return; }
+    if (mode === 'signup') {
+      var invite = document.getElementById('ta-invite').value.trim();
+      if (invite.toUpperCase() !== TEACHER_INVITE_CODE) {
+        err.textContent = 'Invite code not recognised. Check with your school.';
+        err.style.display = 'block';
+        return;
+      }
+    }
 
     btn.disabled = true; btn.textContent = 'Please wait...';
     var action = mode === 'signup' ? TeacherAuth.signUp(email, password) : TeacherAuth.signIn(email, password);
