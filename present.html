@@ -98,14 +98,8 @@ h1,h2,h3{font-family:'Bricolage Grotesque',sans-serif;color:var(--white);line-he
 var state = { phase:'loading', banks:null, subjects:null, subjectKey:null, bankKey:null, shuffle:true, questions:[], idx:0, revealed:false };
 var app = document.getElementById('app');
 
-fetch('forge-quiz.html').then(function(r){ return r.text(); }).then(function(html){
-  var startMarker = 'const BANKS = {';
-  var endMarker = 'function shuffle(a){var b=[...a]';
-  var startIdx = html.indexOf(startMarker);
-  var endIdx = html.indexOf(endMarker);
-  if (startIdx === -1 || endIdx === -1) throw new Error('Could not locate question bank data in forge-quiz.html');
-  var dataScript = html.substring(startIdx, endIdx) + '\nwindow.__FORGE_DATA__ = {BANKS:BANKS, SUBJECTS:SUBJECTS};';
-  (new Function(dataScript))();
+fetch('data/forge-data.js').then(function(r){ return r.text(); }).then(function(dataScript){
+  (new Function(dataScript + '\nwindow.__FORGE_DATA__ = {BANKS:BANKS, SUBJECTS:SUBJECTS};'))();
   state.banks = window.__FORGE_DATA__.BANKS;
   state.subjects = window.__FORGE_DATA__.SUBJECTS;
   state.phase = 'subjects';
