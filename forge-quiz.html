@@ -824,11 +824,17 @@ function renderSubjects(){
 
   subjectKeys.forEach(function(k){
     var s=SUBJECTS[k];
-    var n=s.banks.reduce(function(t,b){return t+BANKS[b].questions.length},0);
+    var countLabel;
+    if (s.readerMode) {
+      countLabel = MANDARIN_PASSAGES.length + ' reading passage' + (MANDARIN_PASSAGES.length === 1 ? '' : 's');
+    } else {
+      var n=s.banks.reduce(function(t,b){return t+BANKS[b].questions.length},0);
+      countLabel = s.banks.length+' banks \u00b7 '+n+' questions';
+    }
     h+='<button class="subject-btn" data-key="'+k+'" style="border-color:'+s.color+'25">';
     h+='<h3 style="color:'+s.color+'">'+s.label+'</h3>';
     h+='<div class="sub">'+s.sub+'</div>';
-    h+='<div class="count">'+s.banks.length+' banks \u00b7 '+n+' questions</div>';
+    h+='<div class="count">'+countLabel+'</div>';
     h+='</button>';
   });
   h+='</div>';

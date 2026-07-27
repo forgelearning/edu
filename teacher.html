@@ -370,7 +370,9 @@ function supaInsert(table, row) {
 
 // Subject list — derived from the shared SUBJECTS data (data/forge-data.js) so new
 // subjects appear here automatically instead of needing a separate manual entry.
-var SUBJECT_OPTIONS = Object.keys(SUBJECTS).map(function(key) {
+var SUBJECT_OPTIONS = Object.keys(SUBJECTS).filter(function(key) {
+  return !SUBJECTS[key].readerMode; // reader-mode subjects have no assignable question banks
+}).map(function(key) {
   var s = SUBJECTS[key];
   return { key: key, label: s.label, spec: s.sub.split(' — ')[0] };
 });
