@@ -35,6 +35,12 @@
   --radius-md:12px;
   --radius-lg:16px;
   --radius-pill:999px;
+
+  /* glass — frosted surfaces. Derived from --coal/--panel so they
+     adapt automatically per theme; do not hardcode alpha values elsewhere. */
+  --glass-blur:20px;
+  --glass-bg:color-mix(in srgb, var(--coal) 62%, transparent);
+  --glass-panel:color-mix(in srgb, var(--panel) 70%, transparent);
 }
 
 [data-theme="light"]{
