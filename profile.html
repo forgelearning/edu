@@ -220,16 +220,22 @@ function renderLogin(){
     var btn=document.getElementById('p-btn');
     if(!name||!code){err.textContent='Enter your name and class code.';err.style.display='block';return;}
     btn.disabled=true;btn.textContent='Loading...';
-    supaGet('classes','code=eq.'+encodeURIComponent(code)).then(function(cls){
-      if(!Array.isArray(cls)||cls.length===0){err.textContent='Class not found.';err.style.display='block';btn.disabled=false;btn.textContent='View my profile \u2192';return;}
-      supaGet('students','class_id=eq.'+cls[0].id+'&name=eq.'+encodeURIComponent(name)).then(function(stus){
-        if(!Array.isArray(stus)||stus.length===0){err.textContent='Name not found. Make sure you\'ve done the quiz first.';err.style.display='block';btn.disabled=false;btn.textContent='View my profile \u2192';return;}
-        st.studentId=stus[0].id;st.classId=cls[0].id;st.studentName=name;st.isGCSE=classLevel(cls[0].name)==='gcse';
-        try { localStorage.setItem('forge-student', JSON.stringify({studentId: st.studentId, classId: st.classId, studentName: st.studentName, classSubject: null, isGCSE: st.isGCSE})); } catch(e) {}
-        supaGet('responses','student_id=eq.'+st.studentId+'&order=created_at.desc').then(function(r){
-          st.responses=r||[];
-          renderProfile();
-        });
+    // Look up via RPC \u2014 classes/students tables are no longer directly
+    // readable by an anonymous (no login) name+code session.
+    fetch(SUPABASE_URL + '/rest/v1/rpc/get_student_by_name_and_code', {
+      method: 'POST', headers: Object.assign({}, hdrs, {'Content-Type':'application/json'}),
+      body: JSON.stringify({ p_code: code, p_name: name })
+    }).then(function(r){ return r.json(); }).then(function(rows){
+      if(!Array.isArray(rows)||rows.length===0){err.textContent='Class or name not found. Make sure you\'ve done the quiz first.';err.style.display='block';btn.disabled=false;btn.textContent='View my profile \u2192';return;}
+      var match = rows[0];
+      st.studentId=match.student_id;st.classId=match.class_id;st.studentName=name;st.isGCSE=classLevel(match.class_name)==='gcse';
+      try { localStorage.setItem('forge-student', JSON.stringify({studentId: st.studentId, classId: st.classId, studentName: st.studentName, classSubject: null, isGCSE: st.isGCSE})); } catch(e) {}
+      fetch(SUPABASE_URL + '/rest/v1/rpc/get_student_own_responses', {
+        method: 'POST', headers: Object.assign({}, hdrs, {'Content-Type':'application/json'}),
+        body: JSON.stringify({ p_student_id: st.studentId, p_code: code, p_name: name })
+      }).then(function(r){ return r.json(); }).then(function(r){
+        st.responses=r||[];
+        renderProfile();
       });
     });
   };

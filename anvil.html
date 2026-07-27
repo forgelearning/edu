@@ -6143,29 +6143,31 @@ function renderLogin(){
     if(!name||!code){err.textContent='Enter your name and class code.';err.style.display='block';return;}
     btn.disabled=true;btn.textContent='Loading...';
 
-    supaGet('classes','code=eq.'+encodeURIComponent(code)).then(function(classes){
-      if(!Array.isArray(classes)||classes.length===0){
-        err.textContent='Class not found.';err.style.display='block';
+    // Look up via RPC \u2014 classes/students tables are no longer directly
+    // readable by an anonymous (no login) name+code session.
+    fetch(SUPABASE_URL + '/rest/v1/rpc/get_student_by_name_and_code', {
+      method: 'POST', headers: Object.assign({}, headers, {'Content-Type':'application/json'}),
+      body: JSON.stringify({ p_code: code, p_name: name })
+    }).then(function(r){ return r.json(); }).then(function(rows){
+      if(!Array.isArray(rows)||rows.length===0){
+        err.textContent='Class or student not found. Make sure you\u2019ve done the quiz first.';err.style.display='block';
         btn.disabled=false;btn.textContent='Open my Anvil \u2192';return;
       }
-      var cls=classes[0];
-      // Find this student
-      supaGet('students','class_id=eq.'+cls.id+'&name=eq.'+encodeURIComponent(name)).then(function(students){
-        if(!Array.isArray(students)||students.length===0){
-          err.textContent='Student not found. Make sure you\u2019ve done the quiz first.';err.style.display='block';
-          btn.disabled=false;btn.textContent='Open my Anvil \u2192';return;
-        }
-        anvilState.studentId=students[0].id;
-        anvilState.classId=cls.id;
-        anvilState.studentName=name;
-        anvilState.classSubject=cls.subject||null;
-        try { localStorage.setItem('forge-student', JSON.stringify({studentId: anvilState.studentId, classId: anvilState.classId, studentName: anvilState.studentName, classSubject: anvilState.classSubject})); } catch(e) {}
-        // Load their responses
-        supaGet('responses','student_id=eq.'+anvilState.studentId+'&order=created_at.asc').then(function(responses){
-          anvilState.responses=responses||[];
-          buildMisconceptions();
-          renderAnvilHome();
-        });
+      var match=rows[0];
+      anvilState.studentId=match.student_id;
+      anvilState.classId=match.class_id;
+      anvilState.studentName=name;
+      anvilState.classSubject=match.subject||null;
+      try { localStorage.setItem('forge-student', JSON.stringify({studentId: anvilState.studentId, classId: anvilState.classId, studentName: anvilState.studentName, classSubject: anvilState.classSubject})); } catch(e) {}
+      // Load their responses
+      fetch(SUPABASE_URL + '/rest/v1/rpc/get_student_own_responses', {
+        method: 'POST', headers: Object.assign({}, headers, {'Content-Type':'application/json'}),
+        body: JSON.stringify({ p_student_id: anvilState.studentId, p_code: code, p_name: name })
+      }).then(function(r){ return r.json(); }).then(function(responses){
+        // RPC returns newest-first; this view expects chronological order.
+        anvilState.responses=(responses||[]).slice().reverse();
+        buildMisconceptions();
+        renderAnvilHome();
       });
     });
   };
