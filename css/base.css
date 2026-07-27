@@ -1,0 +1,45 @@
+/* Shared base + nav — Forge Learning marketing pages.
+   Requires tokens.css loaded first. Fonts: Fraunces (headings), IBM Plex Sans (body), IBM Plex Mono (mono/tags). */
+
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--coal);color:var(--slate);font-family:'IBM Plex Sans',sans-serif;font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:'Fraunces',sans-serif;color:var(--white);line-height:1.08;letter-spacing:-.015em}
+.mono{font-family:'IBM Plex Mono',monospace}
+a{color:var(--hot)}
+.wrap{max-width:1080px;margin:0 auto;padding:0 var(--space-6)}
+.tag{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--ember)}
+:focus-visible{outline:2px solid var(--hot);outline-offset:3px;border-radius:var(--radius-xs)}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+
+/* nav */
+#sticky-nav{position:sticky;top:0;z-index:100;background:var(--coal);border-bottom:1px solid var(--line);}
+nav{display:flex;align-items:center;justify-content:space-between;padding:var(--space-4) var(--space-6)}
+.logo{font-family:'Fraunces',sans-serif;font-weight:800;font-size:22px;color:var(--white);text-decoration:none;display:flex;align-items:center;gap:9px}
+.logo .spark{width:10px;height:10px;background:linear-gradient(135deg,var(--hot),var(--ember));border-radius:2px;transform:rotate(45deg);box-shadow:0 0 12px rgba(255,107,44,.7)}
+.nav-right{display:flex;align-items:center;gap:var(--space-2);flex-wrap:nowrap}
+.cta{display:inline-flex;align-items:center;height:40px;font-size:14px;font-weight:600;color:var(--coal);background:var(--ember);padding:0 var(--space-4);border-radius:var(--radius-sm);text-decoration:none;white-space:nowrap;box-sizing:border-box}
+.cta-ghost{display:inline-flex;align-items:center;height:40px;font-size:14px;font-weight:600;color:var(--white);background:transparent;border:1px solid var(--line);padding:0 var(--space-4);border-radius:var(--radius-sm);text-decoration:none;white-space:nowrap;box-sizing:border-box}
+.cta-ghost:hover{border-color:var(--ember);color:var(--white)}
+.nav-link{display:inline-flex;align-items:center;height:40px;font-size:14px;font-weight:600;color:var(--slate);text-decoration:none;white-space:nowrap;padding:0 6px}
+.nav-link:hover{color:var(--white)}
+.nav-hide-sm{display:inline-flex}
+@media(max-width:680px){.nav-hide-sm{display:none!important}}
+
+.nav-dropdown.open{display:flex}
+
+.theme-toggle{background:var(--panel);border:1px solid var(--line);color:var(--slate);font-family:'IBM Plex Mono',monospace;font-size:12px;padding:6px var(--space-3);border-radius:var(--radius-sm);cursor:pointer;transition:background .15s,color .15s;z-index:99}
+.theme-toggle:hover{color:var(--white);border-color:var(--ember)}
+.nav-drop-btn{background:var(--panel);border:1px solid var(--line);color:var(--slate);font-family:'IBM Plex Mono',monospace;font-size:12px;padding:7px var(--space-4);border-radius:var(--radius-sm);cursor:pointer;transition:background .15s,color .15s;white-space:nowrap}
+.nav-drop-btn:hover{color:var(--white);border-color:var(--ember)}
+.nav-drop-wrap{position:relative}
+.nav-drop-menu{display:none;position:absolute;top:calc(100% + 6px);right:0;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-md);padding:6px;min-width:160px;z-index:200;box-shadow:0 8px 24px rgba(0,0,0,.18)}
+.nav-drop-menu.open{display:block}
+.nav-drop-menu a{display:block;padding:var(--space-2) var(--space-3);color:var(--slate);text-decoration:none;font-size:13px;border-radius:6px;white-space:nowrap}
+.nav-drop-menu a:hover{background:var(--panel-2);color:var(--white)}
+
+/* shared buttons (used beyond nav) */
+.btn{display:inline-block;font-weight:600;font-size:15px;padding:13px var(--space-6);border-radius:var(--radius-md);text-decoration:none;border:1px solid transparent}
+.btn-hot{background:var(--ember);color:var(--coal)}
+.btn-hot:hover{background:var(--hot)}
+.btn-ghost{border-color:var(--line);color:var(--white)}

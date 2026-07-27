@@ -1,0 +1,52 @@
+/* Design tokens — Forge Learning marketing pages.
+   Spacing follows a 4pt scale. Radius is grouped into 5 steps.
+   Edit values here, not in individual pages. */
+
+:root{
+  /* color */
+  --coal:#141210;
+  --panel:#211E1B;
+  --panel-2:#2A2622;
+  --line:#3A342E;
+  --ember:#D55C13;
+  --hot:#FFC93C;
+  --slate:#B8B4AD;
+  --white:#F5F1EA;
+  --good:#7FD98A;
+  --bad:#FF5A5A;
+  --dim:#8A857E;
+
+  /* spacing — 4pt scale */
+  --space-1:4px;
+  --space-2:8px;
+  --space-3:12px;
+  --space-4:16px;
+  --space-5:20px;
+  --space-6:24px;
+  --space-7:32px;
+  --space-8:40px;
+  --space-9:48px;
+  --space-10:64px;
+  --space-11:88px;
+
+  /* radius — 4 steps + pill */
+  --radius-xs:4px;
+  --radius-sm:8px;
+  --radius-md:12px;
+  --radius-lg:16px;
+  --radius-pill:999px;
+}
+
+[data-theme="light"]{
+  --coal:#FAFAF8;
+  --panel:#FFFFFF;
+  --panel-2:#F3F2EF;
+  --line:#E0DDD8;
+  --ember:#E5550F;
+  --hot:#C88500;
+  --slate:#6B6660;
+  --white:#1A1816;
+  --good:#1B8C2A;
+  --bad:#D42D2D;
+  --dim:#6B665F;
+}
