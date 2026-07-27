@@ -746,7 +746,7 @@ function renderLogin(activeTab) {
   var signOutLink = document.getElementById('ta-signout');
   if (signOutLink) signOutLink.onclick = function(e) { e.preventDefault(); teacherSignOut(); };
 
-  // Populate subject dropdown — all available by default; grey-out per school once entered
+  // Populate subject dropdown — all available by default; grey-out per teacher once entered
   if (activeTab === 'create') {
     var sel = document.getElementById('c-subj');
     if (sel) {
@@ -756,13 +756,13 @@ function renderLogin(activeTab) {
       });
       sel.innerHTML = opts;
     }
-    // When school name is blurred, re-filter to grey out subjects already at that school
+    // When school name is blurred, re-filter to grey out subjects THIS teacher already created at that school
     var schoolInput = document.getElementById('c-school');
     if (schoolInput) {
       schoolInput.addEventListener('blur', function() {
         var school = schoolInput.value.trim();
-        if (!school) return;
-        supaGet('classes', 'school=ilike.' + encodeURIComponent(school)).then(function(existing) {
+        if (!school || !currentTeacher || !currentTeacher.id) return;
+        supaGet('classes', 'school=ilike.' + encodeURIComponent(school) + '&teacher_user_id=eq.' + encodeURIComponent(currentTeacher.id)).then(function(existing) {
           var usedSubjects = {};
           (existing || []).forEach(function(c) { if (c.subject) usedSubjects[c.subject] = true; });
           var sel2 = document.getElementById('c-subj');
@@ -772,7 +772,7 @@ function renderLogin(activeTab) {
             if (!usedSubjects[s.key]) {
               opts2 += '<option value="' + s.key + '">' + s.label + ' (' + s.spec + ')</option>';
             } else {
-              opts2 += '<option value="" disabled style="color:#555">' + s.label + ' — already created at this school</option>';
+              opts2 += '<option value="" disabled style="color:#555">' + s.label + ' — you already have a class for this at this school</option>';
             }
           });
           sel2.innerHTML = opts2;
