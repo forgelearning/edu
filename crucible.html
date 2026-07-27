@@ -3470,9 +3470,12 @@ function restoreSession() {
           // Get all class IDs
           var classIds = rows.map(function(r) { return r.class_id; });
 
-          // Fetch class details to get subjects
-          fetch(SUPABASE_URL + '/rest/v1/classes?select=id,subject&id=in.(' + classIds.join(',') + ')', {
-            headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY }
+          // Fetch class details to get subjects — via RPC, since the
+          // classes table itself is no longer directly readable by students.
+          fetch(SUPABASE_URL + '/rest/v1/rpc/get_enrolled_class_subjects', {
+            method: 'POST',
+            headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + (token || SUPABASE_KEY), 'Content-Type': 'application/json' },
+            body: JSON.stringify({ p_class_ids: classIds })
           }).then(function(r) { return r.json(); }).then(function(classes) {
             // Build list of enrolled subjects
             var enrolledSubjects = [];
@@ -3542,9 +3545,14 @@ function checkLocalSessionCrucible() {
       supaGet('students', 'id=eq.' + state.studentId + (state.classId ? '&class_id=eq.' + state.classId : '')).then(function(rows) {
         if (rows && rows[0]) state.extraTime = rows[0].extra_time || 0;
 
-        // Look up all other classes this student may be in via their name
-        // by finding all student rows with same name in classes
-        supaGet('students', 'name=eq.' + encodeURIComponent(state.studentName) + '&class_id=not.is.null').then(function(allRows) {
+        // Look up all other classes this student may be in via their name —
+        // via RPC, since the students/classes tables are no longer directly
+        // readable by an anonymous (no auth token) local-only session.
+        fetch(SUPABASE_URL + '/rest/v1/rpc/get_linked_classes_by_student_name', {
+          method: 'POST',
+          headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ p_name: state.studentName })
+        }).then(function(r) { return r.json(); }).then(function(allRows) {
           var classIds = (allRows || []).map(function(r) { return r.class_id; }).filter(Boolean);
 
           if (classIds.length <= 1) {
@@ -3559,29 +3567,25 @@ function checkLocalSessionCrucible() {
             return;
           }
 
-          // Multiple classes — fetch subjects
-          fetch(SUPABASE_URL + '/rest/v1/classes?select=id,subject&id=in.(' + classIds.join(',') + ')', {
-            headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY }
-          }).then(function(r) { return r.json(); }).then(function(classes) {
-            var enrolledSubjects = [];
-            classes.forEach(function(cls) {
-              if (cls.subject && enrolledSubjects.indexOf(cls.subject) === -1) enrolledSubjects.push(cls.subject);
-            });
-            state.paidSubjects = enrolledSubjects;
+          // Multiple classes — subjects already included in the RPC result
+          var enrolledSubjects = [];
+          (allRows || []).forEach(function(r) {
+            if (r.subject && enrolledSubjects.indexOf(r.subject) === -1) enrolledSubjects.push(r.subject);
+          });
+          state.paidSubjects = enrolledSubjects;
 
-            // Max extra_time across all student rows
-            var maxET = 0;
-            (allRows || []).forEach(function(r) { if ((r.extra_time||0) > maxET) maxET = r.extra_time||0; });
-            if (maxET > state.extraTime) state.extraTime = maxET;
+          // Max extra_time across all student rows
+          var maxET = 0;
+          (allRows || []).forEach(function(r) { if ((r.extra_time||0) > maxET) maxET = r.extra_time||0; });
+          if (maxET > state.extraTime) state.extraTime = maxET;
 
-            if (enrolledSubjects.length === 1) {
-              state.subject = enrolledSubjects[0];
-              state.phase   = 'bank';
-            } else {
-              state.phase = 'subject';
-            }
-            render();
-          }).catch(function() { state.phase = 'subject'; render(); });
+          if (enrolledSubjects.length === 1) {
+            state.subject = enrolledSubjects[0];
+            state.phase   = 'bank';
+          } else {
+            state.phase = 'subject';
+          }
+          render();
         }).catch(function() {
           if (state.classSubject && typeof SUBJECTS !== 'undefined' && SUBJECTS[state.classSubject]) {
             state.subject = state.classSubject;
