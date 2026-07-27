@@ -180,11 +180,6 @@ var headers = {
   'Authorization': 'Bearer ' + SUPABASE_KEY
 };
 
-// ── SIGN-UP INVITE CODE ──────────────────────────────────────
-// Basic deterrent against open self-signup, not a real secret - anyone
-// can view-source this page. Change this and reshare when it leaks.
-var TEACHER_INVITE_CODE = 'MAYFIELD-STAFF';
-
 // ── Teacher auth (separate session from the student-facing forge-auth.js) ──
 var TEACHER_SESSION_KEY = 'forge-teacher-session';
 var currentTeacher = null; // { id, email } once signed in
@@ -313,25 +308,35 @@ function renderTeacherAuth(mode) {
     var btn = document.getElementById('ta-btn');
     err.style.display = 'none';
     if (!email || !password) { err.textContent = 'Enter your email and password.'; err.style.display = 'block'; return; }
-    if (mode === 'signup') {
-      var invite = document.getElementById('ta-invite').value.trim();
-      if (invite.toUpperCase() !== TEACHER_INVITE_CODE) {
-        err.textContent = 'Invite code not recognised. Check with your school.';
-        err.style.display = 'block';
-        return;
-      }
-    }
 
     btn.disabled = true; btn.textContent = 'Please wait...';
-    var action = mode === 'signup' ? TeacherAuth.signUp(email, password) : TeacherAuth.signIn(email, password);
-    action.then(function(data) {
-      currentTeacher = data.user;
-      headers.Authorization = 'Bearer ' + data.access_token;
-      renderLogin(new URLSearchParams(location.search).get('tab') === 'create' ? 'create' : 'view');
-    }).catch(function(e) {
-      btn.disabled = false; btn.textContent = mode === 'signup' ? 'Create account →' : 'Sign in →';
-      err.textContent = e.message || 'Something went wrong.'; err.style.display = 'block';
-    });
+
+    function doAuth() {
+      var action = mode === 'signup' ? TeacherAuth.signUp(email, password) : TeacherAuth.signIn(email, password);
+      action.then(function(data) {
+        currentTeacher = data.user;
+        headers.Authorization = 'Bearer ' + data.access_token;
+        renderLogin(new URLSearchParams(location.search).get('tab') === 'create' ? 'create' : 'view');
+      }).catch(function(e) {
+        btn.disabled = false; btn.textContent = mode === 'signup' ? 'Create account →' : 'Sign in →';
+        err.textContent = e.message || 'Something went wrong.'; err.style.display = 'block';
+      });
+    }
+
+    if (mode === 'signup') {
+      var invite = document.getElementById('ta-invite').value.trim();
+      validateInviteCode(invite).then(function(ok) {
+        if (!ok) {
+          btn.disabled = false; btn.textContent = 'Create account →';
+          err.textContent = 'Invite code not recognised. Check with your school.';
+          err.style.display = 'block';
+          return;
+        }
+        doAuth();
+      });
+    } else {
+      doAuth();
+    }
   };
 }
 
@@ -384,6 +389,19 @@ function supaInsert(table, row) {
       return data;
     });
   });
+}
+
+// Validates a teacher sign-up invite code server-side via Postgres RPC
+// (the code itself is never readable from the client, only this boolean).
+function validateInviteCode(code) {
+  return fetch(SUPABASE_URL + '/rest/v1/rpc/validate_teacher_invite', {
+    method: 'POST',
+    headers: Object.assign({}, headers, { 'Content-Type': 'application/json' }),
+    body: JSON.stringify({ p_code: code })
+  }).then(function(r) {
+    if (!r.ok) return false;
+    return r.json();
+  }).catch(function() { return false; });
 }
 
 // Subject list — derived from the shared SUBJECTS data (data/forge-data.js) so new
