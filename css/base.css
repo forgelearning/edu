@@ -25,6 +25,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:var(--
 .nav-link:hover{color:var(--white)}
 .nav-hide-sm{display:inline-flex}
 @media(max-width:680px){.nav-hide-sm{display:none!important}}
+@media(max-width:480px){#nav-logotext{display:none!important}}
 
 .nav-dropdown.open{display:flex}
 
