@@ -76,7 +76,6 @@ a{color:var(--hot)}
 .nav-drop-menu.open{display:block}
 .nav-drop-menu a{display:block;padding:8px 12px;color:var(--slate);text-decoration:none;font-size:13px;border-radius:6px;white-space:nowrap}
 .nav-drop-menu a:hover{background:var(--panel-2);color:var(--white)}
-.nav-right{display:flex;align-items:center;gap:8px}
 
 /* hero */
 .hero{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;padding:64px 0 88px}
@@ -187,6 +186,8 @@ h2{font-size:clamp(28px,3.6vw,40px);font-weight:800;margin-bottom:14px}
 .subj-top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
 .pill{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:3px 10px;border-radius:99px;border:1px solid var(--line);color:#8A857E}
 .pill.hot{border-color:rgba(255,201,60,.5);color:var(--hot)}
+.pill.good{border-color:rgba(127,217,138,.4);color:var(--good)}
+.pill.early{border-color:rgba(138,133,126,.4);color:#8A857E}
 .boards{font-size:12px;color:#8A857E}
 .subj h3{font-size:19px}
 .subj-stat{font-family:'IBM Plex Sans',sans-serif;font-size:12.5px;color:var(--slate)}
@@ -1425,7 +1426,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
 
     <div class="subj live">
       <div class="subj-top">
-        <span class="pill good">Live</span>
+        <span class="pill early">Early access</span>
         <span class="mono boards">AQA 7192</span>
       </div>
       <h3><a href="a-level-sociology.html" style="color:inherit;text-decoration:none">Sociology</a></h3>
@@ -1485,7 +1486,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
 
     <div class="subj live">
       <div class="subj-top">
-        <span class="pill good">Live</span>
+        <span class="pill early">Early access</span>
         <span class="mono boards">WJEC Level 3</span>
       </div>
       <h3>Criminology</h3>
@@ -1515,7 +1516,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
 
     <div class="subj live">
       <div class="subj-top">
-        <span class="pill good">Live</span>
+        <span class="pill early">Early access</span>
         <span class="mono boards">AQA</span>
       </div>
       <h3>History</h3>
@@ -1575,7 +1576,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
 
     <div class="subj live">
       <div class="subj-top">
-        <span class="pill good">Live</span>
+        <span class="pill early">Early access</span>
         <span class="mono boards">Eduqas</span>
       </div>
       <h3>Computer Science</h3>
@@ -1590,7 +1591,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
 
     <div class="subj live">
       <div class="subj-top">
-        <span class="pill good">Live</span>
+        <span class="pill early">Early access</span>
         <span class="mono boards">Edexcel 9GN0</span>
       </div>
       <h3>German</h3>
@@ -1620,7 +1621,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
 
     <div class="subj live">
       <div class="subj-top">
-        <span class="pill good">Live</span>
+        <span class="pill early">Early access</span>
         <span class="mono boards">Eduqas A680QS</span>
       </div>
       <h3>Media Studies</h3>
@@ -1635,7 +1636,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
 
     <div class="subj live">
       <div class="subj-top">
-        <span class="pill good">Live</span>
+        <span class="pill early">Early access</span>
         <span class="mono boards">AQA 7582</span>
       </div>
       <h3>Physical Education</h3>
@@ -1650,7 +1651,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
 
     <div class="subj live">
       <div class="subj-top">
-        <span class="pill good">Live</span>
+        <span class="pill early">Early access</span>
         <span class="mono boards">Edexcel 9SP0</span>
       </div>
       <h3>Spanish</h3>
@@ -1665,7 +1666,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
 
     <div class="subj live">
       <div class="subj-top">
-        <span class="pill good">Live</span>
+        <span class="pill early">Early access</span>
         <span class="mono boards">Eduqas A120QS</span>
       </div>
       <h3>Religious Studies</h3>
@@ -1680,7 +1681,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
 
     <div class="subj live">
       <div class="subj-top">
-        <span class="pill good">Live</span>
+        <span class="pill early">Early access</span>
         <span class="mono boards">OCR H604</span>
       </div>
       <h3>Health and Social Care</h3>
@@ -1695,7 +1696,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
 
     <div class="subj live">
       <div class="subj-top">
-        <span class="pill good">Live</span>
+        <span class="pill early">Early access</span>
         <span class="mono boards">Edexcel 9FR0</span>
       </div>
       <h3>French</h3>
@@ -1710,7 +1711,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
 
     <div class="subj live">
       <div class="subj-top">
-        <span class="pill good">Live</span>
+        <span class="pill early">Early access</span>
         <span class="mono boards">IB Language B SL Diploma</span>
       </div>
       <h3>Mandarin</h3>
@@ -2072,7 +2073,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
   <div class="inner">
     <p class="tag eyebrow reveal">Early access</p>
     <h2 class="reveal">Get early access to Forge.</h2>
-    <p class="sect-lede reveal" style="margin:0 auto">Forge is being built in a working classroom, launching with Edexcel A Level Economics, AQA Psychology and AQA Sociology. Join the list to shape it and pilot it first.</p>
+    <p class="sect-lede reveal" style="margin:0 auto">Forge is being built in a working classroom, expanding across GCSE and A Level week by week. Join the list to shape it and pilot it first.</p>
     <form id="waitform">
       <input type="email" id="email" placeholder="you@school.org.uk" required aria-label="Email address">
       <button type="submit">Join the waiting list</button>
