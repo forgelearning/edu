@@ -110,6 +110,7 @@ h1,h2,h3{font-family:'Fraunces',sans-serif;color:var(--white);line-height:1.1;le
           <button class="theme-toggle" onclick="(function(){var h=document.documentElement,b=document.querySelector('.theme-toggle');if(h.getAttribute('data-theme')==='light'){h.removeAttribute('data-theme');b.textContent='\u2600 Light';localStorage.setItem('forge-theme','dark');}else{h.setAttribute('data-theme','light');b.textContent='\u263E Dark';localStorage.setItem('forge-theme','light');}})()">&#9728; Light</button>
     </div>
 </nav></div></div>
+<script>if(localStorage.getItem('forge-theme')==='light'){document.documentElement.setAttribute('data-theme','light');document.querySelector('.theme-toggle').textContent='☾ Dark';}</script>
 <div class="wrap">
   <div id="app"></div>
 </div>
