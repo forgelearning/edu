@@ -168,6 +168,7 @@ h1,h2,h3{font-family:'Bricolage Grotesque',sans-serif;color:var(--white);line-he
   <div id="app"></div>
 </div>
 
+<script src="data/forge-data.js"></script>
 <script>
 var SUPABASE_URL = 'https://crysulmbaadjkymcjrew.supabase.co';
 var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNyeXN1bG1iYWFkamt5bWNqcmV3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQyNDUzMzAsImV4cCI6MjA5OTgyMTMzMH0.Q69MKJR6_iEYkqJYXjn8RBhKhstAZShtmf0NiYM-8Vk';
@@ -367,35 +368,12 @@ function supaInsert(table, row) {
   });
 }
 
-// Subject list matching forge-quiz.html SUBJECTS keys
-var SUBJECT_OPTIONS = [
-  { key: 'econ',    label: 'A Level Economics',         spec: 'Edexcel 9EC0' },
-  { key: 'geo',     label: 'A Level Geography',         spec: 'Edexcel 9GE0' },
-  { key: 'psych',   label: 'A Level Psychology',        spec: 'AQA 7182' },
-  { key: 'soc',     label: 'A Level Sociology',         spec: 'AQA 7192' },
-  { key: 'bus',     label: 'A Level Business',          spec: 'Edexcel 9BS0' },
-  { key: 'chem',    label: 'A Level Chemistry',         spec: 'Edexcel 9CH0' },
-  { key: 'bio',     label: 'A Level Biology',           spec: 'Edexcel 9BI0' },
-  { key: 'phys',    label: 'A Level Physics',           spec: 'Edexcel 9PH0' },
-  { key: 'hist',    label: 'A Level History',           spec: 'AQA 7042' },
-  { key: 'law',     label: 'A Level Law',               spec: 'AQA 7162' },
-  { key: 'crim',    label: 'A Level Criminology',       spec: 'WJEC' },
-  { key: 'pol',     label: 'A Level Politics',          spec: 'Edexcel 9PL0' },
-  { key: 'maths',   label: 'A Level Maths',             spec: 'Edexcel 9MA0' },
-  { key: 'german',  label: 'A Level German',            spec: 'Edexcel 9GN0' },
-  { key: 'french',  label: 'A Level French',            spec: 'Edexcel 9FR0' },
-  { key: 'span',    label: 'A Level Spanish',           spec: 'Edexcel 9SP0' },
-  { key: 'mand',    label: 'Mandarin',                  spec: 'IB Language B SL' },
-  { key: 'englit',  label: 'English Literature',        spec: 'AQA 7712' },
-  { key: 'engll',   label: 'English Language & Lit',    spec: 'AQA 7707' },
-  { key: 'cs',      label: 'A Level Computer Science',  spec: 'AQA 7517' },
-  { key: 'rs',      label: 'A Level Religious Studies', spec: 'Eduqas A120QS' },
-  { key: 'hsc',     label: 'Health & Social Care',      spec: 'OCR H604' },
-  { key: 'media',   label: 'A Level Media Studies',     spec: 'Eduqas A680QS' },
-  { key: 'pe',      label: 'A Level Physical Education',spec: 'AQA 7582' },
-  { key: 'gcse-geo',label: 'GCSE Geography',            spec: 'Edexcel B 1GB0' },
-  { key: 'gcse-econ',label: 'GCSE Economics',           spec: 'OCR J205' },
-];
+// Subject list — derived from the shared SUBJECTS data (data/forge-data.js) so new
+// subjects appear here automatically instead of needing a separate manual entry.
+var SUBJECT_OPTIONS = Object.keys(SUBJECTS).map(function(key) {
+  var s = SUBJECTS[key];
+  return { key: key, label: s.label, spec: s.sub.split(' — ')[0] };
+});
 
 // Misconception label lookup
 var MC_LABELS = {
@@ -1402,67 +1380,12 @@ function renderBrowseStarters() {
 
 // ===== ASSIGNMENTS =====
 
-// Bank label lookup — minimal version for teacher side
-var BANK_LABELS = {
-  "ECON-1.1":"Microeconomics Foundations",
-  "2.1.1":"Economic Growth","2.1.2":"Inflation","2.1.3":"Employment & Unemployment","2.1.4":"Balance of Payments",
-  "2.2.1":"Aggregate Demand","2.2.2":"Aggregate Supply","2.2.3":"National Income",
-  "2.3.1":"Fiscal Policy","2.3.2":"Monetary Policy","2.3.3":"Supply-side Policy",
-  "2.4.1":"Income Inequality","2.4.2":"Poverty","2.5.1":"Financial Markets","2.5.2":"Role of Banks","2.5.3":"Central Banks",
-  "GEO-TEC":"Tectonic Hazards",
-  "PSY-SI":"Social Influence","PSY-MEM":"Memory","PSY-ATT":"Attachment","PSY-PATH":"Psychopathology",
-  "SOC-EDU":"Education","SOC-MET":"Research Methods",
-  "BUS-1":"Marketing & People","BUS-2":"Finance & Accounts","BUS-3":"Operations & Strategy",
-  "CHEM-1":"Atomic Structure & Bonding","CHEM-2":"Energetics & Redox","CHEM-3":"Organic Chemistry",
-  "BIO-1":"Cell Biology & Microscopy","BIO-2":"Transport & Enzymes","BIO-3":"Genetics & Inheritance",
-  "PHYS-1":"Mechanics & Materials","PHYS-2":"Waves & Electricity","PHYS-3":"Quantum & Nuclear",
-  "HIST-1":"Germany 1919-45","HIST-2":"Cold War Superpower Relations",
-  "LAW-1":"Criminal Law","LAW-2":"Tort Law",
-  "CRIM-1":"Crime & Deviance Unit 1","CRIM-2":"Criminological Theories",
-  "POL-1":"Paper 1: UK Politics & Ideologies","POL-2":"Paper 2: UK Government & Branches",
-  "MATH-1":"Pure Mathematics Y1","MATH-2":"Calculus & Graphs","MATH-3":"Statistics",
-  "DE-1":"German Language 1","DE-2":"German Language 2",
-  "FR-1":"French Language 1","FR-2":"French Language 2",
-  "CS-1":"Programming Fundamentals","CS-2":"Data Structures & Networks",
-  "RS-1":"Philosophy & Ethics","RS-2":"Applied Ethics",
-  "HSC-1":"Human Lifespan & Health","HSC-2":"Care Practice & Values",
-  "MEDIA-1":"Media Language & Representation","MEDIA-2":"Media Industry & Audience",
-  "PE-1":"Applied Anatomy & Physiology","PE-2":"Exercise Physiology & Biomechanics",
-  "SPAN-1":"Spanish Grammar & Translation","SPAN-2":"Thematic Vocabulary & Culture",
-  "ENG-TERM-1":"Literary & Linguistic Terminology","ENG-TECH-1":"Exam Technique & AO Application",
-  "MAND-1":"IB Mandarin Text Handling & Production",
-  "GCSE-GEO-HAZ":"Hazardous Earth","GCSE-GEO-UKLAND":"UK's Evolving Physical Landscape","GCSE-ECON-UK":"The UK Economy"
-};
-
-// Subject → banks map (mirrors forge-quiz.html SUBJECTS)
-var SUBJECT_BANKS = {
-  econ:  ["ECON-1.1","2.1.1","2.1.2","2.1.3","2.1.4","2.2.1","2.2.2","2.2.3","2.3.1","2.3.2","2.3.3","2.4.1","2.4.2","2.5.1","2.5.2","2.5.3"],
-  geo:   ["GEO-TEC"],
-  psych: ["PSY-SI","PSY-MEM","PSY-ATT","PSY-PATH"],
-  soc:   ["SOC-EDU","SOC-MET"],
-  bus:   ["BUS-1","BUS-2","BUS-3"],
-  chem:  ["CHEM-1","CHEM-2","CHEM-3"],
-  bio:   ["BIO-1","BIO-2","BIO-3"],
-  phys:  ["PHYS-1","PHYS-2","PHYS-3"],
-  hist:  ["HIST-1","HIST-2"],
-  law:   ["LAW-1","LAW-2"],
-  crim:  ["CRIM-1","CRIM-2"],
-  pol:   ["POL-1","POL-2"],
-  maths: ["MATH-1","MATH-2","MATH-3"],
-  german:["DE-1","DE-2"],
-  french:["FR-1","FR-2"],
-  cs:    ["CS-1","CS-2"],
-  rs:    ["RS-1","RS-2"],
-  hsc:   ["HSC-1","HSC-2"],
-  media: ["MEDIA-1","MEDIA-2"],
-  pe:    ["PE-1","PE-2"],
-  span:  ["SPAN-1","SPAN-2"],
-  englit:["ENG-TERM-1","ENG-TECH-1"],
-  engll: ["ENG-TERM-1","ENG-TECH-1"],
-  mand:  ["MAND-1"],
-  "gcse-geo":  ["GCSE-GEO-HAZ","GCSE-GEO-URB","GCSE-GEO-UKLAND","GCSE-GEO-UKHUMAN"],
-  "gcse-econ": ["GCSE-ECON-UK"]
-};
+// Bank label lookup — derived from the shared BANKS data (data/forge-data.js).
+var BANK_LABELS = {};
+Object.keys(BANKS).forEach(function(key) { BANK_LABELS[key] = BANKS[key].label; });
+// Subject → banks map — derived from the shared SUBJECTS data (data/forge-data.js).
+var SUBJECT_BANKS = {};
+Object.keys(SUBJECTS).forEach(function(key) { SUBJECT_BANKS[key] = SUBJECTS[key].banks; });
 
 function dueBadge(dateStr) {
   if (!dateStr) return '';
