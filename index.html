@@ -19,30 +19,6 @@
 <link rel="stylesheet" href="css/tokens.css">
 <link rel="stylesheet" href="css/base.css">
 <style>
-/* floating nav — experimental. Full bar by default; collapses to just
-   the F badge on scroll down (nav-collapsed class, toggled in JS),
-   expands again on scroll up or on tap while collapsed. */
-body{padding-top:88px}
-#sticky-nav{position:fixed;top:14px;left:50%;transform:translateX(-50%);width:calc(100% - 24px);max-width:1080px;border:1px solid var(--line);border-radius:var(--radius-pill);box-shadow:0 20px 50px -20px rgba(0,0,0,.5);transition:width .4s cubic-bezier(.4,0,.2,1),top .3s ease,box-shadow .3s ease}
-[data-theme="light"] #sticky-nav{box-shadow:0 20px 50px -24px rgba(0,0,0,.18)}
-#sticky-nav .wrap-nav{max-width:none}
-#sticky-nav nav{padding:10px 10px 10px 20px;transition:padding .4s cubic-bezier(.4,0,.2,1)}
-#sticky-nav .nav-right{transition:opacity .25s ease .18s}
-@media(min-width:900px){
-  body{padding-top:96px}
-  #sticky-nav{top:16px;width:calc(100% - 32px)}
-  #sticky-nav nav{padding:10px 10px 10px 22px}
-}
-#sticky-nav.nav-collapsed{width:60px;cursor:pointer;overflow:hidden}
-#sticky-nav.nav-collapsed nav{padding:0;justify-content:center;align-items:center}
-#sticky-nav.nav-collapsed .logo{gap:0!important;flex:none!important;justify-content:flex-start!important}
-#sticky-nav.nav-collapsed #nav-logotext{opacity:0!important;width:0!important}
-#sticky-nav.nav-collapsed #nav-logo::after{display:none!important}
-#sticky-nav.nav-collapsed .nav-right{opacity:0;pointer-events:none;position:absolute;right:14px;top:50%;transform:translateY(-50%);transition:opacity .12s ease}
-#sticky-nav.nav-collapsed:hover{box-shadow:0 20px 50px -16px rgba(213,92,19,.4)}
-#sticky-nav .nav-drop-menu{background:rgba(33,30,27,.85);backdrop-filter:blur(32px) saturate(180%);-webkit-backdrop-filter:blur(32px) saturate(180%);box-shadow:0 20px 45px -18px rgba(0,0,0,.4)}
-[data-theme="light"] #sticky-nav .nav-drop-menu{background:rgba(255,255,255,.85)}
-#theme-toggle{width:36px;height:36px;padding:0;display:inline-flex;align-items:center;justify-content:center;font-size:15px;border-radius:50%}
 
 /* hero */
 .hero{display:grid;grid-template-columns:1.14fr .86fr;gap:64px;align-items:center;padding:76px 0 100px;position:relative;isolation:isolate}
@@ -2510,47 +2486,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
 })();
 </script>
 
-<script>
-document.addEventListener('click', function(e) {
-  if (!e.target.closest('.nav-drop-wrap')) {
-    document.querySelectorAll('.nav-drop-menu').forEach(function(m){ m.classList.remove('open'); });
-  }
-});
-</script>
-
-<script>
-(function(){
-  var navEl = document.getElementById('sticky-nav');
-  if (!navEl) return;
-
-  var lastY = window.scrollY;
-  var collapsed = false;
-
-  function collapse() { navEl.classList.add('nav-collapsed'); collapsed = true; }
-  function expand() { navEl.classList.remove('nav-collapsed'); collapsed = false; }
-
-  window.addEventListener('scroll', function(){
-    var y = window.scrollY;
-    var goingDown = y > lastY;
-    lastY = y;
-
-    if (y < 60) {
-      // Always expand near the top
-      if (collapsed) expand();
-    } else if (goingDown && !collapsed) {
-      collapse();
-    } else if (!goingDown && collapsed) {
-      expand();
-    }
-  }, {passive: true});
-
-  // Tap the collapsed badge to pop the full bar back open (matches the
-  // sitewide dropdown-close listener above: don't let this bubble into it).
-  navEl.addEventListener('click', function(e){
-    if (collapsed) { e.preventDefault(); e.stopPropagation(); expand(); }
-  });
-})();
-</script>
+<script src="scripts/nav.js"></script>
 
 <script src="data/forge-data.js"></script>
 <script>

@@ -424,11 +424,11 @@ window.toggleTheme = function() {
   var btn = document.getElementById('theme-toggle');
   if (h.getAttribute('data-theme') === 'light') {
     h.removeAttribute('data-theme');
-    if (btn) btn.textContent = '☀ Light';
+    if (btn) btn.textContent = '☀';
     localStorage.setItem('forge-theme', 'dark');
   } else {
     h.setAttribute('data-theme', 'light');
-    if (btn) btn.textContent = '☾ Dark';
+    if (btn) btn.textContent = '☾';
     localStorage.setItem('forge-theme', 'light');
   }
 };
@@ -438,7 +438,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
   // Button text updated after DOM ready
   document.addEventListener('DOMContentLoaded', function() {
     var btn = document.getElementById('theme-toggle');
-    if (btn) btn.textContent = '☾ Dark';
+    if (btn) btn.textContent = '☾';
   });
 }
 </script>
@@ -460,7 +460,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
     <a class="nav-link nav-hide-sm" href="index.html#pricing">Pricing</a>
     <a class="nav-link nav-hide-sm" href="forge-quiz.html">Sign in</a>
     <a class="cta" href="index.html#waitlist">Get started</a>
-    <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()">☀ Light</button>
+    <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" aria-label="Toggle light/dark theme">☀</button>
   </div>
 </nav>
 </div></div>
@@ -672,5 +672,6 @@ document.querySelectorAll('#eco-bank .bq').forEach(function(card){
   });
 })();
 </script>
+<script src="scripts/nav.js"></script>
 </body>
 </html>
