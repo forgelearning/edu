@@ -43,7 +43,12 @@
 /* demo card — the signature */
 .demo{background:var(--glass-panel);backdrop-filter:blur(var(--glass-blur)) saturate(160%);-webkit-backdrop-filter:blur(var(--glass-blur)) saturate(160%);border:1px solid var(--line);border-radius:var(--radius-lg);padding:26px;position:relative;box-shadow:0 40px 90px -24px rgba(213,92,19,.35),0 30px 70px rgba(0,0,0,.5);transform:translateY(-10px)}
 .demo::before{content:"";position:absolute;inset:-1px;border-radius:var(--radius-lg);padding:1px;background:linear-gradient(160deg,rgba(255,201,60,.55),rgba(255,107,44,.25) 40%,transparent 70%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
-.demo-float{position:absolute;top:-14px;right:28px;font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--coal);background:linear-gradient(100deg,var(--hot),var(--ember));padding:4px 11px;border-radius:var(--radius-pill);font-weight:700;box-shadow:0 8px 20px rgba(213,92,19,.4);transform:rotate(-2deg)}
+.glow-spot{position:relative}
+.glow-spot::after,.glow-spot .glow-border{content:"";position:absolute;inset:0;border-radius:inherit;padding:1.5px;background:radial-gradient(320px circle at var(--glow-x,50%) var(--glow-y,50%),var(--glow-c1,#FFC93C),var(--glow-c2,rgba(255,201,60,.85)) 25%,var(--glow-c3,rgba(213,92,19,.5)) 45%,transparent 68%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;filter:brightness(1.3);opacity:0;transition:opacity .35s ease;pointer-events:none;z-index:0}
+.glow-spot:hover::after,.glow-spot:hover .glow-border{opacity:1}
+.glow-red{--glow-c1:#FF9B9B;--glow-c2:rgba(255,90,90,.85);--glow-c3:rgba(255,90,90,.45)}
+.glow-green{--glow-c1:#B7F0BE;--glow-c2:rgba(127,217,138,.85);--glow-c3:rgba(127,217,138,.45)}
+.demo-float{position:absolute;z-index:1;top:-14px;right:28px;font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--coal);background:linear-gradient(100deg,var(--hot),var(--ember));padding:4px 11px;border-radius:var(--radius-pill);font-weight:700;box-shadow:0 8px 20px rgba(213,92,19,.4);transform:rotate(-2deg)}
 .demo .head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;gap:10px;flex-wrap:wrap}
 .demo .head .spec{font-size:12px;color:var(--slate)}
 .demo .head .spec b{color:var(--hot);font-weight:600}
@@ -533,7 +538,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
   </div>
 
   <!-- SIGNATURE: live demo -->
-  <div class="demo reveal reveal-delay-2" id="demo" aria-live="polite">
+  <div class="demo glow-spot reveal reveal-delay-2" id="demo" aria-live="polite">
     <span class="demo-float">Live bank · updates weekly</span>
     <div class="head">
       <span class="spec mono">A Level Economics · <b>2.1.2</b> Inflation</span>
@@ -565,17 +570,20 @@ if (localStorage.getItem('forge-theme') === 'light') {
   <h2 class="reveal">How a wrong answer becomes a fix.</h2>
   <p class="sect-lede reveal">Flashcard apps show you the right answer and move on. Forge treats the wrong answer as the most useful data in the session — and works it, there and then.</p>
   <div class="loop">
-    <div class="step reveal" data-num="01">
+    <div class="step reveal glow-spot" data-num="01">
+      <span class="glow-border" aria-hidden="true"></span>
       <p class="n mono">01 · TRIGGER</p>
       <h3>The misconception fires</h3>
       <p>Every distractor is written from documented examiner-report errors and tagged to a specific misconception — not "wrong", but <em>why</em> it's wrong.</p>
     </div>
-    <div class="step reveal" data-num="02">
+    <div class="step reveal glow-spot" data-num="02">
+      <span class="glow-border" aria-hidden="true"></span>
       <p class="n mono">02 · SCAFFOLD</p>
       <h3>A 30-second correction</h3>
       <p>Instead of just revealing the answer, Forge shows a two-sentence scaffold that dismantles that exact logic trap while it's still hot.</p>
     </div>
-    <div class="step reveal" data-num="03">
+    <div class="step reveal glow-spot" data-num="03">
+      <span class="glow-border" aria-hidden="true"></span>
       <p class="n mono">03 · RE-FORGE</p>
       <h3>Prove it, reframed</h3>
       <p>A twin question tests the same concept in a new scenario, immediately — so the fix is understood, not memorised.</p>
@@ -589,17 +597,17 @@ if (localStorage.getItem('forge-theme') === 'light') {
   <p class="tag eyebrow reveal">Three ways to train</p>
   <h2 class="reveal">Forge Mode, the Anvil, and the Crucible.</h2>
   <div class="modes reveal">
-    <div class="mode mode-forge">
+    <div class="mode mode-forge glow-spot">
       <h3><span>Forge</span> Mode</h3>
       <p>The daily session: 5–10 minutes of exam-style micro-scenarios, spec-mapped and spaced so it sticks. Habit beats heroics — this isn't an hour-long revision block, it's a short daily rep.</p>
       <p class="who">Every day · 5–10 minutes</p>
     </div>
-    <div class="mode mode-anvil">
+    <div class="mode mode-anvil glow-spot">
       <h3>The <span>Anvil</span></h3>
       <p>Your personal pile of misconceptions that keep firing. Return, rework, and reshape them until they stop costing marks.</p>
       <p class="who">Whenever a weakness persists</p>
     </div>
-    <div class="mode mode-crucible">
+    <div class="mode mode-crucible glow-spot glow-red">
       <h3>The <span>Crucible</span></h3>
       <p>A weekly timed sprint. No hints, no scaffolds — real exam pressure. Results are yours alone; surviving it tempers your rank.</p>
       <p class="who">Weekly · 5 minutes · private</p>
@@ -1374,7 +1382,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
   <!-- A LEVEL -->
   <div class="subjects level-panel" id="panel-alevel" role="tabpanel">
 
-    <div class="subj live" data-subj="econ" data-pill-fixed>
+    <div class="subj live glow-spot" data-subj="econ" data-pill-fixed>
       <div class="subj-top">
         <span class="pill hot">Theme 2 complete</span>
         <span class="mono boards">Edexcel 9EC0</span>
@@ -1389,7 +1397,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
       <a class="subj-link" href="economics.html">View subject page →</a>
     </div>
 
-    <div class="subj live" data-subj="psych">
+    <div class="subj live glow-spot" data-subj="psych">
       <div class="subj-top">
         <span class="pill good">Live</span>
         <span class="mono boards">AQA 7182</span>
@@ -1404,7 +1412,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
       <a class="subj-link" href="psychology.html">View subject page →</a>
     </div>
 
-    <div class="subj live" data-subj="soc">
+    <div class="subj live glow-spot" data-subj="soc">
       <div class="subj-top">
         <span class="pill early">Early access</span>
         <span class="mono boards">AQA 7192</span>
@@ -1419,7 +1427,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
       <a class="subj-link" href="a-level-sociology.html">View subject page →</a>
     </div>
 
-    <div class="subj live" data-subj="geo">
+    <div class="subj live glow-spot" data-subj="geo">
       <div class="subj-top">
         <span class="pill good">Live</span>
         <span class="mono boards">Edexcel 9GE0</span>
@@ -1434,7 +1442,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
       <a class="subj-link" href="forge-quiz.html">Try it now →</a>
     </div>
 
-    <div class="subj live" data-subj="bus">
+    <div class="subj live glow-spot" data-subj="bus">
       <div class="subj-top">
         <span class="pill good">Live</span>
         <span class="mono boards">Edexcel 9BS0</span>
@@ -1449,7 +1457,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
       <a class="subj-link" href="forge-quiz.html">Try it now →</a>
     </div>
 
-    <div class="subj live" data-subj="chem">
+    <div class="subj live glow-spot" data-subj="chem">
       <div class="subj-top">
         <span class="pill good">Live</span>
         <span class="mono boards">AQA 7405</span>
@@ -1464,7 +1472,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
       <a class="subj-link" href="forge-quiz.html">Try it now →</a>
     </div>
 
-    <div class="subj live" data-subj="crim">
+    <div class="subj live glow-spot" data-subj="crim">
       <div class="subj-top">
         <span class="pill early">Early access</span>
         <span class="mono boards">WJEC Level 3</span>
@@ -1479,7 +1487,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
       <a class="subj-link" href="forge-quiz.html">Try it now →</a>
     </div>
 
-    <div class="subj live" data-subj="bio">
+    <div class="subj live glow-spot" data-subj="bio">
       <div class="subj-top">
         <span class="pill good">Live</span>
         <span class="mono boards">OCR-A H420</span>
@@ -1494,7 +1502,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
       <a class="subj-link" href="forge-quiz.html">Try it now →</a>
     </div>
 
-    <div class="subj live" data-subj="hist">
+    <div class="subj live glow-spot" data-subj="hist">
       <div class="subj-top">
         <span class="pill early">Early access</span>
         <span class="mono boards">AQA</span>
@@ -1509,7 +1517,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
       <a class="subj-link" href="forge-quiz.html">Try it now →</a>
     </div>
 
-    <div class="subj live" data-subj="law">
+    <div class="subj live glow-spot" data-subj="law">
       <div class="subj-top">
         <span class="pill good">Live</span>
         <span class="mono boards">OCR</span>
@@ -1524,7 +1532,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
       <a class="subj-link" href="forge-quiz.html">Try it now →</a>
     </div>
 
-    <div class="subj live" data-subj="phys">
+    <div class="subj live glow-spot" data-subj="phys">
       <div class="subj-top">
         <span class="pill good">Live</span>
         <span class="mono boards">AQA 7408</span>
@@ -1539,7 +1547,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
       <a class="subj-link" href="forge-quiz.html">Try it now →</a>
     </div>
 
-    <div class="subj live" data-subj="pol">
+    <div class="subj live glow-spot" data-subj="pol">
       <div class="subj-top">
         <span class="pill good">Live</span>
         <span class="mono boards">Edexcel 9PL0</span>
@@ -1554,7 +1562,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
       <a class="subj-link" href="forge-quiz.html">Try it now →</a>
     </div>
 
-    <div class="subj live" data-subj="cs">
+    <div class="subj live glow-spot" data-subj="cs">
       <div class="subj-top">
         <span class="pill early">Early access</span>
         <span class="mono boards">Eduqas</span>
@@ -1569,7 +1577,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
       <a class="subj-link" href="forge-quiz.html">Try it now →</a>
     </div>
 
-    <div class="subj live" data-subj="german">
+    <div class="subj live glow-spot" data-subj="german">
       <div class="subj-top">
         <span class="pill early">Early access</span>
         <span class="mono boards">Edexcel 9GN0</span>
@@ -1584,7 +1592,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
       <a class="subj-link" href="forge-quiz.html">Try it now →</a>
     </div>
 
-    <div class="subj live" data-subj="maths">
+    <div class="subj live glow-spot" data-subj="maths">
       <div class="subj-top">
         <span class="pill good">Live</span>
         <span class="mono boards">Edexcel 9MA0</span>
@@ -1599,7 +1607,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
       <a class="subj-link" href="forge-quiz.html">Try it now →</a>
     </div>
 
-    <div class="subj live" data-subj="media">
+    <div class="subj live glow-spot" data-subj="media">
       <div class="subj-top">
         <span class="pill early">Early access</span>
         <span class="mono boards">Eduqas A680QS</span>
@@ -1614,7 +1622,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
       <a class="subj-link" href="forge-quiz.html">Try it now →</a>
     </div>
 
-    <div class="subj live" data-subj="pe">
+    <div class="subj live glow-spot" data-subj="pe">
       <div class="subj-top">
         <span class="pill early">Early access</span>
         <span class="mono boards">AQA 7582</span>
@@ -1629,7 +1637,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
       <a class="subj-link" href="forge-quiz.html">Try it now →</a>
     </div>
 
-    <div class="subj live" data-subj="span">
+    <div class="subj live glow-spot" data-subj="span">
       <div class="subj-top">
         <span class="pill early">Early access</span>
         <span class="mono boards">Edexcel 9SP0</span>
@@ -1644,7 +1652,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
       <a class="subj-link" href="forge-quiz.html">Try it now →</a>
     </div>
 
-    <div class="subj live" data-subj="rs">
+    <div class="subj live glow-spot" data-subj="rs">
       <div class="subj-top">
         <span class="pill early">Early access</span>
         <span class="mono boards">Eduqas A120QS</span>
@@ -1659,7 +1667,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
       <a class="subj-link" href="forge-quiz.html">Try it now →</a>
     </div>
 
-    <div class="subj live" data-subj="hsc">
+    <div class="subj live glow-spot" data-subj="hsc">
       <div class="subj-top">
         <span class="pill early">Early access</span>
         <span class="mono boards">OCR H604</span>
@@ -1674,7 +1682,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
       <a class="subj-link" href="forge-quiz.html">Try it now →</a>
     </div>
 
-    <div class="subj live" data-subj="french">
+    <div class="subj live glow-spot" data-subj="french">
       <div class="subj-top">
         <span class="pill early">Early access</span>
         <span class="mono boards">Edexcel 9FR0</span>
@@ -1689,7 +1697,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
       <a class="subj-link" href="forge-quiz.html">Try it now →</a>
     </div>
 
-    <div class="subj live" data-subj="mand">
+    <div class="subj live glow-spot" data-subj="mand">
       <div class="subj-top">
         <span class="pill early">Early access</span>
         <span class="mono boards">IB Language B SL Diploma</span>
@@ -1704,7 +1712,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
       <a class="subj-link" href="forge-quiz.html">Try it now →</a>
     </div>
 
-    <div class="subj live" data-subj="englit" data-pill-fixed>
+    <div class="subj live glow-spot" data-subj="englit" data-pill-fixed>
       <div class="subj-top">
         <span class="pill hot">Pilot</span>
         <span class="mono boards">AQA 7712</span>
@@ -1719,7 +1727,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
       <a class="subj-link" href="forge-quiz.html">Try it now →</a>
     </div>
 
-    <div class="subj live" data-subj="engll" data-pill-fixed>
+    <div class="subj live glow-spot" data-subj="engll" data-pill-fixed>
       <div class="subj-top">
         <span class="pill hot">Pilot</span>
         <span class="mono boards">AQA 7707</span>
@@ -1739,7 +1747,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
   <!-- GCSE -->
   <div class="subjects level-panel" id="panel-gcse" role="tabpanel" hidden>
 
-    <div class="subj live" data-subj="gcse-geo" data-pill-fixed>
+    <div class="subj live glow-spot" data-subj="gcse-geo" data-pill-fixed>
       <div class="subj-top">
         <span class="pill hot">4 banks live</span>
         <span class="mono boards">Edexcel B · 1GB0</span>
@@ -1753,7 +1761,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
       <a class="subj-link" href="gcse-geography.html">View subject page →</a>
     </div>
 
-    <div class="subj soon">
+    <div class="subj soon glow-spot">
       <div class="subj-top">
         <span class="pill">In development</span>
         <span class="mono boards">Edexcel · 1MA1</span>
@@ -1763,7 +1771,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
       <a class="subj-link" href="gcse-maths.html">Preview the subject page →</a>
     </div>
 
-    <div class="subj soon">
+    <div class="subj soon glow-spot">
       <div class="subj-top">
         <span class="pill">In development</span>
         <span class="mono boards">Edexcel · 1SC0</span>
@@ -1773,7 +1781,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
       <a class="subj-link" href="gcse-science.html">Preview the subject page →</a>
     </div>
 
-    <div class="subj soon">
+    <div class="subj soon glow-spot">
       <div class="subj-top">
         <span class="pill">In development</span>
         <span class="mono boards">AQA · 8145</span>
@@ -1783,7 +1791,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
       <a class="subj-link" href="gcse-history.html">Preview the subject page →</a>
     </div>
 
-    <div class="subj soon">
+    <div class="subj soon glow-spot">
       <div class="subj-top">
         <span class="pill">In development</span>
         <span class="mono boards">AQA · 8062</span>
@@ -1793,7 +1801,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
       <a class="subj-link" href="gcse-rs.html">Preview the subject page →</a>
     </div>
 
-    <div class="subj soon">
+    <div class="subj soon glow-spot">
       <div class="subj-top">
         <span class="pill">In development</span>
         <span class="mono boards">AQA · 8132</span>
@@ -1803,7 +1811,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
       <a class="subj-link" href="gcse-business.html">Preview the subject page →</a>
     </div>
 
-    <div class="subj soon">
+    <div class="subj soon glow-spot">
       <div class="subj-top">
         <span class="pill">In development</span>
         <span class="mono boards">AQA · 8182</span>
@@ -1813,7 +1821,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
       <a class="subj-link" href="gcse-psychology.html">Preview the subject page →</a>
     </div>
 
-    <div class="subj live" data-subj="gcse-econ" data-pill-fixed>
+    <div class="subj live glow-spot" data-subj="gcse-econ" data-pill-fixed>
       <div class="subj-top">
         <span class="pill hot">The UK Economy live</span>
         <span class="mono boards">OCR · J205</span>
@@ -1855,22 +1863,22 @@ if (localStorage.getItem('forge-theme') === 'light') {
   <p class="sect-lede reveal">The features below don't exist on Quizlet, Seneca, or Tassomai.</p>
 
   <div class="unique-grid reveal">
-    <div class="unique-card">
+    <div class="unique-card glow-spot">
       <span class="unique-star">★</span>
       <h3>Misconception heatmap</h3>
       <p>The exact wrong answer your class is picking, ranked by frequency and tagged to the spec point it belongs to — not just "this one was tricky."</p>
     </div>
-    <div class="unique-card">
+    <div class="unique-card glow-spot">
       <span class="unique-star">★</span>
       <h3>Scaffold + re-forged twin</h3>
       <p>A wrong answer gets a 30-second correction, then an immediate twin question in a new scenario — proof it stuck, not just a reveal-and-move-on.</p>
     </div>
-    <div class="unique-card">
+    <div class="unique-card glow-spot glow-red">
       <span class="unique-star">★</span>
       <h3>The Crucible — timed pressure</h3>
       <p>No hints, no scaffolds, the clock running. Weekly exam-pressure training that mirrors real exam conditions, not another untimed quiz.</p>
     </div>
-    <div class="unique-card">
+    <div class="unique-card glow-spot glow-green">
       <span class="unique-star">★</span>
       <h3>Corrective starters, auto-built</h3>
       <p>Every misconception the class fires can generate a ready-to-paste starter activity — Monday's lesson plan, written for you.</p>
@@ -1885,22 +1893,22 @@ if (localStorage.getItem('forge-theme') === 'light') {
   <h2 class="reveal">Beyond recall: the full comparison.</h2>
 
   <div class="vs-grid reveal">
-    <div class="vs-card">
+    <div class="vs-card glow-spot">
       <p class="n">VS QUIZLET'S CROWD-SOURCED SETS</p>
       <h3>Every question mapped to the spec</h3>
       <p>Not user-uploaded decks of mixed quality. Every distractor is misconception-tagged and sourced from examiners' reports.</p>
     </div>
-    <div class="vs-card">
+    <div class="vs-card glow-spot">
       <p class="n">VS SENECA'S MARK-AND-MOVE-ON</p>
       <h3>Wrong answers get reworked, not just marked</h3>
       <p>Seneca tells you it's wrong and continues. Forge scaffolds the exact misconception, then retests it immediately with a twin question.</p>
     </div>
-    <div class="vs-card">
+    <div class="vs-card glow-spot">
       <p class="n">VS TASSOMAI'S GCSE FOCUS</p>
       <h3>Built for A Level depth, not just recall</h3>
       <p>Tassomai covers GCSE breadth well. Forge goes deep on A Level application and technique, with a timed exam-pressure mode built in.</p>
     </div>
-    <div class="vs-card">
+    <div class="vs-card glow-spot">
       <p class="n">VS A PAPER MOCK EXAM</p>
       <h3>You find out today, not in six weeks</h3>
       <p>A mock gives you a grade weeks later. Forge tags the misconception the moment it fires — every session is a live diagnostic.</p>
@@ -2091,6 +2099,15 @@ if (localStorage.getItem('forge-theme') === 'light') {
 </div>
 
 <script>
+(function(){
+  document.addEventListener('pointermove',function(e){
+    var card=e.target.closest('.glow-spot');
+    if(!card)return;
+    var r=card.getBoundingClientRect();
+    card.style.setProperty('--glow-x',(e.clientX-r.left)+'px');
+    card.style.setProperty('--glow-y',(e.clientY-r.top)+'px');
+  });
+})();
 (function(){
   var opts=document.querySelectorAll('.opt');
   var scaffold=document.getElementById('scaffold');
@@ -2354,7 +2371,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
 
   var bankEl=document.getElementById('bank');
   BANK.forEach(function(item,i){
-    var card=document.createElement('div');card.className='bq';
+    var card=document.createElement('div');card.className='bq glow-spot';
     var h='<div class="bq-head"><span class="spec mono"><b>'+item.spec+'</b></span>';
     h+=item.crucible?'<span class="crucible-note">Crucible</span>':'<span class="fmt">'+item.fmt+'</span>';
     h+='</div>';
