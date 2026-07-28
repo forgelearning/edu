@@ -110,22 +110,27 @@ h2{font-size:clamp(28px,3.6vw,40px);font-weight:800;margin-bottom:14px}
 .loop .step p{font-size:14px;position:relative}
 
 /* vs competitors */
-.vs-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:28px;margin-bottom:36px}
-.vs-grid .vs-card{background:var(--glass-panel);backdrop-filter:blur(var(--glass-blur)) saturate(160%);-webkit-backdrop-filter:blur(var(--glass-blur)) saturate(160%);border:1px solid var(--line);border-radius:var(--radius-lg);padding:20px}
-.vs-grid .vs-card .n{font-family:'JetBrains Mono',monospace;color:var(--ember);font-size:12px;margin-bottom:8px;text-transform:uppercase;letter-spacing:.04em}
-.vs-grid .vs-card h3{font-size:16px;margin-bottom:6px}
-.vs-grid .vs-card p{font-size:13px;line-height:1.45;color:var(--slate)}
-@media(max-width:860px){.vs-grid{grid-template-columns:1fr 1fr}}
-@media(max-width:480px){.vs-grid{grid-template-columns:1fr}}
+.vs-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:28px;margin-bottom:36px}
+.vs-grid .vs-card{background:var(--glass-panel);backdrop-filter:blur(var(--glass-blur)) saturate(160%);-webkit-backdrop-filter:blur(var(--glass-blur)) saturate(160%);border:1px solid var(--line);border-radius:var(--radius-lg);padding:22px;transition:transform .2s ease,border-color .2s ease}
+.vs-grid .vs-card:hover{transform:translateY(-4px);border-color:rgba(255,107,44,.4)}
+.vs-grid .vs-card .n{font-family:'JetBrains Mono',monospace;color:var(--ember);font-size:11px;margin-bottom:10px;text-transform:uppercase;letter-spacing:.05em;display:inline-block;padding:3px 10px;border-radius:var(--radius-pill);background:rgba(213,92,19,.08);border:1px solid rgba(213,92,19,.25)}
+.vs-grid .vs-card h3{font-size:17px;margin:6px 0 8px}
+.vs-grid .vs-card p{font-size:13.5px;line-height:1.5;color:var(--slate)}
+@media(max-width:760px){.vs-grid{grid-template-columns:1fr}}
 
 /* unique features */
-.unique-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:32px}
-.unique-card{background:var(--glass-panel);backdrop-filter:blur(var(--glass-blur)) saturate(160%);-webkit-backdrop-filter:blur(var(--glass-blur)) saturate(160%);border:1px solid rgba(255,201,60,.3);border-radius:var(--radius-lg);padding:20px;position:relative}
-.unique-card .unique-star{position:absolute;top:16px;right:16px;color:var(--hot);font-size:14px}
-.unique-card h3{font-size:16px;margin-bottom:6px;padding-right:20px}
-.unique-card p{font-size:13px;line-height:1.45;color:var(--slate)}
-@media(max-width:860px){.unique-grid{grid-template-columns:1fr 1fr}}
-@media(max-width:480px){.unique-grid{grid-template-columns:1fr}}
+.unique-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:32px}
+.unique-card{background:var(--glass-panel);backdrop-filter:blur(var(--glass-blur)) saturate(160%);-webkit-backdrop-filter:blur(var(--glass-blur)) saturate(160%);border:1px solid var(--line);border-left:3px solid var(--hot);border-radius:var(--radius-lg);padding:22px;position:relative;overflow:hidden;transition:transform .2s ease,border-color .2s ease}
+.unique-card:hover{transform:translateY(-4px)}
+.unique-card .unique-star{position:absolute;top:-10px;right:6px;font-size:68px;color:var(--hot);opacity:.12;line-height:1;pointer-events:none}
+.unique-card h3{font-size:17px;margin-bottom:6px;padding-right:24px;position:relative}
+.unique-card p{font-size:13.5px;line-height:1.5;color:var(--slate);position:relative}
+.unique-card:nth-child(2){border-left-color:var(--ember)}
+.unique-card:nth-child(3){border-left-color:var(--bad)}
+.unique-card:nth-child(3) .unique-star{color:var(--bad)}
+.unique-card:nth-child(4){border-left-color:var(--good)}
+.unique-card:nth-child(4) .unique-star{color:var(--good)}
+@media(max-width:760px){.unique-grid{grid-template-columns:1fr}}
 
 /* modes */
 .modes{display:grid;grid-template-columns:1.12fr 1fr 1fr;gap:18px;margin-top:32px;align-items:stretch}
@@ -220,11 +225,14 @@ h2{font-size:clamp(28px,3.6vw,40px);font-weight:800;margin-bottom:14px}
 table{width:100%;border-collapse:collapse;margin-top:26px;font-size:14px}
 th,td{padding:9px 12px;text-align:left;border-bottom:1px solid var(--line)}
 th{font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:#8A857E;font-weight:600}
+tbody tr:not(.group-row):hover td{background:var(--panel-2)}
 .group-row td{background:var(--panel);font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--hot);font-weight:700;padding:8px 12px;border-bottom:1px solid var(--line)}
 .group-row:first-child td{padding-top:9px}
 td:first-child{color:var(--white)}
 th.forge,td.forge{background:rgba(255,107,44,.06);border-left:1px solid rgba(255,107,44,.3);border-right:1px solid rgba(255,107,44,.3)}
-th.forge{color:var(--hot)}
+tbody tr:not(.group-row):hover td.forge{background:rgba(255,107,44,.1)}
+th.forge{color:var(--hot);position:relative}
+th.forge::before{content:"★ ";font-size:10px}
 .y{color:var(--good)}.n{color:#6B665F}.p{color:var(--slate)}.star{color:var(--hot);font-weight:700}
 .legend{margin-top:12px;font-size:12px;color:#8A857E}
 
@@ -366,7 +374,12 @@ th.forge{color:var(--hot)}
 .deluxe-banner-text p{font-size:13px;color:var(--slate);line-height:1.4;max-width:640px}
 .price-saving{display:inline-block;font-size:11px;font-family:'JetBrains Mono',monospace;background:rgba(127,217,138,.12);color:var(--good);padding:2px 8px;border-radius:var(--radius-xs);margin-top:4px}
 .price-monthly-equiv{font-size:11px;color:#8A857E;font-family:'JetBrains Mono',monospace;margin-top:2px}
-.price-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-lg);padding:18px;display:flex;flex-direction:column;gap:8px;position:relative;min-width:0;word-break:break-word;margin-top:8px}
+.price-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-lg);padding:18px;display:flex;flex-direction:column;gap:8px;position:relative;min-width:0;word-break:break-word;margin-top:8px;transition:transform .2s ease,box-shadow .2s ease}
+.price-card:hover{transform:translateY(-4px);box-shadow:0 24px 50px -20px rgba(0,0,0,.35)}
+[data-theme="light"] .price-card:hover{box-shadow:0 20px 40px -18px rgba(0,0,0,.12)}
+.trust-row{margin-top:32px;display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+.trust-chip{font-size:12.5px;color:var(--slate);background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-pill);padding:9px 16px;line-height:1.4}
+.trust-chip b{color:var(--white);font-weight:600}
 .price-card-hot{background:linear-gradient(160deg,var(--hot),var(--ember));border-color:transparent;box-shadow:0 20px 60px rgba(255,107,44,.3)}
 .price-card-school{border-color:rgba(255,201,60,.3)}
 .price-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--coal);color:var(--hot);font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;padding:3px 14px;border-radius:var(--radius-pill);border:1px solid rgba(255,201,60,.4);white-space:nowrap}
@@ -393,7 +406,7 @@ th.forge{color:var(--hot)}
 /* gamification */
 .xp-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:24px}
 .xp-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-md);padding:14px;text-align:center}
-.xp-icon{font-size:20px;margin-bottom:6px}
+.xp-icon{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:var(--ember);letter-spacing:.06em;margin-bottom:8px}
 .xp-label{font-size:11px;color:#8A857E;margin-bottom:4px;display:block}
 .xp-val{font-family:'Sora',sans-serif;font-size:20px;font-weight:800;color:var(--hot);margin-bottom:4px}
 .xp-desc{font-size:11.5px;line-height:1.35;color:var(--slate)}
@@ -414,7 +427,7 @@ th.forge{color:var(--hot)}
 .lb-name{color:var(--white);font-weight:600}
 .lb-rank-badge{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;padding:2px 8px;border-radius:var(--radius-pill);text-align:center}
 .lb-xp{font-size:13px;text-align:right}
-.lb-streak{font-size:13px;text-align:right}
+.lb-streak{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--ember);text-align:right}
 
 @media(max-width:680px){.pricing-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:480px){.pricing-grid{grid-template-columns:1fr}}
@@ -431,7 +444,10 @@ th.forge{color:var(--hot)}
 .wait{background:linear-gradient(180deg,rgba(255,107,44,.08),transparent 60%);border-top:1px solid rgba(255,107,44,.35)}
 .wait .inner{max-width:620px;margin:0 auto;text-align:center}
 .wait form{display:flex;gap:10px;margin-top:28px;flex-wrap:wrap;justify-content:center}
-.wait input[type=email]{flex:1;min-width:240px;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-sm);padding:13px 16px;color:var(--white);font-family:'Inter',sans-serif;font-size:15px}
+.wait input[type=email]{flex:1;min-width:240px;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-sm);padding:13px 16px;color:var(--white);font-family:'Inter',sans-serif;font-size:15px;transition:border-color .15s ease,box-shadow .15s ease}
+.wait input[type=email]:focus{outline:none;border-color:var(--ember);box-shadow:0 0 0 3px rgba(213,92,19,.18)}
+.wait button{transition:background .15s ease,transform .15s ease}
+.wait button:active{transform:scale(.97)}
 .wait input::placeholder{color:#7A756E}
 .wait button{background:var(--ember);border:none;color:var(--coal);font-family:'Inter',sans-serif;font-weight:600;font-size:15px;padding:13px 24px;border-radius:var(--radius-sm);cursor:pointer}
 .wait button:hover{background:var(--hot)}
@@ -445,7 +461,7 @@ footer{padding:40px 0 28px;border-top:1px solid var(--line)}
   .loop,.modes{grid-template-columns:1fr}
   .subjects{grid-auto-columns:82vw}
   .split{grid-template-columns:1fr}
-  .table-scroll{overflow-x:auto}
+  .table-scroll{overflow-x:auto;mask-image:linear-gradient(90deg,#000 0%,#000 calc(100% - 40px),transparent 100%);-webkit-mask-image:linear-gradient(90deg,#000 0%,#000 calc(100% - 40px),transparent 100%)}
   table{min-width:640px}
   .spec-grid{grid-template-columns:repeat(auto-fill,minmax(120px,1fr))}
 }
@@ -710,7 +726,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
         <!-- Active assignment -->
         <div style="background:var(--panel-2);border:1px solid rgba(255,107,44,.35);border-radius:var(--radius-md);padding:16px 18px">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-            <span style="font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--ember)">📋 Assignment</span>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--ember)">Assignment</span>
             <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--hot)">Due in 2 days</span>
           </div>
           <p style="font-family:'Sora',sans-serif;font-size:16px;font-weight:700;color:var(--white);margin-bottom:10px">Monetary &amp; Fiscal Policy revision</p>
@@ -723,7 +739,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
         <!-- Upcoming assignment -->
         <div style="background:var(--panel-2);border:1px solid rgba(255,107,44,.2);border-radius:var(--radius-md);padding:16px 18px">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-            <span style="font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--ember)">📋 Assignment</span>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--ember)">Assignment</span>
             <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--good)">Due 14 Feb</span>
           </div>
           <p style="font-family:'Sora',sans-serif;font-size:16px;font-weight:700;color:var(--white);margin-bottom:10px">BoP &amp; Exchange Rates — focus on J-curve</p>
@@ -829,31 +845,31 @@ if (localStorage.getItem('forge-theme') === 'light') {
 
       <div class="xp-grid">
         <div class="xp-card reveal">
-          <div class="xp-icon">⚡</div>
+          <div class="xp-icon">01</div>
           <div class="xp-label mono">Quiz — correct</div>
           <div class="xp-val">+10 XP</div>
           <div class="xp-desc">Getting it right first time. The baseline.</div>
         </div>
         <div class="xp-card reveal">
-          <div class="xp-icon">🔁</div>
+          <div class="xp-icon">02</div>
           <div class="xp-label mono">Re-forge — correct</div>
           <div class="xp-val">+20 XP</div>
           <div class="xp-desc">You got it wrong, then proved you understood why. That's worth more.</div>
         </div>
         <div class="xp-card reveal">
-          <div class="xp-icon">🔥</div>
+          <div class="xp-icon">03</div>
           <div class="xp-label mono">Crucible — correct</div>
           <div class="xp-val">+30 XP</div>
           <div class="xp-desc">No hints. No scaffolds. Under the clock. This is exam conditions.</div>
         </div>
         <div class="xp-card reveal">
-          <div class="xp-icon">⚒</div>
+          <div class="xp-icon">04</div>
           <div class="xp-label mono">Anvil cleared</div>
           <div class="xp-val">+30 XP</div>
           <div class="xp-desc">A misconception that survived the re-forge, reworked until it's gone.</div>
         </div>
         <div class="xp-card reveal">
-          <div class="xp-icon">📅</div>
+          <div class="xp-icon">05</div>
           <div class="xp-label mono">Daily streak</div>
           <div class="xp-val">Tracked</div>
           <div class="xp-desc">Return the next day. Your streak shows on your profile — the habit is the revision strategy.</div>
@@ -899,28 +915,28 @@ if (localStorage.getItem('forge-theme') === 'light') {
             <span class="lb-name">You</span>
             <span class="lb-rank-badge" style="background:rgba(255,107,44,.15);color:var(--ember)">Craftsman</span>
             <span class="lb-xp mono">3,240 XP</span>
-            <span class="lb-streak">🔥 12</span>
+            <span class="lb-streak">12d streak</span>
           </div>
           <div class="lb-row">
             <span class="lb-pos">2</span>
             <span class="lb-name">Student B</span>
             <span class="lb-rank-badge" style="background:rgba(255,201,60,.15);color:var(--hot)">Journeyman</span>
             <span class="lb-xp mono">1,980 XP</span>
-            <span class="lb-streak">🔥 7</span>
+            <span class="lb-streak">7d streak</span>
           </div>
           <div class="lb-row">
             <span class="lb-pos">3</span>
             <span class="lb-name">Student C</span>
             <span class="lb-rank-badge" style="background:rgba(255,201,60,.15);color:var(--hot)">Journeyman</span>
             <span class="lb-xp mono">1,640 XP</span>
-            <span class="lb-streak">🔥 4</span>
+            <span class="lb-streak">4d streak</span>
           </div>
           <div class="lb-row lb-dim">
             <span class="lb-pos">4</span>
             <span class="lb-name">Student D</span>
             <span class="lb-rank-badge" style="background:var(--panel-2);color:var(--slate)">Apprentice</span>
             <span class="lb-xp mono">420 XP</span>
-            <span class="lb-streak">🔥 2</span>
+            <span class="lb-streak">2d streak</span>
           </div>
         </div>
         <p style="font-size:13px;color:#8A857E;margin-top:10px">Leaderboards are class-only — students compete within their group, not against the world. XP is earned by correct thinking, not time logged.</p>
@@ -1026,7 +1042,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
         </div>
 
         <div class="crucible-q">
-          <p class="crucible-stem">🧮 Calculator permitted &nbsp;·&nbsp; <span style="color:#8A857E;font-size:13px">Maths · Pure Year 1</span><br><br>Given that f(x) = 3x⁴ − 5x² + 2, find f′(x) and hence the gradient at x = 1.</p>
+          <p class="crucible-stem">Calculator permitted &nbsp;·&nbsp; <span style="color:#8A857E;font-size:13px">Maths · Pure Year 1</span><br><br>Given that f(x) = 3x⁴ − 5x² + 2, find f′(x) and hence the gradient at x = 1.</p>
           <div class="crucible-opts">
             <div class="crucible-opt">A · f′(x) = 12x³ − 10x &nbsp;· gradient = 2</div>
             <div class="crucible-opt highlight">B · f′(x) = 12x³ − 10x &nbsp;· gradient = 2</div>
@@ -1349,7 +1365,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
         </div>
         <div style="display:flex;gap:8px">
           <div style="flex:1;padding:11px;border-radius:var(--radius-sm);background:var(--ember);color:#fff;font-family:'Inter',sans-serif;font-weight:600;font-size:14px;text-align:center">Set assignment →</div>
-          <div style="padding:11px 14px;border-radius:var(--radius-sm);background:var(--panel);border:1px solid var(--line);color:var(--slate);font-family:'Inter',sans-serif;font-size:13px;text-align:center">📋 Copy EduLink message</div>
+          <div style="padding:11px 14px;border-radius:var(--radius-sm);background:var(--panel);border:1px solid var(--line);color:var(--slate);font-family:'Inter',sans-serif;font-size:13px;text-align:center">Copy EduLink message</div>
         </div>
       </div>
 
@@ -2044,11 +2060,11 @@ if (localStorage.getItem('forge-theme') === 'light') {
     <a href="#waitlist" class="price-btn" style="background:rgba(127,217,138,.12);color:var(--good);border:1px solid rgba(127,217,138,.3);white-space:nowrap">Apply for a place →</a>
   </div>
 
-  <div style="margin-top:32px;padding:18px 24px;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-md);display:flex;flex-wrap:wrap;gap:24px;justify-content:center;align-items:center">
-    <span style="font-size:13px;color:#8A857E">🏫 <b style="color:var(--white)">Built by a practising teacher</b> — every question written against examiners' reports</span>
-    <span style="font-size:13px;color:#8A857E">🎓 <b style="color:var(--white)">Students self-subscribe</b> for £2.99/mo — no class code needed</span>
-    <span style="font-size:13px;color:#8A857E">📄 <b style="color:var(--white)">One invoice</b> for schools — no procurement headache</span>
-    <span style="font-size:13px;color:#8A857E">🔒 <b style="color:var(--white)">UK GDPR compliant</b> — data stored in the EU, no advertising</span>
+  <div class="trust-row reveal">
+    <span class="trust-chip"><b>Built by a practising teacher</b> — every question written against examiners' reports</span>
+    <span class="trust-chip"><b>Students self-subscribe</b> for £2.99/mo — no class code needed</span>
+    <span class="trust-chip"><b>One invoice</b> for schools — no procurement headache</span>
+    <span class="trust-chip"><b>UK GDPR compliant</b> — data stored in the EU, no advertising</span>
   </div>
 
   <div class="pricing-note" style="margin-top:20px">
