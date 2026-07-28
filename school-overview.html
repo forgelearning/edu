@@ -149,6 +149,12 @@ function supaGet(table, params) {
   return fetch(url, { headers: hdrs }).then(function(r) { return r.json(); });
 }
 
+function supaRpc(fn) {
+  var url = SUPABASE_URL + '/rest/v1/rpc/' + fn;
+  return fetch(url, { method: 'POST', headers: Object.assign({ 'Content-Type': 'application/json' }, hdrs), body: '{}' })
+    .then(function(r) { return r.json(); });
+}
+
 // ── AUTH ─────────────────────────────────────────────────────
 var SESSION_KEY = 'forge-slt-session';
 function isAuthed() { return localStorage.getItem(SESSION_KEY) === SCHOOL_OVERVIEW_CODE; }
@@ -195,14 +201,12 @@ function renderLoading() {
 var data = { classes: [], students: [], responses: [] };
 
 function loadData() {
-  Promise.all([
-    supaGet('classes', ''),
-    supaGet('students', ''),
-    supaGet('responses', 'order=created_at.desc')
-  ]).then(function(results) {
-    data.classes   = results[0] || [];
-    data.students  = results[1] || [];
-    data.responses = results[2] || [];
+  supaRpc('get_school_overview').then(function(result) {
+    data.classes   = result.classes   || [];
+    data.students  = result.students  || [];
+    data.responses = (result.responses || []).slice().sort(function(a, b) {
+      return new Date(b.created_at) - new Date(a.created_at);
+    });
     renderDashboard();
   }).catch(function() {
     app.innerHTML = '<p style="color:var(--bad);padding:40px 0">Could not load data. Check your connection.</p>';
