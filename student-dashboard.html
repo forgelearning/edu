@@ -1,0 +1,514 @@
+<head>
+<link rel="icon" type="image/x-icon" href="data:image/x-icon;base64,AAABAAEAEBAAAAAAIACfAgAAFgAAAIlQTkcNChoKAAAADUlIRFIAAAAQAAAAEAgGAAAAH/P/YQAAAmZJREFUeJxtk81L1FEUhp9z7x3n5zRaqFGaJC0qo3Urg2kTfWCEiZHUIoJ2LSPahET/Qju3glCYCOGmoFy4CDctiyCw0PxozHScmd/HvadFo2X57i485z33nMMrOoSV53gaGin1RJcP1/ryNlwzRgcAQpDJ2JsX00vNs49n5uvbrA5hBeBp6WDxTBd9edF+azhvhZORhdgrAHkr1D145aMPvIpVXs4tMntvZrUiczc6xvJWz7Xk5EiThXoGqgERvCoGQISgihUxRA4SD5upLsRe3srXOx1a90qcERqg+VKzJg1gBQQIQE6gu9nvMHmHiazgNhLNUAyCETAeePC+yHzVooBXiINwrOCZPLtuHBgVSDJC4jU4wCHskm28T7dm7M8pcRA6I78bEwxgHHtIBOoBHp6qcqEzZqVuSAMkQVDYZWT2MlCFvIHRz83cftfK66UmRCDo/6z71xFAASfwZjVHbctwtBC41JVQzfbg0sCPZsuBTBuTAc5ApnD/RJXe1oxD+UAl/b3lRqE6gZpn3cRepgtORJWw7byRCpVY6G3xXOxM6C4EUv3zU1VCwYnEXqbdWiwj+3LhSuRojT3eCPZmT52VWGjPB1YbC/yru48c9meqG2uxGRGAmcH2q11FmRSQeqZZMafWCbKVyU5nBUXxkROnoIsVHShNlKeMDmFLE+WphRr9adDltsi4SiZSTsQnAW0cxVtB2iLj0qDLCzX6SxPlqZ0wbSdyYqCj83iBR02GW5GjZVeYMjaTwNinKk8GJ79/267ZueCzIez1Rqxnh9t7i8JdYxgGCIHxijLaN17+8C/7C6vqLm7TWkYuAAAAAElFTkSuQmCC"><link rel="apple-touch-icon" href="data:image/png;base64,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"><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Forge — Dashboard</title>
+<meta name="description" content="Your exam readiness profile — accuracy, focus areas, and strengths, updated after every Forge session.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/sidebar.css">
+<link rel="stylesheet" href="css/sidebar.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--coal);color:var(--slate);font-family:'Inter',sans-serif;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100vh}
+h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter-spacing:-.015em}
+.mono{font-family:'JetBrains Mono',monospace}
+.wrap{max-width:860px;margin:0 auto;padding:28px 20px}
+.tag{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ember)}
+.logo{font-family:'Sora',sans-serif;font-weight:800;font-size:20px;color:var(--white);text-decoration:none;display:inline-flex;align-items:center;gap:8px;margin-bottom:0}
+.logo .spark{width:9px;height:9px;background:linear-gradient(135deg,var(--hot),var(--ember));border-radius:var(--radius-xs);transform:rotate(45deg);box-shadow:0 0 10px rgba(255,107,44,.7)}
+.theme-toggle{background:var(--panel);border:1px solid var(--line);color:var(--slate);font-family:'JetBrains Mono',monospace;font-size:12px;padding:6px 12px;border-radius:var(--radius-sm);cursor:pointer;z-index:99}
+.join-input{width:100%;padding:12px 14px;border-radius:var(--radius-sm);border:1px solid var(--line);background:var(--panel);color:var(--white);font-family:'Inter',sans-serif;font-size:15px;margin-bottom:14px;text-transform:uppercase}
+.join-input:focus{outline:none;border-color:var(--ember)}
+.join-input::placeholder{color:#7A756E;text-transform:none}
+.join-btn{width:100%;padding:13px;border-radius:var(--radius-sm);background:var(--ember);color:#fff;border:none;font-family:'Inter',sans-serif;font-weight:600;font-size:15px;cursor:pointer}
+.join-btn:hover{background:var(--hot)}
+.join-btn:disabled{opacity:.5;cursor:wait}
+.join-err{color:var(--bad);font-size:13px;margin-top:10px;display:none}
+/* ── Profile tabs ── */
+.prof-tabs{display:flex;gap:0;margin-bottom:24px;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-md);padding:4px;width:fit-content}
+.prof-tab{font-size:13px;font-weight:600;font-family:'Inter',sans-serif;padding:8px 16px;border-radius:var(--radius-sm);border:none;background:none;color:var(--slate);cursor:pointer;transition:all .15s}
+.prof-tab.active{background:var(--ember);color:#fff}
+.prof-tab:hover:not(.active){color:var(--white)}
+/* ── Profile header card ── */
+.prof-header{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-lg);padding:24px 28px;margin-bottom:20px}
+.prof-header-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px}
+.prof-name{font-family:'Sora',sans-serif;font-size:22px;font-weight:700;color:var(--white)}
+.prof-subject{font-size:13px;color:var(--slate);margin-top:2px}
+.always-updating{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--ember)}
+/* ── Stat row ── */
+.stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.stat{text-align:center;padding:4px 0}
+.stat-n{font-family:'Sora',sans-serif;font-size:32px;font-weight:800;display:block;line-height:1}
+.stat-l{font-size:10px;color:#8A857E;margin-top:6px;display:block;font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.05em}
+/* ── Two-column overview ── */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-lg);padding:20px;margin-bottom:16px}
+.card-title{font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center}
+/* ── Focus items ── */
+.focus-item{background:var(--panel-2);border:1px solid var(--line);border-radius:var(--radius-md);padding:13px 14px;margin-bottom:8px}
+.focus-head{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:6px}
+.focus-pill{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-family:'JetBrains Mono',monospace;font-weight:700;padding:3px 10px;border-radius:var(--radius-xs)}
+.focus-acc{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700}
+.focus-detail{font-size:13px;color:var(--slate);line-height:1.5}
+.focus-tag{font-size:11px;color:var(--coal);background:var(--hot);padding:2px 8px;border-radius:var(--radius-xs);font-weight:600;font-family:'JetBrains Mono',monospace}
+/* ── Strengths ── */
+.strength-item{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--line);font-size:13px}
+.strength-item:last-child{border-bottom:none}
+.strength-label{color:var(--white)}
+.strength-acc{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:13px;color:var(--good)}
+/* ── Grade + rank ── */
+.grade-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-lg);padding:22px 24px;margin-bottom:16px;display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.grade-letter{font-family:'Sora',sans-serif;font-size:52px;font-weight:800;line-height:1;min-width:80px;text-align:center}
+.grade-info{flex:1;min-width:180px}
+.grade-acc{min-width:80px;text-align:center}
+.grade-eyebrow{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:#8A857E;margin-bottom:4px}
+.grade-tracking{font-size:15px;font-weight:600;color:var(--white);margin-bottom:6px}
+.grade-desc{font-size:13px;color:var(--slate)}
+.grade-caveat{font-size:11px;font-family:'JetBrains Mono',monospace;color:#8A857E;margin-top:6px}
+.rank-display{text-align:center;padding:22px;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-lg);margin-bottom:16px}
+.rank-title{font-family:'Sora',sans-serif;font-size:28px;font-weight:800}
+.rank-xp{font-family:'JetBrains Mono',monospace;font-size:13px;color:#8A857E;margin-top:4px}
+.xp-bar-wrap{height:5px;background:var(--line);border-radius:var(--radius-xs);margin:12px 0 4px}
+.xp-bar-fill{height:5px;border-radius:var(--radius-xs);background:linear-gradient(90deg,var(--hot),var(--ember))}
+.xp-bar-label{display:flex;justify-content:space-between;font-size:11px;font-family:'JetBrains Mono',monospace;color:#8A857E}
+/* ── Anvil list ── */
+.mc-item{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:var(--radius-md);background:var(--panel-2);border:1px solid var(--line);margin-bottom:6px;font-size:13px}
+.mc-detail{flex:1;color:var(--slate)}
+.mc-fires{font-family:'JetBrains Mono',monospace;font-size:12px}
+.empty{text-align:center;padding:28px 20px;color:var(--slate)}
+.empty h3{color:var(--white);margin-bottom:8px}
+.prof-footer{font-size:13px;color:var(--slate);margin-top:16px;padding-top:16px;border-top:1px solid var(--line)}
+.nav-links{display:none} /* replaced by tabs */
+.nav-link{}
+[data-theme="light"] .focus-tag{color:#fff}
+[data-theme="light"] .join-btn{color:#fff}
+[data-theme="light"] .prof-tab.active{color:#fff}
+@media(max-width:600px){.stat-row{grid-template-columns:1fr 1fr}.two-col{grid-template-columns:1fr}.prof-tabs{width:100%;flex-wrap:wrap}}
+[data-theme="light"] .forge-logo-dark{display:none!important}[data-theme="light"] .forge-logo-light{display:inline!important}
+/* ── dashboard-specific ── */
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ember);margin-bottom:8px}
+.stat-strip{display:flex;align-items:center;gap:22px;flex-wrap:wrap;padding:14px 16px;border:1px solid var(--line);border-radius:var(--radius-md);margin-bottom:24px;max-width:620px}
+.stat{display:flex;flex-direction:column;gap:2px}
+.stat-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--dim)}
+.stat-value{font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700;color:var(--white)}
+.stat-value-sub{font-size:12px;font-weight:600;color:var(--good);margin-left:5px}
+.stat-sep{width:1px;align-self:stretch;background:var(--line)}
+.stat-strip-link{margin-left:auto;font-size:12px;font-weight:600;color:var(--ember);text-decoration:none;white-space:nowrap}
+.stat-strip-link:hover{text-decoration:underline}
+.proto-note{border:1px solid var(--line);border-radius:var(--radius-md);padding:14px 16px;max-width:58ch}
+.proto-note p{font-size:14px;line-height:1.6;color:var(--slate)}
+.mod-list{display:flex;flex-direction:column;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--radius-md);overflow:hidden;max-width:620px}
+.mod-row{display:flex;align-items:center;gap:14px;padding:14px 16px;background:var(--panel)}
+.mod-icon{width:34px;height:34px;border-radius:var(--radius-sm);background:var(--panel-2);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--slate)}
+.mod-icon svg{width:17px;height:17px}
+.mod-body{flex:1;min-width:0}
+.mod-name{font-size:14px;font-weight:600;color:var(--white)}
+.mod-status{font-size:12px;color:var(--dim);margin-top:1px}
+.mod-stat{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:var(--ember);white-space:nowrap;flex-shrink:0}
+.mod-stat.mod-stat-muted{color:var(--dim);font-weight:500}
+</style>
+<body>
+
+<script src="scripts/forge-sidebar.js"></script>
+<script>
+ForgeSidebar.mount({
+  active: 'dashboard',
+  items: [
+    {key:'dashboard', href:'student-dashboard.html', label:'Dashboard'},
+    {key:'forge', href:'forge-quiz.html', label:'Forge'},
+    {key:'anvil', href:'anvil.html', label:'Anvil'},
+    {key:'crucible', href:'crucible.html', label:'Crucible'}
+  ],
+  footerItems: [
+    {key:'profile', href:'profile.html', label:'Profile'}
+  ]
+});
+</script>
+
+<div class="wrap">
+  <div id="app"></div>
+</div>
+
+<script src="forge-auth.js"></script>
+<script>
+var SUPABASE_URL = 'https://crysulmbaadjkymcjrew.supabase.co';
+var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNyeXN1bG1iYWFkamt5bWNqcmV3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQyNDUzMzAsImV4cCI6MjA5OTgyMTMzMH0.Q69MKJR6_iEYkqJYXjn8RBhKhstAZShtmf0NiYM-8Vk';
+var hdrs = {'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY};
+function supaGet(t,p){return fetch(SUPABASE_URL+'/rest/v1/'+t+'?select=*'+(p?'&'+p:''),{headers:hdrs}).then(function(r){return r.json();});}
+
+
+
+var RANKS = [
+  {name:'Apprentice',min:0,max:300,color:'var(--slate)',bg:'var(--panel-2)'},
+  {name:'Journeyman',min:300,max:1500,color:'var(--hot)',bg:'rgba(255,201,60,.12)'},
+  {name:'Craftsman',min:1500,max:5000,color:'var(--ember)',bg:'rgba(255,107,44,.12)'},
+  {name:'Forged',min:5000,max:15000,color:'var(--good)',bg:'rgba(127,217,138,.12)'},
+  {name:'Master',min:15000,max:99999,color:'var(--coal)',bg:'linear-gradient(100deg,var(--hot),var(--ember))'}
+];
+
+function getRank(xp){
+  for(var i=RANKS.length-1;i>=0;i--){if(xp>=RANKS[i].min)return RANKS[i];}
+  return RANKS[0];
+}
+
+// Classes are named "<year><letter>/<subject code>" (e.g. "12B/Bs" for a
+// Year 12 A-Level class, "10A/Gg" for a Year 10 GCSE class). There's no
+// separate level column, so level is derived from the year-group prefix:
+// Year 12-13 = A-Level, Year 7-11 = GCSE. See school-overview.html's classLevel.
+function classLevel(className) {
+  var m = /^(\d+)/.exec(className || '');
+  if (!m) return 'alevel';
+  var year = parseInt(m[1], 10);
+  return year >= 12 ? 'alevel' : 'gcse';
+}
+
+function calcGrade(acc, activeMCs, totalMCs, isGCSE) {
+  // acc: overall accuracy 0-100
+  // activeMCs: number of unresolved misconceptions
+  // totalMCs: total unique misconceptions ever fired
+  var mcClearance = totalMCs > 0 ? Math.max(0, 1 - (activeMCs / totalMCs)) : 1;
+  var score = (acc * 0.6) + (mcClearance * 100 * 0.4);
+  if (isGCSE) {
+    if (score >= 85) return {grade:'9', next:null, color:'#ffd700', desc:'Exam-ready. Maintain accuracy and keep the Anvil clear.'};
+    if (score >= 76) return {grade:'8', next:'9',  color:'var(--good)', desc:'Strong. Clear your remaining misconceptions to break into a 9.'};
+    if (score >= 68) return {grade:'7', next:'8',  color:'var(--good)', desc:'Consistent top-end work. Keep the Anvil clear to push higher.'};
+    if (score >= 60) return {grade:'6', next:'7',  color:'var(--hot)', desc:'Solid. Accuracy and Anvil work will push this into the 7s.'};
+    if (score >= 52) return {grade:'5', next:'6',  color:'var(--hot)', desc:'Strong pass. Focus on the Anvil — misconceptions are costing marks.'};
+    if (score >= 44) return {grade:'4', next:'5',  color:'var(--ember)', desc:'Standard pass. Daily sessions and re-forge work will move this up.'};
+    if (score >= 36) return {grade:'3', next:'4',  color:'#b45309', desc:'Keep going. Daily sessions and re-forge work will move this.'};
+    if (score >= 28) return {grade:'2', next:'3',  color:'var(--slate)', desc:'Early stage. More questions and misconception rework needed.'};
+    if (score >= 18) return {grade:'1', next:'2',  color:'var(--slate)', desc:'Early stage. More questions and misconception rework needed.'};
+    return             {grade:'U', next:'1',  color:'var(--bad)', desc:'Not enough data yet — complete more sessions to get a reliable band.'};
+  }
+  if (score >= 85) return {grade:'A*', next:null,    color:'#ffd700', desc:'Exam-ready. Maintain accuracy and keep the Anvil clear.'};
+  if (score >= 72) return {grade:'A',  next:'A*',   color:'var(--good)', desc:'Strong. Clear your remaining misconceptions to break into A*.'};
+  if (score >= 60) return {grade:'B',  next:'A',    color:'var(--hot)', desc:'Consistent. Accuracy and Anvil work will push this to an A.'};
+  if (score >= 50) return {grade:'C',  next:'B',    color:'var(--ember)', desc:'Building. Focus on the Anvil — misconceptions are costing marks.'};
+  if (score >= 40) return {grade:'D',  next:'C',    color:'#b45309', desc:'Keep going. Daily sessions and re-forge work will move this.'};
+  if (score >= 30) return {grade:'E',  next:'D',    color:'var(--slate)', desc:'Early stage. More questions and misconception rework needed.'};
+  return             {grade:'U',  next:'E',    color:'var(--bad)', desc:'Not enough data yet — complete more sessions to get a reliable band.'};
+}
+
+function calcXP(responses){
+  var xp=0;
+  responses.forEach(function(r){
+    if(r.question_id&&r.question_id.endsWith('-CRU')&&r.is_correct) xp+=30;
+    else if(r.reforge_attempted&&r.reforge_correct) xp+=20;
+    else if(r.is_correct&&!r.reforge_attempted) xp+=10;
+    if(r.question_id&&r.question_id.endsWith('-ANVIL')&&r.is_correct) xp+=30; // treat anvil correct as 30
+  });
+  return xp;
+}
+
+
+
+function calcStreak(responses){
+  if(!responses.length) return 0;
+  var dates=new Set(responses.map(function(r){return r.created_at?r.created_at.substring(0,10):''}));
+  var today=new Date().toISOString().substring(0,10);
+  var streak=0;
+  var d=new Date();
+  while(true){
+    var key=d.toISOString().substring(0,10);
+    if(dates.has(key)){streak++;d.setDate(d.getDate()-1);}
+    else break;
+  }
+  return streak;
+}
+
+var st={studentId:null,classId:null,studentName:null,responses:[],isPaid:false,isTrial:false,trialDaysLeft:0,paidSubjects:[],isGCSE:false};
+var app=document.getElementById('app');
+
+function renderLogin(){
+  var h='<div style="max-width:340px;margin:40px auto 0;text-align:center">';
+  h+='<p class="tag" style="margin-bottom:6px">DASHBOARD</p>';
+  h+='<h1 style="font-size:26px;margin-bottom:8px">Your Forge dashboard</h1>';
+  h+='<p style="color:#8A857E;font-size:14px;margin-bottom:28px">Enter your name and class code to see your progress</p>';
+  h+='</div><div style="max-width:340px;margin:0 auto">';
+  h+='<label style="font-size:13px;color:var(--slate);display:block;margin-bottom:4px">Your first name</label>';
+  h+='<input id="p-name" class="join-input" type="text" placeholder="e.g. Alex" style="text-transform:none">';
+  h+='<label style="font-size:13px;color:var(--slate);display:block;margin-bottom:4px">Class code</label>';
+  h+='<input id="p-code" class="join-input" type="text" placeholder="e.g. ECON-Y12-A">';
+  h+='<button class="join-btn" id="p-btn">View my dashboard \u2192</button>';
+  h+='<p class="join-err" id="p-err"></p></div>';
+  app.innerHTML=h;
+
+  document.getElementById('p-btn').onclick=function(){
+    var name=document.getElementById('p-name').value.trim();
+    var code=document.getElementById('p-code').value.trim().toUpperCase();
+    var err=document.getElementById('p-err');
+    var btn=document.getElementById('p-btn');
+    if(!name||!code){err.textContent='Enter your name and class code.';err.style.display='block';return;}
+    btn.disabled=true;btn.textContent='Loading...';
+    // Look up via RPC \u2014 classes/students tables are no longer directly
+    // readable by an anonymous (no login) name+code session.
+    fetch(SUPABASE_URL + '/rest/v1/rpc/get_student_by_name_and_code', {
+      method: 'POST', headers: Object.assign({}, hdrs, {'Content-Type':'application/json'}),
+      body: JSON.stringify({ p_code: code, p_name: name })
+    }).then(function(r){ return r.json(); }).then(function(rows){
+      if(!Array.isArray(rows)||rows.length===0){err.textContent='Class or name not found. Make sure you\'ve done the quiz first.';err.style.display='block';btn.disabled=false;btn.textContent='View my dashboard \u2192';return;}
+      var match = rows[0];
+      st.studentId=match.student_id;st.classId=match.class_id;st.studentName=name;st.isGCSE=classLevel(match.class_name)==='gcse';
+      try { localStorage.setItem('forge-student', JSON.stringify({studentId: st.studentId, classId: st.classId, studentName: st.studentName, classSubject: null, isGCSE: st.isGCSE})); } catch(e) {}
+      fetch(SUPABASE_URL + '/rest/v1/rpc/get_student_own_responses', {
+        method: 'POST', headers: Object.assign({}, hdrs, {'Content-Type':'application/json'}),
+        body: JSON.stringify({ p_student_id: st.studentId, p_code: code, p_name: name })
+      }).then(function(r){ return r.json(); }).then(function(r){
+        st.responses=r||[];
+        renderDashboard();
+      });
+    });
+  };
+}
+
+
+
+var SUBJ_LABELS = {econ:'Economics',psych:'Psychology',soc:'Sociology',geo:'Geography',bus:'Business',chem:'Chemistry',bio:'Biology',phys:'Physics',hist:'History',law:'Law',crim:'Criminology',pol:'Politics',maths:'Maths',german:'German',french:'French',cs:'Computer Science',rs:'Religious Studies',hsc:'Health & Social Care'};
+
+function daysAgo(dateStr){
+  if(!dateStr) return null;
+  var then=new Date(dateStr.substring(0,10));
+  var now=new Date(new Date().toISOString().substring(0,10));
+  var diff=Math.round((now-then)/86400000);
+  if(diff<=0) return 'Today';
+  if(diff===1) return 'Yesterday';
+  return diff+' days ago';
+}
+
+function renderDashboard(){
+  var responses=st.responses||[];
+  var total=responses.filter(function(r){return !r.reforge_attempted;}).length;
+  var correct=responses.filter(function(r){return !r.reforge_attempted&&r.is_correct;}).length;
+  var acc=total>0?Math.round((correct/total)*100):0;
+  var xp=calcXP(responses);
+  var rank=getRank(xp);
+  var streak=calcStreak(responses);
+
+  // Misconceptions — same chronological derivation as the full profile view
+  var mcData={};
+  var chronological=responses.slice().sort(function(a,b){return (a.created_at||'')<(b.created_at||'')?-1:1;});
+  chronological.forEach(function(r){
+    if(!r.misconception_tag)return;
+    var tag=r.misconception_tag;
+    if(!mcData[tag])mcData[tag]={fires:0,streak:0};
+    if(r.reforge_attempted){
+      if(r.reforge_correct)mcData[tag].streak++; else mcData[tag].streak=0;
+    } else if(!r.is_correct){
+      mcData[tag].fires++;mcData[tag].streak=0;
+    }
+  });
+  var activeMCs=Object.keys(mcData).filter(function(t){return mcData[t].fires>0&&mcData[t].streak<3;});
+
+  // Strongest subject — highest accuracy among subjects with a real sample size
+  var subjectData={};
+  responses.forEach(function(r){
+    var subj=r.subject||'unknown';
+    if(subj==='unknown')return;
+    if(!subjectData[subj])subjectData[subj]={total:0,correct:0};
+    subjectData[subj].total++;
+    if(r.is_correct)subjectData[subj].correct++;
+  });
+  var subjectRanked=Object.keys(subjectData).filter(function(s){return subjectData[s].total>=3;}).map(function(s){
+    return {key:s,label:SUBJ_LABELS[s]||s,acc:Math.round((subjectData[s].correct/subjectData[s].total)*100)};
+  }).sort(function(a,b){return b.acc-a.acc;});
+  var strongest=subjectRanked[0]||null;
+
+  // Crucible sessions
+  var crucibleResponses=responses.filter(function(r){return r.question_id&&r.question_id.indexOf('-CRU')!==-1;});
+  var lastCrucible=crucibleResponses.length?crucibleResponses.reduce(function(latest,r){return (!latest||(r.created_at||'')>(latest.created_at||''))?r:latest;},null):null;
+
+  var lastActivity=responses.length?responses.reduce(function(latest,r){return (!latest||(r.created_at||'')>(latest.created_at||''))?r:latest;},null):null;
+
+  var h='';
+  h+='<div class="eyebrow">Dashboard</div>';
+  h+='<h1>Welcome back, '+st.studentName+'</h1>';
+
+  if(total===0){
+    h+='<div class="proto-note" style="max-width:58ch">';
+    h+='<p>No activity yet — head to <a href="forge-quiz.html" style="color:var(--ember)">Forge</a> to answer your first questions. Your dashboard fills in as you go.</p>';
+    h+='</div>';
+    app.innerHTML=h;
+    return;
+  }
+
+  h+='<div class="stat-strip">';
+  h+='<div class="stat"><span class="stat-label">Rank</span><span class="stat-value">'+rank.name+'</span></div>';
+  h+='<div class="stat-sep"></div>';
+  h+='<div class="stat"><span class="stat-label">Streak</span><span class="stat-value">'+streak+' day'+(streak!==1?'s':'')+'</span></div>';
+  h+='<div class="stat-sep"></div>';
+  if(strongest){
+    h+='<div class="stat"><span class="stat-label">Strongest subject</span><span class="stat-value">'+strongest.label+' <span class="stat-value-sub">'+strongest.acc+'%</span></span></div>';
+  } else {
+    h+='<div class="stat"><span class="stat-label">Strongest subject</span><span class="stat-value" style="color:var(--dim);font-size:13px">Not enough data yet</span></div>';
+  }
+  h+='<a class="stat-strip-link" href="profile.html">View profile →</a>';
+  h+='</div>';
+
+  h+='<div class="mod-list">';
+
+  // Forge row
+  h+='<div class="mod-row">';
+  h+='<span class="mod-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c1.2 2 .6 3.2-.3 4.3C10.8 8.5 9.5 9.8 9.5 12a2.5 2.5 0 0 0 5 0c0-.8-.3-1.3-.7-1.8"></path><path d="M8 13.5c-1 1.5-1.3 3-1.3 4.3A5.3 5.3 0 0 0 12 23a5.3 5.3 0 0 0 5.3-5.2c0-1.4-.4-2.9-1.3-4.3"></path></svg></span>';
+  h+='<div class="mod-body"><div class="mod-name">Forge</div><div class="mod-status">'+acc+'% accuracy overall'+(lastActivity?' · last active '+(daysAgo(lastActivity.created_at)||'').toLowerCase():'')+'</div></div>';
+  h+='<span class="mod-stat">'+total+' answered</span>';
+  h+='</div>';
+
+  // Anvil row
+  h+='<div class="mod-row">';
+  h+='<span class="mod-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 13h16l-1.5-3.5a2 2 0 0 0-1.84-1.22L14 8.2V6h1a1 1 0 0 0 0-2h-6a1 1 0 0 0 0 2h1v2.2l-2.66.08a2 2 0 0 0-1.84 1.22L4 13Z"></path><path d="M9 13v2a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2v-2"></path><path d="M10 17v3M14 17v3M8 20h8"></path></svg></span>';
+  h+='<div class="mod-body"><div class="mod-name">Anvil</div><div class="mod-status">'+(activeMCs.length>0?'Needs review — head over to clear these':'All misconceptions cleared')+'</div></div>';
+  h+='<span class="mod-stat'+(activeMCs.length===0?' mod-stat-muted':'')+'">'+activeMCs.length+' open</span>';
+  h+='</div>';
+
+  // Crucible row
+  h+='<div class="mod-row">';
+  h+='<span class="mod-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6M9 3v3.5a5 5 0 0 1-.7 2.55L5.9 12.9A5 5 0 0 0 5.2 15.45V19a2 2 0 0 0 2 2h9.6a2 2 0 0 0 2-2v-3.55a5 5 0 0 0-.7-2.55l-2.4-3.85A5 5 0 0 1 15 6.5V3"></path><path d="M7 16h10"></path></svg></span>';
+  h+='<div class="mod-body"><div class="mod-name">Crucible</div><div class="mod-status">'+(lastCrucible?'Last session '+daysAgo(lastCrucible.created_at):'No timed sessions yet')+'</div></div>';
+  h+='<span class="mod-stat'+(crucibleResponses.length===0?' mod-stat-muted':'')+'">'+crucibleResponses.length+' Qs</span>';
+  h+='</div>';
+
+  h+='</div>';
+
+  app.innerHTML=h;
+}
+
+
+function forgeSignOut(){
+  try { localStorage.removeItem('forge-student'); } catch(e) {}
+  try { localStorage.removeItem('forge-free-session'); } catch(e) {}
+  ForgeAuth.signOut();
+  location.reload();
+}
+
+(function(){
+  if (ForgeAuth.hasSession()) {
+    ForgeAuth.getSession().then(function(result) {
+      if (result && result.subscriber) {
+        var sub    = result.subscriber;
+        var access = result.access;
+        st.studentName = sub.name;
+        st.isPaid      = access === 'pro';
+        st.isTrial     = access === 'trial';
+        st.trialDaysLeft = result.daysLeft || 0;
+        st.paidSubjects  = sub.subjects || [];
+        // Check paid student cache first
+        try {
+          var paidCache = JSON.parse(localStorage.getItem('forge-paid-student') || 'null');
+          if (paidCache && paidCache.studentId) st.studentId = paidCache.studentId;
+        } catch(e) {}
+        // Check for linked student record
+        var saved = null;
+        try { saved = JSON.parse(localStorage.getItem('forge-student') || 'null'); } catch(e) {}
+        if (saved && saved.studentId && !st.studentId) {
+          st.studentId = saved.studentId;
+          st.classId   = saved.classId || null;
+        }
+
+        function loadProfileWithId() {
+          var token = ForgeAuth.accessToken();
+          var authUser = ForgeAuth.currentUser();
+          if (token && authUser) {
+            // Load responses from ALL student rows for this auth user
+            fetch(SUPABASE_URL + '/rest/v1/students?select=id&auth_user_id=eq.' + authUser.id, {
+              headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + token }
+            }).then(function(r) { return r.json(); }).then(function(studentRows) {
+              if (!Array.isArray(studentRows) || studentRows.length === 0) {
+                renderDashboard(); return;
+              }
+              var ids = studentRows.map(function(r) { return r.id; });
+              var filter = ids.length === 1
+                ? 'student_id=eq.' + ids[0]
+                : 'student_id=in.(' + ids.join(',') + ')';
+              supaGet('responses', filter + '&order=created_at.desc').then(function(r) {
+                st.responses = r || [];
+                renderDashboard();
+              }).catch(function() { renderDashboard(); });
+            }).catch(function() { renderDashboard(); });
+          } else if (st.studentId) {
+            supaGet('responses','student_id=eq.'+st.studentId+'&order=created_at.desc').then(function(r){
+              st.responses = r || [];
+              renderDashboard();
+            }).catch(function(){ renderDashboard(); });
+          } else {
+            renderDashboard();
+          }
+        }
+
+        // If still no studentId, look up by auth_user_id
+        if (!st.studentId && ForgeAuth.currentUser()) {
+          (function() {
+            var _token = ForgeAuth.accessToken();
+            var _uid = ForgeAuth.currentUser() ? ForgeAuth.currentUser().id : null;
+            if (!_token || !_uid) return Promise.resolve([]);
+            return fetch(SUPABASE_URL + '/rest/v1/students?select=*&auth_user_id=eq.' + _uid + '&order=created_at.asc&limit=1', {
+              headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + _token }
+            }).then(function(r) { return r.json(); });
+          })().then(function(rows) {
+            if (rows && rows.length > 0) {
+              st.studentId = rows[0].id;
+              try { localStorage.setItem('forge-paid-student', JSON.stringify({ studentId: rows[0].id, name: sub.name })); } catch(e) {}
+            }
+            loadProfileWithId();
+          }).catch(function() { loadProfileWithId(); });
+        } else {
+          loadProfileWithId();
+        }
+      } else {
+        checkLocalSessionProfile();
+      }
+    }).catch(function() { checkLocalSessionProfile(); });
+  } else {
+    checkLocalSessionProfile();
+  }
+
+  function checkLocalSessionProfile() {
+    // Check free session
+    var freeSession = null;
+    try { freeSession = JSON.parse(localStorage.getItem('forge-free-session') || 'null'); } catch(e) {}
+    if (freeSession && freeSession.studentId) {
+      st.studentId   = freeSession.studentId;
+      st.studentName = freeSession.name;
+      st.classId     = null;
+      supaGet('responses','student_id=eq.'+freeSession.studentId+'&order=created_at.desc').then(function(r){
+        st.responses = r || [];
+        renderDashboard();
+      }).catch(function(){ renderDashboard(); });
+      return;
+    }
+    // Check class session
+    var saved = null;
+    try { saved = JSON.parse(localStorage.getItem('forge-student') || 'null'); } catch(e) {}
+    if (saved && saved.studentId) {
+      st.studentId   = saved.studentId;
+      st.classId     = saved.classId;
+      st.studentName = saved.studentName;
+      var applyLevelAndLoad = function(){
+        supaGet('responses','student_id=eq.'+st.studentId+'&order=created_at.desc').then(function(r){
+          st.responses = r || [];
+          renderDashboard();
+        }).catch(function(){ renderLogin(); });
+      };
+      if (typeof saved.isGCSE === 'boolean') {
+        st.isGCSE = saved.isGCSE;
+        applyLevelAndLoad();
+      } else if (st.classId) {
+        // Older saved sessions predate level tracking — resolve and cache it.
+        supaGet('classes','id=eq.'+st.classId).then(function(cls){
+          st.isGCSE = Array.isArray(cls) && cls.length>0 && classLevel(cls[0].name)==='gcse';
+          try { saved.isGCSE = st.isGCSE; localStorage.setItem('forge-student', JSON.stringify(saved)); } catch(e) {}
+          applyLevelAndLoad();
+        }).catch(function(){ applyLevelAndLoad(); });
+      } else {
+        applyLevelAndLoad();
+      }
+    } else {
+      renderLogin();
+    }
+  }
+})();
+</script>
+<script src="scripts/nav.js"></script>
+</body>
+</html>

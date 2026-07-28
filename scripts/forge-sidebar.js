@@ -1,0 +1,187 @@
+// ============================================================
+// forge-sidebar.js — shared collapsible sidebar shell for the
+// Forge student + teacher app pages (badge, rail, footer row).
+// Requires css/tokens.css + css/sidebar.css loaded first.
+// Include this script immediately after <body> opens, then call
+// ForgeSidebar.mount({...}) — see bottom of file for config shape.
+// ============================================================
+
+var _FORGE_LOGO_DARK = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAANwAAAD6CAYAAADKrymqAAAN2UlEQVR4nO3da3BcZ33H8d9zVnuT1oldYznGOCVxwqWZ4UU7QzqdTpu4pJTSAco05TIMTEta2um0wPCi8bhTmNILBTKFZEoSSMKQAnGaNgEHEmgcO03JxWTaGOE4tmVZtmRL1tqyZMkr7Z6V9vSFosw6Xst7Oec5Z8/5ft5lJtaeGevrZ//PuZl1G68RukN/ruZt6Xd1Y78rSdpdzGhXMaNi2TEhHxqaZAgu2jKOpxv7q96WflfXr602/H/2TKa1q5jR7mLauDXaizKCi6jr11ZfWc2qyjheU3/GrRntLi7Ft2cyTXkRRHAR8uZVi96N/a629Lvqz9U6+lnFsvPKqpfRwdkU8UUEwYWsfi5786rFQD7j4GyKeS8iCC4EzcxlQWHeCxfBWdTOXBYU5r1wEFzA/JzLgsK8Zw/BBcDGXBYU5r1gEZxPwpzLgsK85z+C61CU5rKgMO/5h+Da0A1zWVCY9zpDcE3q5rksKMx7rSO4FcRxLgsK815zCK6BJMxlQWHeWxnBvSLJc1lQmPculOjgmMvsYd5bkrjgmMvCl+R5LzHBMZdFTxLnvVgHx1zWPZIy78UuOOay7hfneS8WwTGXxVfc5r2uDo65LDniMu91XXDMZejmea8rgmMuw8V027wX2eCYy9Cqbpj3Ihcccxk6FeV5LxLBMZchKFGb90ILjrkMtkVh3rMaHHMZoiKsec9KcMxliCrb815gwTGXodvYmPd8DY65DHER1LzXcXDMZYg7P+e9toNjLkPS+DHvtRQccxmwpN1575LBMZcBK2tl3msYHHMZ0J5LzXvnBcdcBvjjYvOe+fW3XMVcBgSoft4zL31kLUsZYIkT9gEASUJwgEUEB1hEcIBFBAdYRHCARQQHWERwgEUEB1hEcIBFBAdYRHCARQQHWERwgEUEB1hEcIBFBAdYRHCARQQHWNQT9gFE1Q2714R9CF3tqRunwj6ESGKFAywiOMAiggMsIjjAIoIDLCI4wCKCAywiOMAiggMsIjjAIoIDLCI4wCKCAywiOMAiggMsIjjAIoIDLCI4wCKCAywiOMAiggMsIjjAIoIDLCI4wCKCAywiOMAiggMsIjjAIoIDLOLtORHDW2fijRUOsIjgAIsIDrCI4ACLCA6wiOAAiwgOsIjgAIsIDrCI4ACLCA6wiOAAiwgOsIjgAIsIDrCI4ACLCA6wiOAAiwgOsIjgAIsIDrCI4ACLCA6wiOAAi3gQbMTcsHtNKJ/LA2jtYIUDLCI4wCKCAywiOMAiggMsIjjAIoIDLCI4wCKCAywiOMAiggMsIjjAIoIDLCI4wCJn0Qv7EIBkWPQkp1IzYR8HkAiVmpFTWSQ4wIbKopFTqYV9GEAyVGqS4/KVErDCrRk54/NsVAI2jM87cmYWWOEAG2YWjJyzLsEBNpx1jZypKl8pARumqo6cKVY4wIop18iZrLDCATZMuo6c0y7BATacrjhyimWH75SABcWyY5xZTgsAVswumKXbc4bOpcI+FiDWlhvrkaTxsqPNhcVQDwhLeItNPI2Xl/ZKHEk6Mc8KBwRpuTFHko7PsVMJBOnEXN0KNzrHCgcEaWSuboUbmePUABCk5cYcSTrjOpqu0hwQhOmq0Rm37iulJA1zagAIRH1brwa3dzodysEAcVff1qvBvTjVE8rBAHFX39arwQ2c7TFVHigE+KpaW2pr+b/POwH37GTG/hEBMfbaps4L7oUzfK0E/PTaps4L7qeTbJwAfnptU+cFV6w4Zv8Mqxzgh/0zPSpWzr+o5IKLKJ9nlQN80ailC4J79jTBAX5o1NIFwR0+lzLDJa46AToxXErp8LnUBddLNrwv539OscoBnbhYQw2De/oU5+OATlysoYbBHT6XModm+VoJtOPQbOOvk9IK7/h+qsgqB7RjpXYuGtwuggPaslI7Fw3uZNkxezgnB7Rkz2RaJ1d4uPKKTw96YoJVDmjFpZpZMbidExnDk5mB5swuGO2cyKwYzCWfj/f4eNa/IwJirJlWLhncY+N8rQSa0UwrlwzuaCllHic6YEWPj2d0tNT43Fu9ph65vH001/kRATHWbCNNBXeslDI7xpjlgEZ2jGV1rInVTWoyOEl64BirHNBIK200Hdx42THbR4gOqLd9JKfxFt4i3NJrc759LMdJOaDOd1psoqXgzi0Y3TWUb+2IgJi6ayivVi8MafnFcNtHWOUAqb0WzLqN17T8QVv6Xe9vryu1/OeAuPi7l/q0q7jyZVyNtPXq013FjHmOOwmQUM9NptuKTWozOEm6b5hZDsn0zQ5+99sObnA2ZR7gNAES5oGRnA7NNneSu5G2g5Oke47kzfwieyhIhvlFo3uO5Dv6he8ouEVP+tKB3k5+BNA1vnSgV4teZz+jo+CkpQ2UJ7kzHDH35ESm7Y2Seh0HJ0l3D+VV5qslYqq8aHS3Txd8+BJcseKYrx1m1xLx9LXD+QvegtMuX4KTpB1jWbOTr5aImZ0TGe0Yy/r29c234CTpywd7zcgcT2xGPIzMpfTlg72+zkq+BldeNPrCy+xaIh6+8HKv73sTvgYnSftneswXOVWALvfFA73aP9Pj+06g78FJ0mPjWfMgV6GgSz04ktNj4/7NbfUCCU6S7hzKm2d4myq6zDOn07pzqLOrSVYSWHCS9I8v93FyDl0l6N/ZQIMrLRjd8sJlQX4E4JtbXrhMpYAf7R9ocNLSyx23/bwQ9McAHdn288JFX6Lop8CDk6RnTqfNVw6xc4lo+sqhXj1zOm1l/LESnCR970TW/NtRdi4RLfcfzel7J4LZkWzEWnCSdO9w3jzKE5wREY+OZXXfcHA7ko1YDU6SbjvYa54+xekChOvpU2nd5vNlW82wHpwkfXZfwew72xPGRwPad7ZHn91XCOWUVSjBeZK2DhTM4CwXOsOuwdmUtg4UTIc3brctlOCkpdezbttXEHcXwJaRuZS27Su0/LRkP4UWnCQVy465daCg4RLRIVjDpZRuHSio2MKLN4IQanCSNDbvmM/sLZgDM8x0CMaBmR59Zm/BjM2HG5sUgeAk6Yzr6FN7C+Zn00QHf/1sukef2lswZ9xI/KpHIzhp6ebVT764iieAwTdPTmT0yRdXmSg94CoywS37/P4+88hxTo6jM48cz+rz+6N3t0rkgpOkrw72mk6e345ku284r68O2j+p3YxIBidJ3zqaM7cd5IJntOa2g726/2h032EY2eAk6dGxrNk6wK09aM7WgYIe9fGRdkGIdHCS9Nxk2tzywmUdP9Md8bXoLd08+tyknVtsOhH54KSlm1jf95PV5nleAonXeH4yrff9ZLWxcfOoH7oiOGnpUrBbBwrmYXYw8YqHj2d160DBhHmpVqu6Jrhltw/2mjsG2UxJujsGe3V7RHciV9KVl3b85/GsGZ1zvK1vLWlNhuEuSaZco396uU8/PRP9ea0Rs27jNWEfQ9vW52reX7+lpF9esxD2ocCC/5vq0T8f6NNEyBcgd6Krg1v2p5vnvQ9fWQ77MBCg747k9PUAH9BqSyyCk6RfXVv1Pv2mOa3P1cI+FPhoouzoXw716vku2PJvRmyCk6RcytNfXjvvvXtDJexDgQ9+OJ7VHYP5SF183KlYBbfst9a73t/8Uknx+WtKFk/S3+/v05MTnb9TO2piGZwkrU57+otr57yb1rthHwpa8MRERv862Gumq7FrTVKMg1t20xWut+2tpbAPA034h/19eiKGq1q92AcnSZenPf3Z5jnvXRtY7aLo8fGM7hrqNWdjuqrVS0Rwy35jnet97rqSuvcsTrzUPOlzL/Xp6VPxXtXqJSo4Seox0ic2z3s3b+K8XZgeGs3p7qG8WUjYhUKJC27Z21YveH917ZyuKSyGfSiJcvhcSrcP9mpg2v/3Z3eDxAa37OZNZe8Tm+eVzL9+exY86e6hvB4aje7d2DYkPjhJWpetebdcPa93XsGmShB+fDKje47kdarC9Exwdd7+C1XvI79Y1ttWczG0Hwame/TtY7muvbI/CATXwDvWu95H31jWlb3Md+0YmUvp/qM57Yz5ObV2ENwK3rux4n38qnldlk7YVlqbZqpG9w7n9X2LbxTtNgTXhA9cWfb+fPN82IcRaXcO5fXgSLI3RJpBcE1KO9IHN5W9j19NePXuPZLX9tGcqXJXVFMIrkX5lKc/3FTx/uiqZIf3zeG8/n00a+ZjdOuMDQTXpnzK082bKt4fJyy8+4bzeojQ2kZwHco6nv5gU8X72BvLyjjx3Fxxa0bfOprTf4xmTaVGaJ0gOJ84Rnr/GyreBzeV9bpsPAaa0xVH20dzevh41tTi+W+JdQQXgHdvqHjvf0NFm7v0Os2hcyk9fDyrH46zve83ggvQb65zvfdsdPUra6phH0pT/ncqrR0nMvrvBN0uYxvBWXDtqkXv9zZU9LsbKkpH7FnX1Zr02HhWPxjPanC2O57P380IzqKM4+l3Nrje72+s6Kq+cL9uDpdSeuREVj8azxiXjRBrCC4k112+4L3zClfveb3dR/rtGMvqxyczeuksNySFgeBClnE8/fYVrvcnV8/r8oCu2TxbNfrGkbz+6ySrWdgILkI2Fxa9d6x39SGfHtv+wEhOOycyGuqSd6clAcFF1K+9ruq99/UVXb+2tR3OPZNpfX8sq2dPcw9aFBFcxPX1eNrS73o3rXcvemPswHSPnpjIaFcxY0pd9HLCJCK4LrIxX/Nu6Hd1w7qlR0E8dSqjp4oZnZjn0QXd4v8B8wJXyrhyBoQAAAAASUVORK5CYII=';
+var _FORGE_LOGO_LIGHT = 'data:image/png;base64,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';
+
+// key -> svg-inner markup for common nav icons, shared across pages
+var _FORGE_ICONS = {
+  dashboard: '<path d="M3 12l9-9 9 9"></path><path d="M5 10v10a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1V10"></path>',
+  forge: '<path d="M12 3c1.2 2 .6 3.2-.3 4.3C10.8 8.5 9.5 9.8 9.5 12a2.5 2.5 0 0 0 5 0c0-.8-.3-1.3-.7-1.8"></path><path d="M8 13.5c-1 1.5-1.3 3-1.3 4.3A5.3 5.3 0 0 0 12 23a5.3 5.3 0 0 0 5.3-5.2c0-1.4-.4-2.9-1.3-4.3"></path>',
+  anvil: '<path d="M4 13h16l-1.5-3.5a2 2 0 0 0-1.84-1.22L14 8.2V6h1a1 1 0 0 0 0-2h-6a1 1 0 0 0 0 2h1v2.2l-2.66.08a2 2 0 0 0-1.84 1.22L4 13Z"></path><path d="M9 13v2a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2v-2"></path><path d="M10 17v3M14 17v3M8 20h8"></path>',
+  crucible: '<path d="M9 3h6M9 3v3.5a5 5 0 0 1-.7 2.55L5.9 12.9A5 5 0 0 0 5.2 15.45V19a2 2 0 0 0 2 2h9.6a2 2 0 0 0 2-2v-3.55a5 5 0 0 0-.7-2.55l-2.4-3.85A5 5 0 0 1 15 6.5V3"></path><path d="M7 16h10"></path>',
+  profile: '<circle cx="12" cy="8" r="4"></circle><path d="M4 21c0-4 4-6 8-6s8 2 8 6"></path>',
+  signout: '<path d="M9 21H5a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h4"></path><path d="M16 17l5-5-5-5"></path><path d="M21 12H9"></path>',
+  assignments: '<rect x="3" y="4" width="18" height="17" rx="2"></rect><path d="M3 9h18M8 2v4M16 2v4"></path><path d="M8 13h2M8 17h2M14 13h2M14 17h2"></path>',
+  misconceptions: '<path d="M12 9v4M12 17h.01"></path><path d="M10.3 3.9 2.5 17a2 2 0 0 0 1.7 3h15.6a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"></path>',
+  students: '<path d="M17 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path>',
+  classes: '<path d="M4 19V6a2 2 0 0 1 2-2h9l5 5v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2Z"></path><path d="M8 8h6M8 12h8M8 16h5"></path>',
+  present: '<rect x="2" y="4" width="20" height="13" rx="2"></rect><path d="M8 21h8M12 17v4"></path>'
+};
+
+function _fsIcon(key, cls) {
+  var inner = _FORGE_ICONS[key] || '';
+  return '<svg' + (cls ? ' class="' + cls + '"' : '') + ' viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">' + inner + '</svg>';
+}
+
+var ForgeSidebar = {
+
+  // config:
+  //   active: string — key of the item to mark active
+  //   items: [{key, href, label, badge, badgeMuted}] — main nav items
+  //   footerItems: [{key, href, label}] — items after the divider (e.g. Profile). Optional.
+  //   classSwitch: {label} — optional class-switcher row at the top (teacher pages)
+  //   signOut: function — called when Sign out is clicked. Defaults to
+  //            window.forgeSignOut() or window.forgeLogout(), whichever exists.
+  mount: function(config) {
+    config = config || {};
+    var items = config.items || [];
+    var footerItems = config.footerItems || [];
+
+    var itemsHtml = items.map(function(it) {
+      return _fsItemHtml(it, config.active);
+    }).join('');
+    var footerItemsHtml = footerItems.map(function(it) {
+      return _fsItemHtml(it, config.active);
+    }).join('');
+
+    var classSwitchHtml = '';
+    if (config.classSwitch) {
+      classSwitchHtml =
+        '<div class="fside-classswitch">' +
+          '<button class="fclassswitch-btn" onclick="(window.forgeOnClassSwitch||function(){})()">' +
+            _fsIcon('classes') +
+            '<span class="fclassswitch-label">' + _fsEsc(config.classSwitch.label || '') + '</span>' +
+            '<svg class="fclassswitch-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 10l5 5 5-5"></path></svg>' +
+          '</button>' +
+        '</div>';
+    }
+
+    var badgeHref = config.badgeHref || 'index.html';
+    var badgeHtml =
+      '<a id="forge-badge" href="' + _fsEsc(badgeHref) + '">' +
+        '<span class="badge-mark">' +
+          '<img class="forge-logo-dark" src="' + _FORGE_LOGO_DARK + '" alt="" style="height:22px;width:auto">' +
+          '<img class="forge-logo-light" src="' + _FORGE_LOGO_LIGHT + '" alt="" style="height:22px;width:auto">' +
+        '</span>' +
+        '<span class="badge-name">Forge</span>' +
+      '</a>';
+
+    var sidebarHtml =
+      '<aside id="forge-sidebar">' +
+        classSwitchHtml +
+        '<nav class="fside-nav">' + itemsHtml +
+          (footerItemsHtml ? '<div class="fside-divider"></div>' + footerItemsHtml : '') +
+        '</nav>' +
+        '<div class="fside-footer">' +
+          '<button class="fside-item danger fside-footer-main" onclick="ForgeSidebar._signOut()">' +
+            _fsIcon('signout') +
+            '<span class="fside-label">Sign out</span>' +
+            '<span class="fside-tooltip">Sign out</span>' +
+          '</button>' +
+          '<button class="fside-footer-icon" id="forge-theme-toggle" onclick="ForgeSidebar._toggleTheme()" aria-label="Toggle theme">' +
+            '<svg id="forge-theme-icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>' +
+            '<svg id="forge-theme-icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="display:none"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg>' +
+            '<span class="fside-tooltip" id="forge-theme-tooltip">Dark mode</span>' +
+          '</button>' +
+        '</div>' +
+      '</aside>' +
+      '<button id="forge-sidebar-toggle" onclick="ForgeSidebar._toggleSidebar()" aria-label="Toggle sidebar">' +
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>' +
+      '</button>';
+
+    document.body.insertAdjacentHTML('afterbegin', sidebarHtml);
+    document.body.insertAdjacentHTML('afterbegin', badgeHtml);
+    document.body.classList.add('has-forge-sidebar');
+
+    this._signOutFn = config.signOut || function() {
+      if (typeof window.forgeSignOut === 'function') return window.forgeSignOut();
+      if (typeof window.forgeLogout === 'function') return window.forgeLogout();
+    };
+
+    var expanded = localStorage.getItem('forge-sidebar-expanded') === '1';
+    document.getElementById('forge-sidebar').classList.toggle('expanded', expanded);
+    document.getElementById('forge-badge').classList.toggle('collapsed', !expanded);
+    document.body.classList.toggle('forge-sidebar-expanded', expanded);
+
+    var isLight = localStorage.getItem('forge-theme') === 'light';
+    if (isLight) document.documentElement.setAttribute('data-theme', 'light');
+    this._updateThemeUI(isLight);
+  },
+
+  setClassLabel: function(text) {
+    var el = document.querySelector('.fclassswitch-label');
+    if (el) el.textContent = text;
+  },
+
+  setBadge: function(key, value, muted) {
+    var el = document.querySelector('.fside-item[data-key="' + key + '"] .fside-badge');
+    if (!el) return;
+    el.textContent = value;
+    el.classList.toggle('badge-muted', !!muted);
+  },
+
+  _toggleSidebar: function() {
+    var sb = document.getElementById('forge-sidebar');
+    var badge = document.getElementById('forge-badge');
+    var expanded = sb.classList.toggle('expanded');
+    badge.classList.toggle('collapsed', !expanded);
+    document.body.classList.toggle('forge-sidebar-expanded', expanded);
+    localStorage.setItem('forge-sidebar-expanded', expanded ? '1' : '0');
+  },
+
+  _updateThemeUI: function(isLight) {
+    var moon = document.getElementById('forge-theme-icon-moon');
+    var sun = document.getElementById('forge-theme-icon-sun');
+    var tip = document.getElementById('forge-theme-tooltip');
+    if (!moon || !sun || !tip) return;
+    moon.style.display = isLight ? 'none' : 'block';
+    sun.style.display = isLight ? 'block' : 'none';
+    tip.textContent = isLight ? 'Switch to dark' : 'Switch to light';
+  },
+
+  _toggleTheme: function() {
+    var h = document.documentElement;
+    var isLight = h.getAttribute('data-theme') === 'light';
+    if (isLight) {
+      h.removeAttribute('data-theme');
+      localStorage.setItem('forge-theme', 'dark');
+    } else {
+      h.setAttribute('data-theme', 'light');
+      localStorage.setItem('forge-theme', 'light');
+    }
+    this._updateThemeUI(!isLight);
+  },
+
+  _signOut: function() {
+    if (this._signOutFn) this._signOutFn();
+  }
+};
+
+function _fsEsc(s) {
+  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+function _fsItemHtml(it, activeKey) {
+  var tag = it.href ? 'a' : 'button';
+  var hrefAttr = it.href ? ' href="' + _fsEsc(it.href) + '"' : '';
+  // onclick is a raw JS string (page-controlled, not user input) — used for
+  // in-page SPA navigation (e.g. teacher.html's tab switcher) where there's
+  // no real URL to link to.
+  var onclickAttr = it.onclick ? ' onclick="' + it.onclick.replace(/"/g, '&quot;') + '"' : '';
+  var activeCls = it.key === activeKey ? ' active' : '';
+  var badgeHtml = (it.badge !== undefined && it.badge !== null)
+    ? '<span class="fside-badge' + (it.badgeMuted ? ' badge-muted' : '') + '">' + _fsEsc(it.badge) + '</span>'
+    : '';
+  return '<' + tag + ' class="fside-item' + activeCls + '" data-key="' + _fsEsc(it.key) + '"' + hrefAttr + onclickAttr + '>' +
+    _fsIcon(it.key) +
+    '<span class="fside-label">' + _fsEsc(it.label) + '</span>' +
+    badgeHtml +
+    '<span class="fside-tooltip">' + _fsEsc(it.label) + '</span>' +
+  '</' + tag + '>';
+}
