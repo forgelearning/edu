@@ -154,8 +154,6 @@ ForgeSidebar.mount({
   ]
 });
 </script>
-    </div>
-</nav></div></div>
 <div class="wrap">
   <div id="app"></div>
 </div>
@@ -195,6 +193,17 @@ var supa = {
     }
     return fetch(SUPABASE_URL + '/rest/v1/' + table + '?' + params.join('&'), {
       headers: this._headers()
+    }).then(function(r) { return r.json(); }).catch(function() { return []; });
+  },
+  // responses has no anon SELECT policy — a returning (cached) session must
+  // go through this RPC (same one used at login) rather than a direct table
+  // read, or it silently gets back zero rows instead of an error.
+  ownResponses: function(studentId, code, name) {
+    if (!this._configured()) return Promise.resolve([]);
+    return fetch(SUPABASE_URL + '/rest/v1/rpc/get_student_own_responses', {
+      method: 'POST',
+      headers: this._headers(),
+      body: JSON.stringify({ p_student_id: studentId, p_code: code, p_name: name })
     }).then(function(r) { return r.json(); }).catch(function() { return []; });
   }
 };
@@ -727,7 +736,7 @@ function renderJoin() {
         }
         state.studentName  = name;
         state.classSubject = cls.subject || null;
-        try { localStorage.setItem('forge-student', JSON.stringify({ studentId: state.studentId, classId: state.classId, studentName: state.studentName, classSubject: state.classSubject })); } catch(e) {}
+        try { localStorage.setItem('forge-student', JSON.stringify({ studentId: state.studentId, classId: state.classId, classCode: code, studentName: state.studentName, classSubject: state.classSubject })); } catch(e) {}
         if (state.classSubject && SUBJECTS[state.classSubject]) {
           state.subject = state.classSubject;
           state.phase   = 'banks';
@@ -890,7 +899,7 @@ function renderSubjects(){
           state.classId      = cls.id;
           state.studentId    = studentId;
           state.classSubject = cls.subject || null;
-          try { localStorage.setItem('forge-student', JSON.stringify({ studentId: studentId, classId: cls.id, studentName: state.studentName, classSubject: cls.subject || null })); } catch(e) {}
+          try { localStorage.setItem('forge-student', JSON.stringify({ studentId: studentId, classId: cls.id, classCode: code, studentName: state.studentName, classSubject: cls.subject || null })); } catch(e) {}
           try { localStorage.setItem('forge-paid-student', JSON.stringify({ studentId: studentId, name: state.studentName })); } catch(e) {}
 
           // Backfill responses — update student_id to the new class row AND set class_id
@@ -1536,88 +1545,6 @@ function weightedShuffle(questions, weightMap) {
 }
 
 // ===== SHARED SESSION RESTORE =====
-if (ForgeAuth.hasSession()) {
-  ForgeAuth.getSession().then(function(result) {
-    if (result && result.subscriber) {
-      var sub    = result.subscriber;
-      var access = result.access;
-      state.studentName  = sub.name;
-      state.paidSubjects = sub.subjects || [];
-
-      // Restore cached studentId if available
-      try {
-        var paidCache = JSON.parse(localStorage.getItem('forge-paid-student') || 'null');
-        if (paidCache && paidCache.studentId) state.studentId = paidCache.studentId;
-      } catch(e) {}
-
-      if (access === 'pro') {
-        state.isPaid  = true;
-        state.isTrial = false;
-      } else if (access === 'trial') {
-        state.isPaid       = false;
-        state.isTrial      = true;
-        state.trialDaysLeft = result.daysLeft;
-      } else {
-        state.isPaid  = false;
-        state.isTrial = false;
-      }
-      if (access === 'expired') {
-        state.phase = 'trial-expired';
-      } else if (state.paidSubjects.length === 1 && SUBJECTS[state.paidSubjects[0]]) {
-        state.subject      = state.paidSubjects[0];
-        state.classSubject = state.paidSubjects[0];
-        state.phase        = 'banks';
-      } else {
-        state.phase = 'subjects';
-      }
-    }
-    render();
-  }).catch(function() { render(); });
-} else {
-  var restored = false;
-  try {
-    var savedSession = JSON.parse(localStorage.getItem('forge-student') || 'null');
-    if (savedSession && savedSession.studentName && savedSession.classId) {
-      state.studentId    = savedSession.studentId    || null;
-      state.classId      = savedSession.classId;
-      state.studentName  = savedSession.studentName;
-      state.classSubject = savedSession.classSubject || null;
-      state.isPaid       = false;
-      state.isTrial      = false;
-      if (state.classSubject && SUBJECTS[state.classSubject]) {
-        state.subject = state.classSubject;
-        state.phase   = 'banks';
-      } else {
-        state.phase = 'subjects';
-      }
-      if (state.studentId) {
-        supa.select('responses', { student_id: state.studentId }).then(function(r) {
-          state.weightMap = buildWeightMap(r || []);
-        }).catch(function() { state.weightMap = {}; });
-      }
-      restored = true;
-    }
-  } catch(e) {}
-
-  if (!restored) {
-    var freeSession = loadFreeSession();
-
-    if (freeSession && freeSession.studentId) {
-      state.studentName   = freeSession.name;
-      state.studentId     = freeSession.studentId;
-      state.classId       = null;
-      state.isPaid        = false;
-      state.isTrial       = false;
-      state.phase         = 'subjects';
-      supa.select('responses', { student_id: freeSession.studentId }).then(function(r) {
-        state.weightMap = buildWeightMap(r || []);
-      }).catch(function() { state.weightMap = {}; });
-      restored = true;
-    }
-  }
-  render();
-}
-
 // ══════════════════════════════════════════════════════════════
 // MANDARIN READER MODE
 // ══════════════════════════════════════════════════════════════
@@ -1715,6 +1642,89 @@ var MANDARIN_PASSAGES = [
     ]
   }
 ];
+
+if (ForgeAuth.hasSession()) {
+  ForgeAuth.getSession().then(function(result) {
+    if (result && result.subscriber) {
+      var sub    = result.subscriber;
+      var access = result.access;
+      state.studentName  = sub.name;
+      state.paidSubjects = sub.subjects || [];
+
+      // Restore cached studentId if available
+      try {
+        var paidCache = JSON.parse(localStorage.getItem('forge-paid-student') || 'null');
+        if (paidCache && paidCache.studentId) state.studentId = paidCache.studentId;
+      } catch(e) {}
+
+      if (access === 'pro') {
+        state.isPaid  = true;
+        state.isTrial = false;
+      } else if (access === 'trial') {
+        state.isPaid       = false;
+        state.isTrial      = true;
+        state.trialDaysLeft = result.daysLeft;
+      } else {
+        state.isPaid  = false;
+        state.isTrial = false;
+      }
+      if (access === 'expired') {
+        state.phase = 'trial-expired';
+      } else if (state.paidSubjects.length === 1 && SUBJECTS[state.paidSubjects[0]]) {
+        state.subject      = state.paidSubjects[0];
+        state.classSubject = state.paidSubjects[0];
+        state.phase        = 'banks';
+      } else {
+        state.phase = 'subjects';
+      }
+    }
+    render();
+  }).catch(function() { render(); });
+} else {
+  var restored = false;
+  try {
+    var savedSession = JSON.parse(localStorage.getItem('forge-student') || 'null');
+    if (savedSession && savedSession.studentName && savedSession.classId) {
+      state.studentId    = savedSession.studentId    || null;
+      state.classId      = savedSession.classId;
+      state.studentName  = savedSession.studentName;
+      state.classSubject = savedSession.classSubject || null;
+      state.isPaid       = false;
+      state.isTrial      = false;
+      if (state.classSubject && SUBJECTS[state.classSubject]) {
+        state.subject = state.classSubject;
+        state.phase   = 'banks';
+      } else {
+        state.phase = 'subjects';
+      }
+      if (state.studentId && savedSession.classCode) {
+        supa.ownResponses(state.studentId, savedSession.classCode, state.studentName).then(function(r) {
+          state.weightMap = buildWeightMap(Array.isArray(r) ? r : []);
+        }).catch(function() { state.weightMap = {}; });
+      }
+      restored = true;
+    }
+  } catch(e) {}
+
+  if (!restored) {
+    var freeSession = loadFreeSession();
+
+    if (freeSession && freeSession.studentId) {
+      state.studentName   = freeSession.name;
+      state.studentId     = freeSession.studentId;
+      state.classId       = null;
+      state.isPaid        = false;
+      state.isTrial       = false;
+      state.phase         = 'subjects';
+      supa.select('responses', { student_id: freeSession.studentId }).then(function(r) {
+        state.weightMap = buildWeightMap(r || []);
+      }).catch(function() { state.weightMap = {}; });
+      restored = true;
+    }
+  }
+  render();
+}
+
 
 function renderMandarinReader() {
   var mrs = state.mrState || { submitted:{}, tfSel:{}, mcqSel:{}, correct:0, total:5, passageIdx:0 };

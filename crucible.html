@@ -196,7 +196,7 @@ function renderJoin(){
       state.studentId=match.student_id;state.classId=match.class_id;state.studentName=name;
       state.classSubject=match.subject||null;
       state.extraTime=match.extra_time||0;
-      try { localStorage.setItem('forge-student', JSON.stringify({studentId: state.studentId, classId: state.classId, studentName: state.studentName, classSubject: state.classSubject})); } catch(e) {}
+      try { localStorage.setItem('forge-student', JSON.stringify({studentId: state.studentId, classId: state.classId, classCode: code, studentName: state.studentName, classSubject: state.classSubject})); } catch(e) {}
       if(state.classSubject&&SUBJECTS[state.classSubject]){
         state.subject=state.classSubject;
         state.phase='bank';

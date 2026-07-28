@@ -120,6 +120,15 @@ function supaGet(table,params){
   if(params)url+='&'+params;
   return fetch(url,{headers:headers}).then(function(r){return r.json();});
 }
+// responses has no anon SELECT policy — a returning (cached) session must
+// go through this RPC (same one used at login) rather than a direct table
+// read, or it silently gets back zero rows instead of an error.
+function supaOwnResponses(studentId,code,name){
+  return fetch(SUPABASE_URL+'/rest/v1/rpc/get_student_own_responses',{
+    method:'POST',headers:Object.assign({'Content-Type':'application/json'},headers),
+    body:JSON.stringify({p_student_id:studentId,p_code:code,p_name:name})
+  }).then(function(r){return r.json();});
+}
 function supaInsert(table,row){
   return fetch(SUPABASE_URL+'/rest/v1/'+table,{
     method:'POST',
@@ -477,7 +486,7 @@ function renderLogin(){
       anvilState.classId=match.class_id;
       anvilState.studentName=name;
       anvilState.classSubject=match.subject||null;
-      try { localStorage.setItem('forge-student', JSON.stringify({studentId: anvilState.studentId, classId: anvilState.classId, studentName: anvilState.studentName, classSubject: anvilState.classSubject})); } catch(e) {}
+      try { localStorage.setItem('forge-student', JSON.stringify({studentId: anvilState.studentId, classId: anvilState.classId, classCode: code, studentName: anvilState.studentName, classSubject: anvilState.classSubject})); } catch(e) {}
       // Load their responses
       fetch(SUPABASE_URL + '/rest/v1/rpc/get_student_own_responses', {
         method: 'POST', headers: Object.assign({}, headers, {'Content-Type':'application/json'}),
@@ -880,8 +889,9 @@ function checkLocalSession(){
     anvilState.classId     = saved.classId;
     anvilState.studentName = saved.studentName;
     anvilState.classSubject = saved.classSubject || null;
-    supaGet('responses','student_id=eq.'+anvilState.studentId+'&order=created_at.asc').then(function(responses){
-      anvilState.responses = responses || [];
+    if (!saved.classCode) { renderLogin(); return; } // older cached session predates classCode caching — needs one re-entry
+    supaOwnResponses(anvilState.studentId, saved.classCode, anvilState.studentName).then(function(responses){
+      anvilState.responses = Array.isArray(responses) ? responses : [];
       buildMisconceptions();
       renderAnvilHome();
     }).catch(function(){ renderLogin(); });
