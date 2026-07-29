@@ -21,8 +21,8 @@
 <style>
 
 /* hero */
-.hero-shell{position:relative;min-height:calc(100vh + 88px);width:100%;display:flex;align-items:center;overflow:hidden;isolation:isolate;background:var(--coal);margin-top:-88px;padding:132px 0 60px;box-sizing:border-box}
-@media(min-width:900px){.hero-shell{min-height:calc(100vh + 96px);margin-top:-96px;padding:140px 0 60px}}
+.hero-shell{position:relative;min-height:calc(100vh + 88px);width:100%;display:flex;align-items:center;overflow:hidden;isolation:isolate;background:var(--coal);margin-top:-88px;padding:104px 0 60px;box-sizing:border-box}
+@media(min-width:900px){.hero-shell{min-height:calc(100vh + 96px);margin-top:-96px;padding:112px 0 60px}}
 .hero-shell canvas.hero-grain{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
 .hero-shell .hero-glow{position:absolute;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse 60% 55% at 25% 30%,rgba(213,92,19,.32),transparent 62%),radial-gradient(ellipse 50% 50% at 90% 15%,rgba(255,201,60,.14),transparent 65%),radial-gradient(ellipse 55% 55% at 15% 90%,rgba(213,92,19,.12),transparent 70%)}
 .hero-shell .hero-vignette{position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(ellipse 130% 110% at 50% 45%,transparent 45%,rgba(20,18,16,.55) 100%)}
@@ -40,9 +40,8 @@
 .hero .tag::before{content:"";position:absolute;left:0;top:50%;width:8px;height:2px;background:linear-gradient(90deg,var(--hot),var(--ember));transform:translateY(-50%)}
 .hero-copy{position:relative}
 .hero-copy::after{content:"";position:absolute;bottom:-50px;left:-70px;width:280px;height:280px;background:radial-gradient(circle,rgba(255,201,60,.09),transparent 70%);filter:blur(8px);pointer-events:none;z-index:-1}
-.hero-secondary-link{display:inline-flex;align-items:center;gap:7px;height:50px;font-size:15px;font-weight:600;color:var(--white);text-decoration:none;border-bottom:1px solid var(--line);padding-bottom:2px;transition:border-color .15s,color .15s,gap .15s}
-.hero-secondary-link span{transition:transform .15s}
-.hero-secondary-link:hover{color:var(--hot);border-color:var(--ember)}
+.hero-secondary-link{position:relative;display:inline-flex;align-items:center;gap:8px;height:50px;padding:0 26px;font-size:15px;font-weight:600;text-decoration:none;border-radius:999px}
+.hero-secondary-link span{position:relative;transition:transform .15s}
 .hero-secondary-link:hover span{transform:translateX(3px)}
 .nav-right .cta{transition:background .15s,transform .15s}
 .nav-right .cta:hover{background:var(--hot);transform:translateY(-1px)}
@@ -468,6 +467,26 @@ footer{padding:40px 0 28px;border-top:1px solid var(--line)}
 .reveal-delay-2{transition-delay:.2s}
 .reveal-delay-3{transition-delay:.3s}
 .reveal-delay-4{transition-delay:.4s}
+
+/* ── Glass buttons ─────────────────────────────────────────
+   Frosted-glass fill, theme-aware so it reads as this brand's glass
+   rather than a generic light-mode UI-kit lift:
+   - Dark theme (default): smoked ember glass — translucent dark panel
+     (same family as --glass-panel on the nav/demo card) with a warm
+     ember-tinted top highlight and light text.
+   - Light theme: bright white glass with dark text, since the page
+     itself is already light — a dark panel would read as a solid
+     button, not glass.
+   Layout (padding, height, radius) still comes from each element's
+   own base class; this only overrides fill/border/shadow/color. */
+.btn-glass{position:relative;overflow:hidden;background:linear-gradient(180deg,rgba(58,52,46,.62),rgba(33,30,27,.55) 100%)!important;border:1px solid rgba(255,201,60,.28)!important;color:var(--white)!important;backdrop-filter:blur(18px) saturate(180%);-webkit-backdrop-filter:blur(18px) saturate(180%);box-shadow:inset 0 1px 0 rgba(255,201,60,.35),inset 0 -8px 14px -10px rgba(255,255,255,.08),0 12px 28px -14px rgba(0,0,0,.6)!important;transition:box-shadow .2s ease,transform .2s ease,background .2s ease!important}
+.btn-glass::after{content:"";position:absolute;top:1px;left:8%;right:8%;height:45%;border-radius:inherit;background:linear-gradient(180deg,rgba(255,201,60,.22),transparent);pointer-events:none}
+.btn-glass:hover{background:linear-gradient(180deg,rgba(70,62,54,.7),rgba(40,36,32,.62) 100%)!important;transform:translateY(-2px);box-shadow:inset 0 1px 0 rgba(255,201,60,.55),inset 0 -8px 14px -10px rgba(255,255,255,.1),0 16px 34px -14px rgba(0,0,0,.65),0 0 0 3px rgba(255,201,60,.22)!important}
+.btn-glass span{position:relative}
+
+[data-theme="light"] .btn-glass{background:linear-gradient(180deg,rgba(255,255,255,.62),rgba(255,255,255,.32) 100%)!important;border:1px solid rgba(255,255,255,.65)!important;color:#1A1613!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.95),inset 0 -8px 14px -10px rgba(255,255,255,.4),0 12px 28px -14px rgba(0,0,0,.2)!important}
+[data-theme="light"] .btn-glass::after{background:linear-gradient(180deg,rgba(255,255,255,.7),transparent)}
+[data-theme="light"] .btn-glass:hover{background:linear-gradient(180deg,rgba(255,255,255,.75),rgba(255,255,255,.42) 100%)!important;box-shadow:inset 0 1px 0 #fff,inset 0 -8px 14px -10px rgba(255,255,255,.5),0 16px 34px -14px rgba(0,0,0,.25),0 0 0 3px rgba(213,92,19,.3)!important}
 </style>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-RGZ9J6Q8H9"></script>
@@ -532,7 +551,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
     <a class="nav-link nav-hide-sm" href="guides.html">Guides</a>
     <a class="nav-link nav-hide-sm" href="#pricing">Pricing</a>
     <a class="nav-link nav-hide-sm" href="forge-quiz.html">Sign in</a>
-    <a class="cta" href="#waitlist">Get started</a>
+    <a class="cta btn-glass" href="#waitlist">Get started</a>
     <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" aria-label="Toggle light/dark theme">☀</button>
   </div>
 </nav>
@@ -548,8 +567,8 @@ if (localStorage.getItem('forge-theme') === 'light') {
     <h1 class="reveal reveal-delay-1">Forge your knowledge.<br><em>Face any exam.</em></h1>
     <p class="lede reveal reveal-delay-2">Revision apps get students to remember. Forge gets them to the grade — by catching the exact misconception behind every wrong answer and reworking it on the spot. <strong>Built for 5–10 minutes a day, not hour-long revision sessions.</strong></p>
     <div class="ctas reveal reveal-delay-3">
-      <a class="btn btn-hot" href="forge-quiz.html">Try the quiz — free</a>
-      <a class="hero-secondary-link" href="#waitlist">Join the waiting list <span aria-hidden="true">→</span></a>
+      <a class="btn btn-hot btn-glass" href="forge-quiz.html">Try the quiz — free</a>
+      <a class="hero-secondary-link btn-glass" href="#waitlist">Join the waiting list <span aria-hidden="true">→</span></a>
     </div>
     <p class="sub reveal reveal-delay-4">12+ subjects across GCSE &amp; A Level, spec-mapped and growing weekly. <a href="#subjects">See the subjects ↓</a></p>
   </div>
@@ -2083,7 +2102,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
     <p class="sect-lede reveal" style="margin:0 auto">Forge is being built in a working classroom, expanding across GCSE and A Level week by week. Join the list to shape it and pilot it first.</p>
     <form id="waitform">
       <input type="email" id="email" placeholder="you@school.org.uk" required aria-label="Email address">
-      <button type="submit">Join the waiting list</button>
+      <button type="submit" class="btn-glass">Join the waiting list</button>
     </form>
     <p class="done" id="waitdone">You're on the list. We'll be in touch when the first pilot opens. ✦</p>
     <p class="note">Teachers and students welcome. No spam — one email when pilots open.</p>
@@ -2096,9 +2115,9 @@ if (localStorage.getItem('forge-theme') === 'light') {
   <!-- Primary link row -->
   <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:28px">
     <div style="display:flex;gap:8px;flex-wrap:wrap">
-      <a href="forge-quiz.html" style="padding:8px 16px;border-radius:var(--radius-sm);background:var(--ember);color:var(--coal);font-family:'Inter',sans-serif;font-weight:700;font-size:13px;text-decoration:none;white-space:nowrap">Try the quiz</a>
-      <a href="teacher.html" style="padding:8px 16px;border-radius:var(--radius-sm);background:var(--panel);border:1px solid var(--line);color:var(--white);font-family:'Inter',sans-serif;font-weight:600;font-size:13px;text-decoration:none;white-space:nowrap">Teacher dashboard</a>
-      <a href="school-overview.html" style="padding:8px 16px;border-radius:var(--radius-sm);background:var(--panel);border:1px solid var(--line);color:var(--white);font-family:'Inter',sans-serif;font-weight:600;font-size:13px;text-decoration:none;white-space:nowrap">School overview</a>
+      <a href="forge-quiz.html" class="btn-glass" style="padding:8px 16px;border-radius:var(--radius-sm);font-family:'Inter',sans-serif;font-weight:700;font-size:13px;text-decoration:none;white-space:nowrap">Try the quiz</a>
+      <a href="teacher.html" class="btn-glass" style="padding:8px 16px;border-radius:var(--radius-sm);font-family:'Inter',sans-serif;font-weight:600;font-size:13px;text-decoration:none;white-space:nowrap">Teacher dashboard</a>
+      <a href="school-overview.html" class="btn-glass" style="padding:8px 16px;border-radius:var(--radius-sm);font-family:'Inter',sans-serif;font-weight:600;font-size:13px;text-decoration:none;white-space:nowrap">School overview</a>
     </div>
     <div style="display:flex;gap:16px;flex-wrap:wrap">
       <a href="anvil.html" style="color:var(--slate);text-decoration:none;font-size:13px;white-space:nowrap">The Anvil</a>
