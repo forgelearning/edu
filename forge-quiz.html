@@ -142,6 +142,7 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
 <script>if(localStorage.getItem('forge-theme')==='light'){document.documentElement.setAttribute('data-theme','light');}</script>
 <script src="scripts/forge-logo.js"></script>
 <script src="scripts/forge-auth-card.js"></script>
+<script src="scripts/forge-classes.js"></script>
 <script src="scripts/forge-sidebar.js"></script>
 <script>
 ForgeSidebar.mount({
@@ -413,6 +414,118 @@ var state = {
   paidSubjects: [],
   weightMap: {}        // spaced repetition: questionId → priority weight
 };
+
+// ── JOINING A CLASS ───────────────────────────────────────────
+// Each class the student joins gets its own `students` row, so their answers
+// in that subject are attributed to that class — and therefore to the teacher
+// who handed out the code. Re-entering a code they've already used reuses the
+// existing row instead of creating a duplicate.
+// cb(err, {cls, studentId}).
+function joinClassByCode(name, code, cb) {
+  fetch(SUPABASE_URL + '/rest/v1/rpc/get_class_by_code', {
+    method: 'POST',
+    headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ p_code: code })
+  }).then(function(r) { return r.json(); }).then(function(classes) {
+    if (!Array.isArray(classes) || classes.length === 0) {
+      cb('Class code not found. Check with your teacher.');
+      return;
+    }
+    var cls = classes[0];
+
+    function finish(studentId) {
+      ForgeClasses.add({
+        classId: cls.id, classCode: code, className: cls.name || null,
+        subject: cls.subject || null, studentId: studentId, studentName: name
+      });
+      cb(null, { cls: cls, studentId: studentId });
+    }
+
+    // Already in this class on a previous visit? Reuse that student row.
+    fetch(SUPABASE_URL + '/rest/v1/rpc/get_student_by_name_and_code', {
+      method: 'POST',
+      headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ p_code: code, p_name: name })
+    }).then(function(r) { return r.json(); }).then(function(rows) {
+      if (Array.isArray(rows) && rows.length > 0 && rows[0].student_id) {
+        finish(rows[0].student_id);
+        return;
+      }
+      supa.insert('students', { name: name, class_id: cls.id }).then(function(students) {
+        finish(students && students[0] ? students[0].id : null);
+      }).catch(function() { cb('Could not join. Try again.'); });
+    }).catch(function() {
+      supa.insert('students', { name: name, class_id: cls.id }).then(function(students) {
+        finish(students && students[0] ? students[0].id : null);
+      }).catch(function() { cb('Could not join. Try again.'); });
+    });
+  }).catch(function() { cb('Connection error. Try again.'); });
+}
+
+// Point state at a given class — used when the student picks a subject, so
+// their answers land against that class's student row.
+function activateClass(entry) {
+  if (!entry) return;
+  state.classId      = entry.classId;
+  state.studentId    = entry.studentId;
+  state.classSubject = entry.subject || null;
+  if (entry.studentName) state.studentName = entry.studentName;
+  try {
+    localStorage.setItem('forge-student', JSON.stringify({
+      studentId: entry.studentId, classId: entry.classId, classCode: entry.classCode,
+      studentName: state.studentName, classSubject: entry.subject || null
+    }));
+  } catch(e) {}
+}
+
+// Another teacher hands out another code — students add it here rather than
+// signing out and back in. Rendered on both the subject picker and the bank
+// list, because a student with a single class is taken straight past the
+// picker and would otherwise have no way to reach this.
+function joinMoreHtml() {
+  if (!state.classId && ForgeClasses.subjects(SUBJECTS).length === 0) return '';
+  var h = '<div id="join-more" style="margin-top:18px;border:1px solid var(--line);border-radius:var(--radius-md);padding:14px 16px">';
+  h += '<div style="display:flex;justify-content:space-between;align-items:center;gap:10px">';
+  h += '<span style="font-size:13px;color:var(--slate)">Got a code for another class?</span>';
+  h += '<button id="jm-toggle" style="background:none;border:none;color:var(--ember);font-size:12px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif;white-space:nowrap">Join another class ↓</button>';
+  h += '</div>';
+  h += '<div id="jm-form" style="display:none;margin-top:12px">';
+  h += '<input id="jm-code" class="join-input" type="text" placeholder="e.g. LH-RVN9" style="text-transform:uppercase;margin-bottom:8px">';
+  h += '<button id="jm-btn" class="join-btn btn-glass btn-ember" style="padding:10px">Join class →</button>';
+  h += '<p class="join-err" id="jm-err"></p>';
+  h += '</div></div>';
+  return h;
+}
+
+function wireJoinMore() {
+  var toggle = document.getElementById('jm-toggle');
+  if (!toggle) return;
+  toggle.onclick = function() {
+    var f = document.getElementById('jm-form');
+    f.style.display = f.style.display === 'none' ? 'block' : 'none';
+    if (f.style.display === 'block') document.getElementById('jm-code').focus();
+  };
+  document.getElementById('jm-btn').onclick = function() {
+    var code = document.getElementById('jm-code').value.trim().toUpperCase();
+    var err  = document.getElementById('jm-err');
+    var btn  = document.getElementById('jm-btn');
+    err.style.display = 'none';
+    if (!code) { err.textContent = 'Enter your class code.'; err.style.display = 'block'; return; }
+    btn.disabled = true; btn.textContent = 'Joining…';
+    joinClassByCode(state.studentName, code, function(joinErr, res) {
+      btn.disabled = false; btn.textContent = 'Join class →';
+      if (joinErr) { err.textContent = joinErr; err.style.display = 'block'; return; }
+      if (!res.cls.subject || !SUBJECTS[res.cls.subject]) {
+        err.textContent = 'Joined ' + (res.cls.name || code) + ', but that subject has no questions yet.';
+        err.style.display = 'block';
+        return;
+      }
+      // Land on the picker so the newly added subject is visible.
+      state.phase = 'subjects';
+      render();
+    });
+  };
+}
 
 // ── FREE TIER DAILY LIMIT ─────────────────────────────────────
 var FREE_DAILY_LIMIT = 10;
@@ -716,38 +829,26 @@ function renderJoin() {
     btn.disabled = true; btn.textContent = 'Joining...';
     err.style.display = 'none';
 
-    fetch(SUPABASE_URL + '/rest/v1/rpc/get_class_by_code', {
-      method: 'POST',
-      headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ p_code: code })
-    }).then(function(r) { return r.json(); }).then(function(classes) {
-      if (!Array.isArray(classes) || classes.length === 0) {
-        err.textContent = 'Class code not found. Check with your teacher.';
+    state.studentName = name;
+    joinClassByCode(name, code, function(joinErr, res) {
+      if (joinErr) {
+        err.textContent = joinErr;
         err.style.display = 'block';
         btn.disabled = false; btn.textContent = 'Join class \u2192';
         return;
       }
-      var cls = classes[0];
-      supa.insert('students', { name: name, class_id: cls.id }).then(function(students) {
-        if (students && Array.isArray(students) && students.length > 0) {
-          state.studentId = students[0].id;
-          state.classId = cls.id;
-        }
-        state.studentName  = name;
-        state.classSubject = cls.subject || null;
-        try { localStorage.setItem('forge-student', JSON.stringify({ studentId: state.studentId, classId: state.classId, classCode: code, studentName: state.studentName, classSubject: state.classSubject })); } catch(e) {}
-        if (state.classSubject && SUBJECTS[state.classSubject]) {
-          state.subject = state.classSubject;
-          state.phase   = 'banks';
-        } else {
-          state.phase = 'subjects';
-        }
-        render();
+      activateClass(ForgeClasses.forSubject(res.cls.subject) || {
+        classId: res.cls.id, classCode: code, subject: res.cls.subject,
+        studentId: res.studentId, studentName: name
       });
-    }).catch(function() {
-      err.textContent = 'Connection error. Try again.';
-      err.style.display = 'block';
-      btn.disabled = false; btn.textContent = 'Join class \u2192';
+      var joined = ForgeClasses.subjects(SUBJECTS);
+      if (joined.length === 1) {
+        state.subject = joined[0];
+        state.phase   = 'banks';
+      } else {
+        state.phase = 'subjects';
+      }
+      render();
     });
   };
 
@@ -814,7 +915,7 @@ function renderSubjects(){
     h += '<p style="font-size:13px;color:var(--slate);margin-bottom:0">Is your teacher using Forge? <b style="color:var(--white)">Enter their class code</b> to share your progress.</p>';
     h += '<div id="class-link-form" style="display:none;margin-top:12px">';
     h += '<input id="ql-code" class="join-input" type="text" placeholder="e.g. ECON-Y12-A" style="text-transform:uppercase;margin-bottom:8px">';
-    h += '<button id="ql-btn" class="join-btn" style="padding:10px">Link to class →</button>';
+    h += '<button id="ql-btn" class="join-btn btn-glass btn-ember" style="padding:10px">Link to class →</button>';
     h += '<p class="join-err" id="ql-err"></p>';
     h += '</div></div>';
   }
@@ -831,9 +932,13 @@ function renderSubjects(){
   h += '<p style="color:#8A857E;font-size:15px">Choose what to practise</p></div>';
   h += '<div class="subject-list">';
 
-  // For paid/trial students, only show their chosen subjects
+  // Students see the subjects of every class they've joined. Paid/trial
+  // students without classes see the subjects in their plan.
+  var joinedSubjects = ForgeClasses.subjects(SUBJECTS);
   var subjectKeys = Object.keys(SUBJECTS);
-  if ((state.isPaid || state.isTrial) && state.paidSubjects && state.paidSubjects.length > 0) {
+  if (joinedSubjects.length > 0) {
+    subjectKeys = joinedSubjects;
+  } else if ((state.isPaid || state.isTrial) && state.paidSubjects && state.paidSubjects.length > 0) {
     subjectKeys = state.paidSubjects.filter(function(k) { return SUBJECTS[k]; });
   }
 
@@ -846,6 +951,8 @@ function renderSubjects(){
       var n=s.banks.reduce(function(t,b){return t+BANKS[b].questions.length},0);
       countLabel = s.banks.length+' banks \u00b7 '+n+' questions';
     }
+    var entry = ForgeClasses.forSubject(k);
+    if (entry && entry.className) countLabel += ' \u00b7 ' + entry.className;
     h+='<button class="subject-btn" data-key="'+k+'" style="border-color:'+s.color+'25">';
     h+='<h3 style="color:'+s.color+'">'+s.label+'</h3>';
     h+='<div class="sub">'+s.sub+'</div>';
@@ -853,10 +960,16 @@ function renderSubjects(){
     h+='</button>';
   });
   h+='</div>';
+
+  h += joinMoreHtml();
+
   app.innerHTML=h + sessionBar();
   app.querySelectorAll('.subject-btn').forEach(function(b){
     b.onclick=function(){
       state.subject=b.dataset.key;
+      // Answers must land against the student row for the class that owns
+      // this subject, so the right teacher sees them.
+      activateClass(ForgeClasses.forSubject(b.dataset.key));
       var s = SUBJECTS[b.dataset.key];
       if (s && s.readerMode) {
         state.phase = 'mandarin-reader';
@@ -867,6 +980,8 @@ function renderSubjects(){
       render();
     };
   });
+
+  wireJoinMore();
 
   // Wire up class link form if visible
   var qlBtn = document.getElementById('ql-btn');
@@ -901,6 +1016,10 @@ function renderSubjects(){
           state.classSubject = cls.subject || null;
           try { localStorage.setItem('forge-student', JSON.stringify({ studentId: studentId, classId: cls.id, classCode: code, studentName: state.studentName, classSubject: cls.subject || null })); } catch(e) {}
           try { localStorage.setItem('forge-paid-student', JSON.stringify({ studentId: studentId, name: state.studentName })); } catch(e) {}
+          ForgeClasses.add({
+            classId: cls.id, classCode: code, className: cls.name || null,
+            subject: cls.subject || null, studentId: studentId, studentName: state.studentName
+          });
 
           // Backfill responses — update student_id to the new class row AND set class_id
           // This ensures teacher dashboard shows the student's history correctly
@@ -984,7 +1103,11 @@ function renderSubjects(){
 
 function renderBanks(){
   var subj=SUBJECTS[state.subject];
-  var locked = state.classSubject && state.classSubject === state.subject;
+  // Students in more than one class always need a way back to their other
+  // subjects, so only lock when this really is their only one.
+  var choices = ForgeClasses.subjects(SUBJECTS).length
+             || ((state.isPaid || state.isTrial) ? (state.paidSubjects || []).length : 0);
+  var locked = state.classSubject && state.classSubject === state.subject && choices <= 1;
   var h='';
   // Only show back button if not locked to a subject
   if (!locked) h+='<button class="back-btn" id="back-subj">\u2190 Subjects</button>';
@@ -1002,7 +1125,11 @@ function renderBanks(){
     h+='</button>';
   });
   h+='</div>';
+  // Locked students never see the subject picker, so this is their only
+  // route to adding a second class.
+  if (locked) h += joinMoreHtml();
   app.innerHTML=h + sessionBar();
+  wireJoinMore();
   var backBtn = document.getElementById('back-subj');
   if (backBtn) backBtn.onclick=function(){state.phase='subjects';render();};
   app.querySelectorAll('.bank-btn').forEach(function(b){
@@ -1219,12 +1346,12 @@ function renderQuiz(){
 
       var fb=document.getElementById('feedback');
       if(isCorrect){
-        fb.innerHTML='<div class="praise-box">\u2713 Nailed it.</div><button class="next-btn" id="next-btn">Next \u2192</button><div class="clear"></div>';
+        fb.innerHTML='<div class="praise-box">\u2713 Nailed it.</div><button class="next-btn btn-glass btn-ember" id="next-btn">Next \u2192</button><div class="clear"></div>';
       }else{
         var fh='<div class="scaffold-box"><span class="stag">'+q.tag+'</span><p>'+q.scaffold+'</p></div>';
         fh+='<button class="reforge-trigger" id="rf-btn">Re-forge \u2192</button>';
         fh+='<div id="rf-area" class="hidden"></div>';
-        fh+='<button class="next-btn" id="next-btn">Next \u2192</button><div class="clear"></div>';
+        fh+='<button class="next-btn btn-glass btn-ember" id="next-btn">Next \u2192</button><div class="clear"></div>';
         fb.innerHTML=fh;
         document.getElementById('rf-btn').onclick=function(){
           document.getElementById('rf-btn').classList.add('hidden');
@@ -1338,14 +1465,14 @@ function renderFillBlankQuiz(q,bk,headerHtml){
 
     var fb=document.getElementById('feedback');
     if(allCorrect){
-      fb.innerHTML='<div class="praise-box">✓ Nailed it.</div><button class="next-btn" id="next-btn">Next →</button><div class="clear"></div>';
+      fb.innerHTML='<div class="praise-box">✓ Nailed it.</div><button class="next-btn btn-glass btn-ember" id="next-btn">Next →</button><div class="clear"></div>';
     }else{
       var fh='<div class="scaffold-box"><span class="stag">'+q.tag+'</span><p>'+q.scaffold+'</p></div>';
       if(q.reforge){
         fh+='<button class="reforge-trigger" id="rf-btn">Re-forge →</button>';
         fh+='<div id="rf-area" class="hidden"></div>';
       }
-      fh+='<button class="next-btn" id="next-btn">Next →</button><div class="clear"></div>';
+      fh+='<button class="next-btn btn-glass btn-ember" id="next-btn">Next →</button><div class="clear"></div>';
       fb.innerHTML=fh;
       if(q.reforge){
         document.getElementById('rf-btn').onclick=function(){
@@ -1499,6 +1626,7 @@ function renderResults(){
 function forgeLogout(){
   try { localStorage.removeItem('forge-student'); } catch(e) {}
   try { localStorage.removeItem('forge-free-session'); } catch(e) {}
+  ForgeClasses.clear();
   ForgeAuth.signOut();
   location.reload();
 }
@@ -1691,11 +1819,32 @@ if (ForgeAuth.hasSession()) {
       state.classSubject = savedSession.classSubject || null;
       state.isPaid       = false;
       state.isTrial      = false;
-      if (state.classSubject && SUBJECTS[state.classSubject]) {
+
+      // Sessions from before multi-class support only know about one class —
+      // fold it into the list so it sits alongside any joined since.
+      ForgeClasses.adopt(savedSession);
+
+      var joined = ForgeClasses.subjects(SUBJECTS);
+      if (joined.length === 1) {
+        state.subject      = joined[0];
+        state.classSubject = joined[0];
+        state.phase        = 'banks';
+      } else if (joined.length > 1) {
+        state.phase = 'subjects';
+      } else if (state.classSubject && SUBJECTS[state.classSubject]) {
         state.subject = state.classSubject;
         state.phase   = 'banks';
       } else {
         state.phase = 'subjects';
+        // Stored without a subject (the classes table has no anon SELECT
+        // policy, so this has to come back through the RPC).
+        ForgeClasses.backfillSubjects(SUPABASE_URL, SUPABASE_KEY, function() {
+          var subs = ForgeClasses.subjects(SUBJECTS);
+          if (subs.length === 1) {
+            state.subject = subs[0]; state.classSubject = subs[0]; state.phase = 'banks';
+          }
+          if (subs.length) render();
+        });
       }
       if (state.studentId && savedSession.classCode) {
         supa.ownResponses(state.studentId, savedSession.classCode, state.studentName).then(function(r) {
