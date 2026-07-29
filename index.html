@@ -479,22 +479,9 @@ footer{padding:40px 0 28px;border-top:1px solid var(--line)}
      button, not glass.
    Layout (padding, height, radius) still comes from each element's
    own base class; this only overrides fill/border/shadow/color. */
-.btn-glass{position:relative;overflow:hidden;background:linear-gradient(180deg,rgba(58,52,46,.62),rgba(33,30,27,.55) 100%)!important;border:1px solid rgba(255,201,60,.28)!important;color:var(--white)!important;backdrop-filter:blur(18px) saturate(180%);-webkit-backdrop-filter:blur(18px) saturate(180%);box-shadow:inset 0 1px 0 rgba(255,201,60,.35),inset 0 -8px 14px -10px rgba(255,255,255,.08),0 12px 28px -14px rgba(0,0,0,.6)!important;transition:box-shadow .2s ease,transform .2s ease,background .2s ease!important}
-.btn-glass::after{content:"";position:absolute;top:1px;left:8%;right:8%;height:45%;border-radius:inherit;background:linear-gradient(180deg,rgba(255,201,60,.22),transparent);pointer-events:none}
-.btn-glass:hover{background:linear-gradient(180deg,rgba(70,62,54,.7),rgba(40,36,32,.62) 100%)!important;transform:translateY(-2px);box-shadow:inset 0 1px 0 rgba(255,201,60,.55),inset 0 -8px 14px -10px rgba(255,255,255,.1),0 16px 34px -14px rgba(0,0,0,.65),0 0 0 3px rgba(255,201,60,.22)!important}
-.btn-glass span{position:relative}
+/* .btn-glass itself now lives in css/base.css so the app pages can use it. */
 
-[data-theme="light"] .btn-glass{background:linear-gradient(180deg,rgba(255,255,255,.62),rgba(255,255,255,.32) 100%)!important;border:1px solid rgba(255,255,255,.65)!important;color:#1A1613!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.95),inset 0 -8px 14px -10px rgba(255,255,255,.4),0 12px 28px -14px rgba(0,0,0,.2)!important}
-[data-theme="light"] .btn-glass::after{background:linear-gradient(180deg,rgba(255,255,255,.7),transparent)}
-[data-theme="light"] .btn-glass:hover{background:linear-gradient(180deg,rgba(255,255,255,.75),rgba(255,255,255,.42) 100%)!important;box-shadow:inset 0 1px 0 #fff,inset 0 -8px 14px -10px rgba(255,255,255,.5),0 16px 34px -14px rgba(0,0,0,.25),0 0 0 3px rgba(213,92,19,.3)!important}
-
-/* Ember glass — the primary-CTA variant, lifted from the sign-in cards
-   (css/auth.css). Dark theme only: on light backgrounds the white glass in
-   .btn-glass above already reads as the primary button, so this is scoped to
-   html:not([data-theme="light"]) and layered after .btn-glass to win. */
-html:not([data-theme="light"]) .btn-ember{background:linear-gradient(180deg,var(--ember),#B44A0C)!important;border:1px solid rgba(255,201,60,.32)!important;color:#fff!important;box-shadow:inset 0 1px 0 rgba(255,201,60,.45),0 14px 32px -14px rgba(213,92,19,.95)!important}
-html:not([data-theme="light"]) .btn-ember::after{background:linear-gradient(180deg,rgba(255,255,255,.22),transparent)}
-html:not([data-theme="light"]) .btn-ember:hover{background:linear-gradient(180deg,#E8681A,#C4520E)!important;transform:translateY(-2px);box-shadow:inset 0 1px 0 rgba(255,201,60,.65),0 18px 40px -14px rgba(213,92,19,1),0 0 0 3px rgba(255,201,60,.18)!important}
+/* .btn-ember now lives in css/base.css alongside .btn-glass. */
 </style>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-RGZ9J6Q8H9"></script>

@@ -572,7 +572,7 @@ function renderAnvilHome(){
 
   if(active.length===0 && resolved.length===0){
     h+='<div class="empty"><h3>No misconceptions yet</h3><p>Do some quizzes first \u2014 any wrong answers will appear here for reworking.</p>';
-    h+='<a href="forge-quiz.html" style="display:inline-block;margin-top:16px;padding:10px 20px;border-radius:var(--radius-sm);background:var(--ember);color:#fff;text-decoration:none;font-weight:600;font-size:14px">Go to the quiz \u2192</a>';
+    h+='<a class="btn-glass btn-ember" href="forge-quiz.html" style="display:inline-block;margin-top:16px;padding:10px 20px;border-radius:var(--radius-sm);text-decoration:none;font-weight:600;font-size:14px">Go to the quiz \u2192</a>';
     h+='</div>';
     app.innerHTML=h + sessionBar();return;
   }
@@ -750,12 +750,12 @@ function renderReworkQuestion(tag,questions,lap,qIdx){
 
       if(isCorrect && m.streak>=CLEAR_THRESHOLD){
         fh='<div class="cleared-banner" style="margin-top:20px"><h2>\u2713 Misconception cleared!</h2><p style="color:var(--slate)">'+tag+' \u2014 '+label+'<br>'+CLEAR_THRESHOLD+' correct in a row. This one is off your Anvil.</p></div>';
-        fh+='<button class="next-btn" id="rw-next">Back to Anvil \u2192</button><div class="clear"></div>';
+        fh+='<button class="next-btn btn-glass btn-ember" id="rw-next">Back to Anvil \u2192</button><div class="clear"></div>';
         fb.innerHTML=fh;
         document.getElementById('rw-next').onclick=function(){ renderAnvilHome(); };
       } else if(isCorrect){
         fh='<div class="praise-box">\u2713 Correct. Streak: '+m.streak+'/'+CLEAR_THRESHOLD+'</div>';
-        fh+='<button class="next-btn" id="rw-next">Next question \u2192</button><div class="clear"></div>';
+        fh+='<button class="next-btn btn-glass btn-ember" id="rw-next">Next question \u2192</button><div class="clear"></div>';
         fb.innerHTML=fh;
         document.getElementById('rw-next').onclick=function(){
           renderReworkQuestion(tag,questions,lap,qIdx+1);
@@ -763,7 +763,7 @@ function renderReworkQuestion(tag,questions,lap,qIdx){
       } else {
         fh='<div class="scaffold-box"><span class="stag">'+tag+'</span><p>'+q.scaffold+'</p></div>';
         fh+='<div style="margin-top:12px;font-size:14px;color:var(--bad);font-weight:600">Streak reset to 0/'+CLEAR_THRESHOLD+'</div>';
-        fh+='<button class="next-btn" id="rw-next">Try again \u2192</button><div class="clear"></div>';
+        fh+='<button class="next-btn btn-glass btn-ember" id="rw-next">Try again \u2192</button><div class="clear"></div>';
         fb.innerHTML=fh;
         document.getElementById('rw-next').onclick=function(){
           renderReworkQuestion(tag,questions,lap,qIdx+1);
