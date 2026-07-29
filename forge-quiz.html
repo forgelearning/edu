@@ -424,56 +424,41 @@ var state = {
 // existing row instead of creating a duplicate.
 // cb(err, {cls, studentId}).
 function joinClassByCode(name, code, cb) {
-  fetch(SUPABASE_URL + '/rest/v1/rpc/get_class_by_code', {
+  // One call: finds or creates this student's row for the class and returns
+  // its id. A direct insert can't do this — anon may write to students but
+  // can't read it back, so asking for the row returned fails the whole
+  // request and silently creates nothing.
+  fetch(SUPABASE_URL + '/rest/v1/rpc/join_class_as_student', {
     method: 'POST',
     headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ p_code: code })
-  }).then(function(r) { return r.json(); }).then(function(classes) {
-    if (!Array.isArray(classes) || classes.length === 0) {
+    body: JSON.stringify({ p_code: code, p_name: name })
+  }).then(function(r) { return r.json(); }).then(function(rows) {
+    if (!Array.isArray(rows) || rows.length === 0 || !rows[0].student_id) {
       cb('Class code not found. Check with your teacher.');
       return;
     }
-    var cls = classes[0];
+    var row = rows[0];
+    var cls = { id: row.class_id, name: row.class_name, subject: row.subject };
 
-    function finish(studentId) {
-      ForgeClasses.add({
-        classId: cls.id, classCode: code, className: cls.name || null,
-        subject: cls.subject || null, studentId: studentId, studentName: name
-      });
-      // Tie this class to the one they're already signed in with, so both
-      // follow them onto any other device. Needs both codes, which is
-      // exactly what the student has just demonstrated.
-      var anchor = (state.studentId && state.classId !== cls.id)
-        ? (ForgeClasses.list().filter(function(c){ return c.studentId === state.studentId && c.classCode; })[0] || null)
-        : null;
-      if (anchor) {
-        ForgeClasses.linkToServer(SUPABASE_URL, SUPABASE_KEY, anchor,
-          { studentId: studentId, classCode: code }, function() {
-            cb(null, { cls: cls, studentId: studentId });
-          });
-        return;
-      }
-      cb(null, { cls: cls, studentId: studentId });
-    }
-
-    // Already in this class on a previous visit? Reuse that student row.
-    fetch(SUPABASE_URL + '/rest/v1/rpc/get_student_by_name_and_code', {
-      method: 'POST',
-      headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ p_code: code, p_name: name })
-    }).then(function(r) { return r.json(); }).then(function(rows) {
-      if (Array.isArray(rows) && rows.length > 0 && rows[0].student_id) {
-        finish(rows[0].student_id);
-        return;
-      }
-      supa.insert('students', { name: name, class_id: cls.id }).then(function(students) {
-        finish(students && students[0] ? students[0].id : null);
-      }).catch(function() { cb('Could not join. Try again.'); });
-    }).catch(function() {
-      supa.insert('students', { name: name, class_id: cls.id }).then(function(students) {
-        finish(students && students[0] ? students[0].id : null);
-      }).catch(function() { cb('Could not join. Try again.'); });
+    ForgeClasses.add({
+      classId: cls.id, classCode: code, className: cls.name || null,
+      subject: cls.subject || null, studentId: row.student_id, studentName: name
     });
+
+    // Tie this class to the one they're already signed in with, so both
+    // follow them onto any other device. Needs both codes, which is exactly
+    // what the student has just demonstrated.
+    var anchor = (state.studentId && state.classId !== cls.id)
+      ? (ForgeClasses.list().filter(function(c){ return c.studentId === state.studentId && c.classCode; })[0] || null)
+      : null;
+    if (anchor) {
+      ForgeClasses.linkToServer(SUPABASE_URL, SUPABASE_KEY, anchor,
+        { studentId: row.student_id, classCode: code }, function() {
+          cb(null, { cls: cls, studentId: row.student_id });
+        });
+      return;
+    }
+    cb(null, { cls: cls, studentId: row.student_id });
   }).catch(function() { cb('Connection error. Try again.'); });
 }
 
@@ -655,24 +640,16 @@ function generateFreeId() {
 // Uses a deterministic lookup: students table has a 'free_token' column
 // Falls back gracefully if column doesn't exist yet
 function registerFreeStudent(name, token) {
-  // First try to find existing student by free_token
-  return supa.select('students', { free_token: token }).then(function(rows) {
-    if (rows && rows.length > 0) {
-      // Returning student — reuse their ID
-      return rows[0].id;
-    }
-    // New student — insert
-    return supa.insert('students', { name: name, class_id: null, free_token: token })
-      .then(function(inserted) {
-        return inserted && inserted[0] ? inserted[0].id : null;
-      });
-  }).catch(function() {
-    // If free_token column doesn't exist yet, insert without it
-    return supa.insert('students', { name: name, class_id: null })
-      .then(function(inserted) {
-        return inserted && inserted[0] ? inserted[0].id : null;
-      }).catch(function() { return null; });
-  });
+  // Goes through an RPC for the same reason as joining a class: anon can
+  // insert into students but not read it back, so a direct insert asking for
+  // the new row fails outright. Reuses the row matching this device's token.
+  return fetch(SUPABASE_URL + '/rest/v1/rpc/create_free_student', {
+    method: 'POST',
+    headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ p_name: name, p_free_token: token })
+  }).then(function(r) { return r.json(); }).then(function(rows) {
+    return (Array.isArray(rows) && rows[0]) ? rows[0].student_id : null;
+  }).catch(function() { return null; });
 }
 
 var app = document.getElementById('app');
@@ -1072,8 +1049,11 @@ function renderSubjects(){
           setTimeout(function() { render(); }, 1500);
         }
 
-        // Use anon key for PATCH/INSERT — teacher RLS policy covers anon writes
-        var anonHdrs = { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY, 'Content-Type': 'application/json', 'Prefer': 'return=representation' };
+        // Insert as the signed-in user, not anon: the new row carries their
+        // auth_user_id, which is what lets them read it back. Under the anon
+        // key there's no SELECT policy, so asking for the row returned fails
+        // the whole insert and no row is created.
+        var anonHdrs = authHdrs;
 
         // Always look up existing student row first by auth_user_id to find canonical row
         var authUser = ForgeAuth.currentUser();
