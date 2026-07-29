@@ -93,6 +93,7 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
 
 <script src="scripts/forge-logo.js"></script>
 <script src="scripts/forge-auth-card.js"></script>
+<script src="scripts/forge-classes.js"></script>
 <script src="scripts/forge-sidebar.js"></script>
 <script>
 ForgeSidebar.mount({
@@ -123,15 +124,6 @@ function supaGet(table,params){
   var url=SUPABASE_URL+'/rest/v1/'+table+'?select=*';
   if(params)url+='&'+params;
   return fetch(url,{headers:headers}).then(function(r){return r.json();});
-}
-// responses has no anon SELECT policy — a returning (cached) session must
-// go through this RPC (same one used at login) rather than a direct table
-// read, or it silently gets back zero rows instead of an error.
-function supaOwnResponses(studentId,code,name){
-  return fetch(SUPABASE_URL+'/rest/v1/rpc/get_student_own_responses',{
-    method:'POST',headers:Object.assign({'Content-Type':'application/json'},headers),
-    body:JSON.stringify({p_student_id:studentId,p_code:code,p_name:name})
-  }).then(function(r){return r.json();});
 }
 function supaInsert(table,row){
   return fetch(SUPABASE_URL+'/rest/v1/'+table,{
@@ -488,13 +480,15 @@ function renderLogin(){
       anvilState.studentName=name;
       anvilState.classSubject=match.subject||null;
       try { localStorage.setItem('forge-student', JSON.stringify({studentId: anvilState.studentId, classId: anvilState.classId, classCode: code, studentName: anvilState.studentName, classSubject: anvilState.classSubject})); } catch(e) {}
-      // Load their responses
-      fetch(SUPABASE_URL + '/rest/v1/rpc/get_student_own_responses', {
-        method: 'POST', headers: Object.assign({}, headers, {'Content-Type':'application/json'}),
-        body: JSON.stringify({ p_student_id: anvilState.studentId, p_code: code, p_name: name })
-      }).then(function(r){ return r.json(); }).then(function(responses){
-        // RPC returns newest-first; this view expects chronological order.
-        anvilState.responses=(responses||[]).slice().reverse();
+      ForgeClasses.add({
+        classId: anvilState.classId, classCode: code, className: match.class_name || null,
+        subject: anvilState.classSubject, studentId: anvilState.studentId, studentName: name
+      });
+      // The Anvil covers every class the student is in, not just this one —
+      // misconceptions don't stop mattering because they signed in via a
+      // different code.
+      ForgeClasses.fetchAllResponses(SUPABASE_URL, SUPABASE_KEY, name, function(responses){
+        anvilState.responses = responses;
         buildMisconceptions();
         renderAnvilHome();
       });
@@ -507,7 +501,12 @@ function buildMisconceptions(){
   anvilState.responses.forEach(function(r){
     if(!r.misconception_tag) return;
     var tag=r.misconception_tag;
-    if(!mc[tag]) mc[tag]={tag:tag,fires:0,reforgeAttempts:0,reforgeCorrect:0,streak:0,history:[]};
+    if(!mc[tag]) mc[tag]={tag:tag,fires:0,reforgeAttempts:0,reforgeCorrect:0,streak:0,history:[],studentId:null,classId:null};
+
+    // Remember which class this misconception came from so re-forging it
+    // writes back against that class's student row, not whichever class
+    // happened to be active.
+    if(r._studentId){ mc[tag].studentId=r._studentId; mc[tag].classId=r._classId; }
 
     if(r.reforge_attempted){
       mc[tag].reforgeAttempts++;
@@ -714,8 +713,8 @@ function renderReworkQuestion(tag,questions,lap,qIdx){
 
       // Log to Supabase
       supaInsert('responses',{
-        student_id:anvilState.studentId,
-        class_id:anvilState.classId,
+        student_id:m.studentId||anvilState.studentId,
+        class_id:m.classId||anvilState.classId,
         question_id:q.id+'-ANVIL',
         bank:tag,
         subject:'anvil',
@@ -775,6 +774,7 @@ function renderReworkQuestion(tag,questions,lap,qIdx){
 
 function forgeLogout(){
   try { localStorage.removeItem('forge-student'); } catch(e) {}
+  ForgeClasses.clear();
   try { localStorage.removeItem('forge-free-session'); } catch(e) {}
   ForgeAuth.signOut();
   location.reload();
@@ -891,11 +891,14 @@ function checkLocalSession(){
     anvilState.studentName = saved.studentName;
     anvilState.classSubject = saved.classSubject || null;
     if (!saved.classCode) { renderLogin(); return; } // older cached session predates classCode caching — needs one re-entry
-    supaOwnResponses(anvilState.studentId, saved.classCode, anvilState.studentName).then(function(responses){
-      anvilState.responses = Array.isArray(responses) ? responses : [];
+    ForgeClasses.adopt(saved);
+    // Pull in every class they've joined, so the Anvil shows all their
+    // misconceptions rather than only the last class they signed in through.
+    ForgeClasses.fetchAllResponses(SUPABASE_URL, SUPABASE_KEY, anvilState.studentName, function(responses){
+      anvilState.responses = responses;
       buildMisconceptions();
       renderAnvilHome();
-    }).catch(function(){ renderLogin(); });
+    });
   } else {
     renderLogin();
   }

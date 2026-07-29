@@ -96,9 +96,51 @@
     });
   }
 
+  /* Every response across every class joined, oldest first.
+   *
+   * `responses` has no anon SELECT policy, so each class's rows have to come
+   * back through get_student_own_responses — one call per class, since it
+   * authorises on that class's student row. Rows are tagged with the class
+   * they came from (_studentId/_classId/_subject) so a view acting on one
+   * (Anvil re-forging a misconception, say) can write back against the right
+   * student row and keep the data with the teacher who owns it. */
+  function fetchAllResponses(supabaseUrl, supabaseKey, fallbackName, done) {
+    var list = load().filter(function (c) { return c.studentId && c.classCode; });
+    if (!list.length) { done([]); return; }
+
+    Promise.all(list.map(function (c) {
+      return fetch(supabaseUrl + '/rest/v1/rpc/get_student_own_responses', {
+        method: 'POST',
+        headers: { 'apikey': supabaseKey, 'Authorization': 'Bearer ' + supabaseKey, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ p_student_id: c.studentId, p_code: c.classCode, p_name: c.studentName || fallbackName })
+      }).then(function (r) { return r.json(); }).then(function (rows) {
+        return (Array.isArray(rows) ? rows : []).map(function (row) {
+          row._studentId = c.studentId;
+          row._classId   = c.classId;
+          row._subject   = c.subject || null;
+          return row;
+        });
+      }).catch(function () { return []; });
+    })).then(function (sets) {
+      var all = [], seen = {};
+      sets.forEach(function (rows) {
+        rows.forEach(function (r) {
+          var key = r.id || (r._studentId + '|' + r.question_id + '|' + r.created_at);
+          if (seen[key]) return;
+          seen[key] = true;
+          all.push(r);
+        });
+      });
+      /* Chronological — Anvil replays these in order to work out which
+         misconceptions are still live. */
+      all.sort(function (a, b) { return (a.created_at || '') < (b.created_at || '') ? -1 : 1; });
+      done(all);
+    });
+  }
+
   global.ForgeClasses = {
     load: load, save: save, add: add, remove: remove, clear: clear,
     forSubject: forSubject, subjects: subjects, adopt: adopt,
-    backfillSubjects: backfillSubjects
+    backfillSubjects: backfillSubjects, fetchAllResponses: fetchAllResponses
   };
 })(window);
