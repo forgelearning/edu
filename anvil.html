@@ -9,6 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/tokens.css">
 <link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/auth.css">
 <link rel="stylesheet" href="css/sidebar.css">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -90,6 +91,8 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
 <body>
 
 
+<script src="scripts/forge-logo.js"></script>
+<script src="scripts/forge-auth-card.js"></script>
 <script src="scripts/forge-sidebar.js"></script>
 <script>
 ForgeSidebar.mount({
@@ -450,19 +453,16 @@ var app = document.getElementById('app');
 var anvilState = { studentId:null, classId:null, studentName:null, classSubject:null, responses:[], misconceptions:{} };
 
 function renderLogin(){
-  var h='<div style="max-width:340px;margin:40px auto 0;text-align:center">';
-  h+='<p class="tag" style="margin-bottom:6px">THE ANVIL</p>';
-  h+='<h1 style="font-size:28px;margin-bottom:8px">Rework your weaknesses</h1>';
-  h+='<p style="color:#8A857E;font-size:14px;margin-bottom:28px">Misconceptions that survived the re-forge land here. They don\u2019t leave until you prove you\u2019ve beaten them.</p>';
-  h+='</div><div style="max-width:340px;margin:0 auto">';
-  h+='<label style="font-size:13px;color:var(--slate);display:block;margin-bottom:4px">Your first name</label>';
-  h+='<input id="a-name" class="join-input" type="text" placeholder="e.g. Alex" style="text-transform:none">';
-  h+='<label style="font-size:13px;color:var(--slate);display:block;margin-bottom:4px">Class code</label>';
-  h+='<input id="a-code" class="join-input" type="text" placeholder="e.g. ECON-Y12">';
-  h+='<button class="join-btn" id="a-btn">Open my Anvil \u2192</button>';
-  h+='<p class="join-err" id="a-err"></p>';
-  h+='</div>';
-  app.innerHTML=h;
+  var f=ForgeAuthCard.field('a-name','Your first name',{placeholder:'e.g. Alex',autocomplete:'given-name'})
+       +ForgeAuthCard.field('a-code','Class code',{placeholder:'e.g. ECON-Y12',upper:true})
+       +'<button class="auth-btn" id="a-btn" type="submit">Open my Anvil \u2192</button>'
+       +'<p class="auth-err" id="a-err"></p>';
+  app.innerHTML=ForgeAuthCard.shell({
+    title:'Rework your weaknesses',
+    sub:'Misconceptions that survived the re-forge land here \u2014 sign in to work them off.',
+    foot:'No progress yet? <a href="forge-quiz.html">Start with a quiz</a>'
+  },f);
+  ForgeAuthCard.onSubmit(function(){document.getElementById('a-btn').onclick();});
 
   document.getElementById('a-btn').onclick=function(){
     var name=document.getElementById('a-name').value.trim();

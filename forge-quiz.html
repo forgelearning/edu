@@ -9,6 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/tokens.css">
 <link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/auth.css">
 <link rel="stylesheet" href="css/sidebar.css">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -139,6 +140,8 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
 </head>
 <body>
 <script>if(localStorage.getItem('forge-theme')==='light'){document.documentElement.setAttribute('data-theme','light');}</script>
+<script src="scripts/forge-logo.js"></script>
+<script src="scripts/forge-auth-card.js"></script>
 <script src="scripts/forge-sidebar.js"></script>
 <script>
 ForgeSidebar.mount({
@@ -557,63 +560,53 @@ function render() {
 }
 
 function renderJoin() {
-  var h = '<div class="center" style="padding-top:32px">';
-  h += '<p class="tag" style="margin-bottom:6px">FORGE</p>';
-  h += '<h1 style="font-size:28px;margin-bottom:22px">Welcome to Forge</h1>';
-  h += '</div>';
+  var h = '';
 
-  h += '<div style="max-width:360px;margin:0 auto">';
-
-  // Three-tab switcher
-  h += '<div style="display:flex;background:var(--panel-2);border:1px solid var(--line);border-radius:var(--radius-md);padding:3px;margin-bottom:22px;gap:2px">';
-  h += '<button id="tab-free" style="flex:1;padding:8px 0;border:none;border-radius:var(--radius-sm);font-family:Inter,sans-serif;font-weight:600;font-size:12px;cursor:pointer;background:linear-gradient(100deg,var(--hot),var(--ember));color:#1A1816">Try free</button>';
-  h += '<button id="tab-class" style="flex:1;padding:8px 0;border:none;border-radius:var(--radius-sm);font-family:Inter,sans-serif;font-weight:600;font-size:12px;cursor:pointer;background:transparent;color:var(--slate)">Join class</button>';
-  h += '<button id="tab-solo" style="flex:1;padding:8px 0;border:none;border-radius:var(--radius-sm);font-family:Inter,sans-serif;font-weight:600;font-size:12px;cursor:pointer;background:transparent;color:var(--slate)">Log in</button>';
+  // Three-tab switcher — free / class code / Pro login
+  h += '<div class="login-tabs">';
+  h += '<button type="button" class="login-tab active" id="tab-free">Free</button>';
+  h += '<button type="button" class="login-tab" id="tab-class">Join class</button>';
+  h += '<button type="button" class="login-tab" id="tab-solo">Log in</button>';
   h += '</div>';
 
   // Panel: Free tier
   h += '<div id="panel-free">';
-  h += '<p style="font-size:13px;color:#8A857E;margin-bottom:6px;text-align:center">10 free questions per day · no account needed</p>';
-  h += '<div style="background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-md);padding:12px 14px;margin-bottom:14px;font-size:13px;color:var(--slate)">';
-  h += '<div style="display:flex;justify-content:space-between;margin-bottom:6px"><span>\u2713 All subjects &amp; question banks</span><span style="color:#8A857E">free</span></div>';
-  h += '<div style="display:flex;justify-content:space-between;margin-bottom:6px"><span>\u2713 Scaffolds &amp; re-forge feedback</span><span style="color:#8A857E">free</span></div>';
-  h += '<div style="display:flex;justify-content:space-between;margin-bottom:6px"><span style="color:#8A857E">\u2715 Crucible · full Anvil · XP ranks</span><span style="color:#8A857E">Pro</span></div>';
-  h += '<div style="display:flex;justify-content:space-between"><span style="color:#8A857E">\u2715 Unlimited questions</span><span style="color:#8A857E">Pro</span></div>';
+  h += '<p style="font-size:12.5px;color:var(--dim);margin-bottom:10px;text-align:center">10 free questions per day · no account needed</p>';
+  h += '<div style="background:var(--panel-2);border:1px solid var(--line);border-radius:var(--radius-md);padding:12px 14px;margin-bottom:16px;font-size:12.5px;color:var(--slate)">';
+  h += '<div style="display:flex;justify-content:space-between;margin-bottom:6px"><span>✓ All subjects &amp; question banks</span><span style="color:var(--dim)">free</span></div>';
+  h += '<div style="display:flex;justify-content:space-between;margin-bottom:6px"><span>✓ Scaffolds &amp; re-forge feedback</span><span style="color:var(--dim)">free</span></div>';
+  h += '<div style="display:flex;justify-content:space-between;margin-bottom:6px"><span style="color:var(--dim)">✕ Crucible · full Anvil · XP ranks</span><span style="color:var(--dim)">Pro</span></div>';
+  h += '<div style="display:flex;justify-content:space-between"><span style="color:var(--dim)">✕ Unlimited questions</span><span style="color:var(--dim)">Pro</span></div>';
   h += '</div>';
-  h += '<label style="font-size:13px;color:var(--slate);display:block;margin-bottom:4px">Your first name</label>';
-  h += '<input id="free-name" class="join-input" type="text" placeholder="e.g. Alex">';
-  h += '<button class="join-btn" id="free-btn">Start for free \u2192</button>';
-  h += '<p class="join-err" id="free-err"></p>';
-  h += '<p style="font-size:12px;color:#8A857E;text-align:center;margin-top:10px">Want unlimited? <a href="forge-signup.html" style="color:var(--ember);text-decoration:none;font-weight:600">Subscribe for £2.99/month</a></p>';
+  h += ForgeAuthCard.field('free-name', 'Your first name', {placeholder:'e.g. Alex', autocomplete:'given-name'});
+  h += '<button class="auth-btn" id="free-btn" type="submit">Start for free →</button>';
+  h += '<p class="auth-err" id="free-err"></p>';
   h += '</div>';
 
   // Panel: Join class
   h += '<div id="panel-class" style="display:none">';
-  h += '<p style="font-size:13px;color:#8A857E;margin-bottom:16px;text-align:center">Enter your name and the code your teacher gave you</p>';
-  h += '<label style="font-size:13px;color:var(--slate);display:block;margin-bottom:4px">Your name</label>';
-  h += '<input id="join-name" class="join-input" type="text" placeholder="First name + surname initial — e.g. James B">';
-  h += '<label style="font-size:13px;color:var(--slate);display:block;margin-bottom:4px">Class code</label>';
-  h += '<input id="join-code" class="join-input" type="text" placeholder="e.g. ECON-Y12-A" style="text-transform:uppercase">';
-  h += '<button class="join-btn" id="join-btn">Join class \u2192</button>';
-  h += '<p class="join-err" id="join-err"></p>';
+  h += '<p style="font-size:12.5px;color:var(--dim);margin-bottom:16px;text-align:center">Enter your name and the code your teacher gave you</p>';
+  h += ForgeAuthCard.field('join-name', 'Your name', {placeholder:'First name + surname initial — e.g. James B'});
+  h += ForgeAuthCard.field('join-code', 'Class code', {placeholder:'e.g. ECON-Y12-A', upper:true});
+  h += '<button class="auth-btn" id="join-btn" type="submit">Join class →</button>';
+  h += '<p class="auth-err" id="join-err"></p>';
   h += '</div>';
 
   // Panel: Pro login
   h += '<div id="panel-solo" style="display:none">';
-  h += '<p style="font-size:13px;color:#8A857E;margin-bottom:16px;text-align:center">Log in with your Forge email and password</p>';
-  h += '<label style="font-size:13px;color:var(--slate);display:block;margin-bottom:4px">Email address</label>';
-  h += '<input id="solo-email" class="join-input" type="email" placeholder="e.g. alex@gmail.com">';
-  h += '<label style="font-size:13px;color:var(--slate);display:block;margin-bottom:4px">Password</label>';
-  h += '<input id="solo-pass" class="join-input" type="password" placeholder="Your Forge password">';
-  h += '<button class="join-btn" id="solo-btn">Log in \u2192</button>';
-  h += '<p class="join-err" id="solo-err"></p>';
-  h += '<div style="text-align:center;margin-top:20px;padding-top:16px;border-top:1px solid var(--line)">';
-  h += '<p style="font-size:13px;color:#8A857E;margin-bottom:10px">Don\'t have a subscription yet?</p>';
-  h += '<a href="forge-signup.html" style="display:inline-block;padding:10px 22px;border-radius:var(--radius-sm);background:rgba(255,107,44,.1);border:1px solid rgba(255,107,44,.3);color:var(--ember);text-decoration:none;font-family:Inter,sans-serif;font-weight:600;font-size:14px">Subscribe for £2.99/month \u2192</a>';
-  h += '</div></div>';
-
+  h += '<p style="font-size:12.5px;color:var(--dim);margin-bottom:16px;text-align:center">Log in with your Forge email and password</p>';
+  h += ForgeAuthCard.field('solo-email', 'Email address', {type:'email', placeholder:'e.g. alex@gmail.com', autocomplete:'email'});
+  h += ForgeAuthCard.field('solo-pass', 'Password', {type:'password', placeholder:'Your Forge password', autocomplete:'current-password'});
+  h += '<button class="auth-btn" id="solo-btn" type="submit">Log in →</button>';
+  h += '<p class="auth-err" id="solo-err"></p>';
+  h += '<p style="font-size:12.5px;color:var(--dim);text-align:center;margin-top:12px"><a href="reset-password.html" style="color:var(--ember);text-decoration:none;font-weight:600">Forgot your password?</a></p>';
   h += '</div>';
-  app.innerHTML = h;
+
+  app.innerHTML = ForgeAuthCard.shell({
+    title: 'Welcome to Forge',
+    sub: 'Start free, join your class, or log in to Pro.',
+    foot: 'Want unlimited? <a href="forge-signup.html">Subscribe — £2.99/mo</a>'
+  }, h);
 
   // Tab switching
   var tabs = [
@@ -621,18 +614,23 @@ function renderJoin() {
     {btn: 'tab-class', panel: 'panel-class'},
     {btn: 'tab-solo',  panel: 'panel-solo'},
   ];
+  var activeTab = 'tab-free';
   function activateTab(which) {
+    activeTab = which;
     tabs.forEach(function(t) {
       var isActive = t.btn === which;
-      var btn = document.getElementById(t.btn);
-      var panel = document.getElementById(t.panel);
-      btn.style.background = isActive ? 'linear-gradient(100deg,var(--hot),var(--ember))' : 'transparent';
-      btn.style.color = isActive ? '#1A1816' : 'var(--slate)';
-      panel.style.display = isActive ? 'block' : 'none';
+      document.getElementById(t.btn).classList.toggle('active', isActive);
+      document.getElementById(t.panel).style.display = isActive ? 'block' : 'none';
     });
   }
   tabs.forEach(function(t) {
     document.getElementById(t.btn).onclick = function() { activateTab(t.btn); };
+  });
+
+  // Enter submits whichever panel is showing.
+  ForgeAuthCard.onSubmit(function() {
+    var btn = activeTab === 'tab-class' ? 'join-btn' : activeTab === 'tab-solo' ? 'solo-btn' : 'free-btn';
+    document.getElementById(btn).onclick();
   });
 
   // Free tier handler

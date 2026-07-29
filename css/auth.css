@@ -1,0 +1,104 @@
+/* Sign-in card — shared by every Forge auth screen (profile, dashboard,
+   anvil, quiz, teacher, school overview, password reset).
+
+   Structure comes from scripts/forge-auth-card.js:
+     .auth-stage > .auth-card > .auth-badge + .auth-title + .auth-sub + fields
+
+   Pages keep their existing form markup and ids (.join-input, .field, .btn,
+   .code-input, .login-tabs …) — the rules at the bottom re-skin those in
+   place, so converting a page is a container swap, not a rewrite. */
+
+.auth-stage{position:relative;min-height:calc(100vh - 56px);display:flex;align-items:center;justify-content:center;padding:32px 0}
+
+/* Glows are fixed so they bleed past a narrow .wrap instead of ending in a
+   visible rectangle at its edges. */
+.auth-stage::before,.auth-stage::after{content:"";position:fixed;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0}
+.auth-stage::before{width:520px;height:520px;top:-120px;left:50%;margin-left:-420px;background:radial-gradient(circle,rgba(213,92,19,.42),transparent 70%);animation:auth-drift-a 18s ease-in-out infinite alternate}
+.auth-stage::after{width:460px;height:460px;bottom:-160px;left:50%;margin-left:20px;background:radial-gradient(circle,rgba(255,201,60,.3),transparent 70%);animation:auth-drift-b 22s ease-in-out infinite alternate}
+@keyframes auth-drift-a{from{transform:translate3d(0,0,0) scale(1)}to{transform:translate3d(70px,50px,0) scale(1.15)}}
+@keyframes auth-drift-b{from{transform:translate3d(0,0,0) scale(1.1)}to{transform:translate3d(-60px,-40px,0) scale(.95)}}
+
+.auth-spark{position:absolute;width:3px;height:3px;border-radius:50%;background:var(--hot);opacity:.5;box-shadow:0 0 8px rgba(255,201,60,.8);animation:auth-float 14s linear infinite;z-index:0}
+@keyframes auth-float{0%{transform:translateY(20px);opacity:0}12%{opacity:.6}88%{opacity:.6}100%{transform:translateY(-180px);opacity:0}}
+
+@media(prefers-reduced-motion:reduce){.auth-stage::before,.auth-stage::after,.auth-spark{animation:none}}
+
+.auth-card{position:relative;z-index:1;width:100%;max-width:380px;margin:0 auto;padding:32px 30px;border-radius:var(--radius-lg);background:var(--glass-panel);backdrop-filter:blur(var(--glass-blur)) saturate(160%);-webkit-backdrop-filter:blur(var(--glass-blur)) saturate(160%);border:1px solid var(--line);box-shadow:0 40px 90px -30px rgba(213,92,19,.35),0 30px 70px rgba(0,0,0,.45)}
+.auth-card.wide{max-width:440px}
+
+/* Badge — the Forge shield + wordmark, same mark as the sidebar badge. */
+.auth-badge{display:flex;align-items:center;justify-content:center;gap:9px;margin-bottom:18px}
+.auth-badge .auth-shield{width:38px;height:38px;border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;background:linear-gradient(150deg,rgba(255,201,60,.2),rgba(213,92,19,.16));border:1px solid rgba(255,201,60,.28);box-shadow:0 8px 22px -12px rgba(213,92,19,.9)}
+.auth-badge .auth-wordmark{font-family:'Sora',sans-serif;font-weight:800;font-size:19px;color:var(--white);letter-spacing:-.02em}
+
+.auth-title{font-family:'Sora',sans-serif;font-size:23px;font-weight:700;color:var(--white);text-align:center;letter-spacing:-.02em;line-height:1.15}
+.auth-sub{font-size:13.5px;color:var(--dim);text-align:center;margin-top:6px;margin-bottom:26px}
+.auth-foot{font-size:12.5px;color:var(--dim);text-align:center;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.auth-foot a{color:var(--ember);text-decoration:none;font-weight:600}
+.auth-foot a:hover{text-decoration:underline}
+
+.auth-field{margin-bottom:14px;text-align:left}
+.auth-label{display:block;font-size:12px;font-weight:600;color:var(--slate);margin-bottom:6px}
+
+/* Inputs — .auth-input is the native class; the rest are the per-page
+   classes these screens already used. */
+.auth-input,
+.auth-card .join-input,
+.auth-card .code-input,
+.auth-card .field input,
+.auth-card .subj-select{width:100%;padding:11px 13px;border-radius:var(--radius-sm);border:1px solid var(--line);background:var(--panel-2);color:var(--white);font-family:'Inter',sans-serif;font-size:14.5px;transition:border-color .15s,box-shadow .15s}
+.auth-card .join-input,.auth-card .subj-select{margin-bottom:12px}
+.auth-input::placeholder,
+.auth-card .join-input::placeholder,
+.auth-card .code-input::placeholder,
+.auth-card .field input::placeholder{color:var(--dim);text-transform:none}
+.auth-input:focus,
+.auth-card .join-input:focus,
+.auth-card .code-input:focus,
+.auth-card .field input:focus,
+.auth-card .subj-select:focus{outline:none;border-color:var(--ember);box-shadow:0 0 0 3px rgba(213,92,19,.18)}
+
+/* Buttons */
+.auth-btn,
+.auth-card .join-btn,
+.auth-card > .btn,
+.auth-card .btn-primary{width:100%;margin-top:6px;padding:12px;border-radius:var(--radius-sm);border:1px solid rgba(255,201,60,.3);background:linear-gradient(180deg,var(--ember),#B44A0C);color:#fff;font-family:'Inter',sans-serif;font-weight:600;font-size:14.5px;cursor:pointer;box-shadow:inset 0 1px 0 rgba(255,201,60,.4),0 12px 28px -14px rgba(213,92,19,.9);transition:transform .15s,box-shadow .15s,filter .15s}
+.auth-btn:hover,
+.auth-card .join-btn:hover,
+.auth-card > .btn:hover,
+.auth-card .btn-primary:hover{filter:brightness(1.06);transform:translateY(-1px);box-shadow:inset 0 1px 0 rgba(255,201,60,.55),0 16px 34px -14px rgba(213,92,19,1)}
+.auth-btn:disabled,
+.auth-card .join-btn:disabled,
+.auth-card > .btn:disabled{opacity:.55;cursor:wait;transform:none;filter:none}
+
+/* Secondary action under the primary button (e.g. "practise without a class") */
+.auth-btn-ghost{width:100%;margin-top:10px;padding:11px;border-radius:var(--radius-sm);background:transparent;border:1px solid var(--line);color:var(--slate);font-family:'Inter',sans-serif;font-weight:600;font-size:13.5px;cursor:pointer;transition:color .15s,border-color .15s}
+.auth-btn-ghost:hover{color:var(--white);border-color:var(--ember)}
+
+/* Crucible keeps its red accent — same shape, different heat. */
+.auth-btn.danger{background:linear-gradient(180deg,var(--bad),#C13B3B);border-color:rgba(255,90,90,.35);box-shadow:inset 0 1px 0 rgba(255,255,255,.25),0 12px 28px -14px rgba(255,90,90,.9)}
+.auth-btn.danger:hover{box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 16px 34px -14px rgba(255,90,90,1)}
+
+/* Errors */
+.auth-err,
+.auth-card .join-err,
+.auth-card .err{color:var(--bad);font-size:13px;margin-top:12px;display:none;padding:9px 11px;border-radius:var(--radius-sm);background:rgba(255,90,90,.08);border:1px solid rgba(255,90,90,.25)}
+
+/* Segmented tabs inside a card (teacher sign in / quiz join vs log in) */
+.auth-card .login-tabs{display:flex;gap:4px;padding:4px;margin-bottom:18px;background:var(--panel-2);border:1px solid var(--line);border-radius:var(--radius-md)}
+.auth-card .login-tab{flex:1;padding:8px 0;border:none;background:none;border-radius:var(--radius-sm);font-family:'Inter',sans-serif;font-weight:600;font-size:13px;color:var(--slate);cursor:pointer;transition:background .15s,color .15s}
+.auth-card .login-tab.active{background:var(--ember);color:#fff}
+.auth-card .login-tab:hover:not(.active){color:var(--white)}
+
+/* Light theme — cooler glows, dark ink on the ember button stays white. */
+[data-theme="light"] .auth-stage::before{background:radial-gradient(circle,rgba(229,85,15,.22),transparent 70%)}
+[data-theme="light"] .auth-stage::after{background:radial-gradient(circle,rgba(200,133,0,.18),transparent 70%)}
+[data-theme="light"] .auth-spark{background:var(--ember);box-shadow:0 0 8px rgba(229,85,15,.6)}
+[data-theme="light"] .auth-btn,
+[data-theme="light"] .auth-card .join-btn,
+[data-theme="light"] .auth-card > .btn{color:#fff}
+
+@media(max-width:480px){
+  .auth-card{padding:26px 20px}
+  .auth-title{font-size:21px}
+}

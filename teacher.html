@@ -9,6 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/tokens.css">
 <link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/auth.css">
 <link rel="stylesheet" href="css/sidebar.css">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -156,6 +157,8 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
 </script>
 </head>
 <body>
+<script src="scripts/forge-logo.js"></script>
+<script src="scripts/forge-auth-card.js"></script>
 <script src="scripts/forge-sidebar.js"></script>
 <script>
 window.forgeOnClassSwitch = function(){ renderLogin('view'); };
@@ -284,28 +287,28 @@ var TeacherAuth = {
 function renderTeacherAuth(mode) {
   mode = mode || 'signin';
   var app = document.getElementById('app');
-  var h = '<div style="max-width:400px;margin:50px auto 0">';
-  h += '<div style="text-align:center;margin-bottom:24px">';
-  h += '<p class="tag" style="margin-bottom:6px">FORGE</p>';
-  h += '<h1 style="font-size:28px;margin-bottom:6px">Teacher sign in</h1>';
-  h += '<p style="color:#8A857E;font-size:14px;margin-bottom:16px">Sign in to create classes and view your students’ dashboards.</p>';
-  h += '</div>';
-
+  var h = '';
   h += '<div class="login-tabs">';
-  h += '<button class="login-tab' + (mode === 'signin' ? ' active' : '') + '" id="ta-signin-tab">Sign in</button>';
-  h += '<button class="login-tab' + (mode === 'signup' ? ' active' : '') + '" id="ta-signup-tab">Create account</button>';
+  h += '<button type="button" class="login-tab' + (mode === 'signin' ? ' active' : '') + '" id="ta-signin-tab">Sign in</button>';
+  h += '<button type="button" class="login-tab' + (mode === 'signup' ? ' active' : '') + '" id="ta-signup-tab">Create account</button>';
   h += '</div>';
 
-  h += '<input id="ta-email" class="join-input" type="email" placeholder="Email" style="text-transform:none">';
-  h += '<input id="ta-password" class="join-input" type="password" placeholder="Password" style="text-transform:none">';
+  h += ForgeAuthCard.field('ta-email', 'Email address', {type:'email', placeholder:'you@school.sch.uk', autocomplete:'email'});
+  h += ForgeAuthCard.field('ta-password', 'Password', {type:'password', placeholder:'Your password', autocomplete:mode === 'signup' ? 'new-password' : 'current-password'});
   if (mode === 'signup') {
-    h += '<input id="ta-invite" class="join-input" type="text" placeholder="Invite code (from your school)" style="text-transform:none">';
+    h += ForgeAuthCard.field('ta-invite', 'Invite code', {placeholder:'From your school'});
   }
-  h += '<button class="join-btn" id="ta-btn">' + (mode === 'signup' ? 'Create account →' : 'Sign in →') + '</button>';
-  h += '<p class="join-err" id="ta-err"></p>';
-  h += '</div>';
+  h += '<button class="auth-btn" id="ta-btn" type="submit">' + (mode === 'signup' ? 'Create account →' : 'Sign in →') + '</button>';
+  h += '<p class="auth-err" id="ta-err"></p>';
 
-  app.innerHTML = h;
+  app.innerHTML = ForgeAuthCard.shell({
+    title: 'Teacher sign in',
+    sub: mode === 'signup'
+      ? 'Create an account to set up classes and track your students.'
+      : 'Sign in to create classes and view your students’ dashboards.',
+    foot: 'Forgot your password? <a href="reset-password.html">Reset it</a>'
+  }, h);
+  ForgeAuthCard.onSubmit(function(){ document.getElementById('ta-btn').onclick(); });
 
   document.getElementById('ta-signin-tab').onclick = function() { renderTeacherAuth('signin'); };
   document.getElementById('ta-signup-tab').onclick = function() { renderTeacherAuth('signup'); };
@@ -727,44 +730,43 @@ var dashState = { classId: null, className: null, classSubject: null, classCode:
 
 function renderLogin(activeTab) {
   activeTab = activeTab || 'view';
-  var h = '<div style="max-width:400px;margin:50px auto 0">';
-  h += '<div style="text-align:center;margin-bottom:24px">';
-  h += '<p class="tag" style="margin-bottom:6px">FORGE</p>';
-  h += '<h1 style="font-size:28px;margin-bottom:6px">Teacher Dashboard</h1>';
-  if (currentTeacher && currentTeacher.email) {
-    h += '<p style="color:#8A857E;font-size:12px">Signed in as ' + currentTeacher.email + ' · <a href="#" id="ta-signout" style="color:#8A857E;text-decoration:underline">Sign out</a></p>';
-  }
-  h += '</div>';
-
+  var h = '';
   // Tabs
   h += '<div class="login-tabs">';
-  h += '<button class="login-tab' + (activeTab === 'view' ? ' active' : '') + '" id="lt-view">View class</button>';
-  h += '<button class="login-tab' + (activeTab === 'create' ? ' active' : '') + '" id="lt-create">Create class</button>';
+  h += '<button type="button" class="login-tab' + (activeTab === 'view' ? ' active' : '') + '" id="lt-view">View class</button>';
+  h += '<button type="button" class="login-tab' + (activeTab === 'create' ? ' active' : '') + '" id="lt-create">Create class</button>';
   h += '</div>';
 
   // View panel
   h += '<div id="lp-view" style="display:' + (activeTab === 'view' ? 'block' : 'none') + '">';
-  h += '<p style="color:#8A857E;font-size:14px;margin-bottom:16px;text-align:center">Enter your class code to view student data</p>';
-  h += '<input id="t-code" class="join-input" type="text" placeholder="e.g. ECON-Y12">';
-  h += '<button class="join-btn" id="t-btn">View dashboard \u2192</button>';
-  h += '<p class="join-err" id="t-err"></p>';
+  h += ForgeAuthCard.field('t-code', 'Class code', {placeholder:'e.g. ECON-Y12', upper:true});
+  h += '<button class="auth-btn" id="t-btn" type="submit">View dashboard \u2192</button>';
+  h += '<p class="auth-err" id="t-err"></p>';
   h += '</div>';
 
   // Create panel
   h += '<div id="lp-create" style="display:' + (activeTab === 'create' ? 'block' : 'none') + '">';
-  h += '<p style="color:#8A857E;font-size:14px;margin-bottom:16px;text-align:center">Create a class and get a code to share with your students</p>';
-  h += '<input id="c-school" class="join-input" type="text" placeholder="School name" style="text-transform:none">';
-  h += '<input id="c-name" class="join-input" type="text" placeholder="Class name — e.g. Year 12 Economics" style="text-transform:none">';
-  h += '<input id="c-teacher" class="join-input" type="text" placeholder="Your name" style="text-transform:none">';
-  h += '<select id="c-subj" class="subj-select"><option value="">— Loading subjects... —</option>';
-  h += '</select>';
-  h += '<button class="join-btn" id="c-btn">Create class \u2192</button>';
-  h += '<p class="join-err" id="c-err"></p>';
+  h += ForgeAuthCard.field('c-school', 'School name', {placeholder:'e.g. Mount Grace School'});
+  h += ForgeAuthCard.field('c-name', 'Class name', {placeholder:'e.g. Year 12 Economics'});
+  h += ForgeAuthCard.field('c-teacher', 'Your name', {placeholder:'e.g. Mr Zanier'});
+  h += '<div class="auth-field"><label class="auth-label" for="c-subj">Subject</label>';
+  h += '<select id="c-subj" class="subj-select"><option value="">— Loading subjects... —</option></select></div>';
+  h += '<button class="auth-btn" id="c-btn" type="button">Create class \u2192</button>';
+  h += '<p class="auth-err" id="c-err"></p>';
   h += '<div id="c-result" style="display:none;margin-top:18px"></div>';
   h += '</div>';
 
-  h += '</div>';
-  app.innerHTML = h;
+  app.innerHTML = ForgeAuthCard.shell({
+    wide: true,
+    title: 'Teacher Dashboard',
+    sub: (currentTeacher && currentTeacher.email)
+      ? 'Signed in as ' + currentTeacher.email + ' · <a href="#" id="ta-signout" style="color:var(--ember);text-decoration:none;font-weight:600">Sign out</a>'
+      : 'Open a class dashboard, or create a new class.'
+  }, h);
+  // The view panel's code field is the only Enter-submittable one.
+  ForgeAuthCard.onSubmit(function(){
+    if (activeTab === 'view') document.getElementById('t-btn').onclick();
+  });
 
   // Tab switching
   document.getElementById('lt-view').onclick = function() { renderLogin('view'); };

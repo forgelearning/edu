@@ -487,6 +487,14 @@ footer{padding:40px 0 28px;border-top:1px solid var(--line)}
 [data-theme="light"] .btn-glass{background:linear-gradient(180deg,rgba(255,255,255,.62),rgba(255,255,255,.32) 100%)!important;border:1px solid rgba(255,255,255,.65)!important;color:#1A1613!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.95),inset 0 -8px 14px -10px rgba(255,255,255,.4),0 12px 28px -14px rgba(0,0,0,.2)!important}
 [data-theme="light"] .btn-glass::after{background:linear-gradient(180deg,rgba(255,255,255,.7),transparent)}
 [data-theme="light"] .btn-glass:hover{background:linear-gradient(180deg,rgba(255,255,255,.75),rgba(255,255,255,.42) 100%)!important;box-shadow:inset 0 1px 0 #fff,inset 0 -8px 14px -10px rgba(255,255,255,.5),0 16px 34px -14px rgba(0,0,0,.25),0 0 0 3px rgba(213,92,19,.3)!important}
+
+/* Ember glass — the primary-CTA variant, lifted from the sign-in cards
+   (css/auth.css). Dark theme only: on light backgrounds the white glass in
+   .btn-glass above already reads as the primary button, so this is scoped to
+   html:not([data-theme="light"]) and layered after .btn-glass to win. */
+html:not([data-theme="light"]) .btn-ember{background:linear-gradient(180deg,var(--ember),#B44A0C)!important;border:1px solid rgba(255,201,60,.32)!important;color:#fff!important;box-shadow:inset 0 1px 0 rgba(255,201,60,.45),0 14px 32px -14px rgba(213,92,19,.95)!important}
+html:not([data-theme="light"]) .btn-ember::after{background:linear-gradient(180deg,rgba(255,255,255,.22),transparent)}
+html:not([data-theme="light"]) .btn-ember:hover{background:linear-gradient(180deg,#E8681A,#C4520E)!important;transform:translateY(-2px);box-shadow:inset 0 1px 0 rgba(255,201,60,.65),0 18px 40px -14px rgba(213,92,19,1),0 0 0 3px rgba(255,201,60,.18)!important}
 </style>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-RGZ9J6Q8H9"></script>
@@ -555,7 +563,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
     <a class="nav-link nav-hide-sm" href="guides.html">Guides</a>
     <a class="nav-link nav-hide-sm" href="#pricing">Pricing</a>
     <a class="nav-link nav-hide-sm" href="forge-quiz.html">Sign in</a>
-    <a class="cta btn-glass" href="#waitlist">Get started</a>
+    <a class="cta btn-glass btn-ember" href="#waitlist">Get started</a>
     <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" aria-label="Toggle light/dark theme">☀</button>
   </div>
 </nav>
@@ -571,7 +579,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
     <h1 class="reveal reveal-delay-1">Forge your knowledge.<br><em>Face any exam.</em></h1>
     <p class="lede reveal reveal-delay-2">Revision apps get students to remember. Forge gets them to the grade — by catching the exact misconception behind every wrong answer and reworking it on the spot. <strong>Built for 5–10 minutes a day, not hour-long revision sessions.</strong></p>
     <div class="ctas reveal reveal-delay-3">
-      <a class="btn btn-hot btn-glass" href="forge-quiz.html">Try the quiz — free</a>
+      <a class="btn btn-hot btn-glass btn-ember" href="forge-quiz.html">Try the quiz — free</a>
       <a class="hero-secondary-link btn-glass" href="#waitlist">Join the waiting list <span aria-hidden="true">→</span></a>
     </div>
     <p class="sub reveal reveal-delay-4">12+ subjects across GCSE &amp; A Level, spec-mapped and growing weekly. <a href="#subjects">See the subjects ↓</a></p>
@@ -2106,7 +2114,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
     <p class="sect-lede reveal" style="margin:0 auto">Forge is being built in a working classroom, expanding across GCSE and A Level week by week. Join the list to shape it and pilot it first.</p>
     <form id="waitform">
       <input type="email" id="email" placeholder="you@school.org.uk" required aria-label="Email address">
-      <button type="submit" class="btn-glass">Join the waiting list</button>
+      <button type="submit" class="btn-glass btn-ember">Join the waiting list</button>
     </form>
     <p class="done" id="waitdone">You're on the list. We'll be in touch when the first pilot opens. ✦</p>
     <p class="note">Teachers and students welcome. No spam — one email when pilots open.</p>
@@ -2119,7 +2127,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
   <!-- Primary link row -->
   <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:28px">
     <div style="display:flex;gap:8px;flex-wrap:wrap">
-      <a href="forge-quiz.html" class="btn-glass" style="padding:8px 16px;border-radius:var(--radius-sm);font-family:'Inter',sans-serif;font-weight:700;font-size:13px;text-decoration:none;white-space:nowrap">Try the quiz</a>
+      <a href="forge-quiz.html" class="btn-glass btn-ember" style="padding:8px 16px;border-radius:var(--radius-sm);font-family:'Inter',sans-serif;font-weight:700;font-size:13px;text-decoration:none;white-space:nowrap">Try the quiz</a>
       <a href="teacher.html" class="btn-glass" style="padding:8px 16px;border-radius:var(--radius-sm);font-family:'Inter',sans-serif;font-weight:600;font-size:13px;text-decoration:none;white-space:nowrap">Teacher dashboard</a>
       <a href="school-overview.html" class="btn-glass" style="padding:8px 16px;border-radius:var(--radius-sm);font-family:'Inter',sans-serif;font-weight:600;font-size:13px;text-decoration:none;white-space:nowrap">School overview</a>
     </div>
