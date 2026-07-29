@@ -125,12 +125,18 @@ function supaGet(table,params){
   if(params)url+='&'+params;
   return fetch(url,{headers:headers}).then(function(r){return r.json();});
 }
+// Write-only. anon may insert into responses but has no SELECT policy on it,
+// so asking for the inserted row back fails the whole request (42501) and
+// silently writes nothing.
 function supaInsert(table,row){
   return fetch(SUPABASE_URL+'/rest/v1/'+table,{
     method:'POST',
-    headers:Object.assign({'Content-Type':'application/json','Prefer':'return=representation'},headers),
+    headers:Object.assign({'Content-Type':'application/json','Prefer':'return=minimal'},headers),
     body:JSON.stringify(row)
-  }).then(function(r){return r.json();}).catch(function(){return null;});
+  }).then(function(r){
+    if(!r.ok) return r.text().then(function(t){console.error('insert into '+table+' failed:',r.status,t);return null;});
+    return null;
+  }).catch(function(e){console.error('insert into '+table+' failed:',e);return null;});
 }
 
 var MC_LABELS = {

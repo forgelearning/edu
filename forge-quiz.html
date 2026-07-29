@@ -182,13 +182,20 @@ var supa = {
   _configured: function() {
     return SUPABASE_URL.indexOf('YOUR-PROJECT') === -1;
   },
+  // Writes only — never asks for the row back. anon may insert into
+  // responses but has no SELECT policy on it, so requesting the inserted row
+  // fails the whole request (42501) and silently writes nothing. Anything
+  // needing the new row's id goes through an RPC instead.
   insert: function(table, row) {
     if (!this._configured()) return Promise.resolve(null);
     return fetch(SUPABASE_URL + '/rest/v1/' + table, {
       method: 'POST',
-      headers: this._headers(),
+      headers: Object.assign(this._headers(), { 'Prefer': 'return=minimal' }),
       body: JSON.stringify(row)
-    }).then(function(r) { return r.json(); }).catch(function() { return null; });
+    }).then(function(r) {
+      if (!r.ok) return r.text().then(function(t) { console.error('insert into ' + table + ' failed:', r.status, t); return null; });
+      return null;
+    }).catch(function(e) { console.error('insert into ' + table + ' failed:', e); return null; });
   },
   select: function(table, filters) {
     if (!this._configured()) return Promise.resolve([]);

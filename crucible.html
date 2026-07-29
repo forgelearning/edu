@@ -136,7 +136,19 @@ var hdrs = {'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorizati
 var getHdrs = {'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY};
 
 function supaGet(t,p){return fetch(SUPABASE_URL+'/rest/v1/'+t+'?select=*'+(p?'&'+p:''),{headers:getHdrs}).then(function(r){return r.json();});}
-function supaInsert(t,row){return fetch(SUPABASE_URL+'/rest/v1/'+t,{method:'POST',headers:hdrs,body:JSON.stringify(row)}).then(function(r){return r.json();}).catch(function(){return null;});}
+// Write-only. anon may insert into responses but has no SELECT policy on it,
+// so asking for the inserted row back fails the whole request (42501) and
+// silently writes nothing.
+function supaInsert(t,row){
+  return fetch(SUPABASE_URL+'/rest/v1/'+t,{
+    method:'POST',
+    headers:Object.assign({},hdrs,{'Prefer':'return=minimal'}),
+    body:JSON.stringify(row)
+  }).then(function(r){
+    if(!r.ok) return r.text().then(function(x){console.error('insert into '+t+' failed:',r.status,x);return null;});
+    return null;
+  }).catch(function(e){console.error('insert into '+t+' failed:',e);return null;});
+}
 
 // ===== DATA =====
 </script>
