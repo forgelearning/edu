@@ -872,6 +872,10 @@ function renderLogin(activeTab) {
               // into this class's dashboard. Keep rows with no subject recorded
               // (older data predating the subject field) rather than dropping them.
               dashState.responses = merged.filter(function(r) {
+                // Anvil/Crucible rows carry their own subject ('anvil', 'crucible'), so a
+                // strict subject match dropped every reforge before it reached the
+                // dashboard — completed Anvil work simply vanished.
+                if (r.reforge_attempted || r.subject === 'anvil' || r.subject === 'crucible') return true;
                 return !r.subject || r.subject === dashState.classSubject;
               });
               // Self-heal: patch orphaned responses to the class-linked student_id
@@ -974,6 +978,10 @@ function renderLogin(activeTab) {
               });
               // Same subject filter as the "view class" flow — see comment there.
               dashState.responses = merged.filter(function(r) {
+                // Anvil/Crucible rows carry their own subject ('anvil', 'crucible'), so a
+                // strict subject match dropped every reforge before it reached the
+                // dashboard — completed Anvil work simply vanished.
+                if (r.reforge_attempted || r.subject === 'anvil' || r.subject === 'crucible') return true;
                 return !r.subject || r.subject === dashState.classSubject;
               });
               renderDashboard();
@@ -1152,6 +1160,10 @@ window.forgeGoto = function(view) {
   if (btn) switchTab(view, btn);
 };
 
+// Must match CLEAR_THRESHOLD in anvil.html, or the dashboard disagrees with
+// what the student sees in their own Anvil.
+var ANVIL_CLEAR_THRESHOLD = 3;
+
 var MC_TO_SPEC = {
   "MC-AD-01":"2.2.1",
   "MC-AD-02":"2.2.1",
@@ -1252,6 +1264,31 @@ var MC_TO_SPEC = {
   "MC-TECH-05":"2.2.3"
 };
 
+// Question id → spec point. Correct answers carry no misconception tag, so the
+// MC_TO_SPEC lookup alone only ever matched wrong answers — which made every
+// spec point read 0%. Resolve the spec from the question itself instead.
+var QID_TO_SPEC = (function() {
+  var map = {};
+  if (typeof BANKS === 'undefined') return map;
+  Object.keys(BANKS).forEach(function(bk) {
+    (BANKS[bk].questions || []).forEach(function(q) {
+      var sp = q.spec || MC_TO_SPEC[q.tag] || null;
+      if (sp) map[q.id] = sp;
+    });
+  });
+  return map;
+})();
+
+// Anvil/Crucible/reforge rows suffix the original question id.
+function baseQuestionId(qid) {
+  if (!qid) return '';
+  return qid.replace(/-(RF|ANVIL|CRU\d*)$/, '');
+}
+
+function specForResponse(r) {
+  return r.spec_point || QID_TO_SPEC[baseQuestionId(r.question_id)] || MC_TO_SPEC[r.misconception_tag] || null;
+}
+
 var SPEC_TO_SUBJECT = {
   "2.1.1":"A Level Economics",
   "2.1.2":"A Level Economics",
@@ -1289,7 +1326,7 @@ function renderSpecBreakdown(responses) {
   // Build spec point data
   var specData = {};
   responses.forEach(function(r) {
-    var sp = r.spec_point || MC_TO_SPEC[r.misconception_tag] || null;
+    var sp = specForResponse(r);
     if (!sp || sp === 'TECH') return;
     if (!specData[sp]) specData[sp] = { total: 0, correct: 0, students: {} };
     specData[sp].total++;
@@ -1958,24 +1995,33 @@ window.renderStudent = function(studentId) {
   var correct = studentResponses.filter(function(r) { return r.is_correct; }).length;
   var acc = total > 0 ? Math.round((correct / total) * 100) : 0;
 
-  // Misconception breakdown
+  // Misconception breakdown — mirrors the Anvil's own rule (ANVIL_CLEAR_THRESHOLD
+  // consecutive correct reforges clears it), walked in chronological order so a
+  // later re-fire resets the streak the same way it does for the student.
   var mcData = {};
-  studentResponses.forEach(function(r) {
-    if (!r.is_correct && r.misconception_tag && !r.reforge_attempted) {
-      if (!mcData[r.misconception_tag]) mcData[r.misconception_tag] = { fires: 0, reforgeAttempts: 0, reforgeCorrect: 0 };
-      mcData[r.misconception_tag].fires++;
-    }
-    if (r.reforge_attempted && r.misconception_tag) {
-      if (!mcData[r.misconception_tag]) mcData[r.misconception_tag] = { fires: 0, reforgeAttempts: 0, reforgeCorrect: 0 };
-      mcData[r.misconception_tag].reforgeAttempts++;
-      if (r.reforge_correct) mcData[r.misconception_tag].reforgeCorrect++;
-    }
-  });
+  studentResponses.slice().sort(function(a, b) { return new Date(a.created_at) - new Date(b.created_at); })
+    .forEach(function(r) {
+      var tag = r.misconception_tag;
+      if (!tag) return;
+      if (!mcData[tag]) mcData[tag] = { fires: 0, reforgeAttempts: 0, reforgeCorrect: 0, streak: 0 };
+      var d = mcData[tag];
+      if (r.reforge_attempted) {
+        d.reforgeAttempts++;
+        if (r.reforge_correct) { d.reforgeCorrect++; d.streak++; }
+        else { d.streak = 0; }
+      } else if (!r.is_correct) {
+        d.fires++;
+        d.streak = 0;
+      }
+    });
 
   var reforgeTotal = studentResponses.filter(function(r) { return r.reforge_attempted; }).length;
   var reforgePass = studentResponses.filter(function(r) { return r.reforge_attempted && r.reforge_correct; }).length;
-  var activeMCs = Object.keys(mcData).filter(function(mc) { return mcData[mc].reforgeCorrect < mcData[mc].fires; });
-  var resolvedMCs = Object.keys(mcData).filter(function(mc) { return mcData[mc].fires > 0 && mcData[mc].reforgeCorrect >= mcData[mc].fires; });
+  // A tag counts if it ever fired OR the student has reforged it — the original
+  // wrong answer may sit outside this class's subject filter.
+  var knownMCs = Object.keys(mcData).filter(function(mc) { return mcData[mc].fires > 0 || mcData[mc].reforgeAttempts > 0; });
+  var activeMCs = knownMCs.filter(function(mc) { return mcData[mc].streak < ANVIL_CLEAR_THRESHOLD; });
+  var resolvedMCs = knownMCs.filter(function(mc) { return mcData[mc].streak >= ANVIL_CLEAR_THRESHOLD; });
 
   var h = '<button class="back-btn" onclick="document.getElementById(\'panel-student\').style.display=\'none\';document.getElementById(\'panel-class\').classList.add(\'active\');document.querySelectorAll(\'.tab\')[1].classList.add(\'active\')">\u2190 Back to class</button>';
 
@@ -2080,7 +2126,7 @@ window.renderStudent = function(studentId) {
   // Spec point breakdown
   var specData = {};
   studentResponses.forEach(function(r) {
-    var sp = r.spec_point || MC_TO_SPEC[r.misconception_tag] || null;
+    var sp = specForResponse(r);
     if (!sp || sp === 'TECH') return;
     if (!specData[sp]) specData[sp] = { total: 0, correct: 0 };
     specData[sp].total++;

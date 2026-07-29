@@ -231,7 +231,9 @@ function logResponse(q, selectedKey, isCorrect, isReforge, reforgeCorrect) {
     selected_option: selectedKey,
     is_correct: isCorrect,
     misconception_tag: isCorrect ? null : (q.tag || null),
-    spec_point: q.spec || null,
+    // Fall back to the tag map: most banks carry a tag but no explicit spec, and
+    // without this correct answers logged no spec point at all.
+    spec_point: q.spec || MC_TO_SPEC[q.tag] || null,
     reforge_attempted: isReforge || false,
     reforge_correct: isReforge ? reforgeCorrect : null
   };
