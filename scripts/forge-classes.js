@@ -180,10 +180,102 @@
     });
   }
 
+  /* ── Server-side linking ──────────────────────────────────────────────
+   *
+   * The local list only knows about classes joined on this device, so a
+   * student signing in elsewhere would start empty. students.link_group ties
+   * their rows together server-side; these calls read and extend it.
+   *
+   * Every call is authorised by a (name, code) pair the caller already holds
+   * — the same pair they signed in with. Linking needs two such pairs, so
+   * only someone holding both codes can merge two groups, which is what
+   * keeps students who share a name apart. */
+  function rpc(supabaseUrl, supabaseKey, fn, body) {
+    return fetch(supabaseUrl + '/rest/v1/rpc/' + fn, {
+      method: 'POST',
+      headers: { 'apikey': supabaseKey, 'Authorization': 'Bearer ' + supabaseKey, 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    }).then(function (r) { return r.json(); });
+  }
+
+  /* Replace this student's cached classes with the server's view. `anchor` is
+   * the row they signed in with: {studentId, classCode, studentName}. Its own
+   * code is the only one we know, so it is re-attached to its entry; the
+   * others keep whatever code this device had cached, which is nothing on a
+   * device they haven't used before. That's fine — responses come back
+   * through get_linked_responses, which needs no per-class code. */
+  function syncFromServer(supabaseUrl, supabaseKey, anchor, done) {
+    if (!anchor || !anchor.studentId || !anchor.classCode || !anchor.studentName) { done && done(list()); return; }
+    use(anchor.studentName);
+
+    rpc(supabaseUrl, supabaseKey, 'get_linked_classes', {
+      p_student_id: anchor.studentId, p_code: anchor.classCode, p_name: anchor.studentName
+    }).then(function (rows) {
+      if (!Array.isArray(rows) || !rows.length) { done && done(list()); return; }
+
+      var known = {};
+      load().forEach(function (c) { if (c.classId) known[c.classId] = c; });
+
+      var mine = rows.map(function (r) {
+        var cached = known[r.class_id] || {};
+        return {
+          classId:     r.class_id,
+          classCode:   r.student_id === anchor.studentId ? anchor.classCode : (cached.classCode || null),
+          className:   r.class_name || cached.className || null,
+          subject:     r.subject || cached.subject || null,
+          studentId:   r.student_id,
+          studentName: anchor.studentName
+        };
+      });
+
+      /* Keep other students' entries on this device untouched. */
+      var others = load().filter(function (c) { return norm(c.studentName) !== norm(anchor.studentName); });
+      save(others.concat(mine));
+      done && done(list());
+    }).catch(function () { done && done(list()); });
+  }
+
+  /* Record that the same person holds both codes. */
+  function linkToServer(supabaseUrl, supabaseKey, anchor, joined, done) {
+    if (!anchor || !anchor.studentId || !anchor.classCode ||
+        !joined || !joined.studentId || !joined.classCode ||
+        anchor.studentId === joined.studentId) { done && done(false); return; }
+    rpc(supabaseUrl, supabaseKey, 'link_student_rows', {
+      p_name: anchor.studentName,
+      p_student_id: anchor.studentId, p_code: anchor.classCode,
+      p_other_student_id: joined.studentId, p_other_code: joined.classCode
+    }).then(function (res) {
+      done && done(!(res && res.code));
+    }).catch(function () { done && done(false); });
+  }
+
+  /* Responses across every linked class, oldest first — one call, no
+   * per-class codes needed. Falls back to the per-class route when the
+   * student has no server link yet. */
+  function fetchLinkedResponses(supabaseUrl, supabaseKey, anchor, done) {
+    if (!anchor || !anchor.studentId || !anchor.classCode || !anchor.studentName) {
+      fetchAllResponses(supabaseUrl, supabaseKey, anchor && anchor.studentName, done);
+      return;
+    }
+    rpc(supabaseUrl, supabaseKey, 'get_linked_responses', {
+      p_student_id: anchor.studentId, p_code: anchor.classCode, p_name: anchor.studentName
+    }).then(function (rows) {
+      if (!Array.isArray(rows)) { fetchAllResponses(supabaseUrl, supabaseKey, anchor.studentName, done); return; }
+      done(rows.map(function (r) {
+        r._studentId = r.link_student_id;
+        r._classId   = r.link_class_id;
+        r._subject   = r.link_subject;
+        return r;
+      }));
+    }).catch(function () { fetchAllResponses(supabaseUrl, supabaseKey, anchor.studentName, done); });
+  }
+
   global.ForgeClasses = {
     use: use, list: list, load: load, save: save,
     add: add, remove: remove, clear: clear,
     forSubject: forSubject, subjects: subjects, adopt: adopt,
-    backfillSubjects: backfillSubjects, fetchAllResponses: fetchAllResponses
+    backfillSubjects: backfillSubjects, fetchAllResponses: fetchAllResponses,
+    syncFromServer: syncFromServer, linkToServer: linkToServer,
+    fetchLinkedResponses: fetchLinkedResponses
   };
 })(window);

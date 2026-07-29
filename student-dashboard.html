@@ -264,7 +264,10 @@ function renderLogin(){
       });
       // The dashboard summarises the student's whole picture, so pull every
       // class they've joined rather than just the code they signed in with.
-      ForgeClasses.fetchAllResponses(SUPABASE_URL, SUPABASE_KEY, name, function(r){
+      ForgeClasses.syncFromServer(SUPABASE_URL, SUPABASE_KEY,
+        {studentId: st.studentId, classCode: code, studentName: name}, function(){});
+      ForgeClasses.fetchLinkedResponses(SUPABASE_URL, SUPABASE_KEY,
+        {studentId: st.studentId, classCode: code, studentName: name}, function(r){
         st.responses = r;
         renderDashboard();
       });
@@ -496,7 +499,9 @@ function forgeSignOut(){
       var applyLevelAndLoad = function(){
         if (!saved.classCode) { renderLogin(); return; } // older cached session predates classCode caching — needs one re-entry
         ForgeClasses.adopt(saved);
-        ForgeClasses.fetchAllResponses(SUPABASE_URL, SUPABASE_KEY, st.studentName, function(r){
+        var anchor = {studentId: st.studentId, classCode: saved.classCode, studentName: st.studentName};
+        ForgeClasses.syncFromServer(SUPABASE_URL, SUPABASE_KEY, anchor, function(){});
+        ForgeClasses.fetchLinkedResponses(SUPABASE_URL, SUPABASE_KEY, anchor, function(r){
           st.responses = r;
           renderDashboard();
         });

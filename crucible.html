@@ -202,6 +202,8 @@ function renderJoin(){
         classId: state.classId, classCode: code, className: match.class_name || null,
         subject: state.classSubject, studentId: state.studentId, studentName: name
       });
+      ForgeClasses.syncFromServer(SUPABASE_URL, SUPABASE_KEY,
+        {studentId: state.studentId, classCode: code, studentName: name}, function(){ render(); });
       var joined = ForgeClasses.subjects(SUBJECTS);
       if(joined.length===1){
         state.subject=joined[0];
@@ -657,6 +659,11 @@ function checkLocalSessionCrucible() {
         if (rows && rows[0]) state.extraTime = rows[0].extra_time || 0;
         settlePhase();
       }).catch(function() { settlePhase(); });
+
+      // Pick up classes joined on the student's other devices.
+      ForgeClasses.syncFromServer(SUPABASE_URL, SUPABASE_KEY, {
+        studentId: state.studentId, classCode: savedSession.classCode, studentName: state.studentName
+      }, function(){ settlePhase(); });
 
       // Offer every class the student has joined (in Crucible or Forge —
       // the list is shared), rather than only the one cached last.

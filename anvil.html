@@ -487,7 +487,10 @@ function renderLogin(){
       // The Anvil covers every class the student is in, not just this one —
       // misconceptions don't stop mattering because they signed in via a
       // different code.
-      ForgeClasses.fetchAllResponses(SUPABASE_URL, SUPABASE_KEY, name, function(responses){
+      ForgeClasses.syncFromServer(SUPABASE_URL, SUPABASE_KEY,
+        {studentId: anvilState.studentId, classCode: code, studentName: name}, function(){});
+      ForgeClasses.fetchLinkedResponses(SUPABASE_URL, SUPABASE_KEY,
+        {studentId: anvilState.studentId, classCode: code, studentName: name}, function(responses){
         anvilState.responses = responses;
         buildMisconceptions();
         renderAnvilHome();
@@ -891,9 +894,12 @@ function checkLocalSession(){
     anvilState.classSubject = saved.classSubject || null;
     if (!saved.classCode) { renderLogin(); return; } // older cached session predates classCode caching — needs one re-entry
     ForgeClasses.adopt(saved);
-    // Pull in every class they've joined, so the Anvil shows all their
-    // misconceptions rather than only the last class they signed in through.
-    ForgeClasses.fetchAllResponses(SUPABASE_URL, SUPABASE_KEY, anvilState.studentName, function(responses){
+    // Pull in every class they've joined — on this device or any other — so
+    // the Anvil shows all their misconceptions, not just the class they
+    // signed in through.
+    var anchor = {studentId: anvilState.studentId, classCode: saved.classCode, studentName: anvilState.studentName};
+    ForgeClasses.syncFromServer(SUPABASE_URL, SUPABASE_KEY, anchor, function(){});
+    ForgeClasses.fetchLinkedResponses(SUPABASE_URL, SUPABASE_KEY, anchor, function(responses){
       anvilState.responses = responses;
       buildMisconceptions();
       renderAnvilHome();

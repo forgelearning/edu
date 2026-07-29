@@ -440,6 +440,19 @@ function joinClassByCode(name, code, cb) {
         classId: cls.id, classCode: code, className: cls.name || null,
         subject: cls.subject || null, studentId: studentId, studentName: name
       });
+      // Tie this class to the one they're already signed in with, so both
+      // follow them onto any other device. Needs both codes, which is
+      // exactly what the student has just demonstrated.
+      var anchor = (state.studentId && state.classId !== cls.id)
+        ? (ForgeClasses.list().filter(function(c){ return c.studentId === state.studentId && c.classCode; })[0] || null)
+        : null;
+      if (anchor) {
+        ForgeClasses.linkToServer(SUPABASE_URL, SUPABASE_KEY, anchor,
+          { studentId: studentId, classCode: code }, function() {
+            cb(null, { cls: cls, studentId: studentId });
+          });
+        return;
+      }
       cb(null, { cls: cls, studentId: studentId });
     }
 
@@ -841,18 +854,23 @@ function renderJoin() {
         btn.disabled = false; btn.textContent = 'Join class \u2192';
         return;
       }
-      activateClass(ForgeClasses.forSubject(res.cls.subject) || {
-        classId: res.cls.id, classCode: code, subject: res.cls.subject,
-        studentId: res.studentId, studentName: name
-      });
-      var joined = ForgeClasses.subjects(SUBJECTS);
-      if (joined.length === 1) {
-        state.subject = joined[0];
-        state.phase   = 'banks';
-      } else {
-        state.phase = 'subjects';
-      }
-      render();
+      // Signing in anywhere recovers every class they're linked to, so a
+      // student on a new device doesn't re-enter each code.
+      ForgeClasses.syncFromServer(SUPABASE_URL, SUPABASE_KEY,
+        { studentId: res.studentId, classCode: code, studentName: name }, function() {
+          activateClass(ForgeClasses.forSubject(res.cls.subject) || {
+            classId: res.cls.id, classCode: code, subject: res.cls.subject,
+            studentId: res.studentId, studentName: name
+          });
+          var joined = ForgeClasses.subjects(SUBJECTS);
+          if (joined.length === 1) {
+            state.subject = joined[0];
+            state.phase   = 'banks';
+          } else {
+            state.phase = 'subjects';
+          }
+          render();
+        });
     });
   };
 
@@ -1829,28 +1847,36 @@ if (ForgeAuth.hasSession()) {
       // fold it into the list so it sits alongside any joined since.
       ForgeClasses.adopt(savedSession);
 
-      var joined = ForgeClasses.subjects(SUBJECTS);
-      if (joined.length === 1) {
-        state.subject      = joined[0];
-        state.classSubject = joined[0];
-        state.phase        = 'banks';
-      } else if (joined.length > 1) {
-        state.phase = 'subjects';
-      } else if (state.classSubject && SUBJECTS[state.classSubject]) {
-        state.subject = state.classSubject;
-        state.phase   = 'banks';
-      } else {
-        state.phase = 'subjects';
-        // Stored without a subject (the classes table has no anon SELECT
-        // policy, so this has to come back through the RPC).
-        ForgeClasses.backfillSubjects(SUPABASE_URL, SUPABASE_KEY, function() {
-          var subs = ForgeClasses.subjects(SUBJECTS);
-          if (subs.length === 1) {
-            state.subject = subs[0]; state.classSubject = subs[0]; state.phase = 'banks';
-          }
-          if (subs.length) render();
-        });
+      function settlePhase() {
+        var joined = ForgeClasses.subjects(SUBJECTS);
+        if (joined.length === 1) {
+          state.subject      = joined[0];
+          state.classSubject = joined[0];
+          state.phase        = 'banks';
+        } else if (joined.length > 1) {
+          state.phase = 'subjects';
+        } else if (state.classSubject && SUBJECTS[state.classSubject]) {
+          state.subject = state.classSubject;
+          state.phase   = 'banks';
+        } else {
+          state.phase = 'subjects';
+          // Stored without a subject (the classes table has no anon SELECT
+          // policy, so this has to come back through the RPC).
+          ForgeClasses.backfillSubjects(SUPABASE_URL, SUPABASE_KEY, function() {
+            var subs = ForgeClasses.subjects(SUBJECTS);
+            if (subs.length === 1) {
+              state.subject = subs[0]; state.classSubject = subs[0]; state.phase = 'banks';
+            }
+            if (subs.length) render();
+          });
+        }
       }
+
+      settlePhase();
+      // Pick up classes joined on the student's other devices.
+      ForgeClasses.syncFromServer(SUPABASE_URL, SUPABASE_KEY, {
+        studentId: state.studentId, classCode: savedSession.classCode, studentName: state.studentName
+      }, function() { settlePhase(); render(); });
       if (state.studentId && savedSession.classCode) {
         supa.ownResponses(state.studentId, savedSession.classCode, state.studentName).then(function(r) {
           state.weightMap = buildWeightMap(Array.isArray(r) ? r : []);
