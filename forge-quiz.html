@@ -757,6 +757,8 @@ function renderJoin() {
 
     btn.disabled = true; btn.textContent = 'Starting\u2026';
 
+    ForgeClasses.use(name);
+
     // Check for existing free session on this device
     var existingSession = loadFreeSession();
     if (existingSession && existingSession.studentId) {
@@ -879,6 +881,7 @@ function renderJoin() {
       }
       var sub = result.subscriber;
       state.studentName  = sub.name;
+      ForgeClasses.use(sub.name);
       state.isPaid       = true;
       state.paidSubjects = sub.subjects || [];
       if (state.paidSubjects.length === 1 && SUBJECTS[state.paidSubjects[0]]) {
@@ -1628,7 +1631,6 @@ function renderResults(){
 function forgeLogout(){
   try { localStorage.removeItem('forge-student'); } catch(e) {}
   try { localStorage.removeItem('forge-free-session'); } catch(e) {}
-  ForgeClasses.clear();
   ForgeAuth.signOut();
   location.reload();
 }
@@ -1779,6 +1781,7 @@ if (ForgeAuth.hasSession()) {
       var sub    = result.subscriber;
       var access = result.access;
       state.studentName  = sub.name;
+      ForgeClasses.use(sub.name);
       state.paidSubjects = sub.subjects || [];
 
       // Restore cached studentId if available
@@ -1862,6 +1865,7 @@ if (ForgeAuth.hasSession()) {
 
     if (freeSession && freeSession.studentId) {
       state.studentName   = freeSession.name;
+      ForgeClasses.use(freeSession.name);
       state.studentId     = freeSession.studentId;
       state.classId       = null;
       state.isPaid        = false;

@@ -7,10 +7,21 @@
  * class rather than trying to collapse them into one identity.
  *
  * Shared by forge-quiz.html and crucible.html so a class joined in one shows
- * up in the other. */
+ * up in the other.
+ *
+ * Entries are scoped to the student who joined them. Signing out must not
+ * discard them — a student signing back in with any one of their codes
+ * expects the rest of their classes to still be there — so instead of
+ * wiping the list, every read is filtered to the student currently signed
+ * in. Call use() as soon as their name is known. */
 (function (global) {
   var KEY = 'forge-classes';
+  var activeName = null;
 
+  function norm(n) { return String(n == null ? '' : n).trim().toLowerCase(); }
+
+  /* Every entry on this device, whoever joined it. Internal — callers
+     wanting "this student's classes" want list(). */
   function load() {
     try { return JSON.parse(localStorage.getItem(KEY) || '[]') || []; } catch (e) { return []; }
   }
@@ -20,33 +31,61 @@
     return list;
   }
 
+  /* Name the student whose classes should be visible. */
+  function use(name) {
+    activeName = norm(name) || null;
+    return list();
+  }
+
+  /* This student's classes. Entries predating name scoping have no
+     studentName and are shown to whoever is signed in — they can only have
+     come from this device's previous single-class session. */
+  function list() {
+    var all = load();
+    if (!activeName) return all;
+    return all.filter(function (c) { return !c.studentName || norm(c.studentName) === activeName; });
+  }
+
   /* Re-joining a class updates its entry in place rather than duplicating it
-     or shuffling the subject order the student is used to seeing. */
+     or shuffling the subject order the student is used to seeing. Entries are
+     keyed by class *and* student, so two students sharing a device each keep
+     their own row for the same class. */
   function add(entry) {
-    if (!entry || !entry.classId) return load();
-    var list = load();
-    var at = list.findIndex(function (c) { return c.classId === entry.classId; });
-    if (at === -1) list.push(entry); else list[at] = entry;
-    return save(list);
+    if (!entry || !entry.classId) return list();
+    /* Joining identifies the student, so a different name here means a
+       different student has taken over the device. */
+    if (entry.studentName) activeName = norm(entry.studentName);
+    var all = load();
+    var at = all.findIndex(function (c) {
+      return c.classId === entry.classId && norm(c.studentName) === norm(entry.studentName);
+    });
+    if (at === -1) all.push(entry); else all[at] = entry;
+    save(all);
+    return list();
   }
 
   function remove(classId) {
-    return save(load().filter(function (c) { return c.classId !== classId; }));
+    save(load().filter(function (c) {
+      return !(c.classId === classId && (!activeName || norm(c.studentName) === activeName));
+    }));
+    return list();
   }
 
+  /* Wipe every student's classes on this device. Sign-out deliberately does
+     not call this — see the note at the top of the file. */
   function clear() {
     try { localStorage.removeItem(KEY); } catch (e) {}
   }
 
   function forSubject(subject) {
-    return load().filter(function (c) { return c.subject === subject; })[0] || null;
+    return list().filter(function (c) { return c.subject === subject; })[0] || null;
   }
 
   /* Subjects in join order, de-duplicated. Pass the SUBJECTS map to drop
      classes whose subject has no question bank yet. */
   function subjects(known) {
     var seen = {}, out = [];
-    load().forEach(function (c) {
+    list().forEach(function (c) {
       if (!c.subject || seen[c.subject]) return;
       if (known && !known[c.subject]) return;
       seen[c.subject] = true;
@@ -59,8 +98,9 @@
      into the list, so students who joined before this existed don't have to
      re-enter their first code. */
   function adopt(session) {
-    if (!session || !session.classId) return load();
-    if (load().some(function (c) { return c.classId === session.classId; })) return load();
+    if (!session || !session.classId) return list();
+    if (session.studentName) use(session.studentName);
+    if (list().some(function (c) { return c.classId === session.classId; })) return list();
     return add({
       classId:     session.classId,
       classCode:   session.classCode   || null,
@@ -75,9 +115,9 @@
      had one assigned. get_class_by_code is the only anon-readable route to a
      class record (the table itself has no anon SELECT policy). */
   function backfillSubjects(supabaseUrl, supabaseKey, done) {
-    var list = load();
-    var stale = list.filter(function (c) { return c.classCode && !c.subject; });
-    if (!stale.length) { done && done(list); return; }
+    var all = load();
+    var stale = all.filter(function (c) { return c.classCode && !c.subject; });
+    if (!stale.length) { done && done(list()); return; }
 
     Promise.all(stale.map(function (c) {
       return fetch(supabaseUrl + '/rest/v1/rpc/get_class_by_code', {
@@ -92,7 +132,8 @@
         }
       }).catch(function () {});
     })).then(function () {
-      done && done(save(list));
+      save(all);
+      done && done(list());
     });
   }
 
@@ -105,10 +146,11 @@
    * (Anvil re-forging a misconception, say) can write back against the right
    * student row and keep the data with the teacher who owns it. */
   function fetchAllResponses(supabaseUrl, supabaseKey, fallbackName, done) {
-    var list = load().filter(function (c) { return c.studentId && c.classCode; });
-    if (!list.length) { done([]); return; }
+    if (fallbackName) use(fallbackName);
+    var mine = list().filter(function (c) { return c.studentId && c.classCode; });
+    if (!mine.length) { done([]); return; }
 
-    Promise.all(list.map(function (c) {
+    Promise.all(mine.map(function (c) {
       return fetch(supabaseUrl + '/rest/v1/rpc/get_student_own_responses', {
         method: 'POST',
         headers: { 'apikey': supabaseKey, 'Authorization': 'Bearer ' + supabaseKey, 'Content-Type': 'application/json' },
@@ -139,7 +181,8 @@
   }
 
   global.ForgeClasses = {
-    load: load, save: save, add: add, remove: remove, clear: clear,
+    use: use, list: list, load: load, save: save,
+    add: add, remove: remove, clear: clear,
     forSubject: forSubject, subjects: subjects, adopt: adopt,
     backfillSubjects: backfillSubjects, fetchAllResponses: fetchAllResponses
   };

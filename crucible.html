@@ -194,6 +194,7 @@ function renderJoin(){
       if(!Array.isArray(rows)||rows.length===0){err.textContent='Class or name not found. Join via the quiz first.';err.style.display='block';btn.disabled=false;btn.textContent='Enter the Crucible \u2192';return;}
       var match=rows[0];
       state.studentId=match.student_id;state.classId=match.class_id;state.studentName=name;
+      ForgeClasses.use(name);
       state.classSubject=match.subject||null;
       state.extraTime=match.extra_time||0;
       try { localStorage.setItem('forge-student', JSON.stringify({studentId: state.studentId, classId: state.classId, classCode: code, studentName: state.studentName, classSubject: state.classSubject})); } catch(e) {}

@@ -386,7 +386,6 @@ function renderDashboard(){
 
 function forgeSignOut(){
   try { localStorage.removeItem('forge-student'); } catch(e) {}
-  ForgeClasses.clear();
   try { localStorage.removeItem('forge-free-session'); } catch(e) {}
   ForgeAuth.signOut();
   location.reload();
