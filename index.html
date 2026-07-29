@@ -505,6 +505,10 @@ footer{padding:40px 0 28px;border-top:1px solid var(--line)}
   var hash = window.location.hash;
   if (hash && hash.indexOf('type=recovery') !== -1) {
     window.location.replace('edu/reset-password.html' + hash);
+  } else if (hash && hash.indexOf('access_token=') !== -1) {
+    // Any other Supabase auth link (confirmation, magic link) — hand the hash
+    // to the dashboard, which adopts the session and signs the student in.
+    window.location.replace('edu/student-dashboard.html' + hash);
   }
 })();
 </script>

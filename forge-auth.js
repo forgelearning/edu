@@ -62,6 +62,53 @@ function ForgeTrialDaysLeft(sub) {
 
 var ForgeAuth = {
 
+  // Where a student lands after signing in, however they got there
+  // (password login, signup completion, confirmation link, password reset).
+  LANDING_PAGE: 'student-dashboard.html',
+
+  goToLanding: function() {
+    window.location.href = ForgeAuth.LANDING_PAGE;
+  },
+
+  // Supabase confirmation / magic links come back with the tokens in the URL
+  // hash. Adopt that session and send the student to the landing page, so an
+  // email link signs them in the same way the password form does.
+  // Recovery links are left alone — reset-password.html handles those.
+  adoptHashSession: function() {
+    var hash = window.location.hash.slice(1);
+    if (!hash || hash.indexOf('access_token=') === -1) return false;
+
+    var params = {};
+    hash.split('&').forEach(function(pair) {
+      var kv = pair.split('=');
+      if (kv.length === 2) params[decodeURIComponent(kv[0])] = decodeURIComponent(kv[1]);
+    });
+    if (!params.access_token || params.type === 'recovery') return false;
+
+    _saveAuthSession({ access_token: params.access_token, refresh_token: params.refresh_token, user: null });
+    return fetch(SUPABASE_URL + '/auth/v1/user', {
+      headers: _authHeaders(params.access_token)
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(user) {
+      if (user && user.id) {
+        _saveAuthSession({ access_token: params.access_token, refresh_token: params.refresh_token, user: user });
+      }
+      if (window.history && window.history.replaceState) {
+        window.history.replaceState(null, '', window.location.pathname + window.location.search);
+      }
+      // Already on the landing page (e.g. index.html forwarded the hash here)?
+      // The session is stored and the URL is clean — nothing left to do.
+      var path = window.location.pathname;
+      if (path.slice(-ForgeAuth.LANDING_PAGE.length) !== ForgeAuth.LANDING_PAGE) {
+        ForgeAuth.goToLanding();
+      } else {
+        window.location.reload();
+      }
+    })
+    .catch(function() { _clearAuthSession(); });
+  },
+
   // Sign up — creates Supabase auth user + subscriber record (trial, not yet paying)
   signUp: function(email, password, name, subjects) {
     return fetch(SUPABASE_URL + '/auth/v1/signup', {

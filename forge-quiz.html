@@ -159,6 +159,7 @@ ForgeSidebar.mount({
 </div>
 
 <script src="forge-auth.js"></script>
+<script>if(window.ForgeAuth)ForgeAuth.adoptHashSession();</script>
 <script>
 // ===== SUPABASE =====
 // Replace these with your Supabase project values (Settings > API)
@@ -787,7 +788,8 @@ function renderJoin() {
         state.phase = 'subjects';
       }
       try { localStorage.setItem('forge-student', JSON.stringify({ studentName: sub.name, isPaid: true, paidSubjects: sub.subjects || [], classSubject: state.classSubject || null })); } catch(e) {}
-      render();
+      // Signed in — send the student to their dashboard, not into the quiz.
+      ForgeAuth.goToLanding();
     }).catch(function(e) {
       btn.disabled = false; btn.textContent = 'Log in \u2192';
       err.textContent = e.message || 'Incorrect email or password.';

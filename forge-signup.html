@@ -92,6 +92,7 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
 </div>
 
 <script src="forge-auth.js"></script>
+<script>if(window.ForgeAuth)ForgeAuth.adoptHashSession();</script>
 <script>
 var STRIPE_PAYMENT_LINK = 'https://buy.stripe.com/aFa5kw2wW7AC3mid2b9IQ00';
 var MAX_SUBJECTS = 4;
@@ -339,7 +340,7 @@ function renderSuccess() {
   h += '<input id="link-code" type="text" placeholder="e.g. ECON-Y12-A" style="width:100%;padding:10px 12px;border-radius:var(--radius-sm);border:1px solid var(--line);background:var(--panel);color:var(--white);font-family:Inter,sans-serif;font-size:14px;text-transform:uppercase;margin-bottom:8px">';
   h += '<button id="link-btn" class="btn-primary" style="margin-bottom:6px">Link to class →</button>';
   h += '<p class="err" id="link-err"></p>';
-  h += '<button onclick="skipToQuiz()" class="btn-ghost">Skip — my teacher isn\'t on Forge yet</button>';
+  h += '<button onclick="skipToDashboard()" class="btn-ghost">Skip — my teacher isn\'t on Forge yet</button>';
   h += '</div>';
 
   app.innerHTML = h;
@@ -437,12 +438,12 @@ function renderLinked(cls, name) {
   h += '<div class="success-card">';
   h += '<b>What your teacher can see:</b> your accuracy per spec point, misconceptions you\'ve triggered, and whether you\'ve completed any assignments they set. They cannot see your password or personal details.';
   h += '</div>';
-  h += '<button class="btn-primary" onclick="window.location.href=\'forge-quiz.html\'">Go to the quiz →</button>';
+  h += '<button class="btn-primary" onclick="ForgeAuth.goToLanding()">Go to my dashboard →</button>';
   app.innerHTML = h;
 }
 
-function skipToQuiz() {
-  window.location.href = 'forge-quiz.html';
+function skipToDashboard() {
+  ForgeAuth.goToLanding();
 }
 
 // ── ALREADY SUBSCRIBED ────────────────────────────────────────
@@ -465,7 +466,7 @@ function renderAlreadySubscribed(sub) {
     h += '</div></div>';
   }
 
-  h += '<button class="btn-primary" onclick="window.location.href=\'forge-quiz.html\'">Go to the quiz →</button>';
+  h += '<button class="btn-primary" onclick="ForgeAuth.goToLanding()">Go to my dashboard →</button>';
   h += '<button class="btn-ghost" onclick="ForgeAuth.signOut();renderStep1();" style="margin-top:8px">Sign out / use a different account</button>';
 
   app.innerHTML = h;
