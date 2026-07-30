@@ -165,38 +165,16 @@ function getRank(xp){
 // Year 12 A-Level class, "10A/Gg" for a Year 10 GCSE class). There's no
 // separate level column, so level is derived from the year-group prefix:
 // Year 12-13 = A-Level, Year 7-11 = GCSE. See school-overview.html's classLevel.
+//
+// Nothing on this page renders the level — it's derived and cached onto the
+// `forge-student` session because profile.html reads it back as the fallback
+// level for responses it can't attribute to a known class. Don't drop it as
+// unused.
 function classLevel(className) {
   var m = /^(\d+)/.exec(className || '');
   if (!m) return 'alevel';
   var year = parseInt(m[1], 10);
   return year >= 12 ? 'alevel' : 'gcse';
-}
-
-function calcGrade(acc, activeMCs, totalMCs, isGCSE) {
-  // acc: overall accuracy 0-100
-  // activeMCs: number of unresolved misconceptions
-  // totalMCs: total unique misconceptions ever fired
-  var mcClearance = totalMCs > 0 ? Math.max(0, 1 - (activeMCs / totalMCs)) : 1;
-  var score = (acc * 0.6) + (mcClearance * 100 * 0.4);
-  if (isGCSE) {
-    if (score >= 85) return {grade:'9', next:null, color:'#ffd700', desc:'Exam-ready. Maintain accuracy and keep the Anvil clear.'};
-    if (score >= 76) return {grade:'8', next:'9',  color:'var(--good)', desc:'Strong. Clear your remaining misconceptions to break into a 9.'};
-    if (score >= 68) return {grade:'7', next:'8',  color:'var(--good)', desc:'Consistent top-end work. Keep the Anvil clear to push higher.'};
-    if (score >= 60) return {grade:'6', next:'7',  color:'var(--hot)', desc:'Solid. Accuracy and Anvil work will push this into the 7s.'};
-    if (score >= 52) return {grade:'5', next:'6',  color:'var(--hot)', desc:'Strong pass. Focus on the Anvil — misconceptions are costing marks.'};
-    if (score >= 44) return {grade:'4', next:'5',  color:'var(--ember)', desc:'Standard pass. Daily sessions and re-forge work will move this up.'};
-    if (score >= 36) return {grade:'3', next:'4',  color:'#b45309', desc:'Keep going. Daily sessions and re-forge work will move this.'};
-    if (score >= 28) return {grade:'2', next:'3',  color:'var(--slate)', desc:'Early stage. More questions and misconception rework needed.'};
-    if (score >= 18) return {grade:'1', next:'2',  color:'var(--slate)', desc:'Early stage. More questions and misconception rework needed.'};
-    return             {grade:'U', next:'1',  color:'var(--bad)', desc:'Not enough data yet — complete more sessions to get a reliable band.'};
-  }
-  if (score >= 85) return {grade:'A*', next:null,    color:'#ffd700', desc:'Exam-ready. Maintain accuracy and keep the Anvil clear.'};
-  if (score >= 72) return {grade:'A',  next:'A*',   color:'var(--good)', desc:'Strong. Clear your remaining misconceptions to break into A*.'};
-  if (score >= 60) return {grade:'B',  next:'A',    color:'var(--hot)', desc:'Consistent. Accuracy and Anvil work will push this to an A.'};
-  if (score >= 50) return {grade:'C',  next:'B',    color:'var(--ember)', desc:'Building. Focus on the Anvil — misconceptions are costing marks.'};
-  if (score >= 40) return {grade:'D',  next:'C',    color:'#b45309', desc:'Keep going. Daily sessions and re-forge work will move this.'};
-  if (score >= 30) return {grade:'E',  next:'D',    color:'var(--slate)', desc:'Early stage. More questions and misconception rework needed.'};
-  return             {grade:'U',  next:'E',    color:'var(--bad)', desc:'Not enough data yet — complete more sessions to get a reliable band.'};
 }
 
 function calcXP(responses){
