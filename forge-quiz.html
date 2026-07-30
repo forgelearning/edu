@@ -452,12 +452,24 @@ function joinClassByCode(name, code, cb) {
       subject: cls.subject || null, studentId: row.student_id, studentName: name
     });
 
-    // Tie this class to the one they're already signed in with, so both
-    // follow them onto any other device. Needs both codes, which is exactly
-    // what the student has just demonstrated.
-    var anchor = (state.studentId && state.classId !== cls.id)
-      ? (ForgeClasses.list().filter(function(c){ return c.studentId === state.studentId && c.classCode; })[0] || null)
-      : null;
+    // Tie this class to one the student already holds a code for, so both
+    // follow them onto any other device. Linking needs two codes, which is
+    // exactly what the student has just demonstrated.
+    //
+    // The class they're actively working in is the natural anchor, but its
+    // cached code can be missing: syncFromServer only knows the code of the
+    // class signed in with, so every other class it restores has none. Any
+    // other cached class with a code proves the same thing and links into the
+    // same group, so fall back to that rather than silently skipping the link
+    // — an unlinked row keeps its answers to itself, and the student's history
+    // looks reset the next time they sign in with this code.
+    var anchor = null;
+    if (state.studentId && state.classId !== cls.id) {
+      var coded = ForgeClasses.list().filter(function(c){
+        return c.classCode && c.studentId && c.studentId !== row.student_id;
+      });
+      anchor = coded.filter(function(c){ return c.studentId === state.studentId; })[0] || coded[0] || null;
+    }
     if (anchor) {
       ForgeClasses.linkToServer(SUPABASE_URL, SUPABASE_KEY, anchor,
         { studentId: row.student_id, classCode: code }, function() {

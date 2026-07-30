@@ -17,6 +17,7 @@
 (function (global) {
   var KEY = 'forge-classes';
   var activeName = null;
+  var repairTried = {};
 
   function norm(n) { return String(n == null ? '' : n).trim().toLowerCase(); }
 
@@ -228,10 +229,38 @@
         };
       });
 
+      /* A cached class the server doesn't count as linked, but whose code this
+         device still holds, is one the student joined while its link was
+         missed. Holding both codes is the proof linking needs, so repair it
+         now — otherwise its answers stay walled off from the rest and their
+         history reads as reset. Its entry is kept either way. */
+      var linked = {};
+      rows.forEach(function (r) { linked[r.student_id] = true; });
+      var orphans = load().filter(function (c) {
+        return norm(c.studentName) === norm(anchor.studentName) &&
+               c.classCode && c.studentId && !linked[c.studentId] &&
+               !repairTried[c.studentId];
+      });
+      /* One attempt each per page load: a link the server refuses would
+         otherwise leave the entry an orphan and re-trigger the re-sync below
+         forever. */
+      orphans.forEach(function (c) { repairTried[c.studentId] = true; });
+
       /* Keep other students' entries on this device untouched. */
       var others = load().filter(function (c) { return norm(c.studentName) !== norm(anchor.studentName); });
-      save(others.concat(mine));
-      done && done(list());
+      save(others.concat(mine, orphans));
+
+      if (!orphans.length) { done && done(list()); return; }
+      var pending = orphans.length;
+      orphans.forEach(function (c) {
+        linkToServer(supabaseUrl, supabaseKey, anchor, c, function () {
+          if (--pending === 0) {
+            /* Re-read so the repaired rows come back as ordinary linked
+               classes rather than the orphan entries appended above. */
+            syncFromServer(supabaseUrl, supabaseKey, anchor, done);
+          }
+        });
+      });
     }).catch(function () { done && done(list()); });
   }
 
