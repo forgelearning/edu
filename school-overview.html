@@ -12,6 +12,9 @@
 <link rel="stylesheet" href="css/auth.css">
 <script src="scripts/forge-logo.js"></script>
 <script src="scripts/forge-auth-card.js"></script>
+<!-- BANKS/SUBJECTS: needed to work out which subject a reforge actually came
+     from, since Anvil rows log subject:'anvil' rather than the real subject. -->
+<script src="data/forge-data.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:var(--coal);color:var(--slate);font-family:Inter,sans-serif;font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100vh}
@@ -258,11 +261,61 @@ function renderDashboard() {
   students.forEach(function(s) { if (s.class_id) studentClassMap[s.id] = s.class_id; });
   classes.forEach(function(cls) { if (cls.subject) classSubjectMap[cls.id] = cls.subject; });
 
+  // Question id / misconception tag → subject key. Mirrors teacher.html: the
+  // Anvil logs subject:'anvil' (the source page, not the subject), so without
+  // this an Economics reforge is indistinguishable from a Computing one and
+  // gets counted against whichever class the student happens to sit in.
+  var QID_TO_SUBJECT = {};
+  var MC_TO_SUBJECT = {};
+  if (typeof BANKS !== 'undefined' && typeof SUBJECTS !== 'undefined') {
+    Object.keys(SUBJECTS).forEach(function(sk) {
+      (SUBJECTS[sk].banks || []).forEach(function(bk) {
+        if (!BANKS[bk]) return;
+        (BANKS[bk].questions || []).forEach(function(q) {
+          QID_TO_SUBJECT[q.id] = sk;
+          if (q.tag) MC_TO_SUBJECT[q.tag] = sk;
+        });
+      });
+    });
+  }
+
+  // Reforge suffixes stack (GRO-01-RF-ANVIL), so strip them repeatedly.
+  function baseQuestionId(qid) {
+    if (!qid) return '';
+    var out = qid, prev;
+    do { prev = out; out = out.replace(/-(RF|ANVIL|CRU\d*)$/, ''); } while (out !== prev);
+    return out;
+  }
+
+  // The real subject a response belongs to, seeing through the 'anvil' and
+  // 'crucible' placeholders. Empty string when it can't be established.
+  function subjectForResponse(r) {
+    var rs = (r.subject || '').toLowerCase();
+    if (rs && rs !== 'anvil' && rs !== 'crucible' && rs !== 'unknown') return rs;
+    return QID_TO_SUBJECT[baseQuestionId(r.question_id)]
+        || MC_TO_SUBJECT[r.misconception_tag]
+        || MC_TO_SUBJECT[r.bank]
+        || '';
+  }
+
+  // Does this response belong to a class teaching this subject? Rows whose
+  // subject can't be established are kept, matching the teacher dashboard.
+  function subjectMatches(r, cls) {
+    var rSubj = subjectForResponse(r);
+    var clsSubj = (cls.subject || '').toLowerCase();
+    return !rSubj || rSubj === clsSubj ||
+      (clsSubj === 'englit' && rSubj === 'engll') ||
+      (clsSubj === 'engll' && rSubj === 'englit');
+  }
+
   // Resolve the effective class_id and subject for a response.
   // Prefers the stored class_id; falls back to the student's class if null.
   function resolveResponse(r) {
     var classId = r.class_id || studentClassMap[r.student_id] || null;
-    var subject  = r.subject  || (classId ? classSubjectMap[classId] : null) || null;
+    // subjectForResponse, not r.subject: the latter is 'anvil' on every reforge,
+    // which is not a real subject key, so reforges fell out of the subject
+    // breakdown entirely instead of counting toward the subject they came from.
+    var subject  = subjectForResponse(r) || (classId ? classSubjectMap[classId] : null) || null;
     return { classId: classId, subject: subject };
   }
 
@@ -338,27 +391,15 @@ function renderDashboard() {
     // from students in this class (class_id = null but student belongs here)
     var classStudentIds = new Set(classStudents.map(function(s) { return s.id; }));
     var classResponses = responses.filter(function(r) {
-      // Only include responses that match this class's subject
-      // (allow null subject, and anvil/crucible responses)
-      var rSubj = (r.subject || '').toLowerCase();
-      var clsSubj = (cls.subject || '').toLowerCase();
-      var subjMatch = !rSubj || rSubj === 'anvil' || rSubj === 'crucible' ||
-        rSubj === clsSubj ||
-        (clsSubj === 'englit' && rSubj === 'engll') ||
-        (clsSubj === 'engll' && rSubj === 'englit');
-      if (!subjMatch) return false;
+      // Only include responses that match this class's subject, resolving the
+      // real subject of a reforge rather than waving all reforges through.
+      if (!subjectMatches(r, cls)) return false;
       if (r.class_id === cls.id) return true;
       if (!r.class_id && classStudentIds.has(r.student_id)) return true;
       return false;
     });
     var activeIds = new Set(recentResponses.filter(function(r) {
-      var rSubj = (r.subject || '').toLowerCase();
-      var clsSubj = (cls.subject || '').toLowerCase();
-      var subjMatch = !rSubj || rSubj === 'anvil' || rSubj === 'crucible' ||
-        rSubj === clsSubj ||
-        (clsSubj === 'englit' && rSubj === 'engll') ||
-        (clsSubj === 'engll' && rSubj === 'englit');
-      if (!subjMatch) return false;
+      if (!subjectMatches(r, cls)) return false;
       if (r.class_id === cls.id) return true;
       if (!r.class_id && classStudentIds.has(r.student_id)) return true;
       return false;
