@@ -153,11 +153,46 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
 [data-theme="light"] .tab.active{color:#fff}
 [data-theme="light"] .join-btn{color:#fff}
 
+/* ── mobile / tablet-portrait: the bottom tab bar replaces the in-page tab
+   row, cards lose their gutters, and the student table stacks into rows ── */
+@media(max-width:820px){
+  .wrap{padding:16px 14px 8px}
+  .tabs{display:none}
+  .dash-header{margin-bottom:16px}
+  .dash-header h1{font-size:20px}
+  .card{padding:16px 14px;margin-bottom:12px;border-radius:var(--radius-md)}
+  .stat-row{grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
+  .stat{padding:12px 8px}
+  .stat-n{font-size:23px}
+  .stat-l{font-size:10px}
+  .home-grid{grid-template-columns:1fr;gap:8px}
+  .assign-form{padding:16px 14px}
+
+  .heat-row{grid-template-columns:1fr;gap:6px;padding:12px 14px}
+  .heat-bar{order:3}
+  .heat-spec{font-size:10px}
+
+  /* table -> one card per student, each cell labelled by its column */
+  .class-table,.class-table tbody,.class-table tr,.class-table td{display:block;width:100%}
+  .class-table thead{display:none}
+  .class-table tr{background:var(--panel-2);border:1px solid var(--line);
+    border-radius:var(--radius-md);padding:10px 12px;margin-bottom:8px}
+  .class-table tr:hover{background:var(--panel-2)}
+  .class-table td{display:flex;align-items:center;justify-content:space-between;gap:12px;
+    padding:5px 0;border-bottom:none;font-size:13px;text-align:right}
+  .class-table td::before{content:attr(data-label);flex-shrink:0;text-align:left;
+    font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.05em;
+    text-transform:uppercase;color:#8A857E}
+  /* the student's name is the row's heading, not a labelled field */
+  .class-table td[data-label="Student"]{justify-content:flex-start;text-align:left;
+    font-family:'Sora',sans-serif;font-weight:700;font-size:15px;
+    padding-bottom:8px;margin-bottom:4px;border-bottom:1px solid var(--line)}
+  .class-table td[data-label="Student"]::before{display:none}
+  .class-table td[data-label="Access"] select{min-height:36px}
+}
+
 @media(max-width:700px){
-  .stat-row{grid-template-columns:1fr 1fr}
-  .heat-row{grid-template-columns:1fr;gap:4px}
   .heat-bar,.heat-spec{display:none}
-  .class-table{font-size:12px}
 }
 [data-theme="light"] .forge-logo-dark{display:none!important}[data-theme="light"] .forge-logo-light{display:inline!important}</style>
 <!-- Google tag (gtag.js) -->
@@ -1309,6 +1344,9 @@ window.switchTab = function(view, btn) {
   document.getElementById('panel-' + view).classList.add('active');
   document.getElementById('panel-student').style.display = 'none';
   if (view === 'spec') renderSpecBreakdown(forClassSubject(dashState.responses));
+  // Keep the sidebar rail and the mobile tab bar in step with the in-page tabs.
+  var navKey = {heatmap:'dashboard', class:'students', assignments:'assignments', spec:'misconceptions'}[view];
+  if (navKey && window.ForgeSidebar) ForgeSidebar.setActive(navKey);
 };
 
 // Sidebar nav items don't have real URLs for these — they're tabs within
@@ -2079,15 +2117,15 @@ function renderClassOverview(responses, students) {
     var displayName = student.display_name || ps.name;
 
     h += '<tr>';
-    h += '<td onclick="renderStudent(\'' + sid + '\')" style="cursor:pointer">';
+    h += '<td data-label="Student" onclick="renderStudent(\'' + sid + '\')" style="cursor:pointer">';
     h += '<span class="student-name-display" data-sid="' + sid + '">' + displayName + '</span>';
     if (extraTime > 0) h += '<span class="extra-time-badge">+' + extraTime + '%</span>';
     h += '</td>';
-    h += '<td onclick="renderStudent(\'' + sid + '\')" style="cursor:pointer">' + ps.total + '</td>';
-    h += '<td class="acc" style="color:' + accColor + ';cursor:pointer" onclick="renderStudent(\'' + sid + '\')">' + acc + '%</td>';
-    h += '<td class="mono" style="font-size:12px;cursor:pointer" onclick="renderStudent(\'' + sid + '\')">' + (ps.weakBank || '\u2014') + '</td>';
-    h += '<td class="mono" style="font-size:12px;cursor:pointer" onclick="renderStudent(\'' + sid + '\')">' + (ps.topMC ? ps.topMC + ' \u00d7' + ps.topMCcount : '\u2014') + '</td>';
-    h += '<td style="white-space:nowrap">';
+    h += '<td data-label="Answered" onclick="renderStudent(\'' + sid + '\')" style="cursor:pointer">' + ps.total + '</td>';
+    h += '<td data-label="Accuracy" class="acc" style="color:' + accColor + ';cursor:pointer" onclick="renderStudent(\'' + sid + '\')">' + acc + '%</td>';
+    h += '<td data-label="Weakest topic" class="mono" style="font-size:12px;cursor:pointer" onclick="renderStudent(\'' + sid + '\')">' + (ps.weakBank || '\u2014') + '</td>';
+    h += '<td data-label="Top misconception" class="mono" style="font-size:12px;cursor:pointer" onclick="renderStudent(\'' + sid + '\')">' + (ps.topMC ? ps.topMC + ' \u00d7' + ps.topMCcount : '\u2014') + '</td>';
+    h += '<td data-label="Access" style="white-space:nowrap">';
     h += '<select class="extra-time-select" data-sid="' + sid + '" style="padding:4px 6px;border-radius:var(--radius-sm);border:1px solid var(--line);background:var(--panel);color:var(--slate);font-family:Inter,sans-serif;font-size:12px;cursor:pointer">';
     h += '<option value="0"' + (extraTime === 0 ? ' selected' : '') + '>Standard</option>';
     h += '<option value="25"' + (extraTime === 25 ? ' selected' : '') + '>+25%</option>';

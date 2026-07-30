@@ -23,8 +23,17 @@ var _FORGE_ICONS = {
   misconceptions: '<path d="M12 9v4M12 17h.01"></path><path d="M10.3 3.9 2.5 17a2 2 0 0 0 1.7 3h15.6a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"></path>',
   students: '<path d="M17 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path>',
   classes: '<path d="M4 19V6a2 2 0 0 1 2-2h9l5 5v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2Z"></path><path d="M8 8h6M8 12h8M8 16h5"></path>',
-  present: '<rect x="2" y="4" width="20" height="13" rx="2"></rect><path d="M8 21h8M12 17v4"></path>'
+  present: '<rect x="2" y="4" width="20" height="13" rx="2"></rect><path d="M8 21h8M12 17v4"></path>',
+  more: '<circle cx="5" cy="12" r="1.6"></circle><circle cx="12" cy="12" r="1.6"></circle><circle cx="19" cy="12" r="1.6"></circle>',
+  theme: '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>'
 };
+
+// Below this width the rail is replaced by the bottom tab bar. Kept in sync
+// with the @media block in css/sidebar.css.
+var _FORGE_TABBAR_MAX = 820;
+
+// Tab bar fits 4 nav items plus "More"; anything past that drops into the sheet.
+var _FORGE_MAX_TABS = 4;
 
 function _fsIcon(key, cls) {
   var inner = _FORGE_ICONS[key] || '';
@@ -105,6 +114,13 @@ var ForgeSidebar = {
     document.body.insertAdjacentHTML('afterbegin', badgeHtml);
     document.body.classList.add('has-forge-sidebar');
 
+    // Bottom tab bar + "More" sheet for phones/portrait tablets. Both are
+    // always in the DOM; css/sidebar.css decides which shell is visible, so
+    // rotating a tablet swaps them with no JS involved.
+    this._config = config;
+    this._active = config.active;
+    document.body.insertAdjacentHTML('beforeend', this._tabbarHtml(config));
+
     this._signOutFn = config.signOut || function() {
       if (typeof window.forgeSignOut === 'function') return window.forgeSignOut();
       if (typeof window.forgeLogout === 'function') return window.forgeLogout();
@@ -123,6 +139,103 @@ var ForgeSidebar = {
       var menu = document.getElementById('fclassswitch-menu');
       var wrap = document.querySelector('.fside-classswitch');
       if (menu && menu.style.display !== 'none' && wrap && !wrap.contains(e.target)) menu.style.display = 'none';
+    });
+  },
+
+  // ---- mobile shell -------------------------------------------------
+
+  _tabbarHtml: function(config) {
+    var items = config.items || [];
+    var tabs = items.slice(0, _FORGE_MAX_TABS);
+    var h = tabs.map(function(it) {
+      return _fsTabHtml(it, config.active);
+    }).join('');
+    h += '<button class="ftab" data-key="__more" onclick="ForgeSidebar._openSheet()" aria-label="More">' +
+      _fsIcon('more') + '<span class="ftab-label">More</span>' +
+    '</button>';
+    return '<nav id="forge-tabbar">' + h + '</nav>' +
+      '<div id="forge-sheet-scrim" onclick="ForgeSidebar._onScrimClick(event)">' +
+        '<div id="forge-sheet" role="dialog" aria-label="More"><div class="fsheet-grip"></div>' +
+        '<div id="forge-sheet-body"></div></div>' +
+      '</div>';
+  },
+
+  // Rebuilt on every open so the class list and labels are current.
+  _sheetHtml: function() {
+    var config = this._config || {};
+    var active = this._active;
+    var overflow = (config.items || []).slice(_FORGE_MAX_TABS);
+    var h = '';
+
+    if (config.classSwitch) {
+      var classes = this._classes || [];
+      var activeId = this._activeClassId;
+      var canRemove = typeof window.forgeOnClassRemove === 'function';
+      h += '<div class="fsheet-heading">Classes</div>';
+      h += classes.map(function(c) {
+        var row = '<div class="fsheet-classrow">' +
+          '<button class="fsheet-item' + (c.id === activeId ? ' active' : '') + '" onclick="ForgeSidebar._sheetSelectClass(\'' + c.id + '\')">' +
+            _fsIcon('classes') +
+            '<span>' + _fsEsc(c.name || c.code || '') + '</span>' +
+            '<span class="fsheet-sub">' + _fsEsc(c.code || '') + '</span>' +
+          '</button>';
+        if (canRemove) {
+          row += '<button class="fcs-remove" aria-label="Remove ' + _fsEsc(c.name || c.code || 'class') + ' from this list" onclick="ForgeSidebar._removeClass(\'' + c.id + '\')">' +
+            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"></path></svg>' +
+          '</button>';
+        }
+        return row + '</div>';
+      }).join('');
+      h += '<button class="fsheet-item" style="color:var(--ember)" onclick="ForgeSidebar._sheetAddClass()">' +
+        _fsIcon('classes') + '<span>' + _fsEsc(this._addLabel || '+ Join another class') + '</span></button>';
+      h += '<div class="fsheet-divider"></div>';
+    }
+
+    var rest = overflow.concat(config.footerItems || []);
+    if (rest.length) {
+      h += rest.map(function(it) { return _fsSheetItemHtml(it, active); }).join('');
+      h += '<div class="fsheet-divider"></div>';
+    }
+
+    var isLight = document.documentElement.getAttribute('data-theme') === 'light';
+    h += '<button class="fsheet-item" onclick="ForgeSidebar._toggleTheme()">' +
+      _fsIcon('theme') + '<span>' + (isLight ? 'Switch to dark' : 'Switch to light') + '</span></button>';
+    h += '<button class="fsheet-item danger" onclick="ForgeSidebar._sheetSignOut()">' +
+      _fsIcon('signout') + '<span>Sign out</span></button>';
+    return h;
+  },
+
+  _openSheet: function() {
+    var scrim = document.getElementById('forge-sheet-scrim');
+    var body = document.getElementById('forge-sheet-body');
+    if (!scrim || !body) return;
+    body.innerHTML = this._sheetHtml();
+    scrim.classList.add('open');
+  },
+
+  _closeSheet: function() {
+    var scrim = document.getElementById('forge-sheet-scrim');
+    if (scrim) scrim.classList.remove('open');
+  },
+
+  // Only a tap on the backdrop itself dismisses; taps inside the panel bubble
+  // up to the same handler.
+  _onScrimClick: function(e) {
+    if (e.target && e.target.id === 'forge-sheet-scrim') this._closeSheet();
+  },
+
+  _sheetSelectClass: function(id) { this._closeSheet(); this._selectClass(id); },
+  _sheetAddClass: function() { this._closeSheet(); this._addClass(); },
+  _sheetSignOut: function() { this._closeSheet(); this._signOut(); },
+
+  // Pages that navigate in-place (teacher.html's tab SPA) call this so the
+  // rail and the tab bar both follow along.
+  setActive: function(key) {
+    this._active = key;
+    ['#forge-sidebar .fside-item', '#forge-tabbar .ftab'].forEach(function(sel) {
+      document.querySelectorAll(sel).forEach(function(el) {
+        el.classList.toggle('active', el.getAttribute('data-key') === key);
+      });
     });
   },
 
@@ -181,6 +294,9 @@ var ForgeSidebar = {
     this._classes = (this._classes || []).filter(function(c) { return String(c.id) !== String(id); });
     var menu = document.getElementById('fclassswitch-menu');
     if (menu) { menu.style.display = 'none'; this._toggleClassMenu(); }
+    var scrim = document.getElementById('forge-sheet-scrim');
+    var body = document.getElementById('forge-sheet-body');
+    if (scrim && body && scrim.classList.contains('open')) body.innerHTML = this._sheetHtml();
   },
 
   _addClass: function() {
@@ -191,9 +307,20 @@ var ForgeSidebar = {
 
   setBadge: function(key, value, muted) {
     var el = document.querySelector('.fside-item[data-key="' + key + '"] .fside-badge');
-    if (!el) return;
-    el.textContent = value;
-    el.classList.toggle('badge-muted', !!muted);
+    if (el) {
+      el.textContent = value;
+      el.classList.toggle('badge-muted', !!muted);
+    }
+    var tab = document.querySelector('#forge-tabbar .ftab[data-key="' + key + '"]');
+    if (!tab) return;
+    var dot = tab.querySelector('.ftab-dot');
+    if (!dot) {
+      dot = document.createElement('span');
+      dot.className = 'ftab-dot';
+      tab.appendChild(dot);
+    }
+    dot.textContent = value;
+    dot.classList.toggle('badge-muted', !!muted);
   },
 
   _toggleSidebar: function() {
@@ -226,6 +353,9 @@ var ForgeSidebar = {
       localStorage.setItem('forge-theme', 'light');
     }
     this._updateThemeUI(!isLight);
+    var body = document.getElementById('forge-sheet-body');
+    var scrim = document.getElementById('forge-sheet-scrim');
+    if (body && scrim && scrim.classList.contains('open')) body.innerHTML = this._sheetHtml();
   },
 
   _signOut: function() {
@@ -235,6 +365,40 @@ var ForgeSidebar = {
 
 function _fsEsc(s) {
   return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+// Shared attribute string so a tab/sheet row navigates exactly like its rail
+// twin — href for real pages, onclick for in-page SPA views.
+function _fsLinkAttrs(it) {
+  return (it.href ? ' href="' + _fsEsc(it.href) + '"' : '') +
+    (it.onclick ? ' onclick="' + it.onclick.replace(/"/g, '&quot;') + '"' : '');
+}
+
+function _fsTabHtml(it, activeKey) {
+  var tag = it.href ? 'a' : 'button';
+  var badgeHtml = (it.badge !== undefined && it.badge !== null)
+    ? '<span class="ftab-dot' + (it.badgeMuted ? ' badge-muted' : '') + '">' + _fsEsc(it.badge) + '</span>'
+    : '';
+  return '<' + tag + ' class="ftab' + (it.key === activeKey ? ' active' : '') + '" data-key="' + _fsEsc(it.key) + '"' +
+    _fsLinkAttrs(it) + '>' +
+    _fsIcon(it.key) +
+    '<span class="ftab-label">' + _fsEsc(it.label) + '</span>' +
+    badgeHtml +
+  '</' + tag + '>';
+}
+
+function _fsSheetItemHtml(it, activeKey) {
+  var tag = it.href ? 'a' : 'button';
+  // A sheet row that navigates in-page must also close the sheet.
+  var closer = it.href ? '' : ' onclick="ForgeSidebar._closeSheet()"';
+  var attrs = it.onclick
+    ? ' onclick="ForgeSidebar._closeSheet();' + it.onclick.replace(/"/g, '&quot;') + '"'
+    : (it.href ? ' href="' + _fsEsc(it.href) + '"' : closer);
+  return '<' + tag + ' class="fsheet-item' + (it.key === activeKey ? ' active' : '') + '" data-key="' + _fsEsc(it.key) + '"' +
+    attrs + '>' +
+    _fsIcon(it.key) +
+    '<span>' + _fsEsc(it.label) + '</span>' +
+  '</' + tag + '>';
 }
 
 function _fsItemHtml(it, activeKey) {

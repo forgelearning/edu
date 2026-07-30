@@ -9,7 +9,6 @@
 <link rel="stylesheet" href="css/base.css">
 <link rel="stylesheet" href="css/auth.css">
 <link rel="stylesheet" href="css/sidebar.css">
-<link rel="stylesheet" href="css/sidebar.css">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:var(--coal);color:var(--slate);font-family:'Inter',sans-serif;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100vh}
@@ -87,6 +86,33 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
 [data-theme="light"] .join-btn{color:#fff}
 [data-theme="light"] .prof-tab.active{color:#fff}
 @media(max-width:600px){.stat-row{grid-template-columns:1fr 1fr}.two-col{grid-template-columns:1fr}.prof-tabs{width:100%;flex-wrap:wrap}}
+/* ── mobile / tablet-portrait ──
+   The desktop layout vertically centres a short page; on a phone that fights
+   the fixed top bar, so the content flows from the top instead. */
+@media(max-width:820px){
+  .wrap{padding:18px 14px 8px;min-height:0;justify-content:flex-start}
+  #app h1{font-size:26px;margin-bottom:20px}
+  .two-col{grid-template-columns:1fr;gap:12px}
+  .card{padding:16px 14px;margin-bottom:12px;border-radius:var(--radius-md)}
+  .prof-header{padding:18px 16px;margin-bottom:14px}
+  .prof-header-top{margin-bottom:16px}
+  .prof-name{font-size:19px}
+  .stat-n{font-size:26px}
+
+  /* the stat strip is a horizontal rail on desktop — stack it into a 2-up
+     grid so nothing wraps into an orphan */
+  .stat-strip{display:grid;grid-template-columns:1fr 1fr;gap:14px 18px;padding:14px 16px;margin-bottom:16px}
+  .stat-sep{display:none}
+  .stat-strip-link{grid-column:1/-1;margin-left:0;padding-top:10px;border-top:1px solid var(--line)}
+
+  .mod-row{padding:14px 14px;gap:12px}
+  .mod-name{font-size:15px}
+  .grade-card{padding:18px 16px;gap:14px}
+  .grade-letter{font-size:42px;min-width:60px}
+  .rank-display{padding:18px 14px}
+  .rank-title{font-size:23px}
+  .proto-note{padding:14px 16px}
+}
 [data-theme="light"] .forge-logo-dark{display:none!important}[data-theme="light"] .forge-logo-light{display:inline!important}
 /* ── dashboard-specific ── */
 .eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ember);margin-bottom:8px;text-align:center}

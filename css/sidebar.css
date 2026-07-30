@@ -93,9 +93,99 @@ body.has-forge-sidebar.forge-sidebar-expanded{padding-left:230px}
 .fside-footer-icon .fside-tooltip{display:block!important;position:absolute;left:auto;right:0;top:44px;transform:none;background:var(--panel);border:1px solid var(--line);color:var(--white);font-size:12px;font-weight:600;padding:6px 10px;border-radius:var(--radius-sm);white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .15s ease;box-shadow:0 8px 20px rgba(0,0,0,.3)}
 .fside-footer-icon:hover .fside-tooltip{opacity:1}
 
-@media(max-width:680px){
-  #forge-sidebar{width:64px}
-  #forge-sidebar.expanded{width:210px}
-  #forge-badge{left:12px}
-  #forge-badge.collapsed{width:40px}
+/* ============================================================
+   Mobile + tablet-portrait shell (<=820px)
+   The rail becomes a fixed bottom tab bar so the content gets the
+   full width. Overflow items (Profile, class switcher, theme,
+   sign out) move into the "More" sheet.
+   ============================================================ */
+
+#forge-tabbar{display:none}
+#forge-sheet-scrim{display:none}
+
+@media(max-width:820px){
+  /* rail + its chrome are replaced wholesale by the tab bar */
+  #forge-sidebar,#forge-sidebar-toggle{display:none!important}
+  body.has-forge-sidebar,
+  body.has-forge-sidebar.forge-sidebar-expanded{
+    padding-left:0!important;
+    /* beats the desktop rule's own padding-top:0!important */
+    padding-top:64px!important;
+    padding-bottom:calc(64px + env(safe-area-inset-bottom,0px));
+  }
+
+  /* compact top bar keeps the wordmark + a home tap target */
+  #forge-badge{top:0;left:0;right:0;height:56px;width:auto!important;padding:0 16px!important;
+    justify-content:flex-start;border-radius:0;border-width:0 0 1px;box-shadow:none;z-index:140}
+  #forge-badge.collapsed{width:auto!important;padding:0 16px!important;justify-content:flex-start}
+  #forge-badge .badge-name{opacity:1!important;width:auto!important;display:inline!important}
+
+  #forge-tabbar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:150;
+    align-items:stretch;
+    padding:6px 4px calc(6px + env(safe-area-inset-bottom,0px));
+    background:var(--glass-panel);
+    backdrop-filter:blur(var(--glass-blur)) saturate(160%);
+    -webkit-backdrop-filter:blur(var(--glass-blur)) saturate(160%);
+    border-top:1px solid var(--line)}
+
+  .ftab{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    gap:3px;padding:6px 2px;min-height:52px;border:none;background:none;font:inherit;
+    color:var(--slate);text-decoration:none;cursor:pointer;position:relative;
+    -webkit-tap-highlight-color:transparent}
+  .ftab svg{width:21px;height:21px;flex-shrink:0}
+  .ftab .ftab-label{font-size:10.5px;font-weight:600;letter-spacing:.01em;line-height:1;
+    max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .ftab.active{color:var(--ember)}
+  .ftab.active::before{content:"";position:absolute;top:0;left:50%;transform:translateX(-50%);
+    width:26px;height:2.5px;border-radius:0 0 3px 3px;background:var(--ember)}
+  .ftab .ftab-dot{position:absolute;top:5px;left:calc(50% + 9px);min-width:15px;height:15px;padding:0 4px;
+    border-radius:var(--radius-pill);background:var(--ember);color:var(--coal);
+    font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;line-height:15px;text-align:center}
+  .ftab .ftab-dot.badge-muted{background:var(--panel-2);color:var(--dim)}
+
+  /* "More" sheet */
+  #forge-sheet-scrim{display:block;position:fixed;inset:0;z-index:190;background:rgba(0,0,0,.5);
+    opacity:0;pointer-events:none;transition:opacity .2s ease}
+  #forge-sheet-scrim.open{opacity:1;pointer-events:auto}
+  #forge-sheet{position:fixed;left:0;right:0;bottom:0;z-index:200;
+    max-height:78vh;overflow-y:auto;
+    padding:10px 12px calc(18px + env(safe-area-inset-bottom,0px));
+    background:var(--panel);border-top:1px solid var(--line);
+    border-radius:var(--radius-lg) var(--radius-lg) 0 0;
+    box-shadow:0 -20px 50px rgba(0,0,0,.45);
+    transform:translateY(102%);transition:transform .25s cubic-bezier(.4,0,.2,1)}
+  #forge-sheet-scrim.open #forge-sheet{transform:translateY(0)}
+  .fsheet-grip{width:38px;height:4px;border-radius:var(--radius-pill);background:var(--line);margin:2px auto 12px}
+  .fsheet-item{display:flex;align-items:center;gap:12px;width:100%;min-height:50px;padding:0 14px;
+    border-radius:var(--radius-md);border:none;background:none;font:inherit;font-size:15px;font-weight:600;
+    color:var(--white);text-align:left;text-decoration:none;cursor:pointer}
+  .fsheet-item svg{width:19px;height:19px;flex-shrink:0;color:var(--slate)}
+  .fsheet-item:active{background:var(--panel-2)}
+  .fsheet-item.active{color:var(--ember)}
+  .fsheet-item.active svg{color:var(--ember)}
+  .fsheet-item.danger{color:var(--bad)}
+  .fsheet-item.danger svg{color:var(--bad)}
+  .fsheet-sub{margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:11px;
+    font-weight:600;color:var(--dim);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:45%}
+  .fsheet-divider{height:1px;background:var(--line);margin:8px 6px}
+  .fsheet-heading{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.08em;
+    text-transform:uppercase;color:var(--dim);padding:10px 14px 4px}
+  .fsheet-classrow{display:flex;align-items:stretch;gap:4px}
+  .fsheet-classrow .fsheet-item{min-width:0}
+  .fsheet-classrow .fcs-remove{width:44px;flex-shrink:0;opacity:.6}
+}
+
+/* On a tablet the bar spans a lot of glass; keep the targets grouped near the
+   centre rather than stranded at the far corners. */
+@media(min-width:560px) and (max-width:820px){
+  #forge-tabbar{padding-left:0;padding-right:0}
+  #forge-tabbar .ftab{max-width:120px}
+  #forge-tabbar{justify-content:center;gap:12px}
+  #forge-sheet{max-width:520px;margin:0 auto;border-radius:var(--radius-lg) var(--radius-lg) 0 0}
+}
+
+/* very small phones: tighten the tab labels rather than wrapping them */
+@media(max-width:360px){
+  .ftab .ftab-label{font-size:9.5px}
+  .ftab svg{width:20px;height:20px}
 }
