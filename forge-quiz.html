@@ -19,7 +19,7 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
 .wrap{max-width:680px;margin:0 auto;padding:28px 20px}
 .tag{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ember)}
 .logo{font-family:'Sora',sans-serif;font-weight:800;font-size:20px;color:var(--white);text-decoration:none;display:inline-flex;align-items:center;gap:8px;margin-bottom:0}
-.logo .spark{width:9px;height:9px;background:linear-gradient(135deg,var(--hot),var(--ember));border-radius:var(--radius-xs);transform:rotate(45deg);box-shadow:0 0 10px rgba(255,107,44,.7)}
+.logo .spark{width:9px;height:9px;background:var(--ember);border-radius:var(--radius-xs);transform:rotate(45deg);box-shadow:0 0 10px rgba(255,107,44,.7)}
 .subject-list{display:flex;flex-direction:column;gap:12px;margin-top:28px}
 .subject-btn{padding:20px 22px;border-radius:var(--radius-md);border:2px solid transparent;background:var(--panel);cursor:pointer;text-align:left;font-family:'Inter',sans-serif;transition:border-color .15s}
 .subject-btn:hover{border-color:var(--ember)}
@@ -64,7 +64,7 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
 .fb-word.used{opacity:.25;pointer-events:none}
 .fb-check-btn{margin-top:20px;padding:10px 24px;border-radius:var(--radius-sm);background:var(--white);color:var(--coal);border:none;cursor:pointer;font-weight:600;font-size:14px;font-family:'Inter',sans-serif;opacity:.4;pointer-events:none}
 .fb-check-btn.ready{opacity:1;pointer-events:auto}
-.scaffold-box{margin-top:16px;padding:14px 16px;border-radius:var(--radius-md);border:1px solid rgba(255,201,60,.4);background:linear-gradient(180deg,rgba(255,107,44,.10),rgba(255,201,60,.05));animation:heat .5s ease}
+.scaffold-box{margin-top:16px;padding:14px 16px;border-radius:var(--radius-md);border:1px solid rgba(255,201,60,.4);background:rgba(255,107,44,.075);animation:heat .5s ease}
 @keyframes heat{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 .scaffold-box .stag{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--coal);background:var(--hot);padding:2px 8px;border-radius:var(--radius-xs);font-weight:600;margin-bottom:8px}
 .scaffold-box p{font-size:14px;color:var(--white);line-height:1.5}
@@ -74,7 +74,7 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
 .reforge-box .rf-tag{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
 .reforge-box .rf-stem{font-size:15px;line-height:1.5;color:var(--white);margin-bottom:14px}
 .reforge-box .opt{font-size:14px;padding:10px 12px;border-radius:var(--radius-sm)}
-.rf-scaffold{margin-top:12px;padding:12px 14px;border-radius:var(--radius-sm);border:1px solid rgba(255,201,60,.4);background:linear-gradient(180deg,rgba(255,107,44,.08),rgba(255,201,60,.04));font-size:13px;line-height:1.5}
+.rf-scaffold{margin-top:12px;padding:12px 14px;border-radius:var(--radius-sm);border:1px solid rgba(255,201,60,.4);background:rgba(255,107,44,.06);font-size:13px;line-height:1.5}
 .rf-scaffold .stag{font-size:10px;margin-bottom:6px;display:inline-block;font-family:'JetBrains Mono',monospace;color:var(--coal);background:var(--hot);padding:2px 6px;border-radius:var(--radius-xs);font-weight:600}
 .rf-scaffold p{color:var(--white);font-size:13px}
 .next-btn{margin-top:18px;padding:10px 24px;border-radius:var(--radius-sm);background:var(--white);color:var(--coal);border:none;cursor:pointer;font-weight:600;font-size:14px;font-family:'Inter',sans-serif;float:right}
@@ -107,11 +107,11 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
 .limit-countdown{font-family:'JetBrains Mono',monospace;font-size:28px;font-weight:700;color:var(--hot);margin:12px 0}
 .limit-countdown span{font-size:13px;color:#8A857E;display:block;margin-top:4px;font-weight:400}
 .limit-bar{height:6px;background:var(--line);border-radius:var(--radius-xs);overflow:hidden;margin:16px 0}
-.limit-bar-fill{height:100%;border-radius:var(--radius-xs);background:linear-gradient(90deg,var(--good),var(--hot),var(--bad));transition:width .4s}
+.limit-bar-fill{height:100%;border-radius:var(--radius-xs);background:var(--hot);transition:width .4s}
 .join-badge{display:inline-flex;align-items:center;gap:6px;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-sm);padding:4px 12px;font-size:12px;color:var(--slate);margin-bottom:8px}
 .join-badge .dot{width:6px;height:6px;border-radius:50%;background:var(--good)}
 /* light mode overrides */
-[data-theme="light"] .scaffold-box{border-color:rgba(200,133,0,.4);background:linear-gradient(180deg,rgba(229,85,15,.06),rgba(200,133,0,.03))}
+[data-theme="light"] .scaffold-box{border-color:rgba(200,133,0,.4);background:rgba(229,85,15,.045)}
 [data-theme="light"] .stag,[data-theme="light"] .heat-tag{color:#fff}
 [data-theme="light"] .reforge-trigger,.btn-primary{color:#fff}
 [data-theme="light"] .rf-scaffold .stag{color:#fff}
@@ -1223,7 +1223,7 @@ function renderTrialExpiredWall() {
   h += '<p class="tag" style="margin-bottom:6px">Forge Pro</p>';
   h += '<p style="font-size:22px;font-weight:800;font-family:\'Sora\',sans-serif;color:var(--white);margin-bottom:4px">£2.99<span style="font-size:14px;font-weight:400;color:#8A857E">/month</span></p>';
   h += '<p style="font-size:13px;color:#8A857E;margin-bottom:14px">Unlimited questions · Anvil · Crucible · XP &amp; Ranks · any device</p>';
-  h += '<a href="forge-signup.html" style="display:block;padding:13px;border-radius:var(--radius-sm);background:linear-gradient(100deg,var(--hot),var(--ember));color:var(--coal);font-family:Inter,sans-serif;font-weight:700;font-size:15px;text-align:center;text-decoration:none">Subscribe now →</a>';
+  h += '<a href="forge-signup.html" style="display:block;padding:13px;border-radius:var(--radius-sm);background:var(--ember);color:var(--coal);font-family:Inter,sans-serif;font-weight:700;font-size:15px;text-align:center;text-decoration:none">Subscribe now →</a>';
   h += '</div>';
 
   h += '<div style="background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-lg);padding:20px">';
@@ -1258,7 +1258,7 @@ function renderLimitWall() {
   h += '<p class="tag" style="margin-bottom:6px">Forge Pro</p>';
   h += '<p style="font-size:15px;font-weight:600;color:var(--white);margin-bottom:4px">7-day free trial · then £2.99/month</p>';
   h += '<p style="font-size:13px;color:#8A857E;margin-bottom:14px">Unlimited questions · full Anvil · The Crucible · XP &amp; Ranks · any device</p>';
-  h += '<a href="forge-signup.html" style="display:block;padding:13px;border-radius:var(--radius-sm);background:linear-gradient(100deg,var(--hot),var(--ember));color:var(--coal);font-family:Inter,sans-serif;font-weight:700;font-size:15px;text-align:center;text-decoration:none">Start free trial →</a>';
+  h += '<a href="forge-signup.html" style="display:block;padding:13px;border-radius:var(--radius-sm);background:var(--ember);color:var(--coal);font-family:Inter,sans-serif;font-weight:700;font-size:15px;text-align:center;text-decoration:none">Start free trial →</a>';
   h += '<p style="font-size:12px;color:#8A857E;margin-top:8px;text-align:center">No card needed during trial · cancel anytime</p>';
   h += '</div>';
 

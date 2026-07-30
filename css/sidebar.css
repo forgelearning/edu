@@ -34,7 +34,7 @@ body.has-forge-sidebar.forge-sidebar-expanded{padding-left:230px}
 #forge-sidebar:not(.expanded) .fside-item{justify-content:center;padding:0}
 .fside-item:hover{background:var(--panel-2);color:var(--white)}
 .fside-item.active{background:var(--panel-2);color:var(--white)}
-.fside-item.active::before{content:"";position:absolute;left:-12px;top:8px;bottom:8px;width:3px;border-radius:0 3px 3px 0;background:linear-gradient(180deg,var(--hot),var(--ember))}
+.fside-item.active::before{content:"";position:absolute;left:-12px;top:8px;bottom:8px;width:3px;border-radius:0 3px 3px 0;background:var(--ember)}
 #forge-sidebar:not(.expanded) .fside-item.active::before{display:none}
 .fside-item svg{width:19px;height:19px;flex-shrink:0}
 .fside-item .fside-label{font-size:14px;font-weight:600;opacity:0;display:none;transition:opacity .2s ease .1s}

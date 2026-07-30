@@ -13,8 +13,8 @@
 /* Glows are fixed so they bleed past a narrow .wrap instead of ending in a
    visible rectangle at its edges. */
 .auth-stage::before,.auth-stage::after{content:"";position:fixed;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0}
-.auth-stage::before{width:520px;height:520px;top:-120px;left:50%;margin-left:-420px;background:radial-gradient(circle,rgba(213,92,19,.42),transparent 70%);animation:auth-drift-a 18s ease-in-out infinite alternate}
-.auth-stage::after{width:460px;height:460px;bottom:-160px;left:50%;margin-left:20px;background:radial-gradient(circle,rgba(255,201,60,.3),transparent 70%);animation:auth-drift-b 22s ease-in-out infinite alternate}
+.auth-stage::before{width:520px;height:520px;top:-120px;left:50%;margin-left:-420px;background:rgba(213,92,19,.16);animation:auth-drift-a 18s ease-in-out infinite alternate}
+.auth-stage::after{width:460px;height:460px;bottom:-160px;left:50%;margin-left:20px;background:rgba(255,201,60,.11);animation:auth-drift-b 22s ease-in-out infinite alternate}
 @keyframes auth-drift-a{from{transform:translate3d(0,0,0) scale(1)}to{transform:translate3d(70px,50px,0) scale(1.15)}}
 @keyframes auth-drift-b{from{transform:translate3d(0,0,0) scale(1.1)}to{transform:translate3d(-60px,-40px,0) scale(.95)}}
 
@@ -28,7 +28,7 @@
 
 /* Badge — the Forge shield + wordmark, same mark as the sidebar badge. */
 .auth-badge{display:flex;align-items:center;justify-content:center;gap:9px;margin-bottom:18px}
-.auth-badge .auth-shield{width:38px;height:38px;border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;background:linear-gradient(150deg,rgba(255,201,60,.2),rgba(213,92,19,.16));border:1px solid rgba(255,201,60,.28);box-shadow:0 8px 22px -12px rgba(213,92,19,.9)}
+.auth-badge .auth-shield{width:38px;height:38px;border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;background:rgba(234,146,38,.18);border:1px solid rgba(255,201,60,.28);box-shadow:0 8px 22px -12px rgba(213,92,19,.9)}
 .auth-badge .auth-wordmark{font-family:'Sora',sans-serif;font-weight:800;font-size:19px;color:var(--white);letter-spacing:-.02em}
 
 .auth-title{font-family:'Sora',sans-serif;font-size:23px;font-weight:700;color:var(--white);text-align:center;letter-spacing:-.02em;line-height:1.15}
@@ -62,7 +62,7 @@
 .auth-btn,
 .auth-card .join-btn,
 .auth-card > .btn,
-.auth-card .btn-primary{width:100%;margin-top:6px;padding:12px;border-radius:var(--radius-sm);border:1px solid rgba(255,201,60,.3);background:linear-gradient(180deg,var(--ember),#B44A0C);color:#fff;font-family:'Inter',sans-serif;font-weight:600;font-size:14.5px;cursor:pointer;box-shadow:inset 0 1px 0 rgba(255,201,60,.4),0 12px 28px -14px rgba(213,92,19,.9);transition:transform .15s,box-shadow .15s,filter .15s}
+.auth-card .btn-primary{width:100%;margin-top:6px;padding:12px;border-radius:var(--radius-sm);border:1px solid rgba(255,201,60,.3);background:var(--ember);color:#fff;font-family:'Inter',sans-serif;font-weight:600;font-size:14.5px;cursor:pointer;box-shadow:inset 0 1px 0 rgba(255,201,60,.4),0 12px 28px -14px rgba(213,92,19,.9);transition:transform .15s,box-shadow .15s,filter .15s}
 .auth-btn:hover,
 .auth-card .join-btn:hover,
 .auth-card > .btn:hover,
@@ -76,7 +76,7 @@
 .auth-btn-ghost:hover{color:var(--white);border-color:var(--ember)}
 
 /* Crucible keeps its red accent — same shape, different heat. */
-.auth-btn.danger{background:linear-gradient(180deg,var(--bad),#C13B3B);border-color:rgba(255,90,90,.35);box-shadow:inset 0 1px 0 rgba(255,255,255,.25),0 12px 28px -14px rgba(255,90,90,.9)}
+.auth-btn.danger{background:var(--bad);border-color:rgba(255,90,90,.35);box-shadow:inset 0 1px 0 rgba(255,255,255,.25),0 12px 28px -14px rgba(255,90,90,.9)}
 .auth-btn.danger:hover{box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 16px 34px -14px rgba(255,90,90,1)}
 
 /* Errors */
@@ -91,8 +91,8 @@
 .auth-card .login-tab:hover:not(.active){color:var(--white)}
 
 /* Light theme — cooler glows, dark ink on the ember button stays white. */
-[data-theme="light"] .auth-stage::before{background:radial-gradient(circle,rgba(229,85,15,.22),transparent 70%)}
-[data-theme="light"] .auth-stage::after{background:radial-gradient(circle,rgba(200,133,0,.18),transparent 70%)}
+[data-theme="light"] .auth-stage::before{background:rgba(229,85,15,.09)}
+[data-theme="light"] .auth-stage::after{background:rgba(200,133,0,.07)}
 [data-theme="light"] .auth-spark{background:var(--ember);box-shadow:0 0 8px rgba(229,85,15,.6)}
 [data-theme="light"] .auth-btn,
 [data-theme="light"] .auth-card .join-btn,

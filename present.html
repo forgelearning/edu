@@ -16,7 +16,7 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
 .mono{font-family:'JetBrains Mono',monospace}
 .wrap{max-width:1100px;margin:0 auto;padding:24px 28px}
 .logo{font-family:'Sora',sans-serif;font-weight:800;font-size:19px;color:var(--white);text-decoration:none;display:inline-flex;align-items:center;gap:8px}
-.logo .spark{width:9px;height:9px;background:linear-gradient(135deg,var(--hot),var(--ember));border-radius:var(--radius-xs);transform:rotate(45deg);box-shadow:0 0 10px rgba(255,107,44,.7)}
+.logo .spark{width:9px;height:9px;background:var(--ember);border-radius:var(--radius-xs);transform:rotate(45deg);box-shadow:0 0 10px rgba(255,107,44,.7)}
 .forge-logo-dark{display:block}.forge-logo-light{display:none}[data-theme="light"] .forge-logo-dark{display:none!important}[data-theme="light"] .forge-logo-light{display:block!important}
 .pill-link{font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:#8A857E;text-decoration:none;padding:6px 12px;border-radius:var(--radius-sm);border:1px solid var(--line)}
 .pill-link:hover{color:var(--ember);border-color:var(--ember)}
@@ -39,7 +39,7 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
 .back-btn:hover{color:var(--white)}
 .opts-row{display:flex;gap:14px;margin-top:18px;align-items:center;flex-wrap:wrap}
 .opts-row label{font-size:13px;color:var(--slate);display:flex;align-items:center;gap:6px;cursor:pointer}
-.start-btn{margin-top:22px;padding:13px 28px;border-radius:var(--radius-md);background:linear-gradient(100deg,var(--hot),var(--ember));color:var(--coal);border:none;cursor:pointer;font-weight:700;font-size:15px;font-family:'Inter',sans-serif}
+.start-btn{margin-top:22px;padding:13px 28px;border-radius:var(--radius-md);background:var(--ember);color:var(--coal);border:none;cursor:pointer;font-weight:700;font-size:15px;font-family:'Inter',sans-serif}
 
 /* --- present screen --- */
 .present-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;font-size:13px;color:#8A857E}
@@ -58,7 +58,7 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
 .fb-sentence-big{font-size:clamp(22px,3.2vw,32px);line-height:2.1;color:var(--white);font-family:'Sora',sans-serif;font-weight:600}
 .fb-blank-big{display:inline-block;min-width:120px;border-bottom:3px dashed var(--line);padding:0 8px}
 .fb-blank-big.revealed{border-bottom-style:solid;border-color:var(--good);color:var(--good)}
-.scaffold-big{margin-top:32px;padding:20px 24px;border-radius:var(--radius-lg);border:1px solid rgba(255,201,60,.4);background:linear-gradient(180deg,rgba(255,107,44,.10),rgba(255,201,60,.05));animation:heat .4s ease}
+.scaffold-big{margin-top:32px;padding:20px 24px;border-radius:var(--radius-lg);border:1px solid rgba(255,201,60,.4);background:rgba(255,107,44,.075);animation:heat .4s ease}
 @keyframes heat{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 .scaffold-big .stag{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--coal);background:var(--hot);padding:2px 8px;border-radius:var(--radius-xs);font-weight:600;margin-bottom:10px}
 .scaffold-big p{font-size:clamp(15px,1.6vw,19px);color:var(--white);line-height:1.55}
@@ -66,7 +66,7 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
 .ctrl-btn{padding:12px 22px;border-radius:var(--radius-md);border:1.5px solid var(--line);background:var(--panel);color:var(--white);font-family:'Inter',sans-serif;font-weight:600;font-size:14px;cursor:pointer}
 .ctrl-btn:hover{border-color:var(--ember)}
 .ctrl-btn:disabled{opacity:.3;cursor:default}
-.reveal-btn{padding:14px 30px;border-radius:var(--radius-md);border:none;background:linear-gradient(100deg,var(--hot),var(--ember));color:var(--coal);font-family:'Inter',sans-serif;font-weight:800;font-size:16px;cursor:pointer;box-shadow:0 0 0 0 rgba(213,92,19,.4);animation:pulse-btn 2s ease-in-out infinite}
+.reveal-btn{padding:14px 30px;border-radius:var(--radius-md);border:none;background:var(--ember);color:var(--coal);font-family:'Inter',sans-serif;font-weight:800;font-size:16px;cursor:pointer;box-shadow:0 0 0 0 rgba(213,92,19,.4);animation:pulse-btn 2s ease-in-out infinite}
 @keyframes pulse-btn{0%,100%{box-shadow:0 0 0 0 rgba(213,92,19,.35)}50%{box-shadow:0 0 0 10px rgba(213,92,19,0)}}
 .reveal-btn.next-btn-style{animation:none;background:var(--white)}
 .hint{font-size:13px;color:var(--slate);margin-top:14px;font-family:'Inter',sans-serif;text-align:center}
