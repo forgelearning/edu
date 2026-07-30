@@ -84,6 +84,19 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
 .panel{display:none}
 .panel.active{display:block}
 
+/* teacher home — the classes a teacher owns, one card each */
+.home-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin-bottom:22px}
+.class-card{position:relative;text-align:left;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-lg);padding:18px;cursor:pointer;font:inherit;color:inherit;transition:border-color .15s,transform .15s}
+.class-card:hover{border-color:var(--ember);transform:translateY(-2px)}
+.class-card .cc-subj{font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:var(--ember);display:block;margin-bottom:8px}
+.class-card .cc-name{font-family:'Sora',sans-serif;font-weight:700;font-size:16px;color:var(--white);display:block;line-height:1.25}
+.class-card .cc-meta{font-size:12px;color:#8A857E;margin-top:8px;display:block}
+.class-card .cc-code{font-family:'JetBrains Mono',monospace;color:var(--slate)}
+.class-card.cc-new{border-style:dashed;display:flex;align-items:center;justify-content:center;color:var(--ember);font-weight:600;font-size:14px;min-height:104px}
+.home-actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center;font-size:13px;color:#8A857E}
+.home-link{background:none;border:none;padding:0;font:inherit;font-weight:600;color:var(--ember);cursor:pointer}
+.home-link:hover{color:var(--hot)}
+
 /* login tabs */
 .login-tabs{display:flex;gap:0;background:var(--panel-2);border:1px solid var(--line);border-radius:var(--radius-md);padding:3px;margin-bottom:22px}
 .login-tab{flex:1;padding:9px 0;border:none;background:transparent;color:var(--slate);font-family:Inter,sans-serif;font-weight:600;font-size:13px;cursor:pointer;border-radius:var(--radius-sm);transition:background .15s,color .15s}
@@ -161,11 +174,11 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
 <script src="scripts/forge-auth-card.js"></script>
 <script src="scripts/forge-sidebar.js"></script>
 <script>
-window.forgeOnClassSwitch = function(){ renderLogin('view'); };
+window.forgeOnClassSwitch = function(){ renderTeacherHome(); };
 window.forgeOnClassSelect = function(cls){ loadClassDashboard(cls); };
 ForgeSidebar.mount({
   active: 'dashboard',
-  classSwitch: { label: 'Loading class…' },
+  classSwitch: { label: 'Loading class…', addLabel: '↩ All your classes' },
   items: [
     {key:'dashboard', label:'Overview', onclick:"forgeGoto('heatmap')"},
     {key:'students', label:'Class', onclick:"forgeGoto('class')"},
@@ -344,7 +357,8 @@ function renderTeacherAuth(mode) {
       action.then(function(data) {
         currentTeacher = data.user;
         headers.Authorization = 'Bearer ' + data.access_token;
-        renderLogin(new URLSearchParams(location.search).get('tab') === 'create' ? 'create' : 'view');
+        if (new URLSearchParams(location.search).get('tab') === 'create') renderLogin('create');
+        else renderTeacherHome();
       }).catch(function(e) {
         btn.disabled = false; btn.textContent = mode === 'signup' ? 'Create account →' : 'Sign in →';
         err.textContent = e.message || 'Something went wrong.'; err.style.display = 'block';
@@ -744,6 +758,199 @@ function getDefaultStarter(tag, label) {
 var app = document.getElementById('app');
 var dashState = { classId: null, className: null, classSubject: null, classCode: null, responses: [], students: [], wrongResponses: [], drillResponses: [], drillStudents: [], assignments: [] };
 
+// Loads a given class's dashboard data and remembers it in the sidebar's class
+// switcher, so switching back later doesn't need the code re-entered. Lives at
+// the top level because the home screen and the sidebar both open classes
+// without the code-entry form ever having been rendered.
+window.loadClassDashboard = function(cls) {
+        dashState.classId = cls.id;
+        dashState.className = cls.name;
+        dashState.classSubject = cls.subject || null;
+        dashState.classCode = cls.code || null;
+        addJoinedClass(cls);
+        Promise.all([
+          supaGet('students', 'class_id=eq.' + cls.id),
+          supaGet('assignments', 'class_id=eq.' + cls.id + '&order=due_date.asc')
+        ]).then(function(results) {
+          dashState.students = results[0] || [];
+          dashState.assignments = results[1] || [];
+          // Fetch responses by class_id AND by student_id list
+          // This catches responses where class_id is null (student played before class was linked)
+          var studentIds = dashState.students.map(function(s){ return s.id; });
+          var studentNames = dashState.students.map(function(s){ return s.name; });
+          var byClass = supaGet('responses', 'class_id=eq.' + cls.id + '&order=created_at.desc');
+          var byStudents = studentIds.length > 0
+            ? supaGet('responses', 'student_id=in.(' + studentIds.join(',') + ')&order=created_at.desc')
+            : Promise.resolve([]);
+          // Look up all student rows with same names — catches duplicate rows from re-joining
+          // Query each name individually to avoid PostgREST in() quoting issues
+          var nameQueries = studentNames.map(function(n) {
+            return supaGet('students', 'name=eq.' + encodeURIComponent(n) + '&select=id,name');
+          });
+          Promise.all([byClass, byStudents].concat(nameQueries)).then(function(rResults) {
+            var classResponses = rResults[0] || [];
+            var studentResponses = rResults[1] || [];
+            var nameMatches = [];
+            rResults.slice(2).forEach(function(rows) {
+              (rows || []).forEach(function(s) { nameMatches.push(s); });
+            });
+            // Collect any student IDs not already in our class list
+            var extraIds = [];
+            nameMatches.forEach(function(s) {
+              if (s && s.id && studentIds.indexOf(s.id) === -1) extraIds.push(s.id);
+            });
+            var byExtra = extraIds.length > 0
+              ? supaGet('responses', 'student_id=in.(' + extraIds.join(',') + ')&order=created_at.desc')
+              : Promise.resolve([]);
+            byExtra.then(function(extraResponses) {
+              var seen = {};
+              var merged = [];
+              classResponses.concat(studentResponses).concat(extraResponses || []).forEach(function(r) {
+                if (r && r.id && !seen[r.id]) { seen[r.id] = true; merged.push(r); }
+              });
+              // A student can play other subjects independently of this class —
+              // don't let their unrelated misconceptions/weakest-topic data leak
+              // into this class's dashboard. Keep rows with no subject recorded
+              // (older data predating the subject field) rather than dropping them.
+              dashState.responses = merged.filter(function(r) {
+                // Anvil/Crucible rows carry their own subject ('anvil', 'crucible'),
+                // so a strict r.subject match dropped every reforge before it
+                // reached the dashboard — completed Anvil work simply vanished.
+                // Resolve the real subject from the question instead of waving
+                // all reforges through, which leaked other classes' subjects in.
+                var rs = subjectForResponse(r);
+                return !rs || rs === dashState.classSubject;
+              });
+              // Self-heal: patch orphaned responses to the class-linked student_id
+              if (extraIds.length > 0 && studentIds.length > 0) {
+                extraIds.forEach(function(oldId) {
+                  // Find which class student this old row belongs to by name
+                  var oldRow = nameMatches.find(function(s){ return s.id === oldId; });
+                  var newRow = oldRow ? dashState.students.find(function(s){ return s.name === oldRow.name; }) : null;
+                  var targetId = newRow ? newRow.id : studentIds[0];
+                  fetch(SUPABASE_URL + '/rest/v1/responses?student_id=eq.' + oldId, {
+                    method: 'PATCH',
+                    headers: Object.assign({}, headers, {'Prefer': 'return=minimal'}),
+                    body: JSON.stringify({ student_id: targetId, class_id: cls.id })
+                  }).catch(function(e) { console.warn('Patch orphan failed:', e); });
+                });
+              }
+              console.log('Dashboard loaded:', {
+                classId: cls.id, classSubject: dashState.classSubject,
+                students: dashState.students.length, responses: dashState.responses.length,
+                byClass: classResponses.length, byStudents: studentResponses.length,
+                extraIds: extraIds, extraResponses: (extraResponses||[]).length
+              });
+              renderDashboard();
+            });
+          });
+        });
+  };
+
+// ── Teacher home ────────────────────────────────────────────────────────────
+// Where a signed-in teacher lands: their own classes as cards, click to open.
+// Classes come from the server (classes they own) merged with any class they've
+// opened by code on this device, so a class shared with them still shows up.
+function esc(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+function subjectLabel(key) {
+  var s = SUBJECT_OPTIONS.find(function(o) { return o.key === key; });
+  return s ? s.label : (key || 'No subject');
+}
+
+function renderTeacherHome() {
+  app.innerHTML = ForgeAuthCard.shell({
+    wide: true,
+    title: 'Your classes',
+    sub: 'Loading your classes…'
+  }, '');
+
+  var owned = (currentTeacher && currentTeacher.id)
+    ? supaGet('classes', 'teacher_user_id=eq.' + encodeURIComponent(currentTeacher.id) + '&order=created_at.desc')
+    : Promise.resolve([]);
+
+  owned.catch(function() { return []; }).then(function(rows) {
+    var seen = {}, classes = [];
+    (Array.isArray(rows) ? rows : []).forEach(function(c) {
+      if (c && c.id && !seen[c.id]) { seen[c.id] = true; classes.push(c); }
+    });
+    // Classes opened by code on this device but not owned by this account.
+    getJoinedClasses().forEach(function(c) {
+      if (c && c.id && !seen[c.id]) { seen[c.id] = true; classes.push(c); }
+    });
+    drawTeacherHome(classes);
+  });
+}
+
+function drawTeacherHome(classes) {
+  var h = '';
+  if (!classes.length) {
+    h += '<div class="empty" style="padding:24px 0"><h3>No classes yet</h3>' +
+         '<p style="font-size:13px">Create your first class to start seeing student data.</p></div>';
+  } else {
+    h += '<div class="home-grid">';
+    classes.forEach(function(c) {
+      h += '<button type="button" class="class-card" data-class-id="' + esc(c.id) + '">' +
+        '<span class="cc-subj">' + esc(subjectLabel(c.subject)) + '</span>' +
+        '<span class="cc-name">' + esc(c.name || 'Untitled class') + '</span>' +
+        '<span class="cc-meta">Code <span class="cc-code">' + esc(c.code || '—') + '</span></span>' +
+      '</button>';
+    });
+    h += '<button type="button" class="class-card cc-new" id="home-create">+ Create a class</button>';
+    h += '</div>';
+  }
+  h += '<div class="home-actions">';
+  if (!classes.length) h += '<button type="button" class="home-link" id="home-create-2">Create a class</button><span>·</span>';
+  h += '<button type="button" class="home-link" id="home-code">Open a class by code</button>';
+  h += '</div>';
+
+  app.innerHTML = ForgeAuthCard.shell({
+    wide: true,
+    title: 'Your classes',
+    sub: (currentTeacher && currentTeacher.email)
+      ? 'Signed in as ' + esc(currentTeacher.email) + ' · <a href="#" id="ta-signout" style="color:var(--ember);text-decoration:none;font-weight:600">Sign out</a>'
+      : 'Pick a class to open its dashboard.'
+  }, h);
+
+  var signOutLink = document.getElementById('ta-signout');
+  if (signOutLink) signOutLink.onclick = function(e) { e.preventDefault(); teacherSignOut(); };
+  ['home-create', 'home-create-2'].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) el.onclick = function() { renderLogin('create'); };
+  });
+  var codeBtn = document.getElementById('home-code');
+  if (codeBtn) codeBtn.onclick = function() { renderLogin('view'); };
+
+  Array.prototype.forEach.call(app.querySelectorAll('.class-card[data-class-id]'), function(card) {
+    card.onclick = function() {
+      var cls = classes.filter(function(c) { return String(c.id) === card.getAttribute('data-class-id'); })[0];
+      if (cls) loadClassDashboard(cls);
+    };
+  });
+
+  if (window.ForgeSidebar) ForgeSidebar.setClassList(getJoinedClasses(), null);
+}
+
+// Removing a class from the sidebar switcher forgets it on this device — it
+// does not delete the class or its students, which other teachers and the
+// school overview still rely on.
+window.forgeOnClassRemove = function(cls) {
+  var name = cls.name || cls.code || 'this class';
+  if (!confirm('Remove ' + name + ' from your class list?\n\nThe class, its students and their data stay intact — it just stops showing here until you open it by code again.')) return false;
+  var kept = getJoinedClasses().filter(function(c) { return String(c.id) !== String(cls.id); });
+  try { localStorage.setItem(_joinedClassesKey(), JSON.stringify(kept)); } catch(e) {}
+  // Dropped the class currently on screen? Fall back to the home list.
+  if (String(dashState.classId) === String(cls.id)) {
+    dashState.classId = null;
+    ForgeSidebar.setClassLabel('No class open');
+    renderTeacherHome();
+  }
+  return true;
+};
+
 function renderLogin(activeTab) {
   activeTab = activeTab || 'view';
   var h = '';
@@ -842,93 +1049,6 @@ function renderLogin(activeTab) {
       });
     };
   }
-
-  // Loads a given class's dashboard data and remembers it in the sidebar's
-  // class switcher, so switching back later doesn't need the code re-entered.
-  window.loadClassDashboard = function(cls) {
-        dashState.classId = cls.id;
-        dashState.className = cls.name;
-        dashState.classSubject = cls.subject || null;
-        dashState.classCode = cls.code || null;
-        addJoinedClass(cls);
-        Promise.all([
-          supaGet('students', 'class_id=eq.' + cls.id),
-          supaGet('assignments', 'class_id=eq.' + cls.id + '&order=due_date.asc')
-        ]).then(function(results) {
-          dashState.students = results[0] || [];
-          dashState.assignments = results[1] || [];
-          // Fetch responses by class_id AND by student_id list
-          // This catches responses where class_id is null (student played before class was linked)
-          var studentIds = dashState.students.map(function(s){ return s.id; });
-          var studentNames = dashState.students.map(function(s){ return s.name; });
-          var byClass = supaGet('responses', 'class_id=eq.' + cls.id + '&order=created_at.desc');
-          var byStudents = studentIds.length > 0
-            ? supaGet('responses', 'student_id=in.(' + studentIds.join(',') + ')&order=created_at.desc')
-            : Promise.resolve([]);
-          // Look up all student rows with same names — catches duplicate rows from re-joining
-          // Query each name individually to avoid PostgREST in() quoting issues
-          var nameQueries = studentNames.map(function(n) {
-            return supaGet('students', 'name=eq.' + encodeURIComponent(n) + '&select=id,name');
-          });
-          Promise.all([byClass, byStudents].concat(nameQueries)).then(function(rResults) {
-            var classResponses = rResults[0] || [];
-            var studentResponses = rResults[1] || [];
-            var nameMatches = [];
-            rResults.slice(2).forEach(function(rows) {
-              (rows || []).forEach(function(s) { nameMatches.push(s); });
-            });
-            // Collect any student IDs not already in our class list
-            var extraIds = [];
-            nameMatches.forEach(function(s) {
-              if (s && s.id && studentIds.indexOf(s.id) === -1) extraIds.push(s.id);
-            });
-            var byExtra = extraIds.length > 0
-              ? supaGet('responses', 'student_id=in.(' + extraIds.join(',') + ')&order=created_at.desc')
-              : Promise.resolve([]);
-            byExtra.then(function(extraResponses) {
-              var seen = {};
-              var merged = [];
-              classResponses.concat(studentResponses).concat(extraResponses || []).forEach(function(r) {
-                if (r && r.id && !seen[r.id]) { seen[r.id] = true; merged.push(r); }
-              });
-              // A student can play other subjects independently of this class —
-              // don't let their unrelated misconceptions/weakest-topic data leak
-              // into this class's dashboard. Keep rows with no subject recorded
-              // (older data predating the subject field) rather than dropping them.
-              dashState.responses = merged.filter(function(r) {
-                // Anvil/Crucible rows carry their own subject ('anvil', 'crucible'),
-                // so a strict r.subject match dropped every reforge before it
-                // reached the dashboard — completed Anvil work simply vanished.
-                // Resolve the real subject from the question instead of waving
-                // all reforges through, which leaked other classes' subjects in.
-                var rs = subjectForResponse(r);
-                return !rs || rs === dashState.classSubject;
-              });
-              // Self-heal: patch orphaned responses to the class-linked student_id
-              if (extraIds.length > 0 && studentIds.length > 0) {
-                extraIds.forEach(function(oldId) {
-                  // Find which class student this old row belongs to by name
-                  var oldRow = nameMatches.find(function(s){ return s.id === oldId; });
-                  var newRow = oldRow ? dashState.students.find(function(s){ return s.name === oldRow.name; }) : null;
-                  var targetId = newRow ? newRow.id : studentIds[0];
-                  fetch(SUPABASE_URL + '/rest/v1/responses?student_id=eq.' + oldId, {
-                    method: 'PATCH',
-                    headers: Object.assign({}, headers, {'Prefer': 'return=minimal'}),
-                    body: JSON.stringify({ student_id: targetId, class_id: cls.id })
-                  }).catch(function(e) { console.warn('Patch orphan failed:', e); });
-                });
-              }
-              console.log('Dashboard loaded:', {
-                classId: cls.id, classSubject: dashState.classSubject,
-                students: dashState.students.length, responses: dashState.responses.length,
-                byClass: classResponses.length, byStudents: studentResponses.length,
-                extraIds: extraIds, extraResponses: (extraResponses||[]).length
-              });
-              renderDashboard();
-            });
-          });
-        });
-  };
 
   // Create class handler
   var createBtn = document.getElementById('c-btn');
@@ -1122,7 +1242,7 @@ function renderDashboard() {
        + 'padding:3px 10px;cursor:pointer;vertical-align:middle">' + dashState.classCode + ' ⎘</button>';
   }
   h += '</h1></div>';
-  h += '<div class="dash-meta"><b>' + students.length + '</b> students \u00b7 <b>' + totalQs + '</b> responses \u00b7 <button class="back-btn" onclick="renderLogin(\'view\')" style="display:inline;font-size:12px">\u2190 Change class</button></div>';
+  h += '<div class="dash-meta"><b>' + students.length + '</b> students \u00b7 <b>' + totalQs + '</b> responses \u00b7 <button class="back-btn" onclick="renderTeacherHome()" style="display:inline;font-size:12px">\u2190 All classes</button></div>';
   h += '</div>';
 
   // Stats row
@@ -2236,7 +2356,8 @@ TeacherAuth.getSession().then(function(sess) {
   currentTeacher = sess.user;
   headers.Authorization = 'Bearer ' + sess.access_token;
   if (window.ForgeSidebar) ForgeSidebar.setClassList(getJoinedClasses(), null);
-  renderLogin(new URLSearchParams(location.search).get('tab') === 'create' ? 'create' : 'view');
+  if (new URLSearchParams(location.search).get('tab') === 'create') renderLogin('create');
+  else renderTeacherHome();
 });
 </script>
 <script src="scripts/nav.js"></script>
