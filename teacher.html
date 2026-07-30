@@ -1073,19 +1073,25 @@ function renderLogin(activeTab) {
   }
 }
 
+// Students can sit in several classes, so dashState.responses holds rows from
+// every subject they've answered. Every view must narrow to the class's own
+// subject first, or e.g. a Computing class shows Economics spec points.
+function forClassSubject(rows) {
+  if (!dashState.classSubject) return rows;
+  return rows.filter(function(r) {
+    var cs = dashState.classSubject;
+    var rs = r.subject;
+    var engMatch = (cs === 'englit' || cs === 'engll') && (rs === 'englit' || rs === 'engll');
+    // Always include Anvil/Crucible reforge responses — they belong to the class
+    var isReforge = r.reforge_attempted || rs === 'anvil' || rs === 'crucible';
+    return rs === cs || engMatch || isReforge || rs === null || rs === 'unknown' || !rs;
+  });
+}
+
 function renderDashboard() {
   // Filter responses to this class's subject only
   var allResponses = dashState.responses;
-  var responses = dashState.classSubject
-    ? allResponses.filter(function(r) {
-        var cs = dashState.classSubject;
-        var rs = r.subject;
-        var engMatch = (cs === 'englit' || cs === 'engll') && (rs === 'englit' || rs === 'engll');
-        // Always include Anvil/Crucible reforge responses — they belong to the class
-        var isReforge = r.reforge_attempted || rs === 'anvil' || rs === 'crucible';
-        return rs === cs || engMatch || isReforge || rs === null || rs === 'unknown' || !rs;
-      })
-    : allResponses;
+  var responses = forClassSubject(allResponses);
   var students = dashState.students;
   var studentMap = {};
   students.forEach(function(s) { studentMap[s.id] = s.name; });
@@ -1176,7 +1182,7 @@ window.switchTab = function(view, btn) {
   document.querySelectorAll('.panel').forEach(function(p) { p.classList.remove('active'); });
   document.getElementById('panel-' + view).classList.add('active');
   document.getElementById('panel-student').style.display = 'none';
-  if (view === 'spec') renderSpecBreakdown(dashState.responses);
+  if (view === 'spec') renderSpecBreakdown(forClassSubject(dashState.responses));
 };
 
 // Sidebar nav items don't have real URLs for these — they're tabs within
@@ -2008,15 +2014,7 @@ window.renderStudent = function(studentId) {
   var extraTime = studentObj.extra_time || 0;
 
   var allStudentResponses = dashState.responses.filter(function(r) { return r.student_id === studentId; });
-  var studentResponses = dashState.classSubject
-    ? allStudentResponses.filter(function(r) {
-        var cs = dashState.classSubject;
-        var rs = r.subject;
-        var engMatch = (cs === 'englit' || cs === 'engll') && (rs === 'englit' || rs === 'engll');
-        var isReforge = r.reforge_attempted || rs === 'anvil' || rs === 'crucible';
-        return rs === cs || engMatch || isReforge || rs === null || rs === 'unknown' || !rs;
-      })
-    : allStudentResponses;
+  var studentResponses = forClassSubject(allStudentResponses);
   var total = studentResponses.length;
   var correct = studentResponses.filter(function(r) { return r.is_correct; }).length;
   var acc = total > 0 ? Math.round((correct / total) * 100) : 0;
