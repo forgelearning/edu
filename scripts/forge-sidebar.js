@@ -37,7 +37,9 @@ var ForgeSidebar = {
   //   active: string — key of the item to mark active
   //   items: [{key, href, label, badge, badgeMuted}] — main nav items
   //   footerItems: [{key, href, label}] — items after the divider (e.g. Profile). Optional.
-  //   classSwitch: {label} — optional class-switcher row at the top (teacher pages)
+  //   classSwitch: {label, addLabel} — optional class-switcher row at the top
+  //            (teacher pages). addLabel renames the last row of the menu,
+  //            which calls window.forgeOnClassSwitch().
   //   signOut: function — called when Sign out is clicked. Defaults to
   //            window.forgeSignOut() or window.forgeLogout(), whichever exists.
   mount: function(config) {
@@ -54,6 +56,7 @@ var ForgeSidebar = {
 
     var classSwitchHtml = '';
     if (config.classSwitch) {
+      this._addLabel = config.classSwitch.addLabel;
       classSwitchHtml =
         '<div class="fside-classswitch" style="position:relative">' +
           '<button class="fclassswitch-btn" id="fclassswitch-btn" onclick="ForgeSidebar._toggleClassMenu()">' +
@@ -141,13 +144,21 @@ var ForgeSidebar = {
     if (open) { menu.style.display = 'none'; return; }
     var classes = this._classes || [];
     var activeId = this._activeClassId;
+    var canRemove = typeof window.forgeOnClassRemove === 'function';
     var h = classes.map(function(c) {
-      return '<button class="fclassswitch-item' + (c.id === activeId ? ' active' : '') + '" onclick="ForgeSidebar._selectClass(\'' + c.id + '\')">' +
-        _fsEsc(c.name || c.code || '') +
-        '<span class="fcs-sub">' + _fsEsc(c.code || '') + '</span>' +
-      '</button>';
+      var row = '<div class="fclassswitch-row">' +
+        '<button class="fclassswitch-item' + (c.id === activeId ? ' active' : '') + '" onclick="ForgeSidebar._selectClass(\'' + c.id + '\')">' +
+          _fsEsc(c.name || c.code || '') +
+          '<span class="fcs-sub">' + _fsEsc(c.code || '') + '</span>' +
+        '</button>';
+      if (canRemove) {
+        row += '<button class="fcs-remove" title="Remove from this list" aria-label="Remove ' + _fsEsc(c.name || c.code || 'class') + ' from this list" onclick="ForgeSidebar._removeClass(\'' + c.id + '\')">' +
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"></path></svg>' +
+        '</button>';
+      }
+      return row + '</div>';
     }).join('');
-    h += '<button class="fclassswitch-item fcs-add" onclick="ForgeSidebar._addClass()">+ Join another class</button>';
+    h += '<button class="fclassswitch-item fcs-add" onclick="ForgeSidebar._addClass()">' + _fsEsc(this._addLabel || '+ Join another class') + '</button>';
     menu.innerHTML = h;
     menu.style.display = 'block';
   },
@@ -157,6 +168,19 @@ var ForgeSidebar = {
     if (menu) menu.style.display = 'none';
     var cls = (this._classes || []).find(function(c) { return String(c.id) === String(id); });
     if (cls && typeof window.forgeOnClassSelect === 'function') window.forgeOnClassSelect(cls);
+  },
+
+  // Drops a class from the switcher list. The page owns what that means (the
+  // teacher page forgets it locally rather than deleting the class itself) —
+  // the × only shows when a page has provided the hook.
+  _removeClass: function(id) {
+    var cls = (this._classes || []).find(function(c) { return String(c.id) === String(id); });
+    if (!cls || typeof window.forgeOnClassRemove !== 'function') return;
+    var kept = window.forgeOnClassRemove(cls);
+    if (kept === false) return;
+    this._classes = (this._classes || []).filter(function(c) { return String(c.id) !== String(id); });
+    var menu = document.getElementById('fclassswitch-menu');
+    if (menu) { menu.style.display = 'none'; this._toggleClassMenu(); }
   },
 
   _addClass: function() {

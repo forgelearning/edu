@@ -71,6 +71,17 @@ body.has-forge-sidebar.forge-sidebar-expanded{padding-left:230px}
 .fclassswitch-item.active{color:var(--hot)}
 .fclassswitch-item .fcs-sub{font-size:11px;color:var(--dim)}
 .fclassswitch-item.fcs-add{color:var(--ember);font-weight:600}
+/* a class row is the class button plus its remove ×, so the divider and the
+   hover belong to the row rather than the button */
+.fclassswitch-row{display:flex;align-items:stretch;border-bottom:1px solid var(--line)}
+.fclassswitch-row:last-child{border-bottom:none}
+.fclassswitch-row .fclassswitch-item{border-bottom:none;min-width:0}
+.fclassswitch-row .fclassswitch-item .fcs-sub{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fcs-remove{flex-shrink:0;display:flex;align-items:center;justify-content:center;width:32px;padding:0;background:none;border:none;color:var(--dim);cursor:pointer;opacity:.45;transition:opacity .15s ease,color .15s ease}
+.fclassswitch-row:hover .fcs-remove{opacity:1}
+.fcs-remove:hover{color:var(--bad)}
+.fcs-remove:focus-visible{opacity:1}
+.fcs-remove svg{width:13px;height:13px}
 
 /* footer row: Sign out + theme toggle share the bottom line */
 .fside-footer{margin-top:auto;width:100%;padding:0 12px;display:flex;align-items:center;gap:6px}
