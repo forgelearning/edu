@@ -6,6 +6,7 @@
 //   app.innerHTML = ForgeAuthCard.shell({
 //     title: 'Sign in to Forge',
 //     sub:   'Enter your name and class code',
+//     tag:   'Step 1 of 3',   // optional eyebrow above the title
 //     foot:  'No account? <a href="forge-quiz.html">Start with a quiz</a>'
 //   }, formHtml);
 //
@@ -37,6 +38,7 @@
       return '<div class="auth-stage">' + sparks() +
         '<form class="auth-card' + (o.wide ? ' wide' : '') + '" id="auth-form" novalidate>' +
           badge() +
+          (o.tag ? '<span class="auth-tag">' + o.tag + '</span>' : '') +
           (o.title ? '<h1 class="auth-title">' + o.title + '</h1>' : '') +
           (o.sub ? '<p class="auth-sub">' + o.sub + '</p>' : '') +
           (inner || '') +

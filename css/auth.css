@@ -31,6 +31,9 @@
 .auth-badge .auth-shield{width:38px;height:38px;border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;background:rgba(234,146,38,.18);border:1px solid rgba(255,201,60,.28);box-shadow:0 8px 22px -12px rgba(213,92,19,.9)}
 .auth-badge .auth-wordmark{font-family:'Sora',sans-serif;font-weight:800;font-size:19px;color:var(--white);letter-spacing:-.02em}
 
+/* Optional eyebrow above the title (multi-step flows: "Step 1 of 3"). */
+.auth-tag{display:block;text-align:center;font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--ember);margin-bottom:8px}
+
 .auth-title{font-family:'Sora',sans-serif;font-size:23px;font-weight:700;color:var(--white);text-align:center;letter-spacing:-.02em;line-height:1.15}
 .auth-sub{font-size:13.5px;color:var(--dim);text-align:center;margin-top:6px;margin-bottom:26px}
 .auth-foot{font-size:12.5px;color:var(--dim);text-align:center;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
@@ -97,6 +100,17 @@
 [data-theme="light"] .auth-btn,
 [data-theme="light"] .auth-card .join-btn,
 [data-theme="light"] .auth-card > .btn{color:#fff}
+
+/* Glass CTAs inside a card. .btn-ember is dark-theme-only by design (see
+   base.css), which would leave a primary and its ghost sibling looking
+   identical in light theme — so keep the card's primary ember in both
+   themes, matching .auth-btn above, and flatten the ghost back to an
+   outline so the pair still reads as primary + secondary. */
+[data-theme="light"] .auth-card .btn-primary.btn-glass{background:var(--ember)!important;border-color:rgba(213,92,19,.45)!important;color:#fff!important;box-shadow:inset 0 1px 0 rgba(255,201,60,.4),0 12px 28px -14px rgba(213,92,19,.75)!important}
+[data-theme="light"] .auth-card .btn-primary.btn-glass::after{background:rgba(255,255,255,.14)}
+[data-theme="light"] .auth-card .btn-ghost.btn-glass{background:transparent!important;border:1px solid var(--line)!important;color:var(--slate)!important;box-shadow:none!important}
+[data-theme="light"] .auth-card .btn-ghost.btn-glass::after{display:none}
+[data-theme="light"] .auth-card .btn-ghost.btn-glass:hover{border-color:var(--ember)!important;color:var(--ember)!important;box-shadow:none!important}
 
 @media(max-width:480px){
   .auth-card{padding:26px 20px}
