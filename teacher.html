@@ -896,11 +896,13 @@ function renderLogin(activeTab) {
               // into this class's dashboard. Keep rows with no subject recorded
               // (older data predating the subject field) rather than dropping them.
               dashState.responses = merged.filter(function(r) {
-                // Anvil/Crucible rows carry their own subject ('anvil', 'crucible'), so a
-                // strict subject match dropped every reforge before it reached the
-                // dashboard — completed Anvil work simply vanished.
-                if (r.reforge_attempted || r.subject === 'anvil' || r.subject === 'crucible') return true;
-                return !r.subject || r.subject === dashState.classSubject;
+                // Anvil/Crucible rows carry their own subject ('anvil', 'crucible'),
+                // so a strict r.subject match dropped every reforge before it
+                // reached the dashboard — completed Anvil work simply vanished.
+                // Resolve the real subject from the question instead of waving
+                // all reforges through, which leaked other classes' subjects in.
+                var rs = subjectForResponse(r);
+                return !rs || rs === dashState.classSubject;
               });
               // Self-heal: patch orphaned responses to the class-linked student_id
               if (extraIds.length > 0 && studentIds.length > 0) {
@@ -1001,11 +1003,13 @@ function renderLogin(activeTab) {
               });
               // Same subject filter as the "view class" flow — see comment there.
               dashState.responses = merged.filter(function(r) {
-                // Anvil/Crucible rows carry their own subject ('anvil', 'crucible'), so a
-                // strict subject match dropped every reforge before it reached the
-                // dashboard — completed Anvil work simply vanished.
-                if (r.reforge_attempted || r.subject === 'anvil' || r.subject === 'crucible') return true;
-                return !r.subject || r.subject === dashState.classSubject;
+                // Anvil/Crucible rows carry their own subject ('anvil', 'crucible'),
+                // so a strict r.subject match dropped every reforge before it
+                // reached the dashboard — completed Anvil work simply vanished.
+                // Resolve the real subject from the question instead of waving
+                // all reforges through, which leaked other classes' subjects in.
+                var rs = subjectForResponse(r);
+                return !rs || rs === dashState.classSubject;
               });
               renderDashboard();
             });
@@ -1080,11 +1084,13 @@ function forClassSubject(rows) {
   if (!dashState.classSubject) return rows;
   return rows.filter(function(r) {
     var cs = dashState.classSubject;
-    var rs = r.subject;
+    // Not r.subject: Anvil reforges log 'anvil' there, and blanket-including
+    // every reforge row pulled other classes' subjects onto this dashboard.
+    var rs = subjectForResponse(r);
     var engMatch = (cs === 'englit' || cs === 'engll') && (rs === 'englit' || rs === 'engll');
-    // Always include Anvil/Crucible reforge responses — they belong to the class
-    var isReforge = r.reforge_attempted || rs === 'anvil' || rs === 'crucible';
-    return rs === cs || engMatch || isReforge || rs === null || rs === 'unknown' || !rs;
+    // Rows whose subject can't be established (older data predating the subject
+    // field) are kept rather than dropped.
+    return rs === cs || engMatch || !rs;
   });
 }
 
@@ -1315,6 +1321,30 @@ var QID_TO_SPEC = (function() {
 function baseQuestionId(qid) {
   if (!qid) return '';
   return qid.replace(/-(RF|ANVIL|CRU\d*)$/, '');
+}
+
+// Question id → subject key. The Anvil logs subject:'anvil' (the source page,
+// not the subject), so an Economics reforge is indistinguishable from a
+// Computing one by its subject column alone. The question id still identifies
+// the bank it came from, and the bank belongs to exactly one subject.
+var QID_TO_SUBJECT = (function() {
+  var map = {};
+  if (typeof BANKS === 'undefined' || typeof SUBJECTS === 'undefined') return map;
+  Object.keys(SUBJECTS).forEach(function(sk) {
+    (SUBJECTS[sk].banks || []).forEach(function(bk) {
+      if (!BANKS[bk]) return;
+      (BANKS[bk].questions || []).forEach(function(q) { map[q.id] = sk; });
+    });
+  });
+  return map;
+})();
+
+// The real subject a response belongs to, seeing through the 'anvil'/'crucible'
+// placeholders. Returns null when it can't be established.
+function subjectForResponse(r) {
+  var rs = r.subject;
+  if (rs && rs !== 'anvil' && rs !== 'crucible' && rs !== 'unknown') return rs;
+  return QID_TO_SUBJECT[baseQuestionId(r.question_id)] || null;
 }
 
 function specForResponse(r) {
