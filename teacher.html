@@ -1317,10 +1317,14 @@ var QID_TO_SPEC = (function() {
   return map;
 })();
 
-// Anvil/Crucible/reforge rows suffix the original question id.
+// Anvil/Crucible/reforge rows suffix the original question id, and they stack:
+// a reforge of a reforge is logged as GRO-01-RF-ANVIL. Strip every suffix, not
+// just the last one, or the id never matches its question.
 function baseQuestionId(qid) {
   if (!qid) return '';
-  return qid.replace(/-(RF|ANVIL|CRU\d*)$/, '');
+  var out = qid, prev;
+  do { prev = out; out = out.replace(/-(RF|ANVIL|CRU\d*)$/, ''); } while (out !== prev);
+  return out;
 }
 
 // Question id → subject key. The Anvil logs subject:'anvil' (the source page,
@@ -1339,12 +1343,30 @@ var QID_TO_SUBJECT = (function() {
   return map;
 })();
 
+// Misconception tag → subject, as a second route home: an Anvil row's `bank` is
+// the tag it was forged from, so a tag identifies the subject even when the
+// question id doesn't resolve.
+var MC_TO_SUBJECT = (function() {
+  var map = {};
+  if (typeof BANKS === 'undefined' || typeof SUBJECTS === 'undefined') return map;
+  Object.keys(SUBJECTS).forEach(function(sk) {
+    (SUBJECTS[sk].banks || []).forEach(function(bk) {
+      if (!BANKS[bk]) return;
+      (BANKS[bk].questions || []).forEach(function(q) { if (q.tag) map[q.tag] = sk; });
+    });
+  });
+  return map;
+})();
+
 // The real subject a response belongs to, seeing through the 'anvil'/'crucible'
 // placeholders. Returns null when it can't be established.
 function subjectForResponse(r) {
   var rs = r.subject;
   if (rs && rs !== 'anvil' && rs !== 'crucible' && rs !== 'unknown') return rs;
-  return QID_TO_SUBJECT[baseQuestionId(r.question_id)] || null;
+  return QID_TO_SUBJECT[baseQuestionId(r.question_id)]
+      || MC_TO_SUBJECT[r.misconception_tag]
+      || MC_TO_SUBJECT[r.bank]
+      || null;
 }
 
 function specForResponse(r) {
