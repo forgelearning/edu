@@ -63,6 +63,14 @@ body.has-forge-sidebar.forge-sidebar-expanded{padding-left:230px}
 #forge-sidebar.expanded .fclassswitch-label{opacity:1;display:block}
 .fclassswitch-chev{width:14px!important;height:14px!important;flex-shrink:0;opacity:0;display:none}
 #forge-sidebar.expanded .fclassswitch-chev{opacity:1;display:block}
+.fclassswitch-menu{position:absolute;left:12px;right:12px;margin-top:6px;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-md);box-shadow:0 12px 28px rgba(0,0,0,.35);z-index:50;overflow:hidden}
+#forge-sidebar:not(.expanded) .fclassswitch-menu{display:none!important}
+.fclassswitch-item{display:flex;flex-direction:column;gap:1px;width:100%;text-align:left;padding:9px 13px;background:none;border:none;border-bottom:1px solid var(--line);color:var(--white);font:inherit;font-size:12.5px;cursor:pointer}
+.fclassswitch-item:last-child{border-bottom:none}
+.fclassswitch-item:hover{background:var(--panel-2)}
+.fclassswitch-item.active{color:var(--hot)}
+.fclassswitch-item .fcs-sub{font-size:11px;color:var(--dim)}
+.fclassswitch-item.fcs-add{color:var(--ember);font-weight:600}
 
 /* footer row: Sign out + theme toggle share the bottom line */
 .fside-footer{margin-top:auto;width:100%;padding:0 12px;display:flex;align-items:center;gap:6px}

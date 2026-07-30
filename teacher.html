@@ -162,6 +162,7 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
 <script src="scripts/forge-sidebar.js"></script>
 <script>
 window.forgeOnClassSwitch = function(){ renderLogin('view'); };
+window.forgeOnClassSelect = function(cls){ loadClassDashboard(cls); };
 ForgeSidebar.mount({
   active: 'dashboard',
   classSwitch: { label: 'Loading class…' },
@@ -204,6 +205,21 @@ function _loadTeacherSession() {
 }
 function _clearTeacherSession() {
   try { localStorage.removeItem(TEACHER_SESSION_KEY); } catch(e) {}
+}
+
+// ── Classes a teacher has opened, so the sidebar switcher can list them
+// without re-entering a code each time. Keyed per teacher, since the
+// browser/localStorage may be shared across accounts on a school machine.
+function _joinedClassesKey() {
+  return 'forge-teacher-joined-classes-' + (currentTeacher && currentTeacher.id ? currentTeacher.id : 'anon');
+}
+function getJoinedClasses() {
+  try { return JSON.parse(localStorage.getItem(_joinedClassesKey()) || '[]'); } catch(e) { return []; }
+}
+function addJoinedClass(cls) {
+  var list = getJoinedClasses().filter(function(c) { return c.id !== cls.id; });
+  list.unshift({ id: cls.id, name: cls.name, subject: cls.subject, code: cls.code });
+  try { localStorage.setItem(_joinedClassesKey(), JSON.stringify(list)); } catch(e) {}
 }
 
 var TeacherAuth = {
@@ -822,11 +838,19 @@ function renderLogin(activeTab) {
           err.textContent = 'Class not found. Check the code and try again.'; err.style.display = 'block';
           viewBtn.disabled = false; viewBtn.textContent = 'View dashboard \u2192'; return;
         }
-        var cls = classes[0];
+        loadClassDashboard(classes[0]);
+      });
+    };
+  }
+
+  // Loads a given class's dashboard data and remembers it in the sidebar's
+  // class switcher, so switching back later doesn't need the code re-entered.
+  window.loadClassDashboard = function(cls) {
         dashState.classId = cls.id;
         dashState.className = cls.name;
         dashState.classSubject = cls.subject || null;
         dashState.classCode = cls.code || null;
+        addJoinedClass(cls);
         Promise.all([
           supaGet('students', 'class_id=eq.' + cls.id),
           supaGet('assignments', 'class_id=eq.' + cls.id + '&order=due_date.asc')
@@ -902,9 +926,7 @@ function renderLogin(activeTab) {
             });
           });
         });
-      });
-    };
-  }
+  };
 
   // Create class handler
   var createBtn = document.getElementById('c-btn');
@@ -957,6 +979,7 @@ function renderLogin(activeTab) {
           dashState.students = [];
           dashState.responses = [];
           dashState.assignments = [];
+          addJoinedClass({ id: createdClassId, name: createdClassName, subject: subj, code: code });
           Promise.all([
             supaGet('students', 'class_id=eq.' + createdClassId),
             supaGet('assignments', 'class_id=eq.' + createdClassId + '&order=due_date.asc')
@@ -1115,7 +1138,10 @@ function renderDashboard() {
   h += '<div id="panel-student" style="display:none"></div>';
 
   app.innerHTML = h;
-  if (window.ForgeSidebar) ForgeSidebar.setClassLabel(dashState.className);
+  if (window.ForgeSidebar) {
+    ForgeSidebar.setClassLabel(dashState.className);
+    ForgeSidebar.setClassList(getJoinedClasses(), dashState.classId);
+  }
 
   dashState.wrongResponses = wrongResponses;
   renderHeatmap(wrongResponses);
@@ -2159,6 +2185,7 @@ TeacherAuth.getSession().then(function(sess) {
   if (!sess) { renderTeacherAuth('signin'); return; }
   currentTeacher = sess.user;
   headers.Authorization = 'Bearer ' + sess.access_token;
+  if (window.ForgeSidebar) ForgeSidebar.setClassList(getJoinedClasses(), null);
   renderLogin(new URLSearchParams(location.search).get('tab') === 'create' ? 'create' : 'view');
 });
 </script>

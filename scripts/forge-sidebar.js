@@ -55,12 +55,13 @@ var ForgeSidebar = {
     var classSwitchHtml = '';
     if (config.classSwitch) {
       classSwitchHtml =
-        '<div class="fside-classswitch">' +
-          '<button class="fclassswitch-btn" onclick="(window.forgeOnClassSwitch||function(){})()">' +
+        '<div class="fside-classswitch" style="position:relative">' +
+          '<button class="fclassswitch-btn" id="fclassswitch-btn" onclick="ForgeSidebar._toggleClassMenu()">' +
             _fsIcon('classes') +
             '<span class="fclassswitch-label">' + _fsEsc(config.classSwitch.label || '') + '</span>' +
             '<svg class="fclassswitch-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 10l5 5 5-5"></path></svg>' +
           '</button>' +
+          '<div class="fclassswitch-menu" id="fclassswitch-menu" style="display:none"></div>' +
         '</div>';
     }
 
@@ -114,11 +115,54 @@ var ForgeSidebar = {
     var isLight = localStorage.getItem('forge-theme') === 'light';
     if (isLight) document.documentElement.setAttribute('data-theme', 'light');
     this._updateThemeUI(isLight);
+
+    document.addEventListener('click', function(e) {
+      var menu = document.getElementById('fclassswitch-menu');
+      var wrap = document.querySelector('.fside-classswitch');
+      if (menu && menu.style.display !== 'none' && wrap && !wrap.contains(e.target)) menu.style.display = 'none';
+    });
   },
 
   setClassLabel: function(text) {
     var el = document.querySelector('.fclassswitch-label');
     if (el) el.textContent = text;
+  },
+
+  // classes: [{id, name, subject, code}], activeId: currently open class id
+  setClassList: function(classes, activeId) {
+    this._classes = classes || [];
+    this._activeClassId = activeId;
+  },
+
+  _toggleClassMenu: function() {
+    var menu = document.getElementById('fclassswitch-menu');
+    if (!menu) return;
+    var open = menu.style.display !== 'none';
+    if (open) { menu.style.display = 'none'; return; }
+    var classes = this._classes || [];
+    var activeId = this._activeClassId;
+    var h = classes.map(function(c) {
+      return '<button class="fclassswitch-item' + (c.id === activeId ? ' active' : '') + '" onclick="ForgeSidebar._selectClass(\'' + c.id + '\')">' +
+        _fsEsc(c.name || c.code || '') +
+        '<span class="fcs-sub">' + _fsEsc(c.code || '') + '</span>' +
+      '</button>';
+    }).join('');
+    h += '<button class="fclassswitch-item fcs-add" onclick="ForgeSidebar._addClass()">+ Join another class</button>';
+    menu.innerHTML = h;
+    menu.style.display = 'block';
+  },
+
+  _selectClass: function(id) {
+    var menu = document.getElementById('fclassswitch-menu');
+    if (menu) menu.style.display = 'none';
+    var cls = (this._classes || []).find(function(c) { return String(c.id) === String(id); });
+    if (cls && typeof window.forgeOnClassSelect === 'function') window.forgeOnClassSelect(cls);
+  },
+
+  _addClass: function() {
+    var menu = document.getElementById('fclassswitch-menu');
+    if (menu) menu.style.display = 'none';
+    if (typeof window.forgeOnClassSwitch === 'function') window.forgeOnClassSwitch();
   },
 
   setBadge: function(key, value, muted) {
