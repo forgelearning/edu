@@ -320,8 +320,9 @@ var ForgeSidebar = {
   },
 
   setBadge: function(key, value, muted) {
+    var hasBadge = value !== null && value !== undefined && value !== '';
     var el = document.querySelector('.fside-item[data-key="' + key + '"] .fside-badge');
-    if (!el) {
+    if (!el && hasBadge) {
       var item = document.querySelector('.fside-item[data-key="' + key + '"]');
       if (item) {
         el = document.createElement('span');
@@ -330,19 +331,29 @@ var ForgeSidebar = {
       }
     }
     if (el) {
-      el.textContent = value;
-      el.classList.toggle('badge-muted', !!muted);
+      if (hasBadge) {
+        el.textContent = value;
+        el.classList.toggle('badge-muted', !!muted);
+      } else {
+        el.remove();
+      }
     }
     var tab = document.querySelector('#forge-tabbar .ftab[data-key="' + key + '"]');
     if (!tab) return;
     var dot = tab.querySelector('.ftab-dot');
-    if (!dot) {
+    if (!dot && hasBadge) {
       dot = document.createElement('span');
       dot.className = 'ftab-dot';
       tab.appendChild(dot);
     }
-    dot.textContent = value;
-    dot.classList.toggle('badge-muted', !!muted);
+    if (dot) {
+      if (hasBadge) {
+        dot.textContent = value;
+        dot.classList.toggle('badge-muted', !!muted);
+      } else {
+        dot.remove();
+      }
+    }
   },
 
   _toggleSidebar: function() {
