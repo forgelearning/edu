@@ -2,9 +2,9 @@
   if(!window.ForgeSidebar)return;
   var saved=null;
   try{saved=JSON.parse(localStorage.getItem('forge-student')||'null')}catch(e){}
-  if(!saved)return;
   var n=parseInt(localStorage.getItem('forge-anvil-open')||'',10);
   if(!isNaN(n))ForgeSidebar.setBadge('anvil',n||null);
+  if(!saved)return;
   var completed={};
   try{completed=JSON.parse(localStorage.getItem('forge-completed-banks:'+String(saved.studentId||'anon')+':'+String(saved.classId||'none'))||'{}')}catch(e){}
   var ids=[];
