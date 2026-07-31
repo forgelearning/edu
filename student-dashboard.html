@@ -443,9 +443,9 @@ function forgeSignOut(){
         // Check for linked student record
         var saved = null;
         try { saved = JSON.parse(localStorage.getItem('forge-student') || 'null'); } catch(e) {}
-        if (saved && saved.studentId && !st.studentId) {
-          st.studentId = saved.studentId;
-          st.classId   = saved.classId || null;
+        if (saved && saved.studentId) {
+          if (!st.studentId) st.studentId = saved.studentId;
+          st.classId = saved.classId || st.classId || null;
         }
 
         function loadProfileWithId() {

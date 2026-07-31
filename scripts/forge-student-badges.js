@@ -19,6 +19,6 @@
         var banks=[];try{banks=typeof a.banks==='string'?JSON.parse(a.banks):a.banks||[]}catch(e){}
         return !banks.length||!banks.every(function(bank){return completed[bank]});
       }).length;
-      ForgeSidebar.setBadge('assignments',count||null);
+      if(Array.isArray(rows)) ForgeSidebar.setBadge('assignments',count||null);
     }).catch(function(){});
 })();
