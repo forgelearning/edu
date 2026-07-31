@@ -6,7 +6,7 @@
   var n=parseInt(localStorage.getItem('forge-anvil-open')||'',10);
   if(!isNaN(n))ForgeSidebar.setBadge('anvil',n||null);
   var completed={};
-  try{completed=JSON.parse(localStorage.getItem('forge-completed-banks')||'{}')}catch(e){}
+  try{completed=JSON.parse(localStorage.getItem('forge-completed-banks:'+String(saved.studentId||'anon')+':'+String(saved.classId||'none'))||'{}')}catch(e){}
   var ids=[];
   try{var cs=JSON.parse(localStorage.getItem('forge-classes')||'[]');(Array.isArray(cs)?cs:[]).forEach(function(c){if(c.classId&&ids.indexOf(c.classId)<0)ids.push(c.classId)})}catch(e){}
   if(saved.classId&&ids.indexOf(saved.classId)<0)ids.push(saved.classId);

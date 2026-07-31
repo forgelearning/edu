@@ -1592,7 +1592,7 @@ function getLBRank(xp){for(var i=LB_RANKS.length-1;i>=0;i--){if(xp>=LB_RANKS[i].
 
 function renderResults(){
   var bk=BANKS[state.bank];
-  try { var completed=JSON.parse(localStorage.getItem('forge-completed-banks')||'{}'); completed[state.bank]=true; localStorage.setItem('forge-completed-banks',JSON.stringify(completed)); } catch(e) {}
+  try { var completionKey='forge-completed-banks:'+String(state.studentId||'anon')+':'+String(state.classId||'none'); var completed=JSON.parse(localStorage.getItem(completionKey)||'{}'); completed[state.bank]=true; localStorage.setItem(completionKey,JSON.stringify(completed)); } catch(e) {}
   var pct=Math.round((state.score/state.questions.length)*100);
   var col=pct>=75?'var(--good)':pct>=50?'var(--hot)':'var(--bad)';
   var h='<div class="results">';

@@ -327,7 +327,7 @@ function renderDashboard(){
     }).then(function(r){return r.json();}).then(function(rows){
       var today=new Date(); today.setHours(0,0,0,0);
       var completed={};
-      try { completed=JSON.parse(localStorage.getItem('forge-completed-banks')||'{}'); } catch(e) {}
+      try { completed=JSON.parse(localStorage.getItem('forge-completed-banks:'+String(st.studentId||'anon')+':'+String(st.classId||'none'))||'{}'); } catch(e) {}
       var count=(Array.isArray(rows)?rows:[]).filter(function(a){
         var banks=[]; try { banks=typeof a.banks==='string'?JSON.parse(a.banks):a.banks||[]; } catch(e) {}
         var incomplete=!banks.length || !banks.every(function(bank){
@@ -340,7 +340,7 @@ function renderDashboard(){
           });
           return Object.keys(ids).length < bankData.questions.filter(function(q){return !q.type||q.type==='fill_blank';}).length;
         });
-        if (!incomplete) { try { var complete=JSON.parse(localStorage.getItem('forge-completed-banks')||'{}'); banks.forEach(function(bank){complete[bank]=true}); localStorage.setItem('forge-completed-banks',JSON.stringify(complete)); } catch(e) {} }
+        if (!incomplete) { try { var complete=JSON.parse(localStorage.getItem('forge-completed-banks:'+String(st.studentId||'anon')+':'+String(st.classId||'none'))||'{}'); banks.forEach(function(bank){complete[bank]=true}); localStorage.setItem('forge-completed-banks:'+String(st.studentId||'anon')+':'+String(st.classId||'none'),JSON.stringify(complete)); } catch(e) {} }
         return incomplete;
       }).length;
       if (window.ForgeSidebar) ForgeSidebar.setBadge('assignments', count || null);
