@@ -1891,7 +1891,6 @@ function renderAssignments() {
 
       supaInsert('assignments', {
         class_id: dashState.classId,
-        teacher_user_id: currentTeacher ? currentTeacher.id : null,
         title: title,
         banks: JSON.stringify(checked),
         due_date: due
