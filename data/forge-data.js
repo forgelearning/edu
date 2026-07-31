@@ -3277,6 +3277,20 @@ BANKS["GCSE-GEO-BIOSPHERE"] = {
       correct:"D",tag:"MC-BIO-KT-05",
       scaffold:"Eutrophication is a knock-on chain reaction: nutrient input (e.g. nitrates/phosphates from fertiliser) → algal bloom → algae blocks light for other plants and eventually dies → decomposition of dead algae consumes dissolved oxygen → fish and other aquatic organisms suffocate.",
       reforge:{stem:"Fertiliser runs off farmland into a nearby lake, causing a rapid increase in algae. What is the most likely eventual consequence for fish in the lake?",options:{A:"Eutrophication has no effect on any organisms living in the water",B:"Oxygen levels in the lake will rise sharply, benefiting all species",C:"As the algae die and decompose, oxygen levels in the water fall, potentially suffocating fish and other aquatic life",D:"Fish populations will increase immediately with no negative effects"},correct:"C"}
+    },
+    {
+      id:"GCSE-BIO-18",spec:"GCSE-BIO",stem:"Why are ecosystem services important when assessing the value of a biome?",
+      options:{A:"They describe only the number of species present",B:"They are benefits ecosystems provide, such as food, flood regulation, carbon storage and recreation",C:"They prove every ecosystem has the same economic value",D:"They refer only to tourism income from national parks"},
+      correct:"B",tag:"MC-BIO-KT-06",
+      scaffold:"Ecosystem services are benefits people obtain from ecosystems. They include food and timber, water purification and flood regulation, recreation, nutrient cycling and soil formation.",
+      reforge:{stem:"A wetland is drained for construction and the town later experiences worse flooding. Which ecosystem service was reduced?",options:{A:"Flood-water regulation and storage",B:"International trade in timber",C:"Mineral extraction from bedrock",D:"Altitudinal zonation of vegetation"},correct:"A"}
+    },
+    {
+      id:"GCSE-BIO-19",spec:"GCSE-BIO",stem:"How does the precautionary principle apply to managing a threatened ecosystem?",
+      options:{A:"Wait until damage is irreversible before taking action",B:"Assume any development is sustainable if it creates jobs",C:"Take preventive action when serious harm is possible, even if evidence is incomplete",D:"Ignore local communities because conservation is purely scientific"},
+      correct:"C",tag:"MC-BIO-KT-07",
+      scaffold:"The precautionary principle supports prevention where potential environmental damage is serious or irreversible, even when evidence is uncertain. It means assessing risk, monitoring impacts and avoiding permanent damage.",
+      reforge:{stem:"A new road could fragment endangered-species habitat, but its full impact is uncertain. Which response best follows the precautionary principle?",options:{A:"Build immediately because the impact is not proven",B:"Assess alternatives and impacts before construction, then avoid or reduce habitat damage",C:"Ignore the species because roads never affect ecosystems",D:"Wait until the population collapses before monitoring it"},correct:"B"}
     }
   ]
 };
@@ -3460,6 +3474,20 @@ BANKS["GCSE-GEO-FORESTS"] = {
       correct:"B",tag:"MC-FOR-KT-08",
       scaffold:"CITES targets the trade side of species loss — regulating or banning international trade in endangered animals and plants (like ivory or rare timber) — which complements habitat-focused strategies like conservation areas and sustainable forestry.",
       reforge:{stem:"An international agreement restricts the global trade of ivory to protect endangered elephants from exploitation. Which agreement is this most likely to be?",options:{A:"CITES",B:"Sustainable forestry",C:"A debt-for-nature swap",D:"REDD"},correct:"A"}
+    },
+    {
+      id:"GCSE-FOR-21",spec:"GCSE-FOR",stem:"Why can selective logging be less damaging than clear-cutting, but still require careful management?",
+      options:{A:"It removes every tree but leaves the soil untouched",B:"It removes selected trees and can retain canopy, but roads and repeated extraction can fragment the forest",C:"It prevents all carbon emissions from forestry",D:"It is the same as converting rainforest into a plantation"},
+      correct:"B",tag:"MC-FOR-KT-09",
+      scaffold:"Selective logging can retain more canopy, roots and biodiversity than clear-cutting if extraction is limited. However, roads fragment habitats, machinery damages remaining trees and repeated logging can degrade the forest, so monitoring matters.",
+      reforge:{stem:"Which practice would make selective logging more sustainable?",options:{A:"Build as many access roads as possible",B:"Remove all mature trees in one operation",C:"Set limits, protect habitats and use planned routes with monitoring and replanting",D:"Burn the remaining vegetation after every harvest"},correct:"C"}
+    },
+    {
+      id:"GCSE-FOR-22",spec:"GCSE-FOR",stem:"How can agroforestry reduce pressure on tropical rainforests?",
+      options:{A:"It combines trees with crops or livestock, providing products while maintaining some canopy and soil protection",B:"It replaces all farming with mining",C:"It requires farmers to remove every tree before planting",D:"It makes soils fertile without any nutrient cycling"},
+      correct:"A",tag:"MC-FOR-KT-10",
+      scaffold:"Agroforestry integrates useful trees with crops or livestock. Trees can provide fruit, fuelwood, shade, habitat and carbon storage, while farmers earn income from several products.",
+      reforge:{stem:"A farmer grows cocoa beneath retained shade trees and harvests fruit and timber as well. Which benefit does this illustrate?",options:{A:"A single-crop plantation with no biodiversity",B:"Agroforestry diversifying income while retaining some habitat and carbon storage",C:"Clear-cutting followed by permanent soil exposure",D:"Mining as a conservation strategy"},correct:"B"}
     }
   ]
 };
@@ -3636,6 +3664,20 @@ BANKS["GCSE-GEO-ENERGY"] = {
       correct:"B",tag:"MC-ENE-KT-07",
       scaffold:"Decommissioning costs are a major hidden expense of nuclear power that's easy to overlook when comparing energy sources on 'cost per unit of electricity' alone — safely storing or disposing of radioactive waste can cost millions of pounds and take years, an issue not shared by renewable technologies like wind or solar.",
       reforge:{stem:"Why can safely closing a nuclear power station take significantly longer and cost more than closing a coal-fired power station?",options:{A:"Closing any power station always takes exactly the same time and cost",B:"Coal-fired power stations require more complex decommissioning than nuclear plants",C:"Decommissioning a nuclear plant involves safely disposing of radioactive waste, a costly and lengthy process not required at the same scale for other power stations",D:"Nuclear power stations have no waste to dispose of at all"},correct:"C"}
+    },
+    {
+      id:"GCSE-ENE-20",spec:"GCSE-ENE",stem:"Why is energy security a concern for a country that imports most of its natural gas?",
+      options:{A:"Supply can be affected by international prices, political disputes or disruption to transport routes",B:"Imported gas is always cheaper and guaranteed",C:"Energy security means using only renewable electricity",D:"Importing fuel removes all environmental impacts"},
+      correct:"A",tag:"MC-ENE-KT-08",
+      scaffold:"Energy security means reliable, affordable access to energy. Dependence on imports can expose a country to price volatility, geopolitical conflict and disruption, so diversifying suppliers and sources can reduce vulnerability.",
+      reforge:{stem:"Which strategy would most improve a country's energy security?",options:{A:"Depend on one overseas supplier",B:"Use a diverse mix of domestic and imported sources with storage and reliable infrastructure",C:"Close all power stations before alternatives are available",D:"Increase dependence on a single fuel"},correct:"B"}
+    },
+    {
+      id:"GCSE-ENE-21",spec:"GCSE-ENE",stem:"Why can renewable energy create a challenge for balancing electricity supply and demand?",
+      options:{A:"Wind and solar output varies with weather and daylight, so backup, storage or grid management may be needed",B:"Renewables always produce maximum output at exactly the same time",C:"Renewable sources cannot connect to a national grid",D:"Electricity demand never changes during the day"},
+      correct:"A",tag:"MC-ENE-KT-09",
+      scaffold:"Wind and solar are intermittent: output varies with wind speed, daylight and cloud. Storage, interconnectors, flexible generation and demand management can help maintain a reliable grid.",
+      reforge:{stem:"Which combination could help manage periods when wind and solar output are low?",options:{A:"Battery or pumped storage, interconnectors and flexible backup generation",B:"Removing all electricity storage",C:"Relying on one wind farm in one location",D:"Using electricity only during daylight hours"},correct:"A"}
     }
   ]
 };
@@ -3729,6 +3771,20 @@ BANKS["GCSE-GEO-DECISIONS"] = {
       reforge:{stem:"A resource booklet includes a report commissioned by the company proposing a new development, claiming it will benefit the local economy. What should a strong answer do with this source?",options:{A:"Treat the source as entirely objective with no need for scrutiny",B:"Assume all sources in a resource booklet are equally unbiased regardless of who produced them",C:"Ignore the source completely because it comes from a company",D:"Use the evidence but note the company has a vested interest in a positive outcome, which may affect the report's reliability"},correct:"D"}
     },
     {
+      id:"GCSE-DEC-13",spec:"GCSE-DEC",stem:"Why should a student rank the criteria before making a final geographical decision?",
+      options:{A:"Ranking criteria helps show which impacts matter most and makes the final choice consistent with the evidence",B:"It means only the cheapest option can be selected",C:"It removes the need to use sources",D:"It guarantees every stakeholder will agree"},
+      correct:"A",tag:"MC-DEC-13",
+      scaffold:"Ranking criteria makes priorities explicit. A decision may value environmental protection, jobs, cost, risk or fairness differently, but the answer should explain those priorities and apply them consistently to the evidence.",
+      reforge:{stem:"A student selects an option with lower environmental risk but higher cost. What should they explain?",options:{A:"Why environmental risk was given greater weight than the additional cost, using evidence from the booklet",B:"That cost is never relevant to geography",C:"That the cheapest option must always be best",D:"Nothing beyond naming the chosen option"},correct:"A"}
+    },
+    {
+      id:"GCSE-DEC-14",spec:"GCSE-DEC",stem:"What is meant by a trade-off in a geographical decision?",
+      options:{A:"Choosing an option that produces benefits in one area but involves a cost or disadvantage elsewhere",B:"Finding an option with no disadvantages at all",C:"Repeating the same evidence without evaluating it",D:"Ignoring social impacts in favour of economic growth"},
+      correct:"A",tag:"MC-DEC-14",
+      scaffold:"A trade-off occurs when improving one outcome requires accepting a cost elsewhere, such as jobs versus habitat loss or flood protection versus landscape change. Strong answers identify the trade-off and justify why one side should carry more weight in the particular case.",
+      reforge:{stem:"A new airport creates jobs but increases noise for nearby residents. What is this an example of?",options:{A:"A trade-off between economic benefit and social cost",B:"A decision with only positive impacts",C:"Evidence that noise has no geographical importance",D:"A physical process rather than a human decision"},correct:"A"}
+    }
+    ,{
       id:"GCSE-DEC-FB-01",spec:"GCSE-DEC",type:"fill_blank",
       stem:"Complete the sentence about geographical issues.",
       template:"A geographical issue involves a contested ___ about land or resource use, with no single ___ answer — geographers must weigh competing ___, economic and social priorities.",
