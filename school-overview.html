@@ -95,11 +95,6 @@ if(localStorage.getItem('forge-theme')==='light'){document.documentElement.setAt
 var SUPABASE_URL = 'https://crysulmbaadjkymcjrew.supabase.co';
 var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNyeXN1bG1iYWFkamt5bWNqcmV3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQyNDUzMzAsImV4cCI6MjA5OTgyMTMzMH0.Q69MKJR6_iEYkqJYXjn8RBhKhstAZShtmf0NiYM-8Vk';
 
-// ── ACCESS CODE ──────────────────────────────────────────────
-// Change this to your chosen school overview access code
-// Share only with SLT and Heads of Department
-var SCHOOL_OVERVIEW_CODE = 'MAYFIELD-SLT';
-
 var hdrs = { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY };
 var app = document.getElementById('app');
 var activeTab = 'subjects';
@@ -162,43 +157,49 @@ function supaRpc(fn) {
 }
 
 // ── AUTH ─────────────────────────────────────────────────────
-var SESSION_KEY = 'forge-slt-session';
-function isAuthed() { return localStorage.getItem(SESSION_KEY) === SCHOOL_OVERVIEW_CODE; }
-function signOut() { localStorage.removeItem(SESSION_KEY); renderLogin(); }
+var TEACHER_SESSION_KEY = 'forge-teacher-session';
 
-// ── ROUTING ──────────────────────────────────────────────────
-if (isAuthed()) {
-  renderLoading();
-  loadData();
-} else {
-  renderLogin();
+function teacherSession() {
+  try { return JSON.parse(localStorage.getItem(TEACHER_SESSION_KEY) || 'null'); } catch (e) { return null; }
 }
 
-function renderLogin() {
+function renderLogin(message) {
   app.innerHTML = ForgeAuthCard.shell({
     title: 'Leadership Dashboard',
-    sub: 'Enter your school access code to view cross-class analytics.',
-    foot: 'Read-only — no individual student names are shown.'
-  },
-      ForgeAuthCard.field('code-input', 'School access code', {placeholder:'SCHOOL-CODE', upper:true})
-    + '<button class="auth-btn" id="login-btn" type="submit">Access dashboard →</button>'
-    + '<p class="auth-err" id="login-err">Incorrect code. Contact your Forge administrator.</p>');
-  ForgeAuthCard.onSubmit(function(){ document.getElementById('login-btn').onclick(); });
-
-  document.getElementById('login-btn').onclick = function() {
-    var val = document.getElementById('code-input').value.trim().toUpperCase();
-    if (val === SCHOOL_OVERVIEW_CODE) {
-      localStorage.setItem(SESSION_KEY, val);
-      renderLoading();
-      loadData();
-    } else {
-      document.getElementById('login-err').style.display = 'block';
-    }
-  };
-  document.getElementById('code-input').onkeydown = function(e) {
-    if (e.key === 'Enter') document.getElementById('login-btn').click();
-  };
+    sub: message || 'Sign in as a teacher to view cross-class analytics.',
+    foot: 'Teacher access required · read-only school-wide reporting.'
+  }, '<a class="auth-btn" href="teacher.html" style="display:block;text-align:center;text-decoration:none">Sign in to Teacher Dashboard →</a>');
 }
+
+function signOut() {
+  localStorage.removeItem(TEACHER_SESSION_KEY);
+  renderLogin('You have been signed out.');
+}
+
+function verifyTeacherAccess() {
+  var saved = teacherSession();
+  if (!saved || !saved.access_token) {
+    renderLogin();
+    return;
+  }
+  fetch(SUPABASE_URL + '/auth/v1/user', {
+    headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + saved.access_token }
+  }).then(function(response) {
+    if (!response.ok) throw new Error('Teacher session expired');
+    return response.json();
+  }).then(function(user) {
+    if (!user || !user.id) throw new Error('Teacher session invalid');
+    hdrs.Authorization = 'Bearer ' + saved.access_token;
+    renderLoading();
+    loadData();
+  }).catch(function() {
+    localStorage.removeItem(TEACHER_SESSION_KEY);
+    renderLogin('Your teacher session has expired. Please sign in again.');
+  });
+}
+
+// ── ROUTING ──────────────────────────────────────────────────
+verifyTeacherAccess();
 
 function renderLoading() {
   app.innerHTML = '<p style="color:#8A857E;padding:40px 0">Loading school data…</p>';
