@@ -32,9 +32,40 @@
            '</div>';
   }
 
+  // The stage centres the card in whatever is left of the viewport, but how
+  // much that is varies per page and breakpoint: the desktop rail adds nothing
+  // above, the phone/tablet shell adds a top bar and a tab bar as body padding,
+  // and the public pages (reset-password, school overview) sit under an in-flow
+  // logo nav. Rather than guess, collapse the stage, measure everything else on
+  // the page, and hand the stage exactly what is left over — so the card lands
+  // dead centre instead of being pushed low and off the bottom edge.
+  // CSS keeps a static min-height as the pre-script fallback.
+  function fit() {
+    var stage = document.querySelector('.auth-stage');
+    if (!stage) return;
+    stage.style.minHeight = '0px';
+    var rest = document.documentElement.scrollHeight - stage.getBoundingClientRect().height;
+    stage.style.minHeight = Math.max(0, Math.round(window.innerHeight - rest)) + 'px';
+  }
+
+  var fitBound = false;
+  function scheduleFit() {
+    // setTimeout as well as rAF: rAF never fires while the tab is hidden, and
+    // a card rendered in a background tab still has to be centred when it is
+    // brought forward.
+    setTimeout(fit, 0);
+    requestAnimationFrame(fit);
+    if (!fitBound) {
+      fitBound = true;
+      window.addEventListener('resize', fit);
+      window.addEventListener('orientationchange', fit);
+    }
+  }
+
   window.ForgeAuthCard = {
     shell: function (o, inner) {
       o = o || {};
+      scheduleFit();
       return '<div class="auth-stage">' + sparks() +
         '<form class="auth-card' + (o.wide ? ' wide' : '') + '" id="auth-form" novalidate>' +
           badge() +

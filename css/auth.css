@@ -112,6 +112,18 @@
 [data-theme="light"] .auth-card .btn-ghost.btn-glass::after{display:none}
 [data-theme="light"] .auth-card .btn-ghost.btn-glass:hover{border-color:var(--ember)!important;color:var(--ember)!important;box-shadow:none!important}
 
+/* Tablet + phone: the rail is swapped for a top bar + bottom tab bar whose
+   height body carries as padding, so the desktop stage height overflows the
+   visible area and pushes the card below centre. forge-auth-card.js measures
+   that padding and sets an exact min-height; this is the pre-script fallback. */
+@media(max-width:820px){
+  body.has-forge-sidebar .auth-stage{
+    min-height:calc(100vh - 128px - env(safe-area-inset-bottom,0px));
+    min-height:calc(100dvh - 128px - env(safe-area-inset-bottom,0px));
+    padding:24px 0;
+  }
+}
+
 @media(max-width:480px){
   .auth-card{padding:26px 20px}
   .auth-title{font-size:21px}
