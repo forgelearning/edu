@@ -1371,14 +1371,18 @@ function renderQuiz(){
         fb.innerHTML='<div class="praise-box">\u2713 Nailed it.</div><button class="next-btn btn-glass btn-ember" id="next-btn">Next \u2192</button><div class="clear"></div>';
       }else{
         var fh='<div class="scaffold-box"><span class="stag">'+q.tag+'</span><p>'+q.scaffold+'</p></div>';
-        fh+='<button class="reforge-trigger" id="rf-btn">Re-forge \u2192</button>';
-        fh+='<div id="rf-area" class="hidden"></div>';
+        if(q.reforge){
+          fh+='<button class="reforge-trigger" id="rf-btn">Re-forge \u2192</button>';
+          fh+='<div id="rf-area" class="hidden"></div>';
+        }
         fh+='<button class="next-btn btn-glass btn-ember" id="next-btn">Next \u2192</button><div class="clear"></div>';
         fb.innerHTML=fh;
-        document.getElementById('rf-btn').onclick=function(){
-          document.getElementById('rf-btn').classList.add('hidden');
-          renderReforge(q,document.getElementById('rf-area'),bk.color);
-        };
+        if(q.reforge){
+          document.getElementById('rf-btn').onclick=function(){
+            document.getElementById('rf-btn').classList.add('hidden');
+            renderReforge(q,document.getElementById('rf-area'),bk.color);
+          };
+        }
       }
 
       document.getElementById('next-btn').onclick=function(){
