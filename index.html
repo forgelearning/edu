@@ -487,12 +487,13 @@ footer{padding:40px 0 28px;border-top:1px solid var(--line)}
 /* .btn-ember now lives in css/base.css alongside .btn-glass. */
 </style>
 <!-- Google tag (gtag.js) -->
+<script src="scripts/analytics-consent.js"></script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-RGZ9J6Q8H9"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-  gtag('config', 'G-RGZ9J6Q8H9');
+  gtag('config', 'G-RGZ9J6Q8H9', {allow_google_signals: false, allow_ad_personalization_signals: false});
 </script>
 </head>
 <body>
@@ -544,15 +545,15 @@ if (localStorage.getItem('forge-theme') === 'light') {
       <button class="nav-link" style="font-family:inherit;cursor:pointer;background:transparent;border:none;padding:0" onclick="this.nextElementSibling.classList.toggle('open')">For schools ▾</button>
       <div class="nav-drop-menu">
         <a href="faq.html">FAQ for schools</a>
-        <a href="evidence.html">The evidence</a>
+        <a href="evidence.html">Learning science</a>
         <a href="roadmap.html">Roadmap</a>
-        <a href="teacher.html">Teacher dashboard</a>
-        <a href="privacy.html" style="border-top:1px solid var(--line);margin-top:4px;padding-top:10px">Privacy &amp; data — UK GDPR, EU-hosted</a>
+        <a href="teacher.html">Teacher sign in</a>
+        <a href="privacy.html" style="border-top:1px solid var(--line);margin-top:4px;padding-top:10px">Privacy &amp; DPA</a>
       </div>
     </div>
     <a class="nav-link nav-hide-sm" href="guides.html">Guides</a>
     <a class="nav-link nav-hide-sm" href="#pricing">Pricing</a>
-    <a class="nav-link nav-hide-sm" href="forge-quiz.html">Sign in</a>
+    <a class="nav-link nav-hide-sm" href="forge-quiz.html?mode=class">Sign in</a>
     <a class="cta btn-glass btn-ember" href="#waitlist">Get started</a>
     <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" aria-label="Toggle light/dark theme">☀</button>
   </div>
@@ -1800,6 +1801,20 @@ if (localStorage.getItem('forge-theme') === 'light') {
       <a class="subj-link" href="gcse-geography.html">View subject page →</a>
     </div>
 
+    <div class="subj live glow-spot" data-subj="gcse-econ" data-pill-fixed>
+      <div class="subj-top">
+        <span class="pill good">Live — Papers 1 &amp; 2</span>
+        <span class="mono boards">OCR · J205</span>
+      </div>
+      <h3><a href="gcse-economics.html" style="color:inherit;text-decoration:none">Economics</a></h3>
+      <div class="subj-stat"><span class="subj-stat-n">420</span> questions · 21 banks</div>
+      <p>OCR J205 across both papers — definitions, markets, the national economy and international economics.</p>
+      <div class="progress-row">
+        <span class="mono dim">Paper 1: 7 banks · Paper 2: 14 banks · full coverage live</span>
+      </div>
+      <a class="subj-link" href="gcse-economics.html">View subject page →</a>
+    </div>
+
     <div class="subj soon glow-spot">
       <div class="subj-top">
         <span class="pill">In development</span>
@@ -1858,20 +1873,6 @@ if (localStorage.getItem('forge-theme') === 'light') {
       <h3><a href="gcse-psychology.html" style="color:inherit;text-decoration:none">Psychology</a></h3>
       <p>Research methods and applying concepts to novel scenarios.</p>
       <a class="subj-link" href="gcse-psychology.html">Preview the subject page →</a>
-    </div>
-
-    <div class="subj live glow-spot" data-subj="gcse-econ" data-pill-fixed>
-      <div class="subj-top">
-        <span class="pill hot">The UK Economy live</span>
-        <span class="mono boards">OCR · J205</span>
-      </div>
-      <h3><a href="gcse-economics.html" style="color:inherit;text-decoration:none">Economics</a></h3>
-      <div class="subj-stat"><span class="subj-stat-n">8</span> questions · 1 bank</div>
-      <p>Contraction vs. shift, scarcity vs. poverty — the distinctions markers test.</p>
-      <div class="progress-row">
-        <span class="mono dim">Rest of Paper 1 & 2 — in authoring</span>
-      </div>
-      <a class="subj-link" href="gcse-economics.html">View subject page →</a>
     </div>
 
   </div>
@@ -2087,7 +2088,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
     <span class="trust-chip"><b>Built by a practising teacher</b> — every question written against examiners' reports</span>
     <span class="trust-chip"><b>Students self-subscribe</b> for £2.99/mo — no class code needed</span>
     <span class="trust-chip"><b>One invoice</b> for schools — no procurement headache</span>
-    <span class="trust-chip"><b>UK GDPR compliant</b> — data stored in the EU, no advertising</span>
+    <span class="trust-chip"><b>UK GDPR information available</b> — EU-hosted application data, no advertising profiles</span>
   </div>
 
   <div class="pricing-note" style="margin-top:20px">
@@ -2118,14 +2119,14 @@ if (localStorage.getItem('forge-theme') === 'light') {
   <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:28px">
     <div style="display:flex;gap:8px;flex-wrap:wrap">
       <a href="forge-quiz.html" class="btn-glass btn-ember" style="padding:8px 16px;border-radius:var(--radius-sm);font-family:'Inter',sans-serif;font-weight:700;font-size:13px;text-decoration:none;white-space:nowrap">Try the quiz</a>
-      <a href="teacher.html" class="btn-glass" style="padding:8px 16px;border-radius:var(--radius-sm);font-family:'Inter',sans-serif;font-weight:600;font-size:13px;text-decoration:none;white-space:nowrap">Teacher dashboard</a>
+      <a href="teacher.html" class="btn-glass" style="padding:8px 16px;border-radius:var(--radius-sm);font-family:'Inter',sans-serif;font-weight:600;font-size:13px;text-decoration:none;white-space:nowrap">Teacher sign in</a>
       <a href="school-overview.html" class="btn-glass" style="padding:8px 16px;border-radius:var(--radius-sm);font-family:'Inter',sans-serif;font-weight:600;font-size:13px;text-decoration:none;white-space:nowrap">School overview</a>
     </div>
     <div style="display:flex;gap:16px;flex-wrap:wrap">
       <a href="anvil.html" style="color:var(--slate);text-decoration:none;font-size:13px;white-space:nowrap">The Anvil</a>
       <a href="crucible.html" style="color:var(--slate);text-decoration:none;font-size:13px;white-space:nowrap">The Crucible</a>
       <a href="faq.html" style="color:var(--slate);text-decoration:none;font-size:13px;white-space:nowrap">FAQ for schools</a>
-      <a href="evidence.html" style="color:var(--slate);text-decoration:none;font-size:13px;white-space:nowrap">The evidence</a>
+      <a href="evidence.html" style="color:var(--slate);text-decoration:none;font-size:13px;white-space:nowrap">Learning science</a>
       <a href="roadmap.html" style="color:var(--slate);text-decoration:none;font-size:13px;white-space:nowrap">Roadmap</a>
       <a href="privacy.html" style="color:var(--slate);text-decoration:none;font-size:13px;white-space:nowrap">Privacy</a>
     </div>

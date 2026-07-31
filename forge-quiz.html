@@ -447,6 +447,7 @@ var state = {
   weightMap: {}        // spaced repetition: questionId → priority weight
 };
 var requestedBank = new URLSearchParams(location.search).get('bank');
+var openClassJoin = new URLSearchParams(location.search).get('mode') === 'class';
 var requestedBankStarted = false;
 
 // ── JOINING A CLASS ───────────────────────────────────────────
@@ -776,7 +777,7 @@ function renderJoin() {
     {btn: 'tab-class', panel: 'panel-class'},
     {btn: 'tab-solo',  panel: 'panel-solo'},
   ];
-  var activeTab = 'tab-free';
+  var activeTab = openClassJoin ? 'tab-class' : 'tab-free';
   function activateTab(which) {
     activeTab = which;
     tabs.forEach(function(t) {
@@ -788,6 +789,7 @@ function renderJoin() {
   tabs.forEach(function(t) {
     document.getElementById(t.btn).onclick = function() { activateTab(t.btn); };
   });
+  activateTab(activeTab);
 
   // Enter submits whichever panel is showing.
   ForgeAuthCard.onSubmit(function() {
@@ -1874,7 +1876,7 @@ if (ForgeAuth.hasSession()) {
   }).catch(function() { render(); });
 } else {
   var restored = false;
-  try {
+  if (!openClassJoin) try {
     var savedSession = JSON.parse(localStorage.getItem('forge-student') || 'null');
     if (savedSession && savedSession.studentName && savedSession.classId) {
       state.studentId    = savedSession.studentId    || null;
@@ -1934,7 +1936,7 @@ if (ForgeAuth.hasSession()) {
     }
   } catch(e) {}
 
-  if (!restored) {
+  if (!openClassJoin && !restored) {
     var freeSession = loadFreeSession();
 
     if (freeSession && freeSession.studentId) {
