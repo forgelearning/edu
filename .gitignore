@@ -1,0 +1,20 @@
+# macOS
+.DS_Store
+
+# Codex / agent local state
+.agents/
+skills-lock.json
+.claude/launch.json
+.claude/settings.local.json
+
+# Editor / IDE local files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs and temporary files
+*.log
+*.tmp
+.tmp/
+tmp/

@@ -1612,6 +1612,34 @@ BANKS["GCSE-GEO-HAZ"] = {
       correct:"A",tag:"MC-HAZ-KT-14",
       scaffold:"These three astronomical cycles change how much solar energy reaches Earth and where, over tens of thousands of years, and are a key natural cause of long-term climate change — distinct from the human-driven enhanced greenhouse effect.",
       reforge:{stem:"Which of the following is one of the three named Milankovitch Cycles?",options:{A:"Subduction — a plate sinking beneath another plate",B:"The ITCZ — the zone where global winds converge",C:"Obliquity — the changing tilt of the Earth's axis, between roughly 21.5° and 24.5°",D:"The Coriolis Effect — the effect of Earth's rotation on wind"},correct:"C"}
+    },
+    {
+      id:"GCSE-HAZ-23",spec:"GCSE-HAZ",stem:"A student says earthquakes at conservative boundaries are 'less dangerous' because no volcanoes form there. Why is this wrong?",
+      options:{A:"Conservative boundaries cannot produce earthquakes",B:"Earthquake risk depends on magnitude, depth, population density and preparedness, not whether volcanoes are present",C:"Conservative boundaries only occur under oceans",D:"Volcanoes are the only serious tectonic hazard"},
+      correct:"B",tag:"MC-TEC-08",
+      scaffold:"Conservative boundaries can produce very damaging shallow earthquakes because plates lock, stress builds, then is released suddenly. Hazard risk is not just the physical event: exposure, vulnerability, building quality and preparedness control the scale of disaster.",
+      reforge:{stem:"A magnitude 7 earthquake hits a densely populated city with weak building codes on a conservative boundary. Which statement is most accurate?",options:{A:"It cannot be serious because there is no volcano",B:"It may be highly destructive because shallow shaking, exposure and vulnerability can combine to produce high risk",C:"It will only create lava flows",D:"It is automatically safer than any constructive boundary"},correct:"B"}
+    },
+    {
+      id:"GCSE-HAZ-24",spec:"GCSE-HAZ",stem:"Why do tropical cyclones usually weaken quickly after moving over land?",
+      options:{A:"They lose their supply of warm ocean water and gain more friction over land",B:"The Coriolis effect stops completely over land",C:"Air pressure rises because mountains create earthquakes",D:"They turn into anticyclones as soon as they cross the coast"},
+      correct:"A",tag:"MC-HAZ-15",
+      scaffold:"Tropical cyclones are powered by heat and moisture from warm seas, normally above about 27°C. Once over land, that energy source is cut off and surface friction disrupts the storm's circulation, so wind speeds usually fall.",
+      reforge:{stem:"A tropical cyclone crosses a coastline and moves inland. Which change is most likely after several hours?",options:{A:"It strengthens because land is warmer than the sea",B:"It weakens because warm ocean moisture is cut off and friction increases",C:"It becomes a tectonic hazard",D:"It stops rotating because Earth no longer spins beneath it"},correct:"B"}
+    },
+    {
+      id:"GCSE-HAZ-25",spec:"GCSE-HAZ",stem:"A student writes: 'Monitoring means predicting the exact date of an earthquake.' What is the correction?",
+      options:{A:"Monitoring collects evidence such as seismic activity or gas emissions to assess risk, but exact earthquake prediction is not currently possible",B:"Monitoring only means rebuilding after a disaster",C:"Monitoring guarantees that all hazards can be stopped",D:"Monitoring is the same as evacuation"},
+      correct:"A",tag:"MC-MGT-02",
+      scaffold:"Hazard monitoring reduces risk by tracking warning signs and informing preparation, but it does not remove uncertainty. Volcanic eruptions can sometimes be forecast from signs such as gas emissions and ground deformation; earthquakes cannot be predicted to an exact date and time.",
+      reforge:{stem:"Scientists detect increasing sulphur dioxide emissions and ground swelling around a volcano. What does this monitoring allow them to do?",options:{A:"Cancel the eruption",B:"Assess rising risk and warn authorities, while accepting uncertainty remains",C:"Predict the exact minute of an earthquake",D:"Prove the volcano is extinct"},correct:"B"}
+    },
+    {
+      id:"GCSE-HAZ-26",spec:"GCSE-HAZ",stem:"Which statement best explains why climate change can increase tropical cyclone hazard risk?",
+      options:{A:"Warmer oceans can provide more energy and moisture, increasing the potential intensity and rainfall of storms",B:"Climate change creates new plate boundaries",C:"Tropical cyclones only form in cold polar seas",D:"Climate change prevents storm surges from forming"},
+      correct:"A",tag:"MC-HAZ-16",
+      scaffold:"Tropical cyclones need warm ocean water. Climate change does not mean every storm becomes stronger, but warmer seas and a warmer atmosphere can increase rainfall intensity and the potential for very intense storms, while sea-level rise worsens storm-surge flooding.",
+      reforge:{stem:"Why might a similar tropical cyclone cause worse coastal flooding in a warmer future climate?",options:{A:"Sea level rise can make storm surge start from a higher baseline, and warmer air can hold more moisture",B:"Earthquakes become more common in the eyewall",C:"The Coriolis effect disappears",D:"Storms no longer need warm ocean water"},correct:"A"}
     }
   ]
 };
@@ -2439,6 +2467,34 @@ BANKS["GCSE-GEO-URB"] = {
       bank:["bottom","infrastructure","gradually","top","instantly","tourism"],
       tag:"MC-MUM-06",
       scaffold:"Sites and services schemes work bottom-up: secure land tenure plus basic infrastructure, with residents building and upgrading housing themselves over time — a contrast to top-down demolition-and-rebuild schemes."
+    },
+    {
+      id:"GCSE-URB-07",spec:"GCSE-URB",stem:"Mumbai is described as having both formal and informal employment. Which example best illustrates informal employment?",
+      options:{A:"A government-employed railway engineer with a contract and pension",B:"A street vendor or small recycling worker without secure contract, regulation or reliable pay",C:"A university professor employed by the state",D:"A bank manager in a registered office"},
+      correct:"B",tag:"MC-MUM-07",
+      scaffold:"Informal employment is common in rapidly urbanising cities: work is often small-scale, unregistered, insecure and outside tax or labour protections. It can provide vital income, but workers are vulnerable because rights, safety and pay are not guaranteed.",
+      reforge:{stem:"Why is Dharavi's informal economy important despite its problems?",options:{A:"It provides no employment at all",B:"It creates jobs and income through workshops, recycling and small businesses, but often without secure protection or formal regulation",C:"It is run entirely by foreign governments",D:"It only employs tourists"},correct:"B"}
+    },
+    {
+      id:"GCSE-URB-08",spec:"GCSE-URB",stem:"A student says Mumbai's traffic congestion is only an environmental problem. Why is this incomplete?",
+      options:{A:"Congestion has environmental, economic and social effects, including air pollution, lost work time and reduced quality of life",B:"Congestion is beneficial because it always increases income",C:"Congestion only affects rural areas",D:"Congestion has no link to air pollution"},
+      correct:"A",tag:"MC-MUM-08",
+      scaffold:"Urban problems are multi-dimensional. Traffic congestion increases emissions and air pollution, but it also wastes time, raises transport costs, delays deliveries and can reduce quality of life for residents and commuters.",
+      reforge:{stem:"Which answer best evaluates a new metro line in Mumbai?",options:{A:"It only matters if it makes the city look modern",B:"It may reduce congestion and emissions while improving access to jobs, but benefits depend on cost, coverage and affordability",C:"It cannot affect employment access",D:"It will solve all urban problems immediately"},correct:"B"}
+    },
+    {
+      id:"GCSE-URB-09",spec:"GCSE-URB",stem:"Why can rapid urbanisation lead to water and sanitation problems in Mumbai?",
+      options:{A:"Population growth can outpace the construction of piped water, sewers and waste systems",B:"Cities do not need water infrastructure",C:"Sanitation problems only happen when birth rates fall",D:"Informal settlements always receive infrastructure before formal housing"},
+      correct:"A",tag:"MC-MUM-09",
+      scaffold:"Rapid urbanisation becomes a challenge when infrastructure cannot keep up with population growth. Informal settlements may lack reliable piped water, toilets and drainage, raising health risks and increasing pressure on already stretched city services.",
+      reforge:{stem:"A settlement grows quickly before sewers and piped water are installed. Which consequence is most likely?",options:{A:"Improved public health automatically",B:"Higher risk of waterborne disease and pressure on shared facilities",C:"Immediate disappearance of informal work",D:"No change because infrastructure is unrelated to population"},correct:"B"}
+    },
+    {
+      id:"GCSE-URB-10",spec:"GCSE-URB",stem:"Which criticism of top-down urban redevelopment is strongest in the Dharavi case?",
+      options:{A:"It can ignore residents' livelihoods and community networks if decisions are made mainly by government and developers",B:"It always gives every resident a larger house and better-paid job",C:"It is identical to self-help housing",D:"It never changes land values"},
+      correct:"A",tag:"MC-MUM-10",
+      scaffold:"Top-down redevelopment can improve housing and infrastructure, but in Dharavi the controversy is whether high-rise rehousing protects the dense networks of small workshops, street-level businesses and community support that make the settlement function.",
+      reforge:{stem:"Why might some Dharavi residents oppose high-rise rehousing even if flats have better sanitation?",options:{A:"They may lose street-level workshop space, customer access and community networks that support their livelihoods",B:"They prefer having no legal security",C:"They are unaffected by any redevelopment",D:"High-rise flats are always cheaper to run than informal homes"},correct:"A"}
     }
   ]
 };
@@ -2728,6 +2784,34 @@ BANKS["GCSE-GEO-DEV"] = {
       correct:"A",tag:"MC-DEV-KT-14",
       scaffold:"The defining features of an NGO are independence from government and a non-profit purpose — this is why NGOs are typically behind bottom-up development projects, which prioritise reaching the poorest rather than generating a financial return.",
       reforge:{stem:"An organisation operating in a country has no government affiliation and does not aim to make a profit. What type of organisation is this most likely to be?",options:{A:"A private, profit-driven company",B:"A national government department",C:"A TNC seeking to maximise shareholder profit",D:"An NGO (Non-Governmental Organisation), such as a charity"},correct:"D"}
+    },
+    {
+      id:"GCSE-DEV-31",spec:"GCSE-DEV",stem:"Why is using a single development indicator risky when comparing countries?",
+      options:{A:"One indicator can hide other dimensions of development, so a country may score well economically but poorly socially or environmentally",B:"All indicators measure exactly the same thing",C:"Indicators are only used for weather forecasting",D:"GDP per capita includes literacy, life expectancy and inequality automatically"},
+      correct:"A",tag:"MC-DEV-15",
+      scaffold:"Development is multi-dimensional. GDP per capita measures average income, but not distribution, health, education, freedom or sustainability. Strong answers compare indicators and explain what each includes and leaves out.",
+      reforge:{stem:"Country A has high GDP per capita but low literacy and high inequality. What does this show?",options:{A:"It must be fully developed",B:"Economic data alone can hide social weaknesses, so multiple indicators are needed",C:"Literacy is not linked to development",D:"HDI would be useless because GDP is high"},correct:"B"}
+    },
+    {
+      id:"GCSE-DEV-32",spec:"GCSE-DEV",stem:"A student says a youthful population is always a development problem. What is the best evaluation?",
+      options:{A:"It can create pressure on schools and healthcare, but with education and jobs it can become a demographic dividend",B:"It always causes immediate economic collapse",C:"It only matters in developed countries",D:"It means death rates must be rising"},
+      correct:"A",tag:"MC-DEV-16",
+      scaffold:"A youthful population raises dependency and service pressure in the short term. But if young people receive education, healthcare and employment, they can become a large productive workforce — a demographic dividend. Evaluation depends on investment and job creation.",
+      reforge:{stem:"Which condition is most important if a youthful population is to support development?",options:{A:"No schooling so wages stay low",B:"Investment in education, health and employment opportunities",C:"A ban on migration to cities",D:"Keeping all work informal"},correct:"B"}
+    },
+    {
+      id:"GCSE-DEV-33",spec:"GCSE-DEV",stem:"How can debt relief help development in a low-income country?",
+      options:{A:"It can free government money previously used for debt repayments so it can be spent on health, education or infrastructure",B:"It always removes the need for tax revenue",C:"It immediately makes every household rich",D:"It prevents trade from happening"},
+      correct:"A",tag:"MC-DEV-17",
+      scaffold:"Debt relief can reduce the burden of repayments, allowing public spending on services and infrastructure. But it is not automatically successful: benefits depend on governance, corruption levels, conditions attached and whether money reaches development priorities.",
+      reforge:{stem:"Why might debt relief fail to reduce poverty even if repayments fall?",options:{A:"Because freed money may be poorly governed, lost to corruption or not targeted at services for the poorest",B:"Because debt relief bans education spending",C:"Because all countries have identical governance",D:"Because infrastructure never affects poverty"},correct:"A"}
+    },
+    {
+      id:"GCSE-DEV-34",spec:"GCSE-DEV",stem:"Which statement best distinguishes aid from foreign direct investment (FDI)?",
+      options:{A:"Aid is support such as money, goods or expertise, often from governments or NGOs; FDI is investment by a company or investor into another country's economy",B:"Aid and FDI are exactly the same",C:"FDI is always charity with no profit motive",D:"Aid can only be given by TNCs"},
+      correct:"A",tag:"MC-DEV-18",
+      scaffold:"Aid is intended to support development or emergency relief, though it may have conditions. FDI is investment into production, services or assets in another country, usually with a profit motive. Both can support development, but their aims and trade-offs differ.",
+      reforge:{stem:"A car company builds a factory in an emerging country to produce vehicles for profit. What is this?",options:{A:"Foreign direct investment",B:"Emergency aid",C:"Debt relief",D:"Fairtrade certification"},correct:"A"}
     }
   ]
 };
@@ -2919,6 +3003,34 @@ BANKS["GCSE-GEO-INDIA"] = {
       bank:["BRICS","IMF","donor","ASEAN","WTO","borrower"],
       tag:"MC-IND-13",
       scaffold:"India's memberships: UN (and Security Council), IMF, World Bank, WTO, Asian Development Bank, G20, BRICS, with growing influence in ASEAN. Being simultaneously an aid recipient (US$4,240m ODA in 2017) and an aid donor is a defining feature of an emerging country."
+    },
+    {
+      id:"GCSE-IND-17",spec:"GCSE-IND",stem:"Why has India's growth in IT and business services been important for economic development?",
+      options:{A:"It has created skilled jobs, attracted investment and increased export earnings in services",B:"It has made agriculture disappear completely",C:"It proves manufacturing is no longer part of India's economy",D:"It only benefits foreign tourists"},
+      correct:"A",tag:"MC-IND-17",
+      scaffold:"India's service sector, including IT and business process outsourcing, has generated skilled employment, export income and global links. It also supports multiplier effects, although benefits are uneven and many workers remain in lower-paid informal sectors.",
+      reforge:{stem:"Why is Bangalore often used as evidence of India's changing economy?",options:{A:"It is associated with high-tech and IT service growth, showing a shift toward higher-value services",B:"It proves India has no rural poverty",C:"It is a subsistence farming region only",D:"It shows that FDI has stopped entering India"},correct:"A"}
+    },
+    {
+      id:"GCSE-IND-18",spec:"GCSE-IND",stem:"A student says India's economic growth has benefited everyone equally. Which evidence challenges this?",
+      options:{A:"Strong regional inequality remains between richer urban states and poorer rural areas",B:"All states have identical income and infrastructure",C:"No one has moved to cities",D:"India has no informal employment"},
+      correct:"A",tag:"MC-IND-18",
+      scaffold:"Emerging-country growth is uneven. India's major cities and some states have gained strongly from services, industry and FDI, while many rural areas still face poorer access to sanitation, healthcare, education and secure employment.",
+      reforge:{stem:"Why should an answer about India's development include regional inequality?",options:{A:"Because national averages can hide large differences between urban cores and rural peripheries",B:"Because every region has exactly the same development level",C:"Because inequality only exists between countries, never within them",D:"Because India's development is entirely environmental"},correct:"A"}
+    },
+    {
+      id:"GCSE-IND-19",spec:"GCSE-IND",stem:"How can TNC investment create both benefits and costs for India?",
+      options:{A:"It can create jobs and technology transfer, but profits may be repatriated and environmental pressures may increase",B:"It only creates costs and never jobs",C:"It only creates benefits and has no trade-offs",D:"It is the same as debt relief"},
+      correct:"A",tag:"MC-IND-19",
+      scaffold:"TNCs can bring FDI, jobs, skills, infrastructure and tax revenue. Evaluation matters: some profits leave the country, wages may be low, working conditions can be poor, and factories or offices can increase pressure on water, energy and transport.",
+      reforge:{stem:"A foreign company opens a factory in India. Which is the most balanced judgement?",options:{A:"It may support growth through jobs and investment, but the net benefit depends on wages, working conditions, tax paid, environmental impact and whether profits stay in India",B:"It is automatically harmful",C:"It is automatically perfect development",D:"It has no effect on local workers"},correct:"A"}
+    },
+    {
+      id:"GCSE-IND-20",spec:"GCSE-IND",stem:"Why is rapid urban growth in India linked to both opportunity and challenge?",
+      options:{A:"Cities offer jobs and services, but rapid growth can increase pressure on housing, transport, sanitation and air quality",B:"Cities only create problems and never jobs",C:"Urban growth means rural areas instantly become richer",D:"Urban growth has no connection to infrastructure"},
+      correct:"A",tag:"MC-IND-20",
+      scaffold:"Urban growth is a core feature of India's development. It can concentrate investment, education and employment, but if infrastructure lags behind population growth it creates congestion, pollution, informal housing and pressure on services.",
+      reforge:{stem:"Which answer best evaluates rural-to-urban migration in India?",options:{A:"It can improve access to work and services for migrants, but also increase pressure on urban infrastructure and leave some rural areas with labour shortages",B:"It has no impact on either cities or rural areas",C:"It only happens because cities force people to leave",D:"It removes all inequality immediately"},correct:"A"}
     }
   ]
 };
