@@ -1889,12 +1889,18 @@ function renderAssignments() {
 
       createBtn.disabled = true; createBtn.textContent = 'Saving...';
 
-      supaInsert('assignments', {
+      var assignmentRow = {
         class_id: dashState.classId,
         title: title,
         banks: JSON.stringify(checked),
         due_date: due
-      }).then(function(rows) {
+      };
+      var saveAssignment = currentTeacher && currentTeacher.id
+        ? supaPatch('classes', dashState.classId, { teacher_user_id: currentTeacher.id }).then(function() {
+            return supaInsert('assignments', assignmentRow);
+          })
+        : supaInsert('assignments', assignmentRow);
+      saveAssignment.then(function(rows) {
         createBtn.disabled = false; createBtn.textContent = 'Set assignment \u2192';
         var newAsgn = Array.isArray(rows) ? rows[0] : rows;
         if (!newAsgn || !newAsgn.id) {
