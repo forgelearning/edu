@@ -1,5 +1,6 @@
 (function() {
   if (!window.ForgeSidebar) return;
+  if (document.querySelector('#free-name, #join-name, #join-code')) return;
   var saved = null;
   try { saved = JSON.parse(localStorage.getItem('forge-student') || 'null'); } catch(e) {}
   var anvilCount = null;
