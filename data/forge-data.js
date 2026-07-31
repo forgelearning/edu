@@ -1705,6 +1705,34 @@ BANKS["GCSE-GEO-UKLAND"] = {
       reforge:{stem:"Why does a settlement located at the confluence of two rivers face a greater flood risk than one on a single river of similar size?",options:{A:"Two rivers meeting always cancel out each other's flood risk",B:"Confluences always have lower rainfall than other locations",C:"Floodwater from both rivers can arrive and combine at the same point, increasing the total discharge the settlement must cope with",D:"Confluence location has no bearing on flood risk"},correct:"C"}
     },
     {
+      id:"GCSE-UKLAND-27",spec:"GCSE-UKLAND",stem:"A stretch of coast has a wide beach at low tide but a narrow beach after a winter storm. Which explanation best fits this change?",
+      options:{A:"Storm waves can move beach sediment offshore, narrowing the beach temporarily",B:"The beach must have changed from a depositional landform into an erosional landform",C:"Longshore drift stops whenever wave energy increases during a storm",D:"Beach width is controlled only by the geology of the cliff behind it, not by wave conditions"},
+      correct:"A",tag:"MC-COAST-06",
+      scaffold:"High-energy storm waves have greater erosive power and can move sand and shingle offshore into bars or along the coast. Some sediment may return during calmer conditions, so a narrow post-storm beach does not necessarily mean permanent cliff retreat.",
+      reforge:{stem:"What is the most likely effect of calmer, constructive waves after a storm has removed beach material?",options:{A:"They increase cliff undercutting by concentrating all energy at the cliff base",B:"They can move sediment up the beach and rebuild a wider berm through deposition",C:"They dissolve all beach sediment before it can be moved",D:"They stop sediment movement because swash is absent"},correct:"B"}
+    },
+    {
+      id:"GCSE-UKLAND-28",spec:"GCSE-UKLAND",stem:"Why can urbanisation increase flood risk during heavy rainfall?",
+      options:{A:"Urban surfaces always absorb more rainfall than woodland soils",B:"Concrete and tarmac reduce infiltration, sending water rapidly into drains",C:"Buildings lower river discharge by storing all rainfall permanently",D:"Urban areas prevent precipitation from reaching the drainage basin during storms"},
+      correct:"B",tag:"MC-RIV-04",
+      scaffold:"Impermeable surfaces reduce infiltration and interception. Water reaches drains and the river quickly, shortening lag time and increasing peak discharge. The exact response also depends on rainfall intensity, basin size and drainage design.",
+      reforge:{stem:"Which change would most likely lengthen a drainage basin's lag time?",options:{A:"Replacing grass with more tarmac",B:"Straightening every tributary channel",C:"Adding woodland and permeable surfaces that intercept and infiltrate rainfall",D:"Removing wetlands from the floodplain"},correct:"C"}
+    },
+    {
+      id:"GCSE-UKLAND-29",spec:"GCSE-UKLAND",stem:"A floodplain is useful for farming but can be risky for new housing. Which planning response best manages this conflict?",
+      options:{A:"Build all new homes on the lowest part of the floodplain",B:"Use floodplain zoning to restrict vulnerable development and keep higher-risk land for suitable uses",C:"Remove every riverbank so water can spread into urban areas",D:"Allow development wherever land prices are lowest"},
+      correct:"B",tag:"MC-RIV-05",
+      scaffold:"Floodplain zoning uses flood-risk maps to guide land use. Highly vulnerable development is restricted in areas with frequent or severe flooding, while parks, grazing or playing fields may be more appropriate. It reduces exposure rather than pretending the hazard can be eliminated.",
+      reforge:{stem:"Why might a playing field be considered more suitable than a hospital on a high-risk floodplain?",options:{A:"A playing field is less vulnerable to disruption and can tolerate occasional flooding better",B:"Hospitals never need road access during floods",C:"Playing fields prevent all floodwater from entering the river",D:"Hospitals are always built below sea level"},correct:"A"}
+    },
+    {
+      id:"GCSE-UKLAND-30",spec:"GCSE-UKLAND",stem:"Which combination best explains why a river may have greater discharge downstream?",
+      options:{A:"The channel becomes narrower and rainfall disappears",B:"Tributaries add water, while the basin collects runoff from a larger area",C:"The river loses all groundwater as it approaches the mouth",D:"Discharge rises only because bedload becomes smaller"},
+      correct:"B",tag:"MC-RIV-06",
+      scaffold:"Downstream, tributaries join the main channel and the river drains an increasingly large catchment, so total discharge generally increases. Local abstraction, evaporation or infiltration can interrupt the pattern, so this is a general trend rather than an unbreakable rule.",
+      reforge:{stem:"Which observation would be evidence that a downstream discharge trend has been interrupted by human activity?",options:{A:"A tributary joins the river",B:"The catchment becomes larger",C:"A reservoir abstracts water so discharge is lower just downstream of the dam",D:"The river reaches a wider floodplain"},correct:"C"}
+    },
+    {
       id:"GCSE-UKLAND-FB-01",spec:"GCSE-UKLAND",type:"fill_blank",
       stem:"Complete the sentence about coastal erosion processes on Holderness.",
       template:"___ ___ is the sheer force of water (and compressed air) breaking rock apart, while ___ is material carried by waves grinding against the cliff like sandpaper.",
@@ -1983,6 +2011,34 @@ BANKS["GCSE-GEO-ENQUIRY"] = {
       bank:["methods","improvements","reliable","hypotheses","graphs","aims"],
       tag:"MC-ENQ-11",
       scaffold:"Evaluation covers: accessibility of sites, sample size, duration of data collection, appropriateness of methods/questions, equipment issues, human error, and unforeseen problems on the day. It then suggests concrete improvements — larger sample, more measurements, better equipment, repeat visits — before judging overall reliability."
+    },
+    {
+      id:"GCSE-ENQ-18",spec:"GCSE-ENQ",stem:"A student surveys only people entering a shopping centre to investigate residents' views of urban regeneration. What is the main sampling problem?",
+      options:{A:"The sample may over-represent shoppers and exclude non-users, creating bias",B:"Shopping-centre surveys always produce too many numerical answers",C:"A questionnaire cannot investigate people's views",D:"The sample is automatically stratified because everyone enters through the same doors at similar times"},
+      correct:"A",tag:"MC-ENQ-12",
+      scaffold:"Sampling at one shopping centre is convenient, but it may exclude non-shoppers, older residents and people who avoid the area. The results may not represent the target population. Sampling several locations and times would improve coverage.",
+      reforge:{stem:"Which change would most improve the representativeness of this urban survey?",options:{A:"Ask only the first five people who pass the entrance",B:"Collect responses at several locations and times, with a planned sample of different resident groups",C:"Remove all questions about regeneration",D:"Use one respondent's answer as the community average"},correct:"B"}
+    },
+    {
+      id:"GCSE-ENQ-19",spec:"GCSE-ENQ",stem:"A student records traffic counts at 08:00 on one weekday and concludes that the road is always congested. Which evaluation is strongest?",
+      options:{A:"The conclusion is fully reliable because 08:00 is a precise time",B:"Traffic counts cannot be used in geographical enquiry",C:"One time and one day may not represent daily or weekly variation; repeated counts would improve reliability",D:"The student should remove all numerical data from the investigation"},
+      correct:"C",tag:"MC-ENQ-13",
+      scaffold:"A single time-point can capture a morning peak but cannot establish that congestion is constant. Traffic varies by day, weather, holidays, incidents and school terms. Repeating counts at different times and on more than one day would test whether the pattern is typical.",
+      reforge:{stem:"Which evidence would best test whether a morning traffic peak is typical?",options:{A:"Repeat counts at the same time on several weekdays and compare them with off-peak readings",B:"Count vehicles once at midnight",C:"Use a photograph of the road with no time recorded",D:"Ask one driver whether the road is usually busy"},correct:"A"}
+    },
+    {
+      id:"GCSE-ENQ-20",spec:"GCSE-ENQ",stem:"A choropleth map shades areas according to average income. Which design choice is most important for interpreting it fairly?",
+      options:{A:"Use as many decorative colours as possible",B:"Choose sensible class intervals and include a clear key so shade differences represent meaningful income ranges",C:"Leave out the map title because the pattern should speak for itself",D:"Use one identical shade for every area to avoid bias"},
+      correct:"B",tag:"MC-ENQ-14",
+      scaffold:"A choropleth's pattern depends heavily on its classification. Sensible, clearly labelled class intervals and a readable key allow the reader to interpret differences. Arbitrary intervals can exaggerate or hide spatial patterns.",
+      reforge:{stem:"What could happen if a map uses very wide income classes for some values and very narrow classes for others without explanation?",options:{A:"The map may exaggerate some differences and conceal others, making the spatial pattern misleading",B:"The map becomes automatically more accurate because it has fewer labels",C:"Class intervals have no effect on a choropleth pattern",D:"Every area must appear in a separate colour"},correct:"A"}
+    },
+    {
+      id:"GCSE-ENQ-21",spec:"GCSE-ENQ",stem:"A fieldwork group finds that two variables have a strong correlation. What conclusion is scientifically safest?",
+      options:{A:"The first variable definitely caused the second",B:"The variables are unrelated because correlation is never useful",C:"The pattern suggests a relationship, but other factors and the possibility of coincidence must be considered",D:"The data can be accepted without checking sample size or anomalies"},
+      correct:"C",tag:"MC-ENQ-15",
+      scaffold:"Correlation shows that two variables change together; it does not by itself prove causation. A good conclusion describes the relationship, considers anomalies and sample size, and identifies other possible explanations.",
+      reforge:{stem:"Which additional step would make a correlation-based conclusion more convincing?",options:{A:"Check sample size, identify anomalies and compare the relationship with a plausible geographical explanation",B:"Delete results that do not fit the expected pattern",C:"Change the axis labels until the correlation looks stronger",D:"Treat the correlation as proof without considering other variables"},correct:"A"}
     }
   ]
 };
@@ -2364,6 +2420,34 @@ BANKS["GCSE-GEO-UKHUMAN"] = {
       correct:"D",tag:"MC-UKHUMAN-KT-10",
       scaffold:"The Commonwealth's shared colonial history explains why post-war UK immigration (e.g. the Windrush generation from the Caribbean) often came from former colonies — historical ties, language and existing community networks make migration between these countries more likely.",
       reforge:{stem:"Why do patterns of UK immigration often link back to former British colonies?",options:{A:"The Commonwealth only includes European countries",B:"Shared history through the Commonwealth — including language and existing community ties — has made migration from these countries to the UK more likely",C:"The Commonwealth is unrelated to migration patterns",D:"Commonwealth countries are legally barred from migrating to the UK"},correct:"B"}
+    },
+    {
+      id:"GCSE-UKHUMAN-17",spec:"GCSE-UKHUMAN",stem:"Why did the Jubilee Line Extension support regeneration in London's Docklands?",
+      options:{A:"It improved access to jobs and investment, making the area more attractive to businesses and residents",B:"It moved every Docklands resident into the countryside",C:"It removed the need for any new housing or services",D:"It caused container shipping to return to the old docks"},
+      correct:"A",tag:"MC-UKHUMAN-11",
+      scaffold:"Better transport can create a multiplier effect: it connects residents to employment, attracts firms and encourages further investment in housing and services. The Jubilee Line Extension was one part of Docklands regeneration, alongside the DLR, Canary Wharf development and environmental improvement.",
+      reforge:{stem:"Which outcome would provide evidence of a transport-led multiplier effect in Docklands?",options:{A:"A new station opens but no businesses, jobs or residents follow",B:"Improved access encourages offices to locate nearby, creating jobs and demand for shops and services",C:"All transport investment reduces land values",D:"The railway operates without connecting to any other part of London"},correct:"B"}
+    },
+    {
+      id:"GCSE-UKHUMAN-18",spec:"GCSE-UKHUMAN",stem:"Why can tourism make Cornwall's economy vulnerable despite creating jobs?",
+      options:{A:"Tourism guarantees stable employment in every season",B:"Tourism removes the need for transport and internet links",C:"Seasonal demand can produce insecure work and a downturn can reduce visitors and local income",D:"Tourism has no relationship with house prices or land use"},
+      correct:"C",tag:"MC-UKHUMAN-12",
+      scaffold:"Tourism diversifies Cornwall beyond declining mining and fishing, but it can create dependence on seasonal and discretionary spending. Jobs may be temporary, homes may become second residences, and bad weather or recession can reduce demand.",
+      reforge:{stem:"Which policy would best reduce Cornwall's dependence on seasonal tourism?",options:{A:"Develop year-round sectors such as renewable energy, digital work and education alongside tourism",B:"Convert all local housing into holiday lets",C:"Close transport links outside the summer season",D:"Reduce the range of employment available to local residents"},correct:"A"}
+    },
+    {
+      id:"GCSE-UKHUMAN-19",spec:"GCSE-UKHUMAN",stem:"How can rural-urban migration affect the population structure of both places?",
+      options:{A:"It always increases the proportion of working-age people in rural areas",B:"It can remove younger adults from rural areas while increasing the working-age population of towns and cities",C:"It changes population size but never age structure",D:"It causes identical population changes in origin and destination areas"},
+      correct:"B",tag:"MC-UKHUMAN-13",
+      scaffold:"Migrants are often young adults, so origin areas may experience ageing and a smaller working-age population, while destinations gain workers and consumers. Migration can reshape both population size and age structure.",
+      reforge:{stem:"A rural district loses many young adults to cities. Which consequence is most plausible if the pattern continues?",options:{A:"A larger elderly share and pressure on services such as healthcare and transport",B:"A guaranteed increase in local school enrolment",C:"A younger workforce without any out-migration",D:"No demographic change because only population totals matter"},correct:"A"}
+    },
+    {
+      id:"GCSE-UKHUMAN-20",spec:"GCSE-UKHUMAN",stem:"What is one likely consequence when house prices rise quickly in a popular rural area?",
+      options:{A:"Local workers always become more able to buy homes",B:"Second homes and retirement demand can reduce the supply of affordable housing for younger residents",C:"Rural services automatically expand because prices rise",D:"Population pressure disappears as villages become cheaper"},
+      correct:"B",tag:"MC-UKHUMAN-14",
+      scaffold:"Counter-urbanisation, retirement migration and second-home ownership can increase demand and prices. Existing owners may gain, but local young adults and lower-income workers can be priced out, while seasonal occupancy can weaken year-round demand for services.",
+      reforge:{stem:"Which finding would best support the claim that rising second-home ownership is affecting a rural community?",options:{A:"A higher proportion of homes are empty outside the holiday season while local rents and prices rise",B:"Every village shop reports longer opening hours all year",C:"More local young adults can afford to buy their first home",D:"House prices fall as visitor numbers increase"},correct:"A"}
     }
   ]
 };
@@ -7719,4 +7803,3 @@ SUBJECTS["mandarin"] = {
   banks: [],
   readerMode: true
 };
-
