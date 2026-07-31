@@ -320,6 +320,15 @@ function renderDashboard(){
   var activeMCs=Object.keys(mcData).filter(function(t){return mcData[t].fires>0&&mcData[t].streak<3;});
   if (window.ForgeSidebar) ForgeSidebar.setBadge('anvil', activeMCs.length || null);
   try { localStorage.setItem('forge-anvil-open', String(activeMCs.length)); } catch(e) {}
+  if (st.classId) {
+    fetch(SUPABASE_URL+'/rest/v1/assignments?select=id,due_date&class_id=eq.'+st.classId, {
+      headers:{apikey:'sb_publishable_cPt3HxjC8-1lN8hk30BKKA_0DNow21g',Authorization:'Bearer sb_publishable_cPt3HxjC8-1lN8hk30BKKA_0DNow21g'}
+    }).then(function(r){return r.json();}).then(function(rows){
+      var today=new Date(); today.setHours(0,0,0,0);
+      var count=(Array.isArray(rows)?rows:[]).filter(function(a){return !a.due_date||new Date(a.due_date)>=today;}).length;
+      if (window.ForgeSidebar) ForgeSidebar.setBadge('assignments', count || null);
+    }).catch(function(){});
+  }
   // Strongest subject — highest accuracy among subjects with a real sample size
   var subjectData={};
   responses.forEach(function(r){
