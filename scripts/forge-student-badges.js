@@ -3,6 +3,7 @@
   if (document.querySelector('#free-name, #join-name, #join-code')) return;
   var saved = null;
   try { saved = JSON.parse(localStorage.getItem('forge-student') || 'null'); } catch(e) {}
+  if (!saved) return;
   var anvilCount = null;
   try { anvilCount = parseInt(localStorage.getItem('forge-anvil-open') || '', 10); } catch(e) {}
   if (!isNaN(anvilCount)) ForgeSidebar.setBadge('anvil', anvilCount || null);
