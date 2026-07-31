@@ -9,6 +9,7 @@
 <body>
 <script src="scripts/forge-logo.js"></script><script src="scripts/forge-sidebar.js"></script>
 <script>ForgeSidebar.mount({active:'assignments',items:[{key:'dashboard',href:'student-dashboard.html',label:'Dashboard'},{key:'forge',href:'forge-quiz.html',label:'Forge'},{key:'assignments',href:'assignments.html',label:'Assigned'},{key:'anvil',href:'anvil.html',label:'Anvil'},{key:'crucible',href:'crucible.html',label:'Crucible'}],footerItems:[{key:'profile',href:'profile.html',label:'Profile'}]});</script>
+<script src="scripts/forge-student-badges.js"></script>
 <main class="wrap"><div class="eyebrow">Student work</div><h1>Assigned</h1><p style="margin-top:8px">Your teacher’s current assignments appear here. The full course remains available in <a href="forge-quiz.html">Forge</a>.</p><div id="assignments"><div class="empty">Loading assignments…</div></div></main>
 <script>
 var SUPABASE_URL='https://crysulmbaadjkymcjrew.supabase.co';var SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFub24iLCJpYXQiOjE3ODQyNDUzMzAsImV4cCI6MjA5OTgyMTMzMH0.Q69MKJRJ6_iEYkqJYXjn8RBhKhstAZShtmf0NiYM-8Vk';var el=document.getElementById('assignments');var saved=null;try{saved=JSON.parse(localStorage.getItem('forge-student')||'null')}catch(e){}

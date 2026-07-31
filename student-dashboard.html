@@ -160,6 +160,7 @@ ForgeSidebar.mount({
   ]
 });
 </script>
+<script src="scripts/forge-student-badges.js"></script>
 
 <div class="wrap">
   <div id="app"></div>
@@ -318,6 +319,7 @@ function renderDashboard(){
   });
   var activeMCs=Object.keys(mcData).filter(function(t){return mcData[t].fires>0&&mcData[t].streak<3;});
   if (window.ForgeSidebar) ForgeSidebar.setBadge('anvil', activeMCs.length || null);
+  try { localStorage.setItem('forge-anvil-open', String(activeMCs.length)); } catch(e) {}
   if (st.classId) {
     fetch(SUPABASE_URL+'/rest/v1/assignments?select=id,archived,due_date&class_id=eq.'+st.classId, {headers:hdrs})
       .then(function(r){return r.json();}).then(function(rows){
