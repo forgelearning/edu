@@ -217,6 +217,13 @@ var ForgeAuth = {
       }).catch(function() {});
     }
     _clearAuthSession();
+    // Derived navigation state must never survive into the next student's
+    // session. The Anvil count is only a local display cache.
+    try { localStorage.removeItem('forge-anvil-open'); } catch(e) {}
+    if (window.ForgeSidebar) {
+      ForgeSidebar.setBadge('anvil', null);
+      ForgeSidebar.setBadge('assignments', null);
+    }
   },
 
   currentUser: function() {

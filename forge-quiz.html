@@ -677,7 +677,13 @@ function registerFreeStudent(name, token) {
 var app = document.getElementById('app');
 
 function render() {
-  if (requestedBank && BANKS[requestedBank] && state.studentName && state.phase !== 'quiz') {
+  if (requestedBank && BANKS[requestedBank] && (state.studentName || state.classId) && state.phase !== 'quiz') {
+    // Assignment links are bank-specific. Establish both the bank and its
+    // subject before starting so restoration cannot fall back to the full
+    // subject bank list.
+    state.subject = getSubjectForBank(requestedBank);
+    var requestedClass = ForgeClasses.forSubject(state.subject);
+    if (requestedClass) activateClass(requestedClass);
     state.bank = requestedBank;
     state.questions = weightedShuffle(BANKS[requestedBank].questions.filter(function(q){return !q.type||q.type==='fill_blank';}), state.weightMap||{});
     state.idx = 0; state.score = 0; state.phase = 'quiz';

@@ -330,10 +330,10 @@ function renderDashboard(){
       try { completed=JSON.parse(localStorage.getItem('forge-completed-banks:'+String(st.studentId||'anon')+':'+String(st.classId||'none'))||'{}'); } catch(e) {}
       var count=(Array.isArray(rows)?rows:[]).filter(function(a){
         var banks=[]; try { banks=typeof a.banks==='string'?JSON.parse(a.banks):a.banks||[]; } catch(e) {}
-        var incomplete=!banks.length || !banks.every(function(bank){
-          if (completed[bank]) return true;
+        var incomplete=!banks.length || banks.some(function(bank){
+          if (completed[bank]) return false;
           var bankData=BANKS[bank];
-          if (!bankData) return false;
+          if (!bankData) return true;
           var ids={};
           responses.forEach(function(response){
             if (response.bank===bank) ids[String(response.question_id||'').replace(/-RF$/,'')]=true;
