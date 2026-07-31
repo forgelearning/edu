@@ -1115,9 +1115,9 @@ const SUBJECTS = {
   },
   "gcse-geo": {
     label: "GCSE Geography",
-    sub: "Edexcel B 1GB0 — Paper 1 (Hazardous Earth, Development Dynamics, Urbanising World) & Paper 2 (UK Physical & Human Landscapes, Fieldwork)",
+    sub: "Edexcel B 1GB0 — Paper 1 (Hazardous Earth, Development Dynamics, Urbanising World), Paper 2 (UK Physical & Human Landscapes, Fieldwork) & Paper 3 (Biosphere, Forests, Energy)",
     color: "#0f766e",
-    banks: ["GCSE-GEO-HAZ", "GCSE-GEO-DEV", "GCSE-GEO-INDIA", "GCSE-GEO-URB", "GCSE-GEO-UKLAND", "GCSE-GEO-UKHUMAN", "GCSE-GEO-ENQUIRY", "GCSE-GEO-RIVERFIELD", "GCSE-GEO-URBFIELD"]
+    banks: ["GCSE-GEO-HAZ", "GCSE-GEO-DEV", "GCSE-GEO-INDIA", "GCSE-GEO-URB", "GCSE-GEO-UKLAND", "GCSE-GEO-UKHUMAN", "GCSE-GEO-ENQUIRY", "GCSE-GEO-RIVERFIELD", "GCSE-GEO-URBFIELD", "GCSE-GEO-BIOSPHERE", "GCSE-GEO-FORESTS", "GCSE-GEO-ENERGY"]
   },
   "gcse-econ": {
     label: "GCSE Economics",
@@ -2583,6 +2583,387 @@ BANKS["GCSE-GEO-INDIA"] = {
       bank:["BRICS","IMF","donor","ASEAN","WTO","borrower"],
       tag:"MC-IND-13",
       scaffold:"India's memberships: UN (and Security Council), IMF, World Bank, WTO, Asian Development Bank, G20, BRICS, with growing influence in ASEAN. Being simultaneously an aid recipient (US$4,240m ODA in 2017) and an aid donor is a defining feature of an emerging country."
+    }
+  ]
+};
+
+BANKS["GCSE-GEO-BIOSPHERE"] = {
+  label: "People and the Biosphere",
+  color: "#0f766e",
+  questions: [
+    {
+      id:"GCSE-BIO-01",spec:"GCSE-BIO",stem:"What is the main factor determining the global distribution of biomes?",
+      options:{A:"Climate — temperature and precipitation levels shape the length of the growing season and therefore plant and animal biodiversity",B:"The distance a country is from the equator has no effect on its biome",C:"Government policy decides which biome forms in a country",D:"Biome type is determined only by soil pH"},
+      correct:"A",tag:"MC-BIO-01",
+      scaffold:"Climate (temperature and precipitation) is the primary control on biome distribution: it determines the growing season length, which drives plant growth, which in turn determines biodiversity — the hotter and wetter a place is, the more plant species it supports, providing more food and habitats and so more animal species too. Local factors (altitude, soil/rock type, drainage, continentality, ocean currents) then create variation within that broad climatic pattern.",
+      reforge:{stem:"Two locations are at a similar latitude but one is far inland (continental) and one is on the coast. Why might their biomes differ?",options:{A:"Continentality means inland areas heat up and cool down faster, producing a more extreme temperature range than the moderated coastal climate",B:"Latitude is the only factor that ever affects climate",C:"Inland and coastal areas always share an identical biome",D:"Ocean currents only affect biomes at the equator"},correct:"A"}
+    },
+    {
+      id:"GCSE-BIO-02",spec:"GCSE-BIO",stem:"A tropical rainforest and a hot desert are both located close to the equator. Why is their biodiversity so different?",
+      options:{A:"The rainforest's high year-round rainfall and warmth support far greater plant growth than the desert's low precipitation, providing more habitats and food for animals",B:"Biodiversity is unrelated to precipitation",C:"Deserts always have higher biodiversity than rainforests",D:"Latitude alone determines biodiversity regardless of rainfall"},
+      correct:"A",tag:"MC-BIO-02",
+      scaffold:"Tropical rainforest: over 2000mm rainfall annually, hot and wet year-round, no dormant season — supports roughly 50% of the world's plant and animal species. Hot desert: below 250mm rainfall, extreme temperature swings — low biodiversity (cacti, yucca, scorpions, camels). Both sit at similar latitudes, proving precipitation, not latitude alone, is doing the work here.",
+      reforge:{stem:"The taiga and temperate forest are both found in the northern hemisphere, but the taiga has lower biodiversity. What is the main reason?",options:{A:"The taiga's short growing season (2–3 months) and harsh cold climate limit plant growth to mainly coniferous trees, compared with the temperate forest's 6–8 month growing season",B:"The taiga receives more rainfall than the temperate forest",C:"The taiga is located closer to the equator",D:"Biodiversity is identical in all forest biomes"},correct:"A"}
+    },
+    {
+      id:"GCSE-BIO-03",spec:"GCSE-BIO",stem:"Which local factor explains why biome type can change dramatically over a short horizontal distance in a mountainous region?",
+      options:{A:"Altitude — temperature decreases with height, so vegetation zones change from forest at the base to tundra-like conditions near the summit",B:"Ocean currents, since mountains are never affected by the sea",C:"Continentality, which only applies to low-lying areas",D:"Latitude, since altitude and latitude are the same thing"},
+      correct:"A",tag:"MC-BIO-03",
+      scaffold:"Local factors that modify biome distribution within the broader climatic pattern: altitude (temperature falls as height increases, compressing multiple biome-like zones onto one mountainside), rock/soil type (pH and mineral content affect which plants grow), drainage (soil moisture affects plant type), continentality, and ocean currents (warm/cold currents heat or cool nearby land).",
+      reforge:{stem:"A cold ocean current flows along a coastline that would otherwise be warm enough for tropical vegetation. What effect is this local factor likely to have?",options:{A:"It cools the adjacent land, potentially creating a cooler, drier biome than the latitude alone would predict",B:"Ocean currents have no measurable effect on nearby land climate",C:"It would make the coastline hotter than inland areas at the same latitude",D:"It would increase biodiversity regardless of temperature"},correct:"A"}
+    },
+    {
+      id:"GCSE-BIO-04",spec:"GCSE-BIO",stem:"In a tropical rainforest, vegetation is cleared. Explain the immediate impact on soil using the concept of interdependence.",
+      options:{A:"With no leaf litter or roots being added, nutrient supply to the soil is disrupted, and the exposed soil is also more vulnerable to erosion and leaching",B:"Soil quality automatically improves once vegetation is removed",C:"Removing vegetation has no effect on soil since they are separate, unconnected systems",D:"Soil nutrients increase because there is no longer any competition from plant roots"},
+      correct:"A",tag:"MC-BIO-04",
+      scaffold:"Interdependence means biotic and abiotic components of a biome are interlinked, so a change in one affects the others. Soil (abiotic) depends on dead organic matter (biotic) for nutrients via decomposition. Removing vegetation cuts off that nutrient supply, exposes soil directly to sun and rain (increasing erosion), and reduces the biological weathering that builds new soil in the first place.",
+      reforge:{stem:"Following the same clearance, what is the most likely knock-on effect on local rainfall patterns?",options:{A:"Reduced transpiration from fewer plants can lead to less atmospheric moisture and therefore less frequent, less reliable precipitation",B:"Rainfall would increase because there is less vegetation to intercept it",C:"Rainfall patterns are entirely unrelated to vegetation cover",D:"Soil erosion causes rainfall to increase"},correct:"A"}
+    },
+    {
+      id:"GCSE-BIO-05",spec:"GCSE-BIO",stem:"Which is an example of a 'regulating' ecosystem service, as opposed to a 'provisioning' one?",
+      options:{A:"Waste decomposition and maintenance of water quality",B:"Timber harvested for construction",C:"Fruit and nuts collected for food",D:"Fuel wood collected for cooking"},
+      correct:"A",tag:"MC-BIO-05",
+      scaffold:"The four ecosystem service categories: provisioning (goods — timber, food, water, medicine, fuel), regulating (climate, water quality, waste decomposition, soil quality, disease/pest control, air quality), cultural (health/spiritual benefits, recreation, employment, education), and supporting (soil formation, nutrient cycling). B, C and D are all tangible goods, so they are provisioning services.",
+      reforge:{stem:"A rainforest's role in absorbing CO2 through photosynthesis and helping maintain the balance of atmospheric gases is an example of which ecosystem service category?",options:{A:"Regulating — it controls a natural process (climate/atmospheric composition) rather than providing a tangible good",B:"Provisioning, since gases are a tangible good",C:"Cultural, since it benefits human wellbeing",D:"None of these categories apply to gases"},correct:"A"}
+    },
+    {
+      id:"GCSE-BIO-06",spec:"GCSE-BIO",stem:"The Awá people of the Amazon rely on the rainforest for shelter, rope, food and fuel. Why are indigenous communities like the Awá especially vulnerable to commercial exploitation of the biosphere?",
+      options:{A:"Their livelihoods depend directly on ecosystem goods and services, so deforestation or pollution removes the very resources they rely on for survival",B:"Indigenous communities do not use any natural resources",C:"Commercial exploitation always benefits indigenous communities financially",D:"The Awá import all of their food and materials from cities"},
+      correct:"A",tag:"MC-BIO-06",
+      scaffold:"The Awá depend on the rainforest directly: branches and palm leaves for shelters (tapā í), palm fibres for rope and hammocks, wood for fires, and food from honey, fish, berries (açaí), tapir, deer and howler monkeys. Commercial exploitation (mining, agriculture, logging, HEP) removes exactly these resources, forcing communities to abandon traditional lifestyles when food sources disappear.",
+      reforge:{stem:"A mining company clears forest to build access roads near an indigenous community's territory. Which secondary impact is most likely to follow?",options:{A:"Toxic waste chemicals entering the river system, damaging both the aquatic ecosystem and the community's water and food supply",B:"An automatic increase in the community's traditional food sources",C:"No impact, since mining only affects the exact area being mined",D:"Improved biodiversity as a direct result of road building"},correct:"A"}
+    },
+    {
+      id:"GCSE-BIO-07",spec:"GCSE-BIO",stem:"Why does the construction of a hydroelectric dam on a river affect ecosystems even far downstream?",
+      options:{A:"The dam traps sediment and can block fish migration routes, altering the flow of nutrients and disrupting species like salmon that need to travel upstream",B:"Dams only affect the exact location where they are built",C:"HEP generates no environmental impact once construction is finished",D:"Dams increase the amount of sediment reaching downstream ecosystems"},
+      correct:"A",tag:"MC-BIO-07",
+      scaffold:"HEP impacts: forest clearance for the dam/reservoir, flooding of habitats, loss of food sources, a physical barrier to migratory fish (e.g. salmon), and sediment trapped behind the dam rather than replenishing the ecosystems and floodplains downstream. This is a good example of how one intervention creates a chain of effects across a whole river system, not just the dam site.",
+      reforge:{stem:"Which statement best explains why cleared biomes are difficult to fully restore once exploited?",options:{A:"The interdependent relationships between soil, vegetation, and species take a very long time to re-establish, so the ecosystem cannot immediately return to providing the same goods and services",B:"Cleared land regenerates to its original state within a few months",C:"Ecosystem restoration has no relationship to how long the land was exploited",D:"Once cleared, biomes are legally prevented from ever regenerating"},correct:"A"}
+    },
+    {
+      id:"GCSE-BIO-08",spec:"GCSE-BIO",stem:"How does deforestation directly affect the global carbon cycle?",
+      options:{A:"It reduces the number of carbon sinks (plants and soils) able to absorb CO2 from the atmosphere, while burning cleared biomass releases stored carbon directly",B:"Deforestation removes CO2 from the atmosphere more effectively than intact forest",C:"Trees play no role in the carbon cycle",D:"Deforestation has no effect on atmospheric CO2 levels"},
+      correct:"A",tag:"MC-BIO-08",
+      scaffold:"Plants and soils act as carbon sinks — absorbing CO2 during photosynthesis, storing it in biomass, and (over long timescales) in soil and eventually fossil fuels. Human activity increases atmospheric CO2 two ways: burning biomass/fossil fuels releases stored carbon directly, and deforestation simply removes the sinks that would otherwise keep absorbing it — a double impact.",
+      reforge:{stem:"Why might felling trees for agriculture have a bigger long-term climate impact than the carbon released by the felling itself?",options:{A:"The loss of a carbon sink means future CO2 emissions are no longer absorbed as effectively, compounding the initial release",B:"Agricultural land absorbs more CO2 than forest",C:"Felling trees permanently removes CO2 from the atmosphere",D:"There is no long-term impact beyond the immediate release"},correct:"A"}
+    },
+    {
+      id:"GCSE-BIO-09",spec:"GCSE-BIO",stem:"Why is soil in a biome that has recently been deforested likely to become less fertile over time?",
+      options:{A:"Nutrients are usually supplied through decomposition of leaf litter and dead organic matter; without vegetation, this input stops and existing nutrients are washed away by leaching and erosion",B:"Soil fertility always increases once trees are removed",C:"Soil fertility is entirely unrelated to vegetation cover",D:"Deforestation adds nutrients to soil through increased sunlight exposure"},
+      correct:"A",tag:"MC-BIO-09",
+      scaffold:"The nutrient cycle depends on continuous input from decomposing organic matter. Remove the vegetation and that supply stops; the exposed soil surface is also more prone to leaching (nutrients washed down through the soil) and surface erosion (topsoil washed away entirely) since there's no canopy or root system to protect and hold it in place.",
+      reforge:{stem:"Why are tropical rainforest soils described as particularly vulnerable when vegetation is removed, even though rainforests have such high biodiversity?",options:{A:"Most nutrients in a rainforest are stored in the living biomass rather than the soil itself, so once the biomass is removed there is very little nutrient reserve left in the ground",B:"Rainforest soils are naturally the most fertile soils in the world",C:"Rainforest soils contain no organic matter at all",D:"Removing rainforest vegetation has no effect on soil nutrients"},correct:"A"}
+    },
+    {
+      id:"GCSE-BIO-10",spec:"GCSE-BIO",stem:"According to Malthus's theory (1798), what would eventually happen if population growth outpaced food supply?",
+      options:{A:"A 'Malthusian catastrophe' — famine, disease or war acting as positive checks that increase the death rate and bring population back into balance with resources",B:"Technology would always increase food supply fast enough to prevent any problem",C:"Population growth would have no relationship to food supply",D:"Food supply would automatically double whenever population doubled"},
+      correct:"A",tag:"MC-BIO-10",
+      scaffold:"Malthus (1798): population grows faster than food supply, so eventually there won't be enough food, triggering 'positive checks' (famine, disease, war) that raise the death rate, or 'preventative checks' that lower the birth rate — either way, this brings population back in line with resources. Malthus's original predictions proved wrong because he didn't foresee later agricultural technology, but neo-Malthusians argue his logic still applies given finite land and rising food prices today.",
+      reforge:{stem:"Neo-Malthusians point to modern famines as evidence supporting Malthus's original theory. What is their key argument?",options:{A:"Most available agricultural land has now been used, fertile land is declining, and food prices are rising while population keeps growing — so a Malthusian check may still occur",B:"Technology has permanently solved the problem Malthus described, so neo-Malthusian concerns are baseless",C:"Famines have never occurred since 1798, disproving Malthus entirely",D:"Neo-Malthusians agree completely with Boserup's theory instead"},correct:"A"}
+    },
+    {
+      id:"GCSE-BIO-11",spec:"GCSE-BIO",stem:"How does Boserup's theory (1965) directly contradict Malthus's view of population and resources?",
+      options:{A:"Boserup argues population growth stimulates technological innovation that increases food production, rather than leading inevitably to famine",B:"Boserup agrees entirely with Malthus that population growth always outpaces resources",C:"Boserup argues population and food supply are completely unrelated",D:"Boserup predicts food supply will decline as population grows, just as Malthus did"},
+      correct:"A",tag:"MC-BIO-11",
+      scaffold:"Boserup (1965) is the optimistic counter to Malthus's pessimism: as population grows, necessity drives innovation — new farming technology, more efficient use of resources, and a shift from non-renewable to renewable resources — increasing the food/resource supply to match demand, rather than being outpaced by it.",
+      reforge:{stem:"The Green Revolution of the 1960s–70s saw crop yields rise dramatically through new seed varieties, fertilisers and irrigation as global population grew. Which theory does this best support?",options:{A:"Boserup's theory — population pressure stimulated technological innovation that increased food supply",B:"Malthus's theory — it demonstrates a Malthusian catastrophe occurring exactly as predicted",C:"Neither theory, since crop yields are unrelated to population",D:"It disproves Boserup by showing technology cannot increase food supply"},correct:"A"}
+    },
+    {
+      id:"GCSE-BIO-12",spec:"GCSE-BIO",stem:"Why does increasing global wealth generally lead to greater pressure on the biosphere's resources?",
+      options:{A:"Wealthier populations consume more food, water, energy and consumer goods, and live in larger homes — all of which increase resource extraction and waste",B:"Wealth has no relationship to resource consumption",C:"Wealthier countries always use fewer natural resources than poorer countries",D:"Increased wealth automatically reduces a population's ecological footprint to zero"},
+      correct:"A",tag:"MC-BIO-12",
+      scaffold:"Rising average wealth increases demand across the board: more spending on food, water (appliances like dishwashers), larger homes (more land), energy (production requires land for power stations/wind/solar farms), and consumer goods (more industrial production and waste). Combined with population growth reaching 8 billion in 2022 and rising urbanisation (55%), this compounds the pressure on biomes worldwide.",
+      reforge:{stem:"Which combination of trends explains the sharpest recent rise in global resource demand?",options:{A:"Population growth combined with rising average wealth and increasing urbanisation, all occurring simultaneously",B:"A falling global population with static wealth levels",C:"Declining urbanisation with no change in wealth",D:"Resource demand is unrelated to any demographic or economic trend"},correct:"A"}
+    },
+    {
+      id:"GCSE-BIO-FB-01",spec:"GCSE-BIO",type:"fill_blank",
+      stem:"Complete the sentence about factors affecting biome distribution.",
+      template:"The main factor affecting biome distribution is ___, but local factors such as ___, rock and soil type, drainage and ___ also cause variation.",
+      blanks:["climate","altitude","continentality"],
+      bank:["climate","altitude","continentality","population","currency","transport"],
+      tag:"MC-BIO-01",
+      scaffold:"Climate (temperature and precipitation) sets the broad global pattern of biomes; altitude, rock/soil type, drainage, continentality and ocean currents then create local variation within and across that pattern."
+    },
+    {
+      id:"GCSE-BIO-FB-02",spec:"GCSE-BIO",type:"fill_blank",
+      stem:"Complete the sentence about ecosystem services.",
+      template:"___ services are tangible products like timber and food. ___ services include climate control and waste decomposition. ___ services include recreation and education.",
+      blanks:["Provisioning","Regulating","Cultural"],
+      bank:["Provisioning","Regulating","Cultural","Supporting","Extracting","Economic"],
+      tag:"MC-BIO-05",
+      scaffold:"The four ecosystem service categories: provisioning (goods — timber, food, water, medicine), regulating (climate, water/air quality, waste decomposition, pest control), cultural (health, recreation, employment, heritage, education), and supporting (soil formation, nutrient cycling)."
+    },
+    {
+      id:"GCSE-BIO-FB-03",spec:"GCSE-BIO",type:"fill_blank",
+      stem:"Complete the sentence about deforestation and the carbon cycle.",
+      template:"Plants and soils act as carbon ___, absorbing CO2 during ___. Deforestation removes this ability, while burning ___ releases stored carbon directly into the atmosphere.",
+      blanks:["sinks","photosynthesis","biomass"],
+      bank:["sinks","photosynthesis","biomass","sources","respiration","minerals"],
+      tag:"MC-BIO-08",
+      scaffold:"Plants absorb CO2 during photosynthesis, storing carbon in biomass and eventually soil — this makes vegetated biomes carbon sinks. Deforestation both removes this ongoing absorption and, if the cleared biomass is burned, releases the carbon that was already stored."
+    },
+    {
+      id:"GCSE-BIO-FB-04",spec:"GCSE-BIO",type:"fill_blank",
+      stem:"Complete the sentence about population and resource theories.",
+      template:"___ took a pessimistic view, arguing population growth would outpace food supply leading to a catastrophe. ___ took an optimistic view, arguing population growth stimulates ___ to increase food production.",
+      blanks:["Malthus","Boserup","technology"],
+      bank:["Malthus","Boserup","technology","government","migration","trade"],
+      tag:"MC-BIO-11",
+      scaffold:"Malthus (1798, pessimistic): population outpaces food, causing famine/disease/war. Boserup (1965, optimistic): population pressure drives technological innovation that raises food production to meet demand. Both theories focus on food but can be applied to other resources too."
+    }
+  ]
+};
+
+BANKS["GCSE-GEO-FORESTS"] = {
+  label: "Forests Under Threat",
+  color: "#0f766e",
+  questions: [
+    {
+      id:"GCSE-FOR-01",spec:"GCSE-FOR",stem:"In a tropical rainforest food web, the Zam tree relies on agouti to disperse its seeds, and leaf-cutter ants rely on Zam tree seedlings. If agouti are overhunted, what is the most likely knock-on effect?",
+      options:{A:"Fewer Zam trees germinate, reducing food for leaf-cutter ants and, in turn, the tree frogs and snakes further along the food chain",B:"The Zam tree population would increase because there is less competition for its seeds",C:"Leaf-cutter ant numbers would rise because they are unaffected by tree numbers",D:"There would be no effect on any other species in the food web"},
+      correct:"A",tag:"MC-FOR-01",
+      scaffold:"This is a classic keystone-species/interdependence chain question. Agouti disperse Zam tree seeds → fewer agouti means fewer seeds spread and fewer new trees germinate → less food for leaf-cutter ants → less food for tree frogs that eat the ants → less food for snakes that eat the frogs. A single change ripples through the whole food web because rainforest components are interdependent.",
+      reforge:{stem:"The Zam tree is pollinated by a specific butterfly species, and beetles lay eggs in that butterfly's faeces. If the Zam tree population declines, what happens to the beetle population?",options:{A:"It is likely to decline too, since fewer Zam tree flowers mean fewer butterflies, and beetles depend indirectly on the butterflies for their egg-laying habitat",B:"Beetle numbers are entirely unrelated to tree or butterfly populations",C:"Beetle numbers would increase due to more available habitat",D:"Beetles would switch permanently to a completely different food source with no population change"},correct:"A"}
+    },
+    {
+      id:"GCSE-FOR-02",spec:"GCSE-FOR",stem:"Which adaptation helps tropical rainforest trees such as those with buttress roots survive in the ecosystem?",
+      options:{A:"Buttress roots provide extra support above ground for very tall trees, since their below-ground roots are too shallow to anchor them alone",B:"Buttress roots allow trees to store water during droughts",C:"Buttress roots help trees avoid competition for sunlight",D:"Buttress roots protect trees from cold winter temperatures"},
+      correct:"A",tag:"MC-FOR-02",
+      scaffold:"Rainforest plant adaptations: waxy leaves with drip tips (shed water fast, preventing mould/leaf damage), buttress roots (extra above-ground support since soil nutrients and therefore roots stay shallow), lianas (vines climbing tall trees to reach sunlight), epiphytes (grow on trunks/branches, absorbing nutrients from air/rain/debris), and smooth trunks (reduce epiphyte colonisation).",
+      reforge:{stem:"A sloth has algae growing in its fur, and a toucan has an unusually large bill. What do these adaptations have in common?",options:{A:"Both help the animal survive specific challenges of rainforest life — camouflage from predators for the sloth, and reaching/cracking fruit and nuts for the toucan",B:"Both adaptations are found only in desert animals",C:"Neither adaptation provides any survival advantage",D:"Both adaptations evolved specifically to cope with cold temperatures"},correct:"A"}
+    },
+    {
+      id:"GCSE-FOR-03",spec:"GCSE-FOR",stem:"Why is nutrient cycling in a tropical rainforest described as 'rapid', despite the soil itself being relatively infertile?",
+      options:{A:"High temperature and moisture cause rapid decomposition and plant uptake, so most nutrients are held in the living biomass rather than stored in the soil or litter",B:"Rainforest soils naturally contain the highest nutrient reserves of any biome",C:"Nutrient cycling in rainforests is actually the slowest of any biome",D:"Rainforest plants do not require nutrients from the soil"},
+      correct:"A",tag:"MC-FOR-03",
+      scaffold:"The heat and moisture of the rainforest accelerate decomposition (leaf litter breaks down fast) and plant growth (rapid nutrient uptake), so nutrients cycle quickly between biomass, litter and soil rather than accumulating in any one store. Because most nutrients end up locked in the standing biomass rather than the soil, the soil itself stays infertile — which is why cleared rainforest land quickly becomes unproductive for farming.",
+      reforge:{stem:"Why does clearing tropical rainforest for agriculture typically produce only a few years of good crop yields before the soil becomes unproductive?",options:{A:"Because most nutrients were stored in the felled biomass rather than the soil, that nutrient store is lost once the trees are removed and not replaced",B:"Rainforest soil is naturally the most fertile soil type and never loses productivity",C:"Crop failure in cleared rainforest is caused entirely by lack of rainfall",D:"Nutrient levels in rainforest soil are unaffected by vegetation removal"},correct:"A"}
+    },
+    {
+      id:"GCSE-FOR-04",spec:"GCSE-FOR",stem:"In the taiga, salmon are described as a keystone species. Why does a decline in salmon numbers have a disproportionately large impact on the ecosystem?",
+      options:{A:"Salmon are a critical food source for predators such as bears and wolves (up to 50% of a wolf's diet), so their decline directly threatens those populations too",B:"Salmon have no predators in the taiga ecosystem",C:"Salmon numbers have no effect on any other taiga species",D:"Wolves and bears do not rely on fish for any part of their diet"},
+      correct:"A",tag:"MC-FOR-04",
+      scaffold:"A keystone species has an outsized effect on its ecosystem relative to its numbers. Salmon migrate upstream and are a vital food source for bears and wolves — a barrier like a dam blocking migration, or disease affecting salmon, cuts that food supply and directly reduces predator populations. Scots Pine is the taiga's other named keystone species, supporting squirrels, voles, mice, insects, lichens and mosses through its bark and cones.",
+      reforge:{stem:"A dam is built on a river that salmon use to migrate upstream in the taiga. What is the most likely ecological consequence?",options:{A:"Salmon can no longer reach their spawning grounds, reducing their population and cutting off a major food source for bears and wolves further up the food chain",B:"Salmon numbers would increase because dams provide additional habitat",C:"Wolf populations would be entirely unaffected since they do not rely on salmon",D:"Dams have no effect on any migratory species"},correct:"A"}
+    },
+    {
+      id:"GCSE-FOR-05",spec:"GCSE-FOR",stem:"Why do coniferous trees in the taiga have a conical shape and needle-like leaves?",
+      options:{A:"The conical shape sheds heavy snow to prevent branches breaking, and needle-shaped, waxy leaves reduce water loss and frost damage",B:"These features help the trees absorb more sunlight during long summer days",C:"These features are unrelated to survival and are purely decorative",D:"The conical shape helps trees survive drought conditions in hot climates"},
+      correct:"A",tag:"MC-FOR-05",
+      scaffold:"Taiga tree adaptations: conical shape (sheds snow, preventing branch damage), needle-shaped waxy leaves (reduce transpiration/water loss and resist frost damage), flexible branches (bend rather than break under snow weight), wide shallow roots (avoid frozen ground/permafrost while anchoring against strong winds), and seeds protected inside cones.",
+      reforge:{stem:"Why do many taiga animals such as the snowshoe hare change fur colour between summer (brown) and winter (white)?",options:{A:"It provides camouflage appropriate to the season, helping the animal avoid predators (or, for predators, avoid detection by prey) against snow or bare ground",B:"Fur colour change has no survival benefit and occurs randomly",C:"It is purely a response to temperature with no camouflage function",D:"Only taiga plants change colour seasonally, not animals"},correct:"A"}
+    },
+    {
+      id:"GCSE-FOR-06",spec:"GCSE-FOR",stem:"Why does the taiga have lower Net Primary Productivity (NPP) than the tropical rainforest?",
+      options:{A:"Long cold winters, a short growing season and limited sunlight hours restrict plant growth, and slow decomposition means fewer nutrients are available",B:"The taiga receives more sunlight hours per year than the rainforest",C:"NPP is identical across all forest biomes",D:"The taiga has a longer growing season than the rainforest"},
+      correct:"A",tag:"MC-FOR-06",
+      scaffold:"NPP measures the rate of energy production by plants (photosynthesis minus respiration). The taiga's limiting factors: long cold winters, short 2–3 month growing season, low precipitation, slow chemical weathering, and nutrients stuck in a slowly-decomposing litter layer rather than the biomass. The rainforest has none of these limits, hence far higher NPP.",
+      reforge:{stem:"A 4-mark exam question asks: 'Explain why the taiga forest biome has very low levels of productivity.' Which answer chain would score full marks?",options:{A:"Long cold winters (1) and limited sunlight hours (1) restrict growth, while nutrients are largely locked in the litter layer rather than available to plants (1), all acting as limiting factors on productivity (1)",B:"The taiga is cold (1)",C:"Productivity is low because there are lots of trees (1)",D:"The taiga has high productivity, not low (1)"},correct:"A"}
+    },
+    {
+      id:"GCSE-FOR-07",spec:"GCSE-FOR",stem:"Which countries experience the highest rates of tropical rainforest deforestation?",
+      options:{A:"Malaysia, Brazil, India and Indonesia",B:"Canada, Russia and Scandinavia",C:"The UK, France and Germany",D:"Only countries with no rainforest at all"},
+      correct:"A",tag:"MC-FOR-07",
+      scaffold:"Malaysia, Brazil, India and Indonesia have the highest tropical deforestation rates. Note that deforestation is rarely caused by a single factor — settlement growth also drives agricultural clearance to feed the new population, so causes are usually linked together rather than isolated. Wildfires are a natural cause, but their frequency and severity have increased due to human-induced climate change.",
+      reforge:{stem:"A student explains deforestation in Indonesia purely as 'logging for timber'. Why is this an incomplete answer?",options:{A:"Deforestation is usually the result of multiple linked causes — e.g. logging opens access roads that then enable agricultural clearance and settlement growth in the same area",B:"Logging is the only cause of deforestation anywhere in the world",C:"Timber logging has no connection to any other human activity",D:"Settlement growth never contributes to deforestation"},correct:"A"}
+    },
+    {
+      id:"GCSE-FOR-08",spec:"GCSE-FOR",stem:"How can drought act as an indirect threat to the tropical rainforest, beyond the direct loss of water?",
+      options:{A:"Dry leaf litter kills decomposer organisms, reducing soil fertility, while drought-stressed trees drop more leaves, further reducing food supply and increasing wildfire risk",B:"Droughts have no effect on rainforest ecosystems beyond a temporary lack of water",C:"Droughts always increase rainforest biodiversity",D:"Drought conditions immediately restore rainforest nutrient levels"},
+      correct:"A",tag:"MC-FOR-08",
+      scaffold:"Climate change is the most significant indirect threat, mainly through altered rainfall. The 2015/16 drought and resulting wildfires destroyed around 2.5 billion trees and plants. Drought effects cascade: dead decomposers → lower soil fertility → disrupted nutrient cycle; excess leaf loss → less food for herbivores → food web impacts; reduced evapotranspiration → potentially even less future rainfall; and during drought the rainforest can flip to emitting CO2 rather than absorbing it.",
+      reforge:{stem:"Why might a severe rainforest drought make future droughts more likely in the same region?",options:{A:"Stressed trees lose more leaves, reducing transpiration and evapotranspiration, which can decrease the moisture recycled into the atmosphere and lower future rainfall",B:"Droughts have no relationship to future rainfall patterns",C:"Fewer leaves always increase future rainfall",D:"Droughts permanently increase soil fertility, preventing future droughts"},correct:"A"}
+    },
+    {
+      id:"GCSE-FOR-09",spec:"GCSE-FOR",stem:"How does acid rain damage taiga forests, and where does it originate?",
+      options:{A:"Sulphur dioxide and nitrogen oxides from burning fossil fuels react with atmospheric water, and the resulting acidic rain damages needles and depletes soil nutrients like calcium",B:"Acid rain is caused directly by logging activity within the taiga itself",C:"Acid rain has no measurable effect on coniferous trees",D:"Acid rain only affects tropical biomes, not the taiga"},
+      correct:"A",tag:"MC-FOR-09",
+      scaffold:"Acid rain forms when SO2 and NOx (released by burning fossil fuels, often far from the taiga itself) react with atmospheric water, lowering rainfall pH below 5.7. Impacts: damaged needles reduce photosynthesis, depleted soil calcium weakens trees, and weakened trees become more vulnerable to pests and disease — an important point because the source of acid rain often needs tackling far outside the taiga region where the damage appears.",
+      reforge:{stem:"Why is tackling acid rain damage to the taiga particularly difficult compared with tackling a threat like logging?",options:{A:"Acid rain can travel long distances from its industrial source, so the cause must be addressed outside the taiga region itself, not within it",B:"Acid rain is generated entirely within the taiga by the trees themselves",C:"Acid rain has an identical, easily local solution to logging",D:"Acid rain is not linked to any human industrial activity"},correct:"A"}
+    },
+    {
+      id:"GCSE-FOR-10",spec:"GCSE-FOR",stem:"Between 2000 and 2013, how did the rate of taiga deforestation compare with deforestation in the Amazon over the same period?",
+      options:{A:"Taiga deforestation occurred at one and a half times the rate of Amazon deforestation, mostly in Canada and Russia",B:"Taiga deforestation was far lower than in the Amazon",C:"No deforestation occurred in the taiga during this period",D:"Taiga and Amazon deforestation rates were identical"},
+      correct:"A",tag:"MC-FOR-10",
+      scaffold:"This statistic often surprises students, since the Amazon dominates media coverage of deforestation — but between 2000–2013, taiga loss (mainly in Canada and Russia) outpaced the Amazon by 1.5×. Main causes in the taiga: logging, mining, and oil/gas drilling, plus indirect impacts like air and water pollution from associated transport and road building.",
+      reforge:{stem:"Why might taiga deforestation receive less international media attention than Amazon deforestation, despite occurring at a higher rate?",options:{A:"Public and media focus has historically centred on the Amazon's biodiversity and indigenous communities, even though taiga loss in Canada and Russia has been more extensive by rate",B:"Taiga deforestation does not actually occur",C:"The Amazon has a lower deforestation rate, explaining the difference in coverage",D:"Media coverage is always proportional to the actual scale of an environmental issue"},correct:"A"}
+    },
+    {
+      id:"GCSE-FOR-11",spec:"GCSE-FOR",stem:"What is the main aim of REDD (Reducing Emissions from Deforestation and Forest Degradation)?",
+      options:{A:"To provide financial incentives (cash or carbon credits) from developed countries and TNCs to encourage the protection and sustainable management of forests",B:"To ban all logging activity worldwide immediately",C:"To increase the rate of deforestation in developing countries",D:"To fund the construction of new roads through protected forests"},
+      correct:"A",tag:"MC-FOR-11",
+      scaffold:"REDD is a UN strategy funded by developed countries and TNCs to offset their carbon emissions, paying to protect forests instead. Strengths: tackles climate change, involves local communities. Weaknesses: no clear definition of what counts as 'forest', corruption and fraud, and unclear forest ownership. Compare with CITES (184 countries, restricts trade in endangered species/timber, but hard to monitor and enforce, with weak sanctions).",
+      reforge:{stem:"Why might REDD funding fail to achieve its intended protection of a forest area in practice?",options:{A:"Corruption or unclear land ownership can mean money is misused or the wrong areas are 'protected' rather than the ones most at risk of deforestation",B:"REDD guarantees 100% success in every country that receives funding",C:"REDD funding always goes directly and transparently to local communities",D:"REDD has no known weaknesses or implementation challenges"},correct:"A"}
+    },
+    {
+      id:"GCSE-FOR-12",spec:"GCSE-FOR",stem:"What is meant by 'sustainable forestry' as a management strategy for the taiga?",
+      options:{A:"Logged areas are replanted with native species (afforestation) faster than they are used, rather than being permanently converted into plantations",B:"All logging is banned permanently across the entire taiga",C:"Forests are cleared as quickly as possible to maximise short-term profit",D:"Sustainable forestry only applies to tropical rainforests, not the taiga"},
+      correct:"A",tag:"MC-FOR-12",
+      scaffold:"Sustainable forestry balances the needs of current populations (industry, indigenous communities, wildlife) with future generations by ensuring replanting happens faster than logging removes trees, and natural forest isn't converted into monoculture plantations. The Boreal Forest Platform (industry, e.g. IKEA, working with NGOs like WWF) is a named example, alongside protected areas like Russia's proposed Dvinsky Reserve and Canada's Cape Breton Highlands National Park.",
+      reforge:{stem:"Why might indigenous communities and oil/gas companies have conflicting views on taiga management, even if both groups say they want to protect the environment?",options:{A:"Indigenous communities depend on intact land for hunting and traditional life, while companies prioritise extracting resources for economic gain, even with mitigation efforts in place",B:"Both groups always want exactly the same outcome with no disagreement",C:"Oil and gas companies have no environmental impact on indigenous land",D:"Indigenous communities have no interest in how the taiga is managed"},correct:"A"}
+    },
+    {
+      id:"GCSE-FOR-FB-01",spec:"GCSE-FOR",type:"fill_blank",
+      stem:"Complete the sentence about rainforest adaptations.",
+      template:"Waxy leaves with drip tips allow rainwater to run off quickly, preventing ___ growth. ___ roots provide extra support for tall trees since below-ground roots are shallow. ___ are vines that climb trees to reach sunlight.",
+      blanks:["mould","Buttress","Lianas"],
+      bank:["mould","Buttress","Lianas","fungus","Epiphytes","Canopy"],
+      tag:"MC-FOR-02",
+      scaffold:"Key rainforest plant adaptations: waxy drip-tip leaves shed water fast (preventing mould and leaf damage), buttress roots give tall trees above-ground stability, and lianas use trees as scaffolding to reach the canopy's sunlight."
+    },
+    {
+      id:"GCSE-FOR-FB-02",spec:"GCSE-FOR",type:"fill_blank",
+      stem:"Complete the sentence about keystone species in the taiga.",
+      template:"___ are a keystone species that provide up to 50% of a wolf's diet, so a decline caused by disease or a ___ blocking migration reduces predator populations. ___ Pine is another taiga keystone species supporting squirrels, voles and insects.",
+      blanks:["Salmon","dam","Scots"],
+      bank:["Salmon","dam","Scots","Trout","bridge","Silver"],
+      tag:"MC-FOR-04",
+      scaffold:"Salmon and Scots Pine are the taiga's two named keystone species. Salmon migration blocked by a dam cuts a major food source for bears and wolves; a decline in Scots Pine removes food and habitat for squirrels, voles, mice, insects, lichens and mosses."
+    },
+    {
+      id:"GCSE-FOR-FB-03",spec:"GCSE-FOR",type:"fill_blank",
+      stem:"Complete the sentence about global forest protection strategies.",
+      template:"___ is a UN strategy that provides financial incentives to protect forests and offset carbon emissions. ___ restricts international trade in endangered species and timber. The ___ approves wood sourced from sustainably managed forests.",
+      blanks:["REDD","CITES","FSC"],
+      bank:["REDD","CITES","FSC","ITTA","UN","WWF"],
+      tag:"MC-FOR-11",
+      scaffold:"REDD (Reducing Emissions from Deforestation and Forest Degradation) funds forest protection via carbon credits. CITES (Convention on International Trade in Endangered Species) covers over 35,000 species across 184 countries. The FSC (Forest Stewardship Council) certifies sustainably sourced timber. ITTA restricts hardwood timber trade specifically."
+    },
+    {
+      id:"GCSE-FOR-FB-04",spec:"GCSE-FOR",type:"fill_blank",
+      stem:"Complete the sentence about sustainable taiga management.",
+      template:"Sustainable ___ involves replanting logged areas with native species faster than they are used, known as ___. The Boreal Forest ___ is an example of industry and NGOs working together to allow logging without losing biodiversity.",
+      blanks:["forestry","afforestation","Platform"],
+      bank:["forestry","afforestation","Platform","mining","deforestation","Council"],
+      tag:"MC-FOR-12",
+      scaffold:"Sustainable forestry replants logged areas (afforestation) at a faster rate than logging removes trees, avoiding conversion of natural forest into plantations. The Boreal Forest Platform pairs industry (e.g. IKEA) with NGOs (e.g. WWF) to balance logging with biodiversity protection."
+    }
+  ]
+};
+
+BANKS["GCSE-GEO-ENERGY"] = {
+  label: "Consuming Energy Resources",
+  color: "#0f766e",
+  questions: [
+    {
+      id:"GCSE-ENE-01",spec:"GCSE-ENE",stem:"Which of these correctly classifies gas, wind and biofuel by energy type?",
+      options:{A:"Gas is non-renewable (finite), wind is renewable (infinite), biofuel is recyclable (can be regrown/reused)",B:"All three are non-renewable",C:"All three are renewable",D:"Gas is renewable, wind is non-renewable, biofuel is finite"},
+      correct:"A",tag:"MC-ENE-01",
+      scaffold:"Non-renewable (finite, will run out): gas, oil, coal. Renewable (infinite, won't run out): hydroelectric, wave/tidal, wind, solar, geothermal. Recyclable (can be regrown or reused, e.g. biofuel and nuclear) sits as a distinct third category — don't lump it in with 'renewable' in an exam answer, since the distinction is often tested directly.",
+      reforge:{stem:"Why is nuclear energy classed as 'recyclable' rather than 'renewable' or 'non-renewable'?",options:{A:"Its fuel (uranium) is a finite resource like fossil fuels, but nuclear material can be processed and partially reused, placing it in its own distinct category",B:"Nuclear energy is infinite and will never run out, making it fully renewable",C:"Nuclear energy comes from an inexhaustible natural process like sunlight",D:"Nuclear energy cannot be classified using any of these three categories"},correct:"A"}
+    },
+    {
+      id:"GCSE-ENE-02",spec:"GCSE-ENE",stem:"Why can renewable energy sources still have negative environmental impacts, even though they don't emit greenhouse gases once operational?",
+      options:{A:"Manufacturing and constructing the equipment (e.g. wind turbines, solar panels) produces greenhouse gas emissions, and the infrastructure itself can cause land use, visual, or wildlife impacts",B:"Renewable energy sources have zero environmental impact at every stage",C:"Only non-renewable sources have any environmental impact whatsoever",D:"Renewable sources always improve biodiversity wherever they are built"},
+      correct:"A",tag:"MC-ENE-02",
+      scaffold:"Even 'clean' renewables carry costs: wind (visual/noise pollution, bird strikes, manufacturing emissions), solar (large land use, manufacturing emissions), HEP (flooding land, blocking fish migration, trapping sediment, deforestation in tropical areas), geothermal (emits sulphuric gases). A good exam answer avoids treating 'renewable' as automatically 'no impact'.",
+      reforge:{stem:"A hydroelectric dam produces no direct greenhouse gas emissions during operation. Which impact makes it still environmentally costly?",options:{A:"Large areas of land are flooded behind the dam, and the dam can block fish migration routes and trap sediment that downstream ecosystems depend on",B:"HEP dams have no impact of any kind on the surrounding environment",C:"HEP dams always increase biodiversity in the surrounding area",D:"HEP dams eliminate flooding entirely with no other consequences"},correct:"A"}
+    },
+    {
+      id:"GCSE-ENE-03",spec:"GCSE-ENE",stem:"Why does the UK have large coal reserves that remain largely unused?",
+      options:{A:"Accessibility — the coal lies too deep underground to be economically mined, even though the resource physically exists",B:"The UK has no coal reserves at all",C:"UK coal reserves have all already been fully extracted",D:"Accessibility has no bearing on whether a resource is used"},
+      correct:"A",tag:"MC-ENE-03",
+      scaffold:"Access to energy is shaped by: physical factors (geology determines whether coal/oil/gas formed; climate affects renewable efficiency — e.g. solar needs clear skies, wind needs steady but not excessive wind, HEP needs reliable precipitation), accessibility (depth underground or under oceans raises extraction cost), level of development (nuclear/geothermal need high technology and skilled staff), and politics (government investment decisions, and conflict disrupting supply, e.g. Russia's invasion of Ukraine affecting European gas).",
+      reforge:{stem:"Why might a developing country struggle to develop nuclear power even if it has suitable uranium deposits?",options:{A:"Nuclear power requires high levels of technology and highly skilled staff, which may not be available in a country at an earlier stage of development",B:"Nuclear power requires no specialist technology or training of any kind",C:"Developing countries always have more nuclear capacity than developed countries",D:"Uranium deposits alone guarantee a country can build nuclear power stations"},correct:"A"}
+    },
+    {
+      id:"GCSE-ENE-04",spec:"GCSE-ENE",stem:"Why do emerging economies such as India and China have much higher energy demand growth than developed economies?",
+      options:{A:"Their focus on secondary economic activities (manufacturing) requires large amounts of energy, whereas developed economies are seeing demand level off as manufacturing is increasingly imported",B:"Emerging economies use no energy at all",C:"Developed economies always have the highest energy demand growth",D:"Energy demand is unrelated to a country's economic structure"},
+      correct:"A",tag:"MC-ENE-04",
+      scaffold:"Energy demand by economic structure: developing (LIC) countries — primary activities (agriculture), low energy demand; emerging (NEE) countries like India and China — secondary activities (manufacturing), high and rising energy demand; developed (HIC) countries — demand levelling off as more goods are imported rather than manufactured domestically. The USA is a notable exception with very high per-capita consumption (4.25% of world population, 16% of world energy use).",
+      reforge:{stem:"Why might a developed country's energy demand from industry decline even as its overall wealth and technology use increase?",options:{A:"As manufacturing is increasingly outsourced to emerging economies, domestic industrial energy demand falls even while consumer energy use (appliances, technology) may rise",B:"Developed countries use no energy for consumer technology",C:"Wealth has no relationship whatsoever to energy demand",D:"Manufacturing energy demand always rises in developed countries"},correct:"A"}
+    },
+    {
+      id:"GCSE-ENE-05",spec:"GCSE-ENE",stem:"Approximately what proportion of the world's primary energy currently comes from fossil fuels?",
+      options:{A:"84%",B:"25%",C:"50%",D:"11%"},
+      correct:"A",tag:"MC-ENE-05",
+      scaffold:"Global energy mix: fossil fuels 84%, renewables 11%, nuclear 4%. Despite growing renewable investment, the overwhelming majority of global energy still comes from fossil fuels — a key statistic for explaining why 'switching to renewables' is not a quick or simple fix. Around 2.4 billion people still rely on traditional fuel sources for cooking/heating, and roughly 920 million people (13% of the world) have no access to electricity at all.",
+      reforge:{stem:"Given that fossil fuels supply 84% of world energy and renewables only 11%, what does this suggest about the pace of the global energy transition?",options:{A:"Despite growing investment, renewables would need a very large and sustained increase in capacity to significantly displace fossil fuels' current dominant share",B:"Renewables have already overtaken fossil fuels as the primary global energy source",C:"Fossil fuel use has no bearing on how quickly renewables can expand",D:"The energy transition is already complete worldwide"},correct:"A"}
+    },
+    {
+      id:"GCSE-ENE-06",spec:"GCSE-ENE",stem:"Which factor caused global oil prices to rise sharply following Russia's invasion of Ukraine?",
+      options:{A:"Political conflict disrupting supply and creating uncertainty about future availability",B:"A sudden global increase in oil reserves",C:"Falling global demand for oil",D:"An international agreement to permanently fix oil prices"},
+      correct:"A",tag:"MC-ENE-06",
+      scaffold:"Factors affecting oil supply and price: conflict (Russia/Ukraine raised prices due to supply concerns), diplomatic relations (Venezuela's 2010 threat to halt US sales), recession/boom (2008 financial crisis caused prices to crash), over/under-supply (Saudi Arabia increasing supply in 2013-14 to compete with Iran caused prices to fall; the 1979 Iranian Revolution cutting supply caused prices to rise), and customer preference shifts toward renewables reducing demand and therefore price.",
+      reforge:{stem:"In 2013-14, Saudi Arabia significantly increased oil production during a rivalry with Iran. What effect did this have on global oil prices, and why?",options:{A:"Prices fell, because the sudden increase in supply outpaced demand",B:"Prices rose, because increased supply always raises prices",C:"Prices were completely unaffected by the change in supply",D:"Oil became a renewable resource as a direct result"},correct:"A"}
+    },
+    {
+      id:"GCSE-ENE-07",spec:"GCSE-ENE",stem:"What is meant by 'unconventional' oil and gas sources such as tar sands and shale gas?",
+      options:{A:"They are extracted using methods other than traditional drilling/oil wells — for example, treating bitumen-rich sand or fracturing shale rock at high pressure",B:"They are sources that have never been used for energy production",C:"They can only be found in the Arctic region",D:"They are extracted using exactly the same method as conventional oil wells"},
+      correct:"A",tag:"MC-ENE-07",
+      scaffold:"Tar sands (e.g. Athabasca, Canada) are bitumen-rich reservoirs treated to extract heavy crude oil, using huge quantities of water — almost 60% of Canada's oil production comes from tar sands. Shale gas is extracted via hydraulic fracturing ('fracking'): sand, chemicals and water pumped at high pressure to fracture rock and release trapped gas — over 40% of US dry natural gas is shale gas. Both avoid traditional oil wells/platforms/drilling.",
+      reforge:{stem:"Which environmental cost is specifically associated with fracking for shale gas, rather than tar sands extraction?",options:{A:"Small earthquakes and contamination of groundwater from the high-pressure injection process",B:"Decline of caribou, lynx and wolverine populations from surface habitat destruction",C:"Higher greenhouse gas emissions than conventional oil extraction",D:"Higher rates of air pollution linked to bitumen processing"},correct:"A"}
+    },
+    {
+      id:"GCSE-ENE-08",spec:"GCSE-ENE",stem:"Why is exploration for oil and gas in the Arctic increasing, despite the high costs involved?",
+      options:{A:"Technological improvements have made extraction in cold/deep-sea areas easier, oil and gas company profits are high enough to fund the investment, and melting permafrost has increased accessibility",B:"The Arctic has no oil or gas reserves worth extracting",C:"Arctic extraction has become impossible due to permafrost melting",D:"There is no economic incentive to explore the Arctic region"},
+      correct:"A",tag:"MC-ENE-08",
+      scaffold:"The Arctic supplies 10% of world oil and 25% of world gas, holding an estimated 25-30% of remaining reserves. Drivers of increased exploration: high oil/gas company profits fund expensive exploration, better technology (finding reserves faster, drilling in previously inaccessible cold/deep areas, liquefying gas for transport), and ironically, melting permafrost from global warming making reserves more accessible. Costs include oil spill risk, damage to fisheries and indigenous livelihoods, and infrastructure-driven permafrost melt.",
+      reforge:{stem:"How can Arctic oil and gas exploration create a feedback loop with climate change?",options:{A:"Melting permafrost (caused partly by global warming) makes reserves more accessible, encouraging further extraction and fossil fuel use, which contributes to further warming",B:"Arctic exploration has no relationship whatsoever to climate change",C:"Extracting oil and gas from the Arctic actively cools the region",D:"Permafrost melt makes extraction completely impossible, halting all exploration"},correct:"A"}
+    },
+    {
+      id:"GCSE-ENE-09",spec:"GCSE-ENE",stem:"What does it mean for a country to have an 'energy gap', and how does this relate to energy security?",
+      options:{A:"An energy gap occurs when a country cannot meet its own energy demand from domestic resources, forcing it to import energy and making it less energy secure",B:"An energy gap means a country produces far more energy than it needs",C:"Energy gaps have no relationship to energy security",D:"Only developing countries can have an energy gap"},
+      correct:"A",tag:"MC-ENE-09",
+      scaffold:"Energy security requires an uninterrupted, affordable and accessible supply of energy. A country with an energy gap must import energy to make up the shortfall, making it dependent on other countries or a single source — reducing its security. Diversification (using a range of energy sources, including renewables and recyclables, rather than relying heavily on one) reduces this vulnerability.",
+      reforge:{stem:"Why does relying heavily on a single imported energy source make a country less energy secure than diversifying its energy mix?",options:{A:"A disruption to that single source or supplier (e.g. conflict, political dispute) leaves the country with no alternative, whereas a diverse mix spreads the risk across multiple sources",B:"Relying on one source always guarantees a cheaper, more reliable supply",C:"Diversification has no effect on a country's vulnerability to supply disruption",D:"Energy security depends only on a country's population size"},correct:"A"}
+    },
+    {
+      id:"GCSE-ENE-10",spec:"GCSE-ENE",stem:"According to the examiner's tip in the SaveMyExams guide, why is 'just switching to renewables' not a simple solution to reducing fossil fuel reliance?",
+      options:{A:"Renewable energy is often still more expensive and less efficient than fossil fuels, meaning far more capacity is needed to produce the same amount of electricity",B:"Renewable energy is always cheaper and more efficient than fossil fuels in every situation",C:"Renewable energy produces more electricity per unit than fossil fuels in all cases",D:"There is no cost or efficiency difference between renewable and fossil fuel energy"},
+      correct:"A",tag:"MC-ENE-10",
+      scaffold:"A concrete example: it takes 233 wind turbines to produce the same energy as one average coal-fired power station. Renewables also face reliability issues (wind needs the right wind speed, solar needs sunshine) and higher costs, even as those costs fall over time. This is why energy strategy tends to focus on diversification and efficiency rather than a single rapid switch.",
+      reforge:{stem:"Why might a government promote both renewable energy investment AND energy efficiency measures (like insulation grants) rather than renewables alone?",options:{A:"Because renewables alone may not yet reliably or affordably replace all fossil fuel capacity, so reducing overall demand through efficiency also helps close the energy gap",B:"Energy efficiency measures make renewable energy completely unnecessary",C:"Efficiency measures have no effect on total energy demand",D:"Governments only ever fund one energy strategy at a time"},correct:"A"}
+    },
+    {
+      id:"GCSE-ENE-11",spec:"GCSE-ENE",stem:"What is meant by a person's 'ecological footprint', and why is it typically much higher in developed countries?",
+      options:{A:"It measures a person's or group's use of natural resources (in global hectares); developed countries consume more resources per person due to higher wealth and consumption",B:"Ecological footprint measures only a person's carbon dioxide emissions",C:"Ecological footprints are identical everywhere regardless of a country's wealth",D:"Ecological footprints are always lower in developed countries than developing ones"},
+      correct:"A",tag:"MC-ENE-11",
+      scaffold:"Ecological footprint (measured in global hectares, gha) captures total natural resource use, not just carbon: USA averages 15.5 gha per person versus Haiti's 0.7 gha. Carbon footprint specifically (measured in tonnes CO2e) shows a similar gap: global average 7 tonnes, USA 21 tonnes, Malawi just 0.2 tonnes. Both metrics rise with wealth, driven by more cars, more imported/food-mile-heavy goods, and more energy-using technology.",
+      reforge:{stem:"The USA's average carbon footprint (21 tonnes CO2e) is roughly 100 times Malawi's (0.2 tonnes CO2e). What is the main underlying cause of this gap?",options:{A:"Much greater wealth in the USA drives far higher consumption of cars, imported goods, technology and energy-intensive services",B:"Malawi has access to more advanced technology than the USA",C:"Carbon footprint is unrelated to a country's wealth or consumption levels",D:"The USA has a smaller population than Malawi, explaining the difference"},correct:"A"}
+    },
+    {
+      id:"GCSE-ENE-12",spec:"GCSE-ENE",stem:"Why might increasing wealth in a country eventually lead to a REDUCTION in its carbon footprint, despite wealth usually increasing consumption?",
+      options:{A:"Once basic needs are met, wealthier, better-educated populations increasingly prioritise environmental concerns and can afford energy-efficient technology, insulation, and electric/hybrid vehicles",B:"Wealth always increases carbon footprint with no possible reduction",C:"Poorer countries always have lower carbon footprints regardless of any other factor",D:"Carbon footprint has no relationship to a country's environmental policy"},
+      correct:"A",tag:"MC-ENE-12",
+      scaffold:"This nuance is often missed: rising wealth first increases consumption (more cars, food miles, technology) but can eventually reduce carbon footprint per unit of activity, because wealthier populations can afford efficient appliances, home insulation, solar panels/heat pumps, and electric/hybrid cars, and because education and pressure groups (Friends of the Earth, Greenpeace) raise environmental awareness once basic needs like food and shelter are already secured.",
+      reforge:{stem:"Which group is most likely to prioritise 'business as usual' (continued fossil fuel reliance) over rapid decarbonisation, according to typical stakeholder positions on energy?",options:{A:"Oil and gas TNCs, who aim to maximise profits from existing fossil fuel operations even while making some sustainability commitments",B:"Climate scientists, over 95% of whom oppose any continued fossil fuel use",C:"Environmental organisations such as Greenpeace and WWF",D:"All stakeholder groups have identical views on energy policy"},correct:"A"}
+    },
+    {
+      id:"GCSE-ENE-FB-01",spec:"GCSE-ENE",type:"fill_blank",
+      stem:"Complete the sentence about classifying energy sources.",
+      template:"___ energy sources such as gas, oil and coal are finite and will eventually run out. ___ energy sources such as wind and solar are infinite. ___ energy sources such as biofuel and nuclear can be reused or regrown.",
+      blanks:["Non-renewable","Renewable","Recyclable"],
+      bank:["Non-renewable","Renewable","Recyclable","Sustainable","Fossil","Clean"],
+      tag:"MC-ENE-01",
+      scaffold:"Three distinct categories, not two: non-renewable (finite — gas, oil, coal), renewable (infinite — HEP, wave/tidal, wind, solar, geothermal), and recyclable (can be regrown/reused — biofuel, nuclear). Keep 'recyclable' separate from 'renewable' in exam answers."
+    },
+    {
+      id:"GCSE-ENE-FB-02",spec:"GCSE-ENE",type:"fill_blank",
+      stem:"Complete the sentence about factors affecting access to energy.",
+      template:"Physical factors such as ___ determine whether coal, oil and gas have formed. ___ affects the cost of extracting deeply buried resources. The level of a country's ___ affects whether it has the technology for nuclear or geothermal power.",
+      blanks:["geology","Accessibility","development"],
+      bank:["geology","Accessibility","development","politics","climate","population"],
+      tag:"MC-ENE-03",
+      scaffold:"Access to energy depends on: physical factors (geology for fossil fuel formation, climate for renewable efficiency), accessibility (depth/location raising extraction cost — e.g. the UK's unmined deep coal), level of development (technology and skilled staff needed for nuclear/geothermal), and politics (investment decisions, conflict disrupting supply)."
+    },
+    {
+      id:"GCSE-ENE-FB-03",spec:"GCSE-ENE",type:"fill_blank",
+      stem:"Complete the sentence about unconventional oil and gas.",
+      template:"___ sands are bitumen-rich reservoirs found in Alberta, Canada, treated to extract heavy crude oil. ___ gas is extracted using hydraulic fracturing, known as ___.",
+      blanks:["Tar","Shale","fracking"],
+      bank:["Tar","Shale","fracking","Coal","Oil","drilling"],
+      tag:"MC-ENE-07",
+      scaffold:"Tar sands (Athabasca, Canada) require huge water use to treat bitumen into crude oil. Shale gas is released by fracking — pumping sand, chemicals and water at high pressure to fracture rock. Both are called 'unconventional' because they skip traditional oil wells and drilling rigs."
+    },
+    {
+      id:"GCSE-ENE-FB-04",spec:"GCSE-ENE",type:"fill_blank",
+      stem:"Complete the sentence about energy security.",
+      template:"An energy ___ occurs when a country cannot meet its energy demand from domestic resources and must ___ energy instead, making it less energy ___.",
+      blanks:["gap","import","secure"],
+      bank:["gap","import","secure","surplus","export","efficient"],
+      tag:"MC-ENE-09",
+      scaffold:"To be energy secure, a country needs an uninterrupted, affordable, accessible supply. An energy gap forces reliance on imports, and diversification (using a wide range of sources) is the main strategy for reducing this vulnerability."
     }
   ]
 };
