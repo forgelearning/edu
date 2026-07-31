@@ -321,6 +321,14 @@ var ForgeSidebar = {
 
   setBadge: function(key, value, muted) {
     var el = document.querySelector('.fside-item[data-key="' + key + '"] .fside-badge');
+    if (!el) {
+      var item = document.querySelector('.fside-item[data-key="' + key + '"]');
+      if (item) {
+        el = document.createElement('span');
+        el.className = 'fside-badge';
+        item.insertBefore(el, item.querySelector('.fside-tooltip'));
+      }
+    }
     if (el) {
       el.textContent = value;
       el.classList.toggle('badge-muted', !!muted);
