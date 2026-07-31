@@ -16,7 +16,13 @@
   try{var cs=JSON.parse(localStorage.getItem('forge-classes')||'[]');(Array.isArray(cs)?cs:[]).forEach(function(c){if(c.classId&&ids.indexOf(c.classId)<0)ids.push(c.classId)})}catch(e){}
   if(saved.classId&&ids.indexOf(saved.classId)<0)ids.push(saved.classId);
   if(!ids.length)return;
-  var k='sb_publishable_cPt3HxjC8-1lN8hk30BKKA_0DNow21g';
+  // Keep the shared badge query on the same public key as the rest of the
+  // student app so every page uses one request configuration.
+  var k=window.SUPABASE_KEY;
+  if(!k)return;
+  var assignmentCacheKey='forge-assigned-open:'+String(saved.studentId||'anon')+':'+String(saved.classId||'none');
+  var cachedAssignments=parseInt(localStorage.getItem(assignmentCacheKey)||'',10);
+  if(!isNaN(cachedAssignments))ForgeSidebar.setBadge('assignments',cachedAssignments||null);
   var responsePromise= saved.studentId&&saved.classCode
     ? fetch('https://crysulmbaadjkymcjrew.supabase.co/rest/v1/rpc/get_student_own_responses',{
         method:'POST',
@@ -26,9 +32,10 @@
     : Promise.resolve([]);
   fetch('https://crysulmbaadjkymcjrew.supabase.co/rest/v1/assignments?select=id,class_id,due_date,banks&class_id=in.('+ids.join(',')+')',{headers:{apikey:k,Authorization:'Bearer '+k}})
     .then(function(r){return r.json()})
-    .then(function(rows){return Promise.all([Array.isArray(rows)?rows:[],responsePromise])})
+    .then(function(rows){return Promise.all([rows,responsePromise])})
     .then(function(result){
       var rows=result[0],responses=Array.isArray(result[1])?result[1]:[];
+      if(!Array.isArray(rows))return;
       var count=(Array.isArray(rows)?rows:[]).filter(function(a){
         var banks=[];try{banks=typeof a.banks==='string'?JSON.parse(a.banks):a.banks||[]}catch(e){}
         var incomplete=!banks.length||banks.some(function(bank){
@@ -47,5 +54,6 @@
         return incomplete;
       }).length;
       ForgeSidebar.setBadge('assignments',count||null);
+      try{localStorage.setItem(assignmentCacheKey,String(count))}catch(e){}
     }).catch(function(){});
 })();

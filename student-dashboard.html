@@ -160,6 +160,7 @@ ForgeSidebar.mount({
   ]
 });
 </script>
+<script src="forge-auth.js"></script>
 <script src="scripts/forge-student-badges.js"></script>
 <script src="data/forge-data.js"></script>
 
@@ -167,7 +168,6 @@ ForgeSidebar.mount({
   <div id="app"></div>
 </div>
 
-<script src="forge-auth.js"></script>
 <script>if(window.ForgeAuth)ForgeAuth.adoptHashSession();</script>
 <script>
 var SUPABASE_URL = 'https://crysulmbaadjkymcjrew.supabase.co';
@@ -323,7 +323,7 @@ function renderDashboard(){
   try { localStorage.setItem('forge-anvil-open', String(activeMCs.length)); } catch(e) {}
   if (st.classId) {
     fetch(SUPABASE_URL+'/rest/v1/assignments?select=id,due_date,banks&class_id=eq.'+st.classId, {
-      headers:{apikey:'sb_publishable_cPt3HxjC8-1lN8hk30BKKA_0DNow21g',Authorization:'Bearer sb_publishable_cPt3HxjC8-1lN8hk30BKKA_0DNow21g'}
+      headers:{apikey:SUPABASE_KEY,Authorization:'Bearer '+SUPABASE_KEY}
     }).then(function(r){return r.json();}).then(function(rows){
       var today=new Date(); today.setHours(0,0,0,0);
       var completed={};
@@ -344,6 +344,7 @@ function renderDashboard(){
         return incomplete;
       }).length;
       if (window.ForgeSidebar) ForgeSidebar.setBadge('assignments', count || null);
+      try { localStorage.setItem('forge-assigned-open:'+String(st.studentId||'anon')+':'+String(st.classId||'none'), String(count)); } catch(e) {}
     }).catch(function(){});
   }
   // Strongest subject — highest accuracy among subjects with a real sample size
