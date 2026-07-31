@@ -14,7 +14,7 @@ body{background:var(--coal);color:var(--slate);font-family:'Inter',sans-serif;fo
 h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter-spacing:-.015em}
 a{color:var(--ember);text-decoration:none}
 a:hover{text-decoration:underline}
-.wrap{max-width:820px;margin:0 auto;padding:0 24px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 32px}
 .tag{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ember)}
 .mono{font-family:'JetBrains Mono',monospace}
 
@@ -63,7 +63,9 @@ a:hover{text-decoration:underline}
 .notice-info strong{color:var(--ember)}
 
 /* sidebar TOC */
-.faq-layout{display:grid;grid-template-columns:200px 1fr;gap:48px;align-items:flex-start}
+.faq-layout{display:grid;grid-template-columns:220px minmax(0,1fr);gap:64px;align-items:flex-start}
+.faq-layout main{min-width:0}
+.faq-a p,.faq-a ul,.faq-a ol{max-width:78ch}
 .toc{position:sticky;top:24px;padding-top:4px}
 .toc-title{font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:#8A857E;margin-bottom:12px}
 .toc a{display:block;font-size:13px;color:var(--slate);text-decoration:none;padding:5px 0;border-left:2px solid var(--line);padding-left:12px;margin-bottom:2px;line-height:1.35}
@@ -77,12 +79,13 @@ footer a:hover{color:var(--ember)}
 .footer-row{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
 [data-theme="light"] .forge-logo-dark{display:none!important}[data-theme="light"] .forge-logo-light{display:inline!important}</style>
 <!-- Google tag (gtag.js) -->
+<script src="scripts/analytics-consent.js"></script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-RGZ9J6Q8H9"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-  gtag('config', 'G-RGZ9J6Q8H9');
+  gtag('config', 'G-RGZ9J6Q8H9', {allow_google_signals: false, allow_ad_personalization_signals: false});
 </script>
 </head>
 <body>
@@ -97,7 +100,17 @@ if(localStorage.getItem('forge-theme')==='light'){document.documentElement.setAt
   <div class="nav-right">
     <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle light/dark theme">☀</button>
     <a class="nav-link" href="index.html">← Back to Forge</a>
-    <a class="nav-link" href="teacher.html">Teacher dashboard</a>
+    <div class="nav-drop-wrap nav-hide-sm">
+      <button class="nav-link" style="font-family:inherit;cursor:pointer;background:transparent;border:none;padding:0" onclick="this.nextElementSibling.classList.toggle('open')">For schools ▾</button>
+      <div class="nav-drop-menu">
+        <a href="faq.html">FAQ for schools</a>
+        <a href="evidence.html">Learning science</a>
+        <a href="roadmap.html">Roadmap</a>
+        <a href="teacher.html">Teacher sign in</a>
+        <a href="privacy.html" style="border-top:1px solid var(--line);margin-top:4px;padding-top:10px">Privacy &amp; DPA</a>
+      </div>
+    </div>
+    <a class="nav-link" href="teacher.html">Teacher sign in</a>
   </div>
 </nav>
 </div></div>
@@ -138,7 +151,7 @@ if(localStorage.getItem('forge-theme')==='light'){document.documentElement.setAt
             <span class="faq-chevron" aria-hidden="true">▼</span>
           </button>
           <div class="faq-a">
-            <p>Forge is a web-based A Level revision platform that gives students multiple-choice questions mapped to their exam board's specification, identifies the specific misconceptions behind every wrong answer, and surfaces those patterns to both the student and their teacher.</p>
+            <p>Forge is a web-based GCSE and A Level revision platform that gives students multiple-choice questions mapped to their exam board's specification, identifies the specific misconceptions behind every wrong answer, and surfaces those patterns to both the student and their teacher.</p>
           </div>
         </div>
 
@@ -177,15 +190,15 @@ if(localStorage.getItem('forge-theme')==='light'){document.documentElement.setAt
             <span class="faq-chevron" aria-hidden="true">▼</span>
           </button>
           <div class="faq-a">
-            <p>Forge currently has question banks for 18 A Level subjects across Edexcel, AQA, OCR, WJEC, and Eduqas specifications:</p>
+            <p>Forge currently has live question banks across GCSE, A Level, and IB subject areas, mapped to Edexcel, AQA, OCR, WJEC, Eduqas, and IB specifications. The catalogue is changing quickly, so the product's subject pages are the source of truth for what is live:</p>
             <ul>
               <li>Economics (Edexcel 9EC0) · Psychology (AQA 7182) · Sociology (AQA 7192) · Geography (Edexcel 9GE0)</li>
               <li>Business (Edexcel 9BS0) · Chemistry (Edexcel 9CH0) · Biology (Edexcel 9BI0) · Physics (AQA 7408)</li>
               <li>History (AQA 7042) · Law (AQA 7162) · Criminology (WJEC) · Politics (Edexcel 9PL0)</li>
               <li>Maths (Edexcel 9MA0) · German (Edexcel 9GN0) · French (Edexcel 9FR0) · Computer Science (AQA 7517)</li>
-              <li>Religious Studies (Eduqas) · Health &amp; Social Care (OCR H604)</li>
+              <li>Religious Studies (Eduqas) · Health &amp; Social Care (OCR H604) · English Literature · English Language &amp; Literature · IB Mandarin</li>
             </ul>
-            <p><strong>GCSE content has now started:</strong> Geography (Edexcel B 1GB0, Hazardous Earth) and Economics (OCR J205, The UK Economy) both have live question banks. Psychology (AQA 8182), History (AQA 8145), Combined Science (Edexcel 1SC0) and Mathematics (Edexcel 1MA1) have subject pages live with sample questions, with full banks in authoring.</p>
+            <p><strong>GCSE content is live:</strong> Geography (Edexcel B 1GB0) and Economics (OCR J205) have multiple live banks covering Papers 1 and 2. Other GCSE subject pages may show sample or authoring content; each page identifies its current status.</p>
             <p>Question banks are being extended continuously — each subject page shows exactly which banks are live versus still in authoring.</p>
           </div>
         </div>
@@ -354,7 +367,7 @@ if(localStorage.getItem('forge-theme')==='light'){document.documentElement.setAt
               <li><strong>Scaffolds on every wrong answer</strong> — no student sees just "incorrect". Every wrong answer triggers a targeted explanation of what went wrong and why the right answer is right</li>
               <li><strong>Re-forge attempts</strong> — after a wrong answer, students get a second chance on a related question testing the same concept. This means every mistake is an opportunity rather than a dead end</li>
               <li><strong>Spaced repetition</strong> — questions the student has previously struggled with are weighted to appear more often, without the student knowing. The system works hardest on their weakest areas</li>
-              <li><strong>No leaderboard pressure</strong> — the class overview is for the teacher only. Students see their own profile but not a ranked list of classmates</li>
+              <li><strong>Class-only leaderboard</strong> — students see display names, XP, and rank within their class; no public or cross-school leaderboard is shown</li>
             </ul>
           </div>
         </div>
@@ -408,21 +421,21 @@ if(localStorage.getItem('forge-theme')==='light'){document.documentElement.setAt
         <div class="faq-section-title">Data protection &amp; privacy</div>
 
         <div class="notice notice-good">
-          <strong>Summary:</strong> Forge collects only what it needs to function. It does not sell data, run advertising, or share student information with third parties for commercial purposes. Full details are in the <a href="privacy.html">Privacy Policy</a>.
+          <strong>Summary:</strong> Forge collects only what it needs to function. It does not sell data, run advertising profiles, or share student information with third parties for commercial purposes. Public-page analytics is optional and consent-based. Full details are in the <a href="privacy.html">Privacy &amp; DPA</a>.
         </div>
 
         <div class="faq-item">
           <button class="faq-q" aria-expanded="false">
-            Is Forge UK GDPR compliant?
+            How does Forge approach UK GDPR?
             <span class="faq-chevron" aria-hidden="true">▼</span>
           </button>
           <div class="faq-a">
-            <p>Forge is designed to comply with UK GDPR and the Data Protection Act 2018. The key points:</p>
+            <p>Forge is designed around UK GDPR and the Data Protection Act 2018. Schools should review the current <a href="privacy.html">Privacy &amp; DPA document</a> as part of their own procurement and data-protection assessment. The key points are:</p>
             <ul>
-              <li><strong>Data controller:</strong> Forge (operated by Mr M Zanier, a practising teacher)</li>
+              <li><strong>Data controller:</strong> Forge Education — see the Privacy &amp; DPA document for current contact details</li>
               <li><strong>Legal basis:</strong> Contract (for Pro/trial accounts where a student has signed up) and Legitimate Interests (for class-joined students, where the school has a legitimate educational interest in tracking progress)</li>
               <li><strong>What is collected:</strong> Display name, question responses, misconception tags, and (for Pro/trial accounts) email address and hashed password. No home addresses, phone numbers, photographs, or government identifiers are collected</li>
-              <li><strong>Data processors:</strong> Supabase (database and authentication, EU-West/Ireland, SOC 2 Type II) and Stripe (payment processing, PCI DSS Level 1)</li>
+              <li><strong>Data processors:</strong> Supabase for application data and authentication, Stripe for payments, Formspree for the waitlist, Google Fonts for font delivery, and Google Analytics 4 for consented public-page analytics</li>
               <li><strong>Retention:</strong> Student response data is retained for the academic year plus one additional year, then deleted. Account data is deleted within 30 days of a deletion request</li>
             </ul>
             <p>A full Data Processing Agreement (DPA) is available for schools that require one. Contact forge.educator@gmail.com.</p>
@@ -437,7 +450,7 @@ if(localStorage.getItem('forge-theme')==='light'){document.documentElement.setAt
           <div class="faq-a">
             <p>It depends on how they access Forge:</p>
             <ul>
-              <li><strong>Class-joined students</strong> — enter a display name (first name + surname initial, e.g. "James B") and their teacher's class code. No email address is required</li>
+              <li><strong>Class-joined students</strong> — enter a display name and their teacher's class code. Forge shows a first name plus surname initial (e.g. "James B") to classmates; no email address is required</li>
               <li><strong>Free-tier students</strong> — enter only a display name. No email, no account</li>
               <li><strong>Pro/trial subscribers</strong> — provide an email address and create a password. This is necessary to enable cross-device login and is stored securely via Supabase Auth (bcrypt hashed; neither Forge nor Supabase can recover a plaintext password)</li>
             </ul>
@@ -451,9 +464,9 @@ if(localStorage.getItem('forge-theme')==='light'){document.documentElement.setAt
             <span class="faq-chevron" aria-hidden="true">▼</span>
           </button>
           <div class="faq-a">
-            <p>Student data is stored in Supabase's EU-West (Ireland) data centre. Ireland is an adequacy country under UK GDPR, so no additional transfer mechanisms are required.</p>
+            <p>Application data is stored in Supabase's EU-West (Ireland) data centre. Public pages also use Google Analytics 4, subject to the consent choice described in the privacy policy.</p>
             <p>Stripe (used for payment processing only — not for storing student response data) processes globally but operates under Standard Contractual Clauses (SCCs) for international transfers.</p>
-            <p>Forge does not use US-based databases, analytics services, or advertising networks for student data.</p>
+            <p>Forge does not sell student data, run advertising profiles, or use analytics to analyse student quiz responses. Analytics is limited to public-site usage.</p>
           </div>
         </div>
 
@@ -628,7 +641,7 @@ if(localStorage.getItem('forge-theme')==='light'){document.documentElement.setAt
       <span>© 2026 Forge · Built by a practising teacher</span>
       <span>
         <a href="privacy.html">Privacy policy</a> ·
-        <a href="evidence.html">The evidence</a> ·
+        <a href="evidence.html">Learning science</a> ·
         <a href="roadmap.html">Roadmap</a> ·
         <a href="index.html">Back to Forge</a> ·
         <a href="mailto:forge.educator@gmail.com">forge.educator@gmail.com</a>
@@ -639,12 +652,21 @@ if(localStorage.getItem('forge-theme')==='light'){document.documentElement.setAt
 
 <script>
 // Accordion
-document.querySelectorAll('.faq-q').forEach(function(btn) {
+document.querySelectorAll('.faq-q').forEach(function(btn, index) {
+  var answer = btn.nextElementSibling;
+  var buttonId = 'faq-question-' + (index + 1);
+  var answerId = 'faq-answer-' + (index + 1);
+  btn.id = buttonId;
+  btn.setAttribute('aria-controls', answerId);
+  answer.id = answerId;
+  answer.setAttribute('role', 'region');
+  answer.setAttribute('aria-labelledby', buttonId);
+  answer.hidden = true;
   btn.onclick = function() {
     var expanded = btn.getAttribute('aria-expanded') === 'true';
-    var answer = btn.nextElementSibling;
     btn.setAttribute('aria-expanded', !expanded);
     answer.classList.toggle('open', !expanded);
+    answer.hidden = expanded;
   };
 });
 
