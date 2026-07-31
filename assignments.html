@@ -9,7 +9,7 @@
 var API='https://crysulmbaadjkymcjrew.supabase.co',KEY='sb_publishable_cPt3HxjC8-1lN8hk30BKKA_0DNow21g',el=document.getElementById('list'),saved=null;
 try{saved=JSON.parse(localStorage.getItem('forge-student')||'null')}catch(e){}
 function headers(){return{apikey:KEY,Authorization:'Bearer '+KEY,'Content-Type':'application/json'}}
-function jsonFetch(url,options){return Promise.race([fetch(url,options).then(function(r){if(!r.ok)throw Error('Request failed: '+r.status);return r.json()}),new Promise(function(_,reject){setTimeout(function(){reject(Error('Request timed out'))},8000)})]}
+function jsonFetch(url,options){return Promise.race([fetch(url,options).then(function(r){if(!r.ok)throw Error('Request failed: '+r.status);return r.json()}),new Promise(function(_,reject){setTimeout(function(){reject(Error('Request timed out'))},8000)})])}
 function banks(v){try{return typeof v==='string'?JSON.parse(v):v||[]}catch(e){return[]}}
 function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
 function completionKey(s){return'forge-completed-banks:'+String(s.studentId||'anon')+':'+String(s.classId||'none')}
