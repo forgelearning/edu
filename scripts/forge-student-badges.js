@@ -10,8 +10,6 @@
   }
   var n=parseInt(localStorage.getItem('forge-anvil-open')||'',10);
   if(!isNaN(n))ForgeSidebar.setBadge('anvil',n||null);
-  var completed={};
-  try{completed=JSON.parse(localStorage.getItem('forge-completed-banks:'+String(saved.studentId||'anon')+':'+String(saved.classId||'none'))||'{}')}catch(e){}
   var ids=[];
   try{var cs=JSON.parse(localStorage.getItem('forge-classes')||'[]');(Array.isArray(cs)?cs:[]).forEach(function(c){if(c.classId&&ids.indexOf(c.classId)<0)ids.push(c.classId)})}catch(e){}
   if(saved.classId&&ids.indexOf(saved.classId)<0)ids.push(saved.classId);
@@ -30,7 +28,7 @@
         body:JSON.stringify({p_student_id:saved.studentId,p_code:saved.classCode,p_name:saved.studentName})
       }).then(function(r){return r.json()}).catch(function(){return[]})
     : Promise.resolve([]);
-  fetch('https://crysulmbaadjkymcjrew.supabase.co/rest/v1/assignments?select=id,class_id,due_date,banks&class_id=in.('+ids.join(',')+')',{headers:{apikey:k,Authorization:'Bearer '+k}})
+  fetch('https://crysulmbaadjkymcjrew.supabase.co/rest/v1/assignments?select=id,class_id,due_date,created_at,banks&class_id=in.('+ids.join(',')+')',{headers:{apikey:k,Authorization:'Bearer '+k}})
     .then(function(r){return r.json()})
     .then(function(rows){return Promise.all([rows,responsePromise])})
     .then(function(result){
@@ -39,18 +37,15 @@
       var count=(Array.isArray(rows)?rows:[]).filter(function(a){
         var banks=[];try{banks=typeof a.banks==='string'?JSON.parse(a.banks):a.banks||[]}catch(e){}
         var incomplete=!banks.length||banks.some(function(bank){
-          if(completed[bank])return false;
           var bankData=window.BANKS&&BANKS[bank];
           if(!bankData)return true;
           var ids={};
           responses.forEach(function(response){
+            if(a.created_at&&(!response.created_at||new Date(response.created_at)<new Date(a.created_at)))return;
             if(response.bank===bank)ids[String(response.question_id||'').replace(/-RF$/,'')]=true;
           });
           return Object.keys(ids).length < bankData.questions.filter(function(q){return !q.type||q.type==='fill_blank'}).length;
         });
-        if(!incomplete){
-          try{banks.forEach(function(bank){completed[bank]=true});localStorage.setItem('forge-completed-banks:'+String(saved.studentId||'anon')+':'+String(saved.classId||'none'),JSON.stringify(completed))}catch(e){}
-        }
         return incomplete;
       }).length;
       ForgeSidebar.setBadge('assignments',count||null);

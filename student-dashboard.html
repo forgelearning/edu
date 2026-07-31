@@ -322,25 +322,23 @@ function renderDashboard(){
   if (window.ForgeSidebar) ForgeSidebar.setBadge('anvil', activeMCs.length || null);
   try { localStorage.setItem('forge-anvil-open', String(activeMCs.length)); } catch(e) {}
   if (st.classId) {
-    fetch(SUPABASE_URL+'/rest/v1/assignments?select=id,due_date,banks&class_id=eq.'+st.classId, {
+    fetch(SUPABASE_URL+'/rest/v1/assignments?select=id,due_date,created_at,banks&class_id=eq.'+st.classId, {
       headers:{apikey:SUPABASE_KEY,Authorization:'Bearer '+SUPABASE_KEY}
     }).then(function(r){return r.json();}).then(function(rows){
       var today=new Date(); today.setHours(0,0,0,0);
-      var completed={};
-      try { completed=JSON.parse(localStorage.getItem('forge-completed-banks:'+String(st.studentId||'anon')+':'+String(st.classId||'none'))||'{}'); } catch(e) {}
       var count=(Array.isArray(rows)?rows:[]).filter(function(a){
         var banks=[]; try { banks=typeof a.banks==='string'?JSON.parse(a.banks):a.banks||[]; } catch(e) {}
+        var created=a.created_at?new Date(a.created_at):null;
         var incomplete=!banks.length || banks.some(function(bank){
-          if (completed[bank]) return false;
           var bankData=BANKS[bank];
           if (!bankData) return true;
           var ids={};
           responses.forEach(function(response){
+            if (created && (!response.created_at || new Date(response.created_at)<created)) return;
             if (response.bank===bank) ids[String(response.question_id||'').replace(/-RF$/,'')]=true;
           });
           return Object.keys(ids).length < bankData.questions.filter(function(q){return !q.type||q.type==='fill_blank';}).length;
         });
-        if (!incomplete) { try { var complete=JSON.parse(localStorage.getItem('forge-completed-banks:'+String(st.studentId||'anon')+':'+String(st.classId||'none'))||'{}'); banks.forEach(function(bank){complete[bank]=true}); localStorage.setItem('forge-completed-banks:'+String(st.studentId||'anon')+':'+String(st.classId||'none'),JSON.stringify(complete)); } catch(e) {} }
         return incomplete;
       }).length;
       if (window.ForgeSidebar) ForgeSidebar.setBadge('assignments', count || null);
