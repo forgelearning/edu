@@ -681,6 +681,7 @@ function render() {
     state.bank = requestedBank;
     state.questions = weightedShuffle(BANKS[requestedBank].questions.filter(function(q){return !q.type||q.type==='fill_blank';}), state.weightMap||{});
     state.idx = 0; state.score = 0; state.phase = 'quiz';
+    requestedBank = null;
   }
   if (state.phase === 'join') renderJoin();
   else if (state.phase === 'trial-expired') renderTrialExpiredWall();
@@ -1591,6 +1592,7 @@ function getLBRank(xp){for(var i=LB_RANKS.length-1;i>=0;i--){if(xp>=LB_RANKS[i].
 
 function renderResults(){
   var bk=BANKS[state.bank];
+  try { var completed=JSON.parse(localStorage.getItem('forge-completed-banks')||'{}'); completed[state.bank]=true; localStorage.setItem('forge-completed-banks',JSON.stringify(completed)); } catch(e) {}
   var pct=Math.round((state.score/state.questions.length)*100);
   var col=pct>=75?'var(--good)':pct>=50?'var(--hot)':'var(--bad)';
   var h='<div class="results">';
