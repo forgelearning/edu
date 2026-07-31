@@ -1797,9 +1797,10 @@ function renderAssignments() {
   // ── Create assignment form ──
   h += '<div class="assign-form">';
   h += '<div class="card-title" style="margin-bottom:14px">New assignment</div>';
+  h += '<p style="font-size:13px;color:#8A857E;margin:-6px 0 14px">Assignments set the class priority. Students can still access the full course and work ahead; their extra work remains recorded as completed unassigned.</p>';
   h += '<input type="text" id="asgn-title" placeholder="Assignment title — e.g. Inflation revision">';
   h += '<input type="date" id="asgn-due">';
-  h += '<div class="card-title" style="margin-bottom:8px">Select banks to include</div>';
+  h += '<div class="card-title" style="margin-bottom:8px">Select topics to assign</div>';
   h += '<div class="bank-checklist">';
   availableBanks.forEach(function(bk) {
     var label = BANK_LABELS[bk] || bk;

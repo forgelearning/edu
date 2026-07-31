@@ -29,6 +29,8 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
 .back-btn{background:none;border:none;cursor:pointer;font-size:13px;color:#8A857E;font-family:'Inter',sans-serif;margin-bottom:16px;padding:0}
 .back-btn:hover{color:var(--white)}
 .bank-list{display:flex;flex-direction:column;gap:8px;margin-top:20px}
+.course-note{margin-top:18px;padding:12px 14px;border:1px solid var(--line);border-radius:var(--radius-md);background:var(--panel);font-size:13px;color:var(--slate)}
+.bank-status{float:right;font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:var(--ember);font-weight:700;margin-top:4px}
 .bank-btn{padding:14px 18px;border-radius:var(--radius-md);border:1.5px solid var(--line);background:var(--panel);cursor:pointer;text-align:left;font-family:'Inter',sans-serif;transition:border-color .15s}
 .bank-btn:hover{border-color:var(--ember)}
 .bank-btn .code{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
@@ -417,6 +419,7 @@ var state = {
   classId: null,
   studentName: null,
   classSubject: null,  // locked subject from class code
+  classCode: null,
   isPaid: false,
   isTrial: false,
   trialDaysLeft: 0,
@@ -488,6 +491,7 @@ function activateClass(entry) {
   state.classId      = entry.classId;
   state.studentId    = entry.studentId;
   state.classSubject = entry.subject || null;
+  state.classCode   = entry.classCode || null;
   if (entry.studentName) state.studentName = entry.studentName;
   try {
     localStorage.setItem('forge-student', JSON.stringify({
@@ -1137,12 +1141,16 @@ function renderBanks(){
   h+='<h2 style="font-size:24px;margin-bottom:4px">'+subj.label+'</h2>';
   h+='<p style="color:#8A857E;font-size:14px">'+subj.sub+'</p></div>';
   h+='<div id="assignment-banner"></div>';
+  h+='<div class="course-note"><strong style="color:var(--white)">Your full course is open.</strong> Your teacher\'s assignments are shown first, but you can work ahead on any topic. Work completed outside an assignment is still saved as <strong style="color:var(--ember)">completed unassigned</strong>.</div>';
   h+='<div class="bank-list">';
   subj.banks.forEach(function(key){
     var b=BANKS[key];
+    var status = '';
+    if (state._assignedBanks && state._assignedBanks[key]) status = '<span class="bank-status">Assigned</span>';
+    else status = '<span class="bank-status" style="color:#8A857E">Available</span>';
     h+='<button class="bank-btn" data-key="'+key+'">';
     h+='<div class="code" style="color:'+b.color+'">'+key+'</div>';
-    h+='<div class="name">'+b.label+'</div>';
+    h+='<div class="name">'+b.label+status+'</div>';
     h+='<div class="qcount">'+b.questions.length+' questions</div>';
     h+='</button>';
   });
@@ -1178,9 +1186,11 @@ function renderBanks(){
 
       // Filter to non-overdue assignments
       var active = assignments.filter(function(a){
-        return a.due_date && new Date(a.due_date) >= today;
+        return !a.archived && (!a.due_date || new Date(a.due_date) >= today);
       });
       if (active.length === 0) return;
+
+      state._assignedBanks = {};
 
       var bh = '<div style="margin:16px 0 4px">';
       active.forEach(function(asgn){
@@ -1188,6 +1198,7 @@ function renderBanks(){
         try { banks = typeof asgn.banks === 'string' ? JSON.parse(asgn.banks) : (asgn.banks || []); } catch(e){}
         var relevantBanks = banks.filter(function(bk){ return subj.banks.indexOf(bk) !== -1; });
         if (relevantBanks.length === 0) return;
+        relevantBanks.forEach(function(bk){ state._assignedBanks[bk] = true; });
 
         var due = new Date(asgn.due_date);
         var diff = Math.ceil((due - new Date()) / (1000*60*60*24));
@@ -1211,6 +1222,17 @@ function renderBanks(){
       bh += '</div>';
       if (banner) {
         banner.innerHTML = bh;
+        var bankList = document.querySelector('.bank-list');
+        if (bankList) {
+          bankList.querySelectorAll('.bank-btn').forEach(function(btn) {
+            var label = btn.querySelector('.name');
+            if (!label || label.querySelector('.bank-status')) return;
+            var bk = btn.getAttribute('data-key');
+            label.insertAdjacentHTML('beforeend', state._assignedBanks[bk]
+              ? '<span class="bank-status">Assigned</span>'
+              : '<span class="bank-status" style="color:#8A857E">Available</span>');
+          });
+        }
         banner.querySelectorAll('[data-asgn-bank]').forEach(function(btn){
           btn.onclick = function(){
             var bk = btn.getAttribute('data-asgn-bank');
