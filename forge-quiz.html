@@ -677,10 +677,10 @@ function registerFreeStudent(name, token) {
 var app = document.getElementById('app');
 
 function render() {
-  if (requestedBank && BANKS[requestedBank] && state.studentName) {
+  if (requestedBank && BANKS[requestedBank] && state.studentName && state.phase !== 'quiz') {
     state.bank = requestedBank;
     state.questions = weightedShuffle(BANKS[requestedBank].questions.filter(function(q){return !q.type||q.type==='fill_blank';}), state.weightMap||{});
-    state.idx = 0; state.score = 0; state.phase = 'quiz'; requestedBank = null;
+    state.idx = 0; state.score = 0; state.phase = 'quiz';
   }
   if (state.phase === 'join') renderJoin();
   else if (state.phase === 'trial-expired') renderTrialExpiredWall();
