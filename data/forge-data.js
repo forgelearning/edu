@@ -1115,9 +1115,9 @@ const SUBJECTS = {
   },
   "gcse-geo": {
     label: "GCSE Geography",
-    sub: "Edexcel B 1GB0 — Paper 1 (Hazardous Earth, Development Dynamics, Urbanising World) & Paper 2 (UK Physical & Human Landscapes)",
+    sub: "Edexcel B 1GB0 — Paper 1 (Hazardous Earth, Development Dynamics, Urbanising World) & Paper 2 (UK Physical & Human Landscapes, Fieldwork)",
     color: "#0f766e",
-    banks: ["GCSE-GEO-HAZ", "GCSE-GEO-DEV", "GCSE-GEO-INDIA", "GCSE-GEO-URB", "GCSE-GEO-UKLAND", "GCSE-GEO-UKHUMAN"]
+    banks: ["GCSE-GEO-HAZ", "GCSE-GEO-DEV", "GCSE-GEO-INDIA", "GCSE-GEO-URB", "GCSE-GEO-UKLAND", "GCSE-GEO-UKHUMAN", "GCSE-GEO-ENQUIRY", "GCSE-GEO-RIVERFIELD", "GCSE-GEO-URBFIELD"]
   },
   "gcse-econ": {
     label: "GCSE Economics",
@@ -1654,6 +1654,350 @@ BANKS["GCSE-GEO-UKLAND"] = {
 };
 
 BANKS["ECON-1.1"].questions.find(function(q){return q.id==="SD-01";}).correct="D";
+
+BANKS["GCSE-GEO-ENQUIRY"] = {
+  label: "Geographical Enquiry & Fieldwork Skills",
+  color: "#0f766e",
+  questions: [
+    {
+      id:"GCSE-ENQ-01",spec:"GCSE-ENQ",stem:"A student's fieldwork hypothesis reads: 'The river is different at different points.' Why is this a poor hypothesis?",
+      options:{A:"It is not directional or measurable — a good hypothesis states the expected direction of change, such as 'width increases with distance downstream'",B:"Hypotheses are not allowed in GCSE fieldwork",C:"It should instead be written as a question",D:"It is too short to be a hypothesis"},
+      correct:"A",tag:"MC-ENQ-01",
+      scaffold:"A hypothesis must be clear, directional and measurable — a statement that can be tested and shown to be true or false, e.g. 'River discharge increases with distance from the source' or 'Environmental quality increases with distance from the new road.' 'The river is different' names no variable and no direction, so it can never be tested. Aims and hypotheses are often built from an established theory or model, such as Bradshaw's model for rivers.",
+      reforge:{stem:"Which of these is correctly written as a testable geographical hypothesis?",options:{A:"Environmental quality improves with increasing distance from the CBD",B:"The city centre and the edge of the city are not the same",C:"Some parts of the urban area are nicer than others",D:"Environmental quality is a useful thing to measure"},correct:"A"}
+    },
+    {
+      id:"GCSE-ENQ-02",spec:"GCSE-ENQ",stem:"Why might a fieldwork enquiry use a null hypothesis alongside its main hypothesis?",
+      options:{A:"It removes bias — the null hypothesis states the opposite, so data is not selectively interpreted just to prove the original statement",B:"It is only used when the equipment fails",C:"It replaces the need for a conclusion",D:"It guarantees the results will be reliable"},
+      correct:"A",tag:"MC-ENQ-02",
+      scaffold:"A null hypothesis is the opposite statement to the hypothesis, e.g. hypothesis: 'Environmental quality improves with distance from the CBD'; null hypothesis: 'Environmental quality does not improve with distance from the CBD.' Testing both prevents a student from unconsciously ignoring evidence that doesn't fit — if the hypothesis can't be proved, the null hypothesis must be accepted instead.",
+      reforge:{stem:"A student only tests their hypothesis and ignores the null hypothesis. What is the risk?",options:{A:"They may unconsciously interpret ambiguous data to support their hypothesis, introducing bias into the conclusion",B:"The fieldwork becomes illegal under exam board rules",C:"The sample size automatically becomes too small",D:"There is no risk — null hypotheses are optional decoration"},correct:"A"}
+    },
+    {
+      id:"GCSE-ENQ-03",spec:"GCSE-ENQ",stem:"Which is an example of PRIMARY data in a fieldwork enquiry?",
+      options:{A:"River width and depth measurements taken by the student on the day of fieldwork",B:"Census population data downloaded from the ONS website",C:"Historical weather records from the Met Office",D:"An old newspaper article about a flood event"},
+      correct:"A",tag:"MC-ENQ-03",
+      scaffold:"Primary data is collected first-hand by the student: questionnaires, river measurements, photographs, interviews. Secondary data is collected by someone else and reused: census data, weather records, old photographs, maps, newspaper articles. Primary data is reliable and specific to the enquiry but time-consuming; secondary data is quick and free but not specific to the enquiry and its quality can't be controlled.",
+      reforge:{stem:"What is the main limitation of relying on secondary data in a fieldwork enquiry?",options:{A:"It is not specific to the enquiry, may be out of date, and the student has no control over how it was collected",B:"It is always more expensive than primary data",C:"It cannot be presented on a graph",D:"It is illegal to use in GCSE coursework"},correct:"A"}
+    },
+    {
+      id:"GCSE-ENQ-04",spec:"GCSE-ENQ",stem:"A geography class wants to sample environmental quality at sites every 200 metres along a transect. Which sampling method are they using?",
+      options:{A:"Systematic sampling — sites selected at regular intervals",B:"Random sampling — sites selected using random number generation",C:"Stratified sampling — sites selected to represent subsets of the population",D:"Opportunistic sampling — sites selected based on whatever is accessible"},
+      correct:"A",tag:"MC-ENQ-04",
+      scaffold:"Systematic = regular intervals (e.g. every 200m or every tenth person) — quick and covers the whole area, but not every site has an equal chance of selection, which can introduce bias. Random = numbered grid squares chosen via random number generator — least biased, but may miss whole areas or land on inaccessible sites. Stratified = proportional to known subsets, e.g. if 10% of the population is over 65, 10% of questionnaire respondents should be too.",
+      reforge:{stem:"A researcher wants their questionnaire sample to include the same proportion of over-65s as the wider population. Which sampling method are they using?",options:{A:"Stratified sampling",B:"Systematic sampling",C:"Random sampling",D:"Opportunistic sampling"},correct:"A"}
+    },
+    {
+      id:"GCSE-ENQ-05",spec:"GCSE-ENQ",stem:"Why might a student use opportunistic sampling instead of their planned sampling strategy?",
+      options:{A:"Access to some sites may be limited on the day, so the nearest accessible point to the planned sample site is used instead",B:"Opportunistic sampling always gives more accurate results",C:"It removes the need for a risk assessment",D:"It is required by the exam board for all fieldwork"},
+      correct:"A",tag:"MC-ENQ-05",
+      scaffold:"Opportunistic sampling is a practical compromise, not a preferred method — used when the planned site (from systematic, random or stratified sampling) cannot be reached, e.g. private land, dangerous terrain, restricted access. The rule is to stay as close as possible to the originally selected site so the sample remains as representative as it can be.",
+      reforge:{stem:"A river sample site selected by random sampling turns out to be on private land with no public access. What is the best response?",options:{A:"Use an opportunistic approach — select the nearest accessible point to the original site",B:"Abandon the enquiry entirely",C:"Trespass to reach the exact site",D:"Select a completely different river"},correct:"A"}
+    },
+    {
+      id:"GCSE-ENQ-06",spec:"GCSE-ENQ",stem:"A student conducts an environmental quality survey on their own using a bipolar scale from -3 to +3. What is the main weakness of this method?",
+      options:{A:"It is subjective — the score depends on one person's judgement, which can be reduced by using groups and taking the mode score",B:"Bipolar scales cannot be used for environmental quality",C:"It produces qualitative data that cannot be compared between sites",D:"It requires expensive specialist equipment"},
+      correct:"A",tag:"MC-ENQ-06",
+      scaffold:"Environmental Quality Surveys (EQS) use a sliding or bipolar scale (e.g. -3 to +3) to judge features like litter, graffiti, and green space — they produce quantitative data, but the score reflects one person's opinion, making them subjective. This is reduced by completing the survey in small groups to reach a consensus, or by combining scores from multiple students and using the mode.",
+      reforge:{stem:"How can the subjectivity of an environmental quality survey best be reduced?",options:{A:"Complete it in small groups to reach a consensus, or take the mode score from several students' independent surveys",B:"Use a wider bipolar scale, e.g. -10 to +10",C:"Only survey sites during the day",D:"Replace the survey with a single photograph"},correct:"A"}
+    },
+    {
+      id:"GCSE-ENQ-07",spec:"GCSE-ENQ",stem:"A student wants to show the relationship between river width and discharge collected at eight sample sites. Which graph is most appropriate?",
+      options:{A:"A scattergraph, since it shows the relationship between two variables and allows a best-fit line to be added",B:"A pie chart, since it shows proportions of a whole",C:"A rose diagram, since it uses compass direction",D:"A choropleth map, since it shows spatial variation by shading"},
+      correct:"A",tag:"MC-ENQ-07",
+      scaffold:"Scattergraphs plot two variables against each other, with points left unconnected — a best-fit line reveals the relationship, and outliers/anomalies stand out clearly. Pie charts show proportions of a whole; rose diagrams plot directional data like wind or noise; choropleth maps show spatial variation using shading bands. Match graph type to the type of comparison being made — that's the recurring exam skill.",
+      reforge:{stem:"Which limitation applies specifically to scattergraphs?",options:{A:"They can only show the relationship between two sets of data, and individual points cannot easily be labelled",B:"They cannot show anomalies or outliers",C:"They can only be used with qualitative data",D:"They must always show a perfect positive correlation"},correct:"A"}
+    },
+    {
+      id:"GCSE-ENQ-08",spec:"GCSE-ENQ",stem:"A choropleth map is used to show environmental quality scores across zones of a town. What is its main limitation?",
+      options:{A:"It creates an impression of an abrupt change at zone boundaries, when in reality quality often changes gradually",B:"It cannot display more than two categories of data",C:"It cannot be drawn using GIS software",D:"It only works for numerical data with negative values"},
+      correct:"A",tag:"MC-ENQ-08",
+      scaffold:"Choropleth maps shade areas according to a value range using one colour in different intensities — good for showing a clear overall spatial pattern, but the sharp boundary between two shades implies a sudden change that doesn't exist on the ground, and variation within a single shaded zone is hidden. Proportional symbol maps avoid this by placing a scaled symbol at each exact point instead.",
+      reforge:{stem:"Why might a proportional symbols map be preferred over a choropleth map for showing traffic counts at exact sample sites?",options:{A:"It shows data specific to the exact location without implying false boundaries between zones",B:"It is quicker to construct than a choropleth map",C:"It can display continuous surfaces better than any other method",D:"It removes the need for a scale or key"},correct:"A"}
+    },
+    {
+      id:"GCSE-ENQ-09",spec:"GCSE-ENQ",stem:"In a data set of environmental quality scores: 2, 3, 3, 4, 5, 5, 5, 8, what is the mode?",
+      options:{A:"5",B:"3",C:"4",D:"8"},
+      correct:"A",tag:"MC-ENQ-09",
+      scaffold:"Mode = the value that occurs most often. Here 5 appears three times, more than any other value. Mean = sum ÷ count = 35 ÷ 8 = 4.375. Median = middle value when ranked = average of the 4th and 5th values = (4+5)/2 = 4.5. Range = highest − lowest = 8 − 2 = 6. Learn to calculate all three measures of central tendency plus range, since exam questions often give a small raw data set and ask for one specific measure.",
+      reforge:{stem:"Using the same data set (2, 3, 3, 4, 5, 5, 5, 8), what is the range?",options:{A:"6",B:"8",C:"3",D:"5"},correct:"A"}
+    },
+    {
+      id:"GCSE-ENQ-10",spec:"GCSE-ENQ",stem:"A student finds one river velocity reading is far lower than all the others recorded nearby with similar gradients. What should they do with this anomaly?",
+      options:{A:"Identify it, describe how it differs from the pattern, and try to explain the possible cause rather than deleting it",B:"Automatically delete it from the data set before graphing",C:"Ignore it since anomalies never affect conclusions",D:"Replace it with the mean of the other readings without comment"},
+      correct:"A",tag:"MC-ENQ-10",
+      scaffold:"Anomalies are results that don't fit the expected pattern or trend. Good practice is to identify them, describe how they differ, and suggest an explanation — equipment fault, human error in reading/recording, an unusual local feature (e.g. an obstruction affecting flow), or a genuine but unexpected geographical process. Simply deleting inconvenient data undermines the validity of the whole enquiry.",
+      reforge:{stem:"A river velocity anomaly is later found to be caused by a fallen branch obstructing flow at that exact spot. How should this be treated in the conclusion?",options:{A:"As an explained anomaly caused by a local, temporary obstruction rather than evidence against the general trend",B:"As proof that the hypothesis is entirely wrong",C:"As data that should never have been collected",D:"As evidence that all velocity data is unreliable"},correct:"A"}
+    },
+    {
+      id:"GCSE-ENQ-11",spec:"GCSE-ENQ",stem:"Which statement best describes what an 'evaluation' of a fieldwork enquiry should include?",
+      options:{A:"Limitations of data collection methods, how reliable the conclusions were, and how the enquiry could be improved or extended",B:"A simple restatement of the results without any comment on accuracy",C:"A list of all the equipment used with no comment on its effectiveness",D:"A description of what the weather was like on the day of the fieldwork"},
+      correct:"A",tag:"MC-ENQ-11",
+      scaffold:"Evaluation ≠ conclusion. Conclusion returns to the hypothesis and states whether it was supported. Evaluation critically examines the enquiry itself: were sample sites accessible, was the sample size big enough, was the time available enough, were the questions/methods appropriate, was there human or equipment error, did the weather or unforeseen issues (roadworks, unusual river flow) affect results — and what would you change if repeating it.",
+      reforge:{stem:"A student writes: 'My hypothesis was supported because velocity increased downstream.' Is this a conclusion or an evaluation?",options:{A:"A conclusion — it returns to the hypothesis and states whether the evidence supports it",B:"An evaluation — it discusses the reliability of the methods used",C:"Neither — it is a restatement of the aim",D:"Both, since conclusions and evaluations are the same thing"},correct:"A"}
+    },
+    {
+      id:"GCSE-ENQ-12",spec:"GCSE-ENQ",stem:"A student used a float to measure river velocity but suggests a flow meter would have been better. Why?",
+      options:{A:"A flow meter gives a more direct, precise reading of velocity rather than relying on timing an object with a stopwatch, which introduces human reaction-time error",B:"A float always overestimates velocity",C:"Flow meters remove the need for repeat readings",D:"A float can only be used in still water"},
+      correct:"A",tag:"MC-ENQ-12",
+      scaffold:"This is a standard 'suggest an improvement' exam answer. Using a float: measure a set distance (e.g. 10m), time how long the float takes with a stopwatch, repeat three times per position for a mean. Human reaction time in starting/stopping the stopwatch introduces error. A flow meter placed at least 3cm below the surface gives a direct velocity reading, removing that source of error — though it is more expensive and needs training to use correctly.",
+      reforge:{stem:"Which improvement to a river fieldwork enquiry would most directly increase the reliability of the conclusions?",options:{A:"Increasing the sample size and taking repeat readings at each site to calculate a more robust mean",B:"Only measuring the river at a single site",C:"Removing the health and safety risk assessment",D:"Reducing the number of sites"},correct:"A"}
+    },
+    {
+      id:"GCSE-ENQ-FB-01",spec:"GCSE-ENQ",type:"fill_blank",
+      stem:"Complete the sentence about hypotheses.",
+      template:"A good hypothesis must be clear, ___ and ___, so that it can be tested against the data collected. A ___ hypothesis is the opposite statement, used to reduce bias.",
+      blanks:["directional","measurable","null"],
+      bank:["directional","measurable","null","random","vague","secondary"],
+      tag:"MC-ENQ-01",
+      scaffold:"'The river is different' fails all three tests. 'Discharge increases with distance downstream' passes: it names a direction (increases) and a measurable variable (discharge). Testing the null hypothesis alongside it guards against selectively interpreting ambiguous results."
+    },
+    {
+      id:"GCSE-ENQ-FB-02",spec:"GCSE-ENQ",type:"fill_blank",
+      stem:"Complete the sentence about data types.",
+      template:"Data collected first-hand by the student is called ___ data, while data collected by someone else and reused, such as census figures, is called ___ data.",
+      blanks:["primary","secondary"],
+      bank:["primary","secondary","qualitative","quantitative","random","stratified"],
+      tag:"MC-ENQ-03",
+      scaffold:"Primary: questionnaires, river measurements, photographs taken by the student. Secondary: census data, Met Office weather records, old maps and newspaper articles. Primary is specific and controlled but time-consuming; secondary is quick and free but not tailored to the enquiry."
+    },
+    {
+      id:"GCSE-ENQ-FB-03",spec:"GCSE-ENQ",type:"fill_blank",
+      stem:"Complete the sentence about sampling methods.",
+      template:"___ sampling selects sites at regular intervals, ___ sampling gives every site an equal chance of selection, and ___ sampling ensures subsets of the population are represented proportionally.",
+      blanks:["Systematic","random","stratified"],
+      bank:["Systematic","random","stratified","opportunistic","biased","secondary"],
+      tag:"MC-ENQ-04",
+      scaffold:"Systematic = fixed intervals, quick, covers the whole area, but not fully unbiased. Random = numbered grid squares via random number generator, least biased overall. Stratified = proportional representation of known subsets, e.g. age groups matching the census."
+    },
+    {
+      id:"GCSE-ENQ-FB-04",spec:"GCSE-ENQ",type:"fill_blank",
+      stem:"Complete the sentence about measures of central tendency.",
+      template:"The ___ is calculated by adding all values and dividing by the number of values. The ___ is the middle value when data is ranked in order. The ___ is the most frequently occurring value.",
+      blanks:["mean","median","mode"],
+      bank:["mean","median","mode","range","interquartile","anomaly"],
+      tag:"MC-ENQ-09",
+      scaffold:"Mean = total ÷ count. Median = middle value once ranked (average the two middle values if there is an even number of data points). Mode = most frequent value. Range = highest − lowest — a measure of dispersion (spread), not central tendency."
+    },
+    {
+      id:"GCSE-ENQ-FB-05",spec:"GCSE-ENQ",type:"fill_blank",
+      stem:"Complete the sentence about fieldwork evaluation.",
+      template:"Evaluation should identify problems with the data collection ___, suggest ___ that could have been made, and assess how ___ the conclusions were.",
+      blanks:["methods","improvements","reliable"],
+      bank:["methods","improvements","reliable","hypotheses","graphs","aims"],
+      tag:"MC-ENQ-11",
+      scaffold:"Evaluation covers: accessibility of sites, sample size, duration of data collection, appropriateness of methods/questions, equipment issues, human error, and unforeseen problems on the day. It then suggests concrete improvements — larger sample, more measurements, better equipment, repeat visits — before judging overall reliability."
+    }
+  ]
+};
+
+BANKS["GCSE-GEO-RIVERFIELD"] = {
+  label: "River Fieldwork — River Darent",
+  color: "#0f766e",
+  questions: [
+    {
+      id:"GCSE-RVF-01",spec:"GCSE-RVF",stem:"A class investigates the River Darent at three sites: Westerham (near the source), Park Farm, and Lullingstone Roman Villa (further downstream). Which hypothesis links this to Bradshaw's model?",
+      options:{A:"Channel width and discharge increase with distance downstream from Westerham to Lullingstone Roman Villa",B:"Channel width decreases with distance downstream",C:"Velocity is identical at all three sites",D:"Discharge is unrelated to distance from the source"},
+      correct:"A",tag:"MC-RVF-01",
+      scaffold:"Bradshaw's model predicts that as a river moves from source to mouth, width, depth, velocity, discharge and load size generally increase, while gradient and bed material size decrease. Moving from Westerham (upper course, closer to source) through Park Farm to Lullingstone (further downstream), the expected pattern is increasing width and discharge — this is the standard hypothesis for a downstream-change enquiry on the Darent.",
+      reforge:{stem:"According to Bradshaw's model, which variable should DECREASE between Westerham and Lullingstone Roman Villa?",options:{A:"Channel gradient and the size of bed material",B:"Channel width",C:"Discharge",D:"Cross-sectional area"},correct:"A"}
+    },
+    {
+      id:"GCSE-RVF-02",spec:"GCSE-RVF",stem:"At each River Darent site, students measure width using a tape measure. What is the correct technique?",
+      options:{A:"Measure from where the dry bank meets the water on one side to where it meets the water on the opposite side, keeping the tape taut and clear of the water",B:"Measure the widest point of the entire valley, including the floodplain",C:"Estimate the width visually without any equipment",D:"Measure only the deepest channel, ignoring the banks"},
+      correct:"A",tag:"MC-RVF-02",
+      scaffold:"Width is measured bank-to-bank at the point where dry land meets water. The tape must be held taut and must not touch the water's surface, since a sagging or wet tape would distort the reading and reduce reliability. This is one of the two starting measurements (with depth) for almost every river enquiry.",
+      reforge:{stem:"Why must the tape measure used for river width be kept taut and clear of the water surface?",options:{A:"A sagging or wet tape would give an inaccurate width reading, reducing the reliability of the data",B:"It is a legal requirement under health and safety law",C:"It prevents the tape from being swept downstream",D:"It has no effect on accuracy, only on speed"},correct:"A"}
+    },
+    {
+      id:"GCSE-RVF-03",spec:"GCSE-RVF",stem:"When measuring river depth across the channel at Park Farm, why should the metre rule be held with its flat side facing the banks (i.e. edge-on to the flow)?",
+      options:{A:"It reduces the rule's impact on the water level at that point, giving a more accurate depth reading",B:"It makes the rule easier to read from the riverbank",C:"It prevents the rule from being seen by fish",D:"It has no effect on measurement accuracy"},
+      correct:"A",tag:"MC-RVF-03",
+      scaffold:"Placing the metre rule flat-side against the flow (rather than broad-side, which would dam the water slightly and raise the level around it) reduces its impact on the water height, giving a more accurate depth reading. Depth is measured at regular intervals across the width to build a full cross-sectional picture and calculate mean depth for the discharge formula.",
+      reforge:{stem:"Why is depth measured at several regular points across the river's width, rather than just once in the centre?",options:{A:"A single central reading would not capture how depth varies across the channel, and a mean depth is needed to calculate discharge accurately",B:"It is required only for rivers wider than 5 metres",C:"Depth never varies across a channel, so multiple readings check for equipment error only",D:"It removes the need to measure width separately"},correct:"A"}
+    },
+    {
+      id:"GCSE-RVF-04",spec:"GCSE-RVF",stem:"At a Darent site, students measure velocity using a float over a 10m stretch, timing it with a stopwatch at the left bank, centre, and right bank. Why take readings at three positions across the width?",
+      options:{A:"Velocity varies across the channel — it is typically fastest in the centre/thalweg and slower near the banks due to friction",B:"It is only done to save time compared to using a flow meter",C:"Velocity is identical everywhere in a channel so this simply checks for errors",D:"Three positions are needed to calculate river width"},
+      correct:"A",tag:"MC-RVF-04",
+      scaffold:"Friction with the bed and banks slows water near the edges, so velocity is generally highest in the centre/thalweg and lowest near the banks. Taking three readings (left, centre, right) and repeating each three times allows a representative mean velocity to be calculated — a single reading anywhere would misrepresent the whole cross-section.",
+      reforge:{stem:"A group's float times at the left bank, centre and right bank of a Darent site are 22s, 14s, 21s over 10m. What does this pattern suggest?",options:{A:"Velocity is highest in the centre and lower near both banks, consistent with reduced friction away from the channel edges",B:"The float was defective, since velocity should be identical everywhere",C:"The river is flowing upstream at the banks",D:"The measurements must be discarded as anomalies"},correct:"A"}
+    },
+    {
+      id:"GCSE-RVF-05",spec:"GCSE-RVF",stem:"A group calculates cross-sectional area as 1.8 m² and mean velocity as 0.4 m/s at a Darent site. What is the discharge?",
+      options:{A:"0.72 m³/s",B:"2.2 m³/s",C:"1.4 m³/s",D:"7.2 m³/s"},
+      correct:"A",tag:"MC-RVF-05",
+      scaffold:"Discharge (m³/s) = cross-sectional area (m²) × velocity (m/s). Cross-sectional area = width × mean depth. Here: 1.8 × 0.4 = 0.72 m³/s. Always show both formulas and the substitution in an exam answer — method marks are available even if the final figure is wrong.",
+      reforge:{stem:"A river site has a width of 3.5m and mean depth of 0.6m. What is the cross-sectional area?",options:{A:"2.1 m²",B:"4.1 m²",C:"1.05 m²",D:"0.6 m²"},correct:"A"}
+    },
+    {
+      id:"GCSE-RVF-06",spec:"GCSE-RVF",stem:"Students measure the river's gradient at Westerham using a clinometer and two ranging poles set 10m apart. Why is gradient a useful measurement to link to Bradshaw's model?",
+      options:{A:"Gradient typically decreases downstream, so comparing it across the three Darent sites tests a core prediction of the model",B:"Gradient always stays the same throughout a river's course",C:"Gradient can only be measured at the river's source",D:"Gradient has no relationship to any other river variable"},
+      correct:"A",tag:"MC-RVF-06",
+      scaffold:"Bradshaw's model predicts gradient decreases from source to mouth as the river erodes vertically less and laterally more. On the Darent, comparing gradient at Westerham (steeper, upper course) against Lullingstone (gentler, lower course) directly tests this. Method: place ranging poles 0m and 10m apart, use the clinometer to measure the angle/height difference between them.",
+      reforge:{stem:"If the Darent's gradient is much steeper at Westerham than at Lullingstone Roman Villa, what would Bradshaw's model predict about velocity?",options:{A:"Despite the steeper gradient at Westerham, discharge and channel efficiency downstream mean velocity is often similar or even higher at Lullingstone",B:"Velocity must always be highest wherever gradient is steepest",C:"Velocity and gradient have no relationship in Bradshaw's model",D:"Velocity can only be measured where gradient is zero"},correct:"A"}
+    },
+    {
+      id:"GCSE-RVF-07",spec:"GCSE-RVF",stem:"Which of these is a river-specific health and safety risk that should appear in a risk assessment for fieldwork on the Darent?",
+      options:{A:"Weil's disease from contact with contaminated water, managed by washing hands and covering open wounds",B:"Risk of sunburn only, since rivers have no other hazards",C:"There are no additional risks compared to classroom-based work",D:"Risk of altitude sickness"},
+      correct:"A",tag:"MC-RVF-07",
+      scaffold:"River-specific risks: slippery rocks (sturdy footwear with grip), Weil's disease from contaminated water (wash hands, cover cuts, use anti-bacterial gel), weather (check forecast, sun protection), working in an unfamiliar place (work in groups, carry maps/phones, hi-vis). A good risk assessment names the specific hazard, who it affects, and precisely how it is managed — not just 'be careful'.",
+      reforge:{stem:"A risk assessment states: 'Hazard: slippery rocks. Risk: injury from slipping.' What is missing to complete it properly?",options:{A:"How the risk is managed — e.g. wearing sturdy, appropriate footwear with a good grip",B:"Nothing — hazard and risk are sufficient on their own",C:"The exact GPS coordinates of every rock",D:"A description of what the rocks look like"},correct:"A"}
+    },
+    {
+      id:"GCSE-RVF-08",spec:"GCSE-RVF",stem:"A student wants to display the change in the Darent's channel shape from Westerham to Lullingstone. Which graph type is most appropriate?",
+      options:{A:"A line graph plotting the river cross-section, since the joined points reveal the channel's shape",B:"A pie chart showing proportions of the channel",C:"A rose diagram, since it uses compass direction",D:"A choropleth map"},
+      correct:"A",tag:"MC-RVF-08",
+      scaffold:"A river cross-section is a special case of a line graph: although depth readings are not strictly continuous data, joining the plotted points shows the shape of the channel bed clearly — useful for comparing a narrow, deep upper-course channel (Westerham) against a wider, shallower or more uniform lower-course channel (Lullingstone).",
+      reforge:{stem:"Why might a scattergraph be more useful than a bar graph for showing the Darent's width against discharge across all sample sites?",options:{A:"A scattergraph reveals the relationship (correlation) between the two continuous variables, which a bar graph comparing discrete categories cannot show",B:"A scattergraph is always easier to draw than a bar graph",C:"Bar graphs cannot use numerical data at all",D:"A scattergraph removes the need to record discharge separately"},correct:"A"}
+    },
+    {
+      id:"GCSE-RVF-09",spec:"GCSE-RVF",stem:"At one Darent site, velocity is unexpectedly much lower than at neighbouring sites with a similar gradient. What is the best way to treat this in the analysis?",
+      options:{A:"Identify it as an anomaly and suggest a possible cause, such as an obstruction, vegetation, or a measurement/equipment error",B:"Delete the reading so it doesn't affect the graph",C:"Assume the equipment is always correct and rewrite the hypothesis",D:"Ignore it since anomalies do not need to be discussed"},
+      correct:"A",tag:"MC-RVF-09",
+      scaffold:"Anomalies should be named and explained, not hidden. Possible causes at a river site: debris or vegetation obstructing flow, a meander or pool slowing the current, human error in float timing, or a reading taken in an atypical spot. This is a very common 4-mark 'describe and explain an anomaly' exam question.",
+      reforge:{stem:"A 4-mark exam question shows a graph of the Darent's velocity with one clear anomaly. What must a full-marks answer include?",options:{A:"A description of how the anomalous point differs from the general trend, plus a plausible explanation for why it occurred",B:"Only the numerical value of the anomaly",C:"A statement that the whole enquiry is invalid",D:"A new hypothesis unrelated to the anomaly"},correct:"A"}
+    },
+    {
+      id:"GCSE-RVF-10",spec:"GCSE-RVF",stem:"After completing the River Darent enquiry, a student writes an evaluation. Which statement is a genuine evaluation point rather than a conclusion?",
+      options:{A:"'Our float method may have underestimated true velocity due to reaction-time errors in starting and stopping the stopwatch'",B:"'Discharge increased from Westerham to Lullingstone, supporting our hypothesis'",C:"'Bradshaw's model predicts width should increase downstream'",D:"'Our results matched the pattern predicted by Bradshaw's model'"},
+      correct:"A",tag:"MC-RVF-10",
+      scaffold:"B, C and D all restate findings or theory — that's conclusion territory. A critically examines the method itself and its limitation, which is what evaluation requires: was the equipment/method appropriate, how reliable is the data, what would you change next time (e.g. use a flow meter instead of a float to remove reaction-time error).",
+      reforge:{stem:"Which of these is the strongest evaluation point about sample size on the Darent enquiry?",options:{A:"Only measuring at three sites limits how confidently the trend can be generalised across the river's whole course — more sites between Westerham and Lullingstone would strengthen the conclusion",B:"Three sites is always enough for any river enquiry",C:"Sample size has no effect on the reliability of a conclusion",D:"The number of sites only matters for urban fieldwork, not river fieldwork"},correct:"A"}
+    },
+    {
+      id:"GCSE-RVF-FB-01",spec:"GCSE-RVF",type:"fill_blank",
+      stem:"Complete the sentence about measuring river discharge.",
+      template:"Discharge is calculated using the formula: cross-sectional area × ___. Cross-sectional area itself is calculated as ___ × mean ___.",
+      blanks:["velocity","width","depth"],
+      bank:["velocity","width","depth","gradient","time","length"],
+      tag:"MC-RVF-05",
+      scaffold:"Two-step calculation: (1) cross-sectional area (m²) = width (m) × mean depth (m); (2) discharge (m³/s) = cross-sectional area (m²) × velocity (m/s). Learn this chain — it's a guaranteed calculation question on river fieldwork."
+    },
+    {
+      id:"GCSE-RVF-FB-02",spec:"GCSE-RVF",type:"fill_blank",
+      stem:"Complete the sentence about Bradshaw's model applied to the River Darent.",
+      template:"Moving downstream from Westerham to Lullingstone Roman Villa, Bradshaw's model predicts that channel width and ___ will increase, while ___ and the size of ___ material will decrease.",
+      blanks:["discharge","gradient","bed"],
+      bank:["discharge","gradient","bed","velocity","depth","load"],
+      tag:"MC-RVF-01",
+      scaffold:"Bradshaw's model: width, depth, velocity, discharge and load quantity increase downstream; gradient, bed material size (load calibre) and friction decrease downstream. Using named sites (Westerham → Lullingstone) to test this model is exactly what an exam expects for a place-specific fieldwork answer."
+    },
+    {
+      id:"GCSE-RVF-FB-03",spec:"GCSE-RVF",type:"fill_blank",
+      stem:"Complete the sentence about river velocity measurement technique.",
+      template:"Using a float, students measure a set distance such as ___ metres, time how long the float takes with a ___, and repeat at each position three times to calculate a ___.",
+      blanks:["10","stopwatch","mean"],
+      bank:["10","stopwatch","mean","clinometer","median","5"],
+      tag:"MC-RVF-04",
+      scaffold:"Standard float method: measure a known distance (commonly 10m), time the float's travel with a stopwatch, and repeat three times at each of the three cross-channel positions (left, centre, right) to calculate a reliable mean velocity for that site."
+    }
+  ]
+};
+
+BANKS["GCSE-GEO-URBFIELD"] = {
+  label: "Urban Fieldwork — Stratford, London",
+  color: "#0f766e",
+  questions: [
+    {
+      id:"GCSE-URF-01",spec:"GCSE-URF",stem:"A class investigates change across Old Stratford, Carpenters Estate, East Village and the Olympic Park. Which is the most appropriate hypothesis for this enquiry?",
+      options:{A:"Environmental quality improves with proximity to the regenerated Olympic Park compared with the older Carpenters Estate and Old Stratford",B:"Environmental quality is identical across all areas of Stratford",C:"Traffic levels cannot be measured in Stratford",D:"Population density has no relationship to housing type in Stratford"},
+      correct:"A",tag:"MC-URF-01",
+      scaffold:"A good urban hypothesis names a clear, testable, directional relationship. Stratford is ideal for this because it contains contrasting zones within walking distance: Old Stratford and Carpenters Estate (older, less-regenerated housing) versus East Village and the Olympic Park (post-2012 regeneration). A hypothesis like 'environmental quality improves with proximity to the regenerated Olympic Park' can be tested directly using an EQS at each location.",
+      reforge:{stem:"What would be an appropriate null hypothesis for the Stratford investigation above?",options:{A:"Environmental quality does not improve with proximity to the regenerated Olympic Park",B:"Environmental quality always improves everywhere in London",C:"Stratford has no housing at all",D:"The Olympic Park is not located in Stratford"},correct:"A"}
+    },
+    {
+      id:"GCSE-URF-02",spec:"GCSE-URF",stem:"Why is Stratford, London a strong location for an urban change enquiry linked to regeneration theory?",
+      options:{A:"It contains sharply contrasting land use within a small area — older estates like Carpenters alongside post-Olympic regeneration such as East Village and the Olympic Park",B:"It has no variation in building age or land use",C:"It is entirely rural, so it cannot be used for an urban enquiry",D:"It has no public transport links, making data collection easier"},
+      correct:"A",tag:"MC-URF-02",
+      scaffold:"Regeneration is investment to reverse the decline of a run-down area. Stratford is unusually compressed for fieldwork purposes: Carpenters Estate (1960s social housing, some now vacant pending redevelopment) sits close to East Village (former 2012 Olympic Athletes' Village, now private and rented housing) and the Queen Elizabeth Olympic Park (redeveloped green and leisure space). This lets students compare pre- and post-regeneration environments on a single day's fieldwork.",
+      reforge:{stem:"A student annotates a photograph of Carpenters Estate: 'older, low-rise blocks with visible signs of disrepair, contrasting with the new East Village development nearby.' What analytical skill is this annotation demonstrating?",options:{A:"Qualitative analysis — using an annotation to add explanatory meaning to a photograph, not just a label",B:"Quantitative analysis — calculating a numerical value from the photograph",C:"Secondary data analysis — since photographs cannot be primary data",D:"Statistical analysis — since it refers to a measurable value"},correct:"A"}
+    },
+    {
+      id:"GCSE-URF-03",spec:"GCSE-URF",stem:"Students conduct an Environmental Quality Survey at Old Stratford, Carpenters Estate, East Village and the Olympic Park. Which feature would NOT typically appear on an EQS scoring sheet?",
+      options:{A:"River discharge in cubic metres per second",B:"Condition of pavements",C:"Amount of litter",D:"Amount of green space and vegetation"},
+      correct:"A",tag:"MC-URF-03",
+      scaffold:"EQS scores urban features on a bipolar scale, typically -2 to +2: pavements, buildings, litter, traffic, green space, graffiti. River discharge is a river fieldwork measurement, not an urban one — a classic exam distractor testing whether students can tell urban and river methods apart. Scoring each feature at all four Stratford locations allows a direct site-to-site comparison.",
+      reforge:{stem:"Why might an EQS score for 'green space' be notably higher at the Olympic Park than at Carpenters Estate?",options:{A:"The Olympic Park was purpose-built with extensive parkland and landscaping as part of the 2012 regeneration, unlike the older, more built-up estate",B:"Green space cannot be scored using an EQS",C:"Carpenters Estate has more parks than the Olympic Park",D:"EQS scores are unrelated to actual land use"},correct:"A"}
+    },
+    {
+      id:"GCSE-URF-04",spec:"GCSE-URF",stem:"A student conducts a pedestrian count at East Village and the Olympic Park at 9am, 11am, 1pm and 3pm using a tally chart. What is the main purpose of repeating the count at different times?",
+      options:{A:"Pedestrian flow varies through the day, so multiple time slots give a fuller, more representative picture than a single snapshot",B:"It removes the need to visit more than one location",C:"It replaces the need for a risk assessment",D:"It has no purpose — one count at any time is equally valid"},
+      correct:"A",tag:"MC-URF-04",
+      scaffold:"Footfall changes with time of day — a leisure destination like the Olympic Park may peak differently to a commuter route near East Village. A single count only captures one moment, which may not be typical. Repeating counts at set times (9am, 11am, 1pm, 3pm) captures this variation and produces more reliable, comparable data across sites.",
+      reforge:{stem:"A pedestrian count at the Olympic Park is much higher on a Saturday afternoon than a count taken at Carpenters Estate on a Tuesday morning. Why is this comparison methodologically weak?",options:{A:"The day and time were not controlled between sites, so the difference may reflect timing rather than a genuine difference between locations",B:"Pedestrian counts cannot be compared between any two sites",C:"The Olympic Park is not a valid fieldwork location",D:"Tally charts cannot be used for pedestrian data"},correct:"A"}
+    },
+    {
+      id:"GCSE-URF-05",spec:"GCSE-URF",stem:"Students use a questionnaire to ask residents near Carpenters Estate: 'The regeneration of the Olympic Park area has improved this neighbourhood.' Respondents choose strongly agree, agree, disagree or strongly disagree. What type of question is this?",
+      options:{A:"A statement question using a scale to gauge opinion",B:"An open question with unlimited possible answers",C:"A closed numerical question",D:"A secondary data source"},
+      correct:"A",tag:"MC-URF-05",
+      scaffold:"Question types: closed (single word/number/limited list, e.g. 'How long have you lived here?'), statement/scale (agree–disagree scale, as here), open (any answer, e.g. 'What are your views on the regeneration?'). Statement questions produce data that is easy to quantify and compare, while open questions produce richer but harder-to-compare qualitative data.",
+      reforge:{stem:"'What are your views on the redevelopment of Carpenters Estate?' is an example of which question type, and what is its main limitation for data analysis?",options:{A:"An open question — responses are richer but harder to quantify and compare systematically than closed or scale questions",B:"A closed question — responses are limited to yes or no",C:"A statement question — responses are given as a numerical score",D:"A secondary data question, since it is not answered by the respondent"},correct:"A"}
+    },
+    {
+      id:"GCSE-URF-06",spec:"GCSE-URF",stem:"Which of these is a risk specifically worth including in a risk assessment for fieldwork around Stratford's Carpenters Estate and East Village?",
+      options:{A:"Traffic and road-crossing risk, managed by wearing hi-vis and following safe crossing procedures",B:"Risk of tidal flooding, since Stratford is on the coast",C:"Risk of altitude sickness from elevation change",D:"Risk of encountering livestock"},
+      correct:"A",tag:"MC-URF-06",
+      scaffold:"Urban fieldwork risks differ from river/rural ones: traffic and road crossings, getting lost in an unfamiliar area, contact with strangers during questionnaires, and general pollution exposure are the relevant hazards for a built-up site like Stratford. Livestock, tides and altitude sickness are risks associated with rural, coastal or upland fieldwork instead — another common distractor pattern in exam questions.",
+      reforge:{stem:"A student is completing questionnaires with the public near Stratford station. What precaution addresses the 'contact with strangers' risk most directly?",options:{A:"Planning questions carefully in advance and working in groups, withdrawing politely if someone becomes annoyed or offended",B:"Avoiding all human contact during the enquiry",C:"Completing questionnaires only inside a locked room",D:"Skipping the questionnaire method entirely"},correct:"A"}
+    },
+    {
+      id:"GCSE-URF-07",spec:"GCSE-URF",stem:"A student wants to compare EQS scores for four Stratford sites (Old Stratford, Carpenters Estate, East Village, Olympic Park) on one chart. Which graph type is most appropriate?",
+      options:{A:"A bar graph, since it clearly compares a single score across separate categories/sites",B:"A scattergraph, since there is only one variable being measured",C:"A triangular graph, since there are four categories",D:"A choropleth map, since EQS data cannot be mapped"},
+      correct:"A",tag:"MC-URF-07",
+      scaffold:"Bar graphs are ideal for comparing a single measured value (total EQS score) across distinct categories (the four named sites) — simple to construct and interpret, though they don't show relationships or explain causes. A scattergraph needs two variables; a triangular graph needs three percentage components; EQS scores actually can be mapped as proportional symbols, but a bar graph is the more direct comparison tool here.",
+      reforge:{stem:"If a student instead wanted to test whether EQS score is related to distance from the Olympic Park across many small sites, which graph would be more appropriate than a bar graph?",options:{A:"A scattergraph, plotting EQS score against distance from the Olympic Park to reveal any correlation",B:"A pie chart, showing the proportion of each site's score",C:"A population pyramid",D:"A rose diagram"},correct:"A"}
+    },
+    {
+      id:"GCSE-URF-08",spec:"GCSE-URF",stem:"A student's Stratford enquiry finds Carpenters Estate has a surprisingly HIGH environmental quality score despite being the oldest housing studied. How should this anomaly be treated?",
+      options:{A:"Investigate and explain a plausible cause, such as recent partial refurbishment, low traffic on the survey day, or subjectivity in the scoring",B:"Delete the result so the graph shows a clean trend",C:"Assume the survey method is entirely invalid and abandon the enquiry",D:"Ignore it, since anomalies are not relevant to urban enquiries"},
+      correct:"A",tag:"MC-URF-08",
+      scaffold:"Treat unexpected urban results the same way as any anomaly: describe it, then suggest a specific, plausible cause tied to the actual location — e.g. a particular street within Carpenters Estate may have been recently maintained, the survey may have been completed by only one student (subjectivity), or the day's weather/traffic was unusually light. Specific, place-based explanations score far better than generic ones.",
+      reforge:{stem:"Which explanation for the Carpenters Estate anomaly above would be considered a strong, well-reasoned answer?",options:{A:"The EQS was completed by only one student that day, introducing subjective bias that could be reduced next time by using group consensus scoring",B:"Carpenters Estate must not really exist in Stratford",C:"Anomalies in urban data are always caused by equipment failure",D:"The result should simply be relabelled as correct without explanation"},correct:"A"}
+    },
+    {
+      id:"GCSE-URF-09",spec:"GCSE-URF",stem:"A student evaluating their Stratford fieldwork writes: 'We only visited each site once, on a dry Tuesday afternoon in term time.' What is this evaluation point highlighting?",
+      options:{A:"A limitation of the enquiry's reliability — results may not represent the sites under different weather, days or times, so repeating fieldwork under varied conditions would strengthen the conclusions",B:"A strength that guarantees the enquiry is fully reliable",C:"An irrelevant detail with no bearing on data quality",D:"A statement that belongs in the aims, not the evaluation"},
+      correct:"A",tag:"MC-URF-09",
+      scaffold:"This is a genuine, well-targeted evaluation point: single-visit fieldwork captures only one snapshot in time. Time of day, day of the week, weather and season can all affect footfall, traffic and even perceived environmental quality. A strong evaluation names the specific limitation and proposes a specific fix — e.g. repeat visits at a weekend, in different weather, or at a different time of year.",
+      reforge:{stem:"How could the Stratford urban enquiry's reliability be most directly improved?",options:{A:"Repeating data collection at different times of day and on different days of the week to check whether the pattern holds consistently",B:"Only visiting the Olympic Park and ignoring the other three sites",C:"Removing the environmental quality survey entirely",D:"Reducing the number of questionnaire respondents"},correct:"A"}
+    },
+    {
+      id:"GCSE-URF-10",spec:"GCSE-URF",stem:"Which theory or concept would most appropriately underpin a Stratford fieldwork enquiry into land use change since the 2012 Olympics?",
+      options:{A:"Urban regeneration and the sustainability of redevelopment, since Stratford was transformed as part of the London 2012 Olympic legacy",B:"Bradshaw's model, since Stratford is a river source",C:"Rostow's stages of economic growth, since it applies only to national economies",D:"The demographic transition model, since it explains only population change over time"},
+      correct:"A",tag:"MC-URF-10",
+      scaffold:"Every fieldwork enquiry needs an identifiable underpinning theory or concept. For an urban enquiry like Stratford, the relevant frameworks are urban land use change and sustainability of regeneration — directly relevant given the area's transformation from industrial/1960s estate land into the Olympic Park, East Village and ongoing Carpenters Estate redevelopment plans. Bradshaw's model is for rivers; Rostow's and the DTM apply at a national/international scale, not to a single urban regeneration site.",
+      reforge:{stem:"A student writes: 'Sustainability of urban regeneration' as their underpinning concept for Stratford. Which finding would directly relate to this concept?",options:{A:"Whether East Village's new housing includes affordable homes and green infrastructure that will remain viable and beneficial to residents long-term",B:"The exact wind direction recorded on the day of fieldwork",C:"The number of respondents who refused a questionnaire",D:"The distance between Old Stratford and Park Farm"},correct:"A"}
+    },
+    {
+      id:"GCSE-URF-FB-01",spec:"GCSE-URF",type:"fill_blank",
+      stem:"Complete the sentence about Environmental Quality Surveys in Stratford.",
+      template:"An EQS typically scores features such as pavements, buildings, litter, traffic and ___ space on a ___ scale, and the resulting data is ___.",
+      blanks:["green","bipolar","quantitative"],
+      bank:["green","bipolar","quantitative","river","open","qualitative"],
+      tag:"MC-URF-03",
+      scaffold:"EQS features: pavements, buildings, litter, traffic, green space, graffiti — each scored on a bipolar scale (e.g. -2 to +2). Despite being based on subjective judgement, the output is quantitative (numerical) data, which is why it can be compared and graphed across sites like Old Stratford, Carpenters Estate, East Village and the Olympic Park."
+    },
+    {
+      id:"GCSE-URF-FB-02",spec:"GCSE-URF",type:"fill_blank",
+      stem:"Complete the sentence about Stratford's urban regeneration.",
+      template:"Stratford's ___ Estate represents older, pre-regeneration housing, while ___ Village was built as the Athletes' Village for the 2012 Olympics and the Queen Elizabeth Olympic ___ is the redeveloped green and leisure space.",
+      blanks:["Carpenters","East","Park"],
+      bank:["Carpenters","East","Park","Old","West","Village"],
+      tag:"MC-URF-02",
+      scaffold:"The four named Stratford fieldwork locations: Old Stratford (established area), Carpenters Estate (1960s social housing, partly awaiting redevelopment), East Village (former Athletes' Village, now housing), Queen Elizabeth Olympic Park (redeveloped green/leisure space). This contrast makes Stratford ideal for testing a regeneration-based hypothesis."
+    },
+    {
+      id:"GCSE-URF-FB-03",spec:"GCSE-URF",type:"fill_blank",
+      stem:"Complete the sentence about question types in urban questionnaires.",
+      template:"A ___ question limits answers to a single word or number, an ___ question allows any response, and a ___ question asks respondents to rate agreement on a scale.",
+      blanks:["closed","open","statement"],
+      bank:["closed","open","statement","random","stratified","secondary"],
+      tag:"MC-URF-05",
+      scaffold:"Closed: 'How long have you lived here?' Open: 'What are your views on the regeneration?' Statement: 'The regeneration has improved this neighbourhood — strongly agree to strongly disagree.' Closed and statement questions are quick to analyse and compare; open questions give richer detail but are harder to quantify."
+    }
+  ]
+};
 
 BANKS["GCSE-GEO-UKHUMAN"] = {
   label: "UK's Evolving Human Landscape",
