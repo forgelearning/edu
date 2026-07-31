@@ -135,7 +135,21 @@ var ForgeSidebar = {
     if (isLight) document.documentElement.setAttribute('data-theme', 'light');
     this._updateThemeUI(isLight);
 
+    // Class rows carry their id in a data attribute rather than an inline
+    // onclick, so a class name or id can never escape into executable markup.
     document.addEventListener('click', function(e) {
+      var el = e.target instanceof Element ? e.target : null;
+      if (el) {
+        var rm = el.closest('[data-cls-remove]');
+        if (rm) return ForgeSidebar._removeClass(rm.getAttribute('data-cls-remove'));
+        var sel = el.closest('[data-cls-id]');
+        if (sel) {
+          var id = sel.getAttribute('data-cls-id');
+          return sel.closest('#forge-sheet')
+            ? ForgeSidebar._sheetSelectClass(id)
+            : ForgeSidebar._selectClass(id);
+        }
+      }
       var menu = document.getElementById('fclassswitch-menu');
       var wrap = document.querySelector('.fside-classswitch');
       if (menu && menu.style.display !== 'none' && wrap && !wrap.contains(e.target)) menu.style.display = 'none';
@@ -174,13 +188,13 @@ var ForgeSidebar = {
       h += '<div class="fsheet-heading">Classes</div>';
       h += classes.map(function(c) {
         var row = '<div class="fsheet-classrow">' +
-          '<button class="fsheet-item' + (c.id === activeId ? ' active' : '') + '" onclick="ForgeSidebar._sheetSelectClass(\'' + c.id + '\')">' +
+          '<button class="fsheet-item' + (c.id === activeId ? ' active' : '') + '" data-cls-id="' + _fsEsc(c.id) + '">' +
             _fsIcon('classes') +
             '<span>' + _fsEsc(c.name || c.code || '') + '</span>' +
             '<span class="fsheet-sub">' + _fsEsc(c.code || '') + '</span>' +
           '</button>';
         if (canRemove) {
-          row += '<button class="fcs-remove" aria-label="Remove ' + _fsEsc(c.name || c.code || 'class') + ' from this list" onclick="ForgeSidebar._removeClass(\'' + c.id + '\')">' +
+          row += '<button class="fcs-remove" aria-label="Remove ' + _fsEsc(c.name || c.code || 'class') + ' from this list" data-cls-remove="' + _fsEsc(c.id) + '">' +
             '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"></path></svg>' +
           '</button>';
         }
@@ -260,12 +274,12 @@ var ForgeSidebar = {
     var canRemove = typeof window.forgeOnClassRemove === 'function';
     var h = classes.map(function(c) {
       var row = '<div class="fclassswitch-row">' +
-        '<button class="fclassswitch-item' + (c.id === activeId ? ' active' : '') + '" onclick="ForgeSidebar._selectClass(\'' + c.id + '\')">' +
+        '<button class="fclassswitch-item' + (c.id === activeId ? ' active' : '') + '" data-cls-id="' + _fsEsc(c.id) + '">' +
           _fsEsc(c.name || c.code || '') +
           '<span class="fcs-sub">' + _fsEsc(c.code || '') + '</span>' +
         '</button>';
       if (canRemove) {
-        row += '<button class="fcs-remove" title="Remove from this list" aria-label="Remove ' + _fsEsc(c.name || c.code || 'class') + ' from this list" onclick="ForgeSidebar._removeClass(\'' + c.id + '\')">' +
+        row += '<button class="fcs-remove" title="Remove from this list" aria-label="Remove ' + _fsEsc(c.name || c.code || 'class') + ' from this list" data-cls-remove="' + _fsEsc(c.id) + '">' +
           '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"></path></svg>' +
         '</button>';
       }
@@ -363,8 +377,15 @@ var ForgeSidebar = {
   }
 };
 
+// Escapes for both text and quoted-attribute contexts — class names and codes
+// come from the database, so they reach us as untrusted input.
 function _fsEsc(s) {
-  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  return String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
 }
 
 // Shared attribute string so a tab/sheet row navigates exactly like its rail

@@ -1115,9 +1115,9 @@ const SUBJECTS = {
   },
   "gcse-geo": {
     label: "GCSE Geography",
-    sub: "Edexcel B 1GB0 — Hazardous Earth, Urbanising World, UK Physical & Human Landscapes",
+    sub: "Edexcel B 1GB0 — Paper 1 (Hazardous Earth, Development Dynamics, Urbanising World) & Paper 2 (UK Physical & Human Landscapes)",
     color: "#0f766e",
-    banks: ["GCSE-GEO-HAZ", "GCSE-GEO-URB", "GCSE-GEO-UKLAND", "GCSE-GEO-UKHUMAN"]
+    banks: ["GCSE-GEO-HAZ", "GCSE-GEO-DEV", "GCSE-GEO-INDIA", "GCSE-GEO-URB", "GCSE-GEO-UKLAND", "GCSE-GEO-UKHUMAN"]
   },
   "gcse-econ": {
     label: "GCSE Economics",
@@ -1857,6 +1857,388 @@ BANKS["GCSE-GEO-URB"] = {
       bank:["bottom","infrastructure","gradually","top","instantly","tourism"],
       tag:"MC-MUM-06",
       scaffold:"Sites and services schemes work bottom-up: secure land tenure plus basic infrastructure, with residents building and upgrading housing themselves over time — a contrast to top-down demolition-and-rebuild schemes."
+    }
+  ]
+};
+
+BANKS["GCSE-GEO-DEV"] = {
+  label: "Development Dynamics",
+  color: "#0f766e",
+  questions: [
+    {
+      id:"GCSE-DEV-01",spec:"GCSE-DEV",stem:"Why do geographers use the Human Development Index (HDI) rather than GDP per capita alone to measure development?",
+      options:{A:"HDI combines life expectancy, education and income, so it captures social as well as economic development",B:"HDI is easier to calculate than GDP per capita",C:"GDP per capita cannot be measured in developing countries",D:"HDI is measured every year whereas GDP is measured every ten years"},
+      correct:"A",tag:"MC-DEV-01",
+      scaffold:"Development has many strands — economic, social, demographic, political, environmental — so a single economic indicator gives a partial picture. HDI scores between 0 and 1 using life expectancy (health), education level/literacy (education) and GNI per capita (wealth). A country can have high GDP from oil exports but low life expectancy and literacy; HDI exposes that, GDP per capita hides it.",
+      reforge:{stem:"A country has a high GDP per capita but a low HDI score. What is the most likely explanation?",options:{A:"Wealth is concentrated in a narrow sector or a small elite, so it has not translated into health and education for the population",B:"The country has miscalculated its GDP",C:"HDI cannot be applied to wealthy countries",D:"The country must have a very small population"},correct:"A"}
+    },
+    {
+      id:"GCSE-DEV-02",spec:"GCSE-DEV",stem:"A student writes: 'GDP per capita tells us the quality of life of people in a country.' Why is this a weak claim?",
+      options:{A:"It is an average, so it hides inequality — many people may earn far below it, and it says nothing about health, education or what the money is spent on",B:"GDP per capita is never published for developing countries",C:"Quality of life can only be measured by life expectancy",D:"GDP per capita measures income, and income is irrelevant to quality of life"},
+      correct:"A",tag:"MC-DEV-02",
+      scaffold:"This is a classic 2-mark exam question. GDP per capita = total output ÷ population. Problems: (1) it's a mean, so extreme wealth at the top drags it up while most live below it; (2) it measures production, not wellbeing — spending on weapons counts the same as spending on hospitals; (3) GDP even rises after a disaster because of rebuilding. Use it alongside social indicators, not instead of them.",
+      reforge:{stem:"Following a major earthquake, a country's GDP rises the next year because of reconstruction spending. What does this show about GDP as a development measure?",options:{A:"GDP measures economic activity regardless of whether it improves people's lives, so a rise can mask a fall in wellbeing",B:"Earthquakes are good for development",C:"GDP is always calculated incorrectly after disasters",D:"GDP should be replaced entirely by birth rate"},correct:"A"}
+    },
+    {
+      id:"GCSE-DEV-03",spec:"GCSE-DEV",stem:"Which set of characteristics best describes an emerging country?",
+      options:{A:"Rapid economic growth based on industrial development, rising incomes and high or medium human development",B:"Low human development, subsistence agriculture and very low incomes",C:"Very high human development, a dominant service sector and an ageing population",D:"No industry, no trade links and a declining population"},
+      correct:"A",tag:"MC-DEV-03",
+      scaffold:"Edexcel B uses three categories: developing (low human development — poor quality of life, inadequate services), emerging (high/medium human development — rapid industrial-led growth, rising incomes, reasonable standard of living for most), and developed (very high human development — modern industries, high incomes). India, China and Brazil are the standard emerging examples. B describes a developing country; C describes a developed one.",
+      reforge:{stem:"Which of the following would be the strongest single piece of evidence that a country has moved from 'developing' to 'emerging'?",options:{A:"A sustained shift in employment and GDP from agriculture towards manufacturing and services, alongside rising GNI per capita",B:"An increase in total population",C:"Joining the United Nations",D:"A rise in the number of tourists visiting"},correct:"A"}
+    },
+    {
+      id:"GCSE-DEV-04",spec:"GCSE-DEV",stem:"Which of the following is a HISTORICAL cause of global inequality?",
+      options:{A:"Colonialism — richer nations took political control of other countries and exploited them economically",B:"Landlocked countries being cut off from seaborne trade",C:"Tropical cyclones repeatedly destroying infrastructure",D:"Corrupt governments failing to invest in healthcare"},
+      correct:"A",tag:"MC-DEV-04",
+      scaffold:"Exams often ask you to sort causes into categories. Environmental: climate/hazards, disease, topography, landlocked position. Historical: colonialism and neo-colonialism, trade patterns. Political/economic: governance, corruption, international relations, resource security. Social: healthcare, education, demography, poverty. B is environmental, C is environmental, D is political — only A is historical.",
+      reforge:{stem:"What distinguishes neo-colonialism from colonialism?",options:{A:"Neo-colonialism uses indirect 'soft power' — trade terms, aid conditions, IGOs and TNC dominance — rather than the direct political and military control of colonialism",B:"Neo-colonialism happened first, before colonialism",C:"Neo-colonialism only affects countries that were never colonised",D:"They are two words for exactly the same process"},correct:"A"}
+    },
+    {
+      id:"GCSE-DEV-05",spec:"GCSE-DEV",stem:"Why does a landlocked location tend to slow a country's economic development?",
+      options:{A:"It is cut off from seaborne trade routes, so exporting and importing costs more and depends on neighbouring countries",B:"Landlocked countries always have desert climates",C:"Landlocked countries cannot join international organisations",D:"Being landlocked means a country has no natural resources"},
+      correct:"A",tag:"MC-DEV-05",
+      scaffold:"Most world trade moves by sea because container shipping is cheap and bulk. A landlocked country (e.g. Chad) must move goods overland through neighbours first, adding cost, delay and political risk — which discourages TNC investment. Note this is a physical/environmental cause that interacts with political ones: relations with the neighbour controlling your route matter enormously.",
+      reforge:{stem:"Which combination of physical factors would most severely limit a developing country's ability to grow economically?",options:{A:"Landlocked position, mountainous terrain and a climate that supports disease vectors such as malaria",B:"A long coastline and a temperate climate",C:"Large deposits of minerals near a major port",D:"Flat, fertile land close to a navigable river"},correct:"A"}
+    },
+    {
+      id:"GCSE-DEV-06",spec:"GCSE-DEV",stem:"Rostow's modernisation theory argues that countries develop by:",
+      options:{A:"Passing through five linear stages from traditional society to high mass consumption, driven by investment and industrialisation",B:"Remaining permanently dependent on wealthier core countries",C:"Reducing trade with other countries to protect local industry",D:"Relying entirely on aid from non-governmental organisations"},
+      correct:"A",tag:"MC-DEV-06",
+      scaffold:"Rostow (1960): Stage 1 traditional society (subsistence farming, bartering) → Stage 2 pre-conditions for take-off (surpluses traded, infrastructure, shift to manufacturing) → Stage 3 take-off (industrial and regional growth, investment) → Stage 4 drive to maturity (technology, diversification) → Stage 5 high mass consumption (consumer society, dominant service sector). Learn the stage names in order — they're commonly asked directly.",
+      reforge:{stem:"Which is the strongest criticism of Rostow's modernisation theory?",options:{A:"It assumes all countries start from the same position and ignores how colonialism and debt repayments can block a country from ever reaching take-off",B:"It has too many stages to be useful",C:"It was based on a study of European countries, all of which failed to develop",D:"It says nothing about industrialisation"},correct:"A"}
+    },
+    {
+      id:"GCSE-DEV-07",spec:"GCSE-DEV",stem:"Frank's dependency theory explains global inequality by arguing that:",
+      options:{A:"Peripheral countries sell low-value raw materials to core countries, which process them into high-value goods and grow richer — keeping the periphery dependent",B:"All countries pass through the same five stages of growth",C:"Poverty is caused entirely by physical geography",D:"Development depends only on the size of a country's population"},
+      correct:"A",tag:"MC-DEV-07",
+      scaffold:"Frank developed dependency theory in opposition to Rostow. Core (Europe, North America) vs periphery (much of Africa, Latin America). The periphery exports coffee beans, cocoa, sugar and minerals cheaply; the core adds value through processing and sells manufactured goods back. Wealth therefore flows to the core. It's a structural explanation — poverty isn't a starting point you grow out of, it's actively produced by the relationship.",
+      reforge:{stem:"Which piece of evidence most challenges Frank's dependency theory?",options:{A:"Former peripheral countries such as China, Brazil and India have achieved rapid economic growth and are now emerging economies",B:"Some core countries have experienced recessions",C:"Coffee prices change from year to year",D:"Some countries in the periphery have large populations"},correct:"A"}
+    },
+    {
+      id:"GCSE-DEV-08",spec:"GCSE-DEV",stem:"Which of these is a TOP-DOWN development strategy?",
+      options:{A:"A hydroelectric power dam funded by a World Bank loan",B:"Micro-hydro schemes built and maintained by villagers in rural Nepal",C:"A microfinance loan enabling a woman to start a small business",D:"An NGO training local farmers in improved growing techniques"},
+      correct:"A",tag:"MC-DEV-08",
+      scaffold:"Top-down: large-scale, expensive, high technology, decided by governments/IGOs (IMF, World Bank), aimed at economic growth — dams, ports, airports, motorways. Bottom-up: small-scale, local, low-cost, often NGO-led, aimed at social development — wells, clinics, schools, farmer training, intermediate technology, microfinance, Fairtrade. B, C and D are all bottom-up.",
+      reforge:{stem:"A government builds a large HEP dam with an IGO loan. Which criticism is most specific to top-down strategies?",options:{A:"Local people may not benefit at all, and a lack of local education and training makes the high-tech scheme costly to maintain",B:"The project is too small to make any difference",C:"It only helps women",D:"It cannot be funded because IGOs never lend money"},correct:"A"}
+    },
+    {
+      id:"GCSE-DEV-09",spec:"GCSE-DEV",stem:"What is the main advantage of intermediate technology as a development strategy?",
+      options:{A:"It is appropriate to local needs, affordable, and can be built and maintained by the community itself",B:"It requires large loans from the IMF",C:"It replaces the need for any local labour",D:"It generates the highest possible GDP growth"},
+      correct:"A",tag:"MC-DEV-09",
+      scaffold:"Intermediate (appropriate) technology is matched to the skills, wealth and needs of a local community. The Nepal micro-hydro example: villagers build and maintain it, and the electricity lets children study at night and families use phones and the internet. Because there's no dependence on outside engineers or expensive spares, it's sustainable — which is exactly the failure point of many top-down projects.",
+      reforge:{stem:"Why might a bottom-up NGO project be criticised despite meeting local needs effectively?",options:{A:"Governments can come to rely on NGOs instead of developing their own national systems to support their people",B:"It always costs more than a large dam",C:"It cannot improve health or education",D:"Local people are unable to use the technology"},correct:"A"}
+    },
+    {
+      id:"GCSE-DEV-10",spec:"GCSE-DEV",stem:"How does Fairtrade aim to reduce the development gap?",
+      options:{A:"It sets trade standards guaranteeing producers a fairer price, with part of the price invested back into community development projects",B:"It cancels the debts of the world's poorest countries",C:"It provides emergency food aid after disasters",D:"It removes all tariffs between wealthy countries"},
+      correct:"A",tag:"MC-DEV-10",
+      scaffold:"Fairtrade is a bottom-up trade-based strategy: minimum prices, environmentally sustainable farming, and a social premium reinvested locally. The Gumutindo Coffee Cooperative in eastern Uganda is the standard example — over 90% of small coffee farmers joined, and milling the coffee before roasting adds value locally rather than exporting raw beans, which raises farmer income. Note how that directly counters Frank's core–periphery problem.",
+      reforge:{stem:"Fairtrade cooperatives often process crops locally before export. Why does this matter for development?",options:{A:"Processing adds value within the producing country instead of the profit going to core countries, so more income stays local",B:"Processing reduces the weight of the crop so it is cheaper to ship",C:"It allows the country to stop trading altogether",D:"It guarantees the country will reach Rostow's stage 5"},correct:"A"}
+    },
+    {
+      id:"GCSE-DEV-11",spec:"GCSE-DEV",stem:"In 2006 the IMF cancelled the debts of 19 of the world's poorest countries. What was the intended development benefit?",
+      options:{A:"Money previously spent on debt interest could be redirected into infrastructure, industry and services",B:"The countries could immediately join the G20",C:"It guaranteed those countries would become developed within ten years",D:"It removed the need for those countries to trade"},
+      correct:"A",tag:"MC-DEV-11",
+      scaffold:"Many developing countries borrowed heavily in the 1970s–80s and then could not repay because of high interest rates — debt servicing swallowed money that should have funded development. Debt relief frees that money: Uganda used savings to provide safe water for over 2 million people. Evaluation point: the benefit depends on governance — a corrupt government may retain the money rather than invest it.",
+      reforge:{stem:"What is the key limitation of debt relief as a development strategy?",options:{A:"The freed-up money only helps if the government is transparent and invests it — corrupt governments may keep it",B:"Debt relief always increases a country's debt",C:"No country has ever been granted debt relief",D:"Debt relief can only be given to developed countries"},correct:"A"}
+    },
+    {
+      id:"GCSE-DEV-12",spec:"GCSE-DEV",stem:"Why do TNCs typically locate manufacturing and data-processing operations in emerging countries?",
+      options:{A:"Lower labour costs, large workforces, and government incentives such as special economic zones with reduced taxes and lighter regulation",B:"Emerging countries have the highest wages in the world",C:"Emerging countries have the strictest environmental regulations",D:"TNCs are legally required to locate outside developed countries"},
+      correct:"A",tag:"MC-DEV-12",
+      scaffold:"Pull factors for TNCs: cheap, often skilled and English-speaking labour; large domestic markets; special economic zones (SEZs) and export processing zones (EPZs) with low or no tax; restricted union rights and low minimum wages; limited environmental and health-and-safety regulation, which cuts costs. Note that the last two are simultaneously the reason TNC investment is criticised.",
+      reforge:{stem:"Which is the strongest argument that TNC investment does NOT fully benefit an emerging country?",options:{A:"Higher-level management and technical jobs usually stay in the TNC's home country, leaving the host as producer and resource extractor, and the TNC can relocate whenever it becomes more profitable to do so",B:"TNCs never create any jobs at all",C:"TNCs are not allowed to pay taxes",D:"TNC factories always close within one year"},correct:"A"}
+    },
+    {
+      id:"GCSE-DEV-13",spec:"GCSE-DEV",stem:"What is the 'positive multiplier effect' in development?",
+      options:{A:"New investment creates jobs and incomes, which raises spending and tax revenue, funding further investment and attracting more companies",B:"Population grows faster than the economy can support",C:"A country's debt increases each year through compound interest",D:"Aid money is divided equally between all regions of a country"},
+      correct:"A",tag:"MC-DEV-13",
+      scaffold:"The multiplier is the engine behind the 'cycle of wealth'. TNC builds a factory → jobs and wages → workers spend locally → other businesses grow and co-locate → government collects more tax → invests in education, healthcare and infrastructure → the workforce becomes more skilled and attractive to further investment. It's the reason exam answers about development should chain consequences, not just list them.",
+      reforge:{stem:"A 3-mark question asks you to explain how outsourcing affects economic development. Which answer would score all three marks?",options:{A:"TNCs invest in infrastructure (1), which encourages other companies to co-locate (1), creating further job opportunities (1)",B:"Outsourcing creates jobs.",C:"Outsourcing is when work is sent to another country. It is common in India. Many people work in call centres.",D:"Outsourcing is bad for developed countries because they lose jobs."},correct:"A"}
+    },
+    {
+      id:"GCSE-DEV-14",spec:"GCSE-DEV",stem:"According to the demographic transition model (DTM), which stage is characterised by a rapidly FALLING birth rate while death rate continues to fall more slowly?",
+      options:{A:"Stage 3",B:"Stage 1",C:"Stage 2",D:"Stage 5"},
+      correct:"A",tag:"MC-DEV-14",
+      scaffold:"Stage 1: high BR, high DR, low total population. Stage 2: DR falls (better diet, healthcare, clean water) while BR stays high — population rises rapidly. Stage 3: BR falls rapidly (contraception, family planning, lower infant mortality, cost of children) while DR falls slowly — growth slows. Stage 4: both low and fluctuating. Stage 5: DR exceeds BR, population declines. Emerging countries such as India and Nigeria sit in stage 3.",
+      reforge:{stem:"Why does the birth rate fall sharply in stage 3 of the DTM?",options:{A:"Falling infant mortality means parents no longer need many children for some to survive, alongside better contraception, family planning and education and employment for women",B:"Governments make it illegal to have more than one child",C:"The death rate rises so quickly that fewer adults survive to have children",D:"People emigrate, so fewer babies are born abroad"},correct:"A"}
+    },
+    {
+      id:"GCSE-DEV-15",spec:"GCSE-DEV",stem:"A population pyramid has a very narrow base and a wide top. What does this indicate?",
+      options:{A:"An ageing population with a low birth rate and high life expectancy — typically DTM stage 5",B:"A youthful population with a high birth rate — DTM stage 2",C:"A country experiencing rapid population growth",D:"A country with equal numbers in every age group"},
+      correct:"A",tag:"MC-DEV-15",
+      scaffold:"Pyramid shapes: concave with a very wide base = stage 2 (Niger, youthful, high BR and DR). Pyramid = stage 3 (Nepal). Column = stage 4 (USA). Pentagon with narrow base = stage 5 (Japan, ageing). When interpreting, check four things: young dependents (base width), working population (middle), old dependents (top), and any male/female imbalance — the UAE's male bulge at 25–39 reflects labour migration.",
+      reforge:{stem:"What are the main implications for a government of an ageing population?",options:{A:"Higher pension and social care costs and pressure on healthcare, while a shrinking workforce reduces tax revenue",B:"A need to build many more primary schools",C:"Rapidly rising unemployment among young people",D:"An increase in the birth rate"},correct:"A"}
+    },
+    {
+      id:"GCSE-DEV-16",spec:"GCSE-DEV",stem:"Calculate the dependency ratio for a country with 30 million young dependents, 10 million old dependents and 80 million people of working age.",
+      options:{A:"50",B:"40",C:"25",D:"125"},
+      correct:"A",tag:"MC-DEV-16",
+      scaffold:"Dependency ratio = (young dependents + old dependents) ÷ working population × 100. Here: (30 + 10) ÷ 80 × 100 = 40 ÷ 80 × 100 = 50. This means 50 dependents for every 100 workers. A high ratio means a heavier burden on the working population through taxation. Show the formula in your working — marks are available for method even if the arithmetic slips.",
+      reforge:{stem:"A country's dependency ratio rises from 48 to 67 over thirty years while its birth rate falls. What is the most likely cause?",options:{A:"An ageing population — the growth is in old dependents, not young ones",B:"A sudden rise in the number of children",C:"Large-scale immigration of working-age adults",D:"An increase in the working population"},correct:"A"}
+    },
+    {
+      id:"GCSE-DEV-FB-01",spec:"GCSE-DEV",type:"fill_blank",
+      stem:"Complete the sentence about categories of development.",
+      template:"A ___ country has low human development, while an ___ country is experiencing rapid growth based on industrial development. The difference in wealth between countries is called the development ___.",
+      blanks:["developing","emerging","gap"],
+      bank:["developing","emerging","gap","developed","cycle","ratio"],
+      tag:"MC-DEV-03",
+      scaffold:"The three Edexcel B categories are developing (low human development), emerging (high/medium human development, rapid industrial growth) and developed (very high human development). The difference between them is the development gap."
+    },
+    {
+      id:"GCSE-DEV-FB-02",spec:"GCSE-DEV",type:"fill_blank",
+      stem:"Complete the sentence about the Human Development Index.",
+      template:"HDI combines life ___, education level and ___ per capita to give a score between 0 and ___.",
+      blanks:["expectancy","GNI","1"],
+      bank:["expectancy","GNI","1","100","mortality","literacy"],
+      tag:"MC-DEV-01",
+      scaffold:"HDI runs from 0 (least developed) to 1 (most developed) and combines a health measure (life expectancy), an education measure (literacy and years of schooling) and a wealth measure (GNI per capita). Because it is composite, it is harder to mislead with than any single indicator."
+    },
+    {
+      id:"GCSE-DEV-FB-03",spec:"GCSE-DEV",type:"fill_blank",
+      stem:"Complete the sentence about Rostow's model.",
+      template:"Rostow's model has five stages, beginning with ___ society and ending with high mass ___. The third stage, when rapid industrialisation occurs, is called ___-off.",
+      blanks:["traditional","consumption","take"],
+      bank:["traditional","consumption","take","modern","production","drive"],
+      tag:"MC-DEV-06",
+      scaffold:"The five stages in order: traditional society, pre-conditions for take-off, take-off, drive to maturity, high mass consumption. Take-off (stage 3) is the pivotal one — countries that cannot raise the capital to reach it, often because of debt repayments, remain stuck."
+    },
+    {
+      id:"GCSE-DEV-FB-04",spec:"GCSE-DEV",type:"fill_blank",
+      stem:"Complete the sentence about Frank's dependency theory.",
+      template:"In Frank's model, the ___ produces and sells low-value ___ materials to the ___, which processes them into high-value goods.",
+      blanks:["periphery","raw","core"],
+      bank:["periphery","raw","core","centre","finished","margin"],
+      tag:"MC-DEV-07",
+      scaffold:"Frank's core–periphery model: the periphery exports cheap raw materials (coffee, cocoa, sugar, minerals); the core adds value by processing them and sells manufactured goods back at high prices. Wealth accumulates in the core, keeping the periphery dependent."
+    },
+    {
+      id:"GCSE-DEV-FB-05",spec:"GCSE-DEV",type:"fill_blank",
+      stem:"Complete the sentence about development strategies.",
+      template:"___-down strategies are usually large, expensive projects funded by IGOs such as the World Bank, while ___-up strategies are small-scale community projects often run by ___.",
+      blanks:["Top","bottom","NGOs"],
+      bank:["Top","bottom","NGOs","Bottom","top","TNCs"],
+      tag:"MC-DEV-08",
+      scaffold:"Top-down: dams, ports, motorways — IGO or government funded, economic focus, high technology. Bottom-up: wells, clinics, farmer training, microfinance — NGO-led, social focus, appropriate technology. Watch the capital letter on the first blank."
+    },
+    {
+      id:"GCSE-DEV-FB-06",spec:"GCSE-DEV",type:"fill_blank",
+      stem:"Complete the sentence about the demographic transition model.",
+      template:"In stage ___ of the DTM the death rate falls while the birth rate stays high, so population rises rapidly. In stage ___ the death rate exceeds the birth rate and population ___.",
+      blanks:["2","5","declines"],
+      bank:["2","5","declines","3","4","rises"],
+      tag:"MC-DEV-14",
+      scaffold:"Stage 2 is the rapid-growth stage: better healthcare, diet and clean water cut the death rate but attitudes to family size have not yet changed. Stage 5 is decline: birth rate falls below death rate, as in Japan and South Korea."
+    },
+    {
+      id:"GCSE-DEV-FB-07",spec:"GCSE-DEV",type:"fill_blank",
+      stem:"Complete the sentence about the dependency ratio.",
+      template:"Dependency ratio = (young dependents + ___ dependents) ÷ ___ population × ___.",
+      blanks:["old","working","100"],
+      bank:["old","working","100","total","retired","1000"],
+      tag:"MC-DEV-16",
+      scaffold:"Learn this formula exactly — it is a guaranteed calculation mark. A high ratio means each worker supports more dependents through taxation. Always show the substitution before the answer."
+    },
+    {
+      id:"GCSE-DEV-FB-08",spec:"GCSE-DEV",type:"fill_blank",
+      stem:"Complete the sentence about causes of global inequality.",
+      template:"___ is where a country takes political control of another and exploits it economically. Today, rich countries use 'soft power' through trade, aid and TNCs instead — this is called ___-colonialism.",
+      blanks:["Colonialism","neo"],
+      bank:["Colonialism","neo","Globalisation","post","Dependency","anti"],
+      tag:"MC-DEV-04",
+      scaffold:"Colonialism = direct (hard power) control: military and political rule. Neo-colonialism = indirect (soft power) control: favourable trade terms, aid conditions, IGO influence, TNC brand dominance. Examiners specifically warn against confusing the two."
+    }
+  ]
+};
+
+BANKS["GCSE-GEO-INDIA"] = {
+  label: "India — Emerging Country Case Study",
+  color: "#0f766e",
+  questions: [
+    {
+      id:"GCSE-IND-01",spec:"GCSE-IND",stem:"Which statement best describes India's global economic significance?",
+      options:{A:"It is the world's fifth largest economy, having overtaken the UK in 2022, and is predicted to be second largest by 2050",B:"It is the world's largest economy and has been since 1990",C:"It has the smallest economy of the BRICS countries and is shrinking",D:"Its economy is entirely based on agriculture"},
+      correct:"A",tag:"MC-IND-01",
+      scaffold:"Key India stats worth memorising: seventh largest country by area; second largest population (1.3+ billion); fifth largest economy (overtook the UK, Sept 2022); GDP around US$3.18 trillion (2021) with GDP per capita only about US$2,256; roughly 500% GDP growth since 1990; annual growth around 8.7%. The gap between huge total GDP and low GDP per capita is the single most useful contrast in this case study.",
+      reforge:{stem:"India has the world's fifth largest total GDP but a GDP per capita of only around US$2,256. What does this contrast show?",options:{A:"Its enormous population divides the national wealth thinly, so a large economy does not mean a wealthy population",B:"Its GDP figure must have been calculated incorrectly",C:"India is a developed country by every measure",D:"GDP per capita is always higher than GDP"},correct:"A"}
+    },
+    {
+      id:"GCSE-IND-02",spec:"GCSE-IND",stem:"How has the structure of India's economy changed since 1990?",
+      options:{A:"It has shifted from being dominated by agriculture to being dominated by services, though agriculture is still the largest employer",B:"It has shifted from services to agriculture",C:"Agriculture now contributes over 75% of GDP",D:"Manufacturing has disappeared entirely"},
+      correct:"A",tag:"MC-IND-02",
+      scaffold:"The classic exam trap here is the split between GDP contribution and employment. Services now dominate GDP, but agriculture remains the largest single employer — falling from around 75% of workers to just over 50% by 2010 and about 43% by 2019. So a huge share of the workforce is still in the low-productivity sector, which is exactly why average incomes lag behind headline GDP growth.",
+      reforge:{stem:"Agriculture employs around 43% of India's workers but contributes a far smaller share of GDP. What does this imply?",options:{A:"Agricultural productivity and incomes are low relative to services and manufacturing, contributing to rural poverty",B:"Agricultural workers are the highest paid in India",C:"India imports no food",D:"Agriculture is growing faster than any other sector"},correct:"A"}
+    },
+    {
+      id:"GCSE-IND-03",spec:"GCSE-IND",stem:"Why are TNCs attracted to invest in India?",
+      options:{A:"A large, skilled, low-cost and largely English-speaking workforce, combined with special economic zones offering reduced taxes",B:"India has the highest labour costs in Asia",C:"India bans foreign investment in manufacturing",D:"India has a very small domestic market"},
+      correct:"A",tag:"MC-IND-03",
+      scaffold:"India's pull factors: skilled, well-educated, low-cost, largely English-speaking labour (crucial for call centres and IT outsourcing); economic liberalisation since 1991 (government took less control over what industries produce); reduced import tariffs; special economic zones with tax reductions. Evidence: FDI inflows of $45 billion in 2021, Google's $1bn investment in Bharti Airtel (2022), Facebook's $5.7bn in Reliance Jio (2020).",
+      reforge:{stem:"Which government action since 1991 has most directly encouraged foreign investment in India?",options:{A:"Economic liberalisation — reducing state control over production, cutting import tariffs and creating special economic zones with lower taxes",B:"Nationalising all foreign-owned companies",C:"Banning the export of manufactured goods",D:"Raising taxes on all foreign companies"},correct:"A"}
+    },
+    {
+      id:"GCSE-IND-04",spec:"GCSE-IND",stem:"A student writes: 'India receives aid, so it must be a poor developing country.' Why is this misleading?",
+      options:{A:"India both receives and gives aid — it is now a donor as well as a recipient, reflecting its emerging status",B:"India has never received any aid",C:"Only developed countries can receive aid",D:"Aid has no connection to a country's level of development"},
+      correct:"A",tag:"MC-IND-04",
+      scaffold:"India received US$4,240 million of Official Development Assistance in 2017 (over 50% from Japan), targeted at its poorest states such as Madhya Pradesh — but it is simultaneously an aid donor to other countries. It also changed policy in 2003 to refuse tied aid except from a few partners including the UK, USA and Germany. Being both recipient and donor is a hallmark of an emerging country.",
+      reforge:{stem:"Why did India decide in 2003 to stop accepting most tied aid?",options:{A:"Tied aid requires the recipient to spend the money on goods and services from the donor country, limiting its value and independence",B:"Tied aid is illegal under international law",C:"India no longer needed any external funding at all",D:"Tied aid must be repaid with very high interest"},correct:"A"}
+    },
+    {
+      id:"GCSE-IND-05",spec:"GCSE-IND",stem:"Which pair of figures best illustrates the regional inequality between India's urban core and rural periphery?",
+      options:{A:"GDP per capita of US$7,500 in Delhi compared with US$630 in Bihar",B:"Delhi and Bihar both have a literacy rate of 86%",C:"Bihar has a higher life expectancy than Delhi",D:"Delhi has a higher fertility rate than Bihar"},
+      correct:"A",tag:"MC-IND-05",
+      scaffold:"Delhi (urban core) vs Bihar (rural periphery): life expectancy 72.9 vs 68.7 years; literacy 86.21% vs 69.83%; GDP per capita US$7,500 vs US$630; death rate 4.1 vs 5.4 per 1,000; fertility 1.6 vs 3.0. Learn one figure from each row — a 4-mark 'explain two socio-economic differences between regions' question needs both the difference AND the reason.",
+      reforge:{stem:"Why has Bihar remained poorer than Delhi?",options:{A:"Recurring floods hamper development, poor infrastructure deters investment, and out-migration of working-age people has drained its labour force",B:"Bihar has no agricultural land at all",C:"Bihar refuses to trade with the rest of India",D:"Bihar has a much larger population than the rest of India combined"},correct:"A"}
+    },
+    {
+      id:"GCSE-IND-06",spec:"GCSE-IND",stem:"Roughly what proportion of India's population lived in urban areas in 2021, and how fast is this changing?",
+      options:{A:"About 34% (475 million people), increasing by around 2% a year",B:"About 80%, and falling",C:"About 5%, and static",D:"About 60%, and falling rapidly"},
+      correct:"A",tag:"MC-IND-06",
+      scaffold:"34% urban in 2021 = 475 million people, growing about 2% per year, with roughly 20 million people migrating from rural to urban areas annually. The significance: India is still majority rural, so it has decades of urbanisation ahead — which is why housing, water supply and air quality pressures in cities are projected to worsen, not ease.",
+      reforge:{stem:"About 20 million Indians migrate from rural to urban areas each year. Which combination of push and pull factors best explains this?",options:{A:"Push: flooding, poor rural infrastructure and low farm incomes. Pull: urban employment, higher wages and better services",B:"Push: high urban wages. Pull: subsistence farming opportunities",C:"Push: overcrowded cities. Pull: empty countryside",D:"Push: government orders. Pull: compulsory rural resettlement"},correct:"A"}
+    },
+    {
+      id:"GCSE-IND-07",spec:"GCSE-IND",stem:"How has India's demographic profile changed as its economy has grown?",
+      options:{A:"Life expectancy rose from 45 years in 1960 to 70 in 2021, while death rates, infant mortality and fertility rates have all fallen",B:"Life expectancy has fallen while fertility has risen",C:"Birth and death rates have both risen sharply",D:"There has been no measurable demographic change since 1960"},
+      correct:"A",tag:"MC-IND-07",
+      scaffold:"Economic development → demographic change. Life expectancy 45 (1960) → 70 (2021), driven by better diets, healthcare availability and water quality. Fertility falling because women are more educated, more women work, contraception is more available, and family planning education has spread. This is textbook DTM stage 3 — link the two topics in your answers.",
+      reforge:{stem:"India's population pyramid has changed shape between 1960 and 2022. Which change would you expect to see?",options:{A:"A narrowing base and a widening middle and top as birth rates fall and life expectancy rises",B:"A widening base as birth rates rise",C:"No change in shape, only in total size",D:"A complete inversion, with more over-80s than under-10s"},correct:"A"}
+    },
+    {
+      id:"GCSE-IND-08",spec:"GCSE-IND",stem:"Which is a clear SOCIAL benefit of India's economic development?",
+      options:{A:"Improved gender equality — more women have access to education, contraception and career opportunities",B:"An increase in the number of landfill sites",C:"A rise in carbon dioxide emissions",D:"An increase in car ownership in New Delhi"},
+      correct:"A",tag:"MC-IND-08",
+      scaffold:"Sort impacts carefully — exam questions specify social, economic or environmental. Social positives: improved gender equality (education, literacy, family planning, career opportunities — though female literacy still trails male), better health across all age groups, rising average incomes. B, C and D are all environmental impacts, and negative ones.",
+      reforge:{stem:"Which is a social COST of India's rapid economic development?",options:{A:"Growth of illegal settlements around cities with poor housing, no clean water supply and increased spread of disease",B:"Rising average incomes",C:"Increased literacy rates among women",D:"Improved access to family planning"},correct:"A"}
+    },
+    {
+      id:"GCSE-IND-09",spec:"GCSE-IND",stem:"Why does rural-to-urban migration create problems for India's rural areas?",
+      options:{A:"It is mainly younger, working-age people who leave, so rural areas are left with an ageing, economically inactive population and less investment",B:"It causes rural areas to become overcrowded",C:"It raises rural wages above urban wages",D:"It increases the number of schools needed in villages"},
+      correct:"A",tag:"MC-IND-09",
+      scaffold:"This is a favourite 4-mark 'impacts on different age groups' question. Chain it: rural–urban migration (1) → an ageing population left in rural areas with no-one to care for them and few economically active workers (1). Add the other side: children in rural areas are more likely to work rather than attend school, and rural investment is far lower than urban.",
+      reforge:{stem:"A 4-mark question asks for two negative impacts of rapid development on different age groups. Which answer is structured correctly?",options:{A:"Air pollution (1) causes breathing problems among the elderly and young children (1); a shortage of urban jobs (1) leaves young rural–urban migrants unemployed (1)",B:"Development is bad for everyone in India.",C:"Air pollution is a problem in New Delhi because there are lots of cars and factories and it is very bad.",D:"Old people and young people are both affected by development in different ways."},correct:"A"}
+    },
+    {
+      id:"GCSE-IND-10",spec:"GCSE-IND",stem:"What are the main causes of India's severe urban air pollution?",
+      options:{A:"Vehicle emissions, fossil-fuel power stations, factories, stubble burning, construction dust and biomass cooking fuel",B:"Only volcanic activity",C:"Solely the burning of stubble by farmers",D:"Almost entirely from imported goods"},
+      correct:"A",tag:"MC-IND-10",
+      scaffold:"Multi-causal — a good answer names several sources. New Delhi alone has over 10 million vehicles and 3,000–4,000 factories; over 100 million people nationally rely on biomass for cooking. Scale evidence: air pollution runs at 4× WHO guidelines, and 21 of the world's 30 most polluted cities were in India in 2019.",
+      reforge:{stem:"What are the human effects of India's air pollution?",options:{A:"Life expectancy is around 5 years lower on average, with over 1.5 million deaths in 2019 and rising rates of asthma, lung disease and cardiac problems",B:"There are no measurable health effects",C:"It only affects people over 65",D:"It reduces crop yields but has no effect on human health"},correct:"A"}
+    },
+    {
+      id:"GCSE-IND-11",spec:"GCSE-IND",stem:"Approximately what proportion of India's sewage is treated, and what is the consequence?",
+      options:{A:"Only about 30% is treated, contributing to around 70% of surface water being unfit for human consumption",B:"About 95% is treated, so water pollution is minimal",C:"All sewage is treated but rivers are polluted by volcanic ash",D:"None is treated, but this has no effect on water quality"},
+      correct:"A",tag:"MC-IND-11",
+      scaffold:"Water pollution causes: only 30% of sewage treated; industrial waste water carrying mercury, lead and arsenic; heavy pesticide use including DDT, banned elsewhere. Consequences: the Indus and Ganges are among the ten most polluted rivers in the world, 33% of remaining rivers moderately or severely polluted, ~70% of surface water unfit to drink. Effects: aquatic life damaged, liver and kidney disease, gastric cancers, birth defects, lower crop yields.",
+      reforge:{stem:"Why is India's continued use of pesticides such as DDT an environmental concern?",options:{A:"DDT is banned in many countries because it persists in the environment and accumulates in water, soil and food chains",B:"DDT is too expensive for farmers to use",C:"DDT only affects the air, not water",D:"DDT improves water quality"},correct:"A"}
+    },
+    {
+      id:"GCSE-IND-12",spec:"GCSE-IND",stem:"What is the main environmental consequence of India sending around 90% of its waste to landfill?",
+      options:{A:"Increased methane emissions, leaching of toxins into ground and surface water, and landfill fires such as Ghazipur in March 2022",B:"A reduction in greenhouse gas emissions",C:"Improved groundwater quality",D:"A fall in the total volume of waste produced"},
+      correct:"A",tag:"MC-IND-12",
+      scaffold:"India has over 3,000 landfills and generates around 2.01 billion tonnes of waste annually, ~90% landfilled. Ghazipur in Delhi is 65 m high and caught fire in March 2022, worsening air pollution — a useful example because it links land pollution to air pollution. India is also the third largest CO₂ emitter and fourth largest methane emitter, with over 60% of methane from agriculture.",
+      reforge:{stem:"India is the world's fourth largest emitter of methane, with over 60% coming from agriculture. Why does this create a development dilemma?",options:{A:"Reducing emissions means constraining agriculture and energy use that millions depend on, so international pressure to cut emissions may hinder future development",B:"Methane emissions have no climate effect",C:"India could simply stop all farming without consequence",D:"Only developed countries are asked to reduce emissions"},correct:"A"}
+    },
+    {
+      id:"GCSE-IND-13",spec:"GCSE-IND",stem:"Which evidence best demonstrates India's growing geopolitical influence?",
+      options:{A:"Membership of BRICS, the G20, the UN Security Council and the World Bank, and responsibility for around 15% of global growth according to the IMF",B:"Its withdrawal from all international organisations",C:"Its refusal to trade with the EU or USA",D:"Its declining population"},
+      correct:"A",tag:"MC-IND-13",
+      scaffold:"Geopolitical influence: growing role in ASEAN; membership of BRICS, G20, UN Security Council, World Bank, IMF, WTO, Asian Development Bank; the IMF attributes about 15% of global growth to India. Trade relationships: the EU is India's third largest trading partner (exports €46.2bn, imports €41.9bn — roughly balanced); with the USA India exports more (US$49.7bn) than it imports (US$26.6bn).",
+      reforge:{stem:"How does the 1947 partition of India and Pakistan still affect India's development today?",options:{A:"It caused around one million deaths and displaced 15 million people, and continuing tensions with Pakistan affect regional stability and trade relations",B:"It has had no effect since 1947",C:"It made India a developed country",D:"It removed all border disputes in the region"},correct:"A"}
+    },
+    {
+      id:"GCSE-IND-14",spec:"GCSE-IND",stem:"Which is a COST to India of its changing international relations?",
+      options:{A:"Low tax rates offered to attract TNCs reduce government revenue available for investment in public services",B:"Increased trade with countries around the world",C:"Wages rising and improving average quality of life",D:"India becoming able to provide aid to other countries"},
+      correct:"A",tag:"MC-IND-14",
+      scaffold:"Costs: pressure to cut greenhouse gas emissions may constrain development; low taxes for TNCs reduce revenue for services; increased reliance on TNCs; weak regulation causes environmental damage; rising military spending creates regional tension. Benefits: growth funds healthcare, education and infrastructure; wider trade; rising wages; India as aid donor; improved national security. B, C and D are all benefits.",
+      reforge:{stem:"India's increased defence spending is listed as both a cost and a benefit. Why?",options:{A:"It improves national security, but can also heighten tensions with neighbours such as Pakistan and China and diverts money from public services",B:"Because defence spending is not really a form of spending",C:"Because defence spending only affects developed countries",D:"Because it has no effect either way"},correct:"A"}
+    },
+    {
+      id:"GCSE-IND-15",spec:"GCSE-IND",stem:"India is both a recipient and a source of foreign direct investment. Which fact demonstrates the outward flow?",
+      options:{A:"Indian firms invested $17.24 billion abroad, and India is the second largest FDI contributor in the UK — including TVS Motors' £100 million in Norton Motorcycles",B:"India received $45 billion of FDI inflows in 2021",C:"Singapore provides 27% of investment into India",D:"Google invested US$1 billion in Bharti Airtel"},
+      correct:"A",tag:"MC-IND-15",
+      scaffold:"Inflows (into India): $45bn in 2021, mainly from Singapore 27%, USA 18%, Mauritius 16%, Netherlands 8%, targeting automobiles, electrical machinery and textiles. Outflows (from India): $17.24bn invested abroad; second largest FDI contributor in the UK; Mastek invested £79m creating 1,600 UK jobs; TVS Motors £100m in Norton. B, C and D are all inflows — read the question direction carefully.",
+      reforge:{stem:"What does India's position as a major outward investor suggest about Frank's dependency theory?",options:{A:"It challenges the theory — a former periphery country is now investing capital into core economies such as the UK",B:"It confirms the theory exactly as Frank described it",C:"It shows India is still purely a raw material exporter",D:"It proves core countries no longer exist"},correct:"A"}
+    },
+    {
+      id:"GCSE-IND-16",spec:"GCSE-IND",stem:"How has improved education contributed to India's economic development?",
+      options:{A:"Free primary education since 2009 and the 2020 National Education Policy raise skills and employability, feeding the positive multiplier effect",B:"Education has been reduced to lower government spending",C:"Education has no connection to economic development",D:"Only private education exists in India"},
+      correct:"A",tag:"MC-IND-16",
+      scaffold:"Primary education became free in 2009; the 2020 National Education Policy aimed to improve equality and overall standards. Literacy is around 77%. The chain to learn: education → skills → employability → higher wages → more consumer spending and tax revenue → more investment in services and infrastructure → multiplier effect. It also links to falling fertility, since educated women have fewer children.",
+      reforge:{stem:"Improving female education in India affects both the economy and demography. How?",options:{A:"It raises employability and incomes while also lowering fertility rates, as educated women tend to have smaller families and marry later",B:"It raises fertility rates and lowers incomes",C:"It affects the economy but has no demographic effect",D:"It reduces the workforce because women stop working"},correct:"A"}
+    },
+    {
+      id:"GCSE-IND-FB-01",spec:"GCSE-IND",type:"fill_blank",
+      stem:"Complete the sentence about India's location and significance.",
+      template:"India is located in Asia between the Arabian Sea and the Bay of ___. It is the ___ largest country in the world by area and has the ___ largest population.",
+      blanks:["Bengal","seventh","second"],
+      bank:["Bengal","seventh","second","Oman","first","third"],
+      tag:"MC-IND-01",
+      scaffold:"Site and situation: a peninsula with water on three sides, north of the equator, bordering six countries (Bangladesh, Nepal, Myanmar, Pakistan, China, Bhutan). Seventh largest by area, second largest by population. Its position between the Middle East and South East Asia gives access to both customers and labour."
+    },
+    {
+      id:"GCSE-IND-FB-02",spec:"GCSE-IND",type:"fill_blank",
+      stem:"Complete the sentence about India's economy.",
+      template:"In 2021 India's GDP was about US$3.18 ___, but GDP per ___ was only about US$2,256. Since 1990 GDP has grown by around ___%.",
+      blanks:["trillion","capita","500"],
+      bank:["trillion","capita","500","billion","head","50"],
+      tag:"MC-IND-01",
+      scaffold:"The tension in this case study: enormous total output, modest income per person, because 1.3 billion people share it. Annual growth is around 8.7%, and India overtook the UK to become the fifth largest economy in September 2022."
+    },
+    {
+      id:"GCSE-IND-FB-03",spec:"GCSE-IND",type:"fill_blank",
+      stem:"Complete the sentence about India's economic sectors.",
+      template:"India's GDP is now dominated by the ___ sector, but ___ remains the largest employer, falling from about 75% of workers to around ___% by 2019.",
+      blanks:["service","agriculture","43"],
+      bank:["service","agriculture","43","primary","manufacturing","75"],
+      tag:"MC-IND-02",
+      scaffold:"Separate GDP contribution from employment — this is where marks are lost. Services dominate output; agriculture still employs the largest share of people (75% → just over 50% by 2010 → about 43% by 2019). Low agricultural productivity is a key cause of rural poverty in states like Bihar."
+    },
+    {
+      id:"GCSE-IND-FB-04",spec:"GCSE-IND",type:"fill_blank",
+      stem:"Complete the sentence about regional inequality in India.",
+      template:"Delhi, the urban core, has a GDP per capita of about US$7,500 and literacy of 86.21%, while ___, in the rural periphery, has GDP per capita of just US$___ and a much higher ___ rate of 3.0.",
+      blanks:["Bihar","630","fertility"],
+      bank:["Bihar","630","fertility","Mumbai","6300","death"],
+      tag:"MC-IND-05",
+      scaffold:"Delhi vs Bihar is the core–periphery contrast you must be able to quote. Life expectancy 72.9 vs 68.7; literacy 86.21% vs 69.83%; GDP per capita US$7,500 vs US$630; death rate 4.1 vs 5.4; fertility 1.6 vs 3.0. Bihar's recurring floods, poor infrastructure and out-migration explain the gap."
+    },
+    {
+      id:"GCSE-IND-FB-05",spec:"GCSE-IND",type:"fill_blank",
+      stem:"Complete the sentence about urbanisation in India.",
+      template:"In 2021 about ___% of India's population lived in urban areas — around 475 million people. Urbanisation is rising by about ___% a year, with roughly ___ million people migrating from rural to urban areas annually.",
+      blanks:["34","2","20"],
+      bank:["34","2","20","64","12","5"],
+      tag:"MC-IND-06",
+      scaffold:"India is still majority rural at 34% urban, which is why its urbanisation pressures are projected to intensify for decades. 475 million urban residents, growing ~2% per year, fed by roughly 20 million rural–urban migrants annually."
+    },
+    {
+      id:"GCSE-IND-FB-06",spec:"GCSE-IND",type:"fill_blank",
+      stem:"Complete the sentence about demographic change in India.",
+      template:"Life expectancy in India rose from ___ years in 1960 to ___ years in 2021, while ___ rates are falling as more women are educated and contraception is more available.",
+      blanks:["45","70","fertility"],
+      bank:["45","70","fertility","55","80","death"],
+      tag:"MC-IND-07",
+      scaffold:"Economic development drives demographic change: better diets, healthcare and water quality raised life expectancy from 45 to 70; education, female employment, contraception and family planning are lowering fertility. This places India in stage 3 of the DTM."
+    },
+    {
+      id:"GCSE-IND-FB-07",spec:"GCSE-IND",type:"fill_blank",
+      stem:"Complete the sentence about pollution in India.",
+      template:"Only about ___% of India's sewage is treated, leaving roughly ___% of surface water unfit for human consumption. Air pollution is around ___ times the WHO recommended guidelines.",
+      blanks:["30","70","4"],
+      bank:["30","70","4","90","15","2"],
+      tag:"MC-IND-11",
+      scaffold:"Water: 30% of sewage treated, ~70% of surface water unfit to drink, the Indus and Ganges among the world's ten most polluted rivers. Air: 4× WHO guidelines, 21 of the world's 30 most polluted cities in 2019, over 1.5 million deaths in 2019, life expectancy about 5 years lower on average."
+    },
+    {
+      id:"GCSE-IND-FB-08",spec:"GCSE-IND",type:"fill_blank",
+      stem:"Complete the sentence about India's international position.",
+      template:"India is a member of ___, a group that also includes Brazil, Russia, China and South Africa. According to the ___, India is responsible for about 15% of global growth. India is now both a recipient and a ___ of aid.",
+      blanks:["BRICS","IMF","donor"],
+      bank:["BRICS","IMF","donor","ASEAN","WTO","borrower"],
+      tag:"MC-IND-13",
+      scaffold:"India's memberships: UN (and Security Council), IMF, World Bank, WTO, Asian Development Bank, G20, BRICS, with growing influence in ASEAN. Being simultaneously an aid recipient (US$4,240m ODA in 2017) and an aid donor is a defining feature of an emerging country."
     }
   ]
 };
