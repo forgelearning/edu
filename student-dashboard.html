@@ -326,9 +326,12 @@ function renderDashboard(){
       headers:{apikey:'sb_publishable_cPt3HxjC8-1lN8hk30BKKA_0DNow21g',Authorization:'Bearer sb_publishable_cPt3HxjC8-1lN8hk30BKKA_0DNow21g'}
     }).then(function(r){return r.json();}).then(function(rows){
       var today=new Date(); today.setHours(0,0,0,0);
+      var completed={};
+      try { completed=JSON.parse(localStorage.getItem('forge-completed-banks')||'{}'); } catch(e) {}
       var count=(Array.isArray(rows)?rows:[]).filter(function(a){
         var banks=[]; try { banks=typeof a.banks==='string'?JSON.parse(a.banks):a.banks||[]; } catch(e) {}
         var incomplete=!banks.length || !banks.every(function(bank){
+          if (completed[bank]) return true;
           var bankData=BANKS[bank];
           if (!bankData) return false;
           var ids={};
