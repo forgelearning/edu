@@ -1514,6 +1514,90 @@ BANKS["GCSE-GEO-HAZ"] = {
       bank:["storm surge","Tacloban","wind","Manila"],
       tag:"MC-HAZ-04",
       scaffold:"As with Katrina, storm surge — not wind — was the deadliest element. A roughly 7.5m wall of seawater overwhelmed low-lying coastal areas like Tacloban, in a lower-income setting with a much higher death toll than Katrina."
+    },
+    {
+      id:"GCSE-HAZ-09",spec:"GCSE-HAZ",stem:"Which is the correct definition of the asthenosphere?",
+      options:{A:"The semi-molten layer at the top of the mantle which flows due to convection currents, moving the solid lithosphere above",B:"The solid rock that lies on top of the mantle, broken up into tectonic plates",C:"The molten layer of iron and nickel that surrounds the inner core",D:"The thicker, less dense crust that makes up the continents"},
+      correct:"A",tag:"MC-HAZ-KT-01",
+      scaffold:"Layer order from the surface down: crust → lithosphere (crust + rigid upper mantle) → asthenosphere (semi-molten, flows via convection, carries the plates) → lower mantle → outer core (molten) → inner core (solid). B describes the lithosphere, C the outer core, D continental crust specifically."
+    },
+    {
+      id:"GCSE-HAZ-10",spec:"GCSE-HAZ",stem:"A student mixes up 'lithosphere' and 'asthenosphere'. What is the key difference?",
+      options:{A:"The lithosphere is the solid rock (crust plus rigid upper mantle) that sits on top of the semi-molten, flowing asthenosphere beneath it",B:"They are two names for exactly the same layer",C:"The asthenosphere is solid and the lithosphere is semi-molten",D:"The lithosphere lies beneath the asthenosphere"},
+      correct:"A",tag:"MC-HAZ-KT-02",
+      scaffold:"Lithosphere = solid, broken into tectonic plates. Asthenosphere = semi-molten, flows due to convection currents, and it's this flow that drags the lithospheric plates above it — the mechanism behind plate movement."
+    },
+    {
+      id:"GCSE-HAZ-11",spec:"GCSE-HAZ",stem:"What is subduction?",
+      options:{A:"A process at a destructive plate boundary where one plate is pushed below another and forced to sink into the asthenosphere",B:"A process where two plates slide past each other with no vertical movement",C:"A process where magma rises through the middle of a plate, away from any boundary",D:"The rise in sea level caused by a tropical cyclone pushing water onto the shore"},
+      correct:"A",tag:"MC-HAZ-KT-03",
+      scaffold:"Subduction only happens at destructive (convergent) boundaries, and always to the denser oceanic plate. B describes a conservative boundary, C describes a hotspot, D describes a storm surge — a good example of how exam distractors often swap in a different key term's definition."
+    },
+    {
+      id:"GCSE-HAZ-12",spec:"GCSE-HAZ",stem:"How does a hotspot differ from a normal volcanic plate boundary?",
+      options:{A:"A hotspot is an area where unusually hot magma breaks through the middle of a plate, away from any plate boundary, whereas most volcanoes form at destructive or constructive boundaries",B:"A hotspot only occurs at conservative boundaries",C:"A hotspot is another name for a destructive plate boundary",D:"A hotspot is where two plates move apart"},
+      correct:"A",tag:"MC-HAZ-KT-04",
+      scaffold:"Hawaii is the classic hotspot example — it sits in the middle of the Pacific Plate, nowhere near a boundary. This is why hotspot volcanism catches students out: they expect all volcanoes to sit on boundaries."
+    },
+    {
+      id:"GCSE-HAZ-13",spec:"GCSE-HAZ",stem:"What distinguishes primary effects of a hazard from secondary effects?",
+      options:{A:"Primary effects are caused directly by the hazard itself; secondary effects are a knock-on result of the primary effects",B:"Primary effects happen years after the hazard; secondary effects happen immediately",C:"Primary effects only apply to earthquakes; secondary effects only apply to volcanoes",D:"There is no real difference — the terms are interchangeable"},
+      correct:"A",tag:"MC-HAZ-KT-05",
+      scaffold:"Example: an earthquake collapsing buildings is a primary effect; a fire caused by a ruptured gas main afterwards is a secondary effect. Don't confuse this pairing with immediate/long-term responses, which is about timing of the response, not the type of effect."
+    },
+    {
+      id:"GCSE-HAZ-14",spec:"GCSE-HAZ",stem:"A student writes 'immediate responses happen straight after a hazard, long-term responses happen much later' but can't give an example of either. Which pair correctly illustrates the distinction?",
+      options:{A:"Immediate: search and rescue teams pulling survivors from rubble in the days after an earthquake. Long-term: rebuilding homes to a higher building code over the following years",B:"Immediate: rebuilding infrastructure over several years. Long-term: emergency shelters provided within hours",C:"Both immediate and long-term responses happen in the same week",D:"Immediate responses are always carried out by NGOs, long-term responses always by governments"},
+      correct:"A",tag:"MC-HAZ-KT-06",
+      scaffold:"Immediate responses = hours to about a week (search and rescue, emergency shelter, first aid). Long-term responses = weeks to years afterwards (rebuilding, improved building codes, economic recovery). B has the timeframes swapped."
+    },
+    {
+      id:"GCSE-HAZ-15",spec:"GCSE-HAZ",stem:"Which statement correctly defines hazard risk?",
+      options:{A:"The probability that a natural hazard will negatively affect a population",B:"The magnitude of a hazard on the Richter scale",C:"The total economic cost of a hazard once it has occurred",D:"A hazard caused by processes on the land, as opposed to the atmosphere"},
+      correct:"A",tag:"MC-HAZ-KT-07",
+      scaffold:"Hazard risk is about probability of harm, not just the physical size of the event — it depends on hazard, exposure and vulnerability together. D is actually the definition of a geological hazard, a different term entirely."
+    },
+    {
+      id:"GCSE-HAZ-16",spec:"GCSE-HAZ",stem:"What is the correct definition of the Inter-Tropical Convergence Zone (ITCZ)?",
+      options:{A:"An area surrounding the equator where global winds converge, causing an area of low pressure with rainy conditions",B:"A belt at 30° north and south where air permanently sinks and no rain falls",C:"The point where the Hadley and Ferrel cells meet at the poles",D:"A high-pressure belt found only over the Sahara Desert"},
+      correct:"A",tag:"MC-HAZ-KT-08",
+      scaffold:"The ITCZ sits roughly over the equator, where the Hadley cells of each hemisphere converge — rising warm, moist air creates low pressure and heavy rainfall, and it's the ITCZ's seasonal shift north and south that drives many tropical wet/dry seasons."
+    },
+    {
+      id:"GCSE-HAZ-17",spec:"GCSE-HAZ",stem:"A Hadley cell and a Ferrel cell are both part of atmospheric circulation. What is the key difference between them?",
+      options:{A:"In a Hadley cell, air rises at the equator and sinks at 30°; in a Ferrel cell, air rises at 60° and sinks at around 30°, alongside air arriving from the equator",B:"A Hadley cell only exists in the Southern Hemisphere, a Ferrel cell only in the Northern Hemisphere",C:"A Ferrel cell is found only over oceans, a Hadley cell only over land",D:"They are two names for the same atmospheric cell"},
+      correct:"A",tag:"MC-HAZ-KT-09",
+      scaffold:"Three-cell model, low to high latitude: Hadley cell (0°–30°) → Ferrel cell (30°–60°) → Polar cell (60°–90°). Each cell's rising-air edge produces low pressure and rain; each sinking-air edge produces high pressure and dry conditions — this is why deserts cluster around 30° north and south."
+    },
+    {
+      id:"GCSE-HAZ-18",spec:"GCSE-HAZ",stem:"A tropical storm forms in the Atlantic and moves towards the Caribbean. A very similar storm forms in the western Pacific and moves towards the Philippines. What are these two storms called respectively?",
+      options:{A:"Hurricane; typhoon",B:"Typhoon; hurricane",C:"Cyclone; hurricane",D:"Hurricane; cyclone"},
+      correct:"A",tag:"MC-HAZ-KT-10",
+      scaffold:"Same phenomenon (tropical cyclone), different regional names: hurricane (USA, Latin America, Caribbean), typhoon (India, Japan, Philippines), cyclone (Oceania, Madagascar). Examiners sometimes ask you to name the correct regional term for a given location."
+    },
+    {
+      id:"GCSE-HAZ-19",spec:"GCSE-HAZ",stem:"Inside a tropical cyclone, what is the difference between the eye and the eyewall?",
+      options:{A:"The eye is an area of extremely low pressure and calm conditions at the centre; the eyewall surrounding it has the most intense winds and heaviest rain",B:"The eye has the strongest winds; the eyewall is calm",C:"The eyewall is at the centre of the storm; the eye surrounds it",D:"They are the same feature, just named differently by different countries"},
+      correct:"A",tag:"MC-HAZ-KT-11",
+      scaffold:"Counter-intuitive but commonly tested: the very centre (the eye) is the calmest part of the storm, while the ring immediately around it (the eyewall) is the most violent and destructive part."
+    },
+    {
+      id:"GCSE-HAZ-20",spec:"GCSE-HAZ",stem:"What is the difference between the greenhouse effect and the enhanced greenhouse effect?",
+      options:{A:"The greenhouse effect is the natural process that warms the Earth's surface; the enhanced greenhouse effect is extra warming caused by increased greenhouse gas emissions from human activity",B:"The greenhouse effect is caused by humans; the enhanced greenhouse effect is entirely natural",C:"They are identical processes with different names used in different countries",D:"The enhanced greenhouse effect only happens at the poles"},
+      correct:"A",tag:"MC-HAZ-KT-12",
+      scaffold:"Without any greenhouse effect, Earth would be too cold for life — it's natural and essential. The 'enhanced' version is the problem: burning fossil fuels adds extra greenhouse gases, trapping more energy and raising global temperatures faster than natural systems can adjust to."
+    },
+    {
+      id:"GCSE-HAZ-21",spec:"GCSE-HAZ",stem:"Which of these is a correct source of evidence for past climate change, and what does it show?",
+      options:{A:"Ice cores — cylinders of ice extracted from ice sheets or glaciers, analysed for trapped air bubbles and dust to reconstruct past environmental conditions",B:"The Richter scale — a logarithmic measure of past earthquake magnitudes",C:"The Coriolis Effect — the effect of Earth's rotation on wind, unrelated to past climate",D:"Storm surge records — a measure of past tropical cyclone wind speed only"},
+      correct:"A",tag:"MC-HAZ-KT-13",
+      scaffold:"Ice cores and tree rings are the two named proxy evidence sources in this glossary. Ice cores trap air bubbles (past atmospheric CO2) and dust layers; tree rings record annual growth conditions (wider rings = warmer/wetter years). B, C and D are unrelated tectonic or atmospheric terms used as distractors."
+    },
+    {
+      id:"GCSE-HAZ-22",spec:"GCSE-HAZ",stem:"Milankovitch Cycles is an umbrella term. Which three processes does it cover?",
+      options:{A:"Eccentricity (the shape of Earth's orbit), obliquity (axial tilt), and precession (the wobble of Earth's axis)",B:"Subduction, convection currents, and plate boundaries",C:"The Hadley, Ferrel and Polar cells",D:"Primary effects, secondary effects, and long-term responses"},
+      correct:"A",tag:"MC-HAZ-KT-14",
+      scaffold:"These three astronomical cycles change how much solar energy reaches Earth and where, over tens of thousands of years, and are a key natural cause of long-term climate change — distinct from the human-driven enhanced greenhouse effect."
     }
   ]
 };
@@ -1649,6 +1733,66 @@ BANKS["GCSE-GEO-UKLAND"] = {
       bank:["confluence","saturated","runoff","source","dry","infiltration"],
       tag:"MC-RIV-03",
       scaffold:"Tewkesbury's confluence location meant floodwater from both the Severn and Avon combined at the same point. Ground already saturated from a very wet preceding month couldn't absorb (infiltrate) new rainfall, forcing more of it into rapid surface runoff and worsening the flood."
+    },
+    {
+      id:"GCSE-UKLAND-09",spec:"GCSE-UKLAND",stem:"A student mixes up abrasion and attrition. What is the correct distinction?",
+      options:{A:"Abrasion is where loose material sandpapers the walls and floor of a river, cliff or glacier; attrition is where rocks carried by the water bang against each other, chipping away to become smaller and smoother",B:"Abrasion and attrition are two names for the same erosional process",C:"Attrition wears away the cliff face directly; abrasion only affects the rocks being transported",D:"Abrasion only happens in rivers, attrition only happens at the coast"},
+      correct:"A",tag:"MC-UKLAND-KT-01",
+      scaffold:"Both are erosion processes but act on different things: abrasion is material scraping against the landform itself (the cliff or riverbed), while attrition is transported rocks scraping against each other, reducing their own size and making them rounder — this is why beach pebbles are smoother than upstream river rocks."
+    },
+    {
+      id:"GCSE-UKLAND-10",spec:"GCSE-UKLAND",stem:"What is hydraulic action, and where does it occur?",
+      options:{A:"The pressure of air compressed into cracks in a rock face, which weakens and breaks the rock apart — it's a coastal erosion process most powerful during storms",B:"The dissolving of chemical compounds in a rock by weak acid in rainwater",C:"The transportation of sediment along a beach by the prevailing wind",D:"The rolling of large boulders along a riverbed"},
+      correct:"A",tag:"MC-UKLAND-KT-02",
+      scaffold:"Hydraulic action is purely a mechanical, force-based process — air trapped in cracks is compressed by incoming waves and then releases suddenly, widening the crack. It's distinct from corrasion (material flung at the cliff) and solution (chemical dissolving), which are the other coastal erosion processes."
+    },
+    {
+      id:"GCSE-UKLAND-11",spec:"GCSE-UKLAND",stem:"A student can't tell freeze-thaw weathering apart from mechanical erosion like hydraulic action. What is the key difference?",
+      options:{A:"Freeze-thaw is a form of weathering — it breaks rock apart in place using water freezing and expanding in cracks — while hydraulic action is a form of erosion, which involves the rock being worn away and removed by a moving force like waves",B:"Freeze-thaw only happens at the coast; hydraulic action only happens on mountains",C:"They are identical processes with different names",D:"Freeze-thaw requires no water at all"},
+      correct:"A",tag:"MC-UKLAND-KT-03",
+      scaffold:"Weathering breaks rock down where it is, with no transport involved (freeze-thaw, biological, chemical weathering are all sub-aerial — they happen 'in the open air'). Erosion involves a moving agent (water, wind, ice) wearing away and carrying material off. Freeze-thaw often weakens a cliff first, making it more vulnerable to erosion afterwards."
+    },
+    {
+      id:"GCSE-UKLAND-12",spec:"GCSE-UKLAND",stem:"A coastline has bands of resistant and less resistant rock running perpendicular (at a right angle) to the shore. What type of coast is this, and what landform does it typically produce?",
+      options:{A:"A discordant coast — differential erosion of the alternating rock bands produces a sequence of headlands (resistant rock) and bays (less resistant rock)",B:"A concordant coast, which produces a straight, unbroken cliff line with no headlands or bays",C:"A discordant coast, which always prevents any erosion from occurring",D:"A concordant coast, where rock bands run perpendicular to the shore"},
+      correct:"A",tag:"MC-UKLAND-KT-04",
+      scaffold:"Discordant = perpendicular bands = headland-and-bay coastline (e.g. Swanage). Concordant = parallel bands = a smoother, straighter coastline because the same resistant rock band runs continuously along the front, protecting what's behind it (e.g. Lulworth Cove's cove formed where the outer resistant band was breached)."
+    },
+    {
+      id:"GCSE-UKLAND-13",spec:"GCSE-UKLAND",stem:"What is the difference between hard engineering and soft engineering as approaches to coastal management?",
+      options:{A:"Hard engineering uses artificial concrete structures (e.g. sea walls, groynes, rock armour) to halt coastal recession; soft engineering uses natural materials and sustainable approaches (e.g. beach nourishment, managed retreat) to work with natural processes",B:"Hard engineering only protects rivers; soft engineering only protects coasts",C:"Soft engineering always costs more than hard engineering",D:"They are the same strategy carried out at different times of year"},
+      correct:"A",tag:"MC-UKLAND-KT-05",
+      scaffold:"Hard engineering gives strong, immediate protection but is expensive, unsightly and can increase erosion elsewhere along the coast (starving beaches downdrift of sediment). Soft engineering works with natural sediment processes and is often cheaper long-term but offers less immediate certainty."
+    },
+    {
+      id:"GCSE-UKLAND-14",spec:"GCSE-UKLAND",stem:"How does a groyne reduce coastal erosion?",
+      options:{A:"It is a low wall built perpendicular to the shore that traps sediment moved by longshore drift, building up a wider beach that absorbs wave energy before it reaches the cliff",B:"It is a wall built parallel to the shore that redirects wave energy away from the cliff",C:"It removes sediment from the beach to lower the risk of flooding",D:"It only works by dissolving the salt in incoming waves"},
+      correct:"A",tag:"MC-UKLAND-KT-06",
+      scaffold:"Don't confuse a groyne (perpendicular to the shore, traps sediment moving along the beach) with a sea wall (parallel to the shore, deflects wave energy directly). A wider trapped beach means waves lose energy over a longer distance before reaching the cliff base."
+    },
+    {
+      id:"GCSE-UKLAND-15",spec:"GCSE-UKLAND",stem:"In a river, what is the difference between traction, saltation and suspension as methods of transportation?",
+      options:{A:"Traction rolls large boulders along the bed; saltation bounces smaller sediment along the bed; suspension carries light material floating within the water itself",B:"All three terms describe exactly the same process of transportation",C:"Traction only occurs in the upper course; saltation and suspension only occur in the lower course",D:"Suspension is the rolling of boulders; traction is the floating of fine sediment"},
+      correct:"A",tag:"MC-UKLAND-KT-07",
+      scaffold:"The four transportation processes scale with sediment size and river energy: traction (largest, rolled along the bed), saltation (medium, bounced along the bed), suspension (small, carried within the flow), and solution (dissolved chemicals, carried invisibly in the water)."
+    },
+    {
+      id:"GCSE-UKLAND-16",spec:"GCSE-UKLAND",stem:"What is a river's floodplain, and why is floodplain zoning used to manage it?",
+      options:{A:"A floodplain is the low-lying, wide valley floor in the lower course that acts as overspill when the channel is full; floodplain zoning controls what can be built there to reduce the risk to people and property from flooding",B:"A floodplain is a landform found only in the upper course, where the river erodes rather than floods",C:"Floodplain zoning is a hard-engineering technique used exclusively at the coast",D:"A floodplain is another name for a river's drainage basin"},
+      correct:"A",tag:"MC-UKLAND-KT-08",
+      scaffold:"Floodplains naturally flood — that's their function, spreading excess discharge over a wide area and reducing flood height downstream. Floodplain zoning is a management response: restricting housing and infrastructure on the areas most likely to flood, rather than trying to stop the river flooding at all."
+    },
+    {
+      id:"GCSE-UKLAND-17",spec:"GCSE-UKLAND",stem:"What does a storm hydrograph show, and what is the 'lag time'?",
+      options:{A:"A storm hydrograph shows how a river's discharge changes over a short period, such as during and after a storm; the lag time is the delay between peak rainfall and peak discharge",B:"A storm hydrograph shows a river's long profile from source to mouth",C:"The lag time is the total volume of water in a drainage basin",D:"A storm hydrograph only measures rainfall, not discharge"},
+      correct:"A",tag:"MC-UKLAND-KT-09",
+      scaffold:"A short lag time (steep rising limb) means a 'flashy' hydrograph — water reaches the channel quickly, raising flood risk. This happens where infiltration is low (impermeable rock, urbanised or saturated ground) so more rainfall becomes rapid surface runoff instead of soaking in."
+    },
+    {
+      id:"GCSE-UKLAND-18",spec:"GCSE-UKLAND",stem:"A student defines a permeable rock as 'a type of igneous rock.' Why is this definition wrong?",
+      options:{A:"Permeability describes whether water can pass through a rock (permeable) or not (impermeable) — it is a property of the rock, not a rock type, and both igneous and sedimentary rocks can be permeable or impermeable depending on their structure",B:"The definition is correct — only igneous rocks can be permeable",C:"Permeable means the same thing as metamorphic",D:"Permeability only applies to rivers, never to rock"},
+      correct:"A",tag:"MC-UKLAND-KT-10",
+      scaffold:"Permeable/impermeable is a property that cuts across the three rock types (igneous, sedimentary, metamorphic). Chalk (sedimentary) is permeable; clay (sedimentary) is often impermeable — so students shouldn't assume rock type alone tells you permeability."
     }
   ]
 };
@@ -2098,6 +2242,66 @@ BANKS["GCSE-GEO-UKHUMAN"] = {
       bank:["tourism","seasonal","unemployment","manufacturing","stable","overemployment"],
       tag:"MC-URB-06",
       scaffold:"Cornwall's shift from primary industries to tourism hasn't guaranteed economic security: tourism is strongly seasonal, so many jobs are part-time and concentrated in summer, leaving workers facing unemployment or underemployment for much of the rest of the year."
+    },
+    {
+      id:"GCSE-UKHUMAN-07",spec:"GCSE-UKHUMAN",stem:"A student mixes up immigration and migration. What is the correct distinction?",
+      options:{A:"Immigration is the permanent movement of people to live in a country different from their home country; migration (in this context) is the permanent movement of people to live elsewhere within the same country",B:"Immigration and migration are two words for exactly the same process",C:"Migration only refers to movement between countries; immigration only refers to movement within a country",D:"Immigration is always temporary, migration is always permanent"},
+      correct:"A",tag:"MC-UKHUMAN-KT-01",
+      scaffold:"International movement = immigration (into a country) or emigration (out of a country). Internal movement = migration (e.g. London to Cornwall). Net migration then measures the balance of immigration minus emigration for a country."
+    },
+    {
+      id:"GCSE-UKHUMAN-08",spec:"GCSE-UKHUMAN",stem:"What is net migration?",
+      options:{A:"The difference between the number of migrants moving into a country and the number moving out of it",B:"The total number of people who have ever migrated into a country",C:"The percentage of a country's population that was born abroad",D:"A measure of how many people move within a country each year"},
+      correct:"A",tag:"MC-UKHUMAN-KT-02",
+      scaffold:"Net migration is a balance figure: (immigration) minus (emigration). Positive net migration means more people are arriving than leaving; this is one of the key drivers of the UK's growing and increasingly multicultural population alongside natural increase."
+    },
+    {
+      id:"GCSE-UKHUMAN-09",spec:"GCSE-UKHUMAN",stem:"How does a Trans-National Company (TNC) differ from ordinary Foreign Direct Investment (FDI)?",
+      options:{A:"A TNC is a company that operates in countries other than where its headquarters is based; FDI is the investment itself — when a business or person in one country invests in a business located in another — which a TNC typically carries out as it expands abroad",B:"A TNC and FDI are identical terms describing the same thing",C:"FDI can only be carried out by governments, never by companies",D:"A TNC only operates within its home country"},
+      correct:"A",tag:"MC-UKHUMAN-KT-03",
+      scaffold:"A TNC is the organisation (e.g. a car manufacturer with factories on several continents); FDI is the financial mechanism it uses to set up or invest in those overseas operations. TNC investment is a major driver of globalisation."
+    },
+    {
+      id:"GCSE-UKHUMAN-10",spec:"GCSE-UKHUMAN",stem:"What does the 'shrinking world' effect describe, and what causes it?",
+      options:{A:"The feeling of the world becoming smaller and more easily accessible, caused by improvements in transport and communication technology that make travel and contact faster and cheaper",B:"A measurable reduction in the Earth's physical land area",C:"The declining global population",D:"The process of a country's economy shrinking due to deindustrialisation"},
+      correct:"A",tag:"MC-UKHUMAN-KT-04",
+      scaffold:"'Shrinking world' is about perceived, not physical, distance — jet travel, container shipping and instant digital communication mean places that once took weeks to reach are now hours away, which is a major driver behind globalisation and increased migration and trade."
+    },
+    {
+      id:"GCSE-UKHUMAN-11",spec:"GCSE-UKHUMAN",stem:"A student defines an enterprise zone as 'any area with a lot of businesses.' How should this be corrected?",
+      options:{A:"An enterprise zone is a region specifically set up by the government to encourage businesses to move in, typically offering lower tax rates or newly constructed offices as an incentive",B:"The student's definition is already correct",C:"An enterprise zone is a region where all business activity is banned",D:"An enterprise zone only applies to farming and agriculture"},
+      correct:"A",tag:"MC-UKHUMAN-KT-05",
+      scaffold:"Enterprise zones are a deliberate government regeneration tool, not just a description of where businesses happen to cluster — they're used to attract investment into areas that have lost industry, such as former docklands or coalfield towns."
+    },
+    {
+      id:"GCSE-UKHUMAN-12",spec:"GCSE-UKHUMAN",stem:"Which correctly orders the four types of industry from raw materials to finished service, and gives an accurate example of each?",
+      options:{A:"Primary (farmers extracting raw materials) → Secondary (factory workers manufacturing goods) → Tertiary (teachers providing a service) → Quaternary (architects working in design and technology)",B:"Quaternary → Tertiary → Secondary → Primary, with the examples reversed",C:"Primary and secondary industry both refer to manufacturing, just at different scales",D:"Tertiary industry refers to raw material extraction such as mining"},
+      correct:"A",tag:"MC-UKHUMAN-KT-06",
+      scaffold:"Primary = extracting raw materials (farming, mining). Secondary = manufacturing (turning raw materials into products). Tertiary = providing a service to people (teaching, retail). Quaternary = knowledge/technology-based work (research, design, IT). The UK's economy has shifted heavily from primary/secondary towards tertiary/quaternary over the last century — this is a key idea across the whole topic."
+    },
+    {
+      id:"GCSE-UKHUMAN-13",spec:"GCSE-UKHUMAN",stem:"What is privatisation, and how does it differ from a government grant?",
+      options:{A:"Privatisation is when essential services are taken over by a private company from the government; a grant is money given by the government to a business or organisation, so the two involve opposite directions of control or funding",B:"Privatisation and a grant are the same government policy",C:"A grant always leads to privatisation of the organisation receiving it",D:"Privatisation means a government takes over a private company"},
+      correct:"A",tag:"MC-UKHUMAN-KT-07",
+      scaffold:"Privatisation shifts ownership of a service from public to private hands (e.g. rail, water). A grant is government money flowing the other way, into a business or organisation, often to support development goals such as research or regeneration — don't confuse the direction of each."
+    },
+    {
+      id:"GCSE-UKHUMAN-14",spec:"GCSE-UKHUMAN",stem:"What is the rural-urban continuum, and what is it used to show?",
+      options:{A:"An imaginary line drawn from the centre of an urban city to the centre of a rural area, used to show how living conditions and population characteristics change gradually between the two",B:"A physical road connecting a city centre to the nearest rural village",C:"A measure of a country's total population density",D:"The boundary that legally separates urban and rural land use"},
+      correct:"A",tag:"MC-UKHUMAN-KT-08",
+      scaffold:"The continuum is a conceptual tool, not a real line — it helps geographers describe how characteristics like population density, house prices, age structure and services change gradually, rather than switching abruptly, as you move from city centre to countryside."
+    },
+    {
+      id:"GCSE-UKHUMAN-15",spec:"GCSE-UKHUMAN",stem:"A student says 'segregation and multiculturalism mean the same thing.' Why is this wrong?",
+      options:{A:"Segregation is where a group is isolated from the rest of society, either by choice or exclusion; multiculturalism/multicultural events celebrate cultures and religions from different backgrounds mixing and being shared within a community — the two describe near-opposite social outcomes",B:"The student is correct — they are interchangeable terms",C:"Segregation only refers to religious groups, multiculturalism only to ethnic groups",D:"Multiculturalism means a population has only one ethnic group"},
+      correct:"A",tag:"MC-UKHUMAN-KT-09",
+      scaffold:"Segregation describes separation and isolation between groups; multicultural events (like Chinese New Year or Notting Hill Carnival) represent integration and shared celebration of diverse cultures within the same community — exam answers about a place's cultural character often need you to distinguish evidence of one from the other."
+    },
+    {
+      id:"GCSE-UKHUMAN-16",spec:"GCSE-UKHUMAN",stem:"What does the Commonwealth refer to, and how is it linked to UK migration patterns?",
+      options:{A:"A group of countries that were colonised by Britain as part of the British Empire — historical Commonwealth ties (language, institutional links) have shaped patterns of migration to the UK from countries such as India, Jamaica and Nigeria",B:"A trade bloc that only the UK and USA belong to",C:"An alternative name for the European Union",D:"A term describing only the UK's domestic regions"},
+      correct:"A",tag:"MC-UKHUMAN-KT-10",
+      scaffold:"The Commonwealth's shared colonial history explains why post-war UK immigration (e.g. the Windrush generation from the Caribbean) often came from former colonies — historical ties, language and existing community networks make migration between these countries more likely."
     }
   ]
 };
@@ -2392,6 +2596,90 @@ BANKS["GCSE-GEO-DEV"] = {
       bank:["Colonialism","neo","Globalisation","post","Dependency","anti"],
       tag:"MC-DEV-04",
       scaffold:"Colonialism = direct (hard power) control: military and political rule. Neo-colonialism = indirect (soft power) control: favourable trade terms, aid conditions, IGO influence, TNC brand dominance. Examiners specifically warn against confusing the two."
+    },
+    {
+      id:"GCSE-DEV-17",spec:"GCSE-DEV",stem:"What is the Brandt Line?",
+      options:{A:"A line that divides developed and developing countries on a world map",B:"A line that shows the route taken by Frank's Dependency Model",C:"A line joining every country with a Human Development Index above 0.9",D:"The boundary between the world's tectonic plates"},
+      correct:"A",tag:"MC-DEV-KT-01",
+      scaffold:"The Brandt Line runs roughly at 30°N, dipping to include Australia and New Zealand in the 'rich north'. It's a simplification — some countries north of the line (e.g. parts of the former USSR) are less developed than some south of it (e.g. Australia) — which is a common evaluation point in exam answers."
+    },
+    {
+      id:"GCSE-DEV-18",spec:"GCSE-DEV",stem:"A student confuses a 'top-down' and a 'bottom-up' development project. What is the correct distinction?",
+      options:{A:"A top-down project is a large-scale scheme run by a government or TNC, where benefits should trickle down to the poor; a bottom-up project is a small scheme run by an NGO or charity that aims to help the poorest families directly",B:"A top-down project is always smaller than a bottom-up project",C:"A bottom-up project is always funded by a national government",D:"They are two names for exactly the same type of scheme"},
+      correct:"A",tag:"MC-DEV-KT-02",
+      scaffold:"Top-down = large-scale, government/TNC-led, trickle-down benefits (e.g. a dam project). Bottom-up = small-scale, NGO/charity-led, targets the poorest directly (e.g. a well-building scheme). Exams often ask you to evaluate which is more effective — bottom-up reaches the poorest more reliably but on a smaller scale."
+    },
+    {
+      id:"GCSE-DEV-19",spec:"GCSE-DEV",stem:"What is the key difference between capitalism and communism as economic systems?",
+      options:{A:"Capitalism is run by private companies for profit, on the belief that a richer country becomes more developed; communism holds that goods and production should be owned communally, often by the state, so everyone has access to what they need",B:"Capitalism and communism are the same system with different names",C:"Communism is always run by private companies; capitalism is always run by the state",D:"Capitalism only exists in developing countries"},
+      correct:"A",tag:"MC-DEV-KT-03",
+      scaffold:"This links to why some countries develop differently — a capitalist system relies on private investment and market growth to raise living standards, while a communist system aims for equality through state or communal ownership rather than private profit."
+    },
+    {
+      id:"GCSE-DEV-20",spec:"GCSE-DEV",stem:"Which of the following correctly defines GDP per capita, and how does it differ from plain GDP?",
+      options:{A:"GDP per capita is the value of all produce and spending in a country divided by its population, giving an average figure per person; GDP alone is just the total value with no adjustment for population size",B:"GDP per capita and GDP are identical measures",C:"GDP per capita only measures spending by the government, not private companies",D:"GDP per capita is always higher than total GDP"},
+      correct:"A",tag:"MC-DEV-KT-04",
+      scaffold:"Dividing by population is what makes GDP per capita useful for comparing wealth between countries of very different sizes — a huge total GDP (like India's) can still come with a low GDP per capita if the population is large."
+    },
+    {
+      id:"GCSE-DEV-21",spec:"GCSE-DEV",stem:"What does an indicator of development actually measure?",
+      options:{A:"A way of measuring development that focuses on social, economic or environmental progress — e.g. life expectancy, GDP per capita or pollution levels",B:"Only the total population of a country",C:"The exact location of the Brandt Line",D:"The five stages of Rostow's model"},
+      correct:"A",tag:"MC-DEV-KT-05",
+      scaffold:"An 'indicator' is the general category — any single measure used as a proxy for development. Social indicators (literacy rate, life expectancy), economic indicators (GDP per capita), and environmental indicators (pollution levels) are all types of indicator; HDI is a composite that combines several of them."
+    },
+    {
+      id:"GCSE-DEV-22",spec:"GCSE-DEV",stem:"A student defines infant mortality rate as 'how many babies are born each year.' How should this be corrected?",
+      options:{A:"Infant mortality rate is the fraction of children under 5 years old who die, compared to the total number of births — it measures deaths, not births",B:"The student's definition is correct as written",C:"Infant mortality rate measures deaths of people over 65",D:"Infant mortality rate is a measure of literacy, not health"},
+      correct:"A",tag:"MC-DEV-KT-06",
+      scaffold:"Infant mortality rate is a widely used social/health indicator — a high rate usually points to poor healthcare access, sanitation and nutrition, so it's commonly paired with life expectancy as evidence of a country's level of development."
+    },
+    {
+      id:"GCSE-DEV-23",spec:"GCSE-DEV",stem:"What distinguishes economic inequality from social inequality?",
+      options:{A:"Economic inequality is the difference in wealth between the richest 10% and poorest 10% of a population; social inequality is the difference in quality of life between the highest- and lowest-income households",B:"Economic inequality only applies between countries, never within one",C:"Social inequality is always measured using GDP per capita",D:"They are identical measures with different names"},
+      correct:"A",tag:"MC-DEV-KT-07",
+      scaffold:"Economic inequality is purely about income/wealth distribution. Social inequality is broader — it includes quality-of-life gaps such as access to healthcare, education and services, not just money."
+    },
+    {
+      id:"GCSE-DEV-24",spec:"GCSE-DEV",stem:"Which correctly defines informal work, and why is it common in lower income countries?",
+      options:{A:"Self-employed or temporary work that provides a small wage with limited health and safety regulations — it's common where formal jobs are scarce and there is little regulation of employment",B:"Work that is always highly paid and closely regulated by government inspectors",C:"Work carried out exclusively by NGOs",D:"A synonym for a top-down development project"},
+      correct:"A",tag:"MC-DEV-KT-08",
+      scaffold:"Informal work (street vending, casual labour) is common in squatter settlements and rapidly urbanising cities — it provides income where formal employment is limited, but offers no job security, minimum wage or safety protection."
+    },
+    {
+      id:"GCSE-DEV-25",spec:"GCSE-DEV",stem:"What is a squatter settlement?",
+      options:{A:"A cluster of temporary housing which migrants or low-income families live in, often built on unfavourable land",B:"A large-scale government housing scheme built to a high safety standard",C:"An area where only wealthy families live",D:"A rural farming settlement with no urban connection"},
+      correct:"A",tag:"MC-DEV-KT-09",
+      scaffold:"Squatter settlements form where rural-urban migrants can't afford formal housing — they're often built on steep slopes, floodplains or waste ground precisely because that land is unwanted and unregulated, which increases residents' exposure to hazards."
+    },
+    {
+      id:"GCSE-DEV-26",spec:"GCSE-DEV",stem:"A student says 'the poverty line is the same figure in every country.' Why is this wrong?",
+      options:{A:"The poverty line is the minimum income a person needs to live adequately, and what counts as 'adequate' — cost of food, housing, services — varies between countries, so the line is set differently in each context",B:"The poverty line is a fixed international figure that never changes",C:"The poverty line only applies to developed countries",D:"The poverty line measures literacy, not income"},
+      correct:"A",tag:"MC-DEV-KT-10",
+      scaffold:"Poverty lines can be set nationally (relative to a country's own cost of living) or internationally (e.g. the World Bank's extreme poverty line), which is why comparing poverty rates between countries needs care over which measure is being used."
+    },
+    {
+      id:"GCSE-DEV-27",spec:"GCSE-DEV",stem:"What is governance, and why does it matter for development?",
+      options:{A:"The management of a place or group of people — weak or corrupt governance can block investment and misdirect resources away from development",B:"A measure of a country's total rainfall",C:"Another term for GDP per capita",D:"The physical shape and relief of a country's land"},
+      correct:"A",tag:"MC-DEV-KT-11",
+      scaffold:"Governance covers how decisions are made and enforced — good governance (transparent institutions, low corruption) tends to attract investment and direct aid effectively, while poor governance (see: corruption) can trap a country in low development despite aid or resources."
+    },
+    {
+      id:"GCSE-DEV-28",spec:"GCSE-DEV",stem:"How does corruption act as a barrier to development?",
+      options:{A:"Corruption involves governments being dishonest or stealing money for financial gain or to stay in power, which diverts funds away from healthcare, education and infrastructure",B:"Corruption always increases a country's GDP per capita",C:"Corruption is a physical, not a political, cause of inequality",D:"Corruption only affects developed countries"},
+      correct:"A",tag:"MC-DEV-KT-12",
+      scaffold:"Corruption sits in the political/economic category of causes of inequality alongside trade barriers and debt — money that should fund public services (schools, hospitals, roads) is instead diverted for private or political gain, slowing development even where a country has decent resources."
+    },
+    {
+      id:"GCSE-DEV-29",spec:"GCSE-DEV",stem:"What is topography, and how can it act as a barrier to development?",
+      options:{A:"The shape and relief of the land (e.g. mountainous, low-lying, flat) — difficult topography such as steep mountains can make building infrastructure and transport links expensive and slow",B:"A measure of a country's literacy rate",C:"The formal name for a country's government system",D:"A synonym for climate change"},
+      correct:"A",tag:"MC-DEV-KT-13",
+      scaffold:"Topography is a physical/environmental cause of inequality, alongside climate and being landlocked. Mountainous terrain (e.g. much of Nepal or Bolivia) raises the cost of roads, railways and electricity grids, which can isolate communities from trade and services."
+    },
+    {
+      id:"GCSE-DEV-30",spec:"GCSE-DEV",stem:"A student defines a 'Non-Governmental Organisation (NGO)' as 'a private company that makes money for shareholders.' What's wrong with this definition?",
+      options:{A:"An NGO operates separately from government but does not aim to make a profit — examples include charities and universities, unlike a private company which exists to generate profit",B:"The definition is correct — NGOs are simply another type of private company",C:"NGOs are always run directly by national governments",D:"NGOs only operate in developed countries"},
+      correct:"A",tag:"MC-DEV-KT-14",
+      scaffold:"The defining features of an NGO are independence from government and a non-profit purpose — this is why NGOs are typically behind bottom-up development projects, which prioritise reaching the poorest rather than generating a financial return."
     }
   ]
 };
