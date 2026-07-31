@@ -425,6 +425,7 @@ var state = {
   paidSubjects: [],
   weightMap: {}        // spaced repetition: questionId → priority weight
 };
+var requestedBank = new URLSearchParams(location.search).get('bank');
 
 // ── JOINING A CLASS ───────────────────────────────────────────
 // Each class the student joins gets its own `students` row, so their answers
@@ -676,6 +677,11 @@ function registerFreeStudent(name, token) {
 var app = document.getElementById('app');
 
 function render() {
+  if (requestedBank && BANKS[requestedBank] && state.studentName) {
+    state.bank = requestedBank;
+    state.questions = weightedShuffle(BANKS[requestedBank].questions.filter(function(q){return !q.type||q.type==='fill_blank';}), state.weightMap||{});
+    state.idx = 0; state.score = 0; state.phase = 'quiz'; requestedBank = null;
+  }
   if (state.phase === 'join') renderJoin();
   else if (state.phase === 'trial-expired') renderTrialExpiredWall();
   else if (state.phase === 'subjects') renderSubjects();
