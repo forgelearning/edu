@@ -426,6 +426,7 @@ var state = {
   weightMap: {}        // spaced repetition: questionId → priority weight
 };
 var requestedBank = new URLSearchParams(location.search).get('bank');
+var requestedBankStarted = false;
 
 // ── JOINING A CLASS ───────────────────────────────────────────
 // Each class the student joins gets its own `students` row, so their answers
@@ -687,6 +688,7 @@ function render() {
     state.bank = requestedBank;
     state.questions = weightedShuffle(BANKS[requestedBank].questions.filter(function(q){return !q.type||q.type==='fill_blank';}), state.weightMap||{});
     state.idx = 0; state.score = 0; state.phase = 'quiz';
+    requestedBankStarted = true;
     requestedBank = null;
   }
   if (state.phase === 'join') renderJoin();
@@ -1866,6 +1868,13 @@ if (ForgeAuth.hasSession()) {
       ForgeClasses.adopt(savedSession);
 
       function settlePhase() {
+        // Class sync can finish after the requested bank has already opened.
+        // Preserve that assignment route instead of returning to the picker.
+        if (requestedBankStarted && state.bank && BANKS[state.bank]) {
+          state.subject = getSubjectForBank(state.bank);
+          state.phase = 'quiz';
+          return;
+        }
         var joined = ForgeClasses.subjects(SUBJECTS);
         if (joined.length === 1) {
           state.subject      = joined[0];
