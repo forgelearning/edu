@@ -93,21 +93,48 @@ if(localStorage.getItem('forge-theme')==='light'){document.documentElement.setAt
 </div></div>
 
 <div class="wrap">
-  <div id="app"><div class="loading">Loading question banks…</div></div>
+  <div id="app"><div class="loading">Checking teacher access…</div></div>
 </div>
 
 <script>
+var SUPABASE_URL = 'https://crysulmbaadjkymcjrew.supabase.co';
+var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNyeXN1bG1iYWFkamt5bWNqcmV3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQyNDUzMzAsImV4cCI6MjA5OTgyMTMzMH0.Q69MKJR6_iEYkqJYXjn8RBhKhstAZShtmf0NiYM-8Vk';
+var TEACHER_SESSION_KEY = 'forge-teacher-session';
+
+function requireTeacherSession(onReady) {
+  var app = document.getElementById('app');
+  var saved = null;
+  try { saved = JSON.parse(localStorage.getItem(TEACHER_SESSION_KEY) || 'null'); } catch (e) {}
+  if (!saved || !saved.access_token) {
+    app.innerHTML = '<div class="loading">Class Mode is for signed-in teachers.<br><a href="teacher.html" style="display:inline-block;margin-top:14px;color:var(--ember)">Sign in to Teacher Dashboard →</a></div>';
+    return;
+  }
+  fetch(SUPABASE_URL + '/auth/v1/user', {
+    headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + saved.access_token }
+  }).then(function(response) {
+    if (!response.ok) throw new Error('Teacher session expired');
+    return response.json();
+  }).then(function(user) {
+    if (!user || !user.id) throw new Error('Teacher session invalid');
+    onReady();
+  }).catch(function() {
+    app.innerHTML = '<div class="loading">Your teacher session has expired.<br><a href="teacher.html" style="display:inline-block;margin-top:14px;color:var(--ember)">Sign in again →</a></div>';
+  });
+}
+
 var state = { phase:'loading', banks:null, subjects:null, subjectKey:null, bankKey:null, shuffle:true, questions:[], idx:0, revealed:false };
 var app = document.getElementById('app');
 
-fetch('data/forge-data.js').then(function(r){ return r.text(); }).then(function(dataScript){
-  (new Function(dataScript + '\nwindow.__FORGE_DATA__ = {BANKS:BANKS, SUBJECTS:SUBJECTS};'))();
-  state.banks = window.__FORGE_DATA__.BANKS;
-  state.subjects = window.__FORGE_DATA__.SUBJECTS;
-  state.phase = 'subjects';
-  render();
-}).catch(function(e){
-  app.innerHTML = '<div class="loading">Could not load question banks.<br>'+e.message+'</div>';
+requireTeacherSession(function() {
+  fetch('data/forge-data.js').then(function(r){ return r.text(); }).then(function(dataScript){
+    (new Function(dataScript + '\nwindow.__FORGE_DATA__ = {BANKS:BANKS, SUBJECTS:SUBJECTS};'))();
+    state.banks = window.__FORGE_DATA__.BANKS;
+    state.subjects = window.__FORGE_DATA__.SUBJECTS;
+    state.phase = 'subjects';
+    render();
+  }).catch(function(e){
+    app.innerHTML = '<div class="loading">Could not load question banks.<br>'+e.message+'</div>';
+  });
 });
 
 function shuffleArr(a){var b=a.slice();for(var i=b.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=b[i];b[i]=b[j];b[j]=t;}return b;}
