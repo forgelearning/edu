@@ -1022,7 +1022,7 @@ const SUBJECTS = {
     label: "GCSE Geography",
     sub: "Edexcel B 1GB0 — Paper 1 (Hazardous Earth, Development Dynamics, Urbanising World), Paper 2 (UK Physical & Human Landscapes, Fieldwork), Paper 3 (Biosphere, Forests, Energy) & Making Geographical Decisions",
     color: "#0f766e",
-    banks: ["GCSE-GEO-HAZ", "GCSE-GEO-DEV", "GCSE-GEO-INDIA", "GCSE-GEO-URB", "GCSE-GEO-UKLAND", "GCSE-GEO-UKHUMAN", "GCSE-GEO-ENQUIRY", "GCSE-GEO-RIVERFIELD", "GCSE-GEO-URBFIELD", "GCSE-GEO-BIOSPHERE", "GCSE-GEO-FORESTS", "GCSE-GEO-ENERGY", "GCSE-GEO-DECISIONS"]
+    banks: ["GCSE-GEO-HAZ", "GCSE-GEO-DEV", "GCSE-GEO-INDIA", "GCSE-GEO-URB", "GCSE-GEO-UKLAND", "GCSE-GEO-UKHUMAN", "GCSE-GEO-ENQUIRY", "GCSE-GEO-RIVERFIELD", "GCSE-GEO-URBFIELD", "GCSE-GEO-BIOSPHERE", "GCSE-GEO-FORESTS", "GCSE-GEO-ENERGY", "GCSE-GEO-DECISIONS", "GCSE-GEO-SKILLS"]
   },
   "gcse-econ": {
     label: "GCSE Economics",
@@ -3724,6 +3724,153 @@ BANKS["GCSE-GEO-DECISIONS"] = {
       bank:["produced","interest","reliability","read","budget","length"],
       tag:"MC-DEC-12",
       scaffold:"Evaluating who produced a source and their possible bias (e.g. a company's own report on its own proposed development) is a top-level skill — it goes beyond just summarising what evidence says to critically assessing how much weight it should carry."
+    }
+  ]
+};
+
+BANKS["GCSE-GEO-SKILLS"] = {
+  label: "Geographical Skills",
+  color: "#0f766e",
+  questions: [
+    {
+      id:"GCSE-SKILL-01",spec:"GCSE-GEO-SKILLS",stem:"When giving a grid reference, which part should be read first?",
+      options:{A:"The easting, then the northing",B:"The northing, then the easting",C:"The map scale, then the easting",D:"The contour interval, then the northing"},
+      correct:"A",tag:"MC-GEO-SKILL-01",
+      scaffold:"Grid references are read across then up: the easting is the first number and the northing is the second. A four-figure reference identifies a grid square; a six-figure reference locates a more exact point within it.",
+      reforge:{stem:"A student writes the grid reference 5142. What does the first pair of digits show?",options:{A:"The easting across the map",B:"The height of the location above sea level",C:"The distance travelled along a route",D:"The northing, showing how far up the map the square is"},correct:"A"}
+    },
+    {
+      id:"GCSE-SKILL-02",spec:"GCSE-GEO-SKILLS",stem:"What is the main purpose of a six-figure grid reference?",
+      options:{A:"To show the map's contour interval",B:"A precise point within the square",C:"To identify the direction of north",D:"To calculate the gradient of a slope"},
+      correct:"B",tag:"MC-GEO-SKILL-02",
+      scaffold:"A six-figure grid reference divides a grid square into smaller parts, allowing an exact feature or point to be located. The first three figures are eastings and the last three are northings.",
+      reforge:{stem:"Why is a six-figure reference more precise than a four-figure reference?",options:{A:"It uses a larger map scale in every case",B:"It subdivides the square for a closer location",C:"It includes the height of the land as well as its location",D:"It measures distance along a road more accurately"},correct:"B"}
+    },
+    {
+      id:"GCSE-SKILL-03",spec:"GCSE-GEO-SKILLS",stem:"A map has a scale of 1:25,000. What ground distance does 4 cm represent?",
+      options:{A:"100 m",B:"250 m",C:"750 m",D:"1 km"},
+      correct:"D",tag:"MC-GEO-SKILL-03",
+      scaffold:"At 1:25,000, 1 cm represents 25,000 cm, or 250 m. Therefore 4 cm represents 4 × 250 m = 1,000 m = 1 km. Convert centimetres to metres or kilometres before giving the final answer.",
+      reforge:{stem:"On a 1:50,000 map, a footpath measures 2 cm. What is its real distance?",options:{A:"100 m",B:"25 km",C:"1 km",D:"2 km"},correct:"C"}
+    },
+    {
+      id:"GCSE-SKILL-04",spec:"GCSE-GEO-SKILLS",stem:"What is the most reliable way to measure a curved route on a map?",
+      options:{A:"Measure only the straight-line distance between its endpoints",B:"Use the largest contour value along the route",C:"Count the number of grid squares it crosses",D:"Mark each bend on paper, then use the scale"},
+      correct:"D",tag:"MC-GEO-SKILL-04",
+      scaffold:"A curved route can be broken into short straight sections. Mark each section on a strip of paper, pivoting at each change in direction, then compare the total with the map scale. A straight-line measurement underestimates a winding route.",
+      reforge:{stem:"Why would measuring only between the endpoints underestimate the length of a winding road?",options:{A:"The map scale changes at every bend",B:"Curved roads always cross a contour line",C:"The road's height is included in its map distance",D:"The route has bends"},correct:"D"}
+    },
+    {
+      id:"GCSE-SKILL-05",spec:"GCSE-GEO-SKILLS",stem:"A grid bearing is measured from which starting direction?",
+      options:{A:"Grid north, clockwise through 360°",B:"The nearest contour line, clockwise through 180°",C:"Magnetic south, anticlockwise through 360°",D:"The direction of the steepest slope, through 90°"},
+      correct:"A",tag:"MC-GEO-SKILL-05",
+      scaffold:"A grid bearing is measured clockwise from grid north, which is 000°. East is 090°, south is 180° and west is 270°. Bearings are written as three figures, such as 280°.",
+      reforge:{stem:"A bearing of 180° from point A indicates which direction?",options:{A:"South",B:"Due east",C:"Due west",D:"Due north"},correct:"A"}
+    },
+    {
+      id:"GCSE-SKILL-06",spec:"GCSE-GEO-SKILLS",stem:"What do contour lines that are close together show?",
+      options:{A:"A flat area with little change in height",B:"A steep slope",C:"A river channel with no change in elevation",D:"A settlement with closely spaced buildings"},
+      correct:"B",tag:"MC-GEO-SKILL-06",
+      scaffold:"Contour lines join points of equal height. When they are close together, the height changes rapidly over a short horizontal distance, showing a steep slope. Widely spaced contours indicate gentler slopes or flatter land.",
+      reforge:{stem:"Which contour pattern would be most suitable for locating a gentle slope?",options:{A:"Concentric lines with no height values",B:"Very widely spaced contour lines",C:"A single line crossing the map",D:"Very closely spaced contour lines"},correct:"B"}
+    },
+    {
+      id:"GCSE-SKILL-07",spec:"GCSE-GEO-SKILLS",stem:"What does a four-figure grid reference identify?",
+      options:{A:"An exact point such as a trigonometrical station",B:"The height of a hill above sea level",C:"A grid square containing the feature",D:"The bearing from one feature to another"},
+      correct:"C",tag:"MC-GEO-SKILL-07",
+      scaffold:"A four-figure grid reference names the square containing a feature. It is less precise than a six-figure reference, which estimates the feature's position within that square.",
+      reforge:{stem:"A feature lies in square 2748. Which reference gives its exact position within that square?",options:{A:"A contour interval",B:"A four-figure reference only",C:"A six-figure reference",D:"A compass direction"},correct:"C"}
+    },
+    {
+      id:"GCSE-SKILL-08",spec:"GCSE-GEO-SKILLS",stem:"Which type of data is most suitable for a line graph?",
+      options:{A:"Continuous data over time",B:"Named categories with no numerical order",C:"A list of land uses at separate sites",D:"Percentages that must total exactly 100%"},
+      correct:"A",tag:"MC-GEO-SKILL-08",
+      scaffold:"Line graphs are useful for continuous numerical data and for showing change over time or distance. Both axes should be labelled and the scale should be chosen carefully because altered scales can mislead.",
+      reforge:{stem:"A class records river discharge every 500 metres downstream. Which graph would best show the pattern?",options:{A:"A pie chart of the sampling sites",B:"A pictogram using one symbol per site",C:"A population pyramid for the river basin",D:"A line graph with both variables"},correct:"D"}
+    },
+    {
+      id:"GCSE-SKILL-09",spec:"GCSE-GEO-SKILLS",stem:"Which feature distinguishes a histogram from a bar chart?",
+      options:{A:"A histogram always has a title but a bar chart does not",B:"A histogram is only used for percentages",C:"A histogram displays continuous data with touching bars",D:"A histogram uses categories while a bar chart uses continuous data"},
+      correct:"C",tag:"MC-GEO-SKILL-09",
+      scaffold:"Histograms show grouped continuous data, so the bars touch because there are no gaps between the class intervals. Bar charts usually show discrete categories, so separate bars have spaces between them.",
+      reforge:{stem:"Why should the bars of a histogram touch?",options:{A:"Intervals have no gaps",B:"Touching bars make every value equal",C:"The graph is showing a sequence of separate categories",D:"A ruler can only draw bars that touch"},correct:"A"}
+    },
+    {
+      id:"GCSE-SKILL-10",spec:"GCSE-GEO-SKILLS",stem:"A pie chart represents 25% of a data set. What angle should this sector have?",
+      options:{A:"45°",B:"90°",C:"120°",D:"180°"},
+      correct:"B",tag:"MC-GEO-SKILL-10",
+      scaffold:"A full pie chart is 360°. Calculate 25 ÷ 100 × 360 = 90°. The sector angle is proportional to the percentage of the whole represented.",
+      reforge:{stem:"A land-use category represents 15% of a total. What is its pie-chart angle?",options:{A:"36°",B:"54°",C:"15°",D:"45° (a different sector angle)"},correct:"B"}
+    },
+    {
+      id:"GCSE-SKILL-11",spec:"GCSE-GEO-SKILLS",stem:"Which data would a rose diagram be most suitable for displaying?",
+      options:{A:"The population of towns by age group",B:"Annual rainfall totals in millimetres",C:"The percentage contribution of three soil types",D:"The frequency of wind directions at a site"},
+      correct:"D",tag:"MC-GEO-SKILL-11",
+      scaffold:"Rose diagrams use compass directions as axes and bars extending from the centre. They are suitable for directional data such as wind direction, noise direction or light levels.",
+      reforge:{stem:"A rose diagram for a coastal site has its longest bar pointing southwest. What does this show?",options:{A:"The site has its highest rainfall in the southwest",B:"The southwest is the steepest direction on the map",C:"Frequent southwest winds",D:"Most buildings face southwest"},correct:"C"}
+    },
+    {
+      id:"GCSE-SKILL-12",spec:"GCSE-GEO-SKILLS",stem:"What is a key limitation of a choropleth map?",
+      options:{A:"It cannot show any pattern across an area",B:"It can only display data from one location",C:"It can hide variation within zones",D:"It requires every value to be shown as a separate photograph"},
+      correct:"C",tag:"MC-GEO-SKILL-12",
+      scaffold:"Choropleth maps shade areas according to value ranges. They show broad spatial patterns clearly, but the boundary between shades can look like a sudden change, while differences within one shaded area are hidden.",
+      reforge:{stem:"Why might a proportional-symbol map be better than a choropleth map for traffic counts taken at exact sites?",options:{A:"It removes the need to record any data",B:"It can only show qualitative information",C:"It makes every traffic count appear identical",D:"Exact-site symbols avoid zone boundaries"},correct:"D"}
+    },
+    {
+      id:"GCSE-SKILL-13",spec:"GCSE-GEO-SKILLS",stem:"A survey count rises from 40 to 50. What is the percentage increase?",
+      options:{A:"25%",B:"10% (the raw increase)",C:"20%",D:"40% of the final value"},
+      correct:"A",tag:"MC-GEO-SKILL-13",
+      scaffold:"Percentage increase = (final value − original value) ÷ original value × 100. Here (50 − 40) ÷ 40 × 100 = 25%. The original value is the denominator, not the final value.",
+      reforge:{stem:"A river's discharge falls from 80 m³/s to 60 m³/s. What is the percentage decrease?",options:{A:"25%",B:"20%",C:"33%",D:"75% (using the wrong base)"},correct:"A"}
+    },
+    {
+      id:"GCSE-SKILL-14",spec:"GCSE-GEO-SKILLS",stem:"What is the mean of the four values 4, 6, 8 and 10?",
+      options:{A:"6",B:"7",C:"8",D:"28"},
+      correct:"B",tag:"MC-GEO-SKILL-14",
+      scaffold:"Add the values and divide by the number of values: (4 + 6 + 8 + 10) ÷ 4 = 28 ÷ 4 = 7. The mean is sensitive to unusually high or low values.",
+      reforge:{stem:"What is the median of 3, 5, 6, 9 and 12?",options:{A:"5",B:"6",C:"7",D:"9 (the upper middle value)"},correct:"B"}
+    },
+    {
+      id:"GCSE-SKILL-15",spec:"GCSE-GEO-SKILLS",stem:"A data set contains the values 12, 17, 9 and 14. What is its range?",
+      options:{A:"5",B:"7",C:"8",D:"9 (the highest value)"},
+      correct:"C",tag:"MC-GEO-SKILL-15",
+      scaffold:"Range is the highest value minus the lowest value. 17 − 9 = 8. It describes the spread using only the two extreme values.",
+      reforge:{stem:"A survey records 6, 10, 11, 15 and 18 responses at five sites. What is the range?",options:{A:"10",B:"11",C:"12",D:"24 (highest minus lowest)"},correct:"C"}
+    },
+    {
+      id:"GCSE-SKILL-16",spec:"GCSE-GEO-SKILLS",stem:"What does a positive correlation on a scatter graph show?",
+      options:{A:"One variable rises while the other falls",B:"The variables have no measurable relationship",C:"Every point has exactly the same value",D:"The two variables tend to increase together"},
+      correct:"D",tag:"MC-GEO-SKILL-16",
+      scaffold:"Positive correlation means that higher values of one variable tend to be associated with higher values of the other. A best-fit line usually slopes from bottom left to top right; correlation alone does not prove causation.",
+      reforge:{stem:"A scatter graph shows that wider river channels generally have greater depth. What type of relationship is this?",options:{A:"Negative correlation",B:"No correlation",C:"A proportional-symbol relationship",D:"Positive correlation"},correct:"D"}
+    },
+    {
+      id:"GCSE-SKILL-17",spec:"GCSE-GEO-SKILLS",stem:"When asked to describe a photograph, what should a student mainly do?",
+      options:{A:"State only visible features",B:"Explain the processes that must have created every feature",C:"Identify the photographer's purpose and personal opinion",D:"Use case-study facts that cannot be seen in the image"},
+      correct:"A",tag:"MC-GEO-SKILL-17",
+      scaffold:"Describe means saying what can be observed: physical features, human features, relief, vegetation, land use or settlement patterns. Explanation and interpretation may be required by a later command word, but should not replace accurate observation.",
+      reforge:{stem:"Which response is most clearly descriptive of a photograph of a settlement?",options:{A:"Visible buildings and road layout",B:"The settlement has a high crime rate because it is in a deprived area",C:"The buildings were built after a government regeneration scheme",D:"The area will probably become more expensive in the future"},correct:"A"}
+    },
+    {
+      id:"GCSE-SKILL-18",spec:"GCSE-GEO-SKILLS",stem:"Which feature should be included in a clear field sketch?",
+      options:{A:"A detailed artistic background unrelated to the enquiry",B:"Title, location, direction and labelled features",C:"A scale that is perfectly accurate for every feature",D:"Every visible object, even when it is irrelevant"},
+      correct:"B",tag:"MC-GEO-SKILL-18",
+      scaffold:"A useful field sketch is selective rather than artistic. It should have a frame, title, location or site number, compass direction, key features and clear labels. It can omit irrelevant detail and does not need an exact scale.",
+      reforge:{stem:"Why can a field sketch be useful even when its scale is not accurate?",options:{A:"It guarantees that every measurement is correct",B:"It selects relevant enquiry features",C:"It replaces the need for a risk assessment",D:"It records more precise distances than a map"},correct:"B"}
+    },
+    {
+      id:"GCSE-SKILL-19",spec:"GCSE-GEO-SKILLS",stem:"What is most important when making a decision in an issue-evaluation question?",
+      options:{A:"Choose the cheapest option without considering other evidence",B:"Repeat the information from the booklet without taking a position",C:"Weigh evidence and justify a decision",D:"Select the option that appears first in the resource booklet"},
+      correct:"C",tag:"MC-GEO-SKILL-19",
+      scaffold:"Making geographical decisions tests interpretation, analysis and evaluation. A strong answer uses specific evidence from the resource material, adds relevant geographical knowledge, considers competing impacts and explains why the chosen option is preferred.",
+      reforge:{stem:"A resource booklet gives evidence for and against a new wind farm. Which approach best supports a high-level answer?",options:{A:"Use only the evidence supporting the wind farm",B:"Describe every source but avoid reaching a conclusion",C:"Compare impacts before judging",D:"Choose the option with the most positive words in the booklet"},correct:"C"}
+    },
+    {
+      id:"GCSE-SKILL-20",spec:"GCSE-GEO-SKILLS",stem:"A map has a scale of 1:50,000. A route measures 2 cm on the map. What is the ground distance?",
+      options:{A:"500 m",B:"750 m",C:"2 km",D:"1 km"},
+      correct:"D",tag:"MC-GEO-SKILL-20",
+      scaffold:"At 1:50,000, 1 cm represents 50,000 cm, or 500 m. Therefore 2 cm represents 1,000 m, which is 1 km. Always convert the scale units before selecting the answer.",
+      reforge:{stem:"A straight section measures 3 cm on a 1:25,000 map. What distance does it represent on the ground?",options:{A:"250 m",B:"1.25 km",C:"7.5 km",D:"750 m"},correct:"D"}
     }
   ]
 };
