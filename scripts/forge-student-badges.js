@@ -15,7 +15,8 @@
   if (!classIds.length) return;
   var url = 'https://crysulmbaadjkymcjrew.supabase.co';
   var key = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFub24iLCJpYXQiOjE3ODQyNDUzMzAsImV4cCI6MjA5OTgyMTMzMH0.Q69MKJR6_iEYkqJYXjn8RBhKhstAZShtmf0NiYM-8Vk';
-  fetch(url + '/rest/v1/assignments?select=id,archived,due_date&class_id=in.(' + classIds.join(',') + ')', {headers:{apikey:key,Authorization:'Bearer '+key}})
+  var token = window.ForgeAuth && ForgeAuth.accessToken ? ForgeAuth.accessToken() : null;
+  fetch(url + '/rest/v1/assignments?select=id,archived,due_date&class_id=in.(' + classIds.join(',') + ')', {headers:{apikey:key,Authorization:'Bearer '+(token || key)}})
     .then(function(r) { return r.json(); })
     .then(function(rows) {
       var today = new Date(); today.setHours(0,0,0,0);
