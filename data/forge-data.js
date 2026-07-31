@@ -1115,9 +1115,9 @@ const SUBJECTS = {
   },
   "gcse-geo": {
     label: "GCSE Geography",
-    sub: "Edexcel B 1GB0 — Paper 1 (Hazardous Earth, Development Dynamics, Urbanising World), Paper 2 (UK Physical & Human Landscapes, Fieldwork) & Paper 3 (Biosphere, Forests, Energy)",
+    sub: "Edexcel B 1GB0 — Paper 1 (Hazardous Earth, Development Dynamics, Urbanising World), Paper 2 (UK Physical & Human Landscapes, Fieldwork), Paper 3 (Biosphere, Forests, Energy) & Making Geographical Decisions",
     color: "#0f766e",
-    banks: ["GCSE-GEO-HAZ", "GCSE-GEO-DEV", "GCSE-GEO-INDIA", "GCSE-GEO-URB", "GCSE-GEO-UKLAND", "GCSE-GEO-UKHUMAN", "GCSE-GEO-ENQUIRY", "GCSE-GEO-RIVERFIELD", "GCSE-GEO-URBFIELD", "GCSE-GEO-BIOSPHERE", "GCSE-GEO-FORESTS", "GCSE-GEO-ENERGY"]
+    banks: ["GCSE-GEO-HAZ", "GCSE-GEO-DEV", "GCSE-GEO-INDIA", "GCSE-GEO-URB", "GCSE-GEO-UKLAND", "GCSE-GEO-UKHUMAN", "GCSE-GEO-ENQUIRY", "GCSE-GEO-RIVERFIELD", "GCSE-GEO-URBFIELD", "GCSE-GEO-BIOSPHERE", "GCSE-GEO-FORESTS", "GCSE-GEO-ENERGY", "GCSE-GEO-DECISIONS"]
   },
   "gcse-econ": {
     label: "GCSE Economics",
@@ -3372,6 +3372,142 @@ BANKS["GCSE-GEO-ENERGY"] = {
       options:{A:"Decommissioning is the process of closing a power station and safely disposing of its waste; for nuclear plants this is especially costly and can take over a year (often much longer) due to radioactive material",B:"Decommissioning means building a new power station from scratch",C:"Decommissioning only applies to renewable energy infrastructure like wind farms",D:"Decommissioning has no associated costs"},
       correct:"A",tag:"MC-ENE-KT-07",
       scaffold:"Decommissioning costs are a major hidden expense of nuclear power that's easy to overlook when comparing energy sources on 'cost per unit of electricity' alone — safely storing or disposing of radioactive waste can cost millions of pounds and take years, an issue not shared by renewable technologies like wind or solar."
+    }
+  ]
+};
+
+BANKS["GCSE-GEO-DECISIONS"] = {
+  label: "Making Geographical Decisions",
+  color: "#0f766e",
+  questions: [
+    {
+      id:"GCSE-DEC-01",spec:"GCSE-DEC",stem:"In Paper 3, students are given a resource booklet on a geographical issue and asked to justify which of several options should be chosen. What makes something a 'geographical issue' suitable for this task?",
+      options:{A:"It involves a contested decision about the use of land or resources, connects to topics from across the specification, and has no single objectively 'correct' answer",B:"It is a simple factual question with one definitively correct answer",C:"It only ever involves a purely economic decision with no environmental or social dimension",D:"It can only be about a hazard, never about development or resource use"},
+      correct:"A",tag:"MC-DEC-01",
+      scaffold:"A geographical issue is a genuine dilemma — e.g. whether to build a road through a rainforest, where to site a new reservoir, or how a coastline should be managed — that draws together physical and human geography and forces a trade-off between competing priorities (environmental, economic, social). There is no 'correct' answer; the exam rewards a well-evidenced, justified choice, not a particular option.",
+      reforge:{stem:"Which of these is best described as a geographical issue rather than a simple factual question?",options:{A:"Whether a coastal town should use hard engineering or managed retreat to respond to erosion",B:"What the capital city of a named country is",C:"What year an earthquake happened",D:"What the definition of GDP per capita is"},correct:"A"}
+    },
+    {
+      id:"GCSE-DEC-02",spec:"GCSE-DEC",stem:"A student's answer to the decision-making question only lists advantages of the option they chose and ignores every source that suggests problems with it. Why will this lose marks?",
+      options:{A:"Top-level answers must use evidence from across the whole resource booklet, including sources that could support a different option, and explain why the chosen option still outweighs them",B:"Using only supporting evidence is the correct approach and should gain full marks",C:"The mark scheme only rewards the final decision, not the reasoning",D:"Sources that don't support the chosen option should be actively contradicted or dismissed as wrong"},
+      correct:"A",tag:"MC-DEC-02",
+      scaffold:"This question is marked using a levels-based mark scheme. The top level requires a balanced, well-evidenced argument that draws on multiple sources across the booklet — including ones that seem to favour a rival option — and explains why, on balance, the chosen option is still the strongest. A one-sided answer that cherry-picks only supportive evidence is capped at a lower level, however confident or detailed it is.",
+      reforge:{stem:"What should a student do with a source in the resource booklet that provides evidence AGAINST the option they intend to choose?",options:{A:"Reference it, acknowledge the point it makes, and explain why the advantages of the chosen option still outweigh it",B:"Ignore it completely so the argument looks stronger",C:"Only use sources that agree with the chosen option",D:"State that the source must be factually incorrect"},correct:"A"}
+    },
+    {
+      id:"GCSE-DEC-03",spec:"GCSE-DEC",stem:"Which three categories are commonly used to sort and weigh up evidence about a geographical issue?",
+      options:{A:"Environmental, economic and social (sometimes with political factors added) — each option is judged against how it affects each of these dimensions",B:"Primary, secondary and tertiary industry",C:"Weathering, erosion and deposition",D:"Push, pull and intervening obstacles"},
+      correct:"A",tag:"MC-DEC-03",
+      scaffold:"Sorting evidence into environmental (impact on ecosystems, pollution, landscape), economic (costs, jobs, investment, growth) and social (quality of life, health, community, displacement) impacts — sometimes alongside political factors like governance or international relations — is the standard method for organising a decision-making answer and comparing options fairly.",
+      reforge:{stem:"A source states that a proposed dam will displace 3,000 people from their homes. Which category of impact does this evidence belong to?",options:{A:"Social",B:"Environmental",C:"Purely economic, with no other dimension",D:"It cannot be categorised"},correct:"A"}
+    },
+    {
+      id:"GCSE-DEC-04",spec:"GCSE-DEC",stem:"A student's decision-making answer states 'Option B is best because it is cheaper.' Why is this an incomplete justification?",
+      options:{A:"It gives only one reason and doesn't reference specific evidence from the resource booklet or weigh it against the other factors and sources available",B:"Cost is never a valid factor in a geographical decision",C:"The answer is already sufficient for full marks",D:"It should instead focus only on environmental factors and ignore cost entirely"},
+      correct:"A",tag:"MC-DEC-04",
+      scaffold:"'Justify' requires more than stating a reason — it requires specific evidence (e.g. 'Source C shows Option B costs £2 million less than Option A') integrated into a wider argument that weighs multiple factors against each other, not just the single cheapest one. A strong answer explains why cost matters more than the trade-offs it involves in this particular case.",
+      reforge:{stem:"Which version of a justification is strongest for a Making Geographical Decisions answer?",options:{A:"'Source C shows Option B costs £2 million less than Option A, and although Source E shows it creates fewer jobs, the cost saving allows more to be invested in flood defences elsewhere, making it the stronger overall choice'",B:"'Option B is best because it is cheaper'",C:"'I prefer Option B'",D:"'Option A and Option B are both fine'"},correct:"A"}
+    },
+    {
+      id:"GCSE-DEC-05",spec:"GCSE-DEC",stem:"Why does a strong decision-making answer often consider both short-term and long-term impacts of an option?",
+      options:{A:"An option can look favourable in the short term (e.g. quick job creation) but cause problems long-term (e.g. environmental degradation), or vice versa, and examiners reward answers that weigh both timeframes",B:"Only short-term impacts are ever relevant to a geographical decision",C:"Long-term impacts cannot be predicted, so they should never be mentioned",D:"Time frame has no bearing on how strong a decision is"},
+      correct:"A",tag:"MC-DEC-05",
+      scaffold:"A classic pattern in these resource booklets: an option like slash-and-burn farming or unrestricted logging may bring fast short-term economic benefit but undermine long-term sustainability, while an option like sustainable forestry or managed retreat may cost more upfront but protect a resource or community for longer. Recognising this tension across timeframes is a marker of top-level analysis.",
+      reforge:{stem:"An option provides 500 jobs immediately but a source suggests the resource it exploits will be exhausted within 10 years. What does a strong answer do with this evidence?",options:{A:"Weighs the short-term economic benefit against the long-term sustainability concern raised by the source, rather than only mentioning one",B:"Only mentions the immediate job creation",C:"Ignores the timeframe entirely",D:"Assumes the resource will last forever regardless of the source"},correct:"A"}
+    },
+    {
+      id:"GCSE-DEC-06",spec:"GCSE-DEC",stem:"What does it mean to consider 'scale' when evaluating a geographical decision?",
+      options:{A:"Recognising that an option's impact may differ at local, regional, national or global scale — e.g. benefiting a national economy while harming a local community",B:"Scale only refers to the size of a map used in the resource booklet",C:"Scale means whether the decision affects one person or many people, with no other meaning",D:"Scale is irrelevant to justifying a geographical decision"},
+      correct:"A",tag:"MC-DEC-06",
+      scaffold:"A proposed airport expansion, for instance, might bring national economic benefits (more trade, more jobs across the country) while creating local costs (noise, displacement, local air pollution) for residents nearby. Strong answers explicitly name which scale each piece of evidence operates at, since a decision that's positive nationally can still be negative locally, and both matter to a full evaluation.",
+      reforge:{stem:"A source shows a new mine will boost national GDP but increase water pollution in the immediate local river. What should a strong answer do with this?",options:{A:"Explicitly compare the national-scale economic benefit against the local-scale environmental cost, rather than treating the decision as good or bad overall without distinguishing scale",B:"Only discuss the national benefit since GDP is more important",C:"Assume local and national impacts are always the same",D:"Ignore scale since it isn't relevant to the mark scheme"},correct:"A"}
+    },
+    {
+      id:"GCSE-DEC-07",spec:"GCSE-DEC",stem:"Why might different stakeholders (e.g. a local government, an environmental NGO, and a mining company) interpret the same resource booklet evidence differently?",
+      options:{A:"Each stakeholder has different priorities and interests, so the same evidence can be weighed differently depending on whose perspective is being considered",B:"Stakeholders always agree on the correct interpretation of geographical evidence",C:"Only government stakeholders' opinions are valid in a geographical decision",D:"Evidence has only one possible interpretation regardless of who is reading it"},
+      correct:"A",tag:"MC-DEC-07",
+      scaffold:"This is exactly why 'there is no single correct answer' — a mining company will prioritise the economic evidence (jobs, profit, GDP growth), an environmental NGO will prioritise ecological evidence (habitat loss, pollution, biodiversity), and a local government may prioritise social evidence (housing, services, community impact). A sophisticated answer can acknowledge multiple viewpoints even while reaching its own justified conclusion.",
+      reforge:{stem:"A geography student's essay considers how an environmental NGO and a logging company might each view the same deforestation evidence differently before reaching a personal conclusion. What skill is this demonstrating?",options:{A:"Evaluating evidence from multiple stakeholder perspectives before justifying a final decision",B:"Simply repeating the evidence without any interpretation",C:"Choosing a stakeholder at random and ignoring the others",D:"Avoiding a final decision altogether"},correct:"A"}
+    },
+    {
+      id:"GCSE-DEC-08",spec:"GCSE-DEC",stem:"What is the key difference between the command words 'describe', 'explain' and 'justify' as used in Making Geographical Decisions questions?",
+      options:{A:"'Describe' states what the evidence shows; 'explain' gives reasons why something happens; 'justify' requires a decision to be defended using evidence and reasoning to show why it is the strongest choice",B:"All three command words require exactly the same type of answer",C:"'Justify' only requires a one-word answer with no supporting evidence",D:"'Describe' requires more evidence than 'justify'"},
+      correct:"A",tag:"MC-DEC-08",
+      scaffold:"Command words set the assessment objective being tested. 'Describe' = state features/patterns from the evidence (AO1/AO3). 'Explain' = give reasons or causes (AO1/AO2). 'Justify' = make and defend a choice, weighing evidence for and against, reaching a supported conclusion (AO3/AO4) — the command word used in the final, highest-mark decision-making question.",
+      reforge:{stem:"A question asks students to 'justify' which flood management option should be used. What must the answer include that a 'describe' question would not require?",options:{A:"A clear decision that is defended using weighed evidence, not just a description of what each option involves",B:"A list of facts with no argument or decision",C:"A description of the river's long profile",D:"Simply naming all three options with no further comment"},correct:"A"}
+    },
+    {
+      id:"GCSE-DEC-09",spec:"GCSE-DEC",stem:"What does the concept of 'sustainability' typically require a decision to balance?",
+      options:{A:"Meeting present needs (economic, social, environmental) without compromising the ability to meet those needs in the future",B:"Maximising short-term profit regardless of future consequences",C:"Environmental protection only, with no consideration of economic or social factors",D:"A decision that only considers the next twelve months"},
+      correct:"A",tag:"MC-DEC-09",
+      scaffold:"Sustainability sits at the intersection of environmental, economic and social factors — often visualised as three overlapping circles, with a truly sustainable option sitting where all three overlap. Resource booklet options are often deliberately designed so that no single choice is perfectly sustainable, forcing students to justify which trade-off is most acceptable.",
+      reforge:{stem:"An option scores well on economic and social measures in a resource booklet, but a source shows it will damage a protected wetland. What must a strong answer do?",options:{A:"Acknowledge the environmental cost from the source and directly compare it against the stated economic and social benefits before reaching a justified decision",B:"Ignore the environmental source since two other categories score well",C:"Assume the option is automatically unsustainable and cannot be chosen",D:"State that environmental damage is never relevant to sustainability"},correct:"A"}
+    },
+    {
+      id:"GCSE-DEC-10",spec:"GCSE-DEC",stem:"Why should a decision-making answer reference specific sources by name (e.g. 'Source B shows...') rather than making general, unreferenced claims?",
+      options:{A:"Referencing specific sources shows the answer is grounded in the evidence provided, rather than relying on unsupported opinion or outside knowledge that isn't in the booklet",B:"Referencing sources is optional and has no effect on the mark awarded",C:"General claims with no source reference always earn higher marks",D:"Sources should only be referenced in the introduction, never in the main argument"},
+      correct:"A",tag:"MC-DEC-10",
+      scaffold:"The whole point of the resource-booklet-based question is to test whether a student can select, interpret and apply the evidence they've been given — not just write generically about the topic from memory. Explicitly citing sources (Figure 3, Source D, the table in Source A) is what distinguishes a top-level, evidence-based justification from a generic, unsupported essay.",
+      reforge:{stem:"Two students write about the same geographical issue. One writes 'building the reservoir would harm the environment.' The other writes 'Source D shows the proposed reservoir would flood 40 hectares of ancient woodland, directly reducing local biodiversity.' Why does the second answer score more highly?",options:{A:"It uses specific, referenced evidence from the resource booklet rather than a vague, unsupported general statement",B:"It is shorter than the first answer",C:"It avoids naming any source material",D:"Both answers are equally strong"},correct:"A"}
+    },
+    {
+      id:"GCSE-DEC-11",spec:"GCSE-DEC",stem:"A student spends their entire answer describing what each option involves, then writes 'Overall, I think Option A is best' with no further explanation in the final line. What is missing?",
+      options:{A:"A justified conclusion that explains, using evidence already discussed, why Option A outweighs the alternatives — a decision needs reasoning attached, not just a stated preference",B:"Nothing — describing each option in detail is sufficient for full marks",C:"The student needs to describe the options in even more detail instead of reaching a conclusion",D:"The final line should introduce entirely new evidence not discussed anywhere else in the answer"},
+      correct:"A",tag:"MC-DEC-11",
+      scaffold:"A common mid-level answer describes all the options accurately but fails to build an argument towards a conclusion, or states a preference without justifying it. Top-level answers integrate evaluation throughout the answer (weighing each source against the others as they go) so the final decision reads as the logical outcome of the evidence already discussed, not an unexplained final-line opinion.",
+      reforge:{stem:"Which approach to structuring a Making Geographical Decisions answer is most likely to reach the top mark band?",options:{A:"Weighing and evaluating evidence for each option throughout the answer, so the final justified decision follows logically from the argument already built",B:"Describing each option in full with no evaluation, then stating a preference in the last sentence",C:"Only describing the option that will eventually be chosen",D:"Listing every source without connecting them to any argument"},correct:"A"}
+    },
+    {
+      id:"GCSE-DEC-12",spec:"GCSE-DEC",stem:"Why might a resource booklet deliberately include sources that conflict with each other, such as one report claiming a scheme will create jobs and another claiming it will cause net job losses?",
+      options:{A:"Conflicting evidence is realistic and tests whether a student can weigh contradictory sources, consider their reliability or bias, and still reach a reasoned decision",B:"Conflicting sources indicate an error in the exam paper that should be ignored",C:"Students should only ever use the source that supports their chosen option",D:"Contradictory evidence means no decision can be justified"},
+      correct:"A",tag:"MC-DEC-12",
+      scaffold:"Real geographical issues rarely have clean, one-sided evidence — a mining company's own report predicting job creation may be less impartial than an independent economic study predicting losses. Evaluating the source itself (who produced it, what interest do they have, how was the data collected) alongside its content is a mark of the highest-level answers, and shows the skill of critically evaluating evidence, not just summarising it.",
+      reforge:{stem:"A resource booklet includes a report commissioned by the company proposing a new development, claiming it will benefit the local economy. What should a strong answer do with this source?",options:{A:"Use the evidence but note the company has a vested interest in a positive outcome, which may affect the report's reliability",B:"Treat the source as entirely objective with no need for scrutiny",C:"Ignore the source completely because it comes from a company",D:"Assume all sources in a resource booklet are equally unbiased regardless of who produced them"},correct:"A"}
+    },
+    {
+      id:"GCSE-DEC-FB-01",spec:"GCSE-DEC",type:"fill_blank",
+      stem:"Complete the sentence about geographical issues.",
+      template:"A geographical issue involves a contested ___ about land or resource use, with no single ___ answer — geographers must weigh competing ___, economic and social priorities.",
+      blanks:["decision","correct","environmental"],
+      bank:["decision","correct","environmental","random","factual","historical"],
+      tag:"MC-DEC-01",
+      scaffold:"Geographical issues are genuine dilemmas that connect multiple topics and force a trade-off between environmental, economic and social priorities — there's no objectively right answer, only a better or worse justified one."
+    },
+    {
+      id:"GCSE-DEC-FB-02",spec:"GCSE-DEC",type:"fill_blank",
+      stem:"Complete the sentence about using evidence in a justified decision.",
+      template:"A top-level answer references specific ___ from the resource booklet, considers evidence both ___ and against the chosen option, and explains why the ___ outweigh the drawbacks.",
+      blanks:["sources","for","advantages"],
+      bank:["sources","for","advantages","opinions","against","disadvantages"],
+      tag:"MC-DEC-02",
+      scaffold:"A one-sided answer that only lists supporting evidence is capped at a lower mark band — top answers acknowledge counter-evidence and explain why, on balance, their chosen option still wins."
+    },
+    {
+      id:"GCSE-DEC-FB-03",spec:"GCSE-DEC",type:"fill_blank",
+      stem:"Complete the sentence about categorising evidence.",
+      template:"Evidence in a resource booklet is often sorted into ___, economic and ___ categories, sometimes alongside ___ factors, to help compare how each option performs.",
+      blanks:["environmental","social","political"],
+      bank:["environmental","social","political","physical","historical","biological"],
+      tag:"MC-DEC-03",
+      scaffold:"Sorting evidence into environmental, economic and social (plus sometimes political) categories is the standard method for comparing options fairly across every relevant dimension of impact."
+    },
+    {
+      id:"GCSE-DEC-FB-04",spec:"GCSE-DEC",type:"fill_blank",
+      stem:"Complete the sentence about command words.",
+      template:"'Describe' asks what the evidence shows; 'explain' asks for ___; 'justify' asks for a ___ to be defended using ___ evidence, weighed for and against.",
+      blanks:["reasons","decision","referenced"],
+      bank:["reasons","decision","referenced","opinions","guesses","random"],
+      tag:"MC-DEC-08",
+      scaffold:"'Justify' is the command word used for the final, highest-mark decision-making question — it demands a defended choice built from weighed, referenced evidence, not just a stated preference."
+    },
+    {
+      id:"GCSE-DEC-FB-05",spec:"GCSE-DEC",type:"fill_blank",
+      stem:"Complete the sentence about evaluating sources.",
+      template:"A strong answer considers who ___ a source and what ___ they might have, since this can affect the source's ___, alongside weighing what the evidence itself shows.",
+      blanks:["produced","interest","reliability"],
+      bank:["produced","interest","reliability","read","budget","length"],
+      tag:"MC-DEC-12",
+      scaffold:"Evaluating who produced a source and their possible bias (e.g. a company's own report on its own proposed development) is a top-level skill — it goes beyond just summarising what evidence says to critically assessing how much weight it should carry."
     }
   ]
 };
