@@ -2998,6 +2998,36 @@ BANKS["GCSE-GEO-BIOSPHERE"] = {
       bank:["Malthus","Boserup","technology","government","migration","trade"],
       tag:"MC-BIO-11",
       scaffold:"Malthus (1798, pessimistic): population outpaces food, causing famine/disease/war. Boserup (1965, optimistic): population pressure drives technological innovation that raises food production to meet demand. Both theories focus on food but can be applied to other resources too."
+    },
+    {
+      id:"GCSE-BIO-13",spec:"GCSE-BIO",stem:"A student mixes up abiotic and biotic components of an ecosystem. What is the correct distinction?",
+      options:{A:"Abiotic components are non-living environmental factors (e.g. climate, light, soil type); biotic components are the living organisms that interact with the environment and each other",B:"Abiotic components are living organisms; biotic components are non-living factors",C:"They are two names for exactly the same thing",D:"Abiotic components only exist in deserts"},
+      correct:"A",tag:"MC-BIO-KT-01",
+      scaffold:"A simple memory hook: 'a-' at the start of abiotic means 'without' — abiotic factors have no life. Biotic factors are the living parts of an ecosystem (plants, animals, decomposers) that depend on and interact with those non-living conditions."
+    },
+    {
+      id:"GCSE-BIO-14",spec:"GCSE-BIO",stem:"In a food chain, what is the correct order and role of producers, consumers and decomposers?",
+      options:{A:"Producers convert sunlight into energy (glucose) via photosynthesis; consumers gain energy by eating other organisms; decomposers break down dead organic material and release nutrients back into the ecosystem",B:"Producers eat consumers, who then decompose to release energy",C:"Decomposers convert sunlight into glucose",D:"Consumers and producers are the same trophic level"},
+      correct:"A",tag:"MC-BIO-KT-02",
+      scaffold:"Energy flow: producers (plants) capture solar energy → consumers eat producers or other consumers → decomposers break down dead matter from any level, releasing nutrients back into the soil for producers to use again — this cycle is what nutrient cycling describes."
+    },
+    {
+      id:"GCSE-BIO-15",spec:"GCSE-BIO",stem:"What is altitudinal zonation?",
+      options:{A:"The presence of distinct bands of different vegetation types at different elevations on a mountain, caused by changing environmental conditions such as temperature with altitude",B:"The measurement of a mountain's total height above sea level",C:"A theory about population growth and food supply",D:"The process of carbon dioxide being stored long-term in soil or vegetation"},
+      correct:"A",tag:"MC-BIO-KT-03",
+      scaffold:"As altitude increases, temperature falls (roughly 6.5°C per 1000m) and conditions become harsher, so vegetation changes in visible bands up a mountainside — from forest at the base, through coniferous and alpine vegetation, to bare rock and snow near the summit."
+    },
+    {
+      id:"GCSE-BIO-16",spec:"GCSE-BIO",stem:"How does carbon sequestration differ from simply 'not emitting greenhouse gases'?",
+      options:{A:"Carbon sequestration is the active, long-term capture and storage of carbon dioxide already in the atmosphere (e.g. by forests or oceans), not just the avoidance of new emissions",B:"Carbon sequestration means releasing carbon dioxide into the atmosphere",C:"Carbon sequestration and emissions are the same process",D:"Only oceans, never forests, can sequester carbon"},
+      correct:"A",tag:"MC-BIO-KT-04",
+      scaffold:"A mature tropical rainforest is a major carbon sink because photosynthesis actively removes CO2 from the air and locks it into wood and soil for decades — this is why large-scale deforestation is doubly damaging: it releases stored carbon and removes future sequestration capacity."
+    },
+    {
+      id:"GCSE-BIO-17",spec:"GCSE-BIO",stem:"What causes eutrophication in an aquatic ecosystem, and why is it harmful?",
+      options:{A:"Excess nutrients (often from agricultural fertiliser runoff) cause algae to grow rapidly; as the algae die and decompose, oxygen in the water is depleted, harming other aquatic life",B:"Eutrophication is caused by a lack of nutrients in the water",C:"Eutrophication increases oxygen levels in water, benefiting all aquatic species",D:"Eutrophication only occurs in desert biomes"},
+      correct:"A",tag:"MC-BIO-KT-05",
+      scaffold:"Eutrophication is a knock-on chain reaction: nutrient input (e.g. nitrates/phosphates from fertiliser) → algal bloom → algae blocks light for other plants and eventually dies → decomposition of dead algae consumes dissolved oxygen → fish and other aquatic organisms suffocate."
     }
   ]
 };
@@ -3125,6 +3155,54 @@ BANKS["GCSE-GEO-FORESTS"] = {
       bank:["forestry","afforestation","Platform","mining","deforestation","Council"],
       tag:"MC-FOR-12",
       scaffold:"Sustainable forestry replants logged areas (afforestation) at a faster rate than logging removes trees, avoiding conversion of natural forest into plantations. The Boreal Forest Platform pairs industry (e.g. IKEA) with NGOs (e.g. WWF) to balance logging with biodiversity protection."
+    },
+    {
+      id:"GCSE-FOR-13",spec:"GCSE-FOR",stem:"A student confuses clear felling and selective logging. What is the correct distinction?",
+      options:{A:"Clear felling removes all trees in an area, while selective logging removes only certain trees, reducing the environmental impact of the harvest",B:"Clear felling and selective logging are two names for the same process",C:"Selective logging always removes more trees than clear felling",D:"Clear felling only happens in the taiga, selective logging only in the tropics"},
+      correct:"A",tag:"MC-FOR-KT-01",
+      scaffold:"Clear felling is fast and profitable but devastating — it destroys habitats completely and leaves soil exposed to erosion. Selective logging is slower and less profitable per trip but leaves the forest structure largely intact, making it a key part of sustainable forestry strategies."
+    },
+    {
+      id:"GCSE-FOR-14",spec:"GCSE-FOR",stem:"What are buttress roots, and why do tropical rainforest trees rely on them?",
+      options:{A:"Large, thick roots that grow above the ground, providing extra stability for tall trees growing in the rainforest's thin, nutrient-poor topsoil",B:"An adaptation only found in taiga conifer trees to survive cold winters",C:"Roots that grow underground to store water during droughts",D:"Woody vines that climb from the forest floor up into the canopy"},
+      correct:"A",tag:"MC-FOR-KT-02",
+      scaffold:"Because rainforest soil is thin and nutrients cycle rapidly through the biomass rather than the ground, trees can't anchor deep roots the way temperate trees do — buttress roots spread wide above ground to give tall canopy trees the stability they need. Don't confuse them with lianas (climbing woody vines) or epiphytes (plants growing on other plants)."
+    },
+    {
+      id:"GCSE-FOR-15",spec:"GCSE-FOR",stem:"What is a drip-tip, and what problem does it solve for rainforest plants?",
+      options:{A:"A leaf adaptation with a tapered end that allows heavy rainwater to run off quickly, preventing fungal and bacterial growth on the leaf surface",B:"A root adaptation that helps trees survive drought",C:"An animal adaptation for hibernating through winter",D:"A method used by loggers to identify which trees to fell"},
+      correct:"A",tag:"MC-FOR-KT-03",
+      scaffold:"Tropical rainforests receive extremely high rainfall — if water pooled on leaves it would encourage the growth of mould, fungi and bacteria in the hot, humid climate. The tapered drip-tip lets water shed quickly, keeping the leaf surface drier."
+    },
+    {
+      id:"GCSE-FOR-16",spec:"GCSE-FOR",stem:"What is the difference between commercial farming and subsistence farming, and why does this distinction matter for deforestation?",
+      options:{A:"Commercial farming produces surplus crops or livestock to sell for profit (often driving large-scale deforestation, e.g. cattle ranching); subsistence farming produces just enough food for a farmer's own family, generally on a smaller scale",B:"Commercial and subsistence farming are identical in scale and purpose",C:"Subsistence farming always causes more deforestation than commercial farming",D:"Commercial farming only exists in the taiga, not the rainforest"},
+      correct:"A",tag:"MC-FOR-KT-04",
+      scaffold:"Scale is the key exam distinction: commercial agriculture (like cattle ranching or plantations) is a major cause of large-scale tropical deforestation because it's profit-driven and land-hungry, whereas subsistence farming tends to clear much smaller areas to meet a family's own needs."
+    },
+    {
+      id:"GCSE-FOR-17",spec:"GCSE-FOR",stem:"How does a debt-for-nature swap work as a forest conservation strategy?",
+      options:{A:"A country's debt to another nation or organisation is reduced or cancelled in exchange for that country committing to conservation efforts, such as protecting forest",B:"A country sells its forests to pay off international debt",C:"It is a scheme where logging companies swap timber for cash payments",D:"It is another name for REDD+"},
+      correct:"A",tag:"MC-FOR-KT-05",
+      scaffold:"Debt-for-nature swaps give indebted countries a direct financial incentive to conserve forest rather than exploit it for short-term income — distinct from REDD, which is specifically a UN-run scheme funding emissions reduction from deforestation and forest degradation."
+    },
+    {
+      id:"GCSE-FOR-18",spec:"GCSE-FOR",stem:"What is the correct definition of biodiversity, and how does deforestation affect it?",
+      options:{A:"Biodiversity is the large variety of animal and plant life living within the same ecosystem; deforestation destroys habitats and reduces this variety, often permanently",B:"Biodiversity refers only to the number of tree species, not animals",C:"Biodiversity increases automatically after any deforestation",D:"Biodiversity is a measure of a forest's total biomass, unrelated to species variety"},
+      correct:"A",tag:"MC-FOR-KT-06",
+      scaffold:"Biodiversity loss from deforestation is especially severe in the tropical rainforest, since so many species depend on very specific, complex interdependent relationships within that ecosystem — remove one habitat layer (like the canopy) and multiple dependent species can be affected at once."
+    },
+    {
+      id:"GCSE-FOR-19",spec:"GCSE-FOR",stem:"What is leaching, and why does it make deforested rainforest soil less fertile?",
+      options:{A:"Leaching is where minerals are washed out of the soil by rainfall; without tree cover to intercept rain and take up nutrients, exposed rainforest soil loses its nutrients quickly after deforestation",B:"Leaching is the process of trees absorbing nutrients from the soil",C:"Leaching only occurs in the taiga, not the tropical rainforest",D:"Leaching increases soil fertility over time"},
+      correct:"A",tag:"MC-FOR-KT-07",
+      scaffold:"In an intact rainforest, most nutrients are stored in the living biomass and cycled rapidly, not stored deep in the soil. Once trees are cleared, heavy tropical rainfall leaches remaining nutrients out of the exposed soil quickly, which is why deforested rainforest land is often unproductive within just a few years."
+    },
+    {
+      id:"GCSE-FOR-20",spec:"GCSE-FOR",stem:"What is CITES, and what is its purpose?",
+      options:{A:"The Convention on International Trade in Endangered Species of Wild Fauna & Flora — an international agreement that works to protect threatened wildlife from exploitation through trade restrictions",B:"A United Nations scheme that pays countries to reduce deforestation",C:"An agreement specifically about reducing carbon emissions from factories",D:"A private company that manages tropical plantations"},
+      correct:"A",tag:"MC-FOR-KT-08",
+      scaffold:"CITES targets the trade side of species loss — regulating or banning international trade in endangered animals and plants (like ivory or rare timber) — which complements habitat-focused strategies like conservation areas and sustainable forestry."
     }
   ]
 };
@@ -3252,6 +3330,48 @@ BANKS["GCSE-GEO-ENERGY"] = {
       bank:["gap","import","secure","surplus","export","efficient"],
       tag:"MC-ENE-09",
       scaffold:"To be energy secure, a country needs an uninterrupted, affordable, accessible supply. An energy gap forces reliance on imports, and diversification (using a wide range of sources) is the main strategy for reducing this vulnerability."
+    },
+    {
+      id:"GCSE-ENE-13",spec:"GCSE-ENE",stem:"A student says 'renewable and recyclable energy mean the same thing.' What's the correct distinction?",
+      options:{A:"Renewable energy comes from a source that is effectively infinite or replenishes itself very quickly (e.g. wind, solar, hydroelectric); recyclable energy comes from a finite fuel supply that can be regrown or reused, such as biofuel",B:"Renewable and recyclable are interchangeable terms with no meaningful difference",C:"Recyclable energy is infinite, renewable energy is finite",D:"Both terms refer only to fossil fuels"},
+      correct:"A",tag:"MC-ENE-KT-01",
+      scaffold:"This three-way classification is commonly tested: non-renewable (finite — coal, oil, gas), renewable (infinite/rapidly replenished — wind, solar, tidal, wave, hydroelectric, geothermal), and recyclable (a limited resource that can be regrown or reprocessed — biofuel, nuclear). Don't collapse recyclable into renewable in an exam answer."
+    },
+    {
+      id:"GCSE-ENE-14",spec:"GCSE-ENE",stem:"What is the difference between primary and secondary energy?",
+      options:{A:"Primary energy is a natural resource used in its raw form (e.g. coal, gas, sunlight); secondary energy is the product created from primary energy, most commonly electricity",B:"Primary energy is always electricity; secondary energy is always a raw fuel",C:"They are the same thing measured in different units",D:"Only renewable sources produce secondary energy"},
+      correct:"A",tag:"MC-ENE-KT-02",
+      scaffold:"Primary energy sources (coal, gas, wind, sunlight) are converted into secondary energy — usually electricity — at a power station or generation site, which is then distributed to homes and businesses via the grid."
+    },
+    {
+      id:"GCSE-ENE-15",spec:"GCSE-ENE",stem:"A country has an energy surplus. What does this mean, and how does it differ from an energy deficit?",
+      options:{A:"An energy surplus means a country generates more energy than its population needs (supply exceeds demand); an energy deficit means it generates less than it needs (demand exceeds supply)",B:"An energy surplus and energy deficit describe exactly the same situation",C:"A surplus means a country has run out of energy resources entirely",D:"A deficit means a country produces more energy than it can use"},
+      correct:"A",tag:"MC-ENE-KT-03",
+      scaffold:"A country with a surplus can export energy or build reserves; a country in deficit (an 'energy gap') must import to meet demand, which — as with the earlier energy-gap question — tends to reduce its energy security."
+    },
+    {
+      id:"GCSE-ENE-16",spec:"GCSE-ENE",stem:"How does fracking release natural gas, and what environmental concern is most specifically linked to it?",
+      options:{A:"High-pressure liquids are pumped underground to crack shale rock and release trapped gas; this process has been linked to small earthquakes and the risk of groundwater contamination",B:"Fracking involves burning coal to release trapped gas",C:"Fracking is a method of harnessing wind energy from underground caverns",D:"Fracking has no known environmental risks"},
+      correct:"A",tag:"MC-ENE-KT-04",
+      scaffold:"Fracking is a specific, named process (not a general term for 'gas extraction') — the fracturing of shale rock with high-pressure fluid injection is what creates the pathways for gas to escape, and it's this same high-pressure injection that has been linked to minor seismic activity and contamination risks."
+    },
+    {
+      id:"GCSE-ENE-17",spec:"GCSE-ENE",stem:"How does geothermal energy generate electricity?",
+      options:{A:"Water is pumped deep underground where it is heated by magma or radioactive rocks; the resulting steam rises and turns turbines to generate electricity",B:"Solar panels absorb heat from the sun and convert it directly into electricity",C:"It relies on burning geological deposits of coal and gas",D:"It uses the movement of tides to turn turbines"},
+      correct:"A",tag:"MC-ENE-KT-05",
+      scaffold:"Geothermal energy depends on accessible underground heat, which is why it's most viable in tectonically active regions (e.g. Iceland, sitting on the Mid-Atlantic Ridge) — don't confuse it with hydroelectric (moving river/dam water) or tidal (moving sea water) energy, which use very different mechanisms."
+    },
+    {
+      id:"GCSE-ENE-18",spec:"GCSE-ENE",stem:"A student mixes up tidal energy and wave energy. What is the correct distinction?",
+      options:{A:"Tidal energy uses turbines on the seabed turned by water moving as tides rise and fall; wave energy uses turbines in floating buoys turned by the up-and-down motion of waves on the sea surface",B:"Tidal and wave energy are two names for exactly the same technology",C:"Tidal energy is generated on the sea surface; wave energy is generated on the seabed",D:"Wave energy relies on the gravitational pull of the moon, tidal energy does not"},
+      correct:"A",tag:"MC-ENE-KT-06",
+      scaffold:"Both are marine renewables but exploit different forces: tidal power depends on the predictable rise and fall of tides (driven by gravitational pull), captured by seabed turbines; wave power depends on surface wave motion, captured by floating buoy-based turbines — a useful pairing for a 'compare and contrast' exam question."
+    },
+    {
+      id:"GCSE-ENE-19",spec:"GCSE-ENE",stem:"What does decommissioning a power station involve, and why is it significant for nuclear power specifically?",
+      options:{A:"Decommissioning is the process of closing a power station and safely disposing of its waste; for nuclear plants this is especially costly and can take over a year (often much longer) due to radioactive material",B:"Decommissioning means building a new power station from scratch",C:"Decommissioning only applies to renewable energy infrastructure like wind farms",D:"Decommissioning has no associated costs"},
+      correct:"A",tag:"MC-ENE-KT-07",
+      scaffold:"Decommissioning costs are a major hidden expense of nuclear power that's easy to overlook when comparing energy sources on 'cost per unit of electricity' alone — safely storing or disposing of radioactive waste can cost millions of pounds and take years, an issue not shared by renewable technologies like wind or solar."
     }
   ]
 };
