@@ -14,7 +14,7 @@ body{background:var(--coal);color:var(--slate);font-family:'Inter',sans-serif;fo
 h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter-spacing:-.015em}
 a{color:var(--ember);text-decoration:none}
 a:hover{text-decoration:underline}
-.wrap{max-width:820px;margin:0 auto;padding:0 24px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 32px}
 .tag{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ember)}
 .mono{font-family:'JetBrains Mono',monospace}
 
@@ -91,7 +91,7 @@ footer a:hover{color:var(--ember)}
 .rm-item:last-child{border-bottom:none}
 .rm-item-head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:8px}
 .rm-item h3{font-size:17px;font-weight:700}
-.rm-item p{font-size:14.5px;color:var(--slate);max-width:70ch}
+.rm-item p{font-size:14.5px;color:var(--slate);max-width:82ch}
 .rm-item .mono{color:#8A857E;font-size:11px}
 
 .rm-cta{border:1px solid var(--line);border-radius:var(--radius-lg);padding:32px;background:var(--panel);text-align:center;margin:16px 0 56px}
@@ -99,12 +99,13 @@ footer a:hover{color:var(--ember)}
 .rm-cta p{color:var(--slate);margin-bottom:20px}
 </style>
 <!-- Google tag (gtag.js) -->
+<script src="scripts/analytics-consent.js"></script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-RGZ9J6Q8H9"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-  gtag('config', 'G-RGZ9J6Q8H9');
+  gtag('config', 'G-RGZ9J6Q8H9', {allow_google_signals: false, allow_ad_personalization_signals: false});
 </script>
 </head>
 <body>
@@ -119,7 +120,17 @@ if(localStorage.getItem('forge-theme')==='light'){document.documentElement.setAt
   <div class="nav-right">
     <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle light/dark theme">☀</button>
     <a class="nav-link" href="index.html">← Back to Forge</a>
-    <a class="nav-link" href="teacher.html">Teacher dashboard</a>
+    <div class="nav-drop-wrap nav-hide-sm">
+      <button class="nav-link" style="font-family:inherit;cursor:pointer;background:transparent;border:none;padding:0" onclick="this.nextElementSibling.classList.toggle('open')">For schools ▾</button>
+      <div class="nav-drop-menu">
+        <a href="faq.html">FAQ for schools</a>
+        <a href="evidence.html">Learning science</a>
+        <a href="roadmap.html">Roadmap</a>
+        <a href="teacher.html">Teacher sign in</a>
+        <a href="privacy.html" style="border-top:1px solid var(--line);margin-top:4px;padding-top:10px">Privacy &amp; DPA</a>
+      </div>
+    </div>
+    <a class="nav-link" href="teacher.html">Teacher sign in</a>
   </div>
 </nav>
 </div></div>
@@ -141,12 +152,12 @@ if(localStorage.getItem('forge-theme')==='light'){document.documentElement.setAt
     <p>16 spec points covering inflation, unemployment, fiscal and monetary policy, and international trade — the full run of Theme 2 misconceptions pulled from examiners' reports.</p>
   </div>
   <div class="rm-item">
-    <div class="rm-item-head"><h3>A Level Psychology</h3><span class="mono">AQA 7182 · Paper 1</span></div>
-    <p>Social Influence, Memory, and Attachment banks live, including the Strange Situation and internal working model misconceptions students consistently get wrong on Paper 1.</p>
+    <div class="rm-item-head"><h3>A Level Psychology</h3><span class="mono">AQA 7182 · Papers 1 &amp; 2</span></div>
+    <p>Social Influence, Memory, Attachment, and additional Paper 2 banks are live, including the Strange Situation and internal working model misconceptions students consistently get wrong.</p>
   </div>
   <div class="rm-item">
     <div class="rm-item-head"><h3>A Level Sociology</h3><span class="mono">AQA 7192 · Paper 1</span></div>
-    <p>Education and Research Methods banks live. Paper 3 — Crime and Deviance, Theory and Methods — is a full build, in the Coming soon bucket below.</p>
+    <p>Education and Research Methods banks live. Paper 3 — Crime and Deviance, Theory and Methods — is authored and in final checking in the Beta bucket below.</p>
   </div>
   <div class="rm-item">
     <div class="rm-item-head"><h3>A Level Geography</h3><span class="mono">Physical — Tectonic Hazards</span></div>
@@ -154,11 +165,11 @@ if(localStorage.getItem('forge-theme')==='light'){document.documentElement.setAt
   </div>
   <div class="rm-item">
     <div class="rm-item-head"><h3>GCSE Geography</h3><span class="mono">Edexcel B 1GB0</span></div>
-    <p>16 questions on Hazardous Earth — Tohoku and Haiti, Pinatubo and Eyjafjallajökull, Katrina and Haiyan — the first GCSE subject to go from teaser to a real, gradeable bank.</p>
+    <p>Multiple live banks now cover the Edexcel B specification, including Hazardous Earth case studies such as Tohoku, Haiti, Pinatubo, Eyjafjallajökull, Katrina, and Haiyan.</p>
   </div>
   <div class="rm-item">
-    <div class="rm-item-head"><h3>GCSE Economics</h3><span class="mono">OCR J205 · Paper 2</span></div>
-    <p>The UK Economy paper is live now. Paper 1, Introduction to Economics, is still in authoring — see Coming soon.</p>
+    <div class="rm-item-head"><h3>GCSE Economics</h3><span class="mono">OCR J205 · Papers 1 &amp; 2</span></div>
+    <p>Live banks cover both Introduction to Economics and The UK Economy. The catalogue is still expanding across the specification.</p>
   </div>
   <div class="rm-item">
     <div class="rm-item-head"><h3>The Anvil, the Crucible, and Class Mode</h3><span class="mono">Product features</span></div>
@@ -169,8 +180,8 @@ if(localStorage.getItem('forge-theme')==='light'){document.documentElement.setAt
     <p>Class creation, the misconception heatmap, and the school-wide GCSE/A-Level overview are running against real data, not a demo.</p>
   </div>
   <div class="rm-item">
-    <div class="rm-item-head"><h3>18 more A Level subjects, one bank deep</h3><span class="mono">Business · Chemistry · Criminology · Biology · History · Law · Physics · Politics · Computer Science · Maths · German · Religious Studies · Health &amp; Social Care · French · Media Studies · PE · Spanish · IB Mandarin</span></div>
-    <p>Each has at least one full misconception-tagged bank live in the quiz (8–34 questions), with the rest of the spec in authoring — see each subject's own page for exactly what's live vs. coming. English Literature and English Language &amp; Literature are live in pilot with schools that register their set texts.</p>
+    <div class="rm-item-head"><h3>Additional subject banks</h3><span class="mono">Business · Chemistry · Criminology · Biology · History · Law · Physics · Politics · Computer Science · Maths · German · Religious Studies · Health &amp; Social Care · French · Media Studies · PE · Spanish · English Literature · English Language &amp; Literature · IB Mandarin</span></div>
+    <p>These subjects have live misconception-tagged banks at different depths. Coverage varies by subject and exam board, so each subject page is the source of truth for what is live, in pilot, or still in authoring.</p>
   </div>
 </section>
 
@@ -181,10 +192,6 @@ if(localStorage.getItem('forge-theme')==='light'){document.documentElement.setAt
   <div class="rm-item">
     <div class="rm-item-head"><h3>A Level Sociology — Paper 3</h3><span class="mono">AQA 7192 · Crime and Deviance, Theory and Methods</span></div>
     <p>The full second paper is written and loaded; it's going through a final accuracy pass against the specification before it moves to Live now.</p>
-  </div>
-  <div class="rm-item">
-    <div class="rm-item-head"><h3>GCSE Economics — Paper 1</h3><span class="mono">OCR J205 · Introduction to Economics</span></div>
-    <p>Questions are in authoring alongside the live Paper 2 bank, following the same misconception-first process.</p>
   </div>
 </section>
 
@@ -249,7 +256,7 @@ if(localStorage.getItem('forge-theme')==='light'){document.documentElement.setAt
       <span>
         <a href="privacy.html">Privacy policy</a> ·
         <a href="faq.html">FAQ for schools</a> ·
-        <a href="evidence.html">The evidence</a> ·
+        <a href="evidence.html">Learning science</a> ·
         <a href="index.html">Back to Forge</a> ·
         <a href="mailto:forge.educator@gmail.com">forge.educator@gmail.com</a>
       </span>
