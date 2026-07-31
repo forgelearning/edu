@@ -14,7 +14,7 @@ body{background:var(--coal);color:var(--slate);font-family:'Inter',sans-serif;fo
 h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter-spacing:-.015em}
 a{color:var(--ember);text-decoration:none}
 a:hover{text-decoration:underline}
-.wrap{max-width:820px;margin:0 auto;padding:0 24px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 32px}
 .tag{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ember)}
 .mono{font-family:'JetBrains Mono',monospace}
 
@@ -39,6 +39,7 @@ a:hover{text-decoration:underline}
 .faq-q[aria-expanded="true"] .faq-chevron{transform:rotate(180deg)}
 .faq-a{display:none;padding-bottom:24px;font-size:15px;line-height:1.75}
 .faq-a.open{display:block}
+.faq-a[hidden]{display:none!important}
 .faq-a p{margin-bottom:14px;color:var(--slate)}
 .faq-a p:last-child{margin-bottom:0}
 .faq-a strong{color:var(--white)}
@@ -63,7 +64,9 @@ a:hover{text-decoration:underline}
 .notice-info strong{color:var(--ember)}
 
 /* sidebar TOC */
-.faq-layout{display:grid;grid-template-columns:200px 1fr;gap:48px;align-items:flex-start}
+.faq-layout{display:grid;grid-template-columns:220px minmax(0,1fr);gap:64px;align-items:flex-start}
+.faq-layout main{min-width:0}
+.faq-a p,.faq-a ul,.faq-a ol{max-width:none}
 .toc{position:sticky;top:24px;padding-top:4px}
 .toc-title{font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:#8A857E;margin-bottom:12px}
 .toc a{display:block;font-size:13px;color:var(--slate);text-decoration:none;padding:5px 0;border-left:2px solid var(--line);padding-left:12px;margin-bottom:2px;line-height:1.35}
@@ -77,12 +80,13 @@ footer a:hover{color:var(--ember)}
 .footer-row{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
 [data-theme="light"] .forge-logo-dark{display:none!important}[data-theme="light"] .forge-logo-light{display:inline!important}</style>
 <!-- Google tag (gtag.js) -->
+<script src="scripts/analytics-consent.js"></script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-RGZ9J6Q8H9"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-  gtag('config', 'G-RGZ9J6Q8H9');
+  gtag('config', 'G-RGZ9J6Q8H9', {allow_google_signals: false, allow_ad_personalization_signals: false});
 </script>
 </head>
 <body>
@@ -97,7 +101,7 @@ if(localStorage.getItem('forge-theme')==='light'){document.documentElement.setAt
   <div class="nav-right">
     <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle light/dark theme">☀</button>
     <a class="nav-link" href="index.html">← Back to Forge</a>
-    <a class="nav-link" href="teacher.html">Teacher dashboard</a>
+    <a class="nav-link" href="teacher.html">Teacher sign in</a>
   </div>
 </nav>
 </div></div>
@@ -115,15 +119,16 @@ if(localStorage.getItem('forge-theme')==='light'){document.documentElement.setAt
     <span class="tag">Guides</span>
     <h1>How Forge actually works</h1>
     <p>Plain, no-hype explanations of each part of Forge — what it does, how it's scored, and how the pieces fit together. If you want the sales pitch, see the <a href="index.html">homepage</a>; this is the manual.</p>
+    <p class="last-updated">Last updated July 2026</p>
   </div>
 
   <div class="guide-grid">
-    <a class="guide-card" href="guides-getting-started.html"><h3>Getting started</h3><p>Signing up, joining a class, and what happens on your first session.</p></a>
-    <a class="guide-card" href="guides-forge-mode.html"><h3>Forge mode</h3><p>Your daily session — how questions are picked and what happens after a wrong answer.</p></a>
+    <a class="guide-card" href="guides-getting-started.html"><h3>Getting started</h3><p>Signing up, joining one or more classes, and choosing the right access tier.</p></a>
+    <a class="guide-card" href="guides-forge-mode.html"><h3>Forge mode</h3><p>How questions are weighted, what the free daily limit means, and what happens after a wrong answer.</p></a>
     <a class="guide-card" href="guides-anvil.html"><h3>The Anvil</h3><p>Where persistent misconceptions go, and exactly how they get cleared.</p></a>
     <a class="guide-card" href="guides-crucible.html"><h3>The Crucible</h3><p>Timed, no-scaffold questions that show you what exam pressure feels like.</p></a>
     <a class="guide-card" href="guides-xp-ranks.html"><h3>XP &amp; Ranks</h3><p>How XP is actually calculated, and what each rank means.</p></a>
-    <a class="guide-card" href="guides-assignments.html"><h3>Assignments</h3><p>How teacher-set assignments appear and how due dates work.</p></a>
+    <a class="guide-card" href="guides-assignments.html"><h3>Assignments</h3><p>How teacher-set assignments appear, how progress is reported, and how due dates work.</p></a>
   </div>
 </div>
 
@@ -133,7 +138,7 @@ if(localStorage.getItem('forge-theme')==='light'){document.documentElement.setAt
       <span>© 2026 Forge · Built by a practising teacher</span>
       <span>
         <a href="privacy.html">Privacy policy</a> ·
-        <a href="evidence.html">The evidence</a> ·
+        <a href="evidence.html">Learning science</a> ·
         <a href="roadmap.html">Roadmap</a> ·
         <a href="index.html">Back to Forge</a> ·
         <a href="mailto:forge.educator@gmail.com">forge.educator@gmail.com</a>
