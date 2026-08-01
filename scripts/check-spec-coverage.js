@@ -90,7 +90,10 @@ for (const subjectKey of subjects) {
       if (resolution.point.subject !== subjectKey) {
         fail(location, `specification point belongs to ${resolution.point.subject}`);
       }
-      if (resolution.id !== bankResolution?.id) {
+      const isGeographyKeyIdea = subjectKey === 'geo' &&
+        resolution.id.startsWith('edexcel-a-geo-') &&
+        bankResolution?.id.startsWith('edexcel-a-geo-topic-');
+      if (resolution.id !== bankResolution?.id && !isGeographyKeyIdea) {
         fail(location, `question resolves to ${resolution.id}, but bank resolves to ${bankResolution?.id || 'none'}`);
       }
       counts.set(resolution.id, (counts.get(resolution.id) || 0) + 1);
@@ -100,6 +103,10 @@ for (const subjectKey of subjects) {
 
 for (const [pointId, point] of Object.entries(SPEC_REGISTRY.points)) {
   if (!subjects.includes(point.subject)) continue;
+  // Geography keeps broad legacy topic aliases for bank-level navigation,
+  // while questions now resolve to the numbered Edexcel key ideas. Do not
+  // report those compatibility aliases as uncovered specification points.
+  if (point.subject === 'geo' && pointId.includes('-topic-')) continue;
   const count = counts.get(pointId) || 0;
   if (!count) warn(pointId, `${point.code} ${point.title} has no mapped questions`);
   console.log(`${point.subject}\t${point.paper}\t${point.code}\t${point.title}\t${count} questions`);

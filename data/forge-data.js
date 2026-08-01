@@ -14662,6 +14662,74 @@ rebalanceGeoYear2(["GEO-TEC","GEO-COAST","GEO-REGEN","GEO-P3","GEO-WATER","GEO-C
 SUBJECTS["geo"].banks = ["GEO-TEC","GEO-COAST","GEO-REGEN","GEO-P3","GEO-WATER","GEO-CARBON","GEO-SUPER","GEO-HEALTH"];
 SUBJECTS["geo"].sub = "Edexcel 9GE0 — Papers 1, 2 & 3";
 
+// Align the Geography questions with the numbered Edexcel 9GE0 key ideas.
+// The glossary banks are intentionally grouped by the conceptual sequence of
+// each topic; this gives every existing question a real specification point
+// without pretending that a generic definition question is a case study.
+const geoPoint = code => `edexcel-a-geo-${code}`;
+const geoPointForGlossary = {
+  "GEO-WATER": [
+    ["5.1", 1, 2], ["5.2", 3, 13], ["5.3", 14, 16],
+    ["5.4", 17, 21], ["5.7", 22, 24], ["5.8", 25, 29],
+    ["5.7", 30, 34], ["5.8", 35, 37]
+  ],
+  "GEO-CARBON": [
+    ["6.1", 1, 6], ["6.2", 7, 10], ["6.3", 11, 18],
+    ["6.4", 19, 21], ["6.5", 22, 25], ["6.6", 26, 31],
+    ["6.7", 32, 35], ["6.8", 36, 37]
+  ],
+  "GEO-SUPER": [
+    ["7.1", 1, 9], ["7.2", 10, 16], ["7.3", 17, 20],
+    ["7.4", 21, 25], ["7.5", 26, 29], ["7.6", 30, 32],
+    ["7.8", 33, 35], ["7.9", 36, 37]
+  ],
+  "GEO-HEALTH": [
+    ["8A.1", 1, 7], ["8A.2", 8, 13], ["8A.4", 14, 16],
+    ["8A.5", 17, 19], ["8A.6", 20, 23], ["8A.7", 24, 28],
+    ["8A.8", 29, 32], ["8A.9", 33, 35], ["8A.12", 36, 37]
+  ]
+};
+
+const geoDefinitionStemFrames = [
+  term => `What is meant by ${term}?`,
+  term => `Which description most accurately captures ${term}?`,
+  term => `How is ${term} best defined in geography?`,
+  term => `A student is revising ${term}. Which note is accurate?`,
+  term => `Which option correctly identifies ${term}?`,
+  term => `Which explanation gives the meaning of ${term}?`
+];
+
+function varyGeoDefinitionStem(question, index) {
+  const match = String(question.stem || "").match(/^Which statement best describes (.+)\?$/i);
+  if (!match) return;
+  const term = match[1];
+  question.stem = geoDefinitionStemFrames[index % geoDefinitionStemFrames.length](term);
+}
+
+for (const bankId of SUBJECTS["geo"].banks) {
+  const bank = BANKS[bankId];
+  if (!bank) continue;
+  const glossaryRanges = geoPointForGlossary[bankId];
+  bank.questions.forEach((question, index) => {
+    const number = index + 1;
+    if (glossaryRanges) {
+      const range = glossaryRanges.find(([, start, end]) => number >= start && number <= end);
+      if (range) question.specPointId = geoPoint(range[0]);
+    } else {
+      const pointSequences = {
+        "GEO-TEC": ["1.1", "1.6", "1.3", "1.1", "1.8", "1.2", "1.1", "1.6", "1.6", "1.6", "1.3", "1.5", "1.7", "1.5", "1.8", "1.4"],
+        "GEO-COAST": ["2B.1", "2B.2", "2B.3", "2B.4", "2B.10", "2B.5", "2B.6", "2B.7", "2B.8", "2B.9", "2B.10", "2B.12"],
+        "GEO-REGEN": ["4A.1", "4A.7", "4A.7", "4A.8", "4A.9", "4A.9", "4A.9", "4A.6", "4A.7", "4A.4", "4A.8", "4A.6"],
+        "GEO-P3": ["p3-players", "p3-futures", "p3-futures", "p3-futures", "p3-players", "p3-players", "p3-futures", "p3-players", "p3-players", "p3-players", "p3-attitudes", "p3-futures"]
+      }[bankId];
+      const broadTopic = pointSequences?.[index];
+      if (broadTopic) question.specPointId = geoPoint(broadTopic);
+    }
+    varyGeoDefinitionStem(question, index);
+    if (question.reforge) varyGeoDefinitionStem(question.reforge, index + 2);
+  });
+}
+
 // ===== A LEVEL PSYCHOLOGY (AQA 7182) PAPER 3 OPTION: FORENSIC PSYCHOLOGY =====
 BANKS["PSY-FOR"] = {
   label: "Forensic Psychology",
@@ -16553,6 +16621,67 @@ for (const subjectKey of ['pol', 'hist', 'crim', 'law']) {
   }));
 }
 
+// Final repository-wide stem audit. A small number of older questions still
+// used formulaic openings outside the Politics/History migration above. Keep
+// their tested proposition unchanged while varying only the interrogative
+// frame, so no subject presents the same wording as the default pattern.
+const legacyStemFrames = {
+  describes: [
+    term => `What is the most accurate description of ${term}?`,
+    term => `Which description of ${term} is accurate?`,
+    term => `How should ${term} be understood here?`,
+    term => `A student is revising ${term}. Which explanation is correct?`
+  ],
+  explains: [
+    term => `What best accounts for ${term}?`,
+    term => `Which factor most clearly explains ${term}?`,
+    term => `How can ${term} be explained?`,
+    term => `What is the strongest explanation for ${term}?`
+  ],
+  identifies: [
+    term => `How should ${term} be identified?`,
+    term => `Which description correctly identifies ${term}?`,
+    term => `What distinguishes ${term} from the alternatives?`,
+    term => `A student needs to identify ${term}. Which answer fits?`
+  ]
+};
+const diversifyLegacyStem = (item, index) => {
+  if (!item || !item.stem) return;
+  const text = String(item.stem).trim();
+  let match = text.match(/^Which statement best describes (.+?)\?$/i);
+  if (match) {
+    item.stem = legacyStemFrames.describes[index % legacyStemFrames.describes.length](match[1]);
+    return;
+  }
+  match = text.match(/^Which statement best explains (.+?)\?$/i);
+  if (match) {
+    item.stem = legacyStemFrames.explains[index % legacyStemFrames.explains.length](match[1]);
+    return;
+  }
+  match = text.match(/^Which question best explains (.+?)\?$/i);
+  if (match) {
+    item.stem = legacyStemFrames.explains[index % legacyStemFrames.explains.length](match[1]);
+    return;
+  }
+  match = text.match(/^Which option correctly identifies (.+?)\?$/i);
+  if (match) {
+    item.stem = legacyStemFrames.identifies[index % legacyStemFrames.identifies.length](match[1]);
+    return;
+  }
+  // Catch legitimate but still formulaic variants such as “Which statement
+  // correctly defines…” or “Which statement about… is most accurate?”.
+  // “Claim” preserves the MCQ task while removing the repeated visual cue.
+  if (/^Which statement\b/i.test(text)) item.stem = text.replace(/Which statement/gi, 'Which claim');
+};
+for (const subject of Object.values(SUBJECTS)) {
+  for (const bankId of subject.banks || []) {
+    (BANKS[bankId]?.questions || []).forEach((question, index) => {
+      diversifyLegacyStem(question, index);
+      diversifyLegacyStem(question.reforge, index + 2);
+    });
+  }
+}
+
 for (const subject of Object.values(SUBJECTS)) {
   for (const bankId of subject.banks || []) {
     for (const [index, question] of (BANKS[bankId]?.questions || []).entries()) {
@@ -16660,5 +16789,16 @@ for (const subject of Object.values(SUBJECTS)) {
       if (!ref || !/^Which statement best applies when this idea is used in a new business or examination scenario\?$/i.test(String(ref.stem || '').trim())) continue;
       ref.stem = genericReforgeFrames[index % genericReforgeFrames.length](stripGeneratedFrame(question.stem));
     }
+  }
+}
+
+// Final pass: Reforge expansion can reintroduce a legacy prefix, so audit the
+// fully assembled data one last time before it is exposed to the app.
+for (const subject of Object.values(SUBJECTS)) {
+  for (const bankId of subject.banks || []) {
+    (BANKS[bankId]?.questions || []).forEach((question, index) => {
+      diversifyLegacyStem(question, index);
+      diversifyLegacyStem(question.reforge, index + 2);
+    });
   }
 }

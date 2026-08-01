@@ -359,17 +359,17 @@ const SPEC_REGISTRY = {
 // level tagging.  Broad-bank aliases below deliberately point to the topic
 // level so the audit does not imply false precision.
 const geographySpecTopics = [
-  ["Paper 1", "1", "Tectonic Processes and Hazards", 6],
+  ["Paper 1", "1", "Tectonic Processes and Hazards", 9],
   ["Paper 1", "2A", "Glaciated Landscapes and Change", 12],
   ["Paper 1", "2B", "Coastal Landscapes and Change", 12],
-  ["Paper 2", "3", "Globalisation", 5],
-  ["Paper 2", "4A", "Regenerating Places", 12],
-  ["Paper 2", "4B", "Diverse Places", 10],
-  ["Paper 1", "5", "The Water Cycle and Water Insecurity", 6],
-  ["Paper 1", "6", "The Carbon Cycle and Energy Security", 4],
-  ["Paper 2", "7", "Superpowers", 6],
+  ["Paper 2", "3", "Globalisation", 9],
+  ["Paper 2", "4A", "Regenerating Places", 9],
+  ["Paper 2", "4B", "Diverse Places", 12],
+  ["Paper 1", "5", "The Water Cycle and Water Insecurity", 8],
+  ["Paper 1", "6", "The Carbon Cycle and Energy Security", 9],
+  ["Paper 2", "7", "Superpowers", 9],
   ["Paper 2", "8A", "Health, Human Rights and Intervention", 12],
-  ["Paper 2", "8B", "Migration, Identity and Sovereignty", 11]
+  ["Paper 2", "8B", "Migration, Identity and Sovereignty", 12]
 ];
 for (const [paper, prefix, title, count] of geographySpecTopics) {
   for (let index = 1; index <= count; index += 1) {
@@ -393,6 +393,16 @@ for (const [topicId, title, paper, code] of [
   SPEC_REGISTRY.points[`edexcel-a-geo-${topicId}`] = {
     subject: "geo", board: "Edexcel", qualification: "A Level Geography (9GE0)",
     paper, code, title, aliases: []
+  };
+}
+for (const [code, title] of [
+  ["P3-PLAYERS", "Paper 3 synoptic theme — Players"],
+  ["P3-ATTITUDES", "Paper 3 synoptic theme — Attitudes and actions"],
+  ["P3-FUTURES", "Paper 3 synoptic theme — Futures and uncertainties"]
+]) {
+  SPEC_REGISTRY.points[`edexcel-a-geo-${code.toLowerCase()}`] = {
+    subject: "geo", board: "Edexcel", qualification: "A Level Geography (9GE0)",
+    paper: "Paper 3", code, title, aliases: []
   };
 }
 Object.assign(SPEC_REGISTRY.aliases, {
