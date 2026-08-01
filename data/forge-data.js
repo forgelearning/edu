@@ -17920,6 +17920,64 @@ appendGenerated("GCSE-PSY-MEMORY", [
 for (const question of BANKS["GCSE-PSY-MEMORY"].questions.slice(-2)) question.specPointId = "aqa-gcse-psych-memory";
 rebalanceMCQSubject(["GCSE-SCI-BIO-1","GCSE-SCI-BIO-2","GCSE-SCI-CHEM-1","GCSE-SCI-CHEM-2","GCSE-SCI-PHYS-1","GCSE-SCI-PHYS-2","GCSE-MATH-P1","GCSE-MATH-P2","GCSE-MATH-P3","GCSE-PSY-MEMORY"]);
 
+// Phase 7 specification-depth pass: strengthen the lowest-coverage active
+// A-level points with independent stems, not Reforge-only variants.
+appendGenerated("BUS-4", [
+  ["An international brand keeps its logo worldwide but changes its advertising to fit local customs. This is:","adapted global marketing","a tariff on imports","vertical integration","a fixed exchange rate", "Global firms often standardise core identity while adapting promotion to local culture."],
+  ["A company entering a new overseas market should localise promotion mainly because:","consumer preferences and meanings can vary between cultures","all countries use different currencies","imports are always more expensive","local firms cannot advertise online", "Cultural expectations can change how consumers interpret a message or product." ]
+], "A1-PHASE7-BUS4");
+for (const question of BANKS["BUS-4"].questions.slice(-2)) question.specPointId = "edexcel-a-bus-4.3";
+
+appendGenerated("BIO-3", [
+  ["During reproductive cloning, the nucleus inserted into an enucleated egg provides:","the donor's nuclear genetic material","the egg's mitochondria only","a new set of random alleles","the embryo's fully developed tissues", "The inserted nucleus carries the donor cell's nuclear genome."],
+  ["One potential benefit of therapeutic cloning is the production of:","cells genetically matched to a patient","identical whole ecosystems","gametes with no chromosomes","antibiotics from mineral salts", "Matched cells may reduce immune rejection when used to replace damaged tissue." ]
+], "A1-PHASE7-BIO3");
+for (const question of BANKS["BIO-3"].questions.slice(-2)) question.specPointId = "ocr-a-bio-6.4";
+
+appendGenerated("CHEM-2", [
+  ["In a Kp expression, the partial pressure of a gaseous product rises while reactant pressures stay constant. The value of Qp will:","increase","decrease to zero","remain exactly one","become negative", "A product pressure appears in the numerator, so increasing it raises the reaction quotient."],
+  ["An electrochemical cell has a positive Ecell under standard conditions. This indicates that the forward reaction is:","thermodynamically feasible","at equilibrium with no net change","certain to have a negative rate","unable to transfer electrons", "A positive standard cell potential corresponds to a favourable overall redox reaction." ]
+], "A1-PHASE7-CHEM2");
+for (const question of BANKS["CHEM-2"].questions.slice(-2)) question.specPointId = question.id.endsWith("-01") ? "aqa-a-chem-3.1.10" : "aqa-a-chem-3.1.11";
+
+appendGenerated("GEO-TEC", [
+  ["A hazard has a return period of 100 years. This means that it:","has an estimated 1% chance of occurring in any one year","must occur exactly once each century","cannot occur twice in one decade","will affect every location in the region", "A return period is a probability estimate, not a timetable."],
+  ["Why can a hazard map be useful before a tectonic event occurs?","it identifies areas where exposure and vulnerability may be concentrated","it predicts the exact date of the next earthquake","it removes the need for emergency planning","it proves that all buildings face equal risk", "Risk mapping can guide land-use planning, building standards and preparedness." ]
+], "A1-PHASE7-GEOTEC");
+for (const question of BANKS["GEO-TEC"].questions.slice(-2)) question.specPointId = "edexcel-a-geo-1.9";
+
+appendGenerated("GEO-COAST", [
+  ["A groyne may widen a beach on its updrift side but can also:","reduce sediment reaching downdrift beaches","increase longshore drift in both directions","remove the need for beach nourishment","prevent all coastal flooding", "Interrupting longshore transport can transfer erosion pressure to downdrift communities."],
+  ["Why might a Shoreline Management Plan permit some coastal flooding?","managed realignment may provide a sustainable response where defence costs exceed benefits","flooding always improves tourism income","hard engineering works everywhere without maintenance","coastal communities cannot be consulted", "Policy may weigh social, economic and environmental costs over the long term." ]
+], "A1-PHASE7-GEOCOAST");
+for (const question of BANKS["GEO-COAST"].questions.slice(-2)) question.specPointId = question.id.endsWith("-01") ? "edexcel-a-geo-2B.5" : "edexcel-a-geo-2B.6";
+
+appendGenerated("GEO-GLOBAL", [
+  ["A transnational corporation places research in a high-income city but assembly in a lower-cost region. This illustrates:","a spatial division of labour within a global production network","the end of international trade","a fall in foreign direct investment","complete economic equality between places", "Different stages of production are located where firms judge skills, costs and access to be most favourable."],
+  ["Why can globalisation produce uneven development between places?","investment, jobs and value added may be concentrated in particular regions","trade guarantees identical wages everywhere","technology prevents firms moving production","all governments receive equal tax revenue", "The gains from trade and investment depend on bargaining power, skills, infrastructure and policy." ]
+], "A1-PHASE7-GEOGLOBAL");
+for (const question of BANKS["GEO-GLOBAL"].questions.slice(-2)) question.specPointId = question.id.endsWith("-01") ? "edexcel-a-geo-3.1" : "edexcel-a-geo-3.2";
+
+appendGenerated("2.3.1", [
+  ["During a recession, automatic stabilisers usually cause:","tax receipts to fall and benefit payments to rise","tax receipts to rise and benefits to fall","interest rates to rise automatically","exports to increase without a policy change", "The budget moves toward deficit as incomes and employment weaken, supporting aggregate demand."],
+  ["A government increases infrastructure spending during a downturn. In the short run this is most directly intended to:","raise aggregate demand through higher government expenditure","reduce the money supply","lower potential output","appreciate the exchange rate", "Government spending is a component of AD, though the longer-term supply effect may also matter." ]
+], "A1-PHASE7-ECON231");
+for (const question of BANKS["2.3.1"].questions.slice(-2)) question.specPointId = "edexcel-a-econ-2.3.1";
+
+appendGenerated("2.3.2", [
+  ["If the central bank raises the base rate, highly indebted households are most likely to experience:","higher interest payments and lower discretionary consumption","lower mortgage payments and higher saving income","an immediate fall in import prices only","higher disposable income from cheaper credit", "Higher borrowing costs can reduce household consumption and therefore AD."],
+  ["Quantitative easing is intended to stimulate demand mainly by:","buying financial assets to increase liquidity and lower longer-term borrowing costs","raising income tax to reduce inflation","fixing the exchange rate by selling all reserves","reducing the supply of bank deposits", "Asset purchases can lower yields and encourage lending and spending when rates are constrained." ]
+], "A1-PHASE7-ECON232");
+for (const question of BANKS["2.3.2"].questions.slice(-2)) question.specPointId = "edexcel-a-econ-2.3.2";
+
+appendGenerated("2.3.3", [
+  ["A government-funded vocational training programme may raise long-run aggregate supply because it:","increases workers' skills and potential productivity","reduces the economy's capital stock","lowers the working-age population","raises imports without changing output", "Human-capital investment can improve labour productivity and productive capacity."],
+  ["A possible limitation of supply-side reforms is that they:","may take years to affect capacity and can require substantial public spending","always reduce productivity immediately","cannot affect labour markets","only work when inflation is already zero", "Education, infrastructure and labour-market reforms often have delayed and uncertain returns." ]
+], "A1-PHASE7-ECON233");
+for (const question of BANKS["2.3.3"].questions.slice(-2)) question.specPointId = "edexcel-a-econ-2.3.3";
+
+rebalanceMCQSubject(["BUS-4","BIO-3","CHEM-2","GEO-TEC","GEO-COAST","GEO-GLOBAL","2.3.1","2.3.2","2.3.3"]);
+
 // Final language pass: a few later-added coverage questions were introduced
 // after the main stem-diversity migration. Rephrase those remaining generic
 // "Which statement/claim" openings so the visible bank does not teach a
