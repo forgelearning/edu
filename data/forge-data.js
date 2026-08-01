@@ -16865,6 +16865,62 @@ for (const bankId of Object.keys(businessFallbackPoints)) {
   }
 }
 
+// Map the live AQA 7405 Chemistry banks to the specification sections.  The
+// banks are mixed revision sets, so route each question by its chemistry
+// language while retaining a bank-level fallback for genuinely broad items.
+const chemistryFallbackPoints = {
+  "CHEM-1": "aqa-a-chem-3.1.1",
+  "CHEM-2": "aqa-a-chem-3.1.4",
+  "CHEM-3": "aqa-a-chem-3.3.1"
+};
+const chemistryPointFor = (bankId, stem) => {
+  const text = String(stem || "").toLowerCase();
+  const routes = [
+    [/chromatography|rf value/, "3.3.16"],
+    [/nmr|chemical shift|proton nmr/, "3.3.15"],
+    [/organic synthesis/, "3.3.14"],
+    [/amino acid|protein|peptide|dna/, "3.3.13"],
+    [/polymer|condensation polymer/, "3.3.12"],
+    [/amine|amines are basic|primary amine/, "3.3.11"],
+    [/benzene|aromatic|halogen carrier/, "3.3.10"],
+    [/carboxylic acid|ester|hydrolysis of an ester/, "3.3.9"],
+    [/aldehyde|ketone|tollens/, "3.3.8"],
+    [/optical isomer|isomerism/, "3.3.7"],
+    [/organic analysis|bromine water/, "3.3.6"],
+    [/alcohol|ethanol/, "3.3.5"],
+    [/alkene|electrophilic addition|hbr/, "3.3.4"],
+    [/halogenoalkane|nucleophile|free radical substitution|methane with chlorine/, "3.3.3"],
+    [/alkane/, "3.3.2"],
+    [/organic chemistry|functional group/, "3.3.1"],
+    [/why does fluorine.*electronegativity|fluorine.*higher electronegativity/, "3.1.1"],
+    [/group 2|alkaline earth/, "3.2.2"],
+    [/group 7|halogen/, "3.2.3"],
+    [/period 3|period 3 elements|oxide/, "3.2.4"],
+    [/transition metal|complex ion|ligand/, "3.2.5"],
+    [/aqueous ion|test for ion|precipitate|ions in solution/, "3.2.6"],
+    [/periodicity|across a period/, "3.2.1"],
+    [/acid|buffer|p[hH]|neutralis/, "3.1.12"],
+    [/electrode potential|electrochemical|half-cell|redox cell/, "3.1.11"],
+    [/\bkp\b|equilibrium constant/, "3.1.10"],
+    [/rate equation|unit of the rate constant/, "3.1.9"],
+    [/gibbs|thermodynamics|feasibility calculation/, "3.1.8"],
+    [/equilibrium|le chatelier|dynamic equilibrium|pressure favours|temperature do|increasing pressure/, "3.1.6"],
+    [/redox|oxidation state|oxidation number|reducing agent|disproportionation/, "3.1.7"],
+    [/kinetics|catalyst|collision theory|concentration increase the rate|increasing concentration/, "3.1.5"],
+    [/enthalpy|exothermic|formation/, "3.1.4"],
+    [/mole|mol dm|empirical formula|molecular formula|titration|25\.0 cm/, "3.1.2"],
+    [/bond|dative/, "3.1.3"],
+    [/electronegativity|ionisation energy|ionization energy|isotope|mass spectrometer|atomic structure|electron configuration|proton/, "3.1.1"]
+  ];
+  for (const [pattern, code] of routes) if (pattern.test(text)) return `aqa-a-chem-${code}`;
+  return chemistryFallbackPoints[bankId];
+};
+for (const bankId of Object.keys(chemistryFallbackPoints)) {
+  for (const question of BANKS[bankId]?.questions || []) {
+    question.specPointId = chemistryPointFor(bankId, question.stem);
+  }
+}
+
 // Remove the last legacy Sociology template from imported Paper 1 questions.
 // This is deliberately applied at runtime so future bank extensions cannot
 // reintroduce the same repeated "Which statement best describes..." cue.

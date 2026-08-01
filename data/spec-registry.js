@@ -501,3 +501,53 @@ Object.assign(SPEC_REGISTRY.aliases, {
   "BUS-3": "edexcel-a-bus-3.1",
   "BUS-4": "edexcel-a-bus-4.1"
 });
+
+// AQA A-level Chemistry (7405), using the numbered physical, inorganic and
+// organic chemistry sections in the published specification.
+const chemistrySpecPoints = [
+  ["3.1.1", "Paper 1 / Paper 2", "Atomic structure"],
+  ["3.1.2", "Paper 1 / Paper 2", "Amount of substance"],
+  ["3.1.3", "Paper 1 / Paper 2", "Bonding"],
+  ["3.1.4", "Paper 1 / Paper 2", "Energetics"],
+  ["3.1.5", "Paper 2", "Kinetics"],
+  ["3.1.6", "Paper 1 / Paper 2", "Chemical equilibria, Le Chatelier’s principle and Kc"],
+  ["3.1.7", "Paper 1", "Oxidation, reduction and redox equations"],
+  ["3.1.8", "Paper 1", "Thermodynamics"],
+  ["3.1.9", "Paper 2", "Rate equations"],
+  ["3.1.10", "Paper 1", "Equilibrium constant Kp for homogeneous systems"],
+  ["3.1.11", "Paper 1", "Electrode potentials and electrochemical cells"],
+  ["3.1.12", "Paper 1", "Acids and bases"],
+  ["3.2.1", "Paper 1", "Periodicity"],
+  ["3.2.2", "Paper 1", "Group 2, the alkaline earth metals"],
+  ["3.2.3", "Paper 1", "Group 7(17), the halogens"],
+  ["3.2.4", "Paper 1", "Properties of Period 3 elements and their oxides"],
+  ["3.2.5", "Paper 1", "Transition metals"],
+  ["3.2.6", "Paper 1", "Reactions of ions in aqueous solution"],
+  ["3.3.1", "Paper 2", "Introduction to organic chemistry"],
+  ["3.3.2", "Paper 2", "Alkanes"],
+  ["3.3.3", "Paper 2", "Halogenoalkanes"],
+  ["3.3.4", "Paper 2", "Alkenes"],
+  ["3.3.5", "Paper 2", "Alcohols"],
+  ["3.3.6", "Paper 2", "Organic analysis"],
+  ["3.3.7", "Paper 2", "Optical isomerism"],
+  ["3.3.8", "Paper 2", "Aldehydes and ketones"],
+  ["3.3.9", "Paper 2", "Carboxylic acids and derivatives"],
+  ["3.3.10", "Paper 2", "Aromatic chemistry"],
+  ["3.3.11", "Paper 2", "Amines"],
+  ["3.3.12", "Paper 2", "Polymers"],
+  ["3.3.13", "Paper 2", "Amino acids, proteins and DNA"],
+  ["3.3.14", "Paper 2", "Organic synthesis"],
+  ["3.3.15", "Paper 2", "Nuclear magnetic resonance spectroscopy"],
+  ["3.3.16", "Paper 2", "Chromatography"]
+];
+for (const [code, paper, title] of chemistrySpecPoints) {
+  SPEC_REGISTRY.points[`aqa-a-chem-${code}`] = {
+    subject: "chem", board: "AQA", qualification: "A-level Chemistry (7405)",
+    paper, code, title, aliases: []
+  };
+}
+Object.assign(SPEC_REGISTRY.aliases, {
+  "CHEM-1": "aqa-a-chem-3.1.1",
+  "CHEM-2": "aqa-a-chem-3.1.4",
+  "CHEM-3": "aqa-a-chem-3.3.1"
+});
