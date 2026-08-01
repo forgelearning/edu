@@ -2752,6 +2752,20 @@ if (localStorage.getItem('forge-theme') === 'light') {
       }
     }
   });
+  document.querySelectorAll('.level-panel').forEach(function(panel){
+    var cards = Array.prototype.slice.call(panel.querySelectorAll(':scope > .subj'));
+    cards.forEach(function(card, index){
+      var s = SUBJECTS[card.dataset.subj];
+      card.__forgeQuestionCount = s && s.banks ? s.banks.reduce(function(sum, b){
+        return sum + (BANKS[b] && BANKS[b].questions ? BANKS[b].questions.length : 0);
+      }, 0) : 0;
+      card.__forgeOriginalIndex = index;
+    });
+    cards.sort(function(a, b){
+      var hasQuestions = (b.__forgeQuestionCount > 0) - (a.__forgeQuestionCount > 0);
+      return hasQuestions || a.__forgeOriginalIndex - b.__forgeOriginalIndex;
+    }).forEach(function(card){ panel.appendChild(card); });
+  });
 })();
 </script>
 </body>
