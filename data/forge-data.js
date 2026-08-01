@@ -16624,6 +16624,35 @@ for (const [bankId, specPointId] of Object.entries(sociologySpecPointIds)) {
   for (const question of BANKS[bankId]?.questions || []) question.specPointId = specPointId;
 }
 
+// Remove the last legacy Sociology template from imported Paper 1 questions.
+// This is deliberately applied at runtime so future bank extensions cannot
+// reintroduce the same repeated "Which statement best describes..." cue.
+const sociologyLegacyFrames = [
+  term => `What is meant by ${term}?`,
+  term => `Which example best illustrates ${term}?`,
+  term => `How would a sociologist define ${term}?`,
+  term => `A student encounters the term ${term}. What does it refer to?`,
+  term => `Which description matches ${term}?`,
+  term => `In sociological analysis, what does ${term} describe?`
+];
+const sociologyReforgeLegacyFrames = [
+  term => `How could a sociologist apply ${term} to evidence?`,
+  term => `Which scenario demonstrates ${term}?`,
+  term => `A case study refers to ${term}. What does the reference mean?`,
+  term => `Which conclusion follows from ${term}?`,
+  term => `What would count as evidence of ${term}?`,
+  term => `A related example tests ${term}. Which interpretation is most accurate?`
+];
+for (const bankId of SUBJECTS["soc"].banks) {
+  for (const [index, question] of (BANKS[bankId]?.questions || []).entries()) {
+    const match = String(question.stem || "").match(/^Which statement best describes (.+)\?$/i);
+    if (match) question.stem = sociologyLegacyFrames[index % sociologyLegacyFrames.length](match[1]);
+    const ref = question.reforge;
+    const refMatch = String(ref?.stem || "").match(/^Which statement best describes (.+)\?$/i);
+    if (refMatch) ref.stem = sociologyReforgeLegacyFrames[index % sociologyReforgeLegacyFrames.length](refMatch[1]);
+  }
+}
+
 for (const subject of Object.values(SUBJECTS)) {
   for (const bankId of subject.banks || []) {
     for (const [index, question] of (BANKS[bankId]?.questions || []).entries()) {
