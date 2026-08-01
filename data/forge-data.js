@@ -9310,6 +9310,66 @@ for (const bankId of ["GCSE-PSY-MEMORY","GCSE-PSY-PERCEPTION","GCSE-PSY-DEVELOPM
   }
 }
 
+// GCSE AQA Psychology 8182 — Paper 2: Social context and behaviour.
+BANKS["GCSE-PSY-SOCIAL"] = {label:"Paper 2 — Social Influence",color:"#831843",questions:[]};
+BANKS["GCSE-PSY-LANGUAGE"] = {label:"Paper 2 — Language, Thought and Communication",color:"#831843",questions:[]};
+BANKS["GCSE-PSY-BRAIN"] = {label:"Paper 2 — Brain and Neuropsychology",color:"#831843",questions:[]};
+BANKS["GCSE-PSY-PROBLEMS"] = {label:"Paper 2 — Psychological Problems",color:"#831843",questions:[]};
+addGcsePsych("GCSE-PSY-SOCIAL","GCSE-PSY-SOCIAL","GCSE-PSY-SOC",[
+  ["What is conformity?","Changing behaviour to match a group","Obeying a direct order","Forgetting a norm","Working alone","Conformity involves matching group behaviour or attitudes, often because of normative or informational influence.","A student changes an answer to match classmates. What is this?"],
+  ["What did Asch's line study investigate?","Conformity","Memory duration","Attachment","Dreams","Asch showed that group pressure could produce apparently incorrect judgements.","Which process was tested when participants judged line lengths?"],
+  ["What is obedience?","Following a direct order","Agreeing with a majority","Learning a schema","Recalling a word","Obedience is behaviour carried out in response to an authority figure's command.","A person follows an instruction from an authority. What is shown?"],
+  ["Which factor increased obedience in Milgram's variations?","Authority figure being nearby","Participants being anonymous","The setting being a shop","The learner being visible and close","Milgram found obedience was generally higher when the authority was physically close and legitimate.","Which change would usually increase obedience?"],
+  ["What is an internal locus of control?","Belief that outcomes depend on one's actions","Belief that luck controls all outcomes","Fear of groups","A memory strategy","People with an internal locus tend to see themselves as having control over outcomes.","Which belief reflects an internal locus of control?"],
+  ["What is minority influence?","A smaller group changing majority views","A majority giving an order","A person forgetting a rule","A researcher choosing a sample","Consistency, commitment and flexibility can help a minority influence a majority.","Which feature makes minority influence more effective?"],
+  ["Why can deindividuation increase antisocial behaviour?","Anonymity reduces self-awareness and restraint","It increases private reflection","It removes group membership","It guarantees moral behaviour","Anonymity and reduced self-awareness can weaken normal restraints in a crowd.","Why might a masked crowd behave differently from identified individuals?"],
+  ["What did Zimbardo's prison study examine?","Effects of social roles and situations","Memory storage","Language development","Visual perception","The study examined how assigned guard and prisoner roles could influence behaviour.","Which topic did Zimbardo's study address?"]
+]);
+addGcsePsych("GCSE-PSY-LANGUAGE","GCSE-PSY-LANGUAGE","GCSE-PSY-LAN",[
+  ["What is meant by linguistic relativity?","Language can influence thought","Thought cannot be studied","Language is always inherited","Communication is impossible","The linguistic relativity view suggests that language categories can shape how people interpret experience.","Which view suggests language affects thinking?"],
+  ["What is a phoneme?","The smallest unit of sound","The meaning of a sentence","A whole conversation","A memory store","Phonemes are distinct sound units that can change meaning in a language.","What is the smallest sound unit that can alter a word?"],
+  ["What is a morpheme?","The smallest meaningful language unit","A facial expression","A brain scan","A group norm","Morphemes include roots and affixes that carry meaning.","What is the smallest meaningful part of a word?"],
+  ["What is telegraphic speech?","Short speech containing key words","Speech about telephones","A written essay","A speech disorder only","Young children may use short combinations that omit grammatical words.","Which description fits a young child's brief key-word sentence?"],
+  ["What is a schema?","An organised mental framework","A sound unit","A social order","A treatment","Schemas help people organise knowledge and guide interpretation.","What structure helps organise knowledge about familiar situations?"],
+  ["What did Piaget argue about egocentric speech?","It reflects thinking from one's own perspective","It is always adult speech","It prevents language growth","It is unrelated to thought","Piaget viewed children's speech as reflecting cognitive development and egocentrism.","Which theory links early speech to egocentric thinking?"],
+  ["What is non-verbal communication?","Meaning conveyed without words","A written report","A memory rehearsal","A sampling method","Facial expression, posture, eye contact and gesture can communicate meaning without words.","Which is an example of communication without language?"],
+  ["Why is context important in communication?","It helps interpret ambiguous meaning","It removes all misunderstanding","It replaces speech sounds","It prevents inference","Context provides information about what a speaker or gesture is likely to mean.","Why might the same phrase have different meanings in different settings?"]
+]);
+addGcsePsych("GCSE-PSY-BRAIN","GCSE-PSY-BRAIN","GCSE-PSY-BR",[
+  ["What does the frontal lobe help control?","Planning and decision-making","Balance only","Basic breathing","Visual acuity only","The frontal lobe is involved in planning, judgement, movement and aspects of personality.","Which function is associated with the frontal lobe?"],
+  ["What is the role of the cerebellum?","Coordination and balance","Language comprehension","Hormone production","Long-term storage only","The cerebellum coordinates movement and helps maintain balance.","Which brain area supports balance and coordinated movement?"],
+  ["What did Broca's area become associated with?","Speech production","Visual processing","Fear conditioning","Smell detection","Damage to Broca's area can cause expressive aphasia and difficulty producing speech.","Damage to which area can impair fluent speech?"],
+  ["What did Wernicke's area become associated with?","Language comprehension","Muscle balance","Blood pressure","Visual depth","Damage can produce fluent but meaningless speech and difficulty understanding language.","Which area is linked to understanding spoken language?"],
+  ["What does an fMRI measure indirectly?","Changes in blood oxygenation","Electrical skin resistance","Memory capacity","A person's IQ directly","fMRI detects blood-oxygen changes associated with brain activity.","Which scanning method maps activity through blood-oxygen changes?"],
+  ["What is neuroplasticity?","The brain changing through experience or recovery","The brain never changing","A fixed reflex","A type of therapy only","Neural pathways can strengthen, weaken or reorganise through learning and after damage.","What term describes the brain's capacity to reorganise?"],
+  ["What did Tulving's research distinguish?","Different long-term memory systems","Types of obedience","Visual illusions","Attachment styles","Tulving distinguished episodic, semantic and procedural memory systems.","Which study is linked to long-term memory systems?"],
+  ["What can a stroke cause?","Neurological damage affecting abilities","Improved all-round memory","More accurate perception always","No behavioural change","A stroke can damage particular brain areas and affect movement, language or behaviour.","What may follow damage to a specific brain region?"]
+]);
+addGcsePsych("GCSE-PSY-PROBLEMS","GCSE-PSY-PROBLEMS","GCSE-PSY-PP",[
+  ["What is a symptom of depression?","Persistent low mood","Increased energy only","Perfect concentration","No change in sleep","Depression may involve low mood, loss of interest, sleep changes and negative thinking.","Which is a common symptom of depression?"],
+  ["What is a symptom of OCD?","Intrusive thoughts and compulsions","Only low mood","A visual illusion","Improved self-control","OCD involves unwanted intrusive thoughts and repetitive behaviours or mental acts.","Which pattern is characteristic of OCD?"],
+  ["What is a biological explanation of depression?","Low levels or imbalance of neurotransmitters","Weak social conformity","Poor depth perception","A faulty schema only","Biological accounts include neurotransmitter and genetic explanations, although they are not complete on their own.","Which explanation focuses on neurotransmitters?"],
+  ["What is CBT?","A therapy changing unhelpful thoughts and behaviour","A brain scan","A memory test","A medication only","Cognitive behavioural therapy targets links between thoughts, feelings and behaviour.","Which therapy challenges negative automatic thoughts?"],
+  ["What is systematic desensitisation used for?","Reducing phobic anxiety gradually","Treating memory loss only","Increasing obedience","Measuring IQ","The therapy pairs a hierarchy of feared situations with relaxation and gradual exposure.","Which treatment uses a fear hierarchy and relaxation?"],
+  ["What is a strength of drug therapy?","It can reduce symptoms relatively quickly","It never has side effects","It explains every cause","It needs no adherence","Medication can be useful for symptom reduction, though side effects and relapse are important limitations.","What is a possible advantage of antidepressants?"],
+  ["What is stigma?","Negative social attitudes toward a condition","A diagnostic interview","A brain structure","A statistical average","Stigma can discourage people from seeking help and affect how others respond to them.","What term describes negative attitudes toward mental illness?"],
+  ["Why can diagnosing psychological problems be difficult?","Symptoms and cultural meanings vary","All symptoms are identical","Tests never use criteria","There is no overlap between disorders","Diagnosis involves judgement, cultural context, symptom overlap and reliability concerns.","Why may two clinicians disagree about a diagnosis?"]
+]);
+SUBJECTS["gcse-psych"].banks.push("GCSE-PSY-SOCIAL","GCSE-PSY-LANGUAGE","GCSE-PSY-BRAIN","GCSE-PSY-PROBLEMS");
+SUBJECTS["gcse-psych"].sub = "AQA 8182 — Papers 1 & 2";
+for (const [bankId, plan] of Object.entries({"GCSE-PSY-SOCIAL":"ABCDABCD","GCSE-PSY-LANGUAGE":"CDABCDAB","GCSE-PSY-BRAIN":"ABCDABCD","GCSE-PSY-PROBLEMS":"CDABCDAB"})) {
+  BANKS[bankId].questions.forEach((question, index) => { moveGcseHistoryAnswer(question, plan[index]); moveGcseHistoryAnswer(question, {A:"C",B:"D",C:"A",D:"B"}[plan[index]], true); });
+}
+for (const bankId of ["GCSE-PSY-SOCIAL","GCSE-PSY-LANGUAGE","GCSE-PSY-BRAIN","GCSE-PSY-PROBLEMS"]) {
+  for (const question of BANKS[bankId].questions) for (const item of [question, question.reforge]) {
+    const lengths = Object.fromEntries(Object.entries(item.options).map(([letter, option]) => [letter, option.length]));
+    const max = Math.max(...Object.values(lengths));
+    if (lengths[item.correct] !== max || Object.values(lengths).filter(length => length === max).length !== 1) continue;
+    const alternative = Object.keys(item.options).filter(letter => letter !== item.correct).sort((a, b) => lengths[b] - lengths[a])[0];
+    while (item.options[alternative].length <= item.options[item.correct].length) item.options[alternative] += " (in context)";
+  }
+}
+
 // Final depth pass: 24 additional specification facts per GCSE History bank.
 const addHistoryDepth = (bankId, spec, prefix, rows) => {
   const answers = rows.map(row => row[1]);
