@@ -16278,6 +16278,37 @@ SUBJECTS["phys"].sub = "AQA 7408 — Papers 1–3 and practical skills";
 rebalanceMCQSubject(SUBJECTS["bio"].banks);
 rebalanceMCQSubject(SUBJECTS["phys"].banks);
 appendGenerated("BIO-1", [["The role of ribosomes is to:","assemble polypeptides during translation","replicate whole chromosomes","produce ATP by glycolysis","store lipids", "Ribosomes translate mRNA codons into a polypeptide sequence."]], "BIO-E1B");
+appendGenerated("BIO-1", [
+  ["In an investigation, reliability is improved most directly by:","repeating measurements and comparing the results","changing several variables together","removing all anomalous data without checking","using a smaller sample", "Repeats help reveal random variation and make a mean more dependable."],
+  ["A student measures the effect of light intensity on photosynthesis. Which is a suitable control variable?","temperature of the water bath","light intensity being changed","the measured oxygen volume","the final conclusion", "Temperature can affect enzyme activity, so it should be kept constant."],
+  ["A low percentage uncertainty is generally obtained by:","measuring a larger quantity with the same absolute uncertainty","using fewer decimal places","ignoring the measuring instrument","changing the independent variable during a trial", "Percentage uncertainty is absolute uncertainty divided by the measured value."],
+  ["The cardiac cycle moves blood because:","pressure differences are produced by coordinated contraction and relaxation","all chambers contract permanently","arteries actively pump blood themselves","valves create oxygen", "Muscle contraction changes pressure and valves help maintain one-way flow."]
+], "BIO-GAP1");
+appendGenerated("BIO-2", [
+  ["The main function of haemoglobin in red blood cells is to:","carry oxygen reversibly using haem groups","digest glucose in plasma","produce antibodies in alveoli","form cellulose fibres", "Oxygen binds reversibly to haem groups, allowing loading and unloading."],
+  ["A capillary is well suited to exchange because it has:","a thin wall and a large network close to cells","thick muscle and a single opening","valves along its entire length","no concentration gradients", "Short diffusion distances and extensive branching support exchange."],
+  ["The Bohr effect helps oxygen delivery when respiring tissues have:","higher carbon dioxide concentration and lower pH","no carbon dioxide and higher pH","lower temperature and no blood flow","fewer haemoglobin molecules only", "Carbon dioxide lowers pH, reducing haemoglobin affinity and promoting oxygen unloading."],
+  ["In a mammal, the pulmonary artery carries:","deoxygenated blood from the heart to the lungs","oxygenated blood from the lungs to the heart","blood from the lungs to the aorta","lymph to the right atrium", "It carries deoxygenated blood from the right ventricle to the lungs."],
+  ["A tissue fluid forms when:","hydrostatic pressure forces some plasma out of capillaries","red blood cells leave every artery","lymph enters the alveoli","haemoglobin is filtered by the liver", "Pressure at the arteriole end drives fluid out through capillary walls."],
+  ["Double circulation is advantageous because it:","allows high pressure to reach the body after blood is re-pressurised","mixes oxygenated and deoxygenated blood completely","removes the need for capillaries","stops gas exchange in the lungs", "Separate pulmonary and systemic circuits support efficient delivery to tissues."]
+], "BIO-GAP2");
+appendGenerated("BIO-2", [
+  ["A homeostatic control system usually includes:","a receptor, a coordinator and an effector","only a stimulus and a response","a pathogen and an antibody","two identical enzymes", "Receptors detect change, coordinators process information and effectors act."],
+  ["Negative feedback maintains a variable by:","reversing a change and returning the system towards its set point","amplifying every deviation indefinitely","removing all receptors","preventing any response to change", "The response reduces the original deviation from the normal range."],
+  ["The kidney contributes to homeostasis by regulating:","water balance and the excretion of nitrogenous waste","only oxygen concentration in alveoli","the number of red blood cells in bone marrow","light absorption in chloroplasts", "Ultrafiltration and selective reabsorption help control blood composition."],
+  ["Ultrafiltration occurs in the renal corpuscle because:","high pressure forces small solutes through a filtration barrier","active transport removes all proteins from blood","urea is produced by the nephron","collecting ducts secrete glucose", "Small molecules pass through while cells and most plasma proteins remain in the blood."],
+  ["An action potential is generated when:","voltage-gated sodium channels open after threshold is reached","all sodium leaves the axon permanently","the synapse releases antibodies","myelin becomes a neurotransmitter", "Sodium ion influx depolarises the membrane during the rising phase."],
+  ["Saltatory conduction is rapid because an action potential:","jumps between nodes of Ranvier on a myelinated axon","travels through the blood plasma","uses no ion channels","moves only across the cell body", "Myelin insulates internodes so depolarisation is regenerated at nodes."],
+  ["ADH increases water reabsorption by causing:","aquaporins to be inserted into collecting-duct membranes","the glomerulus to stop filtering","red blood cells to leave the nephron","glucose to be broken down in the ureter", "ADH increases collecting-duct permeability so more water enters the blood."],
+  ["Insulin lowers blood glucose concentration by promoting:","glucose uptake and glycogen formation in target cells","glycogen breakdown in the liver only","glucagon release from beta cells","water loss from collecting ducts", "Insulin encourages cells to take up glucose and store it as glycogen."],
+  ["A synapse ensures one-way transmission because:","neurotransmitter vesicles are presynaptic and receptors are postsynaptic","both membranes release identical hormones","electrical impulses cross without chemicals","the postsynaptic membrane has no proteins", "Vesicle release and receptor location establish direction at a chemical synapse."],
+  ["A cloning technique can be used to produce:","genetically identical cells or organisms from one source","only organisms with entirely new alleles","a population without any DNA","proteins without transcription", "Cloning copies genetic material, although environment can affect phenotype."],
+  ["A restriction enzyme is used in genetic engineering to:","cut DNA at a specific base sequence","join amino acids into proteins","destroy every plasmid in a cell","measure the rate of respiration", "Restriction enzymes create fragments with specific ends for DNA manipulation."],
+  ["A transgenic organism contains:","a gene introduced from another species or source","no genes in its chromosomes","only mitochondrial DNA","an antibody instead of DNA", "The introduced gene can be expressed if suitable regulatory sequences are present."],
+  ["In an ecosystem, decomposers are important because they:","return mineral ions to the environment by breaking down organic matter","remove all energy from sunlight","prevent nutrient cycling","convert nitrogen directly into glucose", "Decomposition releases inorganic nutrients that producers can reuse."],
+  ["Energy transfer between trophic levels is inefficient mainly because:","energy is lost in respiration, movement, heat and uneaten material","energy is created by consumers","all biomass is transferred intact","plants cannot absorb light", "Only a fraction of consumed energy becomes biomass available to the next level."],
+  ["A population reaches carrying capacity when:","available resources limit its size and birth rate balances death rate","every individual reproduces without competition","resources are unlimited","all organisms become genetically identical", "Competition and limiting factors prevent indefinite population growth."]
+], "BIO-GAP3");
 appendGenerated("PHYS-3", [
   ["The de Broglie wavelength of a particle decreases when its momentum:","increases","decreases to zero","becomes negative only","is replaced by its charge", "λ = h/p, so greater momentum gives a shorter wavelength."],
   ["A geostationary satellite must orbit:","above the equator with a 24-hour period","over either pole with a one-hour period","in any direction with zero speed","below the atmosphere", "Its orbital period and direction match Earth's rotation so it remains above one longitude."],
@@ -16958,7 +16989,7 @@ const biologyPointFor = (bankId, stem) => {
   const text = String(stem || "").toLowerCase();
   const routes = [
     [/hardy-weinberg|allele|x-linked|dominant|recessive|inheritance|variation/, "6.2"],
-    [/genome|gene editing|genetic engineering|pcr|restriction enzyme|recombinant dna/, "6.3"],
+    [/genome|gene editing|genetic engineering|pcr|restriction enzyme|recombinant dna|transgenic|introduced gene/, "6.3"],
     [/clone|cloning|biotechnology|monoclonal|stem cell/, "6.4"],
     [/ecosystem|food web|trophic|energy transfer|succession/, "6.5"],
     [/population|sustainab|carrying capacity|conservation/, "6.6"],
@@ -16966,7 +16997,7 @@ const biologyPointFor = (bankId, stem) => {
     [/photosynthesis|calvin cycle|rubisco|light-independent/, "5.6"],
     [/respiration|atp|glycolysis|krebs|oxidative phosphorylation/, "5.7"],
     [/neuron|neuronal|synapse|action potential|myelin/, "5.3"],
-    [/hormone|insulin|adrenaline|endocrine/, "5.4"],
+    [/hormone|insulin|adrenaline|endocrine|\badh\b/, "5.4"],
     [/homeostasis|thermoregulation|negative feedback|communication/, "5.1"],
     [/excretion|kidney|ultrafiltration|osmoregulation|water potential.*kidney/, "5.2"],
     [/tropism|phototropism|response|reflex|plant response/, "5.5"],
