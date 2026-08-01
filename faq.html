@@ -151,7 +151,7 @@ if(localStorage.getItem('forge-theme')==='light'){document.documentElement.setAt
             <span class="faq-chevron" aria-hidden="true">▼</span>
           </button>
           <div class="faq-a">
-            <p>Forge is a web-based GCSE and A Level revision platform that gives students multiple-choice questions mapped to their exam board's specification, identifies the specific misconceptions behind every wrong answer, and surfaces those patterns to both the student and their teacher.</p>
+            <p>Forge is a web-based GCSE and A Level revision platform that gives students multiple-choice questions mapped to their exam board's specification, records the misconception tag attached to a wrong answer, and surfaces those patterns to both the student and their teacher. Where a human-readable descriptor is available, it is shown alongside the tag.</p>
           </div>
         </div>
 
@@ -172,7 +172,7 @@ if(localStorage.getItem('forge-theme')==='light'){document.documentElement.setAt
             <span class="faq-chevron" aria-hidden="true">▼</span>
           </button>
           <div class="faq-a">
-            <p>Most revision apps test whether a student knows the right answer. Forge is specifically designed around <strong>why students get things wrong</strong>. Every wrong-answer option is linked to a documented misconception drawn from examiners' reports — not just a plausible distractor.</p>
+            <p>Most revision apps test whether a student knows the right answer. Forge is specifically designed around <strong>why students get things wrong</strong>. Wrong-answer options are linked to misconception tags based on specification content and examiners' reports; some newer or less common tags may still display their code until a plain-English descriptor is added.</p>
             <p>When a student selects a wrong answer, Forge:</p>
             <ul>
               <li>Identifies the specific misconception triggered</li>
@@ -198,8 +198,8 @@ if(localStorage.getItem('forge-theme')==='light'){document.documentElement.setAt
               <li>Maths (Edexcel 9MA0) · German (Edexcel 9GN0) · French (Edexcel 9FR0) · Computer Science (Eduqas A500QS)</li>
               <li>Religious Studies (Eduqas) · Health &amp; Social Care (OCR H604) · English Literature · English Language &amp; Literature · IB Mandarin</li>
             </ul>
-            <p><strong>GCSE content is live:</strong> Geography (Edexcel B 1GB0) and Economics (OCR J205) have multiple live banks covering Papers 1 and 2. Other GCSE subject pages may show sample or authoring content; each page identifies its current status.</p>
-            <p>Question banks are being extended continuously — each subject page shows exactly which banks are live versus still in authoring.</p>
+            <p><strong>Coverage varies by subject:</strong> many GCSE and A Level subjects now have live banks, while other banks are still being checked or extended. Each subject page is the source of truth for its exam board, paper structure, topics and current bank status.</p>
+            <p>Question banks are being extended continuously — the catalogue should not be treated as a claim that every topic, option or coursework component is already covered.</p>
           </div>
         </div>
 
@@ -221,7 +221,7 @@ if(localStorage.getItem('forge-theme')==='light'){document.documentElement.setAt
               <li><strong>Class overview</strong> — every student's accuracy, weakest topic, and top misconception, sorted by who is struggling most</li>
               <li><strong>Student drill-down</strong> — click any student to see their full misconception profile and re-forge history</li>
               <li><strong>Corrective starter generator</strong> — Forge proposes a warm-up activity based on the class's top three misconceptions, ready to drop into a lesson</li>
-              <li><strong>Assignments</strong> — teachers can set specific banks as homework with a due date; the dashboard shows who has and hasn't started</li>
+              <li><strong>Assignments</strong> — teachers can set specific banks as homework with a due date; the dashboard shows completed, in-progress and not-started students, question progress and accuracy</li>
               <li><strong>School Overview</strong> — a separate read-only view for SLT and Heads of Department showing cross-class trends, engagement rates, and a school-wide misconception league table</li>
             </ul>
           </div>
@@ -367,7 +367,7 @@ if(localStorage.getItem('forge-theme')==='light'){document.documentElement.setAt
               <li><strong>Scaffolds on every wrong answer</strong> — no student sees just "incorrect". Every wrong answer triggers a targeted explanation of what went wrong and why the right answer is right</li>
               <li><strong>Re-forge attempts</strong> — after a wrong answer, students get a second chance on a related question testing the same concept. This means every mistake is an opportunity rather than a dead end</li>
               <li><strong>Spaced repetition</strong> — questions the student has previously struggled with are weighted to appear more often, without the student knowing. The system works hardest on their weakest areas</li>
-              <li><strong>Class-only leaderboard</strong> — students see display names, XP, and rank within their class; no public or cross-school leaderboard is shown</li>
+              <li><strong>Class-only leaderboard</strong> — class-joined students may see display names, XP and rank within their class; no public or cross-school leaderboard is shown</li>
             </ul>
           </div>
         </div>
@@ -450,7 +450,7 @@ if(localStorage.getItem('forge-theme')==='light'){document.documentElement.setAt
           <div class="faq-a">
             <p>It depends on how they access Forge:</p>
             <ul>
-              <li><strong>Class-joined students</strong> — enter a display name and their teacher's class code. Forge shows a first name plus surname initial (e.g. "James B") to classmates; no email address is required</li>
+              <li><strong>Class-joined students</strong> — enter a display name and their teacher's class code. That display name may be visible to classmates on the class-only leaderboard; no email address is required</li>
               <li><strong>Free-tier students</strong> — enter only a display name. No email, no account</li>
               <li><strong>Pro/trial subscribers</strong> — provide an email address and create a password. This is necessary to enable cross-device login and is stored securely via Supabase Auth (bcrypt hashed; neither Forge nor Supabase can recover a plaintext password)</li>
             </ul>
@@ -520,8 +520,7 @@ if(localStorage.getItem('forge-theme')==='light'){document.documentElement.setAt
             <span class="faq-chevron" aria-hidden="true">▼</span>
           </button>
           <div class="faq-a">
-            <p><strong>No.</strong> Students can only see their own profile, progress, and misconception data. There is no leaderboard visible to students, no comparison view, and no way for a student to access another student's data.</p>
-            <p>The class leaderboard (XP and rank) is visible only to the teacher in the dashboard, not to students themselves.</p>
+            <p><strong>Mostly.</strong> Students can only open their own profile, progress and misconception data. Class-joined students can see the class-only leaderboard, which shows display names, XP and rank; it does not expose response details or another student's misconception profile.</p>
           </div>
         </div>
 
@@ -531,9 +530,9 @@ if(localStorage.getItem('forge-theme')==='light'){document.documentElement.setAt
             <span class="faq-chevron" aria-hidden="true">▼</span>
           </button>
           <div class="faq-a">
-            <p>Class-joined students are required to enter their name in the format <strong>First name + surname initial</strong> (e.g. "James B"). The platform enforces this format on the join screen — single-word names or full surnames are not accepted.</p>
-            <p>If a student enters an inappropriate name, teachers can <strong>rename any student</strong> from the class overview in the teacher dashboard. The replacement display name is what appears everywhere on the dashboard. The original join name is preserved in the database for audit purposes.</p>
-            <p>Student names are visible only to their teacher, not to other students.</p>
+            <p>Students enter a display name when joining. The join form asks for at least a first name and surname, but preserves the complete entered name rather than reducing it to a surname initial; excess whitespace is trimmed.</p>
+            <p>If a student enters an inappropriate name, teachers can <strong>rename any student</strong> from the class overview in the teacher dashboard. The replacement display name is what appears in teacher views and the class-only leaderboard.</p>
+            <p>Teachers should ask students to use an appropriate classroom display name and follow their school's naming expectations.</p>
           </div>
         </div>
 
@@ -550,8 +549,8 @@ if(localStorage.getItem('forge-theme')==='light'){document.documentElement.setAt
           </button>
           <div class="faq-a">
             <ul>
-              <li><span class="pill pill-live">Live</span> <strong>GCSE Geography and Economics</strong> — question banks now live (Hazardous Earth; The UK Economy)</li>
-              <li><span class="pill pill-building">Building</span> <strong>More GCSE content</strong> — Psychology, History, Combined Science and Maths have subject pages live, full banks in authoring</li>
+              <li><span class="pill pill-live">Live</span> <strong>Teacher workflow</strong> — classes, assignments, Spec Points, school overview and misconception reporting are available</li>
+              <li><span class="pill pill-building">Building</span> <strong>Subject coverage</strong> — GCSE and A Level banks are being extended and reviewed subject by subject; each subject page shows the current status</li>
               <li><span class="pill pill-building">Building</span> <strong>Extended question banks</strong> — optional topic coverage and additional spec points for existing A Level subjects</li>
               <li><span class="pill pill-building">Building</span> <strong>Dyslexia-friendly font toggle</strong> — OpenDyslexic and increased line spacing as a user preference</li>
               <li><span class="pill pill-building">Building</span> <strong>Vocabulary glossary tooltips</strong> — hover definitions for technical subject terms to support EAL students and lower prior attainment</li>
@@ -570,8 +569,7 @@ if(localStorage.getItem('forge-theme')==='light'){document.documentElement.setAt
             <span class="faq-chevron" aria-hidden="true">▼</span>
           </button>
           <div class="faq-a">
-            <p>Yes — it's already begun. GCSE Geography (Edexcel B, 1GB0) and GCSE Economics (OCR J205) both have live question banks, using the same misconception-tagging approach as the A Level banks, mapped to GCSE mark schemes rather than A Level examiners' reports.</p>
-            <p>Psychology (AQA 8182), History (AQA 8145), Combined Science (Edexcel 1SC0) and Mathematics (Edexcel 1MA1) have subject pages live now, with full question banks in authoring.</p>
+            <p>Yes — GCSE content is already available across several subjects. Coverage and review status vary by paper and bank, so use the relevant subject page rather than assuming that a whole subject or qualification is complete.</p>
           </div>
         </div>
 

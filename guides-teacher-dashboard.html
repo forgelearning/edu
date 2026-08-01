@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Forge — Guide: Teacher dashboard</title>
+  <meta name="description" content="How teachers create classes, set assignments, read Spec Points and use Forge's live classroom data.">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Sora',sans-serif;font-size:16px;line-height:1.7}
+    h1,h2,h3{line-height:1.1}
+    a{color:var(--ember)}
+    .wrap{max-width:1180px;margin:0 auto;padding:0 32px}
+    .guide-hero{padding:56px 0 48px;border-bottom:1px solid var(--line);margin-bottom:56px}
+    .guide-hero .tag{display:block;margin-bottom:10px;color:var(--ember);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase}
+    .guide-hero h1{font-size:clamp(32px,5vw,52px);font-weight:800;margin-bottom:16px}
+    .guide-hero p{font-size:17px;max-width:62ch;color:var(--slate)}
+    .last-updated{font-family:'JetBrains Mono',monospace!important;font-size:11px!important;color:#8A857E!important;margin-top:14px}
+    .layout{display:grid;grid-template-columns:220px minmax(0,1fr);gap:64px;align-items:flex-start}
+    .toc{position:sticky;top:24px;padding-top:4px}
+    .toc-title{font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:#8A857E;margin-bottom:12px}
+    .toc a{display:block;font-size:13px;color:var(--slate);text-decoration:none;padding:5px 0 5px 12px;border-left:2px solid var(--line);margin-bottom:2px;line-height:1.35}
+    .toc a:hover{color:var(--ember);border-left-color:var(--ember)}
+    .section{margin-bottom:56px}
+    .section-title{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ember);margin-bottom:20px;padding-bottom:10px;border-bottom:1px solid var(--line)}
+    .item{border-bottom:1px solid var(--line);padding:20px 0}
+    .item h2{font-size:18px;color:var(--white);margin-bottom:10px}
+    .item p,.item li{font-size:15px;color:var(--slate)}
+    .item ul,.item ol{margin:10px 0 0 20px}
+    .item li{margin-bottom:7px}
+    .item strong{color:var(--white)}
+    .callout{margin-top:16px;padding:14px 18px;border:1px solid rgba(255,201,60,.25);background:rgba(255,201,60,.06);border-radius:10px;color:var(--slate);font-size:14px}
+    .callout strong{color:var(--hot)}
+    .mono{font-family:'JetBrains Mono',monospace}
+    footer{border-top:1px solid var(--line);padding:40px 0;margin-top:56px;font-size:13px;color:#8A857E}
+    footer a{color:#8A857E}
+    .footer-row{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+    @media(max-width:700px){.layout{grid-template-columns:1fr}.toc{display:none}.wrap{padding:0 20px}}
+  </style>
+</head>
+<body>
+  <script src="scripts/analytics-consent.js"></script>
+  <script src="scripts/forge-logo.js"></script>
+  <script>
+    window.toggleTheme=function(){var h=document.documentElement,b=document.querySelector('.theme-toggle');if(h.getAttribute('data-theme')==='light'){h.removeAttribute('data-theme');b.textContent='☀';localStorage.setItem('forge-theme','dark')}else{h.setAttribute('data-theme','light');b.textContent='☾';localStorage.setItem('forge-theme','light')}};
+    if(localStorage.getItem('forge-theme')==='light'){document.documentElement.setAttribute('data-theme','light');}
+  </script>
+  <div id="sticky-nav"><div class="wrap-nav" style="max-width:1080px;margin:0 auto"><nav>
+    <a class="logo" href="index.html" id="teacher-logo" style="line-height:1;display:inline-flex;align-items:center;text-decoration:none"><span style="display:inline-flex;align-items:center"></span></a>
+    <div class="nav-right"><button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle light/dark theme">☀</button><a class="nav-link" href="guides.html">← Guides</a><a class="nav-link" href="teacher.html">Teacher sign in</a></div>
+  </nav></div></div>
+  <script>document.querySelector('#teacher-logo span').innerHTML=ForgeLogo.imgHtml(38);</script>
+
+  <div class="wrap">
+    <header class="guide-hero">
+      <span class="tag">Guide · Teachers</span>
+      <h1>Teacher dashboard</h1>
+      <p>How to create classes, set focused work, read live misconception data and use Spec Points to decide what to teach next.</p>
+      <p class="last-updated">Last updated August 2026</p>
+    </header>
+
+    <div class="layout">
+      <aside class="toc" aria-label="Contents">
+        <div class="toc-title">Contents</div>
+        <a href="#start">Start here</a>
+        <a href="#classes">Classes</a>
+        <a href="#assignments">Assignments</a>
+        <a href="#dashboard">Reading the dashboard</a>
+        <a href="#spec">Spec Points</a>
+        <a href="#school">School Overview</a>
+      </aside>
+
+      <main>
+        <section class="section" id="start">
+          <div class="section-title">Start here</div>
+          <div class="item">
+            <h2>What the dashboard is for</h2>
+            <p>The teacher dashboard turns student responses into a teaching signal. It does not replace marking or professional judgement: use the class patterns to decide which explanation, example or intervention is needed next.</p>
+          </div>
+          <div class="item">
+            <h2>Sign in and choose a class</h2>
+            <p>Open <a href="teacher.html">Teacher sign in</a>. After signing in, choose an existing class or create one. A class has a name, subject, exam board and shareable class code. Students join from the student quiz flow using that code and a display name.</p>
+          </div>
+        </section>
+
+        <section class="section" id="classes">
+          <div class="section-title">Classes</div>
+          <div class="item">
+            <h2>Creating and managing classes</h2>
+            <ol>
+              <li>Choose <strong>Create a class</strong> and select the subject and exam board.</li>
+              <li>Share the generated class code with students; no student email address is required for class-linked use.</li>
+              <li>Open the class to view responses, students, assignments, Spec Points and corrective starters.</li>
+            </ol>
+            <div class="callout"><strong>Display names:</strong> students enter at least a first name and surname, and Forge preserves the complete entered name in teacher views and, for class-linked students, the class-only leaderboard. Teachers can rename a student from the class overview if needed.</div>
+          </div>
+        </section>
+
+        <section class="section" id="assignments">
+          <div class="section-title">Assignments</div>
+          <div class="item">
+            <h2>Set focused practice</h2>
+            <p>Open <strong>Assignments</strong>, enter a clear title, choose one or more banks and set a due date. The selected banks define the questions counted for completion. Students see the assignment in their Assigned area and on the relevant quiz flow.</p>
+          </div>
+          <div class="item">
+            <h2>Interpret progress correctly</h2>
+            <p>The class card shows completed students, started/in-progress students, students who have not started, answered-question progress and accuracy. A student's accuracy is calculated from questions answered; it is not the same as completion.</p>
+            <p>Use <strong>Completed</strong> for every counted question answered, <strong>In progress</strong> for at least one response without completion, and <strong>Not started</strong> when no response has been recorded. Past-due assignments remain in the record but stop appearing as active student work.</p>
+          </div>
+        </section>
+
+        <section class="section" id="dashboard">
+          <div class="section-title">Reading the dashboard</div>
+          <div class="item">
+            <h2>Misconception heatmap</h2>
+            <p>The heatmap ranks misconception tags by how often they appear in incorrect responses. The tag is the stable identifier; where available, a plain-English descriptor explains the pattern. A raw code does not mean the response is unusable, but it may indicate that the descriptor registry still needs expanding.</p>
+          </div>
+          <div class="item">
+            <h2>Class overview and drill-down</h2>
+            <p>The class overview separates accuracy, participation and assignment completion. Select a student to inspect their misconception profile and re-forge history. Treat small samples cautiously: a percentage based on one or two answers is not a secure judgement.</p>
+          </div>
+          <div class="item">
+            <h2>Corrective starters</h2>
+            <p>Forge can generate a short warm-up from the class's highest-frequency misconceptions. Review the wording and adapt it to your lesson, especially where a tag has no human-readable descriptor yet.</p>
+          </div>
+        </section>
+
+        <section class="section" id="spec">
+          <div class="section-title">Spec Points</div>
+          <div class="item">
+            <h2>Use specification-level evidence</h2>
+            <p>The <strong>Spec Points</strong> tab groups logged responses against the mapped exam-board specification points and sorts weaker areas first. Only points with responses after the current tracking update appear, so an absent point does not prove that a class has mastered it.</p>
+          </div>
+        </section>
+
+        <section class="section" id="school">
+          <div class="section-title">School Overview</div>
+          <div class="item">
+            <h2>Cross-class planning</h2>
+            <p><a href="school-overview.html">School Overview</a> is a read-only view for wider planning. It summarises subjects, classes, engagement, accuracy, misconception frequency and Spec Points without exposing individual student names.</p>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <footer><div class="wrap"><div class="footer-row"><span>© 2026 Forge · Built by a practising teacher</span><span><a href="faq.html">FAQ</a> · <a href="privacy.html">Privacy policy</a> · <a href="roadmap.html">Roadmap</a> · <a href="mailto:forge.educator@gmail.com">forge.educator@gmail.com</a></span></div></div></footer>
+</body>
+</html>
