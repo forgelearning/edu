@@ -52,6 +52,14 @@ const PAGES = [
   { file: 'a-level-physics.html', key: 'phys' },
   { file: 'a-level-health-social-care.html', key: 'hsc' },
   { file: 'a-level-religious-studies.html', key: 'rs' },
+  { file: 'a-level-german.html', key: 'german' },
+  { file: 'a-level-maths.html', key: 'maths' },
+  { file: 'a-level-pe.html', key: 'pe' },
+  { file: 'a-level-spanish.html', key: 'span' },
+  { file: 'a-level-french.html', key: 'french' },
+  { file: 'a-level-mandarin.html', key: 'mand' },
+  { file: 'a-level-english-literature.html', key: 'englit' },
+  { file: 'a-level-english-language-literature.html', key: 'engll' },
 ];
 
 let problems = 0;
