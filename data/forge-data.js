@@ -11003,6 +11003,22 @@ addGcseMathsBank("GCSE-MATH-P1", "Paper 1 — Non-Calculator", "1MA1 Paper 1", "
 ]);
 SUBJECTS["gcse-maths"].banks.push("GCSE-MATH-P1");
 
+addGcseMathsBank("GCSE-MATH-P2", "Paper 2 — Calculator", "1MA1 Paper 2", "#1d4ed8", [
+  {id:"MATH-P2-01",stem:"Calculate 3.7 × 10⁴ + 2.6 × 10³.",options:{A:"6.3 × 10³",B:"6.3 × 10⁴",C:"3.96 × 10⁴",D:"6.3 × 10⁷"},correct:"C",scaffold:"Rewrite 2.6 × 10³ as 0.26 × 10⁴, then add: 3.7 + 0.26 = 3.96, so the answer is 3.96 × 10⁴.",tag:"MATH-CALC-STANDARD",reforge:{stem:"What is 5.4 × 10⁶ ÷ 9 × 10²?",options:{A:"6 × 10²",B:"6 × 10³",C:"6 × 10⁴",D:"6 × 10⁸"},correct:"B"}},
+  {id:"MATH-P2-02",stem:"A right-angled triangle has opposite 7 cm and hypotenuse 12 cm. Find the angle θ.",options:{A:"30.1°",B:"35.7°",C:"54.3°",D:"59.9°"},correct:"B",scaffold:"Use sin θ = opposite ÷ hypotenuse = 7/12. Therefore θ = sin⁻¹(7/12) ≈ 35.7°.",tag:"MATH-TRIG",reforge:{stem:"A right triangle has adjacent 9 cm and hypotenuse 15 cm. Find the acute angle.",options:{A:"36.9°",B:"40.0°",C:"53.1°",D:"59.0°"},correct:"C"}},
+  {id:"MATH-P2-03",stem:"A car worth £18,000 depreciates by 12% each year. Find its value after two years.",options:{A:"£13,939.20",B:"£14,080.00",C:"£15,840.00",D:"£16,920.00"},correct:"A",scaffold:"Apply the multiplier 0.88 twice: 18,000 × 0.88² = £13,939.20.",tag:"MATH-COMPOUND",reforge:{stem:"An investment of £2400 grows by 5% per year. Find its value after three years.",options:{A:"£2,778.60",B:"£2,772.00",C:"£2,520.00",D:"£2,760.00"},correct:"A"}},
+  {id:"MATH-P2-04",stem:"Solve x² − 5x − 4 = 0, giving answers to 2 decimal places.",options:{A:"x = 5.70 or −0.70",B:"x = 5.00 or −4.00",C:"x = 0.70 or −5.70",D:"x = 4.56 or −0.88"},correct:"A",scaffold:"Using the quadratic formula gives x = (5 ± √41)/2, so x ≈ 5.70 or −0.70.",tag:"MATH-QUADRATIC",reforge:{stem:"Solve 2x² + 3x − 7 = 0 to 2 decimal places.",options:{A:"x = 2.77 or −1.27",B:"x = 1.27 or −2.77",C:"x = 1.77 or −2.27",D:"x = 0.77 or −3.27"},correct:"B"}},
+  {id:"MATH-P2-05",stem:"The equation of a line is y = 3x − 4. What is its gradient?",options:{A:"−4",B:"3",C:"4",D:"1/3"},correct:"B",scaffold:"In y = mx + c, m is the gradient and c is the y-intercept. Here m = 3.",tag:"MATH-GRAPHS",reforge:{stem:"What is the y-intercept of y = −2x + 7?",options:{A:"−2",B:"2",C:"7",D:"−7"},correct:"C"}},
+  {id:"MATH-P2-06",stem:"A cylinder has radius 4 cm and height 10 cm. Find its volume to 3 significant figures.",options:{A:"126 cm³",B:"251 cm³",C:"503 cm³",D:"1005 cm³"},correct:"C",scaffold:"Volume = πr²h = π × 4² × 10 = 160π ≈ 503 cm³.",tag:"MATH-VOLUME",reforge:{stem:"Find the volume of a sphere with radius 3 cm to 3 significant figures.",options:{A:"28.3 cm³",B:"36.0 cm³",C:"113 cm³",D:"339 cm³"},correct:"C"}},
+  {id:"MATH-P2-07",stem:"A bag contains 5 red and 3 blue counters. Two are taken without replacement. Find P(two red).",options:{A:"5/8",B:"25/64",C:"5/14",D:"20/56"},correct:"C",scaffold:"The probability is 5/8 × 4/7 = 20/56 = 5/14.",tag:"MATH-PROBABILITY2",reforge:{stem:"A box has 4 green and 6 yellow counters. Two are taken without replacement. Find P(two yellow).",options:{A:"3/10",B:"1/3",C:"1/2",D:"2/5"},correct:"B"}},
+  {id:"MATH-P2-08",stem:"The first quartile is 18 and the third quartile is 41. Find the interquartile range.",options:{A:"19",B:"23",C:"29",D:"59"},correct:"B",scaffold:"Interquartile range = upper quartile − lower quartile = 41 − 18 = 23.",tag:"MATH-IQR",reforge:{stem:"What does the interquartile range measure?",options:{A:"The total of all values",B:"The spread of the middle half",C:"The most common value",D:"The difference between mean and mode"},correct:"B"}},
+  {id:"MATH-P2-09",stem:"A frequency table has values 2, 4 and 7 with frequencies 3, 5 and 2. Find the mean.",options:{A:"3.8",B:"4.1",C:"4.0",D:"4.7"},correct:"C",scaffold:"Total frequency is 10 and the total of fx is 6 + 20 + 14 = 40, so the mean is 4.0.",tag:"MATH-FREQUENCY",reforge:{stem:"Values 1, 3 and 8 have frequencies 4, 2 and 4. Find the mean.",options:{A:"3.6",B:"4.0",C:"4.2",D:"4.8"},correct:"C"}},
+  {id:"MATH-P2-10",stem:"A point is enlarged by scale factor 3 about the origin. What happens to its distance from the origin?",options:{A:"It is divided by 3",B:"It is unchanged",C:"It is multiplied by 3",D:"It is increased by 9"},correct:"C",scaffold:"An enlargement with centre at the origin multiplies both coordinates and therefore the distance from the origin by the scale factor 3.",tag:"MATH-TRANSFORM",reforge:{stem:"What does a scale factor −1 do about the origin?",options:{A:"A reflection in the origin",B:"A translation right",C:"An enlargement by 1",D:"A reflection in the x-axis only"},correct:"A"}},
+  {id:"MATH-P2-11",stem:"A length is 8.0 cm correct to the nearest centimetre. What is its upper bound?",options:{A:"7.5 cm",B:"8.0 cm",C:"8.5 cm",D:"9.0 cm"},correct:"C",scaffold:"Rounding to the nearest centimetre means the true length lies from 7.5 cm inclusive to less than 8.5 cm, so the upper bound is 8.5 cm.",tag:"MATH-BOUNDS",reforge:{stem:"A mass is 3.2 kg correct to the nearest 0.1 kg. What is the lower bound?",options:{A:"3.15 kg",B:"3.20 kg",C:"3.25 kg",D:"3.10 kg"},correct:"A"}},
+  {id:"MATH-P2-12",stem:"A regular polygon has exterior angle 24°. How many sides does it have?",options:{A:"12",B:"15",C:"18",D:"24"},correct:"B",scaffold:"Exterior angles total 360°, so the number of sides is 360 ÷ 24 = 15.",tag:"MATH-POLYGON",reforge:{stem:"Each interior angle of a regular polygon is 150°. How many sides does it have?",options:{A:"8",B:"10",C:"12",D:"15"},correct:"B"}}
+]);
+SUBJECTS["gcse-maths"].banks.push("GCSE-MATH-P2");
+
 // ===== A LEVEL PSYCHOLOGY (AQA 7182) PAPER 2: RESEARCH METHODS =====
 BANKS["PSY-RM"] = {
   label: "Research Methods",
@@ -12060,5 +12076,217 @@ BANKS["PSY-MEM"].questions.push(
       correct:"D",tag:"MC-MEM-04",
       scaffold:"Typical interference studies use meaningless word lists learned minutes apart — conditions engineered to maximise interference and rarely matched in real life, where similar material is usually learned days or weeks apart with far more context. So while interference is real, it may explain less everyday forgetting than the laboratory suggests. Two things strengthen the account though: Baddeley and Hitch's rugby player study, where forgetting depended on the number of games played rather than time elapsed, is a genuine real-world demonstration; and Tulving showed that giving cued recall restores much of the apparently 'lost' material, suggesting interference often causes temporary retrieval failure rather than permanent loss.",
       reforge:{stem:"What did Baddeley and Hitch's rugby player study find?",options:{A:"Forgetting depended on the number of games played, not time",B:"Forgetting depended only on the time that had elapsed",C:"Players never forgot any of the teams they had faced",D:"Interference only occurs with artificial word lists"},correct:"A"}
+    }
+);
+
+// ===== A LEVEL PSYCHOLOGY PAPER 1: ATTACHMENT — EXTENSION SET =====
+BANKS["PSY-ATT"].questions.push(
+    {
+      id:"ATT-09",
+      stem:"What is reciprocity in caregiver-infant interaction?",
+      options:{
+        A:"The infant mirroring the facial expressions displayed by the caregiver",
+        B:"A turn-taking exchange where each party responds to the other's signals",
+        C:"The infant showing distress whenever the primary caregiver departs",
+        D:"The caregiver providing food in order to reduce the infant's hunger drive"
+      },
+      correct:"B",tag:"MC-ATT-01",
+      scaffold:"Reciprocity is a two-way flow: the caregiver and infant take turns, each responding to the other's signals like a conversation, and from around three months these exchanges become increasingly frequent and coordinated. Interactional synchrony is different — it is simultaneous rather than alternating, with caregiver and infant mirroring each other's actions and emotions at the same moment. Meltzoff and Moore found infants as young as two weeks imitated adult facial gestures, and Isabella found that higher synchrony predicted better attachment quality. The standard criticism of both is that we are inferring intention from observed movement: an infant's expression may not mean what we assume, so the research is hard to interpret.",
+      reforge:{stem:"What is the main difficulty in researching caregiver-infant interaction?",options:{A:"Infants cannot be observed under any circumstances",B:"We must infer intention from observable movements alone",C:"Synchrony has never been shown to relate to attachment",D:"Observations of infants cannot be filmed or recorded"},correct:"B"}
+    },
+    {
+      id:"ATT-10",
+      stem:"In Schaffer and Emerson's stages of attachment, what characterises the asocial stage?",
+      options:{
+        A:"The infant shows clear separation anxiety toward one specific primary attachment figure",
+        B:"The infant forms multiple attachments to a number of familiar adults all at once",
+        C:"The infant behaves similarly toward objects and people, with some preference for people",
+        D:"The infant accepts comfort from any adult and shows no preference at all"
+      },
+      correct:"C",tag:"MC-ATT-02",
+      scaffold:"Schaffer and Emerson's four stages: asocial (0-6 weeks), where behaviour toward objects and people is similar though the infant already shows a slight preference for familiar people; indiscriminate (2-7 months), where the infant clearly prefers people and accepts comfort from anyone, showing no stranger anxiety; specific (from around 7 months), where separation anxiety appears for one particular person, the primary attachment figure — in 65% of cases the mother; and multiple attachments, forming shortly after, with 29% having a secondary attachment within a month. Note the criticism: the asocial stage relies on observing very young infants whose limited coordination makes their behaviour hard to read.",
+      reforge:{stem:"At roughly what age does specific attachment typically form?",options:{A:"From birth onwards",B:"At around two months",C:"At around seven months",D:"At around two years"},correct:"C"}
+    },
+    {
+      id:"ATT-11",
+      stem:"What did Lorenz's research with geese demonstrate?",
+      options:{
+        A:"That attachment forms through the association of the caregiver with food",
+        B:"Imprinting on the first moving object seen within a critical period",
+        C:"That contact comfort matters more than nourishment for attachment",
+        D:"That infants form attachments to multiple caregivers simultaneously"
+      },
+      correct:"B",tag:"MC-ATT-03",
+      scaffold:"Lorenz divided goose eggs, leaving half with the mother and incubating half so he was the first moving thing they saw. The incubator group followed him everywhere and the effect was irreversible — evidence for imprinting within a critical period, which for these birds was a matter of hours. He also observed sexual imprinting, with a peacock raised among tortoises later directing courtship at them. The evaluative point is generalisability: birds and mammals attach differently, mammalian attachment is more flexible and can form beyond an early window, and Guiton showed imprinting could actually be reversed with experience, which challenges Lorenz's claim that it is permanent.",
+      reforge:{stem:"Why is generalising Lorenz's findings to humans problematic?",options:{A:"Geese were never actually observed in the study",B:"Mammalian attachment differs and is more flexible",C:"Imprinting has been shown not to exist in birds",D:"Human infants imprint within the first hour of life"},correct:"B"}
+    },
+    {
+      id:"ATT-12",
+      stem:"What did Harlow's research with rhesus monkeys show about the basis of attachment?",
+      options:{
+        A:"Infants attached to the wire mother that provided the milk supply",
+        B:"Infants formed no attachment to either of the surrogate mothers offered",
+        C:"Infants divided their time equally between both of the surrogate mothers",
+        D:"Infants preferred the cloth mother, showing contact comfort matters most"
+      },
+      correct:"D",tag:"MC-ATT-03",
+      scaffold:"Harlow gave infant monkeys a wire mother dispensing milk and a cloth-covered mother with no food. They spent most of their time clinging to the cloth mother, returning to her when frightened and using her as a safe base, going to the wire mother only to feed. This directly refutes the learning theory 'cupboard love' explanation that attachment forms through association with food. The long-term findings matter too: maternally deprived monkeys were socially abnormal as adults, aggressive and poor parents, and Harlow identified a critical period of about 90 days. The obvious evaluation point is ethical — the monkeys suffered lasting harm, though the findings shaped human childcare practice.",
+      reforge:{stem:"Which explanation of attachment does Harlow's research most directly challenge?",options:{A:"Bowlby's monotropic theory of attachment",B:"The learning theory account based on food",C:"Ainsworth's classification of attachment types",D:"The concept of the internal working model"},correct:"B"}
+    },
+    {
+      id:"ATT-13",
+      stem:"According to learning theory, how is attachment explained by classical conditioning?",
+      options:{
+        A:"The caregiver becomes associated with food and so becomes a conditioned stimulus",
+        B:"The infant is positively reinforced with adult attention each time that they cry out",
+        C:"The infant imitates attachment behaviours modelled by an older sibling",
+        D:"Attachment is an innate drive selected because it aided infant survival"
+      },
+      correct:"A",tag:"MC-ATT-04",
+      scaffold:"Learning theory explains attachment as 'cupboard love'. Classically: food is an unconditioned stimulus producing pleasure, the caregiver starts as a neutral stimulus, and through repeated pairing the caregiver becomes a conditioned stimulus producing pleasure alone — that conditioned response is claimed to be attachment. Operantly: the infant's crying is reinforced by the caregiver's attention, while the caregiver is negatively reinforced because attending stops the crying, so a two-way reinforcement loop maintains the bond. Both are undermined by Harlow's monkeys choosing comfort over food and by Schaffer and Emerson finding infants often attached most strongly to the person who was most responsive, not the one who fed them.",
+      reforge:{stem:"How is the caregiver negatively reinforced according to learning theory?",options:{A:"By receiving food from the infant in return",B:"Attending to the infant stops the unpleasant crying",C:"By being praised by other adults for good parenting",D:"By the infant imitating their facial expressions"},correct:"B"}
+    },
+    {
+      id:"ATT-14",
+      stem:"What does Bowlby's concept of monotropy claim?",
+      options:{
+        A:"Infants form attachments to many caregivers of roughly equal importance",
+        B:"Attachment is learned through repeated association with feeding",
+        C:"One particular attachment is qualitatively different and more important",
+        D:"Attachment can form at any point throughout childhood and adolescence"
+      },
+      correct:"C",tag:"MC-ATT-05",
+      scaffold:"Monotropy is the claim that one attachment — usually but not necessarily the mother — is unique and carries more weight for development than any other. Bowlby added two principles: the law of continuity, where more constant care produces better attachment, and the law of accumulated separation, where every separation adds up. Around this sit social releasers, innate infant behaviours such as smiling and crying that trigger caregiving; a critical period of roughly two and a half years, extended to five as a sensitive period; and the internal working model, the template for later relationships. The main criticism is that monotropy may be overstated, since Schaffer and Emerson found many infants form multiple attachments simultaneously.",
+      reforge:{stem:"What is the law of accumulated separation?",options:{A:"Separations have no lasting effect on attachment",B:"Only a single long separation causes harm",C:"Every separation adds to a growing risk of damage",D:"Separation strengthens the attachment bond over time"},correct:"C"}
+    },
+    {
+      id:"ATT-15",
+      stem:"In the Strange Situation, how does an insecure-resistant infant typically behave?",
+      options:{
+        A:"Showing little distress at separation and avoiding the caregiver on reunion",
+        B:"Exploring freely, showing moderate distress and being comforted on reunion",
+        C:"Showing no consistent pattern, sometimes freezing or displaying odd behaviour",
+        D:"Showing intense distress at separation and resisting comfort on reunion"
+      },
+      correct:"D",tag:"MC-ATT-06",
+      scaffold:"Three classifications, each with a distinct profile. Secure (Type B, around 60-75% in Britain): explores using the caregiver as a safe base, moderate separation and stranger anxiety, easily comforted at reunion. Insecure-avoidant (Type A, 20-25%): explores freely without using the caregiver as a base, little separation or stranger anxiety, avoids contact at reunion. Insecure-resistant (Type C, around 3%): explores little, intense separation and stranger anxiety, and the defining feature — seeks contact at reunion but simultaneously resists it, arching away or pushing off. Main Solomon later added a disorganised type, described in option C.",
+      reforge:{stem:"Which behaviour defines the insecure-avoidant infant at reunion?",options:{A:"Seeking then resisting contact with the caregiver",B:"Avoiding contact and showing little interest",C:"Being quickly soothed by the caregiver",D:"Freezing and displaying contradictory behaviour"},correct:"B"}
+    },
+    {
+      id:"ATT-16",
+      stem:"What did Van IJzendoorn and Kroonenberg's meta-analysis of cross-cultural attachment find?",
+      options:{
+        A:"Insecure-avoidant attachment was the most common type in every culture studied",
+        B:"Secure attachment was most common everywhere, but insecure patterns varied",
+        C:"Attachment classifications differed so widely that no pattern could be identified",
+        D:"Variation between countries was much greater than variation within countries"
+      },
+      correct:"B",tag:"MC-ATT-06",
+      scaffold:"The meta-analysis covered 32 studies across eight countries. Secure attachment was the majority type everywhere, ranging from 50% in China to 75% in Britain — support for Bowlby's claim that attachment is innate and universal. But the insecure patterns varied by culture: insecure-avoidant was more common in Germany, where independence is encouraged early, and insecure-resistant more common in Japan and Israel, where infants are rarely separated from their mothers. The most-quoted finding is that variation within countries was around one and a half times greater than variation between them, which undercuts simple claims about national culture. Add the imposed etic criticism — the procedure was built on American norms.",
+      reforge:{stem:"Why was insecure-resistant attachment more common in Japan?",options:{A:"Japanese caregivers are typically unresponsive",B:"Japanese infants are rarely separated, so separation is unusually stressful",C:"Japanese infants form no attachments at all",D:"The Strange Situation was not used in Japan"},correct:"B"}
+    },
+    {
+      id:"ATT-17",
+      stem:"What did Bowlby's 44 thieves study claim to show?",
+      options:{
+        A:"That children raised in institutions always develop normally in later life",
+        B:"That maternal deprivation was linked to affectionless psychopathy",
+        C:"That attachment type is unrelated to any later behaviour or outcome",
+        D:"That thieves formed unusually strong attachments to their mothers"
+      },
+      correct:"B",tag:"MC-ATT-07",
+      scaffold:"Bowlby interviewed 44 juvenile thieves and found 14 showed affectionless psychopathy — a lack of guilt or empathy — and of those, 12 had experienced prolonged separation from their mothers in early childhood, against just 5 of the remaining 30 thieves. He concluded that maternal deprivation during the critical period causes lasting emotional damage. The criticisms are serious and examinable: Bowlby conducted the interviews and diagnoses himself while already committed to the hypothesis, so investigator bias is likely; the data are correlational, so deprivation cannot be shown to cause the outcome; and Rutter later argued Bowlby confused deprivation, the loss of an existing attachment, with privation, never having formed one at all.",
+      reforge:{stem:"What distinction did Rutter argue Bowlby had failed to make?",options:{A:"Between secure and insecure attachment types",B:"Between deprivation and privation",C:"Between reciprocity and interactional synchrony",D:"Between classical and operant conditioning"},correct:"B"}
+    },
+    {
+      id:"ATT-18",
+      stem:"What was the key finding of Rutter's Romanian orphan study regarding age of adoption?",
+      options:{
+        A:"Age at adoption made no measurable difference to any later outcome",
+        B:"Children who were adopted after six months showed the fastest recovery of them all",
+        C:"Children adopted before six months showed IQ and attachment close to normal",
+        D:"All institutionalised children recovered fully regardless of adoption age"
+      },
+      correct:"C",tag:"MC-ATT-08",
+      scaffold:"Rutter followed 165 Romanian orphans adopted into British families. At age 11, mean IQ was 102 for those adopted before six months, 86 for six to twenty-four months, and 77 for those adopted after two years — and disinhibited attachment, with indiscriminate friendliness toward strangers, was much more common in the later-adopted group. The conclusion is that the effects of institutionalisation can largely be reversed if intervention comes early enough, supporting a sensitive rather than a strict critical period. Zeanah's Bucharest study found only 19% of institutionalised children were securely attached against 74% of controls. Note the confound: Romanian orphanages had exceptionally poor conditions, so effects may be overstated.",
+      reforge:{stem:"What is disinhibited attachment?",options:{A:"Refusing all contact with unfamiliar adults",B:"Equally friendly and attention-seeking toward strangers",C:"Forming only one very intense attachment",D:"Showing no distress when a caregiver leaves"},correct:"B"}
+    },
+    {
+      id:"ATT-19",
+      stem:"How does the internal working model explain the continuity of relationships?",
+      options:{
+        A:"It provides a template for expectations in later relationships",
+        B:"It stores conscious memories of every early caregiving interaction",
+        C:"It determines the infant's temperament from the moment of birth",
+        D:"It allows the child to imitate the behaviour of older siblings directly"
+      },
+      correct:"A",tag:"MC-ATT-05",
+      scaffold:"Bowlby argued the first attachment forms a mental template of what relationships are like — whether others can be trusted and whether you are worth caring for — which then shapes expectations of friendships, romantic partners and one's own parenting. Hazan and Shaver's 'love quiz' found securely attached adults reported trusting, lasting relationships while insecure-resistant adults reported jealousy and fear of abandonment. Bailey found mothers' own attachment classifications tended to match their infants', supporting intergenerational transmission. Two cautions worth stating: this evidence is correlational and retrospective, relying on adults' recall of childhood, and continuity is a tendency rather than a certainty.",
+      reforge:{stem:"What did Hazan and Shaver's 'love quiz' find?",options:{A:"Attachment type in infancy has no relation to adult relationships",B:"Early attachment type correlated with adult relationship style",C:"All adults reported securely attached relationships",D:"Adult relationships determine infant attachment type"},correct:"B"}
+    },
+    {
+      id:"ATT-20",
+      stem:"Which criticism applies to the Strange Situation as a measure of attachment?",
+      options:{
+        A:"It may measure the specific relationship rather than the child's overall attachment",
+        B:"It has consistently been shown to have extremely poor inter-observer reliability overall",
+        C:"It cannot be used with infants who are older than three months of age",
+        D:"The procedure lacks standardisation, so it cannot be replicated by others"
+      },
+      correct:"A",tag:"MC-ATT-06",
+      scaffold:"Main and Weston found infants behaved differently in the Strange Situation depending on which parent they were with, suggesting the procedure captures one particular relationship rather than a stable characteristic of the child. That is a genuine validity problem for treating attachment type as a property of the infant. Add the temperament explanation: Kagan argued that innate temperament, not caregiver sensitivity, drives the classification. Balance these against real strengths — the procedure is highly standardised and replicable, inter-observer reliability is excellent at around 0.94 in Bick's study, and attachment type predicts later outcomes, giving it predictive validity.",
+      reforge:{stem:"What is the temperament hypothesis as a challenge to the Strange Situation?",options:{A:"Attachment type reflects innate temperament rather than caregiving",B:"Temperament is entirely determined by the caregiver's sensitivity",C:"Infant temperament changes during the procedure itself",D:"Temperament cannot be measured in young infants"},correct:"A"}
+    },
+    {
+      id:"ATT-21",
+      stem:"What is the difference between deprivation and privation?",
+      options:{
+        A:"Deprivation occurs in institutions, whereas privation occurs only within families",
+        B:"Deprivation affects intellectual development and privation affects emotional development",
+        C:"Deprivation applies to infants under six months and privation to older children",
+        D:"Deprivation is losing an existing attachment; privation is never forming one"
+      },
+      correct:"D",tag:"MC-ATT-07",
+      scaffold:"Rutter's distinction matters because it changes the prediction. Deprivation means a bond was formed and then broken, as with a hospitalised child; privation means no attachment ever developed, as in a severely neglectful institution. Rutter argued Bowlby's 44 thieves had mostly experienced privation, not deprivation, and that the far worse outcomes Bowlby attributed to deprivation actually reflect privation. This matters practically: the effects of deprivation are usually recoverable with good subsequent care, while privation is harder to reverse — though the Romanian orphan data show even privation effects can be substantially reduced by early adoption.",
+      reforge:{stem:"Which effect of institutionalisation did Rutter find in later-adopted children?",options:{A:"Higher IQ scores than the control group",B:"Disinhibited attachment and lower IQ",C:"Complete recovery by the age of four",D:"Exclusively secure attachment patterns"},correct:"B"}
+    },
+    {
+      id:"ATT-22",
+      stem:"What did Schaffer and Emerson find about the identity of the primary attachment figure?",
+      options:{
+        A:"It was always found to be the mother in every single one of the families studied",
+        B:"It was the person who fed the infant most often in almost all cases",
+        C:"In 65% of cases it was the mother, but responsiveness mattered more than feeding",
+        D:"Infants formed no primary attachment until well after their first birthday"
+      },
+      correct:"C",tag:"MC-ATT-02",
+      scaffold:"Schaffer and Emerson studied 60 Glasgow infants over 18 months. The primary attachment was the mother in about 65% of cases and the father in only 3%, with the father a joint first object in a further 27%. Crucially, it was not always the person who fed or spent most time with the infant — the strongest attachments formed with the adult who responded most sensitively to signals, which is direct evidence against learning theory. Evaluation points: good ecological validity from home observation, but a narrow working-class Glasgow sample from the 1960s, and mothers reporting their own infants' behaviour introduces social desirability bias.",
+      reforge:{stem:"What made Schaffer and Emerson's findings problematic for learning theory?",options:{A:"Infants attached most to the most responsive adult, not the feeder",B:"All infants attached only to the person who fed them",C:"No infants formed any attachments during the study",D:"Attachment formed only after eighteen months"},correct:"A"}
+    },
+    {
+      id:"ATT-23",
+      stem:"What has research found about the role of the father in attachment?",
+      options:{
+        A:"Fathers who become primary caregivers can show maternal-style sensitivity",
+        B:"Fathers are biologically incapable of ever forming any kind of primary attachment",
+        C:"Fathers show no measurable involvement in their infants' development",
+        D:"Fathers always form the primary attachment when they are present"
+      },
+      correct:"A",tag:"MC-ATT-02",
+      scaffold:"The evidence points to role rather than gender. Field filmed primary-caregiver fathers and found they spent as much time smiling, imitating and holding infants as primary-caregiver mothers did, and more than secondary-caregiver fathers — so the caregiving behaviour follows the role. Grossmann's longitudinal work found fathers' play was linked to the quality of adolescent attachment, suggesting a distinct role in stimulation rather than nurture. Against this, Bowlby's monotropy implies the mother is special, and MacCallum and Golombok found children in same-sex and single-mother families develop no differently, which suggests a father is not required. Note the socially sensitive implications for parental leave policy.",
+      reforge:{stem:"What did Grossmann's longitudinal research suggest about fathers?",options:{A:"Fathers' play quality related to later adolescent attachment",B:"Fathers had no effect on any developmental outcome",C:"Fathers always replaced mothers as primary attachment",D:"Fathers only mattered during the first six weeks"},correct:"A"}
+    },
+    {
+      id:"ATT-24",
+      stem:"Why is the concept of a critical period for attachment now usually described as a sensitive period?",
+      options:{
+        A:"Because attachment has been shown to form only within the first six months of life",
+        B:"Because the concept of a developmental window has been entirely abandoned",
+        C:"Because critical periods apply only to birds and never to any mammal species",
+        D:"Because attachment can still form later, though it becomes harder to establish"
+      },
+      correct:"D",tag:"MC-ATT-08",
+      scaffold:"Bowlby proposed a critical period of about two and a half years, implying attachment simply could not form afterwards. The Romanian orphan evidence contradicts a hard cut-off: children adopted well beyond that window still formed attachments and recovered substantially, just less completely and less easily than earlier-adopted children. The modern term is therefore a sensitive period — a window in which attachment forms most readily but outside which it remains possible. This distinction has genuine practical weight, since a strict critical period implies late-adopted children are beyond help, whereas a sensitive period justifies continued intervention and shaped adoption policy toward placing infants early.",
+      reforge:{stem:"What practical implication follows from a sensitive rather than critical period?",options:{A:"Late intervention is pointless and should be abandoned",B:"Later intervention remains worthwhile even after the window",C:"Adoption should be delayed until after age two",D:"Institutional care produces no lasting effects"},correct:"B"}
     }
 );
