@@ -687,3 +687,33 @@ Object.assign(SPEC_REGISTRY.aliases, {
   "MATH-2": "edexcel-a-maths-2.6",
   "MATH-3": "edexcel-a-maths-3.1"
 });
+
+// Pearson Edexcel A-level French (9FR0), using the four published themes
+// and the three assessment papers as the canonical content/skill points.
+const frenchSpecPoints = [
+  ["1.1", "Papers 1–3", "Les changements dans les structures familiales"],
+  ["1.2", "Papers 1–3", "L'éducation"],
+  ["1.3", "Papers 1–3", "Le monde du travail"],
+  ["2.1", "Papers 1–3", "La musique"],
+  ["2.2", "Papers 1–3", "Les médias"],
+  ["2.3", "Papers 1–3", "Les festivals et les traditions"],
+  ["3.1", "Papers 1–3", "L'impact positif de l'immigration sur la société française"],
+  ["3.2", "Papers 1–3", "Répondre aux défis de l'immigration et de l'intégration en France"],
+  ["3.3", "Papers 1–3", "L'extrême droite"],
+  ["4.1", "Papers 1–3", "La France occupée"],
+  ["4.2", "Papers 1–3", "Le régime de Vichy"],
+  ["4.3", "Papers 1–3", "La Résistance"],
+  ["P1", "Paper 1", "Listening, reading and translation"],
+  ["P2", "Paper 2", "Written response to works and translation"],
+  ["P3", "Paper 3", "Speaking and independent research"]
+];
+for (const [code, paper, title] of frenchSpecPoints) {
+  SPEC_REGISTRY.points[`edexcel-a-french-${code}`] = {
+    subject: "french", board: "Edexcel", qualification: "A-level French (9FR0)",
+    paper, code, title, aliases: []
+  };
+}
+Object.assign(SPEC_REGISTRY.aliases, {
+  "FR-1": "edexcel-a-french-P1",
+  "FR-2": "edexcel-a-french-P2"
+});

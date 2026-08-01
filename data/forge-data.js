@@ -17140,6 +17140,42 @@ for (const bankId of Object.keys(mathematicsFallbackPoints)) {
   }
 }
 
+// Map the live Edexcel 9FR0 French banks to the four themes and assessment
+// skills. These banks currently focus on grammar and translation, so their
+// assessment-paper fallback remains explicit while topical wording is routed
+// to a published theme whenever it is present.
+const frenchFallbackPoints = {
+  "FR-1": "edexcel-a-french-P1",
+  "FR-2": "edexcel-a-french-P2"
+};
+const frenchPointFor = (bankId, stem) => {
+  const text = String(stem || "").toLowerCase();
+  const routes = [
+    [/famille|mariage|couple|structures familiales|parents|divorce/, "1.1"],
+    [/éducation|education|école|ecole|étudiant|études|université|universite/, "1.2"],
+    [/travail|emploi|chômage|chomage|grève|greve|salair|égalité des sexes|egalite des sexes/, "1.3"],
+    [/musique|chanson|rap|artiste|concert/, "2.1"],
+    [/média|media|presse|journal|réseaux sociaux|reseaux sociaux|liberté d’expression|liberte d'expression/, "2.2"],
+    [/festival|tradition|fête|fete|coutume/, "2.3"],
+    [/immigration|immigré|immigre|contribution.*économie|contribution.*economie|culturel.*immigration/, "3.1"],
+    [/intégration|integration|marginalisation|aliénation|alienation|communauté|communaute/, "3.2"],
+    [/extrême droite|extreme droite|front national|rassemblement national|opinion publique/, "3.3"],
+    [/occupation|occupée|occupee|collaboration|antisémitisme|antisemitisme/, "4.1"],
+    [/vichy|pétain|petain|révolution nationale|revolution nationale/, "4.2"],
+    [/résistance|resistance|jean moulin|de gaulle|françaises.*résistance|francaises.*resistance/, "4.3"],
+    [/translate|translation|literary|film|novel|play|character|essay|analysis/, "P2"],
+    [/speak|speaking|oral|research|presentation|discussion/, "P3"],
+    [/listen|listening|reading|comprehension|understanding/, "P1"]
+  ];
+  for (const [pattern, code] of routes) if (pattern.test(text)) return `edexcel-a-french-${code}`;
+  return frenchFallbackPoints[bankId];
+};
+for (const bankId of Object.keys(frenchFallbackPoints)) {
+  for (const question of BANKS[bankId]?.questions || []) {
+    question.specPointId = frenchPointFor(bankId, question.stem);
+  }
+}
+
 // Remove the last legacy Sociology template from imported Paper 1 questions.
 // This is deliberately applied at runtime so future bank extensions cannot
 // reintroduce the same repeated "Which statement best describes..." cue.

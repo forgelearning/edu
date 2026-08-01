@@ -114,7 +114,10 @@ for (const subjectKey of subjects) {
       const isMathematicsSection = subjectKey === 'maths' &&
         resolution.id.startsWith('edexcel-a-maths-') &&
         bankResolution?.id.startsWith('edexcel-a-maths-');
-      if (resolution.id !== bankResolution?.id && !isGeographyKeyIdea && !isHistorySection && !isBusinessSection && !isChemistrySection && !isBiologySection && !isPhysicsSection && !isComputerScienceSection && !isMathematicsSection) {
+      const isFrenchSection = subjectKey === 'french' &&
+        resolution.id.startsWith('edexcel-a-french-') &&
+        bankResolution?.id.startsWith('edexcel-a-french-');
+      if (resolution.id !== bankResolution?.id && !isGeographyKeyIdea && !isHistorySection && !isBusinessSection && !isChemistrySection && !isBiologySection && !isPhysicsSection && !isComputerScienceSection && !isMathematicsSection && !isFrenchSection) {
         fail(location, `question resolves to ${resolution.id}, but bank resolves to ${bankResolution?.id || 'none'}`);
       }
       counts.set(resolution.id, (counts.get(resolution.id) || 0) + 1);
