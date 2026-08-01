@@ -11124,7 +11124,7 @@ const compactSeparateScienceOption = (text, target) => {
   if (clauses[0]) return clauses[0];
   const words = concise.replace(/\b(the|a|an|is|are|was|were|of|to|for|in|on|by|with)\b/gi, " ").replace(/\s+/g, " ").trim().split(" ");
   while (words.length > 1 && words.join(" ").length > target) words.pop();
-  return words.join(" ").slice(0, target).trim();
+  return words.join(" ").trim();
 };
 for (const bankId of ["GCSE-SEP-CHEM-1","GCSE-SEP-CHEM-2","GCSE-SEP-PHYS-1","GCSE-SEP-PHYS-2","GCSE-SEP-BIO-1","GCSE-SEP-BIO-2"]) {
   for (const question of BANKS[bankId].questions) {
@@ -11134,6 +11134,56 @@ for (const bankId of ["GCSE-SEP-CHEM-1","GCSE-SEP-CHEM-2","GCSE-SEP-PHYS-1","GCS
       if (lengths[item.correct] !== max || Object.values(lengths).filter(length => length === max).length !== 1) continue;
       const distractorMax = Math.max(...Object.entries(lengths).filter(([letter]) => letter !== item.correct).map(([, length]) => length));
       item.options[item.correct] = compactSeparateScienceOption(item.options[item.correct], distractorMax);
+    }
+  }
+}
+
+// Repair options that were previously cut mid-sentence by the
+// character-slice fallback. Keep the full scientific meaning, then lengthen
+// a distractor if necessary so the correct answer is not the visual giveaway.
+const separateScienceOptionRepairs = {
+  "SEP-CHEM1-01:reforge": "It loses one outer electron",
+  "SEP-CHEM1-04:base": "They gain energy and move past one another",
+  "SEP-CHEM1-06:reforge": "Energy has transferred to the surroundings",
+  "SEP-CHEM1-07:reforge": "Hydrogen-ion concentration increases tenfold",
+  "SEP-CHEM1-08:reforge": "Carbon dioxide",
+  "SEP-CHEM1-09:base": "To measure the volume needed for neutralisation",
+  "SEP-CHEM1-09:reforge": "It measures a delivered volume accurately",
+  "SEP-CHEM1-11:base": "Actual yield ÷ theoretical yield × 100",
+  "SEP-CHEM1-11:reforge": "Some reactants may be lost or form side products",
+  "SEP-CHEM1-12:reforge": "A white precipitate",
+  "SEP-CHEM1-15:base": "They have a very large surface-area-to-volume ratio",
+  "SEP-CHEM1-15:reforge": "Their effects on health and the environment may be uncertain",
+  "SEP-CHEM1-16:base": "Using smaller pieces of the solid",
+  "SEP-CHEM2-01:base": "Particles collide more often and with more energy",
+  "SEP-CHEM2-02:base": "Forward and reverse rates are equal",
+  "SEP-CHEM2-02:reforge": "It shifts to oppose the addition",
+  "SEP-CHEM2-06:base": "Condensation polymerisation",
+  "SEP-CHEM2-06:reforge": "They may persist and create waste",
+  "SEP-CHEM2-08:base": "Carbon dioxide",
+  "SEP-CHEM2-08:reforge": "It reduces blood's oxygen-carrying capacity",
+  "SEP-CHEM2-09:base": "Limewater turns cloudy",
+  "SEP-CHEM2-09:reforge": "A lit splint gives a squeaky pop",
+  "SEP-CHEM2-10:base": "Its hydrocarbons have different boiling points",
+  "SEP-CHEM2-10:reforge": "It generally decreases from bottom to top",
+  "SEP-CHEM2-11:base": "To make shorter, more useful hydrocarbons",
+  "SEP-CHEM2-12:base": "A reducing sugar is present",
+  "SEP-CHEM2-14:base": "It produces chlorine, hydrogen and sodium hydroxide",
+  "SEP-CHEM2-15:base": "Soluble substances in a mixture",
+  "SEP-CHEM2-15:reforge": "Distance moved by substance with distance moved by solvent",
+  "SEP-CHEM2-16:base": "They may ignore emissions across the full lifecycle",
+  "SEP-CHEM2-07:base": "To remove harmful microbes and substances",
+  "SEP-CHEM2-16:reforge": "Use less energy and lower-emission materials"
+};
+for (const bankId of ["GCSE-SEP-CHEM-1","GCSE-SEP-CHEM-2"]) {
+  for (const question of BANKS[bankId].questions) {
+    for (const [mode, item] of [["base", question], ["reforge", question.reforge]]) {
+      if (!item || !item.options || !item.options[item.correct]) continue;
+      const repair = separateScienceOptionRepairs[`${question.id}:${mode}`];
+      if (repair) item.options[item.correct] = repair;
+      const length = value => String(value).length;
+      const distractor = Object.keys(item.options).filter(key => key !== item.correct).sort((a, b) => length(item.options[b]) - length(item.options[a]))[0];
+      while (length(item.options[distractor]) <= length(item.options[item.correct])) item.options[distractor] += " in this context";
     }
   }
 }
