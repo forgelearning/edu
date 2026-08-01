@@ -422,6 +422,7 @@ Object.assign(SPEC_REGISTRY.aliases, {
   "GEO-SUPER": "edexcel-a-geo-topic-7",
   "9GE0-SUPER": "edexcel-a-geo-topic-7",
   "GEO-HEALTH": "edexcel-a-geo-topic-8a",
+  "GEO-GLOBAL": "edexcel-a-geo-topic-3",
   "9GE0-HEALTH": "edexcel-a-geo-topic-8a"
 });
 
