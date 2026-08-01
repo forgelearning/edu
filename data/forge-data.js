@@ -16390,3 +16390,141 @@ Object.values(SUBJECTS).forEach(subject => subject.banks.forEach(bankId => {
     enforceNoUniqueLongestAnswer(question.reforge);
   });
 }));
+
+// ===== STEM DIVERSITY PASS =====
+// Several older A-Level banks were generated from a single sentence frame.
+// Keep their tested concept and options intact, but vary the question form so
+// students practise recognition, application, comparison and significance.
+const stripGeneratedFrame = stem => String(stem || '')
+  .replace(/^In a new examination scenario, which answer best fits\?\s*/i, '')
+  .replace(/^Which option would be the strongest answer to this related question\?\s*/i, '')
+  .replace(/^A student applies this idea to a different example\. Which answer is correct\?\s*/i, '')
+  .replace(/^Which conclusion follows most directly in this context\?\s*/i, '')
+  .replace(/^For an applied revision question, which answer should be selected\?\s*/i, '')
+  .replace(/\s*\(application variant \d+\)\s*$/i, '')
+  .trim();
+
+const applicationStemFrames = [
+  core => `Consider this case: ${core}`,
+  core => `A student applies the idea to a new example. ${core}`,
+  core => `Use the information in this scenario. ${core}`,
+  core => `Which response fits this application? ${core}`,
+  core => `A teacher changes the context but tests the same point. ${core}`,
+  core => `Read the example carefully before answering: ${core}`,
+  core => `In a fresh examination context, ${core.charAt(0).toLowerCase()}${core.slice(1)}`,
+  core => `A different case raises the same issue. ${core}`,
+  core => `Which conclusion is supported by this example? ${core}`,
+  core => `Apply the concept to the following situation: ${core}`,
+  core => `A revision question uses a new context. ${core}`,
+  core => `What follows in this particular case? ${core}`
+];
+
+const reforgeStemFrames = [
+  core => `Which example best applies the idea? ${core}`,
+  core => `A student must transfer the idea to a new case. ${core}`,
+  core => `How should this related situation be interpreted? ${core}`,
+  core => `Which judgement is strongest in this context? ${core}`,
+  core => `A teacher asks for a practical application. ${core}`,
+  core => `What does the concept imply here? ${core}`,
+  core => `Compare the idea with this example: ${core}`,
+  core => `Which statement is defensible when the context changes? ${core}`,
+  core => `A new scenario tests the same principle. ${core}`,
+  core => `What is the most accurate application? ${core}`,
+  core => `Use the case to identify the best answer: ${core}`,
+  core => `Which interpretation follows from this example? ${core}`
+];
+
+const termFromGeneratedStem = stem => {
+  const text = String(stem || '').trim();
+  const match = text.match(/^Which statement best explains (.+?)\?$/i)
+    || text.match(/^A historian is assessing (.+?)\. Which judgement is most accurate\?$/i)
+    || text.match(/^A student is applying (.+?)\. Which statement is most accurate\?$/i)
+    || text.match(/^Which application of (.+?) is most accurate\?$/i);
+  return match ? match[1] : null;
+};
+
+const historyPoliticsFrames = {
+  question: [
+    term => `What does ${term} refer to?`,
+    term => `Which feature is most closely associated with ${term}?`,
+    term => `A student is revising ${term}. Which description is accurate?`,
+    term => `How should ${term} be defined in this course?`,
+    term => `Which example best illustrates ${term}?`,
+    term => `What role does ${term} play in the topic?`,
+    term => `Why is ${term} significant?`,
+    term => `Which claim about ${term} is supported by the evidence?`,
+    term => `How does ${term} affect the system or period being studied?`,
+    term => `Which distinction helps identify ${term}?`,
+    term => `A teacher asks for an accurate account of ${term}. Which answer works?`,
+    term => `Which consequence can be linked to ${term}?`
+  ],
+  reforge: [
+    term => `Which example demonstrates ${term}?`,
+    term => `A student applies ${term} to a case. Which judgement is strongest?`,
+    term => `What is the main significance of ${term}?`,
+    term => `How should ${term} be evaluated?`,
+    term => `Which claim about ${term} is defensible?`,
+    term => `In a comparison question, what should a student say about ${term}?`,
+    term => `Which outcome is most closely connected with ${term}?`,
+    term => `A historian or political analyst considers ${term}. Which conclusion is sound?`,
+    term => `Why might ${term} matter in this context?`,
+    term => `Which interpretation of ${term} is most accurate?`,
+    term => `What does a case involving ${term} show?`,
+    term => `Which piece of evidence would best support an argument about ${term}?`
+  ]
+};
+
+for (const subjectKey of ['pol', 'hist']) {
+  const subject = SUBJECTS[subjectKey];
+  if (!subject) continue;
+  subject.banks.forEach(bankId => BANKS[bankId].questions.forEach((question, index) => {
+    const term = termFromGeneratedStem(question.stem);
+    if (term) question.stem = historyPoliticsFrames.question[index % historyPoliticsFrames.question.length](term);
+    if (question.reforge) {
+      const refTerm = termFromGeneratedStem(question.reforge.stem) || term;
+      if (refTerm) question.reforge.stem = historyPoliticsFrames.reforge[index % historyPoliticsFrames.reforge.length](refTerm);
+    }
+  }));
+}
+
+for (const subject of Object.values(SUBJECTS)) {
+  for (const bankId of subject.banks || []) {
+    for (const [index, question] of (BANKS[bankId]?.questions || []).entries()) {
+      if (!question.coverageVariant) continue;
+      const core = stripGeneratedFrame(question.stem);
+      question.stem = applicationStemFrames[index % applicationStemFrames.length](core);
+      if (question.reforge) {
+        const refCore = stripGeneratedFrame(question.reforge.stem);
+        question.reforge.stem = reforgeStemFrames[(index + 3) % reforgeStemFrames.length](refCore);
+      }
+    }
+  }
+}
+
+// Older generated Reforge cards used one empty generic stem. Give those
+// cards a meaningful connection to the original question while varying the
+// wording across the bank.
+const genericReforgeFrames = [
+  core => `A related question tests the same principle. ${core}`,
+  core => `Apply the idea again in this connected question: ${core}`,
+  core => `The examiner now changes the example. ${core}`,
+  core => `Which answer follows when the same concept is tested? ${core}`,
+  core => `Use the original principle to answer this variation: ${core}`,
+  core => `A second scenario focuses on the same knowledge. ${core}`,
+  core => `Transfer the concept to this question: ${core}`,
+  core => `The context is different, but the key idea remains. ${core}`,
+  core => `How does the same idea apply here? ${core}`,
+  core => `A student meets a related example. ${core}`,
+  core => `Which response shows that the principle has been understood? ${core}`,
+  core => `Now test the concept from another angle: ${core}`
+];
+
+for (const subject of Object.values(SUBJECTS)) {
+  for (const bankId of subject.banks || []) {
+    for (const [index, question] of (BANKS[bankId]?.questions || []).entries()) {
+      const ref = question.reforge;
+      if (!ref || !/^Which statement best applies when this idea is used in a new business or examination scenario\?$/i.test(String(ref.stem || '').trim())) continue;
+      ref.stem = genericReforgeFrames[index % genericReforgeFrames.length](stripGeneratedFrame(question.stem));
+    }
+  }
+}
