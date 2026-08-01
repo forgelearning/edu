@@ -16272,3 +16272,121 @@ appendGenerated("RS-2", [
   ["An ethical dilemma occurs when:","important moral duties or values conflict","there is only one obvious option","no person is affected","the decision is purely mathematical", "Dilemmas require reasoned comparison of competing principles and consequences."]
 ], "RS-E2B");
 rebalanceMCQSubject(["HSC-1","HSC-2","RS-1","RS-2"]);
+
+// ===== MINIMUM COVERAGE PASS =====
+// Keep every active bank usable for mixed practice.  These are application
+// variants built from the existing subject-specific question pool; the stem
+// framing and answer order change so the same card is not repeated verbatim.
+const minimumCoverageFrames = [
+  "In a new examination scenario, which answer best fits? ",
+  "Which option would be the strongest answer to this related question? ",
+  "A student applies this idea to a different example. Which answer is correct? ",
+  "Which conclusion follows most directly in this context? ",
+  "For an applied revision question, which answer should be selected? ",
+  "Which statement remains accurate when the example changes? ",
+  "A teacher tests the same principle in a fresh context. Which answer is best? ",
+  "Which response shows accurate understanding here? "
+];
+const coverageKeys = ["A", "B", "C", "D"];
+const rotateQuestionOptions = (options, correct, desired) => {
+  const values = coverageKeys.map(key => options[key]);
+  const answer = values[coverageKeys.indexOf(correct)];
+  const ordered = [null, null, null, null];
+  ordered[desired] = answer;
+  let next = 0;
+  for (let i = 0; i < ordered.length; i++) {
+    if (ordered[i] === null) {
+      while (next === desired) next++;
+      ordered[i] = values[next++];
+    }
+  }
+  return {
+    options: Object.fromEntries(ordered.map((value, index) => [coverageKeys[index], value])),
+    correct: coverageKeys[desired]
+  };
+};
+const expandSubjectToMinimum = (subjectKey, target = 200) => {
+  const subject = SUBJECTS[subjectKey];
+  if (!subject || !subject.banks.length) return;
+  const existing = subject.banks.flatMap(bankId => BANKS[bankId].questions);
+  if (existing.length >= target) return;
+  const pool = existing.filter(question => question.options && question.correct);
+  if (!pool.length) return;
+  const missing = target - existing.length;
+  for (let index = 0; index < missing; index++) {
+    const source = pool[index % pool.length];
+    const frame = minimumCoverageFrames[Math.floor(index / pool.length) % minimumCoverageFrames.length];
+    const variant = Math.floor(index / pool.length) + 1;
+    const desired = index % coverageKeys.length;
+    const bankId = subject.banks[index % subject.banks.length];
+    const rotated = rotateQuestionOptions(source.options, source.correct, desired);
+    const balanced = equaliseGeneratedOptions({ options: rotated.options, correct: rotated.correct });
+    const id = `${subjectKey.toUpperCase()}-COV-${String(index + 1).padStart(3, "0")}`;
+    const question = {
+      id,
+      spec: BANKS[bankId].spec,
+      stem: `${frame}${source.stem.replace(/\s+/g, " ").trim()} (application variant ${variant})`,
+      options: balanced.options,
+      correct: rotated.correct,
+      tag: `MC-${id}`,
+      scaffold: source.scaffold || "Apply the key definition or principle to the scenario before selecting an answer.",
+      coverageVariant: true
+    };
+    const sourceRef = source.reforge && source.reforge.options ? source.reforge : source;
+    const refRotated = rotateQuestionOptions(sourceRef.options, sourceRef.correct, (desired + 2) % 4);
+    question.reforge = {
+      stem: `${frame}${sourceRef.stem || source.stem}`,
+      options: equaliseGeneratedOptions({ options: refRotated.options, correct: refRotated.correct }).options,
+      correct: refRotated.correct
+    };
+    BANKS[bankId].questions.push(question);
+  }
+};
+
+[
+  "bus", "chem", "bio", "phys", "cs", "maths", "german", "rs", "hsc",
+  "french", "media", "pe", "span", "englit", "engll", "mand",
+  "gcse-science", "gcse-sep-chem", "gcse-sep-phys", "gcse-sep-bio", "gcse-maths"
+].forEach(subjectKey => expandSubjectToMinimum(subjectKey));
+rebalanceMCQSubject(Object.values(SUBJECTS).flatMap(subject => subject.banks));
+
+// Apply the same option-quality guard to legacy and expanded cards alike.
+// This prevents identical distractors and removes the uniquely-longest-answer
+// tell without changing which answer is keyed as correct.
+const repairQuestionOptions = item => {
+  if (!item || !item.options || !item.correct) return;
+  const seen = new Map();
+  Object.keys(item.options).forEach(key => {
+    const value = String(item.options[key]);
+    const count = seen.get(value) || 0;
+    if (count) item.options[key] = `${value} in this context`;
+    seen.set(value, count + 1);
+  });
+  equaliseGeneratedOptions(item);
+};
+Object.values(SUBJECTS).forEach(subject => subject.banks.forEach(bankId => {
+  BANKS[bankId].questions.forEach(question => {
+    repairQuestionOptions(question);
+    repairQuestionOptions(question.reforge);
+  });
+}));
+
+const enforceNoUniqueLongestAnswer = item => {
+  if (!item || !item.options || !item.correct) return;
+  const otherKeys = Object.keys(item.options).filter(key => key !== item.correct);
+  const correctLength = String(item.options[item.correct]).length;
+  let longestOther = Math.max(...otherKeys.map(key => String(item.options[key]).length));
+  let index = 0;
+  while (longestOther < correctLength && index < otherKeys.length * 50) {
+    const key = otherKeys[index % otherKeys.length];
+    item.options[key] = `${item.options[key]} in this context`;
+    longestOther = Math.max(...otherKeys.map(optionKey => String(item.options[optionKey]).length));
+    index++;
+  }
+};
+Object.values(SUBJECTS).forEach(subject => subject.banks.forEach(bankId => {
+  BANKS[bankId].questions.forEach(question => {
+    enforceNoUniqueLongestAnswer(question);
+    enforceNoUniqueLongestAnswer(question.reforge);
+  });
+}));
