@@ -353,3 +353,64 @@ const SPEC_REGISTRY = {
     ,"SOC-RESEARCH": "aqa-a-soc-3.3.2"
   }
 };
+
+// Edexcel A Level Geography (9GE0), Issue 6.  The numbered key ideas are
+// registered even where an existing broad bank still needs finer question-
+// level tagging.  Broad-bank aliases below deliberately point to the topic
+// level so the audit does not imply false precision.
+const geographySpecTopics = [
+  ["Paper 1", "1", "Tectonic Processes and Hazards", 6],
+  ["Paper 1", "2A", "Glaciated Landscapes and Change", 12],
+  ["Paper 1", "2B", "Coastal Landscapes and Change", 12],
+  ["Paper 2", "3", "Globalisation", 5],
+  ["Paper 2", "4A", "Regenerating Places", 12],
+  ["Paper 2", "4B", "Diverse Places", 10],
+  ["Paper 1", "5", "The Water Cycle and Water Insecurity", 6],
+  ["Paper 1", "6", "The Carbon Cycle and Energy Security", 4],
+  ["Paper 2", "7", "Superpowers", 6],
+  ["Paper 2", "8A", "Health, Human Rights and Intervention", 12],
+  ["Paper 2", "8B", "Migration, Identity and Sovereignty", 11]
+];
+for (const [paper, prefix, title, count] of geographySpecTopics) {
+  for (let index = 1; index <= count; index += 1) {
+    const code = `${prefix}.${index}`;
+    SPEC_REGISTRY.points[`edexcel-a-geo-${code}`] = {
+      subject: "geo", board: "Edexcel", qualification: "A Level Geography (9GE0)",
+      paper, code, title: `${title} — key idea ${code}`, aliases: []
+    };
+  }
+}
+for (const [topicId, title, paper, code] of [
+  ["topic-1", "Tectonic Processes and Hazards", "Paper 1", "Topic 1"],
+  ["topic-2b", "Coastal Landscapes and Change", "Paper 1", "Topic 2B"],
+  ["topic-3", "Globalisation", "Paper 2", "Topic 3"],
+  ["topic-4a", "Regenerating Places", "Paper 2", "Topic 4A"],
+  ["topic-5", "The Water Cycle and Water Insecurity", "Paper 1", "Topic 5"],
+  ["topic-6", "The Carbon Cycle and Energy Security", "Paper 1", "Topic 6"],
+  ["topic-7", "Superpowers", "Paper 2", "Topic 7"],
+  ["topic-8a", "Health, Human Rights and Intervention", "Paper 2", "Topic 8A"]
+]) {
+  SPEC_REGISTRY.points[`edexcel-a-geo-${topicId}`] = {
+    subject: "geo", board: "Edexcel", qualification: "A Level Geography (9GE0)",
+    paper, code, title, aliases: []
+  };
+}
+Object.assign(SPEC_REGISTRY.aliases, {
+  "TECH": "edexcel-a-geo-topic-1",
+  "GEO-TEC": "edexcel-a-geo-topic-1",
+  "9GE0-TEC": "edexcel-a-geo-topic-1",
+  "GEO-COAST": "edexcel-a-geo-topic-2b",
+  "9GE0-COAST": "edexcel-a-geo-topic-2b",
+  "GEO-REGEN": "edexcel-a-geo-topic-4a",
+  "9GE0-REGEN": "edexcel-a-geo-topic-4a",
+  "GEO-P3": "edexcel-a-geo-topic-3",
+  "9GE0-P3": "edexcel-a-geo-topic-3",
+  "GEO-WATER": "edexcel-a-geo-topic-5",
+  "9GE0-WATER": "edexcel-a-geo-topic-5",
+  "GEO-CARBON": "edexcel-a-geo-topic-6",
+  "9GE0-CARBON": "edexcel-a-geo-topic-6",
+  "GEO-SUPER": "edexcel-a-geo-topic-7",
+  "9GE0-SUPER": "edexcel-a-geo-topic-7",
+  "GEO-HEALTH": "edexcel-a-geo-topic-8a",
+  "9GE0-HEALTH": "edexcel-a-geo-topic-8a"
+});

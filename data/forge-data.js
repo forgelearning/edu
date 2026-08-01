@@ -14258,12 +14258,28 @@ const addSocTopicBank = (bankId, label, spec, rows) => {
   BANKS[bankId] = {label, color:"#7f1d1d", questions: rows.map((row, index) => {
     const next = rows[(index + 1) % rows.length];
     const prev = rows[(index + rows.length - 1) % rows.length];
+    const stemFrames = [
+      term => `What is meant by ${term}?`,
+      term => `Which example best illustrates ${term}?`,
+      term => `How would a sociologist define ${term}?`,
+      term => `A student encounters the term ${term}. What does it refer to?`,
+      term => `Which description matches ${term}?`,
+      term => `In sociological analysis, what does ${term} describe?`
+    ];
+    const reforgeFrames = [
+      term => `A related example tests ${term}. Which interpretation is most accurate?`,
+      term => `How could a sociologist apply ${term} to evidence?`,
+      term => `Which scenario demonstrates ${term}?`,
+      term => `A case study refers to ${term}. What does the reference mean?`,
+      term => `Which conclusion follows from ${term}?`,
+      term => `What would count as evidence of ${term}?`
+    ];
     return {
       id:`${bankId}-${String(index + 1).padStart(2,"0")}`, spec,
-      stem:`Which statement best describes ${row.term}?`,
+      stem:stemFrames[index % stemFrames.length](row.term),
       options:{A:row.definition,B:next.definition,C:prev.definition,D:`It has no significant effect on ${label.toLowerCase()}`}, correct:"A",tag:`MC-${bankId}-${index + 1}`,
       scaffold:`${row.term}: ${row.definition} ${row.scaffold || "Use the definition, apply it to the context and evaluate its significance."}`,
-      reforge:{stem:`A student is revising ${row.term}. Which application is most accurate?`,options:{A:row.application,B:prev.application,C:next.application,D:`It is unrelated to ${label.toLowerCase()} and cannot be applied to social evidence`},correct:"A"}
+      reforge:{stem:reforgeFrames[index % reforgeFrames.length](row.term),options:{A:row.application,B:prev.application,C:next.application,D:`It is unrelated to ${label.toLowerCase()} and cannot be applied to social evidence`},correct:"A"}
     };
   })};
   SUBJECTS["soc"].banks.push(bankId);
