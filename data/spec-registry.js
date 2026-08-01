@@ -651,3 +651,39 @@ Object.assign(SPEC_REGISTRY.aliases, {
   "CS-3": "eduqas-a-cs-1.2",
   "CS-4": "eduqas-a-cs-2.2"
 });
+
+// Pearson Edexcel A-level Mathematics (9MA0), using the numbered Pure,
+// Statistics and Mechanics topics from the specification.
+const mathematicsSpecPoints = [
+  ["1.1", "Papers 1–3", "Proof"],
+  ["2.1", "Papers 1–2", "Algebra and functions"],
+  ["2.2", "Papers 1–2", "Coordinate geometry"],
+  ["2.3", "Papers 1–2", "Sequences and series"],
+  ["2.4", "Papers 1–2", "Trigonometry"],
+  ["2.5", "Papers 1–2", "Exponentials and logarithms"],
+  ["2.6", "Papers 1–2", "Differentiation"],
+  ["2.7", "Papers 1–2", "Integration"],
+  ["2.8", "Papers 1–2", "Numerical methods"],
+  ["2.9", "Papers 1–2", "Vectors"],
+  ["3.1", "Paper 3", "Statistical sampling"],
+  ["3.2", "Paper 3", "Data presentation and interpretation"],
+  ["3.3", "Paper 3", "Probability"],
+  ["3.4", "Paper 3", "Statistical distributions"],
+  ["3.5", "Paper 3", "Statistical hypothesis testing"],
+  ["4.1", "Paper 3", "Quantities and units in mechanics"],
+  ["4.2", "Paper 3", "Kinematics"],
+  ["4.3", "Paper 3", "Forces and Newton's laws"],
+  ["4.4", "Paper 3", "Moments"],
+  ["4.5", "Paper 3", "Vectors in mechanics"]
+];
+for (const [code, paper, title] of mathematicsSpecPoints) {
+  SPEC_REGISTRY.points[`edexcel-a-maths-${code}`] = {
+    subject: "maths", board: "Edexcel", qualification: "A-level Mathematics (9MA0)",
+    paper, code, title, aliases: []
+  };
+}
+Object.assign(SPEC_REGISTRY.aliases, {
+  "MATH-1": "edexcel-a-maths-2.1",
+  "MATH-2": "edexcel-a-maths-2.6",
+  "MATH-3": "edexcel-a-maths-3.1"
+});

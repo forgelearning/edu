@@ -17100,6 +17100,46 @@ for (const bankId of Object.keys(computerScienceFallbackPoints)) {
   }
 }
 
+// Map the live Edexcel 9MA0 Mathematics banks to Pure, Statistics and
+// Mechanics topics. The existing banks mix papers for revision, so each stem
+// is routed by its mathematical content rather than by bank alone.
+const mathematicsFallbackPoints = {
+  "MATH-1": "edexcel-a-maths-2.1",
+  "MATH-2": "edexcel-a-maths-2.6",
+  "MATH-3": "edexcel-a-maths-3.1"
+};
+const mathematicsPointFor = (bankId, stem) => {
+  const text = String(stem || "").toLowerCase();
+  const routes = [
+    [/hypothesis test|p-value|significance level|critical region/, "3.5"],
+    [/binomial distribution|normal distribution|sampling distribution|statistical distribution|variance/, "3.4"],
+    [/mutually exclusive|probability|conditional probability|tree diagram/, "3.3"],
+    [/correlation|regression|standard deviation|large data set|quartile|histogram|box plot|frequency|outlier|data presentation/, "3.2"],
+    [/statistical sampling|sample|sampling/, "3.1"],
+    [/moment|moments/, "4.4"],
+    [/force|newton|friction|tension|weight/, "4.3"],
+    [/quantity|unit|dimensional|mechanics/, "4.1"],
+    [/particle|projectile|kinematic|acceleration|velocity|displacement|mass/, "4.2"],
+    [/vector/, "2.9"],
+    [/proof|contradiction|counterexample|irrational/, "1.1"],
+    [/vector/, "2.9"],
+    [/numerical method|newton.?raphson|iteration|trapezium rule/, "2.8"],
+    [/∫|integral|integration|area under|anti.?differentiat/, "2.7"],
+    [/differentiat|stationary point|turning point|gradient|chain rule|product rule|quotient rule/, "2.6"],
+    [/log|exponential|ln\b|growth|decay/, "2.5"],
+    [/sin|cos|tan|trigonometry|radian|identity/, "2.4"],
+    [/sequence|series|arithmetic|geometric|binomial expansion|coefficient of x/, "2.3"],
+    [/coordinate|straight line|circle|quadratic|completing the square|function|algebra|indices|surds|equation|inequalit|polynomial/, "2.1"]
+  ];
+  for (const [pattern, code] of routes) if (pattern.test(text)) return `edexcel-a-maths-${code}`;
+  return mathematicsFallbackPoints[bankId];
+};
+for (const bankId of Object.keys(mathematicsFallbackPoints)) {
+  for (const question of BANKS[bankId]?.questions || []) {
+    question.specPointId = mathematicsPointFor(bankId, question.stem);
+  }
+}
+
 // Remove the last legacy Sociology template from imported Paper 1 questions.
 // This is deliberately applied at runtime so future bank extensions cannot
 // reintroduce the same repeated "Which statement best describes..." cue.

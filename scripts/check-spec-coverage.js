@@ -111,7 +111,10 @@ for (const subjectKey of subjects) {
       const isComputerScienceSection = subjectKey === 'cs' &&
         resolution.id.startsWith('eduqas-a-cs-') &&
         bankResolution?.id.startsWith('eduqas-a-cs-');
-      if (resolution.id !== bankResolution?.id && !isGeographyKeyIdea && !isHistorySection && !isBusinessSection && !isChemistrySection && !isBiologySection && !isPhysicsSection && !isComputerScienceSection) {
+      const isMathematicsSection = subjectKey === 'maths' &&
+        resolution.id.startsWith('edexcel-a-maths-') &&
+        bankResolution?.id.startsWith('edexcel-a-maths-');
+      if (resolution.id !== bankResolution?.id && !isGeographyKeyIdea && !isHistorySection && !isBusinessSection && !isChemistrySection && !isBiologySection && !isPhysicsSection && !isComputerScienceSection && !isMathematicsSection) {
         fail(location, `question resolves to ${resolution.id}, but bank resolves to ${bankResolution?.id || 'none'}`);
       }
       counts.set(resolution.id, (counts.get(resolution.id) || 0) + 1);
