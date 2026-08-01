@@ -10975,6 +10975,34 @@ SUBJECTS["gcse-sep-chem"] = {label:"GCSE Separate Chemistry", sub:"Edexcel 1CH0 
 SUBJECTS["gcse-sep-phys"] = {label:"GCSE Separate Physics", sub:"Edexcel 1PH0 — Papers 1 & 2", color:"#7c2d12", banks:["GCSE-SEP-PHYS-1","GCSE-SEP-PHYS-2"]};
 SUBJECTS["gcse-sep-bio"] = {label:"GCSE Separate Biology", sub:"Edexcel 1BI0 — Papers 1 & 2", color:"#166534", banks:["GCSE-SEP-BIO-1","GCSE-SEP-BIO-2"]};
 
+// GCSE Mathematics (Edexcel 1MA1) — paper-specific banks.
+const addGcseMathsBank = (bankId, label, spec, color, rows) => {
+  BANKS[bankId] = {label, color, questions: rows.map(row => ({id:row.id, spec, stem:row.stem, options:row.options, correct:row.correct, tag:`MC-${row.tag}`, scaffold:row.scaffold, reforge:row.reforge}))};
+  const basePlan = "ABCDABCDABCD";
+  const reforgePlan = "CDABCDABCDAB";
+  BANKS[bankId].questions.forEach((question, index) => {
+    moveGcseScienceAnswer(question, basePlan[index]);
+    moveGcseScienceAnswer(question, reforgePlan[index], true);
+  });
+};
+SUBJECTS["gcse-maths"] = {label:"GCSE Mathematics", sub:"Edexcel 1MA1 — Papers 1, 2 & 3", color:"#1d4ed8", banks:[]};
+
+addGcseMathsBank("GCSE-MATH-P1", "Paper 1 — Non-Calculator", "1MA1 Paper 1", "#1d4ed8", [
+  {id:"MATH-P1-01",stem:"Write 0.00072 in standard form.",options:{A:"7.2 × 10⁻⁴",B:"7.2 × 10⁴",C:"72 × 10⁻⁵",D:"0.72 × 10⁻³"},correct:"A",scaffold:"Move the decimal four places right to make 7.2, so the power is −4: 0.00072 = 7.2 × 10⁻⁴.",tag:"MATH-NUMBER",reforge:{stem:"Which is equal to 3.6 × 10⁵?",options:{A:"36,000",B:"360,000",C:"3,600,000",D:"0.00036"},correct:"B"}},
+  {id:"MATH-P1-02",stem:"What is the highest common factor of 36 and 48?",options:{A:"6",B:"8",C:"12",D:"18"},correct:"C",scaffold:"The common factors include 1, 2, 3, 4, 6 and 12; the greatest is 12.",tag:"MATH-FACTORS",reforge:{stem:"What is the lowest common multiple of 6 and 8?",options:{A:"12",B:"18",C:"24",D:"48"},correct:"C"}},
+  {id:"MATH-P1-03",stem:"Simplify 3x + 5 − x + 2.",options:{A:"2x + 7",B:"4x + 7",C:"2x + 3",D:"4x + 3"},correct:"A",scaffold:"Collect like terms: 3x − x = 2x and 5 + 2 = 7, giving 2x + 7.",tag:"MATH-ALGEBRA",reforge:{stem:"Expand 4(2x − 3).",options:{A:"8x − 3",B:"8x − 12",C:"6x − 12",D:"8x + 12"},correct:"B"}},
+  {id:"MATH-P1-04",stem:"Solve 5x − 7 = 18.",options:{A:"x = 2",B:"x = 5",C:"x = 7/5",D:"x = 25"},correct:"B",scaffold:"Add 7 to both sides to get 5x = 25, then divide by 5: x = 5.",tag:"MATH-EQUATIONS",reforge:{stem:"Solve 3y + 4 = 19.",options:{A:"y = 5",B:"y = 15",C:"y = 23/3",D:"y = 7"},correct:"A"}},
+  {id:"MATH-P1-05",stem:"A ratio is 3:5 and the total is  forty. What is the larger share?",options:{A:"15",B:"20",C:"25",D:"30"},correct:"C",scaffold:"There are 8 parts, so each part is 40 ÷ 8 = 5. The larger share is 5 × 5 = 25.",tag:"MATH-RATIO",reforge:{stem:"Divide £56 in the ratio 3:4. What is the larger amount?",options:{A:"£24",B:"£28",C:"£32",D:"£35"},correct:"C"}},
+  {id:"MATH-P1-06",stem:"Increase 80 by 15%.",options:{A:"£92",B:"£94",C:"£95",D:"£96"},correct:"A",scaffold:"15% of 80 is 12, so the increased value is 80 + 12 = 92.",tag:"MATH-PERCENT",reforge:{stem:"A value of 60 is decreased by 25%. What is the result?",options:{A:"35",B:"40",C:"45",D:"48"},correct:"C"}},
+  {id:"MATH-P1-07",stem:"The angles in a triangle are x, 2x and 3x. Find x.",options:{A:"20°",B:"30°",C:"45°",D:"60°"},correct:"B",scaffold:"Angles in a triangle total 180°, so 6x = 180 and x = 30°.",tag:"MATH-ANGLES",reforge:{stem:"An isosceles triangle has equal angles of 50°. What is the third angle?",options:{A:"50°",B:"70°",C:"80°",D:"100°"},correct:"B"}},
+  {id:"MATH-P1-08",stem:"What is the area of a rectangle measuring 7 cm by 4 cm?",options:{A:"11 cm²",B:"22 cm²",C:"28 cm²",D:"44 cm²"},correct:"C",scaffold:"Area of a rectangle = length × width = 7 × 4 = 28 cm².",tag:"MATH-MEASURES",reforge:{stem:"A parallelogram has base 9 cm and perpendicular height 4 cm. Find its area.",options:{A:"13 cm²",B:"18 cm²",C:"36 cm²",D:"72 cm²"},correct:"C"}},
+  {id:"MATH-P1-09",stem:"A fair six-sided die is rolled. What is the probability of an even number?",options:{A:"1/6",B:"1/3",C:"1/2",D:"2/3"},correct:"C",scaffold:"The even outcomes are 2, 4 and 6: 3 favourable outcomes out of 6, which simplifies to 1/2.",tag:"MATH-PROBABILITY",reforge:{stem:"A bag contains 3 red and 2 blue counters. What is P(blue)?",options:{A:"2/3",B:"2/5",C:"3/5",D:"1/2"},correct:"B"}},
+  {id:"MATH-P1-10",stem:"Find the mean of 4, 6, 9 and 11.",options:{A:"6.0",B:"7.0",C:"7.5",D:"8.0"},correct:"C",scaffold:"Add the values to get 30, then divide by 4: mean = 7.5.",tag:"MATH-STATISTICS",reforge:{stem:"The mean of five numbers is 8. What is their total?",options:{A:"13",B:"32",C:"40",D:"45"},correct:"C"}},
+  {id:"MATH-P1-11",stem:"The sequence 5, 9, 13, 17 continues with which term?",options:{A:"20",B:"21",C:"22",D:"25"},correct:"B",scaffold:"The common difference is 4, so the next term is 17 + 4 = 21.",tag:"MATH-SEQUENCES",reforge:{stem:"What is the nth term of 4, 7, 10, 13, …?",options:{A:"3n + 1",B:"4n − 1",C:"n + 3",D:"3n − 1"},correct:"A"}},
+  {id:"MATH-P1-12",stem:"Factorise x² + 7x + 12.",options:{A:"(x + 2)(x + 6)",B:"(x + 3)(x + 4)",C:"(x − 3)(x − 4)",D:"(x + 1)(x + 12)"},correct:"B",scaffold:"Find two numbers that multiply to 12 and add to 7: 3 and 4. Therefore x² + 7x + 12 = (x + 3)(x + 4).",tag:"MATH-FACTORISE",reforge:{stem:"Factorise x² − 9.",options:{A:"(x − 3)(x + 3)",B:"(x − 9)(x + 1)",C:"(x − 3)²",D:"(x + 9)(x − 1)"},correct:"A"}}
+]);
+SUBJECTS["gcse-maths"].banks.push("GCSE-MATH-P1");
+
 // ===== A LEVEL PSYCHOLOGY (AQA 7182) PAPER 2: RESEARCH METHODS =====
 BANKS["PSY-RM"] = {
   label: "Research Methods",
@@ -11820,5 +11848,217 @@ BANKS["PSY-SI"].questions.push(
       correct:"B",tag:"MC-SI-06",
       scaffold:"Minority influence is slow because agreeing publicly with a minority carries a normative cost: you risk being seen as deviant by the majority. This is why minority influence typically shows up first as private acceptance and only later as public behaviour change — the opposite pattern to majority influence, which produces public compliance without private change. Moscovici's blue-green study captured this, with more participants agreeing with the minority when responses were written privately. The practical implication is that minority influence produces slower but deeper and more durable change, which is exactly what drives long-term social change.",
       reforge:{stem:"Why did more participants agree with the minority when answering privately?",options:{A:"Private answers are easier to record accurately",B:"They avoided the social cost of publicly appearing deviant",C:"The minority became more consistent in private",D:"Informational influence only operates in private"},correct:"B"}
+    }
+);
+
+// ===== A LEVEL PSYCHOLOGY PAPER 1: MEMORY — EXTENSION SET =====
+BANKS["PSY-MEM"].questions.push(
+    {
+      id:"MEM-09",
+      stem:"What is the coding, capacity and duration of long-term memory?",
+      options:{
+        A:"Acoustic coding, with a capacity of 7±2 items and a duration of about 18 seconds",
+        B:"Visual coding, an unlimited capacity and a duration of about 30 minutes",
+        C:"Semantic coding, a potentially unlimited capacity and a lifetime duration",
+        D:"Semantic coding, a capacity of 7±2 items and a duration of several hours"
+      },
+      correct:"C",tag:"MC-MEM-01",
+      scaffold:"Learn the three features for each store as a grid. Sensory register: modality-specific coding, very high capacity, duration under half a second (Sperling). Short-term memory: acoustic coding (Baddeley found acoustically similar words were confused in STM), capacity 7±2 (Jacobs, Miller), duration around 18-30 seconds without rehearsal (Peterson and Peterson). Long-term memory: semantic coding, since semantically similar words are confused in LTM, capacity potentially unlimited, duration up to a lifetime (Bahrick's yearbook study found 70% face recognition after 48 years). Exam tip: name the researcher with each figure — it converts a description mark into an evidence mark.",
+      reforge:{stem:"Which study provides evidence for the duration of long-term memory?",options:{A:"Peterson and Peterson's trigram study",B:"Bahrick's yearbook photograph study",C:"Jacobs' digit span technique",D:"Sperling's sensory register study"},correct:"B"}
+    },
+    {
+      id:"MEM-10",
+      stem:"Which component of the working memory model has the smallest capacity?",
+      options:{
+        A:"The central executive, which directs attention between the slave systems",
+        B:"The phonological loop, which holds and rehearses auditory information",
+        C:"The visuo-spatial sketchpad, which handles visual and spatial information",
+        D:"The episodic buffer, which integrates information into a single sequence"
+      },
+      correct:"A",tag:"MC-MEM-02",
+      scaffold:"The central executive is the supervisory component that allocates attention to the slave systems, and Baddeley described its own storage capacity as very limited — it directs rather than stores. The phonological loop holds auditory information, subdivided into the phonological store (what you hear) and the articulatory process (the inner voice used for maintenance rehearsal), with a capacity of about two seconds' worth of speech. The visuo-spatial sketchpad holds visual and spatial data, roughly three to four objects. The episodic buffer, added in 2000, integrates information from all components into a single time-sequenced record and links to LTM. The central executive is also the model's weakest point: critics argue it is too vague to test.",
+      reforge:{stem:"What is the main criticism of the central executive?",options:{A:"It is too vague and difficult to test empirically",B:"It has an unlimited storage capacity",C:"It only processes visual information",D:"It was removed from the model in 2000"},correct:"A"}
+    },
+    {
+      id:"MEM-11",
+      stem:"A patient can recall facts but cannot form new memories of personal events. Which distinction does this illustrate?",
+      options:{
+        A:"The difference between short-term and long-term memory stores",
+        B:"The difference between semantic and episodic long-term memory",
+        C:"The difference between proactive and retroactive interference",
+        D:"The difference between the phonological loop and the sketchpad"
+      },
+      correct:"B",tag:"MC-MEM-03",
+      scaffold:"Tulving divided long-term memory into three types. Episodic memory stores personal events with a time-stamp and associated emotion, and is consciously recalled — it depends on the hippocampus. Semantic memory stores facts and knowledge about the world without a personal context, is less time-stamped and is more resistant to damage. Procedural memory stores skills such as riding a bike and is recalled without conscious effort. The clinical evidence is strong: HM could not form new episodic memories after his hippocampal surgery but could learn new motor skills, and Clive Wearing retained his ability to play piano while losing his episodic memories. That dissociation supports separate stores.",
+      reforge:{stem:"Which type of long-term memory did Clive Wearing retain?",options:{A:"Episodic memory for recent events",B:"Procedural memory for playing the piano",C:"Short-term memory beyond thirty seconds",D:"Memory for the names of new people"},correct:"B"}
+    },
+    {
+      id:"MEM-12",
+      stem:"What is retroactive interference?",
+      options:{
+        A:"Older learning disrupting the recall of more recently learned material",
+        B:"A cue present at learning being absent at the moment of recall",
+        C:"Newer learning disrupting the recall of previously learned material",
+        D:"Information decaying from short-term memory in the absence of rehearsal"
+      },
+      correct:"C",tag:"MC-MEM-04",
+      scaffold:"Read the prefix. Retroactive interference works backwards: new learning interferes with old — a teacher learning this year's names then struggling to recall last year's. Proactive interference works forwards: old learning interferes with new, so those old names make it harder to learn the new ones. Both are worse when the material is similar, which McGeoch and McDonald demonstrated by having participants learn a word list then a second list of varying similarity: recall was worst when the second list was synonyms. The main criticism is that interference research uses artificial word-list tasks with unusually close timing, so it may overstate how often interference explains everyday forgetting.",
+      reforge:{stem:"McGeoch and McDonald found recall was worst when the second list contained what?",options:{A:"Numbers unrelated to the first list",B:"Nonsense syllables",C:"Synonyms of the original words",D:"No new material at all"},correct:"C"}
+    },
+    {
+      id:"MEM-13",
+      stem:"What is retrieval failure due to absence of cues?",
+      options:{
+        A:"Memory traces physically decaying over time until they disappear",
+        B:"Competing memories completely blocking access to the target information stored",
+        C:"Information never having been encoded into long-term memory at all",
+        D:"Information being available in memory but not accessible without a cue"
+      },
+      correct:"D",tag:"MC-MEM-04",
+      scaffold:"Tulving's encoding specificity principle states that a cue helps recall if it was present at both encoding and retrieval. Retrieval failure means the memory is still stored — available — but cannot be reached because the cue is missing, which is why it often returns later. Two forms are examined: context-dependent forgetting, where the external environment differs, as in Godden and Baddeley's divers recalling worse when the learning and recall environments did not match; and state-dependent forgetting, where the internal state differs, as in Carter and Cassaday's antihistamine study. The practical application is direct: the cognitive interview's 'report everything' and 'context reinstatement' techniques both work by restoring cues.",
+      reforge:{stem:"Godden and Baddeley's divers study demonstrates which type of forgetting?",options:{A:"State-dependent forgetting",B:"Proactive interference",C:"Context-dependent forgetting",D:"Trace decay in short-term memory"},correct:"C"}
+    },
+    {
+      id:"MEM-14",
+      stem:"What did Loftus and Palmer's second experiment demonstrate about post-event information?",
+      options:{
+        A:"Leading questions can alter the actual memory, not just the response given",
+        B:"Participants always recall filmed events with near-perfect accuracy",
+        C:"The speed estimate was unaffected by the verb used in the question",
+        D:"Only participants who witnessed real accidents showed any memory distortion"
+      },
+      correct:"A",tag:"MC-MEM-05",
+      scaffold:"The first experiment showed the verb changed the speed estimate — 'smashed' produced around 40.5 mph against 31.8 mph for 'contacted' — but that alone could be response bias, participants simply guessing higher to match the word. The second experiment settled it: a week later, participants asked with 'smashed' were more than twice as likely to report seeing broken glass that was never in the film. Because the false detail appeared later, the memory itself must have been altered — the substitution explanation. Evaluate with the standard limitation: watching a film clip lacks the stress and consequence of a real incident, and Foster found participants were more accurate when they believed their response mattered.",
+      reforge:{stem:"Why does the broken glass finding support memory alteration rather than response bias?",options:{A:"A false detail was reported a week after the event",B:"Participants gave higher speed estimates immediately",C:"All participants used the same verb condition",D:"The film clip contained visible broken glass"},correct:"A"}
+    },
+    {
+      id:"MEM-15",
+      stem:"What did Johnson and Scott's 'weapon focus' study suggest?",
+      options:{
+        A:"Anxiety narrows attention onto the weapon, reducing recall of the face",
+        B:"Anxiety consistently improves the accuracy of eyewitness identification",
+        C:"Witnesses recall faces equally well whether or not a weapon is present",
+        D:"Weapons make witnesses more confident but no less accurate in recall"
+      },
+      correct:"A",tag:"MC-MEM-05",
+      scaffold:"Participants who overheard an argument and saw a man leave holding a bloodied knife identified him from photographs 33% of the time, against 49% for those who saw him holding a pen. The tunnel-theory explanation is that anxiety narrows attention onto the weapon at the cost of peripheral detail such as the face. But the evidence genuinely conflicts: Yuille and Cutshall's real shooting witnesses were highly accurate five months later, with the most anxious the most accurate. Deffenbacher's resolution is the Yerkes-Dodson inverted U — moderate anxiety improves recall while extreme anxiety impairs it. Pickel also argued the effect may be surprise rather than anxiety, since unusual objects produced the same result.",
+      reforge:{stem:"How does the inverted-U explanation reconcile conflicting anxiety findings?",options:{A:"Anxiety always improves recall in real-world settings",B:"Moderate anxiety aids recall while extreme anxiety impairs it",C:"Anxiety has no measurable effect on eyewitness memory",D:"Only laboratory studies show any anxiety effect"},correct:"B"}
+    },
+    {
+      id:"MEM-16",
+      stem:"Which technique of the cognitive interview involves recalling the event from another person's perspective?",
+      options:{
+        A:"Report absolutely everything, including any details that seem entirely irrelevant",
+        B:"Reinstate the context by mentally returning to the original scene",
+        C:"Change the order by recalling the events in a different sequence",
+        D:"Change the perspective, describing the scene as another witness saw it"
+      },
+      correct:"D",tag:"MC-MEM-06",
+      scaffold:"The four techniques each target a known weakness of memory. Report everything: even trivial details may cue others, and the witness should not filter. Reinstate the context: mentally recreating the environment and emotions applies context-dependent retrieval. Reverse the order: recalling backwards disrupts the influence of schemas and expectation, making invention harder. Change the perspective: describing what another witness would have seen also disrupts schema-driven recall. Fisher's enhanced cognitive interview adds social elements such as reducing anxiety and avoiding interruption. Köhnken's meta-analysis found a 41% increase in accurate information, though also an increase in incorrect details.",
+      reforge:{stem:"What did Köhnken's meta-analysis find about the cognitive interview?",options:{A:"It produced no improvement over standard interviews",B:"It increased accurate information but also incorrect details",C:"It reduced the total amount of information recalled",D:"It only worked with witnesses under the age of eighteen"},correct:"B"}
+    },
+    {
+      id:"MEM-17",
+      stem:"Which finding provides the strongest support for the working memory model over the multi-store model?",
+      options:{
+        A:"Participants tend to recall the first and last items on a list most successfully",
+        B:"Two tasks using the same slave system interfere, but different systems do not",
+        C:"Rehearsal transfers information from short-term into long-term memory",
+        D:"Semantically similar words are confused when recalled from long-term memory"
+      },
+      correct:"B",tag:"MC-MEM-02",
+      scaffold:"Dual-task studies are the decisive evidence. If short-term memory were a single unitary store as the multi-store model claims, any two simultaneous tasks should interfere. Baddeley and Hitch found instead that participants could perform a verbal task and a visual task together with little cost, but performance collapsed when both tasks used the same component. That pattern only makes sense if STM has separate subsystems with separate capacities. Add supporting clinical evidence: patient KF had impaired verbal short-term recall but intact visual short-term recall after brain damage, again pointing to separable stores. Option A describes the serial position effect, which supports the multi-store model instead.",
+      reforge:{stem:"What does the case of patient KF suggest about short-term memory?",options:{A:"Short-term memory is a single unitary store",B:"Verbal and visual short-term memory are separable",C:"Long-term memory codes information acoustically",D:"Rehearsal is unnecessary for memory transfer"},correct:"B"}
+    },
+    {
+      id:"MEM-18",
+      stem:"What is a limitation of using laboratory studies to investigate eyewitness testimony?",
+      options:{
+        A:"Laboratory studies cannot control any of the relevant extraneous variables",
+        B:"Laboratory research has never been used to study eyewitness memory at all",
+        C:"They are unable to produce any quantitative data for statistical analysis",
+        D:"They lack the emotional consequence of witnessing a genuine crime"
+      },
+      correct:"D",tag:"MC-MEM-05",
+      scaffold:"Watching a staged film clip in a laboratory carries no consequence: the witness feels no fear, and nothing turns on their answer. That may explain why real witnesses often outperform participants, as in Yuille and Cutshall's study of a genuine shooting. Foster showed the point directly — participants told their identification would influence a real trial were significantly more accurate. So laboratory findings may overstate eyewitness unreliability. Balance this against the genuine strength of laboratory work: high control allows causal conclusions, and the research has produced real change in police procedure through the cognitive interview and in guidance on leading questions.",
+      reforge:{stem:"What did Foster find about eyewitness accuracy?",options:{A:"Accuracy improved when participants believed the outcome mattered",B:"Accuracy was identical in all experimental conditions",C:"Laboratory participants always outperform real witnesses",D:"Leading questions had no effect on identification"},correct:"A"}
+    },
+    {
+      id:"MEM-19",
+      stem:"What does the serial position effect demonstrate?",
+      options:{
+        A:"That memory is reconstructive and influenced by existing schemas",
+        B:"That interference occurs when two sets of material are very similar",
+        C:"That separate short-term and long-term stores exist",
+        D:"That cues present at encoding must also be present at retrieval"
+      },
+      correct:"C",tag:"MC-MEM-01",
+      scaffold:"When recalling a word list, people remember the first items well (the primacy effect, because those words were rehearsed into long-term memory) and the last items well (the recency effect, because those are still in short-term memory), while the middle is recalled poorly. The dissociation is what matters: adding a delay with a distractor task destroys the recency effect but leaves primacy intact, which is difficult to explain unless two separate stores exist. This is the strongest evidence for the multi-store model, alongside the case of HM. Set against it, the model is criticised as too simplistic — it treats STM and LTM as single unitary stores, which the working memory model and Tulving's LTM types both contradict.",
+      reforge:{stem:"A distractor task after a word list destroys which effect?",options:{A:"The primacy effect",B:"The recency effect",C:"Both effects equally",D:"Neither effect"},correct:"B"}
+    },
+    {
+      id:"MEM-20",
+      stem:"A witness is asked 'How fast was the car going when it hit the other car?' What type of question is this?",
+      options:{
+        A:"A leading question, since its wording suggests a particular answer",
+        B:"An open question that allows the witness to give a free recall account",
+        C:"A context reinstatement prompt used within the cognitive interview",
+        D:"A closed question requiring only a simple yes or no in response"
+      },
+      correct:"A",tag:"MC-MEM-05",
+      scaffold:"A leading question is phrased so that it suggests a particular answer, and here the verb 'hit' primes a specific speed range — the whole point of Loftus and Palmer's manipulation. Two mechanisms are proposed for how misleading information works: the response-bias explanation, where the wording influences the answer given without changing the underlying memory, and the substitution explanation, where the memory itself is altered. The broken glass result supports substitution. Distinguish leading questions from post-event discussion, the other source of misleading information, where co-witnesses contaminate each other's accounts — Gabbert found 71% of witnesses reported details they had only heard from another person.",
+      reforge:{stem:"What did Gabbert's study of post-event discussion find?",options:{A:"Witnesses never discuss events with each other",B:"71% reported details acquired only from another witness",C:"Discussion improved the accuracy of all witnesses",D:"Only leading questions can distort eyewitness memory"},correct:"B"}
+    },
+    {
+      id:"MEM-21",
+      stem:"Which component of the working memory model was added most recently?",
+      options:{
+        A:"The phonological loop, which processes auditory information for rehearsal",
+        B:"The visuo-spatial sketchpad, which processes visual and spatial data",
+        C:"The episodic buffer, which integrates information from all components",
+        D:"The central executive, which allocates attention to the slave systems"
+      },
+      correct:"C",tag:"MC-MEM-02",
+      scaffold:"Baddeley added the episodic buffer in 2000 to fix a gap in the original 1974 model: there was no general store, and no explanation of how visual and auditory information were combined into a single coherent experience, or how working memory connected to long-term memory. The episodic buffer does both — it holds around four chunks, integrates information from the loop, the sketchpad and long-term memory, and sequences it in time. Knowing that the model was revised in response to a specific criticism is itself an evaluation point: it shows the model developing in response to evidence, which is a mark of a scientific theory.",
+      reforge:{stem:"Which problem was the episodic buffer introduced to solve?",options:{A:"The model had no way to store visual information",B:"The central executive had unlimited capacity",C:"The model could not explain acoustic coding",D:"There was no general store integrating the components"},correct:"D"}
+    },
+    {
+      id:"MEM-22",
+      stem:"Why does the multi-store model's account of rehearsal face criticism?",
+      options:{
+        A:"Rehearsal has been shown to play no role whatsoever in the formation of memory",
+        B:"Elaborative rehearsal transfers to long-term memory better than repetition",
+        C:"Rehearsal only operates within the sensory register store",
+        D:"The model does not mention rehearsal at any point in its description"
+      },
+      correct:"B",tag:"MC-MEM-01",
+      scaffold:"The multi-store model claims that the more you rehearse, the more likely material transfers to long-term memory — maintenance rehearsal by simple repetition. Craik and Lockhart's levels of processing account challenged this: what matters is the depth of processing, not the amount of repetition. Elaborative rehearsal, which links new material to existing knowledge or its meaning, produces far better long-term retention than repeating something for longer. This has direct revision implications worth stating in an answer: explaining a concept in your own words or connecting it to an example beats rereading. It is a strong criticism because it targets the model's proposed mechanism, not just its structure.",
+      reforge:{stem:"Which revision strategy uses elaborative rather than maintenance rehearsal?",options:{A:"Reading the same page repeatedly until it feels familiar",B:"Copying out notes word for word from a textbook",C:"Explaining a concept in your own words with an example",D:"Repeating a definition aloud twenty times in a row"},correct:"C"}
+    },
+    {
+      id:"MEM-23",
+      stem:"Which factor most limits the use of the cognitive interview in police practice?",
+      options:{
+        A:"It has been shown to reduce the total quantity of information recalled",
+        B:"It requires specialist training and considerably more time than a standard interview",
+        C:"It can only be used with witnesses who were entirely unaffected by anxiety",
+        D:"It produces information that is entirely inadmissible as evidence in a criminal court"
+      },
+      correct:"B",tag:"MC-MEM-06",
+      scaffold:"The cognitive interview works, but it is expensive. It takes substantially longer than a standard police interview and requires proper training, which many forces cannot resource — so in practice officers often use only some techniques rather than the full protocol. That partial use makes the research literature hard to compare, since 'the cognitive interview' means different things in different studies. Milne and Bull addressed this usefully by testing the components separately: they found that 'report everything' and 'context reinstatement' used together produced better recall than any other combination, which gives forces a practical minimum where full training is not possible.",
+      reforge:{stem:"Which two cognitive interview techniques did Milne and Bull find most effective together?",options:{A:"Reverse order and change of perspective",B:"Report everything and context reinstatement",C:"Change of perspective and report everything",D:"Context reinstatement and reverse order"},correct:"B"}
+    },
+    {
+      id:"MEM-24",
+      stem:"Why might interference research overstate the role of interference in everyday forgetting?",
+      options:{
+        A:"Because interference has never been demonstrated in any laboratory study",
+        B:"Because participants in these studies were always given retrieval cues",
+        C:"Because it only applies to visual rather than to verbal material",
+        D:"Because artificial word lists and short intervals maximise its effects"
+      },
+      correct:"D",tag:"MC-MEM-04",
+      scaffold:"Typical interference studies use meaningless word lists learned minutes apart — conditions engineered to maximise interference and rarely matched in real life, where similar material is usually learned days or weeks apart with far more context. So while interference is real, it may explain less everyday forgetting than the laboratory suggests. Two things strengthen the account though: Baddeley and Hitch's rugby player study, where forgetting depended on the number of games played rather than time elapsed, is a genuine real-world demonstration; and Tulving showed that giving cued recall restores much of the apparently 'lost' material, suggesting interference often causes temporary retrieval failure rather than permanent loss.",
+      reforge:{stem:"What did Baddeley and Hitch's rugby player study find?",options:{A:"Forgetting depended on the number of games played, not time",B:"Forgetting depended only on the time that had elapsed",C:"Players never forgot any of the teams they had faced",D:"Interference only occurs with artificial word lists"},correct:"A"}
     }
 );

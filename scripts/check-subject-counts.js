@@ -38,6 +38,7 @@ const PAGES = [
   { file: 'gcse-history.html', key: 'gcse-hist' },
   { file: 'gcse-psychology.html', key: 'gcse-psych' },
   { file: 'gcse-science.html', key: 'gcse-science' },
+  { file: 'gcse-maths.html', key: 'gcse-maths' },
 ];
 
 let problems = 0;
