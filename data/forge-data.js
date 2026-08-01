@@ -16178,6 +16178,29 @@ appendGenerated("CHEM-3", [
 appendGenerated("CHEM-1", [["The electron arrangement of a magnesium atom is:","2,8,2","2,8,8","2,10","2,6,2", "Magnesium has atomic number 12, so its electrons occupy shells as 2,8,2."]], "CHEM-E1B");
 appendGenerated("CHEM-3", [["A condensation reaction between two amino acids forms:","a peptide bond and water","an alkene and hydrogen","a halogenoalkane and oxygen","only carbon dioxide", "The amino and carboxyl groups react to form an amide link, releasing water."]], "CHEM-E3B");
 
+appendGenerated("CHEM-2", [
+  ["Down Group 2, the first ionisation energy generally:","decreases as atomic radius and shielding increase","increases because atoms gain electrons","stays constant for every element","becomes zero in aqueous solution", "The outer electron is farther from the nucleus and more shielded down the group."],
+  ["Aqueous barium ions are commonly identified by adding sulfate ions, which produce:","a white precipitate","a silver mirror","a green solution","no visible change", "Barium sulfate is insoluble and forms a white precipitate."],
+  ["Which observation is consistent with chlorine being more reactive than bromide ions?","Chlorine displaces bromine from bromide solution","Bromide displaces chlorine from chloride solution","Both halogens form identical products in water","Chlorine cannot gain electrons", "A more reactive halogen oxidises the ions of a less reactive halogen."],
+  ["A transition-metal complex is coloured mainly because it:","absorbs particular frequencies during electronic transitions","contains no delocalised electrons","always forms a white precipitate","has a higher boiling point than water", "The ligand field splits d-orbital energies, allowing selected wavelengths to be absorbed."]
+], "CHEM-E4");
+appendGenerated("CHEM-2", [
+  ["Which trend is expected across Period 3?","the oxides change from mainly ionic to mainly covalent","all elements become metals","atomic radius increases steadily","every oxide is neutral", "Increasing nuclear charge and changing bonding account for the trend in oxide character."],
+  ["When magnesium reacts with steam, the main products are:","magnesium oxide and hydrogen","magnesium hydroxide and chlorine","magnesium carbonate and oxygen","magnesium nitrate and water", "Steam produces magnesium oxide and hydrogen, unlike cold water."],
+  ["A precipitate test for chloride ions uses acidified silver nitrate and gives:","a white precipitate","a yellow flame","a blue solution","a brown gas", "Silver chloride is white; acidification removes interfering carbonate ions."],
+  ["The oxidation state of a transition metal can vary because:","both 4s and 3d electrons may be involved in bonding","transition metals have no outer electrons","all their compounds are molecular","their nuclei contain variable protons", "The similar energies of 4s and 3d electrons allow several oxidation states."]
+], "CHEM-E4B");
+appendGenerated("CHEM-3", [
+  ["In the free-radical substitution of methane, initiation produces:","chlorine radicals when Cl₂ undergoes homolytic fission","methanol by hydrolysis","a carbocation from methane","a polymer by condensation", "Ultraviolet radiation breaks the chlorine molecule's covalent bond into radicals."],
+  ["An alkane is relatively unreactive because it contains:","strong, non-polar C–C and C–H sigma bonds","a reactive carbon-carbon double bond","an ionic lattice","a carbonyl group", "Alkanes lack the polar or pi bonds that provide common reaction sites."],
+  ["A suitable reagent for converting an alkane into a halogenoalkane is:","chlorine under ultraviolet light","aqueous sodium hydroxide at room temperature","acidified potassium manganate(VII)","Tollens' reagent", "Ultraviolet light initiates free-radical substitution with chlorine."],
+  ["In a synthesis pathway, retrosynthesis means:","working backwards from the target molecule to suitable starting materials","heating every intermediate until it boils","measuring the rate without changing conditions","removing all functional groups first", "Retrosynthetic analysis identifies practical disconnections and reagents."],
+  ["A good organic synthesis should be judged partly by:","yield, purity, atom economy and manageable conditions","the number of steps alone","whether every intermediate is coloured","the mass of solvent discarded only", "Several criteria help compare an efficient and practical route."],
+  ["Which sequence is a plausible route from an alcohol to a carboxylic acid?","oxidise a primary alcohol under suitable conditions","reduce the alcohol with sodium borohydride","add bromine water to produce an amine","hydrolyse it with silver nitrate", "Primary alcohols can be oxidised first to an aldehyde and then to a carboxylic acid."],
+  ["A Grignard reagent is useful in synthesis because it can:","form a new carbon-carbon bond with a carbonyl compound","act only as a chromatography solvent","remove every proton from an alkane","convert benzene directly into an amino acid", "Grignard reagents add carbon groups to carbonyl compounds before hydrolysis."],
+  ["A reaction scheme is more convincing when it includes:","reagents, conditions, structures and the reaction type","only the product name","the colour of the apparatus","a yield without any method", "A complete scheme shows how the transformation can be carried out and checked."]
+], "CHEM-E4C");
+
 SUBJECTS["media"].sub = "Eduqas A680QS — Components 1–3";
 SUBJECTS["chem"].sub = "AQA 7405 — Papers 1–3";
 const rebalanceMCQSubject = bankIds => bankIds.forEach(bankId => BANKS[bankId].questions.forEach((question, index) => {
@@ -16889,12 +16912,13 @@ const chemistryPointFor = (bankId, stem) => {
     [/organic analysis|bromine water/, "3.3.6"],
     [/alcohol|ethanol/, "3.3.5"],
     [/alkene|electrophilic addition|hbr/, "3.3.4"],
-    [/halogenoalkane|nucleophile|free radical substitution|methane with chlorine/, "3.3.3"],
+    [/free radical substitution|methane with chlorine/, "3.3.2"],
+    [/halogenoalkane|nucleophile/, "3.3.3"],
     [/alkane/, "3.3.2"],
     [/organic chemistry|functional group/, "3.3.1"],
     [/why does fluorine.*electronegativity|fluorine.*higher electronegativity/, "3.1.1"],
     [/group 2|alkaline earth/, "3.2.2"],
-    [/group 7|halogen/, "3.2.3"],
+    [/group 7|halogen|chlorine.*bromide|bromide.*chlorine/, "3.2.3"],
     [/period 3|period 3 elements|oxide/, "3.2.4"],
     [/transition metal|complex ion|ligand/, "3.2.5"],
     [/aqueous ion|test for ion|precipitate|ions in solution/, "3.2.6"],
