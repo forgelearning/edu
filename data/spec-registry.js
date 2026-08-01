@@ -829,6 +829,66 @@ Object.assign(SPEC_REGISTRY.aliases, {
   "OCR-LAW-P3": "ocr-a-law-ocr-law-p3"
 });
 
+// Remaining live A-level routes. These component-level points mirror the
+// delivered banks and keep coursework components explicit where no recall
+// bank is appropriate.
+const remainingAlevelPoints = [
+  ["pol", "Edexcel", "A Level Politics (9PL0)", [
+    ["P1-UKPOL", "Paper 1", "UK politics"],
+    ["P2-UKGOV", "Paper 2", "UK government"],
+    ["P3-USGOV", "Paper 3", "US government"],
+    ["P3-USPOL", "Paper 3", "US politics and participation"]
+  ]],
+  ["rs", "Eduqas", "A Level Religious Studies (A120QS)", [
+    ["C1", "Component 1", "A study of religion: Buddhism"],
+    ["C2", "Component 2", "Philosophy of religion"],
+    ["C3", "Component 3", "Religion and ethics"]
+  ]],
+  ["hsc", "OCR", "Cambridge Technical Health and Social Care (H128)", [
+    ["F090", "Unit F090", "Principles in health and social care"],
+    ["F091", "Unit F091", "Anatomy and physiology for health and social care"],
+    ["F092", "Unit F092", "Person-centred approach to care"],
+    ["F093", "Unit F093", "Supporting people with mental health conditions"]
+  ]],
+  ["media", "Eduqas", "A Level Media Studies (A680QS)", [
+    ["C1", "Component 1", "Investigating the media"],
+    ["C2", "Component 2", "Creating a media production"],
+    ["C3", "Component 3", "Making media" ]
+  ]],
+  ["pe", "AQA", "A Level Physical Education (7582)", [
+    ["3.1", "Paper 1", "Factors affecting participation in physical activity and sport"],
+    ["3.2", "Paper 2", "Factors affecting optimal performance in physical activity and sport"],
+    ["3.3", "NEA", "Practical performance and written evaluation"]
+  ]],
+  ["englit", "AQA", "A Level English Literature (7712)", [
+    ["3.1", "Paper 1", "Love through the ages"],
+    ["3.2", "Paper 2", "Texts in shared contexts"],
+    ["3.3", "NEA", "Independent critical study"]
+  ]],
+  ["engll", "AQA", "A Level English Language (7707)", [
+    ["3.1", "Paper 1", "Language, the individual and society"],
+    ["3.2", "Paper 2", "Language varieties"],
+    ["3.3", "NEA", "Language investigation and original writing"]
+  ]]
+];
+for (const [subject, board, qualification, points] of remainingAlevelPoints) {
+  for (const [code, paper, title] of points) {
+    const key = `${board.toLowerCase().replace(/[^a-z]/g, "")}-a-${subject}-${code.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
+    SPEC_REGISTRY.points[key] = { subject, board, qualification, paper, code, title, aliases: [] };
+  }
+}
+Object.assign(SPEC_REGISTRY.aliases, {
+  "EDEXCEL-9PL0-P1": "edexcel-a-pol-p1-ukpol", "EDEXCEL-9PL0-P2": "edexcel-a-pol-p2-ukgov",
+  "EDEXCEL-9PL0-P3-US": "edexcel-a-pol-p3-usgov", "EDEXCEL-9PL0-P3-USPOL": "edexcel-a-pol-p3-uspol",
+  "POL-UKPOL": "edexcel-a-pol-p1-ukpol", "POL-UKGOV": "edexcel-a-pol-p2-ukgov",
+  "POL-USGOV": "edexcel-a-pol-p3-usgov", "POL-USPOL": "edexcel-a-pol-p3-uspol",
+  "RS-1": "eduqas-a-rs-c2", "RS-2": "eduqas-a-rs-c3",
+  "HSC-1": "ocr-a-hsc-f090", "HSC-2": "ocr-a-hsc-f092",
+  "MEDIA-1": "eduqas-a-media-c1", "MEDIA-2": "eduqas-a-media-c2",
+  "PE-1": "aqa-a-pe-3-1", "PE-2": "aqa-a-pe-3-2",
+  "ENG-TERM-1": "aqa-a-englit-3-1", "ENG-TECH-1": "aqa-a-englit-3-2"
+});
+
 // Selected-route exclusions for option-based A-level subjects. The live banks
 // represent the options currently taught at school; the alternatives remain
 // in the registry so they can be enabled later without losing board coverage.
@@ -840,6 +900,20 @@ for (const [subject, ids, reason] of [
   for (const pointId of Object.keys(SPEC_REGISTRY.points)) {
     const point = SPEC_REGISTRY.points[pointId];
     if (point.subject === subject && ids.includes(point.code)) {
+      SPEC_REGISTRY.routeExclusions[pointId] = { reason, title: point.title };
+    }
+  }
+}
+
+for (const [subject, codes, reason] of [
+  ["media", ["C3"], "Coursework/production component rather than a recall question bank"],
+  ["pe", ["3.3"], "Practical performance and written evaluation assessed as NEA"],
+  ["englit", ["3.3"], "Independent critical study assessed as NEA"],
+  ["engll", ["3.3"], "Language investigation and original writing assessed as NEA"]
+]) {
+  for (const pointId of Object.keys(SPEC_REGISTRY.points)) {
+    const point = SPEC_REGISTRY.points[pointId];
+    if (point.subject === subject && codes.includes(point.code)) {
       SPEC_REGISTRY.routeExclusions[pointId] = { reason, title: point.title };
     }
   }

@@ -70,9 +70,16 @@ for (const subjectKey of subjects) {
     }
 
     const bankResolution = resolve(bankId);
-    if (!bankResolution) {
+    const bankHasSubjectPoint = (bank.questions || []).some(question => {
+      const rawSpecs = [
+        ...(Array.isArray(question.specPointIds) ? question.specPointIds : []),
+        question.specPointId || question.spec || bankId
+      ];
+      return rawSpecs.map(resolve).some(item => item && item.point.subject === subjectKey);
+    });
+    if (!bankResolution && !bankHasSubjectPoint) {
       fail(`${subjectKey}/${bankId}`, 'bank id has no registered specification point');
-    } else if (bankResolution.point.subject !== subjectKey) {
+    } else if (bankResolution && bankResolution.point.subject !== subjectKey && !bankHasSubjectPoint) {
       fail(`${subjectKey}/${bankId}`, `registry point belongs to ${bankResolution.point.subject}`);
     }
 
@@ -81,10 +88,15 @@ for (const subjectKey of subjects) {
       // Older Economics questions sometimes omit `spec` because their bank
       // already carried the topic identity. Resolve those through the bank
       // during the migration period, then report the point as covered.
-      const rawSpec = question.specPointId || question.spec || bankId;
-      const resolution = resolve(rawSpec);
+      const rawSpecs = [
+        ...(Array.isArray(question.specPointIds) ? question.specPointIds : []),
+        question.specPointId || question.spec || bankId
+      ];
+      const resolutions = rawSpecs.map(resolve).filter(Boolean);
+      const resolution = resolutions.find(item => item.point.subject === subjectKey) || resolutions[0];
+      const hasSubjectResolution = resolutions.some(item => item.point.subject === subjectKey);
       if (!resolution) {
-        fail(location, `unknown specification reference "${rawSpec || ''}"`);
+        fail(location, `unknown specification reference "${rawSpecs.join(', ')}"`);
         continue;
       }
       if (resolution.point.subject !== subjectKey) {
@@ -126,7 +138,7 @@ for (const subjectKey of subjects) {
       const isLawSection = subjectKey === 'law' &&
         resolution.id.startsWith('ocr-a-law-') &&
         bankResolution?.id.startsWith('ocr-a-law-');
-      if (resolution.id !== bankResolution?.id && !isGeographyKeyIdea && !isHistorySection && !isBusinessSection && !isChemistrySection && !isBiologySection && !isPhysicsSection && !isComputerScienceSection && !isMathematicsSection && !isFrenchSection && !isGermanSection && !isSpanishSection && !isLawSection) {
+      if (resolution.id !== bankResolution?.id && !hasSubjectResolution && !isGeographyKeyIdea && !isHistorySection && !isBusinessSection && !isChemistrySection && !isBiologySection && !isPhysicsSection && !isComputerScienceSection && !isMathematicsSection && !isFrenchSection && !isGermanSection && !isSpanishSection && !isLawSection) {
         fail(location, `question resolves to ${resolution.id}, but bank resolves to ${bankResolution?.id || 'none'}`);
       }
       counts.set(resolution.id, (counts.get(resolution.id) || 0) + 1);

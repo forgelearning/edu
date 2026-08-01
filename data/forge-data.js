@@ -17093,6 +17093,99 @@ for (const [bankId, ranges] of Object.entries(historySpecPointIds)) {
   }
 }
 
+// Phase 3 coverage additions: Economics Paper 2 policy/finance sections and
+// the thinner AQA History 2M.6 section. These are appended after the legacy
+// range mapper and receive explicit point IDs below.
+appendGenerated("2.3.1", [
+  ["Automatic stabilisers are best described as:","tax and benefit changes that respond to economic activity without a new decision","a fixed exchange rate chosen by the central bank","a supply-side reform that always raises productivity","a private investment fund used by firms", "Automatic stabilisers soften fluctuations as tax receipts and benefit payments change with income and employment."],
+  ["Crowding out may occur when expansionary fiscal policy:","raises public borrowing and pushes up interest rates faced by private borrowers","reduces government spending during a recession","lowers the demand for loanable funds","increases the supply of skilled labour immediately", "Higher government borrowing can compete for funds and reduce private investment, especially near full capacity."],
+], "ECON-POLICY");
+appendGenerated("2.3.2", [
+  ["Quantitative easing is intended mainly to:","lower longer-term borrowing costs and support spending by buying financial assets","increase direct taxes on households","reduce the money supply through bond sales","fix the exchange rate at a permanent level", "QE creates money to purchase assets, aiming to improve liquidity, confidence and aggregate demand when rates are low."],
+  ["A higher policy interest rate is most likely to reduce aggregate demand through:","more expensive borrowing and a stronger incentive to save","lower saving and cheaper mortgages","a guaranteed rise in exports","an immediate increase in productive capacity", "Higher rates tend to reduce consumption and investment, though the effect depends on debt, confidence and exchange rates."],
+], "ECON-MONETARY");
+appendGenerated("2.3.3", [
+  ["A government-funded apprenticeship scheme is a supply-side policy because it:","improves workers' skills and may raise the economy's productive capacity","reduces the policy interest rate","changes the exchange rate directly","sets a maximum price for all goods", "Training can improve human capital, labour productivity and the long-run aggregate supply of the economy."],
+  ["A possible limitation of supply-side reforms is that they:","may take time to affect productivity and can require substantial public spending","always reduce the budget deficit immediately","cannot affect employment or investment","work faster than a change in interest rates in every case", "Structural reforms may be slow, expensive and uncertain, with benefits depending on implementation and spare capacity."],
+], "ECON-SUPPLY");
+appendGenerated("2.4.1", [
+  ["A progressive income tax is designed to:","take a higher proportion of income from higher-income taxpayers","charge every taxpayer exactly the same amount","reduce the tax paid as income rises","replace all benefit payments with private insurance", "Progressive taxation can reduce post-tax income inequality, although its effects depend on rates, thresholds and avoidance."],
+  ["A Lorenz curve further from the line of equality indicates:","a greater degree of income inequality","that all households receive the same income","a fall in the population size","that the economy has no unemployment", "The greater the gap from the equality line, the more unequal the income distribution."],
+], "ECON-INEQUALITY");
+appendGenerated("2.4.2", [
+  ["Relative poverty is measured by comparing a person's resources with:","a threshold related to typical income or living standards in that society","the cost of one specific imported good","the highest income in the world","the number of firms operating in the economy", "Relative poverty reflects the resources needed to participate in the living standards of the society concerned."],
+  ["The poverty trap can discourage a person from taking work when:","lost benefits and higher taxes outweigh the extra earnings from employment","wages rise faster than productivity for every worker","all benefits are paid regardless of income","employment has no effect on disposable income", "A high effective marginal tax rate can make the financial gain from employment small or negative."],
+], "ECON-POVERTY");
+appendGenerated("2.5.1", [
+  ["An equity market allows firms mainly to:","raise finance by issuing shares to investors","set the official interest rate for the economy","provide unemployment benefits","control the quantity of imported goods", "Equity markets help firms raise capital, while investors share in returns and risk."],
+  ["A forward market can help an importer manage:","the risk that a future exchange rate will change","the risk that all domestic wages will fall","the number of workers available in a region","the level of government spending in a budget", "A forward contract can lock in an exchange rate for a future transaction."],
+], "ECON-FINANCE");
+appendGenerated("2.5.2", [
+  ["Commercial banks create money mainly when they:","make new loans that are credited to borrowers' accounts","print banknotes for the central bank","collect taxes on behalf of the government","turn every deposit into physical cash", "Bank lending creates deposits, subject to capital, liquidity, regulation and borrowers' demand for credit."],
+  ["A lender of last resort provides emergency liquidity to:","a bank or financial institution facing a temporary shortage of funds","any firm seeking a guaranteed profit","households that want to avoid paying tax","exporters needing a lower world price", "Central-bank lending can limit contagion when a solvent institution cannot obtain short-term funding."],
+], "ECON-BANKS");
+appendGenerated("2.5.3", [
+  ["The Financial Policy Committee is primarily concerned with:","reducing risks to the stability of the financial system as a whole","setting the income of every household","choosing the government's annual tax rates","managing individual firms' daily advertising", "Macroprudential policy looks across the financial system and can address risks such as excessive lending."],
+  ["Central-bank independence is intended to:","allow monetary decisions to be made without short-term political pressure","ensure the central bank can ignore its legal objectives","remove the government's role in setting the inflation target","make interest rates identical in every country", "Operational independence can support credibility while the government retains responsibility for the target framework."],
+], "ECON-CENTRAL");
+for (const code of ["2.3.1", "2.3.2", "2.3.3", "2.4.1", "2.4.2", "2.5.1", "2.5.2", "2.5.3"]) {
+  for (const question of BANKS[code].questions.slice(-2)) {
+    question.spec = code;
+    question.specPointId = `edexcel-a-econ-${code}`;
+  }
+}
+
+appendGenerated("HIST-BRIT2", [
+  ["Why did Conservative governments after 1951 claim that Britain had achieved an 'affluent society'?","Rising wages, wider consumer ownership and higher living standards were visible for many households","All poverty and regional inequality had disappeared","Britain had abandoned a mixed economy completely","The welfare state had been dismantled", "Post-war affluence was real but uneven, with poverty and inequality persisting in some groups and regions."],
+  ["What was an important feature of the post-war consensus in Britain?","Both major parties accepted a mixed economy and key welfare-state commitments","Both parties rejected public ownership and national insurance","The Conservatives and Labour shared one foreign policy on every issue","Neither party supported government intervention in the economy", "The consensus involved broad acceptance of welfare provision, full employment aims and a mixed economy, despite differences in emphasis."],
+  ["Why was the 1956 Suez Crisis damaging to Anthony Eden's government?","The failed intervention exposed Britain's reduced international power and caused political pressure at home","It led directly to the creation of the NHS","It ended all Conservative support for decolonisation in 1951","It caused the General Strike of 1926", "US opposition and the forced withdrawal demonstrated limits on Britain's ability to act as a great power."],
+  ["Which development helped change everyday life in Britain during the 1950s?","Greater access to cars, televisions and household consumer goods","The end of all private home ownership","A return to wartime rationing across every product","The removal of secondary education", "Consumer goods became more widely available, although access and prosperity remained uneven."],
+  ["Why did the welfare state remain politically significant after 1951?","It had become a widely expected part of social citizenship","Most voters wanted all public services privatised immediately","It applied only to wealthy households","It was replaced by voluntary charity", "The Conservatives maintained major welfare institutions because they had become embedded in expectations about government responsibility."],
+  ["What was a limitation of measuring post-war prosperity through average income alone?","It could conceal regional, class and household differences in living standards","It always overstated poverty in every region","It measured political participation rather than material conditions","It excluded all changes in consumer spending", "Averages can hide unequal distribution, housing costs, insecurity and differences between regions."],
+  ["How did decolonisation affect Britain's position in the 1950s?","It reduced the empire and encouraged a closer focus on alliances and economic interests","It expanded British control over every major colony","It made Britain independent of the United States","It ended all migration to Britain", "Decolonisation reduced formal imperial power while Britain sought influence through diplomacy, trade and alliances."],
+  ["Why did Macmillan's government emphasise that people had 'never had it so good'?","The slogan presented rising prosperity as evidence of successful Conservative government","It acknowledged that unemployment had reached zero everywhere","It announced the end of the welfare state","It described Britain's defeat at Suez", "The phrase was political messaging that highlighted prosperity while critics pointed to inequality and persistent social problems."],
+], "HIST-2M6-GAPS");
+for (const question of BANKS["HIST-BRIT2"].questions.slice(-8)) question.specPointId = "aqa-a-hist-2m-6";
+
+appendGenerated("RS-1", [
+  ["In Buddhist teaching, dukkha refers most closely to:","the unsatisfactory and unstable nature of conditioned existence","a permanent personal soul","a creator deity who judges actions","a ritual performed only by monks", "Dukkha includes suffering, dissatisfaction and the inability of changing things to provide lasting security."],
+  ["The Four Noble Truths begin with the claim that:","life as ordinarily experienced involves dukkha","all desire is immediately fulfilled","the self is permanent and unchanging","karma has no effect on rebirth", "The first truth identifies dukkha; the remaining truths explain its cause, cessation and the path."],
+  ["In Buddhism, anatta means that:","there is no permanent, independent self","every person has an eternal soul","the body is identical to the Buddha","karma is determined by social class", "Anatta challenges the idea of a fixed, enduring self, linking identity to changing processes."],
+  ["The Eightfold Path is intended to:","provide a practical route towards the cessation of dukkha","prove the existence of a creator God","replace meditation with political action","teach that wealth is the highest good", "The path combines ethical conduct, mental discipline and wisdom."],
+  ["Karma in Buddhist ethics is best understood as:","the moral significance of intentional actions and their consequences","a fixed fate that cannot be influenced","a punishment imposed by a creator deity","a ritual performed after death only", "Intention is central: actions shape future experience and patterns of rebirth."],
+  ["Theravada Buddhism places particular emphasis on:","the arhat ideal and monastic practice","the worship of a creator God","salvation through one eternal self","rejecting meditation as unnecessary", "Theravada commonly emphasises the arhat path, the Pali Canon and monastic discipline."],
+  ["Mahayana Buddhism commonly presents the bodhisattva as someone who:","delays final liberation to assist other sentient beings","rejects compassion as a source of wisdom","seeks wealth as proof of enlightenment","believes only monks can reach liberation", "The bodhisattva ideal places compassionate activity for all beings at the centre of practice."],
+  ["Nirvana is described in Buddhist teaching as:","the ending of craving, ignorance and the cycle of dukkha","a permanent heaven created by a deity","a reward purchased through wealth","a form of political authority", "Nirvana is liberation from the causes of suffering and the cycle of rebirth."],
+], "RS-BUDDHISM");
+for (const question of BANKS["RS-1"].questions.slice(-8)) {
+  question.specPointId = "eduqas-a-rs-c1";
+  question.spec = "RS-1";
+}
+
+appendGenerated("HSC-2", [
+  ["The main role of the small intestine in digestion is to:","absorb digested nutrients through villi into the blood or lymph","store urine before it leaves the body","pump oxygenated blood to the tissues","produce antibodies in the alveoli", "Villi provide a large surface area for absorption of digested nutrients."],
+  ["Gas exchange in the lungs occurs efficiently because alveoli have:","thin walls, a large surface area and a good blood supply","thick walls and no nearby capillaries","a waterproof lining that stops diffusion","cartilage rings throughout each air sac", "Short diffusion distance and maintained concentration gradients support gas exchange."],
+  ["A person with depression may be supported by:","appropriate professional assessment, treatment and ongoing communication","being told to ignore all symptoms","removal of all social contact","a guarantee that one treatment works for everyone", "Support should be person-centred and may involve assessment, talking therapies, medication and monitoring."],
+  ["A person-centred mental-health plan should begin by:","understanding the individual's needs, preferences, strengths and goals","using the same plan for every service user","allowing only relatives to make decisions","focusing on diagnosis without lived experience", "Person-centred planning involves the individual and reflects their priorities and circumstances."],
+], "HSC-ANATOMY-MH");
+for (const question of BANKS["HSC-2"].questions.slice(-4)) {
+  question.specPointId = question.id.endsWith("01") || question.id.endsWith("02") ? "ocr-a-hsc-f091" : "ocr-a-hsc-f093";
+  question.spec = "HSC-2";
+}
+
+// English Literature and English Language & Literature intentionally share
+// the same terminology/practice banks. Keep both qualification routes visible
+// to the coverage audit without duplicating hundreds of question objects.
+for (const [bankId, litPoint, langPoint] of [
+  ["ENG-TERM-1", "aqa-a-englit-3-1", "aqa-a-engll-3-1"],
+  ["ENG-TECH-1", "aqa-a-englit-3-2", "aqa-a-engll-3-2"]
+]) {
+  for (const question of BANKS[bankId]?.questions || []) {
+    question.specPointId = litPoint;
+    question.specPointIds = [litPoint, langPoint];
+  }
+}
+
 // Map Business questions to Edexcel 9BS0 numbered sections using the terms
 // and calculations in each stem. The fallback keeps every legacy bank
 // addressable while the keyword routes provide useful question-level detail.
