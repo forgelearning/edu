@@ -7,6 +7,9 @@
 
 const SPEC_REGISTRY = {
   version: 1,
+  // Some exam boards offer optional routes. Keep those exclusions explicit
+  // so the coverage audit distinguishes "not delivered" from "not covered".
+  routeExclusions: {},
   points: {
     "edexcel-a-econ-1.1": {
       subject: "econ",
@@ -426,6 +429,26 @@ Object.assign(SPEC_REGISTRY.aliases, {
   "9GE0-HEALTH": "edexcel-a-geo-topic-8a"
 });
 
+// The school-delivered Edexcel Geography route uses coastal landscapes,
+// regenerating places and migration-related health/globalisation content;
+// these three alternatives are specification-valid but are not taught on
+// the selected route shown in the options information.
+for (const [prefix, title] of [
+  ["2A", "Glaciated Landscapes and Change"],
+  ["4B", "Diverse Places"],
+  ["8B", "Migration, Identity and Sovereignty"]
+]) {
+  for (const pointId of Object.keys(SPEC_REGISTRY.points)) {
+    const point = SPEC_REGISTRY.points[pointId];
+    if (point.subject === "geo" && point.code.startsWith(`${prefix}.`)) {
+      SPEC_REGISTRY.routeExclusions[pointId] = {
+        reason: "Alternative Edexcel route not delivered on the selected school course",
+        title
+      };
+    }
+  }
+}
+
 // AQA A-level History (7042), using the section structure published for the
 // selected options in this project.  The Tudor bank is the content context
 // for Component 3; the NEA points therefore describe the historical-
@@ -805,3 +828,28 @@ Object.assign(SPEC_REGISTRY.aliases, {
   "OCR-LAW-P2-TORT": "ocr-a-law-ocr-law-p2-tort",
   "OCR-LAW-P3": "ocr-a-law-ocr-law-p3"
 });
+
+// Selected-route exclusions for option-based A-level subjects. The live banks
+// represent the options currently taught at school; the alternatives remain
+// in the registry so they can be enabled later without losing board coverage.
+for (const [subject, ids, reason] of [
+  ["psych", ["3.3.2", "3.3.3", "3.3.5", "3.3.6", "3.3.8", "3.3.10"], "Alternative AQA Psychology option not selected for the delivered route"],
+  ["soc", ["3.2.1", "3.2.3", "3.2.4"], "Alternative AQA Sociology option not selected for the delivered route"],
+  ["hist", ["NEA.1", "NEA.2", "NEA.3"], "Coursework skill assessed through the History NEA rather than an MCQ bank"]
+]) {
+  for (const pointId of Object.keys(SPEC_REGISTRY.points)) {
+    const point = SPEC_REGISTRY.points[pointId];
+    if (point.subject === subject && ids.includes(point.code)) {
+      SPEC_REGISTRY.routeExclusions[pointId] = { reason, title: point.title };
+    }
+  }
+}
+
+const csProjectPoint = Object.entries(SPEC_REGISTRY.points)
+  .find(([, point]) => point.subject === "cs" && point.code === "3.1");
+if (csProjectPoint) {
+  SPEC_REGISTRY.routeExclusions[csProjectPoint[0]] = {
+    reason: "Programming project assessed as Eduqas Component 3 coursework rather than a recall bank",
+    title: csProjectPoint[1].title
+  };
+}

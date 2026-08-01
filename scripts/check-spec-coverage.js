@@ -141,6 +141,11 @@ for (const [pointId, point] of Object.entries(SPEC_REGISTRY.points)) {
   // report those compatibility aliases as uncovered specification points.
   if (point.subject === 'geo' && pointId.includes('-topic-')) continue;
   const count = counts.get(pointId) || 0;
+  const exclusion = SPEC_REGISTRY.routeExclusions?.[pointId];
+  if (!count && exclusion) {
+    console.log(`${point.subject}\t${point.paper}\t${point.code}\t${point.title}\t0 questions\tROUTE EXCLUDED — ${exclusion.reason}`);
+    continue;
+  }
   if (!count) warn(pointId, `${point.code} ${point.title} has no mapped questions`);
   console.log(`${point.subject}\t${point.paper}\t${point.code}\t${point.title}\t${count} questions`);
 }

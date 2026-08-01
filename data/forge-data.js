@@ -16787,6 +16787,31 @@ for (const subject of Object.values(SUBJECTS)) {
   }
 }
 
+// Eduqas A-level Computer Science Component 2.5: legal, moral, cultural and
+// ethical issues. These application questions sit in the existing Component 2
+// bank and are tagged to the exact registry point rather than the broad bank.
+const csEthicsQuestions = [
+  ["CS-ETH-01", "Which principle is most directly protected by data protection law?", {A:"A person's right to control how personal data is collected and used",B:"A firm's right to publish every record it holds",C:"A requirement to store all data permanently",D:"A ban on correcting inaccurate records"}, "A", "Data protection rules regulate the collection, use, accuracy, security and retention of personal information."],
+  ["CS-ETH-02", "A company trains a facial-recognition system on an unrepresentative dataset. What is the main ethical risk?", {A:"The algorithm will always run more quickly",B:"The system may produce unfairly biased outcomes",C:"The dataset will automatically become public",D:"The camera will stop recording all images"}, "B", "Unrepresentative training data can produce systematic errors for groups that are poorly represented."],
+  ["CS-ETH-03", "What is the strongest reason for using encryption when transmitting medical data?", {A:"It guarantees the data is accurate",B:"It makes the data impossible to delete",C:"It reduces the chance that an interceptor can read the data",D:"It removes the need for access controls"}, "C", "Encryption protects confidentiality in transit, although secure authentication and access controls are still needed."],
+  ["CS-ETH-04", "Which example best illustrates the digital divide?", {A:"A programmer choosing between two programming languages",B:"A database containing duplicate records",C:"A website using a responsive layout",D:"Some communities lacking reliable access to devices or the internet"}, "D", "The digital divide is unequal access to digital technologies and the skills or connectivity needed to use them."],
+  ["CS-ETH-05", "Why might a software developer choose an open-source licence with attribution conditions?", {A:"To allow reuse while requiring credit for the original work",B:"To prevent anybody from viewing the source code",C:"To guarantee that every derivative becomes commercial",D:"To remove all responsibility for complying with licence terms"}, "A", "Open-source licences vary: some permit reuse provided conditions such as attribution or sharing changes are met."],
+  ["CS-ETH-06", "A smart speaker records conversations without a clear user choice. Which concern is most relevant?", {A:"The device has insufficient storage capacity",B:"The collection may breach privacy and informed-consent expectations",C:"The processor cannot execute machine code",D:"The network has too much bandwidth"}, "B", "Privacy concerns arise when personal information is captured without transparency, necessity or meaningful consent."],
+  ["CS-ETH-07", "Which change would most reduce the environmental impact of a data centre?", {A:"Increasing unnecessary data duplication",B:"Replacing efficient hardware with older hardware",C:"Improving energy efficiency and using lower-carbon electricity",D:"Keeping unused servers running continuously"}, "C", "Energy-efficient equipment, workload management and lower-carbon power can reduce a data centre's emissions."],
+  ["CS-ETH-08", "Why can automation create a social concern even when it increases productivity?", {A:"It can change employment patterns and widen inequality without support",B:"It makes every worker's skills permanently identical",C:"It prevents organisations from collecting any data",D:"It guarantees all decisions are free from bias"}, "A", "Automation can displace some roles while creating others, so distributional effects and retraining matter."],
+  ["CS-ETH-09", "What is the purpose of an acceptable-use policy in an organisation?", {A:"To make all users administrators",B:"To define permitted and prohibited uses of systems and data",C:"To eliminate the need for cybersecurity training",D:"To guarantee that misuse cannot occur"}, "B", "An acceptable-use policy sets behavioural boundaries and responsibilities for using organisational systems."],
+  ["CS-ETH-10", "Which statement best describes the precautionary principle in technology policy?", {A:"A new system must be adopted immediately",B:"Potential serious harm may justify safeguards before full evidence is available",C:"Only financial costs should be considered",D:"Technology can never create unintended consequences"}, "B", "The precautionary principle supports proportionate safeguards where credible risks of serious harm remain uncertain."],
+  ["CS-ETH-11", "Why is algorithmic transparency important in a high-stakes decision system?", {A:"It helps affected people and auditors understand and challenge decisions",B:"It ensures the algorithm contains no mathematical operations",C:"It means source code can never be protected",D:"It removes the need to test the system"}, "A", "Transparency supports accountability, although explaining a system does not by itself prove that its outcomes are fair."],
+  ["CS-ETH-12", "A school uses monitoring software that flags students as suspicious. What should be considered before deployment?", {A:"Only whether the software has an attractive interface",B:"Accuracy, proportionality, privacy and the consequences of false positives",C:"Whether every alert is automatically treated as proof",D:"Whether students can be denied any explanation"}, "B", "High-impact monitoring needs evidence of accuracy, proportionate use, privacy safeguards and a process to challenge errors."],
+];
+for (const [id, stem, options, correct, scaffold] of csEthicsQuestions) {
+  BANKS["CS-2"].questions.push({
+    id, stem, options, correct, tag: "MC-CS-ETHICS", scaffold,
+    specPointId: "eduqas-a-cs-2.5", spec: "CS-2.5",
+    reforge: {stem: `A new computing case raises the same issue: ${stem}`, options, correct}
+  });
+}
+
 // Phase 2 data hygiene -----------------------------------------------------
 // Older banks were authored before the numbered spec registry was introduced.
 // Give those questions an explicit, honest bank-level reference rather than
@@ -17607,6 +17632,15 @@ for (const subject of Object.values(SUBJECTS)) {
         ref.stem = baseStem;
       }
     }
+  }
+}
+
+// Preserve the exact Component 2.5 mapping after the broader legacy mapping
+// passes above have finished.
+for (const question of BANKS["CS-2"]?.questions || []) {
+  if (String(question.id || "").startsWith("CS-ETH-")) {
+    question.specPointId = "eduqas-a-cs-2.5";
+    question.spec = "CS-2.5";
   }
 }
 
