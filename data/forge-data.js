@@ -17211,6 +17211,41 @@ for (const bankId of Object.keys(germanFallbackPoints)) {
   }
 }
 
+// Map the live Edexcel 9SP0 Spanish banks to the four themes and assessment
+// skills. The current banks mix grammar, translation and cultural recall, so
+// topical wording is routed first and the relevant paper remains the fallback.
+const spanishFallbackPoints = {
+  "SPAN-1": "edexcel-a-spanish-P1",
+  "SPAN-2": "edexcel-a-spanish-P2"
+};
+const spanishPointFor = (bankId, stem) => {
+  const text = String(stem || "").toLowerCase();
+  const routes = [
+    [/familia|matrimonio|relaci[oó]n|estructura familiar/, "1.1"],
+    [/trabajo|laboral|empleo|desempleo|jóvenes|j[oó]venes|igualdad de género|igualdad de g[eé]nero/, "1.2"],
+    [/turismo|tur[ií]stico|energ[ií]as renovables|emisiones|medio ambiente/, "1.3"],
+    [/m[uú]sica|canci[oó]n|rap|artista|concierto/, "2.1"],
+    [/medios|televisi[oó]n|telenovela|prensa|internet|tecnolog[ií]a|redes sociales|pol[ií]tica/, "2.2"],
+    [/festival|fiesta|tradici[oó]n|costumbre/, "2.3"],
+    [/inmigraci[oó]n|inmigrante|econom[ií]a.*cultura|aportaci[oó]n/, "3.1"],
+    [/integraci[oó]n|marginaci[oó]n|aislamiento|comunidad local|desaf[ií]o/, "3.2"],
+    [/opini[oó]n p[uú]blica|reacci[oó]n social|pol[ií]tico.*inmigraci[oó]n|sistema pol[ií]tico|barca|patera/, "3.3"],
+    [/guerra civil|republicanos|nacionalistas|franco|memoria hist[oó]rica/, "4.1"],
+    [/dictadura|censura|opresi[oó]n|franquista|vida cotidiana/, "4.2"],
+    [/transici[oó]n|democracia|juan carlos|su[aá]rez|golpe de estado|volver/, "4.3"],
+    [/translate|translation|literary|film|novel|play|character|essay|analysis/, "P2"],
+    [/speak|speaking|oral|research|presentation|discussion/, "P3"],
+    [/listen|listening|reading|comprehension|understanding/, "P1"]
+  ];
+  for (const [pattern, code] of routes) if (pattern.test(text)) return `edexcel-a-spanish-${code}`;
+  return spanishFallbackPoints[bankId];
+};
+for (const bankId of Object.keys(spanishFallbackPoints)) {
+  for (const question of BANKS[bankId]?.questions || []) {
+    question.specPointId = spanishPointFor(bankId, question.stem);
+  }
+}
+
 // Remove the last legacy Sociology template from imported Paper 1 questions.
 // This is deliberately applied at runtime so future bank extensions cannot
 // reintroduce the same repeated "Which statement best describes..." cue.

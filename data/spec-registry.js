@@ -747,3 +747,33 @@ Object.assign(SPEC_REGISTRY.aliases, {
   "DE-1": "edexcel-a-german-P1",
   "DE-2": "edexcel-a-german-P2"
 });
+
+// Pearson Edexcel A-level Spanish (9SP0), using the four published themes
+// and the three assessment papers as the canonical content/skill points.
+const spanishSpecPoints = [
+  ["1.1", "Papers 1–3", "El cambio en la estructura familiar"],
+  ["1.2", "Papers 1–3", "El mundo laboral"],
+  ["1.3", "Papers 1–3", "El impacto turístico en España"],
+  ["2.1", "Papers 1–3", "La música"],
+  ["2.2", "Papers 1–3", "Los medios de comunicación"],
+  ["2.3", "Papers 1–3", "Los festivales y las tradiciones"],
+  ["3.1", "Papers 1–3", "El impacto positivo de la inmigración en la sociedad Española"],
+  ["3.2", "Papers 1–3", "Enfrentando los desafíos de la inmigración y la integración en España"],
+  ["3.3", "Papers 1–3", "La reacción social y pública hacia la inmigración en España"],
+  ["4.1", "Papers 1–3", "La Guerra Civil y el ascenso de Franco (1936–1939)"],
+  ["4.2", "Papers 1–3", "La dictadura franquista"],
+  ["4.3", "Papers 1–3", "La transición de la dictadura a la democracia"],
+  ["P1", "Paper 1", "Listening, reading and translation"],
+  ["P2", "Paper 2", "Written response to works and translation"],
+  ["P3", "Paper 3", "Speaking and independent research"]
+];
+for (const [code, paper, title] of spanishSpecPoints) {
+  SPEC_REGISTRY.points[`edexcel-a-spanish-${code}`] = {
+    subject: "span", board: "Edexcel", qualification: "A-level Spanish (9SP0)",
+    paper, code, title, aliases: []
+  };
+}
+Object.assign(SPEC_REGISTRY.aliases, {
+  "SPAN-1": "edexcel-a-spanish-P1",
+  "SPAN-2": "edexcel-a-spanish-P2"
+});
