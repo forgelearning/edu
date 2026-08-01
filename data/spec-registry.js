@@ -919,6 +919,111 @@ for (const [subject, codes, reason] of [
   }
 }
 
+// GCSE Phase 4: canonical points for the delivered routes.  These are the
+// board's named content sections represented by Forge's existing banks; the
+// bank-level aliases preserve the current navigation IDs while giving every
+// question a stable specification target.
+const gcseSpecRoutes = [
+  ["gcse-econ", "OCR", "GCSE Economics (J205)", [
+    ["P1-FOUND", "Paper 1", "Introduction to economics"],
+    ["P1-MARKETS", "Paper 1", "The role of markets and money"],
+    ["P1-DS", "Paper 1", "Demand, supply and price"],
+    ["P1-COMP", "Paper 1", "Competition and market structure"],
+    ["P1-PROD", "Paper 1", "Production and productivity"],
+    ["P1-LABOUR", "Paper 1", "The labour market"],
+    ["P1-MONEY", "Paper 1", "Money and financial markets"],
+    ["P2-UK", "Paper 2", "Economic objectives and the role of government"],
+    ["P2-NATIONAL", "Paper 2", "The national economy"],
+    ["P2-GROWTH", "Paper 2", "Economic growth"],
+    ["P2-UNEMP", "Paper 2", "Low unemployment"],
+    ["P2-INCOME", "Paper 2", "Fair distribution of income"],
+    ["P2-PRICE", "Paper 2", "Price stability"],
+    ["P2-FISCAL", "Paper 2", "Fiscal policy"],
+    ["P2-MONETARY", "Paper 2", "Monetary policy"],
+    ["P2-SUPPLY", "Paper 2", "Supply-side policies"],
+    ["P2-MARKETFAIL", "Paper 2", "Limitations of markets"],
+    ["P2-TRADE", "Paper 2", "International trade"],
+    ["P2-BOP", "Paper 2", "Balance of payments"],
+    ["P2-EXR", "Paper 2", "Exchange rates"],
+    ["P2-GLOBAL", "Paper 2", "Globalisation and the global economy"]
+  ]],
+  ["gcse-geo", "Edexcel", "GCSE Geography B (1GB0)", [
+    ["HAZ", "Paper 1", "Hazardous Earth"], ["DEV", "Paper 1", "Development dynamics"],
+    ["IND", "Paper 1", "The development of an emerging country: India"],
+    ["URB", "Paper 1", "Challenges of an urbanising world"],
+    ["UKLAND", "Paper 1", "The UK's evolving physical landscape"],
+    ["UKHUMAN", "Paper 2", "The UK's evolving human landscape"],
+    ["ENQ", "Paper 3", "Geographical investigations and fieldwork"],
+    ["RVF", "Paper 3", "River fieldwork"], ["URF", "Paper 3", "Urban fieldwork"],
+    ["BIO", "Paper 1", "People and the biosphere"], ["FOR", "Paper 1", "Forests under threat"],
+    ["ENE", "Paper 1", "Consuming energy resources"],
+    ["DEC", "Paper 3", "Making geographical decisions"],
+    ["SKILLS", "Paper 3", "Geographical skills"]
+  ]],
+  ["gcse-hist", "AQA", "GCSE History (8145)", [
+    ["AMERICA", "Paper 1", "America, 1920–1973: Opportunity and inequality"],
+    ["INTERWAR", "Paper 1", "Conflict and tension: the inter-war years, 1918–1939"],
+    ["HEALTH", "Paper 2", "Britain: Health and the people, c1000 to the present day"],
+    ["ELIZABETH", "Paper 2", "Elizabethan England, c1568–1603"]
+  ]],
+  ["gcse-psych", "AQA", "GCSE Psychology (8182)", [
+    ["MEMORY", "Paper 1", "Memory"], ["PERCEPTION", "Paper 1", "Perception"],
+    ["DEVELOPMENT", "Paper 1", "Development"], ["RESEARCH", "Paper 1", "Research methods"],
+    ["SOCIAL", "Paper 2", "Social influence"],
+    ["LANGUAGE", "Paper 2", "Language, thought and communication"],
+    ["BRAIN", "Paper 2", "Brain and neuropsychology"],
+    ["PROBLEMS", "Paper 2", "Psychological problems"]
+  ]],
+  ["gcse-science", "Edexcel", "GCSE Combined Science (1SC0)", [
+    ["BIO-1", "Paper 1", "Biology: key concepts and processes"],
+    ["CHEM-1", "Paper 2", "Chemistry: key concepts and reactions"],
+    ["PHYS-1", "Paper 3", "Physics: motion, energy, waves and radiation"],
+    ["BIO-2", "Paper 4", "Biology: coordination, transport and ecosystems"],
+    ["CHEM-2", "Paper 5", "Chemistry: groups, rates, fuels and Earth science"],
+    ["PHYS-2", "Paper 6", "Physics: electricity, magnetism, particles and forces"]
+  ]],
+  ["gcse-sep-chem", "Edexcel", "GCSE Chemistry (1CH0)", [
+    ["P1", "Paper 1", "Chemistry Paper 1"], ["P2", "Paper 2", "Chemistry Paper 2"]
+  ]],
+  ["gcse-sep-phys", "Edexcel", "GCSE Physics (1PH0)", [
+    ["P1", "Paper 1", "Physics Paper 1"], ["P2", "Paper 2", "Physics Paper 2"]
+  ]],
+  ["gcse-sep-bio", "Edexcel", "GCSE Biology (1BI0)", [
+    ["P1", "Paper 1", "Biology Paper 1"], ["P2", "Paper 2", "Biology Paper 2"]
+  ]],
+  ["gcse-maths", "Edexcel", "GCSE Mathematics (1MA1)", [
+    ["P1", "Paper 1", "Non-calculator content"],
+    ["P2", "Paper 2", "Calculator content"], ["P3", "Paper 3", "Calculator content"]
+  ]]
+];
+for (const [subject, board, qualification, points] of gcseSpecRoutes) {
+  for (const [code, paper, title] of points) {
+    const key = `${board.toLowerCase().replace(/[^a-z]/g, "")}-gcse-${subject.replace(/^gcse-/, "")}-${code.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
+    SPEC_REGISTRY.points[key] = { subject, board, qualification, paper, code, title, aliases: [] };
+  }
+}
+const gcseBankMappings = {
+  "gcse-econ": ["GCSE-ECON-P1-FOUND","GCSE-ECON-P1-MARKETS","GCSE-ECON-P1-DS","GCSE-ECON-P1-COMP","GCSE-ECON-P1-PROD","GCSE-ECON-P1-LABOUR","GCSE-ECON-P1-MONEY","GCSE-ECON-UK","GCSE-ECON-P2-NATIONAL","GCSE-ECON-P2-GROWTH","GCSE-ECON-P2-UNEMP","GCSE-ECON-P2-INCOME","GCSE-ECON-P2-PRICE","GCSE-ECON-P2-FISCAL","GCSE-ECON-P2-MONETARY","GCSE-ECON-P2-SUPPLY","GCSE-ECON-P2-MARKETFAIL","GCSE-ECON-P2-TRADE","GCSE-ECON-P2-BOP","GCSE-ECON-P2-EXR","GCSE-ECON-P2-GLOBAL"],
+  "gcse-geo": ["GCSE-GEO-HAZ","GCSE-GEO-DEV","GCSE-GEO-INDIA","GCSE-GEO-URB","GCSE-GEO-UKLAND","GCSE-GEO-UKHUMAN","GCSE-GEO-ENQUIRY","GCSE-GEO-RIVERFIELD","GCSE-GEO-URBFIELD","GCSE-GEO-BIOSPHERE","GCSE-GEO-FORESTS","GCSE-GEO-ENERGY","GCSE-GEO-DECISIONS","GCSE-GEO-SKILLS"],
+  "gcse-hist": ["GCSE-HIST-AMERICA","GCSE-HIST-INTERWAR","GCSE-HIST-HEALTH","GCSE-HIST-ELIZABETH"],
+  "gcse-psych": ["GCSE-PSY-MEMORY","GCSE-PSY-PERCEPTION","GCSE-PSY-DEVELOPMENT","GCSE-PSY-RESEARCH","GCSE-PSY-SOCIAL","GCSE-PSY-LANGUAGE","GCSE-PSY-BRAIN","GCSE-PSY-PROBLEMS"],
+  "gcse-science": ["GCSE-SCI-BIO-1","GCSE-SCI-CHEM-1","GCSE-SCI-PHYS-1","GCSE-SCI-BIO-2","GCSE-SCI-CHEM-2","GCSE-SCI-PHYS-2"],
+  "gcse-sep-chem": ["GCSE-SEP-CHEM-1","GCSE-SEP-CHEM-2"],
+  "gcse-sep-phys": ["GCSE-SEP-PHYS-1","GCSE-SEP-PHYS-2"],
+  "gcse-sep-bio": ["GCSE-SEP-BIO-1","GCSE-SEP-BIO-2"],
+  "gcse-maths": ["GCSE-MATH-P1","GCSE-MATH-P2","GCSE-MATH-P3"]
+};
+for (const [subject, bankIds] of Object.entries(gcseBankMappings)) {
+  const route = gcseSpecRoutes.find(item => item[0] === subject);
+  const [, board] = route;
+  const points = route[3];
+  bankIds.forEach((bankId, index) => {
+    const [code] = points[index];
+    const pointId = `${board.toLowerCase().replace(/[^a-z]/g, "")}-gcse-${subject.replace(/^gcse-/, "")}-${code.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
+    SPEC_REGISTRY.aliases[bankId] = pointId;
+  });
+}
+
 const csProjectPoint = Object.entries(SPEC_REGISTRY.points)
   .find(([, point]) => point.subject === "cs" && point.code === "3.1");
 if (csProjectPoint) {

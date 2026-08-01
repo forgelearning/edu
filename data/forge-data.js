@@ -16841,6 +16841,23 @@ for (const subject of Object.values(SUBJECTS)) {
   }
 }
 
+// GCSE Phase 4: make the delivered bank-to-specification alignment explicit.
+// The registry owns the canonical definitions; these IDs let the coverage
+// checker and future tooling use the same target without relying on legacy
+// paper labels embedded in older question records.
+const gcseCanonicalBankPoints = {
+  "GCSE-ECON-P1-FOUND":"ocr-gcse-econ-p1-found","GCSE-ECON-P1-MARKETS":"ocr-gcse-econ-p1-markets","GCSE-ECON-P1-DS":"ocr-gcse-econ-p1-ds","GCSE-ECON-P1-COMP":"ocr-gcse-econ-p1-comp","GCSE-ECON-P1-PROD":"ocr-gcse-econ-p1-prod","GCSE-ECON-P1-LABOUR":"ocr-gcse-econ-p1-labour","GCSE-ECON-P1-MONEY":"ocr-gcse-econ-p1-money","GCSE-ECON-UK":"ocr-gcse-econ-p2-uk","GCSE-ECON-P2-NATIONAL":"ocr-gcse-econ-p2-national","GCSE-ECON-P2-GROWTH":"ocr-gcse-econ-p2-growth","GCSE-ECON-P2-UNEMP":"ocr-gcse-econ-p2-unemp","GCSE-ECON-P2-INCOME":"ocr-gcse-econ-p2-income","GCSE-ECON-P2-PRICE":"ocr-gcse-econ-p2-price","GCSE-ECON-P2-FISCAL":"ocr-gcse-econ-p2-fiscal","GCSE-ECON-P2-MONETARY":"ocr-gcse-econ-p2-monetary","GCSE-ECON-P2-SUPPLY":"ocr-gcse-econ-p2-supply","GCSE-ECON-P2-MARKETFAIL":"ocr-gcse-econ-p2-marketfail","GCSE-ECON-P2-TRADE":"ocr-gcse-econ-p2-trade","GCSE-ECON-P2-BOP":"ocr-gcse-econ-p2-bop","GCSE-ECON-P2-EXR":"ocr-gcse-econ-p2-exr","GCSE-ECON-P2-GLOBAL":"ocr-gcse-econ-p2-global",
+  "GCSE-GEO-HAZ":"edexcel-gcse-geo-haz","GCSE-GEO-DEV":"edexcel-gcse-geo-dev","GCSE-GEO-INDIA":"edexcel-gcse-geo-ind","GCSE-GEO-URB":"edexcel-gcse-geo-urb","GCSE-GEO-UKLAND":"edexcel-gcse-geo-ukland","GCSE-GEO-UKHUMAN":"edexcel-gcse-geo-ukhuman","GCSE-GEO-ENQUIRY":"edexcel-gcse-geo-enq","GCSE-GEO-RIVERFIELD":"edexcel-gcse-geo-rvf","GCSE-GEO-URBFIELD":"edexcel-gcse-geo-urf","GCSE-GEO-BIOSPHERE":"edexcel-gcse-geo-bio","GCSE-GEO-FORESTS":"edexcel-gcse-geo-for","GCSE-GEO-ENERGY":"edexcel-gcse-geo-ene","GCSE-GEO-DECISIONS":"edexcel-gcse-geo-dec","GCSE-GEO-SKILLS":"edexcel-gcse-geo-skills",
+  "GCSE-HIST-AMERICA":"aqa-gcse-hist-america","GCSE-HIST-INTERWAR":"aqa-gcse-hist-interwar","GCSE-HIST-HEALTH":"aqa-gcse-hist-health","GCSE-HIST-ELIZABETH":"aqa-gcse-hist-elizabeth",
+  "GCSE-PSY-MEMORY":"aqa-gcse-psych-memory","GCSE-PSY-PERCEPTION":"aqa-gcse-psych-perception","GCSE-PSY-DEVELOPMENT":"aqa-gcse-psych-development","GCSE-PSY-RESEARCH":"aqa-gcse-psych-research","GCSE-PSY-SOCIAL":"aqa-gcse-psych-social","GCSE-PSY-LANGUAGE":"aqa-gcse-psych-language","GCSE-PSY-BRAIN":"aqa-gcse-psych-brain","GCSE-PSY-PROBLEMS":"aqa-gcse-psych-problems",
+  "GCSE-SCI-BIO-1":"edexcel-gcse-science-bio-1","GCSE-SCI-CHEM-1":"edexcel-gcse-science-chem-1","GCSE-SCI-PHYS-1":"edexcel-gcse-science-phys-1","GCSE-SCI-BIO-2":"edexcel-gcse-science-bio-2","GCSE-SCI-CHEM-2":"edexcel-gcse-science-chem-2","GCSE-SCI-PHYS-2":"edexcel-gcse-science-phys-2",
+  "GCSE-SEP-CHEM-1":"edexcel-gcse-sep-chem-p1","GCSE-SEP-CHEM-2":"edexcel-gcse-sep-chem-p2","GCSE-SEP-PHYS-1":"edexcel-gcse-sep-phys-p1","GCSE-SEP-PHYS-2":"edexcel-gcse-sep-phys-p2","GCSE-SEP-BIO-1":"edexcel-gcse-sep-bio-p1","GCSE-SEP-BIO-2":"edexcel-gcse-sep-bio-p2",
+  "GCSE-MATH-P1":"edexcel-gcse-maths-p1","GCSE-MATH-P2":"edexcel-gcse-maths-p2","GCSE-MATH-P3":"edexcel-gcse-maths-p3"
+};
+for (const [bankId, pointId] of Object.entries(gcseCanonicalBankPoints)) {
+  for (const question of BANKS[bankId]?.questions || []) question.specPointId = pointId;
+}
+
 // Eduqas A-level Computer Science Component 2.5: legal, moral, cultural and
 // ethical issues. These application questions sit in the existing Component 2
 // bank and are tagged to the exact registry point rather than the broad bank.
