@@ -14451,7 +14451,7 @@ const rebalanceSociety = bankIds => bankIds.forEach(bankId => BANKS[bankId].ques
 }));
 rebalanceSociety(["SOC-EDU","SOC-MET","SOC-FAM","SOC-BEL","SOC-MED","SOC-STRAT","SOC-CRIME","SOC-THEORY","SOC-GLOB","SOC-RESEARCH"]);
 SUBJECTS["soc"].banks = ["SOC-EDU","SOC-MET","SOC-FAM","SOC-BEL","SOC-MED","SOC-STRAT","SOC-CRIME","SOC-THEORY","SOC-GLOB","SOC-RESEARCH"];
-SUBJECTS["soc"].sub = "AQA 7192 — Papers 1–3";
+SUBJECTS["soc"].sub = "AQA 7192 — current specification: Papers 1–3, 13 numbered content points";
 
 // ===== A LEVEL GEOGRAPHY — YEAR 2 TOPIC BANKS =====
 // The four Year 2 units from the course outline each receive 37 questions.
@@ -16586,6 +16586,25 @@ const psychologySpecPointIds = {
   "PSY-FOR": "aqa-a-psych-3.3.9"
 };
 for (const [bankId, specPointId] of Object.entries(psychologySpecPointIds)) {
+  for (const question of BANKS[bankId]?.questions || []) question.specPointId = specPointId;
+}
+
+// Map the live Sociology banks to the AQA 7192 numbered content points.
+// The registry also tracks the three optional Paper 2 points that are not yet
+// represented by a live bank, so coverage gaps remain visible to the audit.
+const sociologySpecPointIds = {
+  "SOC-EDU": "aqa-a-soc-3.1.1",
+  "SOC-MET": "aqa-a-soc-3.1.2",
+  "SOC-THEORY": "aqa-a-soc-3.1.3",
+  "SOC-FAM": "aqa-a-soc-3.2.2",
+  "SOC-BEL": "aqa-a-soc-3.2.5",
+  "SOC-GLOB": "aqa-a-soc-3.2.6",
+  "SOC-MED": "aqa-a-soc-3.2.7",
+  "SOC-STRAT": "aqa-a-soc-3.2.8",
+  "SOC-CRIME": "aqa-a-soc-3.3.1",
+  "SOC-RESEARCH": "aqa-a-soc-3.3.2"
+};
+for (const [bankId, specPointId] of Object.entries(sociologySpecPointIds)) {
   for (const question of BANKS[bankId]?.questions || []) question.specPointId = specPointId;
 }
 

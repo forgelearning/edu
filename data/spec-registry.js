@@ -247,6 +247,59 @@ const SPEC_REGISTRY = {
     "aqa-a-psych-3.3.10": {
       subject: "psych", board: "AQA", qualification: "A-level Psychology (7182)", paper: "Paper 3",
       code: "3.3.10", title: "Addiction", aliases: ["PSY-ADD"]
+    },
+
+    "aqa-a-soc-3.1.1": {
+      subject: "soc", board: "AQA", qualification: "A-level Sociology (7192)", paper: "Paper 1",
+      code: "3.1.1", title: "Education", aliases: ["SOC-EDU"]
+    },
+    "aqa-a-soc-3.1.2": {
+      subject: "soc", board: "AQA", qualification: "A-level Sociology (7192)", paper: "Paper 1",
+      code: "3.1.2", title: "Methods in Context", aliases: ["SOC-MET"]
+    },
+    "aqa-a-soc-3.1.3": {
+      subject: "soc", board: "AQA", qualification: "A-level Sociology (7192)", paper: "Paper 1",
+      code: "3.1.3", title: "Theory and Methods", aliases: ["SOC-THEORY"]
+    },
+    "aqa-a-soc-3.2.1": {
+      subject: "soc", board: "AQA", qualification: "A-level Sociology (7192)", paper: "Paper 2",
+      code: "3.2.1", title: "Culture and Identity", aliases: []
+    },
+    "aqa-a-soc-3.2.2": {
+      subject: "soc", board: "AQA", qualification: "A-level Sociology (7192)", paper: "Paper 2",
+      code: "3.2.2", title: "Families and Households", aliases: ["SOC-FAM"]
+    },
+    "aqa-a-soc-3.2.3": {
+      subject: "soc", board: "AQA", qualification: "A-level Sociology (7192)", paper: "Paper 2",
+      code: "3.2.3", title: "Health", aliases: []
+    },
+    "aqa-a-soc-3.2.4": {
+      subject: "soc", board: "AQA", qualification: "A-level Sociology (7192)", paper: "Paper 2",
+      code: "3.2.4", title: "Work, Poverty and Welfare", aliases: []
+    },
+    "aqa-a-soc-3.2.5": {
+      subject: "soc", board: "AQA", qualification: "A-level Sociology (7192)", paper: "Paper 2",
+      code: "3.2.5", title: "Beliefs in Society", aliases: ["SOC-BEL"]
+    },
+    "aqa-a-soc-3.2.6": {
+      subject: "soc", board: "AQA", qualification: "A-level Sociology (7192)", paper: "Paper 2",
+      code: "3.2.6", title: "Global Development", aliases: ["SOC-GLOB"]
+    },
+    "aqa-a-soc-3.2.7": {
+      subject: "soc", board: "AQA", qualification: "A-level Sociology (7192)", paper: "Paper 2",
+      code: "3.2.7", title: "The Media", aliases: ["SOC-MED"]
+    },
+    "aqa-a-soc-3.2.8": {
+      subject: "soc", board: "AQA", qualification: "A-level Sociology (7192)", paper: "Paper 2",
+      code: "3.2.8", title: "Stratification and Differentiation", aliases: ["SOC-STRAT"]
+    },
+    "aqa-a-soc-3.3.1": {
+      subject: "soc", board: "AQA", qualification: "A-level Sociology (7192)", paper: "Paper 3",
+      code: "3.3.1", title: "Crime and Deviance", aliases: ["SOC-CRIME"]
+    },
+    "aqa-a-soc-3.3.2": {
+      subject: "soc", board: "AQA", qualification: "A-level Sociology (7192)", paper: "Paper 3",
+      code: "3.3.2", title: "Theory and Methods", aliases: ["SOC-RESEARCH"]
     }
   },
 
@@ -288,5 +341,15 @@ const SPEC_REGISTRY = {
     ,"PSY-AGG": "aqa-a-psych-3.3.8"
     ,"PSY-FOR": "aqa-a-psych-3.3.9"
     ,"PSY-ADD": "aqa-a-psych-3.3.10"
+    ,"SOC-EDU": "aqa-a-soc-3.1.1"
+    ,"SOC-MET": "aqa-a-soc-3.1.2"
+    ,"SOC-THEORY": "aqa-a-soc-3.1.3"
+    ,"SOC-FAM": "aqa-a-soc-3.2.2"
+    ,"SOC-BEL": "aqa-a-soc-3.2.5"
+    ,"SOC-GLOB": "aqa-a-soc-3.2.6"
+    ,"SOC-MED": "aqa-a-soc-3.2.7"
+    ,"SOC-STRAT": "aqa-a-soc-3.2.8"
+    ,"SOC-CRIME": "aqa-a-soc-3.3.1"
+    ,"SOC-RESEARCH": "aqa-a-soc-3.3.2"
   }
 };
