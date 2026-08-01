@@ -9249,6 +9249,137 @@ for (const [bankId, [basePlan, reforgePlan]] of Object.entries({
   }
 }
 
+// Final depth pass: 24 additional specification facts per GCSE History bank.
+const addHistoryDepth = (bankId, spec, prefix, rows) => {
+  const answers = rows.map(row => row[1]);
+  BANKS[bankId].questions.push(...rows.map((row, index) => {
+    const [stem, answer, reforgeStem] = row;
+    const wrongs = [answers[(index + 5) % answers.length], answers[(index + 11) % answers.length], answers[(index + 17) % answers.length]];
+    const rWrong = [answers[(index + 3) % answers.length], answers[(index + 9) % answers.length], answers[(index + 15) % answers.length]];
+    return gcseHistoryQuestion(`${prefix}-${String(index + 31).padStart(2,"0")}`, spec, stem, {A:answer,B:wrongs[0],C:wrongs[1],D:wrongs[2]}, "A", `This tests the specified ${spec} knowledge point: ${answer}.`, {stem:reforgeStem,options:{A:answer,B:rWrong[0],C:rWrong[1],D:rWrong[2]},correct:"A"});
+  }));
+};
+addHistoryDepth("GCSE-HIST-AMERICA","GCSE-HIST-AMERICA","GCSE-HIST-AM",[
+  ["What helped create a national consumer culture in 1920s America?","Chain stores","What kind of business expanded consumer choice across the country?"],
+  ["Which group was hit by falling cotton prices?","Southern farmers","Who suffered when agricultural prices fell?"],
+  ["What did the Emergency Banking Act help restore?","Confidence in banks","What was the immediate aim of Roosevelt's banking legislation?"],
+  ["What did the Agricultural Adjustment Act attempt to raise?","Farm prices","What was the AAA designed to improve?"],
+  ["Which New Deal agency provided electricity in rural areas?","Tennessee Valley Authority","Which agency built dams and supplied regional power?"],
+  ["What did Social Security provide from 1935?","Pensions and welfare support","Which reform offered support in old age and unemployment?"],
+  ["Why did Roosevelt face criticism from the left?","The New Deal did not go far enough","Why did radical critics attack Roosevelt's reforms?"],
+  ["What did wartime production do to US unemployment?","Reduced it sharply","How did mobilisation affect jobs?"],
+  ["Which group gained industrial opportunities during the war?","African-American workers","Who entered more wartime industrial jobs?"],
+  ["What did the GI Bill help many veterans obtain?","Education and mortgages","Which post-war benefits supported veterans?"],
+  ["What did the 1947 Taft-Hartley Act restrict?","Trade-union power","Which law limited organised labour?"],
+  ["What did the baby boom increase after 1945?","Demand for housing and schools","Which demographic change increased pressure on services?"],
+  ["What was the key feature of Levittown?","Mass-produced suburban homes","What represented post-war suburban expansion?"],
+  ["Which medium helped spread rock and roll?","Television","What helped popular culture reach national audiences?"],
+  ["What did the House Un-American Activities Committee investigate?","Alleged communist influence","Which committee investigated suspected subversion?"],
+  ["What was the outcome of the Rosenberg case?","Execution for espionage","What happened to Julius and Ethel Rosenberg?"],
+  ["What did Plessy v Ferguson support?","Separate but equal segregation","Which ruling provided a legal basis for segregation?"],
+  ["What did the Greensboro sit-ins challenge?","Segregated lunch counters","Which facility did the 1960 sit-ins target?"],
+  ["What was the aim of the March on Washington?","Civil rights legislation and jobs","What did the 1963 march demand?"],
+  ["What did the Civil Rights Act of 1968 address?","Housing discrimination","Which discrimination did the 1968 Act target?"],
+  ["What did Malcolm X initially advocate?","Black separatism and self-defence","Which ideas were associated with Malcolm X's early politics?"],
+  ["What did the National Organisation for Women campaign for?","Equal rights for women","Which organisation promoted women's equality?"],
+  ["What did the Equal Pay Act of 1963 target?","Unequal pay by sex","Which workplace inequality did the Act address?"],
+  ["What was one limitation of the Great Society?","Opposition and continuing poverty","Why did Great Society reforms not solve every problem?"]
+]);
+addHistoryDepth("GCSE-HIST-INTERWAR","GCSE-HIST-INTERWAR","GCSE-HIST-IW",[
+  ["What principle did Wilson's Fourteen Points promote?","National self-determination","Which principle shaped Wilson's peace aims?"],
+  ["What did France gain from the Treaty settlement?","Alsace-Lorraine","Which territory returned to France?"],
+  ["What happened to Germany's armed forces?","They were limited","How did Versailles restrict German military power?"],
+  ["Why did Germany oppose reparations?","They created financial and political resentment","Why were reparations unpopular in Germany?"],
+  ["What was the League's Covenant?","Its founding agreement","What document established the League's aims and rules?"],
+  ["Which power was absent from the League?","The United States","Which major country did not join?"],
+  ["What was the League's main method of pressure?","Sanctions","How could the League punish an aggressor economically?"],
+  ["What did the League decide in the Upper Silesia dispute?","A plebiscite and partition","How was Upper Silesia settled?"],
+  ["What did the Kellogg-Briand Pact renounce?","War as an instrument of policy","What did the 1928 pact promise?"],
+  ["Why did the Depression weaken the League?","States prioritised national interests","Why did economic crisis reduce cooperation?"],
+  ["What did Japan seize in Manchuria?","Manchuria's resources and territory","Why was Manchuria attractive to Japan?"],
+  ["What did the Lytton Commission produce?","A report condemning Japan's action","What was the League's response to Manchuria?"],
+  ["What did Italy use in the Abyssinian invasion?","Modern weapons and air power","Which advantage helped Italy conquer Abyssinia?"],
+  ["What was the Axis formed between?","Germany and Italy","Which two dictatorships formed the Axis?"],
+  ["What did the Anti-Comintern Pact oppose?","Communism","What ideology did the pact target?"],
+  ["What did German conscription in 1935 breach?","The Treaty of Versailles","Which treaty term did conscription violate?"],
+  ["What was the remilitarised Rhineland?","A previously demilitarised zone","Which area did Hitler reoccupy in 1936?"],
+  ["What was the Anschluss?","The annexation of Austria","Which event united Austria with Nazi Germany?"],
+  ["What did appeasement aim to preserve?","Peace through concessions","What was the intended purpose of appeasement?"],
+  ["What did the Munich Agreement exclude?","Czechoslovakia from negotiations","Which country was not represented at Munich?"],
+  ["What did Germany occupy after Munich?","The rest of Czechoslovakia","What showed Hitler's wider ambitions in 1939?"],
+  ["What did the Nazi-Soviet Pact allow Hitler to do?","Invade Poland without Soviet opposition","How did the pact assist Hitler?"],
+  ["What was the Phoney War?","A period of limited fighting after declarations of war","What describes the months after September 1939?"],
+  ["Which judgement best explains responsibility for war?","Hitler was central but other failures contributed","How should responsibility for war be assessed?"]
+]);
+addHistoryDepth("GCSE-HIST-HEALTH","GCSE-HIST-HEALTH","GCSE-HIST-HP",[
+  ["What did medieval physicians use astrology to decide?","Treatment timing","How could astrology influence medieval medicine?"],
+  ["What was a medieval apothecary?","A seller of medicines","Who prepared and sold remedies?"],
+  ["What did hospitals often provide in the Middle Ages?","Care and religious charity","What was a major role of medieval hospitals?"],
+  ["What did the Renaissance encourage in medicine?","Observation and questioning of authority","How did Renaissance thinking affect medical knowledge?"],
+  ["What did the printing press help spread?","Medical ideas and diagrams","How did printing support medical change?"],
+  ["What did the Royal Society encourage?","Scientific observation and experiment","Which institution promoted experimental science?"],
+  ["What did the 1832 Anatomy Act provide?","Legal bodies for dissection","How did the Anatomy Act support medical training?"],
+  ["What did Florence Nightingale improve?","Nursing standards and hospital hygiene","Which area did Nightingale reform?"],
+  ["What did the germ theory change?","The explanation of infection","What medical idea did germ theory replace?"],
+  ["What did antibiotics treat?","Bacterial infections","Which illnesses can antibiotics target?"],
+  ["What did the first heart transplant demonstrate?","Possibilities of modern surgery","What did transplant surgery show?"],
+  ["What does radiotherapy use?","Radiation to damage cancer cells","How can radiotherapy treat cancer?"],
+  ["What is preventative medicine?","Reducing disease before it develops","What does prevention aim to do?"],
+  ["What did mass vaccination reduce?","Infectious disease spread","What is a population benefit of vaccination?"],
+  ["Why did clean water reduce cholera?","It stopped contaminated water being consumed","How did sanitation prevent cholera?"],
+  ["What did the Beveridge Report recommend?","Action against the five giants","Which report influenced post-war welfare?"],
+  ["What was one benefit of the NHS?","Universal access to treatment","What did the NHS make more widely available?"],
+  ["What is antibiotic resistance?","Bacteria surviving antibiotic treatment","What makes some infections harder to cure?"],
+  ["Why do lifestyle diseases challenge modern health systems?","They require long-term prevention and care","Why are lifestyle diseases difficult to manage?"],
+  ["What did the Clean Air Act of 1956 target?","Smoke pollution","Which environmental health problem did it address?"],
+  ["What did mass production make possible?","Cheaper medicines at scale","How did industrial production affect treatment?"],
+  ["Why did medical technology increase costs?","Equipment and specialist care became expensive","Why can modern treatment place pressure on budgets?"],
+  ["What did DNA research contribute to medicine?","Understanding inherited disease","How can genetics improve diagnosis?"],
+  ["Why does access remain important despite medical progress?","Benefits are not distributed equally","Why can health inequalities persist?"]
+]);
+addHistoryDepth("GCSE-HIST-ELIZABETH","GCSE-HIST-ELIZABETH","GCSE-HIST-EL",[
+  ["What was the role of the Privy Council?","Advising and administering government","What body helped Elizabeth govern?"],
+  ["Why was William Cecil important?","He was Elizabeth's leading minister","Which minister helped manage the realm?"],
+  ["What did Elizabeth's coronation settlement establish?","Her authority as Protestant monarch","What did the early settlement reinforce?"],
+  ["What was the Act of Uniformity?","A law regulating church worship","Which Act standardised Anglican services?"],
+  ["What did recusancy fines encourage?","Attendance at Anglican services","What was the purpose of recusancy fines?"],
+  ["What was the Ridolfi Plot?","A Catholic plot involving Mary and Spain","Which plot aimed to replace Elizabeth?"],
+  ["What was the Throckmorton Plot?","A Catholic-backed attempt against Elizabeth","Which plot led to harsher anti-Catholic laws?"],
+  ["What was the Babington Plot?","A plan to assassinate Elizabeth","Which plot provided evidence against Mary?"],
+  ["What did the Act against Jesuits do?","Treated missionary priests as traitors","How did Parliament respond to missionary activity?"],
+  ["Why did enclosure cause hardship?","Some rural people lost common rights","Why did enclosure increase poverty for some?"],
+  ["What did the 1590s harvest failures cause?","Food shortages and rising prices","What followed poor harvests?"],
+  ["What was the purpose of the 1572 Vagabonds Act?","Punishing and controlling vagrancy","Which problem did the Act address?"],
+  ["What did Shakespeare's Globe provide?","A purpose-built theatre","Which venue became associated with Shakespeare?"],
+  ["Why did Puritans dislike theatres?","They associated them with immorality","Why did some Puritans oppose drama?"],
+  ["What did Elizabethan privateers attack?","Spanish shipping","What was a target of Drake and Hawkins?"],
+  ["Why did Elizabeth knight Francis Drake?","His circumnavigation and service against Spain","Why was Drake rewarded?"],
+  ["What was the significance of the English defeat at Cadiz in 1596?","It demonstrated continuing naval strength","What did the Cadiz expedition show?"],
+  ["Why did the war with Spain damage finances?","Military and naval campaigns were costly","Why did the conflict strain the treasury?"],
+  ["What was the Treaty of London in 1604?","The peace ending war with Spain","Which agreement ended the conflict?"],
+  ["Why did Elizabeth use propaganda?","To strengthen loyalty and royal image","Why were royal portraits politically useful?"],
+  ["What did the Armada portrait celebrate?","Victory over Spain","What event did the portrait commemorate?"],
+  ["Why was Essex popular before his rebellion?","He was a successful court favourite and soldier","Why did Essex have influence?"],
+  ["What happened to Essex after his rebellion?","He was executed","What was the result of Essex's rising?"],
+  ["Why did succession remain unresolved at Elizabeth's death?","Elizabeth refused to name an heir publicly","Why was the succession uncertain?"]
+]);
+for (const [bankId, [basePlan, reforgePlan]] of Object.entries({
+  "GCSE-HIST-AMERICA":["ABCDABCDABCDABCDABCDABCD","CADBBCADDBCADBBCADDBCADBB"],
+  "GCSE-HIST-INTERWAR":["CDABCDABCDABCDABCDABCDABCD","DBACCADBACDBACCADBACDBACC"],
+  "GCSE-HIST-HEALTH":["ABCDABCDABCDABCDABCDABCD","CADBBCADDBCADBBCADDBCADBB"],
+  "GCSE-HIST-ELIZABETH":["CDABCDABCDABCDABCDABCDABCD","DBACCADBACDBACCADBACDBACC"]
+})) {
+  const added = BANKS[bankId].questions.slice(-24);
+  added.forEach((question, index) => { moveGcseHistoryAnswer(question, basePlan[index]); moveGcseHistoryAnswer(question, reforgePlan[index], true); });
+  for (const question of added) for (const item of [question, question.reforge]) {
+    const lengths = Object.fromEntries(Object.entries(item.options).map(([letter, option]) => [letter, option.length]));
+    const max = Math.max(...Object.values(lengths));
+    if (lengths[item.correct] !== max || Object.values(lengths).filter(length => length === max).length !== 1) continue;
+    const alternative = Object.keys(item.options).filter(letter => letter !== item.correct).sort((a, b) => lengths[b] - lengths[a])[0];
+    while (item.options[alternative].length <= item.options[item.correct].length) item.options[alternative] += " (in context)";
+  }
+}
+
 BANKS["GCSE-HIST-HEALTH"].questions.push(
   gcseHistoryQuestion("GCSE-HIST-HP-13","GCSE-HIST-HEALTH","Why did public health improve in industrial Britain after 1875?",{A:"Compulsory sanitation and cleaner water",B:"Less urban growth",C:"The end of factories",D:"Humoural theory"},"A","The 1875 Act required local authorities to provide clean water, sewers and rubbish collection.",{stem:"What did the building of sewers mainly reduce?",options:{A:"Water-borne disease",B:"The need for hospitals",C:"Medical training",D:"The use of anaesthetics"},correct:"A"}),
   gcseHistoryQuestion("GCSE-HIST-HP-14","GCSE-HIST-HEALTH","Why did the germ theory not immediately improve all public health?",{A:"It did not automatically provide infrastructure",B:"It denied microorganisms existed",C:"It ended sanitation",D:"It was based on astrology"},"A","Scientific explanations had to be converted into practical measures such as clean water, sewage systems and hygiene.",{stem:"Which change applied germ theory in hospitals?",options:{A:"Antiseptic cleaning",B:"More bloodletting",C:"Less handwashing",D:"Humour balancing"},correct:"A"}),
