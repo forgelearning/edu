@@ -50,6 +50,8 @@ const PAGES = [
   { file: 'a-level-chemistry.html', key: 'chem' },
   { file: 'a-level-biology.html', key: 'bio' },
   { file: 'a-level-physics.html', key: 'phys' },
+  { file: 'a-level-health-social-care.html', key: 'hsc' },
+  { file: 'a-level-religious-studies.html', key: 'rs' },
 ];
 
 let problems = 0;
