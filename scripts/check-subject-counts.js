@@ -60,6 +60,9 @@ const PAGES = [
   { file: 'a-level-mandarin.html', key: 'mand' },
   { file: 'a-level-english-literature.html', key: 'englit' },
   { file: 'a-level-english-language-literature.html', key: 'engll' },
+  { file: 'gcse-chemistry.html', key: 'gcse-sep-chem' },
+  { file: 'gcse-physics.html', key: 'gcse-sep-phys' },
+  { file: 'gcse-biology.html', key: 'gcse-sep-bio' },
 ];
 
 let problems = 0;
