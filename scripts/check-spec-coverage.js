@@ -96,7 +96,10 @@ for (const subjectKey of subjects) {
       const isHistorySection = subjectKey === 'hist' &&
         resolution.id.startsWith('aqa-a-hist-') &&
         bankResolution?.id.startsWith('aqa-a-hist-');
-      if (resolution.id !== bankResolution?.id && !isGeographyKeyIdea && !isHistorySection) {
+      const isBusinessSection = subjectKey === 'bus' &&
+        resolution.id.startsWith('edexcel-a-bus-') &&
+        bankResolution?.id.startsWith('edexcel-a-bus-');
+      if (resolution.id !== bankResolution?.id && !isGeographyKeyIdea && !isHistorySection && !isBusinessSection) {
         fail(location, `question resolves to ${resolution.id}, but bank resolves to ${bankResolution?.id || 'none'}`);
       }
       counts.set(resolution.id, (counts.get(resolution.id) || 0) + 1);

@@ -16823,6 +16823,48 @@ for (const [bankId, ranges] of Object.entries(historySpecPointIds)) {
   }
 }
 
+// Map Business questions to Edexcel 9BS0 numbered sections using the terms
+// and calculations in each stem. The fallback keeps every legacy bank
+// addressable while the keyword routes provide useful question-level detail.
+const businessFallbackPoints = {
+  "BUS-1": "edexcel-a-bus-1.1",
+  "BUS-2": "edexcel-a-bus-2.1",
+  "BUS-3": "edexcel-a-bus-3.1",
+  "BUS-4": "edexcel-a-bus-4.1"
+};
+const businessPointFor = (bankId, stem) => {
+  const text = String(stem || "").toLowerCase();
+  const routes = [
+    [/global marketing|marketing strategy.*adaptation|adaptation.*global market/, "4.3"],
+    [/multinational company|multinational corporation|global industr/, "4.4"],
+    [/foreign direct|outsourc|emerging market|business expansion|free-trade|trade bloc/, "4.2"],
+    [/global|tariff|quota|remittance|exchange rate|sterling|protectionism|export|import|country risk|balance of trade|supply-chain/, "4.1"],
+    [/decision tree|expected value|payback|net present value|npv|strategic decision/, "3.3"],
+    [/contingency|managing change|change management/, "3.6"],
+    [/porter|competitive advantage|market share|economies of scale|diseconom/, "3.5"],
+    [/pressure group|ethical|corporate social responsibility|sustainab|influences on business decisions/, "3.4"],
+    [/merger|organic growth|vertical integration|first-mover|diversification|business growth|growth strategy/, "3.2"],
+    [/swot|business objective|smart|boston matrix|ansoff/, "3.1"],
+    [/interest rate|ethical|corporate social responsibility|sustainab|external influence/, "2.5"],
+    [/labour productivity|lean production|quality assurance|quality control|capacity utilisation|just-in-time|inventory|resource management/, "2.4"],
+    [/break-even|margin of safety|cash-flow forecast|cash flow forecast|cash-flow deficit|cash flow deficit/, "2.2"],
+    [/gross profit|net profit|profit margin|working capital|current ratio|gearing|balance sheet|contribution per unit|cost of sales/, "2.3"],
+    [/retained profit|overdraft|trade credit|bank loan|raising finance|source of finance|finance for/, "2.1"],
+    [/entrepreneur|sole trader|limited liability|social enterprise|leader/, "1.5"],
+    [/herzberg|motivat|employee|stakeholder conflict|labour/, "1.4"],
+    [/the market|market size|market growth|market share|market research|customer demand/, "1.2"],
+    [/price skimming|penetration pricing|extension strateg|marketing mix|product extension|product-orient|market-orient|segment|focus group|market research|brand|unique selling|distribution|e-commerce|elastic demand|demand/, "1.3"],
+    [/customer|consumer|market research|product|customer needs/, "1.1"]
+  ];
+  for (const [pattern, code] of routes) if (pattern.test(text)) return `edexcel-a-bus-${code}`;
+  return businessFallbackPoints[bankId];
+};
+for (const bankId of Object.keys(businessFallbackPoints)) {
+  for (const question of BANKS[bankId]?.questions || []) {
+    question.specPointId = businessPointFor(bankId, question.stem);
+  }
+}
+
 // Remove the last legacy Sociology template from imported Paper 1 questions.
 // This is deliberately applied at runtime so future bank extensions cannot
 // reintroduce the same repeated "Which statement best describes..." cue.

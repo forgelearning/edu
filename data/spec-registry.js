@@ -463,3 +463,41 @@ Object.assign(SPEC_REGISTRY.aliases, {
   "AQA-1K-USA2": "aqa-a-hist-1k-3",
   "AQA-NEA-TUDOR": "aqa-a-hist-nea-content"
 });
+
+// Pearson Edexcel A-level Business (9BS0). The four themes are split into
+// their numbered specification sections so existing mixed practice banks can
+// carry precise question-level coverage as they are migrated.
+const businessSpecPoints = [
+  ["1.1", "Theme 1", "Meeting customer needs"],
+  ["1.2", "Theme 1", "The market"],
+  ["1.3", "Theme 1", "Marketing mix and strategy"],
+  ["1.4", "Theme 1", "Managing people"],
+  ["1.5", "Theme 1", "Entrepreneurs and leaders"],
+  ["2.1", "Theme 2", "Raising finance"],
+  ["2.2", "Theme 2", "Financial planning"],
+  ["2.3", "Theme 2", "Managing finance"],
+  ["2.4", "Theme 2", "Resource management"],
+  ["2.5", "Theme 2", "External influences"],
+  ["3.1", "Theme 3", "Business objectives and strategy"],
+  ["3.2", "Theme 3", "Business growth"],
+  ["3.3", "Theme 3", "Decision-making techniques"],
+  ["3.4", "Theme 3", "Influences on business decisions"],
+  ["3.5", "Theme 3", "Assessing competitiveness"],
+  ["3.6", "Theme 3", "Managing change"],
+  ["4.1", "Theme 4", "Globalisation"],
+  ["4.2", "Theme 4", "Global markets and business expansion"],
+  ["4.3", "Theme 4", "Global marketing"],
+  ["4.4", "Theme 4", "Global industries and companies (multinational corporations)"]
+];
+for (const [code, paper, title] of businessSpecPoints) {
+  SPEC_REGISTRY.points[`edexcel-a-bus-${code}`] = {
+    subject: "bus", board: "Edexcel", qualification: "A Level Business (9BS0)",
+    paper, code, title, aliases: []
+  };
+}
+Object.assign(SPEC_REGISTRY.aliases, {
+  "BUS-1": "edexcel-a-bus-1.1",
+  "BUS-2": "edexcel-a-bus-2.1",
+  "BUS-3": "edexcel-a-bus-3.1",
+  "BUS-4": "edexcel-a-bus-4.1"
+});
