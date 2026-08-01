@@ -99,7 +99,7 @@ function validateQuestion(subjectKey, bankKey, question, index) {
 
   if (!isNonEmptyString(question.stem)) fail(where, 'missing stem');
   if (!isNonEmptyString(question.scaffold)) fail(where, 'missing scaffold');
-  if (!question.spec) advisories.missingSpec += 1;
+  if (!question.spec && !question.specPointId) advisories.missingSpec += 1;
   if (!question.tag) advisories.missingTag += 1;
 
   const type = question.type || 'mcq';

@@ -178,6 +178,75 @@ const SPEC_REGISTRY = {
       code: "4.1.1",
       title: "Globalisation and trade",
       aliases: ["4.1.1"]
+    },
+
+    "aqa-a-psych-3.1.1": {
+      subject: "psych", board: "AQA", qualification: "A-level Psychology (7182)", paper: "Paper 1",
+      code: "3.1.1", title: "Social influence", aliases: ["PSY-SI"]
+    },
+    "aqa-a-psych-3.1.2": {
+      subject: "psych", board: "AQA", qualification: "A-level Psychology (7182)", paper: "Paper 1",
+      code: "3.1.2", title: "Memory", aliases: ["PSY-MEM"]
+    },
+    "aqa-a-psych-3.1.3": {
+      subject: "psych", board: "AQA", qualification: "A-level Psychology (7182)", paper: "Paper 1",
+      code: "3.1.3", title: "Attachment", aliases: ["PSY-ATT"]
+    },
+    "aqa-a-psych-3.1.4": {
+      subject: "psych", board: "AQA", qualification: "A-level Psychology (7182)", paper: "Paper 1",
+      code: "3.1.4", title: "Psychopathology", aliases: ["PSY-PATH"]
+    },
+    "aqa-a-psych-3.2.1": {
+      subject: "psych", board: "AQA", qualification: "A-level Psychology (7182)", paper: "Paper 2",
+      code: "3.2.1", title: "Approaches in Psychology", aliases: ["PSY-APP"]
+    },
+    "aqa-a-psych-3.2.2": {
+      subject: "psych", board: "AQA", qualification: "A-level Psychology (7182)", paper: "Paper 2",
+      code: "3.2.2", title: "Biopsychology", aliases: ["PSY-BIO"]
+    },
+    "aqa-a-psych-3.2.3": {
+      subject: "psych", board: "AQA", qualification: "A-level Psychology (7182)", paper: "Paper 2",
+      code: "3.2.3", title: "Research methods", aliases: ["PSY-RM"]
+    },
+    "aqa-a-psych-3.3.1": {
+      subject: "psych", board: "AQA", qualification: "A-level Psychology (7182)", paper: "Paper 3",
+      code: "3.3.1", title: "Issues and debates in Psychology", aliases: ["PSY-ID"]
+    },
+    "aqa-a-psych-3.3.2": {
+      subject: "psych", board: "AQA", qualification: "A-level Psychology (7182)", paper: "Paper 3",
+      code: "3.3.2", title: "Relationships", aliases: ["PSY-REL"]
+    },
+    "aqa-a-psych-3.3.3": {
+      subject: "psych", board: "AQA", qualification: "A-level Psychology (7182)", paper: "Paper 3",
+      code: "3.3.3", title: "Gender", aliases: ["PSY-GEN"]
+    },
+    "aqa-a-psych-3.3.4": {
+      subject: "psych", board: "AQA", qualification: "A-level Psychology (7182)", paper: "Paper 3",
+      code: "3.3.4", title: "Cognition and development", aliases: ["PSY-COG"]
+    },
+    "aqa-a-psych-3.3.5": {
+      subject: "psych", board: "AQA", qualification: "A-level Psychology (7182)", paper: "Paper 3",
+      code: "3.3.5", title: "Schizophrenia", aliases: ["PSY-SCH"]
+    },
+    "aqa-a-psych-3.3.6": {
+      subject: "psych", board: "AQA", qualification: "A-level Psychology (7182)", paper: "Paper 3",
+      code: "3.3.6", title: "Eating behaviour", aliases: ["PSY-EAT"]
+    },
+    "aqa-a-psych-3.3.7": {
+      subject: "psych", board: "AQA", qualification: "A-level Psychology (7182)", paper: "Paper 3",
+      code: "3.3.7", title: "Stress", aliases: ["PSY-STR"]
+    },
+    "aqa-a-psych-3.3.8": {
+      subject: "psych", board: "AQA", qualification: "A-level Psychology (7182)", paper: "Paper 3",
+      code: "3.3.8", title: "Aggression", aliases: ["PSY-AGG"]
+    },
+    "aqa-a-psych-3.3.9": {
+      subject: "psych", board: "AQA", qualification: "A-level Psychology (7182)", paper: "Paper 3",
+      code: "3.3.9", title: "Forensic Psychology", aliases: ["PSY-FOR"]
+    },
+    "aqa-a-psych-3.3.10": {
+      subject: "psych", board: "AQA", qualification: "A-level Psychology (7182)", paper: "Paper 3",
+      code: "3.3.10", title: "Addiction", aliases: ["PSY-ADD"]
     }
   },
 
@@ -202,5 +271,22 @@ const SPEC_REGISTRY = {
     "3.1.1": "edexcel-a-econ-3.1.1",
     "3.2.1": "edexcel-a-econ-3.2.1",
     "4.1.1": "edexcel-a-econ-4.1.1"
+    ,"PSY-SI": "aqa-a-psych-3.1.1"
+    ,"PSY-MEM": "aqa-a-psych-3.1.2"
+    ,"PSY-ATT": "aqa-a-psych-3.1.3"
+    ,"PSY-PATH": "aqa-a-psych-3.1.4"
+    ,"PSY-APP": "aqa-a-psych-3.2.1"
+    ,"PSY-BIO": "aqa-a-psych-3.2.2"
+    ,"PSY-RM": "aqa-a-psych-3.2.3"
+    ,"PSY-ID": "aqa-a-psych-3.3.1"
+    ,"PSY-REL": "aqa-a-psych-3.3.2"
+    ,"PSY-GEN": "aqa-a-psych-3.3.3"
+    ,"PSY-COG": "aqa-a-psych-3.3.4"
+    ,"PSY-SCH": "aqa-a-psych-3.3.5"
+    ,"PSY-EAT": "aqa-a-psych-3.3.6"
+    ,"PSY-STR": "aqa-a-psych-3.3.7"
+    ,"PSY-AGG": "aqa-a-psych-3.3.8"
+    ,"PSY-FOR": "aqa-a-psych-3.3.9"
+    ,"PSY-ADD": "aqa-a-psych-3.3.10"
   }
 };

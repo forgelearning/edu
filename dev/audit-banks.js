@@ -142,7 +142,9 @@ for (const [bankId, bank] of Object.entries(BANKS)) {
 }
 
 for (const [key, subject] of Object.entries(SUBJECTS)) {
-  if (!subject.banks.length) issues.push(`EMPTY SUBJECT: "${key}" (${subject.label}) lists no banks, so its card is dead`);
+  // Reader-mode subjects (currently IB Mandarin) deliberately use a passage
+  // workflow instead of MCQ banks, so an empty banks array is expected.
+  if (!subject.banks.length && !subject.readerMode) issues.push(`EMPTY SUBJECT: "${key}" (${subject.label}) lists no banks, so its card is dead`);
   for (const bank of subject.banks) {
     if (!BANKS[bank]) issues.push(`MISSING BANK: subject "${key}" references "${bank}", which is not defined`);
   }

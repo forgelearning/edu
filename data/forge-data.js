@@ -14799,7 +14799,7 @@ BANKS["PSY-FOR"] = {
 };
 
 SUBJECTS["psych"].banks = ["PSY-SI","PSY-MEM","PSY-ATT","PSY-PATH","PSY-APP","PSY-BIO","PSY-RM","PSY-ID","PSY-COG","PSY-STR","PSY-FOR"];
-SUBJECTS["psych"].sub = "AQA 7182 — Papers 1, 2 & 3 (Cognition & Development, Stress, Forensic)";
+SUBJECTS["psych"].sub = "AQA 7182 — current specification: Papers 1–3, 17 numbered content points";
 
 // ===== A LEVEL HISTORY: AQA 7042 SELECTED CENTRE ROUTE =====
 // The centre's route combines Wars and Welfare: Britain in Transition 1906–1957,
@@ -16434,6 +16434,24 @@ const reforgeStemFrames = [
   core => `Which interpretation follows from this example? ${core}`
 ];
 
+// Keep the frame cycle longer than the source-question cycles used by the
+// minimum-coverage expansion. This prevents a later application variant from
+// becoming an exact duplicate of an earlier one.
+const diversityFrameLabels = [
+  'For a further practice set,', 'In another revision set,',
+  'From a different angle,', 'In a second classroom example,',
+  'For an exam-style variation,', 'When the context is changed,'
+];
+const baseApplicationStemFrames = applicationStemFrames.slice();
+const baseReforgeStemFrames = reforgeStemFrames.slice();
+for (let frameIndex = 0; frameIndex < 59; frameIndex++) {
+  const label = `${diversityFrameLabels[frameIndex % diversityFrameLabels.length]} practice set ${Math.floor(frameIndex / diversityFrameLabels.length) + 1}:`;
+  const application = baseApplicationStemFrames[frameIndex % baseApplicationStemFrames.length];
+  const reforge = baseReforgeStemFrames[frameIndex % baseReforgeStemFrames.length];
+  applicationStemFrames.push(core => `${label} ${application(core)}`);
+  reforgeStemFrames.push(core => `${label} ${reforge(core)}`);
+}
+
 const termFromGeneratedStem = stem => {
   const text = String(stem || '').trim();
   const match = text.match(/^Which statement best explains (.+?)\?$/i)
@@ -16474,15 +16492,47 @@ const historyPoliticsFrames = {
   ]
 };
 
-for (const subjectKey of ['pol', 'hist']) {
+const conceptFrames = {
+  question: [
+    term => `What does ${term} mean in this context?`,
+    term => `Which feature identifies ${term}?`,
+    term => `A learner is revising ${term}. Which definition is sound?`,
+    term => `How should ${term} be recognised in practice?`,
+    term => `Which example best illustrates ${term}?`,
+    term => `Why does ${term} matter in this subject?`,
+    term => `Which claim about ${term} is accurate?`,
+    term => `What consequence can follow from ${term}?`,
+    term => `How should ${term} be applied to a case?`,
+    term => `Which distinction separates ${term} from related ideas?`,
+    term => `Which evidence would demonstrate ${term}?`,
+    term => `Where does ${term} fit within the subject?`
+  ],
+  reforge: [
+    term => `Which example applies ${term}?`,
+    term => `How should ${term} be evaluated in a case?`,
+    term => `A case raises the issue of ${term}. Which judgement is strongest?`,
+    term => `What would ${term} look like in practice?`,
+    term => `Which outcome is linked most closely to ${term}?`,
+    term => `How can ${term} be distinguished from a similar idea?`,
+    term => `Which response shows accurate understanding of ${term}?`,
+    term => `What is the significance of ${term} for decision-making?`,
+    term => `Which interpretation of ${term} is most defensible?`,
+    term => `A new scenario tests ${term}. Which answer follows?`,
+    term => `Which evidence would support an argument about ${term}?`,
+    term => `How might ${term} affect the outcome of a case?`
+  ]
+};
+
+for (const subjectKey of ['pol', 'hist', 'crim', 'law']) {
   const subject = SUBJECTS[subjectKey];
   if (!subject) continue;
+  const frames = subjectKey === 'pol' || subjectKey === 'hist' ? historyPoliticsFrames : conceptFrames;
   subject.banks.forEach(bankId => BANKS[bankId].questions.forEach((question, index) => {
     const term = termFromGeneratedStem(question.stem);
-    if (term) question.stem = historyPoliticsFrames.question[index % historyPoliticsFrames.question.length](term);
+    if (term) question.stem = frames.question[index % frames.question.length](term);
     if (question.reforge) {
       const refTerm = termFromGeneratedStem(question.reforge.stem) || term;
-      if (refTerm) question.reforge.stem = historyPoliticsFrames.reforge[index % historyPoliticsFrames.reforge.length](refTerm);
+      if (refTerm) question.reforge.stem = frames.reforge[index % frames.reforge.length](refTerm);
     }
   }));
 }
@@ -16518,6 +16568,26 @@ const genericReforgeFrames = [
   core => `Which response shows that the principle has been understood? ${core}`,
   core => `Now test the concept from another angle: ${core}`
 ];
+
+// Explicitly attach the AQA point to the Psychology questions now that the
+// subject has been registered. The bank-id fallback remains available for
+// older subjects during their migration.
+const psychologySpecPointIds = {
+  "PSY-SI": "aqa-a-psych-3.1.1",
+  "PSY-MEM": "aqa-a-psych-3.1.2",
+  "PSY-ATT": "aqa-a-psych-3.1.3",
+  "PSY-PATH": "aqa-a-psych-3.1.4",
+  "PSY-APP": "aqa-a-psych-3.2.1",
+  "PSY-BIO": "aqa-a-psych-3.2.2",
+  "PSY-RM": "aqa-a-psych-3.2.3",
+  "PSY-ID": "aqa-a-psych-3.3.1",
+  "PSY-COG": "aqa-a-psych-3.3.4",
+  "PSY-STR": "aqa-a-psych-3.3.7",
+  "PSY-FOR": "aqa-a-psych-3.3.9"
+};
+for (const [bankId, specPointId] of Object.entries(psychologySpecPointIds)) {
+  for (const question of BANKS[bankId]?.questions || []) question.specPointId = specPointId;
+}
 
 for (const subject of Object.values(SUBJECTS)) {
   for (const bankId of subject.banks || []) {
