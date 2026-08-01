@@ -424,3 +424,42 @@ Object.assign(SPEC_REGISTRY.aliases, {
   "GEO-HEALTH": "edexcel-a-geo-topic-8a",
   "9GE0-HEALTH": "edexcel-a-geo-topic-8a"
 });
+
+// AQA A-level History (7042), using the section structure published for the
+// selected options in this project.  The Tudor bank is the content context
+// for Component 3; the NEA points therefore describe the historical-
+// investigation skills rather than pretending it is an examined option.
+const historySpecPoints = [
+  ["2m-1", "Paper 2", "2M.1", "The Liberal crisis, 1906–1914"],
+  ["2m-2", "Paper 2", "2M.2", "The impact of war, 1914–1922"],
+  ["2m-3", "Paper 2", "2M.3", "The search for stability, 1922–1929"],
+  ["2m-4", "Paper 2", "2M.4", "The Hungry Thirties, 1929–1939"],
+  ["2m-5", "Paper 2", "2M.5", "The People's War and Peace, 1939–1951"],
+  ["2m-6", "Paper 2", "2M.6", "Never had it so good? 1951–1957"],
+  ["1k-1", "Paper 1", "1K.1", "The Era of Reconstruction and the Gilded Age, 1865–1890"],
+  ["1k-2", "Paper 1", "1K.2", "Populism, progressivism and imperialism, 1890–1920"],
+  ["1k-3", "Paper 1", "1K.3", "Crisis of identity, 1920–1945"],
+  ["1k-4", "Paper 1", "1K.4", "The Superpower, 1945–1975"],
+  ["nea-1", "Component 3", "NEA.1", "Historical issue, context and significant questions"],
+  ["nea-2", "Component 3", "NEA.2", "Research and evaluation of primary and secondary sources"],
+  ["nea-3", "Component 3", "NEA.3", "Interpretations, sustained argument and judgement"],
+  ["nea-content", "Component 3", "NEA.CONTENT", "Tudor investigation content context"]
+];
+for (const [id, paper, code, title] of historySpecPoints) {
+  SPEC_REGISTRY.points[`aqa-a-hist-${id}`] = {
+    subject: "hist", board: "AQA", qualification: "A-level History (7042)",
+    paper, code, title, aliases: []
+  };
+}
+Object.assign(SPEC_REGISTRY.aliases, {
+  "HIST-BRIT1": "aqa-a-hist-2m-1",
+  "HIST-BRIT2": "aqa-a-hist-2m-3",
+  "HIST-USA1": "aqa-a-hist-1k-1",
+  "HIST-USA2": "aqa-a-hist-1k-3",
+  "HIST-TUDOR": "aqa-a-hist-nea-content",
+  "AQA-2M-BRIT1": "aqa-a-hist-2m-1",
+  "AQA-2M-BRIT2": "aqa-a-hist-2m-3",
+  "AQA-1K-USA1": "aqa-a-hist-1k-1",
+  "AQA-1K-USA2": "aqa-a-hist-1k-3",
+  "AQA-NEA-TUDOR": "aqa-a-hist-nea-content"
+});

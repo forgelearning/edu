@@ -16682,6 +16682,26 @@ for (const subject of Object.values(SUBJECTS)) {
   }
 }
 
+// Some older Business, Chemistry and Computer Science reforges contained an
+// empty generic stem. Replace that exact placeholder with varied, usable
+// prompts so it cannot dominate a bank's question style.
+const emptyReforgeFrames = [
+  "Apply the underlying idea to a new scenario.",
+  "A new example tests the same principle. What should be concluded?",
+  "How would the concept be used in a different context?",
+  "Which response shows understanding when the context changes?",
+  "Transfer the principle to this unfamiliar case.",
+  "What would the idea predict in a fresh example?"
+];
+for (const bankId of ["BUS-1", "BUS-2", "BUS-3", "BUS-4", "CHEM-1", "CHEM-2", "CHEM-3", "CS-1", "CS-2", "CS-3", "CS-4"]) {
+  (BANKS[bankId]?.questions || []).forEach((question, index) => {
+    const reforge = question.reforge;
+    if (reforge && /^Which claim best applies when this idea is used in a new business or examination scenario\?$/i.test(String(reforge.stem || "").trim())) {
+      reforge.stem = emptyReforgeFrames[index % emptyReforgeFrames.length];
+    }
+  });
+}
+
 for (const subject of Object.values(SUBJECTS)) {
   for (const bankId of subject.banks || []) {
     for (const [index, question] of (BANKS[bankId]?.questions || []).entries()) {
@@ -16751,6 +16771,36 @@ const sociologySpecPointIds = {
 };
 for (const [bankId, specPointId] of Object.entries(sociologySpecPointIds)) {
   for (const question of BANKS[bankId]?.questions || []) question.specPointId = specPointId;
+}
+
+// Map the live AQA 7042 History banks to the option sections used in the
+// specification registry.  The banks are chronological, so the boundaries
+// follow the AQA section breaks rather than assigning every bank to one broad
+// legacy alias.
+const historySpecPointIds = {
+  "HIST-BRIT1": [
+    [1, 26, "aqa-a-hist-2m-1"], [27, 41, "aqa-a-hist-2m-2"]
+  ],
+  "HIST-BRIT2": [
+    [1, 7, "aqa-a-hist-2m-3"], [8, 21, "aqa-a-hist-2m-4"],
+    [22, 35, "aqa-a-hist-2m-5"], [36, 40, "aqa-a-hist-2m-6"]
+  ],
+  "HIST-USA1": [
+    [1, 21, "aqa-a-hist-1k-1"], [22, 40, "aqa-a-hist-1k-2"]
+  ],
+  "HIST-USA2": [
+    [1, 19, "aqa-a-hist-1k-3"], [20, 24, "aqa-a-hist-1k-4"],
+    [25, 39, "aqa-a-hist-1k-4"]
+  ],
+  "HIST-TUDOR": [[1, 40, "aqa-a-hist-nea-content"]]
+};
+for (const [bankId, ranges] of Object.entries(historySpecPointIds)) {
+  for (const [start, end, specPointId] of ranges) {
+    for (let index = start; index <= end; index += 1) {
+      const question = BANKS[bankId]?.questions?.[index - 1];
+      if (question) question.specPointId = specPointId;
+    }
+  }
 }
 
 // Remove the last legacy Sociology template from imported Paper 1 questions.
