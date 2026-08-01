@@ -447,8 +447,19 @@ var state = {
   weightMap: {}        // spaced repetition: questionId → priority weight
 };
 var requestedBank = new URLSearchParams(location.search).get('bank');
+var requestedSubject = new URLSearchParams(location.search).get('subject');
 var openClassJoin = new URLSearchParams(location.search).get('mode') === 'class';
 var requestedBankStarted = false;
+
+function settleRequestedSubject() {
+  if (requestedSubject && SUBJECTS[requestedSubject]) {
+    state.subject = requestedSubject;
+    state.phase = 'banks';
+    requestedSubject = null;
+  } else {
+    state.phase = 'subjects';
+  }
+}
 
 // ── JOINING A CLASS ───────────────────────────────────────────
 // Each class the student joins gets its own `students` row, so their answers
@@ -566,7 +577,7 @@ function wireJoinMore() {
         return;
       }
       // Land on the picker so the newly added subject is visible.
-      state.phase = 'subjects';
+      settleRequestedSubject();
       render();
     });
   };
@@ -823,7 +834,7 @@ function renderJoin() {
         state.weightMap = buildWeightMap(responses || []);
       }).catch(function() { state.weightMap = {}; });
 
-      state.phase = 'subjects';
+      settleRequestedSubject();
       render();
       return;
     }
@@ -836,7 +847,7 @@ function renderJoin() {
       state.classId     = null;
       state.isPaid      = false;
       saveFreeSession(name, studentId || token);
-      state.phase = 'subjects';
+      settleRequestedSubject();
       render();
     }).catch(function() {
       // Supabase failed — proceed without ID, progress won't persist server-side
@@ -845,7 +856,7 @@ function renderJoin() {
       state.classId     = null;
       state.isPaid      = false;
       saveFreeSession(name, token);
-      state.phase = 'subjects';
+      settleRequestedSubject();
       render();
     });
   };
@@ -874,7 +885,7 @@ function renderJoin() {
 
     if (!supa._configured()) {
       state.studentName = name;
-      state.phase = 'subjects';
+      settleRequestedSubject();
       render();
       return;
     }
@@ -1898,6 +1909,12 @@ if (ForgeAuth.hasSession()) {
           state.phase = 'quiz';
           return;
         }
+        if (requestedSubject && SUBJECTS[requestedSubject]) {
+          state.subject = requestedSubject;
+          state.phase = 'banks';
+          requestedSubject = null;
+          return;
+        }
         var joined = ForgeClasses.subjects(SUBJECTS);
         if (joined.length === 1) {
           state.subject      = joined[0];
@@ -1946,7 +1963,7 @@ if (ForgeAuth.hasSession()) {
       state.classId       = null;
       state.isPaid        = false;
       state.isTrial       = false;
-      state.phase         = 'subjects';
+      settleRequestedSubject();
       supa.select('responses', { student_id: freeSession.studentId }).then(function(r) {
         state.weightMap = buildWeightMap(r || []);
       }).catch(function() { state.weightMap = {}; });

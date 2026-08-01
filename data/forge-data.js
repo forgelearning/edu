@@ -10934,6 +10934,43 @@ extendSeparateScienceBank("GCSE-SEP-BIO-2", [
   {id:"SEP-BIO2-16",stem:"What is selective breeding?",options:{A:"Choosing parents with desired characteristics",B:"Changing every gene deliberately",C:"Selecting habitats only",D:"Cloning every organism"},correct:"A",scaffold:"Selective breeding chooses parents with desired characteristics so their offspring are more likely to inherit them.",tag:"SEP-BIO-BREEDING",reforge:{stem:"What is a possible disadvantage of selective breeding?",options:{A:"Reduced genetic variation",B:"No inherited traits",C:"All offspring become unrelated",D:"It prevents reproduction"},correct:"A"}}
 ]);
 
+const compactSeparateScienceOption = (text, target) => {
+  const clean = String(text).replace(/\([^)]*\)/g, "").replace(/\s+/g, " ").trim();
+  if (clean.length <= target) return clean;
+  const concise = clean
+    .replace(/current is proportional to potential difference/i, "current ∝ potential difference")
+    .replace(/a current-carrying conductor experiences a force in a magnetic field/i, "current in a magnetic field feels force")
+    .replace(/distance moved by substance with distance moved by solvent/i, "substance distance ÷ solvent distance")
+    .replace(/energy transferred per unit time/i, "energy transferred each second")
+    .replace(/the time for half the unstable nuclei to decay/i, "time for half the nuclei to decay")
+    .replace(/viruses lack the bacterial targets antibiotics act on/i, "viruses lack antibiotic targets")
+    .replace(/better-adapted individuals reproduce more successfully/i, "better-adapted individuals leave more offspring")
+    .replace(/they may ignore emissions across the full lifecycle/i, "lifecycle emissions may be ignored")
+    .replace(/some reactants may be lost or form side products/i, "reactants may be lost or form side products")
+    .replace(/the variety of living organisms/i, "variety of living organisms");
+  if (concise.length <= target) return concise;
+  const clauses = [
+    ...concise.split(/\s*[;—:]\s*/),
+    ...concise.split(/\s*,\s*(?=(?:and|but|so|because|which|causing|meaning)\b)/i),
+    concise
+  ].map(value => value.trim()).filter(value => value.length >= 10 && value.length <= target);
+  if (clauses[0]) return clauses[0];
+  const words = concise.replace(/\b(the|a|an|is|are|was|were|of|to|for|in|on|by|with)\b/gi, " ").replace(/\s+/g, " ").trim().split(" ");
+  while (words.length > 1 && words.join(" ").length > target) words.pop();
+  return words.join(" ").slice(0, target).trim();
+};
+for (const bankId of ["GCSE-SEP-CHEM-1","GCSE-SEP-CHEM-2","GCSE-SEP-PHYS-1","GCSE-SEP-PHYS-2","GCSE-SEP-BIO-1","GCSE-SEP-BIO-2"]) {
+  for (const question of BANKS[bankId].questions) {
+    for (const item of [question, question.reforge]) {
+      const lengths = Object.fromEntries(Object.entries(item.options).map(([letter, option]) => [letter, String(option).length]));
+      const max = Math.max(...Object.values(lengths));
+      if (lengths[item.correct] !== max || Object.values(lengths).filter(length => length === max).length !== 1) continue;
+      const distractorMax = Math.max(...Object.entries(lengths).filter(([letter]) => letter !== item.correct).map(([, length]) => length));
+      item.options[item.correct] = compactSeparateScienceOption(item.options[item.correct], distractorMax);
+    }
+  }
+}
+
 SUBJECTS["gcse-sep-chem"] = {label:"GCSE Separate Chemistry", sub:"Edexcel 1CH0 — Papers 1 & 2", color:"#166534", banks:["GCSE-SEP-CHEM-1","GCSE-SEP-CHEM-2"]};
 SUBJECTS["gcse-sep-phys"] = {label:"GCSE Separate Physics", sub:"Edexcel 1PH0 — Papers 1 & 2", color:"#7c2d12", banks:["GCSE-SEP-PHYS-1","GCSE-SEP-PHYS-2"]};
 SUBJECTS["gcse-sep-bio"] = {label:"GCSE Separate Biology", sub:"Edexcel 1BI0 — Papers 1 & 2", color:"#166534", banks:["GCSE-SEP-BIO-1","GCSE-SEP-BIO-2"]};
@@ -11573,3 +11610,215 @@ BANKS["PSY-ID"] = {
 
 SUBJECTS["psych"].banks = ["PSY-SI","PSY-MEM","PSY-ATT","PSY-PATH","PSY-APP","PSY-BIO","PSY-RM","PSY-ID"];
 SUBJECTS["psych"].sub = "AQA 7182 — Papers 1, 2 & 3";
+
+// ===== A LEVEL PSYCHOLOGY PAPER 1: SOCIAL INFLUENCE — EXTENSION SET =====
+BANKS["PSY-SI"].questions.push(
+    {
+      id:"SI-09",
+      stem:"Which type of conformity involves adopting a group's views only while in that group's presence?",
+      options:{
+        A:"Identification, where group membership drives a temporary change in view",
+        B:"Internalisation, where the group's beliefs are genuinely accepted as one's own",
+        C:"Compliance, where behaviour changes publicly but private opinion is unchanged",
+        D:"Obedience, where behaviour changes in response to a direct order from authority"
+      },
+      correct:"A",tag:"MC-SI-01",
+      scaffold:"Kelman's three types differ on depth and permanence. Compliance is the shallowest: public behaviour changes but private belief does not, and the change disappears the moment group pressure is removed. Internalisation is the deepest: the group's view is genuinely accepted, so the change persists in and out of the group. Identification sits between them — you adopt the group's views because you value membership, so the change lasts while you are in the group but fades once you leave. A new employee adopting workplace attitudes is identification; the question's key phrase is 'only while in that group's presence' combined with genuine adoption at the time.",
+      reforge:{stem:"A student joins a vegetarian friendship group and stops eating meat, but eats it at home. Which type is this?",options:{A:"Internalisation",B:"Compliance",C:"Identification",D:"Obedience"},correct:"C"}
+    },
+    {
+      id:"SI-10",
+      stem:"In Asch's variations, what happened to conformity when one confederate gave the correct answer?",
+      options:{
+        A:"Conformity increased sharply because the group appeared more divided",
+        B:"Conformity fell substantially, as the unanimity of the group was broken",
+        C:"Conformity was completely unaffected by the presence of a dissenter",
+        D:"Conformity rose to its highest recorded level across all of the variations"
+      },
+      correct:"B",tag:"MC-SI-01",
+      scaffold:"Asch found conformity dropped from 33% to around 5.5% when one confederate dissented — and crucially it fell even when the dissenter gave a different wrong answer. That second finding is the important one: what matters is not having an ally who is right, but breaking the group's unanimity, which frees the participant to act independently. The other two variables Asch tested: group size, where conformity rose steeply up to three confederates then plateaued, so a small majority is enough; and task difficulty, where making the lines more similar increased conformity, because informational social influence takes over when the correct answer is genuinely unclear.",
+      reforge:{stem:"Why did conformity fall even when the dissenter gave a different wrong answer?",options:{A:"The participant no longer wished to be accurate",B:"Breaking unanimity is what frees the participant to dissent",C:"The task had become considerably easier to judge",D:"The group size had effectively been reduced to zero"},correct:"B"}
+    },
+    {
+      id:"SI-11",
+      stem:"What was the main finding of Zimbardo's Stanford Prison Experiment?",
+      options:{
+        A:"Participants resisted their assigned roles and refused to take part fully",
+        B:"Only participants with authoritarian personalities behaved cruelly as guards",
+        C:"Participants conformed rapidly to their assigned social roles",
+        D:"Prisoners and guards behaved almost identically throughout the study"
+      },
+      correct:"C",tag:"MC-SI-02",
+      scaffold:"Zimbardo randomly assigned volunteers to be guards or prisoners in a mock prison. Within days guards were behaving with increasing brutality and prisoners became passive and depressed, with several released early; the study was stopped after six days of a planned fortnight. The conclusion is situational: because roles were randomly assigned, personality cannot explain the behaviour, so the situation itself must have produced it. Standard criticisms: demand characteristics, since participants may have been play-acting the role of 'guard' from films; Zimbardo's dual role as superintendent and researcher compromised objectivity; and Reicher and Haslam's partial replication found prisoners took control, contradicting the original.",
+      reforge:{stem:"Why does random assignment strengthen Zimbardo's situational conclusion?",options:{A:"It ensures the sample is fully representative of the population",B:"It means personality differences cannot explain the behaviour",C:"It removes the possibility of demand characteristics",D:"It allows the study to be replicated more easily"},correct:"B"}
+    },
+    {
+      id:"SI-12",
+      stem:"In Milgram's variations, obedience fell to 20.5% under which condition?",
+      options:{
+        A:"When the teacher forced the learner's hand onto the shock plate",
+        B:"When the study was moved from Yale to a run-down office building",
+        C:"When the experimenter gave instructions by telephone from another room",
+        D:"When the experimenter wore ordinary clothes rather than a lab coat"
+      },
+      correct:"A",tag:"MC-SI-03",
+      scaffold:"Learn the three situational variables with their figures, because AQA asks for them precisely. Proximity: baseline 65%; same room as the learner, 40%; touch proximity, where the teacher physically pressed the learner's hand onto the plate, 30%; experimenter instructing by telephone, 20.5%. Location: moving from Yale to a run-down office reduced obedience to 47.5%, since the setting conferred less legitimate authority. Uniform: when the experimenter was replaced by an ordinary member of the public in everyday clothes, obedience fell to 20%. Note that this question specifies the touch-proximity condition at 30% — the 20.5% figure belongs to the telephone variation.",
+      reforge:{stem:"Obedience fell to 47.5% in which Milgram variation?",options:{A:"The touch proximity condition",B:"The run-down office block location",C:"The telephone instruction condition",D:"The ordinary clothes condition"},correct:"B"}
+    },
+    {
+      id:"SI-13",
+      stem:"What are binding factors in Milgram's agency theory?",
+      options:{
+        A:"The personality traits that make certain individuals far more obedient than other people",
+        B:"The physical barriers preventing a participant from leaving the laboratory",
+        C:"The rewards offered to participants for completing the experiment fully",
+        D:"Aspects of the situation that let a person minimise the damage of their behaviour"
+      },
+      correct:"D",tag:"MC-SI-03",
+      scaffold:"Agency theory holds that people shift from an autonomous state, where they see themselves as responsible for their actions, into an agentic state, where they see themselves as acting for an authority figure and so feel no personal responsibility. This agentic shift creates moral strain, and binding factors are what allow the person to stay in the agentic state despite it — shifting blame onto the victim, or denying the damage of their own actions. In Milgram's study, the experimenter's reassurance that he accepted full responsibility is the clearest binding factor. Note the related concept of legitimacy of authority: we obey people we believe have a justified position in a social hierarchy.",
+      reforge:{stem:"What is the agentic state?",options:{A:"Seeing oneself as acting on behalf of an authority figure",B:"Feeling personally responsible for one's own actions",C:"Resisting the instructions given by an authority figure",D:"Conforming to the behaviour of a majority group"},correct:"A"}
+    },
+    {
+      id:"SI-14",
+      stem:"According to Adorno, which childhood experience produces an authoritarian personality?",
+      options:{
+        A:"Permissive parenting with very few rules and little imposed discipline",
+        B:"Harsh, strict parenting with conditional love and severe discipline",
+        C:"Consistent, responsive care from a single dedicated primary caregiver",
+        D:"Frequent changes of caregiver during the first two years of life"
+      },
+      correct:"B",tag:"MC-SI-04",
+      scaffold:"Adorno's dispositional explanation traces obedience to personality rather than situation. Harsh parenting with impossibly high standards and conditional love creates hostility toward the parents that cannot safely be expressed, so it is displaced onto those perceived as weaker — scapegoating. The resulting authoritarian personality shows extreme respect for authority, contempt for inferiors, rigid black-and-white thinking and conventional attitudes, measured by the F-scale. Milgram and Elms found obedient participants scored higher on the F-scale, but this is correlational. The broader criticism is that a personality explanation cannot account for whole populations behaving obediently, which situational factors explain far better.",
+      reforge:{stem:"What is the main limitation of the authoritarian personality as an explanation of obedience?",options:{A:"It cannot explain obedience across entire populations",B:"It has never been supported by any correlational data",C:"It ignores the influence of parenting on later behaviour",D:"The F-scale measures situational rather than personal factors"},correct:"A"}
+    },
+    {
+      id:"SI-15",
+      stem:"How does an internal locus of control help a person resist social influence?",
+      options:{
+        A:"They rely entirely on the group to tell them what the correct course of action is",
+        B:"They believe outcomes depend on their own actions, so take responsibility",
+        C:"They are more likely to enter the agentic state when instructed to obey",
+        D:"They have a stronger need for social approval from those around them"
+      },
+      correct:"B",tag:"MC-SI-05",
+      scaffold:"People with an internal locus of control believe that what happens to them results from their own behaviour; externals attribute outcomes to luck or to other people. Internals resist pressure better for two reasons: they take personal responsibility for their actions rather than deferring to an authority, and they tend to be more self-confident and less in need of social approval. Holland's replication of Milgram found 37% of internals refused to continue to the maximum shock, against 23% of externals. The other resistance factor is social support: a dissenting ally breaks unanimity, as Asch showed, and in Milgram's disobedient-confederate variation obedience collapsed to 10%.",
+      reforge:{stem:"In Milgram's variation with two disobedient confederates, obedience fell to what level?",options:{A:"47.5%",B:"30%",C:"20.5%",D:"10%"},correct:"D"}
+    },
+    {
+      id:"SI-16",
+      stem:"Which behaviour by a minority is most likely to produce conversion in the majority?",
+      options:{
+        A:"Consistency in the position argued, maintained over a long period",
+        B:"Frequently changing position to accommodate the majority's objections",
+        C:"Refusing to engage in any discussion with members of the majority",
+        D:"Adopting the majority's view publicly while privately disagreeing"
+      },
+      correct:"A",tag:"MC-SI-06",
+      scaffold:"Moscovici identified three factors that make a minority persuasive. Consistency: holding the same position over time and agreeing among themselves, which makes the majority reassess. Commitment: demonstrating personal sacrifice for the cause, which shows the position is not self-interested — the augmentation principle. Flexibility: being willing to adapt and accept reasonable counter-arguments, since pure rigidity is read as dogmatism. Nemeth showed flexibility matters, as an inflexible minority was ineffective. The outcome is conversion rather than compliance: minority influence works through deeper processing, so the change is internalised and lasts, which is why it drives social change.",
+      reforge:{stem:"What is the augmentation principle in minority influence?",options:{A:"A minority becomes more persuasive as it grows larger",B:"Personal sacrifice for a cause increases a minority's impact",C:"Majorities augment their views when challenged",D:"Consistency augments the size of the majority group"},correct:"B"}
+    },
+    {
+      id:"SI-17",
+      stem:"What is the snowball effect in social change?",
+      options:{
+        A:"A minority position gradually spreads until it becomes the majority view",
+        B:"A majority view rapidly collapses as soon as a single dissenting voice appears",
+        C:"Social change happens suddenly with no gradual build-up beforehand",
+        D:"Conformity increases steadily as the size of the group grows larger"
+      },
+      correct:"A",tag:"MC-SI-06",
+      scaffold:"Moscovici's account of social change runs in stages: the minority draws attention to an issue; consistency and commitment prompt the majority to think more deeply about it, which is the conversion process; individual majority members convert one at a time; the snowball effect takes over as the minority position gains momentum and becomes the majority; and finally social cryptomnesia occurs — people remember the change but forget how it happened. The suffragette movement is the standard worked example, showing consistency across decades, commitment through hunger strikes and imprisonment, and eventual legal change. Note that this process is slow, which is a genuine limitation.",
+      reforge:{stem:"What is social cryptomnesia?",options:{A:"Deliberately forgetting a minority's argument",B:"Remembering a change occurred but forgetting its source",C:"The memory loss caused by obeying authority",D:"A minority forgetting its original position"},correct:"B"}
+    },
+    {
+      id:"SI-18",
+      stem:"Which explanation best accounts for conformity in an ambiguous situation where the answer is unclear?",
+      options:{
+        A:"Normative social influence, driven by a desire to be liked by the group",
+        B:"Compliance, driven by the wish to avoid rejection or ridicule from others",
+        C:"Identification, driven by the wish to maintain valued group membership",
+        D:"Informational social influence, driven by a desire to be correct"
+      },
+      correct:"D",tag:"MC-SI-01",
+      scaffold:"The two explanations map onto two different needs. Informational social influence stems from the need to be right: when a situation is ambiguous, novel or a crisis, we assume others know better and follow, and because we genuinely believe them the result is internalisation. Normative social influence stems from the need to be liked: we go along with the group to avoid rejection, which produces compliance and is strongest with people we care about. Sherif's autokinetic effect study demonstrates ISI, since the light's apparent movement is an illusion with no correct answer; Asch's line task demonstrates NSI, since the answer is obvious and participants knew they were wrong.",
+      reforge:{stem:"Which study best demonstrates informational social influence?",options:{A:"Asch's line judgement task",B:"Milgram's shock experiment",C:"Sherif's autokinetic effect study",D:"Zimbardo's prison simulation"},correct:"C"}
+    },
+    {
+      id:"SI-19",
+      stem:"Why is Asch's research sometimes described as a 'child of its time'?",
+      options:{
+        A:"Because the participants who were tested were all children rather than adults",
+        B:"Because the study has never once been replicated by other researchers",
+        C:"Because 1950s America was unusually conformist, so rates may not generalise",
+        D:"Because the line judgement task is now considered far too difficult"
+      },
+      correct:"C",tag:"MC-SI-01",
+      scaffold:"This is a temporal validity criticism. Asch ran his study during the McCarthy era, when dissent in the United States carried real risk, so unusually high conformity might reflect that specific climate rather than a general human tendency. Perrin and Spencer's 1980 replication with British engineering students found only one conforming response in 396 trials, supporting the point — though those participants were also more confident about measuring lines, which is a confound. Add the other standard criticisms: an androcentric and ethnocentric sample of American men, an artificial task with no consequences, and the ethical issue of deception.",
+      reforge:{stem:"What did Perrin and Spencer's 1980 replication find?",options:{A:"Conformity rates were considerably higher than Asch found",B:"Conformity rates were almost identical to Asch's original",C:"Conformity occurred in only one of 396 trials",D:"Participants refused to complete the line task"},correct:"C"}
+    },
+    {
+      id:"SI-20",
+      stem:"What is the main strength of Milgram's research in terms of supporting evidence?",
+      options:{
+        A:"It has never once been replicated, which makes the original findings genuinely unique",
+        B:"All participants reported enjoying their experience in the study",
+        C:"The findings were obtained without any deception being used at all",
+        D:"Cross-cultural replications have produced broadly similar obedience rates"
+      },
+      correct:"D",tag:"MC-SI-03",
+      scaffold:"Milgram's findings have replicated widely. Burger's 2009 partial replication, stopping at 150 volts for ethical reasons, found 70% willing to continue against Milgram's 82.5% at the same point — a very similar rate almost fifty years later, which counters the 'child of its time' criticism. Cross-cultural work also produces high obedience, though rates vary. Hofling's nurses study adds external validity: 21 of 22 nurses obeyed an unknown doctor's phone instruction to give a dangerous drug dose, in a real hospital. Balance this against the criticisms: severe ethical problems, and Orne and Holland's argument that participants saw through the deception, which would undermine internal validity.",
+      reforge:{stem:"What did Hofling's study of nurses contribute to obedience research?",options:{A:"It showed obedience in a real-world clinical setting",B:"It demonstrated that nurses never obey doctors",C:"It disproved Milgram's original laboratory findings",D:"It showed obedience only occurs in laboratory settings"},correct:"A"}
+    },
+    {
+      id:"SI-21",
+      stem:"How can social change be encouraged through normative social influence?",
+      options:{
+        A:"By telling people what most others already do, so they follow the norm",
+        B:"By presenting complex statistical evidence that the behaviour is harmful",
+        C:"By having a small minority argue their case with total consistency",
+        D:"By instructing people using a figure with legitimate authority"
+      },
+      correct:"A",tag:"MC-SI-06",
+      scaffold:"Social norms interventions work by correcting misperceptions. People often overestimate how common an undesirable behaviour is, so publicising the true and usually lower figure exploits normative social influence directly — the classic example is campus campaigns reporting that most students drink less than peers assume, which reduced drinking. Schultz found hotel guests told that 75% of guests reuse their towels cut their own towel use by 25%. This is a strong real-world application point for an exam: it shows conformity research has practical value. Note it operates through NSI, whereas minority influence produces change through deeper processing and conversion.",
+      reforge:{stem:"What did Schultz find in the hotel towel study?",options:{A:"Guests ignored all messages about towel reuse",B:"Telling guests the group norm reduced towel use by 25%",C:"Only authority figures could change guest behaviour",D:"Guests used more towels when given information"},correct:"B"}
+    },
+    {
+      id:"SI-22",
+      stem:"Which is a valid criticism of the Stanford Prison Experiment?",
+      options:{
+        A:"The guards and prisoners were selected on the basis of personality tests",
+        B:"Zimbardo's dual role as superintendent compromised his objectivity",
+        C:"The study used far too large a sample to draw useful conclusions",
+        D:"No participants showed any distress at any point in the study"
+      },
+      correct:"B",tag:"MC-SI-02",
+      scaffold:"Zimbardo acted as both prison superintendent and lead researcher, so he was directing the situation he was supposed to be observing — he later acknowledged becoming absorbed in the role himself, and only stopped the study when a colleague challenged him. That is a serious investigator effect. Add the other criticisms: demand characteristics, with Banuazizi and Movahedi finding that most people guessed how participants were expected to behave; the ethical problems of psychological harm and the difficulty participants had withdrawing; and Reicher and Haslam's BBC replication, where prisoners resisted and guards would not impose authority, suggesting the original result was not inevitable.",
+      reforge:{stem:"What did Reicher and Haslam's replication find?",options:{A:"Guards were even more brutal than in the original",B:"The results replicated Zimbardo's findings exactly",C:"Prisoners resisted and guards would not assert authority",D:"No participants adopted their assigned roles at all"},correct:"C"}
+    },
+    {
+      id:"SI-23",
+      stem:"A person continues to obey because they believe the authority figure will take responsibility. Which concept explains this?",
+      options:{
+        A:"An external locus of control shaping their general expectations",
+        B:"Informational social influence in an ambiguous situation",
+        C:"A binding factor allowing them to remain in the agentic state",
+        D:"Identification with the social role they have been assigned"
+      },
+      correct:"C",tag:"MC-SI-03",
+      scaffold:"Displacing responsibility onto the authority figure is a textbook binding factor: it reduces the moral strain of continuing, so the person stays in the agentic state rather than shifting back to autonomy. In Milgram's procedure the experimenter's scripted prod — that he accepted full responsibility for anything that happened — did exactly this work, and it is why so many participants continued despite visible distress. Distinguish it from legitimacy of authority, which explains why the person entered the agentic state in the first place: we are socialised from childhood to accept that certain people have a justified right to direct our behaviour.",
+      reforge:{stem:"Why does destructive authority pose a particular danger according to Milgram?",options:{A:"Legitimate authority can be used to order harmful acts",B:"Authority figures are always in an autonomous state",C:"Binding factors prevent authority from being obeyed",D:"Legitimacy of authority reduces obedience overall"},correct:"A"}
+    },
+    {
+      id:"SI-24",
+      stem:"Why might a minority initially struggle to influence a majority?",
+      options:{
+        A:"Minorities are entirely unable to demonstrate any consistency in their stated position",
+        B:"Majority members may fear the social cost of being associated with them",
+        C:"Deeper processing of a minority argument is impossible to achieve",
+        D:"Minority influence has never been demonstrated in any research study"
+      },
+      correct:"B",tag:"MC-SI-06",
+      scaffold:"Minority influence is slow because agreeing publicly with a minority carries a normative cost: you risk being seen as deviant by the majority. This is why minority influence typically shows up first as private acceptance and only later as public behaviour change — the opposite pattern to majority influence, which produces public compliance without private change. Moscovici's blue-green study captured this, with more participants agreeing with the minority when responses were written privately. The practical implication is that minority influence produces slower but deeper and more durable change, which is exactly what drives long-term social change.",
+      reforge:{stem:"Why did more participants agree with the minority when answering privately?",options:{A:"Private answers are easier to record accurately",B:"They avoided the social cost of publicly appearing deviant",C:"The minority became more consistent in private",D:"Informational influence only operates in private"},correct:"B"}
+    }
+);
