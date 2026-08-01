@@ -16787,6 +16787,92 @@ for (const subject of Object.values(SUBJECTS)) {
   }
 }
 
+// Phase 2 data hygiene -----------------------------------------------------
+// Older banks were authored before the numbered spec registry was introduced.
+// Give those questions an explicit, honest bank-level reference rather than
+// leaving the metadata field blank. `specGranularity` makes the distinction
+// visible: these are migration references, not claims that every question has
+// already been mapped to the finest exam-board sub-point.
+for (const subject of Object.values(SUBJECTS)) {
+  for (const bankId of subject.banks || []) {
+    for (const question of BANKS[bankId]?.questions || []) {
+      if (!question.spec && !question.specPointId) {
+        question.spec = bankId;
+        question.specGranularity = "bank";
+      }
+    }
+  }
+}
+
+// Remove contextless generated Reforge prompts and vary the remaining
+// formulaic openings. Each replacement keeps the underlying proposition or
+// the complete original question, so a learner never needs an earlier card to
+// understand what is being asked.
+const phase2ReforgeFrames = [
+  base => `Apply the same principle to this question: ${base}`,
+  base => `Use the concept in this related case: ${base}`,
+  base => `What follows when the idea is applied here? ${base}`,
+  base => `Transfer the idea to this example: ${base}`,
+  base => `How would the concept work in this case? ${base}`,
+  base => `Read this application and select the best answer: ${base}`
+];
+const phase2RewriteStem = (item, index) => {
+  if (!item || !item.stem) return;
+  let text = String(item.stem).trim();
+  const directReforge = /^(?:Which claim best applies when this idea is used in a new business or examination scenario\?|Which claim remains accurate when the example changes\?|Which claim is defensible when the context changes\?)\s*/i;
+  if (directReforge.test(text)) {
+    const remainder = text.replace(directReforge, '').trim();
+    if (remainder) {
+      text = remainder;
+      item.stem = text;
+      return;
+    }
+  }
+  if (/^Which claim best applies when this idea is used in a new business or examination scenario\?$/i.test(text)) return;
+  if (/^Which claim remains accurate when the example changes\?$/i.test(text) ||
+      /^Which claim is defensible when the context changes\?$/i.test(text)) return;
+
+  const replacements = [
+    [/^Which statement best describes (.+?)\?$/i, term => `What is the most accurate description of ${term}?`],
+    [/^Which claim best describes (.+?)\?$/i, term => `What is the most accurate description of ${term}?`],
+    [/^Which statement best explains (.+?)\?$/i, term => `What best accounts for ${term}?`],
+    [/^Which claim best explains (.+?)\?$/i, term => `What best accounts for ${term}?`],
+    [/^Which statement correctly defines (.+?)\?$/i, term => `How should ${term} be defined?`],
+    [/^Which claim correctly defines (.+?)\?$/i, term => `How should ${term} be defined?`],
+    [/^Which statement correctly describes (.+?)\?$/i, term => `What does ${term} look like?`],
+    [/^Which claim correctly describes (.+?)\?$/i, term => `What does ${term} look like?`],
+    [/^Which statement correctly distinguishes (.+?)\?$/i, term => `What distinguishes ${term}?`],
+    [/^Which claim correctly distinguishes (.+?)\?$/i, term => `What distinguishes ${term}?`],
+    [/^Which statement about (.+?) is (.+?)\?$/i, (term, suffix) => `What is the ${suffix} view of ${term}?`],
+    [/^Which claim about (.+?) is (.+?)\?$/i, (term, suffix) => `What is the ${suffix} view of ${term}?`],
+    [/^Which statement is consistent with (.+?)\?$/i, term => `What is consistent with ${term}?`],
+    [/^Which claim is consistent with (.+?)\?$/i, term => `What is consistent with ${term}?`]
+  ];
+  for (const [pattern, make] of replacements) {
+    const match = text.match(pattern);
+    if (match) {
+      text = make(...match.slice(1));
+      item.stem = text;
+      return;
+    }
+  }
+  if (/^Which statement\b/i.test(text)) item.stem = text.replace(/^Which statement\b/i, 'Which option');
+  else if (/^Which claim\b/i.test(text)) item.stem = text.replace(/^Which claim\b/i, 'Which option');
+};
+for (const subject of Object.values(SUBJECTS)) {
+  for (const bankId of subject.banks || []) {
+    for (const [index, question] of (BANKS[bankId]?.questions || []).entries()) {
+      const baseStem = String(question.stem || '').trim();
+      const ref = question.reforge;
+      if (ref && /^(?:Which claim best applies when this idea is used in a new business or examination scenario\?|Which claim remains accurate when the example changes\?|Which claim is defensible when the context changes\?)$/i.test(String(ref.stem || '').trim())) {
+        ref.stem = phase2ReforgeFrames[index % phase2ReforgeFrames.length](baseStem);
+      }
+      phase2RewriteStem(question, index);
+      phase2RewriteStem(ref, index + 2);
+    }
+  }
+}
+
 // Remove internal generation labels from the final student-facing data. These
 // labels describe how a card was produced, not what a learner needs to know.
 // Keep the substantive scenario and question after the label intact.
@@ -17520,6 +17606,37 @@ for (const subject of Object.values(SUBJECTS)) {
       if (ref && ref.options && !String(ref.stem || "").trim()) {
         ref.stem = baseStem;
       }
+    }
+  }
+}
+
+// Final language pass: a few later-added coverage questions were introduced
+// after the main stem-diversity migration. Rephrase those remaining generic
+// "Which statement/claim" openings so the visible bank does not teach a
+// test-taking shortcut.
+const finalStemLanguagePass = (item, index) => {
+  if (!item?.stem) return;
+  let stem = String(item.stem).trim()
+    .replace(/\s*\((?:comparison formulation|second formulation|exam practice variant|alternative wording|another formulation|applied formulation)(?:\s*\([^)]*\))?\)\s*$/i, "")
+    .trim();
+  const replacements = [
+    [/^which statement correctly explains why amines are basic\?$/i, "Why are amines basic?"],
+    [/^which statement correctly describes the difference between discontinuous and continuous variation\?$/i, "How do discontinuous and continuous variation differ?"],
+    [/^which statement best describes the concept of ['\"]media convergence['\"]\??$/i, "How should media convergence be understood?"],
+    [/^which (?:statement|claim) about the Spanish political system is most accurate for A Level study\??$/i, "How is the Spanish political system organised for A Level study?"],
+    [/^which statement describes conservation of energy\?$/i, "How is energy conserved?"],
+  ];
+  for (const [pattern, replacement] of replacements) {
+    if (pattern.test(stem)) { item.stem = replacement; return; }
+  }
+  if (/^which statement\b/i.test(stem)) item.stem = stem.replace(/^which statement\b/i, "Which option");
+  else if (/^which claim\b/i.test(stem)) item.stem = stem.replace(/^which claim\b/i, "Which option");
+};
+for (const subject of Object.values(SUBJECTS)) {
+  for (const bankId of subject.banks || []) {
+    for (const [index, question] of (BANKS[bankId]?.questions || []).entries()) {
+      finalStemLanguagePass(question, index);
+      finalStemLanguagePass(question.reforge, index + 2);
     }
   }
 }

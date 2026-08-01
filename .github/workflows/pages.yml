@@ -26,6 +26,24 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Validate question bank
+        run: node scripts/check-question-bank.js
+
+      - name: Validate subject-page counts
+        run: node scripts/check-subject-counts.js
+
+      - name: Validate specification coverage
+        run: node scripts/check-spec-coverage.js
+
+      - name: Validate stem diversity
+        run: node scripts/check-stem-diversity.js
+
+      - name: Validate stem language
+        run: node scripts/check-stem-language.js
+
+      - name: Audit distractor balance and structure
+        run: node dev/audit-banks.js
+
       - name: Configure Pages
         uses: actions/configure-pages@v5
 

@@ -2784,6 +2784,14 @@ if (localStorage.getItem('forge-theme') === 'light') {
     }, 0);
     var statEl = card.querySelector('.subj-stat');
     if (statEl) statEl.innerHTML = '<span class="subj-stat-n">' + qCount + '</span> questions · ' + bankCount + ' bank' + (bankCount === 1 ? '' : 's');
+    // Keep the descriptive progress row in sync with the canonical data too.
+    // The headline stat was already data-driven, but the detail row was
+    // hand-written and could silently become stale after a bank was added.
+    var detailEl = card.querySelector('.progress-row span:first-child');
+    if (detailEl) {
+      detailEl.textContent = detailEl.textContent.replace(/·\s*\d+\s+banks?\s*·\s*\d+\s+questions/i,
+        '· ' + bankCount + ' bank' + (bankCount === 1 ? '' : 's') + ' · ' + qCount + ' questions');
+    }
     if (!card.hasAttribute('data-pill-fixed')) {
       var pill = card.querySelector('.pill');
       if (pill) {
