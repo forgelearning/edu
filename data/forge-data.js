@@ -17663,7 +17663,10 @@ const mathsSpecQuestions = [
   ["MATH-COV-14", "MATH-3", "edexcel-a-maths-4.5", "A vector in the direction (6, 8) has unit vector:", {A:"(3/5, 4/5)",B:"(6, 8)",C:"(6/14, 8/14)",D:"(4/3, 5/3)"}, "A", "The vector has magnitude 10, so divide both components by 10."]
 ];
 for (const [id, bankId, specPointId, stem, options, correct, scaffold] of mathsSpecQuestions) {
-  BANKS[bankId].questions.push({id, stem, options, correct, tag:"MC-MATH-SPEC", scaffold, specPointId, spec:specPointId});
+  BANKS[bankId].questions.push({
+    id, stem, options, correct, tag:"MC-MATH-SPEC", scaffold, specPointId, spec:specPointId,
+    reforge:{stem:`A related calculation asks: ${stem}`, options, correct}
+  });
 }
 
 // Final language pass: a few later-added coverage questions were introduced
