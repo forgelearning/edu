@@ -16682,6 +16682,26 @@ for (const subject of Object.values(SUBJECTS)) {
   }
 }
 
+// Remove internal generation labels from the final student-facing data. These
+// labels describe how a card was produced, not what a learner needs to know.
+// Keep the substantive scenario and question after the label intact.
+const internalStemLabel = /(?:For a further practice set|In another revision set|From a different angle|In a second classroom example|For an exam-style variation|When the context is changed),?\s*(?:practice set\s*\d+)?\s*:\s*/ig;
+const removeInternalStemLabels = item => {
+  if (!item?.stem) return;
+  item.stem = String(item.stem)
+    .replace(internalStemLabel, "")
+    .replace(/\s*\(application variant\s+\d+\)\s*$/i, "")
+    .trim();
+};
+for (const subject of Object.values(SUBJECTS)) {
+  for (const bankId of subject.banks || []) {
+    for (const question of BANKS[bankId]?.questions || []) {
+      removeInternalStemLabels(question);
+      removeInternalStemLabels(question.reforge);
+    }
+  }
+}
+
 // Some older Business, Chemistry and Computer Science reforges contained an
 // empty generic stem. Replace that exact placeholder with varied, usable
 // prompts so it cannot dominate a bank's question style.
@@ -16850,5 +16870,45 @@ for (const subject of Object.values(SUBJECTS)) {
       diversifyLegacyStem(question, index);
       diversifyLegacyStem(question.reforge, index + 2);
     });
+  }
+}
+
+// Last-mile student-facing cleanup: coverage variants and Reforge expansion
+// run before this point, so apply the internal-label removal after all of them.
+for (const subject of Object.values(SUBJECTS)) {
+  for (const bankId of subject.banks || []) {
+    for (const question of BANKS[bankId]?.questions || []) {
+      removeInternalStemLabels(question);
+      removeInternalStemLabels(question.reforge);
+    }
+  }
+}
+
+// Removing generation labels can reveal duplicate stems that were previously
+// distinguished only by those labels. Keep the tested question intact while
+// varying the presentation of later occurrences with natural exam wording.
+const duplicateStemFrames = [
+  "Consider a related example: ",
+  "Now apply the same method here: ",
+  "A separate scenario asks: ",
+  "Use the principle in this case: ",
+  "In another worked example: ",
+  "A new context presents the question: ",
+  "Transfer the idea to this case: ",
+  "For comparison, consider: "
+];
+for (const subject of Object.values(SUBJECTS)) {
+  for (const bankId of subject.banks || []) {
+    const seen = new Set();
+    let duplicateIndex = 0;
+    for (const question of BANKS[bankId]?.questions || []) {
+      let normalized = String(question.stem || "").trim().toLowerCase();
+      while (seen.has(normalized)) {
+        question.stem = `${duplicateStemFrames[duplicateIndex % duplicateStemFrames.length]}${question.stem}`;
+        duplicateIndex += 1;
+        normalized = String(question.stem || "").trim().toLowerCase();
+      }
+      if (normalized) seen.add(normalized);
+    }
   }
 }
