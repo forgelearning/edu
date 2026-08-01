@@ -145,6 +145,8 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
 .assign-progress-row{display:flex;align-items:center;gap:10px;margin-bottom:4px}
 .assign-progress-bar{flex:1;height:5px;background:var(--line);border-radius:var(--radius-xs);overflow:hidden}
 .assign-progress-fill{height:100%;border-radius:var(--radius-xs);background:var(--ember)}
+.assign-summary{display:flex;flex-wrap:wrap;gap:8px 14px;margin-top:8px;font:11px 'JetBrains Mono',monospace;color:#8A857E}
+.assign-summary span{white-space:nowrap}
 .assign-due{font-size:12px;font-family:'JetBrains Mono',monospace}
 .assign-due.overdue{color:var(--bad)}
 .assign-due.soon{color:var(--hot)}
@@ -1395,8 +1397,9 @@ function renderDashboard() {
   h += '</div>';
 
   // Stats row
+  h += '<p style="font-size:12px;color:#8A857E;margin:-8px 0 14px">Accuracy is based on answered questions; completion and participation are tracked separately.</p>';
   h += '<div class="stat-row">';
-  h += '<div class="stat"><span class="stat-n" style="color:' + (accuracy >= 70 ? 'var(--good)' : accuracy >= 50 ? 'var(--hot)' : 'var(--bad)') + '">' + accuracy + '%</span><span class="stat-l">Class accuracy</span></div>';
+  h += '<div class="stat" title="Correct answers divided by answered questions"><span class="stat-n" style="color:' + (totalQs === 0 ? 'var(--slate)' : accuracy >= 70 ? 'var(--good)' : accuracy >= 50 ? 'var(--hot)' : 'var(--bad)') + '">' + (totalQs === 0 ? '—' : accuracy + '%') + '</span><span class="stat-l">Accuracy</span></div>';
   h += '<div class="stat"><span class="stat-n" style="color:var(--white)">' + totalQs + '</span><span class="stat-l">Total answers</span></div>';
   h += '<div class="stat"><span class="stat-n" style="color:var(--hot)">' + Object.keys(uniqueMCs).length + '</span><span class="stat-l">Unique misconceptions</span></div>';
   h += '<div class="stat"><span class="stat-n" style="color:var(--good)">' + reforgeCorrect.length + '/' + reforgeAttempts.length + '</span><span class="stat-l">Reforges passed</span></div>';
@@ -1868,37 +1871,84 @@ function dueBadge(dateStr) {
   return '<span class="assign-due ok">Due ' + due.toLocaleDateString('en-GB', {day:'numeric',month:'short'}) + '</span>';
 }
 
-function renderAssignCard(asgn, students, responses, isArchived) {
-  var banks = Array.isArray(asgn.banks) ? asgn.banks : (asgn.banks ? JSON.parse(asgn.banks) : []);
-  var bankLabels = banks.map(function(b) { return BANK_LABELS[b] || b; }).join(', ');
-  var asgnCreated = new Date(asgn.created_at);
-  var completedStudents = {};
-  responses.forEach(function(r) {
-    if (new Date(r.created_at) >= asgnCreated && banks.indexOf(r.bank) !== -1) {
-      completedStudents[r.student_id] = true;
-    }
+function teacherEsc(value) {
+  return String(value == null ? '' : value).replace(/[&<>"']/g, function(c) {
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
   });
-  var completedCount = Object.keys(completedStudents).length;
+}
+
+function assignmentBanks(asgn) {
+  try { return Array.isArray(asgn.banks) ? asgn.banks : (asgn.banks ? JSON.parse(asgn.banks) : []); }
+  catch (e) { return []; }
+}
+
+function assignmentQuestionTotal(banks) {
+  return banks.reduce(function(total, bank) {
+    var data = BANKS[bank];
+    if (!data || !Array.isArray(data.questions)) return total;
+    return total + data.questions.filter(function(q) { return !q.type || q.type === 'fill_blank'; }).length;
+  }, 0);
+}
+
+function assignmentStudentProgress(asgn, studentId, responses) {
+  var banks = assignmentBanks(asgn), created = asgn.created_at ? new Date(asgn.created_at) : null;
+  var seen = {}, correct = 0, answered = 0;
+  responses.forEach(function(r) {
+    if (r.student_id !== studentId || banks.indexOf(r.bank) === -1) return;
+    if (created && (!r.created_at || new Date(r.created_at) < created)) return;
+    var id = String(r.question_id || '').replace(/-RF$/, ''), key = r.bank + '|' + id;
+    if (seen[key]) return;
+    seen[key] = true; answered++;
+    if (r.is_correct) correct++;
+  });
+  var total = assignmentQuestionTotal(banks);
+  return {
+    total: total,
+    answered: answered,
+    correct: correct,
+    accuracy: answered ? Math.round((correct / answered) * 100) : null,
+    completed: total > 0 && answered >= total,
+    started: answered > 0
+  };
+}
+
+function renderAssignCard(asgn, students, responses, isArchived) {
+  var banks = assignmentBanks(asgn);
+  var bankLabels = banks.map(function(b) { return BANK_LABELS[b] || b; }).join(', ');
+  var progress = {};
+  students.forEach(function(s) { progress[s.id] = assignmentStudentProgress(asgn, s.id, responses); });
+  var completedCount = students.filter(function(s) { return progress[s.id].completed; }).length;
+  var startedCount = students.filter(function(s) { return progress[s.id].started; }).length;
+  var inProgressCount = students.filter(function(s) { return progress[s.id].started && !progress[s.id].completed; }).length;
+  var notStartedCount = students.length - startedCount;
+  var assignmentAnswered = students.reduce(function(n, s) { return n + progress[s.id].answered; }, 0);
+  var assignmentCorrect = students.reduce(function(n, s) { return n + progress[s.id].correct; }, 0);
+  var assignmentAccuracy = assignmentAnswered ? Math.round((assignmentCorrect / assignmentAnswered) * 100) : null;
   var total = students.length;
   var pct = total > 0 ? Math.round((completedCount / total) * 100) : 0;
 
   var h = '<div class="assign-card' + (isArchived ? ' archived' : '') + '" data-asgn-id="' + asgn.id + '">';
-  h += '<div class="assign-card-title">' + asgn.title + '</div>';
-  h += '<div class="assign-meta">' + bankLabels + '</div>';
+  h += '<div class="assign-card-title">' + teacherEsc(asgn.title) + '</div>';
+  h += '<div class="assign-meta">' + teacherEsc(bankLabels) + '</div>';
   if (!isArchived) {
     h += '<div class="assign-progress-row">';
     h += '<div class="assign-progress-bar"><div class="assign-progress-fill" style="width:' + pct + '%"></div></div>';
-    h += '<span style="font-family:\'JetBrains Mono\',monospace;font-size:12px;color:var(--slate)">' + completedCount + '/' + total + ' started</span>';
+    h += '<span style="font-family:\'JetBrains Mono\',monospace;font-size:12px;color:var(--slate)">' + completedCount + '/' + total + ' completed</span>';
     h += dueBadge(asgn.due_date);
     h += '</div>';
+    h += '<div class="assign-summary" aria-label="Assignment progress">';
+    h += '<span>' + startedCount + ' started</span><span>' + inProgressCount + ' in progress</span><span>' + notStartedCount + ' not started</span>';
+    h += '<span>' + (assignmentAccuracy == null ? '—' : assignmentAccuracy + '%') + ' accuracy</span></div>';
     if (students.length > 0) {
       h += '<div style="margin-top:12px">';
       students.forEach(function(s) {
-        var done = completedStudents[s.id];
+        var ps = progress[s.id];
+        var status = ps.completed ? 'Completed' : ps.started ? 'In progress' : 'Not started';
+        var statusColor = ps.completed ? 'var(--good)' : ps.started ? 'var(--hot)' : '#8A857E';
         h += '<div class="student-assign-row">';
-        h += '<span style="color:' + (done ? 'var(--good)' : 'var(--bad)') + ';font-size:14px">' + (done ? '✓' : '○') + '</span>';
-        h += '<span style="color:var(--white);flex:1">' + s.name + '</span>';
-        h += '<span style="font-family:\'JetBrains Mono\',monospace;font-size:11px;color:#8A857E">' + (done ? 'Started' : 'Not started') + '</span>';
+        h += '<span style="color:' + statusColor + ';font-size:14px">' + (ps.completed ? '✓' : ps.started ? '◐' : '○') + '</span>';
+        h += '<span style="color:var(--white);flex:1">' + teacherEsc(s.display_name || s.name) + '</span>';
+        h += '<span style="font-family:\'JetBrains Mono\',monospace;font-size:11px;color:' + statusColor + '">' + status + (ps.answered ? ' · ' + ps.answered + '/' + ps.total : '') + '</span>';
         h += '</div>';
       });
       h += '</div>';
@@ -1932,9 +1982,13 @@ function renderAssignments() {
   // ── Create assignment form ──
   h += '<div class="assign-form">';
   h += '<div class="card-title" style="margin-bottom:14px">New assignment</div>';
-  h += '<input type="text" id="asgn-title" placeholder="Assignment title — e.g. Inflation revision">';
-  h += '<input type="date" id="asgn-due">';
-  h += '<div class="card-title" style="margin-bottom:8px">Select banks to include</div>';
+  h += '<label for="asgn-title" style="display:block;font-size:12px;color:var(--slate);margin-bottom:6px">Assignment title</label>';
+  h += '<input type="text" id="asgn-title" aria-describedby="asgn-title-help" placeholder="e.g. Inflation revision">';
+  h += '<p id="asgn-title-help" style="font-size:11px;color:#8A857E;margin:-5px 0 12px">Use a name students will recognise.</p>';
+  h += '<label for="asgn-due" style="display:block;font-size:12px;color:var(--slate);margin-bottom:6px">Due date <span style="color:#8A857E">(required)</span></label>';
+  h += '<input type="date" id="asgn-due" aria-describedby="asgn-due-help">';
+  h += '<p id="asgn-due-help" style="font-size:11px;color:#8A857E;margin:-5px 0 14px">Students can still see the work after the date, but it will be marked overdue.</p>';
+  h += '<div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px"><div class="card-title" style="margin-bottom:0">Select banks to include</div><span id="asgn-selected-count" style="font:11px \'JetBrains Mono\',monospace;color:#8A857E">0 selected</span></div>';
   h += '<div class="bank-checklist">';
   availableBanks.forEach(function(bk) {
     var label = BANK_LABELS[bk] || bk;
@@ -1945,7 +1999,7 @@ function renderAssignments() {
     h += '</div>';
   });
   h += '</div>';
-  h += '<button class="join-btn" id="asgn-create-btn">Set assignment \u2192</button>';
+  h += '<button class="join-btn" id="asgn-create-btn" disabled aria-disabled="true">Set assignment \u2192</button>';
   h += '<p class="join-err" id="asgn-err"></p>';
   h += '</div>';
 
@@ -2010,6 +2064,20 @@ function renderAssignments() {
   // Create assignment handler
   var createBtn = document.getElementById('asgn-create-btn');
   if (createBtn) {
+    var titleInput = document.getElementById('asgn-title');
+    var dueInput = document.getElementById('asgn-due');
+    var selectedCount = document.getElementById('asgn-selected-count');
+    var refreshAssignmentForm = function() {
+      var selected = el.querySelectorAll('.bank-checklist input[type=checkbox]:checked').length;
+      selectedCount.textContent = selected + ' selected';
+      var ready = !!titleInput.value.trim() && !!dueInput.value && selected > 0;
+      createBtn.disabled = !ready;
+      createBtn.setAttribute('aria-disabled', ready ? 'false' : 'true');
+    };
+    titleInput.addEventListener('input', refreshAssignmentForm);
+    dueInput.addEventListener('change', refreshAssignmentForm);
+    el.querySelectorAll('.bank-checklist input[type=checkbox]').forEach(function(cb) { cb.addEventListener('change', refreshAssignmentForm); });
+    refreshAssignmentForm();
     createBtn.onclick = function() {
       var title = document.getElementById('asgn-title').value.trim();
       var due = document.getElementById('asgn-due').value;
@@ -2253,7 +2321,7 @@ function renderClassOverview(responses, students) {
 
     h += '<tr>';
     h += '<td data-label="Student" onclick="renderStudent(\'' + sid + '\')" style="cursor:pointer">';
-    h += '<span class="student-name-display" data-sid="' + sid + '">' + displayName + '</span>';
+    h += '<span class="student-name-display" data-sid="' + sid + '">' + teacherEsc(displayName) + '</span>';
     if (extraTime > 0) h += '<span class="extra-time-badge">+' + extraTime + '%</span>';
     h += '</td>';
     h += '<td data-label="Answered" onclick="renderStudent(\'' + sid + '\')" style="cursor:pointer">' + ps.total + '</td>';
@@ -2281,7 +2349,7 @@ function renderClassOverview(responses, students) {
   sorted.forEach(function(sid) {
     var student = dashState.students.find(function(s) { return s.id === sid; }) || {};
     var displayName = student.display_name || perStudent[sid].name;
-    h += '<option value="' + sid + '">' + displayName + '</option>';
+    h += '<option value="' + sid + '">' + teacherEsc(displayName) + '</option>';
   });
   h += '</select>';
   h += '<input type="text" id="rename-input" class="rename-input" placeholder="New display name">';

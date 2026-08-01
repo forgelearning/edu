@@ -770,7 +770,7 @@ function renderJoin() {
   // Panel: Join class
   h += '<div id="panel-class" style="display:none">';
   h += '<p style="font-size:12.5px;color:var(--dim);margin-bottom:16px;text-align:center">Enter your name and the code your teacher gave you</p>';
-  h += ForgeAuthCard.field('join-name', 'Your name', {placeholder:'First name + surname initial — e.g. James B'});
+  h += ForgeAuthCard.field('join-name', 'Your name', {placeholder:'First name and surname — e.g. James Morgan'});
   h += ForgeAuthCard.field('join-code', 'Class code', {placeholder:'e.g. ECON-Y12-A', upper:true});
   h += '<button class="auth-btn" id="join-btn" type="submit">Join class →</button>';
   h += '<p class="auth-err" id="join-err"></p>';
@@ -882,16 +882,17 @@ function renderJoin() {
     if (!rawName) { err.textContent = 'Enter your name.'; err.style.display = 'block'; return; }
     if (!code) { err.textContent = 'Enter your class code.'; err.style.display = 'block'; return; }
 
-    // Enforce First Name + Surname Initial — e.g. "James B"
+    // Require at least a first name and surname, but preserve the entered
+    // display name so teachers can distinguish students with similar initials.
     var parts = rawName.trim().split(/\s+/);
     var name;
     if (parts.length < 2) {
-      err.textContent = 'Enter your first name and first letter of your surname — e.g. James B';
+      err.textContent = 'Enter your first name and surname — e.g. James Morgan';
       err.style.display = 'block'; return;
     }
-    // Capitalise first name + take first letter of surname
-    name = parts[0].charAt(0).toUpperCase() + parts[0].slice(1).toLowerCase()
-         + ' ' + parts[1].charAt(0).toUpperCase();
+    // Keep the full entered name (with collapsed whitespace) rather than
+    // reducing it to "First I", which makes two students look identical.
+    name = rawName.trim().replace(/\s+/g, ' ');
 
     if (!supa._configured()) {
       state.studentName = name;
