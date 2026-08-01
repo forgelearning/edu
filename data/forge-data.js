@@ -12764,6 +12764,22 @@ BANKS["4.1.1"] = {
   ]
 };
 
+// ===== A LEVEL ECONOMICS — THEMES 3–4 EXTENSION =====
+BANKS["3.1.1"].questions.push(
+  {id:"TH3-BO-07",spec:"3.1.1",stem:"Why might a business pursue growth even when short-run profit falls?",options:{A:"Growth can always remove every business risk",B:"Larger firms never face diseconomies of scale",C:"Expansion may raise market power and lower unit costs",D:"A growing firm is guaranteed to charge the highest market price"},correct:"C",tag:"MC-TH3-BO-07",scaffold:"A firm may accept lower short-run profit to build market share, spread fixed costs, strengthen bargaining power and create future economies of scale. Growth also brings risks: finance costs, integration problems and diseconomies of scale. The correct judgement depends on whether the expected long-run gains outweigh the immediate cost and risk.",reforge:{stem:"What is one possible long-run advantage of business growth?",options:{A:"It removes the need for managers to coordinate staff",B:"It guarantees that demand will remain unchanged",C:"It can spread fixed costs across a larger output",D:"It prevents competitors from entering every market"},correct:"C"}},
+  {id:"TH3-BO-08",spec:"3.1.1",stem:"A firm has a high market share but weak customer loyalty. What is the main risk?",options:{A:"Its current sales cannot be measured accurately",B:"Rivals may win customers if conditions change",C:"Its fixed costs will automatically fall to zero",D:"Market share makes advertising legally impossible"},correct:"B",tag:"MC-TH3-BO-08",scaffold:"Market share measures the firm's proportion of market sales at a point in time; it does not prove that customers are loyal. If switching costs are low, rivals can win customers through lower prices, better quality or stronger branding. A firm should therefore track retention and repeat purchases as well as market share.",reforge:{stem:"Which measure would best complement market-share data?",options:{A:"The number of suppliers used by every rival",B:"Repeat-purchase rates among customers",C:"The total land area occupied by the firm",D:"The age of the firm's oldest machine"},correct:"B"}}
+);
+
+BANKS["3.2.1"].questions.push(
+  {id:"TH3-RP-07",spec:"3.2.1",stem:"A firm's average revenue is £18 and average cost is £15 at its current output. What is its profit per unit?",options:{A:"£3",B:"£15",C:"£18",D:"£33"},correct:"A",tag:"MC-TH3-RP-07",scaffold:"Profit per unit is average revenue minus average cost: £18 − £15 = £3. Total profit would require multiplying this figure by the number of units sold. Average figures are useful for comparing unit performance, but they do not reveal the firm's total profit without an output figure.",reforge:{stem:"A firm has average revenue of £24 and average cost of £19. Its profit per unit is:",options:{A:"£5",B:"£19",C:"£24",D:"£43"},correct:"A"}},
+  {id:"TH3-RP-08",spec:"3.2.1",stem:"Why can marginal cost eventually rise as output increases?",options:{A:"Fixed costs rise with every additional unit",B:"Total revenue must fall at higher output",C:"Diminishing returns can raise marginal cost",D:"Average revenue becomes equal to the market price"},correct:"C",tag:"MC-TH3-RP-08",scaffold:"In the short run, at least one factor is fixed. Adding more variable inputs to a fixed factor eventually creates diminishing marginal returns, so each extra unit requires disproportionately more resources and marginal cost rises. This is why the marginal cost curve is often U-shaped. Fixed costs do not themselves change with each extra unit in the short run.",reforge:{stem:"What does diminishing marginal returns imply for marginal cost?",options:{A:"Each extra unit becomes cheaper without limit",B:"More input is needed per extra unit",C:"Fixed costs increase whenever variable input is added",D:"Total revenue becomes independent of the output level"},correct:"B"}}
+);
+
+BANKS["4.1.1"].questions.push(
+  {id:"TH4-GT-07",spec:"4.1.1",stem:"How can foreign direct investment affect a host country's balance of payments?",options:{A:"It always worsens the current account immediately",B:"It removes all imports from the host economy",C:"It can attract capital now but send profits abroad later",D:"It changes the exchange rate without affecting any other account"},correct:"C",tag:"MC-TH4-GT-07",scaffold:"An inward investment is recorded as a financial-account inflow. It may also raise exports, substitute for imports and increase productive capacity, but profits later remitted to the overseas owner appear as a primary-income outflow in the current account. The overall effect therefore depends on the investment's scale, time horizon and links to the domestic economy.",reforge:{stem:"What is a possible later cost of inward foreign direct investment?",options:{A:"Profits may be sent abroad to the overseas owner",B:"The host country must stop exporting all goods",C:"Domestic productivity is guaranteed to fall",D:"The financial account records no investment flow"},correct:"A"}},
+  {id:"TH4-GT-08",spec:"4.1.1",stem:"Why might a country impose an import quota rather than a tariff?",options:{A:"A quota always lowers domestic prices below world prices",B:"A quota sets a physical limit on imported units",C:"A quota guarantees higher tax revenue for government",D:"A quota prevents trading partners from responding"},correct:"B",tag:"MC-TH4-GT-08",scaffold:"A quota restricts the quantity of a good entering the country, whereas a tariff raises its price through a tax. A quota can give domestic producers more certainty about the volume of foreign competition, but it may create quota rents and does not automatically raise government revenue. Trading partners may still retaliate.",reforge:{stem:"What distinguishes an import quota from an import tariff?",options:{A:"A quota fixes quantity; a tariff taxes imports",B:"A quota raises tax receipts; a tariff limits physical quantities",C:"A quota applies only to services; a tariff applies only to goods",D:"A quota removes protection; a tariff guarantees free trade"},correct:"A"}}
+);
+
 SUBJECTS["econ"].banks.push("3.1.1","3.2.1","4.1.1");
 SUBJECTS["econ"].sub = "Edexcel 9EC0 — Themes 2, 3 & 4";
 
@@ -12840,8 +12856,8 @@ function balanceExtensionKeys(bankIds, mainKeys, reforgeKeys) {
 
 balanceExtensionKeys(
   ["3.1.1","3.2.1","4.1.1","GEO-COAST","GEO-REGEN","GEO-P3"],
-  ["A","B","C","D","A","B"],
-  ["C","D","A","B","C","D"]
+  ["A","B","C","D","A","B","C","D"],
+  ["C","D","A","B","C","D","A","B"]
 );
 
 // ===== 2.1.2 INFLATION — PHASE 1 DEEPENING =====
