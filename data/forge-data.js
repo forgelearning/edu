@@ -9249,6 +9249,7 @@ for (const [bankId, [basePlan, reforgePlan]] of Object.entries({
   }
 }
 
+
 // ===== GCSE COMBINED SCIENCE 1SC0: FIRST THREE PAPERS =====
 // These banks follow Pearson's Paper 1 Biology, Paper 2 Chemistry and Paper 3
 // Physics content. Questions are original, with separate Reforge prompts and
@@ -9512,6 +9513,89 @@ for (const question of BANKS["GCSE-SCI-BIO-1"].questions.slice(-12)) {
     const concise = gcseScienceBio1ExtensionConcise[`${question.id}:${mode}`];
     if (concise) item.options[item.correct] = concise;
   }
+}
+
+// ===== GCSE COMBINED SCIENCE 1SC0: CHEMISTRY 1 & PHYSICS 1 EXTENSION SETS =====
+BANKS["GCSE-SCI-CHEM-1"].questions.push(
+  gcseScienceQuestion("SCI-CHEM1-13", "1SC0 Topic 1", "Why do ionic compounds conduct electricity when molten but not when solid?", {A:"The ions are mobile only when molten",B:"The atoms disappear when solid",C:"Electrons leave the compound",D:"The solid contains no charge"}, "A", "In a solid ionic lattice, ions are fixed in position. When molten, the ions can move and carry charge through the liquid.", "CHEM-IONIC-01", {stem:"What holds oppositely charged ions together in an ionic lattice?",options:{A:"Electrostatic attraction",B:"Shared electron pairs",C:"Magnetic repulsion",D:"Gravity alone"},correct:"A"}),
+  gcseScienceQuestion("SCI-CHEM1-14", "1SC0 Topic 1", "Why must a chemical equation be balanced?", {A:"Atoms are conserved",B:"Products need more atoms",C:"Mass is created",D:"Charges are ignored"}, "A", "Balancing ensures the same number of each type of atom appears on both sides. Chemical reactions rearrange atoms rather than create or destroy them.", "CHEM-EQUATION-01", {stem:"What does a state symbol (aq) indicate?",options:{A:"Dissolved in water",B:"A solid metal",C:"A gas only",D:"A pure liquid fuel"},correct:"A"}),
+  gcseScienceQuestion("SCI-CHEM1-15", "1SC0 Topic 1", "What is the empirical formula of a compound with a 1:2 ratio of carbon to oxygen atoms?", {A:"CO2",B:"C2O",C:"CO",D:"C2O2"}, "A", "The empirical formula gives the simplest whole-number ratio of atoms. A carbon-to-oxygen ratio of 1:2 is written CO2.", "CHEM-FORMULA-01", {stem:"What does a molecular formula show?",options:{A:"The actual number of each atom",B:"Only the simplest ratio",C:"The reaction rate",D:"The melting point"},correct:"A"}),
+  gcseScienceQuestion("SCI-CHEM1-16", "1SC0 Topic 2", "What happens to the particles of a solute when it dissolves?", {A:"They spread among solvent particles",B:"They become new elements",C:"They stop existing",D:"They all become gases"}, "A", "Dissolving separates solute particles and disperses them among solvent particles. No new substance is made by this physical process.", "CHEM-SOLUTION-01", {stem:"What is the solvent in a salt solution made with water?",options:{A:"Water",B:"Salt",C:"The beaker",D:"The air above it"},correct:"A"}),
+  gcseScienceQuestion("SCI-CHEM1-17", "1SC0 Topic 3", "Why is a burette useful in an acid–alkali titration?", {A:"It delivers a measured variable volume",B:"It removes all water",C:"It measures temperature only",D:"It identifies every ion"}, "A", "A burette allows a solution to be added accurately while its volume is read. This helps determine the volume needed for neutralisation.", "CHEM-TITRATION-01", {stem:"What is the purpose of an indicator in a titration?",options:{A:"It signals the end point by a colour change",B:"It increases the acid concentration",C:"It filters the salt",D:"It prevents neutralisation"},correct:"A"}),
+  gcseScienceQuestion("SCI-CHEM1-18", "1SC0 Topic 3", "What happens to positive ions at the cathode during electrolysis?", {A:"They gain electrons",B:"They lose neutrons",C:"They form neutral gases only",D:"They move through the wire"}, "A", "Positive ions are attracted to the negative cathode. They gain electrons in reduction reactions at the electrode.", "CHEM-ELECTRO-02", {stem:"What happens to negative ions at the anode?",options:{A:"They lose electrons",B:"They gain protons",C:"They become the power supply",D:"They stop moving"},correct:"A"}),
+  gcseScienceQuestion("SCI-CHEM1-19", "1SC0 Topic 3", "What does oxidation mean in terms of oxygen?", {A:"Gain of oxygen",B:"Loss of oxygen",C:"Gain of electrons only",D:"Loss of protons"}, "A", "Oxidation can be described as gain of oxygen, while reduction is loss of oxygen. The terms can also refer to electron transfer.", "CHEM-REDOX-01", {stem:"In a metal oxide reduced by carbon, what happens to the metal oxide?",options:{A:"It loses oxygen",B:"It gains oxygen",C:"It becomes an acid",D:"It forms water only"},correct:"A"}),
+  gcseScienceQuestion("SCI-CHEM1-20", "1SC0 Topic 3", "Why does painting an iron surface reduce rusting?", {A:"It forms a barrier to oxygen and water",B:"It increases the iron's reactivity",C:"It supplies more water",D:"It removes the iron atoms"}, "A", "Rusting requires both oxygen and water. Paint prevents these reactants reaching the iron, provided the coating remains intact.", "CHEM-RUST-01", {stem:"Why can zinc protect iron even when the surface is scratched?",options:{A:"Zinc is more reactive and oxidises first",B:"Zinc prevents every collision",C:"Iron becomes a noble gas",D:"Zinc removes all water from air"},correct:"A"}),
+  gcseScienceQuestion("SCI-CHEM1-21", "1SC0 Topic 4", "What is the effect of increasing pressure on an equilibrium with more gas molecules on the reactant side?", {A:"It favours the side with fewer gas molecules",B:"It always favours reactants",C:"It has no effect on gases",D:"It stops the forward reaction"}, "A", "Increasing pressure favours the side with fewer gas molecules because this reduces the pressure change. The outcome depends on the equation.", "CHEM-EQ-03", {stem:"What happens if both sides of a gas equilibrium have the same number of molecules?",options:{A:"Pressure causes no equilibrium shift",B:"Products always form",C:"Reactants always form",D:"The catalyst is removed"},correct:"A"}),
+  gcseScienceQuestion("SCI-CHEM1-22", "1SC0 Topic 4", "For an endothermic forward reaction, what does increasing temperature generally do to the equilibrium yield of products?", {A:"It increases the product yield",B:"It always decreases the rate",C:"It has no effect",D:"It removes reactants"}, "A", "An endothermic forward reaction absorbs heat. Increasing temperature favours the direction that absorbs the added heat, increasing the equilibrium product yield.", "CHEM-EQ-04", {stem:"What is the energy transfer in an endothermic reaction?",options:{A:"Energy enters from the surroundings",B:"Energy leaves to the surroundings",C:"Energy is destroyed",D:"No energy changes"},correct:"A"}),
+  gcseScienceQuestion("SCI-CHEM1-23", "1SC0 Topic 3", "A reaction in an open flask appears to lose mass. What is the most likely explanation?", {A:"A gas has escaped",B:"Atoms were destroyed",C:"The balance made mass",D:"The reaction stopped conservation"}, "A", "If a gas product escapes from an open flask, the measured mass falls. The total mass is still conserved when the escaped gas is included.", "CHEM-MASS-02", {stem:"Why may a solid product gain mass during combustion?",options:{A:"It combines with oxygen from air",B:"Atoms appear from nowhere",C:"The balance creates oxygen",D:"Combustion destroys mass"},correct:"A"}),
+  gcseScienceQuestion("SCI-CHEM1-24", "1SC0 Topic 2", "What does a single spot on a chromatogram usually suggest about a sample?", {A:"It may contain one soluble substance",B:"It contains every possible dye",C:"It has no solvent",D:"It is necessarily radioactive"}, "A", "A single spot can indicate one soluble component under the conditions used. Comparing positions with known substances can support identification.", "CHEM-CHROM-02", {stem:"What does the distance travelled by a spot help compare?",options:{A:"Its Rf value with reference substances",B:"The mass of the paper",C:"The room temperature only",D:"The number of protons"},correct:"A"})
+);
+
+BANKS["GCSE-SCI-PHYS-1"].questions.push(
+  gcseScienceQuestion("SCI-PHYS1-13", "1SC0 Topic 2", "A runner changes velocity from 4 m/s to 10 m/s in 3 s. What is the acceleration?", {A:"2 m/s²",B:"3 m/s²",C:"6 m/s²",D:"14 m/s²"}, "A", "Acceleration = change in velocity ÷ time = (10 − 4) ÷ 3 = 2 m/s².", "PHYS-MOTION-02", {stem:"What does negative acceleration mean?",options:{A:"Velocity changes in the negative direction",B:"The object has no velocity",C:"Mass becomes negative",D:"No force acts"},correct:"A"}),
+  gcseScienceQuestion("SCI-PHYS1-14", "1SC0 Topic 2", "What does the area under a velocity–time graph represent?", {A:"Distance travelled",B:"Acceleration only",C:"Mass",D:"Resultant force"}, "A", "The area under a velocity–time graph gives distance travelled. For a rectangle, calculate base × height; for a triangle, use half × base × height.", "PHYS-GRAPH-02", {stem:"What does the gradient of a velocity–time graph show?",options:{A:"Acceleration",B:"Distance",C:"Mass",D:"Energy transferred"},correct:"A"}),
+  gcseScienceQuestion("SCI-PHYS1-15", "1SC0 Topic 2", "Why does a longer stopping distance increase collision risk?", {A:"There is more distance for energy to be dissipated",B:"The vehicle loses its mass",C:"The brakes create momentum",D:"The road removes all forces"}, "A", "A moving vehicle has kinetic energy. Brakes and other resistive forces need distance and time to transfer that energy, so a longer stopping distance increases risk.", "PHYS-STOP-01", {stem:"What can increase thinking distance?",options:{A:"Higher speed or slower reaction",B:"Better concentration",C:"Dry road surface",D:"Brighter headlights only"},correct:"A"}),
+  gcseScienceQuestion("SCI-PHYS1-16", "1SC0 Topic 2", "What happens when a falling object reaches terminal velocity?", {A:"Resistive force balances weight",B:"Weight becomes zero",C:"Acceleration increases forever",D:"The object reverses direction"}, "A", "As speed rises, air resistance increases. At terminal velocity, air resistance equals weight, so the resultant force and acceleration are zero.", "PHYS-TERMINAL-01", {stem:"Why does a parachutist slow after opening a parachute?",options:{A:"Air resistance increases",B:"Weight disappears",C:"Gravity reverses",D:"Mass falls to zero"},correct:"A"}),
+  gcseScienceQuestion("SCI-PHYS1-17", "1SC0 Topic 3", "What is the efficiency of a device?", {A:"Useful output energy divided by total input energy",B:"Total input divided by time only",C:"Wasted energy divided by mass",D:"Useful force multiplied by distance only"}, "A", "Efficiency = useful output energy ÷ total input energy. It can be expressed as a decimal or multiplied by 100 for a percentage.", "PHYS-EFF-01", {stem:"Why can no real device be 100% efficient?",options:{A:"Some energy is dissipated",B:"Energy is destroyed",C:"Input energy is always zero",D:"Useful output cannot exist"},correct:"A"}),
+  gcseScienceQuestion("SCI-PHYS1-18", "1SC0 Topic 3", "A machine transfers 900 J in 30 s. What is its power?", {A:"30 W",B:"270 W",C:"870 W",D:"27,000 W"}, "A", "Power = energy transferred ÷ time = 900 ÷ 30 = 30 W.", "PHYS-POWER-01", {stem:"What does a high power rating indicate?",options:{A:"More energy transferred per second",B:"Less energy can ever be used",C:"The device has no resistance",D:"The device must be 100% efficient"},correct:"A"}),
+  gcseScienceQuestion("SCI-PHYS1-19", "1SC0 Topic 5", "What is the law of reflection?", {A:"Angle of incidence equals angle of reflection",B:"All rays are absorbed",C:"The reflected ray has no direction",D:"Angles are measured from the surface"}, "A", "The angle of incidence equals the angle of reflection, and both angles are measured from the normal line at the surface.", "PHYS-REFLECT-01", {stem:"Why does a plane mirror form a virtual image?",options:{A:"Reflected rays only appear to come from behind it",B:"Light stops at the mirror",C:"The image is made of sound",D:"The mirror creates new matter"},correct:"A"}),
+  gcseScienceQuestion("SCI-PHYS1-20", "1SC0 Topic 4", "A wave has frequency 5 Hz and wavelength 2 m. What is its speed?", {A:"10 m/s",B:"2.5 m/s",C:"7 m/s",D:"0.4 m/s"}, "A", "Wave speed = frequency × wavelength = 5 × 2 = 10 m/s.", "PHYS-WAVE-03", {stem:"What happens to wave frequency when the source oscillates faster?",options:{A:"It increases",B:"It becomes zero",C:"It must halve",D:"It becomes a mass"},correct:"A"}),
+  gcseScienceQuestion("SCI-PHYS1-21", "1SC0 Topic 5", "Which type of electromagnetic radiation is used to sterilise some medical equipment?", {A:"Gamma rays",B:"Radio waves",C:"Microwaves",D:"Infrared"}, "A", "Gamma radiation is penetrating and can kill microorganisms. Its ionising nature means it must be used with appropriate safety controls.", "PHYS-EM-02", {stem:"Which electromagnetic radiation is used for satellite communication?",options:{A:"Microwaves",B:"Alpha",C:"Ultraviolet",D:"X-rays only"},correct:"A"}),
+  gcseScienceQuestion("SCI-PHYS1-22", "1SC0 Topic 6", "A radioactive sample has an activity of 800 Bq and a half-life of 2 hours. What is its activity after 6 hours?", {A:"100 Bq",B:"200 Bq",C:"400 Bq",D:"50 Bq"}, "A", "Six hours contains three half-lives: 800 → 400 → 200 → 100 Bq.", "PHYS-HALF-02", {stem:"After two half-lives, what fraction of the original nuclei remains?",options:{A:"One quarter",B:"One half",C:"One eighth",D:"All of them"},correct:"A"}),
+  gcseScienceQuestion("SCI-PHYS1-23", "1SC0 Topic 6", "Why are sources of ionising radiation kept in shielded containers?", {A:"To reduce exposure to people",B:"To increase their half-life",C:"To stop all radioactive decay",D:"To make them non-radioactive"}, "A", "Shielding absorbs or reduces radiation reaching people. Distance, exposure time and suitable shielding are key safety controls.", "PHYS-SAFETY-02", {stem:"Which radiation is most easily stopped by paper?",options:{A:"Alpha",B:"Beta",C:"Gamma",D:"Microwaves"},correct:"A"}),
+  gcseScienceQuestion("SCI-PHYS1-24", "1SC0 Topic 6", "What happens to the mass number during alpha decay?", {A:"It decreases by 4",B:"It increases by 4",C:"It stays the same",D:"It becomes zero"}, "A", "An alpha particle contains two protons and two neutrons. Emitting one reduces the parent nucleus's mass number by four and atomic number by two.", "PHYS-NUCLEAR-01", {stem:"What is an alpha particle?",options:{A:"A helium nucleus",B:"A fast electron",C:"A photon",D:"A neutron only"},correct:"A"})
+);
+
+const gcseScienceChem1ExtensionPlans = ["ABCDABCDABCD", "CDABCDABCDAB"];
+for (const [bankId, plans] of [["GCSE-SCI-CHEM-1", gcseScienceChem1ExtensionPlans], ["GCSE-SCI-PHYS-1", gcseScienceChem1ExtensionPlans]]) {
+  BANKS[bankId].questions.slice(-12).forEach((question, index) => {
+    moveGcseScienceAnswer(question, plans[0][index]);
+    moveGcseScienceAnswer(question, plans[1][index], true);
+  });
+}
+const gcseScienceFirstPaperExtensionConcise = {
+  "SCI-CHEM1-13:base":"Mobile ions", "SCI-CHEM1-14:base":"Atoms conserved",
+  "SCI-CHEM1-15:base":"CO2", "SCI-CHEM1-16:base":"Particles spread out",
+  "SCI-CHEM1-17:base":"Measured variable volume", "SCI-CHEM1-18:base":"Gain electrons",
+  "SCI-CHEM1-19:base":"Gain oxygen", "SCI-CHEM1-20:base":"Oxygen and water barrier",
+  "SCI-CHEM1-21:base":"Fewer gas molecules", "SCI-CHEM1-22:base":"Higher product yield",
+  "SCI-CHEM1-23:base":"Escaped gas", "SCI-CHEM1-24:base":"One soluble substance",
+  "SCI-PHYS1-13:base":"2 m/s2", "SCI-PHYS1-14:base":"Distance travelled",
+  "SCI-PHYS1-15:base":"Energy dissipates over distance", "SCI-PHYS1-16:base":"Balanced resistive force",
+  "SCI-PHYS1-17:base":"Useful output / input", "SCI-PHYS1-18:base":"30 W",
+  "SCI-PHYS1-19:base":"Equal angles", "SCI-PHYS1-20:base":"10 m/s",
+  "SCI-PHYS1-21:base":"Gamma rays", "SCI-PHYS1-22:base":"100 Bq",
+  "SCI-PHYS1-23:base":"Reduce exposure", "SCI-PHYS1-24:base":"Minus 4",
+  "SCI-CHEM1-13:reforge":"Ionic attraction", "SCI-CHEM1-14:reforge":"Dissolved in water",
+  "SCI-CHEM1-15:reforge":"Actual atom numbers", "SCI-CHEM1-16:reforge":"Water",
+  "SCI-CHEM1-17:reforge":"Colour-change end point", "SCI-CHEM1-18:reforge":"Lose electrons",
+  "SCI-CHEM1-19:reforge":"Oxygen loss", "SCI-CHEM1-20:reforge":"Zinc oxidises first",
+  "SCI-CHEM1-21:reforge":"No pressure shift", "SCI-CHEM1-22:reforge":"Energy enters",
+  "SCI-CHEM1-23:reforge":"Oxygen added", "SCI-CHEM1-24:reforge":"Compare Rf values",
+  "SCI-PHYS1-13:reforge":"Negative-direction change", "SCI-PHYS1-14:reforge":"Acceleration",
+  "SCI-PHYS1-14:base":"Distance", "SCI-PHYS1-15:base":"Dissipated energy",
+  "SCI-PHYS1-15:reforge":"Reaction time/speed", "SCI-PHYS1-16:reforge":"More air drag",
+  "SCI-PHYS1-17:reforge":"Dissipated energy", "SCI-PHYS1-18:reforge":"Energy per second",
+  "SCI-PHYS1-19:reforge":"Rays appear behind mirror", "SCI-PHYS1-20:reforge":"Higher frequency",
+  "SCI-PHYS1-21:reforge":"Microwaves", "SCI-PHYS1-22:reforge":"One quarter",
+  "SCI-PHYS1-23:reforge":"Alpha", "SCI-PHYS1-24:reforge":"Helium nucleus",
+  "SCI-PHYS1-07:base":"More height"
+};
+for (const bankId of ["GCSE-SCI-CHEM-1", "GCSE-SCI-PHYS-1"]) {
+  for (const question of BANKS[bankId].questions.slice(-12)) {
+    for (const [mode, item] of [["base", question], ["reforge", question.reforge]]) {
+      const concise = gcseScienceFirstPaperExtensionConcise[`${question.id}:${mode}`];
+      if (concise) item.options[item.correct] = concise;
+    }
+  }
+}
+
+const gcseScienceGpeQuestion = BANKS["GCSE-SCI-PHYS-1"].questions.find(q => q.id === "SCI-PHYS1-07");
+if (gcseScienceGpeQuestion) {
+  gcseScienceGpeQuestion.options.A = "More height";
+  gcseScienceGpeQuestion.options.B = "Less mass";
+  gcseScienceGpeQuestion.options.C = "Lower field";
+  gcseScienceGpeQuestion.options.D = "Lower height";
 }
 
 // GCSE AQA Psychology 8182 — Paper 1: Cognition and behaviour.
