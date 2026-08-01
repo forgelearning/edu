@@ -8329,6 +8329,45 @@ for (const [bankId, [idPattern]] of Object.entries(geo640BalancePlans)) {
   }
 }
 
+// Geography's earliest banks were authored with full explanations inside the
+// correct option while distractors stayed as short phrases. Keep the detailed
+// explanation in the scaffold and compact only a uniquely-long correct choice
+// so answer length cannot act as a geography shortcut.
+const compactGeoCorrectOption = (text, target) => {
+  const clean = String(text).replace(/\([^)]*\)/g, "").replace(/\s+/g, " ").trim();
+  if (clean.length <= target) return clean;
+  const compactWords = value => value
+    .replace(/\b(the|a|an|that|which|is|are|was|were|of|to|for|in|on|by|with)\b/gi, " ")
+    .replace(/\s+/g, " ").trim();
+  if (/^Fewer Zam trees germinate\b/i.test(clean)) return "Fewer Zam trees germinate";
+  const commaClauses = clean.split(/\s*,\s*/).filter(value => value.length >= 30);
+  const clauses = [
+    ...commaClauses,
+    ...clean.split(/\s*[;—:]\s*/),
+    ...clean.split(/\s*,\s*(?=(?:causing|meaning|so|because|which|leaving|making|therefore|but|while|whereas)\b)/i),
+    ...clean.split(/\s+(?:because|while|whereas|so that|which|leaving|making|although|but|before|after|due to|rather than|in turn|so)\s+/i),
+    clean
+  ].map(value => value.trim()).filter(value => value.length >= 12);
+  const candidates = [...clauses, ...clauses.map(compactWords)]
+    .filter(value => value.length >= 12 && value.length <= target);
+  if (candidates[0]) return candidates[0];
+  const shortened = compactWords(clean).split(" ");
+  while (shortened.length > 1 && shortened.join(" ").length > target) shortened.pop();
+  return shortened.join(" ").slice(0, target).trim();
+};
+for (const bankId of SUBJECTS["gcse-geo"].banks) {
+  for (const question of BANKS[bankId].questions) {
+    for (const item of [question, question.reforge]) {
+      if (!item || !item.options || !item.correct) continue;
+      const lengths = Object.fromEntries(Object.entries(item.options).map(([letter, option]) => [letter, option.length]));
+      const max = Math.max(...Object.values(lengths));
+      if (lengths[item.correct] !== max || Object.values(lengths).filter(length => length === max).length !== 1) continue;
+      const distractorMax = Math.max(...Object.entries(lengths).filter(([letter]) => letter !== item.correct).map(([, length]) => length));
+      item.options[item.correct] = compactGeoCorrectOption(item.options[item.correct], distractorMax);
+    }
+  }
+}
+
 // Update subject definitions
 // GCSE AQA History (8145) — Paper 1: Understanding the Modern World.
 // Kept separate from the existing A-level History banks above.
@@ -9598,6 +9637,126 @@ if (gcseScienceGpeQuestion) {
   gcseScienceGpeQuestion.options.D = "Lower height";
 }
 
+// Additional GCSE Combined Science coverage for Papers 4–6.
+const addGcseScienceSecondExtension = (bankId, spec, rows) => {
+  BANKS[bankId].questions.push(...rows.map(row => gcseScienceQuestion(row.id, spec, row.stem, row.options, row.correct, row.scaffold, row.tag, row.reforge)));
+  const added = BANKS[bankId].questions.slice(-12);
+  const basePlan = "ABCDABCDABCD";
+  const reforgePlan = "CDABCDABCDAB";
+  added.forEach((question, index) => {
+    moveGcseScienceAnswer(question, basePlan[index]);
+    moveGcseScienceAnswer(question, reforgePlan[index], true);
+  });
+};
+
+addGcseScienceSecondExtension("GCSE-SCI-BIO-2", "1SC0 Topic 6–9", [
+  {id:"SCI-BIO2-13",stem:"What is a limiting factor in photosynthesis?",options:{A:"A condition that restricts the rate",B:"A product that is never used",C:"A type of root tissue",D:"A hormone in animals"},correct:"A",scaffold:"Light intensity, carbon dioxide concentration and temperature can limit photosynthesis. The limiting factor is the factor in shortest effective supply at a particular time.",tag:"BIO-LIMIT-01",reforge:{stem:"Why does increasing light intensity eventually stop increasing photosynthesis?",options:{A:"Another factor becomes limiting",B:"The plant loses all chlorophyll",C:"Carbon dioxide becomes oxygen",D:"The roots stop existing"},correct:"A"}},
+  {id:"SCI-BIO2-14",stem:"What is the role of stomata in a leaf?",options:{A:"They allow gas exchange",B:"They make mineral ions",C:"They pump blood",D:"They digest starch"},correct:"A",scaffold:"Stomata are pores that allow carbon dioxide to enter and oxygen and water vapour to leave. Guard cells regulate their opening.",tag:"BIO-STOMA-01",reforge:{stem:"Why might stomata close during a very dry period?",options:{A:"To reduce water loss",B:"To increase transpiration",C:"To stop all respiration",D:"To absorb more sunlight"},correct:"A"}},
+  {id:"SCI-BIO2-15",stem:"What is the function of auxin in a plant shoot?",options:{A:"It promotes growth by cell elongation",B:"It carries oxygen in blood",C:"It digests proteins",D:"It lowers every response"},correct:"A",scaffold:"Auxin is a plant hormone. Unequal auxin distribution can cause shoots to bend towards light because cells on one side elongate more.",tag:"BIO-AUXIN-01",reforge:{stem:"What is phototropism?",options:{A:"Growth in response to light",B:"Transport of sugars in phloem",C:"The breakdown of starch",D:"A disease of roots"},correct:"A"}},
+  {id:"SCI-BIO2-16",stem:"What is the role of the kidneys in homeostasis?",options:{A:"They regulate water and ion content",B:"They pump blood around the body",C:"They produce bile for digestion",D:"They absorb light energy"},correct:"A",scaffold:"The kidneys filter blood and selectively reabsorb useful substances. They help control water balance, ion concentration and urea excretion.",tag:"BIO-KIDNEY-01",reforge:{stem:"Which waste substance is removed from the blood by the kidneys?",options:{A:"Urea",B:"Oxygen",C:"Glucose in all conditions",D:"Starch"},correct:"A"}},
+  {id:"SCI-BIO2-17",stem:"How does the body cool itself when core temperature rises?",options:{A:"Sweat evaporation and skin vasodilation",B:"Shivering and vasoconstriction",C:"Reduced blood flow to skin",D:"Increased insulation only"},correct:"A",scaffold:"Sweating increases evaporative cooling, while vasodilation sends more blood near the skin surface. Both increase heat transfer to the surroundings.",tag:"BIO-TEMP-01",reforge:{stem:"What is vasodilation?",options:{A:"Widening of skin blood vessels",B:"Narrowing of skin blood vessels",C:"Production of antibodies",D:"Contraction of the diaphragm"},correct:"A"}},
+  {id:"SCI-BIO2-18",stem:"Why does the heart muscle need its own coronary blood supply?",options:{A:"To receive oxygen and glucose for respiration",B:"To carry urine to the kidneys",C:"To produce digestive enzymes",D:"To cool the lungs only"},correct:"A",scaffold:"Cardiac muscle contracts continuously and needs aerobic respiration. Coronary arteries deliver oxygen and glucose; blocked arteries can reduce this supply.",tag:"BIO-HEART-01",reforge:{stem:"What can a blocked coronary artery cause?",options:{A:"Reduced oxygen to heart muscle",B:"More oxygen reaching the muscle",C:"Faster digestion",D:"A larger lung surface area"},correct:"A"}},
+  {id:"SCI-BIO2-19",stem:"Why does exercise increase breathing rate?",options:{A:"To supply more oxygen and remove carbon dioxide",B:"To stop respiration",C:"To reduce blood flow to muscles",D:"To make glucose from nitrogen"},correct:"A",scaffold:"Active muscles respire faster and need more oxygen. Increased ventilation also removes the additional carbon dioxide produced.",tag:"BIO-RESP-01",reforge:{stem:"Why may breathing remain fast after vigorous exercise?",options:{A:"The body is repaying an oxygen debt",B:"The lungs have stopped gas exchange",C:"The muscles need no energy",D:"Carbon dioxide is no longer produced"},correct:"A"}},
+  {id:"SCI-BIO2-20",stem:"What is a quadrat used to investigate?",options:{A:"The distribution of organisms in an area",B:"The blood pressure of a mammal",C:"The pH of a cell",D:"The speed of nerve impulses"},correct:"A",scaffold:"Quadrats sample plants or slow-moving organisms. Random placement can reduce bias when estimating abundance or distribution across a habitat.",tag:"BIO-FIELD-01",reforge:{stem:"Why should quadrats be placed randomly?",options:{A:"To reduce sampling bias",B:"To guarantee identical results",C:"To avoid recording data",D:"To increase the temperature"},correct:"A"}},
+  {id:"SCI-BIO2-21",stem:"What is carrying capacity?",options:{A:"The largest population an environment can sustain",B:"The number of species on Earth",C:"The mass of one organism",D:"The speed of decomposition"},correct:"A",scaffold:"Food, space, water, disease and predation can limit population size. Carrying capacity is not fixed if environmental conditions change.",tag:"BIO-POP-01",reforge:{stem:"Which change could lower a habitat's carrying capacity?",options:{A:"Less available food",B:"More nesting space",C:"A stable water supply",D:"Reduced competition"},correct:"A"}},
+  {id:"SCI-BIO2-22",stem:"Why are decomposers important in ecosystems?",options:{A:"They recycle nutrients from dead material",B:"They remove all minerals",C:"They prevent respiration",D:"They produce sunlight"},correct:"A",scaffold:"Bacteria and fungi secrete enzymes onto dead material and absorb soluble products. This returns mineral ions to the soil and supports plant growth.",tag:"BIO-DECOMP-02",reforge:{stem:"What process releases mineral ions from dead organisms?",options:{A:"Decay",B:"Photosynthesis",C:"Pollination",D:"Transpiration"},correct:"A"}},
+  {id:"SCI-BIO2-23",stem:"Why can deforestation increase atmospheric carbon dioxide?",options:{A:"Fewer trees remove carbon dioxide by photosynthesis",B:"Trees create carbon dioxide by absorbing light",C:"Soil stops containing minerals",D:"All animals stop respiring"},correct:"A",scaffold:"Removing trees reduces photosynthetic carbon dioxide uptake. Burning or decomposing the cleared biomass can also release stored carbon.",tag:"BIO-CARBON-02",reforge:{stem:"Which action can increase carbon storage in a habitat?",options:{A:"Planting and protecting trees",B:"Burning woodland",C:"Draining every wetland",D:"Removing vegetation"},correct:"A"}},
+  {id:"SCI-BIO2-24",stem:"Why can a food web be more stable than a single food chain?",options:{A:"It provides alternative feeding pathways",B:"It contains no competition",C:"It prevents energy loss",D:"It has only one species"},correct:"A",scaffold:"If one food source falls, a consumer may use another link in a food web. This can reduce the impact of a change, although ecosystems remain vulnerable to major disturbances.",tag:"BIO-WEB-01",reforge:{stem:"What does a food web show?",options:{A:"Interconnected feeding relationships",B:"Only one sequence of feeding",C:"The mass of every organism",D:"The age of each habitat"},correct:"A"}}
+]);
+
+addGcseScienceSecondExtension("GCSE-SCI-CHEM-2", "1SC0 Topic 6–8", [
+  {id:"SCI-CHEM2-13",stem:"Why does Group 1 reactivity increase down the group?",options:{A:"The outer electron is further from the nucleus",B:"The atoms gain no shells",C:"The nuclei lose all protons",D:"The elements become noble gases"},correct:"A",scaffold:"Down Group 1, atoms have more electron shells. The outer electron is further from the nucleus and more shielded, so it is lost more easily.",tag:"CHEM-G1-02",reforge:{stem:"What do Group 1 metals form when they react?",options:{A:"One-positive ions",B:"Two-negative ions",C:"Noble gas atoms",D:"Neutral molecules only"},correct:"A"}},
+  {id:"SCI-CHEM2-14",stem:"What happens to halogen reactivity down Group 7?",options:{A:"It generally decreases",B:"It always increases",C:"It becomes identical",D:"It changes into metallic bonding"},correct:"A",scaffold:"Down Group 7, the outer shell is further from the nucleus and more shielded. Attraction for an incoming electron weakens, so reactivity falls.",tag:"CHEM-G7-02",reforge:{stem:"What type of ion does a halogen form?",options:{A:"A one-negative ion",B:"A one-positive ion",C:"A two-positive ion",D:"No ion ever"},correct:"A"}},
+  {id:"SCI-CHEM2-15",stem:"Why do noble gases have low boiling points?",options:{A:"Only weak forces act between their atoms",B:"They have strong ionic lattices",C:"They contain hydrogen bonds",D:"They are all solids"},correct:"A",scaffold:"Noble gases are monatomic and have weak intermolecular forces. Little energy is needed to separate their atoms, so their boiling points are low.",tag:"CHEM-G0-02",reforge:{stem:"What happens to noble-gas boiling points down the group?",options:{A:"They increase as atoms get larger",B:"They become zero",C:"They decrease because atoms shrink",D:"They stay exactly constant"},correct:"A"}},
+  {id:"SCI-CHEM2-16",stem:"Why does increasing concentration usually increase reaction rate?",options:{A:"Particles collide more frequently",B:"Particles lose all energy",C:"The activation energy becomes infinite",D:"The products become reactants"},correct:"A",scaffold:"More particles in the same volume increases collision frequency. If enough collisions have energy above activation energy, the reaction proceeds faster.",tag:"CHEM-RATE-03",reforge:{stem:"What should be controlled when comparing reaction rates?",options:{A:"Other variables such as temperature",B:"The question wording",C:"The identity of every student",D:"The final conclusion"},correct:"A"}},
+  {id:"SCI-CHEM2-17",stem:"What does an energy profile show?",options:{A:"Energy changes during a reaction",B:"The colour of every product",C:"The atomic number only",D:"The volume of a gas only"},correct:"A",scaffold:"An energy profile shows reactant and product energy levels and the activation energy. The difference between levels indicates whether the reaction is exothermic or endothermic.",tag:"CHEM-ENERGY-03",reforge:{stem:"What is activation energy?",options:{A:"The minimum energy for a successful collision",B:"The energy in every product",C:"Energy released after cooling",D:"The mass of a catalyst"},correct:"A"}},
+  {id:"SCI-CHEM2-18",stem:"Why is a reaction mixture cooled in an exothermic practical?",options:{A:"To reduce heat loss and improve safety",B:"To make the reactants radioactive",C:"To stop measuring temperature",D:"To remove all products"},correct:"A",scaffold:"Cooling may control the temperature rise and reduce risk. A fair practical also uses an insulated container and records temperature changes consistently.",tag:"CHEM-PRACTICAL-02",reforge:{stem:"What should be plotted to compare energy changes in a temperature practical?",options:{A:"Temperature change against reactant conditions",B:"Mass number against atomic number",C:"Colour against beaker size only",D:"Time against student name"},correct:"A"}},
+  {id:"SCI-CHEM2-19",stem:"Why are alkenes useful for making polymers?",options:{A:"Their double bonds can open and link molecules",B:"They contain no carbon",C:"They cannot react",D:"They are all metals"},correct:"A",scaffold:"The carbon–carbon double bond in an alkene can open, allowing many molecules to join into a long-chain polymer.",tag:"CHEM-POLYMER-01",reforge:{stem:"What is formed when many alkene molecules join?",options:{A:"An addition polymer",B:"A metal oxide",C:"A salt solution",D:"A noble gas"},correct:"A"}},
+  {id:"SCI-CHEM2-20",stem:"Why does incomplete combustion produce carbon monoxide?",options:{A:"There is insufficient oxygen",B:"There is too much nitrogen",C:"The fuel contains no carbon",D:"Water prevents all reactions"},correct:"A",scaffold:"When oxygen supply is limited, carbon may be only partially oxidised, producing carbon monoxide rather than carbon dioxide. Carbon monoxide is toxic.",tag:"CHEM-COMBUST-02",reforge:{stem:"Why is carbon monoxide dangerous?",options:{A:"It reduces the blood's oxygen-carrying capacity",B:"It makes blood contain more oxygen",C:"It is always harmless at any concentration",D:"It destroys all water molecules"},correct:"A"}},
+  {id:"SCI-CHEM2-21",stem:"What is one benefit of using biofuels?",options:{A:"Some carbon released was recently absorbed by plants",B:"They produce no emissions",C:"They require no land",D:"They cannot be burned"},correct:"A",scaffold:"Biofuels can be partly renewable because plant growth absorbs carbon dioxide. Their overall impact depends on land use, transport, processing and farming methods.",tag:"CHEM-BIOFUEL-01",reforge:{stem:"What is a possible disadvantage of large-scale biofuel production?",options:{A:"It can compete with food crops for land",B:"It contains no carbon",C:"It needs no water",D:"It prevents deforestation automatically"},correct:"A"}},
+  {id:"SCI-CHEM2-22",stem:"Why is the atmosphere's carbon dioxide concentration important?",options:{A:"It affects the greenhouse effect",B:"It determines atomic number",C:"It prevents all evaporation",D:"It is the only atmospheric gas"},correct:"A",scaffold:"Carbon dioxide absorbs some outgoing infrared radiation. Changes in its concentration can alter the greenhouse effect and global temperature.",tag:"CHEM-ATMOS-02",reforge:{stem:"Which gas is a greenhouse gas?",options:{A:"Carbon dioxide",B:"Argon only",C:"Oxygen only",D:"Helium only"},correct:"A"}},
+  {id:"SCI-CHEM2-23",stem:"Why is distillation used to produce pure water from a salt solution?",options:{A:"Water boils and condenses separately from the salt",B:"Salt evaporates first",C:"The salt becomes a gas",D:"The water is destroyed"},correct:"A",scaffold:"Distillation boils the solvent and condenses its vapour. Dissolved salts do not evaporate with the water, so they remain in the original flask.",tag:"CHEM-WATER-02",reforge:{stem:"Why is desalination energy-intensive?",options:{A:"It requires heating or pressurising water",B:"Salt creates energy",C:"Water cannot be separated",D:"The process uses no equipment"},correct:"A"}},
+  {id:"SCI-CHEM2-24",stem:"Why should recycled materials be sorted before processing?",options:{A:"Different materials need different treatments",B:"Sorting creates new atoms",C:"All materials melt identically",D:"It increases contamination"},correct:"A",scaffold:"Sorting improves the quality of recycled material and allows suitable processes for metals, glass, paper or polymers. Contamination can reduce the value of the output.",tag:"CHEM-RECYCLE-02",reforge:{stem:"What is one limitation of recycling plastic?",options:{A:"Different polymers may need separate collection",B:"All plastics have identical properties",C:"Plastic cannot be used again",D:"Recycling needs no energy"},correct:"A"}}
+]);
+
+addGcseScienceSecondExtension("GCSE-SCI-PHYS-2", "1SC0 Topic 8–15", [
+  {id:"SCI-PHYS2-13",stem:"What happens to the kinetic energy of an object when its speed doubles?",options:{A:"It increases by a factor of four",B:"It doubles only",C:"It becomes zero",D:"It halves"},correct:"A",scaffold:"Kinetic energy is proportional to speed squared: Ek = 1/2 mv². Doubling speed multiplies kinetic energy by four if mass is unchanged.",tag:"PHYS-KINETIC-02",reforge:{stem:"Which change increases kinetic energy most for a fixed mass?",options:{A:"Doubling speed",B:"Halving speed",C:"Stopping the object",D:"Reducing time only"},correct:"A"}},
+  {id:"SCI-PHYS2-14",stem:"What is the relationship between electrical power, current and potential difference?",options:{A:"P = I × V",B:"P = I ÷ V",C:"P = V ÷ I",D:"P = I + V"},correct:"A",scaffold:"Electrical power is current multiplied by potential difference. Power is measured in watts when current is in amperes and potential difference in volts.",tag:"PHYS-POWER-02",reforge:{stem:"A lamp operates at 6 V and 2 A. What is its power?",options:{A:"12 W",B:"3 W",C:"8 W",D:"0.33 W"},correct:"A"}},
+  {id:"SCI-PHYS2-15",stem:"Why does resistance usually increase as a metal wire gets hotter?",options:{A:"The ions vibrate more and obstruct electrons",B:"The wire gains protons",C:"The current becomes light",D:"The length becomes zero"},correct:"A",scaffold:"Heating increases vibrations of the metal ions. Electrons collide more often, making it harder for charge to flow and increasing resistance.",tag:"PHYS-RESIST-02",reforge:{stem:"What happens to the resistance of an LDR when light intensity rises?",options:{A:"It decreases",B:"It becomes infinite",C:"It always doubles",D:"It has no possible change"},correct:"A"}},
+  {id:"SCI-PHYS2-16",stem:"What is the current in a series circuit?",options:{A:"The same at every point",B:"Different in every component",C:"Zero after the first lamp",D:"Equal to the resistance"},correct:"A",scaffold:"There is only one path in a series circuit, so charge cannot build up at one point. The current is the same through each component.",tag:"PHYS-SERIES-02",reforge:{stem:"What happens to total resistance when another resistor is added in series?",options:{A:"It increases",B:"It becomes zero",C:"It is always unchanged",D:"It becomes a current"},correct:"A"}},
+  {id:"SCI-PHYS2-17",stem:"Why can a thermistor be used in a temperature-sensing circuit?",options:{A:"Its resistance changes with temperature",B:"It produces no current",C:"It is unaffected by heat",D:"It stores nuclear energy"},correct:"A",scaffold:"A thermistor's resistance varies with temperature. In a potential-divider circuit this can produce a voltage that changes with temperature.",tag:"PHYS-THERM-01",reforge:{stem:"What is one use of a thermistor?",options:{A:"Temperature control",B:"Measuring mass directly",C:"Generating alpha particles",D:"Replacing every fuse"},correct:"A"}},
+  {id:"SCI-PHYS2-18",stem:"What determines the direction of the force in the motor effect?",options:{A:"The directions of current and magnetic field",B:"The colour of the wire",C:"The mass of the battery only",D:"The room temperature only"},correct:"A",scaffold:"Fleming's left-hand rule links the directions of magnetic field, conventional current and force. Reversing the current or field reverses the force.",tag:"PHYS-MOTOR-02",reforge:{stem:"How can a motor's turning effect be increased?",options:{A:"Increase current or use a stronger field",B:"Remove the magnet",C:"Stop the current",D:"Use a shorter coil with no turns"},correct:"A"}},
+  {id:"SCI-PHYS2-19",stem:"Why does a transformer need an alternating current?",options:{A:"It creates a changing magnetic field",B:"Direct current changes direction constantly",C:"It removes all energy transfer",D:"It stops induction"},correct:"A",scaffold:"An alternating current produces a changing magnetic field in the primary coil. This changing field induces a potential difference in the secondary coil.",tag:"PHYS-TRANSFORM-01",reforge:{stem:"What does a step-up transformer do?",options:{A:"Increases potential difference",B:"Increases charge stored forever",C:"Removes the magnetic field",D:"Changes AC into mass"},correct:"A"}},
+  {id:"SCI-PHYS2-20",stem:"Why is electricity transmitted at high potential difference?",options:{A:"It reduces current for a given power",B:"It increases heating losses",C:"It makes resistance zero",D:"It stops energy transfer"},correct:"A",scaffold:"For a given power, a higher potential difference means lower current. Cable heating losses depend on I²R, so reducing current reduces wasted energy.",tag:"PHYS-GRID-01",reforge:{stem:"What causes heating in transmission cables?",options:{A:"Current through their resistance",B:"No charge movement",C:"A lack of electrons in the source",D:"The absence of a magnetic field"},correct:"A"}},
+  {id:"SCI-PHYS2-21",stem:"What happens to gas pressure if its volume decreases at constant temperature?",options:{A:"Pressure increases",B:"Pressure becomes zero",C:"Pressure always falls",D:"Particles stop colliding"},correct:"A",scaffold:"Reducing volume gives particles less space. They collide with the container walls more frequently, increasing pressure if temperature is constant.",tag:"PHYS-GAS-02",reforge:{stem:"What must remain constant when investigating pressure and volume?",options:{A:"Temperature",B:"The colour of the gas",C:"The label on the container",D:"The number of graphs"},correct:"A"}},
+  {id:"SCI-PHYS2-22",stem:"Why can a metal sink while a less massive object floats?",options:{A:"Density depends on mass and volume",B:"Mass alone determines floating",C:"Gravity acts only on metals",D:"Volume has no effect"},correct:"A",scaffold:"Floating depends on density and the upthrust compared with weight. A large-volume object can have lower average density than a smaller, more massive object.",tag:"PHYS-DENSITY-02",reforge:{stem:"What happens to density if mass stays constant but volume increases?",options:{A:"It decreases",B:"It increases",C:"It becomes infinite",D:"It remains a force"},correct:"A"}},
+  {id:"SCI-PHYS2-23",stem:"Why does a liquid exert greater pressure at greater depth?",options:{A:"There is more liquid weight above",B:"The liquid has fewer particles",C:"Gravity stops acting near the surface",D:"Area becomes zero"},correct:"A",scaffold:"Liquid pressure increases with depth because the column of liquid above exerts a greater weight per unit area. Pressure also depends on density and gravitational field strength.",tag:"PHYS-LIQUID-01",reforge:{stem:"Which change increases pressure at the same depth in a liquid?",options:{A:"Using a denser liquid",B:"Using a less dense liquid",C:"Reducing gravity to zero",D:"Removing the liquid"},correct:"A"}},
+  {id:"SCI-PHYS2-24",stem:"What is the limit of proportionality for a spring?",options:{A:"The point beyond which extension is no longer proportional",B:"The point where the spring has no force",C:"The mass of the spring",D:"The length of the ruler"},correct:"A",scaffold:"Up to the limit of proportionality, extension is proportional to force. Beyond it, Hooke's law no longer applies even if the spring has not yet broken.",tag:"PHYS-SPRING-02",reforge:{stem:"What may happen if a spring is stretched beyond its elastic limit?",options:{A:"It may not return to its original length",B:"It becomes perfectly elastic",C:"Its mass disappears",D:"Its resistance becomes zero"},correct:"A"}}
+]);
+
+const gcseSciencePaper46ConciseAnswers = {
+  "SCI-BIO2-13:base":"Limiting condition", "SCI-BIO2-13:reforge":"Another limiting factor",
+  "SCI-BIO2-14:base":"Gas exchange", "SCI-BIO2-14:reforge":"Reduce water loss",
+  "SCI-BIO2-15:base":"Auxin-driven elongation", "SCI-BIO2-15:reforge":"Light response",
+  "SCI-BIO2-16:base":"Water and ions", "SCI-BIO2-16:reforge":"Urea",
+  "SCI-BIO2-17:base":"Cooling responses", "SCI-BIO2-17:reforge":"Widened skin vessels",
+  "SCI-BIO2-18:base":"Oxygen and glucose supply", "SCI-BIO2-18:reforge":"Less oxygen to heart",
+  "SCI-BIO2-19:base":"More oxygen, less CO2", "SCI-BIO2-19:reforge":"Oxygen debt",
+  "SCI-BIO2-20:base":"Organism distribution", "SCI-BIO2-20:reforge":"Less sampling bias",
+  "SCI-BIO2-21:base":"Sustainable population", "SCI-BIO2-21:reforge":"Less food",
+  "SCI-BIO2-22:base":"Nutrient recycling", "SCI-BIO2-22:reforge":"Decay",
+  "SCI-BIO2-23:base":"Less CO2 uptake", "SCI-BIO2-23:reforge":"Tree planting",
+  "SCI-BIO2-24:base":"Alternative feeding links", "SCI-BIO2-24:reforge":"Feeding relationships",
+  "SCI-CHEM2-13:base":"Outer electron farther", "SCI-CHEM2-13:reforge":"One-negative ion",
+  "SCI-CHEM2-14:base":"Reactivity falls", "SCI-CHEM2-14:reforge":"One-negative ion",
+  "SCI-CHEM2-15:base":"Weak interatomic forces", "SCI-CHEM2-15:reforge":"Boiling points rise",
+  "SCI-CHEM2-16:base":"More collisions", "SCI-CHEM2-16:reforge":"Control other variables",
+  "SCI-CHEM2-17:base":"Reaction energy profile", "SCI-CHEM2-17:reforge":"Minimum collision energy",
+  "SCI-CHEM2-18:base":"Control heat and safety", "SCI-CHEM2-18:reforge":"Temperature against condition",
+  "SCI-CHEM2-19:base":"Double bonds open", "SCI-CHEM2-19:reforge":"Polymer",
+  "SCI-CHEM2-20:base":"Limited oxygen", "SCI-CHEM2-20:reforge":"Reduced oxygen carriage",
+  "SCI-CHEM2-21:base":"Recent plant carbon", "SCI-CHEM2-21:reforge":"Food-land competition",
+  "SCI-CHEM2-22:base":"Greenhouse effect", "SCI-CHEM2-22:reforge":"CO2",
+  "SCI-CHEM2-23:base":"Water distils", "SCI-CHEM2-23:reforge":"Heat or pressure needed",
+  "SCI-CHEM2-24:base":"Different treatment", "SCI-CHEM2-24:reforge":"Separate polymer types",
+  "SCI-PHYS2-13:base":"Four times", "SCI-PHYS2-13:reforge":"Doubling speed",
+  "SCI-PHYS2-14:base":"P = IV", "SCI-PHYS2-14:reforge":"12 W",
+  "SCI-PHYS2-15:base":"Ion collisions", "SCI-PHYS2-15:reforge":"Resistance falls",
+  "SCI-PHYS2-16:base":"Same current", "SCI-PHYS2-16:reforge":"Resistance increases",
+  "SCI-PHYS2-17:base":"Variable resistance", "SCI-PHYS2-17:reforge":"Temperature control",
+  "SCI-PHYS2-18:base":"Current and field directions", "SCI-PHYS2-18:reforge":"More current or field",
+  "SCI-PHYS2-19:base":"Changing magnetic field", "SCI-PHYS2-19:reforge":"Higher potential difference",
+  "SCI-PHYS2-20:base":"Lower current", "SCI-PHYS2-20:reforge":"Cable resistance heating",
+  "SCI-PHYS2-21:base":"More wall collisions", "SCI-PHYS2-21:reforge":"Constant temperature",
+  "SCI-PHYS2-22:base":"Mass and volume", "SCI-PHYS2-22:reforge":"Lower density",
+  "SCI-PHYS2-23:base":"More liquid weight", "SCI-PHYS2-23:reforge":"Denser liquid",
+  "SCI-PHYS2-24:base":"Beyond proportional extension", "SCI-PHYS2-24:reforge":"Permanent extension"
+};
+for (const bankId of ["GCSE-SCI-BIO-2", "GCSE-SCI-CHEM-2", "GCSE-SCI-PHYS-2"]) {
+  for (const question of BANKS[bankId].questions.slice(-12)) {
+    for (const [mode, item] of [["base", question], ["reforge", question.reforge]]) {
+      const concise = gcseSciencePaper46ConciseAnswers[`${question.id}:${mode}`];
+      if (concise) item.options[item.correct] = concise;
+    }
+  }
+}
+
+// Fix an ungradeable Reforge item: B must differ from the correct 0.2 mm.
+const gcseScienceBio1Microscope = BANKS["GCSE-SCI-BIO-1"].questions.find(question => question.id === "SCI-BIO1-02");
+if (gcseScienceBio1Microscope) gcseScienceBio1Microscope.reforge.options.B = "0.02 mm";
+
+// Replace the six duplicated GCSE Economics stems with distinct specification coverage.
+const replaceGcseEconomicsQuestion = (bankId, id, replacement) => {
+  const index = BANKS[bankId].questions.findIndex(question => question.id === id);
+  if (index !== -1) BANKS[bankId].questions[index] = replacement;
+};
+replaceGcseEconomicsQuestion("GCSE-ECON-P1-PROD", "GCSE-P1-PRD-12", {id:"GCSE-P1-PRD-12",spec:"GCSE-ECON-P1-PROD",stem:"How can technical economies of scale lower a firm's average cost?",options:{A:"Specialist machinery can spread fixed costs over more output",B:"The firm stops using capital",C:"Every worker performs every task",D:"The firm buys inputs at a higher price"},correct:"A",tag:"MC-GCSE-P1-PRD-12",scaffold:"Technical economies can arise when large firms use specialised machinery efficiently. The fixed cost of that equipment is spread across a larger output, reducing average cost if utilisation is high.",reforge:{stem:"Which is an example of a managerial economy of scale?",options:{A:"A large firm employs specialist managers",B:"A firm pays more for each input",C:"A firm loses all coordination",D:"A small shop buys one product"},correct:"A"}});
+replaceGcseEconomicsQuestion("GCSE-ECON-P1-MONEY", "GCSE-P1-MNY-11", {id:"GCSE-P1-MNY-11",spec:"GCSE-ECON-P1-MONEY",stem:"Why might a lender check a borrower's credit history?",options:{A:"To assess the risk of non-repayment",B:"To guarantee no interest is charged",C:"To remove the need for collateral",D:"To make saving impossible"},correct:"A",tag:"MC-GCSE-P1-MNY-11",scaffold:"A credit history gives information about past repayments and helps a lender judge default risk. A riskier borrower may face a higher interest rate or be refused credit.",reforge:{stem:"What may happen if a borrower misses loan repayments?",options:{A:"Their future access to credit may become harder",B:"The loan automatically becomes free",C:"The lender's risk disappears",D:"Their income is guaranteed to rise"},correct:"A"}});
+replaceGcseEconomicsQuestion("GCSE-ECON-P1-MONEY", "GCSE-P1-MNY-13", {id:"GCSE-P1-MNY-13",spec:"GCSE-ECON-P1-MONEY",stem:"What is an insurance premium?",options:{A:"The payment made for insurance cover",B:"The value of every claim paid",C:"A tax on all saving",D:"The loss that cannot be covered"},correct:"A",tag:"MC-GCSE-P1-MNY-13",scaffold:"A premium is the amount paid by a policyholder for insurance cover, usually at regular intervals or when the policy begins. The insurer then assesses valid claims against the policy terms.",reforge:{stem:"What is an insurance excess?",options:{A:"The amount the policyholder pays towards a claim",B:"The insurer's total annual profit",C:"A guaranteed payout for every event",D:"A bank's lending rate"},correct:"A"}});
+replaceGcseEconomicsQuestion("GCSE-ECON-P2-NATIONAL", "GCSE-P2-NAT-11", {id:"GCSE-P2-NAT-11",spec:"GCSE-ECON-P2-NATIONAL",stem:"How might an ageing population affect the tax base?",options:{A:"A smaller share of working-age people may pay income tax",B:"Every person's tax payment must rise",C:"The labour force automatically doubles",D:"Pension spending disappears"},correct:"A",tag:"MC-GCSE-P2-NAT-11",scaffold:"If the retired population grows relative to the working-age population, fewer people may be earning taxable income while demand for pensions and healthcare increases. The outcome depends on employment, migration and policy.",reforge:{stem:"Which policy could reduce pressure caused by an ageing population?",options:{A:"Encouraging later retirement or higher labour-force participation",B:"Reducing all healthcare capacity",C:"Banning pension saving",D:"Shrinking the working-age population"},correct:"A"}});
+replaceGcseEconomicsQuestion("GCSE-ECON-P2-NATIONAL", "GCSE-P2-NAT-12", {id:"GCSE-P2-NAT-12",spec:"GCSE-ECON-P2-NATIONAL",stem:"What does a government budget surplus mean?",options:{A:"Tax revenue is greater than government spending",B:"Imports exceed exports",C:"Household saving exceeds borrowing",D:"Government spending is greater than revenue"},correct:"A",tag:"MC-GCSE-P2-NAT-12",scaffold:"A budget surplus occurs when government revenue exceeds government spending in a period. It is different from a trade surplus, which concerns exports and imports.",reforge:{stem:"A government collects £600 billion and spends £570 billion. It has:",options:{A:"A £30 billion budget surplus",B:"A £30 billion budget deficit",C:"A £1,170 billion trade surplus",D:"Balanced finances"},correct:"A"}});
+replaceGcseEconomicsQuestion("GCSE-ECON-P2-GROWTH", "GCSE-P2-GRO-12", {id:"GCSE-P2-GRO-12",spec:"GCSE-ECON-P2-GROWTH",stem:"How might economic growth increase government tax revenue?",options:{A:"Higher incomes and profits can widen the tax base",B:"Growth removes all taxes",C:"Output falls whenever GDP rises",D:"Public services become impossible to fund"},correct:"A",tag:"MC-GCSE-P2-GRO-12",scaffold:"If growth raises employment, incomes and company profits, more taxable activity may increase government receipts. The size of the effect depends on tax rates, distribution and the cause of growth.",reforge:{stem:"Why may growth give a government more scope to fund public services?",options:{A:"Higher taxable incomes can raise receipts",B:"Growth guarantees no public spending",C:"Economic activity ends",D:"Tax revenue is unrelated to output"},correct:"A"}});
+
 // GCSE AQA Psychology 8182 — Paper 1: Cognition and behaviour.
 const gcsePsychQuestion = (id, spec, stem, options, correct, scaffold, reforge) => ({id, spec, stem, options, correct, tag:`MC-GCSE-PSY-${id.slice(9)}`, scaffold, reforge});
 const addGcsePsych = (bankId, spec, prefix, rows) => BANKS[bankId].questions.push(...rows.map((r, i) => gcsePsychQuestion(`${prefix}-${String(i + 1).padStart(2,"0")}`, spec, r[0], {A:r[1],B:r[2],C:r[3],D:r[4]}, "A", r[5], {stem:r[6],options:{A:r[1],B:r[2],C:r[3],D:r[4]},correct:"A"})));
@@ -9949,3 +10108,645 @@ for (const [bankId, [basePlan, reforgePlan]] of Object.entries({
     while (item.options[alternative].length <= item.options[item.correct].length) item.options[alternative] += " (in context)";
   }
 }
+
+// ===== A LEVEL PSYCHOLOGY (AQA 7182) PAPER 2: APPROACHES IN PSYCHOLOGY =====
+// Options are written length-matched at source, so no post-hoc padding pass is
+// applied to this bank. Answer keys are distributed evenly across A-D.
+BANKS["PSY-APP"] = {
+  label: "Approaches in Psychology",
+  color: "#831843",
+  questions: [
+    {
+      id:"APP-01",
+      stem:"Wundt's method of introspection required participants to do what?",
+      options:{
+        A:"Observe others' behaviour in natural settings without intervening",
+        B:"Complete reaction-time tasks while their brain activity was recorded",
+        C:"Report their own conscious experience of a controlled stimulus",
+        D:"Produce reflex responses to stimuli presented under laboratory control"
+      },
+      correct:"C",tag:"MC-APP-ORIGINS",
+      scaffold:"Wundt opened the first psychology laboratory in Leipzig in 1879, which is why he is called the father of psychology. His method was introspection: participants were trained to break their conscious experience of a standardised stimulus (a metronome beat, a light) into its component sensations, images and feelings. Two features made this a genuine step toward science: the stimulus was standardised, and the procedure was systematic and repeatable. What it was not was objective — the data are private reports nobody else can check. Examiner tip: credit Wundt for the method (structuralism, controlled conditions, first lab) and criticise the data (subjective, unfalsifiable), not the other way round.",
+      reforge:{stem:"Why is Wundt described as significant despite introspection's flaws?",options:{A:"He moved the study of mind into a controlled laboratory setting",B:"He proved that all behaviour is the product of unconscious conflict",C:"He was the first psychologist to use brain-imaging technology",D:"He demonstrated that mental processes cannot be studied at all"},correct:"A"}
+    },
+    {
+      id:"APP-02",
+      stem:"Which criticism of introspection is the strongest scientific objection?",
+      options:{
+        A:"Its data are subjective and cannot be independently verified",
+        B:"It was never once carried out under controlled laboratory conditions",
+        C:"Wundt deliberately refused to publish any of his experimental results",
+        D:"It relied entirely on animal subjects rather than on human participants"
+      },
+      correct:"A",tag:"MC-APP-ORIGINS",
+      scaffold:"The scientific objection is falsifiability. If two participants report different experiences of the same stimulus, there is no external measure that can settle which is correct — the claim cannot in principle be disproved. Watson made exactly this argument in 1913 when launching behaviourism: psychology should study only what can be observed and measured by anyone. Note the distractors are all factually false — Wundt did use controlled conditions, did publish extensively, and did use human participants. Examiner tip: when asked to evaluate introspection, the marks are for 'subjective / unfalsifiable / not replicable', not for saying it was 'old-fashioned'.",
+      reforge:{stem:"Which approach emerged directly as a reaction against introspection?",options:{A:"The humanistic approach, which emphasises free will",B:"The behaviourist approach, which studies only observable behaviour",C:"The psychodynamic approach, which studies the unconscious",D:"The cognitive approach, which infers internal mental processes"},correct:"B"}
+    },
+    {
+      id:"APP-03",
+      stem:"Which assumption is central to the behaviourist approach?",
+      options:{
+        A:"Behaviour is driven mainly by unconscious conflicts formed in childhood",
+        B:"Mental processes should be studied by modelling them on computer systems",
+        C:"People possess free will and an innate drive toward self-actualisation",
+        D:"Only observable behaviour should be studied, as it can be measured"
+      },
+      correct:"D",tag:"MC-APP-BEHAV",
+      scaffold:"Behaviourism rests on three assumptions: (1) only observable, measurable behaviour is a valid subject for study — internal mental states are a 'black box'; (2) we are born a blank slate (tabula rasa), so behaviour is learned from the environment; (3) the basic learning processes are the same in humans and other animals, which is why rats and pigeons are legitimate research subjects. Each distractor here names a different approach: A is psychodynamic, B is cognitive, C is humanistic. Examiner tip: exam questions often give you a scenario and ask which approach explains it — match on the mechanism (conditioning, schema, unconscious, self-concept), not on the topic.",
+      reforge:{stem:"Why do behaviourists consider research on rats and pigeons valid for humans?",options:{A:"Because animals possess the same conscious experience as people",B:"Because animal studies are cheaper and quicker to run in a laboratory",C:"Because the basic laws of learning are assumed to be the same across species",D:"Because animals cannot give informed consent to take part in studies"},correct:"C"}
+    },
+    {
+      id:"APP-04",
+      stem:"In Pavlov's research, what had the bell become by the end of conditioning?",
+      options:{
+        A:"A neutral stimulus, still producing no measurable response at all",
+        B:"A conditioned stimulus, producing a conditioned salivation response",
+        C:"An unconditioned stimulus, producing salivation as an innate reflex",
+        D:"A positive reinforcer, increasing the frequency of feeding behaviour"
+      },
+      correct:"B",tag:"MC-APP-CLASSICAL",
+      scaffold:"Track the labels through the procedure. Before: food = unconditioned stimulus (UCS) → salivation = unconditioned response (UCR); bell = neutral stimulus (NS) → no response. During: bell (NS) paired repeatedly with food (UCS). After: bell = conditioned stimulus (CS) → salivation = conditioned response (CR). The two errors examiners see most often are calling the bell a reinforcer (that is operant conditioning, a different process) and forgetting that the response changes label too — the salivation is a UCR to food but a CR to the bell, even though it looks identical. Classical conditioning explains reflexive, involuntary responses; operant explains voluntary ones.",
+      reforge:{stem:"A child bitten by a dog becomes frightened of all dogs. What is the conditioned stimulus?",options:{A:"The fear response the child now shows",B:"The pain experienced during the bite",C:"The dog, which was neutral before the bite",D:"The child's avoidance of parks and streets"},correct:"C"}
+    },
+    {
+      id:"APP-05",
+      stem:"What is negative reinforcement?",
+      options:{
+        A:"Removing an unpleasant consequence, making a behaviour more likely",
+        B:"Adding an unpleasant consequence, making a behaviour less likely",
+        C:"Removing a pleasant consequence, which makes a behaviour less likely",
+        D:"Adding a pleasant consequence, making a behaviour more likely"
+      },
+      correct:"A",tag:"MC-APP-OPERANT",
+      scaffold:"This is the single most-confused item in the Approaches topic. Build a two-by-two grid: the word 'reinforcement' always means the behaviour increases; 'punishment' always means it decreases. 'Positive' means something is added; 'negative' means something is taken away. So: positive reinforcement = add something pleasant (praise); negative reinforcement = remove something unpleasant (taking a painkiller stops the headache, so you take painkillers again); positive punishment = add something unpleasant (a fine); negative punishment = remove something pleasant (confiscating a phone). The trap is reading 'negative' as 'bad' — negative reinforcement still strengthens behaviour. It is central to explaining why avoidance behaviours in phobias persist.",
+      reforge:{stem:"A student hands in work early to stop their parents nagging. Which process is this?",options:{A:"Positive punishment, because nagging is unpleasant",B:"Negative reinforcement, because an unpleasant stimulus is removed",C:"Positive reinforcement, because the student receives praise",D:"Negative punishment, because a privilege has been withdrawn"},correct:"B"}
+    },
+    {
+      id:"APP-06",
+      stem:"What is the main methodological strength of Skinner's use of the Skinner box?",
+      options:{
+        A:"It allowed the unconscious motivations of the animals to be measured",
+        B:"It produced findings that generalise completely to human decision-making",
+        C:"It gave high control over variables, allowing causal conclusions",
+        D:"It studied animals in natural habitats, raising ecological validity"
+      },
+      correct:"C",tag:"MC-APP-OPERANT",
+      scaffold:"The Skinner box isolates one variable: the consequence of pressing a lever. Everything else — food deprivation, lighting, the chamber itself — is held constant, so a change in lever-pressing can be attributed to the reinforcement schedule rather than to anything else. That is a textbook cause-and-effect design and it is why behaviourism is regarded as the most scientific of the approaches. Balance it in evaluation with the standard cost: extrapolating from a rat in a bare box to human behaviour is questionable, because humans have cognition and language that mediate reinforcement. Note that D is the opposite of the truth — the Skinner box is a highly artificial environment.",
+      reforge:{stem:"Which is a legitimate criticism of Skinner's research?",options:{A:"He failed to control the variables inside the chamber",B:"His findings could not be replicated by other researchers",C:"He never used any form of reinforcement in his studies",D:"Extrapolating from caged animals to humans is questionable"},correct:"D"}
+    },
+    {
+      id:"APP-07",
+      stem:"Which of the following is one of Bandura's four mediational processes?",
+      options:{
+        A:"Reinforcement schedule, determining how often a reward is given",
+        B:"Retention, the extent to which observed behaviour is remembered",
+        C:"Extinction, the fading of a response when reward is withdrawn",
+        D:"Generalisation, responding similarly to comparable situations"
+      },
+      correct:"B",tag:"MC-APP-SLT",
+      scaffold:"The four mediational processes are attention, retention, motor reproduction and motivation — remember them as ARMM. They sit between the observation of a model and the imitation of that model, and they are precisely what makes social learning theory more than behaviourism: they are cognitive. Attention (did you notice it?) and retention (did you remember it?) affect whether learning happens at all; motor reproduction (can you physically do it?) and motivation (is it worth doing?) affect whether learning turns into performance. That learning-versus-performance distinction is a common six-mark question: a child can learn a behaviour and never perform it until the incentive appears.",
+      reforge:{stem:"Which two mediational processes determine whether learning is turned into performance?",options:{A:"Attention and retention",B:"Retention and extinction",C:"Motor reproduction and motivation",D:"Attention and generalisation"},correct:"C"}
+    },
+    {
+      id:"APP-08",
+      stem:"What is vicarious reinforcement?",
+      options:{
+        A:"Being directly rewarded each time a modelled behaviour is copied",
+        B:"Rewarding yourself internally after completing a difficult task",
+        C:"Punishing a model so that observers stop imitating the behaviour",
+        D:"Seeing a model rewarded, making imitation of them more likely"
+      },
+      correct:"D",tag:"MC-APP-SLT",
+      scaffold:"Vicarious means 'experienced through someone else'. The observer is not rewarded — the model is — but the observer's likelihood of imitating still rises because they have learned that the behaviour pays off. This is the key mechanism that lets social learning theory explain behaviours nobody has personally been reinforced for, such as a child copying a sibling who got away with something. The mirror concept is vicarious punishment: seeing a model punished makes imitation less likely. Option A describes ordinary direct reinforcement, which is operant conditioning, so it is the classic distractor. Identification and modelling are the related terms: we imitate models we identify with because of perceived similarity or status.",
+      reforge:{stem:"Why is identification important in social learning theory?",options:{A:"People are more likely to imitate models they see as similar or high status",B:"It guarantees that the observed behaviour will always be performed",C:"It removes the need for any cognitive mediational processes",D:"It explains why reinforcement has no effect on learning"},correct:"A"}
+    },
+    {
+      id:"APP-09",
+      stem:"What did Bandura's Bobo doll research demonstrate?",
+      options:{
+        A:"Aggression is entirely determined by inherited genetic factors",
+        B:"Children will imitate adults only when they are directly rewarded themselves",
+        C:"Observing aggression reduced children's own later aggressive behaviour",
+        D:"Children imitated aggressive acts they had watched an adult perform"
+      },
+      correct:"D",tag:"MC-APP-SLT",
+      scaffold:"Bandura's children watched an adult model behave aggressively toward an inflatable doll, then reproduced those specific acts — including novel ones like striking it with a mallet — when left alone with it. Crucially the children had not been reinforced themselves, which is what the finding contributes: learning occurred purely through observation. The 1965 follow-up added the vicarious element, showing that children who saw the model punished imitated less. Standard evaluation points: high control and clear operationalisation, but low ecological validity (a Bobo doll is designed to be struck, so hitting it may be play rather than aggression) and demand characteristics.",
+      reforge:{stem:"What is the main ecological validity criticism of the Bobo doll research?",options:{A:"The children were never observed by the researchers",B:"A Bobo doll is a toy designed to be hit, so this may be play not aggression",C:"The adult models behaved completely unpredictably",D:"No control condition was included in the design"},correct:"B"}
+    },
+    {
+      id:"APP-10",
+      stem:"What is a schema in the cognitive approach?",
+      options:{
+        A:"A biological brain structure responsible for the storage of all memory",
+        B:"A mental framework of beliefs that organises and interprets information",
+        C:"A step-by-step laboratory procedure for measuring reaction times accurately",
+        D:"An unconscious defence mechanism protecting the ego from anxiety"
+      },
+      correct:"B",tag:"MC-APP-COG",
+      scaffold:"A schema is a package of knowledge built from experience that tells you what to expect and how to behave — you have a schema for 'restaurant', 'dog', and for yourself. Schemas are useful because they let you process huge amounts of information quickly by filling in gaps with defaults. That same shortcut is their weakness: they distort perception and memory toward what was expected, which is why eyewitnesses report seeing things that fit the scene but never happened. This links directly to the Memory topic and to reconstructive memory. Examiner tip: if a question asks why schema are a 'double-edged sword', the answer is efficiency versus distortion.",
+      reforge:{stem:"How do schema help explain distortions in eyewitness testimony?",options:{A:"They prevent any information from being encoded into long-term memory",B:"They ensure recall is always an exact reproduction of the event",C:"They fill gaps in recall with expected details that may not have occurred",D:"They stop witnesses from being influenced by leading questions"},correct:"C"}
+    },
+    {
+      id:"APP-11",
+      stem:"Why does the cognitive approach rely on inference?",
+      options:{
+        A:"Because participants routinely give dishonest answers during interviews",
+        B:"Because brain-scanning technology cannot detect any neural activity",
+        C:"Because mental processes cannot be observed and must be deduced",
+        D:"Because cognitive psychologists reject the use of scientific methods"
+      },
+      correct:"C",tag:"MC-APP-COG",
+      scaffold:"Inference means drawing conclusions about unobservable internal processes from observable behaviour. You cannot see rehearsal happening, but if a distractor task that blocks rehearsal destroys recall, you can infer that rehearsal was doing the work. This is the cognitive approach's answer to the behaviourist 'black box' objection: you can study the mind scientifically without observing it directly. The trade-off, and the standard evaluation point, is that inference can drift into machine reductionism — comparing the mind to a computer captures information flow but ignores emotion and motivation, which demonstrably affect memory. Note that D is false: the cognitive approach is strongly scientific, using controlled lab experiments.",
+      reforge:{stem:"What is the main limitation of the computer analogy used by cognitive psychologists?",options:{A:"It ignores the influence of emotion and motivation on processing",B:"It cannot be applied to memory or attention research",C:"It relies entirely on introspective self-report data",D:"It prevents psychologists from using laboratory experiments"},correct:"A"}
+    },
+    {
+      id:"APP-12",
+      stem:"What does cognitive neuroscience involve?",
+      options:{
+        A:"Mapping mental processes onto the brain structures that carry them out",
+        B:"Treating mental disorder with drugs that alter neurotransmitter levels in the brain",
+        C:"Studying how young children acquire language by imitating their parents",
+        D:"Using introspection to describe the contents of conscious experience"
+      },
+      correct:"A",tag:"MC-APP-COG",
+      scaffold:"Cognitive neuroscience is the scientific study of the neural basis of mental processes — the meeting point of the cognitive and biological approaches. Techniques such as fMRI and PET allow researchers to see which brain regions are active during a specific cognitive task, so the inferences of the cognitive approach can now be grounded in physical evidence. Standard examples: Tulving's PET work showing episodic and semantic memory recruit different prefrontal regions, and Broca's identification of a specific area whose damage impairs speech production. This is a strong evaluation point for the cognitive approach — it shows the approach has become more objective and scientific over time.",
+      reforge:{stem:"Which finding is the best example of cognitive neuroscience in practice?",options:{A:"Pavlov showing dogs salivate to a bell paired with food",B:"Rogers showing that unconditional positive regard aids therapy",C:"Bandura showing children imitate an aggressive adult model",D:"Tulving showing episodic and semantic memory use different brain regions"},correct:"D"}
+    },
+    {
+      id:"APP-13",
+      stem:"What is the difference between genotype and phenotype?",
+      options:{
+        A:"Genotype is inherited from the mother, while phenotype comes from the father",
+        B:"Genotype is the genetic makeup; phenotype is its observable expression",
+        C:"Genotype refers to behaviour, while phenotype refers to brain structure",
+        D:"Genotype changes across the lifespan; phenotype is fixed at conception"
+      },
+      correct:"B",tag:"MC-APP-BIO",
+      scaffold:"Genotype is the actual genetic code an individual inherits; phenotype is the set of characteristics that actually appear, produced by that code interacting with the environment. The classic illustration is identical twins: their genotypes are the same, but if one smokes, trains or is malnourished, their phenotypes diverge. This distinction is what saves the biological approach from crude genetic determinism — it builds the environment into the model, so it supports an interactionist position on the nature-nurture debate. Examiner tip: whenever you use the word 'genetic' in an evaluation, adding 'genotype provides a predisposition; phenotype reflects the environment too' is usually worth a mark.",
+      reforge:{stem:"Identical twins are raised apart and differ in weight and health. What does this show?",options:{A:"Their genotypes must be different from one another",B:"Genes have no measurable influence on physical characteristics",C:"Phenotype is shaped by environment as well as by genotype",D:"Concordance rates for MZ twins are always zero"},correct:"C"}
+    },
+    {
+      id:"APP-14",
+      stem:"Why do MZ twin studies support a genetic basis for behaviour?",
+      options:{
+        A:"Because MZ twins are always raised in completely separate environments",
+        B:"Because MZ twins share only half of their genes, just as any siblings do",
+        C:"Because concordance rates for MZ and DZ twins are consistently identical",
+        D:"Because MZ twins share all their genes and show higher concordance"
+      },
+      correct:"D",tag:"MC-APP-BIO",
+      scaffold:"The logic is comparative. MZ (identical) twins share 100% of their genes; DZ (fraternal) twins share roughly 50%, the same as any siblings. If a characteristic is genetically influenced, MZ concordance should exceed DZ concordance — and for conditions such as OCD and schizophrenia it does, substantially. The critical evaluation point is that this is not proof: MZ twins are also treated more similarly than DZ twins, so shared environment is confounded with shared genes. Note too that MZ concordance is never 100%, which itself demonstrates that genes alone cannot be the whole explanation and that a diathesis-stress model fits the data better.",
+      reforge:{stem:"MZ concordance for a disorder is 68%, not 100%. What does this indicate?",options:{A:"Genetic factors play no part in the disorder at all",B:"The twins cannot genuinely be monozygotic",C:"Environmental factors must also contribute to the disorder",D:"The diagnosis must have been made incorrectly"},correct:"C"}
+    },
+    {
+      id:"APP-15",
+      stem:"How does the biological approach use evolution to explain behaviour?",
+      options:{
+        A:"Behaviours that aided survival were naturally selected and passed on",
+        B:"Behaviours are learned by observing successful members of the species",
+        C:"Behaviours result from conflict between the id, the ego and the superego",
+        D:"Behaviours emerge from an individual's drive to reach their full potential"
+      },
+      correct:"A",tag:"MC-APP-BIO",
+      scaffold:"The evolutionary argument runs: any genetically influenced behaviour that increased the chance of surviving and reproducing became more common in the population, because the individuals showing it left more offspring. Standard applications you can use: attachment (an infant who stays close to a caregiver is protected, so proximity-seeking is adaptive — Bowlby's monotropy), and phobias (a readiness to fear snakes and heights had survival value, which is Seligman's biological preparedness). The recurring criticism is that these accounts are post-hoc 'just so' stories: because the behaviour exists, an adaptive reason is invented for it, and the claim cannot easily be falsified.",
+      reforge:{stem:"What is the standard criticism of evolutionary explanations of behaviour?",options:{A:"They cannot be applied to attachment or to phobias",B:"They are post-hoc and difficult to falsify with evidence",C:"They rely on laboratory experiments with poor control",D:"They deny that genes have any influence on behaviour"},correct:"B"}
+    },
+    {
+      id:"APP-16",
+      stem:"Which statement correctly describes the ego in Freud's model of personality?",
+      options:{
+        A:"It is driven by the pleasure principle and demands immediate gratification",
+        B:"It is present from birth and represents our internalised sense of right and wrong",
+        C:"It works on the reality principle, mediating between the id and superego",
+        D:"It stores repressed memories that cannot be reached by conscious thought"
+      },
+      correct:"C",tag:"MC-APP-PSYDYN",
+      scaffold:"Freud's tripartite personality: the id is present from birth, is entirely unconscious and runs on the pleasure principle, demanding immediate gratification. The superego forms around age five at the end of the phallic stage, internalising the same-sex parent's morality, and punishes with guilt. The ego develops around age two, runs on the reality principle, and manages the conflict between the other two using defence mechanisms. Note how the distractors here each describe a different component: A is the id, B is the superego (with the wrong age), D is the unconscious mind generally. Getting the ages and principles paired correctly is where marks are won.",
+      reforge:{stem:"At which psychosexual stage does the superego develop?",options:{A:"The oral stage, in the first year of life",B:"The anal stage, at around two years old",C:"The genital stage, beginning at puberty",D:"The phallic stage, at around five years old"},correct:"D"}
+    },
+    {
+      id:"APP-17",
+      stem:"A man shouted at by his manager goes home and shouts at his family. Which defence mechanism is this?",
+      options:{
+        A:"Displacement — redirecting the emotion onto a substitute target",
+        B:"Repression — forcing a distressing memory out of conscious awareness",
+        C:"Denial — refusing to accept that an unpleasant reality is happening",
+        D:"Regression — reverting to behaviours typical of an earlier stage"
+      },
+      correct:"A",tag:"MC-APP-PSYDYN",
+      scaffold:"Defence mechanisms are unconscious strategies the ego uses to manage the anxiety created by id-superego conflict. The three AQA requires are repression (pushing a threatening memory into the unconscious, where it still influences behaviour), denial (refusing to acknowledge a reality, such as an addict insisting they can stop whenever they like) and displacement (transferring a strong feeling from its real target onto a safer substitute). Displacement is the one in this scenario: the anger belongs to the manager but is discharged onto the family because expressing it at work is too risky. All three are unconscious and all three are short-term fixes that distort reality.",
+      reforge:{stem:"A woman told of a bereavement continues to set a place at the table for the deceased. Which mechanism is this?",options:{A:"Displacement of grief onto a household routine",B:"Denial, refusing to accept an unacceptable reality",C:"Repression of an early childhood memory",D:"Regression to an earlier psychosexual stage"},correct:"B"}
+    },
+    {
+      id:"APP-18",
+      stem:"According to Freud, what results from fixation at the oral stage?",
+      options:{
+        A:"Excessive tidiness and a strong need to control one's own surroundings",
+        B:"Difficulty forming relationships due to an unresolved Oedipus complex",
+        C:"Aggressive outbursts caused by harsh toilet training during infancy",
+        D:"Traits such as smoking, nail-biting or being critical of others"
+      },
+      correct:"D",tag:"MC-APP-PSYDYN",
+      scaffold:"The five psychosexual stages are oral (0-1), anal (1-3), phallic (3-6), latency and genital. Unresolved conflict at a stage produces fixation, and adult personality carries the mark of it. Oral fixation: smoking, nail-biting, sarcasm and criticism — all mouth-focused. Anal fixation splits two ways: anal-retentive (perfectionist, obsessively tidy, from harsh toilet training) and anal-expulsive (thoughtless, messy). Phallic fixation: narcissistic, reckless, possibly homophobic. Note option A describes anal-retentive and B describes phallic-stage conflict, so this question is really testing whether you can keep the stages apart rather than whether you can recall a list.",
+      reforge:{stem:"Which adult personality does Freud attribute to anal-retentive fixation?",options:{A:"Sarcastic and highly critical of other people",B:"Reckless, vain and narcissistic in relationships",C:"Perfectionist, obsessively tidy and controlling",D:"Thoughtless, disorganised and messy in habits"},correct:"C"}
+    },
+    {
+      id:"APP-19",
+      stem:"What are conditions of worth in Rogers' humanistic theory?",
+      options:{
+        A:"Innate biological needs that must all be met before self-actualisation occurs",
+        B:"Standards a therapist sets before agreeing to take on a new client",
+        C:"Limits a parent places on their love, which the child then internalises",
+        D:"The gap between a person's self-concept and their ideal self"
+      },
+      correct:"C",tag:"MC-APP-HUM",
+      scaffold:"Rogers argued that parents who offer love only when a child meets certain standards ('I will love you if you do well at school') impose conditions of worth. The child internalises these, so self-acceptance becomes conditional and the self-concept drifts away from the ideal self — producing incongruence and low self-worth that persist into adulthood. The therapeutic answer is unconditional positive regard: the client-centred therapist accepts the client entirely, without judgement, dissolving the conditions of worth so the person can move toward self-actualisation. Note that D describes incongruence, which is the consequence, not the cause — a common mix-up.",
+      reforge:{stem:"What does a client-centred therapist provide to counter conditions of worth?",options:{A:"Unconditional positive regard, accepting the client without judgement",B:"A structured programme of systematic desensitisation",C:"Interpretation of the client's dreams and childhood conflicts",D:"A token economy that rewards desirable behaviour"},correct:"A"}
+    },
+    {
+      id:"APP-20",
+      stem:"What does Rogers mean by congruence?",
+      options:{
+        A:"The stage at which a person has fully achieved self-actualisation",
+        B:"A close match between the self-concept and the ideal self",
+        C:"Acceptance offered by a therapist regardless of the client's actions",
+        D:"The point at which all of Maslow's deficiency needs have been met"
+      },
+      correct:"B",tag:"MC-APP-HUM",
+      scaffold:"Self-concept is how you see yourself; the ideal self is who you want to be. When the two are close, you have congruence, and personal growth becomes possible. When the gap is wide, you have incongruence, which Rogers held to be the root of low self-esteem and much psychological distress. This is why the whole point of client-centred therapy is to reduce that gap — not by pushing the person to become their ideal self, but by dissolving the conditions of worth that inflated the ideal in the first place. Keep three terms separate: congruence (the match), unconditional positive regard (what the therapist gives), self-actualisation (the goal at the top of the hierarchy).",
+      reforge:{stem:"A person's self-concept and ideal self are very far apart. What does Rogers predict?",options:{A:"They will rapidly achieve self-actualisation",B:"They will experience incongruence and low self-worth",C:"They will have received unconditional positive regard",D:"Their deficiency needs must all have been satisfied"},correct:"B"}
+    },
+    {
+      id:"APP-21",
+      stem:"Which approach places the greatest emphasis on free will?",
+      options:{
+        A:"The biological approach, which stresses genetic and neural causes",
+        B:"The behaviourist approach, which stresses environmental conditioning",
+        C:"The psychodynamic approach, which stresses unconscious childhood conflict",
+        D:"The humanistic approach, which stresses personal choice and growth"
+      },
+      correct:"D",tag:"MC-APP-COMPARE",
+      scaffold:"On the free will-determinism dimension the humanistic approach stands alone: it holds that people are active agents who choose their own path, which is why it rejects the scientific reductionism of the other approaches and uses idiographic methods such as case studies. Place the others as: biological = biological determinism (genes, neurochemistry), behaviourist = environmental determinism (reinforcement history), psychodynamic = psychic determinism (unconscious conflict fixed in childhood), cognitive = soft determinism (we choose, but within the limits of our thinking). Learning this one-line map lets you answer comparison questions across the whole topic quickly.",
+      reforge:{stem:"Which type of determinism does the psychodynamic approach argue for?",options:{A:"Environmental determinism, based on reinforcement history",B:"Biological determinism, based on genes and neurochemistry",C:"Psychic determinism, based on unconscious childhood conflict",D:"Soft determinism, allowing choice within cognitive limits"},correct:"C"}
+    },
+    {
+      id:"APP-22",
+      stem:"Which pair of approaches are both strongly deterministic?",
+      options:{
+        A:"Humanistic and cognitive, since both emphasise conscious control over choices",
+        B:"Humanistic and behaviourist, as both reject the idea of any inner causes",
+        C:"Biological and behaviourist, as both see behaviour as externally caused",
+        D:"Psychodynamic and humanistic, as both focus on early childhood experience"
+      },
+      correct:"C",tag:"MC-APP-COMPARE",
+      scaffold:"Both the biological and behaviourist approaches are hard determinist: on the biological view your genes and neurochemistry cause your behaviour, and on the behaviourist view your reinforcement history does. In both cases the cause lies outside conscious choice. This has a real-world implication worth deploying in extended answers: hard determinism sits awkwardly with a legal system built on personal responsibility, since a defendant cannot be blamed for behaviour that was fully caused by factors beyond their control. The counter-argument is that determinism is what makes psychology scientific — it allows prediction and control, and it underpins effective treatments such as drug therapy and token economies.",
+      reforge:{stem:"What is a real-world implication of adopting hard determinism?",options:{A:"It strengthens the case for holding offenders morally responsible",B:"It makes psychological research impossible to conduct scientifically",C:"It challenges a legal system that assumes personal responsibility",D:"It removes the need to study environmental influences at all"},correct:"C"}
+    },
+    {
+      id:"APP-23",
+      stem:"Why is the biological approach described as reductionist?",
+      options:{
+        A:"It explains behaviour by combining several different levels of analysis at once",
+        B:"It reduces complex behaviour to genes, neurotransmitters and structures",
+        C:"It rejects the use of controlled experimental methods in its research",
+        D:"It focuses only on what people report about their own inner experience"
+      },
+      correct:"B",tag:"MC-APP-COMPARE",
+      scaffold:"Reductionism means explaining a complex phenomenon by breaking it into its simplest components. Biological reductionism explains depression as low serotonin, or OCD as an overactive worry circuit. The genuine strength is scientific: simple variables can be isolated and tested, and this reductionism produced drug therapies such as SSRIs that demonstrably work. The genuine cost is that it can strip out meaning — describing depression purely as a neurotransmitter level ignores the bereavement or the unemployment that triggered it. The balanced position, which examiners reward, is that reductionism is appropriate for some questions and holism for others, and that an interactionist model such as diathesis-stress captures more.",
+      reforge:{stem:"What is the main strength of taking a reductionist approach in psychology?",options:{A:"It preserves the full complexity of human social behaviour",B:"It removes the need to test explanations experimentally",C:"It allows simple variables to be isolated and tested scientifically",D:"It guarantees that explanations will be entirely accurate"},correct:"C"}
+    },
+    {
+      id:"APP-24",
+      stem:"Which real-world application derives directly from operant conditioning?",
+      options:{
+        A:"Token economy systems used to shape behaviour in institutions",
+        B:"Systematic desensitisation, based on counter-conditioning of fear",
+        C:"Cognitive behavioural therapy, which challenges irrational beliefs",D:"Psychoanalysis, which uses dream analysis to access the unconscious"
+      },
+      correct:"A",tag:"MC-APP-COMPARE",
+      scaffold:"Token economies apply operant conditioning directly: desirable behaviour earns tokens (secondary reinforcers) that are exchanged for privileges (primary reinforcers), so the behaviour is positively reinforced and increases. They are used in prisons and psychiatric settings and are strong evidence for the behaviourist approach's practical value. Keep the therapy-to-approach map straight, because it is examined constantly: token economy and systematic desensitisation are behaviourist (operant and classical respectively), CBT is cognitive, drug therapy is biological, psychoanalysis and dream analysis are psychodynamic, and client-centred therapy is humanistic.",
+      reforge:{stem:"Which therapy is derived from classical rather than operant conditioning?",options:{A:"Token economy programmes in psychiatric hospitals",B:"Systematic desensitisation for treating phobias",C:"Cognitive behavioural therapy for depression",D:"Drug therapy using SSRI antidepressants"},correct:"B"}
+    }
+  ]
+};
+
+// ===== A LEVEL PSYCHOLOGY (AQA 7182) PAPER 2: BIOPSYCHOLOGY =====
+BANKS["PSY-BIO"] = {
+  label: "Biopsychology",
+  color: "#831843",
+  questions: [
+    {
+      id:"PSYBIO-01",
+      stem:"Which structures make up the central nervous system?",
+      options:{
+        A:"The brain and the spinal cord",
+        B:"The somatic and autonomic systems",
+        C:"The sympathetic and parasympathetic branches together",
+        D:"The sensory, relay and motor neurons of the reflex arc"
+      },
+      correct:"A",tag:"MC-BIO-NS",
+      scaffold:"Learn the nervous system as a branching diagram, because AQA examines the divisions directly. The nervous system splits into the central nervous system (brain and spinal cord) and the peripheral nervous system. The PNS splits into the somatic nervous system (voluntary movement, carrying sensory and motor information to and from the CNS) and the autonomic nervous system (involuntary, governing vital functions). The ANS then splits again into the sympathetic branch (arousal, fight or flight) and the parasympathetic branch (rest and digest). Draw this out from memory before the exam: most errors come from placing the autonomic system inside the CNS or confusing the two ANS branches.",
+      reforge:{stem:"Which division of the nervous system controls voluntary movement?",options:{A:"The autonomic nervous system",B:"The somatic nervous system",C:"The central nervous system",D:"The parasympathetic branch"},correct:"B"}
+    },
+    {
+      id:"PSYBIO-02",
+      stem:"What is the primary function of the spinal cord?",
+      options:{
+        A:"To secrete hormones directly into the bloodstream for slow transmission",
+        B:"To coordinate all higher-order thinking, planning and decision-making",
+        C:"To relay information between the brain and the rest of the body",
+        D:"To convert neurotransmitters back into electrical impulses in the brain"
+      },
+      correct:"C",tag:"MC-BIO-NS",
+      scaffold:"The spinal cord is the communication cable of the CNS: it carries sensory information up to the brain and motor commands back down to the body. It also mediates simple reflex actions independently of the brain, which is why you pull your hand from a hot surface before you consciously feel pain — the reflex arc runs sensory neuron to relay neuron to motor neuron within the spinal cord. That speed advantage is the whole evolutionary point of the arrangement. Note option A describes the endocrine system, which is the slower chemical communication network working alongside the nervous system rather than part of it.",
+      reforge:{stem:"Why is the reflex arc faster than a conscious response?",options:{A:"It travels along a shorter route and bypasses the brain",B:"It uses hormones rather than electrical impulses",C:"It involves more synapses than a conscious response",D:"It is controlled by the parasympathetic branch"},correct:"A"}
+    },
+    {
+      id:"PSYBIO-03",
+      stem:"What happens at the synapse when an action potential reaches the presynaptic terminal?",
+      options:{
+        A:"The electrical impulse jumps straight across the synaptic gap into the next neuron",
+        B:"Neurotransmitter is released into the gap and binds to postsynaptic receptors",
+        C:"The neuron reverses direction and the impulse travels back along the axon",
+        D:"Adrenaline is secreted into the bloodstream to arouse the whole body"
+      },
+      correct:"B",tag:"MC-BIO-SYNAPSE",
+      scaffold:"Transmission within a neuron is electrical; transmission between neurons is chemical. When the action potential reaches the presynaptic terminal it triggers vesicles to release neurotransmitter into the synaptic cleft. The neurotransmitter diffuses across and binds to receptors on the postsynaptic membrane, where it is converted back into an electrical signal. Leftover neurotransmitter is then reabsorbed by reuptake — which matters enormously, because SSRIs treat depression precisely by blocking serotonin reuptake and leaving more available in the cleft. Synaptic transmission is unidirectional: receptors sit only on the postsynaptic side, which is why option C is impossible.",
+      reforge:{stem:"Why is synaptic transmission described as unidirectional?",options:{A:"Neurotransmitters can only travel downwards under gravity",B:"The axon is insulated along its entire length",C:"Receptor sites are found only on the postsynaptic membrane",D:"Only one neurotransmitter exists in the human brain"},correct:"C"}
+    },
+    {
+      id:"PSYBIO-04",
+      stem:"What determines whether a postsynaptic neuron fires?",
+      options:{
+        A:"The number of vesicles remaining inside the presynaptic terminal",
+        B:"Whether the neuron is located in the central or peripheral nervous system",
+        C:"The speed at which the impulse travelled along the presynaptic axon",
+        D:"The summed excitatory and inhibitory input reaching the threshold"
+      },
+      correct:"D",tag:"MC-BIO-SYNAPSE",
+      scaffold:"Neurotransmitters are either excitatory (making the postsynaptic neuron more likely to fire, by making its charge more positive) or inhibitory (making it less likely, by making the charge more negative). A single neuron receives thousands of inputs at once, so the outcome is decided by summation: all excitatory and inhibitory influences are added together, and if the net result crosses the threshold the neuron fires an action potential. Firing is all-or-nothing — there is no partial action potential. Standard examples: acetylcholine and adrenaline are excitatory; GABA and serotonin are generally inhibitory, which is why GABA-based drugs reduce anxiety.",
+      reforge:{stem:"Which neurotransmitter is generally inhibitory and reduces anxiety?",options:{A:"Acetylcholine",B:"GABA",C:"Adrenaline",D:"Dopamine"},correct:"B"}
+    },
+    {
+      id:"PSYBIO-05",
+      stem:"How does the endocrine system differ from the nervous system?",
+      options:{
+        A:"It uses hormones in the blood, so it acts more slowly but lasts longer",
+        B:"It uses electrical impulses, so its effects are faster but shorter-lived",
+        C:"It operates only during periods of stress and is inactive at other times",
+        D:"It is controlled by the spinal cord rather than by any part of the brain"
+      },
+      correct:"A",tag:"MC-BIO-ENDO",
+      scaffold:"Two communication systems, two profiles. The nervous system sends electrical impulses down dedicated pathways: very fast, very targeted, effects short-lived. The endocrine system releases hormones from glands into the bloodstream, so they reach every cell with a matching receptor: slower to take effect but much longer-lasting and more widespread. They are not independent — the hypothalamus links them, directing the pituitary gland, which is why the pituitary is called the master gland. Key glands to know: pituitary (controls other glands), adrenal (adrenaline and cortisol), thyroid (thyroxine, metabolism), ovaries and testes (oestrogen and testosterone).",
+      reforge:{stem:"Why is the pituitary described as the master gland?",options:{A:"It is the largest gland in the entire human body",B:"It produces adrenaline during the fight-or-flight response",C:"It directs hormone release from the other endocrine glands",D:"It converts electrical impulses into chemical messages"},correct:"C"}
+    },
+    {
+      id:"PSYBIO-06",
+      stem:"In the fight-or-flight response, which sequence of events is correct?",
+      options:{
+        A:"Pituitary detects threat, then the adrenal medulla stimulates the hypothalamus",
+        B:"Adrenal glands detect threat, then instruct the sympathetic branch to relax the body",
+        C:"Hypothalamus activates the sympathetic branch, which triggers adrenaline release",
+        D:"Parasympathetic branch activates first, raising heart rate and breathing rate"
+      },
+      correct:"C",tag:"MC-BIO-FIGHT",
+      scaffold:"Learn the acute pathway as a chain: the amygdala appraises the threat and signals the hypothalamus; the hypothalamus activates the sympathetic branch of the ANS; the sympathetic branch stimulates the adrenal medulla, which floods the bloodstream with adrenaline. Adrenaline then produces the physical changes — increased heart rate and blood pressure to move oxygen to muscles, dilated pupils, faster breathing, and digestion and salivation suppressed because they are not survival priorities. Once the threat passes, the parasympathetic branch acts as the brake, returning the body to baseline. This is the rest-and-digest response, and it is the opposite of what option D claims.",
+      reforge:{stem:"Which bodily change is caused by the parasympathetic branch?",options:{A:"Pupils dilate and breathing becomes more rapid",B:"Heart rate slows and digestion is stimulated",C:"Adrenaline floods into the bloodstream",D:"Blood is redirected away from the stomach"},correct:"B"}
+    },
+    {
+      id:"PSYBIO-07",
+      stem:"What is one criticism of the fight-or-flight explanation of the stress response?",
+      options:{
+        A:"It has never been supported by any physiological evidence at all",
+        B:"It applies only to non-human animals and never to human beings",
+        C:"It may be androcentric, overlooking a 'tend and befriend' response in females",
+        D:"It wrongly claims that adrenaline is released directly by the pituitary gland during stress"
+      },
+      correct:"C",tag:"MC-BIO-FIGHT",
+      scaffold:"Taylor and colleagues argued in 2000 that the fight-or-flight model was built on predominantly male samples and generalised without justification, making it a beta-bias problem. They proposed that women are more likely to show 'tend and befriend': protecting offspring and forming protective alliances, a response linked to oxytocin, which women release in greater quantities under stress. A second useful criticism is that a modern human facing a deadline or an exam experiences the same acute physiological arousal that evolved for physical danger, and chronic activation of this system contributes to hypertension and immunosuppression — the response is adaptive in origin but maladaptive in a modern environment.",
+      reforge:{stem:"Why can the fight-or-flight response be described as maladaptive today?",options:{A:"Modern stressors are chronic, so prolonged arousal damages health",B:"Humans no longer produce adrenaline in stressful situations",C:"The parasympathetic branch no longer functions in adults",D:"Modern threats are always physical rather than psychological"},correct:"A"}
+    },
+    {
+      id:"PSYBIO-08",
+      stem:"What is meant by localisation of function in the brain?",
+      options:{
+        A:"All areas of the cortex are equally capable of performing any function",
+        B:"Damage to one hemisphere is always compensated by the other one",
+        C:"Brain function is entirely determined by inherited genetic factors",
+        D:"Specific areas of the brain are responsible for specific behaviours"
+      },
+      correct:"D",tag:"MC-BIO-LOCAL",
+      scaffold:"Localisation theory holds that particular functions are carried out by particular regions, and it replaced the earlier holistic view (option A) that the whole brain participates in every process. The regions AQA requires: motor cortex (frontal lobe, voluntary movement), somatosensory cortex (parietal lobe, sensory information from skin), visual cortex (occipital lobe), auditory cortex (temporal lobe), Broca's area (left frontal, speech production) and Wernicke's area (left temporal, language comprehension). The strongest support comes from case studies of brain damage where a specific deficit follows damage to a specific site, which is exactly what a holistic theory cannot easily explain.",
+      reforge:{stem:"Damage to which lobe would most directly impair vision?",options:{A:"The frontal lobe",B:"The temporal lobe",C:"The occipital lobe",D:"The parietal lobe"},correct:"C"}
+    },
+    {
+      id:"PSYBIO-09",
+      stem:"A patient can understand speech but produces slow, halting sentences. Which area is most likely damaged?",
+      options:{
+        A:"Wernicke's area, in the left temporal lobe of the cerebral cortex",
+        B:"The somatosensory cortex, in the parietal lobe of the brain",
+        C:"Broca's area, in the left frontal lobe of the cerebral cortex",
+        D:"The visual cortex, located in the occipital lobe at the rear"
+      },
+      correct:"C",tag:"MC-BIO-LOCAL",
+      scaffold:"Separate the two aphasias by asking what is preserved. Broca's aphasia: comprehension is intact but production is impaired — speech is slow, effortful and lacking function words like 'the' and 'and'. Broca's patient Tan could say only that one syllable, yet understood what was said to him. Wernicke's aphasia is the mirror image: speech is fluent and grammatically well-formed but meaningless, and comprehension is poor — patients produce nonsense words without realising it. Exam shortcut: Broca is at the front, near the motor cortex, and controls output; Wernicke is further back, near the auditory cortex, and handles input.",
+      reforge:{stem:"A patient speaks fluently but produces meaningless nonsense words. Which aphasia is this?",options:{A:"Broca's aphasia, impairing speech production",B:"Wernicke's aphasia, impairing language comprehension",C:"Motor aphasia, impairing voluntary movement",D:"Visual agnosia, impairing object recognition"},correct:"B"}
+    },
+    {
+      id:"PSYBIO-10",
+      stem:"What is hemispheric lateralisation?",
+      options:{
+        A:"The tendency for certain functions to be dominant in one hemisphere",
+        B:"The severing of the corpus callosum in order to control severe epileptic seizures",
+        C:"The ability of undamaged brain areas to take over lost functions",
+        D:"The process by which neurons form new synaptic connections"
+      },
+      correct:"A",tag:"MC-BIO-LATERAL",
+      scaffold:"Lateralisation means the two hemispheres are not functionally identical. The left hemisphere is dominant for language in most people (Broca's and Wernicke's areas both sit there); the right is associated with spatial and visual-motor tasks and with recognising emotion in faces. The wiring is contralateral: the left hemisphere receives information from and controls the right side of the body and the right visual field, and vice versa. That contralateral arrangement is what makes split-brain research possible — and it is what generates the counter-intuitive results, so it is worth being certain of before tackling Sperry.",
+      reforge:{stem:"Information from the left visual field is processed by which hemisphere?",options:{A:"The left hemisphere",B:"The right hemisphere",C:"Both hemispheres equally",D:"Neither, as it goes to the spinal cord"},correct:"B"}
+    },
+    {
+      id:"PSYBIO-11",
+      stem:"In Sperry's split-brain research, why could patients not name an object shown to the left visual field?",
+      options:{
+        A:"The object was presented too briefly for the eye to register it properly",
+        B:"The image reached the right hemisphere, which lacks language centres",
+        C:"The image reached the left hemisphere, which controls the left hand only",
+        D:"The corpus callosum transferred it to the wrong hemisphere entirely"
+      },
+      correct:"B",tag:"MC-BIO-SPLIT",
+      scaffold:"Follow the route. An object in the left visual field projects to the right hemisphere. In an intact brain the corpus callosum would carry that information across to the language centres on the left, and the person could name it. In split-brain patients the corpus callosum has been severed, so the information is stranded in a hemisphere with no capacity for speech — the patient says they saw nothing. Yet they can select the object by touch with the left hand, because the left hand is also controlled by the right hemisphere. That dissociation is Sperry's key evidence: the hemispheres can process information independently, and language is lateralised to the left.",
+      reforge:{stem:"A split-brain patient sees an object in the left visual field. What can they do?",options:{A:"Name the object aloud without any difficulty",B:"Select the object by touch using the right hand",C:"Select the object by touch using the left hand",D:"Neither name nor select the object at all"},correct:"C"}
+    },
+    {
+      id:"PSYBIO-12",
+      stem:"What is a methodological criticism of Sperry's split-brain research?",
+      options:{
+        A:"The sample was very small and all patients had a history of epilepsy",
+        B:"No control group of any kind was used in any of the studies",
+        C:"The procedure lacked standardisation and could not be replicated",D:"The findings directly contradicted every other published study of hemispheric function"
+      },
+      correct:"A",tag:"MC-BIO-SPLIT",
+      scaffold:"Sperry's procedure itself was rigorous — highly standardised, with images presented for a tenth of a second so the eye could not move and share information across the visual fields. The weakness is the sample: only eleven patients, all of whom had severe epilepsy and had undergone commissurotomy, and some of whom had additional brain damage from years of seizures. Generalising to neurotypical brains is therefore risky, and the epilepsy itself is a confounding variable. A second point worth making is that the strict left-brain-right-brain division has been overstated in popular accounts: brain plasticity and everyday functional imaging show the hemispheres normally work together.",
+      reforge:{stem:"Why is generalising from split-brain patients to the wider population difficult?",options:{A:"The patients were all left-handed rather than right-handed",B:"All patients had severe epilepsy and unusual brain histories",C:"The patients were tested only once each, many years apart",D:"The corpus callosum regrows within a few months of surgery"},correct:"B"}
+    },
+    {
+      id:"PSYBIO-13",
+      stem:"What is meant by brain plasticity?",
+      options:{
+        A:"The brain's ability to change its structure in response to experience",
+        B:"The gradual loss of unused synaptic connections during the period of adolescence",
+        C:"The fixed nature of the brain's organisation after early childhood",
+        D:"The transfer of information between the two cerebral hemispheres"
+      },
+      correct:"A",tag:"MC-BIO-PLAST",
+      scaffold:"Plasticity is the brain's capacity to reorganise itself by forming new synaptic connections in response to learning and experience. Two studies do most of the work here. Maguire found London taxi drivers had a significantly larger posterior hippocampus than controls, with volume correlating with years of service — the demands of navigating the city physically reshaped the region. Draganski scanned medical students before and after final exams and found changes in the parietal cortex and hippocampus. Note that plasticity is lifelong, not confined to childhood, though synaptic pruning during adolescence does remove rarely-used connections to improve efficiency.",
+      reforge:{stem:"What did Maguire's taxi driver research demonstrate?",options:{A:"The hippocampus shrinks with prolonged navigational experience",B:"Brain structure is fixed and unchanging after early childhood",C:"Navigational experience was linked to a larger posterior hippocampus",D:"Taxi drivers showed damage to Broca's and Wernicke's areas"},correct:"C"}
+    },
+    {
+      id:"PSYBIO-14",
+      stem:"Which process best describes functional recovery after brain trauma?",
+      options:{
+        A:"Damaged neurons regrow completely within a few short weeks of the original injury",
+        B:"Intact areas take over functions previously performed by damaged areas",
+        C:"The corpus callosum is severed to prevent the damage from spreading",
+        D:"Hormone release from the pituitary gland repairs the affected tissue"
+      },
+      correct:"B",tag:"MC-BIO-PLAST",
+      scaffold:"Functional recovery is plasticity following injury. Secondary neural pathways that are normally dormant are unmasked and activated to compensate, and structural changes support this: axonal sprouting, where surviving neurons grow new nerve endings to connect with undamaged cells; reformation of blood vessels; and recruitment of homologous areas on the opposite side of the brain — for example, the right-hemisphere equivalent of Broca's area taking over some speech function. Recovery is typically fast at first then slows, which is the rationale for intensive early neurorehabilitation. Damaged neurons themselves do not regrow, which is why option A is wrong.",
+      reforge:{stem:"What is axonal sprouting?",options:{A:"The complete regeneration of destroyed neurons in the cortex",B:"The pruning of unused synapses during adolescence",C:"The release of neurotransmitter across the synaptic cleft",D:"Undamaged neurons growing new nerve endings to reconnect"},correct:"D"}
+    },
+    {
+      id:"PSYBIO-15",
+      stem:"Which factor is likely to reduce the extent of functional recovery after brain injury?",
+      options:{
+        A:"Beginning intensive rehabilitation therapy soon after the injury occurs",
+        B:"Being younger at the time the brain injury was sustained",
+        C:"Having a high level of education before the injury took place",
+        D:"Older age at the time of injury, as plasticity declines with age"
+      },
+      correct:"D",tag:"MC-BIO-PLAST",
+      scaffold:"Recovery is not uniform, and AQA expects you to know what moderates it. Age: plasticity is greatest in childhood and declines through adulthood, so younger patients typically recover more function. Rehabilitation: recovery can slow or plateau without therapy, so intensive physiotherapy and speech therapy improve outcomes. Cognitive reserve: Schneider found that patients with more years of education were significantly more likely to achieve a disability-free recovery, suggesting prior cognitive activity buffers the effect of damage. Perseverance and motivation also matter. Note that three of these options describe things that help recovery — only age works the other way.",
+      reforge:{stem:"What did Schneider's research suggest about cognitive reserve?",options:{A:"More years of education increased the chance of disability-free recovery",B:"Education had no measurable effect on recovery outcomes",C:"Recovery was fastest in patients who received no rehabilitation",D:"Cognitive reserve only affects patients under the age of ten"},correct:"A"}
+    },
+    {
+      id:"PSYBIO-16",
+      stem:"What is the main advantage of fMRI over post-mortem examination?",
+      options:{
+        A:"It is considerably cheaper and quicker to carry out on a patient",
+        B:"It produces a direct measure of individual neuron firing rates",
+        C:"It can be carried out only after the patient has already died",
+        D:"It is non-invasive and shows brain activity in the living brain"
+      },
+      correct:"D",tag:"MC-BIO-SCAN",
+      scaffold:"Know each technique by what it measures and its trade-off. fMRI detects changes in blood oxygenation, so it shows which regions are active during a task: non-invasive, excellent spatial resolution (1-2mm), but poor temporal resolution because of a 5-second lag, and expensive. EEG records overall electrical activity via scalp electrodes: excellent temporal resolution (millisecond), useful for sleep and epilepsy, but poor spatial resolution. ERPs use statistical averaging of many EEG trials to isolate the response to one specific stimulus. Post-mortem examination allows deep-brain study impossible in the living, but causation is uncertain and consent is an ethical issue.",
+      reforge:{stem:"Which technique offers the best temporal resolution?",options:{A:"Functional magnetic resonance imaging",B:"Electroencephalogram recording",C:"Post-mortem examination of tissue",D:"Computed tomography scanning"},correct:"B"}
+    },
+    {
+      id:"PSYBIO-17",
+      stem:"What is a limitation of fMRI as a research technique?",
+      options:{
+        A:"It cannot be used with living human participants under any circumstances at all",
+        B:"Its poor temporal resolution means there is a delay of several seconds",
+        C:"It provides no information about the location of brain activity",
+        D:"It requires electrodes to be surgically implanted into the cortex"
+      },
+      correct:"B",tag:"MC-BIO-SCAN",
+      scaffold:"The fMRI trade-off is spatial precision bought at the cost of timing. The haemodynamic response lags neural activity by around five seconds, so fMRI cannot resolve the fast sequence of processes that make up a cognitive task — it tells you where, not precisely when. A second limitation is that it measures blood flow, which is an indirect proxy for neural activity rather than a direct measure of neuron firing. It is also expensive and requires the participant to remain completely still, which limits the tasks that can be studied. Balance these against its genuine strengths: non-invasive, no radiation, and spatial resolution good enough to localise function.",
+      reforge:{stem:"Why is fMRI described as an indirect measure of brain activity?",options:{A:"It records activity only from the surface of the scalp",B:"It requires the participant to report their own experience",C:"It measures blood oxygenation rather than neuron firing",D:"It can only be performed on post-mortem brain tissue"},correct:"C"}
+    },
+    {
+      id:"PSYBIO-18",
+      stem:"What are event-related potentials?",
+      options:{
+        A:"Hormones released by the adrenal gland in response to a sudden threat",
+        B:"Changes in blood flow measured while a participant is performing a cognitive task",
+        C:"Structural differences between the two hemispheres of the cortex",
+        D:"EEG responses to a specific stimulus, isolated by statistical averaging"
+      },
+      correct:"D",tag:"MC-BIO-SCAN",
+      scaffold:"A raw EEG trace contains all the brain's electrical activity at once, so the response to a single stimulus is buried in noise. ERPs solve this by presenting the same stimulus many times and averaging across trials: random background activity cancels out, leaving the consistent response to that stimulus. This gives ERPs the excellent temporal resolution of EEG while allowing much more specific cognitive conclusions — the P300 wave, for instance, is used to study attention and working memory. The limitation is that background noise can never be eliminated entirely, and standardisation across studies is difficult, so replication can be inconsistent.",
+      reforge:{stem:"Why are many trials averaged together to produce an ERP?",options:{A:"To cancel out random background activity and isolate the response",B:"To increase the spatial resolution of the recording",C:"To reduce the cost of running the scanning equipment",D:"To allow the participant time to rest between conditions"},correct:"A"}
+    },
+    {
+      id:"PSYBIO-19",
+      stem:"What is a circadian rhythm?",
+      options:{
+        A:"A biological cycle lasting roughly twenty-four hours",
+        B:"A cycle occurring more than once within a single day",
+        C:"A cycle lasting longer than a single twenty-four hour period",
+        D:"An external cue that resets the body's internal biological clock"
+      },
+      correct:"A",tag:"MC-BIO-RHYTHM",
+      scaffold:"Three rhythm types, distinguished by duration. Circadian: about 24 hours — the sleep-wake cycle and core body temperature, which dips to its lowest around 4am. Infradian: longer than 24 hours — the menstrual cycle at roughly 28 days, and seasonal affective disorder as a yearly rhythm. Ultradian: shorter than 24 hours, occurring more than once a day — the stages of sleep, which cycle roughly every 90 minutes through NREM stages 1-4 and REM. Option D defines an exogenous zeitgeber, an external cue such as light that entrains the rhythm, which is a separate concept examined alongside endogenous pacemakers.",
+      reforge:{stem:"The stages of sleep cycling roughly every 90 minutes is an example of which rhythm?",options:{A:"A circadian rhythm",B:"An infradian rhythm",C:"An ultradian rhythm",D:"An exogenous zeitgeber"},correct:"C"}
+    },
+    {
+      id:"PSYBIO-20",
+      stem:"What did Siffre's cave studies demonstrate about the sleep-wake cycle?",
+      options:{
+        A:"The sleep-wake cycle disappeared entirely once all external light had been removed",
+        B:"It persisted without external cues but settled slightly beyond 24 hours",
+        C:"It shortened dramatically to around eighteen hours in total darkness",
+        D:"It was controlled purely by external light with no internal component"
+      },
+      correct:"B",tag:"MC-BIO-RHYTHM",
+      scaffold:"Siffre spent extended periods underground without clocks or natural light. His sleep-wake cycle did not collapse — it persisted, settling at around 25 hours, so he lost track of days and believed less time had passed than actually had. The conclusion is the important part and it is genuinely two-sided: the rhythm is driven by an endogenous pacemaker, since it continues without cues, but it is not precisely 24 hours, so exogenous zeitgebers such as daylight are needed to entrain it to the environment. Evaluate with caution: this is a case study of one person, and Siffre also had artificial light available, which may itself have affected the rhythm.",
+      reforge:{stem:"What does Siffre's result suggest about exogenous zeitgebers?",options:{A:"They are the sole cause of the sleep-wake cycle",B:"They have no measurable effect on biological rhythms",C:"They are needed to entrain an endogenous rhythm to 24 hours",D:"They only affect infradian rather than circadian rhythms"},correct:"C"}
+    },
+    {
+      id:"PSYBIO-21",
+      stem:"Which structure acts as the main endogenous pacemaker for the sleep-wake cycle?",
+      options:{
+        A:"The pineal gland, located deep within the temporal lobe",
+        B:"The adrenal medulla, sitting on top of each of the kidneys",
+        C:"The suprachiasmatic nucleus, in the hypothalamus",
+        D:"The corpus callosum, connecting the two cerebral hemispheres"
+      },
+      correct:"C",tag:"MC-BIO-RHYTHM",
+      scaffold:"The suprachiasmatic nucleus is a tiny bundle of cells in the hypothalamus, positioned just above the optic chiasm so that it receives light information directly from the eye even when the eyes are closed. It is the master clock: it generates the circadian rhythm and resets it against the light-dark cycle. The SCN then signals the pineal gland, which secretes melatonin during darkness to induce sleepiness — so the pineal gland is downstream of the SCN, not the pacemaker itself. Supporting evidence comes from DeCoursey's chipmunk study, where SCN-destroyed animals lost their rhythm and suffered heavy predation, and from Ralph's hamster transplant work.",
+      reforge:{stem:"Which hormone is secreted by the pineal gland to induce sleepiness?",options:{A:"Melatonin",B:"Cortisol",C:"Adrenaline",D:"Oxytocin"},correct:"A"}
+    },
+    {
+      id:"PSYBIO-22",
+      stem:"What is an exogenous zeitgeber?",
+      options:{
+        A:"An internal body clock that generates a rhythm without any external input at all",
+        B:"A rhythm that repeats more than once within a twenty-four hour period",
+        C:"A hormone released by the pineal gland during hours of darkness",
+        D:"An external environmental cue that helps to entrain a biological rhythm"
+      },
+      correct:"D",tag:"MC-BIO-RHYTHM",
+      scaffold:"Zeitgeber is German for 'time giver'. The dominant one is light, which resets the SCN directly and also indirectly through light receptors on the skin — Campbell and Murphy famously shifted participants' sleep-wake cycles by shining light on the back of the knee, though that study has proved hard to replicate. Social cues matter too: mealtimes and imposed schedules help infants settle into an adult sleep pattern by around 16 weeks, and adjusting to local schedules is standard advice for beating jet lag. The examinable tension is that endogenous pacemakers and exogenous zeitgebers cannot really be studied in isolation, since removing all external cues is close to impossible.",
+      reforge:{stem:"Why is it difficult to study endogenous pacemakers in isolation?",options:{A:"The suprachiasmatic nucleus is too small to be located",B:"Biological rhythms disappear entirely inside a laboratory",C:"Removing every external cue from the environment is nearly impossible",D:"Melatonin cannot be measured in living human participants"},correct:"C"}
+    },
+    {
+      id:"PSYBIO-23",
+      stem:"Which finding supports the view that the menstrual cycle can be influenced externally?",
+      options:{
+        A:"Stein and Schwartz found cycle length was entirely fixed by genetics",
+        B:"Siffre's cycle lengthened to twenty-five hours while living underground",
+        C:"Reinberg found a woman's cycle shortened while in a dimly lit cave",
+        D:"DeCoursey found chipmunks lost their rhythm after SCN destruction"
+      },
+      correct:"C",tag:"MC-BIO-RHYTHM",
+      scaffold:"The menstrual cycle is the standard infradian example, and the debate is how far it is endogenous. Reinberg documented a woman whose cycle shortened from 28 to 25.7 days while spending three months in a cave with very dim lighting, suggesting light influences it. Stern and McClintock's pheromone study is the better-known evidence: samples of underarm sweat from donor women, applied to recipients' upper lips, shifted 68% of recipients' cycles toward the donor's. The evolutionary reading is that synchronisation allowed collective childcare, though the counter-argument is that synchrony would create competition for the highest-quality males. Note options B and D concern circadian rhythms, not infradian ones.",
+      reforge:{stem:"What did Stern and McClintock's pheromone study find?",options:{A:"Pheromones had no detectable effect on the menstrual cycle",B:"Cycle synchronisation occurred only among genetic relatives",C:"Donor sweat applied to recipients shifted most recipients' cycles",D:"The menstrual cycle is an ultradian rather than infradian rhythm"},correct:"C"}
+    },
+    {
+      id:"PSYBIO-24",
+      stem:"Why is shift work associated with poorer health outcomes?",
+      options:{
+        A:"Shift workers are required by law to take considerably less annual leave each year",
+        B:"Desynchronisation of circadian rhythms disrupts sleep and hormone release",
+        C:"Working at night permanently destroys the suprachiasmatic nucleus",
+        D:"Night working eliminates the body's production of adrenaline entirely"
+      },
+      correct:"B",tag:"MC-BIO-RHYTHM",
+      scaffold:"Night workers experience desynchronisation: they are awake when melatonin is high and the core body temperature is at its 4am trough, and they attempt to sleep during daylight when the SCN is signalling wakefulness. Consequences documented in the research include a circadian trough of reduced alertness around 6am — associated with workplace accidents — chronic sleep deprivation, and a threefold increase in heart disease risk in Knutsson's study, plausibly through disrupted stress-hormone rhythms. This has real-world value: it justifies rotating shifts forward rather than backward and using bright light to shift the clock deliberately. Be careful with causation, since shift work correlates with other lifestyle factors.",
+      reforge:{stem:"What is a limitation of research linking shift work to heart disease?",options:{A:"No study has ever measured heart disease in shift workers",B:"Shift work has been shown to have no effect on sleep quality",C:"Correlational data cannot rule out other lifestyle confounds",D:"Circadian rhythms are unaffected by working during the night"},correct:"C"}
+    }
+  ]
+};
+
+SUBJECTS["psych"].banks = ["PSY-SI","PSY-MEM","PSY-ATT","PSY-PATH","PSY-APP","PSY-BIO"];
