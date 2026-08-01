@@ -16858,6 +16858,37 @@ for (const [bankId, pointId] of Object.entries(gcseCanonicalBankPoints)) {
   for (const question of BANKS[bankId]?.questions || []) question.specPointId = pointId;
 }
 
+// Phase 5 targeted expansion: the earlier coverage audit identified two
+// underrepresented delivered A-level areas. These questions add independent
+// stems rather than counting Reforge variants as new coverage.
+appendGenerated("HSC-2", [
+  ["The pancreas contributes to digestion by producing:","enzymes released into the small intestine","red blood cells","bile stored in the gall bladder","urine filtered by the kidneys", "Pancreatic enzymes help digest carbohydrates, proteins and lipids in the small intestine."],
+  ["The small intestine is adapted for absorption because it has:","villi providing a large surface area and a good blood supply","thick dry walls with no blood vessels","only one straight muscular layer","no contact with digested food", "Villi and microvilli increase surface area while capillaries and lacteals transport absorbed substances."],
+  ["The musculoskeletal system supports independence by enabling:","movement, posture and physical activity","gas exchange in the alveoli","hormone production only","filtration of blood", "Bones, joints and muscles work together to support movement, stability and daily activities."],
+  ["Osteoporosis is associated with:","reduced bone density and increased fracture risk","excessive red-cell production","blocked airways only","high blood glucose after meals", "Lower bone density can make fractures more likely, particularly in older adults."],
+  ["A common feature of depression is:","persistent low mood or loss of interest affecting daily life","a temporary preference for one meal","a broken bone","an increased height during adolescence", "Depression can affect mood, motivation, sleep, concentration and everyday functioning."],
+  ["Cognitive behavioural therapy aims to help a person:","identify and change unhelpful thought and behaviour patterns","avoid discussing their experiences","replace all medication automatically","ignore relationships and routine", "CBT links thoughts, feelings and behaviours and develops practical coping strategies."],
+  ["A care professional supporting someone with dementia should usually:","use familiar routines and communicate clearly and patiently","make every decision without involving them","assume all memory is lost","change staff and routines without warning", "Consistency, patience and appropriate involvement can support orientation and autonomy."],
+  ["A public-health approach to reducing type 2 diabetes might include:","support for healthier diet, activity and early risk assessment","withholding information from the public","treating only severe cases in hospital","assuming genetics is the only cause", "Prevention combines population measures with individual support and monitoring of risk factors."]
+], "HSC-PHASE5");
+for (const question of BANKS["HSC-2"].questions.filter(question => question.id.startsWith("HSC-PHASE5-"))) {
+  question.specPointId = question.id.endsWith("01") || question.id.endsWith("02") || question.id.endsWith("03") || question.id.endsWith("04")
+    ? "ocr-a-hsc-f091" : "ocr-a-hsc-f093";
+}
+
+appendGenerated("RS-1", [
+  ["The Three Marks of Existence include:","impermanence, dukkha and anatta","creation, incarnation and resurrection","covenant, prophecy and law","heaven, hell and judgement", "The marks describe conditioned existence as impermanent, unsatisfactory and without a permanent self."],
+  ["The Middle Way avoids:","both extreme self-indulgence and extreme self-mortification","all ethical action and meditation","the study of suffering","compassion for other beings", "The Buddha's path rejects both sensual excess and harmful asceticism."],
+  ["Metta practice is intended to develop:","loving-kindness towards oneself and other beings","fear of people outside the community","attachment to possessions","a permanent personal identity", "Metta is a meditation and ethical attitude of friendliness and goodwill."],
+  ["The Buddhist Five Precepts are best understood as:","training commitments guiding everyday ethical conduct","laws enforced by a creator deity","rules applying only to governments","a substitute for the Noble Eightfold Path", "The precepts guide lay conduct, including avoiding harm, stealing and false speech."],
+  ["The Sangha can refer to:","the Buddhist community, especially the monastic community","a Hindu creator deity","a Buddhist theory denying karma","a place where only kings worship", "Sangha is commonly used for the community of Buddhist practitioners and, in some contexts, monastics."],
+  ["The Jataka tales are traditionally associated with:","stories of the Buddha's previous lives","the life of a Christian apostle","the history of modern Japan","a scientific account of evolution", "Jataka stories illustrate virtues through accounts of the Buddha's former lives."],
+  ["In Pure Land Buddhism, devotion is particularly focused on:","Amitabha Buddha and rebirth in the Pure Land","rejecting all forms of compassion","worshipping a creator God","ending all community practice", "Pure Land traditions emphasise Amitabha and practices such as reciting his name."],
+  ["A Buddhist understanding of compassion is closely linked to:","recognising suffering and responding to it with skilful action","seeking status over other people","avoiding all contact with society","proving that the self is permanent", "Compassion is an active response to suffering and is developed alongside wisdom."]
+], "RS-PHASE5");
+for (const question of BANKS["RS-1"].questions.filter(question => question.id.startsWith("RS-PHASE5-"))) question.specPointId = "eduqas-a-rs-c1";
+rebalanceMCQSubject(["HSC-2", "RS-1"]);
+
 // Eduqas A-level Computer Science Component 2.5: legal, moral, cultural and
 // ethical issues. These application questions sit in the existing Component 2
 // bank and are tagged to the exact registry point rather than the broad bank.
