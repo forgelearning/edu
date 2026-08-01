@@ -11004,7 +11004,7 @@ addGcseMathsBank("GCSE-MATH-P1", "Paper 1 — Non-Calculator", "1MA1 Paper 1", "
 SUBJECTS["gcse-maths"].banks.push("GCSE-MATH-P1");
 
 addGcseMathsBank("GCSE-MATH-P2", "Paper 2 — Calculator", "1MA1 Paper 2", "#1d4ed8", [
-  {id:"MATH-P2-01",stem:"Calculate 3.7 × 10⁴ + 2.6 × 10³.",options:{A:"6.3 × 10³",B:"6.3 × 10⁴",C:"3.96 × 10⁴",D:"6.3 × 10⁷"},correct:"C",scaffold:"Rewrite 2.6 × 10³ as 0.26 × 10⁴, then add: 3.7 + 0.26 = 3.96, so the answer is 3.96 × 10⁴.",tag:"MATH-CALC-STANDARD",reforge:{stem:"What is 5.4 × 10⁶ ÷ 9 × 10²?",options:{A:"6 × 10²",B:"6 × 10³",C:"6 × 10⁴",D:"6 × 10⁸"},correct:"B"}},
+  {id:"MATH-P2-01",stem:"Calculate 3.7 × 10⁴ + 2.6 × 10³.",options:{A:"6.30 × 10³",B:"6.30 × 10⁴",C:"3.96 × 10⁴",D:"6.30 × 10⁷"},correct:"C",scaffold:"Rewrite 2.6 × 10³ as 0.26 × 10⁴, then add: 3.7 + 0.26 = 3.96, so the answer is 3.96 × 10⁴.",tag:"MATH-CALC-STANDARD",reforge:{stem:"What is 5.4 × 10⁶ ÷ 9 × 10²?",options:{A:"6 × 10²",B:"6 × 10³",C:"6 × 10⁴",D:"6 × 10⁸"},correct:"B"}},
   {id:"MATH-P2-02",stem:"A right-angled triangle has opposite 7 cm and hypotenuse 12 cm. Find the angle θ.",options:{A:"30.1°",B:"35.7°",C:"54.3°",D:"59.9°"},correct:"B",scaffold:"Use sin θ = opposite ÷ hypotenuse = 7/12. Therefore θ = sin⁻¹(7/12) ≈ 35.7°.",tag:"MATH-TRIG",reforge:{stem:"A right triangle has adjacent 9 cm and hypotenuse 15 cm. Find the acute angle.",options:{A:"36.9°",B:"40.0°",C:"53.1°",D:"59.0°"},correct:"C"}},
   {id:"MATH-P2-03",stem:"A car worth £18,000 depreciates by 12% each year. Find its value after two years.",options:{A:"£13,939.20",B:"£14,080.00",C:"£15,840.00",D:"£16,920.00"},correct:"A",scaffold:"Apply the multiplier 0.88 twice: 18,000 × 0.88² = £13,939.20.",tag:"MATH-COMPOUND",reforge:{stem:"An investment of £2400 grows by 5% per year. Find its value after three years.",options:{A:"£2,778.60",B:"£2,772.00",C:"£2,520.00",D:"£2,760.00"},correct:"A"}},
   {id:"MATH-P2-04",stem:"Solve x² − 5x − 4 = 0, giving answers to 2 decimal places.",options:{A:"x = 5.70 or −0.70",B:"x = 5.00 or −4.00",C:"x = 0.70 or −5.70",D:"x = 4.56 or −0.88"},correct:"A",scaffold:"Using the quadratic formula gives x = (5 ± √41)/2, so x ≈ 5.70 or −0.70.",tag:"MATH-QUADRATIC",reforge:{stem:"Solve 2x² + 3x − 7 = 0 to 2 decimal places.",options:{A:"x = 2.77 or −1.27",B:"x = 1.27 or −2.77",C:"x = 1.77 or −2.27",D:"x = 0.77 or −3.27"},correct:"B"}},
@@ -11013,7 +11013,7 @@ addGcseMathsBank("GCSE-MATH-P2", "Paper 2 — Calculator", "1MA1 Paper 2", "#1d4
   {id:"MATH-P2-07",stem:"A bag contains 5 red and 3 blue counters. Two are taken without replacement. Find P(two red).",options:{A:"5/8",B:"25/64",C:"5/14",D:"20/56"},correct:"C",scaffold:"The probability is 5/8 × 4/7 = 20/56 = 5/14.",tag:"MATH-PROBABILITY2",reforge:{stem:"A box has 4 green and 6 yellow counters. Two are taken without replacement. Find P(two yellow).",options:{A:"3/10",B:"1/3",C:"1/2",D:"2/5"},correct:"B"}},
   {id:"MATH-P2-08",stem:"The first quartile is 18 and the third quartile is 41. Find the interquartile range.",options:{A:"19",B:"23",C:"29",D:"59"},correct:"B",scaffold:"Interquartile range = upper quartile − lower quartile = 41 − 18 = 23.",tag:"MATH-IQR",reforge:{stem:"What does the interquartile range measure?",options:{A:"The total of all values",B:"The spread of the middle half",C:"The most common value",D:"The difference between mean and mode"},correct:"B"}},
   {id:"MATH-P2-09",stem:"A frequency table has values 2, 4 and 7 with frequencies 3, 5 and 2. Find the mean.",options:{A:"3.8",B:"4.1",C:"4.0",D:"4.7"},correct:"C",scaffold:"Total frequency is 10 and the total of fx is 6 + 20 + 14 = 40, so the mean is 4.0.",tag:"MATH-FREQUENCY",reforge:{stem:"Values 1, 3 and 8 have frequencies 4, 2 and 4. Find the mean.",options:{A:"3.6",B:"4.0",C:"4.2",D:"4.8"},correct:"C"}},
-  {id:"MATH-P2-10",stem:"A point is enlarged by scale factor 3 about the origin. What happens to its distance from the origin?",options:{A:"It is divided by 3",B:"It is unchanged",C:"It is multiplied by 3",D:"It is increased by 9"},correct:"C",scaffold:"An enlargement with centre at the origin multiplies both coordinates and therefore the distance from the origin by the scale factor 3.",tag:"MATH-TRANSFORM",reforge:{stem:"What does a scale factor −1 do about the origin?",options:{A:"A reflection in the origin",B:"A translation right",C:"An enlargement by 1",D:"A reflection in the x-axis only"},correct:"A"}},
+  {id:"MATH-P2-10",stem:"A point is enlarged by scale factor 3 about the origin. What happens to its distance from the origin?",options:{A:"It is divided by 3.0",B:"It is unchanged",C:"It is multiplied by 3",D:"It is increased by 9.0"},correct:"C",scaffold:"An enlargement with centre at the origin multiplies both coordinates and therefore the distance from the origin by the scale factor 3.",tag:"MATH-TRANSFORM",reforge:{stem:"What does a scale factor −1 do about the origin?",options:{A:"A reflection in the origin",B:"A translation right",C:"An enlargement by 1",D:"A reflection in the x-axis only"},correct:"A"}},
   {id:"MATH-P2-11",stem:"A length is 8.0 cm correct to the nearest centimetre. What is its upper bound?",options:{A:"7.5 cm",B:"8.0 cm",C:"8.5 cm",D:"9.0 cm"},correct:"C",scaffold:"Rounding to the nearest centimetre means the true length lies from 7.5 cm inclusive to less than 8.5 cm, so the upper bound is 8.5 cm.",tag:"MATH-BOUNDS",reforge:{stem:"A mass is 3.2 kg correct to the nearest 0.1 kg. What is the lower bound?",options:{A:"3.15 kg",B:"3.20 kg",C:"3.25 kg",D:"3.10 kg"},correct:"A"}},
   {id:"MATH-P2-12",stem:"A regular polygon has exterior angle 24°. How many sides does it have?",options:{A:"12",B:"15",C:"18",D:"24"},correct:"B",scaffold:"Exterior angles total 360°, so the number of sides is 360 ÷ 24 = 15.",tag:"MATH-POLYGON",reforge:{stem:"Each interior angle of a regular polygon is 150°. How many sides does it have?",options:{A:"8",B:"10",C:"12",D:"15"},correct:"B"}}
 ]);
@@ -12288,5 +12288,216 @@ BANKS["PSY-ATT"].questions.push(
       correct:"D",tag:"MC-ATT-08",
       scaffold:"Bowlby proposed a critical period of about two and a half years, implying attachment simply could not form afterwards. The Romanian orphan evidence contradicts a hard cut-off: children adopted well beyond that window still formed attachments and recovered substantially, just less completely and less easily than earlier-adopted children. The modern term is therefore a sensitive period — a window in which attachment forms most readily but outside which it remains possible. This distinction has genuine practical weight, since a strict critical period implies late-adopted children are beyond help, whereas a sensitive period justifies continued intervention and shaped adoption policy toward placing infants early.",
       reforge:{stem:"What practical implication follows from a sensitive rather than critical period?",options:{A:"Late intervention is pointless and should be abandoned",B:"Later intervention remains worthwhile even after the window",C:"Adoption should be delayed until after age two",D:"Institutional care produces no lasting effects"},correct:"B"}
+    }
+);
+
+// ===== A LEVEL PSYCHOLOGY PAPER 1: PSYCHOPATHOLOGY — EXTENSION SET =====
+BANKS["PSY-PATH"].questions.push(
+    {
+      id:"PATH-09",
+      stem:"Which is a limitation of the 'failure to function adequately' definition of abnormality?",
+      options:{
+        A:"It relies entirely upon a normal distribution curve in order to identify abnormality",
+        B:"Some people with serious disorders continue to function apparently normally",
+        C:"It cannot be applied to any behaviour occurring outside a clinical setting",
+        D:"It takes no account of the level of distress experienced by the individual"
+      },
+      correct:"B",tag:"MC-PATH-DEF",
+      scaffold:"Rosenhan and Seligman proposed signs of failure to function: not conforming to interpersonal rules, severe personal distress, irrational or dangerous behaviour. The definition's strength is that it takes the individual's own experience seriously and matches how people actually seek help. But the limitation is coverage: someone with severe depression or an eating disorder may hold down a job and appear to function, so the definition misses them; conversely, unconventional lifestyles may be judged as failure to function when nothing is wrong. Note that option D is false — distress is central to this definition — and option A describes statistical infrequency instead.",
+      reforge:{stem:"Which definition of abnormality is most closely tied to cultural norms?",options:{A:"Statistical infrequency",B:"Deviation from social norms",C:"Failure to function adequately",D:"Deviation from ideal mental health"},correct:"B"}
+    },
+    {
+      id:"PATH-10",
+      stem:"Why is Jahoda's 'deviation from ideal mental health' criterion difficult to apply?",
+      options:{
+        A:"Because its criteria are so demanding that almost everyone would be abnormal",
+        B:"Because it defines abnormality using only a statistical cut-off point",
+        C:"Because it ignores the individual's own subjective personal experience",
+        D:"Because it applies solely to physical rather than to mental health conditions overall"
+      },
+      correct:"A",tag:"MC-PATH-DEF",
+      scaffold:"Jahoda listed criteria for ideal mental health: self-attitudes and a strong sense of identity, self-actualisation, resistance to stress, autonomy, accurate perception of reality, and mastery of the environment. The problem is the bar — very few people meet all of them at any one time, so on this definition almost everyone is abnormal. The criteria are also hard to measure objectively and are culturally loaded: autonomy and self-actualisation are individualist Western values, so applying them to a collectivist culture is an imposed etic. Its genuine strength is that it is comprehensive and positive, defining what good mental health looks like rather than only cataloguing deficits.",
+      reforge:{stem:"Which of Jahoda's criteria is most obviously culturally specific?",options:{A:"Accurate perception of reality",B:"Resistance to stress",C:"Autonomy and independence",D:"A strong sense of personal identity"},correct:"C"}
+    },
+    {
+      id:"PATH-11",
+      stem:"According to the two-process model, what maintains a phobia once it has been acquired?",
+      options:{
+        A:"Classical conditioning, through repeated pairing with the original stimulus",
+        B:"Social learning, through observing another person behaving fearfully",
+        C:"Negative reinforcement, as avoidance removes the unpleasant anxiety",
+        D:"Positive punishment, as encountering the object produces a fear response"
+      },
+      correct:"C",tag:"MC-PATH-PHOB",
+      scaffold:"Mowrer's two-process model splits acquisition from maintenance. Acquisition is classical: a neutral stimulus is paired with something frightening and becomes a conditioned stimulus, as in Watson and Rayner's Little Albert, conditioned to fear a white rat paired with a loud noise, with the fear generalising to other white furry objects. Maintenance is operant, specifically negative reinforcement: avoiding the phobic object removes the anxiety, which is rewarding, so the avoidance behaviour is strengthened and the person never learns the object is safe. This explains why phobias persist for decades without any further frightening experience — and it explains exactly why exposure therapies work.",
+      reforge:{stem:"Why does avoidance prevent a phobia from extinguishing naturally?",options:{A:"The person never learns the feared object is harmless",B:"Avoidance strengthens the original classical conditioning",C:"The conditioned stimulus becomes a neutral stimulus",D:"Avoidance increases the intensity of the fear response"},correct:"A"}
+    },
+    {
+      id:"PATH-12",
+      stem:"What is the role of the anxiety hierarchy in systematic desensitisation?",
+      options:{
+        A:"It exposes the client to their most feared situation immediately and at full intensity",
+        B:"It ranks feared situations so the client can work through them gradually",
+        C:"It records the client's irrational beliefs so they can be disputed logically",
+        D:"It measures the client's serotonin levels before treatment begins"
+      },
+      correct:"B",tag:"MC-PATH-PHOB",
+      scaffold:"Systematic desensitisation has three elements: the anxiety hierarchy, ranking feared situations from least to most frightening; relaxation training, since the body cannot be relaxed and anxious simultaneously — this is reciprocal inhibition; and gradual exposure, working up the hierarchy while staying relaxed, only moving on once each step is comfortable. The mechanism is counter-conditioning: a new relaxation response replaces the fear response. Contrast flooding, which uses immediate full-intensity exposure until the fear response exhausts itself. Flooding is faster and cheaper but far more traumatic, so it has higher dropout rates and requires informed consent about what it involves.",
+      reforge:{stem:"What is reciprocal inhibition?",options:{A:"Two phobias inhibiting each other simultaneously",B:"Relaxation and anxiety cannot be experienced at the same time",C:"The therapist inhibiting the client's avoidance behaviour",D:"A drug inhibiting the reuptake of serotonin"},correct:"B"}
+    },
+    {
+      id:"PATH-13",
+      stem:"Which is a strength of systematic desensitisation over flooding?",
+      options:{
+        A:"It produces results considerably more quickly in a single session",
+        B:"It requires no relaxation training at all on the part of the treating therapist",
+        C:"It is suitable for people who cannot tolerate high levels of anxiety",
+        D:"It targets the irrational beliefs underlying the phobia directly"
+      },
+      correct:"C",tag:"MC-PATH-PHOB",
+      scaffold:"Systematic desensitisation is gradual and client-controlled, so it is far more tolerable — which matters for children and for people with learning difficulties who may not cope with or consent meaningfully to flooding. Gilroy found the benefits lasted at 33 months, so it is not merely a short-term fix. Flooding's advantages are speed and cost: often a single long session rather than many. Both are limited to phobias with a clear conditioned stimulus and neither addresses cognitive elements, which is why some phobias respond better to CBT. Note option D describes CBT, and option A is the strength of flooding rather than of systematic desensitisation.",
+      reforge:{stem:"What is the main advantage of flooding as a treatment?",options:{A:"It is gentler and more tolerable for the client",B:"It works quickly, often in a single session",C:"It addresses the client's irrational thoughts",D:"It has a much lower dropout rate than alternatives"},correct:"B"}
+    },
+    {
+      id:"PATH-14",
+      stem:"In Ellis's ABC model, what does the 'B' represent?",
+      options:{
+        A:"The behaviour that the client shows in response to the situation",
+        B:"The biological vulnerability that the client has inherited from parents",
+        C:"The belief the client holds about the event that has occurred",
+        D:"The benefit the client gains from maintaining their current symptoms"
+      },
+      correct:"C",tag:"MC-PATH-DEP",
+      scaffold:"Ellis's model runs Activating event, Belief, Consequence. The key claim is that the emotional consequence follows from the belief, not from the event itself — so failing an exam does not cause depression, but the irrational belief 'I must succeed at everything or I am worthless' does. Ellis called this musturbatory thinking. REBT extends the model to ABCDE by adding Dispute, where the therapist challenges the irrational belief empirically ('where is the evidence?') and logically, and Effect, the new emotional outcome. Pair this with Beck's negative triad — negative views of the self, the world and the future, maintained by faulty information processing and negative schemas.",
+      reforge:{stem:"What does the 'D' stand for in Ellis's extended ABCDE model?",options:{A:"Depression, the outcome being treated",B:"Disputing the client's irrational beliefs",C:"Diagnosis of the client's condition",D:"Drug therapy given alongside the treatment"},correct:"B"}
+    },
+    {
+      id:"PATH-15",
+      stem:"What is a behavioural activation component of CBT for depression?",
+      options:{
+        A:"Encouraging the client to re-engage with enjoyable and rewarding activities",
+        B:"Requiring the client to confront their single most feared situation immediately",
+        C:"Prescribing an SSRI alongside the weekly therapy sessions",
+        D:"Recording the client's dreams for later interpretation by the therapist"
+      },
+      correct:"A",tag:"MC-PATH-DEP",
+      scaffold:"Depression produces withdrawal from activity, which removes sources of reward and deepens the low mood — a vicious cycle. Behavioural activation breaks it by scheduling pleasant and achievable activities, so the client gathers evidence that contradicts their negative beliefs. It pairs with the cognitive side of CBT: identifying negative automatic thoughts, then testing them. Beck's 'client as scientist' approach has clients collect real evidence about their beliefs, and homework between sessions is central. Evaluation: CBT is at least as effective as drugs for mild to moderate depression with lower relapse rates, but it requires motivation, which severe depression can remove, and it may not suit clients who prefer not to discuss the past.",
+      reforge:{stem:"What does Beck's 'client as scientist' approach involve?",options:{A:"The client gathering evidence to test their own negative beliefs",B:"The therapist conducting experiments on the client",C:"The client studying psychology theory between sessions",D:"Measuring the client's neurotransmitter levels weekly"},correct:"A"}
+    },
+    {
+      id:"PATH-16",
+      stem:"What does the genetic explanation of OCD propose about the COMT and SERT genes?",
+      options:{
+        A:"That they are the sole cause of OCD in every diagnosed case",
+        B:"That they directly control the individual's compulsive hand-washing behaviour",
+        C:"That they have been shown to have no relationship with OCD whatsoever",
+        D:"That they are candidate genes creating a vulnerability to developing OCD"
+      },
+      correct:"D",tag:"MC-PATH-OCD",
+      scaffold:"The COMT gene regulates dopamine, with one variant more common in OCD patients producing higher dopamine levels; the SERT gene affects serotonin transport, and a variant causes lower serotonin. These are candidate genes — they create vulnerability rather than causing the disorder, which is why OCD is described as polygenic. Taylor's analysis identified up to 230 genes potentially involved, so no single gene explanation works. The concordance evidence supports a genetic component without proving determinism: Nestadt found 68% concordance for MZ twins against 31% for DZ. Because MZ concordance is well below 100%, a diathesis-stress model fits better — genes create the predisposition, environmental stressors trigger it.",
+      reforge:{stem:"What does it mean to say OCD is polygenic?",options:{A:"A single gene is responsible for the disorder",B:"Many genes each contribute a small amount of risk",C:"The disorder is entirely environmental in origin",D:"Genes only affect OCD in male patients"},correct:"B"}
+    },
+    {
+      id:"PATH-17",
+      stem:"Which brain region is implicated in the neural explanation of OCD?",
+      options:{
+        A:"The occipital lobe, which is responsible for the processing of vision",
+        B:"The cerebellum, which coordinates balance and fine motor movement",
+        C:"The orbitofrontal cortex, which is involved in the worry circuit",
+        D:"Broca's area, which is responsible for the production of fluent speech"
+      },
+      correct:"C",tag:"MC-PATH-OCD",
+      scaffold:"The neural explanation centres on an overactive worry circuit. The orbitofrontal cortex detects potential danger and sends a signal; normally the caudate nucleus suppresses minor worries, but if it is damaged the thalamus is alerted, which signals back to the OFC, creating a self-reinforcing loop experienced as an obsessive thought. Neurotransmitters are implicated too: low serotonin is associated with OCD, which is why SSRIs help, and abnormal dopamine with the compulsive behaviours. The main limitation is causation — brain differences seen on scans may be a consequence of having OCD rather than its cause, and the co-occurrence of depression makes the serotonin evidence hard to interpret.",
+      reforge:{stem:"Why is evidence from brain scans of OCD patients difficult to interpret?",options:{A:"Scans cannot detect activity in the frontal lobes",B:"The differences may result from OCD rather than cause it",C:"No brain differences have ever been observed",D:"Only patients without OCD can be scanned"},correct:"B"}
+    },
+    {
+      id:"PATH-18",
+      stem:"How do SSRIs work in treating OCD and depression?",
+      options:{
+        A:"By blocking the reuptake of serotonin, leaving more available in the synapse",
+        B:"By increasing the rate at which serotonin is broken down shortly after release",
+        C:"By preventing serotonin from being released into the synaptic cleft",
+        D:"By replacing the dopamine that is missing from the worry circuit"
+      },
+      correct:"A",tag:"MC-PATH-OCD",
+      scaffold:"Selective serotonin reuptake inhibitors block the reuptake mechanism at the presynaptic neuron, so serotonin remains in the synapse longer and continues to stimulate the postsynaptic neuron. Typical treatment is fluoxetine at around 20mg daily, taking three to four months for full effect. Evaluation points to deploy: Soomro's review of 17 trials found SSRIs significantly more effective than placebo, and drugs are cheap and require little effort from the patient compared with therapy. Against that, side effects such as nausea and loss of libido reduce adherence; drugs treat symptoms rather than causes, so relapse is common on stopping; and there is evidence of publication bias favouring positive drug trials.",
+      reforge:{stem:"What is a limitation of drug therapy compared with CBT?",options:{A:"Drugs require far more effort from the patient",B:"Symptoms often return once the drug is stopped",C:"Drugs have never been shown to beat placebo",D:"Drug therapy takes several years to have any effect"},correct:"B"}
+    },
+    {
+      id:"PATH-19",
+      stem:"What is the difference between an obsession and a compulsion in OCD?",
+      options:{
+        A:"Obsessions are behavioural and compulsions are entirely cognitive in nature",
+        B:"Obsessions occur in adults whereas compulsions occur only in children",
+        C:"Obsessions are treatable by drugs whereas compulsions require only therapy",
+        D:"Obsessions are intrusive thoughts; compulsions are repetitive behaviours"
+      },
+      correct:"D",tag:"MC-PATH-OCD",
+      scaffold:"Obsessions are the cognitive element: persistent, intrusive and unwanted thoughts that the person recognises as their own and as excessive — around 90% of OCD sufferers experience them. Compulsions are the behavioural element: repetitive actions such as checking or hand-washing, performed to reduce the anxiety the obsession creates. The relationship between them is the key insight, and it mirrors the phobia model: the compulsion temporarily relieves anxiety, which negatively reinforces it, so the cycle repeats. The emotional characteristics are anxiety, distress and often accompanying depression, and sufferers typically show good insight — they know the behaviour is irrational, which is itself distressing.",
+      reforge:{stem:"Why do compulsions persist even though sufferers know they are irrational?",options:{A:"They permanently eliminate the obsessive thought",B:"They temporarily reduce anxiety, negatively reinforcing the behaviour",C:"Sufferers have no insight into their own behaviour",D:"Compulsions are entirely involuntary reflexes"},correct:"B"}
+    },
+    {
+      id:"PATH-20",
+      stem:"Which finding challenges the behavioural explanation of phobias?",
+      options:{
+        A:"Little Albert developed a fear of white rats after being paired with a loud noise",
+        B:"Avoidance behaviour reduces anxiety in people with diagnosed phobias",
+        C:"Many people with phobias cannot recall any frightening initial experience",
+        D:"Systematic desensitisation successfully treats the majority of phobias"
+      },
+      correct:"C",tag:"MC-PATH-PHOB",
+      scaffold:"If phobias were always acquired by conditioning, everyone with one should have had a frightening encounter — but many people with a snake phobia have never met a snake, and many people bitten by dogs never develop a phobia. This is where Seligman's biological preparedness comes in: we are evolutionarily primed to fear things that threatened ancestral survival, such as snakes and heights, and correspondingly slow to develop phobias of genuinely dangerous modern objects like cars. The behavioural account also ignores the cognitive dimension — the irrational beliefs that accompany a phobia — which is why some phobias respond better to CBT than to exposure therapy alone.",
+      reforge:{stem:"What is biological preparedness?",options:{A:"An innate readiness to fear things that threatened ancestral survival",B:"The body's physical preparation for the fight-or-flight response",C:"A genetic guarantee that phobias will develop in adulthood",D:"Preparing a client physically before exposure therapy"},correct:"A"}
+    },
+    {
+      id:"PATH-21",
+      stem:"Which criticism applies to Beck's cognitive explanation of depression?",
+      options:{
+        A:"It cannot account for any of the cognitive symptoms commonly seen in depression",
+        B:"Negative thinking may be a consequence of depression rather than its cause",
+        C:"It has never generated any successful form of psychological treatment",
+        D:"It denies that the individual's own thoughts have any role in depression"
+      },
+      correct:"B",tag:"MC-PATH-DEP",
+      scaffold:"The direction of causation is the central problem. Beck claims negative schemas and the cognitive triad cause depression, but the evidence is largely correlational — depressed people think negatively, which is equally consistent with low mood producing negative thinking. A second criticism is that the model does not explain all cases, particularly where depression follows a clear life event such as bereavement, or where it presents with strong physical symptoms and hallucinations. Balance these against real strengths: the model has excellent practical application, since CBT derives directly from it and is the recommended NICE treatment, and Grazioli and Terry found cognitive vulnerability predicted later postnatal depression.",
+      reforge:{stem:"What did Grazioli and Terry's research contribute?",options:{A:"Cognitive vulnerability predicted later postnatal depression",B:"Negative thinking has no relationship with depression",C:"Drug therapy is always superior to CBT",D:"Depression is caused entirely by genetic factors"},correct:"A"}
+    },
+    {
+      id:"PATH-22",
+      stem:"Why might the 'deviation from social norms' definition be considered ethically problematic?",
+      options:{
+        A:"Because it requires an expensive assessment by a qualified clinical psychologist",
+        B:"Because it relies on a purely statistical calculation of rarity in a population",
+        C:"Because it can be used to control people whose behaviour society dislikes",D:"Because it takes no account of any cultural context whatsoever in its judgements"
+      },
+      correct:"C",tag:"MC-PATH-DEF",
+      scaffold:"Social norms are constructed by the people with power to define them, so labelling deviation as abnormality can serve social control rather than diagnosis. The historical examples are stark: homosexuality was classified as a mental disorder in the DSM until 1973, and 'drapetomania' was invented in the nineteenth century as a disorder causing enslaved people to flee. Norms also vary across cultures and across time — hearing voices is a religious experience in some cultures and a symptom in others — so applying one culture's norms elsewhere is an imposed etic. The definition does have value, since it takes social context seriously in a way statistical infrequency does not.",
+      reforge:{stem:"Until which year was homosexuality classified as a mental disorder in the DSM?",options:{A:"1952",B:"1973",C:"1990",D:"2005"},correct:"B"}
+    },
+    {
+      id:"PATH-23",
+      stem:"A client is asked to keep a diary of situations, thoughts and resulting emotions. Which therapy is this?",
+      options:{
+        A:"Systematic desensitisation, using a hierarchy of feared situations",
+        B:"Drug therapy, monitoring the side effects of the prescribed medication",
+        C:"Flooding, exposing the client to the feared object without escape",
+        D:"Cognitive behavioural therapy, identifying negative automatic thoughts"
+      },
+      correct:"D",tag:"MC-PATH-DEP",
+      scaffold:"Thought diaries are a core CBT homework task. Recording the activating situation, the automatic thought and the emotional consequence makes the link visible, which is the first step to disputing it — it operationalises Ellis's ABC model in the client's own life. This illustrates two general features of CBT: it is collaborative, with client and therapist working as a team, and it is present-focused rather than exploring childhood. Evaluation: CBT's effectiveness is well supported, with March finding 81% improvement comparable to antidepressants and best results when combined with drugs, but it depends on client motivation and articulacy, and some clients find the focus on their own thinking feels like blame.",
+      reforge:{stem:"What did March find about CBT for adolescent depression?",options:{A:"CBT was substantially less effective than a placebo",B:"81% improved, comparable to antidepressant medication",C:"CBT only worked for clients over the age of thirty",D:"Combining CBT with drugs reduced effectiveness"},correct:"B"}
+    },
+    {
+      id:"PATH-24",
+      stem:"Which explanation best accounts for why OCD often runs in families but is not always inherited?",
+      options:{
+        A:"A diathesis-stress model, where genetic vulnerability requires an environmental trigger",
+        B:"Pure biological determinism, in which genes alone completely determine the final outcome",
+        C:"Classical conditioning, where family members condition each other's fears",
+        D:"Statistical infrequency, since OCD is rare within the general population"
+      },
+      correct:"A",tag:"MC-PATH-OCD",
+      scaffold:"MZ twin concordance for OCD is around 68% — high enough to establish a substantial genetic component, but far short of the 100% that pure genetic determinism would predict. Diathesis-stress explains the gap: candidate genes such as COMT and SERT create a vulnerability, and an environmental stressor is needed to trigger the disorder. Cromer found over half of OCD patients had experienced a traumatic event, with more severe symptoms among those with multiple traumas, which supports the stress element. This interactionist position is the one to argue for in an essay, and it applies equally to depression and to phobias — it is the standard resolution of the nature-nurture debate in psychopathology.",
+      reforge:{stem:"What did Cromer's research suggest about environmental factors in OCD?",options:{A:"Over half of OCD patients had experienced a traumatic event",B:"No OCD patients had experienced any trauma",C:"Trauma reduced the severity of OCD symptoms",D:"OCD is caused exclusively by genetic factors"},correct:"A"}
     }
 );
