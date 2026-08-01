@@ -46,6 +46,8 @@ const PAGES = [
   { file: 'gcse-maths.html', key: 'gcse-maths' },
   { file: 'a-level-business.html', key: 'bus' },
   { file: 'a-level-computer-science.html', key: 'cs' },
+  { file: 'a-level-media.html', key: 'media' },
+  { file: 'a-level-chemistry.html', key: 'chem' },
 ];
 
 let problems = 0;

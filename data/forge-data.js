@@ -15999,3 +15999,118 @@ SUBJECTS["bus"].banks = ["BUS-1","BUS-2","BUS-3","BUS-4"];
 SUBJECTS["bus"].sub = "Edexcel 9BS0 — Themes 1–4";
 SUBJECTS["cs"].banks = ["CS-1","CS-2","CS-3","CS-4"];
 SUBJECTS["cs"].sub = "Eduqas A500QS — Components 1–2";
+
+// ===== MEDIA STUDIES AND AQA CHEMISTRY EXPANSION =====
+appendGenerated("MEDIA-1", [
+  ["In semiotic analysis, a sign is:","something that communicates a meaning","a legal ownership document","a rating of audience size","a production budget", "Signs include words, images, sounds and conventions that audiences interpret."],
+  ["Anchorage is used to:","limit or direct the meaning of an image","remove all denotation","measure circulation figures","identify a broadcaster", "Captions and headlines can guide how an image is read."],
+  ["Denotation refers to:","the literal or descriptive meaning of a media sign","the preferred audience response","the ownership of a platform","the profit made by a publisher", "Denotation is distinguished from connotation, which concerns associated meanings."],
+  ["A media stereotype is:","a simplified and repeated representation of a group","a completely unique character","a method of calculating reach","a copyright licence", "Stereotypes can make groups seem fixed, natural or easily recognisable."],
+  ["Hall's representation theory argues that media representations:","construct meaning rather than simply mirror reality","are always objective records","cannot influence identity","are created only by audiences", "Representation selects, frames and organises meanings through codes and conventions."],
+  ["The preferred reading of a media text is:","the interpretation most encouraged by its creators","the reading every audience must accept","the least likely interpretation","a reading based only on circulation", "Audiences may accept, negotiate or oppose a preferred reading."],
+  ["A media genre is useful because it:","sets recognisable conventions and expectations","guarantees a text's success","prevents hybrid forms","removes the need for marketing", "Genres help producers and audiences organise expectations, while texts can subvert them."],
+  ["A high-key lighting style commonly suggests:","brightness, openness or a positive mood","secrecy and menace in every context","low production value only","a factual news register", "Lighting meaning depends on context but high-key images often appear bright and accessible."],
+  ["A close-up is often used to emphasise:","facial expression or emotional detail","the geography of a whole setting","the number of actors in a scene","the duration of a film", "Shot size directs attention and shapes audience involvement."],
+  ["A non-linear narrative presents events:","out of chronological order","only through documentary evidence","without any editing","in exactly one location", "Flashbacks and parallel timelines can make audiences reconstruct narrative order."],
+  ["A media institution is:","an organisation involved in producing, distributing or regulating media","a fictional character's motivation","a camera angle","an audience demographic", "Institutions operate within economic, technological and regulatory contexts."],
+  ["Vertical integration occurs when a company controls:","different stages of production and distribution","only two unrelated products","a rival audience survey","a single camera lens", "Control across stages can reduce costs and dependence on other firms."],
+  ["A public service broadcaster is expected to:","serve wider public purposes rather than only maximise profit","avoid all news content","broadcast only to subscribers","ignore regulatory standards", "PSB obligations can include range, quality, diversity and access."],
+  ["A media conglomerate is:","a large company with interests across media markets","a small independent production","a single audience member","a genre convention", "Conglomerates may own multiple brands and platforms."],
+  ["Media convergence describes:","the coming together of technologies, industries or media forms","the separation of all platforms","the end of audience participation","a restriction on digital distribution", "Convergence can change production, circulation and consumption."],
+  ["A media text's mode of address refers to:","how it positions and speaks to its audience","the price of a subscription","the length of a script","the ownership of a camera", "Language, tone and design create a relationship with an implied audience."],
+  ["An audience demographic is based on characteristics such as:","age, gender, income or education","only the director's intentions","the number of editing cuts","the colour palette", "Demographics help institutions identify and sell to audience groups."]
+], "MEDIA-E1");
+appendGenerated("MEDIA-2", [
+  ["Uses and gratifications theory treats audiences as:","active users selecting media to meet needs","passive recipients of every message","unable to interpret texts","defined only by income", "Audiences may seek information, identity, social interaction or entertainment."],
+  ["Cultivation theory suggests that heavy exposure to media may:","shape perceptions of social reality over time","make all viewers identical immediately","prevent audiences from watching fiction","remove the importance of institutions", "Gerbner's theory links repeated patterns of representation with worldviews."],
+  ["The hypodermic needle model assumes media messages are:","directly injected into passive audiences","always negotiated by viewers","created only by regulators","unrelated to behaviour", "It is a simple effects model and is criticised for underestimating audience activity."],
+  ["A niche audience is:","a relatively small, specialised audience group","the entire national population","an audience with no shared interests","only a television regulator", "Niche products can serve specialised interests that mass media overlook."],
+  ["Audience fragmentation means:","audiences are divided across more channels and platforms","everyone watches the same programme","a broadcaster owns every outlet","media products cannot be targeted", "Digital choice can make audiences more dispersed and specialised."],
+  ["A media rating is intended to measure:","the size or composition of an audience","the moral quality of a programme","the number of camera shots","the legal status of a company", "Ratings support scheduling, advertising and commissioning decisions."],
+  ["Curran and Seaton link media ownership to:","concentration of power and limits on diversity","the biological effects of colour","the grammar of headlines","the speed of internet access", "Their political-economy approach examines ownership, control and plurality."],
+  ["Livingstone and Lunt argue that digital media regulation faces:","a gap between powerful global platforms and national regulation","no change from print regulation","a complete absence of audience choice","only technical problems with cameras", "Global online services complicate accountability and consumer protection."],
+  ["Van Zoonen's feminist approach examines:","how media construct gender and reproduce or challenge power","only the cost of broadcasting","the speed of a film narrative","the number of newspaper pages", "Gender representation can naturalise unequal roles and viewpoints."],
+  ["The male gaze describes:","representation that positions women as objects of a heterosexual male look","a female audience's viewing statistics","a method of measuring ownership","a neutral news convention", "Mulvey links visual pleasure and narrative perspective to gendered power."],
+  ["A cultural discount occurs when:","a media product loses appeal across cultures because meanings are locally specific","a broadcaster lowers an annual subscription","a text becomes more popular abroad","a company receives a tax refund", "Language, humour and cultural references can reduce exportability."],
+  ["Globalisation can benefit media industries by:","opening access to larger markets and investment","ending all competition","making regulation identical everywhere","removing the need for local content", "Global markets create opportunities but can also intensify cultural and economic inequalities."],
+  ["A gatekeeper is an actor who:","selects or filters what reaches an audience","only watches a media text","funds every production personally","measures screen brightness", "Editors, platforms, algorithms and owners can all influence visibility."],
+  ["User-generated content is produced by:","ordinary users rather than solely professional institutions","only national broadcasters","regulators in private meetings","advertising agencies in every case", "UGC can widen participation while raising issues of accuracy, moderation and exploitation."],
+  ["A media algorithm may affect audiences by:","ranking and recommending content based on data","removing all personalisation","guaranteeing political neutrality","stopping users from sharing content", "Recommendation systems shape visibility and can reinforce existing preferences."],
+  ["A regulation code is intended to:","set standards and responsibilities for media practice","guarantee a programme is profitable","replace all audience research","prevent every form of representation", "Regulation may address harm, privacy, accuracy, fairness and access."],
+  ["A media production's target audience is:","the group the producers intend to reach","every possible viewer regardless of design","only the regulator","the employees who made it", "Targeting influences content, platform, scheduling and marketing decisions."]
+], "MEDIA-E2");
+
+appendGenerated("CHEM-1", [
+  ["The first ionisation energy is the energy needed to remove:","one electron from each atom in one mole of gaseous atoms","one proton from a nucleus","all electrons from a solid","one neutron from an ion", "The definition specifies gaseous atoms and formation of singly positive gaseous ions."],
+  ["An isotope has the same number of protons but a different number of:","neutrons","electrons in every ion","orbitals","energy levels", "Isotopes are atoms of the same element with different mass numbers."],
+  ["The relative atomic mass of an element is a weighted mean based on:","isotopic masses and their abundances","only the most common isotope","the number of electrons in a molecule","the boiling point", "Abundances determine how much each isotope contributes to the mean."],
+  ["One mole contains:","the Avogadro constant number of specified particles","one gram of every substance","one atom of every element","the same volume in every condition", "The particles may be atoms, molecules, ions or electrons as specified."],
+  ["The empirical formula shows:","the simplest whole-number ratio of atoms","the exact three-dimensional shape","the actual number of molecules in a sample","the reaction mechanism", "Molecular formulae can be multiples of empirical formulae."],
+  ["A coordinate bond forms when:","both bonding electrons are donated by one atom","each atom loses a proton","an ionic lattice melts","two neutrons are shared", "The shared pair still forms a covalent bond after donation."],
+  ["A molecule with polar bonds may be non-polar overall if:","bond dipoles cancel because of its symmetrical shape","it contains no electrons","it has an ionic lattice","its atoms have identical mass numbers", "Molecular shape determines whether individual bond dipoles cancel."],
+  ["A giant covalent structure generally has:","many strong covalent bonds and a high melting point","weak intermolecular forces only","mobile ions in the solid","low melting point in every case", "Diamond and graphite are giant structures with different properties due to bonding and layers."],
+  ["An ionic compound conducts electricity when molten because:","its ions are free to move","its covalent bonds become electrons","its atoms disappear","its protons move through the circuit", "Ions are fixed in a solid lattice but mobile when molten or dissolved."]
+], "CHEM-E1");
+appendGenerated("CHEM-2", [
+  ["An exothermic reaction has:","a negative enthalpy change","a positive activation energy only","no energy transfer","a negative temperature in every case", "Products have lower enthalpy than reactants for an exothermic reaction."],
+  ["A catalyst increases rate by:","providing an alternative route with lower activation energy","increasing the enthalpy change","moving the equilibrium position","raising the temperature permanently", "A catalyst speeds both forward and reverse reactions without changing equilibrium position."],
+  ["At dynamic equilibrium:","forward and reverse rates are equal in a closed system","reactants and products have equal concentrations","all reactions have stopped","only products remain", "Concentrations remain constant because the opposing rates are equal."],
+  ["Increasing pressure favours the equilibrium side with:","fewer moles of gas","more solid particles","more total atoms in solution","the larger activation energy", "Le Chatelier's principle applies to gaseous mole numbers when pressure changes."],
+  ["The oxidation state of oxygen in most oxides is:","−2","+2","0","−1", "Exceptions include peroxides and compounds with fluorine."],
+  ["A reducing agent is a species that:","loses electrons and is oxidised","gains electrons and is reduced","accepts protons only","never changes oxidation state", "Remember OIL RIG: oxidation is loss, reduction is gain of electrons."],
+  ["The standard electrode potential of a half-cell is measured relative to:","the standard hydrogen electrode","a saturated salt bridge only","pure oxygen at any pressure","a carbon electrode with no reference", "The standard hydrogen electrode is assigned zero volts under standard conditions."],
+  ["A strong acid is almost completely:","dissociated in aqueous solution","undissociated in water","neutralised before dissolving","converted into a base", "Strong acids have a high proportion of dissociated molecules in water."],
+  ["The pH of a solution is defined using:","the negative logarithm of hydrogen ion concentration","the positive logarithm of hydroxide concentration","mass divided by volume","the number of salt ions only", "pH = −log10[H+], with concentration in mol dm−3."],
+  ["The rate equation expresses rate in terms of:","concentrations raised to experimentally determined orders","only the balanced equation coefficients","the equilibrium constant alone","the melting point", "Orders must be found experimentally and need not match stoichiometric coefficients."],
+  ["The unit of the rate constant depends on:","the overall order of the reaction","the colour of the reactants","the reaction vessel's shape only","the catalyst's name", "The units change so the rate equation gives concentration per unit time."],
+  ["Kp is calculated using:","equilibrium partial pressures raised to their stoichiometric powers","masses of all solids only","initial concentrations only","the activation energy", "Pure solids and liquids are omitted from the Kp expression."],
+  ["A buffer solution resists changes in:","pH when small amounts of acid or alkali are added","temperature when heated","pressure in a gas","mass during evaporation", "A weak acid and its conjugate base can remove added hydrogen or hydroxide ions."],
+  ["The enthalpy change of formation is for forming:","one mole of a compound from its elements in standard states","one atom from an ion","one mole of gas from any liquid","one bond in isolation", "Standard enthalpy definitions specify the amount and standard states."],
+  ["A feasibility calculation using Gibbs free energy considers:","enthalpy, entropy and temperature","only activation energy","only concentration","the atomic number alone", "A negative ΔG indicates feasibility under the stated conditions, not necessarily a fast reaction."],
+  ["The oxidation number of an uncombined element is:","zero","one","equal to its proton number","always negative", "Oxidation numbers are assigned relative to electron ownership rules."],
+  ["A titration endpoint is usually detected by:","a suitable indicator colour change or instrument signal","the solution becoming completely colourless in every case","the burette reaching zero","the temperature falling to zero", "The endpoint should be close to the equivalence point and chosen for the reaction."],
+  ["A redox disproportionation reaction involves:","the same species being both oxidised and reduced","only acid-base neutralisation","two catalysts reacting","no change in oxidation state", "One oxidation state splits into higher and lower oxidation states."]
+], "CHEM-E2");
+appendGenerated("CHEM-3", [
+  ["An alkene is identified by the presence of:","a carbon-carbon double bond","a hydroxyl group only","a benzene ring only","an ionic bond", "The C=C bond is the characteristic functional group of alkenes."],
+  ["Bromine water tests for:","an alkene's carbon-carbon double bond","a carboxylic acid","an amine salt","a transition metal ion", "The orange bromine solution is decolourised by addition across C=C."],
+  ["A nucleophile is a species that:","donates a pair of electrons","accepts a pair of electrons","loses a neutron","always contains a metal", "Nucleophiles attack electron-deficient centres using a lone pair or negative charge."],
+  ["Ethanol can be oxidised to:","ethanal and then ethanoic acid","ethene only in every condition","a ketone directly","an amine", "Primary alcohol oxidation depends on conditions and distillation or reflux."],
+  ["Aldehydes give a positive Tollens' test by forming:","a silver mirror","a blue precipitate","a green gas","an orange solution", "Aldehydes reduce silver ions in Tollens' reagent; ketones generally do not."],
+  ["Carboxylic acids react with carbonates to produce:","a salt, water and carbon dioxide","an aldehyde and hydrogen","only water","a polymer and oxygen", "The gas evolved is carbon dioxide, providing a useful qualitative test."],
+  ["Benzene is unusually stable because it has:","delocalised electrons in a planar ring","six isolated single bonds only","an ionic lattice","no pi electrons", "Delocalisation makes addition less favourable than substitution."],
+  ["A condensation polymer forms when monomers join and:","a small molecule such as water is eliminated","oxygen is always added","all double bonds remain unchanged","the polymer is broken into monomers", "Polyesters and polyamides are common condensation polymers."],
+  ["An amino acid contains:","an amino group and a carboxyl group","only an alkene group","a halogen and a ketone only","a metal ion and a hydroxide", "Amino acids can form zwitterions and peptide bonds."],
+  ["In proton NMR, chemical shift indicates:","the electronic environment of hydrogen nuclei","the mass of a molecule directly","the concentration of oxygen","the number of carbon atoms only", "Different environments absorb at different chemical shifts."],
+  ["In chromatography, the Rf value is:","distance travelled by solute divided by distance travelled by solvent front","mass divided by volume","the solvent volume divided by time","the peak area divided by pressure", "Rf values can help identify substances under the same conditions."],
+  ["A halogenoalkane undergoes hydrolysis with aqueous hydroxide to form:","an alcohol","an alkene only","a carboxylic acid","an amide", "The hydroxide ion substitutes for the halogen in suitable conditions."],
+  ["The major product of addition of HBr to an unsymmetrical alkene is predicted using:","the stability of the intermediate carbocation","the melting point of bromine","the number of oxygen atoms","the pH of pure water", "Regioselectivity follows the more stable carbocation pathway in the usual mechanism."],
+  ["Optical isomers are compounds that:","are non-superimposable mirror images","have different molecular formulae","contain no carbon","are always structural isomers", "Chiral molecules lack a plane of symmetry and form enantiomers."],
+  ["A peptide bond forms between:","the amino group of one amino acid and the carboxyl group of another","two alkene groups","two halogen atoms","a hydroxyl group and a metal ion only", "Condensation forms an amide link and releases water."],
+  ["A primary amine contains nitrogen bonded to:","one carbon-containing group and two hydrogens","three carbonyl groups","one oxygen and no hydrogen","a benzene ring only", "Primary, secondary and tertiary refer to the number of carbon groups attached to nitrogen."],
+  ["Hydrolysis of an ester produces:","an alcohol and a carboxylic acid or its salt","two alkenes","an amine and an aldehyde","only carbon dioxide", "Acid or base hydrolysis breaks the ester link in different conditions."],
+  ["A polymer's repeating unit is found by:","identifying the structural unit repeated along its chain","adding all monomer masses without bonds","removing every carbon atom","counting only the end groups", "The repeat unit represents the regular pattern in the polymer structure."]
+], "CHEM-E3");
+appendGenerated("CHEM-1", [["The electron arrangement of a magnesium atom is:","2,8,2","2,8,8","2,10","2,6,2", "Magnesium has atomic number 12, so its electrons occupy shells as 2,8,2."]], "CHEM-E1B");
+appendGenerated("CHEM-3", [["A condensation reaction between two amino acids forms:","a peptide bond and water","an alkene and hydrogen","a halogenoalkane and oxygen","only carbon dioxide", "The amino and carboxyl groups react to form an amide link, releasing water."]], "CHEM-E3B");
+
+SUBJECTS["media"].sub = "Eduqas A680QS — Components 1–3";
+SUBJECTS["chem"].sub = "AQA 7405 — Papers 1–3";
+const rebalanceMCQSubject = bankIds => bankIds.forEach(bankId => BANKS[bankId].questions.forEach((question, index) => {
+  [[question, index % 4], [question.reforge, (index + 2) % 4]].forEach(([item, target]) => {
+    if (!item || !item.options) return;
+    const targetKey = ["A","B","C","D"][target];
+    if (item.correct !== targetKey) {
+      const saved = item.options[targetKey];
+      item.options[targetKey] = item.options[item.correct];
+      item.options[item.correct] = saved;
+      item.correct = targetKey;
+    }
+    equaliseGeneratedOptions(item);
+  });
+}));
+rebalanceMCQSubject(SUBJECTS["media"].banks);
+rebalanceMCQSubject(SUBJECTS["chem"].banks);
+// Run once more against the concrete bank IDs so legacy starter questions are
+// subject to the same option-length guard as the newly authored questions.
+rebalanceMCQSubject(["MEDIA-1","MEDIA-2","CHEM-1","CHEM-2","CHEM-3"]);
