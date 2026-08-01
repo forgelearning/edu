@@ -37,6 +37,7 @@ const PAGES = [
   { file: 'gcse-economics.html', key: 'gcse-econ' },
   { file: 'gcse-history.html', key: 'gcse-hist' },
   { file: 'gcse-psychology.html', key: 'gcse-psych' },
+  { file: 'gcse-science.html', key: 'gcse-science' },
 ];
 
 let problems = 0;
@@ -48,7 +49,7 @@ for (const { file, key } of PAGES) {
     continue;
   }
   const html = fs.readFileSync(filePath, 'utf8');
-  const match = html.match(/subj-stat-n[^>]*>(\d+)<\/span>\s*questions\s*·\s*(\d+)\s*banks?/i);
+  const match = html.match(/subj-stat-n[^>]*>(\d+)<\/span>\s*questions\s*·\s*(?:<span[^>]*>)?(\d+)(?:<\/span>)?\s*banks?/i);
   if (!match) {
     console.log(`SKIP  ${file} — no "N questions · N banks" stat found (page structure may have changed)`);
     continue;
