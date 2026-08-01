@@ -16945,6 +16945,54 @@ for (const bankId of Object.keys(chemistryFallbackPoints)) {
   }
 }
 
+// Map the live OCR A Biology banks to H420 module topics.  Questions are
+// mixed across the three written papers, so the content topic is the useful
+// question-level anchor while the bank alias remains available for navigation.
+const biologyFallbackPoints = {
+  "BIO-1": "ocr-a-bio-2.1",
+  "BIO-2": "ocr-a-bio-3.1",
+  "BIO-3": "ocr-a-bio-6.1",
+  "BIO-ENZ": "ocr-a-bio-2.4"
+};
+const biologyPointFor = (bankId, stem) => {
+  const text = String(stem || "").toLowerCase();
+  const routes = [
+    [/hardy-weinberg|allele|x-linked|dominant|recessive|inheritance|variation/, "6.2"],
+    [/genome|gene editing|genetic engineering|pcr|restriction enzyme|recombinant dna/, "6.3"],
+    [/clone|cloning|biotechnology|monoclonal|stem cell/, "6.4"],
+    [/ecosystem|food web|trophic|energy transfer|succession/, "6.5"],
+    [/population|sustainab|carrying capacity|conservation/, "6.6"],
+    [/transcription|translation|gene expression|cellular control|epigenetic/, "6.1"],
+    [/photosynthesis|calvin cycle|rubisco|light-independent/, "5.6"],
+    [/respiration|atp|glycolysis|krebs|oxidative phosphorylation/, "5.7"],
+    [/neuron|neuronal|synapse|action potential|myelin/, "5.3"],
+    [/hormone|insulin|adrenaline|endocrine/, "5.4"],
+    [/homeostasis|thermoregulation|negative feedback|communication/, "5.1"],
+    [/excretion|kidney|ultrafiltration|osmoregulation|water potential.*kidney/, "5.2"],
+    [/tropism|phototropism|response|reflex|plant response/, "5.5"],
+    [/pathogen|disease|antibiotic|immune|antibody|vaccin|communicable/, "4.1"],
+    [/biodiversity|species richness|genetic diversity/, "4.2"],
+    [/classification|taxonomy|evolution|natural selection|phylogen/, "4.3"],
+    [/exchange surface|alveol|gas exchange|ventilation|surface area to volume/, "3.1"],
+    [/transpiration|xylem|phloem|mass flow|root hair|water potential.*plant|transport in plant/, "3.3"],
+    [/transport system|heart|blood|haemoglobin|hemoglobin|artery|vein|capillary|transport in animal/, "3.2"],
+    [/dna replication|nucleotide|base pairing|hydrogen bonds between base pairs/, "2.3"],
+    [/enzyme|active site|substrate|inhibitor|km|q.?10|induced fit/, "2.4"],
+    [/membrane|osmosis|facilitated diffusion|active transport|fluid mosaic|partially permeable/, "2.5"],
+    [/mitosis|meiosis|cell division|stem cell|cell diversity|organisation/, "2.6"],
+    [/ribosome|mitochondrion|prokaryotic|eukaryotic|magnification|cell structure/, "2.1"],
+    [/peptide bond|biological molecule|protein|lipid|carbohydrate|amino acid/, "2.2"],
+    [/practical|validity|reliability|uncertainty|standard deviation|chi-squared|t-test|calibration/, "1.1"]
+  ];
+  for (const [pattern, code] of routes) if (pattern.test(text)) return `ocr-a-bio-${code}`;
+  return biologyFallbackPoints[bankId];
+};
+for (const bankId of Object.keys(biologyFallbackPoints)) {
+  for (const question of BANKS[bankId]?.questions || []) {
+    question.specPointId = biologyPointFor(bankId, question.stem);
+  }
+}
+
 // Remove the last legacy Sociology template from imported Paper 1 questions.
 // This is deliberately applied at runtime so future bank extensions cannot
 // reintroduce the same repeated "Which statement best describes..." cue.

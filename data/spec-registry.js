@@ -551,3 +551,47 @@ Object.assign(SPEC_REGISTRY.aliases, {
   "CHEM-2": "aqa-a-chem-3.1.4",
   "CHEM-3": "aqa-a-chem-3.3.1"
 });
+
+// OCR A Level Biology A (H420), using the numbered module topics in the
+// published specification.  Module 1 covers practical skills assessed in
+// the written papers and the Practical Endorsement.
+const biologySpecPoints = [
+  ["1.1", "Papers 1–3 / Practical Endorsement", "Development of practical skills in biology"],
+  ["2.1", "Papers 1–3", "Cell structure"],
+  ["2.2", "Papers 1–3", "Biological molecules"],
+  ["2.3", "Papers 1–3", "Nucleotides and nucleic acids"],
+  ["2.4", "Papers 1–3", "Enzymes"],
+  ["2.5", "Papers 1–3", "Biological membranes"],
+  ["2.6", "Papers 1–3", "Cell division, cell diversity and cellular organisation"],
+  ["3.1", "Papers 1–3", "Exchange surfaces"],
+  ["3.2", "Papers 1–3", "Transport in animals"],
+  ["3.3", "Papers 1–3", "Transport in plants"],
+  ["4.1", "Papers 1–3", "Communicable diseases, disease prevention and the immune system"],
+  ["4.2", "Papers 1–3", "Biodiversity"],
+  ["4.3", "Papers 1–3", "Classification and evolution"],
+  ["5.1", "Papers 1–3", "Communication and homeostasis"],
+  ["5.2", "Papers 1–3", "Excretion as an example of homeostatic control"],
+  ["5.3", "Papers 1–3", "Neuronal communication"],
+  ["5.4", "Papers 1–3", "Hormonal communication"],
+  ["5.5", "Papers 1–3", "Plant and animal responses"],
+  ["5.6", "Papers 1–3", "Photosynthesis"],
+  ["5.7", "Papers 1–3", "Respiration"],
+  ["6.1", "Papers 1–3", "Cellular control"],
+  ["6.2", "Papers 1–3", "Patterns of inheritance"],
+  ["6.3", "Papers 1–3", "Manipulating genomes"],
+  ["6.4", "Papers 1–3", "Cloning and biotechnology"],
+  ["6.5", "Papers 1–3", "Ecosystems"],
+  ["6.6", "Papers 1–3", "Populations and sustainability"]
+];
+for (const [code, paper, title] of biologySpecPoints) {
+  SPEC_REGISTRY.points[`ocr-a-bio-${code}`] = {
+    subject: "bio", board: "OCR", qualification: "A-level Biology A (H420)",
+    paper, code, title, aliases: []
+  };
+}
+Object.assign(SPEC_REGISTRY.aliases, {
+  "BIO-1": "ocr-a-bio-2.1",
+  "BIO-2": "ocr-a-bio-3.1",
+  "BIO-3": "ocr-a-bio-6.1",
+  "BIO-ENZ": "ocr-a-bio-2.4"
+});
