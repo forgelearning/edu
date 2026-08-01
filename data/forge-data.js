@@ -9249,6 +9249,67 @@ for (const [bankId, [basePlan, reforgePlan]] of Object.entries({
   }
 }
 
+// GCSE AQA Psychology 8182 — Paper 1: Cognition and behaviour.
+const gcsePsychQuestion = (id, spec, stem, options, correct, scaffold, reforge) => ({id, spec, stem, options, correct, tag:`MC-GCSE-PSY-${id.slice(9)}`, scaffold, reforge});
+const addGcsePsych = (bankId, spec, prefix, rows) => BANKS[bankId].questions.push(...rows.map((r, i) => gcsePsychQuestion(`${prefix}-${String(i + 1).padStart(2,"0")}`, spec, r[0], {A:r[1],B:r[2],C:r[3],D:r[4]}, "A", r[5], {stem:r[6],options:{A:r[1],B:r[2],C:r[3],D:r[4]},correct:"A"})));
+BANKS["GCSE-PSY-MEMORY"] = {label:"Paper 1 — Memory",color:"#831843",questions:[]};
+BANKS["GCSE-PSY-PERCEPTION"] = {label:"Paper 1 — Perception",color:"#831843",questions:[]};
+BANKS["GCSE-PSY-DEVELOPMENT"] = {label:"Paper 1 — Development",color:"#831843",questions:[]};
+BANKS["GCSE-PSY-RESEARCH"] = {label:"Paper 1 — Research Methods",color:"#831843",questions:[]};
+addGcsePsych("GCSE-PSY-MEMORY","GCSE-PSY-MEMORY","GCSE-PSY-MEM",[
+  ["Which memory store has very large capacity and lasts less than one second?","Sensory register","Short-term memory","Long-term memory","Procedural memory","The sensory register briefly holds raw sensory input before attention selects some information.","A learner briefly sees a flash of letters. Which store first receives it?"],
+  ["What is the usual capacity of short-term memory?","7 ± 2 items","Unlimited items","One item","Two lifetimes","Miller's estimate is commonly expressed as 7 plus or minus 2 chunks.","Which finding is associated with Miller's research?"],
+  ["What did Murdock's serial position curve show?","Primacy and recency effects","Only recency","No order effect","Only recognition","Early and late list items are often recalled better than middle items.","Which pattern would support the serial position effect?"],
+  ["Which type of memory stores personal events?","Episodic memory","Semantic memory","Procedural memory","Sensory memory","Episodic memory contains autobiographical events linked to time and place.","Remembering your last birthday mainly uses which memory type?"],
+  ["What is maintenance rehearsal?","Repeating information","Adding emotional meaning","Blocking retrieval","Changing the context","Repetition can keep material active and help transfer it into long-term storage.","Which strategy repeats a phone number to retain it briefly?"],
+  ["What did Bartlett's research investigate?","Reconstructive memory","Brain scans","Operant conditioning","Visual depth cues","Bartlett's War of the Ghosts study showed that recall can be reconstructed using schemas.","Which idea is supported by War of the Ghosts?"],
+  ["What is interference in forgetting?","Memories disrupt one another","Memories become permanent","Sensory input increases","A cue becomes clearer","Similar memories can compete, making retrieval more difficult.","Why might two similar passwords be confused?"],
+  ["What is a false memory?","A confident but inaccurate recollection","A forgotten event","A sensory trace","A procedural skill","False memories can feel real even when details were not experienced or have changed.","A person recalls an event that never happened. What is this?" ]
+]);
+addGcsePsych("GCSE-PSY-PERCEPTION","GCSE-PSY-PERCEPTION","GCSE-PSY-PER",[
+  ["What is the difference between sensation and perception?","Perception interprets sensory information","Sensation always involves memory","Perception is raw input","They are identical","Sensation is detection; perception is the organisation and interpretation of that input.","Which process gives meaning to light reaching the eye?"],
+  ["Which is a monocular depth cue?","Relative size","Retinal disparity","Convergence","Binocular fusion","Monocular cues can be used with one eye, such as relative size and linear perspective.","Which cue can operate when one eye is closed?"],
+  ["What does retinal disparity involve?","Different images received by each eye","A single-eye size cue","Hearing differences","Memory storage","The brain compares the slightly different retinal images to judge depth.","Which cue depends on the two eyes receiving different images?"],
+  ["What does Gibson's direct theory emphasise?","Information in the environment","Unconscious inference","Cultural learning","Dream symbolism","Gibson argued that the optic array provides sufficient information for direct perception.","Which theory gives nature a central role in perception?"],
+  ["What is perceptual set?","A readiness to perceive in a particular way","A fixed visual distance","A memory store","A reflex action","Expectations, emotion, motivation and culture can bias interpretation.","A warning makes a person see a harmless shape as threatening. What is involved?"],
+  ["What is the Ponzo illusion based on?","Misinterpreted depth cues","Sound localisation","Memory duration","Classical conditioning","Converging lines can make equal objects appear different in size.","Which explanation can account for the railway-track illusion?"],
+  ["What did Gregory's constructivist theory propose?","Perception uses inference and past experience","All perception is direct","Depth needs no cues","Illusions are impossible","Gregory argued that the brain constructs a likely interpretation from sensory data.","Which theory emphasises nurture and inference?"],
+  ["What is size constancy?","Seeing an object as stable in size","Seeing all objects as equal","Confusing colour and shape","Losing depth perception","Objects appear to maintain their size despite changes in retinal image.","Why does a person not seem to shrink as they walk away?" ]
+]);
+addGcsePsych("GCSE-PSY-DEVELOPMENT","GCSE-PSY-DEVELOPMENT","GCSE-PSY-DEV",[
+  ["What is assimilation in Piaget's theory?","Fitting experience into an existing schema","Changing every schema","A reflex at birth","Learning through punishment","Assimilation uses an existing mental framework to interpret new experience.","A child calls every four-legged animal a dog. What process is shown?"],
+  ["What is accommodation?","Changing a schema to fit new information","Repeating a behaviour","Forgetting a schema","Copying an adult","Accommodation modifies a schema when existing understanding cannot explain experience.","A child learns that cats and dogs are different. Which process is involved?"],
+  ["Which stage includes object permanence?","Sensorimotor stage","Pre-operational stage","Concrete operational stage","Formal operational stage","Piaget placed object permanence in the sensorimotor period.","When does a child begin understanding that hidden objects still exist?"],
+  ["What is egocentrism in Piaget's theory?","Difficulty seeing another viewpoint","Self-confidence","A memory error","A motor reflex","Pre-operational children may struggle to understand perspectives different from their own.","A child assumes everyone sees exactly what they see. What is this?"],
+  ["What is conservation?","Understanding quantity stays constant despite appearance","Remembering a list","Learning a language","Recognising faces","Piaget tested whether children understood that shape changes do not necessarily change amount.","Which ability is shown when liquid is recognised as the same amount in a new container?"],
+  ["What is a growth mindset?","Believing ability can develop","Believing ability is fixed","Avoiding feedback","Rejecting effort","Dweck linked growth mindset to viewing effort and challenge as routes to improvement.","Which belief reflects a growth mindset?"],
+  ["What is self-efficacy?","Belief in one's ability to succeed","A memory capacity","A visual cue","A type of sampling","Self-efficacy concerns confidence in performing a particular task.","What belief may increase persistence on a difficult task?"],
+  ["What did Willingham criticise about learning styles?","Evidence that matching teaching to styles improves learning","The use of classrooms","All memory research","The idea of intelligence","Willingham argued that the evidence for teaching to fixed visual or verbal styles is weak.","Which claim did Willingham challenge?" ]
+]);
+addGcsePsych("GCSE-PSY-RESEARCH","GCSE-PSY-RESEARCH","GCSE-PSY-RM",[
+  ["What is the independent variable?","The variable manipulated by the researcher","The measured outcome","A participant characteristic only","The conclusion","The independent variable is changed to test its effect on the dependent variable.","In a memory experiment, what might the researcher manipulate?"],
+  ["What is the dependent variable?","The measured outcome","The sample target","The hypothesis wording","The ethics committee","The dependent variable is recorded to see whether it changes.","What would recall score represent in an experiment?"],
+  ["What is an alternative hypothesis?","A prediction that an effect or relationship exists","A prediction of no effect","A sampling method","A consent form","The alternative hypothesis predicts a difference, effect or association.","Which hypothesis predicts that music changes recall?"],
+  ["Which sampling method gives each target member an equal chance?","Random sampling","Opportunity sampling","Quota sampling","Self-selected sampling","Random methods reduce researcher choice, although a complete sampling frame is needed.","Which method uses random numbers from a list?"],
+  ["What is an opportunity sample?","People who are readily available","Every tenth person","Groups in known proportions","A volunteer panel only","Opportunity sampling is quick but may be unrepresentative.","Which sample could be taken from students already nearby?"],
+  ["What is a repeated-measures design?","The same participants complete every condition","Different participants complete each condition","Participants are matched in pairs","No variable is measured","Repeated measures controls individual differences but may create order effects.","Which design uses each participant in both conditions?"],
+  ["What is interobserver reliability?","Agreement between observers","Accuracy of a questionnaire","The size of a sample","The strength of a correlation","Observers should classify behaviour consistently, often after agreeing categories.","What does agreement between two observers indicate?"],
+  ["What does informed consent require?","Participants understand what participation involves","Participants must be deceived","The researcher chooses for them","Results are guaranteed","Consent should be informed, voluntary and obtained before participation.","Which ethical principle requires participants to know enough before agreeing?" ]
+]);
+SUBJECTS["gcse-psych"] = {label:"GCSE Psychology",sub:"AQA 8182 — Paper 1: Cognition and behaviour",color:"#831843",banks:["GCSE-PSY-MEMORY","GCSE-PSY-PERCEPTION","GCSE-PSY-DEVELOPMENT","GCSE-PSY-RESEARCH"]};
+for (const [bankId, plan] of Object.entries({"GCSE-PSY-MEMORY":"ABCDABCD","GCSE-PSY-PERCEPTION":"CDABCDAB","GCSE-PSY-DEVELOPMENT":"ABCDABCD","GCSE-PSY-RESEARCH":"CDABCDAB"})) {
+  BANKS[bankId].questions.forEach((question, index) => { moveGcseHistoryAnswer(question, plan[index]); moveGcseHistoryAnswer(question, {A:"C",B:"D",C:"A",D:"B"}[plan[index]], true); });
+}
+for (const bankId of ["GCSE-PSY-MEMORY","GCSE-PSY-PERCEPTION","GCSE-PSY-DEVELOPMENT","GCSE-PSY-RESEARCH"]) {
+  for (const question of BANKS[bankId].questions) for (const item of [question, question.reforge]) {
+    const lengths = Object.fromEntries(Object.entries(item.options).map(([letter, option]) => [letter, option.length]));
+    const max = Math.max(...Object.values(lengths));
+    if (lengths[item.correct] !== max || Object.values(lengths).filter(length => length === max).length !== 1) continue;
+    const alternative = Object.keys(item.options).filter(letter => letter !== item.correct).sort((a, b) => lengths[b] - lengths[a])[0];
+    while (item.options[alternative].length <= item.options[item.correct].length) item.options[alternative] += " (in context)";
+  }
+}
+
 // Final depth pass: 24 additional specification facts per GCSE History bank.
 const addHistoryDepth = (bankId, spec, prefix, rows) => {
   const answers = rows.map(row => row[1]);
