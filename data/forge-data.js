@@ -17069,6 +17069,37 @@ for (const bankId of Object.keys(physicsFallbackPoints)) {
   }
 }
 
+// Map the live Eduqas A500QS Computer Science banks to their component
+// content areas. Components 1 and 2 are represented by the four existing
+// banks; the project component remains visible as a specification point.
+const computerScienceFallbackPoints = {
+  "CS-1": "eduqas-a-cs-1.1",
+  "CS-2": "eduqas-a-cs-2.1",
+  "CS-3": "eduqas-a-cs-1.2",
+  "CS-4": "eduqas-a-cs-2.2"
+};
+const computerSciencePointFor = (bankId, stem) => {
+  const text = String(stem || "").toLowerCase();
+  const routes = [
+    [/legal|moral|ethical|privacy|copyright|computer misuse|digital divide|environmental/, "2.5"],
+    [/database|sql|normalisation|normalization|referential integrity|primary key|foreign key|json|xml|csv|data exchange|network|protocol|tcp|udp|dns|ip address|encryption|compression/, "2.3"],
+    [/array|linked list|stack|queue|tree|graph|hash table|data structure|binary search|linear search|sort|big-o|complexity/, "2.4"],
+    [/operating system|compiler|interpreter|driver|virtual memory|software|development life cycle|testing|debugging/, "2.2"],
+    [/processor|cpu|register|cache|program counter|control unit|alu|fetch-decode|clock speed|pipeline/, "2.1"],
+    [/algorithm|recursion|pseudocode|trace table|decomposition|abstraction|pattern recognition|computational thinking/, "1.3"],
+    [/program|variable|loop|iteration|selection|function|procedure|object|class|inheritance|polymorphism|syntax|programming/, "1.2"],
+    [/analysis|design|client|solution|evaluation|prototype|success criteria|test plan|user acceptance/, "3.2"],
+    [/programmed solution|project|implementation|documentation/, "3.1"]
+  ];
+  for (const [pattern, code] of routes) if (pattern.test(text)) return `eduqas-a-cs-${code}`;
+  return computerScienceFallbackPoints[bankId];
+};
+for (const bankId of Object.keys(computerScienceFallbackPoints)) {
+  for (const question of BANKS[bankId]?.questions || []) {
+    question.specPointId = computerSciencePointFor(bankId, question.stem);
+  }
+}
+
 // Remove the last legacy Sociology template from imported Paper 1 questions.
 // This is deliberately applied at runtime so future bank extensions cannot
 // reintroduce the same repeated "Which statement best describes..." cue.

@@ -624,3 +624,30 @@ Object.assign(SPEC_REGISTRY.aliases, {
   "PHYS-2": "aqa-a-phys-3.5",
   "PHYS-3": "aqa-a-phys-3.3"
 });
+
+// Eduqas A-level Computer Science (A500QS), using the specification's three
+// assessment components and their published content areas.
+const computerScienceSpecPoints = [
+  ["1.1", "Component 1", "Elements of computational thinking"],
+  ["1.2", "Component 1", "Problem solving and programming"],
+  ["1.3", "Component 1", "Algorithms to solve problems and standard algorithms"],
+  ["2.1", "Component 2", "Characteristics of contemporary processors"],
+  ["2.2", "Component 2", "Software and software development"],
+  ["2.3", "Component 2", "Exchanging data"],
+  ["2.4", "Component 2", "Data types, data structures and algorithms"],
+  ["2.5", "Component 2", "Legal, moral, cultural and ethical issues"],
+  ["3.1", "Component 3", "Programmed solution to a problem"],
+  ["3.2", "Component 3", "Analysis, design, development, testing and evaluation"]
+];
+for (const [code, paper, title] of computerScienceSpecPoints) {
+  SPEC_REGISTRY.points[`eduqas-a-cs-${code}`] = {
+    subject: "cs", board: "Eduqas", qualification: "A-level Computer Science (A500QS)",
+    paper, code, title, aliases: []
+  };
+}
+Object.assign(SPEC_REGISTRY.aliases, {
+  "CS-1": "eduqas-a-cs-1.1",
+  "CS-2": "eduqas-a-cs-2.1",
+  "CS-3": "eduqas-a-cs-1.2",
+  "CS-4": "eduqas-a-cs-2.2"
+});
