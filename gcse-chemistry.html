@@ -509,8 +509,8 @@ if (localStorage.getItem('forge-theme') === 'light') {
     <div class="bq">
       <div class="bq-head"><span class="spec mono"><b>Chemistry · Chemical changes</b></span><span class="fmt">Application</span></div>
       <p class="q">Why does increasing temperature usually increase reaction rate?</p>
-      <button class="opt" data-mc="MC-SAMPLE-A" data-s="Heating increases particle speed and the proportion of collisions with enough energy to react.">The activation energy becomes zero</button>
-      <button class="opt" data-right="1">Particles collide more often and with more energy</button>
+      <button class="opt" data-right="1" data-mc="MC-SAMPLE-A" data-s="Heating increases particle speed and the proportion of collisions with enough energy to react.">The activation energy becomes zero</button>
+      <button class="opt">Particles collide more often and with more energy</button>
       <button class="opt" data-mc="MC-SAMPLE-B" data-s="Heating increases particle speed and the proportion of collisions with enough energy to react.">Products become reactants</button>
       <button class="opt" data-mc="MC-SAMPLE-C" data-s="Heating increases particle speed and the proportion of collisions with enough energy to react.">Particles stop moving</button>
       <div class="scaffold"><span class="stag"></span><p></p></div>
@@ -519,9 +519,9 @@ if (localStorage.getItem('forge-theme') === 'light') {
     <div class="bq">
       <div class="bq-head"><span class="spec mono"><b>Chemistry · Organic chemistry</b></span><span class="fmt">Concept</span></div>
       <p class="q">Which test identifies an alkene?</p>
-      <button class="opt" data-mc="MC-SAMPLE-A" data-s="Alkenes contain a carbon–carbon double bond that reacts with bromine water.">Limewater turns cloudy</button>
+      <button class="opt" data-right="1" data-mc="MC-SAMPLE-A" data-s="Alkenes contain a carbon–carbon double bond that reacts with bromine water.">Limewater turns cloudy</button>
       <button class="opt" data-mc="MC-SAMPLE-B" data-s="Alkenes contain a carbon–carbon double bond that reacts with bromine water.">A lit splint gives a squeaky pop</button>
-      <button class="opt" data-right="1">Bromine water is decolourised</button>
+      <button class="opt">Bromine water is decolourised</button>
       <button class="opt" data-mc="MC-SAMPLE-C" data-s="Alkenes contain a carbon–carbon double bond that reacts with bromine water.">Universal indicator turns blue</button>
       <div class="scaffold"><span class="stag"></span><p></p></div>
       <p class="praise">Correct — the explanation is the part worth remembering for the exam. ✦</p>
@@ -566,8 +566,8 @@ document.querySelectorAll('#eco-bank .bq').forEach(function(card){
       } else {
         btn.classList.add('wrong');
         var scaffold = card.querySelector('.scaffold');
-        scaffold.querySelector('.stag').textContent = btn.dataset.mc;
-        scaffold.querySelector('p').innerHTML = btn.dataset.s;
+        scaffold.querySelector('.stag').textContent = btn.dataset.mc || 'Concept check';
+        scaffold.querySelector('p').textContent = btn.dataset.s || 'Review the definition and apply it to the question.';
         scaffold.classList.add('show');
       }
     });

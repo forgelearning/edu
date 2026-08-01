@@ -529,8 +529,8 @@ if (localStorage.getItem('forge-theme') === 'light') {
     <div class="bq active">
       <div class="bq-head"><span class="spec mono"><b>Finance · Cash flow vs profit</b></span><span class="fmt">Concept</span></div>
       <p class="q">A student writes: "If a business is making a profit, it can't go bankrupt — profit means it has enough money." Why is this wrong?</p>
-      <button class="opt" data-mc="MC-FIN-01a" data-s="Profit (revenue minus costs, calculated for a whole trading period) and cash flow (the timing of money actually moving in and out of the business) are different things. A business can sell a lot on credit — profitable on paper — but have no cash in the bank right now to pay a supplier's invoice due today.">Profit and cash are the same thing, just counted differently.</button>
-      <button class="opt" data-right="1">A business can be profitable on paper but still run out of cash to pay its immediate bills (wages, suppliers) — profit is measured over a trading period, while cash flow is the actual movement of money in and out day to day; poor cash flow, not lack of profit, is the most common cause of small business failure.</button>
+      <button class="opt" data-right="1" data-mc="MC-FIN-01a" data-s="Profit (revenue minus costs, calculated for a whole trading period) and cash flow (the timing of money actually moving in and out of the business) are different things. A business can sell a lot on credit — profitable on paper — but have no cash in the bank right now to pay a supplier's invoice due today.">Profit and cash are the same thing, just counted differently.</button>
+      <button class="opt">A business can be profitable on paper but still run out of cash to pay its immediate bills (wages, suppliers) — profit is measured over a trading period, while cash flow is the actual movement of money in and out day to day; poor cash flow, not lack of profit, is the most common cause of small business failure.</button>
       <button class="opt" data-mc="MC-FIN-01b" data-s="This is backwards — it's entirely possible to have healthy cash reserves while making a loss (e.g. a new business living off a start-up loan), and possible to be profitable while short of cash (customers who haven't paid yet, or too much stock tied up). They must be assessed separately.">A business with lots of cash in the bank must be profitable.</button>
       <button class="opt" data-mc="MC-FIN-01c" data-s="Depreciation is a non-cash expense — it reduces the profit figure on the income statement but no cash actually leaves the business when it's recorded. This is exactly why profit and cash flow can diverge.">Depreciation and cash flow problems are the same issue.</button>
       <div class="scaffold"><span class="stag"></span><p></p></div>
@@ -604,8 +604,8 @@ document.querySelectorAll('#eco-bank .bq').forEach(function(card){
       } else {
         btn.classList.add('wrong');
         var scaffold = card.querySelector('.scaffold');
-        scaffold.querySelector('.stag').textContent = btn.dataset.mc;
-        scaffold.querySelector('p').innerHTML = btn.dataset.s;
+        scaffold.querySelector('.stag').textContent = btn.dataset.mc || 'Concept check';
+        scaffold.querySelector('p').textContent = btn.dataset.s || 'Review the definition and apply it to the question.';
         scaffold.classList.add('show');
       }
     });
