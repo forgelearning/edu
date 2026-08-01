@@ -105,7 +105,10 @@ for (const subjectKey of subjects) {
       const isBiologySection = subjectKey === 'bio' &&
         resolution.id.startsWith('ocr-a-bio-') &&
         bankResolution?.id.startsWith('ocr-a-bio-');
-      if (resolution.id !== bankResolution?.id && !isGeographyKeyIdea && !isHistorySection && !isBusinessSection && !isChemistrySection && !isBiologySection) {
+      const isPhysicsSection = subjectKey === 'phys' &&
+        resolution.id.startsWith('aqa-a-phys-') &&
+        bankResolution?.id.startsWith('aqa-a-phys-');
+      if (resolution.id !== bankResolution?.id && !isGeographyKeyIdea && !isHistorySection && !isBusinessSection && !isChemistrySection && !isBiologySection && !isPhysicsSection) {
         fail(location, `question resolves to ${resolution.id}, but bank resolves to ${bankResolution?.id || 'none'}`);
       }
       counts.set(resolution.id, (counts.get(resolution.id) || 0) + 1);

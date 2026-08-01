@@ -17024,6 +17024,39 @@ for (const bankId of Object.keys(biologyFallbackPoints)) {
   }
 }
 
+// Map the live AQA 7408 Physics banks to the numbered content sections. The
+// existing banks are mixed revision sets, so the route is based on the topic
+// language in each question and keeps a bank-level fallback for broad items.
+const physicsFallbackPoints = {
+  "PHYS-1": "aqa-a-phys-3.4",
+  "PHYS-2": "aqa-a-phys-3.5",
+  "PHYS-3": "aqa-a-phys-3.3"
+};
+const physicsPointFor = (bankId, stem) => {
+  const text = String(stem || "").toLowerCase();
+  const routes = [
+    [/medical|ultrasound|x-ray|mri|radiotherapy|half-value thickness/, "3.10"],
+    [/astrophys|star|galaxy|red-shift|redshift|luminosity|parallax|hubble|geostationary satellite/, "3.9"],
+    [/electronics|logic gate|transistor|op-amp|operational amplifier|diode/, "3.13"],
+    [/turning point|de broglie|photoelectric effect|wave-particle|quantum/, "3.12"],
+    [/nuclear|radioactive|fission|fusion|half-life|binding energy/, "3.8"],
+    [/electric field|magnetic field|gravitational field|potential at a point|orbital|escape velocity/, "3.7"],
+    [/thermal|internal energy|ideal gas|specific heat|gas law|simple harmonic|oscillation|periodic motion/, "3.6"],
+    [/current|resistance|resistivity|ohm|potential difference|emf|capacitor|transformer|electric circuit/, "3.5"],
+    [/mechanics|velocity|acceleration|newton|force|momentum|work done|energy|power|hooke|young modulus|stoke|materials|displacement-time|projectile/, "3.4"],
+    [/diffraction|interference|standing wave|polarisation|refraction|lens|wave|intensity of a wave/, "3.3"],
+    [/standard model|fundamental particle|quark|lepton|photon|electron|positron|particle|radiation|threshold frequency|work function/, "3.2"],
+    [/uncertainty|percentage uncertainty|error|repeat|reliab|validity|resolution|significant figure|gradient|practical conclusion/, "3.1"]
+  ];
+  for (const [pattern, code] of routes) if (pattern.test(text)) return `aqa-a-phys-${code}`;
+  return physicsFallbackPoints[bankId];
+};
+for (const bankId of Object.keys(physicsFallbackPoints)) {
+  for (const question of BANKS[bankId]?.questions || []) {
+    question.specPointId = physicsPointFor(bankId, question.stem);
+  }
+}
+
 // Remove the last legacy Sociology template from imported Paper 1 questions.
 // This is deliberately applied at runtime so future bank extensions cannot
 // reintroduce the same repeated "Which statement best describes..." cue.

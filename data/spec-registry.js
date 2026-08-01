@@ -595,3 +595,32 @@ Object.assign(SPEC_REGISTRY.aliases, {
   "BIO-3": "ocr-a-bio-6.1",
   "BIO-ENZ": "ocr-a-bio-2.4"
 });
+
+// AQA A-level Physics (7408), using the core and optional topic sections in
+// the published specification.
+const physicsSpecPoints = [
+  ["3.1", "Papers 1–3", "Measurements and their errors"],
+  ["3.2", "Papers 1–3", "Particles and radiation"],
+  ["3.3", "Papers 1–3", "Waves"],
+  ["3.4", "Paper 1", "Mechanics and materials"],
+  ["3.5", "Paper 1", "Electricity"],
+  ["3.6", "Papers 1–2", "Further mechanics and thermal physics"],
+  ["3.7", "Paper 2", "Fields and their consequences"],
+  ["3.8", "Paper 2", "Nuclear physics"],
+  ["3.9", "Paper 3", "Astrophysics"],
+  ["3.10", "Paper 3", "Medical physics"],
+  ["3.11", "Paper 3", "Engineering physics"],
+  ["3.12", "Paper 3", "Turning points in physics"],
+  ["3.13", "Paper 3", "Electronics"]
+];
+for (const [code, paper, title] of physicsSpecPoints) {
+  SPEC_REGISTRY.points[`aqa-a-phys-${code}`] = {
+    subject: "phys", board: "AQA", qualification: "A-level Physics (7408)",
+    paper, code, title, aliases: []
+  };
+}
+Object.assign(SPEC_REGISTRY.aliases, {
+  "PHYS-1": "aqa-a-phys-3.4",
+  "PHYS-2": "aqa-a-phys-3.5",
+  "PHYS-3": "aqa-a-phys-3.3"
+});
