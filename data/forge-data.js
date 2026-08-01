@@ -8520,7 +8520,7 @@ const compactGeoCorrectOption = (text, target) => {
   if (candidates[0]) return candidates[0];
   const shortened = compactWords(clean).split(" ");
   while (shortened.length > 1 && shortened.join(" ").length > target) shortened.pop();
-  return shortened.join(" ").slice(0, target).trim();
+  return shortened.join(" ").trim();
 };
 const geoConciseCorrectOverrides = {
   "GCSE-HAZ-11:base":"One plate sinks beneath another",
@@ -8554,6 +8554,28 @@ for (const bankId of SUBJECTS["gcse-geo"].banks) {
       const distractorMax = Math.max(...Object.entries(lengths).filter(([letter]) => letter !== item.correct).map(([, length]) => length));
       const overrideKey = `${question.id}:${item === question ? "base" : "reforge"}`;
       item.options[item.correct] = geoConciseCorrectOverrides[overrideKey] || compactGeoCorrectOption(item.options[item.correct], distractorMax);
+    }
+  }
+}
+
+// Restore several Geography correct options that were cut into fragments by
+// the old length-equalisation fallback; keep the answer-length safeguard.
+const geoOptionRepairs = {
+  "GCSE-ENQ-01:reforge": "Environmental quality improves with increasing distance from the CBD",
+  "GCSE-URF-07:reforge": "A scattergraph, plotting EQS score against distance from the Olympic Park to reveal any correlation",
+  "GCSE-UKHUMAN-19:reforge": "A larger elderly share and pressure on services such as healthcare and transport",
+  "GCSE-URB-10:base": "It can ignore residents' livelihoods and community networks if decisions are made mainly by government and developers",
+  "GCSE-DEV-11:base": "Money previously spent on debt interest could be redirected into infrastructure, industry and services"
+};
+for (const bankId of SUBJECTS["gcse-geo"].banks) {
+  for (const question of BANKS[bankId].questions) {
+    for (const [mode, item] of [["base", question], ["reforge", question.reforge]]) {
+      if (!item || !item.options || !item.options[item.correct]) continue;
+      const repair = geoOptionRepairs[`${question.id}:${mode}`];
+      if (repair) item.options[item.correct] = repair;
+      const correctLength = String(item.options[item.correct]).length;
+      const distractor = Object.keys(item.options).filter(key => key !== item.correct).sort((a, b) => String(item.options[b]).length - String(item.options[a]).length)[0];
+      while (String(item.options[distractor]).length <= correctLength) item.options[distractor] += " in this context";
     }
   }
 }
@@ -11173,9 +11195,22 @@ const separateScienceOptionRepairs = {
   "SEP-CHEM2-15:reforge": "Distance moved by substance with distance moved by solvent",
   "SEP-CHEM2-16:base": "They may ignore emissions across the full lifecycle",
   "SEP-CHEM2-07:base": "To remove harmful microbes and substances",
-  "SEP-CHEM2-16:reforge": "Use less energy and lower-emission materials"
+  "SEP-CHEM2-16:reforge": "Use less energy and lower-emission materials",
+  "SEP-PHYS1-03:base": "It remains at rest or constant velocity",
+  "SEP-PHYS1-13:base": "Current is proportional to potential difference at constant temperature",
+  "SEP-PHYS2-03:base": "Depth, density and gravitational field strength",
+  "SEP-PHYS2-10:base": "A large nucleus splits and releases energy",
+  "SEP-PHYS2-10:reforge": "Neutrons causing further fissions",
+  "SEP-PHYS2-16:base": "It reduces conduction and convection",
+  "SEP-BIO1-11:base": "Loss of water vapour from leaves",
+  "SEP-BIO2-01:base": "Viruses lack the bacterial targets antibiotics act on",
+  "SEP-BIO2-01:reforge": "Resistant bacteria survive and reproduce",
+  "SEP-BIO2-06:base": "Better-adapted individuals reproduce more successfully",
+  "SEP-BIO2-06:reforge": "Mutations and sexual reproduction",
+  "SEP-BIO2-15:base": "Fewer trees remove carbon dioxide by photosynthesis",
+  "SEP-BIO2-15:reforge": "Planting and protecting trees"
 };
-for (const bankId of ["GCSE-SEP-CHEM-1","GCSE-SEP-CHEM-2"]) {
+for (const bankId of ["GCSE-SEP-CHEM-1","GCSE-SEP-CHEM-2","GCSE-SEP-PHYS-1","GCSE-SEP-PHYS-2","GCSE-SEP-BIO-1","GCSE-SEP-BIO-2"]) {
   for (const question of BANKS[bankId].questions) {
     for (const [mode, item] of [["base", question], ["reforge", question.reforge]]) {
       if (!item || !item.options || !item.options[item.correct]) continue;
@@ -13968,3 +14003,157 @@ BANKS["PSY-COG"] = {
 };
 
 SUBJECTS["psych"].banks = ["PSY-SI","PSY-MEM","PSY-ATT","PSY-PATH","PSY-APP","PSY-BIO","PSY-RM","PSY-ID","PSY-COG"];
+
+// ===== A LEVEL PSYCHOLOGY (AQA 7182) PAPER 3 OPTION: STRESS =====
+BANKS["PSY-STR"] = {
+  label: "Stress",
+  color: "#831843",
+  questions: [
+    {
+      id:"STR-01",stem:"What are the three stages of Selye's General Adaptation Syndrome, in order?",
+      options:{A:"Alarm, resistance and finally exhaustion of the body's resources",B:"Appraisal, coping and then the eventual recovery of normal function",C:"Arousal, adaptation and the subsequent restoration of homeostasis",D:"Anxiety, adjustment and then complete acclimatisation to the stressor"},correct:"A",tag:"MC-STR-GAS",
+      scaffold:"Selye exposed rats to varied stressors and found the same physiological response regardless of the cause, which is why he called it a general syndrome. Alarm: the stressor is perceived, the sympathomedullary pathway activates and adrenaline is released, producing fight or flight. Resistance: the body appears to cope as the HPA axis sustains cortisol output, but resources are being depleted. Exhaustion: the systems can no longer maintain the response, cortisol levels crash or stay chronically raised, the immune system is suppressed and stress-related illness appears. The key criticism is that GAS assumes a uniform response, ignoring psychological appraisal and individual differences.",
+      reforge:{stem:"Why is GAS described as a non-specific response?",options:{A:"It occurs only in response to physical rather than psychological stressors",B:"The same physiological pattern follows regardless of the stressor",C:"It varies completely depending on which stressor is encountered",D:"It affects only the immune system and no other bodily system"},correct:"B"}
+    },
+    {
+      id:"STR-02",stem:"The sympathomedullary pathway responds to acute stress by releasing:",
+      options:{A:"Cortisol from the adrenal cortex over a period of several hours",B:"Melatonin from the pineal gland to regulate the sleep-wake cycle",C:"Adrenaline and noradrenaline from the adrenal medulla within seconds",D:"Corticotrophin releasing hormone secreted from the anterior pituitary gland"},correct:"C",tag:"MC-STR-SAM",
+      scaffold:"Two systems handle stress on different timescales, and questions often turn on telling them apart. The SAM pathway handles acute stress: the hypothalamus activates the sympathetic branch of the ANS, which stimulates the adrenal medulla to release adrenaline and noradrenaline almost instantly, raising heart rate, blood pressure and blood glucose for fight or flight. Once the threat passes, the parasympathetic branch returns the body to baseline. The HPA axis handles chronic stress far more slowly: hypothalamus releases CRH, pituitary releases ACTH, adrenal cortex releases cortisol over minutes to hours. Acute equals adrenaline; chronic equals cortisol.",
+      reforge:{stem:"Which system dominates during prolonged, chronic stress?",options:{A:"The sympathomedullary pathway releasing adrenaline",B:"The parasympathetic branch of the autonomic system",C:"The hypothalamic-pituitary-adrenal axis releasing cortisol",D:"The somatic nervous system that controls all voluntary movement"},correct:"C"}
+    },
+    {
+      id:"STR-03",stem:"Which sequence correctly describes the HPA axis?",
+      options:{A:"Pituitary releases CRH, hypothalamus releases ACTH, medulla releases adrenaline",B:"Adrenal cortex releases CRH, which stimulates the hypothalamus directly",C:"Hypothalamus releases ACTH, which travels to the adrenal medulla",D:"Hypothalamus releases CRH, pituitary releases ACTH, cortex releases cortisol"},correct:"D",tag:"MC-STR-HPA",
+      scaffold:"Learn the chain in order and the exam question answers itself. The hypothalamus detects a sustained stressor and secretes corticotrophin releasing hormone. CRH travels to the anterior pituitary, which secretes adrenocorticotrophic hormone into the bloodstream. ACTH reaches the adrenal cortex, which secretes cortisol. Cortisol maintains steady blood glucose and reduces inflammation in the short term, which is adaptive. There is also a negative feedback loop: high cortisol signals the hypothalamus and pituitary to reduce output, restoring balance. Chronic stress disrupts this feedback, which is why prolonged stress produces persistently abnormal cortisol levels.",
+      reforge:{stem:"What is the function of the negative feedback loop in the HPA axis?",options:{A:"High cortisol reduces further CRH and ACTH release",B:"It permanently increases the output of cortisol over time",C:"It converts cortisol into adrenaline within the bloodstream",D:"It activates the sympathetic branch of the nervous system"},correct:"A"}
+    },
+    {
+      id:"STR-04",stem:"Kiecolt-Glaser's study of wound healing in carers found that:",
+      options:{A:"Carers' wounds healed considerably faster than those of matched controls",B:"Wound healing was entirely unrelated to the participants' stress levels",C:"Only male carers showed any measurable delay in their wound healing",D:"Carers' wounds took significantly longer to heal than controls' wounds"},correct:"D",tag:"MC-STR-IMMUNE",
+      scaffold:"Kiecolt-Glaser gave small punch biopsy wounds to women caring for relatives with dementia and to matched controls, and found the carers' wounds took around nine days longer to heal — direct evidence that chronic stress suppresses immune function. Her earlier work with medical students showed reduced natural killer cell activity during exam periods compared with a month before. The mechanism is cortisol: useful anti-inflammatory action in the short term, but sustained high levels suppress lymphocyte production and antibody response. Evaluate by noting that immune changes are measurable but small, other variables such as sleep, diet and alcohol confound the relationship, and much data is correlational.",
+      reforge:{stem:"Which mechanism links chronic stress to reduced immune function?",options:{A:"Adrenaline permanently destroys white blood cells",B:"Melatonin suppresses the production of antibodies",C:"Sustained cortisol suppresses lymphocyte production",D:"Noradrenaline prevents wounds from clotting properly"},correct:"C"}
+    },
+    {
+      id:"STR-05",stem:"Which is the best explanation of how chronic stress contributes to cardiovascular disorders?",
+      options:{A:"Stress hormones directly create blood clots inside the coronary arteries",B:"Raised blood pressure and heart rate damage vessel walls over time",C:"Cortisol lowers blood glucose, starving the heart muscle of energy",D:"Stress causes the heart to beat more slowly, weakening the muscle"},correct:"B",tag:"MC-STR-CVD",
+      scaffold:"There are direct and indirect routes, and a full answer uses both. Directly, repeated activation of the stress response raises heart rate and blood pressure, and that sustained pressure damages the lining of blood vessels, encouraging plaque formation and atherosclerosis; cortisol also raises blood glucose and lipid levels. Indirectly, stressed people smoke more, drink more, sleep less, eat worse and exercise less, all of which independently raise cardiovascular risk. That indirect route is a serious confound for research: studies linking stress to heart disease are usually correlational, so the relationship may be mediated by behaviour rather than physiology.",
+      reforge:{stem:"Why is the link between stress and heart disease difficult to establish causally?",options:{A:"Heart disease cannot be diagnosed with any accuracy",B:"Stress hormones cannot be measured in living participants",C:"No study has ever found any correlation between them",D:"Indirect lifestyle factors may mediate the relationship"},correct:"D"}
+    },
+    {
+      id:"STR-06",stem:"Holmes and Rahe's Social Readjustment Rating Scale measures stress caused by:",
+      options:{A:"Minor irritations encountered during the course of an ordinary day",B:"The level of control an employee has over their own workload",C:"Life changes requiring readjustment, each given a life change unit score",D:"Physiological arousal recorded through skin conductance and the heart rate"},correct:"C",tag:"MC-STR-LIFE",
+      scaffold:"The SRRS lists 43 life events ranked by how much readjustment they demand, from death of a spouse at 100 life change units down to minor violations of the law at 11. Participants total the units for events experienced in the past year, and scores above 300 are associated with substantially raised illness risk. Note the design assumption that matters for evaluation: readjustment itself is stressful, so positive events such as marriage or promotion also score. Criticisms are that the scale ignores individual differences in how events are appraised, that it relies on retrospective recall which is unreliable, and that the correlations found are modest and cannot show causation.",
+      reforge:{stem:"Why do positive life events appear on the SRRS?",options:{A:"The scale assumes any change requiring readjustment is stressful",B:"Positive life events are always more stressful than negative ones",C:"The scale was designed only to measure happiness levels",D:"Researchers included them accidentally when constructing it"},correct:"A"}
+    },
+    {
+      id:"STR-07",stem:"Kanner's hassles and uplifts scale was developed because:",
+      options:{A:"Life events scales were considered far too quick to administer",B:"Daily hassles may predict ill health better than major life events",C:"Physiological measures of stress had proved to be entirely unreliable",D:"Major life events were shown to have no effect on health at all"},correct:"B",tag:"MC-STR-HASSLES",
+      scaffold:"Major life events are relatively rare, so they cannot explain most day-to-day variation in health. Kanner argued the accumulation of minor daily irritations — traffic, deadlines, arguments — is a better predictor, and research has generally supported this, with hassles correlating more strongly with illness than SRRS scores. Two explanations are offered: the accumulation effect, where minor stressors add up, and the amplification effect, where an existing major stressor makes everyday hassles harder to absorb. Uplifts, the positive counterweight, may buffer the effect. The same criticisms apply as to the SRRS — retrospective self-report, correlational data, and no account of appraisal.",
+      reforge:{stem:"What does the 'amplification effect' describe?",options:{A:"Hassles become easier to manage during a major life event",B:"Uplifts amplify the negative impact of daily hassles",C:"An ongoing major stressor makes daily hassles harder to cope with",D:"Major life events amplify the reliability of all self-report measures"},correct:"C"}
+    },
+    {
+      id:"STR-08",stem:"In Karasek's job demands-control model, the most stressful work is characterised by:",
+      options:{A:"High demands combined with low control over how the work is done",B:"Low demands together with a very high degree of personal control",C:"High demands paired with a high degree of autonomy and control",D:"Low demands and low control, producing boredom and disengagement"},correct:"A",tag:"MC-STR-WORK",
+      scaffold:"Karasek's model holds that strain arises from the combination of high demand and low control, not from demand alone — a surgeon has enormous demands but high control and autonomy, while a call centre worker has moderate demands and almost none. Marmot's Whitehall II study of civil servants supports this: lower-grade employees, who had less job control, showed higher rates of cardiovascular disease even after controlling for smoking and other risk factors. Note the evaluation — later work added social support as a third dimension, and individual differences matter, since some people find high control itself stressful because it brings responsibility.",
+      reforge:{stem:"What did Marmot's Whitehall II study find?",options:{A:"The senior civil servants had the highest rates of heart disease",B:"Job control had no relationship with cardiovascular health",C:"Only smoking predicted cardiovascular disease in the sample",D:"Lower-grade staff with less job control had more heart disease"},correct:"D"}
+    },
+    {
+      id:"STR-09",stem:"Which is a limitation of using self-report questionnaires to measure stress?",
+      options:{A:"They cannot be administered to large samples of participants",B:"They produce only physiological data that is difficult to interpret",C:"Retrospective recall is unreliable and answers may be socially desirable",D:"They are far more expensive to run than any physiological measure of stress"},correct:"C",tag:"MC-STR-MEASURE",
+      scaffold:"Self-report scales such as the SRRS and the hassles scale are quick, cheap and usable with large samples, which is their strength. The weaknesses are real though: participants must recall events over months, and recall is both incomplete and biased — someone currently ill may search harder for stressors, creating a spurious correlation. Answers may also be shaped by social desirability. Physiological measures such as skin conductance, blood pressure and salivary cortisol avoid these problems and are objective, but they are invasive, expensive, affected by caffeine, exercise and time of day, and cannot identify what caused the arousal. Combining both is the strongest design.",
+      reforge:{stem:"What is the main advantage of physiological over self-report measures?",options:{A:"They provide objective data not dependent on participant recall",B:"They are always cheaper and quicker to administer",C:"They identify precisely which stressor has caused the given response",D:"They are entirely unaffected by caffeine or exercise"},correct:"A"}
+    },
+    {
+      id:"STR-10",stem:"Friedman and Rosenman identified Type A personality as characterised by:",
+      options:{A:"Patience, relaxation and a notably easy-going approach to deadlines",B:"Competitiveness, time urgency and hostility towards other people",C:"Suppression of emotion and an unassertive, conforming manner",D:"Strong commitment, a sense of control and openness to challenge"},correct:"B",tag:"MC-STR-PERSONALITY",
+      scaffold:"Friedman and Rosenman's Western Collaborative Group Study followed around 3,000 men for eight and a half years and found Type A men were roughly twice as likely to develop coronary heart disease. Type A: competitive, impatient, time-pressured and hostile. Type B: relaxed, patient, non-competitive. Later research refined the picture significantly — hostility appears to be the genuinely toxic component rather than the whole Type A cluster, and several replications failed to reproduce the original effect. Type C, characterised by emotional suppression, has been linked to cancer, and Kobasa's hardy personality, described in option D, is protective.",
+      reforge:{stem:"Which component of Type A personality appears most strongly linked to heart disease?",options:{A:"Time urgency and marked impatience with any delay",B:"Competitiveness in work and leisure",C:"Hostility and a cynical attitude to others",D:"Ambition and a strong drive to achieve"},correct:"C"}
+    },
+    {
+      id:"STR-11",stem:"Kobasa's three components of the hardy personality are:",
+      options:{A:"Competitiveness, hostility and a persistent sense of time urgency",B:"Alarm, resistance and eventual exhaustion of physical resources",C:"Commitment, control and viewing change as a challenge",D:"Denial, displacement and the repression of stressful memories"},correct:"C",tag:"MC-STR-HARDINESS",
+      scaffold:"Hardiness is a protective disposition made up of the three Cs. Commitment: involvement in life and a sense of purpose. Control: the belief that one influences events, closely related to an internal locus of control. Challenge: treating change as an opportunity to develop rather than a threat. Kobasa found hardy executives fell ill less often despite comparable stress levels, and hardiness training — teaching focusing, reconstructing stressful situations and self-improvement through manageable challenges — has been developed on this basis. Criticisms are that the concept overlaps heavily with existing ideas such as locus of control and negative affectivity, and that measurement relies on self-report.",
+      reforge:{stem:"Which existing concept does hardiness overlap with most closely?",options:{A:"Locus of control, particularly an internal orientation",B:"Short-term memory capacity and its typical overall duration",C:"Attachment type formed during early infancy",D:"The correspondence principle in education"},correct:"A"}
+    },
+    {
+      id:"STR-12",stem:"Benzodiazepines reduce anxiety primarily by:",
+      options:{A:"Blocking the reuptake of serotonin at the synaptic cleft",B:"Preventing adrenaline from binding to any of the receptors in the heart",C:"Increasing cortisol output from the adrenal cortex directly",D:"Enhancing the action of GABA, the brain's main inhibitory transmitter"},correct:"D",tag:"MC-STR-DRUGS",
+      scaffold:"BZs bind to GABA receptors and enhance GABA's inhibitory effect, allowing more chloride ions into the neuron, which makes it less likely to fire — the result is generalised reduced arousal and anxiety. Beta blockers work quite differently and peripherally: they bind to beta-adrenergic receptors in the heart and blood vessels, blocking adrenaline and noradrenaline so heart rate and blood pressure fall, without affecting the brain's anxiety experience. That distinction matters: BZs treat the psychological experience, beta blockers the physical symptoms. Evaluate both as effective and quick but treating symptoms not causes, with BZ dependence and tolerance a serious drawback.",
+      reforge:{stem:"How do beta blockers differ in their mechanism from benzodiazepines?",options:{A:"They act upon GABA receptors within the central nervous system",B:"They block adrenaline peripherally, reducing physical symptoms",C:"They increase serotonin availability in the synaptic cleft",D:"They suppress the release of CRH from the hypothalamus"},correct:"B"}
+    },
+    {
+      id:"STR-13",stem:"What is the correct order of the three phases of Meichenbaum's Stress Inoculation Training?",
+      options:{A:"Application, conceptualisation and then finally skills acquisition",B:"Skills acquisition, application and then conceptualisation of the problem",C:"Conceptualisation, skills acquisition and rehearsal, then application",D:"Relaxation, medication and then gradual exposure to the stressor"},correct:"C",tag:"MC-STR-SIT",
+      scaffold:"SIT is a cognitive-behavioural approach that builds resistance in advance, like a vaccination. Conceptualisation: the client and therapist analyse the stressors and identify how the client currently appraises them. Skills acquisition and rehearsal: the client learns coping techniques — relaxation, positive self-talk, social skills — and practises them in the session. Application: the skills are used in progressively more demanding real situations, often starting with role play. Its strength is that it targets appraisal, addressing the cause rather than the symptoms, and effects are durable. Its weaknesses are the time, expense and motivation required compared with taking a tablet.",
+      reforge:{stem:"What is the main advantage of SIT over drug therapy?",options:{A:"It produces results within a matter of hours",B:"It requires no effort or ongoing commitment from the client",C:"It has no risk of any side effects whatsoever",D:"It targets appraisal, so gains are durable and transferable"},correct:"D"}
+    },
+    {
+      id:"STR-14",stem:"Biofeedback works by:",
+      options:{A:"Giving real-time information about bodily functions so they can be controlled",B:"Administering small doses of medication whenever arousal rises",C:"Exposing the client repeatedly to the feared situation until the fear fades away",D:"Restructuring the irrational beliefs that underlie the stress response"},correct:"A",tag:"MC-STR-BIOFEEDBACK",
+      scaffold:"Biofeedback monitors an involuntary function — heart rate, muscle tension, skin conductance — and displays it to the client as a tone or visual signal. The client experiments with relaxation techniques and sees the immediate effect, so operant conditioning reinforces whatever lowers arousal; eventually the skill transfers away from the machine. It is non-invasive with no side effects and gives the client a sense of control, which is valuable in itself. The main criticisms are that it is expensive and equipment-dependent, and that its benefits may come simply from the relaxation training rather than from the feedback, since relaxation alone often produces similar results.",
+      reforge:{stem:"What is the main criticism of biofeedback's effectiveness?",options:{A:"It causes serious physical side effects in most clients",B:"Relaxation alone may produce the same benefits without equipment",C:"It cannot be used with anyone over the age of sixty",D:"It has never once been properly tested in any controlled research study"},correct:"B"}
+    },
+    {
+      id:"STR-15",stem:"Which finding best describes gender differences in coping with stress?",
+      options:{A:"Men and women have been shown to cope in precisely identical ways",B:"Men are more likely to seek emotional support from their social network",C:"Women more often use emotion-focused and social support strategies",D:"Women exclusively use problem-focused coping in every situation"},correct:"C",tag:"MC-STR-GENDER",
+      scaffold:"Research generally finds women more likely to use emotion-focused coping and to seek social support, while men more often use problem-focused coping or avoidance. Taylor's tend and befriend model gives a biological account: under stress women may protect offspring and form alliances, mediated by oxytocin, which is released in greater quantities in women and whose effects are enhanced by oestrogen. This challenges the androcentric fight-or-flight model built on largely male samples — a clear example of beta bias. Evaluate carefully: differences are averages with substantial overlap, and socialisation is a plausible alternative explanation to hormones.",
+      reforge:{stem:"Which hormone is central to Taylor's tend and befriend explanation?",options:{A:"Cortisol released from the adrenal cortex",B:"Adrenaline released from the adrenal medulla",C:"Testosterone, which is produced primarily in the testes",D:"Oxytocin, whose effects are enhanced by oestrogen"},correct:"D"}
+    },
+    {
+      id:"STR-16",stem:"Which type of social support involves providing practical assistance such as money or transport?",
+      options:{A:"Emotional support, offering empathy, reassurance and a listening ear",B:"Esteem support, expressing confidence in the person's own abilities",C:"Informational support, giving advice and guidance on the problem",D:"Instrumental support, supplying tangible resources and direct help"},correct:"D",tag:"MC-STR-SUPPORT",
+      scaffold:"Four types are usually distinguished: instrumental (tangible help — lifts, money, childcare), emotional (empathy and reassurance), esteem (expressing belief in the person's competence, which builds self-efficacy) and informational (advice and guidance). Social support acts as a buffer, moderating the effect of stressors on health, and it correlates with faster recovery and lower mortality — Kamarck found that participants accompanied by a friend showed lower cardiovascular reactivity during a stressful task. Note the subtlety worth stating: support only helps if it matches the need, and unwanted or mismatched support can increase stress by undermining a sense of control.",
+      reforge:{stem:"Why might social support sometimes fail to reduce stress?",options:{A:"Support only works when it matches the person's actual need",B:"Social support has never been shown to affect health outcomes",C:"Only instrumental support has any measurable benefit",D:"Support always increases the level of cortisol released"},correct:"A"}
+    },
+    {
+      id:"STR-17",stem:"A student revising for exams reframes them as a challenge rather than a threat. According to Lazarus, this is:",
+      options:{A:"Secondary appraisal, judging whether resources are adequate to cope",B:"Primary appraisal, evaluating whether the situation is threatening",C:"An example of instrumental social support from another person",D:"The resistance stage of the General Adaptation Syndrome"},correct:"B",tag:"MC-STR-APPRAISAL",
+      scaffold:"Lazarus's transactional model treats stress as a relationship between person and situation rather than a property of the event. Primary appraisal asks 'is this a threat?' — the same exam can be appraised as irrelevant, benign or stressful, and within stressful as harm, threat or challenge. Secondary appraisal asks 'can I cope?', assessing available resources. Stress results only when demands are judged to exceed resources. This explains individual differences that Selye's GAS cannot, and it underpins SIT, which works precisely by changing appraisal. The main criticism is that the appraisal process is difficult to measure objectively and may not always be conscious.",
+      reforge:{stem:"Why does Lazarus's model explain individual differences better than GAS?",options:{A:"It focuses only on the physiological stress response",B:"It assumes everyone responds identically to a stressor",C:"Stress depends on how the individual appraises the situation",D:"It measures stress by using objective physiological recordings"},correct:"C"}
+    },
+    {
+      id:"STR-18",stem:"Which is a limitation of Selye's General Adaptation Syndrome?",
+      options:{A:"It was based on research using only human female participants",B:"It ignores psychological appraisal and individual differences",C:"It fails to describe any physiological response to a stressor",D:"It has never been supported by any experimental evidence"},correct:"B",tag:"MC-STR-GAS",
+      scaffold:"GAS was derived from animal research, mainly rats exposed to physical stressors such as cold and injury, so generalising to human psychological stressors is questionable — humans appraise, anticipate and ruminate in ways rats do not. The model treats the response as uniform, which Lazarus's transactional model directly contradicts. It also cannot explain why the same stressor affects people so differently, which personality research on Type A and hardiness addresses. Balance this with its genuine contribution: GAS was the first systematic account linking prolonged stress to physical illness, and the physiological pathways it identified remain the basis of the topic.",
+      reforge:{stem:"Why is generalising from Selye's animal research to humans problematic?",options:{A:"Rats do not possess any adrenal glands at all",B:"Animal research simply cannot measure physiological responses",C:"Humans experience the stress response far more weakly",D:"Humans appraise and anticipate stressors in ways rats cannot"},correct:"D"}
+    },
+    {
+      id:"STR-19",stem:"Cortisol has which short-term adaptive function?",
+      options:{A:"It permanently suppresses the entire immune system's activity",B:"It maintains blood glucose supply and reduces inflammation",C:"It slows the heart rate to conserve the body's energy reserves",D:"It triggers the immediate release of adrenaline from the medulla"},correct:"B",tag:"MC-STR-HPA",
+      scaffold:"Cortisol is not simply harmful — that is a common misconception. In the short term it is adaptive: it mobilises energy by raising blood glucose through gluconeogenesis, sustaining the prolonged effort a lasting stressor demands, and it dampens inflammation, which is why synthetic corticosteroids are prescribed as anti-inflammatories. The damage comes from chronic elevation: sustained cortisol suppresses lymphocyte production and antibody response, raises blood pressure and lipid levels, and impairs hippocampal function and therefore memory. This short-term benefit versus long-term cost distinction is exactly what examiners look for when asking about the role of cortisol.",
+      reforge:{stem:"What is the effect of chronically elevated cortisol on memory?",options:{A:"It permanently improves the encoding of episodic memories",B:"It has no measurable effect on any cognitive function",C:"It impairs hippocampal function and damages memory",D:"It increases the capacity of short-term memory stores"},correct:"C"}
+    },
+    {
+      id:"STR-20",stem:"Which is the strongest methodological criticism of research linking life events to illness?",
+      options:{A:"Correlational data cannot establish that life events cause the illness",B:"Major life events have never been shown to correlate with illness at all",C:"The SRRS can only be administered to participants under thirty",D:"Illness cannot be measured reliably by any medical professional"},correct:"A",tag:"MC-STR-LIFE",
+      scaffold:"Almost all life events research is correlational, and the direction of causation is genuinely ambiguous: stress may cause illness, but illness also generates stressful life events such as job loss, financial difficulty and relationship breakdown. A third variable — poverty, for instance — could produce both. Retrospective recall compounds the problem, since people who are currently ill may search their memory harder for stressors, inflating the correlation. Add that the SRRS assigns fixed scores regardless of context, though a divorce may be a relief for one person and devastating for another. Prospective longitudinal designs address some of this but cannot manipulate the variable ethically.",
+      reforge:{stem:"Why might illness cause life events rather than the other way round?",options:{A:"Illness prevents any life events from occurring at all",B:"Illness can cause job loss, financial strain and relationship breakdown",C:"Illness automatically raises a person's total score on the hassles scale",D:"Illness always occurs before any stressful event is experienced"},correct:"B"}
+    },
+    {
+      id:"STR-21",stem:"Emotion-focused coping is most appropriate when:",
+      options:{A:"The stressor can be directly changed by the individual's own actions alone",B:"The person has complete control over the outcome of the situation",C:"The stressor is uncontrollable, such as bereavement or terminal illness",D:"A practical plan would immediately remove the source of the stress"},correct:"C",tag:"MC-STR-COPING",
+      scaffold:"Problem-focused coping tackles the stressor itself — making a plan, seeking information, taking action — and works well when the situation is controllable. Emotion-focused coping manages the emotional response through reappraisal, distraction, seeking comfort or acceptance, and is more appropriate when nothing can change the situation, as with bereavement or a terminal diagnosis. The important point for evaluation is that neither is inherently superior: effectiveness depends on the match between strategy and controllability, which is the goodness-of-fit hypothesis. Persistently using problem-focused coping on an uncontrollable stressor produces frustration and helplessness.",
+      reforge:{stem:"What does the goodness-of-fit hypothesis propose?",options:{A:"Problem-focused coping is always far superior to emotion-focused",B:"Coping strategies have no effect on stress-related outcomes",C:"Emotion-focused coping should be used in every situation",D:"Effectiveness depends on matching strategy to controllability"},correct:"D"}
+    },
+    {
+      id:"STR-22",stem:"Which is an ethical concern in stress research using human participants?",
+      options:{A:"Participants can never give informed consent to any stress study",B:"Deliberately inducing stress risks psychological harm to participants",C:"Stress research is prohibited by law in most European countries",D:"Physiological measures of stress are painful and permanently damaging"},correct:"B",tag:"MC-STR-ETHICS",
+      scaffold:"Protection from harm is the central issue: studies that induce stress experimentally, through tasks such as mental arithmetic under time pressure or cold pressor immersion, deliberately cause distress. Researchers manage this through informed consent about what will happen, the right to withdraw at any point, keeping induced stress mild and brief, and thorough debriefing with monitoring afterwards. There is a trade-off with validity though, because mild laboratory stressors bear little resemblance to chronic real-world stress such as caring for a relative with dementia — which is precisely why naturally occurring stressors are studied instead, at the cost of experimental control.",
+      reforge:{stem:"Why do researchers often study naturally occurring stressors instead?",options:{A:"Natural stressors are far easier to manipulate under experimental conditions",B:"They allow the researcher full control over all variables",C:"They avoid inducing harm and better reflect real chronic stress",D:"Naturally occurring stressors require no ethical approval"},correct:"C"}
+    },
+    {
+      id:"STR-23",stem:"A limitation of benzodiazepines as a treatment for stress is that:",
+      options:{A:"They take several months before producing any therapeutic effect",B:"They have no measurable effect on anxiety compared with placebo",C:"They can only ever be prescribed to patients over the age of sixty-five",D:"Tolerance and dependence develop, and they treat symptoms not causes"},correct:"D",tag:"MC-STR-DRUGS",
+      scaffold:"BZs are fast-acting and effective, requiring no effort from the patient, which makes them useful for acute crisis. The drawbacks are substantial: physical dependence and tolerance develop within weeks, so UK guidance restricts use to two to four weeks; withdrawal produces rebound anxiety and insomnia; and side effects include drowsiness and impaired memory and coordination. Above all they suppress symptoms without addressing the appraisal or circumstances generating the stress, so relapse on stopping is common. That is the central comparison with SIT and biofeedback, which are slower and demand effort but tackle the cause and produce durable change.",
+      reforge:{stem:"Why is relapse common after stopping benzodiazepine treatment?",options:{A:"The underlying cause of the stress has not been addressed",B:"The drug permanently alters the structure of the brain",C:"Patients become physically unable to use other therapies",D:"Benzodiazepines increase the number of life events experienced"},correct:"A"}
+    },
+    {
+      id:"STR-24",stem:"Which conclusion is best supported by the evidence on managing stress?",
+      options:{A:"Drug therapy alone is sufficient for all stress-related problems",B:"Combining approaches suits different needs and timescales best",C:"Psychological therapies have consistently been shown to be ineffective",D:"Social support is the only method with any research support at all"},correct:"B",tag:"MC-STR-COMPARE",
+      scaffold:"The evidence supports matching method to circumstance rather than declaring a winner. Drugs act fast and require no effort, so they suit acute crisis or someone too overwhelmed to engage with therapy — but they treat symptoms and carry dependence risk. SIT and biofeedback are slower and demand motivation and money, but they target appraisal and physiological control, so gains persist and transfer. Social support buffers stress at no cost but depends on having a network and on the support matching the need. A staged approach — drugs to stabilise, then psychological work to build durable coping — is well supported and is the strongest line to take in an essay conclusion.",
+      reforge:{stem:"Why might drug therapy be appropriate as an initial intervention?",options:{A:"It permanently resolves the underlying source of stress",B:"It is the only approach with any evidence base at all",C:"It works quickly and needs little effort from an overwhelmed client",D:"It teaches coping skills that will transfer to many future situations"},correct:"C"}
+    }
+  ]
+};
+
+SUBJECTS["psych"].banks = ["PSY-SI","PSY-MEM","PSY-ATT","PSY-PATH","PSY-APP","PSY-BIO","PSY-RM","PSY-ID","PSY-COG","PSY-STR"];
