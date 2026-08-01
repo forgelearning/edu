@@ -13630,3 +13630,21 @@ BANKS["SOC-MET"].questions.push(
     reforge:{stem:"How is the limited generalisability of a case study usually defended?",options:{A:"Case studies are always representative of the wider population",B:"Generalisation is never an aim of any sociological research",C:"A single school is legally identical to every other school",D:"They generate concepts and hypotheses that larger studies test"},correct:"D"}
   }
 );
+
+// Keep correct options from becoming a length cue in the new banks. Existing
+// Forge balancing uses the same conservative "in this market" suffix where a
+// distractor needs a small length adjustment.
+const equaliseEconCoverageOptions = (bankIds) => bankIds.forEach(bankId => BANKS[bankId].questions.forEach(q => [q, q.reforge].forEach(item => {
+  if (!item || !item.options || !item.options[item.correct]) return;
+  const clean = value => String(value).replace(/<[^>]+>/g, "");
+  let lengths = Object.fromEntries(Object.entries(item.options).map(([key, value]) => [key, clean(value).length]));
+  const correctLength = lengths[item.correct];
+  const distractors = Object.keys(item.options).filter(key => key !== item.correct).sort((a, b) => lengths[b] - lengths[a]);
+  if (!distractors.length) return;
+  const longest = distractors[0];
+  while (lengths[longest] <= correctLength) {
+    item.options[longest] += " in this market";
+    lengths[longest] = clean(item.options[longest]).length;
+  }
+})));
+equaliseEconCoverageOptions(["ECON-1.1","3.1.1","3.2.1","4.1.1"]);
