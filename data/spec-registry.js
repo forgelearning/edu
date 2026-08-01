@@ -717,3 +717,33 @@ Object.assign(SPEC_REGISTRY.aliases, {
   "FR-1": "edexcel-a-french-P1",
   "FR-2": "edexcel-a-french-P2"
 });
+
+// Pearson Edexcel A-level German (9GN0), using the four published themes
+// and the three assessment papers as the canonical content/skill points.
+const germanSpecPoints = [
+  ["1.1", "Papers 1–3", "Natur und Umwelt"],
+  ["1.2", "Papers 1–3", "Bildung"],
+  ["1.3", "Papers 1–3", "Die Welt der Arbeit"],
+  ["2.1", "Papers 1–3", "Musik"],
+  ["2.2", "Papers 1–3", "Die Medien"],
+  ["2.3", "Papers 1–3", "Die Rolle von Festen und Traditionen"],
+  ["3.1", "Papers 1–3", "Die positive Auswirkung von Immigration"],
+  ["3.2", "Papers 1–3", "Die Herausforderungen von Immigration und Integration"],
+  ["3.3", "Papers 1–3", "Die staatliche und soziale Reaktion zur Immigration"],
+  ["4.1", "Papers 1–3", "Die Gesellschaft in der DDR vor der Wiedervereinigung"],
+  ["4.2", "Papers 1–3", "Ereignisse vor der Wiedervereinigung"],
+  ["4.3", "Papers 1–3", "Deutschland seit der Wiedervereinigung"],
+  ["P1", "Paper 1", "Listening, reading and translation"],
+  ["P2", "Paper 2", "Written response to works and translation"],
+  ["P3", "Paper 3", "Speaking and independent research"]
+];
+for (const [code, paper, title] of germanSpecPoints) {
+  SPEC_REGISTRY.points[`edexcel-a-german-${code}`] = {
+    subject: "german", board: "Edexcel", qualification: "A-level German (9GN0)",
+    paper, code, title, aliases: []
+  };
+}
+Object.assign(SPEC_REGISTRY.aliases, {
+  "DE-1": "edexcel-a-german-P1",
+  "DE-2": "edexcel-a-german-P2"
+});

@@ -17176,6 +17176,41 @@ for (const bankId of Object.keys(frenchFallbackPoints)) {
   }
 }
 
+// Map the live Edexcel 9GN0 German banks to the four themes and assessment
+// skills. The existing banks currently focus on grammar and translation, so
+// their assessment-paper fallback is explicit until cultural banks are added.
+const germanFallbackPoints = {
+  "DE-1": "edexcel-a-german-P1",
+  "DE-2": "edexcel-a-german-P2"
+};
+const germanPointFor = (bankId, stem) => {
+  const text = String(stem || "").toLowerCase();
+  const routes = [
+    [/umwelt|natur|recycling|erneuerbare energie|nachhaltig/, "1.1"],
+    [/bildung|schule|student|studium|ausbildung|universität|universitaet/, "1.2"],
+    [/arbeit|beruf|arbeitslos|geschäft|geschaeft|industrie|arbeitsmoral/, "1.3"],
+    [/musik|lied|rap|künstler|kuenstler|konzert/, "2.1"],
+    [/medien|fernsehen|digital|print|online|presse|journal|soziale netzwerke/, "2.2"],
+    [/fest|feier|tradition|brauch|sitte/, "2.3"],
+    [/immigration|immigrant|wirtschaft|kultur.*beitrag/, "3.1"],
+    [/integration|ausgrenzung|entfremdung|gemeinde|gemeinschaft/, "3.2"],
+    [/rechtsextrem|asyl|gastarbeiter|öffentliche meinung|oeffentliche meinung/, "3.3"],
+    [/ddr|kommunistisch|wohnung|verhältnis zum westen|verhaeltnis zum westen/, "4.1"],
+    [/wiedervereinigung|mauer|berliner mauer|zusammenbruch des kommunismus/, "4.2"],
+    [/ost.*west|arbeitslosigkeit.*ddr|schulen.*deutschland|seit der wiedervereinigung/, "4.3"],
+    [/translate|translation|literary|film|novel|play|character|essay|analysis/, "P2"],
+    [/speak|speaking|oral|research|presentation|discussion/, "P3"],
+    [/listen|listening|reading|comprehension|understanding/, "P1"]
+  ];
+  for (const [pattern, code] of routes) if (pattern.test(text)) return `edexcel-a-german-${code}`;
+  return germanFallbackPoints[bankId];
+};
+for (const bankId of Object.keys(germanFallbackPoints)) {
+  for (const question of BANKS[bankId]?.questions || []) {
+    question.specPointId = germanPointFor(bankId, question.stem);
+  }
+}
+
 // Remove the last legacy Sociology template from imported Paper 1 questions.
 // This is deliberately applied at runtime so future bank extensions cannot
 // reintroduce the same repeated "Which statement best describes..." cue.
