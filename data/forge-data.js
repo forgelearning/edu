@@ -16392,7 +16392,26 @@ appendGenerated("PHYS-3", [
   ["A student repeats a timing experiment and obtains 2.41, 2.42 and 2.40 s. The readings are:","precise because they are closely grouped","accurate only because three readings were taken","invalid because they are not identical","systematically wrong by definition", "The close grouping indicates good precision; accuracy needs comparison with an accepted value."],
   ["When adding measured quantities, absolute uncertainties are usually:","combined by addition","multiplied by the number of units","ignored if the values are large","converted into standard deviation automatically", "For sums and differences, absolute uncertainties are added as a conservative estimate."],
 ], "PHYS-MEASURE");
+appendGenerated("BUS-1", [
+  ["An entrepreneur is most likely to be characterised by:","identifying an opportunity and accepting calculated risk","following every competitor's decisions","avoiding all change in the business","working without any business objective", "Entrepreneurs identify opportunities, organise resources and accept uncertainty when pursuing an idea."],
+  ["A democratic leadership style involves:","consulting employees before important decisions","giving orders without seeking views","delegating every decision to customers","removing all accountability from managers", "Consultation can improve commitment, although it may make decisions slower."],
+], "BUS-LEADERS");
+appendGenerated("BUS-2", [
+  ["A cash-flow forecast is mainly used to predict:","when cash is expected to enter and leave the business","whether the business will make an accounting profit","the exact market share of each rival","how many employees will receive training", "Forecasts help managers anticipate liquidity problems and plan finance."],
+  ["A business reaches its break-even output when:","total revenue equals total costs","variable costs become zero","fixed costs are higher than revenue","profit is at its maximum", "At break-even, the contribution made by output covers fixed costs and profit is zero."],
+], "BUS-FINPLAN");
+appendGenerated("BUS-3", [
+  ["Organic growth occurs when a business:","expands using its own resources and operations","buys a direct competitor immediately","merges with a supplier","closes its original outlets", "Organic growth develops the existing business rather than combining with another firm."],
+  ["A decision tree is useful because it can show:","possible outcomes, probabilities and expected values","only the final decision with no uncertainty","the exact behaviour of every competitor","a firm's profit after tax only", "Decision trees structure choices and outcomes where probabilities and returns can be estimated."],
+  ["A firm can assess its competitiveness by examining:","its costs, quality, market share and customer value","only the age of its buildings","the colour of its packaging","whether every employee works remotely", "Competitiveness depends on how well the firm creates value relative to rivals."],
+  ["A possible disadvantage of rapid business growth is:","communication problems and loss of control","an automatic fall in every cost","guaranteed higher product quality","the removal of all financial risk", "Rapid expansion can create diseconomies, coordination problems and pressure on finance."],
+], "BUS-STRATEGY");
+appendGenerated("BUS-4", [
+  ["A business expanding into an emerging market should first consider:","local demand, infrastructure, regulation and country risk","only the size of the country's land area","whether every customer uses the same language","the firm's domestic logo colour", "Expansion decisions should assess market conditions, institutional constraints and operational risk."],
+  ["Foreign direct investment involves:","establishing or acquiring productive operations in another country","selling a product to a domestic wholesaler","borrowing only from a local bank","reducing the number of overseas suppliers", "FDI gives a business a lasting interest in productive activity abroad."],
+], "BUS-GLOBAL");
 rebalanceMCQSubject(["BIO-1","BIO-2","BIO-3","BIO-ENZ","PHYS-1","PHYS-2","PHYS-3"]);
+rebalanceMCQSubject(["BUS-1","BUS-2","BUS-3","BUS-4"]);
 
 // ===== OCR HEALTH & SOCIAL CARE AND EDUQAS RELIGIOUS STUDIES EXPANSION =====
 appendGenerated("HSC-1", [
@@ -17081,7 +17100,7 @@ const businessPointFor = (bankId, stem) => {
     [/global|tariff|quota|remittance|exchange rate|sterling|protectionism|export|import|country risk|balance of trade|supply-chain/, "4.1"],
     [/decision tree|expected value|payback|net present value|npv|strategic decision/, "3.3"],
     [/contingency|managing change|change management/, "3.6"],
-    [/porter|competitive advantage|market share|economies of scale|diseconom/, "3.5"],
+    [/porter|competitive advantage|competitiveness|market share|economies of scale|diseconom/, "3.5"],
     [/pressure group|ethical|corporate social responsibility|sustainab|influences on business decisions/, "3.4"],
     [/merger|organic growth|vertical integration|first-mover|diversification|business growth|growth strategy/, "3.2"],
     [/swot|business objective|smart|boston matrix|ansoff/, "3.1"],
