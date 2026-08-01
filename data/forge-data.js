@@ -14453,6 +14453,199 @@ rebalanceSociety(["SOC-EDU","SOC-MET","SOC-FAM","SOC-BEL","SOC-MED","SOC-STRAT",
 SUBJECTS["soc"].banks = ["SOC-EDU","SOC-MET","SOC-FAM","SOC-BEL","SOC-MED","SOC-STRAT","SOC-CRIME","SOC-THEORY","SOC-GLOB","SOC-RESEARCH"];
 SUBJECTS["soc"].sub = "AQA 7192 — Papers 1–3";
 
+// ===== A LEVEL GEOGRAPHY — YEAR 2 TOPIC BANKS =====
+// The four Year 2 units from the course outline each receive 37 questions.
+const addGeoYear2Bank = (bankId, label, spec, rows) => {
+  BANKS[bankId] = {label, color:"#0f766e", questions: rows.map((row, index) => {
+    const next = rows[(index + 1) % rows.length];
+    const prev = rows[(index + rows.length - 1) % rows.length];
+    return {
+      id:`${bankId}-${String(index + 1).padStart(2,"0")}`, spec,
+      stem:`Which statement best describes ${row.term}?`,
+      options:{A:row.definition,B:next.definition,C:prev.definition,D:`It has no significant geographical effect on ${label.toLowerCase()}`}, correct:"A",tag:`MC-${bankId}-${index + 1}`,
+      scaffold:`${row.term}: ${row.definition} ${row.scaffold || "Apply the concept to place, scale and consequence before reaching a judgement."}`,
+      reforge:{stem:`A student is applying ${row.term} to a case study. Which statement is most accurate?`,options:{A:row.application,B:prev.application,C:next.application,D:`It cannot be applied to geographical evidence or decision-making`},correct:"A"}
+    };
+  })};
+  SUBJECTS["geo"].banks.push(bankId);
+};
+
+addGeoYear2Bank("GEO-WATER", "Water Cycle and Water Insecurity", "9GE0-WATER", [
+  {term:"the global hydrological cycle",definition:"The continuous movement and storage of water between the atmosphere, land, oceans and living organisms",application:"Evaporation, condensation, precipitation, runoff and groundwater flow connect stores in the global cycle"},
+  {term:"water balance",definition:"The relationship between water inputs, outputs and changes in storage within a drainage basin",application:"A basin with precipitation greater than losses may experience a positive water balance"},
+  {term:"drainage basin",definition:"The area of land drained by a river and its tributaries",application:"The watershed forms the boundary around a drainage basin"},
+  {term:"water store",definition:"A location in which water is held within the hydrological cycle",application:"Ice, soil moisture, groundwater, lakes and vegetation are water stores"},
+  {term:"water transfer",definition:"The movement of water between stores within a drainage basin or the wider cycle",application:"Throughflow transfers water through soil towards a river channel"},
+  {term:"water input",definition:"Water entering a drainage basin, mainly through precipitation",application:"Rainfall and snowfall are inputs to a drainage basin"},
+  {term:"water output",definition:"Water leaving a drainage basin through evaporation, transpiration, runoff or river discharge",application:"River discharge is an output from the basin"},
+  {term:"interception",definition:"The capture of precipitation by vegetation before it reaches the ground",application:"A forest canopy can intercept rainfall and delay its movement to the soil"},
+  {term:"infiltration",definition:"The downward movement of water from the ground surface into soil",application:"Permeable soil and low-intensity rainfall can increase infiltration"},
+  {term:"percolation",definition:"The downward movement of water through soil and permeable rock",application:"Percolation can recharge an underlying aquifer"},
+  {term:"surface runoff",definition:"The movement of water over the land surface towards a channel",application:"Heavy rainfall on saturated or impermeable ground can increase runoff"},
+  {term:"throughflow",definition:"The lateral movement of water through soil towards a river channel",application:"Water moving downslope within the soil is throughflow"},
+  {term:"groundwater flow",definition:"The movement of water through permeable rock below the water table",application:"Groundwater flow can sustain river discharge during dry periods"},
+  {term:"storm hydrograph",definition:"A graph showing how river discharge changes after a rainfall event",application:"A steep rising limb suggests a rapid response to rainfall"},
+  {term:"lag time",definition:"The time between peak rainfall and peak river discharge",application:"Urbanisation can shorten lag time by increasing rapid runoff"},
+  {term:"flash flood",definition:"A rapid flood caused by intense rainfall or sudden water release",application:"A steep, impermeable catchment can respond with a flash flood"},
+  {term:"drought",definition:"A prolonged period of unusually low water availability",application:"Low rainfall combined with high demand can create drought conditions"},
+  {term:"water scarcity",definition:"A condition in which available water is insufficient to meet demand",application:"A dry region with rapid population growth may experience water scarcity"},
+  {term:"physical water scarcity",definition:"A situation in which natural water resources are insufficient for demand",application:"Arid climates with high irrigation demand can face physical scarcity"},
+  {term:"economic water scarcity",definition:"A situation in which water exists but people lack infrastructure or finance to access it",application:"A low-income region may have rivers but inadequate pipes and treatment"},
+  {term:"water stress",definition:"Pressure on water resources when demand approaches or exceeds sustainable supply",application:"Falling groundwater levels can indicate increasing water stress"},
+  {term:"virtual water",definition:"The water used to produce a traded good or service",application:"Importing food can transfer the water used in its production between countries"},
+  {term:"water footprint",definition:"The total volume of freshwater used directly and indirectly by a person, product or place",application:"A high-meat diet usually has a larger water footprint than a plant-based diet"},
+  {term:"water transfer scheme",definition:"A project moving water from a region of surplus to a region of deficit",application:"Pipelines can transfer water to cities but may create conflicts at the source"},
+  {term:"dam",definition:"A barrier built across a river to store or regulate water",application:"A dam can supply irrigation and hydroelectricity but displace communities"},
+  {term:"reservoir",definition:"An artificial lake used to store water for later use",application:"Reservoir storage can improve urban water security during dry seasons"},
+  {term:"irrigation",definition:"The artificial application of water to crops",application:"Irrigation can increase yields but intensify pressure on rivers and aquifers"},
+  {term:"aquifer",definition:"A permeable rock layer that stores and transmits groundwater",application:"Wells can abstract water from an aquifer"},
+  {term:"groundwater depletion",definition:"A fall in groundwater storage caused by abstraction exceeding recharge",application:"Over-pumping for irrigation can lower the water table"},
+  {term:"water conservation",definition:"Actions that reduce water use, waste or demand",application:"Leak reduction, metering and efficient appliances can conserve water"},
+  {term:"greywater recycling",definition:"Reusing lightly contaminated household water for a further purpose",application:"Treated bathwater can be reused for toilet flushing or garden irrigation"},
+  {term:"desalination",definition:"Removing salt from seawater to create freshwater",application:"Desalination can increase supply for coastal cities but uses substantial energy"},
+  {term:"integrated water management",definition:"Coordinating environmental, social and economic demands across a water system",application:"A basin plan may balance households, farming, industry and ecosystems"},
+  {term:"water governance",definition:"The institutions, rules and decisions used to manage water resources",application:"Licensing abstraction and enforcing quality standards are governance measures"},
+  {term:"water conflict",definition:"Disagreement between groups or places over access, control or use of water",application:"Upstream dam construction can create conflict with downstream users"},
+  {term:"water security",definition:"Reliable access to sufficient, safe and affordable water",application:"A secure supply is dependable during seasonal and extreme events"},
+  {term:"water insecurity",definition:"Insufficient, unreliable or unsafe access to water",application:"Water insecurity can worsen where demand rises faster than supply"}
+]);
+
+addGeoYear2Bank("GEO-CARBON", "Carbon Cycle and Energy Security", "9GE0-CARBON", [
+  {term:"the global carbon cycle",definition:"The movement and storage of carbon between the atmosphere, oceans, rocks, soils and living organisms",application:"Photosynthesis, respiration, combustion and ocean exchange move carbon between stores"},
+  {term:"carbon store",definition:"A reservoir in which carbon is held for a period of time",application:"Peatlands, forests, oceans and fossil fuels are major carbon stores"},
+  {term:"carbon flux",definition:"The movement of carbon between stores",application:"Combustion is a flux transferring carbon from fossil fuels to the atmosphere"},
+  {term:"carbon budget",definition:"The cumulative amount of carbon dioxide that can be emitted for a chosen warming target",application:"A finite carbon budget means delay increases the scale of later cuts"},
+  {term:"carbon sink",definition:"A store that absorbs more carbon than it releases over a period",application:"Growing forests can act as carbon sinks"},
+  {term:"carbon source",definition:"A store or process that releases more carbon than it absorbs",application:"Fossil-fuel combustion is a major carbon source"},
+  {term:"photosynthesis",definition:"The process by which plants use light to convert carbon dioxide and water into organic matter",application:"Photosynthesis transfers atmospheric carbon into vegetation"},
+  {term:"respiration",definition:"The release of energy from organic matter, returning carbon dioxide to the atmosphere",application:"Plant and animal respiration are natural carbon fluxes"},
+  {term:"decomposition",definition:"The breakdown of dead organic matter by organisms, releasing carbon",application:"Warm, wet conditions can accelerate decomposition and carbon release"},
+  {term:"carbon sequestration",definition:"The capture and long-term storage of carbon dioxide",application:"Peatland restoration can increase natural carbon sequestration"},
+  {term:"fossil fuel",definition:"A coal, oil or gas resource formed from ancient organic matter",application:"Burning fossil fuels releases stored geological carbon"},
+  {term:"greenhouse gas",definition:"An atmospheric gas that absorbs and re-emits outgoing infrared radiation",application:"Carbon dioxide and methane contribute to the enhanced greenhouse effect"},
+  {term:"enhanced greenhouse effect",definition:"The increased warming caused by human additions to atmospheric greenhouse gases",application:"Industrial emissions intensify the natural greenhouse effect"},
+  {term:"carbon intensity",definition:"The amount of carbon dioxide emitted per unit of energy or economic output",application:"Renewable electricity generally has lower carbon intensity than coal power"},
+  {term:"deforestation",definition:"The permanent removal of forest for another land use",application:"Deforestation releases stored carbon and reduces future uptake"},
+  {term:"peatland",definition:"Waterlogged organic soil that stores large amounts of carbon",application:"Draining peatland exposes organic matter to decomposition and carbon release"},
+  {term:"blue carbon",definition:"Carbon captured and stored by coastal and marine ecosystems",application:"Mangroves, salt marshes and seagrass store blue carbon"},
+  {term:"ocean acidification",definition:"A fall in ocean pH caused mainly by absorption of atmospheric carbon dioxide",application:"Acidification can damage organisms that build calcium carbonate shells"},
+  {term:"energy security",definition:"Reliable access to sufficient, affordable and sustainable energy",application:"Diversified supply and storage can improve energy security"},
+  {term:"energy mix",definition:"The combination of energy sources used by a country or place",application:"A country's energy mix may include gas, nuclear, wind and solar"},
+  {term:"energy transition",definition:"The shift from high-carbon energy systems towards lower-carbon sources and technologies",application:"Replacing coal with renewables is part of an energy transition"},
+  {term:"renewable energy",definition:"Energy from sources replenished naturally on a human timescale",application:"Wind, solar, tidal and hydroelectric power are renewable sources"},
+  {term:"non-renewable energy",definition:"Energy from finite resources that form more slowly than they are consumed",application:"Coal, oil, gas and uranium are non-renewable resources"},
+  {term:"energy pathway",definition:"The sequence of choices and technologies through which energy is produced and consumed",application:"Electrification and efficiency can change an energy pathway"},
+  {term:"intermittency",definition:"The variable and non-continuous output of some renewable energy sources",application:"Solar output changes with daylight and cloud cover"},
+  {term:"energy storage",definition:"Holding energy for release when generation and demand do not coincide",application:"Batteries and pumped-storage hydro can balance variable supply"},
+  {term:"energy poverty",definition:"Lack of reliable, affordable access to modern energy services",application:"Households unable to heat or light their homes adequately experience energy poverty"},
+  {term:"energy surplus",definition:"A situation in which energy supply exceeds local demand",application:"A region with abundant generation may export an energy surplus"},
+  {term:"energy deficit",definition:"A situation in which energy demand exceeds available domestic supply",application:"Import dependence can grow when domestic production falls below demand"},
+  {term:"resource nationalism",definition:"Government control or restriction of natural resources to protect national interests",application:"An exporter restricting gas supply to gain political leverage shows resource nationalism"},
+  {term:"energy geopolitics",definition:"The way energy resources and routes shape power between places and states",application:"Pipeline routes can influence alliances and political tensions"},
+  {term:"carbon capture and storage",definition:"Capturing carbon dioxide emissions and storing them rather than releasing them to the atmosphere",application:"CCS may reduce emissions from industry but requires infrastructure and energy"},
+  {term:"carbon offsetting",definition:"Compensating for emissions by funding activities that reduce or remove emissions elsewhere",application:"Planting trees to balance some travel emissions is offsetting"},
+  {term:"decarbonisation",definition:"Reducing carbon emissions from energy, transport, industry and land use",application:"Electrification and renewable generation support decarbonisation"},
+  {term:"climate justice",definition:"The principle that climate responsibilities and impacts should be shared fairly",application:"Historical emitters supporting vulnerable countries raises climate-justice issues"},
+  {term:"energy sovereignty",definition:"A place's ability to control and meet its own energy needs",application:"Domestic renewable generation can reduce dependence on imported fuels"},
+  {term:"energy insecurity",definition:"Unreliable or unaffordable access to sufficient energy",application:"Energy insecurity can increase when prices rise or supply routes are disrupted"}
+]);
+
+addGeoYear2Bank("GEO-SUPER", "Superpowers", "9GE0-SUPER", [
+  {term:"superpower",definition:"A state with exceptional global economic, military, political, technological and cultural influence",application:"The United States and China are commonly analysed as contemporary superpowers"},
+  {term:"emerging power",definition:"A state whose economic and political influence is increasing rapidly",application:"Rapid growth and international investment can support emerging-power status"},
+  {term:"hard power",definition:"Influence gained through military force, economic pressure or coercion",application:"Sanctions and military alliances are examples of hard power"},
+  {term:"soft power",definition:"Influence gained through attraction, culture, values and diplomacy",application:"Universities, media and cultural exports can create soft power"},
+  {term:"smart power",definition:"The strategic combination of hard and soft power",application:"A state using aid alongside diplomatic pressure is using smart power"},
+  {term:"economic power",definition:"The ability to influence others through wealth, trade, finance and production",application:"Control of investment and supply chains can give a state economic power"},
+  {term:"military power",definition:"The capacity to defend interests or project force through armed forces",application:"Nuclear weapons, bases and naval reach contribute to military power"},
+  {term:"political power",definition:"The ability to shape decisions, rules and institutions",application:"A state's influence in international organisations is political power"},
+  {term:"cultural power",definition:"Influence created by the appeal and spread of a society's culture and ideas",application:"Films, music and language can extend cultural power"},
+  {term:"geopolitics",definition:"The relationship between geography, power and international relations",application:"Location, resources and strategic routes affect geopolitical decisions"},
+  {term:"sphere of influence",definition:"An area where a powerful state has substantial political or economic influence",application:"A regional power shaping neighbouring governments has a sphere of influence"},
+  {term:"global governance",definition:"Collective management of international issues through institutions, agreements and norms",application:"Climate agreements require global governance because emissions cross borders"},
+  {term:"United Nations",definition:"An international organisation intended to support peace, cooperation and human rights",application:"The UN can coordinate humanitarian responses and peacekeeping"},
+  {term:"security council",definition:"The UN body with primary responsibility for international peace and security",application:"Permanent members can veto substantive Security Council resolutions"},
+  {term:"multilateralism",definition:"Cooperation among several states through shared rules or institutions",application:"Negotiating a treaty with many countries is multilateralism"},
+  {term:"unilateralism",definition:"A state acting alone rather than through an international agreement",application:"A country imposing its own intervention without coalition support is unilateral"},
+  {term:"globalisation",definition:"The increasing interconnectedness of economies, societies, places and institutions",application:"Trade, migration and digital communication intensify globalisation"},
+  {term:"global production network",definition:"A geographically distributed system of firms and processes producing goods or services",application:"Design, manufacture and assembly taking place in different countries forms a network"},
+  {term:"trade bloc",definition:"A group of states reducing barriers between members",application:"A trade bloc can increase market access while creating external barriers"},
+  {term:"foreign direct investment",definition:"Long-term investment in productive activity located in another country",application:"A company building a factory abroad is foreign direct investment"},
+  {term:"aid diplomacy",definition:"Using development assistance to build influence or achieve foreign-policy goals",application:"Infrastructure finance can deepen a donor state's relationships"},
+  {term:"debt diplomacy",definition:"The use of lending relationships to gain influence over another state's decisions or assets",application:"Loans tied to strategic infrastructure can create debt-diplomacy concerns"},
+  {term:"resource security",definition:"Reliable access to the materials needed by an economy or population",application:"Rare-earth supply is important to technology and resource security"},
+  {term:"resource curse",definition:"The tendency for resource-rich states to experience weak development, conflict or poor governance",application:"Oil wealth alongside corruption and inequality may indicate a resource curse"},
+  {term:"strategic resource",definition:"A resource considered essential to national security or economic power",application:"Energy, food and critical minerals can be strategic resources"},
+  {term:"migration network",definition:"Social and economic links that facilitate movement between places",application:"Family ties and information can lower the cost of international migration"},
+  {term:"diaspora",definition:"A population dispersed from an origin but maintaining connections with it",application:"A diaspora may send remittances and influence politics in its origin country"},
+  {term:"global city",definition:"A city with major international economic, political and cultural connections",application:"London, New York and Singapore perform global-city functions"},
+  {term:"core and periphery",definition:"A model describing unequal relationships between powerful central places and dependent areas",application:"Finance and decision-making concentrated in core cities can shape peripheral regions"},
+  {term:"power transition",definition:"A shift in relative influence between dominant and rising states",application:"China's economic growth is often discussed as part of a power transition"},
+  {term:"multipolar world",definition:"An international system in which power is distributed among several major centres",application:"Several influential states rather than one dominant state indicate multipolarity"},
+  {term:"unipolar world",definition:"An international system dominated by one main superpower",application:"The post-Cold War period is sometimes described as relatively unipolar"},
+  {term:"international intervention",definition:"Action by an external state or organisation intended to influence events in another place",application:"Peacekeeping, sanctions and humanitarian action are forms of intervention"},
+  {term:"border conflict",definition:"Dispute or violence connected to the control or meaning of a boundary",application:"Competing territorial claims can create border conflict"},
+  {term:"global inequality",definition:"Unequal distribution of wealth, power and opportunity between places and groups",application:"Unequal access to finance and technology illustrates global inequality"},
+  {term:"global risk",definition:"A threat whose causes or consequences cross national boundaries",application:"Pandemics, climate change and financial crises are global risks"},
+  {term:"geographical imagination",definition:"The way places and global relationships are understood through narratives and representations",application:"Maps and media can shape how a country is imagined by outsiders"}
+]);
+
+addGeoYear2Bank("GEO-HEALTH", "Health, Human Rights and Intervention", "9GE0-HEALTH", [
+  {term:"health",definition:"A state of physical, mental and social wellbeing rather than simply the absence of disease",application:"Health includes wellbeing, prevention, treatment and social conditions"},
+  {term:"global health",definition:"The study and management of health issues that affect populations across national borders",application:"Pandemics require global-health cooperation"},
+  {term:"morbidity",definition:"The incidence or prevalence of illness within a population",application:"Morbidity data can show how widespread a disease is"},
+  {term:"mortality",definition:"The number or rate of deaths in a population",application:"Infant mortality is a mortality indicator"},
+  {term:"life expectancy",definition:"The average number of years a person can expect to live",application:"Higher life expectancy usually reflects improvements in health and living conditions"},
+  {term:"infant mortality rate",definition:"The number of deaths of infants under one year per thousand live births",application:"A falling infant mortality rate can indicate better maternal and child healthcare"},
+  {term:"epidemiological transition",definition:"The shift from infectious diseases towards chronic and degenerative diseases as development changes",application:"Urbanisation and ageing can increase the relative importance of non-communicable disease"},
+  {term:"communicable disease",definition:"A disease that can be transmitted between people, animals or environments",application:"Malaria and influenza are communicable diseases"},
+  {term:"non-communicable disease",definition:"A disease not directly transmitted between people, often linked to lifestyle or ageing",application:"Heart disease and diabetes are non-communicable diseases"},
+  {term:"pandemic",definition:"An infectious disease outbreak spreading across countries or continents",application:"A pandemic places pressure on health systems and international coordination"},
+  {term:"healthcare access",definition:"The ability of people to obtain appropriate, affordable and timely health services",application:"Distance, cost and staff shortages can limit healthcare access"},
+  {term:"health inequality",definition:"Differences in health outcomes or access between social or geographical groups",application:"Poorer areas experiencing lower life expectancy show health inequality"},
+  {term:"social determinants of health",definition:"Social, economic and environmental conditions shaping health outcomes",application:"Income, housing, education and employment are social determinants of health"},
+  {term:"human rights",definition:"Basic rights and freedoms regarded as belonging to all people",application:"Rights to life, health, expression and protection from torture are human rights"},
+  {term:"universal human rights",definition:"Rights intended to apply to all people regardless of nationality or status",application:"The principle of universality means rights should not depend on citizenship"},
+  {term:"sovereignty",definition:"A state's authority to govern its territory and population without external control",application:"Sovereignty can conflict with international attempts to protect human rights"},
+  {term:"humanitarian intervention",definition:"External action intended to prevent or reduce severe human suffering",application:"International action to protect civilians may be humanitarian intervention"},
+  {term:"responsibility to protect",definition:"The principle that states and the international community should protect populations from mass atrocities",application:"R2P is invoked when governments fail to protect people from genocide or crimes against humanity"},
+  {term:"genocide",definition:"Acts committed with intent to destroy a national, ethnic, racial or religious group",application:"The deliberate destruction of a protected group is genocide"},
+  {term:"refugee",definition:"A person forced to flee across an international border because of persecution or serious danger",application:"A person escaping conflict and unable to return safely may have refugee status"},
+  {term:"internally displaced person",definition:"A person forced to leave home but remaining within their own country",application:"Conflict can create displacement without an international border crossing"},
+  {term:"humanitarian aid",definition:"Assistance intended to save lives and reduce suffering during or after crises",application:"Emergency food, shelter and medical supplies are humanitarian aid"},
+  {term:"development aid",definition:"Longer-term assistance intended to improve economic and social conditions",application:"Funding schools and water systems can be development aid"},
+  {term:"NGO",definition:"A non-governmental organisation operating independently of the state, often on social or environmental goals",application:"A charity delivering mobile clinics is an NGO"},
+  {term:"World Health Organization",definition:"The UN agency responsible for coordinating international public-health work",application:"The WHO supports surveillance, guidance and emergency coordination"},
+  {term:"global health governance",definition:"International coordination of rules, institutions and responses affecting health",application:"Shared disease surveillance is part of global health governance"},
+  {term:"vaccine equity",definition:"Fair access to vaccines between and within countries",application:"Unequal vaccine supply creates a vaccine-equity problem"},
+  {term:"health diplomacy",definition:"Using negotiation and international relationships to improve health outcomes",application:"Countries sharing medical research can build health diplomacy"},
+  {term:"intervention effectiveness",definition:"The extent to which an intervention achieves its intended outcomes",application:"A programme should be judged against health data and unintended consequences"},
+  {term:"top-down intervention",definition:"A project designed and controlled by governments or large organisations",application:"A nationally imposed vaccination programme is top-down"},
+  {term:"bottom-up intervention",definition:"A project designed with substantial local participation and control",application:"A community choosing and managing a clean-water scheme is bottom-up"},
+  {term:"appropriate intervention",definition:"An intervention suited to local physical, social, cultural and economic conditions",application:"A low-cost treatment that local workers can maintain may be appropriate"},
+  {term:"medical technology gap",definition:"Unequal access to medicines, equipment, expertise and digital health technology",application:"Specialist treatment concentrated in wealthy cities creates a technology gap"},
+  {term:"healthcare privatisation",definition:"The transfer of health provision or funding towards private organisations and markets",application:"Private insurance and fee-paying hospitals increase market involvement"},
+  {term:"health resilience",definition:"The capacity of people and health systems to absorb shocks and recover",application:"Surge capacity and trained staff improve resilience during outbreaks"},
+  {term:"ethical intervention",definition:"Action designed and implemented with attention to consent, justice, harm and rights",application:"An intervention should avoid discriminating against vulnerable groups"},
+  {term:"scale of intervention",definition:"The geographical level at which an action operates, from local to global",application:"A local clinic and a global treaty operate at different scales"}
+]);
+
+const rebalanceGeoYear2 = bankIds => bankIds.forEach(bankId => BANKS[bankId].questions.forEach((q,index) => {
+  [[q,["A","B","C","D"][index%4]],[q.reforge,["C","D","A","B"][index%4]]].forEach(([item,target]) => {
+    if (!item || !item.options) return;
+    if (item.correct!==target) { const saved=item.options[target];item.options[target]=item.options[item.correct];item.options[item.correct]=saved;item.correct=target; }
+    const lengths=Object.fromEntries(Object.entries(item.options).map(([key,value])=>[key,String(value).length]));
+    const max=Math.max(...Object.values(lengths));
+    if (lengths[item.correct]===max && Object.values(lengths).filter(value=>value===max).length===1) {
+      const distractor=Object.keys(item.options).filter(key=>key!==item.correct).sort((a,b)=>lengths[b]-lengths[a])[0];
+      while (String(item.options[distractor]).length < lengths[item.correct]) item.options[distractor]+=" in context";
+    }
+  });
+}));
+rebalanceGeoYear2(["GEO-TEC","GEO-COAST","GEO-REGEN","GEO-P3","GEO-WATER","GEO-CARBON","GEO-SUPER","GEO-HEALTH"]);
+SUBJECTS["geo"].banks = ["GEO-TEC","GEO-COAST","GEO-REGEN","GEO-P3","GEO-WATER","GEO-CARBON","GEO-SUPER","GEO-HEALTH"];
+SUBJECTS["geo"].sub = "Edexcel 9GE0 — Papers 1, 2 & 3";
+
 // ===== A LEVEL PSYCHOLOGY (AQA 7182) PAPER 3 OPTION: FORENSIC PSYCHOLOGY =====
 BANKS["PSY-FOR"] = {
   label: "Forensic Psychology",
