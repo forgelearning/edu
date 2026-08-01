@@ -229,6 +229,15 @@ function getSubjectForBank(bankKey) {
   return 'unknown';
 }
 
+// Resolve the exact exam-board point when a subject has been migrated to the
+// shared registry. Older banks continue to fall back to their existing label.
+function getSpecPoint(question, bankKey) {
+  if (typeof SPEC_REGISTRY === 'undefined') return null;
+  var raw = question && (question.specPointId || question.spec) || bankKey;
+  var pointId = SPEC_REGISTRY.aliases[raw] || raw;
+  return SPEC_REGISTRY.points[pointId] || null;
+}
+
 function logResponse(q, selectedKey, isCorrect, isReforge, reforgeCorrect) {
   if (!state.studentId) return;
   var row = {
@@ -428,6 +437,7 @@ var SPEC_TO_SUBJECT = {
 
 // ===== DATA =====
 </script>
+<script src="data/spec-registry.js"></script>
 <script src="data/forge-data.js"></script>
 <script>
 
@@ -1190,9 +1200,11 @@ function renderBanks(){
   h+='<div class="bank-list">';
   subj.banks.forEach(function(key){
     var b=BANKS[key];
+    var point = getSpecPoint({}, key);
     h+='<button class="bank-btn" data-key="'+key+'">';
     h+='<div class="code" style="color:'+b.color+'">'+key+'</div>';
-    h+='<div class="name">'+b.label+'</div>';
+    h+='<div class="name">'+(point ? point.title : b.label)+'</div>';
+    if (point) h+='<div class="qcount">'+point.code+' · '+point.paper+'</div>';
     h+='<div class="qcount">'+b.questions.length+' questions</div>';
     h+='</button>';
   });
@@ -1367,7 +1379,8 @@ function renderQuiz(){
     h += '<span style="font-family:\'JetBrains Mono\',monospace;font-size:11px;color:'+col+';white-space:nowrap">'+remaining+' free question'+(remaining!==1?'s':'')+' left today</span>';
     h += '</div>';
   }
-  h+='<div class="q-meta"><span class="q-id" style="color:'+bk.color+';background:'+bk.color+'14">'+q.id+'</span><span>'+(state.idx+1)+' / '+state.questions.length+'</span></div>';
+  var point = getSpecPoint(q, state.bank);
+  h+='<div class="q-meta"><span class="q-id" style="color:'+bk.color+';background:'+bk.color+'14">'+q.id+'</span><span>'+(point ? point.code+' · '+point.title+' · ' : '')+(state.idx+1)+' / '+state.questions.length+'</span></div>';
   h+='<div class="stem">'+q.stem+'</div>';
 
   if(q.type==='fill_blank'){
