@@ -809,42 +809,42 @@ BANKS["PSY-SI"] = {
       options:{A:"5%",B:"50%",C:"75%",D:"100%"},
       correct:"C",tag:"MC-SI-01",
       scaffold:"About 75% conformed at least once, but the overall conformity rate (across all trials) was ~37%. Students often confuse these two figures. 25% never conformed at all. Key: most people conformed sometimes, not always — suggesting situational pressure rather than permanent trait.",
-      reforge:{stem:"A student writes: 'Asch proved that most people always conform.' Why is this an oversimplification?",options:{A:"It's correct — Asch proved universal conformity.",B:"While 75% conformed at least once, the per-trial rate was only ~37%, and 25% never conformed — conformity was situational, not absolute.",C:"Asch's study was about obedience, not conformity.",D:"Only 5% ever conformed."},correct:"B"}
+      reforge:{stem:"A student writes: 'Asch proved that most people always conform.' Why is this an oversimplification?",options:{A:"It is correct, since Asch proved conformity is universal",B:"Only ~37% conformed per trial and 25% never conformed",C:"Asch's study was really about obedience rather than conformity",D:"Only 5% of participants ever conformed on any trial"},correct:"B"}
     },
     {
       id:"SI-02",stem:"A student defines compliance as 'genuinely changing your mind to agree with the group.' What type of conformity are they actually describing?",
       options:{A:"Compliance — they are correct.",B:"Identification — adopting views to fit into a group role.",C:"Obedience — following an authority figure.",D:"Internalisation"},
       correct:"D",tag:"MC-SI-02",
       scaffold:"Three types (Kelman): Compliance = public agreement, private disagreement (shallowest — changes behaviour not beliefs). Identification = conforming to a valued group's norms while part of it (moderate). Internalisation = genuine belief change, persists even without the group (deepest). Students constantly swap compliance and internalisation.",
-      reforge:{stem:"A person converts to their partner's religion and continues practising it sincerely even after they separate. This is best described as:",options:{A:"Compliance — they only did it for the relationship.",B:"Internalisation — they genuinely adopted the beliefs, which persist independently of the group that introduced them.",C:"Identification — they took on a group role.",D:"Obedience — they followed instructions."},correct:"B"}
+      reforge:{stem:"A person converts to their partner's religion and continues practising it sincerely even after they separate. This is best described as:",options:{A:"Compliance — they only did it to preserve the relationship",B:"Internalisation — the beliefs persist away from the group",C:"Identification — they took on a group role temporarily",D:"Obedience — they simply followed direct instructions"},correct:"B"}
     },
     {
       id:"SI-03",stem:"In Milgram's (1963) baseline study, what percentage of participants delivered the maximum 450V shock?",
       options:{A:"10%",B:"35%",C:"65%",D:"100%"},
       correct:"C",tag:"MC-SI-03",
       scaffold:"65% went to 450V — a finding that shocked the psychology community. 100% went to at least 300V. Key: participants showed extreme distress (sweating, trembling, nervous laughter) but still obeyed. This demonstrates the power of situational factors (authority, graduated commitment) over personality.",
-      reforge:{stem:"In Milgram's variation where the experimenter gave instructions by telephone rather than in person, obedience dropped to ~21%. What does this suggest?",options:{A:"The study lacked validity.",B:"Proximity of the authority figure is a key situational variable — reduced authority presence weakens the agentic state and increases the likelihood of defiance.",C:"Obedience is entirely determined by personality.",D:"Telephone instructions are always ignored."},correct:"B"}
+      reforge:{stem:"In Milgram's variation where the experimenter gave instructions by telephone rather than in person, obedience dropped to ~21%. What does this suggest?",options:{A:"The study lacked internal validity throughout",B:"Proximity of authority is a key situational variable",C:"Obedience is entirely determined by personality factors",D:"Telephone instructions are always ignored by participants"},correct:"B"}
     },
     {
       id:"SI-04",stem:"A student explains obedience using the term 'agentic state' but cannot define it. The correct definition is:",
-      options:{A:"An agentic state: seeing oneself as executing another's wishes rather than acting autonomously.",B:"A state of autonomous conscience where a person acts on their own moral judgement.",C:"A state of total free will in which social influence has no effect.",D:"A stable personality type characterised by natural obedience to authority."},
+      options:{A:"Seeing oneself as carrying out another's wishes rather than acting autonomously",B:"A state of autonomous conscience in which a person acts on their own judgement",C:"A state of complete free will in which social influence has no effect at all on us",D:"A stable personality type characterised by a natural obedience to all authority"},
       correct:"A",tag:"MC-SI-04",
       scaffold:"Agentic state (Milgram): the person acts as an 'agent' of the authority, giving up personal responsibility. Opposite = autonomous state (acting on own free will). The 'agentic shift' occurs when someone perceives a legitimate authority and enters the agentic state. This explains WHY people obey even when distressed — they don't feel personally responsible.",
-      reforge:{stem:"A nurse administers a drug she thinks is too high a dose because the doctor ordered it. She says: 'I was just following orders.' This illustrates:",options:{A:"The autonomous state — she made her own decision.",B:"The agentic state — she has shifted responsibility to the doctor (the authority figure) and sees herself as merely carrying out instructions.",C:"Internalisation — she genuinely believes the dose is correct.",D:"Minority influence."},correct:"B"}
+      reforge:{stem:"A nurse administers a drug she thinks is too high a dose because the doctor ordered it. She says: 'I was just following orders.' This illustrates:",options:{A:"The autonomous state — she made her own free decision",B:"The agentic state — she has shifted responsibility to the doctor",C:"Internalisation — she genuinely believes the dose is correct here",D:"Minority influence."},correct:"B"}
     },
     {
       id:"SI-05",stem:"Moscovici's (1969) blue-green slide study investigated minority influence. What was his key finding about consistency?",
-      options:{A:"Consistency had no effect on the minority's influence.",B:"When the minority consistently called blue slides 'green' (on every trial)",C:"The majority always resisted the minority.",D:"Only majorities can influence individuals."},
+      options:{A:"When the minority gave clearly inconsistent answers across the different trials",B:"When the minority consistently called the blue slides green on every trial",C:"When the majority openly resisted the minority's answers throughout",D:"When only the majority was permitted to influence other individuals"},
       correct:"B",tag:"MC-SI-05",
       scaffold:"Consistency is key: a consistent minority makes the majority engage in deeper processing ('maybe they have a point'). An inconsistent minority is dismissed. Also important: commitment (the minority is seen as principled) and flexibility (rigid minorities are less persuasive than those who bend slightly).",
-      reforge:{stem:"According to the snowball effect, how does minority influence lead to wider social change?",options:{A:"The minority forces the majority to agree immediately.",B:"The consistent minority converts a few individuals, who convert others, gradually shifting the majority position over time — like a snowball gathering mass.",C:"Social change only happens through majority pressure.",D:"The minority gives up after being rejected."},correct:"B"}
+      reforge:{stem:"According to the snowball effect, how does minority influence lead to wider social change?",options:{A:"The minority forces the majority to agree immediately",B:"Converts accumulate until the majority position shifts",C:"Social change only ever happens through majority pressure",D:"The minority gives up after being rejected once"},correct:"B"}
     },
     {
       id:"SI-06",stem:"A student confuses normative social influence (NSI) and informational social influence (ISI). Which correctly distinguishes them?",
       options:{A:"NSI = conforming because you want to be right; ISI = conforming because you want to be liked.",B:"They are the same concept.",C:"NSI = conforming to be accepted/avoid rejection (need for social approval)",D:"NSI only applies to Milgram; ISI only applies to Asch."},
       correct:"C",tag:"MC-SI-06",
       scaffold:"NSI = 'I'll go along so they like me' (driven by desire to fit in — leads to compliance). ISI = 'They probably know better than me' (driven by uncertainty — more likely to lead to internalisation). NSI operates most strongly when: group is important, fear of rejection. ISI operates most strongly when: task is ambiguous, experts present.",
-      reforge:{stem:"During a fire alarm, you're unsure if it's real. You see everyone calmly staying in their seats, so you stay too. This is most likely:",options:{A:"NSI — you want them to like you.",B:"ISI — the situation is ambiguous and you look to others for information about the correct response, concluding it must be a drill.",C:"Obedience — someone told you to stay.",D:"Minority influence."},correct:"B"}
+      reforge:{stem:"During a fire alarm, you're unsure if it's real. You see everyone calmly staying in their seats, so you stay too. This is most likely:",options:{A:"NSI — you want the others to like and accept you",B:"ISI — the situation is ambiguous so you look to others",C:"Obedience — someone in authority told you to stay where you are",D:"Minority influence."},correct:"B"}
     },
     {
       id:"SI-07",stem:"Evaluate Milgram's research in terms of ethical issues. (4 marks)",
@@ -858,7 +858,7 @@ BANKS["PSY-SI"] = {
       options:{A:"It has no limitations — it is a perfect study.",B:"Too many participants were used.",C:"It was a field experiment with no controls.",D:"It lacks ecological validity"},
       correct:"D",tag:"MC-SI-08",
       scaffold:"Asch limitations: (1) Artificial task — conforming about line lengths ≠ conforming about opinions/behaviour. (2) Androcentric sample — all male, potentially different results with women. (3) Cultural/temporal bias — 1950s America (McCarthyism) may have increased conformity. (4) Demand characteristics — participants may have guessed the aim. Strengths: high control, replicable, clear operationalised DV.",
-      reforge:{stem:"A student says: 'Asch's findings prove that conformity is universal across all cultures.' Why is this claim problematic?",options:{A:"It's correct — conformity is universal.",B:"Asch used only American male participants. Cross-cultural replications (e.g. Smith & Bond, 1993) found higher conformity in collectivist cultures and lower in individualist ones — conformity rates vary by culture.",C:"Asch didn't study conformity.",D:"Culture has no effect on behaviour."},correct:"B"}
+      reforge:{stem:"A student says: 'Asch's findings prove that conformity is universal across all cultures.' Why is this claim problematic?",options:{A:"It is correct, since conformity is genuinely universal everywhere",B:"Asch used only American men; conformity varies by culture",C:"Asch did not actually study conformity at all",D:"Culture has no effect whatsoever on human behaviour"},correct:"B"}
     }
   ]
 };
@@ -872,42 +872,42 @@ BANKS["PSY-MEM"] = {
       options:{A:"Sensory register → short-term memory → long-term memory.",B:"Long-term memory → short-term memory → sensory register.",C:"Short-term memory → sensory register → long-term memory.",D:"All three stores operate simultaneously with no sequence."},
       correct:"A",tag:"MC-MEM-01",
       scaffold:"MSM is a linear model: Sensory register (brief, large capacity, modality-specific) → attention → STM (limited: ~7 items, ~30 seconds) → rehearsal → LTM (unlimited capacity and duration). Without attention, information decays from the sensory register. Without rehearsal, it's lost from STM.",
-      reforge:{stem:"A student hears a phone number, repeats it several times, and then remembers it the next day. According to the MSM, what process transferred it to LTM?",options:{A:"Decay.",B:"Maintenance rehearsal — repeated rehearsal in STM strengthened the memory trace and transferred it to LTM.",C:"Retrieval failure.",D:"Proactive interference."},correct:"B"}
+      reforge:{stem:"A student hears a phone number, repeats it several times, and then remembers it the next day. According to the MSM, what process transferred it to LTM?",options:{A:"Spontaneous decay of the memory trace over a long period",B:"Maintenance rehearsal transferred it to long-term memory",C:"Retrieval failure.",D:"Proactive interference."},correct:"B"}
     },
     {
       id:"MEM-02",stem:"A student says STM has a capacity of 'about 5 items.' What is the more accurate description?",
-      options:{A:"STM has unlimited capacity.",B:"Miller (1956) found STM capacity is 7±2 items (5–9)",C:"STM holds exactly 3 items.",D:"STM capacity depends on the colour of the items."},
+      options:{A:"STM has an effectively unlimited capacity for holding new information",B:"Miller found STM capacity is around 7±2 items, so five to nine",C:"STM holds exactly three items and no more than that at any time",D:"STM capacity depends entirely on the colour of the items presented"},
       correct:"B",tag:"MC-MEM-02",
       scaffold:"Miller's magic number: 7±2. Not a fixed limit — chunking increases effective capacity (e.g. BBCITVFBI = 9 letters or 3 chunks). Cowan (2001) later suggested 4 chunks is more accurate. Students often forget the ±2 range or the role of chunking.",
-      reforge:{stem:"A person remembers the sequence 1-9-1-4-1-9-4-5-2-0-0-1 as '1914, 1945, 2001' (three historical dates). This demonstrates:",options:{A:"That STM has unlimited capacity.",B:"Chunking — grouping individual items into meaningful units increases the effective capacity of STM.",C:"That LTM has a limited capacity.",D:"Retroactive interference."},correct:"B"}
+      reforge:{stem:"A person remembers the sequence 1-9-1-4-1-9-4-5-2-0-0-1 as '1914, 1945, 2001' (three historical dates). This demonstrates:",options:{A:"That short-term memory has a genuinely unlimited capacity",B:"Chunking — grouping items into meaningful units",C:"That long-term memory has a limited capacity",D:"Retroactive interference from newer learning"},correct:"B"}
     },
     {
       id:"MEM-03",stem:"The working memory model (Baddeley & Hitch, 1974) was proposed because:",
-      options:{A:"The MSM was too complex.",B:"LTM doesn't exist.",C:"The MSM treated STM as a single, passive store",D:"Baddeley disagreed with Ebbinghaus."},
+      options:{A:"The multi-store model was far too complex to be tested experimentally",B:"Long-term memory was shown not to exist as a separate store at all",C:"The multi-store model treated STM as a single, passive store",D:"Baddeley fundamentally disagreed with Ebbinghaus about forgetting curves"},
       correct:"C",tag:"MC-MEM-03",
       scaffold:"MSM limitation: STM is unitary (one store). But evidence shows we can do two verbal tasks less well than one verbal + one visual → suggests separate processing systems. The WMM: Central executive (attention controller) + phonological loop (verbal) + visuo-spatial sketchpad (visual) + episodic buffer (integration).",
-      reforge:{stem:"You can drive a car (visual-spatial) while having a conversation (verbal) but struggle to listen to a podcast while reading. The WMM explains this because:",options:{A:"Driving doesn't use memory.",B:"The tasks use different slave systems (visuo-spatial sketchpad for driving, phonological loop for conversation) so they don't compete — but two verbal tasks overload the same component (phonological loop).",C:"The central executive has unlimited capacity.",D:"The MSM explains this better."},correct:"B"}
+      reforge:{stem:"You can drive a car (visual-spatial) while having a conversation (verbal) but struggle to listen to a podcast while reading. The WMM explains this because:",options:{A:"Driving does not use memory in any way",B:"The tasks use different slave systems, so they do not compete",C:"The central executive is known to have unlimited storage capacity",D:"The multi-store model explains this situation better"},correct:"B"}
     },
     {
       id:"MEM-04",stem:"A student describes the central executive as 'a big memory store with lots of capacity.' Why is this wrong?",
-      options:{A:"It's correct — the CE stores information.",B:"The central executive doesn't exist.",C:"The central executive only processes visual information.",D:"The central executive is an attentional control system with limited capacity"},
+      options:{A:"This is correct, since the central executive does store information",B:"The central executive does not actually exist in the model at all",C:"The central executive processes only visual and spatial information",D:"It is an attentional control system with a very limited capacity"},
       correct:"D",tag:"MC-MEM-04",
       scaffold:"The CE is the 'boss' — it decides what to attend to and delegates to the slave systems (phonological loop, visuo-spatial sketchpad). It has limited capacity (you can't attend to everything at once) but is NOT a store. Students often describe it as a large memory warehouse — this misses its role as a processor/allocator, not a container.",
-      reforge:{stem:"Which component of the WMM is responsible for integrating information from the slave systems and linking it to LTM?",options:{A:"The phonological loop.",B:"The episodic buffer — it combines information from different sources into coherent episodes and has links to LTM.",C:"The central executive — because it's the biggest store.",D:"The visuo-spatial sketchpad."},correct:"B"}
+      reforge:{stem:"Which component of the WMM is responsible for integrating information from the slave systems and linking it to LTM?",options:{A:"The phonological loop, which handles sound",B:"The episodic buffer, which combines information sources",C:"The central executive, because it is by far the biggest store",D:"The visuo-spatial sketchpad, which handles images"},correct:"B"}
     },
     {
       id:"MEM-05",stem:"Loftus and Palmer (1974) asked participants to estimate the speed of cars in a filmed accident. The verb used ('smashed' vs 'hit') significantly affected estimates. This demonstrates:",
-      options:{A:"The effect of leading questions on eyewitness testimony",B:"That participants have poor eyesight.",C:"That all eyewitnesses are unreliable.",D:"That speed estimates are always accurate."},
+      options:{A:"The effect of leading questions on the accuracy of eyewitness testimony",B:"Whether the participants taking part in the study had unusually poor eyesight",C:"Whether all eyewitnesses are fundamentally unreliable witnesses",D:"Whether speed estimates given by witnesses are always accurate"},
       correct:"A",tag:"MC-MEM-05",
       scaffold:"'Smashed' → higher speed estimates (~41mph) vs 'contacted' (~32mph). Experiment 2: 'smashed' group also more likely to report (non-existent) broken glass. This suggests the leading question didn't just bias the response — it altered the stored memory itself (memory reconstruction). Key concept: post-event discussion/information can contaminate the original memory.",
-      reforge:{stem:"After witnessing a robbery, a witness reads a newspaper report describing the thief as 'tall and bearded.' At a later identity parade, the witness selects a tall, bearded suspect. This illustrates:",options:{A:"Accurate recall.",B:"Post-event information contaminating the original memory — the newspaper report (misleading information) has been integrated into the witness's memory of the event, consistent with Loftus's research.",C:"The multi-store model.",D:"Proactive interference."},correct:"B"}
+      reforge:{stem:"After witnessing a robbery, a witness reads a newspaper report describing the thief as 'tall and bearded.' At a later identity parade, the witness selects a tall, bearded suspect. This illustrates:",options:{A:"Completely accurate recall of the original witnessed event",B:"Post-event information contaminating the original memory",C:"The multi-store model of memory operating normally",D:"Proactive interference."},correct:"B"}
     },
     {
       id:"MEM-06",stem:"The cognitive interview (Fisher & Geiselman, 1992) includes four techniques. Which of the following is NOT one of them?",
       options:{A:"Report everything — even seemingly trivial details.",B:"Mental reinstatement of context — imagine the environment and emotions at the time.",C:"Leading questions — use specific prompts to guide the witness.",D:"Change perspective — recall events from a different viewpoint."},
       correct:"C",tag:"MC-MEM-06",
       scaffold:"Four CI techniques: (1) Report everything (even partial/trivial details). (2) Mental reinstatement (recreate the context — place, weather, feelings). (3) Change temporal order (recall events in reverse or from a different starting point). (4) Change perspective (describe from another person's viewpoint). Leading questions are EXCLUDED — they contaminate memory (Loftus). Students sometimes include 'ask specific questions' which is wrong.",
-      reforge:{stem:"A police officer asks a witness to describe the robbery scene starting from the moment they left, rather than from the beginning. This uses which CI technique?",options:{A:"Report everything.",B:"Change temporal order — recalling in a different sequence can trigger forgotten details and reduces the influence of schemas on recall.",C:"Leading questions.",D:"Mental reinstatement."},correct:"B"}
+      reforge:{stem:"A police officer asks a witness to describe the robbery scene starting from the moment they left, rather than from the beginning. This uses which CI technique?",options:{A:"Report absolutely everything that the witness is able to recall",B:"Change temporal order, recalling in a different sequence",C:"Asking the witness a series of leading questions",D:"Mental reinstatement of the original context"},correct:"B"}
     },
     {
       id:"MEM-07",stem:"Evaluate the multi-store model of memory. (6 marks — AO1 + AO3)",
@@ -921,7 +921,7 @@ BANKS["PSY-MEM"] = {
       options:{A:"Proactive = new learning interferes with old; Retroactive = old learning interferes with new.",B:"Proactive = old learning interferes with recall of new information",C:"They are the same thing.",D:"Proactive = forgetting from STM; Retroactive = forgetting from LTM."},
       correct:"B",tag:"MC-MEM-08",
       scaffold:"Proactive: previously learned material interferes FORWARD in time (old disrupts new). Example: you learned French first, now Spanish vocab keeps coming out as French. Retroactive: newly learned material interferes BACKWARD in time (new disrupts old). Example: you learn a new phone number and can no longer remember the old one. PRO = forward, RETRO = backward.",
-      reforge:{stem:"A teacher learns 200 new student names in September. By October, she struggles to recall last year's students' names. This is:",options:{A:"Proactive interference — old names disrupt new.",B:"Retroactive interference — the newly learned names (new learning) are interfering with recall of the old names (old learning).",C:"Decay — time has passed.",D:"Retrieval failure."},correct:"B"}
+      reforge:{stem:"A teacher learns 200 new student names in September. By October, she struggles to recall last year's students' names. This is:",options:{A:"Proactive interference — the old names disrupt the new",B:"Retroactive interference — new names disrupt the old",C:"Decay, because a long time has simply passed",D:"Retrieval failure."},correct:"B"}
     }
   ]
 };
@@ -1047,14 +1047,14 @@ BANKS["PSY-ATT"] = {
     },
     {
       id:"ATT-02",stem:"Ainsworth's Strange Situation (1969) classified infants into attachment types based on:",
-      options:{A:"Their IQ scores at 6 months.",B:"The number of hours they spent with their caregiver per week.",C:"Their behaviour during separation from and reunion with their caregiver",D:"Brain scans taken during attachment-related scenarios."},
+      options:{A:"Their measured IQ scores taken at around six months of age",B:"The number of hours spent with their caregiver each week",C:"Their behaviour during separation from and reunion with the caregiver",D:"Brain scan images recorded during a range of attachment-related scenarios"},
       correct:"C",tag:"MC-ATT-02",
       scaffold:"The Strange Situation is a controlled observation: 8 episodes including separation and reunion with caregiver, and introduction of a stranger. Key behaviours: separation anxiety (distress when caregiver leaves), stranger anxiety, reunion behaviour (how they respond when caregiver returns), and use of caregiver as safe base. These behaviours determine the attachment type.",
       reforge:{stem:"In the Strange Situation, which behaviour is MOST important for classifying attachment type?",options:{A:"How much the infant cries when the stranger enters.",B:"Reunion behaviour — how the infant responds when the caregiver returns, since this reveals the underlying working model of the relationship.",C:"The infant's age in months.",D:"Whether the infant smiles at the stranger."},correct:"B"}
     },
     {
       id:"ATT-03",stem:"A student describes a Type B (securely attached) infant as 'one who doesn't cry at all when the caregiver leaves.' Why is this wrong?",
-      options:{A:"Securely attached infants show no distress at all during separation.",B:"Secure infants always cry uncontrollably throughout the Strange Situation.",C:"The Strange Situation does not actually measure separation responses.",D:"Securely attached infants show moderate separation anxiety but are easily comforted on reunion."},
+      options:{A:"Securely attached infants show no distress whatsoever during separation",B:"Secure infants will always cry uncontrollably throughout the whole Strange Situation",C:"The Strange Situation does not actually measure separation responses",D:"Secure infants show moderate distress but are easily comforted at reunion"},
       correct:"D",tag:"MC-ATT-03",
       scaffold:"Three types: Type A (insecure-avoidant) — little distress on separation, ignores/avoids caregiver on reunion. Type B (secure) — moderate distress, easily soothed on reunion, uses caregiver as safe base. Type C (insecure-resistant/ambivalent) — high distress, difficult to soothe on reunion, clingy and angry. Students often think 'secure = no distress' which is wrong.",
       reforge:{stem:"An infant shows intense distress when the caregiver leaves but is not comforted on reunion — pushing the caregiver away while still upset. This is most consistent with:",options:{A:"Type B — secure attachment.",B:"Type C — insecure-resistant (ambivalent) attachment, characterised by high distress and inconsistent reunion behaviour.",C:"Type A — insecure-avoidant attachment.",D:"No attachment has formed."},correct:"B"}
@@ -1068,28 +1068,28 @@ BANKS["PSY-ATT"] = {
     },
     {
       id:"ATT-05",stem:"Bowlby's concept of the 'internal working model' refers to:",
-      options:{A:"A brain scan showing activation patterns linked to attachment behaviour.",B:"A cognitive framework from early attachment that shapes expectations of future relationships.",C:"The infant's physical model of their caregiver's facial expressions.",D:"A standardised diagram used to classify the three main attachment types."},
+      options:{A:"A brain scan showing activation patterns linked to attachment behaviour",B:"A mental framework from early attachment shaping later expectations",C:"The infant's physical model of their caregiver's facial expressions",D:"A standardised diagram used to classify the three main attachment types"},
       correct:"B",tag:"MC-ATT-05",
       scaffold:"Internal working model: the mental representation of self, caregiver, and relationships formed in infancy. It acts as a template — a securely attached infant develops positive expectations of others (trustworthy, responsive) and self (worthy of love). Bowlby argued this template influences all later relationships, including romantic ones (continuity hypothesis). Evaluation: hard to test directly; may be deterministic.",
       reforge:{stem:"Research suggests that securely attached infants tend to have better peer relationships and romantic partnerships in adulthood. This supports Bowlby's idea of:",options:{A:"Monotropy — one primary attachment is most important.",B:"The continuity hypothesis — the internal working model formed in infancy acts as a template for all future relationships, with secure early attachment predicting positive later outcomes.",C:"The critical period — all development must occur before age 2.",D:"Imprinting — adult relationships mirror the first attachment."},correct:"B"}
     },
     {
       id:"ATT-06",stem:"Bowlby's maternal deprivation hypothesis claims that separation from the primary caregiver in early childhood causes:",
-      options:{A:"Temporary distress with no lasting effects.",B:"Only cognitive damage, not emotional damage.",C:"Permanent, irreversible intellectual and emotional damage",D:"Damage only if the child is under 6 months old."},
+      options:{A:"Temporary distress with no lasting effects on the child's development",B:"Only intellectual damage, with no emotional consequences at all",C:"Permanent, irreversible intellectual and emotional damage",D:"Damage only if the child happens to be under six months old"},
       correct:"C",tag:"MC-ATT-06",
       scaffold:"Maternal deprivation hypothesis: prolonged separation/loss during the critical period (0–2.5 years) causes irreversible damage including low IQ, delinquency, and affectionless psychopathy (inability to form deep relationships, lack of guilt). Evidence: Bowlby's 44 Thieves study — 86% of affectionless thieves had experienced early separation. Criticism: Rutter distinguished deprivation from privation; effects may be reversible with good substitute care (Czech twins case).",
       reforge:{stem:"Rutter (1981) criticised Bowlby's maternal deprivation hypothesis by arguing that:",options:{A:"Early separation has no effect on development.",B:"Bowlby confused deprivation (loss of an existing bond) with privation (never forming a bond) — the effects of privation are far more severe, and even deprivation effects can be reversed with good quality substitute care.",C:"Only fathers can cause maternal deprivation.",D:"The critical period extends to age 10."},correct:"B"}
     },
     {
       id:"ATT-07",stem:"A student answers a question about Bowlby by only describing his theory without any evaluation. On a 16-mark essay, what is the likely issue?",
-      options:{A:"No issue — description is all that's needed.",B:"The student will lose marks for being too detailed.",C:"16-mark essays only require knowledge, not evaluation.",D:"The student scores AO1 marks only (up to 6) but loses all AO3 evaluation marks (up to 10)"},
+      options:{A:"There is no issue, since description alone is all that is needed",B:"The student will lose marks for having been far too detailed",C:"A 16-mark essay requires only knowledge and never any evaluation at all",D:"They score AO1 marks only and lose all the AO3 evaluation marks"},
       correct:"D",tag:"MC-TECH-02",
       scaffold:"AQA 16-mark essays: AO1 (knowledge/description) = up to 6 marks. AO3 (evaluation/analysis) = up to 10 marks. Evaluation means: using studies to support or contradict the theory, identifying methodological limitations, considering alternative explanations, and reaching a conclusion. Description-only answers are capped at the lowest band regardless of quality.",
       reforge:{stem:"To access the top band in a 16-mark AQA Psychology essay, a student must:",options:{A:"Write more than 4 pages.",B:"Demonstrate thorough and effective evaluation — using evidence to sustain an argument, showing understanding of limitations, and reaching a reasoned conclusion — not just accurate description.",C:"Include a diagram.",D:"Refer to at least 10 studies."},correct:"B"}
     },
     {
       id:"ATT-08",stem:"Which of the following correctly distinguishes Harlow's (1958) rhesus monkey study from Bowlby's theory?",
-      options:{A:"Harlow showed infants prefer contact comfort over food, directly challenging behaviourist learning theory.",B:"Harlow and Bowlby reached the same conclusions about the basis of attachment.",C:"Harlow demonstrated that food provision is the foundation of all attachment bonds.",D:"Bowlby's theory applies to animals; Harlow's applies specifically to humans."},
+      options:{A:"Harlow showed contact comfort beats food, challenging learning theory",B:"Harlow and Bowlby reached exactly the same conclusions about attachment",C:"Harlow demonstrated that food provision is the foundation of attachment",D:"Bowlby's theory applies to animals whereas Harlow's applies only to human infants"},
       correct:"A",tag:"MC-ATT-08",
       scaffold:"Harlow: infant monkeys ran to the cloth mother when frightened (contact comfort), not the wire mother who provided milk. This disproves cupboard love (food-based attachment). BUT the monkeys raised with surrogates were socially damaged — aggressive, poor mothers themselves. So contact comfort alone is insufficient. Supports Bowlby's point that attachment quality matters, not just physical presence. Ethical issue: caused lasting harm to the monkeys.",
       reforge:{stem:"Harlow's study supports Bowlby's monotropic theory because:",options:{A:"Both show that feeding is the basis of attachment.",B:"Both emphasise that a sensitive, responsive caregiver relationship — not just physical proximity or food — is essential for healthy development.",C:"Both were conducted with human infants.",D:"Both argue that fathers are unimportant."},correct:"B"}
@@ -7435,10 +7435,10 @@ BANKS["PSY-PATH"] = {
       id:"PATH-01",
       stem:"Statistical infrequency as a definition of abnormality classifies behaviour as abnormal when:",
       options:{
-        A:"It occurs rarely in the population — typically more than 2 standard deviations from the mean on a normal distribution.",
-        B:"It causes distress to the individual.",
-        C:"It deviates from social norms and expectations.",
-        D:"It prevents the individual from functioning effectively in daily life."
+        A:"It occurs rarely — over two standard deviations from the population mean",
+        B:"It causes significant personal distress to the individual who experiences it",
+        C:"It deviates from the social norms and expectations of the culture",
+        D:"It prevents the individual from functioning effectively in daily life"
       },
       correct:"A",tag:"MC-PATH-01",
       scaffold:"Statistical infrequency: uses normal distribution. Most behaviour clusters around the mean; behaviour 2+ SDs away is statistically abnormal. Example: IQ below 70 (2 SDs below mean of 100) = intellectually disabled. Strength: objective, quantifiable. Weaknesses: (1) some statistically rare traits are desirable (genius IQ); (2) doesn't account for cultural context; (3) where to draw the line is arbitrary.",
@@ -7448,10 +7448,10 @@ BANKS["PSY-PATH"] = {
       id:"PATH-02",
       stem:"The behavioural approach to explaining phobias proposes that phobias are acquired through:",
       options:{
-        A:"Unconscious conflicts originating in childhood psychosexual stages.",
-        B:"Irrational and catastrophising thought patterns about the phobic stimulus.",
-        C:"Genetic inheritance of a biological predisposition to fear.",
-        D:"Classical conditioning — a neutral stimulus becomes associated with a fear response."
+        A:"Unconscious conflicts originating in the early childhood psychosexual stages",
+        B:"Irrational, catastrophising thought patterns about the phobic stimulus",
+        C:"The genetic inheritance of a biological predisposition towards fear",
+        D:"Classical conditioning, as a neutral stimulus is paired with fear"
       },
       correct:"D",tag:"MC-PATH-02",
       scaffold:"Behaviourist explanation: Watson and Rayner's 'Little Albert' study — a neutral stimulus (white rat) was paired with a loud noise (UCS → UCR: fear) until the rat alone (CS) elicited fear (CR). The two-process model (Mowrer): (1) classical conditioning acquires the phobia; (2) operant conditioning maintains it (avoidance is negatively reinforced by anxiety reduction). Supports systematic desensitisation as a treatment.",
@@ -7461,10 +7461,10 @@ BANKS["PSY-PATH"] = {
       id:"PATH-03",
       stem:"Systematic desensitisation treats phobias by:",
       options:{
-        A:"Exposing the patient immediately to the most feared stimulus until anxiety extinguishes.",
-        B:"Replacing maladaptive thoughts about the phobic stimulus with rational alternatives.",
-        C:"Pairing the phobic stimulus with a relaxation response through gradual, hierarchical exposure until the fear response is replaced.",
-        D:"Prescribing medication to suppress the physiological fear response."
+        A:"Exposing the patient immediately to the most feared stimulus until anxiety fades",
+        B:"Replacing maladaptive thoughts about the phobic stimulus with rational ones",
+        C:"Pairing the stimulus with relaxation through gradual, hierarchical exposure",
+        D:"Prescribing medication that suppresses the physiological fear response"
       },
       correct:"C",tag:"MC-PATH-03",
       scaffold:"Systematic desensitisation (Wolpe): (1) patient learns relaxation techniques (deep breathing, progressive muscle relaxation); (2) therapist and patient construct a desensitisation hierarchy (least → most feared); (3) patient works through hierarchy while maintaining relaxation. Counter-conditioning replaces the fear CR with relaxation. Works through reciprocal inhibition (anxiety and relaxation cannot coexist). Supported by evidence; good for specific phobias.",
@@ -7487,10 +7487,10 @@ BANKS["PSY-PATH"] = {
       id:"PATH-05",
       stem:"The cognitive approach explains OCD as caused by:",
       options:{
-        A:"An overactive basal ganglia that produces intrusive urges.",
-        B:"A learned association between an anxiety-provoking stimulus and a compulsive behaviour.",
-        C:"Genetic predisposition combined with low levels of serotonin.",
-        D:"Catastrophic misinterpretation of intrusive thoughts — the person believes the thoughts are dangerous and must be neutralised."
+        A:"An overactive basal ganglia that produces persistent intrusive urges",
+        B:"A learned association between an anxiety-provoking stimulus and a compulsive act",
+        C:"A genetic predisposition combined with unusually low serotonin levels",
+        D:"Catastrophic misinterpretation of intrusive thoughts as truly dangerous"
       },
       correct:"D",tag:"MC-PATH-05",
       scaffold:"Cognitive explanation (Rachman): Everyone has occasional intrusive thoughts, but most people dismiss them. OCD patients interpret these thoughts as threatening and personally significant ('I thought about harming my child — does that make me dangerous?'). This catastrophic misinterpretation causes anxiety; compulsions are performed to neutralise it. This maintains the cycle. Supports CBT as treatment — challenge the misinterpretation rather than the compulsion.",
@@ -7500,10 +7500,10 @@ BANKS["PSY-PATH"] = {
       id:"PATH-06",
       stem:"Drug therapy for depression typically works by targeting which neurotransmitter system?",
       options:{
-        A:"Serotonin — SSRIs block the reuptake of serotonin, increasing its availability at the synapse.",
-        B:"Dopamine — increasing dopamine reuptake in the limbic system.",
-        C:"Acetylcholine — blocking acetylcholine receptors in the prefrontal cortex.",
-        D:"GABA — enhancing GABA activity to reduce neural inhibition."
+        A:"Serotonin — SSRIs block its reuptake, raising synaptic availability",
+        B:"Dopamine — the drugs increase dopamine reuptake within the limbic system",
+        C:"Acetylcholine — blocking its receptors throughout the prefrontal cortex",
+        D:"GABA — the drugs enhance GABA activity in order to reduce inhibition"
       },
       correct:"A",tag:"MC-PATH-06",
       scaffold:"SSRIs (Selective Serotonin Reuptake Inhibitors) — e.g. fluoxetine (Prozac). The low serotonin hypothesis: depression associated with low serotonin levels. SSRIs block the reuptake transporter so serotonin remains in the synapse longer, increasing postsynaptic receptor activation. Evidence: SSRIs are effective (Kirsch meta-analysis shows effect; BUT effect size is often modest compared to placebo for mild-moderate depression). Side effects limit compliance.",
@@ -7513,10 +7513,10 @@ BANKS["PSY-PATH"] = {
       id:"PATH-07",
       stem:"Which statement correctly identifies a limitation of the deviation from social norms definition of abnormality?",
       options:{
-        A:"It is too objective — it relies only on statistics and ignores cultural context.",
-        B:"Social norms vary across cultures and change over time, meaning behaviour can be labelled abnormal in one context but normal in another.",
-        C:"It only applies to mental illness and cannot be used to define physical illness.",
-        D:"It is identical to the statistical infrequency definition."
+        A:"It is too objective, relying only on statistics and ignoring all context",
+        B:"Social norms vary across cultures and change over time, so labels shift",
+        C:"It applies only to mental illness and cannot define physical illness",
+        D:"It is effectively identical to the statistical infrequency definition"
       },
       correct:"B",tag:"MC-PATH-07",
       scaffold:"Deviation from social norms: abnormal = behaviour that violates the written or unwritten rules of society. Strength: explains why some statistically rare behaviour (e.g. genius) is not considered abnormal. Key limitation: cultural relativism — homosexuality was classified as a mental disorder in the DSM until 1973; misattributing political dissent as mental illness in the USSR shows how norms can be used as a tool of social control. Also: norms change over time.",
@@ -7526,10 +7526,10 @@ BANKS["PSY-PATH"] = {
       id:"PATH-08",
       stem:"CBT (Cognitive Behavioural Therapy) treats mental disorders by targeting:",
       options:{
-        A:"Unconscious conflicts through free association and dream analysis.",
-        B:"Maladaptive thought patterns and behaviours, helping clients identify and challenge cognitive distortions.",
-        C:"Neurochemical imbalances through direct brain stimulation.",
-        D:"Learned fear associations through systematic counter-conditioning."
+        A:"Unconscious conflicts, using free association and dream analysis",
+        B:"Maladaptive thoughts and behaviours, challenging cognitive distortions",
+        C:"Neurochemical imbalances, through direct electrical stimulation of the brain",
+        D:"Learned fear associations, using systematic counter-conditioning"
       },
       correct:"B",tag:"MC-PATH-08",
       scaffold:"CBT integrates cognitive and behavioural techniques. Cognitive component: identify negative automatic thoughts (NATs), challenge cognitive distortions (Beck), replace with rational alternatives. Behavioural component: behavioural activation (for depression — scheduling positive activities), exposure tasks (for phobias/OCD). Evidence: NICE recommends CBT as first-line treatment for depression, anxiety, OCD, PTSD. Limitation: requires motivation and cognitive ability; not suitable for severe psychosis.",
@@ -11035,6 +11035,51 @@ addGcseMathsBank("GCSE-MATH-P3", "Paper 3 — Calculator", "1MA1 Paper 3", "#1d4
 ]);
 SUBJECTS["gcse-maths"].banks.push("GCSE-MATH-P3");
 
+const extendGcseMathsBank = (bankId, rows) => {
+  const bank = BANKS[bankId];
+  const added = rows.map(row => ({id:row.id, spec:bank.questions[0].spec, stem:row.stem, options:row.options, correct:row.correct, tag:`MC-${row.tag}`, scaffold:row.scaffold, reforge:row.reforge}));
+  bank.questions.push(...added);
+  const basePlan = "ABCDABCD";
+  const reforgePlan = "CDABCDAB";
+  added.forEach((question, index) => {
+    moveGcseScienceAnswer(question, basePlan[index]);
+    moveGcseScienceAnswer(question, reforgePlan[index], true);
+  });
+};
+
+extendGcseMathsBank("GCSE-MATH-P1", [
+  {id:"MATH-P1-13",stem:"Simplify 3/4 + 5/8.",options:{A:"8/12",B:"11/8",C:"1 1/8",D:"1 3/8"},correct:"D",scaffold:"Use eighths: 3/4 = 6/8, so 6/8 + 5/8 = 11/8 = 1 3/8.",tag:"MATH-FRACTIONS",reforge:{stem:"Calculate 5/6 − 1/4.",options:{A:"7/12",B:"2/10",C:"1/2",D:"4/12"},correct:"A"}},
+  {id:"MATH-P1-14",stem:"Simplify √50.",options:{A:"5√2",B:"25√2",C:"√25",D:"10√5"},correct:"A",scaffold:"√50 = √(25 × 2) = 5√2.",tag:"MATH-SURDS",reforge:{stem:"Simplify 3√8.",options:{A:"3√2",B:"6√2",C:"8√3",D:"24"},correct:"B"}},
+  {id:"MATH-P1-15",stem:"If a = 3 and b = −2, find 2a² + b.",options:{A:"10",B:"14",C:"16",D:"22"},correct:"C",scaffold:"Substitute carefully: 2(3²) + (−2) = 18 − 2 = 16.",tag:"MATH-SUBSTITUTION",reforge:{stem:"If p = −4 and q = 2, find p² − 3q.",options:{A:"10",B:"14",C:"22",D:"28"},correct:"A"}},
+  {id:"MATH-P1-16",stem:"The nth term of a sequence is 5n − 2. Find the 10th term.",options:{A:"48",B:"50",C:"52",D:"58"},correct:"A",scaffold:"Substitute n = 10: 5(10) − 2 = 48.",tag:"MATH-NTH",reforge:{stem:"The nth term is 3n + 4. Which term is 34?",options:{A:"n = 8",B:"n = 9",C:"n = 10",D:"n = 12"},correct:"C"}},
+  {id:"MATH-P1-17",stem:"Two parallel lines are crossed by a transversal. One corresponding angle is 68°. Find the matching angle.",options:{A:"22°",B:"68°",C:"112°",D:"292°"},correct:"B",scaffold:"Corresponding angles are equal when parallel lines are crossed by a transversal, so the matching angle is 68°.",tag:"MATH-PARALLEL",reforge:{stem:"An angle on a straight line is 137°. Find the adjacent angle.",options:{A:"43°",B:"53°",C:"137°",D:"223°"},correct:"A"}},
+  {id:"MATH-P1-18",stem:"A sector has radius 6 cm and angle 60°. Find its area in terms of π.",options:{A:"6π cm²",B:"12π cm²",C:"18π cm²",D:"36π cm²"},correct:"A",scaffold:"Sector area = 60/360 × π × 6² = 6π cm².",tag:"MATH-SECTOR",reforge:{stem:"Find the arc length of a semicircle with radius 5 cm in terms of π.",options:{A:"5π cm",B:"10π cm",C:"25π cm",D:"50π cm"},correct:"A"}},
+  {id:"MATH-P1-19",stem:"A spinner has 4 equal sections. What is the probability of landing on red if 3 sections are red?",options:{A:"1/4",B:"1/2",C:"3/4",D:"1"},correct:"C",scaffold:"Three of the four equally likely sections are red, so the probability is 3/4.",tag:"MATH-SIMPLEPROB",reforge:{stem:"A fair coin is tossed twice. What is P(two heads)?",options:{A:"1/4",B:"1/2",C:"2/3",D:"3/4"},correct:"A"}},
+  {id:"MATH-P1-20",stem:"What is the median of 3, 8, 4, 10 and 6?",options:{A:"4",B:"6",C:"8",D:"10"},correct:"B",scaffold:"Order the values 3, 4, 6, 8, 10. The middle value is 6.",tag:"MATH-MEDIAN",reforge:{stem:"What is the mode of 2, 4, 4, 5, 7, 4?",options:{A:"2",B:"4",C:"5",D:"7"},correct:"B"}}
+]);
+
+extendGcseMathsBank("GCSE-MATH-P2", [
+  {id:"MATH-P2-13",stem:"A ladder 5 m long leans against a wall with its foot 3 m away. How high does it reach?",options:{A:"3 m",B:"4 m",C:"5.8 m",D:"8 m"},correct:"B",scaffold:"Use Pythagoras: height² = 5² − 3² = 16, so height = 4 m.",tag:"MATH-PYTHAGORAS",reforge:{stem:"A rectangle has diagonal 13 cm and width 5 cm. Find its length.",options:{A:"8 cm",B:"10 cm",C:"12 cm",D:"18 cm"},correct:"C"}},
+  {id:"MATH-P2-14",stem:"A price of £240 is reduced by 15%. Find the sale price.",options:{A:"£204",B:"£216",C:"£225",D:"£276"},correct:"A",scaffold:"The multiplier for a 15% reduction is 0.85: £240 × 0.85 = £204.",tag:"MATH-DECIMALPERCENT",reforge:{stem:"A salary of £28,000 increases by 3%. Find the new salary.",options:{A:"£28,030",B:"£28,840",C:"£29,000",D:"£30,800"},correct:"B"}},
+  {id:"MATH-P2-15",stem:"A measurement is 4.6 cm correct to the nearest millimetre. State its error interval.",options:{A:"4.55 ≤ x < 4.65",B:"4.5 ≤ x < 4.7",C:"4.59 ≤ x < 4.61",D:"4.6 ≤ x < 4.7"},correct:"A",scaffold:"Nearest millimetre means half a millimetre either side: 4.55 ≤ x < 4.65 cm.",tag:"MATH-ERROR",reforge:{stem:"A length is 12 cm correct to the nearest centimetre. What is its lower bound?",options:{A:"11.5 cm",B:"11.9 cm",C:"12.0 cm",D:"12.5 cm"},correct:"A"}},
+  {id:"MATH-P2-16",stem:"The equation 2x + 1 = 7 is transformed by multiplying both sides by 3. What equation results?",options:{A:"6x + 3 = 21",B:"6x + 1 = 21",C:"2x + 3 = 21",D:"6x + 3 = 7"},correct:"A",scaffold:"Multiply every term on both sides by 3: 3(2x + 1) = 3(7), giving 6x + 3 = 21.",tag:"MATH-ALGEBRAPRAC",reforge:{stem:"Expand (x + 4)(x − 2).",options:{A:"x² + 2x − 8",B:"x² − 2x + 8",C:"x² + 6x − 8",D:"x² − 6x + 8"},correct:"A"}},
+  {id:"MATH-P2-17",stem:"A scatter diagram shows a strong positive correlation. What does this mean?",options:{A:"Positive trend",B:"Causation proven",C:"Equal values",D:"No pattern"},correct:"A",scaffold:"Positive correlation means the variables tend to rise together. Correlation alone does not prove causation.",tag:"MATH-SCATTER",reforge:{stem:"What is an outlier on a scatter diagram?",options:{A:"Atypical",B:"Nearest point",C:"Outlier",D:"Highest value"},correct:"A"}},
+  {id:"MATH-P2-18",stem:"A cumulative frequency graph reaches 42 at the upper quartile. What does this tell you?",options:{A:"75% at or below",B:"25% at or below",C:"Mean is 42",D:"All values are 42"},correct:"A",scaffold:"The upper quartile is the value below which about 75% of observations lie.",tag:"MATH-CUMFREQ",reforge:{stem:"What percentage of data lies between the lower and upper quartiles?",options:{A:"Lower 25%",B:"50%",C:"Upper 75%",D:"All data"},correct:"B"}},
+  {id:"MATH-P2-19",stem:"A transformation maps (x, y) to (x, −y). What is it?",options:{A:"Reflection in the x-axis",B:"Reflection in the y-axis",C:"Rotation 90°",D:"Translation down"},correct:"A",scaffold:"The x-coordinate stays the same and the y-coordinate changes sign, which is reflection in the x-axis.",tag:"MATH-TRANSFORM2",reforge:{stem:"What matrix represents a reflection in the y-axis?",options:{A:"[−1 0; 0 1]",B:"[1 0; 0 −1]",C:"[0 1; 1 0]",D:"[1 1; 0 1]"},correct:"A"}},
+  {id:"MATH-P2-20",stem:"A sequence has first term 3 and common ratio 2. Find its fifth term.",options:{A:"24",B:"32",C:"48",D:"96"},correct:"C",scaffold:"The terms are 3, 6, 12, 24, 48, so the fifth term is 48.",tag:"MATH-GEOMETRIC",reforge:{stem:"What is the common ratio of 5, 15, 45, 135, …?",options:{A:"2",B:"3",C:"5",D:"10"},correct:"B"}}
+]);
+
+extendGcseMathsBank("GCSE-MATH-P3", [
+  {id:"MATH-P3-13",stem:"A proof shows n(n + 1) is even for every integer n. Why?",options:{A:"One even factor",B:"Both factors prime",C:"Product always odd",D:"n always even"},correct:"A",scaffold:"Among any two consecutive integers, one must be even, so their product is divisible by 2.",tag:"MATH-PROOF2",reforge:{stem:"Which expression is always divisible by 3 for integer n?",options:{A:"Three terms in row",B:"One term plus three",C:"A square then one",D:"Twice n then one"},correct:"A"}},
+  {id:"MATH-P3-14",stem:"A vector from A to B is (6, −2). Find the midpoint vector from A to the midpoint of AB.",options:{A:"(3, −1)",B:"(12, −4)",C:"(6, −1)",D:"(3, −2)"},correct:"A",scaffold:"The midpoint is halfway along the vector, so halve each component: (6, −2) ÷ 2 = (3, −1).",tag:"MATH-VECTOR2",reforge:{stem:"What is the magnitude of vector (3, 4)?",options:{A:"5",B:"7",C:"12",D:"25"},correct:"A"}},
+  {id:"MATH-P3-15",stem:"A chord is 8 cm from the centre of a circle of radius 10 cm. Find the chord length.",options:{A:"12 cm",B:"16 cm",C:"18 cm",D:"20 cm"},correct:"B",scaffold:"The perpendicular from the centre bisects the chord. Half-length = √(10² − 8²) = 6, so chord length = 12 cm.",tag:"MATH-CHORD",reforge:{stem:"The perpendicular from the centre to a chord is 5 cm in a circle of radius 13 cm. Find the chord length.",options:{A:"12 cm",B:"24 cm",C:"26 cm",D:"30 cm"},correct:"B"}},
+  {id:"MATH-P3-16",stem:"A sector has angle 72° and radius 10 cm. Find its perimeter in terms of π.",options:{A:"20 + 4π cm",B:"10 + 4π cm",C:"20 + 2π cm",D:"40 + 4π cm"},correct:"A",scaffold:"The two radii total 20 cm. The arc is 72/360 × 2π × 10 = 4π cm, so the perimeter is 20 + 4π cm.",tag:"MATH-SECTOR2",reforge:{stem:"Find the area of a 90° sector with radius 8 cm.",options:{A:"8π cm²",B:"16π cm²",C:"32π cm²",D:"64π cm²"},correct:"B"}},
+  {id:"MATH-P3-17",stem:"The iteration xₙ₊₁ = (10 + xₙ²)/6 starts with x₀ = 2. Find x₁.",options:{A:"1.00",B:"1.67",C:"2.33",D:"2.67"},correct:"C",scaffold:"Substitute x₀ = 2: x₁ = (10 + 2²)/6 = 14/6 ≈ 2.33.",tag:"MATH-ITERATION2",reforge:{stem:"Why are repeated iteration values rounded only at the end?",options:{A:"Early rounding can change later values",B:"Rounding increases accuracy",C:"The formula stops working",D:"It removes the need for a starting value"},correct:"A"}},
+  {id:"MATH-P3-18",stem:"For a normal distribution with mean 100 and standard deviation 15, what is the z-score for 130?",options:{A:"1",B:"2",C:"2.5",D:"3"},correct:"B",scaffold:"z = (value − mean) ÷ standard deviation = (130 − 100)/15 = 2.",tag:"MATH-ZSCORE",reforge:{stem:"A value has z-score −1.5 in a distribution with mean 40 and standard deviation 8. Find the value.",options:{A:"28",B:"32",C:"48",D:"52"},correct:"A"}},
+  {id:"MATH-P3-19",stem:"Events A and B are mutually exclusive. If P(A)=0.3 and P(B)=0.4, find P(A or B).",options:{A:"0.1",B:"0.7",C:"1.2",D:"0.28"},correct:"B",scaffold:"Mutually exclusive events cannot happen together, so P(A or B) = P(A) + P(B) = 0.7.",tag:"MATH-MUTUALEX",reforge:{stem:"If P(A)=0.6 and P(B)=0.5 for independent events, find P(A and B).",options:{A:"0.3",B:"0.55",C:"1.1",D:"0.1"},correct:"A"}},
+  {id:"MATH-P3-20",stem:"A function is defined by f(x)=2x+1. What is f⁻¹(x)?",options:{A:"(x − 1)/2",B:"(x + 1)/2",C:"2x − 1",D:"1/(2x + 1)"},correct:"A",scaffold:"Set y = 2x + 1, swap x and y, then rearrange: x = 2y + 1 gives y = (x − 1)/2.",tag:"MATH-INVERSE",reforge:{stem:"What is the composite function fg(x) if f(x)=2x and g(x)=x+3?",options:{A:"2x + 3",B:"2x + 6",C:"x + 6",D:"2x − 3"},correct:"B"}}
+]);
+
 // ===== A LEVEL PSYCHOLOGY (AQA 7182) PAPER 2: RESEARCH METHODS =====
 BANKS["PSY-RM"] = {
   label: "Research Methods",
@@ -11697,7 +11742,7 @@ BANKS["PSY-SI"].questions.push(
       },
       correct:"B",tag:"MC-SI-01",
       scaffold:"Asch found conformity dropped from 33% to around 5.5% when one confederate dissented — and crucially it fell even when the dissenter gave a different wrong answer. That second finding is the important one: what matters is not having an ally who is right, but breaking the group's unanimity, which frees the participant to act independently. The other two variables Asch tested: group size, where conformity rose steeply up to three confederates then plateaued, so a small majority is enough; and task difficulty, where making the lines more similar increased conformity, because informational social influence takes over when the correct answer is genuinely unclear.",
-      reforge:{stem:"Why did conformity fall even when the dissenter gave a different wrong answer?",options:{A:"The participant no longer wished to be accurate",B:"Breaking unanimity is what frees the participant to dissent",C:"The task had become considerably easier to judge",D:"The group size had effectively been reduced to zero"},correct:"B"}
+      reforge:{stem:"Why did conformity fall even when the dissenter gave a different wrong answer?",options:{A:"The participant no longer wished to be accurate",B:"Breaking unanimity is what frees the participant to dissent",C:"The task had become considerably easier to judge",D:"The group size had effectively been reduced down to zero people"},correct:"B"}
     },
     {
       id:"SI-11",
@@ -11736,7 +11781,7 @@ BANKS["PSY-SI"].questions.push(
       },
       correct:"D",tag:"MC-SI-03",
       scaffold:"Agency theory holds that people shift from an autonomous state, where they see themselves as responsible for their actions, into an agentic state, where they see themselves as acting for an authority figure and so feel no personal responsibility. This agentic shift creates moral strain, and binding factors are what allow the person to stay in the agentic state despite it — shifting blame onto the victim, or denying the damage of their own actions. In Milgram's study, the experimenter's reassurance that he accepted full responsibility is the clearest binding factor. Note the related concept of legitimacy of authority: we obey people we believe have a justified position in a social hierarchy.",
-      reforge:{stem:"What is the agentic state?",options:{A:"Seeing oneself as acting on behalf of an authority figure",B:"Feeling personally responsible for one's own actions",C:"Resisting the instructions given by an authority figure",D:"Conforming to the behaviour of a majority group"},correct:"A"}
+      reforge:{stem:"What is the agentic state?",options:{A:"Seeing oneself as acting on behalf of an authority figure",B:"Feeling personally responsible for one's own actions",C:"Actively resisting the instructions given by an authority figure",D:"Conforming to the behaviour of a majority group"},correct:"A"}
     },
     {
       id:"SI-14",
@@ -11775,7 +11820,7 @@ BANKS["PSY-SI"].questions.push(
       },
       correct:"A",tag:"MC-SI-06",
       scaffold:"Moscovici identified three factors that make a minority persuasive. Consistency: holding the same position over time and agreeing among themselves, which makes the majority reassess. Commitment: demonstrating personal sacrifice for the cause, which shows the position is not self-interested — the augmentation principle. Flexibility: being willing to adapt and accept reasonable counter-arguments, since pure rigidity is read as dogmatism. Nemeth showed flexibility matters, as an inflexible minority was ineffective. The outcome is conversion rather than compliance: minority influence works through deeper processing, so the change is internalised and lasts, which is why it drives social change.",
-      reforge:{stem:"What is the augmentation principle in minority influence?",options:{A:"A minority becomes more persuasive as it grows larger",B:"Personal sacrifice for a cause increases a minority's impact",C:"Majorities augment their views when challenged",D:"Consistency augments the size of the majority group"},correct:"B"}
+      reforge:{stem:"What is the augmentation principle in minority influence?",options:{A:"A minority becomes considerably more persuasive as it grows larger",B:"Personal sacrifice for a cause increases a minority's impact",C:"Majorities augment their views when challenged",D:"Consistency augments the size of the majority group"},correct:"B"}
     },
     {
       id:"SI-17",
@@ -11788,7 +11833,7 @@ BANKS["PSY-SI"].questions.push(
       },
       correct:"A",tag:"MC-SI-06",
       scaffold:"Moscovici's account of social change runs in stages: the minority draws attention to an issue; consistency and commitment prompt the majority to think more deeply about it, which is the conversion process; individual majority members convert one at a time; the snowball effect takes over as the minority position gains momentum and becomes the majority; and finally social cryptomnesia occurs — people remember the change but forget how it happened. The suffragette movement is the standard worked example, showing consistency across decades, commitment through hunger strikes and imprisonment, and eventual legal change. Note that this process is slow, which is a genuine limitation.",
-      reforge:{stem:"What is social cryptomnesia?",options:{A:"Deliberately forgetting a minority's argument",B:"Remembering a change occurred but forgetting its source",C:"The memory loss caused by obeying authority",D:"A minority forgetting its original position"},correct:"B"}
+      reforge:{stem:"What is social cryptomnesia?",options:{A:"Deliberately choosing to forget a minority's whole argument",B:"Remembering a change occurred but forgetting its source",C:"The memory loss caused by obeying authority",D:"A minority forgetting its original position"},correct:"B"}
     },
     {
       id:"SI-18",
@@ -11801,7 +11846,7 @@ BANKS["PSY-SI"].questions.push(
       },
       correct:"D",tag:"MC-SI-01",
       scaffold:"The two explanations map onto two different needs. Informational social influence stems from the need to be right: when a situation is ambiguous, novel or a crisis, we assume others know better and follow, and because we genuinely believe them the result is internalisation. Normative social influence stems from the need to be liked: we go along with the group to avoid rejection, which produces compliance and is strongest with people we care about. Sherif's autokinetic effect study demonstrates ISI, since the light's apparent movement is an illusion with no correct answer; Asch's line task demonstrates NSI, since the answer is obvious and participants knew they were wrong.",
-      reforge:{stem:"Which study best demonstrates informational social influence?",options:{A:"Asch's line judgement task",B:"Milgram's shock experiment",C:"Sherif's autokinetic effect study",D:"Zimbardo's prison simulation"},correct:"C"}
+      reforge:{stem:"Which study best demonstrates informational social influence?",options:{A:"Asch's line judgement task",B:"Milgram's shock experiment",C:"Sherif's autokinetic effect study",D:"Zimbardo's Stanford prison simulation"},correct:"C"}
     },
     {
       id:"SI-19",
@@ -11840,7 +11885,7 @@ BANKS["PSY-SI"].questions.push(
       },
       correct:"A",tag:"MC-SI-06",
       scaffold:"Social norms interventions work by correcting misperceptions. People often overestimate how common an undesirable behaviour is, so publicising the true and usually lower figure exploits normative social influence directly — the classic example is campus campaigns reporting that most students drink less than peers assume, which reduced drinking. Schultz found hotel guests told that 75% of guests reuse their towels cut their own towel use by 25%. This is a strong real-world application point for an exam: it shows conformity research has practical value. Note it operates through NSI, whereas minority influence produces change through deeper processing and conversion.",
-      reforge:{stem:"What did Schultz find in the hotel towel study?",options:{A:"Guests ignored all messages about towel reuse",B:"Telling guests the group norm reduced towel use by 25%",C:"Only authority figures could change guest behaviour",D:"Guests used more towels when given information"},correct:"B"}
+      reforge:{stem:"What did Schultz find in the hotel towel study?",options:{A:"Guests ignored all messages about towel reuse",B:"Telling guests the group norm reduced towel use by 25%",C:"Only authority figures were able to change guest behaviour",D:"Guests used more towels when given information"},correct:"B"}
     },
     {
       id:"SI-22",
@@ -11853,7 +11898,7 @@ BANKS["PSY-SI"].questions.push(
       },
       correct:"B",tag:"MC-SI-02",
       scaffold:"Zimbardo acted as both prison superintendent and lead researcher, so he was directing the situation he was supposed to be observing — he later acknowledged becoming absorbed in the role himself, and only stopped the study when a colleague challenged him. That is a serious investigator effect. Add the other criticisms: demand characteristics, with Banuazizi and Movahedi finding that most people guessed how participants were expected to behave; the ethical problems of psychological harm and the difficulty participants had withdrawing; and Reicher and Haslam's BBC replication, where prisoners resisted and guards would not impose authority, suggesting the original result was not inevitable.",
-      reforge:{stem:"What did Reicher and Haslam's replication find?",options:{A:"Guards were even more brutal than in the original",B:"The results replicated Zimbardo's findings exactly",C:"Prisoners resisted and guards would not assert authority",D:"No participants adopted their assigned roles at all"},correct:"C"}
+      reforge:{stem:"What did Reicher and Haslam's replication find?",options:{A:"Guards were even more brutal than in the original",B:"The results replicated Zimbardo's findings exactly",C:"Prisoners resisted and guards would not assert authority",D:"No participants adopted their assigned roles at any point"},correct:"C"}
     },
     {
       id:"SI-23",
@@ -11866,7 +11911,7 @@ BANKS["PSY-SI"].questions.push(
       },
       correct:"C",tag:"MC-SI-03",
       scaffold:"Displacing responsibility onto the authority figure is a textbook binding factor: it reduces the moral strain of continuing, so the person stays in the agentic state rather than shifting back to autonomy. In Milgram's procedure the experimenter's scripted prod — that he accepted full responsibility for anything that happened — did exactly this work, and it is why so many participants continued despite visible distress. Distinguish it from legitimacy of authority, which explains why the person entered the agentic state in the first place: we are socialised from childhood to accept that certain people have a justified right to direct our behaviour.",
-      reforge:{stem:"Why does destructive authority pose a particular danger according to Milgram?",options:{A:"Legitimate authority can be used to order harmful acts",B:"Authority figures are always in an autonomous state",C:"Binding factors prevent authority from being obeyed",D:"Legitimacy of authority reduces obedience overall"},correct:"A"}
+      reforge:{stem:"Why does destructive authority pose a particular danger according to Milgram?",options:{A:"Legitimate authority can be used to order harmful acts",B:"Authority figures are always in an autonomous state themselves",C:"Binding factors prevent authority from being obeyed",D:"Legitimacy of authority reduces obedience overall"},correct:"A"}
     },
     {
       id:"SI-24",
@@ -11879,7 +11924,7 @@ BANKS["PSY-SI"].questions.push(
       },
       correct:"B",tag:"MC-SI-06",
       scaffold:"Minority influence is slow because agreeing publicly with a minority carries a normative cost: you risk being seen as deviant by the majority. This is why minority influence typically shows up first as private acceptance and only later as public behaviour change — the opposite pattern to majority influence, which produces public compliance without private change. Moscovici's blue-green study captured this, with more participants agreeing with the minority when responses were written privately. The practical implication is that minority influence produces slower but deeper and more durable change, which is exactly what drives long-term social change.",
-      reforge:{stem:"Why did more participants agree with the minority when answering privately?",options:{A:"Private answers are easier to record accurately",B:"They avoided the social cost of publicly appearing deviant",C:"The minority became more consistent in private",D:"Informational influence only operates in private"},correct:"B"}
+      reforge:{stem:"Why did more participants agree with the minority when answering privately?",options:{A:"Private answers are easier to record accurately",B:"They avoided the social cost of publicly appearing deviant",C:"The minority became more consistent in private",D:"Informational influence only ever operates in private settings"},correct:"B"}
     }
 );
 
@@ -11909,7 +11954,7 @@ BANKS["PSY-MEM"].questions.push(
       },
       correct:"A",tag:"MC-MEM-02",
       scaffold:"The central executive is the supervisory component that allocates attention to the slave systems, and Baddeley described its own storage capacity as very limited — it directs rather than stores. The phonological loop holds auditory information, subdivided into the phonological store (what you hear) and the articulatory process (the inner voice used for maintenance rehearsal), with a capacity of about two seconds' worth of speech. The visuo-spatial sketchpad holds visual and spatial data, roughly three to four objects. The episodic buffer, added in 2000, integrates information from all components into a single time-sequenced record and links to LTM. The central executive is also the model's weakest point: critics argue it is too vague to test.",
-      reforge:{stem:"What is the main criticism of the central executive?",options:{A:"It is too vague and difficult to test empirically",B:"It has an unlimited storage capacity",C:"It only processes visual information",D:"It was removed from the model in 2000"},correct:"A"}
+      reforge:{stem:"What is the main criticism of the central executive?",options:{A:"It is too vague and difficult to test empirically",B:"It has an unlimited storage capacity",C:"It only processes visual information",D:"It was removed from the model back in the year 2000"},correct:"A"}
     },
     {
       id:"MEM-11",
@@ -11974,7 +12019,7 @@ BANKS["PSY-MEM"].questions.push(
       },
       correct:"A",tag:"MC-MEM-05",
       scaffold:"Participants who overheard an argument and saw a man leave holding a bloodied knife identified him from photographs 33% of the time, against 49% for those who saw him holding a pen. The tunnel-theory explanation is that anxiety narrows attention onto the weapon at the cost of peripheral detail such as the face. But the evidence genuinely conflicts: Yuille and Cutshall's real shooting witnesses were highly accurate five months later, with the most anxious the most accurate. Deffenbacher's resolution is the Yerkes-Dodson inverted U — moderate anxiety improves recall while extreme anxiety impairs it. Pickel also argued the effect may be surprise rather than anxiety, since unusual objects produced the same result.",
-      reforge:{stem:"How does the inverted-U explanation reconcile conflicting anxiety findings?",options:{A:"Anxiety always improves recall in real-world settings",B:"Moderate anxiety aids recall while extreme anxiety impairs it",C:"Anxiety has no measurable effect on eyewitness memory",D:"Only laboratory studies show any anxiety effect"},correct:"B"}
+      reforge:{stem:"How does the inverted-U explanation reconcile conflicting anxiety findings?",options:{A:"Anxiety always improves recall in genuine real-world crime settings",B:"Moderate anxiety aids recall while extreme anxiety impairs it",C:"Anxiety has no measurable effect on eyewitness memory",D:"Only laboratory studies show any anxiety effect"},correct:"B"}
     },
     {
       id:"MEM-16",
@@ -11987,7 +12032,7 @@ BANKS["PSY-MEM"].questions.push(
       },
       correct:"D",tag:"MC-MEM-06",
       scaffold:"The four techniques each target a known weakness of memory. Report everything: even trivial details may cue others, and the witness should not filter. Reinstate the context: mentally recreating the environment and emotions applies context-dependent retrieval. Reverse the order: recalling backwards disrupts the influence of schemas and expectation, making invention harder. Change the perspective: describing what another witness would have seen also disrupts schema-driven recall. Fisher's enhanced cognitive interview adds social elements such as reducing anxiety and avoiding interruption. Köhnken's meta-analysis found a 41% increase in accurate information, though also an increase in incorrect details.",
-      reforge:{stem:"What did Köhnken's meta-analysis find about the cognitive interview?",options:{A:"It produced no improvement over standard interviews",B:"It increased accurate information but also incorrect details",C:"It reduced the total amount of information recalled",D:"It only worked with witnesses under the age of eighteen"},correct:"B"}
+      reforge:{stem:"What did Köhnken's meta-analysis find about the cognitive interview?",options:{A:"It produced no improvement over standard interviews",B:"It increased accurate information but also incorrect details",C:"It reduced the total amount of information recalled",D:"It only worked with witnesses who were under the age of eighteen"},correct:"B"}
     },
     {
       id:"MEM-17",
@@ -12000,7 +12045,7 @@ BANKS["PSY-MEM"].questions.push(
       },
       correct:"B",tag:"MC-MEM-02",
       scaffold:"Dual-task studies are the decisive evidence. If short-term memory were a single unitary store as the multi-store model claims, any two simultaneous tasks should interfere. Baddeley and Hitch found instead that participants could perform a verbal task and a visual task together with little cost, but performance collapsed when both tasks used the same component. That pattern only makes sense if STM has separate subsystems with separate capacities. Add supporting clinical evidence: patient KF had impaired verbal short-term recall but intact visual short-term recall after brain damage, again pointing to separable stores. Option A describes the serial position effect, which supports the multi-store model instead.",
-      reforge:{stem:"What does the case of patient KF suggest about short-term memory?",options:{A:"Short-term memory is a single unitary store",B:"Verbal and visual short-term memory are separable",C:"Long-term memory codes information acoustically",D:"Rehearsal is unnecessary for memory transfer"},correct:"B"}
+      reforge:{stem:"What does the case of patient KF suggest about short-term memory?",options:{A:"Short-term memory is a single unitary store",B:"Verbal and visual short-term memory are separable",C:"Long-term memory codes all information acoustically",D:"Rehearsal is unnecessary for memory transfer"},correct:"B"}
     },
     {
       id:"MEM-18",
@@ -12013,7 +12058,7 @@ BANKS["PSY-MEM"].questions.push(
       },
       correct:"D",tag:"MC-MEM-05",
       scaffold:"Watching a staged film clip in a laboratory carries no consequence: the witness feels no fear, and nothing turns on their answer. That may explain why real witnesses often outperform participants, as in Yuille and Cutshall's study of a genuine shooting. Foster showed the point directly — participants told their identification would influence a real trial were significantly more accurate. So laboratory findings may overstate eyewitness unreliability. Balance this against the genuine strength of laboratory work: high control allows causal conclusions, and the research has produced real change in police procedure through the cognitive interview and in guidance on leading questions.",
-      reforge:{stem:"What did Foster find about eyewitness accuracy?",options:{A:"Accuracy improved when participants believed the outcome mattered",B:"Accuracy was identical in all experimental conditions",C:"Laboratory participants always outperform real witnesses",D:"Leading questions had no effect on identification"},correct:"A"}
+      reforge:{stem:"What did Foster find about eyewitness accuracy?",options:{A:"Accuracy improved when participants believed the outcome mattered",B:"Accuracy was identical in all experimental conditions",C:"Laboratory participants will always outperform real crime witnesses",D:"Leading questions had no effect on identification"},correct:"A"}
     },
     {
       id:"MEM-19",
@@ -12039,7 +12084,7 @@ BANKS["PSY-MEM"].questions.push(
       },
       correct:"A",tag:"MC-MEM-05",
       scaffold:"A leading question is phrased so that it suggests a particular answer, and here the verb 'hit' primes a specific speed range — the whole point of Loftus and Palmer's manipulation. Two mechanisms are proposed for how misleading information works: the response-bias explanation, where the wording influences the answer given without changing the underlying memory, and the substitution explanation, where the memory itself is altered. The broken glass result supports substitution. Distinguish leading questions from post-event discussion, the other source of misleading information, where co-witnesses contaminate each other's accounts — Gabbert found 71% of witnesses reported details they had only heard from another person.",
-      reforge:{stem:"What did Gabbert's study of post-event discussion find?",options:{A:"Witnesses never discuss events with each other",B:"71% reported details acquired only from another witness",C:"Discussion improved the accuracy of all witnesses",D:"Only leading questions can distort eyewitness memory"},correct:"B"}
+      reforge:{stem:"What did Gabbert's study of post-event discussion find?",options:{A:"Witnesses never discuss events with each other",B:"71% reported details acquired only from another witness",C:"Discussion improved the accuracy of all witnesses",D:"Only leading questions are able to distort eyewitness memory"},correct:"B"}
     },
     {
       id:"MEM-21",
@@ -12052,7 +12097,7 @@ BANKS["PSY-MEM"].questions.push(
       },
       correct:"C",tag:"MC-MEM-02",
       scaffold:"Baddeley added the episodic buffer in 2000 to fix a gap in the original 1974 model: there was no general store, and no explanation of how visual and auditory information were combined into a single coherent experience, or how working memory connected to long-term memory. The episodic buffer does both — it holds around four chunks, integrates information from the loop, the sketchpad and long-term memory, and sequences it in time. Knowing that the model was revised in response to a specific criticism is itself an evaluation point: it shows the model developing in response to evidence, which is a mark of a scientific theory.",
-      reforge:{stem:"Which problem was the episodic buffer introduced to solve?",options:{A:"The model had no way to store visual information",B:"The central executive had unlimited capacity",C:"The model could not explain acoustic coding",D:"There was no general store integrating the components"},correct:"D"}
+      reforge:{stem:"Which problem was the episodic buffer introduced to solve?",options:{A:"The model had no way at all to store visual information",B:"The central executive had unlimited capacity",C:"The model could not explain acoustic coding",D:"There was no general store integrating the components"},correct:"D"}
     },
     {
       id:"MEM-22",
@@ -12091,7 +12136,7 @@ BANKS["PSY-MEM"].questions.push(
       },
       correct:"D",tag:"MC-MEM-04",
       scaffold:"Typical interference studies use meaningless word lists learned minutes apart — conditions engineered to maximise interference and rarely matched in real life, where similar material is usually learned days or weeks apart with far more context. So while interference is real, it may explain less everyday forgetting than the laboratory suggests. Two things strengthen the account though: Baddeley and Hitch's rugby player study, where forgetting depended on the number of games played rather than time elapsed, is a genuine real-world demonstration; and Tulving showed that giving cued recall restores much of the apparently 'lost' material, suggesting interference often causes temporary retrieval failure rather than permanent loss.",
-      reforge:{stem:"What did Baddeley and Hitch's rugby player study find?",options:{A:"Forgetting depended on the number of games played, not time",B:"Forgetting depended only on the time that had elapsed",C:"Players never forgot any of the teams they had faced",D:"Interference only occurs with artificial word lists"},correct:"A"}
+      reforge:{stem:"What did Baddeley and Hitch's rugby player study find?",options:{A:"Forgetting depended on the number of games played, not time",B:"Forgetting depended only on the amount of time that had elapsed",C:"Players never forgot any of the teams they had faced",D:"Interference only occurs with artificial word lists"},correct:"A"}
     }
 );
 
