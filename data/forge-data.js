@@ -16317,6 +16317,17 @@ appendGenerated("PHYS-3", [
   ["A red-shift in a galaxy's spectrum indicates that its light has:","shifted towards longer wavelengths as it recedes","shifted to shorter wavelengths as it approaches","lost all frequency","become independent of motion", "Cosmological red-shift provides evidence of expansion when interpreted with other evidence."],
   ["The critical angle is the angle of incidence for which the refracted ray is:","along the boundary at 90 degrees","returned along the normal","absorbed completely","parallel to the incident ray", "Beyond the critical angle, total internal reflection can occur in the denser medium."]
 ], "PHYS-E3B");
+appendGenerated("PHYS-3", [
+  ["Medical ultrasound imaging relies mainly on:","reflected high-frequency sound waves","gamma rays from a radioactive source","visible light absorbed by bone","direct current through tissue", "Echoes from boundaries between tissues can be used to build an image."],
+  ["MRI produces images by detecting signals from nuclei in:","a strong magnetic field after radio-frequency excitation","a beam of alpha particles","heated electrical wires","ultraviolet fluorescence only", "Hydrogen nuclei respond to the magnetic field and radio-frequency pulses."],
+  ["Radiotherapy is designed to treat tumours by:","damaging cancer-cell DNA with ionising radiation","increasing the tumour's blood glucose","using ultrasound to measure blood pressure","cooling healthy tissue to absolute zero", "Treatment aims to maximise damage to tumour cells while limiting harm to healthy tissue."],
+  ["In engineering physics, a safety factor is used to:","allow for uncertainty between expected and maximum loading","make a structure carry no load","remove the need to test materials","guarantee that fatigue cannot occur", "Designers compare failure load with working load to manage uncertainty."],
+  ["A material with a large Young modulus is generally:","stiff, so it needs a large stress for a given strain","very soft and easily stretched","unable to store elastic energy","always brittle under every load", "Young modulus is the ratio of tensile stress to tensile strain in the elastic region."],
+  ["A NAND gate produces a false output only when:","both inputs are true","both inputs are false","the inputs are different","one input is disconnected", "NAND is the inverse of AND and is false only for two true inputs."],
+  ["A transistor can be used as a switch when it is operated between:","cut-off and saturation","two states of nuclear decay","the alpha and beta thresholds","the positive and negative terminals of a transformer", "Cut-off represents no collector current and saturation represents a conducting state."],
+  ["A diode is commonly used to:","allow current mainly in one direction","increase resistance equally in both directions","store magnetic flux permanently","convert every alternating signal to sound", "Its asymmetric current-voltage characteristic supports rectification."],
+  ["A logic circuit's truth table shows:","the output for every possible combination of inputs","the resistance of each wire only","the physical size of the circuit","the speed of a nuclear reaction", "Truth tables describe logical behaviour independently of the circuit layout."]
+], "PHYS-GAPS");
 rebalanceMCQSubject(["BIO-1","BIO-2","BIO-3","BIO-ENZ","PHYS-1","PHYS-2","PHYS-3"]);
 
 // ===== OCR HEALTH & SOCIAL CARE AND EDUQAS RELIGIOUS STUDIES EXPANSION =====
@@ -17037,7 +17048,8 @@ const physicsPointFor = (bankId, stem) => {
   const routes = [
     [/medical|ultrasound|x-ray|mri|radiotherapy|half-value thickness/, "3.10"],
     [/astrophys|star|galaxy|red-shift|redshift|luminosity|parallax|hubble|geostationary satellite/, "3.9"],
-    [/electronics|logic gate|transistor|op-amp|operational amplifier|diode/, "3.13"],
+    [/electronics|logic gate|transistor|op-amp|operational amplifier|diode|truth table/, "3.13"],
+    [/engineering physics|safety factor|engineering design/, "3.11"],
     [/turning point|de broglie|photoelectric effect|wave-particle|quantum/, "3.12"],
     [/nuclear|radioactive|fission|fusion|half-life|binding energy/, "3.8"],
     [/electric field|magnetic field|gravitational field|potential at a point|orbital|escape velocity/, "3.7"],
