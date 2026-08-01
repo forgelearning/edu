@@ -16114,3 +16114,69 @@ rebalanceMCQSubject(SUBJECTS["chem"].banks);
 // Run once more against the concrete bank IDs so legacy starter questions are
 // subject to the same option-length guard as the newly authored questions.
 rebalanceMCQSubject(["MEDIA-1","MEDIA-2","CHEM-1","CHEM-2","CHEM-3"]);
+
+// ===== OCR A BIOLOGY AND AQA PHYSICS EXPANSION =====
+appendGenerated("BIO-1", [
+  ["A cell surface membrane is described as partially permeable because it:","allows some substances through more readily than others","allows every solute through equally","contains no proteins","prevents water movement", "Phospholipids and membrane proteins create selective movement into and out of cells."],
+  ["The function of a mitochondrion is most directly linked to:","aerobic respiration and ATP production","protein secretion only","cellulose synthesis","DNA storage only", "Mitochondria contain sites of aerobic respiration and ATP-generating reactions."],
+  ["A peptide bond joins:","amino acids","fatty acids only","monosaccharides only","phosphate ions", "Peptide bonds form between amino acids during condensation reactions."],
+  ["DNA replication is described as semi-conservative because:","each new molecule contains one original strand and one new strand","both strands are entirely new","only RNA is copied","the DNA is replicated only in mitochondria", "Base pairing lets each original strand act as a template for a new complementary strand."]
+], "BIO-E1");
+appendGenerated("BIO-2", [
+  ["A steep water potential gradient across a root hair membrane tends to:","increase net water entry by osmosis","stop all water movement","move sucrose into the soil","destroy the cell wall", "Water moves from higher to lower water potential across a partially permeable membrane."],
+  ["Transpiration is the loss of:","water vapour from a plant's aerial parts","carbon dioxide from roots only","sucrose from phloem","oxygen from mitochondria", "Most transpiration occurs through stomata in leaves."],
+  ["The mass flow hypothesis explains transport in:","the phloem","the nucleus","the alveoli","the xylem only", "Pressure differences drive movement of assimilates through sieve tubes."],
+  ["An enzyme's active site is important because it:","has a complementary shape to its substrate","contains the cell's DNA","always works at any pH","is made from cellulose", "Specific interactions between active site and substrate determine enzyme action."]
+], "BIO-E2");
+appendGenerated("BIO-3", [
+  ["A pathogen is:","an organism or agent that causes disease","a beneficial antibody","a type of allele","a non-living nutrient", "Pathogens include bacteria, viruses, fungi and protists that cause disease."],
+  ["Natural selection requires that individuals in a population:","vary and differ in reproductive success","are genetically identical","all acquire the same mutation","avoid competition completely", "Heritable variation and differential survival or reproduction change allele frequencies."],
+  ["Biodiversity describes:","the variety of life within an area","the number of cells in one organism","only the number of endangered mammals","the rate of photosynthesis", "Biodiversity includes genetic, species and ecosystem diversity."],
+  ["A classification system is useful because it:","organises organisms according to shared characteristics and evolutionary relationships","makes every organism identical","removes the need for identification","measures population growth only", "Modern classification aims to reflect evolutionary relationships using evidence."]
+], "BIO-E3");
+appendGenerated("BIO-ENZ", [
+  ["A competitive inhibitor reduces enzyme activity by:","competing with substrate for the active site","destroying every enzyme molecule","increasing substrate concentration automatically","binding only to DNA", "Increasing substrate concentration can reduce the effect of a competitive inhibitor."],
+  ["At very high temperature, enzyme activity falls mainly because:","bonds maintaining the active-site shape are disrupted","substrate concentration becomes zero","the enzyme gains more active sites","water potential increases", "Denaturation changes the tertiary structure and active-site shape."],
+  ["A controlled variable in an enzyme investigation is:","a factor kept constant so its effect is not confused with the independent variable","the measured rate","the factor deliberately changed","the final conclusion", "Temperature, pH or enzyme concentration may need to be controlled depending on the design."]
+], "BIO-E4");
+appendGenerated("PHYS-1", [
+  ["The gradient of a displacement-time graph represents:","velocity","acceleration","force","momentum", "The rate of change of displacement with time is velocity."],
+  ["A resultant force of zero means an object:","has constant velocity or remains at rest","must be accelerating","has no forces acting on it","must be moving in a circle", "Forces may act but cancel; Newton's first law gives zero acceleration."],
+  ["The work done by a force is zero when the force is:","perpendicular to the displacement","parallel to the displacement","larger than the weight","acting for one second", "Work is F s cos θ, so a right angle gives zero work by that force."],
+  ["The SI unit of electric current is:","ampere","volt","ohm","coulomb", "Current is measured in amperes; charge is measured in coulombs."],
+  ["A material obeys Hooke's law while:","extension is proportional to force","stress is always zero","it has no elastic limit","mass is proportional to length", "The proportional region ends when the force-extension graph stops being linear."],
+  ["The half-life of a radioactive isotope is:","the time for the activity or number of undecayed nuclei to halve","the time for every nucleus to decay","the time for the mass to double","the time for radiation to stop", "Radioactive decay is random for individual nuclei but predictable statistically."]
+], "PHYS-E1");
+appendGenerated("PHYS-2", [
+  ["The electric field strength at a point is defined as:","force per unit positive charge","energy per unit mass","charge per unit time","potential difference per current", "E = F/Q and field direction is the force direction on a positive test charge."],
+  ["The magnetic force on a current-carrying wire is greatest when the wire is:","perpendicular to the magnetic field","parallel to the magnetic field","outside every field","at zero current", "The force is BIL sin θ and is maximum when θ is 90 degrees."],
+  ["In a transformer, increasing the number of secondary turns generally:","increases the secondary potential difference","reduces the primary frequency","removes all energy losses","changes alternating current to direct current", "For an ideal transformer, Vp/Vs = Np/Ns."],
+  ["Simple harmonic motion has acceleration that is:","proportional to displacement and directed towards equilibrium","constant and away from equilibrium","zero at every point","proportional to velocity only", "The restoring acceleration is a = −ω²x."],
+  ["The internal energy of a system is the sum of its particles':","random kinetic and potential energies","rest masses only","electric charges only","external gravitational fields only", "Heating or work can transfer energy into or out of internal energy."],
+  ["A capacitor's time constant is:","resistance multiplied by capacitance","resistance divided by charge","voltage multiplied by current","capacitance divided by frequency", "The time constant RC sets the characteristic charging or discharging timescale."]
+], "PHYS-E2");
+appendGenerated("PHYS-3", [
+  ["The standard model describes:","fundamental particles and their interactions","only planetary motion","all chemical reaction rates","the design of telescopes", "It classifies matter particles and force-carrying particles, excluding gravity in its basic form."],
+  ["In the photoelectric effect, increasing light frequency above threshold increases:","the maximum kinetic energy of emitted electrons","the work function of the metal","the electron charge","the wavelength of the light", "Photon energy hf increases with frequency; intensity mainly affects emission rate."],
+  ["A diffraction grating produces principal maxima when:","path difference is an integer multiple of wavelength","path difference is always half a wavelength","the slits are closed","the frequency is zero", "Constructive interference occurs for nλ = d sin θ."],
+  ["An astronomical parallax angle can be used to determine:","distance to a nearby star","the star's chemical formula only","the age of the universe directly","the speed of light", "Small apparent shifts against distant background objects give stellar distance."],
+  ["The luminosity of a star is its:","total power output","apparent angular size","surface temperature only","distance from Earth", "Luminosity is intrinsic power, while apparent brightness also depends on distance."],
+  ["A practical conclusion is more reliable when:","repeated measurements are consistent and uncertainties are considered","only one anomalous result is used","units are omitted","variables are changed together", "Reliability improves through repeats, control of variables and evaluation of uncertainty."],
+  ["In a nuclear fission reaction, a heavy nucleus:","splits into smaller nuclei and releases energy","combines with an electron only","emits visible light without changing","becomes a chemical compound", "Fission can release neutrons and energy, enabling a chain reaction."],
+  ["The threshold frequency in the photoelectric effect is determined by:","the work function of the metal","the brightness of the source only","the distance from the lamp","the electron's rest mass only", "Below threshold, individual photons do not have enough energy to release electrons."]
+], "PHYS-E3");
+
+SUBJECTS["bio"].sub = "OCR A H420 — Papers 1–3 and Practical Endorsement";
+SUBJECTS["phys"].sub = "AQA 7408 — Papers 1–3 and practical skills";
+rebalanceMCQSubject(SUBJECTS["bio"].banks);
+rebalanceMCQSubject(SUBJECTS["phys"].banks);
+appendGenerated("BIO-1", [["The role of ribosomes is to:","assemble polypeptides during translation","replicate whole chromosomes","produce ATP by glycolysis","store lipids", "Ribosomes translate mRNA codons into a polypeptide sequence."]], "BIO-E1B");
+appendGenerated("PHYS-3", [
+  ["The de Broglie wavelength of a particle decreases when its momentum:","increases","decreases to zero","becomes negative only","is replaced by its charge", "λ = h/p, so greater momentum gives a shorter wavelength."],
+  ["A geostationary satellite must orbit:","above the equator with a 24-hour period","over either pole with a one-hour period","in any direction with zero speed","below the atmosphere", "Its orbital period and direction match Earth's rotation so it remains above one longitude."],
+  ["The intensity of a wave is proportional to:","the square of its amplitude","its wavelength only","the reciprocal of frequency always","its phase difference only", "For many waves, doubling amplitude gives four times the intensity."],
+  ["The uncertainty in a measured quantity is reduced by:","using suitable resolution and repeating measurements","rounding to fewer figures","changing units without measuring","discarding consistent results", "Repeats help estimate random uncertainty; instrument resolution limits precision."],
+  ["A red-shift in a galaxy's spectrum indicates that its light has:","shifted towards longer wavelengths as it recedes","shifted to shorter wavelengths as it approaches","lost all frequency","become independent of motion", "Cosmological red-shift provides evidence of expansion when interpreted with other evidence."],
+  ["The critical angle is the angle of incidence for which the refracted ray is:","along the boundary at 90 degrees","returned along the normal","absorbed completely","parallel to the incident ray", "Beyond the critical angle, total internal reflection can occur in the denser medium."]
+], "PHYS-E3B");
+rebalanceMCQSubject(["BIO-1","BIO-2","BIO-3","BIO-ENZ","PHYS-1","PHYS-2","PHYS-3"]);
