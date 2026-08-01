@@ -44,6 +44,8 @@ const PAGES = [
   { file: 'gcse-psychology.html', key: 'gcse-psych' },
   { file: 'gcse-science.html', key: 'gcse-science' },
   { file: 'gcse-maths.html', key: 'gcse-maths' },
+  { file: 'a-level-business.html', key: 'bus' },
+  { file: 'a-level-computer-science.html', key: 'cs' },
 ];
 
 let problems = 0;

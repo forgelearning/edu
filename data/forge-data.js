@@ -15767,3 +15767,235 @@ SUBJECTS["pol"].sub = "Edexcel 9PL0 — UK Politics, UK Government & US Politics
 rebalanceLawPolitics(SUBJECTS["pol"].banks);
 delete BANKS["POL-1"];
 delete BANKS["POL-2"];
+
+// ===== A LEVEL BUSINESS AND EDUQAS COMPUTER SCIENCE EXPANSION =====
+// These compactly-authored questions retain the same four-option and reforge
+// format as the original banks while keeping answer positions balanced.
+const equaliseGeneratedOptions = item => {
+  const correctLength = String(item.options[item.correct]).length;
+  const otherKeys = Object.keys(item.options).filter(key => key !== item.correct);
+  let longestOther = Math.max(...otherKeys.map(key => String(item.options[key]).length));
+  let index = 0;
+  while (longestOther < correctLength && index < otherKeys.length * 4) {
+    const key = otherKeys[index % otherKeys.length];
+    item.options[key] += index % 2 ? " in this case" : " for this decision";
+    longestOther = Math.max(...otherKeys.map(optionKey => String(item.options[optionKey]).length));
+    index++;
+  }
+  return item;
+};
+const generatedMCQ = (id, spec, stem, answer, distractors, explanation, position) => {
+  const values = [answer, ...distractors];
+  const ordered = [null, null, null, null];
+  ordered[position] = values[0];
+  let next = 1;
+  for (let i = 0; i < 4; i++) if (ordered[i] === null) ordered[i] = values[next++];
+  const options = {A:ordered[0], B:ordered[1], C:ordered[2], D:ordered[3]};
+  const correct = ["A","B","C","D"][position];
+  const refPosition = (position + 2) % 4;
+  const refOrder = [null, null, null, null];
+  refOrder[refPosition] = answer;
+  let refNext = 0;
+  for (let i = 0; i < 4; i++) if (refOrder[i] === null) refOrder[i] = distractors[refNext++];
+  const refOptions = {A:refOrder[0], B:refOrder[1], C:refOrder[2], D:refOrder[3]};
+  const refCorrect = ["A","B","C","D"][refPosition];
+  return {id, spec, stem, options, correct, tag:`MC-${id}`,
+    scaffold:explanation,
+    reforge:equaliseGeneratedOptions({stem:`Which statement best applies when this idea is used in a new business or examination scenario?`, options:refOptions, correct:refCorrect})};
+};
+const appendGenerated = (bankId, rows, prefix) => rows.forEach((row, index) => {
+  const [stem, answer, d1, d2, d3, explanation] = row;
+  const question = generatedMCQ(`${prefix}-${String(index + 1).padStart(2, "0")}`, BANKS[bankId].spec, stem, answer, [d1,d2,d3], explanation, index % 4);
+  BANKS[bankId].questions.push({...question, options:Object.fromEntries(Object.entries(equaliseGeneratedOptions({options:question.options, correct:question.correct}).options))});
+});
+
+BANKS["BUS-4"] = {label:"Theme 4 — Global Business", color:"#b45309", spec:"A LEVEL BUSINESS", questions:[]};
+appendGenerated("BUS-1", [
+  ["A market-oriented firm is most likely to begin with:","customer needs and market research","the production method already owned","the directors' preferred product","the lowest possible wage", "Market orientation starts with customer needs and evidence about demand."],
+  ["Which is a benefit of segmenting a market?","a more focused marketing offer","identical advertising for every buyer","removing all competitors","making demand perfectly certain", "Segmentation helps a firm tailor its product and promotion to a defined group."],
+  ["A brand is best described as:","a recognised identity linked to a product","the variable cost per unit","a legal form of ownership","the number of units sold", "Branding creates recognition and associations that can affect perceived value."],
+  ["Primary market research involves:","collecting new data for the specific decision","copying a competitor's published report","using a government statistic unchanged","estimating last year's profit", "Primary research is gathered first-hand for the firm's current purpose."],
+  ["A focus group is mainly useful for exploring:","detailed opinions about a proposed product","the exact national market size","the firm's tax liability","the depreciation charge", "Discussion can reveal attitudes and reactions, although the sample may not be representative."],
+  ["If a product has elastic demand, a price cut is likely to:","increase total revenue if quantity rises proportionately more","reduce quantity demanded","leave revenue unchanged in every case","raise the average cost automatically", "With elastic demand, the percentage rise in quantity exceeds the percentage fall in price."],
+  ["Penetration pricing is intended to:","gain market share with a relatively low launch price","recover development costs immediately with a high price","sell only to a luxury segment","avoid any promotional spending", "A low initial price can encourage trial and rapid adoption."],
+  ["A distribution channel describes:","the route a product takes to reach the customer","the number of products in a portfolio","the level of employee motivation","the size of the firm's overdraft", "Channels may involve direct selling, retailers, wholesalers or digital platforms."],
+  ["A unique selling point gives a product:","a distinctive benefit competitors do not match easily","a guaranteed monopoly","a lower fixed cost by definition","an exemption from consumer law", "A USP differentiates the offer; it does not guarantee market dominance."],
+  ["Which is a likely advantage of e-commerce for a small firm?","access to customers beyond its local area","no need to manage stock or delivery","guaranteed repeat purchases","zero marketing costs", "Online selling can widen reach, but fulfilment and promotion still create costs."],
+  ["An entrepreneur is most directly responsible for:","organising resources while accepting business risk","setting the national interest rate","guaranteeing every employee a job","auditing all government accounts", "Entrepreneurs combine resources and make decisions under uncertainty."],
+  ["A drawback of a sole trader is:","unlimited liability for business debts","automatic access to public share capital","separation of owner and business identity","no control over day-to-day decisions", "The owner and business are not legally separate, so personal assets may be at risk."],
+  ["Limited liability means shareholders generally:","risk only the capital invested in the company","receive every company asset personally","cannot lose money on shares","are responsible for every company debt", "A company is a separate legal entity, subject to exceptions such as wrongful conduct."],
+  ["A stakeholder is:","a person or group affected by business decisions","only a person who owns ordinary shares","a customer who has complained","a government department only", "Stakeholders include employees, customers, suppliers, owners, government and communities."],
+  ["A conflict between employees and shareholders may arise because employees may prefer:","higher wages while shareholders seek higher dividends","lower job security and lower wages","less training and lower productivity","more pollution near the workplace", "Stakeholders can value different outcomes from the same decision."],
+  ["A social enterprise primarily aims to:","meet a social or environmental purpose while remaining financially viable","maximise dividends regardless of impact","avoid measuring its performance","operate only as a government department", "Surpluses are commonly reinvested to support the social mission."],
+  ["An ethical sourcing policy is most likely to affect:","supplier choice, costs and brand reputation","only the firm's depreciation method","the legal definition of GDP","the number of directors required by law", "Ethical choices can raise input costs but strengthen trust and reduce reputational risk."]
+], "BUS-T1");
+appendGenerated("BUS-2", [
+  ["Contribution per unit is calculated as:","selling price less variable cost per unit","selling price less total fixed costs","revenue less capital employed","fixed costs divided by output", "Contribution shows how much each unit contributes towards fixed costs and profit."],
+  ["If fixed costs rise while contribution per unit is unchanged, break-even output will:","increase","decrease to zero","remain unchanged","become equal to total revenue", "Break-even output equals fixed costs divided by contribution per unit."],
+  ["A cash-flow forecast is mainly used to predict:","timing of cash inflows and outflows","annual depreciation only","the market share of competitors","the firm's brand value", "Cash timing matters because profitable sales may be paid for later."],
+  ["A cash-flow deficit means:","planned cash outflows exceed inflows in a period","the firm has made an accounting profit","sales revenue exceeds variable cost","assets exceed liabilities", "A deficit signals a funding need even if the income statement shows profit."],
+  ["Retained profit is an internal source of finance because it is:","profit kept in the business rather than distributed","a loan from a commercial bank","money raised by issuing new shares","a supplier's credit period", "Retained earnings do not require an external lender or new owner."],
+  ["Gross profit equals:","revenue minus cost of sales","revenue minus every business cost","fixed costs plus variable costs","net profit plus dividends", "Gross profit is calculated before operating expenses and finance costs."],
+  ["A higher gross profit margin may result from:","a lower cost of sales relative to revenue","higher interest charges","a fall in selling prices with unchanged costs","greater corporation tax", "Margin compares gross profit with revenue, so cost control can improve it."],
+  ["Net profit margin measures:","net profit as a percentage of revenue","fixed costs as a percentage of assets","cash held per employee","revenue divided by output", "Net profit margin indicates how much of each pound of revenue remains after relevant costs."],
+  ["An overdraft is most suitable for:","short-term fluctuations in working capital","funding a factory for thirty years","buying a company with permanent finance","replacing all shareholder equity", "Overdrafts are flexible but can be expensive and repayable on demand."],
+  ["Trade credit allows a business to:","receive supplies now and pay the supplier later","borrow directly from shareholders","avoid recording purchases","sell shares without regulation", "Trade credit supports cash flow but may be lost if payment is late."],
+  ["A balance sheet shows a firm's:","assets, liabilities and capital at a point in time","sales by customer for a year","cash inflows for each week","marketing objectives only", "It is a snapshot of financial position, not a forecast of cash timing."],
+  ["Working capital is calculated as:","current assets minus current liabilities","non-current assets minus depreciation","revenue minus fixed costs","profit divided by sales", "Positive working capital can help meet short-term obligations."],
+  ["A current ratio below 1 may suggest:","current liabilities exceed current assets","the firm has no non-current assets","profit is necessarily negative","sales are growing too quickly", "Liquidity may be weak, although the appropriate ratio depends on the industry."],
+  ["Investment appraisal using payback focuses on:","how long it takes to recover the initial investment","the present value of all future cash flows only","the percentage of market share","the firm's gross margin", "Payback is simple and highlights liquidity, but ignores later cash flows and time value."],
+  ["Net present value is positive when:","discounted expected inflows exceed the initial investment","the payback period is longest","accounting profit is zero","fixed costs exceed variable costs", "NPV incorporates time value of money and indicates value created at the chosen discount rate."],
+  ["A business with high gearing has relatively:","high long-term debt compared with capital","high cash balances compared with sales","low fixed costs compared with output","many more employees than competitors", "Gearing indicates reliance on long-term borrowing and the associated financial risk."],
+  ["A fall in the value of a firm's inventory may reduce:","current assets and working capital","non-current liabilities only","the number of ordinary shares","the legal identity of the firm", "Inventory is a current asset and its valuation affects the balance sheet."]
+], "BUS-T2");
+appendGenerated("BUS-3", [
+  ["Labour productivity is output divided by:","labour input","total revenue","fixed capital only","market demand", "Productivity measures output per unit of labour input."],
+  ["A benefit of just-in-time stock control is:","less capital tied up in inventory","complete protection from supply disruption","no need for quality checks","guaranteed lower transport costs", "JIT can reduce storage costs but increases dependence on reliable deliveries."],
+  ["Capacity utilisation is actual output as a percentage of:","maximum possible output","total fixed cost","market demand","labour turnover", "High utilisation can lower average fixed cost, though excessive use may reduce flexibility."],
+  ["A diseconomy of scale occurs when:","average cost rises as output increases beyond the optimum","average cost falls after every expansion","fixed costs become zero","a firm enters a new market", "Growth can create communication, coordination and control problems."],
+  ["Backward vertical integration means acquiring:","a supplier","a retailer","a direct competitor","an unrelated business", "The firm moves back towards an earlier stage of its supply chain."],
+  ["Diversification in the Ansoff Matrix combines:","a new product with a new market","an existing product with an existing market","a new product with an existing market","an existing product with a new market", "Diversification is the highest-risk Ansoff option because both dimensions are new."],
+  ["A cash cow in the Boston Matrix usually has:","high market share in a low-growth market","low market share in a high-growth market","low share and low growth","high growth but no sales", "Cash cows can generate funds for other products."],
+  ["A product extension strategy aims to:","extend sales during a mature or declining stage","remove a product immediately","increase fixed costs without changing demand","prevent any product innovation", "Examples include new packaging, new uses, promotion or price changes."],
+  ["A first-mover advantage may result from:","building recognition before rivals enter","copying a rival's established design","waiting until demand disappears","avoiding all development costs", "Early entry can create brand loyalty, though it also carries uncertainty."],
+  ["A merger combines:","two businesses into one larger organisation","a business with its unpaid suppliers","a product with a market segment","a loan with retained profit", "Mergers can create synergies but may also face integration problems."],
+  ["Organic growth is growth achieved by:","expanding the existing business using its own operations","buying a competitor","merging with a supplier","selling a subsidiary", "Organic growth is usually slower but can be easier to control."],
+  ["A decision tree uses probabilities to calculate:","expected values for alternative decisions","the exact future outcome","the legal ownership of a firm","only the fixed cost of a project", "Expected value combines possible outcomes with their probabilities."],
+  ["A limitation of expected value is that it:","assumes outcomes can be represented by probabilities and ignores risk attitudes","guarantees the highest profit","requires no estimates","only applies to non-business decisions", "Managers may reject the highest expected value if the risk is unacceptable."],
+  ["A pressure group differs from a political party because it primarily seeks to:","influence policy on a specific issue rather than form a government","maximise shareholder dividends","sell products internationally","control a firm's production line", "Pressure groups may lobby, campaign or use publicity without contesting government as a whole."],
+  ["A contingency plan is designed to:","prepare responses to a possible future disruption","guarantee that disruption cannot occur","replace every business objective","calculate gross profit", "Contingency planning improves resilience when risks materialise."],
+  ["A business objective should be SMART, meaning it is:","specific, measurable, achievable, realistic and time-bound","simple, modern, annual, rapid and technical","social, monetary, active, risky and temporary","strategic, market-led, automatic, routine and tested", "SMART objectives make progress easier to monitor and evaluate."],
+  ["A strategic decision is usually:","long term and concerned with the overall direction of the business","a routine daily staffing decision","a single customer complaint","an invoice payment only", "Strategy allocates resources and sets a broad direction under uncertainty."]
+], "BUS-T3");
+appendGenerated("BUS-4", [
+  ["Globalisation refers to:","increasing integration of economies, markets and businesses","a country banning all imports","a firm's decision to employ locally only","the removal of all exchange rates", "Globalisation links production, trade, finance and consumers across borders."],
+  ["A tariff is:","a tax on imported goods","a subsidy paid to foreign consumers","a limit on domestic production","a floating exchange rate", "Tariffs can protect domestic producers but raise import prices."],
+  ["A quota restricts:","the quantity of a product that may be imported","the value of domestic wages","the number of businesses in a country","the size of a firm's dividend", "Quotas limit volume rather than directly taxing each unit."],
+  ["A multinational company operates:","in more than one country","only through a government department","with no overseas suppliers","without any legal responsibilities", "Multinationals coordinate activity across national markets."],
+  ["Foreign direct investment involves:","investing in productive activity in another country","buying a short-term holiday currency","changing a domestic tax rate","exporting without payment", "FDI can bring capital, jobs and technology, but may create dependence."],
+  ["A depreciation of sterling tends to make UK exports:","cheaper in foreign-currency terms","more expensive in every overseas market","unavailable to foreign buyers","unaffected by price", "The effect can raise competitiveness, although imported inputs become dearer."],
+  ["If sterling appreciates, imported components generally become:","cheaper in sterling terms","more expensive in every case","illegal to purchase","unrelated to exchange rates", "An appreciation increases the foreign purchasing power of sterling."],
+  ["A current account deficit means:","outflows on trade, income and transfers exceed inflows","government spending exceeds tax revenue","exports exceed imports","the exchange rate is fixed", "The current account records trade plus primary and secondary income flows."],
+  ["A benefit of outsourcing production abroad may be:","lower unit costs or access to specialist suppliers","complete control over labour conditions","no transport or coordination costs","guaranteed quality in every case", "Outsourcing can reduce costs but creates supply-chain and reputational risks."],
+  ["An ethical concern about global supply chains is:","poor labour conditions in supplier factories","the existence of domestic customers","the use of accounting ratios","a fall in local advertising", "Firms may face pressure to monitor wages, safety and working hours."],
+  ["A trade bloc is:","a group of countries agreeing to reduce trade barriers between members","a single multinational's internal department","a restriction on all exports","a central bank interest-rate committee", "Trade blocs can increase trade within the group but may divert trade from outsiders."],
+  ["Protectionism is designed primarily to:","protect domestic industries from foreign competition","remove every domestic subsidy","increase import competition without limits","prevent firms from exporting", "Protectionist measures include tariffs, quotas and subsidies."],
+  ["A subsidy to domestic exporters may:","lower their costs and improve international competitiveness","raise their costs automatically","reduce their ability to sell abroad","make imports illegal", "Subsidies can support exports but may provoke retaliation and fiscal costs."],
+  ["A global marketing strategy may need adaptation because:","cultures, incomes and regulations differ between markets","all consumers have identical preferences","exchange rates never change","products cannot be branded internationally", "Standardisation saves costs, while adaptation can improve local relevance."],
+  ["A remittance is:","money sent by a worker to people in another country","a tax on imports","a firm's retained profit","a central bank reserve requirement", "Remittances can be important income for households and developing economies."],
+  ["An emerging market is generally characterised by:","rapid growth and increasing integration but developing institutions or income levels","zero economic growth","no financial markets","complete isolation from global trade", "Emerging markets can offer growth but also greater political and currency risk."],
+  ["A business may hedge currency risk by:","using a financial contract to lock in or protect an exchange rate","ignoring all overseas invoices","stopping every export","changing its legal form to a charity", "Hedging reduces uncertainty but may limit gains if exchange rates move favourably."]
+], "BUS-T4");
+appendGenerated("BUS-4", [
+  ["A free-trade agreement generally aims to:","reduce barriers between participating countries","ban all foreign investment","set one global wage","replace every domestic tax", "Reducing barriers can increase trade, although firms may face stronger competition."],
+  ["A multinational may transfer profits between countries partly because:","tax rules and rates differ between jurisdictions","all countries use identical accounts","exchange rates cannot change","customers cannot compare prices", "Tax planning can affect location decisions, but avoidance and evasion are different and laws apply."],
+  ["A supply-chain disruption is most likely to expose dependence on:","a small number of overseas suppliers or routes","a wide range of substitute suppliers","large domestic inventories","flexible local production", "Concentration can lower costs but makes disruption more damaging."],
+  ["A country's balance of trade records:","the value of exports and imports of goods","all government borrowing","capital inflows only","household saving and investment", "The goods balance is one part of the wider current account."],
+  ["A trade surplus occurs when:","the value of exports exceeds the value of imports","imports exceed exports","tax revenue exceeds spending","capital outflows exceed inflows", "A surplus on goods or services indicates export value is greater than import value for that category."],
+  ["A firm's country risk includes the possibility of:","political or economic events disrupting overseas operations","a guaranteed fall in domestic demand","perfectly stable regulation","zero exchange-rate movement", "Country risk can include instability, policy change, restrictions and weak infrastructure."],
+  ["A competitive advantage based on low wages may be weakened by:","rising wages, automation or stronger productivity elsewhere","better training and infrastructure","greater brand loyalty","more efficient logistics", "Cost advantages change when productivity, technology and wages change."],
+  ["Corporate social responsibility may improve long-term performance by:","building trust with customers, workers and communities","guaranteeing no costs in the short term","removing the need for regulation","preventing all disagreements between stakeholders", "CSR can support reputation and relationships, although it may involve short-term costs."]
+], "BUS-T4B");
+
+const csBanks = {
+  "CS-3": {label:"Component 1 — Algorithms, Programming & Systems", color:"#0f766e", spec:"EDUQAS A LEVEL COMPUTER SCIENCE", questions:[]},
+  "CS-4": {label:"Component 2 — Architecture, Data, Communication & Applications", color:"#0f766e", spec:"EDUQAS A LEVEL COMPUTER SCIENCE", questions:[]}
+};
+Object.assign(BANKS, csBanks);
+appendGenerated("CS-1", [
+  ["Decomposition in computational thinking means:","breaking a complex problem into manageable sub-problems","removing all data from a program","writing code without testing","using only one algorithm", "Decomposition reduces complexity and supports separate development and testing."],
+  ["Abstraction involves:","removing unnecessary detail while retaining what matters","adding every possible detail to a model","copying a program exactly","converting decimal to binary", "An abstraction focuses attention on relevant features."],
+  ["A syntax error is usually detected:","when the code is parsed or compiled","only after a user accepts the output","by a network router","by a database administrator", "Syntax errors violate language rules and prevent valid translation or execution."],
+  ["A semantic error occurs when:","the program runs but does not do what was intended","a variable has no name","the keyboard is disconnected","a compiler cannot read a token", "Semantics concerns meaning and behaviour rather than grammar alone."],
+  ["A test case should include:","input data, expected output and the actual result","only the programmer's name","a guarantee that the system is correct","the source code of every rival", "Test records make failures reproducible and support evaluation."],
+  ["Boundary testing checks values:","at and around the limits of valid input","chosen only from the middle of the range","that can never be entered","used only for graphics", "Many errors occur at lower, upper and just-outside boundaries."],
+  ["A pre-condition states:","what must be true before an operation begins","what output is guaranteed after every run","the processor clock speed","the colour of an interface", "Pre-conditions define assumptions required for safe execution."],
+  ["A post-condition states:","what should be true after an operation completes","the input before a program starts","the name of the compiler","the number of network hops", "Post-conditions help specify and test the result of an operation."],
+  ["A recursive algorithm must include:","a base case that stops further calls","a global variable in every function","a network connection","a database table", "Without a base case, recursive calls may continue until resources are exhausted."],
+  ["Binary search requires the data to be:","sorted","encrypted","stored in a stack","randomly ordered", "Each comparison discards half the remaining sorted search space."],
+  ["The worst-case complexity of linear search is:","O(n)","O(1)","O(log n) always","O(n²) always", "A linear search may inspect every item once."],
+  ["A queue uses which access rule?","first in, first out","last in, first out","random in, random out","highest priority only", "The earliest item added is removed first."],
+  ["A linked list stores each node with:","data and a link or pointer to another node","only a fixed numeric index","a truth table and a compiler","a public encryption key only", "Links allow nodes to be connected without contiguous memory."],
+  ["A tree with no cycles is useful for representing:","hierarchical relationships","a flat sequence only","a single Boolean value","an analogue voltage", "File systems and organisation charts are common hierarchical examples."],
+  ["A hash table is designed for:","fast average lookup using a key","sorting every item by size","storing only images","executing machine instructions", "A hash function maps keys to locations, although collisions need handling."],
+  ["Polymorphism allows:","one interface or method name to work with objects of different types","one variable to hold no values","all classes to inherit from two parents","a program to run without data", "Polymorphism supports flexible object-oriented designs."],
+  ["Encapsulation means:","bundling data with methods and controlling access to the data","making every variable global","removing all classes","using only public variables", "Encapsulation protects an object's state through a defined interface."],
+  ["An invariant is:","a condition that remains true during an algorithm or loop","a value that changes randomly","a syntax error in a class","a type of network cable", "Loop invariants help reason about correctness."],
+  ["A dry run is used to:","trace an algorithm manually with chosen values","compile code into machine language","encrypt a database","measure processor temperature", "Tracing variables step by step can reveal logic errors."],
+  ["A compiler generally:","translates a whole source program before execution","runs one source line and forgets it","stores files in a queue","routes packets across a network", "Compilation can produce object or executable code and report errors before running."],
+  ["An interpreter generally:","translates and executes source code incrementally","always creates a permanent executable first","only checks spelling","controls a hard drive motor", "Interpretation supports interactive testing but may add runtime overhead."]
+], "CS-C1A");
+appendGenerated("CS-2", [
+  ["The main purpose of a protocol is to:","define agreed rules for communication","increase a monitor's resolution","store a password in plain text","replace every network device", "Protocols allow different systems to communicate predictably."],
+  ["DNS translates:","domain names into IP addresses","IP addresses into passwords","binary into analogue sound","web pages into machine code", "DNS lets users use memorable names while networks route using addresses."],
+  ["A router primarily forwards packets using:","IP addresses and routing information","MAC addresses only within one application","file extensions","database primary keys", "Routers choose paths between networks using network-layer information."],
+  ["TCP provides:","reliable, ordered delivery with error and flow control","unreliable broadcast with no sequencing","encryption without keys","domain-name registration", "TCP can retransmit lost data and maintain order."],
+  ["UDP may be preferred for live streaming because it:","avoids retransmission delays when low latency matters","guarantees every packet arrives","uses stronger encryption automatically","requires a three-way handshake", "Applications may tolerate occasional loss to preserve smooth timing."],
+  ["A MAC address identifies:","a network interface at the local network level","a web page's domain name","a user account's password","a CPU instruction", "MAC addresses are hardware-level identifiers used on local networks."],
+  ["A firewall is used to:","filter network traffic according to rules","compress every image","replace a backup system","generate random passwords only", "Firewalls can block unauthorised connections but are not complete security."],
+  ["Phishing is an attack that:","tricks users into revealing information through a deceptive message or site","physically overheats a processor","changes a file into binary","improves password strength", "Phishing exploits human trust rather than a hardware fault."],
+  ["A digital signature helps provide:","authentication and integrity of a message","faster processor instructions","anonymous authorship only","unlimited storage capacity", "The sender signs with a private key and others verify with the public key."],
+  ["A primary key in a relational database:","uniquely identifies each record","must contain duplicate values","stores every table in one field","is always a foreign key", "Primary keys support identification and relationships between tables."],
+  ["Referential integrity helps ensure that:","a foreign key refers to a valid related record","every field contains text","all records are duplicated","queries never need conditions", "It prevents orphaned relationships between related tables."],
+  ["Normalisation aims to:","reduce unnecessary duplication and update anomalies","make every table contain one record","remove all relationships","increase repeated data", "Normalised design separates related facts into suitable tables."],
+  ["A SQL WHERE clause is used to:","filter rows before they are returned","sort columns alphabetically only","create a password hash","join a network", "WHERE applies a condition to selected rows."],
+  ["A primary advantage of cloud storage is:","remote access and scalable capacity","guaranteed access without a network","no provider security risk","permanent offline availability", "Cloud services offer flexibility but create dependence on connectivity and providers."],
+  ["An operating system manages:","hardware resources and services for applications","only the user's email content","a country's exchange rate","the content of every website", "Operating systems schedule processes, manage memory and provide interfaces."],
+  ["Virtual memory uses:","secondary storage to extend apparent main memory","a faster CPU register only","a network cable as a keyboard","encryption keys as RAM", "It allows programs to run when physical RAM is insufficient, but is slower."],
+  ["A device driver allows:","the operating system to communicate with particular hardware","a user to bypass authentication","a database to remove keys","a compiler to skip syntax", "Drivers translate operating-system requests for a device."],
+  ["A lossless compression method:","allows the original data to be reconstructed exactly","always gives a smaller file than lossy compression","removes all metadata permanently","works only on video", "Lossless methods preserve information, which is important for text and executable files."],
+  ["Two-factor authentication improves security by requiring:","two independent forms of evidence of identity","two usernames with the same password","two copies of a file","two public IP addresses", "Combining factors reduces the effect of a stolen password."],
+  ["A denial-of-service attack attempts to:","overwhelm a service so legitimate users cannot access it","decrypt a message with a private key","repair corrupted data","reduce network traffic", "Distributed attacks can use many compromised devices at once."],
+  ["A checksum is used to:","detect accidental changes in transmitted or stored data","prove who wrote a message","create a new IP address","increase a file's resolution", "A calculated value can reveal that data has changed, although it is not strong authentication."]
+], "CS-C2A");
+appendGenerated("CS-3", [
+  ["A Boolean AND returns true when:","all its inputs are true","at least one input is true","all inputs are false","the inputs differ", "AND requires every condition to be true."],
+  ["De Morgan's law states that NOT (A AND B) equals:","(NOT A) OR (NOT B)","(NOT A) AND (NOT B)","A OR B","A AND B", "Negating an AND changes it to OR and negates each input."],
+  ["A register is:","a small, fast storage location inside the CPU","a large external database","a network protocol","a programming language", "Registers hold values and instructions currently being processed."],
+  ["The program counter stores:","the address of the next instruction","the result of every calculation","the current user password","the size of the hard drive", "The fetch-decode-execute cycle updates the program counter."],
+  ["An assembler translates:","assembly language into machine code","SQL into HTML","binary into decimal only","Python into pseudocode", "Assembly instructions are converted into machine instructions."],
+  ["The ALU performs:","arithmetic and logical operations","long-term file storage","network authentication","screen rendering only", "The arithmetic logic unit is part of the processor datapath."],
+  ["Pipelining can improve performance by:","overlapping stages of instruction execution","making every instruction shorter","removing the need for registers","storing all data on a network", "Pipelining increases throughput, although hazards can reduce the benefit."],
+  ["Cache memory is useful because it is:","faster than main memory and stores frequently used data","larger and slower than external storage","used only for backups","a form of optical communication", "Caches exploit temporal and spatial locality."],
+  ["Two's complement is used to represent:","positive and negative binary integers","only decimal fractions","network domains","SQL relationships", "Two's complement simplifies signed arithmetic in hardware."],
+  ["A left binary shift by one place usually:","multiplies an unsigned integer by two","divides by two","adds one","changes decimal to hexadecimal", "Bits may be lost if the value exceeds the available width."],
+  ["An image's colour depth describes:","the number of bits used to represent each pixel's colour","the width of the monitor in metres","the number of images in a folder","the speed of a printer", "Higher colour depth allows more possible colours per pixel."],
+  ["Sampling rate is the number of audio samples:","taken per second","stored per pixel","sent per IP address","used per database row", "A higher sampling rate can represent higher frequencies but increases data size."],
+  ["A lossy image format reduces file size by:","discarding information judged less noticeable","storing every bit twice","using no compression","adding extra pixels", "Lossy compression trades exact reconstruction for smaller files."],
+  ["A parity bit is used mainly to:","detect some single-bit errors","encrypt a message securely","increase bandwidth","identify a website", "Parity adds a check bit but cannot correct every error."],
+  ["Packet switching sends data as:","small packets that may take different routes","one permanent electrical circuit only","a single unbroken analogue wave","a database table", "Packets are reassembled at the destination."],
+  ["A network's bandwidth measures:","the maximum data rate of a connection","the physical length of a password","the number of users with admin rights","the delay of one instruction", "Bandwidth is capacity; latency is delay."],
+  ["Latency is:","the delay before data transfer or response occurs","the number of bits per second","the storage capacity of RAM","the strength of encryption", "Low latency matters for interactive applications."],
+  ["An IPv6 address is longer than IPv4 mainly because:","it provides a much larger address space","it stores more user passwords","it removes routing","it is only used for local files", "IPv6 uses 128-bit addresses compared with IPv4's 32-bit addresses."],
+  ["A peer-to-peer network has:","nodes that can act as both clients and servers","one central server for every service","no connected devices","only offline computers", "Peer-to-peer systems distribute roles but can be harder to manage centrally."],
+  ["A client-server system centralises:","services or resources on dedicated servers","all keyboards in one device","every user's personal password","the physical location of all clients", "Central servers simplify management but can become a bottleneck or point of failure."],
+  ["An API is:","a defined interface allowing software components to communicate","a type of CPU cache","a physical network cable","a database backup only", "APIs specify how one system can request services from another."]
+], "CS-C1B");
+appendGenerated("CS-4", [
+  ["A Von Neumann architecture stores:","instructions and data in the same memory","instructions only on paper","data only in the CPU cache","programs only in cloud storage", "The shared memory model creates the Von Neumann bottleneck."],
+  ["The fetch-decode-execute cycle begins by:","fetching the instruction from the address in the program counter","executing the previous program","clearing all registers","sending a packet to DNS", "The instruction is fetched before it is decoded and executed."],
+  ["A GPU is especially suited to:","many parallel operations such as graphics processing","single sequential control decisions only","storing relational keys","managing user permissions", "GPUs contain many processing elements designed for parallel workloads."],
+  ["An embedded system is:","a computer built into a larger device for a specific function","a general-purpose desktop used for every task","a database without a processor","a network with no software", "Embedded systems often have limited resources and real-time requirements."],
+  ["An interrupt allows a device to:","signal the processor that it needs attention","rewrite the operating system without permission","increase RAM capacity","translate a domain name", "Interrupts let the processor respond to events without constant polling."],
+  ["A real-time system must:","respond within defined timing constraints","always use the fastest possible CPU","store every event permanently","avoid all interrupts", "Correctness depends on both the result and when it is produced."],
+  ["The purpose of an operating-system scheduler is to:","allocate processor time among processes","convert source code into HTML","compress audio samples","assign domain names", "Scheduling balances responsiveness, fairness and throughput."],
+  ["Paging divides memory into:","fixed-size pages and frames","variable-size database tables","network packets only","CPU instructions and passwords", "Paging supports virtual memory and reduces external fragmentation."],
+  ["A deadlock can occur when processes:","wait indefinitely for resources held by one another","finish all tasks immediately","share no resources","use only read-only files", "Deadlock involves circular waiting and requires prevention or recovery."],
+  ["A relational database stores data in:","tables made of rows and columns","only a single unstructured paragraph","CPU registers","network routers", "Relations use records and attributes, with keys linking tables."],
+  ["A foreign key is used to:","link a record to a primary key in another table","identify a processor instruction","encrypt a database field","sort every table automatically", "Foreign keys represent relationships between entities."],
+  ["An SQL JOIN is used to:","combine related rows from tables","delete every duplicate database","encrypt a query","change binary to decimal", "Joins use related fields to bring data together."],
+  ["A distributed database stores data:","across multiple networked locations or nodes","only in one local variable","inside a CPU register","without any copies or links", "Distribution can improve availability but adds consistency and coordination issues."],
+  ["Symmetric encryption uses:","the same secret key to encrypt and decrypt","a public key only","no key at all","a different public key for every byte", "Symmetric encryption is fast but requires secure key sharing."],
+  ["Asymmetric encryption uses:","a public/private key pair","one password shared publicly","only a parity bit","two identical secret keys", "A public key can be shared while the private key is kept secret."],
+  ["A cryptographic hash is designed to be:","one-way and difficult to reverse","a reversible compression method","a public IP address","a screen-resolution setting", "Hashes support password storage and integrity checks, not decryption."],
+  ["A digital certificate helps verify:","that a public key is associated with a stated identity","that a file has no copyright","that a CPU is overheating","that a database has no null values", "Certificate authorities bind identities to public keys."],
+  ["HTTPS protects web communication mainly through:","TLS encryption and authenticated connections","a guarantee that the website is honest","removing all cookies","using only plain HTTP", "TLS provides confidentiality and integrity in transit, but not protection from every scam."],
+  ["A denial-of-service attack affects availability by:","making a service too busy to respond to legitimate requests","changing every password into a hash","improving bandwidth","checking a checksum", "Availability is one part of the confidentiality, integrity and availability model."],
+  ["The Data Protection Act and UK GDPR are concerned with:","how personal data is collected, used and protected","the speed of graphics cards","the design of CPU registers","the colour of web pages", "Organisations need lawful, fair and secure handling of personal data."],
+  ["A backup is valuable because it:","allows data to be restored after loss or corruption","prevents every cyberattack","replaces access control","makes a network faster", "Backups support recovery, especially when stored separately from the original data."]
+], "CS-C2B");
+
+SUBJECTS["bus"].banks = ["BUS-1","BUS-2","BUS-3","BUS-4"];
+SUBJECTS["bus"].sub = "Edexcel 9BS0 — Themes 1–4";
+SUBJECTS["cs"].banks = ["CS-1","CS-2","CS-3","CS-4"];
+SUBJECTS["cs"].sub = "Eduqas A500QS — Components 1–2";
