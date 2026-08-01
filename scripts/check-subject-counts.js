@@ -34,6 +34,7 @@ const PAGES = [
   { file: 'psychology.html', key: 'psych' },
   { file: 'a-level-sociology.html', key: 'soc' },
   { file: 'a-level-geography.html', key: 'geo' },
+  { file: 'a-level-history.html', key: 'hist' },
   { file: 'gcse-geography.html', key: 'gcse-geo' },
   { file: 'gcse-economics.html', key: 'gcse-econ' },
   { file: 'gcse-history.html', key: 'gcse-hist' },

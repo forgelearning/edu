@@ -14800,3 +14800,284 @@ BANKS["PSY-FOR"] = {
 
 SUBJECTS["psych"].banks = ["PSY-SI","PSY-MEM","PSY-ATT","PSY-PATH","PSY-APP","PSY-BIO","PSY-RM","PSY-ID","PSY-COG","PSY-STR","PSY-FOR"];
 SUBJECTS["psych"].sub = "AQA 7182 — Papers 1, 2 & 3 (Cognition & Development, Stress, Forensic)";
+
+// ===== A LEVEL HISTORY: AQA 7042 SELECTED CENTRE ROUTE =====
+// The centre's route combines Wars and Welfare: Britain in Transition 1906–1957,
+// The Making of a Superpower: USA 1865–1975, and a Tudor historical investigation.
+const addAlevelHistoryBank = (bankId, label, spec, rawRows) => {
+  const rows = rawRows.map(row => {
+    const [term, definition, application] = row.split("|");
+    return {term, definition, application};
+  });
+  BANKS[bankId] = {
+    label,
+    color: "#92400e",
+    questions: rows.map((row, index) => {
+      const next = rows[(index + 1) % rows.length];
+      const previous = rows[(index + rows.length - 1) % rows.length];
+      return {
+        id:`${bankId}-${String(index + 1).padStart(2, "0")}`,
+        spec,
+        stem:`Which statement best explains ${row.term}?`,
+        options:{
+          A:row.definition,
+          B:next.definition,
+          C:previous.definition,
+          D:`It had no meaningful effect on ${label.toLowerCase()}`
+        },
+        correct:"A",
+        tag:`MC-${bankId}-${index + 1}`,
+        scaffold:`${row.term}: ${row.definition}. In an A-level answer, connect the evidence to causation, change and continuity, significance, or the strength of a historical interpretation.`,
+        reforge:{
+          stem:`A historian is assessing ${row.term}. Which judgement is most accurate?`,
+          options:{
+            A:row.application,
+            B:previous.application,
+            C:next.application,
+            D:`It cannot be tested using historical evidence`
+          },
+          correct:"A"
+        }
+      };
+    })
+  };
+};
+
+addAlevelHistoryBank("HIST-BRIT1", "Britain 1906–1918", "AQA-2M-BRIT1", [
+  "Liberal landslide of 1906|The Liberals won a large Commons majority after the Conservatives were weakened by tariff controversy and division|The result gave Campbell-Bannerman's government room to pursue welfare and constitutional reform",
+  "Joseph Chamberlain's tariff reform|A campaign for imperial preference and protection rather than unrestricted free trade|It divided Conservatives and helped the Liberals present free trade as a popular economic interest",
+  "New Liberalism|A Liberal approach that accepted greater state action to address poverty and social risks|It provided the political framework for reforms such as school meals, pensions and national insurance",
+  "1902 Education Act|A measure that replaced school boards with local education authorities and supported denominational schools|It strengthened central direction and caused tension with Nonconformist Liberal voters",
+  "school meals|The provision of meals for children whose families could not afford adequate food|It addressed physical welfare and helped make poverty a matter of public policy",
+  "medical inspections|Checks on children's health carried out through the school system|They exposed poor health and created evidence supporting wider welfare intervention",
+  "Old Age Pensions Act 1908|A non-contributory pension for many people aged over seventy|It offered limited security to elderly people but excluded many and remained modest in value",
+  "Labour Exchanges Act 1909|The creation of state-supported offices to match job seekers with vacancies|It improved information in the labour market without guaranteeing employment",
+  "People's Budget 1909|Lloyd George's budget that raised revenue through progressive taxation and land-related measures|It financed welfare expansion and triggered a constitutional confrontation with the Lords",
+  "National Insurance Act 1911|A contributory scheme providing health insurance and unemployment insurance for eligible workers|It marked a major extension of state responsibility while leaving important groups outside coverage",
+  "insurance contributions|Payments made by workers, employers and the state into the 1911 insurance schemes|The tripartite structure shared cost but made benefits conditional on contribution",
+  "trade union opposition to insurance|Criticism that compulsory contributions and approved-society administration reduced union independence|It showed that welfare reform could create conflict even among potential beneficiaries",
+  "People's Budget rejection|The House of Lords rejected Lloyd George's 1909 budget|It turned a financial dispute into a constitutional struggle over the elected chamber's authority",
+  "Parliament Act 1911|Legislation limiting the Lords' power to veto money bills and delaying other public bills|It reduced the upper chamber's ability to block elected-government programmes",
+  "Home Rule crisis|The political conflict over proposals for an Irish parliament within the United Kingdom|It threatened civil conflict and exposed the limits of parliamentary compromise",
+  "Third Home Rule Bill|The 1912 proposal to create an Irish legislature while retaining Westminster responsibilities|It intensified Unionist resistance and made Ireland central to British politics",
+  "Ulster Covenant|A 1912 pledge by Ulster Unionists to resist Home Rule|It demonstrated organised opposition and the willingness of opponents to mobilise outside normal parliamentary channels",
+  "Ulster Volunteer Force|A Unionist armed organisation formed to resist implementation of Home Rule|Its existence made the possibility of armed confrontation more credible",
+  "Irish Volunteers|A nationalist force created partly in response to the Ulster Volunteers|It increased pressure on the British government and deepened the militarisation of the crisis",
+  "Curragh incident|The 1914 refusal or threatened refusal of army officers to enforce Home Rule against Ulster|It revealed the political sensitivity of using the army in a domestic constitutional dispute",
+  "Marconi scandal|A 1912 controversy over ministers' share dealings and alleged insider knowledge|It damaged Liberal credibility even though the ministers were not proven to have acted corruptly",
+  "women's suffrage campaign|The organised movement seeking votes for women through constitutional and militant methods|It made political citizenship a national issue but did not secure equal voting rights before 1918",
+  "suffragette militancy|Tactics such as window-breaking, arson and hunger strikes used by parts of the WSPU|It attracted publicity but also allowed opponents to portray the campaign as disorderly",
+  "WSPU|The Women's Social and Political Union led by Emmeline Pankhurst|Its militant strategy kept suffrage visible but narrowed the movement's appeal to some observers",
+  "NUWSS|The National Union of Women's Suffrage Societies led by Millicent Fawcett|Its constitutional campaigning built a respectable mass movement and maintained pressure through elections and petitions",
+  "Cat and Mouse Act 1913|A law allowing temporary release of hunger-striking prisoners before re-arrest|It showed the government's difficulty in balancing public order with the political costs of force-feeding",
+  "1914 outbreak of war|Britain entered the European conflict after Germany invaded Belgium|The war postponed the immediate Home Rule crisis and transformed the role of the state",
+  "wartime coalition|A government including leading Liberals and Conservatives formed during the First World War|It reduced normal party competition while concentrating authority in a national emergency",
+  "Defence of the Realm Act|Wartime legislation granting the government extensive powers over information, industry and behaviour|It increased executive power and restricted civil liberties in the name of security",
+  "wartime mobilisation|The organisation of labour, industry, food and military manpower for total war|It expanded state intervention far beyond the pre-war Liberal programme",
+  "conscription|Compulsory military service introduced during the First World War|It helped maintain army strength but challenged ideas of individual liberty and voluntary service",
+  "women's wartime work|Women's increased employment in munitions, transport, agriculture and public services|It changed gender roles in practice but did not automatically produce equality after the war",
+  "Representation of the People Act 1918|A reform that extended the vote to most men and some women over thirty meeting a property qualification|It transformed the electorate while stopping short of equal adult suffrage",
+  "1918 general election|The first election held after the Representation of the People Act and the wartime coalition|It confirmed the Conservatives' strength and marked the decline of the pre-war Liberal system",
+  "impact of the First World War on Britain|The war increased state capacity, debt, social expectations and imperial strain|Its effects created both a stronger welfare consensus and serious post-war economic problems",
+  "Liberal decline|The collapse of the Liberal Party as the main alternative to the Conservatives|It reflected wartime divisions, leadership conflict and the rise of Labour as a mass working-class party",
+  "rise of Labour|The growth of Labour's electoral and organisational importance before and during the First World War|It was supported by trade-union links, expanded suffrage and the Liberals' loss of support",
+  "pre-war welfare reform|The Liberal programme of intervention before 1914|It improved provision but was limited by means tests, contribution rules and continuing poverty",
+  "Liberal social investigation|Surveys and reports documenting poverty and working-class living conditions|They gave reformers evidence that poverty could reflect structural conditions rather than individual failure",
+  "National Insurance finance|The system divided costs between workers, employers and the state|It made welfare politically and financially sustainable but left coverage incomplete",
+  "Britain and the First World War judgement|The war brought social and political change but imposed heavy economic and human costs|A balanced judgement must compare state-building and reform with debt, loss and post-war instability"
+]);
+
+addAlevelHistoryBank("HIST-BRIT2", "Britain 1918–1957", "AQA-2M-BRIT2", [
+  "post-war unemployment|High unemployment after demobilisation and the contraction of wartime industries|It made the return to peacetime difficult and strengthened demands for state protection",
+  "Geddes Axe|Public spending cuts recommended in the early 1920s to reduce the budget deficit|It protected financial confidence but reduced demand and worsened the social impact of unemployment",
+  "General Strike 1926|A nationwide stoppage called in support of locked-out coal miners|It exposed class tension but ended after limited wider support and state preparation",
+  "miners' lockout|Coal owners reduced wages and extended working hours after the government subsidy ended|It reflected the coal industry's structural weakness and provoked the 1926 crisis",
+  "Samuel Commission|The commission that investigated the coal industry before the General Strike|Its recommendations were rejected by miners because they implied wage cuts and longer hours",
+  "minority Labour government 1924|Labour's first government, led by Ramsay MacDonald, without a Commons majority|It demonstrated Labour's growing legitimacy but had limited room for radical policy",
+  "second Labour government 1929|A Labour administration formed after the 1929 election without an overall majority|It faced the Depression and internal disagreement over how to respond to unemployment",
+  "Wall Street Crash impact|The international financial crisis reduced trade, investment and demand|Britain was affected through exports and industry even though the financial crash was not itself a British event",
+  "Great Depression in Britain|A period of falling output and severe regional unemployment during the early 1930s|Its effects were uneven, with the staple industrial regions suffering most",
+  "Hungry Thirties debate|The argument over whether the 1930s were defined by widespread hardship or improving living standards for many|Regional and class differences mean a single national description is misleading",
+  "means test|An assessment of household resources used to determine eligibility for unemployment assistance|It reduced public spending but caused resentment because families felt their privacy and dignity were invaded",
+  "National Government 1931|A government formed across party lines during the financial crisis and led by MacDonald|It restored confidence but weakened Labour and enabled Conservative dominance",
+  "going off the gold standard|Britain abandoned the fixed gold parity of sterling in 1931|It allowed interest rates to fall and supported recovery, although it signalled financial weakness",
+  "cheap money policy|Low interest rates introduced after leaving the gold standard|It encouraged housebuilding and consumer spending in the more prosperous regions",
+  "rearmament|The expansion of military spending during the later 1930s|It reduced unemployment in some industries while reflecting the international crisis and delaying cuts",
+  "new industries|Expanding sectors such as cars, electrical goods and chemicals in inter-war Britain|They created jobs and consumer opportunities but were concentrated in the Midlands and South",
+  "regional inequality|The contrast between prosperous areas and depressed coal, shipbuilding and steel regions|It explains why national averages could conceal serious local poverty",
+  "council housing|Publicly built homes provided by local authorities|It improved living conditions and supported suburban development, though access was uneven",
+  "1935 election|An election that consolidated the National Government's position|It showed that recovery and fear of extremism could outweigh dissatisfaction with unemployment",
+  "appeasement|The policy of making concessions to avoid war with aggressive dictatorships|It was supported by war-weariness and strategic weakness but ultimately failed to contain Hitler",
+  "Munich Agreement|The 1938 agreement that transferred the Sudetenland from Czechoslovakia to Germany|It appeared to preserve peace temporarily but weakened Czechoslovakia and encouraged further German expansion",
+  "People's War|The idea that wartime society mobilised across class and regional lines|It captures shared sacrifice but can obscure inequalities in experience and reward",
+  "wartime evacuation|The movement of children from vulnerable urban areas to safer districts|It exposed class and regional differences while creating new contact between communities",
+  "rationing|The controlled distribution of scarce food and consumer goods|It aimed to make supply fairer but required bureaucracy and encouraged black markets",
+  "Beveridge Report|The 1942 plan to tackle the five giants of Want, Disease, Ignorance, Squalor and Idleness|It helped shape expectations of comprehensive post-war social security",
+  "wartime coalition|The cross-party government led by Churchill during the Second World War|It coordinated national mobilisation and made post-war reconstruction a central political question",
+  "1945 Labour victory|Labour won a decisive majority after the Second World War|Voters sought social reform and judged the Conservatives' record and campaign insufficient",
+  "Clement Attlee|Prime Minister of the Labour government from 1945 to 1951|His government oversaw nationalisation, the NHS and the expansion of social security",
+  "creation of the NHS|The 1948 establishment of a health service free at the point of use|It represented a major expansion of collective welfare and state responsibility",
+  "nationalisation|The transfer of major industries such as coal, rail and steel into public ownership|It aimed to modernise strategic industries but produced mixed results and did not remove all problems",
+  "welfare state|A system of public provision designed to protect citizens from social risks|Post-war welfare expanded security but remained dependent on economic resources and political choices",
+  "post-war consensus|Broad agreement between major parties on welfare, mixed economy and demand management|It provided stability but did not mean that parties or voters agreed on every policy",
+  "austerity after 1945|Controls and shortages that continued because Britain faced debt, rationing and balance-of-payments problems|Victory in war did not produce immediate prosperity and limited Labour's room for manoeuvre",
+  "Marshall Aid|US economic assistance provided to European countries after the Second World War|It supported recovery but came with economic and strategic expectations",
+  "end of empire|The accelerated process of decolonisation after the Second World War|It reduced Britain's global power and changed the meaning of national influence",
+  "Suez Crisis 1956|Britain, France and Israel attacked Egypt after Nasser nationalised the canal, then withdrew under pressure|It exposed Britain's dependence on the USA and marked a sharp decline in imperial confidence",
+  "1951 Conservative return|The Conservatives returned to office under Churchill despite the continuation of much welfare provision|It suggested voters wanted a change of government without rejecting the main elements of the post-war settlement",
+  "Butler Education Act 1944|The act reorganising secondary education and raising the school-leaving age|It expanded opportunity while creating a selective tripartite structure that reproduced some inequalities",
+  "1950s affluence|Rising wages, consumer goods and home ownership for many households after austerity|It improved material living standards but did not erase regional or class differences",
+  "Britain 1918–1957 judgement|The period combined depression, war and reconstruction with major changes in state and society|A strong judgement weighs living standards, political change, welfare and Britain's changing international position"
+]);
+
+addAlevelHistoryBank("HIST-USA1", "USA 1865–1920", "AQA-1K-USA1", [
+  "Reconstruction|The attempt to reunite the USA and define the status and rights of formerly enslaved people after the Civil War|It ended military conflict but left unresolved struggles over race, citizenship and federal power",
+  "Freedmen's Bureau|A federal agency providing assistance and education to formerly enslaved people and poor Southerners|It created opportunities but was underfunded and faced resistance",
+  "Thirteenth Amendment|The constitutional amendment abolishing slavery|It ended legal slavery but did not by itself provide political equality or economic independence",
+  "Fourteenth Amendment|The amendment establishing national citizenship and equal protection under the law|It gave the federal government a basis for challenging state discrimination",
+  "Fifteenth Amendment|The amendment protecting male citizens' voting rights from racial denial|It expanded formal political rights but was undermined by later restrictions and violence",
+  "Presidential Reconstruction|Andrew Johnson's lenient approach to readmitting Southern states|It allowed former Confederates to regain influence and produced conflict with Congress",
+  "Radical Reconstruction|Congressional policy using military districts and federal action to reshape Southern politics|It expanded Black political participation but provoked determined white resistance",
+  "carpetbagger|A hostile term for Northerners who moved to the South during Reconstruction|The term reflected Southern resentment but was often used to discredit legitimate reformers",
+  "Redeemers|White Southern Democrats who sought to restore conservative control after Reconstruction|Their success reduced federal protection and restored racial hierarchy",
+  "sharecropping|A farming system in which tenants paid rent through a share of the crop|It offered access to land but often trapped Black and poor white farmers in debt",
+  "Jim Crow|A system of state and local segregation laws in the American South|It undermined the promise of equal citizenship and became embedded through law and custom",
+  "Plessy v Ferguson|The 1896 Supreme Court decision upholding segregation under the doctrine of separate but equal|It legitimised Jim Crow until later civil-rights challenges",
+  "Ku Klux Klan|A white supremacist organisation using intimidation and violence|It sought to destroy Black political participation and enforce racial control",
+  "Gilded Age|The period of rapid industrial growth, wealth and political corruption after the Civil War|It created national prosperity while highlighting severe inequality and weak regulation",
+  "railroad expansion|The rapid extension and consolidation of railway networks across the USA|It integrated markets and stimulated settlement but created powerful corporations and abuses",
+  "Robber Baron|A critical label for powerful industrialists accused of monopoly and exploitation|It captures contemporary hostility but can oversimplify entrepreneurs' economic contributions",
+  "laissez-faire|A preference for limited government regulation of business|It encouraged enterprise but left workers and consumers exposed to corporate power",
+  "political machines|Urban organisations exchanging services and jobs for electoral support|They helped immigrants access assistance but were associated with corruption and patronage",
+  "Tammany Hall|The Democratic political machine that dominated New York City politics|It illustrates how machine politics combined social support with electoral corruption",
+  "immigration restriction|Federal limits on entry introduced in response to nativist pressure|It reflected racial and cultural anxieties rather than only labour-market concerns",
+  "Social Darwinism|The application of evolutionary language to justify competition and inequality in society|It gave ideological support to limited government and racial hierarchy",
+  "Populism|A movement representing farmers and workers against banks, railroads and established elites|It raised monetary and economic grievances but struggled to build a durable national majority",
+  "Free Silver|The demand for unlimited coinage of silver to expand the money supply|Supporters hoped it would ease farmers' debts, while opponents feared inflation",
+  "Progressivism|A reform movement seeking to regulate corporations, improve democracy and address social problems|It expanded government responsibility but did not consistently challenge racial segregation",
+  "muckrakers|Journalists who exposed corruption, unsafe conditions and corporate abuses|Their investigations helped create public support for reform legislation",
+  "trust-busting|Government action to break up or regulate monopolistic corporations|It aimed to restore competition but did not end corporate concentration completely",
+  "Square Deal|Theodore Roosevelt's programme of fairness for consumers, labour and business|It signalled a more active federal government and linked reform to presidential leadership",
+  "New Freedom|Woodrow Wilson's reform programme targeting tariffs, banks and monopolies|It differed from Roosevelt's approach but also expanded federal economic regulation",
+  "Federal Reserve Act 1913|The law creating a central banking system for the USA|It improved financial coordination and gave the federal government a stronger economic role",
+  "Sixteenth Amendment|The amendment authorising a federal income tax|It provided revenue for government while making taxation more progressive",
+  "women's suffrage movement|The campaign for women's voting rights culminating in the Nineteenth Amendment|It combined long-term organisation with changing arguments about citizenship and reform",
+  "Nineteenth Amendment|The 1920 amendment preventing states from denying women the vote on sex grounds|It achieved national voting rights but did not end racial or economic barriers",
+  "Great Migration|The movement of African Americans from the rural South to northern and western cities|It reflected search for work and safety and transformed urban politics and culture",
+  "Harlem Renaissance|A flowering of African American literature, music and art in the 1920s|It challenged racist stereotypes and expressed new forms of cultural identity",
+  "Spanish-American War|The 1898 conflict that ended Spanish rule in Cuba and expanded US influence|It marked a shift toward overseas empire and great-power diplomacy",
+  "Open Door policy|The US proposal that foreign powers should have equal trading access in China|It sought commercial opportunity without formal partition of China",
+  "Roosevelt Corollary|The claim that the USA could intervene in Latin America to prevent European involvement|It extended the Monroe Doctrine and justified a more assertive regional role",
+  "First World War entry|The USA entered the war in 1917 after neutrality became difficult to sustain|It increased American global influence but also revived debate over isolationism",
+  "Fourteenth Amendment enforcement|Federal protection of citizenship rights was weakened when courts and administrations tolerated state resistance|It shows why constitutional change did not automatically produce racial equality",
+  "USA 1865–1920 judgement|The USA became an industrial and international power while racial inequality and political corruption persisted|A balanced judgement must compare economic transformation with the limits of freedom and democracy"
+]);
+
+addAlevelHistoryBank("HIST-USA2", "USA 1920–1975", "AQA-1K-USA2", [
+  "Roaring Twenties|A period of consumer growth, cultural change and economic expansion during the 1920s|It improved living standards for some while leaving farmers, minorities and many workers vulnerable",
+  "consumer credit|Buying goods through instalments or borrowing rather than immediate payment|It widened access to cars and appliances but made households and firms vulnerable to falling incomes",
+  "prohibition|The constitutional ban on the manufacture, sale and transport of alcohol|It encouraged illegal supply and organised crime while failing to remove demand",
+  "Red Scare|Fear of communist revolution and radical subversion after the First World War|It encouraged repression and suspicion of immigrants, trade unionists and dissenters",
+  "immigration quotas|Numerical limits designed to reduce immigration, especially from southern and eastern Europe|They reflected nativism and racial assumptions about who belonged in the nation",
+  "Wall Street Crash|The sharp collapse in US share prices in October 1929|It damaged confidence and exposed the weaknesses of speculation and credit",
+  "Great Depression|The severe economic crisis of the 1930s marked by unemployment, bank failures and falling output|It undermined faith in laissez-faire and expanded expectations of federal action",
+  "Hoover's voluntarism|The belief that government should encourage voluntary cooperation rather than direct relief|It appeared inadequate as the crisis deepened and contributed to Hoover's unpopularity",
+  "New Deal|Franklin Roosevelt's programme of relief, recovery and reform after 1933|It expanded federal responsibility without fully ending unemployment before wartime mobilisation",
+  "bank holiday|The temporary closure and inspection of banks ordered by Roosevelt in 1933|It helped restore confidence and demonstrated decisive presidential action",
+  "First Hundred Days|The rapid legislative programme passed during Roosevelt's opening months in office|It created key agencies and showed the strength of executive leadership in crisis",
+  "Alphabet Agencies|New Deal agencies created to regulate, employ and provide relief|They made federal action visible but increased bureaucracy and provoked criticism",
+  "fireside chats|Radio addresses in which Roosevelt explained policy directly to the public|They strengthened presidential communication and helped create confidence",
+  "Social Security Act 1935|A law providing pensions and limited support for unemployment and vulnerable groups|It established a lasting federal welfare role but excluded or disadvantaged some workers",
+  "Wagner Act|The 1935 law protecting collective bargaining and creating the National Labor Relations Board|It strengthened organised labour and shifted the balance between workers and employers",
+  "New Deal opposition|Criticism from conservatives, businessmen, the Supreme Court and those who wanted more radical action|It shows that the New Deal was contested rather than universally accepted",
+  "court-packing plan|Roosevelt's 1937 proposal to add justices to the Supreme Court|It failed politically and revealed limits to presidential power",
+  "Second World War mobilisation|The rapid expansion of production and military employment after US entry into the war|It ended mass unemployment and made the federal government central to the economy",
+  "Double V campaign|The campaign for victory against fascism abroad and racism at home|It linked wartime service to demands for civil rights and exposed contradictions in US democracy",
+  "Truman Doctrine|The 1947 policy of supporting states resisting perceived communist expansion|It formalised containment and made the USA a leading power in the Cold War",
+  "Marshall Plan|US economic aid for European recovery after 1945|It combined humanitarian reconstruction with the strategic aim of limiting communist influence",
+  "NATO|The North Atlantic Treaty Organisation formed in 1949|It created a permanent collective-security alliance linking the USA to western Europe",
+  "McCarthyism|The use of accusations of communist subversion to gain political influence|It damaged civil liberties and careers while exploiting Cold War fears",
+  "Korean War|The 1950–53 conflict in which the USA led a UN force against North Korean and Chinese forces|It showed the global and military nature of containment without producing reunification",
+  "suburbanisation|The movement of many Americans into expanding suburbs after 1945|It reflected prosperity and car ownership but reinforced racial and class segregation",
+  "Baby Boom|The rise in births after the Second World War|It reshaped demand for housing, schools and services and influenced later youth politics",
+  "Civil Rights Movement|The campaign against racial segregation and discrimination|It combined legal action, protest and federal intervention to challenge Jim Crow",
+  "Brown v Board of Education|The 1954 Supreme Court ruling that segregated public schools were unconstitutional|It overturned the legal basis of school segregation but required sustained enforcement",
+  "Montgomery Bus Boycott|The 1955–56 protest against segregated buses in Montgomery, Alabama|It demonstrated the power of sustained local organisation and economic pressure",
+  "Little Rock|The 1957 crisis over the integration of Central High School in Arkansas|Federal troops showed that the national government could enforce civil-rights law against state resistance",
+  "Civil Rights Act 1964|Federal legislation prohibiting discrimination in public accommodations and employment|It represented a major legal victory but could not alone remove economic inequality",
+  "Voting Rights Act 1965|Federal legislation protecting African American voting rights|It sharply increased registration and participation by attacking discriminatory practices",
+  "Great Society|Lyndon Johnson's programme of welfare, education and civil-rights reform|It reduced some forms of poverty but faced cost, political opposition and structural inequality",
+  "Vietnam War|The prolonged US intervention against communist forces in Vietnam|It weakened confidence in government and intensified domestic protest and division",
+  "New Right|A conservative movement opposing big government, liberal social change and high taxation|It reflected backlash against the Great Society and helped reshape later Republican politics",
+  "Watergate|The political scandal that led to Nixon's resignation in 1974|It damaged public trust and demonstrated that presidential power remained subject to constitutional checks",
+  "detente|A period of reduced tension between the USA and USSR during the 1970s|It reflected strategic calculation but did not end competition or ideological rivalry",
+  "affirmative action|Policies intended to improve access for groups disadvantaged by historic discrimination|They expanded opportunity but provoked debate over equality, merit and the role of government",
+  "USA 1920–1975 judgement|The USA consolidated superpower status while experiencing deep racial, social and political conflict|A strong judgement weighs economic power and global leadership against inequality, war and distrust"
+]);
+
+addAlevelHistoryBank("HIST-TUDOR", "Tudor Historical Investigation", "AQA-NEA-TUDOR", [
+  "Tudor succession crisis|The danger that disputed inheritance or weak legitimacy could destabilise the monarchy|It makes dynastic security a key test of Tudor strength",
+  "Henry VII's claim|Henry based his right partly on victory, marriage and descent through the Beaufort line|His insecure claim encouraged caution, surveillance and financial control",
+  "Battle of Bosworth|The 1485 battle in which Henry Tudor defeated Richard III|It created the foundation of Tudor rule but did not eliminate Yorkist opposition",
+  "Lambert Simnel|A pretender presented as the Earl of Warwick and supported by Yorkist opponents|His rebellion exposed the continued vulnerability of Henry VII's position",
+  "Perkin Warbeck|A pretender claiming to be Richard of Shrewsbury who gained foreign support|His long challenge tested Henry's diplomacy and security policies",
+  "Tudor marriage diplomacy|The use of dynastic marriages to improve legitimacy and foreign relations|It strengthened security when combined with military and financial policy",
+  "Henry VII's bonds and recognisances|Financial guarantees imposed on nobles to enforce obedience|They increased royal control but created resentment and were unpopular",
+  "Henry VII's financial policy|The use of crown lands, customs, feudal dues and fines to increase royal income|It made the monarchy more solvent but could undermine consent",
+  "Henry VIII's accession|Henry inherited the throne in 1509 with a secure dynastic position and popular expectations|The contrast with his father shows how legitimacy could change quickly",
+  "Field of Cloth of Gold|The 1520 diplomatic meeting between Henry VIII and Francis I|Its display of magnificence supported prestige but produced little lasting strategic gain",
+  "Wolsey's rise|Thomas Wolsey became Henry VIII's chief minister and controlled much government business|His influence depended on royal favour and failure to secure the annulment led to collapse",
+  "Wolsey's domestic reforms|Attempts to improve legal access and administrative efficiency|They show that Wolsey was more than a foreign-policy minister, although results were limited",
+  "Amicable Grant|A proposed non-parliamentary tax in 1525 that provoked resistance|Its failure revealed the limits of financial demands and contributed to Wolsey's fall",
+  "break with Rome|Henry VIII's rejection of papal authority and establishment of royal control over the English Church|It transformed religion, government and property while originating in a dynastic problem",
+  "Act of Supremacy 1534|The law recognising Henry VIII as Supreme Head of the Church of England|It established the constitutional basis of the English Reformation",
+  "Dissolution of the monasteries|The closure and transfer of monastic property to the Crown and its supporters|It increased royal resources and patronage but provoked resentment and rebellion",
+  "Pilgrimage of Grace|The large 1536 rebellion in northern England against religious and governmental change|It showed the depth of popular and elite resistance but lacked sustained coordination",
+  "Thomas Cromwell|Henry VIII's minister who reorganised government and managed the Reformation|His success depended on solving royal problems but his fall showed the danger of losing favour",
+  "Act of Six Articles|The 1539 law reaffirming several traditional Catholic doctrines|It demonstrates that the English Reformation was politically controlled rather than consistently Protestant",
+  "Henry VIII's succession acts|Legislation altering the order of succession and legitimising or excluding his children|It made parliament central to dynastic security and reflected uncertainty over heirs",
+  "Edward VI's minority|The reign of Edward VI was dominated by competing regents and religious reformers|It reduced direct royal control and made faction especially important",
+  "Somerset's rule|Edward Seymour governed as Lord Protector during the early years of Edward VI|His social and military policies created opposition and contributed to his fall",
+  "Kett's Rebellion|A 1549 East Anglian rebellion focused on enclosure and local grievances|It revealed tensions within reforming government and the limits of central control",
+  "Northumberland's rule|John Dudley dominated government after Somerset's fall and promoted a Protestant succession|His attempt to place Lady Jane Grey on the throne failed because legitimacy and support were weak",
+  "Lady Jane Grey|The Protestant claimant placed on the throne for nine days in 1553|Her failure shows the importance of dynastic legitimacy and popular support",
+  "Mary I's accession|Mary gained the throne in 1553 with broad support against the attempt to exclude her|Her success demonstrated that gender did not make rule impossible but did create anxieties",
+  "Mary I's religious restoration|Mary attempted to restore Catholic worship and papal authority|It was legally significant but lacked time and broad enough consent to become secure",
+  "Marian persecutions|The execution of Protestant heretics during Mary's reign|They damaged Mary's reputation and made religious policy a central issue of succession",
+  "Mary I's marriage to Philip II|The Spanish marriage intended to secure a Catholic alliance and a possible heir|It provoked fears of foreign influence and did not produce the desired succession",
+  "Elizabeth I's settlement|The 1559 religious settlement established a Protestant church with compromises in doctrine and worship|It prioritised political stability and avoided the most extreme alternatives",
+  "Act of Uniformity 1559|The law requiring a common form of worship in the Church of England|It made religious conformity a matter of law while allowing some ambiguity",
+  "Puritan challenge|Pressure from more radical Protestants for further reform of the Church|It became a long-term test of Elizabeth's control over religious debate",
+  "Catholic recusancy|The refusal of Catholics to attend the established church or accept its authority|It became more politically threatening after missionary activity and foreign plots",
+  "Northern Rebellion 1569|A Catholic rising seeking to alter Elizabeth's religious and dynastic settlement|Its failure strengthened government control but encouraged harsher anti-Catholic laws",
+  "Ridolfi Plot|A Catholic conspiracy involving Mary Queen of Scots and foreign support|It reinforced fears that religious dissent could become treason",
+  "Spanish Armada 1588|The failed Spanish attempt to escort an invasion force to England|Its defeat strengthened Elizabeth's image but was aided by strategy, weather and Spanish problems",
+  "Elizabethan poor relief|Local and national measures culminating in the 1601 Poor Law to address poverty|It shows the growth of state regulation while distinguishing the deserving from the idle poor",
+  "Tudor government and Parliament|The monarch relied on Parliament for legislation and taxation but controlled much policy through the Privy Council|It demonstrates strong monarchy rather than absolute rule",
+  "Privy Council|A small group of advisers and administrators who helped the monarch govern|Its growing importance allowed Tudor rulers to coordinate policy while managing faction",
+  "Tudor monarchy judgement|Tudor rulers were strongest when legitimacy, finance, religion and patronage worked together|A historical investigation should compare individual monarchs and recognise limits to royal power"
+]);
+
+const rebalanceAlevelHistory = bankIds => bankIds.forEach(bankId => BANKS[bankId].questions.forEach((question, index) => {
+  [[question, ["A", "B", "C", "D"][index % 4]], [question.reforge, ["C", "D", "A", "B"][index % 4]]].forEach(([item, target]) => {
+    const source = item.correct;
+    if (source !== target) {
+      const saved = item.options[target];
+      item.options[target] = item.options[source];
+      item.options[source] = saved;
+      item.correct = target;
+    }
+    let lengths = Object.fromEntries(Object.entries(item.options).map(([key, value]) => [key, String(value).length]));
+    while (lengths[item.correct] > Math.max(...Object.entries(lengths).filter(([key]) => key !== item.correct).map(([, value]) => value))) {
+      const distractor = Object.keys(item.options).filter(key => key !== item.correct).sort((a, b) => lengths[b] - lengths[a])[0];
+      item.options[distractor] += " in this context";
+      lengths = Object.fromEntries(Object.entries(item.options).map(([key, value]) => [key, String(value).length]));
+    }
+  });
+}));
+
+SUBJECTS["hist"].banks = ["HIST-BRIT1", "HIST-BRIT2", "HIST-USA1", "HIST-USA2", "HIST-TUDOR"];
+SUBJECTS["hist"].sub = "AQA 7042 — Wars and Welfare, USA 1865–1975 & Tudor Investigation";
+rebalanceAlevelHistory(SUBJECTS["hist"].banks);
+delete BANKS["HIST-1"];
+delete BANKS["HIST-2"];
