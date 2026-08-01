@@ -64,10 +64,10 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
 .stat-l{font-size:11px;color:#8A857E;margin-top:4px;display:block;font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.04em}
 
 /* heatmap */
-.heat-row{display:grid;grid-template-columns:110px 1fr 80px 100px 60px;gap:10px;align-items:center;padding:10px 14px;border-radius:var(--radius-md);background:var(--panel-2);border:1px solid var(--line);font-size:13px;margin-bottom:6px}
+.heat-row{display:grid;grid-template-columns:minmax(190px,240px) minmax(0,1fr) 80px 100px 60px;gap:10px;align-items:center;padding:10px 14px;border-radius:var(--radius-md);background:var(--panel-2);border:1px solid var(--line);font-size:13px;margin-bottom:6px}
 .heat-row.high{border-color:rgba(255,90,90,.35)}
 .heat-row.med{border-color:rgba(255,201,60,.25)}
-.heat-tag{font-size:11px;color:var(--coal);background:var(--hot);padding:2px 8px;border-radius:var(--radius-xs);font-weight:600;white-space:nowrap;font-family:'JetBrains Mono',monospace}
+.heat-tag{display:block;min-width:0;font-size:11px;color:var(--coal);background:var(--hot);padding:4px 8px;border-radius:var(--radius-xs);font-weight:600;white-space:normal;overflow-wrap:anywhere;line-height:1.3;font-family:'JetBrains Mono',monospace}
 .heat-label{color:var(--white);font-size:13px}
 .heat-spec{color:#8A857E;font-size:11px;font-family:'JetBrains Mono',monospace}
 .heat-bar{height:6px;background:var(--line);border-radius:var(--radius-xs);overflow:hidden}
@@ -568,6 +568,10 @@ var MC_LABELS = {
   "MC-GCSE-P1-FND-03":"Scarcity confused with poverty","MC-GCSE-P1-FND-04":"Opportunity cost misidentified",
   "MC-GCSE-P1-FND-05":"Division of labour benefits and costs confused","MC-GCSE-P1-FND-06":"Product and service sectors confused",
   "MC-GCSE-P1-FND-07":"Enterprise role confused","MC-GCSE-P1-FND-08":"PPF inside point confused",
+  "MC-GCSE-P1-FND-09":"Enterprise role identified incorrectly","MC-GCSE-P1-FND-10":"Opportunity cost confused with all alternatives",
+  "MC-GCSE-P1-FND-11":"Division of labour disadvantage missed","MC-GCSE-P1-FND-12":"Labour productivity calculation error",
+  "MC-GCSE-P1-FND-13":"PPF efficiency confused with capacity growth","MC-GCSE-P1-FND-14":"Primary, secondary and tertiary sectors confused",
+  "MC-GCSE-P1-FND-15":"Opportunity cost misidentified in a work choice","MC-GCSE-P1-FND-16":"Labour and capital factors confused",
   "MC-GCSE-P1-MKT-01":"Factor and product markets confused","MC-GCSE-P1-MKT-02":"Price signalling confused",
   "MC-GCSE-P1-MKT-03":"Price incentives misunderstood","MC-GCSE-P1-MKT-04":"Factor market definition confused",
   "MC-GCSE-P1-MKT-05":"Free market fairness assumed","MC-GCSE-P1-MKT-06":"Price mechanism behaviour incentives confused",
