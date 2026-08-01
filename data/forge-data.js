@@ -8355,6 +8355,28 @@ const compactGeoCorrectOption = (text, target) => {
   while (shortened.length > 1 && shortened.join(" ").length > target) shortened.pop();
   return shortened.join(" ").slice(0, target).trim();
 };
+const geoConciseCorrectOverrides = {
+  "GCSE-HAZ-11:base":"One plate sinks beneath another",
+  "GCSE-HAZ-26:base":"Warmer oceans can fuel stronger storms",
+  "GCSE-UKLAND-06:reforge":"Lower gradient allows lateral erosion",
+  "GCSE-UKLAND-08:reforge":"Two rivers combine, increasing discharge",
+  "GCSE-UKLAND-29:base":"Use zoning to restrict vulnerable development",
+  "GCSE-UKLAND-17:reforge":"High infiltration slows surface runoff",
+  "GCSE-UKLAND-18:base":"Permeability describes water flow through rock",
+  "GCSE-ENQ-19:reforge":"Repeat counts on several weekdays",
+  "GCSE-RVF-01:reforge":"Gradient decreases",
+  "GCSE-URF-03:reforge":"The park was purpose-built with more green space",
+  "GCSE-UKHUMAN-04:reforge":"Counter-urbanisation",
+  "GCSE-UKHUMAN-08:base":"Difference between immigration and emigration",
+  "GCSE-DEV-05:reforge":"Landlocked, mountainous and drought-prone",
+  "GCSE-DEV-23:base":"Difference in wealth between groups",
+  "GCSE-DEV-32:base":"It can pressure schools and services",
+  "GCSE-DEV-34:base":"Aid support; FDI business investment",
+  "GCSE-IND-12:reforge":"Cutting emissions may constrain farming",
+  "GCSE-IND-13:reforge":"Partition caused deaths and lasting tensions",
+  "GCSE-BIO-05:base":"Waste decomposition",
+  "GCSE-ENE-20:reforge":"Diversify sources and maintain storage"
+};
 for (const bankId of SUBJECTS["gcse-geo"].banks) {
   for (const question of BANKS[bankId].questions) {
     for (const item of [question, question.reforge]) {
@@ -8363,7 +8385,8 @@ for (const bankId of SUBJECTS["gcse-geo"].banks) {
       const max = Math.max(...Object.values(lengths));
       if (lengths[item.correct] !== max || Object.values(lengths).filter(length => length === max).length !== 1) continue;
       const distractorMax = Math.max(...Object.entries(lengths).filter(([letter]) => letter !== item.correct).map(([, length]) => length));
-      item.options[item.correct] = compactGeoCorrectOption(item.options[item.correct], distractorMax);
+      const overrideKey = `${question.id}:${item === question ? "base" : "reforge"}`;
+      item.options[item.correct] = geoConciseCorrectOverrides[overrideKey] || compactGeoCorrectOption(item.options[item.correct], distractorMax);
     }
   }
 }
@@ -10750,3 +10773,803 @@ BANKS["PSY-BIO"] = {
 };
 
 SUBJECTS["psych"].banks = ["PSY-SI","PSY-MEM","PSY-ATT","PSY-PATH","PSY-APP","PSY-BIO"];
+
+// Edexcel GCSE Separate Sciences — 1CH0 Chemistry, 1PH0 Physics and 1BI0 Biology.
+// These are kept separate from Combined Science (1SC0): each discipline has its
+// own two-paper route and its own practice surface on the landing page.
+const separateScienceQuestion = (id, spec, stem, options, correct, scaffold, tag, reforge) => ({
+  id, spec, stem, options, correct, scaffold, tag:`MC-${tag}`, reforge
+});
+const addSeparateScienceBank = (bankId, label, color, spec, rows) => {
+  BANKS[bankId] = {label, color, questions: rows.map(row => separateScienceQuestion(row.id, spec, row.stem, row.options, row.correct, row.scaffold, row.tag, row.reforge))};
+  const basePlan = "ABCDABCD";
+  const reforgePlan = "CDABCDAB";
+  BANKS[bankId].questions.forEach((question, index) => {
+    moveGcseScienceAnswer(question, basePlan[index]);
+    moveGcseScienceAnswer(question, reforgePlan[index], true);
+  });
+};
+
+addSeparateScienceBank("GCSE-SEP-CHEM-1", "Paper 1 — Chemistry", "#166534", "1CH0 Paper 1", [
+  {id:"SEP-CHEM1-01",stem:"What is the electronic structure of a sodium atom?",options:{A:"2,8,1",B:"2,8,2",C:"2,7",D:"2,8,8"},correct:"A",scaffold:"Sodium has atomic number 11, so a neutral atom has 11 electrons arranged 2,8,1.",tag:"SEP-CHEM-ATOM",reforge:{stem:"Why does sodium form a 1+ ion?",options:{A:"It gains one electron",B:"It shares one neutron",C:"It loses one outer electron",D:"It gains a proton"},correct:"C"}},
+  {id:"SEP-CHEM1-02",stem:"What is the mass number of an atom with 17 protons and 18 neutrons?",options:{A:"1",B:"17",C:"18",D:"35"},correct:"D",scaffold:"Mass number is the total number of protons and neutrons: 17 + 18 = 35.",tag:"SEP-CHEM-ISOTOPE",reforge:{stem:"What is unchanged in isotopes of the same element?",options:{A:"The number of neutrons",B:"The number of protons",C:"The mass number",D:"The total nucleons"},correct:"B"}},
+  {id:"SEP-CHEM1-03",stem:"Which substance has a giant covalent structure?",options:{A:"Diamond",B:"Sodium chloride",C:"Methane",D:"Copper"},correct:"A",scaffold:"Diamond consists of carbon atoms joined by strong covalent bonds in a giant lattice. This explains its high melting point and hardness.",tag:"SEP-CHEM-BOND",reforge:{stem:"Why does graphite conduct electricity?",options:{A:"Its ions move through the lattice",B:"Its molecules are polar",C:"It has delocalised electrons",D:"Its atoms are liquid"},correct:"C"}},
+  {id:"SEP-CHEM1-04",stem:"What happens to particles when a solid melts?",options:{A:"They become new atoms",B:"They gain energy and move past one another",C:"They lose all attraction",D:"They form a compound"},correct:"B",scaffold:"Melting is a physical change. Particles gain enough energy to move out of fixed positions, but the substance remains the same material.",tag:"SEP-CHEM-STATES",reforge:{stem:"Which change is reversible without forming a new substance?",options:{A:"Melting wax",B:"Burning methane",C:"Rusting iron",D:"Reacting acid"},correct:"A"}},
+  {id:"SEP-CHEM1-05",stem:"What is the formula for magnesium oxide?",options:{A:"MgO",B:"Mg2O",C:"MgO2",D:"Mg2O2"},correct:"A",scaffold:"Magnesium forms Mg2+ and oxygen forms O2−. A 1:1 ratio balances the charges, giving MgO.",tag:"SEP-CHEM-FORMULA",reforge:{stem:"What is the formula of aluminium oxide?",options:{A:"AlO",B:"AlO2",C:"Al2O3",D:"Al3O2"},correct:"C"}},
+  {id:"SEP-CHEM1-06",stem:"Which observation suggests a chemical reaction has occurred?",options:{A:"A solid changes shape",B:"A gas is produced",C:"A liquid is poured",D:"A crystal is crushed"},correct:"B",scaffold:"Gas production can indicate a new substance has formed, especially when it occurs during mixing of reactants.",tag:"SEP-CHEM-REACTION",reforge:{stem:"Why is a temperature rise evidence of an exothermic reaction?",options:{A:"Energy has transferred to the surroundings",B:"The products have disappeared",C:"The reactants gained no energy",D:"The reaction must be reversible"},correct:"A"}},
+  {id:"SEP-CHEM1-07",stem:"What is the pH of a neutral solution at room temperature?",options:{A:"0",B:"5",C:"7",D:"14"},correct:"C",scaffold:"At room temperature, a neutral solution has equal concentrations of hydrogen and hydroxide ions and pH 7.",tag:"SEP-CHEM-ACID",reforge:{stem:"What does a pH change from 4 to 3 mean?",options:{A:"Hydrogen-ion concentration increases tenfold",B:"Acidity falls tenfold",C:"The solution becomes neutral",D:"There is no chemical change"},correct:"A"}},
+  {id:"SEP-CHEM1-08",stem:"Which product forms when an acid reacts with a metal?",options:{A:"Salt and hydrogen",B:"Salt and oxygen",C:"Water and carbon dioxide",D:"Metal oxide and water"},correct:"A",scaffold:"Acids react with many metals to form a salt and hydrogen gas. The hydrogen gives a squeaky pop with a lit splint.",tag:"SEP-CHEM-ACIDMETAL",reforge:{stem:"Which gas is released when an acid reacts with a carbonate?",options:{A:"Hydrogen",B:"Oxygen",C:"Carbon dioxide",D:"Chlorine"},correct:"C"}}
+]);
+
+addSeparateScienceBank("GCSE-SEP-CHEM-2", "Paper 2 — Chemistry", "#166534", "1CH0 Paper 2", [
+  {id:"SEP-CHEM2-01",stem:"Why does increasing temperature usually increase reaction rate?",options:{A:"Particles collide more often and with more energy",B:"The activation energy becomes zero",C:"Products become reactants",D:"Particles stop moving"},correct:"A",scaffold:"Heating increases particle speed, so collisions are more frequent and a greater proportion have energy at least equal to activation energy.",tag:"SEP-CHEM-RATE",reforge:{stem:"How does a catalyst affect a reaction?",options:{A:"It increases the final yield",B:"It is used up completely",C:"It lowers activation energy",D:"It changes the products"},correct:"C"}},
+  {id:"SEP-CHEM2-02",stem:"What does dynamic equilibrium require?",options:{A:"The reaction has stopped",B:"Forward and reverse rates are equal",C:"Only products remain",D:"The temperature is zero"},correct:"B",scaffold:"At dynamic equilibrium, forward and reverse reactions continue but occur at equal rates, so concentrations remain constant.",tag:"SEP-CHEM-EQUIL",reforge:{stem:"What happens when more reactant is added to an equilibrium mixture?",options:{A:"It shifts to oppose the addition",B:"It always moves left",C:"It stops permanently",D:"The catalyst is removed"},correct:"A"}},
+  {id:"SEP-CHEM2-03",stem:"Why is aluminium extracted by electrolysis rather than carbon reduction?",options:{A:"Aluminium is more reactive than carbon",B:"Aluminium is less reactive than carbon",C:"Aluminium has no oxide",D:"Carbon cannot conduct"},correct:"A",scaffold:"Aluminium is above carbon in the reactivity series, so its oxide is too stable to reduce with carbon. Electrolysis is required.",tag:"SEP-CHEM-EXTRACT",reforge:{stem:"What is one environmental cost of extracting aluminium?",options:{A:"High electricity demand",B:"No mining is needed",C:"The ore becomes radioactive",D:"Aluminium cannot be recycled"},correct:"A"}},
+  {id:"SEP-CHEM2-04",stem:"What is oxidation in terms of electron transfer?",options:{A:"Gain of electrons",B:"Loss of electrons",C:"Gain of neutrons",D:"Loss of protons"},correct:"B",scaffold:"Oxidation is loss of electrons; reduction is gain. The mnemonic OIL RIG helps keep the definitions straight.",tag:"SEP-CHEM-REDOX",reforge:{stem:"In a redox reaction, what happens to the reducing agent?",options:{A:"It is oxidised",B:"It is reduced",C:"It gains neutrons",D:"It becomes a catalyst"},correct:"A"}},
+  {id:"SEP-CHEM2-05",stem:"Which molecule is an alkene?",options:{A:"Ethane",B:"Ethanol",C:"Ethene",D:"Ethanoic acid"},correct:"C",scaffold:"Alkenes contain a carbon–carbon double bond. Ethene is C2H4 and is the simplest alkene.",tag:"SEP-CHEM-ORGANIC",reforge:{stem:"What test identifies an alkene?",options:{A:"Limewater turns cloudy",B:"Bromine water is decolourised",C:"A squeaky pop",D:"Universal indicator turns blue"},correct:"B"}},
+  {id:"SEP-CHEM2-06",stem:"What type of reaction makes a polyester from two monomers?",options:{A:"Addition polymerisation",B:"Condensation polymerisation",C:"Neutralisation",D:"Thermal decomposition"},correct:"B",scaffold:"Condensation polymerisation joins monomers and eliminates a small molecule, commonly water. The monomers have two functional groups each.",tag:"SEP-CHEM-POLYMER",reforge:{stem:"What is a concern about disposing of many synthetic polymers?",options:{A:"They are always biodegradable",B:"They may persist and create waste",C:"They contain no carbon",D:"They cannot be shaped"},correct:"B"}},
+  {id:"SEP-CHEM2-07",stem:"Why is potable water treated before supply?",options:{A:"To remove harmful microbes and substances",B:"To make it radioactive",C:"To increase salt concentration",D:"To remove every dissolved gas"},correct:"A",scaffold:"Potable water must be safe to drink. Filtration removes solids and sterilisation kills microorganisms; treatment does not necessarily remove every dissolved substance.",tag:"SEP-CHEM-WATER",reforge:{stem:"Which method can sterilise drinking water?",options:{A:"Chlorination",B:"Filtration through sand only",C:"Evaporation at room temperature",D:"Decanting"},correct:"A"}},
+  {id:"SEP-CHEM2-08",stem:"What is the main greenhouse gas produced by complete combustion of hydrocarbons?",options:{A:"Carbon dioxide",B:"Hydrogen",C:"Nitrogen",D:"Argon"},correct:"A",scaffold:"Complete combustion of a hydrocarbon produces carbon dioxide and water. Carbon dioxide absorbs outgoing infrared radiation and contributes to the greenhouse effect.",tag:"SEP-CHEM-ATMOS",reforge:{stem:"Why is carbon monoxide dangerous?",options:{A:"It reduces blood's oxygen-carrying capacity",B:"It is harmless at every concentration",C:"It increases oxygen transport",D:"It destroys all haemoglobin"},correct:"A"}}
+]);
+
+addSeparateScienceBank("GCSE-SEP-PHYS-1", "Paper 1 — Physics", "#7c2d12", "1PH0 Paper 1", [
+  {id:"SEP-PHYS1-01",stem:"A runner covers 240 m in 30 s. What is the average speed?",options:{A:"8 m/s",B:"30 m/s",C:"210 m/s",D:"7200 m/s"},correct:"A",scaffold:"Average speed = distance ÷ time = 240 ÷ 30 = 8 m/s.",tag:"SEP-PHYS-MOTION",reforge:{stem:"What does the gradient of a distance–time graph represent?",options:{A:"Force",B:"Speed",C:"Energy",D:"Mass"},correct:"B"}},
+  {id:"SEP-PHYS1-02",stem:"What is the difference between mass and weight?",options:{A:"Mass is a force; weight is measured in kilograms",B:"Mass is amount of matter; weight is gravitational force",C:"They are identical quantities",D:"Weight is independent of gravity"},correct:"B",scaffold:"Mass is measured in kilograms and describes the amount of matter. Weight is the force caused by a gravitational field and is measured in newtons.",tag:"SEP-PHYS-FORCE",reforge:{stem:"Which equation links weight, mass and gravitational field strength?",options:{A:"W = m ÷ g",B:"W = g ÷ m",C:"W = m × g",D:"W = m + g"},correct:"C"}},
+  {id:"SEP-PHYS1-03",stem:"What happens when the resultant force on an object is zero?",options:{A:"It must stop",B:"It accelerates",C:"It remains at rest or constant velocity",D:"Its mass halves"},correct:"C",scaffold:"Zero resultant force means no acceleration. The object may remain stationary or continue at constant velocity.",tag:"SEP-PHYS-NEWTON",reforge:{stem:"What is the resultant force on an object moving at constant velocity?",options:{A:"Its weight",B:"Zero",C:"Its mass",D:"Its momentum"},correct:"B"}},
+  {id:"SEP-PHYS1-04",stem:"Which energy store increases when an object is lifted?",options:{A:"Gravitational potential",B:"Magnetic",C:"Nuclear",D:"Chemical"},correct:"A",scaffold:"Lifting an object transfers energy mechanically to its gravitational potential energy store.",tag:"SEP-PHYS-ENERGY",reforge:{stem:"What happens to useful energy in a real machine?",options:{A:"It is destroyed",B:"It is transferred to less useful stores",C:"It becomes mass",D:"It leaves the universe"},correct:"B"}},
+  {id:"SEP-PHYS1-05",stem:"What does power measure?",options:{A:"Energy transferred per unit time",B:"Total mass stored",C:"Force per unit distance",D:"Charge per unit volume"},correct:"A",scaffold:"Power is the rate of energy transfer: power = energy transferred ÷ time, measured in watts.",tag:"SEP-PHYS-POWER",reforge:{stem:"A 60 W lamp runs for 10 s. How much energy does it transfer?",options:{A:"6 J",B:"50 J",C:"600 J",D:"6000 J"},correct:"C"}},
+  {id:"SEP-PHYS1-06",stem:"What is the current in a series circuit?",options:{A:"The same at every point",B:"Largest near the battery",C:"Zero after the first component",D:"Equal to voltage"},correct:"A",scaffold:"A series circuit has one path, so the same current flows through each component.",tag:"SEP-PHYS-CIRCUIT",reforge:{stem:"What happens to total resistance when a resistor is added in series?",options:{A:"It increases",B:"It becomes zero",C:"It is unchanged",D:"It becomes voltage"},correct:"A"}},
+  {id:"SEP-PHYS1-07",stem:"Which equation gives electrical power?",options:{A:"P = I × V",B:"P = I ÷ V",C:"P = V ÷ I",D:"P = I + V"},correct:"A",scaffold:"Electrical power equals current multiplied by potential difference: P = IV.",tag:"SEP-PHYS-ELECTRIC",reforge:{stem:"What happens to current if resistance increases at constant potential difference?",options:{A:"It increases",B:"It decreases",C:"It becomes voltage",D:"It doubles automatically"},correct:"B"}},
+  {id:"SEP-PHYS1-08",stem:"Why does a transformer require alternating current?",options:{A:"It creates a changing magnetic field",B:"It prevents induction",C:"It removes energy",D:"It produces static charge"},correct:"A",scaffold:"An alternating current produces a changing magnetic field, which induces a potential difference in the secondary coil.",tag:"SEP-PHYS-TRANSFORM",reforge:{stem:"What does a step-up transformer increase?",options:{A:"Current only",B:"Potential difference",C:"Resistance only",D:"Mass"},correct:"B"}}
+]);
+
+addSeparateScienceBank("GCSE-SEP-PHYS-2", "Paper 2 — Physics", "#7c2d12", "1PH0 Paper 2", [
+  {id:"SEP-PHYS2-01",stem:"What is the momentum of a 4 kg object moving at 3 m/s?",options:{A:"1.3 kg m/s",B:"7 kg m/s",C:"12 kg m/s",D:"48 kg m/s"},correct:"C",scaffold:"Momentum = mass × velocity = 4 × 3 = 12 kg m/s.",tag:"SEP-PHYS-MOMENTUM",reforge:{stem:"What must be conserved in a closed collision?",options:{A:"Momentum",B:"Speed of every object",C:"Kinetic energy in every collision",D:"The direction of each object"},correct:"A"}},
+  {id:"SEP-PHYS2-02",stem:"Why does pressure increase when a gas is compressed at constant temperature?",options:{A:"Particles move more slowly",B:"Particles collide with walls more often",C:"Particles disappear",D:"The container loses mass"},correct:"B",scaffold:"A smaller volume gives gas particles less space, so wall collisions become more frequent and pressure rises.",tag:"SEP-PHYS-GAS",reforge:{stem:"What should remain constant when testing gas pressure against volume?",options:{A:"Temperature",B:"Colour",C:"Container label",D:"Graph scale"},correct:"A"}},
+  {id:"SEP-PHYS2-03",stem:"What determines the pressure at a point in a liquid?",options:{A:"Depth, density and gravitational field strength",B:"Colour and surface area only",C:"Mass of the container only",D:"Temperature alone"},correct:"A",scaffold:"Liquid pressure increases with depth and depends on liquid density and gravitational field strength.",tag:"SEP-PHYS-LIQUID",reforge:{stem:"How does liquid pressure change with depth?",options:{A:"It decreases",B:"It remains zero",C:"It increases",D:"It changes randomly"},correct:"C"}},
+  {id:"SEP-PHYS2-04",stem:"What is the density of a 200 g object with volume 50 cm³?",options:{A:"0.25 g/cm³",B:"4 g/cm³",C:"250 g/cm³",D:"10,000 g/cm³"},correct:"B",scaffold:"Density = mass ÷ volume = 200 ÷ 50 = 4 g/cm³.",tag:"SEP-PHYS-DENSITY",reforge:{stem:"Why can a large steel ship float?",options:{A:"Its average density is below water",B:"Steel has no mass",C:"Gravity does not act on ships",D:"Water has no upthrust"},correct:"A"}},
+  {id:"SEP-PHYS2-05",stem:"What happens to resistance when a metal wire is heated?",options:{A:"It usually increases",B:"It becomes zero",C:"It always halves",D:"It turns into voltage"},correct:"A",scaffold:"Heating increases lattice vibrations, causing more collisions for electrons and increasing resistance.",tag:"SEP-PHYS-RESIST",reforge:{stem:"What happens to the resistance of an LDR as light intensity increases?",options:{A:"It usually decreases",B:"It becomes infinite",C:"It always doubles",D:"It cannot change"},correct:"A"}},
+  {id:"SEP-PHYS2-06",stem:"What is the motor effect?",options:{A:"A current-carrying conductor experiences a force in a magnetic field",B:"A magnet loses all field",C:"A wire becomes radioactive",D:"A battery gains mass"},correct:"A",scaffold:"A current in a magnetic field experiences a force. Fleming's left-hand rule links current, field and force directions.",tag:"SEP-PHYS-MOTOR",reforge:{stem:"How can the force in a motor effect be increased?",options:{A:"Increase current or field strength",B:"Remove the field",C:"Stop the current",D:"Use no conductor"},correct:"A"}},
+  {id:"SEP-PHYS2-07",stem:"What type of radiation is most penetrating?",options:{A:"Alpha",B:"Beta",C:"Gamma",D:"Visible light"},correct:"C",scaffold:"Gamma radiation is highly penetrating and requires thick lead or concrete shielding. Alpha is least penetrating; beta is intermediate.",tag:"SEP-PHYS-RADIATION",reforge:{stem:"Which radiation is most strongly ionising?",options:{A:"Alpha",B:"Beta",C:"Gamma",D:"Microwaves"},correct:"A"}},
+  {id:"SEP-PHYS2-08",stem:"What is half-life?",options:{A:"The time for all nuclei to decay",B:"The time for half the unstable nuclei to decay",C:"Half the mass of an atom",D:"The time for radiation to stop"},correct:"B",scaffold:"Half-life is the time taken for the number of undecayed nuclei, or activity, to fall to half its initial value.",tag:"SEP-PHYS-HALFLIFE",reforge:{stem:"Why cannot the exact decay time of one nucleus be predicted?",options:{A:"Decay is random",B:"Nuclei have no energy",C:"Radiation is not measurable",D:"All nuclei decay together"},correct:"A"}}
+]);
+
+addSeparateScienceBank("GCSE-SEP-BIO-1", "Paper 1 — Biology", "#166534", "1BI0 Paper 1", [
+  {id:"SEP-BIO1-01",stem:"Which structure controls movement into and out of a cell?",options:{A:"Cell membrane",B:"Cell wall",C:"Ribosome",D:"Chloroplast"},correct:"A",scaffold:"The cell membrane controls movement of substances into and out of the cell and forms a selectively permeable boundary.",tag:"SEP-BIO-CELL",reforge:{stem:"Where does aerobic respiration mainly occur?",options:{A:"Nucleus",B:"Ribosome",C:"Mitochondrion",D:"Cell wall"},correct:"C"}},
+  {id:"SEP-BIO1-02",stem:"What is the function of ribosomes?",options:{A:"Protein synthesis",B:"Aerobic respiration",C:"Photosynthesis",D:"Cellulose storage"},correct:"A",scaffold:"Ribosomes join amino acids to make proteins. They are found in both prokaryotic and eukaryotic cells.",tag:"SEP-BIO-RIBO",reforge:{stem:"Which structure contains most of a cell's genetic material?",options:{A:"Cell membrane",B:"Nucleus",C:"Vacuole",D:"Mitochondrion"},correct:"B"}},
+  {id:"SEP-BIO1-03",stem:"What is diffusion?",options:{A:"Net movement from high to low concentration",B:"Movement using ATP only",C:"Water movement through a membrane",D:"Movement from low to high concentration"},correct:"A",scaffold:"Diffusion is the net movement of particles down a concentration gradient, caused by random particle motion.",tag:"SEP-BIO-DIFFUSION",reforge:{stem:"Which factor increases diffusion rate?",options:{A:"A smaller concentration gradient",B:"A shorter diffusion distance",C:"A smaller surface area",D:"A lower temperature"},correct:"B"}},
+  {id:"SEP-BIO1-04",stem:"What is osmosis?",options:{A:"Movement of water through a partially permeable membrane",B:"Movement of glucose using energy",C:"Movement of ions through a pump",D:"Breakdown of starch"},correct:"A",scaffold:"Osmosis is the net movement of water molecules from a dilute solution to a more concentrated solution through a partially permeable membrane.",tag:"SEP-BIO-OSMOSIS",reforge:{stem:"What happens to a plant cell in a very dilute solution?",options:{A:"It becomes turgid",B:"It bursts immediately",C:"It loses water",D:"It becomes plasmolysed"},correct:"A"}},
+  {id:"SEP-BIO1-05",stem:"What is the role of enzymes?",options:{A:"They catalyse biological reactions",B:"They are used as genetic material",C:"They stop all reactions",D:"They provide mineral ions"},correct:"A",scaffold:"Enzymes are biological catalysts. Their active sites bind specific substrates and lower activation energy.",tag:"SEP-BIO-ENZYME",reforge:{stem:"What happens to an enzyme above its optimum temperature?",options:{A:"It becomes denatured",B:"It gains a new active site",C:"It works indefinitely faster",D:"It turns into a lipid"},correct:"A"}},
+  {id:"SEP-BIO1-06",stem:"What is the word equation for photosynthesis?",options:{A:"Carbon dioxide + water → glucose + oxygen",B:"Glucose + oxygen → carbon dioxide + water",C:"Protein + oxygen → urea",D:"Nitrate + water → glucose"},correct:"A",scaffold:"Photosynthesis uses light energy to convert carbon dioxide and water into glucose and oxygen.",tag:"SEP-BIO-PHOTO",reforge:{stem:"Where is chlorophyll found?",options:{A:"Chloroplasts",B:"Nuclei",C:"Ribosomes",D:"Cell walls"},correct:"A"}},
+  {id:"SEP-BIO1-07",stem:"What is mitosis used for in a multicellular organism?",options:{A:"Growth and tissue repair",B:"Producing genetically varied gametes",C:"Halving chromosome number",D:"Making antibodies only"},correct:"A",scaffold:"Mitosis produces genetically identical daughter cells for growth, repair and asexual reproduction.",tag:"SEP-BIO-MITOSIS",reforge:{stem:"How many genetically identical cells result from one mitotic division?",options:{A:"One",B:"Two",C:"Three",D:"Four"},correct:"B"}},
+  {id:"SEP-BIO1-08",stem:"What is an allele?",options:{A:"A version of a gene",B:"A complete organism",C:"A type of tissue",D:"A cell organelle"},correct:"A",scaffold:"An allele is an alternative form of a gene. Different alleles can contribute to inherited variation.",tag:"SEP-BIO-GENETICS",reforge:{stem:"What is the observable expression of an organism's genes called?",options:{A:"Genotype",B:"Phenotype",C:"Allele",D:"Genome"},correct:"B"}}
+]);
+
+addSeparateScienceBank("GCSE-SEP-BIO-2", "Paper 2 — Biology", "#166534", "1BI0 Paper 2", [
+  {id:"SEP-BIO2-01",stem:"Why are antibiotics ineffective against viruses?",options:{A:"Viruses lack the bacterial targets antibiotics act on",B:"Viruses are too large",C:"Viruses have thick cell walls",D:"Viruses are plants"},correct:"A",scaffold:"Antibiotics target bacterial structures or processes. Viruses reproduce inside host cells and lack these bacterial targets.",tag:"SEP-BIO-DISEASE",reforge:{stem:"How can antibiotic resistance spread in a bacterial population?",options:{A:"Resistant bacteria survive and reproduce",B:"Antibiotics create new organs",C:"All bacteria become viruses",D:"Resistance prevents reproduction"},correct:"A"}},
+  {id:"SEP-BIO2-02",stem:"What is the purpose of vaccination?",options:{A:"To create immune memory",B:"To cause the disease fully",C:"To remove all white blood cells",D:"To prevent antibodies forming"},correct:"A",scaffold:"Vaccines expose the immune system to harmless antigens, stimulating memory cells and a faster response to future infection.",tag:"SEP-BIO-IMMUNITY",reforge:{stem:"Why can a booster vaccination be useful?",options:{A:"It strengthens immune memory",B:"It destroys memory cells",C:"It makes pathogens reproduce",D:"It stops antibody production"},correct:"A"}},
+  {id:"SEP-BIO2-03",stem:"What is the function of the kidneys?",options:{A:"Regulating water and ion content",B:"Pumping blood",C:"Digesting starch",D:"Producing bile"},correct:"A",scaffold:"The kidneys filter blood, selectively reabsorb useful substances and help control water balance and ion concentration.",tag:"SEP-BIO-HOMEOSTASIS",reforge:{stem:"Which waste substance is removed from blood by the kidneys?",options:{A:"Urea",B:"Oxygen",C:"Starch",D:"Antibody"},correct:"A"}},
+  {id:"SEP-BIO2-04",stem:"What is a reflex response?",options:{A:"A rapid automatic response to a stimulus",B:"A slow conscious decision",C:"A hormone released by the pancreas",D:"A learned language response"},correct:"A",scaffold:"Reflexes are rapid, automatic responses that protect the body. Sensory, relay and motor neurones form a reflex arc.",tag:"SEP-BIO-NERVOUS",reforge:{stem:"Which neurone carries impulses from a receptor to the central nervous system?",options:{A:"Sensory neurone",B:"Motor neurone",C:"Relay muscle",D:"Hormone neurone"},correct:"A"}},
+  {id:"SEP-BIO2-05",stem:"What is a hormone?",options:{A:"A chemical messenger carried in blood",B:"A nerve cell",C:"A digestive enzyme only",D:"A type of antibody"},correct:"A",scaffold:"Hormones are chemical messengers released by endocrine glands and transported in the bloodstream to target organs.",tag:"SEP-BIO-HORMONE",reforge:{stem:"Which hormone lowers blood glucose concentration?",options:{A:"Insulin",B:"Adrenaline",C:"Oestrogen",D:"Thyroxine"},correct:"A"}},
+  {id:"SEP-BIO2-06",stem:"What is natural selection?",options:{A:"Better-adapted individuals reproduce more successfully",B:"Organisms choose useful mutations",C:"All organisms change during life",D:"Populations become identical"},correct:"A",scaffold:"Inherited variation means some individuals are better adapted. They survive and reproduce more, so advantageous alleles become more common over generations.",tag:"SEP-BIO-EVOLUTION",reforge:{stem:"What provides the variation on which natural selection acts?",options:{A:"Mutations and sexual reproduction",B:"Exercise alone",C:"Identical clones",D:"Use and disuse only"},correct:"A"}},
+  {id:"SEP-BIO2-07",stem:"What is a quadrat used to investigate?",options:{A:"The distribution of organisms in an area",B:"Blood pressure",C:"Nerve speed",D:"Cell pH"},correct:"A",scaffold:"Quadrats sample plants or slow-moving organisms. Random placement can reduce bias when estimating abundance or distribution.",tag:"SEP-BIO-ECOLOGY",reforge:{stem:"Why should quadrat locations be selected randomly?",options:{A:"To reduce sampling bias",B:"To guarantee identical results",C:"To avoid recording data",D:"To raise temperature"},correct:"A"}},
+  {id:"SEP-BIO2-08",stem:"Why are decomposers important?",options:{A:"They recycle mineral ions from dead material",B:"They prevent respiration",C:"They remove all minerals",D:"They create sunlight"},correct:"A",scaffold:"Bacteria and fungi break down dead material and return mineral ions to the soil, supporting plant growth.",tag:"SEP-BIO-CYCLES",reforge:{stem:"What process returns mineral ions from dead organisms to the soil?",options:{A:"Decay",B:"Photosynthesis",C:"Pollination",D:"Transpiration"},correct:"A"}}
+]);
+
+const extendSeparateScienceBank = (bankId, rows) => {
+  const bank = BANKS[bankId];
+  const added = rows.map(row => separateScienceQuestion(row.id, bankId.includes("CHEM") ? bankId.includes("-1") ? "1CH0 Paper 1" : "1CH0 Paper 2" : bankId.includes("PHYS") ? bankId.includes("-1") ? "1PH0 Paper 1" : "1PH0 Paper 2" : bankId.includes("-1") ? "1BI0 Paper 1" : "1BI0 Paper 2", row.stem, row.options, row.correct, row.scaffold, row.tag, row.reforge));
+  bank.questions.push(...added);
+  const basePlan = "ABCDABCD";
+  const reforgePlan = "CDABCDAB";
+  added.forEach((question, index) => {
+    moveGcseScienceAnswer(question, basePlan[index]);
+    moveGcseScienceAnswer(question, reforgePlan[index], true);
+  });
+};
+
+extendSeparateScienceBank("GCSE-SEP-CHEM-1", [
+  {id:"SEP-CHEM1-09",stem:"What is the purpose of a titration?",options:{A:"To measure the volume needed for neutralisation",B:"To separate an insoluble solid",C:"To test radioactivity",D:"To produce a polymer"},correct:"A",scaffold:"A titration finds the volume of an acid or alkali needed to neutralise a measured volume of the other solution.",tag:"SEP-CHEM-TITRATION",reforge:{stem:"Why is a burette useful in a titration?",options:{A:"It measures a delivered volume accurately",B:"It filters the salt",C:"It heats the acid",D:"It identifies ions by colour"},correct:"A"}},
+  {id:"SEP-CHEM1-10",stem:"What happens at the cathode during electrolysis?",options:{A:"Positive ions gain electrons",B:"Negative ions lose protons",C:"Water becomes neutral",D:"The electrode dissolves in every case"},correct:"A",scaffold:"Cations move to the negative cathode and gain electrons in reduction reactions.",tag:"SEP-CHEM-ELECTRO",reforge:{stem:"Which ion is attracted to the anode?",options:{A:"A cation",B:"An anion",C:"A neutron",D:"A neutral atom only"},correct:"B"}},
+  {id:"SEP-CHEM1-11",stem:"What is the formula for calculating percentage yield?",options:{A:"Actual yield ÷ theoretical yield × 100",B:"Theoretical ÷ actual × 100",C:"Actual + theoretical",D:"Theoretical − actual"},correct:"A",scaffold:"Percentage yield compares the amount made with the maximum possible amount: actual yield divided by theoretical yield, multiplied by 100.",tag:"SEP-CHEM-YIELD",reforge:{stem:"Why is percentage yield often below 100%?",options:{A:"Some reactants may be lost or form side products",B:"Atoms disappear",C:"Products contain no mass",D:"Equilibrium always stops"},correct:"A"}},
+  {id:"SEP-CHEM1-12",stem:"What does a flame test help identify?",options:{A:"Some metal ions",B:"All anions",C:"The mass number",D:"A polymer chain"},correct:"A",scaffold:"Different metal ions produce characteristic flame colours, providing a qualitative identification test.",tag:"SEP-CHEM-ANALYSIS",reforge:{stem:"What does a positive test for chloride ions produce with silver nitrate?",options:{A:"A white precipitate",B:"A blue flame",C:"A squeaky pop",D:"A purple solution"},correct:"A"}},
+  {id:"SEP-CHEM1-13",stem:"Which factor can change equilibrium position?",options:{A:"Temperature",B:"The colour of the apparatus",C:"The label on a beaker",D:"The order of the equations"},correct:"A",scaffold:"Changing temperature changes the relative favourability of the forward and reverse reactions, so equilibrium position can shift.",tag:"SEP-CHEM-EQUIL2",reforge:{stem:"What does a catalyst do to an equilibrium mixture?",options:{A:"It reaches equilibrium faster",B:"It increases the equilibrium yield",C:"It removes products",D:"It changes the temperature"},correct:"A"}},
+  {id:"SEP-CHEM1-14",stem:"What is the relative formula mass of H2O?",options:{A:"18",B:"16",C:"17",D:"20"},correct:"A",scaffold:"Relative formula mass is 2 × 1 for hydrogen plus 16 for oxygen, giving 18.",tag:"SEP-CHEM-MR",reforge:{stem:"What is the relative formula mass of CO2?",options:{A:"28",B:"32",C:"44",D:"46"},correct:"C"}},
+  {id:"SEP-CHEM1-15",stem:"Why are nanoparticles useful in some applications?",options:{A:"They have a very large surface-area-to-volume ratio",B:"They contain no atoms",C:"They are always safe",D:"They have no chemical properties"},correct:"A",scaffold:"Nanoparticles have a high surface-area-to-volume ratio, which can make them effective catalysts or useful in products; their risks must be assessed.",tag:"SEP-CHEM-NANO",reforge:{stem:"What is a possible concern about nanoparticles?",options:{A:"Their effects on health and the environment may be uncertain",B:"They are too large to enter cells",C:"They cannot react with anything",D:"They contain no surface area"},correct:"A"}},
+  {id:"SEP-CHEM1-16",stem:"Which change increases the rate of a reaction between a solid and a solution?",options:{A:"Using smaller pieces of the solid",B:"Cooling the solution",C:"Diluting the solution",D:"Covering the solid"},correct:"A",scaffold:"Smaller pieces provide a greater surface area, so collisions between particles occur more frequently.",tag:"SEP-CHEM-SURFACE",reforge:{stem:"Why does powdered calcium carbonate react faster than lumps?",options:{A:"More surface is exposed",B:"It has a different element",C:"It contains no particles",D:"It has no activation energy"},correct:"A"}}
+]);
+
+extendSeparateScienceBank("GCSE-SEP-CHEM-2", [
+  {id:"SEP-CHEM2-09",stem:"What is the test for carbon dioxide?",options:{A:"Limewater turns cloudy",B:"A lit splint relights",C:"A squeaky pop",D:"Blue flame appears"},correct:"A",scaffold:"Carbon dioxide turns limewater milky or cloudy because a calcium carbonate precipitate forms.",tag:"SEP-CHEM-GAS",reforge:{stem:"Which test identifies hydrogen gas?",options:{A:"A glowing splint relights",B:"A lit splint gives a squeaky pop",C:"Limewater clouds",D:"Bromine water clears"},correct:"B"}},
+  {id:"SEP-CHEM2-10",stem:"Why is crude oil separated by fractional distillation?",options:{A:"Its hydrocarbons have different boiling points",B:"All molecules have equal masses",C:"It is a pure substance",D:"The fractions are ionic"},correct:"A",scaffold:"Crude oil is a mixture of hydrocarbons with different boiling points, allowing fractions to condense at different temperatures.",tag:"SEP-CHEM-FRACTION",reforge:{stem:"What happens to hydrocarbon chain length across the fractions?",options:{A:"It generally decreases from bottom to top",B:"It is identical in every fraction",C:"It becomes radioactive",D:"It changes into oxygen"},correct:"A"}},
+  {id:"SEP-CHEM2-11",stem:"Why is cracking used in the petrochemical industry?",options:{A:"To make shorter, more useful hydrocarbons",B:"To remove all carbon",C:"To form only metals",D:"To make crude oil renewable"},correct:"A",scaffold:"Cracking breaks long-chain hydrocarbons into shorter alkanes and alkenes, matching supply to demand for useful fuels and feedstocks.",tag:"SEP-CHEM-CRACK",reforge:{stem:"What product of cracking can be used to make polymers?",options:{A:"An alkene",B:"A noble gas",C:"A metal ion",D:"Water only"},correct:"A"}},
+  {id:"SEP-CHEM2-12",stem:"What does a positive result in a Benedict's test indicate?",options:{A:"A reducing sugar is present",B:"A protein is present",C:"A lipid is present",D:"A chloride ion is present"},correct:"A",scaffold:"Benedict's solution changes from blue to orange or brick-red precipitate when heated with a reducing sugar such as glucose.",tag:"SEP-CHEM-FOOD",reforge:{stem:"Which reagent tests for protein?",options:{A:"Biuret reagent",B:"Iodine solution",C:"Benedict's solution",D:"Limewater"},correct:"A"}},
+  {id:"SEP-CHEM2-13",stem:"What is a renewable energy resource?",options:{A:"One replaced as it is used",B:"One found only underground",C:"One that always produces no emissions",D:"One used once only"},correct:"A",scaffold:"Renewable resources are replenished on a human timescale, though their use can still have environmental impacts.",tag:"SEP-CHEM-ENERGY",reforge:{stem:"Which fuel is non-renewable?",options:{A:"Coal",B:"Wind",C:"Solar",D:"Tidal"},correct:"A"}},
+  {id:"SEP-CHEM2-14",stem:"Why is electrolysis of brine industrially useful?",options:{A:"It produces chlorine, hydrogen and sodium hydroxide",B:"It makes only water",C:"It removes all ions",D:"It produces carbon dioxide only"},correct:"A",scaffold:"Brine is concentrated sodium chloride solution. Electrolysis produces chlorine at the anode, hydrogen at the cathode and sodium hydroxide in solution.",tag:"SEP-CHEM-BRINE",reforge:{stem:"Which product forms at the positive electrode in brine electrolysis?",options:{A:"Chlorine",B:"Hydrogen",C:"Sodium",D:"Water vapour"},correct:"A"}},
+  {id:"SEP-CHEM2-15",stem:"What does chromatography separate?",options:{A:"Soluble substances in a mixture",B:"Only metal atoms",C:"Nuclei by mass",D:"All gases by pressure"},correct:"A",scaffold:"Chromatography separates soluble substances because they move at different rates through a stationary phase.",tag:"SEP-CHEM-CHROM",reforge:{stem:"What does an Rf value compare?",options:{A:"Distance moved by substance with distance moved by solvent",B:"Mass with volume",C:"Protons with neutrons",D:"Temperature with time"},correct:"A"}},
+  {id:"SEP-CHEM2-16",stem:"Why can carbon-neutrality claims be misleading?",options:{A:"They may ignore emissions across the full lifecycle",B:"Carbon dioxide is not a greenhouse gas",C:"All fuels absorb carbon",D:"No measurement is possible"},correct:"A",scaffold:"A fuel may appear carbon-neutral at the point of use while production, transport, land use or processing releases greenhouse gases.",tag:"SEP-CHEM-CARBON",reforge:{stem:"What is one way to reduce a product's carbon footprint?",options:{A:"Use less energy and lower-emission materials",B:"Increase unnecessary transport",C:"Burn more fossil fuel",D:"Ignore manufacture"},correct:"A"}}
+]);
+
+extendSeparateScienceBank("GCSE-SEP-PHYS-1", [
+  {id:"SEP-PHYS1-09",stem:"What is the unit of electric charge?",options:{A:"Coulomb",B:"Ampere",C:"Volt",D:"Ohm"},correct:"A",scaffold:"Electric charge is measured in coulombs (C). Current is charge flow per second and is measured in amperes.",tag:"SEP-PHYS-CHARGE",reforge:{stem:"Which equation links charge, current and time?",options:{A:"Q = I × t",B:"Q = I ÷ t",C:"Q = t ÷ I",D:"Q = I + t"},correct:"A"}},
+  {id:"SEP-PHYS1-10",stem:"What happens to potential difference in parallel branches?",options:{A:"It is the same across each branch",B:"It is always zero",C:"It is greatest in the longest wire",D:"It equals current"},correct:"A",scaffold:"Each parallel branch is connected across the same two points, so the potential difference is the same across each branch.",tag:"SEP-PHYS-PARALLEL",reforge:{stem:"What happens to current at a junction in a circuit?",options:{A:"Current entering equals current leaving",B:"It disappears",C:"It doubles without a branch",D:"It becomes resistance"},correct:"A"}},
+  {id:"SEP-PHYS1-11",stem:"What is the frequency of a wave?",options:{A:"Number of complete waves per second",B:"Distance travelled per second",C:"Maximum displacement",D:"Distance between two sources"},correct:"A",scaffold:"Frequency is the number of complete oscillations or waves passing a point per second, measured in hertz.",tag:"SEP-PHYS-WAVE",reforge:{stem:"Which equation links wave speed, frequency and wavelength?",options:{A:"v = fλ",B:"v = f ÷ λ",C:"v = λ ÷ f",D:"v = f + λ"},correct:"A"}},
+  {id:"SEP-PHYS1-12",stem:"Which wave can travel through a vacuum?",options:{A:"Light",B:"Sound",C:"Water surface waves",D:"Seismic S-waves"},correct:"A",scaffold:"Electromagnetic waves such as light can travel through a vacuum; mechanical waves need a medium.",tag:"SEP-PHYS-EM",reforge:{stem:"Which electromagnetic wave has the highest frequency?",options:{A:"Radio",B:"Microwave",C:"Visible",D:"Gamma"},correct:"D"}},
+  {id:"SEP-PHYS1-13",stem:"What is the relationship between current and potential difference for an ohmic conductor?",options:{A:"Current is proportional to potential difference at constant temperature",B:"Current is always zero",C:"Resistance is always zero",D:"Current is independent of voltage"},correct:"A",scaffold:"For an ohmic conductor at constant temperature, a graph of current against potential difference is a straight line through the origin.",tag:"SEP-PHYS-OHM",reforge:{stem:"What is resistance calculated from?",options:{A:"Potential difference ÷ current",B:"Current ÷ potential difference",C:"Potential difference × current",D:"Current + voltage"},correct:"A"}},
+  {id:"SEP-PHYS1-14",stem:"Why are parallel circuits used in household wiring?",options:{A:"Components work independently",B:"One switch controls every appliance",C:"The voltage is zero",D:"Current cannot flow"},correct:"A",scaffold:"Parallel branches allow appliances to operate independently and each receives the supply potential difference.",tag:"SEP-PHYS-HOUSE",reforge:{stem:"What is the purpose of a fuse?",options:{A:"It melts when current is too high",B:"It raises voltage",C:"It stores charge",D:"It prevents all current"},correct:"A"}},
+  {id:"SEP-PHYS1-15",stem:"What is the role of a magnetic field around a current-carrying wire?",options:{A:"It can exert forces on nearby magnets and currents",B:"It removes charge",C:"It stops all induction",D:"It changes mass"},correct:"A",scaffold:"A current produces a magnetic field. The field can interact with other magnetic fields to produce a force.",tag:"SEP-PHYS-MAGNET",reforge:{stem:"How can the magnetic field of a solenoid be strengthened?",options:{A:"Increase current or add an iron core",B:"Remove its turns",C:"Stop the current",D:"Use no magnetic material"},correct:"A"}},
+  {id:"SEP-PHYS1-16",stem:"What is the unit of energy?",options:{A:"Joule",B:"Watt",C:"Newton",D:"Pascal"},correct:"A",scaffold:"Energy is measured in joules. A watt is a joule per second and measures power.",tag:"SEP-PHYS-UNITS",reforge:{stem:"What is the unit of power?",options:{A:"Joule",B:"Watt",C:"Newton",D:"Coulomb"},correct:"B"}}
+]);
+
+extendSeparateScienceBank("GCSE-SEP-PHYS-2", [
+  {id:"SEP-PHYS2-09",stem:"What is meant by background radiation?",options:{A:"Radiation always present in the environment",B:"Radiation from one source only",C:"Radiation with no energy",D:"Radiation produced only by hospitals"},correct:"A",scaffold:"Background radiation comes from natural sources such as rocks, radon and cosmic rays, plus some human activity.",tag:"SEP-PHYS-BACKGROUND",reforge:{stem:"Why should background radiation be considered in an experiment?",options:{A:"It affects measured count rate",B:"It removes all uncertainty",C:"It stops radioactive decay",D:"It changes atomic number"},correct:"A"}},
+  {id:"SEP-PHYS2-10",stem:"What is nuclear fission?",options:{A:"A large nucleus splits and releases energy",B:"Two atoms form a molecule",C:"An electron changes shell",D:"A wave reflects"},correct:"A",scaffold:"In fission, a large unstable nucleus splits into smaller nuclei, releasing energy and usually more neutrons.",tag:"SEP-PHYS-FISSION",reforge:{stem:"What can sustain a nuclear fission chain reaction?",options:{A:"Neutrons causing further fissions",B:"No released particles",C:"Only visible light",D:"Electrons leaving metal"},correct:"A"}},
+  {id:"SEP-PHYS2-11",stem:"What is nuclear fusion?",options:{A:"Small nuclei join and release energy",B:"A nucleus splits into electrons",C:"A resistor heats",D:"A wave is absorbed"},correct:"A",scaffold:"Fusion joins light nuclei at very high temperature and pressure. The resulting nucleus has slightly less mass, with energy released.",tag:"SEP-PHYS-FUSION",reforge:{stem:"Why is fusion difficult to achieve on Earth?",options:{A:"Nuclei must be forced close together",B:"It needs no energy",C:"Light nuclei cannot exist",D:"Gravity prevents all reactions"},correct:"A"}},
+  {id:"SEP-PHYS2-12",stem:"What is the main source of energy for most stars?",options:{A:"Nuclear fusion",B:"Chemical combustion",C:"Electrical resistance",D:"Friction with space"},correct:"A",scaffold:"Stars release energy through nuclear fusion, mainly joining hydrogen nuclei to form helium.",tag:"SEP-PHYS-STARS",reforge:{stem:"What happens to a star like the Sun after its main-sequence stage?",options:{A:"It expands into a red giant",B:"It becomes a planet",C:"It stops containing hydrogen immediately",D:"It becomes a neutron at once"},correct:"A"}},
+  {id:"SEP-PHYS2-13",stem:"What is the Doppler effect?",options:{A:"A change in observed frequency due to motion",B:"A change in mass due to gravity",C:"A force on a wire",D:"The splitting of nuclei"},correct:"A",scaffold:"Relative motion between source and observer changes the observed frequency. Receding sources produce a lower observed frequency.",tag:"SEP-PHYS-DOPPLER",reforge:{stem:"What does red-shift suggest about a distant galaxy?",options:{A:"It is moving away",B:"It is moving towards us",C:"It has no stars",D:"It has stopped expanding"},correct:"A"}},
+  {id:"SEP-PHYS2-14",stem:"What is the approximate age of the universe?",options:{A:"13.8 billion years",B:"13.8 million years",C:"138 years",D:"1.38 trillion years"},correct:"A",scaffold:"Evidence from cosmic background radiation and expansion supports an age of roughly 13.8 billion years.",tag:"SEP-PHYS-UNIVERSE",reforge:{stem:"What does cosmic microwave background radiation provide evidence for?",options:{A:"A hot, dense early universe",B:"A static universe with no history",C:"Only the Milky Way",D:"The absence of matter"},correct:"A"}},
+  {id:"SEP-PHYS2-15",stem:"What is specific heat capacity?",options:{A:"Energy needed to raise 1 kg by 1°C",B:"Energy released by 1 g",C:"Mass per unit volume",D:"Power per unit time"},correct:"A",scaffold:"Specific heat capacity is the energy needed to raise the temperature of 1 kg of a substance by 1°C.",tag:"SEP-PHYS-THERMAL",reforge:{stem:"Which material is useful for storing thermal energy if it has a high specific heat capacity?",options:{A:"Water",B:"A vacuum",C:"A perfect insulator with no mass",D:"A gas with no particles"},correct:"A"}},
+  {id:"SEP-PHYS2-16",stem:"Why does insulation reduce heat transfer from a house?",options:{A:"It reduces conduction and convection",B:"It increases particle collisions",C:"It removes all radiation",D:"It creates energy"},correct:"A",scaffold:"Insulating materials trap air and reduce conduction and convection, lowering the rate of energy transfer to the surroundings.",tag:"SEP-PHYS-INSULATION",reforge:{stem:"Which method of heat transfer can occur through a vacuum?",options:{A:"Radiation",B:"Conduction",C:"Convection",D:"All require particles"},correct:"A"}}
+]);
+
+extendSeparateScienceBank("GCSE-SEP-BIO-1", [
+  {id:"SEP-BIO1-09",stem:"What is the function of red blood cells?",options:{A:"Transport oxygen",B:"Produce bile",C:"Digest starch",D:"Coordinate reflexes"},correct:"A",scaffold:"Red blood cells contain haemoglobin, which binds oxygen in the lungs and releases it to respiring tissues.",tag:"SEP-BIO-BLOOD",reforge:{stem:"Why are red blood cells biconcave?",options:{A:"Large surface area for gas exchange",B:"To contain a nucleus",C:"To digest pathogens",D:"To make hormones"},correct:"A"}},
+  {id:"SEP-BIO1-10",stem:"What is the role of the small intestine?",options:{A:"Absorbing digested nutrients",B:"Pumping blood",C:"Filtering urine",D:"Storing bile only"},correct:"A",scaffold:"The small intestine has villi and microvilli that provide a large surface area for absorption of soluble digested nutrients.",tag:"SEP-BIO-DIGEST",reforge:{stem:"How do villi increase absorption?",options:{A:"They provide a large surface area",B:"They stop blood flow",C:"They produce red cells",D:"They remove enzymes"},correct:"A"}},
+  {id:"SEP-BIO1-11",stem:"What is transpiration?",options:{A:"Loss of water vapour from leaves",B:"Movement of sugar into roots",C:"Production of pollen",D:"Breakdown of proteins"},correct:"A",scaffold:"Transpiration is the loss of water vapour from leaves, mainly through open stomata.",tag:"SEP-BIO-TRANSPIRATION",reforge:{stem:"Which condition usually increases transpiration rate?",options:{A:"Higher wind speed",B:"Higher humidity",C:"Lower temperature",D:"Closed stomata"},correct:"A"}},
+  {id:"SEP-BIO1-12",stem:"What is the role of xylem?",options:{A:"Transporting water and mineral ions",B:"Transporting sugars from leaves",C:"Making antibodies",D:"Producing gametes"},correct:"A",scaffold:"Xylem vessels transport water and mineral ions from roots to shoots and are strengthened with lignin.",tag:"SEP-BIO-PLANTS",reforge:{stem:"What does phloem transport?",options:{A:"Dissolved sugars",B:"Oxygen only",C:"Water vapour only",D:"Urea only"},correct:"A"}},
+  {id:"SEP-BIO1-13",stem:"What is a gene?",options:{A:"A section of DNA coding for a protein or characteristic",B:"A whole organism",C:"A type of antibody",D:"A cell membrane"},correct:"A",scaffold:"A gene is a section of DNA that contains instructions for a protein, contributing to inherited characteristics.",tag:"SEP-BIO-DNA",reforge:{stem:"Where are chromosomes found in a eukaryotic cell?",options:{A:"Nucleus",B:"Cell wall",C:"Vacuole",D:"Ribosome"},correct:"A"}},
+  {id:"SEP-BIO1-14",stem:"What is the role of the placenta?",options:{A:"Exchange of substances between mother and fetus",B:"Digesting food for the mother",C:"Producing sperm",D:"Pumping air"},correct:"A",scaffold:"The placenta allows oxygen and nutrients to reach the fetus and carbon dioxide and urea to leave, while maternal and fetal blood remain separate.",tag:"SEP-BIO-REPRO",reforge:{stem:"Why is the umbilical cord important?",options:{A:"It connects the fetus to the placenta",B:"It produces eggs",C:"It carries air into lungs",D:"It prevents all diffusion"},correct:"A"}},
+  {id:"SEP-BIO1-15",stem:"What is the role of the immune system?",options:{A:"Recognising and destroying pathogens",B:"Producing glucose from light",C:"Transporting urine",D:"Making bone minerals only"},correct:"A",scaffold:"White blood cells defend against pathogens by phagocytosis, producing antibodies and releasing antitoxins.",tag:"SEP-BIO-DEFENCE",reforge:{stem:"What do antibodies bind to?",options:{A:"Specific antigens",B:"Starch granules",C:"Mineral ions",D:"Cellulose fibres"},correct:"A"}},
+  {id:"SEP-BIO1-16",stem:"What is a balanced diet?",options:{A:"One providing nutrients in suitable amounts",B:"One containing only protein",C:"One with no water",D:"One identical for every person"},correct:"A",scaffold:"A balanced diet supplies carbohydrates, proteins, lipids, vitamins, minerals, fibre and water in appropriate amounts.",tag:"SEP-BIO-NUTRITION",reforge:{stem:"Which nutrient is needed for growth and tissue repair?",options:{A:"Protein",B:"Fibre",C:"Water only",D:"Vitamin C only"},correct:"A"}}
+]);
+
+extendSeparateScienceBank("GCSE-SEP-BIO-2", [
+  {id:"SEP-BIO2-09",stem:"What is negative feedback?",options:{A:"A response that reverses a change",B:"A response that always increases a change",C:"A disease",D:"A type of cell division"},correct:"A",scaffold:"Negative feedback restores a variable towards its normal range when it moves away from the set point.",tag:"SEP-BIO-FEEDBACK",reforge:{stem:"Why is negative feedback important in homeostasis?",options:{A:"It maintains stable internal conditions",B:"It stops all enzyme action",C:"It removes receptors",D:"It makes every variable increase"},correct:"A"}},
+  {id:"SEP-BIO2-10",stem:"What is the function of thyroxine?",options:{A:"Regulating metabolic rate",B:"Lowering blood glucose directly",C:"Digesting proteins",D:"Producing antibodies"},correct:"A",scaffold:"Thyroxine from the thyroid gland helps regulate metabolic rate and is controlled by negative feedback involving the pituitary gland.",tag:"SEP-BIO-THYROID",reforge:{stem:"Which gland releases adrenaline?",options:{A:"Adrenal gland",B:"Pancreas",C:"Ovary",D:"Pituitary only"},correct:"A"}},
+  {id:"SEP-BIO2-11",stem:"What is the role of FSH in the menstrual cycle?",options:{A:"It stimulates follicle development",B:"It causes the uterus to shed immediately",C:"It digests the egg",D:"It lowers all hormones"},correct:"A",scaffold:"FSH stimulates an ovarian follicle to mature and encourages oestrogen production.",tag:"SEP-BIO-CYCLE",reforge:{stem:"Which hormone triggers ovulation?",options:{A:"LH",B:"Insulin",C:"Adrenaline",D:"Thyroxine"},correct:"A"}},
+  {id:"SEP-BIO2-12",stem:"What is a trophic level?",options:{A:"A feeding position in a food chain",B:"A type of habitat",C:"A population count",D:"A mineral ion"},correct:"A",scaffold:"Trophic levels describe feeding positions: producers are level one, followed by primary consumers and higher consumers.",tag:"SEP-BIO-TROPHIC",reforge:{stem:"Why is energy lost between trophic levels?",options:{A:"Respiration and waste transfer energy away",B:"All organisms make energy",C:"Energy is destroyed",D:"Plants absorb no light"},correct:"A"}},
+  {id:"SEP-BIO2-13",stem:"Why are food chains usually short?",options:{A:"Energy is lost at each transfer",B:"Consumers cannot reproduce",C:"Plants have no biomass",D:"All predators are extinct"},correct:"A",scaffold:"Only a small fraction of biomass or energy is transferred to the next trophic level; much is lost through respiration, movement, waste and uneaten material.",tag:"SEP-BIO-FOODCHAIN",reforge:{stem:"What is biomass?",options:{A:"The mass of living material",B:"The number of habitats",C:"The energy in sunlight only",D:"The volume of soil"},correct:"A"}},
+  {id:"SEP-BIO2-14",stem:"What is biodiversity?",options:{A:"The variety of living organisms",B:"The mass of one species",C:"The number of cells in a leaf",D:"The temperature of a habitat"},correct:"A",scaffold:"Biodiversity is the variety of species and habitats in an area. Greater biodiversity can support ecosystem stability.",tag:"SEP-BIO-BIODIVERSITY",reforge:{stem:"Which action can protect biodiversity?",options:{A:"Creating protected habitats",B:"Removing all predators",C:"Clearing woodland",D:"Introducing invasive species"},correct:"A"}},
+  {id:"SEP-BIO2-15",stem:"Why can deforestation increase carbon dioxide concentration?",options:{A:"Fewer trees remove carbon dioxide by photosynthesis",B:"Trees produce no oxygen",C:"Soil gains no minerals",D:"Animals stop respiring"},correct:"A",scaffold:"Removing trees reduces photosynthetic carbon dioxide uptake; burning or decomposition can also release stored carbon.",tag:"SEP-BIO-CARBON",reforge:{stem:"Which action can increase carbon storage?",options:{A:"Planting and protecting trees",B:"Burning forests",C:"Removing wetlands",D:"Reducing vegetation"},correct:"A"}},
+  {id:"SEP-BIO2-16",stem:"What is selective breeding?",options:{A:"Choosing parents with desired characteristics",B:"Changing every gene deliberately",C:"Selecting habitats only",D:"Cloning every organism"},correct:"A",scaffold:"Selective breeding chooses parents with desired characteristics so their offspring are more likely to inherit them.",tag:"SEP-BIO-BREEDING",reforge:{stem:"What is a possible disadvantage of selective breeding?",options:{A:"Reduced genetic variation",B:"No inherited traits",C:"All offspring become unrelated",D:"It prevents reproduction"},correct:"A"}}
+]);
+
+SUBJECTS["gcse-sep-chem"] = {label:"GCSE Separate Chemistry", sub:"Edexcel 1CH0 — Papers 1 & 2", color:"#166534", banks:["GCSE-SEP-CHEM-1","GCSE-SEP-CHEM-2"]};
+SUBJECTS["gcse-sep-phys"] = {label:"GCSE Separate Physics", sub:"Edexcel 1PH0 — Papers 1 & 2", color:"#7c2d12", banks:["GCSE-SEP-PHYS-1","GCSE-SEP-PHYS-2"]};
+SUBJECTS["gcse-sep-bio"] = {label:"GCSE Separate Biology", sub:"Edexcel 1BI0 — Papers 1 & 2", color:"#166534", banks:["GCSE-SEP-BIO-1","GCSE-SEP-BIO-2"]};
+
+// ===== A LEVEL PSYCHOLOGY (AQA 7182) PAPER 2: RESEARCH METHODS =====
+BANKS["PSY-RM"] = {
+  label: "Research Methods",
+  color: "#831843",
+  questions: [
+    {
+      id:"PSYRM-01",
+      stem:"What is an operationalised independent variable?",
+      options:{
+        A:"The variable that is measured in order to record the final outcome of the study",
+        B:"The variable manipulated by the researcher, defined in measurable terms",
+        C:"Any variable that varies systematically with the independent variable",
+        D:"A variable held constant so that it cannot affect the study's outcome"
+      },
+      correct:"B",tag:"MC-RM-VAR",
+      scaffold:"Operationalisation means defining a variable so precisely that another researcher could replicate exactly what you did. 'Sleep affects memory' is not operationalised; 'participants given 4 versus 8 hours of sleep recall a 20-word list' is. The IV is what you manipulate, the DV is what you measure. Marks are lost constantly here for vague answers, so in the exam always write the IV as its two conditions and the DV as the unit of measurement. Option A defines the DV, C describes a confounding variable and D describes a controlled variable — being able to separate all four is the foundation of the whole topic.",
+      reforge:{stem:"A study measures 'aggression'. Which is the best operationalised version?",options:{A:"How aggressive the child appears to observers",B:"The child's general level of aggressive feeling",C:"Number of physical acts toward a doll in ten minutes",D:"Whether or not the child has an aggressive nature"},correct:"C"}
+    },
+    {
+      id:"PSYRM-02",
+      stem:"What is the difference between an extraneous and a confounding variable?",
+      options:{
+        A:"Extraneous variables are measured, whereas confounding variables are manipulated",
+        B:"Extraneous variables occur only in field studies, confounding ones only in laboratories",
+        C:"There is no difference, as the two terms are used interchangeably by researchers",
+        D:"Extraneous variables may affect the DV; confounding ones vary with the IV"
+      },
+      correct:"D",tag:"MC-RM-VAR",
+      scaffold:"An extraneous variable is any nuisance variable that could affect the dependent variable — room temperature, time of day, participant mood. It adds noise but, if it affects both conditions equally, it does not undermine the conclusion. A confounding variable is worse: it varies systematically with the independent variable, so you cannot tell which of the two caused the change in the DV. If your morning group gets condition A and your evening group gets condition B, time of day is confounded with the IV and the study is uninterpretable. Randomisation and standardisation are the tools that keep extraneous variables from becoming confounding ones.",
+      reforge:{stem:"A researcher tests one condition at 9am and the other at 5pm. What has occurred?",options:{A:"Time of day has become a confounding variable",B:"Time of day is a well-controlled variable",C:"The dependent variable has been operationalised",D:"Demand characteristics have been eliminated"},correct:"A"}
+    },
+    {
+      id:"PSYRM-03",
+      stem:"Which experimental design is most vulnerable to order effects?",
+      options:{
+        A:"Repeated measures, as each participant completes every condition",
+        B:"Independent groups, as different people are used in each condition",
+        C:"Matched pairs, as participants are paired on relevant characteristics",D:"Natural experiments, as the researcher does not manipulate the variable"
+      },
+      correct:"A",tag:"MC-RM-DESIGN",
+      scaffold:"Because a repeated measures participant does every condition, performance in the second may be affected by having done the first — through practice (improvement) or fatigue and boredom (decline). That is an order effect, and it is the design's defining weakness. The fix is counterbalancing: half the participants do AB and half do BA, so order effects are spread evenly across conditions rather than eliminated. Weigh this against the design's advantage — participant variables are perfectly controlled because each person is their own control, and fewer participants are needed. Independent groups has the reverse profile: no order effects, but participant variables are uncontrolled.",
+      reforge:{stem:"What is the purpose of counterbalancing?",options:{A:"To ensure participants are unaware of the study's aims",B:"To distribute order effects evenly across both conditions",C:"To match participants on age and ability before testing",D:"To increase the size of the sample being tested"},correct:"B"}
+    },
+    {
+      id:"PSYRM-04",
+      stem:"What is the main advantage of a matched pairs design?",
+      options:{
+        A:"It requires far fewer participants than any other experimental design",
+        B:"It completely removes the possibility of any demand characteristics arising",
+        C:"It reduces participant variables while avoiding order effects",
+        D:"It allows the researcher to test every participant in every condition"
+      },
+      correct:"C",tag:"MC-RM-DESIGN",
+      scaffold:"Matched pairs is the compromise design. Participants are pre-tested and paired on variables relevant to the study — IQ, age, memory span — then one of each pair is allocated to each condition. Because different people do each condition there are no order effects, and because the pairs are matched on key variables participant differences are reduced. The costs are real though: matching is time-consuming and expensive, you can never match on every relevant variable, and if one participant drops out you lose the whole pair. Option D describes repeated measures, and option A is false — matched pairs needs twice as many people as repeated measures.",
+      reforge:{stem:"What is a practical disadvantage of matched pairs?",options:{A:"Order effects are unavoidable in this design",B:"Participants act as their own experimental control",C:"Matching is time-consuming and can never be complete",D:"Only one condition of the IV can ever be tested"},correct:"C"}
+    },
+    {
+      id:"PSYRM-05",
+      stem:"Which sampling method is most likely to produce a representative sample?",
+      options:{
+        A:"Opportunity sampling, which uses whoever happens to be readily available at the time",
+        B:"Volunteer sampling, recruiting people who respond to an advertisement",
+        C:"Random sampling, where every member of the population has an equal chance",
+        D:"Systematic sampling, selecting every nth person from an unordered list"
+      },
+      correct:"C",tag:"MC-RM-SAMPLE",
+      scaffold:"Random sampling gives every member of the target population an equal chance of selection — names drawn from a hat, or a random number generator applied to a complete list. That equal-chance property is what makes it the least biased method in principle, though it is not a guarantee: a random sample can still turn out unrepresentative by chance, and it requires a complete list of the population, which is often impossible. Compare the biases of the others: opportunity sampling over-represents whoever is nearby and is the most common method in practice; volunteer sampling attracts a particular personality type, producing volunteer bias. Stratified sampling is the most representative of all but is the most laborious.",
+      reforge:{stem:"What is the main bias introduced by volunteer sampling?",options:{A:"It over-represents people who are physically nearby",B:"It requires a complete list of the target population",C:"Volunteers may share personality traits, biasing the sample",D:"It selects every nth person, creating a periodic pattern"},correct:"C"}
+    },
+    {
+      id:"PSYRM-06",
+      stem:"What are demand characteristics?",
+      options:{
+        A:"Cues that lead participants to guess the aim and change their behaviour",
+        B:"The specific instructions read aloud to participants before a study begins",
+        C:"Unintended cues from the researcher that influence how participants respond",
+        D:"Ethical requirements that a study must satisfy before it can be approved"
+      },
+      correct:"A",tag:"MC-RM-CONTROL",
+      scaffold:"Participants are not passive: they search for clues about the study's purpose and then adjust. That adjustment can go either way — the 'please-U effect', where they behave as they think the researcher wants, or the 'screw-U effect', where they deliberately sabotage it. Either way the DV no longer reflects the IV alone. Controls include the single-blind procedure (participants do not know which condition they are in) and deception via a cover story, though that carries an ethical cost. Do not confuse this with investigator effects, which is option C: that is the researcher unintentionally influencing results, and the control for it is a double-blind procedure.",
+      reforge:{stem:"Which procedure controls for investigator effects?",options:{A:"A single-blind procedure, concealing the condition from participants",B:"A double-blind procedure, where neither party knows the condition",C:"Counterbalancing the order in which conditions are presented",D:"Obtaining fully informed consent before the study begins"},correct:"B"}
+    },
+    {
+      id:"PSYRM-07",
+      stem:"A researcher observes children in a playground without their knowledge. Which ethical issue is most directly raised?",
+      options:{
+        A:"Protection from harm, as the children may become distressed by the study",
+        B:"The right to withdraw, as the children cannot leave the playground setting",
+        C:"Confidentiality, as the children's personal data may be shared with others",
+        D:"Informed consent, as the children have not agreed to take part"
+      },
+      correct:"D",tag:"MC-RM-ETHICS",
+      scaffold:"Covert observation by definition removes the chance to consent, which is why it is the central ethical problem with the method. The standard defences are that observation in a public place where people would expect to be seen is generally acceptable, and that presumptive or retrospective consent can be sought afterwards. Know the BPS issues and their solutions as pairs: informed consent (consent form or debrief), deception (full debrief explaining the true aim), protection from harm (right to withdraw, counselling offered), confidentiality (numbers or initials rather than names), and privacy (avoid observation where privacy is expected).",
+      reforge:{stem:"What is the standard way of dealing with deception after a study?",options:{A:"Offering the participants a financial payment",B:"Deleting all of the data that was collected",C:"Repeating the study without any deception",D:"A full debrief explaining the study's true aim"},correct:"D"}
+    },
+    {
+      id:"PSYRM-08",
+      stem:"A correlation coefficient of -0.85 indicates what?",
+      options:{
+        A:"A weak relationship in which one of the variables causes the other one to decrease",
+        B:"A strong negative correlation, where one variable rises as the other falls",
+        C:"A strong positive correlation between the two variables being measured",
+        D:"That no meaningful relationship exists between the two co-variables"
+      },
+      correct:"B",tag:"MC-RM-CORR",
+      scaffold:"Read a coefficient in two parts. The sign gives direction: positive means both variables move together, negative means one rises as the other falls. The number gives strength, from 0 (no relationship) to 1 (perfect), so -0.85 is strong — the minus sign says nothing about strength. The most heavily penalised error in the whole topic is inferring causation: a correlation cannot establish it, because the direction of the relationship is unknown and an untested third variable may cause both. Correlations are still valuable as a starting point for research and where manipulating the variable would be unethical or impossible.",
+      reforge:{stem:"Ice cream sales correlate with drowning deaths. What is the best explanation?",options:{A:"Eating ice cream directly causes people to drown",B:"Drowning incidents cause an increase in ice cream sales",C:"A third variable, hot weather, influences both of them",D:"The correlation coefficient must have been calculated wrongly"},correct:"C"}
+    },
+    {
+      id:"PSYRM-09",
+      stem:"Which measure of central tendency is most affected by extreme scores?",
+      options:{
+        A:"The mean, because every score contributes to the calculation",
+        B:"The median, because it is the middle value in an ordered set",
+        C:"The mode, because it is the most frequently occurring value",D:"The range, because it is a measure of dispersion rather than centre"
+      },
+      correct:"A",tag:"MC-RM-STATS",
+      scaffold:"The mean uses every value, so a single outlier drags it away from the bulk of the data — with scores of 2, 3, 3, 4 and 88, the mean of 20 describes nobody. That sensitivity is its weakness and its strength: it is the most representative measure when data are normally distributed and free of outliers, which is why it is preferred for interval data. The median ignores everything but position, so outliers cannot distort it, making it the right choice for skewed data or ordinal data. The mode is the only measure usable with nominal data and is the only one guaranteed to be an actual score in the set.",
+      reforge:{stem:"Which measure of central tendency should be used with nominal data?",options:{A:"The mean",B:"The median",C:"The mode",D:"The standard deviation"},correct:"C"}
+    },
+    {
+      id:"PSYRM-10",
+      stem:"What does a large standard deviation tell you about a set of scores?",
+      options:{
+        A:"The mean of the data set must itself be a very large number",
+        B:"The scores are tightly clustered close around the mean value",
+        C:"The scores are widely spread out around the mean value",
+        D:"The distribution of the data must be positively skewed"
+      },
+      correct:"C",tag:"MC-RM-STATS",
+      scaffold:"Standard deviation measures dispersion: how far, on average, scores sit from the mean. A large SD means scores are spread out and the mean is a less reliable summary of the group; a small SD means the group performed consistently. It is more informative than the range because it uses every score rather than only the highest and lowest, so a single outlier does not define it. In an exam, use it to compare conditions: two conditions can share a mean while one has a much larger SD, which tells you the IV affected participants inconsistently — that is a genuine analytical point worth marks.",
+      reforge:{stem:"Two conditions have the same mean but condition B has a much larger SD. What does this suggest?",options:{A:"Condition B produced no effect at all",B:"Participants in condition B responded less consistently",C:"Condition B must contain more participants",D:"The two conditions produced identical results"},correct:"B"}
+    },
+    {
+      id:"PSYRM-11",
+      stem:"In a negatively skewed distribution, how do the measures of central tendency fall?",
+      options:{
+        A:"The mean is the highest, followed by the median and then the mode",
+        B:"The mean is the lowest, followed by the median and then the mode",
+        C:"All three measures fall at exactly the same point in the distribution",
+        D:"The median is lowest, with the mean and mode above it and equal"
+      },
+      correct:"B",tag:"MC-RM-DIST",
+      scaffold:"The tail names the skew, and the mean chases the tail. In a negative skew the long tail points left toward the low scores, so a few very low scores drag the mean down furthest; the mode stays at the peak on the right. Order: mean, then median, then mode, going left to right. Positive skew is the mirror image: the tail points right, the mean is pulled up highest, giving mode, median, mean. In a normal distribution all three coincide at the midpoint, the curve is symmetrical and bell-shaped, and around 68% of scores fall within one standard deviation of the mean — a fact used directly in the statistical infrequency definition of abnormality.",
+      reforge:{stem:"A test is far too difficult, so most students score very low. What distribution results?",options:{A:"A normal distribution",B:"A positively skewed distribution",C:"A negatively skewed distribution",D:"A perfectly uniform distribution"},correct:"B"}
+    },
+    {
+      id:"PSYRM-12",
+      stem:"Why is p ≤ 0.05 the conventional level of significance in psychology?",
+      options:{
+        A:"It guarantees the results obtained could not possibly be due to chance",
+        B:"It ensures that at least 95% of the participants showed the predicted effect",
+        C:"It is required by law for all research involving human participants",
+        D:"It balances the risk of making a Type I error against a Type II error"
+      },
+      correct:"D",tag:"MC-RM-SIG",
+      scaffold:"p ≤ 0.05 means there is a 5% or smaller probability that the result occurred by chance if the null hypothesis were true. It is a convention, not a law, and it exists as a compromise. A stricter level such as 0.01 reduces the chance of a Type I error — wrongly rejecting a true null hypothesis, a false positive — but increases the chance of a Type II error, wrongly accepting a false null hypothesis. Researchers use 0.01 where the consequences of a false positive are serious, such as drug trials, or where they are replicating to confirm a finding. Note that significance never proves anything: it establishes probability, never certainty, which is why option A is wrong.",
+      reforge:{stem:"A researcher uses p ≤ 0.01 instead of p ≤ 0.05. What is the consequence?",options:{A:"The risk of a Type I error rises",B:"The result becomes automatically significant",C:"The risk of a Type II error rises",D:"No change to either type of error occurs"},correct:"C"}
+    },
+    {
+      id:"PSYRM-13",
+      stem:"Which statistical test should be used for an independent groups design with ordinal data?",
+      options:{
+        A:"The Wilcoxon signed-ranks test for related samples of data",
+        B:"The chi-squared test of association between two variables",
+        C:"Spearman's rho, used for testing a correlation between variables",
+        D:"The Mann-Whitney U test for unrelated samples"
+      },
+      correct:"D",tag:"MC-RM-TEST",
+      scaffold:"Choosing a test requires three decisions: are you testing difference or correlation; is the design related (repeated measures, matched pairs) or unrelated (independent groups); and what level of measurement is the data (nominal, ordinal or interval). For difference with ordinal data: unrelated gives Mann-Whitney, related gives Wilcoxon. For nominal data: unrelated gives chi-squared, related gives the sign test. For interval data: unrelated gives unrelated t-test, related gives related t-test. For correlation: ordinal gives Spearman's rho, interval gives Pearson's r. Learn the grid, then remember the rule for reading the result — for Mann-Whitney, Wilcoxon and the sign test the calculated value must be equal to or less than the critical value.",
+      reforge:{stem:"Which test is used for a repeated measures design with nominal data?",options:{A:"The Wilcoxon signed-ranks test",B:"The related t-test",C:"The sign test",D:"Spearman's rho"},correct:"C"}
+    },
+    {
+      id:"PSYRM-14",
+      stem:"What does it mean if a study has high internal validity?",
+      options:{
+        A:"Its findings can be generalised to other settings and populations",
+        B:"The observed effect on the DV was genuinely caused by the IV",
+        C:"The same results would be obtained if the study were repeated",
+        D:"The measuring instrument used is consistent between different raters"
+      },
+      correct:"B",tag:"MC-RM-VALID",
+      scaffold:"Internal validity asks whether the study measured what it intended to, free of confounding variables — so the effect can be attributed to the IV. External validity asks how far the findings generalise: to other settings (ecological validity), to other people (population validity), and to other time periods (temporal validity). The two are often in tension, which is a reliable evaluation point: the tight control of a laboratory experiment maximises internal validity but the artificiality can reduce ecological validity. Options C and D describe reliability, not validity — reliability is consistency, validity is accuracy, and a measure can be perfectly reliable while being consistently wrong.",
+      reforge:{stem:"A study replicates perfectly but measures the wrong thing. How is it best described?",options:{A:"High in validity but low in reliability",B:"Reliable but lacking in validity",C:"Both reliable and valid",D:"Neither reliable nor valid"},correct:"B"}
+    },
+    {
+      id:"PSYRM-15",
+      stem:"What is inter-observer reliability and how is it assessed?",
+      options:{
+        A:"Whether one observer records consistent data over a period of time",
+        B:"Whether the behavioural categories cover every possible behaviour shown",
+        C:"Agreement between observers, checked by correlating their records",
+        D:"Whether the observation genuinely measures the behaviour it claims to"
+      },
+      correct:"C",tag:"MC-RM-VALID",
+      scaffold:"Inter-observer reliability is the extent to which two or more observers watching the same behaviour produce the same record. It is assessed by correlating the two sets of tallies, with a coefficient of +0.80 or above taken as acceptable. It matters because observation is subjective, and it is improved by developing a clear, fully operationalised behavioural checklist and training observers together beforehand. Distinguish it from test-retest reliability, which is option A: giving the same test to the same people on two occasions and correlating the scores. Option D describes validity, and B describes the coverage of a behavioural checklist.",
+      reforge:{stem:"What correlation coefficient is normally taken as acceptable reliability?",options:{A:"+0.20 or above",B:"+0.50 or above",C:"+0.80 or above",D:"+1.00 exactly"},correct:"C"}
+    },
+    {
+      id:"PSYRM-16",
+      stem:"What is the purpose of peer review?",
+      options:{
+        A:"To assess the quality and validity of research before it is published",
+        B:"To provide funding for researchers who have submitted a proposal",
+        C:"To ensure participants have given informed consent before taking part",D:"To replicate a study in order to confirm its findings independently"
+      },
+      correct:"A",tag:"MC-RM-SCIENCE",
+      scaffold:"Peer review is the assessment of research by experts in the same field before publication. It serves three functions: allocating research funding, validating the quality and accuracy of work, and suggesting improvements or amendments. It is the mechanism that maintains the integrity of the scientific record. The standard criticisms are worth knowing: anonymity can be used to bury rival work, there is a publication bias toward positive and headline-grabbing findings, and established theories can be preserved because reviewers are slower to accept work that contradicts them. Peer review also cannot easily detect fraud, since reviewers see the write-up rather than the raw data.",
+      reforge:{stem:"What is publication bias in the context of peer review?",options:{A:"A preference for publishing positive, significant findings",B:"The tendency to publish only replications of past work",C:"The requirement that all research must be peer reviewed",D:"A bias toward publishing research from unknown institutions"},correct:"A"}
+    },
+    {
+      id:"PSYRM-17",
+      stem:"Which feature of science means a theory must be capable of being proved wrong?",
+      options:{
+        A:"Objectivity, requiring the researcher to remain free of personal bias",
+        B:"Replicability, requiring that a study can be repeated by other people",
+        C:"Falsifiability, as set out in Popper's account of scientific method",
+        D:"Paradigm shift, in which a discipline's shared assumptions are overturned"
+      },
+      correct:"C",tag:"MC-RM-SCIENCE",
+      scaffold:"Popper argued that what separates science from pseudoscience is not whether a theory can be confirmed but whether it can in principle be refuted. Theories that explain every possible outcome — Freud's psychodynamic theory is the standard example, since any behaviour can be attributed to unconscious conflict — explain nothing testable. This is why the null hypothesis matters: research seeks to reject it rather than prove the alternative. Learn the other features alongside it: objectivity, empirical method, replicability, and theory construction through the hypothetico-deductive method. Kuhn's contribution is the paradigm — a shared set of assumptions — and his claim that psychology is pre-paradigmatic because it has too many competing approaches.",
+      reforge:{stem:"Why does Kuhn argue psychology is not yet a mature science?",options:{A:"It does not use any empirical research methods",B:"It has too many competing approaches to share one paradigm",C:"Its theories are all completely unfalsifiable",D:"Its findings can never be replicated by other researchers"},correct:"B"}
+    },
+    {
+      id:"PSYRM-18",
+      stem:"In which section of a scientific report would the statistical test results be reported?",
+      options:{
+        A:"The results section, which presents the findings and analysis",
+        B:"The discussion section, which interprets and evaluates the findings",
+        C:"The method section, which describes exactly how the study was run",D:"The abstract, which provides a brief summary of the whole report"
+      },
+      correct:"A",tag:"MC-RM-REPORT",
+      scaffold:"Report structure in order: abstract (a summary of roughly 150-200 words covering aims, method, results and conclusions); introduction (a funnel from broad past research down to the specific aims and hypotheses); method (subdivided into design, participants, apparatus, procedure and ethics — detailed enough to permit replication); results (descriptive statistics, then inferential statistics with the calculated value, critical value, significance level and whether the null hypothesis was rejected); discussion (interpretation, limitations, implications, suggestions for future research); and references in APA format. Note the distinction: results report what was found, discussion explains what it means.",
+      reforge:{stem:"Where would the limitations of a study be discussed?",options:{A:"In the results section alongside the statistics",B:"In the method section with the procedure",C:"In the references at the end of the report",D:"In the discussion section"},correct:"D"}
+    },
+    {
+      id:"PSYRM-19",
+      stem:"What is the main advantage of a natural experiment?",
+      options:{
+        A:"The researcher retains full control over the independent variable",
+        B:"It allows study of variables that could not ethically be manipulated",
+        C:"Random allocation of participants to conditions is always possible",D:"Participant variables are completely controlled by the research design"
+      },
+      correct:"B",tag:"MC-RM-EXPT",
+      scaffold:"In a natural experiment the IV varies naturally and the researcher simply measures the effect — Romanian orphan studies of institutionalisation are the standard example, since no ethics committee would ever allow children to be deprived of care deliberately. That is the method's great strength: it opens up research questions otherwise closed, and it often has high ecological validity because the situation is real. The costs follow from the lack of control: participants cannot be randomly allocated, so confounding variables are likely and causal conclusions are weaker, and the naturally occurring events may be rare, making replication difficult. Distinguish this from a quasi-experiment, where the IV is a pre-existing participant characteristic such as age or gender.",
+      reforge:{stem:"What defines a quasi-experiment?",options:{A:"The IV occurs naturally in the environment",B:"The IV is a pre-existing characteristic of the participants",C:"The researcher manipulates the IV in a laboratory",D:"There is no dependent variable being measured"},correct:"B"}
+    },
+    {
+      id:"PSYRM-20",
+      stem:"What is a pilot study and why is one conducted?",
+      options:{
+        A:"A final replication carried out to confirm the original study's findings",
+        B:"A study conducted using only participants drawn from the target population",
+        C:"A review of past research carried out before the introduction is written",
+        D:"A small-scale trial run allowing problems to be identified and fixed"
+      },
+      correct:"D",tag:"MC-RM-EXPT",
+      scaffold:"A pilot study is a small-scale version of the investigation run before the real thing. Its value is entirely practical: it reveals ambiguous instructions, tasks that are too easy or too difficult, measures that produce floor or ceiling effects, and procedures that take longer than planned. Fixing these before committing full resources saves time and money and improves the quality of the final data. In observational research the pilot is also where behavioural categories are refined and observers are trained, improving inter-observer reliability. If an exam question asks how a study could be improved, suggesting a pilot study with a specific reason is a reliable way to earn a mark.",
+      reforge:{stem:"A task is so easy that every participant scores full marks. What is this called?",options:{A:"A floor effect",B:"An order effect",C:"A ceiling effect",D:"A demand characteristic"},correct:"C"}
+    },
+    {
+      id:"PSYRM-21",
+      stem:"What is the main strength of using a structured interview?",
+      options:{
+        A:"It is easily replicated, as every participant is asked identical questions",
+        B:"It allows the interviewer to follow up unexpected answers in depth",
+        C:"It produces rich qualitative data about a participant's own experience",
+        D:"It removes any possibility at all that the interviewer influences the given responses"
+      },
+      correct:"A",tag:"MC-RM-SELFREP",
+      scaffold:"A structured interview uses a fixed set of pre-determined questions asked in the same order, so it is easy to replicate, quick to administer and straightforward to analyse — but it cannot pursue anything interesting that comes up. An unstructured interview has no set questions and flows like a conversation, producing rich qualitative insight at the cost of replicability and objectivity, and requiring a skilled interviewer. Semi-structured interviews sit between the two. All self-report methods share two weaknesses worth naming in evaluation: social desirability bias, where participants present themselves favourably, and response bias, such as always selecting the middle option.",
+      reforge:{stem:"What is social desirability bias?",options:{A:"Participants answering in a way that presents them favourably",B:"Researchers selecting only the data that supports the hypothesis",C:"Participants always choosing the middle response option",D:"Interviewers asking leading questions during the interview"},correct:"A"}
+    },
+    {
+      id:"PSYRM-22",
+      stem:"What is the difference between time sampling and event sampling?",
+      options:{
+        A:"Time sampling is used covertly, whereas event sampling is always overt",
+        B:"Time sampling records only one participant, event sampling records a group",
+        C:"Time sampling records at fixed intervals; event sampling counts each occurrence",
+        D:"Time sampling produces qualitative data whereas event sampling produces quantitative data"
+      },
+      correct:"C",tag:"MC-RM-OBS",
+      scaffold:"Both are ways of structuring an observation so it produces manageable quantitative data. Time sampling records what is happening at fixed intervals — every 30 seconds, note the behaviour occurring. It reduces the observer's workload but may miss behaviours that fall between the intervals, so the record may be unrepresentative. Event sampling counts every occurrence of a target behaviour throughout the observation. It captures everything but becomes unmanageable if the behaviour is frequent or complex, and the observer may miss events. Both depend on a well-operationalised behavioural checklist with categories that are observable, mutually exclusive and cover all possibilities.",
+      reforge:{stem:"Which is a requirement of a well-designed behavioural checklist?",options:{A:"Categories should overlap so nothing is missed",B:"Categories should be based on inferred mental states",C:"Categories should be observable and mutually exclusive",D:"Categories should be decided after the observation ends"},correct:"C"}
+    },
+    {
+      id:"PSYRM-23",
+      stem:"A researcher wants to test whether extraversion is related to number of social media friends. Which test is appropriate?",
+      options:{
+        A:"The Mann-Whitney U test, comparing two unrelated groups of participants",
+        B:"The chi-squared test, examining an association between two nominal variables",
+        C:"The related t-test, comparing two conditions completed by the same people",
+        D:"Spearman's rho, testing a correlation between two ordinal variables"
+      },
+      correct:"D",tag:"MC-RM-TEST",
+      scaffold:"Work through the three questions in order. First: is this difference or correlation? The word 'related to' with two measured variables and no manipulated IV signals correlation, which immediately rules out Mann-Whitney and the t-test. Second: what level of measurement? An extraversion score from a questionnaire is ordinal, since the intervals between points are not demonstrably equal. Third: ordinal correlation gives Spearman's rho, whereas interval correlation would give Pearson's r. Chi-squared is wrong because it tests association between categories of nominal data, not a relationship between two continuous scores.",
+      reforge:{stem:"Which test would be used for a correlation between two interval-level variables?",options:{A:"Spearman's rho",B:"Pearson's r",C:"Chi-squared",D:"The sign test"},correct:"B"}
+    },
+    {
+      id:"PSYRM-24",
+      stem:"A calculated value for a sign test is 3 and the critical value is 2 at p ≤ 0.05. What should the researcher conclude?",
+      options:{
+        A:"The result is significant, so the alternative hypothesis is accepted",
+        B:"The result is not significant, so the null hypothesis is retained",
+        C:"The result proves the null hypothesis is definitely true in this case",
+        D:"A different statistical test must be selected and the analysis repeated"
+      },
+      correct:"B",tag:"MC-RM-TEST",
+      scaffold:"For the sign test, Wilcoxon and Mann-Whitney, the calculated value must be equal to or LESS than the critical value for significance. Here 3 is greater than 2, so the result is not significant and the null hypothesis is retained. Be precise with the language: we retain or fail to reject the null hypothesis, we never prove it — that is why option C is wrong, and it is a distinction examiners look for specifically. Note the opposite rule applies to chi-squared and the t-tests, where the calculated value must be equal to or GREATER than the critical value. Reading the critical value table also requires the correct N or degrees of freedom and whether the hypothesis was one-tailed or two-tailed.",
+      reforge:{stem:"When would a researcher use a one-tailed rather than a two-tailed test?",options:{A:"When previous research allows the direction of the effect to be predicted",B:"When the sample size is smaller than twenty participants",C:"When the data collected are nominal rather than ordinal",D:"When no alternative hypothesis has been written"},correct:"A"}
+    }
+  ]
+};
+
+// ===== A LEVEL PSYCHOLOGY (AQA 7182) PAPER 3: ISSUES AND DEBATES =====
+BANKS["PSY-ID"] = {
+  label: "Issues and Debates",
+  color: "#831843",
+  questions: [
+    {
+      id:"PSYID-01",
+      stem:"What is alpha bias in psychological research?",
+      options:{
+        A:"Exaggerating the differences between men and women in research findings",
+        B:"Minimising real differences by assuming findings apply equally to both sexes",
+        C:"Using samples drawn entirely from one particular cultural group only",
+        D:"Judging another culture using the standards of the researcher's own culture"
+      },
+      correct:"A",tag:"MC-ID-GENDER",
+      scaffold:"Alpha bias overstates the difference between the sexes, usually presenting one as inferior. Freud's claim that women develop a weaker superego because they cannot experience full castration anxiety is the standard example. Beta bias is the opposite error: minimising or ignoring real differences, usually by studying men and assuming the findings apply to women — as in the fight-or-flight research that overlooked the tend-and-befriend response. Both produce androcentrism, where male behaviour becomes the norm and female behaviour is judged abnormal by comparison. Note options C and D belong to the culture bias debate, so keep the two sets of terms separate.",
+      reforge:{stem:"Fight-or-flight research used male samples and generalised to everyone. Which bias is this?",options:{A:"Alpha bias, exaggerating sex differences",B:"Beta bias, minimising sex differences",C:"Ethnocentrism in cross-cultural research",D:"Cultural relativism in interpreting behaviour"},correct:"B"}
+    },
+    {
+      id:"PSYID-02",
+      stem:"What is meant by androcentrism?",
+      options:{
+        A:"Taking male behaviour as the standard against which females are judged",
+        B:"The assumption that behaviour can be reduced to biological processes",
+        C:"Research conducted using only participants drawn from Western cultures",
+        D:"The belief that behaviour is determined entirely by early childhood events"
+      },
+      correct:"A",tag:"MC-ID-GENDER",
+      scaffold:"Androcentrism is the consequence of a male-dominated discipline: if theories are built by men studying men, male behaviour becomes the implicit norm and anything female is treated as a deviation from it. The clearest example is premenstrual syndrome being medicalised as a disorder while male anger is more often explained away as a rational response to pressure. It matters practically, because biased research has been used to justify excluding women from opportunities. The remedies AQA expects are reflexivity — researchers acknowledging how their own values shape their work — feminist psychology, and greater use of female researchers and mixed samples.",
+      reforge:{stem:"What is reflexivity in the context of gender bias?",options:{A:"Repeating a study to check that its findings are reliable",B:"Researchers acknowledging how their own values shape their work",C:"Using only female participants to counterbalance past research",D:"Applying findings from one culture to a different culture"},correct:"B"}
+    },
+    {
+      id:"PSYID-03",
+      stem:"What is an imposed etic?",
+      options:{
+        A:"Studying a behaviour only from within the culture in which it occurs",
+        B:"The view that behaviour can only be understood in its cultural context",
+        C:"Applying a technique developed in one culture as though it were universal",
+        D:"The tendency for individuals within a large group to lose their own personal identity"
+      },
+      correct:"C",tag:"MC-ID-CULTURE",
+      scaffold:"An etic approach looks at behaviour from outside a culture and seeks universals; an emic approach studies behaviour from within a single culture. The error is the imposed etic: taking a measure built in one culture and applying it elsewhere as if it were universal. Ainsworth's Strange Situation is the classic case — it defines the secure attachment type by American norms, so Japanese infants who become intensely distressed on separation appear insecure, when in that culture infants are rarely left alone. Berry's terms are worth using by name, alongside ethnocentrism (judging others by your own culture's standards) and cultural relativism (understanding behaviour in its own context).",
+      reforge:{stem:"Why did Japanese infants appear insecurely attached in the Strange Situation?",options:{A:"Japanese infants form no attachments to their caregivers",B:"The procedure was not standardised in Japan",C:"Rare separation made the procedure unusually stressful there",D:"Japanese caregivers were unusually unresponsive"},correct:"C"}
+    },
+    {
+      id:"PSYID-04",
+      stem:"Which criticism applies to research samples drawn overwhelmingly from WEIRD populations?",
+      options:{
+        A:"Findings are based on a narrow group but presented as universal",
+        B:"The samples are too large for the data to be analysed meaningfully",
+        C:"Such research can never achieve any degree of internal validity",
+        D:"The participants are unable to give properly informed consent"
+      },
+      correct:"A",tag:"MC-ID-CULTURE",
+      scaffold:"Henrich coined WEIRD for the Western, Educated, Industrialised, Rich and Democratic samples that dominate psychology — overwhelmingly undergraduates at American universities. Because behaviour from these samples is treated as the human baseline, anything different is judged abnormal, which is ethnocentrism operating at the level of the whole discipline. The counterweights are worth naming: Takano and Osaka found that 14 of 15 studies comparing the US and Japan found no evidence of the individualism-collectivism distinction, suggesting the divide is overstated; and increased international collaboration and indigenous psychologies have improved matters since.",
+      reforge:{stem:"What did Takano and Osaka's review suggest?",options:{A:"The individualist-collectivist distinction may be overstated",B:"All cross-cultural research is fundamentally invalid",C:"Japanese and American cultures are entirely identical",D:"Cultural bias has increased over the last few decades"},correct:"A"}
+    },
+    {
+      id:"PSYID-05",
+      stem:"What is soft determinism?",
+      options:{
+        A:"The view that all behaviour is caused by factors outside our control",
+        B:"The view that behaviour is determined only during early childhood years",
+        C:"The claim that human beings have complete and unconstrained free will",
+        D:"The view that behaviour is constrained but choice remains possible"
+      },
+      correct:"D",tag:"MC-ID-FREEWILL",
+      scaffold:"Soft determinism, associated with William James and adopted by the cognitive approach, is the middle position: behaviour has causes, but within those constraints people exercise conscious choice. It matters because it reconciles a scientific psychology with the everyday experience of deciding, and it underpins therapies such as CBT that assume clients can choose to change their thinking. Contrast it with hard determinism (option A), which holds that free will is an illusion and every behaviour is fully caused. Learn the four types of determinism as a set: biological (genes, neurochemistry), environmental (reinforcement history), psychic (unconscious conflict) and soft.",
+      reforge:{stem:"Which approach is most associated with soft determinism?",options:{A:"The behaviourist approach",B:"The cognitive approach",C:"The biological approach",D:"The psychodynamic approach"},correct:"B"}
+    },
+    {
+      id:"PSYID-06",
+      stem:"What evidence is often used to argue against the existence of free will?",
+      options:{
+        A:"Twin studies showing MZ concordance rates well below one hundred percent",
+        B:"Libet's finding that brain activity precedes the conscious decision to move",
+        C:"Rogers' evidence that unconditional positive regard improves client outcomes",
+        D:"Research showing people with an internal locus of control resist pressure"
+      },
+      correct:"B",tag:"MC-ID-FREEWILL",
+      scaffold:"Libet measured readiness potential in the motor cortex and found it began around half a second before participants reported consciously deciding to move their hand. If the brain has already initiated the action before we experience choosing, the experience of deciding may be a post-hoc commentary rather than a cause. The counter-arguments are strong and worth having ready: the readiness potential may simply reflect readiness to act rather than the decision itself, and Libet's participants still had a conscious veto over whether to complete the movement. Also useful is Roberts' finding that adolescents with a strong belief in fatalism were at greater risk of depression, suggesting believing in free will has real value.",
+      reforge:{stem:"What did Roberts find about adolescents who believed their lives were fatalistically determined?",options:{A:"They were at greater risk of developing depression",B:"They showed higher academic achievement overall",C:"They were more resistant to social influence",D:"They showed no difference from other adolescents"},correct:"A"}
+    },
+    {
+      id:"PSYID-07",
+      stem:"What does the diathesis-stress model propose?",
+      options:{
+        A:"Behaviour is entirely determined by inherited genetic vulnerability alone",
+        B:"Environmental factors alone are sufficient to explain mental disorder",
+        C:"A genetic vulnerability is triggered by an environmental stressor",
+        D:"Nature and nurture make separate and completely independent contributions"
+      },
+      correct:"C",tag:"MC-ID-NATURE",
+      scaffold:"Diathesis-stress is the interactionist answer to the nature-nurture debate: a person inherits a predisposition (the diathesis) which only produces the disorder if an environmental trigger (the stressor) occurs. Tienari's Finnish adoption study is the standard evidence — adopted children of schizophrenic biological mothers were most likely to develop schizophrenia when raised in dysfunctional adoptive families, so neither factor alone accounted for the outcome. This model explains why MZ concordance for schizophrenia is around 48% rather than 100%. Take it further with epigenetics: environmental events can switch genes on or off, and those changes can be passed to offspring, so the two influences are not even cleanly separable.",
+      reforge:{stem:"What does epigenetics add to the nature-nurture debate?",options:{A:"It proves that genes have no effect on behaviour",B:"It shows environment can alter gene expression and be inherited",C:"It demonstrates that nurture is more important than nature",D:"It shows behaviour is fixed at the moment of conception"},correct:"B"}
+    },
+    {
+      id:"PSYID-08",
+      stem:"How is heritability best interpreted?",
+      options:{
+        A:"The likelihood that one specific individual will go on to inherit a given trait",
+        B:"The proportion of variation in a population attributable to genetic factors",
+        C:"The percentage of a person's behaviour that is caused by their genes",
+        D:"The number of genes known to be involved in producing a characteristic"
+      },
+      correct:"B",tag:"MC-ID-NATURE",
+      scaffold:"Heritability is a population statistic, not an individual one, and this is the distinction examiners test. A heritability estimate of 0.5 for IQ means that about half the variation between people in that population is attributable to genetic differences — it does not mean half of any one person's intelligence is genetic. It is also population-specific: in an environment where everyone has equal schooling, environmental variation is low, so heritability rises. That is counter-intuitive but important, because it shows a high heritability figure says nothing about whether a trait can be changed by intervention.",
+      reforge:{stem:"A heritability estimate of 0.5 for IQ means what?",options:{A:"Half of each person's intelligence comes from their genes",B:"Half of the population inherited high intelligence",C:"Half the variation between people is attributable to genes",D:"Intelligence cannot be influenced by education"},correct:"C"}
+    },
+    {
+      id:"PSYID-09",
+      stem:"What is the main criticism of a holistic approach to explaining behaviour?",
+      options:{
+        A:"It cannot easily be tested scientifically or reduced to single variables",
+        B:"It has produced almost all of psychology's successful drug treatments",
+        C:"It breaks complex behaviour down into overly simple constituent parts",
+        D:"It ignores the influence of social and cultural context on the individual"
+      },
+      correct:"A",tag:"MC-ID-REDUCT",
+      scaffold:"Holism insists that behaviour must be studied as a whole because the parts interact in ways that cannot be captured separately — the humanistic approach and Jahoda's account of ideal mental health both take this line. Its strength is completeness: it captures the social and interpersonal dimensions that reductionist accounts miss, which is why explanations of conformity or the effects of institutionalisation require it. Its weakness is scientific: holistic accounts tend to be vague, hard to operationalise and hard to falsify, and they offer little practical guidance about which factor to target in treatment. Reductionism has the mirror profile — testable and therapeutically productive, but potentially stripping out meaning.",
+      reforge:{stem:"Which levels of explanation runs from lowest to highest correctly?",options:{A:"Sociocultural, then cognitive, then neurochemical",B:"Neurochemical, then cognitive, then sociocultural",C:"Cognitive, then neurochemical, then sociocultural",D:"Sociocultural, then neurochemical, then cognitive"},correct:"B"}
+    },
+    {
+      id:"PSYID-10",
+      stem:"What is environmental reductionism?",
+      options:{
+        A:"Explaining behaviour in terms of neurotransmitter and hormone levels",
+        B:"Explaining behaviour as the product of stimulus-response associations",
+        C:"Explaining behaviour by reference to social and cultural influences",D:"Explaining behaviour through the interaction of many different factors"
+      },
+      correct:"B",tag:"MC-ID-REDUCT",
+      scaffold:"Environmental reductionism is the behaviourist position: complex behaviour is broken down into simple stimulus-response links learned through conditioning. Its productivity is the strongest argument in its favour — systematic desensitisation and token economies both work, and both come directly from it. The standard criticism is that it cannot account for behaviour that clearly involves cognition, which is precisely why social learning theory added the mediational processes. Distinguish it from biological reductionism (option A), which explains behaviour through genes and neurochemistry, and note that machine reductionism is the cognitive approach's version, comparing the mind to a computer.",
+      reforge:{stem:"Which therapy provides the strongest support for environmental reductionism?",options:{A:"Drug therapy using SSRI antidepressants",B:"Psychoanalysis using dream interpretation",C:"Systematic desensitisation for treating phobias",D:"Client-centred humanistic counselling"},correct:"C"}
+    },
+    {
+      id:"PSYID-11",
+      stem:"What characterises an idiographic approach?",
+      options:{
+        A:"Studying large samples to establish general laws of human behaviour",
+        B:"Producing quantitative data that can be analysed using statistical tests",
+        C:"Focusing on the individual as a unique case with subjective experience",
+        D:"Testing hypotheses under tightly controlled laboratory experimental conditions"
+      },
+      correct:"C",tag:"MC-ID-IDIO",
+      scaffold:"The idiographic approach studies individuals in depth, treating each as unique and producing qualitative data through case studies, unstructured interviews and thematic analysis. The humanistic and psychodynamic approaches take this route. The nomothetic approach studies large groups to establish general laws, using experiments and psychometric testing — the behaviourist, biological and cognitive approaches all do this. The examinable point is that they are complementary rather than opposed: HM's case study is idiographic, yet it generated the general claim that episodic and procedural memory are separate systems. A strong answer argues for combining them rather than choosing.",
+      reforge:{stem:"How did the idiographic case study of HM contribute to nomothetic knowledge?",options:{A:"It showed case studies cannot generalise at all",B:"It generated general claims about separate memory systems",C:"It provided quantitative data from a large sample",D:"It established the reliability of psychometric testing"},correct:"B"}
+    },
+    {
+      id:"PSYID-12",
+      stem:"What is a limitation of the idiographic approach?",
+      options:{
+        A:"It produces only quantitative data unsuited to detailed interpretation",
+        B:"It relies exclusively on tightly controlled laboratory experiments",
+        C:"It cannot generate any useful hypotheses for further investigation",
+        D:"Its narrow evidence base makes generalisation difficult to justify"
+      },
+      correct:"D",tag:"MC-ID-IDIO",
+      scaffold:"The idiographic approach's depth is bought at the cost of breadth: conclusions drawn from one person, often studied through subjective methods such as unstructured interviews, cannot easily be extended to anyone else. Freud's Little Hans is the standard example — an entire theory of phobias built on a single boy, interpreted by a researcher already committed to the theory. Balance this in evaluation: idiographic work provides depth that averaged group data conceals, it can falsify a general law with a single counter-example, and it often generates hypotheses that nomothetic research then tests. The nomothetic weakness is the mirror image — it can lose the individual in the average.",
+      reforge:{stem:"What is the main criticism of the nomothetic approach?",options:{A:"It cannot produce any generalisable scientific laws",B:"It loses the individual experience within group averages",C:"It relies entirely on subjective case study evidence",D:"It cannot be used to formulate testable hypotheses"},correct:"B"}
+    },
+    {
+      id:"PSYID-13",
+      stem:"What are the social implications of psychological research?",
+      options:{
+        A:"The ethical procedures a researcher must follow while collecting data",
+        B:"The statistical significance level chosen before the analysis begins",
+        C:"The extent to which a study's findings can be reliably replicated",
+        D:"The effects findings may have on groups and on public policy"
+      },
+      correct:"D",tag:"MC-ID-ETHICS",
+      scaffold:"Social sensitivity, as defined by Sieber and Stanley, concerns studies with potential consequences for the participants or for the group they represent. Research into the heritability of intelligence has been used to justify discriminatory immigration and eugenic policies; research on the accuracy of eyewitness testimony has reshaped police procedure for the better. The point for an exam answer is that social sensitivity is not a reason to avoid the research — Sieber and Stanley argued that avoiding it leaves prejudice unchallenged — but a reason to be careful about how questions are framed, how findings are reported, and who might use them.",
+      reforge:{stem:"What did Sieber and Stanley argue about socially sensitive research?",options:{A:"It should be avoided entirely by all researchers",B:"It has no ethical implications beyond the participants",C:"Avoiding it leaves prejudice and inequality unchallenged",D:"It should only ever be conducted in laboratory settings"},correct:"C"}
+    },
+    {
+      id:"PSYID-14",
+      stem:"Which historical example best illustrates the misuse of psychological research?",
+      options:{
+        A:"Bowlby's research being used to improve hospital visiting arrangements",
+        B:"Early intelligence testing being used to justify eugenic legislation",
+        C:"Memory research being used to reform police interviewing procedures",
+        D:"Attachment research being used to shape modern childcare provision"
+      },
+      correct:"B",tag:"MC-ID-ETHICS",
+      scaffold:"Early US intelligence testing, conducted on immigrants in English regardless of whether they spoke it, produced predictably low scores that were then presented as innate racial inferiority and used to support restrictive immigration laws and compulsory sterilisation programmes. It is the clearest demonstration that flawed method plus social sensitivity equals real harm. Use it alongside a positive example for balance — the cognitive interview, derived from memory research, improved the accuracy of eyewitness evidence and reduced wrongful convictions. Bowlby's work is genuinely double-edged: it improved hospital practice but was also used to discourage mothers from working.",
+      reforge:{stem:"Why is Bowlby's maternal deprivation research described as socially sensitive?",options:{A:"It was used to discourage mothers from returning to work",B:"It was based entirely on laboratory experiments",C:"It produced no findings of any practical value",D:"It failed to obtain consent from any participants"},correct:"A"}
+    },
+    {
+      id:"PSYID-15",
+      stem:"How does the behaviourist approach view the nature-nurture debate?",
+      options:{
+        A:"Behaviour is almost entirely learned from environmental experience",
+        B:"Nature and nurture interact through a diathesis-stress relationship",
+        C:"Behaviour is largely inherited through genes passed down from parents",
+        D:"The debate cannot meaningfully be applied to human behaviour at all"
+      },
+      correct:"A",tag:"MC-ID-NATURE",
+      scaffold:"Behaviourism takes the strongest nurture position in psychology: we are born a blank slate and everything is learned through conditioning. Watson's boast that he could take any healthy infant and train them into any profession captures it exactly. Position the other approaches against it: the biological approach sits at the nature end (genes, neurochemistry, evolution); the psychodynamic approach is interactionist, combining innate drives with the effects of early relationships; the cognitive approach holds that innate processing capacities are refined by experience; and the humanistic approach emphasises an innate drive toward self-actualisation shaped by the environment of conditions of worth.",
+      reforge:{stem:"Which approach sits closest to the nature end of the debate?",options:{A:"The behaviourist approach",B:"The humanistic approach",C:"The social learning approach",D:"The biological approach"},correct:"D"}
+    },
+    {
+      id:"PSYID-16",
+      stem:"What is the interactionist approach to the nature-nurture debate now generally taken to mean?",
+      options:{
+        A:"That nature and nurture cannot meaningfully be separated in explaining behaviour",
+        B:"That nature accounts for exactly half of all behavioural variation observed",
+        C:"That nurture only becomes the dominant influence at some point after early childhood",
+        D:"That the two influences operate separately without ever affecting each other"
+      },
+      correct:"A",tag:"MC-ID-NATURE",
+      scaffold:"The modern position is not that nature and nurture each contribute a percentage but that the question of which matters more is the wrong question. A child's genetically influenced temperament shapes how others respond to them, which then shapes their development — Plomin calls this niche-picking, where people select environments that suit their genes, so nature and nurture become entangled from the start. Epigenetics reinforces the point at a biological level: life experience switches genes on and off, and Dias and Ressler showed such changes passing to offspring in mice. Examiner tip: in an essay, state that the debate has moved beyond separating the two.",
+      reforge:{stem:"What is niche-picking?",options:{A:"Selecting participants who match the study's hypothesis",B:"People selecting environments that suit their genetic tendencies",C:"Choosing a research method to fit available resources",D:"Matching participants on relevant characteristics before testing"},correct:"B"}
+    },
+    {
+      id:"PSYID-17",
+      stem:"Why is the concept of universality important in the culture bias debate?",
+      options:{
+        A:"It means all research must be conducted using only Western samples",
+        B:"It states that no psychological findings can ever be generalised",
+        C:"It requires every study to be replicated in at least ten countries",
+        D:"It refers to findings that hold across all cultures and both sexes"
+      },
+      correct:"D",tag:"MC-ID-CULTURE",
+      scaffold:"Universality is the claim that a psychological finding applies to all people regardless of culture, gender or historical period. It matters because both gender bias and culture bias are threats to it: if a theory built on Western men is presented as universal, the claim is unearned. Some findings do appear genuinely universal — Ekman's work on basic facial expressions of emotion, and Van IJzendoorn's finding that secure attachment is the most common type in every culture studied. Others clearly are not, such as the specific distribution of insecure attachment types. A strong answer distinguishes between a universal process and a culturally variable expression of it.",
+      reforge:{stem:"Which finding provides the best evidence for universality?",options:{A:"Insecure-avoidant attachment is most common in Germany",B:"Conformity rates are higher in collectivist cultures",C:"Basic facial expressions of emotion are recognised worldwide",D:"Japanese infants appear insecure in the Strange Situation"},correct:"C"}
+    },
+    {
+      id:"PSYID-18",
+      stem:"An explanation of depression focusing only on serotonin levels demonstrates what?",
+      options:{
+        A:"A holistic explanation, considering the whole person and their situation",
+        B:"An idiographic approach, focusing on this individual's unique experience",
+        C:"Biological reductionism, explaining it at the lowest level of analysis",
+        D:"Environmental determinism, based on the person's reinforcement history"
+      },
+      correct:"C",tag:"MC-ID-REDUCT",
+      scaffold:"Levels of explanation run from the lowest and most reductionist upward: neurochemical, then physiological, then psychological or cognitive, then social and cultural. Explaining depression purely as low serotonin operates at the lowest level, which is biological reductionism. The genuine payoff is that it produced SSRIs, which work for many people — reductionism is not a criticism in itself. The genuine cost is that it says nothing about the bereavement, the unemployment or the isolation that preceded the episode, and it risks implying that only medication is needed. The balanced answer is that different levels of explanation answer different questions and a complete account needs several.",
+      reforge:{stem:"Which is the highest level of explanation in the reductionism debate?",options:{A:"The neurochemical level",B:"The physiological level",C:"The cognitive level",D:"The sociocultural level"},correct:"D"}
+    },
+    {
+      id:"PSYID-19",
+      stem:"Which research method is most closely associated with the nomothetic approach?",
+      options:{
+        A:"The unstructured interview, used to explore an individual's own personal account",
+        B:"The controlled laboratory experiment using a large group of participants",
+        C:"The single case study of a person with unusual brain damage",D:"Thematic analysis of qualitative data drawn from open questions"
+      },
+      correct:"B",tag:"MC-ID-IDIO",
+      scaffold:"Nomothetic research seeks general laws, so it needs large samples, quantitative data and statistical analysis — controlled experiments, correlational studies and psychometric testing. Skinner's conditioning work and Milgram's obedience research are both nomothetic. The strength claimed for it is scientific credibility: standardised procedures, replicability and objectivity. The three other options are all idiographic methods, producing qualitative data about individuals. Remember the useful nuance for essays: the two approaches are complementary, and much of psychology moves between them, using idiographic findings to generate hypotheses that nomothetic studies then test on larger samples.",
+      reforge:{stem:"Which pair of studies are both nomothetic?",options:{A:"Little Hans and the case of Phineas Gage",B:"Milgram's obedience studies and Skinner's conditioning research",C:"The case of HM and Freud's case studies",D:"Rogers' client-centred therapy sessions and Little Hans"},correct:"B"}
+    },
+    {
+      id:"PSYID-20",
+      stem:"How does hard determinism create a problem for the legal system?",
+      options:{
+        A:"It suggests that psychological research cannot inform legal proceedings at all",
+        B:"It implies offenders cannot be held morally responsible for their actions",
+        C:"It requires that every defendant undergo compulsory psychological testing",
+        D:"It shows that criminal behaviour has no identifiable causes whatsoever"
+      },
+      correct:"B",tag:"MC-ID-FREEWILL",
+      scaffold:"The legal system assumes defendants chose to act and could have chosen otherwise, which is why they can be blamed. Hard determinism denies exactly this: if genes, neurochemistry or reinforcement history fully caused the behaviour, blame becomes incoherent. The issue is not hypothetical — defences based on a genetic predisposition to aggression, such as the MAOA 'warrior gene', have been argued in court with some success in mitigating sentences. The counter-position is that determinism is what makes psychology scientific and useful: it allows prediction, control and effective treatment, and society can still restrain dangerous individuals without invoking moral blame.",
+      reforge:{stem:"What is the main argument in favour of adopting determinism in psychology?",options:{A:"It matches our everyday subjective experience of choosing",B:"It removes the need for controlled research methods",C:"It allows behaviour to be predicted, controlled and treated",D:"It supports the legal principle of personal responsibility"},correct:"C"}
+    },
+    {
+      id:"PSYID-21",
+      stem:"How might a researcher reduce culture bias in their study?",
+      options:{
+        A:"By recruiting a larger sample from within their own home culture",
+        B:"By assuming their findings apply equally to every human population",
+        C:"By collaborating with local researchers and using emic methods",
+        D:"By translating the same questionnaire into as many languages as possible"
+      },
+      correct:"C",tag:"MC-ID-CULTURE",
+      scaffold:"The remedies AQA credits are practical. Cross-cultural collaboration means working with researchers from the culture being studied, so the measures reflect local meaning rather than an imposed etic. Emic methods study behaviour from within a culture on its own terms. Researchers should also recognise their own ethnocentrism through reflexivity, and avoid assuming that a difference from Western norms represents a deficiency. Note that option D is a trap: translating a questionnaire does not fix an imposed etic, because the underlying construct may still be culturally specific — the concept being measured, not just the wording, has to travel.",
+      reforge:{stem:"Why does translating a questionnaire not necessarily remove culture bias?",options:{A:"Translation always introduces errors of grammar",B:"The underlying construct may still be culturally specific",C:"Participants prefer to answer in English",D:"Translated questionnaires cannot be analysed statistically"},correct:"B"}
+    },
+    {
+      id:"PSYID-22",
+      stem:"Which statement best describes the relationship between reductionism and holism?",
+      options:{
+        A:"Reductionism is always scientifically superior to holistic explanation",
+        B:"Holism is always preferable because it captures the whole person",
+        C:"The two are incompatible, so psychologists must choose between them",
+        D:"Each suits different questions, and levels can be combined"
+      },
+      correct:"D",tag:"MC-ID-REDUCT",
+      scaffold:"The examiner-rewarded position is that the debate is not winner-takes-all. Reductionist explanations are appropriate where a simple variable can be isolated and tested, and they have produced psychology's most effective treatments. Holistic explanations are necessary where behaviour only exists at the group level — conformity to social roles in Zimbardo's prison study cannot be understood by examining one prisoner's neurochemistry. The interactionist position combines levels, and the diathesis-stress model of schizophrenia is the standard example: a biological vulnerability, a psychological trigger and a social context, each contributing something the others cannot supply.",
+      reforge:{stem:"Which phenomenon most clearly requires a holistic explanation?",options:{A:"The action of SSRIs on serotonin reuptake",B:"Conformity to social roles in a group setting",C:"The firing threshold of a single neuron",D:"The heritability of eye colour in a population"},correct:"B"}
+    },
+    {
+      id:"PSYID-23",
+      stem:"Why can free will be described as having practical value regardless of whether it exists?",
+      options:{
+        A:"Because a belief in free will is required by all psychological therapies",
+        B:"Because determinism has been conclusively disproved by neuroscience",
+        C:"Because it makes psychological research considerably easier to conduct",
+        D:"Because believing one has control is linked to better mental health"
+      },
+      correct:"D",tag:"MC-ID-FREEWILL",
+      scaffold:"This is the pragmatic argument, and it is a strong evaluative point because it sidesteps the metaphysical question entirely. People with an internal locus of control — who believe outcomes follow from their own actions — show greater resistance to social influence, better academic outcomes and lower rates of depression, while Roberts found adolescents with fatalistic beliefs at greater risk of depression. So even if hard determinism were true, promoting a sense of agency has measurable benefits. This links directly to CBT, which works by convincing clients they can change their own thinking, and to Seligman's concept of learned helplessness as its opposite.",
+      reforge:{stem:"Which concept describes the opposite of a belief in personal control?",options:{A:"Learned helplessness",B:"Self-actualisation",C:"Unconditional positive regard",D:"Vicarious reinforcement"},correct:"A"}
+    },
+    {
+      id:"PSYID-24",
+      stem:"A researcher publishes findings suggesting a genetic basis for criminality. What is the key ethical consideration?",
+      options:{
+        A:"Whether the participants were correctly debriefed at the end of the study",
+        B:"Whether the sample was large enough to reach statistical significance",
+        C:"How the findings may be used and their impact on affected groups",
+        D:"Whether the study used a laboratory or a field experimental method"
+      },
+      correct:"C",tag:"MC-ID-ETHICS",
+      scaffold:"Sieber and Stanley identified the areas requiring care in socially sensitive research: the framing of the research question, the treatment of participants and confidentiality, the institutional context and who funds the work, and above all the use and public interpretation of the findings. A genetic account of criminality risks being read as fixed and untreatable, and could be used to justify screening or pre-emptive intervention — which is exactly how early intelligence research was misused. The ethical duty extends past data collection into how results are reported. Note that debriefing and sample size are real methodological issues but do not address the social consequences here.",
+      reforge:{stem:"Which is NOT one of Sieber and Stanley's concerns in socially sensitive research?",options:{A:"The way the research question is framed",B:"The uses to which the findings may be put",C:"The institution funding the research",D:"The colour scheme used in published graphs"},correct:"D"}
+    }
+  ]
+};
+
+SUBJECTS["psych"].banks = ["PSY-SI","PSY-MEM","PSY-ATT","PSY-PATH","PSY-APP","PSY-BIO","PSY-RM","PSY-ID"];
+SUBJECTS["psych"].sub = "AQA 7182 — Papers 1, 2 & 3";
