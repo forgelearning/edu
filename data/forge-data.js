@@ -14251,6 +14251,208 @@ const rebalanceAlevelExtension = (bankIds, basePlan, reforgePlan) => {
 };
 rebalanceAlevelExtension(["SOC-EDU","SOC-MET","GEO-TEC","GEO-COAST","GEO-REGEN","GEO-P3"], ["A","B","C","D"], ["C","D","A","B"]);
 
+// ===== A LEVEL SOCIOLOGY — PAPER 2 & 3 TOPIC BANKS =====
+// Each topic contributes 18 distinct concepts, taking Sociology from 56 to
+// exactly 200 questions while keeping the existing two Paper 1 banks intact.
+const addSocTopicBank = (bankId, label, spec, rows) => {
+  BANKS[bankId] = {label, color:"#7f1d1d", questions: rows.map((row, index) => {
+    const next = rows[(index + 1) % rows.length];
+    const prev = rows[(index + rows.length - 1) % rows.length];
+    return {
+      id:`${bankId}-${String(index + 1).padStart(2,"0")}`, spec,
+      stem:`Which statement best describes ${row.term}?`,
+      options:{A:row.definition,B:next.definition,C:prev.definition,D:`It has no significant effect on ${label.toLowerCase()}`}, correct:"A",tag:`MC-${bankId}-${index + 1}`,
+      scaffold:`${row.term}: ${row.definition} ${row.scaffold || "Use the definition, apply it to the context and evaluate its significance."}`,
+      reforge:{stem:`A student is revising ${row.term}. Which application is most accurate?`,options:{A:row.application,B:prev.application,C:next.application,D:`It is unrelated to ${label.toLowerCase()} and cannot be applied to social evidence`},correct:"A"}
+    };
+  })};
+  SUBJECTS["soc"].banks.push(bankId);
+};
+
+addSocTopicBank("SOC-FAM", "Families and Households", "7192-FAM", [
+  {term:"the domestic division of labour",definition:"The way housework, childcare and paid work are divided between household members",application:"A couple sharing chores equally challenges a traditional gendered division of labour"},
+  {term:"instrumental roles",definition:"Parsons' term for the breadwinner and provider role traditionally linked to men",application:"A father working full time while another adult manages domestic tasks fits the instrumental role"},
+  {term:"expressive roles",definition:"Parsons' term for the caring and emotional role traditionally linked to women",application:"Emotional support and primary childcare illustrate an expressive role"},
+  {term:"symmetrical family",definition:"A family in which partners' roles have become more similar and shared",application:"Both partners earning and sharing domestic work suggests symmetry"},
+  {term:"pooling",definition:"A household practice in which partners combine income and make spending decisions together",application:"A joint account used for household purchases is an example of pooling"},
+  {term:"triple shift",definition:"Women performing paid work, domestic labour and emotional work",application:"A woman working for pay, running the home and managing family relationships faces a triple shift"},
+  {term:"dark side of the family",definition:"The idea that families can involve conflict, abuse and unequal power as well as support",application:"Domestic abuse challenges the view that the family is always a safe haven"},
+  {term:"serial monogamy",definition:"A pattern of successive exclusive relationships rather than one lifelong marriage",application:"Repeated partnerships after separation illustrate serial monogamy"},
+  {term:"confluent love",definition:"Giddens' negotiated relationship based on mutual satisfaction rather than duty",application:"Partners staying together while the relationship meets both people's needs reflects confluent love"},
+  {term:"pure relationship",definition:"A relationship maintained while both partners gain satisfaction from it",application:"A couple continuing only while the relationship remains fulfilling fits the pure relationship"},
+  {term:"family diversity",definition:"The growth of different family forms and household arrangements",application:"Lone-parent, reconstituted and same-sex households illustrate family diversity"},
+  {term:"beanpole family",definition:"A vertically extended family with several living generations but few members in each generation",application:"Grandparents, parents and children living across generations form a beanpole pattern"},
+  {term:"modified extended family",definition:"An extended family kept connected through support and communication despite living apart",application:"Relatives living in different towns but sharing childcare form a modified extended family"},
+  {term:"migration and family networks",definition:"Movement between countries or regions can reshape care, identity and financial support",application:"Remittances and digital contact can maintain transnational family relationships"},
+  {term:"child-centred family",definition:"A family in which children's needs and activities strongly shape household decisions",application:"Parents organising work and spending around children's activities suggests child-centredness"},
+  {term:"birth rate",definition:"The number of live births per thousand people in a population per year",application:"A falling birth rate can reduce average family size and change dependency patterns"},
+  {term:"ageing population",definition:"A population with a rising proportion of older people",application:"Longer life expectancy and lower fertility can increase the share of older dependants"},
+  {term:"postmodern family",definition:"A diverse and negotiated family form shaped by choice, identity and individualisation",application:"Flexible household arrangements chosen around personal identity fit a postmodern account"}
+]);
+
+addSocTopicBank("SOC-BEL", "Beliefs in Society", "7192-BEL", [
+  {term:"religious belief",definition:"Acceptance that supernatural or sacred claims are true or meaningful",application:"Belief in a deity or sacred order is a religious belief"},
+  {term:"religious organisation",definition:"A formal body with recognised membership, rules and leadership",application:"A church with trained clergy and established membership is an organisation"},
+  {term:"sect",definition:"A small, demanding religious group that breaks away from an established religion",application:"A group requiring intense commitment and rejecting wider society resembles a sect"},
+  {term:"cult",definition:"A loosely organised spiritual movement centred on novel beliefs or practices",application:"An informal group built around a leader's new spiritual teaching may be a cult"},
+  {term:"denomination",definition:"A relatively tolerant religious group that accepts other faiths within society",application:"A mainstream church operating alongside other faiths is a denomination"},
+  {term:"civil religion",definition:"Shared rituals and symbols that give a society a sacred identity",application:"National ceremonies and symbols can function as a civil religion"},
+  {term:"collective conscience",definition:"Durkheim's shared beliefs and values that bind members of society together",application:"Common rituals can reinforce a collective conscience"},
+  {term:"anomie",definition:"A condition of normlessness in which traditional rules lose their authority",application:"Rapid social change can create uncertainty and weaken shared moral rules"},
+  {term:"opium of the people",definition:"Marx's view that religion comforts the oppressed while legitimising inequality",application:"Promising reward after death may reduce resistance to exploitation"},
+  {term:"theodicy",definition:"A religious explanation attempting to reconcile suffering with belief in a good and powerful deity",application:"Free will or future compensation can be used as a theodicy"},
+  {term:"ideology",definition:"A set of ideas that explains society and can justify the interests of a powerful group",application:"Religious ideas may legitimate existing class or gender relations"},
+  {term:"secularisation",definition:"The declining social significance, influence or membership of religion",application:"Falling attendance and reduced institutional influence indicate secularisation"},
+  {term:"religious market theory",definition:"The view that demand for religion remains when organisations compete to offer meaningful choices",application:"Competing churches may increase participation by offering different religious products"},
+  {term:"globalisation and religion",definition:"Worldwide connections can spread beliefs, movements and religious conflict",application:"Migration and digital media can extend a faith across national borders"},
+  {term:"fundamentalism",definition:"A movement seeking strict adherence to sacred texts and traditional teachings",application:"Rejecting modern reinterpretations in favour of literal scripture is fundamentalist"},
+  {term:"religious revival",definition:"A renewed growth or public influence of religious belief and practice",application:"A rapid increase in worship or religious activism can be a revival"},
+  {term:"New Age spirituality",definition:"Individualised beliefs focused on personal wellbeing, healing and self-development",application:"Choosing meditation and crystals from several traditions fits New Age spirituality"},
+  {term:"religious socialisation",definition:"The process through which people learn religious beliefs, values and practices",application:"Families and places of worship can transmit faith to children"}
+]);
+
+addSocTopicBank("SOC-MED", "Media", "7192-MED", [
+  {term:"media ownership",definition:"Control of media organisations and content by individuals, companies or the state",application:"A small number of corporations owning newspapers illustrates concentrated ownership"},
+  {term:"concentration",definition:"The situation in which a limited number of organisations control a large share of media output",application:"Several major outlets belonging to one corporation indicate concentration"},
+  {term:"agenda setting",definition:"The media's power to decide which issues receive attention and prominence",application:"Repeated coverage of immigration can make it seem a central public issue"},
+  {term:"gatekeeping",definition:"The selection and filtering of events before they become media content",application:"Editors deciding which stories appear on a front page are gatekeepers"},
+  {term:"representation",definition:"The way media portray social groups, identities, places or events",application:"A programme repeatedly showing one group as dangerous creates a representation"},
+  {term:"stereotype",definition:"A simplified and generalised image applied to members of a social group",application:"Portraying all teenagers as irresponsible is a stereotype"},
+  {term:"moral panic",definition:"An exaggerated public reaction to a perceived threat to social values",application:"Sensational reporting about youth crime can generate a moral panic"},
+  {term:"folk devil",definition:"A person or group portrayed as responsible for a threat during a moral panic",application:"A media campaign blaming a youth subculture creates a folk devil"},
+  {term:"hypodermic syringe model",definition:"The view that media messages are injected directly into passive audiences",application:"Assuming every viewer copies a violent scene reflects the hypodermic model"},
+  {term:"two-step flow",definition:"The idea that media influence often passes through opinion leaders to other people",application:"A trusted influencer interpreting a news story for followers illustrates two-step flow"},
+  {term:"uses and gratifications",definition:"The view that audiences actively choose media to satisfy particular needs",application:"Selecting news for information or television for relaxation reflects uses and gratifications"},
+  {term:"active audience",definition:"An audience that interprets and uses media content rather than simply absorbing it",application:"Different viewers giving different meanings to a film suggests an active audience"},
+  {term:"digital divide",definition:"Unequal access to digital devices, skills or reliable internet",application:"Poorer households lacking broadband experience a digital divide"},
+  {term:"global media",definition:"Media content and organisations operating across national boundaries",application:"A streaming platform distributing the same programme worldwide is global media"},
+  {term:"cultural imperialism",definition:"The spread of a dominant culture through powerful media and communication systems",application:"Imported entertainment displacing local production may indicate cultural imperialism"},
+  {term:"surveillance",definition:"The collection and monitoring of information about people's behaviour",application:"Platforms tracking searches and location data are involved in surveillance"},
+  {term:"participatory media",definition:"Media in which users create, share and respond to content",application:"Users uploading videos and commenting on one another's posts is participatory media"},
+  {term:"media effects",definition:"Changes in attitudes, behaviour or beliefs attributed partly to media exposure",application:"A study linking repeated advertising to consumer choices investigates media effects"}
+]);
+
+addSocTopicBank("SOC-STRAT", "Stratification and Differentiation", "7192-STRAT", [
+  {term:"social stratification",definition:"The structured ranking of social groups into unequal layers",application:"Class, status and power differences form a stratified social structure"},
+  {term:"social class",definition:"A group whose members share a similar economic position and relationship to wealth or work",application:"Occupation, income and property can be used to analyse class position"},
+  {term:"status",definition:"The social honour or prestige attached to a position or lifestyle",application:"A respected profession may carry high status even without the highest income"},
+  {term:"power",definition:"The ability to achieve one's wishes, including against opposition",application:"A government imposing policy despite protest demonstrates power"},
+  {term:"life chances",definition:"A person's opportunities to access valued resources and experiences",application:"Housing, education and healthcare affect different groups' life chances"},
+  {term:"social mobility",definition:"Movement between social positions or class locations",application:"A child entering a professional occupation may experience upward mobility"},
+  {term:"absolute poverty",definition:"A lack of resources needed to meet basic physical needs",application:"Inadequate food, shelter or heating can indicate absolute poverty"},
+  {term:"relative poverty",definition:"Having substantially fewer resources than the typical standard in a society",application:"Being unable to participate in normal social activities can indicate relative poverty"},
+  {term:"social exclusion",definition:"Being prevented from full participation in economic, social or political life",application:"Unemployment and poor transport can exclude people from community life"},
+  {term:"underclass",definition:"A group seen as persistently detached from mainstream work and social norms",application:"The term is used by some New Right writers to describe long-term welfare dependence"},
+  {term:"meritocracy",definition:"A system in which rewards are allocated according to ability and achievement",application:"Exams claiming to reward effort and talent reflect a meritocratic ideal"},
+  {term:"cultural capital",definition:"Knowledge, language, tastes and qualifications that can bring social advantage",application:"Familiarity with elite culture may help access prestigious institutions"},
+  {term:"intersectionality",definition:"The idea that class, gender, ethnicity and other inequalities combine",application:"A Black working-class woman's experience cannot be explained by one inequality alone"},
+  {term:"patriarchy",definition:"A social system in which men as a group hold greater power than women",application:"Male dominance in politics and household decision-making can be analysed as patriarchy"},
+  {term:"feminisation of poverty",definition:"The disproportionate concentration of poverty among women",application:"Lone mothers facing low pay and care responsibilities illustrate the concept"},
+  {term:"elite",definition:"A small group with a disproportionate share of power, wealth or influence",application:"A narrow group controlling major institutions can be described as an elite"},
+  {term:"power elite",definition:"Mills' term for interconnected political, corporate and military leaders",application:"Close links between senior politicians, business leaders and defence institutions fit the concept"},
+  {term:"social closure",definition:"The process of restricting access to resources or opportunities for outsiders",application:"Professional qualifications and licensing can close access to occupations"}
+]);
+
+addSocTopicBank("SOC-CRIME", "Crime and Deviance", "7192-CRIME", [
+  {term:"crime",definition:"An act that breaks formal law and can be punished by the state",application:"Theft is crime because it violates a legal rule enforced by the state"},
+  {term:"deviance",definition:"Behaviour that breaches significant social norms, whether or not it is illegal",application:"Unusual dress may be deviant without being criminal"},
+  {term:"social construction of crime",definition:"The idea that definitions and responses to crime reflect social decisions and power",application:"Changing laws can make previously legal behaviour criminal"},
+  {term:"functionalism and crime",definition:"The view that limited deviance can reinforce norms and promote social change",application:"Public reaction to rule-breaking can clarify the boundaries of acceptable behaviour"},
+  {term:"strain theory",definition:"Merton's explanation that blocked legitimate opportunities can encourage deviance",application:"A person embracing success goals without legal means may experience strain"},
+  {term:"status frustration",definition:"Cohen's idea that working-class boys may gain status through an oppositional subculture",application:"An anti-school gang gaining prestige through rule-breaking illustrates status frustration"},
+  {term:"differential association",definition:"Sutherland's view that criminal behaviour is learned through interaction with others",application:"Frequent contact with offending peers can teach techniques and definitions"},
+  {term:"labelling theory",definition:"The view that social reactions and labels can shape identities and future behaviour",application:"A pupil labelled troublesome being treated as deviant illustrates labelling"},
+  {term:"deviant career",definition:"A sequence in which an initial label and further reactions deepen involvement in deviance",application:"Repeated exclusion can push a young person towards a deviant peer group"},
+  {term:"moral entrepreneur",definition:"A person or group that campaigns to define and enforce rules",application:"A pressure group demanding a new offence can act as a moral entrepreneur"},
+  {term:"folk devil",definition:"A group portrayed as a threat during a moral panic",application:"A youth subculture blamed for social decline can become a folk devil"},
+  {term:"white-collar crime",definition:"Crime committed by relatively high-status people during their work",application:"Corporate fraud by senior executives is white-collar crime"},
+  {term:"corporate crime",definition:"Illegal or harmful activity carried out by a company or organisation",application:"A firm knowingly breaching safety regulations may commit corporate crime"},
+  {term:"state crime",definition:"Illegal or harmful actions committed by, or with the support of, a state",application:"Torture carried out by state agents can be analysed as state crime"},
+  {term:"green crime",definition:"Crimes and harms involving the environment and ecological systems",application:"Illegal toxic dumping creates a green crime issue"},
+  {term:"victimisation",definition:"The process of suffering harm as a result of crime or social reaction",application:"Repeated targeting of one household involves victimisation"},
+  {term:"crime survey",definition:"A systematic collection of data about offences and people's experiences of them",application:"A victim survey can reveal offences not reported to the police"},
+  {term:"situational crime prevention",definition:"Reducing opportunities for crime by changing immediate environments",application:"Improved lighting and secure entry systems are situational prevention"}
+]);
+
+addSocTopicBank("SOC-THEORY", "Theory and Methods", "7192-THEORY", [
+  {term:"positivism",definition:"The view that sociology should use observable evidence to discover social patterns and causes",application:"Large-scale questionnaires and official statistics are commonly linked to positivism"},
+  {term:"interpretivism",definition:"The view that sociology should understand the meanings people attach to their actions",application:"Unstructured interviews can explore actors' subjective meanings"},
+  {term:"objectivity",definition:"The attempt to keep personal values from distorting research",application:"Transparent procedures and reflexivity can support objectivity"},
+  {term:"value freedom",definition:"The principle that researchers should separate empirical evidence from personal values",application:"Avoiding selective evidence helps a researcher aim for value freedom"},
+  {term:"validity",definition:"The extent to which research accurately represents the social reality it claims to study",application:"In-depth observation may have high validity because it captures lived behaviour"},
+  {term:"reliability",definition:"The consistency and repeatability of a research method or result",application:"Standardised questions can make a study easier to replicate"},
+  {term:"representativeness",definition:"The extent to which a sample reflects the wider target population",application:"Stratified sampling can improve representativeness"},
+  {term:"correlation",definition:"A relationship in which two variables change together without proving causation",application:"A link between poverty and crime is correlation until other explanations are tested"},
+  {term:"causation",definition:"A relationship in which one factor produces or contributes to a change in another",application:"A controlled experiment is designed to test causation"},
+  {term:"triangulation",definition:"Using more than one method or source to investigate the same issue",application:"Combining interviews, observation and statistics is triangulation"},
+  {term:"primary data",definition:"Information collected directly by the researcher for the current study",application:"A new interview transcript is primary data"},
+  {term:"secondary data",definition:"Information originally collected by someone else for another purpose",application:"A census table used in a new study is secondary data"},
+  {term:"covert observation",definition:"Observation in which participants do not know they are being studied",application:"Joining a group without revealing the research role is covert observation"},
+  {term:"overt observation",definition:"Observation in which participants know the researcher's identity and purpose",application:"Explaining the study before watching classroom behaviour is overt observation"},
+  {term:"unstructured interview",definition:"A flexible interview using broad prompts rather than a fixed schedule",application:"Allowing participants to lead the conversation can produce rich data"},
+  {term:"structured interview",definition:"An interview using standardised questions in a fixed order",application:"Asking every respondent identical questions improves comparability"},
+  {term:"questionnaire",definition:"A written or digital set of questions completed by respondents",application:"A large online survey can gather standardised quantitative data"},
+  {term:"official statistics",definition:"Numerical data collected and published by government agencies or public bodies",application:"Census and recorded crime figures are official statistics"}
+]);
+
+addSocTopicBank("SOC-GLOB", "Global Development", "7192-GLOB", [
+  {term:"global development",definition:"The social, economic and political process through which places improve wellbeing and capability",application:"Improved health, education and living standards are development outcomes"},
+  {term:"GDP per capita",definition:"A country's total economic output divided by its population",application:"GDP per capita gives an average economic figure per person"},
+  {term:"HDI",definition:"A composite index combining income, education and life expectancy",application:"HDI gives a broader development measure than income alone"},
+  {term:"dependency theory",definition:"The view that poorer countries remain disadvantaged by unequal global economic relationships",application:"Low-value exports and debt payments can maintain dependency"},
+  {term:"modernisation theory",definition:"The view that poorer countries develop by following a Western industrial path",application:"Investment, technology and industrialisation are central to modernisation theory"},
+  {term:"neoliberal development",definition:"A market-led approach emphasising trade, privatisation and reduced state intervention",application:"Selling state enterprises and lowering trade barriers reflects neoliberal policy"},
+  {term:"aid",definition:"Resources transferred to support development, relief or policy objectives",application:"A grant funding rural clinics is development aid"},
+  {term:"debt relief",definition:"Reducing, cancelling or rescheduling debts owed by a country",application:"Cancelling interest payments can free money for public services"},
+  {term:"fair trade",definition:"A trading approach intended to secure better prices and conditions for producers",application:"A guaranteed minimum price for farmers is a fair-trade mechanism"},
+  {term:"foreign direct investment",definition:"Investment by a company or individual in productive activity located in another country",application:"A TNC building a factory abroad is foreign direct investment"},
+  {term:"transnational corporation",definition:"A company that operates and makes decisions across national borders",application:"A firm with production, offices and markets in several countries is a TNC"},
+  {term:"informal economy",definition:"Economic activity outside formal regulation, taxation or employment systems",application:"Unregistered street trading can form part of the informal economy"},
+  {term:"sustainable development",definition:"Improving wellbeing while protecting the ability of future generations to meet their needs",application:"Renewable energy and resource conservation support sustainability"},
+  {term:"gender development",definition:"The extent to which development improves equality and opportunities across genders",application:"Girls' access to education is a gender-development indicator"},
+  {term:"governance",definition:"The way institutions make and implement decisions affecting society",application:"Transparent public institutions indicate stronger governance"},
+  {term:"microfinance",definition:"Small-scale loans or financial services offered to people excluded from mainstream banking",application:"A small loan enabling a person to start a business is microfinance"},
+  {term:"appropriate technology",definition:"Technology suited to local needs, resources, skills and environmental conditions",application:"A low-cost hand pump maintained locally is appropriate technology"},
+  {term:"development gap",definition:"The unequal level of wealth, wellbeing or opportunity between places or groups",application:"Differences in life expectancy between countries show a development gap"}
+]);
+
+addSocTopicBank("SOC-RESEARCH", "Research Methods Extension", "7192-RESEARCH", [
+  {term:"hypothesis",definition:"A testable prediction about the relationship between variables",application:"Predicting that school absence rises as poverty increases is a hypothesis"},
+  {term:"operationalisation",definition:"Turning an abstract concept into measurable indicators",application:"Measuring class through occupation and income operationalises social class"},
+  {term:"pilot study",definition:"A small preliminary study used to test research procedures",application:"Trialling a questionnaire before the main survey is a pilot study"},
+  {term:"sampling frame",definition:"A list of the population from which a sample can be selected",application:"A school register can act as a sampling frame"},
+  {term:"simple random sample",definition:"A sample in which every member of the population has an equal chance of selection",application:"A computer choosing names from a complete register produces a random sample"},
+  {term:"systematic sample",definition:"A sample selected by taking members at regular intervals from a list",application:"Selecting every twentieth name is systematic sampling"},
+  {term:"stratified sample",definition:"A sample drawn from population subgroups in proportion to their size",application:"Sampling pupils by year and gender proportionately is stratified sampling"},
+  {term:"quota sample",definition:"A sample filling set categories without necessarily selecting randomly within them",application:"Interviewing people until age quotas are filled is quota sampling"},
+  {term:"opportunity sample",definition:"A sample made up of people who are readily available to the researcher",application:"Surveying the first class leaving a lesson is opportunity sampling"},
+  {term:"snowball sample",definition:"A sample built when participants recruit or introduce further participants",application:"A study of a hidden group using participant contacts may use snowball sampling"},
+  {term:"informed consent",definition:"Participants agreeing to take part after receiving relevant information",application:"Explaining risks and procedures before participation supports informed consent"},
+  {term:"confidentiality",definition:"Protecting participants' personal information from unauthorised disclosure",application:"Removing names from published transcripts protects confidentiality"},
+  {term:"right to withdraw",definition:"A participant's right to leave a study or remove their data",application:"Participants being told they can stop at any time protects this right"},
+  {term:"researcher effect",definition:"The influence of the researcher's identity or behaviour on participants and data",application:"Pupils changing answers because an adult is present shows a researcher effect"},
+  {term:"Hawthorne effect",definition:"Participants changing behaviour because they know they are being observed",application:"Workers becoming more productive while watched illustrates the Hawthorne effect"},
+  {term:"interviewer effect",definition:"The influence of an interviewer's characteristics on respondents' answers",application:"A respondent avoiding criticism in front of a teacher illustrates interviewer effect"},
+  {term:"content analysis",definition:"A systematic method of coding and interpreting media or documentary material",application:"Counting references to gender in newspapers is content analysis"},
+  {term:"research ethics",definition:"Principles governing the protection, treatment and rights of research participants",application:"Avoiding harm and securing consent are ethical requirements"}
+]);
+
+const rebalanceSociety = bankIds => bankIds.forEach(bankId => BANKS[bankId].questions.forEach((q, index) => {
+  [[q,["A","B","C","D"][index % 4]],[q.reforge,["C","D","A","B"][index % 4]]].forEach(([item,target]) => {
+    if (!item || !item.options) return;
+    if (item.correct !== target) { const saved=item.options[target]; item.options[target]=item.options[item.correct]; item.options[item.correct]=saved; item.correct=target; }
+    const lengths=Object.fromEntries(Object.entries(item.options).map(([key,value])=>[key,String(value).length]));
+    const max=Math.max(...Object.values(lengths));
+    if (lengths[item.correct]===max && Object.values(lengths).filter(value=>value===max).length===1) {
+      const distractor=Object.keys(item.options).filter(key=>key!==item.correct).sort((a,b)=>lengths[b]-lengths[a])[0];
+      item.options[distractor] += " in this context";
+    }
+  });
+}));
+rebalanceSociety(["SOC-EDU","SOC-MET","SOC-FAM","SOC-BEL","SOC-MED","SOC-STRAT","SOC-CRIME","SOC-THEORY","SOC-GLOB","SOC-RESEARCH"]);
+SUBJECTS["soc"].banks = ["SOC-EDU","SOC-MET","SOC-FAM","SOC-BEL","SOC-MED","SOC-STRAT","SOC-CRIME","SOC-THEORY","SOC-GLOB","SOC-RESEARCH"];
+SUBJECTS["soc"].sub = "AQA 7192 — Papers 1–3";
+
 // ===== A LEVEL PSYCHOLOGY (AQA 7182) PAPER 3 OPTION: FORENSIC PSYCHOLOGY =====
 BANKS["PSY-FOR"] = {
   label: "Forensic Psychology",
