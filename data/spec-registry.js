@@ -778,3 +778,30 @@ Object.assign(SPEC_REGISTRY.aliases, {
   "SPAN-1": "edexcel-a-spanish-P1",
   "SPAN-2": "edexcel-a-spanish-P2"
 });
+
+// OCR A Level Law (H418).  The school route uses the compulsory criminal-law
+// and tort components, together with the Contract option for Paper 3.  Human
+// Rights (H418/03) is deliberately not registered here because it is not part
+// of the delivered course route.
+const lawSpecPoints = [
+  ["OCR-LAW-P1", "Paper 1", "The English legal system and criminal law"],
+  ["OCR-LAW-P2-SYS", "Paper 2", "The English legal system and law making"],
+  ["OCR-LAW-P2-TORT", "Paper 2", "The law of tort"],
+  ["OCR-LAW-P3", "Paper 3", "The nature of law and the law of contract"]
+];
+for (const [code, paper, title] of lawSpecPoints) {
+  SPEC_REGISTRY.points[`ocr-a-law-${code.toLowerCase()}`] = {
+    subject: "law", board: "OCR", qualification: "A Level Law (H418)",
+    paper, code, title, aliases: [code]
+  };
+}
+Object.assign(SPEC_REGISTRY.aliases, {
+  "LAW-CRIM": "ocr-a-law-ocr-law-p1",
+  "LAW-SYSTEM": "ocr-a-law-ocr-law-p2-sys",
+  "LAW-TORT": "ocr-a-law-ocr-law-p2-tort",
+  "LAW-CONTRACT": "ocr-a-law-ocr-law-p3",
+  "OCR-LAW-P1": "ocr-a-law-ocr-law-p1",
+  "OCR-LAW-P2-SYS": "ocr-a-law-ocr-law-p2-sys",
+  "OCR-LAW-P2-TORT": "ocr-a-law-ocr-law-p2-tort",
+  "OCR-LAW-P3": "ocr-a-law-ocr-law-p3"
+});
