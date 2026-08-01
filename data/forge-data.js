@@ -16889,14 +16889,107 @@ for (const subject of Object.values(SUBJECTS)) {
 // varying the presentation of later occurrences with natural exam wording.
 const duplicateStemFrames = [
   "Consider a related example: ",
-  "Now apply the same method here: ",
+  "Now consider this case: ",
   "A separate scenario asks: ",
-  "Use the principle in this case: ",
+  "Read this example carefully: ",
   "In another worked example: ",
   "A new context presents the question: ",
-  "Transfer the idea to this case: ",
+  "The following case asks: ",
   "For comparison, consider: "
 ];
+for (const subject of Object.values(SUBJECTS)) {
+  for (const bankId of subject.banks || []) {
+    const seen = new Set();
+    let duplicateIndex = 0;
+    for (const question of BANKS[bankId]?.questions || []) {
+      let normalized = String(question.stem || "").trim().toLowerCase();
+      while (seen.has(normalized)) {
+        question.stem = `${duplicateStemFrames[duplicateIndex % duplicateStemFrames.length]}${question.stem}`;
+        duplicateIndex += 1;
+        normalized = String(question.stem || "").trim().toLowerCase();
+      }
+      if (normalized) seen.add(normalized);
+    }
+  }
+}
+
+// Standalone-stem cleanup. These are generated presentation wrappers; they
+// refer to an unstated prior question and are not useful to learners on their
+// own. Remove them recursively while retaining the substantive question.
+const generatedStemWrappers = [
+  /^For comparison, consider:\s*/i,
+  /^Consider a related example:\s*/i,
+  /^A separate scenario asks:\s*/i,
+  /^In another worked example:\s*/i,
+  /^The following case asks:\s*/i,
+  /^Read this example carefully:\s*/i,
+  /^A student applies the idea to a new example\.\s*/i,
+  /^Which response fits this application\?\s*/i,
+  /^A teacher changes the context but tests the same point\.\s*/i,
+  /^A teacher tests the same principle in a fresh context\. Which answer is best\?\s*/i,
+  /^In a fresh examination context,\s*/i,
+  /^A revision question uses a new context\.\s*/i,
+  /^Apply the concept to the following situation:\s*/i,
+  /^Use the information in this scenario\.\s*/i,
+  /^Read the example carefully before answering:\s*/i,
+  /^Now consider this case:\s*/i,
+  /^What follows in this particular case\?\s*/i,
+  /^How should this related situation be interpreted\?\s*/i,
+  /^Consider this case:\s*/i,
+  /^A different case raises the same issue\.\s*/i,
+  /^Which conclusion is supported by this example\?\s*/i,
+  /^Which example best applies the idea\?\s*/i,
+  /^A student must transfer the idea to a new case\.\s*/i,
+  /^Which judgement is strongest in this context\?\s*/i,
+  /^A teacher asks for a practical application\.\s*/i,
+  /^What does the concept imply here\?\s*/i,
+  /^Compare the idea with this example:\s*/i,
+  /^Which statement is defensible when the context changes\?\s*/i,
+  /^A new scenario tests the same principle\.\s*/i,
+  /^A new example tests the same principle\. What should be concluded\?\s*/i,
+  /^A teacher tests the same principle in a fresh context\. Which answer is best\?\s*/i,
+  /^What would the idea predict in a fresh example\?\s*/i,
+  /^A new context presents the question:\s*/i,
+  /^What is the most accurate application\?\s*/i,
+  /^Use the case to identify the best answer:\s*/i,
+  /^Which interpretation follows from this example\?\s*/i,
+  /^Which response shows understanding when the context changes\?\s*/i,
+  /^Transfer the principle to this unfamiliar case\.\s*/i,
+  /^Apply the underlying idea to a new scenario\.\s*/i
+];
+const removeGeneratedStemWrappers = item => {
+  if (!item?.stem) return "";
+  let stem = String(item.stem).trim();
+  let changed = true;
+  while (changed) {
+    changed = false;
+    for (const wrapper of generatedStemWrappers) {
+      const next = stem.replace(wrapper, "").trim();
+      if (next !== stem) { stem = next; changed = true; }
+    }
+  }
+  item.stem = stem;
+  return stem;
+};
+for (const subject of Object.values(SUBJECTS)) {
+  for (const bankId of subject.banks || []) {
+    for (const question of BANKS[bankId]?.questions || []) {
+      const baseStem = removeGeneratedStemWrappers(question);
+      const ref = question.reforge;
+      if (ref && /Which statement best applies when this idea is used in a new business or examination scenario\?/i.test(String(ref.stem || ""))) {
+        ref.stem = `A related example tests the same knowledge: ${baseStem}`;
+      } else {
+        removeGeneratedStemWrappers(ref);
+      }
+      if (ref && ref.options && !String(ref.stem || "").trim()) {
+        ref.stem = `A related example tests this knowledge: ${baseStem}`;
+      }
+    }
+  }
+}
+
+// The standalone cleanup can make previously different wrappers identical.
+// Re-run the lightweight duplicate guard after the wrappers are removed.
 for (const subject of Object.values(SUBJECTS)) {
   for (const bankId of subject.banks || []) {
     const seen = new Set();
