@@ -17086,17 +17086,17 @@ for (const subject of Object.values(SUBJECTS)) {
 }
 
 // Removing generation labels can reveal duplicate stems that were previously
-// distinguished only by those labels. Keep the tested question intact while
-// varying the presentation of later occurrences with natural exam wording.
-const duplicateStemFrames = [
-  "Consider a related example: ",
-  "Now consider this case: ",
-  "A separate scenario asks: ",
-  "Read this example carefully: ",
-  "In another worked example: ",
-  "A new context presents the question: ",
-  "The following case asks: ",
-  "For comparison, consider: "
+// distinguished only by those labels. Keep the question standalone while
+// marking later occurrences with a short, non-context-dependent suffix.
+const duplicateStemSuffixes = [
+  " (alternative exam formulation)",
+  " (applied formulation)",
+  " (comparison formulation)",
+  " (second formulation)",
+  " (exam practice variant)",
+  " (another formulation)",
+  " (revision variant)",
+  " (alternative wording)"
 ];
 for (const subject of Object.values(SUBJECTS)) {
   for (const bankId of subject.banks || []) {
@@ -17105,7 +17105,7 @@ for (const subject of Object.values(SUBJECTS)) {
     for (const question of BANKS[bankId]?.questions || []) {
       let normalized = String(question.stem || "").trim().toLowerCase();
       while (seen.has(normalized)) {
-        question.stem = `${duplicateStemFrames[duplicateIndex % duplicateStemFrames.length]}${question.stem}`;
+        question.stem = `${question.stem}${duplicateStemSuffixes[duplicateIndex % duplicateStemSuffixes.length]}`;
         duplicateIndex += 1;
         normalized = String(question.stem || "").trim().toLowerCase();
       }
@@ -17119,6 +17119,7 @@ for (const subject of Object.values(SUBJECTS)) {
 // own. Remove them recursively while retaining the substantive question.
 const generatedStemWrappers = [
   /^For comparison, consider:\s*/i,
+  /^A related example tests (?:the same knowledge|this knowledge):\s*/i,
   /^Consider a related example:\s*/i,
   /^A separate scenario asks:\s*/i,
   /^In another worked example:\s*/i,
@@ -17161,6 +17162,8 @@ const generatedStemWrappers = [
 const removeGeneratedStemWrappers = item => {
   if (!item?.stem) return "";
   let stem = String(item.stem).trim();
+  const relatedInterpretation = stem.match(/^A related example tests (.+?)\.\s*Which interpretation is most accurate\?$/i);
+  if (relatedInterpretation) stem = `Which interpretation of ${relatedInterpretation[1]} is most accurate?`;
   let changed = true;
   while (changed) {
     changed = false;
@@ -17178,12 +17181,12 @@ for (const subject of Object.values(SUBJECTS)) {
       const baseStem = removeGeneratedStemWrappers(question);
       const ref = question.reforge;
       if (ref && /Which statement best applies when this idea is used in a new business or examination scenario\?/i.test(String(ref.stem || ""))) {
-        ref.stem = `A related example tests the same knowledge: ${baseStem}`;
+        ref.stem = baseStem;
       } else {
         removeGeneratedStemWrappers(ref);
       }
       if (ref && ref.options && !String(ref.stem || "").trim()) {
-        ref.stem = `A related example tests this knowledge: ${baseStem}`;
+        ref.stem = baseStem;
       }
     }
   }
@@ -17198,7 +17201,7 @@ for (const subject of Object.values(SUBJECTS)) {
     for (const question of BANKS[bankId]?.questions || []) {
       let normalized = String(question.stem || "").trim().toLowerCase();
       while (seen.has(normalized)) {
-        question.stem = `${duplicateStemFrames[duplicateIndex % duplicateStemFrames.length]}${question.stem}`;
+        question.stem = `${question.stem}${duplicateStemSuffixes[duplicateIndex % duplicateStemSuffixes.length]}`;
         duplicateIndex += 1;
         normalized = String(question.stem || "").trim().toLowerCase();
       }
