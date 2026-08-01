@@ -35,6 +35,7 @@ const PAGES = [
   { file: 'a-level-sociology.html', key: 'soc' },
   { file: 'gcse-geography.html', key: 'gcse-geo' },
   { file: 'gcse-economics.html', key: 'gcse-econ' },
+  { file: 'gcse-history.html', key: 'gcse-hist' },
 ];
 
 let problems = 0;
