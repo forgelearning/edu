@@ -17864,6 +17864,62 @@ for (const [id, bankId, specPointId, stem, options, correct, scaffold] of mathsS
   });
 }
 
+// Phase 6 priority expansion: add independent stems to high-use GCSE science,
+// mathematics and psychology areas. Reforge variants are not counted as new
+// source stems, so these are additional content rather than relabelling.
+appendGenerated("GCSE-SCI-BIO-1", [
+  ["Which factor can denature an enzyme by changing the shape of its active site?","A temperature above its optimum","A lower substrate concentration","A shorter diffusion distance","A smaller volume of water", "High temperature can disrupt bonds maintaining the enzyme's tertiary structure."],
+  ["A heterozygous individual has which pair of alleles?","Two different alleles for a gene","Two identical dominant alleles","Two identical recessive alleles","No alleles for that gene", "Heterozygous means the two alleles at a gene locus are different."]
+], "GCSE-PHASE6-BIO1");
+appendGenerated("GCSE-SCI-BIO-2", [
+  ["Transpiration is the loss of water vapour mainly from: ","leaves through stomata","roots through xylem only","seeds through chloroplasts","flowers through phloem", "Water vapour diffuses out through open stomata in leaves."],
+  ["A food web is useful because it shows: ","interconnected feeding relationships in a community","only one linear energy transfer","the exact population of every species","the chemical formula of glucose", "Food webs show that organisms may have several prey and predators."]
+], "GCSE-PHASE6-BIO2");
+appendGenerated("GCSE-SCI-CHEM-1", [
+  ["Ionic compounds conduct electricity when molten because: ","their ions are free to move","their atoms become neutral","their electrons disappear","their molecules become larger", "Ions are fixed in a solid lattice but mobile when molten or dissolved."],
+  ["Electrolysis of an aqueous solution uses electricity to: ","decompose ionic substances into products","increase the mass of every electrode","remove all ions from solution","turn every metal into a gas", "Electrical energy drives a non-spontaneous chemical decomposition."]
+], "GCSE-PHASE6-CHEM1");
+appendGenerated("GCSE-SCI-CHEM-2", [
+  ["A catalyst increases reaction rate by: ","providing an alternative pathway with lower activation energy","increasing the enthalpy change","being used up completely","raising the products' energy only", "A catalyst changes the pathway and is regenerated at the end."],
+  ["A fuel is useful because it releases energy when it: ","undergoes combustion","dissolves in water","freezes at room temperature","becomes a catalyst", "Combustion transfers chemical energy to the surroundings, often as heat." ]
+], "GCSE-PHASE6-CHEM2");
+appendGenerated("GCSE-SCI-PHYS-1", [
+  ["The gradient of a velocity–time graph represents: ","acceleration","distance travelled","force divided by mass only","power", "Acceleration is the change in velocity per unit time, shown by the gradient."],
+  ["During radioactive decay, the activity of a sample: ","decreases over time but may never reach exactly zero","increases at a constant rate","becomes negative immediately","stays identical for every isotope", "Random decay produces an overall exponential decrease in activity." ]
+], "GCSE-PHASE6-PHYS1");
+appendGenerated("GCSE-SCI-PHYS-2", [
+  ["The resistance of a component is calculated using: ","potential difference divided by current","current divided by charge","power divided by time","energy multiplied by voltage", "Ohm's law gives resistance R = V ÷ I."],
+  ["An electric motor uses the motor effect when: ","a current-carrying conductor experiences a force in a magnetic field","a resistor loses all its charge","a transformer has no coils","a fuse increases current", "The force on a current-carrying conductor can produce rotation." ]
+], "GCSE-PHASE6-PHYS2");
+const phase6GcseSciencePoints = {
+  "GCSE-SCI-BIO-1":"edexcel-gcse-science-bio-1", "GCSE-SCI-BIO-2":"edexcel-gcse-science-bio-2",
+  "GCSE-SCI-CHEM-1":"edexcel-gcse-science-chem-1", "GCSE-SCI-CHEM-2":"edexcel-gcse-science-chem-2",
+  "GCSE-SCI-PHYS-1":"edexcel-gcse-science-phys-1", "GCSE-SCI-PHYS-2":"edexcel-gcse-science-phys-2"
+};
+for (const [bankId, pointId] of Object.entries(phase6GcseSciencePoints)) {
+  for (const question of BANKS[bankId].questions.slice(-2)) question.specPointId = pointId;
+}
+appendGenerated("GCSE-MATH-P1", [
+  ["Write 0.00072 in standard form.","7.2 × 10⁻⁴","7.2 × 10⁴","72 × 10⁻⁴","0.72 × 10⁻³", "The first significant digit is 7 and the decimal moves four places."],
+  ["Solve x + y = 11 and x − y = 3.","x = 7, y = 4","x = 4, y = 7","x = 8, y = 3","x = 6, y = 5", "Adding the equations gives 2x = 14, so x = 7 and y = 4."]
+], "GCSE-PHASE6-MATH1");
+appendGenerated("GCSE-MATH-P2", [
+  ["A sector has radius 8 cm and angle 45°. What is its area in terms of π?","8π cm²","16π cm²","32π cm²","64π cm²", "Sector area is 45/360 × π × 8² = 8π cm²."],
+  ["A bag contains 4 red and 6 blue counters. Two are taken without replacement. What is P(two blue)?","1/3","2/5","1/2","3/5", "The probability is 6/10 × 5/9 = 1/3." ]
+], "GCSE-PHASE6-MATH2");
+appendGenerated("GCSE-MATH-P3", [
+  ["The median of a dataset is 18. What does this mean?","Half the values are at or below 18 and half are at or above it","18 is the most frequent value","The range is 18","The mean must equal 18", "The median is the central value when data are ordered."],
+  ["For y = x² − 6x + 5, the x-coordinate of the turning point is:","3","−3","5","6", "Completing the square gives y = (x − 3)² − 4, so x = 3." ]
+], "GCSE-PHASE6-MATH3");
+const phase6MathPoints = {"GCSE-MATH-P1":"edexcel-gcse-maths-p1","GCSE-MATH-P2":"edexcel-gcse-maths-p2","GCSE-MATH-P3":"edexcel-gcse-maths-p3"};
+for (const [bankId, pointId] of Object.entries(phase6MathPoints)) for (const question of BANKS[bankId].questions.slice(-2)) question.specPointId = pointId;
+appendGenerated("GCSE-PSY-MEMORY", [
+  ["The serial position effect predicts better recall for items: ","at the beginning and end of a list","only in the middle of a list","that are never rehearsed","presented without attention", "Primacy and recency effects explain stronger recall at the two ends."],
+  ["Interference occurs when: ","one memory disrupts the recall of another","a memory is stored permanently","the sensory register increases capacity","a participant has no prior knowledge", "Similar memories can compete, producing forgetting or retrieval errors." ]
+], "GCSE-PHASE6-PSY");
+for (const question of BANKS["GCSE-PSY-MEMORY"].questions.slice(-2)) question.specPointId = "aqa-gcse-psych-memory";
+rebalanceMCQSubject(["GCSE-SCI-BIO-1","GCSE-SCI-BIO-2","GCSE-SCI-CHEM-1","GCSE-SCI-CHEM-2","GCSE-SCI-PHYS-1","GCSE-SCI-PHYS-2","GCSE-MATH-P1","GCSE-MATH-P2","GCSE-MATH-P3","GCSE-PSY-MEMORY"]);
+
 // Final language pass: a few later-added coverage questions were introduced
 // after the main stem-diversity migration. Rephrase those remaining generic
 // "Which statement/claim" openings so the visible bank does not teach a
