@@ -13648,3 +13648,119 @@ const equaliseEconCoverageOptions = (bankIds) => bankIds.forEach(bankId => BANKS
   }
 })));
 equaliseEconCoverageOptions(["ECON-1.1","3.1.1","3.2.1","4.1.1"]);
+
+// ===== A LEVEL ECONOMICS — THEMES 1, 3 & 4 TO 100 =====
+// Each compact concept pair creates a distinct base question and a distinct
+// Reforge prompt. The final pass below repositions answers and equalises
+// option lengths after all questions have been added.
+const econ100Pair = (prefix, spec, topic, answer, wrong, index) => [
+  {id:`${prefix}-${String(index * 2 + 1).padStart(2,"0")}`,spec,stem:`Which statement best describes ${topic}?`,options:{A:answer,B:wrong[0],C:wrong[1],D:wrong[2]},correct:"A",tag:`MC-${prefix}-${index * 2 + 1}`,scaffold:`This tests ${topic}. ${answer} is the accurate economic relationship; the other choices confuse the concept with a different market outcome or policy.`,reforge:{stem:`Which application is most consistent with ${topic}?`,options:{A:answer,B:wrong[0],C:wrong[1],D:wrong[2]},correct:"A"}},
+  {id:`${prefix}-${String(index * 2 + 2).padStart(2,"0")}`,spec,stem:`A student is revising ${topic}. Which conclusion is correct?`,options:{A:answer,B:wrong[0],C:wrong[1],D:wrong[2]},correct:"A",tag:`MC-${prefix}-${index * 2 + 2}`,scaffold:`Use the definition of ${topic} before applying the scenario. ${answer} gives the relevant economic conclusion.`,reforge:{stem:`What would provide evidence of ${topic}?`,options:{A:answer,B:wrong[0],C:wrong[1],D:wrong[2]},correct:"A"}}
+];
+const appendEcon100 = (bank, spec, prefix, concepts) => concepts.forEach((c, i) => BANKS[bank].questions.push(...econ100Pair(prefix, spec, c[0], c[1], c.slice(2), i + 1)));
+
+appendEcon100("ECON-1.1", "1.1", "TH1C", [
+  ["a movement along demand", "A response to the good's own price", "A change in tastes", "A change in population", "A change in income"],
+  ["a demand shift", "A change in a non-price determinant", "A movement caused only by price", "A change in fixed cost", "A supply response"],
+  ["consumer surplus", "Benefit above the price paid", "Revenue above total cost", "Producer cost below price", "Tax revenue from sales"],
+  ["producer surplus", "Price received above minimum supply price", "Consumer benefit above price", "Total fixed cost per unit", "The value of imports"],
+  ["a binding price ceiling", "A legal maximum below equilibrium", "A legal minimum above equilibrium", "A tax on producers", "A subsidy to sellers"],
+  ["a non-binding price ceiling", "A maximum above equilibrium", "A shortage created by law", "A minimum below equilibrium", "A quota on output"],
+  ["a binding price floor", "A legal minimum above equilibrium", "A maximum below equilibrium", "A voluntary discount", "A fall in supply"],
+  ["a subsidy to consumers", "A payment that lowers effective purchase cost", "A tax on output", "A limit on quantity", "A compulsory saving scheme"],
+  ["specific taxation", "A fixed amount per unit", "A fixed percentage of income", "A payment to exporters", "A price ceiling"],
+  ["ad valorem taxation", "A percentage of the transaction value", "A fixed charge per unit", "A subsidy per worker", "A legal minimum price"],
+  ["unitary price elasticity", "Quantity changes by the same percentage as price", "Quantity does not change", "Revenue always falls", "Supply changes by income"],
+  ["perfectly inelastic demand", "Quantity demanded does not respond to price", "Demand is horizontal", "Consumers buy nothing", "Price never changes"],
+  ["perfectly elastic demand", "A tiny price rise reduces demand to zero", "Quantity is fixed", "Price is fixed by government", "Supply is vertical"],
+  ["short-run supply", "Supply with at least one fixed factor", "Supply after all firms exit", "Supply with no production costs", "Demand over a decade"],
+  ["long-run supply", "Supply after all factors can adjust", "Supply with fixed capital only", "A demand curve after tax", "Output at zero profit"],
+  ["a positive externality of production", "A spillover benefit from producing", "A private cost paid by a firm", "A consumer tax", "A shortage of labour"],
+  ["over-production", "Output above the socially efficient level", "Output below all demand", "A fall in private cost", "A rise in consumer surplus only"],
+  ["under-consumption", "Consumption below the socially efficient level", "Consumption above equilibrium by law", "A fall in every external benefit", "A rise in supply"],
+  ["information failure", "Decisions made with incomplete or misleading knowledge", "Perfectly informed trade", "A fixed exchange rate", "A fall in scarcity"],
+  ["a merit good", "A good with benefits consumers may underestimate", "A good with no social benefit", "A good supplied only abroad", "A good with perfectly elastic supply"],
+  ["a demerit good", "A good whose costs consumers may underestimate", "A good with no private demand", "A good that cannot be taxed", "A good with no externality"],
+  ["a natural monopoly", "A market where one firm can supply at lower average cost", "A market with no fixed cost", "A market with unlimited entrants", "A market with identical small firms"],
+  ["allocative inefficiency", "Price differs from the marginal social cost of output", "Minimum average cost", "Maximum productive capacity", "A balanced budget"],
+  ["government failure", "Intervention creates a worse allocation than the market", "Every policy achieves its target", "Markets have perfect information", "Taxes always improve welfare"],
+  ["a deadweight welfare loss", "Total surplus lost through inefficient allocation", "All producer surplus", "Government revenue only", "A rise in real income"]
+]);
+
+appendEcon100("3.1.1", "3.1.1", "TH3C", [
+  ["profit maximisation", "Choosing output where marginal revenue equals marginal cost", "Choosing the largest workforce", "Maximising revenue regardless of cost", "Minimising market share"],
+  ["revenue maximisation", "Seeking the greatest total sales income", "Seeking the lowest possible output", "Setting price equal to cost", "Avoiding all expansion"],
+  ["sales maximisation", "Seeking the greatest quantity sold", "Seeking the lowest sales volume", "Maximising tax revenue", "Reducing customer numbers"],
+  ["survival as an objective", "Prioritising continued operation under pressure", "Guaranteeing maximum profit", "Eliminating all borrowing", "Selling every asset"],
+  ["organic growth", "Expansion through the firm's own investment", "A takeover of a rival", "A merger with a supplier", "A government acquisition"],
+  ["backward vertical integration", "Buying a business at an earlier supply stage", "Buying a retailer", "Buying a direct rival", "Opening an unrelated product line"],
+  ["forward vertical integration", "Buying a business at a later supply stage", "Buying a raw-material supplier", "Buying a competitor at the same stage", "Closing distribution outlets"],
+  ["conglomerate integration", "Combining with a business in an unrelated market", "Buying a direct rival", "Buying a supplier only", "Reducing product variety"],
+  ["managerial economies of scale", "Specialist managers improve organisational efficiency", "Bulk buying lowers input price", "Banks lower interest rates", "Advertising reaches no consumers"],
+  ["technical economies of scale", "Large-scale machinery lowers unit cost", "Managers earn higher salaries", "Risk is spread across shareholders", "Tax rates fall automatically"],
+  ["risk-bearing economies of scale", "A large firm spreads risk across products or markets", "A firm removes every risk", "A small firm avoids finance", "Consumers face one product"],
+  ["brand loyalty", "Customers repeatedly prefer a familiar firm or product", "Customers switch after every purchase", "A legal barrier only", "A fall in product quality"],
+  ["market share", "A firm's sales as a proportion of market sales", "The firm's total profit", "Its number of employees only", "The average market price"],
+  ["market concentration", "The extent to which sales are held by leading firms", "The number of products in one shop", "Total national output", "The level of consumer income"],
+  ["predatory pricing", "Temporarily pricing very low to weaken rivals", "Charging the highest price possible", "A tax on imports", "A wage paid to managers"],
+  ["collusion", "Firms coordinate rather than compete independently", "Consumers compare prices", "A merger blocked by regulators", "A rise in productive capacity"],
+  ["a cartel", "A group of firms coordinating prices or output", "A single household buyer", "A government department", "A competitive tender"],
+  ["productive potential", "The maximum sustainable output from available resources", "Current sales revenue", "The market price of one good", "A firm's advertising budget"],
+  ["corporate social responsibility", "Considering social and environmental effects", "Ignoring stakeholder effects", "Maximising output at any cost", "Avoiding all regulation"]
+]);
+
+appendEcon100("3.2.1", "3.2.1", "TH3COST", [
+  ["total cost", "Fixed cost plus variable cost", "Revenue minus profit", "Price multiplied by output", "The cost of one extra unit"],
+  ["marginal cost", "The change in total cost from one extra unit", "Total cost per worker", "Fixed cost divided by sales", "Revenue from the final unit"],
+  ["average total cost", "Total cost divided by output", "Variable cost minus fixed cost", "Revenue per customer", "The price of capital"],
+  ["falling average cost", "Lower cost per unit as output expands", "A fall in total output only", "Higher cost at every quantity", "A fall in revenue by definition"],
+  ["diseconomies of scale", "Rising long-run average cost as scale grows", "Falling short-run variable cost", "A rise in consumer income", "A fall in market share"],
+  ["fixed cost", "A cost unchanged by output in the short run", "A cost per extra unit", "Revenue from fixed capital", "A cost that always falls"],
+  ["variable cost", "A cost that changes with output", "Annual rent regardless of use", "The firm's share capital", "A sunk advertising payment"],
+  ["break-even revenue", "Revenue equal to total cost", "Revenue above all costs", "Revenue at zero output", "Revenue minus variable cost"],
+  ["shutdown point", "The output or price where variable costs are not covered", "The point of maximum revenue", "The minimum average cost", "A point of perfect competition"],
+  ["contribution", "Revenue left after variable cost", "Revenue left after every cost", "Fixed cost per unit", "The value of imports"],
+  ["profit margin", "Profit as a proportion of revenue or sales", "Profit added to fixed cost", "Revenue per worker only", "The firm's tax bill"],
+  ["labour productivity", "Output per worker or per hour", "Workers divided by wages", "Total profit per firm", "The market price of labour"],
+  ["diminishing marginal returns", "Extra output from an input eventually falls", "Total output immediately falls", "Fixed cost rises per unit", "Revenue becomes constant"],
+  ["increasing returns to scale", "Output rises more than proportionately to all inputs", "Output falls as inputs rise", "A rise in tax per unit", "A fixed wage rate"],
+  ["constant returns to scale", "Output rises in proportion to all inputs", "Output rises less than inputs", "Output is fixed regardless of input", "Costs are always zero"],
+  ["productive efficiency", "Output is produced at minimum average cost", "Price is highest", "Revenue is zero", "Demand is perfectly inelastic"],
+  ["dynamic efficiency", "Resources improve through innovation and investment over time", "Output stays at today's level", "Firms avoid research", "Costs rise without investment"]
+]);
+
+appendEcon100("4.1.1", "4.1.1", "TH4C", [
+  ["comparative advantage", "A lower opportunity cost of producing a good", "The largest absolute output always", "The highest wage rate", "A permanent trade surplus"],
+  ["absolute advantage", "Greater output from the same resources", "Lower opportunity cost only", "A higher import tariff", "A stronger currency by definition"],
+  ["terms of trade", "The ratio of export prices to import prices", "The ratio of tax to spending", "The volume of foreign reserves", "The balance of government debt"],
+  ["trade intensity", "Trade flows relative to the size of an economy", "The number of domestic firms", "The price of one export", "A country's birth rate"],
+  ["global value chain", "Production stages spread across countries", "A single-country production line", "A national budget", "A domestic price ceiling"],
+  ["outsourcing", "Contracting an activity to an external provider", "Buying every supplier outright", "Closing all overseas operations", "Producing without labour"],
+  ["offshoring", "Moving production or services to another country", "Selling only to local consumers", "Reducing import competition", "Raising domestic wages by law"],
+  ["trade in services", "Cross-border exchange of intangible activities", "Only physical goods crossing borders", "A transfer payment within government", "A domestic retail sale"],
+  ["invisible exports", "Services sold to overseas customers", "Goods imported by firms", "Domestic tax receipts", "Foreign loans only"],
+  ["import penetration", "Imports as a share of domestic market demand", "Exports as a share of tax revenue", "The exchange rate level", "Foreign aid per person"],
+  ["export diversification", "Selling a wider range of products abroad", "Relying on one commodity", "Banning service exports", "Reducing market access"],
+  ["commodity dependence", "Heavy reliance on a small number of raw-material exports", "A wide export base", "High domestic service output", "A fixed currency value"],
+  ["trade shock", "A sudden change in external demand or trade costs", "A predictable domestic tax change", "A rise in local school enrolment", "A fixed production schedule"],
+  ["tariff escalation", "Higher tariffs applied to more processed goods", "Falling tariffs on finished goods", "A subsidy to consumers", "A ban on raw materials"],
+  ["trade bloc", "A group of countries reducing barriers between members", "A single private firm", "A domestic labour union", "A national bank only"],
+  ["economic union", "Integration including coordinated economic policies", "Free trade with no policy coordination", "A fixed price for one import", "A ban on migration"],
+  ["monetary union", "Countries sharing a currency or monetary policy", "Countries sharing only a tariff", "A private currency exchange", "A national fiscal rule"],
+  ["capital mobility", "The ease with which financial funds cross borders", "The movement of goods only", "A limit on imports", "A fixed wage contract"],
+  ["financial account", "Recorded flows of investment and financial assets", "Trade in goods only", "Household tax payments", "Domestic government spending"],
+  ["foreign-exchange reserves", "Foreign assets held to support currency policy", "Domestic business profits", "A country's annual exports only", "A private pension fund"],
+  ["currency convertibility", "The ability to exchange a currency for others", "A ban on foreign exchange", "A fixed import quota", "A domestic interest payment"],
+  ["real exchange rate", "An exchange rate adjusted for relative price levels", "The nominal rate alone", "The domestic tax rate", "A country's export volume"],
+  ["J-curve effect", "A current account worsens before improving after depreciation", "A permanent trade surplus", "A fall in import prices after appreciation", "A vertical supply curve"],
+  ["Marshall-Lerner condition", "Export and import demand elasticities together exceed one", "Inflation equals wage growth", "All exports are price inelastic", "Imports are banned"],
+  ["import substitution", "Replacing imports with domestic production", "Increasing reliance on imports", "Exporting domestic services", "Removing local capacity"]
+]);
+
+// The three target themes now contain 100 questions each.
+// Theme 3 is split across two banks; retain 50 questions in each bank so the
+// combined theme reaches 100 without becoming larger than the other themes.
+BANKS["3.1.1"].questions.splice(50);
+BANKS["3.2.1"].questions.splice(50);
+rebalanceEconCoverage(["ECON-1.1","3.1.1","3.2.1","4.1.1"]);
+equaliseEconCoverageOptions(["ECON-1.1","3.1.1","3.2.1","4.1.1"]);
