@@ -17644,6 +17644,28 @@ for (const question of BANKS["CS-2"]?.questions || []) {
   }
 }
 
+// Edexcel A-level Mathematics gaps: targeted application questions for
+// coordinate geometry, numerical methods, vectors and mechanics.
+const mathsSpecQuestions = [
+  ["MATH-COV-01", "MATH-1", "edexcel-a-maths-2.2", "The line through (2, 5) and (6, 13) has gradient:", {A:"2",B:"1/2",C:"3",D:"4"}, "A", "Gradient is (13 − 5)/(6 − 2) = 2."],
+  ["MATH-COV-02", "MATH-1", "edexcel-a-maths-2.2", "The circle x² + y² − 6x + 4y − 12 = 0 has centre:", {A:"(−3, 2)",B:"(3, −2)",C:"(6, −4)",D:"(−6, 4)"}, "B", "Completing the square gives (x − 3)² + (y + 2)² = 25."],
+  ["MATH-COV-03", "MATH-1", "edexcel-a-maths-2.8", "Newton–Raphson applied to f(x) = x² − 5 gives the iteration:", {A:"xₙ₊₁ = ½(xₙ + 5/xₙ)",B:"xₙ₊₁ = xₙ² − 5",C:"xₙ₊₁ = 5 − xₙ²",D:"xₙ₊₁ = xₙ + (xₙ² − 5)"}, "A", "Using xₙ₊₁ = xₙ − f(xₙ)/f′(xₙ) gives ½(xₙ + 5/xₙ)."],
+  ["MATH-COV-04", "MATH-1", "edexcel-a-maths-2.8", "Using the trapezium rule with width 1 and ordinates 1, 2 and 4 gives:", {A:"3.5",B:"4",C:"4.5",D:"5"}, "C", "The estimate is ½[1 + 2(2) + 4] = 4.5."],
+  ["MATH-COV-05", "MATH-1", "edexcel-a-maths-2.9", "The magnitude of the vector (3, −4) is:", {A:"1",B:"4",C:"5",D:"7"}, "C", "The magnitude is √(3² + 4²) = 5."],
+  ["MATH-COV-06", "MATH-1", "edexcel-a-maths-2.9", "The vector (6, −3) is what multiple of (2, −1)?", {A:"2",B:"3",C:"−3",D:"6"}, "B", "Both components are multiplied by 3."],
+  ["MATH-COV-07", "MATH-3", "edexcel-a-maths-4.2", "A particle has u = 3 m s⁻¹ and a = 2 m s⁻² for 4 seconds. Its final velocity is:", {A:"5 m s⁻¹",B:"8 m s⁻¹",C:"10 m s⁻¹",D:"11 m s⁻¹"}, "D", "v = u + at = 3 + 2(4) = 11 m s⁻¹."],
+  ["MATH-COV-08", "MATH-3", "edexcel-a-maths-4.2", "A particle has u = 5 m s⁻¹, a = −1 m s⁻² and t = 3 s. Its displacement is:", {A:"10.5 m",B:"12 m",C:"13.5 m",D:"15 m"}, "A", "s = ut + ½at² = 15 − 4.5 = 10.5 m."],
+  ["MATH-COV-09", "MATH-3", "edexcel-a-maths-4.3", "A 5 N resultant force acts on a 2 kg particle. Its acceleration is:", {A:"0.4 m s⁻²",B:"2.5 m s⁻²",C:"7 m s⁻²",D:"10 m s⁻²"}, "B", "Newton's second law gives a = F/m = 2.5 m s⁻²."],
+  ["MATH-COV-10", "MATH-3", "edexcel-a-maths-4.3", "At terminal velocity, the resultant force on a falling object is:", {A:"Equal to its weight downward",B:"Equal to its drag upward",C:"Zero",D:"Increasing"}, "C", "Drag balances weight, so the resultant force is zero."],
+  ["MATH-COV-11", "MATH-3", "edexcel-a-maths-4.4", "A 20 N force acts perpendicular to a pivot at 0.4 m. Its moment is:", {A:"5 N m",B:"8 N m",C:"20.4 N m",D:"50 N m"}, "B", "Moment = force × perpendicular distance = 8 N m."],
+  ["MATH-COV-12", "MATH-3", "edexcel-a-maths-4.4", "A clockwise moment of 12 N m is balanced by:", {A:"6 N m anticlockwise",B:"Zero moment",C:"12 N m clockwise",D:"12 N m anticlockwise"}, "D", "Rotational equilibrium requires equal opposite moments."],
+  ["MATH-COV-13", "MATH-3", "edexcel-a-maths-4.5", "The resultant of perpendicular vectors of magnitudes 3 and 4 has magnitude:", {A:"1",B:"5",C:"7",D:"12"}, "B", "The magnitude is √(3² + 4²) = 5."],
+  ["MATH-COV-14", "MATH-3", "edexcel-a-maths-4.5", "A vector in the direction (6, 8) has unit vector:", {A:"(3/5, 4/5)",B:"(6, 8)",C:"(6/14, 8/14)",D:"(4/3, 5/3)"}, "A", "The vector has magnitude 10, so divide both components by 10."]
+];
+for (const [id, bankId, specPointId, stem, options, correct, scaffold] of mathsSpecQuestions) {
+  BANKS[bankId].questions.push({id, stem, options, correct, tag:"MC-MATH-SPEC", scaffold, specPointId, spec:specPointId});
+}
+
 // Final language pass: a few later-added coverage questions were introduced
 // after the main stem-diversity migration. Rephrase those remaining generic
 // "Which statement/claim" openings so the visible bank does not teach a
