@@ -36,6 +36,7 @@ const PAGES = [
   { file: 'gcse-geography.html', key: 'gcse-geo' },
   { file: 'gcse-economics.html', key: 'gcse-econ' },
   { file: 'gcse-history.html', key: 'gcse-hist' },
+  { file: 'gcse-psychology.html', key: 'gcse-psych' },
 ];
 
 let problems = 0;
