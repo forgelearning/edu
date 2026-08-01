@@ -36,6 +36,8 @@ const PAGES = [
   { file: 'a-level-geography.html', key: 'geo' },
   { file: 'a-level-history.html', key: 'hist' },
   { file: 'criminology.html', key: 'crim' },
+  { file: 'law.html', key: 'law' },
+  { file: 'politics.html', key: 'pol' },
   { file: 'gcse-geography.html', key: 'gcse-geo' },
   { file: 'gcse-economics.html', key: 'gcse-econ' },
   { file: 'gcse-history.html', key: 'gcse-hist' },
