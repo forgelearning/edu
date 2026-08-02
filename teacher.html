@@ -1486,9 +1486,12 @@ window.switchTab = function(view, btn) {
 
 // Sidebar nav items don't have real URLs for these — they're tabs within
 // the same dashboard SPA — so route them through the existing tab switcher.
-window.forgeGoto = function(view) {
+window.forgeGoto = function(view, contextTag) {
   var btn = document.querySelector('.tab[data-view="' + view + '"]');
-  if (btn) switchTab(view, btn);
+  if (btn) {
+    switchTab(view, btn);
+    if (contextTag && view === 'starters') showStarterFor(contextTag);
+  }
 };
 
 // Must match CLEAR_THRESHOLD in anvil.html, or the dashboard disagrees with
@@ -2194,7 +2197,7 @@ function renderHeatmap(wrongResponses) {
     h += '<span class="heat-spec">' + banks + '</span>';
     h += '<div class="heat-bar"><div class="heat-fill" style="width:' + pct + '%"></div></div>';
     h += '<span class="heat-count">' + c.count + ' \u00d7 ' + studentCount + 's</span>';
-    h += '<a class="heat-action" href="#" onclick="forgeGoto(\'starters\');return false">Starter \u2192</a>';
+    h += '<a class="heat-action" href="#" onclick="forgeGoto(\'starters\',\'' + tag + '\');return false">Starter \u2192</a>';
     h += '</div>';
   });
   h += '</div>';

@@ -414,6 +414,10 @@ function _fsLinkAttrs(it) {
     (it.onclick ? ' onclick="' + it.onclick.replace(/"/g, '&quot;') + '"' : '');
 }
 
+function _fsDescriptor(key) {
+  return {dashboard:'Home', forge:'Practice', assignments:'Assigned work', anvil:'Repair misconceptions', crucible:'Timed challenge'}[key] || '';
+}
+
 function _fsTabHtml(it, activeKey) {
   var tag = it.href ? 'a' : 'button';
   var badgeHtml = (it.badge !== undefined && it.badge !== null)
@@ -422,7 +426,7 @@ function _fsTabHtml(it, activeKey) {
   return '<' + tag + ' class="ftab' + (it.key === activeKey ? ' active' : '') + '" data-key="' + _fsEsc(it.key) + '"' +
     _fsLinkAttrs(it) + '>' +
     _fsIcon(it.key) +
-    '<span class="ftab-label">' + _fsEsc(it.label) + '</span>' +
+    '<span class="ftab-label">' + _fsEsc(_fsDescriptor(it.key) || it.label) + '</span>' +
     badgeHtml +
   '</' + tag + '>';
 }
@@ -437,7 +441,7 @@ function _fsSheetItemHtml(it, activeKey) {
   return '<' + tag + ' class="fsheet-item' + (it.key === activeKey ? ' active' : '') + '" data-key="' + _fsEsc(it.key) + '"' +
     attrs + '>' +
     _fsIcon(it.key) +
-    '<span>' + _fsEsc(it.label) + '</span>' +
+    '<span>' + _fsEsc(it.label) + (_fsDescriptor(it.key) ? '<small class="fsheet-subtitle">' + _fsEsc(_fsDescriptor(it.key)) + '</small>' : '') + '</span>' +
   '</' + tag + '>';
 }
 
@@ -452,11 +456,11 @@ function _fsItemHtml(it, activeKey) {
   var badgeHtml = (it.badge !== undefined && it.badge !== null)
     ? '<span class="fside-badge' + (it.badgeMuted ? ' badge-muted' : '') + '">' + _fsEsc(it.badge) + '</span>'
     : '';
-  var descriptor = {dashboard:'Home', forge:'Practice', assignments:'Assigned work', anvil:'Repair misconceptions', crucible:'Timed challenge'}[it.key] || '';
+  var descriptor = _fsDescriptor(it.key);
   return '<' + tag + ' class="fside-item' + activeCls + '" data-key="' + _fsEsc(it.key) + '"' + hrefAttr + onclickAttr + '>' +
     _fsIcon(it.key) +
     '<span class="fside-label"><span>' + _fsEsc(it.label) + '</span>' + (descriptor ? '<small>' + _fsEsc(descriptor) + '</small>' : '') + '</span>' +
     badgeHtml +
-    '<span class="fside-tooltip">' + _fsEsc(it.label) + '</span>' +
+    '<span class="fside-tooltip">' + _fsEsc(it.label) + (descriptor ? ' — ' + _fsEsc(descriptor) : '') + '</span>' +
   '</' + tag + '>';
 }

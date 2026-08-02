@@ -397,7 +397,7 @@ function renderDashboard(){
   }
   h+='<a class="stat-strip-link" href="profile.html">View profile →</a>';
   h+='</div>';
-  h+='<p class="forge-progress-note">You have answered '+total+' question'+(total===1?'':'s')+' so far'+(streak ? ' and built a '+streak+'-day streak' : '')+'. Keep the loop moving: practice, repair, then pressure-test.</p>';
+  h+='<p class="forge-progress-note">You have answered '+total+' question'+(total===1?'':'s')+' so far'+(streak ? ' and built a '+streak+'-day streak' : '')+'. '+(activeMCs.length ? activeMCs.length+' misconception'+(activeMCs.length===1?' needs':'s need')+' another pass.' : 'No open misconceptions right now.')+' Keep the loop moving: practice, repair, then pressure-test.</p>';
 
   h+='<div class="ui-recommendation forge-card forge-card--focus">';
   if(activeMCs.length>0){

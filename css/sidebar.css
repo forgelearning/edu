@@ -167,7 +167,7 @@ body.has-forge-sidebar.forge-sidebar-expanded{padding-left:230px}
   .fsheet-item.active svg{color:var(--ember)}
   .fsheet-item.danger{color:var(--bad)}
   .fsheet-item.danger svg{color:var(--bad)}
-  .fsheet-sub{margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:11px;
+.fsheet-sub{margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:11px;
     font-weight:600;color:var(--dim);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:45%}
   .fsheet-divider{height:1px;background:var(--line);margin:8px 6px}
   .fsheet-heading{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.08em;
@@ -176,6 +176,7 @@ body.has-forge-sidebar.forge-sidebar-expanded{padding-left:230px}
   .fsheet-classrow .fsheet-item{min-width:0}
   .fsheet-classrow .fcs-remove{width:44px;flex-shrink:0;opacity:.6}
 }
+.fsheet-subtitle{display:block;margin-top:2px;font-size:11px;color:var(--dim);font-weight:500}
 
 /* On a tablet the bar spans a lot of glass; keep the targets grouped near the
    centre rather than stranded at the far corners. */
