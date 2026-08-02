@@ -114,6 +114,11 @@ var ForgeSidebar = {
     document.body.insertAdjacentHTML('afterbegin', badgeHtml);
     document.body.classList.add('has-forge-sidebar');
 
+    // Assignment counts are page-owned and loaded asynchronously. Clear any
+    // stale markup at shell creation; dashboard/assignments repopulate it
+    // after they have calculated the current outstanding count.
+    this.setBadge('assignments', null);
+
     // Bottom tab bar + "More" sheet for phones/portrait tablets. Both are
     // always in the DOM; css/sidebar.css decides which shell is visible, so
     // rotating a tablet swaps them with no JS involved.
