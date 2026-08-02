@@ -697,13 +697,22 @@ function buildReworkLap(questions,avoidKey){
   return shuffled;
 }
 
-window.startRework=function(tag){
-  var questions=MC_QUESTIONS[tag];
-  if(!questions||questions.length===0){
-    var wanted=String(tag||'').toLowerCase();
-    var matched=Object.keys(MC_QUESTIONS).filter(function(key){return key.toLowerCase()===wanted;})[0];
-    questions=matched?MC_QUESTIONS[matched]:null;
+function repairQuestionsFor(tag){
+  var wanted=String(tag||'').toLowerCase();
+  var found=[];
+  for(var bankKey in BANKS){
+    var bank=BANKS[bankKey];
+    (bank.questions||[]).forEach(function(q){
+      if(!q.reforge||!q.options)return;
+      var tags=Array.isArray(q.tag)?q.tag:[q.tag];
+      if(tags.some(function(value){return String(value||'').toLowerCase()===wanted;})) found.push(q);
+    });
   }
+  return found;
+}
+
+window.startRework=function(tag){
+  var questions=repairQuestionsFor(tag);
   if(!questions||questions.length===0){
     app.innerHTML=ForgeApp.stateHtml('error',{label:'Repair questions unavailable',body:'This misconception has no repair question loaded yet. Return to Anvil and choose another signal.',action:{label:'Back to Anvil',href:'anvil.html'}});
     return;
