@@ -31,18 +31,6 @@ function localSessionResponses(context,assignmentRows){
   });});
   return out;
 }
-function persistLocalResponses(context,rows,serverRows){
-  if(!context.studentId||!context.classId||!rows.length)return;
-  var seen={};
-  (serverRows||[]).forEach(function(r){seen[String(r.bank)+'|'+String(r.question_id||r.id)]=true;});
-  rows.forEach(function(r){
-    var marker=String(r.bank)+'|'+String(r.question_id);
-    if(seen[marker])return;
-    seen[marker]=true;
-    ForgeAPI.insert('responses',{student_id:context.studentId,class_id:context.classId,question_id:r.question_id,bank:r.bank,subject:getSubjectForBank(r.bank),selected_option:null,is_correct:false,misconception_tag:null,reforge_attempted:false,reforge_correct:null},{headers:{'Prefer':'return=minimal'}}).catch(function(error){console.error('Assignment reconciliation failed: '+JSON.stringify({status:error&&error.status,message:error&&error.message,student_id:context.studentId,class_id:context.classId,bank:r.bank,question_id:r.question_id}));});
-  });
-}
-function getSubjectForBank(bank){for(var subject in SUBJECTS){if((SUBJECTS[subject].banks||[]).indexOf(bank)!==-1)return subject}return null}
 function bankForQuestion(id){var wanted=String(id||'').replace(/-RF$/,'');for(var b in BANKS){if((BANKS[b].questions||[]).some(function(q){return String(q.id)===wanted}))return b}return null}
 function progress(a,responses){return ForgeAssignmentProgress.progress(a,responses)}
 function status(a,responses){var p=progress(a,responses);if(p.complete)return['Completed','complete',p];var due=a.due_date&&new Date(a.due_date)<new Date(new Date().setHours(0,0,0,0));if(due)return['Overdue','overdue',p];if(p.answered)return['In progress','progress',p];return['Not started','not-started',p]}
@@ -61,7 +49,7 @@ function load(s){if(!s||!s.classId){showNoClass();return}ForgeState.loading(el,{
         :[];
     })
     :Promise.resolve([]);
-  Promise.all([jsonFetch(API+'/rest/v1/assignments?select=*&class_id=eq.'+encodeURIComponent(s.classId)+'&order=due_date.asc',{headers:headers()}),responsePromise]).then(function(d){var assignmentRows=responseRows(d[0]),serverResponses=responseRows(d[1]),localResponses=localSessionResponses(context,assignmentRows),seen={};serverResponses.concat(localResponses).forEach(function(r){var marker=String(r.bank)+'|'+String(r.question_id||r.id);if(!seen[marker])seen[marker]=r;});persistLocalResponses(context,localResponses,serverResponses);render(assignmentRows,Object.keys(seen).map(function(k){return seen[k]}));if(context.studentId&&context.classCode){ForgeClasses.adopt(context);ForgeClasses.syncFromServer(API,KEY,context,function(){})}}).catch(showAssignmentError)}
+  Promise.all([jsonFetch(API+'/rest/v1/assignments?select=*&class_id=eq.'+encodeURIComponent(s.classId)+'&order=due_date.asc',{headers:headers()}),responsePromise]).then(function(d){var assignmentRows=responseRows(d[0]),serverResponses=responseRows(d[1]),localResponses=localSessionResponses(context,assignmentRows),seen={};serverResponses.concat(localResponses).forEach(function(r){var marker=String(r.bank)+'|'+String(r.question_id||r.id);if(!seen[marker])seen[marker]=r;});render(assignmentRows,Object.keys(seen).map(function(k){return seen[k]}));if(context.studentId&&context.classCode){ForgeClasses.adopt(context);ForgeClasses.syncFromServer(API,KEY,context,function(){})}}).catch(showAssignmentError)}
 if(saved&&saved.classId)load(saved);else if(ForgeAuth.hasSession())ForgeAuth.getSession().then(function(){var token=ForgeAuth.accessToken(),user=ForgeAuth.currentUser();return ForgeAPI.response(API+'/rest/v1/students?select=id,class_id&auth_user_id=eq.'+user.id,{headers:{apikey:KEY,Authorization:'Bearer '+token}})}).then(function(r){return r.json()}).then(function(rows){if(!rows[0])throw Error('No class');saved={studentId:rows[0].id,classId:rows[0].class_id,studentName:(ForgeAuth.currentUser()||{}).user_metadata?.name||''};try{localStorage.setItem('forge-student',JSON.stringify(saved))}catch(e){}load(saved)}).catch(showNoClass);else showNoClass();
 </script>  <script src="scripts/forge-page-actions.js"></script>
 </body></html>
