@@ -675,7 +675,7 @@ var dashState = { classId: null, className: null, classSubject: null, classCode:
 window.loadClassDashboard = function(cls) {
         dashState.classId = cls.id;
         dashState.className = cls.name;
-        dashState.classSubject = cls.subject || null;
+        dashState.classSubject = canonicalSubjectKey(cls.subject);
         dashState.classCode = cls.code || null;
         addJoinedClass(cls);
         Promise.all([
@@ -1454,12 +1454,37 @@ var MC_TO_SUBJECT = (function() {
 // The real subject a response belongs to, seeing through the 'anvil'/'crucible'
 // placeholders. Returns null when it can't be established.
 function subjectForResponse(r) {
-  var rs = r.subject;
-  if (rs && rs !== 'anvil' && rs !== 'crucible' && rs !== 'unknown') return rs;
+  var rs = canonicalSubjectKey(r.subject);
+  if (rs) return rs;
   return QID_TO_SUBJECT[baseQuestionId(r.question_id)]
       || MC_TO_SUBJECT[r.misconception_tag]
       || MC_TO_SUBJECT[r.bank]
       || null;
+}
+
+// Older response rows used display names or alternate spellings (for example
+// "Economics" / "economics") while current rows use canonical keys ("econ").
+// Normalising at the boundary keeps the class-subject safety filter from
+// hiding valid historical responses.
+function canonicalSubjectKey(value) {
+  if (!value || value === 'anvil' || value === 'crucible' || value === 'unknown') return null;
+  var raw = String(value).trim().toLowerCase();
+  if (typeof SUBJECTS !== 'undefined' && SUBJECTS[raw]) return raw;
+  if (typeof SUBJECTS !== 'undefined') {
+    var keys = Object.keys(SUBJECTS);
+    for (var i = 0; i < keys.length; i++) {
+      var subject = SUBJECTS[keys[i]] || {};
+      var label = String(subject.label || '').trim().toLowerCase();
+      if (label && (raw === label || raw === label.replace(/\s+/g, '-'))) return keys[i];
+    }
+  }
+  var aliases = {
+    economics: 'econ', economy: 'econ', psychology: 'psych', sociology: 'soc',
+    geography: 'geo', business: 'bus', chemistry: 'chem', criminology: 'crim',
+    biology: 'bio', history: 'hist', physics: 'phys', politics: 'pol',
+    computing: 'cs', 'computer science': 'cs', mathematics: 'maths', spanish: 'spanish'
+  };
+  return aliases[raw] || raw;
 }
 
 function specForResponse(r) {
