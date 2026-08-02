@@ -38,7 +38,9 @@ body.has-forge-sidebar.forge-sidebar-expanded{padding-left:230px}
 #forge-sidebar:not(.expanded) .fside-item.active::before{display:none}
 .fside-item svg{width:19px;height:19px;flex-shrink:0}
 .fside-item .fside-label{font-size:14px;font-weight:600;opacity:0;display:none;transition:opacity .2s ease .1s}
-#forge-sidebar.expanded .fside-item .fside-label{opacity:1;display:inline}
+#forge-sidebar.expanded .fside-item .fside-label{opacity:1;display:flex}
+.fside-label{flex-direction:column;gap:1px;line-height:1.15}
+.fside-label small{font-size:10px;font-weight:500;color:var(--dim);letter-spacing:.01em}
 
 .fside-item .fside-badge{margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;background:var(--ember);color:var(--coal);border-radius:var(--radius-pill);padding:2px 6px;opacity:0;display:none;transition:opacity .2s ease .1s}
 #forge-sidebar.expanded .fside-item .fside-badge{opacity:1;display:inline-block}

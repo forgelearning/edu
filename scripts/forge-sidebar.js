@@ -452,9 +452,10 @@ function _fsItemHtml(it, activeKey) {
   var badgeHtml = (it.badge !== undefined && it.badge !== null)
     ? '<span class="fside-badge' + (it.badgeMuted ? ' badge-muted' : '') + '">' + _fsEsc(it.badge) + '</span>'
     : '';
+  var descriptor = {dashboard:'Home', forge:'Practice', assignments:'Assigned work', anvil:'Repair misconceptions', crucible:'Timed challenge'}[it.key] || '';
   return '<' + tag + ' class="fside-item' + activeCls + '" data-key="' + _fsEsc(it.key) + '"' + hrefAttr + onclickAttr + '>' +
     _fsIcon(it.key) +
-    '<span class="fside-label">' + _fsEsc(it.label) + '</span>' +
+    '<span class="fside-label"><span>' + _fsEsc(it.label) + '</span>' + (descriptor ? '<small>' + _fsEsc(descriptor) + '</small>' : '') + '</span>' +
     badgeHtml +
     '<span class="fside-tooltip">' + _fsEsc(it.label) + '</span>' +
   '</' + tag + '>';

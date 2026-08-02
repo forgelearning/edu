@@ -79,6 +79,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:var(--
 .btn-hot{background:var(--ember);color:var(--coal)}
 .btn-hot:hover{background:var(--hot)}
 .btn-ghost{border-color:var(--line);color:var(--white)}
+.stat-value-muted{color:var(--dim);font-size:13px}
 
 /* Frosted glass CTA — theme-aware. Dark uses a smoked ember glass matching
    --glass-panel so it reads as this brand's surface rather than a generic

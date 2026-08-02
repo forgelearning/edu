@@ -32,7 +32,10 @@ document.addEventListener('click', function(e) {
     }
   }, {passive: true});
 
-  navEl.addEventListener('click', function(e){
-    if (collapsed) { e.preventDefault(); e.stopPropagation(); expand(); }
+  // The collapsed logo is still a real navigation link. Do not swallow the
+  // first click just to expand the pill; that makes the brand mark feel like
+  // a dead control and violates normal link expectations.
+  navEl.addEventListener('click', function(){
+    if (collapsed) expand();
   });
 })();
