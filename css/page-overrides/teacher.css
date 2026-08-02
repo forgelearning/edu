@@ -92,12 +92,16 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
 .assignment-context strong{color:var(--hot)}
 
 /* class table */
-.class-table{width:100%;border-collapse:collapse;font-size:13px}
+.class-table{width:100%;border-collapse:separate;border-spacing:0;font-size:13px;table-layout:auto}
+.class-table-wrap{overflow-x:auto;margin:0 calc(var(--space-2) * -1);padding:0 var(--space-2)}
 .class-table th{font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:#8A857E;font-weight:600;padding:8px 10px;text-align:left;border-bottom:1px solid var(--line)}
-.class-table td{padding:10px;border-bottom:1px solid var(--line);color:var(--white)}
+.class-table td{padding:14px 10px;border-bottom:1px solid var(--line);color:var(--white);vertical-align:middle}
+.class-table th:first-child,.class-table td:first-child{padding-left:14px}
+.class-table th:last-child,.class-table td:last-child{padding-right:14px}
 .class-table tr:hover{background:var(--panel-2)}
 .class-table tr{cursor:pointer}
 .class-table .acc{font-family:'JetBrains Mono',monospace;font-weight:700}
+.class-table .student-name-display{font-weight:700;color:var(--white)}
 
 /* student detail */
 .back-btn{background:none;border:none;cursor:pointer;font-size:13px;color:#8A857E;font-family:Inter,sans-serif;margin-bottom:16px;padding:0}
@@ -214,6 +218,7 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
 
   /* table -> one card per student, each cell labelled by its column */
   .class-table,.class-table tbody,.class-table tr,.class-table td{display:block;width:100%}
+  .class-table-wrap{margin:0;padding:0}
   .class-table thead{display:none}
   .class-table tr{background:var(--panel-2);border:1px solid var(--line);
     border-radius:var(--radius-md);padding:10px 12px;margin-bottom:8px}

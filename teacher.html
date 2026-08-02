@@ -2136,7 +2136,7 @@ function renderClassOverview(responses, students) {
   });
 
   var h = '<div class="card"><div class="card-title">Students \u2014 sorted by accuracy (lowest first) <span class="forge-u-rsj30h">Click a student to see their full profile</span></div>';
-  h += '<table class="class-table"><thead><tr>';
+  h += '<div class="class-table-wrap"><table class="class-table"><thead><tr>';
   h += '<th>Student</th><th>Answered</th><th>Accuracy</th><th>Weakest topic</th><th>Top misconception</th><th>Access</th>';
   h += '</tr></thead><tbody>';
 
@@ -2167,7 +2167,7 @@ function renderClassOverview(responses, students) {
     h += '</tr>';
   });
 
-  h += '</tbody></table></div>';
+  h += '</tbody></table></div></div>';
 
   // Rename section below table
   h += '<div class="card forge-u-1bzpq1k"><div class="card-title">Rename a student</div>';
