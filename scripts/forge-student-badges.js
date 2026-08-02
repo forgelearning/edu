@@ -20,10 +20,8 @@
   if(!k)return;
   var assignmentCacheKey='forge-assigned-open:'+String(saved.studentId||'anon')+':'+String(saved.classId||'none');
   var currentCached=parseInt(localStorage.getItem('forge-assigned-open-current')||'',10);
-  if(!isNaN(currentCached)){
-    ForgeSidebar.setBadge('assignments',currentCached||null);
-    return;
-  }
+  ForgeSidebar.setBadge('assignments',isNaN(currentCached)?null:(currentCached||null));
+  return;
   var registryEntry=null;
   try{registryEntry=(JSON.parse(localStorage.getItem('forge-classes')||'[]')||[]).find(function(c){return c.classId===saved.classId;})||null}catch(e){}
   var responseContext={studentId:saved.studentId||registryEntry&&registryEntry.studentId,classCode:saved.classCode||registryEntry&&registryEntry.classCode,studentName:saved.studentName||registryEntry&&registryEntry.studentName};
