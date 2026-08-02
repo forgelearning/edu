@@ -169,7 +169,7 @@ var ForgeSidebar = {
     '</button>';
     return '<nav id="forge-tabbar">' + h + '</nav>' +
       '<div id="forge-sheet-scrim" onclick="ForgeSidebar._onScrimClick(event)">' +
-        '<div id="forge-sheet" role="dialog" aria-label="More"><div class="fsheet-grip"></div>' +
+        '<div id="forge-sheet" role="dialog" aria-modal="true" aria-label="More"><div class="fsheet-grip"></div>' +
         '<div id="forge-sheet-body"></div></div>' +
       '</div>';
   },
@@ -225,11 +225,15 @@ var ForgeSidebar = {
     if (!scrim || !body) return;
     body.innerHTML = this._sheetHtml();
     scrim.classList.add('open');
+    var firstItem = body.querySelector('button, a');
+    if (firstItem) firstItem.focus();
   },
 
   _closeSheet: function() {
     var scrim = document.getElementById('forge-sheet-scrim');
     if (scrim) scrim.classList.remove('open');
+    var more = document.querySelector('#forge-tabbar [data-key="__more"]');
+    if (more) more.focus();
   },
 
   // Only a tap on the backdrop itself dismisses; taps inside the panel bubble

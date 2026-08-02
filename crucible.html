@@ -126,7 +126,7 @@ ForgeSidebar.mount({
 <script src="forge-auth.js"></script>
 <script src="scripts/forge-student-badges.js"></script>
 <div class="wrap">
-  <div id="app"></div>
+  <div id="app" aria-live="polite"></div>
 </div>
 
 <script>if(window.ForgeAuth)ForgeAuth.adoptHashSession();</script>
@@ -500,6 +500,7 @@ function renderResults(){
   h+='<p class="tag" style="color:var(--bad);margin-bottom:8px">CRUCIBLE COMPLETE</p>';
   h+='<div class="big-pct" style="color:'+col+'">'+pct+'%</div>';
   h+='<div class="results-detail">'+correct+' / '+total+' correct \u00b7 '+mins+'m '+(secs<10?'0':'')+secs+'s</div>';
+  h+='<div class="forge-success" style="margin-top:18px"><div class="forge-success-title">'+(pct>=75?'Strong pressure-test.':'Useful pressure-test.')+'</div><div class="forge-success-copy">'+(pct>=75?'You held up well under timed conditions.':'Your weak spots are now visible. Rework your Anvil, then try the Crucible again.')+'</div></div>';
   h+='</div>';
 
   // Per-question breakdown
