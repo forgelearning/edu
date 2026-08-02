@@ -30,6 +30,7 @@
 <script src="scripts/forge-state.js"></script>
 <script src="scripts/forge-shell.js"></script>
 <script src="scripts/forge-content-status.js"></script>
+<script src="scripts/forge-app.js"></script>
 <script>if(localStorage.getItem('forge-theme')==='light'){document.documentElement.setAttribute('data-theme','light');}</script>
 <script src="scripts/forge-logo.js"></script>
 <script src="scripts/forge-auth-card.js"></script>
@@ -322,7 +323,7 @@ var state = {
   weightMap: {},       // spaced repetition: questionId → priority weight
   sessionWrongTags: [] // the session's clearest repair signal
 };
-var FORGE_SESSION_SIZE = 8;
+var FORGE_SESSION_SIZE = (window.ForgeApp && ForgeApp.session.defaultQuestionCount) || 8;
 var FORGE_SESSION_PREFIX = 'forge-session:';
 function forgeSessionKey(bank) { return FORGE_SESSION_PREFIX + String(state.studentId || 'anon') + ':' + String(state.classId || 'none') + ':' + bank; }
 function forgeSessionStorage(bank) { try { return JSON.parse(localStorage.getItem(forgeSessionKey(bank)) || 'null'); } catch(e) { return null; } }
@@ -1111,7 +1112,9 @@ function renderBanks(){
   h += '<h2 id="recommended-session-title" class="forge-recommendation__title">An eight-question session in '+subj.label+'</h2>';
   h += '<p class="forge-recommendation__copy">We picked '+(recommended ? recommended.label : 'the next available topic')+' because it is the clearest place to build momentum. You can change the session below.</p>';
   if (window.ForgeContentConfidence && window.ForgeContentConfidence.badge) h += '<div class="forge-content-selection-status">'+window.ForgeContentConfidence.badge(confidence.tier)+' '+window.ForgeContentConfidence.explanations[confidence.tier]+' '+window.ForgeContentConfidence.experiences[confidence.tier]+'</div>';
-  h += '<dl class="forge-session-detail"><div><dt>Topic</dt><dd>'+(recommended ? recommended.label : 'Current topic')+'</dd></div><div><dt>Questions</dt><dd>'+Math.min(FORGE_SESSION_SIZE, recommendedQuestions.length || FORGE_SESSION_SIZE)+'</dd></div><div><dt>Estimated time</dt><dd>~'+Math.max(4, Math.round(Math.min(FORGE_SESSION_SIZE, recommendedQuestions.length || FORGE_SESSION_SIZE) * 0.75))+' min</dd></div></dl>';
+  var recommendedCount = (window.ForgeApp && ForgeApp.session) ? ForgeApp.session.questionsFor(recommendedQuestions.length) : Math.min(FORGE_SESSION_SIZE, recommendedQuestions.length || FORGE_SESSION_SIZE);
+  var recommendedMinutes = (window.ForgeApp && ForgeApp.session) ? ForgeApp.session.estimatedMinutesFor(recommendedCount) : Math.max(4, Math.round(recommendedCount * 0.75));
+  h += '<dl class="forge-session-detail"><div><dt>Topic</dt><dd>'+(recommended ? recommended.label : 'Current topic')+'</dd></div><div><dt>Questions</dt><dd>'+recommendedCount+'</dd></div><div><dt>Estimated time</dt><dd>~'+recommendedMinutes+' min</dd></div></dl>';
   h += '<button class="forge-button forge-button--primary" id="start-recommended">Start recommended session →</button>';
   h += '<p class="forge-session-change"><button class="forge-link-button" id="change-session" type="button">Change session</button> to choose a different bank.</p></section>';
   h+='<div class="bank-list" id="all-session-options" hidden>';

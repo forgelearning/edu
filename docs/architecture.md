@@ -8,6 +8,7 @@ Forge remains a static deployment, but its browser code now has an explicit appl
 - `forge-auth.js` owns student session semantics and access/trial rules. It delegates network work to `ForgeAPI`.
 - Page scripts own view state and rendering only. Legacy `supaGet`, `supaInsert`, and related names are compatibility adapters that delegate to `ForgeAPI` while pages are migrated.
 - `data/forge-data.js` owns question-bank content and subject metadata; it must not contain transport or session logic.
+- `scripts/forge-app.js` owns cross-surface application contracts: bounded session configuration, navigation entry points, dashboard-card composition, and content-confidence access. Page scripts consume these helpers rather than redefining those values locally.
 
 ## Rules for new work
 
