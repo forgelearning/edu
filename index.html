@@ -37,10 +37,8 @@
 </head>
 <body>
 <script>
-// Review-only homepage experiment. Remove the query string to see the current page.
-if (new URLSearchParams(window.location.search).get('audit') === '1') {
-  document.body.classList.add('audit-test');
-}
+// The reviewed landing-page build is now the live homepage.
+document.body.classList.add('audit-test');
 </script>
 <script src="scripts/forge-content-status.js?v=20260812"></script>
 <script>
@@ -1826,7 +1824,6 @@ if (localStorage.getItem('forge-theme') === 'light') {
 
 <script>
 (function(){
-  if (!document.body.classList.contains('audit-test')) return;
   document.title = 'Forge — revision that responds to mistakes';
   var heroTitle = document.querySelector('.hero h1');
   if (heroTitle) heroTitle.innerHTML = 'Turn wrong answers into <em>better answers.</em>';
