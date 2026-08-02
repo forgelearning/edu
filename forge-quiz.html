@@ -634,11 +634,21 @@ function render() {
     state.subject = getSubjectForBank(requestedBank);
     var requestedClass = ForgeClasses.forSubject(state.subject);
     if (requestedClass) activateClass(requestedClass);
-    state.bank = requestedBank;
-    forgeStartSession(requestedBank, BANKS[requestedBank].questions.filter(function(q){return !q.type||q.type==='fill_blank';}));
-    state.phase = 'quiz';
-    requestedBankStarted = true;
-    requestedBank = null;
+    var launchRequestedBank = function() {
+      // The authenticated route can arrive before the paid/trial student row
+      // has been restored. Do not render a session that cannot log responses.
+      state.bank = requestedBank;
+      forgeStartSession(requestedBank, BANKS[requestedBank].questions.filter(function(q){return !q.type||q.type==='fill_blank';}));
+      state.phase = 'quiz';
+      requestedBankStarted = true;
+      requestedBank = null;
+      render();
+    };
+    if (!state.studentId && (state.isPaid || state.isTrial)) {
+      ensurePaidStudentId().then(launchRequestedBank).catch(launchRequestedBank);
+      return;
+    }
+    launchRequestedBank();
   }
   if (state.phase === 'join') renderJoin();
   else if (state.phase === 'trial-expired') renderTrialExpiredWall();
