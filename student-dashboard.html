@@ -149,6 +149,7 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
 <script src="scripts/forge-auth-card.js"></script>
 <script src="scripts/forge-classes.js"></script>
 <script src="scripts/forge-sidebar.js"></script>
+<script src="scripts/forge-product-analytics.js"></script>
 <script>
 ForgeSidebar.mount({
   active: 'dashboard',
@@ -305,6 +306,9 @@ function renderDashboard(){
   var total=responses.filter(function(r){return !r.reforge_attempted;}).length;
   var correct=responses.filter(function(r){return !r.reforge_attempted&&r.is_correct;}).length;
   var acc=total>0?Math.round((correct/total)*100):0;
+  var recent=responses.filter(function(r){return !r.reforge_attempted;}).slice(-20);
+  var recentAcc=recent.length?Math.round(recent.filter(function(r){return r.is_correct;}).length/recent.length*100):acc;
+  var trend=recent.length>=5?(recentAcc>acc+5?'improving':recentAcc<acc-5?'slipping':'steady'):'building a baseline';
   var xp=calcXP(responses);
   var rank=getRank(xp);
   var streak=calcStreak(responses);
@@ -398,7 +402,7 @@ function renderDashboard(){
   }
   h+='<a class="stat-strip-link" href="profile.html">View profile →</a>';
   h+='</div>';
-  h+='<p class="forge-progress-note">You have answered '+total+' question'+(total===1?'':'s')+' so far'+(streak ? ' and built a '+streak+'-day streak' : '')+'. '+(activeMCs.length ? activeMCs.length+' misconception'+(activeMCs.length===1?' needs':'s need')+' another pass.' : 'No open misconceptions right now.')+' Keep the loop moving: practice, repair, then pressure-test.</p>';
+  h+='<p class="forge-progress-note">You have answered '+total+' question'+(total===1?'':'s')+' so far'+(streak ? ' and built a '+streak+'-day streak' : '')+'. Recent accuracy is '+recentAcc+'% — <strong>'+trend+'</strong>. '+(activeMCs.length ? activeMCs.length+' misconception'+(activeMCs.length===1?' needs':'s need')+' another pass.' : 'No open misconceptions right now.')+' Keep the loop moving: practice, repair, then pressure-test.</p>';
 
   h+='<div class="ui-recommendation forge-card forge-card--focus">';
   if(activeMCs.length>0){
