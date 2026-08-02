@@ -114,7 +114,13 @@ var MC_LABELS = {"MC-INF-01":"Confuses disinflation with deflation","MC-INF-02":
 
 function supaGet(table, params) { return ForgeAPI.get(table, params); }
 
-function supaRpc(fn) { return ForgeAPI.rpc(fn); }
+// get_school_overview is scoped to the signed-in teacher's school, so the call
+// has to carry their token. Sent with the anon key it can only ever come back
+// unauthorised.
+function supaRpc(fn) {
+  var saved = teacherSession();
+  return ForgeAPI.rpc(fn, {}, saved && saved.access_token ? { token: saved.access_token } : {});
+}
 
 // ── AUTH ─────────────────────────────────────────────────────
 var TEACHER_SESSION_KEY = 'forge-teacher-session';
@@ -165,6 +171,21 @@ var data = { classes: [], students: [], responses: [] };
 
 function loadData() {
   supaRpc('get_school_overview').then(function(result) {
+    // The RPC is scoped to the caller's school and reports refusal in the
+    // payload rather than as an HTTP error. Without this branch an
+    // unauthorised caller would fall through to an empty-but-normal overview,
+    // which reads as "your school has no data" instead of "you can't see it".
+    if (result && result.authorized === false) {
+      if (result.reason === 'no_school') {
+        ForgeState.empty(app, {
+          label: 'No school linked to your account',
+          body: 'The overview covers the school on your classes. Create a class with your school name to see it here.'
+        });
+      } else {
+        renderLogin('Please sign in again to view the school overview.');
+      }
+      return;
+    }
     data.classes   = result.classes   || [];
     data.students  = result.students  || [];
     data.responses = (result.responses || []).slice().sort(function(a, b) {
