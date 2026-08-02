@@ -106,7 +106,7 @@ function getSpecPoint(question, bankKey) {
 }
 
 function logResponse(q, selectedKey, isCorrect, isReforge, reforgeCorrect) {
-  if (!state.studentId) return;
+  if (!state.studentId) return Promise.resolve(false);
   var row = {
     student_id: state.studentId,
     class_id: state.classId,
@@ -125,7 +125,7 @@ function logResponse(q, selectedKey, isCorrect, isReforge, reforgeCorrect) {
   // Use auth token for trial/paid students so RLS policies pass correctly
   var token = (state.isPaid || state.isTrial) ? ForgeAuth.accessToken() : null;
   if (token) {
-    ForgeAPI.response(SUPABASE_URL + '/rest/v1/responses', {
+    return ForgeAPI.response(SUPABASE_URL + '/rest/v1/responses', {
       method: 'POST',
       headers: {
         'apikey': SUPABASE_KEY,
@@ -134,9 +134,9 @@ function logResponse(q, selectedKey, isCorrect, isReforge, reforgeCorrect) {
         'Prefer': 'return=minimal'
       },
       body: JSON.stringify(row)
-    }).catch(function(e) { console.error('logResponse failed:', e); });
+    }).then(function() { return true; }).catch(function(e) { console.error('logResponse failed:', e); return false; });
   } else {
-    supa.insert('responses', row);
+    return supa.insert('responses', row).then(function() { return true; }).catch(function(e) { console.error('logResponse failed:', e); return false; });
   }
 }
 
@@ -546,7 +546,7 @@ function ensurePaidStudentId() {
   // Check localStorage cache first
   var cached = null;
   try { cached = JSON.parse(localStorage.getItem('forge-paid-student') || 'null'); } catch(e) {}
-  if (cached && cached.studentId && cached.name === state.studentName) {
+  if (cached && cached.studentId && cached.name === state.studentName && state.classId) {
     state.studentId = cached.studentId;
     return Promise.resolve(state.studentId);
   }
@@ -569,6 +569,10 @@ function ensurePaidStudentId() {
     if (rows && rows.length > 0) {
       var id = rows[0].id;
       state.studentId = id;
+      // Direct assignment links do not carry class context. Restore it from
+      // the authenticated student's row so response writes are attributable
+      // to the class that owns the assignment.
+      if (!state.classId && rows[0].class_id) state.classId = rows[0].class_id;
       try { localStorage.setItem('forge-paid-student', JSON.stringify({ studentId: id, name: state.studentName })); } catch(e) {}
       return id;
     }
@@ -1356,7 +1360,7 @@ function renderQuiz(){
       if (isCorrect) { state.weightMap[q.id] = Math.max(0.2, (state.weightMap[q.id]||1) * 0.5); }
       else { state.weightMap[q.id] = 3; }
     }
-    logResponse(q, k, isCorrect, false, null);
+    var responseSaved = logResponse(q, k, isCorrect, false, null);
 
       opts.forEach(function(x){
         x.classList.add('answered');
@@ -1377,7 +1381,11 @@ function renderQuiz(){
       }
 
       document.getElementById('next-btn').onclick=function(){
+        var next = function() {
         state.idx++;render();
+        };
+        if (responseSaved && typeof responseSaved.then === 'function') responseSaved.then(next).catch(next);
+        else next();
       };
     };
   });
@@ -1801,6 +1809,12 @@ if (ForgeAuth.hasSession()) {
       try {
         var paidCache = JSON.parse(localStorage.getItem('forge-paid-student') || 'null');
         if (paidCache && paidCache.studentId) state.studentId = paidCache.studentId;
+        var linkedStudent = JSON.parse(localStorage.getItem('forge-student') || 'null');
+        if (linkedStudent && linkedStudent.studentId && linkedStudent.classId) {
+          state.studentId = linkedStudent.studentId;
+          state.classId = linkedStudent.classId;
+          state.studentName = linkedStudent.studentName || state.studentName;
+        }
       } catch(e) {}
 
       if (access === 'pro') {

@@ -21,6 +21,16 @@ function banks(v){try{return typeof v==='string'?JSON.parse(v):v||[]}catch(e){re
 function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
 function normalise(v){return String(v==null?'':v).trim().toLowerCase()}
 function responseRows(payload){if(Array.isArray(payload))return payload;if(payload&&Array.isArray(payload.responses))return payload.responses;if(payload&&Array.isArray(payload.data))return payload.data;return[]}
+function localSessionResponses(context,assignmentRows){
+  var out=[];
+  (assignmentRows||[]).forEach(function(a){banks(a.banks).forEach(function(bank){
+    try{
+      var saved=JSON.parse(localStorage.getItem('forge-session:'+String(context.studentId||'anon')+':'+String(context.classId||'none')+':'+bank)||'null');
+      (saved&&saved.completedIds||[]).forEach(function(id){out.push({question_id:id,bank:bank,is_correct:false});});
+    }catch(e){}
+  });});
+  return out;
+}
 function bankForQuestion(id){var wanted=String(id||'').replace(/-RF$/,'');for(var b in BANKS){if((BANKS[b].questions||[]).some(function(q){return String(q.id)===wanted}))return b}return null}
 function progress(a,responses){return ForgeAssignmentProgress.progress(a,responses)}
 function status(a,responses){var p=progress(a,responses);if(p.complete)return['Completed','complete',p];var due=a.due_date&&new Date(a.due_date)<new Date(new Date().setHours(0,0,0,0));if(due)return['Overdue','overdue',p];if(p.answered)return['In progress','progress',p];return['Not started','not-started',p]}
@@ -32,10 +42,14 @@ function load(s){if(!s||!s.classId){showNoClass();return}ForgeState.loading(el,{
      Fetch the student's own responses first, then reconcile other linked rows
      in the background. This keeps a valid assignment renderable even when a
      linking RPC is unavailable or slow. */
-  var responsePromise=context.studentId&&context.classCode
-    ?jsonFetch(API+'/rest/v1/rpc/get_student_own_responses',{method:'POST',headers:headers(),body:JSON.stringify({p_student_id:context.studentId,p_code:context.classCode,p_name:context.studentName})}).then(function(rows){return responseRows(rows)}).catch(function(){return[]})
+  var responsePromise=context.studentId
+    ?jsonFetch(API+'/rest/v1/responses?select=*&student_id=eq.'+encodeURIComponent(context.studentId)+'&class_id=eq.'+encodeURIComponent(context.classId),{headers:headers(),token:ForgeAuth.accessToken()||KEY}).then(function(rows){return responseRows(rows)}).catch(function(){
+      return context.classCode
+        ?jsonFetch(API+'/rest/v1/rpc/get_student_own_responses',{method:'POST',headers:headers(),body:JSON.stringify({p_student_id:context.studentId,p_code:context.classCode,p_name:context.studentName})}).then(function(rows){return responseRows(rows)}).catch(function(){return[]})
+        :[];
+    })
     :Promise.resolve([]);
-  Promise.all([jsonFetch(API+'/rest/v1/assignments?select=*&class_id=eq.'+encodeURIComponent(s.classId)+'&order=due_date.asc',{headers:headers()}),responsePromise]).then(function(d){render(responseRows(d[0]),responseRows(d[1]));if(context.studentId&&context.classCode){ForgeClasses.adopt(context);ForgeClasses.syncFromServer(API,KEY,context,function(){})}}).catch(showAssignmentError)}
+  Promise.all([jsonFetch(API+'/rest/v1/assignments?select=*&class_id=eq.'+encodeURIComponent(s.classId)+'&order=due_date.asc',{headers:headers()}),responsePromise]).then(function(d){var assignmentRows=responseRows(d[0]),serverResponses=responseRows(d[1]),localResponses=localSessionResponses(context,assignmentRows),seen={};serverResponses.concat(localResponses).forEach(function(r){var marker=String(r.bank)+'|'+String(r.question_id||r.id);if(!seen[marker])seen[marker]=r;});render(assignmentRows,Object.keys(seen).map(function(k){return seen[k]}));if(context.studentId&&context.classCode){ForgeClasses.adopt(context);ForgeClasses.syncFromServer(API,KEY,context,function(){})}}).catch(showAssignmentError)}
 if(saved&&saved.classId)load(saved);else if(ForgeAuth.hasSession())ForgeAuth.getSession().then(function(){var token=ForgeAuth.accessToken(),user=ForgeAuth.currentUser();return ForgeAPI.response(API+'/rest/v1/students?select=id,class_id&auth_user_id=eq.'+user.id,{headers:{apikey:KEY,Authorization:'Bearer '+token}})}).then(function(r){return r.json()}).then(function(rows){if(!rows[0])throw Error('No class');saved={studentId:rows[0].id,classId:rows[0].class_id,studentName:(ForgeAuth.currentUser()||{}).user_metadata?.name||''};try{localStorage.setItem('forge-student',JSON.stringify(saved))}catch(e){}load(saved)}).catch(showNoClass);else showNoClass();
 </script>  <script src="scripts/forge-page-actions.js"></script>
 </body></html>

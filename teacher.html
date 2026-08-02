@@ -1733,7 +1733,8 @@ function assignmentQuestionTotal(banks) {
   return banks.reduce(function(total, bank) {
     var data = BANKS[bank];
     if (!data || !Array.isArray(data.questions)) return total;
-    return total + data.questions.filter(function(q) { return !q.type || q.type === 'fill_blank'; }).length;
+    var available = data.questions.filter(function(q) { return !q.type || q.type === 'fill_blank'; }).length;
+    return total + Math.min(8, available);
   }, 0);
 }
 

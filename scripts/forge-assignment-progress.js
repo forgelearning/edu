@@ -33,7 +33,8 @@
     });
     var total=banks.reduce(function(sum,bank){
       var data=bankData()[bank];
-      return sum+(data&&data.questions?data.questions.filter(function(q){return !q.type||q.type==='fill_blank';}).length:0);
+      var available=data&&data.questions?data.questions.filter(function(q){return !q.type||q.type==='fill_blank';}).length:0;
+      return sum+Math.min(8,available);
     },0);
     return {answered:Math.min(answered,total),correct:correct,total:total,complete:total>0&&answered>=total};
   }
