@@ -220,7 +220,14 @@ function renderDashboard(){
             if (created && (!response.created_at || new Date(response.created_at)<created)) return;
             if (response.bank===bank) ids[String(response.question_id||'').replace(/-RF$/,'')]=true;
           });
-          return Object.keys(ids).length < bankData.questions.filter(function(q){return !q.type||q.type==='fill_blank';}).length;
+          // A focused assignment is capped at the same eight questions as the
+          // student assignment view. Include locally completed session IDs so
+          // the sidebar does not show a stale badge before server sync.
+          try {
+            var savedSession=JSON.parse(localStorage.getItem('forge-session:'+String(st.studentId||'anon')+':'+String(st.classId||'none')+':'+bank)||'null');
+            (savedSession&&savedSession.completedIds||[]).forEach(function(id){ids[String(id).replace(/-RF$/,'')]=true;});
+          } catch(e) {}
+          return Object.keys(ids).length < Math.min(8,bankData.questions.filter(function(q){return !q.type||q.type==='fill_blank';}).length);
         });
         return incomplete;
       }).length;
