@@ -434,9 +434,9 @@ function renderProfile(){
     // Stat row
     h+='<div class="stat-row">';
     h+='<div class="stat"><span class="stat-n" style="color:'+accCol+'">'+acc+'%</span><span class="stat-l">Overall accuracy</span></div>';
-    h+='<div class="stat"><span class="stat-n" style="color:var(--white)">'+total+'</span><span class="stat-l">Questions answered</span></div>';
-    h+='<div class="stat"><span class="stat-n" style="color:var(--bad)">'+activeMCs.length+'</span><span class="stat-l">Active misconceptions</span></div>';
-    h+='<div class="stat"><span class="stat-n" style="color:var(--good)">'+resolved+'</span><span class="stat-l">Reforged &amp; resolved</span></div>';
+    h+='<div class="stat"><span class="stat-n forge-text-white">'+total+'</span><span class="stat-l">Questions answered</span></div>';
+    h+='<div class="stat"><span class="stat-n forge-text-bad">'+activeMCs.length+'</span><span class="stat-l">Active misconceptions</span></div>';
+    h+='<div class="stat"><span class="stat-n forge-text-good">'+resolved+'</span><span class="stat-l">Reforged &amp; resolved</span></div>';
     h+='</div></div>';
 
     // Two-col: focus areas + strengths
@@ -444,7 +444,7 @@ function renderProfile(){
 
     // Focus areas
     h+='<div class="card">';
-    h+='<div class="card-title"><span style="color:var(--bad)">▲ Focus areas — where marks are lost</span></div>';
+    h+='<div class="card-title"><span class="forge-text-bad">▲ Focus areas — where marks are lost</span></div>';
     if(weakBanks.length===0&&activeMCs.length===0){
       h+='<div class="empty"><h3>No weak spots yet</h3><p>Answer more questions per topic to see focus areas.</p></div>';
     } else {
@@ -465,7 +465,7 @@ function renderProfile(){
         h+='<div class="focus-item">';
         h+='<div class="focus-head">';
         h+='<span class="focus-pill" style="background:rgba(255,201,60,.15);color:var(--hot);border:1px solid rgba(255,201,60,.3)">'+tag+'</span>';
-        h+='<span class="focus-acc" style="color:var(--bad)">'+d.fires+' fire'+(d.fires!==1?'s':'')+'</span>';
+        h+='<span class="focus-acc forge-text-bad">'+d.fires+' fire'+(d.fires!==1?'s':'')+'</span>';
         h+='</div>';
         h+='<div class="focus-detail">'+label+'. Hit the <a href="anvil.html" style="color:var(--ember);font-weight:600">Anvil</a> to rework it.</div>';
         h+='</div>';
@@ -475,7 +475,7 @@ function renderProfile(){
 
     // Strengths
     h+='<div class="card">';
-    h+='<div class="card-title"><span style="color:var(--good)">✓ Strengths — ready for the exam</span></div>';
+    h+='<div class="card-title"><span class="forge-text-good">✓ Strengths — ready for the exam</span></div>';
     if(goodBanks.length===0){
       h+='<div class="empty"><h3>Strengths loading</h3><p>Answer at least 3 questions per topic to confirm strengths.</p></div>';
     } else {
@@ -503,7 +503,7 @@ function renderProfile(){
     });
     var subjects = Object.keys(subjectData).filter(function(s){return s!=='unknown';});
     if (subjects.length > 0) {
-      h += '<div class="card" style="margin-top:16px">';
+      h += '<div class="card forge-mt-4">';
       h += '<div class="card-title">Subject breakdown</div>';
       h += '<table style="width:100%;border-collapse:collapse;font-size:13px">';
       h += '<thead><tr style="border-bottom:1px solid var(--line)">';
@@ -552,7 +552,7 @@ function renderProfile(){
       h+='<div style="display:flex;gap:24px;margin-bottom:20px;flex-wrap:wrap">';
       h+='<div class="stat"><span class="stat-n" style="color:'+recentCol+'">'+recentAcc+'%</span><span class="stat-l">Last 30 questions</span></div>';
       h+='<div class="stat"><span class="stat-n" style="color:var(--ember)">'+streak+'</span><span class="stat-l">Day streak 🔥</span></div>';
-      h+='<div class="stat"><span class="stat-n" style="color:var(--white)">'+xp.toLocaleString()+'</span><span class="stat-l">Total XP</span></div>';
+      h+='<div class="stat"><span class="stat-n forge-text-white">'+xp.toLocaleString()+'</span><span class="stat-l">Total XP</span></div>';
       h+='</div>';
       // Grade prediction — one card per class the student is in
       if(grades.length>1){
@@ -565,7 +565,7 @@ function renderProfile(){
         h+='<div class="grade-info">';
         h+='<div class="grade-eyebrow">'+(g.label?g.label+' &middot; ':'')+'Predicted '+(g.isGCSE?'GCSE':'A Level')+' grade</div>';
         if(gr.next){
-          h+='<div class="grade-tracking">Tracking for <b style="color:'+gr.color+'">'+gr.grade+'</b> &rarr; stretch target: <b style="color:var(--white)">'+gr.next+'</b></div>';
+          h+='<div class="grade-tracking">Tracking for <b style="color:'+gr.color+'">'+gr.grade+'</b> &rarr; stretch target: <b class="forge-text-white">'+gr.next+'</b></div>';
         } else {
           h+='<div class="grade-tracking" style="color:'+gr.color+'">Top band ✦</div>';
         }
@@ -590,7 +590,7 @@ function renderProfile(){
   } else if(activeTab==='anvil'){
     // ── ANVIL TAB ──
     h+='<div class="card">';
-    h+='<div class="card-title"><span style="color:var(--bad)">Your Anvil — misconceptions to rework</span></div>';
+    h+='<div class="card-title"><span class="forge-text-bad">Your Anvil — misconceptions to rework</span></div>';
     if(activeMCs.length===0){
       h+='<div class="empty"><h3>Anvil is clear ✓</h3><p>No active misconceptions right now. Keep going to maintain this.</p></div>';
     } else {
@@ -600,7 +600,7 @@ function renderProfile(){
         h+='<div class="mc-item">';
         h+='<span class="focus-tag">'+tag+'</span>';
         h+='<span class="mc-detail">'+label+'</span>';
-        h+='<span class="mc-fires" style="color:var(--bad)">'+d.fires+'×</span>';
+        h+='<span class="mc-fires forge-text-bad">'+d.fires+'×</span>';
         h+='</div>';
       });
       h+='<a href="anvil.html" style="display:inline-block;margin-top:14px;font-size:13px;color:var(--ember);font-family:JetBrains Mono,monospace;text-decoration:none;font-weight:600">Rework these in the Anvil →</a>';
@@ -611,7 +611,7 @@ function renderProfile(){
     var resolvedTags=Object.keys(mcData).filter(function(t){return mcData[t].fires>0&&mcData[t].streak>=3;});
     if(resolvedTags.length>0){
       h+='<div class="card">';
-      h+='<div class="card-title" style="color:var(--good)">✓ Cleared from Anvil</div>';
+      h+='<div class="card-title forge-text-good">✓ Cleared from Anvil</div>';
       resolvedTags.forEach(function(tag){
         var label=MC_LABELS[tag]||tag;
         h+='<div class="strength-item"><span class="strength-label">'+label+'</span><span class="strength-acc">cleared</span></div>';
@@ -623,7 +623,7 @@ function renderProfile(){
     // ── CRUCIBLE TAB ──
     var crucibleResponses=responses.filter(function(r){return r.question_id&&r.question_id.endsWith('-CRU');});
     h+='<div class="card">';
-    h+='<div class="card-title" style="color:var(--bad)">The Crucible — exam pressure sessions</div>';
+    h+='<div class="card-title forge-text-bad">The Crucible — exam pressure sessions</div>';
     if(crucibleResponses.length===0){
       h+='<div class="empty"><h3>No Crucible sessions yet</h3><p>Complete a Crucible session to see your timed performance here.</p></div>';
     } else {
@@ -632,7 +632,7 @@ function renderProfile(){
       var cCol=cAcc>=75?'var(--good)':cAcc>=50?'var(--hot)':'var(--bad)';
       h+='<div class="stat-row" style="max-width:400px;margin-bottom:20px">';
       h+='<div class="stat"><span class="stat-n" style="color:'+cCol+'">'+cAcc+'%</span><span class="stat-l">Crucible accuracy</span></div>';
-      h+='<div class="stat"><span class="stat-n" style="color:var(--white)">'+crucibleResponses.length+'</span><span class="stat-l">Questions done</span></div>';
+      h+='<div class="stat"><span class="stat-n forge-text-white">'+crucibleResponses.length+'</span><span class="stat-l">Questions done</span></div>';
       h+='</div>';
       h+='<p style="font-size:13px;color:var(--slate)">The Crucible fires real exam conditions — no hints, no scaffolds. Your accuracy here is the closest prediction of exam day performance.</p>';
       h+='<a href="crucible.html" style="display:inline-block;margin-top:14px;font-size:13px;color:var(--bad);font-family:JetBrains Mono,monospace;text-decoration:none;font-weight:600">Enter the Crucible →</a>';

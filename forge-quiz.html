@@ -146,6 +146,7 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
 <script src="scripts/forge-classes.js"></script>
 <script src="scripts/forge-sidebar.js"></script>
 <script src="scripts/forge-product-analytics.js"></script>
+<script src="scripts/forge-page-actions.js"></script>
 <script>
 ForgeSidebar.mount({
   active: 'forge',
@@ -796,10 +797,10 @@ function renderJoin() {
   h += '<div id="panel-free">';
   h += '<p style="font-size:12.5px;color:var(--dim);margin-bottom:10px;text-align:center">10 free questions per day · no account needed</p>';
   h += '<div style="background:var(--panel-2);border:1px solid var(--line);border-radius:var(--radius-md);padding:12px 14px;margin-bottom:16px;font-size:12.5px;color:var(--slate)">';
-  h += '<div style="display:flex;justify-content:space-between;margin-bottom:6px"><span>✓ All subjects &amp; question banks</span><span style="color:var(--dim)">free</span></div>';
-  h += '<div style="display:flex;justify-content:space-between;margin-bottom:6px"><span>✓ Scaffolds &amp; re-forge feedback</span><span style="color:var(--dim)">free</span></div>';
-  h += '<div style="display:flex;justify-content:space-between;margin-bottom:6px"><span style="color:var(--dim)">✕ Crucible · full Anvil · XP ranks</span><span style="color:var(--dim)">Pro</span></div>';
-  h += '<div style="display:flex;justify-content:space-between"><span style="color:var(--dim)">✕ Unlimited questions</span><span style="color:var(--dim)">Pro</span></div>';
+  h += '<div style="display:flex;justify-content:space-between;margin-bottom:6px"><span>✓ All subjects &amp; question banks</span><span class="forge-text-dim">free</span></div>';
+  h += '<div style="display:flex;justify-content:space-between;margin-bottom:6px"><span>✓ Scaffolds &amp; re-forge feedback</span><span class="forge-text-dim">free</span></div>';
+  h += '<div style="display:flex;justify-content:space-between;margin-bottom:6px"><span class="forge-text-dim">✕ Crucible · full Anvil · XP ranks</span><span class="forge-text-dim">Pro</span></div>';
+  h += '<div style="display:flex;justify-content:space-between"><span class="forge-text-dim">✕ Unlimited questions</span><span class="forge-text-dim">Pro</span></div>';
   h += '</div>';
   h += ForgeAuthCard.field('free-name', 'Your first name', {placeholder:'e.g. Alex', autocomplete:'given-name'});
   h += '<button class="auth-btn" id="free-btn" type="submit">Start for free →</button>';
@@ -1028,11 +1029,11 @@ function renderSubjects(){
   // Class link prompt for trial/paid students not yet in a class
   if ((state.isPaid || state.isTrial) && !state.classId) {
     h += '<div id="class-link-banner" style="background:var(--panel);border:1px solid rgba(255,107,44,.25);border-radius:var(--radius-md);padding:14px 16px;margin-bottom:16px">';
-    h += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">';
+    h += '<div class="forge-between-row">';
     h += '<span style="font-family:\'JetBrains Mono\',monospace;font-size:11px;color:var(--ember);text-transform:uppercase;letter-spacing:.06em">Optional</span>';
     h += '<button onclick="document.getElementById(\'class-link-form\').style.display=document.getElementById(\'class-link-form\').style.display===\'none\'?\'block\':\'none\'" style="background:none;border:none;color:#8A857E;font-size:12px;cursor:pointer;font-family:Inter,sans-serif">Link to class ↓</button>';
     h += '</div>';
-    h += '<p style="font-size:13px;color:var(--slate);margin-bottom:0">Is your teacher using Forge? <b style="color:var(--white)">Enter their class code</b> to share your progress.</p>';
+    h += '<p style="font-size:13px;color:var(--slate);margin-bottom:0">Is your teacher using Forge? <b class="forge-text-white">Enter their class code</b> to share your progress.</p>';
     h += '<div id="class-link-form" style="display:none;margin-top:12px">';
     h += '<input id="ql-code" class="join-input" type="text" placeholder="e.g. ECON-Y12-A" style="text-transform:uppercase;margin-bottom:8px">';
     h += '<button id="ql-btn" class="join-btn btn-glass btn-ember" style="padding:10px">Link to class →</button>';
@@ -1296,7 +1297,7 @@ function renderBanks(){
         var dueColor = diff <= 1 ? 'var(--bad)' : diff <= 3 ? 'var(--hot)' : 'var(--good)';
 
         bh += '<div style="background:var(--panel);border:1px solid rgba(255,107,44,.35);border-radius:var(--radius-md);padding:14px 16px;margin-bottom:10px">';
-        bh += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">';
+        bh += '<div class="forge-between-row">';
         bh += '<span style="font-family:\'JetBrains Mono\',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--ember)">📋 Assignment</span>';
         bh += '<span style="font-family:\'JetBrains Mono\',monospace;font-size:11px;color:'+dueColor+'">'+dueStr+'</span>';
         bh += '</div>';
@@ -1375,7 +1376,7 @@ function renderLimitWall() {
   h += '<p style="font-size:12px;color:#8A857E;margin-top:8px;text-align:center">No card needed during trial · cancel anytime</p>';
   h += '</div>';
 
-  h += '<button class="skip-btn" onclick="(function(){state.phase=\'banks\';render();})()" style="margin-top:16px">← Back to banks</button>';
+  h += '<button class="skip-btn" onclick="(function(){state.phase=\'banks\';render();})()" class="forge-mt-4">← Back to banks</button>';
   h += '</div>';
 
   app.innerHTML = h;
@@ -1431,7 +1432,7 @@ function renderQuiz(){
   var keys=Object.keys(q.options);
   h+='<div class="options" id="opts">';
   keys.forEach(function(k){
-    h+='<button class="opt" data-k="'+k+'"><span class="letter">'+k+'</span><span>'+q.options[k]+'</span></button>';
+    h+='<button class="opt forge-option" data-k="'+k+'"><span class="letter">'+k+'</span><span>'+q.options[k]+'</span></button>';
   });
   h+='</div>';
   h+='<div id="feedback"></div>';
@@ -1628,7 +1629,7 @@ function renderReforge(q,el,color){
   h+='<div class="rf-stem">'+rf.stem+'</div>';
   h+='<div class="options" id="rf-opts">';
   keys.forEach(function(k){
-    h+='<button class="opt" data-k="'+k+'" style="font-size:14px;padding:10px 12px;border-radius:var(--radius-sm)"><span class="letter">'+k+'</span><span>'+rf.options[k]+'</span></button>';
+    h+='<button class="opt forge-option" data-k="'+k+'"><span class="letter">'+k+'</span><span>'+rf.options[k]+'</span></button>';
   });
   h+='</div><div id="rf-feedback"></div></div>';
   el.innerHTML=h;
@@ -1698,7 +1699,7 @@ function renderResults(){
   h+='<p class="tag" style="color:'+bk.color+';margin-bottom:6px">'+state.bank+' \u2014 '+bk.label+'</p>';
   h+='<div class="pct" style="color:'+col+'">'+pct+'%</div>';
   h+='<div class="detail">'+state.score+' / '+state.questions.length+' correct · session complete</div>';
-  h+='<div class="forge-status '+(pct>=75?'forge-status--success':'forge-status--focus')+'" style="margin-top:18px;text-align:left"><strong>'+(pct>=75?'Keep the momentum':'Your next session will prioritise this bank')+'</strong><br><span style="font-size:13px">'+(pct>=75?'Try another focused bank or pressure-test your recall in the Crucible.':'The question weighting will bring weaker questions back into rotation so you can repair the gap.')+'</span></div>';
+  h+='<div class="forge-status '+(pct>=75?'forge-status--success':'forge-status--focus')+'" style="margin-top:18px;text-align:left"><strong>'+(pct>=75?'Keep the momentum':'Your next session will prioritise this bank')+'</strong><br><span class="forge-text-13">'+(pct>=75?'Try another focused bank or pressure-test your recall in the Crucible.':'The question weighting will bring weaker questions back into rotation so you can repair the gap.')+'</span></div>';
   h+='<div class="forge-action-row">';
   h+='<button class="forge-button forge-button--primary" id="retry">Retry</button>';
   h+='<button class="forge-button forge-button--secondary" id="all-banks">All banks</button>';

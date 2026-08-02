@@ -245,6 +245,7 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
 <script src="scripts/forge-sidebar.js"></script>
 <script src="scripts/forge-teacher-ui.js"></script>
 <script src="scripts/forge-product-analytics.js"></script>
+<script src="scripts/forge-page-actions.js"></script>
 <script>
 window.forgeOnClassSwitch = function(){ renderTeacherHome(); };
 window.forgeOnClassSelect = function(cls){ loadClassDashboard(cls); };
@@ -1066,7 +1067,7 @@ function drawTeacherHome(classes) {
   var h = '';
   if (!classes.length) {
     h += '<div class="empty" style="padding:24px 0"><h3>No classes yet</h3>' +
-         '<p style="font-size:13px">Create your first class to start seeing student data.</p></div>';
+         '<p class="forge-text-13">Create your first class to start seeing student data.</p></div>';
   } else {
     h += '<div class="home-grid">';
     classes.forEach(function(c) {
@@ -1785,7 +1786,7 @@ function renderSpecBreakdown(responses) {
     return accA - accB;
   });
 
-  var h = '<div class="card-title" style="margin-bottom:16px">Spec Point Accuracy — weakest first</div>';
+  var h = '<div class="card-title forge-mb-4">Spec Point Accuracy — weakest first</div>';
   h += '<p style="font-size:13px;color:#8A857E;margin-bottom:20px">Only spec points with logged responses are shown. Questions answered before the latest update will not appear here.</p>';
   h += '<table style="width:100%;border-collapse:collapse;font-size:13px">';
   h += '<thead><tr style="color:#8A857E;text-align:left;border-bottom:1px solid var(--line)">';
@@ -1874,7 +1875,7 @@ function renderBrowseStarters() {
   var el = document.getElementById('panel-heatmap');
   var allTags = Object.keys(MC_STARTERS);
 
-  var h = '<div class="card" style="margin-bottom:20px">';
+  var h = '<div class="card forge-mb-5">';
   h += '<div class="card-title">Browse starter activities</div>';
   h += '<p style="font-size:13px;color:#8A857E;margin-bottom:14px">No class data loaded — pick any misconception tag to preview its starter activity. Once students complete questions, the top-firing tag will be recommended automatically.</p>';
   h += '<select id="tag-picker" style="width:100%;padding:10px 12px;background:var(--panel-2);border:1px solid var(--line);border-radius:var(--radius-sm);color:var(--white);font-family:Inter,sans-serif;font-size:14px;cursor:pointer">';
@@ -2077,7 +2078,7 @@ function renderAssignments() {
     h += '<option value="all"' + (dashState.assignmentFilter === 'all' ? ' selected' : '') + '>All assignments</option></select></div>';
 
     if (dashState.assignmentFilter !== 'archived' && active.length > 0) {
-      h += '<div class="card-title" style="margin-bottom:12px">Active assignments</div>';
+      h += '<div class="card-title forge-mb-3">Active assignments</div>';
       active.forEach(function(asgn) { h += renderAssignCard(asgn, students, responses, false); });
     }
 
@@ -2260,7 +2261,7 @@ function renderStarters(wrongResponses) {
   if (wrongResponses.length === 0) {
     // Browse mode when no data
     var allTags = Object.keys(MC_STARTERS);
-    var h = '<div class="card" style="margin-bottom:20px">';
+    var h = '<div class="card forge-mb-5">';
     h += '<div class="card-title">Browse starter activities</div>';
     h += '<p style="font-size:13px;color:#8A857E;margin-bottom:14px">No class data yet — pick any misconception tag to preview its starter activity.</p>';
     h += '<select id="tag-picker" style="width:100%;padding:10px 12px;background:var(--panel-2);border:1px solid var(--line);border-radius:var(--radius-sm);color:var(--white);font-family:Inter,sans-serif;font-size:14px;cursor:pointer">';
@@ -2543,18 +2544,18 @@ window.renderStudent = function(studentId) {
 
   var h = '<button class="back-btn" onclick="document.getElementById(\'panel-student\').style.display=\'none\';document.getElementById(\'panel-class\').classList.add(\'active\');document.querySelectorAll(\'.tab\')[1].classList.add(\'active\')">\u2190 Back to class</button>';
 
-  h += '<div class="dash-header" style="margin-bottom:16px"><div><p class="tag" style="margin-bottom:4px">Student Profile</p><h1>' + studentName + (extraTime > 0 ? ' <span class="extra-time-badge" style="font-size:14px;padding:3px 10px">+' + extraTime + '% time</span>' : '') + '</h1></div></div>';
+  h += '<div class="dash-header forge-mb-4"><div><p class="tag" style="margin-bottom:4px">Student Profile</p><h1>' + studentName + (extraTime > 0 ? ' <span class="extra-time-badge" style="font-size:14px;padding:3px 10px">+' + extraTime + '% time</span>' : '') + '</h1></div></div>';
 
   h += '<div class="stat-row">';
   h += '<div class="stat"><span class="stat-n" style="color:' + (acc >= 70 ? 'var(--good)' : acc >= 50 ? 'var(--hot)' : 'var(--bad)') + '">' + acc + '%</span><span class="stat-l">Accuracy</span></div>';
-  h += '<div class="stat"><span class="stat-n" style="color:var(--white)">' + total + '</span><span class="stat-l">Questions</span></div>';
-  h += '<div class="stat"><span class="stat-n" style="color:var(--hot)">' + activeMCs.length + '</span><span class="stat-l">Active misconceptions</span></div>';
-  h += '<div class="stat"><span class="stat-n" style="color:var(--good)">' + reforgePass + '/' + reforgeTotal + '</span><span class="stat-l">Reforges passed</span></div>';
+  h += '<div class="stat"><span class="stat-n forge-text-white">' + total + '</span><span class="stat-l">Questions</span></div>';
+  h += '<div class="stat"><span class="stat-n forge-text-hot">' + activeMCs.length + '</span><span class="stat-l">Active misconceptions</span></div>';
+  h += '<div class="stat"><span class="stat-n forge-text-good">' + reforgePass + '/' + reforgeTotal + '</span><span class="stat-l">Reforges passed</span></div>';
   h += '</div>';
 
   // Active misconceptions (Anvil)
   if (activeMCs.length > 0) {
-    h += '<div class="card" style="border-color:rgba(255,90,90,.3)"><div class="card-title" style="color:var(--bad)">Anvil \u2014 still active</div>';
+    h += '<div class="card" style="border-color:rgba(255,90,90,.3)"><div class="card-title forge-text-bad">Anvil \u2014 still active</div>';
     activeMCs.sort(function(a, b) { return mcData[b].fires - mcData[a].fires; });
     activeMCs.forEach(function(mc) {
       var d = mcData[mc];
@@ -2562,7 +2563,7 @@ window.renderStudent = function(studentId) {
       h += '<div class="mc-item">';
       h += '<span class="heat-tag">' + mc + '</span>';
       h += '<span class="mc-detail">' + label + '</span>';
-      h += '<span class="mc-fires" style="color:var(--bad)">Fired ' + d.fires + '\u00d7 \u00b7 Reforged ' + d.reforgeCorrect + '/' + d.reforgeAttempts + '</span>';
+      h += '<span class="mc-fires forge-text-bad">Fired ' + d.fires + '\u00d7 \u00b7 Reforged ' + d.reforgeCorrect + '/' + d.reforgeAttempts + '</span>';
       h += '</div>';
     });
     h += '</div>';
@@ -2570,14 +2571,14 @@ window.renderStudent = function(studentId) {
 
   // Resolved
   if (resolvedMCs.length > 0) {
-    h += '<div class="card" style="border-color:rgba(127,217,138,.3)"><div class="card-title" style="color:var(--good)">Resolved \u2014 reforged successfully</div>';
+    h += '<div class="card" style="border-color:rgba(127,217,138,.3)"><div class="card-title forge-text-good">Resolved \u2014 reforged successfully</div>';
     resolvedMCs.forEach(function(mc) {
       var d = mcData[mc];
       var label = MC_LABELS[mc] || mc;
       h += '<div class="mc-item" style="opacity:.7">';
       h += '<span class="heat-tag" style="background:var(--good)">' + mc + '</span>';
       h += '<span class="mc-detail" style="text-decoration:line-through">' + label + '</span>';
-      h += '<span class="mc-fires" style="color:var(--good)">Resolved \u2713</span>';
+      h += '<span class="mc-fires forge-text-good">Resolved \u2713</span>';
       h += '</div>';
     });
     h += '</div>';

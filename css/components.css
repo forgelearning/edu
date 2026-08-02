@@ -1,5 +1,40 @@
 /* Forge UI primitives. Keep repeated interaction patterns here. */
 .forge-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-lg);padding:var(--space-6)}
+.forge-question-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-md);padding:var(--space-5);margin-bottom:var(--space-4)}
+.forge-question-card__prompt{color:var(--white);font-weight:600;line-height:1.5;margin-bottom:var(--space-4);text-wrap:pretty}
+.forge-option{display:flex;align-items:flex-start;gap:var(--space-3);width:100%;padding:12px 14px;background:var(--panel-2);border:1px solid var(--line);border-radius:var(--radius-md);color:var(--white);font:inherit;text-align:left;cursor:pointer;transition:border-color .15s,background .15s,opacity .15s}
+.forge-option:hover:not(:disabled){border-color:var(--ember)}
+.forge-option:disabled{cursor:default;opacity:.6}
+.forge-option.is-correct{border-color:var(--good);background:rgba(127,217,138,.08);opacity:1}
+.forge-option.is-wrong{border-color:var(--bad);background:rgba(255,90,90,.08);opacity:1}
+.forge-subject-card{display:flex;flex-direction:column;gap:var(--space-2);min-height:140px;padding:var(--space-5);background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-md);text-decoration:none;transition:border-color .15s,transform .15s}
+.forge-subject-card:hover{border-color:var(--ember);transform:translateY(-1px)}
+.forge-subject-card__title{color:var(--white);font-family:'Sora',sans-serif;font-weight:700}
+.forge-subject-card__meta{color:var(--dim);font:11px 'JetBrains Mono',monospace;font-variant-numeric:tabular-nums}
+.forge-stat-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--space-3)}
+.forge-stat{padding:var(--space-4);background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-md)}
+.forge-stat__value{display:block;color:var(--white);font:800 28px/1 'Sora',sans-serif;font-variant-numeric:tabular-nums}
+.forge-stat__label{display:block;margin-top:var(--space-2);color:var(--dim);font:10px 'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.06em}
+.forge-cta-group{display:flex;align-items:center;gap:var(--space-3);flex-wrap:wrap}
+.forge-cta-group > *{min-height:44px}
+.forge-text-bad{color:var(--bad)}
+.forge-text-good{color:var(--good)}
+.forge-text-hot{color:var(--hot)}
+.forge-text-dim{color:var(--dim)}
+.forge-text-white{color:var(--white)}
+.forge-text-slate{color:var(--slate)}
+.forge-link-quiet{color:inherit;text-decoration:none}
+.forge-link-meta{color:var(--slate);text-decoration:none;font-size:13px;white-space:nowrap}
+.forge-meta-label{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--dim)}
+.forge-inline-note{font-size:13px;color:var(--dim)}
+.forge-text-13{font-size:13px}
+.forge-text-12{font-size:12px}
+.forge-mt-4{margin-top:16px}
+.forge-mb-3{margin-bottom:12px}
+.forge-mb-4{margin-bottom:16px}
+.forge-mb-5{margin-bottom:20px}
+.forge-logo-img{height:38px;width:auto}
+.forge-between-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
 .forge-card--glass{background:var(--glass-panel);backdrop-filter:blur(var(--glass-blur)) saturate(160%);-webkit-backdrop-filter:blur(var(--glass-blur)) saturate(160%)}
 .forge-card--focus{border-color:rgba(255,201,60,.42);background:rgba(255,201,60,.07)}
 .forge-button{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:0 var(--space-4);border:1px solid transparent;border-radius:var(--radius-sm);font:600 13px Inter,sans-serif;text-decoration:none;cursor:pointer;transition:background .15s,color .15s,border-color .15s,transform .15s}
@@ -42,3 +77,4 @@
 @media(max-width:480px){.forge-progress-note{font-size:12.5px}.ui-state-copy{font-size:13.5px}}
 @media(max-width:600px){.forge-loop{grid-template-columns:1fr}.forge-loop-step{text-align:left}.forge-loop-step strong{display:inline;margin-right:4px}}
 @media(max-width:600px){.forge-card{padding:var(--space-5)}.forge-button{min-height:44px}}
+@media(max-width:700px){.forge-stat-grid{grid-template-columns:1fr 1fr}}

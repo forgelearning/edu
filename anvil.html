@@ -659,9 +659,9 @@ function renderAnvilHome(){
 
   // Stats
   h+='<div class="stat-row">';
-  h+='<div class="stat"><span class="stat-n" style="color:var(--bad)">'+active.length+'</span><span class="stat-l">Active</span></div>';
-  h+='<div class="stat"><span class="stat-n" style="color:var(--good)">'+resolved.length+'</span><span class="stat-l">Resolved</span></div>';
-  h+='<div class="stat"><span class="stat-n" style="color:var(--white)">'+total+'</span><span class="stat-l">Total tracked</span></div>';
+  h+='<div class="stat"><span class="stat-n forge-text-bad">'+active.length+'</span><span class="stat-l">Active</span></div>';
+  h+='<div class="stat"><span class="stat-n forge-text-good">'+resolved.length+'</span><span class="stat-l">Resolved</span></div>';
+  h+='<div class="stat"><span class="stat-n forge-text-white">'+total+'</span><span class="stat-l">Total tracked</span></div>';
   h+='</div>';
 
   if(active.length===0 && resolved.length===0){
@@ -788,7 +788,7 @@ function renderReworkQuestion(tag,questions,lap,qIdx){
   h+='<div class="stem">'+q.stem+'</div>';
   h+='<div class="options" id="rw-opts">';
   keys.forEach(function(k){
-    h+='<button class="opt" data-k="'+k+'"><span class="letter">'+k+'</span><span>'+q.options[k]+'</span></button>';
+    h+='<button class="opt forge-option" data-k="'+k+'"><span class="letter">'+k+'</span><span>'+q.options[k]+'</span></button>';
   });
   h+='</div>';
   h+='<div id="rw-feedback"></div>';

@@ -27,8 +27,8 @@
   h+='<div class="insight-stat"><span class="tag">Run completion</span><span class="insight-number">'+completionRate+'%</span></div></div>';
   h+='<section class="insight-list"><h2>Event breakdown</h2>';
   Object.keys(counts).sort().forEach(function(name){h+='<div class="event-row"><span class="event-name">'+name+'</span><span class="forge-meta">'+counts[name]+'</span></div>';});
-  if(!events.length)h+='<p class="forge-status" style="margin-top:16px">No product events have been captured on this device yet.</p>';
-  h+='</section><p style="margin-top:16px"><button class="forge-button forge-button--secondary" id="clear">Clear local events</button></p>';
+  if(!events.length)h+='<p class="forge-status forge-mt-4">No product events have been captured on this device yet.</p>';
+  h+='</section><p class="forge-mt-4"><button class="forge-button forge-button--secondary" id="clear">Clear local events</button></p>';
   document.getElementById('app').innerHTML=h;
   document.getElementById('clear').onclick=function(){localStorage.removeItem('forge-product-events');location.reload();};
 })();

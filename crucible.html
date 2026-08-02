@@ -110,6 +110,7 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
 <script src="scripts/forge-classes.js"></script>
 <script src="scripts/forge-sidebar.js"></script>
 <script src="scripts/forge-product-analytics.js"></script>
+<script src="scripts/forge-page-actions.js"></script>
 <script>
 ForgeSidebar.mount({
   active: 'crucible',
@@ -283,7 +284,7 @@ function renderSubject(){
   h+='</div>';
   var saved=loadCrucibleRun();
   if(saved&&saved.status==='active'&&saved.subject&&saved.bank){
-    h+='<div class="forge-status forge-status--focus" style="margin-top:18px"><strong>Crucible run in progress</strong><br><span style="font-size:13px">You have answered '+(saved.answers||[]).length+' of '+(saved.questionIds||[]).length+' questions.</span><br><button class="forge-button forge-button--primary" id="resume-crucible" style="margin-top:10px">Resume run →</button> <button class="forge-button forge-button--secondary" id="discard-crucible" style="margin-top:10px">Start fresh</button></div>';
+    h+='<div class="forge-status forge-status--focus" style="margin-top:18px"><strong>Crucible run in progress</strong><br><span class="forge-text-13">You have answered '+(saved.answers||[]).length+' of '+(saved.questionIds||[]).length+' questions.</span><br><button class="forge-button forge-button--primary" id="resume-crucible" style="margin-top:10px">Resume run →</button> <button class="forge-button forge-button--secondary" id="discard-crucible" style="margin-top:10px">Start fresh</button></div>';
   }
   app.innerHTML=h + sessionBar();
   var resumeBtn=document.getElementById('resume-crucible');
@@ -455,7 +456,7 @@ function renderQuestion(){
   h+='<div class="stem">'+q.stem+'</div>';
   h+='<div class="options" id="c-opts">';
   keys.forEach(function(k){
-    h+='<button class="opt" data-k="'+k+'"><span class="letter">'+k+'</span><span>'+q.options[k]+'</span></button>';
+    h+='<button class="opt forge-option" data-k="'+k+'"><span class="letter">'+k+'</span><span>'+q.options[k]+'</span></button>';
   });
   h+='</div>';
   h+='<div id="c-feedback"></div><div class="clear"></div>';
@@ -545,7 +546,7 @@ function renderResults(){
       var tag=a.q.tag;
       if(Array.isArray(tag)) tag=tag[0];
       h+='<div class="result-row">';
-      h+='<span class="result-icon" style="color:var(--bad)">\u2715</span>';
+      h+='<span class="result-icon forge-text-bad">\u2715</span>';
       h+='<span class="result-info">'+a.q.stem.substring(0,80)+(a.q.stem.length>80?'\u2026':'')+'</span>';
       h+='<span class="result-mc">'+(tag||'—')+'</span>';
       h+='</div>';
@@ -560,7 +561,7 @@ function renderResults(){
     h+='<p class="tag" style="color:var(--good);margin-bottom:12px">Got these right</p>';
     rightAnswers.forEach(function(a){
       h+='<div class="result-row">';
-      h+='<span class="result-icon" style="color:var(--good)">\u2713</span>';
+      h+='<span class="result-icon forge-text-good">\u2713</span>';
       h+='<span class="result-info">'+a.q.stem.substring(0,80)+(a.q.stem.length>80?'\u2026':'')+'</span>';
       h+='<span class="result-mc correct">'+a.q.id+'</span>';
       h+='</div>';
@@ -573,7 +574,7 @@ function renderResults(){
   h+='<button class="forge-button forge-button--secondary" onclick="state.phase=\'bank\';render()">Change bank</button>';
   h+='<button class="forge-button forge-button--secondary" onclick="state.phase=state.classSubject?\'bank\':\'subject\';render()">Change subject</button>';
   h+='</div>';
-  h+='<div class="center" style="margin-top:16px">';
+  h+='<div class="center forge-mt-4">';
   h+='<a href="anvil.html" style="font-size:13px;color:var(--ember);font-family:JetBrains Mono,monospace;text-decoration:none">Rework your Anvil \u2192</a>';
   h+='</div>';
   app.innerHTML=h;
