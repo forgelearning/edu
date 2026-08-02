@@ -232,6 +232,7 @@ function renderDashboard(){
         return incomplete;
       }).length;
       if (window.ForgeSidebar) ForgeSidebar.setBadge('assignments', count || null);
+      try { localStorage.setItem('forge-assigned-open-current', String(count)); } catch(e) {}
       try { localStorage.setItem('forge-assigned-open:'+String(st.studentId||'anon')+':'+String(st.classId||'none'), String(count)); } catch(e) {}
     }).catch(function(){});
   }
