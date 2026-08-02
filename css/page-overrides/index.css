@@ -67,7 +67,7 @@
 section{padding:60px 0;border-top:1px solid var(--line)}
 .eyebrow{margin-bottom:10px}
 h2{font-size:clamp(28px,3.6vw,40px);font-weight:800;margin-bottom:14px}
-.sect-lede{max-width:60ch;font-size:17px}
+.sect-lede{max-width:none;font-size:17px}
 .sect-lede--wide{max-width:none}
 
 /* loop */
@@ -277,7 +277,7 @@ th.forge::before{content:"★ ";font-size:10px}
 .landing-recommendation{border:1px solid rgba(255,201,60,.4);border-radius:var(--radius-md);padding:18px 20px;margin:18px 0;background:rgba(255,201,60,.06)}
 .landing-recommendation-label{display:block;color:var(--hot);font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:7px}
 .landing-recommendation h3{font-size:20px;margin:0 0 7px;color:var(--white)}
-.landing-recommendation p{font-size:14px;line-height:1.5;color:var(--slate);max-width:68ch;margin:0 0 14px}
+.landing-recommendation p{font-size:14px;line-height:1.5;color:var(--slate);max-width:none;margin:0 0 14px}
 .landing-recommendation .landing-recommendation-copy{max-width:none}
 .landing-recommendation--teacher p{max-width:none}
 .landing-recommendation .btn{font-size:13px;padding:9px 14px}
@@ -300,7 +300,7 @@ th.forge::before{content:"★ ";font-size:10px}
 .teacher-cta p{margin-bottom:18px}
 .teacher-cta .forge-u-13fc78r{justify-content:center}
 .student-assignment-card{margin-top:28px}
-.student-assignment-card .dash-desc{max-width:72ch;margin-bottom:20px}
+.student-assignment-card .dash-desc{max-width:none;margin-bottom:20px}
 .student-assignment-list{display:grid;gap:10px}
 .student-assignment{border:1px solid var(--line);border-radius:var(--radius-md);padding:16px 18px;background:var(--panel-2)}
 .student-assignment--active{border-color:rgba(255,201,60,.4);background:rgba(255,201,60,.06)}
@@ -334,7 +334,7 @@ th.forge::before{content:"★ ";font-size:10px}
 .assignment-filter-row strong{color:var(--white);font-weight:600}
 
 .dash-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:8px}
-.dash-desc{font-size:13.5px;color:var(--slate);margin-bottom:14px;max-width:60ch}
+.dash-desc{font-size:13.5px;color:var(--slate);margin-bottom:14px;max-width:none}
 .dash-card .dash-desc--wide{max-width:none}
 .dash-footer{margin-top:14px;font-size:13.5px;color:var(--slate);border-top:1px solid var(--line);padding-top:10px}
 .heatmap-grid{display:flex;flex-direction:column;gap:8px}
