@@ -20,6 +20,9 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
 .btn:hover{opacity:.9}
 .err{color:var(--bad);font-size:13px;margin-top:8px;display:none}
 
+/* Keep the school overview's single sign-in action centred in its card. */
+.auth-card > a.auth-btn[href="teacher.html"]{display:block;width:max-content;margin:6px auto 0;text-align:center;text-decoration:none}
+
 /* Dashboard */
 .dash-header{margin-bottom:28px}
 .dash-meta{font-size:13px;color:var(--slate);margin-top:4px}
