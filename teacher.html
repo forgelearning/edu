@@ -1584,7 +1584,8 @@ function renderSpecBreakdown(responses) {
     var col = acc >= 70 ? 'var(--good)' : acc >= 50 ? 'var(--hot)' : 'var(--bad)';
     h += '<tr class="forge-u-1jhoksp">';
     h += '<td class="forge-u-yj4cup">' + sp + '</td>';
-    h += '<td class="forge-u-16oyzks">' + (SPEC_TO_SUBJECT[sp] || '—') + '</td>';
+    var specSubject = SPEC_TO_SUBJECT[sp] || (/^(ECON|ECON-)/i.test(sp) ? 'A Level Economics' : 'Subject not mapped');
+    h += '<td class="forge-u-16oyzks">' + specSubject + '</td>';
     h += '<td class="forge-u-19j2vc3">' + d.total + '</td>';
     h += '<td class="forge-u-19j2vc3">' + studentCount + '</td>';
     h += '<td style="font-weight:700;color:' + col + '">' + acc + '%</td>';
