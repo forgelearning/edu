@@ -14,6 +14,17 @@
 
   function navigate(href) { window.location.href = href; }
 
+  function stateRender(target, kind, options) {
+    if (!window.ForgeState || typeof window.ForgeState.render !== 'function') return null;
+    return window.ForgeState.render(target, kind, options);
+  }
+
+  function retry(target, options, onRetry) {
+    var button = stateRender(target, 'error', options);
+    if (button && typeof onRetry === 'function') button.addEventListener('click', onRetry);
+    return button;
+  }
+
   function dashboardCard(options) {
     options = options || {};
     var eyebrow = options.eyebrow ? '<span class="card-title">' + esc(options.eyebrow) + '</span>' : '';
@@ -38,6 +49,8 @@
     session: session,
     state: window.ForgeState || null,
     navigate: navigate,
+    stateRender: stateRender,
+    retry: retry,
     dashboardCard: dashboardCard,
     contentStatus: contentStatus
   };

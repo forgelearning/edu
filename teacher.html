@@ -660,12 +660,11 @@ function getDefaultStarter(tag, label) {
 
 var app = document.getElementById('app');
 function teacherInlineState(target, kind, options) {
-  if (!target) return null;
-  var holder = document.createElement('div');
-  holder.innerHTML = ForgeState.html(kind, options);
-  var stateNode = holder.firstElementChild;
+  if (!target || !window.ForgeApp || !ForgeApp.stateRender) return null;
+  var stateNode = document.createElement('div');
   target.appendChild(stateNode);
-  return stateNode;
+  ForgeApp.stateRender(stateNode, kind, options);
+  return stateNode.firstElementChild;
 }
 var dashState = { classId: null, className: null, classSubject: null, classCode: null, responses: [], students: [], wrongResponses: [], drillResponses: [], drillStudents: [], assignments: [], assignmentFilter: 'active' };
 
