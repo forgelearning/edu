@@ -41,6 +41,7 @@
 .forge-card--focus{border-color:rgba(255,201,60,.42);background:rgba(255,201,60,.07)}
 .forge-button{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:0 var(--space-4);border:1px solid transparent;border-radius:var(--radius-sm);font:600 13px Inter,sans-serif;text-decoration:none;cursor:pointer;transition:background .15s,color .15s,border-color .15s,transform .15s}
 .forge-button--primary{background:var(--ember);color:#fff}
+.forge-button--primary .forge-meta{color:inherit}
 .forge-button--primary:hover{background:var(--hot);color:var(--coal);transform:translateY(-1px)}
 .forge-button--secondary{background:transparent;border-color:var(--line);color:var(--white)}
 .forge-button--secondary:hover{border-color:var(--ember);color:var(--white)}
