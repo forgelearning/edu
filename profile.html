@@ -475,7 +475,7 @@ function renderProfile(){
     h+='<div class="card-title forge-u-1gs3btp">Forge mode — daily accuracy</div>';
     // Recent session breakdown
     var recentMain=responses.filter(function(r){return !r.reforge_attempted;}).slice(-30);
-    if(recentMain.length===0){
+    if(recentMain.length===0 && responses.length===0){
       h+=ForgeState.html('empty',{label:'No Forge sessions yet',body:'Complete your first quiz session to see accuracy and grade tracking.'});
     } else {
       var recentCorrect=recentMain.filter(function(r){return r.is_correct;}).length;

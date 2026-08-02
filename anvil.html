@@ -699,7 +699,15 @@ function buildReworkLap(questions,avoidKey){
 
 window.startRework=function(tag){
   var questions=MC_QUESTIONS[tag];
-  if(!questions||questions.length===0) return;
+  if(!questions||questions.length===0){
+    var wanted=String(tag||'').toLowerCase();
+    var matched=Object.keys(MC_QUESTIONS).filter(function(key){return key.toLowerCase()===wanted;})[0];
+    questions=matched?MC_QUESTIONS[matched]:null;
+  }
+  if(!questions||questions.length===0){
+    app.innerHTML=ForgeApp.stateHtml('error',{label:'Repair questions unavailable',body:'This misconception has no repair question loaded yet. Return to Anvil and choose another signal.',action:{label:'Back to Anvil',href:'anvil.html'}});
+    return;
+  }
   renderReworkQuestion(tag,questions,buildReworkLap(questions,null),0);
 };
 
