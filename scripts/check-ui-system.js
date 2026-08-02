@@ -5,11 +5,15 @@ const path = require('path');
 
 const root = path.resolve(__dirname, '..');
 const htmlFiles = fs.readdirSync(root).filter(name => name.endsWith('.html'));
+const maintainedHtmlFiles = [
+  ...htmlFiles.map(name => path.join(root, name)),
+  ...['dev/sidebar-test.html', 'dev/teacher-dashboard-test.html', 'templates/gcse-subject-template.html'].map(name => path.join(root, name))
+];
 const failures = [];
 const metrics = { pages: htmlFiles.length, dynamicStyleAttributes: 0, staticStyleAttributes: 0, inlineStyleBlocks: 0, inlineEventAttributes: 0, runtimeInlineHandlerSources: 0, legacyLogoClassAttributes: 0, duplicateClassAttributes: 0, directSupabaseFetches: 0, subjectPagesWithoutSharedCss: 0 };
 
-for (const name of htmlFiles) {
-  const file = path.join(root, name);
+for (const file of maintainedHtmlFiles) {
+  const name = path.relative(root, file);
   const source = fs.readFileSync(file, 'utf8');
   const markupSource = source.replace(/<!--[\s\S]*?-->/g, '');
   const styleBlocks = markupSource.match(/<style\b/gi) || [];
@@ -38,7 +42,7 @@ for (const name of htmlFiles) {
     metrics.directSupabaseFetches += directSupabase.length;
     failures.push(`${name}: direct Supabase transport (${directSupabase.length})`);
   }
-  if (/^(a-level|gcse)-/.test(name)) {
+  if (/^(a-level|gcse)-/.test(path.basename(name))) {
     const required = ['css/tokens.css', 'css/base.css', 'css/components.css', 'css/subject-pages.css', 'css/discovery.css', 'css/generated-utilities.css'];
     const missing = required.filter(asset => !source.includes(asset));
     if (missing.length) {

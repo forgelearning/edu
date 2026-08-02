@@ -1177,6 +1177,12 @@ function renderDashboard() {
   h += '<div class="stat stat--priority"><span class="stat-n stat-n-hot">' + Object.keys(uniqueMCs).length + '</span><span class="stat-l">Open misconception signals</span></div>';
   h += '</div>';
   h += '<div class="stat-support"><span>' + students.length + ' students</span><span>' + totalQs + ' answers</span><span>' + reforgeCorrect.length + '/' + reforgeAttempts.length + ' reforges passed</span></div>';
+  h += '<section class="ui-recommendation" aria-labelledby="teacher-next-action-title">';
+  h += '<p class="ui-recommendation__eyebrow">Next best action</p>';
+  h += '<h2 class="ui-recommendation__title" id="teacher-next-action-title">' + (wrongResponses.length ? 'Address the strongest misconception signal' : 'Create the first focused assignment') + '</h2>';
+  h += '<p class="ui-recommendation__copy">' + (wrongResponses.length ? 'Start with the students and misconception volume shown below, then use the secondary views only when you need supporting detail.' : 'There is not enough response data for a reliable intervention yet. Set a short assignment to establish the first signal.') + '</p>';
+  h += '<a class="ui-state-action" href="#panel-' + (wrongResponses.length ? 'heatmap' : 'assignments') + '" data-forge-action="next-action">' + (wrongResponses.length ? 'Open priority signals' : 'Open assignments') + '</a>';
+  h += '</section>';
   h += '<div class="forge-card forge-card--focus forge-u-p7nziw"><div class="card-title">Needs attention today <span class="forge-meta">top misconception volume</span></div>';
   if(attentionRows.length){
     h += '<div class="forge-action-row forge-u-11yg588">';
@@ -1208,6 +1214,8 @@ function renderDashboard() {
   app.innerHTML = h;
   var dashAction = document.getElementById('dash-action');
   if (dashAction) dashAction.onclick = function(e) { e.preventDefault(); switchTab(wrongResponses.length ? 'heatmap' : 'assignments', dashAction); };
+  var nextAction = document.querySelector('[data-forge-action="next-action"]');
+  if (nextAction) nextAction.onclick = function(e) { e.preventDefault(); switchTab(wrongResponses.length ? 'heatmap' : 'assignments', nextAction); };
   if (window.ForgeSidebar) {
     ForgeSidebar.setClassLabel(dashState.className);
     ForgeSidebar.setClassList(getJoinedClasses(), dashState.classId);

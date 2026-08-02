@@ -2,4 +2,5 @@
 .coverage-pill--full{color:var(--good);border-color:var(--good)}
 .coverage-pill--developing{color:var(--hot);border-color:var(--hot)}
 .coverage-pill--pilot,.coverage-pill--preview{color:var(--slate);border-color:var(--line)}
+.coverage-pill--unknown{color:var(--slate);border-color:var(--line);background:var(--panel-2)}
 .content-status-note{max-width:62ch;margin:8px 0 0;color:var(--slate);font-size:13px;line-height:1.5}

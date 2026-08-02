@@ -8,6 +8,7 @@ const path = require('path');
 const vm = require('vm');
 
 const root = path.join(__dirname, '..');
+const statusPath = path.join(root, 'data/content-status.json');
 const data = {};
 vm.createContext(data);
 vm.runInContext(fs.readFileSync(path.join(root, 'data/forge-data.js'), 'utf8') + '\nthis.SUBJECTS=SUBJECTS;this.BANKS=BANKS;', data);
@@ -54,3 +55,32 @@ for (const [key, subject] of Object.entries(data.SUBJECTS)) {
 console.log(`\n${Object.keys(data.SUBJECTS).length} canonical subjects; ${totalQuestions} questions across ${totalBanks} banks.`);
 console.log(`Coverage tiers: ${JSON.stringify(tiers)}`);
 console.log(`Marketing rollout checked: ${subjectPages.length} pages.`);
+
+if (!fs.existsSync(statusPath)) {
+  console.error('Missing data/content-status.json. Run node scripts/build-content-status.js.');
+  process.exit(1);
+}
+const status = JSON.parse(fs.readFileSync(statusPath, 'utf8'));
+for (const [page, key] of Object.entries(status.pages || {})) {
+  if (!fs.existsSync(path.join(root, page))) {
+    console.error(`Content status references missing marketing page: ${page}`);
+    process.exit(1);
+  }
+  if (!status.subjects[key]) {
+    console.error(`Content status page mapping references missing subject: ${key}`);
+    process.exit(1);
+  }
+}
+for (const [key, subject] of Object.entries(status.subjects || {})) {
+  if (!data.SUBJECTS[key]) {
+    console.error(`Content status references missing canonical subject: ${key}`);
+    process.exit(1);
+  }
+  const banks = (data.SUBJECTS[key].banks || []).map(id => data.BANKS[id]).filter(Boolean);
+  const questions = banks.reduce((sum, bank) => sum + (bank.questions || []).length, 0);
+  if (subject.questions !== questions || subject.banks !== banks.length) {
+    console.error(`Stale content status for ${key}. Run node scripts/build-content-status.js.`);
+    process.exit(1);
+  }
+}
+console.log('Browser content status contract is current.');

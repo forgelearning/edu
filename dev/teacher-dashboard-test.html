@@ -1,307 +1,40 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="en-GB">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Teacher dashboard — prototype</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/tokens.css">
-<style>
-  *{margin:0;padding:0;box-sizing:border-box}
-  body{background:var(--coal);color:var(--slate);font-family:'Inter',sans-serif;font-size:15px;-webkit-font-smoothing:antialiased;min-height:100vh}
-  h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);letter-spacing:-.015em}
-
-  /* ── top badge: Forge mark, frosted ── */
-  #top-badge{position:fixed;top:16px;left:16px;z-index:200;display:inline-flex;align-items:center;gap:10px;height:52px;padding:0 18px 0 14px;background:var(--glass-bg);backdrop-filter:blur(var(--glass-blur)) saturate(160%);-webkit-backdrop-filter:blur(var(--glass-blur)) saturate(160%);border:1px solid var(--line);border-radius:var(--radius-pill);box-shadow:0 20px 50px -20px rgba(0,0,0,.5);overflow:hidden;transition:width .35s cubic-bezier(.4,0,.2,1),padding .35s cubic-bezier(.4,0,.2,1)}
-  #top-badge.collapsed{width:44px;padding:0;justify-content:center}
-  #top-badge .badge-mark{flex-shrink:0;display:flex;align-items:center}
-  #top-badge .badge-mark .forge-logo-dark{display:block}
-  #top-badge .badge-mark .forge-logo-light{display:none}
-  [data-theme="light"] #top-badge .badge-mark .forge-logo-dark{display:none!important}
-  [data-theme="light"] #top-badge .badge-mark .forge-logo-light{display:block!important}
-  #top-badge .badge-name{font-family:'Sora',sans-serif;font-weight:800;font-size:16px;color:var(--white);white-space:nowrap;opacity:1;transition:opacity .2s ease}
-  #top-badge.collapsed .badge-name{opacity:0;width:0;display:none}
-
-  /* ── sidebar ── */
-  #sidebar{position:fixed;top:0;left:0;bottom:0;width:76px;z-index:150;display:flex;flex-direction:column;align-items:center;padding:88px 0 20px;background:var(--glass-panel);backdrop-filter:blur(var(--glass-blur)) saturate(160%);-webkit-backdrop-filter:blur(var(--glass-blur)) saturate(160%);border-right:1px solid var(--line);overflow:hidden;transition:width .35s cubic-bezier(.4,0,.2,1)}
-  #sidebar.expanded{width:230px;align-items:stretch}
-
-  #sidebar-toggle{position:fixed;top:78px;left:62px;width:28px;height:28px;border-radius:50%;background:var(--panel);border:1px solid var(--line);color:var(--slate);display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:160;transition:background .15s,color .15s,left .35s cubic-bezier(.4,0,.2,1)}
-  #sidebar.expanded ~ #sidebar-toggle{left:216px}
-  #sidebar-toggle:hover{color:var(--white);border-color:var(--ember)}
-  #sidebar-toggle svg{width:14px;height:14px;transition:transform .35s cubic-bezier(.4,0,.2,1)}
-  #sidebar.expanded ~ #sidebar-toggle svg{transform:rotate(180deg)}
-
-  .side-nav{display:flex;flex-direction:column;gap:4px;width:100%;padding:0 12px}
-  .side-item{position:relative;display:flex;align-items:center;gap:12px;height:46px;padding:0 13px;border-radius:var(--radius-md);color:var(--slate);text-decoration:none;cursor:pointer;background:transparent;border:none;font:inherit;text-align:left;width:100%;white-space:nowrap;overflow:hidden}
-  #sidebar:not(.expanded) .side-item{justify-content:center;padding:0}
-  .side-item:hover{background:var(--panel-2);color:var(--white)}
-  .side-item.active{background:var(--panel-2);color:var(--white)}
-  .side-item.active::before{content:"";position:absolute;left:-12px;top:8px;bottom:8px;width:3px;border-radius:0 3px 3px 0;background:var(--ember)}
-  #sidebar:not(.expanded) .side-item.active::before{display:none}
-  .side-item svg{width:19px;height:19px;flex-shrink:0}
-  .side-item .side-label{font-size:14px;font-weight:600;opacity:0;display:none;transition:opacity .2s ease .1s}
-  #sidebar.expanded .side-item .side-label{opacity:1;display:inline}
-
-  .side-item .side-badge{margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;background:var(--ember);color:var(--coal);border-radius:var(--radius-pill);padding:2px 6px;opacity:0;display:none;transition:opacity .2s ease .1s}
-  #sidebar.expanded .side-item .side-badge{opacity:1;display:inline-block}
-  .side-item .side-badge.badge-muted{background:var(--panel-2);color:var(--dim)}
-
-  .side-divider{height:1px;background:var(--line);margin:12px 12px}
-  #sidebar:not(.expanded) .side-divider{margin:12px 16px}
-
-  .side-item.danger:hover{background:rgba(255,90,90,.12);color:var(--bad)}
-
-  #sidebar:not(.expanded) .side-item{position:relative}
-  #sidebar:not(.expanded) .side-tooltip{position:absolute;left:64px;top:50%;transform:translateY(-50%);background:var(--panel);border:1px solid var(--line);color:var(--white);font-size:12px;font-weight:600;padding:6px 10px;border-radius:var(--radius-sm);white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .15s ease;box-shadow:0 8px 20px rgba(0,0,0,.3)}
-  #sidebar:not(.expanded) .side-item:hover .side-tooltip{opacity:1}
-  #sidebar.expanded .side-tooltip{display:none}
-
-  /* class switcher — this is where switching earns its keep for a
-     teacher (multiple classes taught), unlike the student sidebar
-     where we cut it */
-  .side-classswitch{width:100%;padding:0 12px;margin-bottom:10px}
-  .classswitch-btn{width:100%;display:flex;align-items:center;gap:10px;height:44px;padding:0 13px;border-radius:var(--radius-md);background:var(--panel-2);border:1px solid var(--line);color:var(--white);font:inherit;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;overflow:hidden}
-  #sidebar:not(.expanded) .classswitch-btn{justify-content:center;padding:0}
-  .classswitch-btn svg{width:16px;height:16px;flex-shrink:0;color:var(--dim)}
-  .classswitch-label{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;opacity:0;display:none}
-  #sidebar.expanded .classswitch-label{opacity:1;display:block}
-  .classswitch-chev{width:14px!important;height:14px!important;flex-shrink:0;opacity:0;display:none}
-  #sidebar.expanded .classswitch-chev{opacity:1;display:block}
-
-  /* ── page content ── */
-  #main{margin-left:76px;padding:110px 40px 60px;transition:margin-left .35s cubic-bezier(.4,0,.2,1);max-width:920px}
-  #sidebar.expanded ~ #main{margin-left:230px}
-  .eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ember);margin-bottom:8px}
-  #main h1{font-size:24px;font-weight:700;letter-spacing:-.01em;margin-bottom:16px}
-
-  /* cohort stat strip */
-  .stat-strip{display:flex;align-items:center;gap:22px;flex-wrap:wrap;padding:14px 16px;border:1px solid var(--line);border-radius:var(--radius-md);margin-bottom:24px;max-width:620px}
-  .stat{display:flex;flex-direction:column;gap:2px}
-  .stat-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--dim)}
-  .stat-value{font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700;color:var(--white)}
-  .stat-value-sub{font-size:12px;font-weight:600;color:var(--bad);margin-left:5px}
-  .stat-sep{width:1px;align-self:stretch;background:var(--line)}
-  .stat-strip-link{margin-left:auto;font-size:12px;font-weight:600;color:var(--ember);text-decoration:none;white-space:nowrap}
-  .stat-strip-link:hover{text-decoration:underline}
-
-  .section-label{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--dim);margin:28px 0 10px}
-  .section-label:first-of-type{margin-top:0}
-
-  /* needs-attention list — weakest spec points across the cohort */
-  .attn-list{display:flex;flex-direction:column;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--radius-md);overflow:hidden;max-width:620px}
-  .attn-row{display:flex;align-items:center;gap:14px;padding:13px 16px;background:var(--panel)}
-  .attn-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;background:var(--bad)}
-  .attn-dot.mid{background:var(--hot)}
-  .attn-body{flex:1;min-width:0}
-  .attn-name{font-size:14px;font-weight:600;color:var(--white)}
-  .attn-sub{font-size:12px;color:var(--dim);margin-top:1px}
-  .attn-stat{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:var(--bad);white-space:nowrap;flex-shrink:0}
-  .attn-stat.mid{color:var(--hot)}
-
-  /* roster table */
-  .roster{width:100%;max-width:620px;border-collapse:collapse;font-size:13px}
-  .roster th{text-align:left;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--dim);font-weight:600;padding:0 12px 8px;border-bottom:1px solid var(--line)}
-  .roster td{padding:11px 12px;border-bottom:1px solid var(--line);color:var(--slate)}
-  .roster tr:last-child td{border-bottom:none}
-  .roster td:first-child,.roster th:first-child{color:var(--white);font-weight:600}
-  .roster-acc{font-family:'JetBrains Mono',monospace;font-weight:700}
-  .roster-acc.low{color:var(--bad)}
-  .roster-acc.ok{color:var(--slate)}
-  .roster-acc.high{color:var(--good)}
-
-  /* ── footer row: Sign out + theme toggle share the bottom line ── */
-  .side-footer{margin-top:auto;width:100%;padding:0 12px;display:flex;align-items:center;gap:6px}
-  #sidebar:not(.expanded) .side-footer{flex-direction:column}
-  .side-footer-main{flex:1;min-width:0}
-  .side-footer-icon{position:relative;flex-shrink:0;width:38px;height:38px;border-radius:var(--radius-md);background:transparent;border:none;color:var(--slate);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .15s,color .15s}
-  .side-footer-icon:hover{background:var(--panel-2);color:var(--white)}
-  .side-footer-icon svg{width:18px;height:18px}
-  .side-footer-icon .side-tooltip{display:block!important;position:absolute;left:auto;right:0;top:44px;transform:none;background:var(--panel);border:1px solid var(--line);color:var(--white);font-size:12px;font-weight:600;padding:6px 10px;border-radius:var(--radius-sm);white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .15s ease;box-shadow:0 8px 20px rgba(0,0,0,.3)}
-  .side-footer-icon:hover .side-tooltip{opacity:1}
-
-  @media(max-width:680px){
-    #sidebar{width:64px}
-    #sidebar.expanded{width:210px}
-    #main{margin-left:64px}
-    #sidebar.expanded ~ #main{margin-left:210px}
-    #top-badge{left:12px}
-    #top-badge.collapsed{width:40px}
-  }
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Forge teacher dashboard harness</title>
+  <link rel="stylesheet" href="../css/tokens.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/sidebar.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/page-overrides/dev-harness.css">
 </head>
 <body>
-
-<div id="top-badge">
-  <span class="badge-mark"><img class="forge-logo-dark" src="data:image/png;base64,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" alt="" style="height:22px;width:auto;display:block"><img class="forge-logo-light" src="data:image/png;base64,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" alt="" style="height:22px;width:auto;display:none"></span>
-  <span class="badge-name">Forge</span>
-</div>
-
-<aside id="sidebar">
-  <div class="side-classswitch">
-    <button class="classswitch-btn" onclick="alert('Class switcher (prototype)')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V6a2 2 0 0 1 2-2h9l5 5v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2Z"></path><path d="M8 8h6M8 12h8M8 16h5"></path></svg>
-      <span class="classswitch-label">Year 12 Economics</span>
-      <svg class="classswitch-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 10l5 5 5-5"></path></svg>
-    </button>
-  </div>
-
-  <nav class="side-nav">
-    <a class="side-item active" href="#">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12l9-9 9 9"></path><path d="M5 10v10a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1V10"></path></svg>
-      <span class="side-label">Dashboard</span>
-      <span class="side-tooltip">Dashboard</span>
-    </a>
-    <a class="side-item" href="#">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"></rect><path d="M3 9h18M8 2v4M16 2v4"></path><path d="M8 13h2M8 17h2M14 13h2M14 17h2"></path></svg>
-      <span class="side-label">Assignments</span>
-      <span class="side-badge">4</span>
-      <span class="side-tooltip">Assignments</span>
-    </a>
-    <a class="side-item" href="#">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01"></path><path d="M10.3 3.9 2.5 17a2 2 0 0 0 1.7 3h15.6a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"></path></svg>
-      <span class="side-label">Misconceptions</span>
-      <span class="side-badge">12</span>
-      <span class="side-tooltip">Misconceptions</span>
-    </a>
-    <a class="side-item" href="#">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-      <span class="side-label">Students</span>
-      <span class="side-badge badge-muted">24</span>
-      <span class="side-tooltip">Students</span>
-    </a>
-
-    <div class="side-divider"></div>
-
-    <a class="side-item" href="profile.html">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c0-4 4-6 8-6s8 2 8 6"></path></svg>
-      <span class="side-label">Profile</span>
-      <span class="side-tooltip">Profile</span>
-    </a>
-  </nav>
-
-  <div class="side-footer">
-    <button class="side-item danger side-footer-main" onclick="alert('Sign out (prototype)')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h4"></path><path d="M16 17l5-5-5-5"></path><path d="M21 12H9"></path></svg>
-      <span class="side-label">Sign out</span>
-      <span class="side-tooltip">Sign out</span>
-    </button>
-    <button class="side-footer-icon" id="sidebar-theme-toggle" onclick="protoToggleTheme()" aria-label="Toggle theme">
-      <svg id="theme-icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-      <svg id="theme-icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="display:none"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg>
-      <span class="side-tooltip" id="theme-tooltip">Dark mode</span>
-    </button>
-  </div>
-</aside>
-
-<button id="sidebar-toggle" onclick="toggleSidebar()" aria-label="Toggle sidebar">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
-</button>
-
-<div id="main">
-  <div class="eyebrow">Dashboard · Year 12 Economics</div>
-  <h1>Good morning, Mr. Zanier</h1>
-
-  <div class="stat-strip">
-    <div class="stat">
-      <span class="stat-label">Students</span>
-      <span class="stat-value">24</span>
-    </div>
-    <div class="stat-sep"></div>
-    <div class="stat">
-      <span class="stat-label">Class average</span>
-      <span class="stat-value">74%</span>
-    </div>
-    <div class="stat-sep"></div>
-    <div class="stat">
-      <span class="stat-label">Weakest spec point</span>
-      <span class="stat-value">Inflation <span class="stat-value-sub">48%</span></span>
-    </div>
-    <a class="stat-strip-link" href="teacher.html">Full class overview →</a>
-  </div>
-
-  <div class="proto-note" style="border:1px dashed var(--line);border-radius:var(--radius-md);padding:12px 14px;margin-bottom:8px;max-width:58ch">
-    <p style="font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.7;color:var(--dim)">Prototype note — same sidebar shell as the student dashboard (badge, collapse, footer row), swapped to a teacher's nav: a class switcher up top, then Dashboard / Assignments / Misconceptions / Students.</p>
-  </div>
-
-  <div class="section-label">Needs attention</div>
-  <div class="attn-list">
-    <div class="attn-row">
-      <span class="attn-dot"></span>
-      <div class="attn-body">
-        <div class="attn-name">Inflation — CPI vs RPI confusion</div>
-        <div class="attn-sub">9 students flagged this week</div>
-      </div>
-      <span class="attn-stat">48% acc.</span>
-    </div>
-    <div class="attn-row">
-      <span class="attn-dot mid"></span>
-      <div class="attn-body">
-        <div class="attn-name">Elasticity — sign convention errors</div>
-        <div class="attn-sub">5 students flagged this week</div>
-      </div>
-      <span class="attn-stat mid">61% acc.</span>
-    </div>
-    <div class="attn-row">
-      <span class="attn-dot"></span>
-      <div class="attn-body">
-        <div class="attn-name">3 students haven't opened Forge in 5+ days</div>
-        <div class="attn-sub">Priya K., Sam O., Deja R.</div>
-      </div>
-      <span class="attn-stat">Inactive</span>
-    </div>
-  </div>
-
-  <div class="section-label">Students — lowest accuracy first</div>
-  <table class="roster">
-    <thead>
-      <tr><th>Name</th><th>Last active</th><th>Accuracy</th></tr>
-    </thead>
-    <tbody>
-      <tr><td>Sam O.</td><td>6 days ago</td><td class="roster-acc low">52%</td></tr>
-      <tr><td>Priya K.</td><td>5 days ago</td><td class="roster-acc low">58%</td></tr>
-      <tr><td>Deja R.</td><td>5 days ago</td><td class="roster-acc ok">64%</td></tr>
-      <tr><td>Tom H.</td><td>Today</td><td class="roster-acc ok">71%</td></tr>
-      <tr><td>Maya Z.</td><td>Today</td><td class="roster-acc high">91%</td></tr>
-    </tbody>
-  </table>
-</div>
-
-<script>
-function toggleSidebar(){
-  var sb = document.getElementById('sidebar');
-  var badge = document.getElementById('top-badge');
-  var expanded = sb.classList.toggle('expanded');
-  badge.classList.toggle('collapsed', !expanded);
-  localStorage.setItem('proto-sidebar-teacher', expanded ? '1' : '0');
-}
-(function(){
-  var expanded = localStorage.getItem('proto-sidebar-teacher') === '1';
-  document.getElementById('sidebar').classList.toggle('expanded', expanded);
-  document.getElementById('top-badge').classList.toggle('collapsed', !expanded);
-})();
-function updateThemeToggleUI(isLight){
-  document.getElementById('theme-icon-moon').style.display = isLight ? 'none' : 'block';
-  document.getElementById('theme-icon-sun').style.display = isLight ? 'block' : 'none';
-  document.getElementById('theme-tooltip').textContent = isLight ? 'Switch to dark' : 'Switch to light';
-}
-function protoToggleTheme(){
-  var h = document.documentElement;
-  var isLight = h.getAttribute('data-theme') === 'light';
-  if(isLight){
-    h.removeAttribute('data-theme'); localStorage.setItem('forge-theme','dark');
-  } else {
-    h.setAttribute('data-theme','light'); localStorage.setItem('forge-theme','light');
-  }
-  updateThemeToggleUI(!isLight);
-}
-(function(){
-  var isLight = localStorage.getItem('forge-theme') === 'light';
-  if(isLight) document.documentElement.setAttribute('data-theme','light');
-  updateThemeToggleUI(isLight);
-})();
-</script>
-
+  <main class="wrap forge-harness-main">
+    <p class="tag">Development harness</p>
+    <h1>Priority-first teacher view</h1>
+    <section class="ui-recommendation" aria-labelledby="harness-focus-title">
+      <p class="ui-recommendation__eyebrow">Today’s priority</p>
+      <h2 class="ui-recommendation__title" id="harness-focus-title">Review the largest misconception cluster</h2>
+      <p class="ui-recommendation__copy">The production dashboard should lead with one next action before exposing deeper analytics.</p>
+      <a class="ui-state-action" href="../teacher.html">Open teacher dashboard</a>
+    </section>
+  </main>
+  <script src="../scripts/forge-logo.js"></script>
+  <script src="../scripts/forge-sidebar.js?v=20260802"></script>
+  <script src="../scripts/forge-page-actions.js"></script>
+  <script>
+    ForgeSidebar.mount({
+      active: 'dashboard',
+      classSwitch: { label: 'Demo class' },
+      items: [
+        { key: 'dashboard', href: 'teacher-dashboard-test.html', label: 'Overview' },
+        { key: 'students', href: '../teacher.html#class', label: 'Class' },
+        { key: 'assignments', href: '../teacher.html#assignments', label: 'Assignments' }
+      ],
+      footerItems: [{ key: 'school', href: '../school-overview.html', label: 'School overview' }]
+    });
+  </script>
 </body>
 </html>

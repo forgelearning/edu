@@ -1,0 +1,245 @@
+{
+  "version": 1,
+  "generatedAt": "2026-08-02T09:06:58.064Z",
+  "pages": {
+    "economics.html": "econ",
+    "psychology.html": "psych",
+    "law.html": "law",
+    "politics.html": "pol",
+    "criminology.html": "crim",
+    "a-level-sociology.html": "soc",
+    "a-level-geography.html": "geo",
+    "a-level-business.html": "bus",
+    "a-level-chemistry.html": "chem",
+    "a-level-biology.html": "bio",
+    "a-level-history.html": "hist",
+    "a-level-physics.html": "phys",
+    "a-level-maths.html": "maths",
+    "a-level-german.html": "german",
+    "a-level-french.html": "french",
+    "a-level-spanish.html": "span",
+    "a-level-mandarin.html": "mand",
+    "a-level-media.html": "media",
+    "a-level-pe.html": "pe",
+    "a-level-religious-studies.html": "rs",
+    "a-level-health-social-care.html": "hsc",
+    "a-level-computer-science.html": "cs",
+    "a-level-english-literature.html": "englit",
+    "a-level-english-language-literature.html": "engll",
+    "gcse-geography.html": "gcse-geo",
+    "gcse-economics.html": "gcse-econ",
+    "gcse-psychology.html": "gcse-psych",
+    "gcse-history.html": "gcse-hist",
+    "gcse-science.html": "gcse-science",
+    "gcse-maths.html": "gcse-maths",
+    "gcse-chemistry.html": "gcse-sep-chem",
+    "gcse-physics.html": "gcse-sep-phys",
+    "gcse-biology.html": "gcse-sep-bio"
+  },
+  "subjects": {
+    "econ": {
+      "tier": "full",
+      "questions": 515,
+      "banks": 19,
+      "coverage": 100
+    },
+    "psych": {
+      "tier": "full",
+      "questions": 264,
+      "banks": 11,
+      "coverage": 100
+    },
+    "soc": {
+      "tier": "full",
+      "questions": 200,
+      "banks": 10,
+      "coverage": 100
+    },
+    "geo": {
+      "tier": "full",
+      "questions": 238,
+      "banks": 9,
+      "coverage": 91
+    },
+    "gcse-geo": {
+      "tier": "full",
+      "questions": 640,
+      "banks": 14,
+      "coverage": 100
+    },
+    "gcse-econ": {
+      "tier": "full",
+      "questions": 420,
+      "banks": 21,
+      "coverage": 100
+    },
+    "bus": {
+      "tier": "full",
+      "questions": 202,
+      "banks": 4,
+      "coverage": 100
+    },
+    "chem": {
+      "tier": "full",
+      "questions": 202,
+      "banks": 3,
+      "coverage": 100
+    },
+    "crim": {
+      "tier": "full",
+      "questions": 200,
+      "banks": 4,
+      "coverage": 100
+    },
+    "bio": {
+      "tier": "full",
+      "questions": 202,
+      "banks": 4,
+      "coverage": 100
+    },
+    "hist": {
+      "tier": "full",
+      "questions": 208,
+      "banks": 5,
+      "coverage": 100
+    },
+    "law": {
+      "tier": "full",
+      "questions": 200,
+      "banks": 4,
+      "coverage": 100
+    },
+    "phys": {
+      "tier": "full",
+      "questions": 200,
+      "banks": 3,
+      "coverage": 100
+    },
+    "pol": {
+      "tier": "full",
+      "questions": 200,
+      "banks": 4,
+      "coverage": 100
+    },
+    "cs": {
+      "tier": "full",
+      "questions": 212,
+      "banks": 4,
+      "coverage": 100
+    },
+    "maths": {
+      "tier": "full",
+      "questions": 214,
+      "banks": 3,
+      "coverage": 100
+    },
+    "german": {
+      "tier": "full",
+      "questions": 212,
+      "banks": 2,
+      "coverage": 100
+    },
+    "rs": {
+      "tier": "full",
+      "questions": 216,
+      "banks": 2,
+      "coverage": 100
+    },
+    "hsc": {
+      "tier": "full",
+      "questions": 212,
+      "banks": 2,
+      "coverage": 100
+    },
+    "french": {
+      "tier": "full",
+      "questions": 213,
+      "banks": 2,
+      "coverage": 100
+    },
+    "media": {
+      "tier": "full",
+      "questions": 200,
+      "banks": 2,
+      "coverage": 100
+    },
+    "pe": {
+      "tier": "full",
+      "questions": 200,
+      "banks": 2,
+      "coverage": 100
+    },
+    "span": {
+      "tier": "full",
+      "questions": 211,
+      "banks": 2,
+      "coverage": 100
+    },
+    "englit": {
+      "tier": "full",
+      "questions": 200,
+      "banks": 2,
+      "coverage": 100
+    },
+    "engll": {
+      "tier": "full",
+      "questions": 200,
+      "banks": 2,
+      "coverage": 100
+    },
+    "mand": {
+      "tier": "developing",
+      "questions": 200,
+      "banks": 1,
+      "coverage": 100
+    },
+    "gcse-hist": {
+      "tier": "full",
+      "questions": 200,
+      "banks": 4,
+      "coverage": 100
+    },
+    "mandarin": {
+      "tier": "preview",
+      "questions": 0,
+      "banks": 0,
+      "coverage": 100
+    },
+    "gcse-science": {
+      "tier": "full",
+      "questions": 212,
+      "banks": 6,
+      "coverage": 100
+    },
+    "gcse-psych": {
+      "tier": "full",
+      "questions": 202,
+      "banks": 8,
+      "coverage": 100
+    },
+    "gcse-sep-chem": {
+      "tier": "full",
+      "questions": 200,
+      "banks": 2,
+      "coverage": 100
+    },
+    "gcse-sep-phys": {
+      "tier": "full",
+      "questions": 200,
+      "banks": 2,
+      "coverage": 100
+    },
+    "gcse-sep-bio": {
+      "tier": "full",
+      "questions": 200,
+      "banks": 2,
+      "coverage": 100
+    },
+    "gcse-maths": {
+      "tier": "full",
+      "questions": 206,
+      "banks": 3,
+      "coverage": 100
+    }
+  }
+}

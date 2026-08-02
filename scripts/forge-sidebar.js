@@ -169,6 +169,28 @@ var ForgeSidebar = {
       var wrap = document.querySelector('.fside-classswitch');
       if (menu && menu.style.display !== 'none' && wrap && !wrap.contains(e.target)) menu.style.display = 'none';
     });
+    document.addEventListener('keydown', function(e) {
+      var scrim = document.getElementById('forge-sheet-scrim');
+      if (!scrim || !scrim.classList.contains('open')) return;
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        ForgeSidebar._closeSheet();
+        return;
+      }
+      if (e.key !== 'Tab') return;
+      var focusable = Array.prototype.slice.call(scrim.querySelectorAll('a,button,input,select,textarea,[tabindex]:not([tabindex="-1"])'))
+        .filter(function(el) { return !el.disabled && el.offsetParent !== null; });
+      if (!focusable.length) return;
+      var first = focusable[0];
+      var last = focusable[focusable.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    });
   },
 
   // ---- mobile shell -------------------------------------------------
@@ -183,8 +205,9 @@ var ForgeSidebar = {
       _fsIcon('more') + '<span class="ftab-label">More</span>' +
     '</button>';
     return '<nav id="forge-tabbar">' + h + '</nav>' +
-      '<div id="forge-sheet-scrim" data-forge-sidebar-action="scrim">' +
-        '<div id="forge-sheet" role="dialog" aria-modal="true" aria-label="More"><div class="fsheet-grip"></div>' +
+      '<div id="forge-sheet-scrim" data-forge-sidebar-action="scrim" aria-hidden="true" hidden>' +
+        '<div id="forge-sheet" role="dialog" aria-modal="true" aria-labelledby="forge-sheet-title" tabindex="-1"><div class="fsheet-grip"></div>' +
+        '<h2 id="forge-sheet-title" class="forge-sr-only">More navigation</h2>' +
         '<div id="forge-sheet-body"></div></div>' +
       '</div>';
   },
@@ -239,6 +262,9 @@ var ForgeSidebar = {
     var body = document.getElementById('forge-sheet-body');
     if (!scrim || !body) return;
     body.innerHTML = this._sheetHtml();
+    this._sheetTrigger = document.querySelector('#forge-tabbar [data-key="__more"]');
+    scrim.removeAttribute('hidden');
+    scrim.setAttribute('aria-hidden', 'false');
     scrim.classList.add('open');
     var firstItem = body.querySelector('button, a');
     if (firstItem) firstItem.focus();
@@ -246,9 +272,14 @@ var ForgeSidebar = {
 
   _closeSheet: function() {
     var scrim = document.getElementById('forge-sheet-scrim');
-    if (scrim) scrim.classList.remove('open');
-    var more = document.querySelector('#forge-tabbar [data-key="__more"]');
+    if (scrim) {
+      scrim.classList.remove('open');
+      scrim.setAttribute('aria-hidden', 'true');
+      scrim.setAttribute('hidden', 'hidden');
+    }
+    var more = this._sheetTrigger || document.querySelector('#forge-tabbar [data-key="__more"]');
     if (more) more.focus();
+    this._sheetTrigger = null;
   },
 
   // Only a tap on the backdrop itself dismisses; taps inside the panel bubble

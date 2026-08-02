@@ -39,7 +39,13 @@
 <script>ForgeSidebar.mount({active:'school',items:[{key:'dashboard',href:'teacher.html',label:'Teacher dashboard'},{key:'school',href:'school-overview.html',label:'School overview'},{key:'present',href:'present.html',label:'Class Mode'}],footerItems:[]});</script>
 <script>
 window.toggleTheme=function(){var h=document.documentElement,b=document.querySelector('.theme-toggle');if(h.getAttribute('data-theme')==='light'){h.removeAttribute('data-theme');b.textContent='☀';localStorage.setItem('forge-theme','dark');}else{h.setAttribute('data-theme','light');b.textContent='☾';localStorage.setItem('forge-theme','light');}};
-if(localStorage.getItem('forge-theme')==='light'){document.documentElement.setAttribute('data-theme','light');document.querySelector('.theme-toggle').textContent='☾';}
+if(localStorage.getItem('forge-theme')==='light'){
+  document.documentElement.setAttribute('data-theme','light');
+  document.addEventListener('DOMContentLoaded',function(){
+    var btn=document.querySelector('.theme-toggle');
+    if(btn) btn.textContent='☾';
+  });
+}
 </script>
 
 <div class="forge-u-12w34v1" id="sticky-nav"><div class="wrap-nav forge-u-s2pdxx"><nav>
@@ -422,14 +428,15 @@ function renderDashboard() {
     return;
   }
 
-  // Tabs
-  h += '<div class="tabs">';
+  // Detail views are deliberately secondary to the leadership focus above.
+  h += '<details class="tab-more school-detail-views"' + (activeTab !== 'subjects' ? ' open' : '') + '>';
+  h += '<summary>Explore detail</summary><div class="tabs">';
   h += '<button class="tab' + (activeTab === 'subjects' ? ' active' : '') + '" data-forge-action="switch-tab" data-tab="subjects">By subject</button>';
   h += '<button class="tab' + (activeTab === 'classes' ? ' active' : '') + '" data-forge-action="switch-tab" data-tab="classes">By class</button>';
   h += '<button class="tab' + (activeTab === 'misconceptions' ? ' active' : '') + '" data-forge-action="switch-tab" data-tab="misconceptions">Misconception league</button>';
   h += '<button class="tab' + (activeTab === 'performance' ? ' active' : '') + '" data-forge-action="switch-tab" data-tab="performance">Performance bands</button>';
   h += '<button class="tab' + (activeTab === 'spec' ? ' active' : '') + '" data-forge-action="switch-tab" data-tab="spec">Spec points</button>';
-  h += '</div>';
+  h += '</div></details>';
 
   // Subject tab
   h += '<div id="tab-subjects" style="display:' + (activeTab === 'subjects' ? 'block' : 'none') + '">';

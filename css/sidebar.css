@@ -146,6 +146,7 @@ body.has-forge-sidebar.forge-sidebar-expanded{padding-left:230px}
   .ftab .ftab-dot.badge-muted{background:var(--panel-2);color:var(--dim)}
 
   /* "More" sheet */
+  #forge-sheet-scrim[hidden]{display:none!important}
   #forge-sheet-scrim{display:block;position:fixed;inset:0;z-index:190;background:rgba(0,0,0,.5);
     opacity:0;pointer-events:none;transition:opacity .2s ease}
   #forge-sheet-scrim.open{opacity:1;pointer-events:auto}
