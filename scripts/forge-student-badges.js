@@ -22,8 +22,10 @@
   var registryEntry=null;
   try{registryEntry=(JSON.parse(localStorage.getItem('forge-classes')||'[]')||[]).find(function(c){return c.classId===saved.classId;})||null}catch(e){}
   var responseContext={studentId:saved.studentId||registryEntry&&registryEntry.studentId,classCode:saved.classCode||registryEntry&&registryEntry.classCode,studentName:saved.studentName||registryEntry&&registryEntry.studentName};
-  var responsePromise= responseContext.studentId&&responseContext.classCode
-    ? ForgeAPI.rpc('get_student_own_responses',{p_student_id:responseContext.studentId,p_code:responseContext.classCode,p_name:responseContext.studentName}).catch(function(){return[]})
+  var responsePromise= responseContext.studentId&&saved.classId
+    ? ForgeAPI.get('responses','student_id=eq.'+encodeURIComponent(responseContext.studentId)+'&class_id=eq.'+encodeURIComponent(saved.classId)).catch(function(){return[]})
+    : responseContext.studentId&&responseContext.classCode
+      ? ForgeAPI.rpc('get_student_own_responses',{p_student_id:responseContext.studentId,p_code:responseContext.classCode,p_name:responseContext.studentName}).catch(function(){return[]})
     : Promise.resolve([]);
   ForgeAPI.request('/rest/v1/assignments?select=id,class_id,due_date,created_at,banks&class_id=in.('+ids.join(',')+')')
     .then(function(rows){return Promise.all([rows,responsePromise])})

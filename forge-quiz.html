@@ -363,6 +363,7 @@ function forgeCompleteSession() {
   } catch(e) {}
 }
 var requestedBank = new URLSearchParams(location.search).get('bank');
+var requestedClassId = new URLSearchParams(location.search).get('class_id');
 var requestedSubject = new URLSearchParams(location.search).get('subject');
 var openClassJoin = new URLSearchParams(location.search).get('mode') === 'class';
 var requestedBankStarted = false;
@@ -636,6 +637,7 @@ function render() {
     // subject before starting so restoration cannot fall back to the full
     // subject bank list.
     state.subject = getSubjectForBank(requestedBank);
+    if (requestedClassId) state.classId = requestedClassId;
     var requestedClass = ForgeClasses.forSubject(state.subject);
     if (requestedClass) activateClass(requestedClass);
     var launchRequestedBank = function() {
