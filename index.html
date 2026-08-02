@@ -290,42 +290,24 @@ if (localStorage.getItem('forge-theme') === 'light') {
       </div>
       <p class="dash-desc">When your teacher sets an assignment, it appears as a banner on your quiz page — with the due date and direct links to the right banks.</p>
 
-      <div class="forge-u-157kvxn student-assignment-list">
-
-        <!-- Active assignment -->
-        <div class="forge-u-r6nawe student-assignment student-assignment--active">
-          <div class="forge-between-row">
-            <span class="forge-u-myoll1">Assignment</span>
-            <span class="forge-u-1gtbreu">Due in 2 days</span>
-          </div>
-          <p class="forge-u-2d68tr">Monetary &amp; Fiscal Policy revision</p>
-          <div class="forge-u-1hm6ozo">
-            <button class="forge-u-1t7z1ya">Monetary Policy →</button>
-            <button class="forge-u-1t7z1ya">Fiscal Policy →</button>
-          </div>
-        </div>
-
-        <!-- Upcoming assignment -->
-        <div class="forge-u-gcfygq student-assignment student-assignment--upcoming">
-          <div class="forge-between-row">
-            <span class="forge-u-myoll1">Assignment</span>
-            <span class="forge-u-kbr4rw">Due 14 Feb</span>
-          </div>
-          <p class="forge-u-2d68tr">BoP &amp; Exchange Rates — focus on J-curve</p>
-          <div class="forge-u-1hm6ozo">
-            <button class="forge-u-1t7z1ya">Balance of Payments →</button>
-          </div>
-        </div>
-
-        <!-- Completed assignment -->
-        <div class="forge-u-1la6jci student-assignment student-assignment--complete">
-          <div class="forge-u-99vhu7">
-            <span class="forge-u-fkzdmp">✓ Completed</span>
-            <span class="forge-meta-label">Due 24 Jan</span>
-          </div>
-          <p class="forge-u-1dn0hst">Inflation &amp; Unemployment fundamentals</p>
-        </div>
-
+      <div class="student-assignment-list">
+        <article class="student-assignment student-assignment--active">
+          <div class="student-assignment-head"><h3>Monetary &amp; Fiscal Policy revision</h3><span class="student-assignment-due">Due in 2 days</span></div>
+          <span class="student-assignment-status student-assignment-status--progress">In progress</span>
+          <div class="student-assignment-progress"><div class="student-assignment-progress-label"><span>12 of 20 questions answered</span><span>60%</span></div><div class="student-assignment-progress-track"><div class="student-assignment-progress-fill student-assignment-progress-fill--60"></div></div></div>
+          <div class="student-assignment-topics"><a href="#">Monetary Policy →</a><a href="#">Fiscal Policy →</a></div>
+        </article>
+        <article class="student-assignment student-assignment--upcoming">
+          <div class="student-assignment-head"><h3>BoP &amp; Exchange Rates revision</h3><span class="student-assignment-due">Due 14 Feb</span></div>
+          <span class="student-assignment-status student-assignment-status--not-started">Not started</span>
+          <div class="student-assignment-progress"><div class="student-assignment-progress-label"><span>0 of 10 questions answered</span><span>0%</span></div><div class="student-assignment-progress-track"><div class="student-assignment-progress-fill student-assignment-progress-fill--0"></div></div></div>
+          <div class="student-assignment-topics"><a href="#">Balance of Payments →</a></div>
+        </article>
+        <article class="student-assignment student-assignment--complete">
+          <div class="student-assignment-head"><h3>Inflation &amp; Unemployment fundamentals</h3><span class="student-assignment-due">Due 24 Jan</span></div>
+          <span class="student-assignment-status student-assignment-status--complete">Completed</span>
+          <div class="student-assignment-progress"><div class="student-assignment-progress-label"><span>20 of 20 questions answered</span><span>100%</span></div><div class="student-assignment-progress-track"><div class="student-assignment-progress-fill student-assignment-progress-fill--100"></div></div></div>
+        </article>
       </div>
 
       <p class="dash-footer">→ Assignment banks appear as orange banners on your quiz page too — so you can't miss them. Due dates show in red when you're running out of time.</p>
@@ -671,9 +653,11 @@ if (localStorage.getItem('forge-theme') === 'light') {
   <div class="dash-tabs forge-u-1hexcow" role="tablist">
     <button class="dtab active" data-forge-action="dashboard-heatmap">Priority signals</button>
     <button class="dtab" data-forge-action="dashboard-class">Class overview</button>
-    <button class="dtab" data-forge-action="dashboard-student">Student profile</button>
-    <button class="dtab" data-forge-action="dashboard-starter">Starter builder</button>
-    <button class="dtab" data-forge-action="dashboard-assignments">Assignments</button>
+    <details class="landing-tab-more"><summary>More views</summary><div class="landing-tab-secondary">
+      <button class="dtab" data-forge-action="dashboard-student">Student profile</button>
+      <button class="dtab" data-forge-action="dashboard-starter">Starter builder</button>
+      <button class="dtab" data-forge-action="dashboard-assignments">Assignments</button>
+    </div></details>
   </div>
 
   <!-- VIEW 1: Recommendation-led priority signals -->
@@ -687,7 +671,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
         <span class="landing-recommendation-label">Next best action</span>
         <h3>Address the strongest misconception signal</h3>
         <p>Start with MC-INF-01. It is affecting 23 students, so a five-minute corrective starter will have the largest immediate impact.</p>
-        <button class="btn btn-hot" type="button" data-forge-action="dashboard-starter">Open priority signals →</button>
+        <button class="btn btn-hot" type="button" data-forge-action="dashboard-heatmap">Open priority signals →</button>
       </div>
       <p class="dash-desc dash-desc--wide">The supporting view below ranks the misconception volume and surfaces the three students who need attention first.</p>
       <div class="teacher-signal-row">
@@ -924,8 +908,11 @@ if (localStorage.getItem('forge-theme') === 'light') {
       <!-- Create new assignment form preview -->
       <div class="forge-u-1h02pgp assignment-create">
         <div class="card-title forge-mb-3">New assignment</div>
-        <div class="forge-u-15ae0qx">Assignment title — e.g. BoP revision before mock</div>
-        <div class="forge-u-15ae0qx">Due date</div>
+        <div class="assignment-field-label">Assignment title</div>
+        <div class="forge-u-15ae0qx">e.g. Inflation revision</div>
+        <div class="assignment-field-label">Due date <span>(required)</span></div>
+        <div class="forge-u-15ae0qx">Choose a due date</div>
+        <div class="assignment-bank-heading"><span class="card-title">Select banks to include</span><span>2 selected</span></div>
         <div class="forge-u-15wv3o3">
           <div class="forge-u-1dx1qbf">
             <span class="forge-u-3ddgcm">☑</span>
@@ -943,6 +930,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
             <span class="forge-meta-label">2.3.2</span>
           </div>
         </div>
+        <div class="assignment-filter-row"><span>Show</span><strong>Active assignments</strong><span>⌄</span></div>
         <div class="forge-u-mm2ujz">
           <div class="forge-u-60bfrk">Set assignment →</div>
           <div class="forge-u-n7jcqm">Copy EduLink message</div>
