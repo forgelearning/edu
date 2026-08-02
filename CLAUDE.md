@@ -60,27 +60,47 @@ common target.
 
 ## Current ownership — A-Level Economics (Edexcel 9EC0)
 
-Two efforts have overlapped here. The split:
-
-| Area | Status |
+| Area | Questions per bank |
 |---|---|
-| Theme 2 — Themes 2.1 and 2.2 | Done, 20 questions per bank |
-| Theme 2 — 2.3, 2.4, 2.5, `ECON-1.1` | Outstanding, still 5-8 questions each |
-| Theme 1 | Not started |
-| Themes 3 and 4 (`3.1.1`, `3.2.1`, `4.1.1`) | Started separately, 6 questions each |
+| Theme 1 (`ECON-1.1`) | 100 |
+| Theme 2 — 2.1.x, 2.2.x | 20 each |
+| Theme 2 — 2.3.x | 12 each |
+| Theme 2 — 2.4.x, 2.5.x | 7-10 each |
+| Themes 3 and 4 (`3.1.1`, `3.2.1`) | 50 each |
+| Theme 4 (`4.1.1`) | 100 |
 
-The Theme 3 and 4 banks were built before the authoring standard above and
-currently show cued Reforge twins (`3.1.1` is 83%). Worth a pass with
-`dev/audit-banks.js` before they are extended further.
+Theme 2's 2.4 and 2.5 banks are the thinnest and are the next ones to extend.
 
 ## Known outstanding issues
 
-- `SUBJECTS.mandarin` lists no banks, so its subject card is dead. Either
-  populate it or remove the entry. (`mand` is a separate, populated subject.)
+- **Permuted Reforge twins — the big one.** 1,102 of 7,506 questions (14.7%,
+  across 59 banks) have a `reforge` whose option set is identical to the
+  parent question's, just reordered. The student sees the answer highlighted
+  and then the same four options again, so the twin gives it away. This is
+  the failure mode authoring rule 4 warns about, and `dev/audit-banks.js`
+  does **not** detect it — it only checks structure and cueing. Worst banks:
+  `RS-1` 51/116, `ECON-1.1` 49/99, `4.1.1` 48/100, `PHYS-3` 46/84,
+  `HSC-2` 45/112. `GCSE-PSY-MEMORY`, `-PERCEPTION` and `-DEVELOPMENT` are
+  100% affected. Rewrite by hand; do not permute with a script.
+- **Boilerplate scaffolds.** 232 questions across 12 banks (all GCSE History
+  and GCSE Psychology) have a scaffold matching
+  `This tests the <spec> knowledge point: <answer>`, which restates the answer
+  instead of teaching. Combined with the point above, GCSE Psychology is the
+  weakest subject currently live.
+- **Misconception labels are half missing.** 711 of 1,300 tags used in the
+  bank have no entry in `MC_LABELS` (defined in `teacher.html`, mirrored in
+  `school-overview.html` and `anvil.html`), so the teacher heatmap and School
+  Overview show a raw code instead of a description. Worst prefixes:
+  `GCSE-P2` (112), `GCSE-DEF` (84), `GEO-SKILL` (20).
+- **Starter activities cover 54 of 1,300 tags.** Everything else falls back to
+  `getDefaultStarter()`, a generic stub. The teacher sign-in page promises
+  "which starter activity will help you address them", so this gap is
+  user-visible.
 - `englit` and `engll` reference the same two bank ids (`ENG-TERM-1`,
   `ENG-TECH-1`), so both subjects serve identical questions.
-- The older, small A-Level banks (`bio`, `chem`, `phys`, `maths`, `bus`,
-  `soc`, `law`, `pol`, `media`, `pe`, `span`, `crim`, `cs`, `rs`, `hsc`,
-  `french`, `german`, `hist`, `mand`, `geo`) have Reforge twins that are
-  75-100% cued and heavily "B"-skewed. Roughly 340 questions. The GCSE banks
-  and `psych` are already clean.
+- `SUBJECTS.mandarin` is a `readerMode` subject with `banks: []`, separate
+  from the populated `mand` ("IB Mandarin"). Two Mandarin cards both showing
+  IB Language B SL is confusing — merge or rename.
+
+Bank *structure* is otherwise healthy: `dev/audit-banks.js` reports 0 issues
+and 0% cued stems and twins across all 7,506 questions.

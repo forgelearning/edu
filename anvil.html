@@ -8,10 +8,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/tokens.css">
-<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/base.css?v=20260812">
 <link rel="stylesheet" href="css/auth.css">
 <link rel="stylesheet" href="css/sidebar.css">
-<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/components.css?v=20260812">
 
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-RGZ9J6Q8H9"></script>
@@ -34,7 +34,7 @@
 <script src="scripts/forge-logo.js"></script>
 <script src="scripts/forge-auth-card.js"></script>
 <script src="scripts/forge-classes.js"></script>
-<script src="scripts/forge-sidebar.js?v=20260803"></script>
+<script src="scripts/forge-sidebar.js?v=20260812"></script>
 <script src="scripts/forge-product-analytics.js"></script>
 <script>
 ForgeSidebar.mount({
@@ -611,11 +611,11 @@ function renderAnvilHome(){
   if(active.length>0){
     h+='<p class="forge-u-1si02oh">\u26a0 Active \u2014 tap to rework</p>';
     active.forEach(function(m){
-      var label=MC_LABELS[m.tag]||m.tag;
+      var label=MC_LABELS[m.tag]||'';
       var hasQs=MC_QUESTIONS[m.tag]&&MC_QUESTIONS[m.tag].length>0;
       h+='<div class="anvil-card active-mc" '+(hasQs?'data-forge-action="anvil-rework" data-tag="'+m.tag+'"':'')+' style="'+(hasQs?'':'opacity:.5;cursor:default')+'">';
-      h+='<div class="anvil-top"><span class="anvil-tag">'+m.tag+'</span><span class="mono forge-u-pmcgs0">'+m.fires+' fires</span></div>';
-      h+='<div class="anvil-label">'+label+'</div>';
+      h+='<div class="anvil-top"><span class="anvil-tag">'+m.tag+'</span><span class="mono forge-u-pmcgs0">'+m.fires+' fire'+(m.fires!==1?'s':'')+'</span></div>';
+      if(label) h+='<div class="anvil-label">'+label+'</div>';
       h+='<div class="anvil-meta"><span>Reforged '+m.reforgeCorrect+'/'+m.reforgeAttempts+'</span><span>Streak: '+m.streak+'/'+CLEAR_THRESHOLD+'</span></div>';
       // Streak dots
       h+='<div class="anvil-streak">';
@@ -633,10 +633,10 @@ function renderAnvilHome(){
   if(resolved.length>0){
     h+='<p class="forge-u-1y2mmc9">\u2713 Resolved</p>';
     resolved.forEach(function(m){
-      var label=MC_LABELS[m.tag]||m.tag;
+      var label=MC_LABELS[m.tag]||'';
       h+='<div class="anvil-card resolved-mc">';
       h+='<div class="anvil-top"><span class="anvil-tag forge-u-6uw790">'+m.tag+'</span><span class="mono forge-u-10wft76">\u2713 Cleared</span></div>';
-      h+='<div class="anvil-label forge-u-bed994">'+label+'</div>';
+      if(label) h+='<div class="anvil-label forge-u-bed994">'+label+'</div>';
       h+='</div>';
     });
   }
@@ -733,14 +733,14 @@ function renderReworkQuestion(tag,questions,lap,qIdx){
   var q = useReforge
     ? { id: baseQ.id+'-RF', stem: baseQ.reforge.stem, options: baseQ.reforge.options, correct: baseQ.reforge.correct, scaffold: baseQ.scaffold, tag: baseQ.tag }
     : baseQ;
-  var label=MC_LABELS[tag]||tag;
+  var label=MC_LABELS[tag]||'';
   var m=anvilState.misconceptions[tag];
   var keys=Object.keys(q.options);
 
   var h='<button class="back-btn" data-forge-action="anvil-home">\u2190 Back to Anvil</button>';
   h+='<div class="forge-u-t04ya0">';
-  h+='<div><span class="anvil-tag">'+tag+'</span><span class="forge-u-1kcgkyz">'+label+'</span></div>';
-  h+='<span class="mono forge-u-wlc5am">Streak: '+m.streak+'/'+CLEAR_THRESHOLD+'</span>';
+  h+='<div><span class="anvil-tag">'+tag+'</span>'+(label?'<span class="forge-u-1kcgkyz">'+label+'</span>':'')+'</div>';
+  h+='<span class="mono forge-u-wlc5am" id="rw-streak">Streak: '+m.streak+'/'+CLEAR_THRESHOLD+'</span>';
   h+='</div>';
 
   h+='<div class="stem">'+q.stem+'</div>';
@@ -796,6 +796,11 @@ function renderReworkQuestion(tag,questions,lap,qIdx){
         else if(x===o&&!isCorrect) x.classList.add('wrong');
         else x.classList.add('dimmed');
       });
+
+      // The streak counter lives in the question header, which is not re-rendered
+      // when an answer is marked — keep it in step with the feedback below it.
+      var streakEl=document.getElementById('rw-streak');
+      if(streakEl) streakEl.textContent='Streak: '+m.streak+'/'+CLEAR_THRESHOLD;
 
       var fb=document.getElementById('rw-feedback');
       var fh='';

@@ -20,6 +20,7 @@
   function hideBanner() {
     var banner = document.getElementById('analytics-consent-banner');
     if (banner) banner.remove();
+    if (document.body) document.body.classList.remove('has-consent-banner');
   }
 
   function saveChoice(value) {
@@ -49,6 +50,7 @@
     banner.querySelector('.analytics-consent-reject').addEventListener('click', function () { saveChoice('denied'); });
     banner.querySelector('.analytics-consent-accept').addEventListener('click', function () { saveChoice('granted'); });
     document.body.appendChild(banner);
+    document.body.classList.add('has-consent-banner');
   }
 
   window.forgeManageAnalytics = function () { showBanner(true); };

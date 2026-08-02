@@ -68,7 +68,7 @@ var ForgeSidebar = {
       this._addLabel = config.classSwitch.addLabel;
       classSwitchHtml =
         '<div class="fside-classswitch">' +
-          '<button class="fclassswitch-btn" id="fclassswitch-btn" data-forge-sidebar-action="toggle-class-menu">' +
+          '<button class="fclassswitch-btn" id="fclassswitch-btn" data-forge-sidebar-action="toggle-class-menu" aria-label="Switch class — ' + _fsEsc(config.classSwitch.label || 'choose a class') + '">' +
             _fsIcon('classes') +
             '<span class="fclassswitch-label">' + _fsEsc(config.classSwitch.label || '') + '</span>' +
             '<svg class="fclassswitch-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 10l5 5 5-5"></path></svg>' +
@@ -79,7 +79,7 @@ var ForgeSidebar = {
 
     var badgeHref = config.badgeHref || 'index.html';
     var badgeHtml =
-      '<a id="forge-badge" href="' + _fsEsc(badgeHref) + '">' +
+      '<a id="forge-badge" href="' + _fsEsc(badgeHref) + '" aria-label="Forge — home">' +
         '<span class="badge-mark">' +
           '<img class="forge-logo-dark forge-logo-img--sm" src="' + _FORGE_LOGO_DARK + '" alt="">' +
           '<img class="forge-logo-light forge-logo-img--sm" src="' + _FORGE_LOGO_LIGHT + '" alt="">' +
@@ -94,7 +94,7 @@ var ForgeSidebar = {
           (footerItemsHtml ? '<div class="fside-divider"></div>' + footerItemsHtml : '') +
         '</nav>' +
         '<div class="fside-footer">' +
-          '<button class="fside-item danger fside-footer-main" data-forge-sidebar-action="signout">' +
+          '<button class="fside-item danger fside-footer-main" data-forge-sidebar-action="signout" aria-label="Sign out">' +
             _fsIcon('signout') +
             '<span class="fside-label">Sign out</span>' +
             '<span class="fside-tooltip">Sign out</span>' +
@@ -486,6 +486,12 @@ function _fsDescriptor(key) {
   return {dashboard:'Home', forge:'Practice', assignments:'Assigned work', anvil:'Repair misconceptions', crucible:'Timed challenge'}[key] || '';
 }
 
+// Bottom-tab labels have roughly 9 characters before they ellipsise, so they get
+// their own short forms rather than reusing the longer rail descriptors.
+function _fsTabLabel(key) {
+  return {dashboard:'Home', forge:'Practice', assignments:'Assigned', anvil:'Repair', crucible:'Crucible'}[key] || '';
+}
+
 function _fsTabHtml(it, activeKey) {
   var tag = it.href ? 'a' : 'button';
   var badgeHtml = (it.badge !== undefined && it.badge !== null)
@@ -494,7 +500,7 @@ function _fsTabHtml(it, activeKey) {
   return '<' + tag + ' class="ftab' + (it.key === activeKey ? ' active' : '') + '" data-key="' + _fsEsc(it.key) + '"' +
     _fsLinkAttrs(it) + '>' +
     _fsIcon(it.key) +
-    '<span class="ftab-label">' + _fsEsc(_fsDescriptor(it.key) || it.label) + '</span>' +
+    '<span class="ftab-label">' + _fsEsc(_fsTabLabel(it.key) || it.label) + '</span>' +
     badgeHtml +
   '</' + tag + '>';
 }
@@ -521,7 +527,10 @@ function _fsItemHtml(it, activeKey) {
     ? '<span class="fside-badge' + (it.badgeMuted ? ' badge-muted' : '') + '">' + _fsEsc(it.badge) + '</span>'
     : '';
   var descriptor = _fsDescriptor(it.key);
-  return '<' + tag + ' class="fside-item' + activeCls + '" data-key="' + _fsEsc(it.key) + '"' + hrefAttr + onclickAttr + '>' +
+  // The visible label is hidden by CSS while the rail is collapsed, which leaves
+  // the control with no accessible name — so name it explicitly.
+  var ariaAttr = ' aria-label="' + _fsEsc(it.label + (descriptor ? ' — ' + descriptor : '')) + '"';
+  return '<' + tag + ' class="fside-item' + activeCls + '" data-key="' + _fsEsc(it.key) + '"' + hrefAttr + onclickAttr + ariaAttr + '>' +
     _fsIcon(it.key) +
     '<span class="fside-label"><span>' + _fsEsc(it.label) + '</span>' + (descriptor ? '<small>' + _fsEsc(descriptor) + '</small>' : '') + '</span>' +
     badgeHtml +

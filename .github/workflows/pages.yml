@@ -44,6 +44,12 @@ jobs:
       - name: Audit distractor balance and structure
         run: node dev/audit-banks.js
 
+      - name: Validate routes and local links
+        run: node scripts/check-routes.js
+
+      - name: Validate UI system
+        run: node scripts/check-ui-system.js
+
       - name: Configure Pages
         uses: actions/configure-pages@v5
 

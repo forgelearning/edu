@@ -13,6 +13,14 @@
     pilot: 'Students get targeted practice while coverage expands.',
     preview: 'Students can explore the subject but cannot start a live bank.'
   };
+  // The strings above are written about students, for teacher and marketing
+  // surfaces. Anything a student reads directly uses these instead.
+  var learnerExperiences = {
+    full: 'You get the full Forge practice experience.',
+    developing: 'You can practise now while coverage expands.',
+    pilot: 'You get targeted practice while coverage expands.',
+    preview: 'You can explore the subject, but the live bank is not ready yet.'
+  };
   var page = location.pathname.split('/').pop() || 'index.html';
   fetch('data/content-status.json').then(function (response) {
     if (!response.ok) throw new Error('Content status unavailable');
@@ -44,7 +52,7 @@
       });
     }
     if (!status || !meta) {
-      window.ForgeContentConfidence = { subjects: contract.subjects || {}, labels: labels, explanations: explanations, ctas: ctas, experiences: experiences, statusFor: function (key) { return (contract.subjects || {})[key] || { tier: 'preview' }; }, badge: function (tier) { return '<span class="forge-confidence forge-confidence--' + tier + '">' + labels[tier] + '</span>'; }, note: function (tier) { return explanations[tier] + ' ' + experiences[tier]; } };
+      window.ForgeContentConfidence = { subjects: contract.subjects || {}, labels: labels, explanations: explanations, ctas: ctas, experiences: experiences, learnerExperiences: learnerExperiences, statusFor: function (key) { return (contract.subjects || {})[key] || { tier: 'preview' }; }, badge: function (tier) { return '<span class="forge-confidence forge-confidence--' + tier + '">' + labels[tier] + '</span>'; }, note: function (tier) { return explanations[tier] + ' ' + experiences[tier]; } };
       document.dispatchEvent(new CustomEvent('forge-content-ready'));
       return;
     }
@@ -97,7 +105,7 @@
     var waitCopy = document.querySelector('.wait .sect-lede');
     if (waitCopy && status.tier !== 'full') waitCopy.textContent = 'Coverage is expanding topic by topic. Join the waitlist for updates as new banks go live.';
     window.ForgeContentConfidence = {
-      subjects: contract.subjects || {}, labels: labels, explanations: explanations, ctas: ctas, experiences: experiences,
+      subjects: contract.subjects || {}, labels: labels, explanations: explanations, ctas: ctas, experiences: experiences, learnerExperiences: learnerExperiences,
       statusFor: function (key) { return (contract.subjects || {})[key] || { tier: 'preview', questions: 0, banks: 0, coverage: 0 }; },
       badge: function (tier) { return '<span class="forge-confidence forge-confidence--' + tier + '" title="' + explanations[tier] + '">' + labels[tier] + '</span>'; },
       note: function (tier) { return '<span class="forge-content-confidence-note">' + explanations[tier] + ' ' + experiences[tier] + '</span>'; }

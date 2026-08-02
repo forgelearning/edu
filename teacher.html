@@ -8,13 +8,13 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/tokens.css">
-<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/base.css?v=20260812">
 <link rel="stylesheet" href="css/auth.css">
 <link rel="stylesheet" href="css/sidebar.css">
-<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/components.css?v=20260812">
 
 <!-- Google tag (gtag.js) -->
-<script src="scripts/analytics-consent.js"></script>
+<script src="scripts/analytics-consent.js?v=20260812"></script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-RGZ9J6Q8H9"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -32,12 +32,12 @@
 <script src="scripts/forge-state.js"></script>
 <script src="scripts/forge-logo.js"></script>
 <script src="scripts/forge-auth-card.js"></script>
-<script src="scripts/forge-sidebar.js?v=20260803"></script>
+<script src="scripts/forge-sidebar.js?v=20260812"></script>
 <script src="scripts/forge-teacher-ui.js"></script>
 <script src="scripts/forge-product-analytics.js"></script>
 <script src="scripts/forge-page-actions.js"></script>
 <script src="scripts/forge-shell.js"></script>
-<script src="scripts/forge-content-status.js"></script>
+<script src="scripts/forge-content-status.js?v=20260812"></script>
 <script src="scripts/forge-app.js"></script>
 <script>
 window.forgeOnClassSwitch = function(){ renderTeacherHome(); };
@@ -147,8 +147,15 @@ var TeacherAuth = {
   }
 };
 
+// The teacher app is a single page that swaps views, so the document title has
+// to follow the view or it stays on "Teacher Sign In" for the whole session.
+function setTeacherTitle(view) {
+  document.title = 'Forge — ' + (view || 'Teacher');
+}
+
 function renderTeacherAuth(mode) {
   mode = mode || 'signin';
+  setTeacherTitle('Teacher Sign In');
   var app = document.getElementById('app');
   var h = '';
   h += '<div class="login-tabs">';
@@ -673,6 +680,7 @@ var dashState = { classId: null, className: null, classSubject: null, classCode:
 // the top level because the home screen and the sidebar both open classes
 // without the code-entry form ever having been rendered.
 window.loadClassDashboard = function(cls) {
+        setTeacherTitle(cls.name || 'Class dashboard');
         dashState.classId = cls.id;
         dashState.className = cls.name;
         dashState.classSubject = canonicalSubjectKey(cls.subject);
@@ -772,6 +780,7 @@ function subjectLabel(key) {
 }
 
 function renderTeacherHome() {
+  setTeacherTitle('Your classes');
   ForgeApp.loading(app, { label: 'Loading your classes', body: 'Getting your classes and student data ready.' });
 
   var owned = (currentTeacher && currentTeacher.id)
@@ -997,12 +1006,8 @@ function renderLogin(activeTab) {
       for (var i = 0; i < 4; i++) rand += chars[Math.floor(Math.random() * chars.length)];
       var code = prefix + '-' + rand;
 
-      // Debug: log exactly what we're sending
-      console.log('Inserting:', { name: name, subject: subj, code: code });
-
       supaInsert('classes', { name: name, subject: subj, code: code, teacher_name: teacher, school: school, teacher_user_id: currentTeacher ? currentTeacher.id : null }).then(function(rows) {
         createBtn.disabled = false; createBtn.textContent = 'Create class \u2192';
-        console.log('Supabase response:', JSON.stringify(rows));
         var cls = Array.isArray(rows) ? rows[0] : rows;
         if (window.forgeTrack) forgeTrack('teacher_class_created', { subject: subj });
         if (!cls || !cls.id) {
@@ -1169,7 +1174,7 @@ function renderDashboard() {
        + 'padding:3px 10px;cursor:pointer;vertical-align:middle">' + dashState.classCode + ' ⎘</button>';
   }
   h += '</h1></div>';
-  h += '<div class="dash-header-actions"><a class="dash-primary forge-button forge-button--primary" href="#" id="dash-action">' + (wrongResponses.length ? 'Open misconceptions \u2192' : 'Create assignment \u2192') + '</a><div class="dash-meta"><b>' + students.length + '</b> students \u00b7 <b>' + totalQs + '</b> responses \u00b7 <button class="back-btn forge-u-gr3ipb" data-forge-action="render-teacher-home">\u2190 All classes</button></div></div>';
+  h += '<div class="dash-header-actions"><a class="dash-primary forge-button forge-button--primary" href="#" id="dash-action">' + (wrongResponses.length ? 'Open misconceptions \u2192' : 'Create assignment \u2192') + '</a><div class="dash-meta"><b>' + students.length + '</b> student' + (students.length !== 1 ? 's' : '') + ' \u00b7 <b>' + totalQs + '</b> response' + (totalQs !== 1 ? 's' : '') + ' \u00b7 <button class="back-btn forge-u-gr3ipb" data-forge-action="render-teacher-home">\u2190 All classes</button></div></div>';
   h += '</div>';
 
   // Stats row
@@ -1662,13 +1667,22 @@ function renderStarterCard(tag, h, context) {
 }
 
 function renderBrowseStarters() {
-  // Always-visible starter browser — no class data required
+  // Always-visible starter browser — no class data required. Scoped to this
+  // class's subject so the list is usable rather than a cross-curriculum dump.
   var el = document.getElementById('panel-heatmap');
-  var allTags = Object.keys(MC_STARTERS);
+  var allTags = Object.keys(MC_STARTERS).filter(function(tag) {
+    return !dashState.classSubject || MC_TO_SUBJECT[tag] === dashState.classSubject;
+  });
 
   var h = '<div class="card forge-mb-5">';
   h += '<div class="card-title">Browse starter activities</div>';
-  h += '<p class="forge-u-1rniwep">No class data loaded — pick any misconception tag to preview its starter activity. Once students complete questions, the top-firing tag will be recommended automatically.</p>';
+  if (allTags.length === 0) {
+    h += '<p class="forge-u-1rniwep">There are no starter activities for this subject yet. Once students complete questions, the top-firing misconception will be ranked here and you can build a starter from its scaffold.</p>';
+    h += '</div><div id="browse-starter-slot"></div>';
+    el.innerHTML = h;
+    return;
+  }
+  h += '<p class="forge-u-1rniwep">No class data loaded — pick a misconception tag to preview its starter activity. Once students complete questions, the top-firing tag will be recommended automatically.</p>';
   h += '<select class="forge-u-1vs062b" id="tag-picker">';
   h += '<option value="">— pick a misconception tag —</option>';
 
@@ -1683,7 +1697,7 @@ function renderBrowseStarters() {
   Object.keys(groups).sort().forEach(function(grp) {
     h += '<optgroup label="' + grp + '">';
     groups[grp].forEach(function(tag) {
-      h += '<option value="' + tag + '">' + tag + ' — ' + (MC_LABELS[tag] || tag) + '</option>';
+      h += '<option value="' + tag + '">' + tag + (MC_LABELS[tag] ? ' — ' + MC_LABELS[tag] : '') + '</option>';
     });
     h += '</optgroup>';
   });
@@ -2035,16 +2049,17 @@ function renderHeatmap(wrongResponses) {
     var c = counts[tag];
     var pct = Math.round((c.count / maxCount) * 100);
     var level = pct > 60 ? 'high' : pct > 30 ? 'med' : '';
-    var label = MC_LABELS[tag] || tag;
+    // Tags without a human label fall back to showing the code once, not twice.
+    var label = MC_LABELS[tag] || '';
     var banks = Object.keys(c.banks).join(', ');
     var studentCount = Object.keys(c.students).length;
 
     h += '<div class="heat-row ' + level + '">';
     h += '<span class="heat-tag">' + tag + '</span>';
-    h += '<span class="heat-label">' + label + '</span>';
+    if (label) h += '<span class="heat-label">' + label + '</span>';
     h += '<span class="heat-spec">' + banks + '</span>';
     h += '<div class="heat-bar"><div class="heat-fill" style="width:' + pct + '%"></div></div>';
-    h += '<span class="heat-count">' + c.count + ' \u00d7 ' + studentCount + 's</span>';
+    h += '<span class="heat-count">' + c.count + ' error' + (c.count !== 1 ? 's' : '') + ' \u00b7 ' + studentCount + ' student' + (studentCount !== 1 ? 's' : '') + '</span>';
     h += '<a class="heat-action" href="#" data-starter-tag="' + teacherEsc(tag) + '">Starter \u2192</a>';
     h += '</div>';
   });
@@ -2057,18 +2072,27 @@ function renderStarters(wrongResponses) {
   var el = document.getElementById('panel-starters');
   if (!el) return;
   if (wrongResponses.length === 0) {
-    // Browse mode when no data
-    var allTags = Object.keys(MC_STARTERS);
+    // Browse mode when no data. Only offer starters for this class's own subject —
+    // a GCSE Psychology teacher has no use for the French or Weimar Germany ones.
+    var allTags = Object.keys(MC_STARTERS).filter(function(tag) {
+      return !dashState.classSubject || MC_TO_SUBJECT[tag] === dashState.classSubject;
+    });
     var h = '<div class="card forge-mb-5">';
     h += '<div class="card-title">Browse starter activities</div>';
-    h += '<p class="forge-u-1rniwep">No class data yet — pick any misconception tag to preview its starter activity.</p>';
+    if (allTags.length === 0) {
+      h += '<p class="forge-u-1rniwep">There are no starter activities for this subject yet. Once students answer questions, the top-firing misconception will still be ranked below and you can build a starter from its scaffold.</p>';
+      h += '</div><div id="browse-starter-slot"></div>';
+      el.innerHTML = h;
+      return;
+    }
+    h += '<p class="forge-u-1rniwep">No class data yet — pick a misconception tag to preview its starter activity.</p>';
     h += '<select class="forge-u-1vs062b" id="tag-picker">';
     h += '<option value="">— pick a misconception tag —</option>';
     var groups = {};
     allTags.forEach(function(tag) { var g = tag.split('-')[0]+'-'+tag.split('-')[1]; if(!groups[g])groups[g]=[]; groups[g].push(tag); });
     Object.keys(groups).sort().forEach(function(grp) {
       h += '<optgroup label="' + grp + '">';
-      groups[grp].forEach(function(tag) { h += '<option value="' + tag + '">' + tag + ' — ' + (MC_LABELS[tag]||tag) + '</option>'; });
+      groups[grp].forEach(function(tag) { h += '<option value="' + tag + '">' + tag + (MC_LABELS[tag] ? ' — ' + MC_LABELS[tag] : '') + '</option>'; });
       h += '</optgroup>';
     });
     h += '</select></div><div id="browse-starter-slot"></div>';
