@@ -1351,7 +1351,7 @@ function renderLimitWall() {
   h += '<p style="font-size:12px;color:#8A857E;margin-top:8px;text-align:center">No card needed during trial · cancel anytime</p>';
   h += '</div>';
 
-  h += '<button class="skip-btn" onclick="(function(){state.phase=\'banks\';render();})()" class="forge-mt-4">← Back to banks</button>';
+  h += '<button class="skip-btn forge-mt-4" onclick="(function(){state.phase=\'banks\';render();})()">← Back to banks</button>';
   h += '</div>';
 
   app.innerHTML = h;

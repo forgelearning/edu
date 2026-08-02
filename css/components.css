@@ -33,7 +33,8 @@
 .forge-mb-3{margin-bottom:12px}
 .forge-mb-4{margin-bottom:16px}
 .forge-mb-5{margin-bottom:20px}
-.forge-logo-img{height:38px;width:auto}
+.forge-logo-img{height:38px;width:auto;display:block;max-width:100%}
+.forge-logo-img--sm{height:22px}
 .forge-between-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
 .forge-nav-menu-button{font-family:inherit;cursor:pointer;background:transparent;border:0}
 .forge-card--glass{background:var(--glass-panel);backdrop-filter:blur(var(--glass-blur)) saturate(160%);-webkit-backdrop-filter:blur(var(--glass-blur)) saturate(160%)}

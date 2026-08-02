@@ -11,9 +11,9 @@
     // Theme-aware <img> pair. css/base.css shows one and hides the other via
     // the [data-theme="light"] rules on .forge-logo-dark/.forge-logo-light.
     imgHtml: function (height) {
-      var h = (height || 22) + 'px';
-      return '<img class="forge-logo-dark" src="' + DARK + '" alt="" style="height:' + h + ';width:auto">' +
-             '<img class="forge-logo-light" src="' + LIGHT + '" alt="" style="height:' + h + ';width:auto">';
+      var sizeClass = (height && height > 22) ? '' : ' forge-logo-img--sm';
+      return '<img class="forge-logo-dark forge-logo-img' + sizeClass + '" src="' + DARK + '" alt="">' +
+             '<img class="forge-logo-light forge-logo-img' + sizeClass + '" src="' + LIGHT + '" alt="">';
     }
   };
 })();

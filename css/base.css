@@ -22,6 +22,15 @@ body{padding-top:88px}
 #sticky-nav .wrap-nav{max-width:none}
 #sticky-nav nav{padding:10px 10px 10px 20px;transition:padding .4s cubic-bezier(.4,0,.2,1)}
 #sticky-nav .nav-right{transition:opacity .25s ease .18s}
+/* The landing page carries its logo as data-URI images so it also works when
+   opened directly from disk. Keep those assets bounded at the navigation
+   boundary; a malformed/legacy class attribute must never be able to make a
+   source image dictate the size of the whole navbar. */
+#sticky-nav #nav-shield > img{display:block;width:auto;height:38px;max-width:none}
+#sticky-nav #nav-logotext > img{display:block;width:auto;height:34px;max-width:none}
+#sticky-nav #nav-logo{line-height:1;display:inline-flex;align-items:center;gap:20px;text-decoration:none}
+#sticky-nav #nav-shield{display:inline-flex;align-items:center;flex-shrink:0;transition:transform .4s ease}
+#sticky-nav #nav-logotext{display:inline-flex;align-items:center;overflow:hidden;transition:opacity .4s ease,width .4s ease,transform .4s ease}
 @media(min-width:900px){
   body{padding-top:96px}
   #sticky-nav{top:16px;width:calc(100% - 32px)}
@@ -41,6 +50,8 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:var(--
 .logo{font-family:'Sora',sans-serif;font-weight:800;font-size:22px;color:var(--white);text-decoration:none;display:flex;align-items:center;gap:9px}
 .logo .spark{width:10px;height:10px;background:var(--ember);border-radius:2px;transform:rotate(45deg);box-shadow:0 0 12px rgba(255,107,44,.7)}
 .forge-logo-dark{display:block}.forge-logo-light{display:none}[data-theme="light"] .forge-logo-dark{display:none!important}[data-theme="light"] .forge-logo-light{display:block!important}
+.forge-logo-img{display:block;width:auto;max-width:100%;height:38px}
+.forge-logo-img--sm{height:22px}
 .nav-right{display:flex;align-items:center;gap:var(--space-2);flex-wrap:nowrap}
 .cta{display:inline-flex;align-items:center;height:40px;font-size:14px;font-weight:600;color:var(--coal);background:var(--ember);padding:0 var(--space-4);border-radius:var(--radius-sm);text-decoration:none;white-space:nowrap;box-sizing:border-box}
 .cta-ghost{display:inline-flex;align-items:center;height:40px;font-size:14px;font-weight:600;color:var(--white);background:transparent;border:1px solid var(--line);padding:0 var(--space-4);border-radius:var(--radius-sm);text-decoration:none;white-space:nowrap;box-sizing:border-box}

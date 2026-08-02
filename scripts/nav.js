@@ -12,6 +12,15 @@ document.addEventListener('click', function(e) {
   var navEl = document.getElementById('sticky-nav');
   if (!navEl) return;
 
+  // Older static marketing markup contained duplicate class attributes on
+  // the logo images. Browsers keep only the first attribute, which removes
+  // the shared sizing class. Normalize the boundary once so all pages remain
+  // safe while those static templates are migrated.
+  navEl.querySelectorAll('img').forEach(function(img){
+    img.classList.add('forge-logo-img');
+    if (img.closest('#nav-shield')) img.classList.add('forge-logo-img--mark');
+  });
+
   var lastY = window.scrollY;
   var collapsed = false;
 
