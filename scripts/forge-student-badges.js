@@ -16,33 +16,23 @@
   if(!ids.length)return;
   // Keep the shared badge query on the same public key as the rest of the
   // student app so every page uses one request configuration.
-  var k=window.SUPABASE_KEY;
+  var k=window.SUPABASE_KEY||window.ForgeAPI&&ForgeAPI.config&&ForgeAPI.config.key;
   if(!k)return;
   var assignmentCacheKey='forge-assigned-open:'+String(saved.studentId||'anon')+':'+String(saved.classId||'none');
   var cachedAssignments=parseInt(localStorage.getItem(assignmentCacheKey)||'',10);
   if(!isNaN(cachedAssignments))ForgeSidebar.setBadge('assignments',cachedAssignments||null);
-  var responsePromise= saved.studentId&&saved.classCode
-    ? ForgeAPI.rpc('get_student_own_responses',{p_student_id:saved.studentId,p_code:saved.classCode,p_name:saved.studentName}).catch(function(){return[]})
+  var registryEntry=null;
+  try{registryEntry=(JSON.parse(localStorage.getItem('forge-classes')||'[]')||[]).find(function(c){return c.classId===saved.classId;})||null}catch(e){}
+  var responseContext={studentId:saved.studentId||registryEntry&&registryEntry.studentId,classCode:saved.classCode||registryEntry&&registryEntry.classCode,studentName:saved.studentName||registryEntry&&registryEntry.studentName};
+  var responsePromise= responseContext.studentId&&responseContext.classCode
+    ? ForgeAPI.rpc('get_student_own_responses',{p_student_id:responseContext.studentId,p_code:responseContext.classCode,p_name:responseContext.studentName}).catch(function(){return[]})
     : Promise.resolve([]);
   ForgeAPI.request('/rest/v1/assignments?select=id,class_id,due_date,created_at,banks&class_id=in.('+ids.join(',')+')')
     .then(function(rows){return Promise.all([rows,responsePromise])})
     .then(function(result){
       var rows=result[0],responses=Array.isArray(result[1])?result[1]:[];
       if(!Array.isArray(rows))return;
-      var count=(Array.isArray(rows)?rows:[]).filter(function(a){
-        var banks=[];try{banks=typeof a.banks==='string'?JSON.parse(a.banks):a.banks||[]}catch(e){}
-        var incomplete=!banks.length||banks.some(function(bank){
-          var bankData=window.BANKS&&BANKS[bank];
-          if(!bankData)return true;
-          var ids={};
-          responses.forEach(function(response){
-            if(a.created_at&&(!response.created_at||new Date(response.created_at)<new Date(a.created_at)))return;
-            if(response.bank===bank)ids[String(response.question_id||'').replace(/-RF$/,'')]=true;
-          });
-          return Object.keys(ids).length < bankData.questions.filter(function(q){return !q.type||q.type==='fill_blank'}).length;
-        });
-        return incomplete;
-      }).length;
+      var count=(Array.isArray(rows)?rows:[]).filter(function(a){return !ForgeAssignmentProgress.progress(a,responses).complete;}).length;
       ForgeSidebar.setBadge('assignments',count||null);
       try{localStorage.setItem(assignmentCacheKey,String(count))}catch(e){}
     }).catch(function(){});
