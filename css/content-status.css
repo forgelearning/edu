@@ -4,3 +4,10 @@
 .coverage-pill--pilot,.coverage-pill--preview{color:var(--slate);border-color:var(--line)}
 .coverage-pill--unknown{color:var(--slate);border-color:var(--line);background:var(--panel-2)}
 .content-status-note{max-width:62ch;margin:8px 0 0;color:var(--slate);font-size:13px;line-height:1.5}
+.forge-content-confidence-note{display:block;margin-top:6px;color:var(--slate);font-size:12px;line-height:1.45}
+.forge-content-selection-status,.assignment-content-confidence{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:12px 0;padding:10px 12px;border:1px solid var(--line);border-radius:var(--radius-md);background:var(--panel-2);color:var(--slate);font-size:12px;line-height:1.45}
+.forge-content-selection-status .forge-confidence{flex-shrink:0}
+.assignment-content-confidence{display:block;margin:0 0 18px;border-color:rgba(255,201,60,.35);background:rgba(255,201,60,.06)}
+.assignment-content-confidence .card-title{display:inline-block;margin:0 8px 0 0}
+.assignment-content-confidence p{margin:7px 0 0;max-width:70ch}
+.assignment-content-cta{display:block;margin-top:7px;color:var(--hot);font:600 11px 'JetBrains Mono',monospace}

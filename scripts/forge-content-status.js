@@ -1,4 +1,18 @@
 (function () {
+  var labels = { full: 'Full', developing: 'Developing', pilot: 'Pilot', preview: 'Preview' };
+  var explanations = {
+    full: 'Complete live bank across the active specification.',
+    developing: 'Live bank growing across the active specification.',
+    pilot: 'Focused live bank being tested with early learners.',
+    preview: 'Guided subject preview before the student bank is live.'
+  };
+  var ctas = { full: 'Start practising', developing: 'Practise the current bank', pilot: 'Try the pilot bank', preview: 'See the launch plan' };
+  var experiences = {
+    full: 'Students get the full Forge practice experience.',
+    developing: 'Students can practise now while coverage expands.',
+    pilot: 'Students get targeted practice while coverage expands.',
+    preview: 'Students can explore the subject but cannot start a live bank.'
+  };
   var page = location.pathname.split('/').pop() || 'index.html';
   fetch('data/content-status.json').then(function (response) {
     if (!response.ok) throw new Error('Content status unavailable');
@@ -7,13 +21,38 @@
     var key = (contract.pages || {})[page];
     var status = key && (contract.subjects || {})[key];
     var meta = document.querySelector('.subject-meta-row > div');
-    if (!status || !meta) return;
-    var labels = { full: 'Full bank', developing: 'Developing bank', pilot: 'Pilot bank', preview: 'Preview only' };
+    if (page === 'index.html') {
+      document.querySelectorAll('.subj[data-subj]').forEach(function (card) {
+        var cardStatus = (contract.subjects || {})[card.getAttribute('data-subj')];
+        if (!cardStatus) return;
+        var cardPill = card.querySelector('.subj-top .pill');
+        if (cardPill && !card.hasAttribute('data-pill-fixed')) {
+          cardPill.className = 'pill ' + (cardStatus.tier === 'full' ? 'good' : cardStatus.tier === 'pilot' ? 'hot' : 'early');
+          cardPill.textContent = labels[cardStatus.tier];
+          cardPill.title = explanations[cardStatus.tier] + ' ' + experiences[cardStatus.tier];
+        }
+        var confidenceNote = card.querySelector('.forge-content-confidence-note');
+        if (!confidenceNote) {
+          confidenceNote = document.createElement('span');
+          confidenceNote.className = 'forge-content-confidence-note';
+          var statLine = card.querySelector('.subj-stat');
+          if (statLine) statLine.insertAdjacentElement('afterend', confidenceNote);
+        }
+        confidenceNote.textContent = explanations[cardStatus.tier] + ' ' + experiences[cardStatus.tier];
+        var link = card.querySelector('.subj-link');
+        if (link) link.textContent = ctas[cardStatus.tier] + ' →';
+      });
+    }
+    if (!status || !meta) {
+      window.ForgeContentConfidence = { subjects: contract.subjects || {}, labels: labels, explanations: explanations, ctas: ctas, experiences: experiences, statusFor: function (key) { return (contract.subjects || {})[key] || { tier: 'preview' }; }, badge: function (tier) { return '<span class="forge-confidence forge-confidence--' + tier + '">' + labels[tier] + '</span>'; }, note: function (tier) { return explanations[tier] + ' ' + experiences[tier]; } };
+      document.dispatchEvent(new CustomEvent('forge-content-ready'));
+      return;
+    }
     var notes = {
-      full: 'Coverage is live across the current published bank.',
-      developing: 'The current bank is live and expanding across the specification.',
-      pilot: 'Pilot bank — use it for targeted practice while coverage expands.',
-      preview: 'Preview only — no live student bank is available yet.'
+      full: explanations.full,
+      developing: explanations.developing,
+      pilot: explanations.pilot,
+      preview: explanations.preview
     };
     var existing = meta.querySelector('.pill');
     if (existing) {
@@ -52,11 +91,18 @@
     });
     var primary = document.querySelector('.subject-actions .btn-hot');
     if (primary && status.tier === 'preview') {
-      primary.textContent = 'See the launch plan';
+      primary.textContent = ctas.preview;
       primary.href = 'index.html#waitlist';
-    } else if (primary && status.tier !== 'full') primary.textContent = 'Try the current bank — free';
+    } else if (primary) primary.textContent = ctas[status.tier];
     var waitCopy = document.querySelector('.wait .sect-lede');
     if (waitCopy && status.tier !== 'full') waitCopy.textContent = 'Coverage is expanding topic by topic. Join the waitlist for updates as new banks go live.';
+    window.ForgeContentConfidence = {
+      subjects: contract.subjects || {}, labels: labels, explanations: explanations, ctas: ctas, experiences: experiences,
+      statusFor: function (key) { return (contract.subjects || {})[key] || { tier: 'preview', questions: 0, banks: 0, coverage: 0 }; },
+      badge: function (tier) { return '<span class="forge-confidence forge-confidence--' + tier + '" title="' + explanations[tier] + '">' + labels[tier] + '</span>'; },
+      note: function (tier) { return '<span class="forge-content-confidence-note">' + explanations[tier] + ' ' + experiences[tier] + '</span>'; }
+    };
+    document.dispatchEvent(new CustomEvent('forge-content-ready'));
   }).catch(function () {
     var meta = document.querySelector('.subject-meta-row > div');
     if (meta) {

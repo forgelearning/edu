@@ -25,6 +25,7 @@
 <link rel="stylesheet" href="css/states.css">
   <link rel="stylesheet" href="css/generated-utilities.css">
   <link rel="stylesheet" href="css/page-overrides/teacher.css">
+  <link rel="stylesheet" href="css/content-status.css">
 </head>
 <body>
 <script src="scripts/forge-api.js"></script>
@@ -35,6 +36,8 @@
 <script src="scripts/forge-teacher-ui.js"></script>
 <script src="scripts/forge-product-analytics.js"></script>
 <script src="scripts/forge-page-actions.js"></script>
+<script src="scripts/forge-shell.js"></script>
+<script src="scripts/forge-content-status.js"></script>
 <script>
 window.forgeOnClassSwitch = function(){ renderTeacherHome(); };
 window.forgeOnClassSelect = function(cls){ loadClassDashboard(cls); };
@@ -1787,11 +1790,16 @@ function renderAssignments() {
 
   var subject = dashState.classSubject;
   var availableBanks = subject && SUBJECT_BANKS[subject] ? SUBJECT_BANKS[subject] : Object.keys(BANK_LABELS);
+  var contentConfidence = window.ForgeContentConfidence && window.ForgeContentConfidence.statusFor ? window.ForgeContentConfidence.statusFor(subject) : {tier:'full'};
   var assignments = dashState.assignments || [];
   var students = dashState.students || [];
   var responses = dashState.responses || [];
 
   var h = '';
+
+  if (window.ForgeContentConfidence && window.ForgeContentConfidence.badge) {
+    h += '<div class="assignment-content-confidence"><div><span class="card-title">Content confidence</span>' + window.ForgeContentConfidence.badge(contentConfidence.tier) + '</div><p>' + window.ForgeContentConfidence.explanations[contentConfidence.tier] + ' ' + window.ForgeContentConfidence.experiences[contentConfidence.tier] + '</p><span class="assignment-content-cta">' + window.ForgeContentConfidence.ctas[contentConfidence.tier] + ' →</span></div>';
+  }
 
   if (dashState.selectedStarterTag) {
     h += '<div class="assignment-context"><span><strong>Starter selected:</strong> ' + teacherEsc(MC_LABELS[dashState.selectedStarterTag] || dashState.selectedStarterTag) + '. Choose the relevant question bank below to assign it.</span><button class="asgn-action-btn" id="clear-starter-context" type="button">Clear</button></div>';
@@ -2430,6 +2438,10 @@ window.renderStudent = function(studentId) {
 
   el.innerHTML = h;
 };
+
+document.addEventListener('forge-content-ready', function () {
+  if (typeof dashState !== 'undefined' && dashState.classSubject && typeof renderAssignments === 'function') renderAssignments();
+});
 
 TeacherAuth.getSession().then(function(sess) {
   if (!sess) { renderTeacherAuth('signin'); return; }
