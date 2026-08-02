@@ -27,7 +27,10 @@
     : responseContext.studentId&&responseContext.classCode
       ? ForgeAPI.rpc('get_student_own_responses',{p_student_id:responseContext.studentId,p_code:responseContext.classCode,p_name:responseContext.studentName}).catch(function(){return[]})
     : Promise.resolve([]);
-  ForgeAPI.request('/rest/v1/assignments?select=id,class_id,due_date,created_at,banks&class_id=in.('+ids.join(',')+')')
+  var assignmentScope=saved.classId
+    ? 'class_id=eq.'+encodeURIComponent(saved.classId)
+    : 'class_id=in.('+ids.join(',')+')';
+  ForgeAPI.request('/rest/v1/assignments?select=id,class_id,due_date,created_at,banks&'+assignmentScope)
     .then(function(rows){return Promise.all([rows,responsePromise])})
     .then(function(result){
       var rows=result[0],responses=Array.isArray(result[1])?result[1]:[];
