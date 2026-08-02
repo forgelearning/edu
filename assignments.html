@@ -9,7 +9,7 @@
 <script src="scripts/forge-state.js"></script>
 <link rel="stylesheet" href="css/components.css"><script src="scripts/forge-logo.js"></script><script src="forge-auth.js"></script><script src="scripts/forge-sidebar.js?v=20260802"></script><script src="scripts/forge-product-analytics.js"></script><script src="data/forge-data.js"></script><script>window.ForgeAssignmentBanks=BANKS;</script><script src="scripts/forge-assignment-progress.js"></script><script src="scripts/forge-classes.js"></script>
 <script>function forgeSignOut(){try{localStorage.removeItem('forge-student');localStorage.removeItem('forge-anvil-open')}catch(e){}if(window.ForgeAuth)ForgeAuth.signOut();location.href='forge-quiz.html'}ForgeSidebar.mount({active:'assignments',items:[{key:'dashboard',href:'student-dashboard.html',label:'Dashboard'},{key:'forge',href:'forge-quiz.html',label:'Forge'},{key:'assignments',href:'assignments.html',label:'Assigned'},{key:'anvil',href:'anvil.html',label:'Anvil'},{key:'crucible',href:'crucible.html',label:'Crucible'}],footerItems:[{key:'profile',href:'profile.html',label:'Profile'}],signOut:forgeSignOut});</script>
-<script src="scripts/forge-student-badges.js"></script>
+<script src="scripts/forge-student-badges.js?v=20260804"></script>
 <main class="wrap"><div class="forge-u-vxmhzc">Student work</div><h1>Assigned</h1><p>Your teacher’s current assignments appear here. The full course remains available in <a href="forge-quiz.html">Forge</a>.</p><div id="list" class="card"></div></main>
 <script>
 var API=ForgeAPI.config.url,KEY=ForgeAPI.config.key,el=document.getElementById('list'),saved=null;
