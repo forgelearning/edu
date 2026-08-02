@@ -283,17 +283,17 @@ if (localStorage.getItem('forge-theme') === 'light') {
       <p class="dash-footer">→ Your overview updates after every session. Focus areas tell you where to spend time — strengths confirm what's already locked in.</p>
     </div>
 
-    <div class="dash-card reveal forge-mt-4">
+    <div class="dash-card reveal forge-mt-4 student-assignment-card">
       <div class="dash-head">
         <span class="rt">Assignments · Set by your teacher</span>
         <span class="tag">Due dates tracked</span>
       </div>
       <p class="dash-desc">When your teacher sets an assignment, it appears as a banner on your quiz page — with the due date and direct links to the right banks.</p>
 
-      <div class="forge-u-157kvxn">
+      <div class="forge-u-157kvxn student-assignment-list">
 
         <!-- Active assignment -->
-        <div class="forge-u-r6nawe">
+        <div class="forge-u-r6nawe student-assignment student-assignment--active">
           <div class="forge-between-row">
             <span class="forge-u-myoll1">Assignment</span>
             <span class="forge-u-1gtbreu">Due in 2 days</span>
@@ -306,7 +306,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
         </div>
 
         <!-- Upcoming assignment -->
-        <div class="forge-u-gcfygq">
+        <div class="forge-u-gcfygq student-assignment student-assignment--upcoming">
           <div class="forge-between-row">
             <span class="forge-u-myoll1">Assignment</span>
             <span class="forge-u-kbr4rw">Due 14 Feb</span>
@@ -318,7 +318,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
         </div>
 
         <!-- Completed assignment -->
-        <div class="forge-u-1la6jci">
+        <div class="forge-u-1la6jci student-assignment student-assignment--complete">
           <div class="forge-u-99vhu7">
             <span class="forge-u-fkzdmp">✓ Completed</span>
             <span class="forge-meta-label">Due 24 Jan</span>
@@ -962,32 +962,6 @@ if (localStorage.getItem('forge-theme') === 'light') {
     </div>
   </div>
 
-</div>
-</section>
-<section id="leadership">
-<div class="wrap">
-  <p class="tag eyebrow reveal">For school leadership</p>
-  <h2 class="reveal">See the school-wide priority, not a wall of reporting.</h2>
-  <p class="sect-lede reveal">Leadership gets one clear starting point: the class or subject requiring attention, the reason it matters, and the intervention to take next.</p>
-
-  <div class="leadership-preview dash-card reveal">
-    <div class="dash-head">
-      <span class="rt">School overview · Read-only</span>
-      <span class="tag">Updated live</span>
-    </div>
-    <div class="landing-recommendation landing-recommendation--leadership">
-      <span class="landing-recommendation-label">Leadership focus</span>
-      <h3>Start with 12D/Lw</h3>
-      <p>This class has no recorded answers yet. Start there before interpreting school-wide trends.</p>
-      <button class="btn btn-hot" type="button">Open priority signals →</button>
-    </div>
-    <div class="leadership-metrics">
-      <div><strong>25</strong><span>Active classes</span></div>
-      <div><strong class="forge-text-good">75%</strong><span>School-wide accuracy</span></div>
-      <div><strong>59</strong><span>Students enrolled</span></div>
-    </div>
-    <p class="dash-footer">→ Detailed subject and class reporting stays available below the priority, when leadership needs the evidence.</p>
-  </div>
 </div>
 </section>
 <section id="subjects">
