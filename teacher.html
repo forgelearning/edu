@@ -1946,8 +1946,10 @@ function assignmentStudentProgress(asgn, studentId, responses) {
     if (r.is_correct) correct++;
   });
   var total = assignmentQuestionTotal(banks);
+  var sessionTotal = Math.max(1, Math.ceil(total / 8));
   return {
     total: total,
+    sessions: sessionTotal,
     answered: answered,
     correct: correct,
     accuracy: answered ? Math.round((correct / answered) * 100) : null,
@@ -1976,13 +1978,13 @@ function renderAssignCard(asgn, students, responses, isArchived) {
   h += '<div class="assign-meta">' + teacherEsc(bankLabels) + '</div>';
   if (!isArchived) {
     h += '<div class="assign-progress-row">';
-    h += '<div class="assign-progress-bar"><div class="assign-progress-fill" style="width:' + pct + '%"></div></div>';
+    h += '<div class="assign-progress forge-progress" role="progressbar" aria-label="Assignment completion" aria-valuemin="0" aria-valuemax="100" aria-valuenow="' + pct + '"><span style="width:' + pct + '%"></span></div>';
     h += '<span style="font-family:\'JetBrains Mono\',monospace;font-size:12px;color:var(--slate)">' + completedCount + '/' + total + ' completed</span>';
     h += dueBadge(asgn.due_date);
     h += '</div>';
     h += '<div class="assign-summary" aria-label="Assignment progress">';
     h += '<span>' + startedCount + ' started</span><span>' + inProgressCount + ' in progress</span><span>' + notStartedCount + ' not started</span>';
-    h += '<span>' + (assignmentAccuracy == null ? '—' : assignmentAccuracy + '%') + ' accuracy</span></div>';
+    h += '<span>' + (assignmentAccuracy == null ? '—' : assignmentAccuracy + '%') + ' accuracy</span><span>' + (assignmentAnswered ? Math.ceil(assignmentAnswered / 8) : 0) + '/' + Math.ceil((students.length * (assignmentQuestionTotal(banks) || 1)) / 8) + ' sessions logged</span></div>';
     if (students.length > 0) {
       h += '<div style="margin-top:12px">';
       students.forEach(function(s) {
@@ -1992,7 +1994,7 @@ function renderAssignCard(asgn, students, responses, isArchived) {
         h += '<div class="student-assign-row">';
         h += '<span style="color:' + statusColor + ';font-size:14px">' + (ps.completed ? '✓' : ps.started ? '◐' : '○') + '</span>';
         h += '<span style="color:var(--white);flex:1">' + teacherEsc(s.display_name || s.name) + '</span>';
-        h += '<span style="font-family:\'JetBrains Mono\',monospace;font-size:11px;color:' + statusColor + '">' + status + (ps.answered ? ' · ' + ps.answered + '/' + ps.total : '') + '</span>';
+        h += '<span style="font-family:\'JetBrains Mono\',monospace;font-size:11px;color:' + statusColor + '">' + status + (ps.answered ? ' · ' + ps.answered + '/' + ps.total + ' · ' + Math.ceil(ps.answered / 8) + '/' + ps.sessions + ' sessions' : '') + '</span>';
         h += '</div>';
       });
       h += '</div>';

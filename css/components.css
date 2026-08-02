@@ -8,6 +8,13 @@
 .forge-button--secondary{background:transparent;border-color:var(--line);color:var(--white)}
 .forge-button--secondary:hover{border-color:var(--ember);color:var(--white)}
 .forge-button:disabled{opacity:.55;cursor:wait;transform:none}
+.forge-button:focus-visible{outline:2px solid var(--hot);outline-offset:2px}
+.forge-action-row{display:flex;align-items:center;gap:var(--space-2);flex-wrap:wrap}
+.forge-meta{font:11px 'JetBrains Mono',monospace;color:var(--dim);font-variant-numeric:tabular-nums}
+.forge-progress{height:6px;background:var(--line);border-radius:var(--radius-pill);overflow:hidden}
+.forge-progress > span{display:block;height:100%;background:var(--ember);border-radius:inherit;transition:width .2s ease}
+@media(max-width:600px){.forge-button{min-height:44px}.forge-action-row{width:100%}.forge-action-row .forge-button{flex:1}}
+@media(prefers-reduced-motion:reduce){.forge-button,.forge-progress > span{transition:none}.forge-button:hover{transform:none}}
 .forge-status{border:1px solid var(--line);border-radius:var(--radius-md);padding:var(--space-4);color:var(--slate);background:var(--glass-panel)}
 .forge-status--error{border-color:rgba(255,90,90,.35);background:rgba(255,90,90,.08);color:var(--bad)}
 .forge-status--success{border-color:rgba(127,217,138,.35);background:rgba(127,217,138,.08);color:var(--good)}

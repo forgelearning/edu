@@ -161,9 +161,22 @@ function supaInsert(t,row){
 
 var CRUCIBLE_TIME = 5 * 60; // 5 minutes
 var QUESTIONS_PER_RUN = 6;
-var CRUCIBLE_RUN_KEY = 'forge-crucible-run';
-function saveCrucibleRun() { try { localStorage.setItem(CRUCIBLE_RUN_KEY, JSON.stringify({subject:state.subject,bank:state.bank,answers:state.answers.map(function(a){return {id:a.q.id,selected:a.selected,correct:a.correct,timedOut:a.timedOut};}),idx:state.idx,updatedAt:Date.now()})); } catch(e) {} }
-function clearCrucibleRun() { try { localStorage.removeItem(CRUCIBLE_RUN_KEY); } catch(e) {} }
+var CRUCIBLE_RUN_PREFIX = 'forge-crucible-run:';
+function crucibleRunKey() { return CRUCIBLE_RUN_PREFIX + String(state.studentId || 'anon') + ':' + String(state.classId || 'none'); }
+function loadCrucibleRun() { try { return JSON.parse(localStorage.getItem(crucibleRunKey()) || 'null'); } catch(e) { return null; } }
+function saveCrucibleRun() { try { localStorage.setItem(crucibleRunKey(), JSON.stringify({status:'active',subject:state.subject,bank:state.bank,questionIds:state.questions.map(function(q){return q.id;}),answers:state.answers.map(function(a){return {id:a.q.id,selected:a.selected,correct:a.correct,timedOut:a.timedOut};}),idx:state.idx,timeLeft:state.timeLeft,updatedAt:Date.now()})); } catch(e) {} }
+function clearCrucibleRun() { try { localStorage.removeItem(crucibleRunKey()); } catch(e) {} }
+function restoreCrucibleRun() {
+  var saved=loadCrucibleRun();
+  if(!saved||saved.status!=='active'||!saved.bank||!saved.questionIds) return false;
+  var pool=saved.bank==='ALL'?SUBJECTS[saved.subject].banks.reduce(function(all,bk){return all.concat(BANKS[bk]?BANKS[bk].questions.filter(function(q){return !q.type&&q.reforge;}):[]);},[]):(BANKS[saved.bank]?BANKS[saved.bank].questions.filter(function(q){return !q.type&&q.reforge;}):[]);
+  var byId={};pool.forEach(function(q){byId[q.id]=q;});
+  var questions=saved.questionIds.map(function(id){return byId[id];}).filter(Boolean);
+  if(!questions.length) return false;
+  state.subject=saved.subject; state.bank=saved.bank; state.questions=questions; state.idx=Math.min(saved.idx||0,questions.length-1); state.timeLeft=saved.timeLeft||CRUCIBLE_TIME;
+  state.answers=(saved.answers||[]).map(function(a){return {q:byId[a.id],selected:a.selected,correct:a.correct,timedOut:a.timedOut};}).filter(function(a){return a.q;});
+  state.phase='quiz'; return true;
+}
 
 function shuffle(a){var b=[...a];for(var i=b.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
 
@@ -267,7 +280,15 @@ function renderSubject(){
     h+='</button>';
   });
   h+='</div>';
+  var saved=loadCrucibleRun();
+  if(saved&&saved.status==='active'&&saved.subject&&saved.bank){
+    h+='<div class="forge-status forge-status--focus" style="margin-top:18px"><strong>Crucible run in progress</strong><br><span style="font-size:13px">You have answered '+(saved.answers||[]).length+' of '+(saved.questionIds||[]).length+' questions.</span><br><button class="forge-button forge-button--primary" id="resume-crucible" style="margin-top:10px">Resume run →</button> <button class="forge-button forge-button--secondary" id="discard-crucible" style="margin-top:10px">Start fresh</button></div>';
+  }
   app.innerHTML=h + sessionBar();
+  var resumeBtn=document.getElementById('resume-crucible');
+  if(resumeBtn) resumeBtn.onclick=function(){if(restoreCrucibleRun()){startCrucible();}};
+  var discardBtn=document.getElementById('discard-crucible');
+  if(discardBtn) discardBtn.onclick=function(){clearCrucibleRun();renderSubject();};
   app.querySelectorAll('.pick-btn').forEach(function(b){
     b.onclick=function(){
       state.subject=b.dataset.key;
@@ -363,7 +384,7 @@ window.startCrucible=function(){
   state.phase='quiz';
   // Apply extra time if student has access arrangement
   var multiplier = 1 + ((state.extraTime || 0) / 100);
-  state.timeLeft = Math.round(CRUCIBLE_TIME * multiplier);
+  if(!state.answers.length || !state.timeLeft) state.timeLeft = Math.round(CRUCIBLE_TIME * multiplier);
   if(state.timer) clearInterval(state.timer);
   state.timer=setInterval(function(){
     state.timeLeft--;
@@ -465,6 +486,7 @@ function renderQuestion(){
       fb.innerHTML+='<button class="next-btn btn-glass btn-crimson" id="c-next">'+(state.idx+1<state.questions.length?'Next \u2192':'Finish \u2192')+'</button><div class="clear"></div>';
       document.getElementById('c-next').onclick=function(){
         state.idx++;
+        saveCrucibleRun();
         if(state.idx>=state.questions.length){
           if(state.timer){clearInterval(state.timer);state.timer=null;}
           state.phase='results';render();
