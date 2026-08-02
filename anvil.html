@@ -642,6 +642,15 @@ function renderAnvilHome(){
   }
 
   app.innerHTML=(anvilState.loadError?ForgeApp.stateHtml('error',{label:'Anvil data is unavailable',body:'We couldn’t retrieve your misconceptions. Refresh and try again.',action:{label:'Retry Anvil',href:location.href}}):'')+h;
+  // Keep the primary repair action reliable even if delegated page actions
+  // are unavailable during a partial page load.
+  app.querySelectorAll('[data-forge-action="anvil-rework"]').forEach(function(button){
+    button.addEventListener('click',function(event){
+      event.preventDefault();
+      event.stopPropagation();
+      window.startRework(this.getAttribute('data-tag'));
+    });
+  });
 }
 
 function shuffleArr(arr){
