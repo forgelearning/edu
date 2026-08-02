@@ -12,87 +12,7 @@
 <link rel="stylesheet" href="css/auth.css">
 <link rel="stylesheet" href="css/sidebar.css">
 <link rel="stylesheet" href="css/components.css">
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--coal);color:var(--slate);font-family:'Inter',sans-serif;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100vh}
-h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter-spacing:-.015em}
-.mono{font-family:'JetBrains Mono',monospace}
-.wrap{max-width:680px;margin:0 auto;padding:28px 20px}
-.tag{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ember)}
-.logo{font-family:'Sora',sans-serif;font-weight:800;font-size:20px;color:var(--white);text-decoration:none;display:inline-flex;align-items:center;gap:8px;margin-bottom:0}
-.logo .spark{width:9px;height:9px;background:var(--ember);border-radius:var(--radius-xs);transform:rotate(45deg);box-shadow:0 0 10px rgba(255,107,44,.7)}
-.theme-toggle{background:var(--panel);border:1px solid var(--line);color:var(--slate);font-family:'JetBrains Mono',monospace;font-size:12px;padding:6px 12px;border-radius:var(--radius-sm);cursor:pointer;z-index:99}
-.theme-toggle:hover{color:var(--white);border-color:var(--ember)}
 
-/* join */
-.join-input{width:100%;padding:12px 14px;border-radius:var(--radius-sm);border:1px solid var(--line);background:var(--panel);color:var(--white);font-family:'Inter',sans-serif;font-size:15px;margin-bottom:14px}
-.join-input:focus{outline:none;border-color:var(--ember)}
-.join-input::placeholder{color:#7A756E}
-.join-btn{width:100%;padding:13px;border-radius:var(--radius-sm);background:var(--ember);color:#fff;border:none;font-family:'Inter',sans-serif;font-weight:600;font-size:15px;cursor:pointer}
-.join-btn:hover{background:var(--hot)}
-.join-btn:disabled{opacity:.5;cursor:wait}
-.join-err{color:var(--bad);font-size:13px;margin-top:10px;display:none}
-.center{text-align:center}
-.back-btn{background:none;border:none;cursor:pointer;font-size:13px;color:#8A857E;font-family:'Inter',sans-serif;margin-bottom:16px;padding:0;display:block}
-.back-btn:hover{color:var(--white)}
-
-/* subject/bank picker */
-.subject-list,.bank-list{display:flex;flex-direction:column;gap:10px;margin-top:20px}
-.pick-btn{padding:16px 18px;border-radius:var(--radius-md);border:1.5px solid var(--line);background:var(--panel);cursor:pointer;text-align:left;font-family:'Inter',sans-serif;transition:border-color .15s}
-.pick-btn:hover{border-color:var(--ember)}
-.pick-btn h3{font-size:16px;color:var(--white);margin-bottom:2px}
-.pick-btn .sub{font-size:12px;color:#8A857E}
-
-/* timer ring */
-.timer-wrap{position:relative;width:120px;height:120px;margin:0 auto 20px}
-.timer-svg{transform:rotate(-90deg)}
-.timer-bg{fill:none;stroke:var(--line);stroke-width:6}
-.timer-ring{fill:none;stroke-width:6;stroke-linecap:round;transition:stroke-dashoffset .5s linear,stroke .5s}
-.timer-text{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'Sora',sans-serif;font-size:28px;font-weight:800;color:var(--white)}
-.timer-text.urgent{color:var(--bad)}
-
-/* progress bar */
-.progress-bar{height:3px;background:var(--line);border-radius:var(--radius-xs);margin-bottom:20px}
-.progress-fill{height:3px;border-radius:var(--radius-xs);background:var(--bad);transition:width .3s}
-
-/* question */
-.q-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;font-size:13px;color:#8A857E}
-.q-id{font-family:'JetBrains Mono',monospace;font-size:11px;background:rgba(255,90,90,.12);color:var(--bad);padding:2px 8px;border-radius:var(--radius-xs)}
-.stem{font-size:16px;line-height:1.55;color:var(--white);margin-bottom:20px;font-weight:500}
-.options{display:flex;flex-direction:column;gap:8px}
-.opt{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;border-radius:var(--radius-md);border:1.5px solid var(--line);background:var(--panel-2);color:var(--white);cursor:pointer;text-align:left;font-family:'Inter',sans-serif;font-size:15px;line-height:1.45;transition:border-color .15s,background .15s,opacity .15s;width:100%}
-.opt:hover:not(.answered){border-color:var(--bad)}
-.opt .letter{font-weight:700;min-width:20px;color:#8A857E}
-.opt.answered{cursor:default}
-.opt.correct{border-color:var(--good);background:rgba(127,217,138,.08)}
-.opt.correct .letter{color:var(--good)}
-.opt.wrong{border-color:var(--bad);background:rgba(255,90,90,.07)}
-.opt.wrong .letter{color:var(--bad)}
-.opt.dimmed{opacity:.4}
-.no-scaffold{margin-top:14px;padding:12px 14px;border-radius:var(--radius-md);background:rgba(255,90,90,.06);border:1px solid rgba(255,90,90,.2);font-size:13px;color:var(--slate)}
-.no-scaffold b{color:var(--bad)}
-.next-btn{margin-top:18px;padding:10px 24px;border-radius:var(--radius-sm);background:var(--bad);color:#fff;border:none;cursor:pointer;font-weight:600;font-size:14px;font-family:'Inter',sans-serif;float:right}
-.clear{clear:both}
-.time-up-banner{margin-top:16px;padding:14px;border-radius:var(--radius-md);background:rgba(255,90,90,.08);border:1px solid rgba(255,90,90,.3);color:var(--bad);font-weight:600;font-size:14px;text-align:center}
-
-/* results */
-.results-card{background:var(--panel);border:1px solid rgba(255,90,90,.4);border-radius:var(--radius-lg);padding:28px;text-align:center;margin-bottom:20px;position:relative}
-.big-pct{font-family:'Sora',sans-serif;font-size:80px;font-weight:900;line-height:1}
-.results-detail{font-size:14px;color:var(--slate);margin:8px 0 20px}
-.result-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--line);font-size:13px;text-align:left}
-.result-row:last-child{border-bottom:none}
-.result-icon{font-size:16px;min-width:20px}
-.result-info{flex:1;color:var(--white)}
-.result-mc{font-family:'JetBrains Mono',monospace;font-size:11px;padding:2px 7px;border-radius:var(--radius-xs);background:rgba(255,90,90,.12);color:var(--bad)}
-.result-mc.correct{background:rgba(127,217,138,.12);color:var(--good)}
-.results-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
-.results-btns button{padding:10px 20px;border-radius:var(--radius-sm);border:none;cursor:pointer;font-weight:600;font-size:14px;font-family:'Inter',sans-serif}
-.btn-danger{background:var(--bad);color:#fff}
-.btn-ghost{background:var(--panel-2);color:var(--white);border:1px solid var(--line)!important}
-
-[data-theme="light"] .join-btn,[data-theme="light"] .next-btn,[data-theme="light"] .btn-danger{color:#fff}
-@media(max-width:600px){.big-pct{font-size:60px}}
-[data-theme="light"] .forge-logo-dark{display:none!important}[data-theme="light"] .forge-logo-light{display:inline!important}</style>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-RGZ9J6Q8H9"></script>
 <script>
@@ -102,6 +22,8 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
   gtag('config', 'G-RGZ9J6Q8H9');
 </script>
 <link rel="stylesheet" href="css/states.css">
+  <link rel="stylesheet" href="css/generated-utilities.css">
+  <link rel="stylesheet" href="css/page-overrides/crucible.css">
 </head>
 <body>
 <script src="scripts/forge-api.js"></script>
@@ -111,7 +33,7 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
 <script src="scripts/forge-logo.js"></script>
 <script src="scripts/forge-auth-card.js"></script>
 <script src="scripts/forge-classes.js"></script>
-<script src="scripts/forge-sidebar.js"></script>
+<script src="scripts/forge-sidebar.js?v=20260802"></script>
 <script src="scripts/forge-product-analytics.js"></script>
 <script src="scripts/forge-page-actions.js"></script>
 <script>
@@ -253,9 +175,9 @@ function renderJoin(){
 
 // ===== SUBJECT PICKER =====
 function renderSubject(){
-  var h='<p class="tag" style="color:var(--bad);margin-bottom:4px">THE CRUCIBLE</p>';
-  h+='<h2 style="font-size:22px;margin-bottom:6px">Choose a subject</h2>';
-  h+='<p style="color:#8A857E;font-size:14px;margin-bottom:4px">You\u2019ll get up to 6 questions from that subject at random. No scaffolds.</p>';
+  var h='<p class="tag forge-u-1aakxi2">THE CRUCIBLE</p>';
+  h+='<h2 class="forge-u-1y4dowp">Choose a subject</h2>';
+  h+='<p class="forge-u-13n81an">You\u2019ll get up to 6 questions from that subject at random. No scaffolds.</p>';
   h+='<div class="subject-list">';
 
   // Subjects of every class joined (in Crucible or Forge \u2014 the list is
@@ -291,7 +213,7 @@ function renderSubject(){
   h+='</div>';
   var saved=loadCrucibleRun();
   if(saved&&saved.status==='active'&&saved.subject&&saved.bank){
-    h+='<div class="forge-status forge-status--focus" style="margin-top:18px"><strong>Crucible run in progress</strong><br><span class="forge-text-13">You have answered '+(saved.answers||[]).length+' of '+(saved.questionIds||[]).length+' questions.</span><br><button class="forge-button forge-button--primary" id="resume-crucible" style="margin-top:10px">Resume run →</button> <button class="forge-button forge-button--secondary" id="discard-crucible" style="margin-top:10px">Start fresh</button></div>';
+    h+='<div class="forge-status forge-status--focus forge-u-1ltoyjw"><strong>Crucible run in progress</strong><br><span class="forge-text-13">You have answered '+(saved.answers||[]).length+' of '+(saved.questionIds||[]).length+' questions.</span><br><button class="forge-button forge-button--primary forge-u-so79xg" id="resume-crucible">Resume run →</button> <button class="forge-button forge-button--secondary forge-u-so79xg" id="discard-crucible">Start fresh</button></div>';
   }
   app.innerHTML=h + sessionBar();
   var resumeBtn=document.getElementById('resume-crucible');
@@ -318,10 +240,10 @@ function renderSubject(){
 function renderBank(){
   var subj=SUBJECTS[state.subject];
   var locked=state.classSubject&&state.classSubject===state.subject;
-  var h=locked?'':'<button class="back-btn" onclick="state.phase=\'subject\';render()">\u2190 Subjects</button>';
-  h+='<p class="tag" style="color:var(--bad);margin-bottom:4px">THE CRUCIBLE</p>';
-  h+='<h2 style="font-size:22px;margin-bottom:6px">'+subj.label+'</h2>';
-  h+='<p style="color:#8A857E;font-size:14px;margin-bottom:4px">Pick a topic bank or run the full subject mix.</p>';
+  var h=locked?'':'<button class="back-btn" data-forge-action="crucible-subject">\u2190 Subjects</button>';
+  h+='<p class="tag forge-u-1aakxi2">THE CRUCIBLE</p>';
+  h+='<h2 class="forge-u-1y4dowp">'+subj.label+'</h2>';
+  h+='<p class="forge-u-13n81an">Pick a topic bank or run the full subject mix.</p>';
   h+='<div class="bank-list">';
   // All banks option
   var allQs=[];
@@ -375,23 +297,23 @@ function buildQuestions(){
 function renderReady(){
   var subj=SUBJECTS[state.subject];
   var bankName=state.bank==='ALL'?'All topics':BANKS[state.bank].label;
-  var h='<button class="back-btn" onclick="state.phase=\'bank\';render()">\u2190 Back</button>';
+  var h='<button class="back-btn" data-forge-action="crucible-bank">\u2190 Back</button>';
   h+='<div class="center">';
-  h+='<p class="tag" style="color:var(--bad);margin-bottom:10px">THE CRUCIBLE</p>';
-  h+='<h1 style="font-size:32px;margin-bottom:10px">Ready?</h1>';
-  h+='<p style="color:var(--white);font-size:17px;margin-bottom:6px">'+bankName+'</p>';
+  h+='<p class="tag forge-u-8jlsd7">THE CRUCIBLE</p>';
+  h+='<h1 class="forge-u-1w1cjfn">Ready?</h1>';
+  h+='<p class="forge-u-1ls6geo">'+bankName+'</p>';
   var totalSecs = Math.round(CRUCIBLE_TIME * (1 + ((state.extraTime || 0) / 100)));
   var totalMins = Math.round(totalSecs / 60);
   var timeLabel = totalMins + ' minute' + (totalMins !== 1 ? 's' : '');
-  var extraNote = state.extraTime > 0 ? ' <span style="font-family:\'JetBrains Mono\',monospace;font-size:11px;color:var(--good)">(+' + state.extraTime + '% time arrangement applied)</span>' : '';
-  h+='<p style="color:#8A857E;font-size:14px;margin-bottom:32px">'+state.questions.length+' questions \u00b7 ' + timeLabel + ' \u00b7 no scaffolds \u00b7 no re-forges' + extraNote + '</p>';
-  h+='<div style="display:flex;flex-direction:column;gap:10px;max-width:280px;margin:0 auto;font-size:14px;color:var(--slate);text-align:left">';
+  var extraNote = state.extraTime > 0 ? ' <span class="forge-u-mla374">(+' + state.extraTime + '% time arrangement applied)</span>' : '';
+  h+='<p class="forge-u-2vbwk">'+state.questions.length+' questions \u00b7 ' + timeLabel + ' \u00b7 no scaffolds \u00b7 no re-forges' + extraNote + '</p>';
+  h+='<div class="forge-u-12xyhzv">';
   h+='<div>\u2715 No hints if you get it wrong</div>';
   h+='<div>\u2715 No re-forge twin to soften the blow</div>';
   h+='<div>\u2713 Wrong answers go to your Anvil automatically</div>';
   h+='<div>\u2713 Timer stops for no one</div>';
   h+='</div>';
-  h+='<button class="forge-button forge-button--primary" onclick="startCrucible()" style="margin-top:32px;min-height:48px;padding:0 28px;font-size:17px">Begin \u2192</button>';
+  h+='<button class="forge-button forge-button--primary forge-u-1vwx933" data-forge-action="crucible-start">Begin \u2192</button>';
   h+='</div>';
   app.innerHTML=h;
 }
@@ -499,7 +421,7 @@ function renderQuestion(){
 
       var fb=document.getElementById('c-feedback');
       if(isCorrect){
-        fb.innerHTML='<div style="margin-top:14px;padding:12px 14px;border-radius:var(--radius-md);background:rgba(127,217,138,.08);border:1px solid rgba(127,217,138,.3);color:var(--good);font-weight:600;font-size:14px">\u2713 Correct.</div>';
+        fb.innerHTML='<div class="forge-u-7q8pd2">\u2713 Correct.</div>';
       } else {
         fb.innerHTML='<div class="no-scaffold"><b>No scaffold here.</b> That error has been sent to your Anvil. Rework it after.</div>';
       }
@@ -546,17 +468,17 @@ function renderResults(){
   var h='<div class="results-card">';
   clearCrucibleRun();
   if(window.forgeTrack) forgeTrack('crucible_completed',{bank:state.bank,score:correct,total:total});
-  h+='<p class="tag" style="color:var(--bad);margin-bottom:8px">CRUCIBLE COMPLETE</p>';
+  h+='<p class="tag forge-u-mj6mom">CRUCIBLE COMPLETE</p>';
   h+='<div class="big-pct" style="color:'+col+'">'+pct+'%</div>';
   h+='<div class="results-detail">'+correct+' / '+total+' correct \u00b7 '+mins+'m '+(secs<10?'0':'')+secs+'s</div>';
-  h+='<div class="forge-success" style="margin-top:18px"><div class="forge-success-title">'+(pct>=75?'Strong pressure-test.':'Useful pressure-test.')+'</div><div class="forge-success-copy">'+(pct>=75?'You held up well under timed conditions.':'Your weak spots are now visible. Rework your Anvil, then try the Crucible again.')+'</div></div>';
+  h+='<div class="forge-success forge-u-1ltoyjw"><div class="forge-success-title">'+(pct>=75?'Strong pressure-test.':'Useful pressure-test.')+'</div><div class="forge-success-copy">'+(pct>=75?'You held up well under timed conditions.':'Your weak spots are now visible. Rework your Anvil, then try the Crucible again.')+'</div></div>';
   h+='</div>';
 
   // Per-question breakdown
   var wrong=state.answers.filter(function(a){return !a.correct;});
   if(wrong.length>0){
-    h+='<div style="background:var(--panel);border:1px solid rgba(255,90,90,.3);border-radius:var(--radius-lg);padding:20px;margin-bottom:18px">';
-    h+='<p class="tag" style="color:var(--bad);margin-bottom:12px">Sent to your Anvil</p>';
+    h+='<div class="forge-u-1qqcf3a">';
+    h+='<p class="tag forge-u-1xtvs35">Sent to your Anvil</p>';
     wrong.forEach(function(a){
       var tag=a.q.tag;
       if(Array.isArray(tag)) tag=tag[0];
@@ -572,8 +494,8 @@ function renderResults(){
   // Correct summary
   var rightAnswers=state.answers.filter(function(a){return a.correct;});
   if(rightAnswers.length>0){
-    h+='<div style="background:var(--panel);border:1px solid rgba(127,217,138,.2);border-radius:var(--radius-lg);padding:20px;margin-bottom:18px">';
-    h+='<p class="tag" style="color:var(--good);margin-bottom:12px">Got these right</p>';
+    h+='<div class="forge-u-1486nkx">';
+    h+='<p class="tag forge-u-1kx3umd">Got these right</p>';
     rightAnswers.forEach(function(a){
       h+='<div class="result-row">';
       h+='<span class="result-icon forge-text-good">\u2713</span>';
@@ -585,12 +507,12 @@ function renderResults(){
   }
 
   h+='<div class="forge-action-row">';
-  h+='<button class="forge-button forge-button--primary" onclick="buildQuestions();state.phase=\'ready\';render()">Run it again</button>';
-  h+='<button class="forge-button forge-button--secondary" onclick="state.phase=\'bank\';render()">Change bank</button>';
-  h+='<button class="forge-button forge-button--secondary" onclick="state.phase=state.classSubject?\'bank\':\'subject\';render()">Change subject</button>';
+  h+='<button class="forge-button forge-button--primary" data-forge-action="crucible-build">Run it again</button>';
+  h+='<button class="forge-button forge-button--secondary" data-forge-action="crucible-bank">Change bank</button>';
+  h+='<button class="forge-button forge-button--secondary" data-forge-action="crucible-back">Change subject</button>';
   h+='</div>';
   h+='<div class="center forge-mt-4">';
-  h+='<a href="anvil.html" style="font-size:13px;color:var(--ember);font-family:JetBrains Mono,monospace;text-decoration:none">Rework your Anvil \u2192</a>';
+  h+='<a class="forge-u-1q6gxej" href="anvil.html">Rework your Anvil \u2192</a>';
   h+='</div>';
   app.innerHTML=h;
 }
@@ -612,7 +534,7 @@ function forgeLogout(){
 }
 function sessionBar(){
   if (!state.studentId || !state.studentName || state.studentName === 'Anonymous') return '';
-  return '<div style="text-align:center;margin-top:26px;padding-top:14px;border-top:1px solid var(--line)"><span style="font-size:12px;color:#8A857E">Signed in as <b style="color:var(--slate)">' + state.studentName + '</b> \u00b7 <a href="#" onclick="forgeLogout();return false" style="color:var(--ember);text-decoration:none">Not you? Switch student</a></span></div>';
+  return '<div class="forge-u-44gkcw"><span class="forge-u-16oyzks">Signed in as <b class="forge-u-1ybl9nb">' + state.studentName + '</b> \u00b7 <a class="forge-u-1u5pwzm" href="#" data-forge-action="logout">Not you? Switch student</a></span></div>';
 }
 
 // ===== SHARED SESSION RESTORE =====

@@ -12,239 +12,7 @@
 <link rel="stylesheet" href="css/auth.css">
 <link rel="stylesheet" href="css/sidebar.css">
 <link rel="stylesheet" href="css/components.css">
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--coal);color:var(--slate);font-family:Inter,sans-serif;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100vh}
-h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter-spacing:-.015em}
-.mono{font-family:'JetBrains Mono',monospace}
-.wrap{max-width:1180px;margin:0 auto;padding:28px 32px}
-.tag{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ember)}
-.logo{font-family:'Sora',sans-serif;font-weight:800;font-size:20px;color:var(--white);text-decoration:none;display:inline-flex;align-items:center;gap:8px;margin-bottom:0}
-.logo .spark{width:9px;height:9px;background:var(--ember);border-radius:var(--radius-xs);transform:rotate(45deg);box-shadow:0 0 10px rgba(255,107,44,.7)}
-.theme-toggle{background:var(--panel);border:1px solid var(--line);color:var(--slate);font-family:'JetBrains Mono',monospace;font-size:12px;padding:6px 12px;border-radius:var(--radius-sm);cursor:pointer;z-index:99}
-.theme-toggle:hover{color:var(--white);border-color:var(--ember)}
 
-.teacher-entry{display:grid;grid-template-columns:minmax(0,1fr) minmax(360px,440px);gap:clamp(40px,7vw,96px);align-items:center;max-width:none;margin:0;min-height:calc(100vh - 136px)}
-.teacher-entry-copy{max-width:68ch;padding:24px 0}
-.teacher-entry-copy .tag{display:block;margin-bottom:12px}
-.teacher-entry-copy h1{font-size:clamp(30px,4vw,48px);margin-bottom:18px}
-.teacher-entry-copy p{font-size:17px;color:var(--slate);max-width:62ch;margin-bottom:20px}
-.teacher-entry-copy ul{margin:0 0 24px 20px;color:var(--slate);font-size:15px;line-height:1.7}
-.teacher-entry-copy li{margin-bottom:7px}
-.teacher-entry-copy strong{color:var(--white)}
-.teacher-entry-links{display:flex;flex-wrap:wrap;gap:12px;font-size:13px}
-.teacher-entry .auth-stage{min-height:0;padding:32px 0}
-@media(max-width:820px){.teacher-entry{grid-template-columns:1fr;gap:8px;min-height:0}.teacher-entry-copy{padding:24px 0 0}.teacher-entry-copy h1{font-size:32px}.teacher-entry .auth-stage{padding-top:20px}}
-
-/* join */
-.join-input{width:100%;padding:12px 14px;border-radius:var(--radius-sm);border:1px solid var(--line);background:var(--panel);color:var(--white);font-family:Inter,sans-serif;font-size:15px;margin-bottom:14px;text-transform:uppercase}
-.join-input:focus{outline:none;border-color:var(--ember)}
-.join-input::placeholder{color:#7A756E;text-transform:none}
-.join-btn{width:100%;padding:13px;border-radius:var(--radius-sm);background:var(--ember);color:#fff;border:none;font-family:Inter,sans-serif;font-weight:600;font-size:15px;cursor:pointer}
-.join-btn:hover{background:var(--hot)}
-.join-btn:disabled{opacity:.5;cursor:wait}
-.join-err{color:var(--bad);font-size:13px;margin-top:10px;display:none}
-
-/* dashboard */
-.dash-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;flex-wrap:wrap;gap:10px}
-.dash-header h1{font-size:24px}
-.dash-meta{font-size:13px;color:var(--slate)}
-.dash-meta b{color:var(--hot)}
-.dash-header-actions{display:flex;flex-direction:column;align-items:flex-end;gap:6px}
-.dash-primary{display:inline-flex;align-items:center;min-height:38px;padding:0 13px;border-radius:var(--radius-sm);background:var(--ember);color:#fff;text-decoration:none;font-size:13px;font-weight:700}
-.dash-primary:hover{background:var(--hot);color:var(--coal)}
-
-.tabs{display:flex;align-items:center;gap:4px;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-md);padding:4px;margin-bottom:24px;flex-wrap:wrap}
-.tab-primary{display:flex;gap:4px}
-.tab-more{position:relative;margin-left:auto}
-.tab-more summary{list-style:none;cursor:pointer;font:600 13px Inter,sans-serif;color:var(--slate);padding:9px 14px;border-radius:var(--radius-sm);white-space:nowrap}
-.tab-more summary::-webkit-details-marker{display:none}
-.tab-more summary::after{content:'⌄';margin-left:7px;color:var(--dim)}
-.tab-more[open] summary,.tab-more summary:hover{color:var(--white);background:var(--panel-2)}
-.tab-secondary{position:absolute;right:0;top:calc(100% + 6px);z-index:5;display:flex;flex-direction:column;min-width:190px;padding:4px;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-md)}
-.tab-secondary .tab{text-align:left}
-.tab{font-family:Inter,sans-serif;font-weight:600;font-size:13px;color:var(--slate);background:transparent;border:none;padding:9px 18px;border-radius:var(--radius-sm);cursor:pointer;white-space:nowrap}
-.tab:hover{color:var(--white)}
-.tab.active{background:var(--ember);color:var(--coal)}
-@media(max-width:600px){.tabs{display:flex;flex-wrap:nowrap;max-width:100%;overflow-x:auto;scrollbar-width:none}.tabs::-webkit-scrollbar{display:none}.tab{flex:0 0 auto}.dash-header-actions{align-items:flex-start;width:100%}}
-
-.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-lg);padding:24px;margin-bottom:18px}
-.card-title{font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:#8A857E;margin-bottom:14px}
-
-.stat-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-bottom:10px}
-.stat-row--priority{max-width:560px}
-.stat-support{display:flex;gap:12px;flex-wrap:wrap;margin:0 0 22px;color:var(--dim);font:12px 'JetBrains Mono',monospace}
-.stat-support span+span::before{content:'·';margin-right:12px;color:var(--line)}
-.stat{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-md);padding:16px;text-align:center}
-.stat--priority{border-color:var(--ember);background:var(--panel-2)}
-.stat-n{font-family:'Sora',sans-serif;font-size:28px;font-weight:800;display:block}
-.stat-l{font-size:11px;color:#8A857E;margin-top:4px;display:block;font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.04em}
-.stat-n-muted{color:var(--slate)}
-.stat-n-neutral{color:var(--white)}
-.stat-n-hot{color:var(--hot)}
-.stat-n-good{color:var(--good)}
-.stat-n-bad{color:var(--bad)}
-
-/* heatmap */
-.heat-row{display:grid;grid-template-columns:minmax(150px,190px) minmax(0,1fr) 80px 100px 60px 72px;gap:10px;align-items:center;padding:10px 14px;border-radius:var(--radius-md);background:var(--panel-2);border:1px solid var(--line);font-size:13px;margin-bottom:6px}
-.heat-row.high{border-color:rgba(255,90,90,.35)}
-.heat-row.med{border-color:rgba(255,201,60,.25)}
-.heat-tag{display:block;min-width:0;font-size:11px;color:var(--coal);background:var(--hot);padding:4px 8px;border-radius:var(--radius-xs);font-weight:600;white-space:normal;overflow-wrap:anywhere;line-height:1.3;font-family:'JetBrains Mono',monospace}
-.heat-label{color:var(--white);font-size:13px}
-.heat-spec{color:#8A857E;font-size:11px;font-family:'JetBrains Mono',monospace}
-.heat-bar{height:6px;background:var(--line);border-radius:var(--radius-xs);overflow:hidden}
-.heat-fill{height:100%;border-radius:var(--radius-xs);background:var(--ember)}
-.heat-count{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--slate);text-align:right}
-.heat-action{font-size:12px;font-weight:700;color:var(--ember);text-decoration:none;white-space:nowrap}
-.heat-action:hover{color:var(--hot);text-decoration:underline}
-.starter-assign-btn{margin:0 0 16px}
-.assignment-context{display:flex;align-items:center;gap:10px;margin-bottom:16px;padding:12px 14px;border:1px solid rgba(255,201,60,.35);border-radius:var(--radius-md);background:rgba(255,201,60,.07);color:var(--slate);font-size:13px}
-.assignment-context strong{color:var(--hot)}
-
-/* class table */
-.class-table{width:100%;border-collapse:collapse;font-size:13px}
-.class-table th{font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:#8A857E;font-weight:600;padding:8px 10px;text-align:left;border-bottom:1px solid var(--line)}
-.class-table td{padding:10px;border-bottom:1px solid var(--line);color:var(--white)}
-.class-table tr:hover{background:var(--panel-2)}
-.class-table tr{cursor:pointer}
-.class-table .acc{font-family:'JetBrains Mono',monospace;font-weight:700}
-
-/* student detail */
-.back-btn{background:none;border:none;cursor:pointer;font-size:13px;color:#8A857E;font-family:Inter,sans-serif;margin-bottom:16px;padding:0}
-.back-btn:hover{color:var(--white)}
-.mc-item{display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:var(--radius-md);background:var(--panel-2);border:1px solid var(--line);margin-bottom:6px;font-size:13px}
-.mc-item .mc-detail{flex:1;color:var(--slate)}
-.mc-item .mc-fires{font-family:'JetBrains Mono',monospace;font-size:12px}
-
-/* empty state */
-.empty{text-align:center;padding:48px 20px;color:var(--slate)}
-.empty h3{color:var(--white);margin-bottom:8px}
-
-.panel{display:none}
-.panel.active{display:block}
-
-/* teacher home — the classes a teacher owns, one card each */
-.home-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin-bottom:22px}
-.class-card{position:relative;text-align:left;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-lg);padding:18px;cursor:pointer;font:inherit;color:inherit;transition:border-color .15s,transform .15s}
-.class-card:hover{border-color:var(--ember)}
-.class-card .cc-subj{font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:var(--ember);display:block;margin-bottom:8px}
-.class-card .cc-name{font-family:'Sora',sans-serif;font-weight:700;font-size:16px;color:var(--white);display:block;line-height:1.25}
-.class-card .cc-meta{font-size:12px;color:#8A857E;margin-top:8px;display:block}
-.class-card .cc-code{font-family:'JetBrains Mono',monospace;color:var(--slate)}
-.class-card.cc-new{border-style:dashed;display:flex;align-items:center;justify-content:center;color:var(--ember);font-weight:600;font-size:14px;min-height:104px}
-.home-actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center;font-size:13px;color:#8A857E}
-.home-link{background:none;border:none;padding:0;font:inherit;font-weight:600;color:var(--ember);cursor:pointer}
-.home-link:hover{color:var(--hot)}
-
-/* login tabs */
-.login-tabs{display:flex;gap:0;background:var(--panel-2);border:1px solid var(--line);border-radius:var(--radius-md);padding:3px;margin-bottom:22px}
-.login-tab{flex:1;padding:9px 0;border:none;background:transparent;color:var(--slate);font-family:Inter,sans-serif;font-weight:600;font-size:13px;cursor:pointer;border-radius:var(--radius-sm);transition:background .15s,color .15s}
-.login-tab.active{background:var(--ember);color:#1A1816}
-[data-theme="light"] .login-tab.active{color:#fff}
-.login-tab:hover:not(.active){color:var(--white)}
-
-/* subject select */
-.subj-select{width:100%;padding:12px 14px;border-radius:var(--radius-sm);border:1px solid var(--line);background:var(--panel);color:var(--white);font-family:Inter,sans-serif;font-size:15px;margin-bottom:14px;cursor:pointer;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238A857E' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center}
-.subj-select:focus{outline:none;border-color:var(--ember)}
-.subj-select option{background:var(--panel);color:var(--white)}
-
-/* created code display */
-.code-display{background:var(--panel-2);border:1px solid var(--line);border-radius:var(--radius-md);padding:18px;text-align:center;margin-bottom:14px}
-.code-display .code-val{font-family:'JetBrains Mono',monospace;font-size:26px;font-weight:700;color:var(--hot);letter-spacing:.1em;display:block;margin:6px 0}
-.code-display .code-sub{font-size:12px;color:#8A857E}
-.copy-btn{width:100%;padding:11px;border-radius:var(--radius-sm);background:var(--panel-2);border:1px solid var(--line);color:var(--white);font-family:Inter,sans-serif;font-weight:600;font-size:14px;cursor:pointer;margin-bottom:8px}
-.copy-btn:hover{border-color:var(--ember);color:var(--hot)}
-
-/* assignments */
-.assign-form{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-lg);padding:22px;margin-bottom:20px}
-.assign-form input[type=text],.assign-form input[type=date]{width:100%;padding:10px 12px;border-radius:var(--radius-sm);border:1px solid var(--line);background:var(--panel-2);color:var(--white);font-family:Inter,sans-serif;font-size:14px;margin-bottom:12px}
-.assign-form input:focus{outline:none;border-color:var(--ember)}
-.assign-form input[type=date]{color-scheme:dark}
-.bank-checklist{display:flex;flex-direction:column;gap:6px;max-height:240px;overflow-y:auto;margin-bottom:14px;padding-right:4px}
-.bank-check-item{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:var(--radius-sm);background:var(--panel-2);border:1px solid var(--line);cursor:pointer;transition:border-color .15s}
-.bank-check-item:hover{border-color:var(--ember)}
-.bank-check-item input[type=checkbox]{accent-color:var(--ember);width:15px;height:15px;cursor:pointer;flex-shrink:0}
-.bank-check-item label{font-size:13px;color:var(--white);cursor:pointer;flex:1}
-.bank-check-item .bank-count{font-family:'JetBrains Mono',monospace;font-size:11px;color:#8A857E}
-.assign-card{background:var(--panel-2);border:1px solid var(--line);border-radius:var(--radius-md);padding:16px 18px;margin-bottom:10px}
-.assign-card-title{font-family:'Sora',sans-serif;font-size:16px;font-weight:700;color:var(--white);margin-bottom:4px}
-.assign-meta{font-family:'JetBrains Mono',monospace;font-size:11px;color:#8A857E;margin-bottom:10px}
-.assign-progress-row{display:flex;align-items:center;gap:10px;margin-bottom:4px}
-.assign-progress-bar{flex:1;height:5px;background:var(--line);border-radius:var(--radius-xs);overflow:hidden}
-.assign-progress-fill{height:100%;border-radius:var(--radius-xs);background:var(--ember)}
-.assign-summary{display:flex;flex-wrap:wrap;gap:8px 14px;margin-top:8px;font:11px 'JetBrains Mono',monospace;color:#8A857E}
-.assign-summary span{white-space:nowrap}
-.assign-due{font-size:12px;font-family:'JetBrains Mono',monospace}
-.assign-due.overdue{color:var(--bad)}
-.assign-due.soon{color:var(--hot)}
-.assign-due.ok{color:var(--good)}
-.student-assign-row{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--line);font-size:13px}
-.extra-time-badge{display:inline-block;padding:2px 7px;border-radius:var(--radius-xs);font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;background:rgba(127,217,138,.1);border:1px solid rgba(127,217,138,.3);color:var(--good);margin-left:6px}
-.rename-input{padding:5px 8px;border-radius:var(--radius-sm);border:1px solid var(--ember);background:var(--panel);color:var(--white);font-family:Inter,sans-serif;font-size:13px;width:140px}
-.student-assign-row:last-child{border-bottom:none}
-.student-assign-row[data-status="in-progress"],.student-assign-row[data-status="completed"]{cursor:pointer}
-.student-assign-row:focus-visible,.class-table td[tabindex="0"]:focus-visible{outline:2px solid var(--ember);outline-offset:2px;border-radius:var(--radius-xs)}
-.assignment-filter{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0 0 16px}
-.assignment-filter label{font:11px 'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.06em;color:#8A857E}
-.assignment-filter select{min-height:36px;padding:7px 30px 7px 10px;border-radius:var(--radius-sm);border:1px solid var(--line);background:var(--panel);color:var(--white);font:13px Inter,sans-serif}
-.asgn-actions{display:flex;gap:6px;margin-top:12px;padding-top:10px;border-top:1px solid var(--line)}
-.asgn-action-btn{padding:5px 12px;border-radius:var(--radius-sm);font-family:Inter,sans-serif;font-size:12px;font-weight:600;cursor:pointer;border:1px solid var(--line);background:var(--panel);color:var(--slate);transition:border-color .15s,color .15s}
-.asgn-action-btn:hover{border-color:var(--ember);color:var(--white)}
-.asgn-action-btn.danger:hover{border-color:var(--bad);color:var(--bad)}
-.assign-card.archived{opacity:.5;filter:grayscale(.4)}
-.assign-card.archived .assign-card-title{text-decoration:line-through;color:#8A857E}
-[data-theme="light"] .assign-form input[type=date]{color-scheme:light}
-
-[data-theme="light"] .heat-tag{color:#fff}
-[data-theme="light"] .tab.active{color:#fff}
-[data-theme="light"] .join-btn{color:#fff}
-
-/* ── mobile / tablet-portrait: the bottom tab bar replaces the in-page tab
-   row, cards lose their gutters, and the student table stacks into rows ── */
-@media(max-width:820px){
-  .wrap{padding:16px 14px 8px}
-  .tabs{display:none}
-  .dash-header{margin-bottom:16px}
-  .dash-header h1{font-size:20px}
-  .card{padding:16px 14px;margin-bottom:12px;border-radius:var(--radius-md)}
-  .stat-row{grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
-  .stat-support{gap:6px;line-height:1.6;margin-bottom:18px}
-  .stat-support span+span::before{margin-right:6px}
-  .tab-more{margin-left:0}
-  .tab-secondary{left:0;right:auto}
-  .stat{padding:12px 8px}
-  .stat-n{font-size:23px}
-  .stat-l{font-size:10px}
-  .home-grid{grid-template-columns:1fr;gap:8px}
-  .assign-form{padding:16px 14px}
-
-  .heat-row{grid-template-columns:1fr;gap:6px;padding:12px 14px}
-  .heat-bar{order:3}
-  .heat-spec{font-size:10px}
-
-  /* table -> one card per student, each cell labelled by its column */
-  .class-table,.class-table tbody,.class-table tr,.class-table td{display:block;width:100%}
-  .class-table thead{display:none}
-  .class-table tr{background:var(--panel-2);border:1px solid var(--line);
-    border-radius:var(--radius-md);padding:10px 12px;margin-bottom:8px}
-  .class-table tr:hover{background:var(--panel-2)}
-  .class-table td{display:flex;align-items:center;justify-content:space-between;gap:12px;
-    padding:5px 0;border-bottom:none;font-size:13px;text-align:right}
-  .class-table td::before{content:attr(data-label);flex-shrink:0;text-align:left;
-    font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.05em;
-    text-transform:uppercase;color:#8A857E}
-  /* the student's name is the row's heading, not a labelled field */
-  .class-table td[data-label="Student"]{justify-content:flex-start;text-align:left;
-    font-family:'Sora',sans-serif;font-weight:700;font-size:15px;
-    padding-bottom:8px;margin-bottom:4px;border-bottom:1px solid var(--line)}
-  .class-table td[data-label="Student"]::before{display:none}
-  .class-table td[data-label="Access"] select{min-height:36px}
-}
-
-@media(max-width:700px){
-  .heat-bar,.heat-spec{display:none}
-}
-[data-theme="light"] .forge-logo-dark{display:none!important}[data-theme="light"] .forge-logo-light{display:inline!important}</style>
 <!-- Google tag (gtag.js) -->
 <script src="scripts/analytics-consent.js"></script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-RGZ9J6Q8H9"></script>
@@ -255,13 +23,15 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
   gtag('config', 'G-RGZ9J6Q8H9', {allow_google_signals: false, allow_ad_personalization_signals: false});
 </script>
 <link rel="stylesheet" href="css/states.css">
+  <link rel="stylesheet" href="css/generated-utilities.css">
+  <link rel="stylesheet" href="css/page-overrides/teacher.css">
 </head>
 <body>
 <script src="scripts/forge-api.js"></script>
 <script src="scripts/forge-state.js"></script>
 <script src="scripts/forge-logo.js"></script>
 <script src="scripts/forge-auth-card.js"></script>
-<script src="scripts/forge-sidebar.js"></script>
+<script src="scripts/forge-sidebar.js?v=20260802"></script>
 <script src="scripts/forge-teacher-ui.js"></script>
 <script src="scripts/forge-product-analytics.js"></script>
 <script src="scripts/forge-page-actions.js"></script>
@@ -1046,7 +816,7 @@ function drawTeacherHome(classes, loadError) {
     wide: true,
     title: 'Your classes',
     sub: (currentTeacher && currentTeacher.email)
-      ? 'Signed in as ' + esc(currentTeacher.email) + ' · <a href="#" id="ta-signout" style="color:var(--ember);text-decoration:none;font-weight:600">Sign out</a>'
+      ? 'Signed in as ' + esc(currentTeacher.email) + ' · <a class="forge-u-elt0p9" href="#" id="ta-signout">Sign out</a>'
       : 'Pick a class to open its dashboard.'
   }, h);
 
@@ -1122,14 +892,14 @@ function renderLogin(activeTab) {
   h += '<select id="c-subj" class="subj-select"><option value="">— Loading subjects... —</option></select></div>';
   h += '<button class="auth-btn" id="c-btn" type="button">Create class \u2192</button>';
   h += '<p class="auth-err" id="c-err"></p>';
-  h += '<div id="c-result" style="display:none;margin-top:18px"></div>';
+  h += '<div class="forge-u-10t1ysv" id="c-result"></div>';
   h += '</div>';
 
   app.innerHTML = ForgeAuthCard.shell({
     wide: true,
     title: 'Teacher Dashboard',
     sub: (currentTeacher && currentTeacher.email)
-      ? 'Signed in as ' + currentTeacher.email + ' · <a href="#" id="ta-signout" style="color:var(--ember);text-decoration:none;font-weight:600">Sign out</a>'
+      ? 'Signed in as ' + currentTeacher.email + ' · <a class="forge-u-elt0p9" href="#" id="ta-signout">Sign out</a>'
       : 'Open a class dashboard, or create a new class.'
   }, h);
   // The view panel's code field is the only Enter-submittable one.
@@ -1169,7 +939,7 @@ function renderLogin(activeTab) {
             if (!usedSubjects[s.key]) {
               opts2 += '<option value="' + s.key + '">' + s.label + ' (' + s.spec + ')</option>';
             } else {
-              opts2 += '<option value="" disabled style="color:#555">' + s.label + ' — you already have a class for this at this school</option>';
+              opts2 += '<option class="forge-u-41pj58" value="" disabled>' + s.label + ' — you already have a class for this at this school</option>';
             }
           });
           sel2.innerHTML = opts2;
@@ -1300,7 +1070,7 @@ function renderLogin(activeTab) {
         r += '</div>';
         r += '<button class="copy-btn" id="copy-code-btn">\u2398 Copy code</button>';
         r += '<button class="copy-btn" id="share-edulink-btn">\uD83D\uDCCB Copy EduLink message</button>';
-        r += '<button class="join-btn" onclick="window._openCreatedDash()">Open dashboard \u2192</button>';
+        r += '<button class="join-btn" data-forge-action="created-dashboard">Open dashboard \u2192</button>';
         result.innerHTML = r;
         result.style.display = 'block';
         result.insertAdjacentHTML('afterbegin', ForgeState.html('success', {
@@ -1387,44 +1157,44 @@ function renderDashboard() {
   var attentionRows=Object.keys(attention).map(function(id){return {id:id,name:(studentMap[id]||'Student'),count:attention[id]};}).sort(function(a,b){return b.count-a.count;}).slice(0,5);
 
   var h = '<div class="dash-header">';
-  h += '<div><p class="tag" style="margin-bottom:4px">Teacher Dashboard</p>';
+  h += '<div><p class="tag forge-u-l8gta7">Teacher Dashboard</p>';
   h += '<h1>' + dashState.className;
   if (dashState.classCode) {
-    h += ' <button id="class-code-pill" onclick="copyClassCode(this)" title="Copy class code" '
+    h += ' <button id="class-code-pill" data-forge-action="copy-class-code" title="Copy class code" '
        + 'style="font-family:\'JetBrains Mono\',monospace;font-size:13px;font-weight:700;letter-spacing:.06em;'
        + 'color:var(--hot);background:var(--panel-2);border:1px solid var(--line);border-radius:var(--radius-sm);'
        + 'padding:3px 10px;cursor:pointer;vertical-align:middle">' + dashState.classCode + ' ⎘</button>';
   }
   h += '</h1></div>';
-  h += '<div class="dash-header-actions"><a class="dash-primary forge-button forge-button--primary" href="#" id="dash-action">' + (wrongResponses.length ? 'Open misconceptions \u2192' : 'Create assignment \u2192') + '</a><div class="dash-meta"><b>' + students.length + '</b> students \u00b7 <b>' + totalQs + '</b> responses \u00b7 <button class="back-btn" onclick="renderTeacherHome()" style="display:inline;font-size:12px">\u2190 All classes</button></div></div>';
+  h += '<div class="dash-header-actions"><a class="dash-primary forge-button forge-button--primary" href="#" id="dash-action">' + (wrongResponses.length ? 'Open misconceptions \u2192' : 'Create assignment \u2192') + '</a><div class="dash-meta"><b>' + students.length + '</b> students \u00b7 <b>' + totalQs + '</b> responses \u00b7 <button class="back-btn forge-u-gr3ipb" data-forge-action="render-teacher-home">\u2190 All classes</button></div></div>';
   h += '</div>';
 
   // Stats row
-  h += '<p style="font-size:12px;color:#8A857E;margin:-8px 0 14px">Start with the priority below, then use the secondary views when you need detail.</p>';
+  h += '<p class="forge-u-scng4v">Start with the priority below, then use the secondary views when you need detail.</p>';
   h += '<div class="stat-row stat-row--priority">';
   var accuracyClass = totalQs === 0 ? 'stat-n-muted' : accuracy >= 70 ? 'stat-n-good' : accuracy >= 50 ? 'stat-n-hot' : 'stat-n-bad';
   h += '<div class="stat stat--priority" title="Correct answers divided by answered questions"><span class="stat-n ' + accuracyClass + '">' + (totalQs === 0 ? '—' : accuracy + '%') + '</span><span class="stat-l">Class accuracy</span></div>';
   h += '<div class="stat stat--priority"><span class="stat-n stat-n-hot">' + Object.keys(uniqueMCs).length + '</span><span class="stat-l">Open misconception signals</span></div>';
   h += '</div>';
   h += '<div class="stat-support"><span>' + students.length + ' students</span><span>' + totalQs + ' answers</span><span>' + reforgeCorrect.length + '/' + reforgeAttempts.length + ' reforges passed</span></div>';
-  h += '<div class="forge-card forge-card--focus" style="margin:16px 0"><div class="card-title">Needs attention today <span class="forge-meta">top misconception volume</span></div>';
+  h += '<div class="forge-card forge-card--focus forge-u-p7nziw"><div class="card-title">Needs attention today <span class="forge-meta">top misconception volume</span></div>';
   if(attentionRows.length){
-    h += '<div class="forge-action-row" style="align-items:stretch">';
-    attentionRows.slice(0,3).forEach(function(row,i){h += '<button class="forge-button forge-button--'+(i===0?'primary':'secondary')+'" style="justify-content:space-between;flex:1;min-width:150px" onclick="renderStudent(\''+row.id+'\')"><span>'+(i===0?'Start with ':'')+teacherEsc(row.name)+'</span><span class="forge-meta">'+row.count+' open</span></button>';});
-    h += '</div><p style="font-size:12px;color:var(--slate);margin-top:10px">The first student is the recommended starting point; open their profile to choose an intervention.</p>';
-  } else h += '<p style="font-size:13px;color:var(--slate)">No active misconception signals yet. Keep collecting responses.</p>';
+    h += '<div class="forge-action-row forge-u-11yg588">';
+    attentionRows.slice(0,3).forEach(function(row,i){h += '<button class="forge-button forge-button--'+(i===0?'primary':'secondary')+' forge-u-1l0ycxr" data-forge-action="render-student" data-student-id="'+row.id+'"><span>'+(i===0?'Start with ':'')+teacherEsc(row.name)+'</span><span class="forge-meta">'+row.count+' open</span></button>';});
+    h += '</div><p class="forge-u-8g5nnq">The first student is the recommended starting point; open their profile to choose an intervention.</p>';
+  } else h += '<p class="ui-meta-muted">No active misconception signals yet. Keep collecting responses.</p>';
   h += '</div>';
 
   // Tabs
   h += '<div class="tabs">';
   h += '<div class="tab-primary">';
-  h += '<button class="tab active" data-view="heatmap" onclick="switchTab(\'heatmap\',this)">Priority signals</button>';
-  h += '<button class="tab" data-view="class" onclick="switchTab(\'class\',this)">Class overview</button>';
+  h += '<button class="tab active" data-view="heatmap" data-forge-action="switch-tab" data-tab="heatmap">Priority signals</button>';
+  h += '<button class="tab" data-view="class" data-forge-action="switch-tab" data-tab="class">Class overview</button>';
   h += '</div>';
   h += '<details class="tab-more"><summary>More views</summary><div class="tab-secondary">';
-  h += '<button class="tab" data-view="spec" onclick="switchTab(\'spec\',this)">Spec points</button>';
-  h += '<button class="tab" data-view="assignments" onclick="switchTab(\'assignments\',this)">Assignments</button>';
-  h += '<button class="tab" data-view="starters" onclick="switchTab(\'starters\',this)">Corrective starters</button>';
+  h += '<button class="tab" data-view="spec" data-forge-action="switch-tab" data-tab="spec">Spec points</button>';
+  h += '<button class="tab" data-view="assignments" data-forge-action="switch-tab" data-tab="assignments">Assignments</button>';
+  h += '<button class="tab" data-view="starters" data-forge-action="switch-tab" data-tab="starters">Corrective starters</button>';
   h += '</div></details>';
   h += '</div>';
 
@@ -1433,7 +1203,7 @@ function renderDashboard() {
   h += '<div class="panel" id="panel-spec"></div>';
   h += '<div class="panel" id="panel-assignments"></div>';
   h += '<div class="panel" id="panel-starters"></div>';
-  h += '<div id="panel-student" style="display:none"></div>';
+  h += '<div class="forge-u-uydnfn" id="panel-student"></div>';
 
   app.innerHTML = h;
   var dashAction = document.getElementById('dash-action');
@@ -1765,10 +1535,10 @@ function renderSpecBreakdown(responses) {
   });
 
   var h = '<div class="card-title forge-mb-4">Spec Point Accuracy — weakest first</div>';
-  h += '<p style="font-size:13px;color:#8A857E;margin-bottom:20px">Only spec points with logged responses are shown. Questions answered before the latest update will not appear here.</p>';
-  h += '<table style="width:100%;border-collapse:collapse;font-size:13px">';
-  h += '<thead><tr style="color:#8A857E;text-align:left;border-bottom:1px solid var(--line)">';
-  h += '<th style="padding:8px 0">Spec point</th><th>Subject</th><th>Questions</th><th>Students</th><th>Accuracy</th><th style="min-width:120px">Bar</th>';
+  h += '<p class="forge-u-12m5q32">Only spec points with logged responses are shown. Questions answered before the latest update will not appear here.</p>';
+  h += '<table class="forge-u-k85mqv">';
+  h += '<thead><tr class="forge-u-yzojjb">';
+  h += '<th class="forge-u-qvnuss">Spec point</th><th>Subject</th><th>Questions</th><th>Students</th><th>Accuracy</th><th class="forge-u-naz5e1">Bar</th>';
   h += '</tr></thead><tbody>';
 
   specKeys.forEach(function(sp) {
@@ -1776,13 +1546,13 @@ function renderSpecBreakdown(responses) {
     var acc = Math.round((d.correct / d.total) * 100);
     var studentCount = Object.keys(d.students).length;
     var col = acc >= 70 ? 'var(--good)' : acc >= 50 ? 'var(--hot)' : 'var(--bad)';
-    h += '<tr style="border-top:1px solid var(--line)">';
-    h += '<td style="padding:8px 0;font-family:JetBrains Mono,monospace;font-size:12px;color:var(--ember);font-weight:700">' + sp + '</td>';
-    h += '<td style="font-size:12px;color:#8A857E">' + (SPEC_TO_SUBJECT[sp] || '—') + '</td>';
-    h += '<td style="color:#8A857E">' + d.total + '</td>';
-    h += '<td style="color:#8A857E">' + studentCount + '</td>';
+    h += '<tr class="forge-u-1jhoksp">';
+    h += '<td class="forge-u-yj4cup">' + sp + '</td>';
+    h += '<td class="forge-u-16oyzks">' + (SPEC_TO_SUBJECT[sp] || '—') + '</td>';
+    h += '<td class="forge-u-19j2vc3">' + d.total + '</td>';
+    h += '<td class="forge-u-19j2vc3">' + studentCount + '</td>';
     h += '<td style="font-weight:700;color:' + col + '">' + acc + '%</td>';
-    h += '<td><div style="background:var(--line);border-radius:var(--radius-xs);height:8px;width:120px"><div style="background:' + col + ';border-radius:var(--radius-xs);height:8px;width:' + acc + '%"></div></div></td>';
+    h += '<td><div class="forge-u-1lpc5ot"><div style="background:' + col + ';border-radius:var(--radius-xs);height:8px;width:' + acc + '%"></div></div></td>';
     h += '</tr>';
   });
   h += '</tbody></table>';
@@ -1797,51 +1567,51 @@ function renderStarterCard(tag, h, context) {
   var typeLabel = typeLabels[starterData.type] || "Starter activity";
 
   h += '<div class="card forge-card forge-card--focus" id="starter-card">';
-  h += '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">';
-  h += '<div class="card-title" style="color:var(--ember)">' + (context ? 'Recommended starter' : 'Starter activity') + ' — ' + typeLabel + '</div>';
-  h += '<span style="font-family:monospace;font-size:11px;color:#8A857E;padding:3px 8px;border:1px solid var(--line);border-radius:var(--radius-xs)">' + tag + '</span>';
+  h += '<div class="forge-u-1i89z8z">';
+  h += '<div class="card-title forge-u-1gs3btp">' + (context ? 'Recommended starter' : 'Starter activity') + ' — ' + typeLabel + '</div>';
+  h += '<span class="forge-u-16jmth7">' + tag + '</span>';
   h += '</div>';
-  h += '<p style="color:var(--white);font-size:15px;font-weight:600;margin-bottom:4px">' + starterData.title + '</p>';
+  h += '<p class="forge-u-1idc03v">' + starterData.title + '</p>';
   if (context) {
-    h += '<p style="font-size:13px;color:#8A857E;margin-bottom:14px">' + context.fires + ' error' + (context.fires !== 1 ? 's' : '') + ' across ' + context.students + ' student' + (context.students !== 1 ? 's' : '') + ' this period</p>';
+    h += '<p class="forge-u-1rniwep">' + context.fires + ' error' + (context.fires !== 1 ? 's' : '') + ' across ' + context.students + ' student' + (context.students !== 1 ? 's' : '') + ' this period</p>';
   } else {
-    h += '<p style="font-size:13px;color:#8A857E;margin-bottom:14px">Preview — no class data loaded</p>';
+    h += '<p class="forge-u-1rniwep">Preview — no class data loaded</p>';
   }
-  h += '<p style="font-size:14px;color:var(--slate);margin-bottom:14px">' + starterData.instruction + '</p>';
+  h += '<p class="forge-u-1m9skgg">' + starterData.instruction + '</p>';
   h += '<button class="forge-button forge-button--primary starter-assign-btn" data-starter-tag="' + teacherEsc(tag) + '" type="button">Use this starter for an assignment →</button>';
 
   if (starterData.prompt) {
-    h += '<div style="background:var(--panel-2);border-left:3px solid var(--ember);padding:10px 14px;border-radius:0 8px 8px 0;margin-bottom:12px">';
-    h += '<p style="font-size:13px;color:var(--slate);font-style:italic">' + starterData.prompt + '</p>';
+    h += '<div class="forge-u-vbh83g">';
+    h += '<p class="forge-u-ga1lyh">' + starterData.prompt + '</p>';
     h += '</div>';
   }
   if (starterData.items) {
-    h += '<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px">';
+    h += '<div class="forge-u-1dan4j4">';
     starterData.items.forEach(function(item) {
-      h += '<span style="font-size:13px;padding:4px 10px;background:var(--panel-2);border:1px solid var(--line);border-radius:var(--radius-sm);color:var(--white)">' + item + '</span>';
+      h += '<span class="forge-u-4h08im">' + item + '</span>';
     });
     h += '</div>';
   }
   if (starterData.headers && starterData.rows) {
-    h += '<div style="overflow-x:auto;margin-bottom:12px"><table style="width:100%;border-collapse:collapse;font-size:13px">';
+    h += '<div class="forge-u-1o87gnr"><table class="forge-u-k85mqv">';
     h += '<thead><tr>';
     starterData.headers.forEach(function(hdr) {
-      h += '<th style="text-align:left;padding:6px 10px;border-bottom:1px solid var(--line);color:var(--white)">' + hdr + '</th>';
+      h += '<th class="forge-u-1a2ozug">' + hdr + '</th>';
     });
     h += '</tr></thead><tbody>';
     starterData.rows.forEach(function(row) {
       h += '<tr>';
       row.forEach(function(cell, ci) {
-        h += '<td style="padding:6px 10px;border-bottom:1px solid var(--panel-2);color:' + (ci===0 ? 'var(--white)' : 'var(--slate)') + '">' + (cell || '<span style="color:#3A342E">—</span>') + '</td>';
+        h += '<td style="padding:6px 10px;border-bottom:1px solid var(--panel-2);color:' + (ci===0 ? 'var(--white)' : 'var(--slate)') + '">' + (cell || '<span class="forge-u-gqocm1">—</span>') + '</td>';
       });
       h += '</tr>';
     });
     h += '</tbody></table></div>';
   }
   if (starterData.answer) {
-    h += '<div style="display:flex;align-items:flex-start;gap:10px;padding:10px 14px;background:rgba(127,217,138,.08);border:1px solid var(--good);border-radius:var(--radius-sm);margin-bottom:4px">';
-    h += '<span style="color:var(--good);font-weight:700;font-size:16px">✓</span>';
-    h += '<p style="font-size:13px;color:var(--white)">' + starterData.answer + '</p>';
+    h += '<div class="forge-u-bfx4f7">';
+    h += '<span class="forge-u-11wqq9g">✓</span>';
+    h += '<p class="forge-u-1kqs3gf">' + starterData.answer + '</p>';
     h += '</div>';
   }
   h += '</div>';
@@ -1855,8 +1625,8 @@ function renderBrowseStarters() {
 
   var h = '<div class="card forge-mb-5">';
   h += '<div class="card-title">Browse starter activities</div>';
-  h += '<p style="font-size:13px;color:#8A857E;margin-bottom:14px">No class data loaded — pick any misconception tag to preview its starter activity. Once students complete questions, the top-firing tag will be recommended automatically.</p>';
-  h += '<select id="tag-picker" style="width:100%;padding:10px 12px;background:var(--panel-2);border:1px solid var(--line);border-radius:var(--radius-sm);color:var(--white);font-family:Inter,sans-serif;font-size:14px;cursor:pointer">';
+  h += '<p class="forge-u-1rniwep">No class data loaded — pick any misconception tag to preview its starter activity. Once students complete questions, the top-firing tag will be recommended automatically.</p>';
+  h += '<select class="forge-u-1vs062b" id="tag-picker">';
   h += '<option value="">— pick a misconception tag —</option>';
 
   // Group by subject prefix
@@ -1969,21 +1739,21 @@ function renderAssignCard(asgn, students, responses, isArchived) {
   if (!isArchived) {
     h += '<div class="assign-progress-row">';
     h += '<div class="assign-progress forge-progress" role="progressbar" aria-label="Assignment completion" aria-valuemin="0" aria-valuemax="100" aria-valuenow="' + pct + '"><span style="width:' + pct + '%"></span></div>';
-    h += '<span style="font-family:\'JetBrains Mono\',monospace;font-size:12px;color:var(--slate)">' + completedCount + '/' + total + ' completed</span>';
+    h += '<span class="forge-u-tb67f">' + completedCount + '/' + total + ' completed</span>';
     h += dueBadge(asgn.due_date);
     h += '</div>';
     h += '<div class="assign-summary" aria-label="Assignment progress">';
     h += '<span>' + startedCount + ' started</span><span>' + inProgressCount + ' in progress</span><span>' + notStartedCount + ' not started</span>';
     h += '<span>' + (assignmentAccuracy == null ? '—' : assignmentAccuracy + '%') + ' accuracy</span><span>' + (assignmentAnswered ? Math.ceil(assignmentAnswered / 8) : 0) + '/' + Math.ceil((students.length * (assignmentQuestionTotal(banks) || 1)) / 8) + ' sessions logged</span></div>';
     if (students.length > 0) {
-      h += '<div style="margin-top:12px">';
+      h += '<div class="forge-u-jm24uy">';
       students.forEach(function(s) {
         var ps = progress[s.id];
         var status = ps.completed ? 'Completed' : ps.started ? 'In progress' : 'Not started';
         var statusColor = ps.completed ? 'var(--good)' : ps.started ? 'var(--hot)' : '#8A857E';
         h += '<div class="student-assign-row">';
         h += '<span style="color:' + statusColor + ';font-size:14px">' + (ps.completed ? '✓' : ps.started ? '◐' : '○') + '</span>';
-        h += '<span style="color:var(--white);flex:1">' + teacherEsc(s.display_name || s.name) + '</span>';
+        h += '<span class="forge-u-b5x4dy">' + teacherEsc(s.display_name || s.name) + '</span>';
         h += '<span style="font-family:\'JetBrains Mono\',monospace;font-size:11px;color:' + statusColor + '">' + status + (ps.answered ? ' · ' + ps.answered + '/' + ps.total + ' · ' + Math.ceil(ps.answered / 8) + '/' + ps.sessions + ' sessions' : '') + '</span>';
         h += '</div>';
       });
@@ -2021,14 +1791,14 @@ function renderAssignments() {
 
   // ── Create assignment form ──
   h += '<div class="assign-form">';
-  h += '<div class="card-title" style="margin-bottom:14px">New assignment</div>';
-  h += '<label for="asgn-title" style="display:block;font-size:12px;color:var(--slate);margin-bottom:6px">Assignment title</label>';
+  h += '<div class="card-title forge-u-dfjwb8">New assignment</div>';
+  h += '<label class="forge-u-1s6s0pt" for="asgn-title">Assignment title</label>';
   h += '<input type="text" id="asgn-title" aria-describedby="asgn-title-help" placeholder="e.g. Inflation revision">';
-  h += '<p id="asgn-title-help" style="font-size:11px;color:#8A857E;margin:-5px 0 12px">Use a name students will recognise.</p>';
-  h += '<label for="asgn-due" style="display:block;font-size:12px;color:var(--slate);margin-bottom:6px">Due date <span style="color:#8A857E">(required)</span></label>';
+  h += '<p class="forge-u-l9adfb" id="asgn-title-help">Use a name students will recognise.</p>';
+  h += '<label class="forge-u-1s6s0pt" for="asgn-due">Due date <span class="forge-u-19j2vc3">(required)</span></label>';
   h += '<input type="date" id="asgn-due" aria-describedby="asgn-due-help">';
-  h += '<p id="asgn-due-help" style="font-size:11px;color:#8A857E;margin:-5px 0 14px">Students can still see the work after the date, but it will be marked overdue.</p>';
-  h += '<div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px"><div class="card-title" style="margin-bottom:0">Select banks to include</div><span id="asgn-selected-count" style="font:11px \'JetBrains Mono\',monospace;color:#8A857E">0 selected</span></div>';
+  h += '<p class="forge-u-ux2pa9" id="asgn-due-help">Students can still see the work after the date, but it will be marked overdue.</p>';
+  h += '<div class="forge-u-1woniy7"><div class="card-title forge-u-3ocpgz">Select banks to include</div><span class="forge-u-18u61ix" id="asgn-selected-count">0 selected</span></div>';
   h += '<div class="bank-checklist">';
   availableBanks.forEach(function(bk) {
     var label = BANK_LABELS[bk] || bk;
@@ -2061,7 +1831,7 @@ function renderAssignments() {
     }
 
     if (dashState.assignmentFilter !== 'active' && archived.length > 0) {
-      h += '<div class="card-title" style="margin-bottom:12px;margin-top:20px;color:#8A857E">Archived</div>';
+      h += '<div class="card-title forge-u-j2cfmy">Archived</div>';
       archived.forEach(function(asgn) { h += renderAssignCard(asgn, students, responses, true); });
     }
   }
@@ -2242,8 +2012,8 @@ function renderStarters(wrongResponses) {
     var allTags = Object.keys(MC_STARTERS);
     var h = '<div class="card forge-mb-5">';
     h += '<div class="card-title">Browse starter activities</div>';
-    h += '<p style="font-size:13px;color:#8A857E;margin-bottom:14px">No class data yet — pick any misconception tag to preview its starter activity.</p>';
-    h += '<select id="tag-picker" style="width:100%;padding:10px 12px;background:var(--panel-2);border:1px solid var(--line);border-radius:var(--radius-sm);color:var(--white);font-family:Inter,sans-serif;font-size:14px;cursor:pointer">';
+    h += '<p class="forge-u-1rniwep">No class data yet — pick any misconception tag to preview its starter activity.</p>';
+    h += '<select class="forge-u-1vs062b" id="tag-picker">';
     h += '<option value="">— pick a misconception tag —</option>';
     var groups = {};
     allTags.forEach(function(tag) { var g = tag.split('-')[0]+'-'+tag.split('-')[1]; if(!groups[g])groups[g]=[]; groups[g].push(tag); });
@@ -2281,11 +2051,11 @@ function renderStarters(wrongResponses) {
   // Also firing chips
   var others = sorted.slice(1, 5);
   if (others.length > 0) {
-    h += '<div class="card" style="margin-top:12px;padding:14px 18px">';
-    h += '<p style="font-size:12px;color:#8A857E;margin-bottom:10px">Other misconceptions this period — click to preview starter:</p>';
-    h += '<div style="display:flex;flex-wrap:wrap;gap:8px">';
+    h += '<div class="card forge-u-1c8f8t4">';
+    h += '<p class="forge-u-9pvytk">Other misconceptions this period — click to preview starter:</p>';
+    h += '<div class="forge-u-ksn93q">';
     others.forEach(function(tag) {
-      h += '<button onclick="showStarterFor(\'' + tag + '\')" style="font-family:monospace;font-size:12px;color:var(--ember);background:rgba(255,107,44,.08);border:1px solid rgba(255,107,44,.25);border-radius:var(--radius-sm);padding:4px 10px;cursor:pointer">' + tag + ' (' + counts[tag].count + '×)</button>';
+      h += '<button class="forge-u-1oh7221" data-forge-action="show-starter" data-tag="' + tag + '">' + tag + ' (' + counts[tag].count + '×)</button>';
     });
     h += '</div></div>';
   }
@@ -2297,7 +2067,7 @@ window.showStarterFor = function(tag) {
   var el = document.getElementById('panel-starters');
   if (!el) return;
   var out = ''; out = renderStarterCard(tag, out, null);
-  el.innerHTML = out + '<button onclick="renderStarters(dashState.wrongResponses||[])" style="margin-top:12px;font-size:13px;color:var(--slate);background:none;border:1px solid var(--line);padding:6px 14px;border-radius:var(--radius-sm);cursor:pointer">&larr; Back to all starters</button>';
+  el.innerHTML = out + '<button class="forge-u-166b9d9" data-forge-action="render-starters">&larr; Back to all starters</button>';
 };
 
 function renderClassOverview(responses, students) {
@@ -2357,7 +2127,7 @@ function renderClassOverview(responses, students) {
     return accA - accB;
   });
 
-  var h = '<div class="card"><div class="card-title">Students \u2014 sorted by accuracy (lowest first) <span style="float:right;font-family:Inter,sans-serif;font-size:11px;color:#8A857E;font-weight:400;text-transform:none;letter-spacing:0">Click a student to see their full profile</span></div>';
+  var h = '<div class="card"><div class="card-title">Students \u2014 sorted by accuracy (lowest first) <span class="forge-u-rsj30h">Click a student to see their full profile</span></div>';
   h += '<table class="class-table"><thead><tr>';
   h += '<th>Student</th><th>Answered</th><th>Accuracy</th><th>Weakest topic</th><th>Top misconception</th><th>Access</th>';
   h += '</tr></thead><tbody>';
@@ -2371,16 +2141,16 @@ function renderClassOverview(responses, students) {
     var displayName = student.display_name || ps.name;
 
     h += '<tr>';
-    h += '<td data-label="Student" onclick="renderStudent(\'' + sid + '\')" style="cursor:pointer">';
+    h += '<td class="forge-u-1imlfss" data-label="Student" data-forge-action="render-student" data-student-id="' + sid + '">';
     h += '<span class="student-name-display" data-sid="' + sid + '">' + teacherEsc(displayName) + '</span>';
     if (extraTime > 0) h += '<span class="extra-time-badge">+' + extraTime + '%</span>';
     h += '</td>';
-    h += '<td data-label="Answered" onclick="renderStudent(\'' + sid + '\')" style="cursor:pointer">' + ps.total + '</td>';
-    h += '<td data-label="Accuracy" class="acc" style="color:' + accColor + ';cursor:pointer" onclick="renderStudent(\'' + sid + '\')">' + acc + '%</td>';
-    h += '<td data-label="Weakest topic" class="mono" style="font-size:12px;cursor:pointer" onclick="renderStudent(\'' + sid + '\')">' + (ps.weakBank || '\u2014') + '</td>';
-    h += '<td data-label="Top misconception" class="mono" style="font-size:12px;cursor:pointer" onclick="renderStudent(\'' + sid + '\')">' + (ps.topMC ? ps.topMC + ' \u00d7' + ps.topMCcount : '\u2014') + '</td>';
-    h += '<td data-label="Access" style="white-space:nowrap">';
-    h += '<label class="forge-sr-only" for="extra-time-' + sid + '">Extra time for ' + teacherEsc(displayName) + '</label><select id="extra-time-' + sid + '" class="extra-time-select" data-sid="' + sid + '" style="padding:4px 6px;border-radius:var(--radius-sm);border:1px solid var(--line);background:var(--panel);color:var(--slate);font-family:Inter,sans-serif;font-size:12px;cursor:pointer">';
+    h += '<td class="forge-u-1imlfss" data-label="Answered" data-forge-action="render-student" data-student-id="' + sid + '">' + ps.total + '</td>';
+    h += '<td data-label="Accuracy" class="acc" style="color:' + accColor + ';cursor:pointer" data-forge-action="render-student" data-student-id="' + sid + '">' + acc + '%</td>';
+    h += '<td data-label="Weakest topic" class="mono forge-u-gsw1zp" data-forge-action="render-student" data-student-id="' + sid + '">' + (ps.weakBank || '\u2014') + '</td>';
+    h += '<td data-label="Top misconception" class="mono forge-u-gsw1zp" data-forge-action="render-student" data-student-id="' + sid + '">' + (ps.topMC ? ps.topMC + ' \u00d7' + ps.topMCcount : '\u2014') + '</td>';
+    h += '<td class="forge-u-5goeua" data-label="Access">';
+    h += '<label class="forge-sr-only" for="extra-time-' + sid + '">Extra time for ' + teacherEsc(displayName) + '</label><select id="extra-time-' + sid + '" class="extra-time-select forge-u-1ljnzm7" data-sid="' + sid + '">';
     h += '<option value="0"' + (extraTime === 0 ? ' selected' : '') + '>Standard</option>';
     h += '<option value="25"' + (extraTime === 25 ? ' selected' : '') + '>+25%</option>';
     h += '<option value="50"' + (extraTime === 50 ? ' selected' : '') + '>+50%</option>';
@@ -2392,10 +2162,10 @@ function renderClassOverview(responses, students) {
   h += '</tbody></table></div>';
 
   // Rename section below table
-  h += '<div class="card" style="margin-top:14px"><div class="card-title">Rename a student</div>';
-  h += '<p style="font-size:13px;color:#8A857E;margin-bottom:12px">If a student has used an inappropriate name, select them and enter a replacement. The original name is preserved in the database.</p>';
-  h += '<div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">';
-  h += '<label class="forge-sr-only" for="rename-select">Student to rename</label><select id="rename-select" style="padding:7px 10px;border-radius:var(--radius-sm);border:1px solid var(--line);background:var(--panel);color:var(--white);font-family:Inter,sans-serif;font-size:13px;flex:1;min-width:140px">';
+  h += '<div class="card forge-u-1bzpq1k"><div class="card-title">Rename a student</div>';
+  h += '<p class="forge-u-1hzqkjr">If a student has used an inappropriate name, select them and enter a replacement. The original name is preserved in the database.</p>';
+  h += '<div class="forge-u-w2i2oa">';
+  h += '<label class="forge-sr-only" for="rename-select">Student to rename</label><select class="forge-u-1o9xvhi" id="rename-select">';
   h += '<option value="">Select student…</option>';
   sorted.forEach(function(sid) {
     var student = dashState.students.find(function(s) { return s.id === sid; }) || {};
@@ -2404,7 +2174,7 @@ function renderClassOverview(responses, students) {
   });
   h += '</select>';
   h += '<input type="text" id="rename-input" class="rename-input" placeholder="New display name">';
-  h += '<button id="rename-btn" class="join-btn" style="padding:7px 16px;margin:0;width:auto">Save</button>';
+  h += '<button id="rename-btn" class="join-btn forge-u-fnqu57">Save</button>';
   h += '<p class="join-err" id="rename-err"></p>';
   h += '</div></div>';
 
@@ -2521,9 +2291,9 @@ window.renderStudent = function(studentId) {
   var activeMCs = knownMCs.filter(function(mc) { return mcData[mc].streak < ANVIL_CLEAR_THRESHOLD; });
   var resolvedMCs = knownMCs.filter(function(mc) { return mcData[mc].streak >= ANVIL_CLEAR_THRESHOLD; });
 
-  var h = '<button class="back-btn" onclick="document.getElementById(\'panel-student\').style.display=\'none\';document.getElementById(\'panel-class\').classList.add(\'active\');document.querySelectorAll(\'.tab\')[1].classList.add(\'active\')">\u2190 Back to class</button>';
+  var h = '<button class="back-btn" data-forge-action="student-back">\u2190 Back to class</button>';
 
-  h += '<div class="dash-header forge-mb-4"><div><p class="tag" style="margin-bottom:4px">Student Profile</p><h1>' + studentName + (extraTime > 0 ? ' <span class="extra-time-badge" style="font-size:14px;padding:3px 10px">+' + extraTime + '% time</span>' : '') + '</h1></div></div>';
+  h += '<div class="dash-header forge-mb-4"><div><p class="tag forge-u-l8gta7">Student Profile</p><h1>' + studentName + (extraTime > 0 ? ' <span class="extra-time-badge forge-u-1nzryid">+' + extraTime + '% time</span>' : '') + '</h1></div></div>';
 
   h += '<div class="stat-row">';
   h += '<div class="stat"><span class="stat-n" style="color:' + (acc >= 70 ? 'var(--good)' : acc >= 50 ? 'var(--hot)' : 'var(--bad)') + '">' + acc + '%</span><span class="stat-l">Accuracy</span></div>';
@@ -2534,7 +2304,7 @@ window.renderStudent = function(studentId) {
 
   // Active misconceptions (Anvil)
   if (activeMCs.length > 0) {
-    h += '<div class="card" style="border-color:rgba(255,90,90,.3)"><div class="card-title forge-text-bad">Anvil \u2014 still active</div>';
+    h += '<div class="card forge-u-1ce7cf7"><div class="card-title forge-text-bad">Anvil \u2014 still active</div>';
     activeMCs.sort(function(a, b) { return mcData[b].fires - mcData[a].fires; });
     activeMCs.forEach(function(mc) {
       var d = mcData[mc];
@@ -2550,13 +2320,13 @@ window.renderStudent = function(studentId) {
 
   // Resolved
   if (resolvedMCs.length > 0) {
-    h += '<div class="card" style="border-color:rgba(127,217,138,.3)"><div class="card-title forge-text-good">Resolved \u2014 reforged successfully</div>';
+    h += '<div class="card forge-u-5cp4nn"><div class="card-title forge-text-good">Resolved \u2014 reforged successfully</div>';
     resolvedMCs.forEach(function(mc) {
       var d = mcData[mc];
       var label = MC_LABELS[mc] || mc;
-      h += '<div class="mc-item" style="opacity:.7">';
-      h += '<span class="heat-tag" style="background:var(--good)">' + mc + '</span>';
-      h += '<span class="mc-detail" style="text-decoration:line-through">' + label + '</span>';
+      h += '<div class="mc-item forge-u-w5mfjv">';
+      h += '<span class="heat-tag forge-u-6uw790">' + mc + '</span>';
+      h += '<span class="mc-detail forge-u-1aezjox">' + label + '</span>';
       h += '<span class="mc-fires forge-text-good">Resolved \u2713</span>';
       h += '</div>';
     });
@@ -2578,7 +2348,7 @@ window.renderStudent = function(studentId) {
       var when = r.created_at ? new Date(r.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }) : '';
       h += '<div class="mc-item" style="' + (r.reforge_correct ? 'opacity:.7' : '') + '">';
       h += '<span class="heat-tag" style="background:' + (r.reforge_correct ? 'var(--good)' : 'var(--bad)') + '">' + (mc || r.bank || '—') + '</span>';
-      h += '<span class="mc-detail"' + (r.reforge_correct ? ' style="text-decoration:line-through"' : '') + '>' + label + '</span>';
+      h += '<span class="mc-detail forge-u-1aezjox"' + (r.reforge_correct ? '' : '') + '>' + label + '</span>';
       h += '<span class="mc-fires" style="color:' + (r.reforge_correct ? 'var(--good)' : 'var(--bad)') + '">' + (r.reforge_correct ? '✓ Passed' : '✗ Failed') + (when ? ' · ' + when : '') + '</span>';
       h += '</div>';
     });
@@ -2601,7 +2371,7 @@ window.renderStudent = function(studentId) {
   });
   crucibleSessions.reverse();
   if (crucibleSessions.length > 0) {
-    h += '<div class="card"><div class="card-title">Crucible sessions — ' + crucibleSessions.length + ' run' + (crucibleSessions.length !== 1 ? 's' : '') + '<span style="float:right;font-family:Inter,sans-serif;font-size:11px;color:#8A857E;font-weight:400;text-transform:none;letter-spacing:0">Duration is estimated from answer timestamps</span></div>';
+    h += '<div class="card"><div class="card-title">Crucible sessions — ' + crucibleSessions.length + ' run' + (crucibleSessions.length !== 1 ? 's' : '') + '<span class="forge-u-rsj30h">Duration is estimated from answer timestamps</span></div>';
     crucibleSessions.slice(0, 10).forEach(function(sess) {
       var start = new Date(sess.answers[0].created_at);
       var end = new Date(sess.answers[sess.answers.length - 1].created_at);
@@ -2633,18 +2403,18 @@ window.renderStudent = function(studentId) {
   var specKeys = Object.keys(specData).sort();
   if (specKeys.length > 0) {
     h += '<div class="card"><div class="card-title">Spec Point Breakdown</div>';
-    h += '<table style="width:100%;border-collapse:collapse;font-size:13px">';
-    h += '<thead><tr style="color:#8A857E;text-align:left"><th style="padding:6px 0">Spec</th><th>Subject</th><th>Questions</th><th>Accuracy</th><th style="min-width:80px">Bar</th></tr></thead><tbody>';
+    h += '<table class="forge-u-k85mqv">';
+    h += '<thead><tr class="forge-u-sd7dny"><th class="forge-u-3ebq6">Spec</th><th>Subject</th><th>Questions</th><th>Accuracy</th><th class="forge-u-urn98g">Bar</th></tr></thead><tbody>';
     specKeys.forEach(function(sp) {
       var d = specData[sp];
       var spAcc = Math.round((d.correct / d.total) * 100);
       var col = spAcc >= 70 ? 'var(--good)' : spAcc >= 50 ? 'var(--hot)' : 'var(--bad)';
-      h += '<tr style="border-top:1px solid var(--line)">';
-      h += '<td style="padding:7px 0;font-family:JetBrains Mono,monospace;font-size:12px;color:var(--ember)">' + sp + '</td>';
-      h += '<td style="font-size:12px;color:#8A857E">' + (SPEC_TO_SUBJECT[sp] || '—') + '</td>';
-      h += '<td style="color:#8A857E">' + d.total + '</td>';
+      h += '<tr class="forge-u-1jhoksp">';
+      h += '<td class="forge-u-5obb8e">' + sp + '</td>';
+      h += '<td class="forge-u-16oyzks">' + (SPEC_TO_SUBJECT[sp] || '—') + '</td>';
+      h += '<td class="forge-u-19j2vc3">' + d.total + '</td>';
       h += '<td style="font-weight:700;color:' + col + '">' + spAcc + '%</td>';
-      h += '<td><div style="background:var(--line);border-radius:var(--radius-xs);height:6px;width:80px"><div style="background:' + col + ';border-radius:var(--radius-xs);height:6px;width:' + spAcc + '%"></div></div></td>';
+      h += '<td><div class="forge-u-139b0tm"><div style="background:' + col + ';border-radius:var(--radius-xs);height:6px;width:' + spAcc + '%"></div></div></td>';
       h += '</tr>';
     });
     h += '</tbody></table></div>';

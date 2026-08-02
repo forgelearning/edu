@@ -12,84 +12,7 @@
 <link rel="stylesheet" href="css/sidebar.css">
 <link rel="stylesheet" href="css/auth.css">
 <link rel="stylesheet" href="css/components.css">
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--coal);color:var(--slate);font-family:'Inter',sans-serif;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100vh}
-h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter-spacing:-.015em}
-.mono{font-family:'JetBrains Mono',monospace}
-.wrap{max-width:860px;margin:0 auto;padding:28px 20px}
-.tag{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ember)}
-.logo{font-family:'Sora',sans-serif;font-weight:800;font-size:20px;color:var(--white);text-decoration:none;display:inline-flex;align-items:center;gap:8px;margin-bottom:0}
-.logo .spark{width:9px;height:9px;background:var(--ember);border-radius:var(--radius-xs);transform:rotate(45deg);box-shadow:0 0 10px rgba(255,107,44,.7)}
-.theme-toggle{background:var(--panel);border:1px solid var(--line);color:var(--slate);font-family:'JetBrains Mono',monospace;font-size:12px;padding:6px 12px;border-radius:var(--radius-sm);cursor:pointer;z-index:99}
-.join-input{width:100%;padding:12px 14px;border-radius:var(--radius-sm);border:1px solid var(--line);background:var(--panel);color:var(--white);font-family:'Inter',sans-serif;font-size:15px;margin-bottom:14px;text-transform:uppercase}
-.join-input:focus{outline:none;border-color:var(--ember)}
-.join-input::placeholder{color:#7A756E;text-transform:none}
-.join-btn{width:100%;padding:13px;border-radius:var(--radius-sm);background:var(--ember);color:#fff;border:none;font-family:'Inter',sans-serif;font-weight:600;font-size:15px;cursor:pointer}
-.join-btn:hover{background:var(--hot)}
-.join-btn:disabled{opacity:.5;cursor:wait}
-.join-err{color:var(--bad);font-size:13px;margin-top:10px;display:none}
-/* ── Profile tabs ── */
-.prof-tabs{display:flex;gap:0;margin-bottom:24px;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-md);padding:4px;width:fit-content}
-.prof-tab{font-size:13px;font-weight:600;font-family:'Inter',sans-serif;padding:8px 16px;border-radius:var(--radius-sm);border:none;background:none;color:var(--slate);cursor:pointer;transition:all .15s}
-.prof-tab.active{background:var(--ember);color:#fff}
-.prof-tab:hover:not(.active){color:var(--white)}
-/* ── Profile header card ── */
-.prof-header{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-lg);padding:24px 28px;margin-bottom:20px}
-.prof-header-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px}
-.prof-name{font-family:'Sora',sans-serif;font-size:22px;font-weight:700;color:var(--white)}
-.prof-subject{font-size:13px;color:var(--slate);margin-top:2px}
-.always-updating{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--ember)}
-/* ── Stat row ── */
-.stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
-.stat{text-align:center;padding:4px 0}
-.stat-n{font-family:'Sora',sans-serif;font-size:32px;font-weight:800;display:block;line-height:1}
-.stat-l{font-size:10px;color:#8A857E;margin-top:6px;display:block;font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.05em}
-/* ── Two-column overview ── */
-.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
-.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-lg);padding:20px;margin-bottom:16px}
-.card-title{font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center}
-/* ── Focus items ── */
-.focus-item{background:var(--panel-2);border:1px solid var(--line);border-radius:var(--radius-md);padding:13px 14px;margin-bottom:8px}
-.focus-head{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:6px}
-.focus-pill{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-family:'JetBrains Mono',monospace;font-weight:700;padding:3px 10px;border-radius:var(--radius-xs)}
-.focus-acc{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700}
-.focus-detail{font-size:13px;color:var(--slate);line-height:1.5}
-.focus-tag{font-size:11px;color:var(--coal);background:var(--hot);padding:2px 8px;border-radius:var(--radius-xs);font-weight:600;font-family:'JetBrains Mono',monospace}
-/* ── Strengths ── */
-.strength-item{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--line);font-size:13px}
-.strength-item:last-child{border-bottom:none}
-.strength-label{color:var(--white)}
-.strength-acc{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:13px;color:var(--good)}
-/* ── Grade + rank ── */
-.grade-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-lg);padding:22px 24px;margin-bottom:16px;display:flex;align-items:center;gap:20px;flex-wrap:wrap}
-.grade-letter{font-family:'Sora',sans-serif;font-size:52px;font-weight:800;line-height:1;min-width:80px;text-align:center}
-.grade-info{flex:1;min-width:180px}
-.grade-acc{min-width:80px;text-align:center}
-.grade-eyebrow{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:#8A857E;margin-bottom:4px}
-.grade-tracking{font-size:15px;font-weight:600;color:var(--white);margin-bottom:6px}
-.grade-desc{font-size:13px;color:var(--slate)}
-.grade-caveat{font-size:11px;font-family:'JetBrains Mono',monospace;color:#8A857E;margin-top:6px}
-.rank-display{text-align:center;padding:22px;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-lg);margin-bottom:16px}
-.rank-title{font-family:'Sora',sans-serif;font-size:28px;font-weight:800}
-.rank-xp{font-family:'JetBrains Mono',monospace;font-size:13px;color:#8A857E;margin-top:4px}
-.xp-bar-wrap{height:5px;background:var(--line);border-radius:var(--radius-xs);margin:12px 0 4px}
-.xp-bar-fill{height:5px;border-radius:var(--radius-xs);background:var(--ember)}
-.xp-bar-label{display:flex;justify-content:space-between;font-size:11px;font-family:'JetBrains Mono',monospace;color:#8A857E}
-/* ── Anvil list ── */
-.mc-item{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:var(--radius-md);background:var(--panel-2);border:1px solid var(--line);margin-bottom:6px;font-size:13px}
-.mc-detail{flex:1;color:var(--slate)}
-.mc-fires{font-family:'JetBrains Mono',monospace;font-size:12px}
-.empty{text-align:center;padding:28px 20px;color:var(--slate)}
-.empty h3{color:var(--white);margin-bottom:8px}
-.prof-footer{font-size:13px;color:var(--slate);margin-top:16px;padding-top:16px;border-top:1px solid var(--line)}
-.nav-links{display:none} /* replaced by tabs */
-.nav-link{}
-[data-theme="light"] .focus-tag{color:#fff}
-[data-theme="light"] .join-btn{color:#fff}
-[data-theme="light"] .prof-tab.active{color:#fff}
-@media(max-width:600px){.stat-row{grid-template-columns:1fr 1fr}.two-col{grid-template-columns:1fr}.prof-tabs{width:100%;flex-wrap:wrap}}
-[data-theme="light"] .forge-logo-dark{display:none!important}[data-theme="light"] .forge-logo-light{display:inline!important}</style>
+
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-RGZ9J6Q8H9"></script>
 <script>
@@ -99,6 +22,8 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
   gtag('config', 'G-RGZ9J6Q8H9');
 </script>
 <link rel="stylesheet" href="css/states.css">
+  <link rel="stylesheet" href="css/generated-utilities.css">
+  <link rel="stylesheet" href="css/page-overrides/profile.css">
 </head>
 <body>
 <script src="scripts/forge-api.js"></script>
@@ -107,7 +32,7 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
 
 <script src="scripts/forge-logo.js"></script>
 <script src="scripts/forge-auth-card.js"></script>
-<script src="scripts/forge-sidebar.js"></script>
+<script src="scripts/forge-sidebar.js?v=20260802"></script>
 <script src="scripts/forge-product-analytics.js"></script>
 <script>
 ForgeSidebar.mount({
@@ -399,24 +324,24 @@ function renderProfile(){
                   : days + ' days left on your trial';
 
     h += '<div style="background:var(--panel);border:1px solid '+borderCol+';border-radius:var(--radius-md);padding:14px 18px;margin-bottom:18px">';
-    h += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">';
+    h += '<div class="forge-u-4f9uhm">';
     h += '<div>';
     h += '<span style="font-family:\'JetBrains Mono\',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:'+tagCol+'">Free trial</span>';
-    h += '<p style="font-size:15px;font-weight:700;font-family:\'Sora\',sans-serif;color:var(--white);margin-top:2px">'+msg+'</p>';
+    h += '<p class="forge-u-s0p829">'+msg+'</p>';
     h += '</div>';
-    h += '<a href="forge-signup.html" style="display:inline-block;padding:8px 16px;border-radius:var(--radius-sm);background:var(--ember);color:var(--coal);font-family:Inter,sans-serif;font-weight:700;font-size:13px;text-decoration:none;white-space:nowrap">Subscribe →</a>';
+    h += '<a class="forge-u-qwg8u0" href="forge-signup.html">Subscribe →</a>';
     h += '</div>';
     // Progress bar (fills as trial runs out)
-    h += '<div style="height:5px;background:var(--line);border-radius:var(--radius-xs);overflow:hidden">';
+    h += '<div class="forge-u-1rh0em3">';
     h += '<div style="height:100%;width:'+barPct+'%;background:'+barCol+';border-radius:var(--radius-xs);transition:width .4s"></div>';
     h += '</div>';
-    h += '<p style="font-size:12px;color:#8A857E;margin-top:8px">After '+days+' day'+(days!==1?'s':'')+', you\'ll drop to 10 free questions/day unless you subscribe · £2.99/month</p>';
+    h += '<p class="forge-u-1bzwq9b">After '+days+' day'+(days!==1?'s':'')+', you\'ll drop to 10 free questions/day unless you subscribe · £2.99/month</p>';
     h += '</div>';
   } else if (st.isPaid) {
     // Small Pro badge for paying subscribers
-    h += '<div style="display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:var(--radius-sm);background:rgba(127,217,138,.08);border:1px solid rgba(127,217,138,.25);margin-bottom:14px">';
-    h += '<span style="color:var(--good);font-size:13px">✓</span>';
-    h += '<span style="font-family:\'JetBrains Mono\',monospace;font-size:12px;color:var(--good)">Forge Pro — active</span>';
+    h += '<div class="forge-u-sr19fb">';
+    h += '<span class="forge-u-oznh0r">✓</span>';
+    h += '<span class="forge-u-4amsf1">Forge Pro — active</span>';
     h += '</div>';
   }
 
@@ -468,10 +393,10 @@ function renderProfile(){
         var label=MC_LABELS[tag]||tag;
         h+='<div class="focus-item">';
         h+='<div class="focus-head">';
-        h+='<span class="focus-pill" style="background:rgba(255,201,60,.15);color:var(--hot);border:1px solid rgba(255,201,60,.3)">'+tag+'</span>';
+        h+='<span class="focus-pill forge-u-1ec8uss">'+tag+'</span>';
         h+='<span class="focus-acc forge-text-bad">'+d.fires+' fire'+(d.fires!==1?'s':'')+'</span>';
         h+='</div>';
-        h+='<div class="focus-detail">'+label+'. Hit the <a href="anvil.html" style="color:var(--ember);font-weight:600">Anvil</a> to rework it.</div>';
+        h+='<div class="focus-detail">'+label+'. Hit the <a class="forge-u-xad1ay" href="anvil.html">Anvil</a> to rework it.</div>';
         h+='</div>';
       });
     }
@@ -509,13 +434,13 @@ function renderProfile(){
     if (subjects.length > 0) {
       h += '<div class="card forge-mt-4">';
       h += '<div class="card-title">Subject breakdown</div>';
-      h += '<table style="width:100%;border-collapse:collapse;font-size:13px">';
-      h += '<thead><tr style="border-bottom:1px solid var(--line)">';
-      h += '<th style="font-family:\'JetBrains Mono\',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:#8A857E;padding:6px 8px;text-align:left">Subject</th>';
-      h += '<th style="font-family:\'JetBrains Mono\',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:#8A857E;padding:6px 8px;text-align:right">Qs answered</th>';
-      h += '<th style="font-family:\'JetBrains Mono\',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:#8A857E;padding:6px 8px;text-align:right">Accuracy</th>';
-      h += '<th style="font-family:\'JetBrains Mono\',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:#8A857E;padding:6px 8px;text-align:left">Progress</th>';
-      h += '<th style="font-family:\'JetBrains Mono\',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:#8A857E;padding:6px 8px;text-align:left">Top misconception</th>';
+      h += '<table class="forge-u-k85mqv">';
+      h += '<thead><tr class="forge-u-1jmaj5p">';
+      h += '<th class="forge-u-s6yio4">Subject</th>';
+      h += '<th class="forge-u-dzjm5t">Qs answered</th>';
+      h += '<th class="forge-u-dzjm5t">Accuracy</th>';
+      h += '<th class="forge-u-s6yio4">Progress</th>';
+      h += '<th class="forge-u-s6yio4">Top misconception</th>';
       h += '</tr></thead><tbody>';
       subjects.sort(function(a,b){return subjectData[b].total-subjectData[a].total;}).forEach(function(subj) {
         var sd = subjectData[subj];
@@ -524,17 +449,17 @@ function renderProfile(){
         var topMC = Object.keys(sd.mcs).sort(function(a,b){return sd.mcs[b]-sd.mcs[a];})[0]||null;
         var topMCLabel = topMC?(MC_LABELS[topMC]||topMC):null;
         var bankCount = Object.keys(sd.banks).length;
-        h += '<tr style="border-bottom:1px solid var(--line)">';
-        h += '<td style="padding:10px 8px;color:var(--white);font-weight:600">'+(SUBJ_LABELS[subj]||subj)+'</td>';
-        h += '<td style="padding:10px 8px;text-align:right;font-family:\'JetBrains Mono\',monospace;font-size:12px;color:var(--slate)">'+sd.total+'<span style="color:#8A857E;font-size:10px"> / '+bankCount+' bank'+(bankCount!==1?'s':'')+'</span></td>';
+        h += '<tr class="forge-u-1jmaj5p">';
+        h += '<td class="forge-u-9z781z">'+(SUBJ_LABELS[subj]||subj)+'</td>';
+        h += '<td class="forge-u-ssl18s">'+sd.total+'<span class="forge-u-1kd1vsw"> / '+bankCount+' bank'+(bankCount!==1?'s':'')+'</span></td>';
         h += '<td style="padding:10px 8px;text-align:right;font-family:\'JetBrains Mono\',monospace;font-size:13px;font-weight:600;color:'+scol+'">'+sacc+'%</td>';
-        h += '<td style="padding:10px 8px;min-width:90px"><div style="height:5px;background:var(--line);border-radius:var(--radius-xs);overflow:hidden"><div style="height:100%;width:'+sacc+'%;background:'+scol+';border-radius:var(--radius-xs)"></div></div></td>';
-        h += '<td style="padding:10px 8px;font-size:12px">';
+        h += '<td class="forge-u-7tbz36"><div class="forge-u-1rh0em3"><div style="height:100%;width:'+sacc+'%;background:'+scol+';border-radius:var(--radius-xs)"></div></div></td>';
+        h += '<td class="forge-u-1rlm34s">';
         if (topMCLabel) {
-          h += '<span style="font-family:\'JetBrains Mono\',monospace;font-size:10px;padding:2px 6px;border-radius:var(--radius-xs);background:rgba(255,90,90,.1);border:1px solid rgba(255,90,90,.2);color:var(--bad);margin-right:5px">'+topMC+'</span>';
-          h += '<span style="color:#8A857E">'+topMCLabel.slice(0,38)+(topMCLabel.length>38?'…':'')+'</span>';
+          h += '<span class="forge-u-e2msq1">'+topMC+'</span>';
+          h += '<span class="forge-u-19j2vc3">'+topMCLabel.slice(0,38)+(topMCLabel.length>38?'…':'')+'</span>';
         } else {
-          h += '<span style="color:var(--good);font-size:11px">✓ None yet</span>';
+          h += '<span class="forge-u-fxiby9">✓ None yet</span>';
         }
         h += '</td></tr>';
       });
@@ -544,7 +469,7 @@ function renderProfile(){
   } else if(activeTab==='forgemode'){
     // ── FORGE MODE TAB ──
     h+='<div class="card">';
-    h+='<div class="card-title" style="color:var(--ember)">Forge mode — daily accuracy</div>';
+    h+='<div class="card-title forge-u-1gs3btp">Forge mode — daily accuracy</div>';
     // Recent session breakdown
     var recentMain=responses.filter(function(r){return !r.reforge_attempted;}).slice(-30);
     if(recentMain.length===0){
@@ -553,14 +478,14 @@ function renderProfile(){
       var recentCorrect=recentMain.filter(function(r){return r.is_correct;}).length;
       var recentAcc=Math.round((recentCorrect/recentMain.length)*100);
       var recentCol=recentAcc>=75?'var(--good)':recentAcc>=50?'var(--hot)':'var(--bad)';
-      h+='<div style="display:flex;gap:24px;margin-bottom:20px;flex-wrap:wrap">';
+      h+='<div class="forge-u-elv7v3">';
       h+='<div class="stat"><span class="stat-n" style="color:'+recentCol+'">'+recentAcc+'%</span><span class="stat-l">Last 30 questions</span></div>';
-      h+='<div class="stat"><span class="stat-n" style="color:var(--ember)">'+streak+'</span><span class="stat-l">Day streak 🔥</span></div>';
+      h+='<div class="stat"><span class="stat-n forge-u-1gs3btp">'+streak+'</span><span class="stat-l">Day streak 🔥</span></div>';
       h+='<div class="stat"><span class="stat-n forge-text-white">'+xp.toLocaleString()+'</span><span class="stat-l">Total XP</span></div>';
       h+='</div>';
       // Grade prediction — one card per class the student is in
       if(grades.length>1){
-        h+='<div class="grade-eyebrow" style="margin-bottom:10px">Predicted grades — '+grades.length+' subjects</div>';
+        h+='<div class="grade-eyebrow forge-u-w2df8o">Predicted grades — '+grades.length+' subjects</div>';
       }
       grades.forEach(function(g,i){
         var gr=g.grade;
@@ -583,12 +508,12 @@ function renderProfile(){
     var xpToNext=nextRank?nextRank.min-xp:0;
     var pct=nextRank?Math.round(((xp-rank.min)/(nextRank.min-rank.min))*100):100;
     h+='<div class="rank-display">';
-    h+='<p class="tag" style="margin-bottom:8px">'+st.studentName+' — Forge Rank</p>';
+    h+='<p class="tag forge-u-1x3vyu3">'+st.studentName+' — Forge Rank</p>';
     h+='<div class="rank-title" style="color:'+rank.color+'">'+rank.name+'</div>';
     h+='<div class="rank-xp">'+xp.toLocaleString()+' XP</div>';
     h+='<div class="xp-bar-wrap"><div class="xp-bar-fill" style="width:'+pct+'%"></div></div>';
     if(nextRank){h+='<div class="xp-bar-label"><span>'+rank.name+'</span><span>'+xpToNext.toLocaleString()+' XP to '+nextRank.name+'</span></div>';}
-    else{h+='<div style="font-size:12px;color:var(--hot);margin-top:4px">Maximum rank achieved ✦</div>';}
+    else{h+='<div class="forge-u-1a7i38n">Maximum rank achieved ✦</div>';}
     h+='</div>';
 
   } else if(activeTab==='anvil'){
@@ -607,8 +532,8 @@ function renderProfile(){
         h+='<span class="mc-fires forge-text-bad">'+d.fires+'×</span>';
         h+='</div>';
       });
-      h+='<a href="anvil.html" style="display:inline-block;margin-top:14px;font-size:13px;color:var(--ember);font-family:JetBrains Mono,monospace;text-decoration:none;font-weight:600">Rework these in the Anvil →</a>';
-      h+='<div style="margin-top:10px;font-size:12px;color:#8A857E;font-family:JetBrains Mono,monospace">After clearing misconceptions in the Anvil, <a href="profile.html" style="color:#8A857E">refresh this page</a> to update your list.</div>';
+      h+='<a class="forge-u-14gvs6c" href="anvil.html">Rework these in the Anvil →</a>';
+      h+='<div class="forge-u-1tuzle1">After clearing misconceptions in the Anvil, <a class="forge-u-19j2vc3" href="profile.html">refresh this page</a> to update your list.</div>';
     }
     h+='</div>';
     // Resolved
@@ -634,12 +559,12 @@ function renderProfile(){
       var cCorrect=crucibleResponses.filter(function(r){return r.is_correct;}).length;
       var cAcc=Math.round((cCorrect/crucibleResponses.length)*100);
       var cCol=cAcc>=75?'var(--good)':cAcc>=50?'var(--hot)':'var(--bad)';
-      h+='<div class="stat-row" style="max-width:400px;margin-bottom:20px">';
+      h+='<div class="stat-row forge-u-4jqx9p">';
       h+='<div class="stat"><span class="stat-n" style="color:'+cCol+'">'+cAcc+'%</span><span class="stat-l">Crucible accuracy</span></div>';
       h+='<div class="stat"><span class="stat-n forge-text-white">'+crucibleResponses.length+'</span><span class="stat-l">Questions done</span></div>';
       h+='</div>';
-      h+='<p style="font-size:13px;color:var(--slate)">The Crucible fires real exam conditions — no hints, no scaffolds. Your accuracy here is the closest prediction of exam day performance.</p>';
-      h+='<a href="crucible.html" style="display:inline-block;margin-top:14px;font-size:13px;color:var(--bad);font-family:JetBrains Mono,monospace;text-decoration:none;font-weight:600">Enter the Crucible →</a>';
+      h+='<p class="ui-meta-muted">The Crucible fires real exam conditions — no hints, no scaffolds. Your accuracy here is the closest prediction of exam day performance.</p>';
+      h+='<a class="forge-u-97wwn0" href="crucible.html">Enter the Crucible →</a>';
     }
     h+='</div>';
   }
@@ -814,5 +739,6 @@ function forgeSignOut(){
 })();
 </script>
 <script src="scripts/nav.js"></script>
+  <script src="scripts/forge-page-actions.js"></script>
 </body>
 </html>

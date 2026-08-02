@@ -7,40 +7,11 @@
   <meta name="description" content="How teachers create classes, set assignments, read Spec Points and use Forge's live classroom data.">
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/base.css">
-  <style>
-    *{margin:0;padding:0;box-sizing:border-box}
-    body{font-family:'Sora',sans-serif;font-size:16px;line-height:1.7}
-    h1,h2,h3{line-height:1.1}
-    a{color:var(--ember)}
-    .wrap{max-width:1180px;margin:0 auto;padding:0 32px}
-    .guide-hero{padding:56px 0 48px;border-bottom:1px solid var(--line);margin-bottom:56px}
-    .guide-hero .tag{display:block;margin-bottom:10px;color:var(--ember);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase}
-    .guide-hero h1{font-size:clamp(32px,5vw,52px);font-weight:800;margin-bottom:16px}
-    .guide-hero p{font-size:17px;max-width:62ch;color:var(--slate)}
-    .last-updated{font-family:'JetBrains Mono',monospace!important;font-size:11px!important;color:#8A857E!important;margin-top:14px}
-    .layout{display:grid;grid-template-columns:220px minmax(0,1fr);gap:64px;align-items:flex-start}
-    .toc{position:sticky;top:24px;padding-top:4px}
-    .toc-title{font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:#8A857E;margin-bottom:12px}
-    .toc a{display:block;font-size:13px;color:var(--slate);text-decoration:none;padding:5px 0 5px 12px;border-left:2px solid var(--line);margin-bottom:2px;line-height:1.35}
-    .toc a:hover{color:var(--ember);border-left-color:var(--ember)}
-    .section{margin-bottom:56px}
-    .section-title{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ember);margin-bottom:20px;padding-bottom:10px;border-bottom:1px solid var(--line)}
-    .item{border-bottom:1px solid var(--line);padding:20px 0}
-    .item h2{font-size:18px;color:var(--white);margin-bottom:10px}
-    .item p,.item li{font-size:15px;color:var(--slate)}
-    .item ul,.item ol{margin:10px 0 0 20px}
-    .item li{margin-bottom:7px}
-    .item strong{color:var(--white)}
-    .callout{margin-top:16px;padding:14px 18px;border:1px solid rgba(255,201,60,.25);background:rgba(255,201,60,.06);border-radius:10px;color:var(--slate);font-size:14px}
-    .callout strong{color:var(--hot)}
-    .mono{font-family:'JetBrains Mono',monospace}
-    footer{border-top:1px solid var(--line);padding:40px 0;margin-top:56px;font-size:13px;color:#8A857E}
-    footer a{color:#8A857E}
-    .footer-row{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
-    @media(max-width:700px){.layout{grid-template-columns:1fr}.toc{display:none}.wrap{padding:0 20px}}
-  </style>
+
 <link rel="stylesheet" href="css/components.css">
 <link rel="stylesheet" href="css/discovery.css">
+  <link rel="stylesheet" href="css/generated-utilities.css">
+  <link rel="stylesheet" href="css/page-overrides/guides-teacher-dashboard.css">
 </head>
 <body>
   <script src="scripts/analytics-consent.js"></script>
@@ -49,9 +20,9 @@
     window.toggleTheme=function(){var h=document.documentElement,b=document.querySelector('.theme-toggle');if(h.getAttribute('data-theme')==='light'){h.removeAttribute('data-theme');b.textContent='☀';localStorage.setItem('forge-theme','dark')}else{h.setAttribute('data-theme','light');b.textContent='☾';localStorage.setItem('forge-theme','light')}};
     if(localStorage.getItem('forge-theme')==='light'){document.documentElement.setAttribute('data-theme','light');}
   </script>
-  <div id="sticky-nav"><div class="wrap-nav" style="max-width:1080px;margin:0 auto"><nav>
-    <a class="logo" href="index.html" id="teacher-logo" style="line-height:1;display:inline-flex;align-items:center;text-decoration:none"><span style="display:inline-flex;align-items:center"></span></a>
-    <div class="nav-right"><button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle light/dark theme">☀</button><a class="nav-link" href="guides.html">← Guides</a><a class="nav-link" href="teacher.html">Teacher sign in</a></div>
+  <div id="sticky-nav"><div class="wrap-nav"><nav>
+    <a class="logo forge-u-1cihgfz" href="index.html" id="teacher-logo"><span class="forge-u-fj5l7q"></span></a>
+    <div class="nav-right"><button class="theme-toggle" data-forge-action="theme" aria-label="Toggle light/dark theme">☀</button><a class="nav-link" href="guides.html">← Guides</a><a class="nav-link" href="teacher.html">Teacher sign in</a></div>
   </nav></div></div>
   <script>document.querySelector('#teacher-logo span').innerHTML=ForgeLogo.imgHtml(38);</script>
 

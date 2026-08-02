@@ -1,0 +1,71 @@
+/* Route-specific overrides for guides-forge-mode.html. Shared rules belong in components.css. */
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Sora',sans-serif;font-size:16px;line-height:1.7}
+h1,h2,h3{line-height:1.1}
+a{color:var(--ember)}
+a:hover{text-decoration:underline}
+.wrap{max-width:1180px;margin:0 auto;padding:0 32px}
+.tag{color:var(--ember)}
+.mono{font-family:'JetBrains Mono',monospace}
+[data-theme="light"] .cta{color:#fff}
+
+/* hero */
+.faq-hero{padding:56px 0 48px;border-bottom:1px solid var(--line);margin-bottom:56px}
+.faq-hero .tag{margin-bottom:10px;display:block}
+.faq-hero h1{font-size:clamp(32px,5vw,52px);font-weight:800;margin-bottom:16px}
+.faq-hero p{font-size:17px;max-width:54ch;color:var(--slate)}
+.last-updated{font-family:'JetBrains Mono',monospace;font-size:11px;color:#8A857E;margin-top:14px}
+
+/* sections */
+.faq-section{margin-bottom:56px}
+.faq-section-title{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ember);margin-bottom:20px;padding-bottom:10px;border-bottom:1px solid var(--line)}
+
+/* accordion */
+.faq-item{border-bottom:1px solid var(--line)}
+.faq-q{width:100%;background:none;border:none;text-align:left;padding:20px 0;cursor:pointer;display:flex;justify-content:space-between;align-items:flex-start;gap:16px;font-family:'Sora',sans-serif;font-size:18px;font-weight:700;color:var(--white);line-height:1.2}
+.faq-q:hover{color:var(--ember)}
+.faq-q:focus-visible{outline:2px solid var(--hot);outline-offset:3px;border-radius:var(--radius-xs)}
+.faq-chevron{flex-shrink:0;font-size:14px;color:var(--slate);transition:transform .2s;margin-top:3px}
+.faq-q[aria-expanded="true"] .faq-chevron{transform:rotate(180deg)}
+.faq-a{display:none;padding-bottom:24px;font-size:15px;line-height:1.75}
+.faq-a.open{display:block}
+.faq-a[hidden]{display:none!important}
+.faq-a p{margin-bottom:14px;color:var(--slate)}
+.faq-a p:last-child{margin-bottom:0}
+.faq-a strong{color:var(--white)}
+.faq-a ul,.faq-a ol{margin:10px 0 14px 20px}
+.faq-a li{margin-bottom:7px;color:var(--slate)}
+.faq-a li strong{color:var(--white)}
+
+/* status pills */
+.pill{display:inline-block;padding:3px 10px;border-radius:5px;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;margin-right:6px;vertical-align:middle}
+.pill-live{background:rgba(127,217,138,.1);border:1px solid rgba(127,217,138,.3);color:var(--good)}
+.pill-building{background:rgba(255,201,60,.1);border:1px solid rgba(255,201,60,.3);color:var(--hot)}
+.pill-planned{background:rgba(184,180,173,.1);border:1px solid rgba(184,180,173,.25);color:var(--slate)}
+.pill-no{background:rgba(255,90,90,.08);border:1px solid rgba(255,90,90,.2);color:var(--bad)}
+
+/* notice boxes */
+.notice{border-radius:10px;padding:14px 18px;margin:14px 0;font-size:14px}
+.notice-good{background:rgba(127,217,138,.06);border:1px solid rgba(127,217,138,.25);color:var(--slate)}
+.notice-good strong{color:var(--good)}
+.notice-amber{background:rgba(255,201,60,.06);border:1px solid rgba(255,201,60,.25);color:var(--slate)}
+.notice-amber strong{color:var(--hot)}
+.notice-info{background:rgba(255,107,44,.05);border:1px solid rgba(255,107,44,.2);color:var(--slate)}
+.notice-info strong{color:var(--ember)}
+
+/* sidebar TOC */
+.faq-layout{display:grid;grid-template-columns:220px minmax(0,1fr);gap:64px;align-items:flex-start}
+.faq-layout main{min-width:0}
+.faq-a p,.faq-a ul,.faq-a ol{max-width:none}
+.toc{position:sticky;top:24px;padding-top:4px}
+.toc-title{font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:#8A857E;margin-bottom:12px}
+.toc a{display:block;font-size:13px;color:var(--slate);text-decoration:none;padding:5px 0;border-left:2px solid var(--line);padding-left:12px;margin-bottom:2px;line-height:1.35}
+.toc a:hover,.toc a.active{color:var(--ember);border-left-color:var(--ember)}
+@media(max-width:700px){.faq-layout{grid-template-columns:1fr}.toc{display:none}}
+
+/* footer */
+footer{border-top:1px solid var(--line);padding:40px 0;margin-top:56px;font-size:13px;color:#8A857E}
+footer a{color:#8A857E}
+footer a:hover{color:var(--ember)}
+.footer-row{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+[data-theme="light"] .forge-logo-dark{display:none!important}[data-theme="light"] .forge-logo-light{display:inline!important}

@@ -81,7 +81,7 @@
     onSubmit: function (fn) {
       var form = document.getElementById('auth-form');
       if (!form) return;
-      form.onsubmit = function (e) { e.preventDefault(); fn(); };
+      form.addEventListener('submit', function (e) { e.preventDefault(); fn(); });
     },
 
     field: function (id, label, o) {

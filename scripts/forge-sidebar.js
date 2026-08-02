@@ -67,13 +67,13 @@ var ForgeSidebar = {
     if (config.classSwitch) {
       this._addLabel = config.classSwitch.addLabel;
       classSwitchHtml =
-        '<div class="fside-classswitch" style="position:relative">' +
-          '<button class="fclassswitch-btn" id="fclassswitch-btn" onclick="ForgeSidebar._toggleClassMenu()">' +
+        '<div class="fside-classswitch">' +
+          '<button class="fclassswitch-btn" id="fclassswitch-btn" data-forge-sidebar-action="toggle-class-menu">' +
             _fsIcon('classes') +
             '<span class="fclassswitch-label">' + _fsEsc(config.classSwitch.label || '') + '</span>' +
             '<svg class="fclassswitch-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 10l5 5 5-5"></path></svg>' +
           '</button>' +
-          '<div class="fclassswitch-menu" id="fclassswitch-menu" style="display:none"></div>' +
+          '<div class="fclassswitch-menu" id="fclassswitch-menu"></div>' +
         '</div>';
     }
 
@@ -81,8 +81,8 @@ var ForgeSidebar = {
     var badgeHtml =
       '<a id="forge-badge" href="' + _fsEsc(badgeHref) + '">' +
         '<span class="badge-mark">' +
-          '<img class="forge-logo-dark" src="' + _FORGE_LOGO_DARK + '" alt="" style="height:22px;width:auto">' +
-          '<img class="forge-logo-light" src="' + _FORGE_LOGO_LIGHT + '" alt="" style="height:22px;width:auto">' +
+          '<img class="forge-logo-dark forge-logo-img--sm" src="' + _FORGE_LOGO_DARK + '" alt="">' +
+          '<img class="forge-logo-light forge-logo-img--sm" src="' + _FORGE_LOGO_LIGHT + '" alt="">' +
         '</span>' +
         '<span class="badge-name">Forge</span>' +
       '</a>';
@@ -94,19 +94,19 @@ var ForgeSidebar = {
           (footerItemsHtml ? '<div class="fside-divider"></div>' + footerItemsHtml : '') +
         '</nav>' +
         '<div class="fside-footer">' +
-          '<button class="fside-item danger fside-footer-main" onclick="ForgeSidebar._signOut()">' +
+          '<button class="fside-item danger fside-footer-main" data-forge-sidebar-action="signout">' +
             _fsIcon('signout') +
             '<span class="fside-label">Sign out</span>' +
             '<span class="fside-tooltip">Sign out</span>' +
           '</button>' +
-          '<button class="fside-footer-icon" id="forge-theme-toggle" onclick="ForgeSidebar._toggleTheme()" aria-label="Toggle theme">' +
+          '<button class="fside-footer-icon" id="forge-theme-toggle" data-forge-sidebar-action="theme" aria-label="Toggle theme">' +
             '<svg id="forge-theme-icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>' +
-            '<svg id="forge-theme-icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="display:none"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg>' +
+            '<svg id="forge-theme-icon-sun" class="forge-theme-icon-hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg>' +
             '<span class="fside-tooltip" id="forge-theme-tooltip">Dark mode</span>' +
           '</button>' +
         '</div>' +
       '</aside>' +
-      '<button id="forge-sidebar-toggle" onclick="ForgeSidebar._toggleSidebar()" aria-label="Toggle sidebar">' +
+      '<button id="forge-sidebar-toggle" data-forge-sidebar-action="toggle-sidebar" aria-label="Toggle sidebar">' +
         '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>' +
       '</button>';
 
@@ -150,6 +150,21 @@ var ForgeSidebar = {
             : ForgeSidebar._selectClass(id);
         }
       }
+      var action = el && el.closest('[data-forge-sidebar-action]');
+      if (action) {
+        var actionName = action.getAttribute('data-forge-sidebar-action');
+        if (actionName === 'scrim') return ForgeSidebar._onScrimClick(e);
+        if (actionName === 'sidebar-call') return ForgeSidebar._runSidebarCall(action.getAttribute('data-forge-sidebar-call'));
+        var actions = {
+          'toggle-class-menu': '_toggleClassMenu', 'signout': '_signOut', 'theme': '_toggleTheme',
+          'toggle-sidebar': '_toggleSidebar', 'open-sheet': '_openSheet', 'close-sheet': '_closeSheet',
+          'sheet-add-class': '_sheetAddClass', 'sheet-signout': '_sheetSignOut', 'add-class': '_addClass'
+        };
+        if (actions[actionName] && typeof ForgeSidebar[actions[actionName]] === 'function') {
+          e.preventDefault();
+          return ForgeSidebar[actions[actionName]]();
+        }
+      }
       var menu = document.getElementById('fclassswitch-menu');
       var wrap = document.querySelector('.fside-classswitch');
       if (menu && menu.style.display !== 'none' && wrap && !wrap.contains(e.target)) menu.style.display = 'none';
@@ -164,11 +179,11 @@ var ForgeSidebar = {
     var h = tabs.map(function(it) {
       return _fsTabHtml(it, config.active);
     }).join('');
-    h += '<button class="ftab" data-key="__more" onclick="ForgeSidebar._openSheet()" aria-label="More">' +
+    h += '<button class="ftab" data-key="__more" data-forge-sidebar-action="open-sheet" aria-label="More">' +
       _fsIcon('more') + '<span class="ftab-label">More</span>' +
     '</button>';
     return '<nav id="forge-tabbar">' + h + '</nav>' +
-      '<div id="forge-sheet-scrim" onclick="ForgeSidebar._onScrimClick(event)">' +
+      '<div id="forge-sheet-scrim" data-forge-sidebar-action="scrim">' +
         '<div id="forge-sheet" role="dialog" aria-modal="true" aria-label="More"><div class="fsheet-grip"></div>' +
         '<div id="forge-sheet-body"></div></div>' +
       '</div>';
@@ -200,7 +215,7 @@ var ForgeSidebar = {
         }
         return row + '</div>';
       }).join('');
-      h += '<button class="fsheet-item" style="color:var(--ember)" onclick="ForgeSidebar._sheetAddClass()">' +
+      h += '<button class="fsheet-item fsheet-item-accent" data-forge-sidebar-action="sheet-add-class">' +
         _fsIcon('classes') + '<span>' + _fsEsc(this._addLabel || '+ Join another class') + '</span></button>';
       h += '<div class="fsheet-divider"></div>';
     }
@@ -212,9 +227,9 @@ var ForgeSidebar = {
     }
 
     var isLight = document.documentElement.getAttribute('data-theme') === 'light';
-    h += '<button class="fsheet-item" onclick="ForgeSidebar._toggleTheme()">' +
+    h += '<button class="fsheet-item" data-forge-sidebar-action="theme">' +
       _fsIcon('theme') + '<span>' + (isLight ? 'Switch to dark' : 'Switch to light') + '</span></button>';
-    h += '<button class="fsheet-item danger" onclick="ForgeSidebar._sheetSignOut()">' +
+    h += '<button class="fsheet-item danger" data-forge-sidebar-action="sheet-signout">' +
       _fsIcon('signout') + '<span>Sign out</span></button>';
     return h;
   },
@@ -289,7 +304,7 @@ var ForgeSidebar = {
       }
       return row + '</div>';
     }).join('');
-    h += '<button class="fclassswitch-item fcs-add" onclick="ForgeSidebar._addClass()">' + _fsEsc(this._addLabel || '+ Join another class') + '</button>';
+    h += '<button class="fclassswitch-item fcs-add" data-forge-sidebar-action="add-class">' + _fsEsc(this._addLabel || '+ Join another class') + '</button>';
     menu.innerHTML = h;
     menu.style.display = 'block';
   },
@@ -374,8 +389,8 @@ var ForgeSidebar = {
     var sun = document.getElementById('forge-theme-icon-sun');
     var tip = document.getElementById('forge-theme-tooltip');
     if (!moon || !sun || !tip) return;
-    moon.style.display = isLight ? 'none' : 'block';
-    sun.style.display = isLight ? 'block' : 'none';
+    moon.classList.toggle('forge-theme-icon-hidden', isLight);
+    sun.classList.toggle('forge-theme-icon-hidden', !isLight);
     tip.textContent = isLight ? 'Switch to dark' : 'Switch to light';
   },
 
@@ -397,6 +412,14 @@ var ForgeSidebar = {
 
   _signOut: function() {
     if (this._signOutFn) this._signOutFn();
+  },
+
+  _runSidebarCall: function(call) {
+    var value = String(call || '');
+    if (value.indexOf('goto:') === 0 && typeof window.forgeGoto === 'function') {
+      this._closeSheet();
+      return window.forgeGoto(value.slice(5));
+    }
   }
 };
 
@@ -415,7 +438,12 @@ function _fsEsc(s) {
 // twin — href for real pages, onclick for in-page SPA views.
 function _fsLinkAttrs(it) {
   return (it.href ? ' href="' + _fsEsc(it.href) + '"' : '') +
-    (it.onclick ? ' onclick="' + it.onclick.replace(/"/g, '&quot;') + '"' : '');
+    (it.onclick ? ' data-forge-sidebar-action="sidebar-call" data-forge-sidebar-call="' + _fsEsc(_fsSidebarCall(it.onclick)) + '"' : '');
+}
+
+function _fsSidebarCall(source) {
+  var match = String(source || '').match(/^\s*forgeGoto\(['"]([^'"]+)['"]\)\s*;?\s*$/);
+  return match ? 'goto:' + match[1] : '';
 }
 
 function _fsDescriptor(key) {
@@ -438,10 +466,9 @@ function _fsTabHtml(it, activeKey) {
 function _fsSheetItemHtml(it, activeKey) {
   var tag = it.href ? 'a' : 'button';
   // A sheet row that navigates in-page must also close the sheet.
-  var closer = it.href ? '' : ' onclick="ForgeSidebar._closeSheet()"';
   var attrs = it.onclick
-    ? ' onclick="ForgeSidebar._closeSheet();' + it.onclick.replace(/"/g, '&quot;') + '"'
-    : (it.href ? ' href="' + _fsEsc(it.href) + '"' : closer);
+    ? ' data-forge-sidebar-action="sidebar-call" data-forge-sidebar-call="' + _fsEsc(_fsSidebarCall(it.onclick)) + '"'
+    : (it.href ? ' href="' + _fsEsc(it.href) + '"' : ' data-forge-sidebar-action="close-sheet"');
   return '<' + tag + ' class="fsheet-item' + (it.key === activeKey ? ' active' : '') + '" data-key="' + _fsEsc(it.key) + '"' +
     attrs + '>' +
     _fsIcon(it.key) +
@@ -452,10 +479,7 @@ function _fsSheetItemHtml(it, activeKey) {
 function _fsItemHtml(it, activeKey) {
   var tag = it.href ? 'a' : 'button';
   var hrefAttr = it.href ? ' href="' + _fsEsc(it.href) + '"' : '';
-  // onclick is a raw JS string (page-controlled, not user input) — used for
-  // in-page SPA navigation (e.g. teacher.html's tab switcher) where there's
-  // no real URL to link to.
-  var onclickAttr = it.onclick ? ' onclick="' + it.onclick.replace(/"/g, '&quot;') + '"' : '';
+  var onclickAttr = it.onclick ? ' data-forge-sidebar-action="sidebar-call" data-forge-sidebar-call="' + _fsEsc(_fsSidebarCall(it.onclick)) + '"' : '';
   var activeCls = it.key === activeKey ? ' active' : '';
   var badgeHtml = (it.badge !== undefined && it.badge !== null)
     ? '<span class="fside-badge' + (it.badgeMuted ? ' badge-muted' : '') + '">' + _fsEsc(it.badge) + '</span>'

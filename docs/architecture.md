@@ -17,4 +17,13 @@ Forge remains a static deployment, but its browser code now has an explicit appl
 4. Convert API failures into the shared state language through `ForgeState`; do not expose raw response text or database policy details.
 5. Put reusable business rules in a shared script, then keep page files responsible for composition and presentation.
 
-The existing static HTML entry points can therefore continue shipping independently while all new data behaviour has one reviewable boundary.
+The existing static HTML entry points can therefore continue shipping independently while all new data behaviour has one reviewable boundary. The shared page shell is enforced by `scripts/check-ui-system.js`; route availability is checked by `scripts/check-routes.js`. This keeps the current static deployment controlled while a future application layer can be introduced behind the same API and component contracts.
+
+## Page composition contract
+
+Every page loads the delegated action layer and the generated compatibility
+stylesheet. Marketing pages use the shared base/components/subject layers;
+authenticated pages use the sidebar/components/state layers. Page overrides are
+allowed only for composition or genuinely page-specific content. Shared logos,
+navigation, actions, state messages, and dashboard primitives must not be
+reimplemented locally.

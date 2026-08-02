@@ -12,124 +12,7 @@
 <link rel="stylesheet" href="css/auth.css">
 <link rel="stylesheet" href="css/sidebar.css">
 <link rel="stylesheet" href="css/components.css">
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--coal);color:var(--slate);font-family:'Inter',sans-serif;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100vh}
-h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter-spacing:-.015em}
-.mono{font-family:'JetBrains Mono',monospace}
-.wrap{max-width:680px;margin:0 auto;padding:28px 20px}
-.tag{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ember)}
-.logo{font-family:'Sora',sans-serif;font-weight:800;font-size:20px;color:var(--white);text-decoration:none;display:inline-flex;align-items:center;gap:8px;margin-bottom:0}
-.logo .spark{width:9px;height:9px;background:var(--ember);border-radius:var(--radius-xs);transform:rotate(45deg);box-shadow:0 0 10px rgba(255,107,44,.7)}
-.subject-list{display:flex;flex-direction:column;gap:12px;margin-top:28px}
-.subject-btn{padding:20px 22px;border-radius:var(--radius-md);border:2px solid transparent;background:var(--panel);cursor:pointer;text-align:left;font-family:'Inter',sans-serif;transition:border-color .15s}
-.subject-btn:hover{border-color:var(--ember)}
-.subject-btn h3{font-size:18px;margin-bottom:2px}
-.subject-btn .sub{font-size:13px;color:var(--slate)}
-.subject-btn .count{font-size:12px;color:#8A857E;margin-top:3px}
-.back-btn{background:none;border:none;cursor:pointer;font-size:13px;color:#8A857E;font-family:'Inter',sans-serif;margin-bottom:16px;padding:0}
-.back-btn:hover{color:var(--white)}
-.bank-list{display:flex;flex-direction:column;gap:8px;margin-top:20px}
-.bank-btn{padding:14px 18px;border-radius:var(--radius-md);border:1.5px solid var(--line);background:var(--panel);cursor:pointer;text-align:left;font-family:'Inter',sans-serif;transition:border-color .15s}
-.bank-btn:hover{border-color:var(--ember)}
-.bank-btn .code{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
-.bank-btn .name{font-size:16px;font-weight:700;color:var(--white);margin-top:1px}
-.bank-btn .qcount{font-size:12px;color:#8A857E;margin-top:1px}
-.progress-bar{height:3px;background:var(--line);border-radius:var(--radius-xs);margin-bottom:24px}
-.progress-fill{height:3px;border-radius:var(--radius-xs);transition:width .3s}
-.quiz-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;font-size:13px;color:#8A857E}
-.quiz-header .bank-name{font-weight:700;font-size:14px}
-.q-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;font-size:13px;color:#8A857E}
-.q-id{font-weight:600;padding:2px 10px;border-radius:var(--radius-xs);font-size:12px}
-.stem{font-size:16px;line-height:1.55;color:var(--white);margin-bottom:20px}
-.options{display:flex;flex-direction:column;gap:8px}
-.opt{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;border-radius:var(--radius-md);border:1.5px solid var(--line);background:var(--panel-2);color:var(--white);cursor:pointer;text-align:left;font-family:'Inter',sans-serif;font-size:15px;line-height:1.45;transition:border-color .15s,background .15s,opacity .15s;width:100%}
-.opt:hover:not(.answered){border-color:var(--ember)}
-.opt .letter{font-weight:700;min-width:20px;color:#8A857E}
-.opt.answered{cursor:default}
-.opt.correct{border-color:var(--good);background:rgba(127,217,138,.08);opacity:1}
-.opt.correct .letter{color:var(--good)}
-.opt.wrong{border-color:var(--bad);background:rgba(255,90,90,.07);opacity:1}
-.opt.wrong .letter{color:var(--bad)}
-.opt.dimmed{opacity:.5}
-.fb-sentence{font-size:16px;line-height:2.6;color:var(--white)}
-.fb-blank{display:inline-block;min-width:100px;padding:3px 10px;margin:2px 3px;border-radius:var(--radius-sm);border:1.5px dashed var(--line);background:var(--panel-2);text-align:center;cursor:pointer;font-weight:600;color:#8A857E;vertical-align:middle;transition:border-color .15s,background .15s}
-.fb-blank:hover:not(.locked){border-color:var(--ember)}
-.fb-blank.filled{border-style:solid;border-color:var(--ember);color:var(--white);background:rgba(255,107,44,.08)}
-.fb-blank.correct{border-style:solid;border-color:var(--good);background:rgba(127,217,138,.08);color:var(--good)}
-.fb-blank.wrong{border-style:solid;border-color:var(--bad);background:rgba(255,90,90,.07);color:var(--bad)}
-.fb-blank.locked{cursor:default}
-.fb-wordbank{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px}
-.fb-word{padding:8px 16px;border-radius:var(--radius-sm);border:1.5px solid var(--line);background:var(--panel-2);color:var(--white);cursor:pointer;font-family:'Inter',sans-serif;font-size:14px;font-weight:600;transition:border-color .15s,opacity .15s}
-.fb-word:hover:not(.used){border-color:var(--ember)}
-.fb-word.used{opacity:.25;pointer-events:none}
-.fb-check-btn{margin-top:20px;padding:10px 24px;border-radius:var(--radius-sm);background:var(--white);color:var(--coal);border:none;cursor:pointer;font-weight:600;font-size:14px;font-family:'Inter',sans-serif;opacity:.4;pointer-events:none}
-.fb-check-btn.ready{opacity:1;pointer-events:auto}
-.scaffold-box{margin-top:16px;padding:14px 16px;border-radius:var(--radius-md);border:1px solid rgba(255,201,60,.4);background:rgba(255,107,44,.075);animation:heat .5s ease}
-@keyframes heat{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
-.scaffold-box .stag{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--coal);background:var(--hot);padding:2px 8px;border-radius:var(--radius-xs);font-weight:600;margin-bottom:8px}
-.scaffold-box p{font-size:14px;color:var(--white);line-height:1.5}
-.praise-box{margin-top:16px;padding:14px 16px;border-radius:var(--radius-md);border:1px solid var(--good);background:rgba(127,217,138,.08);color:var(--good);font-weight:600;font-size:14px}
-.reforge-trigger{margin-top:14px;padding:10px 20px;border-radius:var(--radius-sm);background:var(--ember);color:var(--coal);border:none;cursor:pointer;font-weight:600;font-size:14px;font-family:'Inter',sans-serif}
-.reforge-box{margin-top:20px;padding:18px 16px;border-radius:var(--radius-md);border:1.5px solid var(--line);background:var(--panel)}
-.reforge-box .rf-tag{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
-.reforge-box .rf-stem{font-size:15px;line-height:1.5;color:var(--white);margin-bottom:14px}
-.reforge-box .opt{font-size:14px;padding:10px 12px;border-radius:var(--radius-sm)}
-.rf-scaffold{margin-top:12px;padding:12px 14px;border-radius:var(--radius-sm);border:1px solid rgba(255,201,60,.4);background:rgba(255,107,44,.06);font-size:13px;line-height:1.5}
-.rf-scaffold .stag{font-size:10px;margin-bottom:6px;display:inline-block;font-family:'JetBrains Mono',monospace;color:var(--coal);background:var(--hot);padding:2px 6px;border-radius:var(--radius-xs);font-weight:600}
-.rf-scaffold p{color:var(--white);font-size:13px}
-.next-btn{margin-top:18px;padding:10px 24px;border-radius:var(--radius-sm);background:var(--white);color:var(--coal);border:none;cursor:pointer;font-weight:600;font-size:14px;font-family:'Inter',sans-serif;float:right}
-.clear{clear:both}
-.results{text-align:center;padding-top:80px}
-.results .pct{font-size:72px;font-weight:900;font-family:'Sora',sans-serif}
-.results .detail{font-size:17px;color:#8A857E;margin:4px 0 28px}
-.results .btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
-.results .btns button{padding:10px 20px;border-radius:var(--radius-sm);border:none;cursor:pointer;font-weight:600;font-size:14px;font-family:'Inter',sans-serif}
-.btn-primary{background:var(--ember);color:var(--coal)}
-.btn-secondary{background:var(--panel);color:var(--white);border:1px solid var(--line)!important}
-.center{text-align:center}
-.hidden{display:none}
-/* join screen */
-.join-input{width:100%;padding:12px 14px;border-radius:var(--radius-sm);border:1px solid var(--line);background:var(--panel);color:var(--white);font-family:'Inter',sans-serif;font-size:15px;margin-bottom:14px}
-.join-input::placeholder{color:#7A756E}
-.join-input:focus{outline:none;border-color:var(--ember)}
-.join-btn{width:100%;padding:13px;border-radius:var(--radius-sm);background:var(--ember);color:var(--coal);border:none;font-family:'Inter',sans-serif;font-weight:600;font-size:15px;cursor:pointer}
-.join-btn:hover{background:var(--hot)}
-.join-btn:disabled{opacity:.5;cursor:wait}
-.skip-btn{background:none;border:none;color:var(--slate);font-size:13px;margin-top:16px;cursor:pointer;width:100%;text-align:center;font-family:'Inter',sans-serif}
-.skip-btn:hover{color:var(--white)}
-.join-err{color:var(--bad);font-size:13px;margin-top:10px;display:none}
 
-/* free tier limit wall */
-.limit-wall{text-align:center;padding:32px 0}
-.limit-wall .limit-icon{font-size:48px;margin-bottom:16px}
-.limit-wall h2{font-size:24px;margin-bottom:8px}
-.limit-wall p{color:#8A857E;font-size:14px;margin-bottom:20px}
-.limit-countdown{font-family:'JetBrains Mono',monospace;font-size:28px;font-weight:700;color:var(--hot);margin:12px 0}
-.limit-countdown span{font-size:13px;color:#8A857E;display:block;margin-top:4px;font-weight:400}
-.limit-bar{height:6px;background:var(--line);border-radius:var(--radius-xs);overflow:hidden;margin:16px 0}
-.limit-bar-fill{height:100%;border-radius:var(--radius-xs);background:var(--hot);transition:width .4s}
-.join-badge{display:inline-flex;align-items:center;gap:6px;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-sm);padding:4px 12px;font-size:12px;color:var(--slate);margin-bottom:8px}
-.join-badge .dot{width:6px;height:6px;border-radius:50%;background:var(--good)}
-/* light mode overrides */
-[data-theme="light"] .scaffold-box{border-color:rgba(200,133,0,.4);background:rgba(229,85,15,.045)}
-[data-theme="light"] .stag,[data-theme="light"] .heat-tag{color:#fff}
-[data-theme="light"] .reforge-trigger,.btn-primary{color:#fff}
-[data-theme="light"] .rf-scaffold .stag{color:#fff}
-.theme-toggle{background:var(--panel);border:1px solid var(--line);color:var(--slate);font-family:'JetBrains Mono',monospace;font-size:12px;padding:6px 12px;border-radius:var(--radius-sm);cursor:pointer;z-index:99}
-.theme-toggle:hover{color:var(--white);border-color:var(--ember)}
-.lb-wrap{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-lg);margin-top:24px;overflow:hidden}
-.lb-header{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--ember);padding:14px 18px;border-bottom:1px solid var(--line)}
-.lb-row{display:grid;grid-template-columns:32px 1fr auto auto auto;gap:10px;align-items:center;padding:12px 18px;border-bottom:1px solid var(--panel-2);font-size:14px}
-.lb-row:last-child{border-bottom:none}
-.lb-row.lb-you{background:rgba(255,107,44,.07);border-left:3px solid var(--ember)}
-.lb-row.lb-dim{opacity:.4}
-.lb-pos{font-family:'JetBrains Mono',monospace;font-size:12px;color:#8A857E;text-align:center}
-.lb-name{font-weight:600;color:var(--white)}
-.lb-rank-pill{font-size:10px;font-family:'JetBrains Mono',monospace;padding:2px 8px;border-radius:var(--radius-xs);white-space:nowrap}
-.lb-xp{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:var(--white);white-space:nowrap}
-.lb-streak{font-size:12px;white-space:nowrap}
-[data-theme="light"] .forge-logo-dark{display:none!important}[data-theme="light"] .forge-logo-light{display:inline!important}</style>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-RGZ9J6Q8H9"></script>
 <script>
@@ -139,6 +22,8 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
   gtag('config', 'G-RGZ9J6Q8H9');
 </script>
 <link rel="stylesheet" href="css/states.css">
+  <link rel="stylesheet" href="css/generated-utilities.css">
+  <link rel="stylesheet" href="css/page-overrides/forge-quiz.css">
 </head>
 <body>
 <script src="scripts/forge-api.js"></script>
@@ -147,7 +32,7 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
 <script src="scripts/forge-logo.js"></script>
 <script src="scripts/forge-auth-card.js"></script>
 <script src="scripts/forge-classes.js"></script>
-<script src="scripts/forge-sidebar.js"></script>
+<script src="scripts/forge-sidebar.js?v=20260802"></script>
 <script src="scripts/forge-product-analytics.js"></script>
 <script src="scripts/forge-page-actions.js"></script>
 <script>
@@ -565,14 +450,14 @@ function activateClass(entry) {
 // picker and would otherwise have no way to reach this.
 function joinMoreHtml() {
   if (!state.classId && ForgeClasses.subjects(SUBJECTS).length === 0) return '';
-  var h = '<div id="join-more" style="margin-top:18px;border:1px solid var(--line);border-radius:var(--radius-md);padding:14px 16px">';
-  h += '<div style="display:flex;justify-content:space-between;align-items:center;gap:10px">';
-  h += '<span style="font-size:13px;color:var(--slate)">Got a code for another class?</span>';
-  h += '<button id="jm-toggle" style="background:none;border:none;color:var(--ember);font-size:12px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif;white-space:nowrap">Join another class ↓</button>';
+  var h = '<div class="forge-u-1kt0xuh" id="join-more">';
+  h += '<div class="forge-u-8hgxgk">';
+  h += '<span class="ui-meta-muted">Got a code for another class?</span>';
+  h += '<button class="forge-u-8q3i1z" id="jm-toggle">Join another class ↓</button>';
   h += '</div>';
-  h += '<div id="jm-form" style="display:none;margin-top:12px">';
-  h += '<input id="jm-code" class="join-input" type="text" placeholder="e.g. LH-RVN9" style="text-transform:uppercase;margin-bottom:8px">';
-  h += '<button id="jm-btn" class="join-btn btn-glass btn-ember" style="padding:10px">Join class →</button>';
+  h += '<div class="forge-u-1karbkd" id="jm-form">';
+  h += '<input id="jm-code" class="join-input forge-u-dtise6" type="text" placeholder="e.g. LH-RVN9">';
+  h += '<button id="jm-btn" class="join-btn btn-glass btn-ember forge-u-1og9mh9">Join class →</button>';
   h += '<p class="join-err" id="jm-err"></p>';
   h += '</div></div>';
   return h;
@@ -770,12 +655,12 @@ function renderJoin() {
 
   // Panel: Free tier
   h += '<div id="panel-free">';
-  h += '<p style="font-size:12.5px;color:var(--dim);margin-bottom:10px;text-align:center">10 free questions per day · no account needed</p>';
-  h += '<div style="background:var(--panel-2);border:1px solid var(--line);border-radius:var(--radius-md);padding:12px 14px;margin-bottom:16px;font-size:12.5px;color:var(--slate)">';
-  h += '<div style="display:flex;justify-content:space-between;margin-bottom:6px"><span>✓ All subjects &amp; question banks</span><span class="forge-text-dim">free</span></div>';
-  h += '<div style="display:flex;justify-content:space-between;margin-bottom:6px"><span>✓ Scaffolds &amp; re-forge feedback</span><span class="forge-text-dim">free</span></div>';
-  h += '<div style="display:flex;justify-content:space-between;margin-bottom:6px"><span class="forge-text-dim">✕ Crucible · full Anvil · XP ranks</span><span class="forge-text-dim">Pro</span></div>';
-  h += '<div style="display:flex;justify-content:space-between"><span class="forge-text-dim">✕ Unlimited questions</span><span class="forge-text-dim">Pro</span></div>';
+  h += '<p class="forge-u-1xgpbl">10 free questions per day · no account needed</p>';
+  h += '<div class="forge-u-eelu4s">';
+  h += '<div class="forge-u-1ce89bl"><span>✓ All subjects &amp; question banks</span><span class="forge-text-dim">free</span></div>';
+  h += '<div class="forge-u-1ce89bl"><span>✓ Scaffolds &amp; re-forge feedback</span><span class="forge-text-dim">free</span></div>';
+  h += '<div class="forge-u-1ce89bl"><span class="forge-text-dim">✕ Crucible · full Anvil · XP ranks</span><span class="forge-text-dim">Pro</span></div>';
+  h += '<div class="forge-u-h6lji0"><span class="forge-text-dim">✕ Unlimited questions</span><span class="forge-text-dim">Pro</span></div>';
   h += '</div>';
   h += ForgeAuthCard.field('free-name', 'Your first name', {placeholder:'e.g. Alex', autocomplete:'given-name'});
   h += '<button class="auth-btn" id="free-btn" type="submit">Start for free →</button>';
@@ -783,8 +668,8 @@ function renderJoin() {
   h += '</div>';
 
   // Panel: Join class
-  h += '<div id="panel-class" style="display:none">';
-  h += '<p style="font-size:12.5px;color:var(--dim);margin-bottom:16px;text-align:center">Enter your name and the code your teacher gave you</p>';
+  h += '<div class="forge-u-uydnfn" id="panel-class">';
+  h += '<p class="forge-u-152cbjr">Enter your name and the code your teacher gave you</p>';
   h += ForgeAuthCard.field('join-name', 'Your name', {placeholder:'First name and surname — e.g. James Morgan'});
   h += ForgeAuthCard.field('join-code', 'Class code', {placeholder:'e.g. ECON-Y12-A', upper:true});
   h += '<button class="auth-btn" id="join-btn" type="submit">Join class →</button>';
@@ -792,13 +677,13 @@ function renderJoin() {
   h += '</div>';
 
   // Panel: Pro login
-  h += '<div id="panel-solo" style="display:none">';
-  h += '<p style="font-size:12.5px;color:var(--dim);margin-bottom:16px;text-align:center">Log in with your Forge email and password</p>';
+  h += '<div class="forge-u-uydnfn" id="panel-solo">';
+  h += '<p class="forge-u-152cbjr">Log in with your Forge email and password</p>';
   h += ForgeAuthCard.field('solo-email', 'Email address', {type:'email', placeholder:'e.g. alex@gmail.com', autocomplete:'email'});
   h += ForgeAuthCard.field('solo-pass', 'Password', {type:'password', placeholder:'Your Forge password', autocomplete:'current-password'});
   h += '<button class="auth-btn" id="solo-btn" type="submit">Log in →</button>';
   h += '<p class="auth-err" id="solo-err"></p>';
-  h += '<p style="font-size:12.5px;color:var(--dim);text-align:center;margin-top:12px"><a href="reset-password.html" style="color:var(--ember);text-decoration:none;font-weight:600">Forgot your password?</a></p>';
+  h += '<p class="forge-u-gtw5fv"><a class="forge-u-elt0p9" href="reset-password.html">Forgot your password?</a></p>';
   h += '</div>';
 
   app.innerHTML = ForgeAuthCard.shell({
@@ -1003,29 +888,29 @@ function renderSubjects(){
 
   // Class link prompt for trial/paid students not yet in a class
   if ((state.isPaid || state.isTrial) && !state.classId) {
-    h += '<div id="class-link-banner" style="background:var(--panel);border:1px solid rgba(255,107,44,.25);border-radius:var(--radius-md);padding:14px 16px;margin-bottom:16px">';
+    h += '<div class="forge-u-1rz1eg2" id="class-link-banner">';
     h += '<div class="forge-between-row">';
-    h += '<span style="font-family:\'JetBrains Mono\',monospace;font-size:11px;color:var(--ember);text-transform:uppercase;letter-spacing:.06em">Optional</span>';
-    h += '<button onclick="document.getElementById(\'class-link-form\').style.display=document.getElementById(\'class-link-form\').style.display===\'none\'?\'block\':\'none\'" style="background:none;border:none;color:#8A857E;font-size:12px;cursor:pointer;font-family:Inter,sans-serif">Link to class ↓</button>';
+    h += '<span class="forge-u-1qo1pg">Optional</span>';
+    h += '<button class="forge-u-1f5fxqy" data-forge-action="toggle-class-link">Link to class ↓</button>';
     h += '</div>';
-    h += '<p style="font-size:13px;color:var(--slate);margin-bottom:0">Is your teacher using Forge? <b class="forge-text-white">Enter their class code</b> to share your progress.</p>';
-    h += '<div id="class-link-form" style="display:none;margin-top:12px">';
-    h += '<input id="ql-code" class="join-input" type="text" placeholder="e.g. ECON-Y12-A" style="text-transform:uppercase;margin-bottom:8px">';
-    h += '<button id="ql-btn" class="join-btn btn-glass btn-ember" style="padding:10px">Link to class →</button>';
+    h += '<p class="forge-u-1tg6uy0">Is your teacher using Forge? <b class="forge-text-white">Enter their class code</b> to share your progress.</p>';
+    h += '<div class="forge-u-1karbkd" id="class-link-form">';
+    h += '<input id="ql-code" class="join-input forge-u-dtise6" type="text" placeholder="e.g. ECON-Y12-A">';
+    h += '<button id="ql-btn" class="join-btn btn-glass btn-ember forge-u-1og9mh9">Link to class →</button>';
     h += '<p class="join-err" id="ql-err"></p>';
     h += '</div></div>';
   }
 
   // Trial days remaining nudge
   if (state.isTrial && state.trialDaysLeft <= 3 && state.trialDaysLeft > 0) {
-    h += '<div style="background:rgba(255,201,60,.06);border:1px solid rgba(255,201,60,.3);border-radius:var(--radius-md);padding:10px 14px;margin-bottom:14px;font-size:13px;color:var(--hot);text-align:center">';
-    h += '⏰ ' + state.trialDaysLeft + ' day' + (state.trialDaysLeft !== 1 ? 's' : '') + ' left on your trial · <a href="forge-signup.html" style="color:var(--ember);font-weight:600;text-decoration:none">Subscribe to keep access →</a>';
+    h += '<div class="forge-u-10v1r9j">';
+    h += '⏰ ' + state.trialDaysLeft + ' day' + (state.trialDaysLeft !== 1 ? 's' : '') + ' left on your trial · <a class="forge-u-1ojcao3" href="forge-signup.html">Subscribe to keep access →</a>';
     h += '</div>';
   }
 
-  h += '<div class="center"><p class="tag" style="margin-bottom:6px">FORGE</p>';
-  h += '<h1 style="font-size:28px;margin-bottom:6px">Pick a subject</h1>';
-  h += '<p style="color:#8A857E;font-size:15px">Choose what to practise</p></div>';
+  h += '<div class="center"><p class="tag forge-u-bhmr11">FORGE</p>';
+  h += '<h1 class="forge-u-z7clmb">Pick a subject</h1>';
+  h += '<p class="forge-u-1vn3cqv">Choose what to practise</p></div>';
   h += '<div class="subject-list">';
 
   // Students see the subjects of every class they've joined. Paid/trial
@@ -1140,7 +1025,7 @@ function renderSubjects(){
           }
           var banner = document.getElementById('class-link-banner');
           if (banner) {
-            banner.innerHTML = '<p style="font-size:13px;color:var(--good)">✓ Linked to <b>' + (cls.name || code) + '</b> — your teacher can now see your progress and your quiz history has carried over.</p>';
+            banner.innerHTML = '<p class="forge-u-iyagyp">✓ Linked to <b>' + (cls.name || code) + '</b> — your teacher can now see your progress and your quiz history has carried over.</p>';
           }
           setTimeout(function() { render(); }, 1500);
         }
@@ -1211,8 +1096,8 @@ function renderBanks(){
   // Only show back button if not locked to a subject
   if (!locked) h+='<button class="back-btn" id="back-subj">\u2190 Subjects</button>';
   h+='<div class="center"><p class="tag" style="color:'+subj.color+';margin-bottom:4px">FORGE</p>';
-  h+='<h2 style="font-size:24px;margin-bottom:4px">'+subj.label+'</h2>';
-  h+='<p style="color:#8A857E;font-size:14px">'+subj.sub+'</p></div>';
+  h+='<h2 class="forge-u-1oh0w3h">'+subj.label+'</h2>';
+  h+='<p class="forge-u-10yda30">'+subj.sub+'</p></div>';
   h+='<div class="bank-list">';
   subj.banks.forEach(function(key){
     var b=BANKS[key];
@@ -1259,7 +1144,7 @@ function renderBanks(){
       });
       if (active.length === 0) return;
 
-      var bh = '<div style="margin:16px 0 4px">';
+      var bh = '<div class="forge-u-1ahjg1o">';
       active.forEach(function(asgn){
         var banks = [];
         try { banks = typeof asgn.banks === 'string' ? JSON.parse(asgn.banks) : (asgn.banks || []); } catch(e){}
@@ -1271,16 +1156,16 @@ function renderBanks(){
         var dueStr = diff <= 0 ? 'Due today' : diff === 1 ? 'Due tomorrow' : 'Due '+due.toLocaleDateString('en-GB',{day:'numeric',month:'short'});
         var dueColor = diff <= 1 ? 'var(--bad)' : diff <= 3 ? 'var(--hot)' : 'var(--good)';
 
-        bh += '<div style="background:var(--panel);border:1px solid rgba(255,107,44,.35);border-radius:var(--radius-md);padding:14px 16px;margin-bottom:10px">';
+        bh += '<div class="forge-u-1icwgvv">';
         bh += '<div class="forge-between-row">';
-        bh += '<span style="font-family:\'JetBrains Mono\',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--ember)">📋 Assignment</span>';
+        bh += '<span class="forge-u-6e7995">📋 Assignment</span>';
         bh += '<span style="font-family:\'JetBrains Mono\',monospace;font-size:11px;color:'+dueColor+'">'+dueStr+'</span>';
         bh += '</div>';
-        bh += '<p style="font-family:\'Sora\',sans-serif;font-size:15px;font-weight:700;color:var(--white);margin-bottom:10px">'+asgn.title+'</p>';
-        bh += '<div style="display:flex;flex-wrap:wrap;gap:6px">';
+        bh += '<p class="forge-u-1anmklq">'+asgn.title+'</p>';
+        bh += '<div class="forge-u-1hm6ozo">';
         relevantBanks.forEach(function(bk){
           var bankLabel = BANKS[bk] ? BANKS[bk].label : bk;
-          bh += '<button data-asgn-bank="'+bk+'" style="font-size:12px;padding:5px 12px;border-radius:var(--radius-sm);background:rgba(255,107,44,.12);border:1px solid rgba(255,107,44,.3);color:var(--ember);cursor:pointer;font-family:Inter,sans-serif;font-weight:600">';
+          bh += '<button class="forge-u-1h97zoi" data-asgn-bank="'+bk+'">';
           bh += bankLabel+' \u2192</button>';
         });
         bh += '</div></div>';
@@ -1306,19 +1191,19 @@ function renderTrialExpiredWall() {
   var h = '<div class="limit-wall">';
   h += '<div class="limit-icon">⏰</div>';
   h += '<h2>Your free trial has ended</h2>';
-  h += '<p style="margin-bottom:24px">Your 7-day Pro trial is over' + (state.studentName ? ', ' + state.studentName : '') + '.<br>Subscribe to keep full access — or stay on the free tier.</p>';
+  h += '<p class="forge-u-1y8kt2f">Your 7-day Pro trial is over' + (state.studentName ? ', ' + state.studentName : '') + '.<br>Subscribe to keep full access — or stay on the free tier.</p>';
 
-  h += '<div style="background:var(--panel);border:1px solid rgba(255,107,44,.3);border-radius:var(--radius-lg);padding:20px;margin-bottom:14px">';
-  h += '<p class="tag" style="margin-bottom:6px">Forge Pro</p>';
-  h += '<p style="font-size:22px;font-weight:800;font-family:\'Sora\',sans-serif;color:var(--white);margin-bottom:4px">£2.99<span style="font-size:14px;font-weight:400;color:#8A857E">/month</span></p>';
-  h += '<p style="font-size:13px;color:#8A857E;margin-bottom:14px">Unlimited questions · Anvil · Crucible · XP &amp; Ranks · any device</p>';
-  h += '<a href="forge-signup.html" style="display:block;padding:13px;border-radius:var(--radius-sm);background:var(--ember);color:var(--coal);font-family:Inter,sans-serif;font-weight:700;font-size:15px;text-align:center;text-decoration:none">Subscribe now →</a>';
+  h += '<div class="forge-u-dt9lvq">';
+  h += '<p class="tag forge-u-bhmr11">Forge Pro</p>';
+  h += '<p class="forge-u-17e49tm">£2.99<span class="forge-u-1uc2u7b">/month</span></p>';
+  h += '<p class="forge-u-1rniwep">Unlimited questions · Anvil · Crucible · XP &amp; Ranks · any device</p>';
+  h += '<a class="forge-u-mv8v0m" href="forge-signup.html">Subscribe now →</a>';
   h += '</div>';
 
-  h += '<div style="background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-lg);padding:20px">';
-  h += '<p style="font-size:14px;font-weight:600;color:var(--white);margin-bottom:4px">Stay on free</p>';
-  h += '<p style="font-size:13px;color:#8A857E;margin-bottom:14px">10 questions per day · all subjects · scaffolds included</p>';
-  h += '<button onclick="(function(){ state.isPaid=false; state.isTrial=false; state.phase=\'subjects\'; render(); })()" style="width:100%;padding:12px;border-radius:var(--radius-sm);background:none;border:1px solid var(--line);color:var(--slate);font-family:Inter,sans-serif;font-weight:600;font-size:14px;cursor:pointer">Continue for free →</button>';
+  h += '<div class="forge-u-xrboeu">';
+  h += '<p class="forge-u-hptrzy">Stay on free</p>';
+  h += '<p class="forge-u-1rniwep">10 questions per day · all subjects · scaffolds included</p>';
+  h += '<button class="forge-u-148bwq4" data-forge-action="quiz-free-tier">Continue for free →</button>';
   h += '</div>';
 
   h += '</div>';
@@ -1335,23 +1220,23 @@ function renderLimitWall() {
   h += '<p>Free accounts get ' + FREE_DAILY_LIMIT + ' questions per day.<br>Your questions reset at midnight.</p>';
 
   // Progress bar
-  h += '<div class="limit-bar"><div class="limit-bar-fill" style="width:100%"></div></div>';
-  h += '<p style="font-family:\'JetBrains Mono\',monospace;font-size:12px;color:#8A857E;margin-bottom:20px">' + used + ' / ' + FREE_DAILY_LIMIT + ' questions used today</p>';
+  h += '<div class="limit-bar"><div class="limit-bar-fill forge-u-akjizx"></div></div>';
+  h += '<p class="forge-u-1onnife">' + used + ' / ' + FREE_DAILY_LIMIT + ' questions used today</p>';
 
   // Countdown
   h += '<div class="limit-countdown" id="lw-countdown">' + formatCountdown(secs);
   h += '<span>until your questions reset</span></div>';
 
   // Upgrade CTA
-  h += '<div style="margin-top:28px;padding:20px;background:var(--panel);border:1px solid rgba(255,107,44,.3);border-radius:var(--radius-lg)">';
-  h += '<p class="tag" style="margin-bottom:6px">Forge Pro</p>';
-  h += '<p style="font-size:15px;font-weight:600;color:var(--white);margin-bottom:4px">7-day free trial · then £2.99/month</p>';
-  h += '<p style="font-size:13px;color:#8A857E;margin-bottom:14px">Unlimited questions · full Anvil · The Crucible · XP &amp; Ranks · any device</p>';
-  h += '<a href="forge-signup.html" style="display:block;padding:13px;border-radius:var(--radius-sm);background:var(--ember);color:var(--coal);font-family:Inter,sans-serif;font-weight:700;font-size:15px;text-align:center;text-decoration:none">Start free trial →</a>';
-  h += '<p style="font-size:12px;color:#8A857E;margin-top:8px;text-align:center">No card needed during trial · cancel anytime</p>';
+  h += '<div class="forge-u-1cukupz">';
+  h += '<p class="tag forge-u-bhmr11">Forge Pro</p>';
+  h += '<p class="forge-u-1iee4k3">7-day free trial · then £2.99/month</p>';
+  h += '<p class="forge-u-1rniwep">Unlimited questions · full Anvil · The Crucible · XP &amp; Ranks · any device</p>';
+  h += '<a class="forge-u-mv8v0m" href="forge-signup.html">Start free trial →</a>';
+  h += '<p class="forge-u-815kda">No card needed during trial · cancel anytime</p>';
   h += '</div>';
 
-  h += '<button class="skip-btn forge-mt-4" onclick="(function(){state.phase=\'banks\';render();})()">← Back to banks</button>';
+  h += '<button class="skip-btn forge-mt-4" data-forge-action="quiz-back-banks">← Back to banks</button>';
   h += '</div>';
 
   app.innerHTML = h;
@@ -1381,7 +1266,7 @@ function renderQuiz(){
   h+='<button class="back-btn" id="back-banks">\u2190 Banks</button>';
   h+='<span class="bank-name" style="color:'+bk.color+'">'+bk.label+'</span>';
   h+='<span>'+state.score+' \u2713</span></div>';
-  h+='<p style="color:#8A857E;font-size:12px;margin:-4px 0 10px">Focused session · '+state.questions.length+' questions · progress saves automatically</p>';
+  h+='<p class="forge-u-lp9fq9">Focused session · '+state.questions.length+' questions · progress saves automatically</p>';
   h+='<div class="progress-bar"><div class="progress-fill" style="width:'+((state.idx/state.questions.length)*100)+'%;background:'+bk.color+'"></div></div>';
 
   // Free tier: show questions remaining
@@ -1390,8 +1275,8 @@ function renderQuiz(){
     var remaining = Math.max(0, FREE_DAILY_LIMIT - used);
     var pct = (used / FREE_DAILY_LIMIT) * 100;
     var col = remaining <= 2 ? 'var(--bad)' : remaining <= 5 ? 'var(--hot)' : 'var(--good)';
-    h += '<div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;padding:6px 10px;background:var(--panel);border-radius:var(--radius-sm);border:1px solid var(--line)">';
-    h += '<div style="flex:1;height:3px;background:var(--line);border-radius:var(--radius-xs);overflow:hidden"><div style="height:100%;width:'+pct+'%;background:'+col+';border-radius:var(--radius-xs);transition:width .3s"></div></div>';
+    h += '<div class="forge-u-1p0xeot">';
+    h += '<div class="forge-u-1gsso20"><div style="height:100%;width:'+pct+'%;background:'+col+';border-radius:var(--radius-xs);transition:width .3s"></div></div>';
     h += '<span style="font-family:\'JetBrains Mono\',monospace;font-size:11px;color:'+col+';white-space:nowrap">'+remaining+' free question'+(remaining!==1?'s':'')+' left today</span>';
     h += '</div>';
   }
@@ -1629,9 +1514,9 @@ function renderReforge(q,el,color){
       });
       var rfb=document.getElementById('rf-feedback');
       if(isCorrect){
-        rfb.innerHTML='<div style="margin-top:10px;font-size:14px;color:var(--good);font-weight:600">\u2713 Reforged.</div>';
+        rfb.innerHTML='<div class="forge-u-1wiwwwz">\u2713 Reforged.</div>';
       }else{
-        rfb.innerHTML='<div style="margin-top:12px"><div style="font-size:14px;color:var(--bad);margin-bottom:10px">Not quite \u2014 the answer is <strong>'+rf.correct+'</strong>.</div><div class="rf-scaffold"><span class="stag">Re-read the scaffold</span><p>'+q.scaffold+'</p></div></div>';
+        rfb.innerHTML='<div class="forge-u-jm24uy"><div class="forge-u-o1x2qa">Not quite \u2014 the answer is <strong>'+rf.correct+'</strong>.</div><div class="rf-scaffold"><span class="stag">Re-read the scaffold</span><p>'+q.scaffold+'</p></div></div>';
       }
     };
   });
@@ -1674,16 +1559,16 @@ function renderResults(){
   h+='<p class="tag" style="color:'+bk.color+';margin-bottom:6px">'+state.bank+' \u2014 '+bk.label+'</p>';
   h+='<div class="pct" style="color:'+col+'">'+pct+'%</div>';
   h+='<div class="detail">'+state.score+' / '+state.questions.length+' correct · session complete</div>';
-  h+='<div class="forge-status '+(pct>=75?'forge-status--success':'forge-status--focus')+'" style="margin-top:18px;text-align:left"><strong>'+(pct>=75?'Keep the momentum':'Your next session will prioritise this bank')+'</strong><br><span class="forge-text-13">'+(pct>=75?'Try another focused bank or pressure-test your recall in the Crucible.':'The question weighting will bring weaker questions back into rotation so you can repair the gap.')+'</span></div>';
+  h+='<div class="forge-status ui-margin-top-18-left '+(pct>=75?'forge-status--success':'forge-status--focus')+'"><strong>'+(pct>=75?'Keep the momentum':'Your next session will prioritise this bank')+'</strong><br><span class="forge-text-13">'+(pct>=75?'Try another focused bank or pressure-test your recall in the Crucible.':'The question weighting will bring weaker questions back into rotation so you can repair the gap.')+'</span></div>';
   h+='<div class="forge-action-row">';
   h+='<button class="forge-button forge-button--primary" id="retry">Retry</button>';
   h+='<button class="forge-button forge-button--secondary" id="all-banks">All banks</button>';
   h+='<button class="forge-button forge-button--secondary" id="all-subj">Subjects</button>';
   h+='</div>';
-  h+='<a href="teacher.html" style="display:inline-block;margin-top:18px;font-size:13px;color:var(--slate);text-decoration:none;font-family:JetBrains Mono,monospace">Teacher? View dashboard \u2192</a>';
-  h+='<br><a href="profile.html" style="display:inline-block;margin-top:8px;font-size:13px;color:var(--white);text-decoration:none;font-family:JetBrains Mono,monospace">My profile \u2192</a>';
-  h+='<br><a href="anvil.html" style="display:inline-block;margin-top:8px;font-size:13px;color:var(--ember);text-decoration:none;font-family:JetBrains Mono,monospace">Open your Anvil \u2192</a>';
-  h+='<br><a href="crucible.html" style="display:inline-block;margin-top:8px;font-size:13px;color:var(--bad);text-decoration:none;font-family:JetBrains Mono,monospace">Enter the Crucible \u2192</a>';
+  h+='<a class="forge-u-trem2d" href="teacher.html">Teacher? View dashboard \u2192</a>';
+  h+='<br><a class="forge-u-1j23rnq" href="profile.html">My profile \u2192</a>';
+  h+='<br><a class="forge-u-1utfzhg" href="anvil.html">Open your Anvil \u2192</a>';
+  h+='<br><a class="forge-u-1s5jx58" href="crucible.html">Enter the Crucible \u2192</a>';
   h+='<div id="lb-section"></div>';
   h+='</div>';
   app.innerHTML=h;
@@ -1728,7 +1613,7 @@ function renderResults(){
         out+='</div>';
       });
       out+='</div>';
-      out+='<p style="font-size:12px;color:#8A857E;margin-top:10px;text-align:center">Leaderboards are class-only. XP is earned by correct thinking, not time logged.</p>';
+      out+='<p class="forge-u-ig11mh">Leaderboards are class-only. XP is earned by correct thinking, not time logged.</p>';
       lbEl.innerHTML=out;
     }).catch(function(){var retry=ForgeState.error(lbEl,{label:'Leaderboard is unavailable',body:'We couldn’t load the latest class responses. Try again in a moment.'});if(retry)retry.onclick=function(){location.reload();};});
   }).catch(function(){var retry=ForgeState.error(lbEl,{label:'Leaderboard is unavailable',body:'We couldn’t load the latest class list. Try again in a moment.'});if(retry)retry.onclick=function(){location.reload();};});
@@ -1743,7 +1628,7 @@ function forgeLogout(){
 function sessionBar(){
   if (!state.studentName) return '';
   var statusLabel = state.classId ? ' · class' : state.isPaid ? ' · Pro ⚡' : ' · free';
-  return '<div style="text-align:center;margin-top:26px;padding-top:14px;border-top:1px solid var(--line)"><span style="font-size:12px;color:#8A857E">Signed in as <b style="color:var(--slate)">' + state.studentName + '</b><span style="color:#8A857E">' + statusLabel + '</span> \u00b7 <a href="#" onclick="forgeLogout();return false" style="color:var(--ember);text-decoration:none">Switch student</a></span></div>';
+  return '<div class="forge-u-44gkcw"><span class="forge-u-16oyzks">Signed in as <b class="forge-u-1ybl9nb">' + state.studentName + '</b><span class="forge-u-19j2vc3">' + statusLabel + '</span> \u00b7 <a class="forge-u-1u5pwzm" href="#" data-forge-action="logout">Switch student</a></span></div>';
 }
 
 // ===== SPACED REPETITION ENGINE =====
@@ -2019,55 +1904,55 @@ function renderMandarinReader() {
   var h = '';
 
   // Back button
-  h += '<button class="back-btn" onclick="(function(){state.phase=\'subjects\';render();})()">\u2190 Subjects</button>';
+  h += '<button class="back-btn" data-forge-action="quiz-subjects">\u2190 Subjects</button>';
 
   // Progress
   h += '<div class="progress-bar"><div class="progress-fill" style="width:'+pct+'%;background:#e8472a"></div></div>';
 
   // Layout wrapper
-  h += '<div id="mr-layout" style="display:flex;gap:0;min-height:70vh;border:1px solid var(--line);border-radius:var(--radius-lg);overflow:hidden;margin-top:8px">';
+  h += '<div class="forge-u-12ooiq4" id="mr-layout">';
 
   // PASSAGE PANEL
-  h += '<div style="width:46%;background:#f7f3eb;padding:28px 24px;position:relative;border-right:3px solid #e8472a;overflow-y:auto;flex-shrink:0">';
-  h += '<div style="position:absolute;top:12px;right:16px;font-size:80px;color:rgba(232,71,42,0.06);line-height:1;pointer-events:none;font-family:serif">\u6587</div>';
-  h += '<div style="display:inline-block;background:#e8472a;color:#fff;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:2px 8px;border-radius:var(--radius-xs);margin-bottom:8px">'+p.typeTag+'</div>';
-  h += '<div style="font-size:19px;font-weight:700;color:#1a1a1f;margin-bottom:4px;font-family:\'Noto Serif SC\',STSong,SimSun,serif">'+p.title+'</div>';
-  h += '<div style="font-size:11px;color:#6a6560;margin-bottom:16px">'+p.subtitle+'</div>';
-  h += '<div style="height:1px;background:rgba(232,71,42,0.2);margin-bottom:16px"></div>';
-  h += '<div style="font-family:\'Noto Serif SC\',STSong,SimSun,serif;font-size:16px;line-height:2.1;color:#1a1a1f">';
+  h += '<div class="forge-u-pii2wz">';
+  h += '<div class="forge-u-qbousq">\u6587</div>';
+  h += '<div class="forge-u-nu69iv">'+p.typeTag+'</div>';
+  h += '<div class="forge-u-luj9k5">'+p.title+'</div>';
+  h += '<div class="forge-u-1w5fxlz">'+p.subtitle+'</div>';
+  h += '<div class="forge-u-5eru22"></div>';
+  h += '<div class="forge-u-1hkpawr">';
   p.lines.forEach(function(l){
-    h += '<span style="font-size:10px;color:#b0a89e;margin-right:6px;display:inline-block;width:16px;text-align:right;font-family:sans-serif">'+l.n+'</span>'+l.t+'<br>';
+    h += '<span class="forge-u-e8ercf">'+l.n+'</span>'+l.t+'<br>';
   });
   h += '</div>';
-  h += '<div style="margin-top:20px;padding-top:16px;border-top:1px dashed rgba(74,69,64,0.3)">';
-  h += '<div style="font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#a09890;margin-bottom:10px;font-family:sans-serif">Key Vocabulary</div>';
+  h += '<div class="forge-u-1pgsjgp">';
+  h += '<div class="forge-u-pyk7ku">Key Vocabulary</div>';
   p.vocab.forEach(function(v){
-    h += '<div style="display:flex;gap:8px;font-size:12px;margin-bottom:5px;align-items:baseline">';
-    h += '<span style="font-family:\'Noto Serif SC\',STSong,SimSun,serif;font-weight:700;color:#1a1a1f;min-width:70px">'+v.zh+'</span>';
-    h += '<span style="color:#a09890;font-style:italic;min-width:90px">'+v.py+'</span>';
-    h += '<span style="color:#4a4540">'+v.en+'</span>';
+    h += '<div class="forge-u-xdhlla">';
+    h += '<span class="forge-u-1l0vflr">'+v.zh+'</span>';
+    h += '<span class="forge-u-1rucfid">'+v.py+'</span>';
+    h += '<span class="forge-u-rb0caf">'+v.en+'</span>';
     h += '</div>';
   });
   h += '</div></div>';
 
   // QUESTIONS PANEL
-  h += '<div style="flex:1;padding:24px 20px;overflow-y:auto">';
-  h += '<div style="font-size:11px;color:#8A857E;margin-bottom:4px">阅读理解 · Reading Comprehension</div>';
-  h += '<div style="font-size:20px;font-weight:700;color:var(--white);letter-spacing:-.3px;margin-bottom:20px">Questions 1–'+qs.length+'</div>';
+  h += '<div class="forge-u-1us3s6h">';
+  h += '<div class="forge-u-1o5fony">阅读理解 · Reading Comprehension</div>';
+  h += '<div class="forge-u-1u2l3ir">Questions 1–'+qs.length+'</div>';
 
   // Score panel if complete
   if (done >= qs.length) {
     var spct = Math.round(mrs.correct / qs.length * 100);
     var grade = spct >= 80 ? '🔥 Forged' : spct >= 60 ? '⚒️ Craftsman' : '🔨 Keep forging';
-    h += '<div style="background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-md);padding:24px;text-align:center;margin-bottom:20px">';
-    h += '<div style="font-size:48px;font-weight:900;color:var(--white);letter-spacing:-2px">'+mrs.correct+'/'+qs.length+'</div>';
-    h += '<div style="font-size:12px;color:#8A857E;margin-bottom:16px">Questions answered correctly</div>';
-    h += '<div style="display:flex;gap:10px;justify-content:center;margin-bottom:16px">';
-    h += '<div style="background:rgba(255,255,255,.04);border-radius:var(--radius-sm);padding:8px 14px;text-align:center"><div style="font-size:18px;font-weight:700;color:var(--white)">'+mrs.correct+'</div><div style="font-size:10px;color:#8A857E">Correct</div></div>';
-    h += '<div style="background:rgba(255,255,255,.04);border-radius:var(--radius-sm);padding:8px 14px;text-align:center"><div style="font-size:18px;font-weight:700;color:var(--white)">'+(qs.length-mrs.correct)+'</div><div style="font-size:10px;color:#8A857E">Review</div></div>';
-    h += '<div style="background:rgba(255,255,255,.04);border-radius:var(--radius-sm);padding:8px 14px;text-align:center"><div style="font-size:18px;font-weight:700;color:var(--white)">'+grade+'</div><div style="font-size:10px;color:#8A857E">Rank</div></div>';
+    h += '<div class="forge-u-1j8pxz2">';
+    h += '<div class="forge-u-1ndegov">'+mrs.correct+'/'+qs.length+'</div>';
+    h += '<div class="forge-u-1gda80a">Questions answered correctly</div>';
+    h += '<div class="forge-u-tp123k">';
+    h += '<div class="forge-u-1950rq5"><div class="forge-u-pn05gc">'+mrs.correct+'</div><div class="forge-u-qqzwkq">Correct</div></div>';
+    h += '<div class="forge-u-1950rq5"><div class="forge-u-pn05gc">'+(qs.length-mrs.correct)+'</div><div class="forge-u-qqzwkq">Review</div></div>';
+    h += '<div class="forge-u-1950rq5"><div class="forge-u-pn05gc">'+grade+'</div><div class="forge-u-qqzwkq">Rank</div></div>';
     h += '</div>';
-    h += '<button onclick="(function(){state.mrState={submitted:{},tfSel:{},mcqSel:{},correct:0,total:'+qs.length+',passageIdx:0};render();})()" style="padding:9px 24px;border-radius:var(--radius-sm);border:1px solid #e8472a;background:transparent;color:#e8472a;font-family:Inter,sans-serif;font-weight:600;font-size:13px;cursor:pointer">Try again</button>';
+    h += '<button class="forge-u-1qc89jz" data-forge-action="mr-reset">Try again</button>';
     h += '</div>';
   }
 
@@ -2082,36 +1967,36 @@ function renderMandarinReader() {
     // Header
     var badgeColors = {tf:'rgba(201,168,76,0.15)|#c9a84c|rgba(201,168,76,0.3)', find:'rgba(99,179,237,0.12)|#63b3ed|rgba(99,179,237,0.25)', mcq:'rgba(154,117,237,0.12)|#b794f4|rgba(154,117,237,0.25)', format:'rgba(232,71,42,0.12)|#e8472a|rgba(232,71,42,0.25)', grammar:'rgba(72,187,120,0.12)|#68d391|rgba(72,187,120,0.25)'};
     var bc = (badgeColors[q.type]||'rgba(255,255,255,.08)|#8A857E|rgba(255,255,255,.15)').split('|');
-    h += '<div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:14px">';
-    h += '<span style="font-size:11px;font-weight:700;color:#5a5858;padding-top:2px">'+(qi+1)+'.</span>';
+    h += '<div class="forge-u-mc4cc1">';
+    h += '<span class="forge-u-18ybfd3">'+(qi+1)+'.</span>';
     h += '<span style="font-size:9px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;padding:3px 7px;border-radius:var(--radius-xs);background:'+bc[0]+';color:'+bc[1]+';border:1px solid '+bc[2]+';flex-shrink:0">'+q.badge+'</span>';
     h += '</div>';
 
     // Question text
-    var qtext = q.textZh ? '<span style="font-family:\'Noto Sans SC\',STHeiti,SimHei,sans-serif;font-size:15px">'+q.text+'</span>' : q.text;
-    h += '<div style="font-size:14px;line-height:1.6;color:var(--white);margin-bottom:14px">'+qtext+'</div>';
+    var qtext = q.textZh ? '<span class="forge-u-ztv68m">'+q.text+'</span>' : q.text;
+    h += '<div class="forge-u-1kslj0g">'+qtext+'</div>';
     if (q.textZh && q.subtext) {
-      h += '<div style="font-size:12px;color:#8A857E;margin-top:-10px;margin-bottom:12px">'+q.subtext+'</div>';
+      h += '<div class="forge-u-1n87nb9">'+q.subtext+'</div>';
     }
 
     // Input
     if (q.type === 'tf') {
       var tfVal = mrs.tfSel[q.id] || '';
-      h += '<div style="display:flex;gap:10px;margin-bottom:12px">';
+      h += '<div class="forge-u-153sad2">';
       ['true','false'].forEach(function(v){
         var sel = tfVal === v;
-        h += '<button onclick="mrSelectTF(\''+q.id+'\',\''+v+'\')" style="flex:1;padding:9px;border-radius:var(--radius-sm);border:1px solid '+(sel?'#c9a84c':'var(--line)')+';background:'+(sel?'rgba(201,168,76,0.08)':'transparent')+';color:'+(sel?'#c9a84c':'#8A857E')+';font-size:13px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif">'+(v==='true'?'✓ True':'✗ False')+'</button>';
+        h += '<button data-forge-action="mr-select-tf" data-question-id="'+q.id+'" data-value="'+v+'" style="flex:1;padding:9px;border-radius:var(--radius-sm);border:1px solid '+(sel?'#c9a84c':'var(--line)')+';background:'+(sel?'rgba(201,168,76,0.08)':'transparent')+';color:'+(sel?'#c9a84c':'#8A857E')+';font-size:13px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif">'+(v==='true'?'✓ True':'✗ False')+'</button>';
       });
       h += '</div>';
       h += '<div id="mr-just-area-'+q.id+'" style="display:'+(tfVal?'block':'none')+'">';
-      h += '<div style="font-size:11px;color:#8A857E;margin-bottom:5px;font-weight:500">Justify — quote directly from the text (in Chinese):</div>';
-      h += '<textarea id="mr-just-'+q.id+'" style="width:100%;background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:var(--radius-sm);padding:9px 12px;color:var(--white);font-family:\'Noto Sans SC\',STHeiti,SimHei,sans-serif;font-size:14px;resize:none;min-height:56px;outline:none;line-height:1.8" placeholder="Copy the relevant characters from the passage…"></textarea>';
+      h += '<div class="forge-u-1da1bnv">Justify — quote directly from the text (in Chinese):</div>';
+      h += '<textarea class="forge-u-1v8to55" id="mr-just-'+q.id+'" placeholder="Copy the relevant characters from the passage…"></textarea>';
       h += '</div>';
-      h += '<button onclick="mrSubmit(\''+q.id+'\')" id="mr-sbtn-'+q.id+'" '+(isSubmitted||!tfVal?'disabled':'')+' style="width:100%;padding:10px;border-radius:var(--radius-sm);border:none;background:#e8472a;color:#fff;font-family:Inter,sans-serif;font-size:13px;font-weight:600;cursor:pointer;margin-top:12px;opacity:'+(isSubmitted||!tfVal?'.4':'1')+'">Check answer</button>';
+      h += '<button data-forge-action="mr-submit" data-question-id="'+q.id+'" id="mr-sbtn-'+q.id+'" '+(isSubmitted||!tfVal?'disabled':'')+' style="width:100%;padding:10px;border-radius:var(--radius-sm);border:none;background:#e8472a;color:#fff;font-family:Inter,sans-serif;font-size:13px;font-weight:600;cursor:pointer;margin-top:12px;opacity:'+(isSubmitted||!tfVal?'.4':'1')+'">Check answer</button>';
     } else if (q.type === 'find') {
-      h += '<div style="font-size:11px;color:#5a5858;margin-bottom:8px">📌 '+q.lineRef+'</div>';
-      h += '<input id="mr-find-'+q.id+'" oninput="mrFindInput(\''+q.id+'\')" style="width:100%;background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:var(--radius-sm);padding:9px 12px;color:var(--white);font-family:\'Noto Sans SC\',STHeiti,SimHei,sans-serif;font-size:15px;outline:none" placeholder="Type the character(s) here…">';
-      h += '<button onclick="mrSubmit(\''+q.id+'\')" id="mr-sbtn-'+q.id+'" disabled style="width:100%;padding:10px;border-radius:var(--radius-sm);border:none;background:#e8472a;color:#fff;font-family:Inter,sans-serif;font-size:13px;font-weight:600;cursor:pointer;margin-top:12px;opacity:.4">Check answer</button>';
+      h += '<div class="forge-u-paoxfs">📌 '+q.lineRef+'</div>';
+      h += '<input class="forge-u-1ldj335" id="mr-find-'+q.id+'" data-forge-action="mr-find-input" data-question-id="'+q.id+'" placeholder="Type the character(s) here…">';
+      h += '<button class="forge-u-9r1sf3" data-forge-action="mr-submit" data-question-id="'+q.id+'" id="mr-sbtn-'+q.id+'" disabled>Check answer</button>';
     } else {
       var selK = mrs.mcqSel[q.id] || '';
       q.opts.forEach(function(o){
@@ -2122,19 +2007,19 @@ function renderMandarinReader() {
         var bgC = corr ? 'rgba(127,217,138,.08)' : wrong ? 'rgba(255,90,90,.07)' : sel ? 'rgba(201,168,76,.06)' : 'var(--panel-2)';
         var letterC = corr ? 'var(--good)' : wrong ? 'var(--bad)' : sel ? '#c9a84c' : '#8A857E';
         var textStyle = o.zh ? 'font-family:\'Noto Sans SC\',STHeiti,SimHei,sans-serif;font-size:14px' : '';
-        h += '<button onclick="mrSelectMCQ(\''+q.id+'\',\''+o.k+'\')" style="display:flex;align-items:flex-start;gap:10px;padding:11px 13px;border-radius:var(--radius-sm);border:1px solid '+borderC+';background:'+bgC+';cursor:pointer;text-align:left;width:100%;margin-bottom:7px;font-family:Inter,sans-serif">';
+        h += '<button data-forge-action="mr-select-mcq" data-question-id="'+q.id+'" data-letter="'+o.k+'" style="display:flex;align-items:flex-start;gap:10px;padding:11px 13px;border-radius:var(--radius-sm);border:1px solid '+borderC+';background:'+bgC+';cursor:pointer;text-align:left;width:100%;margin-bottom:7px;font-family:Inter,sans-serif">';
         h += '<span style="width:20px;height:20px;border-radius:50%;border:1px solid '+letterC+';display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;color:'+letterC+'">'+o.k+'</span>';
         h += '<span style="font-size:13px;line-height:1.5;color:var(--white);padding-top:1px;'+textStyle+'">'+o.t+'</span>';
         h += '</button>';
       });
-      h += '<button onclick="mrSubmit(\''+q.id+'\')" id="mr-sbtn-'+q.id+'" '+(isSubmitted||!selK?'disabled':'')+' style="width:100%;padding:10px;border-radius:var(--radius-sm);border:none;background:#e8472a;color:#fff;font-family:Inter,sans-serif;font-size:13px;font-weight:600;cursor:pointer;margin-top:4px;opacity:'+(isSubmitted||!selK?'.4':'1')+'">Check answer</button>';
+      h += '<button data-forge-action="mr-submit" data-question-id="'+q.id+'" id="mr-sbtn-'+q.id+'" '+(isSubmitted||!selK?'disabled':'')+' style="width:100%;padding:10px;border-radius:var(--radius-sm);border:none;background:#e8472a;color:#fff;font-family:Inter,sans-serif;font-size:13px;font-weight:600;cursor:pointer;margin-top:4px;opacity:'+(isSubmitted||!selK?'.4':'1')+'">Check answer</button>';
     }
 
     // Feedback
     if (isSubmitted) {
       h += '<div style="margin-top:12px;padding:12px 14px;border-radius:var(--radius-sm);'+(isCorrect?'background:rgba(127,217,138,.1);border:1px solid rgba(127,217,138,.25)':'background:rgba(255,90,90,.08);border:1px solid rgba(255,90,90,.2)')+'">';
       h += '<div style="font-size:11px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;margin-bottom:5px;color:'+(isCorrect?'var(--good)':'var(--bad)')+'">'+(isCorrect?'✓ Correct':'✗ Review')+'</div>';
-      h += '<div style="font-size:13px;line-height:1.6;color:#8A857E">'+q.fb[isCorrect?'correct':'incorrect']+'</div>';
+      h += '<div class="forge-u-rpxuuv">'+q.fb[isCorrect?'correct':'incorrect']+'</div>';
       h += '</div>';
     }
 

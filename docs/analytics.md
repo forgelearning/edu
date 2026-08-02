@@ -21,9 +21,14 @@ Question text, submitted answers, student names, email addresses and other free-
 
 ## Current limitation
 
-The internal page is intentionally a device-level diagnostic view. It cannot calculate reliable cohorts, retention, teacher adoption, session completion across users or learning outcomes. Those require protected server-side queries over `product_events` joined to authorised product data, with an explicit privacy and retention policy.
+The internal Product insights page remains a device-level diagnostic view. It
+does not pretend that its local history is a product report. Cross-user
+measurement is now provided by protected server-side functions with explicit
+authorization and a bounded time window. The server reports are still
+directional product metrics rather than causal evidence, and the anonymous
+event stream is intentionally not joined to named student records.
 
-The first production queries should be built around:
+The production measurement model is built around:
 
 1. weekly activation and retention by anonymous cohort;
 2. Forge and Crucible start-to-completion rates;

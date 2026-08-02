@@ -12,74 +12,7 @@
 <link rel="stylesheet" href="css/auth.css">
 <link rel="stylesheet" href="css/sidebar.css">
 <link rel="stylesheet" href="css/components.css">
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--coal);color:var(--slate);font-family:'Inter',sans-serif;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100vh}
-h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter-spacing:-.015em}
-.mono{font-family:'JetBrains Mono',monospace}
-.wrap{max-width:680px;margin:0 auto;padding:28px 20px}
-.tag{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ember)}
-.logo{font-family:'Sora',sans-serif;font-weight:800;font-size:20px;color:var(--white);text-decoration:none;display:inline-flex;align-items:center;gap:8px;margin-bottom:0}
-.logo .spark{width:9px;height:9px;background:var(--ember);border-radius:var(--radius-xs);transform:rotate(45deg);box-shadow:0 0 10px rgba(255,107,44,.7)}
-.theme-toggle{background:var(--panel);border:1px solid var(--line);color:var(--slate);font-family:'JetBrains Mono',monospace;font-size:12px;padding:6px 12px;border-radius:var(--radius-sm);cursor:pointer;z-index:99}
-.theme-toggle:hover{color:var(--white);border-color:var(--ember)}
 
-.join-input{width:100%;padding:12px 14px;border-radius:var(--radius-sm);border:1px solid var(--line);background:var(--panel);color:var(--white);font-family:'Inter',sans-serif;font-size:15px;margin-bottom:14px;text-transform:uppercase}
-.join-input:focus{outline:none;border-color:var(--ember)}
-.join-input::placeholder{color:#7A756E;text-transform:none}
-.join-btn{width:100%;padding:13px;border-radius:var(--radius-sm);background:var(--ember);color:#fff;border:none;font-family:'Inter',sans-serif;font-weight:600;font-size:15px;cursor:pointer}
-.join-btn:hover{background:var(--hot)}
-.join-btn:disabled{opacity:.5;cursor:wait}
-.join-err{color:var(--bad);font-size:13px;margin-top:10px;display:none}
-.center{text-align:center}
-.hidden{display:none}
-
-.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px}
-.stat{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-md);padding:16px;text-align:center}
-.stat-n{font-family:'Sora',sans-serif;font-size:28px;font-weight:800;display:block}
-.stat-l{font-size:11px;color:#8A857E;margin-top:4px;display:block;font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.04em}
-
-.anvil-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-lg);padding:20px;margin-bottom:12px;cursor:pointer;transition:border-color .15s}
-.anvil-card:hover{border-color:var(--ember)}
-.anvil-card.active-mc{border-left:3px solid var(--bad)}
-.anvil-card.resolved-mc{border-left:3px solid var(--good);opacity:.6}
-.anvil-top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
-.anvil-tag{font-size:11px;color:var(--coal);background:var(--hot);padding:2px 8px;border-radius:var(--radius-xs);font-weight:600;font-family:'JetBrains Mono',monospace}
-.anvil-label{color:var(--white);font-size:14px;font-weight:600;margin-top:6px}
-.anvil-meta{font-size:12px;color:#8A857E;margin-top:6px;display:flex;gap:16px;flex-wrap:wrap}
-.anvil-streak{font-family:'JetBrains Mono',monospace;font-size:12px;margin-top:8px}
-.streak-dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:3px}
-
-/* quiz mode */
-.stem{font-size:16px;line-height:1.55;color:var(--white);margin-bottom:20px}
-.options{display:flex;flex-direction:column;gap:8px}
-.opt{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;border-radius:var(--radius-md);border:1.5px solid var(--line);background:var(--panel-2);color:var(--white);cursor:pointer;text-align:left;font-family:'Inter',sans-serif;font-size:15px;line-height:1.45;transition:border-color .15s,background .15s,opacity .15s;width:100%}
-.opt:hover:not(.answered){border-color:var(--ember)}
-.opt .letter{font-weight:700;min-width:20px;color:#8A857E}
-.opt.answered{cursor:default}
-.opt.correct{border-color:var(--good);background:rgba(127,217,138,.08);opacity:1}
-.opt.correct .letter{color:var(--good)}
-.opt.wrong{border-color:var(--bad);background:rgba(255,90,90,.07);opacity:1}
-.opt.wrong .letter{color:var(--bad)}
-.opt.dimmed{opacity:.5}
-.scaffold-box{margin-top:16px;padding:14px 16px;border-radius:var(--radius-md);border:1px solid rgba(255,201,60,.4);background:rgba(255,107,44,.075);animation:heat .5s ease}
-@keyframes heat{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
-.scaffold-box .stag{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--coal);background:var(--hot);padding:2px 8px;border-radius:var(--radius-xs);font-weight:600;margin-bottom:8px}
-.scaffold-box p{font-size:14px;color:var(--white);line-height:1.5}
-.praise-box{margin-top:16px;padding:14px 16px;border-radius:var(--radius-md);border:1px solid var(--good);background:rgba(127,217,138,.08);color:var(--good);font-weight:600;font-size:14px}
-.next-btn{margin-top:18px;padding:10px 24px;border-radius:var(--radius-sm);background:var(--white);color:var(--coal);border:none;cursor:pointer;font-weight:600;font-size:14px;font-family:'Inter',sans-serif;float:right}
-.back-btn{background:none;border:none;cursor:pointer;font-size:13px;color:#8A857E;font-family:'Inter',sans-serif;margin-bottom:16px;padding:0}
-.back-btn:hover{color:var(--white)}
-.clear{clear:both}
-.empty{text-align:center;padding:48px 20px}
-.empty h3{color:var(--white);margin-bottom:8px}
-.cleared-banner{text-align:center;padding:40px 20px;background:var(--panel);border:1px solid rgba(127,217,138,.4);border-radius:var(--radius-lg);margin-top:20px}
-.cleared-banner h2{color:var(--good);margin-bottom:8px}
-
-[data-theme="light"] .anvil-tag,[data-theme="light"] .stag{color:#fff}
-[data-theme="light"] .join-btn{color:#fff}
-@media(max-width:600px){.stat-row{grid-template-columns:1fr}}
-[data-theme="light"] .forge-logo-dark{display:none!important}[data-theme="light"] .forge-logo-light{display:inline!important}</style>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-RGZ9J6Q8H9"></script>
 <script>
@@ -89,6 +22,8 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
   gtag('config', 'G-RGZ9J6Q8H9');
 </script>
 <link rel="stylesheet" href="css/states.css">
+  <link rel="stylesheet" href="css/generated-utilities.css">
+  <link rel="stylesheet" href="css/page-overrides/anvil.css">
 </head>
 <body>
 <script src="scripts/forge-api.js"></script>
@@ -98,7 +33,7 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
 <script src="scripts/forge-logo.js"></script>
 <script src="scripts/forge-auth-card.js"></script>
 <script src="scripts/forge-classes.js"></script>
-<script src="scripts/forge-sidebar.js"></script>
+<script src="scripts/forge-sidebar.js?v=20260802"></script>
 <script src="scripts/forge-product-analytics.js"></script>
 <script>
 ForgeSidebar.mount({
@@ -643,11 +578,11 @@ function renderAnvilHome(){
   var resolved=getResolvedMCs();
   var total=active.length+resolved.length;
 
-  var h='<button class="back-btn" onclick="'+(anvilState.classId ? 'renderLogin()' : 'window.location.href=\'forge-quiz.html\'')+'">\u2190 '+(anvilState.classId ? 'Log out' : 'Back to quiz')+'</button>';
-  h+='<div class="center" style="margin-bottom:24px">';
-  h+='<p class="tag" style="margin-bottom:4px">THE ANVIL</p>';
-  h+='<h1 style="font-size:24px;margin-bottom:4px">'+anvilState.studentName+'</h1>';
-  h+='<p style="color:#8A857E;font-size:14px">'+CLEAR_THRESHOLD+' correct in a row to clear a misconception</p>';
+  var h='<button class="back-btn" data-forge-action="anvil-back">\u2190 '+(anvilState.classId ? 'Log out' : 'Back to quiz')+'</button>';
+  h+='<div class="center forge-u-1y8kt2f">';
+  h+='<p class="tag forge-u-l8gta7">THE ANVIL</p>';
+  h+='<h1 class="forge-u-1oh0w3h">'+anvilState.studentName+'</h1>';
+  h+='<p class="forge-u-10yda30">'+CLEAR_THRESHOLD+' correct in a row to clear a misconception</p>';
   h+='</div>';
 
   // Stats
@@ -663,17 +598,17 @@ function renderAnvilHome(){
   }
 
   if(active.length===0){
-    h+='<div class="cleared-banner"><h2>\u2713 Anvil clear</h2><p style="color:var(--slate)">Every misconception has been resolved. Keep doing quizzes \u2014 new ones will land here if they fire.</p></div>';
+    h+='<div class="cleared-banner"><h2>\u2713 Anvil clear</h2><p class="forge-u-1ybl9nb">Every misconception has been resolved. Keep doing quizzes \u2014 new ones will land here if they fire.</p></div>';
   }
 
   // Active misconceptions
   if(active.length>0){
-    h+='<p style="font-size:12px;color:var(--bad);font-family:JetBrains Mono,monospace;text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">\u26a0 Active \u2014 tap to rework</p>';
+    h+='<p class="forge-u-1si02oh">\u26a0 Active \u2014 tap to rework</p>';
     active.forEach(function(m){
       var label=MC_LABELS[m.tag]||m.tag;
       var hasQs=MC_QUESTIONS[m.tag]&&MC_QUESTIONS[m.tag].length>0;
-      h+='<div class="anvil-card active-mc" '+(hasQs?'onclick="startRework(\''+m.tag+'\')"':'')+' style="'+(hasQs?'':'opacity:.5;cursor:default')+'">';
-      h+='<div class="anvil-top"><span class="anvil-tag">'+m.tag+'</span><span class="mono" style="font-size:12px;color:var(--bad)">'+m.fires+' fires</span></div>';
+      h+='<div class="anvil-card active-mc" '+(hasQs?'data-forge-action="anvil-rework" data-tag="'+m.tag+'"':'')+' style="'+(hasQs?'':'opacity:.5;cursor:default')+'">';
+      h+='<div class="anvil-top"><span class="anvil-tag">'+m.tag+'</span><span class="mono forge-u-pmcgs0">'+m.fires+' fires</span></div>';
       h+='<div class="anvil-label">'+label+'</div>';
       h+='<div class="anvil-meta"><span>Reforged '+m.reforgeCorrect+'/'+m.reforgeAttempts+'</span><span>Streak: '+m.streak+'/'+CLEAR_THRESHOLD+'</span></div>';
       // Streak dots
@@ -682,7 +617,7 @@ function renderAnvilHome(){
       recent.forEach(function(ok){
         h+='<span class="streak-dot" style="background:'+(ok?'var(--good)':'var(--bad)')+'"></span>';
       });
-      if(recent.length===0) h+='<span style="font-size:11px;color:#8A857E">No attempts yet</span>';
+      if(recent.length===0) h+='<span class="forge-u-1qdci5l">No attempts yet</span>';
       h+='</div>';
       h+='</div>';
     });
@@ -690,12 +625,12 @@ function renderAnvilHome(){
 
   // Resolved
   if(resolved.length>0){
-    h+='<p style="font-size:12px;color:var(--good);font-family:JetBrains Mono,monospace;text-transform:uppercase;letter-spacing:.06em;margin:24px 0 10px">\u2713 Resolved</p>';
+    h+='<p class="forge-u-1y2mmc9">\u2713 Resolved</p>';
     resolved.forEach(function(m){
       var label=MC_LABELS[m.tag]||m.tag;
       h+='<div class="anvil-card resolved-mc">';
-      h+='<div class="anvil-top"><span class="anvil-tag" style="background:var(--good)">'+m.tag+'</span><span class="mono" style="font-size:12px;color:var(--good)">\u2713 Cleared</span></div>';
-      h+='<div class="anvil-label" style="text-decoration:line-through;color:var(--slate)">'+label+'</div>';
+      h+='<div class="anvil-top"><span class="anvil-tag forge-u-6uw790">'+m.tag+'</span><span class="mono forge-u-10wft76">\u2713 Cleared</span></div>';
+      h+='<div class="anvil-label forge-u-bed994">'+label+'</div>';
       h+='</div>';
     });
   }
@@ -770,10 +705,10 @@ function renderReworkQuestion(tag,questions,lap,qIdx){
   var m=anvilState.misconceptions[tag];
   var keys=Object.keys(q.options);
 
-  var h='<button class="back-btn" onclick="renderAnvilHome()">\u2190 Back to Anvil</button>';
-  h+='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:8px">';
-  h+='<div><span class="anvil-tag">'+tag+'</span><span style="color:var(--white);font-size:14px;font-weight:600;margin-left:10px">'+label+'</span></div>';
-  h+='<span class="mono" style="font-size:12px;color:var(--slate)">Streak: '+m.streak+'/'+CLEAR_THRESHOLD+'</span>';
+  var h='<button class="back-btn" data-forge-action="anvil-home">\u2190 Back to Anvil</button>';
+  h+='<div class="forge-u-t04ya0">';
+  h+='<div><span class="anvil-tag">'+tag+'</span><span class="forge-u-1kcgkyz">'+label+'</span></div>';
+  h+='<span class="mono forge-u-wlc5am">Streak: '+m.streak+'/'+CLEAR_THRESHOLD+'</span>';
   h+='</div>';
 
   h+='<div class="stem">'+q.stem+'</div>';
@@ -834,7 +769,7 @@ function renderReworkQuestion(tag,questions,lap,qIdx){
       var fh='';
 
       if(isCorrect && m.streak>=CLEAR_THRESHOLD){
-        fh='<div class="cleared-banner" style="margin-top:20px"><h2>\u2713 Misconception cleared!</h2><p style="color:var(--slate)">'+tag+' \u2014 '+label+'<br>'+CLEAR_THRESHOLD+' correct in a row. This one is off your Anvil.</p></div>';
+        fh='<div class="cleared-banner forge-u-f4v9hz"><h2>\u2713 Misconception cleared!</h2><p class="forge-u-1ybl9nb">'+tag+' \u2014 '+label+'<br>'+CLEAR_THRESHOLD+' correct in a row. This one is off your Anvil.</p></div>';
         fh+='<button class="next-btn btn-glass btn-ember" id="rw-next">Back to Anvil \u2192</button><div class="clear"></div>';
         fb.innerHTML=fh;
         document.getElementById('rw-next').onclick=function(){ renderAnvilHome(); };
@@ -847,7 +782,7 @@ function renderReworkQuestion(tag,questions,lap,qIdx){
         };
       } else {
         fh='<div class="scaffold-box"><span class="stag">'+tag+'</span><p>'+q.scaffold+'</p></div>';
-        fh+='<div style="margin-top:12px;font-size:14px;color:var(--bad);font-weight:600">Streak reset to 0/'+CLEAR_THRESHOLD+'</div>';
+        fh+='<div class="forge-u-1pk26m3">Streak reset to 0/'+CLEAR_THRESHOLD+'</div>';
         fh+='<button class="next-btn btn-glass btn-ember" id="rw-next">Try again \u2192</button><div class="clear"></div>';
         fb.innerHTML=fh;
         document.getElementById('rw-next').onclick=function(){
@@ -866,7 +801,7 @@ function forgeLogout(){
 }
 function sessionBar(){
   if (!anvilState.studentId || !anvilState.studentName) return '';
-  return '<div style="text-align:center;margin-top:26px;padding-top:14px;border-top:1px solid var(--line)"><span style="font-size:12px;color:#8A857E">Signed in as <b style="color:var(--slate)">' + anvilState.studentName + '</b> \u00b7 <a href="#" onclick="forgeLogout();return false" style="color:var(--ember);text-decoration:none">Not you? Switch student</a></span></div>';
+  return '<div class="forge-u-44gkcw"><span class="forge-u-16oyzks">Signed in as <b class="forge-u-1ybl9nb">' + anvilState.studentName + '</b> \u00b7 <a class="forge-u-1u5pwzm" href="#" data-forge-action="logout">Not you? Switch student</a></span></div>';
 }
 
 // ===== SHARED SESSION RESTORE =====
@@ -994,5 +929,6 @@ function checkLocalSession(){
 startAnvil();
 </script>
 <script src="scripts/nav.js"></script>
+  <script src="scripts/forge-page-actions.js"></script>
 </body>
 </html>

@@ -1,0 +1,64 @@
+/* Route-specific overrides for privacy.html. Shared rules belong in components.css. */
+body{background:var(--coal);color:var(--slate);font-family:'Inter',sans-serif;font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter-spacing:-.015em}
+.mono{font-family:'JetBrains Mono',monospace}
+a{color:var(--hot)}
+a:hover{color:var(--ember)}
+.wrap{max-width:1180px;margin:0 auto;padding:0 32px}
+.tag{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--ember)}
+:focus-visible{outline:2px solid var(--hot);outline-offset:3px;border-radius:var(--radius-xs)}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+
+/* page header */
+.page-header{padding:60px 0 48px;border-bottom:1px solid var(--line);margin-bottom:48px}
+.page-header .tag{margin-bottom:12px;display:block}
+.page-header h1{font-size:clamp(28px,5vw,42px);margin-bottom:12px}
+.page-header p{font-size:15px;color:var(--slate);max-width:580px}
+.last-updated{display:inline-block;margin-top:16px;font-family:'JetBrains Mono',monospace;font-size:11px;color:#8A857E;background:var(--panel);border:1px solid var(--line);padding:4px 12px;border-radius:var(--radius-sm)}
+
+/* doc layout */
+.doc-layout{display:block}
+.doc-nav{display:none}
+.toc-box{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-md);padding:18px 20px;margin-bottom:32px}
+.toc-box-title{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:#8A857E;margin-bottom:12px}
+.toc-links{display:flex;flex-wrap:wrap;gap:6px}
+.toc-links a{font-size:13px;color:var(--slate);text-decoration:none;padding:4px 10px;border:1px solid var(--line);border-radius:var(--radius-sm);transition:color .15s,border-color .15s}
+.toc-links a:hover{color:var(--ember);border-color:var(--ember)}
+
+/* prose */
+.prose{padding-bottom:80px}
+.prose section{margin-bottom:48px;scroll-margin-top:80px}
+.prose h2{font-size:22px;color:var(--white);margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--line)}
+.prose h3{font-size:16px;color:var(--white);margin:24px 0 10px;font-family:'Inter',sans-serif;font-weight:600}
+.prose p{margin-bottom:14px;font-size:15px;line-height:1.7;max-width:none}
+.prose ul,.prose ol{margin:0 0 14px 20px;font-size:15px;line-height:1.7;max-width:none}
+.prose li{margin-bottom:6px}
+.prose strong{color:var(--white);font-weight:600}
+.prose .notice{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--ember);border-radius:0 8px 8px 0;padding:14px 18px;margin:20px 0;font-size:14px}
+.prose .notice.good{border-left-color:var(--good)}
+.prose .notice.hot{border-left-color:var(--hot)}
+.prose table{width:100%;border-collapse:collapse;font-size:14px;margin:20px 0}
+.prose th{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:#8A857E}
+.prose td{padding:10px 14px;border-bottom:1px solid var(--panel-2);color:var(--slate);vertical-align:top}
+.prose td strong{color:var(--white)}
+.prose td:first-child{color:var(--white);font-weight:600;white-space:normal}
+.prose .dpa-box{background:var(--panel);border:1px solid rgba(127,217,138,.3);border-radius:var(--radius-md);padding:28px 32px;margin:32px 0}
+.prose .dpa-box h3{color:var(--good);margin-top:0}
+.prose .sig-block{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:24px}
+.prose .sig-block .sig{background:var(--panel-2);border:1px solid var(--line);border-radius:var(--radius-sm);padding:18px 20px;font-size:14px}
+.prose .sig-block .sig p{margin-bottom:4px;font-size:13px}
+.prose .sig-block .sig .sig-name{color:var(--white);font-weight:600;margin-bottom:8px;font-size:15px}
+.prose .sig-block .sig .sig-line{border-bottom:1px solid var(--line);margin:16px 0 8px}
+@media(max-width:700px){
+  .prose table{display:block;overflow-x:auto;max-width:100%;-webkit-overflow-scrolling:touch}
+  .prose table th,.prose table td{min-width:150px}
+  .prose table th:first-child,.prose table td:first-child{min-width:130px}
+}
+@media(max-width:600px){.prose .sig-block{grid-template-columns:1fr}}
+
+/* footer */
+footer{border-top:1px solid var(--line);padding:32px 0;font-size:13px;color:#8A857E}
+footer a{color:#8A857E;text-decoration:none}
+footer a:hover{color:var(--slate)}
+.footer-inner{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
+[data-theme="light"] .forge-logo-dark{display:none!important}[data-theme="light"] .forge-logo-light{display:block!important}

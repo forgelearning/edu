@@ -46,8 +46,8 @@
         '<button type="button" class="analytics-consent-reject">Reject</button>' +
         '<button type="button" class="analytics-consent-accept">Accept analytics</button>' +
       '</div>';
-    banner.querySelector('.analytics-consent-reject').onclick = function () { saveChoice('denied'); };
-    banner.querySelector('.analytics-consent-accept').onclick = function () { saveChoice('granted'); };
+    banner.querySelector('.analytics-consent-reject').addEventListener('click', function () { saveChoice('denied'); });
+    banner.querySelector('.analytics-consent-accept').addEventListener('click', function () { saveChoice('granted'); });
     document.body.appendChild(banner);
   }
 
