@@ -271,12 +271,15 @@ function renderProfile(){
   var byClass={}, order=[];
   responses.forEach(function(r){
     var cid = r._classId || r.class_id;
-    var key = (cid && classes[cid]) ? cid : '_other';
+    // Older response rows may not carry class_id. Subject is still a stable
+    // boundary, so keep those results visible instead of collapsing them.
+    var key = (cid && classes[cid]) ? cid : (r.subject ? 'subject:'+r.subject : '_other');
     if(!byClass[key]){ byClass[key]=[]; order.push(key); }
     byClass[key].push(r);
   });
   var grades=order.map(function(key){
-    var info = classes[key] || {label:null, isGCSE:st.isGCSE};
+    var subjectKey = key.indexOf('subject:')===0 ? key.slice(8) : null;
+    var info = classes[key] || {label:subjectKey ? (SUBJ_LABELS[subjectKey]||subjectKey) : null, isGCSE:st.isGCSE};
     var g = gradeFor(byClass[key], info.isGCSE);
     g.label = info.label;
     return g;

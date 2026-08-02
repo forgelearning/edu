@@ -16,7 +16,7 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
 .join-btn:disabled{opacity:.5;cursor:wait}
 .join-err{color:var(--bad);font-size:13px;margin-top:10px;display:none}
 /* ── Profile tabs ── */
-.prof-tabs{display:flex;gap:0;margin-bottom:24px;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-md);padding:4px;width:fit-content}
+.prof-tabs{display:flex;gap:4px;margin-bottom:24px;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-md);padding:5px;width:fit-content;box-shadow:0 10px 28px rgba(0,0,0,.12)}
 .prof-tab{font-size:13px;font-weight:600;font-family:'Inter',sans-serif;padding:8px 16px;border-radius:var(--radius-sm);border:none;background:none;color:var(--slate);cursor:pointer;transition:all .15s}
 .prof-tab.active{background:var(--ember);color:#fff}
 .prof-tab:hover:not(.active){color:var(--white)}
@@ -33,7 +33,7 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
 .stat-l{font-size:10px;color:#8A857E;margin-top:6px;display:block;font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.05em}
 /* ── Two-column overview ── */
 .two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
-.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-lg);padding:20px;margin-bottom:16px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-lg);padding:24px;margin-bottom:20px;box-shadow:0 12px 30px rgba(0,0,0,.1)}
 .card-title{font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center}
 /* ── Focus items ── */
 .focus-item{background:var(--panel-2);border:1px solid var(--line);border-radius:var(--radius-md);padding:13px 14px;margin-bottom:8px}
@@ -48,7 +48,7 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
 .strength-label{color:var(--white)}
 .strength-acc{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:13px;color:var(--good)}
 /* ── Grade + rank ── */
-.grade-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-lg);padding:22px 24px;margin-bottom:16px;display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.grade-card{background:var(--panel-2);border:1px solid var(--line);border-radius:var(--radius-lg);padding:22px 24px;margin:12px 0 0;display:flex;align-items:center;gap:20px;flex-wrap:wrap}
 .grade-letter{font-family:'Sora',sans-serif;font-size:52px;font-weight:800;line-height:1;min-width:80px;text-align:center}
 .grade-info{flex:1;min-width:180px}
 .grade-acc{min-width:80px;text-align:center}
@@ -76,3 +76,11 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
 [data-theme="light"] .prof-tab.active{color:#fff}
 @media(max-width:600px){.stat-row{grid-template-columns:1fr 1fr}.two-col{grid-template-columns:1fr}.prof-tabs{width:100%;flex-wrap:wrap}}
 [data-theme="light"] .forge-logo-dark{display:none!important}[data-theme="light"] .forge-logo-light{display:inline!important}
+.forge-u-k85mqv{width:100%;border-collapse:separate;border-spacing:0 4px;table-layout:fixed}
+.forge-u-k85mqv th,.forge-u-k85mqv td{padding:12px 10px;text-align:left;vertical-align:middle;line-height:1.35}
+.forge-u-k85mqv th:nth-child(1){width:20%}.forge-u-k85mqv th:nth-child(2){width:15%}.forge-u-k85mqv th:nth-child(3){width:13%}.forge-u-k85mqv th:nth-child(4){width:18%}.forge-u-k85mqv th:nth-child(5){width:34%}
+.forge-u-k85mqv tbody tr{background:var(--panel-2)}
+.forge-u-k85mqv tbody td:first-child{border-radius:var(--radius-sm) 0 0 var(--radius-sm)}
+.forge-u-k85mqv tbody td:last-child{border-radius:0 var(--radius-sm) var(--radius-sm) 0}
+.forge-u-1rlm34s{white-space:normal;overflow-wrap:anywhere}
+@media(max-width:600px){.forge-u-k85mqv{font-size:12px}.forge-u-k85mqv th,.forge-u-k85mqv td{padding:9px 5px}.forge-u-k85mqv th:nth-child(4),.forge-u-k85mqv td:nth-child(4){display:none}.forge-u-k85mqv th:nth-child(5){width:40%}}

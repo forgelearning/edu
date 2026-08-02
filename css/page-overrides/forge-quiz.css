@@ -116,3 +116,7 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
 .lb-xp{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:var(--white);white-space:nowrap}
 .lb-streak{font-size:12px;white-space:nowrap}
 [data-theme="light"] .forge-logo-dark{display:none!important}[data-theme="light"] .forge-logo-light{display:inline!important}
+.forge-result-actions{justify-content:center;flex-wrap:wrap;gap:10px;margin-top:20px}
+.forge-result-links{display:flex;justify-content:center;flex-wrap:wrap;gap:8px 20px;margin:18px auto 0;padding-top:16px;border-top:1px solid var(--line);font-size:13px}
+.forge-result-links a{color:var(--hot);text-decoration:none}
+.forge-result-links a:hover{text-decoration:underline}
