@@ -101,8 +101,10 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
   gtag('js', new Date());
   gtag('config', 'G-RGZ9J6Q8H9');
 </script>
+<link rel="stylesheet" href="css/states.css">
 </head>
 <body>
+<script src="scripts/forge-state.js"></script>
 
 
 <script src="scripts/forge-logo.js"></script>
@@ -164,6 +166,7 @@ function supaInsert(t,row){
 var CRUCIBLE_TIME = 5 * 60; // 5 minutes
 var QUESTIONS_PER_RUN = 6;
 var CRUCIBLE_RUN_PREFIX = 'forge-crucible-run:';
+ForgeState.loading(document.getElementById('app'), { label: 'Loading Crucible', body: 'Getting your timed practice ready.' });
 function crucibleRunKey() { return CRUCIBLE_RUN_PREFIX + String(state.studentId || 'anon') + ':' + String(state.classId || 'none'); }
 function loadCrucibleRun() { try { return JSON.parse(localStorage.getItem(crucibleRunKey()) || 'null'); } catch(e) { return null; } }
 function saveCrucibleRun() { try { localStorage.setItem(crucibleRunKey(), JSON.stringify({status:'active',subject:state.subject,bank:state.bank,questionIds:state.questions.map(function(q){return q.id;}),answers:state.answers.map(function(a){return {id:a.q.id,selected:a.selected,correct:a.correct,timedOut:a.timedOut};}),idx:state.idx,timeLeft:state.timeLeft,updatedAt:Date.now()})); } catch(e) {} }
@@ -271,16 +274,26 @@ function renderSubject(){
     subjectKeys = state.paidSubjects.filter(function(k) { return SUBJECTS[k]; });
   }
 
+  var eligible = 0;
   subjectKeys.forEach(function(k) {
     var s=SUBJECTS[k];
     var total=s.banks.reduce(function(t,b){return t+(BANKS[b]?BANKS[b].questions.filter(function(q){return !q.type&&q.reforge;}).length:0);},0);
     if(total<3) return;
+    eligible++;
     var entry = ForgeClasses.forSubject(k);
     h+='<button class="pick-btn" data-key="'+k+'">';
     h+='<h3 style="color:'+s.color+'">'+s.label+'</h3>';
     h+='<div class="sub">'+s.sub+' \u00b7 '+total+' questions available'+(entry&&entry.className?' \u00b7 '+entry.className:'')+'</div>';
     h+='</button>';
   });
+  if (!eligible) {
+    app.innerHTML = ForgeState.html('empty', {
+      label: 'No Crucible topics available',
+      body: 'Join a class or choose a subject in Forge before starting a timed run.',
+      action: { label: 'Open Forge', href: 'forge-quiz.html' }
+    }) + sessionBar();
+    return;
+  }
   h+='</div>';
   var saved=loadCrucibleRun();
   if(saved&&saved.status==='active'&&saved.subject&&saved.bank){
@@ -319,6 +332,14 @@ function renderBank(){
   // All banks option
   var allQs=[];
   subj.banks.forEach(function(bk){if(BANKS[bk])allQs=allQs.concat(BANKS[bk].questions.filter(function(q){return !q.type&&q.reforge;}));});
+  if (allQs.length < 2) {
+    app.innerHTML = ForgeState.html('empty', {
+      label: 'No questions in this subject yet',
+      body: 'Choose another subject or continue practising in Forge.',
+      action: { label: 'Open Forge', href: 'forge-quiz.html' }
+    }) + sessionBar();
+    return;
+  }
   h+='<button class="pick-btn" data-bank="ALL" style="border-color:'+subj.color+'30">';
   h+='<h3 style="color:'+subj.color+'">All topics mixed</h3>';
   h+='<div class="sub">'+allQs.length+' questions \u00b7 randomised</div>';

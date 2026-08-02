@@ -88,8 +88,10 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
   gtag('js', new Date());
   gtag('config', 'G-RGZ9J6Q8H9');
 </script>
+<link rel="stylesheet" href="css/states.css">
 </head>
 <body>
+<script src="scripts/forge-state.js"></script>
 
 
 <script src="scripts/forge-logo.js"></script>
@@ -534,7 +536,8 @@ for(var bk in BANKS){
 
 var CLEAR_THRESHOLD = 3; // consecutive correct to resolve
 var app = document.getElementById('app');
-var anvilState = { studentId:null, classId:null, studentName:null, classSubject:null, responses:[], misconceptions:{} };
+var anvilState = { studentId:null, classId:null, studentName:null, classSubject:null, responses:[], misconceptions:{}, loadError:false };
+ForgeState.loading(app, { label: 'Loading Anvil', body: 'Finding the concepts that need another look.' });
 
 function renderLogin(){
   var f=ForgeAuthCard.field('a-name','Your first name',{placeholder:'e.g. Alex',autocomplete:'given-name'})
@@ -554,7 +557,7 @@ function renderLogin(){
     var err=document.getElementById('a-err');
     var btn=document.getElementById('a-btn');
     if(!name||!code){err.textContent='Enter your name and class code.';err.style.display='block';return;}
-    btn.disabled=true;btn.textContent='Loading...';
+    btn.disabled=true;btn.textContent='Checking details…';
 
     // Look up via RPC \u2014 classes/students tables are no longer directly
     // readable by an anonymous (no login) name+code session.
@@ -665,9 +668,7 @@ function renderAnvilHome(){
   h+='</div>';
 
   if(active.length===0 && resolved.length===0){
-    h+='<div class="empty"><h3>No misconceptions yet</h3><p>Do some quizzes first \u2014 any wrong answers will appear here for reworking.</p>';
-    h+='<a class="btn-glass btn-ember" href="forge-quiz.html" style="display:inline-block;margin-top:16px;padding:10px 20px;border-radius:var(--radius-sm);text-decoration:none;font-weight:600;font-size:14px">Go to the quiz \u2192</a>';
-    h+='</div>';
+    h+=ForgeState.html('empty',{label:'No misconceptions yet',body:'Complete a Forge quiz first. Any wrong answers will appear here for reworking.',action:{label:'Go to the quiz',href:'forge-quiz.html'}});
     app.innerHTML=h + sessionBar();return;
   }
 
@@ -709,7 +710,7 @@ function renderAnvilHome(){
     });
   }
 
-  app.innerHTML=h;
+  app.innerHTML=(anvilState.loadError?ForgeState.html('error',{label:'Anvil data is unavailable',body:'We couldn’t retrieve your misconceptions. Refresh and try again.',action:{label:'Retry Anvil',href:location.href}}):'')+h;
 }
 
 function shuffleArr(arr){
@@ -926,7 +927,7 @@ function startAnvil(){
               anvilState.responses = responses || [];
               buildMisconceptions();
               renderAnvilHome();
-            }).catch(function(){ buildMisconceptions(); renderAnvilHome(); });
+            }).catch(function(){ anvilState.loadError=true; buildMisconceptions(); renderAnvilHome(); });
           } else {
             buildMisconceptions();
             renderAnvilHome();
@@ -973,7 +974,7 @@ function checkLocalSession(){
       anvilState.responses = responses || [];
       buildMisconceptions();
       renderAnvilHome();
-    }).catch(function(){ buildMisconceptions(); renderAnvilHome(); });
+    }).catch(function(){ anvilState.loadError=true; buildMisconceptions(); renderAnvilHome(); });
     return;
   }
   // Check class session

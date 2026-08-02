@@ -98,8 +98,10 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
   gtag('js', new Date());
   gtag('config', 'G-RGZ9J6Q8H9');
 </script>
+<link rel="stylesheet" href="css/states.css">
 </head>
 <body>
+<script src="scripts/forge-state.js"></script>
 
 
 <script src="scripts/forge-logo.js"></script>
@@ -214,8 +216,9 @@ function calcXP(responses){
   return xp;
 }
 
-var st={studentId:null,classId:null,studentName:null,responses:[],isPaid:false,isTrial:false,trialDaysLeft:0,paidSubjects:[],activeTab:'overview',isGCSE:false};
+var st={studentId:null,classId:null,studentName:null,responses:[],isPaid:false,isTrial:false,trialDaysLeft:0,paidSubjects:[],activeTab:'overview',isGCSE:false,loadError:false};
 var app=document.getElementById('app');
+ForgeState.loading(app, { label: 'Loading your profile', body: 'Getting your progress, strengths, and focus areas ready.' });
 
 function renderLogin(){
   var f=ForgeAuthCard.field('p-name','Your first name',{placeholder:'e.g. Alex',autocomplete:'given-name'})
@@ -235,7 +238,7 @@ function renderLogin(){
     var err=document.getElementById('p-err');
     var btn=document.getElementById('p-btn');
     if(!name||!code){err.textContent='Enter your name and class code.';err.style.display='block';return;}
-    btn.disabled=true;btn.textContent='Loading...';
+    btn.disabled=true;btn.textContent='Checking details…';
     // Look up via RPC \u2014 classes/students tables are no longer directly
     // readable by an anonymous (no login) name+code session.
     fetch(SUPABASE_URL + '/rest/v1/rpc/get_student_by_name_and_code', {
@@ -446,7 +449,7 @@ function renderProfile(){
     h+='<div class="card">';
     h+='<div class="card-title"><span class="forge-text-bad">▲ Focus areas — where marks are lost</span></div>';
     if(weakBanks.length===0&&activeMCs.length===0){
-      h+='<div class="empty"><h3>No weak spots yet</h3><p>Answer more questions per topic to see focus areas.</p></div>';
+      h+=ForgeState.html('empty',{label:'No focus areas yet',body:'Answer more questions by topic and Forge will show where your next marks are available.'});
     } else {
       weakBanks.slice(0,3).forEach(function(s){
         var pct=s.acc;
@@ -477,7 +480,7 @@ function renderProfile(){
     h+='<div class="card">';
     h+='<div class="card-title"><span class="forge-text-good">✓ Strengths — ready for the exam</span></div>';
     if(goodBanks.length===0){
-      h+='<div class="empty"><h3>Strengths loading</h3><p>Answer at least 3 questions per topic to confirm strengths.</p></div>';
+      h+=ForgeState.html('empty',{label:'Strengths will appear soon',body:'Answer at least three questions in a topic to confirm a strength.'});
     } else {
       goodBanks.slice(0,6).forEach(function(s){
         var col=s.acc>=90?'var(--good)':s.acc>=80?'var(--hot)':'var(--slate)';
@@ -544,7 +547,7 @@ function renderProfile(){
     // Recent session breakdown
     var recentMain=responses.filter(function(r){return !r.reforge_attempted;}).slice(-30);
     if(recentMain.length===0){
-      h+='<div class="empty"><h3>No sessions yet</h3><p>Complete your first quiz session to see Forge mode data.</p></div>';
+      h+=ForgeState.html('empty',{label:'No Forge sessions yet',body:'Complete your first quiz session to see accuracy and grade tracking.'});
     } else {
       var recentCorrect=recentMain.filter(function(r){return r.is_correct;}).length;
       var recentAcc=Math.round((recentCorrect/recentMain.length)*100);
@@ -592,7 +595,7 @@ function renderProfile(){
     h+='<div class="card">';
     h+='<div class="card-title"><span class="forge-text-bad">Your Anvil — misconceptions to rework</span></div>';
     if(activeMCs.length===0){
-      h+='<div class="empty"><h3>Anvil is clear ✓</h3><p>No active misconceptions right now. Keep going to maintain this.</p></div>';
+      h+=ForgeState.html('success',{label:'Anvil is clear',body:'No active misconceptions right now. Keep going to maintain this.'});
     } else {
       activeMCs.forEach(function(tag){
         var d=mcData[tag];
@@ -625,7 +628,7 @@ function renderProfile(){
     h+='<div class="card">';
     h+='<div class="card-title forge-text-bad">The Crucible — exam pressure sessions</div>';
     if(crucibleResponses.length===0){
-      h+='<div class="empty"><h3>No Crucible sessions yet</h3><p>Complete a Crucible session to see your timed performance here.</p></div>';
+      h+=ForgeState.html('empty',{label:'No Crucible sessions yet',body:'Complete a Crucible session to see your timed performance here.'});
     } else {
       var cCorrect=crucibleResponses.filter(function(r){return r.is_correct;}).length;
       var cAcc=Math.round((cCorrect/crucibleResponses.length)*100);
@@ -640,7 +643,7 @@ function renderProfile(){
     h+='</div>';
   }
 
-  app.innerHTML=h;
+  app.innerHTML=(st.loadError?ForgeState.html('error',{label:'Some profile data is unavailable',body:'We couldn’t retrieve the latest progress. Refresh and try again.',action:{label:'Retry profile',href:location.href}}):'')+h;
   // Wire tab buttons via event delegation (avoids inline onclick quote issues)
   app.querySelectorAll('.prof-tab').forEach(function(btn){
     btn.addEventListener('click',function(){
@@ -714,13 +717,13 @@ function forgeSignOut(){
               supaGet('responses', filter + '&order=created_at.desc').then(function(r) {
                 st.responses = r || [];
                 renderProfile();
-              }).catch(function() { renderProfile(); });
-            }).catch(function() { renderProfile(); });
+              }).catch(function() { st.loadError=true; renderProfile(); });
+            }).catch(function() { st.loadError=true; renderProfile(); });
           } else if (st.studentId) {
             supaGet('responses','student_id=eq.'+st.studentId+'&order=created_at.desc').then(function(r){
               st.responses = r || [];
               renderProfile();
-            }).catch(function(){ renderProfile(); });
+              }).catch(function(){ st.loadError=true; renderProfile(); });
           } else {
             renderProfile();
           }
@@ -764,7 +767,7 @@ function forgeSignOut(){
       supaGet('responses','student_id=eq.'+freeSession.studentId+'&order=created_at.desc').then(function(r){
         st.responses = r || [];
         renderProfile();
-      }).catch(function(){ renderProfile(); });
+      }).catch(function(){ st.loadError=true; renderProfile(); });
       return;
     }
     // Check class session

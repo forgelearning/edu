@@ -238,8 +238,10 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
   gtag('js', new Date());
   gtag('config', 'G-RGZ9J6Q8H9', {allow_google_signals: false, allow_ad_personalization_signals: false});
 </script>
+<link rel="stylesheet" href="css/states.css">
 </head>
 <body>
+<script src="scripts/forge-state.js"></script>
 <script src="scripts/forge-logo.js"></script>
 <script src="scripts/forge-auth-card.js"></script>
 <script src="scripts/forge-sidebar.js"></script>
@@ -447,7 +449,7 @@ function renderTeacherAuth(mode) {
         else renderTeacherHome();
       }).catch(function(e) {
         btn.disabled = false; btn.textContent = mode === 'signup' ? 'Create account →' : 'Sign in →';
-        err.textContent = e.message || 'Something went wrong.'; err.style.display = 'block';
+        err.textContent = 'We couldn’t sign you in. Check your details and try again.'; err.style.display = 'block';
       });
     }
 
@@ -934,6 +936,14 @@ function getDefaultStarter(tag, label) {
 }
 
 var app = document.getElementById('app');
+function teacherInlineState(target, kind, options) {
+  if (!target) return null;
+  var holder = document.createElement('div');
+  holder.innerHTML = ForgeState.html(kind, options);
+  var stateNode = holder.firstElementChild;
+  target.appendChild(stateNode);
+  return stateNode;
+}
 var dashState = { classId: null, className: null, classSubject: null, classCode: null, responses: [], students: [], wrongResponses: [], drillResponses: [], drillStudents: [], assignments: [], assignmentFilter: 'active' };
 
 // Loads a given class's dashboard data and remembers it in the sidebar's class
@@ -1040,17 +1050,13 @@ function subjectLabel(key) {
 }
 
 function renderTeacherHome() {
-  app.innerHTML = ForgeAuthCard.shell({
-    wide: true,
-    title: 'Your classes',
-    sub: 'Loading your classes…'
-  }, '');
+  ForgeState.loading(app, { label: 'Loading your classes', body: 'Getting your classes and student data ready.' });
 
   var owned = (currentTeacher && currentTeacher.id)
     ? supaGet('classes', 'teacher_user_id=eq.' + encodeURIComponent(currentTeacher.id) + '&order=created_at.desc')
     : Promise.resolve([]);
 
-  owned.catch(function() { return []; }).then(function(rows) {
+  owned.then(function(rows) {
     var seen = {}, classes = [];
     (Array.isArray(rows) ? rows : []).forEach(function(c) {
       if (c && c.id && !seen[c.id]) { seen[c.id] = true; classes.push(c); }
@@ -1059,15 +1065,16 @@ function renderTeacherHome() {
     getJoinedClasses().forEach(function(c) {
       if (c && c.id && !seen[c.id]) { seen[c.id] = true; classes.push(c); }
     });
-    drawTeacherHome(classes);
-  });
+    drawTeacherHome(classes, false);
+  }).catch(function() { drawTeacherHome([], true); });
 }
 
-function drawTeacherHome(classes) {
+function drawTeacherHome(classes, loadError) {
   var h = '';
-  if (!classes.length) {
-    h += '<div class="empty" style="padding:24px 0"><h3>No classes yet</h3>' +
-         '<p class="forge-text-13">Create your first class to start seeing student data.</p></div>';
+  if (loadError) {
+    h = ForgeState.html('error', { label: 'Your classes are unavailable', body: 'We couldn’t retrieve your classes. Check your connection and try again.' });
+  } else if (!classes.length) {
+    h += ForgeState.html('empty', { label: 'No classes yet', body: 'Create your first class to start seeing student data.', action: { label: 'Create a class', href: '#' } });
   } else {
     h += '<div class="home-grid">';
     classes.forEach(function(c) {
@@ -1095,6 +1102,10 @@ function drawTeacherHome(classes) {
 
   var signOutLink = document.getElementById('ta-signout');
   if (signOutLink) signOutLink.onclick = function(e) { e.preventDefault(); teacherSignOut(); };
+  var retry = app.querySelector('[data-forge-state-retry]');
+  if (retry) retry.onclick = renderTeacherHome;
+  var emptyCreate = app.querySelector('.forge-state__action[href="#"]');
+  if (emptyCreate) emptyCreate.onclick = function(e) { e.preventDefault(); renderLogin('create'); };
   ['home-create', 'home-create-2'].forEach(function(id) {
     var el = document.getElementById(id);
     if (el) el.onclick = function() { renderLogin('create'); };
@@ -1217,7 +1228,7 @@ function renderLogin(activeTab) {
       var code = document.getElementById('t-code').value.trim().toUpperCase();
       var err = document.getElementById('t-err');
       if (!code) { err.textContent = 'Enter a class code.'; err.style.display = 'block'; return; }
-      viewBtn.disabled = true; viewBtn.textContent = 'Loading...';
+      viewBtn.disabled = true; viewBtn.textContent = 'Loading class…';
       supaGet('classes', 'code=eq.' + encodeURIComponent(code)).then(function(classes) {
         if (!Array.isArray(classes) || classes.length === 0) {
           err.textContent = 'Class not found. Check the code and try again.'; err.style.display = 'block';
@@ -1264,7 +1275,7 @@ function renderLogin(activeTab) {
         console.log('Supabase response:', JSON.stringify(rows));
         var cls = Array.isArray(rows) ? rows[0] : rows;
         if (!cls || !cls.id) {
-          err.textContent = 'Unexpected response — check browser console (F12) for details.';
+          err.textContent = 'We couldn’t create the class. Check the details and try again.';
           err.style.display = 'block'; return;
         }
         var subjInfo = SUBJECT_OPTIONS.find(function(s) { return s.key === subj; });
@@ -1334,6 +1345,10 @@ function renderLogin(activeTab) {
         r += '<button class="join-btn" onclick="window._openCreatedDash()">Open dashboard \u2192</button>';
         result.innerHTML = r;
         result.style.display = 'block';
+        result.insertAdjacentHTML('afterbegin', ForgeState.html('success', {
+          label: 'Class created',
+          body: 'Your class code is ready to share with students.'
+        }));
 
         // Remove the newly created subject from the dropdown
         var sel = document.getElementById('c-subj');
@@ -1368,7 +1383,7 @@ function renderLogin(activeTab) {
         };
       }).catch(function(e) {
         createBtn.disabled = false; createBtn.textContent = 'Create class \u2192';
-        err.textContent = 'Error: ' + (e && e.message ? e.message : 'Connection failed. Try again.');
+        err.textContent = 'We couldn’t create the class. Check your connection and try again.';
         err.style.display = 'block';
       });
     };
@@ -1758,7 +1773,7 @@ function renderSpecBreakdown(responses) {
   var el = document.getElementById('panel-spec');
   if (!el) return;
   if (!responses || responses.length === 0) {
-    el.innerHTML = '<div class="empty"><h3>No data yet</h3><p>Students need to answer questions to generate spec point data.</p></div>';
+    el.innerHTML = ForgeState.html('empty', { label: 'No spec point data yet', body: 'Students need to answer questions before this view can show patterns.' });
     return;
   }
 
@@ -1775,7 +1790,7 @@ function renderSpecBreakdown(responses) {
 
   var specKeys = Object.keys(specData).sort();
   if (specKeys.length === 0) {
-    el.innerHTML = '<div class="empty"><h3>No spec point data yet</h3><p>Spec point tracking requires questions answered after the latest update.</p></div>';
+    el.innerHTML = ForgeState.html('empty', { label: 'No spec point data yet', body: 'Spec point tracking will appear after questions are answered under the latest update.' });
     return;
   }
 
@@ -2067,7 +2082,7 @@ function renderAssignments() {
 
   // ── Existing assignments ──
   if (assignments.length === 0) {
-    h += '<div class="empty"><h3>No assignments yet</h3><p>Create one above to get started.</p></div>';
+    h += ForgeState.html('empty', { label: 'No assignments yet', body: 'Create an assignment above to give a class its next clear step.', action: { label: 'Create an assignment', href: '#panel-assignments' } });
   } else {
     var active = assignments.filter(function(a) { return !a.archived; });
     var archived = assignments.filter(function(a) { return a.archived; });
@@ -2109,9 +2124,9 @@ function renderAssignments() {
             renderAssignments();
           } else {
             btn.disabled = false; btn.textContent = 'Delete';
-            alert('Could not delete. Try again.');
+            teacherInlineState(btn.closest('.asgn-card') || btn.parentNode, 'error', { label: 'Assignment wasn’t deleted', body: 'Try again in a moment.' });
           }
-        }).catch(function() { btn.disabled = false; btn.textContent = 'Delete'; alert('Connection error.'); });
+        }).catch(function() { btn.disabled = false; btn.textContent = 'Delete'; teacherInlineState(btn.closest('.asgn-card') || btn.parentNode, 'error', { label: 'Assignment wasn’t deleted', body: 'Check your connection and try again.' }); });
 
       } else if (action === 'archive') {
         btn.disabled = true; btn.textContent = 'Archiving\u2026';
@@ -2119,7 +2134,7 @@ function renderAssignments() {
           var asgn = dashState.assignments.find(function(a) { return a.id === id; });
           if (asgn) asgn.archived = true;
           renderAssignments();
-        }).catch(function() { btn.disabled = false; btn.textContent = 'Archive'; alert('Connection error.'); });
+        }).catch(function() { btn.disabled = false; btn.textContent = 'Archive'; teacherInlineState(btn.closest('.asgn-card') || btn.parentNode, 'error', { label: 'Assignment wasn’t archived', body: 'Check your connection and try again.' }); });
 
       } else if (action === 'unarchive') {
         btn.disabled = true; btn.textContent = 'Restoring\u2026';
@@ -2127,7 +2142,7 @@ function renderAssignments() {
           var asgn = dashState.assignments.find(function(a) { return a.id === id; });
           if (asgn) asgn.archived = false;
           renderAssignments();
-        }).catch(function() { btn.disabled = false; btn.textContent = 'Restore'; alert('Connection error.'); });
+        }).catch(function() { btn.disabled = false; btn.textContent = 'Restore'; teacherInlineState(btn.closest('.asgn-card') || btn.parentNode, 'error', { label: 'Assignment wasn’t restored', body: 'Check your connection and try again.' }); });
       }
     };
   });
@@ -2171,7 +2186,7 @@ function renderAssignments() {
         createBtn.disabled = false; createBtn.textContent = 'Set assignment \u2192';
         var newAsgn = Array.isArray(rows) ? rows[0] : rows;
         if (!newAsgn || !newAsgn.id) {
-          err.textContent = 'Failed to save — check Supabase assignments table exists.';
+          err.textContent = 'We couldn’t save this assignment. Check your connection and try again.';
           err.style.display = 'block'; return;
         }
         dashState.assignments.push(newAsgn);
@@ -2193,7 +2208,7 @@ function renderAssignments() {
           + '3. Your assignment will appear at the top of the page';
         var toast = document.createElement('div');
         toast.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--panel);border:1px solid var(--ember);border-radius:var(--radius-md);padding:14px 18px;display:flex;gap:12px;align-items:center;z-index:999;box-shadow:0 4px 24px rgba(0,0,0,.4);max-width:340px';
-        toast.innerHTML = '<span style="font-size:13px;color:var(--white)">Assignment set! Share with students?</span><button id="toast-share" style="font-size:12px;padding:5px 12px;border-radius:var(--radius-sm);background:var(--ember);border:none;color:#fff;cursor:pointer;font-family:Inter,sans-serif;font-weight:600;white-space:nowrap">\uD83D\uDCCB Copy message</button>';
+        toast.innerHTML = ForgeState.html('success', { label: 'Assignment set', body: 'Your class can now see this work. Share it with students.' }) + '<button id="toast-share" class="forge-button forge-button--primary">\uD83D\uDCCB Copy message</button>';
         document.body.appendChild(toast);
         document.getElementById('toast-share').onclick = function() {
           navigator.clipboard.writeText(asgnShareText).then(function() {
@@ -2204,7 +2219,7 @@ function renderAssignments() {
         setTimeout(function() { if(toast.parentNode) toast.parentNode.removeChild(toast); }, 8000);
       }).catch(function(e) {
         createBtn.disabled = false; createBtn.textContent = 'Set assignment \u2192';
-        err.textContent = 'Error: ' + (e && e.message ? e.message : 'Connection failed.');
+        err.textContent = 'We couldn’t save this assignment. Check your connection and try again.';
         err.style.display = 'block';
       });
     };
@@ -2324,7 +2339,7 @@ window.showStarterFor = function(tag) {
 function renderClassOverview(responses, students) {
   var el = document.getElementById('panel-class');
   if (students.length === 0) {
-    el.innerHTML = '<div class="empty"><h3>No students yet</h3><p>Students join using the class code on the quiz page.</p></div>';
+    el.innerHTML = ForgeState.html('empty', { label: 'No students yet', body: 'Students can join using the class code shown on the quiz page.' });
     return;
   }
 
@@ -2468,7 +2483,7 @@ function renderClassOverview(responses, students) {
       }).catch(function(e) {
         sel.disabled = false;
         sel.value = prevVal;
-        alert('Could not save extra time. Make sure the RLS policy allows teacher updates — run: CREATE POLICY "Teachers can update student records" ON students FOR UPDATE TO anon USING (true) WITH CHECK (true);');
+        teacherInlineState(sel.parentNode, 'error', { label: 'Extra time wasn’t saved', body: 'Check your connection and try again.' });
       });
     };
     // Store initial value
@@ -2493,7 +2508,7 @@ function renderClassOverview(responses, students) {
         document.getElementById('rename-input').value = '';
         document.getElementById('rename-select').value = '';
         renderClassOverview(dashState.responses, dashState.students);
-      }).catch(function() { renameBtn.disabled = false; renameBtn.textContent = 'Save'; alert('Could not save.'); });
+      }).catch(function() { renameBtn.disabled = false; renameBtn.textContent = 'Save'; teacherInlineState(renameBtn.parentNode, 'error', { label: 'Name wasn’t saved', body: 'Check your connection and try again.' }); });
     };
   }
 }
@@ -2585,7 +2600,7 @@ window.renderStudent = function(studentId) {
   }
 
   if (activeMCs.length === 0 && resolvedMCs.length === 0) {
-    h += '<div class="empty"><h3>No misconception data yet</h3><p>This student needs to answer more questions.</p></div>';
+    h += ForgeState.html('empty', { label: 'No misconception data yet', body: 'This student needs to answer more questions before a focus area can appear.' });
   }
 
   // Reforge history — every individual reforge attempt, most recent first

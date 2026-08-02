@@ -77,8 +77,10 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
   gtag('js', new Date());
   gtag('config', 'G-RGZ9J6Q8H9');
 </script>
+<link rel="stylesheet" href="css/states.css">
 </head>
 <body>
+<script src="scripts/forge-state.js"></script>
 <a class="forge-skip-link" href="#main-content">Skip to main content</a>
 <script>ForgeSidebar.mount({active:'school',items:[{key:'dashboard',href:'teacher.html',label:'Teacher dashboard'},{key:'school',href:'school-overview.html',label:'School overview'},{key:'present',href:'present.html',label:'Class Mode'}],footerItems:[]});</script>
 <script>
@@ -208,7 +210,7 @@ function verifyTeacherAccess() {
 verifyTeacherAccess();
 
 function renderLoading() {
-  app.innerHTML = '<p style="color:#8A857E;padding:40px 0">Loading school data…</p>';
+  ForgeState.loading(app, { label: 'Loading school overview', body: 'Getting the latest classes, students, and learning data ready.' });
 }
 
 // ── DATA ─────────────────────────────────────────────────────
@@ -223,7 +225,8 @@ function loadData() {
     });
     renderDashboard();
   }).catch(function() {
-    app.innerHTML = '<p style="color:var(--bad);padding:40px 0">Could not load data. Check your connection.</p>';
+    var retry = ForgeState.error(app, { label: 'School data is unavailable', body: 'We couldn’t retrieve the overview. Check your connection and try again.' });
+    if (retry) retry.onclick = loadData;
   });
 }
 
@@ -502,6 +505,9 @@ function renderDashboard() {
   h += '<table class="overview-table"><thead><tr>';
   h += '<th>Class</th><th>Subject</th><th>Students</th><th>Questions answered</th><th>Active last 7d</th><th>Accuracy</th><th>Engagement</th>';
   h += '</tr></thead><tbody>';
+  if (classEngagement.length === 0) {
+    h += '<tr><td colspan="7">' + ForgeState.html('empty', { label: 'No class data yet', body: 'Create a class and invite students to see engagement here.' }) + '</td></tr>';
+  }
   classEngagement.forEach(function(cls) {
     var engPct = cls.students > 0 ? Math.round((cls.active7d / cls.students) * 100) : 0;
     var accCol = cls.acc >= 70 ? 'var(--good)' : cls.acc >= 50 ? 'var(--hot)' : 'var(--bad)';
@@ -522,7 +528,7 @@ function renderDashboard() {
   h += '<div class="card">';
   h += '<div class="card-title">School-wide misconception league — top 10 <button class="export-btn" onclick="exportCSV(\'misconceptions\')">Export CSV</button></div>';
   if (mcLeague.length === 0) {
-    h += '<p style="color:#8A857E;font-size:14px">No misconception data yet — students need to answer questions first.</p>';
+    h += ForgeState.html('empty', { label: 'No misconception data yet', body: 'Students need to answer questions before school-wide patterns can appear.' });
   } else {
     var SUBJ_DISPLAY = {
       'econ':'Economics','economics':'Economics',

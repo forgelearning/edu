@@ -138,8 +138,10 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
   gtag('js', new Date());
   gtag('config', 'G-RGZ9J6Q8H9');
 </script>
+<link rel="stylesheet" href="css/states.css">
 </head>
 <body>
+<script src="scripts/forge-state.js"></script>
 <script>if(localStorage.getItem('forge-theme')==='light'){document.documentElement.setAttribute('data-theme','light');}</script>
 <script src="scripts/forge-logo.js"></script>
 <script src="scripts/forge-auth-card.js"></script>
@@ -565,7 +567,7 @@ function joinClassByCode(name, code, cb) {
       return;
     }
     cb(null, { cls: cls, studentId: row.student_id });
-  }).catch(function() { cb('Connection error. Try again.'); });
+  }).catch(function() { cb('We couldn’t join this class right now. Check your connection and try again.'); });
 }
 
 // Point state at a given class — used when the student picks a subject, so
@@ -1012,7 +1014,7 @@ function renderJoin() {
       ForgeAuth.goToLanding();
     }).catch(function(e) {
       btn.disabled = false; btn.textContent = 'Log in \u2192';
-      err.textContent = e.message || 'Incorrect email or password.';
+      err.textContent = 'We couldn’t sign you in. Check your details and try again.';
       err.style.display = 'block';
     });
   };
@@ -1209,7 +1211,7 @@ function renderSubjects(){
             finishLink(studentId);
           }).catch(function(e) {
             console.error('INSERT error:', e);
-            err.textContent = 'Could not link. Try again.';
+            err.textContent = 'We couldn’t link you to this class. Check your connection and try again.';
             err.style.display = 'block';
             btn.disabled = false; btn.textContent = 'Link to class →';
           });
@@ -1217,7 +1219,7 @@ function renderSubjects(){
 
         lookupAndLink();
       }).catch(function() {
-        err.textContent = 'Connection error. Try again.';
+        err.textContent = 'We couldn’t link you to this class. Check your connection and try again.';
         err.style.display = 'block';
         btn.disabled = false; btn.textContent = 'Link to class →';
       });
@@ -1724,11 +1726,11 @@ function renderResults(){
   };
   if(!state.classId||!state.studentId) return;
   var lbEl=document.getElementById('lb-section');
-  lbEl.innerHTML='<p style="font-size:13px;color:#8A857E;margin-top:20px;text-align:center">Loading leaderboard...</p>';
+  ForgeState.loading(lbEl, { label: 'Loading leaderboard', body: 'Getting the latest class positions ready.' });
   var hdrs={'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY};
   fetch(SUPABASE_URL+'/rest/v1/students?select=*&class_id=eq.'+state.classId,{headers:hdrs}).then(function(r){return r.json();}).then(function(students){
     if(!students||!Array.isArray(students)||!students.length){
-      lbEl.innerHTML='<p style="font-size:12px;color:#8A857E;margin-top:16px;text-align:center">No classmates found yet.</p>';return;}
+      lbEl.innerHTML=ForgeState.html('empty',{label:'No classmates yet',body:'Your class leaderboard will appear after other students join.'});return;}
     var ids=students.map(function(s){return s.id;}).join(',');
     fetch(SUPABASE_URL+'/rest/v1/responses?select=*&student_id=in.('+ids+')',{headers:hdrs}).then(function(r){return r.json();}).then(function(responses){
       if(!responses||!Array.isArray(responses)) responses=[];
@@ -1755,8 +1757,8 @@ function renderResults(){
       out+='</div>';
       out+='<p style="font-size:12px;color:#8A857E;margin-top:10px;text-align:center">Leaderboards are class-only. XP is earned by correct thinking, not time logged.</p>';
       lbEl.innerHTML=out;
-    }).catch(function(e){lbEl.innerHTML='<p style="font-size:12px;color:var(--bad);margin-top:16px">Leaderboard error (responses): '+e+'</p>';});
-  }).catch(function(e){lbEl.innerHTML='<p style="font-size:12px;color:var(--bad);margin-top:16px">Leaderboard error (students): '+e+'</p>';});
+    }).catch(function(){var retry=ForgeState.error(lbEl,{label:'Leaderboard is unavailable',body:'We couldn’t load the latest class responses. Try again in a moment.'});if(retry)retry.onclick=function(){location.reload();};});
+  }).catch(function(){var retry=ForgeState.error(lbEl,{label:'Leaderboard is unavailable',body:'We couldn’t load the latest class list. Try again in a moment.'});if(retry)retry.onclick=function(){location.reload();};});
 }
 
 function forgeLogout(){

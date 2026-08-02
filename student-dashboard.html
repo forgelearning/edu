@@ -143,6 +143,7 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
 .mod-row:hover .mod-action{opacity:1;color:var(--hot)}
 </style>
 <body>
+<script src="scripts/forge-state.js"></script>
 
 <script src="scripts/forge-logo.js"></script>
 <script src="scripts/forge-auth-card.js"></script>
@@ -238,8 +239,9 @@ function calcStreak(responses){
   return streak;
 }
 
-var st={studentId:null,classId:null,studentName:null,responses:[],isPaid:false,isTrial:false,trialDaysLeft:0,paidSubjects:[],isGCSE:false};
+var st={studentId:null,classId:null,studentName:null,responses:[],isPaid:false,isTrial:false,trialDaysLeft:0,paidSubjects:[],isGCSE:false,loadError:false};
 var app=document.getElementById('app');
+ForgeState.loading(app, { label: 'Loading your dashboard', body: 'Getting your progress and focus areas ready.' });
 
 function renderLogin(){
   var f=ForgeAuthCard.field('p-name','Your first name',{placeholder:'e.g. Alex',autocomplete:'given-name'})
@@ -259,7 +261,7 @@ function renderLogin(){
     var err=document.getElementById('p-err');
     var btn=document.getElementById('p-btn');
     if(!name||!code){err.textContent='Enter your name and class code.';err.style.display='block';return;}
-    btn.disabled=true;btn.textContent='Loading...';
+    btn.disabled=true;btn.textContent='Checking details…';
     // Look up via RPC \u2014 classes/students tables are no longer directly
     // readable by an anonymous (no login) name+code session.
     fetch(SUPABASE_URL + '/rest/v1/rpc/get_student_by_name_and_code', {
@@ -393,6 +395,11 @@ function renderDashboard(){
   h+='<div class="forge-loop-step is-current"><strong>1. Forge</strong>Practice</div><div class="forge-loop-step"><strong>2. Anvil</strong>Repair</div><div class="forge-loop-step"><strong>3. Crucible</strong>Pressure-test</div></div>';
 
   if(total===0){
+    if(st.loadError){
+      h+=ForgeState.html('error',{label:'Your dashboard data is unavailable',body:'We couldn’t retrieve your progress. Refresh and try again.',action:{label:'Retry dashboard',href:location.href}});
+      app.innerHTML=h;
+      return;
+    }
     h+='<div class="ui-state forge-status">';
     h+='<div class="ui-state-title">Your first practice session is waiting.</div>';
     h+='<p class="ui-state-copy">Answer a few questions in Forge to start building your accuracy, strengths, and misconception profile.</p>';
@@ -462,7 +469,7 @@ function renderDashboard(){
 
   h+='</div>';
 
-  app.innerHTML=h;
+  app.innerHTML=(st.loadError?ForgeState.html('error',{label:'Some dashboard data is unavailable',body:'We couldn’t retrieve the latest progress. Refresh and try again.',action:{label:'Retry dashboard',href:location.href}}):'')+h;
 }
 
 
@@ -525,13 +532,13 @@ function forgeSignOut(){
               supaGet('responses', filter + '&order=created_at.desc').then(function(r) {
                 st.responses = r || [];
                 renderDashboard();
-              }).catch(function() { renderDashboard(); });
-            }).catch(function() { renderDashboard(); });
+              }).catch(function() { st.loadError=true; renderDashboard(); });
+            }).catch(function() { st.loadError=true; renderDashboard(); });
           } else if (st.studentId) {
             supaGet('responses','student_id=eq.'+st.studentId+'&order=created_at.desc').then(function(r){
               st.responses = r || [];
               renderDashboard();
-            }).catch(function(){ renderDashboard(); });
+            }).catch(function(){ st.loadError=true; renderDashboard(); });
           } else {
             renderDashboard();
           }
@@ -575,7 +582,7 @@ function forgeSignOut(){
       supaGet('responses','student_id=eq.'+freeSession.studentId+'&order=created_at.desc').then(function(r){
         st.responses = r || [];
         renderDashboard();
-      }).catch(function(){ renderDashboard(); });
+      }).catch(function(){ st.loadError=true; renderDashboard(); });
       return;
     }
     // Check class session

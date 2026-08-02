@@ -76,8 +76,10 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
 .done-box{text-align:center;padding-top:14vh}
 .loading{padding-top:20vh;text-align:center;color:#8A857E;font-family:'JetBrains Mono',monospace;font-size:13px}
 </style>
+<link rel="stylesheet" href="css/states.css">
 </head>
 <body>
+<script src="scripts/forge-state.js"></script>
 <a class="forge-skip-link" href="#main-content">Skip to main content</a>
 <script>ForgeSidebar.mount({active:'present',items:[{key:'dashboard',href:'teacher.html',label:'Teacher dashboard'},{key:'school',href:'school-overview.html',label:'School overview'},{key:'present',href:'present.html',label:'Class Mode'}],footerItems:[]});</script>
 <script>
@@ -97,7 +99,7 @@ if(localStorage.getItem('forge-theme')==='light'){document.documentElement.setAt
 </div></div>
 
 <main class="wrap" id="main-content">
-  <div id="app"><div class="loading">Checking teacher access…</div></div>
+  <div id="app"></div>
 </div>
 
 <script>
@@ -107,10 +109,11 @@ var TEACHER_SESSION_KEY = 'forge-teacher-session';
 
 function requireTeacherSession(onReady) {
   var app = document.getElementById('app');
+  ForgeState.loading(app, { label: 'Checking teacher access', body: 'Confirming your teacher session before opening Class Mode.' });
   var saved = null;
   try { saved = JSON.parse(localStorage.getItem(TEACHER_SESSION_KEY) || 'null'); } catch (e) {}
   if (!saved || !saved.access_token) {
-    app.innerHTML = '<div class="loading">Class Mode is for signed-in teachers.<br><a href="teacher.html" style="display:inline-block;margin-top:14px;color:var(--ember)">Sign in to Teacher Dashboard →</a></div>';
+    app.innerHTML = ForgeState.html('empty', { label: 'Teacher sign-in required', body: 'Class Mode is available after you sign in to the Teacher Dashboard.', action: { label: 'Sign in to Teacher Dashboard', href: 'teacher.html' } });
     return;
   }
   fetch(SUPABASE_URL + '/auth/v1/user', {
@@ -122,7 +125,7 @@ function requireTeacherSession(onReady) {
     if (!user || !user.id) throw new Error('Teacher session invalid');
     onReady();
   }).catch(function() {
-    app.innerHTML = '<div class="loading">Your teacher session has expired.<br><a href="teacher.html" style="display:inline-block;margin-top:14px;color:var(--ember)">Sign in again →</a></div>';
+    app.innerHTML = ForgeState.html('error', { label: 'Your teacher session has expired', body: 'Sign in again to continue using Class Mode.', action: { label: 'Sign in again', href: 'teacher.html' } });
   });
 }
 
@@ -137,7 +140,8 @@ requireTeacherSession(function() {
     state.phase = 'subjects';
     render();
   }).catch(function(e){
-    app.innerHTML = '<div class="loading">Could not load question banks.<br>'+e.message+'</div>';
+    var retry = ForgeState.error(app, { label: 'Question banks are unavailable', body: 'We couldn’t load the teaching material. Check your connection and try again.' });
+    if (retry) retry.onclick = function () { location.reload(); };
   });
 });
 
