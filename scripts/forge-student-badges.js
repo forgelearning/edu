@@ -46,6 +46,11 @@
         });
         return !ForgeAssignmentProgress.progress(a,merged).complete;
       }).length;
+      // The Assigned page reconciles server responses and local session
+      // completion together. Reuse its lower, already-reconciled value when
+      // available so secondary pages cannot resurrect a stale open count.
+      var cached=parseInt(localStorage.getItem(assignmentCacheKey)||'',10);
+      if(!isNaN(cached)&&cached<count)count=cached;
       ForgeSidebar.setBadge('assignments',count||null);
       try{localStorage.setItem(assignmentCacheKey,String(count))}catch(e){}
     }).catch(function(){});
