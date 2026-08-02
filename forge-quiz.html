@@ -1388,15 +1388,8 @@ function renderFillBlankQuiz(q,bk,headerHtml){
     var tmp=bankWords[i];bankWords[i]=bankWords[j];bankWords[j]=tmp;
   }
 
-  var h=headerHtml+sentHtml;
-  h+='<div class="fb-wordbank" id="fb-bank">';
-  bankWords.forEach(function(w,i){
-    h+='<button class="fb-word" data-word="'+w+'" data-wi="'+i+'">'+w+'</button>';
-  });
-  h+='</div>';
-  h+='<button class="fb-check-btn" id="fb-check">Check answer</button>';
-  h+='<div id="feedback"></div>';
-  h+='<div class="clear"></div>';
+  var h=window.ForgeQuestion.renderFillBlank(q,bankWords,sentHtml);
+  h=headerHtml+h;
 
   app.innerHTML=h;
   document.getElementById('back-banks').onclick=function(){state.phase='banks';render();};
@@ -1471,16 +1464,8 @@ function renderFillBlankQuiz(q,bk,headerHtml){
     checkBtn.style.display='none';
 
     var fb=document.getElementById('feedback');
-    if(allCorrect){
-      fb.innerHTML='<div class="praise-box">✓ Nailed it.</div><button class="next-btn btn-glass btn-ember" id="next-btn">Next →</button><div class="clear"></div>';
-    }else{
-      var fh='<div class="scaffold-box"><span class="stag">'+q.tag+'</span><p>'+q.scaffold+'</p></div>';
-      if(q.reforge){
-        fh+='<button class="reforge-trigger" id="rf-btn">Re-forge →</button>';
-        fh+='<div id="rf-area" class="hidden"></div>';
-      }
-      fh+='<button class="next-btn btn-glass btn-ember" id="next-btn">Next →</button><div class="clear"></div>';
-      fb.innerHTML=fh;
+    fb.innerHTML=window.ForgeQuestion.renderFeedback(q,allCorrect);
+    if(!allCorrect){
       if(q.reforge){
         document.getElementById('rf-btn').onclick=function(){
           document.getElementById('rf-btn').classList.add('hidden');

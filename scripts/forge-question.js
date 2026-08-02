@@ -21,8 +21,17 @@
     return html + '<button class="next-btn btn-glass btn-ember" id="next-btn">Next \u2192</button><div class="clear"></div>';
   }
 
+  function renderFillBlank(question, words, sentenceHtml){
+    var html = sentenceHtml + '<div class="fb-wordbank" id="fb-bank">';
+    words.forEach(function(word, index){
+      html += '<button class="fb-word" data-word="'+word+'" data-wi="'+index+'">'+word+'</button>';
+    });
+    return html + '</div><button class="fb-check-btn" id="fb-check">Check answer</button><div id="feedback"></div><div class="clear"></div>';
+  }
+
   window.ForgeQuestion = {
     renderOptions: renderOptions,
-    renderFeedback: renderFeedback
+    renderFeedback: renderFeedback,
+    renderFillBlank: renderFillBlank
   };
 })(window);
