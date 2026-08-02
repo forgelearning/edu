@@ -11,6 +11,8 @@
 .forge-status{border:1px solid var(--line);border-radius:var(--radius-md);padding:var(--space-4);color:var(--slate);background:var(--glass-panel)}
 .forge-status--error{border-color:rgba(255,90,90,.35);background:rgba(255,90,90,.08);color:var(--bad)}
 .forge-status--success{border-color:rgba(127,217,138,.35);background:rgba(127,217,138,.08);color:var(--good)}
+.forge-status--focus{border-color:rgba(255,201,60,.35);background:rgba(255,201,60,.07);color:var(--slate)}
+.forge-status--focus strong{color:var(--hot)}
 .forge-status--loading{color:var(--dim)}
 .forge-loop{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:0 0 var(--space-6);padding:8px;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-md)}
 .forge-loop-step{padding:10px 12px;border-radius:var(--radius-sm);font-size:12px;color:var(--dim);text-align:center}

@@ -11,6 +11,7 @@
 <link rel="stylesheet" href="css/base.css">
 <link rel="stylesheet" href="css/auth.css">
 <link rel="stylesheet" href="css/sidebar.css">
+<link rel="stylesheet" href="css/components.css">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:var(--coal);color:var(--slate);font-family:'Inter',sans-serif;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100vh}
@@ -1693,6 +1694,7 @@ function renderResults(){
   h+='<p class="tag" style="color:'+bk.color+';margin-bottom:6px">'+state.bank+' \u2014 '+bk.label+'</p>';
   h+='<div class="pct" style="color:'+col+'">'+pct+'%</div>';
   h+='<div class="detail">'+state.score+' / '+state.questions.length+' correct · session complete</div>';
+  h+='<div class="forge-status '+(pct>=75?'forge-status--success':'forge-status--focus')+'" style="margin-top:18px;text-align:left"><strong>'+(pct>=75?'Keep the momentum':'Your next session will prioritise this bank')+'</strong><br><span style="font-size:13px">'+(pct>=75?'Try another focused bank or pressure-test your recall in the Crucible.':'The question weighting will bring weaker questions back into rotation so you can repair the gap.')+'</span></div>';
   h+='<div class="btns">';
   h+='<button class="btn-primary" id="retry">Retry</button>';
   h+='<button class="btn-secondary" id="all-banks">All banks</button>';
