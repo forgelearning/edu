@@ -76,8 +76,9 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
 [data-theme="light"] .prof-tab.active{color:#fff}
 @media(max-width:600px){.stat-row{grid-template-columns:1fr 1fr}.two-col{grid-template-columns:1fr}.prof-tabs{width:100%;flex-wrap:wrap}}
 [data-theme="light"] .forge-logo-dark{display:none!important}[data-theme="light"] .forge-logo-light{display:inline!important}
-.forge-u-k85mqv{width:100%;border-collapse:separate;border-spacing:0 4px;table-layout:fixed}
-.forge-u-k85mqv th,.forge-u-k85mqv td{padding:12px 10px;text-align:left;vertical-align:middle;line-height:1.35}
+.forge-u-k85mqv{width:100%;border-collapse:separate;border-spacing:0 4px;table-layout:fixed;font-size:13px}
+.forge-u-k85mqv th{padding:10px;text-align:left;vertical-align:middle;line-height:1.25;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:#8A857E}
+.forge-u-k85mqv td{padding:11px 10px;text-align:left;vertical-align:middle;line-height:1.35}
 .forge-u-k85mqv th:nth-child(1){width:20%}.forge-u-k85mqv th:nth-child(2){width:15%}.forge-u-k85mqv th:nth-child(3){width:13%}.forge-u-k85mqv th:nth-child(4){width:18%}.forge-u-k85mqv th:nth-child(5){width:34%}
 .forge-u-k85mqv tbody tr{background:var(--panel-2)}
 .forge-u-k85mqv tbody td:first-child{border-radius:var(--radius-sm) 0 0 var(--radius-sm)}
