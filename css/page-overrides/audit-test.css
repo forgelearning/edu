@@ -125,6 +125,8 @@
 .audit-test .audit-app-sidebar-foot{margin-top:auto;padding:12px 2px 0;border-top:1px solid var(--line);color:var(--dim);font-size:9px;line-height:1.4;text-align:center}
 .audit-test .audit-app-main{min-width:0;padding:24px}
 .audit-test .audit-compact-preview{min-height:380px}
+.audit-test .audit-app-preview--student .audit-compact-preview,
+.audit-test .audit-app-preview--teacher .audit-compact-preview{min-height:var(--audit-overview-height,380px)}
 .audit-test .audit-preview-header{display:flex;justify-content:space-between;gap:20px;align-items:center;padding-bottom:18px;border-bottom:1px solid var(--line)}
 .audit-test .audit-preview-header h3{margin:7px 0 5px;font-size:22px}
 .audit-test .audit-preview-header p{margin:0;color:var(--slate);font-size:13px}
@@ -408,7 +410,7 @@ body.audit-test #subjects ~ section#audit-faq{display:block!important;padding:72
   .audit-test .audit-app-brand{padding-bottom:6px}
   .audit-test .audit-app-sidebar-foot{margin-top:4px;padding-top:8px}
   .audit-test .audit-app-main{padding:18px 14px}
-  .audit-test .audit-compact-preview{min-height:0}
+  .audit-test .audit-compact-preview{min-height:var(--audit-overview-height,0px)}
   .audit-test .audit-preview-header{align-items:flex-start;flex-direction:column}
   .audit-test .audit-preview-header h3{font-size:19px}
   .audit-test .audit-preview-header .btn{width:100%}

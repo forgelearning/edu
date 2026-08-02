@@ -1987,7 +1987,9 @@ if (localStorage.getItem('forge-theme') === 'light') {
       button.innerHTML = '<span class="audit-side-icon">' + auditSidebarIcon(item.icon) + '</span><span class="audit-side-label">' + item.label + '</span>' + (item.badge ? '<span class="audit-side-badge">' + item.badge + '</span>' : '');
       button.addEventListener('click', function(){
         aside.querySelectorAll('.audit-side-item').forEach(function(other){ other.classList.toggle('active', other === button); });
+        currentView = item.action;
         renderPreviewState(compact, item.action);
+        syncOverviewHeight();
       });
       aside.appendChild(button);
     });
@@ -2004,6 +2006,17 @@ if (localStorage.getItem('forge-theme') === 'light') {
     main.insertAdjacentHTML('afterbegin', '<div class="audit-compact-preview"></div>');
     var compact = main.querySelector('.audit-compact-preview');
     renderPreviewState(compact, items[0].action);
+    // Keep every tab inside the same shell as Overview. The real Overview is
+    // the reference composition, so capture its rendered height before any
+    // tab can replace it and reuse that height for the rest of the preview.
+    var currentView = items[0].action;
+    function syncOverviewHeight(){
+      if (currentView !== items[0].action) return;
+      var overviewHeight = Math.ceil(compact.getBoundingClientRect().height);
+      stage.style.setProperty('--audit-overview-height', overviewHeight + 'px');
+    }
+    syncOverviewHeight();
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(syncOverviewHeight);
     panels.forEach(function(panel){ panel.style.display = 'none'; });
   }
   addPreviewSidebar('students', 'student', [
