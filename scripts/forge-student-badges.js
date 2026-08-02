@@ -19,11 +19,6 @@
   var k=window.SUPABASE_KEY||window.ForgeAPI&&ForgeAPI.config&&ForgeAPI.config.key;
   if(!k)return;
   var assignmentCacheKey='forge-assigned-open:'+String(saved.studentId||'anon')+':'+String(saved.classId||'none');
-  var cachedAssignments=parseInt(localStorage.getItem(assignmentCacheKey)||'',10);
-  if(!isNaN(cachedAssignments)){
-    ForgeSidebar.setBadge('assignments',cachedAssignments||null);
-    return;
-  }
   var registryEntry=null;
   try{registryEntry=(JSON.parse(localStorage.getItem('forge-classes')||'[]')||[]).find(function(c){return c.classId===saved.classId;})||null}catch(e){}
   var responseContext={studentId:saved.studentId||registryEntry&&registryEntry.studentId,classCode:saved.classCode||registryEntry&&registryEntry.classCode,studentName:saved.studentName||registryEntry&&registryEntry.studentName};
@@ -49,7 +44,18 @@
             (savedSession&&savedSession.completedIds||[]).forEach(function(id){merged.push({question_id:id,bank:bank,is_correct:false});});
           }catch(e){}
         });
-        return !ForgeAssignmentProgress.progress(a,merged).complete;
+        return banks.some(function(bank){
+          var data=(window.BANKS||window.ForgeAssignmentBanks||{})[bank];
+          if(!data)return true;
+          var available=(data.questions||[]).filter(function(q){return !q.type||q.type==='fill_blank';}).length;
+          var target=Math.min(8,available),seen={};
+          merged.forEach(function(response){
+            if(String(response.bank||'').toLowerCase()!==String(bank).toLowerCase())return;
+            var id=String(response.question_id||response.questionId||response.id||'').replace(/-RF$/,'');
+            if(id)seen[id]=true;
+          });
+          return Object.keys(seen).length<target;
+        });
       }).length;
       // The Assigned page reconciles server responses and local session
       // completion together. Reuse its lower, already-reconciled value when
