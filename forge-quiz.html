@@ -456,6 +456,42 @@ var state = {
   paidSubjects: [],
   weightMap: {}        // spaced repetition: questionId → priority weight
 };
+var FORGE_SESSION_SIZE = 8;
+var FORGE_SESSION_PREFIX = 'forge-session:';
+function forgeSessionKey(bank) { return FORGE_SESSION_PREFIX + String(state.studentId || 'anon') + ':' + String(state.classId || 'none') + ':' + bank; }
+function forgeSessionStorage(bank) { try { return JSON.parse(localStorage.getItem(forgeSessionKey(bank)) || 'null'); } catch(e) { return null; } }
+function forgeSaveSession() {
+  if (!state.bank || !state.questions.length) return;
+  try {
+    var saved = forgeSessionStorage(state.bank) || {completedIds: []};
+    var currentId = state.questions[state.idx] && state.questions[state.idx].id;
+    if (currentId && saved.completedIds.indexOf(currentId) === -1) saved.completedIds.push(currentId);
+    saved.questionIds = state.questions.map(function(q){return q.id;}); saved.idx = state.idx; saved.score = state.score; saved.updatedAt = Date.now();
+    localStorage.setItem(forgeSessionKey(state.bank), JSON.stringify(saved));
+  } catch(e) {}
+}
+function forgeStartSession(bank, rawQs) {
+  var saved = forgeSessionStorage(bank) || {completedIds: []};
+  if (saved.questionIds && saved.questionIds.length && saved.idx < saved.questionIds.length) {
+    var byId = {}; rawQs.forEach(function(q){byId[q.id] = q;});
+    var resumed = saved.questionIds.map(function(id){return byId[id];}).filter(Boolean);
+    if (resumed.length) { state.questions = resumed; state.idx = saved.idx || 0; state.score = saved.score || 0; return; }
+  }
+  var completed = saved.completedIds || [];
+  var available = rawQs.filter(function(q){return completed.indexOf(q.id) === -1;});
+  if (!available.length) { available = rawQs; completed = []; }
+  state.questions = weightedShuffle(available, state.weightMap || {}).slice(0, FORGE_SESSION_SIZE);
+  state.idx = 0; state.score = 0;
+  try { localStorage.setItem(forgeSessionKey(bank), JSON.stringify({completedIds: completed, questionIds: state.questions.map(function(q){return q.id;}), idx: 0, score: 0, updatedAt: Date.now()})); } catch(e) {}
+}
+function forgeCompleteSession() {
+  try {
+    var saved = forgeSessionStorage(state.bank) || {completedIds: []};
+    var completed = saved.completedIds || [];
+    state.questions.forEach(function(q){if(completed.indexOf(q.id) === -1) completed.push(q.id);});
+    localStorage.setItem(forgeSessionKey(state.bank), JSON.stringify({completedIds: completed, updatedAt: Date.now()}));
+  } catch(e) {}
+}
 var requestedBank = new URLSearchParams(location.search).get('bank');
 var requestedSubject = new URLSearchParams(location.search).get('subject');
 var openClassJoin = new URLSearchParams(location.search).get('mode') === 'class';
@@ -729,8 +765,8 @@ function render() {
     var requestedClass = ForgeClasses.forSubject(state.subject);
     if (requestedClass) activateClass(requestedClass);
     state.bank = requestedBank;
-    state.questions = weightedShuffle(BANKS[requestedBank].questions.filter(function(q){return !q.type||q.type==='fill_blank';}), state.weightMap||{});
-    state.idx = 0; state.score = 0; state.phase = 'quiz';
+    forgeStartSession(requestedBank, BANKS[requestedBank].questions.filter(function(q){return !q.type||q.type==='fill_blank';}));
+    state.phase = 'quiz';
     requestedBankStarted = true;
     requestedBank = null;
   }
@@ -1221,8 +1257,7 @@ function renderBanks(){
     b.onclick=function(){
       state.bank=b.dataset.key;
       var rawQs=BANKS[b.dataset.key].questions.filter(function(q){return !q.type||q.type==='fill_blank';});
-      state.questions=weightedShuffle(rawQs, state.weightMap||{});
-      state.idx=0;state.score=0;
+      forgeStartSession(state.bank, rawQs);
       // Ensure trial/paid students have a studentId so responses log correctly
       ensurePaidStudentId().then(function() {
         state.phase='quiz';render();
@@ -1279,8 +1314,8 @@ function renderBanks(){
             var bk = btn.getAttribute('data-asgn-bank');
             state.bank = bk;
             var rawQs = BANKS[bk].questions.filter(function(q){return !q.type||q.type==='fill_blank';});
-            state.questions = weightedShuffle(rawQs, state.weightMap||{});
-            state.idx=0; state.score=0; state.phase='quiz'; render();
+            forgeStartSession(state.bank, rawQs);
+            state.phase='quiz'; render();
           };
         });
       }
@@ -1367,6 +1402,7 @@ function renderQuiz(){
   h+='<button class="back-btn" id="back-banks">\u2190 Banks</button>';
   h+='<span class="bank-name" style="color:'+bk.color+'">'+bk.label+'</span>';
   h+='<span>'+state.score+' \u2713</span></div>';
+  h+='<p style="color:#8A857E;font-size:12px;margin:-4px 0 10px">Focused session · '+state.questions.length+' questions · progress saves automatically</p>';
   h+='<div class="progress-bar"><div class="progress-fill" style="width:'+((state.idx/state.questions.length)*100)+'%;background:'+bk.color+'"></div></div>';
 
   // Free tier: show questions remaining
@@ -1411,6 +1447,7 @@ function renderQuiz(){
       var k=o.dataset.k;
       var isCorrect=k===q.correct;
       if(isCorrect) state.score++;
+      forgeSaveSession();
 
       // Increment free tier daily count
       if (isFreeTier()) incrementDailyCount();
@@ -1571,6 +1608,7 @@ function renderFillBlankQuiz(q,bk,headerHtml){
         };
       }
     }
+    forgeSaveSession();
     document.getElementById('next-btn').onclick=function(){
       state.idx++;render();
     };
@@ -1648,13 +1686,13 @@ function getLBRank(xp){for(var i=LB_RANKS.length-1;i>=0;i--){if(xp>=LB_RANKS[i].
 
 function renderResults(){
   var bk=BANKS[state.bank];
-  try { var completionKey='forge-completed-banks:'+String(state.studentId||'anon')+':'+String(state.classId||'none'); var completed=JSON.parse(localStorage.getItem(completionKey)||'{}'); completed[state.bank]=true; localStorage.setItem(completionKey,JSON.stringify(completed)); } catch(e) {}
+  forgeCompleteSession();
   var pct=Math.round((state.score/state.questions.length)*100);
   var col=pct>=75?'var(--good)':pct>=50?'var(--hot)':'var(--bad)';
   var h='<div class="results">';
   h+='<p class="tag" style="color:'+bk.color+';margin-bottom:6px">'+state.bank+' \u2014 '+bk.label+'</p>';
   h+='<div class="pct" style="color:'+col+'">'+pct+'%</div>';
-  h+='<div class="detail">'+state.score+' / '+state.questions.length+' correct</div>';
+  h+='<div class="detail">'+state.score+' / '+state.questions.length+' correct · session complete</div>';
   h+='<div class="btns">';
   h+='<button class="btn-primary" id="retry">Retry</button>';
   h+='<button class="btn-secondary" id="all-banks">All banks</button>';
@@ -1669,8 +1707,8 @@ function renderResults(){
   app.innerHTML=h;
   document.getElementById('retry').onclick=function(){
     var rawQs2=BANKS[state.bank].questions.filter(function(q){return !q.type||q.type==='fill_blank';});
-    state.questions=weightedShuffle(rawQs2,state.weightMap||{});
-    state.idx=0;state.score=0;state.phase='quiz';render();
+    forgeStartSession(state.bank, rawQs2);
+    state.phase='quiz';render();
   };
   document.getElementById('all-banks').onclick=function(){state.phase='banks';render();};
   document.getElementById('all-subj').onclick=function(){

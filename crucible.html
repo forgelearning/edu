@@ -159,7 +159,10 @@ function supaInsert(t,row){
 // ===== END DATA =====
 
 var CRUCIBLE_TIME = 5 * 60; // 5 minutes
-var QUESTIONS_PER_RUN = 12;
+var QUESTIONS_PER_RUN = 6;
+var CRUCIBLE_RUN_KEY = 'forge-crucible-run';
+function saveCrucibleRun() { try { localStorage.setItem(CRUCIBLE_RUN_KEY, JSON.stringify({subject:state.subject,bank:state.bank,answers:state.answers.map(function(a){return {id:a.q.id,selected:a.selected,correct:a.correct,timedOut:a.timedOut};}),idx:state.idx,updatedAt:Date.now()})); } catch(e) {} }
+function clearCrucibleRun() { try { localStorage.removeItem(CRUCIBLE_RUN_KEY); } catch(e) {} }
 
 function shuffle(a){var b=[...a];for(var i=b.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
 
@@ -187,7 +190,7 @@ function renderJoin(){
        +'<button class="auth-btn-ghost" id="j-skip" type="button">Practise without a class</button>';
   app.innerHTML=ForgeAuthCard.shell({
     title:'No hints. No scaffolds.<br>Just the question.',
-    sub:'5 minutes. 12 questions. Wrong answers go straight to your Anvil.'
+    sub:'5 minutes. 6 questions. Wrong answers go straight to your Anvil.'
   },f);
   ForgeAuthCard.onSubmit(function(){document.getElementById('j-btn').onclick();});
 
@@ -239,7 +242,7 @@ function renderJoin(){
 function renderSubject(){
   var h='<p class="tag" style="color:var(--bad);margin-bottom:4px">THE CRUCIBLE</p>';
   h+='<h2 style="font-size:22px;margin-bottom:6px">Choose a subject</h2>';
-  h+='<p style="color:#8A857E;font-size:14px;margin-bottom:4px">You\u2019ll get 12 questions from that subject at random. No scaffolds.</p>';
+  h+='<p style="color:#8A857E;font-size:14px;margin-bottom:4px">You\u2019ll get up to 6 questions from that subject at random. No scaffolds.</p>';
   h+='<div class="subject-list">';
 
   // Subjects of every class joined (in Crucible or Forge \u2014 the list is
@@ -442,6 +445,7 @@ function renderQuestion(){
       var k=o.dataset.k;
       var isCorrect=k===q.correct;
       state.answers.push({q:q,selected:k,correct:isCorrect,timedOut:false});
+      saveCrucibleRun();
       logAnswer(q,k,isCorrect);
 
       opts.forEach(function(x){
@@ -497,6 +501,7 @@ function renderResults(){
   var mins=Math.floor(timeUsed/60),secs=timeUsed%60;
 
   var h='<div class="results-card">';
+  clearCrucibleRun();
   h+='<p class="tag" style="color:var(--bad);margin-bottom:8px">CRUCIBLE COMPLETE</p>';
   h+='<div class="big-pct" style="color:'+col+'">'+pct+'%</div>';
   h+='<div class="results-detail">'+correct+' / '+total+' correct \u00b7 '+mins+'m '+(secs<10?'0':'')+secs+'s</div>';
