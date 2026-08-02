@@ -20,6 +20,45 @@ body.forge-discovery .cta-ghost{
   justify-content:center;
 }
 body.forge-discovery .subject-actions > a{min-height:44px}
+
+/* The landing-page navigation is the shared public navigation. Subject pages
+   use the same structure so the dropdowns, mobile menu, and collapse behavior
+   do not change as a learner moves into a bank. */
+body.forge-modern-nav #sticky-nav{max-width:1220px}
+body.forge-modern-nav #sticky-nav nav{justify-content:flex-start}
+body.forge-modern-nav #sticky-nav .nav-right{flex:1;min-width:0;justify-content:flex-start;padding-left:14px;gap:8px}
+body.forge-modern-nav #sticky-nav .nav-right > :first-child{margin-left:14px}
+body.forge-modern-nav #sticky-nav.nav-collapsed{width:60px}
+body.forge-modern-nav #sticky-nav.nav-collapsed nav{justify-content:center}
+body.forge-modern-nav #sticky-nav.nav-collapsed .nav-right{padding-left:0}
+body.forge-modern-nav #sticky-nav.nav-collapsed .nav-right > :first-child{margin-left:0}
+body.forge-modern-nav .audit-nav-action{color:var(--white)}
+body.forge-modern-nav .audit-nav-action:hover{color:var(--hot)}
+body.forge-modern-nav .audit-mobile-nav-wrap{display:none}
+
+@media(max-width:820px){
+  body.forge-modern-nav #sticky-nav{width:calc(100% - 20px)}
+  body.forge-modern-nav #sticky-nav.nav-collapsed{width:60px}
+  body.forge-modern-nav #sticky-nav .nav-right{flex:0 1 auto;gap:5px}
+  body.forge-modern-nav #sticky-nav .nav-hide-sm{display:none!important}
+  body.forge-modern-nav .audit-nav-action{display:none}
+  body.forge-modern-nav .audit-mobile-nav-wrap{display:block;position:relative}
+  body.forge-modern-nav .audit-mobile-menu{right:0;min-width:205px;padding:8px}
+  body.forge-modern-nav .audit-mobile-menu.open{display:flex;flex-direction:column}
+  body.forge-modern-nav .audit-mobile-menu a{padding:9px 10px}
+}
+
+@media(max-width:430px){
+  body.forge-modern-nav #sticky-nav .nav-right{gap:2px}
+  body.forge-modern-nav #sticky-nav .cta{height:36px;padding-left:10px;padding-right:10px;font-size:13px}
+  body.forge-modern-nav .audit-mobile-nav-wrap .forge-nav-menu-button{padding-left:3px;padding-right:3px;font-size:13px}
+  body.forge-modern-nav #sticky-nav .theme-toggle{flex:0 0 36px}
+}
+
+@media(max-width:360px){
+  body.forge-modern-nav #sticky-nav .cta{display:none}
+}
+
 @media(max-width:600px){
   body.forge-discovery .wrap{padding-left:16px;padding-right:16px}
   body.forge-discovery .nav-hide-sm{display:none}
