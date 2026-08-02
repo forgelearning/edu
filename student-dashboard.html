@@ -372,6 +372,9 @@ function renderDashboard(){
   h+='<div class="eyebrow">Dashboard</div>';
   h+='<h1>Welcome back, '+st.studentName+'</h1>';
 
+  h+='<div class="forge-loop" aria-label="Learning loop">';
+  h+='<div class="forge-loop-step is-current"><strong>1. Forge</strong>Practice</div><div class="forge-loop-step"><strong>2. Anvil</strong>Repair</div><div class="forge-loop-step"><strong>3. Crucible</strong>Pressure-test</div></div>';
+
   if(total===0){
     h+='<div class="ui-state">';
     h+='<div class="ui-state-title">Your first practice session is waiting.</div>';
@@ -394,6 +397,7 @@ function renderDashboard(){
   }
   h+='<a class="stat-strip-link" href="profile.html">View profile →</a>';
   h+='</div>';
+  h+='<p class="forge-progress-note">You have answered '+total+' question'+(total===1?'':'s')+' so far'+(streak ? ' and built a '+streak+'-day streak' : '')+'. Keep the loop moving: practice, repair, then pressure-test.</p>';
 
   h+='<div class="ui-recommendation forge-card forge-card--focus">';
   if(activeMCs.length>0){

@@ -73,7 +73,7 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
 .stat-n-bad{color:var(--bad)}
 
 /* heatmap */
-.heat-row{display:grid;grid-template-columns:minmax(150px,190px) minmax(0,1fr) 80px 100px 60px;gap:10px;align-items:center;padding:10px 14px;border-radius:var(--radius-md);background:var(--panel-2);border:1px solid var(--line);font-size:13px;margin-bottom:6px}
+.heat-row{display:grid;grid-template-columns:minmax(150px,190px) minmax(0,1fr) 80px 100px 60px 72px;gap:10px;align-items:center;padding:10px 14px;border-radius:var(--radius-md);background:var(--panel-2);border:1px solid var(--line);font-size:13px;margin-bottom:6px}
 .heat-row.high{border-color:rgba(255,90,90,.35)}
 .heat-row.med{border-color:rgba(255,201,60,.25)}
 .heat-tag{display:block;min-width:0;font-size:11px;color:var(--coal);background:var(--hot);padding:4px 8px;border-radius:var(--radius-xs);font-weight:600;white-space:normal;overflow-wrap:anywhere;line-height:1.3;font-family:'JetBrains Mono',monospace}
@@ -82,6 +82,8 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
 .heat-bar{height:6px;background:var(--line);border-radius:var(--radius-xs);overflow:hidden}
 .heat-fill{height:100%;border-radius:var(--radius-xs);background:var(--ember)}
 .heat-count{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--slate);text-align:right}
+.heat-action{font-size:12px;font-weight:700;color:var(--ember);text-decoration:none;white-space:nowrap}
+.heat-action:hover{color:var(--hot);text-decoration:underline}
 
 /* class table */
 .class-table{width:100%;border-collapse:collapse;font-size:13px}
@@ -2192,6 +2194,7 @@ function renderHeatmap(wrongResponses) {
     h += '<span class="heat-spec">' + banks + '</span>';
     h += '<div class="heat-bar"><div class="heat-fill" style="width:' + pct + '%"></div></div>';
     h += '<span class="heat-count">' + c.count + ' \u00d7 ' + studentCount + 's</span>';
+    h += '<a class="heat-action" href="#" onclick="forgeGoto(\'starters\');return false">Starter \u2192</a>';
     h += '</div>';
   });
   h += '</div>';
