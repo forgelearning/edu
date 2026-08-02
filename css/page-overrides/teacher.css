@@ -74,6 +74,9 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
 .stat-row--priority + .stat-support{margin-top:var(--space-3);margin-bottom:var(--space-7)}
 .forge-u-11yg588{gap:var(--space-3);margin-top:var(--space-4)}
 .forge-u-1l0ycxr{min-width:150px}
+.forge-card--focus .forge-action-row{margin-top:var(--space-4)}
+.forge-card--focus .forge-action-row + p{margin-top:var(--space-3);line-height:1.5}
+.forge-card--focus + .tabs{margin-top:var(--space-5)}
 
 /* heatmap */
 .heat-row{display:grid;grid-template-columns:minmax(150px,190px) minmax(0,1fr) 80px 100px 60px 72px;gap:10px;align-items:center;padding:10px 14px;border-radius:var(--radius-md);background:var(--panel-2);border:1px solid var(--line);font-size:13px;margin-bottom:6px}
