@@ -2,7 +2,18 @@
 (function () {
   function invoke(action, element) {
     if (action === 'theme' && typeof window.toggleTheme === 'function') return window.toggleTheme();
-    if (action === 'schools-menu') return element.nextElementSibling && element.nextElementSibling.classList.toggle('open');
+    if (action === 'schools-menu') {
+      var menu = element.nextElementSibling;
+      var wasOpen = menu && menu.classList.contains('open');
+      document.querySelectorAll('#sticky-nav .nav-drop-menu').forEach(function(other){
+        if (other !== menu) other.classList.remove('open');
+      });
+      if (menu) {
+        if (wasOpen) menu.classList.remove('open');
+        else menu.classList.add('open');
+      }
+      return menu;
+    }
     if (action === 'student-overview' && typeof window.switchStudent === 'function') return window.switchStudent('overview', element);
     if (action === 'student-forge' && typeof window.switchStudent === 'function') return window.switchStudent('forge', element);
     if (action === 'student-anvil' && typeof window.switchStudent === 'function') return window.switchStudent('anvil', element);
