@@ -25,7 +25,7 @@
     '</div>';
   var mobileMenu =
       '<div class="nav-drop-wrap audit-mobile-nav-wrap"><button class="nav-link forge-nav-menu-button" type="button" data-forge-action="schools-menu">Menu ▾</button>' +
-      '<div class="nav-drop-menu audit-mobile-menu"><a href="index.html#students">For students</a><a href="index.html#teachers">For teachers</a><a href="school-overview.html">For schools</a><a href="index.html#audit-faq">FAQs</a><a href="forge-quiz.html?mode=class">Join class</a><a href="forge-quiz.html">Log in</a><a href="forge-signup.html">Sign up</a></div>' +
+      '<div class="nav-drop-menu audit-mobile-menu"><a href="index.html#students">For students</a><a href="teacher.html">Teacher dashboard</a><a href="index.html#teachers">For teachers</a><a href="school-overview.html">For schools</a><a href="index.html#audit-faq">FAQs</a><a href="forge-quiz.html?mode=class">Join class</a><a href="forge-quiz.html">Log in</a><a href="forge-signup.html">Sign up</a></div>' +
     '</div>';
   nav.innerHTML = modern ?
     '<a class="nav-link nav-hide-sm" href="index.html#how">How it works</a>' + roleMenus +
