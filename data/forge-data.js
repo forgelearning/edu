@@ -16843,8 +16843,10 @@ for (const subject of Object.values(SUBJECTS)) {
 
 // Shared application scripts use the same canonical registry for progress
 // and content-readiness calculations on every page.
-window.BANKS = BANKS;
-window.SUBJECTS = SUBJECTS;
+if (typeof window !== 'undefined') {
+  window.BANKS = BANKS;
+  window.SUBJECTS = SUBJECTS;
+}
 
 // GCSE Phase 4: make the delivered bank-to-specification alignment explicit.
 // The registry owns the canonical definitions; these IDs let the coverage
