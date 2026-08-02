@@ -257,6 +257,7 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
 <link rel="stylesheet" href="css/states.css">
 </head>
 <body>
+<script src="scripts/forge-api.js"></script>
 <script src="scripts/forge-state.js"></script>
 <script src="scripts/forge-logo.js"></script>
 <script src="scripts/forge-auth-card.js"></script>
@@ -289,8 +290,8 @@ ForgeSidebar.mount({
 
 <script src="data/forge-data.js"></script>
 <script>
-var SUPABASE_URL = 'https://crysulmbaadjkymcjrew.supabase.co';
-var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNyeXN1bG1iYWFkamt5bWNqcmV3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQyNDUzMzAsImV4cCI6MjA5OTgyMTMzMH0.Q69MKJR6_iEYkqJYXjn8RBhKhstAZShtmf0NiYM-8Vk';
+var SUPABASE_URL = ForgeAPI.config.url;
+var SUPABASE_KEY = ForgeAPI.config.key;
 
 var headers = {
   'apikey': SUPABASE_KEY,
@@ -328,46 +329,24 @@ function addJoinedClass(cls) {
 
 var TeacherAuth = {
   signUp: function(email, password) {
-    return fetch(SUPABASE_URL + '/auth/v1/signup', {
-      method: 'POST',
-      headers: { 'apikey': SUPABASE_KEY, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: email, password: password })
-    })
-    .then(function(r) { return r.json(); })
-    .then(function(data) {
-      if (data.error || !data.access_token) {
-        return Promise.reject(new Error(data.error_description || data.msg || data.error || 'Sign-up failed'));
-      }
+    return ForgeAPI.auth.signUp(email, password).then(function(data) {
+      if (!data || data.error || !data.access_token) throw new Error((data && (data.error_description || data.msg || data.error)) || 'Sign-up failed');
       _saveTeacherSession({ access_token: data.access_token, refresh_token: data.refresh_token, user: data.user });
       return data;
     });
   },
   signIn: function(email, password) {
-    return fetch(SUPABASE_URL + '/auth/v1/token?grant_type=password', {
-      method: 'POST',
-      headers: { 'apikey': SUPABASE_KEY, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: email, password: password })
-    })
-    .then(function(r) { return r.json(); })
-    .then(function(data) {
-      if (data.error || !data.access_token) {
-        return Promise.reject(new Error(data.error_description || data.msg || data.error || 'Incorrect email or password'));
-      }
+    return ForgeAPI.auth.signIn(email, password).then(function(data) {
+      if (!data || data.error || !data.access_token) throw new Error((data && (data.error_description || data.msg || data.error)) || 'Incorrect email or password');
       _saveTeacherSession({ access_token: data.access_token, refresh_token: data.refresh_token, user: data.user });
       return data;
     });
   },
   refreshSession: function(refreshToken) {
-    return fetch(SUPABASE_URL + '/auth/v1/token?grant_type=refresh_token', {
-      method: 'POST',
-      headers: { 'apikey': SUPABASE_KEY, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ refresh_token: refreshToken })
-    })
-    .then(function(r) { return r.json(); })
-    .then(function(data) {
-      if (data.error || !data.access_token) {
+    return ForgeAPI.auth.refresh(refreshToken).then(function(data) {
+      if (!data || data.error || !data.access_token) {
         _clearTeacherSession();
-        return Promise.reject(new Error('Session expired'));
+        throw new Error('Session expired');
       }
       _saveTeacherSession({ access_token: data.access_token, refresh_token: data.refresh_token, user: data.user });
       return data;
@@ -375,32 +354,22 @@ var TeacherAuth = {
   },
   signOut: function() {
     var saved = _loadTeacherSession();
-    if (saved && saved.access_token) {
-      fetch(SUPABASE_URL + '/auth/v1/logout', {
-        method: 'POST',
-        headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + saved.access_token }
-      }).catch(function() {});
-    }
+    if (saved && saved.access_token) ForgeAPI.auth.signOut(saved.access_token).catch(function() {});
     _clearTeacherSession();
   },
-  // Resolve current session, refreshing the access token if needed.
-  // Returns { access_token, user } or null.
   getSession: function() {
     var saved = _loadTeacherSession();
     if (!saved || !saved.access_token) return Promise.resolve(null);
-    return fetch(SUPABASE_URL + '/auth/v1/user', {
-      headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + saved.access_token }
-    })
-    .then(function(r) {
-      if (r.status === 401 && saved.refresh_token) {
+    return ForgeAPI.auth.user(saved.access_token).then(function(user) {
+      return { access_token: saved.access_token, user: user };
+    }).catch(function(error) {
+      if (error && error.status === 401 && saved.refresh_token) {
         return TeacherAuth.refreshSession(saved.refresh_token).then(function(data) {
           return { access_token: data.access_token, user: data.user };
         });
       }
-      if (!r.ok) return null;
-      return r.json().then(function(user) { return { access_token: saved.access_token, user: user }; });
-    })
-    .catch(function() { return null; });
+      return null;
+    });
   }
 };
 
@@ -493,11 +462,11 @@ function teacherSignOut() {
   renderTeacherAuth('signin');
 }
 
-function supaGet(table, params) {
-  var url = SUPABASE_URL + '/rest/v1/' + table + '?select=*';
-  if (params) url += '&' + params;
-  return fetch(url, { headers: headers }).then(function(r) { return r.json(); });
+function teacherApiOptions() {
+  var auth = headers.Authorization || '';
+  return { token: auth.replace(/^Bearer\s+/, '') };
 }
+function supaGet(table, params) { return ForgeAPI.get(table, params, teacherApiOptions()); }
 
 // PostgREST returns an array for a successful list query, but an error payload
 // is an object. Keep dashboard rendering safe when a policy or network error
@@ -507,54 +476,17 @@ function rowsOrEmpty(value) {
 }
 
 function supaDelete(table, id) {
-  return fetch(SUPABASE_URL + '/rest/v1/' + table + '?id=eq.' + id, {
-    method: 'DELETE',
-    headers: headers
-  }).then(function(r) { return r.ok; });
+  return ForgeAPI.remove(table, id, teacherApiOptions()).then(function() { return true; });
 }
 
-function supaPatch(table, id, row) {
-  return fetch(SUPABASE_URL + '/rest/v1/' + table + '?id=eq.' + id, {
-    method: 'PATCH',
-    headers: Object.assign({}, headers, { 'Content-Type': 'application/json', 'Prefer': 'return=representation' }),
-    body: JSON.stringify(row)
-  }).then(function(r) {
-    if (!r.ok) {
-      return r.text().then(function(t) {
-        return Promise.reject(new Error('PATCH failed ' + r.status + ': ' + t));
-      });
-    }
-    return r.json();
-  });
-}
+function supaPatch(table, id, row) { return ForgeAPI.patch(table, id, row, teacherApiOptions()); }
 
-function supaInsert(table, row) {
-  return fetch(SUPABASE_URL + '/rest/v1/' + table, {
-    method: 'POST',
-    headers: Object.assign({}, headers, { 'Content-Type': 'application/json', 'Prefer': 'return=representation' }),
-    body: JSON.stringify(row)
-  }).then(function(r) {
-    return r.json().then(function(data) {
-      if (!r.ok) {
-        var msg = (data && (data.message || data.error || data.hint)) || ('HTTP ' + r.status);
-        return Promise.reject(new Error(msg));
-      }
-      return data;
-    });
-  });
-}
+function supaInsert(table, row) { return ForgeAPI.insert(table, row, teacherApiOptions()); }
 
 // Validates a teacher sign-up invite code server-side via Postgres RPC
 // (the code itself is never readable from the client, only this boolean).
 function validateInviteCode(code) {
-  return fetch(SUPABASE_URL + '/rest/v1/rpc/validate_teacher_invite', {
-    method: 'POST',
-    headers: Object.assign({}, headers, { 'Content-Type': 'application/json' }),
-    body: JSON.stringify({ p_code: code })
-  }).then(function(r) {
-    if (!r.ok) return false;
-    return r.json();
-  }).catch(function() { return false; });
+  return ForgeAPI.rpc('validate_teacher_invite', { p_code: code }, teacherApiOptions()).catch(function() { return false; });
 }
 
 // Subject list — derived from the shared SUBJECTS data (data/forge-data.js) so new
@@ -1032,11 +964,11 @@ window.loadClassDashboard = function(cls) {
                   var oldRow = nameMatches.find(function(s){ return s.id === oldId; });
                   var newRow = oldRow ? dashState.students.find(function(s){ return s.name === oldRow.name; }) : null;
                   var targetId = newRow ? newRow.id : studentIds[0];
-                  fetch(SUPABASE_URL + '/rest/v1/responses?student_id=eq.' + oldId, {
+                  ForgeAPI.request('/rest/v1/responses?student_id=eq.' + encodeURIComponent(oldId), Object.assign({
                     method: 'PATCH',
-                    headers: Object.assign({}, headers, {'Prefer': 'return=minimal'}),
+                    headers: {'Content-Type': 'application/json', 'Prefer': 'return=minimal'},
                     body: JSON.stringify({ student_id: targetId, class_id: cls.id })
-                  }).catch(function(e) { console.warn('Patch orphan failed:', e); });
+                  }, teacherApiOptions())).catch(function(e) { console.warn('Patch orphan failed:', e); });
                 });
               }
               console.log('Dashboard loaded:', {

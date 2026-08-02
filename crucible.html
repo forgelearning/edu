@@ -104,6 +104,7 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
 <link rel="stylesheet" href="css/states.css">
 </head>
 <body>
+<script src="scripts/forge-api.js"></script>
 <script src="scripts/forge-state.js"></script>
 
 
@@ -136,24 +137,17 @@ ForgeSidebar.mount({
 
 <script>if(window.ForgeAuth)ForgeAuth.adoptHashSession();</script>
 <script>
-var SUPABASE_URL = 'https://crysulmbaadjkymcjrew.supabase.co';
-var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNyeXN1bG1iYWFkamt5bWNqcmV3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQyNDUzMzAsImV4cCI6MjA5OTgyMTMzMH0.Q69MKJR6_iEYkqJYXjn8RBhKhstAZShtmf0NiYM-8Vk';
+var SUPABASE_URL = ForgeAPI.config.url;
+var SUPABASE_KEY = ForgeAPI.config.key;
 var hdrs = {'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Prefer':'return=representation'};
 var getHdrs = {'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY};
 
-function supaGet(t,p){return fetch(SUPABASE_URL+'/rest/v1/'+t+'?select=*'+(p?'&'+p:''),{headers:getHdrs}).then(function(r){return r.json();});}
+function supaGet(t,p){return ForgeAPI.get(t,p);}
 // Write-only. anon may insert into responses but has no SELECT policy on it,
 // so asking for the inserted row back fails the whole request (42501) and
 // silently writes nothing.
 function supaInsert(t,row){
-  return fetch(SUPABASE_URL+'/rest/v1/'+t,{
-    method:'POST',
-    headers:Object.assign({},hdrs,{'Prefer':'return=minimal'}),
-    body:JSON.stringify(row)
-  }).then(function(r){
-    if(!r.ok) return r.text().then(function(x){console.error('insert into '+t+' failed:',r.status,x);return null;});
-    return null;
-  }).catch(function(e){console.error('insert into '+t+' failed:',e);return null;});
+  return ForgeAPI.insert(t,row,{headers:{'Prefer':'return=minimal'}}).then(function(){return null;}).catch(function(e){console.error('insert into '+t+' failed:',e);return null;});
 }
 
 // ===== DATA =====
@@ -222,7 +216,7 @@ function renderJoin(){
     btn.disabled=true;btn.textContent='Joining...';
     // Look up via RPC \u2014 classes/students tables are no longer directly
     // readable by an anonymous (no login) name+code session.
-    fetch(SUPABASE_URL + '/rest/v1/rpc/get_student_by_name_and_code', {
+    ForgeAPI.response(SUPABASE_URL + '/rest/v1/rpc/get_student_by_name_and_code', {
       method: 'POST', headers: Object.assign({}, getHdrs, {'Content-Type':'application/json'}),
       body: JSON.stringify({ p_code: code, p_name: name })
     }).then(function(r){ return r.json(); }).then(function(rows){
@@ -636,7 +630,7 @@ function restoreSession() {
         var authUser = ForgeAuth.currentUser();
         if (!authUser) { checkLocalSessionCrucible(); return; }
 
-        fetch(SUPABASE_URL + '/rest/v1/students?select=id,class_id,extra_time&auth_user_id=eq.' + authUser.id + '&class_id=not.is.null', {
+        ForgeAPI.response(SUPABASE_URL + '/rest/v1/students?select=id,class_id,extra_time&auth_user_id=eq.' + authUser.id + '&class_id=not.is.null', {
           headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + (token || SUPABASE_KEY) }
         }).then(function(r) { return r.json(); }).then(function(rows) {
           if (!Array.isArray(rows) || rows.length === 0) {
@@ -651,7 +645,7 @@ function restoreSession() {
 
           // Fetch class details to get subjects — via RPC, since the
           // classes table itself is no longer directly readable by students.
-          fetch(SUPABASE_URL + '/rest/v1/rpc/get_enrolled_class_subjects', {
+          ForgeAPI.response(SUPABASE_URL + '/rest/v1/rpc/get_enrolled_class_subjects', {
             method: 'POST',
             headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + (token || SUPABASE_KEY), 'Content-Type': 'application/json' },
             body: JSON.stringify({ p_class_ids: classIds })

@@ -79,6 +79,7 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
 <link rel="stylesheet" href="css/states.css">
 </head>
 <body>
+<script src="scripts/forge-api.js"></script>
 <script src="scripts/forge-state.js"></script>
 <a class="forge-skip-link" href="#main-content">Skip to main content</a>
 <script>ForgeSidebar.mount({active:'present',items:[{key:'dashboard',href:'teacher.html',label:'Teacher dashboard'},{key:'school',href:'school-overview.html',label:'School overview'},{key:'present',href:'present.html',label:'Class Mode'}],footerItems:[]});</script>
@@ -103,8 +104,8 @@ if(localStorage.getItem('forge-theme')==='light'){document.documentElement.setAt
 </div>
 
 <script>
-var SUPABASE_URL = 'https://crysulmbaadjkymcjrew.supabase.co';
-var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNyeXN1bG1iYWFkamt5bWNqcmV3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQyNDUzMzAsImV4cCI6MjA5OTgyMTMzMH0.Q69MKJR6_iEYkqJYXjn8RBhKhstAZShtmf0NiYM-8Vk';
+var SUPABASE_URL = ForgeAPI.config.url;
+var SUPABASE_KEY = ForgeAPI.config.key;
 var TEACHER_SESSION_KEY = 'forge-teacher-session';
 
 function requireTeacherSession(onReady) {
@@ -116,12 +117,7 @@ function requireTeacherSession(onReady) {
     app.innerHTML = ForgeState.html('empty', { label: 'Teacher sign-in required', body: 'Class Mode is available after you sign in to the Teacher Dashboard.', action: { label: 'Sign in to Teacher Dashboard', href: 'teacher.html' } });
     return;
   }
-  fetch(SUPABASE_URL + '/auth/v1/user', {
-    headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + saved.access_token }
-  }).then(function(response) {
-    if (!response.ok) throw new Error('Teacher session expired');
-    return response.json();
-  }).then(function(user) {
+  ForgeAPI.auth.user(saved.access_token).then(function(user) {
     if (!user || !user.id) throw new Error('Teacher session invalid');
     onReady();
   }).catch(function() {

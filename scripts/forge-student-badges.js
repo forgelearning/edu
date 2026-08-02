@@ -22,14 +22,9 @@
   var cachedAssignments=parseInt(localStorage.getItem(assignmentCacheKey)||'',10);
   if(!isNaN(cachedAssignments))ForgeSidebar.setBadge('assignments',cachedAssignments||null);
   var responsePromise= saved.studentId&&saved.classCode
-    ? fetch('https://crysulmbaadjkymcjrew.supabase.co/rest/v1/rpc/get_student_own_responses',{
-        method:'POST',
-        headers:{apikey:k,Authorization:'Bearer '+k,'Content-Type':'application/json'},
-        body:JSON.stringify({p_student_id:saved.studentId,p_code:saved.classCode,p_name:saved.studentName})
-      }).then(function(r){return r.json()}).catch(function(){return[]})
+    ? ForgeAPI.rpc('get_student_own_responses',{p_student_id:saved.studentId,p_code:saved.classCode,p_name:saved.studentName}).catch(function(){return[]})
     : Promise.resolve([]);
-  fetch('https://crysulmbaadjkymcjrew.supabase.co/rest/v1/assignments?select=id,class_id,due_date,created_at,banks&class_id=in.('+ids.join(',')+')',{headers:{apikey:k,Authorization:'Bearer '+k}})
-    .then(function(r){return r.json()})
+  ForgeAPI.request('/rest/v1/assignments?select=id,class_id,due_date,created_at,banks&class_id=in.('+ids.join(',')+')')
     .then(function(rows){return Promise.all([rows,responsePromise])})
     .then(function(result){
       var rows=result[0],responses=Array.isArray(result[1])?result[1]:[];

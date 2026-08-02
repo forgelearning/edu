@@ -3,8 +3,8 @@
 // Include BEFORE page-specific scripts on every student page
 // ============================================================
 
-var SUPABASE_URL = 'https://crysulmbaadjkymcjrew.supabase.co';
-var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNyeXN1bG1iYWFkamt5bWNqcmV3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQyNDUzMzAsImV4cCI6MjA5OTgyMTMzMH0.Q69MKJR6_iEYkqJYXjn8RBhKhstAZShtmf0NiYM-8Vk';
+var SUPABASE_URL = ForgeAPI.config.url;
+var SUPABASE_KEY = ForgeAPI.config.key;
 
 var TRIAL_DAYS = 7;
 
@@ -86,10 +86,7 @@ var ForgeAuth = {
     if (!params.access_token || params.type === 'recovery') return false;
 
     _saveAuthSession({ access_token: params.access_token, refresh_token: params.refresh_token, user: null });
-    return fetch(SUPABASE_URL + '/auth/v1/user', {
-      headers: _authHeaders(params.access_token)
-    })
-    .then(function(r) { return r.json(); })
+    return ForgeAPI.auth.user(params.access_token)
     .then(function(user) {
       if (user && user.id) {
         _saveAuthSession({ access_token: params.access_token, refresh_token: params.refresh_token, user: user });
@@ -111,12 +108,7 @@ var ForgeAuth = {
 
   // Sign up — creates Supabase auth user + subscriber record (trial, not yet paying)
   signUp: function(email, password, name, subjects) {
-    return fetch(SUPABASE_URL + '/auth/v1/signup', {
-      method: 'POST',
-      headers: _authHeaders(),
-      body: JSON.stringify({ email: email, password: password })
-    })
-    .then(function(r) { return r.json(); })
+    return ForgeAPI.auth.signUp(email, password)
     .then(function(data) {
       if (data.error || !data.access_token) {
         return Promise.reject(new Error(data.error_description || data.msg || data.error || 'Sign-up failed'));
@@ -124,19 +116,14 @@ var ForgeAuth = {
       _saveAuthSession({ access_token: data.access_token, refresh_token: data.refresh_token, user: data.user });
 
       // Insert subscriber record — trial mode, not yet paying
-      return fetch(SUPABASE_URL + '/rest/v1/subscribers', {
-        method: 'POST',
-        headers: Object.assign({}, _authHeaders(data.access_token), { 'Prefer': 'return=representation' }),
-        body: JSON.stringify({
+      return ForgeAPI.insert('subscribers', {
           user_id: data.user.id,
           name: name,
           subjects: subjects,
           active: false,
           trial: true,
           trial_started_at: new Date().toISOString()
-        })
-      })
-      .then(function(r) { return r.json(); })
+        }, { token: data.access_token })
       .then(function() {
         return { user: data.user, name: name, subjects: subjects };
       });
@@ -145,12 +132,7 @@ var ForgeAuth = {
 
   // Sign in with email + password
   signIn: function(email, password) {
-    return fetch(SUPABASE_URL + '/auth/v1/token?grant_type=password', {
-      method: 'POST',
-      headers: _authHeaders(),
-      body: JSON.stringify({ email: email, password: password })
-    })
-    .then(function(r) { return r.json(); })
+    return ForgeAPI.auth.signIn(email, password)
     .then(function(data) {
       if (data.error || !data.access_token) {
         return Promise.reject(new Error(data.error_description || data.msg || data.error || 'Incorrect email or password'));
@@ -162,12 +144,7 @@ var ForgeAuth = {
 
   // Refresh an expired access token
   refreshSession: function(refreshToken) {
-    return fetch(SUPABASE_URL + '/auth/v1/token?grant_type=refresh_token', {
-      method: 'POST',
-      headers: _authHeaders(),
-      body: JSON.stringify({ refresh_token: refreshToken })
-    })
-    .then(function(r) { return r.json(); })
+    return ForgeAPI.auth.refresh(refreshToken)
     .then(function(data) {
       if (data.error || !data.access_token) {
         _clearAuthSession();
@@ -183,19 +160,15 @@ var ForgeAuth = {
     var saved = _loadAuthSession();
     if (!saved || !saved.access_token) return Promise.resolve(null);
 
-    return fetch(SUPABASE_URL + '/rest/v1/subscribers?select=*', {
-      headers: _authHeaders(saved.access_token)
-    })
-    .then(function(r) {
-      if (r.status === 401 && saved.refresh_token) {
+    return ForgeAPI.get('subscribers', null, { token: saved.access_token })
+    .catch(function(error) {
+      if (error && error.status === 401 && saved.refresh_token) {
         return ForgeAuth.refreshSession(saved.refresh_token).then(function() {
           var newSaved = _loadAuthSession();
-          return fetch(SUPABASE_URL + '/rest/v1/subscribers?select=*', {
-            headers: _authHeaders(newSaved.access_token)
-          }).then(function(r2) { return r2.json(); });
+          return ForgeAPI.get('subscribers', null, { token: newSaved.access_token });
         });
       }
-      return r.json();
+      throw error;
     })
     .then(function(rows) {
       var sub     = (Array.isArray(rows) && rows.length > 0) ? rows[0] : null;
@@ -211,10 +184,7 @@ var ForgeAuth = {
   signOut: function() {
     var saved = _loadAuthSession();
     if (saved && saved.access_token) {
-      fetch(SUPABASE_URL + '/auth/v1/logout', {
-        method: 'POST',
-        headers: _authHeaders(saved.access_token)
-      }).catch(function() {});
+      ForgeAPI.auth.signOut(saved.access_token).catch(function() {});
     }
     _clearAuthSession();
     // Derived navigation state must never survive into the next student's
