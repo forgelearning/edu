@@ -395,7 +395,7 @@ function renderDashboard(){
   h+='<a class="stat-strip-link" href="profile.html">View profile →</a>';
   h+='</div>';
 
-  h+='<div class="ui-recommendation">';
+  h+='<div class="ui-recommendation forge-card forge-card--focus">';
   if(activeMCs.length>0){
     h+='<div class="ui-state-title">Recommended next: repair '+activeMCs.length+' misconception'+(activeMCs.length===1?'':'s')+'</div>';
     h+='<p class="ui-state-copy">Anvil has the exact errors that need another pass. Clear one now, then return to Forge to test the improvement.</p>';

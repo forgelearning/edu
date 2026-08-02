@@ -57,6 +57,7 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
 .tab{font-family:Inter,sans-serif;font-weight:600;font-size:13px;color:var(--slate);background:transparent;border:none;padding:9px 18px;border-radius:var(--radius-sm);cursor:pointer;white-space:nowrap}
 .tab:hover{color:var(--white)}
 .tab.active{background:var(--ember);color:var(--coal)}
+@media(max-width:600px){.tabs{display:flex;flex-wrap:nowrap;max-width:100%;overflow-x:auto;scrollbar-width:none}.tabs::-webkit-scrollbar{display:none}.tab{flex:0 0 auto}.dash-header-actions{align-items:flex-start;width:100%}}
 
 .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-lg);padding:24px;margin-bottom:18px}
 .card-title{font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:#8A857E;margin-bottom:14px}
@@ -1405,7 +1406,7 @@ function renderDashboard() {
        + 'padding:3px 10px;cursor:pointer;vertical-align:middle">' + dashState.classCode + ' ⎘</button>';
   }
   h += '</h1></div>';
-  h += '<div class="dash-header-actions"><a class="dash-primary" href="#" id="dash-action">' + (wrongResponses.length ? 'Open misconceptions \u2192' : 'Create assignment \u2192') + '</a><div class="dash-meta"><b>' + students.length + '</b> students \u00b7 <b>' + totalQs + '</b> responses \u00b7 <button class="back-btn" onclick="renderTeacherHome()" style="display:inline;font-size:12px">\u2190 All classes</button></div></div>';
+  h += '<div class="dash-header-actions"><a class="dash-primary forge-button forge-button--primary" href="#" id="dash-action">' + (wrongResponses.length ? 'Open misconceptions \u2192' : 'Create assignment \u2192') + '</a><div class="dash-meta"><b>' + students.length + '</b> students \u00b7 <b>' + totalQs + '</b> responses \u00b7 <button class="back-btn" onclick="renderTeacherHome()" style="display:inline;font-size:12px">\u2190 All classes</button></div></div>';
   h += '</div>';
 
   // Stats row

@@ -1,9 +1,10 @@
 /* Shared base + nav — Forge Learning marketing pages.
    Requires tokens.css loaded first. Fonts: Sora (headings), Inter (body), JetBrains Mono (mono/tags). */
+@import url('components.css');
 
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{background:var(--coal);color:var(--slate);font-family:'Inter',sans-serif;font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased}
+body{background:var(--coal);color:var(--slate);font-family:'Inter',sans-serif;font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased;min-width:320px}
 h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.08;letter-spacing:-.015em}
 .mono{font-family:'JetBrains Mono',monospace}
 a{color:var(--hot)}
