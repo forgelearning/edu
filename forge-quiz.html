@@ -1699,10 +1699,10 @@ function renderResults(){
   h+='<div class="pct" style="color:'+col+'">'+pct+'%</div>';
   h+='<div class="detail">'+state.score+' / '+state.questions.length+' correct · session complete</div>';
   h+='<div class="forge-status '+(pct>=75?'forge-status--success':'forge-status--focus')+'" style="margin-top:18px;text-align:left"><strong>'+(pct>=75?'Keep the momentum':'Your next session will prioritise this bank')+'</strong><br><span style="font-size:13px">'+(pct>=75?'Try another focused bank or pressure-test your recall in the Crucible.':'The question weighting will bring weaker questions back into rotation so you can repair the gap.')+'</span></div>';
-  h+='<div class="btns">';
-  h+='<button class="btn-primary" id="retry">Retry</button>';
-  h+='<button class="btn-secondary" id="all-banks">All banks</button>';
-  h+='<button class="btn-secondary" id="all-subj">Subjects</button>';
+  h+='<div class="forge-action-row">';
+  h+='<button class="forge-button forge-button--primary" id="retry">Retry</button>';
+  h+='<button class="forge-button forge-button--secondary" id="all-banks">All banks</button>';
+  h+='<button class="forge-button forge-button--secondary" id="all-subj">Subjects</button>';
   h+='</div>';
   h+='<a href="teacher.html" style="display:inline-block;margin-top:18px;font-size:13px;color:var(--slate);text-decoration:none;font-family:JetBrains Mono,monospace">Teacher? View dashboard \u2192</a>';
   h+='<br><a href="profile.html" style="display:inline-block;margin-top:8px;font-size:13px;color:var(--white);text-decoration:none;font-family:JetBrains Mono,monospace">My profile \u2192</a>';

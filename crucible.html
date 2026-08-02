@@ -375,7 +375,7 @@ function renderReady(){
   h+='<div>\u2713 Wrong answers go to your Anvil automatically</div>';
   h+='<div>\u2713 Timer stops for no one</div>';
   h+='</div>';
-  h+='<button class="btn-glass btn-crimson" onclick="startCrucible()" style="margin-top:32px;padding:14px 36px;border-radius:var(--radius-md);font-family:Inter,sans-serif;font-weight:700;font-size:17px;cursor:pointer;letter-spacing:.01em">Begin \u2192</button>';
+  h+='<button class="forge-button forge-button--primary" onclick="startCrucible()" style="margin-top:32px;min-height:48px;padding:0 28px;font-size:17px">Begin \u2192</button>';
   h+='</div>';
   app.innerHTML=h;
 }
@@ -568,10 +568,10 @@ function renderResults(){
     h+='</div>';
   }
 
-  h+='<div class="results-btns">';
-  h+='<button class="btn-danger btn-glass btn-crimson" onclick="buildQuestions();state.phase=\'ready\';render()">Run it again</button>';
-  h+='<button class="btn-ghost btn-glass" onclick="state.phase=\'bank\';render()">Change bank</button>';
-  h+='<button class="btn-ghost btn-glass" onclick="state.phase=state.classSubject?\'bank\':\'subject\';render()">Change subject</button>';
+  h+='<div class="forge-action-row">';
+  h+='<button class="forge-button forge-button--primary" onclick="buildQuestions();state.phase=\'ready\';render()">Run it again</button>';
+  h+='<button class="forge-button forge-button--secondary" onclick="state.phase=\'bank\';render()">Change bank</button>';
+  h+='<button class="forge-button forge-button--secondary" onclick="state.phase=state.classSubject?\'bank\':\'subject\';render()">Change subject</button>';
   h+='</div>';
   h+='<div class="center" style="margin-top:16px">';
   h+='<a href="anvil.html" style="font-size:13px;color:var(--ember);font-family:JetBrains Mono,monospace;text-decoration:none">Rework your Anvil \u2192</a>';

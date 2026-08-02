@@ -118,8 +118,7 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
 /* ── dashboard-specific ── */
 .eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ember);margin-bottom:8px;text-align:center}
 #app h1{text-align:center;margin-bottom:28px}
-.stat-strip{display:flex;align-items:center;gap:22px;flex-wrap:wrap;padding:16px 20px;border:1px solid var(--line);border-radius:var(--radius-lg);margin:0 auto 20px;max-width:620px;background:var(--glass-panel);backdrop-filter:blur(var(--glass-blur));-webkit-backdrop-filter:blur(var(--glass-blur));box-shadow:0 8px 24px rgba(0,0,0,.12);transition:transform .2s ease,box-shadow .2s ease}
-.stat-strip:hover{transform:translateY(-3px);box-shadow:0 14px 32px rgba(0,0,0,.18)}
+.stat-strip{display:flex;align-items:center;gap:22px;flex-wrap:wrap;padding:16px 20px;border:1px solid var(--line);border-radius:var(--radius-lg);margin:0 auto 20px;max-width:620px;background:var(--glass-panel);backdrop-filter:blur(var(--glass-blur));-webkit-backdrop-filter:blur(var(--glass-blur));box-shadow:0 8px 24px rgba(0,0,0,.12)}
 .stat{display:flex;flex-direction:column;gap:2px}
 .stat-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--dim)}
 .stat-value{font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700;color:var(--white)}
@@ -308,7 +307,7 @@ function renderDashboard(){
   var acc=total>0?Math.round((correct/total)*100):0;
   var recent=responses.filter(function(r){return !r.reforge_attempted;}).slice(-20);
   var recentAcc=recent.length?Math.round(recent.filter(function(r){return r.is_correct;}).length/recent.length*100):acc;
-  var trend=recent.length>=5?(recentAcc>acc+5?'improving':recentAcc<acc-5?'slipping':'steady'):'building a baseline';
+  var trend=recent.length>=5?(recentAcc>acc+5?'above your usual level':recentAcc<acc-5?'below your usual level':'close to your usual level'):'building a baseline';
   var xp=calcXP(responses);
   var rank=getRank(xp);
   var streak=calcStreak(responses);
@@ -366,6 +365,18 @@ function renderDashboard(){
     return {key:s,label:SUBJ_LABELS[s]||s,acc:Math.round((subjectData[s].correct/subjectData[s].total)*100)};
   }).sort(function(a,b){return b.acc-a.acc;});
   var strongest=subjectRanked[0]||null;
+  // Topic-level signal for the recommendation: use recent bank performance,
+  // but only surface topics with enough evidence to avoid overreacting to one answer.
+  var topicData={};
+  recent.forEach(function(r){
+    var key=r.bank||r.subject||'unknown';
+    if(!topicData[key]) topicData[key]={total:0,correct:0,label:key};
+    topicData[key].total++; if(r.is_correct) topicData[key].correct++;
+  });
+  var topicRanked=Object.keys(topicData).filter(function(k){return topicData[k].total>=3;}).map(function(k){
+    var d=topicData[k]; return {key:k,label:d.label,acc:Math.round(d.correct/d.total*100),sample:d.total};
+  }).sort(function(a,b){return a.acc-b.acc;});
+  var focusTopic=topicRanked[0]||null;
 
   // Crucible sessions
   var crucibleResponses=responses.filter(function(r){return r.question_id&&r.question_id.indexOf('-CRU')!==-1;});
@@ -384,7 +395,7 @@ function renderDashboard(){
     h+='<div class="ui-state forge-status">';
     h+='<div class="ui-state-title">Your first practice session is waiting.</div>';
     h+='<p class="ui-state-copy">Answer a few questions in Forge to start building your accuracy, strengths, and misconception profile.</p>';
-    h+='<a class="ui-state-action" href="forge-quiz.html">Start practicing →</a>';
+    h+='<a class="ui-state-action forge-button" href="forge-quiz.html">Start practicing →</a>';
     h+='</div>';
     app.innerHTML=h;
     return;
@@ -402,17 +413,26 @@ function renderDashboard(){
   }
   h+='<a class="stat-strip-link" href="profile.html">View profile →</a>';
   h+='</div>';
-  h+='<p class="forge-progress-note">You have answered '+total+' question'+(total===1?'':'s')+' so far'+(streak ? ' and built a '+streak+'-day streak' : '')+'. Recent accuracy is '+recentAcc+'% — <strong>'+trend+'</strong>. '+(activeMCs.length ? activeMCs.length+' misconception'+(activeMCs.length===1?' needs':'s need')+' another pass.' : 'No open misconceptions right now.')+' Keep the loop moving: practice, repair, then pressure-test.</p>';
+  h+='<p class="forge-progress-note">You have answered '+total+' question'+(total===1?'':'s')+' so far'+(streak ? ' and built a '+streak+'-day streak' : '')+'. Recent accuracy is '+recentAcc+'% across '+recent.length+' question'+(recent.length===1?'':'s')+' — <strong>'+trend+'</strong>. '+(activeMCs.length ? activeMCs.length+' misconception'+(activeMCs.length===1?' needs':'s need')+' another pass.' : 'No open misconceptions right now.')+' Keep the loop moving: practice, repair, then pressure-test.</p>';
+
+  if(focusTopic){
+    h+='<div class="forge-card forge-card--focus forge-insight-card">';
+    h+='<div class="card-title">Recent focus</div>';
+    h+='<div class="forge-insight-head"><strong>'+focusTopic.label+'</strong><span class="forge-meta">'+focusTopic.acc+'% · '+focusTopic.sample+' recent questions</span></div>';
+    h+='<p class="ui-state-copy">This is the weakest topic in your recent sample. A short Forge session here is the clearest next test.</p>';
+    h+='<a class="ui-state-action forge-button" href="forge-quiz.html?bank='+encodeURIComponent(focusTopic.key)+'">Practise this topic →</a>';
+    h+='</div>';
+  }
 
   h+='<div class="ui-recommendation forge-card forge-card--focus">';
   if(activeMCs.length>0){
     h+='<div class="ui-state-title">Recommended next: repair '+activeMCs.length+' misconception'+(activeMCs.length===1?'':'s')+'</div>';
     h+='<p class="ui-state-copy">Anvil has the exact errors that need another pass. Clear one now, then return to Forge to test the improvement.</p>';
-    h+='<a class="ui-state-action" href="anvil.html">Open Anvil →</a>';
+    h+='<a class="ui-state-action forge-button" href="anvil.html">Open Anvil →</a>';
   } else {
     h+='<div class="ui-state-title">Recommended next: keep the heat on.</div>';
     h+='<p class="ui-state-copy">No open misconceptions right now. A short Forge session will keep your recall fresh and surface the next useful focus area.</p>';
-    h+='<a class="ui-state-action" href="forge-quiz.html">Continue practice →</a>';
+    h+='<a class="ui-state-action forge-button" href="forge-quiz.html">Continue practice →</a>';
   }
   h+='</div>';
 

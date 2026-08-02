@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Forge — Product insights</title>
+  <link rel="stylesheet" href="css/tokens.css"><link rel="stylesheet" href="css/base.css"><link rel="stylesheet" href="css/components.css">
+  <style>
+    body{background:var(--coal);color:var(--slate);font-family:Inter,sans-serif}.wrap{max-width:960px;margin:0 auto;padding:32px 20px}h1,h2{font-family:Sora,sans-serif;color:var(--white)}h1{font-size:32px;margin:12px 0}.lede{max-width:62ch;color:var(--slate)}.insight-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:28px 0}.insight-stat{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-md);padding:18px}.insight-number{display:block;font:800 28px Sora;color:var(--white);margin-top:4px}.insight-list{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-lg);padding:20px}.event-row{display:flex;justify-content:space-between;gap:12px;padding:11px 0;border-bottom:1px solid var(--line);font-size:13px}.event-row:last-child{border-bottom:0}.event-name{color:var(--white)}@media(max-width:620px){.insight-grid{grid-template-columns:1fr 1fr}.event-row{align-items:flex-start;flex-direction:column;gap:3px}}
+  </style>
+</head>
+<body><main class="wrap">
+  <span class="tag">Internal product view</span><h1>Product insights</h1>
+  <p class="lede">A local summary of anonymous Forge and Crucible events captured on this device. This is a diagnostic view, not a production analytics warehouse.</p>
+  <div id="app" aria-live="polite"></div>
+</main>
+<script src="scripts/forge-product-analytics.js"></script>
+<script>
+(function(){
+  var events=[];try{events=JSON.parse(localStorage.getItem('forge-product-events')||'[]');}catch(e){}
+  var counts={};events.forEach(function(e){counts[e.name]=(counts[e.name]||0)+1;});
+  var starts=(counts.forge_session_started||0)+(counts.crucible_started||0);
+  var completes=(counts.forge_session_completed||0)+(counts.crucible_completed||0);
+  var completionRate=starts?Math.round(completes/starts*100):0;
+  var h='<div class="insight-grid">';
+  h+='<div class="insight-stat"><span class="tag">Events</span><span class="insight-number">'+events.length+'</span></div>';
+  h+='<div class="insight-stat"><span class="tag">Runs started</span><span class="insight-number">'+starts+'</span></div>';
+  h+='<div class="insight-stat"><span class="tag">Run completion</span><span class="insight-number">'+completionRate+'%</span></div></div>';
+  h+='<section class="insight-list"><h2>Event breakdown</h2>';
+  Object.keys(counts).sort().forEach(function(name){h+='<div class="event-row"><span class="event-name">'+name+'</span><span class="forge-meta">'+counts[name]+'</span></div>';});
+  if(!events.length)h+='<p class="forge-status" style="margin-top:16px">No product events have been captured on this device yet.</p>';
+  h+='</section><p style="margin-top:16px"><button class="forge-button forge-button--secondary" id="clear">Clear local events</button></p>';
+  document.getElementById('app').innerHTML=h;
+  document.getElementById('clear').onclick=function(){localStorage.removeItem('forge-product-events');location.reload();};
+})();
+</script>
+</body></html>
