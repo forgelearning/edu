@@ -55,7 +55,7 @@ ForgeSidebar.mount({
 });
 </script>
 <script src="forge-auth.js"></script>
-<script src="scripts/forge-assignment-progress.js"></script><script defer src="scripts/forge-student-badges.js?v=20260807"></script>
+<script src="scripts/forge-assignment-progress.js"></script><script defer src="scripts/forge-student-badges.js?v=20260808"></script>
 <div class="wrap">
   <div id="app" aria-live="polite"></div>
 </div>
@@ -66,6 +66,13 @@ ForgeSidebar.mount({
 // Replace these with your Supabase project values (Settings > API)
 var SUPABASE_URL = ForgeAPI.config.url;
 var SUPABASE_KEY = ForgeAPI.config.key;
+window.ForgePersistenceErrors = window.ForgePersistenceErrors || [];
+function recordPersistenceError(error, row, source) {
+  var detail = {source:source || 'response', status:error && error.status || null, message:error && error.message || String(error || 'Unknown persistence error'), student_id:row && row.student_id, class_id:row && row.class_id, bank:row && row.bank, question_id:row && row.question_id};
+  window.ForgePersistenceErrors.push(detail);
+  console.error('Forge response persistence failed:', detail);
+  return detail;
+}
 
 var supa = {
   _configured: function() { return !!ForgeAPI.config.url; },
@@ -134,9 +141,9 @@ function logResponse(q, selectedKey, isCorrect, isReforge, reforgeCorrect) {
         'Prefer': 'return=minimal'
       },
       body: JSON.stringify(row)
-    }).then(function() { return true; }).catch(function(e) { console.error('logResponse failed:', e); return false; });
+    }).then(function() { return true; }).catch(function(e) { recordPersistenceError(e, row, 'authenticated-response'); return false; });
   } else {
-    return supa.insert('responses', row).then(function() { return true; }).catch(function(e) { console.error('logResponse failed:', e); return false; });
+    return supa.insert('responses', row).then(function() { return true; }).catch(function(e) { recordPersistenceError(e, row, 'anonymous-response'); return false; });
   }
 }
 
