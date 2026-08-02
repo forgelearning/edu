@@ -454,7 +454,7 @@ function renderProfile(){
         h += '<tr class="forge-u-1jmaj5p">';
         h += '<td class="forge-u-9z781z">'+(SUBJ_LABELS[subj]||subj)+'</td>';
         h += '<td class="forge-u-ssl18s">'+sd.total+'<span class="forge-u-1kd1vsw"> / '+bankCount+' bank'+(bankCount!==1?'s':'')+'</span></td>';
-        h += '<td style="padding:10px 8px;text-align:right;font-family:\'JetBrains Mono\',monospace;font-size:13px;font-weight:600;color:'+scol+'">'+sacc+'%</td>';
+        h += '<td class="profile-accuracy" style="padding:10px 8px;text-align:center;font-family:\'JetBrains Mono\',monospace;font-size:13px;font-weight:600;color:'+scol+'">'+sacc+'%</td>';
         h += '<td class="forge-u-1rlm34s">';
         if (topMCLabel) {
           h += '<span class="forge-u-e2msq1">'+topMC+'</span>';
