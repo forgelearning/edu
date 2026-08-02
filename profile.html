@@ -57,7 +57,7 @@ ForgeSidebar.mount({
 
 <script>if(window.ForgeAuth)ForgeAuth.adoptHashSession();</script>
 <script src="data/forge-data.js?v=20260805"></script>
-<script src="scripts/forge-classes.js"></script>
+<script src="scripts/forge-classes.js?v=20260813"></script>
 <script>
 var SUPABASE_URL = ForgeAPI.config.url;
 var SUPABASE_KEY = ForgeAPI.config.key;
@@ -683,10 +683,13 @@ function forgeSignOut(){
       st.studentId   = freeSession.studentId;
       st.studentName = freeSession.name;
       st.classId     = null;
-      supaGet('responses','student_id=eq.'+freeSession.studentId+'&order=created_at.desc').then(function(r){
-        st.responses = r || [];
+      // anon cannot SELECT responses directly — the read succeeds and returns
+      // nothing. Go through the token-gated RPC instead.
+      ForgeClasses.fetchFreeResponses(SUPABASE_URL, SUPABASE_KEY, freeSession, function(r){
+        if (r === null) { st.responses = []; st.loadError = true; }
+        else { st.responses = r.slice().reverse(); }
         renderProfile();
-      }).catch(function(){ st.loadError=true; renderProfile(); });
+      });
       return;
     }
     // Check class session

@@ -235,13 +235,41 @@
     rpc(supabaseUrl, supabaseKey, 'get_student_own_responses', {
       p_student_id: anchor.studentId, p_code: anchor.classCode, p_name: anchor.studentName
     }).then(function (rows) {
-      done((Array.isArray(rows) ? rows : []).map(function (r) {
+      var mapped = (Array.isArray(rows) ? rows : []).map(function (r) {
         r._studentId = anchor.studentId;
         r._classId   = anchor.classId || null;
         r._subject   = anchor.subject || null;
         return r;
-      }));
+      });
+      /* Chronological, same as fetchAllResponses. get_student_own_responses
+         returns newest first, and the Anvil replays these in order to work out
+         which misconceptions are still live — unsorted, it counts a streak
+         backwards and reads a repaired misconception as unrepaired. */
+      mapped.sort(function (a, b) { return (a.created_at || '') < (b.created_at || '') ? -1 : 1; });
+      done(mapped);
     }).catch(function () { done([]); });
+  }
+
+  /* Responses for a free, no-account student.
+   *
+   * Free students have no class and no class code, so get_student_own_responses
+   * can never match them — its EXISTS clause joins students to classes. And a
+   * direct read of the responses table is worse than useless: anon has no
+   * SELECT policy, so it returns 200 with [], which every caller here would
+   * otherwise render as "you have answered nothing".
+   *
+   * The device's free token is the credential. Sessions created before the
+   * token was persisted cannot prove ownership; they resolve to null so the
+   * caller can say so rather than claim the student has no history.
+   */
+  function fetchFreeResponses(supabaseUrl, supabaseKey, freeSession, done) {
+    if (!freeSession || !freeSession.studentId || !freeSession.freeToken) { done(null); return; }
+    rpc(supabaseUrl, supabaseKey, 'get_free_student_responses', {
+      p_student_id: freeSession.studentId,
+      p_free_token: freeSession.freeToken
+    }).then(function (rows) {
+      done(Array.isArray(rows) ? rows : []);
+    }).catch(function () { done(null); });
   }
 
   global.ForgeClasses = {
@@ -250,6 +278,7 @@
     forSubject: forSubject, subjects: subjects, adopt: adopt,
     backfillSubjects: backfillSubjects, fetchAllResponses: fetchAllResponses,
     syncFromServer: syncFromServer, linkToServer: linkToServer,
-    fetchLinkedResponses: fetchLinkedResponses
+    fetchLinkedResponses: fetchLinkedResponses,
+    fetchFreeResponses: fetchFreeResponses
   };
 })(window);

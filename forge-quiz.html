@@ -35,7 +35,7 @@
 <script>if(localStorage.getItem('forge-theme')==='light'){document.documentElement.setAttribute('data-theme','light');}</script>
 <script src="scripts/forge-logo.js"></script>
 <script src="scripts/forge-auth-card.js"></script>
-<script src="scripts/forge-classes.js"></script>
+<script src="scripts/forge-classes.js?v=20260813"></script>
 <script src="scripts/forge-sidebar.js?v=20260812"></script>
 <script src="scripts/forge-product-analytics.js"></script>
 <script src="scripts/forge-page-actions.js"></script>
@@ -606,8 +606,11 @@ function loadFreeSession() {
   try { return JSON.parse(localStorage.getItem(FREE_SESSION_KEY) || 'null'); } catch(e) { return null; }
 }
 
-function saveFreeSession(name, studentId) {
-  try { localStorage.setItem(FREE_SESSION_KEY, JSON.stringify({ name: name, studentId: studentId })); } catch(e) {}
+// The free token is this device's credential for reading its own responses
+// back (get_free_student_responses). Without it the Anvil cannot see anything
+// the student has answered, so it has to survive in the session.
+function saveFreeSession(name, studentId, freeToken) {
+  try { localStorage.setItem(FREE_SESSION_KEY, JSON.stringify({ name: name, studentId: studentId, freeToken: freeToken || null })); } catch(e) {}
 }
 
 function generateFreeId() {
@@ -764,12 +767,15 @@ function renderJoin() {
       state.studentId   = existingSession.studentId;
       state.classId     = null;
       state.isPaid      = false;
-      saveFreeSession(name, existingSession.studentId);
+      saveFreeSession(name, existingSession.studentId, existingSession.freeToken);
 
-      // Load their weight map for spaced repetition
-      supa.select('responses', { student_id: existingSession.studentId }).then(function(responses) {
+      // Load their weight map for spaced repetition. This has to go through the
+      // token-gated RPC: a direct read as anon returns an empty list, which
+      // silently gave every returning free student a blank weight map and so
+      // no spaced repetition at all.
+      ForgeClasses.fetchFreeResponses(SUPABASE_URL, SUPABASE_KEY, existingSession, function(responses) {
         state.weightMap = buildWeightMap(responses || []);
-      }).catch(function() { state.weightMap = {}; });
+      });
 
       settleRequestedSubject();
       render();
@@ -783,7 +789,7 @@ function renderJoin() {
       state.studentId   = studentId;
       state.classId     = null;
       state.isPaid      = false;
-      saveFreeSession(name, studentId || token);
+      saveFreeSession(name, studentId || token, token);
       settleRequestedSubject();
       render();
     }).catch(function() {
@@ -792,7 +798,7 @@ function renderJoin() {
       state.studentId   = null;
       state.classId     = null;
       state.isPaid      = false;
-      saveFreeSession(name, token);
+      saveFreeSession(name, token, token);
       settleRequestedSubject();
       render();
     });
