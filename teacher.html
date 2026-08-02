@@ -1551,10 +1551,12 @@ function renderSpecBreakdown(responses) {
   responses.forEach(function(r) {
     var sp = specForResponse(r);
     if (!sp || sp === 'TECH') return;
-    if (!specData[sp]) specData[sp] = { total: 0, correct: 0, students: {} };
+    if (!specData[sp]) specData[sp] = { total: 0, correct: 0, students: {}, subjects: {} };
     specData[sp].total++;
     if (r.is_correct) specData[sp].correct++;
     if (r.student_id) specData[sp].students[r.student_id] = true;
+    var responseSubject = subjectForResponse(r);
+    if (responseSubject) specData[sp].subjects[responseSubject] = true;
   });
 
   var specKeys = Object.keys(specData).sort();
@@ -1584,7 +1586,11 @@ function renderSpecBreakdown(responses) {
     var col = acc >= 70 ? 'var(--good)' : acc >= 50 ? 'var(--hot)' : 'var(--bad)';
     h += '<tr class="forge-u-1jhoksp">';
     h += '<td class="forge-u-yj4cup">' + sp + '</td>';
-    var specSubject = SPEC_TO_SUBJECT[sp] || (/^(ECON|ECON-)/i.test(sp) ? 'A Level Economics' : 'Subject not mapped');
+    var subjectKeys = Object.keys(d.subjects || {});
+    var subjectLabels = subjectKeys.map(function (key) {
+      return SPEC_TO_SUBJECT[key] || (typeof SUBJECTS !== 'undefined' && SUBJECTS[key] ? SUBJECTS[key].label : key);
+    });
+    var specSubject = subjectLabels.length ? subjectLabels.join(' · ') : (SPEC_TO_SUBJECT[sp] || (/^(ECON|ECON-)/i.test(sp) ? 'A Level Economics' : 'Subject not mapped'));
     h += '<td class="forge-u-16oyzks">' + specSubject + '</td>';
     h += '<td class="forge-u-19j2vc3">' + d.total + '</td>';
     h += '<td class="forge-u-19j2vc3">' + studentCount + '</td>';
