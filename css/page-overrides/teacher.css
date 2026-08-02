@@ -129,6 +129,13 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
 .home-actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center;font-size:13px;color:#8A857E}
 .home-link{background:none;border:none;padding:0;font:inherit;font-weight:600;color:var(--ember);cursor:pointer}
 .home-link:hover{color:var(--hot)}
+.insight-list{margin-top:var(--space-7);padding:var(--space-6);border:1px solid var(--line);border-radius:var(--radius-lg);background:var(--glass-panel);box-shadow:0 12px 30px -24px rgba(0,0,0,.45)}
+.insight-list h2{margin:var(--space-2) 0 var(--space-5);font-size:24px}
+.insight-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--space-3);margin-bottom:var(--space-4)}
+.insight-stat{display:flex;flex-direction:column;gap:var(--space-2);padding:var(--space-4);border:1px solid var(--line);border-radius:var(--radius-md);background:var(--panel-2)}
+.insight-stat .tag{font-size:10px;text-align:left;margin:0}
+.insight-number{color:var(--white);font:700 24px/1 'Sora',sans-serif;font-variant-numeric:tabular-nums}
+@media(max-width:600px){.insight-list{padding:var(--space-5)}.insight-grid{grid-template-columns:1fr}.insight-list h2{font-size:21px}}
 
 /* login tabs */
 .login-tabs{display:flex;gap:0;background:var(--panel-2);border:1px solid var(--line);border-radius:var(--radius-md);padding:3px;margin-bottom:22px}
