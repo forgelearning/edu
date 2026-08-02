@@ -442,7 +442,6 @@ function renderProfile(){
       h += '<th class="forge-u-s6yio4">Subject</th>';
       h += '<th class="forge-u-dzjm5t">Qs answered</th>';
       h += '<th class="forge-u-dzjm5t">Accuracy</th>';
-      h += '<th class="forge-u-s6yio4">Progress</th>';
       h += '<th class="forge-u-s6yio4">Top misconception</th>';
       h += '</tr></thead><tbody>';
       subjects.sort(function(a,b){return subjectData[b].total-subjectData[a].total;}).forEach(function(subj) {
@@ -456,7 +455,6 @@ function renderProfile(){
         h += '<td class="forge-u-9z781z">'+(SUBJ_LABELS[subj]||subj)+'</td>';
         h += '<td class="forge-u-ssl18s">'+sd.total+'<span class="forge-u-1kd1vsw"> / '+bankCount+' bank'+(bankCount!==1?'s':'')+'</span></td>';
         h += '<td style="padding:10px 8px;text-align:right;font-family:\'JetBrains Mono\',monospace;font-size:13px;font-weight:600;color:'+scol+'">'+sacc+'%</td>';
-        h += '<td class="forge-u-7tbz36"><div class="forge-u-1rh0em3"><div style="height:100%;width:'+sacc+'%;background:'+scol+';border-radius:var(--radius-xs)"></div></div></td>';
         h += '<td class="forge-u-1rlm34s">';
         if (topMCLabel) {
           h += '<span class="forge-u-e2msq1">'+topMC+'</span>';
