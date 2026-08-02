@@ -143,6 +143,13 @@
 .audit-test .audit-school-card .audit-school-trend{color:var(--good)}
 .audit-test .audit-mini-bars{display:flex;align-items:end;gap:5px;height:32px;margin-top:12px}
 .audit-test .audit-mini-bars i{display:block;flex:1;background:var(--ember);border-radius:3px 3px 0 0;opacity:.75}
+.audit-test .audit-bar-42{height:42%}
+.audit-test .audit-bar-64{height:64%}
+.audit-test .audit-bar-58{height:58%}
+.audit-test .audit-bar-82{height:82%}
+.audit-test .audit-bar-72{height:72%}
+.audit-test .audit-bar-94{height:94%}
+.audit-test .audit-bar-88{height:88%}
 .audit-test .audit-school-table{margin-top:16px;border:1px solid var(--line);border-radius:var(--radius-md);overflow:hidden}
 .audit-test .audit-school-table>div{display:grid;grid-template-columns:1.1fr .5fr 1.4fr .4fr;gap:10px;align-items:center;padding:12px 14px;border-top:1px solid var(--line);font-size:12px}
 .audit-test .audit-school-table>div:first-child{border-top:0}
@@ -294,6 +301,12 @@ body.audit-test #subjects ~ section#audit-faq{display:block!important;padding:72
 .audit-test .audit-assignment-progress{display:flex;justify-content:space-between;gap:8px;margin-top:14px;color:var(--slate);font-size:10px}
 .audit-test .audit-progress-track{height:5px;margin:6px 0 12px;overflow:hidden;border-radius:99px;background:var(--line)}
 .audit-test .audit-progress-track i{display:block;height:100%;border-radius:99px;background:var(--ember)}
+.audit-test .audit-progress-0{width:0%}
+.audit-test .audit-progress-60{width:60%}
+.audit-test .audit-progress-63{width:63%}
+.audit-test .audit-heat-48{width:48%}
+.audit-test .audit-heat-70{width:70%}
+.audit-test .audit-heat-100{width:100%}
 .audit-test .audit-topic-links{display:flex;gap:10px;flex-wrap:wrap}
 .audit-test .audit-topic-links a,.audit-test .audit-profile-card a{color:var(--ember);font-size:10px;text-decoration:none}
 .audit-test .audit-assignment-card small{color:var(--dim);font-size:10px}
