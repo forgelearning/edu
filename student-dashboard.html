@@ -114,7 +114,7 @@ function calcStreak(responses){
 
 var st={studentId:null,classId:null,studentName:null,responses:[],isPaid:false,isTrial:false,trialDaysLeft:0,paidSubjects:[],isGCSE:false,loadError:false};
 var app=document.getElementById('app');
-ForgeState.loading(app, { label: 'Loading your dashboard', body: 'Getting your progress and focus areas ready.' });
+ForgeApp.loading(app, { label: 'Loading your dashboard', body: 'Getting your progress and focus areas ready.' });
 
 function renderLogin(){
   var f=ForgeAuthCard.field('p-name','Your first name',{placeholder:'e.g. Alex',autocomplete:'given-name'})
@@ -269,7 +269,7 @@ function renderDashboard(){
 
   if(total===0){
     if(st.loadError){
-      h+=ForgeState.html('error',{label:'Your dashboard data is unavailable',body:'We couldn’t retrieve your progress. Refresh and try again.',action:{label:'Retry dashboard',href:location.href}});
+      h+=ForgeApp.stateHtml('error',{label:'Your dashboard data is unavailable',body:'We couldn’t retrieve your progress. Refresh and try again.',action:{label:'Retry dashboard',href:location.href}});
       app.innerHTML=h;
       return;
     }
@@ -342,7 +342,7 @@ function renderDashboard(){
 
   h+='</div>';
 
-  app.innerHTML=(st.loadError?ForgeState.html('error',{label:'Some dashboard data is unavailable',body:'We couldn’t retrieve the latest progress. Refresh and try again.',action:{label:'Retry dashboard',href:location.href}}):'')+h;
+  app.innerHTML=(st.loadError?ForgeApp.stateHtml('error',{label:'Some dashboard data is unavailable',body:'We couldn’t retrieve the latest progress. Refresh and try again.',action:{label:'Retry dashboard',href:location.href}}):'')+h;
 }
 
 

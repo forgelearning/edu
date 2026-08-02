@@ -772,7 +772,7 @@ function subjectLabel(key) {
 }
 
 function renderTeacherHome() {
-  ForgeState.loading(app, { label: 'Loading your classes', body: 'Getting your classes and student data ready.' });
+  ForgeApp.loading(app, { label: 'Loading your classes', body: 'Getting your classes and student data ready.' });
 
   var owned = (currentTeacher && currentTeacher.id)
     ? supaGet('classes', 'teacher_user_id=eq.' + encodeURIComponent(currentTeacher.id) + '&order=created_at.desc')
@@ -794,7 +794,7 @@ function renderTeacherHome() {
 function drawTeacherHome(classes, loadError) {
   var h = '';
   if (loadError) {
-    h = ForgeState.html('error', { label: 'Your classes are unavailable', body: 'We couldn’t retrieve your classes. Check your connection and try again.' });
+    h = ForgeApp.stateHtml('error', { label: 'Your classes are unavailable', body: 'We couldn’t retrieve your classes. Check your connection and try again.' });
   } else if (!classes.length) {
     h += ForgeState.html('empty', { label: 'No classes yet', body: 'Create your first class to start seeing student data.', action: { label: 'Create a class', href: '#' } });
   } else {

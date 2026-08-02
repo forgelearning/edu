@@ -463,7 +463,7 @@ for(var bk in BANKS){
 var CLEAR_THRESHOLD = 3; // consecutive correct to resolve
 var app = document.getElementById('app');
 var anvilState = { studentId:null, classId:null, studentName:null, classSubject:null, responses:[], misconceptions:{}, loadError:false };
-ForgeState.loading(app, { label: 'Loading Anvil', body: 'Finding the concepts that need another look.' });
+ForgeApp.loading(app, { label: 'Loading Anvil', body: 'Finding the concepts that need another look.' });
 
 function renderLogin(){
   var f=ForgeAuthCard.field('a-name','Your first name',{placeholder:'e.g. Alex',autocomplete:'given-name'})
@@ -641,7 +641,7 @@ function renderAnvilHome(){
     });
   }
 
-  app.innerHTML=(anvilState.loadError?ForgeState.html('error',{label:'Anvil data is unavailable',body:'We couldn’t retrieve your misconceptions. Refresh and try again.',action:{label:'Retry Anvil',href:location.href}}):'')+h;
+  app.innerHTML=(anvilState.loadError?ForgeApp.stateHtml('error',{label:'Anvil data is unavailable',body:'We couldn’t retrieve your misconceptions. Refresh and try again.',action:{label:'Retry Anvil',href:location.href}}):'')+h;
 }
 
 function shuffleArr(arr){

@@ -83,7 +83,7 @@ function supaInsert(t,row){
 var CRUCIBLE_TIME = 5 * 60; // 5 minutes
 var QUESTIONS_PER_RUN = 6;
 var CRUCIBLE_RUN_PREFIX = 'forge-crucible-run:';
-ForgeState.loading(document.getElementById('app'), { label: 'Loading Crucible', body: 'Getting your timed practice ready.' });
+ForgeApp.loading(document.getElementById('app'), { label: 'Loading Crucible', body: 'Getting your timed practice ready.' });
 function crucibleRunKey() { return CRUCIBLE_RUN_PREFIX + String(state.studentId || 'anon') + ':' + String(state.classId || 'none'); }
 function loadCrucibleRun() { try { return JSON.parse(localStorage.getItem(crucibleRunKey()) || 'null'); } catch(e) { return null; } }
 function saveCrucibleRun() { try { localStorage.setItem(crucibleRunKey(), JSON.stringify({status:'active',subject:state.subject,bank:state.bank,questionIds:state.questions.map(function(q){return q.id;}),answers:state.answers.map(function(a){return {id:a.q.id,selected:a.selected,correct:a.correct,timedOut:a.timedOut};}),idx:state.idx,timeLeft:state.timeLeft,updatedAt:Date.now()})); } catch(e) {} }

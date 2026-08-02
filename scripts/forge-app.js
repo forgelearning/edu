@@ -19,6 +19,16 @@
     return window.ForgeState.render(target, kind, options);
   }
 
+  function stateHtml(kind, options) {
+    if (!window.ForgeState || typeof window.ForgeState.html !== 'function') return '';
+    return window.ForgeState.html(kind, options);
+  }
+
+  function loading(target, options) {
+    if (!window.ForgeState || typeof window.ForgeState.loading !== 'function') return null;
+    return window.ForgeState.loading(target, options);
+  }
+
   function retry(target, options, onRetry) {
     var button = stateRender(target, 'error', options);
     if (button && typeof onRetry === 'function') button.addEventListener('click', onRetry);
@@ -50,6 +60,8 @@
     state: window.ForgeState || null,
     navigate: navigate,
     stateRender: stateRender,
+    stateHtml: stateHtml,
+    loading: loading,
     retry: retry,
     dashboardCard: dashboardCard,
     contentStatus: contentStatus
