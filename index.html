@@ -31,10 +31,17 @@
 <link rel="stylesheet" href="css/components.css?v=20260812">
 <link rel="stylesheet" href="css/discovery.css">
   <link rel="stylesheet" href="css/generated-utilities.css">
-  <link rel="stylesheet" href="css/page-overrides/index.css?v=20260802-ui">
+<link rel="stylesheet" href="css/page-overrides/index.css?v=20260802-ui">
+  <link rel="stylesheet" href="css/page-overrides/audit-test.css?v=20260802-9">
   <link rel="stylesheet" href="css/content-status.css">
 </head>
 <body>
+<script>
+// Review-only homepage experiment. Remove the query string to see the current page.
+if (new URLSearchParams(window.location.search).get('audit') === '1') {
+  document.body.classList.add('audit-test');
+}
+</script>
 <script src="scripts/forge-content-status.js?v=20260812"></script>
 <script>
 // If Supabase redirected a password-reset link here (Site URL pointing at root),
@@ -90,8 +97,8 @@ if (localStorage.getItem('forge-theme') === 'light') {
         <a href="privacy.html" class="nav-drop-divider">Privacy &amp; DPA</a>
       </div>
     </div>
-    <a class="nav-link nav-hide-sm" href="guides.html">Guides</a>
-    <a class="nav-link nav-hide-sm" href="#pricing">Pricing</a>
+    <a class="nav-link nav-hide-sm audit-nav-secondary" href="guides.html">Guides</a>
+    <a class="nav-link nav-hide-sm audit-nav-secondary" href="#pricing">Pricing</a>
     <a class="nav-link nav-hide-sm" href="forge-quiz.html?mode=class">Sign in</a>
     <a class="cta btn-glass btn-ember" href="#waitlist">Get started</a>
     <button class="theme-toggle" id="theme-toggle" data-forge-action="theme" aria-label="Toggle light/dark theme">☀</button>
@@ -143,6 +150,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
 </div>
 </header>
 
+<main id="main-content">
 <section id="how">
 <div class="wrap">
   <p class="tag eyebrow reveal">The Forge loop</p>
@@ -645,6 +653,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
 
 </div>
 </section>
+<div class="audit-proof-note" aria-label="Example data note">Example product view — figures shown here are illustrative.</div>
 <section id="teachers">
 <div class="wrap">
   <p class="tag eyebrow reveal">For teachers</p>
@@ -667,7 +676,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
     <div class="dash-card reveal">
       <div class="dash-head">
         <span class="rt">Year 12 Economics · Teacher dashboard</span>
-        <span class="tag">Live data</span>
+        <span class="tag">Example teacher view</span>
       </div>
       <div class="landing-recommendation landing-recommendation--teacher">
         <span class="landing-recommendation-label">Next best action</span>
@@ -952,6 +961,36 @@ if (localStorage.getItem('forge-theme') === 'light') {
     </div>
   </div>
 
+</div>
+</section>
+<section id="schools" class="audit-only-preview">
+<div class="wrap">
+  <p class="tag eyebrow reveal">For schools</p>
+  <h2 class="reveal">One view across every classroom.</h2>
+  <p class="sect-lede reveal">Leadership sees where a department needs support, while teachers keep the detail they need to act next.</p>
+  <div class="audit-app-preview audit-app-preview--school reveal">
+    <aside class="audit-app-sidebar" aria-label="School overview navigation">
+      <div class="audit-app-brand"><span class="audit-app-mark">F</span><span>Forge</span></div>
+      <span class="audit-app-context">School overview</span>
+      <button class="audit-side-item active" type="button" data-school-view="overview"><span>▦</span> Overview</button>
+      <button class="audit-side-item" type="button" data-school-view="departments"><span>⌘</span> Departments</button>
+      <button class="audit-side-item" type="button" data-school-view="impact"><span>↗</span> Impact</button>
+      <span class="audit-app-sidebar-foot">Read-only leadership view</span>
+    </aside>
+    <div class="audit-app-main">
+      <div class="audit-app-topline"><span class="rt">Northbridge Sixth Form · All departments</span><span class="tag">Example school view</span></div>
+      <div class="audit-school-panel" data-school-panel="overview">
+        <div class="audit-school-grid">
+          <div class="audit-school-card audit-school-card--wide"><span class="audit-school-label">Students active this week</span><strong>184</strong><span class="audit-school-trend">↑ 18% from last week</span><div class="audit-mini-bars"><i style="height:42%"></i><i style="height:64%"></i><i style="height:58%"></i><i style="height:82%"></i><i style="height:72%"></i><i style="height:94%"></i><i style="height:88%"></i></div></div>
+          <div class="audit-school-card"><span class="audit-school-label">Open misconceptions</span><strong class="forge-text-hot">47</strong><span class="audit-school-trend">Across 6 departments</span></div>
+          <div class="audit-school-card"><span class="audit-school-label">Classes needing action</span><strong>8</strong><span class="audit-school-trend">3 high-priority signals</span></div>
+        </div>
+        <div class="audit-school-table"><div class="audit-school-table-head"><span>Department</span><span>Students</span><span>Priority signal</span><span>Action</span></div><div><b>Economics</b><span>42</span><span class="forge-text-hot">Inflation misconceptions</span><a href="teacher.html">View →</a></div><div><b>Biology</b><span>36</span><span class="forge-text-hot">Transport &amp; exchange</span><a href="teacher.html">View →</a></div><div><b>Psychology</b><span>28</span><span class="forge-text-good">Stable</span><a href="teacher.html">View →</a></div></div>
+      </div>
+      <div class="audit-school-panel hidden" data-school-panel="departments"><div class="audit-school-empty"><span class="tag">Department view</span><h3>Compare patterns without exposing student detail.</h3><p>See which departments have the highest volume of unresolved misconceptions, then open a teacher dashboard for the next step.</p></div></div>
+      <div class="audit-school-panel hidden" data-school-panel="impact"><div class="audit-school-empty"><span class="tag">Impact view</span><h3>Track whether the pattern is changing.</h3><p>Leadership can follow active misconceptions, resolved misconceptions and weekly participation across the school.</p></div></div>
+    </div>
+  </div>
 </div>
 </section>
 <section id="subjects">
@@ -1473,7 +1512,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
 <div class="wrap">
   <p class="tag eyebrow reveal">Straight from the bank</p>
   <h2 class="reveal">Try three real questions — no sign-up.</h2>
-  <p class="sect-lede reveal">Real questions from across the Forge banks — GCSE and A Level, spanning Economics, Geography, Psychology, Law, Biology, History, Chemistry, Maths, Sociology, and Physics. Refreshes on every visit. Every distractor is tagged to a documented misconception from examiners' reports.</p>
+  <p class="sect-lede reveal">Three real questions from the Forge banks — Economics, Psychology, and Law in this preview. More GCSE and A Level subjects are available in the subject directory. Every distractor is tagged to a documented misconception from examiners' reports.</p>
   <div class="bank-nav">
     <span class="bank-progress" id="bankProgress">Question 1 of 3</span>
     <div class="bank-nav-btns">
@@ -1685,6 +1724,62 @@ if (localStorage.getItem('forge-theme') === 'light') {
   </div>
 </div>
 </section>
+<div class="audit-proof-note audit-proof-note--bottom" aria-label="Example data note">Subject totals reflect the current content bank. Dashboard figures above are illustrative.</div>
+<section id="audit-sample-bank" class="audit-sample-bank subject-section subject-section--spaced">
+<div class="wrap">
+  <p class="tag eyebrow reveal">Straight from the bank</p>
+  <h2 class="reveal">Try three real questions — no sign-up.</h2>
+  <p class="sect-lede reveal">Three real questions from the Forge banks — Economics, Psychology, and Law in this preview. More GCSE and A Level subjects are available in the subject directory. Every distractor is tagged to a documented misconception from examiners' reports.</p>
+  <div class="bank-nav"><span class="bank-progress" id="auditSampleProgress">Question 1 of 3</span><div class="bank-nav-btns"><button type="button" class="bank-nav-btn" id="auditSamplePrev" aria-label="Previous question">← Prev</button><button type="button" class="bank-nav-btn" id="auditSampleNext" aria-label="Next question">Next →</button></div></div>
+  <div id="auditSampleTabs" class="audit-sample-tabs" role="tablist" aria-label="Sample question cards"></div>
+  <div class="bank subject-bank" id="auditSampleBank">
+    <div class="bq active">
+      <div class="bq-head"><span class="spec mono"><b>Economics · 2.1.2</b></span><span class="fmt">Calculation</span></div>
+      <p class="stimulus">The CPI index stands at 130 in 2025 and 133.9 in 2026.</p>
+      <p class="q">What is the inflation rate for 2026?</p>
+      <button class="opt forge-option" data-mc="MC-INF-03" data-s="CPI is an <b>index</b>; the inflation rate is the <b>percentage change</b> over 12 months — not the gap read as a percent. (133.9 − 130) ÷ 130 × 100 = 3.0%.">33.9%</button>
+      <button class="opt forge-option" data-right="1">3.0%</button>
+      <button class="opt forge-option" data-mc="MC-INF-03" data-s="3.9 is the raw point change, but a rate needs a base: divide by the starting index. (133.9 − 130) ÷ 130 × 100 = 3.0%.">3.9%</button>
+      <button class="opt forge-option" data-mc="MC-INF-03" data-s="That's the index level itself. Inflation compares the index with the same month last year: (133.9 − 130) ÷ 130 × 100 = 3.0%.">130%</button>
+      <div class="scaffold"><span class="stag"></span><p></p></div><p class="praise">3.0% — change over base, times 100. That's the whole method. ✦</p>
+    </div>
+    <div class="bq">
+      <div class="bq-head"><span class="spec mono"><b>Economics · 2.1.2</b></span><span class="fmt">Concept</span></div>
+      <p class="stimulus">UK inflation falls from 4.2% to 2.1%. A headline reads: <em>"Prices tumble as inflation halves."</em></p>
+      <p class="q">Which statement about this economy is correct?</p>
+      <button class="opt forge-option" data-mc="MC-INF-01" data-s="Disinflation is a slowdown in the <b>rate</b> of inflation — prices are still rising, just more slowly. Deflation only occurs when the rate goes below zero and the price level actually falls.">The average price level is falling</button>
+      <button class="opt forge-option" data-right="1">The average price level is rising, but more slowly than before</button>
+      <button class="opt forge-option" data-mc="MC-INF-02" data-s="If inflation is positive at all, the cost of living is still going <b>up</b>. A fall from 4.2% to 2.1% means living costs rose 2.1% — the headline is wrong, and examiners test exactly this.">The cost of living has fallen by 2.1%</button>
+      <button class="opt forge-option" data-mc="MC-INF-01" data-s="Disinflation is a slowdown in the <b>rate</b> of inflation — prices are still rising, just more slowly. Deflation only occurs when the rate goes below zero and the price level actually falls.">The economy has entered deflation</button>
+      <div class="scaffold"><span class="stag"></span><p></p></div><p class="praise">Rising more slowly is disinflation, not deflation — most students miss this. ✦</p>
+    </div>
+    <div class="bq">
+      <div class="bq-head"><span class="spec mono"><b>Economics · 2.1.2 · Synoptic</b></span><span class="crucible-note">Crucible</span></div>
+      <table class="data"><tr><th></th><th>2024</th><th>2025</th><th>2026</th></tr><tr><td>CPI inflation</td><td>5.0%</td><td>2.0%</td><td>−0.5%</td></tr><tr><td>Pay growth</td><td>4.0%</td><td>3.5%</td><td>1.0%</td></tr></table>
+      <p class="q">Which statement is supported by the data?</p>
+      <button class="opt forge-option" data-mc="MC-INF-01" data-s="Prices only fall when inflation is <b>negative</b>. In 2024 and 2025 inflation was positive — only 2026 (−0.5%) is deflation.">Prices fell continuously from 2024 to 2026</button>
+      <button class="opt forge-option" data-right="1">Real pay fell in 2024 but rose in 2025 and 2026</button>
+      <button class="opt forge-option" data-mc="MC-INF-10" data-s="Compare nominal with inflation: Pay +1.0% against inflation −0.5% is a real pay rise of ~1.5% — the strongest year.">Workers were worse off in 2026 because pay growth was only 1%</button>
+      <button class="opt forge-option" data-mc="MC-INF-02" data-s="Inflation of 2.0% is positive — the cost of living still <b>rose</b> in 2025. Falling inflation is not falling prices.">The cost of living fell in 2025</button>
+      <div class="scaffold"><span class="stag"></span><p></p></div><p class="praise">Real = nominal − inflation, applied three times. That's a Crucible answer. ✦</p>
+    </div>
+  </div>
+</div>
+</section>
+<section id="audit-faq" class="audit-essential-faq">
+<div class="wrap">
+  <p class="tag eyebrow reveal">Essential FAQs</p>
+  <h2 class="reveal">The useful answers, before you start.</h2>
+  <div class="audit-faq-grid">
+    <details class="audit-faq-item"><summary>What makes Forge different from a revision guide?</summary><p>Forge starts with the mistake, not just the topic. Each wrong answer is tied to a documented misconception, followed by a short correction and a fresh question to prove the fix.</p></details>
+    <details class="audit-faq-item"><summary>Can students use it without joining a class?</summary><p>Yes. Students can practise independently for free, or subscribe for unlimited questions and the full Anvil, Crucible and progress features.</p></details>
+    <details class="audit-faq-item"><summary>Which subjects and exam boards are covered?</summary><p>Forge covers selected GCSE and A Level subjects with the exam board and paper structure shown on each subject page. The subject directory marks what is live, early access or still building.</p></details>
+    <details class="audit-faq-item"><summary>What do teachers see?</summary><p>Teachers see class-level misconception patterns, student progress and ready-to-use corrective starters. The focus is what to teach next, not a leaderboard of logins.</p></details>
+    <details class="audit-faq-item"><summary>How do schools protect student data?</summary><p>School views are designed around aggregated, read-only reporting for leadership, with the data and privacy details set out in the school overview and privacy information.</p></details>
+  </div>
+  <a class="forge-link-meta audit-faq-link" href="faq.html">See all FAQs →</a>
+</div>
+</section>
 <section class="wait" id="waitlist">
 <canvas class="auralis" id="auralis-canvas" aria-hidden="true"></canvas>
 <div class="wrap">
@@ -1701,6 +1796,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
   </div>
 </div>
 </section>
+</main>
 
 <div class="wrap">
 <footer>
@@ -1730,6 +1826,270 @@ if (localStorage.getItem('forge-theme') === 'light') {
 
 <script>
 (function(){
+  if (!document.body.classList.contains('audit-test')) return;
+  document.title = 'Forge — revision that responds to mistakes';
+  var heroTitle = document.querySelector('.hero h1');
+  if (heroTitle) heroTitle.innerHTML = 'Turn wrong answers into <em>better answers.</em>';
+  var heroLede = document.querySelector('.hero .lede');
+  if (heroLede) heroLede.innerHTML = 'Forge finds the misconception behind a wrong answer, explains the missing idea, and gives the student a fresh question to prove the fix. <strong>Short enough to use every day.</strong>';
+  var heroSub = document.querySelector('.hero .sub');
+  if (heroSub) heroSub.firstChild.textContent = 'Exam-board mapped practice for GCSE and A Level.';
+  var howTitle = document.querySelector('#how h2');
+  if (howTitle) howTitle.textContent = 'A wrong answer becomes the next useful step.';
+  var howLead = document.querySelector('#how .sect-lede');
+  if (howLead) howLead.textContent = 'Each question is written around a known exam misconception, so practice shows students what to fix—not just what they got wrong.';
+  var modesTitle = document.querySelector('#how + section h2');
+  if (modesTitle) modesTitle.textContent = 'One loop, three moments.';
+  var teacherLead = document.querySelector('#teachers .sect-lede');
+  if (teacherLead) teacherLead.textContent = 'See the misconception pattern that deserves attention next, then turn it into a five-minute starter.';
+  var subjects = [];
+  document.querySelectorAll('#subjects .level-panel').forEach(function(panel){
+    var level = panel.id === 'panel-gcse' ? 'GCSE' : 'A Level';
+    panel.querySelectorAll('.subj').forEach(function(card){
+      var link = card.querySelector('.subj-link, h3 a');
+      subjects.push({
+        level: level,
+        name: card.querySelector('h3') ? card.querySelector('h3').textContent.trim() : '',
+        href: link ? link.href : '#',
+        board: card.querySelector('.boards') ? card.querySelector('.boards').textContent.trim() : '',
+        status: card.querySelector('.pill') ? card.querySelector('.pill').textContent.trim() : 'Available'
+      });
+    });
+  });
+  var subjectsSection = document.getElementById('subjects');
+  if (subjectsSection) subjectsSection.style.display = 'none';
+  var picker = document.createElement('section');
+  picker.id = 'audit-subject-picker';
+  picker.className = 'audit-subject-picker';
+  picker.innerHTML = '<div class="wrap"><div class="audit-picker-copy"><span class="tag eyebrow">Subjects and resources</span><h2>Start with the subject you teach or study.</h2><p class="sect-lede">Choose a level and subject to go straight to the mapped question banks, misconception guides and practice tools.</p></div><div class="audit-picker-controls"><label>Level<select id="audit-level-select"><option value="A Level">A Level</option><option value="GCSE">GCSE</option></select></label><label>Subject<select id="audit-subject-select"></select></label><a id="audit-subject-link" class="btn btn-hot" href="#">Explore subject →</a></div><p id="audit-subject-meta" class="audit-picker-meta"></p></div>';
+  var loopSection = document.getElementById('how');
+  var modesSection = loopSection ? loopSection.nextElementSibling : null;
+  if (modesSection) modesSection.insertAdjacentElement('afterend', picker);
+  var levelSelect = picker.querySelector('#audit-level-select');
+  var subjectSelect = picker.querySelector('#audit-subject-select');
+  var subjectLink = picker.querySelector('#audit-subject-link');
+  var subjectMeta = picker.querySelector('#audit-subject-meta');
+  function refreshSubjectOptions(){
+    var matches = subjects.filter(function(subject){ return subject.level === levelSelect.value; });
+    subjectSelect.innerHTML = matches.map(function(subject){ return '<option value="' + subjects.indexOf(subject) + '">' + subject.name + '</option>'; }).join('');
+    var current = matches[0];
+    if (!current) return;
+    subjectLink.href = current.href;
+    subjectMeta.textContent = current.board + ' · ' + current.status;
+  }
+  levelSelect.addEventListener('change', refreshSubjectOptions);
+  subjectSelect.addEventListener('change', function(){
+    var current = subjects[Number(subjectSelect.value)];
+    if (!current) return;
+    subjectLink.href = current.href;
+    subjectMeta.textContent = current.board + ' · ' + current.status;
+  });
+  refreshSubjectOptions();
+  document.querySelectorAll('button').forEach(function(button){
+    if (!button.closest('form')) button.type = 'button';
+  });
+  var buttonObserver = new MutationObserver(function(records){
+    records.forEach(function(record){
+      record.addedNodes.forEach(function(node){
+        if (node.nodeType !== 1) return;
+        if (node.matches && node.matches('button') && !node.closest('form')) node.type = 'button';
+        if (node.querySelectorAll) node.querySelectorAll('button').forEach(function(button){
+          if (!button.closest('form')) button.type = 'button';
+        });
+      });
+    });
+  });
+  buttonObserver.observe(document.body, {childList:true, subtree:true});
+  document.querySelectorAll('[role="tablist"] button').forEach(function(button){
+    button.setAttribute('role', 'tab');
+    button.setAttribute('aria-selected', button.classList.contains('active') ? 'true' : 'false');
+  });
+  document.querySelectorAll('[role="tablist"] button').forEach(function(button){
+    button.addEventListener('click', function(){
+      var list = button.closest('[role="tablist"]');
+      if (!list) return;
+      list.querySelectorAll('[role="tab"]').forEach(function(tab){
+        tab.setAttribute('aria-selected', tab === button ? 'true' : 'false');
+      });
+    });
+  });
+  var auditSidebarIcons = {
+    dashboard:'<path d="M3 12l9-9 9 9"></path><path d="M5 10v10a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1V10"></path>',
+    forge:'<path d="M12 3c1.2 2 .6 3.2-.3 4.3C10.8 8.5 9.5 9.8 9.5 12a2.5 2.5 0 0 0 5 0c0-.8-.3-1.3-.7-1.8"></path><path d="M8 13.5c-1 1.5-1.3 3-1.3 4.3A5.3 5.3 0 0 0 12 23a5.3 5.3 0 0 0 5.3-5.2c0-1.4-.4-2.9-1.3-4.3"></path>',
+    anvil:'<path d="M4 13h16l-1.5-3.5a2 2 0 0 0-1.84-1.22L14 8.2V6h1a1 1 0 0 0 0-2h-6a1 1 0 0 0 0 2h1v2.2l-2.66.08a2 2 0 0 0-1.84 1.22L4 13Z"></path><path d="M9 13v2a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2v-2"></path><path d="M10 17v3M14 17v3M8 20h8"></path>',
+    crucible:'<path d="M9 3h6M9 3v3.5a5 5 0 0 1-.7 2.55L5.9 12.9A5 5 0 0 0 5.2 15.45V19a2 2 0 0 0 2 2h9.6a2 2 0 0 0 2-2v-3.55a5 5 0 0 0-.7-2.55l-2.4-3.85A5 5 0 0 1 15 6.5V3"></path><path d="M7 16h10"></path>',
+    profile:'<circle cx="12" cy="8" r="4"></circle><path d="M4 21c0-4 4-6 8-6s8 2 8 6"></path>',
+    assignments:'<rect x="3" y="4" width="18" height="17" rx="2"></rect><path d="M3 9h18M8 2v4M16 2v4"></path><path d="M8 13h2M8 17h2M14 13h2M14 17h2"></path>',
+    misconceptions:'<path d="M12 9v4M12 17h.01"></path><path d="M10.3 3.9 2.5 17a2 2 0 0 0 1.7 3h15.6a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"></path>',
+    students:'<path d="M17 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path>',
+    classes:'<path d="M4 19V6a2 2 0 0 1 2-2h9l5 5v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2Z"></path><path d="M8 8h6M8 12h8M8 16h5"></path>',
+    present:'<rect x="2" y="4" width="20" height="13" rx="2"></rect><path d="M8 21h8M12 17v4"></path>'
+  };
+  function auditSidebarIcon(key){
+    return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + (auditSidebarIcons[key] || auditSidebarIcons.dashboard) + '</svg>';
+  }
+  function addPreviewSidebar(sectionId, context, items){
+    var section = document.getElementById(sectionId);
+    if (!section || section.querySelector('.audit-app-preview')) return;
+    var wrap = section.querySelector('.wrap');
+    if (!wrap) return;
+    var panels = Array.prototype.slice.call(wrap.querySelectorAll(':scope > .dash-panel'));
+    if (!panels.length) return;
+    var firstPanel = panels[0];
+    var stage = document.createElement('div');
+    stage.className = 'audit-app-preview audit-app-preview--' + context;
+    var aside = document.createElement('aside');
+    aside.className = 'audit-app-sidebar';
+    aside.setAttribute('aria-label', context + ' preview navigation');
+    var badgeSource = document.querySelector('#nav-shield .forge-logo-dark');
+    aside.innerHTML = '<div class="audit-app-brand"><span class="audit-app-mark"><img src="' + (badgeSource ? badgeSource.src : '') + '" alt=""></span><span>Forge</span></div><span class="audit-app-context">' + (context === 'student' ? 'Student view' : 'Teacher view') + '</span>';
+    function auditStudentPage(view){
+      if (view === 'student-forge') return '<div class="audit-real-product-page"><button class="audit-page-back">← Dashboard</button><p class="tag">FORGE</p><h2>Pick a subject</h2><p class="audit-page-lede">Choose a subject to start a focused practice session.</p><div class="audit-subject-list"><button class="audit-subject-card"><strong>Economics</strong><span>A Level · 156 questions</span><b>Open →</b></button><button class="audit-subject-card"><strong>English Literature</strong><span>A Level · 84 questions</span><b>Open →</b></button></div><div class="audit-trial-note">8 questions per session · scaffolds and re-forge feedback included</div></div>';
+      if (view === 'student-assigned') return '<div class="audit-real-product-page"><button class="audit-page-back">← Dashboard</button><p class="audit-page-kicker">Student work</p><h2>Assigned</h2><p class="audit-page-lede">Your teacher’s current assignments appear here. The full course remains available in Forge.</p><div class="audit-assignment-card"><h3>Monetary &amp; Fiscal Policy revision</h3><span class="audit-assignment-meta">Due Friday · <b>In progress</b></span><div class="audit-assignment-progress"><span>12 of 20 questions answered</span><span>60%</span></div><div class="audit-progress-track"><i style="width:60%"></i></div><div class="audit-topic-links"><a>Fiscal policy →</a><a>Balance of payments →</a></div></div><div class="audit-assignment-card"><h3>Exam technique starter</h3><span class="audit-assignment-meta">Due next week · <b>Not started</b></span><div class="audit-assignment-progress"><span>0 of 8 questions answered</span><span>0%</span></div><div class="audit-progress-track"><i style="width:0%"></i></div><div class="audit-topic-links"><a>8-mark answers →</a></div></div></div>';
+      if (view === 'student-anvil') return '<div class="audit-real-product-page"><button class="audit-page-back">← Dashboard</button><div class="audit-page-center"><p class="tag">THE ANVIL</p><h2>Your repair queue</h2><p class="audit-page-lede">3 correct in a row to clear a misconception.</p></div><div class="audit-three-stats"><div><b>4</b><span>Active</span></div><div><b class="good">11</b><span>Resolved</span></div><div><b>15</b><span>Total tracked</span></div></div><div class="audit-repair-recommendation"><p class="tag">Recommended next</p><h3>Repair Disinflation vs deflation</h3><p>This misconception has fired 6 times and is the clearest repair to make now.</p><button class="btn btn-hot">Start the repair →</button></div><div class="audit-anvil-card"><span>MC-INF-01</span><strong>Disinflation vs deflation</strong><small>6 fires · Reforged 1/3 · Streak 1/3</small><div class="audit-dot-row"><i></i><i></i><i></i></div></div><div class="audit-anvil-card"><span>MC-BOP-02</span><strong>Current vs capital account</strong><small>4 fires · Reforged 0/3 · Streak 0/3</small><div class="audit-dot-row"><i></i><i></i><i></i></div></div></div>';
+      if (view === 'student-crucible') return '<div class="audit-real-product-page"><button class="audit-page-back">← Dashboard</button><p class="tag">THE CRUCIBLE</p><div class="audit-repair-recommendation"><p class="tag">Recommended next</p><h3>Pressure-test your strongest current topic</h3><p>A short, timed run shows whether recent practice holds without scaffolds.</p></div><h2>Choose a subject</h2><p class="audit-page-lede">You’ll get up to 6 questions from that subject at random. No scaffolds.</p><div class="audit-subject-list"><button class="audit-subject-card"><strong>Economics</strong><span>6 questions · 5 minutes · no hints</span><b>Choose →</b></button><button class="audit-subject-card"><strong>English Literature</strong><span>6 questions · 5 minutes · no hints</span><b>Choose →</b></button></div></div>';
+      if (view === 'student-profile') return '<div class="audit-real-product-page"><button class="audit-page-back">← Dashboard</button><p class="tag">PROFILE</p><h2>Account and progress</h2><div class="audit-profile-card"><strong>Student profile</strong><span>A Level Economics · 2 joined classes</span><a>View full profile →</a></div></div>';
+      return '';
+    }
+    function auditTeacherPage(view){
+      if (view === 'dashboard-class') return '<div class="audit-real-product-page"><button class="audit-page-back">← Overview</button><p class="tag">CLASS OVERVIEW</p><h2>Year 12 Economics</h2><div class="audit-class-table"><div class="audit-table-head"><span>Student</span><span>Accuracy</span><span>Open signals</span><span>Last active</span></div><div><strong>Jordan</strong><b>68%</b><span>8</span><em>Today</em></div><div><strong>Amira</strong><b>74%</b><span>6</span><em>Yesterday</em></div><div><strong>Lewis</strong><b>61%</b><span>5</span><em>2 days ago</em></div><div><strong>Sofia</strong><b>82%</b><span>2</span><em>Today</em></div></div></div>';
+      if (view === 'dashboard-assignments') return '<div class="audit-real-product-page"><button class="audit-page-back">← Overview</button><p class="tag">ASSIGNMENTS</p><h2>Class assignments</h2><div class="audit-assignment-card"><h3>Monetary &amp; Fiscal Policy revision</h3><span class="audit-assignment-meta">Due Friday · Year 12 Economics</span><div class="audit-assignment-progress"><span>15 of 24 students started</span><span>63%</span></div><div class="audit-progress-track"><i style="width:63%"></i></div><small>2.3.1 Fiscal Policy · 2.3.2 Monetary Policy</small></div><button class="btn btn-hot">Create assignment →</button></div>';
+      if (view === 'dashboard-starter') return '<div class="audit-real-product-page"><button class="audit-page-back">← Overview</button><p class="tag">SPEC POINTS</p><h2>Spec point breakdown</h2><div class="audit-spec-table"><div><span>2.1.2</span><strong>Disinflation vs deflation</strong><b>48%</b><em>23 students</em></div><div><span>2.1.4</span><strong>Current vs capital account</strong><b>56%</b><em>18 students</em></div><div><span>2.3.1</span><strong>Real vs nominal growth</strong><b>64%</b><em>14 students</em></div></div></div>';
+      if (view === 'dashboard-school') return '<div class="audit-real-product-page"><button class="audit-page-back">← All classes</button><p class="tag">SCHOOL OVERVIEW</p><h2>Northbridge Sixth Form</h2><div class="audit-three-stats"><div><b>184</b><span>Active students</span></div><div><b>47</b><span>Open signals</span></div><div><b>8</b><span>Classes to review</span></div></div><div class="audit-profile-card"><strong>Department patterns</strong><span>Economics · Biology · Psychology</span><a>Open department view →</a></div></div>';
+      if (view === 'dashboard-student') return '<div class="audit-real-product-page"><button class="audit-page-back">← Class overview</button><p class="tag">STUDENT PROFILE</p><h2>Student detail</h2><div class="audit-three-stats"><div><b>38%</b><span>Accuracy</span></div><div><b>6</b><span>Open signals</span></div><div><b>34</b><span>Questions</span></div></div><div class="audit-repair-recommendation"><p class="tag">Recommended intervention</p><h3>Repair Disinflation vs deflation</h3><p>This is the clearest next step for this student. Assign a short corrective starter, then check the re-forge.</p><button class="btn btn-hot">Build starter →</button></div><div class="audit-profile-card"><strong>Recent activity</strong><span>Last active today · 2.1.2 weakest spec point</span><a>View response history →</a></div></div>';
+      if (view === 'dashboard-present') return '<div class="audit-real-product-page"><button class="audit-page-back">← Dashboard</button><p class="tag">CLASS MODE</p><h2>Forge Class Mode</h2><p class="audit-page-lede">Run a question bank from the front of the room — no student devices needed.</p><div class="audit-howto-list"><div><b>1</b><span>Pick your subject and topic below.</span></div><div><b>2</b><span>Show a question big on screen and let the class answer.</span></div><div><b>3</b><span>Reveal the answer, then move to the next question.</span></div></div><button class="btn btn-hot">Choose a subject →</button></div>';
+      return '';
+    }
+    function renderPreviewState(target, view){
+      var isStudent = context === 'student';
+      var productPage = isStudent ? auditStudentPage(view) : auditTeacherPage(view);
+      if (productPage) { target.innerHTML = productPage; return; }
+      var common = '<div class="audit-preview-header"><div><span class="audit-preview-kicker">' + (isStudent ? 'Student dashboard' : 'Teacher dashboard') + '</span><h3>' + (isStudent ? 'Alex · A Level Economics' : 'Year 12 Economics · Class of 24') + '</h3><p>' + (isStudent ? 'A clear next step from the work you have already done.' : 'A clear next step from the pattern in your class data.') + '</p></div><button class="btn btn-hot" type="button">' + (isStudent ? 'Continue practice →' : 'Build a starter →') + '</button></div>';
+      if (isStudent) {
+        if (view === 'student-forge') target.innerHTML = common + '<div class="audit-stat-strip"><div><strong>8</strong><span>Questions queued</span></div><div><strong>5m</strong><span>Estimated time</span></div><div><strong>6/8</strong><span>Last session</span></div><div><strong>+20</strong><span>XP available</span></div></div><div class="audit-preview-card"><span class="audit-preview-kicker">Forge practice</span><h4>Recommended session · Automatic stabilisers</h4><p>Each question tests the same idea in a new scenario, then explains the misconception if it fires.</p><div class="audit-session-list"><span>✓ Aggregate demand shift</span><span>○ Automatic stabilisers</span><span>○ J-curve direction</span></div><button class="btn btn-hot" type="button">Start 8-question session →</button></div>';
+        else if (view === 'student-assigned') target.innerHTML = common + '<div class="audit-stat-strip"><div><strong>4</strong><span>Assigned tasks</span></div><div><strong>2</strong><span>Due this week</span></div><div><strong>68%</strong><span>Completed</span></div><div><strong>1</strong><span>Needs attention</span></div></div><div class="audit-preview-card"><span class="audit-preview-kicker">Assigned</span><h4>Monetary &amp; Fiscal Policy revision</h4><p>20 questions · due Friday · targeted to the misconceptions in your recent sessions.</p><div class="audit-session-list"><span><b>Fiscal policy</b> Due Friday</span><span><b>Balance of payments</b> 12/20 complete</span><span><b>Exam technique</b> Ready to start</span></div><button class="btn btn-hot" type="button">Open assignment →</button></div>';
+        else if (view === 'student-anvil') target.innerHTML = common + '<div class="audit-stat-strip"><div><strong>4</strong><span>Active repairs</span></div><div><strong>2</strong><span>Ready to re-forge</span></div><div><strong>11</strong><span>Resolved</span></div><div><strong>3d</strong><span>Last review</span></div></div><div class="audit-preview-card"><span class="audit-preview-kicker">The Anvil</span><h4>Misconceptions that need another pass</h4><div class="audit-session-list"><span><b>MC-INF-01</b> Disinflation vs deflation · 48%</span><span><b>MC-BOP-02</b> Fiscal vs current account deficit · 52%</span><span><b>MC-TECH-04</b> 8-mark answer structure · 60%</span></div></div>';
+        else if (view === 'student-crucible') target.innerHTML = common + '<div class="audit-stat-strip"><div><strong>5m</strong><span>Timed sprint</span></div><div><strong>12</strong><span>Questions</span></div><div><strong>75%</strong><span>Best score</span></div><div><strong>4</strong><span>Sent to Anvil</span></div></div><div class="audit-preview-card"><span class="audit-preview-kicker">The Crucible</span><h4>Pressure-test your weakest areas.</h4><p>No hints during the sprint. Every wrong answer is tagged afterwards so the pressure reveals what to repair next.</p><button class="btn btn-hot" type="button">Enter the Crucible →</button></div>';
+        else if (view === 'student-profile') target.innerHTML = common + '<div class="audit-preview-card"><span class="audit-preview-kicker">Profile</span><h4>Alex · A Level Economics</h4><p>Keep your subject choices, progress and account details in one place.</p><div class="audit-session-list"><span><b>Current level</b> A Level</span><span><b>Joined classes</b> 2</span><span><b>Forge rank</b> Journeyman</span></div><button class="btn btn-hot" type="button">Manage profile →</button></div>';
+        else target.innerHTML = '<div class="audit-real-student-dashboard"><div class="eyebrow">Dashboard</div><h1>Welcome back</h1><div class="forge-loop" aria-label="Learning loop"><div class="forge-loop-step is-current"><strong>1. Forge</strong>Practice</div><div class="forge-loop-step"><strong>2. Anvil</strong>Repair</div><div class="forge-loop-step"><strong>3. Crucible</strong>Pressure-test</div></div><div class="stat-strip"><div class="stat"><span class="stat-label">Rank</span><span class="stat-value">Journeyman</span></div><div class="stat-sep"></div><div class="stat"><span class="stat-label">Streak</span><span class="stat-value">4 days</span></div><div class="stat-sep"></div><div class="stat"><span class="stat-label">Strongest subject</span><span class="stat-value">Economics <span class="stat-value-sub">72%</span></span></div><a class="stat-strip-link" href="#">View profile →</a></div><p class="forge-progress-note">You have answered 156 questions so far and built a 4-day streak. Recent accuracy is 72% across 20 questions — <strong>close to your usual level</strong>. 4 misconceptions need another pass. Keep the loop moving: practice, repair, then pressure-test.</p><div class="ui-recommendation forge-card forge-card--focus"><div class="ui-state-title">Recommended next: repair 4 misconceptions</div><p class="ui-state-copy">Anvil has the exact errors that need another pass. Clear one now, then return to Forge to test the improvement.</p><a class="ui-state-action forge-button" href="#">Open Anvil →</a></div><div class="mod-list"><a class="mod-row" href="#"><span class="mod-icon">✦</span><div class="mod-body"><div class="mod-name">Forge</div><div class="mod-status">72% accuracy overall · last active today</div></div><span class="mod-stat">156 answered</span><span class="mod-action">Practice →</span></a><a class="mod-row" href="#"><span class="mod-icon">△</span><div class="mod-body"><div class="mod-name">Anvil</div><div class="mod-status">Needs review — head over to clear these</div></div><span class="mod-stat">4 open</span><span class="mod-action">Review →</span></a><a class="mod-row" href="#"><span class="mod-icon">◈</span><div class="mod-body"><div class="mod-name">Crucible</div><div class="mod-status">Last session 3 days ago</div></div><span class="mod-stat">12 Qs</span><span class="mod-action">Start →</span></a></div></div>';
+      } else {
+        if (view === 'dashboard-class') target.innerHTML = common + '<div class="audit-stat-strip audit-stat-strip--teacher"><div><strong>24</strong><span>Students</span></div><div><strong>68%</strong><span>Class accuracy</span></div><div><strong>184</strong><span>Questions this week</span></div><div><strong>8</strong><span>Need action</span></div></div><div class="audit-preview-card"><span class="audit-preview-kicker">Class overview</span><h4>Students needing the clearest next step</h4><div class="audit-class-list"><span><b>Student A</b><em>38% · MC-INF-01 ×6</em></span><span><b>Student B</b><em>46% · MC-BOP-02 ×5</em></span><span><b>Student C</b><em>54% · MC-GRO-02 ×3</em></span></div></div>';
+        else if (view === 'dashboard-student') target.innerHTML = common + '<div class="audit-stat-strip audit-stat-strip--teacher"><div><strong>38%</strong><span>Student A accuracy</span></div><div><strong>6</strong><span>Open signals</span></div><div><strong>34</strong><span>Questions done</span></div><div><strong>2.1.2</strong><span>Weakest spec point</span></div></div><div class="audit-preview-card"><span class="audit-preview-kicker">Student profile</span><h4>Student A needs a misconception repair, not more volume.</h4><p>Open the exact signal, assign a short starter, and check whether the re-forge holds.</p><button class="btn btn-hot" type="button">Open student profile →</button></div>';
+        else if (view === 'dashboard-starter') target.innerHTML = common + '<div class="audit-preview-card"><span class="audit-preview-kicker">Starter builder</span><h4>Five-minute starter · Disinflation vs deflation</h4><p>3 questions · 23 students affected · mapped to 2.1.2</p><div class="audit-session-list"><span>1. Diagnose the headline claim</span><span>2. Correct the underlying misconception</span><span>3. Re-forge with a new scenario</span></div><button class="btn btn-hot" type="button">Preview starter →</button></div>';
+        else if (view === 'dashboard-assignments') target.innerHTML = common + '<div class="audit-stat-strip audit-stat-strip--teacher"><div><strong>4</strong><span>Active assignments</span></div><div><strong>18</strong><span>Due this week</span></div><div><strong>72%</strong><span>Completion</span></div><div><strong>3</strong><span>Need follow-up</span></div></div><div class="audit-preview-card"><span class="audit-preview-kicker">Assignments</span><h4>Monetary &amp; Fiscal Policy revision</h4><p>20 questions · due Friday · 12 students in progress</p><button class="btn btn-hot" type="button">Open assignments →</button></div>';
+        else if (view === 'dashboard-school') target.innerHTML = common + '<div class="audit-stat-strip audit-stat-strip--teacher"><div><strong>6</strong><span>Departments</span></div><div><strong>184</strong><span>Active students</span></div><div><strong>47</strong><span>Open signals</span></div><div><strong>8</strong><span>Classes to review</span></div></div><div class="audit-preview-card"><span class="audit-preview-kicker">School overview</span><h4>Northbridge Sixth Form · All departments</h4><p>Compare aggregated patterns across departments, then open a teacher view for the next action.</p><div class="audit-class-list"><span><b>Economics</b><em>42 students · 3 signals</em></span><span><b>Biology</b><em>36 students · 2 signals</em></span><span><b>Psychology</b><em>28 students · stable</em></span></div></div>';
+        else if (view === 'dashboard-present') target.innerHTML = common + '<div class="audit-preview-card"><span class="audit-preview-kicker">Class Mode</span><h4>Run a misconception check without student devices.</h4><p>Project one question, take answers from the room, and turn the class pattern into the next five-minute starter.</p><div class="audit-session-list"><span><b>Question 1</b> Disinflation vs deflation</span><span><b>Responses</b> 18 of 24 captured</span><span><b>Next</b> Reveal the common error</span></div><button class="btn btn-hot" type="button">Start class mode →</button></div>';
+        else target.innerHTML = '<div class="audit-real-teacher-dashboard"><div class="dash-header"><div><p class="tag">Teacher Dashboard</p><h1>Year 12 Economics <span class="audit-class-code">ECON-Y12 ⎘</span></h1></div><div class="dash-header-actions"><a class="dash-primary" href="#">Open misconceptions →</a><div class="dash-meta"><b>24</b> students · <b>184</b> responses · <button class="back-btn" type="button">← All classes</button></div></div></div><p class="dash-intro">Start with the priority below, then use the secondary views when you need detail.</p><div class="stat-row stat-row--priority"><div class="stat stat--priority"><span class="stat-n stat-n-good">68%</span><span class="stat-l">Class accuracy</span></div><div class="stat stat--priority"><span class="stat-n stat-n-hot">5</span><span class="stat-l">Open misconception signals</span></div></div><div class="stat-support"><span>24 students</span><span>184 answers</span><span>31/42 reforges passed</span></div><section class="ui-recommendation"><p class="ui-recommendation__eyebrow">Next best action</p><h2 class="ui-recommendation__title">Address the strongest misconception signal</h2><p class="ui-recommendation__copy">Start with the students and misconception volume shown below, then use the secondary views only when you need supporting detail.</p><a class="ui-state-action" href="#">Open priority signals</a></section><div class="card forge-card forge-card--focus"><div class="card-title">Needs attention today <span class="forge-meta">top misconception volume</span></div><div class="teacher-attention-row"><button class="forge-button forge-button--primary" type="button"><span>Start with Jordan</span><span class="forge-meta">8 open</span></button><button class="forge-button forge-button--secondary" type="button"><span>Amira</span><span class="forge-meta">6 open</span></button><button class="forge-button forge-button--secondary" type="button"><span>Lewis</span><span class="forge-meta">5 open</span></button></div><p class="teacher-note">The first student is the recommended starting point; open their profile to choose an intervention.</p></div><div class="tabs"><div class="tab-primary"><button class="tab active" type="button">Priority signals</button><button class="tab" type="button">Class overview</button></div><details class="tab-more"><summary>More views</summary><div class="tab-secondary"><button class="tab" type="button">Spec points</button><button class="tab" type="button">Assignments</button><button class="tab" type="button">Corrective starters</button></div></details></div><div class="card forge-card"><div class="card-title">Misconceptions ranked by frequency</div><div class="heat-row high"><span class="heat-tag">MC-INF-01</span><span class="heat-label">Disinflation vs deflation</span><span class="heat-spec">2.1.2</span><div class="heat-bar"><div class="heat-fill" style="width:100%"></div></div><span class="heat-count">23 errors · 18 students</span><a class="heat-action" href="#">Starter →</a></div><div class="heat-row med"><span class="heat-tag">MC-BOP-02</span><span class="heat-label">Current vs capital account</span><span class="heat-spec">2.1.4</span><div class="heat-bar"><div class="heat-fill" style="width:70%"></div></div><span class="heat-count">16 errors · 12 students</span><a class="heat-action" href="#">Starter →</a></div><div class="heat-row"><span class="heat-tag">MC-GRO-02</span><span class="heat-label">Real vs nominal growth</span><span class="heat-spec">2.3.1</span><div class="heat-bar"><div class="heat-fill" style="width:48%"></div></div><span class="heat-count">11 errors · 9 students</span><a class="heat-action" href="#">Starter →</a></div></div></div>';
+      }
+    }
+    items.forEach(function(item, index){
+      var button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'audit-side-item' + (index === 0 ? ' active' : '');
+      button.setAttribute('data-forge-action', item.action);
+      button.innerHTML = '<span class="audit-side-icon">' + auditSidebarIcon(item.icon) + '</span><span class="audit-side-label">' + item.label + '</span>' + (item.badge ? '<span class="audit-side-badge">' + item.badge + '</span>' : '');
+      button.addEventListener('click', function(){
+        aside.querySelectorAll('.audit-side-item').forEach(function(other){ other.classList.toggle('active', other === button); });
+        renderPreviewState(compact, item.action);
+      });
+      aside.appendChild(button);
+    });
+    var foot = document.createElement('span');
+    foot.className = 'audit-app-sidebar-foot';
+    foot.textContent = context === 'student' ? 'Personal progress view' : 'Built for the next lesson';
+    aside.appendChild(foot);
+    stage.appendChild(aside);
+    var main = document.createElement('div');
+    main.className = 'audit-app-main';
+    firstPanel.parentNode.insertBefore(stage, firstPanel);
+    panels.forEach(function(panel){ main.appendChild(panel); });
+    stage.appendChild(main);
+    main.insertAdjacentHTML('afterbegin', '<div class="audit-compact-preview"></div>');
+    var compact = main.querySelector('.audit-compact-preview');
+    renderPreviewState(compact, items[0].action);
+    panels.forEach(function(panel){ panel.style.display = 'none'; });
+  }
+  addPreviewSidebar('students', 'student', [
+    {action:'student-overview',icon:'dashboard',label:'Dashboard',badge:'3'},
+    {action:'student-forge',icon:'forge',label:'Forge',badge:'8'},
+    {action:'student-assigned',icon:'assignments',label:'Assigned',badge:'4'},
+    {action:'student-anvil',icon:'anvil',label:'Anvil',badge:'1'},
+    {action:'student-crucible',icon:'crucible',label:'Crucible',badge:'1'},
+    {action:'student-profile',icon:'profile',label:'Profile'}
+  ]);
+  addPreviewSidebar('teachers', 'teacher', [
+    {action:'dashboard-heatmap',icon:'dashboard',label:'Overview'},
+    {action:'dashboard-class',icon:'students',label:'Class'},
+    {action:'dashboard-assignments',icon:'assignments',label:'Assignments'},
+    {action:'dashboard-starter',icon:'misconceptions',label:'Spec Points'},
+    {action:'dashboard-school',icon:'classes',label:'School Overview'},
+    {action:'dashboard-present',icon:'present',label:'Class Mode'}
+  ]);
+  var sampleCards = document.querySelectorAll('#auditSampleBank .bq');
+  var sampleIndex = 0;
+  var samplePrev = document.getElementById('auditSamplePrev');
+  var sampleNext = document.getElementById('auditSampleNext');
+  var sampleProgress = document.getElementById('auditSampleProgress');
+  var sampleTabs = document.getElementById('auditSampleTabs');
+  if (sampleCards.length > 2) {
+    var originalSynopticMarkup = sampleCards[2].innerHTML;
+    sampleCards[1].innerHTML = '<div class="bq-head"><span class="spec mono"><b>Psychology · Social Influence</b></span><span class="fmt">Key study</span></div><p class="stimulus">In Asch\'s (1951) line study, participants matched a standard line to comparison lines in the presence of confederates who gave wrong answers.</p><p class="q">Approximately what percentage of participants conformed at least once?</p><button class="opt forge-option" data-mc="MC-SI-01" data-s="37% is the <b>per-trial</b> rate. The question asks about participants who conformed <b>at least once</b> — that figure is 75%.">37% — that was the overall conformity rate across all trials</button><button class="opt forge-option" data-right="1">75%</button><button class="opt forge-option" data-mc="MC-SI-01" data-s="25% of participants <b>never</b> conformed at all. The figure who conformed at least once was 75%.">100% — everyone conformed eventually</button><button class="opt forge-option" data-mc="MC-SI-01" data-s="The figure is higher: about 75% conformed at least once. The per-trial rate was 37%.">50% — about half gave in to group pressure</button><div class="scaffold"><span class="stag"></span><p></p></div><p class="praise">75% at least once, 37% per trial — you know the difference. That\'s the Asch question. ✦</p>';
+    sampleCards[2].innerHTML = '<div class="bq-head"><span class="spec mono"><b>Law · Criminal Law</b></span><span class="fmt">Application</span></div><p class="stimulus">Dave punches Ethan once, breaking his jaw. Dave claims he did not intend to break Ethan\'s jaw, only to frighten him.</p><p class="q">Which statement best applies the law on mens rea for s.20 GBH?</p><button class="opt forge-option" data-mc="MC-LAW-01" data-s="s.20 only requires <b>recklessness</b> — did he foresee <b>some</b> harm? Specific intention to break the jaw is not required.">Dave lacks mens rea because he did not intend the specific injury</button><button class="opt forge-option" data-right="1">Dave has the mens rea for s.20 because he foresaw some physical harm, even if not the specific injury that resulted</button><button class="opt forge-option" data-mc="MC-LAW-01" data-s="The injury being more serious than intended does not remove liability. The thin skull rule and s.20 recklessness cover this situation.">Dave has no liability because the injury was accidental</button><button class="opt forge-option" data-mc="MC-LAW-02" data-s="Intention to wound is required for s.18. s.20 requires only recklessness as to whether some harm is caused.">Dave needs intent to wound for s.20 GBH</button><div class="scaffold"><span class="stag"></span><p></p></div><p class="praise">s.20 = recklessness as to some harm. Intention to wound is s.18. ✦</p>';
+    sampleCards[0].innerHTML = sampleCards[1].innerHTML;
+    sampleCards[1].innerHTML = sampleCards[2].innerHTML;
+    sampleCards[2].innerHTML = originalSynopticMarkup;
+  }
+  function updateSampleBank(){
+    sampleCards.forEach(function(card, index){ card.classList.toggle('active', index === sampleIndex); });
+    sampleTabs.querySelectorAll('button').forEach(function(button, index){ button.classList.toggle('active', index === sampleIndex); button.setAttribute('aria-selected', index === sampleIndex ? 'true' : 'false'); });
+    sampleProgress.textContent = 'Question ' + (sampleIndex + 1) + ' of ' + sampleCards.length;
+    samplePrev.disabled = sampleIndex === 0;
+    sampleNext.disabled = sampleIndex === sampleCards.length - 1;
+  }
+  sampleCards.forEach(function(card){
+    card.querySelectorAll('.opt').forEach(function(button){
+      button.addEventListener('click', function(){
+        card.querySelectorAll('.opt').forEach(function(option){ option.disabled = true; });
+        var correct = card.querySelector('.opt[data-right]');
+        correct.classList.add('correct');
+        if (button.dataset.right) card.querySelector('.praise').classList.add('show');
+        else {
+          button.classList.add('wrong');
+          var scaffold = card.querySelector('.scaffold');
+          scaffold.querySelector('.stag').textContent = button.dataset.mc || 'Concept check';
+          scaffold.querySelector('p').innerHTML = button.dataset.s || 'Review the definition and apply it to the question.';
+          scaffold.classList.add('show');
+        }
+      });
+    });
+  });
+  if (sampleCards.length) {
+    if (sampleCards.length > 2) sampleCards[0].parentNode.insertBefore(sampleCards[2], sampleCards[0]);
+    sampleCards = document.querySelectorAll('#auditSampleBank .bq');
+    sampleCards.forEach(function(card, index){
+      var tab = document.createElement('button');
+      tab.type = 'button';
+      tab.setAttribute('role', 'tab');
+      tab.setAttribute('aria-selected', 'false');
+      tab.textContent = (index + 1) + ' · ' + card.querySelector('.spec b').textContent;
+      tab.addEventListener('click', function(){ sampleIndex = index; updateSampleBank(); });
+      sampleTabs.appendChild(tab);
+    });
+    updateSampleBank();
+    samplePrev.addEventListener('click', function(){ if (sampleIndex > 0) { sampleIndex--; updateSampleBank(); } });
+    sampleNext.addEventListener('click', function(){ if (sampleIndex < sampleCards.length - 1) { sampleIndex++; updateSampleBank(); } });
+  }
+  var schoolPreview = document.getElementById('schools');
+  if (schoolPreview) schoolPreview.remove();
+  document.querySelectorAll('[data-school-view]').forEach(function(button){
+    button.addEventListener('click', function(){
+      var view = button.getAttribute('data-school-view');
+      document.querySelectorAll('[data-school-view]').forEach(function(other){ other.classList.toggle('active', other === button); });
+      document.querySelectorAll('[data-school-panel]').forEach(function(panel){ panel.classList.toggle('hidden', panel.getAttribute('data-school-panel') !== view); });
+    });
+  });
+})();
+(function(){
   document.addEventListener('pointermove',function(e){
     var card=e.target.closest('.glow-spot');
     if(!card)return;
@@ -1739,7 +2099,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
   });
 })();
 (function(){
-  var opts=document.querySelectorAll('.opt');
+  var opts=document.querySelectorAll('#demo .opt');
   var scaffold=document.getElementById('scaffold');
   var stag=document.getElementById('stag');
   var stext=document.getElementById('stext');
@@ -1755,7 +2115,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
         praise.classList.add('show');
       }else{
         o.classList.add('wrong');
-        document.querySelector('[data-right]').classList.add('correct');
+        document.querySelector('#demo [data-right]').classList.add('correct');
         stag.textContent=o.dataset.mc;
         stext.innerHTML=o.dataset.s;
         scaffold.classList.add('show');
@@ -2362,7 +2722,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
   });
 })();
 </script>
-<script src="scripts/forge-page-actions.js"></script>
-<script src="scripts/forge-discovery-nav.js"></script>
+<script src="scripts/forge-page-actions.js?v=20260802-2"></script>
+<script src="scripts/forge-discovery-nav.js?v=20260802-2"></script>
 </body>
 </html>
