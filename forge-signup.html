@@ -437,7 +437,7 @@ function renderSuccess() {
       } else {
         // First time — look up by auth_user_id first
         var lookupUrl = SUPABASE_URL + '/rest/v1/students?select=*&auth_user_id=eq.' + (authUser ? authUser.id : 'null') + '&order=created_at.asc&limit=1';
-        fetch(lookupUrl, { headers: authHdrs }).then(function(r) { return r.json(); }).then(function(rows) {
+        ForgeAPI.response(lookupUrl, { headers: authHdrs }).then(function(r) { return r.json(); }).then(function(rows) {
           if (rows && rows.length > 0) {
             // Existing row — patch it
             var anonHdrs3 = { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY, 'Content-Type': 'application/json', 'Prefer': 'return=representation' };

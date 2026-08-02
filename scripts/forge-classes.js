@@ -121,11 +121,7 @@
     if (!stale.length) { done && done(list()); return; }
 
     Promise.all(stale.map(function (c) {
-      return fetch(supabaseUrl + '/rest/v1/rpc/get_class_by_code', {
-        method: 'POST',
-        headers: { 'apikey': supabaseKey, 'Authorization': 'Bearer ' + supabaseKey, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ p_code: c.classCode })
-      }).then(function (r) { return r.json(); }).then(function (rows) {
+      return rpc(supabaseUrl, supabaseKey, 'get_class_by_code', { p_code: c.classCode }).then(function (rows) {
         var cls = Array.isArray(rows) && rows[0];
         if (cls) {
           c.subject   = cls.subject || null;
@@ -152,11 +148,7 @@
     if (!mine.length) { done([]); return; }
 
     Promise.all(mine.map(function (c) {
-      return fetch(supabaseUrl + '/rest/v1/rpc/get_student_own_responses', {
-        method: 'POST',
-        headers: { 'apikey': supabaseKey, 'Authorization': 'Bearer ' + supabaseKey, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ p_student_id: c.studentId, p_code: c.classCode, p_name: c.studentName || fallbackName })
-      }).then(function (r) { return r.json(); }).then(function (rows) {
+      return rpc(supabaseUrl, supabaseKey, 'get_student_own_responses', { p_student_id: c.studentId, p_code: c.classCode, p_name: c.studentName || fallbackName }).then(function (rows) {
         return (Array.isArray(rows) ? rows : []).map(function (row) {
           row._studentId = c.studentId;
           row._classId   = c.classId;
@@ -192,11 +184,8 @@
    * only someone holding both codes can merge two groups, which is what
    * keeps students who share a name apart. */
   function rpc(supabaseUrl, supabaseKey, fn, body) {
-    return fetch(supabaseUrl + '/rest/v1/rpc/' + fn, {
-      method: 'POST',
-      headers: { 'apikey': supabaseKey, 'Authorization': 'Bearer ' + supabaseKey, 'Content-Type': 'application/json' },
-      body: JSON.stringify(body)
-    }).then(function (r) { return r.json(); });
+    if (global.ForgeAPI && global.ForgeAPI.rpc) return global.ForgeAPI.rpc(fn, body, { token: supabaseKey });
+    return Promise.reject(new Error('ForgeAPI is unavailable'));
   }
 
   /* Replace this student's cached classes with the server's view. `anchor` is
