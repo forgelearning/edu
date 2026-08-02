@@ -430,6 +430,7 @@ function renderTeacherAuth(mode) {
       action.then(function(data) {
         currentTeacher = data.user;
         headers.Authorization = 'Bearer ' + data.access_token;
+        if (window.forgeTrack) forgeTrack(mode === 'signup' ? 'teacher_account_created' : 'teacher_signed_in', { role: 'teacher' });
         if (new URLSearchParams(location.search).get('tab') === 'create') renderLogin('create');
         else renderTeacherHome();
       }).catch(function(e) {
@@ -1039,6 +1040,7 @@ function drawTeacherHome(classes, loadError) {
   if (!classes.length) h += '<button type="button" class="home-link" id="home-create-2">Create a class</button><span>·</span>';
   h += '<button type="button" class="home-link" id="home-code">Open a class by code</button>';
   h += '</div>';
+  h += '<section class="insight-list forge-mt-4" id="teacher-adoption"><span class="tag">Your adoption snapshot</span><h2>Teaching activity</h2><p class="forge-meta">Loading your class, assignment and response activity.</p></section>';
 
   app.innerHTML = ForgeAuthCard.shell({
     wide: true,
@@ -1047,6 +1049,13 @@ function drawTeacherHome(classes, loadError) {
       ? 'Signed in as ' + esc(currentTeacher.email) + ' · <a href="#" id="ta-signout" style="color:var(--ember);text-decoration:none;font-weight:600">Sign out</a>'
       : 'Pick a class to open its dashboard.'
   }, h);
+
+  if (window.forgeTrack) forgeTrack('teacher_dashboard_viewed', { class_count: classes.length });
+  ForgeAPI.rpc('get_teacher_adoption_snapshot', {}, teacherApiOptions()).then(function(snapshot) {
+    var target = document.getElementById('teacher-adoption');
+    if (!target || !snapshot || snapshot.authorized !== true) return;
+    target.innerHTML = '<span class="tag">Your adoption snapshot</span><h2>Teaching activity</h2><div class="insight-grid"><div class="insight-stat"><span class="tag">Classes</span><span class="insight-number">' + snapshot.classes + '</span></div><div class="insight-stat"><span class="tag">Active students</span><span class="insight-number">' + snapshot.active_students_30d + '</span></div><div class="insight-stat"><span class="tag">Accuracy</span><span class="insight-number">' + snapshot.accuracy_30d + '%</span></div></div><p class="forge-meta">Last 30 days: ' + snapshot.responses + ' responses across ' + snapshot.students + ' students and ' + snapshot.assignments + ' assignments.</p>';
+  }).catch(function() {});
 
   var signOutLink = document.getElementById('ta-signout');
   if (signOutLink) signOutLink.onclick = function(e) { e.preventDefault(); teacherSignOut(); };
@@ -1222,6 +1231,7 @@ function renderLogin(activeTab) {
         createBtn.disabled = false; createBtn.textContent = 'Create class \u2192';
         console.log('Supabase response:', JSON.stringify(rows));
         var cls = Array.isArray(rows) ? rows[0] : rows;
+        if (window.forgeTrack) forgeTrack('teacher_class_created', { subject: subj });
         if (!cls || !cls.id) {
           err.textContent = 'We couldn’t create the class. Check the details and try again.';
           err.style.display = 'block'; return;
@@ -2142,6 +2152,7 @@ function renderAssignments() {
           err.textContent = 'We couldn’t save this assignment. Check your connection and try again.';
           err.style.display = 'block'; return;
         }
+        if (window.forgeTrack) forgeTrack('teacher_assignment_created', { bank_count: checked.length });
         dashState.assignments.push(newAsgn);
         renderAssignments();
         // Switch back to show the new assignment

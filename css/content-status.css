@@ -1,0 +1,5 @@
+.coverage-pill{display:inline-flex;align-items:center;min-height:24px;padding:3px 9px;border:1px solid var(--line);border-radius:var(--radius-pill);font:600 10px/1 'JetBrains Mono',monospace;letter-spacing:.04em;text-transform:uppercase}
+.coverage-pill--full{color:var(--good);border-color:var(--good)}
+.coverage-pill--developing{color:var(--hot);border-color:var(--hot)}
+.coverage-pill--pilot,.coverage-pill--preview{color:var(--slate);border-color:var(--line)}
+.content-status-note{max-width:62ch;margin:8px 0 0;color:var(--slate);font-size:13px;line-height:1.5}

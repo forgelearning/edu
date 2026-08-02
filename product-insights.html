@@ -5,20 +5,22 @@
   <title>Forge — Product insights</title>
   <link rel="stylesheet" href="css/tokens.css"><link rel="stylesheet" href="css/base.css"><link rel="stylesheet" href="css/components.css">
   <style>
-    body{background:var(--coal);color:var(--slate);font-family:Inter,sans-serif}.wrap{max-width:960px;margin:0 auto;padding:32px 20px}h1,h2{font-family:Sora,sans-serif;color:var(--white)}h1{font-size:32px;margin:12px 0}.lede{max-width:62ch;color:var(--slate)}.insight-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:28px 0}.insight-stat{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-md);padding:18px}.insight-number{display:block;font:800 28px Sora;color:var(--white);margin-top:4px}.insight-list{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-lg);padding:20px}.event-row{display:flex;justify-content:space-between;gap:12px;padding:11px 0;border-bottom:1px solid var(--line);font-size:13px}.event-row:last-child{border-bottom:0}.event-name{color:var(--white)}@media(max-width:620px){.insight-grid{grid-template-columns:1fr 1fr}.event-row{align-items:flex-start;flex-direction:column;gap:3px}}
+    body{background:var(--coal);color:var(--slate);font-family:Inter,sans-serif}.wrap{max-width:960px;margin:0 auto;padding:32px 20px}h1,h2{font-family:Sora,sans-serif;color:var(--white)}h1{font-size:32px;margin:12px 0}.lede{max-width:62ch;color:var(--slate)}.insight-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:28px 0}.insight-stat{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-md);padding:18px}.insight-number{display:block;font:800 28px Sora;color:var(--white);margin-top:4px}.insight-list{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-lg);padding:20px}.event-row{display:flex;justify-content:space-between;gap:12px;padding:11px 0;border-bottom:1px solid var(--line);font-size:13px}.event-row:last-child{border-bottom:0}.event-name{color:var(--white)}.table-wrap{overflow:auto;margin:14px 0 8px}.forge-table{width:100%;border-collapse:collapse;font-size:13px}.forge-table th,.forge-table td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--line)}.forge-table th{color:var(--dim);font:600 11px JetBrains Mono,monospace;text-transform:uppercase;letter-spacing:.06em}.forge-table td{color:var(--slate)}@media(max-width:620px){.insight-grid{grid-template-columns:1fr 1fr}.event-row{align-items:flex-start;flex-direction:column;gap:3px}}
   </style>
 <link rel="stylesheet" href="css/states.css">
 </head>
 <body>
-<script src="scripts/forge-state.js"></script><main class="wrap">
+<script src="scripts/forge-api.js"></script><script src="scripts/forge-state.js"></script><main class="wrap">
   <span class="tag">Internal product view</span><h1>Product insights</h1>
-  <p class="lede">A local summary of anonymous Forge and Crucible events captured on this device. This is a diagnostic view, not a production analytics warehouse.</p>
+  <p class="lede">This page shows local diagnostics from this device. Events are also sent anonymously to the production event stream when available; this page is not a cohort or retention warehouse.</p>
   <div id="app" aria-live="polite"></div>
+  <div id="protected-report" class="forge-mt-4" aria-live="polite"></div>
 </main>
 <script src="scripts/forge-product-analytics.js"></script>
 <script>
 (function(){
-  var events=[];try{events=JSON.parse(localStorage.getItem('forge-product-events')||'[]');}catch(e){}
+  var events=window.forgeAnalytics?forgeAnalytics.localEvents():[];
+  var analyticsStatus=window.forgeAnalytics?forgeAnalytics.status():{mode:'local-only'};
   var counts={};events.forEach(function(e){counts[e.name]=(counts[e.name]||0)+1;});
   var starts=(counts.forge_session_started||0)+(counts.crucible_started||0);
   var completes=(counts.forge_session_completed||0)+(counts.crucible_completed||0);
@@ -30,9 +32,35 @@
   h+='<section class="insight-list"><h2>Event breakdown</h2>';
   Object.keys(counts).sort().forEach(function(name){h+='<div class="event-row"><span class="event-name">'+name+'</span><span class="forge-meta">'+counts[name]+'</span></div>';});
   if(!events.length)h+=ForgeState.html('empty',{label:'No product events yet',body:'Complete a Forge or Crucible session on this device to see local diagnostics here.'});
-  h+='</section><p class="forge-mt-4"><button class="forge-button forge-button--secondary" id="clear">Clear local events</button></p>';
+  var statusLabel=analyticsStatus.mode==='remote'?'Remote ingestion active':analyticsStatus.mode==='remote-ready'?'Remote ingestion ready':'Local fallback active';
+  var statusBody=analyticsStatus.mode==='remote'||analyticsStatus.mode==='remote-ready'?'New events are queued locally and submitted to the shared production event stream.':'Events are being kept locally until the production event stream is reachable.';
+  h+='<section class="insight-list forge-mt-4">'+ForgeState.html(analyticsStatus.mode==='local-fallback'?'error':'success',{label:statusLabel,body:statusBody})+'<p class="forge-meta forge-mt-3">This browser cannot display cross-user cohorts. Use the protected Supabase analytics queries for retention, adoption, and outcome analysis.</p><button class="forge-button forge-button--secondary" id="sync">Sync pending events</button></section>';
+  h+='<p class="forge-mt-4"><button class="forge-button forge-button--secondary" id="clear">Clear local events</button></p>';
   document.getElementById('app').innerHTML=h;
-  document.getElementById('clear').onclick=function(){localStorage.removeItem('forge-product-events');location.reload();};
+  document.getElementById('clear').onclick=function(){forgeAnalytics.clearLocal();location.reload();};
+  document.getElementById('sync').onclick=function(){forgeAnalytics.flush().then(function(){location.reload();});};
+  var report=document.getElementById('protected-report');
+  function escapeHtml(value){return String(value==null?'':value).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+  function tokenFromSession(){
+    try {
+      var keys=['forge-teacher-session','forge-auth-session'];
+      for(var i=0;i<keys.length;i++){var saved=JSON.parse(localStorage.getItem(keys[i])||'null');if(saved&&saved.access_token)return saved.access_token;}
+    } catch(e){}
+    return null;
+  }
+  function renderProtected(data){
+    if(!data||data.authorized!==true){
+      report.innerHTML='<section class="insight-list"><h2>Protected reporting</h2>'+ForgeState.html('empty',{label:'Admin access required',body:'Cross-user cohorts, retention, adoption and learning outcomes are protected. Sign in with an authorised leadership account to view this report.'})+'</section>';
+      return;
+    }
+    var m=data.metrics||{}, o=data.learning_outcomes||{};
+    var rows=(data.retention||[]).map(function(r){return '<tr><td>'+escapeHtml(r.cohort_week)+'</td><td>'+r.cohort_size+'</td><td>'+r.retained_week_2+'</td><td>'+r.retention_rate+'%</td></tr>';}).join('');
+    var breakdown=(data.event_breakdown||[]).slice(0,8).map(function(r){return '<div class="event-row"><span class="event-name">'+escapeHtml(r.event_name)+'</span><span class="forge-meta">'+r.count+'</span></div>';}).join('');
+    report.innerHTML='<section class="insight-list"><span class="tag">Protected production report</span><h2>Cross-user signal</h2><p class="lede">'+data.window_days+'-day window. These aggregates come from the Supabase event stream, not this browser’s local history.</p><div class="insight-grid"><div class="insight-stat"><span class="tag">Unique users</span><span class="insight-number">'+m.unique_users+'</span></div><div class="insight-stat"><span class="tag">Run completion</span><span class="insight-number">'+m.completion_rate+'%</span></div><div class="insight-stat"><span class="tag">Learning accuracy</span><span class="insight-number">'+o.accuracy+'%</span></div></div><h2>Retention cohorts</h2><div class="table-wrap"><table class="forge-table"><thead><tr><th>Cohort week</th><th>Users</th><th>Week 2</th><th>Rate</th></tr></thead><tbody>'+(rows||'<tr><td colspan="4">No cohort data yet.</td></tr>')+'</tbody></table></div><h2 class="forge-mt-4">Event mix</h2>'+(breakdown||'<p class="forge-meta">No remote events received yet.</p>')+'<p class="forge-meta forge-mt-4">'+(data.limitations||[]).map(escapeHtml).join(' ')+'</p></section>';
+  }
+  var token=tokenFromSession();
+  if(!token){renderProtected({authorized:false});}
+  else {report.innerHTML=ForgeState.html('loading',{label:'Loading protected report',body:'Fetching authorised cross-user aggregates.'});ForgeAPI.rpc('get_product_analytics',{p_days:30},{token:token}).then(renderProtected).catch(function(){renderProtected({authorized:false});});}
 })();
 </script>
 </body></html>
