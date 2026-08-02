@@ -28,6 +28,7 @@
 <body>
 <script src="scripts/forge-api.js"></script>
 <script src="scripts/forge-state.js"></script>
+<script src="scripts/forge-shell.js"></script>
 <script>if(localStorage.getItem('forge-theme')==='light'){document.documentElement.setAttribute('data-theme','light');}</script>
 <script src="scripts/forge-logo.js"></script>
 <script src="scripts/forge-auth-card.js"></script>
@@ -1098,7 +1099,17 @@ function renderBanks(){
   h+='<div class="center"><p class="tag" style="color:'+subj.color+';margin-bottom:4px">FORGE</p>';
   h+='<h2 class="forge-u-1oh0w3h">'+subj.label+'</h2>';
   h+='<p class="forge-u-10yda30">'+subj.sub+'</p></div>';
-  h+='<div class="bank-list">';
+  var recommendedBank = subj.banks[0];
+  var recommended = BANKS[recommendedBank];
+  var recommendedQuestions = recommended ? recommended.questions.filter(function(q){return !q.type||q.type==='fill_blank';}) : [];
+  h += '<section class="forge-recommendation" aria-labelledby="recommended-session-title">';
+  h += '<p class="forge-recommendation__eyebrow">Recommended next</p>';
+  h += '<h2 id="recommended-session-title" class="forge-recommendation__title">An eight-question session in '+subj.label+'</h2>';
+  h += '<p class="forge-recommendation__copy">We picked '+(recommended ? recommended.label : 'the next available topic')+' because it is the clearest place to build momentum. You can change the session below.</p>';
+  h += '<dl class="forge-session-detail"><div><dt>Topic</dt><dd>'+(recommended ? recommended.label : 'Current topic')+'</dd></div><div><dt>Questions</dt><dd>'+Math.min(FORGE_SESSION_SIZE, recommendedQuestions.length || FORGE_SESSION_SIZE)+'</dd></div><div><dt>Estimated time</dt><dd>~'+Math.max(4, Math.round(Math.min(FORGE_SESSION_SIZE, recommendedQuestions.length || FORGE_SESSION_SIZE) * 0.75))+' min</dd></div></dl>';
+  h += '<button class="forge-button forge-button--primary" id="start-recommended">Start recommended session →</button>';
+  h += '<p class="forge-session-change"><button class="forge-link-button" id="change-session" type="button">Change session</button> to choose a different bank.</p></section>';
+  h+='<div class="bank-list" id="all-session-options" hidden>';
   subj.banks.forEach(function(key){
     var b=BANKS[key];
     var point = getSpecPoint({}, key);
@@ -1114,6 +1125,15 @@ function renderBanks(){
   // route to adding a second class.
   if (locked) h += joinMoreHtml();
   app.innerHTML=h + sessionBar();
+  var recommendedBtn=document.getElementById('start-recommended');
+  if(recommendedBtn) recommendedBtn.onclick=function(){
+    if(!recommended || !recommendedQuestions.length) return;
+    state.bank=recommendedBank; forgeStartSession(recommendedBank,recommendedQuestions);
+    ensurePaidStudentId().then(function(){state.phase='quiz';render();});
+  };
+  var changeBtn=document.getElementById('change-session');
+  var allOptions=document.getElementById('all-session-options');
+  if(changeBtn && allOptions) changeBtn.onclick=function(){allOptions.hidden=false;changeBtn.closest('.forge-session-change').hidden=true;};
   wireJoinMore();
   var backBtn = document.getElementById('back-subj');
   if (backBtn) backBtn.onclick=function(){state.phase='subjects';render();};

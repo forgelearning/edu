@@ -108,3 +108,17 @@
 .ui-recommendation__eyebrow { margin: 0 0 4px; color: var(--hot); font: 600 11px 'JetBrains Mono', monospace; letter-spacing: .08em; text-transform: uppercase; }
 .ui-recommendation__title { margin: 0; color: var(--white); font: 700 16px/1.3 'Sora', sans-serif; }
 .ui-recommendation__copy { max-width: 68ch; margin: 6px 0 12px; color: var(--slate); font-size: 14px; }
+.forge-confidence{display:inline-flex;align-items:center;min-height:24px;padding:0 var(--space-2);border:1px solid currentColor;border-radius:var(--radius-pill);font:600 10px/1 'JetBrains Mono',monospace;letter-spacing:.05em;text-transform:uppercase}
+.forge-confidence--full{color:var(--good)}
+.forge-confidence--developing{color:var(--hot)}
+.forge-confidence--pilot{color:var(--ember)}
+.forge-confidence--preview{color:var(--slate)}
+.forge-recommendation{padding:var(--space-6);margin:var(--space-6) 0 var(--space-5);border:1px solid rgba(255,201,60,.38);border-radius:var(--radius-lg);background:linear-gradient(135deg,rgba(255,201,60,.1),var(--panel));box-shadow:0 16px 38px -28px rgba(0,0,0,.6)}
+.forge-recommendation__eyebrow{margin:0 0 var(--space-2);color:var(--hot);font:600 11px 'JetBrains Mono',monospace;letter-spacing:.08em;text-transform:uppercase}
+.forge-recommendation__title{margin:0;color:var(--white);font:700 20px/1.25 'Sora',sans-serif;text-wrap:balance}
+.forge-recommendation__copy{max-width:65ch;margin:var(--space-2) 0 var(--space-4);color:var(--slate);font-size:14px;line-height:1.5}
+.forge-session-detail{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--space-3);margin:var(--space-4) 0;padding:var(--space-4);border:1px solid var(--line);border-radius:var(--radius-md);background:var(--panel-2)}
+.forge-session-detail dt{color:var(--dim);font:10px 'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.06em}
+.forge-session-detail dd{margin:var(--space-1) 0 0;color:var(--white);font-weight:600}
+.forge-session-change{margin-top:var(--space-3);color:var(--slate);font-size:13px}
+@media(max-width:600px){.forge-session-detail{grid-template-columns:1fr}.forge-recommendation{padding:var(--space-5)}}
