@@ -31,6 +31,7 @@
 <script src="scripts/forge-shell.js"></script>
 <script src="scripts/forge-content-status.js"></script>
 <script src="scripts/forge-app.js"></script>
+<script src="scripts/forge-question.js"></script>
 <script>if(localStorage.getItem('forge-theme')==='light'){document.documentElement.setAttribute('data-theme','light');}</script>
 <script src="scripts/forge-logo.js"></script>
 <script src="scripts/forge-auth-card.js"></script>
@@ -1317,14 +1318,7 @@ function renderQuiz(){
     return;
   }
 
-  var keys=Object.keys(q.options);
-  h+='<div class="options" id="opts">';
-  keys.forEach(function(k){
-    h+='<button class="opt forge-option" data-k="'+k+'"><span class="letter">'+k+'</span><span>'+q.options[k]+'</span></button>';
-  });
-  h+='</div>';
-  h+='<div id="feedback"></div>';
-  h+='<div class="clear"></div>';
+  h += window.ForgeQuestion.renderOptions(q);
 
   app.innerHTML=h;
   document.getElementById('back-banks').onclick=function(){state.phase='banks';render();};
@@ -1362,16 +1356,8 @@ function renderQuiz(){
       });
 
       var fb=document.getElementById('feedback');
-      if(isCorrect){
-        fb.innerHTML='<div class="praise-box">\u2713 Nailed it.</div><button class="next-btn btn-glass btn-ember" id="next-btn">Next \u2192</button><div class="clear"></div>';
-      }else{
-        var fh='<div class="scaffold-box"><span class="stag">'+q.tag+'</span><p>'+q.scaffold+'</p></div>';
-        if(q.reforge){
-          fh+='<button class="reforge-trigger" id="rf-btn">Re-forge \u2192</button>';
-          fh+='<div id="rf-area" class="hidden"></div>';
-        }
-        fh+='<button class="next-btn btn-glass btn-ember" id="next-btn">Next \u2192</button><div class="clear"></div>';
-        fb.innerHTML=fh;
+      fb.innerHTML=window.ForgeQuestion.renderFeedback(q,isCorrect);
+      if(!isCorrect){
         if(q.reforge){
           document.getElementById('rf-btn').onclick=function(){
             document.getElementById('rf-btn').classList.add('hidden');
