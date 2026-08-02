@@ -169,6 +169,11 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
 .extra-time-badge{display:inline-block;padding:2px 7px;border-radius:var(--radius-xs);font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;background:rgba(127,217,138,.1);border:1px solid rgba(127,217,138,.3);color:var(--good);margin-left:6px}
 .rename-input{padding:5px 8px;border-radius:var(--radius-sm);border:1px solid var(--ember);background:var(--panel);color:var(--white);font-family:Inter,sans-serif;font-size:13px;width:140px}
 .student-assign-row:last-child{border-bottom:none}
+.student-assign-row[data-status="in-progress"],.student-assign-row[data-status="completed"]{cursor:pointer}
+.student-assign-row:focus-visible,.class-table td[tabindex="0"]:focus-visible{outline:2px solid var(--ember);outline-offset:2px;border-radius:var(--radius-xs)}
+.assignment-filter{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0 0 16px}
+.assignment-filter label{font:11px 'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.06em;color:#8A857E}
+.assignment-filter select{min-height:36px;padding:7px 30px 7px 10px;border-radius:var(--radius-sm);border:1px solid var(--line);background:var(--panel);color:var(--white);font:13px Inter,sans-serif}
 .asgn-actions{display:flex;gap:6px;margin-top:12px;padding-top:10px;border-top:1px solid var(--line)}
 .asgn-action-btn{padding:5px 12px;border-radius:var(--radius-sm);font-family:Inter,sans-serif;font-size:12px;font-weight:600;cursor:pointer;border:1px solid var(--line);background:var(--panel);color:var(--slate);transition:border-color .15s,color .15s}
 .asgn-action-btn:hover{border-color:var(--ember);color:var(--white)}
@@ -926,7 +931,7 @@ function getDefaultStarter(tag, label) {
 }
 
 var app = document.getElementById('app');
-var dashState = { classId: null, className: null, classSubject: null, classCode: null, responses: [], students: [], wrongResponses: [], drillResponses: [], drillStudents: [], assignments: [] };
+var dashState = { classId: null, className: null, classSubject: null, classCode: null, responses: [], students: [], wrongResponses: [], drillResponses: [], drillStudents: [], assignments: [], assignmentFilter: 'active' };
 
 // Loads a given class's dashboard data and remembers it in the sidebar's class
 // switcher, so switching back later doesn't need the code re-entered. Lives at
@@ -2052,18 +2057,25 @@ function renderAssignments() {
     var active = assignments.filter(function(a) { return !a.archived; });
     var archived = assignments.filter(function(a) { return a.archived; });
 
-    if (active.length > 0) {
+    h += '<div class="assignment-filter"><label for="assignment-status-filter">Show</label><select id="assignment-status-filter" aria-label="Filter assignments by status">';
+    h += '<option value="active"' + (dashState.assignmentFilter === 'active' ? ' selected' : '') + '>Active assignments</option>';
+    h += '<option value="archived"' + (dashState.assignmentFilter === 'archived' ? ' selected' : '') + '>Archived assignments</option>';
+    h += '<option value="all"' + (dashState.assignmentFilter === 'all' ? ' selected' : '') + '>All assignments</option></select></div>';
+
+    if (dashState.assignmentFilter !== 'archived' && active.length > 0) {
       h += '<div class="card-title" style="margin-bottom:12px">Active assignments</div>';
       active.forEach(function(asgn) { h += renderAssignCard(asgn, students, responses, false); });
     }
 
-    if (archived.length > 0) {
+    if (dashState.assignmentFilter !== 'active' && archived.length > 0) {
       h += '<div class="card-title" style="margin-bottom:12px;margin-top:20px;color:#8A857E">Archived</div>';
       archived.forEach(function(asgn) { h += renderAssignCard(asgn, students, responses, true); });
     }
   }
 
   el.innerHTML = h;
+  var assignmentFilter = document.getElementById('assignment-status-filter');
+  if (assignmentFilter) assignmentFilter.onchange = function() { dashState.assignmentFilter = assignmentFilter.value; renderAssignments(); };
   var clearStarterContext = document.getElementById('clear-starter-context');
   if (clearStarterContext) clearStarterContext.onclick = function() { dashState.selectedStarterTag = null; renderAssignments(); };
 
@@ -2403,6 +2415,16 @@ function renderClassOverview(responses, students) {
   h += '</div></div>';
 
   el.innerHTML = h;
+
+  // The responsive table keeps the click-to-drill-down behaviour usable by
+  // keyboard and switch controls as well as pointer users.
+  el.querySelectorAll('.class-table td[onclick]').forEach(function(cell) {
+    cell.setAttribute('tabindex', '0');
+    cell.setAttribute('role', 'button');
+    cell.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); cell.click(); }
+    });
+  });
 
   // Wire extra time selects
   el.querySelectorAll('.extra-time-select').forEach(function(sel) {
