@@ -188,69 +188,26 @@
     return Promise.reject(new Error('ForgeAPI is unavailable'));
   }
 
-  /* Replace this student's cached classes with the server's view. `anchor` is
-   * the row they signed in with: {studentId, classCode, studentName}. Its own
-   * code is the only one we know, so it is re-attached to its entry; the
-   * others keep whatever code this device had cached, which is nothing on a
-   * device they haven't used before. That's fine — responses come back
-   * through get_linked_responses, which needs no per-class code. */
+  /* Make the signed-in class the only active class context.
+   *
+   * Class rows and responses are intentionally isolated. A student may join
+   * several classes, but a teacher must only ever see the student row and
+   * responses created through that teacher's class code. Do not restore or
+   * merge linked rows here: doing so leaks history from another class into
+   * the current class dashboard. */
   function syncFromServer(supabaseUrl, supabaseKey, anchor, done) {
     if (!anchor || !anchor.studentId || !anchor.classCode || !anchor.studentName) { done && done(list()); return; }
     use(anchor.studentName);
-
-    rpc(supabaseUrl, supabaseKey, 'get_linked_classes', {
-      p_student_id: anchor.studentId, p_code: anchor.classCode, p_name: anchor.studentName
-    }).then(function (rows) {
-      if (!Array.isArray(rows) || !rows.length) { done && done(list()); return; }
-
-      var known = {};
-      load().forEach(function (c) { if (c.classId) known[c.classId] = c; });
-
-      var mine = rows.map(function (r) {
-        var cached = known[r.class_id] || {};
-        return {
-          classId:     r.class_id,
-          classCode:   r.student_id === anchor.studentId ? anchor.classCode : (cached.classCode || null),
-          className:   r.class_name || cached.className || null,
-          subject:     r.subject || cached.subject || null,
-          studentId:   r.student_id,
-          studentName: anchor.studentName
-        };
-      });
-
-      /* A cached class the server doesn't count as linked, but whose code this
-         device still holds, is one the student joined while its link was
-         missed. Holding both codes is the proof linking needs, so repair it
-         now — otherwise its answers stay walled off from the rest and their
-         history reads as reset. Its entry is kept either way. */
-      var linked = {};
-      rows.forEach(function (r) { linked[r.student_id] = true; });
-      var orphans = load().filter(function (c) {
-        return norm(c.studentName) === norm(anchor.studentName) &&
-               c.classCode && c.studentId && !linked[c.studentId] &&
-               !repairTried[c.studentId];
-      });
-      /* One attempt each per page load: a link the server refuses would
-         otherwise leave the entry an orphan and re-trigger the re-sync below
-         forever. */
-      orphans.forEach(function (c) { repairTried[c.studentId] = true; });
-
-      /* Keep other students' entries on this device untouched. */
-      var others = load().filter(function (c) { return norm(c.studentName) !== norm(anchor.studentName); });
-      save(others.concat(mine, orphans));
-
-      if (!orphans.length) { done && done(list()); return; }
-      var pending = orphans.length;
-      orphans.forEach(function (c) {
-        linkToServer(supabaseUrl, supabaseKey, anchor, c, function () {
-          if (--pending === 0) {
-            /* Re-read so the repaired rows come back as ordinary linked
-               classes rather than the orphan entries appended above. */
-            syncFromServer(supabaseUrl, supabaseKey, anchor, done);
-          }
-        });
-      });
-    }).catch(function () { done && done(list()); });
+    var others = load().filter(function (c) { return norm(c.studentName) !== norm(anchor.studentName); });
+    save(others.concat([{
+      classId: anchor.classId || null,
+      classCode: anchor.classCode,
+      className: anchor.className || null,
+      subject: anchor.subject || null,
+      studentId: anchor.studentId,
+      studentName: anchor.studentName
+    }]));
+    done && done(list());
   }
 
   /* Record that the same person holds both codes. */
@@ -267,25 +224,24 @@
     }).catch(function () { done && done(false); });
   }
 
-  /* Responses across every linked class, oldest first — one call, no
-   * per-class codes needed. Falls back to the per-class route when the
-   * student has no server link yet. */
+  /* Responses for the active class only. Never use the cross-class linked
+   * response RPC: a teacher's dashboard must not receive another class's
+   * history. */
   function fetchLinkedResponses(supabaseUrl, supabaseKey, anchor, done) {
     if (!anchor || !anchor.studentId || !anchor.classCode || !anchor.studentName) {
       fetchAllResponses(supabaseUrl, supabaseKey, anchor && anchor.studentName, done);
       return;
     }
-    rpc(supabaseUrl, supabaseKey, 'get_linked_responses', {
+    rpc(supabaseUrl, supabaseKey, 'get_student_own_responses', {
       p_student_id: anchor.studentId, p_code: anchor.classCode, p_name: anchor.studentName
     }).then(function (rows) {
-      if (!Array.isArray(rows)) { fetchAllResponses(supabaseUrl, supabaseKey, anchor.studentName, done); return; }
-      done(rows.map(function (r) {
-        r._studentId = r.link_student_id;
-        r._classId   = r.link_class_id;
-        r._subject   = r.link_subject;
+      done((Array.isArray(rows) ? rows : []).map(function (r) {
+        r._studentId = anchor.studentId;
+        r._classId   = anchor.classId || null;
+        r._subject   = anchor.subject || null;
         return r;
       }));
-    }).catch(function () { fetchAllResponses(supabaseUrl, supabaseKey, anchor.studentName, done); });
+    }).catch(function () { done([]); });
   }
 
   global.ForgeClasses = {

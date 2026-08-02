@@ -155,7 +155,8 @@ function renderJoin(){
         subject: state.classSubject, studentId: state.studentId, studentName: name
       });
       ForgeClasses.syncFromServer(SUPABASE_URL, SUPABASE_KEY,
-        {studentId: state.studentId, classCode: code, studentName: name}, function(){ render(); });
+        {studentId: state.studentId, classId: state.classId, classCode: code,
+         subject: state.classSubject, className: match.class_name, studentName: name}, function(){ render(); });
       var joined = ForgeClasses.subjects(SUBJECTS);
       if(joined.length===1){
         state.subject=joined[0];
