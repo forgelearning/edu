@@ -200,10 +200,10 @@ if (localStorage.getItem('forge-theme') === 'light') {
   <p class="sect-lede reveal">Other apps show you a streak. Forge shows you exactly where you'll lose marks — and what to do about it before the exam.</p>
 
   <div class="dash-tabs forge-u-1hexcow" role="tablist">
-    <button class="stab active" data-forge-action="student-overview">My overview</button>
-    <button class="stab" data-forge-action="student-forge">Forge mode</button>
-    <button class="stab" data-forge-action="student-anvil">The Anvil</button>
-    <button class="stab" data-forge-action="student-crucible">The Crucible</button>
+    <button class="stab active" data-forge-action="student-overview">Dashboard</button>
+    <button class="stab" data-forge-action="student-forge">Forge · practice</button>
+    <button class="stab" data-forge-action="student-anvil">Anvil · repair</button>
+    <button class="stab" data-forge-action="student-crucible">Crucible · pressure-test</button>
   </div>
   <p class="forge-u-p3u7u5">These are the same tabs you'll see on your own profile once you're signed in.</p>
 
@@ -213,6 +213,14 @@ if (localStorage.getItem('forge-theme') === 'light') {
       <div class="dash-head">
         <span class="rt">Your profile · A Level Economics</span>
         <span class="tag">Always updating</span>
+      </div>
+
+      <div class="landing-recommendation landing-recommendation--student">
+        <span class="landing-recommendation-label">Recommended next</span>
+        <h3>Practise 2.3.1 · Automatic stabilisers</h3>
+        <p>Your weakest recent topic is at 20% accuracy. Start an 8-question Forge session to repair the exact misconception before it costs you again.</p>
+        <div class="landing-recommendation-meta"><span>8 questions</span><span>~5 minutes</span><span>Why this was selected · weakest recent topic</span></div>
+        <button class="btn btn-hot" type="button" data-forge-action="student-forge">Start recommended session →</button>
       </div>
 
       <div class="sp-stat-row">
@@ -328,15 +336,15 @@ if (localStorage.getItem('forge-theme') === 'light') {
   <div class="dash-panel hidden" id="stu-forge">
     <div class="dash-card reveal">
       <div class="dash-head">
-        <span class="rt">Forge mode · Daily session</span>
-        <span class="tag">5–10 minutes</span>
+        <span class="rt">Forge · Recommended practice</span>
+        <span class="tag">8 questions · ~5 minutes</span>
       </div>
-      <p class="dash-desc">Your daily session pulls questions from across the spec, weighted toward the topics you're weakest on. The worse you're doing on a spec point, the more often it appears.</p>
+      <p class="dash-desc">Forge recommends one short session from your weakest recent topic. You can change the session when you want more control.</p>
 
       <div class="stu-session-mock reveal">
         <div class="stu-session-head">
-          <span class="forge-u-auhegk">Today's session</span>
-          <span class="mono forge-u-1ap9jxy">10 questions · ~3 mins</span>
+          <span class="forge-u-auhegk">Recommended session · 2.3.1 Automatic stabilisers</span>
+          <span class="mono forge-u-1ap9jxy">8 questions · ~5 mins</span>
         </div>
         <div class="stu-session-row">
           <span class="stu-dot forge-u-6uw790"></span>
@@ -389,8 +397,8 @@ if (localStorage.getItem('forge-theme') === 'light') {
           <span class="stu-sq-result forge-text-bad">✗ → scaffold → re-forge ✓</span>
         </div>
         <div class="stu-session-summary">
-          <span class="forge-u-auhegk">7/10 correct</span>
-          <span class="forge-u-19j2vc3">· 2 reforged successfully · 1 sent to Anvil</span>
+          <span class="forge-u-auhegk">6/8 correct · confidence improving</span>
+          <span class="forge-u-19j2vc3">· 1 repaired successfully · 1 sent to Anvil</span>
         </div>
       </div>
 
@@ -661,21 +669,32 @@ if (localStorage.getItem('forge-theme') === 'light') {
 
   <!-- dashboard tabs -->
   <div class="dash-tabs forge-u-1hexcow" role="tablist">
-    <button class="dtab active" data-forge-action="dashboard-heatmap">Misconception heatmap</button>
+    <button class="dtab active" data-forge-action="dashboard-heatmap">Priority signals</button>
     <button class="dtab" data-forge-action="dashboard-class">Class overview</button>
-    <button class="dtab" data-forge-action="dashboard-student">Student drill-down</button>
-    <button class="dtab" data-forge-action="dashboard-starter">Corrective starters</button>
+    <button class="dtab" data-forge-action="dashboard-student">Student profile</button>
+    <button class="dtab" data-forge-action="dashboard-starter">Starter builder</button>
     <button class="dtab" data-forge-action="dashboard-assignments">Assignments</button>
   </div>
 
-  <!-- VIEW 1: Misconception heatmap -->
+  <!-- VIEW 1: Recommendation-led priority signals -->
   <div class="dash-panel" id="dash-heatmap">
     <div class="dash-card reveal">
       <div class="dash-head">
-        <span class="rt">Year 12 Economics · This week</span>
+        <span class="rt">Year 12 Economics · Teacher dashboard</span>
         <span class="tag">Live data</span>
       </div>
-      <p class="dash-desc">The misconceptions your class is firing most, ranked by frequency. Red = high volume. Each tag links to the spec point it belongs to.</p>
+      <div class="landing-recommendation landing-recommendation--teacher">
+        <span class="landing-recommendation-label">Next best action</span>
+        <h3>Address the strongest misconception signal</h3>
+        <p>Start with MC-INF-01. It is affecting 23 students, so a five-minute corrective starter will have the largest immediate impact.</p>
+        <button class="btn btn-hot" type="button" data-forge-action="dashboard-starter">Open priority signals →</button>
+      </div>
+      <p class="dash-desc">The supporting view below ranks the misconception volume and surfaces the three students who need attention first.</p>
+      <div class="teacher-signal-row">
+        <span class="teacher-signal teacher-signal--active"><b>Start with Student A</b><span>6 open</span></span>
+        <span class="teacher-signal"><b>Student B</b><span>5 open</span></span>
+        <span class="teacher-signal"><b>Student C</b><span>3 open</span></span>
+      </div>
       <div class="heatmap-grid">
         <div class="heat-row high">
           <span class="heat-tag mono">MC-INF-01</span>
@@ -713,7 +732,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
           <span class="heat-count">6 fires</span>
         </div>
       </div>
-      <p class="dash-footer">→ You'd plan Monday's starter around <b class="forge-text-hot">MC-INF-01</b> — 23 students hit the same trap this week.</p>
+      <p class="dash-footer">→ The detailed heatmap stays below the recommendation so you can inspect the evidence when you need it.</p>
     </div>
   </div>
 
@@ -943,6 +962,32 @@ if (localStorage.getItem('forge-theme') === 'light') {
     </div>
   </div>
 
+</div>
+</section>
+<section id="leadership">
+<div class="wrap">
+  <p class="tag eyebrow reveal">For school leadership</p>
+  <h2 class="reveal">See the school-wide priority, not a wall of reporting.</h2>
+  <p class="sect-lede reveal">Leadership gets one clear starting point: the class or subject requiring attention, the reason it matters, and the intervention to take next.</p>
+
+  <div class="leadership-preview dash-card reveal">
+    <div class="dash-head">
+      <span class="rt">School overview · Read-only</span>
+      <span class="tag">Updated live</span>
+    </div>
+    <div class="landing-recommendation landing-recommendation--leadership">
+      <span class="landing-recommendation-label">Leadership focus</span>
+      <h3>Start with 12D/Lw</h3>
+      <p>This class has no recorded answers yet. Start there before interpreting school-wide trends.</p>
+      <button class="btn btn-hot" type="button">Open priority signals →</button>
+    </div>
+    <div class="leadership-metrics">
+      <div><strong>25</strong><span>Active classes</span></div>
+      <div><strong class="forge-text-good">75%</strong><span>School-wide accuracy</span></div>
+      <div><strong>59</strong><span>Students enrolled</span></div>
+    </div>
+    <p class="dash-footer">→ Detailed subject and class reporting stays available below the priority, when leadership needs the evidence.</p>
+  </div>
 </div>
 </section>
 <section id="subjects">
