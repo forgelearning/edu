@@ -54,7 +54,15 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
 .dash-primary{display:inline-flex;align-items:center;min-height:38px;padding:0 13px;border-radius:var(--radius-sm);background:var(--ember);color:#fff;text-decoration:none;font-size:13px;font-weight:700}
 .dash-primary:hover{background:var(--hot);color:var(--coal)}
 
-.tabs{display:inline-flex;gap:4px;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-md);padding:4px;margin-bottom:24px;flex-wrap:wrap}
+.tabs{display:flex;align-items:center;gap:4px;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-md);padding:4px;margin-bottom:24px;flex-wrap:wrap}
+.tab-primary{display:flex;gap:4px}
+.tab-more{position:relative;margin-left:auto}
+.tab-more summary{list-style:none;cursor:pointer;font:600 13px Inter,sans-serif;color:var(--slate);padding:9px 14px;border-radius:var(--radius-sm);white-space:nowrap}
+.tab-more summary::-webkit-details-marker{display:none}
+.tab-more summary::after{content:'⌄';margin-left:7px;color:var(--dim)}
+.tab-more[open] summary,.tab-more summary:hover{color:var(--white);background:var(--panel-2)}
+.tab-secondary{position:absolute;right:0;top:calc(100% + 6px);z-index:5;display:flex;flex-direction:column;min-width:190px;padding:4px;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-md)}
+.tab-secondary .tab{text-align:left}
 .tab{font-family:Inter,sans-serif;font-weight:600;font-size:13px;color:var(--slate);background:transparent;border:none;padding:9px 18px;border-radius:var(--radius-sm);cursor:pointer;white-space:nowrap}
 .tab:hover{color:var(--white)}
 .tab.active{background:var(--ember);color:var(--coal)}
@@ -63,8 +71,12 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
 .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-lg);padding:24px;margin-bottom:18px}
 .card-title{font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:#8A857E;margin-bottom:14px}
 
-.stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
+.stat-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-bottom:10px}
+.stat-row--priority{max-width:560px}
+.stat-support{display:flex;gap:12px;flex-wrap:wrap;margin:0 0 22px;color:var(--dim);font:12px 'JetBrains Mono',monospace}
+.stat-support span+span::before{content:'·';margin-right:12px;color:var(--line)}
 .stat{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-md);padding:16px;text-align:center}
+.stat--priority{border-color:var(--ember);background:var(--panel-2)}
 .stat-n{font-family:'Sora',sans-serif;font-size:28px;font-weight:800;display:block}
 .stat-l{font-size:11px;color:#8A857E;margin-top:4px;display:block;font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.04em}
 .stat-n-muted{color:var(--slate)}
@@ -195,7 +207,11 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
   .dash-header{margin-bottom:16px}
   .dash-header h1{font-size:20px}
   .card{padding:16px 14px;margin-bottom:12px;border-radius:var(--radius-md)}
-  .stat-row{grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
+  .stat-row{grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
+  .stat-support{gap:6px;line-height:1.6;margin-bottom:18px}
+  .stat-support span+span::before{margin-right:6px}
+  .tab-more{margin-left:0}
+  .tab-secondary{left:0;right:auto}
   .stat{padding:12px 8px}
   .stat-n{font-size:23px}
   .stat-l{font-size:10px}
@@ -1442,29 +1458,32 @@ function renderDashboard() {
   h += '</div>';
 
   // Stats row
-  h += '<p style="font-size:12px;color:#8A857E;margin:-8px 0 14px">Accuracy is based on answered questions; completion and participation are tracked separately.</p>';
-  h += '<div class="stat-row">';
+  h += '<p style="font-size:12px;color:#8A857E;margin:-8px 0 14px">Start with the priority below, then use the secondary views when you need detail.</p>';
+  h += '<div class="stat-row stat-row--priority">';
   var accuracyClass = totalQs === 0 ? 'stat-n-muted' : accuracy >= 70 ? 'stat-n-good' : accuracy >= 50 ? 'stat-n-hot' : 'stat-n-bad';
-  h += '<div class="stat" title="Correct answers divided by answered questions"><span class="stat-n ' + accuracyClass + '">' + (totalQs === 0 ? '—' : accuracy + '%') + '</span><span class="stat-l">Accuracy</span></div>';
-  h += '<div class="stat"><span class="stat-n stat-n-neutral">' + totalQs + '</span><span class="stat-l">Total answers</span></div>';
-  h += '<div class="stat"><span class="stat-n stat-n-hot">' + Object.keys(uniqueMCs).length + '</span><span class="stat-l">Unique misconceptions</span></div>';
-  h += '<div class="stat"><span class="stat-n stat-n-good">' + reforgeCorrect.length + '/' + reforgeAttempts.length + '</span><span class="stat-l">Reforges passed</span></div>';
+  h += '<div class="stat stat--priority" title="Correct answers divided by answered questions"><span class="stat-n ' + accuracyClass + '">' + (totalQs === 0 ? '—' : accuracy + '%') + '</span><span class="stat-l">Class accuracy</span></div>';
+  h += '<div class="stat stat--priority"><span class="stat-n stat-n-hot">' + Object.keys(uniqueMCs).length + '</span><span class="stat-l">Open misconception signals</span></div>';
   h += '</div>';
+  h += '<div class="stat-support"><span>' + students.length + ' students</span><span>' + totalQs + ' answers</span><span>' + reforgeCorrect.length + '/' + reforgeAttempts.length + ' reforges passed</span></div>';
   h += '<div class="forge-card forge-card--focus" style="margin:16px 0"><div class="card-title">Needs attention today <span class="forge-meta">top misconception volume</span></div>';
   if(attentionRows.length){
     h += '<div class="forge-action-row" style="align-items:stretch">';
-    attentionRows.forEach(function(row){h += '<button class="forge-button forge-button--secondary" style="justify-content:space-between;flex:1;min-width:150px" onclick="renderStudent(\''+row.id+'\')"><span>'+teacherEsc(row.name)+'</span><span class="forge-meta">'+row.count+' open</span></button>';});
-    h += '</div><p style="font-size:12px;color:var(--slate);margin-top:10px">Start with the students carrying the most unresolved misconception signals, then open their profile to choose an intervention.</p>';
+    attentionRows.slice(0,3).forEach(function(row,i){h += '<button class="forge-button forge-button--'+(i===0?'primary':'secondary')+'" style="justify-content:space-between;flex:1;min-width:150px" onclick="renderStudent(\''+row.id+'\')"><span>'+(i===0?'Start with ':'')+teacherEsc(row.name)+'</span><span class="forge-meta">'+row.count+' open</span></button>';});
+    h += '</div><p style="font-size:12px;color:var(--slate);margin-top:10px">The first student is the recommended starting point; open their profile to choose an intervention.</p>';
   } else h += '<p style="font-size:13px;color:var(--slate)">No active misconception signals yet. Keep collecting responses.</p>';
   h += '</div>';
 
   // Tabs
   h += '<div class="tabs">';
-  h += '<button class="tab active" data-view="heatmap" onclick="switchTab(\'heatmap\',this)">Misconception Heatmap</button>';
-  h += '<button class="tab" data-view="class" onclick="switchTab(\'class\',this)">Class Overview</button>';
-  h += '<button class="tab" data-view="spec" onclick="switchTab(\'spec\',this)">Spec Points</button>';
+  h += '<div class="tab-primary">';
+  h += '<button class="tab active" data-view="heatmap" onclick="switchTab(\'heatmap\',this)">Priority signals</button>';
+  h += '<button class="tab" data-view="class" onclick="switchTab(\'class\',this)">Class overview</button>';
+  h += '</div>';
+  h += '<details class="tab-more"><summary>More views</summary><div class="tab-secondary">';
+  h += '<button class="tab" data-view="spec" onclick="switchTab(\'spec\',this)">Spec points</button>';
   h += '<button class="tab" data-view="assignments" onclick="switchTab(\'assignments\',this)">Assignments</button>';
   h += '<button class="tab" data-view="starters" onclick="switchTab(\'starters\',this)">Corrective starters</button>';
+  h += '</div></details>';
   h += '</div>';
 
   h += '<div class="panel active" id="panel-heatmap"></div>';
@@ -1511,7 +1530,9 @@ window.copyClassCode = function(btn) {
 
 window.switchTab = function(view, btn) {
   document.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('active'); });
-  btn.classList.add('active');
+  if (btn && btn.classList) btn.classList.add('active');
+  var more = document.querySelector('.tab-more');
+  if (more && btn && more.contains(btn)) more.open = false;
   document.querySelectorAll('.panel').forEach(function(p) { p.classList.remove('active'); });
   document.getElementById('panel-' + view).classList.add('active');
   document.getElementById('panel-student').style.display = 'none';

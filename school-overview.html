@@ -44,7 +44,9 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
 /* Dashboard */
 .dash-header{margin-bottom:28px}
 .dash-meta{font-size:13px;color:var(--slate);margin-top:4px}
-.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
+.stat-grid{display:grid;grid-template-columns:repeat(2,minmax(0,280px));gap:12px;margin-bottom:10px}
+.stat-support{display:flex;gap:12px;flex-wrap:wrap;margin:0 0 24px;color:var(--dim);font:12px 'JetBrains Mono',monospace}
+.stat-support span+span::before{content:'·';margin-right:12px;color:var(--line)}
 .stat-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-md);padding:18px 16px;text-align:center}
 .stat-n{font-family:'Sora',sans-serif;font-size:36px;font-weight:800;display:block;line-height:1}
 .stat-l{font-family:JetBrains Mono,monospace;font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:#8A857E;display:block;margin-top:6px}
@@ -67,7 +69,7 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
 .two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .signout-btn{padding:7px 14px;border-radius:var(--radius-sm);background:var(--panel);border:1px solid var(--line);color:var(--slate);font-family:Inter,sans-serif;font-size:13px;font-weight:600;cursor:pointer}
 .signout-btn:hover{border-color:var(--ember);color:var(--white)}
-@media(max-width:680px){.stat-grid{grid-template-columns:1fr 1fr}.two-col{grid-template-columns:1fr}}
+@media(max-width:680px){.stat-grid{grid-template-columns:1fr 1fr}.stat-support{gap:6px;line-height:1.6}.stat-support span+span::before{margin-right:6px}.two-col{grid-template-columns:1fr}}
 [data-theme="light"] .forge-logo-dark{display:none!important}[data-theme="light"] .forge-logo-light{display:block!important}</style>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-RGZ9J6Q8H9"></script>
@@ -451,10 +453,9 @@ function renderDashboard() {
   // Stat cards
   h += '<div class="stat-grid">';
   h += statCard(totalClasses, 'Active classes', 'var(--white)');
-  h += statCard(totalStudents, 'Students enrolled', 'var(--white)');
-  h += statCard(activeStudents7d, 'Active last 7 days', 'var(--hot)');
   h += statCard(avgAcc + '%', 'School-wide accuracy', avgAcc >= 70 ? 'var(--good)' : avgAcc >= 50 ? 'var(--hot)' : 'var(--bad)');
   h += '</div>';
+  h += '<div class="stat-support"><span>' + totalStudents + ' students enrolled</span><span>' + activeStudents7d + ' active in 7 days</span><span>' + totalResponses + ' answers recorded</span></div>';
 
   if (totalClasses === 0) {
     h += '<div class="card" style="text-align:center;color:#8A857E;padding:32px 20px">'
