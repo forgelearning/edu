@@ -413,31 +413,8 @@ function joinClassByCode(name, code, cb) {
       subject: cls.subject || null, studentId: row.student_id, studentName: name
     });
 
-    // Tie this class to one the student already holds a code for, so both
-    // follow them onto any other device. Linking needs two codes, which is
-    // exactly what the student has just demonstrated.
-    //
-    // The class they're actively working in is the natural anchor, but its
-    // cached code can be missing: syncFromServer only knows the code of the
-    // class signed in with, so every other class it restores has none. Any
-    // other cached class with a code proves the same thing and links into the
-    // same group, so fall back to that rather than silently skipping the link
-    // — an unlinked row keeps its answers to itself, and the student's history
-    // looks reset the next time they sign in with this code.
-    var anchor = null;
-    if (state.studentId && state.classId !== cls.id) {
-      var coded = ForgeClasses.list().filter(function(c){
-        return c.classCode && c.studentId && c.studentId !== row.student_id;
-      });
-      anchor = coded.filter(function(c){ return c.studentId === state.studentId; })[0] || coded[0] || null;
-    }
-    if (anchor) {
-      ForgeClasses.linkToServer(SUPABASE_URL, SUPABASE_KEY, anchor,
-        { studentId: row.student_id, classCode: code }, function() {
-          cb(null, { cls: cls, studentId: row.student_id });
-        });
-      return;
-    }
+    // Keep each class row independent. A new class must start with an empty
+    // class-scoped history; never merge it with a row from another class.
     cb(null, { cls: cls, studentId: row.student_id });
   }).catch(function() { cb('We couldn’t join this class right now. Check your connection and try again.'); });
 }
@@ -844,7 +821,8 @@ function renderJoin() {
       // Signing in anywhere recovers every class they're linked to, so a
       // student on a new device doesn't re-enter each code.
       ForgeClasses.syncFromServer(SUPABASE_URL, SUPABASE_KEY,
-        { studentId: res.studentId, classCode: code, studentName: name }, function() {
+        { studentId: res.studentId, classId: res.cls.id, classCode: code,
+          className: res.cls.name, subject: res.cls.subject, studentName: name }, function() {
           activateClass(ForgeClasses.forSubject(res.cls.subject) || {
             classId: res.cls.id, classCode: code, subject: res.cls.subject,
             studentId: res.studentId, studentName: name
@@ -1629,7 +1607,7 @@ function renderResults(){
     if(!students||!Array.isArray(students)||!students.length){
       lbEl.innerHTML=ForgeState.html('empty',{label:'No classmates yet',body:'Your class leaderboard will appear after other students join.'});return;}
     var ids=students.map(function(s){return s.id;}).join(',');
-    ForgeAPI.response(SUPABASE_URL+'/rest/v1/responses?select=*&student_id=in.('+ids+')',{headers:hdrs}).then(function(r){return r.json();}).then(function(responses){
+    ForgeAPI.response(SUPABASE_URL+'/rest/v1/responses?select=*&class_id=eq.'+encodeURIComponent(state.classId)+'&student_id=in.('+ids+')',{headers:hdrs}).then(function(r){return r.json();}).then(function(responses){
       if(!responses||!Array.isArray(responses)) responses=[];
       var byStudent={};
       students.forEach(function(s){byStudent[s.id]={name:s.name,responses:[]};});

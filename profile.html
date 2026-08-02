@@ -630,22 +630,14 @@ function forgeSignOut(){
           var token = ForgeAuth.accessToken();
           var authUser = ForgeAuth.currentUser();
           if (token && authUser) {
-            // Load responses from ALL student rows for this auth user
-            ForgeAPI.response(SUPABASE_URL + '/rest/v1/students?select=id&auth_user_id=eq.' + authUser.id, {
-              headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + token }
-            }).then(function(r) { return r.json(); }).then(function(studentRows) {
-              if (!Array.isArray(studentRows) || studentRows.length === 0) {
-                renderProfile(); return;
-              }
-              var ids = studentRows.map(function(r) { return r.id; });
-              var filter = ids.length === 1
-                ? 'student_id=eq.' + ids[0]
-                : 'student_id=in.(' + ids.join(',') + ')';
-              supaGet('responses', filter + '&order=created_at.desc').then(function(r) {
+            // Load only the currently active class row. Class history is not
+            // shared across teachers or class memberships.
+            if (st.studentId) {
+              supaGet('responses', 'student_id=eq.' + encodeURIComponent(st.studentId) + '&order=created_at.desc').then(function(r) {
                 st.responses = r || [];
                 renderProfile();
               }).catch(function() { st.loadError=true; renderProfile(); });
-            }).catch(function() { st.loadError=true; renderProfile(); });
+            } else { renderProfile(); }
           } else if (st.studentId) {
             supaGet('responses','student_id=eq.'+st.studentId+'&order=created_at.desc').then(function(r){
               st.responses = r || [];
