@@ -700,32 +700,17 @@ window.loadClassDashboard = function(cls) {
           var byStudents = studentIds.length > 0
             ? supaGet('responses', 'student_id=in.(' + studentIds.join(',') + ')&order=created_at.desc')
             : Promise.resolve([]);
-          // Look up all student rows with same names — catches duplicate rows from re-joining
-          // Query each name individually to avoid PostgREST in() quoting issues
-          var nameQueries = studentNames.map(function(n) {
-            return supaGet('students', 'name=eq.' + encodeURIComponent(n) + '&select=id,name');
-          });
-          Promise.all([byClass, byStudents].concat(nameQueries)).then(function(rResults) {
+          // Only read responses attached to this class or its student rows.
+          // Never broaden the query by display name: a student may use the
+          // same name in another class, and that class's history is private.
+          Promise.all([byClass, byStudents]).then(function(rResults) {
             var classResponses = rowsOrEmpty(rResults[0]);
             var studentResponses = rowsOrEmpty(rResults[1]);
-            var nameMatches = [];
-            rResults.slice(2).forEach(function(rows) {
-              (rows || []).forEach(function(s) { nameMatches.push(s); });
+            var seen = {};
+            var merged = [];
+            classResponses.concat(studentResponses).forEach(function(r) {
+              if (r && r.id && !seen[r.id]) { seen[r.id] = true; merged.push(r); }
             });
-            // Collect any student IDs not already in our class list
-            var extraIds = [];
-            nameMatches.forEach(function(s) {
-              if (s && s.id && studentIds.indexOf(s.id) === -1) extraIds.push(s.id);
-            });
-            var byExtra = extraIds.length > 0
-              ? supaGet('responses', 'student_id=in.(' + extraIds.join(',') + ')&order=created_at.desc')
-              : Promise.resolve([]);
-            byExtra.then(function(extraResponses) {
-              var seen = {};
-              var merged = [];
-              classResponses.concat(studentResponses).concat(rowsOrEmpty(extraResponses)).forEach(function(r) {
-                if (r && r.id && !seen[r.id]) { seen[r.id] = true; merged.push(r); }
-              });
               // A student can play other subjects independently of this class —
               // don't let their unrelated misconceptions/weakest-topic data leak
               // into this class's dashboard. Keep rows with no subject recorded
@@ -739,28 +724,13 @@ window.loadClassDashboard = function(cls) {
                 var rs = subjectForResponse(r);
                 return !rs || rs === dashState.classSubject;
               });
-              // Self-heal: patch orphaned responses to the class-linked student_id
-              if (extraIds.length > 0 && studentIds.length > 0) {
-                extraIds.forEach(function(oldId) {
-                  // Find which class student this old row belongs to by name
-                  var oldRow = nameMatches.find(function(s){ return s.id === oldId; });
-                  var newRow = oldRow ? dashState.students.find(function(s){ return s.name === oldRow.name; }) : null;
-                  var targetId = newRow ? newRow.id : studentIds[0];
-                  ForgeAPI.request('/rest/v1/responses?student_id=eq.' + encodeURIComponent(oldId), Object.assign({
-                    method: 'PATCH',
-                    headers: {'Content-Type': 'application/json', 'Prefer': 'return=minimal'},
-                    body: JSON.stringify({ student_id: targetId, class_id: cls.id })
-                  }, teacherApiOptions())).catch(function(e) { console.warn('Patch orphan failed:', e); });
-                });
-              }
               console.log('Dashboard loaded:', {
                 classId: cls.id, classSubject: dashState.classSubject,
                 students: dashState.students.length, responses: dashState.responses.length,
                 byClass: classResponses.length, byStudents: studentResponses.length,
-                extraIds: extraIds, extraResponses: rowsOrEmpty(extraResponses).length
+                extraIds: 0, extraResponses: 0
               });
               renderDashboard();
-            });
           });
         });
   };

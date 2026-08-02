@@ -149,12 +149,14 @@ function renderLogin(){
         classId: st.classId, classCode: code, className: match.class_name || null,
         subject: match.subject || null, studentId: st.studentId, studentName: name
       });
-      // The dashboard summarises the student's whole picture, so pull every
-      // class they've joined rather than just the code they signed in with.
+      // The dashboard is scoped to the class code used to sign in. A new
+      // class must not inherit another class's history.
       ForgeClasses.syncFromServer(SUPABASE_URL, SUPABASE_KEY,
-        {studentId: st.studentId, classCode: code, studentName: name}, function(){});
+        {studentId: st.studentId, classId: st.classId, classCode: code,
+         subject: match.subject, className: match.class_name, studentName: name}, function(){});
       ForgeClasses.fetchLinkedResponses(SUPABASE_URL, SUPABASE_KEY,
-        {studentId: st.studentId, classCode: code, studentName: name}, function(r){
+        {studentId: st.studentId, classId: st.classId, classCode: code,
+         subject: match.subject, studentName: name}, function(r){
         st.responses = r;
         renderDashboard();
       });
@@ -389,32 +391,14 @@ function forgeSignOut(){
           var token = ForgeAuth.accessToken();
           var authUser = ForgeAuth.currentUser();
           if (token && authUser) {
-            // Load responses from ALL student rows for this auth user
-            ForgeAPI.response(SUPABASE_URL + '/rest/v1/students?select=id,class_id&auth_user_id=eq.' + authUser.id, {
-              headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + token }
-            }).then(function(r) { return r.json(); }).then(function(studentRows) {
-              if (!Array.isArray(studentRows) || studentRows.length === 0) {
-                renderDashboard(); return;
-              }
-              var ids = studentRows.map(function(r) { return r.id; });
-              if (!st.classId && studentRows[0].class_id) {
-                st.classId = studentRows[0].class_id;
-                try {
-                  var cached = JSON.parse(localStorage.getItem('forge-student') || 'null') || {};
-                  cached.studentId = st.studentId || studentRows[0].id;
-                  cached.classId = st.classId;
-                  cached.studentName = st.studentName;
-                  localStorage.setItem('forge-student', JSON.stringify(cached));
-                } catch(e) {}
-              }
-              var filter = ids.length === 1
-                ? 'student_id=eq.' + ids[0]
-                : 'student_id=in.(' + ids.join(',') + ')';
-              supaGet('responses', filter + '&order=created_at.desc').then(function(r) {
+            // Load only the active class row; other class memberships are
+            // intentionally not part of this dashboard.
+            if (st.studentId) {
+              supaGet('responses', 'student_id=eq.' + encodeURIComponent(st.studentId) + '&order=created_at.desc').then(function(r) {
                 st.responses = r || [];
                 renderDashboard();
               }).catch(function() { st.loadError=true; renderDashboard(); });
-            }).catch(function() { st.loadError=true; renderDashboard(); });
+            } else { renderDashboard(); }
           } else if (st.studentId) {
             supaGet('responses','student_id=eq.'+st.studentId+'&order=created_at.desc').then(function(r){
               st.responses = r || [];
