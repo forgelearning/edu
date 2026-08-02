@@ -373,8 +373,10 @@ function renderDashboard(){
   h+='<h1>Welcome back, '+st.studentName+'</h1>';
 
   if(total===0){
-    h+='<div class="proto-note" style="max-width:58ch">';
-    h+='<p>No activity yet — head to <a href="forge-quiz.html" style="color:var(--ember)">Forge</a> to answer your first questions. Your dashboard fills in as you go.</p>';
+    h+='<div class="ui-state">';
+    h+='<div class="ui-state-title">Your first practice session is waiting.</div>';
+    h+='<p class="ui-state-copy">Answer a few questions in Forge to start building your accuracy, strengths, and misconception profile.</p>';
+    h+='<a class="ui-state-action" href="forge-quiz.html">Start practicing →</a>';
     h+='</div>';
     app.innerHTML=h;
     return;
@@ -391,6 +393,18 @@ function renderDashboard(){
     h+='<div class="stat"><span class="stat-label">Strongest subject</span><span class="stat-value stat-value-muted">Not enough data yet</span></div>';
   }
   h+='<a class="stat-strip-link" href="profile.html">View profile →</a>';
+  h+='</div>';
+
+  h+='<div class="ui-recommendation">';
+  if(activeMCs.length>0){
+    h+='<div class="ui-state-title">Recommended next: repair '+activeMCs.length+' misconception'+(activeMCs.length===1?'':'s')+'</div>';
+    h+='<p class="ui-state-copy">Anvil has the exact errors that need another pass. Clear one now, then return to Forge to test the improvement.</p>';
+    h+='<a class="ui-state-action" href="anvil.html">Open Anvil →</a>';
+  } else {
+    h+='<div class="ui-state-title">Recommended next: keep the heat on.</div>';
+    h+='<p class="ui-state-copy">No open misconceptions right now. A short Forge session will keep your recall fresh and surface the next useful focus area.</p>';
+    h+='<a class="ui-state-action" href="forge-quiz.html">Continue practice →</a>';
+  }
   h+='</div>';
 
   h+='<div class="mod-list">';

@@ -80,6 +80,13 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:var(--
 .btn-hot:hover{background:var(--hot)}
 .btn-ghost{border-color:var(--line);color:var(--white)}
 .stat-value-muted{color:var(--dim);font-size:13px}
+.ui-state{border:1px solid var(--line);border-radius:var(--radius-lg);padding:20px;background:var(--glass-panel)}
+.ui-state-title{font-family:'Sora',sans-serif;color:var(--white);font-weight:700;margin-bottom:6px}
+.ui-state-copy{font-size:14px;color:var(--slate);line-height:1.55;max-width:58ch}
+.ui-state-action{display:inline-flex;align-items:center;min-height:40px;margin-top:14px;padding:0 14px;border-radius:var(--radius-sm);background:var(--ember);color:#fff;text-decoration:none;font-size:13px;font-weight:700}
+.ui-state-action:hover{background:var(--hot);color:var(--coal)}
+.ui-recommendation{border:1px solid rgba(255,201,60,.42);border-radius:var(--radius-lg);padding:20px 22px;background:rgba(255,201,60,.07);box-shadow:0 16px 36px -24px rgba(213,92,19,.5)}
+.ui-recommendation .ui-state-title{color:var(--hot)}
 
 /* Frosted glass CTA — theme-aware. Dark uses a smoked ember glass matching
    --glass-panel so it reads as this brand's surface rather than a generic

@@ -49,6 +49,9 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
 .dash-header h1{font-size:24px}
 .dash-meta{font-size:13px;color:var(--slate)}
 .dash-meta b{color:var(--hot)}
+.dash-header-actions{display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+.dash-primary{display:inline-flex;align-items:center;min-height:38px;padding:0 13px;border-radius:var(--radius-sm);background:var(--ember);color:#fff;text-decoration:none;font-size:13px;font-weight:700}
+.dash-primary:hover{background:var(--hot);color:var(--coal)}
 
 .tabs{display:inline-flex;gap:4px;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-md);padding:4px;margin-bottom:24px;flex-wrap:wrap}
 .tab{font-family:Inter,sans-serif;font-weight:600;font-size:13px;color:var(--slate);background:transparent;border:none;padding:9px 18px;border-radius:var(--radius-sm);cursor:pointer;white-space:nowrap}
@@ -1402,7 +1405,7 @@ function renderDashboard() {
        + 'padding:3px 10px;cursor:pointer;vertical-align:middle">' + dashState.classCode + ' ⎘</button>';
   }
   h += '</h1></div>';
-  h += '<div class="dash-meta"><b>' + students.length + '</b> students \u00b7 <b>' + totalQs + '</b> responses \u00b7 <button class="back-btn" onclick="renderTeacherHome()" style="display:inline;font-size:12px">\u2190 All classes</button></div>';
+  h += '<div class="dash-header-actions"><a class="dash-primary" href="#" id="dash-action">' + (wrongResponses.length ? 'Open misconceptions \u2192' : 'Create assignment \u2192') + '</a><div class="dash-meta"><b>' + students.length + '</b> students \u00b7 <b>' + totalQs + '</b> responses \u00b7 <button class="back-btn" onclick="renderTeacherHome()" style="display:inline;font-size:12px">\u2190 All classes</button></div></div>';
   h += '</div>';
 
   // Stats row
@@ -1432,6 +1435,8 @@ function renderDashboard() {
   h += '<div id="panel-student" style="display:none"></div>';
 
   app.innerHTML = h;
+  var dashAction = document.getElementById('dash-action');
+  if (dashAction) dashAction.onclick = function(e) { e.preventDefault(); switchTab(wrongResponses.length ? 'heatmap' : 'assignments', dashAction); };
   if (window.ForgeSidebar) {
     ForgeSidebar.setClassLabel(dashState.className);
     ForgeSidebar.setClassList(getJoinedClasses(), dashState.classId);
