@@ -4,6 +4,9 @@
 
 body.has-forge-sidebar{padding-top:0!important;padding-left:76px;transition:padding-left .35s cubic-bezier(.4,0,.2,1)}
 body.has-forge-sidebar.forge-sidebar-expanded{padding-left:230px}
+/* Authenticated pages use the sidebar shell; any legacy marketing nav left in
+   a static entry point must not create a second header or reserve top space. */
+body.has-forge-sidebar #sticky-nav{display:none!important}
 @media(max-width:680px){
   body.has-forge-sidebar{padding-left:64px}
   body.has-forge-sidebar.forge-sidebar-expanded{padding-left:210px}
