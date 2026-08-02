@@ -1,0 +1,29 @@
+/* Shared visual contract for every pre-login Forge surface. */
+body.forge-discovery{
+  --discovery-content-max:1080px;
+  scroll-padding-top:96px;
+}
+body.forge-discovery .wrap{max-width:var(--discovery-content-max)}
+body.forge-discovery h1,
+body.forge-discovery h2,
+body.forge-discovery h3{text-wrap:balance}
+body.forge-discovery p,
+body.forge-discovery li{text-wrap:pretty}
+body.forge-discovery .reveal{transition:opacity .25s ease,transform .25s ease}
+body.forge-discovery :focus-visible{outline:2px solid var(--hot);outline-offset:3px}
+body.forge-discovery .btn,
+body.forge-discovery .cta,
+body.forge-discovery .cta-ghost{
+  min-height:44px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+}
+body.forge-discovery .subject-actions > a{min-height:44px}
+@media(max-width:600px){
+  body.forge-discovery .wrap{padding-left:16px;padding-right:16px}
+  body.forge-discovery .nav-hide-sm{display:none}
+}
+@media(prefers-reduced-motion:reduce){
+  body.forge-discovery .reveal{transition:none}
+}

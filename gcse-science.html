@@ -17,7 +17,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/tokens.css">
-<link rel="stylesheet" href="css/components.css">
 <link rel="stylesheet" href="css/subject-pages.css">
 <link rel="stylesheet" href="css/base.css">
 
@@ -29,6 +28,8 @@
   gtag('js', new Date());
   gtag('config', 'G-RGZ9J6Q8H9');
 </script>
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/discovery.css">
 </head>
 <body>
 <script>
@@ -81,28 +82,28 @@ if (localStorage.getItem('forge-theme') === 'light') {
 
 <div class="wrap">
 
-<header style="padding-top:56px">
+<header class="subject-header">
   <p class="tag eyebrow reveal"><a href="index.html#subjects" style="color:var(--slate);text-decoration:none">← All subjects</a></p>
-  <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-top:12px">
+  <div class="subject-meta-row">
     <div>
       <span class="pill good reveal">Live — Papers 1–6</span>
       <span class="mono boards reveal" style="margin-left:10px">Edexcel · 1SC0</span>
     </div>
   </div>
-  <h1 class="reveal" style="font-size:clamp(32px,4.2vw,48px);font-weight:800;margin-top:14px;margin-bottom:10px">GCSE Combined Science</h1>
-  <div class="subj-stat reveal" style="font-size:15px;margin-bottom:14px"><span class="subj-stat-n">212</span> questions · <span class="subj-stat-n">6</span> banks</div>
+  <h1 class="subject-title reveal">GCSE Combined Science</h1>
+  <div class="subject-stat-line subj-stat reveal"><span class="subj-stat-n">212</span> questions · <span class="subj-stat-n">6</span> banks</div>
   <p class="sect-lede reveal">All six Edexcel (1SC0) paper banks are live: Biology 1–2, Chemistry 1–2 and Physics 1–2. Coverage is tagged at skill level, with a Reforge variant for every question. Practise core knowledge, application, calculations and common misconceptions, then rework mistakes in Forge mode.</p>
-  <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:22px" class="reveal">
+  <div class="subject-actions reveal">
     <a href="forge-quiz.html?subject=gcse-science" class="btn btn-hot" style="text-decoration:none">Start practising the live banks</a>
     <a href="forge-quiz.html" class="cta-ghost" style="text-decoration:none;display:inline-flex;align-items:center;padding:0 18px;height:44px;border-radius:var(--radius-md);border:1px solid var(--line)">Try a live subject instead</a>
   </div>
 </header>
 
-<section style="border-top:none;padding-top:52px">
+<section class="subject-section subject-section--first">
   <p class="tag eyebrow reveal">Spec coverage</p>
   <h2 class="reveal">Mapped to Edexcel, discipline by discipline.</h2>
   <p class="sect-lede reveal">Combined Science is examined as three separate disciplines under Edexcel (1SC0) — two papers each, six exams in total — so you can see exactly what's coming before term starts.</p>
-  <div class="rank-grid reveal" style="margin-top:24px">
+  <div class="rank-grid subject-spec-grid reveal">
     <div class="rank-row reveal">
       <span class="rank-badge" style="background:rgba(127,217,138,.12);color:var(--good)">Live</span>
       <span class="rank-range mono">Biology · Papers 1B &amp; 2B</span>
@@ -121,7 +122,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
   </div>
 </section>
 
-<section style="padding-top:52px">
+<section class="subject-section subject-section--spaced">
   <p class="tag eyebrow reveal">A preview of the format</p>
   <h2 class="reveal">Three sample questions.</h2>
   <p class="sect-lede reveal">These samples show the format used in the live banks: misconception-tagged questions with clear explanations after answering.</p>
@@ -134,7 +135,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
     </div>
   </div>
 
-  <div class="bank" id="eco-bank" style="width:auto;position:static;left:auto;margin-left:0;padding:0;display:block">
+  <div class="bank subject-bank" id="eco-bank">
 
     <div class="bq active">
       <div class="bq-head"><span class="spec mono"><b>Biology · Osmosis</b></span><span class="fmt">Concept</span></div>
@@ -288,5 +289,6 @@ document.querySelectorAll('#eco-bank .bq').forEach(function(card){
 </script>
 <script src="scripts/nav.js"></script>
 <script src="scripts/forge-page-actions.js"></script>
+<script src="scripts/forge-discovery-nav.js"></script>
 </body>
 </html>

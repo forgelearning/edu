@@ -1,5 +1,15 @@
 
 /* hero */
+.subject-header{padding-top:56px}
+.subject-meta-row{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-top:12px}
+.subject-title{font-size:clamp(32px,4.2vw,48px);font-weight:800;margin-top:14px;margin-bottom:10px}
+.subject-stat-line{font-size:15px;margin-bottom:14px}
+.subject-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
+.subject-section{border-top:1px solid var(--line);padding:60px 0}
+.subject-section--first{border-top:none;padding-top:52px}
+.subject-section--spaced{padding-top:52px}
+.subject-spec-grid{margin-top:24px}
+.subject-bank{width:auto;position:static;left:auto;margin-left:0;padding:0;display:block}
 .hero{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;padding:64px 0 88px}
 .hero h1{font-size:clamp(38px,5.4vw,60px);font-weight:800;margin:14px 0 18px}
 .hero h1 em{font-style:normal;color:var(--ember)}
@@ -386,4 +396,3 @@ footer{padding:40px 0 28px;border-top:1px solid var(--line)}
 .reveal-delay-2{transition-delay:.2s}
 .reveal-delay-3{transition-delay:.3s}
 .reveal-delay-4{transition-delay:.4s}
-

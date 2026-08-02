@@ -17,7 +17,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/tokens.css">
-<link rel="stylesheet" href="css/components.css">
 <link rel="stylesheet" href="css/subject-pages.css">
 <link rel="stylesheet" href="css/base.css">
 
@@ -29,6 +28,8 @@
   gtag('js', new Date());
   gtag('config', 'G-RGZ9J6Q8H9');
 </script>
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/discovery.css">
 </head>
 <body>
 <script>
@@ -81,27 +82,27 @@ if (localStorage.getItem('forge-theme') === 'light') {
 
 <div class="wrap">
 
-<header style="padding-top:56px">
+<header class="subject-header">
   <p class="tag eyebrow reveal"><a href="index.html#subjects" style="color:var(--slate);text-decoration:none">← All subjects</a></p>
-  <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-top:12px">
+  <div class="subject-meta-row">
     <div>
       <span class="pill hot reveal">Themes 2–4 building</span>
       <span class="mono boards reveal" style="margin-left:10px">Edexcel 9EC0</span>
     </div>
   </div>
-  <h1 class="reveal" style="font-size:clamp(32px,4.2vw,48px);font-weight:800;margin-top:14px;margin-bottom:10px">A Level Economics</h1>
-  <div class="subj-stat reveal" style="font-size:15px;margin-bottom:14px"><span class="subj-stat-n" style="font-size:26px">515</span> questions · 19 banks live</div>
+  <h1 class="subject-title reveal">A Level Economics</h1>
+  <div class="subject-stat-line subj-stat reveal"><span class="subj-stat-n" style="font-size:26px">515</span> questions · 19 banks live</div>
   <p class="sect-lede reveal">Themes 1–4: markets and market failure, the UK economy, business behaviour, and the global economy. Micro-scenarios, chain-of-reasoning builders, data-response and calculation questions — mapped to every numbered spec point, sourced from examiners' reports.</p>
-  <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:22px" class="reveal">
+  <div class="subject-actions reveal">
     <a href="forge-quiz.html" class="btn btn-hot" style="text-decoration:none">Try the full quiz — free</a>
     <a href="index.html#waitlist" class="cta-ghost" style="text-decoration:none;display:inline-flex;align-items:center;padding:0 18px;height:44px;border-radius:var(--radius-md);border:1px solid var(--line)">Join the waiting list</a>
   </div>
 </header>
 
-<section style="border-top:none;padding-top:52px">
+<section class="subject-section subject-section--first">
   <p class="tag eyebrow reveal">Spec coverage</p>
   <h2 class="reveal">Built theme by theme.</h2>
-  <div class="rank-grid reveal" style="margin-top:24px">
+  <div class="rank-grid subject-spec-grid reveal">
     <div class="rank-row reveal">
       <span class="rank-badge" style="background:rgba(127,217,138,.15);color:var(--good)">Live</span>
       <span class="rank-range mono">1 bank · 100 questions</span>
@@ -125,7 +126,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
   </div>
 </section>
 
-<section style="padding-top:52px">
+<section class="subject-section subject-section--spaced">
   <p class="tag eyebrow reveal">Straight from the bank</p>
   <h2 class="reveal">Three real Economics questions.</h2>
   <p class="sect-lede reveal">No sign-up. Every distractor tagged to a documented misconception from examiners' reports.</p>
@@ -138,7 +139,7 @@ if (localStorage.getItem('forge-theme') === 'light') {
     </div>
   </div>
 
-  <div class="bank" id="eco-bank" style="width:auto;position:static;left:auto;margin-left:0;padding:0;display:block">
+  <div class="bank subject-bank" id="eco-bank">
 
     <div class="bq active">
       <div class="bq-head"><span class="spec mono"><b>Economics · 2.1.2</b></span><span class="fmt">Calculation</span></div>
@@ -299,5 +300,6 @@ document.querySelectorAll('#eco-bank .bq').forEach(function(card){
 </script>
 <script src="scripts/nav.js"></script>
 <script src="scripts/forge-page-actions.js"></script>
+<script src="scripts/forge-discovery-nav.js"></script>
 </body>
 </html>

@@ -17,7 +17,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/tokens.css">
-<link rel="stylesheet" href="css/components.css">
 <link rel="stylesheet" href="css/subject-pages.css">
 <link rel="stylesheet" href="css/base.css">
 
@@ -29,6 +28,8 @@
   gtag('js', new Date());
   gtag('config', 'G-RGZ9J6Q8H9');
 </script>
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/discovery.css">
 </head>
 <body>
 <script>
@@ -81,17 +82,17 @@ if (localStorage.getItem('forge-theme') === 'light') {
 
 <div class="wrap">
 
-<header style="padding-top:56px">
+<header class="subject-header">
   <p class="tag eyebrow reveal"><a href="index.html#subjects" style="color:var(--slate);text-decoration:none">← All subjects</a></p>
-  <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-top:12px"><div><span class="pill good reveal">Live — Papers 1 &amp; 2</span><span class="mono boards reveal" style="margin-left:10px">Edexcel · 1PH0</span></div></div>
-  <h1 class="reveal" style="font-size:clamp(32px,4.2vw,48px);font-weight:800;margin-top:14px;margin-bottom:10px">GCSE Separate Physics</h1>
-  <div class="subj-stat reveal" style="font-size:15px;margin-bottom:14px"><span class="subj-stat-n">200</span> questions · <span class="subj-stat-n">2</span> banks</div>
+  <div class="subject-meta-row"><div><span class="pill good reveal">Live — Papers 1 &amp; 2</span><span class="mono boards reveal" style="margin-left:10px">Edexcel · 1PH0</span></div></div>
+  <h1 class="subject-title reveal">GCSE Separate Physics</h1>
+  <div class="subject-stat-line subj-stat reveal"><span class="subj-stat-n">200</span> questions · <span class="subj-stat-n">2</span> banks</div>
   <p class="sect-lede reveal">Separate Physics across Papers 1 and 2: motion, forces, energy, electricity, waves, radiation and practical reasoning. Practise core knowledge, application, calculations and common misconceptions, then rework mistakes in Forge mode.</p>
-  <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:22px" class="reveal"><a href="forge-quiz.html?subject=gcse-sep-phys" class="btn btn-hot" style="text-decoration:none">Start practising</a><a href="gcse-science.html" class="cta-ghost" style="text-decoration:none;display:inline-flex;align-items:center;padding:0 18px;height:44px;border-radius:var(--radius-md);border:1px solid var(--line)">Combined Science</a></div></header>
+  <div class="subject-actions reveal"><a href="forge-quiz.html?subject=gcse-sep-phys" class="btn btn-hot" style="text-decoration:none">Start practising</a><a href="gcse-science.html" class="cta-ghost" style="text-decoration:none;display:inline-flex;align-items:center;padding:0 18px;height:44px;border-radius:var(--radius-md);border:1px solid var(--line)">Combined Science</a></div></header>
 
-<section style="border-top:none;padding-top:52px">
+<section class="subject-section subject-section--first">
   <p class="tag eyebrow reveal">Spec coverage</p><h2 class="reveal">Mapped to Edexcel, paper by paper.</h2><p class="sect-lede reveal">The two-paper GCSE Separate Physics route is represented directly in Forge, so you can choose the content and method you need next.</p>
-  <div class="rank-grid reveal" style="margin-top:24px">
+  <div class="rank-grid subject-spec-grid reveal">
     <div class="rank-row reveal">
       <span class="rank-badge" style="background:rgba(127,217,138,.12);color:var(--good)">Live</span>
       <span class="rank-range mono">Paper 1 · Physics</span>
@@ -106,10 +107,10 @@ if (localStorage.getItem('forge-theme') === 'light') {
     </div>
   </div></section>
 
-<section style="padding-top:52px">
+<section class="subject-section subject-section--spaced">
   <p class="tag eyebrow reveal">A preview of the format</p><h2 class="reveal">Three sample questions.</h2><p class="sect-lede reveal">Misconception-tagged questions with clear explanations after answering — the same loop used in the live banks.</p>
   <div class="bank-nav"><span class="bank-progress" id="ecoProgress">Question 1 of 3</span><div class="bank-nav-btns"><button type="button" class="bank-nav-btn" id="ecoPrev" aria-label="Previous question">← Prev</button><button type="button" class="bank-nav-btn" id="ecoNext" aria-label="Next question">Next →</button></div></div>
-  <div class="bank" id="eco-bank" style="width:auto;position:static;left:auto;margin-left:0;padding:0;display:block">
+  <div class="bank subject-bank" id="eco-bank">
     <div class="bq">
       <div class="bq-head"><span class="spec mono"><b>Physics · Motion</b></span><span class="fmt">Calculation</span></div>
       <p class="q">A runner covers 240 m in 30 s. What is the average speed?</p>
@@ -246,5 +247,6 @@ document.querySelectorAll('#eco-bank .bq').forEach(function(card){
 </script>
 <script src="scripts/nav.js"></script>
 <script src="scripts/forge-page-actions.js"></script>
+<script src="scripts/forge-discovery-nav.js"></script>
 </body>
 </html>
