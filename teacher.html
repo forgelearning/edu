@@ -110,7 +110,7 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
 /* teacher home — the classes a teacher owns, one card each */
 .home-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin-bottom:22px}
 .class-card{position:relative;text-align:left;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-lg);padding:18px;cursor:pointer;font:inherit;color:inherit;transition:border-color .15s,transform .15s}
-.class-card:hover{border-color:var(--ember);transform:translateY(-2px)}
+.class-card:hover{border-color:var(--ember)}
 .class-card .cc-subj{font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:var(--ember);display:block;margin-bottom:8px}
 .class-card .cc-name{font-family:'Sora',sans-serif;font-weight:700;font-size:16px;color:var(--white);display:block;line-height:1.25}
 .class-card .cc-meta{font-size:12px;color:#8A857E;margin-top:8px;display:block}
@@ -2179,7 +2179,7 @@ function renderHeatmap(wrongResponses) {
   var sorted = Object.keys(counts).sort(function(a, b) { return counts[b].count - counts[a].count; });
   var maxCount = counts[sorted[0]].count;
 
-  var h = '<div class="card"><div class="card-title">Misconceptions ranked by frequency</div>';
+  var h = '<div class="card forge-card"><div class="card-title">Misconceptions ranked by frequency</div>';
   sorted.forEach(function(tag) {
     var c = counts[tag];
     var pct = Math.round((c.count / maxCount) * 100);
