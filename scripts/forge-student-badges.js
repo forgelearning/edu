@@ -19,6 +19,11 @@
   var k=window.SUPABASE_KEY||window.ForgeAPI&&ForgeAPI.config&&ForgeAPI.config.key;
   if(!k)return;
   var assignmentCacheKey='forge-assigned-open:'+String(saved.studentId||'anon')+':'+String(saved.classId||'none');
+  var cachedAssignments=parseInt(localStorage.getItem(assignmentCacheKey)||'',10);
+  if(!isNaN(cachedAssignments)){
+    ForgeSidebar.setBadge('assignments',cachedAssignments||null);
+    return;
+  }
   var registryEntry=null;
   try{registryEntry=(JSON.parse(localStorage.getItem('forge-classes')||'[]')||[]).find(function(c){return c.classId===saved.classId;})||null}catch(e){}
   var responseContext={studentId:saved.studentId||registryEntry&&registryEntry.studentId,classCode:saved.classCode||registryEntry&&registryEntry.classCode,studentName:saved.studentName||registryEntry&&registryEntry.studentName};
@@ -49,8 +54,6 @@
       // The Assigned page reconciles server responses and local session
       // completion together. Reuse its lower, already-reconciled value when
       // available so secondary pages cannot resurrect a stale open count.
-      var cached=parseInt(localStorage.getItem(assignmentCacheKey)||'',10);
-      if(!isNaN(cached)&&cached<count)count=cached;
       ForgeSidebar.setBadge('assignments',count||null);
       try{localStorage.setItem(assignmentCacheKey,String(count))}catch(e){}
     }).catch(function(){});
