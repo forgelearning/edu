@@ -507,7 +507,7 @@ th.forge::before{content:"★ ";font-size:10px}
 .wait .done{display:none;margin-top:24px;color:var(--good);font-weight:600}
 
 footer{padding:40px 0 28px;border-top:1px solid var(--line)}
-footer .btn-glass{min-height:50px;padding:0 20px;border-radius:999px;display:inline-flex;align-items:center;justify-content:center}
+footer .btn-glass{min-height:50px;padding:0 20px;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;font-family:'Inter',sans-serif;font-size:13.5px;line-height:1.2;text-decoration:none!important}
 
 @media (max-width:860px){
   .hero{grid-template-columns:1fr;padding-top:32px}
