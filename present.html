@@ -9,6 +9,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/tokens.css">
 <link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/sidebar.css">
+<link rel="stylesheet" href="css/components.css">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:var(--coal);color:var(--slate);font-family:'Inter',sans-serif;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100vh}
@@ -76,6 +78,8 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
 </style>
 </head>
 <body>
+<a class="forge-skip-link" href="#main-content">Skip to main content</a>
+<script>ForgeSidebar.mount({active:'present',items:[{key:'dashboard',href:'teacher.html',label:'Teacher dashboard'},{key:'school',href:'school-overview.html',label:'School overview'},{key:'present',href:'present.html',label:'Class Mode'}],footerItems:[]});</script>
 <script>
 window.toggleTheme=function(){var h=document.documentElement,b=document.querySelector('.theme-toggle');if(h.getAttribute('data-theme')==='light'){h.removeAttribute('data-theme');b.textContent='☀';localStorage.setItem('forge-theme','dark');}else{h.setAttribute('data-theme','light');b.textContent='☾';localStorage.setItem('forge-theme','light');}};
 if(localStorage.getItem('forge-theme')==='light'){document.documentElement.setAttribute('data-theme','light');document.addEventListener('DOMContentLoaded',function(){var b=document.querySelector('.theme-toggle');if(b)b.textContent='☾';});}
@@ -92,7 +96,7 @@ if(localStorage.getItem('forge-theme')==='light'){document.documentElement.setAt
 </nav>
 </div></div>
 
-<div class="wrap">
+<main class="wrap" id="main-content">
   <div id="app"><div class="loading">Checking teacher access…</div></div>
 </div>
 
