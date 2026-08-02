@@ -28,6 +28,10 @@ body.forge-modern-nav #sticky-nav{max-width:1220px}
 body.forge-modern-nav #sticky-nav nav{justify-content:flex-start}
 body.forge-modern-nav #sticky-nav .nav-right{flex:1;min-width:0;justify-content:flex-start;padding-left:14px;gap:8px}
 body.forge-modern-nav #sticky-nav .nav-right > :first-child{margin-left:14px}
+body.forge-modern-nav #sticky-nav .nav-right > .audit-nav-spacer{flex:1 1 auto;min-width:12px}
+body.forge-modern-nav #sticky-nav .nav-right > .audit-nav-action,
+body.forge-modern-nav #sticky-nav .nav-right > .cta,
+body.forge-modern-nav #sticky-nav .nav-right > .theme-toggle{flex:0 0 auto}
 body.forge-modern-nav #sticky-nav.nav-collapsed{width:60px}
 body.forge-modern-nav #sticky-nav.nav-collapsed nav{justify-content:center}
 body.forge-modern-nav #sticky-nav.nav-collapsed .nav-right{padding-left:0}
@@ -39,7 +43,7 @@ body.forge-modern-nav .audit-mobile-nav-wrap{display:none}
 @media(max-width:820px){
   body.forge-modern-nav #sticky-nav{width:calc(100% - 20px)}
   body.forge-modern-nav #sticky-nav.nav-collapsed{width:60px}
-  body.forge-modern-nav #sticky-nav .nav-right{flex:0 1 auto;gap:5px}
+  body.forge-modern-nav #sticky-nav .nav-right{flex:1 1 auto;min-width:0;justify-content:flex-end;padding-left:0;gap:5px}
   body.forge-modern-nav #sticky-nav .nav-hide-sm{display:none!important}
   body.forge-modern-nav .audit-nav-action{display:none}
   body.forge-modern-nav .audit-mobile-nav-wrap{display:block;position:relative}
