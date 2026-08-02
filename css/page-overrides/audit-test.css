@@ -21,9 +21,9 @@
 .audit-test .audit-subject-count{font-size:13px}
 .audit-test .audit-subject-arrow{color:var(--ember);font-size:18px}
 .audit-test .audit-subject-picker{display:block;padding:56px 0 30px;border-bottom:1px solid var(--line);scroll-margin-top:96px}
-.audit-test .audit-picker-copy{max-width:650px}
-.audit-test .audit-picker-copy h2{max-width:18ch;margin:10px 0 12px}
-.audit-test .audit-picker-copy .sect-lede{max-width:58ch}
+.audit-test .audit-picker-copy{max-width:none}
+.audit-test .audit-picker-copy h2{max-width:none;margin:10px 0 12px}
+.audit-test .audit-picker-copy .sect-lede{max-width:72ch}
 .audit-test .audit-picker-controls{display:grid;grid-template-columns:180px minmax(220px,330px) auto;align-items:end;gap:12px;margin-top:26px}
 .audit-test .audit-picker-controls label{display:flex;flex-direction:column;gap:7px;color:var(--dim);font:500 10px/1.2 'JetBrains Mono',monospace;letter-spacing:.08em;text-transform:uppercase}
 .audit-test .audit-picker-controls select{width:100%;height:44px;padding:0 12px;border:1px solid var(--line);border-radius:var(--radius-sm);background:var(--panel-2);color:var(--white);font:500 14px/1 'Inter',sans-serif}
@@ -32,6 +32,7 @@
 
 /* The test has one primary action and one lower-commitment alternative. */
 .audit-test .hero-secondary-link{border:0;background:transparent;box-shadow:none;padding-left:0;padding-right:0}
+.audit-test .hero-secondary-link{font-size:14px}
 .audit-test .hero-secondary-link:hover{background:transparent;transform:none;color:var(--hot)}
 .audit-test .hero .sub{max-width:44ch}
 .audit-test .hero .sub a{display:none}
@@ -77,6 +78,33 @@
 .audit-test .audit-nav-action{color:var(--white)}
 .audit-test .audit-nav-action:hover{color:var(--hot)}
 .audit-test .audit-mobile-nav-wrap{display:none}
+
+/* Use the compact navigation before the desktop controls can outgrow a
+   tablet viewport. The same menu remains available on phones. */
+@media(max-width:820px){
+  .audit-test #sticky-nav{width:calc(100% - 20px)}
+  .audit-test #sticky-nav.nav-collapsed{width:60px}
+  .audit-test #sticky-nav .nav-right{flex:0 1 auto;gap:5px}
+  .audit-test #sticky-nav .nav-hide-sm{display:none!important}
+  .audit-test .audit-nav-action{display:none}
+  .audit-test .audit-mobile-nav-wrap{display:block;position:relative}
+  .audit-test .audit-mobile-menu{right:0;min-width:205px;padding:8px}
+  .audit-test .audit-mobile-menu.open{display:flex;flex-direction:column}
+  .audit-test .audit-mobile-menu a{padding:9px 10px}
+}
+
+@media(max-width:360px){
+  /* Sign up remains available inside the mobile menu; hiding the duplicate
+     CTA preserves room for the menu and theme control on narrow phones. */
+  .audit-test #sticky-nav .cta{display:none}
+}
+
+@media(max-width:430px){
+  .audit-test #sticky-nav .nav-right{gap:2px}
+  .audit-test #sticky-nav .cta{height:36px;padding-left:10px;padding-right:10px;font-size:13px}
+  .audit-test .audit-mobile-nav-wrap .forge-nav-menu-button{padding-left:3px;padding-right:3px;font-size:13px}
+  .audit-test #sticky-nav .theme-toggle{flex:0 0 36px}
+}
 
 /* Product previews: a restrained shell around the existing Forge panels. */
 .audit-test .audit-app-preview{display:grid;grid-template-columns:220px minmax(0,1fr);margin-top:30px;border:1px solid var(--line);border-radius:var(--radius-lg);overflow:hidden;background:var(--glass-panel);box-shadow:0 26px 70px rgba(0,0,0,.28)}
@@ -427,7 +455,7 @@ body.audit-test .audit-real-teacher-dashboard .heat-row{padding:6px 8px;margin-b
 body.audit-test .reveal{opacity:1!important;transform:none!important}
 body.audit-test #audit-sample-bank{display:block!important;padding:64px 0 58px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);scroll-margin-top:96px}
 body.audit-test #subjects ~ section#audit-sample-bank{display:block!important}
-body.audit-test .audit-sample-bank h2{max-width:18ch;margin:10px 0 12px}
+body.audit-test .audit-sample-bank h2{max-width:none;margin:10px 0 12px}
 body.audit-test .audit-sample-tabs{display:flex;flex-wrap:wrap;gap:6px;margin:18px 0 12px}
 body.audit-test .audit-sample-tabs button{padding:7px 10px;border:1px solid var(--line);border-radius:var(--radius-sm);background:var(--panel);color:var(--dim);font:600 10px/1.2 'Inter',sans-serif;cursor:pointer}
 body.audit-test .audit-sample-tabs button:hover{border-color:var(--ember);color:var(--white)}
@@ -454,9 +482,15 @@ body.audit-test .audit-sample-shell .btn:disabled{opacity:.55;cursor:not-allowed
   body.audit-test .audit-real-student-dashboard h1{font-size:20px}
   body.audit-test .audit-real-student-dashboard .stat-strip{gap:7px;padding:9px}
   body.audit-test .audit-real-student-dashboard .stat-sep{display:none}
+  body.audit-test .audit-real-teacher-dashboard .heat-row{grid-template-columns:minmax(0,1fr) auto;gap:6px}
   body.audit-test #audit-sample-bank{padding:46px 0 42px}
   body.audit-test .audit-sample-tabs{margin-top:14px}
   body.audit-test .audit-sample-shell{padding:15px}
+  body.audit-test #auditSampleBank{grid-template-columns:minmax(0,1fr)}
+  body.audit-test #auditSampleBank .bq{width:100%;min-width:0}
+  body.audit-test #auditSampleBank table.data{display:block;width:100%;min-width:0;max-width:100%;overflow-x:auto;table-layout:fixed}
+  body.audit-test #auditSampleBank table.data th,
+  body.audit-test #auditSampleBank table.data td{overflow-wrap:anywhere}
   body.audit-test .audit-sample-topline{align-items:flex-start;flex-direction:column;gap:5px}
   body.audit-test .audit-sample-options{grid-template-columns:1fr}
   body.audit-test .audit-sample-question{font-size:16px}
