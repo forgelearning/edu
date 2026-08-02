@@ -69,7 +69,12 @@
     },
     get: function (name, query, options) { return request(table(name, query), Object.assign({ method: 'GET' }, options || {})); },
     rpc: function (name, payload, options) { return request('/rest/v1/rpc/' + name, Object.assign({ method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload || {}) }, options || {})); },
-    insert: function (name, row, options) { return request('/rest/v1/' + name, Object.assign({ method: 'POST', headers: { 'Content-Type': 'application/json', 'Prefer': 'return=representation' }, body: JSON.stringify(row) }, options || {})); },
+    insert: function (name, row, options) {
+      var defaults = { method: 'POST', headers: { 'Content-Type': 'application/json', 'Prefer': 'return=representation' }, body: JSON.stringify(row) };
+      options = options || {};
+      if (options.headers) options.headers = Object.assign({}, defaults.headers, options.headers);
+      return request('/rest/v1/' + name, Object.assign(defaults, options));
+    },
     patch: function (name, id, row, options) { return request('/rest/v1/' + name + '?id=eq.' + encodeURIComponent(id), Object.assign({ method: 'PATCH', headers: { 'Content-Type': 'application/json', 'Prefer': 'return=representation' }, body: JSON.stringify(row) }, options || {})); },
     remove: function (name, id, options) { return request('/rest/v1/' + name + '?id=eq.' + encodeURIComponent(id), Object.assign({ method: 'DELETE' }, options || {})); }
   };
