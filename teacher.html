@@ -84,6 +84,9 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
 .heat-count{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--slate);text-align:right}
 .heat-action{font-size:12px;font-weight:700;color:var(--ember);text-decoration:none;white-space:nowrap}
 .heat-action:hover{color:var(--hot);text-decoration:underline}
+.starter-assign-btn{margin:0 0 16px}
+.assignment-context{display:flex;align-items:center;gap:10px;margin-bottom:16px;padding:12px 14px;border:1px solid rgba(255,201,60,.35);border-radius:var(--radius-md);background:rgba(255,201,60,.07);color:var(--slate);font-size:13px}
+.assignment-context strong{color:var(--hot)}
 
 /* class table */
 .class-table{width:100%;border-collapse:collapse;font-size:13px}
@@ -234,6 +237,7 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
 <script src="scripts/forge-logo.js"></script>
 <script src="scripts/forge-auth-card.js"></script>
 <script src="scripts/forge-sidebar.js"></script>
+<script src="scripts/forge-teacher-ui.js"></script>
 <script>
 window.forgeOnClassSwitch = function(){ renderTeacherHome(); };
 window.forgeOnClassSelect = function(cls){ loadClassDashboard(cls); };
@@ -1494,6 +1498,22 @@ window.forgeGoto = function(view, contextTag) {
   }
 };
 
+window.forgeAssignStarter = function(tag) {
+  dashState.selectedStarterTag = tag;
+  var btn = document.querySelector('.tab[data-view="assignments"]');
+  if (btn) switchTab('assignments', btn);
+  renderAssignments();
+};
+
+document.addEventListener('click', function(e) {
+  var heatLink = e.target.closest && e.target.closest('[data-starter-tag]');
+  if (!heatLink) return;
+  e.preventDefault();
+  var tag = heatLink.getAttribute('data-starter-tag');
+  if (heatLink.classList.contains('starter-assign-btn')) forgeAssignStarter(tag);
+  else { forgeGoto('starters', tag); }
+});
+
 // Must match CLEAR_THRESHOLD in anvil.html, or the dashboard disagrees with
 // what the student sees in their own Anvil.
 var ANVIL_CLEAR_THRESHOLD = 3;
@@ -1780,7 +1800,7 @@ function renderStarterCard(tag, h, context) {
   var typeLabels = {sort:"Sort activity",diagnose:"Diagnose",correct:"Spot the error",distinguish:"Distinguish",classify:"Classify",evaluate:"Evaluate",diagram:"Diagram task",chain:"Causal chain",calculate:"Calculation",graph:"Graph task",sequence:"Sequence",apply:"Application",compare:"Comparison table",match:"Match activity",trigger:"Trigger hunt",rewrite:"Rewrite task",trace:"Trace activity",scenario:"Scenario"};
   var typeLabel = typeLabels[starterData.type] || "Starter activity";
 
-  h += '<div class="card" id="starter-card" style="border-color:rgba(255,107,44,.4);margin-top:20px">';
+  h += '<div class="card forge-card forge-card--focus" id="starter-card">';
   h += '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">';
   h += '<div class="card-title" style="color:var(--ember)">' + (context ? 'Recommended starter' : 'Starter activity') + ' — ' + typeLabel + '</div>';
   h += '<span style="font-family:monospace;font-size:11px;color:#8A857E;padding:3px 8px;border:1px solid var(--line);border-radius:var(--radius-xs)">' + tag + '</span>';
@@ -1792,6 +1812,7 @@ function renderStarterCard(tag, h, context) {
     h += '<p style="font-size:13px;color:#8A857E;margin-bottom:14px">Preview — no class data loaded</p>';
   }
   h += '<p style="font-size:14px;color:var(--slate);margin-bottom:14px">' + starterData.instruction + '</p>';
+  h += '<button class="forge-button forge-button--primary starter-assign-btn" data-starter-tag="' + teacherEsc(tag) + '" type="button">Use this starter for an assignment →</button>';
 
   if (starterData.prompt) {
     h += '<div style="background:var(--panel-2);border-left:3px solid var(--ember);padding:10px 14px;border-radius:0 8px 8px 0;margin-bottom:12px">';
@@ -1892,11 +1913,7 @@ function dueBadge(dateStr) {
   return '<span class="assign-due ok">Due ' + due.toLocaleDateString('en-GB', {day:'numeric',month:'short'}) + '</span>';
 }
 
-function teacherEsc(value) {
-  return String(value == null ? '' : value).replace(/[&<>"']/g, function(c) {
-    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
-  });
-}
+function teacherEsc(value) { return window.ForgeTeacherUI.escape(value); }
 
 function assignmentBanks(asgn) {
   try { return Array.isArray(asgn.banks) ? asgn.banks : (asgn.banks ? JSON.parse(asgn.banks) : []); }
@@ -2000,6 +2017,10 @@ function renderAssignments() {
 
   var h = '';
 
+  if (dashState.selectedStarterTag) {
+    h += '<div class="assignment-context"><span><strong>Starter selected:</strong> ' + teacherEsc(MC_LABELS[dashState.selectedStarterTag] || dashState.selectedStarterTag) + '. Choose the relevant question bank below to assign it.</span><button class="asgn-action-btn" id="clear-starter-context" type="button">Clear</button></div>';
+  }
+
   // ── Create assignment form ──
   h += '<div class="assign-form">';
   h += '<div class="card-title" style="margin-bottom:14px">New assignment</div>';
@@ -2013,8 +2034,8 @@ function renderAssignments() {
   h += '<div class="bank-checklist">';
   availableBanks.forEach(function(bk) {
     var label = BANK_LABELS[bk] || bk;
-    h += '<div class="bank-check-item" onclick="this.querySelector(\'input\').click()">';
-    h += '<input type="checkbox" id="bk-' + bk + '" value="' + bk + '" onclick="event.stopPropagation()">';
+    h += '<div class="bank-check-item">';
+    h += '<input type="checkbox" id="bk-' + bk + '" value="' + bk + '">';
     h += '<label for="bk-' + bk + '">' + label + '</label>';
     h += '<span class="bank-count">' + bk + '</span>';
     h += '</div>';
@@ -2043,6 +2064,8 @@ function renderAssignments() {
   }
 
   el.innerHTML = h;
+  var clearStarterContext = document.getElementById('clear-starter-context');
+  if (clearStarterContext) clearStarterContext.onclick = function() { dashState.selectedStarterTag = null; renderAssignments(); };
 
   // Wire archive / delete / restore buttons
   el.querySelectorAll('.asgn-action-btn[data-action]').forEach(function(btn) {
@@ -2197,7 +2220,7 @@ function renderHeatmap(wrongResponses) {
     h += '<span class="heat-spec">' + banks + '</span>';
     h += '<div class="heat-bar"><div class="heat-fill" style="width:' + pct + '%"></div></div>';
     h += '<span class="heat-count">' + c.count + ' \u00d7 ' + studentCount + 's</span>';
-    h += '<a class="heat-action" href="#" onclick="forgeGoto(\'starters\',\'' + tag + '\');return false">Starter \u2192</a>';
+    h += '<a class="heat-action" href="#" data-starter-tag="' + teacherEsc(tag) + '">Starter \u2192</a>';
     h += '</div>';
   });
   h += '</div>';
