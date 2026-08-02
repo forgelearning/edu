@@ -318,7 +318,8 @@ var state = {
   isTrial: false,
   trialDaysLeft: 0,
   paidSubjects: [],
-  weightMap: {}        // spaced repetition: questionId → priority weight
+  weightMap: {},       // spaced repetition: questionId → priority weight
+  sessionWrongTags: [] // the session's clearest repair signal
 };
 var FORGE_SESSION_SIZE = 8;
 var FORGE_SESSION_PREFIX = 'forge-session:';
@@ -347,6 +348,7 @@ function forgeStartSession(bank, rawQs) {
   state.questions = weightedShuffle(available, state.weightMap || {}).slice(0, FORGE_SESSION_SIZE);
   if(window.forgeTrack) forgeTrack('forge_session_started',{bank:bank,question_count:state.questions.length});
   state.idx = 0; state.score = 0;
+  state.sessionWrongTags = [];
   try { localStorage.setItem(forgeSessionKey(bank), JSON.stringify({completedIds: completed, questionIds: state.questions.map(function(q){return q.id;}), idx: 0, score: 0, updatedAt: Date.now()})); } catch(e) {}
 }
 function forgeCompleteSession() {
@@ -1331,6 +1333,7 @@ function renderQuiz(){
       var k=o.dataset.k;
       var isCorrect=k===q.correct;
       if(isCorrect) state.score++;
+      if(!isCorrect && q.tag && state.sessionWrongTags.indexOf(q.tag) === -1) state.sessionWrongTags.push(q.tag);
       if(window.forgeTrack) forgeTrack('forge_question_answered',{bank:state.bank,correct:isCorrect});
       forgeSaveSession();
 
@@ -1575,13 +1578,23 @@ function renderResults(){
   if(window.forgeTrack) forgeTrack('forge_session_completed',{bank:state.bank,score:state.score,total:state.questions.length});
   var pct=Math.round((state.score/state.questions.length)*100);
   var col=pct>=75?'var(--good)':pct>=50?'var(--hot)':'var(--bad)';
+  var confidence = pct >= 80 ? 'High confidence' : pct >= 60 ? 'Building confidence' : 'Needs another pass';
+  var remaining = state.sessionWrongTags.length ? state.sessionWrongTags[0] : null;
+  var remainingLabel = remaining || 'No clear weak area in this session';
+  var nextHref = remaining ? 'anvil.html' : 'crucible.html';
+  var nextLabel = remaining ? 'Repair this in Anvil' : 'Pressure-test in Crucible';
   var h='<div class="results">';
   h+='<p class="tag" style="color:'+bk.color+';margin-bottom:6px">'+state.bank+' \u2014 '+bk.label+'</p>';
   h+='<div class="pct" style="color:'+col+'">'+pct+'%</div>';
   h+='<div class="detail">'+state.score+' / '+state.questions.length+' correct · session complete</div>';
-  h+='<div class="forge-status ui-margin-top-18-left '+(pct>=75?'forge-status--success':'forge-status--focus')+'"><strong>'+(pct>=75?'Keep the momentum':'Your next session will prioritise this bank')+'</strong><br><span class="forge-text-13">'+(pct>=75?'Try another focused bank or pressure-test your recall in the Crucible.':'The question weighting will bring weaker questions back into rotation so you can repair the gap.')+'</span></div>';
+  h+='<div class="forge-result-grid"><div><span class="forge-result-label">Score</span><strong>'+pct+'%</strong></div><div><span class="forge-result-label">Confidence</span><strong>'+confidence+'</strong></div></div>';
+  h+='<section class="forge-result-story" aria-labelledby="result-next-title">';
+  h+='<p class="forge-recommendation__eyebrow">Session readout</p>';
+  h+='<h2 id="result-next-title">'+(remaining ? 'Your next repair is clear.' : 'Your recall is ready for pressure.')+'</h2>';
+  h+='<dl class="forge-result-facts"><div><dt>Strongest repaired misconception</dt><dd>'+(remaining ? 'The error was surfaced and is ready for a targeted Anvil pass.' : 'You held the key ideas across this session.')+'</dd></div><div><dt>Remaining weak area</dt><dd>'+remainingLabel+'</dd></div></dl>';
+  h+='<a class="forge-button forge-button--primary" href="'+nextHref+'" id="result-next-action">'+nextLabel+' →</a></section>';
   h+='<div class="forge-action-row">';
-  h+='<button class="forge-button forge-button--primary" id="retry">Retry</button>';
+  h+='<button class="forge-button forge-button--secondary" id="retry">Retry session</button>';
   h+='<button class="forge-button forge-button--secondary" id="all-banks">All banks</button>';
   h+='<button class="forge-button forge-button--secondary" id="all-subj">Subjects</button>';
   h+='</div>';

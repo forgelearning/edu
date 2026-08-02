@@ -592,6 +592,11 @@ function renderAnvilHome(){
   h+='<div class="stat"><span class="stat-n forge-text-white">'+total+'</span><span class="stat-l">Total tracked</span></div>';
   h+='</div>';
 
+  if(active.length>0){
+    var priority=active[0];
+    h+='<section class="forge-recommendation" aria-labelledby="anvil-next-title"><p class="forge-recommendation__eyebrow">Recommended next</p><h2 id="anvil-next-title" class="forge-recommendation__title">Repair '+(MC_LABELS[priority.tag]||priority.tag)+'</h2><p class="forge-recommendation__copy">This misconception has fired '+priority.fires+' time'+(priority.fires===1?'':'s')+' and is the clearest repair to make now.</p><button class="forge-button forge-button--primary" data-forge-action="anvil-rework" data-tag="'+priority.tag+'">Start the repair →</button></section>';
+  }
+
   if(active.length===0 && resolved.length===0){
     h+=ForgeState.html('empty',{label:'No misconceptions yet',body:'Complete a Forge quiz first. Any wrong answers will appear here for reworking.',action:{label:'Go to the quiz',href:'forge-quiz.html'}});
     app.innerHTML=h + sessionBar();return;

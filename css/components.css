@@ -122,3 +122,12 @@
 .forge-session-detail dd{margin:var(--space-1) 0 0;color:var(--white);font-weight:600}
 .forge-session-change{margin-top:var(--space-3);color:var(--slate);font-size:13px}
 @media(max-width:600px){.forge-session-detail{grid-template-columns:1fr}.forge-recommendation{padding:var(--space-5)}}
+.forge-result-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-3);margin:var(--space-5) 0}
+.forge-result-grid>div{padding:var(--space-4);border:1px solid var(--line);border-radius:var(--radius-md);background:var(--panel-2)}
+.forge-result-grid strong{display:block;margin-top:var(--space-1);color:var(--white);font:700 18px 'Sora',sans-serif}
+.forge-result-label,.forge-result-facts dt{display:block;color:var(--dim);font:10px 'JetBrains Mono',monospace;letter-spacing:.06em;text-transform:uppercase}
+.forge-result-story{padding:var(--space-6);margin:var(--space-5) 0;border:1px solid rgba(127,217,138,.35);border-radius:var(--radius-lg);background:linear-gradient(135deg,rgba(127,217,138,.1),var(--panel))}
+.forge-result-story h2{margin:0 0 var(--space-4);color:var(--white);font:700 20px/1.25 'Sora',sans-serif;text-wrap:balance}
+.forge-result-facts{display:grid;gap:var(--space-3);margin-bottom:var(--space-5)}
+.forge-result-facts dd{margin-top:var(--space-1);color:var(--slate);font-size:14px;line-height:1.45}
+@media(max-width:600px){.forge-result-grid{grid-template-columns:1fr}.forge-result-story{padding:var(--space-5)}}
