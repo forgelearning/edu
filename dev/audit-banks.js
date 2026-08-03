@@ -47,7 +47,7 @@ const wanted = (bankId) => {
 const seenIds = new Map();
 const rows = [];
 const issues = [];
-let totals = { mcq: 0, cuedStem: 0, ref: 0, cuedRef: 0 };
+let totals = { mcq: 0, cuedStem: 0, ref: 0, cuedRef: 0, permutedRef: 0 };
 
 for (const [bankId, bank] of Object.entries(BANKS)) {
   if (!bankToSubject[bankId]) {
@@ -59,7 +59,7 @@ for (const [bankId, bank] of Object.entries(BANKS)) {
   const stemKeys = { A: 0, B: 0, C: 0, D: 0 };
   const refKeys = { A: 0, B: 0, C: 0, D: 0 };
   const stems = new Map();
-  let mcq = 0, ref = 0, cuedStem = 0, cuedRef = 0;
+  let mcq = 0, ref = 0, cuedStem = 0, cuedRef = 0, permutedRef = 0;
 
   for (const q of bank.questions) {
     if (seenIds.has(q.id)) {
@@ -91,6 +91,7 @@ for (const [bankId, bank] of Object.entries(BANKS)) {
       continue;
     }
 
+    let stemTextSet = null, refTextSet = null;
     for (const [item, label] of [[q, ''], [q.reforge, ' (reforge)']]) {
       if (!item || !item.options) {
         if (!label) issues.push(`NO OPTIONS: ${q.id} (${bankId})`);
@@ -113,10 +114,21 @@ for (const [bankId, bank] of Object.entries(BANKS)) {
       if (label) {
         ref++; refKeys[item.correct]++;
         if (isCued(item)) { cuedRef++; issues.push(`CUE: longest option is correct - ${q.id}${label} (${bankId})`); }
+        refTextSet = texts.slice().sort().join('');
       } else {
         mcq++; stemKeys[item.correct]++;
         if (isCued(item)) { cuedStem++; issues.push(`CUE: longest option is correct - ${q.id} (${bankId})`); }
+        stemTextSet = texts.slice().sort().join('');
       }
+    }
+
+    // The Reforge twin must test the misconception from a different angle.
+    // If its option set is just the parent's options reordered, the student
+    // sees the answer highlighted and then the same four options again —
+    // the twin gives away the answer instead of teaching.
+    if (stemTextSet !== null && refTextSet !== null && stemTextSet === refTextSet) {
+      permutedRef++;
+      issues.push(`PERMUTED REFORGE: ${q.id} (${bankId}) reforge options are the parent's options reordered`);
     }
 
     if (!q.scaffold || q.scaffold.trim().length < MIN_SCAFFOLD) {
@@ -138,7 +150,8 @@ for (const [bankId, bank] of Object.entries(BANKS)) {
 
   totals.mcq += mcq; totals.ref += ref;
   totals.cuedStem += cuedStem; totals.cuedRef += cuedRef;
-  rows.push({ bankId, subject: bankToSubject[bankId], n: bank.questions.length, mcq, ref, cuedStem, cuedRef, stemKeys, refKeys });
+  totals.permutedRef += permutedRef;
+  rows.push({ bankId, subject: bankToSubject[bankId], n: bank.questions.length, mcq, ref, cuedStem, cuedRef, permutedRef, stemKeys, refKeys });
 }
 
 for (const [key, subject] of Object.entries(SUBJECTS)) {
@@ -162,7 +175,7 @@ for (const r of rows.sort((a, b) => a.subject.localeCompare(b.subject) || a.bank
   );
 }
 
-console.log(`\nstems ${totals.cuedStem}/${totals.mcq} cued (${pct(totals.cuedStem, totals.mcq)})  |  reforges ${totals.cuedRef}/${totals.ref} cued (${pct(totals.cuedRef, totals.ref)})`);
+console.log(`\nstems ${totals.cuedStem}/${totals.mcq} cued (${pct(totals.cuedStem, totals.mcq)})  |  reforges ${totals.cuedRef}/${totals.ref} cued (${pct(totals.cuedRef, totals.ref)})  |  reforges permuted ${totals.permutedRef}/${totals.ref} (${pct(totals.permutedRef, totals.ref)})`);
 
 const grouped = {};
 for (const i of issues) (grouped[i.split(':')[0]] ||= []).push(i);
@@ -179,4 +192,20 @@ const fatal = issues.filter((i) => /^(UNGRADEABLE|BAD OPTION KEYS|MISSING BANK|D
 if (fatal.length) {
   console.log(`\n${fatal.length} fatal issue(s) — these break questions for students.`);
   process.exit(1);
+}
+
+// Regression guard for permuted Reforge twins (see CLAUDE.md "Known
+// outstanding issues"). 1,102 already exist and are being rewritten by hand,
+// bank by bank — this only stops that count from growing. Only enforced on
+// a full run (no bank/subject filter), since a partial run can't see the
+// true total. Lower PERMUTED_REFORGE_BASELINE as banks get fixed.
+const PERMUTED_REFORGE_BASELINE = 1102;
+if (!args.length && totals.permutedRef > PERMUTED_REFORGE_BASELINE) {
+  console.log(
+    `\nPermuted Reforge twins regressed: ${totals.permutedRef} > baseline ${PERMUTED_REFORGE_BASELINE}. ` +
+    `Every new Reforge twin must test the misconception from a different angle, not reorder the parent's options.`
+  );
+  process.exit(1);
+} else if (!args.length && totals.permutedRef < PERMUTED_REFORGE_BASELINE) {
+  console.log(`\nPermuted Reforge twins improved: ${totals.permutedRef} < baseline ${PERMUTED_REFORGE_BASELINE}. Lower PERMUTED_REFORGE_BASELINE in dev/audit-banks.js to lock in the gain.`);
 }
