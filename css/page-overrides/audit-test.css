@@ -5,7 +5,7 @@
 .audit-test #students,
 .audit-test #pricing,
 .audit-test #demo-2,
-.audit-test #subjects ~ section:not(#waitlist),
+.audit-test #subjects ~ section:not(#waitlist):not(#pricing),
 .audit-test #subjects .level-panel[hidden]{display:none!important}
 .audit-test #subjects{padding-top:var(--space-10)}
 .audit-test #subjects{display:none!important}
