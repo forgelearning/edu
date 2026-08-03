@@ -18748,3 +18748,4 @@ for (const bankId of ["CS-1", "CS-2", "CS-3", "CS-4"]) {
 }
 for (const bankId of ["CS-1", "CS-2", "CS-3", "CS-4"]) {
   for (const question of BANKS[bankId].questions) enforceNoUniqueLongestAnswer(question.reforge);
+}
