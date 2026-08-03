@@ -18033,3 +18033,47 @@ for (const subject of Object.values(SUBJECTS)) {
     }
   }
 }
+
+// Hand-authored Reforge twin fix for GCSE-PSY-MEMORY. The bank's generator
+// helpers (addGcsePsych, addPsychDepth, appendGenerated) all reused the
+// parent question's own four option texts for the Reforge twin, just
+// reordered — every one of the bank's 27 questions gave the student the
+// same options right after seeing the answer highlighted. Each twin below
+// now has its own distinct distractors testing the same concept from a
+// different angle, per CLAUDE.md's authoring rule 4, with lengths balanced
+// so the correct option is never the single longest one (rule 1).
+{
+  const reforgeFixes = {
+    "GCSE-PSY-MEM-01": { stem: "A learner briefly sees a flash of letters. Which store first receives it?", options: { A: "Sensory register", B: "Short-term memory", C: "Long-term memory", D: "Working memory" }, correct: "A" },
+    "GCSE-PSY-MEM-02": { stem: "Which finding is associated with Miller's research?", options: { A: "Memory duration is roughly thirty seconds", B: "About seven plus or minus two chunks capacity", C: "Recall improves mainly through rehearsal alone", D: "Capacity is effectively unlimited for digits" }, correct: "B" },
+    "GCSE-PSY-MEM-03": { stem: "Which pattern would support the serial position effect?", options: { A: "Equal recall is shown across the whole list", B: "Recall is entirely determined by list length", C: "First and last list items are recalled best", D: "Recall is worse for the first item only" }, correct: "C" },
+    "GCSE-PSY-MEM-04": { stem: "Remembering your last birthday mainly uses which memory type?", options: { A: "Semantic memory", B: "Procedural memory", C: "Working memory", D: "Episodic memory" }, correct: "D" },
+    "GCSE-PSY-MEM-05": { stem: "Which strategy repeats a phone number to retain it briefly?", options: { A: "Maintenance rehearsal", B: "Elaborative rehearsal", C: "Chunking by meaning", D: "Retrieval practice" }, correct: "A" },
+    "GCSE-PSY-MEM-06": { stem: "Which idea is supported by War of the Ghosts?", options: { A: "Memory is a passive recording device", B: "Recall is reconstructed using existing schemas", C: "Recall is unaffected by prior knowledge", D: "Forgetting never occurs with meaningful stories" }, correct: "B" },
+    "GCSE-PSY-MEM-07": { stem: "Why might two similar passwords be confused?", options: { A: "One of the two passwords is forgotten completely", B: "The sensory register becomes overloaded", C: "Similar memories interfere with each other", D: "A retrieval cue suddenly becomes clearer" }, correct: "C" },
+    "GCSE-PSY-MEM-08": { stem: "A person recalls an event that never happened. What is this?", options: { A: "A procedural memory", B: "A sensory trace", C: "An episodic gap", D: "A false memory" }, correct: "D" },
+    "GCSE-PSY-MEM-09": { stem: "Why might similar-sounding words be confused in short-term memory?", options: { A: "Short-term memory codes acoustically", B: "Short-term memory codes semantically", C: "Long-term memory codes visually", D: "Sensory memory has no coding" }, correct: "A" },
+    "GCSE-PSY-MEM-10": { stem: "Which store commonly represents meaning?", options: { A: "Sensory register", B: "Long-term memory, coded semantically", C: "Short-term memory, coded acoustically", D: "Iconic memory" }, correct: "B" },
+    "GCSE-PSY-MEM-11": { stem: "Which store loses information almost immediately?", options: { A: "Long-term memory", B: "Semantic memory", C: "Sensory memory", D: "Short-term memory" }, correct: "C" },
+    "GCSE-PSY-MEM-12": { stem: "Which model treats short-term memory as an active system?", options: { A: "The multi-store model", B: "The levels-of-processing model", C: "The reconstructive memory model", D: "The working memory model" }, correct: "D" },
+    "GCSE-PSY-MEM-13": { stem: "Which component directs working-memory resources?", options: { A: "The central executive", B: "The phonological loop", C: "The visuospatial sketchpad", D: "The episodic buffer" }, correct: "A" },
+    "GCSE-PSY-MEM-14": { stem: "Which component temporarily handles speech-based material?", options: { A: "The central executive", B: "The phonological loop", C: "The visuospatial sketchpad", D: "The sensory register" }, correct: "B" },
+    "GCSE-PSY-MEM-15": { stem: "Which component manipulates mental images?", options: { A: "The phonological loop mainly handles sound", B: "The central executive directs attention fully", C: "The visuospatial sketchpad manipulates images", D: "The sensory register briefly holds raw input" }, correct: "C" },
+    "GCSE-PSY-MEM-16": { stem: "What did dual-task findings suggest?", options: { A: "Short-term memory is a single unified store", B: "Memory capacity here is effectively unlimited", C: "Rehearsal is not necessary for retention here", D: "Working memory splits verbal and visual parts" }, correct: "D" },
+    "GCSE-PSY-MEM-17": { stem: "Which interference occurs when an old password affects a new one?", options: { A: "Proactive interference", B: "Retroactive interference", C: "State-dependent forgetting", D: "Context-dependent forgetting" }, correct: "A" },
+    "GCSE-PSY-MEM-18": { stem: "Which interference follows learning new similar material?", options: { A: "Proactive interference", B: "Retroactive interference", C: "Context-dependent forgetting", D: "Trace decay" }, correct: "B" },
+    "GCSE-PSY-MEM-19": { stem: "Why can the place of learning act as a cue?", options: { A: "State-dependent forgetting means recall depends on mood", B: "Interference always blocks retrieval completely", C: "Recall improves in the original learning context", D: "Sensory memory stores contextual detail permanently" }, correct: "C" },
+    "GCSE-PSY-MEM-20": { stem: "Why can mood or bodily state affect retrieval?", options: { A: "Context-dependent forgetting links recall to place", B: "Interference disrupts every similar memory", C: "Trace decay removes the memory entirely", D: "Recall depends on matching internal bodily state" }, correct: "D" },
+    "GCSE-PSY-MEM-21": { stem: "What process did Bartlett use to explain changed recall?", options: { A: "Fitting unfamiliar detail into an existing schema", B: "Maintenance rehearsal of unfamiliar words alone", C: "Interference between two very similar stories", D: "Sensory registration of totally unfamiliar symbols" }, correct: "A" },
+    "GCSE-PSY-MEM-22": { stem: "How can prior knowledge alter recall?", options: { A: "It has genuinely no effect on recall accuracy", B: "A schema can guide and distort reconstruction", C: "It only affects short-term memory capacity", D: "It prevents any interference from occurring" }, correct: "B" },
+    "GCSE-PSY-MEM-23": { stem: "What can misleading questions create?", options: { A: "Improved sensory registration of detail", B: "Stronger maintenance rehearsal of the event", C: "A false memory from misleading information", D: "A permanent increase in storage capacity" }, correct: "C" },
+    "GCSE-PSY-MEM-24": { stem: "How can a question alter eyewitness estimates?", options: { A: "Wording has no effect on memory reports", B: "Only the sensory register is affected", C: "Estimates always become more accurate", D: "Wording can bias the reported estimate" }, correct: "D" },
+    "GCSE-PSY-MEM-25": { stem: "What helps evaluate a memory model scientifically?", options: { A: "Supporting evidence drawn from controlled research", B: "Agreement with everyday intuition alone, nothing more", C: "A model that requires no empirical test", D: "Reliance on a single case study only" }, correct: "A" },
+    "GCSE-PHASE6-PSY-01": { stem: "Which pattern describes recall being weakest for items in the middle of a list?", options: { A: "Interference", B: "The serial position effect", C: "Context-dependent forgetting", D: "The multi-store model" }, correct: "B" },
+    "GCSE-PHASE6-PSY-02": { stem: "Why might learning French vocabulary today make it harder to recall Spanish vocabulary learned yesterday?", options: { A: "State-dependent forgetting", B: "Trace decay", C: "Retroactive interference", D: "The serial position effect" }, correct: "C" },
+  };
+  for (const question of BANKS["GCSE-PSY-MEMORY"].questions) {
+    const fix = reforgeFixes[question.id];
+    if (fix) question.reforge = { stem: fix.stem, options: fix.options, correct: fix.correct };
+  }
+}
