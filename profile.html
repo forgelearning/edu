@@ -317,24 +317,24 @@ function renderProfile(){
                   : days + ' days left on your trial';
 
     h += '<div style="background:var(--panel);border:1px solid '+borderCol+';border-radius:var(--radius-md);padding:14px 18px;margin-bottom:18px">';
-    h += '<div class="forge-u-4f9uhm">';
+    h += '<div>';
     h += '<div>';
     h += '<span style="font-family:\'JetBrains Mono\',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:'+tagCol+'">Free trial</span>';
-    h += '<p class="forge-u-s0p829">'+msg+'</p>';
+    h += '<p>'+msg+'</p>';
     h += '</div>';
-    h += '<a class="forge-u-qwg8u0" href="forge-signup.html">Subscribe →</a>';
+    h += '<a href="forge-signup.html">Subscribe →</a>';
     h += '</div>';
     // Progress bar (fills as trial runs out)
-    h += '<div class="forge-u-1rh0em3">';
+    h += '<div>';
     h += '<div style="height:100%;width:'+barPct+'%;background:'+barCol+';border-radius:var(--radius-xs);transition:width .4s"></div>';
     h += '</div>';
-    h += '<p class="forge-u-1bzwq9b">After '+days+' day'+(days!==1?'s':'')+', you\'ll drop to 10 free questions/day unless you subscribe · £2.99/month</p>';
+    h += '<p>After '+days+' day'+(days!==1?'s':'')+', you\'ll drop to 10 free questions/day unless you subscribe · £2.99/month</p>';
     h += '</div>';
   } else if (st.isPaid) {
     // Small Pro badge for paying subscribers
-    h += '<div class="forge-u-sr19fb">';
-    h += '<span class="forge-u-oznh0r">✓</span>';
-    h += '<span class="forge-u-4amsf1">Forge Pro — active</span>';
+    h += '<div>';
+    h += '<span>✓</span>';
+    h += '<span>Forge Pro — active</span>';
     h += '</div>';
   }
 
@@ -386,10 +386,10 @@ function renderProfile(){
         var label=resolveMCLabel(tag)||tag;
         h+='<div class="focus-item">';
         h+='<div class="focus-head">';
-        h+='<span class="focus-pill forge-u-1ec8uss">'+tag+'</span>';
+        h+='<span class="focus-pill">'+tag+'</span>';
         h+='<span class="focus-acc forge-text-bad">'+d.fires+' fire'+(d.fires!==1?'s':'')+'</span>';
         h+='</div>';
-        h+='<div class="focus-detail">'+label+'. Hit the <a class="forge-u-xad1ay" href="anvil.html">Anvil</a> to rework it.</div>';
+        h+='<div class="focus-detail">'+label+'. Hit the <a href="anvil.html">Anvil</a> to rework it.</div>';
         h+='</div>';
       });
     }
@@ -428,11 +428,11 @@ function renderProfile(){
       h += '<div class="card forge-mt-4">';
       h += '<div class="card-title">Subject breakdown</div>';
       h += '<table class="forge-u-k85mqv">';
-      h += '<thead><tr class="forge-u-1jmaj5p">';
-      h += '<th class="forge-u-s6yio4">Subject</th>';
-      h += '<th class="forge-u-dzjm5t">Qs answered</th>';
-      h += '<th class="forge-u-dzjm5t">Accuracy</th>';
-      h += '<th class="forge-u-s6yio4">Top misconception</th>';
+      h += '<thead><tr>';
+      h += '<th>Subject</th>';
+      h += '<th>Qs answered</th>';
+      h += '<th>Accuracy</th>';
+      h += '<th>Top misconception</th>';
       h += '</tr></thead><tbody>';
       subjects.sort(function(a,b){return subjectData[b].total-subjectData[a].total;}).forEach(function(subj) {
         var sd = subjectData[subj];
@@ -441,16 +441,16 @@ function renderProfile(){
         var topMC = Object.keys(sd.mcs).sort(function(a,b){return sd.mcs[b]-sd.mcs[a];})[0]||null;
         var topMCLabel = topMC?(resolveMCLabel(topMC)||topMC):null;
         var bankCount = Object.keys(sd.banks).length;
-        h += '<tr class="forge-u-1jmaj5p">';
-        h += '<td class="forge-u-9z781z">'+(SUBJ_LABELS[subj]||subj)+'</td>';
-        h += '<td class="forge-u-ssl18s">'+sd.total+'<span class="forge-u-1kd1vsw"> / '+bankCount+' bank'+(bankCount!==1?'s':'')+'</span></td>';
+        h += '<tr>';
+        h += '<td>'+(SUBJ_LABELS[subj]||subj)+'</td>';
+        h += '<td>'+sd.total+'<span> / '+bankCount+' bank'+(bankCount!==1?'s':'')+'</span></td>';
         h += '<td class="profile-accuracy" style="padding:10px 8px;text-align:center;font-family:\'JetBrains Mono\',monospace;font-size:13px;font-weight:600;color:'+scol+'">'+sacc+'%</td>';
         h += '<td class="forge-u-1rlm34s">';
         if (topMCLabel) {
-          h += '<span class="forge-u-e2msq1">'+topMC+'</span>';
-          h += '<span class="forge-u-19j2vc3">'+topMCLabel.slice(0,38)+(topMCLabel.length>38?'…':'')+'</span>';
+          h += '<span>'+topMC+'</span>';
+          h += '<span>'+topMCLabel.slice(0,38)+(topMCLabel.length>38?'…':'')+'</span>';
         } else {
-          h += '<span class="forge-u-fxiby9">✓ None yet</span>';
+          h += '<span>✓ None yet</span>';
         }
         h += '</td></tr>';
       });
@@ -460,7 +460,7 @@ function renderProfile(){
   } else if(activeTab==='forgemode'){
     // ── FORGE MODE TAB ──
     h+='<div class="card">';
-    h+='<div class="card-title forge-u-1gs3btp">Forge mode — daily accuracy</div>';
+    h+='<div class="card-title">Forge mode — daily accuracy</div>';
     // Recent session breakdown
     var recentMain=responses.filter(function(r){return !r.reforge_attempted;}).slice(-30);
     if(recentMain.length===0 && responses.length===0){
@@ -469,14 +469,14 @@ function renderProfile(){
       var recentCorrect=recentMain.filter(function(r){return r.is_correct;}).length;
       var recentAcc=Math.round((recentCorrect/recentMain.length)*100);
       var recentCol=recentAcc>=75?'var(--good)':recentAcc>=50?'var(--hot)':'var(--bad)';
-      h+='<div class="forge-u-elv7v3">';
+      h+='<div>';
       h+='<div class="stat"><span class="stat-n" style="color:'+recentCol+'">'+recentAcc+'%</span><span class="stat-l">Last 30 questions</span></div>';
-      h+='<div class="stat"><span class="stat-n forge-u-1gs3btp">'+streak+'</span><span class="stat-l">Day streak 🔥</span></div>';
+      h+='<div class="stat"><span class="stat-n">'+streak+'</span><span class="stat-l">Day streak 🔥</span></div>';
       h+='<div class="stat"><span class="stat-n forge-text-white">'+xp.toLocaleString()+'</span><span class="stat-l">Total XP</span></div>';
       h+='</div>';
       // Grade prediction — one card per class the student is in
       if(grades.length>1){
-        h+='<div class="grade-eyebrow forge-u-w2df8o">Predicted grades — '+grades.length+' subjects</div>';
+        h+='<div class="grade-eyebrow">Predicted grades — '+grades.length+' subjects</div>';
       }
       grades.forEach(function(g,i){
         var gr=g.grade;
@@ -499,12 +499,12 @@ function renderProfile(){
     var xpToNext=nextRank?nextRank.min-xp:0;
     var pct=nextRank?Math.round(((xp-rank.min)/(nextRank.min-rank.min))*100):100;
     h+='<div class="rank-display">';
-    h+='<p class="tag forge-u-1x3vyu3">'+st.studentName+' — Forge Rank</p>';
+    h+='<p class="tag">'+st.studentName+' — Forge Rank</p>';
     h+='<div class="rank-title" style="color:'+rank.color+'">'+rank.name+'</div>';
     h+='<div class="rank-xp">'+xp.toLocaleString()+' XP</div>';
     h+='<div class="xp-bar-wrap"><div class="xp-bar-fill" style="width:'+pct+'%"></div></div>';
     if(nextRank){h+='<div class="xp-bar-label"><span>'+rank.name+'</span><span>'+xpToNext.toLocaleString()+' XP to '+nextRank.name+'</span></div>';}
-    else{h+='<div class="forge-u-1a7i38n">Maximum rank achieved ✦</div>';}
+    else{h+='<div>Maximum rank achieved ✦</div>';}
     h+='</div>';
 
   } else if(activeTab==='anvil'){
@@ -523,8 +523,8 @@ function renderProfile(){
         h+='<span class="mc-fires forge-text-bad">'+d.fires+'×</span>';
         h+='</div>';
       });
-      h+='<a class="forge-u-14gvs6c" href="anvil.html">Rework these in the Anvil →</a>';
-      h+='<div class="forge-u-1tuzle1">After clearing misconceptions in the Anvil, <a class="forge-u-19j2vc3" href="profile.html">refresh this page</a> to update your list.</div>';
+      h+='<a href="anvil.html">Rework these in the Anvil →</a>';
+      h+='<div>After clearing misconceptions in the Anvil, <a href="profile.html">refresh this page</a> to update your list.</div>';
     }
     h+='</div>';
     // Resolved
@@ -550,12 +550,12 @@ function renderProfile(){
       var cCorrect=crucibleResponses.filter(function(r){return r.is_correct;}).length;
       var cAcc=Math.round((cCorrect/crucibleResponses.length)*100);
       var cCol=cAcc>=75?'var(--good)':cAcc>=50?'var(--hot)':'var(--bad)';
-      h+='<div class="stat-row forge-u-4jqx9p">';
+      h+='<div class="stat-row">';
       h+='<div class="stat"><span class="stat-n" style="color:'+cCol+'">'+cAcc+'%</span><span class="stat-l">Crucible accuracy</span></div>';
       h+='<div class="stat"><span class="stat-n forge-text-white">'+crucibleResponses.length+'</span><span class="stat-l">Questions done</span></div>';
       h+='</div>';
       h+='<p class="ui-meta-muted">The Crucible fires real exam conditions — no hints, no scaffolds. Your accuracy here is the closest prediction of exam day performance.</p>';
-      h+='<a class="forge-u-97wwn0" href="crucible.html">Enter the Crucible →</a>';
+      h+='<a href="crucible.html">Enter the Crucible →</a>';
     }
     h+='</div>';
   }

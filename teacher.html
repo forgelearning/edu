@@ -483,7 +483,7 @@ function drawTeacherHome(classes, loadError) {
     wide: true,
     title: 'Your classes',
     sub: (currentTeacher && currentTeacher.email)
-      ? 'Signed in as ' + esc(currentTeacher.email) + ' · <a class="forge-u-elt0p9" href="#" id="ta-signout">Sign out</a>'
+      ? 'Signed in as ' + esc(currentTeacher.email) + ' · <a href="#" id="ta-signout">Sign out</a>'
       : 'Pick a class to open its dashboard.'
   }, h);
 
@@ -559,14 +559,14 @@ function renderLogin(activeTab) {
   h += '<select id="c-subj" class="subj-select"><option value="">— Loading subjects... —</option></select></div>';
   h += '<button class="auth-btn" id="c-btn" type="button">Create class \u2192</button>';
   h += '<p class="auth-err" id="c-err"></p>';
-  h += '<div class="forge-u-10t1ysv" id="c-result"></div>';
+  h += '<div id="c-result"></div>';
   h += '</div>';
 
   app.innerHTML = ForgeAuthCard.shell({
     wide: true,
     title: 'Teacher Dashboard',
     sub: (currentTeacher && currentTeacher.email)
-      ? 'Signed in as ' + currentTeacher.email + ' · <a class="forge-u-elt0p9" href="#" id="ta-signout">Sign out</a>'
+      ? 'Signed in as ' + currentTeacher.email + ' · <a href="#" id="ta-signout">Sign out</a>'
       : 'Open a class dashboard, or create a new class.'
   }, h);
   // The view panel's code field is the only Enter-submittable one.
@@ -606,7 +606,7 @@ function renderLogin(activeTab) {
             if (!usedSubjects[s.key]) {
               opts2 += '<option value="' + s.key + '">' + s.label + ' (' + s.spec + ')</option>';
             } else {
-              opts2 += '<option class="forge-u-41pj58" value="" disabled>' + s.label + ' — you already have a class for this at this school</option>';
+              opts2 += '<option value="" disabled>' + s.label + ' — you already have a class for this at this school</option>';
             }
           });
           sel2.innerHTML = opts2;
@@ -820,7 +820,7 @@ function renderDashboard() {
   var attentionRows=Object.keys(attention).map(function(id){return {id:id,name:(studentMap[id]||'Student'),count:attention[id]};}).sort(function(a,b){return b.count-a.count;}).slice(0,5);
 
   var h = '<div class="dash-header">';
-  h += '<div><p class="tag forge-u-l8gta7">Teacher Dashboard</p>';
+  h += '<div><p class="tag">Teacher Dashboard</p>';
   h += '<h1>' + dashState.className;
   if (dashState.classCode) {
     h += ' <button id="class-code-pill" data-forge-action="copy-class-code" title="Copy class code" '
@@ -829,7 +829,7 @@ function renderDashboard() {
        + 'padding:3px 10px;cursor:pointer;vertical-align:middle">' + dashState.classCode + ' ⎘</button>';
   }
   h += '</h1></div>';
-  h += '<div class="dash-header-actions"><a class="dash-primary forge-button forge-button--primary" href="#" id="dash-action">' + (wrongResponses.length ? 'Open misconceptions \u2192' : 'Create assignment \u2192') + '</a><div class="dash-meta"><b>' + students.length + '</b> student' + (students.length !== 1 ? 's' : '') + ' \u00b7 <b>' + totalQs + '</b> response' + (totalQs !== 1 ? 's' : '') + ' \u00b7 <button class="back-btn forge-u-gr3ipb" data-forge-action="render-teacher-home">\u2190 All classes</button></div></div>';
+  h += '<div class="dash-header-actions"><a class="dash-primary forge-button forge-button--primary" href="#" id="dash-action">' + (wrongResponses.length ? 'Open misconceptions \u2192' : 'Create assignment \u2192') + '</a><div class="dash-meta"><b>' + students.length + '</b> student' + (students.length !== 1 ? 's' : '') + ' \u00b7 <b>' + totalQs + '</b> response' + (totalQs !== 1 ? 's' : '') + ' \u00b7 <button class="back-btn" data-forge-action="render-teacher-home">\u2190 All classes</button></div></div>';
   h += '</div>';
 
   // Stats row
@@ -846,11 +846,11 @@ function renderDashboard() {
   h += '<p class="ui-recommendation__copy">' + (wrongResponses.length ? 'Start with the students and misconception volume shown below, then use the secondary views only when you need supporting detail.' : 'There is not enough response data for a reliable intervention yet. Set a short assignment to establish the first signal.') + '</p>';
   h += '<a class="ui-state-action" href="#panel-' + (wrongResponses.length ? 'heatmap' : 'assignments') + '" data-forge-action="next-action">' + (wrongResponses.length ? 'Open priority signals' : 'Open assignments') + '</a>';
   h += '</section>';
-  h += '<div class="forge-card forge-card--focus forge-u-p7nziw"><div class="card-title">Needs attention today <span class="forge-meta">top misconception volume</span></div>';
+  h += '<div class="forge-card forge-card--focus"><div class="card-title">Needs attention today <span class="forge-meta">top misconception volume</span></div>';
   if(attentionRows.length){
     h += '<div class="forge-action-row forge-u-11yg588">';
     attentionRows.slice(0,3).forEach(function(row,i){h += '<button class="forge-button forge-button--'+(i===0?'primary':'secondary')+' forge-u-1l0ycxr" data-forge-action="render-student" data-student-id="'+row.id+'"><span>'+(i===0?'Start with ':'')+teacherEsc(row.name)+'</span><span class="forge-meta">'+row.count+' open</span></button>';});
-    h += '</div><p class="forge-u-8g5nnq">The first student is the recommended starting point; open their profile to choose an intervention.</p>';
+    h += '</div><p>The first student is the recommended starting point; open their profile to choose an intervention.</p>';
   } else h += '<p class="ui-meta-muted">No active misconception signals yet. Keep collecting responses.</p>';
   h += '</div>';
 
@@ -872,7 +872,7 @@ function renderDashboard() {
   h += '<div class="panel" id="panel-spec"></div>';
   h += '<div class="panel" id="panel-assignments"></div>';
   h += '<div class="panel" id="panel-starters"></div>';
-  h += '<div class="forge-u-uydnfn" id="panel-student"></div>';
+  h += '<div id="panel-student"></div>';
 
   app.innerHTML = h;
   var dashAction = document.getElementById('dash-action');
@@ -1233,10 +1233,10 @@ function renderSpecBreakdown(responses) {
   });
 
   var h = '<div class="card-title forge-mb-4">Spec Point Accuracy — weakest first</div>';
-  h += '<p class="forge-u-12m5q32">Only spec points with logged responses are shown. Questions answered before the latest update will not appear here.</p>';
+  h += '<p>Only spec points with logged responses are shown. Questions answered before the latest update will not appear here.</p>';
   h += '<table class="forge-u-k85mqv">';
-  h += '<thead><tr class="forge-u-yzojjb">';
-  h += '<th class="forge-u-qvnuss">Spec point</th><th>Subject</th><th>Questions</th><th>Students</th><th>Accuracy</th><th class="forge-u-naz5e1">Bar</th>';
+  h += '<thead><tr>';
+  h += '<th>Spec point</th><th>Subject</th><th>Questions</th><th>Students</th><th>Accuracy</th><th>Bar</th>';
   h += '</tr></thead><tbody>';
 
   specKeys.forEach(function(sp) {
@@ -1244,16 +1244,16 @@ function renderSpecBreakdown(responses) {
     var acc = Math.round((d.correct / d.total) * 100);
     var studentCount = Object.keys(d.students).length;
     var col = acc >= 70 ? 'var(--good)' : acc >= 50 ? 'var(--hot)' : 'var(--bad)';
-    h += '<tr class="forge-u-1jhoksp">';
-    h += '<td class="forge-u-yj4cup">' + sp + '</td>';
+    h += '<tr>';
+    h += '<td>' + sp + '</td>';
     var subjectKeys = Object.keys(d.subjects || {});
     var subjectLabels = subjectKeys.map(function (key) {
       return SPEC_TO_SUBJECT[key] || (typeof SUBJECTS !== 'undefined' && SUBJECTS[key] ? SUBJECTS[key].label : key);
     });
     var specSubject = subjectLabels.length ? subjectLabels.join(' · ') : (SPEC_TO_SUBJECT[sp] || (/^(ECON|ECON-)/i.test(sp) ? 'A Level Economics' : 'Subject not mapped'));
-    h += '<td class="forge-u-16oyzks">' + specSubject + '</td>';
-    h += '<td class="forge-u-19j2vc3">' + d.total + '</td>';
-    h += '<td class="forge-u-19j2vc3">' + studentCount + '</td>';
+    h += '<td>' + specSubject + '</td>';
+    h += '<td>' + d.total + '</td>';
+    h += '<td>' + studentCount + '</td>';
     h += '<td style="font-weight:700;color:' + col + '">' + acc + '%</td>';
     h += '<td><div class="forge-u-1lpc5ot"><div style="background:' + col + ';border-radius:var(--radius-xs);height:8px;width:' + acc + '%"></div></div></td>';
     h += '</tr>';
@@ -1270,51 +1270,51 @@ function renderStarterCard(tag, h, context) {
   var typeLabel = typeLabels[starterData.type] || "Starter activity";
 
   h += '<div class="card forge-card forge-card--focus" id="starter-card">';
-  h += '<div class="forge-u-1i89z8z">';
-  h += '<div class="card-title forge-u-1gs3btp">' + (context ? 'Recommended starter' : 'Starter activity') + ' — ' + typeLabel + '</div>';
-  h += '<span class="forge-u-16jmth7">' + tag + '</span>';
+  h += '<div>';
+  h += '<div class="card-title">' + (context ? 'Recommended starter' : 'Starter activity') + ' — ' + typeLabel + '</div>';
+  h += '<span>' + tag + '</span>';
   h += '</div>';
-  h += '<p class="forge-u-1idc03v">' + starterData.title + '</p>';
+  h += '<p>' + starterData.title + '</p>';
   if (context) {
-    h += '<p class="forge-u-1rniwep">' + context.fires + ' error' + (context.fires !== 1 ? 's' : '') + ' across ' + context.students + ' student' + (context.students !== 1 ? 's' : '') + ' this period</p>';
+    h += '<p>' + context.fires + ' error' + (context.fires !== 1 ? 's' : '') + ' across ' + context.students + ' student' + (context.students !== 1 ? 's' : '') + ' this period</p>';
   } else {
-    h += '<p class="forge-u-1rniwep">Preview — no class data loaded</p>';
+    h += '<p>Preview — no class data loaded</p>';
   }
-  h += '<p class="forge-u-1m9skgg">' + starterData.instruction + '</p>';
+  h += '<p>' + starterData.instruction + '</p>';
   h += '<button class="forge-button forge-button--primary starter-assign-btn" data-starter-tag="' + teacherEsc(tag) + '" type="button">Use this starter for an assignment →</button>';
 
   if (starterData.prompt) {
-    h += '<div class="forge-u-vbh83g">';
-    h += '<p class="forge-u-ga1lyh">' + starterData.prompt + '</p>';
+    h += '<div>';
+    h += '<p>' + starterData.prompt + '</p>';
     h += '</div>';
   }
   if (starterData.items) {
-    h += '<div class="forge-u-1dan4j4">';
+    h += '<div>';
     starterData.items.forEach(function(item) {
-      h += '<span class="forge-u-4h08im">' + item + '</span>';
+      h += '<span>' + item + '</span>';
     });
     h += '</div>';
   }
   if (starterData.headers && starterData.rows) {
-    h += '<div class="forge-u-1o87gnr"><table class="forge-u-k85mqv">';
+    h += '<div><table class="forge-u-k85mqv">';
     h += '<thead><tr>';
     starterData.headers.forEach(function(hdr) {
-      h += '<th class="forge-u-1a2ozug">' + hdr + '</th>';
+      h += '<th>' + hdr + '</th>';
     });
     h += '</tr></thead><tbody>';
     starterData.rows.forEach(function(row) {
       h += '<tr>';
       row.forEach(function(cell, ci) {
-        h += '<td style="padding:6px 10px;border-bottom:1px solid var(--panel-2);color:' + (ci===0 ? 'var(--white)' : 'var(--slate)') + '">' + (cell || '<span class="forge-u-gqocm1">—</span>') + '</td>';
+        h += '<td style="padding:6px 10px;border-bottom:1px solid var(--panel-2);color:' + (ci===0 ? 'var(--white)' : 'var(--slate)') + '">' + (cell || '<span>—</span>') + '</td>';
       });
       h += '</tr>';
     });
     h += '</tbody></table></div>';
   }
   if (starterData.answer) {
-    h += '<div class="forge-u-bfx4f7">';
-    h += '<span class="forge-u-11wqq9g">✓</span>';
-    h += '<p class="forge-u-1kqs3gf">' + starterData.answer + '</p>';
+    h += '<div>';
+    h += '<span>✓</span>';
+    h += '<p>' + starterData.answer + '</p>';
     h += '</div>';
   }
   h += '</div>';
@@ -1332,13 +1332,13 @@ function renderBrowseStarters() {
   var h = '<div class="card forge-mb-5">';
   h += '<div class="card-title">Browse starter activities</div>';
   if (allTags.length === 0) {
-    h += '<p class="forge-u-1rniwep">There are no starter activities for this subject yet. Once students complete questions, the top-firing misconception will be ranked here and you can build a starter from its scaffold.</p>';
+    h += '<p>There are no starter activities for this subject yet. Once students complete questions, the top-firing misconception will be ranked here and you can build a starter from its scaffold.</p>';
     h += '</div><div id="browse-starter-slot"></div>';
     el.innerHTML = h;
     return;
   }
-  h += '<p class="forge-u-1rniwep">No class data loaded — pick a misconception tag to preview its starter activity. Once students complete questions, the top-firing tag will be recommended automatically.</p>';
-  h += '<select class="forge-u-1vs062b" id="tag-picker">';
+  h += '<p>No class data loaded — pick a misconception tag to preview its starter activity. Once students complete questions, the top-firing tag will be recommended automatically.</p>';
+  h += '<select id="tag-picker">';
   h += '<option value="">— pick a misconception tag —</option>';
 
   // Group by subject prefix
@@ -1452,21 +1452,21 @@ function renderAssignCard(asgn, students, responses, isArchived) {
   if (!isArchived) {
     h += '<div class="assign-progress-row">';
     h += '<div class="assign-progress forge-progress" role="progressbar" aria-label="Assignment completion" aria-valuemin="0" aria-valuemax="100" aria-valuenow="' + pct + '"><span style="width:' + pct + '%"></span></div>';
-    h += '<span class="forge-u-tb67f">' + completedCount + '/' + total + ' completed</span>';
+    h += '<span>' + completedCount + '/' + total + ' completed</span>';
     h += dueBadge(asgn.due_date);
     h += '</div>';
     h += '<div class="assign-summary" aria-label="Assignment progress">';
     h += '<span>' + startedCount + ' started</span><span>' + inProgressCount + ' in progress</span><span>' + notStartedCount + ' not started</span>';
     h += '<span>' + (assignmentAccuracy == null ? '—' : assignmentAccuracy + '%') + ' accuracy</span><span>' + (assignmentAnswered ? Math.ceil(assignmentAnswered / 8) : 0) + '/' + Math.ceil((students.length * (assignmentQuestionTotal(banks) || 1)) / 8) + ' sessions logged</span></div>';
     if (students.length > 0) {
-      h += '<div class="forge-u-jm24uy">';
+      h += '<div>';
       students.forEach(function(s) {
         var ps = progress[s.id];
         var status = ps.completed ? 'Completed' : ps.started ? 'In progress' : 'Not started';
         var statusColor = ps.completed ? 'var(--good)' : ps.started ? 'var(--hot)' : '#8A857E';
         h += '<div class="student-assign-row">';
         h += '<span style="color:' + statusColor + ';font-size:14px">' + (ps.completed ? '✓' : ps.started ? '◐' : '○') + '</span>';
-        h += '<span class="forge-u-b5x4dy">' + teacherEsc(s.display_name || s.name) + '</span>';
+        h += '<span>' + teacherEsc(s.display_name || s.name) + '</span>';
         h += '<span style="font-family:\'JetBrains Mono\',monospace;font-size:11px;color:' + statusColor + '">' + status + (ps.answered ? ' · ' + ps.answered + '/' + ps.total + ' · ' + Math.ceil(ps.answered / 8) + '/' + ps.sessions + ' sessions' : '') + '</span>';
         h += '</div>';
       });
@@ -1509,14 +1509,14 @@ function renderAssignments() {
 
   // ── Create assignment form ──
   h += '<div class="assign-form">';
-  h += '<div class="card-title forge-u-dfjwb8">New assignment</div>';
-  h += '<label class="forge-u-1s6s0pt" for="asgn-title">Assignment title</label>';
+  h += '<div class="card-title">New assignment</div>';
+  h += '<label for="asgn-title">Assignment title</label>';
   h += '<input type="text" id="asgn-title" aria-describedby="asgn-title-help" placeholder="e.g. Inflation revision">';
-  h += '<p class="forge-u-l9adfb" id="asgn-title-help">Use a name students will recognise.</p>';
-  h += '<label class="forge-u-1s6s0pt" for="asgn-due">Due date <span class="forge-u-19j2vc3">(required)</span></label>';
+  h += '<p id="asgn-title-help">Use a name students will recognise.</p>';
+  h += '<label for="asgn-due">Due date <span>(required)</span></label>';
   h += '<input type="date" id="asgn-due" aria-describedby="asgn-due-help">';
-  h += '<p class="forge-u-ux2pa9" id="asgn-due-help">Students can still see the work after the date, but it will be marked overdue.</p>';
-  h += '<div class="forge-u-1woniy7"><div class="card-title forge-u-3ocpgz">Select banks to include</div><span class="forge-u-18u61ix" id="asgn-selected-count">0 selected</span></div>';
+  h += '<p id="asgn-due-help">Students can still see the work after the date, but it will be marked overdue.</p>';
+  h += '<div><div class="card-title">Select banks to include</div><span id="asgn-selected-count">0 selected</span></div>';
   h += '<div class="bank-checklist">';
   availableBanks.forEach(function(bk) {
     var label = BANK_LABELS[bk] || bk;
@@ -1549,7 +1549,7 @@ function renderAssignments() {
     }
 
     if (dashState.assignmentFilter !== 'active' && archived.length > 0) {
-      h += '<div class="card-title forge-u-j2cfmy">Archived</div>';
+      h += '<div class="card-title">Archived</div>';
       archived.forEach(function(asgn) { h += renderAssignCard(asgn, students, responses, true); });
     }
   }
@@ -1735,13 +1735,13 @@ function renderStarters(wrongResponses) {
     var h = '<div class="card forge-mb-5">';
     h += '<div class="card-title">Browse starter activities</div>';
     if (allTags.length === 0) {
-      h += '<p class="forge-u-1rniwep">There are no starter activities for this subject yet. Once students answer questions, the top-firing misconception will still be ranked below and you can build a starter from its scaffold.</p>';
+      h += '<p>There are no starter activities for this subject yet. Once students answer questions, the top-firing misconception will still be ranked below and you can build a starter from its scaffold.</p>';
       h += '</div><div id="browse-starter-slot"></div>';
       el.innerHTML = h;
       return;
     }
-    h += '<p class="forge-u-1rniwep">No class data yet — pick a misconception tag to preview its starter activity.</p>';
-    h += '<select class="forge-u-1vs062b" id="tag-picker">';
+    h += '<p>No class data yet — pick a misconception tag to preview its starter activity.</p>';
+    h += '<select id="tag-picker">';
     h += '<option value="">— pick a misconception tag —</option>';
     var groups = {};
     allTags.forEach(function(tag) { var g = tag.split('-')[0]+'-'+tag.split('-')[1]; if(!groups[g])groups[g]=[]; groups[g].push(tag); });
@@ -1779,11 +1779,11 @@ function renderStarters(wrongResponses) {
   // Also firing chips
   var others = sorted.slice(1, 5);
   if (others.length > 0) {
-    h += '<div class="card forge-u-1c8f8t4">';
-    h += '<p class="forge-u-9pvytk">Other misconceptions this period — click to preview starter:</p>';
-    h += '<div class="forge-u-ksn93q">';
+    h += '<div class="card">';
+    h += '<p>Other misconceptions this period — click to preview starter:</p>';
+    h += '<div>';
     others.forEach(function(tag) {
-      h += '<button class="forge-u-1oh7221" data-forge-action="show-starter" data-tag="' + tag + '">' + tag + ' (' + counts[tag].count + '×)</button>';
+      h += '<button data-forge-action="show-starter" data-tag="' + tag + '">' + tag + ' (' + counts[tag].count + '×)</button>';
     });
     h += '</div></div>';
   }
@@ -1795,7 +1795,7 @@ window.showStarterFor = function(tag) {
   var el = document.getElementById('panel-starters');
   if (!el) return;
   var out = ''; out = renderStarterCard(tag, out, null);
-  el.innerHTML = out + '<button class="forge-u-166b9d9" data-forge-action="render-starters">&larr; Back to all starters</button>';
+  el.innerHTML = out + '<button data-forge-action="render-starters">&larr; Back to all starters</button>';
 };
 
 function renderClassOverview(responses, students) {
@@ -1855,7 +1855,7 @@ function renderClassOverview(responses, students) {
     return accA - accB;
   });
 
-  var h = '<div class="card"><div class="card-title">Students \u2014 sorted by accuracy (lowest first) <span class="forge-u-rsj30h">Click a student to see their full profile</span></div>';
+  var h = '<div class="card"><div class="card-title">Students \u2014 sorted by accuracy (lowest first) <span>Click a student to see their full profile</span></div>';
   h += '<div class="class-table-wrap"><table class="class-table"><thead><tr>';
   h += '<th>Student</th><th>Answered</th><th>Accuracy</th><th>Weakest topic</th><th>Top misconception</th><th>Access</th>';
   h += '</tr></thead><tbody>';
@@ -1869,16 +1869,16 @@ function renderClassOverview(responses, students) {
     var displayName = student.display_name || ps.name;
 
     h += '<tr>';
-    h += '<td class="forge-u-1imlfss" data-label="Student" data-forge-action="render-student" data-student-id="' + sid + '">';
+    h += '<td data-label="Student" data-forge-action="render-student" data-student-id="' + sid + '">';
     h += '<span class="student-name-display" data-sid="' + sid + '">' + teacherEsc(displayName) + '</span>';
     if (extraTime > 0) h += '<span class="extra-time-badge">+' + extraTime + '%</span>';
     h += '</td>';
-    h += '<td class="forge-u-1imlfss" data-label="Answered" data-forge-action="render-student" data-student-id="' + sid + '">' + ps.total + '</td>';
+    h += '<td data-label="Answered" data-forge-action="render-student" data-student-id="' + sid + '">' + ps.total + '</td>';
     h += '<td data-label="Accuracy" class="acc" style="color:' + accColor + ';cursor:pointer" data-forge-action="render-student" data-student-id="' + sid + '">' + acc + '%</td>';
-    h += '<td data-label="Weakest topic" class="mono forge-u-gsw1zp" data-forge-action="render-student" data-student-id="' + sid + '">' + (ps.weakBank || '\u2014') + '</td>';
-    h += '<td data-label="Top misconception" class="mono forge-u-gsw1zp" data-forge-action="render-student" data-student-id="' + sid + '">' + (ps.topMC ? ps.topMC + ' \u00d7' + ps.topMCcount : '\u2014') + '</td>';
-    h += '<td class="forge-u-5goeua" data-label="Access">';
-    h += '<label class="forge-sr-only" for="extra-time-' + sid + '">Extra time for ' + teacherEsc(displayName) + '</label><select id="extra-time-' + sid + '" class="extra-time-select forge-u-1ljnzm7" data-sid="' + sid + '">';
+    h += '<td data-label="Weakest topic" class="mono" data-forge-action="render-student" data-student-id="' + sid + '">' + (ps.weakBank || '\u2014') + '</td>';
+    h += '<td data-label="Top misconception" class="mono" data-forge-action="render-student" data-student-id="' + sid + '">' + (ps.topMC ? ps.topMC + ' \u00d7' + ps.topMCcount : '\u2014') + '</td>';
+    h += '<td data-label="Access">';
+    h += '<label class="forge-sr-only" for="extra-time-' + sid + '">Extra time for ' + teacherEsc(displayName) + '</label><select id="extra-time-' + sid + '" class="extra-time-select" data-sid="' + sid + '">';
     h += '<option value="0"' + (extraTime === 0 ? ' selected' : '') + '>Standard</option>';
     h += '<option value="25"' + (extraTime === 25 ? ' selected' : '') + '>+25%</option>';
     h += '<option value="50"' + (extraTime === 50 ? ' selected' : '') + '>+50%</option>';
@@ -1890,10 +1890,10 @@ function renderClassOverview(responses, students) {
   h += '</tbody></table></div></div>';
 
   // Rename section below table
-  h += '<div class="card forge-u-1bzpq1k"><div class="card-title">Rename a student</div>';
-  h += '<p class="forge-u-1hzqkjr">If a student has used an inappropriate name, select them and enter a replacement. The original name is preserved in the database.</p>';
-  h += '<div class="forge-u-w2i2oa">';
-  h += '<label class="forge-sr-only" for="rename-select">Student to rename</label><select class="forge-u-1o9xvhi" id="rename-select">';
+  h += '<div class="card"><div class="card-title">Rename a student</div>';
+  h += '<p>If a student has used an inappropriate name, select them and enter a replacement. The original name is preserved in the database.</p>';
+  h += '<div>';
+  h += '<label class="forge-sr-only" for="rename-select">Student to rename</label><select id="rename-select">';
   h += '<option value="">Select student…</option>';
   sorted.forEach(function(sid) {
     var student = dashState.students.find(function(s) { return s.id === sid; }) || {};
@@ -1902,7 +1902,7 @@ function renderClassOverview(responses, students) {
   });
   h += '</select>';
   h += '<input type="text" id="rename-input" class="rename-input" placeholder="New display name">';
-  h += '<button id="rename-btn" class="join-btn forge-u-fnqu57">Save</button>';
+  h += '<button id="rename-btn" class="join-btn">Save</button>';
   h += '<p class="join-err" id="rename-err"></p>';
   h += '</div></div>';
 
@@ -2021,7 +2021,7 @@ window.renderStudent = function(studentId) {
 
   var h = '<button class="back-btn" data-forge-action="student-back">\u2190 Back to class</button>';
 
-  h += '<div class="dash-header forge-mb-4"><div><p class="tag forge-u-l8gta7">Student Profile</p><h1>' + studentName + (extraTime > 0 ? ' <span class="extra-time-badge forge-u-1nzryid">+' + extraTime + '% time</span>' : '') + '</h1></div></div>';
+  h += '<div class="dash-header forge-mb-4"><div><p class="tag">Student Profile</p><h1>' + studentName + (extraTime > 0 ? ' <span class="extra-time-badge">+' + extraTime + '% time</span>' : '') + '</h1></div></div>';
 
   h += '<div class="stat-row">';
   h += '<div class="stat"><span class="stat-n" style="color:' + (acc >= 70 ? 'var(--good)' : acc >= 50 ? 'var(--hot)' : 'var(--bad)') + '">' + acc + '%</span><span class="stat-l">Accuracy</span></div>';
@@ -2032,7 +2032,7 @@ window.renderStudent = function(studentId) {
 
   // Active misconceptions (Anvil)
   if (activeMCs.length > 0) {
-    h += '<div class="card forge-u-1ce7cf7"><div class="card-title forge-text-bad">Anvil \u2014 still active</div>';
+    h += '<div class="card"><div class="card-title forge-text-bad">Anvil \u2014 still active</div>';
     activeMCs.sort(function(a, b) { return mcData[b].fires - mcData[a].fires; });
     activeMCs.forEach(function(mc) {
       var d = mcData[mc];
@@ -2048,13 +2048,13 @@ window.renderStudent = function(studentId) {
 
   // Resolved
   if (resolvedMCs.length > 0) {
-    h += '<div class="card forge-u-5cp4nn"><div class="card-title forge-text-good">Resolved \u2014 reforged successfully</div>';
+    h += '<div class="card"><div class="card-title forge-text-good">Resolved \u2014 reforged successfully</div>';
     resolvedMCs.forEach(function(mc) {
       var d = mcData[mc];
       var label = resolveMCLabel(mc) || mc;
-      h += '<div class="mc-item forge-u-w5mfjv">';
-      h += '<span class="heat-tag forge-u-6uw790">' + mc + '</span>';
-      h += '<span class="mc-detail forge-u-1aezjox">' + label + '</span>';
+      h += '<div class="mc-item">';
+      h += '<span class="heat-tag">' + mc + '</span>';
+      h += '<span class="mc-detail">' + label + '</span>';
       h += '<span class="mc-fires forge-text-good">Resolved \u2713</span>';
       h += '</div>';
     });
@@ -2076,7 +2076,7 @@ window.renderStudent = function(studentId) {
       var when = r.created_at ? new Date(r.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }) : '';
       h += '<div class="mc-item" style="' + (r.reforge_correct ? 'opacity:.7' : '') + '">';
       h += '<span class="heat-tag" style="background:' + (r.reforge_correct ? 'var(--good)' : 'var(--bad)') + '">' + (mc || r.bank || '—') + '</span>';
-      h += '<span class="mc-detail forge-u-1aezjox"' + (r.reforge_correct ? '' : '') + '>' + label + '</span>';
+      h += '<span class="mc-detail"' + (r.reforge_correct ? '' : '') + '>' + label + '</span>';
       h += '<span class="mc-fires" style="color:' + (r.reforge_correct ? 'var(--good)' : 'var(--bad)') + '">' + (r.reforge_correct ? '✓ Passed' : '✗ Failed') + (when ? ' · ' + when : '') + '</span>';
       h += '</div>';
     });
@@ -2099,7 +2099,7 @@ window.renderStudent = function(studentId) {
   });
   crucibleSessions.reverse();
   if (crucibleSessions.length > 0) {
-    h += '<div class="card"><div class="card-title">Crucible sessions — ' + crucibleSessions.length + ' run' + (crucibleSessions.length !== 1 ? 's' : '') + '<span class="forge-u-rsj30h">Duration is estimated from answer timestamps</span></div>';
+    h += '<div class="card"><div class="card-title">Crucible sessions — ' + crucibleSessions.length + ' run' + (crucibleSessions.length !== 1 ? 's' : '') + '<span>Duration is estimated from answer timestamps</span></div>';
     crucibleSessions.slice(0, 10).forEach(function(sess) {
       var start = new Date(sess.answers[0].created_at);
       var end = new Date(sess.answers[sess.answers.length - 1].created_at);
@@ -2132,17 +2132,17 @@ window.renderStudent = function(studentId) {
   if (specKeys.length > 0) {
     h += '<div class="card"><div class="card-title">Spec Point Breakdown</div>';
     h += '<table class="forge-u-k85mqv">';
-    h += '<thead><tr class="forge-u-sd7dny"><th class="forge-u-3ebq6">Spec</th><th>Subject</th><th>Questions</th><th>Accuracy</th><th class="forge-u-urn98g">Bar</th></tr></thead><tbody>';
+    h += '<thead><tr><th>Spec</th><th>Subject</th><th>Questions</th><th>Accuracy</th><th>Bar</th></tr></thead><tbody>';
     specKeys.forEach(function(sp) {
       var d = specData[sp];
       var spAcc = Math.round((d.correct / d.total) * 100);
       var col = spAcc >= 70 ? 'var(--good)' : spAcc >= 50 ? 'var(--hot)' : 'var(--bad)';
-      h += '<tr class="forge-u-1jhoksp">';
-      h += '<td class="forge-u-5obb8e">' + sp + '</td>';
-      h += '<td class="forge-u-16oyzks">' + (SPEC_TO_SUBJECT[sp] || '—') + '</td>';
-      h += '<td class="forge-u-19j2vc3">' + d.total + '</td>';
+      h += '<tr>';
+      h += '<td>' + sp + '</td>';
+      h += '<td>' + (SPEC_TO_SUBJECT[sp] || '—') + '</td>';
+      h += '<td>' + d.total + '</td>';
       h += '<td style="font-weight:700;color:' + col + '">' + spAcc + '%</td>';
-      h += '<td><div class="forge-u-139b0tm"><div style="background:' + col + ';border-radius:var(--radius-xs);height:6px;width:' + spAcc + '%"></div></div></td>';
+      h += '<td><div><div style="background:' + col + ';border-radius:var(--radius-xs);height:6px;width:' + spAcc + '%"></div></div></td>';
       h += '</tr>';
     });
     h += '</tbody></table></div>';

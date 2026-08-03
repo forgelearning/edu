@@ -177,10 +177,10 @@ function renderJoin(){
 
 // ===== SUBJECT PICKER =====
 function renderSubject(){
-  var h='<p class="tag forge-u-1aakxi2">THE CRUCIBLE</p>';
+  var h='<p class="tag">THE CRUCIBLE</p>';
   h+='<section class="forge-recommendation" aria-labelledby="crucible-next-title"><p class="forge-recommendation__eyebrow">Recommended next</p><h2 id="crucible-next-title" class="forge-recommendation__title">Pressure-test your strongest current topic</h2><p class="forge-recommendation__copy">A short, timed run shows whether your recent practice holds without scaffolds. Choose a subject below to begin.</p></section>';
-  h+='<h2 class="forge-u-1y4dowp">Choose a subject</h2>';
-  h+='<p class="forge-u-13n81an">You\u2019ll get up to 6 questions from that subject at random. No scaffolds.</p>';
+  h+='<h2>Choose a subject</h2>';
+  h+='<p>You\u2019ll get up to 6 questions from that subject at random. No scaffolds.</p>';
   h+='<div class="subject-list">';
 
   // Subjects of every class joined (in Crucible or Forge \u2014 the list is
@@ -216,7 +216,7 @@ function renderSubject(){
   h+='</div>';
   var saved=loadCrucibleRun();
   if(saved&&saved.status==='active'&&saved.subject&&saved.bank){
-    h+='<div class="forge-status forge-status--focus forge-u-1ltoyjw"><strong>Crucible run in progress</strong><br><span class="forge-text-13">You have answered '+(saved.answers||[]).length+' of '+(saved.questionIds||[]).length+' questions.</span><br><button class="forge-button forge-button--primary forge-u-so79xg" id="resume-crucible">Resume run →</button> <button class="forge-button forge-button--secondary forge-u-so79xg" id="discard-crucible">Start fresh</button></div>';
+    h+='<div class="forge-status forge-status--focus"><strong>Crucible run in progress</strong><br><span class="forge-text-13">You have answered '+(saved.answers||[]).length+' of '+(saved.questionIds||[]).length+' questions.</span><br><button class="forge-button forge-button--primary" id="resume-crucible">Resume run →</button> <button class="forge-button forge-button--secondary" id="discard-crucible">Start fresh</button></div>';
   }
   app.innerHTML=h + sessionBar();
   var resumeBtn=document.getElementById('resume-crucible');
@@ -244,9 +244,9 @@ function renderBank(){
   var subj=SUBJECTS[state.subject];
   var locked=state.classSubject&&state.classSubject===state.subject;
   var h=locked?'':'<button class="back-btn" data-forge-action="crucible-subject">\u2190 Subjects</button>';
-  h+='<p class="tag forge-u-1aakxi2">THE CRUCIBLE</p>';
-  h+='<h2 class="forge-u-1y4dowp">'+subj.label+'</h2>';
-  h+='<p class="forge-u-13n81an">Pick a topic bank or run the full subject mix.</p>';
+  h+='<p class="tag">THE CRUCIBLE</p>';
+  h+='<h2>'+subj.label+'</h2>';
+  h+='<p>Pick a topic bank or run the full subject mix.</p>';
   h+='<div class="bank-list">';
   // All banks option
   var allQs=[];
@@ -302,21 +302,21 @@ function renderReady(){
   var bankName=state.bank==='ALL'?'All topics':BANKS[state.bank].label;
   var h='<button class="back-btn" data-forge-action="crucible-bank">\u2190 Back</button>';
   h+='<div class="center">';
-  h+='<p class="tag forge-u-8jlsd7">THE CRUCIBLE</p>';
-  h+='<h1 class="forge-u-1w1cjfn">Ready?</h1>';
-  h+='<p class="forge-u-1ls6geo">'+bankName+'</p>';
+  h+='<p class="tag">THE CRUCIBLE</p>';
+  h+='<h1>Ready?</h1>';
+  h+='<p>'+bankName+'</p>';
   var totalSecs = Math.round(CRUCIBLE_TIME * (1 + ((state.extraTime || 0) / 100)));
   var totalMins = Math.round(totalSecs / 60);
   var timeLabel = totalMins + ' minute' + (totalMins !== 1 ? 's' : '');
-  var extraNote = state.extraTime > 0 ? ' <span class="forge-u-mla374">(+' + state.extraTime + '% time arrangement applied)</span>' : '';
-  h+='<p class="forge-u-2vbwk">'+state.questions.length+' questions \u00b7 ' + timeLabel + ' \u00b7 no scaffolds \u00b7 no re-forges' + extraNote + '</p>';
-  h+='<div class="forge-u-12xyhzv">';
+  var extraNote = state.extraTime > 0 ? ' <span>(+' + state.extraTime + '% time arrangement applied)</span>' : '';
+  h+='<p>'+state.questions.length+' questions \u00b7 ' + timeLabel + ' \u00b7 no scaffolds \u00b7 no re-forges' + extraNote + '</p>';
+  h+='<div>';
   h+='<div>\u2715 No hints if you get it wrong</div>';
   h+='<div>\u2715 No re-forge twin to soften the blow</div>';
   h+='<div>\u2713 Wrong answers go to your Anvil automatically</div>';
   h+='<div>\u2713 Timer stops for no one</div>';
   h+='</div>';
-  h+='<button class="forge-button forge-button--primary forge-u-1vwx933" data-forge-action="crucible-start">Begin \u2192</button>';
+  h+='<button class="forge-button forge-button--primary" data-forge-action="crucible-start">Begin \u2192</button>';
   h+='</div>';
   app.innerHTML=h;
 }
@@ -424,7 +424,7 @@ function renderQuestion(){
 
       var fb=document.getElementById('c-feedback');
       if(isCorrect){
-        fb.innerHTML='<div class="forge-u-7q8pd2">\u2713 Correct.</div>';
+        fb.innerHTML='<div>\u2713 Correct.</div>';
       } else {
         fb.innerHTML='<div class="no-scaffold"><b>No scaffold here.</b> That error has been sent to your Anvil. Rework it after.</div>';
       }
@@ -471,17 +471,17 @@ function renderResults(){
   var h='<div class="results-card">';
   clearCrucibleRun();
   if(window.forgeTrack) forgeTrack('crucible_completed',{bank:state.bank,score:correct,total:total});
-  h+='<p class="tag forge-u-mj6mom">CRUCIBLE COMPLETE</p>';
+  h+='<p class="tag">CRUCIBLE COMPLETE</p>';
   h+='<div class="big-pct" style="color:'+col+'">'+pct+'%</div>';
   h+='<div class="results-detail">'+correct+' / '+total+' correct \u00b7 '+mins+'m '+(secs<10?'0':'')+secs+'s</div>';
-  h+='<div class="forge-success forge-u-1ltoyjw"><div class="forge-success-title">'+(pct>=75?'Strong pressure-test.':'Useful pressure-test.')+'</div><div class="forge-success-copy">'+(pct>=75?'You held up well under timed conditions.':'Your weak spots are now visible. Rework your Anvil, then try the Crucible again.')+'</div></div>';
+  h+='<div class="forge-success"><div class="forge-success-title">'+(pct>=75?'Strong pressure-test.':'Useful pressure-test.')+'</div><div class="forge-success-copy">'+(pct>=75?'You held up well under timed conditions.':'Your weak spots are now visible. Rework your Anvil, then try the Crucible again.')+'</div></div>';
   h+='</div>';
 
   // Per-question breakdown
   var wrong=state.answers.filter(function(a){return !a.correct;});
   if(wrong.length>0){
-    h+='<div class="forge-u-1qqcf3a">';
-    h+='<p class="tag forge-u-1xtvs35">Sent to your Anvil</p>';
+    h+='<div>';
+    h+='<p class="tag">Sent to your Anvil</p>';
     wrong.forEach(function(a){
       var tag=a.q.tag;
       if(Array.isArray(tag)) tag=tag[0];
@@ -497,8 +497,8 @@ function renderResults(){
   // Correct summary
   var rightAnswers=state.answers.filter(function(a){return a.correct;});
   if(rightAnswers.length>0){
-    h+='<div class="forge-u-1486nkx">';
-    h+='<p class="tag forge-u-1kx3umd">Got these right</p>';
+    h+='<div>';
+    h+='<p class="tag">Got these right</p>';
     rightAnswers.forEach(function(a){
       h+='<div class="result-row">';
       h+='<span class="result-icon forge-text-good">\u2713</span>';
@@ -515,7 +515,7 @@ function renderResults(){
   h+='<button class="forge-button forge-button--secondary" data-forge-action="crucible-back">Change subject</button>';
   h+='</div>';
   h+='<div class="center forge-mt-4">';
-  h+='<a class="forge-u-1q6gxej" href="anvil.html">Rework your Anvil \u2192</a>';
+  h+='<a href="anvil.html">Rework your Anvil \u2192</a>';
   h+='</div>';
   app.innerHTML=h;
 }
@@ -537,7 +537,7 @@ function forgeLogout(){
 }
 function sessionBar(){
   if (!state.studentId || !state.studentName || state.studentName === 'Anonymous') return '';
-  return '<div class="forge-u-44gkcw"><span class="forge-u-16oyzks">Signed in as <b class="forge-u-1ybl9nb">' + state.studentName + '</b> \u00b7 <a class="forge-u-1u5pwzm" href="#" data-forge-action="logout">Not you? Switch student</a></span></div>';
+  return '<div><span>Signed in as <b>' + state.studentName + '</b> \u00b7 <a href="#" data-forge-action="logout">Not you? Switch student</a></span></div>';
 }
 
 // ===== SHARED SESSION RESTORE =====

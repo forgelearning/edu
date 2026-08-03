@@ -10,7 +10,26 @@ const maintainedHtmlFiles = [
   ...['dev/sidebar-test.html', 'dev/teacher-dashboard-test.html', 'templates/gcse-subject-template.html'].map(name => path.join(root, name))
 ];
 const failures = [];
-const metrics = { pages: htmlFiles.length, dynamicStyleAttributes: 0, staticStyleAttributes: 0, inlineStyleBlocks: 0, inlineEventAttributes: 0, runtimeInlineHandlerSources: 0, legacyLogoClassAttributes: 0, duplicateClassAttributes: 0, directSupabaseFetches: 0, subjectPagesWithoutSharedCss: 0 };
+const metrics = { pages: htmlFiles.length, dynamicStyleAttributes: 0, staticStyleAttributes: 0, inlineStyleBlocks: 0, inlineEventAttributes: 0, runtimeInlineHandlerSources: 0, legacyLogoClassAttributes: 0, duplicateClassAttributes: 0, directSupabaseFetches: 0, subjectPagesWithoutSharedCss: 0, undefinedUtilityClasses: 0, buttonColourCollisions: 0 };
+
+// Every forge-u-* class the markup asks for must actually be defined in CSS.
+// Without this, a re-run of extract-static-styles.js can empty the generated
+// sheet while the class references remain, and the pages lose their styling
+// silently — the markup still validates, it just stops being styled.
+const definedUtilities = new Set();
+const cssDirs = [path.join(root, 'css'), path.join(root, 'css/page-overrides')];
+for (const dir of cssDirs) {
+  if (!fs.existsSync(dir)) continue;
+  for (const name of fs.readdirSync(dir).filter(n => n.endsWith('.css'))) {
+    const source = fs.readFileSync(path.join(dir, name), 'utf8');
+    for (const match of source.matchAll(/\.(forge-u-[a-z0-9]+)/g)) definedUtilities.add(match[1]);
+  }
+}
+
+// .ui-link-reset sets a colour as well as removing the underline, so combining
+// it with a button class overrides the button's own text colour. That produced
+// a 1.89:1 contrast ratio on the subject-page primary CTA across 35 pages.
+const buttonColourCollision = /class="[^"]*\b(?:btn|forge-button)\b[^"]*\bui-link-reset\b[^"]*"|class="[^"]*\bui-link-reset\b[^"]*\b(?:btn|forge-button)\b[^"]*"/g;
 
 for (const file of maintainedHtmlFiles) {
   const name = path.relative(root, file);
@@ -51,6 +70,19 @@ for (const file of maintainedHtmlFiles) {
     }
   }
   if (!source.includes('scripts/forge-page-actions.js')) failures.push(`${name}: missing shared action delegate`);
+
+  const undefinedUtilities = [...new Set([...markupSource.matchAll(/\b(forge-u-[a-z0-9]+)/g)].map(m => m[1]))]
+    .filter(className => !definedUtilities.has(className));
+  if (undefinedUtilities.length) {
+    metrics.undefinedUtilityClasses += undefinedUtilities.length;
+    failures.push(`${name}: undefined utility classes (${undefinedUtilities.slice(0, 4).join(', ')}${undefinedUtilities.length > 4 ? `, +${undefinedUtilities.length - 4}` : ''})`);
+  }
+
+  const collisions = markupSource.match(buttonColourCollision) || [];
+  if (collisions.length) {
+    metrics.buttonColourCollisions += collisions.length;
+    failures.push(`${name}: ui-link-reset overriding a button's text colour (${collisions.length})`);
+  }
 }
 
 const scriptFiles = fs.readdirSync(path.join(root, 'scripts')).filter(name => name.endsWith('.js') && !/^(migrate|extract)-/.test(name));
