@@ -8471,6 +8471,7 @@ for (const [bankId, [idPattern, plan, reforgePlan]] of Object.entries(geo640Bala
     moveGeoAnswer(question, reforgePlan[index], true);
   });
 }
+
 const geo640ShortAnswers = {
   "GCSE-HAZ-35:base":"Mid-latitude air transfer","GCSE-HAZ-35:reforge":"Deflected Ferrel-cell airflow","GCSE-HAZ-36:reforge":"Warm Atlantic heat transfer","GCSE-HAZ-37:base":"Several local factors affect growth","GCSE-HAZ-37:reforge":"Less favourable local growth","GCSE-HAZ-38:reforge":"Aerosol-related cooling","GCSE-HAZ-40:reforge":"Long-term uncertainty grows","GCSE-HAZ-42:reforge":"Water is funnelled coastward","GCSE-HAZ-49:reforge":"About 32 times more energy",
   "GCSE-DEV-43:base":"Income, health and education","GCSE-DEV-46:base":"Maternal healthcare and wellbeing","GCSE-DEV-47:base":"Isolation from markets and services","GCSE-DEV-48:reforge":"Debt shapes national policy","GCSE-DEV-50:base":"Core economies extract peripheral value","GCSE-DEV-50:reforge":"Cheap raw exports; costly imports","GCSE-DEV-52:reforge":"Power gains versus debt and displacement","GCSE-DEV-54:base":"Weak networks and skills","GCSE-DEV-54:reforge":"Broadband and technical education","GCSE-DEV-56:reforge":"Community-led spending decisions",
@@ -16220,6 +16221,21 @@ appendGenerated("CHEM-1", [
   ["A giant covalent structure generally has:","many strong covalent bonds and a high melting point","weak intermolecular forces only","mobile ions in the solid","low melting point in every case", "Diamond and graphite are giant structures with different properties due to bonding and layers."],
   ["An ionic compound conducts electricity when molten because:","its ions are free to move","its covalent bonds become electrons","its atoms disappear","its protons move through the circuit", "Ions are fixed in a solid lattice but mobile when molten or dissolved."]
 ], "CHEM-E1");
+const chemistryTheme1Reforges = {
+  "CHEM-E1-01": {stem:"What happens when an atom in the gas phase loses its first electron?",options:{A:"A gaseous positive ion forms and the required energy is its first ionisation energy",B:"A neutron is removed from the nucleus",C:"All electrons are removed from a solid",D:"The atom becomes a different isotope"},correct:"A"},
+  "CHEM-E1-02": {stem:"Two atoms have the same proton number but different mass numbers. How are they related?",options:{A:"They are isotopes with different numbers of neutrons",B:"They are ions with different charges",C:"They are different elements with the same nucleus",D:"They have different electron shells but identical nuclei"},correct:"A"},
+  "CHEM-E1-03": {stem:"Why do abundant isotopes contribute more strongly to an element's relative atomic mass?",options:{A:"The weighted mean gives their masses a larger contribution",B:"Only the least abundant isotope is included",C:"Electron number determines the mass instead",D:"Boiling point replaces isotopic abundance in the calculation"},correct:"A"},
+  "CHEM-E1-04": {stem:"A sample contains 0.50 mol of water molecules. What does this amount represent?",options:{A:"0.50 times the Avogadro constant number of water molecules",B:"Exactly 0.50 water molecules",C:"0.50 grams regardless of the substance's formula mass",D:"The same volume of water under every condition"},correct:"A"},
+  "CHEM-E1-05": {stem:"A compound has molecular formula C6H12O6. What does its empirical formula show?",options:{A:"The simplest whole-number ratio of its atoms",B:"Its exact three-dimensional molecular shape",C:"The number of molecules in every sample",D:"The sequence of steps in its reaction mechanism"},correct:"A"},
+  "CHEM-E1-06": {stem:"In a coordinate covalent bond, where do the shared electrons originate?",options:{A:"One atom supplies both electrons in the shared pair",B:"Each atom loses a proton to create the pair",C:"The ionic lattice supplies electrons only when it melts",D:"Two neutrons combine outside the nucleus"},correct:"A"},
+  "CHEM-E1-07": {stem:"Why is carbon dioxide non-polar overall despite having polar C=O bonds?",options:{A:"Its linear symmetry causes the bond dipoles to cancel",B:"It contains no electrons around the oxygen atoms",C:"It forms an ionic lattice in the gas phase",D:"Its atoms have identical mass numbers"},correct:"A"},
+  "CHEM-E1-08": {stem:"Why does diamond have a high melting point?",options:{A:"Many strong covalent bonds must be broken throughout its giant structure",B:"It contains only weak intermolecular attractions",C:"Its solid contains mobile ions",D:"Its melting point is low because carbon atoms are small"},correct:"A"},
+  "CHEM-E1-09": {stem:"Why can molten sodium chloride conduct electricity when solid sodium chloride cannot?",options:{A:"The ions are mobile in the molten state but fixed in the solid lattice",B:"Covalent bonds become free electrons on melting",C:"The protons move through the external circuit",D:"The atoms disappear and leave a conducting liquid"},correct:"A"}
+};
+for (const [id, reforge] of Object.entries(chemistryTheme1Reforges)) {
+  const question = BANKS["CHEM-1"].questions.find(item => item.id === id);
+  if (question) question.reforge = reforge;
+}
 appendGenerated("CHEM-2", [
   ["An exothermic reaction has:","a negative enthalpy change","a positive activation energy only","no energy transfer","a negative temperature in every case", "Products have lower enthalpy than reactants for an exothermic reaction."],
   ["A catalyst increases rate by:","providing an alternative route with lower activation energy","increasing the enthalpy change","moving the equilibrium position","raising the temperature permanently", "A catalyst speeds both forward and reverse reactions without changing equilibrium position."],
@@ -16441,6 +16457,20 @@ appendGenerated("BUS-1", [
   ["An entrepreneur is most likely to be characterised by:","identifying an opportunity and accepting calculated risk","following every competitor's decisions","avoiding all change in the business","working without any business objective", "Entrepreneurs identify opportunities, organise resources and accept uncertainty when pursuing an idea."],
   ["A democratic leadership style involves:","consulting employees before important decisions","giving orders without seeking views","delegating every decision to customers","removing all accountability from managers", "Consultation can improve commitment, although it may make decisions slower."],
 ], "BUS-LEADERS");
+const businessTheme1FollowupReforges = {
+  "BUS-T1-14": {stem:"A founder spots an unmet customer need and invests savings in testing a new product. Which entrepreneurial behaviour is shown?",options:{A:"Identifying an opportunity and accepting calculated risk",B:"Copying a rival without making a decision",C:"Avoiding all uncertainty by closing the business",D:"Managing the national interest rate"},correct:"A"},
+  "BUS-T1-15": {stem:"A manager asks employees for views before choosing a new rota. Which leadership style is this?",options:{A:"Democratic leadership",B:"Autocratic leadership",C:"Laissez-faire accounting",D:"Paternalistic ownership"},correct:"A"},
+  "BUS-T1-16": {stem:"A start-up's founder tests several ideas before committing funds. Which quality is most relevant?",options:{A:"Calculated risk-taking",B:"Guaranteed certainty",C:"Avoidance of opportunity",D:"Complete dependence on competitors"},correct:"A"},
+  "BUS-T1-17": {stem:"Employees help choose a workplace change and then show stronger commitment to implementing it. What is a likely benefit of consultation?",options:{A:"Greater employee commitment",B:"Removal of all decision-making responsibility",C:"A guaranteed fall in operating costs",D:"An end to the need for management"},correct:"A"},
+  "BUS-LEADERS-01": {stem:"A founder launches a product after researching demand but accepts that sales are uncertain. Which role is illustrated?",options:{A:"Entrepreneurial opportunity recognition and calculated risk",B:"Routine administration with no uncertainty",C:"Central-bank policy setting",D:"Competitor price fixing"},correct:"A"},
+  "BUS-LEADERS-02": {stem:"A team leader invites staff to discuss alternatives before making a decision. This is closest to:",options:{A:"Democratic leadership",B:"Autocratic leadership",C:"Hands-off leadership with no accountability",D:"Management by financial ratio"},correct:"A"}
+};
+for (const [id, reforge] of Object.entries(businessTheme1FollowupReforges)) {
+  for (const bank of Object.values(BANKS)) {
+    const question = bank.questions?.find(item => item.id === id);
+    if (question) question.reforge = reforge;
+  }
+}
 appendGenerated("BUS-2", [
   ["A cash-flow forecast is mainly used to predict:","when cash is expected to enter and leave the business","whether the business will make an accounting profit","the exact market share of each rival","how many employees will receive training", "Forecasts help managers anticipate liquidity problems and plan finance."],
   ["A business reaches its break-even output when:","total revenue equals total costs","variable costs become zero","fixed costs are higher than revenue","profit is at its maximum", "At break-even, the contribution made by output covers fixed costs and profit is zero."],
@@ -18674,3 +18704,47 @@ for (const subject of Object.values(SUBJECTS)) {
     if (fix) question.reforge = { stem: fix.stem, options: fix.options, correct: fix.correct };
   }
 }
+
+// Complete the Computer Science Reforge migration. These legacy generated
+// twins repeated the parent's option set. Rebuild each affected twin with
+// fresh distractors from the same bank and a transfer framing.
+for (const bankId of ["CS-1", "CS-2", "CS-3", "CS-4"]) {
+  const bank = BANKS[bankId];
+  const questions = bank.questions || [];
+  const pool = questions.flatMap(question => Object.entries(question.options || {})
+    .filter(([letter]) => letter !== question.correct)
+    .map(([, text]) => String(text)));
+  questions.forEach((question, index) => {
+    const current = question.reforge;
+    if (!current || !current.options) return;
+    const parentSet = Object.values(question.options).map(value => String(value).trim().toLowerCase()).sort().join("\u001f");
+    const reforgeSet = Object.values(current.options).map(value => String(value).trim().toLowerCase()).sort().join("\u001f");
+    if (parentSet !== reforgeSet) return;
+    const answer = String(question.options[question.correct]);
+    const distractors = [];
+    for (let step = 0; distractors.length < 3 && step < pool.length * 2; step += 1) {
+      const candidate = pool[(index * 11 + step) % pool.length];
+      if (candidate.toLowerCase() === answer.toLowerCase()) continue;
+      if (Object.values(question.options).some(value => String(value).toLowerCase() === candidate.toLowerCase())) continue;
+      if (!distractors.some(value => value.toLowerCase() === candidate.toLowerCase())) distractors.push(candidate);
+    }
+    if (distractors.length < 3) return;
+    const letters = ["A", "B", "C", "D"];
+    const correctPosition = index % 4;
+    let distractorIndex = 0;
+    const options = {};
+    letters.forEach((letter, position) => { options[letter] = position === correctPosition ? answer : distractors[distractorIndex++]; });
+    const longestOther = Math.max(...letters.filter(letter => letter !== letters[correctPosition]).map(letter => options[letter].length));
+    if (options[letters[correctPosition]].length > longestOther) {
+      const longestLetter = letters.filter(letter => letter !== letters[correctPosition]).sort((a, b) => options[b].length - options[a].length)[0];
+      options[longestLetter] += " in this computing context";
+    }
+    question.reforge = {
+      stem: `In a different computing scenario, which answer applies to this idea? ${question.stem}`,
+      options,
+      correct: letters[correctPosition]
+    };
+  });
+}
+for (const bankId of ["CS-1", "CS-2", "CS-3", "CS-4"]) {
+  for (const question of BANKS[bankId].questions) enforceNoUniqueLongestAnswer(question.reforge);
