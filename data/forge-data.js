@@ -18708,6 +18708,14 @@ for (const subject of Object.values(SUBJECTS)) {
 // Complete the Computer Science Reforge migration. These legacy generated
 // twins repeated the parent's option set. Rebuild each affected twin with
 // fresh distractors from the same bank and a transfer framing.
+const csTransferFrames = [
+  "A computing case presents the following problem:",
+  "A developer tests this principle with a new example:",
+  "During a practical programming task, a student asks:",
+  "In a systems-design scenario, consider this question:",
+  "A technician applies the idea while troubleshooting:",
+  "A software team encounters the following situation:"
+];
 for (const bankId of ["CS-1", "CS-2", "CS-3", "CS-4"]) {
   const bank = BANKS[bankId];
   const questions = bank.questions || [];
@@ -18740,7 +18748,7 @@ for (const bankId of ["CS-1", "CS-2", "CS-3", "CS-4"]) {
       options[longestLetter] += " in this computing context";
     }
     question.reforge = {
-      stem: `In a different computing scenario, which answer applies to this idea? ${question.stem}`,
+      stem: `${csTransferFrames[index % csTransferFrames.length]} ${question.stem}`,
       options,
       correct: letters[correctPosition]
     };
