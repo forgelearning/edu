@@ -427,7 +427,7 @@ BANKS["2.3.1"] = {
     },
     {
       id:"FIS-04",spec:"2.3.1",stem:"What is the difference between the fiscal (budget) deficit and the national debt?",
-      options:{A:"The fiscal deficit (G − T) and current account deficit (M − X) measure different things.",B:"No error — the fiscal deficit and current account deficit are the same concept.",C:"The fiscal deficit cannot be expressed as a percentage of GDP.",D:"The current account only measures trade in goods, not services."},correct:"C",tag:"MC-BOP-02",
+      options:{A:"The fiscal deficit (G − T) and current account deficit (M − X) measure different things.",B:"No error — the fiscal deficit and current account deficit are the same concept.",C:"The fiscal deficit cannot be expressed as a percentage of GDP.",D:"The current account only measures trade in goods, not services."},correct:"C",tag:"MC-FIS-04",
       scaffold:"Deficit = a flow (this year's gap between spending and revenue). Debt = a stock (total accumulated over decades). Running a deficit of £100bn this year adds £100bn to the national debt. You can run a deficit while the debt-to-GDP ratio falls if GDP grows faster than borrowing. The 2019 examiner report flagged students confusing fiscal deficit with current account deficit.",
       reforge:{stem:"A government runs a surplus of £10bn. What happens to the national debt?",options:{A:"It increases by £10bn.",B:"It is unaffected — surpluses and debt are unrelated. (in the market described)",C:"It decreases by £10bn — the surplus is used to pay down accumulated debt.",D:"It doubles."},correct:"C"}
     },
@@ -3022,84 +3022,84 @@ BANKS["GCSE-GEO-BIOSPHERE"] = {
     {
       id:"GCSE-BIO-01",spec:"GCSE-BIO",stem:"What is the main factor determining the global distribution of biomes?",
       options:{A:"The distance a country is from the equator has no effect on its biome",B:"Biome type is determined only by soil pH",C:"Climate — temperature and precipitation levels shape the length of the growing season and therefore plant and animal biodiversity",D:"Government policy decides which biome forms in a country"},
-      correct:"C",tag:"MC-BIO-01",
+      correct:"C",tag:"MC-GEO-BIO-01",
       scaffold:"Climate (temperature and precipitation) is the primary control on biome distribution: it determines the growing season length, which drives plant growth, which in turn determines biodiversity — the hotter and wetter a place is, the more plant species it supports, providing more food and habitats and so more animal species too. Local factors (altitude, soil/rock type, drainage, continentality, ocean currents) then create variation within that broad climatic pattern.",
       reforge:{stem:"Two locations are at a similar latitude but one is far inland (continental) and one is on the coast. Why might their biomes differ?",options:{A:"Inland and coastal areas always share an identical biome",B:"Ocean currents only affect biomes at the equator",C:"Latitude is the only factor that ever affects climate",D:"Continentality means inland areas heat up and cool down faster, producing a more extreme temperature range than the moderated coastal climate"},correct:"D"}
     },
     {
       id:"GCSE-BIO-02",spec:"GCSE-BIO",stem:"A tropical rainforest and a hot desert are both located close to the equator. Why is their biodiversity so different?",
       options:{A:"Deserts always have higher biodiversity than rainforests",B:"The rainforest's high year-round rainfall and warmth support far greater plant growth than the desert's low precipitation, providing more habitats and food for animals",C:"Biodiversity is unrelated to precipitation",D:"Latitude alone determines biodiversity regardless of rainfall"},
-      correct:"B",tag:"MC-BIO-02",
+      correct:"B",tag:"MC-GEO-BIO-02",
       scaffold:"Tropical rainforest: over 2000mm rainfall annually, hot and wet year-round, no dormant season — supports roughly 50% of the world's plant and animal species. Hot desert: below 250mm rainfall, extreme temperature swings — low biodiversity (cacti, yucca, scorpions, camels). Both sit at similar latitudes, proving precipitation, not latitude alone, is doing the work here.",
       reforge:{stem:"The taiga and temperate forest are both found in the northern hemisphere, but the taiga has lower biodiversity. What is the main reason?",options:{A:"The taiga's short growing season (2–3 months) and harsh cold climate limit plant growth to mainly coniferous trees, compared with the temperate forest's 6–8 month growing season",B:"Biodiversity is identical in all forest biomes",C:"The taiga receives more rainfall than the temperate forest",D:"The taiga is located closer to the equator"},correct:"A"}
     },
     {
       id:"GCSE-BIO-03",spec:"GCSE-BIO",stem:"Which local factor explains why biome type can change dramatically over a short horizontal distance in a mountainous region?",
       options:{A:"Latitude, since altitude and latitude are the same thing",B:"Continentality, which only applies to low-lying areas",C:"Altitude — temperature decreases with height, so vegetation zones change from forest at the base to tundra-like conditions near the summit",D:"Ocean currents, since mountains are never affected by the sea"},
-      correct:"C",tag:"MC-BIO-03",
+      correct:"C",tag:"MC-GEO-BIO-03",
       scaffold:"Local factors that modify biome distribution within the broader climatic pattern: altitude (temperature falls as height increases, compressing multiple biome-like zones onto one mountainside), rock/soil type (pH and mineral content affect which plants grow), drainage (soil moisture affects plant type), continentality, and ocean currents (warm/cold currents heat or cool nearby land).",
       reforge:{stem:"A cold ocean current flows along a coastline that would otherwise be warm enough for tropical vegetation. What effect is this local factor likely to have?",options:{A:"It would increase biodiversity regardless of temperature",B:"It cools the adjacent land, potentially creating a cooler, drier biome than the latitude alone would predict",C:"Ocean currents have no measurable effect on nearby land climate",D:"It would make the coastline hotter than inland areas at the same latitude"},correct:"B"}
     },
     {
       id:"GCSE-BIO-04",spec:"GCSE-BIO",stem:"In a tropical rainforest, vegetation is cleared. Explain the immediate impact on soil using the concept of interdependence.",
       options:{A:"With no leaf litter or roots being added, nutrient supply to the soil is disrupted, and the exposed soil is also more vulnerable to erosion and leaching",B:"Soil nutrients increase because there is no longer any competition from plant roots",C:"Removing vegetation has no effect on soil since they are separate, unconnected systems",D:"Soil quality automatically improves once vegetation is removed"},
-      correct:"A",tag:"MC-BIO-04",
+      correct:"A",tag:"MC-GEO-BIO-04",
       scaffold:"Interdependence means biotic and abiotic components of a biome are interlinked, so a change in one affects the others. Soil (abiotic) depends on dead organic matter (biotic) for nutrients via decomposition. Removing vegetation cuts off that nutrient supply, exposes soil directly to sun and rain (increasing erosion), and reduces the biological weathering that builds new soil in the first place.",
       reforge:{stem:"Following the same clearance, what is the most likely knock-on effect on local rainfall patterns?",options:{A:"Soil erosion causes rainfall to increase",B:"Rainfall would increase because there is less vegetation to intercept it",C:"Rainfall patterns are entirely unrelated to vegetation cover",D:"Reduced transpiration from fewer plants can lead to less atmospheric moisture and therefore less frequent, less reliable precipitation"},correct:"D"}
     },
     {
       id:"GCSE-BIO-05",spec:"GCSE-BIO",stem:"Which is an example of a 'regulating' ecosystem service, as opposed to a 'provisioning' one?",
       options:{A:"Fuel wood collected for cooking",B:"Timber harvested for construction",C:"Fruit and nuts collected for food",D:"Waste decomposition and maintenance of water quality"},
-      correct:"D",tag:"MC-BIO-05",
+      correct:"D",tag:"MC-GEO-BIO-05",
       scaffold:"The four ecosystem service categories: provisioning (goods — timber, food, water, medicine, fuel), regulating (climate, water quality, waste decomposition, soil quality, disease/pest control, air quality), cultural (health/spiritual benefits, recreation, employment, education), and supporting (soil formation, nutrient cycling). B, C and D are all tangible goods, so they are provisioning services.",
       reforge:{stem:"A rainforest's role in absorbing CO2 through photosynthesis and helping maintain the balance of atmospheric gases is an example of which ecosystem service category?",options:{A:"Regulating — it controls a natural process (climate/atmospheric composition) rather than providing a tangible good",B:"Provisioning, since gases are a tangible good",C:"Cultural, since it benefits human wellbeing",D:"None of these categories apply to gases"},correct:"A"}
     },
     {
       id:"GCSE-BIO-06",spec:"GCSE-BIO",stem:"The Awá people of the Amazon rely on the rainforest for shelter, rope, food and fuel. Why are indigenous communities like the Awá especially vulnerable to commercial exploitation of the biosphere?",
       options:{A:"Indigenous communities do not use any natural resources",B:"Commercial exploitation always benefits indigenous communities financially",C:"Their livelihoods depend directly on ecosystem goods and services, so deforestation or pollution removes the very resources they rely on for survival",D:"The Awá import all of their food and materials from cities"},
-      correct:"C",tag:"MC-BIO-06",
+      correct:"C",tag:"MC-GEO-BIO-06",
       scaffold:"The Awá depend on the rainforest directly: branches and palm leaves for shelters (tapā í), palm fibres for rope and hammocks, wood for fires, and food from honey, fish, berries (açaí), tapir, deer and howler monkeys. Commercial exploitation (mining, agriculture, logging, HEP) removes exactly these resources, forcing communities to abandon traditional lifestyles when food sources disappear.",
       reforge:{stem:"A mining company clears forest to build access roads near an indigenous community's territory. Which secondary impact is most likely to follow?",options:{A:"No impact, since mining only affects the exact area being mined",B:"Toxic waste chemicals entering the river system, damaging both the aquatic ecosystem and the community's water and food supply",C:"An automatic increase in the community's traditional food sources",D:"Improved biodiversity as a direct result of road building"},correct:"B"}
     },
     {
       id:"GCSE-BIO-07",spec:"GCSE-BIO",stem:"Why does the construction of a hydroelectric dam on a river affect ecosystems even far downstream?",
       options:{A:"The dam traps sediment and can block fish migration routes, altering the flow of nutrients and disrupting species like salmon that need to travel upstream",B:"Dams increase the amount of sediment reaching downstream ecosystems",C:"Dams only affect the exact location where they are built",D:"HEP generates no environmental impact once construction is finished"},
-      correct:"A",tag:"MC-BIO-07",
+      correct:"A",tag:"MC-GEO-BIO-07",
       scaffold:"HEP impacts: forest clearance for the dam/reservoir, flooding of habitats, loss of food sources, a physical barrier to migratory fish (e.g. salmon), and sediment trapped behind the dam rather than replenishing the ecosystems and floodplains downstream. This is a good example of how one intervention creates a chain of effects across a whole river system, not just the dam site.",
       reforge:{stem:"Which statement best explains why cleared biomes are difficult to fully restore once exploited?",options:{A:"Ecosystem restoration has no relationship to how long the land was exploited",B:"Once cleared, biomes are legally prevented from ever regenerating",C:"Cleared land regenerates to its original state within a few months",D:"The interdependent relationships between soil, vegetation, and species take a very long time to re-establish, so the ecosystem cannot immediately return to providing the same goods and services"},correct:"D"}
     },
     {
       id:"GCSE-BIO-08",spec:"GCSE-BIO",stem:"How does deforestation directly affect the global carbon cycle?",
       options:{A:"Deforestation has no effect on atmospheric CO2 levels",B:"It reduces the number of carbon sinks (plants and soils) able to absorb CO2 from the atmosphere, while burning cleared biomass releases stored carbon directly",C:"Deforestation removes CO2 from the atmosphere more effectively than intact forest",D:"Trees play no role in the carbon cycle"},
-      correct:"B",tag:"MC-BIO-08",
+      correct:"B",tag:"MC-GEO-BIO-08",
       scaffold:"Plants and soils act as carbon sinks — absorbing CO2 during photosynthesis, storing it in biomass, and (over long timescales) in soil and eventually fossil fuels. Human activity increases atmospheric CO2 two ways: burning biomass/fossil fuels releases stored carbon directly, and deforestation simply removes the sinks that would otherwise keep absorbing it — a double impact.",
       reforge:{stem:"Why might felling trees for agriculture have a bigger long-term climate impact than the carbon released by the felling itself?",options:{A:"Agricultural land absorbs more CO2 than forest",B:"There is no long-term impact beyond the immediate release",C:"The loss of a carbon sink means future CO2 emissions are no longer absorbed as effectively, compounding the initial release",D:"Felling trees permanently removes CO2 from the atmosphere"},correct:"C"}
     },
     {
       id:"GCSE-BIO-09",spec:"GCSE-BIO",stem:"Why is soil in a biome that has recently been deforested likely to become less fertile over time?",
       options:{A:"Nutrients are usually supplied through decomposition of leaf litter and dead organic matter; without vegetation, this input stops and existing nutrients are washed away by leaching and erosion",B:"Soil fertility is entirely unrelated to vegetation cover",C:"Deforestation adds nutrients to soil through increased sunlight exposure",D:"Soil fertility always increases once trees are removed"},
-      correct:"A",tag:"MC-BIO-09",
+      correct:"A",tag:"MC-GEO-BIO-09",
       scaffold:"The nutrient cycle depends on continuous input from decomposing organic matter. Remove the vegetation and that supply stops; the exposed soil surface is also more prone to leaching (nutrients washed down through the soil) and surface erosion (topsoil washed away entirely) since there's no canopy or root system to protect and hold it in place.",
       reforge:{stem:"Why are tropical rainforest soils described as particularly vulnerable when vegetation is removed, even though rainforests have such high biodiversity?",options:{A:"Rainforest soils contain no organic matter at all",B:"Rainforest soils are naturally the most fertile soils in the world",C:"Most nutrients in a rainforest are stored in the living biomass rather than the soil itself, so once the biomass is removed there is very little nutrient reserve left in the ground",D:"Removing rainforest vegetation has no effect on soil nutrients"},correct:"C"}
     },
     {
       id:"GCSE-BIO-10",spec:"GCSE-BIO",stem:"According to Malthus's theory (1798), what would eventually happen if population growth outpaced food supply?",
       options:{A:"Population growth would have no relationship to food supply",B:"A 'Malthusian catastrophe' — famine, disease or war acting as positive checks that increase the death rate and bring population back into balance with resources",C:"Food supply would automatically double whenever population doubled",D:"Technology would always increase food supply fast enough to prevent any problem"},
-      correct:"B",tag:"MC-BIO-10",
+      correct:"B",tag:"MC-GEO-BIO-10",
       scaffold:"Malthus (1798): population grows faster than food supply, so eventually there won't be enough food, triggering 'positive checks' (famine, disease, war) that raise the death rate, or 'preventative checks' that lower the birth rate — either way, this brings population back in line with resources. Malthus's original predictions proved wrong because he didn't foresee later agricultural technology, but neo-Malthusians argue his logic still applies given finite land and rising food prices today.",
       reforge:{stem:"Neo-Malthusians point to modern famines as evidence supporting Malthus's original theory. What is their key argument?",options:{A:"Famines have never occurred since 1798, disproving Malthus entirely",B:"Neo-Malthusians agree completely with Boserup's theory instead",C:"Technology has permanently solved the problem Malthus described, so neo-Malthusian concerns are baseless",D:"Most available agricultural land has now been used, fertile land is declining, and food prices are rising while population keeps growing — so a Malthusian check may still occur"},correct:"D"}
     },
     {
       id:"GCSE-BIO-11",spec:"GCSE-BIO",stem:"How does Boserup's theory (1965) directly contradict Malthus's view of population and resources?",
       options:{A:"Boserup argues population growth stimulates technological innovation that increases food production, rather than leading inevitably to famine",B:"Boserup argues population and food supply are completely unrelated",C:"Boserup agrees entirely with Malthus that population growth always outpaces resources",D:"Boserup predicts food supply will decline as population grows, just as Malthus did"},
-      correct:"A",tag:"MC-BIO-11",
+      correct:"A",tag:"MC-GEO-BIO-11",
       scaffold:"Boserup (1965) is the optimistic counter to Malthus's pessimism: as population grows, necessity drives innovation — new farming technology, more efficient use of resources, and a shift from non-renewable to renewable resources — increasing the food/resource supply to match demand, rather than being outpaced by it.",
       reforge:{stem:"The Green Revolution of the 1960s–70s saw crop yields rise dramatically through new seed varieties, fertilisers and irrigation as global population grew. Which theory does this best support?",options:{A:"Neither theory, since crop yields are unrelated to population",B:"It disproves Boserup by showing technology cannot increase food supply",C:"Boserup's theory — population pressure stimulated technological innovation that increased food supply",D:"Malthus's theory — it demonstrates a Malthusian catastrophe occurring exactly as predicted"},correct:"C"}
     },
     {
       id:"GCSE-BIO-12",spec:"GCSE-BIO",stem:"Why does increasing global wealth generally lead to greater pressure on the biosphere's resources?",
       options:{A:"Wealthier countries always use fewer natural resources than poorer countries",B:"Wealthier populations consume more food, water, energy and consumer goods, and live in larger homes — all of which increase resource extraction and waste",C:"Increased wealth automatically reduces a population's ecological footprint to zero",D:"Wealth has no relationship to resource consumption"},
-      correct:"B",tag:"MC-BIO-12",
+      correct:"B",tag:"MC-GEO-BIO-12",
       scaffold:"Rising average wealth increases demand across the board: more spending on food, water (appliances like dishwashers), larger homes (more land), energy (production requires land for power stations/wind/solar farms), and consumer goods (more industrial production and waste). Combined with population growth reaching 8 billion in 2022 and rising urbanisation (55%), this compounds the pressure on biomes worldwide.",
       reforge:{stem:"Which combination of trends explains the sharpest recent rise in global resource demand?",options:{A:"A falling global population with static wealth levels",B:"Resource demand is unrelated to any demographic or economic trend",C:"Declining urbanisation with no change in wealth",D:"Population growth combined with rising average wealth and increasing urbanisation, all occurring simultaneously"},correct:"D"}
     },
@@ -3109,7 +3109,7 @@ BANKS["GCSE-GEO-BIOSPHERE"] = {
       template:"The main factor affecting biome distribution is ___, but local factors such as ___, rock and soil type, drainage and ___ also cause variation.",
       blanks:["climate","altitude","continentality"],
       bank:["climate","altitude","continentality","population","currency","transport"],
-      tag:"MC-BIO-01",
+      tag:"MC-GEO-BIO-01",
       scaffold:"Climate (temperature and precipitation) sets the broad global pattern of biomes; altitude, rock/soil type, drainage, continentality and ocean currents then create local variation within and across that pattern."
     },
     {
@@ -3118,7 +3118,7 @@ BANKS["GCSE-GEO-BIOSPHERE"] = {
       template:"___ services are tangible products like timber and food. ___ services include climate control and waste decomposition. ___ services include recreation and education.",
       blanks:["Provisioning","Regulating","Cultural"],
       bank:["Provisioning","Regulating","Cultural","Supporting","Extracting","Economic"],
-      tag:"MC-BIO-05",
+      tag:"MC-GEO-BIO-05",
       scaffold:"The four ecosystem service categories: provisioning (goods — timber, food, water, medicine), regulating (climate, water/air quality, waste decomposition, pest control), cultural (health, recreation, employment, heritage, education), and supporting (soil formation, nutrient cycling)."
     },
     {
@@ -3127,7 +3127,7 @@ BANKS["GCSE-GEO-BIOSPHERE"] = {
       template:"Plants and soils act as carbon ___, absorbing CO2 during ___. Deforestation removes this ability, while burning ___ releases stored carbon directly into the atmosphere.",
       blanks:["sinks","photosynthesis","biomass"],
       bank:["sinks","photosynthesis","biomass","sources","respiration","minerals"],
-      tag:"MC-BIO-08",
+      tag:"MC-GEO-BIO-08",
       scaffold:"Plants absorb CO2 during photosynthesis, storing carbon in biomass and eventually soil — this makes vegetated biomes carbon sinks. Deforestation both removes this ongoing absorption and, if the cleared biomass is burned, releases the carbon that was already stored."
     },
     {
@@ -3136,7 +3136,7 @@ BANKS["GCSE-GEO-BIOSPHERE"] = {
       template:"___ took a pessimistic view, arguing population growth would outpace food supply leading to a catastrophe. ___ took an optimistic view, arguing population growth stimulates ___ to increase food production.",
       blanks:["Malthus","Boserup","technology"],
       bank:["Malthus","Boserup","technology","government","migration","trade"],
-      tag:"MC-BIO-11",
+      tag:"MC-GEO-BIO-11",
       scaffold:"Malthus (1798, pessimistic): population outpaces food, causing famine/disease/war. Boserup (1965, optimistic): population pressure drives technological innovation that raises food production to meet demand. Both theories focus on food but can be applied to other resources too."
     },
     {
@@ -7950,7 +7950,7 @@ BANKS["CS-2"] = {
         C:"Random access — any element can be accessed directly by index.",
         D:"Priority-based — items are removed in order of their assigned priority."
       },
-      correct:"A",tag:"MC-CS-05",
+      correct:"A",tag:"MC-CS2-01",
       scaffold:"Stack: LIFO (Last In, First Out). Think of a stack of plates — you add (push) and remove (pop) from the top only. Operations: push (add to top), pop (remove from top), peek (view top without removing), isEmpty. Used in: call stack (function calls), undo functionality, expression evaluation, depth-first search. Contrasted with a queue (FIFO — first in, first out), which adds at the back and removes from the front.",
       reforge:{stem:"Which real-world scenario is best modelled by a stack?",options:{A:"A printer queue — documents print in the order they were submitted.",B:"A browser's back button — the most recently visited page is the first returned to when you press back.",C:"A hospital waiting list — patients are seen in order of arrival.",D:"A playlist — songs play in the order they were added."},correct:"B"}
     },
@@ -7963,7 +7963,7 @@ BANKS["CS-2"] = {
         C:"d²",
         D:"2^d"
       },
-      correct:"D",tag:"MC-CS-06",
+      correct:"D",tag:"MC-CS2-02",
       scaffold:"Binary tree: each node has at most 2 children (left and right). At depth 0: 1 node (root = 2⁰). At depth 1: up to 2 nodes (2¹). At depth 2: up to 4 nodes (2²). At depth d: up to 2^d nodes. A perfect binary tree of height h has 2^(h+1) − 1 total nodes. This exponential growth is what makes binary search efficient — each level doubles the number of nodes.",
       reforge:{stem:"A binary search tree has height 4 (root at height 0). What is the maximum total number of nodes it can contain?",options:{A:"16 nodes — 2⁴ = 16 (height 4, leaf nodes only).",B:"31 nodes — using 2^(h+1) − 1 where h = 4 gives 2⁵ − 1 = 31 total nodes.",C:"20 nodes — intermediate guess between 16 and 31.",D:"8 nodes — 2³, which would be height 3."},correct:"B"}
     },
@@ -7976,7 +7976,7 @@ BANKS["CS-2"] = {
         C:"Layer 4 — Transport",
         D:"Layer 3 — Network"
       },
-      correct:"D",tag:"MC-CS-07",
+      correct:"D",tag:"MC-CS2-03",
       scaffold:"OSI model (7 layers, bottom to top): Physical (bits/cables), Data Link (MAC addresses, frames, switches), Network (IP addresses, routing, routers), Transport (TCP/UDP, port numbers, end-to-end delivery), Session, Presentation, Application. The Network layer (Layer 3) handles logical addressing — IP addresses — and routing between different networks. Data Link (Layer 2) handles physical addressing within the same network using MAC addresses.",
       reforge:{stem:"A packet travels from a computer in London to a server in Tokyo. Which OSI layer handles the routing decisions along the way?",options:{A:"Layer 2 — Data Link, using MAC addresses.",B:"Layer 4 — Transport, using port numbers.",C:"Layer 7 — Application, using domain names.",D:"Layer 3 — Network, using IP addresses to make routing decisions at each router hop."},correct:"D"}
     },
@@ -7989,7 +7989,7 @@ BANKS["CS-2"] = {
         C:"Can only be used for video streaming applications.",
         D:"Operates at the Network layer rather than the Transport layer."
       },
-      correct:"A",tag:"MC-CS-08",
+      correct:"A",tag:"MC-CS2-04",
       scaffold:"TCP (Transmission Control Protocol): connection-oriented (three-way handshake: SYN, SYN-ACK, ACK), reliable (acknowledgements + retransmission), ordered (sequence numbers), flow controlled. Used for: web (HTTP/HTTPS), email, file transfer. UDP (User Datagram Protocol): connectionless, no acknowledgements, no ordering, no retransmission — faster but unreliable. Used for: video streaming, online gaming, DNS, VoIP — where speed matters more than perfect delivery.",
       reforge:{stem:"Why is UDP preferred over TCP for live video streaming?",options:{A:"UDP provides better data security than TCP for video streams.",B:"UDP is faster — it sends packets without acknowledgements or retransmission, accepting some data loss. Streaming tolerates this; file transfers cannot.",C:"TCP cannot handle the video file formats used in live streaming.",D:"UDP is more reliable than TCP for large file transfers where accuracy matters most."},correct:"B"}
     },
@@ -8744,7 +8744,7 @@ BANKS["BIO-3"] = {
         C:"Only DNA in the nucleus codes for proteins; mitochondrial DNA does not.",
         D:"DNA codes for RNA only, never proteins directly."
       },
-      correct:"A",tag:"MC-BIO-09",
+      correct:"A",tag:"MC-GEN-01",
       scaffold:"Coding DNA (exons): sequences transcribed and translated into protein. Non-coding DNA: introns (spliced out post-transcription), regulatory sequences (promoters, enhancers), repetitive sequences (satellite DNA, telomeres). In humans, only ~2% of DNA codes for protein. Exam trap: confusing 'non-coding' with 'non-functional' — regulatory sequences are non-coding but essential. Also: all DNA is transcribed into pre-mRNA, but introns are removed before translation.",
       reforge:{stem:"Why can non-coding DNA still have a critical function?",options:{A:"It codes for structural proteins not detected by standard analysis.",B:"Non-coding sequences include promoters and enhancers that regulate gene expression — without them, genes cannot be switched on or off correctly, causing developmental failure.",C:"Non-coding DNA protects coding DNA from mutation.",D:"It stores energy for the cell during transcription."},correct:"B"}
     },
@@ -8757,7 +8757,7 @@ BANKS["BIO-3"] = {
         C:"Independent assortment of chromosomes at metaphase I",
         D:"Cytokinesis producing haploid daughter cells"
       },
-      correct:"A",tag:"MC-BIO-10",
+      correct:"A",tag:"MC-GEN-02",
       scaffold:"Two main sources of genetic variation in meiosis: (1) Crossing over (prophase I): homologous chromosomes pair up (bivalents), non-sister chromatids exchange segments at chiasmata — produces new allele combinations on chromosomes; (2) Independent assortment (metaphase I): maternal and paternal homologues align randomly → 2²³ possible combinations in humans. Distinguish from semi-conservative replication (DNA replication, not meiosis) and cytokinesis (cell division, not recombination).",
       reforge:{stem:"A student says independent assortment produces more genetic variation than crossing over. Is this correct?",options:{A:"Yes — independent assortment is more important because it affects all chromosomes at once.",B:"Both matter — independent assortment gives 2²³ combinations; crossing over adds further variation within each chromosome, making crossing over arguably more significant for total variation.",C:"Yes — crossing over moves one segment while independent assortment randomises all chromosomes.",D:"No — crossing over does not actually occur in humans during meiosis."},correct:"B"}
     },
@@ -8770,7 +8770,7 @@ BANKS["BIO-3"] = {
         C:"100% of sons",
         D:"50% of sons"
       },
-      correct:"D",tag:"MC-BIO-11",
+      correct:"D",tag:"MC-GEN-03",
       scaffold:"X-linked recessive: carrier mother = X^A X^a (one normal, one recessive allele). Father = X^A Y. Sons receive Y from father, X from mother. Mother passes X^A or X^a with equal probability (50%). A son who receives X^a is affected (no second X to mask it). So 50% of sons affected. 50% of daughters are carriers. Overall: 25% of all children affected (all are sons). Exam trap: stating 25% of all children, not 50% of sons.",
       reforge:{stem:"Why are males more likely to express X-linked recessive conditions than females?",options:{A:"Males have weaker immune systems, making X-linked conditions more likely to develop.",B:"Males have only one X chromosome — a single recessive allele on the X is automatically expressed because there is no second X to mask it.",C:"The Y chromosome actively promotes expression of recessive alleles on the X chromosome.",D:"X-linked alleles mutate more frequently in males due to higher cell division rates."},correct:"B"}
     },
@@ -8783,7 +8783,7 @@ BANKS["BIO-3"] = {
         C:"It means that environmental adaptations cannot be inherited.",
         D:"Carriers of recessive alleles (Aa) have the same phenotype as dominant homozygotes (AA) but different genotypes — selection cannot distinguish them, so recessive alleles persist in the population even when they reduce fitness in homozygous form."
       },
-      correct:"D",tag:"MC-BIO-12",
+      correct:"D",tag:"MC-GEN-04",
       scaffold:"Selection acts on phenotype — what the organism looks like and how it functions. Carriers (Aa) are phenotypically normal but carry one copy of a harmful recessive allele. Selection cannot eliminate the recessive allele from carriers. This explains why harmful recessive alleles (e.g. cystic fibrosis allele) persist at low frequency in populations — they are 'hidden' in heterozygous carriers and only exposed to selection in homozygous recessives (aa).",
       reforge:{stem:"A harmful recessive allele causes severe disease in homozygotes but not carriers. Why can natural selection not eliminate this allele from the population?",options:{A:"Natural selection can only act on dominant alleles — recessive ones are invisible to it.",B:"Heterozygous carriers are phenotypically normal, so the allele is shielded from selection — it persists because it causes no disadvantage in carriers.",C:"The allele mutates back to the dominant form faster than selection can remove it.",D:"Harmful alleles are always dominant and therefore always visible to selection."},correct:"B"}
     },
@@ -8796,7 +8796,7 @@ BANKS["BIO-3"] = {
         C:"No natural selection, mutation, genetic drift, or gene flow",
         D:"Organisms reproduce sexually"
       },
-      correct:"D",tag:"MC-BIO-13",
+      correct:"D",tag:"MC-GEN-05",
       scaffold:"Hardy-Weinberg conditions: (1) Large population (prevents genetic drift); (2) Random mating (no sexual selection); (3) No natural selection; (4) No mutation; (5) No gene flow (migration). Sexual reproduction is assumed — the principle applies to sexually reproducing diploid organisms, so 'organisms reproduce sexually' is a background assumption, not a condition for equilibrium maintenance. Exam trap: listing sexual reproduction as a condition rather than a prerequisite.",
       reforge:{stem:"A population of rare mountain goats is split by a new road. Over generations, the two populations diverge genetically. Which Hardy-Weinberg condition is being violated?",options:{A:"No mutation — the road causes DNA mutations.",B:"No natural selection — the road selects for different traits.",C:"No gene flow — the road prevents migration between the two populations, allowing allele frequencies to diverge independently.",D:"Random mating — goats can no longer choose mates freely."},correct:"C"}
     },
@@ -8809,7 +8809,7 @@ BANKS["BIO-3"] = {
         C:"Continuous variation only occurs in plants; discontinuous variation only in animals.",
         D:"Discontinuous variation is more common in human populations than continuous variation."
       },
-      correct:"B",tag:"MC-BIO-14",
+      correct:"B",tag:"MC-GEN-06",
       scaffold:"Discontinuous: controlled by one or few genes (monogenic), phenotypes fall into distinct groups, little environmental influence. Examples: ABO blood group, tongue rolling, dimples. Continuous: controlled by many genes (polygenic) + environmental influence. Normal distribution. Examples: height, weight, skin colour, intelligence. The distinction is not purely genetic vs environmental — discontinuous traits can also be influenced by environment, but the key feature is the presence or absence of intermediates.",
       reforge:{stem:"Height in humans shows continuous variation. Why does this produce a normal distribution rather than distinct categories?",options:{A:"Height is determined entirely by diet and environment — genes play no role.",B:"Multiple genes each contribute a small additive effect (polygenic inheritance), and environment adds continuous variation, producing a normal distribution.",C:"Height varies continuously because humans keep growing throughout their adult lives.",D:"A normal distribution only appears when environment has absolutely no effect on the trait."},correct:"B"}
     },
@@ -8822,7 +8822,7 @@ BANKS["BIO-3"] = {
         C:"The coding strand — the strand with the same sequence as the mRNA.",
         D:"Either strand, depending on which gene is being expressed."
       },
-      correct:"A",tag:"MC-BIO-15",
+      correct:"A",tag:"MC-GEN-07",
       scaffold:"Transcription: RNA polymerase binds at the promoter and reads the template (antisense) strand in the 3′→5′ direction, synthesising mRNA in the 5′→3′ direction. The mRNA sequence matches the coding (sense) strand (with U replacing T). Exam trap: students confuse template with coding strand. Template = complementary to mRNA; coding = same sequence as mRNA (except T→U). Different genes on the same chromosome may use different strands as template.",
       reforge:{stem:"The coding strand of a gene reads 5′-ATGGCCTAG-3′. What is the mRNA sequence produced from this gene?",options:{A:"3′-TACCGGATC-5′",B:"5′-ATGGCCTAG-3′",C:"5′-AUGGCCUAG-3′",D:"3′-UACCGGAUC-5′"},correct:"C"}
     },
@@ -8835,7 +8835,7 @@ BANKS["BIO-3"] = {
         C:"All bacteria develop resistance simultaneously through phenotypic plasticity.",
         D:"Resistance alleles already existed at low frequency; the antibiotic killed susceptible bacteria, leaving resistant individuals to reproduce — increasing the frequency of resistance alleles (natural selection)."
       },
-      correct:"D",tag:"MC-BIO-16",
+      correct:"D",tag:"MC-GEN-08",
       scaffold:"Natural selection, NOT Lamarckian inheritance: (1) Variation existed before antibiotic exposure — some bacteria had random mutations conferring resistance; (2) Antibiotic = selection pressure; (3) Susceptible bacteria die; (4) Resistant bacteria survive and reproduce; (5) Resistance allele frequency increases over generations. The antibiotic does not cause resistance — it selects for pre-existing resistance. Key exam distinction: selection acts on existing variation; it does not direct mutation.",
       reforge:{stem:"Why is it wrong to say 'the antibiotic caused the bacteria to become resistant'?",options:{A:"Bacteria cannot change their genetic code, so antibiotic resistance cannot develop.",B:"Antibiotics are not mutagenic chemicals, so they cannot cause resistance mutations.",C:"The antibiotic selected for pre-existing resistant variants — resistance arose from random mutations before exposure, not because the antibiotic caused them.",D:"Resistance developed too rapidly for antibiotic exposure to be the cause of the mutation."},correct:"C"}
     }
@@ -8855,7 +8855,7 @@ BANKS["CHEM-3"] = {
         C:"Chain isomerism",
         D:"Positional isomerism"
       },
-      correct:"B",tag:"MC-CHEM-09",
+      correct:"B",tag:"MC-ORG-01",
       scaffold:"Structural isomers: same molecular formula, different connectivity (chain, positional, functional group isomers). Stereoisomers: same molecular formula AND same connectivity, but different spatial arrangement. E/Z isomers: restricted rotation around C=C due to pi bond; different groups on same or opposite sides. Optical isomers: chiral carbon (four different groups); non-superimposable mirror images (enantiomers). Both require the same molecular formula AND same structural formula — the student's definition only captures structural isomerism.",
       reforge:{stem:"Which molecule can exhibit optical isomerism?",options:{A:"CH₂Cl₂ — two identical chlorine atoms.",B:"CH₃CHClCH₃ — the central carbon has two identical methyl groups.",C:"CH₃CH₂OH — no carbon with four different groups.",D:"CHClBrF — the central carbon has four different substituents (H, Cl, Br, F), making it a chiral centre."},correct:"D"}
     },
@@ -8868,7 +8868,7 @@ BANKS["CHEM-3"] = {
         C:"Because the reaction occurs at room temperature without UV light.",
         D:"Because ethene has no hydrogen atoms to be substituted."
       },
-      correct:"B",tag:"MC-CHEM-10",
+      correct:"B",tag:"MC-ORG-02",
       scaffold:"Alkenes are unsaturated (C=C double bond contains sigma + pi bond). In addition reactions, the pi bond breaks, both carbons form new bonds to incoming atoms, and the product is saturated (no double bond). Substitution would require replacing an existing atom — but in addition, no atom is lost. Compare with alkanes (saturated): no pi bond available, so bromine reacts by free radical substitution (UV light needed). The unsaturation of alkenes determines the mechanism.",
       reforge:{stem:"Why do alkanes undergo free radical substitution with Br₂ while alkenes undergo electrophilic addition?",options:{A:"Alkanes are more reactive than alkenes — they form stronger C-H bonds.",B:"Alkanes have no pi bond, so there is nothing for an electrophile to attack; substitution (via radical mechanism) is possible instead.",C:"Bromine reacts differently with alkanes depending on the temperature used.",D:"Alkanes contain oxygen, which enables substitution instead of addition."},correct:"B"}
     },
@@ -8881,7 +8881,7 @@ BANKS["CHEM-3"] = {
         C:"To break the C-H bonds in benzene.",
         D:"To absorb the HBr produced and shift equilibrium."
       },
-      correct:"A",tag:"MC-CHEM-11",
+      correct:"A",tag:"MC-ORG-03",
       scaffold:"Benzene's delocalised pi electrons give it extra stability — electrophiles must be more powerful than for simple alkenes. FeBr₃ (or AlBr₃) reacts with Br₂: Br₂ + FeBr₃ → Br⁺[FeBr₄]⁻. The Br⁺ electrophile attacks the ring. The mechanism is electrophilic substitution (not addition) — the aromatic system is restored after reaction, preserving the delocalisation energy. Addition would destroy aromaticity and is thermodynamically unfavourable.",
       reforge:{stem:"Why does benzene undergo electrophilic substitution rather than electrophilic addition (unlike alkenes)?",options:{A:"Benzene has no pi electrons, so it cannot attract electrophilic reagents.",B:"Benzene's delocalised pi system confers aromatic stability (~150 kJ/mol). Addition would destroy this — costing more energy than it releases — so substitution, which preserves the ring, is strongly favoured.",C:"Benzene molecules are too large geometrically for addition reactions to occur.",D:"Addition would require a Lewis acid catalyst that is simply unavailable for benzene."},correct:"B"}
     },
@@ -8894,7 +8894,7 @@ BANKS["CHEM-3"] = {
         C:"Ethyl hydrogen sulphate",
         D:"Ethene"
       },
-      correct:"D",tag:"MC-CHEM-12",
+      correct:"D",tag:"MC-ORG-04",
       scaffold:"Acid-catalysed elimination (dehydration) of ethanol: concentrated H₂SO₄ at 170°C → ethene + H₂O. At lower temperature (140°C, excess ethanol): intermolecular dehydration → diethyl ether. Temperature determines product. 170°C: intramolecular elimination → alkene. 140°C: intermolecular substitution → ether. Exam trap: students state ether at 170°C or ethene at 140°C. Mechanism at 170°C: protonation of -OH → leaves as H₂O → carbocation → E2 elimination.",
       reforge:{stem:"Ethanol is heated with excess concentrated H₂SO₄ at 140°C. What is the product and why different from 170°C?",options:{A:"Ethene — dehydration occurs at all temperatures above 100°C.",B:"Ethanoic acid — oxidation by sulphuric acid.",C:"Diethyl ether — at 140°C with excess alcohol, intermolecular condensation occurs (two alcohol molecules lose water to form an ether); the lower temperature is insufficient for intramolecular elimination to ethene.",D:"Ethyl sulphate — esterification with H₂SO₄."},correct:"C"}
     },
@@ -8907,7 +8907,7 @@ BANKS["CHEM-3"] = {
         C:"Bromine water — both decolourise it.",
         D:"NaOH — only aldehydes react with sodium hydroxide."
       },
-      correct:"A",tag:"MC-CHEM-13",
+      correct:"A",tag:"MC-ORG-05",
       scaffold:"Aldehydes can be oxidised (have a H on the carbonyl carbon); ketones cannot be easily oxidised (no H on carbonyl). Tests: (1) Tollens' (ammoniacal silver nitrate) — aldehyde reduces Ag⁺ to Ag metal (silver mirror); ketone no reaction. (2) Fehling's — aldehyde reduces Cu²⁺ to Cu₂O (brick-red precipitate); ketone no reaction. (3) Acidified K₂Cr₂O₇: aldehydes oxidised (orange → green); ketones are NOT oxidised under normal conditions — this does NOT distinguish them cleanly.",
       reforge:{stem:"Why can Tollens' reagent distinguish an aldehyde from a ketone, but acidified K₂Cr₂O₇ is less reliable for this purpose?",options:{A:"Tollens' reagent is more concentrated, which is why it can react with ketones.",B:"Tollens' (Ag⁺) and Fehling's (Cu²⁺) oxidise aldehydes but not ketones (silver mirror / brick-red precipitate); K₂Cr₂O₇ oxidises both, so it cannot distinguish between them.",C:"K₂Cr₂O₇ reacts with both aldehydes and ketones but at visibly different rates.",D:"Only Tollens' reagent produces a colour change; K₂Cr₂O₇ does not change colour at all."},correct:"B"}
     },
@@ -8920,7 +8920,7 @@ BANKS["CHEM-3"] = {
         C:"Nucleophilic substitution; produces an amide",
         D:"Esterification (condensation); produces an ester and water"
       },
-      correct:"D",tag:"MC-CHEM-14",
+      correct:"D",tag:"MC-ORG-06",
       scaffold:"Esterification: RCOOH + R'OH ⇌ RCOOR' + H₂O. Acid catalyst (conc. H₂SO₄) speeds up the equilibrium. Condensation reaction — two molecules join with loss of a small molecule (H₂O). The ester functional group is -COO-. Reversible: excess acid or alcohol shifts equilibrium right; water removal (Dean-Stark) drives to completion. Products: ester + water. Students confuse esterification with amide formation (acyl chloride + amine → amide + HCl).",
       reforge:{stem:"Why does esterification reach an equilibrium rather than going to completion?",options:{A:"The acid catalyst is consumed during esterification, reducing the yield.",B:"Esters are thermally unstable at reaction temperatures, causing decomposition before equilibrium.",C:"Esterification is reversible — the ester can hydrolyse back. Yield is improved by removing water, using excess reactant, or removing the ester as it forms (Le Chatelier's principle).",D:"The reaction requires UV light to proceed beyond the equilibrium point."},correct:"C"}
     },
@@ -8933,7 +8933,7 @@ BANKS["CHEM-3"] = {
         C:"Substitution — CH₃• replaces H in CH₄",
         D:"Initiation — UV light causes homolytic fission of Cl₂ to give 2Cl•"
       },
-      correct:"D",tag:"MC-CHEM-15",
+      correct:"D",tag:"MC-ORG-07",
       scaffold:"Free radical substitution mechanism — three stages: (1) Initiation: Cl₂ + UV → 2Cl• (homolytic fission — each atom takes one electron from the shared pair); (2) Propagation: Cl• + CH₄ → HCl + CH₃•; then CH₃• + Cl₂ → CH₃Cl + Cl•. Radicals are regenerated — the chain continues; (3) Termination: two radicals combine (Cl•+Cl•, CH₃•+Cl•, CH₃•+CH₃•) — radicals consumed, chain ends. Initiation creates the first radicals. A common error: stating propagation creates the initial radicals.",
       reforge:{stem:"Why does free radical substitution typically produce a mixture of products?",options:{A:"The UV light selectively breaks different bonds each time.",B:"Once the methyl radical is formed, it can react with excess Cl₂ to form CH₃Cl, but the product CH₃Cl itself can undergo further substitution — giving CH₂Cl₂, CHCl₃, and CCl₄ as the radical chain continues. Controlling the ratio of reactants limits but cannot eliminate this mixture.",C:"Chlorine radicals react randomly with any molecule in the mixture.",D:"The reaction is reversible, regenerating methane and chlorine."},correct:"B"}
     },
@@ -8946,7 +8946,7 @@ BANKS["CHEM-3"] = {
         C:"Amines are basic because they are derived from ammonia which is a strong base.",
         D:"The lone pair on the nitrogen atom accepts a proton from an acid (or water), acting as a Brønsted-Lowry base."
       },
-      correct:"D",tag:"MC-CHEM-16",
+      correct:"D",tag:"MC-ORG-08",
       scaffold:"Amines (R-NH₂): nitrogen has a lone pair of electrons available to donate. As a Brønsted-Lowry base: R-NH₂ + H⁺ → R-NH₃⁺ (proton accepted). In water: R-NH₂ + H₂O ⇌ R-NH₃⁺ + OH⁻ (weak base). Basicity increases with electron-donating alkyl groups (which increase electron density on N, making the lone pair more available). Aromatic amines (aniline) are weaker bases — the lone pair is delocalised into the benzene ring, reducing availability. Ammonia is a weak base (Kb = 1.8×10⁻⁵), not a strong base.",
       reforge:{stem:"Why is aniline (C₆H₅NH₂) a weaker base than methylamine (CH₃NH₂)?",options:{A:"Aniline has more hydrogen atoms, making it harder to accept a proton.",B:"In aniline, the lone pair on nitrogen is partially delocalised into the aromatic ring (resonance) — reducing its availability to accept a proton. In methylamine, the methyl group donates electrons to nitrogen, increasing lone pair availability and basicity.",C:"The benzene ring in aniline physically blocks access to the nitrogen.",D:"Methylamine is not actually more basic than aniline."},correct:"B"}
     }
@@ -9174,7 +9174,7 @@ BANKS["PHYS-3"] = {
         C:"Current increases around a series circuit because the battery replenishes it.",
         D:"Current is a flow of charge, and charge is conserved — the same current flows through all components in a series circuit. It is energy (as potential difference) that is 'used up', not current."
       },
-      correct:"D",tag:"MC-PHYS-09",
+      correct:"D",tag:"MC-EWQ-01",
       scaffold:"Kirchhoff's First Law: the sum of currents entering a junction equals the sum leaving (conservation of charge). In a series circuit there are no junctions — current is the same everywhere. Confusion arises because voltage drops across components: V = IR means each resistor 'uses' voltage, not current. Students confuse the dimming of bulbs in series (because voltage is shared) with current being consumed.",
       reforge:{stem:"Two identical bulbs are connected in series with a battery. Bulb A is closer to the positive terminal. Which burns brighter?",options:{A:"Bulb A — current is stronger closer to the battery.",B:"Bulb B — current builds up as it flows around.",C:"They are equally bright — the same current flows through both in a series circuit.",D:"Neither — bulbs in series always go out."},correct:"C"}
     },
@@ -9187,7 +9187,7 @@ BANKS["PHYS-3"] = {
         C:"Output voltage stays constant — the supply voltage is fixed.",
         D:"Output voltage increases only if the thermistor is above 25°C."
       },
-      correct:"B",tag:"MC-PHYS-10",
+      correct:"B",tag:"MC-EWQ-02",
       scaffold:"Potential divider: V_out = V_supply × R_thermistor/(R_fixed + R_thermistor). As temperature rises, R_thermistor falls → numerator falls → V_out falls. This is the basis of temperature sensors. Exam trap: students think lower resistance → more current → more voltage. True that current increases (I = V/R_total), but V_out = IR_thermistor — the larger I is multiplied by a much smaller R, giving a smaller V_out overall.",
       reforge:{stem:"In the same potential divider, the output is taken across the FIXED resistor instead. What happens to this output as the thermistor warms up?",options:{A:"Output decreases — fixed resistor has lower share.",B:"Output stays the same — it is a fixed resistor.",C:"Output increases — as thermistor resistance falls, more of the supply voltage falls across the fixed resistor (V_out = V_supply × R_fixed/(R_fixed + R_thermistor) — denominator falls, fraction rises).",D:"Output decreases because total resistance falls."},correct:"C"}
     },
@@ -9200,7 +9200,7 @@ BANKS["PHYS-3"] = {
         C:"340 m/s",
         D:"500.68 m/s"
       },
-      correct:"C",tag:"MC-PHYS-11",
+      correct:"C",tag:"MC-EWQ-03",
       scaffold:"Wave equation: v = fλ = 500 × 0.68 = 340 m/s. This is the speed of sound in air at room temperature — a useful sense-check. Common errors: (1) dividing instead of multiplying (f/λ gives 735 — wrong); (2) adding f and λ; (3) not recognising the answer as physically plausible. Always check units and order of magnitude: sound ~340 m/s, light ~3×10⁸ m/s.",
       reforge:{stem:"A radio wave travels at 3×10⁸ m/s and has a frequency of 100 MHz (10⁸ Hz). What is its wavelength?",options:{A:"3×10¹⁶ m",B:"3 m",C:"0.33 m",D:"3×10⁻⁸ m"},correct:"B"}
     },
@@ -9213,7 +9213,7 @@ BANKS["PHYS-3"] = {
         C:"The wave nature of light — constructive interference (path difference = nλ) produces bright fringes; destructive interference (path difference = (n+½)λ) produces dark fringes.",
         D:"That light can only travel through very narrow gaps."
       },
-      correct:"C",tag:"MC-PHYS-12",
+      correct:"C",tag:"MC-EWQ-04",
       scaffold:"Young's double-slit (1801): light from two coherent sources interferes. Bright fringe: waves arrive in phase (path difference = whole number of wavelengths). Dark fringe: waves arrive in antiphase (path difference = half-integer wavelengths). The existence of dark fringes (where light + light = no light) can only be explained by wave superposition — a particle model cannot produce this. This was key evidence for the wave theory of light before quantum mechanics complicated matters.",
       reforge:{stem:"The fringe spacing in Young's experiment is w = λD/d. A student increases the slit separation d while keeping all else constant. What happens to the fringe spacing?",options:{A:"Fringe spacing increases — wider slits diffract more.",B:"Fringe spacing decreases — w = λD/d, so increasing d reduces w. The fringes get closer together.",C:"Fringe spacing stays the same — it depends only on wavelength.",D:"Fringe spacing increases because more light gets through."},correct:"B"}
     },
@@ -9226,7 +9226,7 @@ BANKS["PHYS-3"] = {
         C:"Electrons are only emitted when light is focused with a lens.",
         D:"The photoelectric effect only occurs with visible light, not with radio waves."
       },
-      correct:"A",tag:"MC-PHYS-13",
+      correct:"A",tag:"MC-EWQ-05",
       scaffold:"Wave model prediction: energy delivered continuously — given enough time or intensity, any frequency should eject electrons, and higher intensity should increase electron energy. Observations that contradict this: (1) threshold frequency exists — below it, no electrons however intense the light; (2) above threshold, electron energy depends on frequency, not intensity; (3) emission is instantaneous even at low intensity. Einstein's photon model explains all three: photon energy E = hf; if hf < work function φ, no emission.",
       reforge:{stem:"Why does increasing light intensity above the threshold frequency increase the number of photoelectrons but not their maximum kinetic energy?",options:{A:"Intensity determines how fast electrons move through the metal.",B:"Higher intensity means more photons per second, each with the same energy (E = hf). More photons eject more electrons, but each photon still transfers the same energy — so KE_max = hf − φ is unchanged.",C:"Above the threshold, the work function increases with intensity.",D:"Intensity and frequency both affect electron energy equally."},correct:"B"}
     },
@@ -9239,7 +9239,7 @@ BANKS["PHYS-3"] = {
         C:"Parallel circuits always have lower resistance than series circuits regardless of component values.",
         D:"Adding a parallel path provides an additional route for current — the total current from the supply increases for the same voltage, so the combined resistance (R = V/I) is lower."
       },
-      correct:"D",tag:"MC-PHYS-14",
+      correct:"D",tag:"MC-EWQ-06",
       scaffold:"Parallel resistors: 1/R_total = 1/R₁ + 1/R₂. Each parallel branch carries its own current. Total current = sum of branch currents. Since V is the same across both, and I_total = I₁ + I₂ > either branch current, R_total = V/I_total < V/I₁ or V/I₂. Intuition: adding a parallel path is like adding lanes to a motorway — more flow for the same 'pressure'. Always less than smallest individual resistor.",
       reforge:{stem:"Three identical resistors each of 12 Ω are connected in parallel. What is the total resistance?",options:{A:"36 Ω — the three resistances added directly.",B:"4 Ω — for parallel resistors: 1/R = 1/12 + 1/12 + 1/12 = 3/12, giving R = 4 Ω.",C:"12 Ω — the value of one resistor unchanged.",D:"0.25 Ω — the reciprocal taken without inverting back."},correct:"B"}
     },
@@ -9252,7 +9252,7 @@ BANKS["PHYS-3"] = {
         C:"A node only forms at the ends of a string.",
         D:"Nodes and antinodes alternate with the same separation as the wavelength."
       },
-      correct:"B",tag:"MC-PHYS-15",
+      correct:"B",tag:"MC-EWQ-07",
       scaffold:"Stationary wave: superposition of two equal waves travelling in opposite directions. Nodes: fixed points of zero displacement — destructive interference always (path difference = (n+½)λ for the two sources). Antinodes: points of maximum displacement — constructive interference always. Node-to-node distance = λ/2 (not λ). Exam trap: (1) stating nodes are at maximum displacement; (2) stating node-to-node distance = λ. Evidence for stationary waves: nodes are truly stationary, unlike in a progressive wave where all points oscillate.",
       reforge:{stem:"A guitar string of length 0.65 m vibrates in its fundamental mode (one antinode in the middle). What is the wavelength of the stationary wave?",options:{A:"0.65 m — wavelength equals string length.",B:"0.325 m — half wavelength fits in the string.",C:"1.3 m — the wavelength is twice the string length for the fundamental mode.",D:"1.95 m — three half-wavelengths fit."},correct:"C"}
     },
@@ -9265,7 +9265,7 @@ BANKS["PHYS-3"] = {
         C:"The electron's de Broglie wavelength is much smaller than visible light (around 10⁻¹¹ m), which is why electron microscopes resolve features that optical microscopes cannot.",
         D:"The wavelength increases as the electron is accelerated to higher speeds."
       },
-      correct:"C",tag:"MC-PHYS-16",
+      correct:"C",tag:"MC-EWQ-08",
       scaffold:"de Broglie: λ = h/p = h/mv. For an electron accelerated through V: KE = eV = ½mv² → v = √(2eV/m). With V=1000V: v ≈ 1.9×10⁷ m/s, λ ≈ 3.9×10⁻¹¹ m ≈ 0.04 nm. Visible light: 400–700 nm. The electron wavelength is ~10,000× shorter → can resolve atomic-scale features. Higher accelerating voltage → higher KE → higher momentum → shorter wavelength (λ = h/p, p larger). Used in electron microscopes and supports wave-particle duality.",
       reforge:{stem:"Why does increasing the accelerating voltage of an electron microscope improve its resolution?",options:{A:"Higher voltage produces brighter electrons that illuminate samples better.",B:"Higher voltage increases electron energy and momentum — since λ = h/p, greater momentum means shorter de Broglie wavelength, and shorter wavelength allows resolution of smaller features (resolution limit ≈ wavelength).",C:"Higher voltage increases the number of electrons, improving image brightness.",D:"Resolution depends on the detector, not the electron wavelength."},correct:"B"}
     }
@@ -9298,7 +9298,7 @@ BANKS["BUS-3"] = {
         C:"Skilled labour — having too many qualified employees",
         D:"Transportation — unnecessary movement of materials"
       },
-      correct:"C",tag:"MC-BUS-09",
+      correct:"C",tag:"MC-OPS-02",
       scaffold:"The seven wastes (TIMWOOD): Transportation, Inventory, Motion, Waiting, Overproduction, Overprocessing, Defects. Skilled labour is not a waste — lean production values worker expertise and multi-skilling. The philosophy: eliminate activities that consume resources without adding value from the customer's perspective. Just-in-time (JIT) directly addresses overproduction and inventory waste. Kaizen (continuous improvement) targets all seven through small, incremental changes.",
       reforge:{stem:"A car manufacturer holds 6 weeks of component stock 'just in case'. Which lean waste does this represent, and what is the lean alternative?",options:{A:"Overproduction — the solution is to make more cars.",B:"Inventory waste — holding excess stock ties up capital and hides quality problems. The lean alternative is JIT: receive components only when needed for production, reducing inventory to near-zero.",C:"Motion waste — workers are moving too much.",D:"Transportation waste — components are moved too frequently."},correct:"B"}
     },
@@ -9311,7 +9311,7 @@ BANKS["BUS-3"] = {
         C:"Raising borrowing costs for the firm and reducing consumer spending on credit-financed purchases, potentially depressing demand and increasing financial risk for highly geared firms.",
         D:"Reducing the cost of imported raw materials"
       },
-      correct:"C",tag:"MC-BUS-10",
+      correct:"C",tag:"MC-OPS-03",
       scaffold:"Interest rate effects on business: (1) Borrowing costs rise — loan repayments increase, reducing profitability; firms with high gearing are most exposed; (2) Consumer spending falls — mortgage costs rise, reducing disposable income; demand for big-ticket items (cars, kitchens) falls most; (3) Exchange rate: higher rates attract foreign investment → currency appreciates → exports more expensive, imports cheaper. Evaluation: impact depends on gearing, whether products are necessities or luxuries, and export dependency.",
       reforge:{stem:"Why are highly geared businesses more vulnerable to interest rate rises than low-geared businesses?",options:{A:"Highly geared firms have more employees to pay, increasing fixed labour costs.",B:"Highly geared firms carry large debt — rising interest rates increase their repayment costs directly, squeezing profit margins more than for low-geared competitors.",C:"Gearing affects employee productivity levels rather than the firm's financial costs.",D:"Highly geared firms always operate with permanently lower profit margins."},correct:"B"}
     },
@@ -9324,7 +9324,7 @@ BANKS["BUS-3"] = {
         C:"The intensity of competitive rivalry",
         D:"The threat of new entrants into the market"
       },
-      correct:"A",tag:"MC-BUS-11",
+      correct:"A",tag:"MC-OPS-04",
       scaffold:"Porter's Five Forces: (1) Competitive rivalry; (2) Threat of new entrants; (3) Bargaining power of suppliers; (4) Bargaining power of buyers; (5) Threat of substitutes. Substitutes come from OUTSIDE the industry: Uber is a substitute for taxis; streaming is a substitute for cinema; cycling is a substitute for public transport. High substitute threat caps pricing power and profit margins. Exam trap: confusing substitutes (from outside) with competitors (within the same industry).",
       reforge:{stem:"Which of the following represents a substitute threat to the cinema industry?",options:{A:"A new cinema chain opening nearby and offering lower ticket prices.",B:"Netflix releasing cinema films on streaming — consumers substitute the same experience at lower cost from home, reducing cinema demand.",C:"Popcorn suppliers raising their wholesale prices to cinemas.",D:"Odeon acquiring Vue cinemas, reducing competition in the local market."},correct:"B"}
     },
@@ -9337,7 +9337,7 @@ BANKS["BUS-3"] = {
         C:"A threat — competitors may exploit this trend first.",
         D:"An opportunity — an external trend the business could exploit to gain competitive advantage."
       },
-      correct:"D",tag:"MC-BUS-12",
+      correct:"D",tag:"MC-OPS-05",
       scaffold:"SWOT: Strengths and Weaknesses = internal (the business itself); Opportunities and Threats = external (the environment). A market trend — regardless of whether it is positive or negative — is external. Rising demand for sustainability is an external development the business can exploit (opportunity) or may be unable to respond to (threat if competitors move faster). The classification depends on the firm's position: a firm already investing in sustainability sees this as an opportunity; a firm reliant on non-sustainable practices may classify it as a threat.",
       reforge:{stem:"A business is highly dependent on one supplier who has just announced a 30% price increase. In a SWOT analysis, this is:",options:{A:"An opportunity — higher costs motivate efficiency improvements.",B:"A strength — the close supplier relationship shows reliability.",C:"A threat — an external development that will increase costs and reduce competitiveness. The firm's dependence on a single supplier is the underlying weakness that makes this threat especially serious.",D:"A weakness — the firm should have negotiated better prices."},correct:"C"}
     },
@@ -9350,7 +9350,7 @@ BANKS["BUS-3"] = {
         C:"Quality assurance only applies to service businesses.",
         D:"Quality control is more effective because it catches every defective product."
       },
-      correct:"B",tag:"MC-BUS-13",
+      correct:"B",tag:"MC-OPS-06",
       scaffold:"Quality control (QC): inspection at the end of production — catches defects but does not prevent them; faulty products may have been costly to make; relies on inspectors. Quality assurance (QA): prevention-focused — quality standards built into every stage of production; workers take responsibility; aims to get it right first time. Total Quality Management (TQM) extends QA to a whole-company philosophy: zero defects, continuous improvement (kaizen), customer focus. QA is generally preferred — preventing defects is cheaper than finding and scrapping them.",
       reforge:{stem:"Why is quality assurance generally more cost-effective than quality control in the long run?",options:{A:"QA requires less staff training than QC inspection.",B:"QA prevents defects throughout the process, avoiding the cost of scrapping faulty goods; QC only catches defects after production.",C:"QA inspectors receive lower wages than QC inspectors at every level.",D:"QC reliably produces a higher percentage of defective products over time."},correct:"B"}
     },
@@ -9363,7 +9363,7 @@ BANKS["BUS-3"] = {
         C:"The total reduction in fixed costs when a firm closes a factory.",
         D:"The benefit of producing in a single location rather than multiple sites."
       },
-      correct:"B",tag:"MC-BUS-14",
+      correct:"B",tag:"MC-OPS-07",
       scaffold:"Economies of scale (EoS): as output rises, average cost per unit falls. Types: purchasing (bulk-buying discount), technical (larger, more efficient machinery), financial (better loan terms for larger firms), managerial (specialists instead of generalists), risk-bearing (diversified product range). Diseconomies of scale: average costs rise beyond optimal size — communication breakdown, coordination problems, motivation falls. Minimum efficient scale: output level where average cost is minimised.",
       reforge:{stem:"A supermarket chain negotiates a lower price per unit from a supplier because it orders 10,000 units instead of 1,000. This is an example of which type of economy of scale?",options:{A:"Technical economies — larger machinery is more efficient.",B:"Managerial economies — specialist buyers negotiate better deals.",C:"Purchasing (buying) economies of scale — bulk-buying power gives the larger firm lower unit input costs.",D:"Financial economies — the bank offers better interest rates."},correct:"C"}
     },
@@ -9376,7 +9376,7 @@ BANKS["BUS-3"] = {
         C:"The exporter's goods become cheaper in foreign currency, making them more price-competitive abroad and potentially increasing export volume — though import costs also rise.",
         D:"Exchange rate movements have no effect on exporters who invoice in sterling."
       },
-      correct:"C",tag:"MC-BUS-15",
+      correct:"C",tag:"MC-OPS-08",
       scaffold:"Sterling depreciation (£ falls vs foreign currencies): (1) UK exports cheaper in foreign currency → more competitive → higher volume potentially; (2) UK imports more expensive in sterling → higher raw material costs. Net effect on an exporter: revenue opportunity (more sales) vs cost pressure (pricier imports). Evaluation: depends on price elasticity of demand for exports, proportion of imported inputs, and whether contracts are in sterling or foreign currency. Firms invoicing in sterling ARE affected because their prices look cheaper to foreign buyers.",
       reforge:{stem:"A UK car manufacturer exports to the EU. The pound depreciates by 15% against the euro. Which best describes the likely short-term effect?",options:{A:"UK cars become more expensive for EU buyers — exports fall.",B:"UK cars become cheaper for EU buyers in euro terms, potentially increasing demand. However, if the manufacturer uses imported components, input costs rise, squeezing margins. The net effect depends on PED and import dependency.",C:"The manufacturer must reduce sterling prices to maintain market share.",D:"No effect — car prices are set annually in advance."},correct:"B"}
     }
@@ -9625,7 +9625,7 @@ BANKS["GCSE-SCI-BIO-2"] = {
   questions: [
     gcseScienceQuestion("SCI-BIO2-01", "1SC0 Topic 1", "What is the main role of chlorophyll in photosynthesis?", {A:"Absorbing light energy",B:"Releasing carbon dioxide",C:"Breaking down glucose",D:"Transporting water"}, "A", "Chlorophyll absorbs light energy, which is used to drive the reactions that make glucose from carbon dioxide and water.", "BIO-PLANT-01", {stem:"Which gas is taken in by a leaf for photosynthesis?",options:{A:"Oxygen",B:"Carbon dioxide",C:"Nitrogen",D:"Hydrogen"},correct:"B"}),
     gcseScienceQuestion("SCI-BIO2-02", "1SC0 Topic 6", "Why are root hair cells effective at absorbing water and mineral ions?", {A:"They have a large surface area",B:"They contain no cytoplasm",C:"They are covered by wax",D:"They have no cell membrane"}, "A", "Root hair cells have a long extension that provides a large surface area. Their membranes and transport proteins help absorb water and mineral ions from the soil.", "BIO-PLANT-02", {stem:"How does water enter a root hair cell?",options:{A:"By active transport only",B:"By osmosis",C:"By digestion",D:"By transpiration from the root"},correct:"B"}),
-    gcseScienceQuestion("SCI-BIO2-03", "1SC0 Topic 6", "What is the function of xylem tissue?", {A:"Transporting water and mineral ions",B:"Transporting sugars from leaves",C:"Making pollen grains",D:"Controlling stomata only"}, "A", "Xylem vessels carry water and mineral ions from roots towards the leaves. They are strengthened with lignin and form continuous tubes.", "BIO-TRANSPORT-01", {stem:"Which tissue transports sucrose around a plant?",options:{A:"Xylem",B:"Phloem",C:"Epidermis",D:"Meristem"},correct:"B"}),
+    gcseScienceQuestion("SCI-BIO2-03", "1SC0 Topic 6", "What is the function of xylem tissue?", {A:"Transporting water and mineral ions",B:"Transporting sugars from leaves",C:"Making pollen grains",D:"Controlling stomata only"}, "A", "Xylem vessels carry water and mineral ions from roots towards the leaves. They are strengthened with lignin and form continuous tubes.", "BIO-XYLEM-01", {stem:"Which tissue transports sucrose around a plant?",options:{A:"Xylem",B:"Phloem",C:"Epidermis",D:"Meristem"},correct:"B"}),
     gcseScienceQuestion("SCI-BIO2-04", "1SC0 Topic 6", "Why does transpiration usually increase when temperature rises?", {A:"Water molecules gain kinetic energy",B:"The leaf makes less glucose",C:"Stomata always close",D:"Roots stop absorbing ions"}, "A", "Higher temperature increases evaporation from mesophyll cells and diffusion of water vapour through stomata, increasing the transpiration rate if other factors are constant.", "BIO-TRANS-02", {stem:"What is the effect of strong wind on transpiration?",options:{A:"It removes humid air near the leaf",B:"It stops evaporation completely",C:"It reduces the diffusion gradient",D:"It closes every stomata"},correct:"A"}),
     gcseScienceQuestion("SCI-BIO2-05", "1SC0 Topic 7", "Which part of the nervous system carries impulses from receptors to the central nervous system?", {A:"Motor neurone",B:"Relay neurone",C:"Sensory neurone",D:"Effector"}, "C", "Sensory neurones carry impulses from receptors towards the central nervous system. Motor neurones carry impulses to effectors.", "BIO-NERVE-01", {stem:"What is the role of a synapse?",options:{A:"It connects bones",B:"It transfers a signal between neurones",C:"It pumps blood",D:"It produces antibodies"},correct:"B"}),
     gcseScienceQuestion("SCI-BIO2-06", "1SC0 Topic 7", "What is a reflex action?", {A:"A slow conscious decision",B:"A rapid automatic response",C:"A response that needs no receptor",D:"A learned movement only"}, "B", "Reflexes are rapid and automatic. They protect the body and are coordinated through a reflex arc, often without conscious involvement first.", "BIO-REFLEX-01", {stem:"Why are reflex actions useful?",options:{A:"They delay responses",B:"They reduce the chance of injury",C:"They require detailed thought",D:"They prevent all movement"},correct:"B"}),
