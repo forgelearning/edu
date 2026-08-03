@@ -9986,6 +9986,21 @@ addGcsePsych("GCSE-PSY-MEMORY","GCSE-PSY-MEMORY","GCSE-PSY-MEM",[
   ["What is interference in forgetting?","Memories disrupt one another","Memories become permanent","Sensory input increases","A cue becomes clearer","Similar memories can compete, making retrieval more difficult.","Why might two similar passwords be confused?"],
   ["What is a false memory?","A confident but inaccurate recollection","A forgotten event","A sensory trace","A procedural skill","False memories can feel real even when details were not experienced or have changed.","A person recalls an event that never happened. What is this?" ]
 ]);
+// Hand-written Reforge twins for the first Memory set. These deliberately use
+// new scenarios and distractors: repeating the parent's option set makes the
+// highlighted answer recoverable rather than testing transfer.
+const replaceGcsePsychReforge = (bankId, id, reforge) => {
+  const question = BANKS[bankId].questions.find(item => item.id === id);
+  if (question) question.reforge = reforge;
+};
+replaceGcsePsychReforge("GCSE-PSY-MEMORY", "GCSE-PSY-MEM-01", {stem:"A camera records a brief flash before attention is directed elsewhere. Which memory system briefly held the raw visual input?",options:{A:"Sensory register",B:"Semantic memory",C:"Working memory",D:"Episodic memory"},correct:"A"});
+replaceGcsePsychReforge("GCSE-PSY-MEMORY", "GCSE-PSY-MEM-02", {stem:"A student recalls about seven digits, but performance falls when the list becomes much longer. Which finding does this illustrate?",options:{A:"The capacity of short-term memory is limited",B:"Long-term memory has no capacity",C:"Sensory memory lasts several minutes",D:"Procedural memory stores spoken lists"},correct:"A"});
+replaceGcsePsychReforge("GCSE-PSY-MEMORY", "GCSE-PSY-MEM-03", {stem:"In a word list, the first and final items are recalled better than items in the middle. What pattern is this?",options:{A:"A serial-position curve",B:"A context effect",C:"A state-dependent effect",D:"A misinformation effect"},correct:"A"});
+replaceGcsePsychReforge("GCSE-PSY-MEMORY", "GCSE-PSY-MEM-04", {stem:"Remembering the events of a particular holiday, including where and when they happened, mainly uses:",options:{A:"Episodic memory",B:"Semantic memory",C:"Procedural memory",D:"The sensory register"},correct:"A"});
+replaceGcsePsychReforge("GCSE-PSY-MEMORY", "GCSE-PSY-MEM-05", {stem:"Someone keeps a new access code active by saying it repeatedly until it can be entered. Which process are they using?",options:{A:"Maintenance rehearsal",B:"Retroactive interference",C:"Reconstruction",D:"Context reinstatement"},correct:"A"});
+replaceGcsePsychReforge("GCSE-PSY-MEMORY", "GCSE-PSY-MEM-06", {stem:"A story is recalled in a way that fits the listener's cultural expectations, even though several details have changed. Which explanation is most relevant?",options:{A:"Schemas reconstruct memories",B:"The sensory register stores the story permanently",C:"Procedural memory controls the recall",D:"Short-term capacity increases with age"},correct:"A"});
+replaceGcsePsychReforge("GCSE-PSY-MEMORY", "GCSE-PSY-MEM-07", {stem:"A driver confuses two very similar route instructions because learning one makes the other harder to retrieve. This is an example of:",options:{A:"Interference",B:"Object permanence",C:"Perceptual set",D:"Social facilitation"},correct:"A"});
+replaceGcsePsychReforge("GCSE-PSY-MEMORY", "GCSE-PSY-MEM-08", {stem:"A witness gives a detailed account with confidence, but CCTV shows that the account contains invented details. This is best described as:",options:{A:"A false memory",B:"A sensory trace",C:"Maintenance rehearsal",D:"A procedural memory"},correct:"A"});
 addGcsePsych("GCSE-PSY-PERCEPTION","GCSE-PSY-PERCEPTION","GCSE-PSY-PER",[
   ["What is the difference between sensation and perception?","Perception interprets sensory information","Sensation always involves memory","Perception is raw input","They are identical","Sensation is detection; perception is the organisation and interpretation of that input.","Which process gives meaning to light reaching the eye?"],
   ["Which is a monocular depth cue?","Relative size","Retinal disparity","Convergence","Binocular fusion","Monocular cues can be used with one eye, such as relative size and linear perspective.","Which cue can operate when one eye is closed?"],
@@ -15964,6 +15979,25 @@ appendGenerated("BUS-1", [
   ["A social enterprise primarily aims to:","meet a social or environmental purpose while remaining financially viable","maximise dividends regardless of impact","avoid measuring its performance","operate only as a government department", "Surpluses are commonly reinvested to support the social mission."],
   ["An ethical sourcing policy is most likely to affect:","supplier choice, costs and brand reputation","only the firm's depreciation method","the legal definition of GDP","the number of directors required by law", "Ethical choices can raise input costs but strengthen trust and reduce reputational risk."]
 ], "BUS-T1");
+const businessTheme1Reforges = {
+  "BUS-T1-01": {stem:"A café surveys customers before designing a new menu. Which approach is it using?",options:{A:"Market orientation, because it starts with customer needs",B:"Production orientation, because it ignores demand",C:"Financial gearing, because it uses a survey",D:"Backward integration, because it controls suppliers"},correct:"A"},
+  "BUS-T1-02": {stem:"A sportswear company creates separate offers for runners and hikers. What is the main benefit?",options:{A:"It can target each segment with a more relevant marketing mix",B:"It removes the need for market research",C:"It guarantees every competitor leaves the market",D:"It makes demand perfectly predictable"},correct:"A"},
+  "BUS-T1-03": {stem:"Customers recognise a distinctive name, logo and set of associations when choosing a product. This is the firm's:",options:{A:"Brand identity",B:"Variable cost",C:"Legal structure",D:"Distribution channel"},correct:"A"},
+  "BUS-T1-04": {stem:"A firm asks 500 potential customers how often they would buy a proposed product. This is:",options:{A:"Primary market research",B:"Secondary research using published statistics",C:"A cash-flow forecast",D:"A balance-sheet calculation"},correct:"A"},
+  "BUS-T1-05": {stem:"A small group discusses its reactions to an advert while a researcher moderates. What method is this?",options:{A:"A focus group",B:"A census of the whole market",C:"A profitability ratio",D:"A production forecast"},correct:"A"},
+  "BUS-T1-06": {stem:"If a 10% price cut causes quantity demanded to rise by 20%, what happens to total revenue?",options:{A:"It is likely to rise because demand is price elastic",B:"It must fall because the price is lower",C:"It stays unchanged in every market",D:"It becomes unrelated to quantity sold"},correct:"A"},
+  "BUS-T1-07": {stem:"A new streaming service launches with a low monthly price to attract subscribers quickly. Which strategy is this?",options:{A:"Penetration pricing",B:"Price skimming",C:"Cost-plus pricing",D:"Predatory purchasing"},correct:"A"},
+  "BUS-T1-08": {stem:"A manufacturer sells directly through its own website rather than through wholesalers. This changes its:",options:{A:"Distribution channel",B:"Market share calculation",C:"Employee appraisal system",D:"Capital structure"},correct:"A"},
+  "BUS-T1-09": {stem:"A detergent claims it removes stains more effectively than rival products. This claim is intended to be its:",options:{A:"Unique selling point",B:"Current liability",C:"Break-even output",D:"Economy of scale"},correct:"A"},
+  "BUS-T1-10": {stem:"A local craft firm begins selling online and receives orders from other regions. What benefit has it gained?",options:{A:"Access to a wider market",B:"Guaranteed repeat purchases",C:"Zero fulfilment costs",D:"Automatic control of competitors' prices"},correct:"A"},
+  "BUS-T1-11": {stem:"An entrepreneur opens a business and commits personal funds despite uncertainty about demand. What role is shown?",options:{A:"Organising resources while accepting business risk",B:"Setting the national interest rate",C:"Auditing the government's accounts",D:"Guaranteeing employment for every worker"},correct:"A"},
+  "BUS-T1-12": {stem:"A sole trader's business cannot repay a supplier. Which consequence reflects unlimited liability?",options:{A:"The owner's personal assets may be used to repay business debts",B:"Only the firm's shares can ever be lost",C:"The government automatically pays the supplier",D:"The debt disappears when sales fall"},correct:"A"},
+  "BUS-T1-13": {stem:"What protection does limited liability normally give shareholders in a company?",options:{A:"Their loss is generally limited to the capital they invested",B:"They receive all company assets if profits fall",C:"Their shares can never lose value",D:"They personally guarantee every company debt"},correct:"A"}
+};
+for (const [id, reforge] of Object.entries(businessTheme1Reforges)) {
+  const question = BANKS["BUS-1"].questions.find(item => item.id === id);
+  if (question) question.reforge = reforge;
+}
 appendGenerated("BUS-2", [
   ["Contribution per unit is calculated as:","selling price less variable cost per unit","selling price less total fixed costs","revenue less capital employed","fixed costs divided by output", "Contribution shows how much each unit contributes towards fixed costs and profit."],
   ["If fixed costs rise while contribution per unit is unchanged, break-even output will:","increase","decrease to zero","remain unchanged","become equal to total revenue", "Break-even output equals fixed costs divided by contribution per unit."],
@@ -17982,6 +18016,62 @@ appendGenerated("2.3.3", [
   ["A possible limitation of supply-side reforms is that they:","may take years to affect capacity and can require substantial public spending","always reduce productivity immediately","cannot affect labour markets","only work when inflation is already zero", "Education, infrastructure and labour-market reforms often have delayed and uncertain returns." ]
 ], "A1-PHASE7-ECON233");
 for (const question of BANKS["2.3.3"].questions.slice(-2)) question.specPointId = "edexcel-a-econ-2.3.3";
+
+const economicsPhase7Reforges = {
+  "A1-PHASE7-ECON231-01": {stem:"During a downturn, which pair of changes usually cushions household incomes without a fresh fiscal announcement?",options:{A:"Lower tax receipts and higher benefit payments",B:"Higher tax receipts and lower welfare spending",C:"A compulsory rise in the policy rate",D:"A ban on government borrowing"},correct:"A"},
+  "A1-PHASE7-ECON231-02": {stem:"A public infrastructure project is brought forward during a recession. What is its immediate macroeconomic role?",options:{A:"It adds to aggregate demand through government expenditure",B:"It reduces the quantity of money in circulation",C:"It lowers the economy's potential output",D:"It guarantees an appreciation of the currency"},correct:"A"},
+  "A1-PHASE7-ECON232-01": {stem:"Which households are most exposed to the consumption effect of a rise in the base rate?",options:{A:"Highly indebted households facing higher interest payments",B:"Households with no borrowing and no savings",C:"Households whose wages are fixed by export prices",D:"Households that receive an automatic tax refund"},correct:"A"},
+  "A1-PHASE7-ECON232-02": {stem:"Why might a central bank buy bonds when its policy rate is close to zero?",options:{A:"Asset purchases can lower longer-term borrowing costs and support demand",B:"Bond purchases directly increase income-tax rates",C:"They permanently fix the exchange rate",D:"They remove all commercial-bank deposits"},correct:"A"},
+  "A1-PHASE7-ECON233-01": {stem:"A vocational training scheme can shift long-run aggregate supply because it:",options:{A:"improves skills and may raise worker productivity",B:"reduces the capital stock",C:"shrinks the working-age population",D:"raises imports without affecting productive capacity"},correct:"A"},
+  "A1-PHASE7-ECON233-02": {stem:"Which is a realistic drawback of a major education reform?",options:{A:"Benefits may be delayed and the programme may require substantial public funding",B:"It must reduce productivity immediately",C:"It cannot affect labour-market outcomes",D:"It works faster than monetary policy in every circumstance"},correct:"A"}
+};
+for (const [id, reforge] of Object.entries(economicsPhase7Reforges)) {
+  for (const bank of Object.values(BANKS)) {
+    const question = bank.questions?.find(item => item.id === id);
+    if (question) question.reforge = reforge;
+  }
+}
+
+// Hand-written Reforge twins for the first Economics 2.3 coverage additions.
+// The generated twins used the parent's four options in a new order, which
+// exposes the answer immediately after feedback.
+const economicsPolicyReforges = {
+  "ECON-POLICY-01": {stem:"A recession reduces household incomes and employment. Which automatic response helps support demand?",options:{A:"Income-tax receipts fall while benefit payments rise",B:"The central bank raises rates without a meeting",C:"Exports become zero by definition",D:"Government stops collecting all taxes permanently"},correct:"A"},
+  "ECON-POLICY-02": {stem:"A government funds a large stimulus by borrowing while the economy is close to full capacity. What risk may arise?",options:{A:"Private investment may fall if borrowing pushes interest rates higher",B:"The money supply must fall to zero",C:"The labour force becomes perfectly skilled immediately",D:"The budget automatically moves into surplus"},correct:"A"},
+  "ECON-MONETARY-01": {stem:"When conventional interest rates are already very low, what is the purpose of an asset-purchase programme?",options:{A:"To lower longer-term yields and encourage lending or spending",B:"To increase direct taxation on households",C:"To impose a permanent fixed exchange rate",D:"To reduce the number of bank deposits"},correct:"A"},
+  "ECON-MONETARY-02": {stem:"A rate rise makes mortgages and business loans more expensive. What is the most likely short-run effect?",options:{A:"Consumption and investment weaken, reducing aggregate demand",B:"Households automatically receive higher disposable income",C:"The economy's productive capacity doubles",D:"Exports become cheaper because the currency appreciates"},correct:"A"},
+  "ECON-SUPPLY-01": {stem:"Why can a publicly funded training programme increase long-run output?",options:{A:"It can raise human capital and labour productivity",B:"It directly fixes the policy interest rate",C:"It guarantees a fall in imports",D:"It sets a legal maximum price for every product"},correct:"A"},
+  "ECON-SUPPLY-02": {stem:"Why might a supply-side reform fail to improve output quickly?",options:{A:"Implementation can be costly and its productivity effects may take years",B:"Supply-side policy always reduces the labour force",C:"Structural reform only affects the exchange rate",D:"Productivity responds instantly regardless of the policy"},correct:"A"}
+};
+for (const [id, reforge] of Object.entries(economicsPolicyReforges)) {
+  for (const bank of Object.values(BANKS)) {
+    const question = bank.questions?.find(item => item.id === id);
+    if (question) question.reforge = reforge;
+  }
+}
+
+const economicsFinanceReforges = {
+  "ECON-INEQUALITY-01": {stem:"Which tax design is most likely to reduce post-tax income inequality?",options:{A:"A progressive income tax taking a larger percentage from higher earners",B:"A flat tax taking the same percentage from every earner",C:"A tax that falls as income rises",D:"A tax applied only to people below the poverty line"},correct:"A"},
+  "ECON-INEQUALITY-02": {stem:"On a Lorenz curve diagram, what does a larger gap from the equality line indicate?",options:{A:"A more unequal distribution of income",B:"Identical income for every household",C:"A smaller population but unchanged distribution",D:"The absence of unemployment"},correct:"A"},
+  "ECON-POVERTY-01": {stem:"Why is relative poverty linked to the living standards of a particular society?",options:{A:"Its threshold is compared with typical income or resources in that society",B:"It is based only on the price of one imported good",C:"It always means having the lowest income in the world",D:"It is calculated from the number of firms in the economy"},correct:"A"},
+  "ECON-POVERTY-02": {stem:"A worker loses benefits and pays more tax after taking a low-paid job. What problem might this create?",options:{A:"A poverty trap, because the gain in disposable income is very small",B:"A guaranteed increase in labour productivity",C:"A fall in the effective marginal tax rate",D:"An automatic increase in the worker's real wage"},correct:"A"},
+  "ECON-FINANCE-01": {stem:"What is the main purpose of an equity market for a company?",options:{A:"To raise finance by issuing ownership shares to investors",B:"To set the central bank's policy rate",C:"To distribute unemployment benefits",D:"To control the volume of imports"},correct:"A"},
+  "ECON-FINANCE-02": {stem:"An importer agrees today to exchange currencies at a set rate in six months. What risk is being managed?",options:{A:"The risk of an adverse future exchange-rate movement",B:"The risk that domestic wages will fall",C:"The number of workers available in the region",D:"The government's annual spending total"},correct:"A"},
+  "ECON-BANKS-01": {stem:"How does a commercial bank usually create a deposit when it approves a new loan?",options:{A:"It credits the borrower's account with a new deposit",B:"It prints physical notes for the central bank",C:"It collects a new tax from the borrower",D:"It converts every existing deposit into cash"},correct:"A"},
+  "ECON-BANKS-02": {stem:"Why might a central bank act as lender of last resort?",options:{A:"To provide emergency liquidity to a solvent institution facing a temporary funding shortage",B:"To guarantee a profit for every private company",C:"To remove income tax from households",D:"To set a lower world price for exporters"},correct:"A"},
+  "ECON-CENTRAL-01": {stem:"What is the main focus of macroprudential regulation?",options:{A:"Reducing risks that could destabilise the financial system as a whole",B:"Choosing the advertising strategy of each bank",C:"Setting every household's annual income",D:"Writing the government's tax budget"},correct:"A"},
+  "ECON-CENTRAL-02": {stem:"What is the main economic reason for giving a central bank operational independence?",options:{A:"To reduce short-term political pressure on monetary decisions",B:"To let it ignore its statutory objectives",C:"To give it sole control of the government's tax rates",D:"To make interest rates identical across all countries"},correct:"A"}
+};
+for (const [id, reforge] of Object.entries(economicsFinanceReforges)) {
+  for (const bank of Object.values(BANKS)) {
+    const question = bank.questions?.find(item => item.id === id);
+    if (question) question.reforge = reforge;
+  }
+}
+for (const reforge of Object.values(economicsFinanceReforges)) {
+  repairQuestionOptions(reforge);
+  enforceNoUniqueLongestAnswer(reforge);
+}
 
 rebalanceMCQSubject(["BUS-4","BIO-3","CHEM-2","GEO-TEC","GEO-COAST","GEO-GLOBAL","2.3.1","2.3.2","2.3.3"]);
 
