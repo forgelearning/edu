@@ -86,12 +86,11 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:var(--
 
 /* Optional analytics consent — keep it in document flow so it never masks
    the page's primary action or interactive content. */
-#analytics-consent-banner{position:relative;z-index:10;display:flex;align-items:center;justify-content:space-between;gap:18px;width:calc(100% - 48px);max-width:900px;margin:16px auto;padding:12px 14px;background:var(--glass-panel);backdrop-filter:blur(var(--glass-blur)) saturate(160%);-webkit-backdrop-filter:blur(var(--glass-blur)) saturate(160%);border:1px solid var(--line);border-radius:var(--radius-md);box-shadow:0 20px 50px -20px rgba(0,0,0,.55);box-sizing:border-box}
+#analytics-consent-banner{position:static;z-index:auto;display:flex;align-items:center;justify-content:space-between;gap:18px;width:calc(100% - 48px);max-width:900px;margin:16px auto;padding:12px 14px;background:var(--glass-panel);backdrop-filter:blur(var(--glass-blur)) saturate(160%);-webkit-backdrop-filter:blur(var(--glass-blur)) saturate(160%);border:1px solid var(--line);border-radius:var(--radius-md);box-shadow:0 20px 50px -20px rgba(0,0,0,.55);box-sizing:border-box}
 .analytics-consent-copy{min-width:0}.analytics-consent-copy strong{display:block;color:var(--white);font-family:'Sora',sans-serif;font-size:13px;margin-bottom:2px}.analytics-consent-copy p{color:var(--slate);font-size:12px;line-height:1.35;margin:0;max-width:62ch}.analytics-consent-actions{display:flex;gap:6px;flex-shrink:0}.analytics-consent-actions button{min-height:36px;border-radius:var(--radius-sm);padding:0 12px;border:1px solid var(--line);background:var(--panel);color:var(--slate);font:600 12px 'IBM Plex Sans',sans-serif;cursor:pointer}.analytics-consent-actions button:hover{color:var(--white);border-color:var(--ember)}.analytics-consent-actions .analytics-consent-accept{background:var(--ember);border-color:var(--ember);color:#fff}.analytics-consent-actions .analytics-consent-accept:hover{background:var(--hot);border-color:var(--hot);color:var(--coal)}
 .privacy-settings{padding:0;border:0;background:none;color:var(--ember);font:inherit;text-decoration:underline;cursor:pointer}
-/* The banner is fixed, so reserve room for it while it is on screen — otherwise
-   it sits on top of whatever is at the bottom of the viewport (on the home page
-   that is the primary hero CTA). */
+/* The banner remains in normal document flow, so it never sits on top of
+   content or follows the viewport while the visitor scrolls. */
 body.has-consent-banner{padding-bottom:0}
 @media(max-width:600px){#analytics-consent-banner{width:calc(100% - 24px);display:block;padding:12px}.analytics-consent-actions{margin-top:10px}.analytics-consent-actions button{min-height:44px;flex:1}}
 
