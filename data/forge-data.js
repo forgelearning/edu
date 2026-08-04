@@ -18902,4 +18902,3 @@ for (const [id, key] of Object.entries(media2IdMap)) {
   if (question) question.reforge = media2ReforgeFixes[key];
 }
 for (const key of Object.keys(media2ReforgeFixes)) enforceNoUniqueLongestAnswer(media2ReforgeFixes[key]);
-
