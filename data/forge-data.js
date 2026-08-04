@@ -594,7 +594,7 @@ BANKS["2.4.1"] = {
       id:"INQ-02",spec:"2.4.1",stem:"The UK's Gini coefficient is 0.34. What does this mean?",
       options:{A:"The Gini coefficient ranges from 0 (perfect equality) to 1 (perfect inequality).",B:"34% of the UK population currently live below the poverty line. (all else equal) (all else equal)",C:"The UK ranks 34th in global league tables of income inequality.",D:"34% of UK national income is captured by the top 1% of earners."},correct:"A",tag:"MC-INQ-02",
       scaffold:"Gini coefficient = Area between Lorenz curve and 45° line ÷ total area under the 45° line. 0 = perfect equality (Lorenz curve IS the 45° line). 1 = perfect inequality (one person has everything). UK at 0.34 means moderate inequality — for comparison, Nordics are ~0.25, South Africa ~0.63.",
-      reforge:{stem:"Country A has a Gini of 0.28; Country B has 0.52. Which has greater income inequality?",options:{A:"Country B: a higher Gini coefficient indicates greater inequality.",B:"Country A — higher Gini means more equality.",C:"They are equally unequal.",D:"Gini coefficients can't be compared across countries. (all else equal) (all else equal)"},correct:"A"}
+      reforge:{stem:"Country A has a Gini of 0.28; Country B has 0.52. Which has greater income inequality?",options:{A:"Country A — higher Gini means more equality.",B:"Country B: a higher Gini coefficient indicates greater inequality.",C:"They are equally unequal.",D:"Gini coefficients can't be compared across countries. (all else equal) (all else equal)"},correct:"B"}
     },
     {
       id:"INQ-03",spec:"2.4.1",stem:"A student explains causes of income inequality but offers no evaluation. In an 8-mark question, how many marks are they likely to lose?",
@@ -625,7 +625,7 @@ BANKS["2.4.1"] = {
       id:"INQ-07",spec:"2.4.1",stem:"Progressive taxation means:",
       options:{A:"The marginal rate of tax increases as income rises",B:"Everyone pays the same percentage of their income in tax.",C:"Tax rates decrease as income rises.",D:"Only the wealthy pay tax."},correct:"A",tag:"MC-INQ-07",
       scaffold:"Progressive: marginal rate rises with income (UK: 20% basic → 40% higher → 45% additional). Proportional: same rate for all. Regressive: takes a larger proportion from lower incomes (e.g. VAT — same rate but represents a larger share of a poorer person's income). Progressive taxation is the main fiscal tool for reducing income inequality.",
-      reforge:{stem:"VAT is often described as regressive because:",options:{A:"The same tax rate takes a larger share of income from lower earners, who spend more of their income.",B:"It charges a higher rate to the wealthy. (in the market described) (with other relevant factors held constant)",C:"Only poor people pay VAT.",D:"It is progressive in disguise."},correct:"A"}
+      reforge:{stem:"VAT is often described as regressive because:",options:{A:"It charges a higher rate to the wealthy. (in the market described) (with other relevant factors held constant)",B:"The same tax rate takes a larger share of income from lower earners, who spend more of their income.",C:"Only poor people pay VAT.",D:"It is progressive in disguise."},correct:"B"}
     },
     {
       id:"INQ-08",spec:"2.4.1",stem:"Evaluate whether government redistribution (taxes and benefits) is the most effective way to reduce inequality. (12 marks — 8 KAA + 4 EV)",
@@ -8472,6 +8472,7 @@ for (const [bankId, [idPattern, plan, reforgePlan]] of Object.entries(geo640Bala
   });
 }
 
+
 const geo640ShortAnswers = {
   "GCSE-HAZ-35:base":"Mid-latitude air transfer","GCSE-HAZ-35:reforge":"Deflected Ferrel-cell airflow","GCSE-HAZ-36:reforge":"Warm Atlantic heat transfer","GCSE-HAZ-37:base":"Several local factors affect growth","GCSE-HAZ-37:reforge":"Less favourable local growth","GCSE-HAZ-38:reforge":"Aerosol-related cooling","GCSE-HAZ-40:reforge":"Long-term uncertainty grows","GCSE-HAZ-42:reforge":"Water is funnelled coastward","GCSE-HAZ-49:reforge":"About 32 times more energy",
   "GCSE-DEV-43:base":"Income, health and education","GCSE-DEV-46:base":"Maternal healthcare and wellbeing","GCSE-DEV-47:base":"Isolation from markets and services","GCSE-DEV-48:reforge":"Debt shapes national policy","GCSE-DEV-50:base":"Core economies extract peripheral value","GCSE-DEV-50:reforge":"Cheap raw exports; costly imports","GCSE-DEV-52:reforge":"Power gains versus debt and displacement","GCSE-DEV-54:base":"Weak networks and skills","GCSE-DEV-54:reforge":"Broadband and technical education","GCSE-DEV-56:reforge":"Community-led spending decisions",
@@ -9389,15 +9390,6 @@ SUBJECTS["phys"].banks = ["PHYS-1","PHYS-2","PHYS-3"];
 SUBJECTS["phys"].sub = "AQA 7408 — Mechanics, Electricity & Waves";
 SUBJECTS["bus"].banks = ["BUS-1","BUS-2","BUS-3"];
 SUBJECTS["bus"].sub = "Edexcel 9BS0 — Themes 1–4";
-
-// Mandarin — passage-based reader mode
-SUBJECTS["mandarin"] = {
-  label: "Mandarin Chinese",
-  sub: "IB Language B SL — Passage-based comprehension",
-  color: "#e8472a",
-  banks: [],
-  readerMode: true
-};
 
 // GCSE AQA History (8145) — Paper 2: Shaping the Nation.
 BANKS["GCSE-HIST-HEALTH"] = {
@@ -18935,6 +18927,23 @@ for (const key of Object.keys(media2ReforgeFixes)) enforceNoUniqueLongestAnswer(
     const fix = reforgeFixes[question.id];
     if (fix) question.reforge = { stem: fix.stem, options: fix.options, correct: fix.correct };
   }
+}
+
+// Final answer-key balance repair for the short 2.4.1 Reforge bank. Keep this
+// after generated content passes so later authoring transforms cannot undo it.
+{
+  const q = BANKS["2.4.1"].questions;
+  const swap = (id, from, to) => {
+    const item = q.find(question => question.id === id);
+    if (!item || !item.reforge) return;
+    const value = item.reforge.options[from];
+    item.reforge.options[from] = item.reforge.options[to];
+    item.reforge.options[to] = value;
+    if (item.reforge.correct === from) item.reforge.correct = to;
+    else if (item.reforge.correct === to) item.reforge.correct = from;
+  };
+  swap("INQ-02", "A", "B");
+  swap("INQ-07", "A", "B");
 }
 
 // Chemistry content pass: the CHEM-1 COV cluster had reused isotope

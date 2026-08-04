@@ -45,7 +45,9 @@ for (const [key, subject] of Object.entries(data.SUBJECTS)) {
   });
   const activePoints = Object.entries(points).filter(([id, point]) => point.subject === key && !exclusions[id]);
   const coverage = activePoints.length ? Math.min(100, Math.round(mappedPoints.size / activePoints.length * 100)) : 100;
-  const tier = questions >= 200 && banks.length >= 2 && coverage >= 80 ? 'full' : questions >= 80 && coverage >= 50 ? 'developing' : questions ? 'pilot' : 'preview';
+  // “Full” means every point on the delivered route is represented. A high
+  // question count must not hide gaps in the active specification.
+  const tier = questions >= 200 && banks.length >= 2 && coverage === 100 ? 'full' : questions >= 80 && coverage >= 50 ? 'developing' : questions ? 'pilot' : 'preview';
   subjects[key] = { tier, questions, banks: banks.length, coverage };
 }
 

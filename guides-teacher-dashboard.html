@@ -16,10 +16,7 @@
 <body>
   <script src="scripts/analytics-consent.js?v=20260812"></script>
   <script src="scripts/forge-logo.js"></script>
-  <script>
-    window.toggleTheme=function(){var h=document.documentElement,b=document.querySelector('.theme-toggle');if(h.getAttribute('data-theme')==='light'){h.removeAttribute('data-theme');b.textContent='☀';localStorage.setItem('forge-theme','dark')}else{h.setAttribute('data-theme','light');b.textContent='☾';localStorage.setItem('forge-theme','light')}};
-    if(localStorage.getItem('forge-theme')==='light'){document.documentElement.setAttribute('data-theme','light');}
-  </script>
+  <script src="scripts/forge-theme.js"></script>
   <div id="sticky-nav"><div class="wrap-nav"><nav>
     <a class="logo forge-u-1cihgfz" href="index.html" id="teacher-logo"><span class="forge-u-fj5l7q"></span></a>
     <div class="nav-right"><button class="theme-toggle" data-forge-action="theme" aria-label="Toggle light/dark theme">☀</button><a class="nav-link" href="guides.html">← Guides</a><a class="nav-link" href="teacher.html">Teacher sign in</a></div>

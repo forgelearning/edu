@@ -15,27 +15,7 @@
   <link rel="stylesheet" href="css/page-overrides/pricing.css">
 </head>
 <body>
-  <script>
-    window.toggleTheme=function(){
-      var h=document.documentElement,b=document.querySelector('.theme-toggle');
-      if(h.getAttribute('data-theme')==='light'){
-        h.removeAttribute('data-theme');
-        if(b)b.textContent='☀';
-        localStorage.setItem('forge-theme','dark');
-      }else{
-        h.setAttribute('data-theme','light');
-        if(b)b.textContent='☾';
-        localStorage.setItem('forge-theme','light');
-      }
-    };
-    if(localStorage.getItem('forge-theme')==='light'){
-      document.documentElement.setAttribute('data-theme','light');
-      document.addEventListener('DOMContentLoaded',function(){
-        var b=document.querySelector('.theme-toggle');
-        if(b)b.textContent='☾';
-      });
-    }
-  </script>
+  <script src="scripts/forge-theme.js"></script>
   <div id="sticky-nav"><div class="wrap-nav"><nav>
     <a class="logo" href="index.html" id="nav-logo"><span id="nav-shield"></span><span id="nav-logotext">Forge Learning</span></a>
     <div class="nav-right"><button class="theme-toggle" id="theme-toggle" type="button" data-forge-action="theme" aria-label="Toggle light/dark theme">☀</button></div>
