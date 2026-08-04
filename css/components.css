@@ -39,7 +39,7 @@
 .forge-nav-menu-button{font-family:inherit;cursor:pointer;background:transparent;border:0}
 .forge-card--glass{background:var(--glass-panel);backdrop-filter:blur(var(--glass-blur)) saturate(160%);-webkit-backdrop-filter:blur(var(--glass-blur)) saturate(160%)}
 .forge-card--focus{border-color:rgba(255,201,60,.42);background:rgba(255,201,60,.07)}
-.forge-button{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:0 var(--space-4);border:1px solid transparent;border-radius:var(--radius-sm);font:600 13px Inter,sans-serif;text-decoration:none;cursor:pointer;transition:background .15s,color .15s,border-color .15s,transform .15s}
+.forge-button{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:0 var(--space-4);border:1px solid transparent;border-radius:var(--radius-sm);font:600 13px 'IBM Plex Sans',sans-serif;text-decoration:none;cursor:pointer;transition:background .15s,color .15s,border-color .15s,transform .15s}
 .forge-button--primary{background:var(--ember);color:#fff}
 .forge-button--primary .forge-meta{color:inherit}
 .forge-button--primary:hover{background:var(--hot);color:var(--coal);transform:translateY(-1px)}
@@ -96,8 +96,8 @@
 .ui-row-gap{display:flex;gap:16px;flex-wrap:wrap}
 .ui-row-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:20px}
 .ui-footer-row{border-top:1px solid var(--line);padding-top:16px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
-.ui-button-secondary-sm{padding:8px 16px;border-radius:var(--radius-sm);background:var(--panel);border:1px solid var(--line);color:var(--white);font-family:Inter,sans-serif;font-weight:600;font-size:13px;text-decoration:none;white-space:nowrap}
-.ui-button-primary-sm{padding:8px 16px;border-radius:var(--radius-sm);background:var(--ember);color:var(--coal);font-family:Inter,sans-serif;font-weight:700;font-size:13px;text-decoration:none;white-space:nowrap}
+.ui-button-secondary-sm{padding:8px 16px;border-radius:var(--radius-sm);background:var(--panel);border:1px solid var(--line);color:var(--white);font-family:'IBM Plex Sans',sans-serif;font-weight:600;font-size:13px;text-decoration:none;white-space:nowrap}
+.ui-button-primary-sm{padding:8px 16px;border-radius:var(--radius-sm);background:var(--ember);color:var(--coal);font-family:'IBM Plex Sans',sans-serif;font-weight:700;font-size:13px;text-decoration:none;white-space:nowrap}
 .ui-button-outline-lg{display:inline-flex;align-items:center;padding:0 18px;height:44px;border-radius:var(--radius-md);border:1px solid var(--line);text-decoration:none}
 .ui-badge-good{background:rgba(127,217,138,.15);color:var(--good)}
 .ui-badge-good-soft{background:rgba(127,217,138,.12);color:var(--good)}
