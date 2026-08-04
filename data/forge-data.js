@@ -18968,6 +18968,23 @@ for (const question of BANKS["CHEM-1"].questions) {
     tailIndex++;
   }
 }
+
+// History content pass: remove the repeated non-answer distractor that was
+// attached to coverage questions across all five A-level History banks.
+for (const bankId of ["HIST-BRIT1", "HIST-BRIT2", "HIST-USA1", "HIST-USA2", "HIST-TUDOR"]) {
+  for (const question of BANKS[bankId].questions) {
+    if (!question.reforge) continue;
+    const genericLetter = Object.keys(question.reforge.options).find(letter =>
+      String(question.reforge.options[letter]).trim().toLowerCase() === "it cannot be tested using historical evidence"
+    );
+    if (!genericLetter) continue;
+    const replacement = Object.entries(question.options)
+      .filter(([letter, value]) => letter !== question.correct && String(value).trim().toLowerCase() !== String(question.reforge.options[question.reforge.correct]).trim().toLowerCase())
+      .map(([, value]) => String(value).replace(/\s+(?:in this context|in this case|for this decision)/gi, "").trim())
+      .find(value => !Object.values(question.reforge.options).some(existing => String(existing).trim().toLowerCase() === value.toLowerCase()));
+    if (replacement) question.reforge.options[genericLetter] = replacement;
+  }
+}
 // Hand-authored Reforge twin fix for PHYS-2. Same generator bug as
 // PHYS-1/PHYS-3: the E2 series glued a templated phrase in front of
 // an identical stem, and the COV series repeated the same fact.
