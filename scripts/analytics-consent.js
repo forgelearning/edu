@@ -17,9 +17,40 @@
     wait_for_update: 500
   });
 
+  // The banner is position:fixed, so the page has to reserve its height or the
+  // banner covers whatever sits at the bottom of the document. Its height moves
+  // with viewport width, text wrapping and the audit-test override, so measure
+  // the real box rather than hardcoding a value per breakpoint.
+  var spaceObserver = null;
+
+  function syncBannerSpace() {
+    var banner = document.getElementById('analytics-consent-banner');
+    if (!banner || !document.body) return;
+    var rect = banner.getBoundingClientRect();
+    var gap = window.innerHeight - rect.bottom;
+    if (gap < 0) gap = 0;
+    document.body.style.setProperty('--consent-banner-space', Math.ceil(rect.height + gap) + 'px');
+  }
+
+  function stopSpaceSync() {
+    if (spaceObserver) { spaceObserver.disconnect(); spaceObserver = null; }
+    window.removeEventListener('resize', syncBannerSpace);
+    if (document.body) document.body.style.removeProperty('--consent-banner-space');
+  }
+
+  function startSpaceSync(banner) {
+    syncBannerSpace();
+    window.addEventListener('resize', syncBannerSpace);
+    if (window.ResizeObserver) {
+      spaceObserver = new window.ResizeObserver(syncBannerSpace);
+      spaceObserver.observe(banner);
+    }
+  }
+
   function hideBanner() {
     var banner = document.getElementById('analytics-consent-banner');
     if (banner) banner.remove();
+    stopSpaceSync();
     if (document.body) document.body.classList.remove('has-consent-banner');
   }
 
@@ -51,6 +82,7 @@
     banner.querySelector('.analytics-consent-accept').addEventListener('click', function () { saveChoice('granted'); });
     document.body.appendChild(banner);
     document.body.classList.add('has-consent-banner');
+    startSpaceSync(banner);
   }
 
   window.forgeManageAnalytics = function () { showBanner(true); };
