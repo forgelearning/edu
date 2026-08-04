@@ -23,6 +23,15 @@
 // resolveMCLabel() below covers those instead, by deriving a short label
 // from the question's own scaffold at the point it's needed.
 //
+// Current state, measured over the 7,226 tags in the bank: 683 come from
+// MC_LABELS, 6,543 are derived, none fall back to a bare code. Of the
+// derived labels 375 are still truncated (always at a word boundary), and
+// 1,675 tags share a label with two or more others. The remaining sharers
+// are tags whose scaffold opens with the same generic line and whose stem
+// gives nothing better — worth revisiting by hand-labelling the banks they
+// cluster in (IB Paper 2 skills, French/Spanish tense work) rather than by
+// tuning the derivation further.
+//
 // A small number of reconciled tags here are not used by any question in
 // the CURRENT bank (their content was superseded when a bank was rewritten,
 // but historical rows in the `responses` table can still reference the old
@@ -472,6 +481,10 @@ const MC_LABELS = {
   "MC-GHU-06": "WTO role confused with IMF/World Bank",
   "MC-GHU-07": "Brain drain — one-sided analysis",
   "MC-GHU-08": "TNC impact — uncritical positive or negative",
+  "MC-GEO-BIO-01": "Climate as the control on biome distribution",
+  "MC-GEO-BIO-05": "Provisioning vs regulating ecosystem services",
+  "MC-GEO-BIO-08": "Deforestation's effect on the carbon cycle",
+  "MC-GEO-BIO-11": "Boserup vs Malthus on population and resources",
   "MC-GRO-01": "Growth confused with GDP level",
   "MC-GRO-02": "Actual vs potential growth blurred",
   "MC-GRO-03": "Output gap direction swapped",
@@ -830,6 +843,13 @@ const MC_LABELS = {
 var _mcLabelCache = Object.create(null);
 var _mcTagIndex = null;
 
+// 13 questions carry an ARRAY of tags rather than a single one (e.g.
+// 2.3.1 FIS-05 is tagged ["MC-FIS-01","MC-EMP-02","MC-TECH-02"]). Indexing
+// those under `q.tag` directly stringifies the array, producing a junk key
+// ("MC-FIS-01,MC-EMP-02,MC-TECH-02") and leaving each real tag unindexed by
+// that question. Every one of those tags happens to also appear on a
+// single-tag question today, so nothing is currently unresolvable — but the
+// moment one doesn't, it would fall back to a bare code. Index each element.
 function _mcBuildTagIndex() {
   var index = Object.create(null);
   if (typeof BANKS === 'undefined') return index;
@@ -838,7 +858,12 @@ function _mcBuildTagIndex() {
     if (!bank || !bank.questions) continue;
     for (var i = 0; i < bank.questions.length; i++) {
       var q = bank.questions[i];
-      if (q.tag && !index[q.tag]) index[q.tag] = q;
+      if (!q.tag) continue;
+      var tags = Array.isArray(q.tag) ? q.tag : [q.tag];
+      for (var t = 0; t < tags.length; t++) {
+        var tag = String(tags[t]).trim();
+        if (tag && !index[tag]) index[tag] = q;
+      }
     }
   }
   return index;
@@ -859,6 +884,48 @@ var _mcBoilerplateRe = /^This tests the .+? knowledge point:\s*(.+?)\.?$/i;
 // segment, so this is tried first.
 var _mcConceptColonRe = /^([a-z][a-z '\u2019-]{2,38}):\s+[A-Z]/;
 
+// Shorten to fit a heatmap cell. The previous version sliced at a fixed 87
+// characters, which cut mid-word on 2,827 tags ("...which shifts the\u2026").
+// Prefer the first clause when there is one long enough to stand alone;
+// otherwise fall back to the last whole word.
+function _mcShorten(text, max) {
+  var s = String(text || '').replace(/\s+/g, ' ').trim();
+  if (s.length <= max) return s;
+  var clause = s.slice(0, max).match(/^(.{24,}?)(?=\s*[,;:\u2014\u2013(])/);
+  if (clause) return clause[1].replace(/[\s.,;:]+$/, '');
+  var cut = s.slice(0, max);
+  var space = cut.lastIndexOf(' ');
+  if (space > 24) cut = cut.slice(0, space);
+  return cut.replace(/[\s,;:\u2014\u2013-]+$/, '') + '\u2026';
+}
+
+// Exam framing that carries no information about the misconception.
+var _mcStemFramingRe = /^(?:read (?:the following|this)[^.]*\.\s*|using the same[^:.]*[:.]\s*|complete the sentence about\s*|which of the following\s+(?:best\s+)?(?:describes|explains|shows|is)\s+|what is meant by\s+)/i;
+
+// Some scaffolds open with a generic instruction rather than the idea being
+// tested ("Use the named concept, apply it to the context..." covers 42
+// sociology tags). When a derived label is shared by several tags it stops
+// distinguishing rows in the teacher heatmap, so the question's own stem is
+// tried instead.
+function _mcDeriveFromStem(stem) {
+  var s = String(stem || '').replace(/\s+/g, ' ').trim();
+  if (!s) return '';
+  // Comprehension banks quote a whole source text in the stem and put the
+  // actual question after a "Q:" / "Q2:" marker at the end. Every tag on one
+  // passage shares the passage but asks something different, so the tail is
+  // the only part that distinguishes them.
+  var marked = s.match(/\bQ\s*\d*\s*[:：]\s*([\s\S]+)$/);
+  if (marked) s = marked[1].trim();
+  // Still long means the stem is a passage with no question marker. No prefix
+  // of it describes a misconception, so don't try.
+  if (s.length > 200) return '';
+  s = s.replace(/\s*\([^)]*\bmarks?\b[^)]*\)\s*$/i, '');
+  s = s.replace(_mcStemFramingRe, '');
+  s = s.replace(/[?:.]+$/, '').trim();
+  if (!s) return '';
+  return _mcShorten(s.charAt(0).toUpperCase() + s.slice(1), 70);
+}
+
 function _mcDeriveFromScaffold(scaffold) {
   var s = (scaffold || '').trim();
   if (!s) return '';
@@ -871,17 +938,56 @@ function _mcDeriveFromScaffold(scaffold) {
   }
   var firstSentence = (s.split(/(?<=[.!?])\s+(?=[A-Z])/)[0] || s).trim();
   firstSentence = firstSentence.replace(/^[\u2014\u2013\-\s]+/, '');
-  if (firstSentence.length > 90) firstSentence = firstSentence.slice(0, 87).trim() + '\u2026';
-  return firstSentence;
+  return _mcShorten(firstSentence, 90);
+}
+
+// How many distinct tags each scaffold-derived label would serve. A label
+// shared by more than a couple of tags is a generic scaffold opening, not a
+// description of the misconception, so the stem is preferred for those.
+var _mcDerivedCounts = null;
+
+function _mcBuildDerivedCounts() {
+  var counts = Object.create(null);
+  for (var tag in _mcTagIndex) {
+    if (MC_LABELS[tag]) continue;
+    var label = _mcDeriveFromScaffold(_mcTagIndex[tag].scaffold);
+    if (label) counts[label] = (counts[label] || 0) + 1;
+  }
+  return counts;
 }
 
 function resolveMCLabel(tag) {
   if (!tag) return '';
+  // A handful of questions carry an array of tags; a caller passing one
+  // through unchanged should still get something readable rather than a
+  // stringified array.
+  if (Array.isArray(tag)) {
+    var parts = [];
+    for (var i = 0; i < tag.length; i++) {
+      var one = resolveMCLabel(tag[i]);
+      if (one && parts.indexOf(one) === -1) parts.push(one);
+    }
+    return parts.join('; ');
+  }
   if (MC_LABELS[tag]) return MC_LABELS[tag];
   if (_mcLabelCache[tag] !== undefined) return _mcLabelCache[tag];
   if (!_mcTagIndex) _mcTagIndex = _mcBuildTagIndex();
   var q = _mcTagIndex[tag];
   var derived = q ? _mcDeriveFromScaffold(q.scaffold) : '';
+  if (derived && q) {
+    if (!_mcDerivedCounts) _mcDerivedCounts = _mcBuildDerivedCounts();
+    if (_mcDerivedCounts[derived] > 2) {
+      var fromStem = _mcDeriveFromStem(q.stem);
+      // Only swap when the stem yields a label that stands on its own: short
+      // enough not to need truncating, and not already shared. A stem that
+      // has to be cut is a reading passage rather than a question (the IB
+      // Mandarin banks embed the whole source text in the stem), and cutting
+      // it produces a worse label than the generic scaffold line.
+      if (fromStem && fromStem.slice(-1) !== '…' && _mcDerivedCounts[fromStem] === undefined) {
+        derived = fromStem;
+      }
+    }
+  }
   _mcLabelCache[tag] = derived;
   return derived;
 }
