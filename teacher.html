@@ -1220,7 +1220,13 @@ function renderStarterCard(tag, h, context) {
   // context: {fires, students} from real data, or null for browse mode
   var label = resolveMCLabel(tag) || tag;
   var starterData = getStarterActivity(tag, label);
-  var intervention = window.resolveMCIntervention ? resolveMCIntervention(tag) : 'Ask students to explain the rule in their own words, then apply it to one fresh example.';
+  // The subject-level intervention is a fallback for tags with no starter of
+  // their own. Where a specific starter exists it already says more, so
+  // showing both puts a generic line above a precise one.
+  var hasSpecificStarter = !!(window.MC_STARTERS && MC_STARTERS[tag]);
+  var intervention = !hasSpecificStarter && window.resolveMCIntervention
+    ? resolveMCIntervention(tag, MC_TO_SUBJECT[tag])
+    : '';
   var typeLabels = {sort:"Sort activity",diagnose:"Diagnose",correct:"Spot the error",distinguish:"Distinguish",classify:"Classify",evaluate:"Evaluate",diagram:"Diagram task",chain:"Causal chain",calculate:"Calculation",graph:"Graph task",sequence:"Sequence",apply:"Application",compare:"Comparison table",match:"Match activity",trigger:"Trigger hunt",rewrite:"Rewrite task",trace:"Trace activity",scenario:"Scenario",explain:"Explanation"};
   var typeLabel = typeLabels[starterData.type] || "Starter activity";
 
@@ -1236,7 +1242,9 @@ function renderStarterCard(tag, h, context) {
     h += '<p class="forge-u-1rniwep">Preview — no class data loaded</p>';
   }
   h += '<p class="forge-u-1m9skgg">' + starterData.instruction + '</p>';
-  h += '<p class="forge-u-1rniwep"><strong>Suggested intervention:</strong> ' + teacherEsc(intervention) + '</p>';
+  if (intervention) {
+    h += '<p class="forge-u-1rniwep"><strong>Suggested intervention:</strong> ' + teacherEsc(intervention) + '</p>';
+  }
   h += '<button class="forge-button forge-button--primary starter-assign-btn" data-starter-tag="' + teacherEsc(tag) + '" type="button">Use this starter for an assignment →</button>';
 
   if (starterData.prompt) {

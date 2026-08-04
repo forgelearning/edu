@@ -993,21 +993,47 @@ function resolveMCLabel(tag) {
 }
 
 // A practical next move for the teacher, kept alongside the canonical label.
-// Explicit starters in teacher.html remain more specific; this fallback means
-// every active tag still gets a usable intervention rather than a blank card.
-function resolveMCIntervention(tag) {
+// This is a FALLBACK: where data/starter-activities.js has a specific starter
+// for the tag, teacher.html shows that instead, because it always says more
+// than a subject-level prompt can. This exists so a tag with no starter still
+// gets a usable next step rather than a blank card.
+//
+// Callers should pass the subject key (teacher.html has MC_TO_SUBJECT, built
+// from BANKS). Routing on the tag NAME does not work: tag names do not encode
+// subject, so every A-Level Psychology tag (MC-APP-*, MC-ATT-*, MC-MEM-*)
+// missed the psychology branch entirely, while ten Biopsychology tags named
+// MC-BIO-* were routed to the science branch and told a psychology teacher to
+// "label the key variable" on the nervous system. The name regexes are kept
+// only for callers that cannot supply a subject.
+var _mcInterventionsBySubject = {
+  hist: 'Build a dated cause → event → consequence chain and require one precise piece of evidence before the judgement.',
+  'gcse-hist': 'Place the event or factor on a short timeline, then explain its cause, consequence, and significance using one precise detail.',
+  psych: 'Use a three-part response: define the concept, name the study or theorist, then apply it to a new scenario.',
+  'gcse-psych': 'Use a three-part response: define the concept, name the study or theorist, then apply it to a new scenario.',
+  bio: 'Ask students to state the process step by step, label the key variable, and predict what changes in a new example.',
+  chem: 'Ask students to state the process step by step, label the key variable, and predict what changes in a new example.',
+  phys: 'Ask students to state the process step by step, label the key variable, and predict what changes in a new example.',
+  'gcse-science': 'Ask students to state the process step by step, label the key variable, and predict what changes in a new example.',
+  'gcse-sep-bio': 'Ask students to state the process step by step, label the key variable, and predict what changes in a new example.',
+  'gcse-sep-chem': 'Ask students to state the process step by step, label the key variable, and predict what changes in a new example.',
+  'gcse-sep-phys': 'Ask students to state the process step by step, label the key variable, and predict what changes in a new example.'
+};
+
+function resolveMCIntervention(tag, subject) {
   if (!tag) return 'Ask students to explain the rule in their own words, then apply it to one fresh example.';
+  if (subject && _mcInterventionsBySubject[subject]) return _mcInterventionsBySubject[subject];
+  if (subject) return 'Have students state the governing rule, contrast it with the nearest distractor, and complete one fresh example.';
   if (/^(?:MC-)?HIST-/.test(tag)) {
-    return 'Build a dated cause → event → consequence chain and require one precise piece of evidence before the judgement.';
+    return _mcInterventionsBySubject.hist;
   }
   if (/^(?:MC-)?GCSE-HIST-/.test(tag)) {
-    return 'Place the event or factor on a short timeline, then explain its cause, consequence, and significance using one precise detail.';
+    return _mcInterventionsBySubject['gcse-hist'];
   }
   if (/^(?:MC-)?(?:PSY|GCSE-PSY)-/.test(tag)) {
-    return 'Use a three-part response: define the concept, name the study or theorist, then apply it to a new scenario.';
+    return _mcInterventionsBySubject.psych;
   }
   if (/^(?:MC-)?(?:BIO|CHEM|PHYS)-/.test(tag)) {
-    return 'Ask students to state the process step by step, label the key variable, and predict what changes in a new example.';
+    return _mcInterventionsBySubject.bio;
   }
   return 'Have students state the governing rule, contrast it with the nearest distractor, and complete one fresh example.';
 }
