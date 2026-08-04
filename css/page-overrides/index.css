@@ -7,8 +7,8 @@ h1,h2,h3{font-family:'Rethink Sans',sans-serif;font-weight:700;letter-spacing:-.
 #analytics-consent-banner .analytics-consent-actions button{font-family:'Poppins',sans-serif}
 .hero h1{max-width:15ch;font-weight:700}
 /* hero */
-.hero-shell{position:relative;min-height:calc(100vh + 88px);width:100%;display:flex;align-items:center;overflow:hidden;isolation:isolate;background:var(--coal);margin-top:-88px;padding:104px 0 60px;box-sizing:border-box}
-@media(min-width:900px){.hero-shell{min-height:auto;margin-top:-96px;padding:140px 0 60px;align-items:flex-start}}
+.hero-shell{position:relative;min-height:100svh;width:100%;display:flex;align-items:center;overflow:hidden;isolation:isolate;background:var(--coal);margin-top:-88px;padding:104px 0 60px;box-sizing:border-box}
+@media(min-width:900px){.hero-shell{min-height:100svh;margin-top:-96px;padding:140px 0 60px;align-items:flex-start}}
 .hero-shell canvas.hero-grain{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
 .hero-shell .hero-glow{position:absolute;inset:0;z-index:0;pointer-events:none;background:rgba(213,92,19,.16)}
 .hero-shell .hero-vignette{position:absolute;inset:0;z-index:1;pointer-events:none;background:rgba(20,18,16,.3)}
@@ -533,7 +533,7 @@ footer .btn-glass{min-height:50px;padding:0 20px;border-radius:999px;display:inl
 /* Mobile hero: let visitors reach the live question before the supporting
    reassurance and consent UI. The desktop two-column composition is unchanged. */
 @media (max-width:600px){
-  .hero-shell{min-height:auto;padding:86px 0 28px}
+  .hero-shell{min-height:100svh;padding:86px 0 28px}
   .hero{display:grid;grid-template-columns:1fr;gap:16px;padding-top:8px}
   .hero-copy{display:contents}
   .hero-copy > .tag{grid-row:1}
