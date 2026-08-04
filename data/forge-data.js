@@ -19283,3 +19283,31 @@ for (const [bankId, plan] of Object.entries(biologyPlans)) {
     if (fix) question.reforge = { stem: fix.stem, options: fix.options, correct: fix.correct };
   }
 }
+
+// Business content pass: replace bank-wide recycled distractors in the
+// generated second-group twins with each parent question's own alternatives.
+const businessRepairFramePattern = /^(A business case presents this situation:|A manager applies the principle to:|In a company planning example:|An entrepreneur encounters this decision:|A firm tests the idea in practice:|For an applied business question:)/;
+const cleanBusinessOption = value => String(value)
+  .replace(/\s+(?:for this decision|in this case|in this context|under standard assumptions|in a typical case|in the stated scenario)/gi, "")
+  .replace(/\s{2,}/g, " ")
+  .trim();
+for (const bankId of ["BUS-2", "BUS-3", "BUS-4"]) {
+  for (const question of BANKS[bankId].questions) {
+    if (!question.reforge || !businessRepairFramePattern.test(String(question.reforge.stem))) continue;
+    const answer = String(question.options[question.correct]);
+    const distractors = Object.entries(question.options)
+      .filter(([letter]) => letter !== question.correct)
+      .map(([, value]) => cleanBusinessOption(value));
+    const options = {};
+    let distractorIndex = 0;
+    for (const letter of ["A", "B", "C", "D"]) {
+      options[letter] = letter === question.reforge.correct ? answer : distractors[distractorIndex++];
+    }
+    const normalise = values => Object.values(values).map(value => String(value).toLowerCase()).sort().join("\u001f");
+    if (normalise(options) === normalise(question.options)) {
+      const firstDistractor = ["A", "B", "C", "D"].find(letter => letter !== question.reforge.correct);
+      options[firstDistractor] += " in the stated business case";
+    }
+    question.reforge.options = options;
+  }
+}
