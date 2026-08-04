@@ -36,6 +36,11 @@
     hideBanner();
     var banner = document.createElement('aside');
     banner.id = 'analytics-consent-banner';
+    // Keep this invariant in the element itself as well as in CSS so an older
+    // cached stylesheet can never turn the consent UI into a viewport overlay.
+    banner.style.position = 'static';
+    banner.style.inset = 'auto';
+    banner.style.zIndex = 'auto';
     banner.setAttribute('role', 'dialog');
     banner.setAttribute('aria-labelledby', 'analytics-consent-title');
     banner.innerHTML =
