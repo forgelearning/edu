@@ -17,10 +17,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/tokens.css">
-<link rel="stylesheet" href="css/base.css?v=20260812">
+<link rel="stylesheet" href="css/base.css?v=20260813-consent">
 
 <!-- Google tag (gtag.js) -->
-<script src="scripts/analytics-consent.js?v=20260812"></script>
+<script src="scripts/analytics-consent.js?v=20260813"></script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-RGZ9J6Q8H9"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -31,7 +31,7 @@
 <link rel="stylesheet" href="css/components.css?v=20260812">
 <link rel="stylesheet" href="css/discovery.css">
   <link rel="stylesheet" href="css/generated-utilities.css">
-<link rel="stylesheet" href="css/page-overrides/index.css?v=20260802-ui">
+<link rel="stylesheet" href="css/page-overrides/index.css?v=20260813-cta">
   <link rel="stylesheet" href="css/page-overrides/audit-test.css?v=20260802-9">
   <link rel="stylesheet" href="css/content-status.css">
 </head>
@@ -88,10 +88,10 @@ document.body.classList.add('audit-test');
   <div class="hero-copy">
     <span class="tag reveal">GCSE &amp; A Level · Spec-mapped · Built by a practising teacher</span>
     <h1 class="reveal reveal-delay-1">Turn wrong answers into <em>better answers.</em></h1>
-    <p class="lede reveal reveal-delay-2">Forge finds the misconception behind a wrong answer, explains the missing idea, and gives the student a fresh question to prove the fix. <strong>Short enough to use every day.</strong></p>
+    <p class="lede reveal reveal-delay-2">Forge finds the misconception behind a wrong answer, explains the missing idea, then gives the student a fresh question to prove the fix. <strong>Short enough to use every day.</strong></p>
     <div class="ctas reveal reveal-delay-3">
       <a class="btn btn-hot btn-glass btn-ember" href="forge-quiz.html">Try the quiz — free</a>
-      <a class="hero-secondary-link btn-glass" href="#waitlist">Join the waiting list <span aria-hidden="true">→</span></a>
+      <a class="hero-secondary-link" href="#waitlist">Join the waiting list <span aria-hidden="true">→</span></a>
     </div>
     <p class="sub reveal reveal-delay-4">Exam-board mapped practice for GCSE and A Level.</p>
   </div>
@@ -106,10 +106,10 @@ document.body.classList.add('audit-test');
     <div id="demo-body">
       <p class="stimulus">UK inflation falls from 4.2% to 2.1%. A headline reads: <em>"Prices tumble as inflation halves."</em></p>
       <p class="q">Which statement about this economy is correct?</p>
-      <button class="opt" data-mc="MC-INF-01" data-s="Disinflation is a slowdown in the <b>rate</b> of inflation — prices are still rising, just more slowly. Deflation only occurs when the rate goes below zero and the price level actually falls.">The average price level is falling</button>
+      <button class="opt" data-mc="MC-INF-01" data-s="Disinflation is a slowdown in the <b>rate</b> of inflation. Prices are still rising, just more slowly. Deflation only occurs when the rate goes below zero and the price level actually falls.">The average price level is falling</button>
       <button class="opt" data-right="1">The average price level is rising, but more slowly than before</button>
-      <button class="opt" data-mc="MC-INF-02" data-s="If inflation is positive at all, the cost of living is still going <b>up</b>. A fall from 4.2% to 2.1% means living costs rose 2.1% — the headline is wrong, and examiners test exactly this.">The cost of living has fallen by 2.1%</button>
-      <button class="opt" data-mc="MC-INF-01" data-s="Disinflation is a slowdown in the <b>rate</b> of inflation — prices are still rising, just more slowly. Deflation only occurs when the rate goes below zero and the price level actually falls.">The economy has entered deflation</button>
+      <button class="opt" data-mc="MC-INF-02" data-s="If inflation is positive at all, the cost of living is still going <b>up</b>. A fall from 4.2% to 2.1% means living costs rose 2.1%. The headline is wrong, and examiners test exactly this.">The cost of living has fallen by 2.1%</button>
+      <button class="opt" data-mc="MC-INF-01" data-s="Disinflation is a slowdown in the <b>rate</b> of inflation. Prices are still rising, just more slowly. Deflation only occurs when the rate goes below zero and the price level actually falls.">The economy has entered deflation</button>
 
       <div class="scaffold" id="scaffold">
         <span class="stag" id="stag">MC-INF-01</span>
@@ -118,7 +118,7 @@ document.body.classList.add('audit-test');
       </div>
       <p class="praise" id="praise">Solid. Prices rising more slowly is disinflation — most students miss this. ✦</p>
     </div>
-    <p class="foot">Every wrong answer is tagged to a real misconception from examiners' reports. This is one live question from the Forge bank.</p>
+    <p class="foot">Every wrong answer is tagged to a real misconception from examiners' reports. This question is live in the Forge bank.</p>
   </div>
 </div>
 </div>
@@ -129,25 +129,25 @@ document.body.classList.add('audit-test');
 <div class="wrap">
   <p class="tag eyebrow reveal">The Forge loop</p>
   <h2 class="reveal">How a wrong answer becomes a fix.</h2>
-  <p class="sect-lede reveal">Flashcard apps show you the right answer and move on. Forge treats the wrong answer as the most useful data in the session — and works it, there and then.</p>
+  <p class="sect-lede reveal">Flashcard apps show the right answer and move on. Forge uses a wrong answer as the most useful data in the session. It helps students work through the error while it is still fresh.</p>
   <div class="loop">
     <div class="step reveal glow-spot" data-num="01">
       <span class="glow-border" aria-hidden="true"></span>
       <p class="n mono">01 · TRIGGER</p>
       <h3>The misconception fires</h3>
-      <p>Every distractor is written from documented examiner-report errors and tagged to a specific misconception — not "wrong", but <em>why</em> it's wrong.</p>
+      <p>Every distractor comes from a documented examiner-report error. It is tagged to the misconception behind the choice, so students can see <em>why</em> it went wrong.</p>
     </div>
     <div class="step reveal glow-spot" data-num="02">
       <span class="glow-border" aria-hidden="true"></span>
       <p class="n mono">02 · SCAFFOLD</p>
       <h3>A 30-second correction</h3>
-      <p>Instead of just revealing the answer, Forge shows a two-sentence scaffold that dismantles that exact logic trap while it's still hot.</p>
+      <p>Forge follows with a two-sentence scaffold that breaks down that logic trap while it is still fresh.</p>
     </div>
     <div class="step reveal glow-spot" data-num="03">
       <span class="glow-border" aria-hidden="true"></span>
       <p class="n mono">03 · RE-FORGE</p>
       <h3>Prove it, reframed</h3>
-      <p>A twin question tests the same concept in a new scenario, immediately — so the fix is understood, not memorised.</p>
+      <p>A twin question tests the same concept in a new scenario straight away. The student has to use the fix, not simply remember the explanation.</p>
     </div>
   </div>
 </div>
@@ -160,7 +160,7 @@ document.body.classList.add('audit-test');
   <div class="modes reveal">
     <div class="mode mode-forge glow-spot">
       <h3><span>Forge</span> Mode</h3>
-      <p>The daily session: 5–10 minutes of exam-style micro-scenarios, spec-mapped and spaced so it sticks. Habit beats heroics — this isn't an hour-long revision block, it's a short daily rep.</p>
+      <p>The daily session is 5–10 minutes of exam-style micro-scenarios. Each one is spec-mapped and spaced to help the learning stick. It is a short daily rep, not an hour-long revision block.</p>
       <p class="who">Every day · 5–10 minutes</p>
     </div>
     <div class="mode mode-anvil glow-spot">
@@ -170,7 +170,7 @@ document.body.classList.add('audit-test');
     </div>
     <div class="mode mode-crucible glow-spot glow-red">
       <h3>The <span>Crucible</span></h3>
-      <p>A weekly timed sprint. No hints, no scaffolds — real exam pressure. Results are yours alone; surviving it tempers your rank.</p>
+      <p>A weekly timed sprint with no hints or scaffolds. It recreates real exam pressure, and the result stays private.</p>
       <p class="who">Weekly · 5 minutes · private</p>
     </div>
   </div>
@@ -181,7 +181,7 @@ document.body.classList.add('audit-test');
 <div class="wrap">
   <p class="tag eyebrow reveal">For students</p>
   <h2 class="reveal">Exactly where you're losing marks.</h2>
-  <p class="sect-lede sect-lede--wide reveal">Other apps show you a streak. Forge shows you exactly where you'll lose marks — and what to do about it before the exam.</p>
+  <p class="sect-lede sect-lede--wide reveal">Other apps show a streak. Forge shows the misconceptions behind lost marks, then gives students a way to repair them before the exam.</p>
 
   <div class="dash-tabs forge-u-1hexcow" role="tablist">
     <button class="stab active" data-forge-action="student-overview">Dashboard</button>
@@ -971,7 +971,7 @@ document.body.classList.add('audit-test');
 <div class="wrap">
   <p class="tag eyebrow reveal">Subjects</p>
   <h2 class="reveal">Spec-point depth, not subject breadth.</h2>
-  <p class="sect-lede reveal">Other platforms cover thirteen subjects at flashcard depth. Forge builds spec point by spec point, from examiners' reports — starting where the exam pressure is highest.</p>
+  <p class="sect-lede reveal">Other platforms spread practice across thirteen subjects at flashcard depth. Forge goes spec point by spec point, starting with the areas under the most exam pressure.</p>
 
   <div class="level-tabs" role="tablist" aria-label="Choose level">
     <button class="ltab active" role="tab" aria-selected="true" data-level="alevel">A Level</button>
@@ -1486,7 +1486,7 @@ document.body.classList.add('audit-test');
 <div class="wrap">
   <p class="tag eyebrow reveal">Straight from the bank</p>
   <h2 class="reveal">Try three real questions — no sign-up.</h2>
-  <p class="sect-lede reveal">Three real questions from the Forge banks — Economics, Psychology, and Law in this preview. More GCSE and A Level subjects are available in the subject directory. Every distractor is tagged to a documented misconception from examiners' reports.</p>
+  <p class="sect-lede reveal">This preview includes three real questions from the Forge banks: Economics, Psychology, and Law. More GCSE and A Level subjects are available in the subject directory. Every distractor is tagged to a documented misconception from examiners' reports.</p>
   <div class="bank-nav">
     <span class="bank-progress" id="bankProgress">Question 1 of 3</span>
     <div class="bank-nav-btns">
@@ -1501,29 +1501,29 @@ document.body.classList.add('audit-test');
 <section>
 <div class="wrap">
   <p class="tag eyebrow reveal">Built differently</p>
-  <h2 class="reveal">What Quizlet, Seneca, and Tassomai don't do.</h2>
-  <p class="sect-lede reveal">The features below don't exist on Quizlet, Seneca, or Tassomai.</p>
+  <h2 class="reveal">What the usual revision apps miss.</h2>
+  <p class="sect-lede reveal">Forge turns each wrong answer into a specific next step, from the first correction to the next lesson plan.</p>
 
   <div class="unique-grid reveal">
     <div class="unique-card glow-spot">
       <span class="unique-star">★</span>
       <h3>Misconception heatmap</h3>
-      <p>The exact wrong answer your class is picking, ranked by frequency and tagged to the spec point it belongs to — not just "this one was tricky."</p>
+      <p>See the exact wrong answer your class is picking. Forge ranks it by frequency and tags it to the spec point behind the error.</p>
     </div>
     <div class="unique-card glow-spot glow-ember">
       <span class="unique-star">★</span>
       <h3>Scaffold + re-forged twin</h3>
-      <p>A wrong answer gets a 30-second correction, then an immediate twin question in a new scenario — proof it stuck, not just a reveal-and-move-on.</p>
+      <p>A wrong answer gets a 30-second correction, followed by a twin question in a new scenario. That checks whether the fix stuck.</p>
     </div>
     <div class="unique-card glow-spot glow-red">
       <span class="unique-star">★</span>
       <h3>The Crucible — timed pressure</h3>
-      <p>No hints, no scaffolds, the clock running. Weekly exam-pressure training that mirrors real exam conditions, not another untimed quiz.</p>
+      <p>The clock runs and the scaffolds are off. Weekly exam-pressure training that mirrors real conditions and keeps practice honest.</p>
     </div>
     <div class="unique-card glow-spot glow-green">
       <span class="unique-star">★</span>
       <h3>Corrective starters, auto-built</h3>
-      <p>Every misconception the class fires can generate a ready-to-paste starter activity — Monday's lesson plan, written for you.</p>
+      <p>Every misconception your class fires can generate a ready-to-paste starter activity. It gives you a focused plan for Monday's lesson.</p>
     </div>
   </div>
 </div>
@@ -1703,7 +1703,7 @@ document.body.classList.add('audit-test');
 <div class="wrap">
   <p class="tag eyebrow reveal">Straight from the bank</p>
   <h2 class="reveal">Try three real questions — no sign-up.</h2>
-  <p class="sect-lede reveal">Three real questions from the Forge banks — Economics, Psychology, and Law in this preview. More GCSE and A Level subjects are available in the subject directory. Every distractor is tagged to a documented misconception from examiners' reports.</p>
+  <p class="sect-lede reveal">This preview includes three real questions from the Forge banks: Economics, Psychology, and Law. More GCSE and A Level subjects are available in the subject directory. Every distractor is tagged to a documented misconception from examiners' reports.</p>
   <div class="bank-nav"><span class="bank-progress" id="auditSampleProgress">Question 1 of 3</span><div class="bank-nav-btns"><button type="button" class="bank-nav-btn" id="auditSamplePrev" aria-label="Previous question">← Prev</button><button type="button" class="bank-nav-btn" id="auditSampleNext" aria-label="Next question">Next →</button></div></div>
   <div id="auditSampleTabs" class="audit-sample-tabs" role="tablist" aria-label="Sample question cards"></div>
   <div class="bank subject-bank" id="auditSampleBank">
@@ -1760,13 +1760,13 @@ document.body.classList.add('audit-test');
   <div class="inner">
     <p class="tag eyebrow reveal">Early access</p>
     <h2 class="reveal">Get early access to Forge.</h2>
-    <p class="sect-lede reveal ui-centered">Forge is being built in a working classroom, expanding across GCSE and A Level week by week. Join the list to shape it and pilot it first.</p>
+    <p class="sect-lede reveal ui-centered">Forge is being built in a working classroom and expanding across GCSE and A Level each week. Join the list to shape it and pilot it first.</p>
     <form id="waitform">
       <input type="email" id="email" placeholder="you@school.org.uk" required aria-label="Email address">
       <button type="submit" class="btn-glass btn-ember">Join the waiting list</button>
     </form>
     <p class="done" id="waitdone">You're on the list. We'll be in touch when the first pilot opens. ✦</p>
-    <p class="note">Teachers and students welcome. No spam — one email when pilots open.</p>
+    <p class="note">Teachers and students welcome. No spam. We will send one email when pilots open.</p>
   </div>
 </div>
 </section>
@@ -1803,7 +1803,7 @@ document.body.classList.add('audit-test');
   var howTitle = document.querySelector('#how h2');
   if (howTitle) howTitle.textContent = 'A wrong answer becomes the next useful step.';
   var howLead = document.querySelector('#how .sect-lede');
-  if (howLead) howLead.textContent = 'Each question is written around a known exam misconception, so practice shows students what to fix—not just what they got wrong.';
+  if (howLead) howLead.textContent = 'Each question is written around a known exam misconception, so practice shows students what to fix and how to repair it.';
   var modesTitle = document.querySelector('#how + section h2');
   if (modesTitle) modesTitle.textContent = 'One loop, three moments.';
   var teacherLead = document.querySelector('#teachers .sect-lede');
