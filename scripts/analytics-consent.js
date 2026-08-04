@@ -41,7 +41,7 @@
     banner.innerHTML =
       '<div class="analytics-consent-copy">' +
         '<strong id="analytics-consent-title">Optional analytics</strong>' +
-        '<p>Forge uses Google Analytics on public pages to understand aggregate site usage. It is not used to analyse student quiz responses.</p>' +
+        '<p>Forge uses Google Analytics for aggregate public-site usage only. It does not analyse student quiz responses.</p>' +
       '</div>' +
       '<div class="analytics-consent-actions">' +
         '<button type="button" class="analytics-consent-reject">Reject</button>' +
