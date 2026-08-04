@@ -36,7 +36,9 @@ h1,h2,h3{font-family:'Rethink Sans',sans-serif;font-weight:700;letter-spacing:-.
 .nav-right .cta:hover{background:var(--hot);transform:translateY(-1px)}
 
 /* demo card — the signature */
-.demo{background:var(--glass-panel);backdrop-filter:blur(var(--glass-blur)) saturate(160%);-webkit-backdrop-filter:blur(var(--glass-blur)) saturate(160%);border:1px solid var(--line);border-radius:var(--radius-lg);padding:26px;position:relative;box-shadow:0 40px 90px -24px rgba(213,92,19,.35),0 30px 70px rgba(0,0,0,.5);transform:translateY(-10px)}
+.demo{background:var(--glass-panel);backdrop-filter:blur(var(--glass-blur)) saturate(160%);-webkit-backdrop-filter:blur(var(--glass-blur)) saturate(160%);border:1px solid var(--line);border-radius:var(--radius-lg);padding:26px;position:relative;box-shadow:0 40px 90px -24px rgba(213,92,19,.35),0 30px 70px rgba(0,0,0,.5);transform:translateY(-10px);transition:border-color .35s ease,box-shadow .35s ease}
+.demo.is-learning{border-color:rgba(255,201,60,.6);box-shadow:0 40px 90px -24px rgba(213,92,19,.5),0 30px 70px rgba(0,0,0,.5),0 0 0 3px rgba(255,201,60,.08)}
+.demo.is-repaired{border-color:rgba(127,217,138,.62);box-shadow:0 40px 90px -24px rgba(127,217,138,.28),0 30px 70px rgba(0,0,0,.5),0 0 0 3px rgba(127,217,138,.08)}
 
 /* The border tracks the pointer: --glow-x/--glow-y are written on the card by
    the pointermove handler near the end of this file, and feed a radial that
@@ -48,6 +50,9 @@ h1,h2,h3{font-family:'Rethink Sans',sans-serif;font-weight:700;letter-spacing:-.
 .glow-red{--glow-c1:var(--bad);--glow-c2:color-mix(in srgb,var(--bad) 85%,transparent);--glow-c3:color-mix(in srgb,var(--bad) 45%,transparent)}
 .glow-green{--glow-c1:var(--good);--glow-c2:color-mix(in srgb,var(--good) 85%,transparent);--glow-c3:color-mix(in srgb,var(--good) 45%,transparent)}
 .demo-float{position:absolute;z-index:1;top:-14px;right:28px;font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--coal);background:var(--ember);padding:4px 11px;border-radius:var(--radius-pill);font-weight:700;box-shadow:0 8px 20px rgba(213,92,19,.4);transform:rotate(-2deg)}
+.demo-state{position:absolute;z-index:1;top:-14px;left:28px;font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--coal);background:var(--good);padding:4px 11px;border-radius:var(--radius-pill);font-weight:700;box-shadow:0 8px 20px rgba(127,217,138,.28);opacity:0;transform:translateY(5px) rotate(2deg);pointer-events:none}
+.demo.is-repaired .demo-state{animation:repaired-badge .42s cubic-bezier(.16,1,.3,1) forwards}
+@keyframes repaired-badge{from{opacity:0;transform:translateY(5px) rotate(2deg)}to{opacity:1;transform:none}}
 .demo .head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;gap:10px;flex-wrap:wrap}
 .demo .head .spec{font-size:12px;color:var(--slate)}
 .demo .head .spec b{color:var(--hot);font-weight:600}
@@ -78,6 +83,14 @@ h1,h2,h3{font-family:'Rethink Sans',sans-serif;font-weight:700;letter-spacing:-.
 @keyframes feedback-in{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
 .demo-body--reforged{animation:reforge-in .42s cubic-bezier(.16,1,.3,1)}
 @keyframes reforge-in{from{opacity:.35;transform:translateY(10px);filter:blur(2px)}to{opacity:1;transform:none;filter:none}}
+@supports (view-transition-name:none){
+  #demo-body{view-transition-name:forge-question}
+  ::view-transition-group(forge-question){animation-duration:.46s}
+  ::view-transition-old(forge-question){animation:forge-question-out .2s ease both}
+  ::view-transition-new(forge-question){animation:forge-question-in .46s cubic-bezier(.16,1,.3,1) both}
+}
+@keyframes forge-question-out{to{opacity:0;transform:translateY(-8px) scale(.985);filter:blur(3px)}}
+@keyframes forge-question-in{from{opacity:0;transform:translateY(12px) scale(.985);filter:blur(3px)}to{opacity:1;transform:none;filter:none}}
 .demo .foot{margin-top:14px;font-size:12px;line-height:1.5;color:#A39D94;max-width:58ch}
 .demo .opt{min-height:44px}
 
@@ -523,6 +536,7 @@ th.forge::before{content:"★ ";font-size:10px}
 .wait button:hover{background:var(--hot)}
 .wait .note{margin-top:14px;font-size:13px;color:#8A857E}
 .wait .done{display:none;margin-top:24px;color:var(--good);font-weight:600}
+.wait .form-error{margin-top:14px;color:var(--bad);font-size:14px;line-height:1.45}
 
 footer{padding:40px 0 28px;border-top:1px solid var(--line)}
 footer .btn-glass{min-height:50px;padding:0 20px;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;font-family:'Poppins',sans-serif;font-size:13.5px;line-height:1.2;text-decoration:none!important}
@@ -560,6 +574,10 @@ footer .btn-glass{min-height:50px;padding:0 20px;border-radius:999px;display:inl
   .bank-nav-btn{flex:1}
 }
 .forge-logo-dark{display:block}.forge-logo-light{display:none}[data-theme="light"] .forge-logo-dark{display:none!important}[data-theme="light"] .forge-logo-light{display:block!important}
+/* Shared semantic feedback surfaces, extracted from the landing demo states. */
+#demo .opt.correct{background:var(--surface-success-subtle)}
+#demo .opt.wrong{background:var(--surface-error-subtle)}
+.landing-recommendation,.starter-reveal{background:var(--surface-focus-subtle)}
 /* ── Scroll reveal ─────────────────────────────────────── */
 .reveal{opacity:0;transform:translateY(28px);transition:opacity .6s ease,transform .6s ease}
 .reveal.visible{opacity:1;transform:translateY(0)}
@@ -589,3 +607,33 @@ footer .btn-glass{min-height:50px;padding:0 20px;border-radius:999px;display:inl
 /* .btn-glass itself now lives in css/base.css so the app pages can use it. */
 
 /* .btn-ember now lives in css/base.css alongside .btn-glass. */
+
+/* ── Bolder landing pass ─────────────────────────────────
+   Turn up Forge's own strongest moves at the page's key decisions:
+   the hero, the repair loop, and the proof sections. */
+.hero h1{font-size:clamp(44px,5.8vw,70px);letter-spacing:-.04em}
+.hero h1 em{text-shadow:0 0 28px rgba(213,92,19,.22)}
+.hero .ctas .btn-ember{min-height:56px;padding-inline:28px;font-size:16px;box-shadow:inset 0 1px 0 rgba(255,201,60,.5),0 18px 42px -16px rgba(213,92,19,.9)!important}
+.hero .ctas .btn-ember:hover:not(:disabled){box-shadow:inset 0 1px 0 rgba(255,201,60,.7),0 22px 48px -16px rgba(213,92,19,1),0 0 0 3px rgba(255,201,60,.2)!important}
+.demo{border-color:rgba(255,201,60,.34);box-shadow:0 44px 96px -24px rgba(213,92,19,.48),0 30px 70px rgba(0,0,0,.52)}
+#how{background:var(--surface-focus-subtle)}
+#demo-2{background:var(--surface-action-subtle)}
+#pricing{background:var(--panel)}
+#how{border-top-color:rgba(255,201,60,.35);border-bottom:1px solid var(--line)}
+#how .eyebrow,#students .eyebrow,#teachers .eyebrow{display:flex;align-items:center;gap:10px}
+#how .eyebrow::before,#students .eyebrow::before,#teachers .eyebrow::before{content:"";width:24px;height:2px;background:var(--ember);flex:0 0 auto}
+#how h2,#students h2,#teachers h2{font-size:clamp(32px,4.2vw,48px)}
+#how .loop{margin-top:48px}
+#how .loop .step:nth-child(2){transform:translateY(-10px);border-color:rgba(255,201,60,.58);box-shadow:0 34px 70px -24px rgba(213,92,19,.38)}
+#demo-2{border-top-color:rgba(255,201,60,.28)}
+#pricing{border-top-color:rgba(127,217,138,.25)}
+.mode.mode-forge{background:var(--surface-focus-subtle)}
+.mode.mode-crucible{background:var(--surface-error-subtle)}
+@media(max-width:860px){
+  #how .loop .step:nth-child(2){transform:none}
+}
+@media(max-width:600px){
+  .hero h1{font-size:clamp(40px,11vw,52px)}
+  .hero .ctas .btn-ember{min-height:52px;padding-inline:22px}
+  .demo{box-shadow:0 30px 70px -24px rgba(213,92,19,.42),0 24px 54px rgba(0,0,0,.45)}
+}

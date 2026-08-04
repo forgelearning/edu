@@ -4,6 +4,7 @@
   var STORAGE_KEY = 'forge-analytics-consent';
   var measurementId = 'G-RGZ9J6Q8H9';
   var consent = null;
+  var settingsTrigger = null;
 
   try { consent = window.localStorage.getItem(STORAGE_KEY); } catch (e) {}
 
@@ -29,10 +30,17 @@
       analytics_storage: value === 'granted' ? 'granted' : 'denied'
     });
     hideBanner();
+    if (settingsTrigger && document.contains(settingsTrigger)) {
+      settingsTrigger.focus();
+      settingsTrigger = null;
+    }
   }
 
   function showBanner(force) {
     if (!force && consent) return;
+    if (force && document.activeElement && document.activeElement !== document.body) {
+      settingsTrigger = document.activeElement;
+    }
     hideBanner();
     var banner = document.createElement('aside');
     banner.id = 'analytics-consent-banner';
@@ -41,12 +49,16 @@
     banner.style.setProperty('position', 'static', 'important');
     banner.style.setProperty('inset', 'auto', 'important');
     banner.style.setProperty('z-index', 'auto', 'important');
-    banner.setAttribute('role', 'dialog');
+    // This is an inline preference region, not a modal dialog: it should not
+    // trap focus or imply that the rest of the page is unavailable.
+    banner.setAttribute('role', 'region');
+    banner.setAttribute('aria-label', 'Analytics consent');
     banner.setAttribute('aria-labelledby', 'analytics-consent-title');
+    banner.setAttribute('aria-describedby', 'analytics-consent-description');
     banner.innerHTML =
       '<div class="analytics-consent-copy">' +
         '<strong id="analytics-consent-title">Optional analytics</strong>' +
-        '<p>Forge uses Google Analytics for aggregate public-site usage only. It does not analyse student quiz responses.</p>' +
+        '<p id="analytics-consent-description">Forge uses Google Analytics for aggregate public-site usage only. It does not analyse student quiz responses.</p>' +
       '</div>' +
       '<div class="analytics-consent-actions">' +
         '<button type="button" class="analytics-consent-reject">Reject</button>' +
@@ -78,6 +90,7 @@
       }
     }
     document.body.classList.add('has-consent-banner');
+    if (force) banner.querySelector('.analytics-consent-reject').focus();
   }
 
   window.forgeManageAnalytics = function () { showBanner(true); };

@@ -43,6 +43,12 @@
   --glass-blur:20px;
   --glass-bg:rgba(20,18,16,.62);
   --glass-panel:rgba(33,30,27,.7);
+
+  /* semantic state surfaces — use these for feedback, not raw colour mixes */
+  --surface-success-subtle:rgba(127,217,138,.08);
+  --surface-error-subtle:rgba(255,90,90,.08);
+  --surface-focus-subtle:rgba(255,201,60,.07);
+  --surface-action-subtle:rgba(213,92,19,.07);
 }
 
 [data-theme="light"]{
@@ -60,4 +66,9 @@
 
   --glass-bg:rgba(250,250,248,.62);
   --glass-panel:rgba(255,255,255,.7);
+
+  --surface-success-subtle:rgba(27,140,42,.08);
+  --surface-error-subtle:rgba(212,45,45,.08);
+  --surface-focus-subtle:rgba(200,133,0,.08);
+  --surface-action-subtle:rgba(229,85,15,.07);
 }
