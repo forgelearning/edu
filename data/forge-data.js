@@ -18791,3 +18791,36 @@ for (const [id, key] of Object.entries(hsc1IdMap)) {
   if (question) question.reforge = hsc1ReforgeFixes[key];
 }
 for (const key of Object.keys(hsc1ReforgeFixes)) enforceNoUniqueLongestAnswer(hsc1ReforgeFixes[key]);
+
+// Hand-written Media Studies MEDIA-1 Reforge twins. These apply terminology
+// and theory to fresh media examples rather than repeating the parent's four
+// option texts.
+const media1ReforgeFixes = {
+  sign: {stem:"A red heart icon is used to represent love in an advert. In semiotics, the icon is a:",options:{A:"Sign",B:"Genre",C:"Institution",D:"Demographic"},correct:"A"},
+  anchorage: {stem:"A photograph of a protest is printed beside the headline 'Peaceful citizens demand change'. What does the headline provide?",options:{A:"Denotation",B:"Anchorage",C:"Convergence",D:"A mode of address"},correct:"B"},
+  denotation: {stem:"When analysing an image, a student lists the objects and colours that are literally visible before discussing meanings. This is describing:",options:{A:"Stereotyping",B:"Preferred reading",C:"Denotation",D:"Vertical integration"},correct:"C"},
+  stereotype: {stem:"An advert repeatedly presents scientists as older men in white coats. This is an example of a media:",options:{A:"Public service remit",B:"Genre convention",C:"Distribution channel",D:"Stereotype"},correct:"D"},
+  representation: {stem:"A news drama selects some groups as threatening and others as respectable. Hall's approach would say the representation is:",options:{A:"Constructed through selection and ideology",B:"A neutral mirror of reality",C:"Produced only by audience demographics",D:"Unrelated to social power"},correct:"A"},
+  preferred: {stem:"A documentary is encoded to encourage viewers to accept its environmental argument. The reading most encouraged by its producers is the:",options:{A:"Oppositional reading",B:"Preferred reading",C:"Negotiated rejection",D:"Denotative code"},correct:"B"},
+  genre: {stem:"A streaming platform groups crime dramas together so audiences know what style and conventions to expect. This illustrates the usefulness of:",options:{A:"Audience demographic",B:"Mode of address",C:"Genre",D:"Public ownership"},correct:"C"},
+  highKey: {stem:"A cheerful advert uses bright, even lighting with very few shadows. Which lighting style is being used?",options:{A:"Low-key chiaroscuro",B:"Naturalistic underexposure",C:"Silhouette lighting",D:"High-key lighting"},correct:"D"},
+  closeup: {stem:"A film cuts tightly to a character's eyes as they hear unexpected news. What is the main effect of this shot?",options:{A:"It establishes the whole setting",B:"It emphasises emotion and reaction",C:"It hides the character's response",D:"It proves the text is non-linear"},correct:"B"},
+  nonlinear: {stem:"A thriller begins with the final confrontation, then returns to earlier events to explain it. Its narrative is:",options:{A:"Strictly chronological",B:"A public service announcement",C:"Non-linear",D:"A genre institution"},correct:"C"},
+  institution: {stem:"A company that funds, produces and distributes television programmes is a media:",options:{A:"Stereotype",B:"Denotation",C:"Demographic",D:"Institution"},correct:"D"},
+  vertical: {stem:"A media corporation buys a production studio and a streaming platform in its supply chain. This is:",options:{A:"Vertical integration",B:"Horizontal audience fragmentation",C:"Public service broadcasting",D:"Cultural discount"},correct:"A"},
+  publicService: {stem:"A broadcaster is required to provide news, education and content for minority audiences rather than only chase profit. This reflects a:",options:{A:"Commercial monopoly",B:"Public service remit",C:"Niche demographic",D:"Preferred reading"},correct:"B"},
+  conglomerate: {stem:"A corporation owns newspapers, film studios, radio stations and online platforms. It is a media:",options:{A:"Genre convention",B:"Mode of address",C:"Conglomerate",D:"Single-text audience"},correct:"C"},
+  convergence: {stem:"A smartphone combines filming, editing, publishing and social interaction in one device. This is media:",options:{A:"Denotation",B:"Stereotyping",C:"Linear narration",D:"Convergence"},correct:"D"},
+  mode: {stem:"A presenter uses informal language and direct address to make viewers feel like friends. This describes the text's:",options:{A:"Institutional ownership",B:"Mode of address",C:"Audience demographic",D:"Vertical integration"},correct:"B"},
+  demographic: {stem:"An audience profile records viewers' age, gender, income and location. These are examples of:",options:{A:"Narrative codes",B:"Production institutions",C:"Demographic characteristics",D:"Lighting conventions"},correct:"C"}
+};
+const media1IdMap = {
+  "MEDIA-E1-01":"sign", "MEDIA-E1-02":"anchorage", "MEDIA-E1-03":"denotation", "MEDIA-E1-04":"stereotype", "MEDIA-E1-05":"representation", "MEDIA-E1-06":"preferred", "MEDIA-E1-07":"genre", "MEDIA-E1-08":"highKey", "MEDIA-E1-09":"closeup", "MEDIA-E1-10":"nonlinear", "MEDIA-E1-11":"institution", "MEDIA-E1-12":"vertical", "MEDIA-E1-13":"publicService", "MEDIA-E1-14":"conglomerate", "MEDIA-E1-15":"convergence", "MEDIA-E1-16":"mode", "MEDIA-E1-17":"demographic",
+  "MEDIA-COV-009":"sign", "MEDIA-COV-011":"denotation", "MEDIA-COV-013":"representation", "MEDIA-COV-015":"genre", "MEDIA-COV-017":"closeup", "MEDIA-COV-019":"institution", "MEDIA-COV-021":"publicService", "MEDIA-COV-023":"convergence", "MEDIA-COV-025":"demographic",
+  "MEDIA-COV-109":"sign", "MEDIA-COV-111":"denotation", "MEDIA-COV-113":"representation", "MEDIA-COV-115":"genre", "MEDIA-COV-117":"closeup", "MEDIA-COV-119":"institution", "MEDIA-COV-121":"publicService", "MEDIA-COV-123":"convergence", "MEDIA-COV-125":"demographic"
+};
+for (const [id, key] of Object.entries(media1IdMap)) {
+  const question = BANKS["MEDIA-1"].questions.find(item => item.id === id);
+  if (question) question.reforge = media1ReforgeFixes[key];
+}
+for (const key of Object.keys(media1ReforgeFixes)) enforceNoUniqueLongestAnswer(media1ReforgeFixes[key]);
