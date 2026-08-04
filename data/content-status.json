@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-08-02T09:06:58.064Z",
+  "generatedAt": "2026-08-04T13:26:54.017Z",
   "pages": {
     "economics.html": "econ",
     "psychology.html": "psych",
@@ -56,7 +56,7 @@
       "coverage": 100
     },
     "geo": {
-      "tier": "full",
+      "tier": "developing",
       "questions": 238,
       "banks": 9,
       "coverage": 91
@@ -197,12 +197,6 @@
       "tier": "full",
       "questions": 200,
       "banks": 4,
-      "coverage": 100
-    },
-    "mandarin": {
-      "tier": "preview",
-      "questions": 0,
-      "banks": 0,
       "coverage": 100
     },
     "gcse-science": {
