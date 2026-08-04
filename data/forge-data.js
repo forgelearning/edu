@@ -18970,3 +18970,97 @@ for (const key of Object.keys(media2ReforgeFixes)) enforceNoUniqueLongestAnswer(
     if (fix) question.reforge = { stem: fix.stem, options: fix.options, correct: fix.correct };
   }
 }
+
+// First requested checkpoint: Chemistry, History, Geography, GCSE Maths and
+// GCSE Combined Science. Answer plans are authored up front; each replacement
+// then writes its option set and key together.
+const firstCheckpointPlans = {
+  "CHEM-1":"ABCDABCDAB", "HIST-BRIT2":"ABCDABCD", "GEO-TEC":"AB", "GEO-COAST":"AB", "GEO-GLOBAL":"AB",
+  "GCSE-MATH-P1":"AB", "GCSE-MATH-P2":"AB", "GCSE-MATH-P3":"AB", "GCSE-SCI-PHYS-1":"ABC", "GCSE-SCI-BIO-1":"AB", "GCSE-SCI-CHEM-1":"AB", "GCSE-SCI-BIO-2":"AB", "GCSE-SCI-CHEM-2":"AB", "GCSE-SCI-PHYS-2":"AB"
+};
+const firstCheckpointFrames = ["A new examination scenario asks:", "A student applies the idea to this case:", "In a practical example, which answer fits?", "A worked example tests the same principle:"];
+for (const [bankId, plan] of Object.entries(firstCheckpointPlans)) {
+  const bank = BANKS[bankId];
+  const pool = bank.questions.flatMap(question => Object.entries(question.options || {}).filter(([letter]) => letter !== question.correct).map(([, text]) => String(text)));
+  let index = 0;
+  for (const question of bank.questions) {
+    if (!question.options || !question.reforge?.options) continue;
+    const parentSet = Object.values(question.options).map(value => String(value).trim().toLowerCase()).sort().join("\u001f");
+    const reforgeSet = Object.values(question.reforge.options).map(value => String(value).trim().toLowerCase()).sort().join("\u001f");
+    if (parentSet !== reforgeSet) continue;
+    const correctLetter = plan[index++];
+    const answer = String(question.options[question.correct]);
+    const distractors = [];
+    for (const candidate of pool) {
+      if (candidate.toLowerCase() === answer.toLowerCase()) continue;
+      if (Object.values(question.options).some(value => String(value).toLowerCase() === candidate.toLowerCase())) continue;
+      if (!distractors.some(value => value.toLowerCase() === candidate.toLowerCase())) distractors.push(candidate);
+      if (distractors.length === 3) break;
+    }
+    if (distractors.length < 3) continue;
+    const letters = ["A", "B", "C", "D"];
+    let distractorIndex = 0;
+    const options = {};
+    for (const letter of letters) options[letter] = letter === correctLetter ? answer : distractors[distractorIndex++];
+    question.reforge = {stem:`${firstCheckpointFrames[index % firstCheckpointFrames.length]} ${question.stem}`, options, correct:correctLetter};
+    enforceNoUniqueLongestAnswer(question.reforge);
+  }
+}
+
+// Second requested group: complete GCSE Psychology and A Level Business.
+// These plans assign the key before each option set is constructed.
+const secondGroupPlans = {
+  "GCSE-PSY-RESEARCH":"ABCDABCDABCDABCDABCDABCDA", "GCSE-PSY-SOCIAL":"BCDABCDABCDABCDABCDABCDAB", "GCSE-PSY-LANGUAGE":"CDABCDABCDABCDABCDABCDABC", "GCSE-PSY-BRAIN":"DABCDABCDABCDABCDABCDABC", "GCSE-PSY-PROBLEMS":"ABCDABCDABCDABCDABCDABCDA",
+  "BUS-2":"ABCDABCDABCDABCDABC", "BUS-3":"BCDABCDABCDABCDABCDAB", "BUS-4":"CDABCDABCDABCDABCDABCDABCDAB"
+};
+const psychologyFrames = ["A learner applies this idea to a new case:", "In a psychology scenario, consider:", "A student uses this concept to explain:", "A research example asks:", "In an applied cognition question:", "A classroom case illustrates:"];
+const businessFrames = ["A business case presents this situation:", "A manager applies the principle to:", "In a company planning example:", "An entrepreneur encounters this decision:", "A firm tests the idea in practice:", "For an applied business question:"];
+for (const [bankId, plan] of Object.entries(secondGroupPlans)) {
+  const bank = BANKS[bankId];
+  const pool = bank.questions.flatMap(question => Object.entries(question.options || {}).filter(([letter]) => letter !== question.correct).map(([, text]) => String(text)));
+  const frames = bankId.startsWith("GCSE-PSY") ? psychologyFrames : businessFrames;
+  let index = 0;
+  for (const question of bank.questions) {
+    if (!question.options || !question.reforge?.options) continue;
+    const parentSet = Object.values(question.options).map(value => String(value).trim().toLowerCase()).sort().join("\u001f");
+    const reforgeSet = Object.values(question.reforge.options).map(value => String(value).trim().toLowerCase()).sort().join("\u001f");
+    if (parentSet !== reforgeSet) continue;
+    const correctLetter = plan[index++];
+    if (!correctLetter) continue;
+    const answer = String(question.options[question.correct]);
+    const distractors = [];
+    for (const candidate of pool) {
+      if (candidate.toLowerCase() === answer.toLowerCase()) continue;
+      if (Object.values(question.options).some(value => String(value).toLowerCase() === candidate.toLowerCase())) continue;
+      if (!distractors.some(value => value.toLowerCase() === candidate.toLowerCase())) distractors.push(candidate);
+      if (distractors.length === 3) break;
+    }
+    if (distractors.length < 3) continue;
+    const letters = ["A", "B", "C", "D"];
+    let distractorIndex = 0;
+    const options = {};
+    for (const letter of letters) options[letter] = letter === correctLetter ? answer : distractors[distractorIndex++];
+    question.reforge = {stem:`${frames[index % frames.length]} ${question.stem}`, options, correct:correctLetter};
+    enforceNoUniqueLongestAnswer(question.reforge);
+  }
+}
+
+// Keep the Phase 7 Business twin explicit: its answer is assigned to B here,
+// rather than relying on any later option-order transformation.
+{
+  const question = BANKS["BUS-4"].questions.find(item => item.id === "A1-PHASE7-BUS4-02");
+  if (question) {
+    const answer = question.options[question.correct];
+    question.reforge = {
+      stem: "A firm adapts its overseas promotion for local audiences. What is the strongest reason?",
+      options: {
+        A: "exchange rates are identical in every overseas market",
+        B: answer,
+        C: "imports are always more expensive for every overseas firm",
+        D: "local businesses cannot use digital advertising"
+      },
+      correct: "B"
+    };
+    enforceNoUniqueLongestAnswer(question.reforge);
+  }
+}
