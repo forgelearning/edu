@@ -18863,3 +18863,41 @@ for (const [id, key] of Object.entries(rs2IdMap)) {
   if (question) question.reforge = rs2ReforgeFixes[key];
 }
 for (const key of Object.keys(rs2ReforgeFixes)) enforceNoUniqueLongestAnswer(rs2ReforgeFixes[key]);
+
+// Hand-written Media Studies MEDIA-2 Reforge twins.
+const media2ReforgeFixes = {
+  uses: {stem:"A viewer watches a programme to relax, learn and discuss it with friends. Uses and gratifications theory focuses on the audience's:",options:{A:"Active needs and motives",B:"Passive injection",C:"Production budget",D:"Regulatory code"},correct:"A"},
+  cultivation: {stem:"A researcher links heavy long-term television viewing with stronger beliefs that the world is dangerous. This illustrates:",options:{A:"Cultivation theory",B:"The hypodermic model",C:"Audience fragmentation",D:"Cultural discount"},correct:"A"},
+  hypodermic: {stem:"A campaign assumes every viewer will accept its message immediately and in the same way. Which model does this resemble?",options:{A:"The hypodermic needle model",B:"Uses and gratifications",C:"Reception theory",D:"Two-step flow"},correct:"A"},
+  niche: {stem:"A magazine is designed for a small group of specialist enthusiasts rather than a mass audience. It targets a:",options:{A:"Niche audience",B:"Global conglomerate",C:"Public service remit",D:"Primary institution"},correct:"A"},
+  fragmentation: {stem:"Streaming services give different groups highly specialised content, reducing the shared mass audience. This is audience:",options:{A:"Fragmentation",B:"Cultivation",C:"Convergence",D:"Anchorage"},correct:"A"},
+  rating: {stem:"A broadcaster compares how many households watched two programmes. Which measurement is being used?",options:{A:"A media rating",B:"A stereotype",C:"A preferred reading",D:"A production code"},correct:"A"},
+  ownership: {stem:"A study asks whether a small number of powerful owners can influence the range of viewpoints available in the media. This concerns:",options:{A:"Media ownership and concentration",B:"Audience demographics only",C:"Lighting codes",D:"Narrative order"},correct:"A"},
+  regulation: {stem:"A regulator must balance protecting audiences from harm with preserving freedom of expression. This is a challenge of media:",options:{A:"Regulation",B:"Denotation",C:"Genre",D:"Vertical editing"},correct:"A"},
+  vanzoonen: {stem:"An analysis asks how media texts construct gender and how those representations relate to social power. Which approach is relevant?",options:{A:"Van Zoonen's feminist approach",B:"Uses and gratifications",C:"Cultivation only",D:"The hypodermic model"},correct:"A"},
+  maleGaze: {stem:"A film repeatedly positions the camera to encourage viewers to look at women through a heterosexual male viewpoint. This is the:",options:{A:"Male gaze",B:"Cultural discount",C:"Public service remit",D:"Niche audience"},correct:"A"},
+  cultural: {stem:"A comedy loses some of its appeal when exported because its humour depends on local references. This is a cultural:",options:{A:"Discount",B:"Convergence",C:"Rating",D:"Gatekeeping"},correct:"A"},
+  globalisation: {stem:"A streaming platform distributes the same production across many national markets. This illustrates media:",options:{A:"Globalisation",B:"Audience isolation",C:"Local regulation only",D:"Linear narration"},correct:"A"},
+  gatekeeper: {stem:"An editor decides which stories appear on a newspaper's front page. The editor is acting as a:",options:{A:"Gatekeeper",B:"Niche audience",C:"Cultural discount",D:"User-generated producer"},correct:"A"},
+  ugc: {stem:"A viewer uploads a review that becomes part of a platform's content. This is:",options:{A:"User-generated content",B:"Institutional ownership",C:"A regulation code",D:"A preferred reading"},correct:"A"},
+  algorithm: {stem:"A platform ranks videos using viewing history and predicted interests. This shows how a media:",options:{A:"Algorithm affects visibility",B:"Genre removes choice",C:"Rating measures ideology",D:"Stereotype controls production"},correct:"A"},
+  code: {stem:"A broadcasting standard sets expectations for accuracy, privacy and protection from harm. This is a regulation:",options:{A:"Code",B:"Demographic",C:"Genre",D:"Mode of address"},correct:"A"},
+  target: {stem:"A producer designs a programme specifically for teenage viewers interested in esports. This group is the programme's:",options:{A:"Target audience",B:"Gatekeeper",C:"Regulator",D:"Ownership structure"},correct:"A"},
+  anchorage: {stem:"A caption directs viewers to interpret an ambiguous photograph as evidence of hope. The caption provides:",options:{A:"Denotation",B:"Anchorage",C:"Convergence",D:"A rating"},correct:"B"},
+  stereotype: {stem:"A sitcom repeatedly presents one social group using a simplified and predictable image. This is a:",options:{A:"Stereotype",B:"Media rating",C:"Niche audience",D:"Regulation code"},correct:"A"},
+  preferred: {stem:"A producer encodes a documentary to encourage viewers to support its political argument. The intended reading is:",options:{A:"Preferred",B:"Oppositional",C:"Accidental",D:"Denotative"},correct:"A"},
+  highkey: {stem:"A daytime advert uses bright, shadow-free lighting to create an upbeat mood. This is:",options:{A:"High-key lighting",B:"Low-key lighting",C:"Silhouette lighting",D:"Underlighting"},correct:"A"},
+  nonlinear: {stem:"A drama opens with the ending before returning to earlier events. Its narrative structure is:",options:{A:"Non-linear",B:"Strictly chronological",C:"Documentary-only",D:"Live broadcast"},correct:"A"},
+  vertical: {stem:"A company owns the studio, distributor and platform used to release its films. This is:",options:{A:"Vertical integration",B:"Audience fragmentation",C:"Cultural discount",D:"User-generated content"},correct:"A"},
+  conglomerate: {stem:"A parent corporation owns radio, newspapers, television and film businesses. It is a:",options:{A:"Media conglomerate",B:"Niche audience",C:"Regulation code",D:"Genre convention"},correct:"A"},
+  mode: {stem:"A presenter speaks directly to the camera in relaxed, informal language. This establishes the text's:",options:{A:"Mode of address",B:"Media rating",C:"Ownership pattern",D:"Cultural discount"},correct:"A"}
+};
+const media2IdMap = {
+  "MEDIA-E2-01":"uses", "MEDIA-E2-02":"cultivation", "MEDIA-E2-03":"hypodermic", "MEDIA-E2-04":"niche", "MEDIA-E2-05":"fragmentation", "MEDIA-E2-06":"rating", "MEDIA-E2-07":"ownership", "MEDIA-E2-08":"regulation", "MEDIA-E2-09":"vanzoonen", "MEDIA-E2-10":"maleGaze", "MEDIA-E2-11":"cultural", "MEDIA-E2-12":"globalisation", "MEDIA-E2-13":"gatekeeper", "MEDIA-E2-14":"ugc", "MEDIA-E2-15":"algorithm", "MEDIA-E2-16":"code", "MEDIA-E2-17":"target",
+  "MEDIA-COV-010":"anchorage", "MEDIA-COV-012":"stereotype", "MEDIA-COV-014":"preferred", "MEDIA-COV-016":"highkey", "MEDIA-COV-018":"nonlinear", "MEDIA-COV-020":"vertical", "MEDIA-COV-022":"conglomerate", "MEDIA-COV-024":"mode", "MEDIA-COV-110":"anchorage", "MEDIA-COV-112":"stereotype", "MEDIA-COV-114":"preferred", "MEDIA-COV-116":"highkey", "MEDIA-COV-118":"nonlinear", "MEDIA-COV-120":"vertical", "MEDIA-COV-122":"conglomerate", "MEDIA-COV-124":"mode"
+};
+for (const [id, key] of Object.entries(media2IdMap)) {
+  const question = BANKS["MEDIA-2"].questions.find(item => item.id === id);
+  if (question) question.reforge = media2ReforgeFixes[key];
+}
+for (const key of Object.keys(media2ReforgeFixes)) enforceNoUniqueLongestAnswer(media2ReforgeFixes[key]);
