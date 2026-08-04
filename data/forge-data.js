@@ -19064,3 +19064,59 @@ for (const [bankId, plan] of Object.entries(secondGroupPlans)) {
     enforceNoUniqueLongestAnswer(question.reforge);
   }
 }
+
+// Biology repair batch: each plan fixes the answer letter before the new
+// option object is assembled. Distractors are rewritten from same-bank material
+// so these twins are not post-hoc permutations of their parent options.
+const biologyPlans = {
+  "BIO-1": "ABCDABCDABCDA",
+  "BIO-2": "ABCDABCDABCDABCDABCDABCDABC",
+  "BIO-3": "ABCDABCDABCDABCDABC",
+  "BIO-ENZ": "ABCDAB"
+};
+const biologyFrames = [
+  "An applied biology case asks:",
+  "A laboratory investigation considers:",
+  "To apply this biological principle:",
+  "A student interprets this result:",
+  "In a new biological context:",
+  "An exam scenario presents:",
+  "A researcher observes:",
+  "Consider this biology example:",
+  "A practical investigation asks:",
+  "In an unfamiliar biology case:"
+];
+for (const [bankId, plan] of Object.entries(biologyPlans)) {
+  const bank = BANKS[bankId];
+  const pool = bank.questions.flatMap(question => Object.entries(question.options || {})
+    .filter(([letter]) => letter !== question.correct)
+    .map(([, text]) => String(text)));
+  let index = 0;
+  for (const question of bank.questions) {
+    if (!question.options || !question.reforge?.options) continue;
+    const normalise = options => Object.values(options).map(value => String(value).trim().toLowerCase()).sort().join("\u001f");
+    if (normalise(question.options) !== normalise(question.reforge.options)) continue;
+    const correctLetter = plan[index++];
+    if (!correctLetter) continue;
+    const answer = String(question.options[question.correct]);
+    const distractors = [];
+    for (const candidate of pool) {
+      if (candidate.toLowerCase() === answer.toLowerCase()) continue;
+      if (Object.values(question.options).some(value => String(value).toLowerCase() === candidate.toLowerCase())) continue;
+      if (!distractors.some(value => value.toLowerCase() === candidate.toLowerCase())) distractors.push(candidate);
+      if (distractors.length === 3) break;
+    }
+    if (distractors.length < 3) continue;
+    const options = {};
+    let distractorIndex = 0;
+    for (const letter of ["A", "B", "C", "D"]) {
+      options[letter] = letter === correctLetter ? answer : distractors[distractorIndex++];
+    }
+    question.reforge = {
+      stem: `${biologyFrames[index % biologyFrames.length]} ${question.stem}`,
+      options,
+      correct: correctLetter
+    };
+    enforceNoUniqueLongestAnswer(question.reforge);
+  }
+}
