@@ -6,9 +6,9 @@
 <title>Forge — Quiz</title>
 <meta name="description" content="Practise GCSE and A Level questions mapped to your exam board's spec, with instant misconception-tagged feedback.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Rethink+Sans:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/tokens.css">
-<link rel="stylesheet" href="css/base.css?v=20260812">
+<link rel="stylesheet" href="css/base.css?v=20260814-fonts">
 <link rel="stylesheet" href="css/auth.css">
 <link rel="stylesheet" href="css/sidebar.css">
 <link rel="stylesheet" href="css/components.css?v=20260812">
@@ -23,7 +23,7 @@
 </script>
 <link rel="stylesheet" href="css/states.css">
   <link rel="stylesheet" href="css/generated-utilities.css">
-  <link rel="stylesheet" href="css/page-overrides/forge-quiz.css?v=20260814">
+  <link rel="stylesheet" href="css/page-overrides/forge-quiz.css?v=20260814-pairing1">
 </head>
 <body>
 <script src="scripts/forge-api.js?v=20260809"></script>
@@ -2041,14 +2041,14 @@ function renderMandarinReader() {
       h += '<div class="forge-u-153sad2">';
       ['true','false'].forEach(function(v){
         var sel = tfVal === v;
-        h += '<button data-forge-action="mr-select-tf" data-question-id="'+q.id+'" data-value="'+v+'" style="flex:1;padding:9px;border-radius:var(--radius-sm);border:1px solid '+(sel?'#c9a84c':'var(--line)')+';background:'+(sel?'rgba(201,168,76,0.08)':'transparent')+';color:'+(sel?'#c9a84c':'#8A857E')+';font-size:13px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif">'+(v==='true'?'✓ True':'✗ False')+'</button>';
+        h += '<button data-forge-action="mr-select-tf" data-question-id="'+q.id+'" data-value="'+v+'" style="flex:1;padding:9px;border-radius:var(--radius-sm);border:1px solid '+(sel?'#c9a84c':'var(--line)')+';background:'+(sel?'rgba(201,168,76,0.08)':'transparent')+';color:'+(sel?'#c9a84c':'#8A857E')+';font-size:13px;font-weight:600;cursor:pointer;font-family:\'Poppins\',sans-serif">'+(v==='true'?'✓ True':'✗ False')+'</button>';
       });
       h += '</div>';
       h += '<div id="mr-just-area-'+q.id+'" style="display:'+(tfVal?'block':'none')+'">';
       h += '<div class="forge-u-1da1bnv">Justify — quote directly from the text (in Chinese):</div>';
       h += '<textarea class="forge-u-1v8to55" id="mr-just-'+q.id+'" placeholder="Copy the relevant characters from the passage…"></textarea>';
       h += '</div>';
-      h += '<button data-forge-action="mr-submit" data-question-id="'+q.id+'" id="mr-sbtn-'+q.id+'" '+(isSubmitted||!tfVal?'disabled':'')+' style="width:100%;padding:10px;border-radius:var(--radius-sm);border:none;background:#e8472a;color:#fff;font-family:Inter,sans-serif;font-size:13px;font-weight:600;cursor:pointer;margin-top:12px;opacity:'+(isSubmitted||!tfVal?'.4':'1')+'">Check answer</button>';
+      h += '<button data-forge-action="mr-submit" data-question-id="'+q.id+'" id="mr-sbtn-'+q.id+'" '+(isSubmitted||!tfVal?'disabled':'')+' style="width:100%;padding:10px;border-radius:var(--radius-sm);border:none;background:#e8472a;color:#fff;font-family:\'Poppins\',sans-serif;font-size:13px;font-weight:600;cursor:pointer;margin-top:12px;opacity:'+(isSubmitted||!tfVal?'.4':'1')+'">Check answer</button>';
     } else if (q.type === 'find') {
       h += '<div class="forge-u-paoxfs">📌 '+q.lineRef+'</div>';
       h += '<input class="forge-u-1ldj335" id="mr-find-'+q.id+'" data-forge-action="mr-find-input" data-question-id="'+q.id+'" placeholder="Type the character(s) here…">';
@@ -2063,12 +2063,12 @@ function renderMandarinReader() {
         var bgC = corr ? 'rgba(127,217,138,.08)' : wrong ? 'rgba(255,90,90,.07)' : sel ? 'rgba(201,168,76,.06)' : 'var(--panel-2)';
         var letterC = corr ? 'var(--good)' : wrong ? 'var(--bad)' : sel ? '#c9a84c' : '#8A857E';
         var textStyle = o.zh ? 'font-family:\'Noto Sans SC\',STHeiti,SimHei,sans-serif;font-size:14px' : '';
-        h += '<button data-forge-action="mr-select-mcq" data-question-id="'+q.id+'" data-letter="'+o.k+'" style="display:flex;align-items:flex-start;gap:10px;padding:11px 13px;border-radius:var(--radius-sm);border:1px solid '+borderC+';background:'+bgC+';cursor:pointer;text-align:left;width:100%;margin-bottom:7px;font-family:Inter,sans-serif">';
+        h += '<button data-forge-action="mr-select-mcq" data-question-id="'+q.id+'" data-letter="'+o.k+'" style="display:flex;align-items:flex-start;gap:10px;padding:11px 13px;border-radius:var(--radius-sm);border:1px solid '+borderC+';background:'+bgC+';cursor:pointer;text-align:left;width:100%;margin-bottom:7px;font-family:\'Poppins\',sans-serif">';
         h += '<span style="width:20px;height:20px;border-radius:50%;border:1px solid '+letterC+';display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;color:'+letterC+'">'+o.k+'</span>';
         h += '<span style="font-size:13px;line-height:1.5;color:var(--white);padding-top:1px;'+textStyle+'">'+o.t+'</span>';
         h += '</button>';
       });
-      h += '<button data-forge-action="mr-submit" data-question-id="'+q.id+'" id="mr-sbtn-'+q.id+'" '+(isSubmitted||!selK?'disabled':'')+' style="width:100%;padding:10px;border-radius:var(--radius-sm);border:none;background:#e8472a;color:#fff;font-family:Inter,sans-serif;font-size:13px;font-weight:600;cursor:pointer;margin-top:4px;opacity:'+(isSubmitted||!selK?'.4':'1')+'">Check answer</button>';
+      h += '<button data-forge-action="mr-submit" data-question-id="'+q.id+'" id="mr-sbtn-'+q.id+'" '+(isSubmitted||!selK?'disabled':'')+' style="width:100%;padding:10px;border-radius:var(--radius-sm);border:none;background:#e8472a;color:#fff;font-family:\'Poppins\',sans-serif;font-size:13px;font-weight:600;cursor:pointer;margin-top:4px;opacity:'+(isSubmitted||!selK?'.4':'1')+'">Check answer</button>';
     }
 
     // Feedback
