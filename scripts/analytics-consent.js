@@ -51,15 +51,26 @@
     banner.querySelector('.analytics-consent-accept').addEventListener('click', function () { saveChoice('granted'); });
     // Keep consent visible without covering the primary action or live demo.
     // On the homepage, use the intentional space beneath the hero reassurance
-    // line; other pages place it before their main content.
+    // line. Other pages insert it before their top-level content shell rather
+    // than before a nested <main>, which can accidentally turn the banner into
+    // a grid or flex child (the FAQ layout is one such case).
     var heroSub = document.querySelector('.hero .sub');
-    var insertionPoint = heroSub || document.querySelector('main');
     if (heroSub && heroSub.parentNode) {
       heroSub.parentNode.insertBefore(banner, heroSub.nextSibling);
-    } else if (insertionPoint && insertionPoint.parentNode) {
-      insertionPoint.parentNode.insertBefore(banner, insertionPoint);
     } else {
-      document.body.appendChild(banner);
+      var pageShell = null;
+      var bodyChildren = document.body ? document.body.children : [];
+      for (var i = 0; i < bodyChildren.length; i += 1) {
+        var child = bodyChildren[i];
+        if (child.id === 'sticky-nav' || child.tagName === 'SCRIPT' || child.id === 'analytics-consent-banner') continue;
+        pageShell = child;
+        break;
+      }
+      if (pageShell && pageShell.parentNode) {
+        pageShell.parentNode.insertBefore(banner, pageShell);
+      } else {
+        document.body.appendChild(banner);
+      }
     }
     document.body.classList.add('has-consent-banner');
   }
