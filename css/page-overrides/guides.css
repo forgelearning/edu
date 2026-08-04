@@ -1,6 +1,7 @@
 /* Route-specific overrides for guides.html. Shared rules belong in components.css. */
-body{background:var(--coal);color:var(--slate);font-family:'Inter',sans-serif;font-size:16px;line-height:1.7;-webkit-font-smoothing:antialiased}
-h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter-spacing:-.015em}
+/* Guides pairing: Rethink Sans for display type, Poppins for reading/UI. */
+body{background:var(--coal);color:var(--slate);font-family:'Poppins',sans-serif;font-size:16px;line-height:1.7;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:'Rethink Sans',sans-serif;color:var(--white);line-height:1.1;letter-spacing:-.015em}
 a{color:var(--ember);text-decoration:none}
 a:hover{text-decoration:underline}
 .wrap{max-width:1180px;margin:0 auto;padding:0 32px}
@@ -22,7 +23,7 @@ a:hover{text-decoration:underline}
 
 /* accordion */
 .faq-item{border-bottom:1px solid var(--line)}
-.faq-q{width:100%;background:none;border:none;text-align:left;padding:20px 0;cursor:pointer;display:flex;justify-content:space-between;align-items:flex-start;gap:16px;font-family:'Sora',sans-serif;font-size:18px;font-weight:700;color:var(--white);line-height:1.2}
+.faq-q{width:100%;background:none;border:none;text-align:left;padding:20px 0;cursor:pointer;display:flex;justify-content:space-between;align-items:flex-start;gap:16px;font-family:'Rethink Sans',sans-serif;font-size:18px;font-weight:700;color:var(--white);line-height:1.2}
 .faq-q:hover{color:var(--ember)}
 .faq-chevron{flex-shrink:0;font-size:14px;color:var(--slate);transition:transform .2s;margin-top:3px}
 .faq-q[aria-expanded="true"] .faq-chevron{transform:rotate(180deg)}
