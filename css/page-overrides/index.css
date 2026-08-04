@@ -20,6 +20,7 @@ h1,h2,h3{font-family:'Rethink Sans',sans-serif;font-weight:700;letter-spacing:-.
 .hero h1{font-size:clamp(40px,5.2vw,62px);font-weight:700;letter-spacing:-.025em;line-height:1.03;margin:16px 0 18px;max-width:12ch;text-wrap:balance}
 .hero h1 em{font-style:normal;color:var(--ember)}
 .hero p.lede{font-size:clamp(17px,1.35vw,19px);line-height:1.55;max-width:43ch;text-wrap:pretty}
+.hero p.lede .lede-mobile{display:none}
 .hero .ctas{display:flex;gap:14px;margin-top:30px;flex-wrap:wrap}
 .hero .sub{margin-top:16px;font-size:13px;line-height:1.5;letter-spacing:.01em;color:#A39D94;max-width:44ch}
 .hero-copy > #analytics-consent-banner{width:100%;max-width:none;margin:16px 0 0}
@@ -531,12 +532,14 @@ footer .btn-glass{min-height:50px;padding:0 20px;border-radius:999px;display:inl
 /* Mobile hero: let visitors reach the live question before the supporting
    reassurance and consent UI. The desktop two-column composition is unchanged. */
 @media (max-width:600px){
-  .hero{display:grid;grid-template-columns:1fr;gap:24px;padding-top:18px}
+  .hero-shell{min-height:auto;padding:86px 0 28px}
+  .hero{display:grid;grid-template-columns:1fr;gap:16px;padding-top:8px}
   .hero-copy{display:contents}
   .hero-copy > .tag{grid-row:1}
   .hero-copy > h1{grid-row:2;font-size:clamp(38px,11vw,48px);line-height:1.02;margin-top:12px;margin-bottom:14px}
-  .hero-copy > .lede{grid-row:3;font-size:16px;line-height:1.45}
-  .hero-copy > .lede strong{display:none}
+  .hero-copy > .lede{grid-row:3;font-size:16px;line-height:1.4}
+  .hero-copy > .lede .lede-desktop{display:none}
+  .hero-copy > .lede .lede-mobile{display:inline}
   .hero-copy > .ctas{grid-row:4;margin-top:8px;gap:10px}
   .hero > .demo{grid-row:5}
   .hero-copy > .sub{grid-row:6;margin-top:0}

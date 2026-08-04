@@ -25,8 +25,8 @@ const styles = new Map([
   ['display:flex;gap:16px;flex-wrap:wrap', 'ui-row-gap'],
   ['display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:20px', 'ui-row-actions'],
   ['border-top:1px solid var(--line);padding-top:16px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px', 'ui-footer-row'],
-  ['padding:8px 16px;border-radius:var(--radius-sm);background:var(--panel);border:1px solid var(--line);color:var(--white);font-family:Inter,sans-serif;font-weight:600;font-size:13px;text-decoration:none;white-space:nowrap', 'ui-button-secondary-sm'],
-  ['padding:8px 16px;border-radius:var(--radius-sm);background:var(--ember);color:var(--coal);font-family:Inter,sans-serif;font-weight:700;font-size:13px;text-decoration:none;white-space:nowrap', 'ui-button-primary-sm'],
+  ['padding:8px 16px;border-radius:var(--radius-sm);background:var(--panel);border:1px solid var(--line);color:var(--white);font-family:'IBM Plex Sans',sans-serif;font-weight:600;font-size:13px;text-decoration:none;white-space:nowrap', 'ui-button-secondary-sm'],
+  ['padding:8px 16px;border-radius:var(--radius-sm);background:var(--ember);color:var(--coal);font-family:'IBM Plex Sans',sans-serif;font-weight:700;font-size:13px;text-decoration:none;white-space:nowrap', 'ui-button-primary-sm'],
   ['text-decoration:none;display:inline-flex;align-items:center;padding:0 18px;height:44px;border-radius:var(--radius-md);border:1px solid var(--line)', 'ui-button-outline-lg'],
 ]);
 
