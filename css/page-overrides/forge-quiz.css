@@ -128,3 +128,202 @@ h1,h2,h3{font-family:'Rethink Sans',sans-serif;color:var(--white);line-height:1.
 .forge-result-links{display:flex;justify-content:center;flex-wrap:wrap;gap:8px 20px;margin:18px auto 0;padding-top:16px;border-top:1px solid var(--line);font-size:13px}
 .forge-result-links a{color:var(--hot);text-decoration:none}
 .forge-result-links a:hover{text-decoration:underline}
+
+/* Student experience pass: keep the quiz feeling like a focused workbench. */
+#app{max-width:680px;margin:0 auto}
+#app>.forge-u-lp9fq9{margin:-10px 0 14px;color:var(--dim);font-size:12px}
+.quiz-header{padding-bottom:14px;margin-bottom:14px;border-bottom:1px solid var(--line)}
+.quiz-header .bank-name{font-family:'Rethink Sans',sans-serif;font-size:17px;letter-spacing:-.01em}
+.quiz-header .back-btn{min-height:40px;padding:0 10px;border:1px solid transparent;border-radius:var(--radius-sm);transition:color .15s,background .15s,border-color .15s}
+.quiz-header .back-btn:hover{background:var(--panel);border-color:var(--line);color:var(--white)}
+.progress-bar{height:6px;margin-bottom:24px;border-radius:var(--radius-pill);overflow:hidden;background:var(--panel-2)}
+.progress-fill{height:100%;border-radius:inherit;box-shadow:0 0 12px rgba(255,107,44,.28);transition:width .3s ease}
+.q-meta{margin-bottom:10px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.01em}
+.q-id{border:1px solid currentColor;background:var(--surface-action-subtle)!important}
+.stem{font-family:'Rethink Sans',sans-serif;font-size:22px;line-height:1.3;letter-spacing:-.01em;text-wrap:pretty;margin-bottom:22px}
+.opt{min-height:50px;padding:13px 15px;border-width:1px;background:var(--panel);transition:border-color .15s,background .15s,opacity .15s,box-shadow .15s}
+.opt:focus-visible,.fb-blank:focus-visible,.fb-word:focus-visible,.reforge-trigger:focus-visible,.next-btn:focus-visible,.fb-check-btn:focus-visible,.btn-primary:focus-visible,.btn-secondary:focus-visible,.join-btn:focus-visible,.join-input:focus-visible{outline:2px solid var(--hot);outline-offset:3px}
+.opt:hover:not(.answered){background:var(--panel-2);box-shadow:0 5px 18px rgba(0,0,0,.14)}
+.opt .letter{font-family:'JetBrains Mono',monospace;color:var(--dim)}
+.opt.correct{background:var(--surface-success-subtle)}
+.opt.wrong{background:var(--surface-error-subtle)}
+.fb-blank.filled{background:var(--surface-action-subtle)}
+.fb-blank.correct{background:var(--surface-success-subtle)}
+.fb-blank.wrong{background:var(--surface-error-subtle)}
+.scaffold-box{background:var(--surface-focus-subtle);border-color:rgba(255,201,60,.45)}
+.praise-box{background:var(--surface-success-subtle);border-color:var(--good)}
+.reforge-trigger{min-height:44px;background:var(--ember);color:#fff;transition:background .15s,transform .15s}
+.reforge-trigger:hover{background:var(--hot);color:var(--coal);transform:translateY(-1px)}
+.reforge-box{background:var(--panel-2);box-shadow:0 16px 34px -26px rgba(0,0,0,.8)}
+.next-btn{min-height:44px;background:var(--ember);color:#fff;transition:background .15s,transform .15s}
+.next-btn:hover{background:var(--hot);color:var(--coal);transform:translateY(-1px)}
+.results{padding-top:48px}
+.results .pct{font-size:clamp(60px,12vw,88px);line-height:.95;text-shadow:0 8px 28px rgba(255,107,44,.14)}
+.results .detail{margin-bottom:20px}
+.results .btns button{min-height:44px}
+.join-input{min-height:48px}
+.join-btn{min-height:48px}
+@media(max-width:600px){
+  #app{width:100%}
+  .wrap{padding:20px 16px}
+  .quiz-header{align-items:flex-start;gap:8px;flex-wrap:wrap}
+  .quiz-header .bank-name{order:3;width:100%;font-size:16px}
+  .stem{font-size:20px}
+  .opt{min-height:52px}
+  .fb-word{min-height:44px;display:inline-flex;align-items:center}
+  .next-btn{float:none;width:100%}
+  .results{padding-top:28px}
+  .results .btns{flex-direction:column}
+  .results .btns button{width:100%}
+}
+@media(prefers-reduced-motion:reduce){
+  .progress-fill,.opt,.reforge-trigger,.next-btn{transition:none}
+  .reforge-trigger:hover,.next-btn:hover{transform:none}
+}
+
+/* Forge Quiz: Operate pass — a sharper, calmer live-question workbench. */
+#app{max-width:760px}
+.wrap{max-width:760px}
+.quiz-header{position:relative;align-items:center;gap:18px;padding:16px 0 15px;border-top:1px solid var(--line)}
+.quiz-header .bank-name{font-size:18px;font-weight:700;letter-spacing:-.02em}
+.quiz-header .back-btn{flex:0 0 auto}
+.progress-bar{height:8px;margin:0 0 26px;background:var(--panel-2);box-shadow:inset 0 0 0 1px rgba(255,255,255,.03)}
+.progress-fill{box-shadow:0 0 16px rgba(255,107,44,.38)}
+.q-meta{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px;color:var(--dim)}
+.q-id{letter-spacing:.08em;text-transform:uppercase}
+.stem{max-width:34ch;font-size:clamp(24px,3.6vw,34px);line-height:1.18;letter-spacing:-.025em;margin-bottom:26px}
+.options{gap:12px}
+.opt{min-height:60px;padding:16px 18px;border-radius:var(--radius-md);font-size:16px;line-height:1.4;transition:transform .18s ease,border-color .18s ease,background .18s ease,box-shadow .18s ease,opacity .18s ease}
+.opt .letter{font-size:12px;font-weight:600;letter-spacing:.08em}
+.opt:hover:not(.answered){transform:translateX(4px);box-shadow:8px 10px 24px -20px rgba(255,107,44,.8)}
+#feedback{margin-top:20px;contain:layout paint}
+.scaffold-box,.praise-box{padding:18px 20px;border-top-width:2px;contain:layout paint}
+.scaffold-box .stag,.praise-box .stag{letter-spacing:.08em}
+.next-btn{float:none;display:block;margin:18px 0 0 auto;min-width:132px;padding:12px 22px;border-radius:var(--radius-pill);font-size:15px;box-shadow:0 10px 22px -16px rgba(255,107,44,.9)}
+.reforge-box{margin-top:28px;contain:layout paint}
+.reforge-trigger{border-radius:var(--radius-pill);box-shadow:0 10px 22px -18px rgba(255,107,44,.9)}
+.results{contain:layout paint}
+
+@media(prefers-reduced-motion:no-preference){
+  .scaffold-box,.praise-box{animation:quiz-feedback-in .34s cubic-bezier(.22,1,.36,1) both}
+  .next-btn{animation:quiz-next-in .28s cubic-bezier(.22,1,.36,1) both}
+  .reforge-box{animation:quiz-reforge-in .4s cubic-bezier(.22,1,.36,1) both}
+  @keyframes quiz-feedback-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes quiz-next-in{from{opacity:0;transform:translateY(6px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+  @keyframes quiz-reforge-in{from{opacity:0;clip-path:inset(0 0 12% 0)}to{opacity:1;clip-path:inset(0 0 0 0)}}
+}
+
+@media(max-width:600px){
+  #app,.wrap{max-width:none}
+  .wrap{padding:18px 16px 28px}
+  .quiz-header{align-items:flex-start;gap:8px;padding-top:12px}
+  .quiz-header .bank-name{font-size:16px}
+  .progress-bar{height:7px;margin-bottom:22px}
+  .stem{max-width:none;font-size:22px;line-height:1.24;margin-bottom:22px}
+  .opt{min-height:56px;padding:15px 14px;font-size:15px}
+  .opt:hover:not(.answered){transform:none}
+  .scaffold-box,.praise-box{padding:16px}
+  .next-btn{width:100%;margin-top:16px}
+  .reforge-box{margin-top:22px}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .opt{transition:border-color .15s ease,background .15s ease,opacity .15s ease,box-shadow .15s ease}
+  .opt:hover:not(.answered){transform:none}
+}
+
+/* Overdrive: Live Rep Instrument. The session itself becomes the interface chrome. */
+#app:has(.quiz-header){
+  position:relative;
+  padding-top:18px;
+  --rep-accent:var(--ember);
+}
+#app:has(.quiz-header)::before{
+  content:"LIVE REP  /  FOCUSED SESSION";
+  display:flex;
+  align-items:center;
+  gap:10px;
+  min-height:24px;
+  margin-bottom:8px;
+  color:var(--hot);
+  font:600 10px/1 'JetBrains Mono',monospace;
+  letter-spacing:.14em;
+}
+#app:has(.quiz-header)::after{
+  content:"";
+  position:absolute;
+  top:0;
+  left:0;
+  width:52px;
+  height:2px;
+  background:var(--hot);
+  box-shadow:0 0 14px rgba(255,201,60,.55);
+}
+#app:has(.quiz-header) .quiz-header{
+  border-top:0;
+  border-bottom-color:rgba(255,201,60,.28);
+}
+#app:has(.quiz-header) .progress-bar{
+  position:relative;
+  isolation:isolate;
+  border:1px solid rgba(255,201,60,.18);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.03),0 10px 24px -22px rgba(255,107,44,.9);
+}
+#app:has(.quiz-header) .progress-fill{
+  position:relative;
+  z-index:1;
+  filter:saturate(1.15);
+}
+#app:has(.quiz-header) .q-meta{
+  min-height:30px;
+  padding:0 2px;
+}
+#app:has(.quiz-header) .q-meta>span:last-child{
+  color:var(--slate);
+  font-size:11px;
+}
+#app:has(.quiz-header) .stem{
+  text-wrap:balance;
+  text-shadow:0 10px 28px rgba(255,107,44,.08);
+}
+#app:has(.quiz-header) .options{
+  position:relative;
+  padding:4px 0;
+}
+#app:has(.quiz-header) .opt{
+  position:relative;
+  border-color:rgba(255,255,255,.14);
+}
+#app:has(.quiz-header) .opt.correct{box-shadow:0 12px 28px -22px rgba(80,200,120,.85)}
+#app:has(.quiz-header) .opt.wrong{box-shadow:0 12px 28px -22px rgba(255,90,80,.85)}
+#app:has(.quiz-header):has(.opt.correct) .progress-bar{box-shadow:inset 0 0 0 1px rgba(80,200,120,.12),0 10px 24px -20px rgba(80,200,120,.7)}
+#app:has(.quiz-header):has(.opt.wrong) .progress-bar{box-shadow:inset 0 0 0 1px rgba(255,90,80,.14),0 10px 24px -20px rgba(255,90,80,.7)}
+#app:has(.quiz-header) #feedback{scroll-margin-top:24px}
+#app:has(.quiz-header) .reforge-box{
+  border-color:rgba(255,201,60,.32)!important;
+  background:linear-gradient(135deg,var(--panel-2),rgba(255,107,44,.07));
+}
+#app:has(.quiz-header) .rf-tag{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  letter-spacing:.12em;
+}
+#app:has(.quiz-header) .rf-tag::before{
+  content:"↻";
+  font-size:16px;
+  line-height:1;
+}
+
+@media(prefers-reduced-motion:no-preference){
+  #app:has(.quiz-header) .progress-fill{animation:rep-signal 1.8s ease-out both}
+  @keyframes rep-signal{from{filter:saturate(.8) brightness(.9)}to{filter:saturate(1.15) brightness(1)}}
+}
+
+@media(max-width:600px){
+  #app:has(.quiz-header){padding-top:14px}
+  #app:has(.quiz-header)::before{margin-bottom:4px;font-size:9px;letter-spacing:.11em}
+  #app:has(.quiz-header) .quiz-header{padding-top:10px}
+  #app:has(.quiz-header) .q-meta>span:last-child{font-size:10px}
+  #app:has(.quiz-header) .rf-tag::before{font-size:14px}
+}

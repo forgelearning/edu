@@ -86,3 +86,33 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
 .forge-u-k85mqv tbody td:last-child{border-radius:0 var(--radius-sm) var(--radius-sm) 0}
 .forge-u-1rlm34s{white-space:normal;overflow-wrap:anywhere}
 @media(max-width:600px){.forge-u-k85mqv{font-size:12px}.forge-u-k85mqv th,.forge-u-k85mqv td{padding:9px 5px}.forge-u-k85mqv th:nth-child(4){width:40%}}
+
+/* Student experience pass: make the profile a readable readiness overview. */
+body{font-family:'Poppins',sans-serif}
+h1,h2,h3,.prof-name,.rank-title,.grade-letter,.logo{font-family:'Rethink Sans',sans-serif}
+.wrap{padding-top:42px;padding-bottom:56px}
+#app{max-width:860px;margin:0 auto}
+.prof-tabs{margin:0 auto 24px}
+.prof-tab{font-family:'Poppins',sans-serif;min-height:40px}
+.prof-header,.card,.rank-display{background:var(--glass-panel);backdrop-filter:blur(var(--glass-blur));-webkit-backdrop-filter:blur(var(--glass-blur))}
+.prof-header{padding:24px 28px}
+.prof-name{font-size:24px;letter-spacing:-.02em}
+.stat-n{font-family:'Rethink Sans',sans-serif}
+.card-title{color:var(--hot)}
+.focus-item{background:var(--surface-error-subtle)}
+.strength-item{background:var(--surface-success-subtle);border-bottom-color:var(--line);padding:11px 12px;border-radius:var(--radius-sm);margin-bottom:6px}
+.focus-detail,.grade-desc,.prof-footer{line-height:1.55}
+.focus-item a,.prof-footer a{color:var(--hot)}
+.mc-item{background:var(--surface-error-subtle)}
+.grade-card{background:var(--panel-2)}
+.prof-tab:focus-visible,.join-input:focus-visible,.join-btn:focus-visible,.focus-item a:focus-visible,.prof-header a:focus-visible{outline:2px solid var(--hot);outline-offset:3px}
+@media(max-width:600px){
+  .wrap{padding:20px 16px 36px}
+  .prof-tabs{width:100%;justify-content:center}
+  .prof-tab{flex:1;padding:8px 10px}
+  .prof-header{padding:20px 16px}
+  .prof-header-top{gap:12px;flex-direction:column}
+  .always-updating{align-self:flex-start}
+  .stat-row{gap:10px}
+  .stat-n{font-size:28px}
+}

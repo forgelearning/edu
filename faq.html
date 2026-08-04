@@ -6,7 +6,7 @@
 <title>Forge — FAQ for School Leaders</title>
 <meta name="description" content="Answers to the questions school leaders, heads of department, and SENCOs ask about Forge — what it does, what it doesn't, inclusion, data protection, and what's coming.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Rethink+Sans:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/tokens.css">
 <link rel="stylesheet" href="css/base.css?v=20260814-fonts">
 
@@ -592,6 +592,10 @@ document.querySelectorAll('.faq-q').forEach(function(btn, index) {
   answer.id = answerId;
   answer.setAttribute('role', 'region');
   answer.setAttribute('aria-labelledby', buttonId);
+  var answerInner = document.createElement('div');
+  answerInner.className = 'faq-a__inner';
+  while (answer.firstChild) answerInner.appendChild(answer.firstChild);
+  answer.appendChild(answerInner);
   answer.hidden = true;
   btn.onclick = function() {
     var expanded = btn.getAttribute('aria-expanded') === 'true';
@@ -613,7 +617,7 @@ var observer = new IntersectionObserver(function(entries) {
       });
     }
   });
-}, { rootMargin: '-20% 0px -70% 0px' });
+}, { rootMargin: '-10% 0px -10% 0px' });
 sections.forEach(function(s) { observer.observe(s); });
 </script>
 <script src="scripts/nav.js"></script>

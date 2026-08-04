@@ -79,3 +79,68 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
 [data-theme="light"] .join-btn,[data-theme="light"] .next-btn,[data-theme="light"] .btn-danger{color:#fff}
 @media(max-width:600px){.big-pct{font-size:60px}}
 [data-theme="light"] .forge-logo-dark{display:none!important}[data-theme="light"] .forge-logo-light{display:inline!important}
+
+/* Student experience pass: make pressure-testing feel deliberate, not noisy. */
+body{font-family:'Poppins',sans-serif}
+h1,h2,h3,.logo{font-family:'Rethink Sans',sans-serif}
+.wrap{padding-top:42px;padding-bottom:56px}
+#app{max-width:680px;margin:0 auto}
+.tag{margin-bottom:10px}
+.pick-btn{min-height:72px;padding:17px 18px;background:var(--glass-panel);font-family:'Poppins',sans-serif;transition:border-color .15s,background .15s,transform .15s,box-shadow .15s}
+.pick-btn:hover{background:var(--panel-2);transform:translateY(-1px);box-shadow:0 12px 24px -22px rgba(0,0,0,.9)}
+.pick-btn h3{font-family:'Rethink Sans',sans-serif;font-size:18px}
+.pick-btn .sub{color:var(--dim)}
+.forge-recommendation{margin:0 0 20px}
+.timer-wrap{margin-bottom:24px}
+.timer-text{font-family:'Rethink Sans',sans-serif}
+.progress-bar{height:6px;border-radius:var(--radius-pill);overflow:hidden;background:var(--panel-2)}
+.progress-fill{height:100%;border-radius:inherit;box-shadow:0 0 12px rgba(255,90,90,.28)}
+.q-header{padding-bottom:14px;margin-bottom:14px;border-bottom:1px solid var(--line);font-family:'JetBrains Mono',monospace;font-size:11px}
+.q-id{border:1px solid currentColor;background:var(--surface-error-subtle)}
+.stem{font-family:'Rethink Sans',sans-serif;font-size:22px;line-height:1.3;letter-spacing:-.01em;text-wrap:pretty}
+.opt{min-height:50px;padding:13px 15px;border-width:1px;background:var(--panel);font-family:'Poppins',sans-serif;transition:border-color .15s,background .15s,opacity .15s,box-shadow .15s}
+.opt:hover:not(.answered){background:var(--panel-2);box-shadow:0 5px 18px rgba(0,0,0,.14)}
+.opt .letter{font-family:'JetBrains Mono',monospace;color:var(--dim)}
+.opt.correct{background:var(--surface-success-subtle)}
+.opt.wrong{background:var(--surface-error-subtle)}
+.no-scaffold,.time-up-banner{background:var(--surface-error-subtle)}
+.next-btn{min-height:44px;background:var(--bad);font-family:'Poppins',sans-serif;transition:background .15s,transform .15s}
+.next-btn:hover{background:var(--hot);color:var(--coal);transform:translateY(-1px)}
+.results-card{background:var(--glass-panel);padding:28px;border-color:rgba(255,90,90,.4)}
+.big-pct{font-family:'Rethink Sans',sans-serif;font-size:clamp(64px,12vw,88px)}
+.results-btns button{min-height:44px;font-family:'Poppins',sans-serif}
+.back-btn,.join-input,.join-btn{font-family:'Poppins',sans-serif}
+.join-input{min-height:48px}
+.join-btn{min-height:48px}
+.back-btn:focus-visible,.pick-btn:focus-visible,.opt:focus-visible,.next-btn:focus-visible,.join-input:focus-visible,.join-btn:focus-visible,.results-btns button:focus-visible{outline:2px solid var(--hot);outline-offset:3px}
+@media(max-width:600px){
+  .wrap{padding:20px 16px 36px}
+  .stem{font-size:20px}
+  .opt{min-height:52px}
+  .next-btn{float:none;width:100%}
+  .results-btns{flex-direction:column}
+  .results-btns button{width:100%}
+}
+@media(prefers-reduced-motion:reduce){.pick-btn,.opt,.next-btn{transition:none}.pick-btn:hover,.next-btn:hover{transform:none}}
+
+/* Entry screen pass: give the timed mode a deliberate threshold before the clock starts. */
+.crucible-ready{
+  margin:clamp(24px,8vh,72px) 0 clamp(36px,10vh,88px);
+  padding:clamp(28px,5vw,52px) clamp(20px,6vw,64px);
+  background:var(--glass-panel);
+  border:1px solid rgba(255,90,90,.28);
+  border-radius:var(--radius-lg);
+  box-shadow:0 22px 52px -34px rgba(0,0,0,.9);
+}
+.crucible-ready .tag{color:var(--bad)}
+.crucible-ready h1{margin:12px 0 8px;font-size:clamp(42px,8vw,68px);letter-spacing:-.045em}
+.crucible-ready .forge-u-1ls6geo{margin-bottom:24px;font-size:clamp(20px,3vw,28px);color:var(--slate)}
+.crucible-ready .forge-u-1vwx933{margin-top:26px}
+.crucible-ready > div:not(.forge-button){display:grid;gap:8px;color:var(--slate)}
+.crucible-begin-btn{min-width:156px;min-height:52px;background:var(--bad)!important;color:#fff!important;box-shadow:0 10px 24px -16px rgba(255,90,90,.9);transition:background .15s,transform .15s,box-shadow .15s}
+.crucible-begin-btn:hover{background:#ff7474!important;color:#fff!important;transform:translateY(-2px);box-shadow:0 16px 30px -18px rgba(255,90,90,.95)}
+@media(max-width:600px){
+  .crucible-ready{margin:18px 0 36px;padding:30px 18px}
+  .crucible-ready .forge-u-1vwx933{width:100%}
+}
+@media(prefers-reduced-motion:reduce){.crucible-begin-btn{transition:none}.crucible-begin-btn:hover{transform:none}}

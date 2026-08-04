@@ -6,7 +6,7 @@
 <title>Forge — The Crucible</title>
 <meta name="description" content="Timed, no-hints exam-pressure practice for GCSE and A Level. The Crucible trains you for real exam conditions.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&family=Rethink+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/tokens.css">
 <link rel="stylesheet" href="css/base.css?v=20260814-fonts">
 <link rel="stylesheet" href="css/auth.css">
@@ -301,7 +301,7 @@ function renderReady(){
   var subj=SUBJECTS[state.subject];
   var bankName=state.bank==='ALL'?'All topics':BANKS[state.bank].label;
   var h='<button class="back-btn" data-forge-action="crucible-bank">\u2190 Back</button>';
-  h+='<div class="center">';
+  h+='<div class="center crucible-ready">';
   h+='<p class="tag forge-u-8jlsd7">THE CRUCIBLE</p>';
   h+='<h1 class="forge-u-1w1cjfn">Ready?</h1>';
   h+='<p class="forge-u-1ls6geo">'+bankName+'</p>';
@@ -316,7 +316,7 @@ function renderReady(){
   h+='<div>\u2713 Wrong answers go to your Anvil automatically</div>';
   h+='<div>\u2713 Timer stops for no one</div>';
   h+='</div>';
-  h+='<button class="forge-button forge-button--primary forge-u-1vwx933" data-forge-action="crucible-start">Begin \u2192</button>';
+  h+='<button class="forge-button forge-button--primary crucible-begin-btn forge-u-1vwx933" data-forge-action="crucible-start">Begin \u2192</button>';
   h+='</div>';
   app.innerHTML=h;
 }
