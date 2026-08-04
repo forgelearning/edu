@@ -28,6 +28,13 @@
   <link rel="stylesheet" href="css/content-status.css">
 </head>
 <body>
+<script>
+  (function () {
+    var allowed = { 'command-centre': 1, 'learning-loop': 1, 'control-room': 1 };
+    var requested = new URLSearchParams(window.location.search).get('overdrive') || 'command-centre';
+    if (allowed[requested]) document.documentElement.setAttribute('data-overdrive', requested);
+  }());
+</script>
 <script src="scripts/forge-api.js?v=20260815"></script>
 <script src="scripts/forge-state.js"></script>
 <script src="scripts/forge-logo.js"></script>

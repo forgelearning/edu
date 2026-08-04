@@ -15,7 +15,7 @@
 <meta name="twitter:description" content="A Level Economics practice mapped to Edexcel 9EC0 — 515 questions across markets, the UK economy, business behaviour and the global economy. Misconception-tagged, spec by spec.">
 <meta name="twitter:image" content="https://forgelearning.github.io/edu/og-image.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Rethink+Sans:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/tokens.css">
 <link rel="stylesheet" href="css/subject-pages.css">
 <link rel="stylesheet" href="css/base.css?v=20260814-fonts">
@@ -201,6 +201,16 @@
 </div>
 
 <script>
+function feedbackHtml(value){
+  var escaped = String(value || 'Review the definition and apply it to the question.')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+  return escaped
+    .replace(/&lt;b&gt;/gi, '<b>')
+    .replace(/&lt;\/b&gt;/gi, '</b>');
+}
+
 document.querySelectorAll('#eco-bank .bq').forEach(function(card){
   card.querySelectorAll('.opt').forEach(function(btn){
     btn.addEventListener('click', function(){
@@ -213,7 +223,7 @@ document.querySelectorAll('#eco-bank .bq').forEach(function(card){
         btn.classList.add('wrong');
         var scaffold = card.querySelector('.scaffold');
         scaffold.querySelector('.stag').textContent = btn.dataset.mc || 'Concept check';
-        scaffold.querySelector('p').textContent = btn.dataset.s || 'Review the definition and apply it to the question.';
+        scaffold.querySelector('p').innerHTML = feedbackHtml(btn.dataset.s);
         scaffold.classList.add('show');
       }
     });

@@ -55,3 +55,19 @@ h1,h2,h3{font-family:'Rethink Sans',sans-serif;color:var(--white);line-height:1.
 @media(max-width:680px){.stat-grid{grid-template-columns:1fr 1fr}.stat-support{gap:6px;line-height:1.6}.stat-support span+span::before{margin-right:6px}.two-col{grid-template-columns:1fr}}
 @media(max-width:820px){.wrap{padding:20px 16px 32px}}
 [data-theme="light"] .forge-logo-dark{display:none!important}[data-theme="light"] .forge-logo-light{display:block!important}
+
+/* Audience pass: make school-level evidence feel calm, legible and decisive. */
+.wrap{padding:42px 32px 56px}
+.dash-header{padding-bottom:18px;border-bottom:1px solid var(--line);margin-bottom:20px}
+.dash-header h1{font-size:clamp(30px,4vw,46px);letter-spacing:-.025em}
+.dash-meta{font-size:14px}
+.stat-card,.card{background:var(--glass-panel);backdrop-filter:blur(var(--glass-blur));-webkit-backdrop-filter:blur(var(--glass-blur));box-shadow:0 12px 30px -26px rgba(0,0,0,.8)}
+.stat-card{padding:20px 16px}
+.stat-card:first-child{background:var(--surface-focus-subtle)}
+.card-title{color:var(--hot)}
+.tabs{box-shadow:0 10px 26px -24px rgba(0,0,0,.8)}
+.tab:focus-visible,.export-btn:focus-visible,.signout-btn:focus-visible,.code-input:focus-visible,.btn:focus-visible{outline:2px solid var(--hot);outline-offset:3px}
+.mc-tag{background:var(--surface-error-subtle)}
+.subject-badge{background:var(--surface-action-subtle)}
+.overview-table tr:hover{background:var(--panel-2)}
+@media(max-width:820px){.wrap{padding:20px 16px 36px}.dash-header h1{font-size:32px}}

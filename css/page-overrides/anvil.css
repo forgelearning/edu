@@ -27,8 +27,8 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
 
 .anvil-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-lg);padding:20px;margin-bottom:12px;cursor:pointer;transition:border-color .15s}
 .anvil-card:hover{border-color:var(--ember)}
-.anvil-card.active-mc{border-left:3px solid var(--bad)}
-.anvil-card.resolved-mc{border-left:3px solid var(--good);opacity:.6}
+.anvil-card.active-mc{border-color:var(--bad)}
+.anvil-card.resolved-mc{border-color:var(--good);opacity:.6}
 .anvil-top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
 .anvil-tag{font-size:11px;color:var(--coal);background:var(--hot);padding:2px 8px;border-radius:var(--radius-xs);font-weight:600;font-family:'JetBrains Mono',monospace}
 .anvil-label{color:var(--white);font-size:14px;font-weight:600;margin-top:6px}
@@ -66,3 +66,47 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
 [data-theme="light"] .join-btn{color:#fff}
 @media(max-width:600px){.stat-row{grid-template-columns:1fr}}
 [data-theme="light"] .forge-logo-dark{display:none!important}[data-theme="light"] .forge-logo-light{display:inline!important}
+
+/* Student experience pass: make repair feel precise, visible and recoverable. */
+body{font-family:'Poppins',sans-serif}
+h1,h2,h3,.logo{font-family:'Rethink Sans',sans-serif}
+.wrap{padding-top:42px;padding-bottom:56px}
+#app{max-width:680px;margin:0 auto}
+.center .tag{margin-bottom:10px}
+.center h1{font-size:clamp(30px,5vw,44px);letter-spacing:-.025em;margin-bottom:8px}
+.center>p:last-of-type{color:var(--dim);font-size:13px}
+.stat-row{gap:10px;margin:24px 0 20px}
+.stat{background:var(--glass-panel);backdrop-filter:blur(var(--glass-blur));-webkit-backdrop-filter:blur(var(--glass-blur));padding:16px 12px}
+.stat-n{font-family:'Rethink Sans',sans-serif;font-size:32px}
+.stat-l{font-family:'JetBrains Mono',monospace;color:var(--dim)}
+.forge-recommendation{margin:0 0 20px}
+.anvil-card{padding:20px;background:var(--glass-panel);transition:border-color .15s,background .15s,transform .15s,box-shadow .15s}
+.anvil-card:hover{background:var(--panel-2);transform:translateY(-1px);box-shadow:0 12px 24px -22px rgba(0,0,0,.9)}
+.anvil-card.active-mc{border-left:1px solid var(--bad);background:var(--surface-error-subtle)}
+.anvil-card.resolved-mc{border-left:1px solid var(--good);background:var(--surface-success-subtle);opacity:.78}
+.anvil-label{font-family:'Rethink Sans',sans-serif;font-size:17px}
+.anvil-meta,.anvil-streak{font-family:'JetBrains Mono',monospace;color:var(--dim)}
+.opt{min-height:50px;padding:13px 15px;border-width:1px;background:var(--panel);font-family:'Poppins',sans-serif;transition:border-color .15s,background .15s,opacity .15s,box-shadow .15s}
+.opt:hover:not(.answered){background:var(--panel-2);box-shadow:0 5px 18px rgba(0,0,0,.14)}
+.opt .letter{font-family:'JetBrains Mono',monospace;color:var(--dim)}
+.opt.correct{background:var(--surface-success-subtle)}
+.opt.wrong{background:var(--surface-error-subtle)}
+.scaffold-box{background:var(--surface-focus-subtle)}
+.praise-box{background:var(--surface-success-subtle)}
+.next-btn{min-height:44px;background:var(--ember);color:#fff;font-family:'Poppins',sans-serif;transition:background .15s,transform .15s}
+.next-btn:hover{background:var(--hot);color:var(--coal);transform:translateY(-1px)}
+.back-btn,.join-input,.join-btn{font-family:'Poppins',sans-serif}
+.join-input{min-height:48px}
+.join-btn{min-height:48px}
+.back-btn:focus-visible,.opt:focus-visible,.next-btn:focus-visible,.join-input:focus-visible,.join-btn:focus-visible,.anvil-card:focus-visible{outline:2px solid var(--hot);outline-offset:3px}
+.cleared-banner{background:var(--surface-success-subtle);padding:32px 20px}
+@media(max-width:600px){
+  .wrap{padding:20px 16px 36px}
+  .stat-row{grid-template-columns:repeat(3,1fr);gap:8px}
+  .stat{padding:13px 8px}
+  .stat-n{font-size:27px}
+  .stat-l{font-size:9px}
+  .opt{min-height:52px}
+  .next-btn{float:none;width:100%}
+}
+@media(prefers-reduced-motion:reduce){.anvil-card,.opt,.next-btn{transition:none}.anvil-card:hover,.next-btn:hover{transform:none}}
