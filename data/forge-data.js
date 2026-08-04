@@ -18936,6 +18936,55 @@ for (const key of Object.keys(media2ReforgeFixes)) enforceNoUniqueLongestAnswer(
     if (fix) question.reforge = { stem: fix.stem, options: fix.options, correct: fix.correct };
   }
 }
+
+// Chemistry content pass: the CHEM-1 COV cluster had reused isotope
+// distractors for unrelated organic and analytical chemistry questions.
+const chemistryClusterIds = new Set([
+  "CHEM-E1B-01", "CHEM-COV-061", "CHEM-COV-064", "CHEM-COV-067", "CHEM-COV-070",
+  "CHEM-COV-073", "CHEM-COV-076", "CHEM-COV-079", "CHEM-COV-082", "CHEM-COV-085"
+]);
+for (const question of BANKS["CHEM-1"].questions) {
+  if (!chemistryClusterIds.has(question.id) || !question.reforge) continue;
+  const answer = String(question.options[question.correct]);
+  const distractors = Object.entries(question.options)
+    .filter(([letter]) => letter !== question.correct)
+    .map(([, value]) => String(value)
+      .replace(/\s+(?:for this decision|in this case|in this context|under standard assumptions|in a typical case)/gi, "")
+      .trim());
+  const options = {};
+  let distractorIndex = 0;
+  for (const letter of ["A", "B", "C", "D"]) {
+    options[letter] = letter === question.reforge.correct ? answer : distractors[distractorIndex++];
+  }
+  question.reforge.options = options;
+  const otherLetters = ["A", "B", "C", "D"].filter(letter => letter !== question.reforge.correct);
+  const balanceTails = [" under the chemical conditions described", " for the reaction described in the question", " in the chemistry scenario given"];
+  let tailIndex = 0;
+  const answerLength = answer.length;
+  while (Math.max(...otherLetters.map(letter => String(options[letter]).length)) < answerLength && tailIndex < 40) {
+    const letter = otherLetters[tailIndex % otherLetters.length];
+    const tail = balanceTails[Math.floor(tailIndex / otherLetters.length) % balanceTails.length];
+    if (!String(options[letter]).endsWith(tail)) options[letter] += tail;
+    tailIndex++;
+  }
+}
+
+// History content pass: remove the repeated non-answer distractor that was
+// attached to coverage questions across all five A-level History banks.
+for (const bankId of ["HIST-BRIT1", "HIST-BRIT2", "HIST-USA1", "HIST-USA2", "HIST-TUDOR"]) {
+  for (const question of BANKS[bankId].questions) {
+    if (!question.reforge) continue;
+    const genericLetter = Object.keys(question.reforge.options).find(letter =>
+      String(question.reforge.options[letter]).trim().toLowerCase() === "it cannot be tested using historical evidence"
+    );
+    if (!genericLetter) continue;
+    const replacement = Object.entries(question.options)
+      .filter(([letter, value]) => letter !== question.correct && String(value).trim().toLowerCase() !== String(question.reforge.options[question.reforge.correct]).trim().toLowerCase())
+      .map(([, value]) => String(value).replace(/\s+(?:in this context|in this case|for this decision)/gi, "").trim())
+      .find(value => !Object.values(question.reforge.options).some(existing => String(existing).trim().toLowerCase() === value.toLowerCase()));
+    if (replacement) question.reforge.options[genericLetter] = replacement;
+  }
+}
 // Hand-authored Reforge twin fix for PHYS-2. Same generator bug as
 // PHYS-1/PHYS-3: the E2 series glued a templated phrase in front of
 // an identical stem, and the COV series repeated the same fact.
