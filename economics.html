@@ -135,8 +135,8 @@
       <div class="bq-head"><span class="spec mono"><b>Economics · 2.1.2</b></span><span class="fmt">Concept</span></div>
       <p class="stimulus">UK inflation falls from 4.2% to 2.1%. A headline reads: <em>"Prices tumble as inflation halves."</em></p>
       <p class="q">Which statement about this economy is correct?</p>
-      <button class="opt forge-option" data-right="1" data-mc="MC-INF-01" data-s="Disinflation is a slowdown in the <b>rate</b> of inflation — prices are still rising, just more slowly. Deflation only occurs when the rate goes below zero and the price level actually falls.">The average price level is falling</button>
-      <button class="opt forge-option">The average price level is rising, but more slowly than before</button>
+      <button class="opt forge-option" data-mc="MC-INF-01" data-s="Disinflation is a slowdown in the <b>rate</b> of inflation — prices are still rising, just more slowly. Deflation only occurs when the rate goes below zero and the price level actually falls.">The average price level is falling</button>
+      <button class="opt forge-option" data-right="1">The average price level is rising, but more slowly than before</button>
       <button class="opt forge-option" data-mc="MC-INF-02" data-s="If inflation is positive at all, the cost of living is still going <b>up</b>. A fall from 4.2% to 2.1% means living costs rose 2.1% — the headline is wrong, and examiners test exactly this.">The cost of living has fallen by 2.1%</button>
       <button class="opt forge-option" data-mc="MC-INF-01" data-s="Disinflation is a slowdown in the <b>rate</b> of inflation — prices are still rising, just more slowly. Deflation only occurs when the rate goes below zero and the price level actually falls.">The economy has entered deflation</button>
       <div class="scaffold"><span class="stag"></span><p></p></div>
@@ -205,9 +205,9 @@ document.querySelectorAll('#eco-bank .bq').forEach(function(card){
   card.querySelectorAll('.opt').forEach(function(btn){
     btn.addEventListener('click', function(){
       card.querySelectorAll('.opt').forEach(function(x){ x.disabled = true; });
-      var rightBtn = card.querySelector('.opt[data-right]');
+      var rightBtn = card.querySelector('.opt[data-right]:not([data-mc])') || card.querySelector('.opt:not([data-mc])') || card.querySelector('.opt[data-right]');
       rightBtn.classList.add('correct');
-      if (btn.dataset.right) {
+      if (btn === rightBtn) {
         card.querySelector('.praise').classList.add('show');
       } else {
         btn.classList.add('wrong');

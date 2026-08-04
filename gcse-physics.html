@@ -102,8 +102,8 @@
     <div class="bq">
       <div class="bq-head"><span class="spec mono"><b>Physics · Electricity</b></span><span class="fmt">Concept</span></div>
       <p class="q">Which equation gives electrical power?</p>
-      <button class="opt forge-option" data-right="1" data-mc="MC-SAMPLE-A" data-s="Electrical power equals current multiplied by potential difference: P = IV.">P = I ÷ V</button>
-      <button class="opt forge-option">P = I × V</button>
+      <button class="opt forge-option" data-mc="MC-SAMPLE-A" data-s="Electrical power equals current multiplied by potential difference: P = IV.">P = I ÷ V</button>
+      <button class="opt forge-option" data-right="1">P = I × V</button>
       <button class="opt forge-option" data-mc="MC-SAMPLE-B" data-s="Electrical power equals current multiplied by potential difference: P = IV.">P = V ÷ I</button>
       <button class="opt forge-option" data-mc="MC-SAMPLE-C" data-s="Electrical power equals current multiplied by potential difference: P = IV.">P = I + V</button>
       <div class="scaffold"><span class="stag"></span><p></p></div>
@@ -112,9 +112,9 @@
     <div class="bq">
       <div class="bq-head"><span class="spec mono"><b>Physics · Waves</b></span><span class="fmt">Concept</span></div>
       <p class="q">Which wave can travel through a vacuum?</p>
-      <button class="opt forge-option" data-right="1" data-mc="MC-SAMPLE-A" data-s="Electromagnetic waves such as light do not need a medium.">Sound</button>
+      <button class="opt forge-option" data-mc="MC-SAMPLE-A" data-s="Electromagnetic waves such as light do not need a medium.">Sound</button>
       <button class="opt forge-option" data-mc="MC-SAMPLE-B" data-s="Electromagnetic waves such as light do not need a medium.">Water surface waves</button>
-      <button class="opt forge-option">Light</button>
+      <button class="opt forge-option" data-right="1">Light</button>
       <button class="opt forge-option" data-mc="MC-SAMPLE-C" data-s="Electromagnetic waves such as light do not need a medium.">Seismic S-waves</button>
       <div class="scaffold"><span class="stag"></span><p></p></div>
       <p class="praise">Correct — the explanation is the part worth remembering for the exam. ✦</p>
@@ -152,9 +152,9 @@ document.querySelectorAll('#eco-bank .bq').forEach(function(card){
   card.querySelectorAll('.opt').forEach(function(btn){
     btn.addEventListener('click', function(){
       card.querySelectorAll('.opt').forEach(function(x){ x.disabled = true; });
-      var rightBtn = card.querySelector('.opt[data-right]');
+      var rightBtn = card.querySelector('.opt[data-right]:not([data-mc])') || card.querySelector('.opt:not([data-mc])') || card.querySelector('.opt[data-right]');
       rightBtn.classList.add('correct');
-      if (btn.dataset.right) {
+      if (btn === rightBtn) {
         card.querySelector('.praise').classList.add('show');
       } else {
         btn.classList.add('wrong');

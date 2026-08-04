@@ -71,7 +71,8 @@ ForgeSidebar.mount({
 if (!window.ForgeAPI || !window.ForgeAPI.config) {
   var bootApp = document.getElementById('app');
   if (bootApp) {
-    bootApp.innerHTML = '<section class="card"><h2>Teacher dashboard could not load</h2><p>Forge is still loading its shared services. Refresh to try again.</p><button class="forge-button forge-button--primary" type="button" onclick="location.reload()">Retry dashboard</button></section>';
+    bootApp.innerHTML = '<section class="card"><h2>Teacher dashboard could not load</h2><p>Forge is still loading its shared services. Refresh to try again.</p><button class="forge-button forge-button--primary" type="button" data-forge-reload>Retry dashboard</button></section>';
+    bootApp.querySelector('[data-forge-reload]').addEventListener('click', function(){ location.reload(); });
   }
   throw new Error('ForgeAPI unavailable during teacher dashboard boot');
 }

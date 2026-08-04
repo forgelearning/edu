@@ -190,9 +190,9 @@ document.querySelectorAll('#eco-bank .bq').forEach(function(card){
   card.querySelectorAll('.opt').forEach(function(btn){
     btn.addEventListener('click', function(){
       card.querySelectorAll('.opt').forEach(function(x){ x.disabled = true; });
-      var rightBtn = card.querySelector('.opt[data-right]');
+      var rightBtn = card.querySelector('.opt[data-right]:not([data-mc])') || card.querySelector('.opt:not([data-mc])') || card.querySelector('.opt[data-right]');
       rightBtn.classList.add('correct');
-      if (btn.dataset.right) {
+      if (btn === rightBtn) {
         card.querySelector('.praise').classList.add('show');
       } else {
         btn.classList.add('wrong');
