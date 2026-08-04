@@ -1,0 +1,61 @@
+#!/usr/bin/env node
+/* Read-only smoke tests for the public Supabase boundary. */
+const fs = require('fs');
+
+const apiSource = fs.readFileSync(require.resolve('../scripts/forge-api.js'), 'utf8');
+const url = (apiSource.match(/url:\s*'([^']+)'/) || [])[1];
+const key = (apiSource.match(/config\.key\s*=\s*'([^']+)'/) || [])[1];
+if (!url || !key) throw new Error('Could not read ForgeAPI configuration');
+
+const headers = { apikey: key, Authorization: `Bearer ${key}` };
+
+async function request(path, options = {}) {
+  const response = await fetch(url + path, { ...options, headers: { ...headers, ...(options.headers || {}) } });
+  const text = await response.text();
+  let body = text;
+  try { body = text ? JSON.parse(text) : null; } catch (_) {}
+  return { status: response.status, body };
+}
+
+function assertStatus(name, result, accepted) {
+  if (!accepted.includes(result.status)) {
+    throw new Error(`${name}: expected ${accepted.join('/')} but got ${result.status}: ${JSON.stringify(result.body)}`);
+  }
+  console.log(`✓ ${name} (${result.status})`);
+}
+
+(async () => {
+  // This RPC must not be callable by an anonymous browser with no teacher JWT.
+  assertStatus('school overview is not public', await request('/rest/v1/rpc/get_school_overview', { method: 'POST', headers: { 'content-type': 'application/json' }, body: '{}' }), [401, 403, 404]);
+
+  // Invite codes are only reachable through validate_teacher_invite().
+  assertStatus('invite-code table is not public', await request('/rest/v1/teacher_invite_codes?select=*'), [401, 403, 404]);
+
+  // The free-history RPC may return an empty set for a fake bearer token, but
+  // it must not return another student's rows or allow a missing token.
+  const free = await request('/rest/v1/rpc/get_free_student_responses', {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ p_student_id: '00000000-0000-0000-0000-000000000000', p_free_token: 'invalid-test-token' })
+  });
+  assertStatus('free-history RPC is present and fail-closed', free, [200]);
+  if (Array.isArray(free.body) && free.body.length !== 0) {
+    throw new Error('free-history RPC returned rows for an invalid token');
+  }
+
+  const quota = await request('/rest/v1/rpc/record_free_response', {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({
+      p_student_id: '00000000-0000-0000-0000-000000000000',
+      p_free_token: 'invalid-test-token', p_question_id: 'SECURITY-SMOKE',
+      p_bank: 'SECURITY', p_subject: 'security', p_selected_option: 'A',
+      p_is_correct: false, p_misconception_tag: null,
+      p_reforge_attempted: false, p_reforge_correct: null
+    })
+  });
+  assertStatus('free quota RPC is present and fail-closed', quota, [200]);
+  if (!quota.body || quota.body.allowed !== false) throw new Error('free quota RPC accepted an invalid session');
+
+  console.log('Supabase security smoke tests passed.');
+})().catch(error => { console.error(error.message); process.exit(1); });

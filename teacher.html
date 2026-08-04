@@ -1277,6 +1277,7 @@ function renderStarterCard(tag, h, context) {
   // context: {fires, students} from real data, or null for browse mode
   var label = resolveMCLabel(tag) || tag;
   var starterData = MC_STARTERS[tag] || getDefaultStarter(tag, label);
+  var intervention = window.resolveMCIntervention ? resolveMCIntervention(tag) : 'Ask students to explain the rule in their own words, then apply it to one fresh example.';
   var typeLabels = {sort:"Sort activity",diagnose:"Diagnose",correct:"Spot the error",distinguish:"Distinguish",classify:"Classify",evaluate:"Evaluate",diagram:"Diagram task",chain:"Causal chain",calculate:"Calculation",graph:"Graph task",sequence:"Sequence",apply:"Application",compare:"Comparison table",match:"Match activity",trigger:"Trigger hunt",rewrite:"Rewrite task",trace:"Trace activity",scenario:"Scenario"};
   var typeLabel = typeLabels[starterData.type] || "Starter activity";
 
@@ -1292,6 +1293,7 @@ function renderStarterCard(tag, h, context) {
     h += '<p class="forge-u-1rniwep">Preview — no class data loaded</p>';
   }
   h += '<p class="forge-u-1m9skgg">' + starterData.instruction + '</p>';
+  h += '<p class="forge-u-1rniwep"><strong>Suggested intervention:</strong> ' + teacherEsc(intervention) + '</p>';
   h += '<button class="forge-button forge-button--primary starter-assign-btn" data-starter-tag="' + teacherEsc(tag) + '" type="button">Use this starter for an assignment →</button>';
 
   if (starterData.prompt) {

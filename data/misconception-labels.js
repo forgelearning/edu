@@ -886,7 +886,28 @@ function resolveMCLabel(tag) {
   return derived;
 }
 
+// A practical next move for the teacher, kept alongside the canonical label.
+// Explicit starters in teacher.html remain more specific; this fallback means
+// every active tag still gets a usable intervention rather than a blank card.
+function resolveMCIntervention(tag) {
+  if (!tag) return 'Ask students to explain the rule in their own words, then apply it to one fresh example.';
+  if (/^(?:MC-)?HIST-/.test(tag)) {
+    return 'Build a dated cause → event → consequence chain and require one precise piece of evidence before the judgement.';
+  }
+  if (/^(?:MC-)?GCSE-HIST-/.test(tag)) {
+    return 'Place the event or factor on a short timeline, then explain its cause, consequence, and significance using one precise detail.';
+  }
+  if (/^(?:MC-)?(?:PSY|GCSE-PSY)-/.test(tag)) {
+    return 'Use a three-part response: define the concept, name the study or theorist, then apply it to a new scenario.';
+  }
+  if (/^(?:MC-)?(?:BIO|CHEM|PHYS)-/.test(tag)) {
+    return 'Ask students to state the process step by step, label the key variable, and predict what changes in a new example.';
+  }
+  return 'Have students state the governing rule, contrast it with the nearest distractor, and complete one fresh example.';
+}
+
 if (typeof window !== 'undefined') {
   window.MC_LABELS = MC_LABELS;
   window.resolveMCLabel = resolveMCLabel;
+  window.resolveMCIntervention = resolveMCIntervention;
 }
