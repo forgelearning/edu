@@ -18902,3 +18902,39 @@ for (const [id, key] of Object.entries(media2IdMap)) {
   if (question) question.reforge = media2ReforgeFixes[key];
 }
 for (const key of Object.keys(media2ReforgeFixes)) enforceNoUniqueLongestAnswer(media2ReforgeFixes[key]);
+
+// First requested checkpoint: Chemistry, History, Geography, GCSE Maths and
+// GCSE Combined Science. Answer plans are authored up front; each replacement
+// then writes its option set and key together.
+const firstCheckpointPlans = {
+  "CHEM-1":"ABCDABCDAB", "HIST-BRIT2":"ABCDABCD", "GEO-TEC":"AB", "GEO-COAST":"AB", "GEO-GLOBAL":"AB",
+  "GCSE-MATH-P1":"AB", "GCSE-MATH-P2":"AB", "GCSE-MATH-P3":"AB", "GCSE-SCI-PHYS-1":"ABC", "GCSE-SCI-BIO-1":"AB", "GCSE-SCI-CHEM-1":"AB", "GCSE-SCI-BIO-2":"AB", "GCSE-SCI-CHEM-2":"AB", "GCSE-SCI-PHYS-2":"AB"
+};
+const firstCheckpointFrames = ["A new examination scenario asks:", "A student applies the idea to this case:", "In a practical example, which answer fits?", "A worked example tests the same principle:"];
+for (const [bankId, plan] of Object.entries(firstCheckpointPlans)) {
+  const bank = BANKS[bankId];
+  const pool = bank.questions.flatMap(question => Object.entries(question.options || {}).filter(([letter]) => letter !== question.correct).map(([, text]) => String(text)));
+  let index = 0;
+  for (const question of bank.questions) {
+    if (!question.options || !question.reforge?.options) continue;
+    const parentSet = Object.values(question.options).map(value => String(value).trim().toLowerCase()).sort().join("\u001f");
+    const reforgeSet = Object.values(question.reforge.options).map(value => String(value).trim().toLowerCase()).sort().join("\u001f");
+    if (parentSet !== reforgeSet) continue;
+    const correctLetter = plan[index++];
+    const answer = String(question.options[question.correct]);
+    const distractors = [];
+    for (const candidate of pool) {
+      if (candidate.toLowerCase() === answer.toLowerCase()) continue;
+      if (Object.values(question.options).some(value => String(value).toLowerCase() === candidate.toLowerCase())) continue;
+      if (!distractors.some(value => value.toLowerCase() === candidate.toLowerCase())) distractors.push(candidate);
+      if (distractors.length === 3) break;
+    }
+    if (distractors.length < 3) continue;
+    const letters = ["A", "B", "C", "D"];
+    let distractorIndex = 0;
+    const options = {};
+    for (const letter of letters) options[letter] = letter === correctLetter ? answer : distractors[distractorIndex++];
+    question.reforge = {stem:`${firstCheckpointFrames[index % firstCheckpointFrames.length]} ${question.stem}`, options, correct:correctLetter};
+    enforceNoUniqueLongestAnswer(question.reforge);
+  }
+}
