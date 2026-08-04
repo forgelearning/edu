@@ -49,7 +49,18 @@
       '</div>';
     banner.querySelector('.analytics-consent-reject').addEventListener('click', function () { saveChoice('denied'); });
     banner.querySelector('.analytics-consent-accept').addEventListener('click', function () { saveChoice('granted'); });
-    document.body.appendChild(banner);
+    // Keep consent visible without covering the primary action or live demo.
+    // On the homepage, use the intentional space beneath the hero reassurance
+    // line; other pages place it before their main content.
+    var heroSub = document.querySelector('.hero .sub');
+    var insertionPoint = heroSub || document.querySelector('main');
+    if (heroSub && heroSub.parentNode) {
+      heroSub.parentNode.insertBefore(banner, heroSub.nextSibling);
+    } else if (insertionPoint && insertionPoint.parentNode) {
+      insertionPoint.parentNode.insertBefore(banner, insertionPoint);
+    } else {
+      document.body.appendChild(banner);
+    }
     document.body.classList.add('has-consent-banner');
   }
 
