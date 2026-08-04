@@ -142,6 +142,16 @@ function logResponse(q, selectedKey, isCorrect, isReforge, reforgeCorrect) {
       },
       body: JSON.stringify(row)
     }).then(function() { return true; }).catch(function(e) { recordPersistenceError(e, row, 'authenticated-response'); return false; });
+  } else if (state.classId) {
+    // Class-code students are anonymous, but their student/class pair is the
+    // ownership boundary for response writes. Keep this path explicit so a
+    // class session cannot silently fall through as a local-only quiz.
+    return ForgeAPI.insert('responses', row, {
+      headers: {'Prefer': 'return=minimal'}
+    }).then(function() { return true; }).catch(function(e) {
+      recordPersistenceError(e, row, 'class-response');
+      return false;
+    });
   } else {
     // Free students write through the token-gated RPC. Besides authorising the
     // row, it enforces the daily quota atomically on the server so clearing
@@ -1358,7 +1368,7 @@ function renderQuiz(){
     var pct = (used / FREE_DAILY_LIMIT) * 100;
     var col = remaining <= 2 ? 'var(--bad)' : remaining <= 5 ? 'var(--hot)' : 'var(--good)';
     h += '<div class="forge-u-1p0xeot">';
-    h += '<div class="forge-u-1gsso20"><div id="free-quota-fill" style="height:100%;width:'+pct+'%;background:'+col+';border-radius:var(--radius-xs);transition:width .3s"></div></div>';
+    h += '<div class="forge-u-1gsso20"><div id="free-quota-fill" style="height:100%;width:'+pct+'%;background:'+col+';border-radius:var(--radius-xs)"></div></div>';
     h += '<span id="free-quota-label" style="font-family:\'JetBrains Mono\',monospace;font-size:11px;color:'+col+';white-space:nowrap">'+remaining+' free question'+(remaining!==1?'s':'')+' left today</span>';
     h += '</div>';
   }
