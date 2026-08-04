@@ -18757,3 +18757,37 @@ for (const bankId of ["CS-1", "CS-2", "CS-3", "CS-4"]) {
 for (const bankId of ["CS-1", "CS-2", "CS-3", "CS-4"]) {
   for (const question of BANKS[bankId].questions) enforceNoUniqueLongestAnswer(question.reforge);
 }
+
+// Hand-written HSC-1 Reforge twins. The generated E1/E1B and coverage
+// variants reused the parent option sets; these twins apply the same care
+// principles to new situations with explicitly authored answer letters.
+const hsc1ReforgeFixes = {
+  equality: {stem:"A clinic offers an accessible booking process and interpreters so that barriers do not exclude particular groups. Which principle is being applied?",options:{A:"Equality",B:"Confidentiality",C:"Infection control",D:"Resource allocation"},correct:"A"},
+  autonomy: {stem:"A resident with capacity chooses which activity to join after staff explain the available options. Which principle is this?",options:{A:"Safeguarding",B:"Autonomy",C:"Clinical governance",D:"Risk elimination"},correct:"B"},
+  hazard: {stem:"A wet floor near a care home's entrance could cause someone to fall. In a risk assessment, the wet floor is a:",options:{A:"Control measure",B:"Care outcome",C:"Hazard",D:"Safeguarding disclosure"},correct:"C"},
+  confidentiality: {stem:"A nurse needs to tell the patient's physiotherapist relevant information to coordinate treatment. When is sharing justified?",options:{A:"When it serves a legitimate care purpose and follows information rules",B:"Whenever any visitor asks for it",C:"When posted publicly without checking consent",D:"When the information is interesting to staff"},correct:"A"},
+  personCentred: {stem:"A support plan is adjusted to reflect a person's culture, routines, goals and preferred way of communicating. What approach does this show?",options:{A:"Standardised care",B:"Person-centred care",C:"Task-centred administration",D:"Organisation-centred care"},correct:"B"},
+  safeguarding: {stem:"A care worker suspects neglect after noticing unexplained changes in a service user's condition. What should happen first?",options:{A:"Investigate the allegation alone",B:"Wait until visible injury appears",C:"Discuss it socially with friends",D:"Record and report the concern through the safeguarding procedure"},correct:"D"},
+  equalityAct: {stem:"A manager refuses to provide a reasonable adjustment for an employee's mobility impairment. Which area of law is most directly relevant?",options:{A:"Equality law protecting against disability discrimination",B:"Food safety law",C:"Confidentiality guidance",D:"Cardiovascular regulation"},correct:"A"},
+  riskAssessment: {stem:"Before introducing a hoist, a care provider considers who could be injured, how, and what precautions are needed. What process is this?",options:{A:"A diagnosis",B:"A risk assessment",C:"A confidentiality audit",D:"A discharge summary"},correct:"B"},
+  dutyCare: {stem:"A care assistant checks equipment and follows safe procedures because a foreseeable failure could injure a resident. Which duty is illustrated?",options:{A:"Duty of care",B:"Duty to disclose all records publicly",C:"Duty to remove patient choice",D:"Duty to guarantee recovery"},correct:"A"},
+  evidence: {stem:"A service updates its falls-prevention approach after reviewing current research and professional guidance. This is an example of:",options:{A:"Evidence-informed best practice",B:"Habit-based care",C:"Unsupervised delegation",D:"Preference replacing standards"},correct:"A"},
+  records: {stem:"A support worker writes an objective account immediately after an incident and stores it securely. What quality of record-keeping is shown?",options:{A:"Accurate, timely and confidential documentation",B:"Retrospective speculation",C:"Informal gossip",D:"Unrestricted disclosure"},correct:"A"},
+  adjustment: {stem:"A service installs a ramp so a wheelchair user can enter the building independently. This is an example of:",options:{A:"A reasonable adjustment supporting disability equality",B:"A breach of confidentiality",C:"A nutrition intervention",D:"A cardiac assessment"},correct:"A"},
+  boundary: {stem:"A care worker declines a service user's request to borrow money and keeps the relationship professional. What is being maintained?",options:{A:"A professional boundary",B:"A diagnosis",C:"A treatment outcome",D:"A risk-free environment"},correct:"A"},
+  consent: {stem:"Before a procedure, a person with capacity receives relevant information, asks questions and agrees voluntarily. What does this establish?",options:{A:"Automatic authorisation for all future care",B:"Informed consent",C:"Consent by staff only",D:"A safeguarding referral"},correct:"B"},
+  moving: {stem:"Two trained workers use the assessed hoist technique and suitable equipment to transfer a resident. Which risk is they are managing?",options:{A:"A moving-and-handling risk",B:"A confidentiality risk",C:"A dietary preference",D:"A language register"},correct:"A"},
+  whistleblowing: {stem:"A worker reports serious unsafe practice through an appropriate external route after internal concerns are ignored. This is:",options:{A:"Whistleblowing",B:"Informal gossip",C:"Clinical diagnosis",D:"Refusal of supervision"},correct:"A"},
+  multidisciplinary: {stem:"A nurse, social worker, physiotherapist and support worker coordinate one person's care plan. This is a:",options:{A:"Single-profession review",B:"Multidisciplinary team",C:"Confidentiality breach by definition",D:"Financial audit"},correct:"B"}
+};
+const hsc1IdMap = {
+  "HSC-E1-01":"equality", "HSC-E1-02":"autonomy", "HSC-E1-03":"hazard", "HSC-E1-04":"confidentiality", "HSC-E1-05":"personCentred", "HSC-E1-06":"safeguarding", "HSC-E1-07":"equalityAct", "HSC-E1-08":"riskAssessment", "HSC-E1-09":"dutyCare",
+  "HSC-E1B-01":"evidence", "HSC-E1B-02":"records", "HSC-E1B-03":"adjustment", "HSC-E1B-04":"boundary", "HSC-E1B-05":"consent", "HSC-E1B-06":"moving", "HSC-E1B-07":"whistleblowing", "HSC-E1B-08":"multidisciplinary",
+  "HSC-COV-009":"equality", "HSC-COV-011":"hazard", "HSC-COV-013":"personCentred", "HSC-COV-015":"equalityAct", "HSC-COV-017":"dutyCare", "HSC-COV-019":"records", "HSC-COV-021":"boundary", "HSC-COV-023":"moving", "HSC-COV-025":"multidisciplinary",
+  "HSC-COV-109":"equality", "HSC-COV-111":"hazard", "HSC-COV-113":"personCentred", "HSC-COV-115":"equalityAct", "HSC-COV-117":"dutyCare", "HSC-COV-119":"records", "HSC-COV-121":"boundary", "HSC-COV-123":"moving", "HSC-COV-125":"multidisciplinary"
+};
+for (const [id, key] of Object.entries(hsc1IdMap)) {
+  const question = BANKS["HSC-1"].questions.find(item => item.id === id);
+  if (question) question.reforge = hsc1ReforgeFixes[key];
+}
+for (const key of Object.keys(hsc1ReforgeFixes)) enforceNoUniqueLongestAnswer(hsc1ReforgeFixes[key]);
