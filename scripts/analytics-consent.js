@@ -56,13 +56,18 @@
     banner.setAttribute('aria-labelledby', 'analytics-consent-title');
     banner.setAttribute('aria-describedby', 'analytics-consent-description');
     banner.innerHTML =
-      '<div class="analytics-consent-copy">' +
+      // The banner sits inside the hero copy column, so the visible line has to
+      // stay short to remain one row. The full wording is kept for assistive
+      // tech via aria-describedby, and the detail lives behind the Privacy link.
+      '<p class="analytics-consent-copy">' +
         '<strong id="analytics-consent-title">Optional analytics</strong>' +
-        '<p id="analytics-consent-description">Forge uses Google Analytics for aggregate public-site usage only. It does not analyse student quiz responses.</p>' +
-      '</div>' +
+        '<span class="analytics-consent-detail"> — site usage only.</span>' +
+        '<span id="analytics-consent-description" class="forge-sr-only">Forge uses Google Analytics for aggregate public-site usage only. It does not analyse student quiz responses.</span>' +
+        ' <a href="privacy.html">Privacy</a>' +
+      '</p>' +
       '<div class="analytics-consent-actions">' +
         '<button type="button" class="analytics-consent-reject">Reject</button>' +
-        '<button type="button" class="analytics-consent-accept">Accept analytics</button>' +
+        '<button type="button" class="analytics-consent-accept">Accept</button>' +
       '</div>';
     banner.querySelector('.analytics-consent-reject').addEventListener('click', function () { saveChoice('denied'); });
     banner.querySelector('.analytics-consent-accept').addEventListener('click', function () { saveChoice('granted'); });

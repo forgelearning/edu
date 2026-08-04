@@ -45,8 +45,9 @@
 .audit-test .audit-proof-note{max-width:1080px;margin:-18px auto 0;padding:0 var(--space-6);color:var(--dim);font:500 12px/1.5 'JetBrains Mono',monospace;letter-spacing:.03em}
 .audit-test .audit-proof-note--bottom{margin:var(--space-7) auto -20px}
 
-/* Keep optional analytics compact without taking it out of document flow. */
-.audit-test #analytics-consent-banner{max-width:720px;padding:12px 16px}
+/* Optional analytics is a slim single-line bar site-wide (css/base.css); keep
+   the test build's narrower measure without reinstating the stacked card. */
+.audit-test #analytics-consent-banner{max-width:720px}
 
 /* Make the experiment feel editorial rather than like a dashboard catalogue. */
 .audit-test section#how > .wrap > .sect-lede,
