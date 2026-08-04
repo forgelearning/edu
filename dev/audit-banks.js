@@ -199,7 +199,7 @@ if (fatal.length) {
 // bank by bank — this only stops that count from growing. Only enforced on
 // a full run (no bank/subject filter), since a partial run can't see the
 // true total. Lower PERMUTED_REFORGE_BASELINE as banks get fixed.
-const PERMUTED_REFORGE_BASELINE = 126;
+const PERMUTED_REFORGE_BASELINE = 61;
 if (!args.length && totals.permutedRef > PERMUTED_REFORGE_BASELINE) {
   console.log(
     `\nPermuted Reforge twins regressed: ${totals.permutedRef} > baseline ${PERMUTED_REFORGE_BASELINE}. ` +
