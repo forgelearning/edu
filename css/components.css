@@ -55,7 +55,7 @@
 .forge-skip-link:focus{transform:translateY(0)}
 .forge-progress{height:6px;background:var(--line);border-radius:var(--radius-pill);overflow:hidden}
 .forge-progress > span{display:block;height:100%;background:var(--ember);border-radius:inherit;transition:width .2s ease}
-.ui-state-action{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:0 var(--space-4);border-radius:var(--radius-sm);background:var(--ember);color:var(--coal);font:600 13px 'IBM Plex Sans',sans-serif;text-decoration:none;transition:background .15s,color .15s}
+.ui-state-action{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:0 var(--space-4);border-radius:var(--radius-sm);background:var(--ember);color:#fff;font:600 13px Inter,sans-serif;text-decoration:none;transition:background .15s,color .15s}
 .ui-state-action:hover{background:var(--hot);color:var(--coal)}
 .ui-recommendation .ui-state-action{margin-top:var(--space-2)}
 .forge-insight-card{margin-bottom:var(--space-5)}

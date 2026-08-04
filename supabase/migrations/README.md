@@ -9,9 +9,15 @@ Reviewed-then-applied. Nothing here has been run against production.
 | `20260802180000_scope_school_overview_to_caller_school.sql` | Scopes `get_school_overview()` to the caller's school; revokes `anon` EXECUTE |
 | `20260802180100_revoke_public_execute_on_rls_auto_enable.sql` | Removes an event-trigger function from the public API surface |
 | `20260802180200_revoke_api_grants_on_teacher_invite_codes.sql` | Drops `anon`/`authenticated` table grants on the invite-code table |
+| `20260804170000_enforce_free_daily_quota.sql` | Authorises free response writes by token and enforces the ten-question daily limit server-side |
 | `ROLLBACK_20260802180000.sql` | Restores the previous state. Reintroduces the exposures — fix forward instead where possible |
 
 Apply in filename order.
+
+After deployment, run `node dev/audit-supabase-security.js`. The check is
+read-only and verifies that the overview and invite-code table are not public,
+that free-history is token-gated, and that the free quota RPC rejects an
+invalid session.
 
 ### These are coupled to a client change
 

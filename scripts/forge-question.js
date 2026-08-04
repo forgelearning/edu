@@ -10,11 +10,25 @@
     return html + '</div><div id="feedback"></div><div class="clear"></div>';
   }
 
+  function scaffoldText(question){
+    var scaffold = String(question && question.scaffold || '').trim();
+    if (!scaffold) return 'Review the key term, connect it to the question, and explain why the other options do not fit.';
+
+    // A batch of the GCSE History and Psychology banks still carries the
+    // authoring placeholder. Turn it into a useful post-answer explanation at
+    // render time while the source bank is being reviewed topic by topic.
+    var generic = scaffold.match(/^This tests the specified .+? knowledge point:\s*(.+?)\.?$/i);
+    if (generic) {
+      return 'Key idea: ' + generic[1] + '. Recall the definition or event, then link it to the question and explain why the closest distractor is different.';
+    }
+    return scaffold;
+  }
+
   function renderFeedback(question, correct){
     if(correct){
       return '<div class="praise-box">\u2713 Nailed it.</div><button class="next-btn btn-glass btn-ember" id="next-btn">Next \u2192</button><div class="clear"></div>';
     }
-    var html = '<div class="scaffold-box"><span class="stag">'+question.tag+'</span><p>'+question.scaffold+'</p></div>';
+    var html = '<div class="scaffold-box"><span class="stag">'+question.tag+'</span><p>'+scaffoldText(question)+'</p></div>';
     if(question.reforge){
       html += '<button class="reforge-trigger" id="rf-btn">Re-forge \u2192</button><div id="rf-area" class="hidden"></div>';
     }
@@ -33,5 +47,6 @@
     renderOptions: renderOptions,
     renderFeedback: renderFeedback,
     renderFillBlank: renderFillBlank
+    ,scaffoldText: scaffoldText
   };
 })(window);

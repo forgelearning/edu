@@ -143,7 +143,27 @@ function logResponse(q, selectedKey, isCorrect, isReforge, reforgeCorrect) {
       body: JSON.stringify(row)
     }).then(function() { return true; }).catch(function(e) { recordPersistenceError(e, row, 'authenticated-response'); return false; });
   } else {
-    return supa.insert('responses', row).then(function() { return true; }).catch(function(e) { recordPersistenceError(e, row, 'anonymous-response'); return false; });
+    // Free students write through the token-gated RPC. Besides authorising the
+    // row, it enforces the daily quota atomically on the server so clearing
+    // localStorage cannot mint another ten-question allowance.
+    if (state.studentId && state.classId == null) {
+      return ForgeAPI.rpc('record_free_response', {
+        p_student_id: state.studentId,
+        p_free_token: (loadFreeSession() || {}).freeToken || null,
+        p_question_id: row.question_id,
+        p_bank: row.bank,
+        p_subject: row.subject,
+        p_selected_option: row.selected_option,
+        p_is_correct: row.is_correct,
+        p_misconception_tag: row.misconception_tag,
+        p_reforge_attempted: row.reforge_attempted,
+        p_reforge_correct: row.reforge_correct
+      }).then(function(result) {
+        if (result && result.allowed === false) return false;
+        return true;
+      }).catch(function(e) { recordPersistenceError(e, row, 'free-response-rpc'); return false; });
+    }
+    return Promise.resolve(false);
   }
 }
 
@@ -1553,7 +1573,7 @@ function renderReforge(q,el,color){
       if(isCorrect){
         rfb.innerHTML='<div class="forge-u-1wiwwwz">\u2713 Reforged.</div>';
       }else{
-        rfb.innerHTML='<div class="forge-u-jm24uy"><div class="forge-u-o1x2qa">Not quite \u2014 the answer is <strong>'+rf.correct+'</strong>.</div><div class="rf-scaffold"><span class="stag">Re-read the scaffold</span><p>'+q.scaffold+'</p></div></div>';
+        rfb.innerHTML='<div class="forge-u-jm24uy"><div class="forge-u-o1x2qa">Not quite \u2014 the answer is <strong>'+rf.correct+'</strong>.</div><div class="rf-scaffold"><span class="stag">Re-read the scaffold</span><p>'+ForgeQuestion.scaffoldText(q)+'</p></div></div>';
       }
     };
   });
@@ -1938,9 +1958,9 @@ if (ForgeAuth.hasSession()) {
       state.isPaid        = false;
       state.isTrial       = false;
       settleRequestedSubject();
-      supa.select('responses', { student_id: freeSession.studentId }).then(function(r) {
-        state.weightMap = buildWeightMap(r || []);
-      }).catch(function() { state.weightMap = {}; });
+      ForgeClasses.fetchFreeResponses(SUPABASE_URL, SUPABASE_KEY, freeSession, function(responses) {
+        state.weightMap = buildWeightMap(responses || []);
+      });
       restored = true;
     }
   }
