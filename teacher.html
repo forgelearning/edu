@@ -28,7 +28,7 @@
   <link rel="stylesheet" href="css/content-status.css">
 </head>
 <body>
-<script src="scripts/forge-api.js?v=20260809"></script>
+<script src="scripts/forge-api.js?v=20260815"></script>
 <script src="scripts/forge-state.js"></script>
 <script src="scripts/forge-logo.js"></script>
 <script src="scripts/forge-auth-card.js"></script>
@@ -65,6 +65,16 @@ ForgeSidebar.mount({
 <script src="data/forge-data.js"></script>
 <script src="data/misconception-labels.js?v=20260813"></script>
 <script>
+// The dashboard depends on ForgeAPI. If a cached or interrupted first load
+// leaves that dependency unavailable, show a recoverable state instead of
+// throwing halfway through boot and leaving the page visually empty.
+if (!window.ForgeAPI || !window.ForgeAPI.config) {
+  var bootApp = document.getElementById('app');
+  if (bootApp) {
+    bootApp.innerHTML = '<section class="card"><h2>Teacher dashboard could not load</h2><p>Forge is still loading its shared services. Refresh to try again.</p><button class="forge-button forge-button--primary" type="button" onclick="location.reload()">Retry dashboard</button></section>';
+  }
+  throw new Error('ForgeAPI unavailable during teacher dashboard boot');
+}
 var SUPABASE_URL = ForgeAPI.config.url;
 var SUPABASE_KEY = ForgeAPI.config.key;
 
