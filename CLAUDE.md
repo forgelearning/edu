@@ -73,34 +73,18 @@ Theme 2's 2.4 and 2.5 banks are the thinnest and are the next ones to extend.
 
 ## Known outstanding issues
 
-- **Permuted Reforge twins — the big one.** 1,102 of 7,506 questions (14.7%,
-  across 59 banks) have a `reforge` whose option set is identical to the
-  parent question's, just reordered. The student sees the answer highlighted
-  and then the same four options again, so the twin gives it away. This is
-  the failure mode authoring rule 4 warns about, and `dev/audit-banks.js`
-  does **not** detect it — it only checks structure and cueing. Worst banks:
-  `RS-1` 51/116, `ECON-1.1` 49/99, `4.1.1` 48/100, `PHYS-3` 46/84,
-  `HSC-2` 45/112. `GCSE-PSY-MEMORY`, `-PERCEPTION` and `-DEVELOPMENT` are
-  100% affected. Rewrite by hand; do not permute with a script.
-- **Boilerplate scaffolds.** 232 questions across 12 banks (all GCSE History
-  and GCSE Psychology) have a scaffold matching
-  `This tests the <spec> knowledge point: <answer>`, which restates the answer
-  instead of teaching. Combined with the point above, GCSE Psychology is the
-  weakest subject currently live.
-- **Misconception labels are half missing.** 711 of 1,300 tags used in the
-  bank have no entry in `MC_LABELS` (defined in `teacher.html`, mirrored in
-  `school-overview.html` and `anvil.html`), so the teacher heatmap and School
-  Overview show a raw code instead of a description. Worst prefixes:
-  `GCSE-P2` (112), `GCSE-DEF` (84), `GEO-SKILL` (20).
-- **Starter activities cover 54 of 1,300 tags.** Everything else falls back to
-  `getDefaultStarter()`, a generic stub. The teacher sign-in page promises
-  "which starter activity will help you address them", so this gap is
-  user-visible.
+- Reforge option sets are currently distinct across all 7,506 MCQs; keep
+  `dev/test-forge.js` running as new content lands.
+- GCSE History and GCSE Psychology still need ongoing scaffold-quality review;
+  structural checks cannot judge whether an explanation genuinely teaches.
+- Misconception labels and starter activities remain a product-quality backlog:
+  the teacher heatmap should show human-readable labels and useful intervention
+  suggestions for every active tag.
+- A-Level Geography is intentionally marked Developing until every active route
+  point is mapped.
 - `englit` and `engll` reference the same two bank ids (`ENG-TERM-1`,
   `ENG-TECH-1`), so both subjects serve identical questions.
-- `SUBJECTS.mandarin` is a `readerMode` subject with `banks: []`, separate
-  from the populated `mand` ("IB Mandarin"). Two Mandarin cards both showing
-  IB Language B SL is confusing — merge or rename.
+- Mandarin is represented by one subject key (`mand`) and one live bank.
 
 Bank *structure* is otherwise healthy: `dev/audit-banks.js` reports 0 issues
 and 0% cued stems and twins across all 7,506 questions.

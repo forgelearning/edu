@@ -12,6 +12,11 @@ document.addEventListener('click', function(e) {
   var navEl = document.getElementById('sticky-nav');
   if (!navEl) return;
 
+  var logoLink = navEl.querySelector('#nav-logo');
+  if (logoLink && !logoLink.getAttribute('aria-label')) {
+    logoLink.setAttribute('aria-label', 'Forge Learning home');
+  }
+
   // Older static marketing markup contained duplicate class attributes on
   // the logo images. Browsers keep only the first attribute, which removes
   // the shared sizing class. Normalize the boundary once so all pages remain

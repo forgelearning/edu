@@ -4,14 +4,14 @@
 <title>Forge — Dashboard</title>
 <meta name="description" content="Your exam readiness profile — accuracy, focus areas, and strengths, updated after every Forge session.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Rethink+Sans:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/tokens.css">
-<link rel="stylesheet" href="css/base.css?v=20260812">
+<link rel="stylesheet" href="css/base.css?v=20260814-fonts">
 <link rel="stylesheet" href="css/auth.css">
 <link rel="stylesheet" href="css/sidebar.css">
 <link rel="stylesheet" href="css/components.css?v=20260812">
 <link rel="stylesheet" href="css/generated-utilities.css">
-<link rel="stylesheet" href="css/page-overrides/student-dashboard.css">
+<link rel="stylesheet" href="css/page-overrides/student-dashboard.css?v=20260814-pairing1">
 
 <body>
 <script src="scripts/forge-api.js?v=20260809"></script>
@@ -134,14 +134,14 @@ function renderLogin(){
     var err=document.getElementById('p-err');
     var btn=document.getElementById('p-btn');
     if(!name||!code){err.textContent='Enter your name and class code.';err.style.display='block';return;}
-    btn.disabled=true;btn.textContent='Checking details…';
-    // Look up via RPC \u2014 classes/students tables are no longer directly
-    // readable by an anonymous (no login) name+code session.
-    ForgeAPI.response(SUPABASE_URL + '/rest/v1/rpc/get_student_by_name_and_code', {
+    btn.disabled=true;btn.textContent='Joining class…';
+    // Enroll through the same RPC used by the class quiz flow. This creates
+    // (or reuses) the student's row before loading dashboard data.
+    ForgeAPI.response(SUPABASE_URL + '/rest/v1/rpc/join_class_as_student', {
       method: 'POST', headers: Object.assign({}, hdrs, {'Content-Type':'application/json'}),
       body: JSON.stringify({ p_code: code, p_name: name })
     }).then(function(r){ return r.json(); }).then(function(rows){
-      if(!Array.isArray(rows)||rows.length===0){err.textContent='Class or name not found. Make sure you\'ve done the quiz first.';err.style.display='block';btn.disabled=false;btn.textContent='View my dashboard \u2192';return;}
+      if(!Array.isArray(rows)||rows.length===0){err.textContent='Class code not found. Check with your teacher.';err.style.display='block';btn.disabled=false;btn.textContent='View my dashboard \u2192';return;}
       var match = rows[0];
       st.studentId=match.student_id;st.classId=match.class_id;st.studentName=name;st.isGCSE=classLevel(match.class_name)==='gcse';
       try { localStorage.setItem('forge-student', JSON.stringify({studentId: st.studentId, classId: st.classId, classCode: code, studentName: st.studentName, classSubject: match.subject || null, isGCSE: st.isGCSE})); } catch(e) {}

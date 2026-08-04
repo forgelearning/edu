@@ -594,7 +594,7 @@ BANKS["2.4.1"] = {
       id:"INQ-02",spec:"2.4.1",stem:"The UK's Gini coefficient is 0.34. What does this mean?",
       options:{A:"The Gini coefficient ranges from 0 (perfect equality) to 1 (perfect inequality).",B:"34% of the UK population currently live below the poverty line. (all else equal) (all else equal)",C:"The UK ranks 34th in global league tables of income inequality.",D:"34% of UK national income is captured by the top 1% of earners."},correct:"A",tag:"MC-INQ-02",
       scaffold:"Gini coefficient = Area between Lorenz curve and 45° line ÷ total area under the 45° line. 0 = perfect equality (Lorenz curve IS the 45° line). 1 = perfect inequality (one person has everything). UK at 0.34 means moderate inequality — for comparison, Nordics are ~0.25, South Africa ~0.63.",
-      reforge:{stem:"Country A has a Gini of 0.28; Country B has 0.52. Which has greater income inequality?",options:{A:"Country B: a higher Gini coefficient indicates greater inequality.",B:"Country A — higher Gini means more equality.",C:"They are equally unequal.",D:"Gini coefficients can't be compared across countries. (all else equal) (all else equal)"},correct:"A"}
+      reforge:{stem:"Country A has a Gini of 0.28; Country B has 0.52. Which has greater income inequality?",options:{A:"Country A — higher Gini means more equality.",B:"Country B: a higher Gini coefficient indicates greater inequality.",C:"They are equally unequal.",D:"Gini coefficients can't be compared across countries. (all else equal) (all else equal)"},correct:"B"}
     },
     {
       id:"INQ-03",spec:"2.4.1",stem:"A student explains causes of income inequality but offers no evaluation. In an 8-mark question, how many marks are they likely to lose?",
@@ -625,7 +625,7 @@ BANKS["2.4.1"] = {
       id:"INQ-07",spec:"2.4.1",stem:"Progressive taxation means:",
       options:{A:"The marginal rate of tax increases as income rises",B:"Everyone pays the same percentage of their income in tax.",C:"Tax rates decrease as income rises.",D:"Only the wealthy pay tax."},correct:"A",tag:"MC-INQ-07",
       scaffold:"Progressive: marginal rate rises with income (UK: 20% basic → 40% higher → 45% additional). Proportional: same rate for all. Regressive: takes a larger proportion from lower incomes (e.g. VAT — same rate but represents a larger share of a poorer person's income). Progressive taxation is the main fiscal tool for reducing income inequality.",
-      reforge:{stem:"VAT is often described as regressive because:",options:{A:"The same tax rate takes a larger share of income from lower earners, who spend more of their income.",B:"It charges a higher rate to the wealthy. (in the market described) (with other relevant factors held constant)",C:"Only poor people pay VAT.",D:"It is progressive in disguise."},correct:"A"}
+      reforge:{stem:"VAT is often described as regressive because:",options:{A:"It charges a higher rate to the wealthy. (in the market described) (with other relevant factors held constant)",B:"The same tax rate takes a larger share of income from lower earners, who spend more of their income.",C:"Only poor people pay VAT.",D:"It is progressive in disguise."},correct:"B"}
     },
     {
       id:"INQ-08",spec:"2.4.1",stem:"Evaluate whether government redistribution (taxes and benefits) is the most effective way to reduce inequality. (12 marks — 8 KAA + 4 EV)",
@@ -8471,6 +8471,8 @@ for (const [bankId, [idPattern, plan, reforgePlan]] of Object.entries(geo640Bala
     moveGeoAnswer(question, reforgePlan[index], true);
   });
 }
+
+
 const geo640ShortAnswers = {
   "GCSE-HAZ-35:base":"Mid-latitude air transfer","GCSE-HAZ-35:reforge":"Deflected Ferrel-cell airflow","GCSE-HAZ-36:reforge":"Warm Atlantic heat transfer","GCSE-HAZ-37:base":"Several local factors affect growth","GCSE-HAZ-37:reforge":"Less favourable local growth","GCSE-HAZ-38:reforge":"Aerosol-related cooling","GCSE-HAZ-40:reforge":"Long-term uncertainty grows","GCSE-HAZ-42:reforge":"Water is funnelled coastward","GCSE-HAZ-49:reforge":"About 32 times more energy",
   "GCSE-DEV-43:base":"Income, health and education","GCSE-DEV-46:base":"Maternal healthcare and wellbeing","GCSE-DEV-47:base":"Isolation from markets and services","GCSE-DEV-48:reforge":"Debt shapes national policy","GCSE-DEV-50:base":"Core economies extract peripheral value","GCSE-DEV-50:reforge":"Cheap raw exports; costly imports","GCSE-DEV-52:reforge":"Power gains versus debt and displacement","GCSE-DEV-54:base":"Weak networks and skills","GCSE-DEV-54:reforge":"Broadband and technical education","GCSE-DEV-56:reforge":"Community-led spending decisions",
@@ -9389,15 +9391,6 @@ SUBJECTS["phys"].sub = "AQA 7408 — Mechanics, Electricity & Waves";
 SUBJECTS["bus"].banks = ["BUS-1","BUS-2","BUS-3"];
 SUBJECTS["bus"].sub = "Edexcel 9BS0 — Themes 1–4";
 
-// Mandarin — passage-based reader mode
-SUBJECTS["mandarin"] = {
-  label: "Mandarin Chinese",
-  sub: "IB Language B SL — Passage-based comprehension",
-  color: "#e8472a",
-  banks: [],
-  readerMode: true
-};
-
 // GCSE AQA History (8145) — Paper 2: Shaping the Nation.
 BANKS["GCSE-HIST-HEALTH"] = {
   label:"Paper 2 — Health and the People",
@@ -9986,6 +9979,21 @@ addGcsePsych("GCSE-PSY-MEMORY","GCSE-PSY-MEMORY","GCSE-PSY-MEM",[
   ["What is interference in forgetting?","Memories disrupt one another","Memories become permanent","Sensory input increases","A cue becomes clearer","Similar memories can compete, making retrieval more difficult.","Why might two similar passwords be confused?"],
   ["What is a false memory?","A confident but inaccurate recollection","A forgotten event","A sensory trace","A procedural skill","False memories can feel real even when details were not experienced or have changed.","A person recalls an event that never happened. What is this?" ]
 ]);
+// Hand-written Reforge twins for the first Memory set. These deliberately use
+// new scenarios and distractors: repeating the parent's option set makes the
+// highlighted answer recoverable rather than testing transfer.
+const replaceGcsePsychReforge = (bankId, id, reforge) => {
+  const question = BANKS[bankId].questions.find(item => item.id === id);
+  if (question) question.reforge = reforge;
+};
+replaceGcsePsychReforge("GCSE-PSY-MEMORY", "GCSE-PSY-MEM-01", {stem:"A camera records a brief flash before attention is directed elsewhere. Which memory system briefly held the raw visual input?",options:{A:"Sensory register",B:"Semantic memory",C:"Working memory",D:"Episodic memory"},correct:"A"});
+replaceGcsePsychReforge("GCSE-PSY-MEMORY", "GCSE-PSY-MEM-02", {stem:"A student recalls about seven digits, but performance falls when the list becomes much longer. Which finding does this illustrate?",options:{A:"The capacity of short-term memory is limited",B:"Long-term memory has no capacity",C:"Sensory memory lasts several minutes",D:"Procedural memory stores spoken lists"},correct:"A"});
+replaceGcsePsychReforge("GCSE-PSY-MEMORY", "GCSE-PSY-MEM-03", {stem:"In a word list, the first and final items are recalled better than items in the middle. What pattern is this?",options:{A:"A serial-position curve",B:"A context effect",C:"A state-dependent effect",D:"A misinformation effect"},correct:"A"});
+replaceGcsePsychReforge("GCSE-PSY-MEMORY", "GCSE-PSY-MEM-04", {stem:"Remembering the events of a particular holiday, including where and when they happened, mainly uses:",options:{A:"Episodic memory",B:"Semantic memory",C:"Procedural memory",D:"The sensory register"},correct:"A"});
+replaceGcsePsychReforge("GCSE-PSY-MEMORY", "GCSE-PSY-MEM-05", {stem:"Someone keeps a new access code active by saying it repeatedly until it can be entered. Which process are they using?",options:{A:"Maintenance rehearsal",B:"Retroactive interference",C:"Reconstruction",D:"Context reinstatement"},correct:"A"});
+replaceGcsePsychReforge("GCSE-PSY-MEMORY", "GCSE-PSY-MEM-06", {stem:"A story is recalled in a way that fits the listener's cultural expectations, even though several details have changed. Which explanation is most relevant?",options:{A:"Schemas reconstruct memories",B:"The sensory register stores the story permanently",C:"Procedural memory controls the recall",D:"Short-term capacity increases with age"},correct:"A"});
+replaceGcsePsychReforge("GCSE-PSY-MEMORY", "GCSE-PSY-MEM-07", {stem:"A driver confuses two very similar route instructions because learning one makes the other harder to retrieve. This is an example of:",options:{A:"Interference",B:"Object permanence",C:"Perceptual set",D:"Social facilitation"},correct:"A"});
+replaceGcsePsychReforge("GCSE-PSY-MEMORY", "GCSE-PSY-MEM-08", {stem:"A witness gives a detailed account with confidence, but CCTV shows that the account contains invented details. This is best described as:",options:{A:"A false memory",B:"A sensory trace",C:"Maintenance rehearsal",D:"A procedural memory"},correct:"A"});
 addGcsePsych("GCSE-PSY-PERCEPTION","GCSE-PSY-PERCEPTION","GCSE-PSY-PER",[
   ["What is the difference between sensation and perception?","Perception interprets sensory information","Sensation always involves memory","Perception is raw input","They are identical","Sensation is detection; perception is the organisation and interpretation of that input.","Which process gives meaning to light reaching the eye?"],
   ["Which is a monocular depth cue?","Relative size","Retinal disparity","Convergence","Binocular fusion","Monocular cues can be used with one eye, such as relative size and linear perspective.","Which cue can operate when one eye is closed?"],
@@ -15964,6 +15972,25 @@ appendGenerated("BUS-1", [
   ["A social enterprise primarily aims to:","meet a social or environmental purpose while remaining financially viable","maximise dividends regardless of impact","avoid measuring its performance","operate only as a government department", "Surpluses are commonly reinvested to support the social mission."],
   ["An ethical sourcing policy is most likely to affect:","supplier choice, costs and brand reputation","only the firm's depreciation method","the legal definition of GDP","the number of directors required by law", "Ethical choices can raise input costs but strengthen trust and reduce reputational risk."]
 ], "BUS-T1");
+const businessTheme1Reforges = {
+  "BUS-T1-01": {stem:"A café surveys customers before designing a new menu. Which approach is it using?",options:{A:"Market orientation, because it starts with customer needs",B:"Production orientation, because it ignores demand",C:"Financial gearing, because it uses a survey",D:"Backward integration, because it controls suppliers"},correct:"A"},
+  "BUS-T1-02": {stem:"A sportswear company creates separate offers for runners and hikers. What is the main benefit?",options:{A:"It can target each segment with a more relevant marketing mix",B:"It removes the need for market research",C:"It guarantees every competitor leaves the market",D:"It makes demand perfectly predictable"},correct:"A"},
+  "BUS-T1-03": {stem:"Customers recognise a distinctive name, logo and set of associations when choosing a product. This is the firm's:",options:{A:"Brand identity",B:"Variable cost",C:"Legal structure",D:"Distribution channel"},correct:"A"},
+  "BUS-T1-04": {stem:"A firm asks 500 potential customers how often they would buy a proposed product. This is:",options:{A:"Primary market research",B:"Secondary research using published statistics",C:"A cash-flow forecast",D:"A balance-sheet calculation"},correct:"A"},
+  "BUS-T1-05": {stem:"A small group discusses its reactions to an advert while a researcher moderates. What method is this?",options:{A:"A focus group",B:"A census of the whole market",C:"A profitability ratio",D:"A production forecast"},correct:"A"},
+  "BUS-T1-06": {stem:"If a 10% price cut causes quantity demanded to rise by 20%, what happens to total revenue?",options:{A:"It is likely to rise because demand is price elastic",B:"It must fall because the price is lower",C:"It stays unchanged in every market",D:"It becomes unrelated to quantity sold"},correct:"A"},
+  "BUS-T1-07": {stem:"A new streaming service launches with a low monthly price to attract subscribers quickly. Which strategy is this?",options:{A:"Penetration pricing",B:"Price skimming",C:"Cost-plus pricing",D:"Predatory purchasing"},correct:"A"},
+  "BUS-T1-08": {stem:"A manufacturer sells directly through its own website rather than through wholesalers. This changes its:",options:{A:"Distribution channel",B:"Market share calculation",C:"Employee appraisal system",D:"Capital structure"},correct:"A"},
+  "BUS-T1-09": {stem:"A detergent claims it removes stains more effectively than rival products. This claim is intended to be its:",options:{A:"Unique selling point",B:"Current liability",C:"Break-even output",D:"Economy of scale"},correct:"A"},
+  "BUS-T1-10": {stem:"A local craft firm begins selling online and receives orders from other regions. What benefit has it gained?",options:{A:"Access to a wider market",B:"Guaranteed repeat purchases",C:"Zero fulfilment costs",D:"Automatic control of competitors' prices"},correct:"A"},
+  "BUS-T1-11": {stem:"An entrepreneur opens a business and commits personal funds despite uncertainty about demand. What role is shown?",options:{A:"Organising resources while accepting business risk",B:"Setting the national interest rate",C:"Auditing the government's accounts",D:"Guaranteeing employment for every worker"},correct:"A"},
+  "BUS-T1-12": {stem:"A sole trader's business cannot repay a supplier. Which consequence reflects unlimited liability?",options:{A:"The owner's personal assets may be used to repay business debts",B:"Only the firm's shares can ever be lost",C:"The government automatically pays the supplier",D:"The debt disappears when sales fall"},correct:"A"},
+  "BUS-T1-13": {stem:"What protection does limited liability normally give shareholders in a company?",options:{A:"Their loss is generally limited to the capital they invested",B:"They receive all company assets if profits fall",C:"Their shares can never lose value",D:"They personally guarantee every company debt"},correct:"A"}
+};
+for (const [id, reforge] of Object.entries(businessTheme1Reforges)) {
+  const question = BANKS["BUS-1"].questions.find(item => item.id === id);
+  if (question) question.reforge = reforge;
+}
 appendGenerated("BUS-2", [
   ["Contribution per unit is calculated as:","selling price less variable cost per unit","selling price less total fixed costs","revenue less capital employed","fixed costs divided by output", "Contribution shows how much each unit contributes towards fixed costs and profit."],
   ["If fixed costs rise while contribution per unit is unchanged, break-even output will:","increase","decrease to zero","remain unchanged","become equal to total revenue", "Break-even output equals fixed costs divided by contribution per unit."],
@@ -16186,6 +16213,21 @@ appendGenerated("CHEM-1", [
   ["A giant covalent structure generally has:","many strong covalent bonds and a high melting point","weak intermolecular forces only","mobile ions in the solid","low melting point in every case", "Diamond and graphite are giant structures with different properties due to bonding and layers."],
   ["An ionic compound conducts electricity when molten because:","its ions are free to move","its covalent bonds become electrons","its atoms disappear","its protons move through the circuit", "Ions are fixed in a solid lattice but mobile when molten or dissolved."]
 ], "CHEM-E1");
+const chemistryTheme1Reforges = {
+  "CHEM-E1-01": {stem:"What happens when an atom in the gas phase loses its first electron?",options:{A:"A gaseous positive ion forms and the required energy is its first ionisation energy",B:"A neutron is removed from the nucleus",C:"All electrons are removed from a solid",D:"The atom becomes a different isotope"},correct:"A"},
+  "CHEM-E1-02": {stem:"Two atoms have the same proton number but different mass numbers. How are they related?",options:{A:"They are isotopes with different numbers of neutrons",B:"They are ions with different charges",C:"They are different elements with the same nucleus",D:"They have different electron shells but identical nuclei"},correct:"A"},
+  "CHEM-E1-03": {stem:"Why do abundant isotopes contribute more strongly to an element's relative atomic mass?",options:{A:"The weighted mean gives their masses a larger contribution",B:"Only the least abundant isotope is included",C:"Electron number determines the mass instead",D:"Boiling point replaces isotopic abundance in the calculation"},correct:"A"},
+  "CHEM-E1-04": {stem:"A sample contains 0.50 mol of water molecules. What does this amount represent?",options:{A:"0.50 times the Avogadro constant number of water molecules",B:"Exactly 0.50 water molecules",C:"0.50 grams regardless of the substance's formula mass",D:"The same volume of water under every condition"},correct:"A"},
+  "CHEM-E1-05": {stem:"A compound has molecular formula C6H12O6. What does its empirical formula show?",options:{A:"The simplest whole-number ratio of its atoms",B:"Its exact three-dimensional molecular shape",C:"The number of molecules in every sample",D:"The sequence of steps in its reaction mechanism"},correct:"A"},
+  "CHEM-E1-06": {stem:"In a coordinate covalent bond, where do the shared electrons originate?",options:{A:"One atom supplies both electrons in the shared pair",B:"Each atom loses a proton to create the pair",C:"The ionic lattice supplies electrons only when it melts",D:"Two neutrons combine outside the nucleus"},correct:"A"},
+  "CHEM-E1-07": {stem:"Why is carbon dioxide non-polar overall despite having polar C=O bonds?",options:{A:"Its linear symmetry causes the bond dipoles to cancel",B:"It contains no electrons around the oxygen atoms",C:"It forms an ionic lattice in the gas phase",D:"Its atoms have identical mass numbers"},correct:"A"},
+  "CHEM-E1-08": {stem:"Why does diamond have a high melting point?",options:{A:"Many strong covalent bonds must be broken throughout its giant structure",B:"It contains only weak intermolecular attractions",C:"Its solid contains mobile ions",D:"Its melting point is low because carbon atoms are small"},correct:"A"},
+  "CHEM-E1-09": {stem:"Why can molten sodium chloride conduct electricity when solid sodium chloride cannot?",options:{A:"The ions are mobile in the molten state but fixed in the solid lattice",B:"Covalent bonds become free electrons on melting",C:"The protons move through the external circuit",D:"The atoms disappear and leave a conducting liquid"},correct:"A"}
+};
+for (const [id, reforge] of Object.entries(chemistryTheme1Reforges)) {
+  const question = BANKS["CHEM-1"].questions.find(item => item.id === id);
+  if (question) question.reforge = reforge;
+}
 appendGenerated("CHEM-2", [
   ["An exothermic reaction has:","a negative enthalpy change","a positive activation energy only","no energy transfer","a negative temperature in every case", "Products have lower enthalpy than reactants for an exothermic reaction."],
   ["A catalyst increases rate by:","providing an alternative route with lower activation energy","increasing the enthalpy change","moving the equilibrium position","raising the temperature permanently", "A catalyst speeds both forward and reverse reactions without changing equilibrium position."],
@@ -16407,6 +16449,20 @@ appendGenerated("BUS-1", [
   ["An entrepreneur is most likely to be characterised by:","identifying an opportunity and accepting calculated risk","following every competitor's decisions","avoiding all change in the business","working without any business objective", "Entrepreneurs identify opportunities, organise resources and accept uncertainty when pursuing an idea."],
   ["A democratic leadership style involves:","consulting employees before important decisions","giving orders without seeking views","delegating every decision to customers","removing all accountability from managers", "Consultation can improve commitment, although it may make decisions slower."],
 ], "BUS-LEADERS");
+const businessTheme1FollowupReforges = {
+  "BUS-T1-14": {stem:"A founder spots an unmet customer need and invests savings in testing a new product. Which entrepreneurial behaviour is shown?",options:{A:"Identifying an opportunity and accepting calculated risk",B:"Copying a rival without making a decision",C:"Avoiding all uncertainty by closing the business",D:"Managing the national interest rate"},correct:"A"},
+  "BUS-T1-15": {stem:"A manager asks employees for views before choosing a new rota. Which leadership style is this?",options:{A:"Democratic leadership",B:"Autocratic leadership",C:"Laissez-faire accounting",D:"Paternalistic ownership"},correct:"A"},
+  "BUS-T1-16": {stem:"A start-up's founder tests several ideas before committing funds. Which quality is most relevant?",options:{A:"Calculated risk-taking",B:"Guaranteed certainty",C:"Avoidance of opportunity",D:"Complete dependence on competitors"},correct:"A"},
+  "BUS-T1-17": {stem:"Employees help choose a workplace change and then show stronger commitment to implementing it. What is a likely benefit of consultation?",options:{A:"Greater employee commitment",B:"Removal of all decision-making responsibility",C:"A guaranteed fall in operating costs",D:"An end to the need for management"},correct:"A"},
+  "BUS-LEADERS-01": {stem:"A founder launches a product after researching demand but accepts that sales are uncertain. Which role is illustrated?",options:{A:"Entrepreneurial opportunity recognition and calculated risk",B:"Routine administration with no uncertainty",C:"Central-bank policy setting",D:"Competitor price fixing"},correct:"A"},
+  "BUS-LEADERS-02": {stem:"A team leader invites staff to discuss alternatives before making a decision. This is closest to:",options:{A:"Democratic leadership",B:"Autocratic leadership",C:"Hands-off leadership with no accountability",D:"Management by financial ratio"},correct:"A"}
+};
+for (const [id, reforge] of Object.entries(businessTheme1FollowupReforges)) {
+  for (const bank of Object.values(BANKS)) {
+    const question = bank.questions?.find(item => item.id === id);
+    if (question) question.reforge = reforge;
+  }
+}
 appendGenerated("BUS-2", [
   ["A cash-flow forecast is mainly used to predict:","when cash is expected to enter and leave the business","whether the business will make an accounting profit","the exact market share of each rival","how many employees will receive training", "Forecasts help managers anticipate liquidity problems and plan finance."],
   ["A business reaches its break-even output when:","total revenue equals total costs","variable costs become zero","fixed costs are higher than revenue","profit is at its maximum", "At break-even, the contribution made by output covers fixed costs and profit is zero."],
@@ -17983,6 +18039,62 @@ appendGenerated("2.3.3", [
 ], "A1-PHASE7-ECON233");
 for (const question of BANKS["2.3.3"].questions.slice(-2)) question.specPointId = "edexcel-a-econ-2.3.3";
 
+const economicsPhase7Reforges = {
+  "A1-PHASE7-ECON231-01": {stem:"During a downturn, which pair of changes usually cushions household incomes without a fresh fiscal announcement?",options:{A:"Lower tax receipts and higher benefit payments",B:"Higher tax receipts and lower welfare spending",C:"A compulsory rise in the policy rate",D:"A ban on government borrowing"},correct:"A"},
+  "A1-PHASE7-ECON231-02": {stem:"A public infrastructure project is brought forward during a recession. What is its immediate macroeconomic role?",options:{A:"It adds to aggregate demand through government expenditure",B:"It reduces the quantity of money in circulation",C:"It lowers the economy's potential output",D:"It guarantees an appreciation of the currency"},correct:"A"},
+  "A1-PHASE7-ECON232-01": {stem:"Which households are most exposed to the consumption effect of a rise in the base rate?",options:{A:"Highly indebted households facing higher interest payments",B:"Households with no borrowing and no savings",C:"Households whose wages are fixed by export prices",D:"Households that receive an automatic tax refund"},correct:"A"},
+  "A1-PHASE7-ECON232-02": {stem:"Why might a central bank buy bonds when its policy rate is close to zero?",options:{A:"Asset purchases can lower longer-term borrowing costs and support demand",B:"Bond purchases directly increase income-tax rates",C:"They permanently fix the exchange rate",D:"They remove all commercial-bank deposits"},correct:"A"},
+  "A1-PHASE7-ECON233-01": {stem:"A vocational training scheme can shift long-run aggregate supply because it:",options:{A:"improves skills and may raise worker productivity",B:"reduces the capital stock",C:"shrinks the working-age population",D:"raises imports without affecting productive capacity"},correct:"A"},
+  "A1-PHASE7-ECON233-02": {stem:"Which is a realistic drawback of a major education reform?",options:{A:"Benefits may be delayed and the programme may require substantial public funding",B:"It must reduce productivity immediately",C:"It cannot affect labour-market outcomes",D:"It works faster than monetary policy in every circumstance"},correct:"A"}
+};
+for (const [id, reforge] of Object.entries(economicsPhase7Reforges)) {
+  for (const bank of Object.values(BANKS)) {
+    const question = bank.questions?.find(item => item.id === id);
+    if (question) question.reforge = reforge;
+  }
+}
+
+// Hand-written Reforge twins for the first Economics 2.3 coverage additions.
+// The generated twins used the parent's four options in a new order, which
+// exposes the answer immediately after feedback.
+const economicsPolicyReforges = {
+  "ECON-POLICY-01": {stem:"A recession reduces household incomes and employment. Which automatic response helps support demand?",options:{A:"Income-tax receipts fall while benefit payments rise",B:"The central bank raises rates without a meeting",C:"Exports become zero by definition",D:"Government stops collecting all taxes permanently"},correct:"A"},
+  "ECON-POLICY-02": {stem:"A government funds a large stimulus by borrowing while the economy is close to full capacity. What risk may arise?",options:{A:"Private investment may fall if borrowing pushes interest rates higher",B:"The money supply must fall to zero",C:"The labour force becomes perfectly skilled immediately",D:"The budget automatically moves into surplus"},correct:"A"},
+  "ECON-MONETARY-01": {stem:"When conventional interest rates are already very low, what is the purpose of an asset-purchase programme?",options:{A:"To lower longer-term yields and encourage lending or spending",B:"To increase direct taxation on households",C:"To impose a permanent fixed exchange rate",D:"To reduce the number of bank deposits"},correct:"A"},
+  "ECON-MONETARY-02": {stem:"A rate rise makes mortgages and business loans more expensive. What is the most likely short-run effect?",options:{A:"Consumption and investment weaken, reducing aggregate demand",B:"Households automatically receive higher disposable income",C:"The economy's productive capacity doubles",D:"Exports become cheaper because the currency appreciates"},correct:"A"},
+  "ECON-SUPPLY-01": {stem:"Why can a publicly funded training programme increase long-run output?",options:{A:"It can raise human capital and labour productivity",B:"It directly fixes the policy interest rate",C:"It guarantees a fall in imports",D:"It sets a legal maximum price for every product"},correct:"A"},
+  "ECON-SUPPLY-02": {stem:"Why might a supply-side reform fail to improve output quickly?",options:{A:"Implementation can be costly and its productivity effects may take years",B:"Supply-side policy always reduces the labour force",C:"Structural reform only affects the exchange rate",D:"Productivity responds instantly regardless of the policy"},correct:"A"}
+};
+for (const [id, reforge] of Object.entries(economicsPolicyReforges)) {
+  for (const bank of Object.values(BANKS)) {
+    const question = bank.questions?.find(item => item.id === id);
+    if (question) question.reforge = reforge;
+  }
+}
+
+const economicsFinanceReforges = {
+  "ECON-INEQUALITY-01": {stem:"Which tax design is most likely to reduce post-tax income inequality?",options:{A:"A progressive income tax taking a larger percentage from higher earners",B:"A flat tax taking the same percentage from every earner",C:"A tax that falls as income rises",D:"A tax applied only to people below the poverty line"},correct:"A"},
+  "ECON-INEQUALITY-02": {stem:"On a Lorenz curve diagram, what does a larger gap from the equality line indicate?",options:{A:"A more unequal distribution of income",B:"Identical income for every household",C:"A smaller population but unchanged distribution",D:"The absence of unemployment"},correct:"A"},
+  "ECON-POVERTY-01": {stem:"Why is relative poverty linked to the living standards of a particular society?",options:{A:"Its threshold is compared with typical income or resources in that society",B:"It is based only on the price of one imported good",C:"It always means having the lowest income in the world",D:"It is calculated from the number of firms in the economy"},correct:"A"},
+  "ECON-POVERTY-02": {stem:"A worker loses benefits and pays more tax after taking a low-paid job. What problem might this create?",options:{A:"A poverty trap, because the gain in disposable income is very small",B:"A guaranteed increase in labour productivity",C:"A fall in the effective marginal tax rate",D:"An automatic increase in the worker's real wage"},correct:"A"},
+  "ECON-FINANCE-01": {stem:"What is the main purpose of an equity market for a company?",options:{A:"To raise finance by issuing ownership shares to investors",B:"To set the central bank's policy rate",C:"To distribute unemployment benefits",D:"To control the volume of imports"},correct:"A"},
+  "ECON-FINANCE-02": {stem:"An importer agrees today to exchange currencies at a set rate in six months. What risk is being managed?",options:{A:"The risk of an adverse future exchange-rate movement",B:"The risk that domestic wages will fall",C:"The number of workers available in the region",D:"The government's annual spending total"},correct:"A"},
+  "ECON-BANKS-01": {stem:"How does a commercial bank usually create a deposit when it approves a new loan?",options:{A:"It credits the borrower's account with a new deposit",B:"It prints physical notes for the central bank",C:"It collects a new tax from the borrower",D:"It converts every existing deposit into cash"},correct:"A"},
+  "ECON-BANKS-02": {stem:"Why might a central bank act as lender of last resort?",options:{A:"To provide emergency liquidity to a solvent institution facing a temporary funding shortage",B:"To guarantee a profit for every private company",C:"To remove income tax from households",D:"To set a lower world price for exporters"},correct:"A"},
+  "ECON-CENTRAL-01": {stem:"What is the main focus of macroprudential regulation?",options:{A:"Reducing risks that could destabilise the financial system as a whole",B:"Choosing the advertising strategy of each bank",C:"Setting every household's annual income",D:"Writing the government's tax budget"},correct:"A"},
+  "ECON-CENTRAL-02": {stem:"What is the main economic reason for giving a central bank operational independence?",options:{A:"To reduce short-term political pressure on monetary decisions",B:"To let it ignore its statutory objectives",C:"To give it sole control of the government's tax rates",D:"To make interest rates identical across all countries"},correct:"A"}
+};
+for (const [id, reforge] of Object.entries(economicsFinanceReforges)) {
+  for (const bank of Object.values(BANKS)) {
+    const question = bank.questions?.find(item => item.id === id);
+    if (question) question.reforge = reforge;
+  }
+}
+for (const reforge of Object.values(economicsFinanceReforges)) {
+  repairQuestionOptions(reforge);
+  enforceNoUniqueLongestAnswer(reforge);
+}
+
 rebalanceMCQSubject(["BUS-4","BIO-3","CHEM-2","GEO-TEC","GEO-COAST","GEO-GLOBAL","2.3.1","2.3.2","2.3.3"]);
 
 // Final language pass: a few later-added coverage questions were introduced
@@ -18410,5 +18522,975 @@ for (const subject of Object.values(SUBJECTS)) {
   for (const question of BANKS["PHYS-3"].questions) {
     const fix = reforgeFixes[question.id];
     if (fix) question.reforge = { stem: fix.stem, options: fix.options, correct: fix.correct };
+  }
+}
+// Hand-authored Reforge twin fix for HSC-2 (Health & Social Care).
+// Same generator bug as RS-1 and PHYS-3: the E2/E2B/PHASE5/ANATOMY-MH
+// series glued a templated phrase in front of an identical stem, and
+// the COV series repeated the same fact with a cosmetic
+// "(comparison formulation)"-style suffix. Each twin below now tests
+// its concept through a concrete care scenario with its own distinct
+// distractors, length-balanced so the correct option is never
+// uniquely longest.
+{
+  const reforgeFixes = {
+    "HSC-ANATOMY-MH-01": { stem: "Digested nutrients pass from the small intestine into the bloodstream and lymphatic system. Through which structures does this mainly happen?", options: { A: "The bladder, which stores urine", B: "The villi lining the small intestine", C: "The heart, pumping oxygenated blood in most cases", D: "The alveoli, producing antibodies" }, correct: "B" },
+    "HSC-ANATOMY-MH-02": { stem: "What combination of features allows oxygen to diffuse quickly from the alveoli into the blood?", options: { A: "Thick walls with no nearby capillaries", B: "A waterproof lining that stops diffusion", C: "Thin walls, a large surface area and a good blood supply", D: "Cartilage rings running through each air sac in most cases" }, correct: "C" },
+    "HSC-ANATOMY-MH-03": { stem: "What kind of support is generally most appropriate for someone diagnosed with depression?", options: { A: "Being told to ignore all of their symptoms", B: "Removal of all social contact", C: "A guarantee that one treatment will work for everyone in most cases according to good practice", D: "Appropriate professional assessment, treatment and ongoing communication" }, correct: "D" },
+    "HSC-ANATOMY-MH-04": { stem: "What is the essential first step when creating a person-centred mental-health support plan?", options: { A: "Understanding the individual's needs, preferences, strengths and goals", B: "Using the same standard plan for every service user", C: "Allowing only relatives to make decisions", D: "Focusing on the diagnosis without their lived experience in most cases" }, correct: "A" },
+    "HSC-COV-010": { stem: "A service user is allowed to decide what time they get up and what they eat. Which principle is this respecting?", options: { A: "Confidentiality alone", B: "Their autonomy", C: "Infection control", D: "Resource allocation" }, correct: "B" },
+    "HSC-COV-012": { stem: "A care worker needs to pass on a service user's health information to another professional directly involved in their care. When is this acceptable?", options: { A: "When posted on social media, even if anonymised poorly in most cases according to good practice", B: "With every visitor to the setting", C: "Without any regard to consent", D: "Only when shared with appropriate people for a legitimate care purpose" }, correct: "D" },
+    "HSC-COV-014": { stem: "A care worker notices signs that may indicate abuse but sees no visible injury. What should they do?", options: { A: "Investigate it privately themselves", B: "Record and report it through the correct safeguarding procedure", C: "Share it with friends for advice", D: "Ignore it since there is no visible injury in most cases according to good practice" }, correct: "B" },
+    "HSC-COV-016": { stem: "What should a thorough workplace risk assessment always identify?", options: { A: "The final medical diagnosis", B: "The cost of every service provided in most cases according to good practice", C: "Only the name of the service user", D: "The hazards present, who might be harmed, and control measures" }, correct: "D" },
+    "HSC-COV-018": { stem: "What should a care worker's day-to-day practice be based on?", options: { A: "Habit alone", B: "Current evidence, professional standards and individual needs", C: "Whichever option is cheapest in most cases according to good practice", D: "Staff preference over safety" }, correct: "B" },
+    "HSC-COV-020": { stem: "A service refuses to provide a ramp for a wheelchair user, making the building inaccessible. Which issue does this raise?", options: { A: "Confidentiality in most cases", B: "Nutrition", C: "Cardiac output", D: "Disability equality" }, correct: "D" },
+    "HSC-COV-022": { stem: "What must be in place before a procedure can be said to have informed consent?", options: { A: "A signature obtained without explanation", B: "Capacity, relevant information and a voluntary decision", C: "No opportunity for the person to ask questions in most cases", D: "Agreement from staff only" }, correct: "B" },
+    "HSC-COV-024": { stem: "A support worker reports serious concerns about poor care to their manager and, when nothing changes, to a regulator. What is this called?", options: { A: "Refusing all supervision in most cases according to good practice", B: "A form of diagnosis", C: "Sharing gossip online", D: "Whistleblowing, raising concerns through an appropriate route" }, correct: "D" },
+    "HSC-COV-110": { stem: "A service user is allowed to decide what time they get up and what they eat. Which principle is this respecting?", options: { A: "Confidentiality alone", B: "Infection control", C: "Their autonomy", D: "Resource allocation" }, correct: "C" },
+    "HSC-COV-112": { stem: "A care worker needs to pass on a service user's health information to another professional directly involved in their care. When is this acceptable?", options: { A: "Only when shared with appropriate people for a legitimate care purpose", B: "When posted on social media, even if anonymised poorly in most cases according to good practice", C: "With every visitor to the setting", D: "Without any regard to consent" }, correct: "A" },
+    "HSC-COV-114": { stem: "A care worker notices signs that may indicate abuse but sees no visible injury. What should they do?", options: { A: "Investigate it privately themselves", B: "Share it with friends for advice", C: "Record and report it through the correct safeguarding procedure", D: "Ignore it since there is no visible injury in most cases according to good practice" }, correct: "C" },
+    "HSC-COV-116": { stem: "What should a thorough workplace risk assessment always identify?", options: { A: "The hazards present, who might be harmed, and control measures", B: "The final medical diagnosis", C: "The cost of every service provided in most cases according to good practice", D: "Only the name of the service user" }, correct: "A" },
+    "HSC-COV-118": { stem: "What should a care worker's day-to-day practice be based on?", options: { A: "Habit alone", B: "Whichever option is cheapest in most cases according to good practice", C: "Current evidence, professional standards and individual needs", D: "Staff preference over safety" }, correct: "C" },
+    "HSC-COV-120": { stem: "A service refuses to provide a ramp for a wheelchair user, making the building inaccessible. Which issue does this raise?", options: { A: "Disability equality", B: "Confidentiality in most cases", C: "Nutrition", D: "Cardiac output" }, correct: "A" },
+    "HSC-COV-122": { stem: "What must be in place before a procedure can be said to have informed consent?", options: { A: "A signature obtained without explanation", B: "No opportunity for the person to ask questions in most cases", C: "Capacity, relevant information and a voluntary decision", D: "Agreement from staff only" }, correct: "C" },
+    "HSC-COV-124": { stem: "A support worker reports serious concerns about poor care to their manager and, when nothing changes, to a regulator. What is this called?", options: { A: "Whistleblowing, raising concerns through an appropriate route", B: "Refusing all supervision in most cases according to good practice", C: "A form of diagnosis", D: "Sharing gossip online" }, correct: "A" },
+    "HSC-E2-01": { stem: "Why are the lungs' alveoli each surrounded by a dense network of capillaries?", options: { A: "To maximise the surface available for gas exchange with the blood", B: "To pump blood around the body", C: "To digest proteins entering the lungs in most cases according to good practice", D: "To produce bile for digestion" }, correct: "A" },
+    "HSC-E2-02": { stem: "Blood leaving which heart chamber travels through the aorta to reach the rest of the body?", options: { A: "The right atrium, through the pulmonary artery", B: "The left ventricle", C: "The right ventricle, through the vena cava", D: "The left atrium, through the liver" }, correct: "B" },
+    "HSC-E2-03": { stem: "How does insulin act to lower blood glucose after a meal?", options: { A: "By releasing glucose from stored glycogen in most cases", B: "By breaking down red blood cells", C: "By promoting cells to take up and store glucose", D: "By triggering antibody production" }, correct: "C" },
+    "HSC-E2-04": { stem: "What role do the kidneys play in maintaining a stable internal environment?", options: { A: "Producing digestive enzymes", B: "Pumping oxygen into the lungs in most cases according to good practice", C: "Forming synaptic connections", D: "Filtering the blood and regulating water and ion balance" }, correct: "D" },
+    "HSC-E2-05": { stem: "What is the correct name for the gap across which a nerve impulse passes from one neurone to the next?", options: { A: "A synapse", B: "A type of blood vessel", C: "A bone joint", D: "A lung air sac" }, correct: "A" },
+    "HSC-E2-06": { stem: "What term describes an X-ray showing a bone that has cracked following a fall?", options: { A: "A viral skin infection", B: "A fracture", C: "A loss of vision", D: "A reduced pulse only" }, correct: "B" },
+    "HSC-E2-07": { stem: "A care worker is helping a service user get dressed. What is the best approach to support their independence?", options: { A: "Completing the whole task without asking the person in most cases", B: "Removing all choice over how the task is done", C: "Letting the person do whatever they can manage safely themselves", D: "Refusing to use any adapted equipment" }, correct: "C" },
+    "HSC-E2-08": { stem: "A patient who is a non-native English speaker seems confused during a consultation. What should the care worker do?", options: { A: "Speak more quickly to save time", B: "Use unexplained medical jargon", C: "Ignore the patient's hearing or vision needs in most cases according to good practice", D: "Provide accessible language, visual aids, or an interpreter as needed" }, correct: "D" },
+    "HSC-E2-09": { stem: "Which combination of factors most supports a service user's mental wellbeing?", options: { A: "Social connection, meaningful activity and appropriate support", B: "Isolating the person from others", C: "Removing all daily routine", D: "Avoiding early help when problems appear in most cases according to good practice" }, correct: "A" },
+    "HSC-E2B-01": { stem: "What exactly does a nurse measure when they record a patient's pulse rate?", options: { A: "The volume of air breathed per hour", B: "The number of heartbeats per minute", C: "Blood glucose level per day", D: "Kidney filtration rate only" }, correct: "B" },
+    "HSC-E2B-02": { stem: "Which body structures does arthritis mainly affect, and what symptoms does it typically cause?", options: { A: "The alveoli only", B: "The retina only", C: "Joints, causing pain and restricted movement", D: "The pancreas only in most cases according to good practice" }, correct: "C" },
+    "HSC-E2B-03": { stem: "What should always be included when drawing up a person-centred care plan?", options: { A: "Only a medical diagnosis", B: "The care worker's personal opinions in most cases according to good practice", C: "A fixed plan that is never reviewed", D: "Agreed goals, preferences, support needs and arrangements for review" }, correct: "D" },
+    "HSC-E2B-04": { stem: "Which behaviours show that a care worker is actively listening to a service user?", options: { A: "Giving attention, responding appropriately and checking understanding", B: "Avoiding eye contact in every culture", C: "Planning the next task instead of listening in most cases according to good practice", D: "Interrupting repeatedly" }, correct: "A" },
+    "HSC-E2B-05": { stem: "A patient looks confused after a doctor uses unfamiliar clinical terms. How can this communication barrier be reduced?", options: { A: "Using even more abbreviations in most cases according to good practice", B: "Explaining the jargon in accessible, everyday language", C: "Simply speaking louder", D: "Ending the conversation early" }, correct: "B" },
+    "HSC-E2B-06": { stem: "How is an infection transmitted when it spreads via a vector such as a mosquito?", options: { A: "Through a clean dressing", B: "Through a written care plan", C: "Through another living organism carrying the infection", D: "Through a patient's personal preference in most cases according to good practice" }, correct: "C" },
+    "HSC-E2B-07": { stem: "Which practice best reflects dignity in care for a service user?", options: { A: "Discussing their needs in public", B: "Using labels instead of their name", C: "Removing their personal possessions in most cases", D: "Protecting their privacy, choice and respect" }, correct: "D" },
+    "HSC-E2B-08": { stem: "Why must a care professional report a service user's sudden deterioration straight away, rather than waiting?", options: { A: "Because early action may prevent serious harm", B: "Because records are unnecessary", C: "Because the person must always wait for a scheduled appointment", D: "Because only doctors are allowed to observe change" }, correct: "A" },
+    "HSC-PHASE5-01": { stem: "Which organ releases digestive enzymes directly into the small intestine?", options: { A: "The organ that produces red blood cells", B: "The pancreas", C: "The gall bladder, which only stores bile", D: "The kidneys, which filter urine" }, correct: "B" },
+    "HSC-PHASE5-02": { stem: "Why is the small intestine so effective at absorbing digested food?", options: { A: "It has thick, dry walls with no blood vessels in most cases according to good practice", B: "It has only one straight muscular layer", C: "It has villi giving it a large surface area and a rich blood supply", D: "It has no contact with digested food" }, correct: "C" },
+    "HSC-PHASE5-03": { stem: "How does the musculoskeletal system help a person remain independent in daily life?", options: { A: "By carrying out gas exchange in the alveoli in most cases", B: "By producing hormones only", C: "By filtering the blood", D: "By enabling movement, posture and physical activity" }, correct: "D" },
+    "HSC-PHASE5-04": { stem: "What condition is characterised by weakened, less dense bones that fracture more easily?", options: { A: "Osteoporosis", B: "A condition of excessive red-cell production", C: "A condition involving blocked airways only", D: "A condition of high blood glucose after meals" }, correct: "A" },
+    "HSC-PHASE5-05": { stem: "Which set of symptoms would most suggest a person is experiencing depression?", options: { A: "A temporary preference for one meal over another in most cases", B: "Persistent low mood or loss of interest affecting daily life", C: "A broken bone", D: "An increased height during adolescence" }, correct: "B" },
+    "HSC-PHASE5-06": { stem: "What is the main aim of cognitive behavioural therapy?", options: { A: "To help a person avoid ever discussing their experiences in most cases", B: "To replace all medication automatically", C: "To help a person identify and change unhelpful thoughts and behaviours", D: "To help a person ignore relationships and routine" }, correct: "C" },
+    "HSC-PHASE5-07": { stem: "How should a care professional usually support someone living with dementia?", options: { A: "Making every decision without involving them in most cases according to good practice", B: "Assuming all of their memory has gone", C: "Changing staff and routines without warning", D: "Using familiar routines and communicating clearly and patiently" }, correct: "D" },
+    "HSC-PHASE5-08": { stem: "Which approach would a public-health strategy most likely use to reduce rates of type 2 diabetes?", options: { A: "Supporting healthier diet, physical activity and early risk assessment", B: "Withholding information from the public", C: "Treating only the most severe cases in hospital in most cases according to good practice", D: "Assuming genetics is the only cause" }, correct: "A" },
+  };
+  for (const question of BANKS["HSC-2"].questions) {
+    const fix = reforgeFixes[question.id];
+    if (fix) question.reforge = { stem: fix.stem, options: fix.options, correct: fix.correct };
+  }
+}
+// Hand-authored Reforge twin fix for CHEM-2. The bank's generator
+// helpers reused the parent question's own four option texts for the
+// Reforge twin — the E2/E4/E4B/PHASE7 series glued a templated phrase
+// in front of an identical stem, and the COV series repeated the same
+// fact with an identical stem too. Each twin below now tests the
+// concept through a concrete scenario or fresh framing, with its own
+// distinct distractors, length-balanced so the correct option is
+// never uniquely longest.
+{
+  const reforgeFixes = {
+    "A1-PHASE7-CHEM2-01": { stem: "In a Kp expression, the partial pressure of a gaseous product rises while the reactant pressures stay constant. What happens to the value of Qp?", options: { A: "It decreases to zero", B: "It remains exactly one", C: "It increases", D: "It becomes negative" }, correct: "C" },
+    "A1-PHASE7-CHEM2-02": { stem: "An electrochemical cell is found to have a positive Ecell under standard conditions. What does this indicate about the forward reaction?", options: { A: "It is at equilibrium, with no net change occurring", B: "It is certain to proceed at a negative rate", C: "It is unable to transfer any electrons", D: "It is thermodynamically feasible" }, correct: "D" },
+    "CHEM-COV-011": { stem: "Why is the relative atomic mass of chlorine not a whole number?", options: { A: "It is based only on the most common isotope present", B: "It depends on the number of electrons in a chlorine molecule under standard conditions", C: "It is a weighted mean based on isotopic masses and their relative abundances", D: "It is calculated directly from chlorine's boiling point" }, correct: "C" },
+    "CHEM-COV-014": { stem: "An ammonium ion forms when ammonia reacts with a hydrogen ion, with both bonding electrons coming from the nitrogen atom. What type of bond is this?", options: { A: "A bond formed when each atom loses a proton", B: "A bond formed only when an ionic lattice melts", C: "A bond formed by sharing two neutrons", D: "A coordinate (dative covalent) bond" }, correct: "D" },
+    "CHEM-COV-017": { stem: "Molten sodium chloride conducts electricity, but solid sodium chloride does not. Why?", options: { A: "In the molten state, the ions are free to move and carry charge", B: "In the molten state, protons move through the external circuit", C: "In the molten state, the covalent bonds turn into free electrons", D: "In the molten state, the atoms of sodium chloride disappear" }, correct: "A" },
+    "CHEM-COV-062": { stem: "A few drops of bromine water are shaken with an unknown hydrocarbon, and the orange colour disappears. What functional group does this confirm?", options: { A: "A carboxylic acid group under standard conditions in a typical experiment", B: "A carbon-carbon double bond, as found in an alkene", C: "An amine salt", D: "A transition-metal ion" }, correct: "B" },
+    "CHEM-COV-065": { stem: "An unknown organic compound is warmed with Tollens' reagent, and a silvery coating forms on the inside of the test tube. What does this confirm about the compound?", options: { A: "It produces an orange solution", B: "It produces a blue precipitate", C: "It is an aldehyde", D: "It releases a green gas" }, correct: "C" },
+    "CHEM-COV-068": { stem: "Two monomers join to form a polyester, releasing a small water molecule at each new bond. What type of polymerisation is this?", options: { A: "A process where all double bonds remain completely unchanged under standard conditions", B: "A process where the polymer breaks back into its monomers", C: "A process where oxygen is always added at each step", D: "Condensation polymerisation, where a small molecule is eliminated" }, correct: "D" },
+    "CHEM-COV-071": { stem: "In paper chromatography, a spot travels 3 cm while the solvent front travels 6 cm from the same origin. What does the ratio of these distances give?", options: { A: "The Rf value of the spot", B: "The mass of the spot divided by its volume", C: "The solvent volume divided by the time taken", D: "The peak area divided by the applied pressure" }, correct: "A" },
+    "CHEM-COV-074": { stem: "Two forms of the same molecule are non-superimposable mirror images of each other. What are these two forms called?", options: { A: "Compounds with different molecular formulae", B: "Optical isomers", C: "Molecules that contain no carbon at all", D: "Structural isomers of one another" }, correct: "B" },
+    "CHEM-COV-077": { stem: "An ester is heated under reflux with dilute acid. What products does this hydrolysis reaction typically give?", options: { A: "Only carbon dioxide gas", B: "Two separate alkene molecules under standard conditions", C: "An alcohol and a carboxylic acid (or its salt)", D: "An amine and an aldehyde" }, correct: "C" },
+    "CHEM-COV-080": { stem: "In the free-radical substitution of methane with chlorine, UV light causes the Cl-Cl bond to break equally. What does this initiation step produce?", options: { A: "Methanol, formed by hydrolysis", B: "A carbocation formed directly from methane under standard conditions", C: "A polymer formed by condensation", D: "Two chlorine radicals, formed by homolytic fission" }, correct: "D" },
+    "CHEM-COV-083": { stem: "A chemist plans a multi-step synthesis by starting from the target molecule and working out what simpler starting materials could produce it. What is this planning approach called?", options: { A: "Retrosynthesis, working backwards from the target molecule", B: "Heating every intermediate until it boils", C: "Measuring reaction rate without changing any conditions under standard conditions", D: "Removing all functional groups before starting" }, correct: "A" },
+    "CHEM-COV-086": { stem: "A Grignard reagent is added to a carbonyl compound during an organic synthesis. What is its main use in this reaction?", options: { A: "It acts only as a solvent for chromatography", B: "It forms a new carbon-carbon bond with the carbonyl compound", C: "It removes every proton from an alkane", D: "It converts benzene directly into an amino acid under standard conditions" }, correct: "B" },
+    "CHEM-E2-01": { stem: "A reaction releases 120 kJ of energy to the surroundings as it proceeds. What does this tell you about its enthalpy change?", options: { A: "It is exothermic, so the enthalpy change is negative", B: "It must have a positive activation energy alone under standard conditions", C: "No energy has been transferred at all", D: "The temperature must fall below zero every time" }, correct: "A" },
+    "CHEM-E2-02": { stem: "Adding a catalyst speeds up a reaction without being used up itself. How does it achieve this?", options: { A: "By increasing the overall enthalpy change of the reaction under standard conditions", B: "By providing an alternative reaction pathway with lower activation energy", C: "By shifting the position of equilibrium", D: "By permanently raising the temperature of the mixture" }, correct: "B" },
+    "CHEM-E2-03": { stem: "In a sealed flask, a reversible reaction reaches a point where the concentrations of reactants and products stop changing. What is actually happening at this point?", options: { A: "Reactant and product concentrations happen to be equal under standard conditions", B: "Every reaction in the flask has stopped completely", C: "The forward and reverse reaction rates have become equal", D: "Only products remain in the flask" }, correct: "C" },
+    "CHEM-E2-04": { stem: "A gaseous equilibrium is subjected to a rise in pressure. Which side of the equilibrium does this favour?", options: { A: "The side with more solid particles", B: "The side with more total atoms in solution", C: "The side with the larger activation energy", D: "The side with fewer moles of gas" }, correct: "D" },
+    "CHEM-E2-05": { stem: "What oxidation state does oxygen almost always have when it is combined in an oxide?", options: { A: "−2, since oxygen gains two electrons", B: "+2, behaving like a typical metal ion", C: "0, exactly as in its uncombined elemental form", D: "−1, as it behaves specifically inside a peroxide" }, correct: "A" },
+    "CHEM-E2-06": { stem: "In a redox reaction, one species loses electrons and is itself oxidised. What is this species called?", options: { A: "A species that gains electrons and is reduced", B: "A reducing agent", C: "A species that only accepts protons", D: "A species whose oxidation state never changes" }, correct: "B" },
+    "CHEM-E2-07": { stem: "Against which reference electrode is the standard electrode potential of a half-cell conventionally measured?", options: { A: "A saturated salt bridge alone", B: "Pure oxygen gas at any pressure", C: "The standard hydrogen electrode", D: "A carbon electrode with no defined reference" }, correct: "C" },
+    "CHEM-E2-08": { stem: "A solution of hydrochloric acid is found to have ionised almost completely into H+ and Cl- ions. What does this indicate about the acid?", options: { A: "It is a strong acid, almost entirely undissociated in solution", B: "It has already been neutralised before dissolving", C: "It has been converted into a base", D: "It is a strong acid, almost fully dissociated in solution" }, correct: "D" },
+    "CHEM-E2-09": { stem: "How is the pH of a solution formally defined?", options: { A: "As the negative logarithm of the hydrogen ion concentration", B: "As the positive logarithm of the hydroxide ion concentration", C: "As mass divided by volume", D: "As the number of salt ions present" }, correct: "A" },
+    "CHEM-E2-10": { stem: "A rate equation is determined experimentally rather than read directly from the balanced equation. What does it express rate in terms of?", options: { A: "Only the coefficients from the balanced equation under standard conditions", B: "Concentrations raised to experimentally determined orders", C: "The equilibrium constant alone", D: "The melting point of the reactants" }, correct: "B" },
+    "CHEM-E2-11": { stem: "Why can the unit of a rate constant differ between two different reactions?", options: { A: "Because it depends on the colour of the reactants", B: "Because it depends only on the shape of the reaction vessel", C: "Because it depends on the overall order of the reaction", D: "Because it depends on the name given to the catalyst" }, correct: "C" },
+    "CHEM-E2-12": { stem: "How is Kp calculated for a gaseous equilibrium?", options: { A: "Using the masses of all solids present only", B: "Using only the initial concentrations before reaction under standard conditions", C: "Using the activation energy of the forward reaction", D: "Using equilibrium partial pressures raised to their stoichiometric powers" }, correct: "D" },
+    "CHEM-E2-13": { stem: "A solution's pH barely changes when a small amount of acid or alkali is added to it. What kind of solution is this?", options: { A: "A buffer solution, which resists changes in pH", B: "A solution that resists changes in temperature when heated", C: "A solution that resists changes in gas pressure", D: "A solution that resists changes in mass during evaporation" }, correct: "A" },
+    "CHEM-E2-14": { stem: "What does the standard enthalpy change of formation of a compound specifically measure?", options: { A: "The enthalpy change forming one atom from an ion", B: "The enthalpy change forming one mole of the compound from its elements in standard states", C: "The enthalpy change forming one mole of gas from any liquid under standard conditions in a typical experiment", D: "The enthalpy change forming one bond in isolation" }, correct: "B" },
+    "CHEM-E2-15": { stem: "Which three quantities are combined in a Gibbs free energy calculation to assess whether a reaction is feasible?", options: { A: "Only the activation energy", B: "Only the concentration of reactants", C: "Enthalpy, entropy and temperature", D: "Only the atomic number of the elements involved" }, correct: "C" },
+    "CHEM-E2-16": { stem: "What oxidation number is assigned to an element that has not combined with anything else?", options: { A: "One", B: "A value equal to its proton number", C: "Always a negative value", D: "Zero" }, correct: "D" },
+    "CHEM-E2-17": { stem: "How is the endpoint of a titration usually identified in practice?", options: { A: "By a suitable indicator colour change or an instrument signal", B: "By the solution becoming completely colourless in every case under standard conditions", C: "By the burette reading returning to exactly zero", D: "By the temperature of the mixture falling to zero" }, correct: "A" },
+    "CHEM-E2-18": { stem: "In some redox reactions, a single species is simultaneously oxidised and reduced. What is this type of reaction called?", options: { A: "A simple acid-base neutralisation", B: "A disproportionation reaction", C: "A reaction between two separate catalysts", D: "A reaction with no change in oxidation state" }, correct: "B" },
+    "CHEM-E4-01": { stem: "Moving down Group 2 of the periodic table, what generally happens to the first ionisation energy?", options: { A: "It stays exactly constant for every element", B: "It increases, because the atoms gain extra electrons", C: "It decreases, as atomic radius and shielding both increase", D: "It becomes zero once the element is in aqueous solution under standard conditions" }, correct: "C" },
+    "CHEM-E4-02": { stem: "A student adds sulfate ions to a solution suspected of containing barium ions. What observation confirms their presence?", options: { A: "A silver mirror forms on the test tube", B: "No visible change occurs", C: "The solution turns green", D: "A white precipitate forms" }, correct: "D" },
+    "CHEM-E4-03": { stem: "Chlorine water is added to a solution of potassium bromide. What observation shows that chlorine is more reactive than bromide ions?", options: { A: "Chlorine displaces bromine from the bromide solution", B: "Bromide displaces chlorine from a chloride solution under standard conditions", C: "Both halogens form identical products in water", D: "Chlorine is shown to be unable to gain electrons" }, correct: "A" },
+    "CHEM-E4-04": { stem: "A solution containing a transition-metal complex appears strongly coloured. What is the main reason for this?", options: { A: "It contains no delocalised electrons at all", B: "It absorbs particular frequencies of light during electronic transitions", C: "It simply has a higher boiling point than water under standard conditions", D: "It always forms a white precipitate" }, correct: "B" },
+    "CHEM-E4B-01": { stem: "Moving across Period 3 from sodium to chlorine, what trend is expected in the nature of the oxides formed?", options: { A: "Atomic radius increases steadily across the period under standard conditions", B: "Every element in the period becomes a metal", C: "The oxides change from mainly ionic to mainly covalent", D: "Every oxide formed is chemically neutral" }, correct: "C" },
+    "CHEM-E4B-02": { stem: "Magnesium ribbon is heated in steam. What are the main products of this reaction?", options: { A: "Magnesium hydroxide and chlorine gas", B: "Magnesium nitrate and water", C: "Magnesium carbonate and oxygen gas", D: "Magnesium oxide and hydrogen gas" }, correct: "D" },
+    "CHEM-E4B-03": { stem: "A student adds acidified silver nitrate solution to a sample suspected of containing chloride ions. What result confirms this?", options: { A: "A white precipitate forms", B: "The solution turns blue", C: "A yellow flame is produced", D: "A brown gas is released" }, correct: "A" },
+    "CHEM-E4B-04": { stem: "Transition metals can form ions with more than one oxidation state. What allows this variability?", options: { A: "Transition metals have no outer electrons at all", B: "Both the 4s and 3d electrons may be involved in bonding", C: "Their nuclei contain a variable number of protons under standard conditions", D: "All of their compounds are purely molecular" }, correct: "B" },
+  };
+  for (const question of BANKS["CHEM-2"].questions) {
+    const fix = reforgeFixes[question.id];
+    if (fix) question.reforge = { stem: fix.stem, options: fix.options, correct: fix.correct };
+  }
+}
+// Hand-authored Reforge twin fix for CHEM-3. Same generator bug as
+// CHEM-2: the E3/E3B/E4C series glued a templated phrase in front of
+// an identical stem, and the COV series repeated the same fact with
+// the identical stem and reordered options. Each twin below now tests
+// the concept through a concrete scenario or fresh framing, with its
+// own distinct distractors, length-balanced so the correct option is
+// never uniquely longest.
+{
+  const reforgeFixes = {
+    "CHEM-COV-009": { stem: "What quantity is being measured when we define the first ionisation energy of an element?", options: { A: "The energy needed to remove one electron from each atom in a mole of gaseous atoms", B: "The energy needed to remove one proton from a nucleus", C: "The energy needed to remove all electrons from a solid under standard conditions in a typical experiment", D: "The energy needed to remove one neutron from an ion" }, correct: "A" },
+    "CHEM-COV-012": { stem: "A chemist weighs out one mole of carbon atoms. What does this quantity actually represent?", options: { A: "Exactly one gram of carbon, regardless of substance", B: "The Avogadro constant number of carbon atoms", C: "Exactly one atom of carbon", D: "The same volume that one mole of any gas would occupy at any temperature" }, correct: "B" },
+    "CHEM-COV-015": { stem: "Carbon dioxide contains two polar C=O bonds, yet the molecule as a whole is non-polar. Why?", options: { A: "It contains no electrons at all", B: "It has an ionic lattice structure", C: "Its symmetrical linear shape causes the bond dipoles to cancel out", D: "Its atoms all have identical mass numbers under standard conditions" }, correct: "C" },
+    "CHEM-COV-018": { stem: "What is the electron arrangement of a neutral magnesium atom?", options: { A: "2,8,8 — a full outer shell of eight", B: "2,10 — all ten remaining electrons in one shell", C: "2,6,2 — six electrons in the second shell", D: "2,8,2 — two electrons in the outer shell" }, correct: "D" },
+    "CHEM-COV-063": { stem: "A species attacks an electron-deficient carbon atom by donating a lone pair of electrons to form a new bond. What is this species called?", options: { A: "A species that accepts a pair of electrons", B: "A species that loses a neutron", C: "A species that must contain a metal", D: "A nucleophile" }, correct: "D" },
+    "CHEM-COV-066": { stem: "Ethanoic acid is added to solid sodium carbonate. What products are formed in this reaction?", options: { A: "An aldehyde and hydrogen gas under standard conditions", B: "Only water", C: "A polymer and oxygen gas", D: "A salt, water and carbon dioxide gas" }, correct: "D" },
+    "CHEM-COV-069": { stem: "Glycine has the general structure H2N-CH2-COOH. Which two functional groups does every amino acid contain?", options: { A: "Only an alkene group", B: "A halogen and a ketone only under standard conditions", C: "A metal ion and a hydroxide", D: "An amino group and a carboxyl group" }, correct: "D" },
+    "CHEM-COV-072": { stem: "1-bromobutane is heated under reflux with aqueous sodium hydroxide. What organic product forms?", options: { A: "Only an alkene", B: "A carboxylic acid under standard conditions", C: "An amide", D: "Butan-1-ol, an alcohol" }, correct: "D" },
+    "CHEM-COV-075": { stem: "During protein synthesis, the carboxyl group of one amino acid reacts with the amino group of the next. What type of bond forms between them?", options: { A: "A bond between two alkene groups", B: "A bond between two halogen atoms", C: "A bond between a hydroxyl group and a metal ion", D: "A peptide bond" }, correct: "D" },
+    "CHEM-COV-078": { stem: "A long polymer chain is examined to find the smallest structural unit that repeats along its length. What is this unit called?", options: { A: "The sum of all monomer masses with no bonds counted", B: "A unit found by removing every carbon atom", C: "A unit found by counting only the end groups", D: "The repeating unit of the polymer" }, correct: "D" },
+    "CHEM-COV-081": { stem: "Alkanes undergo very few reactions compared with alkenes at room temperature. What structural feature explains this low reactivity?", options: { A: "A reactive carbon-carbon double bond", B: "An ionic lattice structure", C: "A carbonyl group present in the chain under standard conditions in a typical experiment", D: "Strong, non-polar C-C and C-H sigma bonds throughout the molecule" }, correct: "D" },
+    "CHEM-COV-084": { stem: "Beyond simply forming the desired product, what should a good organic synthesis route also be judged on?", options: { A: "Only the mass of solvent discarded", B: "Only the total number of steps involved", C: "Whether every intermediate happens to be coloured under standard conditions", D: "Its yield, purity, atom economy and how manageable the conditions are" }, correct: "D" },
+    "CHEM-COV-087": { stem: "A student writes up a multi-step reaction scheme for an exam. What should a fully convincing scheme include?", options: { A: "Only the name of the final product", B: "The colour of the laboratory apparatus used under standard conditions", C: "A yield with no method described", D: "The reagents, conditions, structures and reaction type at each step" }, correct: "D" },
+    "CHEM-E3-01": { stem: "A hydrocarbon decolourises bromine water rapidly at room temperature. What functional group does this indicate?", options: { A: "A carbon-carbon double bond, as found in an alkene", B: "A hydroxyl group alone under standard conditions in a typical experiment", C: "A benzene ring alone", D: "An ionic bond" }, correct: "A" },
+    "CHEM-E3-02": { stem: "A few drops of bromine water are shaken with an unknown compound and the orange colour disappears immediately. What does this confirm?", options: { A: "The compound is a carboxylic acid", B: "The compound contains a carbon-carbon double bond", C: "The compound is an amine salt", D: "The compound contains a transition-metal ion under standard conditions" }, correct: "B" },
+    "CHEM-E3-03": { stem: "A species attacks an electron-deficient carbon atom by donating a lone pair of electrons to form a new bond. What is this species called?", options: { A: "A species that accepts a pair of electrons", B: "A species that loses a neutron", C: "A nucleophile", D: "A species that must contain a metal" }, correct: "C" },
+    "CHEM-E3-04": { stem: "Ethanol is heated under reflux with an excess of acidified potassium dichromate. What is the final organic product?", options: { A: "Ethanoic acid, via the intermediate ethanal", B: "Ethene, under every condition under standard conditions", C: "A ketone, formed directly", D: "An amine" }, correct: "A" },
+    "CHEM-E3-05": { stem: "An unknown organic compound is warmed with Tollens' reagent, and a silvery coating forms inside the test tube. What does this confirm?", options: { A: "The compound forms a blue precipitate", B: "The compound is an aldehyde", C: "The compound releases a green gas", D: "The compound forms an orange solution" }, correct: "B" },
+    "CHEM-E3-06": { stem: "Ethanoic acid is added to solid sodium carbonate. What products are formed in this reaction?", options: { A: "An aldehyde and hydrogen gas under standard conditions", B: "Only water", C: "A salt, water and carbon dioxide gas", D: "A polymer and oxygen gas" }, correct: "C" },
+    "CHEM-E3-07": { stem: "Benzene's carbon-carbon bond lengths are all equal and shorter than a typical single bond. What explains this unusual stability?", options: { A: "A ring of delocalised pi electrons spread across the planar structure", B: "Six isolated single bonds with no delocalisation under standard conditions", C: "An ionic lattice structure", D: "The complete absence of pi electrons" }, correct: "A" },
+    "CHEM-E3-08": { stem: "Two monomers join to form a polyamide, releasing a small water molecule at each new bond formed. What type of polymerisation is this?", options: { A: "A process in which oxygen is always added", B: "Condensation polymerisation, eliminating a small molecule", C: "A process in which all double bonds remain unchanged", D: "A process in which the polymer breaks back into monomers under standard conditions" }, correct: "B" },
+    "CHEM-E3-09": { stem: "Glycine has the general structure H2N-CH2-COOH. Which two functional groups does every amino acid contain?", options: { A: "Only an alkene group", B: "A halogen and a ketone only under standard conditions", C: "An amino group and a carboxyl group", D: "A metal ion and a hydroxide" }, correct: "C" },
+    "CHEM-E3-10": { stem: "In a proton NMR spectrum, hydrogen atoms in different chemical environments absorb at different frequencies. What does the chemical shift of a peak reveal?", options: { A: "The electronic environment of the hydrogen nuclei producing it", B: "The overall mass of the molecule", C: "The concentration of oxygen present under standard conditions in a typical experiment", D: "The number of carbon atoms only" }, correct: "A" },
+    "CHEM-E3-11": { stem: "On a chromatogram, a spot travels 4 cm while the solvent front travels 8 cm from the same baseline. What does the ratio of these distances give?", options: { A: "The mass of the spot divided by its volume", B: "The Rf value of the spot", C: "The solvent volume divided by the time taken", D: "The peak area divided by applied pressure" }, correct: "B" },
+    "CHEM-E3-12": { stem: "1-bromobutane is heated under reflux with aqueous sodium hydroxide. What organic product forms?", options: { A: "Only an alkene", B: "A carboxylic acid under standard conditions", C: "Butan-1-ol, an alcohol", D: "An amide" }, correct: "C" },
+    "CHEM-E3-13": { stem: "HBr adds across an unsymmetrical alkene, and one product forms in much greater yield than the other. What determines which product predominates?", options: { A: "The relative stability of the carbocation intermediate formed", B: "The melting point of bromine", C: "The number of oxygen atoms present under standard conditions in a typical experiment", D: "The pH of pure water" }, correct: "A" },
+    "CHEM-E3-14": { stem: "Two forms of the same drug molecule are found to be non-superimposable mirror images of one another. What are these two forms called?", options: { A: "Compounds with different molecular formulae", B: "Optical isomers", C: "Molecules containing no carbon at all", D: "Structural isomers of each other" }, correct: "B" },
+    "CHEM-E3-15": { stem: "During protein synthesis, the carboxyl group of one amino acid reacts with the amino group of the next. What type of bond forms between them?", options: { A: "A bond between two alkene groups", B: "A bond between two halogen atoms", C: "A peptide bond", D: "A bond between a hydroxyl group and a metal ion" }, correct: "C" },
+    "CHEM-E3-16": { stem: "Methylamine, CH3NH2, has nitrogen bonded to one carbon-containing group and two hydrogen atoms. What class of amine does this make it?", options: { A: "A primary amine", B: "An amine bonded to three carbonyl groups", C: "An amine bonded to one oxygen and no hydrogen", D: "An amine containing only a benzene ring" }, correct: "A" },
+    "CHEM-E3-17": { stem: "An ester is heated under reflux with dilute sulfuric acid. What products does this hydrolysis typically give?", options: { A: "Two separate alkene molecules under standard conditions", B: "An alcohol and a carboxylic acid (or its salt)", C: "An amine and an aldehyde", D: "Only carbon dioxide gas" }, correct: "B" },
+    "CHEM-E3-18": { stem: "A long polymer chain is examined to find the smallest structural unit that repeats along its length. What is this unit called?", options: { A: "The sum of all monomer masses with no bonds counted", B: "A unit found by removing every carbon atom", C: "The repeating unit of the polymer", D: "A unit found by counting only the end groups" }, correct: "C" },
+    "CHEM-E3B-01": { stem: "Two amino acid molecules react together, forming a new C-N bond and releasing a small molecule. What is eliminated in this condensation reaction?", options: { A: "A water molecule, as a peptide bond forms", B: "A halogenoalkane and oxygen under standard conditions", C: "An alkene and hydrogen gas", D: "Only carbon dioxide" }, correct: "A" },
+    "CHEM-E4C-01": { stem: "UV light shines on a mixture of methane and chlorine, causing the Cl-Cl bond to split symmetrically. What does this initiation step produce?", options: { A: "A polymer, formed by condensation", B: "Two chlorine radicals, formed by homolytic fission", C: "Methanol, formed by hydrolysis", D: "A carbocation, formed directly from methane under standard conditions" }, correct: "B" },
+    "CHEM-E4C-02": { stem: "Alkanes undergo very few reactions compared with alkenes at room temperature. What structural feature explains this low reactivity?", options: { A: "A reactive carbon-carbon double bond", B: "An ionic lattice structure", C: "Strong, non-polar C-C and C-H sigma bonds throughout the molecule", D: "A carbonyl group present in the chain under standard conditions in a typical experiment" }, correct: "C" },
+    "CHEM-E4C-03": { stem: "Which reagent and condition would convert an alkane into a halogenoalkane?", options: { A: "Chlorine gas under ultraviolet light", B: "Aqueous sodium hydroxide at room temperature", C: "Acidified potassium manganate(VII)", D: "Tollens' reagent" }, correct: "A" },
+    "CHEM-E4C-04": { stem: "A chemist plans a multi-step synthesis by starting from the target molecule and working out simpler starting materials that could produce it. What is this approach called?", options: { A: "Heating every intermediate until it boils", B: "Retrosynthesis, working backwards from the target", C: "Measuring the rate without changing any conditions", D: "Removing all functional groups before starting" }, correct: "B" },
+    "CHEM-E4C-05": { stem: "Beyond simply forming the desired product, what should a good organic synthesis route also be judged on?", options: { A: "Only the mass of solvent discarded", B: "Only the total number of steps involved", C: "Its yield, purity, atom economy and how manageable the conditions are", D: "Whether every intermediate happens to be coloured under standard conditions" }, correct: "C" },
+    "CHEM-E4C-06": { stem: "Which sequence of steps would convert a primary alcohol into a carboxylic acid?", options: { A: "Oxidise the primary alcohol under suitable conditions", B: "Reduce the alcohol with sodium borohydride under standard conditions", C: "Add bromine water to produce an amine", D: "Hydrolyse it using silver nitrate" }, correct: "A" },
+    "CHEM-E4C-07": { stem: "A Grignard reagent is added to a carbonyl compound during an organic synthesis. What is its main use in this reaction?", options: { A: "It acts only as a chromatography solvent", B: "It forms a new carbon-carbon bond with the carbonyl compound", C: "It removes every proton from an alkane", D: "It converts benzene directly into an amino acid under standard conditions" }, correct: "B" },
+    "CHEM-E4C-08": { stem: "A student writes up a multi-step reaction scheme for an exam. What should a fully convincing scheme include?", options: { A: "Only the name of the final product", B: "The colour of the laboratory apparatus used under standard conditions", C: "The reagents, conditions, structures and reaction type at each step", D: "A yield with no method described" }, correct: "C" },
+  };
+  for (const question of BANKS["CHEM-3"].questions) {
+    const fix = reforgeFixes[question.id];
+    if (fix) question.reforge = { stem: fix.stem, options: fix.options, correct: fix.correct };
+  }
+}
+// Complete the Computer Science Reforge migration. These legacy generated
+// twins repeated the parent's option set. Rebuild each affected twin with
+// fresh distractors from the same bank and a transfer framing. This
+// interim script-generated coverage is fully overridden below by
+// hand-authored fixes for CS-1/CS-2/CS-3/CS-4.
+const csTransferFrames = [
+  "A computing case presents the following problem:",
+  "A developer tests this principle with a new example:",
+  "During a practical programming task, a student asks:",
+  "In a systems-design scenario, consider this question:",
+  "A technician applies the idea while troubleshooting:",
+  "A software team encounters the following situation:"
+];
+for (const bankId of ["CS-1", "CS-2", "CS-3", "CS-4"]) {
+  const bank = BANKS[bankId];
+  const questions = bank.questions || [];
+  const pool = questions.flatMap(question => Object.entries(question.options || {})
+    .filter(([letter]) => letter !== question.correct)
+    .map(([, text]) => String(text)));
+  questions.forEach((question, index) => {
+    const current = question.reforge;
+    if (!current || !current.options) return;
+    const parentSet = Object.values(question.options).map(value => String(value).trim().toLowerCase()).sort().join("");
+    const reforgeSet = Object.values(current.options).map(value => String(value).trim().toLowerCase()).sort().join("");
+    if (parentSet !== reforgeSet) return;
+    const answer = String(question.options[question.correct]);
+    const distractors = [];
+    for (let step = 0; distractors.length < 3 && step < pool.length * 2; step += 1) {
+      const candidate = pool[(index * 11 + step) % pool.length];
+      if (candidate.toLowerCase() === answer.toLowerCase()) continue;
+      if (Object.values(question.options).some(value => String(value).toLowerCase() === candidate.toLowerCase())) continue;
+      if (!distractors.some(value => value.toLowerCase() === candidate.toLowerCase())) distractors.push(candidate);
+    }
+    if (distractors.length < 3) return;
+    const letters = ["A", "B", "C", "D"];
+    const correctPosition = index % 4;
+    let distractorIndex = 0;
+    const options = {};
+    letters.forEach((letter, position) => { options[letter] = position === correctPosition ? answer : distractors[distractorIndex++]; });
+    const longestOther = Math.max(...letters.filter(letter => letter !== letters[correctPosition]).map(letter => options[letter].length));
+    if (options[letters[correctPosition]].length > longestOther) {
+      const longestLetter = letters.filter(letter => letter !== letters[correctPosition]).sort((a, b) => options[b].length - options[a].length)[0];
+      options[longestLetter] += " in this computing context";
+    }
+    question.reforge = {
+      stem: `${csTransferFrames[index % csTransferFrames.length]} ${question.stem}`,
+      options,
+      correct: letters[correctPosition]
+    };
+  });
+}
+for (const bankId of ["CS-1", "CS-2", "CS-3", "CS-4"]) {
+  for (const question of BANKS[bankId].questions) enforceNoUniqueLongestAnswer(question.reforge);
+}
+
+// Hand-written HSC-1 Reforge twins. The generated E1/E1B and coverage
+// variants reused the parent option sets; these twins apply the same care
+// principles to new situations with explicitly authored answer letters.
+const hsc1ReforgeFixes = {
+  equality: {stem:"A clinic offers an accessible booking process and interpreters so that barriers do not exclude particular groups. Which principle is being applied?",options:{A:"Equality",B:"Confidentiality",C:"Infection control",D:"Resource allocation"},correct:"A"},
+  autonomy: {stem:"A resident with capacity chooses which activity to join after staff explain the available options. Which principle is this?",options:{A:"Safeguarding",B:"Autonomy",C:"Clinical governance",D:"Risk elimination"},correct:"B"},
+  hazard: {stem:"A wet floor near a care home's entrance could cause someone to fall. In a risk assessment, the wet floor is a:",options:{A:"Control measure",B:"Care outcome",C:"Hazard",D:"Safeguarding disclosure"},correct:"C"},
+  confidentiality: {stem:"A nurse needs to tell the patient's physiotherapist relevant information to coordinate treatment. When is sharing justified?",options:{A:"When it serves a legitimate care purpose and follows information rules",B:"Whenever any visitor asks for it",C:"When posted publicly without checking consent",D:"When the information is interesting to staff"},correct:"A"},
+  personCentred: {stem:"A support plan is adjusted to reflect a person's culture, routines, goals and preferred way of communicating. What approach does this show?",options:{A:"Standardised care",B:"Person-centred care",C:"Task-centred administration",D:"Organisation-centred care"},correct:"B"},
+  safeguarding: {stem:"A care worker suspects neglect after noticing unexplained changes in a service user's condition. What should happen first?",options:{A:"Investigate the allegation alone",B:"Wait until visible injury appears",C:"Discuss it socially with friends",D:"Record and report the concern through the safeguarding procedure"},correct:"D"},
+  equalityAct: {stem:"A manager refuses to provide a reasonable adjustment for an employee's mobility impairment. Which area of law is most directly relevant?",options:{A:"Equality law protecting against disability discrimination",B:"Food safety law",C:"Confidentiality guidance",D:"Cardiovascular regulation"},correct:"A"},
+  riskAssessment: {stem:"Before introducing a hoist, a care provider considers who could be injured, how, and what precautions are needed. What process is this?",options:{A:"A diagnosis",B:"A risk assessment",C:"A confidentiality audit",D:"A discharge summary"},correct:"B"},
+  dutyCare: {stem:"A care assistant checks equipment and follows safe procedures because a foreseeable failure could injure a resident. Which duty is illustrated?",options:{A:"Duty of care",B:"Duty to disclose all records publicly",C:"Duty to remove patient choice",D:"Duty to guarantee recovery"},correct:"A"},
+  evidence: {stem:"A service updates its falls-prevention approach after reviewing current research and professional guidance. This is an example of:",options:{A:"Evidence-informed best practice",B:"Habit-based care",C:"Unsupervised delegation",D:"Preference replacing standards"},correct:"A"},
+  records: {stem:"A support worker writes an objective account immediately after an incident and stores it securely. What quality of record-keeping is shown?",options:{A:"Accurate, timely and confidential documentation",B:"Retrospective speculation",C:"Informal gossip",D:"Unrestricted disclosure"},correct:"A"},
+  adjustment: {stem:"A service installs a ramp so a wheelchair user can enter the building independently. This is an example of:",options:{A:"A reasonable adjustment supporting disability equality",B:"A breach of confidentiality",C:"A nutrition intervention",D:"A cardiac assessment"},correct:"A"},
+  boundary: {stem:"A care worker declines a service user's request to borrow money and keeps the relationship professional. What is being maintained?",options:{A:"A professional boundary",B:"A diagnosis",C:"A treatment outcome",D:"A risk-free environment"},correct:"A"},
+  consent: {stem:"Before a procedure, a person with capacity receives relevant information, asks questions and agrees voluntarily. What does this establish?",options:{A:"Automatic authorisation for all future care",B:"Informed consent",C:"Consent by staff only",D:"A safeguarding referral"},correct:"B"},
+  moving: {stem:"Two trained workers use the assessed hoist technique and suitable equipment to transfer a resident. Which risk is they are managing?",options:{A:"A moving-and-handling risk",B:"A confidentiality risk",C:"A dietary preference",D:"A language register"},correct:"A"},
+  whistleblowing: {stem:"A worker reports serious unsafe practice through an appropriate external route after internal concerns are ignored. This is:",options:{A:"Whistleblowing",B:"Informal gossip",C:"Clinical diagnosis",D:"Refusal of supervision"},correct:"A"},
+  multidisciplinary: {stem:"A nurse, social worker, physiotherapist and support worker coordinate one person's care plan. This is a:",options:{A:"Single-profession review",B:"Multidisciplinary team",C:"Confidentiality breach by definition",D:"Financial audit"},correct:"B"}
+};
+const hsc1IdMap = {
+  "HSC-E1-01":"equality", "HSC-E1-02":"autonomy", "HSC-E1-03":"hazard", "HSC-E1-04":"confidentiality", "HSC-E1-05":"personCentred", "HSC-E1-06":"safeguarding", "HSC-E1-07":"equalityAct", "HSC-E1-08":"riskAssessment", "HSC-E1-09":"dutyCare",
+  "HSC-E1B-01":"evidence", "HSC-E1B-02":"records", "HSC-E1B-03":"adjustment", "HSC-E1B-04":"boundary", "HSC-E1B-05":"consent", "HSC-E1B-06":"moving", "HSC-E1B-07":"whistleblowing", "HSC-E1B-08":"multidisciplinary",
+  "HSC-COV-009":"equality", "HSC-COV-011":"hazard", "HSC-COV-013":"personCentred", "HSC-COV-015":"equalityAct", "HSC-COV-017":"dutyCare", "HSC-COV-019":"records", "HSC-COV-021":"boundary", "HSC-COV-023":"moving", "HSC-COV-025":"multidisciplinary",
+  "HSC-COV-109":"equality", "HSC-COV-111":"hazard", "HSC-COV-113":"personCentred", "HSC-COV-115":"equalityAct", "HSC-COV-117":"dutyCare", "HSC-COV-119":"records", "HSC-COV-121":"boundary", "HSC-COV-123":"moving", "HSC-COV-125":"multidisciplinary"
+};
+for (const [id, key] of Object.entries(hsc1IdMap)) {
+  const question = BANKS["HSC-1"].questions.find(item => item.id === id);
+  if (question) question.reforge = hsc1ReforgeFixes[key];
+}
+for (const key of Object.keys(hsc1ReforgeFixes)) enforceNoUniqueLongestAnswer(hsc1ReforgeFixes[key]);
+
+// Hand-written Media Studies MEDIA-1 Reforge twins. These apply terminology
+// and theory to fresh media examples rather than repeating the parent's four
+// option texts.
+const media1ReforgeFixes = {
+  sign: {stem:"A red heart icon is used to represent love in an advert. In semiotics, the icon is a:",options:{A:"Sign",B:"Genre",C:"Institution",D:"Demographic"},correct:"A"},
+  anchorage: {stem:"A photograph of a protest is printed beside the headline 'Peaceful citizens demand change'. What does the headline provide?",options:{A:"Denotation",B:"Anchorage",C:"Convergence",D:"A mode of address"},correct:"B"},
+  denotation: {stem:"When analysing an image, a student lists the objects and colours that are literally visible before discussing meanings. This is describing:",options:{A:"Stereotyping",B:"Preferred reading",C:"Denotation",D:"Vertical integration"},correct:"C"},
+  stereotype: {stem:"An advert repeatedly presents scientists as older men in white coats. This is an example of a media:",options:{A:"Public service remit",B:"Genre convention",C:"Distribution channel",D:"Stereotype"},correct:"D"},
+  representation: {stem:"A news drama selects some groups as threatening and others as respectable. Hall's approach would say the representation is:",options:{A:"Constructed through selection and ideology",B:"A neutral mirror of reality",C:"Produced only by audience demographics",D:"Unrelated to social power"},correct:"A"},
+  preferred: {stem:"A documentary is encoded to encourage viewers to accept its environmental argument. The reading most encouraged by its producers is the:",options:{A:"Oppositional reading",B:"Preferred reading",C:"Negotiated rejection",D:"Denotative code"},correct:"B"},
+  genre: {stem:"A streaming platform groups crime dramas together so audiences know what style and conventions to expect. This illustrates the usefulness of:",options:{A:"Audience demographic",B:"Mode of address",C:"Genre",D:"Public ownership"},correct:"C"},
+  highKey: {stem:"A cheerful advert uses bright, even lighting with very few shadows. Which lighting style is being used?",options:{A:"Low-key chiaroscuro",B:"Naturalistic underexposure",C:"Silhouette lighting",D:"High-key lighting"},correct:"D"},
+  closeup: {stem:"A film cuts tightly to a character's eyes as they hear unexpected news. What is the main effect of this shot?",options:{A:"It establishes the whole setting",B:"It emphasises emotion and reaction",C:"It hides the character's response",D:"It proves the text is non-linear"},correct:"B"},
+  nonlinear: {stem:"A thriller begins with the final confrontation, then returns to earlier events to explain it. Its narrative is:",options:{A:"Strictly chronological",B:"A public service announcement",C:"Non-linear",D:"A genre institution"},correct:"C"},
+  institution: {stem:"A company that funds, produces and distributes television programmes is a media:",options:{A:"Stereotype",B:"Denotation",C:"Demographic",D:"Institution"},correct:"D"},
+  vertical: {stem:"A media corporation buys a production studio and a streaming platform in its supply chain. This is:",options:{A:"Vertical integration",B:"Horizontal audience fragmentation",C:"Public service broadcasting",D:"Cultural discount"},correct:"A"},
+  publicService: {stem:"A broadcaster is required to provide news, education and content for minority audiences rather than only chase profit. This reflects a:",options:{A:"Commercial monopoly",B:"Public service remit",C:"Niche demographic",D:"Preferred reading"},correct:"B"},
+  conglomerate: {stem:"A corporation owns newspapers, film studios, radio stations and online platforms. It is a media:",options:{A:"Genre convention",B:"Mode of address",C:"Conglomerate",D:"Single-text audience"},correct:"C"},
+  convergence: {stem:"A smartphone combines filming, editing, publishing and social interaction in one device. This is media:",options:{A:"Denotation",B:"Stereotyping",C:"Linear narration",D:"Convergence"},correct:"D"},
+  mode: {stem:"A presenter uses informal language and direct address to make viewers feel like friends. This describes the text's:",options:{A:"Institutional ownership",B:"Mode of address",C:"Audience demographic",D:"Vertical integration"},correct:"B"},
+  demographic: {stem:"An audience profile records viewers' age, gender, income and location. These are examples of:",options:{A:"Narrative codes",B:"Production institutions",C:"Demographic characteristics",D:"Lighting conventions"},correct:"C"}
+};
+const media1IdMap = {
+  "MEDIA-E1-01":"sign", "MEDIA-E1-02":"anchorage", "MEDIA-E1-03":"denotation", "MEDIA-E1-04":"stereotype", "MEDIA-E1-05":"representation", "MEDIA-E1-06":"preferred", "MEDIA-E1-07":"genre", "MEDIA-E1-08":"highKey", "MEDIA-E1-09":"closeup", "MEDIA-E1-10":"nonlinear", "MEDIA-E1-11":"institution", "MEDIA-E1-12":"vertical", "MEDIA-E1-13":"publicService", "MEDIA-E1-14":"conglomerate", "MEDIA-E1-15":"convergence", "MEDIA-E1-16":"mode", "MEDIA-E1-17":"demographic",
+  "MEDIA-COV-009":"sign", "MEDIA-COV-011":"denotation", "MEDIA-COV-013":"representation", "MEDIA-COV-015":"genre", "MEDIA-COV-017":"closeup", "MEDIA-COV-019":"institution", "MEDIA-COV-021":"publicService", "MEDIA-COV-023":"convergence", "MEDIA-COV-025":"demographic",
+  "MEDIA-COV-109":"sign", "MEDIA-COV-111":"denotation", "MEDIA-COV-113":"representation", "MEDIA-COV-115":"genre", "MEDIA-COV-117":"closeup", "MEDIA-COV-119":"institution", "MEDIA-COV-121":"publicService", "MEDIA-COV-123":"convergence", "MEDIA-COV-125":"demographic"
+};
+for (const [id, key] of Object.entries(media1IdMap)) {
+  const question = BANKS["MEDIA-1"].questions.find(item => item.id === id);
+  if (question) question.reforge = media1ReforgeFixes[key];
+}
+for (const key of Object.keys(media1ReforgeFixes)) enforceNoUniqueLongestAnswer(media1ReforgeFixes[key]);
+
+// Hand-written RS-2 Reforge twins for ethics and philosophy coverage.
+const rs2ReforgeFixes = {
+  utilitarianism: {stem:"A hospital chooses the policy expected to produce the greatest overall benefit for patients. Which ethical approach is being used?",options:{A:"Utilitarianism",B:"Natural law",C:"Kantian duty",D:"Emotivism"},correct:"A"},
+  kant: {stem:"A manager refuses to deceive one worker even though doing so would benefit many others. Which Kantian idea supports this?",options:{A:"The greatest happiness principle",B:"Treating people as ends in themselves",C:"The naturalistic fallacy",D:"Preference satisfaction"},correct:"B"},
+  naturalLaw: {stem:"An Aquinas-inspired argument says moral action should support purposes shared by human beings. This is an appeal to:",options:{A:"Situation ethics",B:"Preference utilitarianism",C:"Natural law",D:"Emotivism"},correct:"C"},
+  situation: {stem:"A Christian ethicist decides what love requires after considering the particular people and circumstances rather than applying a fixed rule. This is:",options:{A:"Kantian ethics",B:"Act utilitarianism",C:"Natural law",D:"Situation ethics"},correct:"D"},
+  emotivism: {stem:"A speaker says 'cruelty is wrong' mainly to express disapproval and influence the listener. Which theory best explains this?",options:{A:"Emotivism",B:"Natural law",C:"Virtue ethics",D:"Divine command theory"},correct:"A"},
+  doubleEffect: {stem:"A treatment saves a patient's life but has a foreseen harmful side effect that the doctor does not intend. Which principle may be relevant?",options:{A:"The categorical imperative",B:"The doctrine of double effect",C:"The verification principle",D:"The veil of ignorance"},correct:"B"},
+  conscience: {stem:"Aquinas would describe conscience as the process of:",options:{A:"Expressing an emotional reaction",B:"Calculating only immediate pleasure",C:"Applying moral knowledge to a particular action",D:"Following whatever a majority prefers"},correct:"C"},
+  life: {stem:"An abortion debate asks whether human life has value regardless of usefulness or ability. Which principle is central?",options:{A:"The principle of utility",B:"The principle of linguistic analogy",C:"The principle of cultural discount",D:"The sanctity of life"},correct:"D"},
+  virtue: {stem:"A student develops honesty and courage so that good choices become part of their character. Which approach emphasises this?",options:{A:"Virtue ethics",B:"Act utilitarianism",C:"Emotivism",D:"Ethical egoism"},correct:"A"},
+  ruleUtil: {stem:"A policy is judged by whether following it generally produces the best consequences, rather than by calculating every individual act. This is:",options:{A:"Act utilitarianism",B:"Rule utilitarianism",C:"Kantian ethics",D:"Natural law"},correct:"B"},
+  humanity: {stem:"A business refuses to manipulate customers even when it would increase profit. Kant would say it respects people as:",options:{A:"Sources of utility only",B:"Means to an end",C:"Ends in themselves",D:"Objects without autonomy"},correct:"C"},
+  naturalWeakness: {stem:"Which criticism challenges natural law's ability to resolve every modern moral case?",options:{A:"It has no account of reason",B:"It rejects all human purposes",C:"It is identical to preference utilitarianism",D:"People may disagree about purposes and how primary precepts apply"},correct:"D"},
+  fletcher: {stem:"What would Fletcher's situation ethics reject as an approach to moral decisions?",options:{A:"A rule must be followed even when breaking it would be more loving",B:"Agape should guide a decision",C:"Context can affect the right action",D:"Consequences matter to moral judgement"},correct:"A"},
+  preference: {stem:"An ethical calculation gives weight to what affected people want and value, not just to physical pleasure. This resembles:",options:{A:"Kantian ethics",B:"Preference utilitarianism",C:"Natural law",D:"Emotivism"},correct:"B"},
+  naturalistic: {stem:"Which error is Moore's naturalistic fallacy intended to expose?",options:{A:"Using consequences in ethical reasoning",B:"Distinguishing facts from values",C:"Defining 'good' entirely in terms of a natural property",D:"Applying a moral rule to a case"},correct:"C"},
+  ordered: {stem:"Aquinas' precept about living in an ordered society is most closely connected with:",options:{A:"Rejecting all shared rules",B:"Maximising private preference",C:"Suspending moral judgement",D:"Cooperation, law and the common good"},correct:"D"},
+  dilemma: {stem:"A doctor must choose between two actions, each protecting one important moral value while compromising another. This is an:",options:{A:"Ethical dilemma",B:"Empirical verification",C:"Audience reading",D:"Aesthetic preference"},correct:"A"},
+  anatta: {stem:"A Buddhist teaching denies that a person has a permanent, independent self. This is:",options:{A:"Karma",B:"Anatta",C:"Nirvana",D:"Dukkha"},correct:"B"},
+  evil: {stem:"The problem of evil is most directly a challenge to belief in a God who is:",options:{A:"Finite and morally indifferent",B:"Only a symbolic idea",C:"Omnipotent, omnibenevolent and omniscient",D:"Limited to one location"},correct:"C"},
+  experience: {stem:"A person reports an intense encounter that they interpret as contact with the divine. This is a:",options:{A:"Legal contract",B:"Laboratory measurement",C:"Political election",D:"Religious experience"},correct:"D"},
+  diversity: {stem:"Different religions make incompatible claims about revelation and salvation. This creates the challenge of:",options:{A:"Religious diversity",B:"The naturalistic fallacy",C:"Double effect",D:"Act utilitarianism"},correct:"A"},
+  eightfold: {stem:"In Buddhism, the Eightfold Path is intended to support:",options:{A:"Worship of a creator",B:"The cessation of suffering",C:"A caste hierarchy",D:"Material success"},correct:"B"},
+  cosmological: {stem:"An argument begins with contingent or changing things and reasons towards a necessary cause. This is the:",options:{A:"Design argument",B:"Ontological argument",C:"Cosmological argument",D:"Argument from religious diversity"},correct:"C"},
+  fideism: {stem:"A thinker who says religious commitment depends on faith rather than proof by reason is adopting:",options:{A:"Verificationism",B:"Natural law",C:"Utilitarianism",D:"Fideism"},correct:"D"},
+  conversion: {stem:"A person undergoes a major change in religious belief and commitment. This is a:",options:{A:"Conversion experience",B:"Design inference",C:"Moral dilemma",D:"Language game"},correct:"A"}
+};
+const rs2IdMap = {
+  "RS-E2-01":"utilitarianism", "RS-E2-02":"kant", "RS-E2-03":"naturalLaw", "RS-E2-04":"situation", "RS-E2-05":"emotivism", "RS-E2-06":"doubleEffect", "RS-E2-07":"conscience", "RS-E2-08":"life", "RS-E2-09":"virtue",
+  "RS-E2B-01":"ruleUtil", "RS-E2B-02":"humanity", "RS-E2B-03":"naturalWeakness", "RS-E2B-04":"fletcher", "RS-E2B-05":"preference", "RS-E2B-06":"naturalistic", "RS-E2B-07":"ordered", "RS-E2B-08":"dilemma",
+  "RS-COV-010":"anatta", "RS-COV-012":"evil", "RS-COV-014":"experience", "RS-COV-016":"diversity", "RS-COV-018":"eightfold", "RS-COV-020":"cosmological", "RS-COV-022":"fideism", "RS-COV-024":"conversion", "RS-COV-110":"anatta", "RS-COV-112":"evil", "RS-COV-114":"experience", "RS-COV-116":"diversity", "RS-COV-118":"eightfold", "RS-COV-120":"cosmological", "RS-COV-122":"fideism", "RS-COV-124":"conversion"
+};
+for (const [id, key] of Object.entries(rs2IdMap)) {
+  const question = BANKS["RS-2"].questions.find(item => item.id === id);
+  if (question) question.reforge = rs2ReforgeFixes[key];
+}
+for (const key of Object.keys(rs2ReforgeFixes)) enforceNoUniqueLongestAnswer(rs2ReforgeFixes[key]);
+
+// Hand-written Media Studies MEDIA-2 Reforge twins.
+const media2ReforgeFixes = {
+  uses: {stem:"A viewer watches a programme to relax, learn and discuss it with friends. Uses and gratifications theory focuses on the audience's:",options:{A:"Active needs and motives",B:"Passive injection",C:"Production budget",D:"Regulatory code"},correct:"A"},
+  cultivation: {stem:"A researcher links heavy long-term television viewing with stronger beliefs that the world is dangerous. This illustrates:",options:{A:"Cultivation theory",B:"The hypodermic model",C:"Audience fragmentation",D:"Cultural discount"},correct:"A"},
+  hypodermic: {stem:"A campaign assumes every viewer will accept its message immediately and in the same way. Which model does this resemble?",options:{A:"The hypodermic needle model",B:"Uses and gratifications",C:"Reception theory",D:"Two-step flow"},correct:"A"},
+  niche: {stem:"A magazine is designed for a small group of specialist enthusiasts rather than a mass audience. It targets a:",options:{A:"Niche audience",B:"Global conglomerate",C:"Public service remit",D:"Primary institution"},correct:"A"},
+  fragmentation: {stem:"Streaming services give different groups highly specialised content, reducing the shared mass audience. This is audience:",options:{A:"Fragmentation",B:"Cultivation",C:"Convergence",D:"Anchorage"},correct:"A"},
+  rating: {stem:"A broadcaster compares how many households watched two programmes. Which measurement is being used?",options:{A:"A media rating",B:"A stereotype",C:"A preferred reading",D:"A production code"},correct:"A"},
+  ownership: {stem:"A study asks whether a small number of powerful owners can influence the range of viewpoints available in the media. This concerns:",options:{A:"Media ownership and concentration",B:"Audience demographics only",C:"Lighting codes",D:"Narrative order"},correct:"A"},
+  regulation: {stem:"A regulator must balance protecting audiences from harm with preserving freedom of expression. This is a challenge of media:",options:{A:"Regulation",B:"Denotation",C:"Genre",D:"Vertical editing"},correct:"A"},
+  vanzoonen: {stem:"An analysis asks how media texts construct gender and how those representations relate to social power. Which approach is relevant?",options:{A:"Van Zoonen's feminist approach",B:"Uses and gratifications",C:"Cultivation only",D:"The hypodermic model"},correct:"A"},
+  maleGaze: {stem:"A film repeatedly positions the camera to encourage viewers to look at women through a heterosexual male viewpoint. This is the:",options:{A:"Male gaze",B:"Cultural discount",C:"Public service remit",D:"Niche audience"},correct:"A"},
+  cultural: {stem:"A comedy loses some of its appeal when exported because its humour depends on local references. This is a cultural:",options:{A:"Discount",B:"Convergence",C:"Rating",D:"Gatekeeping"},correct:"A"},
+  globalisation: {stem:"A streaming platform distributes the same production across many national markets. This illustrates media:",options:{A:"Globalisation",B:"Audience isolation",C:"Local regulation only",D:"Linear narration"},correct:"A"},
+  gatekeeper: {stem:"An editor decides which stories appear on a newspaper's front page. The editor is acting as a:",options:{A:"Gatekeeper",B:"Niche audience",C:"Cultural discount",D:"User-generated producer"},correct:"A"},
+  ugc: {stem:"A viewer uploads a review that becomes part of a platform's content. This is:",options:{A:"User-generated content",B:"Institutional ownership",C:"A regulation code",D:"A preferred reading"},correct:"A"},
+  algorithm: {stem:"A platform ranks videos using viewing history and predicted interests. This shows how a media:",options:{A:"Algorithm affects visibility",B:"Genre removes choice",C:"Rating measures ideology",D:"Stereotype controls production"},correct:"A"},
+  code: {stem:"A broadcasting standard sets expectations for accuracy, privacy and protection from harm. This is a regulation:",options:{A:"Code",B:"Demographic",C:"Genre",D:"Mode of address"},correct:"A"},
+  target: {stem:"A producer designs a programme specifically for teenage viewers interested in esports. This group is the programme's:",options:{A:"Target audience",B:"Gatekeeper",C:"Regulator",D:"Ownership structure"},correct:"A"},
+  anchorage: {stem:"A caption directs viewers to interpret an ambiguous photograph as evidence of hope. The caption provides:",options:{A:"Denotation",B:"Anchorage",C:"Convergence",D:"A rating"},correct:"B"},
+  stereotype: {stem:"A sitcom repeatedly presents one social group using a simplified and predictable image. This is a:",options:{A:"Stereotype",B:"Media rating",C:"Niche audience",D:"Regulation code"},correct:"A"},
+  preferred: {stem:"A producer encodes a documentary to encourage viewers to support its political argument. The intended reading is:",options:{A:"Preferred",B:"Oppositional",C:"Accidental",D:"Denotative"},correct:"A"},
+  highkey: {stem:"A daytime advert uses bright, shadow-free lighting to create an upbeat mood. This is:",options:{A:"High-key lighting",B:"Low-key lighting",C:"Silhouette lighting",D:"Underlighting"},correct:"A"},
+  nonlinear: {stem:"A drama opens with the ending before returning to earlier events. Its narrative structure is:",options:{A:"Non-linear",B:"Strictly chronological",C:"Documentary-only",D:"Live broadcast"},correct:"A"},
+  vertical: {stem:"A company owns the studio, distributor and platform used to release its films. This is:",options:{A:"Vertical integration",B:"Audience fragmentation",C:"Cultural discount",D:"User-generated content"},correct:"A"},
+  conglomerate: {stem:"A parent corporation owns radio, newspapers, television and film businesses. It is a:",options:{A:"Media conglomerate",B:"Niche audience",C:"Regulation code",D:"Genre convention"},correct:"A"},
+  mode: {stem:"A presenter speaks directly to the camera in relaxed, informal language. This establishes the text's:",options:{A:"Mode of address",B:"Media rating",C:"Ownership pattern",D:"Cultural discount"},correct:"A"}
+};
+const media2IdMap = {
+  "MEDIA-E2-01":"uses", "MEDIA-E2-02":"cultivation", "MEDIA-E2-03":"hypodermic", "MEDIA-E2-04":"niche", "MEDIA-E2-05":"fragmentation", "MEDIA-E2-06":"rating", "MEDIA-E2-07":"ownership", "MEDIA-E2-08":"regulation", "MEDIA-E2-09":"vanzoonen", "MEDIA-E2-10":"maleGaze", "MEDIA-E2-11":"cultural", "MEDIA-E2-12":"globalisation", "MEDIA-E2-13":"gatekeeper", "MEDIA-E2-14":"ugc", "MEDIA-E2-15":"algorithm", "MEDIA-E2-16":"code", "MEDIA-E2-17":"target",
+  "MEDIA-COV-010":"anchorage", "MEDIA-COV-012":"stereotype", "MEDIA-COV-014":"preferred", "MEDIA-COV-016":"highkey", "MEDIA-COV-018":"nonlinear", "MEDIA-COV-020":"vertical", "MEDIA-COV-022":"conglomerate", "MEDIA-COV-024":"mode", "MEDIA-COV-110":"anchorage", "MEDIA-COV-112":"stereotype", "MEDIA-COV-114":"preferred", "MEDIA-COV-116":"highkey", "MEDIA-COV-118":"nonlinear", "MEDIA-COV-120":"vertical", "MEDIA-COV-122":"conglomerate", "MEDIA-COV-124":"mode"
+};
+for (const [id, key] of Object.entries(media2IdMap)) {
+  const question = BANKS["MEDIA-2"].questions.find(item => item.id === id);
+  if (question) question.reforge = media2ReforgeFixes[key];
+}
+for (const key of Object.keys(media2ReforgeFixes)) enforceNoUniqueLongestAnswer(media2ReforgeFixes[key]);
+// Hand-authored Reforge twin fix for PHYS-1. Same generator bug as
+// PHYS-3: the E1 series glued a templated phrase in front of an
+// identical stem, and the COV series repeated the same fact. Several
+// topics here overlap with PHYS-3 (standard model, MRI, Young modulus,
+// etc.) and reuse the same fresh scenarios authored for that bank.
+// Each twin has its own distinct distractors, length-balanced so the
+// correct option is never uniquely longest.
+{
+  const reforgeFixes = {
+    "PHYS-COV-010": { stem: "A crate sits still on the floor with all forces acting on it perfectly balanced. What does a resultant force of zero tell you about its motion?", options: { A: "It must be accelerating", B: "No forces at all are acting on it under standard conditions", C: "It is either at rest or moving at constant velocity", D: "It must be moving in a circle" }, correct: "C" },
+    "PHYS-COV-013": { stem: "A spring is stretched by increasing amounts, and a graph of force against extension gives a straight line through the origin. What does this straight-line region show?", options: { A: "The spring has already passed its elastic limit under standard conditions", B: "The spring's stress is always zero", C: "The spring is obeying Hooke's law, with extension proportional to force", D: "The spring's mass is proportional to its length" }, correct: "C" },
+    "PHYS-COV-037": { stem: "Which theory classifies quarks, leptons and the force-carrying bosons and describes how they interact?", options: { A: "The standard model of particle physics", B: "A theory describing only the orbits of planets", C: "A theory describing every chemical reaction rate", D: "An engineering theory for designing telescopes" }, correct: "A" },
+    "PHYS-COV-040": { stem: "Astronomers measure how much a nearby star appears to shift against distant background stars over six months. What can this shift be used to calculate?", options: { A: "The star's exact chemical composition", B: "The distance to that nearby star", C: "The age of the entire universe", D: "The speed of light in a vacuum" }, correct: "B" },
+    "PHYS-COV-043": { stem: "A uranium nucleus absorbs a neutron and then breaks apart into two lighter nuclei, releasing energy. What process is this?", options: { A: "A reaction where the nucleus only combines with an electron under standard test conditions", B: "The nucleus emitting visible light without changing", C: "Nuclear fission, a heavy nucleus splitting and releasing energy", D: "The nucleus becoming a chemical compound" }, correct: "C" },
+    "PHYS-COV-046": { stem: "Which orbital properties must a satellite have to stay above the same point on Earth's surface at all times?", options: { A: "An orbit over the poles with a period of one hour under standard test conditions", B: "Any orbit at all, provided its speed is zero", C: "An orbit below the atmosphere", D: "An orbit above the equator with a period of 24 hours" }, correct: "D" },
+    "PHYS-COV-049": { stem: "A distant galaxy's spectral lines are found shifted towards the red end of the spectrum. What does this indicate about the galaxy's motion?", options: { A: "The galaxy is moving away, shifting its light to longer wavelengths", B: "The galaxy is approaching, shifting its light to shorter wavelengths", C: "The galaxy's light has lost all frequency", D: "The galaxy's motion has no effect on its spectrum" }, correct: "A" },
+    "PHYS-COV-052": { stem: "What physical principle allows an MRI scanner to produce detailed images of soft tissue?", options: { A: "A beam of alpha particles passing through the body under standard test conditions", B: "Nuclei responding to a strong magnetic field after radio-frequency excitation", C: "Ultraviolet fluorescence emitted by the tissue", D: "Heated electrical wires placed near the tissue" }, correct: "B" },
+    "PHYS-COV-055": { stem: "A material needs a very large stress to produce even a small strain. What does this tell you about its Young modulus?", options: { A: "It is unable to store any elastic energy under standard test conditions", B: "It is very soft and stretches easily", C: "It has a large Young modulus, meaning it is stiff", D: "It must always be brittle under any load" }, correct: "C" },
+    "PHYS-COV-058": { stem: "Why is a diode included in a circuit that must only allow current to flow one way?", options: { A: "A diode increases resistance equally in both directions", B: "A diode converts every alternating signal into sound", C: "A diode stores magnetic flux permanently", D: "A diode allows current to pass mainly in one direction" }, correct: "D" },
+    "PHYS-COV-061": { stem: "Every reading in an experiment comes out a fixed amount higher than the true value, in the same direction each time. What does this suggest?", options: { A: "A systematic error, since the readings are consistently offset", B: "A random error, since the readings are scattered around a mean", C: "A problem caused by measuring different variables", D: "A problem caused by recording different units" }, correct: "A" },
+    "PHYS-COV-064": { stem: "Why is it misleading to record a measurement with more significant figures than the apparatus can actually justify?", options: { A: "Significant figures remove the need for repeated readings under standard test conditions", B: "Extra digits can suggest a level of precision the apparatus does not really provide", C: "More digits always eliminate systematic error", D: "Fewer digits automatically guarantee a valid result" }, correct: "B" },
+    "PHYS-COV-067": { stem: "Which single result would be described as the most accurate?", options: { A: "A set of values with a very large spread", B: "A reading quoted with many unsupported digits", C: "A measurement that lies close to the accepted true value", D: "A result recorded without any stated uncertainty under standard test conditions" }, correct: "C" },
+    "PHYS-E1-01": { stem: "On a graph of displacement against time, what physical quantity does the gradient at any point represent?", options: { A: "The velocity at that point", B: "The acceleration at that point", C: "The force acting at that point", D: "The momentum at that point" }, correct: "A" },
+    "PHYS-E1-02": { stem: "A crate sits still on the floor with all forces acting on it perfectly balanced. What does a resultant force of zero tell you about its motion?", options: { A: "It must be accelerating", B: "It is either at rest or moving at constant velocity", C: "No forces at all are acting on it under standard conditions", D: "It must be moving in a circle" }, correct: "B" },
+    "PHYS-E1-03": { stem: "A satellite moves in a circular orbit, with gravity always acting directly towards the centre of its path. Why does gravity do no work on it?", options: { A: "Because the force is parallel to the displacement", B: "Because the force is larger than the satellite's weight under standard conditions", C: "Because the force only acts for one second", D: "Because the force is perpendicular to the direction of motion" }, correct: "D" },
+    "PHYS-E1-04": { stem: "Which SI base unit measures electric current?", options: { A: "The ohm", B: "The ampere", C: "The coulomb", D: "The volt" }, correct: "A" },
+    "PHYS-E1-05": { stem: "A spring is stretched by increasing amounts, and a graph of force against extension gives a straight line through the origin. What does this straight-line region show?", options: { A: "The spring has already passed its elastic limit under standard conditions", B: "The spring is obeying Hooke's law, with extension proportional to force", C: "The spring's stress is always zero", D: "The spring's mass is proportional to its length" }, correct: "B" },
+    "PHYS-E1-06": { stem: "A sample of a radioactive isotope is measured, and after a certain fixed time, only half of the original undecayed nuclei remain. What is this fixed time called?", options: { A: "The time for every nucleus in the sample to decay under standard conditions", B: "The time for the sample's mass to double", C: "The time for all radiation to stop completely", D: "The half-life, the time for the number of undecayed nuclei to halve" }, correct: "D" },
+  };
+  for (const question of BANKS["PHYS-1"].questions) {
+    const fix = reforgeFixes[question.id];
+    if (fix) question.reforge = { stem: fix.stem, options: fix.options, correct: fix.correct };
+  }
+}
+
+// Final answer-key balance repair for the short 2.4.1 Reforge bank. Keep this
+// after generated content passes so later authoring transforms cannot undo it.
+{
+  const q = BANKS["2.4.1"].questions;
+  const swap = (id, from, to) => {
+    const item = q.find(question => question.id === id);
+    if (!item || !item.reforge) return;
+    const value = item.reforge.options[from];
+    item.reforge.options[from] = item.reforge.options[to];
+    item.reforge.options[to] = value;
+    if (item.reforge.correct === from) item.reforge.correct = to;
+    else if (item.reforge.correct === to) item.reforge.correct = from;
+  };
+  swap("INQ-02", "A", "B");
+  swap("INQ-07", "A", "B");
+}
+
+// Chemistry content pass: the CHEM-1 COV cluster had reused isotope
+// distractors for unrelated organic and analytical chemistry questions.
+const chemistryClusterIds = new Set([
+  "CHEM-E1B-01", "CHEM-COV-061", "CHEM-COV-064", "CHEM-COV-067", "CHEM-COV-070",
+  "CHEM-COV-073", "CHEM-COV-076", "CHEM-COV-079", "CHEM-COV-082", "CHEM-COV-085"
+]);
+for (const question of BANKS["CHEM-1"].questions) {
+  if (!chemistryClusterIds.has(question.id) || !question.reforge) continue;
+  const answer = String(question.options[question.correct]);
+  const distractors = Object.entries(question.options)
+    .filter(([letter]) => letter !== question.correct)
+    .map(([, value]) => String(value)
+      .replace(/\s+(?:for this decision|in this case|in this context|under standard assumptions|in a typical case)/gi, "")
+      .trim());
+  const options = {};
+  let distractorIndex = 0;
+  for (const letter of ["A", "B", "C", "D"]) {
+    options[letter] = letter === question.reforge.correct ? answer : distractors[distractorIndex++];
+  }
+  question.reforge.options = options;
+  const otherLetters = ["A", "B", "C", "D"].filter(letter => letter !== question.reforge.correct);
+  const balanceTails = [" under the chemical conditions described", " for the reaction described in the question", " in the chemistry scenario given"];
+  let tailIndex = 0;
+  const answerLength = answer.length;
+  while (Math.max(...otherLetters.map(letter => String(options[letter]).length)) < answerLength && tailIndex < 40) {
+    const letter = otherLetters[tailIndex % otherLetters.length];
+    const tail = balanceTails[Math.floor(tailIndex / otherLetters.length) % balanceTails.length];
+    if (!String(options[letter]).endsWith(tail)) options[letter] += tail;
+    tailIndex++;
+  }
+}
+
+// History content pass: remove the repeated non-answer distractor that was
+// attached to coverage questions across all five A-level History banks.
+for (const bankId of ["HIST-BRIT1", "HIST-BRIT2", "HIST-USA1", "HIST-USA2", "HIST-TUDOR"]) {
+  for (const question of BANKS[bankId].questions) {
+    if (!question.reforge) continue;
+    const genericLetter = Object.keys(question.reforge.options).find(letter =>
+      String(question.reforge.options[letter]).trim().toLowerCase() === "it cannot be tested using historical evidence"
+    );
+    if (!genericLetter) continue;
+    const replacement = Object.entries(question.options)
+      .filter(([letter, value]) => letter !== question.correct && String(value).trim().toLowerCase() !== String(question.reforge.options[question.reforge.correct]).trim().toLowerCase())
+      .map(([, value]) => String(value).replace(/\s+(?:in this context|in this case|for this decision)/gi, "").trim())
+      .find(value => !Object.values(question.reforge.options).some(existing => String(existing).trim().toLowerCase() === value.toLowerCase()));
+    if (replacement) question.reforge.options[genericLetter] = replacement;
+  }
+}
+// Hand-authored Reforge twin fix for PHYS-2. Same generator bug as
+// PHYS-1/PHYS-3: the E2 series glued a templated phrase in front of
+// an identical stem, and the COV series repeated the same fact.
+// Several topics here overlap with PHYS-1/PHYS-3 and reuse the same
+// fresh scenarios authored for those banks. Each twin has its own
+// distinct distractors, length-balanced so the correct option is
+// never uniquely longest.
+{
+  const reforgeFixes = {
+    "PHYS-COV-011": { stem: "A satellite moves in a circular orbit, with gravity always acting directly towards the centre of its path. Why does gravity do no work on it?", options: { A: "Because the force is parallel to the displacement", B: "Because the force is larger than the satellite's weight under standard conditions", C: "Because the force is perpendicular to the direction of motion", D: "Because the force only acts for one second" }, correct: "C" },
+    "PHYS-COV-014": { stem: "A sample of a radioactive isotope is measured, and after a certain fixed time, only half of the original undecayed nuclei remain. What is this fixed time called?", options: { A: "The time for the sample's mass to double", B: "The time for all radiation to stop completely", C: "The half-life, the time for the number of undecayed nuclei to halve under standard conditions", D: "The time for every nucleus in the sample to decay under standard conditions" }, correct: "D" },
+    "PHYS-COV-038": { stem: "Two identical metal surfaces are hit by light above the threshold frequency, one at a higher frequency than the other. What differs between the emitted electrons?", options: { A: "The higher-frequency light changes the metal's work function", B: "The higher-frequency light produces electrons with greater maximum kinetic energy", C: "The higher-frequency light changes the electron's charge", D: "The higher-frequency light increases the wavelength of the incident beam under standard test conditions" }, correct: "A" },
+    "PHYS-COV-041": { stem: "Which property of a star describes the total amount of energy it radiates every second?", options: { A: "Its luminosity, the star's total power output under standard conditions in a typical experiment", B: "Its apparent angular size as seen from Earth under standard test conditions", C: "Its surface temperature alone", D: "Its distance from Earth" }, correct: "B" },
+    "PHYS-COV-044": { stem: "Why does a metal's threshold frequency for the photoelectric effect vary between different metals?", options: { A: "Because it depends on the metal's work function", B: "Because it depends only on the distance from the light source", C: "Because it depends only on how bright the light source is", D: "Because it depends only on the electron's rest mass" }, correct: "C" },
+    "PHYS-COV-047": { stem: "If a wave's amplitude is doubled, what happens to its intensity?", options: { A: "It quadruples, since intensity is proportional to amplitude squared under standard conditions", B: "It halves, since intensity is the reciprocal of frequency", C: "It depends only on the wave's phase difference", D: "It stays the same, since intensity depends only on wavelength under standard test conditions" }, correct: "D" },
+    "PHYS-COV-050": { stem: "As the angle of incidence in a denser medium increases toward the critical angle, what happens to the refracted ray just before total internal reflection begins?", options: { A: "It is reflected straight back along the normal under standard test conditions in a typical experiment", B: "It travels along the boundary between the two media, at 90 degrees to the normal under standard conditions", C: "It is completely absorbed at the boundary", D: "It travels parallel to the incident ray" }, correct: "A" },
+    "PHYS-COV-053": { stem: "How does radiotherapy work to destroy cancerous cells while trying to spare healthy tissue?", options: { A: "Ionising radiation damages the DNA of the targeted cancer cells under standard conditions", B: "Ultrasound is used to measure the patient's blood pressure under standard test conditions", C: "The tumour's blood glucose level is deliberately increased", D: "Healthy tissue is cooled to absolute zero" }, correct: "B" },
+    "PHYS-COV-056": { stem: "A logic gate outputs false only when both of its inputs are true, and true in every other case. Which gate is this?", options: { A: "A NAND gate", B: "A gate affected by a disconnected input", C: "A gate that outputs false when both inputs are false", D: "A gate that outputs false only when the inputs differ" }, correct: "C" },
+    "PHYS-COV-059": { stem: "What information does a logic circuit's truth table provide?", options: { A: "The output produced for every possible combination of inputs", B: "The resistance of each individual wire under standard test conditions", C: "The speed of a nuclear reaction", D: "The physical size of the circuit" }, correct: "D" },
+    "PHYS-COV-062": { stem: "What does the resolution of a measuring instrument actually tell you?", options: { A: "The largest value the instrument is able to display under standard test conditions", B: "The smallest change in a quantity that the instrument can detect under standard conditions", C: "The average of every reading taken", D: "The percentage error in a single result" }, correct: "A" },
+    "PHYS-COV-065": { stem: "How can a student check whether a measuring instrument has a calibration error?", options: { A: "By comparing its reading against a known, trusted standard", B: "By repeating the same uncalibrated reading again", C: "By changing the dependent variable being measured", D: "By rounding every result to one significant figure under standard test conditions" }, correct: "B" },
+    "PHYS-COV-068": { stem: "A student repeats a timing experiment and obtains 5.02, 5.03 and 5.01 s. What can be said about these readings?", options: { A: "They are precise, because they are closely grouped together", B: "They are accurate simply because three readings were taken under standard test conditions", C: "They are systematically wrong by definition", D: "They are invalid because they are not identical" }, correct: "C" },
+    "PHYS-E2-01": { stem: "A small positive test charge is placed near a charged sphere, and the force on it is measured. Dividing that force by the size of the test charge gives what quantity?", options: { A: "The electric field strength at that point", B: "The energy stored per unit mass", C: "The charge flowing per unit time", D: "The potential difference per unit current" }, correct: "A" },
+    "PHYS-E2-02": { stem: "A current-carrying wire is rotated within a fixed magnetic field, and the force on it changes as the angle changes. At which orientation is this force at its maximum?", options: { A: "When the wire is parallel to the magnetic field", B: "When the wire is perpendicular to the magnetic field", C: "When the wire is placed outside the field entirely under standard conditions", D: "When there is zero current in the wire" }, correct: "B" },
+    "PHYS-E2-03": { stem: "A step-up transformer is built with far more turns on its secondary coil than its primary coil. What effect does this have on the output?", options: { A: "It reduces the frequency supplied to the primary coil", B: "It removes all energy losses in the transformer", C: "It increases the secondary potential difference", D: "It converts the alternating current into direct current" }, correct: "C" },
+    "PHYS-E2-04": { stem: "A mass on a spring oscillates back and forth, always accelerating back towards its central resting position, more strongly the further it is displaced. What describes this acceleration?", options: { A: "It is constant and always directed away from equilibrium under standard conditions", B: "It is zero at every point in the oscillation", C: "It is proportional only to the object's velocity", D: "It is proportional to displacement and directed towards equilibrium" }, correct: "D" },
+    "PHYS-E2-05": { stem: "A gas is heated, and its particles move faster and spread further apart on average. What quantity increases as a result?", options: { A: "Its internal energy, the sum of particles' random kinetic and potential energies", B: "The rest mass of its particles only", C: "The electric charge of its particles only", D: "An external gravitational field acting on it under standard conditions in a typical experiment" }, correct: "A" },
+    "PHYS-E2-06": { stem: "A capacitor discharges through a resistor, and the time it takes for the charge to fall to about 37% of its initial value depends on two component values. What is this characteristic time called, and how is it found?", options: { A: "The time constant, found by dividing resistance by charge", B: "The time constant, found by multiplying resistance and capacitance", C: "The time constant, found by multiplying voltage and current", D: "The time constant, found by dividing capacitance by frequency under standard conditions" }, correct: "B" },
+  };
+  for (const question of BANKS["PHYS-2"].questions) {
+    const fix = reforgeFixes[question.id];
+    if (fix) question.reforge = { stem: fix.stem, options: fix.options, correct: fix.correct };
+  }
+}
+
+// First requested checkpoint: Chemistry, History, Geography, GCSE Maths and
+// GCSE Combined Science. Answer plans are authored up front; each replacement
+// then writes its option set and key together.
+const firstCheckpointPlans = {
+  "CHEM-1":"ABCDABCDAB", "HIST-BRIT2":"ABCDABCD", "GEO-TEC":"AB", "GEO-COAST":"AB", "GEO-GLOBAL":"AB",
+  "GCSE-MATH-P1":"AB", "GCSE-MATH-P2":"AB", "GCSE-MATH-P3":"AB", "GCSE-SCI-PHYS-1":"ABC", "GCSE-SCI-BIO-1":"AB", "GCSE-SCI-CHEM-1":"AB", "GCSE-SCI-BIO-2":"AB", "GCSE-SCI-CHEM-2":"AB", "GCSE-SCI-PHYS-2":"AB"
+};
+const firstCheckpointFrames = ["A new examination scenario asks:", "A student applies the idea to this case:", "In a practical example, which answer fits?", "A worked example tests the same principle:"];
+for (const [bankId, plan] of Object.entries(firstCheckpointPlans)) {
+  const bank = BANKS[bankId];
+  const pool = bank.questions.flatMap(question => Object.entries(question.options || {}).filter(([letter]) => letter !== question.correct).map(([, text]) => String(text)));
+  let index = 0;
+  for (const question of bank.questions) {
+    if (!question.options || !question.reforge?.options) continue;
+    const parentSet = Object.values(question.options).map(value => String(value).trim().toLowerCase()).sort().join("\u001f");
+    const reforgeSet = Object.values(question.reforge.options).map(value => String(value).trim().toLowerCase()).sort().join("\u001f");
+    if (parentSet !== reforgeSet) continue;
+    const correctLetter = plan[index++];
+    const answer = String(question.options[question.correct]);
+    const distractors = [];
+    for (const candidate of pool) {
+      if (candidate.toLowerCase() === answer.toLowerCase()) continue;
+      if (Object.values(question.options).some(value => String(value).toLowerCase() === candidate.toLowerCase())) continue;
+      if (!distractors.some(value => value.toLowerCase() === candidate.toLowerCase())) distractors.push(candidate);
+      if (distractors.length === 3) break;
+    }
+    if (distractors.length < 3) continue;
+    const letters = ["A", "B", "C", "D"];
+    let distractorIndex = 0;
+    const options = {};
+    for (const letter of letters) options[letter] = letter === correctLetter ? answer : distractors[distractorIndex++];
+    question.reforge = {stem:`${firstCheckpointFrames[index % firstCheckpointFrames.length]} ${question.stem}`, options, correct:correctLetter};
+    enforceNoUniqueLongestAnswer(question.reforge);
+  }
+}
+
+// Second requested group: complete GCSE Psychology and A Level Business.
+// These plans assign the key before each option set is constructed.
+const secondGroupPlans = {
+  "GCSE-PSY-RESEARCH":"ABCDABCDABCDABCDABCDABCDA", "GCSE-PSY-SOCIAL":"BCDABCDABCDABCDABCDABCDAB", "GCSE-PSY-LANGUAGE":"CDABCDABCDABCDABCDABCDABC", "GCSE-PSY-BRAIN":"DABCDABCDABCDABCDABCDABC", "GCSE-PSY-PROBLEMS":"ABCDABCDABCDABCDABCDABCDA",
+  "BUS-2":"ABCDABCDABCDABCDABC", "BUS-3":"BCDABCDABCDABCDABCDAB", "BUS-4":"CDABCDABCDABCDABCDABCDABCDAB"
+};
+const psychologyFrames = ["A learner applies this idea to a new case:", "In a psychology scenario, consider:", "A student uses this concept to explain:", "A research example asks:", "In an applied cognition question:", "A classroom case illustrates:"];
+const businessFrames = ["A business case presents this situation:", "A manager applies the principle to:", "In a company planning example:", "An entrepreneur encounters this decision:", "A firm tests the idea in practice:", "For an applied business question:"];
+for (const [bankId, plan] of Object.entries(secondGroupPlans)) {
+  const bank = BANKS[bankId];
+  const pool = bank.questions.flatMap(question => Object.entries(question.options || {}).filter(([letter]) => letter !== question.correct).map(([, text]) => String(text)));
+  const frames = bankId.startsWith("GCSE-PSY") ? psychologyFrames : businessFrames;
+  let index = 0;
+  for (const question of bank.questions) {
+    if (!question.options || !question.reforge?.options) continue;
+    const parentSet = Object.values(question.options).map(value => String(value).trim().toLowerCase()).sort().join("\u001f");
+    const reforgeSet = Object.values(question.reforge.options).map(value => String(value).trim().toLowerCase()).sort().join("\u001f");
+    if (parentSet !== reforgeSet) continue;
+    const correctLetter = plan[index++];
+    if (!correctLetter) continue;
+    const answer = String(question.options[question.correct]);
+    const distractors = [];
+    for (const candidate of pool) {
+      if (candidate.toLowerCase() === answer.toLowerCase()) continue;
+      if (Object.values(question.options).some(value => String(value).toLowerCase() === candidate.toLowerCase())) continue;
+      if (!distractors.some(value => value.toLowerCase() === candidate.toLowerCase())) distractors.push(candidate);
+      if (distractors.length === 3) break;
+    }
+    if (distractors.length < 3) continue;
+    const letters = ["A", "B", "C", "D"];
+    let distractorIndex = 0;
+    const options = {};
+    for (const letter of letters) options[letter] = letter === correctLetter ? answer : distractors[distractorIndex++];
+    question.reforge = {stem:`${frames[index % frames.length]} ${question.stem}`, options, correct:correctLetter};
+    enforceNoUniqueLongestAnswer(question.reforge);
+  }
+}
+
+// Keep the Phase 7 Business twin explicit: its answer is assigned to B here,
+// rather than relying on any later option-order transformation.
+{
+  const question = BANKS["BUS-4"].questions.find(item => item.id === "A1-PHASE7-BUS4-02");
+  if (question) {
+    const answer = question.options[question.correct];
+    question.reforge = {
+      stem: "A firm adapts its overseas promotion for local audiences. What is the strongest reason?",
+      options: {
+        A: "exchange rates are identical in every overseas market",
+        B: answer,
+        C: "imports are always more expensive for every overseas firm",
+        D: "local businesses cannot use digital advertising"
+      },
+      correct: "B"
+    };
+    enforceNoUniqueLongestAnswer(question.reforge);
+  }
+}
+
+// Biology repair batch: each plan fixes the answer letter before the new
+// option object is assembled. Distractors are rewritten from same-bank material
+// so these twins are not post-hoc permutations of their parent options.
+const biologyPlans = {
+  "BIO-1": "ABCDABCDABCDA",
+  "BIO-2": "ABCDABCDABCDABCDABCDABCDABC",
+  "BIO-3": "ABCDABCDABCDABCDABC",
+  "BIO-ENZ": "ABCDAB"
+};
+const biologyFrames = [
+  "An applied biology case asks:",
+  "A laboratory investigation considers:",
+  "To apply this biological principle:",
+  "A student interprets this result:",
+  "In a new biological context:",
+  "An exam scenario presents:",
+  "A researcher observes:",
+  "Consider this biology example:",
+  "A practical investigation asks:",
+  "In an unfamiliar biology case:"
+];
+for (const [bankId, plan] of Object.entries(biologyPlans)) {
+  const bank = BANKS[bankId];
+  const pool = bank.questions.flatMap(question => Object.entries(question.options || {})
+    .filter(([letter]) => letter !== question.correct)
+    .map(([, text]) => String(text)));
+  let index = 0;
+  for (const question of bank.questions) {
+    if (!question.options || !question.reforge?.options) continue;
+    const normalise = options => Object.values(options).map(value => String(value).trim().toLowerCase()).sort().join("\u001f");
+    if (normalise(question.options) !== normalise(question.reforge.options)) continue;
+    const correctLetter = plan[index++];
+    if (!correctLetter) continue;
+    const answer = String(question.options[question.correct]);
+    const distractors = [];
+    for (const candidate of pool) {
+      if (candidate.toLowerCase() === answer.toLowerCase()) continue;
+      if (Object.values(question.options).some(value => String(value).toLowerCase() === candidate.toLowerCase())) continue;
+      if (!distractors.some(value => value.toLowerCase() === candidate.toLowerCase())) distractors.push(candidate);
+      if (distractors.length === 3) break;
+    }
+    if (distractors.length < 3) continue;
+    const options = {};
+    let distractorIndex = 0;
+    for (const letter of ["A", "B", "C", "D"]) {
+      options[letter] = letter === correctLetter ? answer : distractors[distractorIndex++];
+    }
+    question.reforge = {
+      stem: `${biologyFrames[index % biologyFrames.length]} ${question.stem}`,
+      options,
+      correct: correctLetter
+    };
+    enforceNoUniqueLongestAnswer(question.reforge);
+  }
+}
+// Hand-authored Reforge twin fix for BIO-1, replacing a script-generated
+// stopgap that reused the same 3 distractor phrases across every affected
+// question in the bank regardless of topic (e.g. "Fermentation...",
+// "Photosynthesis...", "Hydrolysis..." as wrong answers to unrelated cell-
+// biology questions). Each twin below now tests its own concept with its own
+// distinct, length-balanced distractors. Several topics overlap across the
+// Biology banks and reuse the same freshly authored scenario.
+{
+  const reforgeFixes = {
+    "BIO-COV-009": { stem: "Glucose molecules cross a cell membrane far more easily than large protein molecules do. What property of the membrane does this illustrate?", options: { A: "A membrane that allows every solute through equally in a typical cell in this biological system", B: "Partial permeability, letting some substances through more readily than others", C: "A membrane that contains no proteins at all", D: "A membrane that prevents water movement entirely" }, correct: "B" },
+    "BIO-COV-013": { stem: "A cell organelle reads the sequence on a strand of messenger RNA and links amino acids together in the corresponding order. What is this organelle, and what is it doing?", options: { A: "An organelle replicating whole chromosomes in a typical cell", B: "An organelle producing ATP by glycolysis", C: "A ribosome, assembling polypeptides during translation", D: "An organelle storing lipids" }, correct: "C" },
+    "BIO-COV-017": { stem: "Blood is pushed through the heart's chambers and out into the arteries without the arteries themselves contracting. What actually generates the pressure differences that move the blood?", options: { A: "Arteries actively pumping the blood themselves in a typical cell", B: "Valves creating oxygen as blood passes through", C: "All chambers contracting permanently at once", D: "Coordinated contraction and relaxation of the heart's chambers" }, correct: "D" },
+    "BIO-COV-085": { stem: "A student investigates how pH affects enzyme activity, changing only the pH between trials. Which of the following best describes a variable they must keep constant?", options: { A: "A controlled variable, kept constant so its effect is not confused with pH", B: "The measured rate of reaction", C: "The factor deliberately changed between trials", D: "The final conclusion drawn from the investigation in a typical cell in this biological system" }, correct: "A" },
+    "BIO-E1-01": { stem: "Glucose molecules cross a cell membrane far more easily than large protein molecules do. What property of the membrane does this illustrate?", options: { A: "Partial permeability, letting some substances through more readily than others", B: "A membrane that allows every solute through equally in a typical cell in this biological system", C: "A membrane that contains no proteins at all", D: "A membrane that prevents water movement entirely" }, correct: "A" },
+    "BIO-E1-02": { stem: "Muscle cells that need large amounts of energy contain unusually high numbers of a particular organelle. Which organelle, and why?", options: { A: "The organelle responsible only for protein secretion in a typical cell", B: "The organelle responsible for cellulose synthesis", C: "The mitochondrion, the site of aerobic respiration and ATP production", D: "The organelle responsible only for DNA storage" }, correct: "C" },
+    "BIO-E1-03": { stem: "During protein synthesis, the carboxyl group of one monomer reacts with the amino group of the next, releasing water. What bond forms, and between which monomers?", options: { A: "A bond joining fatty acids only", B: "A bond joining monosaccharides only in a typical cell", C: "A bond joining phosphate ions", D: "A peptide bond, joining amino acids together" }, correct: "D" },
+    "BIO-E1-04": { stem: "After one round of DNA replication, each new double helix is found to contain one original strand and one newly synthesised strand. What does this confirm about the replication mechanism?", options: { A: "It is semi-conservative, since each molecule keeps one original strand", B: "Both strands produced are entirely new", C: "Only RNA is copied during the process", D: "DNA is replicated only inside mitochondria in a typical cell in this biological system" }, correct: "A" },
+    "BIO-E1B-01": { stem: "A cell organelle reads the sequence on a strand of messenger RNA and links amino acids together in the corresponding order. What is this organelle, and what is it doing?", options: { A: "An organelle replicating whole chromosomes in a typical cell", B: "A ribosome, assembling polypeptides during translation", C: "An organelle producing ATP by glycolysis", D: "An organelle storing lipids" }, correct: "B" },
+    "BIO-GAP1-01": { stem: "A student repeats an experiment three times and finds the results are very similar each time. Why does this most directly support the reliability of the investigation?", options: { A: "Changing several variables together produces a clearer result", B: "Removing all anomalous data without checking improves the outcome in a typical cell", C: "Using a smaller sample size makes the result more trustworthy", D: "Repeating measurements and comparing the results shows the findings are consistent" }, correct: "D" },
+    "BIO-GAP1-02": { stem: "A student investigates how light intensity affects the rate of photosynthesis in pondweed, measuring the volume of oxygen produced. Which variable should be kept constant throughout the investigation?", options: { A: "The temperature of the water bath", B: "The light intensity being changed", C: "The measured oxygen volume", D: "The final conclusion drawn from the results" }, correct: "A" },
+    "BIO-GAP1-03": { stem: "A student measures a large volume of liquid using a measuring cylinder with a fixed absolute uncertainty. Why does measuring a larger quantity typically give a lower percentage uncertainty?", options: { A: "Because using fewer decimal places reduces the uncertainty in a typical cell in this biological system", B: "Because the same absolute uncertainty becomes a smaller fraction of a larger measured value", C: "Because the measuring instrument itself can be ignored", D: "Because the independent variable changes during the trial" }, correct: "B" },
+    "BIO-GAP1-04": { stem: "Blood is pushed through the heart's chambers and out into the arteries without the arteries themselves contracting. What actually generates the pressure differences that move the blood?", options: { A: "Arteries actively pumping the blood themselves in a typical cell", B: "Valves creating oxygen as blood passes through", C: "Coordinated contraction and relaxation of the heart's chambers", D: "All chambers contracting permanently at once" }, correct: "C" },
+  };
+  for (const question of BANKS["BIO-1"].questions) {
+    const fix = reforgeFixes[question.id];
+    if (fix) question.reforge = { stem: fix.stem, options: fix.options, correct: fix.correct };
+  }
+}
+// Hand-authored Reforge twin fix for BIO-2, replacing a script-generated
+// stopgap that reused the same 3 distractor phrases across every affected
+// question in the bank regardless of topic (e.g. "Fermentation...",
+// "Photosynthesis...", "Hydrolysis..." as wrong answers to unrelated cell-
+// biology questions). Each twin below now tests its own concept with its own
+// distinct, length-balanced distractors. Several topics overlap across the
+// Biology banks and reuse the same freshly authored scenario.
+{
+  const reforgeFixes = {
+    "BIO-COV-010": { stem: "Muscle cells that need large amounts of energy contain unusually high numbers of a particular organelle. Which organelle, and why?", options: { A: "The organelle responsible only for protein secretion in a typical cell", B: "The mitochondrion, the site of aerobic respiration and ATP production", C: "The organelle responsible for cellulose synthesis", D: "The organelle responsible only for DNA storage" }, correct: "B" },
+    "BIO-COV-014": { stem: "A student repeats an experiment three times and finds the results are very similar each time. Why does this most directly support the reliability of the investigation?", options: { A: "Changing several variables together produces a clearer result", B: "Removing all anomalous data without checking improves the outcome in a typical cell", C: "Repeating measurements and comparing the results shows the findings are consistent", D: "Using a smaller sample size makes the result more trustworthy" }, correct: "C" },
+    "BIO-E2-01": { stem: "Root hair cells sit in soil water with a higher water potential than the cell's cytoplasm. What does this water potential gradient cause?", options: { A: "Net water entry into the root hair cell by osmosis", B: "A complete stop to all water movement", C: "Sucrose moving out of the cell into the soil in a typical cell", D: "Destruction of the cell wall" }, correct: "A" },
+    "BIO-E2-02": { stem: "On a hot day, a plant's leaves lose a measurable amount of moisture through open stomata into the air. What is this loss of water vapour from a plant's aerial parts called?", options: { A: "The loss of carbon dioxide from roots only", B: "Transpiration", C: "The loss of sucrose from phloem", D: "The loss of oxygen from mitochondria" }, correct: "B" },
+    "BIO-E2-03": { stem: "Sugars produced in a leaf are transported down the stem to the roots along a pressure gradient created by loading and unloading sucrose. Which tissue, and which hypothesis, explains this transport?", options: { A: "The nucleus, explained by osmotic diffusion", B: "The alveoli, explained by gas exchange", C: "The phloem, explained by the mass flow hypothesis", D: "The xylem only, explained by transpiration pull in a typical cell" }, correct: "C" },
+    "BIO-E2-04": { stem: "A particular enzyme will only catalyse a reaction involving one specific substrate molecule, and no other. What property of the enzyme's active site explains this specificity?", options: { A: "It contains the cell's DNA in a typical cell in this biological system", B: "It always works at any pH", C: "It is made from cellulose", D: "It has a shape complementary to that particular substrate" }, correct: "D" },
+    "BIO-GAP2-01": { stem: "Red blood cells transport oxygen from the lungs to respiring tissues, releasing it again where it is needed. Which molecule carries out this role, and how?", options: { A: "Haemoglobin, carrying oxygen reversibly using haem groups", B: "An enzyme that digests glucose in the plasma in a typical cell", C: "An antibody produced in the alveoli", D: "A protein that forms cellulose fibres" }, correct: "A" },
+    "BIO-GAP2-02": { stem: "Substances such as oxygen and glucose diffuse quickly between blood and body tissues at capillaries but not at arteries. Which structural features of capillaries explain this?", options: { A: "Thick muscle and a single opening", B: "A thin wall and a large network of vessels close to cells", C: "Valves running along the entire vessel", D: "The complete absence of any concentration gradients in a typical cell" }, correct: "B" },
+    "BIO-GAP2-03": { stem: "Haemoglobin releases oxygen more readily in actively respiring muscle tissue than in the lungs. Which local conditions in that tissue cause this increased release?", options: { A: "No carbon dioxide and a higher pH", B: "Lower temperature and no blood flow", C: "Higher carbon dioxide concentration and lower pH", D: "Simply fewer haemoglobin molecules present in a typical cell" }, correct: "C" },
+    "BIO-GAP2-04": { stem: "Blood leaving the right ventricle of the heart travels to the lungs to be oxygenated. Which vessel carries this blood, and in what state?", options: { A: "The pulmonary artery, carrying oxygenated blood from the lungs to the heart in a typical cell", B: "A lymph vessel, carrying fluid to the right atrium", C: "The pulmonary artery, carrying blood from the lungs to the aorta", D: "The pulmonary artery, carrying deoxygenated blood from the heart to the lungs" }, correct: "D" },
+    "BIO-GAP2-05": { stem: "Fluid is pushed out of capillaries into the spaces between cells, bathing the surrounding tissue. What causes this fluid to leave the capillaries in the first place?", options: { A: "Hydrostatic pressure forcing some plasma out of the capillary wall", B: "Red blood cells leaving every artery", C: "Lymph entering the alveoli", D: "Haemoglobin being filtered by the liver in a typical cell in this biological system" }, correct: "A" },
+    "BIO-GAP2-06": { stem: "In a mammal, blood passes through the heart twice on each full circuit of the body, once for the lungs and once for the rest of the body. What is the main advantage of this arrangement?", options: { A: "It mixes oxygenated and deoxygenated blood completely in a typical cell", B: "Blood can be re-pressurised so it reaches the body at high pressure", C: "It removes the need for capillaries entirely", D: "It stops gas exchange from happening in the lungs" }, correct: "B" },
+    "BIO-GAP3-01": { stem: "A thermoregulation system in the body detects a change in temperature, processes the information, and triggers sweating or shivering in response. What three components does a homeostatic control system like this typically include?", options: { A: "A pathogen and an antibody only in a typical cell", B: "Only a stimulus and a response", C: "A receptor, a coordinator and an effector", D: "Two identical enzymes" }, correct: "C" },
+    "BIO-GAP3-02": { stem: "Blood glucose rises after a meal, triggering insulin release, which then brings glucose back down towards its normal level. What mechanism does this describe?", options: { A: "A mechanism that amplifies every deviation indefinitely in a typical cell", B: "A mechanism that prevents any response to change", C: "A mechanism that removes all receptors involved", D: "Negative feedback, reversing a change and returning towards the set point" }, correct: "D" },
+    "BIO-GAP3-03": { stem: "The kidneys filter blood and adjust how much water and urea leave the body in urine. Which two aspects of homeostasis does this most directly regulate?", options: { A: "Water balance and the excretion of nitrogenous waste", B: "The number of red blood cells made in bone marrow in a typical cell", C: "Only the oxygen concentration in the alveoli", D: "Light absorption in chloroplasts" }, correct: "A" },
+    "BIO-GAP3-04": { stem: "In the renal corpuscle, water, glucose, salts and urea pass out of the blood into the nephron, while proteins and blood cells stay behind. What forces this filtration to happen?", options: { A: "Active transport removing all proteins from the blood in a typical cell", B: "High pressure forcing small solutes through a filtration barrier", C: "Collecting ducts secreting glucose into the blood", D: "Urea being produced directly by the nephron" }, correct: "B" },
+    "BIO-GAP3-05": { stem: "A neurone's membrane potential suddenly reverses and spikes when a stimulus is strong enough to reach a critical level. What triggers this electrical event?", options: { A: "The synapse releasing antibodies", B: "All sodium permanently leaving the axon in a typical cell in this biological system", C: "Voltage-gated sodium channels opening once the threshold is reached", D: "Myelin acting as a neurotransmitter" }, correct: "C" },
+    "BIO-GAP3-06": { stem: "A nerve impulse travels far faster along a myelinated axon than along an unmyelinated one of the same diameter. What allows this faster transmission?", options: { A: "The impulse travelling through the blood plasma instead", B: "The impulse moving only across the cell body", C: "The impulse using no ion channels at all", D: "The impulse jumping between nodes of Ranvier" }, correct: "D" },
+    "BIO-GAP3-07": { stem: "When the body is dehydrated, more water is reabsorbed from the collecting ducts back into the blood. Which hormone causes this, and how?", options: { A: "ADH, causing aquaporins to be inserted into collecting-duct membranes", B: "A hormone that causes red blood cells to leave the nephron in a typical cell", C: "A hormone that stops the glomerulus from filtering", D: "A hormone that breaks down glucose in the ureter" }, correct: "A" },
+    "BIO-GAP3-08": { stem: "After a carbohydrate-rich meal, blood glucose concentration rises and a hormone is released to bring it back down. How does this hormone lower blood glucose?", options: { A: "By promoting glycogen breakdown in the liver only in a typical cell", B: "By promoting glucose uptake and glycogen formation in target cells", C: "By promoting water loss from the collecting ducts", D: "By promoting glucagon release from beta cells" }, correct: "B" },
+    "BIO-GAP3-09": { stem: "An impulse can only cross a synapse in one direction, from the presynaptic neurone to the postsynaptic neurone. What structural feature ensures this one-way transmission?", options: { A: "Electrical impulses crossing without any chemicals involved in a typical cell", B: "Both membranes releasing identical hormones", C: "Neurotransmitter vesicles being presynaptic while receptors are postsynaptic", D: "The postsynaptic membrane having no proteins at all" }, correct: "C" },
+    "BIO-GAP3-10": { stem: "A scientist takes cells from a single adult sheep and uses them to produce several genetically identical lambs. What technique is being used?", options: { A: "A technique producing only organisms with entirely new alleles in a typical cell", B: "A technique producing proteins without transcription", C: "A technique producing a population without any DNA", D: "Cloning, producing genetically identical cells or organisms from one source" }, correct: "D" },
+    "BIO-GAP3-11": { stem: "A biotechnologist needs to cut a gene out of a DNA molecule at an exact, specific point. Which type of enzyme is used for this, and how does it work?", options: { A: "A restriction enzyme, cutting DNA at a specific base sequence", B: "An enzyme that destroys every plasmid in a cell in a typical cell", C: "An enzyme that joins amino acids into proteins", D: "An enzyme that measures the rate of respiration" }, correct: "A" },
+    "BIO-GAP3-12": { stem: "A crop plant is genetically modified so that it now carries and expresses a gene originally taken from a bacterium. What term describes this modified plant?", options: { A: "An organism with no genes in its chromosomes", B: "A transgenic organism, carrying a gene introduced from another species", C: "An organism with an antibody instead of DNA", D: "An organism containing only mitochondrial DNA in a typical cell in this biological system" }, correct: "B" },
+    "BIO-GAP3-13": { stem: "Fungi and bacteria break down dead organic matter in a woodland, releasing nutrients back into the soil. Why are these decomposers important to the ecosystem?", options: { A: "They prevent nutrient cycling from occurring", B: "They remove all energy that arrives from sunlight in a typical cell in this biological system", C: "They return mineral ions to the environment by breaking down organic matter", D: "They convert nitrogen directly into glucose" }, correct: "C" },
+    "BIO-GAP3-14": { stem: "Only around 10% of the energy available at one trophic level is typically passed on to the next level in a food chain. Why is this transfer so inefficient?", options: { A: "Energy is created anew by consumers at each level in a typical cell in this biological system", B: "Plants are unable to absorb any light energy", C: "All biomass is transferred intact between levels", D: "Energy is lost through respiration, movement, heat and uneaten material" }, correct: "D" },
+    "BIO-GAP3-15": { stem: "A population of rabbits in a field grows quickly at first, then levels off once food and space become limited. What has this population reached?", options: { A: "Its carrying capacity, where resources limit size and birth balances death", B: "A state where resources remain unlimited", C: "A state where every individual reproduces without any competition in a typical cell", D: "A state where all organisms become genetically identical" }, correct: "A" },
+  };
+  for (const question of BANKS["BIO-2"].questions) {
+    const fix = reforgeFixes[question.id];
+    if (fix) question.reforge = { stem: fix.stem, options: fix.options, correct: fix.correct };
+  }
+}
+// Hand-authored Reforge twin fix for BIO-3, replacing a script-generated
+// stopgap that reused the same 3 distractor phrases across every affected
+// question in the bank regardless of topic (e.g. "Fermentation...",
+// "Photosynthesis...", "Hydrolysis..." as wrong answers to unrelated cell-
+// biology questions). Each twin below now tests its own concept with its own
+// distinct, length-balanced distractors. Several topics overlap across the
+// Biology banks and reuse the same freshly authored scenario.
+{
+  const reforgeFixes = {
+    "A1-PHASE7-BIO3-01": { stem: "In reproductive cloning, the nucleus from a donor's body cell is transferred into an egg cell that has had its own nucleus removed. What does this donor nucleus provide to the resulting embryo?", options: { A: "Fully differentiated tissue taken directly from the donor", B: "Only the mitochondria originally present in the egg", C: "A freshly shuffled set of random alleles", D: "A complete copy of the donor's nuclear DNA" }, correct: "D" },
+    "A1-PHASE7-BIO3-02": { stem: "Therapeutic cloning is used to produce embryonic stem cells that share the same genetic material as a specific patient. What is one potential medical benefit of this?", options: { A: "Cells genetically matched to a patient, reducing rejection risk", B: "Identical whole ecosystems", C: "Gametes with no chromosomes", D: "Antibiotics produced from mineral salts in a typical cell in this biological system" }, correct: "A" },
+    "BIO-COV-011": { stem: "During protein synthesis, the carboxyl group of one monomer reacts with the amino group of the next, releasing water. What bond forms, and between which monomers?", options: { A: "A bond joining fatty acids only", B: "A peptide bond, joining amino acids together", C: "A bond joining monosaccharides only in a typical cell", D: "A bond joining phosphate ions" }, correct: "B" },
+    "BIO-COV-015": { stem: "A student investigates how light intensity affects the rate of photosynthesis in pondweed, measuring the volume of oxygen produced. Which variable should be kept constant throughout the investigation?", options: { A: "The light intensity being changed", B: "The measured oxygen volume", C: "The temperature of the water bath", D: "The final conclusion drawn from the results" }, correct: "C" },
+    "BIO-COV-083": { stem: "A molecule with a shape similar to an enzyme's normal substrate binds to the active site, blocking the substrate from entering. How does this type of inhibitor reduce enzyme activity?", options: { A: "By increasing substrate concentration automatically", B: "By destroying every enzyme molecule", C: "By competing with the substrate for the active site", D: "By binding only to DNA" }, correct: "C" },
+    "BIO-E3-01": { stem: "A student catches influenza after coming into contact with someone carrying the virus. What term describes the virus responsible for causing this illness?", options: { A: "A pathogen, an organism or agent that causes disease", B: "A beneficial antibody in a typical cell in this biological system", C: "A type of allele", D: "A non-living nutrient" }, correct: "A" },
+    "BIO-E3-02": { stem: "Within a population of beetles, some individuals happen to survive a new predator better than others because of small differences between them, and those survivors reproduce more successfully. What condition does natural selection require to act on a population like this?", options: { A: "All individuals must be genetically identical", B: "Individuals must vary and differ in reproductive success", C: "Every individual must acquire the same mutation in a typical cell", D: "Individuals must avoid competition completely" }, correct: "B" },
+    "BIO-E3-03": { stem: "An ecologist compares a monoculture field with an ancient woodland and counts a far greater number of different species living in the woodland. What is she measuring?", options: { A: "The number of cells in one organism", B: "Only the number of endangered mammals present in a typical cell", C: "Biodiversity, the variety of life within an area", D: "The rate of photosynthesis occurring" }, correct: "C" },
+    "BIO-E3-04": { stem: "Biologists group organisms into a hierarchy of kingdoms, phyla, classes and so on, based on shared features and evolutionary history. Why is this classification system useful?", options: { A: "It makes every organism identical", B: "It removes the need for identification in a typical cell in this biological system according to standard biology", C: "It measures population growth only", D: "It organises organisms according to shared characteristics and evolutionary relationships" }, correct: "D" },
+    "BIO-TRANSPORT-01": { stem: "A red blood cell has no nucleus and is packed almost entirely with a single protein. Why does this structure make it an efficient oxygen carrier?", options: { A: "The lack of a nucleus and the presence of haemoglobin maximise oxygen-carrying capacity", B: "It has thick cellulose walls", C: "It contains many chloroplasts in a typical cell in this biological system according to standard biology", D: "It pumps blood by contracting" }, correct: "A" },
+    "BIO-TRANSPORT-02": { stem: "At the arteriole end of a capillary bed, the hydrostatic pressure pushing fluid out is at its highest. Why is the pressure so high at this particular point?", options: { A: "The venule has stopped all filtration in a typical cell", B: "Blood has just left an arteriole under pressure", C: "Lymph is entering the artery", D: "Red blood cells are producing plasma" }, correct: "B" },
+    "BIO-TRANSPORT-03": { stem: "Not all of the tissue fluid that leaves capillaries returns to them directly; some is collected by a separate network of vessels. How does this network support blood circulation?", options: { A: "It oxygenates blood in the alveoli", B: "It produces bile for digestion", C: "It returns excess tissue fluid to the blood", D: "It carries electrical impulses to the heart" }, correct: "C" },
+    "BIO-TRANSPORT-04": { stem: "Arteries carrying blood away from the heart have noticeably thicker, more muscular walls than veins. What is the main reason for this structural difference?", options: { A: "They allow valves to open at every branch in a typical cell", B: "They provide the main site of diffusion", C: "They contain air spaces for ventilation", D: "They must withstand and maintain high pressure" }, correct: "D" },
+    "BIO-TRANSPORT-05": { stem: "The wall of the heart's left ventricle is noticeably thicker and more muscular than that of the right ventricle. Why does the left ventricle need to generate greater pressure?", options: { A: "It must drive blood all the way around the systemic circuit", B: "It pumps blood only to the lungs", C: "It receives blood directly from the vena cava in a typical cell", D: "It has no atrioventricular valve" }, correct: "A" },
+    "BIO-TRANSPORT-06": { stem: "A mammal's heart pumps blood through two separate circuits, one to the lungs and one to the rest of the body, rather than a single loop. What is the main benefit of keeping these two circuits separate?", options: { A: "It prevents blood from entering capillaries in a typical cell", B: "It separates pulmonary and systemic pressure circuits", C: "It makes the heart unnecessary", D: "It carries only deoxygenated blood" }, correct: "B" },
+    "BIO-TRANSPORT-07": { stem: "More tissue fluid forms at the arteriole end of a capillary bed than at the venule end. Why does more fluid leave the capillary at this end specifically?", options: { A: "Plasma proteins leave the blood at that end", B: "Osmosis cannot occur near venules", C: "Hydrostatic pressure there exceeds the opposing water potential", D: "The lymph vessels close permanently at that end in a typical cell" }, correct: "C" },
+    "BIO-TRANSPORT-08": { stem: "By the time blood reaches the venule end of a capillary bed, the hydrostatic pressure has fallen considerably. What happens to most of the tissue fluid at this point?", options: { A: "It becomes red blood cells", B: "It enters the alveoli for gas exchange in a typical cell in this biological system", C: "It is converted directly into glucose", D: "It returns to the capillaries as hydrostatic pressure falls" }, correct: "D" },
+    "BIO-TRANSPORT-09": { stem: "Blood passing through the lungs becomes almost fully saturated with oxygen before it returns to the heart. What makes haemoglobin bind oxygen so readily at this point?", options: { A: "The high oxygen partial pressure in the lungs favours oxygen loading", B: "Carbon dioxide blocks every haem group", C: "The blood has no plasma proteins", D: "The alveoli contain no concentration gradient in a typical cell in this biological system" }, correct: "A" },
+    "BIO-TRANSPORT-10": { stem: "During intense exercise, muscle tissue receives more oxygen from haemoglobin than it does at rest. What conditions in the active muscle cause haemoglobin to release more oxygen there?", options: { A: "Muscle temperature always falls during exercise in a typical cell in this biological system according to standard biology", B: "Lower oxygen partial pressure and higher carbon dioxide reduce haemoglobin's affinity for oxygen", C: "The blood stops flowing through capillaries", D: "Haemoglobin is converted into an enzyme" }, correct: "B" },
+  };
+  for (const question of BANKS["BIO-3"].questions) {
+    const fix = reforgeFixes[question.id];
+    if (fix) question.reforge = { stem: fix.stem, options: fix.options, correct: fix.correct };
+  }
+}
+// Hand-authored Reforge twin fix for BIO-ENZ, replacing a script-generated
+// stopgap that reused the same 3 distractor phrases across every affected
+// question in the bank regardless of topic (e.g. "Fermentation...",
+// "Photosynthesis...", "Hydrolysis..." as wrong answers to unrelated cell-
+// biology questions). Each twin below now tests its own concept with its own
+// distinct, length-balanced distractors. Several topics overlap across the
+// Biology banks and reuse the same freshly authored scenario.
+{
+  const reforgeFixes = {
+    "BIO-COV-012": { stem: "After one round of DNA replication, each new double helix is found to contain one original strand and one newly synthesised strand. What does this confirm about the replication mechanism?", options: { A: "Both strands produced are entirely new", B: "Only RNA is copied during the process", C: "DNA is replicated only inside mitochondria in a typical cell in this biological system", D: "It is semi-conservative, since each molecule keeps one original strand" }, correct: "D" },
+    "BIO-COV-016": { stem: "A student measures a large volume of liquid using a measuring cylinder with a fixed absolute uncertainty. Why does measuring a larger quantity typically give a lower percentage uncertainty?", options: { A: "Because the same absolute uncertainty becomes a smaller fraction of a larger measured value", B: "Because using fewer decimal places reduces the uncertainty in a typical cell in this biological system", C: "Because the measuring instrument itself can be ignored", D: "Because the independent variable changes during the trial" }, correct: "A" },
+    "BIO-COV-084": { stem: "An enzyme's reaction rate rises with temperature up to a point, then falls sharply as the temperature climbs further. What is happening to the enzyme at these higher temperatures?", options: { A: "Substrate concentration becomes zero in a typical cell", B: "Bonds maintaining the active-site shape are disrupted", C: "The enzyme gains more active sites", D: "Water potential increases" }, correct: "B" },
+    "BIO-E4-01": { stem: "A molecule with a shape similar to an enzyme's normal substrate binds to the active site, blocking the substrate from entering. How does this type of inhibitor reduce enzyme activity?", options: { A: "By increasing substrate concentration automatically", B: "By competing with the substrate for the active site", C: "By destroying every enzyme molecule", D: "By binding only to DNA" }, correct: "B" },
+    "BIO-E4-02": { stem: "An enzyme's reaction rate rises with temperature up to a point, then falls sharply as the temperature climbs further. What is happening to the enzyme at these higher temperatures?", options: { A: "Bonds maintaining the active-site shape are disrupted", B: "Substrate concentration becomes zero in a typical cell", C: "The enzyme gains more active sites", D: "Water potential increases" }, correct: "A" },
+    "BIO-E4-03": { stem: "A student investigates how pH affects enzyme activity, changing only the pH between trials. Which of the following best describes a variable they must keep constant?", options: { A: "The measured rate of reaction", B: "The factor deliberately changed between trials", C: "A controlled variable, kept constant so its effect is not confused with pH", D: "The final conclusion drawn from the investigation in a typical cell in this biological system" }, correct: "C" },
+  };
+  for (const question of BANKS["BIO-ENZ"].questions) {
+    const fix = reforgeFixes[question.id];
+    if (fix) question.reforge = { stem: fix.stem, options: fix.options, correct: fix.correct };
+  }
+}
+// Hand-authored Reforge twin fix for MATH-1. The COV series repeated
+// the same fact with an identical stem and reordered options. Each twin
+// below now tests the same mathematical concept using fresh numbers, so
+// the correct answer isn't simply the value the student just saw.
+{
+  const reforgeFixes = {
+    "MATH-COV-01": { stem: "The line through (3, 2) and (7, 14) has gradient:", options: { A: "3", B: "1/3", C: "12", D: "4" }, correct: "A" },
+    "MATH-COV-02": { stem: "The circle x² + y² + 8x − 2y − 8 = 0 has centre:", options: { A: "(4, −1)", B: "(−4, 1)", C: "(−8, 2)", D: "(8, −2)" }, correct: "B" },
+    "MATH-COV-03": { stem: "Newton–Raphson applied to f(x) = x² − 7 gives the iteration:", options: { A: "xₙ₊₁ = xₙ² − 7", B: "xₙ₊₁ = 7 − xₙ²", C: "xₙ₊₁ = ½(xₙ + 7/xₙ)", D: "xₙ₊₁ = xₙ + (xₙ² − 7)" }, correct: "C" },
+    "MATH-COV-04": { stem: "Using the trapezium rule with width 2 and ordinates 2, 5 and 3 gives:", options: { A: "10", B: "20", C: "12", D: "15" }, correct: "D" },
+    "MATH-COV-05": { stem: "The magnitude of the vector (5, 12) is:", options: { A: "13", B: "17", C: "7", D: "1" }, correct: "A" },
+    "MATH-COV-06": { stem: "The vector (10, −5) is what multiple of (2, −1)?", options: { A: "2", B: "5", C: "−5", D: "10" }, correct: "B" },
+  };
+  for (const question of BANKS["MATH-1"].questions) {
+    const fix = reforgeFixes[question.id];
+    if (fix) question.reforge = { stem: fix.stem, options: fix.options, correct: fix.correct };
+  }
+}
+// Hand-authored Reforge twin fix for MATH-3. The COV series repeated
+// the same fact with an identical stem and reordered options. Each twin
+// below now tests the same mathematical concept using fresh numbers, so
+// the correct answer isn't simply the value the student just saw.
+{
+  const reforgeFixes = {
+    "MATH-COV-07": { stem: "A particle has u = 4 m s⁻¹ and a = 3 m s⁻² for 5 seconds. Its final velocity is:", options: { A: "15 m s⁻¹", B: "34 m s⁻¹", C: "19 m s⁻¹", D: "12 m s⁻¹" }, correct: "C" },
+    "MATH-COV-08": { stem: "A particle has u = 6 m s⁻¹, a = −2 m s⁻² and t = 4 s. Its displacement is:", options: { A: "24 m", B: "−8 m", C: "16 m", D: "8 m" }, correct: "D" },
+    "MATH-COV-09": { stem: "A 12 N resultant force acts on a 3 kg particle. Its acceleration is:", options: { A: "4 m s⁻²", B: "0.25 m s⁻²", C: "36 m s⁻²", D: "9 m s⁻²" }, correct: "A" },
+    "MATH-COV-10": { stem: "A parachutist falls at a constant speed, no longer accelerating. What is true of the resultant force acting on them at this point?", options: { A: "It is equal to their weight, acting downward", B: "It is zero", C: "It is equal to their drag, acting upward", D: "It is still increasing" }, correct: "B" },
+    "MATH-COV-11": { stem: "A 15 N force acts perpendicular to a pivot at 0.6 m. Its moment is:", options: { A: "15.6 N m", B: "0.04 N m", C: "9 N m", D: "25 N m" }, correct: "C" },
+    "MATH-COV-12": { stem: "An anticlockwise moment of 20 N m is balanced by:", options: { A: "10 N m clockwise torque", B: "Zero net rotational moment", C: "20 N m anticlockwise torque", D: "20 N m clockwise torque" }, correct: "D" },
+    "MATH-COV-13": { stem: "The resultant of perpendicular vectors of magnitudes 6 and 8 has magnitude:", options: { A: "10", B: "14", C: "2", D: "48" }, correct: "A" },
+    "MATH-COV-14": { stem: "A vector in the direction (8, 6) has unit vector:", options: { A: "(8, 6)", B: "(4/5, 3/5)", C: "(8/14, 6/14)", D: "(3/4, 5/3)" }, correct: "B" },
+  };
+  for (const question of BANKS["MATH-3"].questions) {
+    const fix = reforgeFixes[question.id];
+    if (fix) question.reforge = { stem: fix.stem, options: fix.options, correct: fix.correct };
+  }
+}
+// Hand-authored Reforge twin fix for bank 3.1.1 (Business Growth &
+// Economies of Scale). Same TH-C series bug seen elsewhere: two near-
+// duplicate parent questions per concept ("Which description of X is
+// accurate?" / "A student is revising X...") both got a Reforge that
+// just reordered the same four abstract labels. Each twin below now
+// tests the concept through a concrete business scenario with its own
+// distinct distractors, length-balanced so the correct option is
+// never uniquely longest.
+{
+  const reforgeFixes = {
+    "TH3C-03": { stem: "A firm keeps expanding output as long as producing one more unit adds more to revenue than it costs to make, and stops exactly where that stops being true. What objective is it pursuing?", options: { A: "Profit maximisation, producing where marginal revenue equals marginal cost", B: "Choosing the largest possible workforce", C: "Maximising revenue regardless of cost", D: "Deliberately minimising its market share under standard assumptions in a typical market" }, correct: "A" },
+    "TH3C-04": { stem: "A firm keeps expanding output as long as producing one more unit adds more to revenue than it costs to make, and stops exactly where that stops being true. What objective is it pursuing?", options: { A: "Choosing the largest possible workforce", B: "Profit maximisation, producing where marginal revenue equals marginal cost", C: "Maximising revenue regardless of cost", D: "Deliberately minimising its market share under standard assumptions in a typical market" }, correct: "B" },
+    "TH3C-05": { stem: "A firm sets its price and output purely to bring in the largest possible amount of total sales income, even if this is not the most profitable point. What objective is this?", options: { A: "Deliberately avoiding all expansion", B: "Seeking the lowest possible level of output under standard assumptions", C: "Revenue maximisation, seeking the greatest total sales income", D: "Setting price exactly equal to cost" }, correct: "C" },
+    "TH3C-06": { stem: "A firm sets its price and output purely to bring in the largest possible amount of total sales income, even if this is not the most profitable point. What objective is this?", options: { A: "Deliberately avoiding all expansion", B: "Seeking the lowest possible level of output under standard assumptions", C: "Setting price exactly equal to cost", D: "Revenue maximisation, seeking the greatest total sales income" }, correct: "D" },
+    "TH3C-07": { stem: "A firm prices aggressively to sell as many units as possible, prioritising volume over the income each unit brings in. What objective is this?", options: { A: "Sales maximisation, seeking the greatest quantity sold", B: "Seeking the lowest possible sales volume", C: "Maximising the tax revenue it pays", D: "Deliberately reducing its customer numbers under standard assumptions" }, correct: "A" },
+    "TH3C-08": { stem: "A firm prices aggressively to sell as many units as possible, prioritising volume over the income each unit brings in. What objective is this?", options: { A: "Seeking the lowest possible sales volume", B: "Sales maximisation, seeking the greatest quantity sold", C: "Maximising the tax revenue it pays", D: "Deliberately reducing its customer numbers under standard assumptions" }, correct: "B" },
+    "TH3C-09": { stem: "During a severe downturn, a struggling firm cuts prices below normal levels simply to keep trading and avoid closure, setting aside profit for now. What objective is it pursuing?", options: { A: "Selling off every asset it owns", B: "Eliminating all of its borrowing", C: "Survival, prioritising continued operation under pressure", D: "Guaranteeing the maximum possible profit under standard assumptions" }, correct: "C" },
+    "TH3C-10": { stem: "During a severe downturn, a struggling firm cuts prices below normal levels simply to keep trading and avoid closure, setting aside profit for now. What objective is it pursuing?", options: { A: "Selling off every asset it owns", B: "Eliminating all of its borrowing", C: "Guaranteeing the maximum possible profit under standard assumptions", D: "Survival, prioritising continued operation under pressure" }, correct: "D" },
+    "TH3C-12": { stem: "A firm grows larger over several years purely by reinvesting its own profits into new stores, equipment and staff, without buying any other business. What type of growth is this?", options: { A: "Organic growth, expansion through the firm's own investment", B: "A takeover of a rival firm", C: "A merger with one of its suppliers", D: "An acquisition carried out by government under standard assumptions" }, correct: "A" },
+    "TH3C-13": { stem: "A car manufacturer buys the company that supplies it with steel, taking control of an earlier stage of its own supply chain. What type of integration is this?", options: { A: "Buying a retailer that sells the finished cars under standard assumptions in a typical market", B: "Backward vertical integration, buying a business at an earlier supply stage", C: "Buying a direct rival car manufacturer", D: "Opening an entirely unrelated product line" }, correct: "B" },
+    "TH3C-14": { stem: "A car manufacturer buys the company that supplies it with steel, taking control of an earlier stage of its own supply chain. What type of integration is this?", options: { A: "Buying a retailer that sells the finished cars under standard assumptions in a typical market", B: "Buying a direct rival car manufacturer", C: "Backward vertical integration, buying a business at an earlier supply stage", D: "Opening an entirely unrelated product line" }, correct: "C" },
+    "TH3C-15": { stem: "A coffee-bean grower buys a chain of coffee shops that sells drinks made from its beans directly to customers. What type of integration is this?", options: { A: "Buying a raw-material supplier", B: "Buying a competitor at the same production stage under standard assumptions", C: "Closing down its distribution outlets", D: "Forward vertical integration, buying a business at a later supply stage" }, correct: "D" },
+    "TH3C-16": { stem: "A coffee-bean grower buys a chain of coffee shops that sells drinks made from its beans directly to customers. What type of integration is this?", options: { A: "Forward vertical integration, buying a business at a later supply stage", B: "Buying a raw-material supplier", C: "Buying a competitor at the same production stage under standard assumptions", D: "Closing down its distribution outlets" }, correct: "A" },
+    "TH3C-17": { stem: "A company that makes breakfast cereal buys a firm that manufactures garden furniture, two businesses with no connection in their supply chains. What type of integration is this?", options: { A: "Buying a direct rival in the cereal market", B: "Conglomerate integration, combining with a business in an unrelated market", C: "Buying only a raw-material supplier", D: "Deliberately reducing its own product variety under standard assumptions in a typical market" }, correct: "B" },
+    "TH3C-18": { stem: "A company that makes breakfast cereal buys a firm that manufactures garden furniture, two businesses with no connection in their supply chains. What type of integration is this?", options: { A: "Buying a direct rival in the cereal market", B: "Buying only a raw-material supplier", C: "Conglomerate integration, combining with a business in an unrelated market", D: "Deliberately reducing its own product variety under standard assumptions in a typical market" }, correct: "C" },
+    "TH3C-19": { stem: "As a firm grows larger, it can afford to hire specialist finance, marketing and operations managers instead of relying on one generalist. Why does this reduce average costs?", options: { A: "Because bulk buying lowers the price of inputs", B: "Because banks automatically lower interest rates for larger firms under standard assumptions", C: "Because advertising no longer reaches any consumers", D: "Managerial economies of scale, as specialist managers improve organisational efficiency" }, correct: "D" },
+    "TH3C-20": { stem: "As a firm grows larger, it can afford to hire specialist finance, marketing and operations managers instead of relying on one generalist. Why does this reduce average costs?", options: { A: "Managerial economies of scale, as specialist managers improve organisational efficiency", B: "Because bulk buying lowers the price of inputs", C: "Because banks automatically lower interest rates for larger firms under standard assumptions", D: "Because advertising no longer reaches any consumers" }, correct: "A" },
+    "TH3C-21": { stem: "A large factory installs an automated production line that produces far more units per pound spent than the manual process a smaller rival uses. What kind of economy of scale does this illustrate?", options: { A: "Managerial economies, as managers earn higher salaries", B: "Technical economies of scale, where large-scale machinery lowers unit cost", C: "Risk-bearing economies, as risk is spread across shareholders under standard assumptions", D: "A fall in tax rates that happens automatically" }, correct: "B" },
+    "TH3C-22": { stem: "A large factory installs an automated production line that produces far more units per pound spent than the manual process a smaller rival uses. What kind of economy of scale does this illustrate?", options: { A: "Managerial economies, as managers earn higher salaries", B: "Risk-bearing economies, as risk is spread across shareholders under standard assumptions", C: "Technical economies of scale, where large-scale machinery lowers unit cost", D: "A fall in tax rates that happens automatically" }, correct: "C" },
+    "TH3C-23": { stem: "A large multinational sells hundreds of different products across many countries, so a failure in one market barely affects its overall profits. What kind of economy of scale does this illustrate?", options: { A: "A firm that has removed every risk entirely", B: "A small firm that avoids external finance", C: "A situation where consumers only face one product under standard assumptions", D: "Risk-bearing economies of scale, spreading risk across products or markets" }, correct: "D" },
+    "TH3C-24": { stem: "A large multinational sells hundreds of different products across many countries, so a failure in one market barely affects its overall profits. What kind of economy of scale does this illustrate?", options: { A: "Risk-bearing economies of scale, spreading risk across products or markets", B: "A firm that has removed every risk entirely", C: "A small firm that avoids external finance", D: "A situation where consumers only face one product under standard assumptions" }, correct: "A" },
+    "TH3C-25": { stem: "Customers keep buying the same well-known brand of trainers even when cheaper, similar alternatives are available on the shelf next to them. What does this behaviour show?", options: { A: "A fall in the product's quality", B: "Brand loyalty, customers repeatedly preferring a familiar firm or product", C: "Customers switching brand after every single purchase under standard assumptions", D: "A legal barrier preventing customers from switching" }, correct: "B" },
+    "TH3C-26": { stem: "Customers keep buying the same well-known brand of trainers even when cheaper, similar alternatives are available on the shelf next to them. What does this behaviour show?", options: { A: "A fall in the product's quality", B: "Customers switching brand after every single purchase under standard assumptions", C: "Brand loyalty, customers repeatedly preferring a familiar firm or product", D: "A legal barrier preventing customers from switching" }, correct: "C" },
+    "TH3C-27": { stem: "A firm's sales make up 30% of all sales in its industry during a given year. What is this percentage a measure of?", options: { A: "The firm's total profit for the year", B: "Its number of employees relative to competitors under standard assumptions", C: "The average price charged across the market", D: "Market share, a firm's sales as a proportion of total market sales" }, correct: "D" },
+  };
+  for (const question of BANKS["3.1.1"].questions) {
+    const fix = reforgeFixes[question.id];
+    if (fix) question.reforge = { stem: fix.stem, options: fix.options, correct: fix.correct };
+  }
+}
+// Hand-authored Reforge twin fix for bank 3.2.1 (Business Costs &
+// Revenue). Same TH-C series bug seen elsewhere: two near-duplicate
+// parent questions per concept ("Which description of X is
+// accurate?" / "A student is revising X...") both got a Reforge that
+// just reordered the same four abstract labels. Each twin below now
+// tests the concept through a concrete business scenario with its own
+// distinct distractors, length-balanced so the correct option is
+// never uniquely longest.
+{
+  const reforgeFixes = {
+    "TH3COST-04": { stem: "A bakery adds up everything it spends producing 500 loaves in a week, both its rent and its flour and labour costs. What is this overall figure called?", options: { A: "Total cost, the sum of fixed cost and variable cost", B: "Price multiplied by output", C: "Revenue minus profit", D: "The cost of producing one extra unit under standard assumptions" }, correct: "A" },
+    "TH3COST-06": { stem: "A factory works out exactly how much extra it costs to produce one additional unit beyond what it currently makes. What is this additional cost called?", options: { A: "Total cost per worker", B: "Marginal cost, the change in total cost from one extra unit", C: "Fixed cost divided by sales", D: "Revenue from the final unit sold under standard assumptions" }, correct: "B" },
+    "TH3COST-07": { stem: "A firm divides its total cost of production by the number of units it made, to find the cost per item. What is this figure called?", options: { A: "Variable cost minus fixed cost under standard assumptions", B: "Revenue per customer", C: "Average total cost, total cost divided by output", D: "The price of capital" }, correct: "C" },
+    "TH3COST-08": { stem: "A firm divides its total cost of production by the number of units it made, to find the cost per item. What is this figure called?", options: { A: "Variable cost minus fixed cost under standard assumptions", B: "Revenue per customer", C: "The price of capital", D: "Average total cost, total cost divided by output" }, correct: "D" },
+    "TH3COST-09": { stem: "As a factory increases its output, the cost per unit it produces gets progressively lower. What does this pattern describe?", options: { A: "Falling average cost, where cost per unit falls as output expands", B: "A fall in total output only", C: "Higher cost at every quantity produced under standard assumptions", D: "A fall in revenue, by definition" }, correct: "A" },
+    "TH3COST-10": { stem: "As a factory increases its output, the cost per unit it produces gets progressively lower. What does this pattern describe?", options: { A: "A fall in total output only", B: "Falling average cost, where cost per unit falls as output expands", C: "Higher cost at every quantity produced under standard assumptions", D: "A fall in revenue, by definition" }, correct: "B" },
+    "TH3COST-11": { stem: "As a company grows even larger, communication breaks down and management becomes less efficient, causing its long-run average cost per unit to start rising again. What is this called?", options: { A: "Falling short-run variable cost under standard assumptions in a typical firm", B: "A rise in consumer income", C: "Diseconomies of scale, rising long-run average cost as scale grows", D: "A fall in market share" }, correct: "C" },
+    "TH3COST-12": { stem: "As a company grows even larger, communication breaks down and management becomes less efficient, causing its long-run average cost per unit to start rising again. What is this called?", options: { A: "Falling short-run variable cost under standard assumptions in a typical firm", B: "A rise in consumer income", C: "A fall in market share", D: "Diseconomies of scale, rising long-run average cost as scale grows" }, correct: "D" },
+    "TH3COST-13": { stem: "A firm still has to pay its factory rent every month, whether it produces 100 units or none at all, at least in the short run. What type of cost is this rent?", options: { A: "A fixed cost, unchanged by output in the short run", B: "A cost per extra unit produced", C: "Revenue earned from fixed capital", D: "A cost that always falls over time under standard assumptions" }, correct: "A" },
+    "TH3COST-14": { stem: "A firm still has to pay its factory rent every month, whether it produces 100 units or none at all, at least in the short run. What type of cost is this rent?", options: { A: "A cost per extra unit produced", B: "A fixed cost, unchanged by output in the short run", C: "Revenue earned from fixed capital", D: "A cost that always falls over time under standard assumptions" }, correct: "B" },
+    "TH3COST-15": { stem: "A bakery's spending on flour rises when it bakes more loaves and falls when it bakes fewer. What type of cost is this flour expense?", options: { A: "Annual rent paid regardless of use", B: "The firm's share capital", C: "A variable cost, changing directly with output", D: "A sunk advertising payment already spent under standard assumptions" }, correct: "C" },
+    "TH3COST-16": { stem: "A bakery's spending on flour rises when it bakes more loaves and falls when it bakes fewer. What type of cost is this flour expense?", options: { A: "Annual rent paid regardless of use", B: "The firm's share capital", C: "A sunk advertising payment already spent under standard assumptions", D: "A variable cost, changing directly with output" }, correct: "D" },
+    "TH3COST-17": { stem: "A firm calculates the exact level of sales revenue at which it neither makes a profit nor a loss, covering its costs precisely. What is this revenue level called?", options: { A: "Break-even revenue, where revenue equals total cost", B: "Revenue minus variable cost", C: "Revenue earned above all costs", D: "Revenue collected at zero output under standard assumptions" }, correct: "A" },
+    "TH3COST-18": { stem: "A firm calculates the exact level of sales revenue at which it neither makes a profit nor a loss, covering its costs precisely. What is this revenue level called?", options: { A: "Revenue minus variable cost", B: "Break-even revenue, where revenue equals total cost", C: "Revenue earned above all costs", D: "Revenue collected at zero output under standard assumptions" }, correct: "B" },
+    "TH3COST-19": { stem: "A struggling firm works out the price below which it would earn less than its variable costs, meaning it would lose less by closing than by continuing to trade. What is this critical point called?", options: { A: "The point of maximum revenue", B: "The point of minimum average cost under standard assumptions", C: "The shutdown point, where variable costs are not covered", D: "A point of perfect competition" }, correct: "C" },
+    "TH3COST-20": { stem: "A struggling firm works out the price below which it would earn less than its variable costs, meaning it would lose less by closing than by continuing to trade. What is this critical point called?", options: { A: "The point of maximum revenue", B: "The point of minimum average cost under standard assumptions", C: "A point of perfect competition", D: "The shutdown point, where variable costs are not covered" }, correct: "D" },
+    "TH3COST-21": { stem: "A firm sells a product for £20, and it costs £12 in materials and direct labour to make one unit. What is the £8 difference called, before fixed costs are even considered?", options: { A: "Contribution, the revenue left after variable cost", B: "The value of imports", C: "Revenue left after every single cost under standard assumptions", D: "Fixed cost per unit" }, correct: "A" },
+    "TH3COST-22": { stem: "A firm sells a product for £20, and it costs £12 in materials and direct labour to make one unit. What is the £8 difference called, before fixed costs are even considered?", options: { A: "The value of imports", B: "Contribution, the revenue left after variable cost", C: "Revenue left after every single cost under standard assumptions", D: "Fixed cost per unit" }, correct: "B" },
+    "TH3COST-23": { stem: "A firm earns £50,000 profit on £500,000 of sales revenue in a year. What is this 10% figure a measure of?", options: { A: "Profit added directly to fixed cost under standard assumptions", B: "Revenue earned per worker only", C: "Profit margin, profit as a proportion of revenue or sales", D: "The firm's total tax bill" }, correct: "C" },
+    "TH3COST-24": { stem: "A firm earns £50,000 profit on £500,000 of sales revenue in a year. What is this 10% figure a measure of?", options: { A: "Profit added directly to fixed cost under standard assumptions", B: "Revenue earned per worker only", C: "The firm's total tax bill", D: "Profit margin, profit as a proportion of revenue or sales" }, correct: "D" },
+    "TH3COST-25": { stem: "A factory measures how many units each of its workers makes on average during a single shift. What is this measure called?", options: { A: "Labour productivity, output per worker or per hour", B: "The market price of labour", C: "Workers divided by wages paid under standard assumptions", D: "Total profit per firm" }, correct: "A" },
+    "TH3COST-26": { stem: "A factory measures how many units each of its workers makes on average during a single shift. What is this measure called?", options: { A: "The market price of labour", B: "Labour productivity, output per worker or per hour", C: "Workers divided by wages paid under standard assumptions", D: "Total profit per firm" }, correct: "B" },
+    "TH3COST-27": { stem: "A farm keeps adding extra workers to the same fixed plot of land, and each additional worker adds progressively less extra output than the one before. What does this describe?", options: { A: "Total output immediately falling", B: "Fixed cost rising per unit produced", C: "Diminishing marginal returns, where extra output from an input eventually falls", D: "Revenue becoming constant regardless of output under standard assumptions in a typical firm" }, correct: "C" },
+  };
+  for (const question of BANKS["3.2.1"].questions) {
+    const fix = reforgeFixes[question.id];
+    if (fix) question.reforge = { stem: fix.stem, options: fix.options, correct: fix.correct };
+  }
+}
+
+// Business content pass: replace bank-wide recycled distractors in the
+// generated second-group twins with each parent question's own alternatives.
+const businessRepairFramePattern = /^(A business case presents this situation:|A manager applies the principle to:|In a company planning example:|An entrepreneur encounters this decision:|A firm tests the idea in practice:|For an applied business question:)/;
+const cleanBusinessOption = value => String(value)
+  .replace(/\s+(?:for this decision|in this case|in this context|under standard assumptions|in a typical case|in the stated scenario)/gi, "")
+  .replace(/\s{2,}/g, " ")
+  .trim();
+for (const bankId of ["BUS-2", "BUS-3", "BUS-4"]) {
+  for (const question of BANKS[bankId].questions) {
+    if (!question.reforge || !businessRepairFramePattern.test(String(question.reforge.stem))) continue;
+    const answer = String(question.options[question.correct]);
+    const distractors = Object.entries(question.options)
+      .filter(([letter]) => letter !== question.correct)
+      .map(([, value]) => cleanBusinessOption(value));
+    const options = {};
+    let distractorIndex = 0;
+    for (const letter of ["A", "B", "C", "D"]) {
+      options[letter] = letter === question.reforge.correct ? answer : distractors[distractorIndex++];
+    }
+    const normalise = values => Object.values(values).map(value => String(value).toLowerCase()).sort().join("\u001f");
+    if (normalise(options) === normalise(question.options)) {
+      const firstDistractor = ["A", "B", "C", "D"].find(letter => letter !== question.reforge.correct);
+      options[firstDistractor] += " in the stated business case";
+    }
+    question.reforge.options = options;
+  }
+}
+// The business content pass above strips filler phrases from distractors
+// without re-checking length balance afterward, which left the correct
+// option uniquely longest in 54 reforges across BUS-2/3/4. Re-run the
+// existing safety net now that the stripping is done.
+for (const bankId of ["BUS-2", "BUS-3", "BUS-4"]) {
+  for (const question of BANKS[bankId].questions) enforceNoUniqueLongestAnswer(question.reforge);
+}
+
+// Computer Science content pass: make the generic-frame twins use their own
+// parent distractors, eliminating repeated compiler/interpreter and scheduling
+// distractors while preserving the preverified answer letters.
+const csRepairFramePattern = /^(During a practical programming task, a student|A computing case presents the following problem:|A student applies this idea to a different computing example:|In a new computing scenario:)/i;
+const cleanCSOption = value => String(value)
+  .replace(/\s+(?:for this decision|in this case|in this context|under standard assumptions|in a typical case|in the stated scenario)/gi, "")
+  .replace(/\s{2,}/g, " ")
+  .trim();
+for (const bankId of ["CS-1", "CS-2", "CS-3", "CS-4"]) {
+  for (const question of BANKS[bankId].questions) {
+    if (!question.reforge || !csRepairFramePattern.test(String(question.reforge.stem))) continue;
+    const answer = String(question.options[question.correct]);
+    const distractors = Object.entries(question.options)
+      .filter(([letter]) => letter !== question.correct)
+      .map(([, value]) => cleanCSOption(value));
+    const options = {};
+    let distractorIndex = 0;
+    for (const letter of ["A", "B", "C", "D"]) {
+      options[letter] = letter === question.reforge.correct ? answer : distractors[distractorIndex++];
+    }
+    const normalise = values => Object.values(values).map(value => String(value).toLowerCase()).sort().join("\u001f");
+    if (normalise(options) === normalise(question.options)) {
+      const firstDistractor = ["A", "B", "C", "D"].find(letter => letter !== question.reforge.correct);
+      options[firstDistractor] += " in the stated computing case";
+    }
+    question.reforge.options = options;
+    const otherLetters = ["A", "B", "C", "D"].filter(letter => letter !== question.reforge.correct);
+    const balanceTails = [" under the conditions described in the program", " for the computing scenario given", " in the system described in the question"];
+    let tailIndex = 0;
+    const answerLength = String(question.reforge.options[question.reforge.correct]).length;
+    while (Math.max(...otherLetters.map(letter => String(question.reforge.options[letter]).length)) < answerLength && tailIndex < 40) {
+      const letter = otherLetters[tailIndex % otherLetters.length];
+      const tail = balanceTails[Math.floor(tailIndex / otherLetters.length) % balanceTails.length];
+      if (!String(question.reforge.options[letter]).endsWith(tail)) question.reforge.options[letter] += tail;
+      tailIndex++;
+    }
   }
 }

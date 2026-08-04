@@ -6,15 +6,15 @@
 <title>Forge — Teacher Sign In</title>
 <meta name="description" content="Live misconception heatmaps, class overview, and auto-generated corrective starters — see exactly what to teach next.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Rethink+Sans:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/tokens.css">
-<link rel="stylesheet" href="css/base.css?v=20260812">
+<link rel="stylesheet" href="css/base.css?v=20260814-fonts">
 <link rel="stylesheet" href="css/auth.css">
 <link rel="stylesheet" href="css/sidebar.css">
 <link rel="stylesheet" href="css/components.css?v=20260812">
 
 <!-- Google tag (gtag.js) -->
-<script src="scripts/analytics-consent.js?v=20260812"></script>
+<script src="scripts/analytics-consent.js?v=20260816"></script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-RGZ9J6Q8H9"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -24,11 +24,11 @@
 </script>
 <link rel="stylesheet" href="css/states.css">
   <link rel="stylesheet" href="css/generated-utilities.css">
-  <link rel="stylesheet" href="css/page-overrides/teacher.css?v=20260802-mobile-auth">
+  <link rel="stylesheet" href="css/page-overrides/teacher.css?v=20260814-pairing1">
   <link rel="stylesheet" href="css/content-status.css">
 </head>
 <body>
-<script src="scripts/forge-api.js?v=20260809"></script>
+<script src="scripts/forge-api.js?v=20260815"></script>
 <script src="scripts/forge-state.js"></script>
 <script src="scripts/forge-logo.js"></script>
 <script src="scripts/forge-auth-card.js"></script>
@@ -64,7 +64,19 @@ ForgeSidebar.mount({
 
 <script src="data/forge-data.js"></script>
 <script src="data/misconception-labels.js?v=20260813"></script>
+<script src="data/starter-activities.js?v=20260813"></script>
 <script>
+// The dashboard depends on ForgeAPI. If a cached or interrupted first load
+// leaves that dependency unavailable, show a recoverable state instead of
+// throwing halfway through boot and leaving the page visually empty.
+if (!window.ForgeAPI || !window.ForgeAPI.config) {
+  var bootApp = document.getElementById('app');
+  if (bootApp) {
+    bootApp.innerHTML = '<section class="card"><h2>Teacher dashboard could not load</h2><p>Forge is still loading its shared services. Refresh to try again.</p><button class="forge-button forge-button--primary" type="button" data-forge-reload>Retry dashboard</button></section>';
+    bootApp.querySelector('[data-forge-reload]').addEventListener('click', function(){ location.reload(); });
+  }
+  throw new Error('ForgeAPI unavailable during teacher dashboard boot');
+}
 var SUPABASE_URL = ForgeAPI.config.url;
 var SUPABASE_KEY = ForgeAPI.config.key;
 
@@ -284,71 +296,7 @@ var SUBJECT_OPTIONS = Object.keys(SUBJECTS).filter(function(key) {
 // Misconception label lookup
 
 
-var MC_STARTERS = {
-  "MC-INF-01":{type:"sort",title:"Inflation or Disinflation?",instruction:"Sort these statements into Inflation, Disinflation, or Deflation. One fits two categories — be ready to justify.",items:["Price level rising at 4%","Price level rising at 2%, down from 4%","Price level falling","CPI at 103, up from 101","The rate of inflation is slowing","Prices are lower than last year"]},
-  "MC-INF-03":{type:"diagnose",title:"Diagnose the Diagram",instruction:"A student drew AD/AS to show demand-pull inflation but made two errors. Identify both and correct them.",prompt:"Student labelled the shift 'AD moves right' and wrote 'result: higher prices AND higher output', showing the new equilibrium on a vertical LRAS."},
-  "MC-INF-07":{type:"correct",title:"Spot the Error",instruction:"Find and correct the error in this student sentence.",prompt:"'The Bank of England's MPC must keep inflation at 0%, as higher prices damage the economy.'",answer:"Target is 2% CPI (symmetric). The MPC writes to the Chancellor if inflation exceeds 3% or falls below 1%."},
-  "MC-GRO-01":{type:"distinguish",title:"Level vs Rate",instruction:"Label each GDP figure as 'level of GDP', 'rate of growth', or 'both'. Write one sentence explaining the difference.",items:["UK GDP: £2.2 trillion","GDP grew by 0.4% last quarter","GDP per capita rose from £32,000 to £33,500","The economy is 18% larger than in 2010"]},
-  "MC-GRO-03":{type:"diagram",title:"Gap Check",instruction:"Draw an AD/AS diagram showing a positive output gap. Label actual GDP, potential GDP, and the price level. Explain in one sentence why it is called 'positive'.",prompt:"Common error: students draw actual GDP below potential and still call it positive."},
-  "MC-EMP-01":{type:"classify",title:"Who Counts?",instruction:"Decide whether each person is ILO unemployed, claimant count unemployed, or economically inactive. One person may fit two categories.",items:["Jake, 19, not working but looking and available","Priya, 35, left work to care for children","Marcus, 24, working 3 hours/week (wants more)","Aisha, 28, claiming Universal Credit while job hunting","Lena, 67, retired"]},
-  "MC-EMP-03":{type:"evaluate",title:"Short Run or Long Run?",instruction:"Mark each claim T (true in short run), L (long run only), or F (false). Justify each.",items:["Lower unemployment always means higher inflation","The long-run Phillips curve is vertical","The MPC can reduce unemployment permanently by cutting rates","Worker expectations adjust — removing the permanent trade-off"]},
-  "MC-BOP-02":{type:"correct",title:"Spot the Confusion",instruction:"Identify the conceptual error and rewrite correctly.",prompt:"'The UK's current account deficit is the same as the government's fiscal deficit — both measure the gap between government income and spending.'"},
-  "MC-BOP-03":{type:"diagram",title:"Draw the J-Curve",instruction:"Sketch a J-curve showing the effect of sterling depreciation on the current account over time. Label the initial worsening phase, turning point, and improvement phase. Add a 6-word explanation of why it worsens first.",prompt:"Common error: students draw immediate improvement after depreciation."},
-  "MC-AD-01":{type:"correct",title:"Fix the Formula",instruction:"A student wrote: AD = C + S + G + (X − M). Identify the error and correct it. Explain why savings belongs in a different model.",answer:"AD = C + I + G + (X − M). Savings is a withdrawal from the circular flow, not a component of AD."},
-  "MC-AD-04":{type:"diagram",title:"What Happens to Prices?",instruction:"On an AD/AS diagram, show a rightward shift in AD. Mark the new equilibrium. Does the price level rise or fall? Why does the answer depend on where the economy is on the SRAS curve?",prompt:"Common error: students state AD shifting right always causes lower prices."},
-  "MC-AS-01":{type:"sort",title:"SRAS or LRAS?",instruction:"Sort these factors into 'shifts SRAS only', 'shifts LRAS only', or 'shifts both'. Justify one controversial placement.",items:["Oil price rise","Worker productivity improvement","Infrastructure investment","Rise in nominal wages","Technological innovation","Consumer confidence falls"]},
-  "MC-FIS-01":{type:"distinguish",title:"Policy Match",instruction:"Match each action to 'fiscal' or 'monetary'. Three are ambiguous — annotate why.",items:["MPC cuts the base rate","Chancellor raises income tax","Government increases road spending","BoE buys government bonds (QE)","Government introduces Help to Buy","MPC raises rates to 5.25%"]},
-  "MC-MON-04":{type:"chain",title:"QE Transmission Chain",instruction:"Complete the chain from start to finish. Each arrow must be a specific mechanism, not 'the economy improves'.",prompt:"BoE buys £60bn of government bonds → [step] → [step] → [step] → aggregate demand rises. Common error: students say QE 'prints money that goes straight to consumers'."},
-  "MC-NI-01":{type:"classify",title:"Injection or Withdrawal?",instruction:"Classify each item as Injection (J) or Withdrawal (W). Then write the equilibrium condition using I, G, X, S, T, M.",items:["Consumer spending on imports","Government NHS spending","Household savings","Export revenue from UK services","Corporation tax receipts","Business investment"]},
-  "MC-SI-01":{type:"correct",title:"Fix the Stat",instruction:"A student wrote: 'Asch found that 37% of participants conformed.' Identify the error and write the three correct Asch statistics.",answer:"37% = conformity on critical trials. 75% = participants who conformed at least once. ~32% = overall conformity rate across all trials."},
-  "MC-SI-03":{type:"correct",title:"Milgram: Check the Figure",instruction:"A student wrote: 'Milgram showed that most people refused to obey.' Correct this and name one variation that significantly reduced obedience.",answer:"65% delivered maximum 450V in the baseline. Obedience fell to 40% when authority gave orders by phone; to 20% when the study moved from Yale."},
-  "MC-MEM-01":{type:"diagram",title:"Reconstruct the MSM",instruction:"From memory, draw the Multi-Store Model. Label all three stores with capacity and duration. Mark the two processes between them. Identify one criticism.",prompt:"Common error: students reverse transfer direction or omit the rehearsal loop."},
-  "MC-MEM-08":{type:"scenario",title:"Which Type of Interference?",instruction:"State whether proactive or retroactive interference is operating in each scenario. Write one sentence explaining the direction of disruption.",items:["You learned French first — your Spanish keeps coming out as French","You learn a new phone PIN and can no longer recall the old one","New revision notes keep pushing out the original version","Old work password resurfaces instead of the current one"]},
-  "MC-ATT-01":{type:"correct",title:"Bowlby: Spot the Error",instruction:"Find and correct the error.",prompt:"'Bowlby argued that infants form equal attachments to all caregivers simultaneously and that any of these can serve as the primary attachment figure.'",answer:"Bowlby argued for monotropy — one primary attachment that is qualitatively stronger. This forms the internal working model; other attachments are secondary."},
-  "MC-EDU-02":{type:"apply",title:"Hidden Curriculum in Practice",instruction:"Read this extract: 'Students line up in silence, are rewarded for punctuality, and are streamed by assessed ability from Year 7.' Link each feature to a specific element of the correspondence principle (Bowles & Gintis). Which social class does each element benefit?"},
-  "MC-MET-01":{type:"evaluate",title:"Ethical Matrix",instruction:"Complete this matrix for covert participant observation. Then decide: is it ever justifiable? Apply one BPS ethical guideline.",headers:["Ethical issue","Problem for covert obs","How researcher might respond"],rows:[["Informed consent","",""],["Right to withdraw","",""],["Deception","",""],["Protection from harm",""," "]]},
-  "MC-TEC-01":{type:"diagram",title:"Boundary Types",instruction:"Draw cross-sections of a destructive boundary and a constructive boundary. Label plate types, direction of movement, crust destroyed/created, and hazards at each. Explain why oceanic crust subducts rather than continental.",prompt:"Common error: students reverse which plate subducts or omit oceanic vs continental labelling."},
-  "MC-TEC-02":{type:"compare",title:"Why did Haiti lose more lives than Christchurch?",instruction:"Complete this comparison table for the two earthquakes, then write a two-sentence conclusion explaining why development level mattered more than magnitude.",headers:["Factor","Haiti 2010","Christchurch 2011"],rows:[["Magnitude","7.0","6.3"],["Deaths","~230,000","185"],["Building quality","",""],["Emergency services","",""],["GDP per capita","",""],["Conclusion: why the difference?","",""]]},
-  "MC-TEC-03":{type:"correct",title:"Why do composite volcanoes explode?",instruction:"A student wrote: 'Composite volcanoes erupt explosively because they are very tall and the pressure builds up inside.' Find the two errors in this explanation and write the correct version.",prompt:"Correct explanation must include: silica-rich (acidic) magma from subducted oceanic crust, high viscosity preventing gas escape, pressure builds until explosive release. Tall = shield volcano (basaltic, effusive). Height is a consequence, not a cause.",answer:"Composite volcanoes erupt explosively because silica-rich magma from the subducted plate is highly viscous — it traps gases which build until a violent explosive eruption occurs. The height of the volcano is a result of previous eruptions, not the cause of explosivity."},
-  "MC-TEC-04":{type:"classify",title:"Earthquakes — which boundary?",instruction:"Classify each earthquake example as destructive, constructive, or conservative boundary. One is a trap — be ready to justify.",items:["2010 Haiti — conservative plate boundary (Caribbean/North American plates sliding)",  "2004 Indian Ocean — destructive boundary (subduction triggered megathrust)","San Andreas Fault, California — conservative (transform fault)","Mid-Atlantic Ridge — constructive boundary (can produce earthquakes)","2011 Tohoku, Japan — destructive (Pacific plate subducting under Eurasian)"]},
-  "MC-TEC-06":{type:"diagram",title:"Focus or epicentre?",instruction:"Draw a cross-section diagram of an earthquake. Label: the focus (hypocentre), the epicentre, seismic waves, and the fault line. Then write one sentence defining each term precisely.",prompt:"Common error: students say the epicentre is where the earthquake originates — it is the point on the SURFACE directly ABOVE the focus. The focus (hypocentre) is the underground origin point. Shallow-focus earthquakes (<70km) cause more surface damage than deep-focus events.",answer:"Focus: the point underground where the earthquake originates and energy is released. Epicentre: the point on the Earth's surface directly above the focus — where shaking is usually most intense."},
-  "MC-TEC-07":{type:"explain",title:"Why is Iceland so volcanically active?",instruction:"Iceland sits on the Mid-Atlantic Ridge (constructive boundary). But that alone does not explain its exceptional volcanic activity. Write a two-part explanation: (1) what the constructive boundary contributes, (2) what the hot spot adds — and mark Iceland's position on a blank Atlantic diagram.",prompt:"Constructive boundary: plates diverge → magma rises to fill gap → effusive basaltic eruptions (e.g. Eyjafjallajökull fissure eruptions). Hot spot: a fixed mantle plume of unusually hot material beneath the crust — independently generates extra volcanic activity. Iceland sits above BOTH simultaneously, making it more active than any other constructive boundary location.",answer:"Two factors combine: (1) The Mid-Atlantic Ridge causes plates to diverge, allowing basaltic magma to rise — producing regular effusive eruptions. (2) A mantle hot spot beneath Iceland provides an additional source of heat independent of the boundary, further raising volcanic output. Neither factor alone explains Iceland's exceptional activity."},
-  "MC-BUS-02":{type:"calculate",title:"Break-Even Check",instruction:"Selling price: £20, variable cost per unit: £12, fixed costs: £40,000. Show full workings using the contribution method. Explain why the formula uses contribution, not profit.",prompt:"Common error: students divide price by fixed costs rather than fixed costs by contribution per unit."},
-  "MC-CHEM-02":{type:"graph",title:"Ionisation Energy Jumps",instruction:"Sketch a graph of successive ionisation energies for sodium. Mark the large jump and explain why it occurs where it does.",prompt:"Common error: students describe all jumps as equal or fail to link the large jump to a new electron shell."},
-  "MC-CRIM-01":{type:"sort",title:"Crime, Deviance, or Both?",instruction:"Sort each behaviour and explain your reasoning. Identify one example where the classification has changed over time.",items:["Shoplifting","Wearing pyjamas to a funeral","Cheating on a partner","Cannabis possession","Tax avoidance (legal schemes)","Honour-based violence"]},
-  "MC-BIO-03":{type:"sequence",title:"Replication Steps",instruction:"Put these events in the correct order, then annotate each with the enzyme responsible and its specific function.",items:["DNA polymerase adds complementary nucleotides","Helicase unwinds the double helix","Free nucleotides are activated","Two identical double helices produced","Hydrogen bonds between base pairs break","DNA ligase joins Okazaki fragments"]},
-  "MC-HIST-04":{type:"chain",title:"Fire to Dictatorship",instruction:"Complete the causal chain. Each link must be a specific event or law.",prompt:"Reichstag Fire (Feb 1933) → [step] → [step] → [step] → Hitler has dictatorial powers (July 1933). Common error: jumping from fire directly to Enabling Act without naming the Decree of the Reich President."},
-  "MC-LAW-02":{type:"apply",title:"Intent or Recklessness?",instruction:"Classify each scenario as direct intent, oblique intent (Woollin), or Cunningham recklessness. Cite the defining case.",items:["D shoots V with aim of killing","D blows up plane for insurance — passengers die","D throws stone at window knowing it might break — it does","D drives at high speed in residential area — child killed"]},
-  "MC-PHYS-01":{type:"correct",title:"Forces vs Motion",instruction:"A student wrote: 'When an object moves at constant velocity, a net forward force must be acting.' Correct this using Newton's First Law and draw a free body diagram for a car at constant speed.",prompt:"Common error: students assume motion requires ongoing force — confusing Aristotelian with Newtonian mechanics."},
-  "MC-CS-01":{type:"trace",title:"Trace the Loop",instruction:"Trace through this loop for i = 1 to 5 and record the output. Then identify the off-by-one error and rewrite to print only values 2, 3, 4.",prompt:"FOR i ← 1 TO 5\n  IF i MOD 2 ≠ 0 THEN OUTPUT i\nENDFOR"},
-  "MC-MATH-01":{type:"correct",title:"Chain Rule Check",instruction:"A student differentiated y = sin(3x²) and wrote dy/dx = cos(3x²). Find the error and write the correct derivative showing all steps.",prompt:"Common error: differentiating the outer function only, not multiplying by the derivative of the inner function."},
-  "MC-DE-04":{type:"correct",title:"Word Order Fix",instruction:"Each sentence has a subordinate clause word-order error. Underline and rewrite correctly.",items:["Ich denke, dass er kommt morgen.","Sie sagt, obwohl sie ist müde.","Wir wissen, weil er hat das gemacht.","Er hofft, dass sie kommt nicht."]},
-  "MC-RS-04":{type:"distinguish",title:"Which Problem of Evil?",instruction:"Label each argument as Logical PoE, Evidential PoE, or theodicy. Identify the philosopher and write one counter-argument for the theodicy.",items:["God and evil are logically incompatible (Mackie)","The quantity of suffering makes God's existence improbable (Rowe)","Evil is necessary for soul-making (Hick)","Evil entered through free will and original sin (Augustine)"]},
-  "MC-HSC-03":{type:"match",title:"Erikson Stage Match",instruction:"Match each behaviour to the correct Erikson stage and conflict. Write one consequence of failing to resolve each.",items:["A toddler insists on dressing themselves","A 6-year-old compares their reading to classmates","A teenager changes friendship group every term","A 40-year-old mentors junior colleagues","A 75-year-old writes their memoirs with pride"]},
-  "MC-FR-03":{type:"trigger",title:"Subjunctive Triggers",instruction:"Highlight the trigger in each sentence and conjugate the verb correctly. Then write your own sentence using 'il faut que' with an irregular subjunctive.",items:["Je veux que tu (venir) avec moi.","Il est possible qu'elle (être) absente.","Nous partons avant qu'il (pleuvoir).","Bien qu'il (faire) froid, ils sont sortis."]},
-  "MC-RS-06":{type:"compare",title:"Bentham vs Mill",instruction:"Complete this comparison table. Then write two sentences evaluating where Mill's qualitative distinction creates a practical problem.",headers:["Feature","Bentham","Mill"],rows:[["Basis of judgement","",""],["How pleasures counted","",""],["Type of utilitarianism","",""],["Key criticism","",""]]},
-  "MC-HSC-04":{type:"rewrite",title:"Command Word Upgrade",instruction:"Rewrite this student answer at the 'assess' level. Question: 'Assess the effectiveness of person-centred care for an elderly patient with dementia.'",prompt:"Student: 'Person-centred care means putting the patient at the centre. It involves respecting their wishes and dignity. It is used in care homes across the UK.'"},
-  "MC-FR-05":{type:"correct",title:"Si Clause Fix",instruction:"Find and correct the error in each conditional sentence. Write the rule in your own words below each.",items:["Si j'aurais de l'argent, j'achèterais une voiture.","Si tu viendrais, je serais content.","S'il pleuvrait, nous resterons à la maison.","Si j'aurais su, je n'aurais pas dit ça."]},
-  "MC-HIST-01":{type:"evaluate",title:"Doomed from the Start?",instruction:"A student claims the Weimar Republic was structurally doomed from 1919. Your job: write one paragraph SUPPORTING this view, then one paragraph CHALLENGING it. Each paragraph must cite at least two specific pieces of evidence.",prompt:"Support: Article 48 emergency powers, proportional representation producing unstable coalitions, stab-in-the-back myth undermining legitimacy from the outset, war guilt clause economic damage. Challenge: Republic survived hyperinflation (1923), Stresemann's golden years (1924–29) with GDP recovery, cultural flourishing, Dawes Plan stability. Common error: students list structural factors only and ignore the contingency of the Depression — Weimar was NOT doomed until 1929."},
-  "MC-HIST-02":{type:"chain",title:"Failure to Long-term Gain",instruction:"The Munich Putsch failed. Complete this chain showing how a military failure became a long-term political asset. Each arrow must name a specific consequence or action.",prompt:"16 November 1923: Putsch collapses, Hitler arrested → [step: trial and speech] → [step: Mein Kampf and national platform] → [step: strategic shift] → [outcome by 1933]. Common error: students say Hitler 'learned from his mistakes' without specifying the decision to pursue power through legal means — the key strategic conclusion from the trial."},
-  "MC-HIST-03":{type:"correct",title:"Did Germans Vote Hitler into Power?",instruction:"Find and correct the two factual errors in this student sentence. Then add one sentence that explains how Hitler actually became Chancellor.",prompt:"'Hitler became Chancellor in January 1933 because the Nazi Party won over 50% of the vote in the November 1932 election, giving them a democratic mandate.'",answer:"Error 1: Nazi vote share in November 1932 was 33.1% — their vote had FALLEN from 37.4% in July 1932. Error 2: Hitler was not elected Chancellor — he was appointed by President Hindenburg on 30 January 1933 after backroom deals involving von Papen, who believed he could control Hitler. Correct sentence: Hitler became Chancellor through elite miscalculation, not popular mandate."},
-  "MC-HIST-05":{type:"compare",title:"Browning vs Goldhagen",instruction:"Complete this table comparing the two historians' arguments. Then write a two-sentence judgement: which interpretation has stronger evidential support and why?",headers:["Feature","Browning (Ordinary Men)","Goldhagen (Hitler's Willing Executioners)"],rows:[["Primary cause of killing","",""],["Evidence used","Battalion 101 testimonies",""],["Nature of perpetrators","Ordinary, pressured",""],["Role of ideology","Secondary",""],["Main criticism","","Monocausal, ignores peer pressure"]]},
-  "MC-HIST-06":{type:"chain",title:"Truman Doctrine Transmission",instruction:"The Truman Doctrine (1947) marked a permanent shift in US foreign policy. Complete this chain — each link must be a specific claim, not a vague assertion.",prompt:"Soviet pressure on Greece and Turkey (1946–47) → [step: British withdrawal] → [step: Truman's speech to Congress, March 1947] → [step: the doctrine's key commitment] → [consequence for US foreign policy 1947–1989]. Common error: students describe the Doctrine as 'helping Greece' without stating the universal principle — that the US would support free peoples resisting communist subjugation anywhere in the world. This is what made it a doctrine, not just an aid package."},
-  "MC-HIST-07":{type:"evaluate",title:"Berlin Blockade — Who Won?",instruction:"Write two sentences: one arguing the Blockade was a Soviet victory, one arguing it was a Western victory. Then write a third sentence giving your overall judgement with one piece of supporting evidence.",prompt:"Soviet case: forced Allies to concede German partition was permanent; demonstrated Western vulnerability in Berlin. Western case: airlift succeeded (277,000 flights, 2.3m tonnes), Soviet capitulation in May 1949, NATO formed April 1949, FRG founded May 1949. Common error: students say Soviets 'gave up' without noting the political consequences — the crisis accelerated exactly the Western alliance the Soviets sought to prevent."},
-  "MC-HIST-08":{type:"correct",title:"Cuban Missile Crisis Resolution",instruction:"A student wrote: 'Kennedy stood firm and forced Khrushchev to back down.' Find three problems with this account and rewrite it accurately in three sentences.",prompt:"Problems: (1) 'Stood firm' ignores the secret deal — removal of Jupiter missiles from Turkey was a real US concession; (2) 'forced Khrushchev' implies Soviet defeat — both sides compromised; (3) ignores the public pledge not to invade Cuba. The crisis is better described as a mutual face-saving compromise than a US victory."},
-  "MC-HIST-09":{type:"sort",title:"Détente or Containment?",instruction:"Sort each policy/event as primarily 'détente' (reducing Cold War tensions) or 'containment' (resisting Soviet expansion). Two are genuinely ambiguous — be ready to argue both ways.",items:["SALT I (1972)","Nixon visits China (1972)","Helsinki Accords (1975)","Carter boycotts Moscow Olympics (1980)","US arms mujahideen in Afghanistan","Ford refuses to meet Solzhenitsyn","Jackson-Vanik Amendment (1974)","Reagan 'Evil Empire' speech (1983)"]},
-  "MC-HIST-12":{type:"chain",title:"Why did the USSR Collapse?",instruction:"Historians disagree about the relative weight of internal vs external causes. Complete both chains, then write one sentence judging which was more important.",prompt:"Internal chain: Command economy stagnation → [step] → [step] → [outcome: 1991]. External chain: Arms race cost → [step: Afghanistan] → [step] → [outcome: 1991]. Common error: students attribute collapse solely to Gorbachev's reforms or solely to Reagan's arms race pressure — examiners credit multi-causal analysis that identifies the interaction between economic weakness and political reform."},
-  "MC-HIST-13":{type:"evaluate",title:"Korea — Limited War or Global Crisis?",instruction:"Write one sentence arguing Korea showed Cold War restraint, and one sentence arguing it nearly became World War Three. Then add a judgement: which interpretation better fits the evidence?",prompt:"Restraint case: both superpowers avoided direct confrontation, MacArthur dismissed for wanting to escalate, armistice restored original boundary — war ended where it started. Escalation risk case: MacArthur pushed to Yalu River triggering Chinese intervention (300,000 troops), nuclear weapons considered, Truman declared national emergency. Key judgement: the war demonstrated that both sides feared escalation — limited war became the Cold War norm precisely because Korea showed the alternative."}
-};
-
-function getDefaultStarter(tag, label) {
-  return {
-    type:"correct",
-    title:"Targeted Misconception Drill",
-    instruction:"The most common error this period is: <strong>" + label + "</strong>. Write the correct version on the board with key terms blanked out. Students fill in the gaps before you reveal.",
-    prompt:"Tag: " + tag + " — Students who selected wrong answers on this concept should revisit the scaffold on their Forge profile."
-  };
-}
+// MC_STARTERS and getStarterActivity() now live in data/starter-activities.js.
 
 var app = document.getElementById('app');
 function teacherInlineState(target, kind, options) {
@@ -1105,7 +1053,13 @@ var MC_TO_SUBJECT = (function() {
   Object.keys(SUBJECTS).forEach(function(sk) {
     (SUBJECTS[sk].banks || []).forEach(function(bk) {
       if (!BANKS[bk]) return;
-      (BANKS[bk].questions || []).forEach(function(q) { if (q.tag) map[q.tag] = sk; });
+      // A few questions carry an array of tags; map each element, or the key
+      // becomes a stringified array and every real tag on it goes unmapped.
+      (BANKS[bk].questions || []).forEach(function(q) {
+        if (!q.tag) return;
+        var tags = Array.isArray(q.tag) ? q.tag : [q.tag];
+        tags.forEach(function(t) { if (t) map[t] = sk; });
+      });
     });
   });
   return map;
@@ -1265,8 +1219,15 @@ function renderSpecBreakdown(responses) {
 function renderStarterCard(tag, h, context) {
   // context: {fires, students} from real data, or null for browse mode
   var label = resolveMCLabel(tag) || tag;
-  var starterData = MC_STARTERS[tag] || getDefaultStarter(tag, label);
-  var typeLabels = {sort:"Sort activity",diagnose:"Diagnose",correct:"Spot the error",distinguish:"Distinguish",classify:"Classify",evaluate:"Evaluate",diagram:"Diagram task",chain:"Causal chain",calculate:"Calculation",graph:"Graph task",sequence:"Sequence",apply:"Application",compare:"Comparison table",match:"Match activity",trigger:"Trigger hunt",rewrite:"Rewrite task",trace:"Trace activity",scenario:"Scenario"};
+  var starterData = getStarterActivity(tag, label);
+  // The subject-level intervention is a fallback for tags with no starter of
+  // their own. Where a specific starter exists it already says more, so
+  // showing both puts a generic line above a precise one.
+  var hasSpecificStarter = !!(window.MC_STARTERS && MC_STARTERS[tag]);
+  var intervention = !hasSpecificStarter && window.resolveMCIntervention
+    ? resolveMCIntervention(tag, MC_TO_SUBJECT[tag])
+    : '';
+  var typeLabels = {sort:"Sort activity",diagnose:"Diagnose",correct:"Spot the error",distinguish:"Distinguish",classify:"Classify",evaluate:"Evaluate",diagram:"Diagram task",chain:"Causal chain",calculate:"Calculation",graph:"Graph task",sequence:"Sequence",apply:"Application",compare:"Comparison table",match:"Match activity",trigger:"Trigger hunt",rewrite:"Rewrite task",trace:"Trace activity",scenario:"Scenario",explain:"Explanation"};
   var typeLabel = typeLabels[starterData.type] || "Starter activity";
 
   h += '<div class="card forge-card forge-card--focus" id="starter-card">';
@@ -1281,6 +1242,9 @@ function renderStarterCard(tag, h, context) {
     h += '<p class="forge-u-1rniwep">Preview — no class data loaded</p>';
   }
   h += '<p class="forge-u-1m9skgg">' + starterData.instruction + '</p>';
+  if (intervention) {
+    h += '<p class="forge-u-1rniwep"><strong>Suggested intervention:</strong> ' + teacherEsc(intervention) + '</p>';
+  }
   h += '<button class="forge-button forge-button--primary starter-assign-btn" data-starter-tag="' + teacherEsc(tag) + '" type="button">Use this starter for an assignment →</button>';
 
   if (starterData.prompt) {
