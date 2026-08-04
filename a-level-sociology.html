@@ -138,8 +138,8 @@
     <div class="bq">
       <div class="bq-head"><span class="spec mono"><b>Sociology · Education</b></span><span class="fmt">Evaluation</span></div>
       <p class="q">A student applies only ONE perspective (e.g. Marxism) when answering a question about the role of education. What mark-scheme issue does this create?</p>
-      <button class="opt forge-option" data-right="1" data-mc="MC-TECH-02b" data-s="AQA mark schemes explicitly require evaluation — a single, well-explained perspective still caps at AO1/AO2 marks and scores zero on AO3.">None — one perspective is enough for full marks</button>
-      <button class="opt forge-option">The answer lacks evaluation and competing perspectives</button>
+      <button class="opt forge-option" data-mc="MC-TECH-02b" data-s="AQA mark schemes explicitly require evaluation — a single, well-explained perspective still caps at AO1/AO2 marks and scores zero on AO3.">None — one perspective is enough for full marks</button>
+      <button class="opt forge-option" data-right="1">The answer lacks evaluation and competing perspectives</button>
       <button class="opt forge-option" data-mc="MC-TECH-02c" data-s="Marxism is one of several relevant perspectives (functionalism, feminism, interactionism) — the issue is using only one, not that only Marxism applies.">Only Marxism is relevant to education questions</button>
       <button class="opt forge-option" data-mc="MC-TECH-02d" data-s="Common sense isn't a sociological perspective — the fix is applying and evaluating multiple theoretical perspectives, not abandoning theory.">The student should have used common sense instead</button>
       <div class="scaffold"><span class="stag"></span><p></p></div>
@@ -203,9 +203,9 @@ document.querySelectorAll('#eco-bank .bq').forEach(function(card){
   card.querySelectorAll('.opt').forEach(function(btn){
     btn.addEventListener('click', function(){
       card.querySelectorAll('.opt').forEach(function(x){ x.disabled = true; });
-      var rightBtn = card.querySelector('.opt[data-right]');
+      var rightBtn = card.querySelector('.opt[data-right]:not([data-mc])') || card.querySelector('.opt:not([data-mc])') || card.querySelector('.opt[data-right]');
       rightBtn.classList.add('correct');
-      if (btn.dataset.right) {
+      if (btn === rightBtn) {
         card.querySelector('.praise').classList.add('show');
       } else {
         btn.classList.add('wrong');

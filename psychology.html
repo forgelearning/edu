@@ -162,9 +162,9 @@
     <div class="bq active">
       <div class="bq-head"><span class="spec mono"><b>Psychology · Social Influence</b></span><span class="fmt">Concept</span></div>
       <p class="q">A student confuses normative social influence (NSI) and informational social influence (ISI). Which correctly distinguishes them?</p>
-      <button class="opt forge-option" data-right="1" data-mc="MC-SI-06a" data-s="NSI = conforming because you want to be right; ISI = conforming because you want to be liked — this reverses the two definitions. NSI is driven by wanting to fit in; ISI is driven by wanting to be correct.">NSI = conforming because you want to be right; ISI = conforming because you want to be liked</button>
+      <button class="opt forge-option" data-mc="MC-SI-06a" data-s="NSI = conforming because you want to be right; ISI = conforming because you want to be liked — this reverses the two definitions. NSI is driven by wanting to fit in; ISI is driven by wanting to be correct.">NSI = conforming because you want to be right; ISI = conforming because you want to be liked</button>
       <button class="opt forge-option" data-mc="MC-SI-06b" data-s="NSI and ISI are distinct explanations for conformity, each operating in different conditions — they are not the same concept.">They are the same concept</button>
-      <button class="opt forge-option">NSI = conforming to be accepted/avoid rejection (need for social approval)</button>
+      <button class="opt forge-option" data-right="1">NSI = conforming to be accepted/avoid rejection (need for social approval)</button>
       <button class="opt forge-option" data-mc="MC-SI-06d" data-s="Both NSI and ISI are general explanations for conformity that apply across many studies, not limited to one researcher's paradigm.">NSI only applies to Milgram; ISI only applies to Asch</button>
       <div class="scaffold"><span class="stag"></span><p></p></div>
       <p class="praise">NSI = "I'll go along so they like me." ISI = "They probably know better than me." Keep the driver in mind, not just the letters. ✦</p>
@@ -173,8 +173,8 @@
     <div class="bq">
       <div class="bq-head"><span class="spec mono"><b>Psychology · Research Methods</b></span><span class="fmt">Application</span></div>
       <p class="q">A researcher repeats a study with a new sample using the same procedure. What is the main purpose of this replication?</p>
-      <button class="opt forge-option" data-right="1" data-mc="MC-RM-DEMO-b" data-s="Replication is not primarily about producing a larger sample; it tests whether the original finding can be reproduced.">To make the original study more representative</button>
-      <button class="opt forge-option">To test whether the original finding can be reproduced</button>
+      <button class="opt forge-option" data-mc="MC-RM-DEMO-b" data-s="Replication is not primarily about producing a larger sample; it tests whether the original finding can be reproduced.">To make the original study more representative</button>
+      <button class="opt forge-option" data-right="1">To test whether the original finding can be reproduced</button>
       <button class="opt forge-option" data-mc="MC-RM-DEMO-c" data-s="Using the same procedure does not automatically remove ethical issues; those still need separate consideration.">To remove all ethical issues from the research</button>
       <button class="opt forge-option" data-mc="MC-RM-DEMO-d" data-s="Replication can support reliability, but it cannot by itself prove that a finding is valid in every context.">To prove that the finding is valid in every context</button>
       <div class="scaffold"><span class="stag"></span><p></p></div>
@@ -238,9 +238,9 @@ document.querySelectorAll('#eco-bank .bq').forEach(function(card){
   card.querySelectorAll('.opt').forEach(function(btn){
     btn.addEventListener('click', function(){
       card.querySelectorAll('.opt').forEach(function(x){ x.disabled = true; });
-      var rightBtn = card.querySelector('.opt[data-right]');
+      var rightBtn = card.querySelector('.opt[data-right]:not([data-mc])') || card.querySelector('.opt:not([data-mc])') || card.querySelector('.opt[data-right]');
       rightBtn.classList.add('correct');
-      if (btn.dataset.right) {
+      if (btn === rightBtn) {
         card.querySelector('.praise').classList.add('show');
       } else {
         btn.classList.add('wrong');
