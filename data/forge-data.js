@@ -19245,3 +19245,41 @@ for (const [bankId, plan] of Object.entries(biologyPlans)) {
     if (fix) question.reforge = { stem: fix.stem, options: fix.options, correct: fix.correct };
   }
 }
+// Hand-authored Reforge twin fix for MATH-1. The COV series repeated
+// the same fact with an identical stem and reordered options. Each twin
+// below now tests the same mathematical concept using fresh numbers, so
+// the correct answer isn't simply the value the student just saw.
+{
+  const reforgeFixes = {
+    "MATH-COV-01": { stem: "The line through (3, 2) and (7, 14) has gradient:", options: { A: "3", B: "1/3", C: "12", D: "4" }, correct: "A" },
+    "MATH-COV-02": { stem: "The circle x² + y² + 8x − 2y − 8 = 0 has centre:", options: { A: "(4, −1)", B: "(−4, 1)", C: "(−8, 2)", D: "(8, −2)" }, correct: "B" },
+    "MATH-COV-03": { stem: "Newton–Raphson applied to f(x) = x² − 7 gives the iteration:", options: { A: "xₙ₊₁ = xₙ² − 7", B: "xₙ₊₁ = 7 − xₙ²", C: "xₙ₊₁ = ½(xₙ + 7/xₙ)", D: "xₙ₊₁ = xₙ + (xₙ² − 7)" }, correct: "C" },
+    "MATH-COV-04": { stem: "Using the trapezium rule with width 2 and ordinates 2, 5 and 3 gives:", options: { A: "10", B: "20", C: "12", D: "15" }, correct: "D" },
+    "MATH-COV-05": { stem: "The magnitude of the vector (5, 12) is:", options: { A: "13", B: "17", C: "7", D: "1" }, correct: "A" },
+    "MATH-COV-06": { stem: "The vector (10, −5) is what multiple of (2, −1)?", options: { A: "2", B: "5", C: "−5", D: "10" }, correct: "B" },
+  };
+  for (const question of BANKS["MATH-1"].questions) {
+    const fix = reforgeFixes[question.id];
+    if (fix) question.reforge = { stem: fix.stem, options: fix.options, correct: fix.correct };
+  }
+}
+// Hand-authored Reforge twin fix for MATH-3. The COV series repeated
+// the same fact with an identical stem and reordered options. Each twin
+// below now tests the same mathematical concept using fresh numbers, so
+// the correct answer isn't simply the value the student just saw.
+{
+  const reforgeFixes = {
+    "MATH-COV-07": { stem: "A particle has u = 4 m s⁻¹ and a = 3 m s⁻² for 5 seconds. Its final velocity is:", options: { A: "15 m s⁻¹", B: "34 m s⁻¹", C: "19 m s⁻¹", D: "12 m s⁻¹" }, correct: "C" },
+    "MATH-COV-08": { stem: "A particle has u = 6 m s⁻¹, a = −2 m s⁻² and t = 4 s. Its displacement is:", options: { A: "24 m", B: "−8 m", C: "16 m", D: "8 m" }, correct: "D" },
+    "MATH-COV-09": { stem: "A 12 N resultant force acts on a 3 kg particle. Its acceleration is:", options: { A: "4 m s⁻²", B: "0.25 m s⁻²", C: "36 m s⁻²", D: "9 m s⁻²" }, correct: "A" },
+    "MATH-COV-10": { stem: "A parachutist falls at a constant speed, no longer accelerating. What is true of the resultant force acting on them at this point?", options: { A: "It is equal to their weight, acting downward", B: "It is zero", C: "It is equal to their drag, acting upward", D: "It is still increasing" }, correct: "B" },
+    "MATH-COV-11": { stem: "A 15 N force acts perpendicular to a pivot at 0.6 m. Its moment is:", options: { A: "15.6 N m", B: "0.04 N m", C: "9 N m", D: "25 N m" }, correct: "C" },
+    "MATH-COV-12": { stem: "An anticlockwise moment of 20 N m is balanced by:", options: { A: "10 N m clockwise torque", B: "Zero net rotational moment", C: "20 N m anticlockwise torque", D: "20 N m clockwise torque" }, correct: "D" },
+    "MATH-COV-13": { stem: "The resultant of perpendicular vectors of magnitudes 6 and 8 has magnitude:", options: { A: "10", B: "14", C: "2", D: "48" }, correct: "A" },
+    "MATH-COV-14": { stem: "A vector in the direction (8, 6) has unit vector:", options: { A: "(8, 6)", B: "(4/5, 3/5)", C: "(8/14, 6/14)", D: "(3/4, 5/3)" }, correct: "B" },
+  };
+  for (const question of BANKS["MATH-3"].questions) {
+    const fix = reforgeFixes[question.id];
+    if (fix) question.reforge = { stem: fix.stem, options: fix.options, correct: fix.correct };
+  }
+}
