@@ -2536,11 +2536,16 @@ document.body.classList.add('audit-test');
   var ctx = canvas.getContext('2d', { alpha: true });
   if (!ctx) return;
 
-  var size = 512;
+  // Keep the texture small enough that the animated grain stays decorative
+  // instead of competing with the page for CPU time on low-power devices.
+  var size = 256;
   var patternAlpha = 18;
-  var refreshEvery = 2;
+  var refreshEvery = 4;
   var frame = 0;
   var animId = 0;
+  var inView = true;
+
+  function active(){ return inView && !document.hidden; }
 
   function resize(){
     canvas.width = size;
@@ -2558,10 +2563,20 @@ document.body.classList.add('audit-test');
   }
 
   function loop(){
+    if (!active()) { animId = 0; return; }
     if (frame % refreshEvery === 0) drawGrain();
     frame++;
     animId = window.requestAnimationFrame(loop);
   }
+
+  function resume(){ if (!animId && active()) loop(); }
+
+  var grainObserver = new IntersectionObserver(function(entries){
+    inView = entries[0].isIntersecting;
+    if (inView) resume();
+  }, { rootMargin: '120px 0px' });
+  grainObserver.observe(shell);
+  document.addEventListener('visibilitychange', resume);
 
   window.addEventListener('resize', resize);
   resize();
@@ -2672,6 +2687,8 @@ document.body.classList.add('audit-test');
   var colorsHex = ['#FFC93C', '#D55C13', '#7A2E0A'];
   var speed = 0.28;
   var grainAmount = 0.35;
+  var inView = false;
+  var animId = 0;
 
   function hexToRgb(hex){
     var h = hex.replace('#', '');
@@ -2694,16 +2711,26 @@ document.body.classList.add('audit-test');
   ro.observe(container);
   resize();
 
-  var raf = 0;
+  function active(){ return inView && !document.hidden; }
+
   function render(t){
+    if (!active()) { animId = 0; return; }
     gl.uniform2f(locs.res, canvas.width, canvas.height);
     gl.uniform1f(locs.time, t * 0.001 * speed);
     gl.uniform1f(locs.grain, grainAmount);
     gl.uniform3fv(locs.colors, flatColors);
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
-    raf = window.requestAnimationFrame(render);
+    animId = window.requestAnimationFrame(render);
   }
-  raf = window.requestAnimationFrame(render);
+
+  function resume(){ if (!animId && active()) animId = window.requestAnimationFrame(render); }
+
+  var ambientObserver = new IntersectionObserver(function(entries){
+    inView = entries[0].isIntersecting;
+    if (inView) resume();
+  }, { rootMargin: '200px 0px' });
+  ambientObserver.observe(container);
+  document.addEventListener('visibilitychange', resume);
 })();
 </script>
 
