@@ -15,6 +15,7 @@
 <meta name="twitter:description" content="Turn wrong answers into better answers with misconception-triggered practice for GCSE and A Level, mapped to your exam board's spec.">
 <meta name="twitter:image" content="https://forgelearning.github.io/edu/og-image.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Rethink+Sans:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/tokens.css">
 <link rel="stylesheet" href="css/base.css?v=20260813-consent">
@@ -36,6 +37,7 @@
   <link rel="stylesheet" href="css/content-status.css">
 </head>
 <body>
+<a class="forge-skip-link" href="#main-content">Skip to main content</a>
 <script>
 // The reviewed landing-page build is now the live homepage.
 document.body.classList.add('audit-test');
@@ -88,10 +90,10 @@ document.body.classList.add('audit-test');
   <div class="hero-copy">
     <span class="tag reveal">GCSE &amp; A Level · Spec-mapped · Built by a practising teacher</span>
     <h1 class="reveal reveal-delay-1">Turn wrong answers into <em>better answers.</em></h1>
-    <p class="lede reveal reveal-delay-2"><span class="lede-desktop">Forge finds the misconception behind a wrong answer, explains the missing idea, and gives the student a fresh question to prove the fix. <strong>Short enough for every day.</strong></span><span class="lede-mobile">Find the misconception. Prove the fix with one fresh question.</span></p>
+    <p class="lede reveal reveal-delay-2"><span class="lede-desktop">Forge finds the misconception behind a wrong answer, explains the missing idea, then gives the student a fresh question to check the fix. <strong>Built for daily practice.</strong></span><span class="lede-mobile">Find the misconception. Prove the fix with one fresh question.</span></p>
     <div class="ctas reveal reveal-delay-3">
       <a class="btn btn-hot btn-glass btn-ember" href="forge-quiz.html">Try the quiz — free</a>
-      <a class="hero-secondary-link" href="#waitlist">Join the waiting list <span aria-hidden="true">→</span></a>
+      <a class="hero-secondary-link" href="#waitlist">Join the early-access list <span aria-hidden="true">→</span></a>
     </div>
     <p class="sub reveal reveal-delay-4">Exam-board mapped practice for GCSE and A Level.</p>
   </div>
@@ -99,9 +101,10 @@ document.body.classList.add('audit-test');
   <!-- SIGNATURE: live demo -->
   <div class="demo glow-spot reveal reveal-delay-2" id="demo" aria-live="polite">
     <span class="demo-float">Live bank · updates weekly</span>
+    <span class="demo-state" id="demo-state" aria-hidden="true">Concept repaired</span>
     <div class="head">
       <span class="spec mono">A Level Economics · <b>2.1.2</b> Inflation</span>
-      <span class="tag">Try one — tap an answer</span>
+      <span class="tag">Try one — choose an answer</span>
     </div>
     <div id="demo-body">
       <p class="stimulus">UK inflation falls from 4.2% to 2.1%. A headline reads: <em>"Prices tumble as inflation halves."</em></p>
@@ -116,7 +119,7 @@ document.body.classList.add('audit-test');
         <p id="stext"></p>
         <div class="next"><button id="reforge">Re-forge it → same concept, new question</button></div>
       </div>
-      <p class="praise" id="praise">Solid. Prices rising more slowly is disinflation — most students miss this. ✦</p>
+      <p class="praise" id="praise">Concept repaired. Prices are still rising, just more slowly: disinflation. ✦</p>
     </div>
     <p class="foot">Every wrong answer is tagged to a real misconception from examiners' reports. This question is live in the Forge bank.</p>
   </div>
@@ -279,13 +282,13 @@ document.body.classList.add('audit-test');
           <div class="student-assignment-head"><h3>Monetary &amp; Fiscal Policy revision</h3><span class="student-assignment-due">Due in 2 days</span></div>
           <span class="student-assignment-status student-assignment-status--progress">In progress</span>
           <div class="student-assignment-progress"><div class="student-assignment-progress-label"><span>12 of 20 questions answered</span><span>60%</span></div><div class="student-assignment-progress-track"><div class="student-assignment-progress-fill student-assignment-progress-fill--60"></div></div></div>
-          <div class="student-assignment-topics"><a href="#">Monetary Policy →</a><a href="#">Fiscal Policy →</a></div>
+          <div class="student-assignment-topics"><span>Monetary Policy</span><span>Fiscal Policy</span></div>
         </article>
         <article class="student-assignment student-assignment--upcoming">
           <div class="student-assignment-head"><h3>BoP &amp; Exchange Rates revision</h3><span class="student-assignment-due">Due 14 Feb</span></div>
           <span class="student-assignment-status student-assignment-status--not-started">Not started</span>
           <div class="student-assignment-progress"><div class="student-assignment-progress-label"><span>0 of 10 questions answered</span><span>0%</span></div><div class="student-assignment-progress-track"><div class="student-assignment-progress-fill student-assignment-progress-fill--0"></div></div></div>
-          <div class="student-assignment-topics"><a href="#">Balance of Payments →</a></div>
+          <div class="student-assignment-topics"><span>Balance of Payments</span></div>
         </article>
         <article class="student-assignment student-assignment--complete">
           <div class="student-assignment-head"><h3>Inflation &amp; Unemployment fundamentals</h3><span class="student-assignment-due">Due 24 Jan</span></div>
@@ -1743,7 +1746,7 @@ document.body.classList.add('audit-test');
 <section id="audit-faq" class="audit-essential-faq">
 <div class="wrap">
   <p class="tag eyebrow reveal">Essential FAQs</p>
-  <h2 class="reveal">The useful answers, before you start.</h2>
+  <h2 class="reveal">Answers before you start.</h2>
   <div class="audit-faq-grid">
     <details class="audit-faq-item"><summary>What makes Forge different from a revision guide?</summary><p>Forge starts with the mistake, not just the topic. Each wrong answer is tied to a documented misconception, followed by a short correction and a fresh question to prove the fix.</p></details>
     <details class="audit-faq-item"><summary>Can students use it without joining a class?</summary><p>Yes. Students can practise independently for free, or subscribe for unlimited questions and the full Anvil, Crucible and progress features.</p></details>
@@ -1760,13 +1763,15 @@ document.body.classList.add('audit-test');
   <div class="inner">
     <p class="tag eyebrow reveal">Early access</p>
     <h2 class="reveal">Get early access to Forge.</h2>
-    <p class="sect-lede reveal ui-centered">Forge is being built in a working classroom and expanding across GCSE and A Level each week. Join the list to shape it and pilot it first.</p>
+    <p class="sect-lede reveal ui-centered">Forge is being built in a working classroom and expanding across GCSE and A Level each week. Join the list to help shape Forge and hear when the first pilot opens.</p>
     <form id="waitform">
-      <input type="email" id="email" placeholder="you@school.org.uk" required aria-label="Email address">
+      <label class="forge-visually-hidden" for="email">Email address</label>
+      <input type="email" id="email" placeholder="you@school.org.uk" required autocomplete="email" maxlength="254" aria-describedby="waiterror">
       <button type="submit" class="btn-glass btn-ember">Join the waiting list</button>
     </form>
     <p class="done" id="waitdone">You're on the list. We'll be in touch when the first pilot opens. ✦</p>
-    <p class="note">Teachers and students welcome. No spam. We will send one email when pilots open.</p>
+    <p class="form-error" id="waiterror" role="alert" hidden>We couldn’t join you to the list. Please try again, or email forge.educator@gmail.com.</p>
+    <p class="note">Teachers and students are welcome. We’ll only email when pilots open.</p>
   </div>
 </div>
 </section>
@@ -2095,13 +2100,22 @@ document.body.classList.add('audit-test');
   });
 })();
 (function(){
+  var pending = null;
+  var frame = 0;
   document.addEventListener('pointermove',function(e){
     var card=e.target.closest('.glow-spot');
-    if(!card)return;
-    var r=card.getBoundingClientRect();
-    card.style.setProperty('--glow-x',(e.clientX-r.left)+'px');
-    card.style.setProperty('--glow-y',(e.clientY-r.top)+'px');
-  });
+    if(!card) { pending = null; return; }
+    pending = {card: card, x: e.clientX, y: e.clientY};
+    if(frame) return;
+    frame = window.requestAnimationFrame(function(){
+      frame = 0;
+      if(!pending) return;
+      var r=pending.card.getBoundingClientRect();
+      pending.card.style.setProperty('--glow-x',(pending.x-r.left)+'px');
+      pending.card.style.setProperty('--glow-y',(pending.y-r.top)+'px');
+      pending = null;
+    });
+  }, {passive:true});
 })();
 (function(){
   var opts=document.querySelectorAll('#demo .opt');
@@ -2111,15 +2125,28 @@ document.body.classList.add('audit-test');
   var praise=document.getElementById('praise');
   var reforge=document.getElementById('reforge');
   var body=document.getElementById('demo-body');
+  var demo=document.getElementById('demo');
+  var reducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function transitionDemo(update){
+    if(document.startViewTransition && !reducedMotion){
+      document.startViewTransition(update);
+    }else{
+      update();
+    }
+  }
 
   opts.forEach(function(o){
     o.addEventListener('click',function(){
       opts.forEach(function(x){x.disabled=true;});
       if(o.dataset.right){
         o.classList.add('correct');
+        demo.classList.add('is-repaired');
         praise.classList.add('show');
       }else{
         o.classList.add('wrong');
+        demo.classList.add('is-learning');
+        demo.classList.remove('is-repaired');
         document.querySelector('#demo [data-right]').classList.add('correct');
         stag.textContent=o.dataset.mc;
         stext.innerHTML=o.dataset.s;
@@ -2129,22 +2156,26 @@ document.body.classList.add('audit-test');
   });
 
   reforge.addEventListener('click',function(){
-    body.innerHTML=''+
-      '<p class="stimulus">Inflation in Japan moves from −0.5% to +0.8%.</p>'+
-      '<p class="q">Which term describes the −0.5% period, and what happened to prices?</p>'+
-      '<button class="opt r2">Disinflation; prices rose slowly</button>'+
-      '<button class="opt r2" data-right="1">Deflation; prices fell</button>'+
-      '<button class="opt r2">Disinflation; prices fell</button>'+
-      '<button class="opt r2">Deflation; prices rose slowly</button>'+
-      '<p class="praise" id="praise2">Re-forged. Same concept, new frame — now it\u0027s yours. ✦</p>'+
-      '<p class="praise forge-text-bad" id="miss2">Not yet — below zero means deflation: the price level itself fell. In the full app, this goes to your Anvil.</p>';
-    body.classList.add('demo-body--reforged');
-    var o2=body.querySelectorAll('.r2');
-    o2.forEach(function(b){
-      b.addEventListener('click',function(){
-        o2.forEach(function(x){x.disabled=true;});
-        if(b.dataset.right){b.classList.add('correct');document.getElementById('praise2').classList.add('show');}
-        else{b.classList.add('wrong');body.querySelector('[data-right]').classList.add('correct');document.getElementById('miss2').classList.add('show');}
+    demo.classList.add('is-learning');
+    demo.classList.remove('is-repaired');
+    transitionDemo(function(){
+      body.innerHTML=''+
+        '<p class="stimulus">Inflation in Japan moves from −0.5% to +0.8%.</p>'+
+        '<p class="q">Which term describes the −0.5% period, and what happened to prices?</p>'+
+        '<button class="opt r2">Disinflation; prices rose slowly</button>'+
+        '<button class="opt r2" data-right="1">Deflation; prices fell</button>'+
+        '<button class="opt r2">Disinflation; prices fell</button>'+
+        '<button class="opt r2">Deflation; prices rose slowly</button>'+
+        '<p class="praise" id="praise2">Re-forged. Same concept, new frame. Use the fix again. ✦</p>'+
+        '<p class="praise forge-text-bad" id="miss2">Not yet — below zero means deflation: the price level itself fell. In the full app, this goes to your Anvil.</p>';
+      body.classList.add('demo-body--reforged');
+      var o2=body.querySelectorAll('.r2');
+      o2.forEach(function(b){
+        b.addEventListener('click',function(){
+          o2.forEach(function(x){x.disabled=true;});
+          if(b.dataset.right){b.classList.add('correct');demo.classList.add('is-repaired');demo.classList.remove('is-learning');document.getElementById('praise2').classList.add('show');}
+          else{b.classList.add('wrong');body.querySelector('[data-right]').classList.add('correct');document.getElementById('miss2').classList.add('show');}
+        });
       });
     });
   });
@@ -2460,6 +2491,8 @@ document.body.classList.add('audit-test');
     var form = this;
     var btn = form.querySelector('button');
     var email = document.getElementById('email').value;
+    var error = document.getElementById('waiterror');
+    error.hidden = true;
     btn.disabled = true;
     btn.textContent = 'Joining...';
     fetch('https://formspree.io/f/meeyaylp', {
@@ -2467,21 +2500,21 @@ document.body.classList.add('audit-test');
       headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
       body: JSON.stringify({email: email, _subject: 'New Forge waitlist signup: ' + email})
     })
-    .then(function(r){ return r.json(); })
-    .then(function(data){
-      if (data.ok) {
+    .then(function(r){
+      return r.json().then(function(data){ return {ok: r.ok && data.ok}; });
+    })
+    .then(function(result){
+      if (result.ok) {
         form.style.display = 'none';
         document.getElementById('waitdone').style.display = 'block';
       } else {
-        btn.disabled = false;
-        btn.textContent = 'Join the waiting list';
-        alert('Something went wrong — please try again or email forge.educator@gmail.com directly.');
+        throw new Error('waitlist request failed');
       }
     })
     .catch(function(){
       btn.disabled = false;
       btn.textContent = 'Join the waiting list';
-      alert('Something went wrong — please try again or email forge.educator@gmail.com directly.');
+      error.hidden = false;
     });
   });
 })();
