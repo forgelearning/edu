@@ -70,13 +70,15 @@
     banner.setAttribute('role', 'dialog');
     banner.setAttribute('aria-labelledby', 'analytics-consent-title');
     banner.innerHTML =
-      '<div class="analytics-consent-copy">' +
-        '<strong id="analytics-consent-title">Optional analytics</strong>' +
-        '<p>Forge uses Google Analytics on public pages to understand aggregate site usage. It is not used to analyse student quiz responses.</p>' +
-      '</div>' +
+      // Two copy lengths so the bar stays one line at every width; CSS picks one.
+      '<p class="analytics-consent-copy" id="analytics-consent-title">' +
+        '<span class="analytics-consent-long">Optional analytics on public pages — never student quiz responses. </span>' +
+        '<span class="analytics-consent-short">Optional analytics. </span>' +
+        '<a href="privacy.html">Privacy</a>' +
+      '</p>' +
       '<div class="analytics-consent-actions">' +
         '<button type="button" class="analytics-consent-reject">Reject</button>' +
-        '<button type="button" class="analytics-consent-accept">Accept analytics</button>' +
+        '<button type="button" class="analytics-consent-accept">Accept</button>' +
       '</div>';
     banner.querySelector('.analytics-consent-reject').addEventListener('click', function () { saveChoice('denied'); });
     banner.querySelector('.analytics-consent-accept').addEventListener('click', function () { saveChoice('granted'); });

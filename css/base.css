@@ -84,10 +84,19 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:var(--
 .nav-drop-menu a{display:block;padding:var(--space-2) var(--space-3);color:var(--slate);text-decoration:none;font-size:13px;border-radius:6px;white-space:nowrap}
 .nav-drop-menu a:hover{background:var(--panel-2);color:var(--white)}
 
-/* Optional analytics consent — keeps the banner useful without becoming a
-   full-width interruption on small screens. */
-#analytics-consent-banner{position:fixed;left:24px;right:24px;bottom:calc(24px + env(safe-area-inset-bottom,0px));z-index:300;display:flex;align-items:center;justify-content:space-between;gap:24px;max-width:900px;margin:0 auto;padding:16px 18px;max-height:calc(100vh - 48px);max-height:calc(100dvh - 48px);overflow-y:auto;overscroll-behavior:contain;background:var(--glass-panel);backdrop-filter:blur(var(--glass-blur)) saturate(160%);-webkit-backdrop-filter:blur(var(--glass-blur)) saturate(160%);border:1px solid var(--line);border-radius:var(--radius-md);box-shadow:0 20px 50px -20px rgba(0,0,0,.55)}
-.analytics-consent-copy{min-width:0}.analytics-consent-copy strong{display:block;color:var(--white);font-family:'Sora',sans-serif;font-size:14px;margin-bottom:3px}.analytics-consent-copy p{color:var(--slate);font-size:13px;line-height:1.45;margin:0;max-width:62ch}.analytics-consent-actions{display:flex;gap:8px;flex-shrink:0}.analytics-consent-actions button{min-height:40px;border-radius:var(--radius-sm);padding:0 14px;border:1px solid var(--line);background:var(--panel);color:var(--slate);font:600 13px Inter,sans-serif;cursor:pointer}.analytics-consent-actions button:hover{color:var(--white);border-color:var(--ember)}.analytics-consent-actions .analytics-consent-accept{background:var(--ember);border-color:var(--ember);color:#fff}.analytics-consent-actions .analytics-consent-accept:hover{background:var(--hot);border-color:var(--hot);color:var(--coal)}
+/* Optional analytics consent — a slim single-line bar. It is a fixed overlay
+   sitting over the page for as long as it is undecided, so it stays one row
+   deep: copy on the left, actions on the right, never a stacked card. */
+#analytics-consent-banner{position:fixed;left:24px;right:24px;bottom:calc(24px + env(safe-area-inset-bottom,0px));z-index:300;display:flex;align-items:center;justify-content:space-between;gap:16px;max-width:820px;margin:0 auto;padding:8px 8px 8px 20px;max-height:calc(100vh - 48px);max-height:calc(100dvh - 48px);overflow-y:auto;overscroll-behavior:contain;background:var(--glass-panel);backdrop-filter:blur(var(--glass-blur)) saturate(160%);-webkit-backdrop-filter:blur(var(--glass-blur)) saturate(160%);border:1px solid var(--line);border-radius:var(--radius-pill);box-shadow:0 20px 50px -20px rgba(0,0,0,.55)}
+.analytics-consent-copy{min-width:0;margin:0;color:var(--slate);font-size:13px;line-height:1.4;text-wrap:pretty}
+.analytics-consent-copy a{color:var(--ember);text-decoration:underline;text-underline-offset:2px;white-space:nowrap}
+.analytics-consent-short{display:none}
+.analytics-consent-copy a:hover{color:var(--hot)}
+.analytics-consent-actions{display:flex;gap:8px;flex-shrink:0}
+.analytics-consent-actions button{min-height:36px;white-space:nowrap;border-radius:var(--radius-pill);padding:0 16px;border:1px solid var(--line);background:var(--panel);color:var(--slate);font:600 13px Inter,sans-serif;cursor:pointer}
+.analytics-consent-actions button:hover{color:var(--white);border-color:var(--ember)}
+.analytics-consent-actions .analytics-consent-accept{background:var(--ember);border-color:var(--ember);color:#fff}
+.analytics-consent-actions .analytics-consent-accept:hover{background:var(--hot);border-color:var(--hot);color:var(--coal)}
 .privacy-settings{padding:0;border:0;background:none;color:var(--ember);font:inherit;text-decoration:underline;cursor:pointer}
 /* The banner is fixed, so reserve room for it while it is on screen — otherwise
    it sits on top of whatever is at the bottom of the viewport (on the home page
@@ -95,8 +104,8 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:var(--
    text wrapping and the audit-test override, so analytics-consent.js measures
    the rendered banner and sets --consent-banner-space. These literals are only
    the pre-measurement fallback. */
-body.has-consent-banner{padding-bottom:var(--consent-banner-space,190px)}
-@media(max-width:680px){#analytics-consent-banner{left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));display:block;padding:14px}.analytics-consent-actions{margin-top:12px}.analytics-consent-actions button{flex:1}body.has-consent-banner{padding-bottom:var(--consent-banner-space,190px)}}
+body.has-consent-banner{padding-bottom:var(--consent-banner-space,90px)}
+@media(max-width:680px){#analytics-consent-banner{left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));gap:10px;padding:7px 7px 7px 14px;border-radius:var(--radius-md)}.analytics-consent-copy{font-size:12px}.analytics-consent-long{display:none}.analytics-consent-short{display:inline}.analytics-consent-actions{gap:6px}.analytics-consent-actions button{min-height:34px;padding:0 12px;font-size:12px}body.has-consent-banner{padding-bottom:var(--consent-banner-space,90px)}}
 
 /* shared buttons (used beyond nav) */
 .btn{display:inline-block;font-weight:600;font-size:15px;padding:13px var(--space-6);border-radius:var(--radius-md);text-decoration:none;border:1px solid transparent}
