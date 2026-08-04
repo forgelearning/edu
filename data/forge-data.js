@@ -18824,3 +18824,42 @@ for (const [id, key] of Object.entries(media1IdMap)) {
   if (question) question.reforge = media1ReforgeFixes[key];
 }
 for (const key of Object.keys(media1ReforgeFixes)) enforceNoUniqueLongestAnswer(media1ReforgeFixes[key]);
+
+// Hand-written RS-2 Reforge twins for ethics and philosophy coverage.
+const rs2ReforgeFixes = {
+  utilitarianism: {stem:"A hospital chooses the policy expected to produce the greatest overall benefit for patients. Which ethical approach is being used?",options:{A:"Utilitarianism",B:"Natural law",C:"Kantian duty",D:"Emotivism"},correct:"A"},
+  kant: {stem:"A manager refuses to deceive one worker even though doing so would benefit many others. Which Kantian idea supports this?",options:{A:"The greatest happiness principle",B:"Treating people as ends in themselves",C:"The naturalistic fallacy",D:"Preference satisfaction"},correct:"B"},
+  naturalLaw: {stem:"An Aquinas-inspired argument says moral action should support purposes shared by human beings. This is an appeal to:",options:{A:"Situation ethics",B:"Preference utilitarianism",C:"Natural law",D:"Emotivism"},correct:"C"},
+  situation: {stem:"A Christian ethicist decides what love requires after considering the particular people and circumstances rather than applying a fixed rule. This is:",options:{A:"Kantian ethics",B:"Act utilitarianism",C:"Natural law",D:"Situation ethics"},correct:"D"},
+  emotivism: {stem:"A speaker says 'cruelty is wrong' mainly to express disapproval and influence the listener. Which theory best explains this?",options:{A:"Emotivism",B:"Natural law",C:"Virtue ethics",D:"Divine command theory"},correct:"A"},
+  doubleEffect: {stem:"A treatment saves a patient's life but has a foreseen harmful side effect that the doctor does not intend. Which principle may be relevant?",options:{A:"The categorical imperative",B:"The doctrine of double effect",C:"The verification principle",D:"The veil of ignorance"},correct:"B"},
+  conscience: {stem:"Aquinas would describe conscience as the process of:",options:{A:"Expressing an emotional reaction",B:"Calculating only immediate pleasure",C:"Applying moral knowledge to a particular action",D:"Following whatever a majority prefers"},correct:"C"},
+  life: {stem:"An abortion debate asks whether human life has value regardless of usefulness or ability. Which principle is central?",options:{A:"The principle of utility",B:"The principle of linguistic analogy",C:"The principle of cultural discount",D:"The sanctity of life"},correct:"D"},
+  virtue: {stem:"A student develops honesty and courage so that good choices become part of their character. Which approach emphasises this?",options:{A:"Virtue ethics",B:"Act utilitarianism",C:"Emotivism",D:"Ethical egoism"},correct:"A"},
+  ruleUtil: {stem:"A policy is judged by whether following it generally produces the best consequences, rather than by calculating every individual act. This is:",options:{A:"Act utilitarianism",B:"Rule utilitarianism",C:"Kantian ethics",D:"Natural law"},correct:"B"},
+  humanity: {stem:"A business refuses to manipulate customers even when it would increase profit. Kant would say it respects people as:",options:{A:"Sources of utility only",B:"Means to an end",C:"Ends in themselves",D:"Objects without autonomy"},correct:"C"},
+  naturalWeakness: {stem:"Which criticism challenges natural law's ability to resolve every modern moral case?",options:{A:"It has no account of reason",B:"It rejects all human purposes",C:"It is identical to preference utilitarianism",D:"People may disagree about purposes and how primary precepts apply"},correct:"D"},
+  fletcher: {stem:"Which claim would Fletcher's situation ethics reject?",options:{A:"A rule must be followed even when breaking it would be more loving",B:"Agape should guide a decision",C:"Context can affect the right action",D:"Consequences matter to moral judgement"},correct:"A"},
+  preference: {stem:"An ethical calculation gives weight to what affected people want and value, not just to physical pleasure. This resembles:",options:{A:"Kantian ethics",B:"Preference utilitarianism",C:"Natural law",D:"Emotivism"},correct:"B"},
+  naturalistic: {stem:"Which error is Moore's naturalistic fallacy intended to expose?",options:{A:"Using consequences in ethical reasoning",B:"Distinguishing facts from values",C:"Defining 'good' entirely in terms of a natural property",D:"Applying a moral rule to a case"},correct:"C"},
+  ordered: {stem:"Aquinas' precept about living in an ordered society is most closely connected with:",options:{A:"Rejecting all shared rules",B:"Maximising private preference",C:"Suspending moral judgement",D:"Cooperation, law and the common good"},correct:"D"},
+  dilemma: {stem:"A doctor must choose between two actions, each protecting one important moral value while compromising another. This is an:",options:{A:"Ethical dilemma",B:"Empirical verification",C:"Audience reading",D:"Aesthetic preference"},correct:"A"},
+  anatta: {stem:"A Buddhist teaching denies that a person has a permanent, independent self. This is:",options:{A:"Karma",B:"Anatta",C:"Nirvana",D:"Dukkha"},correct:"B"},
+  evil: {stem:"The problem of evil is most directly a challenge to belief in a God who is:",options:{A:"Finite and morally indifferent",B:"Only a symbolic idea",C:"Omnipotent, omnibenevolent and omniscient",D:"Limited to one location"},correct:"C"},
+  experience: {stem:"A person reports an intense encounter that they interpret as contact with the divine. This is a:",options:{A:"Legal contract",B:"Laboratory measurement",C:"Political election",D:"Religious experience"},correct:"D"},
+  diversity: {stem:"Different religions make incompatible claims about revelation and salvation. This creates the challenge of:",options:{A:"Religious diversity",B:"The naturalistic fallacy",C:"Double effect",D:"Act utilitarianism"},correct:"A"},
+  eightfold: {stem:"In Buddhism, the Eightfold Path is intended to support:",options:{A:"Worship of a creator",B:"The cessation of suffering",C:"A caste hierarchy",D:"Material success"},correct:"B"},
+  cosmological: {stem:"An argument begins with contingent or changing things and reasons towards a necessary cause. This is the:",options:{A:"Design argument",B:"Ontological argument",C:"Cosmological argument",D:"Argument from religious diversity"},correct:"C"},
+  fideism: {stem:"A thinker who says religious commitment depends on faith rather than proof by reason is adopting:",options:{A:"Verificationism",B:"Natural law",C:"Utilitarianism",D:"Fideism"},correct:"D"},
+  conversion: {stem:"A person undergoes a major change in religious belief and commitment. This is a:",options:{A:"Conversion experience",B:"Design inference",C:"Moral dilemma",D:"Language game"},correct:"A"}
+};
+const rs2IdMap = {
+  "RS-E2-01":"utilitarianism", "RS-E2-02":"kant", "RS-E2-03":"naturalLaw", "RS-E2-04":"situation", "RS-E2-05":"emotivism", "RS-E2-06":"doubleEffect", "RS-E2-07":"conscience", "RS-E2-08":"life", "RS-E2-09":"virtue",
+  "RS-E2B-01":"ruleUtil", "RS-E2B-02":"humanity", "RS-E2B-03":"naturalWeakness", "RS-E2B-04":"fletcher", "RS-E2B-05":"preference", "RS-E2B-06":"naturalistic", "RS-E2B-07":"ordered", "RS-E2B-08":"dilemma",
+  "RS-COV-010":"anatta", "RS-COV-012":"evil", "RS-COV-014":"experience", "RS-COV-016":"diversity", "RS-COV-018":"eightfold", "RS-COV-020":"cosmological", "RS-COV-022":"fideism", "RS-COV-024":"conversion", "RS-COV-110":"anatta", "RS-COV-112":"evil", "RS-COV-114":"experience", "RS-COV-116":"diversity", "RS-COV-118":"eightfold", "RS-COV-120":"cosmological", "RS-COV-122":"fideism", "RS-COV-124":"conversion"
+};
+for (const [id, key] of Object.entries(rs2IdMap)) {
+  const question = BANKS["RS-2"].questions.find(item => item.id === id);
+  if (question) question.reforge = rs2ReforgeFixes[key];
+}
+for (const key of Object.keys(rs2ReforgeFixes)) enforceNoUniqueLongestAnswer(rs2ReforgeFixes[key]);
