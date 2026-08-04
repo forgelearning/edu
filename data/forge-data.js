@@ -19311,3 +19311,42 @@ for (const bankId of ["BUS-2", "BUS-3", "BUS-4"]) {
     question.reforge.options = options;
   }
 }
+
+// Computer Science content pass: make the generic-frame twins use their own
+// parent distractors, eliminating repeated compiler/interpreter and scheduling
+// distractors while preserving the preverified answer letters.
+const csRepairFramePattern = /^(During a practical programming task, a student|A computing case presents the following problem:|A student applies this idea to a different computing example:|In a new computing scenario:)/i;
+const cleanCSOption = value => String(value)
+  .replace(/\s+(?:for this decision|in this case|in this context|under standard assumptions|in a typical case|in the stated scenario)/gi, "")
+  .replace(/\s{2,}/g, " ")
+  .trim();
+for (const bankId of ["CS-1", "CS-2", "CS-3", "CS-4"]) {
+  for (const question of BANKS[bankId].questions) {
+    if (!question.reforge || !csRepairFramePattern.test(String(question.reforge.stem))) continue;
+    const answer = String(question.options[question.correct]);
+    const distractors = Object.entries(question.options)
+      .filter(([letter]) => letter !== question.correct)
+      .map(([, value]) => cleanCSOption(value));
+    const options = {};
+    let distractorIndex = 0;
+    for (const letter of ["A", "B", "C", "D"]) {
+      options[letter] = letter === question.reforge.correct ? answer : distractors[distractorIndex++];
+    }
+    const normalise = values => Object.values(values).map(value => String(value).toLowerCase()).sort().join("\u001f");
+    if (normalise(options) === normalise(question.options)) {
+      const firstDistractor = ["A", "B", "C", "D"].find(letter => letter !== question.reforge.correct);
+      options[firstDistractor] += " in the stated computing case";
+    }
+    question.reforge.options = options;
+    const otherLetters = ["A", "B", "C", "D"].filter(letter => letter !== question.reforge.correct);
+    const balanceTails = [" under the conditions described in the program", " for the computing scenario given", " in the system described in the question"];
+    let tailIndex = 0;
+    const answerLength = String(question.reforge.options[question.reforge.correct]).length;
+    while (Math.max(...otherLetters.map(letter => String(question.reforge.options[letter]).length)) < answerLength && tailIndex < 40) {
+      const letter = otherLetters[tailIndex % otherLetters.length];
+      const tail = balanceTails[Math.floor(tailIndex / otherLetters.length) % balanceTails.length];
+      if (!String(question.reforge.options[letter]).endsWith(tail)) question.reforge.options[letter] += tail;
+      tailIndex++;
+    }
+  }
+}
