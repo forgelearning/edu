@@ -71,6 +71,34 @@ common target.
 
 Theme 2's 2.4 and 2.5 banks are the thinnest and are the next ones to extend.
 
+## Answer text is rewritten after the literals — check the override tables
+
+Several tables near the end of `data/forge-data.js` (`geo640ShortAnswers`,
+`gcseHistoryConciseAnswers`, and the `gcseScience*Concise*` family) overwrite
+`item.options[item.correct]` with a shorter string, keyed by `"<id>:base"` or
+`"<id>:reforge"`. There are ~430 such entries. The intent is sound — stop the
+correct option reading like a mini mark scheme — but a bad entry silently
+replaces a correct answer with a fragment, a circular phrase, or a different
+fact, and the question still looks perfectly well-formed.
+
+This is not theoretical: entries had turned "Salt, water and carbon dioxide"
+into "Hydrogen", "Evaporation or crystallisation" into "Chromatography", and
+"Energy is transferred, not created or destroyed" into "Thermal store".
+
+So: **when a correct answer looks wrong, check these tables before the question
+literal** — the literal is often right and the override is the bug. To see what
+a question originally said, evaluate the file with
+`if (concise) item.options[item.correct] = concise;` stripped out and diff the
+correct-answer text. Length balancing does *not* depend on these tables;
+`equaliseGeneratedOptions()` in the rebalance pass handles it, and the audit
+reports 0% cued without them.
+
+Two other passes rewrite questions after the literals, worth knowing for the
+same reason: `rebalanceMCQSubject()` swaps option *letters* (so always match a
+key on answer text, never on letter), and `expandSubjectToMinimum()` clones
+existing questions to pad a subject to 200, so an error in a source question
+propagates into its `*-COV-*` copies and fixing the source fixes them all.
+
 ## Known outstanding issues
 
 - Reforge option sets are currently distinct across all 7,506 MCQs; keep
@@ -79,7 +107,16 @@ Theme 2's 2.4 and 2.5 banks are the thinnest and are the next ones to extend.
   structural checks cannot judge whether an explanation genuinely teaches.
 - Misconception labels and starter activities remain a product-quality backlog:
   the teacher heatmap should show human-readable labels and useful intervention
-  suggestions for every active tag.
+  suggestions for every active tag. The blocker is *tagging*, not starters —
+  most subjects give each question a tag unique to itself (`tag === "MC-" + id`),
+  so nothing aggregates and every starter falls back to a generic drill. Done so
+  far: `psych`, `gcse-geo`, `soc`, `econ` and `gcse-econ` (420 questions
+  regrouped onto 76 shared `MC-GE-*` tags, all labelled with a starter each).
+  Next, roughly by value: `gcse-science` plus the three `gcse-sep-*` banks
+  (~812 questions, one shared set serves all four), `gcse-maths`, then the
+  ~15 subjects still at 100% per-question tags. `dev/audit-banks.js` now fails
+  if a subject listed in its `TAG_TAXONOMY_SUBJECTS` regresses, or if an
+  aggregatable tag has no starter; add a subject there once it is retagged.
 - A-Level Geography is intentionally marked Developing until every active route
   point is mapped.
 - `englit` and `engll` reference the same two bank ids (`ENG-TERM-1`,
