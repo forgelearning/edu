@@ -23,8 +23,8 @@
 // resolveMCLabel() below covers those instead, by deriving a short label
 // from the question's own scaffold at the point it's needed.
 //
-// Current state, measured over the 6,896 tags in the bank: 584 come from
-// MC_LABELS, 6,312 are derived, none fall back to a bare code. (The tag count
+// Current state, measured over the 3,969 tags in the bank: 680 come from
+// MC_LABELS, 3,289 are derived, none fall back to a bare code. (The tag count
 // fell from 7,239 when GCSE Economics was retagged from 420 per-question tags
 // onto 76 shared MC-GE-* categories, all of them hand-labelled below.) Of the
 // derived labels 375 are still truncated (always at a word boundary), and
@@ -914,7 +914,111 @@ const MC_LABELS = {
   "MC-GE-J-CURVE": "Depreciation improves the balance only if demand responds",
   "MC-GE-GLOBALISATION": "Globalisation as growing integration and interdependence",
   "MC-GE-MNC": "Multinationals and foreign direct investment",
-  "MC-GE-GLOB-COSTS": "Costs of globalisation for workers and communities"
+  "MC-GE-GLOB-COSTS": "Costs of globalisation for workers and communities",
+
+  // ---- GCSE Separate Sciences (Edexcel). Tags authored on the questions;
+  // coverage variants inherit them via expandSubjectToMinimum().
+  // ---- GCSE Separate Biology (Edexcel). Tags are authored on the questions.
+  "MC-SEP-BIO-CELL": "Cell membrane controls entry and exit, not the wall",
+  "MC-SEP-BIO-RIBO": "Ribosomes make protein — site of protein synthesis",
+  "MC-SEP-BIO-DIFFUSION": "Diffusion is net movement down a gradient",
+  "MC-SEP-BIO-OSMOSIS": "Osmosis moves water, not solute",
+  "MC-SEP-BIO-ENZYME": "Enzymes are catalysts — lowering activation energy",
+  "MC-SEP-BIO-PHOTO": "Photosynthesis word equation and its reactants",
+  "MC-SEP-BIO-MITOSIS": "Mitosis gives identical cells; meiosis gives gametes",
+  "MC-SEP-BIO-GENETICS": "Allele is a version of a gene, not a gene itself",
+  "MC-SEP-BIO-BLOOD": "Red cells carry oxygen; white cells defend",
+  "MC-SEP-BIO-DIGEST": "Small intestine absorbs; stomach digests",
+  "MC-SEP-BIO-TRANSPIRATION": "Transpiration is water loss through stomata",
+  "MC-SEP-BIO-PLANTS": "Xylem carries water; phloem carries sugars",
+  "MC-SEP-BIO-DNA": "Gene, DNA and chromosome — which contains which",
+  "MC-SEP-BIO-REPRO": "Placenta exchanges substances; blood does not mix",
+  "MC-SEP-BIO-DEFENCE": "White blood cells — phagocytosis, antibodies, antitoxins",
+  "MC-SEP-BIO-NUTRITION": "A balanced diet supplies all nutrient groups",
+  "MC-SEP-BIO-DISEASE": "Antibiotics do not work on viruses",
+  "MC-SEP-BIO-IMMUNITY": "Vaccines create memory cells, not instant immunity",
+  "MC-SEP-BIO-HOMEOSTASIS": "Kidneys filter and selectively reabsorb",
+  "MC-SEP-BIO-NERVOUS": "Reflex arc order — sensory, relay, motor",
+  "MC-SEP-BIO-HORMONE": "Hormones travel in blood; nerves use impulses",
+  "MC-SEP-BIO-EVOLUTION": "Natural selection acts on existing variation",
+  "MC-SEP-BIO-ECOLOGY": "Quadrats sample distribution and abundance",
+  "MC-SEP-BIO-CYCLES": "Decomposers return mineral ions to soil",
+  "MC-SEP-BIO-FEEDBACK": "Negative feedback reverses a change",
+  "MC-SEP-BIO-THYROID": "Thyroxine sets metabolic rate under negative feedback",
+  "MC-SEP-BIO-CYCLE": "Menstrual cycle hormones — FSH, LH, oestrogen, progesterone",
+  "MC-SEP-BIO-TROPHIC": "Trophic levels start at producers, level one",
+  "MC-SEP-BIO-FOODCHAIN": "Energy loss between levels limits chain length",
+  "MC-SEP-BIO-BIODIVERSITY": "Biodiversity is variety of species and habitats",
+  "MC-SEP-BIO-CARBON": "Deforestation reduces carbon dioxide uptake",
+  "MC-SEP-BIO-BREEDING": "Selective breeding is human choice, not natural selection",
+
+  // ---- GCSE Separate Chemistry (Edexcel)
+  "MC-SEP-CHEM-ATOM": "Electronic structure — filling shells in order",
+  "MC-SEP-CHEM-ISOTOPE": "Mass number is protons plus neutrons",
+  "MC-SEP-CHEM-BOND": "Giant covalent vs simple molecular structure",
+  "MC-SEP-CHEM-STATES": "Melting is a physical change, not a new substance",
+  "MC-SEP-CHEM-FORMULA": "Ionic formulae must balance the charges",
+  "MC-SEP-CHEM-REACTION": "Evidence that a new substance has formed",
+  "MC-SEP-CHEM-ACID": "pH 7 is neutral; the scale is not linear",
+  "MC-SEP-CHEM-ACIDMETAL": "Acid plus metal gives salt and hydrogen",
+  "MC-SEP-CHEM-TITRATION": "Titration measures volume for neutralisation",
+  "MC-SEP-CHEM-ELECTRO": "Cathode attracts cations and reduces them",
+  "MC-SEP-CHEM-YIELD": "Percentage yield compares actual with theoretical",
+  "MC-SEP-CHEM-ANALYSIS": "Flame tests identify metal ions",
+  "MC-SEP-CHEM-EQUIL2": "Only temperature changes the equilibrium constant",
+  "MC-SEP-CHEM-MR": "Relative formula mass sums every atom present",
+  "MC-SEP-CHEM-NANO": "Nanoparticles — high surface-area-to-volume ratio",
+  "MC-SEP-CHEM-SURFACE": "Smaller pieces mean more surface area, not more energy",
+  "MC-SEP-CHEM-RATE": "Temperature raises collision frequency AND energy",
+  "MC-SEP-CHEM-EQUIL": "Dynamic equilibrium — rates equal, reactions continue",
+  "MC-SEP-CHEM-EXTRACT": "Reactivity decides extraction method",
+  "MC-SEP-CHEM-REDOX": "OIL RIG — oxidation is loss of electrons",
+  "MC-SEP-CHEM-ORGANIC": "Alkanes vs alkenes — the double bond",
+  "MC-SEP-CHEM-POLYMER": "Addition vs condensation polymerisation",
+  "MC-SEP-CHEM-WATER": "Potable water is safe, not pure",
+  "MC-SEP-CHEM-ATMOS": "Complete combustion gives carbon dioxide and water",
+  "MC-SEP-CHEM-GAS": "Gas tests — limewater, splint, damp litmus",
+  "MC-SEP-CHEM-FRACTION": "Fractional distillation uses boiling point differences",
+  "MC-SEP-CHEM-CRACK": "Cracking makes shorter, more useful hydrocarbons",
+  "MC-SEP-CHEM-FOOD": "Food tests and their positive results",
+  "MC-SEP-CHEM-ENERGY": "Renewable means replenished, not impact-free",
+  "MC-SEP-CHEM-BRINE": "Electrolysis of brine — three useful products",
+  "MC-SEP-CHEM-CHROM": "Chromatography separates soluble substances",
+  "MC-SEP-CHEM-CARBON": "Carbon-neutral claims and lifecycle emissions",
+
+  // ---- GCSE Separate Physics (Edexcel)
+  "MC-SEP-PHYS-MOTION": "Average speed is total distance over total time",
+  "MC-SEP-PHYS-FORCE": "Mass is matter in kg; weight is a force in N",
+  "MC-SEP-PHYS-NEWTON": "Zero resultant force means constant velocity, not rest",
+  "MC-SEP-PHYS-ENERGY": "Energy stores and the transfers between them",
+  "MC-SEP-PHYS-POWER": "Power is the rate of energy transfer",
+  "MC-SEP-PHYS-CIRCUIT": "Current is the same everywhere in series",
+  "MC-SEP-PHYS-ELECTRIC": "Electrical power P = IV",
+  "MC-SEP-PHYS-TRANSFORM": "Transformers need a changing magnetic field",
+  "MC-SEP-PHYS-CHARGE": "Charge in coulombs; current is charge per second",
+  "MC-SEP-PHYS-PARALLEL": "Potential difference is shared equally in parallel",
+  "MC-SEP-PHYS-WAVE": "Frequency, wavelength and period distinguished",
+  "MC-SEP-PHYS-EM": "Only electromagnetic waves cross a vacuum",
+  "MC-SEP-PHYS-OHM": "Ohmic conductors need constant temperature",
+  "MC-SEP-PHYS-HOUSE": "Parallel wiring lets appliances work independently",
+  "MC-SEP-PHYS-MAGNET": "A current produces a magnetic field",
+  "MC-SEP-PHYS-UNITS": "Joule for energy, watt for power",
+  "MC-SEP-PHYS-MOMENTUM": "Momentum is mass times velocity",
+  "MC-SEP-PHYS-GAS": "Compression raises pressure through collision frequency",
+  "MC-SEP-PHYS-LIQUID": "Liquid pressure depends on depth and density",
+  "MC-SEP-PHYS-DENSITY": "Density is mass divided by volume",
+  "MC-SEP-PHYS-RESIST": "Heating a metal wire raises its resistance",
+  "MC-SEP-PHYS-MOTOR": "Motor effect — current in a field feels a force",
+  "MC-SEP-PHYS-RADIATION": "Alpha, beta, gamma — penetration vs ionisation",
+  "MC-SEP-PHYS-HALFLIFE": "Half-life halves what remains, not what is gone",
+  "MC-SEP-PHYS-BACKGROUND": "Background radiation is always present",
+  "MC-SEP-PHYS-FISSION": "Fission splits a large nucleus",
+  "MC-SEP-PHYS-FUSION": "Fusion joins light nuclei at extreme conditions",
+  "MC-SEP-PHYS-STARS": "Stars are powered by fusion, not burning",
+  "MC-SEP-PHYS-DOPPLER": "Doppler effect changes observed frequency",
+  "MC-SEP-PHYS-UNIVERSE": "Red-shift evidence and the age of the universe",
+  "MC-SEP-PHYS-THERMAL": "Specific heat capacity vs latent heat",
+  "MC-SEP-PHYS-INSULATION": "Insulation slows conduction and convection"
 };
 
 // Resolve a tag to a human label, deriving one on the fly for tags that
