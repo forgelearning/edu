@@ -17258,6 +17258,83 @@ appendGenerated("HIST-BRIT2", [
 ], "HIST-2M6-GAPS");
 for (const question of BANKS["HIST-BRIT2"].questions.slice(-8)) question.specPointId = "aqa-a-hist-2m-6";
 
+// Misconception tags for A-Level History.
+//
+// addAlevelHistoryBank() derives a tag per question (MC-<bankId>-<n>), which
+// gives 208 tags for 208 questions: nothing aggregates, so the heatmap ranks
+// individual questions rather than misconceptions and no starter can be
+// written for any of them. This maps the questions that share an underlying
+// error onto a common tag.
+//
+// 141 of the 208 are mapped, onto 38 tags. The other 67 keep their generated
+// per-question tag deliberately — they are the purely definitional items
+// (Tudor foreign policy, the People's War, Vietnam and Watergate), and the
+// only tag that would cover them names a TOPIC, not an error. The spec-point
+// accuracy table already reports topic-level weakness, from better evidence.
+// See docs/history-misconception-mapping.md for the full assignment.
+//
+// Caveat worth keeping in view: these stems are generated definition-recall
+// ("What does X refer to?"), so a fire here means "missed a definition in the
+// area where this error lives", not "holds this misconception". One question
+// per tag is being rewritten to the authoring standard so that each tag has
+// at least one genuinely diagnostic item behind it.
+const historyMisconceptionTags = {
+  "HIST-BRIT1-03":"MC-HIST-NEWLIB",
+  "HIST-BRIT1-05":"MC-HIST-LIB-WELFARE","HIST-BRIT1-06":"MC-HIST-LIB-WELFARE","HIST-BRIT1-08":"MC-HIST-LIB-WELFARE","HIST-BRIT1-38":"MC-HIST-LIB-WELFARE","HIST-BRIT1-39":"MC-HIST-LIB-WELFARE",
+  "HIST-BRIT1-07":"MC-HIST-CONTRIB","HIST-BRIT1-10":"MC-HIST-CONTRIB","HIST-BRIT1-11":"MC-HIST-CONTRIB","HIST-BRIT1-12":"MC-HIST-CONTRIB","HIST-BRIT1-40":"MC-HIST-CONTRIB",
+  "HIST-BRIT1-09":"MC-HIST-LORDS","HIST-BRIT1-13":"MC-HIST-LORDS","HIST-BRIT1-14":"MC-HIST-LORDS",
+  "HIST-BRIT1-15":"MC-HIST-HOMERULE","HIST-BRIT1-16":"MC-HIST-HOMERULE","HIST-BRIT1-17":"MC-HIST-HOMERULE","HIST-BRIT1-18":"MC-HIST-HOMERULE","HIST-BRIT1-19":"MC-HIST-HOMERULE","HIST-BRIT1-20":"MC-HIST-HOMERULE",
+  "HIST-BRIT1-22":"MC-HIST-SUFFRAGE","HIST-BRIT1-23":"MC-HIST-SUFFRAGE","HIST-BRIT1-24":"MC-HIST-SUFFRAGE","HIST-BRIT1-25":"MC-HIST-SUFFRAGE","HIST-BRIT1-26":"MC-HIST-SUFFRAGE",
+  "HIST-BRIT1-32":"MC-HIST-WARCAUSE",
+  "HIST-BRIT1-33":"MC-HIST-FRANCHISE","HIST-BRIT1-34":"MC-HIST-FRANCHISE",
+  "HIST-BRIT1-41":"MC-HIST-JUDGEMENT",
+
+  "HIST-BRIT2-03":"MC-HIST-GENSTRIKE","HIST-BRIT2-04":"MC-HIST-GENSTRIKE","HIST-BRIT2-05":"MC-HIST-GENSTRIKE",
+  "HIST-BRIT2-09":"MC-HIST-THIRTIES","HIST-BRIT2-10":"MC-HIST-THIRTIES","HIST-BRIT2-11":"MC-HIST-THIRTIES","HIST-BRIT2-16":"MC-HIST-THIRTIES","HIST-BRIT2-17":"MC-HIST-THIRTIES",
+  "HIST-BRIT2-12":"MC-HIST-NATGOV","HIST-BRIT2-19":"MC-HIST-NATGOV",
+  "HIST-BRIT2-13":"MC-HIST-GOLD","HIST-BRIT2-14":"MC-HIST-GOLD",
+  "HIST-BRIT2-15":"MC-HIST-APPEASE","HIST-BRIT2-20":"MC-HIST-APPEASE","HIST-BRIT2-21":"MC-HIST-APPEASE",
+  "HIST-BRIT2-25":"MC-HIST-BEVERIDGE","HIST-BRIT2-29":"MC-HIST-BEVERIDGE","HIST-BRIT2-31":"MC-HIST-BEVERIDGE","HIST-BRIT2-38":"MC-HIST-BEVERIDGE",
+  "HIST-BRIT2-27":"MC-HIST-1945","HIST-BRIT2-28":"MC-HIST-1945",
+  "HIST-BRIT2-30":"MC-HIST-CONSENSUS","HIST-BRIT2-32":"MC-HIST-CONSENSUS","HIST-BRIT2-37":"MC-HIST-CONSENSUS",
+  "HIST-2M6-GAPS-02":"MC-HIST-CONSENSUS","HIST-2M6-GAPS-05":"MC-HIST-CONSENSUS",
+  "HIST-BRIT2-36":"MC-HIST-SUEZ","HIST-2M6-GAPS-03":"MC-HIST-SUEZ",
+  "HIST-BRIT2-40":"MC-HIST-JUDGEMENT",
+
+  "HIST-USA1-01":"MC-HIST-RECON","HIST-USA1-02":"MC-HIST-RECON","HIST-USA1-06":"MC-HIST-RECON","HIST-USA1-07":"MC-HIST-RECON","HIST-USA1-08":"MC-HIST-RECON",
+  "HIST-USA1-03":"MC-HIST-AMENDMENTS","HIST-USA1-04":"MC-HIST-AMENDMENTS","HIST-USA1-05":"MC-HIST-AMENDMENTS",
+  "HIST-USA1-09":"MC-HIST-RIGHTSDECLINE","HIST-USA1-10":"MC-HIST-RIGHTSDECLINE","HIST-USA1-39":"MC-HIST-RIGHTSDECLINE",
+  "HIST-USA1-11":"MC-HIST-JIMCROW","HIST-USA1-12":"MC-HIST-JIMCROW","HIST-USA1-13":"MC-HIST-JIMCROW",
+  "HIST-USA1-14":"MC-HIST-LAISSEZ","HIST-USA1-15":"MC-HIST-LAISSEZ","HIST-USA1-16":"MC-HIST-LAISSEZ","HIST-USA1-17":"MC-HIST-LAISSEZ","HIST-USA1-21":"MC-HIST-LAISSEZ",
+  "HIST-USA1-22":"MC-HIST-POPPROG","HIST-USA1-23":"MC-HIST-POPPROG","HIST-USA1-24":"MC-HIST-POPPROG","HIST-USA1-25":"MC-HIST-POPPROG","HIST-USA1-26":"MC-HIST-POPPROG","HIST-USA1-27":"MC-HIST-POPPROG","HIST-USA1-28":"MC-HIST-POPPROG","HIST-USA1-29":"MC-HIST-POPPROG","HIST-USA1-30":"MC-HIST-POPPROG",
+  "HIST-USA1-33":"MC-HIST-CIVILRIGHTS-START",
+  "HIST-USA1-40":"MC-HIST-JUDGEMENT",
+
+  "HIST-USA2-02":"MC-HIST-CRASH","HIST-USA2-06":"MC-HIST-CRASH","HIST-USA2-07":"MC-HIST-CRASH",
+  "HIST-USA2-08":"MC-HIST-NEWDEAL-PLAN","HIST-USA2-09":"MC-HIST-NEWDEAL-PLAN","HIST-USA2-10":"MC-HIST-NEWDEAL-PLAN","HIST-USA2-11":"MC-HIST-NEWDEAL-PLAN","HIST-USA2-12":"MC-HIST-NEWDEAL-PLAN","HIST-USA2-13":"MC-HIST-NEWDEAL-PLAN","HIST-USA2-14":"MC-HIST-NEWDEAL-PLAN","HIST-USA2-15":"MC-HIST-NEWDEAL-PLAN",
+  "HIST-USA2-16":"MC-HIST-NDOPP","HIST-USA2-17":"MC-HIST-NDOPP",
+  "HIST-USA2-18":"MC-HIST-NEWDEAL-END",
+  "HIST-USA2-19":"MC-HIST-CIVILRIGHTS-START",
+  "HIST-USA2-20":"MC-HIST-COLDWARPOLICY","HIST-USA2-21":"MC-HIST-COLDWARPOLICY","HIST-USA2-22":"MC-HIST-COLDWARPOLICY","HIST-USA2-24":"MC-HIST-COLDWARPOLICY","HIST-USA2-37":"MC-HIST-COLDWARPOLICY",
+  "HIST-USA2-27":"MC-HIST-CIVILRIGHTS-LAW","HIST-USA2-28":"MC-HIST-CIVILRIGHTS-LAW","HIST-USA2-29":"MC-HIST-CIVILRIGHTS-LAW","HIST-USA2-30":"MC-HIST-CIVILRIGHTS-LAW","HIST-USA2-31":"MC-HIST-CIVILRIGHTS-LAW","HIST-USA2-32":"MC-HIST-CIVILRIGHTS-LAW",
+  "HIST-USA2-39":"MC-HIST-JUDGEMENT",
+
+  "HIST-TUDOR-01":"MC-HIST-TUDORCLAIM","HIST-TUDOR-02":"MC-HIST-TUDORCLAIM","HIST-TUDOR-03":"MC-HIST-TUDORCLAIM","HIST-TUDOR-06":"MC-HIST-TUDORCLAIM","HIST-TUDOR-20":"MC-HIST-TUDORCLAIM","HIST-TUDOR-25":"MC-HIST-TUDORCLAIM","HIST-TUDOR-26":"MC-HIST-TUDORCLAIM",
+  "HIST-TUDOR-04":"MC-HIST-PRETENDERS","HIST-TUDOR-05":"MC-HIST-PRETENDERS",
+  "HIST-TUDOR-11":"MC-HIST-MINISTERS","HIST-TUDOR-12":"MC-HIST-MINISTERS","HIST-TUDOR-13":"MC-HIST-MINISTERS","HIST-TUDOR-18":"MC-HIST-MINISTERS",
+  "HIST-TUDOR-14":"MC-HIST-BREAK","HIST-TUDOR-15":"MC-HIST-BREAK","HIST-TUDOR-19":"MC-HIST-BREAK",
+  "HIST-TUDOR-16":"MC-HIST-DISSOLUTION",
+  "HIST-TUDOR-17":"MC-HIST-REBELLION","HIST-TUDOR-23":"MC-HIST-REBELLION","HIST-TUDOR-34":"MC-HIST-REBELLION","HIST-TUDOR-35":"MC-HIST-REBELLION",
+  "HIST-TUDOR-30":"MC-HIST-ELIZSETTLE","HIST-TUDOR-31":"MC-HIST-ELIZSETTLE","HIST-TUDOR-32":"MC-HIST-ELIZSETTLE","HIST-TUDOR-33":"MC-HIST-ELIZSETTLE",
+  "HIST-TUDOR-40":"MC-HIST-JUDGEMENT"
+};
+for (const bankId of ["HIST-BRIT1", "HIST-BRIT2", "HIST-USA1", "HIST-USA2", "HIST-TUDOR"]) {
+  for (const question of BANKS[bankId]?.questions || []) {
+    const tag = historyMisconceptionTags[question.id];
+    if (tag) question.tag = tag;
+  }
+}
+
 appendGenerated("RS-1", [
   ["In Buddhist teaching, dukkha refers most closely to:","the unsatisfactory and unstable nature of conditioned existence","a permanent personal soul","a creator deity who judges actions","a ritual performed only by monks", "Dukkha includes suffering, dissatisfaction and the inability of changing things to provide lasting security."],
   ["The Four Noble Truths begin with the claim that:","life as ordinarily experienced involves dukkha","all desire is immediately fulfilled","the self is permanent and unchanging","karma has no effect on rebirth", "The first truth identifies dukkha; the remaining truths explain its cause, cessation and the path."],
