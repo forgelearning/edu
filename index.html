@@ -1973,6 +1973,7 @@ document.body.classList.add('audit-test');
       button.setAttribute('aria-selected', index === 0 ? 'true' : 'false');
       button.setAttribute('aria-controls', sectionId + '-preview-panel');
       button.setAttribute('data-forge-action', item.action);
+      button.setAttribute('aria-label', item.badge ? item.label + ', ' + item.badge + ' items' : item.label);
       button.innerHTML = '<span class="audit-side-icon">' + auditSidebarIcon(item.icon) + '</span><span class="audit-side-label">' + item.label + '</span>' + (item.badge ? '<span class="audit-side-badge">' + item.badge + '</span>' : '');
       button.addEventListener('click', function(){
         aside.querySelectorAll('.audit-side-item').forEach(function(other){ other.classList.toggle('active', other === button); other.setAttribute('aria-selected', other === button ? 'true' : 'false'); });
@@ -2817,5 +2818,9 @@ document.body.classList.add('audit-test');
 </script>
 <script src="scripts/forge-page-actions.js?v=20260802-3"></script>
 <script src="scripts/forge-discovery-nav.js?v=20260802-3"></script>
+<script>
+  var landingLogo = document.getElementById('nav-logo');
+  if (landingLogo) landingLogo.setAttribute('href', 'index.html');
+</script>
 </body>
 </html>
