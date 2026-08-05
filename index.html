@@ -2001,7 +2001,7 @@ document.body.classList.add('audit-test');
     compact.setAttribute('tabindex', '0');
     wrap.querySelectorAll('.dash-tabs').forEach(function(tablist){ tablist.hidden = true; });
     renderPreviewState(compact, items[0].action);
-    setTimeout(function(){ hardenPreviewLinks(compact); }, 0);
+    setTimeout(function(){ neutralizePreviewLinks(compact); }, 0);
     // Keep every tab inside the same shell as Overview. The real Overview is
     // the reference composition, so capture its rendered height before any
     // tab can replace it and reuse that height for the rest of the preview.

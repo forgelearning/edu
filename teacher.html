@@ -578,12 +578,29 @@ function renderLogin(activeTab) {
       var err = document.getElementById('t-err');
       if (!code) { err.textContent = 'Enter a class code.'; err.style.display = 'block'; return; }
       viewBtn.disabled = true; viewBtn.textContent = 'Loading class…';
+      var lookupTimedOut = false;
+      var lookupTimeout = setTimeout(function() {
+        lookupTimedOut = true;
+        err.textContent = 'The class lookup timed out. Check your connection and try again.';
+        err.style.display = 'block';
+        viewBtn.disabled = false;
+        viewBtn.textContent = 'View dashboard \u2192';
+      }, 10000);
       supaGet('classes', 'code=eq.' + encodeURIComponent(code)).then(function(classes) {
+        if (lookupTimedOut) return;
+        clearTimeout(lookupTimeout);
         if (!Array.isArray(classes) || classes.length === 0) {
           err.textContent = 'Class not found. Check the code and try again.'; err.style.display = 'block';
           viewBtn.disabled = false; viewBtn.textContent = 'View dashboard \u2192'; return;
         }
         loadClassDashboard(classes[0]);
+      }).catch(function() {
+        if (lookupTimedOut) return;
+        clearTimeout(lookupTimeout);
+        err.textContent = 'We could not look up that class. Check your connection and try again.';
+        err.style.display = 'block';
+        viewBtn.disabled = false;
+        viewBtn.textContent = 'View dashboard \u2192';
       });
     };
   }
