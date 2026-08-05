@@ -294,7 +294,10 @@ function renderProfile(){
   // Determine subject label from responses
   var subjectLabel='A Level';
   var subjectKey=responses.length>0?(responses[0].subject||''):'';
-  if(subjectKey){var skeys=Object.keys(typeof SUBJECTS!=='undefined'?SUBJECTS:{});skeys.forEach(function(k){if(k===subjectKey&&typeof SUBJECTS!=='undefined')subjectLabel='A Level '+SUBJECTS[k].label;});}
+  // SUBJECTS labels already carry their level ("A Level Business",
+  // "GCSE Geography"), so prefixing produced "A Level A Level Business" — and
+  // "A Level GCSE Geography" for the GCSE keys.
+  if(subjectKey){var skeys=Object.keys(typeof SUBJECTS!=='undefined'?SUBJECTS:{});skeys.forEach(function(k){if(k===subjectKey&&typeof SUBJECTS!=='undefined')subjectLabel=SUBJECTS[k].label;});}
 
   var activeTab=st.activeTab||'overview';
 

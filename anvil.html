@@ -363,14 +363,22 @@ function buildReworkLap(questions,avoidKey){
 function repairQuestionsFor(tag){
   var wanted=String(tag||'').toLowerCase();
   var found=[];
-  for(var bankKey in BANKS){
-    var bank=BANKS[bankKey];
-    (bank.questions||[]).forEach(function(q){
-      if(!q.reforge||!q.options)return;
-      var tags=Array.isArray(q.tag)?q.tag:[q.tag];
-      if(tags.some(function(value){return String(value||'').toLowerCase()===wanted;})) found.push(q);
-    });
-  }
+  // Retired banks too: a misconception recorded against HIST-1 or LAW-1 is
+  // still the student's to fix, and those questions are the only ones that
+  // carry its tag. Repair is the one place a superseded bank still earns its
+  // keep — nothing else serves them.
+  var sources=[BANKS];
+  if(typeof RETIRED_BANKS!=='undefined') sources.push(RETIRED_BANKS);
+  sources.forEach(function(source){
+    for(var bankKey in source){
+      var bank=source[bankKey];
+      (bank.questions||[]).forEach(function(q){
+        if(!q.reforge||!q.options)return;
+        var tags=Array.isArray(q.tag)?q.tag:[q.tag];
+        if(tags.some(function(value){return String(value||'').toLowerCase()===wanted;})) found.push(q);
+      });
+    }
+  });
   return found;
 }
 
