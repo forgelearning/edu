@@ -107,22 +107,36 @@ propagates into its `*-COV-*` copies and fixing the source fixes them all.
   structural checks cannot judge whether an explanation genuinely teaches.
 - Misconception labels and starter activities remain a product-quality backlog:
   the teacher heatmap should show human-readable labels and useful intervention
-  suggestions for every active tag. The blocker is *tagging*, not starters —
-  most subjects give each question a tag unique to itself (`tag === "MC-" + id`),
-  so nothing aggregates and every starter falls back to a generic drill. Done so
-  far: `psych`, `gcse-geo`, `soc`, `econ`, `gcse-econ` (420 questions regrouped
-  onto 76 shared `MC-GE-*` tags) and the three `gcse-sep-*` sciences (600
-  questions on 96 shared topic tags, one per bio/chem/physics topic). Next,
-  roughly by value: `gcse-science` — its 212 questions still sit on 156 tags,
-  and most should be remapped onto the existing `MC-SEP-*` science tags rather
-  than given a set of their own, since combined science is a subset of the
-  separate content — then `gcse-maths`, then the ~15 subjects still at 100%
-  per-question tags. `dev/audit-banks.js` fails if a subject listed in its
-  `TAG_TAXONOMY_SUBJECTS` regresses, or if an aggregatable tag has no starter;
-  add a subject there once it is retagged.
-- Not every subject needs a fresh taxonomy first: `gcse-sep-*` already carried
-  good topic tags, so the work there was purely labels and starters. Check what
-  a subject's tags actually look like before assuming a retag is needed.
+  suggestions for every active tag. A starter is keyed to a tag, so a tag used
+  by exactly one question can never aggregate and always falls back to a generic
+  drill. **1,670 of 7,801 questions (21%) currently have a real starter.**
+
+  Complete: `gcse-econ` (76 tags), `gcse-sep-bio`/`-chem`/`-phys` (32 tags each).
+  Substantial: `psych` (83% of questions covered). Partial: `econ`, `gcse-geo`.
+
+  **Check a subject's tags before assuming it needs retagging** — since coverage
+  variants started inheriting their source tag, the backlog splits in two and
+  the halves need completely different work:
+
+  1. *Tags already shared, starters missing.* Cheap: no retag, just labels and
+     starters. `cs` (99 tags needing a starter), `bus` 88, `chem` 86, `bio` 84,
+     `gcse-maths` 80, `phys` 68, `media` 50, `rs` 48, `hsc` 48, `maths` 23,
+     `pe`/`englit`/`engll`/`span` 16 each, `french` 14, `german` 13, `mand` 8.
+     About 773 starters in total, and `englit`/`engll` share banks so they are
+     one job.
+  2. *Still mostly per-question tags, so a taxonomy is needed first.* `hist`,
+     `gcse-psych`, `crim`, `law`, `pol` and `gcse-hist` are at ~100%; `geo` 99%,
+     `soc` 93%, `gcse-geo` 77%, `econ` 73%, `gcse-science` 47%. About 2,602
+     questions to regroup.
+
+  `gcse-science` is the best next target in group 2: most of its 156 tags should
+  be remapped onto the existing `MC-SEP-*` science tags rather than given a set
+  of their own, since combined science is a subset of the separate content — so
+  it needs a mapping and almost no new starters.
+
+  `dev/audit-banks.js` fails if a subject listed in its `TAG_TAXONOMY_SUBJECTS`
+  regresses, or if an aggregatable tag has no starter; add a subject there once
+  it is done, with its allowance set to the level it has reached.
 - A-Level Geography is intentionally marked Developing until every active route
   point is mapped.
 - `englit` and `engll` reference the same two bank ids (`ENG-TERM-1`,
