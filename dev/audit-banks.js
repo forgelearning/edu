@@ -247,23 +247,26 @@ const starterRows = {};
 const starterTypes = {};
 const starterTitles = new Map();
 const starterSubjectStats = {};
-let activeTags = 0, explicitStarters = 0, curatedStarters = 0, generatedStarters = 0, unusableStarters = 0;
+let activeTags = 0, explicitStarters = 0, handAuthoredStarters = 0, curatedStarters = 0, generatedStarters = 0, unusableStarters = 0, recallEvaluateStarters = 0;
 for (const [bankId, bank] of Object.entries(BANKS)) {
   const subject = bankToSubject[bankId];
   if (!subject || !wanted(bankId)) continue;
   for (const q of bank.questions) {
     if (!q.tag) continue;
-    const subjectStats = (starterSubjectStats[subject] ||= { tags: new Set(), explicit: 0, curated: 0 });
+    const subjectStats = (starterSubjectStats[subject] ||= { tags: new Set(), explicit: 0, hand: 0, curated: 0 });
     if (subjectStats.tags.has(q.tag)) continue;
     subjectStats.tags.add(q.tag);
     const isCurated = curatedTags.has(q.tag);
-    const isExplicit = !!MC_STARTERS[q.tag] || isCurated;
+    const isHandAuthored = !!MC_STARTERS[q.tag];
+    const isExplicit = isHandAuthored || isCurated;
     if (isExplicit) subjectStats.explicit++;
+    if (isHandAuthored) subjectStats.hand++;
     if (isCurated) subjectStats.curated++;
     if (starterRows[q.tag]) continue;
     activeTags++;
     const starter = getStarterActivity(q.tag, q.tag);
     if (isExplicit) explicitStarters++; else generatedStarters++;
+    if (isHandAuthored) handAuthoredStarters++;
     if (isCurated) curatedStarters++;
     const hasActivityContent = starter && (starter.prompt || starter.answer || starter.items || (starter.headers && starter.rows));
     if (!starter || !starter.type || !starter.title || !starter.instruction || !hasActivityContent) {
@@ -272,17 +275,24 @@ for (const [bankId, bank] of Object.entries(BANKS)) {
     }
     const starterType = starter && starter.type || 'missing';
     starterTypes[starterType] = (starterTypes[starterType] || 0) + 1;
+    const stem = String(q.stem || '').replace(/\s+/g, ' ').trim().toLowerCase();
+    const plainRecall = /^(what|which|who|where|when|define|identify|name|state)\b/.test(stem) && !/\b(response shows|passage|best|most important|argument|view)\b/.test(stem);
+    if (!isExplicit && starterType === 'evaluate' && plainRecall) {
+      recallEvaluateStarters++;
+      issues.push(`STARTER INFERENCE: ${q.tag} uses evaluate for a plain recall stem`);
+    }
     if (starter && starter.title) starterTitles.set(starter.title, (starterTitles.get(starter.title) || 0) + 1);
     starterRows[q.tag] = { subject, isExplicit };
   }
 }
 const repeatedGeneratedTitles = [...starterTitles.values()].filter((n) => n > 1).length;
-console.log(`\nstarters ${explicitStarters} explicit (${curatedStarters} curated anchors) / ${generatedStarters} generated / ${unusableStarters} unusable across ${activeTags} active tags`);
+console.log(`\nstarters ${explicitStarters} explicit (${handAuthoredStarters} hand-authored, ${curatedStarters} structured anchors) / ${generatedStarters} generated / ${unusableStarters} unusable across ${activeTags} active tags`);
 console.log(`starter types ${Object.entries(starterTypes).sort((a, b) => b[1] - a[1]).map(([type, n]) => `${type}=${n}`).join('  ')}`);
+console.log(`generated recall stems incorrectly using evaluate ${recallEvaluateStarters}`);
 console.log(`repeated starter titles ${repeatedGeneratedTitles}`);
 for (const subject of [...new Set(anchorGroups.flatMap((group) => Object.keys(group)))]) {
-  const stats = starterSubjectStats[subject] || { tags: new Set(), explicit: 0, curated: 0 };
-  console.log(`starter anchors ${subject}: ${stats.explicit}/${stats.tags.size} explicit (${stats.curated} curated)`);
+  const stats = starterSubjectStats[subject] || { tags: new Set(), explicit: 0, hand: 0, curated: 0 };
+  console.log(`starter anchors ${subject}: ${stats.explicit}/${stats.tags.size} explicit (${stats.hand} hand-authored, ${stats.curated} structured)`);
   if (stats.tags.size >= 15 && stats.explicit < 15) issues.push(`STARTER ANCHORS: ${subject} has only ${stats.explicit} explicit starters; expected at least 15`);
 }
 
