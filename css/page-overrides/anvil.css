@@ -29,6 +29,8 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
 .anvil-card:hover{border-color:var(--ember)}
 .anvil-card.active-mc{border-color:var(--bad)}
 .anvil-card.resolved-mc{border-color:var(--good);opacity:.6}
+.anvil-card.no-repair{cursor:default;opacity:.62}
+.anvil-norepair{margin-top:10px;font-size:12px;line-height:1.45;color:#8A857E}
 .anvil-top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
 .anvil-tag{font-size:11px;color:var(--coal);background:var(--hot);padding:2px 8px;border-radius:var(--radius-xs);font-weight:600;font-family:'JetBrains Mono',monospace}
 .anvil-label{color:var(--white);font-size:14px;font-weight:600;margin-top:6px}
