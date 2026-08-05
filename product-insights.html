@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Forge — Product insights</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Rethink+Sans:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/tokens.css"><link rel="stylesheet" href="css/base.css?v=20260814-fonts"><link rel="stylesheet" href="css/components.css?v=20260812">
 
 <link rel="stylesheet" href="css/states.css">
@@ -63,5 +65,6 @@
   else {report.innerHTML=ForgeState.html('loading',{label:'Loading protected report',body:'Fetching authorised cross-user aggregates.'});ForgeAPI.rpc('get_product_analytics',{p_days:30},{token:token}).then(renderProtected).catch(function(){renderProtected({authorized:false});});}
 })();
 </script>
+  <script src="scripts/forge-overdrive.js"></script>
   <script src="scripts/forge-page-actions.js"></script>
 </body></html>

@@ -112,7 +112,7 @@ function renderSubjects(){
   Object.keys(state.subjects).forEach(function(key){
     var s = state.subjects[key];
     var qCount = s.banks.reduce(function(sum,bk){ return sum + (state.banks[bk] ? state.banks[bk].questions.length : 0); }, 0);
-    h += '<button class="pick-btn" data-key="'+key+'" style="border-left:4px solid '+s.color+'"><h3>'+s.label+'</h3><div class="sub">'+s.sub+'</div><div class="count">'+qCount+' questions</div></button>';
+    h += '<button class="pick-btn" data-key="'+key+'" style="--accent-color:'+s.color+'"><h3>'+s.label+'</h3><div class="sub">'+s.sub+'</div><div class="count">'+qCount+' questions</div></button>';
   });
   h += '</div>';
   app.innerHTML = h;
@@ -141,7 +141,7 @@ function renderBanks(){
     var b = state.banks[bk];
     if (!b) return;
     var qs = b.questions.filter(function(q){ return !q.type || q.type==='fill_blank'; });
-    h += '<button class="pick-btn" data-key="'+bk+'" style="border-left:4px solid '+b.color+'"><h3>'+b.label+'</h3><div class="count">'+qs.length+' questions</div></button>';
+    h += '<button class="pick-btn" data-key="'+bk+'" style="--accent-color:'+b.color+'"><h3>'+b.label+'</h3><div class="count">'+qs.length+' questions</div></button>';
   });
   h += '</div>';
   h += '<div class="opts-row"><label><input type="checkbox" id="shuffle-cb" '+(state.shuffle?'checked':'')+'> Shuffle question order</label></div>';
@@ -165,7 +165,7 @@ function renderPresent(){
   }
 
   var h = '<div class="present-header"><button class="back-btn forge-u-3ocpgz" id="back-banks">← Banks</button><span class="bank-name" style="color:'+bk.color+'">'+bk.label+'</span><span>'+(state.idx+1)+' / '+state.questions.length+'</span></div>';
-  h += '<div class="progress-bar"><div class="progress-fill" style="width:'+((state.idx/state.questions.length)*100)+'%;background:'+bk.color+'"></div></div>';
+  h += '<div class="progress-bar"><div class="progress-fill" style="--progress:'+((state.idx/state.questions.length))+';background:'+bk.color+'"></div></div>';
   h += '<div class="stage">';
   h += '<span class="q-id-big" style="color:'+bk.color+';background:'+bk.color+'1a">'+q.id+'</span>';
   h += '<div class="stem-big">'+(q.stem||q.template)+'</div>';
@@ -236,6 +236,7 @@ document.addEventListener('keydown', function(e){
 });
 </script>
 <script src="scripts/nav.js"></script>
+  <script src="scripts/forge-overdrive.js"></script>
   <script src="scripts/forge-page-actions.js"></script>
 </body>
 </html>
