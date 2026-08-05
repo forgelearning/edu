@@ -17,6 +17,13 @@ const { BANKS, SUBJECTS } = new Function(
   fs.readFileSync(SRC, 'utf8') + '\nreturn { BANKS, SUBJECTS };'
 )();
 
+// Loaded for the misconception-tag checks at the bottom. The browser globals
+// guard at the end of the file is stripped so it can be evaluated headless.
+const STARTERS_SRC = path.join(__dirname, '..', 'data', 'starter-activities.js');
+const MC_STARTERS = new Function(
+  fs.readFileSync(STARTERS_SRC, 'utf8').replace(/if \(typeof window[\s\S]*$/, '') + '\nreturn MC_STARTERS;'
+)();
+
 // A question is "cued" when the correct option is the single longest one.
 // Students learn to pick the longest answer, so this scores marks without
 // any subject knowledge.
@@ -163,6 +170,54 @@ for (const [key, subject] of Object.entries(SUBJECTS)) {
   }
 }
 
+// A misconception tag used by exactly one question is a per-question
+// identifier, not a category: the teacher heatmap has nothing to aggregate and
+// getStarterActivity() can only offer a generic drill. Structural checks above
+// cannot see this, because a bank of 420 one-off tags is perfectly well-formed.
+//
+// Enforced per subject rather than globally: two subjects that coincidentally
+// share a tag once each still give neither teacher anything to act on. Only
+// the subjects listed below have a real taxonomy today; the rest are the
+// backlog recorded in CLAUDE.md, so they are held at their current level
+// rather than failing the build. Lower a threshold once a subject is retagged.
+const TAG_TAXONOMY_SUBJECTS = {
+  // subject key: max share of that subject's questions allowed to sit on a
+  // tag used only once within the subject.
+  'gcse-econ': 0,
+  psych: 0.18,
+  'gcse-geo': 0.78,
+  soc: 0.94,
+};
+for (const [key, maxSingleShare] of Object.entries(TAG_TAXONOMY_SUBJECTS)) {
+  const subject = SUBJECTS[key];
+  if (!subject) { issues.push(`TAG TAXONOMY: subject "${key}" is checked but no longer exists`); continue; }
+  const counts = new Map();
+  let n = 0;
+  for (const bankId of subject.banks) {
+    for (const q of (BANKS[bankId] || { questions: [] }).questions) {
+      n++;
+      if (q.tag) counts.set(q.tag, (counts.get(q.tag) || 0) + 1);
+    }
+  }
+  if (!n) continue;
+  const singles = [...counts.entries()].filter(([, c]) => c === 1);
+  const share = singles.length / n;
+  if (share > maxSingleShare) {
+    issues.push(
+      `TAG TAXONOMY: "${key}" has ${singles.length}/${n} questions (${Math.round(share * 100)}%) on a tag used only once ` +
+      `(allowed ${Math.round(maxSingleShare * 100)}%). Group them into shared misconception tags, ` +
+      `then add a label in data/misconception-labels.js and a starter in data/starter-activities.js for each.`
+    );
+  }
+  // A shared tag with no starter is a heatmap row a teacher cannot act on.
+  const missingStarter = [...counts.entries()]
+    .filter(([tag, c]) => c >= 2 && !MC_STARTERS[tag])
+    .map(([tag]) => tag);
+  if (missingStarter.length) {
+    issues.push(`NO STARTER: "${key}" has ${missingStarter.length} aggregatable tag(s) with no corrective starter: ${missingStarter.slice(0, 5).join(', ')}${missingStarter.length > 5 ? ', …' : ''}`);
+  }
+}
+
 const pct = (a, b) => (b ? Math.round((a / b) * 100) + '%' : '-');
 const fmt = (k) => ['A', 'B', 'C', 'D'].map((l) => k[l]).join('/');
 
@@ -191,6 +246,21 @@ if (!issues.length) console.log('none');
 const fatal = issues.filter((i) => /^(UNGRADEABLE|BAD OPTION KEYS|MISSING BANK|DUPLICATE ID|NO OPTIONS|EMPTY STEM)/.test(i));
 if (fatal.length) {
   console.log(`\n${fatal.length} fatal issue(s) — these break questions for students.`);
+  process.exit(1);
+}
+
+// Misconception-taxonomy guard. These do not break a question for a student,
+// so they are not in the "fatal" list above, but they silently make the
+// teacher heatmap useless — and nothing else in this audit can see them, since
+// a bank of 420 one-off tags is structurally perfect. Enforced for the
+// subjects listed in TAG_TAXONOMY_SUBJECTS only, at their current level, so
+// this stops regressions without failing on the known backlog.
+const taxonomy = issues.filter((i) => /^(TAG TAXONOMY|NO STARTER)/.test(i));
+if (taxonomy.length) {
+  console.log(
+    `\n${taxonomy.length} misconception-tag issue(s) — these break the teacher heatmap, not the question. ` +
+    `Group one-off tags into shared categories, then give each a label and a corrective starter.`
+  );
   process.exit(1);
 }
 

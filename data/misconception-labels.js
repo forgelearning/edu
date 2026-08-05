@@ -23,8 +23,10 @@
 // resolveMCLabel() below covers those instead, by deriving a short label
 // from the question's own scaffold at the point it's needed.
 //
-// Current state, measured over the 7,226 tags in the bank: 683 come from
-// MC_LABELS, 6,543 are derived, none fall back to a bare code. Of the
+// Current state, measured over the 6,896 tags in the bank: 584 come from
+// MC_LABELS, 6,312 are derived, none fall back to a bare code. (The tag count
+// fell from 7,239 when GCSE Economics was retagged from 420 per-question tags
+// onto 76 shared MC-GE-* categories, all of them hand-labelled below.) Of the
 // derived labels 375 are still truncated (always at a word boundary), and
 // 1,675 tags share a label with two or more others. The remaining sharers
 // are tags whose scaffold opens with the same generic line and whose stem
@@ -834,7 +836,85 @@ const MC_LABELS = {
   "MC-URB-06": "Cornwall — decline of primary industry, rise of tourism",
   "MC-URF-02": "Stratford — regeneration fieldwork location",
   "MC-URF-03": "Environmental Quality Survey — bipolar scoring",
-  "MC-URF-05": "Questionnaire design — closed vs scale questions"
+  "MC-URF-05": "Questionnaire design — closed vs scale questions",
+
+  // ---- GCSE Economics (OCR J205). See GCSE_ECON_MC_TAGS in data/forge-data.js.
+  "MC-GE-SCARCITY": "Opportunity cost — next best alternative, not every alternative",
+  "MC-GE-FACTORS": "Factors of production — capital confused with money or labour",
+  "MC-GE-PPF": "PPF — inside the frontier vs a shift of the frontier",
+  "MC-GE-SECTORS": "Primary, secondary and tertiary sector classification",
+  "MC-GE-SPECIALISATION": "Division of labour — benefits stated without drawbacks",
+  "MC-GE-MARKET-DEF": "Product vs factor markets; what a market is",
+  "MC-GE-PRICE-FUNC": "Price mechanism — signalling, incentive and rationing confused",
+  "MC-GE-DISEQ": "Shortage vs surplus; effect of maximum and minimum prices",
+  "MC-GE-SHIFT-VS-MOVE": "Movement along a curve vs a shift of the whole curve",
+  "MC-GE-DS-DETERMINANTS": "Substitutes, complements and cost changes — which curve moves",
+  "MC-GE-EQUILIBRIUM": "Equilibrium — quantity demanded equals quantity supplied",
+  "MC-GE-ELASTICITY": "Elastic vs inelastic; PED confused with PES",
+  "MC-GE-REV-COST-PROFIT": "Revenue, total cost, average cost and profit calculations",
+  "MC-GE-PRODUCTIVITY": "Productivity (output per input) confused with total production",
+  "MC-GE-EOS": "Economies vs diseconomies of scale",
+  "MC-GE-MARKET-STRUCT": "Monopoly vs oligopoly vs competitive market",
+  "MC-GE-BARRIERS": "Barriers to entry and market power",
+  "MC-GE-NONPRICE-COMP": "Non-price competition, branding and loss leaders",
+  "MC-GE-DERIVED-DEMAND": "Demand for labour is derived from demand for the output",
+  "MC-GE-LABOUR-SUPPLY": "Supply of labour — who counts as willing and able",
+  "MC-GE-WAGE-DIFFERENTIALS": "Why wages differ — scarcity of skill, not effort alone",
+  "MC-GE-MIN-WAGE": "Minimum wage — binding above equilibrium, non-binding below",
+  "MC-GE-IMMOBILITY": "Geographical vs occupational immobility of labour",
+  "MC-GE-PAY": "Gross vs net pay; income tax and national insurance",
+  "MC-GE-MONEY-FUNC": "Functions and qualities of money; why barter is inefficient",
+  "MC-GE-INTEREST": "Interest as cost of borrowing and reward for saving",
+  "MC-GE-FIN-INST": "Banks, insurance and credit risk",
+  "MC-GE-OBJECTIVES": "The government's macroeconomic objectives",
+  "MC-GE-GDP": "GDP, GDP per capita and the growth rate",
+  "MC-GE-REAL-VS-NOMINAL": "Real vs nominal GDP — adjusting for price changes",
+  "MC-GE-CYCLE": "Boom, recession and the economic cycle",
+  "MC-GE-GROWTH-CAUSES": "Causes and benefits of economic growth",
+  "MC-GE-GDP-WELLBEING": "GDP per capita as an incomplete measure of wellbeing",
+  "MC-GE-SUSTAINABILITY": "Sustainable growth and development",
+  "MC-GE-UNEMP-TYPES": "Structural, cyclical, frictional and seasonal unemployment",
+  "MC-GE-UNEMP-MEASURE": "Unemployment rate; unemployed vs economically inactive",
+  "MC-GE-UNEMP-EFFECTS": "Costs of unemployment to workers, firms and government",
+  "MC-GE-INCOME-VS-WEALTH": "Income is a flow; wealth is a stock",
+  "MC-GE-INEQUALITY": "Measuring income inequality; median vs mean",
+  "MC-GE-REDISTRIBUTION": "Redistribution through taxes and benefits",
+  "MC-GE-TAX-TYPES": "Direct vs indirect; progressive vs regressive tax",
+  "MC-GE-INFLATION-DEF": "Falling inflation is not falling prices",
+  "MC-GE-CPI": "CPI calculation and weighting of the basket",
+  "MC-GE-INFLATION-CAUSES": "Demand-pull vs cost-push inflation",
+  "MC-GE-INFLATION-EFFECTS": "Who gains and loses from unexpected inflation",
+  "MC-GE-GOVT-SPENDING": "What government spending covers; ageing population pressure",
+  "MC-GE-BUDGET": "Budget deficit vs surplus vs national debt",
+  "MC-GE-FISCAL": "Expansionary vs contractionary fiscal policy",
+  "MC-GE-AUTO-STABILISERS": "Automatic stabilisers act without a new decision",
+  "MC-GE-POLICY-LAGS": "Policy time lags before an effect appears",
+  "MC-GE-BOE": "Bank of England, the MPC and quantitative easing",
+  "MC-GE-MONETARY": "Interest rate changes and their effect on spending",
+  "MC-GE-RATES-AND-CURRENCY": "Interest rates and the exchange rate",
+  "MC-GE-SUPPLYSIDE": "Supply-side policy — capacity, not demand",
+  "MC-GE-EXTERNALITIES": "Positive and negative externalities on third parties",
+  "MC-GE-MERIT-GOODS": "Merit, demerit and public goods",
+  "MC-GE-MARKET-FAILURE": "Market failure — public goods and asymmetric information",
+  "MC-GE-INTERVENTION": "Taxes, subsidies and regulation to correct market failure",
+  "MC-GE-GOVT-FAILURE": "Government failure — intervention with unintended costs",
+  "MC-GE-EXPORTS-IMPORTS": "Exports vs imports — direction of the flow",
+  "MC-GE-TRADE-BENEFITS": "Gains from specialisation and comparative advantage",
+  "MC-GE-PROTECTIONISM": "Tariffs and quotas — who gains and who loses",
+  "MC-GE-TRADING-BLOCS": "Trading blocs and free trade agreements",
+  "MC-GE-TRADE-RISKS": "Supply-chain interdependence and its risks",
+  "MC-GE-BOP": "What the current account records",
+  "MC-GE-BOP-CALC": "Calculating the trade and current account balance",
+  "MC-GE-BOP-EVAL": "A current account deficit is not automatically a crisis",
+  "MC-GE-BOP-POLICY": "Improving the current account through competitiveness",
+  "MC-GE-APPREC-DEPREC": "Appreciation vs depreciation; what an exchange rate is",
+  "MC-GE-CURRENCY-DEMAND": "What shifts demand for and supply of a currency",
+  "MC-GE-EXCHANGE-RATE": "Exchange rate effects on exporters vs importers",
+  "MC-GE-EXR-CALC": "Converting between currencies — multiply or divide",
+  "MC-GE-J-CURVE": "Depreciation improves the balance only if demand responds",
+  "MC-GE-GLOBALISATION": "Globalisation as growing integration and interdependence",
+  "MC-GE-MNC": "Multinationals and foreign direct investment",
+  "MC-GE-GLOB-COSTS": "Costs of globalisation for workers and communities"
 };
 
 // Resolve a tag to a human label, deriving one on the fly for tags that
