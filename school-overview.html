@@ -900,8 +900,13 @@ window.exportCSV = function(type) {
   var url = URL.createObjectURL(blob);
   var a = document.createElement('a');
   a.href = url; a.download = 'forge-' + type + '-' + new Date().toISOString().slice(0,10) + '.csv';
+  a.style.display = 'none';
+  document.body.appendChild(a);
   a.click();
-  URL.revokeObjectURL(url);
+  setTimeout(function() {
+    a.remove();
+    URL.revokeObjectURL(url);
+  }, 1000);
 };
 </script>
 <script src="scripts/nav.js"></script>

@@ -312,6 +312,8 @@ var ForgeSidebar = {
   setClassLabel: function(text) {
     var el = document.querySelector('.fclassswitch-label');
     if (el) el.textContent = text;
+    var button = document.getElementById('fclassswitch-btn');
+    if (button) button.setAttribute('aria-label', 'Switch class — ' + String(text || 'choose a class'));
   },
 
   // classes: [{id, name, subject, code}], activeId: currently open class id
