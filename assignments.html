@@ -44,7 +44,14 @@ function load(s){if(!s||!s.classId){showNoClass();return}ForgeState.loading(el,{
      in the background. This keeps a valid assignment renderable even when a
      linking RPC is unavailable or slow. */
   var responsePromise=context.studentId
-    ?jsonFetch(API+'/rest/v1/responses?select=*&student_id=eq.'+encodeURIComponent(context.studentId)+'&class_id=eq.'+encodeURIComponent(context.classId),{headers:headers(),token:ForgeAuth.accessToken()||KEY}).then(function(rows){return responseRows(rows)}).catch(function(){
+    ?jsonFetch(API+'/rest/v1/responses?select=*&student_id=eq.'+encodeURIComponent(context.studentId)+'&class_id=eq.'+encodeURIComponent(context.classId),{headers:headers(),token:ForgeAuth.accessToken()||KEY}).then(function(rows){
+      var direct=responseRows(rows);
+      // A direct table read can return 200 + [] when RLS hides the student's
+      // rows. Treat that the same as a failed read and use the anon-safe RPC,
+      // otherwise completed work is displayed as not started.
+      if(direct.length||!context.classCode)return direct;
+      return jsonFetch(API+'/rest/v1/rpc/get_student_own_responses',{method:'POST',headers:headers(),body:JSON.stringify({p_student_id:context.studentId,p_code:context.classCode,p_name:context.studentName})}).then(function(rows){return responseRows(rows)}).catch(function(){return[]});
+    }).catch(function(){
       return context.classCode
         ?jsonFetch(API+'/rest/v1/rpc/get_student_own_responses',{method:'POST',headers:headers(),body:JSON.stringify({p_student_id:context.studentId,p_code:context.classCode,p_name:context.studentName})}).then(function(rows){return responseRows(rows)}).catch(function(){return[]})
         :[];
