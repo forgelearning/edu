@@ -2000,7 +2000,10 @@ document.body.classList.add('audit-test');
     compact.setAttribute('role', 'tabpanel');
     compact.setAttribute('aria-labelledby', sectionId + '-preview-tab-0');
     compact.setAttribute('tabindex', '0');
-    wrap.querySelectorAll('.dash-tabs').forEach(function(tablist){ tablist.hidden = true; });
+    wrap.querySelectorAll('.dash-tabs').forEach(function(tablist){
+      tablist.hidden = true;
+      tablist.style.display = 'none';
+    });
     renderPreviewState(compact, items[0].action);
     setTimeout(function(){ neutralizePreviewLinks(compact); }, 0);
     // Keep every tab inside the same shell as Overview. The real Overview is
@@ -2223,7 +2226,6 @@ document.body.classList.add('audit-test');
   setTimeout(function(){
     hardenPreviewLinks(document.getElementById('students'));
     hardenPreviewLinks(document.getElementById('teachers'));
-    document.querySelectorAll('#teachers .dash-tabs').forEach(function(tablist){ tablist.style.display = 'inline-flex'; });
   }, 0);
   // Preview-only links are intentionally non-functional. Remove them after
   // the initial dashboard render as well as through renderPreviewState so
