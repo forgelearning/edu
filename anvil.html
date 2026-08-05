@@ -33,6 +33,7 @@
 
 
 <script src="scripts/forge-logo.js"></script>
+<script src="scripts/forge-question.js"></script>
 <script src="scripts/forge-auth-card.js"></script>
 <script src="scripts/forge-classes.js?v=20260813"></script>
 <script src="scripts/forge-sidebar.js?v=20260812"></script>
@@ -397,26 +398,25 @@ function renderReworkQuestion(tag,questions,lap,qIdx){
     : baseQ;
   var label=resolveMCLabel(tag)||'';
   var m=anvilState.misconceptions[tag];
-  var keys=Object.keys(q.options);
 
-  var h='<button class="back-btn" data-forge-action="anvil-home">\u2190 Back to Anvil</button>';
-  h+='<div class="forge-u-t04ya0">';
-  h+='<div><span class="anvil-tag">'+tag+'</span>'+(label?'<span class="forge-u-1kcgkyz">'+label+'</span>':'')+'</div>';
-  h+='<span class="mono forge-u-wlc5am" id="rw-streak">Streak: '+m.streak+'/'+CLEAR_THRESHOLD+'</span>';
+  // Same chrome as a Forge quiz question \u2014 header, progress, q-meta, stem,
+  // then the shared option markup \u2014 so a repair reads as the quiz the
+  // student already knows. The progress bar tracks the clearing streak
+  // rather than a question count, which is what "done" means here.
+  var h='<div class="quiz-header">';
+  h+='<button class="back-btn" data-forge-action="anvil-home">\u2190 Anvil</button>';
+  h+='<span class="bank-name">'+(label||tag)+'</span>';
+  h+='<span class="mono" id="rw-streak">'+m.streak+' / '+CLEAR_THRESHOLD+' \u2713</span>';
   h+='</div>';
-
+  h+='<p class="rw-sub">Repair session \u00b7 '+CLEAR_THRESHOLD+' correct in a row clears this misconception</p>';
+  h+='<div class="progress-bar"><div class="progress-fill" id="rw-progress" style="width:'+((m.streak/CLEAR_THRESHOLD)*100)+'%;background:var(--ember)"></div></div>';
+  h+='<div class="q-meta"><span class="q-id">'+q.id+'</span><span>'+tag+(useReforge?' \u00b7 re-forge':'')+'</span></div>';
   h+='<div class="stem">'+q.stem+'</div>';
-  h+='<div class="options" id="rw-opts">';
-  keys.forEach(function(k){
-    h+='<button class="opt forge-option" data-k="'+k+'"><span class="letter">'+k+'</span><span>'+q.options[k]+'</span></button>';
-  });
-  h+='</div>';
-  h+='<div id="rw-feedback"></div>';
-  h+='<div class="clear"></div>';
+  h+=window.ForgeQuestion.renderOptions(q);
 
   app.innerHTML=h;
 
-  var opts=document.querySelectorAll('#rw-opts .opt');
+  var opts=document.querySelectorAll('#opts .opt');
   var answered=false;
 
   opts.forEach(function(o){
@@ -459,12 +459,15 @@ function renderReworkQuestion(tag,questions,lap,qIdx){
         else x.classList.add('dimmed');
       });
 
-      // The streak counter lives in the question header, which is not re-rendered
-      // when an answer is marked — keep it in step with the feedback below it.
+      // The streak counter and progress bar live in the question header, which
+      // is not re-rendered when an answer is marked — keep them in step with
+      // the feedback below.
       var streakEl=document.getElementById('rw-streak');
-      if(streakEl) streakEl.textContent='Streak: '+m.streak+'/'+CLEAR_THRESHOLD;
+      if(streakEl) streakEl.textContent=m.streak+' / '+CLEAR_THRESHOLD+' ✓';
+      var barEl=document.getElementById('rw-progress');
+      if(barEl) barEl.style.width=((m.streak/CLEAR_THRESHOLD)*100)+'%';
 
-      var fb=document.getElementById('rw-feedback');
+      var fb=document.getElementById('feedback');
       var fh='';
 
       if(isCorrect && m.streak>=CLEAR_THRESHOLD){
@@ -480,7 +483,9 @@ function renderReworkQuestion(tag,questions,lap,qIdx){
           renderReworkQuestion(tag,questions,lap,qIdx+1);
         };
       } else {
-        fh='<div class="scaffold-box"><span class="stag">'+tag+'</span><p>'+q.scaffold+'</p></div>';
+        // scaffoldText() rather than q.scaffold: it rewrites the authoring
+        // placeholder some banks still carry, exactly as the quiz does.
+        fh='<div class="scaffold-box"><span class="stag">'+tag+'</span><p>'+window.ForgeQuestion.scaffoldText(q)+'</p></div>';
         fh+='<div class="forge-u-1pk26m3">Streak reset to 0/'+CLEAR_THRESHOLD+'</div>';
         fh+='<button class="next-btn btn-glass btn-ember" id="rw-next">Try again \u2192</button><div class="clear"></div>';
         fb.innerHTML=fh;
