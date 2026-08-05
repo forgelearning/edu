@@ -177,6 +177,57 @@ for (const r of rows.sort((a, b) => a.subject.localeCompare(b.subject) || a.bank
 
 console.log(`\nstems ${totals.cuedStem}/${totals.mcq} cued (${pct(totals.cuedStem, totals.mcq)})  |  reforges ${totals.cuedRef}/${totals.ref} cued (${pct(totals.cuedRef, totals.ref)})  |  reforges permuted ${totals.permutedRef}/${totals.ref} (${pct(totals.permutedRef, totals.ref)})`);
 
+// Corrective-starter audit. Explicit starters are preferred, but every active
+// tag must resolve to a usable question-aware builder. This is intentionally a
+// quality report rather than a second source of coverage: getStarterActivity()
+// remains the single runtime path used by teacher.html.
+const starterSource = fs.readFileSync(path.join(__dirname, '..', 'data', 'starter-activities.js'), 'utf8');
+const { MC_STARTERS, MC_CURATED_TAGS, MC_ADDITIONAL_TAGS, getStarterActivity } = new Function('BANKS', starterSource + '\nreturn { MC_STARTERS, MC_CURATED_TAGS, MC_ADDITIONAL_TAGS, getStarterActivity };')(BANKS);
+const anchorGroups = [MC_CURATED_TAGS || {}, MC_ADDITIONAL_TAGS || {}];
+const curatedTags = new Set(anchorGroups.flatMap((group) => Object.values(group).flat()));
+const starterRows = {};
+const starterTypes = {};
+const starterTitles = new Map();
+const starterSubjectStats = {};
+let activeTags = 0, explicitStarters = 0, curatedStarters = 0, generatedStarters = 0, unusableStarters = 0;
+for (const [bankId, bank] of Object.entries(BANKS)) {
+  const subject = bankToSubject[bankId];
+  if (!subject || !wanted(bankId)) continue;
+  for (const q of bank.questions) {
+    if (!q.tag) continue;
+    const subjectStats = (starterSubjectStats[subject] ||= { tags: new Set(), explicit: 0, curated: 0 });
+    if (subjectStats.tags.has(q.tag)) continue;
+    subjectStats.tags.add(q.tag);
+    const isCurated = curatedTags.has(q.tag);
+    const isExplicit = !!MC_STARTERS[q.tag] || isCurated;
+    if (isExplicit) subjectStats.explicit++;
+    if (isCurated) subjectStats.curated++;
+    if (starterRows[q.tag]) continue;
+    activeTags++;
+    const starter = getStarterActivity(q.tag, q.tag);
+    if (isExplicit) explicitStarters++; else generatedStarters++;
+    if (isCurated) curatedStarters++;
+    const hasActivityContent = starter && (starter.prompt || starter.answer || starter.items || (starter.headers && starter.rows));
+    if (!starter || !starter.type || !starter.title || !starter.instruction || !hasActivityContent) {
+      unusableStarters++;
+      issues.push(`STARTER COVERAGE: ${q.tag} (${subject}) does not resolve to a usable starter`);
+    }
+    const starterType = starter && starter.type || 'missing';
+    starterTypes[starterType] = (starterTypes[starterType] || 0) + 1;
+    if (starter && starter.title) starterTitles.set(starter.title, (starterTitles.get(starter.title) || 0) + 1);
+    starterRows[q.tag] = { subject, isExplicit };
+  }
+}
+const repeatedGeneratedTitles = [...starterTitles.values()].filter((n) => n > 1).length;
+console.log(`\nstarters ${explicitStarters} explicit (${curatedStarters} curated anchors) / ${generatedStarters} generated / ${unusableStarters} unusable across ${activeTags} active tags`);
+console.log(`starter types ${Object.entries(starterTypes).sort((a, b) => b[1] - a[1]).map(([type, n]) => `${type}=${n}`).join('  ')}`);
+console.log(`repeated starter titles ${repeatedGeneratedTitles}`);
+for (const subject of [...new Set(anchorGroups.flatMap((group) => Object.keys(group)))]) {
+  const stats = starterSubjectStats[subject] || { tags: new Set(), explicit: 0, curated: 0 };
+  console.log(`starter anchors ${subject}: ${stats.explicit}/${stats.tags.size} explicit (${stats.curated} curated)`);
+  if (stats.tags.size && stats.explicit < 15) issues.push(`STARTER ANCHORS: ${subject} has only ${stats.explicit} explicit starters; expected at least 15`);
+}
+
 const grouped = {};
 for (const i of issues) (grouped[i.split(':')[0]] ||= []).push(i);
 console.log(`\n=== ISSUES (${issues.length}) ===`);
