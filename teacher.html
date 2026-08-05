@@ -827,16 +827,12 @@ function renderDashboard() {
   h += '</div>';
 
   // Tabs
-  h += '<div class="tabs">';
-  h += '<div class="tab-primary">';
+  h += '<div class="tabs" role="tablist" aria-label="Teacher dashboard views">';
   h += '<button class="tab active" data-view="heatmap" data-forge-action="switch-tab" data-tab="heatmap">Priority signals</button>';
   h += '<button class="tab" data-view="class" data-forge-action="switch-tab" data-tab="class">Class overview</button>';
-  h += '</div>';
-  h += '<details class="tab-more"><summary>More views</summary><div class="tab-secondary">';
   h += '<button class="tab" data-view="spec" data-forge-action="switch-tab" data-tab="spec">Spec points</button>';
   h += '<button class="tab" data-view="assignments" data-forge-action="switch-tab" data-tab="assignments">Assignments</button>';
   h += '<button class="tab" data-view="starters" data-forge-action="switch-tab" data-tab="starters">Corrective starters</button>';
-  h += '</div></details>';
   h += '</div>';
 
   h += '<div class="panel active" id="panel-heatmap"></div>';
@@ -1254,58 +1250,57 @@ function renderStarterCard(tag, h, context) {
   var typeLabels = {sort:"Sort activity",diagnose:"Diagnose",correct:"Spot the error",distinguish:"Distinguish",classify:"Classify",evaluate:"Evaluate",diagram:"Diagram task",chain:"Causal chain",calculate:"Calculation",graph:"Graph task",sequence:"Sequence",apply:"Application",compare:"Comparison table",match:"Match activity",trigger:"Trigger hunt",rewrite:"Rewrite task",trace:"Trace activity",scenario:"Scenario",explain:"Explanation"};
   var typeLabel = typeLabels[starterData.type] || "Starter activity";
 
-  h += '<div class="card forge-card forge-card--focus" id="starter-card">';
-  h += '<div class="forge-u-1i89z8z">';
-  h += '<div class="card-title forge-u-1gs3btp">' + (context ? 'Recommended starter' : 'Starter activity') + ' — ' + typeLabel + '</div>';
-  h += '<span class="forge-u-16jmth7">' + tag + '</span>';
+  h += '<article class="card forge-card forge-card--focus starter-card" id="starter-card">';
+  h += '<div class="starter-card__header">';
+  h += '<div><div class="card-title">' + (context ? 'Recommended starter' : 'Starter activity') + ' · ' + typeLabel + '</div>';
+  h += '<h2 class="starter-card__title">' + starterData.title + '</h2></div>';
+  h += '<span class="starter-card__tag">' + tag + '</span>';
   h += '</div>';
-  h += '<p class="forge-u-1idc03v">' + starterData.title + '</p>';
   if (context) {
-    h += '<p class="forge-u-1rniwep">' + context.fires + ' error' + (context.fires !== 1 ? 's' : '') + ' across ' + context.students + ' student' + (context.students !== 1 ? 's' : '') + ' this period</p>';
+    h += '<p class="starter-card__meta">' + context.fires + ' error' + (context.fires !== 1 ? 's' : '') + ' across ' + context.students + ' student' + (context.students !== 1 ? 's' : '') + ' this period</p>';
   } else {
-    h += '<p class="forge-u-1rniwep">Preview — no class data loaded</p>';
+    h += '<p class="starter-card__meta">Preview — no class data loaded</p>';
   }
-  h += '<p class="forge-u-1m9skgg">' + starterData.instruction + '</p>';
+  h += '<div class="starter-card__body"><p class="starter-card__instruction">' + starterData.instruction + '</p>';
   if (intervention) {
-    h += '<p class="forge-u-1rniwep"><strong>Suggested intervention:</strong> ' + teacherEsc(intervention) + '</p>';
+    h += '<p class="starter-card__intervention"><strong>Suggested intervention</strong><span>' + teacherEsc(intervention) + '</span></p>';
   }
-  h += '<button class="forge-button forge-button--primary starter-assign-btn" data-starter-tag="' + teacherEsc(tag) + '" type="button">Use this starter for an assignment →</button>';
+  h += '<div class="starter-card__actions"><button class="forge-button forge-button--primary starter-assign-btn" data-starter-tag="' + teacherEsc(tag) + '" type="button">Use this starter for an assignment →</button></div></div>';
 
   if (starterData.prompt) {
-    h += '<div class="forge-u-vbh83g">';
-    h += '<p class="forge-u-ga1lyh">' + starterData.prompt + '</p>';
+    h += '<div class="starter-card__prompt"><span class="starter-card__eyebrow">Prompt</span>';
+    h += '<p>' + starterData.prompt + '</p>';
     h += '</div>';
   }
   if (starterData.items) {
-    h += '<div class="forge-u-1dan4j4">';
+    h += '<div class="starter-card__items">';
     starterData.items.forEach(function(item) {
       h += '<span class="forge-u-4h08im">' + item + '</span>';
     });
     h += '</div>';
   }
   if (starterData.headers && starterData.rows) {
-    h += '<div class="forge-u-1o87gnr"><table class="forge-u-k85mqv">';
+    h += '<div class="starter-card__table"><table>';
     h += '<thead><tr>';
     starterData.headers.forEach(function(hdr) {
-      h += '<th class="forge-u-1a2ozug">' + hdr + '</th>';
+      h += '<th>' + hdr + '</th>';
     });
     h += '</tr></thead><tbody>';
     starterData.rows.forEach(function(row) {
       h += '<tr>';
       row.forEach(function(cell, ci) {
-        h += '<td style="padding:6px 10px;border-bottom:1px solid var(--panel-2);color:' + (ci===0 ? 'var(--white)' : 'var(--slate)') + '">' + (cell || '<span class="forge-u-gqocm1">—</span>') + '</td>';
+        h += '<td>' + (cell || '<span>—</span>') + '</td>';
       });
       h += '</tr>';
     });
     h += '</tbody></table></div>';
   }
   if (starterData.answer) {
-    h += '<div class="forge-u-bfx4f7">';
-    h += '<span class="forge-u-11wqq9g">✓</span>';
-    h += '<p class="forge-u-1kqs3gf">' + starterData.answer + '</p>';
+    h += '<div class="starter-card__answer"><span aria-hidden="true">✓</span>';
+    h += '<p><strong>Answer guide</strong>' + starterData.answer + '</p>';
     h += '</div>';
   }
-  h += '</div>';
+  h += '</article>';
   return h;
 }
 
@@ -1767,13 +1762,13 @@ function renderStarters(wrongResponses) {
   // Also firing chips
   var others = sorted.slice(1, 5);
   if (others.length > 0) {
-    h += '<div class="card forge-u-1c8f8t4">';
-    h += '<p class="forge-u-9pvytk">Other misconceptions this period — click to preview starter:</p>';
-    h += '<div class="forge-u-ksn93q">';
+    h += '<section class="card misconception-card" aria-labelledby="other-misconceptions-title">';
+    h += '<div class="misconception-card__header"><div><div class="card-title">Next interventions</div><h2 id="other-misconceptions-title">Other misconceptions this period</h2></div><span class="misconception-card__hint">Choose one to preview</span></div>';
+    h += '<div class="misconception-grid">';
     others.forEach(function(tag) {
-      h += '<button class="forge-u-1oh7221" data-forge-action="show-starter" data-tag="' + tag + '">' + tag + ' (' + counts[tag].count + '×)</button>';
+      h += '<button class="misconception-chip" data-forge-action="show-starter" data-tag="' + teacherEsc(tag) + '"><span><strong>' + teacherEsc(tag) + '</strong><small>' + counts[tag].count + ' fires</small></span><span aria-hidden="true">→</span></button>';
     });
-    h += '</div></div>';
+    h += '</div></section>';
   }
 
   el.innerHTML = h;
