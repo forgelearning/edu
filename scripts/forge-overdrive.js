@@ -8,6 +8,7 @@
     if (!node || node.dataset.overdriveReady) return;
     node.dataset.overdriveReady = 'true';
     node.classList.add('forge-overdrive-target');
+    node.classList.add('forge-tactile');
     if (reduced || !finePointer) return;
     node.addEventListener('pointermove', function (event) {
       var rect = node.getBoundingClientRect();
@@ -27,8 +28,9 @@
 
   function scan(root) {
     if (!root || !root.querySelectorAll) return;
-    if (root.matches && root.matches('.auth-card,.price-card,.stat-card,.mech,.insight-stat,.insight-list,.pick-btn,.stage,.scaffold-big,.opt-big,.faq-hero,.guide-hero,.faq-item,.item,.callout,.rm-hero,.rm-bucket,.rm-item,.rm-cta')) enhance(root);
-    root.querySelectorAll('.auth-card,.price-card,.stat-card,.mech,.insight-stat,.insight-list,.pick-btn,.stage,.scaffold-big,.opt-big,.faq-hero,.guide-hero,.faq-item,.item,.callout,.rm-hero,.rm-bucket,.rm-item,.rm-cta').forEach(enhance);
+    var targets = '.auth-card,.price-card,.stat-card,.mech,.insight-stat,.insight-list,.pick-btn,.stage,.scaffold-big,.opt-big,.faq-hero,.guide-hero,.faq-item,.item,.callout,.rm-hero,.rm-bucket,.rm-item,.rm-cta,.prof-header,.prof-tabs,.profile-card,.rank-display,.grade-card,.anvil-card,.anvil-stat,.opt,.scaffold-box,.praise-box,.cleared-banner';
+    if (root.matches && root.matches(targets)) enhance(root);
+    root.querySelectorAll(targets).forEach(enhance);
   }
 
   function initGuideProgress() {
@@ -46,12 +48,15 @@
     update();
   }
 
-  document.addEventListener('DOMContentLoaded', function () {
+  function init() {
     scan(document);
     var app = document.getElementById('app');
     if (app) new MutationObserver(function (records) {
       records.forEach(function (record) { record.addedNodes.forEach(scan); });
     }).observe(app, {childList: true, subtree: true});
     initGuideProgress();
-  });
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+  else init();
 })();
