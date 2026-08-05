@@ -184,6 +184,9 @@ const TAG_TAXONOMY_SUBJECTS = {
   // subject key: max share of that subject's questions allowed to sit on a
   // tag used only once within the subject.
   'gcse-econ': 0,
+  'gcse-sep-bio': 0,
+  'gcse-sep-chem': 0,
+  'gcse-sep-phys': 0,
   psych: 0.18,
   'gcse-geo': 0.78,
   soc: 0.94,

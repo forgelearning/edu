@@ -110,13 +110,19 @@ propagates into its `*-COV-*` copies and fixing the source fixes them all.
   suggestions for every active tag. The blocker is *tagging*, not starters —
   most subjects give each question a tag unique to itself (`tag === "MC-" + id`),
   so nothing aggregates and every starter falls back to a generic drill. Done so
-  far: `psych`, `gcse-geo`, `soc`, `econ` and `gcse-econ` (420 questions
-  regrouped onto 76 shared `MC-GE-*` tags, all labelled with a starter each).
-  Next, roughly by value: `gcse-science` plus the three `gcse-sep-*` banks
-  (~812 questions, one shared set serves all four), `gcse-maths`, then the
-  ~15 subjects still at 100% per-question tags. `dev/audit-banks.js` now fails
-  if a subject listed in its `TAG_TAXONOMY_SUBJECTS` regresses, or if an
-  aggregatable tag has no starter; add a subject there once it is retagged.
+  far: `psych`, `gcse-geo`, `soc`, `econ`, `gcse-econ` (420 questions regrouped
+  onto 76 shared `MC-GE-*` tags) and the three `gcse-sep-*` sciences (600
+  questions on 96 shared topic tags, one per bio/chem/physics topic). Next,
+  roughly by value: `gcse-science` — its 212 questions still sit on 156 tags,
+  and most should be remapped onto the existing `MC-SEP-*` science tags rather
+  than given a set of their own, since combined science is a subset of the
+  separate content — then `gcse-maths`, then the ~15 subjects still at 100%
+  per-question tags. `dev/audit-banks.js` fails if a subject listed in its
+  `TAG_TAXONOMY_SUBJECTS` regresses, or if an aggregatable tag has no starter;
+  add a subject there once it is retagged.
+- Not every subject needs a fresh taxonomy first: `gcse-sep-*` already carried
+  good topic tags, so the work there was purely labels and starters. Check what
+  a subject's tags actually look like before assuming a retag is needed.
 - A-Level Geography is intentionally marked Developing until every active route
   point is mapped.
 - `englit` and `engll` reference the same two bank ids (`ENG-TERM-1`,
