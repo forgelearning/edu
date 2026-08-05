@@ -65,6 +65,7 @@ h1,h2,h3{font-family:'Rethink Sans',sans-serif;color:var(--white);line-height:1.
 .stat-card{padding:20px 16px}
 .stat-card:first-child{background:var(--surface-focus-subtle)}
 .card-title{color:var(--hot)}
+.ui-recommendation__copy{max-width:none}
 .tabs{box-shadow:0 10px 26px -24px rgba(0,0,0,.8)}
 .tab:focus-visible,.export-btn:focus-visible,.signout-btn:focus-visible,.code-input:focus-visible,.btn:focus-visible{outline:2px solid var(--hot);outline-offset:3px}
 .mc-tag{background:var(--surface-error-subtle)}
