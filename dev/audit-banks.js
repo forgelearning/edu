@@ -249,17 +249,55 @@ if (fatal.length) {
   process.exit(1);
 }
 
+// A correct answer that opens with a conjunction or relative pronoun is the
+// tail of a sentence whose front was lost — "so there's no route for magma to
+// reach the surface". The student reads the right answer as broken English.
+//
+// This is how the GCSE Science answers were damaged: several *ConciseAnswers
+// tables overwrite item.options[item.correct] with a shortened string, and a
+// bad entry there silently replaces a correct answer with a fragment, a
+// circular phrase, or a different fact. Nothing else in this audit can see it,
+// because the result is still a well-formed four-option question.
+//
+// Allowances are per subject at today's level, so the known backlog does not
+// fail the build but nothing new slips in. Any subject not listed must be 0.
+const FRAGMENT_ANSWER_ALLOWANCE = { 'gcse-geo': 30, cs: 4 };
+const FRAGMENT_OPENERS = /^(?:and|so|but|which|that|because|while|whereas|although|then|therefore)\b/i;
+const fragmentCounts = {};
+for (const [key, subject] of Object.entries(SUBJECTS)) {
+  for (const bankId of subject.banks || []) {
+    for (const q of (BANKS[bankId] || { questions: [] }).questions) {
+      for (const item of [q, q.reforge]) {
+        if (!item || !item.options || !item.correct) continue;
+        const answer = String(item.options[item.correct]).trim();
+        if (/^[a-z]/.test(answer) && FRAGMENT_OPENERS.test(answer)) {
+          (fragmentCounts[key] = fragmentCounts[key] || []).push(`${q.id}: "${answer.slice(0, 60)}"`);
+        }
+      }
+    }
+  }
+}
+for (const [key, list] of Object.entries(fragmentCounts)) {
+  const allowed = FRAGMENT_ANSWER_ALLOWANCE[key] || 0;
+  if (list.length > allowed) {
+    issues.push(
+      `FRAGMENT ANSWER: "${key}" has ${list.length} correct answer(s) that start mid-sentence (allowed ${allowed}) — ` +
+      `e.g. ${list.slice(0, 2).join('; ')}. Restore the full answer text, and check the *ConciseAnswers override tables in data/forge-data.js.`
+    );
+  }
+}
+
 // Misconception-taxonomy guard. These do not break a question for a student,
 // so they are not in the "fatal" list above, but they silently make the
 // teacher heatmap useless — and nothing else in this audit can see them, since
 // a bank of 420 one-off tags is structurally perfect. Enforced for the
 // subjects listed in TAG_TAXONOMY_SUBJECTS only, at their current level, so
 // this stops regressions without failing on the known backlog.
-const taxonomy = issues.filter((i) => /^(TAG TAXONOMY|NO STARTER)/.test(i));
+const taxonomy = issues.filter((i) => /^(TAG TAXONOMY|NO STARTER|FRAGMENT ANSWER)/.test(i));
 if (taxonomy.length) {
   console.log(
-    `\n${taxonomy.length} misconception-tag issue(s) — these break the teacher heatmap, not the question. ` +
-    `Group one-off tags into shared categories, then give each a label and a corrective starter.`
+    `\n${taxonomy.length} content-quality issue(s) — a structurally valid question can still be unusable. ` +
+    `Group one-off tags into shared categories with a label and a starter, and keep correct answers readable in full.`
   );
   process.exit(1);
 }

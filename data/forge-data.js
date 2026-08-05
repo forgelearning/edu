@@ -9609,17 +9609,16 @@ for (const [bankId, [basePlan, reforgePlan]] of Object.entries(gcseScienceAnswer
 const gcseScienceConciseAnswers = {
   "SCI-BIO1-01:base":"A cell membrane", "SCI-BIO1-01:reforge":"Cell membrane",
   "SCI-BIO1-02:reforge":"0.2 mm", "SCI-BIO1-03:reforge":"Mitochondrion",
-  "SCI-BIO1-04:base":"Growth and tissue repair", "SCI-BIO1-05:reforge":"Phenotype",
+   "SCI-BIO1-05:reforge":"Phenotype",
   "SCI-BIO1-07:reforge":"Genetic variation", "SCI-BIO1-08:base":"More offspring from carriers",
   "SCI-BIO1-09:base":"No bacterial drug target", "SCI-BIO1-10:reforge":"Less trial bias",
   "SCI-BIO1-11:reforge":"Renew immune memory", "SCI-BIO1-12:reforge":"Specific antigen binding",
-  "SCI-CHEM1-02:base":"Different neutron numbers", "SCI-CHEM1-03:reforge":"Particles spread apart",
-  "SCI-CHEM1-04:base":"Chromatography", "SCI-CHEM1-05:base":"Hydrogen",
-  "SCI-CHEM1-07:base":"Unreacted solid", "SCI-CHEM1-07:reforge":"It did not dissolve",
+   "SCI-CHEM1-03:reforge":"Particles spread apart",
+   "SCI-CHEM1-07:reforge":"It did not dissolve",
   "SCI-CHEM1-12:base":"Faster rate, lower yield", "SCI-CHEM1-12:reforge":"Fewer gas molecules",
-  "SCI-PHYS1-06:base":"Thermal store", "SCI-PHYS1-06:reforge":"Thermal energy",
+   "SCI-PHYS1-06:reforge":"Thermal energy",
   "SCI-PHYS1-07:base":"Greater height", "SCI-PHYS1-08:base":"Perpendicular vibrations",
-  "SCI-PHYS1-09:base":"Speed and direction may change", "SCI-PHYS1-11:base":"Real, inverted, smaller",
+  "SCI-PHYS1-09:base":"Speed and direction may change",
   "SCI-PHYS1-12:base":"Half the nuclei decay"
 };
 for (const bankId of SUBJECTS["gcse-science"].banks) {
@@ -9710,7 +9709,7 @@ const gcseScienceSecondConciseAnswers = {
   "SCI-BIO2-05:reforge":"Signal transfer", "SCI-BIO2-06:reforge":"Reduces injury",
   "SCI-BIO2-07:base":"More glucose uptake", "SCI-BIO2-07:reforge":"Glucose release",
   "SCI-BIO2-09:base":"Thin walls, large area", "SCI-BIO2-10:base":"Uneaten or undigested material",
-  "SCI-BIO2-11:base":"Respiratory carbon dioxide", "SCI-BIO2-11:reforge":"CO2 removal",
+  "SCI-BIO2-11:base":"Respiratory carbon dioxide",
   "SCI-BIO2-12:base":"Algae and oxygen loss", "SCI-BIO2-12:reforge":"Nutrient enrichment",
   "SCI-CHEM2-01:base":"Same outer electrons", "SCI-CHEM2-02:base":"Orange-brown",
   "SCI-CHEM2-02:reforge":"More reactive halogen", "SCI-CHEM2-03:base":"Full outer shells",
@@ -9825,7 +9824,7 @@ const gcseScienceFirstPaperExtensionConcise = {
   "SCI-CHEM1-21:base":"Fewer gas molecules", "SCI-CHEM1-22:base":"Higher product yield",
   "SCI-CHEM1-23:base":"Escaped gas", "SCI-CHEM1-24:base":"One soluble substance",
   "SCI-PHYS1-13:base":"2 m/s2", "SCI-PHYS1-14:base":"Distance travelled",
-  "SCI-PHYS1-15:base":"Energy dissipates over distance", "SCI-PHYS1-16:base":"Balanced resistive force",
+   "SCI-PHYS1-16:base":"Balanced resistive force",
   "SCI-PHYS1-17:base":"Useful output / input", "SCI-PHYS1-18:base":"30 W",
   "SCI-PHYS1-19:base":"Equal angles", "SCI-PHYS1-20:base":"10 m/s",
   "SCI-PHYS1-21:base":"Gamma rays", "SCI-PHYS1-22:base":"100 Bq",
@@ -9837,7 +9836,7 @@ const gcseScienceFirstPaperExtensionConcise = {
   "SCI-CHEM1-21:reforge":"No pressure shift", "SCI-CHEM1-22:reforge":"Energy enters",
   "SCI-CHEM1-23:reforge":"Oxygen added", "SCI-CHEM1-24:reforge":"Compare Rf values",
   "SCI-PHYS1-13:reforge":"Negative-direction change", "SCI-PHYS1-14:reforge":"Acceleration",
-  "SCI-PHYS1-14:base":"Distance", "SCI-PHYS1-15:base":"Dissipated energy",
+  "SCI-PHYS1-14:base":"Distance",
   "SCI-PHYS1-15:reforge":"Reaction time/speed", "SCI-PHYS1-16:reforge":"More air drag",
   "SCI-PHYS1-17:reforge":"Dissipated energy", "SCI-PHYS1-18:reforge":"Energy per second",
   "SCI-PHYS1-19:reforge":"Rays appear behind mirror", "SCI-PHYS1-20:reforge":"Higher frequency",
@@ -9920,11 +9919,11 @@ addGcseScienceSecondExtension("GCSE-SCI-PHYS-2", "1SC0 Topic 8–15", [
 ]);
 
 const gcseSciencePaper46ConciseAnswers = {
-  "SCI-BIO2-13:base":"Limiting condition", "SCI-BIO2-13:reforge":"Another limiting factor",
+   "SCI-BIO2-13:reforge":"Another limiting factor",
   "SCI-BIO2-14:base":"Gas exchange", "SCI-BIO2-14:reforge":"Reduce water loss",
   "SCI-BIO2-15:base":"Auxin-driven elongation", "SCI-BIO2-15:reforge":"Light response",
   "SCI-BIO2-16:base":"Water and ions", "SCI-BIO2-16:reforge":"Urea",
-  "SCI-BIO2-17:base":"Cooling responses", "SCI-BIO2-17:reforge":"Widened skin vessels",
+   "SCI-BIO2-17:reforge":"Widened skin vessels",
   "SCI-BIO2-18:base":"Oxygen and glucose supply", "SCI-BIO2-18:reforge":"Less oxygen to heart",
   "SCI-BIO2-19:base":"More oxygen, less CO2", "SCI-BIO2-19:reforge":"Oxygen debt",
   "SCI-BIO2-20:base":"Organism distribution", "SCI-BIO2-20:reforge":"Less sampling bias",
@@ -9952,7 +9951,7 @@ const gcseSciencePaper46ConciseAnswers = {
   "SCI-PHYS2-18:base":"Current and field directions", "SCI-PHYS2-18:reforge":"More current or field",
   "SCI-PHYS2-19:base":"Changing magnetic field", "SCI-PHYS2-19:reforge":"Higher potential difference",
   "SCI-PHYS2-20:base":"Lower current", "SCI-PHYS2-20:reforge":"Cable resistance heating",
-  "SCI-PHYS2-21:base":"More wall collisions", "SCI-PHYS2-21:reforge":"Constant temperature",
+   "SCI-PHYS2-21:reforge":"Constant temperature",
   "SCI-PHYS2-22:base":"Mass and volume", "SCI-PHYS2-22:reforge":"Lower density",
   "SCI-PHYS2-23:base":"More liquid weight", "SCI-PHYS2-23:reforge":"Denser liquid",
   "SCI-PHYS2-24:base":"Beyond proportional extension", "SCI-PHYS2-24:reforge":"Permanent extension"
