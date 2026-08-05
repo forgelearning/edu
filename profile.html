@@ -379,7 +379,7 @@ function renderProfile(){
         var col=pct<40?'var(--bad)':'var(--hot)';
         h+='<div class="focus-item">';
         h+='<div class="focus-head">';
-        h+='<span class="focus-pill" style="background:'+col+'20;color:'+col+';border:1px solid '+col+'40">'+s.bank+'</span>';
+        h+='<span class="focus-pill" title="'+s.bank+'" style="background:'+col+'20;color:'+col+';border:1px solid '+col+'40">'+resolveBankLabel(s.bank)+'</span>';
         h+='<span class="focus-acc" style="color:'+col+'">'+pct+'% accuracy</span>';
         h+='</div>';
         h+='<div class="focus-detail">Keep practising — accuracy below 60%.</div>';
@@ -407,7 +407,7 @@ function renderProfile(){
     } else {
       goodBanks.slice(0,6).forEach(function(s){
         var col=s.acc>=90?'var(--good)':s.acc>=80?'var(--hot)':'var(--slate)';
-        h+='<div class="strength-item"><span class="strength-label">'+s.bank+'</span><span class="strength-acc" style="color:'+col+'">'+s.acc+'%</span></div>';
+        h+='<div class="strength-item"><span class="strength-label" title="'+s.bank+'">'+resolveBankLabel(s.bank)+'</span><span class="strength-acc" style="color:'+col+'">'+s.acc+'%</span></div>';
       });
     }
     h+='</div>';

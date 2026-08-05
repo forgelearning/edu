@@ -12,6 +12,15 @@ function retireBank(bankId){
   delete BANKS[bankId];
 }
 
+// Bank id -> human label, for anywhere a student's history is displayed.
+// Response rows keep the bank id they were answered under, so this has to
+// cover retired ids too; anything older than both (LAW-3, MAN-EXP-1, SOC-STR)
+// has no label anywhere and shows as the raw id rather than a guess.
+function resolveBankLabel(bankId){
+  var bank = BANKS[bankId] || RETIRED_BANKS[bankId];
+  return (bank && bank.label) || bankId;
+}
+
 const BANKS = {
   "2.1.1": {
     label: "Economic Growth",
