@@ -327,7 +327,7 @@ function renderProfile(){
     h += '</div>';
     // Progress bar (fills as trial runs out)
     h += '<div class="forge-u-1rh0em3">';
-    h += '<div style="height:100%;width:'+barPct+'%;background:'+barCol+';border-radius:var(--radius-xs);transition:width .4s"></div>';
+    h += '<div style="height:100%;width:100%;background:'+barCol+';border-radius:var(--radius-xs);transform:scaleX('+(barPct / 100)+');transform-origin:left center;transition:transform .4s"></div>';
     h += '</div>';
     h += '<p class="forge-u-1bzwq9b">After '+days+' day'+(days!==1?'s':'')+', you\'ll drop to 10 free questions/day unless you subscribe · £2.99/month</p>';
     h += '</div>';
