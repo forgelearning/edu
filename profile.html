@@ -24,6 +24,7 @@
 <link rel="stylesheet" href="css/states.css">
   <link rel="stylesheet" href="css/generated-utilities.css">
   <link rel="stylesheet" href="css/page-overrides/profile.css">
+  <link rel="stylesheet" href="css/page-overrides/profile-overdrive.css?v=20260818-overdrive">
 </head>
 <body>
 <script src="scripts/forge-api.js"></script>
@@ -293,7 +294,10 @@ function renderProfile(){
   // Determine subject label from responses
   var subjectLabel='A Level';
   var subjectKey=responses.length>0?(responses[0].subject||''):'';
-  if(subjectKey){var skeys=Object.keys(typeof SUBJECTS!=='undefined'?SUBJECTS:{});skeys.forEach(function(k){if(k===subjectKey&&typeof SUBJECTS!=='undefined')subjectLabel='A Level '+SUBJECTS[k].label;});}
+  // SUBJECTS labels already carry their level ("A Level Business",
+  // "GCSE Geography"), so prefixing produced "A Level A Level Business" — and
+  // "A Level GCSE Geography" for the GCSE keys.
+  if(subjectKey){var skeys=Object.keys(typeof SUBJECTS!=='undefined'?SUBJECTS:{});skeys.forEach(function(k){if(k===subjectKey&&typeof SUBJECTS!=='undefined')subjectLabel=SUBJECTS[k].label;});}
 
   var activeTab=st.activeTab||'overview';
 
@@ -326,7 +330,7 @@ function renderProfile(){
     h += '</div>';
     // Progress bar (fills as trial runs out)
     h += '<div class="forge-u-1rh0em3">';
-    h += '<div style="height:100%;width:'+barPct+'%;background:'+barCol+';border-radius:var(--radius-xs);transition:width .4s"></div>';
+    h += '<div style="height:100%;width:100%;background:'+barCol+';border-radius:var(--radius-xs);transform:scaleX('+(barPct / 100)+');transform-origin:left center;transition:transform .4s"></div>';
     h += '</div>';
     h += '<p class="forge-u-1bzwq9b">After '+days+' day'+(days!==1?'s':'')+', you\'ll drop to 10 free questions/day unless you subscribe · £2.99/month</p>';
     h += '</div>';
@@ -375,7 +379,7 @@ function renderProfile(){
         var col=pct<40?'var(--bad)':'var(--hot)';
         h+='<div class="focus-item">';
         h+='<div class="focus-head">';
-        h+='<span class="focus-pill" style="background:'+col+'20;color:'+col+';border:1px solid '+col+'40">'+s.bank+'</span>';
+        h+='<span class="focus-pill" title="'+s.bank+'" style="background:'+col+'20;color:'+col+';border:1px solid '+col+'40">'+resolveBankLabel(s.bank)+'</span>';
         h+='<span class="focus-acc" style="color:'+col+'">'+pct+'% accuracy</span>';
         h+='</div>';
         h+='<div class="focus-detail">Keep practising — accuracy below 60%.</div>';
@@ -403,7 +407,7 @@ function renderProfile(){
     } else {
       goodBanks.slice(0,6).forEach(function(s){
         var col=s.acc>=90?'var(--good)':s.acc>=80?'var(--hot)':'var(--slate)';
-        h+='<div class="strength-item"><span class="strength-label">'+s.bank+'</span><span class="strength-acc" style="color:'+col+'">'+s.acc+'%</span></div>';
+        h+='<div class="strength-item"><span class="strength-label" title="'+s.bank+'">'+resolveBankLabel(s.bank)+'</span><span class="strength-acc" style="color:'+col+'">'+s.acc+'%</span></div>';
       });
     }
     h+='</div>';
@@ -725,6 +729,7 @@ function forgeSignOut(){
 })();
 </script>
 <script src="scripts/nav.js"></script>
+  <script src="scripts/forge-overdrive.js?v=20260818-overdrive"></script>
   <script src="scripts/forge-page-actions.js"></script>
 </body>
 </html>

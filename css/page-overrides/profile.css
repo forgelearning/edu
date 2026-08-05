@@ -100,6 +100,11 @@ h1,h2,h3,.prof-name,.rank-title,.grade-letter,.logo{font-family:'Rethink Sans',s
 .stat-n{font-family:'Rethink Sans',sans-serif}
 .card-title{color:var(--hot)}
 .focus-item{background:var(--surface-error-subtle)}
+/* The pill carries a topic name now, not a short bank id: let it wrap and
+   shrink rather than squeezing the accuracy figure off the row. */
+.focus-pill{min-width:0;font-family:'Poppins',sans-serif;font-size:12px;font-weight:600;letter-spacing:0;text-align:left}
+.focus-acc{flex-shrink:0;white-space:nowrap}
+.strength-label{min-width:0;padding-right:10px}
 .strength-item{background:var(--surface-success-subtle);border-bottom-color:var(--line);padding:11px 12px;border-radius:var(--radius-sm);margin-bottom:6px}
 .focus-detail,.grade-desc,.prof-footer{line-height:1.55}
 .focus-item a,.prof-footer a{color:var(--hot)}
