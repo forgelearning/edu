@@ -16646,7 +16646,13 @@ const expandSubjectToMinimum = (subjectKey, target = 200) => {
       stem: `${frame}${source.stem.replace(/\s+/g, " ").trim()} (application variant ${variant})`,
       options: balanced.options,
       correct: rotated.correct,
-      tag: `MC-${id}`,
+      // A coverage variant is the SAME question reframed, so it tests the same
+      // misconception as its source and must carry the same tag. Giving it a
+      // tag of its own made every variant a single-use tag the teacher heatmap
+      // could not aggregate and getStarterActivity() could only answer with a
+      // generic drill — which matters here because most of the GCSE science
+      // banks are mainly coverage variants.
+      tag: source.tag || `MC-${id}`,
       scaffold: source.scaffold || "Apply the key definition or principle to the scenario before selecting an answer.",
       coverageVariant: true
     };
