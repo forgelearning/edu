@@ -1,6 +1,17 @@
 // Canonical question-bank data for Forge — shared by forge-quiz.html, anvil.html, and teacher.html.
 // Single source of truth: edit banks/subjects here, not in the app files.
 
+// Banks that have been superseded (HIST-1 → HIST-BRIT1, LAW-1 → LAW-CRIM, …).
+// They are pulled out of BANKS so nothing serves them as new practice, but
+// students carry misconceptions tagged against them for as long as their
+// response history lasts, and the Anvil needs these questions to repair one.
+// Deleting them outright left those misconceptions permanently unfixable.
+const RETIRED_BANKS = {};
+function retireBank(bankId){
+  if (BANKS[bankId]) RETIRED_BANKS[bankId] = BANKS[bankId];
+  delete BANKS[bankId];
+}
+
 const BANKS = {
   "2.1.1": {
     label: "Economic Growth",
@@ -15222,8 +15233,8 @@ const rebalanceAlevelHistory = bankIds => bankIds.forEach(bankId => BANKS[bankId
 SUBJECTS["hist"].banks = ["HIST-BRIT1", "HIST-BRIT2", "HIST-USA1", "HIST-USA2", "HIST-TUDOR"];
 SUBJECTS["hist"].sub = "AQA 7042 — Wars and Welfare, USA 1865–1975 & Tudor Investigation";
 rebalanceAlevelHistory(SUBJECTS["hist"].banks);
-delete BANKS["HIST-1"];
-delete BANKS["HIST-2"];
+retireBank("HIST-1");
+retireBank("HIST-2");
 
 // ===== WJEC LEVEL 3 APPLIED CRIMINOLOGY: FOUR-UNIT ROUTE =====
 const addCriminologyBank = (bankId, label, spec, rawRows) => {
@@ -15466,8 +15477,8 @@ const rebalanceCriminology = bankIds => bankIds.forEach(bankId => BANKS[bankId].
 SUBJECTS["crim"].banks = ["CRIM-AWARE", "CRIM-THEORY", "CRIM-COURT", "CRIM-PUNISH"];
 SUBJECTS["crim"].sub = "WJEC Level 3 Applied Criminology — Units 1–4";
 rebalanceCriminology(SUBJECTS["crim"].banks);
-delete BANKS["CRIM-1"];
-delete BANKS["CRIM-2"];
+retireBank("CRIM-1");
+retireBank("CRIM-2");
 
 // ===== A LEVEL LAW AND POLITICS EXPANSION =====
 const addLawPoliticsBank = (bankId, label, spec, rawRows) => {
@@ -15903,13 +15914,13 @@ addLawPoliticsSupplement("POL-USPOL", [["voter registration", "The process by wh
 SUBJECTS["law"].banks = ["LAW-CRIM", "LAW-SYSTEM", "LAW-TORT", "LAW-CONTRACT"];
 SUBJECTS["law"].sub = "OCR A Level Law — Criminal, Legal System, Tort & Contract";
 rebalanceLawPolitics(SUBJECTS["law"].banks);
-delete BANKS["LAW-1"];
-delete BANKS["LAW-2"];
+retireBank("LAW-1");
+retireBank("LAW-2");
 SUBJECTS["pol"].banks = ["POL-UKPOL", "POL-UKGOV", "POL-USGOV", "POL-USPOL"];
 SUBJECTS["pol"].sub = "Edexcel 9PL0 — UK Politics, UK Government & US Politics";
 rebalanceLawPolitics(SUBJECTS["pol"].banks);
-delete BANKS["POL-1"];
-delete BANKS["POL-2"];
+retireBank("POL-1");
+retireBank("POL-2");
 
 // ===== A LEVEL BUSINESS AND EDUQAS COMPUTER SCIENCE EXPANSION =====
 // These compactly-authored questions retain the same four-option and reforge
