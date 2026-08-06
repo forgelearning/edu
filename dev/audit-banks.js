@@ -191,6 +191,9 @@ const TAG_TAXONOMY_SUBJECTS = {
   // Combined science shares the separate sciences' MC-SEP-* taxonomy. The
   // remaining share is 15 questions whose tag names a topic, not an error.
   'gcse-science': 0.08,
+  // The only single-use tag left is MC-MATH-INVERSE; nothing else in the
+  // subject tests inverse functions.
+  'gcse-maths': 0.01,
   'gcse-geo': 0.78,
   soc: 0.94,
 };
