@@ -33,3 +33,16 @@ footer{margin-top:76px}
 @media(max-width:700px){.faq-hero,.guide-hero{padding:46px 0 38px;margin-bottom:46px}.faq-hero::after,.guide-hero::after{display:none}.faq-hero h1,.guide-hero h1{font-size:clamp(40px,13vw,58px)}.faq-section,.section{margin-bottom:56px}.faq-q{min-height:52px;padding:19px 0}.faq-a{font-size:15px;line-height:1.75}.toc{display:none}.notice,.callout{padding:16px}}
 @media(pointer:coarse){.faq-q{min-height:56px}}
 @media(prefers-reduced-motion:reduce){body::before{transform:scaleX(1);box-shadow:none}.faq-hero,.guide-hero,.faq-a.open,.faq-section,.section{animation:none}.faq-item,.item,.toc a{transition:none}.toc a:hover,.toc a.active{transform:none}}
+
+/* Shared editorial width pass: guide articles should use the same horizontal
+   scale as the FAQ, evidence and roadmap pages. */
+.wrap{max-width:1240px}
+.faq-hero,.guide-hero{max-width:none}
+.faq-hero h1,.guide-hero h1{max-width:none}
+.faq-hero p,.guide-hero p{max-width:90ch}
+.faq-layout,.layout{grid-template-columns:minmax(190px,220px) minmax(0,1fr);gap:clamp(32px,7vw,96px)}
+@media(max-width:700px){
+  .wrap{padding:0 20px}
+  .faq-layout,.layout{grid-template-columns:1fr}
+  .toc{display:none}
+}

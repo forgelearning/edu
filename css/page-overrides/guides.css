@@ -113,3 +113,9 @@ body::before{content:"";position:fixed;z-index:50;top:0;left:0;width:100%;height
   .guide-card{animation-name:manual-card-in;animation-duration:1ms;animation-timing-function:linear;animation-fill-mode:both;animation-timeline:view(-8% 12%);animation-range:entry 0% entry 24%}
 }
 @media(prefers-reduced-motion:reduce){body::before{transform:scaleX(1)}.guide-card{animation:none!important;opacity:1!important;transform:none!important}}
+
+/* Keep the guide index on the same wide editorial grid as its articles. */
+.wrap{max-width:1240px}
+.faq-hero{max-width:none}
+.faq-hero h1{max-width:none}
+.faq-hero p{max-width:90ch}
