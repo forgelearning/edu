@@ -101,7 +101,7 @@ propagates into its `*-COV-*` copies and fixing the source fixes them all.
 
 ## Known outstanding issues
 
-- Reforge option sets are currently distinct across all 7,506 MCQs; keep
+- Reforge option sets are currently distinct across every MCQ; keep
   `dev/test-forge.js` running as new content lands.
 - GCSE History and GCSE Psychology still need ongoing scaffold-quality review;
   structural checks cannot judge whether an explanation genuinely teaches.
@@ -109,17 +109,28 @@ propagates into its `*-COV-*` copies and fixing the source fixes them all.
   the teacher heatmap should show human-readable labels and useful intervention
   suggestions for every active tag. The blocker is *tagging*, not starters —
   most subjects give each question a tag unique to itself (`tag === "MC-" + id`),
-  so nothing aggregates and every starter falls back to a generic drill. Done so
-  far: `psych`, `gcse-geo`, `soc`, `econ`, `gcse-econ` (420 questions regrouped
-  onto 76 shared `MC-GE-*` tags) and the three `gcse-sep-*` sciences (600
-  questions on 96 shared topic tags, one per bio/chem/physics topic). Next,
-  roughly by value: `gcse-science` — its 212 questions still sit on 156 tags,
-  and most should be remapped onto the existing `MC-SEP-*` science tags rather
-  than given a set of their own, since combined science is a subset of the
-  separate content — then `gcse-maths`, then the ~15 subjects still at 100%
-  per-question tags. `dev/audit-banks.js` fails if a subject listed in its
-  `TAG_TAXONOMY_SUBJECTS` regresses, or if an aggregatable tag has no starter;
-  add a subject there once it is retagged.
+  so nothing aggregates and every starter falls back to a generic drill.
+
+  **Measure before trusting any "done" list here, including this one.** The
+  honest record of completion is the ratchet in `TAG_TAXONOMY_SUBJECTS` in
+  `dev/audit-banks.js`: it caps the share of a subject's questions allowed to
+  sit on a tag used only once. A `0` means genuinely retagged; a high value
+  means the entry was set to whatever the state already was and mostly locks in
+  the status quo. Fully done: `gcse-econ` (420 questions onto 76 shared
+  `MC-GE-*` tags), the three `gcse-sep-*` sciences (600 questions on 96 shared
+  topic tags), `gcse-science` (212 questions from 156 tags onto 83, reusing the
+  `MC-SEP-*` set — see `docs/gcse-science-misconception-mapping.md`), and
+  `hist` (37 shared `MC-HIST-*` tags, see
+  `docs/history-misconception-mapping.md`). Substantially done: `psych` (0.18).
+  Listed but *not* meaningfully retagged: `gcse-geo` (0.78 — 492 of 640
+  questions still on single-use tags), `soc` (0.94), and `econ`, which is not
+  in the ratchet at all and has 378 of 515 questions on single-use tags.
+
+  Next, roughly by value: `gcse-maths`, then `econ`, `gcse-geo` and `soc` —
+  those three need a taxonomy designed from scratch, which is the expensive
+  part — then the ~15 subjects still at 100% per-question tags. The audit fails
+  if a subject listed in `TAG_TAXONOMY_SUBJECTS` regresses, or if an
+  aggregatable tag has no starter; add a subject there once it is retagged.
 - Not every subject needs a fresh taxonomy first: `gcse-sep-*` already carried
   good topic tags, so the work there was purely labels and starters. Check what
   a subject's tags actually look like before assuming a retag is needed.
@@ -130,4 +141,10 @@ propagates into its `*-COV-*` copies and fixing the source fixes them all.
 - Mandarin is represented by one subject key (`mand`) and one live bank.
 
 Bank *structure* is otherwise healthy: `dev/audit-banks.js` reports 0 issues
-and 0% cued stems and twins across all 7,506 questions.
+and 0% cued stems and twins.
+
+Question counts: the tools count different things, so quote the tool rather
+than a single number. `scripts/check-question-bank.js` reports 7,601 questions
+(everything, including the short/extended-answer shapes); `dev/audit-banks.js`
+reports on 7,506 gradeable MCQ stems; `dev/test-forge.js` checks 7,706 MCQs
+including reforge twins.
