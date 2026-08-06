@@ -1,6 +1,6 @@
 /* Route-specific overrides for present.html. Shared rules belong in components.css. */
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--coal);color:var(--slate);font-family:'Inter',sans-serif;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100vh}
+body{background:var(--coal);color:var(--slate);font-family:'IBM Plex Sans',sans-serif;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100vh}
 h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter-spacing:-.015em}
 .mono{font-family:'JetBrains Mono',monospace}
 .wrap{max-width:1100px;margin:0 auto;padding:24px 28px}
@@ -19,22 +19,22 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
 .howto-text{font-size:13px;color:var(--slate);line-height:1.4;padding-top:3px}
 .howto-text b{color:var(--white)}
 .subject-list,.bank-list{display:flex;flex-direction:column;gap:10px;margin-top:22px}
-.pick-btn{padding:18px 20px;border-radius:var(--radius-md);border:1.5px solid var(--line);background:var(--panel);cursor:pointer;text-align:left;font-family:'Inter',sans-serif;transition:border-color .15s}
+.pick-btn{padding:18px 20px;border-radius:var(--radius-md);border:1.5px solid var(--line);background:var(--panel);cursor:pointer;text-align:left;font-family:'IBM Plex Sans',sans-serif;transition:border-color .15s}
 .pick-btn:hover{border-color:var(--ember)}
 .pick-btn h3{font-size:17px;margin-bottom:2px}
 .pick-btn .sub{font-size:13px;color:var(--slate)}
 .pick-btn .count{font-size:12px;color:#8A857E;margin-top:4px}
-.back-btn{background:none;border:none;cursor:pointer;font-size:13px;color:#8A857E;font-family:'Inter',sans-serif;margin-bottom:8px;padding:0}
+.back-btn{background:none;border:none;cursor:pointer;font-size:13px;color:#8A857E;font-family:'IBM Plex Sans',sans-serif;margin-bottom:8px;padding:0}
 .back-btn:hover{color:var(--white)}
 .opts-row{display:flex;gap:14px;margin-top:18px;align-items:center;flex-wrap:wrap}
 .opts-row label{font-size:13px;color:var(--slate);display:flex;align-items:center;gap:6px;cursor:pointer}
-.start-btn{margin-top:22px;padding:13px 28px;border-radius:var(--radius-md);background:var(--ember);color:var(--coal);border:none;cursor:pointer;font-weight:700;font-size:15px;font-family:'Inter',sans-serif}
+.start-btn{margin-top:22px;padding:13px 28px;border-radius:var(--radius-md);background:var(--ember);color:var(--coal);border:none;cursor:pointer;font-weight:700;font-size:15px;font-family:'IBM Plex Sans',sans-serif}
 
 /* --- present screen --- */
 .present-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;font-size:13px;color:#8A857E}
 .present-header .bank-name{font-weight:700;font-size:15px}
 .progress-bar{height:4px;background:var(--line);border-radius:var(--radius-xs);margin-bottom:34px;overflow:hidden}
-.progress-fill{height:4px;border-radius:var(--radius-xs);transition:width .3s}
+.progress-fill{height:4px;width:100%;border-radius:var(--radius-xs);transform:scaleX(var(--progress,0));transform-origin:left center;transition:transform .3s}
 .stage{min-height:56vh;display:flex;flex-direction:column;justify-content:center}
 .q-id-big{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:14px;padding:4px 12px;border-radius:var(--radius-sm);margin-bottom:22px}
 .stem-big{font-size:clamp(26px,4vw,42px);font-weight:700;color:var(--white);font-family:'Sora',sans-serif;line-height:1.25;letter-spacing:-.01em;margin-bottom:34px}
@@ -52,13 +52,41 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
 .scaffold-big .stag{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--coal);background:var(--hot);padding:2px 8px;border-radius:var(--radius-xs);font-weight:600;margin-bottom:10px}
 .scaffold-big p{font-size:clamp(15px,1.6vw,19px);color:var(--white);line-height:1.55}
 .controls{display:flex;justify-content:space-between;align-items:center;margin-top:36px;gap:12px;flex-wrap:wrap}
-.ctrl-btn{padding:12px 22px;border-radius:var(--radius-md);border:1.5px solid var(--line);background:var(--panel);color:var(--white);font-family:'Inter',sans-serif;font-weight:600;font-size:14px;cursor:pointer}
+.ctrl-btn{padding:12px 22px;border-radius:var(--radius-md);border:1.5px solid var(--line);background:var(--panel);color:var(--white);font-family:'IBM Plex Sans',sans-serif;font-weight:600;font-size:14px;cursor:pointer}
 .ctrl-btn:hover{border-color:var(--ember)}
 .ctrl-btn:disabled{opacity:.3;cursor:default}
-.reveal-btn{padding:14px 30px;border-radius:var(--radius-md);border:none;background:var(--ember);color:var(--coal);font-family:'Inter',sans-serif;font-weight:800;font-size:16px;cursor:pointer;box-shadow:0 0 0 0 rgba(213,92,19,.4);animation:pulse-btn 2s ease-in-out infinite}
+.reveal-btn{padding:14px 30px;border-radius:var(--radius-md);border:none;background:var(--ember);color:var(--coal);font-family:'IBM Plex Sans',sans-serif;font-weight:800;font-size:16px;cursor:pointer;box-shadow:0 0 0 0 rgba(213,92,19,.4);animation:pulse-btn 2s ease-in-out infinite}
 @keyframes pulse-btn{0%,100%{box-shadow:0 0 0 0 rgba(213,92,19,.35)}50%{box-shadow:0 0 0 10px rgba(213,92,19,0)}}
 .reveal-btn.next-btn-style{animation:none;background:var(--white)}
-.hint{font-size:13px;color:var(--slate);margin-top:14px;font-family:'Inter',sans-serif;text-align:center}
+.hint{font-size:13px;color:var(--slate);margin-top:14px;font-family:'IBM Plex Sans',sans-serif;text-align:center}
 .hint .mono{font-family:'JetBrains Mono',monospace;font-size:11px;color:#6a6560}
 .done-box{text-align:center;padding-top:14vh}
 .loading{padding-top:20vh;text-align:center;color:#8A857E;font-family:'JetBrains Mono',monospace;font-size:13px}
+
+/* Six-pass refinement: Class Mode is a teaching instrument, so the next
+   action stays obvious while the stage carries the drama. */
+body{font-family:'Poppins',sans-serif;background:radial-gradient(circle at 72% -12%,rgba(213,92,19,.1),transparent 36%),var(--coal)}
+h1,h2,h3{font-family:'Rethink Sans',sans-serif}
+.wrap{max-width:1160px;padding:34px 30px 72px}
+.step-label{font-size:11px;letter-spacing:.12em}
+.howto{gap:18px;margin-top:24px;padding:20px 22px;border-radius:var(--radius-lg);background:linear-gradient(135deg,rgba(255,201,60,.06),transparent 62%),var(--panel);box-shadow:0 20px 46px -40px rgba(213,92,19,.8)}
+.howto-step{min-width:210px}.howto-num{width:30px;height:30px;box-shadow:0 8px 18px -10px rgba(213,92,19,.9)}
+.subject-list,.bank-list{gap:12px;margin-top:26px}
+.pick-btn{min-height:78px;padding:18px 22px;border-radius:var(--radius-lg);font-family:'Poppins',sans-serif;transition:transform .2s cubic-bezier(.16,1,.3,1),border-color .2s,box-shadow .2s;background:linear-gradient(135deg,rgba(255,107,44,.045),transparent 58%),var(--panel);border-color:color-mix(in srgb,var(--accent-color,var(--line)) 55%,var(--line))}
+.pick-btn:hover{transform:translateX(5px);border-color:var(--ember);box-shadow:0 18px 34px -26px rgba(213,92,19,.85)}
+.pick-btn h3{font-size:20px;letter-spacing:-.02em}
+.back-btn,.ctrl-btn{font-family:'Poppins',sans-serif;min-height:44px}
+.present-header{font-family:'JetBrains Mono',monospace;letter-spacing:.02em}
+.progress-bar{height:6px;margin-bottom:38px;border-radius:var(--radius-pill)}.progress-fill{height:6px;border-radius:var(--radius-pill)}
+.stage{position:relative;isolation:isolate;min-height:58vh;padding:24px 0}
+.stage::before{content:"";position:absolute;inset:0 -8vw;z-index:-1;pointer-events:none;background:radial-gradient(circle at 50% 42%,rgba(213,92,19,.12),transparent 48%);opacity:.8}
+.q-id-big{font-size:12px;letter-spacing:.08em;box-shadow:0 12px 26px -22px rgba(213,92,19,.9)}
+.stem-big{font-family:'Rethink Sans',sans-serif;font-size:clamp(30px,5vw,58px);font-weight:800;letter-spacing:-.035em;line-height:1.12}
+.opt-big{min-height:66px;padding:18px 22px;border-radius:var(--radius-lg);font-family:'Poppins',sans-serif;transition:transform .2s cubic-bezier(.16,1,.3,1),border-color .2s,background .2s,opacity .2s;box-shadow:0 16px 34px -32px rgba(213,92,19,.9)}
+.opt-big:hover{transform:translateX(5px);border-color:var(--ember)}
+.scaffold-big{border-radius:var(--radius-lg);box-shadow:0 22px 42px -30px rgba(255,201,60,.34)}
+.controls{margin-top:40px}.ctrl-btn,.reveal-btn{min-height:50px}.reveal-btn{border-radius:var(--radius-lg);font-family:'Poppins',sans-serif;box-shadow:0 18px 34px -18px rgba(213,92,19,.86)}
+.hint{line-height:1.55}
+@media(max-width:700px){.wrap{padding:24px 16px 52px}.howto{padding:18px}.howto-step{min-width:100%}.stage{min-height:52vh;padding:16px 0}.stem-big{font-size:clamp(28px,8vw,42px)}.opt-big{padding:16px 18px;min-height:60px}.controls{margin-top:28px}.reveal-btn,.ctrl-btn{min-height:50px}}
+@media(pointer:coarse){.pick-btn,.ctrl-btn,.reveal-btn,.back-btn{min-height:48px}}
+@media(prefers-reduced-motion:reduce){.pick-btn,.opt-big{transition:none}.pick-btn:hover,.opt-big:hover{transform:none}.progress-fill{transition:none}}

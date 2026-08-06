@@ -6,12 +6,12 @@
 <title>Privacy & Data — Forge</title>
 <meta name="description" content="How Forge collects, uses and protects personal data, including student, teacher, analytics, and school DPA information.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Rethink+Sans:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/tokens.css">
-<link rel="stylesheet" href="css/base.css?v=20260812">
+<link rel="stylesheet" href="css/base.css?v=20260814-fonts">
 
 <!-- Google tag (gtag.js) -->
-<script src="scripts/analytics-consent.js?v=20260812"></script>
+<script src="scripts/analytics-consent.js?v=20260816"></script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-RGZ9J6Q8H9"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -58,7 +58,19 @@
   </div>
 
   <div class="doc-layout">
-    <nav class="doc-nav" aria-label="Document sections"></nav>
+     <nav class="doc-nav" aria-label="Document sections">
+       <span class="doc-nav-title">On this page</span>
+       <a href="#who-we-are">Who we are</a>
+       <a href="#what-we-collect">What we collect</a>
+       <a href="#how-we-use">How we use it</a>
+       <a href="#your-rights">Your rights</a>
+       <a href="#data-retention">Retention</a>
+       <a href="#cookies">Cookies</a>
+       <a href="#dpa">Data Processing Agreement</a>
+       <a href="#subprocessors">Sub-processors</a>
+       <a href="#account-deletion">Delete your account</a>
+       <a href="#contact">Contact</a>
+     </nav>
 
     <div class="prose">
       <div class="toc-box">
@@ -415,5 +427,19 @@
 <script src="scripts/nav.js"></script>
 <script src="scripts/forge-page-actions.js"></script>
 <script src="scripts/forge-discovery-nav.js"></script>
+<script>
+  (function () {
+    var links = Array.prototype.slice.call(document.querySelectorAll('.doc-nav a'));
+    var sections = links.map(function (link) { return document.querySelector(link.getAttribute('href')); }).filter(Boolean);
+    if (!links.length || !('IntersectionObserver' in window)) return;
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        links.forEach(function (link) { link.classList.toggle('is-current', link.getAttribute('href') === '#' + entry.target.id); });
+      });
+    }, { rootMargin: '-10% 0px -10% 0px' });
+    sections.forEach(function (section) { observer.observe(section); });
+  }());
+</script>
 </body>
 </html>

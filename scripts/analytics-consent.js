@@ -4,6 +4,7 @@
   var STORAGE_KEY = 'forge-analytics-consent';
   var measurementId = 'G-RGZ9J6Q8H9';
   var consent = null;
+  var settingsTrigger = null;
 
   try { consent = window.localStorage.getItem(STORAGE_KEY); } catch (e) {}
 
@@ -29,39 +30,72 @@
       analytics_storage: value === 'granted' ? 'granted' : 'denied'
     });
     hideBanner();
+    if (settingsTrigger && document.contains(settingsTrigger)) {
+      settingsTrigger.focus();
+      settingsTrigger = null;
+    }
   }
 
   function showBanner(force) {
     if (!force && consent) return;
+    if (force && document.activeElement && document.activeElement !== document.body) {
+      settingsTrigger = document.activeElement;
+    }
     hideBanner();
     var banner = document.createElement('aside');
     banner.id = 'analytics-consent-banner';
-    banner.setAttribute('role', 'dialog');
+    // Keep this invariant in the element itself as well as in CSS so an older
+    // cached stylesheet can never turn the consent UI into a viewport overlay.
+    banner.style.setProperty('position', 'static', 'important');
+    banner.style.setProperty('inset', 'auto', 'important');
+    banner.style.setProperty('z-index', 'auto', 'important');
+    // This is an inline preference region, not a modal dialog: it should not
+    // trap focus or imply that the rest of the page is unavailable.
+    banner.setAttribute('role', 'region');
+    banner.setAttribute('aria-label', 'Analytics consent');
     banner.setAttribute('aria-labelledby', 'analytics-consent-title');
+    banner.setAttribute('aria-describedby', 'analytics-consent-description');
     banner.innerHTML =
-      '<div class="analytics-consent-copy">' +
+      // The banner sits inside the hero copy column, so the visible line has to
+      // stay short to remain one row. The full wording is kept for assistive
+      // tech via aria-describedby, and the detail lives behind the Privacy link.
+      '<p class="analytics-consent-copy">' +
         '<strong id="analytics-consent-title">Optional analytics</strong>' +
-        '<p>Forge uses Google Analytics on public pages to understand aggregate site usage. It is not used to analyse student quiz responses.</p>' +
-      '</div>' +
+        '<span class="analytics-consent-detail"> — site usage only.</span>' +
+        '<span id="analytics-consent-description" class="forge-sr-only">Forge uses Google Analytics for aggregate public-site usage only. It does not analyse student quiz responses.</span>' +
+        ' <a href="privacy.html">Privacy</a>' +
+      '</p>' +
       '<div class="analytics-consent-actions">' +
         '<button type="button" class="analytics-consent-reject">Reject</button>' +
-        '<button type="button" class="analytics-consent-accept">Accept analytics</button>' +
+        '<button type="button" class="analytics-consent-accept">Accept</button>' +
       '</div>';
     banner.querySelector('.analytics-consent-reject').addEventListener('click', function () { saveChoice('denied'); });
     banner.querySelector('.analytics-consent-accept').addEventListener('click', function () { saveChoice('granted'); });
     // Keep consent visible without covering the primary action or live demo.
     // On the homepage, use the intentional space beneath the hero reassurance
-    // line; other pages place it before their main content.
+    // line. Other pages insert it before their top-level content shell rather
+    // than before a nested <main>, which can accidentally turn the banner into
+    // a grid or flex child (the FAQ layout is one such case).
     var heroSub = document.querySelector('.hero .sub');
-    var insertionPoint = heroSub || document.querySelector('main');
     if (heroSub && heroSub.parentNode) {
       heroSub.parentNode.insertBefore(banner, heroSub.nextSibling);
-    } else if (insertionPoint && insertionPoint.parentNode) {
-      insertionPoint.parentNode.insertBefore(banner, insertionPoint);
     } else {
-      document.body.appendChild(banner);
+      var pageShell = null;
+      var bodyChildren = document.body ? document.body.children : [];
+      for (var i = 0; i < bodyChildren.length; i += 1) {
+        var child = bodyChildren[i];
+        if (child.id === 'sticky-nav' || child.tagName === 'SCRIPT' || child.id === 'analytics-consent-banner') continue;
+        pageShell = child;
+        break;
+      }
+      if (pageShell && pageShell.parentNode) {
+        pageShell.parentNode.insertBefore(banner, pageShell);
+      } else {
+        document.body.appendChild(banner);
+      }
     }
     document.body.classList.add('has-consent-banner');
+    if (force) banner.querySelector('.analytics-consent-reject').focus();
   }
 
   window.forgeManageAnalytics = function () { showBanner(true); };

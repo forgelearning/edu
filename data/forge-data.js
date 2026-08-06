@@ -1,6 +1,26 @@
 // Canonical question-bank data for Forge — shared by forge-quiz.html, anvil.html, and teacher.html.
 // Single source of truth: edit banks/subjects here, not in the app files.
 
+// Banks that have been superseded (HIST-1 → HIST-BRIT1, LAW-1 → LAW-CRIM, …).
+// They are pulled out of BANKS so nothing serves them as new practice, but
+// students carry misconceptions tagged against them for as long as their
+// response history lasts, and the Anvil needs these questions to repair one.
+// Deleting them outright left those misconceptions permanently unfixable.
+const RETIRED_BANKS = {};
+function retireBank(bankId){
+  if (BANKS[bankId]) RETIRED_BANKS[bankId] = BANKS[bankId];
+  delete BANKS[bankId];
+}
+
+// Bank id -> human label, for anywhere a student's history is displayed.
+// Response rows keep the bank id they were answered under, so this has to
+// cover retired ids too; anything older than both (LAW-3, MAN-EXP-1, SOC-STR)
+// has no label anywhere and shows as the raw id rather than a guess.
+function resolveBankLabel(bankId){
+  var bank = BANKS[bankId] || RETIRED_BANKS[bankId];
+  return (bank && bank.label) || bankId;
+}
+
 const BANKS = {
   "2.1.1": {
     label: "Economic Growth",
@@ -3936,12 +3956,12 @@ BANKS["GCSE-ECON-P2-NATIONAL"] = {
   label: "Paper 2: The National Economy",
   color: "#166534",
   questions: [
-    {id:"GCSE-P2-NAT-01",spec:"GCSE-ECON-P2-NATIONAL",stem:"Which is a macroeconomic objective of the UK government?",options:{A:"Keeping every firm profitable",B:"Maintaining low and stable inflation",C:"Maximising imports",D:"Fixing every wage at the same level"},correct:"A",tag:"MC-GCSE-P2-NAT-01",scaffold:"Macroeconomic objectives concern the performance of the whole economy, including growth, low unemployment, price stability and a sustainable balance of payments. They can conflict, so governments face trade-offs.",reforge:{stem:"Which outcome would generally be considered a national economic policy aim?",options:{A:"Persistent high unemployment",B:"Falling productivity",C:"Stable prices and sustainable economic growth",D:"A permanent trade deficit"},correct:"A"}},
+    {id:"GCSE-P2-NAT-01",spec:"GCSE-ECON-P2-NATIONAL",stem:"Which is a macroeconomic objective of the UK government?",options:{A:"Keeping every firm profitable",B:"Maintaining low and stable inflation",C:"Maximising imports",D:"Fixing every wage at the same level"},correct:"B",tag:"MC-GCSE-P2-NAT-01",scaffold:"Macroeconomic objectives concern the performance of the whole economy, including growth, low unemployment, price stability and a sustainable balance of payments. They can conflict, so governments face trade-offs.",reforge:{stem:"Which outcome would generally be considered a national economic policy aim?",options:{A:"Persistent high unemployment",B:"Falling productivity",C:"Stable prices and sustainable economic growth",D:"A permanent trade deficit"},correct:"C"}},
     {id:"GCSE-P2-NAT-02",spec:"GCSE-ECON-P2-NATIONAL",stem:"Why might the government remove VAT from a product such as a cycle helmet?",options:{A:"It makes supply perfectly inelastic",B:"It is always a luxury good",C:"It may be a merit good with wider benefits when consumed",D:"The policy guarantees a budget surplus (in the market described)"},correct:"C",tag:"MC-GCSE-P2-NAT-02",scaffold:"Merit goods create benefits for other people as well as the consumer. Reducing tax lowers the price and may encourage consumption, such as safer cycling or improved education, although the policy has an opportunity cost.",reforge:{stem:"A government subsidises school vaccination programmes because:",options:{A:"They always reduce government spending immediately (assuming other conditions are unchanged)",B:"They are examples of demerit goods",C:"They create positive external benefits beyond the individual receiving the vaccine",D:"They are supplied only by overseas firms"},correct:"C"}},
-    {id:"GCSE-P2-NAT-03",spec:"GCSE-ECON-P2-NATIONAL",stem:"Which tax system takes a larger percentage of income from higher earners?",options:{A:"A poll tax",B:"A proportional tax with one fixed amount",C:"Regressive taxation",D:"Progressive taxation"},correct:"D",tag:"MC-GCSE-P2-NAT-03",scaffold:"Under a progressive system, the average tax rate rises as income rises. This can reduce post-tax inequality and raise revenue, but higher rates may affect incentives depending on the circumstances.",reforge:{stem:"If a household on a low income pays 8% of its income in a tax while a high-income household pays 2%, the tax is best described as:",options:{A:"Regressive",B:"Deflationary",C:"Proportional",D:"Progressive"},correct:"D"}},
-    {id:"GCSE-P2-NAT-04",spec:"GCSE-ECON-P2-NATIONAL",stem:"Which area is most likely to be included in government expenditure?",options:{A:"Public healthcare",B:"Household pocket money",C:"A firm's retained profit",D:"A consumer's private saving"},correct:"B",tag:"MC-GCSE-P2-NAT-04",scaffold:"Government spending includes public services such as health, education, transport, defence and social protection. Spending choices have opportunity costs because public funds are limited.",reforge:{stem:"Why might a government increase spending on education?",options:{A:"To guarantee that inflation becomes negative (in the market described)",B:"To improve human capital and potentially raise future productivity",C:"To reduce the size of the labour force",D:"To make all private firms state-owned"},correct:"B"}},
-    {id:"GCSE-P2-NAT-05",spec:"GCSE-ECON-P2-NATIONAL",stem:"A country has a labour force of 30 million and 1.5 million people are unemployed. What is the unemployment rate?",options:{A:"0.05%",B:"5%",C:"20%",D:"31.5%"},correct:"A",tag:"MC-GCSE-P2-NAT-05",scaffold:"The unemployment rate is unemployed people divided by the labour force, multiplied by 100: 1.5 million / 30 million x 100 = 5%.",reforge:{stem:"If 2 million people are unemployed in a labour force of 40 million, the unemployment rate is:",options:{A:"2%",B:"42%",C:"5%",D:"20%"},correct:"A"}},
-    {id:"GCSE-P2-NAT-06",spec:"GCSE-ECON-P2-NATIONAL",stem:"What does a government budget deficit mean?",options:{A:"Household saving is greater than borrowing",B:"Government spending is greater than tax revenue in a period",C:"Tax revenue is greater than government spending",D:"Exports are greater than imports"},correct:"C",tag:"MC-GCSE-P2-NAT-06",scaffold:"A budget deficit occurs when government expenditure exceeds its receipts, so the government may need to borrow. It is different from a current account deficit, which concerns international transactions.",reforge:{stem:"A government collects £720 billion in taxes and spends £760 billion. Before interest and other adjustments, it has:",options:{A:"A £1,480 billion trade deficit",B:"Balanced finances",C:"A £40 billion budget surplus",D:"A £40 billion budget deficit"},correct:"C"}},
+    {id:"GCSE-P2-NAT-03",spec:"GCSE-ECON-P2-NATIONAL",stem:"Which tax system takes a larger percentage of income from higher earners?",options:{A:"A poll tax",B:"A proportional tax with one fixed amount",C:"Regressive taxation",D:"Progressive taxation"},correct:"D",tag:"MC-GCSE-P2-NAT-03",scaffold:"Under a progressive system, the average tax rate rises as income rises. This can reduce post-tax inequality and raise revenue, but higher rates may affect incentives depending on the circumstances.",reforge:{stem:"If a household on a low income pays 8% of its income in a tax while a high-income household pays 2%, the tax is best described as:",options:{A:"Regressive",B:"Deflationary",C:"Proportional",D:"Progressive"},correct:"A"}},
+    {id:"GCSE-P2-NAT-04",spec:"GCSE-ECON-P2-NATIONAL",stem:"Which area is most likely to be included in government expenditure?",options:{A:"Public healthcare",B:"Household pocket money",C:"A firm's retained profit",D:"A consumer's private saving"},correct:"A",tag:"MC-GCSE-P2-NAT-04",scaffold:"Government spending includes public services such as health, education, transport, defence and social protection. Spending choices have opportunity costs because public funds are limited.",reforge:{stem:"Why might a government increase spending on education?",options:{A:"To guarantee that inflation becomes negative (in the market described)",B:"To improve human capital and potentially raise future productivity",C:"To reduce the size of the labour force",D:"To make all private firms state-owned"},correct:"B"}},
+    {id:"GCSE-P2-NAT-05",spec:"GCSE-ECON-P2-NATIONAL",stem:"A country has a labour force of 30 million and 1.5 million people are unemployed. What is the unemployment rate?",options:{A:"0.05%",B:"5%",C:"20%",D:"31.5%"},correct:"B",tag:"MC-GCSE-P2-NAT-05",scaffold:"The unemployment rate is unemployed people divided by the labour force, multiplied by 100: 1.5 million / 30 million x 100 = 5%.",reforge:{stem:"If 2 million people are unemployed in a labour force of 40 million, the unemployment rate is:",options:{A:"2%",B:"42%",C:"5%",D:"20%"},correct:"C"}},
+    {id:"GCSE-P2-NAT-06",spec:"GCSE-ECON-P2-NATIONAL",stem:"What does a government budget deficit mean?",options:{A:"Household saving is greater than borrowing",B:"Government spending is greater than tax revenue in a period",C:"Tax revenue is greater than government spending",D:"Exports are greater than imports"},correct:"B",tag:"MC-GCSE-P2-NAT-06",scaffold:"A budget deficit occurs when government expenditure exceeds its receipts, so the government may need to borrow. It is different from a current account deficit, which concerns international transactions.",reforge:{stem:"A government collects £720 billion in taxes and spends £760 billion. Before interest and other adjustments, it has:",options:{A:"A £1,480 billion trade deficit",B:"Balanced finances",C:"A £40 billion budget surplus",D:"A £40 billion budget deficit"},correct:"D"}},
     {id:"GCSE-P2-NAT-07",spec:"GCSE-ECON-P2-NATIONAL",stem:"Why might an ageing population increase government spending?",options:{A:"Older people cannot consume public services",B:"Tax revenue must always rise faster than spending",C:"The labour force automatically doubles",D:"There may be more demand for pensions and healthcare"},correct:"D",tag:"MC-GCSE-P2-NAT-07",scaffold:"An ageing population can increase expenditure on pensions, social care and healthcare. The government may also face a smaller proportion of working-age taxpayers, creating pressure on public finances.",reforge:{stem:"Which demographic change is most likely to put pressure on social protection spending?",options:{A:"A fall in life expectancy",B:"A rise in the number of people in work",C:"A smaller need for healthcare",D:"A larger retired population relative to workers"},correct:"D"}},
     {id:"GCSE-P2-NAT-08",spec:"GCSE-ECON-P2-NATIONAL",stem:"Why might governments support a large infrastructure project?",options:{A:"It guarantees no opportunity cost",B:"It can provide long-term social benefits that private investors may not fully capture",C:"It always reduces aggregate demand",D:"It can be funded without any resources (with other relevant factors held constant)"},correct:"B",tag:"MC-GCSE-P2-NAT-08",scaffold:"Infrastructure such as rail links can create external benefits, connect regions and support productivity, but it may require very large upfront finance and careful cost-benefit evaluation.",reforge:{stem:"A new rail line reduces journey times for many firms and workers. This is one reason public support may be justified because it:",options:{A:"Makes all private investment unnecessary",B:"Creates wider benefits not captured in the ticket price alone",C:"Removes scarcity from the economy",D:"Guarantees every household receives the same income"},correct:"B"}}
   ]
@@ -3951,7 +3971,7 @@ BANKS["GCSE-ECON-P2-GROWTH"] = {
   label: "Paper 2: Economic Growth",
   color: "#15803d",
   questions: [
-    {id:"GCSE-P2-GRO-01",spec:"GCSE-ECON-P2-GROWTH",stem:"Real GDP rises from £500 billion to £515 billion. What is the approximate economic growth rate?",options:{A:"0.3%",B:"3%",C:"15%",D:"103%"},correct:"A",tag:"MC-GCSE-P2-GRO-01",scaffold:"Growth rate is the change in real GDP divided by the original GDP, multiplied by 100: £15 billion / £500 billion x 100 = 3%.",reforge:{stem:"Real GDP increases from £800 billion to £824 billion. The growth rate is:",options:{A:"2%",B:"103%",C:"3%",D:"24%"},correct:"A"}},
+    {id:"GCSE-P2-GRO-01",spec:"GCSE-ECON-P2-GROWTH",stem:"Real GDP rises from £500 billion to £515 billion. What is the approximate economic growth rate?",options:{A:"0.3%",B:"3%",C:"15%",D:"103%"},correct:"B",tag:"MC-GCSE-P2-GRO-01",scaffold:"Growth rate is the change in real GDP divided by the original GDP, multiplied by 100: £15 billion / £500 billion x 100 = 3%.",reforge:{stem:"Real GDP increases from £800 billion to £824 billion. The growth rate is:",options:{A:"2%",B:"103%",C:"3%",D:"24%"},correct:"C"}},
     {id:"GCSE-P2-GRO-02",spec:"GCSE-ECON-P2-GROWTH",stem:"Why is real GDP per capita useful when comparing living standards?",options:{A:"It ignores population changes completely (assuming other conditions are unchanged)",B:"It measures only government spending",C:"It relates output to the size of the population and removes some price effects",D:"It guarantees equal income distribution"},correct:"C",tag:"MC-GCSE-P2-GRO-02",scaffold:"Real GDP per capita divides inflation-adjusted output by population. It gives a rough average measure, but it does not show how income is distributed or capture every aspect of wellbeing.",reforge:{stem:"A country’s real GDP rises but its population rises even faster. What may happen to real GDP per capita?",options:{A:"It is unchanged by population",B:"It becomes a measure of inflation",C:"It may fall",D:"It must double"},correct:"C"}},
     {id:"GCSE-P2-GRO-03",spec:"GCSE-ECON-P2-GROWTH",stem:"Which description best fits a recession?",options:{A:"A rise in the price level only",B:"A permanent trade surplus",C:"A period of rapid growth and high employment",D:"A sustained fall in real GDP, commonly defined as two consecutive quarters"},correct:"D",tag:"MC-GCSE-P2-GRO-03",scaffold:"A recession is a period when economic activity contracts. Falling output can reduce business revenues, investment and employment, although definitions and severity can vary.",reforge:{stem:"During an economic boom, which combination is most likely?",options:{A:"Falling output and falling demand",B:"Zero investment and zero inflation",C:"A guaranteed current account surplus",D:"Rising output and strong employment"},correct:"D"}},
     {id:"GCSE-P2-GRO-04",spec:"GCSE-ECON-P2-GROWTH",stem:"Which change is most likely to increase long-run economic growth?",options:{A:"A permanent fall in labour productivity",B:"Investment in productive technology",C:"Less training for workers",D:"Destroying transport infrastructure"},correct:"B",tag:"MC-GCSE-P2-GRO-04",scaffold:"Investment can increase the capital stock, capacity and productivity of an economy. Education, training, innovation and improved infrastructure can also shift productive potential outward.",reforge:{stem:"A firm installs more efficient machinery and workers receive training. The most likely long-run effect is:",options:{A:"Lower productive capacity",B:"Higher potential output through improved productivity",C:"A guaranteed fall in employment in every sector",D:"No change to the economy’s supply"},correct:"B"}},
@@ -3966,14 +3986,14 @@ BANKS["GCSE-ECON-P2-UNEMP"] = {
   label: "Paper 2: Low Unemployment",
   color: "#16a34a",
   questions: [
-    {id:"GCSE-P2-UNEMP-01",spec:"GCSE-ECON-P2-UNEMP",stem:"A labour force contains 28 million people, of whom 1.4 million are unemployed. What is the unemployment rate?",options:{A:"0.5%",B:"5%",C:"20%",D:"29.4%"},correct:"A",tag:"MC-GCSE-P2-UNEMP-01",scaffold:"Unemployment rate = unemployed / labour force x 100. Therefore 1.4 / 28 x 100 = 5%.",reforge:{stem:"If 900,000 people are unemployed in a labour force of 30 million, the unemployment rate is:",options:{A:"0.3%",B:"33.3%",C:"3%",D:"30%"},correct:"A"}},
-    {id:"GCSE-P2-UNEMP-02",spec:"GCSE-ECON-P2-UNEMP",stem:"What is meant by full employment?",options:{A:"Only highly skilled workers have jobs",B:"Most willing and able workers can find jobs, although some frictional unemployment remains",C:"Every adult works for the government",D:"There is no unemployment of any kind"},correct:"C",tag:"MC-GCSE-P2-UNEMP-02",scaffold:"Full employment does not usually mean zero unemployment. People may be temporarily between jobs or entering the labour market, so some frictional unemployment can remain.",reforge:{stem:"Why can an economy have full employment while its unemployment rate is above zero?",options:{A:"Full employment means firms stop recruiting",B:"Unemployment is counted as employment",C:"Some people are changing jobs or searching for their first suitable job",D:"The unemployment rate excludes all workers"},correct:"C"}},
+    {id:"GCSE-P2-UNEMP-01",spec:"GCSE-ECON-P2-UNEMP",stem:"A labour force contains 28 million people, of whom 1.4 million are unemployed. What is the unemployment rate?",options:{A:"0.5%",B:"5%",C:"20%",D:"29.4%"},correct:"B",tag:"MC-GCSE-P2-UNEMP-01",scaffold:"Unemployment rate = unemployed / labour force x 100. Therefore 1.4 / 28 x 100 = 5%.",reforge:{stem:"If 900,000 people are unemployed in a labour force of 30 million, the unemployment rate is:",options:{A:"0.3%",B:"33.3%",C:"3%",D:"30%"},correct:"C"}},
+    {id:"GCSE-P2-UNEMP-02",spec:"GCSE-ECON-P2-UNEMP",stem:"What is meant by full employment?",options:{A:"Only highly skilled workers have jobs",B:"Most willing and able workers can find jobs, although some frictional unemployment remains",C:"Every adult works for the government",D:"There is no unemployment of any kind"},correct:"B",tag:"MC-GCSE-P2-UNEMP-02",scaffold:"Full employment does not usually mean zero unemployment. People may be temporarily between jobs or entering the labour market, so some frictional unemployment can remain.",reforge:{stem:"Why can an economy have full employment while its unemployment rate is above zero?",options:{A:"Full employment means firms stop recruiting",B:"Unemployment is counted as employment",C:"Some people are changing jobs or searching for their first suitable job",D:"The unemployment rate excludes all workers"},correct:"C"}},
     {id:"GCSE-P2-UNEMP-03",spec:"GCSE-ECON-P2-UNEMP",stem:"A worker loses a job because demand permanently shifts away from the industry. What type of unemployment is most likely?",options:{A:"Seasonal",B:"Voluntary retirement",C:"Frictional",D:"Structural"},correct:"D",tag:"MC-GCSE-P2-UNEMP-03",scaffold:"Structural unemployment occurs when the pattern of demand or production changes and workers’ skills no longer match available jobs. Retraining and mobility can reduce it.",reforge:{stem:"A ski instructor is unemployed during the summer but expects work next winter. This is:",options:{A:"Structural unemployment",B:"Cyclical unemployment",C:"Technological unemployment only",D:"Seasonal unemployment"},correct:"D"}},
     {id:"GCSE-P2-UNEMP-04",spec:"GCSE-ECON-P2-UNEMP",stem:"What is cyclical unemployment most closely associated with?",options:{A:"Workers moving between jobs",B:"A downturn reducing demand for goods and labour",C:"The school holiday calendar only",D:"A shortage of relevant skills in one industry"},correct:"B",tag:"MC-GCSE-P2-UNEMP-04",scaffold:"Cyclical unemployment rises during recessions when aggregate demand and firms’ derived demand for labour fall. It may reduce as the economy recovers.",reforge:{stem:"A recession causes restaurants to reduce staff because customers are spending less. This is best described as:",options:{A:"Frictional unemployment",B:"Cyclical unemployment",C:"Seasonal unemployment",D:"Occupational mobility"},correct:"B"}},
-    {id:"GCSE-P2-UNEMP-05",spec:"GCSE-ECON-P2-UNEMP",stem:"Which is a cost of unemployment to the government?",options:{A:"Higher income tax receipts from the unemployed",B:"More benefit spending and lower tax revenue",C:"An automatic rise in exports",D:"Lower demand for welfare payments"},correct:"A",tag:"MC-GCSE-P2-UNEMP-05",scaffold:"Unemployment can reduce income tax and national insurance receipts while increasing benefit payments. The government also faces the opportunity cost of using funds to support people out of work.",reforge:{stem:"How can high unemployment affect public finances?",options:{A:"Tax receipts may fall while spending on benefits rises",B:"It has no effect on government finances",C:"Tax receipts must rise because fewer people work",D:"Benefit spending automatically falls to zero"},correct:"A"}},
+    {id:"GCSE-P2-UNEMP-05",spec:"GCSE-ECON-P2-UNEMP",stem:"Which is a cost of unemployment to the government?",options:{A:"Higher income tax receipts from the unemployed",B:"More benefit spending and lower tax revenue",C:"An automatic rise in exports",D:"Lower demand for welfare payments"},correct:"B",tag:"MC-GCSE-P2-UNEMP-05",scaffold:"Unemployment can reduce income tax and national insurance receipts while increasing benefit payments. The government also faces the opportunity cost of using funds to support people out of work.",reforge:{stem:"How can high unemployment affect public finances?",options:{A:"Tax receipts may fall while spending on benefits rises",B:"It has no effect on government finances",C:"Tax receipts must rise because fewer people work",D:"Benefit spending automatically falls to zero"},correct:"A"}},
     {id:"GCSE-P2-UNEMP-06",spec:"GCSE-ECON-P2-UNEMP",stem:"Why can job losses damage a local economy?",options:{A:"Local firms are unaffected by household income",B:"Unemployment increases local demand in every shop",C:"Lower household income can reduce spending at local businesses",D:"Job losses automatically attract investment"},correct:"C",tag:"MC-GCSE-P2-UNEMP-06",scaffold:"Redundancies reduce incomes and spending, which can lower sales for other local firms. Persistent unemployment may also reduce skills, health and investment in the area.",reforge:{stem:"A factory closes and nearby shops lose customers. This illustrates how unemployment can:",options:{A:"Raise productivity immediately",B:"Have effects only on the closed factory",C:"Create a multiplier effect of lower spending in the local economy",D:"Increase local disposable income"},correct:"C"}},
     {id:"GCSE-P2-UNEMP-07",spec:"GCSE-ECON-P2-UNEMP",stem:"Which policy could reduce structural unemployment?",options:{A:"Making job information harder to access",B:"Banning labour mobility",C:"Reducing all education spending",D:"Retraining workers for occupations with growing demand"},correct:"D",tag:"MC-GCSE-P2-UNEMP-07",scaffold:"Retraining and better education can reduce skills mismatch. Relocation support, improved transport and information can also help workers move towards available vacancies.",reforge:{stem:"Why might subsidised adult training reduce unemployment?",options:{A:"It guarantees every firm makes a profit (with other relevant factors held constant)",B:"It reduces the number of available jobs",C:"It increases skills mismatch",D:"It can give displaced workers skills that match vacancies in expanding sectors"},correct:"D"}},
-    {id:"GCSE-P2-UNEMP-08",spec:"GCSE-ECON-P2-UNEMP",stem:"Which person is economically inactive rather than unemployed?",options:{A:"Someone retired and not looking for paid work",B:"Someone actively seeking work and available to start",C:"Someone who has applied for three jobs this week",D:"Someone temporarily between jobs and searching"},correct:"B",tag:"MC-GCSE-P2-UNEMP-08",scaffold:"Unemployed people are without work but available for work and actively seeking it. People who are not working and not seeking or available for work may be economically inactive, such as some retirees or full-time carers.",reforge:{stem:"Which person should not normally be included in the unemployment rate?",options:{A:"A laid-off worker applying for vacancies",B:"A student who is not seeking or available for a job",C:"A graduate attending interviews",D:"A worker waiting to start a confirmed job"},correct:"B"}}
+    {id:"GCSE-P2-UNEMP-08",spec:"GCSE-ECON-P2-UNEMP",stem:"Which person is economically inactive rather than unemployed?",options:{A:"Someone retired and not looking for paid work",B:"Someone actively seeking work and available to start",C:"Someone who has applied for three jobs this week",D:"Someone temporarily between jobs and searching"},correct:"A",tag:"MC-GCSE-P2-UNEMP-08",scaffold:"Unemployed people are without work but available for work and actively seeking it. People who are not working and not seeking or available for work may be economically inactive, such as some retirees or full-time carers.",reforge:{stem:"Which person should not normally be included in the unemployment rate?",options:{A:"A laid-off worker applying for vacancies",B:"A student who is not seeking or available for a job",C:"A graduate attending interviews",D:"A worker waiting to start a confirmed job"},correct:"B"}}
   ]
 };
 
@@ -3981,7 +4001,7 @@ BANKS["GCSE-ECON-P2-INCOME"] = {
   label: "Paper 2: Fair Distribution of Income",
   color: "#22c55e",
   questions: [
-    {id:"GCSE-P2-INCOME-01",spec:"GCSE-ECON-P2-INCOME",stem:"What is the difference between income and wealth?",options:{A:"Income is a flow over time; wealth is the stock of assets owned",B:"Income and wealth are exactly the same",C:"Wealth is only wages; income is only property (in the market described)",D:"Income is always a stock"},correct:"A",tag:"MC-GCSE-P2-INCOME-01",scaffold:"Income is money received over a period, such as wages or rent. Wealth is the value of accumulated assets minus liabilities, such as property, savings and shares.",reforge:{stem:"Which is an example of wealth rather than income?",options:{A:"The salary paid this month",B:"Interest received this year",C:"A house owned by a household",D:"A weekly benefit payment"},correct:"A"}},
+    {id:"GCSE-P2-INCOME-01",spec:"GCSE-ECON-P2-INCOME",stem:"What is the difference between income and wealth?",options:{A:"Income is a flow over time; wealth is the stock of assets owned",B:"Income and wealth are exactly the same",C:"Wealth is only wages; income is only property (in the market described)",D:"Income is always a stock"},correct:"A",tag:"MC-GCSE-P2-INCOME-01",scaffold:"Income is money received over a period, such as wages or rent. Wealth is the value of accumulated assets minus liabilities, such as property, savings and shares.",reforge:{stem:"Which is an example of wealth rather than income?",options:{A:"The salary paid this month",B:"Interest received this year",C:"A house owned by a household",D:"A weekly benefit payment"},correct:"C"}},
     {id:"GCSE-P2-INCOME-02",spec:"GCSE-ECON-P2-INCOME",stem:"What does the median income represent?",options:{A:"The income of the government",B:"The highest income in the economy",C:"The middle value when incomes are ordered",D:"The total of all incomes"},correct:"C",tag:"MC-GCSE-P2-INCOME-02",scaffold:"The median is the middle observation in an ordered list. It can represent a typical household better than the mean when a few very high incomes pull the average upwards.",reforge:{stem:"Why might analysts prefer median household income to mean income when describing a typical household?",options:{A:"The median is the highest value",B:"It ignores every low income",C:"A few very high incomes have less influence on the median",D:"The median always includes wealth (over the period considered)"},correct:"C"}},
     {id:"GCSE-P2-INCOME-03",spec:"GCSE-ECON-P2-INCOME",stem:"Why might a professional sportsperson earn a very high wage?",options:{A:"Their labour supply is unlimited",B:"Wages are unrelated to demand",C:"High wages always reflect low productivity (in the market described)",D:"Their scarce skills may face high demand from a large market"},correct:"D",tag:"MC-GCSE-P2-INCOME-03",scaffold:"Wage differentials can reflect skill, training, scarcity, demand for the output, responsibility and bargaining power. High earnings may arise where a worker’s talent is scarce and the market is large.",reforge:{stem:"Which combination is most likely to raise a worker’s wage?",options:{A:"Low demand and many identical workers",B:"No training and no responsibility",C:"A complete absence of employers",D:"High demand for the worker’s output and a scarce skill"},correct:"D"}},
     {id:"GCSE-P2-INCOME-04",spec:"GCSE-ECON-P2-INCOME",stem:"Which is a possible consequence of a large gap between high and low incomes?",options:{A:"Identical housing for all households",B:"Greater poverty and unequal access to opportunities",C:"No differences in health",D:"An automatic rise in social mobility"},correct:"B",tag:"MC-GCSE-P2-INCOME-04",scaffold:"Large income differences may be associated with relative poverty, unequal housing, education and healthcare outcomes, and differences in life chances. The size of these effects depends on public services and redistribution.",reforge:{stem:"How can income inequality affect opportunity?",options:{A:"It guarantees that all children start with the same resources",B:"Low-income families may have less access to education, housing or healthcare",C:"It removes differences in living standards",D:"It makes poverty impossible to measure"},correct:"B"}},
@@ -3997,9 +4017,9 @@ BANKS["GCSE-ECON-P2-PRICE"] = {
   color: "#16a34a",
   questions: [
     {id:"GCSE-P2-PRICE-01",spec:"GCSE-ECON-P2-PRICE",stem:"What does a positive inflation rate of 3% mean?",options:{A:"The average price level is rising by about 3% over the period",B:"Every price rises by exactly 3%",C:"Prices are falling by 3%",D:"Real output is rising by 3%"},correct:"A",tag:"MC-GCSE-P2-PRICE-01",scaffold:"Inflation is the rate of increase in the general price level. A positive rate means prices are still rising, even if some individual prices fall.",reforge:{stem:"Inflation falls from 6% to 2%, but remains positive. What happens to the general price level?",options:{A:"It continues to rise, but more slowly",B:"It falls to zero",C:"It must fall by 4% (in the market described)",D:"It is unchanged"},correct:"A"}},
-    {id:"GCSE-P2-PRICE-02",spec:"GCSE-ECON-P2-PRICE",stem:"A basket costs £50 in the base year and £60 in the next year. What is the CPI in the next year?",options:{A:"120",B:"100",C:"83",D:"110"},correct:"C",tag:"MC-GCSE-P2-PRICE-02",scaffold:"CPI = cost of basket in current period divided by cost in base period x 100: £60 / £50 x 100 = 120. This indicates prices are 20% higher than in the base year.",reforge:{stem:"A representative basket costs £80 in the base year and £88 later. Its CPI later is:",options:{A:"110",B:"180",C:"90",D:"100"},correct:"C"}},
+    {id:"GCSE-P2-PRICE-02",spec:"GCSE-ECON-P2-PRICE",stem:"A basket costs £50 in the base year and £60 in the next year. What is the CPI in the next year?",options:{A:"120",B:"100",C:"83",D:"110"},correct:"A",tag:"MC-GCSE-P2-PRICE-02",scaffold:"CPI = cost of basket in current period divided by cost in base period x 100: £60 / £50 x 100 = 120. This indicates prices are 20% higher than in the base year.",reforge:{stem:"A representative basket costs £80 in the base year and £88 later. Its CPI later is:",options:{A:"110",B:"180",C:"90",D:"100"},correct:"A"}},
     {id:"GCSE-P2-PRICE-03",spec:"GCSE-ECON-P2-PRICE",stem:"Why are goods given different weights when calculating the CPI?",options:{A:"Weights measure unemployment",B:"Only luxury goods are included",C:"All goods have identical importance",D:"Households spend different proportions of their budgets on them"},correct:"D",tag:"MC-GCSE-P2-PRICE-03",scaffold:"The CPI uses a representative basket and weights items according to their share of household spending. A change in the price of a frequently purchased necessity can have a larger effect on household budgets.",reforge:{stem:"Why might food receive a larger CPI weight than a rare leisure purchase?",options:{A:"Food prices never change",B:"Leisure goods are excluded from inflation",C:"Weights are based on the producer’s profit (assuming other conditions are unchanged)",D:"Food usually represents a larger and more regular share of household spending"},correct:"D"}},
-    {id:"GCSE-P2-PRICE-04",spec:"GCSE-ECON-P2-PRICE",stem:"Who is most likely to lose from unexpectedly high inflation?",options:{A:"A borrower whose debt is fixed in nominal terms",B:"A person whose cash savings earn interest below inflation",C:"A firm that raises its prices with its costs",D:"A worker whose wages rise faster than prices"},correct:"B",tag:"MC-GCSE-P2-PRICE-04",scaffold:"If inflation exceeds the interest rate on savings, the real value and purchasing power of those savings fall. Borrowers may gain if nominal debts become easier to repay in real terms, though lenders lose.",reforge:{stem:"If savings earn 2% interest while inflation is 5%, the real return is approximately:",options:{A:"+3%",B:"+7%",C:"-3%",D:"-7%"},correct:"B"}},
+    {id:"GCSE-P2-PRICE-04",spec:"GCSE-ECON-P2-PRICE",stem:"Who is most likely to lose from unexpectedly high inflation?",options:{A:"A borrower whose debt is fixed in nominal terms",B:"A person whose cash savings earn interest below inflation",C:"A firm that raises its prices with its costs",D:"A worker whose wages rise faster than prices"},correct:"B",tag:"MC-GCSE-P2-PRICE-04",scaffold:"If inflation exceeds the interest rate on savings, the real value and purchasing power of those savings fall. Borrowers may gain if nominal debts become easier to repay in real terms, though lenders lose.",reforge:{stem:"If savings earn 2% interest while inflation is 5%, the real return is approximately:",options:{A:"+3%",B:"+7%",C:"-3%",D:"-7%"},correct:"C"}},
     {id:"GCSE-P2-PRICE-05",spec:"GCSE-ECON-P2-PRICE",stem:"What is demand-pull inflation?",options:{A:"Prices rising because aggregate demand grows faster than productive capacity",B:"Prices falling because demand collapses",C:"Prices rising only because imported materials cost more (in the market described)",D:"A reduction in the money supply"},correct:"A",tag:"MC-GCSE-P2-PRICE-05",scaffold:"Demand-pull inflation occurs when spending pressure exceeds the economy’s ability to increase output, especially near capacity. Cost-push inflation instead originates from rising production costs.",reforge:{stem:"Households increase spending rapidly while factories are already near full capacity. This may cause:",options:{A:"Demand-pull inflation",B:"A fall in aggregate demand",C:"Deflation caused by excess supply",D:"Structural unemployment only"},correct:"A"}},
     {id:"GCSE-P2-PRICE-06",spec:"GCSE-ECON-P2-PRICE",stem:"What is deflation?",options:{A:"An increase in real GDP",B:"A slower rate of positive inflation",C:"A sustained fall in the general price level",D:"A rise in the price level"},correct:"C",tag:"MC-GCSE-P2-PRICE-06",scaffold:"Deflation means the general price level falls. It can encourage consumers to delay purchases and increase the real burden of debt, although small price falls for particular goods are not necessarily deflation.",reforge:{stem:"Prices fall across the economy for a sustained period. This is known as:",options:{A:"Demand-pull inflation",B:"Hyper-employment",C:"Deflation",D:"Disinflation"},correct:"C"}},
     {id:"GCSE-P2-PRICE-07",spec:"GCSE-ECON-P2-PRICE",stem:"Which group may benefit from unanticipated inflation?",options:{A:"A lender receiving fixed repayments",B:"A worker whose wage is fixed forever",C:"A saver with a fixed nominal return",D:"A borrower with a fixed-rate loan"},correct:"D",tag:"MC-GCSE-P2-PRICE-07",scaffold:"Unexpected inflation reduces the real value of fixed nominal repayments, which can benefit borrowers and disadvantage lenders. The effect depends on contracts and whether incomes adjust.",reforge:{stem:"Why might inflation help a household with a fixed-rate mortgage?",options:{A:"Its nominal repayments automatically become zero",B:"The lender receives more purchasing power",C:"Inflation guarantees a lower interest rate",D:"The real value of its outstanding debt can fall as prices and incomes rise"},correct:"D"}},
@@ -4011,7 +4031,7 @@ BANKS["GCSE-ECON-P2-FISCAL"] = {
   label: "Paper 2: Fiscal Policy",
   color: "#15803d",
   questions: [
-    {id:"GCSE-P2-FISC-01",spec:"GCSE-ECON-P2-FISCAL",stem:"Which pair of actions is expansionary fiscal policy?",options:{A:"Higher taxes and lower government spending",B:"Lower taxes and higher government spending",C:"Higher interest rates and lower money supply",D:"A tariff and an import quota"},correct:"A",tag:"MC-GCSE-P2-FISC-01",scaffold:"Expansionary fiscal policy increases aggregate demand through lower taxation, higher spending or both. It may support growth and employment during a downturn but can increase inflation or borrowing.",reforge:{stem:"To stimulate demand during a recession, the government could:",options:{A:"Increase infrastructure spending or reduce income tax",B:"Raise the central bank interest rate",C:"Cut all public spending",D:"Raise taxes and reduce benefits"},correct:"A"}},
+    {id:"GCSE-P2-FISC-01",spec:"GCSE-ECON-P2-FISCAL",stem:"Which pair of actions is expansionary fiscal policy?",options:{A:"Higher taxes and lower government spending",B:"Lower taxes and higher government spending",C:"Higher interest rates and lower money supply",D:"A tariff and an import quota"},correct:"B",tag:"MC-GCSE-P2-FISC-01",scaffold:"Expansionary fiscal policy increases aggregate demand through lower taxation, higher spending or both. It may support growth and employment during a downturn but can increase inflation or borrowing.",reforge:{stem:"To stimulate demand during a recession, the government could:",options:{A:"Increase infrastructure spending or reduce income tax",B:"Raise the central bank interest rate",C:"Cut all public spending",D:"Raise taxes and reduce benefits"},correct:"A"}},
     {id:"GCSE-P2-FISC-02",spec:"GCSE-ECON-P2-FISCAL",stem:"Which is an example of an automatic stabiliser?",options:{A:"A firm changing its advertising budget",B:"A one-off decision to build a new airport (in the market described)",C:"Income tax receipts falling when incomes fall in a recession",D:"The central bank changing interest rates"},correct:"C",tag:"MC-GCSE-P2-FISC-02",scaffold:"Automatic stabilisers change the government’s budget without a new policy decision. In a downturn, tax receipts tend to fall and benefit payments rise, supporting aggregate demand.",reforge:{stem:"During a recession, unemployment benefits rise automatically. This can:",options:{A:"Make fiscal policy contractionary (in the market described)",B:"Have no effect on households",C:"Support household incomes and partially stabilise demand",D:"Reduce all government spending"},correct:"C"}},
     {id:"GCSE-P2-FISC-03",spec:"GCSE-ECON-P2-FISCAL",stem:"What is the likely effect of contractionary fiscal policy?",options:{A:"A direct fall in the exchange rate only",B:"An automatic increase in productive capacity",C:"Higher aggregate demand and more inflation",D:"Lower aggregate demand and reduced inflationary pressure"},correct:"D",tag:"MC-GCSE-P2-FISC-03",scaffold:"Higher taxes or lower government spending can reduce disposable income and spending, lowering aggregate demand. This may help control inflation but can weaken growth and employment.",reforge:{stem:"Why might a government cut spending when inflation is persistently high?",options:{A:"To guarantee faster economic growth",B:"To increase household disposable income",C:"To raise imports immediately",D:"To reduce demand pressure on scarce resources"},correct:"D"}},
     {id:"GCSE-P2-FISC-04",spec:"GCSE-ECON-P2-FISCAL",stem:"What is public debt?",options:{A:"The value of all household mortgages",B:"The accumulated borrowing of the government",C:"A single year’s trade deficit",D:"Total private sector profits"},correct:"B",tag:"MC-GCSE-P2-FISC-04",scaffold:"Public debt is the stock of government borrowing built up over time. A budget deficit is a flow measured over a period; deficits can add to the debt, while surpluses can reduce it.",reforge:{stem:"Which statement correctly distinguishes a deficit from debt?",options:{A:"Debt is a yearly flow and deficit is an accumulated stock (in the market described)",B:"A deficit is a yearly shortfall; debt is the accumulated stock of borrowing",C:"They always mean the same thing",D:"Neither relates to government finances"},correct:"B"}},
@@ -4105,7 +4125,7 @@ BANKS["GCSE-ECON-P2-EXR"] = {
     {id:"GCSE-P2-EXR-02",spec:"GCSE-ECON-P2-EXR",stem:"Which change would increase demand for sterling?",options:{A:"Foreign investors selling UK assets",B:"UK residents buying more imports",C:"Overseas buyers purchasing more UK exports",D:"UK tourists buying foreign holidays"},correct:"C",tag:"MC-GCSE-P2-EXR-02",scaffold:"Foreign buyers need sterling to purchase UK exports, increasing demand for the currency. UK demand for imports increases supply of sterling as residents exchange it for foreign currency.",reforge:{stem:"A rise in foreign demand for UK financial assets is likely to:",options:{A:"Have no exchange-rate effect",B:"Reduce the demand for UK assets",C:"Increase demand for sterling and put upward pressure on its value",D:"Increase supply of sterling and lower its value (in the market described)"},correct:"C"}},
     {id:"GCSE-P2-EXR-03",spec:"GCSE-ECON-P2-EXR",stem:"What is a likely effect of pound depreciation on UK import prices?",options:{A:"Import prices cannot change",B:"UK exports become more expensive to UK buyers (in the market described)",C:"All imports become cheaper",D:"Imported goods and raw materials become more expensive in pounds"},correct:"D",tag:"MC-GCSE-P2-EXR-03",scaffold:"When sterling falls, more pounds are needed to buy foreign currency. Importers may pass higher costs to consumers, creating cost-push inflation.",reforge:{stem:"A weaker pound raises the cost of imported energy. This may:",options:{A:"Reduce every firm’s costs",B:"Make imported energy free",C:"Lower demand for all exports",D:"Increase production costs and add to inflationary pressure"},correct:"D"}},
     {id:"GCSE-P2-EXR-04",spec:"GCSE-ECON-P2-EXR",stem:"How can a stronger pound affect UK exporters?",options:{A:"Their goods become cheaper for overseas buyers",B:"Their goods become more expensive for overseas buyers",C:"Their imported inputs become more expensive",D:"Exports are automatically banned"},correct:"B",tag:"MC-GCSE-P2-EXR-04",scaffold:"Appreciation raises the foreign-currency price of UK exports, potentially reducing demand. It can also lower the sterling cost of imported inputs, benefiting some firms.",reforge:{stem:"A UK holiday abroad becomes cheaper after sterling appreciates because:",options:{A:"Foreign hotels reduce every price",B:"Each pound buys more foreign currency",C:"UK wages automatically rise",D:"The pound has depreciated"},correct:"B"}},
-    {id:"GCSE-P2-EXR-05",spec:"GCSE-ECON-P2-EXR",stem:"A UK company must pay €1,000 when £1 = €1.25. Approximately how many pounds are needed?",options:{A:"£800",B:"£1,000",C:"£1,250",D:"£80"},correct:"A",tag:"MC-GCSE-P2-EXR-05",scaffold:"Pounds needed = euros / euros per pound: €1,000 / 1.25 = £800.",reforge:{stem:"If £1 = $1.25, how many dollars would £400 buy?",options:{A:"$320",B:"$1,600",C:"$500",D:"$1,250"},correct:"A"}},
+    {id:"GCSE-P2-EXR-05",spec:"GCSE-ECON-P2-EXR",stem:"A UK company must pay €1,000 when £1 = €1.25. Approximately how many pounds are needed?",options:{A:"£800",B:"£1,000",C:"£1,250",D:"£80"},correct:"A",tag:"MC-GCSE-P2-EXR-05",scaffold:"Pounds needed = euros / euros per pound: €1,000 / 1.25 = £800.",reforge:{stem:"If £1 = $1.25, how many dollars would £400 buy?",options:{A:"$320",B:"$1,600",C:"$500",D:"$1,250"},correct:"C"}},
     {id:"GCSE-P2-EXR-06",spec:"GCSE-ECON-P2-EXR",stem:"Why might a current account deficit put downward pressure on a currency?",options:{A:"A deficit means foreign currency is not used",B:"Exports always increase demand for the currency",C:"Residents need to sell the domestic currency to buy imports",D:"Imports create unlimited demand for domestic currency"},correct:"C",tag:"MC-GCSE-P2-EXR-06",scaffold:"When residents purchase imports, they supply domestic currency in exchange for foreign currency. If this pressure exceeds demand from exports and capital inflows, the currency may depreciate.",reforge:{stem:"If a country persistently imports much more than it exports, one possible exchange-rate pressure is:",options:{A:"No need for foreign currency",B:"A fixed exchange rate automatically (in the market described)",C:"Downward pressure on its currency from greater supply",D:"Guaranteed appreciation"},correct:"C"}},
     {id:"GCSE-P2-EXR-07",spec:"GCSE-ECON-P2-EXR",stem:"What is a possible benefit of a currency appreciation?",options:{A:"Guaranteed higher export demand (assuming other conditions are unchanged)",B:"A rise in import prices",C:"More expensive imports",D:"Cheaper imports and lower costs for firms using imported inputs"},correct:"D",tag:"MC-GCSE-P2-EXR-07",scaffold:"Appreciation makes foreign goods and inputs cheaper in domestic currency, which can reduce inflation and help consumers. Exporters may lose competitiveness.",reforge:{stem:"A stronger pound may help UK manufacturers that:",options:{A:"Sell only to overseas customers and face no competition",B:"Depend entirely on expensive exports",C:"Have no imported inputs",D:"Buy imported machinery or raw materials"},correct:"D"}},
     {id:"GCSE-P2-EXR-08",spec:"GCSE-ECON-P2-EXR",stem:"Why may a depreciation fail to improve the current account quickly?",options:{A:"Exports become impossible to sell",B:"Contracts and inelastic demand may prevent quantities responding immediately",C:"Imports always become cheaper",D:"Exchange rates never affect trade prices (assuming other conditions are unchanged)"},correct:"B",tag:"MC-GCSE-P2-EXR-08",scaffold:"The value of trade depends on price elasticities and time. In the short run, contracts and inelastic demand can cause the balance to worsen before quantities adjust.",reforge:{stem:"The J-curve effect suggests a depreciation may initially:",options:{A:"Improve the current account instantly in every case",B:"Worsen the current account before improving it later",C:"Have no effect on imports",D:"Make exports more expensive"},correct:"B"}}
@@ -4134,7 +4154,7 @@ BANKS["GCSE-ECON-UK"].questions.push(
   {id:"GCSE-ECON-11",spec:"GCSE-ECON-UK",stem:"Which change is most likely to reduce the UK's potential economic growth?",options:{A:"Fewer available workers from overseas",B:"More spending on worker training",C:"Improved transport links",D:"Higher investment in machinery"},correct:"A",tag:"MC-GCSE-P2-UK-11",scaffold:"Potential growth depends on productive capacity. A smaller labour force can reduce the amount an economy is able to produce, whereas training, infrastructure and capital investment can raise capacity.",reforge:{stem:"What is a likely result of a free trade agreement?",options:{A:"Trade barriers between the partners may fall",B:"Trade between the countries must stop",C:"The range of goods available must shrink",D:"Every domestic firm becomes protected"},correct:"A"}},
   {id:"GCSE-ECON-12",spec:"GCSE-ECON-UK",stem:"Which transaction belongs outside the balance of payments current account?",options:{A:"A UK tourist paying for a meal in Spain",B:"An overseas company buying UK industrial land",C:"A UK firm exporting software",D:"Interest received from an overseas bank"},correct:"B",tag:"MC-GCSE-P2-UK-12",scaffold:"The current account records trade in goods and services, primary income and secondary income. A foreign purchase of UK land is a financial transaction recorded outside the current account.",reforge:{stem:"Which item is recorded in the current account rather than as a capital investment?",options:{A:"A foreign company buying a UK factory",B:"A UK household paying for a hotel abroad",C:"A UK firm purchasing shares overseas",D:"A bank lending to a foreign government"},correct:"B"}},
   {id:"GCSE-ECON-13",spec:"GCSE-ECON-UK",stem:"A sustained current account surplus is most likely to help a country:",options:{A:"Lower its exchange rate automatically",B:"Reduce its external borrowing",C:"Increase unemployment directly",D:"Eliminate all inflation"},correct:"B",tag:"MC-GCSE-P2-UK-13",scaffold:"A current account surplus means receipts from trade and income exceed payments. This can reduce the need for external borrowing, although it does not guarantee lower inflation or unemployment.",reforge:{stem:"What may happen when overseas buyers demand more of a country's exports?",options:{A:"The supply of its currency must increase",B:"Demand for its currency may increase",C:"Its current account must move into deficit",D:"Domestic output must fall"},correct:"B"}},
-  {id:"GCSE-ECON-14",spec:"GCSE-ECON-UK",stem:"What is meant by globalisation?",options:{A:"A country producing everything itself",B:"Growing economic links and interdependence between countries",C:"The removal of all domestic markets",D:"A policy of banning imports"},correct:"B",tag:"MC-GCSE-P2-UK-14",scaffold:"Globalisation describes increasing connections between economies through trade, investment, migration, technology and supply chains. It does not mean that every barrier disappears.",reforge:{stem:"Which development is evidence of greater globalisation?",options:{A:"A firm using suppliers in several countries",B:"A fall in communication between economies",C:"A country ending all international trade",D:"Every good being produced locally"},correct:"B"}},
+  {id:"GCSE-ECON-14",spec:"GCSE-ECON-UK",stem:"What is meant by globalisation?",options:{A:"A country producing everything itself",B:"Growing economic links and interdependence between countries",C:"The removal of all domestic markets",D:"A policy of banning imports"},correct:"B",tag:"MC-GCSE-P2-UK-14",scaffold:"Globalisation describes increasing connections between economies through trade, investment, migration, technology and supply chains. It does not mean that every barrier disappears.",reforge:{stem:"Which development is evidence of greater globalisation?",options:{A:"A firm using suppliers in several countries",B:"A fall in communication between economies",C:"A country ending all international trade",D:"Every good being produced locally"},correct:"A"}},
   {id:"GCSE-ECON-15",spec:"GCSE-ECON-UK",stem:"Which outcome is most closely linked to social sustainability?",options:{A:"A firm selling more imported fuel",B:"A higher exchange rate for one month",C:"A transport project improving long-term access for isolated communities",D:"A temporary rise in a company's advertising budget"},correct:"C",tag:"MC-GCSE-P2-UK-15",scaffold:"Social sustainability considers whether present decisions support people's long-term wellbeing and access to opportunities. Better transport can connect communities to work, education and services.",reforge:{stem:"Which policy most clearly supports sustainable development?",options:{A:"Using more coal without pollution controls",B:"Ignoring future resource use",C:"Investing in reliable low-emission public transport",D:"Maximising output for one year only"},correct:"C"}},
   {id:"GCSE-ECON-16",spec:"GCSE-ECON-UK",stem:"What is a possible benefit of international trade for UK producers?",options:{A:"Fewer potential customers",B:"Higher unit costs in every case",C:"Larger markets and economies of scale",D:"A ban on overseas competition"},correct:"C",tag:"MC-GCSE-P2-UK-16",scaffold:"Selling abroad can increase the market available to producers. Higher output may allow firms to spread fixed costs and gain economies of scale, although outcomes depend on competition and demand.",reforge:{stem:"Which is a likely consumer benefit of international trade?",options:{A:"A guarantee that every domestic price rises",B:"Less access to overseas products",C:"More choice of goods and services",D:"An end to all domestic production"},correct:"C"}}
 );
@@ -4558,7 +4578,7 @@ BANKS["GCSE-ECON-P1-PROD"] = {
     {id:"GCSE-P1-PRD-01",spec:"GCSE-ECON-P1-PROD",stem:"Which cost is most likely to be fixed for a small furniture manufacturer in the short run?",options:{A:"Rent for the factory building",B:"Timber used for each table",C:"Electricity used by each machine",D:"Packaging for each item sold"},correct:"A",tag:"MC-GCSE-P1-PRD-01",scaffold:"Fixed costs do not change directly with output in the short run, such as rent or some insurance. Variable costs change as output changes, such as materials, packaging and power used in production.",reforge:{stem:"Which is a variable cost for a bakery?",options:{A:"Flour used in each batch of bread",B:"Annual building insurance",C:"Rent for the shop",D:"A fixed monthly licence fee"},correct:"A"}},
     {id:"GCSE-P1-PRD-02",spec:"GCSE-ECON-P1-PROD",stem:"A firm has fixed costs of £6,000 and variable costs of £4,000 at an output of 2,000 units. What is its average cost per unit?",options:{A:"£2",B:"£3",C:"£5",D:"£10"},correct:"C",tag:"MC-GCSE-P1-PRD-02",scaffold:"Total cost is fixed cost plus variable cost: £6,000 + £4,000 = £10,000. Average cost is total cost divided by output: £10,000 / 2,000 = £5 per unit.",reforge:{stem:"Total cost is £18,000 at an output of 3,000 units. What is average cost?",options:{A:"£5 per unit",B:"£15 per unit",C:"£6 per unit",D:"£54,000 per unit"},correct:"C"}},
     {id:"GCSE-P1-PRD-03",spec:"GCSE-ECON-P1-PROD",stem:"A business sells 500 units at £12 each and has total costs of £4,500. What is its profit?",options:{A:"£4,500",B:"£6,000",C:"£10,500",D:"£1,500"},correct:"D",tag:"MC-GCSE-P1-PRD-03",scaffold:"Revenue is price multiplied by quantity: £12 x 500 = £6,000. Profit is total revenue minus total cost: £6,000 - £4,500 = £1,500.",reforge:{stem:"A firm's revenue is £24,000 and total cost is £27,000. Which statement is correct?",options:{A:"It makes a £3,000 profit",B:"It breaks even",C:"Its average cost is zero",D:"It makes a £3,000 loss"},correct:"D"}},
-    {id:"GCSE-P1-PRD-04",spec:"GCSE-ECON-P1-PROD",stem:"A factory produces 1,200 units using 6 workers. What is labour productivity?",options:{A:"6 units per worker",B:"200 units per worker",C:"1,206 units per worker",D:"7,200 units per worker"},correct:"B",tag:"MC-GCSE-P1-PRD-04",scaffold:"Labour productivity is output per worker: 1,200 / 6 = 200 units per worker. Higher productivity means more output is produced for each unit of labour input.",reforge:{stem:"Output rises from 900 to 1,200 units while the number of workers stays at 6. By how much does output per worker rise?",options:{A:"25 units",B:"150 units",C:"50 units",D:"300 units"},correct:"B"}},
+    {id:"GCSE-P1-PRD-04",spec:"GCSE-ECON-P1-PROD",stem:"A factory produces 1,200 units using 6 workers. What is labour productivity?",options:{A:"6 units per worker",B:"200 units per worker",C:"1,206 units per worker",D:"7,200 units per worker"},correct:"B",tag:"MC-GCSE-P1-PRD-04",scaffold:"Labour productivity is output per worker: 1,200 / 6 = 200 units per worker. Higher productivity means more output is produced for each unit of labour input.",reforge:{stem:"Output rises from 900 to 1,200 units while the number of workers stays at 6. By how much does output per worker rise?",options:{A:"25 units",B:"150 units",C:"50 units",D:"300 units"},correct:"C"}},
     {id:"GCSE-P1-PRD-05",spec:"GCSE-ECON-P1-PROD",stem:"Which change is most likely to raise labour productivity?",options:{A:"Better worker training and improved technology",B:"Less training and older equipment",C:"More machine breakdowns",D:"Reducing output while keeping workers unchanged"},correct:"A",tag:"MC-GCSE-P1-PRD-05",scaffold:"Training raises human capital and technology can allow each worker to produce more. Productivity may also improve through specialisation, motivation, better management or investment.",reforge:{stem:"A firm introduces a safer, faster machine but keeps its workforce unchanged. The most likely immediate effect is:",options:{A:"Higher output per worker",B:"Lower labour productivity by definition",C:"No possible change in output",D:"A shift in consumer demand only"},correct:"A"}},
     {id:"GCSE-P1-PRD-06",spec:"GCSE-ECON-P1-PROD",stem:"Which is a purchasing economy of scale?",options:{A:"A firm hires a specialist manager",B:"A firm spreads risk across several products",C:"A large firm buys raw materials in bulk at a lower price per unit",D:"A firm borrows from a bank at a lower interest rate"},correct:"C",tag:"MC-GCSE-P1-PRD-06",scaffold:"Purchasing economies arise because large firms can negotiate bulk discounts. Other economies include technical, managerial, financial, marketing and risk-bearing economies.",reforge:{stem:"A large company can borrow at a lower interest rate than a small start-up because lenders see it as safer. This is a:",options:{A:"Diseconomy of scale",B:"Variable cost",C:"Financial economy of scale",D:"Negative externality"},correct:"C"}},
     {id:"GCSE-P1-PRD-07",spec:"GCSE-ECON-P1-PROD",stem:"What is a likely diseconomy of scale?",options:{A:"Bulk buying lowers input prices",B:"A bank offers a lower loan rate",C:"Specialist managers improve efficiency (assuming other conditions are unchanged)",D:"Communication problems make decisions slower as the organisation grows"},correct:"D",tag:"MC-GCSE-P1-PRD-07",scaffold:"Diseconomies of scale occur when average costs rise as a firm becomes too large. Coordination, communication, motivation and control can become more difficult.",reforge:{stem:"A company's average cost rises after it expands rapidly and managers struggle to coordinate many sites. This suggests:",options:{A:"A purchasing economy",B:"A fall in fixed costs to zero",C:"Perfect competition",D:"Diseconomies of scale"},correct:"D"}},
@@ -9589,17 +9609,16 @@ for (const [bankId, [basePlan, reforgePlan]] of Object.entries(gcseScienceAnswer
 const gcseScienceConciseAnswers = {
   "SCI-BIO1-01:base":"A cell membrane", "SCI-BIO1-01:reforge":"Cell membrane",
   "SCI-BIO1-02:reforge":"0.2 mm", "SCI-BIO1-03:reforge":"Mitochondrion",
-  "SCI-BIO1-04:base":"Growth and tissue repair", "SCI-BIO1-05:reforge":"Phenotype",
+   "SCI-BIO1-05:reforge":"Phenotype",
   "SCI-BIO1-07:reforge":"Genetic variation", "SCI-BIO1-08:base":"More offspring from carriers",
   "SCI-BIO1-09:base":"No bacterial drug target", "SCI-BIO1-10:reforge":"Less trial bias",
   "SCI-BIO1-11:reforge":"Renew immune memory", "SCI-BIO1-12:reforge":"Specific antigen binding",
-  "SCI-CHEM1-02:base":"Different neutron numbers", "SCI-CHEM1-03:reforge":"Particles spread apart",
-  "SCI-CHEM1-04:base":"Chromatography", "SCI-CHEM1-05:base":"Hydrogen",
-  "SCI-CHEM1-07:base":"Unreacted solid", "SCI-CHEM1-07:reforge":"It did not dissolve",
+   "SCI-CHEM1-03:reforge":"Particles spread apart",
+   "SCI-CHEM1-07:reforge":"It did not dissolve",
   "SCI-CHEM1-12:base":"Faster rate, lower yield", "SCI-CHEM1-12:reforge":"Fewer gas molecules",
-  "SCI-PHYS1-06:base":"Thermal store", "SCI-PHYS1-06:reforge":"Thermal energy",
+   "SCI-PHYS1-06:reforge":"Thermal energy",
   "SCI-PHYS1-07:base":"Greater height", "SCI-PHYS1-08:base":"Perpendicular vibrations",
-  "SCI-PHYS1-09:base":"Speed and direction may change", "SCI-PHYS1-11:base":"Real, inverted, smaller",
+  "SCI-PHYS1-09:base":"Speed and direction may change",
   "SCI-PHYS1-12:base":"Half the nuclei decay"
 };
 for (const bankId of SUBJECTS["gcse-science"].banks) {
@@ -9690,7 +9709,7 @@ const gcseScienceSecondConciseAnswers = {
   "SCI-BIO2-05:reforge":"Signal transfer", "SCI-BIO2-06:reforge":"Reduces injury",
   "SCI-BIO2-07:base":"More glucose uptake", "SCI-BIO2-07:reforge":"Glucose release",
   "SCI-BIO2-09:base":"Thin walls, large area", "SCI-BIO2-10:base":"Uneaten or undigested material",
-  "SCI-BIO2-11:base":"Respiratory carbon dioxide", "SCI-BIO2-11:reforge":"CO2 removal",
+  "SCI-BIO2-11:base":"Respiratory carbon dioxide",
   "SCI-BIO2-12:base":"Algae and oxygen loss", "SCI-BIO2-12:reforge":"Nutrient enrichment",
   "SCI-CHEM2-01:base":"Same outer electrons", "SCI-CHEM2-02:base":"Orange-brown",
   "SCI-CHEM2-02:reforge":"More reactive halogen", "SCI-CHEM2-03:base":"Full outer shells",
@@ -9805,7 +9824,7 @@ const gcseScienceFirstPaperExtensionConcise = {
   "SCI-CHEM1-21:base":"Fewer gas molecules", "SCI-CHEM1-22:base":"Higher product yield",
   "SCI-CHEM1-23:base":"Escaped gas", "SCI-CHEM1-24:base":"One soluble substance",
   "SCI-PHYS1-13:base":"2 m/s2", "SCI-PHYS1-14:base":"Distance travelled",
-  "SCI-PHYS1-15:base":"Energy dissipates over distance", "SCI-PHYS1-16:base":"Balanced resistive force",
+   "SCI-PHYS1-16:base":"Balanced resistive force",
   "SCI-PHYS1-17:base":"Useful output / input", "SCI-PHYS1-18:base":"30 W",
   "SCI-PHYS1-19:base":"Equal angles", "SCI-PHYS1-20:base":"10 m/s",
   "SCI-PHYS1-21:base":"Gamma rays", "SCI-PHYS1-22:base":"100 Bq",
@@ -9817,7 +9836,7 @@ const gcseScienceFirstPaperExtensionConcise = {
   "SCI-CHEM1-21:reforge":"No pressure shift", "SCI-CHEM1-22:reforge":"Energy enters",
   "SCI-CHEM1-23:reforge":"Oxygen added", "SCI-CHEM1-24:reforge":"Compare Rf values",
   "SCI-PHYS1-13:reforge":"Negative-direction change", "SCI-PHYS1-14:reforge":"Acceleration",
-  "SCI-PHYS1-14:base":"Distance", "SCI-PHYS1-15:base":"Dissipated energy",
+  "SCI-PHYS1-14:base":"Distance",
   "SCI-PHYS1-15:reforge":"Reaction time/speed", "SCI-PHYS1-16:reforge":"More air drag",
   "SCI-PHYS1-17:reforge":"Dissipated energy", "SCI-PHYS1-18:reforge":"Energy per second",
   "SCI-PHYS1-19:reforge":"Rays appear behind mirror", "SCI-PHYS1-20:reforge":"Higher frequency",
@@ -9900,11 +9919,11 @@ addGcseScienceSecondExtension("GCSE-SCI-PHYS-2", "1SC0 Topic 8–15", [
 ]);
 
 const gcseSciencePaper46ConciseAnswers = {
-  "SCI-BIO2-13:base":"Limiting condition", "SCI-BIO2-13:reforge":"Another limiting factor",
+   "SCI-BIO2-13:reforge":"Another limiting factor",
   "SCI-BIO2-14:base":"Gas exchange", "SCI-BIO2-14:reforge":"Reduce water loss",
   "SCI-BIO2-15:base":"Auxin-driven elongation", "SCI-BIO2-15:reforge":"Light response",
   "SCI-BIO2-16:base":"Water and ions", "SCI-BIO2-16:reforge":"Urea",
-  "SCI-BIO2-17:base":"Cooling responses", "SCI-BIO2-17:reforge":"Widened skin vessels",
+   "SCI-BIO2-17:reforge":"Widened skin vessels",
   "SCI-BIO2-18:base":"Oxygen and glucose supply", "SCI-BIO2-18:reforge":"Less oxygen to heart",
   "SCI-BIO2-19:base":"More oxygen, less CO2", "SCI-BIO2-19:reforge":"Oxygen debt",
   "SCI-BIO2-20:base":"Organism distribution", "SCI-BIO2-20:reforge":"Less sampling bias",
@@ -9932,7 +9951,7 @@ const gcseSciencePaper46ConciseAnswers = {
   "SCI-PHYS2-18:base":"Current and field directions", "SCI-PHYS2-18:reforge":"More current or field",
   "SCI-PHYS2-19:base":"Changing magnetic field", "SCI-PHYS2-19:reforge":"Higher potential difference",
   "SCI-PHYS2-20:base":"Lower current", "SCI-PHYS2-20:reforge":"Cable resistance heating",
-  "SCI-PHYS2-21:base":"More wall collisions", "SCI-PHYS2-21:reforge":"Constant temperature",
+   "SCI-PHYS2-21:reforge":"Constant temperature",
   "SCI-PHYS2-22:base":"Mass and volume", "SCI-PHYS2-22:reforge":"Lower density",
   "SCI-PHYS2-23:base":"More liquid weight", "SCI-PHYS2-23:reforge":"Denser liquid",
   "SCI-PHYS2-24:base":"Beyond proportional extension", "SCI-PHYS2-24:reforge":"Permanent extension"
@@ -11275,7 +11294,7 @@ addGcseMathsBank("GCSE-MATH-P2", "Paper 2 — Calculator", "1MA1 Paper 2", "#1d4
   {id:"MATH-P2-09",stem:"A frequency table has values 2, 4 and 7 with frequencies 3, 5 and 2. Find the mean.",options:{A:"3.8",B:"4.1",C:"4.0",D:"4.7"},correct:"C",scaffold:"Total frequency is 10 and the total of fx is 6 + 20 + 14 = 40, so the mean is 4.0.",tag:"MATH-FREQUENCY",reforge:{stem:"Values 1, 3 and 8 have frequencies 4, 2 and 4. Find the mean.",options:{A:"3.6",B:"4.0",C:"4.2",D:"4.8"},correct:"C"}},
   {id:"MATH-P2-10",stem:"A point is enlarged by scale factor 3 about the origin. What happens to its distance from the origin?",options:{A:"It is divided by 3.0",B:"It is unchanged",C:"It is multiplied by 3",D:"It is increased by 9.0"},correct:"C",scaffold:"An enlargement with centre at the origin multiplies both coordinates and therefore the distance from the origin by the scale factor 3.",tag:"MATH-TRANSFORM",reforge:{stem:"What does a scale factor −1 do about the origin?",options:{A:"A reflection in the origin",B:"A translation right",C:"An enlargement by 1",D:"A reflection in the x-axis only"},correct:"A"}},
   {id:"MATH-P2-11",stem:"A length is 8.0 cm correct to the nearest centimetre. What is its upper bound?",options:{A:"7.5 cm",B:"8.0 cm",C:"8.5 cm",D:"9.0 cm"},correct:"C",scaffold:"Rounding to the nearest centimetre means the true length lies from 7.5 cm inclusive to less than 8.5 cm, so the upper bound is 8.5 cm.",tag:"MATH-BOUNDS",reforge:{stem:"A mass is 3.2 kg correct to the nearest 0.1 kg. What is the lower bound?",options:{A:"3.15 kg",B:"3.20 kg",C:"3.25 kg",D:"3.10 kg"},correct:"A"}},
-  {id:"MATH-P2-12",stem:"A regular polygon has exterior angle 24°. How many sides does it have?",options:{A:"12",B:"15",C:"18",D:"24"},correct:"B",scaffold:"Exterior angles total 360°, so the number of sides is 360 ÷ 24 = 15.",tag:"MATH-POLYGON",reforge:{stem:"Each interior angle of a regular polygon is 150°. How many sides does it have?",options:{A:"8",B:"10",C:"12",D:"15"},correct:"B"}}
+  {id:"MATH-P2-12",stem:"A regular polygon has exterior angle 24°. How many sides does it have?",options:{A:"12",B:"15",C:"18",D:"24"},correct:"B",scaffold:"Exterior angles total 360°, so the number of sides is 360 ÷ 24 = 15.",tag:"MATH-POLYGON",reforge:{stem:"Each interior angle of a regular polygon is 150°. How many sides does it have?",options:{A:"8",B:"10",C:"12",D:"15"},correct:"C"}}
 ]);
 SUBJECTS["gcse-maths"].banks.push("GCSE-MATH-P2");
 
@@ -11355,7 +11374,7 @@ extendGcseMathsBank("GCSE-MATH-P2", [
 extendGcseMathsBank("GCSE-MATH-P3", [
   {id:"MATH-P3-13",stem:"A proof shows n(n + 1) is even for every integer n. Why?",options:{A:"One even factor",B:"Both factors prime",C:"Product always odd",D:"n always even"},correct:"A",scaffold:"Among any two consecutive integers, one must be even, so their product is divisible by 2.",tag:"MATH-PROOF2",reforge:{stem:"Which expression is always divisible by 3 for integer n?",options:{A:"Three terms in row",B:"One term plus three",C:"A square then one",D:"Twice n then one"},correct:"A"}},
   {id:"MATH-P3-14",stem:"A vector from A to B is (6, −2). Find the midpoint vector from A to the midpoint of AB.",options:{A:"(3, −1)",B:"(12, −4)",C:"(6, −1)",D:"(3, −2)"},correct:"A",scaffold:"The midpoint is halfway along the vector, so halve each component: (6, −2) ÷ 2 = (3, −1).",tag:"MATH-VECTOR2",reforge:{stem:"What is the magnitude of vector (3, 4)?",options:{A:"5",B:"7",C:"12",D:"25"},correct:"A"}},
-  {id:"MATH-P3-15",stem:"A chord is 8 cm from the centre of a circle of radius 10 cm. Find the chord length.",options:{A:"12 cm",B:"16 cm",C:"18 cm",D:"20 cm"},correct:"B",scaffold:"The perpendicular from the centre bisects the chord. Half-length = √(10² − 8²) = 6, so chord length = 12 cm.",tag:"MATH-CHORD",reforge:{stem:"The perpendicular from the centre to a chord is 5 cm in a circle of radius 13 cm. Find the chord length.",options:{A:"12 cm",B:"24 cm",C:"26 cm",D:"30 cm"},correct:"B"}},
+  {id:"MATH-P3-15",stem:"A chord is 8 cm from the centre of a circle of radius 10 cm. Find the chord length.",options:{A:"12 cm",B:"16 cm",C:"18 cm",D:"20 cm"},correct:"A",scaffold:"The perpendicular from the centre bisects the chord. Half-length = √(10² − 8²) = 6, so chord length = 12 cm.",tag:"MATH-CHORD",reforge:{stem:"The perpendicular from the centre to a chord is 5 cm in a circle of radius 13 cm. Find the chord length.",options:{A:"12 cm",B:"24 cm",C:"26 cm",D:"30 cm"},correct:"B"}},
   {id:"MATH-P3-16",stem:"A sector has angle 72° and radius 10 cm. Find its perimeter in terms of π.",options:{A:"20 + 4π cm",B:"10 + 4π cm",C:"20 + 2π cm",D:"40 + 4π cm"},correct:"A",scaffold:"The two radii total 20 cm. The arc is 72/360 × 2π × 10 = 4π cm, so the perimeter is 20 + 4π cm.",tag:"MATH-SECTOR2",reforge:{stem:"Find the area of a 90° sector with radius 8 cm.",options:{A:"8π cm²",B:"16π cm²",C:"32π cm²",D:"64π cm²"},correct:"B"}},
   {id:"MATH-P3-17",stem:"The iteration xₙ₊₁ = (10 + xₙ²)/6 starts with x₀ = 2. Find x₁.",options:{A:"1.00",B:"1.67",C:"2.33",D:"2.67"},correct:"C",scaffold:"Substitute x₀ = 2: x₁ = (10 + 2²)/6 = 14/6 ≈ 2.33.",tag:"MATH-ITERATION2",reforge:{stem:"Why are repeated iteration values rounded only at the end?",options:{A:"Early rounding can change later values",B:"Rounding increases accuracy",C:"The formula stops working",D:"It removes the need for a starting value"},correct:"A"}},
   {id:"MATH-P3-18",stem:"For a normal distribution with mean 100 and standard deviation 15, what is the z-score for 130?",options:{A:"1",B:"2",C:"2.5",D:"3"},correct:"B",scaffold:"z = (value − mean) ÷ standard deviation = (130 − 100)/15 = 2.",tag:"MATH-ZSCORE",reforge:{stem:"A value has z-score −1.5 in a distribution with mean 40 and standard deviation 8. Find the value.",options:{A:"28",B:"32",C:"48",D:"52"},correct:"A"}},
@@ -15222,8 +15241,8 @@ const rebalanceAlevelHistory = bankIds => bankIds.forEach(bankId => BANKS[bankId
 SUBJECTS["hist"].banks = ["HIST-BRIT1", "HIST-BRIT2", "HIST-USA1", "HIST-USA2", "HIST-TUDOR"];
 SUBJECTS["hist"].sub = "AQA 7042 — Wars and Welfare, USA 1865–1975 & Tudor Investigation";
 rebalanceAlevelHistory(SUBJECTS["hist"].banks);
-delete BANKS["HIST-1"];
-delete BANKS["HIST-2"];
+retireBank("HIST-1");
+retireBank("HIST-2");
 
 // ===== WJEC LEVEL 3 APPLIED CRIMINOLOGY: FOUR-UNIT ROUTE =====
 const addCriminologyBank = (bankId, label, spec, rawRows) => {
@@ -15466,8 +15485,8 @@ const rebalanceCriminology = bankIds => bankIds.forEach(bankId => BANKS[bankId].
 SUBJECTS["crim"].banks = ["CRIM-AWARE", "CRIM-THEORY", "CRIM-COURT", "CRIM-PUNISH"];
 SUBJECTS["crim"].sub = "WJEC Level 3 Applied Criminology — Units 1–4";
 rebalanceCriminology(SUBJECTS["crim"].banks);
-delete BANKS["CRIM-1"];
-delete BANKS["CRIM-2"];
+retireBank("CRIM-1");
+retireBank("CRIM-2");
 
 // ===== A LEVEL LAW AND POLITICS EXPANSION =====
 const addLawPoliticsBank = (bankId, label, spec, rawRows) => {
@@ -15903,13 +15922,13 @@ addLawPoliticsSupplement("POL-USPOL", [["voter registration", "The process by wh
 SUBJECTS["law"].banks = ["LAW-CRIM", "LAW-SYSTEM", "LAW-TORT", "LAW-CONTRACT"];
 SUBJECTS["law"].sub = "OCR A Level Law — Criminal, Legal System, Tort & Contract";
 rebalanceLawPolitics(SUBJECTS["law"].banks);
-delete BANKS["LAW-1"];
-delete BANKS["LAW-2"];
+retireBank("LAW-1");
+retireBank("LAW-2");
 SUBJECTS["pol"].banks = ["POL-UKPOL", "POL-UKGOV", "POL-USGOV", "POL-USPOL"];
 SUBJECTS["pol"].sub = "Edexcel 9PL0 — UK Politics, UK Government & US Politics";
 rebalanceLawPolitics(SUBJECTS["pol"].banks);
-delete BANKS["POL-1"];
-delete BANKS["POL-2"];
+retireBank("POL-1");
+retireBank("POL-2");
 
 // ===== A LEVEL BUSINESS AND EDUQAS COMPUTER SCIENCE EXPANSION =====
 // These compactly-authored questions retain the same four-option and reforge
@@ -16627,7 +16646,13 @@ const expandSubjectToMinimum = (subjectKey, target = 200) => {
       stem: `${frame}${source.stem.replace(/\s+/g, " ").trim()} (application variant ${variant})`,
       options: balanced.options,
       correct: rotated.correct,
-      tag: `MC-${id}`,
+      // A coverage variant is the SAME question reframed, so it tests the same
+      // misconception as its source and must carry the same tag. Giving it a
+      // tag of its own made every variant a single-use tag the teacher heatmap
+      // could not aggregate and getStarterActivity() could only answer with a
+      // generic drill — which matters here because most of the GCSE science
+      // banks are mainly coverage variants.
+      tag: source.tag || `MC-${id}`,
       scaffold: source.scaffold || "Apply the key definition or principle to the scenario before selecting an answer.",
       coverageVariant: true
     };
@@ -19569,5 +19594,495 @@ for (const bankId of ["CS-1", "CS-2", "CS-3", "CS-4"]) {
       if (!String(question.reforge.options[letter]).endsWith(tail)) question.reforge.options[letter] += tail;
       tailIndex++;
     }
+  }
+}
+
+// ============================================================
+// GCSE Economics (OCR J205) misconception taxonomy.
+//
+// Every question in the 21 gcse-econ banks previously carried a tag unique to
+// itself - 420 questions, 420 tags - so the teacher heatmap had nothing to
+// aggregate and getStarterActivity() could only fall back to a generic drill.
+// These 76 tags group the same questions by the error a student actually
+// makes, averaging 5.5 questions per tag with no tag used only once.
+//
+// The MC-GE-* prefix keeps this cohort separate from the A-Level Economics
+// tags in MC_LABELS: the ideas overlap but the spec, the cohort and the useful
+// intervention do not, and merging them would make the heatmap unreadable for
+// both. Labels live in data/misconception-labels.js and the corrective starter
+// for each tag lives in data/starter-activities.js.
+//
+// Applied here rather than on the question literals because banks 09-20 in
+// each GCSE Economics bank are generated as coverage variants, so they have no
+// literal to edit. This pass runs last, after all generation.
+// ============================================================
+const GCSE_ECON_MC_TAGS = {
+  // Paper 1: Economic Foundations
+  "GCSE-P1-FND-01": "MC-GE-SCARCITY",
+  "GCSE-P1-FND-02": "MC-GE-FACTORS",
+  "GCSE-P1-FND-03": "MC-GE-SCARCITY",
+  "GCSE-P1-FND-04": "MC-GE-SCARCITY",
+  "GCSE-P1-FND-05": "MC-GE-SPECIALISATION",
+  "GCSE-P1-FND-06": "MC-GE-SECTORS",
+  "GCSE-P1-FND-07": "MC-GE-FACTORS",
+  "GCSE-P1-FND-08": "MC-GE-PPF",
+  "GCSE-P1-FND-09": "MC-GE-FACTORS",
+  "GCSE-P1-FND-10": "MC-GE-SCARCITY",
+  "GCSE-P1-FND-11": "MC-GE-SPECIALISATION",
+  "GCSE-P1-FND-12": "MC-GE-PRODUCTIVITY",
+  "GCSE-P1-FND-13": "MC-GE-PPF",
+  "GCSE-P1-FND-14": "MC-GE-SECTORS",
+  "GCSE-P1-FND-15": "MC-GE-SCARCITY",
+  "GCSE-P1-FND-16": "MC-GE-FACTORS",
+  "GCSE-P1-FND-17": "MC-GE-MARKET-DEF",
+  "GCSE-P1-FND-18": "MC-GE-SECTORS",
+  "GCSE-P1-FND-19": "MC-GE-MARKET-DEF",
+  "GCSE-P1-FND-20": "MC-GE-SPECIALISATION",
+
+  // Paper 1: The Role of Markets
+  "GCSE-P1-MKT-01": "MC-GE-MARKET-DEF",
+  "GCSE-P1-MKT-02": "MC-GE-PRICE-FUNC",
+  "GCSE-P1-MKT-03": "MC-GE-PRICE-FUNC",
+  "GCSE-P1-MKT-04": "MC-GE-MARKET-DEF",
+  "GCSE-P1-MKT-05": "MC-GE-PRICE-FUNC",
+  "GCSE-P1-MKT-06": "MC-GE-PRICE-FUNC",
+  "GCSE-P1-MKT-07": "MC-GE-DISEQ",
+  "GCSE-P1-MKT-08": "MC-GE-INTERVENTION",
+  "GCSE-P1-MKT-09": "MC-GE-MARKET-STRUCT",
+  "GCSE-P1-MKT-10": "MC-GE-MARKET-DEF",
+  "GCSE-P1-MKT-11": "MC-GE-PRICE-FUNC",
+  "GCSE-P1-MKT-12": "MC-GE-PRICE-FUNC",
+  "GCSE-P1-MKT-13": "MC-GE-EXTERNALITIES",
+  "GCSE-P1-MKT-14": "MC-GE-MERIT-GOODS",
+  "GCSE-P1-MKT-15": "MC-GE-DISEQ",
+  "GCSE-P1-MKT-16": "MC-GE-EXTERNALITIES",
+  "GCSE-P1-MKT-17": "MC-GE-MARKET-DEF",
+  "GCSE-P1-MKT-18": "MC-GE-EQUILIBRIUM",
+  "GCSE-P1-MKT-19": "MC-GE-MARKET-DEF",
+  "GCSE-P1-MKT-20": "MC-GE-MARKET-DEF",
+
+  // Paper 1: Demand, Supply & Price
+  "GCSE-P1-DS-01": "MC-GE-SHIFT-VS-MOVE",
+  "GCSE-P1-DS-02": "MC-GE-DS-DETERMINANTS",
+  "GCSE-P1-DS-03": "MC-GE-DS-DETERMINANTS",
+  "GCSE-P1-DS-04": "MC-GE-EQUILIBRIUM",
+  "GCSE-P1-DS-05": "MC-GE-REV-COST-PROFIT",
+  "GCSE-P1-DS-06": "MC-GE-ELASTICITY",
+  "GCSE-P1-DS-07": "MC-GE-ELASTICITY",
+  "GCSE-P1-DS-08": "MC-GE-DISEQ",
+  "GCSE-P1-DS-09": "MC-GE-DS-DETERMINANTS",
+  "GCSE-P1-DS-10": "MC-GE-DS-DETERMINANTS",
+  "GCSE-P1-DS-11": "MC-GE-ELASTICITY",
+  "GCSE-P1-DS-12": "MC-GE-ELASTICITY",
+  "GCSE-P1-DS-13": "MC-GE-DS-DETERMINANTS",
+  "GCSE-P1-DS-14": "MC-GE-EQUILIBRIUM",
+  "GCSE-P1-DS-15": "MC-GE-REV-COST-PROFIT",
+  "GCSE-P1-DS-16": "MC-GE-SHIFT-VS-MOVE",
+  "GCSE-P1-DS-17": "MC-GE-SHIFT-VS-MOVE",
+  "GCSE-P1-DS-18": "MC-GE-SHIFT-VS-MOVE",
+  "GCSE-P1-DS-19": "MC-GE-SHIFT-VS-MOVE",
+  "GCSE-P1-DS-20": "MC-GE-ELASTICITY",
+
+  // Paper 1: Competition
+  "GCSE-P1-CMP-01": "MC-GE-BARRIERS",
+  "GCSE-P1-CMP-02": "MC-GE-NONPRICE-COMP",
+  "GCSE-P1-CMP-03": "MC-GE-MARKET-STRUCT",
+  "GCSE-P1-CMP-04": "MC-GE-BARRIERS",
+  "GCSE-P1-CMP-05": "MC-GE-MARKET-STRUCT",
+  "GCSE-P1-CMP-06": "MC-GE-NONPRICE-COMP",
+  "GCSE-P1-CMP-07": "MC-GE-BARRIERS",
+  "GCSE-P1-CMP-08": "MC-GE-NONPRICE-COMP",
+  "GCSE-P1-CMP-09": "MC-GE-MARKET-STRUCT",
+  "GCSE-P1-CMP-10": "MC-GE-BARRIERS",
+  "GCSE-P1-CMP-11": "MC-GE-BARRIERS",
+  "GCSE-P1-CMP-12": "MC-GE-NONPRICE-COMP",
+  "GCSE-P1-CMP-13": "MC-GE-MARKET-STRUCT",
+  "GCSE-P1-CMP-14": "MC-GE-NONPRICE-COMP",
+  "GCSE-P1-CMP-15": "MC-GE-MARKET-STRUCT",
+  "GCSE-P1-CMP-16": "MC-GE-BARRIERS",
+  "GCSE-P1-CMP-17": "MC-GE-MARKET-STRUCT",
+  "GCSE-P1-CMP-18": "MC-GE-MARKET-STRUCT",
+  "GCSE-P1-CMP-19": "MC-GE-MARKET-STRUCT",
+  "GCSE-P1-CMP-20": "MC-GE-MARKET-STRUCT",
+
+  // Paper 1: Production
+  "GCSE-P1-PRD-01": "MC-GE-REV-COST-PROFIT",
+  "GCSE-P1-PRD-02": "MC-GE-REV-COST-PROFIT",
+  "GCSE-P1-PRD-03": "MC-GE-REV-COST-PROFIT",
+  "GCSE-P1-PRD-04": "MC-GE-PRODUCTIVITY",
+  "GCSE-P1-PRD-05": "MC-GE-PRODUCTIVITY",
+  "GCSE-P1-PRD-06": "MC-GE-EOS",
+  "GCSE-P1-PRD-07": "MC-GE-EOS",
+  "GCSE-P1-PRD-08": "MC-GE-PRODUCTIVITY",
+  "GCSE-P1-PRD-09": "MC-GE-SPECIALISATION",
+  "GCSE-P1-PRD-10": "MC-GE-REV-COST-PROFIT",
+  "GCSE-P1-PRD-11": "MC-GE-REV-COST-PROFIT",
+  "GCSE-P1-PRD-12": "MC-GE-EOS",
+  "GCSE-P1-PRD-13": "MC-GE-EOS",
+  "GCSE-P1-PRD-14": "MC-GE-PRODUCTIVITY",
+  "GCSE-P1-PRD-15": "MC-GE-SPECIALISATION",
+  "GCSE-P1-PRD-16": "MC-GE-REV-COST-PROFIT",
+  "GCSE-P1-PRD-17": "MC-GE-PRODUCTIVITY",
+  "GCSE-P1-PRD-18": "MC-GE-PRODUCTIVITY",
+  "GCSE-P1-PRD-19": "MC-GE-REV-COST-PROFIT",
+  "GCSE-P1-PRD-20": "MC-GE-EOS",
+
+  // Paper 1: The Labour Market
+  "GCSE-P1-LAB-01": "MC-GE-DERIVED-DEMAND",
+  "GCSE-P1-LAB-02": "MC-GE-LABOUR-SUPPLY",
+  "GCSE-P1-LAB-03": "MC-GE-LABOUR-SUPPLY",
+  "GCSE-P1-LAB-04": "MC-GE-WAGE-DIFFERENTIALS",
+  "GCSE-P1-LAB-05": "MC-GE-MIN-WAGE",
+  "GCSE-P1-LAB-06": "MC-GE-IMMOBILITY",
+  "GCSE-P1-LAB-07": "MC-GE-PAY",
+  "GCSE-P1-LAB-08": "MC-GE-DERIVED-DEMAND",
+  "GCSE-P1-LAB-09": "MC-GE-DERIVED-DEMAND",
+  "GCSE-P1-LAB-10": "MC-GE-PAY",
+  "GCSE-P1-LAB-11": "MC-GE-SCARCITY",
+  "GCSE-P1-LAB-12": "MC-GE-LABOUR-SUPPLY",
+  "GCSE-P1-LAB-13": "MC-GE-WAGE-DIFFERENTIALS",
+  "GCSE-P1-LAB-14": "MC-GE-MIN-WAGE",
+  "GCSE-P1-LAB-15": "MC-GE-IMMOBILITY",
+  "GCSE-P1-LAB-16": "MC-GE-DERIVED-DEMAND",
+  "GCSE-P1-LAB-17": "MC-GE-LABOUR-SUPPLY",
+  "GCSE-P1-LAB-18": "MC-GE-PAY",
+  "GCSE-P1-LAB-19": "MC-GE-PAY",
+  "GCSE-P1-LAB-20": "MC-GE-PAY",
+
+  // Paper 1: Money & Financial Markets
+  "GCSE-P1-MNY-01": "MC-GE-MONEY-FUNC",
+  "GCSE-P1-MNY-02": "MC-GE-MONEY-FUNC",
+  "GCSE-P1-MNY-03": "MC-GE-INTEREST",
+  "GCSE-P1-MNY-04": "MC-GE-INTEREST",
+  "GCSE-P1-MNY-05": "MC-GE-INTEREST",
+  "GCSE-P1-MNY-06": "MC-GE-FIN-INST",
+  "GCSE-P1-MNY-07": "MC-GE-FIN-INST",
+  "GCSE-P1-MNY-08": "MC-GE-MONEY-FUNC",
+  "GCSE-P1-MNY-09": "MC-GE-MONEY-FUNC",
+  "GCSE-P1-MNY-10": "MC-GE-MONEY-FUNC",
+  "GCSE-P1-MNY-11": "MC-GE-FIN-INST",
+  "GCSE-P1-MNY-12": "MC-GE-INTEREST",
+  "GCSE-P1-MNY-13": "MC-GE-FIN-INST",
+  "GCSE-P1-MNY-14": "MC-GE-FIN-INST",
+  "GCSE-P1-MNY-15": "MC-GE-MONEY-FUNC",
+  "GCSE-P1-MNY-16": "MC-GE-INTEREST",
+  "GCSE-P1-MNY-17": "MC-GE-MONEY-FUNC",
+  "GCSE-P1-MNY-18": "MC-GE-INTEREST",
+  "GCSE-P1-MNY-19": "MC-GE-FIN-INST",
+  "GCSE-P1-MNY-20": "MC-GE-FIN-INST",
+
+  // Paper 2: The UK Economy Overview
+  "GCSE-ECON-01": "MC-GE-OBJECTIVES",
+  "GCSE-ECON-02": "MC-GE-INFLATION-DEF",
+  "GCSE-ECON-03": "MC-GE-UNEMP-TYPES",
+  "GCSE-ECON-04": "MC-GE-FISCAL",
+  "GCSE-ECON-05": "MC-GE-MONETARY",
+  "GCSE-ECON-06": "MC-GE-BUDGET",
+  "GCSE-ECON-07": "MC-GE-EXCHANGE-RATE",
+  "GCSE-ECON-08": "MC-GE-PROTECTIONISM",
+  "GCSE-ECON-09": "MC-GE-GDP",
+  "GCSE-ECON-10": "MC-GE-INFLATION-DEF",
+  "GCSE-ECON-11": "MC-GE-GROWTH-CAUSES",
+  "GCSE-ECON-12": "MC-GE-BOP",
+  "GCSE-ECON-13": "MC-GE-BOP",
+  "GCSE-ECON-14": "MC-GE-GLOBALISATION",
+  "GCSE-ECON-15": "MC-GE-SUSTAINABILITY",
+  "GCSE-ECON-16": "MC-GE-TRADE-BENEFITS",
+  "GCSE-ECON-DEF-01": "MC-GE-GDP",
+  "GCSE-ECON-DEF-02": "MC-GE-GDP",
+  "GCSE-ECON-DEF-03": "MC-GE-CYCLE",
+  "GCSE-ECON-DEF-04": "MC-GE-INFLATION-DEF",
+
+  // Paper 2: The National Economy
+  "GCSE-P2-NAT-01": "MC-GE-OBJECTIVES",
+  "GCSE-P2-NAT-02": "MC-GE-MERIT-GOODS",
+  "GCSE-P2-NAT-03": "MC-GE-TAX-TYPES",
+  "GCSE-P2-NAT-04": "MC-GE-GOVT-SPENDING",
+  "GCSE-P2-NAT-05": "MC-GE-UNEMP-MEASURE",
+  "GCSE-P2-NAT-06": "MC-GE-BUDGET",
+  "GCSE-P2-NAT-07": "MC-GE-GOVT-SPENDING",
+  "GCSE-P2-NAT-08": "MC-GE-GOVT-SPENDING",
+  "GCSE-P2-NAT-09": "MC-GE-OBJECTIVES",
+  "GCSE-P2-NAT-10": "MC-GE-MERIT-GOODS",
+  "GCSE-P2-NAT-11": "MC-GE-GOVT-SPENDING",
+  "GCSE-P2-NAT-12": "MC-GE-BUDGET",
+  "GCSE-P2-NAT-13": "MC-GE-SCARCITY",
+  "GCSE-P2-NAT-14": "MC-GE-GDP-WELLBEING",
+  "GCSE-P2-NAT-15": "MC-GE-BOP",
+  "GCSE-P2-NAT-16": "MC-GE-MERIT-GOODS",
+  "GCSE-P2-NAT-17": "MC-GE-GOVT-SPENDING",
+  "GCSE-P2-NAT-18": "MC-GE-REDISTRIBUTION",
+  "GCSE-P2-NAT-19": "MC-GE-TAX-TYPES",
+  "GCSE-P2-NAT-20": "MC-GE-BUDGET",
+
+  // Paper 2: Economic Growth
+  "GCSE-P2-GRO-01": "MC-GE-GDP",
+  "GCSE-P2-GRO-02": "MC-GE-GDP",
+  "GCSE-P2-GRO-03": "MC-GE-CYCLE",
+  "GCSE-P2-GRO-04": "MC-GE-GROWTH-CAUSES",
+  "GCSE-P2-GRO-05": "MC-GE-GROWTH-CAUSES",
+  "GCSE-P2-GRO-06": "MC-GE-SUSTAINABILITY",
+  "GCSE-P2-GRO-07": "MC-GE-REAL-VS-NOMINAL",
+  "GCSE-P2-GRO-08": "MC-GE-GDP-WELLBEING",
+  "GCSE-P2-GRO-09": "MC-GE-GDP",
+  "GCSE-P2-GRO-10": "MC-GE-REAL-VS-NOMINAL",
+  "GCSE-P2-GRO-11": "MC-GE-SUSTAINABILITY",
+  "GCSE-P2-GRO-12": "MC-GE-GROWTH-CAUSES",
+  "GCSE-P2-GRO-13": "MC-GE-GDP-WELLBEING",
+  "GCSE-P2-GRO-14": "MC-GE-GROWTH-CAUSES",
+  "GCSE-P2-GRO-15": "MC-GE-REAL-VS-NOMINAL",
+  "GCSE-P2-GRO-16": "MC-GE-GDP-WELLBEING",
+  "GCSE-P2-GRO-17": "MC-GE-GDP",
+  "GCSE-P2-GRO-18": "MC-GE-CYCLE",
+  "GCSE-P2-GRO-19": "MC-GE-CYCLE",
+  "GCSE-P2-GRO-20": "MC-GE-GDP",
+
+  // Paper 2: Low Unemployment
+  "GCSE-P2-UNEMP-01": "MC-GE-UNEMP-MEASURE",
+  "GCSE-P2-UNEMP-02": "MC-GE-UNEMP-MEASURE",
+  "GCSE-P2-UNEMP-03": "MC-GE-UNEMP-TYPES",
+  "GCSE-P2-UNEMP-04": "MC-GE-UNEMP-TYPES",
+  "GCSE-P2-UNEMP-05": "MC-GE-UNEMP-EFFECTS",
+  "GCSE-P2-UNEMP-06": "MC-GE-UNEMP-EFFECTS",
+  "GCSE-P2-UNEMP-07": "MC-GE-UNEMP-TYPES",
+  "GCSE-P2-UNEMP-08": "MC-GE-UNEMP-MEASURE",
+  "GCSE-P2-UNEMP-09": "MC-GE-UNEMP-MEASURE",
+  "GCSE-P2-UNEMP-10": "MC-GE-UNEMP-TYPES",
+  "GCSE-P2-UNEMP-11": "MC-GE-UNEMP-MEASURE",
+  "GCSE-P2-UNEMP-12": "MC-GE-UNEMP-EFFECTS",
+  "GCSE-P2-UNEMP-13": "MC-GE-UNEMP-TYPES",
+  "GCSE-P2-UNEMP-14": "MC-GE-UNEMP-EFFECTS",
+  "GCSE-P2-UNEMP-15": "MC-GE-IMMOBILITY",
+  "GCSE-P2-UNEMP-16": "MC-GE-UNEMP-MEASURE",
+  "GCSE-P2-UNEMP-17": "MC-GE-LABOUR-SUPPLY",
+  "GCSE-P2-UNEMP-18": "MC-GE-LABOUR-SUPPLY",
+  "GCSE-P2-UNEMP-19": "MC-GE-LABOUR-SUPPLY",
+  "GCSE-P2-UNEMP-20": "MC-GE-LABOUR-SUPPLY",
+
+  // Paper 2: Fair Distribution of Income
+  "GCSE-P2-INCOME-01": "MC-GE-INCOME-VS-WEALTH",
+  "GCSE-P2-INCOME-02": "MC-GE-INEQUALITY",
+  "GCSE-P2-INCOME-03": "MC-GE-WAGE-DIFFERENTIALS",
+  "GCSE-P2-INCOME-04": "MC-GE-INEQUALITY",
+  "GCSE-P2-INCOME-05": "MC-GE-TAX-TYPES",
+  "GCSE-P2-INCOME-06": "MC-GE-INEQUALITY",
+  "GCSE-P2-INCOME-07": "MC-GE-INCOME-VS-WEALTH",
+  "GCSE-P2-INCOME-08": "MC-GE-REDISTRIBUTION",
+  "GCSE-P2-INC-09": "MC-GE-INEQUALITY",
+  "GCSE-P2-INC-10": "MC-GE-TAX-TYPES",
+  "GCSE-P2-INC-11": "MC-GE-INCOME-VS-WEALTH",
+  "GCSE-P2-INC-12": "MC-GE-REDISTRIBUTION",
+  "GCSE-P2-INC-13": "MC-GE-TAX-TYPES",
+  "GCSE-P2-INC-14": "MC-GE-REDISTRIBUTION",
+  "GCSE-P2-INC-15": "MC-GE-REDISTRIBUTION",
+  "GCSE-P2-INC-16": "MC-GE-INCOME-VS-WEALTH",
+  "GCSE-P2-INC-17": "MC-GE-TAX-TYPES",
+  "GCSE-P2-INC-18": "MC-GE-TAX-TYPES",
+  "GCSE-P2-INC-19": "MC-GE-TAX-TYPES",
+  "GCSE-P2-INC-20": "MC-GE-REDISTRIBUTION",
+
+  // Paper 2: Price Stability
+  "GCSE-P2-PRICE-01": "MC-GE-INFLATION-DEF",
+  "GCSE-P2-PRICE-02": "MC-GE-CPI",
+  "GCSE-P2-PRICE-03": "MC-GE-CPI",
+  "GCSE-P2-PRICE-04": "MC-GE-INFLATION-EFFECTS",
+  "GCSE-P2-PRICE-05": "MC-GE-INFLATION-CAUSES",
+  "GCSE-P2-PRICE-06": "MC-GE-INFLATION-DEF",
+  "GCSE-P2-PRICE-07": "MC-GE-INFLATION-EFFECTS",
+  "GCSE-P2-PRICE-08": "MC-GE-INFLATION-EFFECTS",
+  "GCSE-P2-PRI-09": "MC-GE-CPI",
+  "GCSE-P2-PRI-10": "MC-GE-INFLATION-CAUSES",
+  "GCSE-P2-PRI-11": "MC-GE-INFLATION-DEF",
+  "GCSE-P2-PRI-12": "MC-GE-MONETARY",
+  "GCSE-P2-PRI-13": "MC-GE-INFLATION-CAUSES",
+  "GCSE-P2-PRI-14": "MC-GE-SUPPLYSIDE",
+  "GCSE-P2-PRI-15": "MC-GE-INFLATION-DEF",
+  "GCSE-P2-PRI-16": "MC-GE-INFLATION-EFFECTS",
+  "GCSE-P2-PRI-17": "MC-GE-INFLATION-DEF",
+  "GCSE-P2-PRI-18": "MC-GE-INFLATION-DEF",
+  "GCSE-P2-PRI-19": "MC-GE-CPI",
+  "GCSE-P2-PRI-20": "MC-GE-INFLATION-DEF",
+
+  // Paper 2: Fiscal Policy
+  "GCSE-P2-FISC-01": "MC-GE-FISCAL",
+  "GCSE-P2-FISC-02": "MC-GE-AUTO-STABILISERS",
+  "GCSE-P2-FISC-03": "MC-GE-FISCAL",
+  "GCSE-P2-FISC-04": "MC-GE-BUDGET",
+  "GCSE-P2-FISC-05": "MC-GE-GOVT-SPENDING",
+  "GCSE-P2-FISC-06": "MC-GE-BUDGET",
+  "GCSE-P2-FISC-07": "MC-GE-POLICY-LAGS",
+  "GCSE-P2-FISC-08": "MC-GE-SUPPLYSIDE",
+  "GCSE-P2-FIS-09": "MC-GE-FISCAL",
+  "GCSE-P2-FIS-10": "MC-GE-AUTO-STABILISERS",
+  "GCSE-P2-FIS-11": "MC-GE-FISCAL",
+  "GCSE-P2-FIS-12": "MC-GE-BUDGET",
+  "GCSE-P2-FIS-13": "MC-GE-SCARCITY",
+  "GCSE-P2-FIS-14": "MC-GE-TAX-TYPES",
+  "GCSE-P2-FIS-15": "MC-GE-FISCAL",
+  "GCSE-P2-FIS-16": "MC-GE-SUPPLYSIDE",
+  "GCSE-P2-FIS-17": "MC-GE-GOVT-SPENDING",
+  "GCSE-P2-FIS-18": "MC-GE-TAX-TYPES",
+  "GCSE-P2-FIS-19": "MC-GE-BUDGET",
+  "GCSE-P2-FIS-20": "MC-GE-BUDGET",
+
+  // Paper 2: Monetary Policy
+  "GCSE-P2-MON-01": "MC-GE-BOE",
+  "GCSE-P2-MON-02": "MC-GE-MONETARY",
+  "GCSE-P2-MON-03": "MC-GE-MONETARY",
+  "GCSE-P2-MON-04": "MC-GE-MONETARY",
+  "GCSE-P2-MON-05": "MC-GE-MONETARY",
+  "GCSE-P2-MON-06": "MC-GE-RATES-AND-CURRENCY",
+  "GCSE-P2-MON-07": "MC-GE-MONETARY",
+  "GCSE-P2-MON-08": "MC-GE-BOE",
+  "GCSE-P2-MON-09": "MC-GE-MONETARY",
+  "GCSE-P2-MON-10": "MC-GE-BOE",
+  "GCSE-P2-MON-11": "MC-GE-RATES-AND-CURRENCY",
+  "GCSE-P2-MON-12": "MC-GE-RATES-AND-CURRENCY",
+  "GCSE-P2-MON-13": "MC-GE-BOE",
+  "GCSE-P2-MON-14": "MC-GE-MONETARY",
+  "GCSE-P2-MON-15": "MC-GE-MONETARY",
+  "GCSE-P2-MON-16": "MC-GE-MONETARY",
+  "GCSE-P2-MON-17": "MC-GE-BOE",
+  "GCSE-P2-MON-18": "MC-GE-BOE",
+  "GCSE-P2-MON-19": "MC-GE-BOE",
+  "GCSE-P2-MON-20": "MC-GE-BOE",
+
+  // Paper 2: Supply-side Policies
+  "GCSE-P2-SUP-01": "MC-GE-SUPPLYSIDE",
+  "GCSE-P2-SUP-02": "MC-GE-SUPPLYSIDE",
+  "GCSE-P2-SUP-03": "MC-GE-SUPPLYSIDE",
+  "GCSE-P2-SUP-04": "MC-GE-SUPPLYSIDE",
+  "GCSE-P2-SUP-05": "MC-GE-SUPPLYSIDE",
+  "GCSE-P2-SUP-06": "MC-GE-LABOUR-SUPPLY",
+  "GCSE-P2-SUP-07": "MC-GE-MIN-WAGE",
+  "GCSE-P2-SUP-08": "MC-GE-POLICY-LAGS",
+  "GCSE-P2-SUP-09": "MC-GE-SUPPLYSIDE",
+  "GCSE-P2-SUP-10": "MC-GE-SUPPLYSIDE",
+  "GCSE-P2-SUP-11": "MC-GE-SUPPLYSIDE",
+  "GCSE-P2-SUP-12": "MC-GE-PRODUCTIVITY",
+  "GCSE-P2-SUP-13": "MC-GE-GROWTH-CAUSES",
+  "GCSE-P2-SUP-14": "MC-GE-PRODUCTIVITY",
+  "GCSE-P2-SUP-15": "MC-GE-SUPPLYSIDE",
+  "GCSE-P2-SUP-16": "MC-GE-SUPPLYSIDE",
+  "GCSE-P2-SUP-17": "MC-GE-PRODUCTIVITY",
+  "GCSE-P2-SUP-18": "MC-GE-REV-COST-PROFIT",
+  "GCSE-P2-SUP-19": "MC-GE-EOS",
+  "GCSE-P2-SUP-20": "MC-GE-PRODUCTIVITY",
+
+  // Paper 2: Limitations of Markets
+  "GCSE-P2-MF-01": "MC-GE-EXTERNALITIES",
+  "GCSE-P2-MF-02": "MC-GE-EXTERNALITIES",
+  "GCSE-P2-MF-03": "MC-GE-INTERVENTION",
+  "GCSE-P2-MF-04": "MC-GE-INTERVENTION",
+  "GCSE-P2-MF-05": "MC-GE-INTERVENTION",
+  "GCSE-P2-MF-06": "MC-GE-MERIT-GOODS",
+  "GCSE-P2-MF-07": "MC-GE-MARKET-FAILURE",
+  "GCSE-P2-MF-08": "MC-GE-GOVT-FAILURE",
+  "GCSE-P2-MKF-09": "MC-GE-EXTERNALITIES",
+  "GCSE-P2-MKF-10": "MC-GE-MERIT-GOODS",
+  "GCSE-P2-MKF-11": "MC-GE-GOVT-FAILURE",
+  "GCSE-P2-MKF-12": "MC-GE-MARKET-FAILURE",
+  "GCSE-P2-MKF-13": "MC-GE-INTERVENTION",
+  "GCSE-P2-MKF-14": "MC-GE-GOVT-FAILURE",
+  "GCSE-P2-MKF-15": "MC-GE-MARKET-FAILURE",
+  "GCSE-P2-MKF-16": "MC-GE-MERIT-GOODS",
+  "GCSE-P2-MKF-17": "MC-GE-INTERVENTION",
+  "GCSE-P2-MKF-18": "MC-GE-INTERVENTION",
+  "GCSE-P2-MKF-19": "MC-GE-MARKET-DEF",
+  "GCSE-P2-MKF-20": "MC-GE-MARKET-DEF",
+
+  // Paper 2: International Trade
+  "GCSE-P2-TRADE-01": "MC-GE-EXPORTS-IMPORTS",
+  "GCSE-P2-TRADE-02": "MC-GE-TRADE-BENEFITS",
+  "GCSE-P2-TRADE-03": "MC-GE-TRADE-BENEFITS",
+  "GCSE-P2-TRADE-04": "MC-GE-PROTECTIONISM",
+  "GCSE-P2-TRADE-05": "MC-GE-TRADE-BENEFITS",
+  "GCSE-P2-TRADE-06": "MC-GE-TRADING-BLOCS",
+  "GCSE-P2-TRADE-07": "MC-GE-GLOBALISATION",
+  "GCSE-P2-TRADE-08": "MC-GE-TRADE-RISKS",
+  "GCSE-P2-TRD-09": "MC-GE-TRADE-BENEFITS",
+  "GCSE-P2-TRD-10": "MC-GE-PROTECTIONISM",
+  "GCSE-P2-TRD-11": "MC-GE-PROTECTIONISM",
+  "GCSE-P2-TRD-12": "MC-GE-TRADE-BENEFITS",
+  "GCSE-P2-TRD-13": "MC-GE-TRADE-BENEFITS",
+  "GCSE-P2-TRD-14": "MC-GE-TRADE-BENEFITS",
+  "GCSE-P2-TRD-15": "MC-GE-PROTECTIONISM",
+  "GCSE-P2-TRD-16": "MC-GE-TRADE-BENEFITS",
+  "GCSE-P2-TRD-17": "MC-GE-EXPORTS-IMPORTS",
+  "GCSE-P2-TRD-18": "MC-GE-TRADING-BLOCS",
+  "GCSE-P2-TRD-19": "MC-GE-TRADING-BLOCS",
+  "GCSE-P2-TRD-20": "MC-GE-EXPORTS-IMPORTS",
+
+  // Paper 2: Balance of Payments
+  "GCSE-P2-BOP-01": "MC-GE-BOP",
+  "GCSE-P2-BOP-02": "MC-GE-BOP",
+  "GCSE-P2-BOP-03": "MC-GE-BOP",
+  "GCSE-P2-BOP-04": "MC-GE-BOP-CALC",
+  "GCSE-P2-BOP-05": "MC-GE-BOP-EVAL",
+  "GCSE-P2-BOP-06": "MC-GE-BOP-POLICY",
+  "GCSE-P2-BOP-07": "MC-GE-EXCHANGE-RATE",
+  "GCSE-P2-BOP-08": "MC-GE-BOP-EVAL",
+  "GCSE-P2-BOP-09": "MC-GE-BOP",
+  "GCSE-P2-BOP-10": "MC-GE-BOP",
+  "GCSE-P2-BOP-11": "MC-GE-BOP",
+  "GCSE-P2-BOP-12": "MC-GE-BOP",
+  "GCSE-P2-BOP-13": "MC-GE-BOP-EVAL",
+  "GCSE-P2-BOP-14": "MC-GE-BOP-POLICY",
+  "GCSE-P2-BOP-15": "MC-GE-BOP-CALC",
+  "GCSE-P2-BOP-16": "MC-GE-BOP-POLICY",
+  "GCSE-P2-BOP-17": "MC-GE-BOP",
+  "GCSE-P2-BOP-18": "MC-GE-BOP",
+  "GCSE-P2-BOP-19": "MC-GE-BOP",
+  "GCSE-P2-BOP-20": "MC-GE-BOP",
+
+  // Paper 2: Exchange Rates
+  "GCSE-P2-EXR-01": "MC-GE-APPREC-DEPREC",
+  "GCSE-P2-EXR-02": "MC-GE-CURRENCY-DEMAND",
+  "GCSE-P2-EXR-03": "MC-GE-EXCHANGE-RATE",
+  "GCSE-P2-EXR-04": "MC-GE-EXCHANGE-RATE",
+  "GCSE-P2-EXR-05": "MC-GE-EXR-CALC",
+  "GCSE-P2-EXR-06": "MC-GE-CURRENCY-DEMAND",
+  "GCSE-P2-EXR-07": "MC-GE-EXCHANGE-RATE",
+  "GCSE-P2-EXR-08": "MC-GE-J-CURVE",
+  "GCSE-P2-EXR-09": "MC-GE-EXCHANGE-RATE",
+  "GCSE-P2-EXR-10": "MC-GE-CURRENCY-DEMAND",
+  "GCSE-P2-EXR-11": "MC-GE-CURRENCY-DEMAND",
+  "GCSE-P2-EXR-12": "MC-GE-EXCHANGE-RATE",
+  "GCSE-P2-EXR-13": "MC-GE-EXR-CALC",
+  "GCSE-P2-EXR-14": "MC-GE-J-CURVE",
+  "GCSE-P2-EXR-15": "MC-GE-EXCHANGE-RATE",
+  "GCSE-P2-EXR-16": "MC-GE-CURRENCY-DEMAND",
+  "GCSE-P2-EXR-17": "MC-GE-APPREC-DEPREC",
+  "GCSE-P2-EXR-18": "MC-GE-APPREC-DEPREC",
+  "GCSE-P2-EXR-19": "MC-GE-APPREC-DEPREC",
+  "GCSE-P2-EXR-20": "MC-GE-APPREC-DEPREC",
+
+  // Paper 2: Globalisation
+  "GCSE-P2-GLOB-01": "MC-GE-GLOBALISATION",
+  "GCSE-P2-GLOB-02": "MC-GE-MNC",
+  "GCSE-P2-GLOB-03": "MC-GE-GLOBALISATION",
+  "GCSE-P2-GLOB-04": "MC-GE-MNC",
+  "GCSE-P2-GLOB-05": "MC-GE-GLOB-COSTS",
+  "GCSE-P2-GLOB-06": "MC-GE-MNC",
+  "GCSE-P2-GLOB-07": "MC-GE-GDP-WELLBEING",
+  "GCSE-P2-GLOB-08": "MC-GE-TRADE-RISKS",
+  "GCSE-P2-GLOB-09": "MC-GE-GLOBALISATION",
+  "GCSE-P2-GLOB-10": "MC-GE-TRADE-RISKS",
+  "GCSE-P2-GLOB-11": "MC-GE-GLOB-COSTS",
+  "GCSE-P2-GLOB-12": "MC-GE-MNC",
+  "GCSE-P2-GLOB-13": "MC-GE-GDP-WELLBEING",
+  "GCSE-P2-GLOB-14": "MC-GE-SUSTAINABILITY",
+  "GCSE-P2-GLOB-15": "MC-GE-GLOB-COSTS",
+  "GCSE-P2-GLOB-16": "MC-GE-TRADE-RISKS",
+  "GCSE-P2-GLOB-17": "MC-GE-TRADING-BLOCS",
+  "GCSE-P2-GLOB-18": "MC-GE-EXPORTS-IMPORTS",
+  "GCSE-P2-GLOB-19": "MC-GE-TRADING-BLOCS",
+  "GCSE-P2-GLOB-20": "MC-GE-EXPORTS-IMPORTS"
+};
+
+for (const bankId of SUBJECTS["gcse-econ"].banks) {
+  for (const question of BANKS[bankId]?.questions || []) {
+    const tag = GCSE_ECON_MC_TAGS[question.id];
+    if (tag) question.tag = tag;
   }
 }

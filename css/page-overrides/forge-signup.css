@@ -1,7 +1,8 @@
 /* Route-specific overrides for forge-signup.html. Shared rules belong in components.css. */
+/* Forge Signup pairing: Rethink Sans for display type, Poppins for product UI. */
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--coal);color:var(--slate);font-family:'Inter',sans-serif;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100vh}
-h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter-spacing:-.015em}
+body{background:var(--coal);color:var(--slate);font-family:'Poppins',sans-serif;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100vh}
+h1,h2,h3{font-family:'Rethink Sans',sans-serif;color:var(--white);line-height:1.1;letter-spacing:-.015em}
 .wrap{max-width:560px;margin:0 auto;padding:8px 20px 28px}
 .tag{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ember)}
 .theme-toggle{background:var(--panel);border:1px solid var(--line);color:var(--slate);font-family:'JetBrains Mono',monospace;font-size:12px;padding:6px 12px;border-radius:var(--radius-sm);cursor:pointer;z-index:99}
@@ -10,7 +11,7 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
 /* form */
 .field{margin-bottom:16px}
 .field label{display:block;font-size:13px;color:var(--slate);margin-bottom:5px}
-.field input{width:100%;padding:12px 14px;border-radius:var(--radius-sm);border:1px solid var(--line);background:var(--panel);color:var(--white);font-family:'Inter',sans-serif;font-size:15px}
+.field input{width:100%;padding:12px 14px;border-radius:var(--radius-sm);border:1px solid var(--line);background:var(--panel);color:var(--white);font-family:'Poppins',sans-serif;font-size:15px}
 .field input:focus{outline:none;border-color:var(--ember)}
 .field input::placeholder{color:#7A756E}
 
@@ -18,7 +19,7 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
 .subj-level{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--dim);margin:4px 0 8px;display:flex;align-items:center;gap:8px}
 .subj-level::after{content:"";flex:1;height:1px;background:var(--line)}
 .subj-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:18px}
-.subj-chip{padding:10px 14px;border-radius:var(--radius-sm);border:1.5px solid var(--line);background:var(--panel);cursor:pointer;font-family:'Inter',sans-serif;font-size:13px;color:var(--slate);text-align:left;transition:border-color .15s,color .15s,background .15s}
+.subj-chip{padding:10px 14px;border-radius:var(--radius-sm);border:1.5px solid var(--line);background:var(--panel);cursor:pointer;font-family:'Poppins',sans-serif;font-size:13px;color:var(--slate);text-align:left;transition:border-color .15s,color .15s,background .15s}
 .subj-chip:hover{border-color:var(--ember);color:var(--white)}
 .subj-chip.selected{border-color:var(--ember);background:rgba(255,107,44,.08);color:var(--white)}
 .subj-chip.subj-chip-disabled{opacity:.35;cursor:not-allowed;pointer-events:none}
@@ -26,7 +27,7 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
 
 /* price card */
 .price-card{background:var(--panel-2);border:1px solid rgba(255,201,60,.32);border-radius:var(--radius-md);padding:20px;margin-bottom:18px;position:relative;overflow:hidden}
-.price-main{font-family:'Sora',sans-serif;font-size:38px;font-weight:800;color:var(--white);line-height:1}
+.price-main{font-family:'Rethink Sans',sans-serif;font-size:38px;font-weight:800;color:var(--white);line-height:1}
 .price-period{font-size:15px;color:#8A857E;margin-left:4px}
 .price-desc{font-size:13px;color:#8A857E;margin-top:6px}
 .price-features{margin-top:16px;display:flex;flex-direction:column;gap:8px}
@@ -34,10 +35,10 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
 .price-feat::before{content:"✓";color:var(--good);font-weight:700;flex-shrink:0}
 
 /* buttons */
-.btn-primary{width:100%;padding:14px;border-radius:var(--radius-md);background:var(--ember);color:var(--coal);border:none;font-family:'Inter',sans-serif;font-weight:700;font-size:15px;cursor:pointer;margin-bottom:10px}
+.btn-primary{width:100%;padding:14px;border-radius:var(--radius-md);background:var(--ember);color:var(--coal);border:none;font-family:'Poppins',sans-serif;font-weight:700;font-size:15px;cursor:pointer;margin-bottom:10px}
 .btn-primary:hover{opacity:.9}
 .btn-primary:disabled{opacity:.5;cursor:wait}
-.btn-ghost{width:100%;padding:12px;border-radius:var(--radius-md);background:none;border:1px solid var(--line);color:var(--slate);font-family:'Inter',sans-serif;font-size:14px;cursor:pointer}
+.btn-ghost{width:100%;padding:12px;border-radius:var(--radius-md);background:none;border:1px solid var(--line);color:var(--slate);font-family:'Poppins',sans-serif;font-size:14px;cursor:pointer}
 .btn-ghost:hover{border-color:var(--ember);color:var(--white)}
 .err{color:var(--bad);font-size:13px;margin-top:8px;display:none}
 .note{font-size:12px;color:#8A857E;text-align:center;margin-top:10px}
@@ -55,3 +56,47 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
    than the other cards so the grid doesn't push the CTA off screen. */
 .auth-card .subj-scroll{max-height:min(46vh,380px);overflow-y:auto;margin:0 -4px 4px;padding:0 4px}
 @media(max-width:480px){.subj-grid{grid-template-columns:1fr}}
+
+/* Conversion refinement: make the trial path feel like a short, confident
+   sequence rather than a generic form. */
+body{background:radial-gradient(circle at 50% -12%,rgba(213,92,19,.12),transparent 36%),var(--coal)}
+.wrap{max-width:720px;padding:20px 20px 56px}
+.auth-stage{padding:28px 0 48px}
+.auth-card{max-width:560px;padding:34px 36px;background:color-mix(in srgb,var(--glass-panel) 92%,var(--ember) 8%);box-shadow:0 34px 90px -34px rgba(213,92,19,.62),0 28px 70px rgba(0,0,0,.42);animation:forge-auth-in .52s cubic-bezier(.16,1,.3,1) both}
+.auth-card.wide{max-width:620px}
+.auth-badge{margin-bottom:22px}
+.auth-title{font-family:'Rethink Sans',sans-serif;font-size:clamp(25px,4vw,34px);font-weight:800;letter-spacing:-.03em}
+.auth-sub{font-family:'Poppins',sans-serif;font-size:14px;line-height:1.55;max-width:44ch;margin:8px auto 28px}
+.auth-tag{font-size:10px;letter-spacing:.12em}
+.auth-field,.field{margin-bottom:18px}
+.auth-label,.field label{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.04em;text-transform:uppercase}
+.auth-input,.field input{min-height:48px;font-family:'Poppins',sans-serif;font-size:15px;border-radius:var(--radius-md);background:rgba(0,0,0,.14)}
+.auth-input:focus,.field input:focus{box-shadow:0 0 0 4px rgba(213,92,19,.2),0 8px 24px -18px rgba(213,92,19,.7)}
+.price-card{padding:22px 24px;margin-bottom:22px;background:linear-gradient(135deg,rgba(255,201,60,.1),rgba(255,107,44,.05)),var(--panel-2);box-shadow:inset 0 1px 0 rgba(255,201,60,.18)}
+.price-main{font-size:clamp(42px,7vw,56px);letter-spacing:-.04em}
+.price-desc{max-width:48ch;line-height:1.5}
+.price-features{gap:9px}
+.price-feat{line-height:1.45}
+.btn-primary,.auth-btn{min-height:50px;border-radius:var(--radius-md);font-family:'Poppins',sans-serif;font-weight:800;letter-spacing:-.01em;transition:transform .18s cubic-bezier(.16,1,.3,1),box-shadow .18s,filter .18s}
+.btn-primary:hover,.auth-btn:hover{transform:translateY(-2px);box-shadow:0 18px 34px -16px rgba(213,92,19,.95)}
+.btn-ghost,.auth-btn-ghost{min-height:46px;border-radius:var(--radius-md);font-family:'Poppins',sans-serif}
+.subj-level{margin-top:12px}
+.subj-chip{min-height:56px;padding:11px 14px;border-radius:var(--radius-md);transition:transform .18s cubic-bezier(.16,1,.3,1),border-color .18s,background .18s,box-shadow .18s}
+.subj-chip:hover{transform:translateY(-2px);box-shadow:0 12px 22px -18px rgba(213,92,19,.9)}
+.subj-chip.selected{box-shadow:inset 0 0 0 1px rgba(255,201,60,.42),0 10px 24px -18px rgba(213,92,19,.9)}
+.already-box{padding:16px 18px;border-radius:var(--radius-md);background:rgba(255,201,60,.06)}
+.note{line-height:1.5}
+.success-card{animation:forge-auth-in .45s cubic-bezier(.16,1,.3,1) both}
+@keyframes forge-auth-in{from{opacity:0;transform:translateY(12px) scale(.985)}to{opacity:1;transform:none}}
+@media(max-width:600px){.wrap{padding:12px 14px 40px}.auth-stage{padding:18px 0 30px}.auth-card,.auth-card.wide{padding:28px 20px;max-width:100%}.price-card{padding:20px}.auth-sub{margin-bottom:22px}}
+@media(pointer:coarse){.btn-primary,.auth-btn,.btn-ghost,.auth-btn-ghost,.subj-chip{min-height:48px}}
+@media(prefers-reduced-motion:reduce){.auth-card,.success-card{animation:none}.btn-primary,.auth-btn,.subj-chip{transition:none}}
+
+/* Overdrive: the cursor reveals a quiet pool of ember light, giving the
+   active surface a physical response without competing with the form. */
+.forge-overdrive-target{--pointer-x:50%;--pointer-y:50%}
+.auth-card.forge-overdrive-target::after{content:"";position:absolute;inset:1px;border-radius:inherit;pointer-events:none;background:radial-gradient(circle at var(--pointer-x) var(--pointer-y),rgba(255,201,60,.12),transparent 28%);opacity:0;transition:opacity .28s;mix-blend-mode:screen}
+.auth-card.forge-overdrive-target:hover::after{opacity:1}
+@supports(view-transition-name: none){.auth-card{view-transition-name:forge-auth-card}.auth-stage{view-transition-name:forge-auth-stage}}
+::view-transition-old(forge-auth-card),::view-transition-new(forge-auth-card){animation-duration:.38s;animation-timing-function:cubic-bezier(.16,1,.3,1)}
+@media(prefers-reduced-motion:reduce){.auth-card.forge-overdrive-target::after{transition:none}::view-transition-old(forge-auth-card),::view-transition-new(forge-auth-card){animation:none}}

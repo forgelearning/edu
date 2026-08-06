@@ -6,9 +6,9 @@
 <title>Forge — Subscribe</title>
 <meta name="description" content="Start your 7-day free trial of Forge Pro — pick your GCSE or A Level subjects and get full access, no card needed.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Rethink+Sans:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/tokens.css">
-<link rel="stylesheet" href="css/base.css?v=20260812">
+<link rel="stylesheet" href="css/base.css?v=20260814-fonts">
 <link rel="stylesheet" href="css/auth.css">
 <script src="scripts/forge-logo.js"></script>
 <script src="scripts/forge-auth-card.js"></script>
@@ -23,7 +23,7 @@
 </script>
 <link rel="stylesheet" href="css/states.css">
   <link rel="stylesheet" href="css/generated-utilities.css">
-  <link rel="stylesheet" href="css/page-overrides/forge-signup.css">
+  <link rel="stylesheet" href="css/page-overrides/forge-signup.css?v=20260814-pairing1">
 </head>
 <body>
 <script src="scripts/forge-api.js"></script>
@@ -35,9 +35,9 @@
     </div>
 </nav>
 <script>if(localStorage.getItem('forge-theme')==='light'){document.documentElement.setAttribute('data-theme','light');document.addEventListener('DOMContentLoaded',function(){var btn=document.querySelector('.theme-toggle');if(btn)btn.textContent='\u263E';});}</script></div></div>
-<div class="wrap">
-  <div id="app"></div>
-</div>
+<main class="wrap" id="main-content">
+  <div id="app" aria-live="polite"></div>
+</main>
 
 <script src="forge-auth.js"></script>
 <script>if(window.ForgeAuth)ForgeAuth.adoptHashSession();</script>
@@ -460,6 +460,7 @@ function renderAlreadySubscribed(sub) {
 </script>
 
 <script src="scripts/nav.js"></script>
+<script src="scripts/forge-overdrive.js"></script>
   <script src="scripts/forge-page-actions.js"></script>
 </body>
 </html>

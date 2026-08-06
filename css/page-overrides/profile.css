@@ -1,6 +1,6 @@
 /* Route-specific overrides for profile.html. Shared rules belong in components.css. */
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--coal);color:var(--slate);font-family:'Inter',sans-serif;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100vh}
+body{background:var(--coal);color:var(--slate);font-family:'IBM Plex Sans',sans-serif;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100vh}
 h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter-spacing:-.015em}
 .mono{font-family:'JetBrains Mono',monospace}
 .wrap{max-width:860px;margin:0 auto;padding:28px 20px}
@@ -8,16 +8,16 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
 .logo{font-family:'Sora',sans-serif;font-weight:800;font-size:20px;color:var(--white);text-decoration:none;display:inline-flex;align-items:center;gap:8px;margin-bottom:0}
 .logo .spark{width:9px;height:9px;background:var(--ember);border-radius:var(--radius-xs);transform:rotate(45deg);box-shadow:0 0 10px rgba(255,107,44,.7)}
 .theme-toggle{background:var(--panel);border:1px solid var(--line);color:var(--slate);font-family:'JetBrains Mono',monospace;font-size:12px;padding:6px 12px;border-radius:var(--radius-sm);cursor:pointer;z-index:99}
-.join-input{width:100%;padding:12px 14px;border-radius:var(--radius-sm);border:1px solid var(--line);background:var(--panel);color:var(--white);font-family:'Inter',sans-serif;font-size:15px;margin-bottom:14px;text-transform:uppercase}
+.join-input{width:100%;padding:12px 14px;border-radius:var(--radius-sm);border:1px solid var(--line);background:var(--panel);color:var(--white);font-family:'IBM Plex Sans',sans-serif;font-size:15px;margin-bottom:14px;text-transform:uppercase}
 .join-input:focus{outline:none;border-color:var(--ember)}
 .join-input::placeholder{color:#7A756E;text-transform:none}
-.join-btn{width:100%;padding:13px;border-radius:var(--radius-sm);background:var(--ember);color:#fff;border:none;font-family:'Inter',sans-serif;font-weight:600;font-size:15px;cursor:pointer}
+.join-btn{width:100%;padding:13px;border-radius:var(--radius-sm);background:var(--ember);color:#fff;border:none;font-family:'IBM Plex Sans',sans-serif;font-weight:600;font-size:15px;cursor:pointer}
 .join-btn:hover{background:var(--hot)}
 .join-btn:disabled{opacity:.5;cursor:wait}
 .join-err{color:var(--bad);font-size:13px;margin-top:10px;display:none}
 /* ── Profile tabs ── */
 .prof-tabs{display:flex;gap:4px;margin-bottom:24px;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-md);padding:5px;width:fit-content;box-shadow:0 10px 28px rgba(0,0,0,.12)}
-.prof-tab{font-size:13px;font-weight:600;font-family:'Inter',sans-serif;padding:8px 16px;border-radius:var(--radius-sm);border:none;background:none;color:var(--slate);cursor:pointer;transition:all .15s}
+.prof-tab{font-size:13px;font-weight:600;font-family:'IBM Plex Sans',sans-serif;padding:8px 16px;border-radius:var(--radius-sm);border:none;background:none;color:var(--slate);cursor:pointer;transition:all .15s}
 .prof-tab.active{background:var(--ember);color:#fff}
 .prof-tab:hover:not(.active){color:var(--white)}
 /* ── Profile header card ── */
@@ -86,3 +86,38 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
 .forge-u-k85mqv tbody td:last-child{border-radius:0 var(--radius-sm) var(--radius-sm) 0}
 .forge-u-1rlm34s{white-space:normal;overflow-wrap:anywhere}
 @media(max-width:600px){.forge-u-k85mqv{font-size:12px}.forge-u-k85mqv th,.forge-u-k85mqv td{padding:9px 5px}.forge-u-k85mqv th:nth-child(4){width:40%}}
+
+/* Student experience pass: make the profile a readable readiness overview. */
+body{font-family:'Poppins',sans-serif}
+h1,h2,h3,.prof-name,.rank-title,.grade-letter,.logo{font-family:'Rethink Sans',sans-serif}
+.wrap{padding-top:42px;padding-bottom:56px}
+#app{max-width:860px;margin:0 auto}
+.prof-tabs{margin:0 auto 24px}
+.prof-tab{font-family:'Poppins',sans-serif;min-height:40px}
+.prof-header,.card,.rank-display{background:var(--glass-panel);backdrop-filter:blur(var(--glass-blur));-webkit-backdrop-filter:blur(var(--glass-blur))}
+.prof-header{padding:24px 28px}
+.prof-name{font-size:24px;letter-spacing:-.02em}
+.stat-n{font-family:'Rethink Sans',sans-serif}
+.card-title{color:var(--hot)}
+.focus-item{background:var(--surface-error-subtle)}
+/* The pill carries a topic name now, not a short bank id: let it wrap and
+   shrink rather than squeezing the accuracy figure off the row. */
+.focus-pill{min-width:0;font-family:'Poppins',sans-serif;font-size:12px;font-weight:600;letter-spacing:0;text-align:left}
+.focus-acc{flex-shrink:0;white-space:nowrap}
+.strength-label{min-width:0;padding-right:10px}
+.strength-item{background:var(--surface-success-subtle);border-bottom-color:var(--line);padding:11px 12px;border-radius:var(--radius-sm);margin-bottom:6px}
+.focus-detail,.grade-desc,.prof-footer{line-height:1.55}
+.focus-item a,.prof-footer a{color:var(--hot)}
+.mc-item{background:var(--surface-error-subtle)}
+.grade-card{background:var(--panel-2)}
+.prof-tab:focus-visible,.join-input:focus-visible,.join-btn:focus-visible,.focus-item a:focus-visible,.prof-header a:focus-visible{outline:2px solid var(--hot);outline-offset:3px}
+@media(max-width:600px){
+  .wrap{padding:20px 16px 36px}
+  .prof-tabs{width:100%;justify-content:center}
+  .prof-tab{flex:1;padding:8px 10px}
+  .prof-header{padding:20px 16px}
+  .prof-header-top{gap:12px;flex-direction:column}
+  .always-updating{align-self:flex-start}
+  .stat-row{gap:10px}
+  .stat-n{font-size:28px}
+}

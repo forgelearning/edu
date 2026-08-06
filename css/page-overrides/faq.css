@@ -1,5 +1,5 @@
 /* Route-specific overrides for faq.html. Shared rules belong in components.css. */
-body{background:var(--coal);color:var(--slate);font-family:'Inter',sans-serif;font-size:16px;line-height:1.7;-webkit-font-smoothing:antialiased}
+body{background:var(--coal);color:var(--slate);font-family:'IBM Plex Sans',sans-serif;font-size:16px;line-height:1.7;-webkit-font-smoothing:antialiased}
 h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter-spacing:-.015em}
 a{color:var(--ember);text-decoration:none}
 a:hover{text-decoration:underline}
@@ -67,3 +67,51 @@ footer a{color:#8A857E}
 footer a:hover{color:var(--ember)}
 .footer-row{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
 [data-theme="light"] .forge-logo-dark{display:none!important}[data-theme="light"] .forge-logo-light{display:inline!important}
+
+/* Field Manual overdrive: make long-form scanning feel instrumented, not
+   decorative. */
+body::before{content:"";position:fixed;z-index:50;top:0;left:0;width:100%;height:1px;background:var(--ember);transform-origin:0 50%;transform:scaleX(0);pointer-events:none}
+@supports (animation-timeline:scroll()){body::before{animation:manual-scroll-progress linear both;animation-timeline:scroll(root block)}}
+@keyframes manual-scroll-progress{to{transform:scaleX(1)}}
+.toc a{position:relative}
+.toc a.active{font-weight:600}
+.toc a.active::after{content:"";position:absolute;right:0;top:50%;width:4px;height:4px;border-radius:50%;background:var(--hot);box-shadow:0 0 0 4px rgba(255,201,60,.12);transform:translateY(-50%)}
+@supports (animation-timeline:view()){.faq-section{animation:manual-section-in linear both;animation-timeline:view(-8% 16%);animation-range:entry 0% entry 28%}}
+@keyframes manual-section-in{from{opacity:.35;transform:translateY(18px)}to{opacity:1;transform:none}}
+
+/* FAQ pass: make the page scan like a decision tool, while preserving the
+   long-form answers for readers who want the detail. */
+body{font-family:'Poppins',sans-serif}
+h1,h2,h3,.faq-q{font-family:'Rethink Sans',sans-serif}
+.wrap{max-width:1240px}
+.faq-hero{padding:clamp(52px,8vw,96px) 0 46px;margin-bottom:48px}
+.faq-hero .tag{display:inline-flex;align-items:center;gap:10px}
+.faq-hero .tag::before{content:"";width:28px;height:2px;background:var(--ember);display:inline-block}
+.faq-hero h1{font-size:clamp(40px,6vw,72px);letter-spacing:-.04em;max-width:13ch;text-wrap:balance}
+.faq-hero p{font-size:16px;line-height:1.75;max-width:68ch}
+.faq-layout{grid-template-columns:210px minmax(0,780px);gap:clamp(32px,7vw,96px);justify-content:center}
+.toc{top:28px}
+.toc-title{color:var(--hot)}
+.toc a{padding:8px 12px;border-left-width:1px;transition:color .18s ease,border-color .18s ease,transform .18s ease}
+.toc a:hover,.toc a.active{transform:translateX(3px)}
+.faq-section{margin-bottom:72px;scroll-margin-top:28px}
+.faq-section-title{font-size:11px;color:var(--hot);padding-bottom:14px;margin-bottom:0}
+.faq-item{border-bottom:1px solid var(--line);transition:border-color .2s ease}
+.faq-item:has(.faq-q[aria-expanded="true"]){border-bottom-color:rgba(255,201,60,.45)}
+.faq-q{min-height:72px;padding:22px 0;font-size:clamp(18px,2.2vw,23px);letter-spacing:-.02em;transition:color .18s ease}
+.faq-q:focus-visible{outline:2px solid var(--hot);outline-offset:6px;border-radius:3px}
+.faq-chevron{font-size:11px;padding-top:5px;transition:transform .28s cubic-bezier(.16,1,.3,1),color .18s ease}
+.faq-q[aria-expanded="true"] .faq-chevron{color:var(--hot)}
+.faq-a,.faq-a.open,.faq-a[hidden]{display:grid;grid-template-rows:0fr;overflow:hidden;opacity:0;padding-bottom:0;transition:grid-template-rows .34s cubic-bezier(.16,1,.3,1),opacity .22s ease}
+.faq-a__inner{min-height:0;overflow:hidden}
+.faq-a.open{grid-template-rows:1fr;opacity:1;padding-bottom:26px}
+.faq-a p,.faq-a ul,.faq-a ol{font-size:15px;line-height:1.8;max-width:70ch}
+.notice{border-left:0;border-top:2px solid var(--ember);box-shadow:0 16px 36px -30px rgba(0,0,0,.7)}
+@media(max-width:700px){
+  .wrap{padding:0 20px}
+  .faq-hero{padding-top:42px;margin-bottom:34px}
+  .faq-hero h1{font-size:clamp(40px,12vw,58px)}
+  .faq-q{min-height:64px;padding:19px 0}
+  .faq-a.open{padding-bottom:22px}
+}
+@media(prefers-reduced-motion:reduce){body::before{transform:scaleX(1)}.faq-section{animation:none!important;opacity:1!important;transform:none!important}}

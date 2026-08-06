@@ -23,6 +23,7 @@ var _FORGE_ICONS = {
   misconceptions: '<path d="M12 9v4M12 17h.01"></path><path d="M10.3 3.9 2.5 17a2 2 0 0 0 1.7 3h15.6a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"></path>',
   students: '<path d="M17 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path>',
   classes: '<path d="M4 19V6a2 2 0 0 1 2-2h9l5 5v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2Z"></path><path d="M8 8h6M8 12h8M8 16h5"></path>',
+  school: '<path d="M3 21h18"></path><path d="M5 21V9l7-4 7 4v12"></path><path d="M8 21v-6h8v6M9 11h.01M12 11h.01M15 11h.01"></path>',
   present: '<rect x="2" y="4" width="20" height="13" rx="2"></rect><path d="M8 21h8M12 17v4"></path>',
   more: '<circle cx="5" cy="12" r="1.6"></circle><circle cx="12" cy="12" r="1.6"></circle><circle cx="19" cy="12" r="1.6"></circle>',
   theme: '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>'
@@ -311,6 +312,8 @@ var ForgeSidebar = {
   setClassLabel: function(text) {
     var el = document.querySelector('.fclassswitch-label');
     if (el) el.textContent = text;
+    var button = document.getElementById('fclassswitch-btn');
+    if (button) button.setAttribute('aria-label', 'Switch class — ' + String(text || 'choose a class'));
   },
 
   // classes: [{id, name, subject, code}], activeId: currently open class id
