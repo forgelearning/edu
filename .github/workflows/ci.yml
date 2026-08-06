@@ -1,0 +1,58 @@
+name: CI tests
+
+on:
+  pull_request:
+    branches: ["main"]
+  push:
+    branches-ignore: ["main"]
+
+permissions:
+  contents: read
+
+jobs:
+  ci-tests:
+    name: CI tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate question bank
+        run: node scripts/check-question-bank.js
+
+      - name: Validate subject-page counts
+        run: node scripts/check-subject-counts.js
+
+      - name: Validate specification coverage
+        run: node scripts/check-spec-coverage.js
+
+      - name: Validate stem diversity
+        run: node scripts/check-stem-diversity.js
+
+      - name: Validate stem language
+        run: node scripts/check-stem-language.js
+
+      - name: Audit distractor balance and structure
+        run: node dev/audit-banks.js
+
+      - name: Validate UI system
+        run: node scripts/check-ui-system.js
+
+      - name: Serve site for route smoke test
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 >/dev/null 2>&1 &
+          echo "SERVER_PID=$!" >> "$GITHUB_ENV"
+          for _ in $(seq 1 30); do
+            curl -sf http://127.0.0.1:4173/index.html >/dev/null && exit 0
+            sleep 1
+          done
+          echo "Static server did not come up on 127.0.0.1:4173" >&2
+          exit 1
+
+      - name: Validate routes and local links
+        run: node scripts/check-routes.js
+
+      - name: Stop static server
+        if: always()
+        run: kill "$SERVER_PID" 2>/dev/null || true
