@@ -119,14 +119,17 @@ propagates into its `*-COV-*` copies and fixing the source fixes them all.
   the status quo. Fully done: `gcse-econ` (420 questions onto 76 shared
   `MC-GE-*` tags), the three `gcse-sep-*` sciences (600 questions on 96 shared
   topic tags), `gcse-science` (212 questions from 156 tags onto 83, reusing the
-  `MC-SEP-*` set — see `docs/gcse-science-misconception-mapping.md`), and
+  `MC-SEP-*` set — see `docs/gcse-science-misconception-mapping.md`),
+  `gcse-maths` (126 tags onto 90; all 90 labelled, 89 with a hand-written
+  starter — its tags were already topical and merely split by a numeric
+  suffix, so the work was merging variants, not designing a taxonomy), and
   `hist` (37 shared `MC-HIST-*` tags, see
   `docs/history-misconception-mapping.md`). Substantially done: `psych` (0.18).
   Listed but *not* meaningfully retagged: `gcse-geo` (0.78 — 492 of 640
   questions still on single-use tags), `soc` (0.94), and `econ`, which is not
   in the ratchet at all and has 378 of 515 questions on single-use tags.
 
-  Next, roughly by value: `gcse-maths`, then `econ`, `gcse-geo` and `soc` —
+  Next, roughly by value: `econ`, `gcse-geo` and `soc` —
   those three need a taxonomy designed from scratch, which is the expensive
   part — then the ~15 subjects still at 100% per-question tags. The audit fails
   if a subject listed in `TAG_TAXONOMY_SUBJECTS` regresses, or if an
