@@ -70,14 +70,47 @@ jobs:
       - name: Configure Pages
         uses: actions/configure-pages@v5
 
+      # Publish only the static site. Uploading the repo root shipped 554
+      # .claude/ tooling files — 76% of the artifact — to a public website and
+      # made every deployment slower than it needed to be. Nothing excluded
+      # here is referenced by any page; check-routes.js still runs against the
+      # full checkout above.
+      - name: Stage site
+        run: |
+          rsync -a --delete \
+            --exclude='.git/' \
+            --exclude='.github/' \
+            --exclude='.claude/' \
+            --exclude='.impeccable/' \
+            --exclude='_site/' \
+            --exclude='dev/' \
+            --exclude='docs/' \
+            --exclude='supabase/' \
+            --exclude='templates/' \
+            --exclude='CLAUDE.md' \
+            --exclude='scripts/check-*.js' \
+            --exclude='scripts/build-*.js' \
+            --exclude='scripts/migrate-*.js' \
+            --exclude='scripts/extract-*.js' \
+            --exclude='scripts/clean-*.js' \
+            --exclude='scripts/merge-*.js' \
+            ./ _site/
+          test -f _site/index.html
+          echo "Staged $(find _site -type f | wc -l) files (repo has $(git ls-files | wc -l))"
+
       - name: Upload site
         uses: actions/upload-pages-artifact@v5
         with:
           name: github-pages-${{ github.run_id }}-${{ github.run_attempt }}
-          path: .
+          path: _site
 
+      # The Pages backend has been taking longer than deploy-pages' 10 minute
+      # default to finish a deployment that it accepts within seconds, so every
+      # run since 2026-08-06 12:30 aborted mid-deploy rather than failing on
+      # anything in this repo. Give it room instead of failing the site build.
       - name: Deploy
         id: deployment
         uses: actions/deploy-pages@v5
         with:
           artifact_name: github-pages-${{ github.run_id }}-${{ github.run_attempt }}
+          timeout: 1800000
