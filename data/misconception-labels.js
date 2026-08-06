@@ -1007,6 +1007,30 @@ const MC_LABELS = {
   "MC-SEP-CHEM-ELECTRO": "Cathode attracts cations and reduces them",
   "MC-SEP-CHEM-YIELD": "Percentage yield compares actual with theoretical",
   "MC-SEP-CHEM-ANALYSIS": "Flame tests identify metal ions",
+  // Combined-science items deliberately left on their own tag: each names a
+  // single topic rather than a shared error, so it stays browsable without
+  // pretending to aggregate. They still carry a label and a starter.
+  "BIO-MICRO-01": "Magnification multiplies, it does not add",
+  "BIO-MED-02": "Monoclonal antibodies bind one specific target",
+  "BIO-DIFF-01": "Differentiation gives structure suited to a function",
+  "BIO-GM-01": "A vector carries the gene into the host cell",
+  "CHEM-MIX-01": "Crystallisation recovers a dissolved solid",
+  "PHYS-QUANT-01": "Vectors carry direction; scalars do not",
+  "BIO-AUXIN-01": "Auxin drives unequal growth, not movement",
+  "BIO-HUMAN-01": "Fertiliser runoff removes oxygen from water",
+  "BIO-PLANT-02": "Root hair cells add surface area for uptake",
+  "PHYS-PRESSURE-01": "Pressure is force spread over area",
+  "PHYS-STOP-01": "Stopping distance is thinking plus braking",
+  // Added with the combined-science retag: errors that GCSE Combined Science
+  // questions share but which had no existing MC-SEP-* home.
+  "MC-SEP-BIO-TRIAL": "Controls and placebos isolate the drug's effect",
+  "MC-SEP-BIO-CIRCULATION": "Double circulation — blood passes the heart twice",
+  "MC-SEP-BIO-GASEXCHANGE": "Surface area and diffusion distance, not effort",
+  "MC-SEP-CHEM-MASS": "Mass is conserved; gases escaping are still mass",
+  "MC-SEP-CHEM-GROUPS": "Group trends follow the outer-shell electrons",
+  "MC-SEP-CHEM-ENERGETICS": "Exothermic releases energy; endothermic takes it in",
+  "MC-SEP-PHYS-OPTICS": "Light rays bend at the boundary, not inside the glass",
+  "MC-SEP-PHYS-SPRING": "Extension is proportional only up to the limit",
   "MC-SEP-CHEM-EQUIL2": "Only temperature changes the equilibrium constant",
   "MC-SEP-CHEM-MR": "Relative formula mass sums every atom present",
   "MC-SEP-CHEM-NANO": "Nanoparticles — high surface-area-to-volume ratio",
