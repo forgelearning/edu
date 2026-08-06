@@ -115,3 +115,12 @@ h1,h2,h3,.faq-q{font-family:'Rethink Sans',sans-serif}
   .faq-a.open{padding-bottom:22px}
 }
 @media(prefers-reduced-motion:reduce){body::before{transform:scaleX(1)}.faq-section{animation:none!important;opacity:1!important;transform:none!important}}
+
+/* Keep the editorial scale, but let the page breathe at desktop widths. The
+   previous fixed reading column left roughly half of the viewport unused and
+   forced the hero into an unnecessarily narrow stack. */
+.faq-hero h1{max-width:none}
+.faq-hero p{max-width:90ch}
+.faq-layout{grid-template-columns:minmax(170px,210px) minmax(0,1fr);justify-content:stretch}
+.faq-a p,.faq-a ul,.faq-a ol{max-width:78ch}
+@media(max-width:700px){.faq-layout{grid-template-columns:1fr}.toc{display:none}}

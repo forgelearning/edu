@@ -102,6 +102,12 @@ h1,h2,h3,h4{font-family:'Rethink Sans',sans-serif}
 .prose table{border:1px solid var(--line);border-radius:var(--radius-md);overflow:hidden}
 .prose th{background:var(--panel);color:var(--hot);padding:12px 14px}
 .prose td{padding:13px 14px}
+
+/* Use the available page width while retaining a comfortable reading measure
+   for the policy copy. */
+.page-header h1{max-width:none}
+.page-header p{max-width:90ch}
+.doc-layout{grid-template-columns:minmax(170px,210px) minmax(0,1fr);justify-content:stretch}
 @media(max-width:800px){
   .doc-layout{display:block}
   .doc-nav{display:none}
