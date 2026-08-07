@@ -20,9 +20,18 @@
   }
   function progress(assignment,payload){
     var banks=list(assignment&&assignment.banks), allowed={};
+    var createdAt=assignment&&assignment.created_at?new Date(assignment.created_at).getTime():0;
     banks.forEach(function(bank){allowed[key(bank)]=bank;});
     var seen={}, answered=0, correct=0;
     rows(payload).forEach(function(response){
+      // Assignment progress must not inherit answers recorded before the
+      // assignment was created. Responses are currently shared by bank/class,
+      // so the creation boundary is the reliable discriminator until an
+      // assignment_id column is added to the response model.
+      if(createdAt&&response&&response.created_at){
+        var responseAt=new Date(response.created_at).getTime();
+        if(responseAt&&responseAt<createdAt)return;
+      }
       var id=String(response.question_id||response.questionId||response.id||'').replace(/-RF$/,'');
       var bank=allowed[key(response.bank)]||bankForQuestion(id);
       if(!bank||!allowed[key(bank)]) return;
