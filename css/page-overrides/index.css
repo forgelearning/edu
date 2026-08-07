@@ -691,12 +691,12 @@ body.audit-test{background:
 @media(max-width:900px){
   .audit-test .hero{grid-template-columns:1fr;gap:38px}
   .audit-test .hero h1{max-width:12ch}
-  .audit-test .hero-shell{min-height:auto;margin-top:0;padding-top:128px;align-items:flex-start}
+  .audit-test .hero-shell{min-height:auto;margin-top:0;padding-top:80px;align-items:flex-start}
   .audit-test .hero-shell::after{right:-18rem;top:26%;opacity:.55}
   .audit-test .hero .demo{max-width:680px}
 }
 @media(max-width:600px){
-  .audit-test .hero-shell{margin-top:0;padding-top:128px;padding-bottom:54px;align-items:flex-start}
+  .audit-test .hero-shell{margin-top:0;padding-top:56px;padding-bottom:54px;align-items:flex-start}
   .audit-test .hero h1{font-size:clamp(46px,13vw,64px);margin-top:16px}
   .audit-test .hero-copy > .tag{max-width:32ch}
   .audit-test .hero .demo{padding:22px;border-radius:18px}
@@ -974,4 +974,21 @@ body.overdrive-instrument #waitlist #email:focus{outline:none!important;border-c
 @media(max-width:600px){
   .audit-test.overdrive-instrument .hero .ctas{flex-wrap:wrap;white-space:normal}
   .audit-test.overdrive-instrument .hero-secondary-link{white-space:normal}
+}
+
+/* The mobile hero contains the full live question card, so it must grow with
+   its content instead of clipping the card to the first viewport. */
+@media(max-width:900px){
+  .audit-test.overdrive-instrument .hero-shell{height:auto;min-height:0;overflow-x:clip;overflow-y:visible}
+}
+
+/* Compact the stacked mobile hero after the audit layout's desktop spacing
+   rules have been applied. */
+@media(max-width:900px){
+  .audit-test.overdrive-instrument .hero{gap:24px}
+  .audit-test.overdrive-instrument .hero .ctas{margin-top:12px}
+}
+@media(max-width:600px){
+  .audit-test.overdrive-instrument .hero{gap:16px}
+  .audit-test.overdrive-instrument .hero .ctas{margin-top:8px}
 }
