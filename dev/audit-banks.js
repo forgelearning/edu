@@ -196,6 +196,12 @@ const TAG_TAXONOMY_SUBJECTS = {
   'gcse-maths': 0.01,
   'gcse-geo': 0.78,
   soc: 0.94,
+  // 141 of 208 questions retagged onto 38 shared MC-HIST-* tags. The residue
+  // is the 67 purely definitional questions that only a TOPIC tag would cover
+  // (see docs/history-misconception-mapping.md), plus four taxonomy tags
+  // sitting on a single question each until the rewrite pass gives them a
+  // second. Ratchet set just above the current 0.341 to catch regression.
+  hist: 0.35,
 };
 for (const [key, maxSingleShare] of Object.entries(TAG_TAXONOMY_SUBJECTS)) {
   const subject = SUBJECTS[key];
