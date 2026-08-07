@@ -200,8 +200,11 @@ const TAG_TAXONOMY_SUBJECTS = {
   // is the 67 purely definitional questions that only a TOPIC tag would cover
   // (see docs/history-misconception-mapping.md), plus four taxonomy tags
   // sitting on a single question each until the rewrite pass gives them a
-  // second. Ratchet set just above the current 0.341 to catch regression.
-  hist: 0.35,
+  // second. The rewrite pass has now landed: all 38 tags aggregate, and the
+  // four extra questions took the share to 0.316, so the ratchet tightens
+  // from 0.35 to lock that in. The residue is the 67 purely definitional
+  // questions that only a TOPIC tag would cover.
+  hist: 0.32,
   // Stage 1 only, and the value says so: 0.45 is a FLOOR against regression,
   // not a claim that econ is done. 148 questions were merged onto 74 concept
   // tags, taking the single-use share from 0.734 to 0.447, and every one of
