@@ -117,5 +117,5 @@ html:not([data-theme="light"]) body.forge-auth-ember .auth-badge .auth-shield{
   border:1px solid var(--forge-auth-ember);
   box-shadow:0 0 0 3px rgba(213,92,19,.12)
 }
-html:not([data-theme="light"]) body.forge-auth-ember .auth-badge .auth-shield .forge-logo-dark{display:none}
+html:not([data-theme="light"]) body.forge-auth-ember .auth-badge .auth-shield .forge-logo-img{display:none!important}
 html:not([data-theme="light"]) body.forge-auth-ember .auth-badge .auth-shield::after{content:"F";color:var(--forge-auth-ember);font:800 19px/1 'Poppins',sans-serif;letter-spacing:-.04em}
