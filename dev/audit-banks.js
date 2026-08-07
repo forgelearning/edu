@@ -211,6 +211,35 @@ const TAG_TAXONOMY_SUBJECTS = {
   // that lands rather than sitting here at 0.45 indefinitely.
   econ: 0.45,
 };
+
+// Companion ratchet to the one above, measuring something it cannot see: the
+// share of a subject's SOURCE questions whose tag is literally MC-<id>. Such a
+// tag names nothing, and because expandSubjectToMinimum() clones carry their
+// source's tag, a subject of purely mechanical tags can score 0.00 on the
+// single-use check. Defaults to 0 for any subject not listed.
+//
+// The five subjects at 0 below have a genuine taxonomy: every tag names a
+// concept. The four with a value carry a mechanical residue, and each number
+// is the CURRENT level, set to catch regression and to be lowered as the
+// residue is retagged — not an endorsement of it.
+const TAG_TAXONOMY_MECHANICAL = {
+  'gcse-econ': 0,
+  'gcse-sep-bio': 0,
+  'gcse-sep-chem': 0,
+  'gcse-sep-phys': 0,
+  'gcse-science': 0,
+  'gcse-maths': 0,
+  'gcse-geo': 0,
+  // 29 of 264, all in the Forensic and Cognitive banks added after the retag.
+  psych: 0.12,
+  // 52 of 208 — the residue of definitional questions that only a topic tag
+  // would cover, documented in docs/history-misconception-mapping.md.
+  hist: 0.26,
+  // 92 of 200. soc has 6 genuinely aggregating tags and no taxonomy yet.
+  soc: 0.47,
+  // 249 of 515, awaiting the stage 2 taxonomy in docs/econ-misconception-plan.md.
+  econ: 0.49,
+};
 for (const [key, maxSingleShare] of Object.entries(TAG_TAXONOMY_SUBJECTS)) {
   const subject = SUBJECTS[key];
   if (!subject) { issues.push(`TAG TAXONOMY: subject "${key}" is checked but no longer exists`); continue; }
@@ -232,6 +261,37 @@ for (const [key, maxSingleShare] of Object.entries(TAG_TAXONOMY_SUBJECTS)) {
       `then add a label in data/misconception-labels.js and a starter in data/starter-activities.js for each.`
     );
   }
+  // The single-use share above is computed over ALL questions, and
+  // expandSubjectToMinimum() clones a question to pad a subject to 200 with
+  // the clone carrying its source's tag. So a purely mechanical tag can be
+  // paired up by its own clone and score a perfect 0.00 while naming nothing.
+  // `cs` is the live example: 92 of its 112 source questions are tagged
+  // MC-<id>, and its single-use share is 0.00.
+  //
+  // This catches that directly by asking a different question — does the tag
+  // name a CONCEPT, or merely repeat the question id? Coverage variants are
+  // excluded because they inherit their source's tag by design.
+  //
+  // Deliberately NOT the same as "how many distinct questions share a tag".
+  // gcse-maths and the gcse-sep-* sciences carry one topical tag per source
+  // concept (MC-MATH-RATIO, MC-SEP-BIO-OSMOSIS) reused across that concept's
+  // variants, which is the design working, not a defect.
+  const sourceQuestions = subject.banks
+    .flatMap((bankId) => (BANKS[bankId] || { questions: [] }).questions)
+    .filter((q) => q.tag && !q.coverageVariant);
+  const mechanical = sourceQuestions.filter((q) => q.tag === `MC-${q.id}`);
+  if (sourceQuestions.length) {
+    const mechShare = mechanical.length / sourceQuestions.length;
+    const allowed = TAG_TAXONOMY_MECHANICAL[key] ?? 0;
+    if (mechShare > allowed) {
+      issues.push(
+        `MECHANICAL TAGS: "${key}" has ${mechanical.length}/${sourceQuestions.length} source questions ` +
+        `(${Math.round(mechShare * 100)}%) whose tag just repeats the question id (allowed ${Math.round(allowed * 100)}%). ` +
+        `A tag of the form MC-<id> names nothing a teacher can act on, and clones can hide it from the single-use check.`
+      );
+    }
+  }
+
   // A shared tag with no starter is a heatmap row a teacher cannot act on.
   const missingStarter = [...counts.entries()]
     .filter(([tag, c]) => c >= 2 && !MC_STARTERS[tag])

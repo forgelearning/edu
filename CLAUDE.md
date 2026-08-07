@@ -114,9 +114,23 @@ propagates into its `*-COV-*` copies and fixing the source fixes them all.
   **Measure before trusting any "done" list here, including this one.** The
   honest record of completion is the ratchet in `TAG_TAXONOMY_SUBJECTS` in
   `dev/audit-banks.js`: it caps the share of a subject's questions allowed to
-  sit on a tag used only once. A `0` means genuinely retagged; a high value
-  means the entry was set to whatever the state already was and mostly locks in
-  the status quo. Fully done: `gcse-econ` (420 questions onto 76 shared
+  sit on a tag used only once. A high value means the entry was set to whatever
+  the state already was and mostly locks in the status quo.
+
+  **A `0` there does not by itself mean retagged.** `expandSubjectToMinimum()`
+  clones a question to pad a subject to 200 and the clone inherits its source's
+  tag, so a purely mechanical `MC-<id>` tag gets paired up by its own clone and
+  scores a perfect `0`. `cs` is the live example: single-use share `0.00`, and
+  92 of its 112 source questions tagged `MC-<id>`. Read `0` together with
+  `TAG_TAXONOMY_MECHANICAL`, the companion ratchet that measures the share of
+  SOURCE questions whose tag merely repeats the question id. Both must be low.
+
+  Note what this does *not* mean: one topical tag per source concept, reused
+  across that concept's coverage variants, is the design working. `gcse-maths`
+  (`MC-MATH-RATIO`) and the `gcse-sep-*` sciences (`MC-SEP-BIO-OSMOSIS`) are
+  built that way and are genuinely done — 0% mechanical tags in all four.
+
+  Fully done: `gcse-econ` (420 questions onto 76 shared
   `MC-GE-*` tags), the three `gcse-sep-*` sciences (600 questions on 96 shared
   topic tags), `gcse-science` (212 questions from 156 tags onto 83, reusing the
   `MC-SEP-*` set — see `docs/gcse-science-misconception-mapping.md`),
@@ -132,8 +146,15 @@ propagates into its `*-COV-*` copies and fixing the source fixes them all.
   Next, roughly by value: `econ`, `gcse-geo` and `soc` —
   those three need a taxonomy designed from scratch, which is the expensive
   part — then the ~15 subjects still at 100% per-question tags. The audit fails
-  if a subject listed in `TAG_TAXONOMY_SUBJECTS` regresses, or if an
-  aggregatable tag has no starter; add a subject there once it is retagged.
+  if a subject listed in `TAG_TAXONOMY_SUBJECTS` regresses, if it exceeds its
+  `TAG_TAXONOMY_MECHANICAL` share, or if an aggregatable tag has no starter;
+  add a subject to both maps once it is retagged.
+
+  Ranked by mechanical-tag share, the untouched backlog is: `chem` `bio` `phys`
+  `rs` `hsc` `media` `french` `span` `pe` `englit` `engll` `mand` `gcse-hist`
+  `gcse-psych` all at 1.00, then `bus` 0.98, `cs` 0.82, `crim`/`law`/`pol` 0.82,
+  `maths` 0.58. `gcse-geo` is a different case — 0.00 mechanical but 0.77
+  single-use, so its tags name topics and are simply too fine to aggregate.
 - Not every subject needs a fresh taxonomy first: `gcse-sep-*` already carried
   good topic tags, so the work there was purely labels and starters. Check what
   a subject's tags actually look like before assuming a retag is needed.
