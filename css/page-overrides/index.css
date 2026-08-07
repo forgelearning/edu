@@ -637,3 +637,304 @@ footer .btn-glass{min-height:50px;padding:0 20px;border-radius:999px;display:inl
   .hero .ctas .btn-ember{min-height:52px;padding-inline:22px}
   .demo{box-shadow:0 30px 70px -24px rgba(213,92,19,.42),0 24px 54px rgba(0,0,0,.45)}
 }
+
+/* ── Overdrive landing pass ─────────────────────────────
+   A more cinematic first fold and a calmer editorial rhythm below it. The
+   product content stays the same; this is deliberately composition-only. */
+body.audit-test{background:
+  radial-gradient(circle at 79% 4%,rgba(213,92,19,.11),transparent 28rem),
+  var(--coal)}
+.audit-test .hero-shell{min-height:clamp(720px,92svh,900px);padding-top:118px;padding-bottom:82px;background:
+  radial-gradient(circle at 77% 43%,rgba(255,201,60,.09),transparent 18rem),
+  radial-gradient(circle at 18% 78%,rgba(213,92,19,.13),transparent 25rem),
+  linear-gradient(135deg,#151210 0%,#1a1511 50%,#131110 100%)}
+.audit-test .hero-shell::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.23;background:radial-gradient(circle at 30% 65%,rgba(255,201,60,.08),transparent 22rem);mask-image:linear-gradient(to bottom,transparent 0%,#000 18%,#000 70%,transparent 100%)}
+.audit-test .hero-shell::after{content:"";position:absolute;right:-8rem;top:10%;width:38rem;height:38rem;border:1px solid rgba(255,201,60,.16);border-radius:50%;box-shadow:0 0 0 40px rgba(255,201,60,.025),0 0 0 80px rgba(255,201,60,.018);pointer-events:none}
+.audit-test .hero-shell .hero-glow{background:radial-gradient(circle at 82% 44%,rgba(213,92,19,.22),transparent 24rem);mix-blend-mode:screen}
+.audit-test .hero-shell .hero-vignette{background:linear-gradient(90deg,rgba(20,18,16,.12),transparent 45%,rgba(20,18,16,.28))}
+.audit-test .hero{grid-template-columns:minmax(0,.92fr) minmax(430px,1.08fr);gap:clamp(42px,6vw,90px)}
+.audit-test .hero-copy{padding-left:clamp(0px,2vw,24px)}
+.audit-test .hero-copy > .tag{letter-spacing:.14em;color:#d9a54c}
+.audit-test .hero h1{color:#fff6ea}
+.audit-test .hero h1{font-size:clamp(50px,6vw,76px);line-height:.98;max-width:12ch;margin-top:22px;margin-bottom:24px;text-wrap:balance}
+.audit-test .hero h1 em{display:inline-block;color:#ff9a3d;text-shadow:0 0 34px rgba(255,123,42,.25)}
+.audit-test .hero p.lede{max-width:39ch;font-size:clamp(17px,1.45vw,20px);line-height:1.5;color:#cbc4bb}
+.audit-test .hero .sub{color:#989087;margin-top:20px}
+.audit-test .hero .ctas{margin-top:34px}
+.audit-test .hero .ctas .btn-ember{box-shadow:0 18px 48px -20px rgba(255,107,44,.95),inset 0 1px 0 rgba(255,201,60,.7)!important}
+.audit-test .hero .demo{border-color:rgba(255,201,60,.44);border-radius:22px;padding:30px;box-shadow:0 38px 90px -28px rgba(213,92,19,.62),0 24px 70px rgba(0,0,0,.48);background:rgba(31,26,22,.78)}
+.audit-test .hero .demo .q,.audit-test .hero .demo .opt{color:#fff6ea}
+.audit-test .hero .demo .opt{background:#2a2622;border-color:#4a4038}
+.audit-test .hero .demo .opt::before{background:#211e1b;border-color:#5b5045;color:#aaa198}
+.audit-test .hero .demo .spec,.audit-test .hero .demo .foot{color:#aaa198}
+.audit-test .hero .demo::before{content:"LIVE PRACTICE";position:absolute;left:30px;top:-10px;padding:4px 10px;border:1px solid rgba(255,201,60,.45);border-radius:999px;background:#1e1915;color:var(--hot);font:600 10px/1 'JetBrains Mono',monospace;letter-spacing:.12em}
+.audit-test .hero .demo .head{padding-top:4px}
+.audit-test .hero .demo .foot{color:#aaa198}
+.audit-test section{padding:104px 0;border-top-color:rgba(255,255,255,.09)}
+.audit-test #how{padding-top:116px;background:linear-gradient(180deg,rgba(255,201,60,.055),transparent 42%),var(--coal)}
+.audit-test #how h2,.audit-test #students h2,.audit-test #teachers h2{max-width:13ch;font-size:clamp(38px,4.8vw,62px);line-height:.98}
+.audit-test #how .sect-lede,.audit-test #students .sect-lede,.audit-test #teachers .sect-lede{max-width:54ch;color:#aaa39b}
+.audit-test .loop{gap:14px;margin-top:56px}
+.audit-test .loop .step{min-height:258px;padding:28px 26px;background:rgba(34,29,25,.72);border-radius:18px;box-shadow:0 20px 50px -32px rgba(0,0,0,.8)}
+.audit-test .loop .step:nth-child(2){background:linear-gradient(145deg,rgba(94,60,22,.42),rgba(34,29,25,.78));border-color:rgba(255,201,60,.55);box-shadow:0 28px 60px -32px rgba(213,92,19,.62)}
+.audit-test .loop .step h3{font-size:22px;margin-bottom:14px}
+.audit-test .loop .step p{font-size:14.5px;line-height:1.6;color:#aaa39b}
+.audit-test .loop .step .n{color:#f09b3b;letter-spacing:.12em}
+.audit-test #students{background:linear-gradient(180deg,transparent,rgba(213,92,19,.045) 70%,transparent)}
+.audit-test #students .audit-app-preview,.audit-test #teachers .audit-app-preview{border-radius:20px;border-color:rgba(255,255,255,.13);box-shadow:0 34px 80px -38px rgba(0,0,0,.85)}
+.audit-test #teachers{background:rgba(255,255,255,.018)}
+.audit-test .wait{padding:0;border-top:1px solid rgba(255,201,60,.24);border-bottom:1px solid rgba(255,201,60,.18);background:#18120f}
+.audit-test .wait .inner{padding:128px 0}
+.audit-test .wait h2{font-size:clamp(40px,5vw,64px);line-height:1}
+.audit-test footer{padding-top:54px}
+
+@media(max-width:900px){
+  .audit-test .hero{grid-template-columns:1fr;gap:38px}
+  .audit-test .hero h1{max-width:12ch}
+  .audit-test .hero-shell{min-height:auto;padding-top:106px}
+  .audit-test .hero-shell::after{right:-18rem;top:26%;opacity:.55}
+  .audit-test .hero .demo{max-width:680px}
+}
+@media(max-width:600px){
+  .audit-test .hero-shell{padding-top:88px;padding-bottom:54px}
+  .audit-test .hero h1{font-size:clamp(46px,13vw,64px);margin-top:16px}
+  .audit-test .hero-copy > .tag{max-width:32ch}
+  .audit-test .hero .demo{padding:22px;border-radius:18px}
+  .audit-test .hero .demo::before{left:20px}
+  .audit-test section{padding:76px 0}
+  .audit-test #how{padding-top:82px}
+  .audit-test #how h2,.audit-test #students h2,.audit-test #teachers h2{font-size:clamp(36px,11vw,50px)}
+  .audit-test .loop{margin-top:36px}
+  .audit-test .loop .step{min-height:0;padding:24px 22px}
+  .audit-test .wait .inner{padding:88px 0}
+}
+
+/* ── Impeccable overdrive variants ──────────────────────
+   All three variants share the landing HTML and incumbent Forge tokens.
+   The query-string class is applied before the page content paints. */
+.audit-test .hero-copy::before{position:absolute;right:0;top:-2px;color:var(--hot);font:600 10px/1 'JetBrains Mono',monospace;letter-spacing:.13em;opacity:.78}
+.overdrive-ember .hero-copy::before{content:"01 / REACTIVE EMBER"}
+.overdrive-sequence .hero-copy::before{content:"02 / FORGE SEQUENCE"}
+.overdrive-instrument .hero-copy::before{content:"03 / PRECISION INSTRUMENT"}
+.overdrive-ember .hero-shell{--ember-x:72%;--ember-y:44%}
+.overdrive-ember .hero-shell::after{right:-7rem;top:7%;width:40rem;height:40rem;border-color:rgba(255,143,46,.24);box-shadow:0 0 0 28px rgba(255,123,42,.045),0 0 0 72px rgba(255,123,42,.025),0 0 120px rgba(255,123,42,.12);transform:translate(calc((var(--ember-x) - 72%) * .08),calc((var(--ember-y) - 44%) * .08));transition:transform .18s ease-out}
+.overdrive-ember .hero-shell .hero-glow{background:radial-gradient(circle at var(--ember-x) var(--ember-y),rgba(255,122,34,.32),transparent 13rem),radial-gradient(circle at 22% 82%,rgba(255,201,60,.13),transparent 23rem);transition:background .15s ease-out}
+.overdrive-ember .hero-shell::before{opacity:.32;transform:translate(calc((var(--ember-x) - 50%) * .025),calc((var(--ember-y) - 50%) * .025));transition:transform .18s ease-out}
+.overdrive-ember .hero .demo{box-shadow:0 44px 110px -28px rgba(255,106,35,.72),0 24px 70px rgba(0,0,0,.52),0 0 0 1px rgba(255,201,60,.1)}
+.overdrive-ember .hero .demo::after{opacity:.28;background:radial-gradient(240px circle at var(--glow-x,50%) var(--glow-y,50%),rgba(255,201,60,.45),transparent 70%)}
+
+.overdrive-sequence #how{view-timeline-name:--forge-loop;view-timeline-axis:block}
+.overdrive-sequence #how::before{content:"";display:block;position:absolute;left:50%;top:0;width:1px;height:100%;background:linear-gradient(to bottom,transparent,#d55c13 18%,#ffc93c 50%,transparent 82%);transform:translateX(-50%) scaleY(.15);transform-origin:top;opacity:.6;pointer-events:none}
+.overdrive-sequence #how{position:relative;overflow:hidden}
+.overdrive-sequence .loop{position:relative}
+.overdrive-sequence .loop::before{content:"";position:absolute;left:calc(16.66% + 9px);right:calc(16.66% + 9px);top:50%;height:1px;background:linear-gradient(90deg,rgba(213,92,19,.15),rgba(255,201,60,.8),rgba(213,92,19,.15));transform-origin:left;transform:scaleX(.05);opacity:.6}
+.overdrive-sequence .loop .step{view-timeline-name:--forge-step;view-timeline-axis:block;animation:forge-step-rise linear both;animation-timeline:--forge-step;animation-range:entry 10% cover 48%;}
+.overdrive-sequence .loop .step:nth-child(2){animation-range:entry 5% cover 42%}
+.overdrive-sequence .loop .step:nth-child(3){animation-range:entry 0% cover 36%}
+.overdrive-sequence .loop .step:nth-child(1){animation-delay:-.1s}
+.overdrive-sequence .loop .step:nth-child(2){animation-delay:-.2s}
+.overdrive-sequence .loop .step:nth-child(3){animation-delay:-.3s}
+@keyframes forge-step-rise{from{opacity:.3;transform:translateY(46px) scale(.97);filter:blur(5px)}to{opacity:1;transform:translateY(0) scale(1);filter:none}}
+@supports (animation-timeline:view()){.overdrive-sequence #how::before{animation:forge-axis linear both;animation-timeline:--forge-loop;animation-range:entry 0% exit 100%}.overdrive-sequence .loop::before{animation:forge-rail linear both;animation-timeline:--forge-loop;animation-range:entry 8% cover 62%}}
+@keyframes forge-axis{from{transform:translateX(-50%) scaleY(.05)}to{transform:translateX(-50%) scaleY(1)}}
+@keyframes forge-rail{from{transform:scaleX(.05);opacity:.1}to{transform:scaleX(1);opacity:.8}}
+
+.overdrive-instrument .hero .demo{background-color:#171411;background-image:linear-gradient(rgba(255,201,60,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,201,60,.035) 1px,transparent 1px),linear-gradient(145deg,rgba(39,31,25,.95),rgba(20,17,14,.98));background-size:32px 32px,32px 32px,100% 100%;box-shadow:0 42px 100px -28px rgba(213,92,19,.66),0 0 0 1px rgba(255,201,60,.18),inset 0 0 70px rgba(255,107,44,.05)}
+.overdrive-instrument .hero .demo::after{content:"";position:absolute;inset:30px;border:1px solid rgba(255,201,60,.12);border-radius:13px;background:transparent!important;box-shadow:none;filter:none;-webkit-mask:none;mask-image:linear-gradient(to bottom,transparent 0%,#000 9%,#000 82%,transparent 100%);pointer-events:none;opacity:1}
+.overdrive-instrument .hero .demo .head{position:relative;border-bottom:1px solid rgba(255,201,60,.22);padding-bottom:16px}
+.overdrive-instrument .hero .demo .head::after{content:"READY / LIVE BANK";color:#7fd98a;font:600 9px/1 'JetBrains Mono',monospace;letter-spacing:.1em}
+.overdrive-instrument .hero .demo .q{font-size:18px;letter-spacing:-.015em}
+.overdrive-instrument .hero .demo .opt{position:relative;overflow:hidden;border-radius:9px;transition:background .2s,border-color .2s,transform .2s}
+.overdrive-instrument .hero .demo .opt::after{content:"";position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--ember);transform:scaleY(0);transition:transform .2s;transform-origin:center}
+.overdrive-instrument .hero .demo .opt:hover:not(:disabled){background:#332a22;border-color:var(--hot);transform:translateX(4px)}
+.overdrive-instrument .hero .demo .opt:hover:not(:disabled)::after{transform:scaleY(1)}
+.overdrive-instrument .hero .demo .foot{padding-top:14px;border-top:1px solid rgba(255,201,60,.16)}
+.overdrive-instrument .hero .demo-state{box-shadow:0 0 20px rgba(127,217,138,.25)}
+
+@media(max-width:900px){
+  .audit-test .hero-copy::before{position:static;display:block;margin-bottom:18px}
+  .overdrive-sequence #how::before{left:24px}
+  .overdrive-sequence .loop::before{left:24px;right:auto;top:0;bottom:0;width:1px;height:auto;background:linear-gradient(to bottom,rgba(213,92,19,.12),rgba(255,201,60,.8),rgba(213,92,19,.12));transform-origin:top}
+  @supports (animation-timeline:view()){
+    .overdrive-sequence .loop::before{animation-name:forge-rail-mobile}
+  }
+  .overdrive-instrument .hero .demo::after{inset:22px}
+}
+@keyframes forge-rail-mobile{from{transform:scaleY(.05);opacity:.1}to{transform:scaleY(1);opacity:.8}}
+@media(prefers-reduced-motion:reduce){
+  .overdrive-ember .hero-shell::after,.overdrive-ember .hero-shell::before{transform:none!important}
+  .overdrive-sequence .loop .step{animation:none!important;filter:none!important}
+  .overdrive-sequence #how::before,.overdrive-sequence .loop::before{animation:none!important;transform:none!important}
+}
+
+/* ── Full-page overdrive field ──────────────────────────
+   The landing page now behaves like one continuous Forge instrument. Each
+   section has a clear role, an intentional surface change, and a shared
+   visual grammar instead of isolated “feature card” moments. */
+.overdrive-ember main,.overdrive-sequence main,.overdrive-instrument main{position:relative;overflow:clip;background:linear-gradient(180deg,transparent 0%,rgba(213,92,19,.025) 42%,transparent 100%)}
+.overdrive-ember main::before,.overdrive-sequence main::before,.overdrive-instrument main::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.55;background:linear-gradient(90deg,transparent 0%,rgba(255,201,60,.06) 50%,transparent 100%);mask-image:linear-gradient(to bottom,transparent,#000 8%,#000 92%,transparent)}
+.overdrive-ember main>section,.overdrive-sequence main>section,.overdrive-instrument main>section{position:relative;border-top:1px solid rgba(255,255,255,.1);scroll-margin-top:104px}
+.overdrive-ember main>section::after,.overdrive-sequence main>section::after,.overdrive-instrument main>section::after{content:"";position:absolute;left:50%;bottom:0;width:min(1080px,calc(100% - 48px));height:1px;background:linear-gradient(90deg,transparent,rgba(255,201,60,.22),transparent);transform:translateX(-50%);pointer-events:none}
+.overdrive-ember main>section:nth-of-type(odd),.overdrive-sequence main>section:nth-of-type(odd),.overdrive-instrument main>section:nth-of-type(odd){background:rgba(255,255,255,.012)}
+.overdrive-ember main>section:nth-of-type(even),.overdrive-sequence main>section:nth-of-type(even),.overdrive-instrument main>section:nth-of-type(even){background:linear-gradient(120deg,rgba(213,92,19,.04),transparent 48%)}
+.overdrive-ember main>section::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at var(--ember-x,72%) var(--ember-y,44%),rgba(255,128,42,.08),transparent 20rem);opacity:.85;transition:background .16s ease-out}
+.overdrive-ember main>section>.wrap,.overdrive-sequence main>section>.wrap,.overdrive-instrument main>section>.wrap{position:relative;z-index:1}
+.overdrive-ember section:not(#how),.overdrive-sequence section:not(#how),.overdrive-instrument section:not(#how){padding-top:112px;padding-bottom:112px}
+.overdrive-ember h2,.overdrive-sequence h2,.overdrive-instrument h2{letter-spacing:-.035em}
+.overdrive-ember .sect-lede,.overdrive-sequence .sect-lede,.overdrive-instrument .sect-lede{max-width:62ch;color:#b9b1a7}
+.overdrive-ember .eyebrow,.overdrive-sequence .eyebrow,.overdrive-instrument .eyebrow{font-size:10px;letter-spacing:.14em;color:#e8a34f}
+.overdrive-ember .eyebrow::before,.overdrive-sequence .eyebrow::before,.overdrive-instrument .eyebrow::before{width:34px;background:var(--ember);box-shadow:0 0 14px rgba(213,92,19,.55)}
+
+/* Modes become the first clear decision after the loop. */
+.overdrive-ember .modes,.overdrive-sequence .modes,.overdrive-instrument .modes{gap:12px;margin-top:48px}
+.overdrive-ember .mode,.overdrive-sequence .mode,.overdrive-instrument .mode{min-height:300px;padding:30px;border-radius:18px;background:rgba(33,28,24,.72);border-color:rgba(255,255,255,.13);box-shadow:0 26px 70px -42px rgba(0,0,0,.9);transition:transform .35s cubic-bezier(.16,1,.3,1),border-color .25s,box-shadow .25s}
+.overdrive-ember .mode:hover,.overdrive-sequence .mode:hover,.overdrive-instrument .mode:hover{transform:translateY(-8px);border-color:rgba(255,201,60,.48);box-shadow:0 36px 80px -38px rgba(213,92,19,.55)}
+.overdrive-ember .mode h3,.overdrive-sequence .mode h3,.overdrive-instrument .mode h3{font-size:26px;margin-bottom:18px}
+.overdrive-ember .mode p,.overdrive-sequence .mode p,.overdrive-instrument .mode p{font-size:14.5px;line-height:1.65;color:#b8b0a7}
+.overdrive-ember .mode .who,.overdrive-sequence .mode .who,.overdrive-instrument .mode .who{margin-top:24px;padding-top:16px;border-top:1px solid rgba(255,201,60,.15);color:#d29b50}
+
+/* Product previews are framed as a single machine, not nested dashboard cards. */
+.overdrive-ember .dash-tabs,.overdrive-sequence .dash-tabs,.overdrive-instrument .dash-tabs{margin-top:34px;background:#191512;border-color:rgba(255,201,60,.2);border-radius:999px;padding:5px}
+.overdrive-ember .stab,.overdrive-ember .dtab,.overdrive-sequence .stab,.overdrive-sequence .dtab,.overdrive-instrument .stab,.overdrive-instrument .dtab{min-height:42px;padding-inline:20px}
+.overdrive-ember .dash-panel,.overdrive-sequence .dash-panel,.overdrive-instrument .dash-panel{margin-top:28px}
+.overdrive-ember .dash-card,.overdrive-sequence .dash-card,.overdrive-instrument .dash-card{border-radius:20px;border-color:rgba(255,201,60,.2);background:linear-gradient(145deg,rgba(35,29,24,.9),rgba(24,20,17,.84));box-shadow:0 34px 90px -48px rgba(0,0,0,.95),inset 0 1px 0 rgba(255,201,60,.08)}
+.overdrive-ember .dash-head,.overdrive-sequence .dash-head,.overdrive-instrument .dash-head{padding-bottom:16px;border-bottom:1px solid rgba(255,201,60,.18)}
+.overdrive-ember .landing-recommendation,.overdrive-sequence .landing-recommendation,.overdrive-instrument .landing-recommendation{position:relative;border-radius:14px;background:linear-gradient(110deg,rgba(255,201,60,.11),rgba(213,92,19,.055));border-color:rgba(255,201,60,.42);box-shadow:0 20px 44px -30px rgba(213,92,19,.6)}
+.overdrive-ember .sp-stat,.overdrive-sequence .sp-stat,.overdrive-instrument .sp-stat{background:rgba(17,15,13,.55);border-color:rgba(255,255,255,.12)}
+.overdrive-ember .sp-stat-row,.overdrive-sequence .sp-stat-row,.overdrive-instrument .sp-stat-row{gap:8px}
+
+/* Discovery, proof, comparison, and pricing all get the same sense of depth. */
+.overdrive-ember .audit-subject-picker,.overdrive-sequence .audit-subject-picker,.overdrive-instrument .audit-subject-picker{padding-top:0;border-bottom:0}
+.overdrive-ember .audit-subject-row,.overdrive-sequence .audit-subject-row,.overdrive-instrument .audit-subject-row{min-height:62px;padding:16px 18px;border-radius:12px;background:rgba(29,24,21,.72);border-color:rgba(255,255,255,.12);box-shadow:inset 0 1px 0 rgba(255,201,60,.05);transition:transform .25s ease,border-color .2s,background .2s}
+.overdrive-ember .audit-subject-row:hover,.overdrive-sequence .audit-subject-row:hover,.overdrive-instrument .audit-subject-row:hover{transform:translateX(8px);background:#2a211b;border-color:rgba(255,201,60,.5)}
+.overdrive-ember .vs-grid,.overdrive-sequence .vs-grid,.overdrive-instrument .vs-grid{gap:12px;margin-top:42px}
+.overdrive-ember .vs-card,.overdrive-sequence .vs-card,.overdrive-instrument .vs-card{padding:26px;border-radius:16px;background:rgba(29,24,21,.68);border-color:rgba(255,255,255,.12)}
+.overdrive-ember .vs-card h3,.overdrive-sequence .vs-card h3,.overdrive-instrument .vs-card h3{font-size:20px}
+.overdrive-ember .table-scroll,.overdrive-sequence .table-scroll,.overdrive-instrument .table-scroll{margin-top:34px;border:1px solid rgba(255,201,60,.2);border-radius:16px;overflow:auto;background:rgba(22,18,16,.58);box-shadow:0 28px 70px -46px rgba(0,0,0,.9)}
+.overdrive-ember table,.overdrive-sequence table,.overdrive-instrument table{margin-top:0}
+.overdrive-ember th.forge,.overdrive-sequence th.forge,.overdrive-instrument th.forge{box-shadow:inset 0 0 28px rgba(213,92,19,.14)}
+.overdrive-ember .pricing-grid,.overdrive-sequence .pricing-grid,.overdrive-instrument .pricing-grid{gap:12px;padding-top:30px}
+.overdrive-ember .price-card,.overdrive-sequence .price-card,.overdrive-instrument .price-card{min-height:560px;padding:24px;border-radius:18px;background:rgba(29,24,21,.84);border-color:rgba(255,255,255,.13);box-shadow:0 30px 80px -48px rgba(0,0,0,.95)}
+.overdrive-ember .price-card-hot,.overdrive-sequence .price-card-hot,.overdrive-instrument .price-card-hot{background:linear-gradient(145deg,#e3611b,#a83d11);box-shadow:0 38px 90px -40px rgba(213,92,19,.8)}
+.overdrive-ember .deluxe-banner,.overdrive-sequence .deluxe-banner,.overdrive-instrument .deluxe-banner{margin-top:28px;padding:24px 28px;border-radius:16px;background:linear-gradient(110deg,rgba(127,217,138,.08),rgba(33,28,24,.76));border-color:rgba(127,217,138,.3)}
+.overdrive-ember .trust-row,.overdrive-sequence .trust-row,.overdrive-instrument .trust-row{gap:8px;margin-top:28px}
+.overdrive-ember .trust-chip,.overdrive-sequence .trust-chip,.overdrive-instrument .trust-chip{background:rgba(29,24,21,.72);border-color:rgba(255,255,255,.12)}
+
+/* Real question bank and FAQ are the final proof layer. */
+.overdrive-ember .bq,.overdrive-sequence .bq,.overdrive-instrument .bq{border-radius:20px;background:linear-gradient(145deg,rgba(35,29,24,.9),rgba(21,18,16,.9));border-color:rgba(255,201,60,.25);box-shadow:0 36px 90px -48px rgba(0,0,0,.95)}
+.overdrive-ember .bank-nav,.overdrive-sequence .bank-nav,.overdrive-instrument .bank-nav{padding-bottom:14px;border-bottom:1px solid rgba(255,201,60,.17)}
+.overdrive-ember .audit-faq-grid,.overdrive-sequence .audit-faq-grid,.overdrive-instrument .audit-faq-grid{gap:10px;margin-top:38px}
+.overdrive-ember .audit-faq-item,.overdrive-sequence .audit-faq-item,.overdrive-instrument .audit-faq-item{border-radius:12px;background:rgba(29,24,21,.72);border-color:rgba(255,255,255,.12);transition:border-color .2s,background .2s}
+.overdrive-ember .audit-faq-item[open],.overdrive-sequence .audit-faq-item[open],.overdrive-instrument .audit-faq-item[open]{background:rgba(43,31,22,.9);border-color:rgba(255,201,60,.4)}
+.overdrive-ember .audit-faq-item summary,.overdrive-sequence .audit-faq-item summary,.overdrive-instrument .audit-faq-item summary{padding:19px 20px;font-size:15px}
+.overdrive-ember .audit-faq-item p,.overdrive-sequence .audit-faq-item p,.overdrive-instrument .audit-faq-item p{padding:0 20px 20px;color:#bdb4aa}
+.overdrive-ember .wait,.overdrive-sequence .wait,.overdrive-instrument .wait{position:relative;overflow:hidden;background:radial-gradient(circle at 50% 40%,rgba(213,92,19,.18),transparent 28rem),#18120f}
+.overdrive-ember .wait .inner,.overdrive-sequence .wait .inner,.overdrive-instrument .wait .inner{padding:148px 0}
+.overdrive-ember .wait form,.overdrive-sequence .wait form,.overdrive-instrument .wait form{position:relative;max-width:660px;margin-inline:auto;padding:6px;border:1px solid rgba(255,201,60,.28);border-radius:999px;background:rgba(24,18,15,.68);box-shadow:0 20px 70px -30px rgba(213,92,19,.62)}
+.overdrive-ember .wait input[type=email],.overdrive-sequence .wait input[type=email],.overdrive-instrument .wait input[type=email]{background:transparent;border:0;padding-left:18px}
+.overdrive-ember .wait button,.overdrive-sequence .wait button,.overdrive-instrument .wait button{border-radius:999px;padding-inline:26px}
+.overdrive-ember footer,.overdrive-sequence footer,.overdrive-instrument footer{border-top-color:rgba(255,201,60,.2);background:rgba(18,15,13,.45)}
+
+/* Full-page variant differences. */
+.overdrive-sequence main>section{view-timeline-name:--page-section;view-timeline-axis:block}
+.overdrive-sequence main>section>.wrap{animation:section-arrive linear both;animation-timeline:view();animation-range:entry 0% cover 26%}
+@keyframes section-arrive{from{opacity:.38;transform:translateY(32px);filter:blur(4px)}to{opacity:1;transform:none;filter:none}}
+.overdrive-sequence .modes .mode,.overdrive-sequence .vs-card,.overdrive-sequence .price-card,.overdrive-sequence .audit-faq-item{view-timeline-name:--component;view-timeline-axis:block;animation:component-arrive linear both;animation-timeline:view();animation-range:entry 0% cover 42%}
+@keyframes component-arrive{from{opacity:.35;transform:translateY(30px) scale(.985)}to{opacity:1;transform:none}}
+.overdrive-instrument main>section>.wrap{border-left:1px solid rgba(255,201,60,.08);border-right:1px solid rgba(255,201,60,.08);padding-left:clamp(24px,3vw,48px);padding-right:clamp(24px,3vw,48px)}
+.overdrive-instrument .mode,.overdrive-instrument .vs-card,.overdrive-instrument .price-card,.overdrive-instrument .audit-faq-item{border-radius:8px;background-color:#1c1714}
+.overdrive-instrument .audit-subject-row,.overdrive-instrument .teacher-signal,.overdrive-instrument .sp-stat{border-radius:8px}
+.overdrive-instrument .audit-faq-item summary::before{content:"+";display:inline-block;margin-right:12px;color:var(--hot);font:600 13px/1 'JetBrains Mono',monospace}
+.overdrive-instrument .audit-faq-item[open] summary::before{content:"−"}
+
+@media(max-width:860px){
+  .overdrive-ember section:not(#how),.overdrive-sequence section:not(#how),.overdrive-instrument section:not(#how){padding-top:82px;padding-bottom:82px}
+  .overdrive-ember .mode,.overdrive-sequence .mode,.overdrive-instrument .mode{min-height:0}
+  .overdrive-ember .price-card,.overdrive-sequence .price-card,.overdrive-instrument .price-card{min-height:0}
+  .overdrive-ember .wait .inner,.overdrive-sequence .wait .inner,.overdrive-instrument .wait .inner{padding:96px 0}
+  .overdrive-ember .wait form,.overdrive-sequence .wait form,.overdrive-instrument .wait form{border-radius:16px}
+  .overdrive-ember .wait input[type=email],.overdrive-sequence .wait input[type=email],.overdrive-instrument .wait input[type=email]{min-width:0}
+  .overdrive-instrument main>section>.wrap{padding-left:24px;padding-right:24px}
+}
+@media(prefers-reduced-motion:reduce){
+  .overdrive-sequence main>section>.wrap,.overdrive-sequence .modes .mode,.overdrive-sequence .vs-card,.overdrive-sequence .price-card,.overdrive-sequence .audit-faq-item{animation:none!important;filter:none!important;opacity:1!important;transform:none!important}
+  .overdrive-ember .mode:hover,.overdrive-sequence .mode:hover,.overdrive-instrument .mode:hover{transform:none}
+}
+
+/* Precision Instrument refinement: tighter editorial rhythm, wider headlines,
+   and a real light-theme surface system across the full landing page. */
+.overdrive-instrument main>section>.wrap{padding-left:24px;padding-right:24px}
+.overdrive-instrument section:not(#how){padding-top:72px;padding-bottom:84px}
+.overdrive-instrument #how{padding-top:72px!important;padding-bottom:72px!important}
+.overdrive-instrument #how + section{padding-top:72px!important}
+.overdrive-instrument #subjects{padding-top:64px!important}
+.overdrive-instrument #audit-subject-picker{padding-top:56px;padding-bottom:64px}
+.overdrive-instrument #audit-subject-picker h2{max-width:none;font-size:clamp(34px,3.8vw,50px);line-height:1.04}
+.overdrive-instrument #audit-subject-picker .sect-lede{max-width:78ch}
+.overdrive-instrument #waitlist .inner{padding:88px 0}
+.overdrive-instrument #students h2,.overdrive-instrument #teachers h2{max-width:none;font-size:clamp(36px,4vw,54px);line-height:1.02}
+.overdrive-instrument #students .sect-lede,.overdrive-instrument #teachers .sect-lede{max-width:78ch;font-size:16px;line-height:1.55}
+.overdrive-instrument #students .audit-real-student-dashboard h2{max-width:none;font-size:clamp(28px,2.5vw,34px);line-height:1.05}
+.audit-test.overdrive-instrument .audit-real-teacher-dashboard .dash-header h2{max-width:none!important;font-size:clamp(28px,2.5vw,34px)!important;line-height:1.05!important}
+.audit-test.overdrive-instrument .audit-real-teacher-dashboard .ui-recommendation__title{max-width:30ch!important;font-size:clamp(24px,2.3vw,32px)!important;line-height:1.08!important}
+.overdrive-instrument #teachers .landing-recommendation h3{max-width:30ch;font-size:clamp(24px,2.5vw,36px);line-height:1.08}
+
+/* Keep mouse focus quiet inside the pill; retain a keyboard-only cue. */
+.overdrive-instrument .wait input[type=email]:focus{outline:none!important;border-color:transparent!important;box-shadow:none!important}
+body.overdrive-instrument #waitlist #email:focus{outline:none!important;border-color:transparent!important;box-shadow:none!important}
+.overdrive-instrument .wait input[type=email]:focus-visible{outline:2px solid var(--hot);outline-offset:4px;border-radius:999px}
+
+/* The first viewport is the arrival moment: keep the next section below the fold. */
+.audit-test.overdrive-instrument .hero-shell{min-height:100svh;height:100svh;box-sizing:border-box;padding-bottom:56px}
+.overdrive-instrument .mode.mode-crucible .who{display:flex;align-items:center;flex-wrap:nowrap;white-space:nowrap;gap:0;font-size:11px;line-height:1.3;letter-spacing:.07em;text-transform:uppercase}
+.overdrive-instrument .mode.mode-crucible .who::before{margin-right:10px}
+.audit-test.overdrive-instrument #students .audit-product-crucible h2{max-width:none!important;font-size:clamp(34px,4vw,50px)!important;line-height:1.04!important}
+
+[data-theme="light"] .overdrive-instrument main{background:linear-gradient(180deg,transparent 0%,rgba(229,85,15,.035) 42%,transparent 100%)}
+[data-theme="light"] body.overdrive-instrument #waitlist #email{color:#fff6ea;caret-color:var(--hot);background:rgba(24,18,15,.18)}
+[data-theme="light"] body.overdrive-instrument #waitlist #email::placeholder{color:rgba(255,246,234,.58)}
+[data-theme="light"] body.overdrive-instrument #waitlist #email:focus{outline:none!important;border-color:transparent!important;box-shadow:inset 0 -2px 0 rgba(255,201,60,.72)!important}
+[data-theme="light"] .overdrive-instrument .hero-shell{background:radial-gradient(circle at 77% 43%,rgba(229,85,15,.08),transparent 18rem),radial-gradient(circle at 18% 78%,rgba(200,133,0,.08),transparent 25rem),linear-gradient(135deg,#fafaf8 0%,#f3f0eb 52%,#fff 100%)}
+[data-theme="light"] .overdrive-instrument .hero-shell::before{opacity:.45;background:radial-gradient(circle at 30% 65%,rgba(229,85,15,.08),transparent 22rem)}
+[data-theme="light"] .overdrive-instrument .hero-shell::after{border-color:rgba(200,133,0,.28);box-shadow:0 0 0 40px rgba(200,133,0,.035),0 0 0 80px rgba(229,85,15,.025)}
+[data-theme="light"] .overdrive-instrument .hero-shell .hero-glow{background:radial-gradient(circle at 82% 44%,rgba(229,85,15,.12),transparent 24rem);mix-blend-mode:multiply}
+[data-theme="light"] .overdrive-instrument .hero-shell .hero-vignette{background:linear-gradient(90deg,rgba(250,250,248,.12),transparent 45%,rgba(250,250,248,.25))}
+[data-theme="light"] .overdrive-instrument .hero h1{color:var(--white)}
+[data-theme="light"] .overdrive-instrument .hero h1 em{color:var(--ember);text-shadow:none}
+[data-theme="light"] .overdrive-instrument .hero p.lede{color:var(--slate)}
+[data-theme="light"] .overdrive-instrument .hero .sub{color:var(--dim)}
+[data-theme="light"] .overdrive-instrument .hero-copy > .tag{color:var(--hot)}
+[data-theme="light"] .overdrive-instrument .hero-secondary-link{color:var(--slate)}
+[data-theme="light"] .overdrive-instrument .hero-secondary-link:hover{color:var(--ember)}
+[data-theme="light"] .audit-test.overdrive-instrument .hero .demo{background-color:var(--panel);background-image:linear-gradient(rgba(200,133,0,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(200,133,0,.08) 1px,transparent 1px),linear-gradient(145deg,#fff,#f3f2ef);border-color:rgba(200,133,0,.52);box-shadow:0 30px 70px -34px rgba(26,24,22,.32),0 0 0 1px rgba(200,133,0,.1),inset 0 0 70px rgba(229,85,15,.04)}
+[data-theme="light"] .audit-test.overdrive-instrument .hero .demo .q,[data-theme="light"] .audit-test.overdrive-instrument .hero .demo .opt{color:var(--white)}
+[data-theme="light"] .audit-test.overdrive-instrument .hero .demo .opt{background:var(--panel-2);border-color:var(--line)}
+[data-theme="light"] .audit-test.overdrive-instrument .hero .demo .opt::before{background:#fff;border-color:var(--line);color:var(--slate)}
+[data-theme="light"] .audit-test.overdrive-instrument .hero .demo .spec,[data-theme="light"] .audit-test.overdrive-instrument .hero .demo .foot{color:var(--slate)}
+[data-theme="light"] .audit-test.overdrive-instrument .hero .demo::before{background:#fff;color:var(--hot);border-color:rgba(200,133,0,.5)}
+[data-theme="light"] .audit-test.overdrive-instrument .hero .demo::after{border-color:rgba(200,133,0,.18)}
+[data-theme="light"] .audit-test.overdrive-instrument .hero .demo .head{border-bottom-color:rgba(200,133,0,.28)}
+[data-theme="light"] .audit-test.overdrive-instrument .hero .demo .foot{border-top-color:var(--line)}
+[data-theme="light"] .audit-test.overdrive-instrument .hero .demo .opt:hover:not(:disabled){background:#fff;border-color:var(--ember)}
+[data-theme="light"] .audit-test.overdrive-instrument #how .loop .step{background:var(--panel);border-color:var(--line);box-shadow:0 22px 60px -42px rgba(26,24,22,.42)}
+[data-theme="light"] .audit-test.overdrive-instrument #how .loop .step:nth-child(2){background:linear-gradient(145deg,rgba(229,85,15,.08),#fff);border-color:rgba(229,85,15,.42);box-shadow:0 28px 60px -38px rgba(229,85,15,.24)}
+[data-theme="light"] .audit-test.overdrive-instrument #how .loop .step h3{color:var(--white)}
+[data-theme="light"] .audit-test.overdrive-instrument #how .loop .step p{color:var(--slate)}
+[data-theme="light"] .overdrive-instrument main::before{opacity:.4;background:linear-gradient(90deg,transparent 0%,rgba(200,133,0,.08) 50%,transparent 100%)}
+[data-theme="light"] .overdrive-instrument main>section{border-top-color:rgba(26,24,22,.12)}
+[data-theme="light"] .overdrive-instrument main>section:nth-of-type(odd){background:rgba(255,255,255,.66)}
+[data-theme="light"] .overdrive-instrument main>section:nth-of-type(even){background:linear-gradient(120deg,rgba(229,85,15,.045),transparent 48%)}
+[data-theme="light"] .overdrive-instrument .sect-lede{color:var(--slate)}
+[data-theme="light"] .overdrive-instrument .mode,[data-theme="light"] .overdrive-instrument .dash-card,[data-theme="light"] .overdrive-instrument .audit-subject-row,[data-theme="light"] .overdrive-instrument .vs-card,[data-theme="light"] .overdrive-instrument .table-scroll,[data-theme="light"] .overdrive-instrument .price-card,[data-theme="light"] .overdrive-instrument .bq,[data-theme="light"] .overdrive-instrument .audit-faq-item{background:var(--panel);border-color:var(--line);box-shadow:0 22px 60px -44px rgba(26,24,22,.42)}
+[data-theme="light"] .overdrive-instrument .mode p,[data-theme="light"] .overdrive-instrument .audit-faq-item p{color:var(--slate)}
+[data-theme="light"] .overdrive-instrument .dash-tabs{background:var(--panel);border-color:var(--line)}
+[data-theme="light"] .overdrive-instrument .sp-stat{background:var(--panel-2);border-color:var(--line)}
+[data-theme="light"] .overdrive-instrument .audit-faq-item[open]{background:#fff;border-color:rgba(229,85,15,.4)}
+[data-theme="light"] .overdrive-instrument .deluxe-banner{background:linear-gradient(110deg,rgba(27,140,42,.07),rgba(255,255,255,.9));border-color:rgba(27,140,42,.28)}
+[data-theme="light"] .overdrive-instrument .trust-chip{background:var(--panel);border-color:var(--line)}
+[data-theme="light"] .overdrive-instrument footer{background:rgba(255,255,255,.72);border-top-color:var(--line)}
+
+@media(max-width:860px){
+  .overdrive-instrument #waitlist .inner{padding:72px 0}
+  .overdrive-instrument #students h2,.overdrive-instrument #teachers h2{font-size:clamp(32px,8vw,44px)}
+}
