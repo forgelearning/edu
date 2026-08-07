@@ -202,6 +202,14 @@ const TAG_TAXONOMY_SUBJECTS = {
   // sitting on a single question each until the rewrite pass gives them a
   // second. Ratchet set just above the current 0.341 to catch regression.
   hist: 0.35,
+  // Stage 1 only, and the value says so: 0.45 is a FLOOR against regression,
+  // not a claim that econ is done. 148 questions were merged onto 74 concept
+  // tags, taking the single-use share from 0.734 to 0.447, and every one of
+  // the 117 aggregatable econ tags now has an explicit starter. The remaining
+  // 228 single-use questions need a designed taxonomy — stage 2, scoped in
+  // docs/econ-misconception-plan.md — and this entry should drop sharply when
+  // that lands rather than sitting here at 0.45 indefinitely.
+  econ: 0.45,
 };
 for (const [key, maxSingleShare] of Object.entries(TAG_TAXONOMY_SUBJECTS)) {
   const subject = SUBJECTS[key];
