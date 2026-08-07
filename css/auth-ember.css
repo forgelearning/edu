@@ -113,9 +113,11 @@ html[data-theme="light"] body.forge-auth-ember .note{color:#8d7568}
 
 /* Keep the badge distinct from the ember action colour in dark mode. */
 html:not([data-theme="light"]) body.forge-auth-ember .auth-badge .auth-shield{
-  background:var(--forge-auth-surface-soft);
-  border:1px solid var(--forge-auth-ember);
-  box-shadow:0 0 0 3px rgba(213,92,19,.12)
+  display:flex!important;align-items:center;justify-content:center;box-sizing:border-box;
+  width:34px!important;height:34px!important;border-radius:9px!important;
+  background:var(--forge-auth-surface-soft)!important;
+  border:1px solid var(--forge-auth-ember)!important;
+  box-shadow:0 0 0 3px rgba(213,92,19,.12)!important
 }
 html:not([data-theme="light"]) body.forge-auth-ember .auth-badge .auth-shield .forge-logo-img{display:none!important}
-html:not([data-theme="light"]) body.forge-auth-ember .auth-badge .auth-shield::after{content:"F";color:var(--forge-auth-ember);font:800 19px/1 'Poppins',sans-serif;letter-spacing:-.04em}
+html:not([data-theme="light"]) body.forge-auth-ember .auth-badge .auth-shield::after{content:"F";display:block;color:var(--forge-auth-ember);font:800 19px/1 'Poppins',sans-serif;letter-spacing:-.04em}
