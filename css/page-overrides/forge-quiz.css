@@ -459,6 +459,10 @@ html:not([data-theme="light"]) body.forge-login-screen{
 }
 html:not([data-theme="light"]) body.forge-solo-login .auth-card,
 html:not([data-theme="light"]) body.forge-login-screen .auth-card{background:var(--forge-login-surface);border-color:var(--forge-login-line);box-shadow:0 22px 60px rgba(0,0,0,.34)}
+html:not([data-theme="light"]) body.forge-solo-login .auth-badge .auth-shield,
+html:not([data-theme="light"]) body.forge-login-screen .auth-badge .auth-shield{background:var(--forge-login-surface-soft);border:1px solid var(--forge-login-ember);box-shadow:0 0 0 3px rgba(213,92,19,.12)}
+html:not([data-theme="light"]) body.forge-solo-login .auth-badge .auth-shield .forge-logo-dark,
+html:not([data-theme="light"]) body.forge-login-screen .auth-badge .auth-shield .forge-logo-dark{filter:brightness(0) invert(1)}
 html:not([data-theme="light"]) body.forge-solo-login .auth-badge .auth-wordmark,
 html:not([data-theme="light"]) body.forge-login-screen .auth-badge .auth-wordmark,
 html:not([data-theme="light"]) body.forge-solo-login .auth-title,
