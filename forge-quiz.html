@@ -23,7 +23,7 @@
 </script>
 <link rel="stylesheet" href="css/states.css">
   <link rel="stylesheet" href="css/generated-utilities.css">
-  <link rel="stylesheet" href="css/page-overrides/forge-quiz.css?v=20260814-pairing1">
+<link rel="stylesheet" href="css/page-overrides/forge-quiz.css?v=20260807-nothing-ember3">
 </head>
 <body>
 <script src="scripts/forge-api.js?v=20260809"></script>
@@ -403,6 +403,8 @@ var requestedBank = new URLSearchParams(location.search).get('bank');
 var requestedClassId = new URLSearchParams(location.search).get('class_id');
 var requestedSubject = new URLSearchParams(location.search).get('subject');
 var openClassJoin = new URLSearchParams(location.search).get('mode') === 'class';
+var openSoloLogin = new URLSearchParams(location.search).get('mode') === 'solo';
+if (openSoloLogin) document.body.classList.add('forge-solo-login');
 var requestedBankStarted = false;
 
 function settleRequestedSubject() {
@@ -670,6 +672,7 @@ function registerFreeStudent(name, token) {
 var app = document.getElementById('app');
 
 function render() {
+  document.body.classList.toggle('forge-login-screen', state.phase === 'join');
   if (requestedBank && BANKS[requestedBank] && (state.studentName || state.classId) && state.phase !== 'quiz') {
     // Assignment links are bank-specific. Establish both the bank and its
     // subject before starting so restoration cannot fall back to the full
@@ -758,7 +761,7 @@ function renderJoin() {
     {btn: 'tab-class', panel: 'panel-class'},
     {btn: 'tab-solo',  panel: 'panel-solo'},
   ];
-  var activeTab = openClassJoin ? 'tab-class' : 'tab-free';
+  var activeTab = openClassJoin ? 'tab-class' : openSoloLogin ? 'tab-solo' : 'tab-free';
   function activateTab(which) {
     activeTab = which;
     tabs.forEach(function(t) {
@@ -1845,7 +1848,7 @@ var MANDARIN_PASSAGES = [
   }
 ];
 
-if (ForgeAuth.hasSession()) {
+if (!openSoloLogin && ForgeAuth.hasSession()) {
   ForgeAuth.getSession().then(function(result) {
     if (result && result.subscriber) {
       var sub    = result.subscriber;
@@ -1891,7 +1894,7 @@ if (ForgeAuth.hasSession()) {
   }).catch(function() { render(); });
 } else {
   var restored = false;
-  if (!openClassJoin) try {
+  if (!openClassJoin && !openSoloLogin) try {
     var savedSession = JSON.parse(localStorage.getItem('forge-student') || 'null');
     if (savedSession && savedSession.studentName && savedSession.classId) {
       state.studentId    = savedSession.studentId    || null;
@@ -1957,7 +1960,7 @@ if (ForgeAuth.hasSession()) {
     }
   } catch(e) {}
 
-  if (!openClassJoin && !restored) {
+  if (!openClassJoin && !openSoloLogin && !restored) {
     var freeSession = loadFreeSession();
 
     if (freeSession && freeSession.studentId) {

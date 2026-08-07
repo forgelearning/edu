@@ -1,0 +1,112 @@
+/* Shared Forge auth treatment for the non-quiz entry points. */
+body.forge-auth-ember{
+  --forge-auth-canvas:#141210;
+  --forge-auth-surface:#211e1b;
+  --forge-auth-surface-soft:#2a2622;
+  --forge-auth-ink:#f5f1ea;
+  --forge-auth-muted:#b8b4ad;
+  --forge-auth-line:#3a342e;
+  --forge-auth-ember:#d55c13;
+  --forge-auth-hot:#ffc93c;
+  background:var(--forge-auth-canvas);color:var(--forge-auth-ink)
+}
+body.forge-auth-ember .auth-stage{padding:34px 0 54px}
+body.forge-auth-ember .auth-stage::before,
+body.forge-auth-ember .auth-stage::after,
+body.forge-auth-ember .auth-spark{display:none}
+body.forge-auth-ember .auth-card{max-width:430px;margin:0 auto;padding:34px 32px 28px;border:1px solid var(--forge-auth-line);border-radius:14px;background:var(--forge-auth-surface);box-shadow:0 22px 60px rgba(0,0,0,.34);backdrop-filter:none;-webkit-backdrop-filter:none}
+body.forge-auth-ember .auth-card.wide{max-width:620px}
+body.forge-auth-ember .auth-badge{justify-content:flex-start;margin-bottom:28px}
+body.forge-auth-ember .auth-badge .auth-shield{width:34px;height:34px;border-radius:9px;background:var(--forge-auth-ember);border:0;box-shadow:0 8px 18px rgba(213,92,19,.25)}
+body.forge-auth-ember .auth-badge .auth-wordmark{font-family:'Poppins',sans-serif;color:var(--forge-auth-ink);font-size:17px;font-weight:650}
+body.forge-auth-ember .auth-title{font-family:'Rethink Sans',sans-serif;color:var(--forge-auth-ink);text-align:left;font-size:30px;font-weight:500;letter-spacing:-.035em;line-height:1.05}
+body.forge-auth-ember .auth-sub{color:var(--forge-auth-muted);text-align:left;margin:8px 0 27px;font-size:13px;line-height:1.5}
+body.forge-auth-ember .auth-card .login-tabs{display:flex;gap:0;padding:0;margin:0 0 24px;border:0;border-bottom:1px solid var(--forge-auth-line);border-radius:0;background:transparent}
+body.forge-auth-ember .auth-card .login-tab{flex:0 0 auto;margin-right:22px;padding:0 0 10px;border-radius:0;background:transparent;color:#8a857e;font-family:'Poppins',sans-serif;font-size:12px;font-weight:500}
+body.forge-auth-ember .auth-card .login-tab.active{background:transparent;color:var(--forge-auth-ember);box-shadow:inset 0 -2px 0 var(--forge-auth-ember)}
+body.forge-auth-ember .auth-card .login-tab:hover:not(.active){color:var(--forge-auth-ember)}
+body.forge-auth-ember .auth-label,
+body.forge-auth-ember .field label{color:#d2ccc4;font-size:11px;font-weight:500;margin-bottom:6px}
+body.forge-auth-ember .auth-field,
+body.forge-auth-ember .field{margin-bottom:15px}
+body.forge-auth-ember .auth-input,
+body.forge-auth-ember .auth-card .field input,
+body.forge-auth-ember .auth-card .join-input,
+body.forge-auth-ember .auth-card .code-input,
+body.forge-auth-ember .auth-card .subj-select{padding:12px 13px;border:1px solid #4a4139;border-radius:7px;background:var(--forge-auth-surface-soft);color:var(--forge-auth-ink);font-family:'Poppins',sans-serif;font-size:14px;box-shadow:none}
+body.forge-auth-ember .auth-input::placeholder,
+body.forge-auth-ember .auth-card .field input::placeholder,
+body.forge-auth-ember .auth-card .join-input::placeholder,
+body.forge-auth-ember .auth-card .code-input::placeholder{color:#8a857e}
+body.forge-auth-ember .auth-input:focus,
+body.forge-auth-ember .auth-card .field input:focus,
+body.forge-auth-ember .auth-card .join-input:focus,
+body.forge-auth-ember .auth-card .code-input:focus,
+body.forge-auth-ember .auth-card .subj-select:focus{outline:none;border-color:var(--forge-auth-ember);box-shadow:0 0 0 3px rgba(213,92,19,.16)}
+body.forge-auth-ember .auth-btn,
+body.forge-auth-ember .auth-card .btn-primary,
+body.forge-auth-ember .auth-card .join-btn{height:46px;margin-top:8px;padding:0 14px;border:0;border-radius:7px;background:var(--forge-auth-ember);color:#fff;font-family:'Poppins',sans-serif;font-size:13px;font-weight:600;box-shadow:0 10px 20px rgba(213,92,19,.2)}
+body.forge-auth-ember .auth-btn:hover,
+body.forge-auth-ember .auth-card .btn-primary:hover,
+body.forge-auth-ember .auth-card .join-btn:hover{background:#e8681a;transform:none;box-shadow:0 12px 24px rgba(213,92,19,.28);filter:none}
+body.forge-auth-ember .auth-card .btn-ghost,
+body.forge-auth-ember .auth-card .auth-btn-ghost{border-color:var(--forge-auth-line);color:var(--forge-auth-muted);background:transparent}
+body.forge-auth-ember .auth-card .btn-ghost:hover,
+body.forge-auth-ember .auth-card .auth-btn-ghost:hover{border-color:var(--forge-auth-ember);color:var(--forge-auth-ink)}
+body.forge-auth-ember .auth-foot{margin-top:28px;padding-top:18px;border-top:1px solid var(--forge-auth-line);color:#9a938a;font-size:11px}
+body.forge-auth-ember .auth-foot a{color:var(--forge-auth-ember);font-weight:600}
+body.forge-auth-ember .auth-err,
+body.forge-auth-ember .err{color:#ffb4a8;background:rgba(255,90,90,.1);border:1px solid rgba(255,90,90,.35)}
+body.forge-auth-ember .price-card,
+body.forge-auth-ember .already-box{background:var(--forge-auth-surface-soft);border-color:var(--forge-auth-line)}
+body.forge-auth-ember .price-period,
+body.forge-auth-ember .price-desc,
+body.forge-auth-ember .note{color:#9a938a}
+body.forge-auth-ember .subj-chip{background:var(--forge-auth-surface-soft);border-color:var(--forge-auth-line);color:var(--forge-auth-muted)}
+body.forge-auth-ember .subj-chip:hover,
+body.forge-auth-ember .subj-chip.selected{border-color:var(--forge-auth-ember);color:var(--forge-auth-ink)}
+body.forge-auth-ember .teacher-entry-copy h1{color:var(--forge-auth-ink)}
+body.forge-auth-ember .teacher-entry-copy p,
+body.forge-auth-ember .teacher-entry-copy ul{color:var(--forge-auth-muted)}
+body.forge-auth-ember .teacher-entry-copy strong{color:var(--forge-auth-ink)}
+body.forge-auth-ember .teacher-entry-copy a{color:var(--forge-auth-ember)}
+
+@media(max-width:600px){
+  body.forge-auth-ember .auth-stage{padding:22px 14px 36px}
+  body.forge-auth-ember .auth-card,
+  body.forge-auth-ember .auth-card.wide{padding:27px 22px 23px;max-width:100%}
+  body.forge-auth-ember .auth-title{font-size:27px}
+}
+
+html[data-theme="light"] body.forge-auth-ember{
+  --forge-auth-canvas:#fbf4ec;
+  --forge-auth-surface:#fffdfa;
+  --forge-auth-surface-soft:#fff8f0;
+  --forge-auth-ink:#261914;
+  --forge-auth-muted:#76665e;
+  --forge-auth-line:#e6d3c4;
+  --forge-auth-ember:#d55c13;
+  --forge-auth-hot:#ffc93c;
+  background:var(--forge-auth-canvas);color:var(--forge-auth-ink)
+}
+html[data-theme="light"] body.forge-auth-ember .auth-card{background:var(--forge-auth-surface);border-color:var(--forge-auth-line);box-shadow:0 18px 50px rgba(92,44,18,.11)}
+html[data-theme="light"] body.forge-auth-ember .auth-badge .auth-wordmark,
+html[data-theme="light"] body.forge-auth-ember .auth-title,
+html[data-theme="light"] body.forge-auth-ember .teacher-entry-copy h1,
+html[data-theme="light"] body.forge-auth-ember .teacher-entry-copy strong{color:var(--forge-auth-ink)}
+html[data-theme="light"] body.forge-auth-ember .auth-sub,
+html[data-theme="light"] body.forge-auth-ember .teacher-entry-copy p,
+html[data-theme="light"] body.forge-auth-ember .teacher-entry-copy ul{color:var(--forge-auth-muted)}
+html[data-theme="light"] body.forge-auth-ember .auth-label,
+html[data-theme="light"] body.forge-auth-ember .field label{color:#59463c}
+html[data-theme="light"] body.forge-auth-ember .auth-input,
+html[data-theme="light"] body.forge-auth-ember .auth-card .field input,
+html[data-theme="light"] body.forge-auth-ember .auth-card .join-input,
+html[data-theme="light"] body.forge-auth-ember .auth-card .code-input,
+html[data-theme="light"] body.forge-auth-ember .auth-card .subj-select{border-color:#d9c0ae;background:var(--forge-auth-surface-soft);color:var(--forge-auth-ink)}
+html[data-theme="light"] body.forge-auth-ember .auth-input::placeholder,
+html[data-theme="light"] body.forge-auth-ember .auth-card .field input::placeholder{color:#a38c7d}
+html[data-theme="light"] body.forge-auth-ember .auth-foot{border-top-color:#eadbd0;color:#9b877a}
+html[data-theme="light"] body.forge-auth-ember .price-period,
+html[data-theme="light"] body.forge-auth-ember .price-desc,
+html[data-theme="light"] body.forge-auth-ember .note{color:#8d7568}
