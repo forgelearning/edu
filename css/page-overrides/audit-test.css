@@ -316,7 +316,7 @@ body.audit-test #subjects ~ section#audit-faq{display:block!important;padding:72
 .audit-test .audit-real-product-page{color:var(--slate)}
 .audit-test .audit-page-back{padding:0;border:0;background:none;color:var(--dim);font:500 10px/1.2 'IBM Plex Sans',sans-serif;cursor:pointer}
 .audit-test .audit-real-product-page>.tag{display:block;margin:20px 0 6px;color:var(--ember);font:500 10px/1.2 'JetBrains Mono',monospace;letter-spacing:.08em;text-transform:uppercase}
-.audit-test .audit-real-product-page h2{margin:0 0 7px;color:var(--white);font:700 24px/1.1 'Sora',sans-serif}
+.audit-test .audit-real-product-page h2{margin:0 0 7px;color:var(--white);font:700 20px/1.1 'Sora',sans-serif}
 .audit-test .audit-page-lede{margin:0 0 18px;color:var(--slate);font-size:12px;line-height:1.5}
 .audit-test .audit-page-kicker{margin:20px 0 6px;color:var(--ember);font:500 10px/1.2 'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.08em}
 .audit-test .audit-page-center{text-align:center}
