@@ -195,7 +195,11 @@ const TAG_TAXONOMY_SUBJECTS = {
   // subject tests inverse functions.
   'gcse-maths': 0.01,
   'gcse-geo': 0.78,
-  soc: 0.94,
+  // 185 of 200 questions retagged onto 44 shared categories, taking the
+  // single-use share from 0.930 to 0.010. The two tags left on one question
+  // each are MC-EDU-ETHNIC and MC-TECH-01, both real categories with one
+  // question in the bank rather than per-question identifiers.
+  soc: 0.02,
   // 141 of 208 questions retagged onto 38 shared MC-HIST-* tags. The residue
   // is the 67 purely definitional questions that only a TOPIC tag would cover
   // (see docs/history-misconception-mapping.md), plus four taxonomy tags
@@ -238,8 +242,8 @@ const TAG_TAXONOMY_MECHANICAL = {
   // 52 of 208 — the residue of definitional questions that only a topic tag
   // would cover, documented in docs/history-misconception-mapping.md.
   hist: 0.26,
-  // 92 of 200. soc has 6 genuinely aggregating tags and no taxonomy yet.
-  soc: 0.47,
+  // Retagged: 0 of 200 after socMisconceptionTags, down from 92.
+  soc: 0,
   // 249 of 515, awaiting the stage 2 taxonomy in docs/econ-misconception-plan.md.
   econ: 0.49,
 };
