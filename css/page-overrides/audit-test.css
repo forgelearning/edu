@@ -522,3 +522,16 @@ body.audit-test .audit-sample-shell .btn:disabled{opacity:.55;cursor:not-allowed
   body.audit-test .audit-sample-options{grid-template-columns:1fr}
   body.audit-test .audit-sample-question{font-size:16px}
 }
+
+/* Let the landing-page story use the full content measure. The narrower
+   editorial caps make the refreshed headings and lead copy wrap too early. */
+body.audit-test.overdrive-instrument #how h2,
+body.audit-test.overdrive-instrument #students h2,
+body.audit-test.overdrive-instrument #teachers h2,
+body.audit-test.overdrive-instrument #audit-subject-picker h2,
+body.audit-test.overdrive-instrument #audit-sample-bank h2{max-width:none}
+body.audit-test.overdrive-instrument #how .sect-lede,
+body.audit-test.overdrive-instrument #students .sect-lede,
+body.audit-test.overdrive-instrument #teachers .sect-lede,
+body.audit-test.overdrive-instrument #audit-subject-picker .sect-lede,
+body.audit-test.overdrive-instrument #audit-sample-bank .sect-lede{max-width:none}
