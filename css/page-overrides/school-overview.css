@@ -22,7 +22,7 @@ h1,h2,h3{font-family:'Rethink Sans',sans-serif;color:var(--white);line-height:1.
 .err{color:var(--bad);font-size:13px;margin-top:8px;display:none}
 
 /* Keep the school overview's single sign-in action centred in its card. */
-.auth-card > a.auth-btn[href="teacher.html"]{display:block;width:max-content;margin:6px auto 0;text-align:center;text-decoration:none}
+.auth-card > a.auth-btn[href="teacher.html"]{display:inline-flex;align-items:center;justify-content:center;width:max-content;min-height:46px;margin:6px auto 0;padding:0 14px;text-align:center;text-decoration:none;line-height:1.2}
 
 /* Dashboard */
 .dash-header{margin-bottom:28px}
