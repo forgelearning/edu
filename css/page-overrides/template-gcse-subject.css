@@ -495,7 +495,8 @@ h1,h2,h3,.logo{font-family:'Rethink Sans',sans-serif}
 /* Coordinated subject-template pass: bolder peak, useful motion, leaner rendering. */
 .subject-header{position:relative;overflow:clip}
 .subject-header::before{content:"";display:block;width:clamp(72px,10vw,124px);height:4px;margin-bottom:clamp(22px,4vw,38px);border-radius:999px;background:var(--ember);transform-origin:left;animation:subject-mark-in .7s cubic-bezier(.16,1,.3,1) both}
-.subject-title{max-width:14ch;font-size:clamp(44px,6.4vw,72px);font-weight:800}
+.subject-title{max-width:none;width:100%;font-size:clamp(38px,5vw,58px);font-weight:800;white-space:nowrap}
+.subject-header>.sect-lede{max-width:none}
 .subject-stat-line .subj-stat-n{font-size:30px}
 .subject-actions .btn{box-shadow:0 14px 28px -22px rgba(255,107,44,.95);transition:transform .18s cubic-bezier(.16,1,.3,1),box-shadow .18s,background .18s}
 .subject-actions .btn:hover{transform:translateY(-2px);box-shadow:0 20px 34px -22px rgba(255,107,44,.95)}
@@ -514,7 +515,8 @@ h1,h2,h3,.logo{font-family:'Rethink Sans',sans-serif}
 @keyframes question-arrive{from{opacity:0;transform:translateY(10px);clip-path:inset(0 0 8% 0)}to{opacity:1;transform:none;clip-path:inset(0)}}
 @keyframes feedback-arrive{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
 @media(max-width:760px){.subject-header::before{margin-bottom:24px}.subject-section{padding:44px 0}.bank-nav{align-items:stretch;flex-direction:column;gap:12px}.bank-nav-btns{width:100%}.bank-nav-btn{flex:1;min-height:44px}.bq{padding:20px}}
-@media(max-width:480px){.subject-title{font-size:clamp(40px,12vw,58px)}.subject-stat-line .subj-stat-n{font-size:27px}.subject-header>.sect-lede{font-size:15px;line-height:1.6}}
+@media(max-width:680px){.subject-title{white-space:normal}}
+@media(max-width:480px){.subject-title{font-size:clamp(38px,11vw,58px)}.subject-stat-line .subj-stat-n{font-size:27px}.subject-header>.sect-lede{font-size:15px;line-height:1.6}}
 @media(prefers-reduced-motion:reduce){.subject-header::before,.bank .bq.active,.praise.show,.scaffold.show{animation:none}.subject-actions .btn:hover,.subject-actions .cta-ghost:hover{transform:none}}
 
 /* Forge Bank Pulse: tie the subject journey to the live practice bank. */
