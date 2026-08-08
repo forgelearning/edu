@@ -15,7 +15,7 @@ whose true state was most badly mis-recorded.
 | Distinct tags | 565 |
 | Single-use tags | 492 (**76.9%**) |
 | Tags naming no concept | 633 of 640 (**99%**) |
-| Ratchets | `gcse-geo: 0.78` single-use, `0` mechanical |
+| Ratchets | `gcse-geo: 0.78` single-use, `0.99` mechanical |
 
 ## The record was wrong, and the audit agreed with it
 
@@ -35,8 +35,9 @@ plus a position:
 
 The 0.00 mechanical score was a measurement artefact: the check tested
 `tag === "MC-" + id`, the ids read `GCSE-HAZ-27` and the tags read
-`MC-GEO-HAZ-27`, so the two strings never matched. The companion PR fixes the
-check; measured properly the subject is 633 of 640.
+`MC-GEO-HAZ-27`, so the two strings never matched. The check was fixed in
+#96, which is what moved the mechanical ratchet from `0` to `0.99` — not a
+regression, just the first honest measurement of this subject.
 
 **The single-use figure flatters it too.** 73 tags look like they aggregate.
 71 of those owe their second question to a `fill_blank` `-FB-` twin that
