@@ -209,14 +209,14 @@ const TAG_TAXONOMY_SUBJECTS = {
   // from 0.35 to lock that in. The residue is the 67 purely definitional
   // questions that only a TOPIC tag would cover.
   hist: 0.32,
-  // Stage 1 only, and the value says so: 0.45 is a FLOOR against regression,
-  // not a claim that econ is done. 148 questions were merged onto 74 concept
-  // tags, taking the single-use share from 0.734 to 0.447, and every one of
-  // the 117 aggregatable econ tags now has an explicit starter. The remaining
-  // 228 single-use questions need a designed taxonomy — stage 2, scoped in
-  // docs/econ-misconception-plan.md — and this entry should drop sharply when
-  // that lands rather than sitting here at 0.45 indefinitely.
-  econ: 0.45,
+  // Stage 2 has landed. All 230 remaining single-use questions were mapped
+  // onto shared categories, taking the share from 0.447 to 0.012. The six
+  // left are concepts with no genuine partner in the bank — twin deficits,
+  // AD-shift-and-inflation, wages and AD, movement vs shift of SRAS,
+  // asymmetric information and stock market crashes — each renamed from its
+  // index form so it names the error rather than the question's position.
+  // See docs/econ-misconception-taxonomy-draft.md.
+  econ: 0.013,
   // All 238 questions retagged onto 52 shared MC-GEO-* categories, none of
   // which carries fewer than two questions, taking the single-use share from
   // 0.992 to 0.004. The 0.01 is not headroom: it is the single array-tagged
@@ -271,9 +271,16 @@ const TAG_TAXONOMY_MECHANICAL = {
   // are array-tagged, which is also why they read as used-once on the
   // single-use check above.
   soc: 0.01,
-  // 256 of 515, awaiting the stage 2 taxonomy now drafted in
-  // docs/econ-misconception-taxonomy-draft.md.
-  econ: 0.5,
+  // 35 of 515, down from 256 after the stage 2 retag. The residue is an
+  // artefact of the `tag === MC-<id>` clause rather than a real defect: these
+  // are questions whose id happens to match the name of a tag that genuinely
+  // aggregates — question SD-02 on MC-SD-02, GRO-01 on MC-GRO-01, which
+  // carries four questions with a label and a starter. The index-tag clause
+  // below correctly passes those tags; the MC-<id> clause flags the one
+  // member whose id matches. Conditioning that clause on the tag failing to
+  // aggregate would take econ to ~0, and is worth doing for hist and psych
+  // at the same time.
+  econ: 0.068,
   // Retagged: 0 of 238, down from 200. Every tag names a concept.
   geo: 0,
 };
