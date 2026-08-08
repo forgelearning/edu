@@ -340,7 +340,10 @@ h1,h2,h3{font-family:'Rethink Sans',sans-serif;color:var(--white);line-height:1.
    recommended starter read as a short, scannable decision panel. */
 .tabs{display:flex;flex-wrap:nowrap;gap:4px;overflow-x:auto;scrollbar-width:none}
 .tabs::-webkit-scrollbar{display:none}
-.tabs .tab{flex:1 1 0;min-width:max-content;text-align:center}
+.tabs{-webkit-overflow-scrolling:touch;touch-action:pan-x;overscroll-behavior-x:contain}
+.tabs .tab{flex:0 0 auto;min-width:max-content;text-align:center}
+.student-profile-header{display:block}
+.student-profile-header::before{width:max-content}
 .starter-card{padding:0;overflow:hidden;border-top:2px solid var(--ember)}
 .starter-card__header{display:flex;align-items:flex-start;justify-content:space-between;gap:24px;padding:24px 26px 18px;background:var(--surface-focus-subtle);border-bottom:1px solid var(--line)}
 .starter-card__header .card-title{margin-bottom:8px}

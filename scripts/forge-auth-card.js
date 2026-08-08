@@ -86,11 +86,13 @@
 
     field: function (id, label, o) {
       o = o || {};
+      var enterHint = o.enterkeyhint || (o.type === 'password' ? 'done' : 'next');
       return '<div class="auth-field">' +
         '<label class="auth-label" for="' + id + '">' + label + '</label>' +
         '<input id="' + id + '" class="auth-input" type="' + (o.type || 'text') + '"' +
           (o.placeholder ? ' placeholder="' + o.placeholder + '"' : '') +
           (o.autocomplete ? ' autocomplete="' + o.autocomplete + '"' : '') +
+          ' enterkeyhint="' + enterHint + '"' +
           (o.upper ? ' autocapitalize="characters" style="text-transform:uppercase"' : '') +
         '></div>';
     }

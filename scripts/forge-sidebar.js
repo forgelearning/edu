@@ -11,6 +11,42 @@
 var _FORGE_LOGO_DARK = (window.ForgeLogo || {}).dark || '';
 var _FORGE_LOGO_LIGHT = (window.ForgeLogo || {}).light || '';
 
+// Authenticated app pages all load this shell, so keep PWA plumbing in one
+// place and avoid a different install/offline experience per route.
+(function loadForgePwaStyles() {
+  var viewport = document.querySelector('meta[name="viewport"]');
+  if (viewport) {
+    var viewportContent = viewport.getAttribute('content') || '';
+    if (!/(^|,)\s*viewport-fit\s*=/.test(viewportContent)) {
+      viewport.setAttribute('content', viewportContent.replace(/\s*$/, '') + (viewportContent ? ', ' : '') + 'viewport-fit=cover');
+    }
+  }
+  if (!document.querySelector('link[rel="manifest"]')) {
+    var manifest = document.createElement('link');
+    manifest.rel = 'manifest';
+    manifest.href = 'manifest.json';
+    document.head.appendChild(manifest);
+  }
+  if (!document.querySelector('meta[name="theme-color"]')) {
+    var theme = document.createElement('meta');
+    theme.name = 'theme-color';
+    theme.content = '#101214';
+    document.head.appendChild(theme);
+  }
+  if (!document.querySelector('link[href$="css/pwa.css"]')) {
+    var link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = 'css/pwa.css?v=1';
+    document.head.appendChild(link);
+  }
+  if (!document.querySelector('script[data-forge-pwa]')) {
+    var script = document.createElement('script');
+    script.src = 'scripts/forge-pwa.js?v=1';
+    script.setAttribute('data-forge-pwa', '');
+    document.head.appendChild(script);
+  }
+}());
+
 // key -> svg-inner markup for common nav icons, shared across pages
 var _FORGE_ICONS = {
   dashboard: '<path d="M3 12l9-9 9 9"></path><path d="M5 10v10a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1V10"></path>',
@@ -26,7 +62,8 @@ var _FORGE_ICONS = {
   school: '<path d="M3 21h18"></path><path d="M5 21V9l7-4 7 4v12"></path><path d="M8 21v-6h8v6M9 11h.01M12 11h.01M15 11h.01"></path>',
   present: '<rect x="2" y="4" width="20" height="13" rx="2"></rect><path d="M8 21h8M12 17v4"></path>',
   more: '<circle cx="5" cy="12" r="1.6"></circle><circle cx="12" cy="12" r="1.6"></circle><circle cx="19" cy="12" r="1.6"></circle>',
-  theme: '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>'
+  theme: '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>',
+  settings: '<circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.06.06-1.7 1.7-.06-.06a1.7 1.7 0 0 0-1.88-.34 1.7 1.7 0 0 0-1.03 1.56V20h-2.4v-.2a1.7 1.7 0 0 0-1.03-1.56 1.7 1.7 0 0 0-1.88.34l-.06.06-1.7-1.7.06-.06A1.7 1.7 0 0 0 8.46 15a1.7 1.7 0 0 0-1.56-1.03H6v-2.4h.9A1.7 1.7 0 0 0 8.46 10a1.7 1.7 0 0 0-.34-1.88l-.06-.06 1.7-1.7.06.06a1.7 1.7 0 0 0 1.88.34 1.7 1.7 0 0 0 1.03-1.56V5h2.4v.2a1.7 1.7 0 0 0 1.03 1.56 1.7 1.7 0 0 0 1.88-.34l.06-.06 1.7 1.7-.06.06A1.7 1.7 0 0 0 19.4 10a1.7 1.7 0 0 0 1.56 1.03H22v2.4h-1.04A1.7 1.7 0 0 0 19.4 15Z"></path>'
 };
 
 // Below this width the rail is replaced by the bottom tab bar. Kept in sync
@@ -55,7 +92,11 @@ var ForgeSidebar = {
   mount: function(config) {
     config = config || {};
     var items = config.items || [];
-    var footerItems = config.footerItems || [];
+    var footerItems = (config.footerItems || []).slice();
+    if (!footerItems.some(function(it) { return it.key === 'settings'; })) {
+      footerItems.push({key:'settings', href: config.settingsHref || 'settings.html', label:'Settings'});
+    }
+    config.footerItems = footerItems;
 
     var itemsHtml = items.map(function(it) {
       return _fsItemHtml(it, config.active);
@@ -137,9 +178,147 @@ var ForgeSidebar = {
     document.getElementById('forge-badge').classList.toggle('collapsed', !expanded);
     document.body.classList.toggle('forge-sidebar-expanded', expanded);
 
-    var isLight = localStorage.getItem('forge-theme') === 'light';
-    if (isLight) document.documentElement.setAttribute('data-theme', 'light');
+    var nativeShell = !!(window.Capacitor && (typeof window.Capacitor.isNativePlatform !== 'function' || window.Capacitor.isNativePlatform()));
+    if (nativeShell && !this._edgeSwipeBound) {
+      var edgeStart = null;
+      var edgeThreshold = 72;
+      var swipeMain = function () { return document.getElementById('main-content'); };
+      var clearSwipe = function () {
+        var main = swipeMain();
+        if (!main) return;
+        main.style.transition = 'transform .22s cubic-bezier(.2,.8,.2,1)';
+        main.style.transform = 'translate3d(0,0,0)';
+        setTimeout(function () {
+          main.style.transition = '';
+          main.style.transform = '';
+          main.classList.remove('forge-edge-swipe-active');
+        }, 240);
+      };
+      document.addEventListener('touchstart', function (event) {
+        if (!event.touches || event.touches.length !== 1) return;
+        var touch = event.touches[0];
+        edgeStart = touch.clientX <= 28 ? { x: touch.clientX, y: touch.clientY } : null;
+        var main = swipeMain();
+        if (main && edgeStart) {
+          main.style.transition = 'none';
+          main.style.transform = 'translate3d(0,0,0)';
+          main.classList.add('forge-edge-swipe-active');
+        }
+      }, { passive: true });
+      document.addEventListener('touchmove', function (event) {
+        if (!edgeStart || !event.touches || !event.touches.length) return;
+        var touch = event.touches[0];
+        var dx = touch.clientX - edgeStart.x;
+        var dy = Math.abs(touch.clientY - edgeStart.y);
+        var main = swipeMain();
+        if (dy > 80 || dx < 0) return;
+        if (main) main.style.transform = 'translate3d(' + Math.min(120, Math.round(dx * .5)) + 'px,0,0)';
+      }, { passive: true });
+      document.addEventListener('touchend', function (event) {
+        if (!edgeStart || !event.changedTouches || !event.changedTouches.length) return;
+        var touch = event.changedTouches[0];
+        var dx = touch.clientX - edgeStart.x;
+        var dy = Math.abs(touch.clientY - edgeStart.y);
+        edgeStart = null;
+        var main = swipeMain();
+        if (dx >= edgeThreshold && dy <= 80) {
+          if (main) {
+            main.style.transition = 'transform .16s cubic-bezier(.2,.8,.2,1)';
+            main.style.transform = 'translate3d(110px,0,0)';
+          }
+          setTimeout(function () {
+            var handled = typeof window.forgeHandleNativeBack === 'function'
+              && window.forgeHandleNativeBack() === true;
+            if (handled) clearSwipe();
+            else if (window.history.length > 1) window.history.back();
+            else clearSwipe();
+          }, 145);
+        } else {
+          clearSwipe();
+        }
+      }, { passive: true });
+      this._edgeSwipeBound = true;
+    }
+    if (nativeShell && !this._pullRefreshBound) {
+      var pullStart = null;
+      var pullMain = function () { return document.getElementById('main-content'); };
+      var pullIndicator = document.createElement('div');
+      pullIndicator.id = 'forge-pull-refresh';
+      pullIndicator.setAttribute('aria-hidden', 'true');
+      pullIndicator.innerHTML = '<span class="forge-pull-refresh-spinner"></span><span class="forge-pull-refresh-label">Pull to refresh</span>';
+      document.body.appendChild(pullIndicator);
+      var resetPull = function () {
+        var main = pullMain();
+        if (main) {
+          main.style.transition = 'transform .22s cubic-bezier(.2,.8,.2,1)';
+          main.style.transform = 'translate3d(0,0,0)';
+        }
+        pullIndicator.classList.remove('is-ready','is-refreshing','is-visible');
+        setTimeout(function () {
+          if (main) { main.style.transition = ''; main.style.transform = ''; }
+        }, 240);
+      };
+      document.addEventListener('touchstart', function (event) {
+        if (!event.touches || event.touches.length !== 1) return;
+        var touch = event.touches[0];
+        var topThird = Math.max(180, Math.round(window.innerHeight / 3));
+        if (touch.clientY <= topThird && touch.clientX > 28) pullStart = { x: touch.clientX, y: touch.clientY };
+      }, { passive: true });
+      document.addEventListener('touchmove', function (event) {
+        if (!pullStart || !event.touches || !event.touches.length) return;
+        var touch = event.touches[0];
+        var dx = touch.clientX - pullStart.x;
+        var dy = touch.clientY - pullStart.y;
+        if (dy < 0 || Math.abs(dx) > 60) { pullStart = null; resetPull(); return; }
+        var distance = Math.min(88, Math.round(dy * .55));
+        var main = pullMain();
+        if (main && distance > 0) {
+          event.preventDefault();
+          main.style.transition = 'none';
+          main.style.transform = 'translate3d(0,' + distance + 'px,0)';
+          pullIndicator.classList.add('is-visible');
+          pullIndicator.classList.toggle('is-ready', distance >= 52);
+          pullIndicator.querySelector('.forge-pull-refresh-label').textContent = distance >= 52 ? 'Release to refresh' : 'Pull to refresh';
+        }
+      }, { passive: false });
+      document.addEventListener('touchend', function (event) {
+        if (!pullStart || !event.changedTouches || !event.changedTouches.length) return;
+        var touch = event.changedTouches[0];
+        var dy = touch.clientY - pullStart.y;
+        pullStart = null;
+        if (dy >= 96) {
+          pullIndicator.classList.add('is-refreshing');
+          pullIndicator.querySelector('.forge-pull-refresh-label').textContent = 'Refreshing…';
+          setTimeout(function () { window.location.reload(); }, 120);
+        } else resetPull();
+      }, { passive: true });
+      this._pullRefreshBound = true;
+    }
+    var savedTheme = localStorage.getItem('forge-theme');
+    var isLight = savedTheme === 'light'
+      ? true
+      : savedTheme === 'dark'
+        ? false
+        : !!(window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches);
+    if (window.setForgeTheme) window.setForgeTheme(isLight, false);
+    else if (isLight) document.documentElement.setAttribute('data-theme', 'light');
     this._updateThemeUI(isLight);
+
+    // Follow the device while no explicit Forge override exists. This keeps
+    // an already-open iOS app in sync when the user changes Appearance.
+    if (!this._themeMedia && window.matchMedia) {
+      this._themeMedia = window.matchMedia('(prefers-color-scheme: light)');
+      this._themeMediaHandler = function (event) {
+        var saved = localStorage.getItem('forge-theme');
+        if (saved === 'light' || saved === 'dark') return;
+        if (window.setForgeTheme) window.setForgeTheme(event.matches, false);
+        else if (event.matches) document.documentElement.setAttribute('data-theme', 'light');
+        else document.documentElement.removeAttribute('data-theme');
+        ForgeSidebar._updateThemeUI(event.matches);
+      };
+      if (this._themeMedia.addEventListener) this._themeMedia.addEventListener('change', this._themeMediaHandler);
+      else if (this._themeMedia.addListener) this._themeMedia.addListener(this._themeMediaHandler);
+    }
 
     // Class rows carry their id in a data attribute rather than an inline
     // onclick, so a class name or id can never escape into executable markup.
@@ -436,13 +615,10 @@ var ForgeSidebar = {
   _toggleTheme: function() {
     var h = document.documentElement;
     var isLight = h.getAttribute('data-theme') === 'light';
-    if (isLight) {
-      h.removeAttribute('data-theme');
-      localStorage.setItem('forge-theme', 'dark');
-    } else {
-      h.setAttribute('data-theme', 'light');
-      localStorage.setItem('forge-theme', 'light');
-    }
+    var nativeShell = !!(window.Capacitor && (typeof window.Capacitor.isNativePlatform !== 'function' || window.Capacitor.isNativePlatform()));
+    if (window.setForgeTheme) window.setForgeTheme(!isLight, !nativeShell);
+    else if (isLight) { h.removeAttribute('data-theme'); localStorage.setItem('forge-theme', 'dark'); }
+    else { h.setAttribute('data-theme', 'light'); localStorage.setItem('forge-theme', 'light'); }
     this._updateThemeUI(!isLight);
     var body = document.getElementById('forge-sheet-body');
     var scrim = document.getElementById('forge-sheet-scrim');

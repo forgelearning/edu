@@ -39,7 +39,9 @@
 <script src="scripts/forge-api.js?v=20260815"></script>
 <script src="scripts/forge-state.js"></script>
 <script src="scripts/forge-logo.js"></script>
+<script src="scripts/forge-role.js"></script>
 <script src="scripts/forge-auth-card.js"></script>
+<script src="scripts/forge-theme.js"></script>
 <script src="scripts/forge-sidebar.js?v=20260812"></script>
 <script src="scripts/forge-teacher-ui.js"></script>
 <script src="scripts/forge-product-analytics.js"></script>
@@ -52,6 +54,7 @@ window.forgeOnClassSwitch = function(){ renderTeacherHome(); };
 window.forgeOnClassSelect = function(cls){ loadClassDashboard(cls); };
 ForgeSidebar.mount({
   active: 'dashboard',
+  settingsHref: 'teacher-settings.html',
   classSwitch: { label: 'Loading class…', addLabel: '↩ All your classes' },
   items: [
     {key:'dashboard', label:'Overview', onclick:"forgeGoto('heatmap')"},
@@ -127,6 +130,7 @@ var TeacherAuth = {
     return ForgeAPI.auth.signUp(email, password).then(function(data) {
       if (!data || data.error || !data.access_token) throw new Error((data && (data.error_description || data.msg || data.error)) || 'Sign-up failed');
       _saveTeacherSession({ access_token: data.access_token, refresh_token: data.refresh_token, user: data.user });
+      if (window.ForgeRole) ForgeRole.set('teacher');
       return data;
     });
   },
@@ -134,6 +138,7 @@ var TeacherAuth = {
     return ForgeAPI.auth.signIn(email, password).then(function(data) {
       if (!data || data.error || !data.access_token) throw new Error((data && (data.error_description || data.msg || data.error)) || 'Incorrect email or password');
       _saveTeacherSession({ access_token: data.access_token, refresh_token: data.refresh_token, user: data.user });
+      if (window.ForgeRole) ForgeRole.set('teacher');
       return data;
     });
   },
@@ -151,6 +156,7 @@ var TeacherAuth = {
     var saved = _loadTeacherSession();
     if (saved && saved.access_token) ForgeAPI.auth.signOut(saved.access_token).catch(function() {});
     _clearTeacherSession();
+    if (window.ForgeRole) ForgeRole.clear('teacher');
   },
   getSession: function() {
     var saved = _loadTeacherSession();
@@ -321,11 +327,22 @@ var dashState = { classId: null, className: null, classSubject: null, classCode:
 // the top level because the home screen and the sidebar both open classes
 // without the code-entry form ever having been rendered.
 window.loadClassDashboard = function(cls) {
+        // A class can be opened from a previously scrolled classes page or
+        // from the sidebar. Always start the dashboard at its header.
+        window.scrollTo(0, 0);
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
         setTeacherTitle(cls.name || 'Class dashboard');
         dashState.classId = cls.id;
         dashState.className = cls.name;
         dashState.classSubject = canonicalSubjectKey(cls.subject);
         dashState.classCode = cls.code || null;
+        // The teacher dashboard is a single document with an in-page class
+        // view. Give that view its own history entry so browser/native back
+        // returns to the class list instead of the public launch screen.
+        if (window.history && window.history.pushState) {
+          window.history.pushState({ forgeView: 'teacher-class', classId: String(cls.id) }, '', window.location.href);
+        }
         addJoinedClass(cls);
         Promise.all([
           supaGet('students', 'class_id=eq.' + cls.id),
@@ -408,7 +425,26 @@ function renderTeacherHome() {
       if (c && c.id && !seen[c.id]) { seen[c.id] = true; classes.push(c); }
     });
     drawTeacherHome(classes, false);
+    forgeSyncWidgetClasses(classes);
   }).catch(function() { drawTeacherHome([], true); });
+}
+
+function forgeSyncWidgetClasses(classes) {
+  try {
+    if (!window.webkit || !window.webkit.messageHandlers || !window.webkit.messageHandlers.forgeWidgetSync) return;
+    window.webkit.messageHandlers.forgeWidgetSync.postMessage({
+      classes: (classes || []).filter(function(c){ return c && c.id && c.name; }).map(function(c){
+        return { id: String(c.id), name: String(c.name) };
+      })
+    });
+  } catch (e) {}
+}
+
+function forgeSyncTeacherWidgetData(data) {
+  try {
+    if (!window.webkit || !window.webkit.messageHandlers || !window.webkit.messageHandlers.forgeWidgetSync) return;
+    window.webkit.messageHandlers.forgeWidgetSync.postMessage({ teacherData: data || {} });
+  } catch (e) {}
 }
 
 function drawTeacherHome(classes, loadError) {
@@ -472,6 +508,36 @@ function drawTeacherHome(classes, loadError) {
 
   if (window.ForgeSidebar) ForgeSidebar.setClassList(getJoinedClasses(), null);
 }
+
+// Teacher class dashboards are an in-page view inside teacher.html rather
+// than a separate document. Treat the class list as the previous screen so a
+// native edge swipe returns to the teacher's classes instead of falling back
+// through the browser history to the public role selector.
+window.forgeHandleNativeBack = function() {
+  if (dashState.classId) {
+    dashState.classId = null;
+    dashState.className = null;
+    dashState.classSubject = null;
+    dashState.classCode = null;
+    if (window.ForgeSidebar) {
+      ForgeSidebar.setClassLabel('Loading class…');
+      ForgeSidebar.setActive('dashboard');
+    }
+    if (window.history && window.history.replaceState) {
+      window.history.replaceState({ forgeView: 'teacher-home' }, '', window.location.href);
+    }
+    renderTeacherHome();
+    return true;
+  }
+  return false;
+};
+
+// Handle the same boundary for the system back gesture/button. The native
+// edge swipe calls forgeHandleNativeBack directly; a normal browser back emits
+// popstate instead.
+window.addEventListener('popstate', function () {
+  if (dashState.classId) window.forgeHandleNativeBack();
+});
 
 // Removing a class from the sidebar switcher forgets it on this device — it
 // does not delete the class or its students, which other teachers and the
@@ -788,6 +854,15 @@ function renderDashboard() {
   wrongResponses.forEach(function(r) { uniqueMCs[r.misconception_tag] = true; });
   var reforgeAttempts = responses.filter(function(r) { return r.reforge_attempted; });
   var reforgeCorrect = reforgeAttempts.filter(function(r) { return r.reforge_correct; });
+  forgeSyncTeacherWidgetData({
+    classId: String(dashState.classId || ''),
+    className: String(dashState.className || ''),
+    accuracy: accuracy,
+    openSignals: Object.keys(uniqueMCs).length,
+    students: students.length,
+    responses: totalQs,
+    secondary: wrongResponses.length ? 'Open priority signals' : 'No open priority signals'
+  });
   var attention={};
   wrongResponses.forEach(function(r){attention[r.student_id]=(attention[r.student_id]||0)+1;});
   var attentionRows=Object.keys(attention).map(function(id){return {id:id,name:(studentMap[id]||'Student'),count:attention[id]};}).sort(function(a,b){return b.count-a.count;}).slice(0,5);
@@ -1451,7 +1526,7 @@ function renderAssignCard(asgn, students, responses, isArchived) {
         h += '<div class="student-assign-row">';
         h += '<span style="color:' + statusColor + ';font-size:14px">' + (ps.completed ? '✓' : ps.started ? '◐' : '○') + '</span>';
         h += '<span class="forge-u-b5x4dy">' + teacherEsc(s.display_name || s.name) + '</span>';
-        h += '<span style="font-family:\'JetBrains Mono\',monospace;font-size:11px;color:' + statusColor + '">' + status + (ps.answered ? ' · ' + ps.answered + '/' + ps.total + ' · ' + Math.ceil(ps.answered / 8) + '/' + ps.sessions + ' sessions' : '') + '</span>';
+        h += '<span style="font-family:\'JetBrains Mono\',monospace;font-size:11px;color:' + statusColor + '">' + status + (ps.answered ? ' · ' + ps.answered + '/' + ps.total + (ps.accuracy == null ? '' : ' · ' + ps.accuracy + '% score') + ' · ' + Math.ceil(ps.answered / 8) + '/' + ps.sessions + ' sessions' : '') + '</span>';
         h += '</div>';
       });
       h += '</div>';
@@ -2005,7 +2080,7 @@ window.renderStudent = function(studentId) {
 
   var h = '<button class="back-btn" data-forge-action="student-back">\u2190 Back to class</button>';
 
-  h += '<div class="dash-header forge-mb-4"><div><p class="tag forge-u-l8gta7">Student Profile</p><h1>' + studentName + (extraTime > 0 ? ' <span class="extra-time-badge forge-u-1nzryid">+' + extraTime + '% time</span>' : '') + '</h1></div></div>';
+  h += '<div class="dash-header student-profile-header forge-mb-4"><div><p class="tag forge-u-l8gta7">Student Profile</p><h1>' + studentName + (extraTime > 0 ? ' <span class="extra-time-badge forge-u-1nzryid">+' + extraTime + '% time</span>' : '') + '</h1></div></div>';
 
   h += '<div class="stat-row">';
   h += '<div class="stat"><span class="stat-n" style="color:' + (acc >= 70 ? 'var(--good)' : acc >= 50 ? 'var(--hot)' : 'var(--bad)') + '">' + acc + '%</span><span class="stat-l">Accuracy</span></div>';
@@ -2141,6 +2216,7 @@ document.addEventListener('forge-content-ready', function () {
 
 TeacherAuth.getSession().then(function(sess) {
   if (!sess) { renderTeacherAuth('signin'); return; }
+  if (window.ForgeRole) ForgeRole.set('teacher');
   currentTeacher = sess.user;
   headers.Authorization = 'Bearer ' + sess.access_token;
   if (window.ForgeSidebar) ForgeSidebar.setClassList(getJoinedClasses(), null);

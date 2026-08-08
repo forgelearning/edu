@@ -25,7 +25,7 @@
   <link rel="stylesheet" href="css/page-overrides/privacy.css">
 </head>
 <body>
-<script>if(localStorage.getItem('forge-theme')==='light'){document.documentElement.setAttribute('data-theme','light');document.addEventListener('DOMContentLoaded',function(){var b=document.querySelector('.theme-toggle');if(b)b.textContent='☾';});}</script>
+<script>(function(){var t=localStorage.getItem('forge-theme');if(t==='light'||(t!=='dark'&&window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)').matches)){document.documentElement.setAttribute('data-theme','light');document.addEventListener('DOMContentLoaded',function(){var b=document.querySelector('.theme-toggle');if(b)b.textContent='☾';});}}());</script>
 
 <div class="wrap">
 <div id="sticky-nav"><div class="wrap-nav">

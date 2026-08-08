@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1200" viewBox="0 0 1200 1200">
+  <defs>
+    <linearGradient id="dark" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#2d1a10"/><stop offset="1" stop-color="#100d0b"/></linearGradient>
+    <linearGradient id="light" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fbf4ed"/><stop offset="1" stop-color="#e6d8cc"/></linearGradient>
+    <radialGradient id="glowD"><stop stop-color="#c95017" stop-opacity=".32"/><stop offset="1" stop-color="#c95017" stop-opacity="0"/></radialGradient>
+    <radialGradient id="glowL"><stop stop-color="#ee7b36" stop-opacity=".28"/><stop offset="1" stop-color="#ee7b36" stop-opacity="0"/></radialGradient>
+    <filter id="shadow"><feDropShadow dx="0" dy="14" stdDeviation="18" flood-color="#63442f" flood-opacity=".24"/></filter>
+    <style>
+      .title{font:700 31px -apple-system,BlinkMacSystemFont,Segoe UI,sans-serif}.sub{font:500 17px -apple-system,BlinkMacSystemFont,Segoe UI,sans-serif}.h{font:700 27px -apple-system,BlinkMacSystemFont,Segoe UI,sans-serif}.body{font:500 16px -apple-system,BlinkMacSystemFont,Segoe UI,sans-serif}.mono{font:600 12px ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:1.5px}
+    </style>
+  </defs>
+  <rect width="1200" height="760" fill="#eee9e4"/>
+  <text x="55" y="58" class="title" fill="#29231f">Forge · large widget review</text>
+  <text x="55" y="88" class="sub" fill="#756a61">True 4×4 Home Screen footprint · square layout</text>
+
+  <!-- student square -->
+  <g transform="translate(55 135)" filter="url(#shadow)">
+    <rect width="500" height="500" rx="48" fill="url(#dark)"/>
+    <circle r="280" fill="url(#glowD)"/>
+    <path d="M34 36l21-7 21 7v16c0 13-8 22-21 27-13-5-21-14-21-27z" fill="#e76620"/><text x="47" y="61" font-family="Arial" font-size="25" font-weight="900" fill="#15202d">F</text>
+    <text x="98" y="58" class="mono" fill="#f0bd3f">LEARNING LOOP</text>
+    <text x="34" y="125" class="h" fill="#f5f0e8">Keep the loop moving</text>
+    <text x="34" y="177" class="mono" fill="#f0bd3f">NEXT ASSIGNMENT</text>
+    <text x="34" y="224" class="h" fill="#f5f0e8">AD</text><text x="466" y="224" text-anchor="end" class="h" fill="#f0bd3f">0%</text>
+    <text x="34" y="263" class="body" fill="#b8afa7">Due soon · 0 of 8 questions</text>
+    <rect x="34" y="285" width="432" height="8" rx="4" fill="#3c332c"/>
+    <line x1="34" y1="326" x2="466" y2="326" stroke="#3c332c"/>
+    <text x="34" y="360" class="mono" fill="#8d8178">ANVIL TASKS</text><text x="466" y="360" text-anchor="end" class="h" fill="#f0bd3f">10+</text>
+    <text x="34" y="405" class="mono" fill="#8d8178">STREAK</text><text x="466" y="405" text-anchor="end" class="body" fill="#f5f0e8">1 day</text>
+    <text x="34" y="462" class="mono" fill="#8d8178">1 NEW ASSIGNMENT</text><text x="466" y="462" text-anchor="end" class="mono" fill="#f0bd3f">OPEN →</text>
+  </g>
+  <text x="55" y="680" class="sub" fill="#756a61">Student · 4×4 · Dark</text>
+
+  <!-- teacher square -->
+  <g transform="translate(645 135)" filter="url(#shadow)">
+    <rect width="500" height="500" rx="48" fill="url(#light)"/>
+    <circle r="280" fill="url(#glowL)"/>
+    <path d="M34 36l21-7 21 7v16c0 13-8 22-21 27-13-5-21-14-21-27z" fill="#202a36"/><text x="47" y="61" font-family="Arial" font-size="25" font-weight="900" fill="#ed671f">F</text>
+    <text x="98" y="58" class="mono" fill="#9a5e27">CLASS PULSE</text>
+    <text x="34" y="125" class="h" fill="#25211e">Your class at a glance</text>
+    <text x="34" y="177" class="mono" fill="#9a5e27">CLASS</text><text x="466" y="177" text-anchor="end" class="h" fill="#25211e">12A/Ec</text>
+    <text x="34" y="224" class="mono" fill="#9a5e27">ACCURACY</text><text x="466" y="224" text-anchor="end" class="h" fill="#d27b1d">75%</text>
+    <rect x="34" y="247" width="432" height="8" rx="4" fill="#d3c8be"/><rect x="34" y="247" width="324" height="8" rx="4" fill="#ed671f"/>
+    <line x1="34" y1="286" x2="466" y2="286" stroke="#d3c8be"/>
+    <text x="34" y="330" class="mono" fill="#756a61">OPEN SIGNALS</text><text x="466" y="330" text-anchor="end" class="h" fill="#d27b1d">28</text>
+    <text x="34" y="376" class="mono" fill="#756a61">STUDENTS</text><text x="466" y="376" text-anchor="end" class="h" fill="#25211e">12</text>
+    <text x="34" y="422" class="mono" fill="#756a61">RESPONSES</text><text x="466" y="422" text-anchor="end" class="h" fill="#25211e">233</text>
+    <text x="34" y="471" class="mono" fill="#9a5e27">OPEN CLASS →</text>
+  </g>
+  <text x="645" y="680" class="sub" fill="#756a61">Teacher · 4×4 · Light</text>
+</svg>

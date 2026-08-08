@@ -117,6 +117,12 @@
    visible area and pushes the card below centre. forge-auth-card.js measures
    that padding and sets an exact min-height; this is the pre-script fallback. */
 @media(max-width:820px){
+  /* Prevent iOS Safari/WKWebView from applying input-focus zoom. */
+  .auth-input,
+  .auth-card .join-input,
+  .auth-card .code-input,
+  .auth-card .field input,
+  .auth-card .subj-select{font-size:16px}
   body.has-forge-sidebar .auth-stage{
     min-height:calc(100vh - 128px - env(safe-area-inset-bottom,0px));
     min-height:calc(100dvh - 128px - env(safe-area-inset-bottom,0px));
