@@ -18732,6 +18732,617 @@ function applyGeoMisconceptionTags() {
 }
 applyGeoMisconceptionTags();
 
+// Replace the filler-padded distractors in A-Level Geography with real text.
+//
+// The length-equalisation passes (rebalanceAlevelExtension, rebalanceGeoYear2)
+// enforce the authoring standard's rule that the correct answer must not be
+// the single longest option by APPENDING " in this context" / " (in context)"
+// to the longest distractor until it wins on length. That satisfies the check
+// and defeats its purpose: a student scanning the options sees one ending in
+// repeated filler and eliminates it, which is a stronger cue than the length
+// it was added to hide. CLAUDE.md warns about exactly this.
+//
+// 187 options across all nine geo banks were affected — none of them a correct
+// answer, which is the giveaway that the filler was applied to distractors to
+// out-length the key. Each is replaced below with genuine, plausible-but-wrong
+// text written to be at least as long as its correct answer, so the padding
+// loops have nothing left to do.
+//
+// Keyed "<id>:<mode>" -> { existing option text: replacement }. Matched on the
+// option's TEXT, not its letter, because rebalanceMCQSubject() permutes letters
+// and this pass must run after it. Runs last for the same reason: the padding
+// is applied by several passes scattered through this file.
+//
+// Where the original distractor was a generated non-answer ("It has no
+// significant geographical effect on ...", "It cannot be applied to
+// geographical evidence or decision-making") the replacement is a real
+// misconception-shaped wrong answer rather than a longer non-answer.
+//
+// Two entries fix a separate defect the padding was hiding:
+// A1-PHASE7-GEOTEC-01/-02 both carried TEC-01's distractor ("Continental
+// plates are anchored by mountain ranges and cannot move.") on questions about
+// return periods and hazard maps.
+//
+// This is a geo-only fix. The same filler affects 6,149 options across 30
+// subjects; see docs/geo-misconception-mapping.md.
+const geoAlevelDistractorRepairs = {
+  "TEC-01:base": {
+    "Continental plates are anchored by mountain ranges and cannot move.": "Continental crust is anchored by the mountain ranges along its margin, so it cannot be forced downwards by the oceanic plate."
+  },
+  "TEC-02:base": {
+    "The Christchurch earthquake was focused much deeper, reducing surface shaking.": "The Christchurch earthquake had a far deeper focus, so much less energy reached the surface."
+  },
+  "TEC-02:reforge": {
+    "The high-income country suffers more because its denser urban infrastructure creates more falling debris.": "The high-income country suffers more, because its taller buildings and denser urban infrastructure generate far more falling debris and trap more people in collapsed structures."
+  },
+  "TEC-03:reforge": {
+    "The Hawaiian government maintains lava diversion walls that redirect all flows to the ocean.": "The Hawaiian authorities maintain a network of lava diversion walls that redirect every flow safely out to the ocean."
+  },
+  "TEC-04:base": {
+    "Iceland experiences earthquakes yet has no subduction zone, proving they only occur at destructive boundaries.": "Iceland experiences frequent earthquakes yet has no subduction zone, which proves they occur only at destructive boundaries."
+  },
+  "TEC-04:reforge": {
+    "Conservative boundaries exclusively occur beneath deep ocean water, preventing volcanic surface eruptions.": "Conservative boundaries occur exclusively beneath deep ocean water, which prevents any volcanic eruption from reaching the surface."
+  },
+  "TEC-06:reforge": {
+    "Earthquake B, since deeper earthquakes radiate energy outward more evenly.": "Earthquake B, since a deeper focus allows seismic energy to radiate outwards more evenly and reach a much wider area of the surface."
+  },
+  "TEC-07:base": {
+    "All constructive boundaries produce this level of activity; Iceland is typical, not exceptional.": "All constructive boundaries produce this level of activity, so Iceland is entirely typical of them rather than exceptional."
+  },
+  "TEC-07:reforge": {
+    "Eruptions at constructive boundaries are detected months in advance by monitoring equipment.": "Eruptions at constructive boundaries are detected several months in advance by monitoring equipment, allowing every settlement to be evacuated."
+  },
+  "TEC-08:reforge": {
+    "Tsunami walls are an ineffective technology and should be replaced with other measures.": "Tsunami walls are an ineffective technology and should be replaced entirely by offshore breakwaters and by relocating coastal settlements to higher ground."
+  },
+  "TEC-09:base": {
+    "Low-income countries experience no tectonic activity": "Low-income countries rarely experience significant tectonic activity"
+  },
+  "TEC-09:reforge": {
+    "Waiting until after the event to map the hazard": "Waiting until after the event has occurred before mapping the hazard"
+  },
+  "TEC-10:base": {
+    "The exact magnitude of every earthquake in the past": "The exact magnitude of every earthquake recorded in the past"
+  },
+  "TEC-10:reforge": {
+    "Hazard magnitude changes at every street corner": "Hazard magnitude changes from one street corner to the next right across the city"
+  },
+  "TEC-12:base": {
+    "They become smaller when approaching shallow water": "They become steadily smaller as they approach shallower water"
+  },
+  "TEC-12:reforge": {
+    "Building critical facilities directly on low beaches": "Building critical facilities directly on low-lying beaches"
+  },
+  "TEC-13:base": {
+    "The number of people who return after evacuation": "The number of residents who return home after an evacuation"
+  },
+  "TEC-13:reforge": {
+    "It proves the next event will be exactly the same size": "It proves that the next event will be of exactly the same size again"
+  },
+  "TEC-14:base": {
+    "It cannot travel beyond the volcano's crater": "Ash cannot travel any distance at all beyond the rim of the volcano's crater"
+  },
+  "TEC-14:reforge": {
+    "Ash is heavier than all building materials": "Ash is denser than most of the building materials it settles on"
+  },
+  "TEC-15:base": {
+    "Governments can prevent all natural processes from occurring": "Governments are able to prevent these natural processes from occurring at all"
+  },
+  "TEC-15:reforge": {
+    "Sharing warnings through several communication channels": "Sharing warnings through several different public communication channels"
+  },
+  "TEC-16:base": {
+    "Fertility prevents any settlement near volcanoes": "Soil fertility prevents settlement anywhere near volcanoes"
+  },
+  "TEC-16:reforge": {
+    "Volcanoes guarantee that no floods will occur": "Living beside a volcano guarantees that no flooding will ever occur nearby"
+  },
+  "TEC-GAP-01:base": {
+    "Removing all hazard maps from public websites": "Removing all hazard maps from public council websites"
+  },
+  "TEC-GAP-01:reforge": {
+    "It makes every earthquake smaller": "It makes each future earthquake smaller in magnitude"
+  },
+  "TEC-GAP-02:base": {
+    "Rainfall creates new crust in every region": "Rainfall steadily creates new sections of crust in every region"
+  },
+  "TEC-GAP-03:base": {
+    "Explosiveness depends only on the volcano's height": "Explosiveness depends only on the overall height of the volcano"
+  },
+  "TEC-GAP-03:reforge": {
+    "Runny basaltic magma with little dissolved gas": "Runny basaltic magma that holds little dissolved gas"
+  },
+  "TEC-GAP-04:base": {
+    "Building settlements directly beside every active vent": "Building new settlements directly beside every active vent on the volcano flank"
+  },
+  "TEC-GAP-04:reforge": {
+    "They guarantee that eruptions will not occur": "They guarantee that no further eruption will occur at the vent"
+  },
+  "A1-PHASE7-GEOTEC-01:reforge": {
+    "Continental plates are anchored by mountain ranges and cannot move.": "It means the hazard is guaranteed to occur exactly once every century"
+  },
+  "A1-PHASE7-GEOTEC-02:reforge": {
+    "Continental plates are anchored by mountain ranges and cannot move.": "It records the precise date and time at which the next tectonic event will occur"
+  },
+  "COAST-01:reforge": {
+    "Longshore drift moving sediment parallel to the beach": "Longshore drift steadily moving sediment parallel to the beach"
+  },
+  "COAST-06:reforge": {
+    "Added sand makes waves approach at a steeper angle": "Added sand causes the waves to approach at a much steeper angle"
+  },
+  "COAST-07:base": {
+    "It shows where all coastal erosion has stopped": "It marks out those stretches of coastline along which erosion has now stopped completely"
+  },
+  "COAST-07:reforge": {
+    "It increases sediment reaching the downdrift beach": "It increases the total volume of sediment reaching the downdrift beach"
+  },
+  "COAST-08:base": {
+    "Wave refraction deposits identical sediment along the coast": "Wave refraction deposits sediment of identical size along the whole coast"
+  },
+  "COAST-08:reforge": {
+    "It makes wave energy equal at every point on the coast": "It makes wave energy exactly equal at every single point along the coastline"
+  },
+  "COAST-09:base": {
+    "A submerged coral reef on a tectonic boundary": "A submerged coral reef lying along a tectonic plate boundary"
+  },
+  "COAST-09:reforge": {
+    "Uplift of the coastline by an earthquake only": "Uplift of the coastline caused by an earthquake alone"
+  },
+  "COAST-10:base": {
+    "It lowers the energy of every storm to zero": "It reduces the energy carried by every storm surge almost to zero"
+  },
+  "COAST-10:reforge": {
+    "Relying on one temporary sandbag wall forever": "Relying indefinitely on a single temporary wall built from sandbags"
+  },
+  "COAST-11:base": {
+    "Replacing every beach with a concrete promenade": "Replacing the whole of the beach with a concrete promenade and sea wall"
+  },
+  "COAST-11:reforge": {
+    "It changes the geology of the entire coastline": "It permanently changes the geology of the whole coastline"
+  },
+  "COAST-12:base": {
+    "Hard engineering has no effect beyond its construction site": "Hard engineering has no effect at all beyond its own immediate construction site"
+  },
+  "COAST-12:reforge": {
+    "It is always the cheapest option regardless of land value": "It is always the cheapest available option, whatever the value of the land behind it"
+  },
+  "COAST-GAP-01:reforge": {
+    "It prevents all erosion along the coastline": "It prevents erosion along the whole coastline"
+  },
+  "COAST-GAP-02:base": {
+    "Energy is always equal along the whole coastline": "Wave energy is always exactly equal along the whole coastline"
+  },
+  "COAST-GAP-03:base": {
+    "The cliff becomes higher because beaches grow": "The cliff becomes higher as the beach in front of it grows"
+  },
+  "COAST-GAP-04:base": {
+    "Tides move sediment only up and down the beach": "Tides move the sediment only directly up and down the face of the beach"
+  },
+  "COAST-GAP-04:reforge": {
+    "A fold mountain at the cliff foot": "A fold mountain forming at the foot of the cliff"
+  },
+  "COAST-GAP-05:base": {
+    "Only unconsolidated sediment is exposed at the shore": "Only loose, unconsolidated sediment is exposed along the shore"
+  },
+  "COAST-GAP-05:reforge": {
+    "A headland is built entirely from loose sand": "A headland that is built up entirely from loose sand"
+  },
+  "A1-PHASE7-GEOCOAST-02:reforge": {
+    "Waves remove all sediment from the beach before reaching the cliff": "Waves remove every last trace of sediment from the beach before they ever reach the cliff line",
+    "Salt crystals dissolve the entire cliff face during one tidal cycle": "Salt crystals completely dissolve the entire face of the cliff within a single tidal cycle",
+    "Longshore drift moves the cliff inland without breaking the rock": "Longshore drift shifts the whole cliff steadily inland without ever breaking any of the rock"
+  },
+  "REGEN-01:reforge": {
+    "The length of the main road measured from a map": "The length of the main road as measured from a map"
+  },
+  "REGEN-02:reforge": {
+    "A new retailer seeking a larger customer base": "A new retailer hoping to reach a larger customer base"
+  },
+  "REGEN-03:reforge": {
+    "It removes the need for local employment opportunities": "It removes any need for local employment opportunities to be created"
+  },
+  "REGEN-04:reforge": {
+    "Higher incomes always reduce the quality of local services": "Higher average incomes always reduce the quality of local services"
+  },
+  "REGEN-05:reforge": {
+    "Banning existing residents from participating in planning": "Banning existing residents from taking part in the planning process"
+  },
+  "REGEN-06:reforge": {
+    "Promotional material always includes complete survey evidence": "Promotional material always includes the complete survey evidence behind it"
+  },
+  "REGEN-07:base": {
+    "Measuring only the physical height of new buildings": "Measuring only the physical height and the density of the new buildings"
+  },
+  "REGEN-07:reforge": {
+    "It makes all housing automatically affordable": "It makes all of the housing in the area automatically affordable to buy"
+  },
+  "REGEN-08:base": {
+    "A project doubles its budget without any new activity": "A project simply doubles its budget without generating any new activity"
+  },
+  "REGEN-08:reforge": {
+    "A development imports all labour and profits abroad": "A development that imports all of its labour and sends the profits abroad again"
+  },
+  "REGEN-09:base": {
+    "Maximising car access regardless of air quality": "Maximising car access regardless of the effect on air quality"
+  },
+  "REGEN-09:reforge": {
+    "Large areas of impermeable parking without drainage": "Large areas of impermeable parking laid out without any surface drainage"
+  },
+  "REGEN-10:base": {
+    "Regeneration always reduces the quality of the area": "Regeneration always reduces the environmental quality of the surrounding area"
+  },
+  "REGEN-10:reforge": {
+    "Schools and services become free for all households": "Schools and local services become free of charge for all local households"
+  },
+  "REGEN-12:base": {
+    "The number of slogans used in advertising": "The number of slogans used in the area's new advertising campaign"
+  },
+  "REGEN-12:reforge": {
+    "Employment can never be measured at a local scale": "Employment can never be measured accurately at a local scale"
+  },
+  "REGEN-GAP-01:base": {
+    "A single promotional photograph of the scheme": "A single promotional photograph taken of the finished scheme"
+  },
+  "REGEN-GAP-01:reforge": {
+    "It makes comparison between places impossible": "It makes any comparison between different places impossible"
+  },
+  "REGEN-GAP-03:base": {
+    "Local residents gain affordable homes and secure jobs": "Local residents gain both affordable homes and secure long-term jobs"
+  },
+  "REGEN-GAP-03:reforge": {
+    "Replacing community facilities with luxury retail": "Replacing community facilities with luxury retail units"
+  },
+  "REGEN-GAP-04:base": {
+    "The number of construction cranes on one day": "The number of construction cranes counted on a single day"
+  },
+  "REGEN-GAP-04:reforge": {
+    "It proves that every resident benefits equally": "It proves that every single resident has benefited equally"
+  },
+  "REGEN-GAP-05:base": {
+    "Replacing parks with car parks increases biodiversity": "Replacing existing parks with car parks increases local biodiversity"
+  },
+  "REGEN-GAP-05:reforge": {
+    "Urban projects have no effect on energy use": "Urban regeneration projects have no effect at all on local energy use"
+  },
+  "P3-GC-02:reforge": {
+    "A local shop changes its opening hours for one weekend": "A local shop changes its opening hours for a single weekend only"
+  },
+  "P3-GC-03:reforge": {
+    "Carbon dioxide disappears completely after one year in the atmosphere": "Carbon dioxide disappears from the atmosphere completely within a single year"
+  },
+  "P3-GC-04:reforge": {
+    "Replacing a coal power station with offshore wind": "Replacing a coal power station with an offshore wind farm"
+  },
+  "P3-GC-07:base": {
+    "A private company operating in several countries": "A privately owned company that operates across several different countries"
+  },
+  "P3-GC-08:base": {
+    "They prevent migrants maintaining links with their origin": "They prevent migrants from maintaining any links with their place of origin"
+  },
+  "P3-GC-08:reforge": {
+    "Remittances cannot be used for education or health": "Remittances cannot be spent on education or healthcare by the household"
+  },
+  "P3-GC-09:reforge": {
+    "TNCs are required to locate equally in every country": "TNCs are required to locate their activities equally in every country"
+  },
+  "P3-GC-10:base": {
+    "A ban on all international economic activity": "A complete ban on all forms of international economic activity"
+  },
+  "P3-GC-10:reforge": {
+    "Member states lose all control over domestic policy": "Member states lose all control over their domestic policy"
+  },
+  "P3-GC-11:base": {
+    "It removes the influence of transport networks": "It removes the influence of transport and communication networks entirely"
+  },
+  "P3-GC-11:reforge": {
+    "Local cultures can never adapt to outside influences": "Local cultures can never adapt to any influence from outside"
+  },
+  "P3-GC-12:base": {
+    "The complete absence of risk from future events": "The complete absence of any risk arising from future events"
+  },
+  "P3-GC-12:reforge": {
+    "Relying on one overseas supplier for every component": "Relying on a single overseas supplier for every one of its components"
+  },
+  "A1-PHASE7-GEOGLOBAL-01:reforge": {
+    "Reduced international contact between businesses": "Steadily reduced international contact between separate businesses"
+  },
+  "A1-PHASE7-GEOGLOBAL-02:reforge": {
+    "Reduced international contact between businesses": "Steadily reduced international contact between businesses everywhere in the world",
+    "The end of all cross-border investment": "The complete and permanent end of all cross-border investment flows worldwide",
+    "A universal fall in internet access": "A universal fall in the level of internet access right across every region"
+  },
+  "GEO-WATER-01:base": {
+    "The relationship between water inputs, outputs and changes in storage within a drainage basin": "The relationship between water inputs, outputs and changes in storage measured within a drainage basin"
+  },
+  "GEO-WATER-01:reforge": {
+    "A basin with precipitation greater than losses may experience a positive water balance": "A basin in which precipitation is greater than its total losses may experience a positive water balance overall"
+  },
+  "GEO-WATER-04:reforge": {
+    "Throughflow transfers water through soil towards a river channel": "Throughflow transfers water laterally through the soil towards a river channel"
+  },
+  "GEO-WATER-05:base": {
+    "It has no significant geographical effect on water cycle and water insecurity": "The volume of water held in storage at a single moment within a whole drainage basin"
+  },
+  "GEO-WATER-07:base": {
+    "It has no significant geographical effect on water cycle and water insecurity": "Water entering a drainage basin as precipitation, as snowmelt or as flow from an upstream channel"
+  },
+  "GEO-WATER-08:reforge": {
+    "Permeable soil and low-intensity rainfall can increase infiltration": "Permeable soil combined with low-intensity rainfall can increase infiltration"
+  },
+  "GEO-WATER-11:reforge": {
+    "It cannot be applied to geographical evidence or decision-making": "Deep permeable soils on gentle slopes usually generate the most surface runoff"
+  },
+  "GEO-WATER-18:reforge": {
+    "Low rainfall combined with high demand can create drought conditions": "Low rainfall combined with unusually high demand can create drought conditions"
+  },
+  "GEO-WATER-20:base": {
+    "Pressure on water resources when demand approaches or exceeds sustainable supply": "Pressure on water resources arising when demand approaches or exceeds sustainable supply"
+  },
+  "GEO-WATER-20:reforge": {
+    "Arid climates with high irrigation demand can face physical scarcity": "Arid climates combined with high irrigation demand can face physical scarcity"
+  },
+  "GEO-WATER-22:reforge": {
+    "A high-meat diet usually has a larger water footprint than a plant-based diet": "A high-meat diet usually carries a larger water footprint than a plant-based diet"
+  },
+  "GEO-WATER-23:base": {
+    "It has no significant geographical effect on water cycle and water insecurity": "The share of a country's total water supply that is drawn directly from underground aquifers"
+  },
+  "GEO-WATER-27:reforge": {
+    "Reservoir storage can improve urban water security during dry seasons": "Reservoir storage can improve urban water security throughout the dry season"
+  },
+  "GEO-WATER-32:reforge": {
+    "Treated bathwater can be reused for toilet flushing or garden irrigation": "Treated bathwater can be reused for flushing toilets or for irrigating a garden"
+  },
+  "GEO-WATER-34:reforge": {
+    "A basin plan may balance households, farming, industry and ecosystems": "A basin plan may seek to balance households, farming, industry and ecosystems"
+  },
+  "WATER-GAP-01:reforge": {
+    "Covering every open space with concrete": "Covering every remaining open space with concrete"
+  },
+  "WATER-GAP-02:reforge": {
+    "Low demand during a wet season": "Unusually low demand during a wet season"
+  },
+  "GEO-CARBON-01:base": {
+    "It has no significant geographical effect on carbon cycle and energy security": "The movement of carbon between the atmosphere and living organisms alone, excluding rocks and oceans"
+  },
+  "GEO-CARBON-01:reforge": {
+    "Energy insecurity can increase when prices rise or supply routes are disrupted": "Energy insecurity can increase whenever prices rise or key supply routes are disrupted"
+  },
+  "GEO-CARBON-03:reforge": {
+    "A finite carbon budget means delay increases the scale of later cuts": "A finite carbon budget means that delay increases the scale of the cuts required later"
+  },
+  "GEO-CARBON-04:base": {
+    "It has no significant geographical effect on carbon cycle and energy security": "The total mass of carbon currently held in the world's oceans, soils and rocks combined"
+  },
+  "GEO-CARBON-07:base": {
+    "The release of energy from organic matter, returning carbon dioxide to the atmosphere": "The release of stored energy from organic matter, returning carbon dioxide back to the atmosphere"
+  },
+  "GEO-CARBON-09:reforge": {
+    "It cannot be applied to geographical evidence or decision-making": "Cold, waterlogged conditions accelerate decomposition and release carbon rapidly"
+  },
+  "GEO-CARBON-12:reforge": {
+    "It cannot be applied to geographical evidence or decision-making": "Nitrogen and oxygen are the two most important greenhouse gases in the atmosphere"
+  },
+  "GEO-CARBON-13:base": {
+    "It has no significant geographical effect on carbon cycle and energy security": "The natural warming that keeps the planet habitable, unaltered by human activity"
+  },
+  "GEO-CARBON-14:reforge": {
+    "It cannot be applied to geographical evidence or decision-making": "Carbon intensity measures the total emissions of a country regardless of its output"
+  },
+  "GEO-CARBON-16:reforge": {
+    "It cannot be applied to geographical evidence or decision-making": "Draining peatland halts decomposition and locks the stored carbon away permanently"
+  },
+  "GEO-CARBON-18:reforge": {
+    "It cannot be applied to geographical evidence or decision-making": "Acidification raises ocean pH and strengthens the shells built by marine organisms"
+  },
+  "GEO-CARBON-21:base": {
+    "It has no significant geographical effect on carbon cycle and energy security": "The movement of energy resources along pipelines and shipping routes between trading states"
+  },
+  "GEO-CARBON-24:base": {
+    "It has no significant geographical effect on carbon cycle and energy security": "The total quantity of energy that a country is able to generate from its domestic sources"
+  },
+  "GEO-CARBON-27:reforge": {
+    "It cannot be applied to geographical evidence or decision-making": "Energy poverty occurs only in countries that have no domestic energy resources at all"
+  },
+  "GEO-CARBON-30:base": {
+    "It has no significant geographical effect on carbon cycle and energy security": "The tendency for resource-rich states to grow more slowly than resource-poor ones do"
+  },
+  "GEO-CARBON-30:reforge": {
+    "Import dependence can grow when domestic production falls below demand": "Import dependence can grow whenever domestic production falls below the level of national demand"
+  },
+  "GEO-CARBON-32:base": {
+    "Compensating for emissions by funding activities that reduce or remove emissions elsewhere": "Compensating for emissions by funding activities that reduce or remove emissions in another place"
+  },
+  "GEO-CARBON-32:reforge": {
+    "It cannot be applied to geographical evidence or decision-making": "CCS captures every tonne of carbon dioxide emitted and needs no additional energy"
+  },
+  "GEO-CARBON-35:base": {
+    "It has no significant geographical effect on carbon cycle and energy security": "The principle that every country should cut emissions by exactly the same amount"
+  },
+  "GEO-CARBON-35:reforge": {
+    "Domestic renewable generation can reduce dependence on imported fuels": "Domestic renewable generation can reduce a country's dependence on imported fuels"
+  },
+  "CARBON-GAP-01:base": {
+    "Removing monitoring of industrial emissions": "Removing all monitoring of industrial emissions"
+  },
+  "GEO-SUPER-01:base": {
+    "The way places and global relationships are understood through narratives and representations": "The way places and global relationships come to be understood through narratives and representations"
+  },
+  "GEO-SUPER-01:reforge": {
+    "Rapid growth and international investment can support emerging-power status": "Rapid growth and rising international investment can support emerging-power status"
+  },
+  "GEO-SUPER-03:base": {
+    "A state whose economic and political influence is increasing rapidly": "A state whose economic and political influence is increasing very rapidly"
+  },
+  "GEO-SUPER-06:base": {
+    "The capacity to defend interests or project force through armed forces": "The capacity to defend national interests or project force through the armed forces"
+  },
+  "GEO-SUPER-06:reforge": {
+    "A state using aid alongside diplomatic pressure is using smart power": "A state using aid alongside sustained diplomatic pressure is using smart power"
+  },
+  "GEO-SUPER-08:reforge": {
+    "Nuclear weapons, bases and naval reach contribute to military power": "Nuclear weapons, overseas bases and naval reach contribute to military power"
+  },
+  "GEO-SUPER-09:base": {
+    "The relationship between geography, power and international relations": "The relationship between geography, power and international relations over time"
+  },
+  "GEO-SUPER-12:base": {
+    "An international organisation intended to support peace, cooperation and human rights": "An international organisation intended to support peace, cooperation and human rights globally"
+  },
+  "GEO-SUPER-12:reforge": {
+    "A regional power shaping neighbouring governments has a sphere of influence": "A regional power shaping the decisions of neighbouring governments has a sphere of influence"
+  },
+  "GEO-SUPER-14:reforge": {
+    "It cannot be applied to geographical evidence or decision-making": "Every member of the Security Council holds an equal veto over its resolutions"
+  },
+  "GEO-SUPER-16:reforge": {
+    "Trade, migration and digital communication intensify globalisation": "Trade, migration and digital communication have together intensified globalisation"
+  },
+  "GEO-SUPER-18:base": {
+    "The increasing interconnectedness of economies, societies, places and institutions": "The increasing interconnectedness of economies, societies, places and their institutions"
+  },
+  "GEO-SUPER-18:reforge": {
+    "A trade bloc can increase market access while creating external barriers": "A trade bloc can increase market access while creating new barriers to non-member states"
+  },
+  "GEO-SUPER-22:base": {
+    "Using development assistance to build influence or achieve foreign-policy goals": "Using development assistance in order to build influence or to achieve wider foreign-policy goals"
+  },
+  "GEO-SUPER-22:reforge": {
+    "Rare-earth supply is important to technology and resource security": "Rare-earth supply is important to both technology and to resource security"
+  },
+  "GEO-SUPER-24:base": {
+    "A resource considered essential to national security or economic power": "A resource considered to be essential to a state's national security or to its wider economic power"
+  },
+  "GEO-SUPER-24:reforge": {
+    "Rare-earth supply is important to technology and resource security": "Rare-earth supply is important to technology and to overall resource security"
+  },
+  "GEO-SUPER-27:reforge": {
+    "Family ties and information can lower the cost of international migration": "Family ties and shared information can lower the cost of international migration"
+  },
+  "GEO-SUPER-29:base": {
+    "A city with major international economic, political and cultural connections": "A city holding major international economic, political and cultural connections across the world"
+  },
+  "GEO-SUPER-29:reforge": {
+    "China's economic growth is often discussed as part of a power transition": "China's rapid economic growth is often discussed as part of a wider power transition"
+  },
+  "GEO-SUPER-31:base": {
+    "A shift in relative influence between dominant and rising states": "A shift in the relative influence held by the dominant states and the rising states"
+  },
+  "GEO-SUPER-31:reforge": {
+    "China's economic growth is often discussed as part of a power transition": "China's economic growth is often discussed as part of a much wider power transition"
+  },
+  "GEO-SUPER-33:base": {
+    "Dispute or violence connected to the control or meaning of a boundary": "Dispute or violence connected to the control, the position or else the meaning of a boundary"
+  },
+  "GEO-SUPER-33:reforge": {
+    "The post-Cold War period is sometimes described as relatively unipolar": "The post-Cold War period is sometimes described as a relatively unipolar one"
+  },
+  "GEO-SUPER-35:base": {
+    "Dispute or violence connected to the control or meaning of a boundary": "Dispute or violence connected to the control of a boundary or else to its meaning"
+  },
+  "GEO-SUPER-35:reforge": {
+    "It cannot be applied to geographical evidence or decision-making": "Global inequality has been eliminated by the growth of international trade"
+  },
+  "GEO-HEALTH-01:base": {
+    "The study and management of health issues that affect populations across national borders": "The study and management of the health issues that affect populations across national borders"
+  },
+  "GEO-HEALTH-01:reforge": {
+    "It cannot be applied to geographical evidence or decision-making": "Health is measured only by the absence of any diagnosed physical disease"
+  },
+  "GEO-HEALTH-05:reforge": {
+    "A falling infant mortality rate can indicate better maternal and child healthcare": "A falling infant mortality rate can indicate improved maternal and child healthcare services"
+  },
+  "GEO-HEALTH-07:base": {
+    "It has no significant geographical effect on health, human rights and intervention": "The movement of populations out of rural areas and into the cities as a country becomes more developed"
+  },
+  "GEO-HEALTH-07:reforge": {
+    "A falling infant mortality rate can indicate better maternal and child healthcare": "A falling infant mortality rate can indicate stronger maternal and child healthcare provision"
+  },
+  "GEO-HEALTH-09:base": {
+    "It has no significant geographical effect on health, human rights and intervention": "A disease passed directly between people through contact, air, water or an insect vector"
+  },
+  "GEO-HEALTH-10:reforge": {
+    "It cannot be applied to geographical evidence or decision-making": "A pandemic is defined by the severity of a disease rather than by its spread"
+  },
+  "GEO-HEALTH-14:reforge": {
+    "Income, housing, education and employment are social determinants of health": "Income, housing, education and employment are the social determinants of health"
+  },
+  "GEO-HEALTH-16:base": {
+    "It has no significant geographical effect on health, human rights and intervention": "The obligation on every state to accept international rulings on its internal affairs"
+  },
+  "GEO-HEALTH-16:reforge": {
+    "The principle of universality means rights should not depend on citizenship": "The principle of universality means that rights should not depend on citizenship"
+  },
+  "GEO-HEALTH-18:base": {
+    "Acts committed with intent to destroy a national, ethnic, racial or religious group": "Acts committed with the deliberate intent of destroying a national, an ethnic, a racial or a religious group"
+  },
+  "GEO-HEALTH-18:reforge": {
+    "International action to protect civilians may be humanitarian intervention": "International action taken in order to protect civilians may amount to humanitarian intervention"
+  },
+  "GEO-HEALTH-20:base": {
+    "Acts committed with intent to destroy a national, ethnic, racial or religious group": "Acts committed with the clear and deliberate intent of destroying a national, ethnic or religious group"
+  },
+  "GEO-HEALTH-20:reforge": {
+    "Conflict can create displacement without an international border crossing": "Conflict can create displacement without any crossing of an international border"
+  },
+  "GEO-HEALTH-24:base": {
+    "It has no significant geographical effect on health, human rights and intervention": "A body that is created and funded by national governments in order to deliver their own aid programmes overseas"
+  },
+  "GEO-HEALTH-25:reforge": {
+    "It cannot be applied to geographical evidence or decision-making": "The WHO can compel its member states to adopt the health policies it sets"
+  },
+  "GEO-HEALTH-29:reforge": {
+    "It cannot be applied to geographical evidence or decision-making": "A programme should be judged on the size of its budget rather than its outcomes"
+  },
+  "GEO-HEALTH-33:reforge": {
+    "A low-cost treatment that local workers can maintain may be appropriate": "A low-cost treatment that local health workers can maintain may be appropriate"
+  },
+  "GEO-HEALTH-34:base": {
+    "It has no significant geographical effect on health, human rights and intervention": "The transfer of all health provision from private organisations back towards the state"
+  },
+  "GEO-HEALTH-36:base": {
+    "It has no significant geographical effect on health, human rights and intervention": "Action judged solely by whether it achieved its stated aim within the planned budget"
+  },
+  "GEO-HEALTH-36:reforge": {
+    "Surge capacity and trained staff improve resilience during outbreaks": "Surge capacity and well-trained staff improve resilience during outbreaks"
+  },
+  "HEALTH-GAP-01:base": {
+    "Rights apply only to people in wealthy countries": "Rights apply only to people living in wealthy countries"
+  },
+  "HEALTH-GAP-01:reforge": {
+    "A national service is free at the point of use": "A national service that is free at the point of use"
+  },
+  "HEALTH-GAP-02:base": {
+    "The size of the launch event alone": "The size of the programme launch event alone"
+  },
+  "HEALTH-GAP-03:reforge": {
+    "It depends on imported experts indefinitely": "It depends on imported experts indefinitely to run"
+  }
+};
+function applyGeoAlevelDistractorRepairs() {
+  const FILLER = /(?:\s*(?:\(in context\)|in this context|in context))+\s*$/i;
+  let replaced = 0;
+  for (const bankId of SUBJECTS.geo.banks) {
+    for (const question of BANKS[bankId]?.questions || []) {
+      for (const [mode, item] of [["base", question], ["reforge", question.reforge]]) {
+        if (!item || !item.options) continue;
+        const table = geoAlevelDistractorRepairs[`${question.id}:${mode}`];
+        if (!table) continue;
+        for (const [letter, value] of Object.entries(item.options)) {
+          const bare = String(value).replace(FILLER, "").trim();
+          const replacement = table[bare];
+          if (replacement) { item.options[letter] = replacement; replaced++; }
+        }
+      }
+    }
+  }
+  return replaced;
+}
+// Invoked at the very end of this file, not here. Seven A1-PHASE7-GEO* reforge
+// twins are rebuilt by a later pass, which re-pads them; calling at this point
+// repaired them and then had the repair overwritten.
+
 // Final language pass: a few later-added coverage questions were introduced
 // after the main stem-diversity migration. Rephrase those remaining generic
 // "Which statement/claim" openings so the visible bank does not teach a
@@ -20619,3 +21230,10 @@ for (const bankId of SUBJECTS["gcse-econ"].banks) {
     if (tag) question.tag = tag;
   }
 }
+
+// Last thing in this file, deliberately. Several passes above append filler to
+// the longest distractor to satisfy the answer-length rule, and seven
+// A1-PHASE7-GEO* reforge twins are rebuilt after the repair's own definition
+// point. Running here is what makes the repair stick. If a new pass is added
+// below this line, check it does not re-pad geo.
+applyGeoAlevelDistractorRepairs();
