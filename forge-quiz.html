@@ -32,8 +32,9 @@
 <script src="scripts/forge-content-status.js?v=20260812"></script>
 <script src="scripts/forge-app.js"></script>
 <script src="scripts/forge-question.js"></script>
-<script>if(localStorage.getItem('forge-theme')==='light'){document.documentElement.setAttribute('data-theme','light');}</script>
+<script src="scripts/forge-theme.js"></script>
 <script src="scripts/forge-logo.js"></script>
+<script src="scripts/forge-role.js"></script>
 <script src="scripts/forge-auth-card.js"></script>
 <script src="scripts/forge-classes.js?v=20260813"></script>
 <script src="scripts/forge-sidebar.js?v=20260812"></script>
@@ -56,6 +57,18 @@ ForgeSidebar.mount({
 </script>
 <script src="forge-auth.js"></script>
 <script src="scripts/forge-assignment-progress.js"></script><script defer src="scripts/forge-student-badges.js?v=20260808"></script>
+<script>
+// Keep the native edge gesture inside the quiz flow before allowing the
+// WebView/browser to leave Forge entirely.
+window.forgeHandleNativeBack = function () {
+  if (!window.state || typeof window.render !== 'function') return false;
+  var previous = { results: 'quiz', quiz: 'ready', ready: 'bank', bank: 'subject' }[window.state.phase];
+  if (!previous) return false;
+  window.state.phase = previous;
+  window.render();
+  return true;
+};
+</script>
 <main class="wrap" id="main-content">
   <div id="app" aria-live="polite"></div>
 </main>
@@ -359,6 +372,7 @@ var state = {
   trialDaysLeft: 0,
   paidSubjects: [],
   weightMap: {},       // spaced repetition: questionId → priority weight
+  bankStats: {},       // latest per-topic accuracy used by the recommendation
   sessionWrongTags: [] // the session's clearest repair signal
 };
 var FORGE_SESSION_SIZE = (window.ForgeApp && ForgeApp.session.defaultQuestionCount) || 8;
@@ -401,9 +415,27 @@ function forgeCompleteSession() {
 }
 var requestedBank = new URLSearchParams(location.search).get('bank');
 var requestedClassId = new URLSearchParams(location.search).get('class_id');
+var requestedAssignmentTitle = new URLSearchParams(location.search).get('assignment_title');
 var requestedSubject = new URLSearchParams(location.search).get('subject');
 var openClassJoin = new URLSearchParams(location.search).get('mode') === 'class';
 var requestedBankStarted = false;
+
+function forgeSyncStudentWidgetProgress() {
+  try {
+    if (!window.webkit || !window.webkit.messageHandlers || !window.webkit.messageHandlers.forgeWidgetSync || !state.bank) return;
+    var bank = BANKS[state.bank];
+    var total = state.questions.length || 0;
+    var answered = Math.min(total, (state.idx || 0) + 1);
+    window.webkit.messageHandlers.forgeWidgetSync.postMessage({ widgetData: {
+      role: 'student',
+      title: String(requestedAssignmentTitle || (bank && bank.label) || state.bank),
+      detail: String(answered >= total && total ? 'Completed · ' + answered + ' of ' + total + ' questions answered' : 'In progress · ' + answered + ' of ' + total + ' questions answered'),
+      progress: total ? Math.min(100, Math.round(answered / total * 100)) : 0,
+      secondary: answered + ' of ' + total + ' questions answered',
+      deepLink: 'forge://assigned'
+    }});
+  } catch (e) {}
+}
 
 function settleRequestedSubject() {
   if (requestedSubject && SUBJECTS[requestedSubject]) {
@@ -805,6 +837,8 @@ function renderJoin() {
       // no spaced repetition at all.
       ForgeClasses.fetchFreeResponses(SUPABASE_URL, SUPABASE_KEY, existingSession, function(responses) {
         state.weightMap = buildWeightMap(responses || []);
+        state.bankStats = buildBankStats(responses || []);
+        if (state.phase === 'banks') render();
       });
 
       settleRequestedSubject();
@@ -884,14 +918,10 @@ function renderJoin() {
             classId: res.cls.id, classCode: code, subject: res.cls.subject,
             studentId: res.studentId, studentName: name
           });
-          var joined = ForgeClasses.subjects(SUBJECTS);
-          if (joined.length === 1) {
-            state.subject = joined[0];
-            state.phase   = 'banks';
-          } else {
-            state.phase = 'subjects';
-          }
-          render();
+          // A successful student sign-in is an account/session entry point,
+          // so land on the dashboard first. Students can open Forge from the
+          // dashboard navigation when they are ready to practise.
+          ForgeAuth.goToLanding();
         });
     });
   };
@@ -1162,7 +1192,7 @@ function renderBanks(){
   h+='<div class="center"><p class="tag" style="color:'+subj.color+';margin-bottom:4px">FORGE</p>';
   h+='<h2 class="forge-u-1oh0w3h">'+subj.label+'</h2>';
   h+='<p class="forge-u-10yda30">'+subj.sub+'</p></div>';
-  var recommendedBank = subj.banks[0];
+  var recommendedBank = recommendedBankForSubject(subj);
   var recommended = BANKS[recommendedBank];
   var confidence = window.ForgeContentConfidence && window.ForgeContentConfidence.statusFor ? window.ForgeContentConfidence.statusFor(state.subject) : {tier:'full'};
   var recommendedQuestions = recommended ? recommended.questions.filter(function(q){return !q.type||q.type==='fill_blank';}) : [];
@@ -1343,6 +1373,16 @@ function renderLimitWall() {
   }, 1000);
 }
 
+function revealQuizNext(){
+  var next = document.getElementById('next-btn');
+  if (!next) return;
+  window.requestAnimationFrame(function(){
+    window.setTimeout(function(){
+      next.scrollIntoView({behavior:'smooth', block:'center'});
+    }, 80);
+  });
+}
+
 function renderQuiz(){
   // Check daily limit before showing next question
   if (isAtDailyLimit()) {
@@ -1410,6 +1450,7 @@ function renderQuiz(){
       else { state.weightMap[q.id] = 3; }
     }
     var responseSaved = logResponse(q, k, isCorrect, false, null);
+    forgeSyncStudentWidgetProgress();
 
       opts.forEach(function(x){
         x.classList.add('answered');
@@ -1436,6 +1477,7 @@ function renderQuiz(){
         if (responseSaved && typeof responseSaved.then === 'function') responseSaved.then(next).catch(next);
         else next();
       };
+      revealQuizNext();
     };
   });
 }
@@ -1527,6 +1569,7 @@ function renderFillBlankQuiz(q,bk,headerHtml){
       else{ state.weightMap[q.id]=3; }
     }
     logResponse(q,given.join('|'),allCorrect,false,null);
+    forgeSyncStudentWidgetProgress();
 
     checkBtn.style.display='none';
 
@@ -1544,6 +1587,7 @@ function renderFillBlankQuiz(q,bk,headerHtml){
     document.getElementById('next-btn').onclick=function(){
       state.idx++;render();
     };
+    revealQuizNext();
   };
 }
 
@@ -1735,6 +1779,45 @@ function buildWeightMap(responses) {
     else if (d.wrong > 0) weights[id] = 2;
   });
   return weights;
+}
+
+function buildBankStats(responses) {
+  var latest = {};
+  (responses || []).forEach(function(r) {
+    if (!r || !r.bank || !r.question_id || r.reforge_attempted) return;
+    var marker = String(r.bank) + '|' + String(r.question_id).replace(/-RF$/, '');
+    var timestamp = r.created_at ? new Date(r.created_at).getTime() : 0;
+    if (!latest[marker] || timestamp >= latest[marker].timestamp) {
+      latest[marker] = {bank: String(r.bank), correct: !!r.is_correct, timestamp: timestamp};
+    }
+  });
+  var stats = {};
+  Object.keys(latest).forEach(function(marker) {
+    var item = latest[marker];
+    if (!stats[item.bank]) stats[item.bank] = {answered: 0, correct: 0};
+    stats[item.bank].answered++;
+    if (item.correct) stats[item.bank].correct++;
+  });
+  return stats;
+}
+
+function recommendedBankForSubject(subject) {
+  var banks = subject && subject.banks || [];
+  if (!banks.length) return null;
+  var best = banks[0];
+  var bestWeakness = -1;
+  banks.forEach(function(bank) {
+    var stats = state.bankStats && state.bankStats[bank];
+    // Unattempted topics are treated as 0% complete, while attempted topics
+    // are ranked by their latest per-question accuracy. This moves the
+    // recommendation away from a topic once it has been mastered.
+    var weakness = stats && stats.answered ? 1 - (stats.correct / stats.answered) : 1;
+    if (weakness > bestWeakness) {
+      best = bank;
+      bestWeakness = weakness;
+    }
+  });
+  return best;
 }
 
 function weightedShuffle(questions, weightMap) {
@@ -1950,7 +2033,10 @@ if (ForgeAuth.hasSession()) {
       }, function() { settlePhase(); render(); });
       if (state.studentId && savedSession.classCode) {
         supa.ownResponses(state.studentId, savedSession.classCode, state.studentName).then(function(r) {
-          state.weightMap = buildWeightMap(Array.isArray(r) ? r : []);
+          var responses = Array.isArray(r) ? r : [];
+          state.weightMap = buildWeightMap(responses);
+          state.bankStats = buildBankStats(responses);
+          if (state.phase === 'banks') render();
         }).catch(function() { state.weightMap = {}; });
       }
       restored = true;
@@ -1970,11 +2056,23 @@ if (ForgeAuth.hasSession()) {
       settleRequestedSubject();
       ForgeClasses.fetchFreeResponses(SUPABASE_URL, SUPABASE_KEY, freeSession, function(responses) {
         state.weightMap = buildWeightMap(responses || []);
+        state.bankStats = buildBankStats(responses || []);
+        if (state.phase === 'banks') render();
       });
       restored = true;
     }
   }
   document.addEventListener('forge-content-ready', function () { if (state.phase === 'bank') render(); });
+
+  // Mobile browsers suspend a page aggressively when the user switches apps
+  // or locks the screen. Persist the current question before that happens so
+  // returning to Forge resumes the same session rather than losing context.
+  document.addEventListener('visibilitychange', function () {
+    if (document.visibilityState === 'hidden' && typeof forgeSaveSession === 'function') forgeSaveSession();
+  });
+  window.addEventListener('pagehide', function () {
+    if (typeof forgeSaveSession === 'function') forgeSaveSession();
+  });
   render();
 }
 

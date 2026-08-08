@@ -1,0 +1,18 @@
+{
+  "name": "Forge Learning",
+  "short_name": "Forge",
+  "description": "Targeted exam practice for GCSE and A Level students, with teacher insight built in.",
+  "lang": "en-GB",
+  "dir": "ltr",
+  "start_url": "role-select.html",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
+  "orientation": "any",
+  "theme_color": "#101214",
+  "background_color": "#101214",
+  "categories": ["education", "productivity"],
+  "icons": [
+    { "src": "assets/forge-icon.png", "sizes": "156x140", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

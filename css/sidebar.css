@@ -14,6 +14,18 @@ body.has-forge-sidebar #sticky-nav{display:none!important}
 
 #forge-badge{position:fixed;top:16px;left:16px;z-index:200;display:inline-flex;align-items:center;gap:10px;height:52px;padding:0 18px 0 14px;background:var(--glass-bg);backdrop-filter:blur(var(--glass-blur)) saturate(160%);-webkit-backdrop-filter:blur(var(--glass-blur)) saturate(160%);border:1px solid var(--line);border-radius:var(--radius-pill);box-shadow:0 20px 50px -20px rgba(0,0,0,.5);overflow:hidden;text-decoration:none;cursor:pointer;transition:width .35s cubic-bezier(.4,0,.2,1),padding .35s cubic-bezier(.4,0,.2,1),box-shadow .15s ease}
 #forge-badge:hover{box-shadow:0 20px 50px -16px rgba(213,92,19,.35)}
+#forge-notification-toast{position:fixed;left:50%;bottom:calc(82px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:260;display:flex;align-items:center;gap:10px;max-width:min(92vw,420px);padding:13px 16px;border:1px solid color-mix(in srgb,var(--line) 80%,var(--ember));border-radius:18px;background:color-mix(in srgb,var(--panel) 84%,transparent);backdrop-filter:blur(24px) saturate(160%);-webkit-backdrop-filter:blur(24px) saturate(160%);box-shadow:0 18px 42px rgba(0,0,0,.3);color:var(--white);font-size:13px;line-height:1.3;animation:forge-notification-in .24s ease-out}
+#forge-notification-toast strong{font-weight:800;white-space:nowrap}
+#forge-notification-toast span{color:var(--muted)}
+#forge-notification-toast button{border:0;background:none;color:var(--hot);font:inherit;font-weight:800;white-space:nowrap;cursor:pointer}
+#forge-notification-toast.is-leaving{opacity:0;transform:translate(-50%,8px);transition:opacity .2s ease,transform .2s ease}
+@keyframes forge-notification-in{from{opacity:0;transform:translate(-50%,10px)}to{opacity:1;transform:translate(-50%,0)}}
+#forge-pull-refresh{position:fixed;top:calc(8px + env(safe-area-inset-top,0px));left:50%;z-index:250;display:flex;align-items:center;gap:7px;padding:7px 12px;border:1px solid var(--line);border-radius:999px;background:color-mix(in srgb,var(--panel) 84%,transparent);backdrop-filter:blur(18px) saturate(150%);-webkit-backdrop-filter:blur(18px) saturate(150%);box-shadow:0 8px 24px rgba(0,0,0,.18);color:var(--muted);font-size:11px;font-weight:700;opacity:0;transform:translate(-50%,-12px);pointer-events:none;transition:opacity .18s ease,transform .18s ease}
+#forge-pull-refresh.is-visible{opacity:1;transform:translate(-50%,0)}
+#forge-pull-refresh.is-ready{color:var(--hot);border-color:color-mix(in srgb,var(--hot) 65%,var(--line))}
+#forge-pull-refresh.is-refreshing .forge-pull-refresh-spinner{animation:forge-pull-spin .7s linear infinite}
+.forge-pull-refresh-spinner{width:12px;height:12px;border:2px solid currentColor;border-top-color:transparent;border-radius:50%}
+@keyframes forge-pull-spin{to{transform:rotate(360deg)}}
 #forge-badge.collapsed{width:44px;padding:0;justify-content:center}
 #forge-badge .badge-mark{flex-shrink:0;display:flex;align-items:center}
 #forge-badge .badge-mark .forge-logo-dark{display:block}
@@ -180,6 +192,48 @@ body.has-forge-sidebar #sticky-nav{display:none!important}
   .fsheet-classrow .fsheet-item{min-width:0}
   .fsheet-classrow .fcs-remove{width:44px;flex-shrink:0;opacity:.6}
 }
+
+/* iOS Capacitor shell: a native-only Liquid Glass treatment for the existing
+   bottom navigation. The web/PWA tab bar keeps its normal styling. */
+@supports (-webkit-touch-callout:none){
+  /* Keep the native safe-area surfaces on the same Forge canvas as the web
+     content. Without this, iOS exposes the default white/light or black/dark
+     window colour as a hard strip when the page is over-scrolled. */
+  html.forge-native{
+    color-scheme:dark;
+    background:radial-gradient(120% 62% at 50% -6%,rgba(213,92,19,.2),transparent 64%),#141210;
+  }
+  html.forge-native body{
+    background:radial-gradient(120% 62% at 50% -6%,rgba(213,92,19,.2),transparent 64%),#141210;
+  }
+  html.forge-native[data-theme="light"]{color-scheme:light}
+  html.forge-native[data-theme="light"],
+  html.forge-native[data-theme="light"] body{
+    background:radial-gradient(120% 62% at 50% -6%,rgba(229,85,15,.1),transparent 64%),#f6eee8;
+  }
+  html.forge-native body{-webkit-tap-highlight-color:transparent;overscroll-behavior-y:none}
+  html.forge-native #forge-tabbar{
+    left:50%;
+    right:auto;
+    bottom:calc(-10px + env(safe-area-inset-bottom,0px));
+    width:calc(100% - 24px);
+    max-width:520px;
+    transform:translateX(-50%);
+    padding:6px 8px;
+    border:1px solid rgba(255,255,255,.18);
+    border-radius:999px;
+    background:rgba(24,26,30,.62);
+    box-shadow:0 12px 34px rgba(0,0,0,.28),0 1px 0 rgba(255,255,255,.08) inset;
+    -webkit-backdrop-filter:blur(28px) saturate(185%);
+    backdrop-filter:blur(28px) saturate(185%);
+  }
+  html.forge-native #forge-tabbar .ftab{min-height:54px}
+  html.forge-native body.has-forge-sidebar{padding-bottom:calc(88px + env(safe-area-inset-bottom,0px))}
+  html.forge-native[data-theme="light"] #forge-tabbar{
+    background:rgba(247,245,240,.72);
+    border-color:rgba(16,18,20,.14);
+  }
+}
 .fsheet-subtitle{display:block;margin-top:2px;font-size:11px;color:var(--dim);font-weight:500}
 
 /* On a tablet the bar spans a lot of glass; keep the targets grouped near the
@@ -195,4 +249,107 @@ body.has-forge-sidebar #sticky-nav{display:none!important}
 @media(max-width:360px){
   .ftab .ftab-label{font-size:9.5px}
   .ftab svg{width:20px;height:20px}
+}
+
+/* Native iOS polish. This is deliberately scoped to Capacitor so the
+   browser/PWA navigation remains unchanged. The layered highlight and subtle
+   refraction make the bar read as a floating glass surface rather than a
+   solid pill. */
+@supports (-webkit-touch-callout:none){
+  html.forge-native #forge-tabbar{
+    isolation:isolate;
+    overflow:hidden;
+    background:linear-gradient(180deg,rgba(255,255,255,.14),rgba(255,255,255,.015) 48%,rgba(0,0,0,.1)),rgba(24,26,30,.24);
+    border-color:rgba(255,255,255,.24);
+    box-shadow:0 18px 44px rgba(0,0,0,.32),0 1px 0 rgba(255,255,255,.28) inset,0 -1px 0 rgba(0,0,0,.18) inset;
+  }
+  html.forge-native #forge-tabbar::before{
+    content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
+    background:radial-gradient(120% 90% at 50% -20%,rgba(255,255,255,.28),transparent 55%);
+  }
+    html.forge-native #forge-tabbar .ftab{position:relative;z-index:1;border-radius:18px;transition:background .2s ease,color .2s ease,transform .2s ease}
+    html.forge-native #forge-tabbar .ftab .ftab-label{line-height:1.15}
+  html.forge-native #forge-tabbar .ftab.active{background:rgba(255,255,255,.16);box-shadow:0 1px 0 rgba(255,255,255,.18) inset}
+  html.forge-native[data-theme="light"] #forge-tabbar{
+    background:linear-gradient(180deg,rgba(255,255,255,.42),rgba(255,255,255,.1) 48%,rgba(220,220,215,.12)),rgba(250,250,248,.22);
+    border-color:rgba(40,38,34,.18);
+    box-shadow:0 18px 44px rgba(55,45,35,.18),0 1px 0 rgba(255,255,255,.9) inset,0 -1px 0 rgba(0,0,0,.06) inset;
+  }
+  html.forge-native[data-theme="light"] #forge-tabbar .ftab.active{background:rgba(255,255,255,.58);box-shadow:0 1px 0 rgba(255,255,255,.95) inset,0 4px 12px rgba(55,45,35,.08)}
+
+  /* Keep the brand control above the page without creating a full-width
+     opaque strip. The browser/PWA header keeps its existing layout. */
+  @media(max-width:820px){
+    html.forge-native body.has-forge-sidebar,
+    html.forge-native body.has-forge-sidebar.forge-sidebar-expanded{
+      padding-top:calc(72px + env(safe-area-inset-top,0px))!important;
+    }
+    html.forge-native #forge-badge,
+    html.forge-native #forge-badge.collapsed{
+      top:calc(10px + env(safe-area-inset-top,0px));
+      left:12px;right:auto;width:auto!important;height:50px;
+      padding:0 18px 0 14px!important;
+      border:1px solid rgba(255,255,255,.28);
+      border-radius:999px;
+      background:linear-gradient(180deg,rgba(255,255,255,.13),rgba(255,255,255,.012)),rgba(28,30,34,.14);
+      box-shadow:0 14px 34px rgba(0,0,0,.22),0 1px 0 rgba(255,255,255,.24) inset;
+      -webkit-backdrop-filter:blur(28px) saturate(190%);
+      backdrop-filter:blur(28px) saturate(190%);
+      justify-content:flex-start;
+    }
+    /* With Capacitor edge-to-edge rendering, some iOS 27 WebViews report a
+       zero CSS safe-area inset even though the status bar still occupies the
+       top of the physical screen. Keep the badge below that region on a
+       portrait phone; the max() retains the correct placement when env() is
+       reported normally. */
+    @media (max-width:600px) and (orientation:portrait){
+      html.forge-native #forge-badge,
+      html.forge-native #forge-badge.collapsed{
+        top:max(58px,calc(10px + env(safe-area-inset-top,0px)));
+      }
+    }
+    html.forge-native[data-theme="light"] #forge-badge,
+    html.forge-native[data-theme="light"] #forge-badge.collapsed{
+      background:linear-gradient(180deg,rgba(255,255,255,.24),rgba(255,255,255,.02)),rgba(250,250,248,.08);
+      border-color:rgba(40,38,34,.14);
+      box-shadow:0 14px 34px rgba(55,45,35,.14),0 1px 0 rgba(255,255,255,.85) inset;
+    }
+    html.forge-native #forge-tabbar{
+      background:linear-gradient(180deg,rgba(255,255,255,.09),rgba(255,255,255,.008)),rgba(24,26,30,.1);
+      -webkit-backdrop-filter:blur(36px) saturate(220%) contrast(110%);
+      backdrop-filter:blur(36px) saturate(220%) contrast(110%);
+    }
+    html.forge-native[data-theme="light"] #forge-tabbar{
+      background:linear-gradient(180deg,rgba(255,255,255,.16),rgba(255,255,255,.012)),rgba(247,245,240,.06);
+      -webkit-backdrop-filter:blur(36px) saturate(220%) contrast(108%);
+      backdrop-filter:blur(36px) saturate(220%) contrast(108%);
+    }
+    html.forge-native[data-theme="light"] #forge-tabbar .ftab.active{background:rgba(255,255,255,.22)}
+
+    /* Keep one, shared native clearance below the floating brand badge. The
+       old shell reserved this space in body, main-content, and wrap, which
+       compounded into a large blank region on several routes. */
+    html.forge-native body.has-forge-sidebar .wrap{
+      padding-top:20px!important;
+    }
+    html.forge-native body.has-forge-sidebar #main-content{
+      padding-top:0!important;
+    }
+
+    /* Auth cards already center themselves inside their own viewport-height
+       stage. Do not add dashboard clearance to those pages or the card gets
+       pushed much too far down (notably Teacher > Your classes). */
+    html.forge-native body.has-forge-sidebar .wrap:has(.auth-stage),
+    html.forge-native body.has-forge-sidebar #main-content:has(.auth-stage){
+      padding-top:0!important;
+    }
+
+    /* A loaded teacher class dashboard has its own compact header. The
+       generic dashboard clearance is too generous here and leaves a large
+       dead zone between the floating brand badge and the class heading. */
+    html.forge-native body.has-forge-sidebar .wrap:has(.dash-header),
+    html.forge-native body.has-forge-sidebar #main-content:has(.dash-header){
+      padding-top:20px!important;
+    }
+  }
 }

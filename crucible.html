@@ -32,10 +32,13 @@
 
 
 <script src="scripts/forge-logo.js"></script>
+<script src="scripts/forge-role.js"></script>
 <script src="scripts/forge-auth-card.js"></script>
 <script src="scripts/forge-classes.js?v=20260813"></script>
+<script src="scripts/forge-theme.js"></script>
 <script src="scripts/forge-sidebar.js?v=20260812"></script>
 <script src="scripts/forge-product-analytics.js"></script>
+<script>if (window.ForgeRole) ForgeRole.guard('student', 'teacher.html');</script>
 <script src="scripts/forge-page-actions.js"></script>
 <script>
 ForgeSidebar.mount({
@@ -54,6 +57,18 @@ ForgeSidebar.mount({
 </script>
 <script src="forge-auth.js"></script>
 <script src="scripts/forge-assignment-progress.js"></script><script defer src="scripts/forge-student-badges.js?v=20260807"></script>
+<script>
+// Keep the native edge gesture within the Crucible sequence. The shared
+// sidebar will only fall back to browser history from its first screen.
+window.forgeHandleNativeBack = function () {
+  if (!window.state || typeof window.render !== 'function') return false;
+  var previous = { results: 'quiz', quiz: 'ready', ready: 'bank', bank: 'subject', subject: 'join' }[window.state.phase];
+  if (!previous) return false;
+  window.state.phase = previous;
+  window.render();
+  return true;
+};
+</script>
 <main class="wrap" id="main-content">
   <div id="app" aria-live="polite"></div>
 </main>

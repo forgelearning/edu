@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Forge — Settings</title>
+  <meta name="description" content="Forge app settings.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Poppins:wght@400;500;600;700;800&family=Rethink+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/sidebar.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/states.css">
+  <link rel="stylesheet" href="css/page-overrides/settings.css">
+</head>
+<body>
+  <script src="scripts/forge-api.js"></script>
+  <script src="scripts/forge-state.js"></script>
+  <script src="scripts/forge-logo.js"></script>
+  <script src="scripts/forge-role.js"></script>
+  <script src="scripts/forge-theme.js"></script>
+  <script src="scripts/forge-sidebar.js"></script>
+  <script src="forge-auth.js"></script>
+  <script src="scripts/forge-student-badges.js"></script>
+  <script>if (window.ForgeRole) ForgeRole.guard('student', 'teacher.html');</script>
+  <script>
+    function forgeSignOut() {
+      try { localStorage.removeItem('forge-student'); localStorage.removeItem('forge-free-session'); } catch (e) {}
+      if (window.ForgeAuth) ForgeAuth.signOut();
+      location.href = 'forge-quiz.html';
+    }
+    ForgeSidebar.mount({
+      active: 'settings',
+      items: [
+        {key:'dashboard', href:'student-dashboard.html', label:'Dashboard'},
+        {key:'forge', href:'forge-quiz.html', label:'Forge'},
+        {key:'assignments', href:'assignments.html', label:'Assigned'},
+        {key:'anvil', href:'anvil.html', label:'Anvil'},
+        {key:'crucible', href:'crucible.html', label:'Crucible'}
+      ],
+      footerItems: [{key:'profile', href:'profile.html', label:'Profile'}],
+      signOut: forgeSignOut
+    });
+  </script>
+
+  <main class="wrap settings-page" id="main-content">
+    <header class="settings-hero">
+      <p class="settings-kicker">FORGE / CONTROL PANEL</p>
+      <h1>Settings</h1>
+      <p>Shape Forge around the way you study. Changes apply across the app on this device.</p>
+    </header>
+
+    <section class="settings-section" aria-labelledby="appearance-title">
+      <div class="settings-section-heading"><div><p class="settings-kicker">APPEARANCE</p><h2 id="appearance-title">Choose your atmosphere</h2></div><span class="settings-section-mark" aria-hidden="true">◐</span></div>
+      <div class="settings-options" role="radiogroup" aria-label="Theme preference">
+        <label class="settings-option"><input type="radio" name="theme" value="system"><span><strong>Use device setting</strong><small>Follow light and dark mode automatically.</small></span></label>
+        <label class="settings-option"><input type="radio" name="theme" value="light"><span><strong>Light Forge</strong><small>Bright surfaces and ember accents.</small></span></label>
+        <label class="settings-option"><input type="radio" name="theme" value="dark"><span><strong>Dark Forge</strong><small>Low-light contrast for focused sessions.</small></span></label>
+      </div>
+    </section>
+
+    <section class="settings-section" aria-labelledby="notifications-title">
+      <div class="settings-section-heading"><div><p class="settings-kicker">SIGNALS</p><h2 id="notifications-title">Notifications</h2></div><span class="settings-section-mark" aria-hidden="true">!</span></div>
+      <p class="settings-copy">Get a nudge when a new assignment arrives, a deadline is close, or ten or more Anvil tasks are waiting.</p>
+      <div class="settings-action-row"><span id="settings-notification-status" class="settings-status">Checking notification access…</span><button class="forge-button forge-button--secondary" id="settings-enable-notifications" type="button">Enable notifications</button></div>
+    </section>
+
+    <section class="settings-section" aria-labelledby="account-title">
+      <div class="settings-section-heading"><div><p class="settings-kicker">ACCOUNT</p><h2 id="account-title">Your Forge account</h2></div><span class="settings-section-mark" aria-hidden="true">F</span></div>
+      <div class="settings-account" id="settings-account-copy">Your current student session will appear here.</div>
+      <button class="forge-button forge-button--danger" type="button" id="settings-sign-out">Sign out</button>
+    </section>
+  </main>
+
+  <script>
+    (function () {
+      var theme = localStorage.getItem('forge-theme');
+      var selected = theme === 'light' || theme === 'dark' ? theme : 'system';
+      var radios = document.querySelectorAll('input[name="theme"]');
+      Array.prototype.forEach.call(radios, function (radio) {
+        radio.checked = radio.value === selected;
+        radio.addEventListener('change', function () {
+          if (this.value === 'system') localStorage.removeItem('forge-theme');
+          else localStorage.setItem('forge-theme', this.value);
+          var light = this.value === 'light' || (this.value === 'system' && window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches);
+          if (window.setForgeTheme) window.setForgeTheme(light, false);
+          else if (light) document.documentElement.setAttribute('data-theme', 'light');
+          else document.documentElement.removeAttribute('data-theme');
+          setTimeout(function () { location.reload(); }, 80);
+        });
+      });
+      var saved = null;
+      try { saved = JSON.parse(localStorage.getItem('forge-student') || 'null'); } catch (e) {}
+      var account = document.getElementById('settings-account-copy');
+      if (saved) account.innerHTML = '<strong>' + String(saved.studentName || 'Student').replace(/[&<>"']/g, '') + '</strong><span>' + String(saved.classCode || 'Forge learner').replace(/[&<>"']/g, '') + '</span>';
+      document.getElementById('settings-sign-out').addEventListener('click', forgeSignOut);
+      var status = document.getElementById('settings-notification-status');
+      var enable = document.getElementById('settings-enable-notifications');
+      function updateNotificationStatus() {
+        var permissionPromise = window.ForgeStudentNotifications && ForgeStudentNotifications.permission
+          ? ForgeStudentNotifications.permission()
+          : Promise.resolve({display: window.Notification ? Notification.permission : 'unsupported'});
+        permissionPromise.then(function (result) {
+          var permission = result && result.display || 'unsupported';
+          status.textContent = permission === 'granted' ? 'Notifications are enabled' : permission === 'denied' ? 'Notifications are blocked in device settings' : permission === 'unsupported' ? 'Notifications are unavailable in this build' : 'Notifications are not enabled yet';
+        });
+      }
+      updateNotificationStatus();
+      enable.addEventListener('click', function () {
+        status.textContent = 'Requesting notification access…';
+        if (window.ForgeStudentNotifications && ForgeStudentNotifications.enable) ForgeStudentNotifications.enable().then(updateNotificationStatus);
+        else if (window.Notification) Notification.requestPermission().then(updateNotificationStatus);
+        else status.textContent = 'Notifications are unavailable in this build';
+      });
+    }());
+  </script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Forge — Choose your sign in</title>
+  <meta name="description" content="Choose whether you are signing in as a student or teacher.">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#101214">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Forge">
+  <link rel="apple-touch-icon" href="assets/forge-icon.png">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css?v=20260814-fonts">
+  <link rel="stylesheet" href="css/pwa.css?v=1">
+  <link rel="stylesheet" href="css/role-select.css">
+  <script src="scripts/forge-pwa.js?v=1" data-forge-pwa></script>
+</head>
+<body>
+  <main class="role-select" aria-labelledby="role-title">
+    <div class="role-select__card">
+      <img class="role-select__icon" src="assets/forge-icon.png" alt="Forge shield with F badge">
+      <p class="tag">Welcome to Forge</p>
+      <h1 id="role-title">How are you using Forge?</h1>
+      <p class="role-select__intro">Choose your sign in and we’ll take you to the right place.</p>
+      <div class="role-select__choices">
+        <a class="role-choice role-choice--student" href="forge-quiz.html?mode=class">
+          <span class="role-choice__mark" aria-hidden="true">S</span>
+          <span><strong>Student</strong><small>Practise, repair misconceptions and track your progress.</small></span>
+          <span class="role-choice__arrow" aria-hidden="true">→</span>
+        </a>
+        <a class="role-choice role-choice--teacher" href="teacher.html">
+          <span class="role-choice__mark" aria-hidden="true">T</span>
+          <span><strong>Teacher</strong><small>Open classes, assignments and student insight.</small></span>
+          <span class="role-choice__arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+      <a class="role-select__back" href="index.html">Back to Forge home</a>
+    </div>
+  </main>
+</body>
+</html>

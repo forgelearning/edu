@@ -17,6 +17,7 @@ function _authHeaders(token) {
 }
 
 var FORGE_SESSION_KEY = 'forge-auth-session';
+var FORGE_REFRESH_ATTEMPT_KEY = 'forge-auth-refresh-at';
 
 function _saveAuthSession(session) {
   try { localStorage.setItem(FORGE_SESSION_KEY, JSON.stringify(session)); } catch(e) {}
@@ -25,7 +26,10 @@ function _loadAuthSession() {
   try { return JSON.parse(localStorage.getItem(FORGE_SESSION_KEY) || 'null'); } catch(e) { return null; }
 }
 function _clearAuthSession() {
-  try { localStorage.removeItem(FORGE_SESSION_KEY); } catch(e) {}
+  try {
+    localStorage.removeItem(FORGE_SESSION_KEY);
+    localStorage.removeItem(FORGE_REFRESH_ATTEMPT_KEY);
+  } catch(e) {}
 }
 
 // ── TRIAL HELPERS ────────────────────────────────────────────
@@ -114,6 +118,7 @@ var ForgeAuth = {
         return Promise.reject(new Error(data.error_description || data.msg || data.error || 'Sign-up failed'));
       }
       _saveAuthSession({ access_token: data.access_token, refresh_token: data.refresh_token, user: data.user });
+      if (window.ForgeRole) ForgeRole.set('student');
 
       // Insert subscriber record — trial mode, not yet paying
       return ForgeAPI.insert('subscribers', {
@@ -138,6 +143,7 @@ var ForgeAuth = {
         return Promise.reject(new Error(data.error_description || data.msg || data.error || 'Incorrect email or password'));
       }
       _saveAuthSession({ access_token: data.access_token, refresh_token: data.refresh_token, user: data.user });
+      if (window.ForgeRole) ForgeRole.set('student');
       return data;
     });
   },
@@ -153,6 +159,19 @@ var ForgeAuth = {
       _saveAuthSession({ access_token: data.access_token, refresh_token: data.refresh_token, user: data.user });
       return data;
     });
+  },
+
+  // Native WebViews can remain suspended long enough for the short-lived
+  // access token to expire. Refresh on app resume, but throttle the attempt so
+  // repeated foreground/background transitions do not create auth traffic.
+  refreshIfNeeded: function() {
+    var saved = _loadAuthSession();
+    if (!saved || !saved.refresh_token) return Promise.resolve(saved);
+    var lastAttempt = 0;
+    try { lastAttempt = Number(localStorage.getItem(FORGE_REFRESH_ATTEMPT_KEY) || 0); } catch(e) {}
+    if (lastAttempt && Date.now() - lastAttempt < 60000) return Promise.resolve(saved);
+    try { localStorage.setItem(FORGE_REFRESH_ATTEMPT_KEY, String(Date.now())); } catch(e) {}
+    return ForgeAuth.refreshSession(saved.refresh_token).catch(function() { return null; });
   },
 
   // Check session, refresh if needed, return { session, subscriber, access, daysLeft } or null
@@ -187,6 +206,7 @@ var ForgeAuth = {
       ForgeAPI.auth.signOut(saved.access_token).catch(function() {});
     }
     _clearAuthSession();
+    if (window.ForgeRole) ForgeRole.clear('student');
     // Derived navigation state must never survive into the next student's
     // session. The Anvil count is only a local display cache.
     try { localStorage.removeItem('forge-anvil-open'); } catch(e) {}

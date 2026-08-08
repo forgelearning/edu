@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="900" viewBox="0 0 1400 900">
+  <defs>
+    <linearGradient id="lightBg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f4eee7"/><stop offset="1" stop-color="#dcd0c4"/>
+    </linearGradient>
+    <linearGradient id="darkBg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2a1a11"/><stop offset="1" stop-color="#0e0c0b"/>
+    </linearGradient>
+    <radialGradient id="emberLight" cx="0" cy="0" r="1">
+      <stop offset="0" stop-color="#f28a49" stop-opacity=".38"/><stop offset="1" stop-color="#f28a49" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="emberDark" cx="0" cy="0" r="1">
+      <stop offset="0" stop-color="#e85f1d" stop-opacity=".36"/><stop offset="1" stop-color="#e85f1d" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="18" stdDeviation="20" flood-color="#6d4a35" flood-opacity=".23"/></filter>
+    <style>
+      .title{font:700 32px -apple-system,BlinkMacSystemFont,Segoe UI,sans-serif;fill:#222}
+      .sub{font:500 18px -apple-system,BlinkMacSystemFont,Segoe UI,sans-serif;fill:#6b625a}
+      .mono{font:600 15px ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:2px}
+      .h{font:700 30px -apple-system,BlinkMacSystemFont,Segoe UI,sans-serif}
+      .body{font:500 18px -apple-system,BlinkMacSystemFont,Segoe UI,sans-serif}
+      .tiny{font:600 13px ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:1px}
+    </style>
+  </defs>
+  <rect width="1400" height="900" fill="#eee9e4"/>
+  <text x="72" y="74" class="title">Forge widgets · first review slice</text>
+  <text x="72" y="108" class="sub">Student assignment widgets · light and dark appearance</text>
+
+  <!-- light small -->
+  <g transform="translate(72 166)" filter="url(#shadow)">
+    <rect width="280" height="280" rx="42" fill="url(#lightBg)"/>
+    <circle cx="0" cy="0" r="190" fill="url(#emberLight)"/>
+    <path d="M34 33l20-7 20 7v15c0 12-8 20-20 25-12-5-20-13-20-25z" fill="#202a36"/>
+    <text x="47" y="56" font-family="Arial" font-size="24" font-weight="900" fill="#ed671f">F</text>
+    <text x="32" y="146" class="tiny" fill="#9a5e27">NEXT MOVE</text>
+    <text x="32" y="190" class="h" fill="#25211e">AD</text>
+    <text x="32" y="230" class="body" fill="#6b625a">0% complete</text>
+    <rect x="32" y="248" width="216" height="6" rx="3" fill="#d3c8be"/>
+  </g>
+  <text x="72" y="480" class="sub">Small</text>
+
+  <!-- light medium -->
+  <g transform="translate(390 166)" filter="url(#shadow)">
+    <rect width="560" height="280" rx="42" fill="url(#lightBg)"/>
+    <circle cx="0" cy="0" r="260" fill="url(#emberLight)"/>
+    <path d="M32 34l20-7 20 7v15c0 12-8 20-20 25-12-5-20-13-20-25z" fill="#202a36"/>
+    <text x="45" y="57" font-family="Arial" font-size="24" font-weight="900" fill="#ed671f">F</text>
+    <text x="92" y="54" class="tiny" fill="#9a5e27">ASSIGNED QUEUE</text>
+    <text x="34" y="128" class="h" fill="#25211e">AD</text>
+    <text x="472" y="128" text-anchor="end" class="h" fill="#d27b1d">0%</text>
+    <text x="34" y="171" class="body" fill="#6b625a">Due soon · 0 of 8 questions answered</text>
+    <rect x="34" y="194" width="492" height="8" rx="4" fill="#d3c8be"/>
+    <rect x="34" y="194" width="0" height="8" rx="4" fill="#ed671f"/>
+    <text x="34" y="238" class="tiny" fill="#8c8177">1 NEW ASSIGNMENT</text>
+  </g>
+  <text x="390" y="480" class="sub">Medium</text>
+
+  <!-- dark small -->
+  <g transform="translate(72 570)" filter="url(#shadow)">
+    <rect width="280" height="280" rx="42" fill="url(#darkBg)"/>
+    <circle cx="0" cy="0" r="190" fill="url(#emberDark)"/>
+    <path d="M34 33l20-7 20 7v15c0 12-8 20-20 25-12-5-20-13-20-25z" fill="#e76620"/>
+    <text x="47" y="56" font-family="Arial" font-size="24" font-weight="900" fill="#15202d">F</text>
+    <text x="32" y="146" class="tiny" fill="#f0bd3f">NEXT MOVE</text>
+    <text x="32" y="190" class="h" fill="#f5f0e8">AD</text>
+    <text x="32" y="230" class="body" fill="#b8afa7">0% complete</text>
+    <rect x="32" y="248" width="216" height="6" rx="3" fill="#3c332c"/>
+  </g>
+  <text x="72" y="884" class="sub">Dark · follows system appearance</text>
+
+  <!-- dark medium -->
+  <g transform="translate(390 570)" filter="url(#shadow)">
+    <rect width="560" height="280" rx="42" fill="url(#darkBg)"/>
+    <circle cx="0" cy="0" r="260" fill="url(#emberDark)"/>
+    <path d="M32 34l20-7 20 7v15c0 12-8 20-20 25-12-5-20-13-20-25z" fill="#e76620"/>
+    <text x="45" y="57" font-family="Arial" font-size="24" font-weight="900" fill="#15202d">F</text>
+    <text x="92" y="54" class="tiny" fill="#f0bd3f">ASSIGNED QUEUE</text>
+    <text x="34" y="128" class="h" fill="#f5f0e8">AD</text>
+    <text x="472" y="128" text-anchor="end" class="h" fill="#f0bd3f">0%</text>
+    <text x="34" y="171" class="body" fill="#b8afa7">Due soon · 0 of 8 questions answered</text>
+    <rect x="34" y="194" width="492" height="8" rx="4" fill="#3c332c"/>
+    <rect x="34" y="194" width="0" height="8" rx="4" fill="#e76620"/>
+    <text x="34" y="238" class="tiny" fill="#8d8178">1 NEW ASSIGNMENT</text>
+  </g>
+  <text x="390" y="884" class="sub">Dark · follows system appearance</text>
+
+  <text x="1040" y="210" class="title">Direction</text>
+  <text x="1040" y="258" class="body" fill="#4f4842">Small stays focused:</text>
+  <text x="1040" y="288" class="body" fill="#4f4842">one next move, one tap.</text>
+  <text x="1040" y="348" class="body" fill="#4f4842">Medium adds context:</text>
+  <text x="1040" y="378" class="body" fill="#4f4842">due date, progress, and</text>
+  <text x="1040" y="408" class="body" fill="#4f4842">assignment count.</text>
+  <text x="1040" y="468" class="body" fill="#4f4842">Both link directly to</text>
+  <text x="1040" y="498" class="body" fill="#4f4842">the assigned page.</text>
+</svg>

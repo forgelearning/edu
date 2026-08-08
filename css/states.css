@@ -8,11 +8,13 @@
 .forge-state__action{min-height:44px}
 .forge-state--loading{border-color:rgba(255,201,60,.3);background:rgba(255,201,60,.06)}
 .forge-state--loading .forge-state__icon{color:var(--hot);animation:forge-state-pulse 1.2s ease-in-out infinite}
+.forge-state--loading .forge-state__icon{font-size:0;border:2px solid color-mix(in srgb,var(--hot) 30%,transparent);border-top-color:var(--hot);animation:forge-state-spin .8s linear infinite}
 .forge-state--error{border-color:rgba(255,90,90,.35);background:rgba(255,90,90,.07)}
 .forge-state--error .forge-state__icon{color:var(--bad);background:rgba(255,90,90,.12)}
 .forge-state--success{border-color:rgba(127,217,138,.35);background:rgba(127,217,138,.07)}
 .forge-state--success .forge-state__icon{color:var(--good);background:rgba(127,217,138,.12)}
 .forge-state--empty .forge-state__icon{color:var(--dim)}
 @keyframes forge-state-pulse{0%,100%{opacity:.5}50%{opacity:1}}
+@keyframes forge-state-spin{to{transform:rotate(360deg)}}
 @media(max-width:600px){.forge-state{padding:var(--space-4)}.forge-state__actions{width:100%}.forge-state__action{flex:1}}
 @media(prefers-reduced-motion:reduce){.forge-state--loading .forge-state__icon{animation:none}}
