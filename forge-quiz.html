@@ -80,10 +80,25 @@ window.forgeHandleNativeBack = function () {
 var SUPABASE_URL = ForgeAPI.config.url;
 var SUPABASE_KEY = ForgeAPI.config.key;
 window.ForgePersistenceErrors = window.ForgePersistenceErrors || [];
+function showPersistenceStatus(detail) {
+  var target = document.getElementById('feedback') || document.getElementById('rf-feedback');
+  if (!target) return;
+  var status = document.getElementById('forge-save-status');
+  if (!status) {
+    status = document.createElement('div');
+    status.id = 'forge-save-status';
+    status.className = 'forge-status forge-status--error forge-save-status';
+    status.setAttribute('role', 'status');
+    target.parentNode.insertBefore(status, target.nextSibling);
+  }
+  status.textContent = 'We couldn’t sync this answer right now. It is saved on this device; try again when you’re back online.';
+  return detail;
+}
 function recordPersistenceError(error, row, source) {
   var detail = {source:source || 'response', status:error && error.status || null, message:error && error.message || String(error || 'Unknown persistence error'), student_id:row && row.student_id, class_id:row && row.class_id, bank:row && row.bank, question_id:row && row.question_id};
   window.ForgePersistenceErrors.push(detail);
   console.error('Forge response persistence failed:', detail);
+  showPersistenceStatus(detail);
   return detail;
 }
 
@@ -1478,12 +1493,30 @@ function renderQuiz(){
 
       document.getElementById('next-btn').onclick=function(){
         var next = function() {
-        state.idx++;render();
+          state.idx++;render();
         };
         if (responseSaved && typeof responseSaved.then === 'function') responseSaved.then(function(result){
           if (result && result.allowed === false) { renderLimitWall(); return; }
+          if (result === false) {
+            showPersistenceStatus();
+            var continueBtn = document.getElementById('next-btn');
+            if (continueBtn) {
+              continueBtn.textContent = 'Continue anyway';
+              continueBtn.onclick = next;
+              continueBtn.focus();
+            }
+            return;
+          }
           next();
-        }).catch(next);
+        }).catch(function(){
+          showPersistenceStatus();
+          var continueBtn = document.getElementById('next-btn');
+          if (continueBtn) {
+            continueBtn.textContent = 'Continue anyway';
+            continueBtn.onclick = next;
+            continueBtn.focus();
+          }
+        });
         else next();
       };
       revealQuizNext();
@@ -1577,7 +1610,7 @@ function renderFillBlankQuiz(q,bk,headerHtml){
       if(allCorrect){ state.weightMap[q.id]=Math.max(0.2,(state.weightMap[q.id]||1)*0.5); }
       else{ state.weightMap[q.id]=3; }
     }
-    logResponse(q,given.join('|'),allCorrect,false,null);
+    var responseSaved = logResponse(q,given.join('|'),allCorrect,false,null);
     forgeSyncStudentWidgetProgress();
 
     checkBtn.style.display='none';
@@ -1594,7 +1627,30 @@ function renderFillBlankQuiz(q,bk,headerHtml){
     }
     forgeSaveSession();
     document.getElementById('next-btn').onclick=function(){
-      state.idx++;render();
+      var next = function(){ state.idx++;render(); };
+      if (responseSaved && typeof responseSaved.then === 'function') responseSaved.then(function(result){
+        if (result && result.allowed === false) { renderLimitWall(); return; }
+        if (result === false) {
+          showPersistenceStatus();
+          var continueBtn = document.getElementById('next-btn');
+          if (continueBtn) {
+            continueBtn.textContent = 'Continue anyway';
+            continueBtn.onclick = next;
+            continueBtn.focus();
+          }
+          return;
+        }
+        next();
+      }).catch(function(){
+        showPersistenceStatus();
+        var continueBtn = document.getElementById('next-btn');
+        if (continueBtn) {
+          continueBtn.textContent = 'Continue anyway';
+          continueBtn.onclick = next;
+          continueBtn.focus();
+        }
+      });
+      else next();
     };
     revealQuizNext();
   };

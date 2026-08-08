@@ -213,6 +213,7 @@ h1,h2,h3{font-family:'Rethink Sans',sans-serif;color:var(--white);line-height:1.
 .opt .letter{font-size:12px;font-weight:600;letter-spacing:.08em}
 .opt:hover:not(.answered){transform:translateX(4px);box-shadow:8px 10px 24px -20px rgba(255,107,44,.8)}
 #feedback{margin-top:20px;contain:layout paint}
+.forge-save-status{margin-top:14px;font-size:13px;line-height:1.5}
 .scaffold-box,.praise-box{padding:18px 20px;border-top-width:2px;contain:layout paint}
 .scaffold-box .stag,.praise-box .stag{letter-spacing:.08em}
 .next-btn{float:none;display:block;margin:18px 0 0 auto;min-width:132px;padding:12px 22px;border-radius:var(--radius-pill);font-size:15px;box-shadow:0 10px 22px -16px rgba(255,107,44,.9)}
