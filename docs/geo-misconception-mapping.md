@@ -203,16 +203,76 @@ Each failure mode was confirmed to fire before the values were committed:
 | one question's tag reverted to `MC-<id>` | fails: `MECHANICAL TAGS: "geo" has 1/238 source questions` |
 | `MC-GEO-RIGHTS` starter removed | fails: `NO STARTER: "geo" has 1 aggregatable tag(s)` |
 
-## Not done, and deliberately
+## Padded distractors — fixed for geo
 
-- **19 options carry literal padding filler** — `TEC-01` option B ends
-  "cannot move. in this context in context in context in context", and there
-  are 18 more across `GEO-TEC`, `GEO-COAST`, `GEO-REGEN` and `GEO-WATER`.
-  This is how the subject reached 0% "correct answer is longest": distractors
-  were padded, which is the anti-pattern `CLAUDE.md` warns against. Geo needs
-  no rewrite pass for the length rule itself — a scripted check found **0**
-  correct-is-longest violations across all 474 stems and twins — but the
-  filler should be replaced with genuine distractor content.
+**187 options across all nine geo banks** ended in repeated filler
+(`TEC-01` option B: "…cannot move. in this context in context in context in
+context"). None of them was a correct answer, which is the giveaway: the
+filler was applied to *distractors* so they would out-length the key.
+
+The mechanism is a family of about fifteen copy-pasted loops in
+`data/forge-data.js` of the form
+
+```js
+while (options[distractor].length <= options[correct].length)
+  options[distractor] += " in this context";
+```
+
+They enforce the authoring standard's rule that the correct answer must not be
+the single longest option, and defeat its purpose: a student scanning four
+options sees one trailing in repeated filler and eliminates it, which is a
+stronger cue than the length it was added to hide. `CLAUDE.md` warns about
+precisely this.
+
+All 187 are now replaced by `geoAlevelDistractorRepairs`, each a genuine
+plausible-but-wrong option written to be at least as long as its correct
+answer, so the padding loops have nothing left to do. Result: **0 padded
+options and 0 correct-is-single-longest across all 474 geo option sets.**
+
+Three things worth knowing about that pass:
+
+- It is keyed `"<id>:<mode>"` and matches on the option's **text, not its
+  letter**, because `rebalanceMCQSubject()` permutes letters.
+- It is invoked as the **last statement in the file**. Seven
+  `A1-PHASE7-GEO*` reforge twins are rebuilt by a pass that runs after the
+  repair's own definition point; called there, the repair was applied and then
+  overwritten. If a new pass is added below it, check it does not re-pad geo.
+- Where the original distractor was a generated non-answer ("It has no
+  significant geographical effect on …", "It cannot be applied to geographical
+  evidence or decision-making") the replacement is a real misconception-shaped
+  wrong answer rather than a longer non-answer.
+
+It also fixed a defect the padding was hiding: `A1-PHASE7-GEOTEC-01` and
+`-02` both carried `TEC-01`'s distractor ("Continental plates are anchored by
+mountain ranges and cannot move.") on questions about return periods and
+hazard maps.
+
+### The same filler affects 6,149 options across 30 subjects
+
+Geo's 187 are a local fix to a bank-wide problem. Measured across every
+subject:
+
+| subject | padded options | | subject | padded options |
+|---|---|---|---|---|
+| `englit` / `engll` | 492 each | | `hsc` | 231 |
+| `pe` | 406 | | `maths` / `rs` | 220 each |
+| `span` | 351 | | `media` | 219 |
+| `mand` | 288 | | **`geo`** | **187 → 0** |
+| `german` | 278 | | `bio` / `cs` | 170 each |
+| `french` | 269 | | `gcse-hist` | 161 |
+| `bus` | 268 | | `phys` | 152 |
+| `gcse-psych` | 262 | | …and 13 more | |
+
+`gcse-geo` (82) and the `gcse-sep-*` sciences already have curated repair
+tables (`geoOptionRepairs`, `separateScienceOptionRepairs`) applied *before*
+their padding loop — the same idea, and the model the geo pass follows.
+
+Fixing the rest is a much larger content job than a mechanical one: each
+replacement has to be written, because the only alternatives are padding
+(the current bug) or shortening correct answers (which produced the
+fragment-and-wrong-fact defects `CLAUDE.md` documents for the override
+tables). A shared repair-table mechanism plus an audit check that fails on
+filler would stop it spreading further.
 - **The four definition-recall banks still test definitions.** `GEO-WATER`,
   `GEO-CARBON`, `GEO-SUPER` and `GEO-HEALTH` are generated
   "What is meant by X?" stems, so a tag firing means "missed a definition in

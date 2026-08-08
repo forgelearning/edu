@@ -173,13 +173,30 @@ propagates into its `*-COV-*` copies and fixing the source fixes them all.
 - A-Level Geography is intentionally marked Developing until every active route
   point is mapped. That is about spec-point coverage (91%) and is unrelated to
   its misconception tagging, which is complete.
-- A-Level Geography carries 19 options padded with literal filler
-  (`TEC-01` option B ends "cannot move. in this context in context in
-  context in context"), across `GEO-TEC`, `GEO-COAST`, `GEO-REGEN` and
-  `GEO-WATER`. This is how the subject reached 0% cued: distractors were
-  padded rather than written. A scripted check finds 0 correct-is-longest
-  violations there, so the length rule itself needs no rewrite pass — the
-  filler text does.
+- **The 0% cued figure is partly manufactured, and this is the big one.**
+  About fifteen copy-pasted loops in `data/forge-data.js` do
+  `while (options[distractor].length <= options[correct].length)
+  options[distractor] += " in this context";`. That satisfies the
+  answer-length rule by appending filler to a distractor, which is a *stronger*
+  cue than the length it hides — a student eliminates the option trailing in
+  repeated filler. **6,149 options across 30 subjects** are affected: `englit`
+  and `engll` 492 each, `pe` 406, `span` 351, `mand` 288, `german` 278,
+  `french` 269, `bus` 268, `gcse-psych` 262, and on down. None of them is ever
+  a correct answer — the filler exists to make distractors out-length the key.
+
+  A-Level `geo` is fixed (187 → 0) via `geoAlevelDistractorRepairs`, following
+  the `geoOptionRepairs` / `separateScienceOptionRepairs` pattern that
+  `gcse-geo` and the separate sciences already use: a curated table of genuine
+  replacement text, so the padding loop has nothing to do. The rest is a
+  content job — each replacement must be written, since the alternatives are
+  padding or shortening correct answers, and the latter is what produced the
+  override-table defects above. `dev/audit-banks.js` does not currently fail on
+  filler; adding that check would stop it spreading.
+
+  Two gotchas if you extend this: match on option **text, not letter**
+  (`rebalanceMCQSubject()` permutes letters), and run the repair **last** —
+  some reforge twins are rebuilt by later passes and will overwrite an earlier
+  repair.
 - `TAG_TAXONOMY_SUBJECTS` counts array-valued tags as a single composite key
   rather than incrementing each member, so a question tagged
   `["MC-A","MC-TECH-02"]` reads as used-once no matter how many questions
