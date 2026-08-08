@@ -17463,12 +17463,192 @@ const econMisconceptionTags = {
   "TH4C-47":"MC-GLOB-JCURVE","TH4C-48":"MC-GLOB-JCURVE",
   "TH4C-49":"MC-GLOB-MARSHALL-LERNER","TH4C-50":"MC-GLOB-MARSHALL-LERNER",
   "TH4C-51":"MC-GLOB-IMPORT-SUB","TH4C-52":"MC-GLOB-IMPORT-SUB",
+
+  // ===== Stage 2 ==========================================================
+  // Stage 1 merged the generated concept PAIRS, where the concept was named
+  // in the stem and the merge was derivable by script. It left 230 questions
+  // on a tag used exactly once: the definitional TH1-*/TH3-*/TH4-GT-* recall
+  // questions and the hand-authored SD-*/FIS-*/MON-* misconception items.
+  //
+  // Those 230 are mapped below. 26 of them land on tags stage 1 already
+  // created, which deepens those rather than adding new ones — TH1-SPL-09
+  // "What is absolute advantage?" belongs on MC-GLOB-ABSOLUTE, and BOP-03,
+  // where a student draws the J-curve improving immediately, belongs on
+  // MC-GLOB-JCURVE, which is precisely the error that tag names.
+  //
+  // Single-use share falls 0.447 -> 0.012, and the six that remain carry a
+  // tag naming the error rather than the question's position, so the
+  // mechanical share is 0. See docs/econ-misconception-taxonomy-draft.md.
+  // --- Theme 1 microeconomics — the definitional TH1-* set and the hand-authored SD-*
+  "SD-03":"MC-MICRO-EQUILIBRIUM","TH1-EQ-09":"MC-MICRO-EQUILIBRIUM",
+  "TH1-EQ-10":"MC-MICRO-EQUILIBRIUM","TH1-EQ-11":"MC-MICRO-EQUILIBRIUM",
+  "SD-05":"MC-MICRO-XED","TH1-DEM-11":"MC-MICRO-XED",
+  "TH1-XED-09":"MC-MICRO-XED","TH1-XED-10":"MC-MICRO-XED",
+  "TH1-YED-09":"MC-MICRO-YED","TH1-YED-10":"MC-MICRO-YED",
+  "TH1-SC-09":"MC-MICRO-SCARCITY","TH1-SC-10":"MC-MICRO-SCARCITY",
+  "TH1-SC-11":"MC-MICRO-SCARCITY",
+  "TH1-PPC-09":"MC-MICRO-PPF","TH1-PPC-10":"MC-MICRO-PPF",
+  "TH1-PPC-11":"MC-MICRO-PPF",
+  "TH1-SPL-10":"MC-MICRO-SPECIALISATION",
+  "TH1-SPL-11":"MC-MICRO-SPECIALISATION",
+  "TH1-SUP-09":"MC-MICRO-SUPPLY-DETERMINANTS",
+  "TH1-SUP-10":"MC-MICRO-SUPPLY-DETERMINANTS",
+  "TH1-SUP-11":"MC-MICRO-SUPPLY-DETERMINANTS",
+  "TH1-MKT-09":"MC-MICRO-COMPETITION","TH1-MKT-10":"MC-MICRO-COMPETITION",
+  "TH1-MKT-11":"MC-MICRO-COMPETITION",
+  "TH1-EXT-09":"MC-MICRO-EXT-NEGATIVE","TH1-EXT-11":"MC-MICRO-EXT-NEGATIVE",
+  "TH1-PUB-09":"MC-MICRO-PUBLIC-GOODS","TH1-PUB-10":"MC-MICRO-PUBLIC-GOODS",
+  "TH1-GOV-09":"MC-MICRO-CORRECTIVE-TAX",
+  "TH1-GOV-10":"MC-MICRO-CORRECTIVE-TAX",
+  "SD-01":"MC-MICRO-MOVEMENT","TH1-DEM-09":"MC-MICRO-MOVEMENT",
+  "TH1-DEM-10":"MC-MICRO-SHIFT",
+  "SD-04":"MC-MICRO-PED-INELASTIC",
+  "TH1-PED-09":"MC-MICRO-PED-ELASTIC","TH1-PED-10":"MC-MICRO-PED-ELASTIC",
+  "TH1-PED-11":"MC-MICRO-PED-ELASTIC",
+  "SD-08":"MC-MICRO-PES-SHORTRUN","TH1-PES-09":"MC-MICRO-PES-SHORTRUN",
+  "TH1-PES-10":"MC-MICRO-PES-SHORTRUN",
+  "TH1-EXT-10":"MC-MICRO-EXT-POSITIVE",
+  "TH1-ASY-09":"MC-MICRO-INFO-FAILURE","TH1-ASY-10":"MC-MICRO-INFO-FAILURE",
+  "TH1-GOV-11":"MC-MICRO-CEILING-BINDING",
+  "TH1-MIN-09":"MC-MICRO-FLOOR","TH1-MIN-10":"MC-MICRO-FLOOR",
+  "TH3-RP-24":"MC-MICRO-ALLOCATIVE","TH3-RP-25":"MC-MICRO-ALLOCATIVE",
+  // --- Theme 4 globalisation and trade
+  "TH4-GT-01":"MC-GLOB-INTEGRATION","TH4-GT-30":"MC-GLOB-INTEGRATION",
+  "TH4-GT-47":"MC-GLOB-INTEGRATION","TH4-GT-09":"MC-GLOB-INTEGRATION",
+  "TH4-GT-02":"MC-GLOB-MNC","TH4-GT-28":"MC-GLOB-MNC",
+  "TH4-GT-03":"MC-GLOB-TARIFF","TH4-GT-13":"MC-GLOB-TARIFF",
+  "TH4-GT-36":"MC-GLOB-TARIFF",
+  "TH4-GT-04":"MC-GLOB-GAINS","TH4-GT-38":"MC-GLOB-GAINS",
+  "TH4-GT-05":"MC-GLOB-PROTECTION","TH4-GT-10":"MC-GLOB-PROTECTION",
+  "TH4-GT-35":"MC-GLOB-PROTECTION",
+  "TH4-GT-33":"MC-GLOB-INFANT","TH4-GT-50":"MC-GLOB-INFANT",
+  "TH4-GT-06":"MC-GLOB-FDI","TH4-GT-07":"MC-GLOB-FDI",
+  "TH4-GT-25":"MC-GLOB-FDI","TH4-GT-26":"MC-GLOB-FDI",
+  "TH4-GT-27":"MC-GLOB-FDI",
+  "TH4-GT-08":"MC-GLOB-NONTARIFF","TH4-GT-11":"MC-GLOB-NONTARIFF",
+  "TH4-GT-37":"MC-GLOB-NONTARIFF",
+  "TH4-GT-12":"MC-GLOB-DUMPING","TH4-GT-34":"MC-GLOB-DUMPING",
+  "TH4-GT-14":"MC-GLOB-CREATION-DIVERSION",
+  "TH4-GT-15":"MC-GLOB-CREATION-DIVERSION",
+  "TH4-GT-18":"MC-GLOB-CURRENT-ACCOUNT",
+  "TH4-GT-19":"MC-GLOB-CURRENT-ACCOUNT",
+  "TH4-GT-20":"MC-GLOB-CURRENT-ACCOUNT",
+  "TH4-GT-41":"MC-GLOB-CURRENT-ACCOUNT",
+  "TH4-GT-21":"MC-GLOB-ER-REGIME","TH4-GT-22":"MC-GLOB-ER-REGIME",
+  "TH4-GT-23":"MC-GLOB-ER-EFFECTS","TH4-GT-24":"MC-GLOB-ER-EFFECTS",
+  "TH4-GT-42":"MC-GLOB-ER-EFFECTS","MON-06":"MC-GLOB-ER-EFFECTS",
+  "TH4-GT-39":"MC-GLOB-INEQUALITY","TH4-GT-40":"MC-GLOB-INEQUALITY",
+  "TH4-GT-43":"MC-GLOB-DEV-FINANCE","TH4-GT-44":"MC-GLOB-DEV-FINANCE",
+  "TH4-GT-45":"MC-GLOB-DEV-FINANCE","TH4-GT-46":"MC-GLOB-DEV-FINANCE",
+  "TH1-SPL-09":"MC-GLOB-ABSOLUTE",
+  "TH4-GT-29":"MC-GLOB-VALUECHAIN",
+  "TH4-GT-16":"MC-GLOB-BLOC","TH4-GT-17":"MC-GLOB-BLOC",
+  "TH4-GT-48":"MC-GLOB-BLOC","TH4-GT-49":"MC-GLOB-BLOC",
+  "TH4-GT-31":"MC-GLOB-TOT",
+  "TH4-GT-32":"MC-GLOB-COMMODITY",
+  "BOP-03":"MC-GLOB-JCURVE",
+  // --- Theme 3 business growth, revenue and costs
+  "TH3-GO-01":"MC-FIRM-GROWTH-MOTIVE","TH3-BO-07":"MC-FIRM-GROWTH-MOTIVE",
+  "TH3-GO-03":"MC-FIRM-OBJECTIVES","TH3-BO-09":"MC-FIRM-OBJECTIVES",
+  "TH3-BO-11":"MC-FIRM-OBJECTIVES",
+  "TH3-GO-06":"MC-FIRM-PRINCIPAL-AGENT",
+  "TH3-BO-10":"MC-FIRM-PRINCIPAL-AGENT",
+  "TH3-BO-17":"MC-FIRM-PRINCIPAL-AGENT",
+  "TH3-BO-08":"MC-FIRM-MARKET-SHARE","TH3C-27":"MC-FIRM-MARKET-SHARE",
+  "TH3-BO-12":"MC-FIRM-EXTERNAL-GROWTH",
+  "TH3-BO-13":"MC-FIRM-EXTERNAL-GROWTH",
+  "TH3-BO-15":"MC-FIRM-EOS-SOURCES","TH3-BO-23":"MC-FIRM-EOS-SOURCES",
+  "TH3-BO-18":"MC-FIRM-CONTESTABILITY","TH3-BO-19":"MC-FIRM-CONTESTABILITY",
+  "TH3-BO-20":"MC-FIRM-CONTESTABILITY",
+  "TH3-BO-21":"MC-FIRM-COMPETITION-STRATEGY",
+  "TH3-BO-22":"MC-FIRM-COMPETITION-STRATEGY",
+  "TH3-BO-24":"MC-FIRM-NONPROFIT-FORMS",
+  "TH3-BO-25":"MC-FIRM-NONPROFIT-FORMS",
+  "TH3-GO-05":"MC-FIRM-ORGANIC","TH3-BO-16":"MC-FIRM-ORGANIC",
+  "TH3-BO-14":"MC-FIRM-CONGLOMERATE",
+  "TH3-RP-06":"MC-FIRM-PROFITMAX",
+  "TH3-RP-01":"MC-COST-PROFIT-CALC","TH3-RP-07":"MC-COST-PROFIT-CALC",
+  "TH3-RP-09":"MC-COST-REVENUE","TH3-RP-10":"MC-COST-REVENUE",
+  "TH3-RP-11":"MC-COST-REVENUE",
+  "TH3-RP-20":"MC-COST-NORMAL-PROFIT","TH3-RP-21":"MC-COST-NORMAL-PROFIT",
+  "TH3-RP-22":"MC-COST-NORMAL-PROFIT","TH3-RP-23":"MC-COST-NORMAL-PROFIT",
+  "TH3-GO-02":"MC-COST-FALLING-AC","TH3-RP-03":"MC-COST-FALLING-AC",
+  "TH3-GO-04":"MC-COST-DISECONOMIES",
+  "TH3-RP-02":"MC-COST-FIXED","TH3-RP-12":"MC-COST-FIXED",
+  "TH3-RP-14":"MC-COST-FIXED",
+  "TH3-RP-04":"MC-COST-BREAKEVEN","TH3-RP-18":"MC-COST-BREAKEVEN",
+  "TH3-RP-19":"MC-COST-BREAKEVEN",
+  "TH3-RP-05":"MC-COST-CONTRIBUTION","TH3-RP-17":"MC-COST-CONTRIBUTION",
+  "TH3-RP-08":"MC-COST-MARGINAL","TH3-RP-16":"MC-COST-MARGINAL",
+  "TH3COST-27":"MC-COST-MARGINAL",
+  "TH3-RP-13":"MC-COST-VARIABLE","TH3-RP-15":"MC-COST-VARIABLE",
+  // --- Theme 2 policy, inequality and the financial sector
+  "FIS-01":"MC-FIS-DEFINITION","A1-PHASE7-ECON231-02":"MC-FIS-DEFINITION",
+  "FIS-02":"MC-FIS-STABILISERS","ECON-POLICY-01":"MC-FIS-STABILISERS",
+  "A1-PHASE7-ECON231-01":"MC-FIS-STABILISERS",
+  "FIS-03":"MC-FIS-TAX-REVENUE","FIS-06":"MC-FIS-TAX-REVENUE",
+  "FIS-04":"MC-FIS-LIMITS","FIS-05":"MC-FIS-LIMITS","FIS-07":"MC-FIS-LIMITS",
+  "FIS-08":"MC-FIS-CROWDING-OUT","ECON-POLICY-02":"MC-FIS-CROWDING-OUT",
+  "MON-01":"MC-MON-INDEPENDENCE","CB-02":"MC-MON-INDEPENDENCE",
+  "ECON-CENTRAL-02":"MC-MON-INDEPENDENCE",
+  "MON-02":"MC-MON-TRANSMISSION","ECON-MONETARY-02":"MC-MON-TRANSMISSION",
+  "A1-PHASE7-ECON232-01":"MC-MON-TRANSMISSION","AD-02":"MC-MON-TRANSMISSION",
+  "MON-03":"MC-MON-LIMITS","MON-05":"MC-MON-LIMITS","MON-07":"MC-MON-LIMITS",
+  "CB-04":"MC-MON-LIMITS",
+  "MON-04":"MC-MON-QE","MON-08":"MC-MON-QE","ECON-MONETARY-01":"MC-MON-QE",
+  "A1-PHASE7-ECON232-02":"MC-MON-QE",
+  "SSP-03":"MC-SSP-DEMAND-VS-SUPPLY","SSP-08":"MC-SSP-DEMAND-VS-SUPPLY",
+  "ECON-SUPPLY-01":"MC-SSP-INTERVENTIONIST",
+  "A1-PHASE7-ECON233-01":"MC-SSP-INTERVENTIONIST",
+  "SSP-04":"MC-SSP-LIMITS","SSP-05":"MC-SSP-LIMITS",
+  "ECON-SUPPLY-02":"MC-SSP-LIMITS","A1-PHASE7-ECON233-02":"MC-SSP-LIMITS",
+  "INQ-02":"MC-INQ-MEASURES","ECON-INEQUALITY-02":"MC-INQ-MEASURES",
+  "INQ-07":"MC-INQ-REDISTRIBUTION","INQ-08":"MC-INQ-REDISTRIBUTION",
+  "ECON-INEQUALITY-01":"MC-INQ-REDISTRIBUTION",
+  "INQ-03":"MC-INQ-CAUSES","INQ-04":"MC-INQ-CAUSES",
+  "POV-03":"MC-POV-TRAP","ECON-POVERTY-02":"MC-POV-TRAP",
+  "POV-02":"MC-POV-ABSOLUTE-RELATIVE","POV-04":"MC-POV-ABSOLUTE-RELATIVE",
+  "POV-06":"MC-POV-ABSOLUTE-RELATIVE",
+  "ECON-POVERTY-01":"MC-POV-ABSOLUTE-RELATIVE",
+  "BNK-02":"MC-BNK-MONEY-CREATION","ECON-BANKS-01":"MC-BNK-MONEY-CREATION",
+  "BNK-01":"MC-BNK-FUNCTIONS","ECON-BANKS-02":"MC-BNK-FUNCTIONS",
+  "CB-01":"MC-BNK-FUNCTIONS",
+  "BNK-03":"MC-BNK-MORAL-HAZARD","BNK-04":"MC-BNK-MORAL-HAZARD",
+  "BNK-05":"MC-BNK-MORAL-HAZARD",
+  "CB-03":"MC-CB-FIN-STABILITY","CB-05":"MC-CB-FIN-STABILITY",
+  "ECON-CENTRAL-01":"MC-CB-FIN-STABILITY",
+  "INF-01":"MC-INF-RATE-VS-LEVEL","INF-08":"MC-INF-RATE-VS-LEVEL",
+  "INF-09":"MC-INF-RATE-VS-LEVEL",
+  "INF-02":"MC-INF-MEASUREMENT","INF-07":"MC-INF-MEASUREMENT",
+  "INF-04":"MC-INF-COSTPUSH","INF-10":"MC-INF-COSTPUSH",
+  "EMP-10":"MC-EMP-LABOUR-SUPPLY","EMP-18":"MC-EMP-LABOUR-SUPPLY",
+  "ECON-FINANCE-01":"MC-FMK-01",
+  "FMK-02":"MC-FMK-02","ECON-FINANCE-02":"MC-FMK-02",
+  "AS-19":"MC-AS-04",
+  "NI-14":"MC-NI-01","NI-19":"MC-NI-01",
+  // --- No genuine partner in the bank, so each keeps a tag of its own — renamed
+  // from its index form (MC-BOP-02, MC-AD-04) so it names the error rather
+  // than the question position
+  "BOP-02":"MC-BOP-TWIN-DEFICITS",
+  "AD-04":"MC-AD-SHIFT-INFLATION",
+  "AD-07":"MC-AD-WAGES",
+  "AS-05":"MC-AS-MOVEMENT-SHIFT",
+  "FMK-03":"MC-FMK-ASYMMETRIC",
+  "FMK-04":"MC-FMK-CRASH",
 };
-for (const bankId of ["ECON-1.1", "3.1.1", "3.2.1", "4.1.1"]) {
-  for (const question of BANKS[bankId]?.questions || []) {
-    const tag = econMisconceptionTags[question.id];
-    if (tag) question.tag = tag;
+// Applied at the END of this file, not here. Six A1-PHASE7-ECON* questions are
+// appended to the 2.3.x banks well below this point, so a loop running at the
+// declaration silently skips them and leaves them on their per-question tags —
+// which is exactly what happened to geo, see applyGeoMisconceptionTags().
+function applyEconMisconceptionTags() {
+  let applied = 0;
+  for (const bankId of SUBJECTS.econ.banks) {
+    for (const question of BANKS[bankId]?.questions || []) {
+      const tag = econMisconceptionTags[question.id];
+      if (tag) { question.tag = tag; applied++; }
+    }
   }
+  return applied;
 }
 
 // Misconception tags for A-Level Sociology.
@@ -21237,3 +21417,8 @@ for (const bankId of SUBJECTS["gcse-econ"].banks) {
 // point. Running here is what makes the repair stick. If a new pass is added
 // below this line, check it does not re-pad geo.
 applyGeoAlevelDistractorRepairs();
+
+// Runs late for the same reason applyGeoMisconceptionTags() does: the six
+// A1-PHASE7-ECON* questions are appended to the 2.3.x banks after the tag
+// table is declared.
+applyEconMisconceptionTags();

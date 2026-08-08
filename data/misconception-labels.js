@@ -1569,6 +1569,85 @@ function resolveMCIntervention(tag, subject) {
   return 'Have students state the governing rule, contrast it with the nearest distractor, and complete one fresh example.';
 }
 
+// A-Level Economics stage 2. Labels for the 69 tags created when the 230
+// questions still on single-use tags were mapped onto shared categories.
+// See docs/econ-misconception-taxonomy-draft.md.
+Object.assign(MC_LABELS, {
+  // --- Theme 1 microeconomics
+  "MC-MICRO-EQUILIBRIUM": "Equilibrium read as the price sellers want",
+  "MC-MICRO-XED": "Cross elasticity sign not linked to substitutes or complements",
+  "MC-MICRO-YED": "Inferior good read as low quality, not negative YED",
+  "MC-MICRO-SCARCITY": "Opportunity cost given as the money price",
+  "MC-MICRO-PPF": "Point inside the PPF read as impossible, not inefficient",
+  "MC-MICRO-SPECIALISATION": "Gains from specialisation asserted without the mechanism",
+  "MC-MICRO-SUPPLY-DETERMINANTS": "Every supply change drawn as a movement along the curve",
+  "MC-MICRO-COMPETITION": "Monopoly defined by firm size rather than market share",
+  "MC-MICRO-EXT-NEGATIVE": "Social cost given as external cost, omitting private cost",
+  "MC-MICRO-PUBLIC-GOODS": "Non-rivalry and non-excludability conflated",
+  "MC-MICRO-CORRECTIVE-TAX": "Corrective tax justified by revenue, not by internalising",
+  // --- Theme 2 macro policy and the financial sector
+  "MC-INF-RATE-VS-LEVEL": "Falling inflation rate read as falling prices",
+  "MC-INF-MEASUREMENT": "CPI basket assumed fixed; target read as a ceiling",
+  "MC-INF-COSTPUSH": "Cost-push inflation explained by wages alone",
+  "MC-EMP-LABOUR-SUPPLY": "Migration's effect on labour supply not shown on the diagram",
+  "MC-BOP-TWIN-DEFICITS": "Budget deficit treated as the current account deficit",
+  "MC-MON-TRANSMISSION": "Rate change linked to AD with no transmission mechanism",
+  "MC-AD-SHIFT-INFLATION": "AD shifting right read as growth AND lower inflation",
+  "MC-AD-WAGES": "Higher wages assumed always to shift AD right",
+  "MC-AS-MOVEMENT-SHIFT": "Movement along SRAS confused with a shift of SRAS",
+  "MC-FIS-DEFINITION": "Fiscal policy defined to include interest rates",
+  "MC-FIS-STABILISERS": "Automatic stabilisers described as discretionary decisions",
+  "MC-FIS-TAX-REVENUE": "Higher tax rates assumed always to raise revenue",
+  "MC-FIS-LIMITS": "Budget deficit and national debt conflated; lags ignored",
+  "MC-FIS-CROWDING-OUT": "Crowding out asserted regardless of spare capacity",
+  "MC-MON-INDEPENDENCE": "Interest rates assumed to be set by government",
+  "MC-MON-LIMITS": "Monetary policy assumed to fix cost-push without trade-offs",
+  "MC-MON-QE": "QE described as printing cash for government spending",
+  "MC-SSP-DEMAND-VS-SUPPLY": "Any government spending classified as supply-side",
+  "MC-SSP-INTERVENTIONIST": "Training and infrastructure assumed to work through AD only",
+  "MC-SSP-LIMITS": "Supply-side policies assumed costless and immediate",
+  "MC-INQ-MEASURES": "Gini and Lorenz read as poverty measures",
+  "MC-INQ-CAUSES": "Causes of inequality listed without evaluation",
+  "MC-INQ-REDISTRIBUTION": "Progressive tax defined by amount paid, not share of income",
+  "MC-POV-ABSOLUTE-RELATIVE": "Absolute and relative poverty conflated",
+  "MC-POV-TRAP": "Poverty trap explained by low wages, not the withdrawal rate",
+  "MC-FMK-ASYMMETRIC": "Financial market failure treated as simple bad luck",
+  "MC-FMK-CRASH": "Stock market crash assumed to have no real-economy effect",
+  "MC-BNK-FUNCTIONS": "Commercial bank and central bank functions merged",
+  "MC-BNK-MONEY-CREATION": "Banks assumed only to lend out existing deposits",
+  "MC-BNK-MORAL-HAZARD": "Bailouts judged on stability alone, moral hazard omitted",
+  "MC-CB-FIN-STABILITY": "FPC and MPC roles swapped",
+  // --- Theme 3 firms, revenue and costs
+  "MC-FIRM-GROWTH-MOTIVE": "Growth assumed always to raise profit",
+  "MC-FIRM-OBJECTIVES": "Profit assumed to be the default objective; satisficing read as failure",
+  "MC-FIRM-PRINCIPAL-AGENT": "Managers assumed to maximise profit for owners",
+  "MC-FIRM-MARKET-SHARE": "Market share read as loyalty or as absolute sales",
+  "MC-FIRM-EXTERNAL-GROWTH": "Takeover and horizontal integration used interchangeably",
+  "MC-FIRM-EOS-SOURCES": "Financial economies and economies of scope both read as size",
+  "MC-FIRM-CONTESTABILITY": "Sunk costs treated as fixed costs",
+  "MC-FIRM-COMPETITION-STRATEGY": "Non-price competition treated as not competing",
+  "MC-FIRM-NONPROFIT-FORMS": "Social enterprises assumed not to need a surplus",
+  "MC-COST-PROFIT-CALC": "Profit per unit computed from totals",
+  "MC-COST-REVENUE": "Average revenue not recognised as price",
+  "MC-COST-NORMAL-PROFIT": "Normal profit read as zero profit",
+  // --- Theme 4 globalisation and trade
+  "MC-GLOB-INTEGRATION": "Globalisation equated with convergence of living standards",
+  "MC-GLOB-MNC": "MNC location explained by wage costs alone",
+  "MC-GLOB-TARIFF": "Tariff incidence assumed to fall on the foreign producer",
+  "MC-GLOB-GAINS": "Gains from trade asserted statically, dynamic efficiency omitted",
+  "MC-GLOB-PROTECTION": "Protection judged only by the protected industry's gain",
+  "MC-GLOB-FDI": "FDI not distinguished from portfolio investment",
+  "MC-GLOB-NONTARIFF": "Quota treated as a tariff with the same revenue effect",
+  "MC-GLOB-DUMPING": "Dumping treated as any cheap import",
+  "MC-GLOB-CREATION-DIVERSION": "Trade creation and diversion not distinguished",
+  "MC-GLOB-CURRENT-ACCOUNT": "Balance of trade used as the whole current account",
+  "MC-GLOB-ER-REGIME": "Fixed rate assumed to need no reserves or commitment",
+  "MC-GLOB-ER-EFFECTS": "Depreciation assumed to improve the account immediately",
+  "MC-GLOB-INFANT": "Infant-industry protection defended with no exit condition",
+  "MC-GLOB-INEQUALITY": "Aggregate gains from trade taken to mean everyone gains",
+  "MC-GLOB-DEV-FINANCE": "Remittances, aid and borrowing treated as costless inflows",
+});
+
 if (typeof window !== 'undefined') {
   window.MC_LABELS = MC_LABELS;
   window.resolveMCLabel = resolveMCLabel;
