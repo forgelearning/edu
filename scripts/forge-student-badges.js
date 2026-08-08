@@ -104,7 +104,7 @@
       } else if (root.Notification && root.Notification.permission === 'granted') {
         try {
           var browserNotification = new root.Notification(title, { body: body, tag: key || title });
-          browserNotification.onclick = function () { root.focus(); root.location.href = options.href || 'assignments.html'; };
+          browserNotification.addEventListener('click', function () { root.focus(); root.location.href = options.href || 'assignments.html'; });
         } catch (e) {}
       }
     });
