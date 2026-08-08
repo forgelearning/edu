@@ -45,7 +45,7 @@ body{padding-top:88px}
 #sticky-nav.nav-collapsed:hover{box-shadow:0 20px 50px -16px rgba(213,92,19,.4)}
 #sticky-nav .nav-drop-menu{background:rgba(33,30,27,.85);backdrop-filter:blur(32px) saturate(180%);-webkit-backdrop-filter:blur(32px) saturate(180%);box-shadow:0 20px 45px -18px rgba(0,0,0,.4)}
 [data-theme="light"] #sticky-nav .nav-drop-menu{background:rgba(255,255,255,.85)}
-#theme-toggle{width:36px;height:36px;padding:0;display:inline-flex;align-items:center;justify-content:center;font-size:15px;border-radius:50%}
+#theme-toggle{width:44px;height:44px;padding:0;display:inline-flex;align-items:center;justify-content:center;font-size:15px;border-radius:50%}
 nav{display:flex;align-items:center;justify-content:space-between;padding:var(--space-4) var(--space-6)}
 .logo{font-family:'Sora',sans-serif;font-weight:800;font-size:22px;color:var(--white);text-decoration:none;display:flex;align-items:center;gap:9px}
 .logo .spark{width:10px;height:10px;background:var(--ember);border-radius:2px;transform:rotate(45deg);box-shadow:0 0 12px rgba(255,107,44,.7)}
@@ -76,6 +76,9 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:var(--
 
 .theme-toggle{background:var(--panel);border:1px solid var(--line);color:var(--slate);font-family:'JetBrains Mono',monospace;font-size:12px;padding:6px var(--space-3);border-radius:var(--radius-sm);cursor:pointer;transition:background .15s,color .15s;z-index:99}
 .theme-toggle:hover{color:var(--white);border-color:var(--ember)}
+.theme-icon{display:block;width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.nav-chevron{display:inline-block;width:7px;height:7px;margin:0 0 3px 5px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(45deg);transition:transform .15s ease}
+.nav-drop-wrap:has(.nav-drop-menu.open) .nav-chevron{transform:rotate(225deg);margin-bottom:-1px}
 .nav-drop-btn{background:var(--panel);border:1px solid var(--line);color:var(--slate);font-family:'JetBrains Mono',monospace;font-size:12px;padding:7px var(--space-4);border-radius:var(--radius-sm);cursor:pointer;transition:background .15s,color .15s;white-space:nowrap}
 .nav-drop-btn:hover{color:var(--white);border-color:var(--ember)}
 .nav-drop-wrap{position:relative}
