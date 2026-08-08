@@ -217,6 +217,18 @@ const TAG_TAXONOMY_SUBJECTS = {
   // docs/econ-misconception-plan.md — and this entry should drop sharply when
   // that lands rather than sitting here at 0.45 indefinitely.
   econ: 0.45,
+  // All 238 questions retagged onto 52 shared MC-GEO-* categories, none of
+  // which carries fewer than two questions, taking the single-use share from
+  // 0.992 to 0.004. The 0.01 is not headroom: it is the single array-tagged
+  // question, TEC-05, which carries ["MC-GEO-TEC-VULNERABILITY","MC-TECH-02"].
+  // The counting below keys on the tag VALUE, so an array counts as its own
+  // composite key and reads as used-once however many questions share its
+  // members. MC-GEO-TEC-VULNERABILITY itself covers five questions. Fixing
+  // that properly means teaching this check to count array members
+  // individually, which would change the reported share for every subject
+  // using array tags, so it is left as a known limitation rather than
+  // silently rescored here.
+  geo: 0.01,
 };
 
 // Companion ratchet to the one above, measuring something it cannot see: the
@@ -246,6 +258,8 @@ const TAG_TAXONOMY_MECHANICAL = {
   soc: 0,
   // 249 of 515, awaiting the stage 2 taxonomy in docs/econ-misconception-plan.md.
   econ: 0.49,
+  // Retagged: 0 of 238, down from 200. Every tag names a concept.
+  geo: 0,
 };
 for (const [key, maxSingleShare] of Object.entries(TAG_TAXONOMY_SUBJECTS)) {
   const subject = SUBJECTS[key];

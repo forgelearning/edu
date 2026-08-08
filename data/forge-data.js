@@ -17645,6 +17645,194 @@ for (const bankId of ["HIST-BRIT1", "HIST-BRIT2", "HIST-USA1", "HIST-USA2", "HIS
   }
 }
 
+// Misconception tags for A-Level Geography (Edexcel 9GE0).
+//
+// Before this map, 237 of the subject's 238 questions carried a tag used
+// exactly once and 200 carried a tag that merely repeated the question id, so
+// the heatmap ranked individual questions and no starter could be written.
+// This maps all 238 onto 52 shared categories. Every category carries at
+// least two questions, so every row on the heatmap aggregates.
+//
+// Two things worth knowing before editing this:
+//
+// 1. GEO-TEC and GEO-COAST were previously tagged MC-TEC-<n> / MC-COAST-<n>,
+//    which LOOKED done — those tags have labels and hand-written starters.
+//    They are gcse-geo's tags, still used by gcse-geo, and the A-Level bank
+//    was piggybacking on them incorrectly: A-Level COAST-02 asks what causes
+//    longshore drift, while MC-COAST-02 is labelled "Differential erosion —
+//    headland and bay". A teacher following that starter would reteach the
+//    wrong thing. The MC-TEC-*/MC-COAST-* labels and starters are therefore
+//    left untouched for gcse-geo, and A-Level geo moves onto its own MC-GEO-*
+//    set below.
+// 2. Tagging deliberately crosses bank boundaries, because that is where the
+//    aggregation is. GEO-P3 and GEO-GLOBAL are almost entirely restatements
+//    of Superpowers and Carbon concepts: nine of GEO-P3's twelve questions
+//    and five of GEO-GLOBAL's thirteen fold into MC-GEO-SUPER-* and
+//    MC-GEO-CARBON-*. Only three P3 questions test a synoptic skill that no
+//    topic bank covers, and they share MC-GEO-P3-SYNOPTIC.
+//
+// Caveat, the same one recorded for History and Sociology: GEO-WATER,
+// GEO-CARBON, GEO-SUPER and GEO-HEALTH are generated definition-recall stems
+// ("What is meant by X?"), so a fire on one of their tags means "missed a
+// definition in the area where this error lives", not "holds this
+// misconception". The GAP-suffixed questions in each bank are the genuinely
+// diagnostic ones and every category that has one includes it.
+const geoMisconceptionTags = {
+  // --- Tectonic hazards (22) --------------------------------------------
+  "TEC-01":"MC-GEO-TEC-MARGIN","TEC-04":"MC-GEO-TEC-MARGIN","TEC-07":"MC-GEO-TEC-MARGIN",
+  "TEC-11":"MC-GEO-TEC-MARGIN","TEC-GAP-02":"MC-GEO-TEC-MARGIN",
+  "TEC-03":"MC-GEO-TEC-ERUPTION","TEC-GAP-03":"MC-GEO-TEC-ERUPTION",
+  "TEC-14":"MC-GEO-TEC-VOLCANIC-IMPACT","TEC-16":"MC-GEO-TEC-VOLCANIC-IMPACT",
+  "TEC-02":"MC-GEO-TEC-VULNERABILITY","TEC-08":"MC-GEO-TEC-VULNERABILITY",
+  "TEC-09":"MC-GEO-TEC-VULNERABILITY","TEC-10":"MC-GEO-TEC-VULNERABILITY",
+  // TEC-05 keeps the cross-subject exam-technique tag it already carried.
+  "TEC-05":["MC-GEO-TEC-VULNERABILITY","MC-TECH-02"],
+  "TEC-06":"MC-GEO-TEC-SEISMIC","TEC-12":"MC-GEO-TEC-SEISMIC",
+  "TEC-13":"MC-GEO-TEC-RETURN-PERIOD","A1-PHASE7-GEOTEC-01":"MC-GEO-TEC-RETURN-PERIOD",
+  "TEC-15":"MC-GEO-TEC-MITIGATION","TEC-GAP-01":"MC-GEO-TEC-MITIGATION",
+  "TEC-GAP-04":"MC-GEO-TEC-MITIGATION","A1-PHASE7-GEOTEC-02":"MC-GEO-TEC-MITIGATION",
+
+  // --- Coastal landscapes (19) ------------------------------------------
+  "COAST-01":"MC-GEO-COAST-EROSION","COAST-03":"MC-GEO-COAST-EROSION",
+  "COAST-06":"MC-GEO-COAST-EROSION","COAST-GAP-03":"MC-GEO-COAST-EROSION",
+  "COAST-02":"MC-GEO-COAST-SEDIMENT","COAST-07":"MC-GEO-COAST-SEDIMENT",
+  "COAST-09":"MC-GEO-COAST-SEDIMENT","COAST-GAP-04":"MC-GEO-COAST-SEDIMENT",
+  "COAST-04":"MC-GEO-COAST-LITHOLOGY","COAST-08":"MC-GEO-COAST-LITHOLOGY",
+  "COAST-GAP-02":"MC-GEO-COAST-LITHOLOGY","COAST-GAP-05":"MC-GEO-COAST-LITHOLOGY",
+  "COAST-05":"MC-GEO-COAST-MANAGE","COAST-10":"MC-GEO-COAST-MANAGE",
+  "COAST-11":"MC-GEO-COAST-MANAGE","COAST-12":"MC-GEO-COAST-MANAGE",
+  "COAST-GAP-01":"MC-GEO-COAST-MANAGE","A1-PHASE7-GEOCOAST-01":"MC-GEO-COAST-MANAGE",
+  "A1-PHASE7-GEOCOAST-02":"MC-GEO-COAST-MANAGE",
+
+  // --- Regenerating places (17) -----------------------------------------
+  "REGEN-01":"MC-GEO-REGEN-IDENTITY","REGEN-05":"MC-GEO-REGEN-IDENTITY",
+  "REGEN-06":"MC-GEO-REGEN-IDENTITY","REGEN-07":"MC-GEO-REGEN-IDENTITY",
+  "REGEN-04":"MC-GEO-REGEN-MEASURE","REGEN-12":"MC-GEO-REGEN-MEASURE",
+  "REGEN-GAP-01":"MC-GEO-REGEN-MEASURE","REGEN-GAP-04":"MC-GEO-REGEN-MEASURE",
+  "REGEN-03":"MC-GEO-REGEN-WINNERS","REGEN-08":"MC-GEO-REGEN-WINNERS",
+  "REGEN-10":"MC-GEO-REGEN-WINNERS","REGEN-GAP-03":"MC-GEO-REGEN-WINNERS",
+  "REGEN-02":"MC-GEO-REGEN-STAKEHOLDER","REGEN-11":"MC-GEO-REGEN-STAKEHOLDER",
+  "REGEN-GAP-02":"MC-GEO-REGEN-STAKEHOLDER",
+  "REGEN-09":"MC-GEO-REGEN-SUSTAINABILITY","REGEN-GAP-05":"MC-GEO-REGEN-SUSTAINABILITY",
+
+  // --- Paper 3 synoptic (12) --------------------------------------------
+  // Only the three genuinely synoptic stems stay here; the rest are
+  // restatements of topic-bank concepts and are tagged as those.
+  "P3-GC-05":"MC-GEO-P3-SYNOPTIC","P3-GC-06":"MC-GEO-P3-SYNOPTIC","P3-GC-12":"MC-GEO-P3-SYNOPTIC",
+  "P3-GC-01":"MC-GEO-SUPER-POWERTYPE",
+  "P3-GC-02":"MC-GEO-SUPER-ECON","P3-GC-09":"MC-GEO-SUPER-ECON","P3-GC-10":"MC-GEO-SUPER-ECON",
+  "P3-GC-03":"MC-GEO-CARBON-SYSTEM","P3-GC-04":"MC-GEO-CARBON-MITIGATE",
+  "P3-GC-07":"MC-GEO-SUPER-GOVERNANCE","P3-GC-08":"MC-GEO-SUPER-MIGRATION",
+  "P3-GC-11":"MC-GEO-GLOBAL-CULTURE",
+
+  // --- Water cycle and water insecurity (39) -----------------------------
+  "GEO-WATER-01":"MC-GEO-WATER-SYSTEM","GEO-WATER-02":"MC-GEO-WATER-SYSTEM",
+  "GEO-WATER-03":"MC-GEO-WATER-SYSTEM","GEO-WATER-04":"MC-GEO-WATER-SYSTEM",
+  "GEO-WATER-05":"MC-GEO-WATER-SYSTEM","GEO-WATER-06":"MC-GEO-WATER-SYSTEM",
+  "GEO-WATER-07":"MC-GEO-WATER-SYSTEM",
+  "GEO-WATER-08":"MC-GEO-WATER-FLOWS","GEO-WATER-09":"MC-GEO-WATER-FLOWS",
+  "GEO-WATER-10":"MC-GEO-WATER-FLOWS","GEO-WATER-11":"MC-GEO-WATER-FLOWS",
+  "GEO-WATER-12":"MC-GEO-WATER-FLOWS","GEO-WATER-13":"MC-GEO-WATER-FLOWS",
+  "GEO-WATER-14":"MC-GEO-WATER-HYDROGRAPH","GEO-WATER-15":"MC-GEO-WATER-HYDROGRAPH",
+  "GEO-WATER-16":"MC-GEO-WATER-HYDROGRAPH","WATER-GAP-01":"MC-GEO-WATER-HYDROGRAPH",
+  "GEO-WATER-17":"MC-GEO-WATER-SCARCITY","GEO-WATER-18":"MC-GEO-WATER-SCARCITY",
+  "GEO-WATER-19":"MC-GEO-WATER-SCARCITY","GEO-WATER-20":"MC-GEO-WATER-SCARCITY",
+  "GEO-WATER-21":"MC-GEO-WATER-SCARCITY","WATER-GAP-02":"MC-GEO-WATER-SCARCITY",
+  "GEO-WATER-22":"MC-GEO-WATER-FOOTPRINT","GEO-WATER-23":"MC-GEO-WATER-FOOTPRINT",
+  "GEO-WATER-24":"MC-GEO-WATER-SUPPLY","GEO-WATER-25":"MC-GEO-WATER-SUPPLY",
+  "GEO-WATER-26":"MC-GEO-WATER-SUPPLY","GEO-WATER-27":"MC-GEO-WATER-SUPPLY",
+  "GEO-WATER-28":"MC-GEO-WATER-SUPPLY","GEO-WATER-29":"MC-GEO-WATER-SUPPLY",
+  "GEO-WATER-31":"MC-GEO-WATER-SUPPLY","GEO-WATER-32":"MC-GEO-WATER-SUPPLY",
+  "GEO-WATER-30":"MC-GEO-WATER-MANAGE","GEO-WATER-33":"MC-GEO-WATER-MANAGE",
+  "GEO-WATER-34":"MC-GEO-WATER-MANAGE","GEO-WATER-35":"MC-GEO-WATER-MANAGE",
+  "GEO-WATER-36":"MC-GEO-WATER-MANAGE","GEO-WATER-37":"MC-GEO-WATER-MANAGE",
+
+  // --- Carbon cycle and energy security (38) -----------------------------
+  "GEO-CARBON-01":"MC-GEO-CARBON-SYSTEM","GEO-CARBON-02":"MC-GEO-CARBON-SYSTEM",
+  "GEO-CARBON-03":"MC-GEO-CARBON-SYSTEM","GEO-CARBON-04":"MC-GEO-CARBON-SYSTEM",
+  "GEO-CARBON-05":"MC-GEO-CARBON-SYSTEM","GEO-CARBON-06":"MC-GEO-CARBON-SYSTEM",
+  "GEO-CARBON-07":"MC-GEO-CARBON-BIO","GEO-CARBON-08":"MC-GEO-CARBON-BIO",
+  "GEO-CARBON-09":"MC-GEO-CARBON-BIO","GEO-CARBON-10":"MC-GEO-CARBON-BIO",
+  "GEO-CARBON-12":"MC-GEO-CARBON-GHG","GEO-CARBON-13":"MC-GEO-CARBON-GHG",
+  "GEO-CARBON-14":"MC-GEO-CARBON-GHG","GEO-CARBON-18":"MC-GEO-CARBON-GHG",
+  "GEO-CARBON-11":"MC-GEO-CARBON-STORES","GEO-CARBON-15":"MC-GEO-CARBON-STORES",
+  "GEO-CARBON-16":"MC-GEO-CARBON-STORES","GEO-CARBON-17":"MC-GEO-CARBON-STORES",
+  "GEO-CARBON-19":"MC-GEO-ENERGY-MIX","GEO-CARBON-20":"MC-GEO-ENERGY-MIX",
+  "GEO-CARBON-21":"MC-GEO-ENERGY-MIX","GEO-CARBON-22":"MC-GEO-ENERGY-MIX",
+  "GEO-CARBON-23":"MC-GEO-ENERGY-MIX",
+  "GEO-CARBON-24":"MC-GEO-ENERGY-SUPPLY","GEO-CARBON-25":"MC-GEO-ENERGY-SUPPLY",
+  "GEO-CARBON-26":"MC-GEO-ENERGY-SUPPLY","GEO-CARBON-27":"MC-GEO-ENERGY-SUPPLY",
+  "GEO-CARBON-28":"MC-GEO-ENERGY-SUPPLY","GEO-CARBON-29":"MC-GEO-ENERGY-SUPPLY",
+  "GEO-CARBON-30":"MC-GEO-ENERGY-GEOPOL","GEO-CARBON-31":"MC-GEO-ENERGY-GEOPOL",
+  "GEO-CARBON-36":"MC-GEO-ENERGY-GEOPOL","GEO-CARBON-37":"MC-GEO-ENERGY-GEOPOL",
+  "GEO-CARBON-32":"MC-GEO-CARBON-MITIGATE","GEO-CARBON-33":"MC-GEO-CARBON-MITIGATE",
+  "GEO-CARBON-34":"MC-GEO-CARBON-MITIGATE","GEO-CARBON-35":"MC-GEO-CARBON-MITIGATE",
+  "CARBON-GAP-01":"MC-GEO-CARBON-MITIGATE",
+
+  // --- Superpowers (38) ---------------------------------------------------
+  "GEO-SUPER-01":"MC-GEO-SUPER-POWERTYPE","GEO-SUPER-02":"MC-GEO-SUPER-POWERTYPE",
+  "GEO-SUPER-03":"MC-GEO-SUPER-DIMENSIONS","GEO-SUPER-04":"MC-GEO-SUPER-DIMENSIONS",
+  "GEO-SUPER-05":"MC-GEO-SUPER-DIMENSIONS","GEO-SUPER-06":"MC-GEO-SUPER-DIMENSIONS",
+  "GEO-SUPER-07":"MC-GEO-SUPER-DIMENSIONS","GEO-SUPER-08":"MC-GEO-SUPER-DIMENSIONS",
+  "GEO-SUPER-09":"MC-GEO-SUPER-DIMENSIONS",
+  "GEO-SUPER-12":"MC-GEO-SUPER-GOVERNANCE","GEO-SUPER-13":"MC-GEO-SUPER-GOVERNANCE",
+  "GEO-SUPER-14":"MC-GEO-SUPER-GOVERNANCE","GEO-SUPER-15":"MC-GEO-SUPER-GOVERNANCE",
+  "GEO-SUPER-16":"MC-GEO-SUPER-GOVERNANCE",
+  "GEO-SUPER-17":"MC-GEO-SUPER-ECON","GEO-SUPER-18":"MC-GEO-SUPER-ECON",
+  "GEO-SUPER-19":"MC-GEO-SUPER-ECON","GEO-SUPER-20":"MC-GEO-SUPER-ECON",
+  "GEO-SUPER-10":"MC-GEO-SUPER-DIPLOMACY","GEO-SUPER-11":"MC-GEO-SUPER-DIPLOMACY",
+  "GEO-SUPER-21":"MC-GEO-SUPER-DIPLOMACY","GEO-SUPER-22":"MC-GEO-SUPER-DIPLOMACY",
+  "GEO-SUPER-23":"MC-GEO-SUPER-RESOURCE","GEO-SUPER-24":"MC-GEO-SUPER-RESOURCE",
+  "GEO-SUPER-25":"MC-GEO-SUPER-RESOURCE",
+  "GEO-SUPER-26":"MC-GEO-SUPER-MIGRATION","GEO-SUPER-27":"MC-GEO-SUPER-MIGRATION",
+  "GEO-SUPER-28":"MC-GEO-SUPER-MIGRATION",
+  "GEO-SUPER-29":"MC-GEO-SUPER-POLARITY","GEO-SUPER-30":"MC-GEO-SUPER-POLARITY",
+  "GEO-SUPER-31":"MC-GEO-SUPER-POLARITY","GEO-SUPER-32":"MC-GEO-SUPER-POLARITY",
+  "GEO-SUPER-33":"MC-GEO-SUPER-TENSION","GEO-SUPER-34":"MC-GEO-SUPER-TENSION",
+  "GEO-SUPER-36":"MC-GEO-SUPER-TENSION","SUPER-GAP-01":"MC-GEO-SUPER-TENSION",
+  "GEO-SUPER-35":"MC-GEO-GLOBAL-UNEVEN","GEO-SUPER-37":"MC-GEO-GLOBAL-CULTURE",
+
+  // --- Health, human rights and intervention (40) -------------------------
+  "GEO-HEALTH-01":"MC-GEO-HEALTH-MEASURE","GEO-HEALTH-02":"MC-GEO-HEALTH-MEASURE",
+  "GEO-HEALTH-03":"MC-GEO-HEALTH-MEASURE","GEO-HEALTH-04":"MC-GEO-HEALTH-MEASURE",
+  "GEO-HEALTH-05":"MC-GEO-HEALTH-MEASURE","GEO-HEALTH-06":"MC-GEO-HEALTH-MEASURE",
+  "GEO-HEALTH-07":"MC-GEO-HEALTH-TRANSITION","GEO-HEALTH-08":"MC-GEO-HEALTH-TRANSITION",
+  "GEO-HEALTH-09":"MC-GEO-HEALTH-TRANSITION","GEO-HEALTH-10":"MC-GEO-HEALTH-TRANSITION",
+  "GEO-HEALTH-11":"MC-GEO-HEALTH-INEQUALITY","GEO-HEALTH-12":"MC-GEO-HEALTH-INEQUALITY",
+  "GEO-HEALTH-13":"MC-GEO-HEALTH-INEQUALITY","GEO-HEALTH-33":"MC-GEO-HEALTH-INEQUALITY",
+  // RIGHTS absorbs what an earlier draft split off as INTERVENTION-LAW: the
+  // legal doctrine questions (17, 18) are two items, and "R2P is binding law"
+  // is the same student error as "universal rights override sovereignty".
+  "GEO-HEALTH-14":"MC-GEO-RIGHTS","GEO-HEALTH-15":"MC-GEO-RIGHTS",
+  "GEO-HEALTH-16":"MC-GEO-RIGHTS","GEO-HEALTH-17":"MC-GEO-RIGHTS",
+  "GEO-HEALTH-18":"MC-GEO-RIGHTS","GEO-HEALTH-19":"MC-GEO-RIGHTS",
+  "HEALTH-GAP-01":"MC-GEO-RIGHTS",
+  "GEO-HEALTH-20":"MC-GEO-DISPLACEMENT","GEO-HEALTH-21":"MC-GEO-DISPLACEMENT",
+  "GEO-HEALTH-22":"MC-GEO-AID","GEO-HEALTH-23":"MC-GEO-AID","GEO-HEALTH-24":"MC-GEO-AID",
+  "GEO-HEALTH-25":"MC-GEO-HEALTH-GOV","GEO-HEALTH-26":"MC-GEO-HEALTH-GOV",
+  "GEO-HEALTH-27":"MC-GEO-HEALTH-GOV","GEO-HEALTH-28":"MC-GEO-HEALTH-GOV",
+  "GEO-HEALTH-34":"MC-GEO-HEALTH-GOV",
+  "GEO-HEALTH-29":"MC-GEO-INTERVENTION-EVAL","GEO-HEALTH-30":"MC-GEO-INTERVENTION-EVAL",
+  "GEO-HEALTH-31":"MC-GEO-INTERVENTION-EVAL","GEO-HEALTH-32":"MC-GEO-INTERVENTION-EVAL",
+  "GEO-HEALTH-35":"MC-GEO-INTERVENTION-EVAL","GEO-HEALTH-36":"MC-GEO-INTERVENTION-EVAL",
+  "GEO-HEALTH-37":"MC-GEO-INTERVENTION-EVAL","HEALTH-GAP-02":"MC-GEO-INTERVENTION-EVAL",
+  "HEALTH-GAP-03":"MC-GEO-INTERVENTION-EVAL",
+
+  // --- Globalisation (13) -------------------------------------------------
+  "GLOBAL-GAP-01":"MC-GEO-GLOBAL-DRIVERS","GLOBAL-GAP-09":"MC-GEO-GLOBAL-DRIVERS",
+  "GLOBAL-GAP-02":"MC-GEO-SUPER-ECON","GLOBAL-GAP-03":"MC-GEO-SUPER-ECON",
+  "GLOBAL-GAP-04":"MC-GEO-SUPER-ECON","GLOBAL-GAP-05":"MC-GEO-SUPER-ECON",
+  "A1-PHASE7-GEOGLOBAL-01":"MC-GEO-SUPER-ECON",
+  "GLOBAL-GAP-06":"MC-GEO-GLOBAL-UNEVEN","GLOBAL-GAP-08":"MC-GEO-GLOBAL-UNEVEN",
+  "GLOBAL-GAP-11":"MC-GEO-GLOBAL-UNEVEN","A1-PHASE7-GEOGLOBAL-02":"MC-GEO-GLOBAL-UNEVEN",
+  "GLOBAL-GAP-07":"MC-GEO-SUPER-GOVERNANCE",
+  "GLOBAL-GAP-10":"MC-GEO-GLOBAL-CULTURE",
+};
+// Applied further down the file, not here: the six A1-PHASE7-GEO* questions
+// are appended to GEO-TEC, GEO-COAST and GEO-GLOBAL about a thousand lines
+// below this point, so a loop running here would silently skip them and leave
+// six per-question tags behind. See applyGeoMisconceptionTags().
+
 appendGenerated("RS-1", [
   ["In Buddhist teaching, dukkha refers most closely to:","the unsatisfactory and unstable nature of conditioned existence","a permanent personal soul","a creator deity who judges actions","a ritual performed only by monks", "Dukkha includes suffering, dissatisfaction and the inability of changing things to provide lasting security."],
   ["The Four Noble Truths begin with the claim that:","life as ordinarily experienced involves dukkha","all desire is immediately fulfilled","the self is permanent and unchanging","karma has no effect on rebirth", "The first truth identifies dukkha; the remaining truths explain its cause, cessation and the path."],
@@ -18526,6 +18714,23 @@ for (const reforge of Object.values(economicsFinanceReforges)) {
 }
 
 rebalanceMCQSubject(["BUS-4","BIO-3","CHEM-2","GEO-TEC","GEO-COAST","GEO-GLOBAL","2.3.1","2.3.2","2.3.3"]);
+
+// A-Level Geography misconception tags, applied here rather than beside the
+// geoMisconceptionTags table itself: the six A1-PHASE7-GEO* questions are
+// appended to GEO-TEC, GEO-COAST and GEO-GLOBAL above, after that table is
+// declared. Running the loop at the declaration left those six on their
+// generated per-question tags.
+function applyGeoMisconceptionTags() {
+  let applied = 0;
+  for (const bankId of SUBJECTS.geo.banks) {
+    for (const question of BANKS[bankId]?.questions || []) {
+      const tag = geoMisconceptionTags[question.id];
+      if (tag) { question.tag = tag; applied++; }
+    }
+  }
+  return applied;
+}
+applyGeoMisconceptionTags();
 
 // Final language pass: a few later-added coverage questions were introduced
 // after the main stem-diversity migration. Rephrase those remaining generic
