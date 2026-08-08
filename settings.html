@@ -24,6 +24,7 @@
   <script src="forge-auth.js"></script>
   <script src="scripts/forge-student-badges.js"></script>
   <script>if (window.ForgeRole) ForgeRole.guard('student', 'teacher.html');</script>
+  <script src="scripts/forge-page-actions.js"></script>
   <script>
     function forgeSignOut() {
       try { localStorage.removeItem('forge-student'); localStorage.removeItem('forge-free-session'); } catch (e) {}
