@@ -11,6 +11,7 @@
     "cap:copy": "npm run mobile:build && cap copy",
     "cap:open:ios": "cap open ios",
     "cap:open:android": "cap open android",
+    "staging": "node dev/staging-server.js",
     "check": "node scripts/check-routes.js && node dev/test-forge.js && node dev/test-auth.js && node dev/test-forge-api.js && node dev/test-persistence.js"
   },
   "dependencies": {
