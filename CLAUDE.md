@@ -123,7 +123,17 @@ propagates into its `*-COV-*` copies and fixing the source fixes them all.
   scores a perfect `0`. `cs` is the live example: single-use share `0.00`, and
   92 of its 112 source questions tagged `MC-<id>`. Read `0` together with
   `TAG_TAXONOMY_MECHANICAL`, the companion ratchet that measures the share of
-  SOURCE questions whose tag merely repeats the question id. Both must be low.
+  SOURCE questions whose tag names no concept. Both must be low.
+
+  That second ratchet asks whether a tag contains a concept word at all, not
+  merely whether it equals `MC-<id>` — an all-caps code ending in a number
+  does not. `MC-<id>` was too literal a test and missed a whole subject: see
+  `gcse-geo` below. An index tag still passes when it groups two or more
+  distinct source questions, which is econ's `MC-AD-03` — numeric, but shared,
+  labelled and starter-backed. `fill_blank` restatements are excluded from
+  that count for the same reason coverage variants are: they restate their
+  source question and inherit its tag, so they pair a tag up without grouping
+  anything.
 
   Note what this does *not* mean: one topical tag per source concept, reused
   across that concept's coverage variants, is the design working. `gcse-maths`
@@ -142,23 +152,33 @@ propagates into its `*-COV-*` copies and fixing the source fixes them all.
   categories) and `geo` (all 238 questions onto 52 categories, none carrying
   fewer than two, with 52 hand-written starters — see
   `docs/geo-misconception-mapping.md`). Substantially done: `psych` (0.18).
-  Stage 1 only: `econ`, which still has 228 questions on single-use tags and a
+  Stage 1 only: `econ`, which still has 230 questions on single-use tags and a
   ratchet of 0.45 set as a floor against regression, not a claim of
-  completion. Listed but *not* meaningfully retagged: `gcse-geo` (0.78 — 492
-  of 640 questions still on single-use tags).
+  completion. Listed but *not* retagged at all: `gcse-geo` (0.77 single-use
+  and 0.99 mechanical — 492 of 640 questions on single-use tags, and 633 on a
+  tag that names no concept).
 
-  Next, roughly by value: `econ` stage 2 and `gcse-geo` — both need design
-  work, though `gcse-geo`'s tags already name topics — then the ~15 subjects
-  still at 100% per-question tags. The audit fails
+  Next, roughly by value: `econ` stage 2 (drafted in
+  `docs/econ-misconception-taxonomy-draft.md`) and `gcse-geo`, then the ~15
+  subjects still at 100% per-question tags. The audit fails
   if a subject listed in `TAG_TAXONOMY_SUBJECTS` regresses, if it exceeds its
   `TAG_TAXONOMY_MECHANICAL` share, or if an aggregatable tag has no starter;
   add a subject to both maps once it is retagged.
 
-  Ranked by mechanical-tag share, the untouched backlog is: `chem` `bio` `phys`
-  `rs` `hsc` `media` `french` `span` `pe` `englit` `engll` `mand` `gcse-hist`
-  `gcse-psych` all at 1.00, then `bus` 0.98, `cs` 0.82, `crim`/`law`/`pol` 0.82,
-  `maths` 0.58. `gcse-geo` is a different case — 0.00 mechanical but 0.77
-  single-use, so its tags name topics and are simply too fine to aggregate.
+  Ranked by mechanical-tag share, the untouched backlog is: `gcse-geo` 0.99,
+  then `chem` `bio` `phys` `rs` `hsc` `media` `french` `span` `pe` `englit`
+  `engll` `mand` `gcse-hist` `gcse-psych` and `crim`/`law`/`pol` all at 1.00,
+  `bus` 0.99, `cs` 0.89, `maths` 0.63.
+
+  **`gcse-geo` is the biggest job here, not the cheapest — the earlier note
+  saying its tags "already name topics" was wrong.** All 565 of its tags are a
+  bank code plus a position (`MC-GEO-HAZ-27`, `MC-ENQ-02`, `MC-GEO-RVF-19`);
+  not one contains a concept word. It scored 0.00 mechanical only because the
+  check tested `tag === "MC-" + id` and the ids read `GCSE-HAZ-27`, so the two
+  strings never matched. Its 73 "aggregating" tags are an artefact too: 71 owe
+  their second question to a `fill_blank` `-FB-` twin restating the source and
+  inheriting its tag, and only 2 group genuinely distinct questions. The
+  mechanical check now catches all of this — see below.
 
   **A label and a starter existing does not mean a subject is done, either.**
   A-Level `geo` looked part-finished because `GEO-TEC` and `GEO-COAST` carried

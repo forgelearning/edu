@@ -237,10 +237,16 @@ const TAG_TAXONOMY_SUBJECTS = {
 // source's tag, a subject of purely mechanical tags can score 0.00 on the
 // single-use check. Defaults to 0 for any subject not listed.
 //
-// The five subjects at 0 below have a genuine taxonomy: every tag names a
-// concept. The four with a value carry a mechanical residue, and each number
-// is the CURRENT level, set to catch regression and to be lowered as the
-// residue is retagged — not an endorsement of it.
+// The subjects at 0 below have a genuine taxonomy: every tag names a concept.
+// The ones with a value carry a residue, and each number is the CURRENT level,
+// set to catch regression and to be lowered as the residue is retagged — not
+// an endorsement of it.
+//
+// Several values below rose when the check stopped looking only for the
+// literal MC-<id> form and started asking whether the tag names a concept at
+// all. Nothing regressed; the old numbers were measuring less than they
+// claimed. The subjects that were genuinely retagged were unmoved by the
+// change, which is the evidence that the new rule is not over-firing.
 const TAG_TAXONOMY_MECHANICAL = {
   'gcse-econ': 0,
   'gcse-sep-bio': 0,
@@ -248,16 +254,26 @@ const TAG_TAXONOMY_MECHANICAL = {
   'gcse-sep-phys': 0,
   'gcse-science': 0,
   'gcse-maths': 0,
-  'gcse-geo': 0,
+  // 633 of 640, was 0.00. Not a regression — gcse-geo has never had a
+  // taxonomy. Every one of its 565 tags is a bank code plus a position
+  // (MC-GEO-HAZ-27, MC-ENQ-02), and none contains a concept word, but none
+  // matched MC-<id> either because the ids read GCSE-HAZ-27. It is the
+  // largest untagged subject left; see docs/gcse-geo-misconception-plan.md.
+  'gcse-geo': 0.99,
   // 29 of 264, all in the Forensic and Cognitive banks added after the retag.
   psych: 0.12,
-  // 52 of 208 — the residue of definitional questions that only a topic tag
-  // would cover, documented in docs/history-misconception-mapping.md.
-  hist: 0.26,
-  // Retagged: 0 of 200 after socMisconceptionTags, down from 92.
-  soc: 0,
-  // 249 of 515, awaiting the stage 2 taxonomy in docs/econ-misconception-plan.md.
-  econ: 0.49,
+  // 67 of 212 — the residue of definitional questions that only a topic tag
+  // would cover, documented in docs/history-misconception-mapping.md. Was
+  // 0.26 against the literal check; the extra 15 are MC-HIST-BRIT1-1 style
+  // positional tags in the same residue.
+  hist: 0.32,
+  // 2 of 200: MC-TECH-01 and MC-TECH-02, each carried by one question. Both
+  // are array-tagged, which is also why they read as used-once on the
+  // single-use check above.
+  soc: 0.01,
+  // 256 of 515, awaiting the stage 2 taxonomy now drafted in
+  // docs/econ-misconception-taxonomy-draft.md.
+  econ: 0.5,
   // Retagged: 0 of 238, down from 200. Every tag names a concept.
   geo: 0,
 };
@@ -297,18 +313,43 @@ for (const [key, maxSingleShare] of Object.entries(TAG_TAXONOMY_SUBJECTS)) {
   // gcse-maths and the gcse-sep-* sciences carry one topical tag per source
   // concept (MC-MATH-RATIO, MC-SEP-BIO-OSMOSIS) reused across that concept's
   // variants, which is the design working, not a defect.
+  //
+  // MC-<id> is only the most literal form. A tag can name just as little
+  // while looking nothing like the id: gcse-geo tags GCSE-HAZ-27 as
+  // MC-GEO-HAZ-27, which is a bank code plus a position and scored 0.00 here
+  // for years. So the test is not "does the tag equal the id" but "does the
+  // tag contain a concept word at all" — an all-caps code ending in a number
+  // does not.
+  //
+  // An index tag still passes when it genuinely groups two or more distinct
+  // source questions, because that is econ's MC-AD-03: numeric, but shared,
+  // labelled and starter-backed. What does not pass is an index tag carried
+  // by a single question. fill_blank restatements are excluded from that
+  // count for the same reason coverage variants are — gcse-geo's 72 -FB-
+  // twins restate their source question and inherit its tag, which paired up
+  // 71 of its 73 "aggregating" tags without grouping anything.
+  const isIndexTag = (tag) => /^MC-(?:[A-Z0-9]+-)+\d+$/.test(tag);
   const sourceQuestions = subject.banks
     .flatMap((bankId) => (BANKS[bankId] || { questions: [] }).questions)
     .filter((q) => q.tag && !q.coverageVariant);
-  const mechanical = sourceQuestions.filter((q) => q.tag === `MC-${q.id}`);
+  const distinctCarriers = new Map();
+  for (const q of sourceQuestions) {
+    if (q.type === 'fill_blank') continue;
+    distinctCarriers.set(q.tag, (distinctCarriers.get(q.tag) || 0) + 1);
+  }
+  const mechanical = sourceQuestions.filter(
+    (q) => q.tag === `MC-${q.id}` ||
+      (isIndexTag(q.tag) && (distinctCarriers.get(q.tag) || 0) < 2)
+  );
   if (sourceQuestions.length) {
     const mechShare = mechanical.length / sourceQuestions.length;
     const allowed = TAG_TAXONOMY_MECHANICAL[key] ?? 0;
     if (mechShare > allowed) {
       issues.push(
         `MECHANICAL TAGS: "${key}" has ${mechanical.length}/${sourceQuestions.length} source questions ` +
-        `(${Math.round(mechShare * 100)}%) whose tag just repeats the question id (allowed ${Math.round(allowed * 100)}%). ` +
-        `A tag of the form MC-<id> names nothing a teacher can act on, and clones can hide it from the single-use check.`
+        `(${Math.round(mechShare * 100)}%) on a tag that names no concept (allowed ${Math.round(allowed * 100)}%). ` +
+        `A tag of the form MC-<id>, or a bank code plus a number carried by one question, names nothing a ` +
+        `teacher can act on, and clones and fill_blank restatements can hide it from the single-use check.`
       );
     }
   }
