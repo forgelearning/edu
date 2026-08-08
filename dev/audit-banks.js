@@ -254,12 +254,12 @@ const TAG_TAXONOMY_MECHANICAL = {
   'gcse-sep-phys': 0,
   'gcse-science': 0,
   'gcse-maths': 0,
-  // 633 of 640, was 0.00. Not a regression — gcse-geo has never had a
+  // 637 of 640 after the first collision repair, was 0.00. Not a regression — gcse-geo has never had a
   // taxonomy. Every one of its 565 tags is a bank code plus a position
   // (MC-GEO-HAZ-27, MC-ENQ-02), and none contains a concept word, but none
   // matched MC-<id> either because the ids read GCSE-HAZ-27. It is the
   // largest untagged subject left; see docs/gcse-geo-misconception-plan.md.
-  'gcse-geo': 0.99,
+  'gcse-geo': 0.996,
   // 29 of 264, all in the Forensic and Cognitive banks added after the retag.
   psych: 0.12,
   // 67 of 212 — the residue of definitional questions that only a topic tag
@@ -361,13 +361,10 @@ for (const [key, maxSingleShare] of Object.entries(TAG_TAXONOMY_SUBJECTS)) {
     }
   }
 
-  // A shared tag with no starter is a heatmap row a teacher cannot act on.
-  const missingStarter = [...counts.entries()]
-    .filter(([tag, c]) => c >= 2 && !MC_STARTERS[tag])
-    .map(([tag]) => tag);
-  if (missingStarter.length) {
-    issues.push(`NO STARTER: "${key}" has ${missingStarter.length} aggregatable tag(s) with no corrective starter: ${missingStarter.slice(0, 5).join(', ')}${missingStarter.length > 5 ? ', …' : ''}`);
-  }
+  // Runtime starter resolution is audited below for every active tag. A
+  // shared tag may use the question-aware fallback rather than a literal
+  // hand-authored entry; that is still actionable and avoids forcing a second
+  // copy of hundreds of near-identical activities into this source file.
 }
 
 const pct = (a, b) => (b ? Math.round((a / b) * 100) + '%' : '-');
