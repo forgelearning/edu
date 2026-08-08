@@ -32,6 +32,28 @@ function _clearAuthSession() {
   } catch(e) {}
 }
 
+// Student identity is also reflected in local caches used by the dashboard
+// and sidebar. Clear those caches whenever an identity changes so a fresh
+// account cannot inherit another student's class, assignment, or Anvil state.
+function _clearDerivedStudentState() {
+  var exact = [
+    'forge-student',
+    'forge-free-session',
+    'forge-paid-student',
+    'forge-anvil-open',
+    'forge-assigned-open-current'
+  ];
+  try {
+    exact.forEach(function (key) { localStorage.removeItem(key); });
+    var remove = [];
+    for (var i = 0; i < localStorage.length; i++) {
+      var key = localStorage.key(i);
+      if (key && (/^forge-assigned-open:/.test(key) || /^forge-assignment-seen:/.test(key) || /^forge-notification-state:/.test(key))) remove.push(key);
+    }
+    remove.forEach(function (key) { localStorage.removeItem(key); });
+  } catch (e) {}
+}
+
 // ── TRIAL HELPERS ────────────────────────────────────────────
 
 // Given a subscriber record, return their access level:
@@ -117,6 +139,7 @@ var ForgeAuth = {
       if (data.error || !data.access_token) {
         return Promise.reject(new Error(data.error_description || data.msg || data.error || 'Sign-up failed'));
       }
+      _clearDerivedStudentState();
       _saveAuthSession({ access_token: data.access_token, refresh_token: data.refresh_token, user: data.user });
       if (window.ForgeRole) ForgeRole.set('student');
 
@@ -142,6 +165,7 @@ var ForgeAuth = {
       if (data.error || !data.access_token) {
         return Promise.reject(new Error(data.error_description || data.msg || data.error || 'Incorrect email or password'));
       }
+      _clearDerivedStudentState();
       _saveAuthSession({ access_token: data.access_token, refresh_token: data.refresh_token, user: data.user });
       if (window.ForgeRole) ForgeRole.set('student');
       return data;
@@ -206,6 +230,7 @@ var ForgeAuth = {
       ForgeAPI.auth.signOut(saved.access_token).catch(function() {});
     }
     _clearAuthSession();
+    _clearDerivedStudentState();
     if (window.ForgeRole) ForgeRole.clear('student');
     // Derived navigation state must never survive into the next student's
     // session. The Anvil count is only a local display cache.
