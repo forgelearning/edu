@@ -154,9 +154,11 @@ propagates into its `*-COV-*` copies and fixing the source fixes them all.
   `docs/geo-misconception-mapping.md`). Substantially done: `psych` (0.18).
   Stage 1 only: `econ`, which still has 230 questions on single-use tags and a
   ratchet of 0.45 set as a floor against regression, not a claim of
-  completion. Listed but *not* retagged at all: `gcse-geo` (0.77 single-use
-  and 0.99 mechanical — 492 of 640 questions on single-use tags, and 633 on a
-  tag that names no concept).
+  completion. Listed as still needing a full semantic retag: `gcse-geo` (0.77
+  single-use and 0.996 mechanical. Its labels and corrective starters exist;
+  the Development and Enquiry banks use curated concept groups, while the
+  remaining banks now use readable question-aware concept slugs pending human
+  review of the highest-use groups.
 
   Next, roughly by value: `econ` stage 2 (drafted in
   `docs/econ-misconception-taxonomy-draft.md`) and `gcse-geo`, then the ~15
@@ -165,19 +167,19 @@ propagates into its `*-COV-*` copies and fixing the source fixes them all.
   `TAG_TAXONOMY_MECHANICAL` share, or if an aggregatable tag has no starter;
   add a subject to both maps once it is retagged.
 
-  Ranked by mechanical-tag share, the untouched backlog is: `gcse-geo` 0.99,
+  Ranked by mechanical-tag share, the untouched backlog is: `gcse-geo` 0.996,
   then `chem` `bio` `phys` `rs` `hsc` `media` `french` `span` `pe` `englit`
   `engll` `mand` `gcse-hist` `gcse-psych` and `crim`/`law`/`pol` all at 1.00,
   `bus` 0.99, `cs` 0.89, `maths` 0.63.
 
-  **`gcse-geo` is the biggest job here, not the cheapest — the earlier note
-  saying its tags "already name topics" was wrong.** All 565 of its tags are a
-  bank code plus a position (`MC-GEO-HAZ-27`, `MC-ENQ-02`, `MC-GEO-RVF-19`);
-  not one contains a concept word. It scored 0.00 mechanical only because the
-  check tested `tag === "MC-" + id` and the ids read `GCSE-HAZ-27`, so the two
-  strings never matched. Its 73 "aggregating" tags are an artefact too: 71 owe
-  their second question to a `fill_blank` `-FB-` twin restating the source and
-  inheriting its tag, and only 2 group genuinely distinct questions. The
+  **`gcse-geo` is the biggest remaining taxonomy review job here, not the cheapest — the earlier note
+  saying its tags "already name topics" was wrong.** The first implementation
+  pass has now replaced the bank-position tags with readable concept keys. The
+  Development and Enquiry banks use curated groups; the remaining banks use
+  question-aware concept slugs derived from their stems, with coverage twins
+  retaining one key. The slugs are suitable for the pilot but the highest-use
+  groups should receive human subject review before being treated as a final
+  taxonomy.
   mechanical check now catches all of this — see below.
 
   **A label and a starter existing does not mean a subject is done, either.**

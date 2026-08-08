@@ -1931,7 +1931,7 @@ BANKS["GCSE-GEO-ENQUIRY"] = {
     {
       id:"GCSE-ENQ-18",spec:"GCSE-ENQ",stem:"A student surveys only people entering a shopping centre to investigate residents' views of urban regeneration. What is the main sampling problem?",
       options:{A:"The sample may over-represent shoppers and exclude non-users, creating bias",B:"Shopping-centre surveys always produce too many numerical answers",C:"A questionnaire cannot investigate people's views",D:"The sample is automatically stratified because everyone enters through the same doors at similar times"},
-      correct:"A",tag:"MC-ENQ-12",
+      correct:"A",tag:"MC-ENQ-SAMPLING-BIAS",
       scaffold:"Sampling at one shopping centre is convenient, but it may exclude non-shoppers, older residents and people who avoid the area. The results may not represent the target population. Sampling several locations and times would improve coverage.",
       reforge:{stem:"Which change would most improve the representativeness of this urban survey?",options:{A:"Ask only the first five people who pass the entrance",B:"Collect responses at several locations and times, with a planned sample of different resident groups",C:"Remove all questions about regeneration",D:"Use one respondent's answer as the community average"},correct:"B"}
     },
@@ -2788,14 +2788,14 @@ BANKS["GCSE-GEO-DEV"] = {
     {
       id:"GCSE-DEV-31",spec:"GCSE-DEV",stem:"Why is using a single development indicator risky when comparing countries?",
       options:{A:"One indicator can hide other dimensions of development, so a country may score well economically but poorly socially or environmentally",B:"All indicators measure exactly the same thing",C:"Indicators are only used for weather forecasting",D:"GDP per capita includes literacy, life expectancy and inequality automatically"},
-      correct:"A",tag:"MC-DEV-15",
+      correct:"A",tag:"MC-DEV-INDICATORS",
       scaffold:"Development is multi-dimensional. GDP per capita measures average income, but not distribution, health, education, freedom or sustainability. Strong answers compare indicators and explain what each includes and leaves out.",
       reforge:{stem:"Country A has high GDP per capita but low literacy and high inequality. What does this show?",options:{A:"It must be fully developed",B:"Literacy is not linked to development",C:"Economic data alone can hide social weaknesses, so multiple indicators are needed",D:"HDI would be useless because GDP is high"},correct:"C"}
     },
     {
       id:"GCSE-DEV-32",spec:"GCSE-DEV",stem:"A student says a youthful population is always a development problem. What is the best evaluation?",
       options:{A:"It always causes immediate economic collapse",B:"It only matters in developed countries",C:"It can create pressure on schools and healthcare, but with education and jobs it can become a demographic dividend",D:"It means death rates must be rising"},
-      correct:"C",tag:"MC-DEV-16",
+      correct:"C",tag:"MC-DEV-YOUTHFUL-POP",
       scaffold:"A youthful population raises dependency and service pressure in the short term. But if young people receive education, healthcare and employment, they can become a large productive workforce — a demographic dividend. Evaluation depends on investment and job creation.",
       reforge:{stem:"Which condition is most important if a youthful population is to support development?",options:{A:"No schooling so wages stay low",B:"Investment in education, health and employment opportunities",C:"A ban on migration to cities",D:"Keeping all work informal"},correct:"B"}
     },
@@ -21422,3 +21422,119 @@ applyGeoAlevelDistractorRepairs();
 // A1-PHASE7-ECON* questions are appended to the 2.3.x banks after the tag
 // table is declared.
 applyEconMisconceptionTags();
+
+// GCSE Geography Development: replace bank-position tags with names that tell
+// a teacher what the student may have confused. Coverage variants retain the
+// same concept tag as their source question.
+const GCSE_GEO_DEV_SEMANTIC_TAGS = {
+  "MC-DEV-01":"MC-DEV-MEASURING-DEVELOPMENT", "MC-DEV-02":"MC-DEV-MEASURING-DEVELOPMENT",
+  "MC-DEV-03":"MC-DEV-DEVELOPMENT-CLASSIFICATION", "MC-DEV-04":"MC-DEV-HISTORICAL-INEQUALITY",
+  "MC-DEV-05":"MC-DEV-LOCATION-BARRIERS", "MC-DEV-06":"MC-DEV-ROSTOW",
+  "MC-DEV-07":"MC-DEV-DEPENDENCY-THEORY", "MC-DEV-08":"MC-DEV-DEVELOPMENT-APPROACHES",
+  "MC-DEV-09":"MC-DEV-INTERMEDIATE-TECH", "MC-DEV-10":"MC-DEV-FAIRTRADE",
+  "MC-DEV-11":"MC-DEV-DEBT-RELIEF", "MC-DEV-12":"MC-DEV-TNC-FDI",
+  "MC-DEV-13":"MC-DEV-MULTIPLIER", "MC-DEV-14":"MC-DEV-DTM",
+  "MC-DEV-15":"MC-DEV-AGEING-POPULATION", "MC-DEV-16":"MC-DEV-DEPENDENCY-DEMOGRAPHIC-DIVIDEND",
+  "MC-DEV-KT-01":"MC-DEV-DEVELOPMENT-CLASSIFICATION", "MC-DEV-KT-02":"MC-DEV-DEVELOPMENT-APPROACHES",
+  "MC-DEV-KT-03":"MC-DEV-ECONOMIC-SYSTEMS", "MC-DEV-KT-04":"MC-DEV-MEASURING-DEVELOPMENT",
+  "MC-DEV-KT-05":"MC-DEV-MEASURING-DEVELOPMENT", "MC-DEV-KT-06":"MC-DEV-HEALTH-INDICATORS",
+  "MC-DEV-KT-07":"MC-DEV-INEQUALITY", "MC-DEV-KT-08":"MC-DEV-INFORMAL-ECONOMY",
+  "MC-DEV-KT-09":"MC-DEV-SQUATTER-SETTLEMENTS", "MC-DEV-KT-10":"MC-DEV-POVERTY-LINE",
+  "MC-DEV-KT-11":"MC-DEV-GOVERNANCE", "MC-DEV-KT-12":"MC-DEV-GOVERNANCE",
+  "MC-DEV-KT-13":"MC-DEV-LOCATION-BARRIERS", "MC-DEV-KT-14":"MC-DEV-NGO",
+  "MC-DEV-17":"MC-DEV-DEBT-RELIEF", "MC-DEV-18":"MC-DEV-AID-VS-FDI",
+  "MC-GEO-DEV-35":"MC-DEV-INEQUALITY", "MC-GEO-DEV-36":"MC-DEV-DEVELOPMENT-CLASSIFICATION",
+  "MC-GEO-DEV-37":"MC-DEV-HISTORICAL-INEQUALITY", "MC-GEO-DEV-38":"MC-DEV-DEVELOPMENT-APPROACHES",
+  "MC-GEO-DEV-39":"MC-DEV-GLOBALISATION", "MC-GEO-DEV-40":"MC-DEV-ENVIRONMENTAL-COSTS",
+  "MC-GEO-DEV-41":"MC-DEV-FLOW-LINE-MAPS", "MC-GEO-DEV-42":"MC-DEV-TNC-FDI",
+  "MC-GEO-DEV-43":"MC-DEV-MEASURING-DEVELOPMENT", "MC-GEO-DEV-44":"MC-DEV-INEQUALITY",
+  "MC-GEO-DEV-45":"MC-DEV-GOVERNANCE", "MC-GEO-DEV-46":"MC-DEV-HEALTH-INDICATORS",
+  "MC-GEO-DEV-47":"MC-DEV-LOCATION-BARRIERS", "MC-GEO-DEV-48":"MC-DEV-HISTORICAL-INEQUALITY",
+  "MC-GEO-DEV-49":"MC-DEV-ROSTOW", "MC-GEO-DEV-50":"MC-DEV-DEPENDENCY-THEORY",
+  "MC-GEO-DEV-51":"MC-DEV-INTERMEDIATE-TECH", "MC-GEO-DEV-52":"MC-DEV-MEGAPROJECTS",
+  "MC-GEO-DEV-53":"MC-DEV-MULTIPLIER", "MC-GEO-DEV-54":"MC-DEV-DIGITAL-DIVIDE",
+  "MC-GEO-DEV-55":"MC-DEV-AGEING-POPULATION", "MC-GEO-DEV-56":"MC-DEV-TIED-AID"
+};
+for (const question of SUBJECTS["gcse-geo"].banks.flatMap((bankId) => BANKS[bankId]?.questions || [])) {
+  if (question.spec === "GCSE-DEV" && GCSE_GEO_DEV_SEMANTIC_TAGS[question.tag]) {
+    question.tag = GCSE_GEO_DEV_SEMANTIC_TAGS[question.tag];
+  }
+}
+
+// GCSE Geography fieldwork and enquiry: consolidate method and data-skills
+// misconceptions across the core enquiry bank. The later river and urban
+// fieldwork banks remain separate because their practical contexts matter.
+const GCSE_GEO_ENQ_SEMANTIC_TAGS = {
+  "MC-ENQ-01":"MC-ENQ-HYPOTHESIS-DESIGN", "MC-ENQ-02":"MC-ENQ-NULL-HYPOTHESIS",
+  "MC-ENQ-03":"MC-ENQ-PRIMARY-DATA", "MC-ENQ-04":"MC-ENQ-SYSTEMATIC-SAMPLING",
+  "MC-ENQ-05":"MC-ENQ-OPPORTUNISTIC-SAMPLING", "MC-ENQ-06":"MC-ENQ-ENVIRONMENTAL-QUALITY-SCALE",
+  "MC-ENQ-07":"MC-ENQ-SCATTER-CORRELATION", "MC-ENQ-08":"MC-ENQ-CHOROPLETH",
+  "MC-ENQ-09":"MC-ENQ-CENTRAL-TENDENCY", "MC-ENQ-10":"MC-ENQ-ANOMALIES",
+  "MC-ENQ-11":"MC-ENQ-EVALUATION-CONCLUSION", "MC-ENQ-12":"MC-ENQ-FLOW-METER",
+  "MC-ENQ-13":"MC-ENQ-EVALUATION-CONCLUSION", "MC-ENQ-14":"MC-ENQ-CHOROPLETH", "MC-ENQ-15":"MC-ENQ-SCATTER-CORRELATION",
+  "MC-GEO-ENQUIRY-22":"MC-ENQ-RANDOM-SAMPLING", "MC-GEO-ENQUIRY-23":"MC-ENQ-BAR-CHARTS",
+  "MC-GEO-ENQUIRY-24":"MC-ENQ-PERCENTAGE-CHANGE", "MC-GEO-ENQUIRY-25":"MC-ENQ-VARIABILITY",
+  "MC-GEO-ENQUIRY-26":"MC-ENQ-REPEAT-MEASUREMENTS", "MC-GEO-ENQUIRY-27":"MC-ENQ-VALIDITY",
+  "MC-GEO-ENQUIRY-28":"MC-ENQ-SCATTER-CORRELATION", "MC-GEO-ENQUIRY-29":"MC-ENQ-SCATTER-CORRELATION",
+  "MC-GEO-ENQUIRY-30":"MC-ENQ-PRIMARY-DATA", "MC-GEO-ENQUIRY-31":"MC-ENQ-SYSTEMATIC-SAMPLING",
+  "MC-GEO-ENQUIRY-32":"MC-ENQ-STRATIFIED-SAMPLING", "MC-GEO-ENQUIRY-33":"MC-ENQ-ENVIRONMENTAL-QUALITY-SCALE",
+  "MC-GEO-ENQUIRY-34":"MC-ENQ-PILOT-STUDY", "MC-GEO-ENQUIRY-35":"MC-ENQ-VARIABILITY",
+  "MC-GEO-ENQUIRY-36":"MC-ENQ-CENTRAL-TENDENCY", "MC-GEO-ENQUIRY-37":"MC-ENQ-CHOROPLETH",
+  "MC-GEO-ENQUIRY-38":"MC-ENQ-PROPORTIONAL-SYMBOLS", "MC-GEO-ENQUIRY-39":"MC-ENQ-STANDARDISATION",
+  "MC-GEO-ENQUIRY-40":"MC-ENQ-ANOMALIES", "MC-GEO-ENQUIRY-41":"MC-ENQ-RELIABILITY-VALIDITY",
+  "MC-GEO-ENQUIRY-42":"MC-ENQ-TRIANGULATION", "MC-GEO-ENQUIRY-43":"MC-ENQ-ETHICS",
+  "MC-GEO-ENQUIRY-44":"MC-ENQ-EVALUATION-CONCLUSION"
+};
+Object.assign(GCSE_GEO_ENQ_SEMANTIC_TAGS, {
+  "MC-GEO-ENQUIRY-22":"MC-ENQ-RANDOM-SAMPLING", "MC-GEO-ENQUIRY-23":"MC-ENQ-BAR-CHARTS",
+  "MC-GEO-ENQUIRY-24":"MC-ENQ-PERCENTAGE-CHANGE", "MC-GEO-ENQUIRY-25":"MC-ENQ-VARIABILITY",
+  "MC-GEO-ENQUIRY-26":"MC-ENQ-REPEAT-MEASUREMENTS", "MC-GEO-ENQUIRY-27":"MC-ENQ-VALIDITY",
+  "MC-GEO-ENQUIRY-28":"MC-ENQ-SCATTER-CORRELATION", "MC-GEO-ENQUIRY-29":"MC-ENQ-SCATTER-CORRELATION",
+  "MC-GEO-ENQ-30":"MC-ENQ-PRIMARY-DATA", "MC-GEO-ENQ-31":"MC-ENQ-SYSTEMATIC-SAMPLING",
+  "MC-GEO-ENQ-32":"MC-ENQ-STRATIFIED-SAMPLING", "MC-GEO-ENQ-33":"MC-ENQ-ENVIRONMENTAL-QUALITY-SCALE",
+  "MC-GEO-ENQ-34":"MC-ENQ-PILOT-STUDY", "MC-GEO-ENQ-35":"MC-ENQ-VARIABILITY",
+  "MC-GEO-ENQ-36":"MC-ENQ-CENTRAL-TENDENCY", "MC-GEO-ENQ-37":"MC-ENQ-CHOROPLETH",
+  "MC-GEO-ENQ-38":"MC-ENQ-PROPORTIONAL-SYMBOLS", "MC-GEO-ENQ-39":"MC-ENQ-STANDARDISATION",
+  "MC-GEO-ENQ-40":"MC-ENQ-ANOMALIES", "MC-GEO-ENQ-41":"MC-ENQ-RELIABILITY-VALIDITY",
+  "MC-GEO-ENQ-42":"MC-ENQ-TRIANGULATION", "MC-GEO-ENQ-43":"MC-ENQ-ETHICS",
+  "MC-GEO-ENQ-44":"MC-ENQ-EVALUATION-CONCLUSION"
+});
+for (const question of SUBJECTS["gcse-geo"].banks.flatMap((bankId) => BANKS[bankId]?.questions || [])) {
+  if (/^GCSE-ENQ/.test(question.spec || "") && GCSE_GEO_ENQ_SEMANTIC_TAGS[question.tag]) {
+    question.tag = GCSE_GEO_ENQ_SEMANTIC_TAGS[question.tag];
+  }
+}
+
+// Finish the remaining GCSE Geography banks with readable, question-aware
+// concept keys. The source question and its fill-blank/coverage variants keep
+// one key; otherwise each key is derived from the concept words in the stem,
+// so teachers never see a bank-position code as a misconception label.
+const GCSE_GEO_REMAINING_BANKS = [
+  "GCSE-GEO-HAZ", "GCSE-GEO-INDIA", "GCSE-GEO-URB", "GCSE-GEO-UKLAND",
+  "GCSE-GEO-UKHUMAN", "GCSE-GEO-RIVERFIELD", "GCSE-GEO-URBFIELD",
+  "GCSE-GEO-BIOSPHERE", "GCSE-GEO-FORESTS", "GCSE-GEO-ENERGY",
+  "GCSE-GEO-DECISIONS", "GCSE-GEO-SKILLS"
+];
+const GCSE_GEO_TAG_STOPWORDS = new Set("a an and are as at be by can does for from how is it may of on or should the their them these this to what when which why with would".split(" "));
+function gcseGeoSemanticStem(stem) {
+  const words = String(stem || "").toUpperCase().replace(/[^A-Z0-9 ]/g, " ").split(/\s+/)
+    .filter((word) => word.length > 2 && !GCSE_GEO_TAG_STOPWORDS.has(word.toLowerCase()));
+  return words.slice(0, 5).join("-") || "CONCEPT";
+}
+for (const bankId of GCSE_GEO_REMAINING_BANKS) {
+  const bank = BANKS[bankId];
+  if (!bank) continue;
+  const sourceByOldTag = new Map();
+  for (const question of bank.questions) {
+    if (!question.tag || question.type === "fill_blank") continue;
+    if (!sourceByOldTag.has(question.tag)) sourceByOldTag.set(question.tag, question);
+  }
+  const semanticByOldTag = new Map();
+  for (const [oldTag, question] of sourceByOldTag) {
+    const shortBank = bankId.replace(/^GCSE-GEO-/, "");
+    semanticByOldTag.set(oldTag, `MC-GG-${shortBank}-${gcseGeoSemanticStem(question.stem)}-CONCEPT`);
+  }
+  for (const question of bank.questions) {
+    if (semanticByOldTag.has(question.tag)) question.tag = semanticByOldTag.get(question.tag);
+  }
+}

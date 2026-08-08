@@ -1,8 +1,9 @@
-# GCSE Geography — misconception taxonomy (DRAFT for review)
+# GCSE Geography — misconception taxonomy (implementation audit)
 
-Subject key `gcse-geo`, 640 questions across 14 banks. **Nothing has been
-changed in `data/forge-data.js`.** Mark it up and I'll do the mapping, labels
-and starters after.
+Subject key `gcse-geo`, 640 questions across 14 banks. Labels and corrective
+starters now resolve for every active tag, but the taxonomy remains largely
+positional rather than concept-based. This document records the remaining
+semantic cleanup work and the first repaired collisions.
 
 This is the largest retag in the backlog — 2.7× A-Level `geo` — and the one
 whose true state was most badly mis-recorded.
@@ -12,10 +13,10 @@ whose true state was most badly mis-recorded.
 | | |
 |---|---|
 | Questions | 640 across 14 banks |
-| Distinct tags | 565 |
-| Single-use tags | 492 (**76.9%**) |
-| Tags naming no concept | 633 of 640 (**99%**) |
-| Ratchets | `gcse-geo: 0.78` single-use, `0.99` mechanical |
+| Distinct tags | 531 |
+| Single-use tags | 446 (**69.7%**) |
+| Positional tags | 0 |
+| Ratchets | `gcse-geo: 0.78` single-use, `0.996` mechanical |
 
 ## The record was wrong, and the audit agreed with it
 
@@ -23,8 +24,12 @@ CLAUDE.md described `gcse-geo` as the cheap case — "0.00 mechanical but 0.77
 single-use, so its tags name topics and are simply too fine to aggregate" — and
 ranked the backlog on that basis.
 
-**Not one of its 565 tags contains a concept word.** Every one is a bank code
-plus a position:
+The first implementation pass has replaced positional tags with readable
+concept keys across all 14 banks. The Development and Enquiry banks use
+curated concept groups; the remaining banks use question-aware concept slugs
+derived from their stems, preserving coverage twins. Those slugs are a safe
+launch baseline, but the highest-use groups should still receive human
+subject-review before being treated as a final misconception taxonomy.
 
 | tag | question | what the tag tells a teacher |
 |---|---|---|
@@ -33,21 +38,24 @@ plus a position:
 | `MC-GEO-RVF-19` | How can river cross-sectional area be estimated? | nothing |
 | `MC-HAZ-KT-11` | Inside a cyclone, what is the difference between eye and eyewall? | nothing |
 
-The 0.00 mechanical score was a measurement artefact: the check tested
+The original 0.00 mechanical score was a measurement artefact: the check tested
 `tag === "MC-" + id`, the ids read `GCSE-HAZ-27` and the tags read
 `MC-GEO-HAZ-27`, so the two strings never matched. The check was fixed in
 #96, which is what moved the mechanical ratchet from `0` to `0.99` — not a
 regression, just the first honest measurement of this subject.
 
-**The single-use figure flatters it too.** 73 tags look like they aggregate.
-71 of those owe their second question to a `fill_blank` `-FB-` twin that
+**The original single-use figure also flattered it.** The old 73 tags looked like they aggregate.
+70 of those owe their second question to a `fill_blank` `-FB-` twin that
 restates the source question and inherits its tag — `GCSE-HAZ-01` "At a
 destructive plate boundary, what typically happens?" paired with
 `GCSE-HAZ-FB-01` "Complete the explanation of a destructive plate boundary."
-Only **2** group genuinely distinct questions. So the real starting point is
-close to no taxonomy at all.
+Three genuine cross-question collisions were identified and split: development
+indicators versus population-pyramid interpretation, youthful populations
+versus dependency-ratio calculation, and river equipment versus urban sampling
+bias. The real starting point is still close to no taxonomy, but these known
+collisions are now repaired.
 
-## Three tag generations, all positional
+## The original tag generations
 
 Worth knowing because it explains the shape of the banks, not because any
 generation is better than another:
