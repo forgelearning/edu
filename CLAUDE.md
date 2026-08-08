@@ -136,16 +136,20 @@ propagates into its `*-COV-*` copies and fixing the source fixes them all.
   `MC-SEP-*` set — see `docs/gcse-science-misconception-mapping.md`),
   `gcse-maths` (126 tags onto 90; all 90 labelled, 89 with a hand-written
   starter — its tags were already topical and merely split by a numeric
-  suffix, so the work was merging variants, not designing a taxonomy), and
+  suffix, so the work was merging variants, not designing a taxonomy),
   `hist` (37 shared `MC-HIST-*` tags, see
-  `docs/history-misconception-mapping.md`). Substantially done: `psych` (0.18).
-  Listed but *not* meaningfully retagged: `gcse-geo` (0.78 — 492 of 640
-  questions still on single-use tags), `soc` (0.94), and `econ`, which is not
-  in the ratchet at all and has 378 of 515 questions on single-use tags.
+  `docs/history-misconception-mapping.md`), `soc` (185 questions onto 44
+  categories) and `geo` (all 238 questions onto 52 categories, none carrying
+  fewer than two, with 52 hand-written starters — see
+  `docs/geo-misconception-mapping.md`). Substantially done: `psych` (0.18).
+  Stage 1 only: `econ`, which still has 228 questions on single-use tags and a
+  ratchet of 0.45 set as a floor against regression, not a claim of
+  completion. Listed but *not* meaningfully retagged: `gcse-geo` (0.78 — 492
+  of 640 questions still on single-use tags).
 
-  Next, roughly by value: `econ`, `gcse-geo` and `soc` —
-  those three need a taxonomy designed from scratch, which is the expensive
-  part — then the ~15 subjects still at 100% per-question tags. The audit fails
+  Next, roughly by value: `econ` stage 2 and `gcse-geo` — both need design
+  work, though `gcse-geo`'s tags already name topics — then the ~15 subjects
+  still at 100% per-question tags. The audit fails
   if a subject listed in `TAG_TAXONOMY_SUBJECTS` regresses, if it exceeds its
   `TAG_TAXONOMY_MECHANICAL` share, or if an aggregatable tag has no starter;
   add a subject to both maps once it is retagged.
@@ -155,11 +159,32 @@ propagates into its `*-COV-*` copies and fixing the source fixes them all.
   `gcse-psych` all at 1.00, then `bus` 0.98, `cs` 0.82, `crim`/`law`/`pol` 0.82,
   `maths` 0.58. `gcse-geo` is a different case — 0.00 mechanical but 0.77
   single-use, so its tags name topics and are simply too fine to aggregate.
+
+  **A label and a starter existing does not mean a subject is done, either.**
+  A-Level `geo` looked part-finished because `GEO-TEC` and `GEO-COAST` carried
+  16 + 6 tags that all had labels and hand-written starters. Those tags belong
+  to `gcse-geo`, which still uses them, and A-Level geo was sharing them
+  wrongly: A-Level `COAST-02` asks what causes longshore drift and pointed at a
+  starter reteaching headland-and-bay formation. Check that a tag's label
+  describes the question in *this* subject before counting it as covered.
 - Not every subject needs a fresh taxonomy first: `gcse-sep-*` already carried
   good topic tags, so the work there was purely labels and starters. Check what
   a subject's tags actually look like before assuming a retag is needed.
 - A-Level Geography is intentionally marked Developing until every active route
-  point is mapped.
+  point is mapped. That is about spec-point coverage (91%) and is unrelated to
+  its misconception tagging, which is complete.
+- A-Level Geography carries 19 options padded with literal filler
+  (`TEC-01` option B ends "cannot move. in this context in context in
+  context in context"), across `GEO-TEC`, `GEO-COAST`, `GEO-REGEN` and
+  `GEO-WATER`. This is how the subject reached 0% cued: distractors were
+  padded rather than written. A scripted check finds 0 correct-is-longest
+  violations there, so the length rule itself needs no rewrite pass — the
+  filler text does.
+- `TAG_TAXONOMY_SUBJECTS` counts array-valued tags as a single composite key
+  rather than incrementing each member, so a question tagged
+  `["MC-A","MC-TECH-02"]` reads as used-once no matter how many questions
+  share `MC-A`. 15 questions are affected across `geo`, `soc` and several
+  others; it is why `geo`'s ratchet is 0.01 rather than 0.
 - `englit` and `engll` reference the same two bank ids (`ENG-TERM-1`,
   `ENG-TECH-1`), so both subjects serve identical questions.
 - Mandarin is represented by one subject key (`mand`) and one live bank.
