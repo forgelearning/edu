@@ -22517,3 +22517,50 @@ for (const question of SUBJECTS.cs.banks.flatMap(bankId => BANKS[bankId]?.questi
   const sourceId = question.coverageVariant ? String(question.tag || "").replace(/^MC-/, "") : question.id;
   if (CS_TAGS[question.id] || CS_TAGS[sourceId]) question.tag = CS_TAGS[question.id] || CS_TAGS[sourceId];
 }
+
+// Final geography cue repairs. These are misconception-shaped distractors,
+// not length padding: each replacement is a plausible but wrong claim that
+// makes the answer set test the concept rather than the option length.
+const geoFinalCuedDistractorRepairs = {
+  "A1-PHASE7-GEOTEC-01:base": { B: "must occur exactly once each century, regardless of previous events or local conditions" },
+  "A1-PHASE7-GEOTEC-02:base": { A: "it predicts the precise date and magnitude of the next earthquake from mapped patterns" },
+  "A1-PHASE7-GEOCOAST-02:base": { A: "flooding always improves tourism income and protects the coastline from future erosion without creating new risks" },
+  "GLOBAL-GAP-01:reforge": { A: "It eliminates the need for physical transport and face-to-face business relationships" },
+  "GLOBAL-GAP-02:base": { A: "A factory supplying only its local village and having no overseas production links" },
+  "GLOBAL-GAP-02:reforge": { A: "To keep every stage of production in one country and avoid international dependence" },
+  "GLOBAL-GAP-03:base": { A: "It can never move capital or production between countries after investing" },
+  "GLOBAL-GAP-03:reforge": { B: "It always prevents host-country firms from entering the same markets" },
+  "GLOBAL-GAP-04:base": { A: "FDI prevents exports from increasing because foreign firms only sell domestically" },
+  "GLOBAL-GAP-04:reforge": { A: "Removing labour standards so investors can reduce costs without accountability" },
+  "GLOBAL-GAP-05:base": { B: "To prevent member states from trading independently with countries outside the bloc" },
+  "GLOBAL-GAP-06:base": { A: "Every worker benefits from identical wages and employment opportunities" },
+  "GLOBAL-GAP-06:reforge": { A: "A teacher whose work depends on one local school and cannot be transferred abroad" },
+  "GLOBAL-GAP-07:base": { A: "To prevent all international investment, trade and migration from taking place" },
+  "GLOBAL-GAP-07:reforge": { B: "Allowing firms to decide privately whether they report any impacts" },
+  "GLOBAL-GAP-08:base": { A: "A country's total population size and land area compared with its neighbours" },
+  "GLOBAL-GAP-08:reforge": { A: "Universal access to finance, education and advanced technology in every region" },
+  "GLOBAL-GAP-09:base": { B: "All global connections stopped developing after the late twentieth century" },
+  "GLOBAL-GAP-09:reforge": { A: "A fall in the cost of shipping making all supply chains permanently secure" },
+  "GLOBAL-GAP-10:base": { A: "It makes every language, tradition and cultural practice exactly identical immediately" },
+  "GLOBAL-GAP-10:reforge": { A: "A government permanently closing every cultural institution to prevent all outside cultural influences" },
+  "GLOBAL-GAP-11:base": { A: "Trade removes every difference in access to technology, investment and infrastructure" },
+  "GLOBAL-GAP-11:reforge": { B: "Reducing education, transport and digital investment in less-connected regions" },
+  "A1-PHASE7-GEOGLOBAL-01:base": { A: "complete economic equality between places, with identical wages and production roles everywhere" },
+  "A1-PHASE7-GEOGLOBAL-02:base": { B: "trade guarantees identical wages, investment and value added in every region of the world" },
+  "GCSE-DEV-11:base": { A: "The countries could immediately join the G20, eliminate all future borrowing and no longer need support from international institutions" },
+  "GCSE-URB-10:base": { A: "It always gives every resident a larger house, a better-paid job and a guaranteed share of the redevelopment profits, without disrupting existing communities" },
+  "GCSE-UKHUMAN-19:reforge": { A: "A younger workforce without any out-migration, because all young adults remain in the rural district" },
+  "GCSE-ENQ-01:reforge": { A: "Environmental quality is a useful thing to measure, even though the hypothesis does not identify a direction or relationship" },
+  "GCSE-URF-07:reforge": { B: "A pie chart, showing the proportion of each site's score and making the distance relationship clear across the sites" }
+};
+
+for (const [key, replacements] of Object.entries(geoFinalCuedDistractorRepairs)) {
+  const [id, mode] = key.split(":");
+  const subject = id.startsWith("GCSE-") ? SUBJECTS["gcse-geo"] : SUBJECTS.geo;
+  for (const bankId of subject.banks) {
+    const question = (BANKS[bankId]?.questions || []).find(item => item.id === id);
+    const item = mode === "base" ? question : question?.reforge;
+    if (!item?.options) continue;
+    for (const [letter, value] of Object.entries(replacements)) item.options[letter] = value;
+  }
+}
