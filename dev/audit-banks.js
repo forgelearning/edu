@@ -198,6 +198,12 @@ const TAG_TAXONOMY_SUBJECTS = {
   pol: 0,
   // GCSE History: 200 questions now use 29 shared misconception groups.
   'gcse-hist': 0,
+  // A-Level Chemistry: 202 questions now use 13 shared misconception groups.
+  chem: 0,
+  // A-Level Biology: 202 questions now use 13 shared misconception groups.
+  bio: 0,
+  // A-Level Physics: 200 questions now use 13 shared misconception groups.
+  phys: 0,
   // Combined science shares the separate sciences' MC-SEP-* taxonomy. The
   // remaining share is 15 questions whose tag names a topic, not an error.
   'gcse-science': 0.08,
@@ -275,6 +281,9 @@ const TAG_TAXONOMY_MECHANICAL = {
   'gcse-sep-chem': 0,
   'gcse-sep-phys': 0,
   'gcse-science': 0,
+  'chem': 0,
+  'bio': 0,
+  'phys': 0,
   'gcse-maths': 0,
   // Was 0.996 when every tag was a bank code plus a position (MC-GEO-HAZ-27).
   // The concept-slug pass cleared that: the subject now measures 0, so the

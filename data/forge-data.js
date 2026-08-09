@@ -22264,3 +22264,71 @@ addGHistRange("EL",1,7,"MC-GHIST-ELIZ-RELIGION"); addGHistRange("EL",8,13,"MC-GH
 for (const question of SUBJECTS["gcse-hist"].banks.flatMap(bankId => BANKS[bankId]?.questions || [])) {
   if (GCSE_HIST_TAGS[question.id]) question.tag = GCSE_HIST_TAGS[question.id];
 }
+
+// A-Level Chemistry: group questions by the underlying misconception rather
+// than by specification section. These maps are keyed by question id so an
+// error that appears in a bank extension can be reviewed without relying on
+// the stem text.
+const CHEM_TAGS = {};
+const addChem = (tag, ids) => ids.forEach(id => { CHEM_TAGS[id] = tag; });
+addChem("MC-GCHEM-ATOMIC-STRUCTURE", ["CHEM-01","CHEM-02","CHEM-06","CHEM-12","CHEM-16","CHEM-E1-01","CHEM-E1-02","CHEM-E1-03","CHEM-E1B-01","CHEM-E4-01"]);
+addChem("MC-GCHEM-MOLES-FORMULAE", ["CHEM-05","CHEM-E1-04","CHEM-E1-05","CHEM-15"]);
+addChem("MC-GCHEM-BONDING-STRUCTURE", ["CHEM-03","CHEM-04","CHEM-08","CHEM-09","CHEM-14","CHEM-E1-06","CHEM-E1-07","CHEM-E1-08","CHEM-E1-09"]);
+addChem("MC-GCHEM-MASS-SPECTRA", ["CHEM-07","CHEM-E3-10","CHEM-E3-11"]);
+addChem("MC-GCHEM-ENERGETICS", ["CHEM-10","CHEM-E2-01","CHEM-E2-14","CHEM-E2-15"]);
+addChem("MC-GCHEM-RATES", ["CHEM-13","CHEM-E2-02","CHEM-E2-10","CHEM-E2-11"]);
+addChem("MC-GCHEM-EQUILIBRIA", ["CHEM-11","CHEM-E2-03","CHEM-E2-04","CHEM-E2-12","A1-PHASE7-CHEM2-01"]);
+addChem("MC-GCHEM-ACIDS-REDOX", ["CHEM-E2-05","CHEM-E2-06","CHEM-E2-07","CHEM-E2-08","CHEM-E2-09","CHEM-E2-13","CHEM-E2-16","CHEM-E2-17","CHEM-E2-18","A1-PHASE7-CHEM2-02"]);
+addChem("MC-GCHEM-INORGANIC-TESTS", ["CHEM-E4-02","CHEM-E4-03","CHEM-E4-04","CHEM-E4B-01","CHEM-E4B-02","CHEM-E4B-03","CHEM-E4B-04"]);
+addChem("MC-GCHEM-ORGANIC-MECHANISMS", ["ORG-02","ORG-03","ORG-07","CHEM-E3-01","CHEM-E3-02","CHEM-E3-03","CHEM-E3-07","CHEM-E4C-01","CHEM-E4C-02","CHEM-E4C-03"]);
+addChem("MC-GCHEM-FUNCTIONAL-GROUPS", ["ORG-04","ORG-05","ORG-06","CHEM-E3-04","CHEM-E3-05","CHEM-E3-06","CHEM-E3-12","CHEM-E3-13","CHEM-E3-16","CHEM-E3-17","CHEM-E4C-06","CHEM-E4C-07"]);
+addChem("MC-GCHEM-ORGANIC-STRUCTURE", ["ORG-01","CHEM-E3-08","CHEM-E3-09","CHEM-E3-14","CHEM-E3-15","CHEM-E3-18","CHEM-E3B-01"]);
+addChem("MC-GCHEM-SYNTHESIS", ["ORG-08","CHEM-E4C-04","CHEM-E4C-05","CHEM-E4C-08"]);
+for (const question of SUBJECTS.chem.banks.flatMap(bankId => BANKS[bankId]?.questions || [])) {
+  const sourceId = question.coverageVariant ? String(question.tag || "").replace(/^MC-/, "") : question.id;
+  if (CHEM_TAGS[question.id] || CHEM_TAGS[sourceId]) question.tag = CHEM_TAGS[question.id] || CHEM_TAGS[sourceId];
+}
+
+// A-Level Biology: distinguish the process students are confusing, such as
+// water potential versus concentration, or genotype versus phenotype.
+const BIO_TAGS = {};
+const addBio = (tag, ids) => ids.forEach(id => { BIO_TAGS[id] = tag; });
+addBio("MC-GBIO-CELL-STRUCTURE", ["BIO-02","BIO-06","BIO-13","BIO-E1-01","BIO-E1B-01"]);
+addBio("MC-GBIO-RESPIRATION-PHOTOSYNTHESIS", ["BIO-01","BIO-E1-02","BIO-15"]);
+addBio("MC-GBIO-MEMBRANE-TRANSPORT", ["BIO-04","BIO-05","BIO-09","BIO-10","BIO-14","BIO-E2-01"]);
+addBio("MC-GBIO-DNA-PROTEIN", ["BIO-03","BIO-E1-03","BIO-E1-04","BIO-E1B-01","GEN-07"]);
+addBio("MC-GBIO-CELL-DIVISION", ["BIO-07","GEN-02","GEN-06"]);
+addBio("MC-GBIO-GENETICS", ["BIO-16","GEN-01","GEN-03","GEN-04","GEN-05"]);
+addBio("MC-GBIO-EVOLUTION", ["BIO-E3-02","BIO-E3-03","BIO-E3-04","GEN-08"]);
+addBio("MC-GBIO-ENZYMES", ["BIO-08","BIO-11","BIO-12","BIO-E2-04","BIO-ENZ-01","BIO-ENZ-02","BIO-ENZ-03","BIO-ENZ-04","BIO-ENZ-05","BIO-ENZ-06","BIO-ENZ-07","BIO-ENZ-08","BIO-ENZ-09","BIO-ENZ-10","BIO-E4-01","BIO-E4-02"]);
+addBio("MC-GBIO-INVESTIGATION", ["BIO-GAP1-01","BIO-GAP1-02","BIO-GAP1-03","BIO-E4-03"]);
+addBio("MC-GBIO-CIRCULATION", ["BIO-GAP1-04","BIO-GAP2-01","BIO-GAP2-02","BIO-GAP2-03","BIO-GAP2-04","BIO-GAP2-05","BIO-GAP2-06","BIO-TRANSPORT-01","BIO-TRANSPORT-02","BIO-TRANSPORT-03","BIO-TRANSPORT-04","BIO-TRANSPORT-05","BIO-TRANSPORT-06","BIO-TRANSPORT-07","BIO-TRANSPORT-08","BIO-TRANSPORT-09","BIO-TRANSPORT-10","BIO-E2-02","BIO-E2-03"]);
+addBio("MC-GBIO-HOMEOSTASIS", ["BIO-GAP3-01","BIO-GAP3-02","BIO-GAP3-03","BIO-GAP3-04","BIO-GAP3-05","BIO-GAP3-06","BIO-GAP3-07","BIO-GAP3-08","BIO-GAP3-09"]);
+addBio("MC-GBIO-GENETIC-ENGINEERING", ["BIO-GAP3-10","BIO-GAP3-11","BIO-GAP3-12","A1-PHASE7-BIO3-01","A1-PHASE7-BIO3-02"]);
+addBio("MC-GBIO-ECOLOGY-DISEASE", ["BIO-GAP3-13","BIO-GAP3-14","BIO-GAP3-15","BIO-E3-01"]);
+for (const question of SUBJECTS.bio.banks.flatMap(bankId => BANKS[bankId]?.questions || [])) {
+  const sourceId = question.coverageVariant ? String(question.tag || "").replace(/^MC-/, "") : question.id;
+  if (BIO_TAGS[question.id] || BIO_TAGS[sourceId]) question.tag = BIO_TAGS[question.id] || BIO_TAGS[sourceId];
+}
+
+// A-Level Physics: group by the mistaken physical relationship being used,
+// not by the chapter in which the equation first appears.
+const PHYS_TAGS = {};
+const addPhys = (tag, ids) => ids.forEach(id => { PHYS_TAGS[id] = tag; });
+addPhys("MC-GPHYS-RESULTANT-FORCE", ["PHYS-01","PHYS-E1-02","PHYS-06","PHYS-12"]);
+addPhys("MC-GPHYS-MOTION-GRAVITY", ["PHYS-02","PHYS-04","PHYS-08","PHYS-09","PHYS-15"]);
+addPhys("MC-GPHYS-WORK-ENERGY", ["PHYS-03","PHYS-05","PHYS-E1-03"]);
+addPhys("MC-GPHYS-SCALAR-VECTOR", ["PHYS-07","PHYS-13"]);
+addPhys("MC-GPHYS-GRAPHS-KINEMATICS", ["PHYS-E1-01","PHYS-E2-06"]);
+addPhys("MC-GPHYS-SPRINGS-MATERIALS", ["PHYS-E1-05","PHYS-16","PHYS-GAPS-04","PHYS-GAPS-05"]);
+addPhys("MC-GPHYS-CIRCUITS", ["PHYS-10","PHYS-14","PHYS-E1-04","EWQ-01","EWQ-02","EWQ-06","PHYS-GAPS-06","PHYS-GAPS-07","PHYS-GAPS-08","PHYS-GAPS-09"]);
+addPhys("MC-GPHYS-WAVES", ["PHYS-11","EWQ-03","EWQ-04","EWQ-07","PHYS-E3-03","PHYS-E3B-03","PHYS-GAPS-01"]);
+addPhys("MC-GPHYS-QUANTUM-NUCLEAR", ["PHYS-E1-06","EWQ-05","EWQ-08","PHYS-E3-01","PHYS-E3-02","PHYS-E3-07","PHYS-E3-08","PHYS-E3B-01","PHYS-GAPS-03"]);
+addPhys("MC-GPHYS-FIELDS-ELECTROMAGNETISM", ["PHYS-E2-01","PHYS-E2-02","PHYS-E2-03","PHYS-E3B-02","PHYS-E3B-05","PHYS-E3B-06"]);
+addPhys("MC-GPHYS-OSCILLATIONS-THERMAL", ["PHYS-E2-04","PHYS-E2-05"]);
+addPhys("MC-GPHYS-ASTRONOMY", ["PHYS-E3-04","PHYS-E3-05","PHYS-GAPS-02"]);
+addPhys("MC-GPHYS-MEASUREMENT", ["PHYS-E3-06","PHYS-E3B-04","PHYS-MEASURE-01","PHYS-MEASURE-02","PHYS-MEASURE-03","PHYS-MEASURE-04","PHYS-MEASURE-05","PHYS-MEASURE-06","PHYS-MEASURE-07","PHYS-MEASURE-08","PHYS-MEASURE-09","PHYS-MEASURE-10"]);
+for (const question of SUBJECTS.phys.banks.flatMap(bankId => BANKS[bankId]?.questions || [])) {
+  const sourceId = question.coverageVariant ? String(question.tag || "").replace(/^MC-/, "") : question.id;
+  if (PHYS_TAGS[question.id] || PHYS_TAGS[sourceId]) question.tag = PHYS_TAGS[question.id] || PHYS_TAGS[sourceId];
+}
