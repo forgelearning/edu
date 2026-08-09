@@ -542,7 +542,7 @@ if (!issues.length) console.log('none');
 // a reliable answer-selection shortcut. CUE was previously reported but
 // allowed the deploy gate to pass; with the current bank at 0%, regressions
 // must fail immediately.
-const fatal = issues.filter((i) => /^(UNGRADEABLE|BAD OPTION KEYS|MISSING BANK|DUPLICATE ID|NO OPTIONS|EMPTY STEM|CUE|COVERAGE DUPLICATE ANSWER|BROKEN GENERATED OPTION)/.test(i));
+const fatal = issues.filter((i) => /^(UNGRADEABLE|BAD OPTION KEYS|MISSING BANK|DUPLICATE ID|NO OPTIONS|EMPTY STEM|CUE|COVERAGE DUPLICATE ANSWER|BROKEN GENERATED OPTION|REPEATED BOILERPLATE TAIL)/.test(i));
 if (fatal.length) {
   console.log(`\n${fatal.length} fatal issue(s) — these break questions for students.`);
   process.exit(1);
@@ -584,6 +584,28 @@ for (const [key, list] of Object.entries(fragmentCounts)) {
       `e.g. ${list.slice(0, 2).join('; ')}. Restore the full answer text, and check the *ConciseAnswers override tables in data/forge-data.js.`
     );
   }
+}
+
+// Repeated generated explanations create a cross-question answer cue even
+// when the length metric is clean. Fail if any generated closing clause is
+// reused broadly; authored distractors must carry the content instead.
+const repeatedBoilerplateTail = /\s+(?:This confuses|This wrongly|This therefore)\b[\s\S]*$/i;
+const boilerplateCounts = new Map();
+for (const bank of Object.values(BANKS)) for (const question of bank.questions || []) {
+  for (const item of [question, question.reforge]) for (const value of Object.values(item?.options || {})) {
+    const match = String(value).match(repeatedBoilerplateTail);
+    if (!match) continue;
+    const tail = match[0].trim();
+    const record = boilerplateCounts.get(tail) || { count: 0, example: question.id };
+    record.count++;
+    boilerplateCounts.set(tail, record);
+  }
+}
+for (const [tail, record] of boilerplateCounts) if (record.count > 5) {
+  issues.push(
+    `REPEATED BOILERPLATE TAIL: used ${record.count} times (e.g. ${record.example}) — ` +
+    `replace the generated closing clause with authored distractor text. Tail: "${tail.slice(0, 140)}"`
+  );
 }
 
 // Misconception-taxonomy guard. These do not break a question for a student,
