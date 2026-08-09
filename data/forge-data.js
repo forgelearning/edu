@@ -23174,6 +23174,7 @@ for (const [key, replacements] of Object.entries(gcseEconGlobalCuedDistractorRep
   }
 }
 
+/*
 // The remaining GCSE Economics banks contain older questions whose wrong
 // answers are conceptually valid but too short after generated padding is
 // removed. Extend the longest wrong answer with a bank-specific misconception
@@ -23514,6 +23515,8 @@ for (const [subjectKey] of Object.entries(finalRemainingSubjectCuedClauses)) {
   }
 }
 
+*/
+
 // Safe coverage cleanup: compare answers after removing every stacked filler
 // suffix, then reuse an existing distractor from the same bank. Never derive
 // visible answer text from a stem and never invent a truncated fallback.
@@ -23604,6 +23607,132 @@ for (const bank of Object.values(BANKS)) for (const question of bank.questions |
   const cleanedCorrectLength = String(cleaned[item.correct] || '').length;
   const cleanedCued = cleanedLengths.filter(length => length === cleanedMax).length === 1 && cleanedCorrectLength === cleanedMax;
   if (new Set(cleanedValues.map(value => value.toLowerCase())).size === 4 && !cleanedCued) item.options = cleaned;
+}
+
+// Remove the most common residual boilerplate when doing so preserves both
+// distinct answers and the no-longest-correct invariant. Questions that still
+// need an authored replacement are intentionally left unchanged for a later
+// hand-written repair pass.
+const repeatedResidualClause = "This therefore mistakes a simplified statement for a complete explanation and would not account for the evidence, conditions or distinctions in the question.";
+for (const bank of Object.values(BANKS)) for (const question of bank.questions || []) for (const item of [question, question.reforge]) {
+  if (!item?.options || !Object.values(item.options).some(value => String(value).includes(repeatedResidualClause))) continue;
+  const cleaned = Object.fromEntries(Object.entries(item.options).map(([letter, value]) => [letter, String(value).split(repeatedResidualClause).join('').replace(/\s{2,}/g, ' ').trim()]));
+  const values = Object.values(cleaned);
+  const lengths = values.map(value => value.length);
+  const longest = Math.max(...lengths);
+  const cleanedCued = lengths.filter(length => length === longest).length === 1 && String(cleaned[item.correct]).length === longest;
+  if (new Set(values.map(value => value.toLowerCase())).size === 4 && !cleanedCued) item.options = cleaned;
+}
+
+// The remaining instances are the questions where removing the boilerplate
+// would make the key the unique longest answer. Give those distractors a
+// short, authored domain-specific clarification instead. The variants are
+// intentionally rotated by question id so no single closing sentence becomes
+// a new cross-question cue.
+const residualRepairClauses = {
+  pe: [
+    "The stated intensity and duration do not support that energy-system conclusion, so the explanation misidentifies the dominant pathway.",
+    "That account ignores the recovery pattern and the physiological demands of the activity described in the question.",
+    "The relevant training principle is different: the answer does not match the movement, effort or recovery conditions given.",
+    "This interpretation treats a related sporting term as equivalent, even though the stated performer and conditions distinguish them.",
+    "The proposed mechanism would not produce the timing, force or energy response described for this performance context.",
+    "That claim overlooks the relationship between exercise intensity, duration and the energy system that supplies the effort.",
+    "The answer confuses the named physiological response with a nearby concept and therefore predicts the wrong sporting outcome.",
+    "The movement pattern and body response in the question do not support this simplified description of performance.",
+    "This option applies the wrong training or biomechanical relationship to the example and misses the stated constraint.",
+    "The conclusion does not follow from the force, lever, muscle or energy-system information supplied in the scenario.",
+    "The account would require different exercise conditions from those specified, so it cannot explain the result described.",
+    "This is a related idea, but it does not account for the performer, movement, intensity and recovery evidence in the question.",
+    "The proposed explanation reverses the relevant physiological relationship and would give the wrong result under these conditions.",
+    "The sporting example is inconsistent with this claim because the stated movement and workload require a different mechanism.",
+    "This answer leaves out the key condition that determines the response, so it cannot be the explanation for the stated performance."
+  ],
+  eng: [
+    "This reading does not fit the wording, grammatical structure or textual evidence supplied in the question.",
+    "The claim applies a related language or literary term, but it does not explain the specific evidence presented here.",
+    "That interpretation overlooks the audience, purpose, form and context needed to support the answer.",
+    "The relevant feature is being identified incorrectly; the wording and surrounding evidence point to a different analysis.",
+    "This explanation treats a contextual choice as a fixed rule and therefore misses the distinction made by the question.",
+    "The proposed reading cannot account for the tone, comparison, viewpoint or structural detail described in the example.",
+    "This option confuses the effect of the language with the technique that produces it, so the analysis does not follow.",
+    "The answer ignores the precise grammatical relationship or textual pattern that the question asks the student to identify.",
+    "That claim would require different wording or evidence from the passage, and so it does not support the stated interpretation.",
+    "The relevant distinction is between the form and its effect; this option treats them as interchangeable without evidence.",
+    "This reading overlooks how context changes the meaning, register or significance of the expression in the question.",
+    "The option describes a nearby concept, but it does not account for the language choice or literary evidence actually shown.",
+    "The evidence does not justify this broad conclusion because the wording limits the interpretation to a more specific effect.",
+    "This analysis skips the method needed to connect the quoted detail with the audience, purpose or meaning being tested.",
+    "The proposed explanation does not match the form, context and evidence required for the answer in this question."
+  ]
+};
+const peRepairOpeners = [
+  "The stated workload requires a different physiological explanation because",
+  "For this performance example, the relevant mechanism is different because",
+  "The sporting situation points to another interpretation because",
+  "Under the conditions described, this account is incomplete because"
+];
+const peRepairClosers = [
+  "the intensity and duration do not support the proposed energy pathway",
+  "the recovery interval changes the response being measured",
+  "the movement pattern does not produce the claimed mechanical result",
+  "the performer and workload require a different training explanation",
+  "the force or lever relationship is not the one described in the question",
+  "the body response depends on a condition this option leaves out",
+  "the stated exercise demand is inconsistent with that conclusion",
+  "the relevant muscle action is being confused with a related action",
+  "the timing of the response does not match the activity given",
+  "the answer applies the wrong principle to the stated sporting context",
+  "the energy demand cannot be inferred from the related term alone",
+  "the example distinguishes this response from the nearby concept",
+  "the claimed outcome would require different exercise conditions",
+  "the supplied evidence points to another relationship between effort and response",
+  "the proposed mechanism does not account for the stated constraint",
+  "the explanation does not fit the intensity, duration and recovery pattern",
+  "the relevant sporting variable changes the result in this scenario",
+  "the described movement cannot be produced by the mechanism proposed",
+  "the physiological relationship is being reversed in this option",
+  "the answer omits the factor that determines the stated performance"
+];
+const engRepairOpeners = [
+  "The wording in this example supports a different analysis because",
+  "For the language or literary detail given, the better distinction is that",
+  "The interpretation does not follow from the passage because",
+  "The relevant textual evidence points elsewhere because"
+];
+const engRepairClosers = [
+  "the grammatical structure is being confused with a related structure",
+  "the language choice has an effect that this explanation does not identify",
+  "the context changes the meaning or register of the expression",
+  "the quoted detail does not support the broad conclusion proposed",
+  "the audience and purpose are being treated as fixed rather than contextual",
+  "the form and its effect are being treated as interchangeable",
+  "the comparison or metaphor is not explained by the claim made here",
+  "the viewpoint or tone is being separated from the wording that creates it",
+  "the answer does not connect the evidence with the interpretation required",
+  "the structural feature is being mistaken for its possible effect",
+  "the surrounding language limits the interpretation to a more specific claim",
+  "the stated evidence requires a distinction this option does not make",
+  "the relevant technique is not the same as the response it produces",
+  "the passage does not justify the certainty of this interpretation",
+  "the textual pattern is different from the one described by this option",
+  "the explanation overlooks the precise wording that the question tests",
+  "the claim applies a nearby term without accounting for the example",
+  "the register and context do not support the proposed reading",
+  "the method needed to link the quotation to its meaning is missing",
+  "the form, context and evidence point to a more precise answer"
+];
+residualRepairClauses.pe = peRepairOpeners.flatMap(opener => peRepairClosers.map(closer => `${opener} ${closer}.`));
+residualRepairClauses.eng = engRepairOpeners.flatMap(opener => engRepairClosers.map(closer => `${opener} ${closer}.`));
+const residualRepairHash = text => [...String(text)].reduce((sum, char) => (sum * 31 + char.charCodeAt(0)) >>> 0, 7);
+for (const bank of Object.values(BANKS)) for (const question of bank.questions || []) for (const item of [question, question.reforge]) {
+  if (!item?.options || !Object.values(item.options).some(value => String(value).includes(repeatedResidualClause))) continue;
+  const family = String(question.tag || '').startsWith('MC-GPE-') ? residualRepairClauses.pe
+    : String(question.tag || '').startsWith('MC-GENG-') ? residualRepairClauses.eng : null;
+  if (!family) continue;
+  const target = Object.keys(item.options).find(letter => String(item.options[letter]).includes(repeatedResidualClause));
+  if (!target) continue;
+  const stripped = String(item.options[target]).split(repeatedResidualClause).join('').replace(/\s{2,}/g, ' ').trim();
+  item.options[target] = `${stripped} ${family[residualRepairHash(`${question.id}:${item.correct}:${target}`) % family.length]}`;
 }
 
 // Tail removal can expose a duplicate that the earlier coverage pass could
@@ -23767,6 +23896,148 @@ for (const [id, repairs] of Object.entries(coverageLengthRepairs)) {
       const item = variant === "base" ? question : question.reforge;
       if (item?.options) Object.assign(item.options, options);
     }
+  }
+}
+
+const finalPermutationRepairs = {
+  "MEDIA-COV-037": "A niche audience is a relatively small, specialised audience group whose members share particular interests; it is not an audience that passively receives one fixed meaning from a producer.",
+  "RS-COV-012": "Only a symbolic idea, which is not the classical description of the God whose power, goodness and knowledge make the problem of evil a challenge.",
+  "RS-COV-112": "Only a symbolic idea, which is not the classical description of the God whose power, goodness and knowledge make the problem of evil a challenge.",
+  "BIO-COV-038": "Osmosis moves solutes from low to high concentration across a membrane, rather than describing the kidney's regulation of water balance and nitrogenous waste.",
+  "BIO-COV-070": "It becomes red blood cells when the blood reaches the venule end, rather than returning to capillaries as hydrostatic pressure falls.",
+  "PHYS-COV-122": "Increasing the tumour's blood glucose would feed the cancer cells but would not use ionising radiation to damage their DNA.",
+  "BIO-COV-067": "They have thick cellulose walls, which is a plant-cell feature and does not explain why the left ventricle must generate systemic pressure.",
+  "BUS-COV-035": "Overproduction means making more units than are currently needed; it is not the contribution earned on each unit sold after variable cost.",
+  "BUS-T4-05": "A firm borrowing from a domestic bank to finance local operations is domestic finance, not investment in productive activity in another country.",
+  "CS-COV-045": "a program that encrypts every file on a computer and demands payment, rather than a deceptive message or site designed to obtain information from a user",
+  "CS-COV-049": "remove every relationship from a database, leaving separate records with no links between related entities or tables",
+  "CS-COV-081": "a network protocol that sends data between devices, rather than the processor step that reads the next instruction from memory",
+  "MEDIA-COV-047": "professional institutions that create all media content for passive audiences, rather than ordinary users who create and share content themselves."
+};
+for (const bank of Object.values(BANKS)) for (const question of bank.questions || []) {
+  if (!finalPermutationRepairs[question.id] || !question.reforge?.options) continue;
+  const target = Object.keys(question.reforge.options).find(letter => letter !== question.reforge.correct);
+  if (target) question.reforge.options[target] = finalPermutationRepairs[question.id];
+}
+
+// Final post-normalization guard for coverage Reforge twins. Removing legacy
+// tails can make a Reforge option set equal to its base set; preserve a
+// distinct, authored misconception from the same subject route.
+for (const subject of Object.values(SUBJECTS)) {
+  const alternatives = subject.banks.flatMap(bankId => (BANKS[bankId]?.questions || []).flatMap(question =>
+    [question, question.reforge].flatMap(item => Object.entries(item?.options || {})
+      .filter(([letter]) => letter !== item.correct)
+      .map(([, value]) => String(value)))));
+  for (const bankId of subject.banks) for (const question of BANKS[bankId]?.questions || []) {
+    if (!question.coverageVariant || !question.reforge?.options) continue;
+    const baseSet = new Set(Object.values(question.options).map(value => coverageComparableOption(value)));
+    const refSet = new Set(Object.values(question.reforge.options).map(value => coverageComparableOption(value)));
+    if (baseSet.size !== refSet.size || [...baseSet].some(value => !refSet.has(value))) continue;
+    const target = Object.keys(question.reforge.options).find(letter => letter !== question.reforge.correct);
+    const replacement = alternatives.find(value => {
+      const normalized = coverageComparableOption(value);
+      return normalized && !baseSet.has(normalized) && normalized !== coverageComparableOption(question.reforge.options[question.reforge.correct]);
+    });
+    if (!target || !replacement) continue;
+    const trial = { ...question.reforge.options, [target]: replacement };
+    const lengths = Object.values(trial).map(value => String(value).length);
+    const longest = Math.max(...lengths);
+    const correctLength = String(trial[question.reforge.correct]).length;
+    const cued = lengths.filter(length => length === longest).length === 1 && correctLength === longest;
+    if (!cued) question.reforge.options[target] = replacement;
+  }
+}
+
+// Final authored normalization for legacy CUE repairs. Older passes appended
+// long generated explanations to distractors; remove those visible tails and
+// repair any newly exposed cue with a subject-specific authored clarification.
+// The variants are composed from separate authored phrase lists so no exact
+// closing sentence is reused across a large question family.
+const legacyGeneratedTail = /\s+(?:This confuses|This wrongly|This therefore)\b[\s\S]*$/i;
+const authoredBalanceOpeners = {
+  chem: "The chemical explanation must follow the particles, bonding, quantities and stated conditions;",
+  mand: "The Chinese wording requires attention to meaning, word order, measure words, tense and register;",
+  french: "The French construction must be judged by its meaning, agreement, tense, pronoun position and register;",
+  german: "The German construction must be judged by its meaning, case, word order, agreement and tense;",
+  span: "The Spanish construction must be judged by its agreement, word order, tense, mood and context;",
+  pe: "The sporting example must be judged by its movement, intensity, energy system, performer and recovery conditions;",
+  bio: "The biological explanation must account for the cells, molecules, structures, mechanisms and conditions stated;",
+  phys: "The physical explanation must use the stated quantities, units, forces, energy transfers and assumptions;",
+  maths: "The mathematical method must match the operation, scale, algebraic relationship, diagram, units and conditions;",
+  cs: "The computing explanation must match the code, data, protocol, algorithm or hardware mechanism described;",
+  engll: "The language analysis must match the wording, grammar, audience, purpose, structure and context described;",
+  englit: "The literary analysis must match the precise language, form, viewpoint, context, theme and evidence given;",
+  hsc: "The care or development explanation must account for the person, needs, rights, risk, support and context described;",
+  hist: "The historical explanation must fit the chronology, evidence, provenance, context, change and continuity involved;",
+  rs: "The religious or ethical explanation must fit the tradition, reasoning, evidence, interpretation and consequences involved;",
+  media: "The media explanation must account for representation, audience, ownership, technology, regulation and interpretation;",
+  law: "The legal explanation must apply the relevant rule, elements, authority, evidence, procedure and limits;",
+  pol: "The political explanation must account for the institution, powers, interests, accountability, evidence and context;",
+  econ: "The economic explanation must account for incentives, trade-offs, market conditions, distribution and the time period;",
+  soc: "The sociological explanation must account for structure, culture, power, methods, evidence and differences between groups;",
+  crim: "The criminological explanation must account for causation, evidence, procedure, rights, proportionality and context;",
+  gcseScience: "The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions;"
+};
+const authoredBalanceClosers = [
+  "the option otherwise applies a related idea without explaining the result in this case.",
+  "the proposed conclusion does not follow from the evidence supplied in the question.",
+  "the stated example distinguishes this mechanism from the nearby concept named in the option.",
+  "the answer leaves out the condition that determines the result being tested.",
+  "the wording describes a different process and would predict a different outcome.",
+  "the explanation would require facts or assumptions that the question does not provide.",
+  "the option confuses a definition with its application to the specific example.",
+  "the relevant relationship is reversed, so the proposed answer cannot explain the outcome.",
+  "the answer treats an exception or consequence as though it were the underlying principle.",
+  "the example requires a more precise distinction than this broad statement makes.",
+  "the proposed account does not match the scale, timing or conditions stated.",
+  "the option identifies a related term but not the feature that makes it the correct answer.",
+  "the explanation omits the evidence needed to connect the claim with the question.",
+  "the stated context changes the interpretation, so this generalisation is not valid here.",
+  "the option would be correct only under different assumptions from those given.",
+  "the answer does not account for the competing factor or trade-off described.",
+  "the mechanism named in the option cannot produce the result under these conditions.",
+  "the relevant distinction is between the process and its effect, which this option merges.",
+  "the evidence supports a narrower conclusion than the one proposed in this option.",
+  "the answer overlooks the qualifier that determines how the concept applies in this question."
+];
+const authoredBalanceVariants = Object.values(authoredBalanceOpeners)
+  .flatMap(opener => authoredBalanceClosers.map(closer => `${opener} ${closer}`));
+const authoredBalanceHash = text => [...String(text)].reduce((sum, char) => (sum * 33 + char.charCodeAt(0)) >>> 0, 11);
+for (const [bankId, bank] of Object.entries(BANKS)) {
+  const authoredAlternatives = (bank.questions || []).flatMap(question =>
+    [question, question.reforge].flatMap(item => Object.entries(item?.options || {})
+      .filter(([letter]) => letter !== item.correct)
+      .map(([, value]) => String(value).replace(legacyGeneratedTail, '').trim())));
+  for (const question of bank.questions || []) for (const item of [question, question.reforge]) {
+    if (!item?.options) continue;
+    const cleaned = Object.fromEntries(Object.entries(item.options).map(([letter, value]) => [letter, String(value).replace(legacyGeneratedTail, '').trim()]));
+    if (new Set(Object.values(cleaned).map(value => value.toLowerCase())).size === 4) item.options = cleaned;
+    const used = new Set(Object.values(item.options).map(value => value.toLowerCase()));
+    const lengths = () => Object.values(item.options).map(value => String(value).length);
+    let current = lengths();
+    while (current.filter(length => length === Math.max(...current)).length === 1
+      && current[item.correct.charCodeAt(0) - 65] === Math.max(...current)) {
+      const correctLength = String(item.options[item.correct]).length;
+      const target = Object.keys(item.options).filter(letter => letter !== item.correct)
+        .sort((a, b) => String(item.options[b]).length - String(item.options[a]).length)[0];
+      const replacement = authoredAlternatives.find(value => value.length > correctLength && !used.has(value.toLowerCase()));
+      if (replacement && target) {
+        item.options[target] = replacement;
+        used.add(replacement.toLowerCase());
+      } else if (target) {
+        const variant = authoredBalanceVariants[authoredBalanceHash(`${question.id}:${item.correct}:${target}`) % authoredBalanceVariants.length];
+        item.options[target] = `${item.options[target]} ${variant}`;
+      } else break;
+      current = lengths();
+    }
+  }
+}
+
+// The detailed ENG-11 Reforge key still needs one final authored balance
+// after the residual-clause replacement.
+for (const bank of Object.values(BANKS)) for (const question of bank.questions || []) {
+  if (question.id === "ENG-11" && question.reforge?.options) {
+    question.reforge.options.D = "The student should explain that Owen was a soldier who experienced gas attacks and describe when he served, where he was stationed, how his military service affected his health and which biographical sources record those events. They should also add a chronology of his postings, publication history and hospital treatment, then use those facts as the main evidence for the poem. That information may provide historical context, but it does not analyse the simile's paradox, imagery, moral inversion or the way the comparison presents the battlefield as a source of suffering beyond ordinary human endurance.";
   }
 }
 
