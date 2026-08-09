@@ -1839,6 +1839,22 @@ Object.assign(MC_LABELS, {
   "MC-GLOB-DEV-FINANCE": "Remittances, aid and borrowing treated as costless inflows",
 });
 
+// Keep labels attached when legacy GCSE science tags are normalised in the
+// question bank. The old keys remain readable for stored historical records.
+Object.assign(MC_LABELS, {
+  "MC-SEP-BIO-MAGNIFICATION": MC_LABELS["BIO-MICRO-01"],
+  "MC-SEP-BIO-MONOCLONAL": MC_LABELS["BIO-MED-02"],
+  "MC-SEP-BIO-DIFFERENTIATION": MC_LABELS["BIO-DIFF-01"],
+  "MC-SEP-BIO-VECTOR": MC_LABELS["BIO-GM-01"],
+  "MC-SEP-CHEM-SEPARATION": MC_LABELS["CHEM-MIX-01"],
+  "MC-SEP-PHYS-SCALAR-VECTOR": MC_LABELS["PHYS-QUANT-01"],
+  "MC-SEP-PHYS-STOPPING-DISTANCE": MC_LABELS["PHYS-STOP-01"],
+  "MC-SEP-BIO-ROOT-HAIR": MC_LABELS["BIO-PLANT-02"],
+  "MC-SEP-BIO-EUTROPHICATION": MC_LABELS["BIO-HUMAN-01"],
+  "MC-SEP-BIO-AUXIN": MC_LABELS["BIO-AUXIN-01"],
+  "MC-SEP-PHYS-PRESSURE": MC_LABELS["PHYS-PRESSURE-01"]
+});
+
 if (typeof window !== 'undefined') {
   window.MC_LABELS = MC_LABELS;
   window.resolveMCLabel = resolveMCLabel;
