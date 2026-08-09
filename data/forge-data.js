@@ -22392,3 +22392,128 @@ for (const question of SUBJECTS.media.banks.flatMap(bankId => BANKS[bankId]?.que
   const sourceId = question.coverageVariant ? String(question.tag || "").replace(/^MC-/, "") : question.id;
   if (MEDIA_TAGS[question.id] || MEDIA_TAGS[sourceId]) question.tag = MEDIA_TAGS[question.id] || MEDIA_TAGS[sourceId];
 }
+
+const addLanguageTags = (subjectKey, subjectTags, tagPrefix) => {
+  for (const question of SUBJECTS[subjectKey].banks.flatMap(bankId => BANKS[bankId]?.questions || [])) {
+    const sourceId = question.coverageVariant ? String(question.tag || "").replace(/^MC-/, "") : question.id;
+    if (subjectTags[question.id] || subjectTags[sourceId]) question.tag = subjectTags[question.id] || subjectTags[sourceId];
+  }
+};
+
+const FRENCH_TAGS = {};
+const addFrench = (tag, ids) => ids.forEach(id => { FRENCH_TAGS[id] = tag; });
+addFrench("MC-GFR-TENSES", ["FR-01","FR-02","FR-05","FR-13","FR-14","FR-15","FR-16"]);
+addFrench("MC-GFR-SUBJUNCTIVE", ["FR-03","FR-04","FR-07"]);
+addFrench("MC-GFR-PRONOUNS", ["FR-09","FR-10","FR-11","FR-12"]);
+addFrench("MC-GFR-CULTURE-SOCIETY", ["FR-COV-01","FR-COV-02","FR-COV-03","FR-COV-07","FR-COV-08","FR-COV-09","FR-COV-10"]);
+addFrench("MC-GFR-HISTORY-TEXTS", ["FR-COV-04","FR-COV-05","FR-COV-06","FR-COV-11","FR-COV-12"]);
+addFrench("MC-GFR-ANALYSIS-RESEARCH", ["FR-08","FR-COV-13"]);
+addFrench("MC-GFR-SUBJUNCTIVE", ["FR-06"]);
+addLanguageTags("french", FRENCH_TAGS);
+
+const SPAN_TAGS = {};
+const addSpanish = (tag, ids) => ids.forEach(id => { SPAN_TAGS[id] = tag; });
+addSpanish("MC-GSP-TENSES", ["SP-01","SP-02","SP-04","SP-05","SP-06"]);
+addSpanish("MC-GSP-SUBJUNCTIVE", ["SP-03","SP-07","SP-08","SP-13","SP-16"]);
+addSpanish("MC-GSP-CULTURE-SOCIETY", ["SP-COV-01","SP-COV-02","SP-COV-03","SP-COV-07","SP-COV-08","SP-COV-09","SP-COV-10"]);
+addSpanish("MC-GSP-HISTORY-FILM", ["SP-COV-04","SP-COV-05","SP-COV-06","SP-11","SP-12"]);
+addSpanish("MC-GSP-ANALYSIS-RESEARCH", ["SP-09","SP-10","SP-COV-11"]);
+addSpanish("MC-GSP-IMMIGRATION-POLITICS", ["SP-14","SP-15"]);
+addLanguageTags("span", SPAN_TAGS);
+
+const PE_TAGS = {};
+const addPe = (tag, ids) => ids.forEach(id => { PE_TAGS[id] = tag; });
+addPe("MC-GPE-CARDIAC-OXYGEN", ["PE-01","PE-02"]);
+addPe("MC-GPE-MUSCLE-CONTRACTION", ["PE-03","PE-07"]);
+addPe("MC-GPE-ENERGY-SYSTEMS", ["PE-04","PE-06","PE-09","PE-10"]);
+addPe("MC-GPE-AEROBIC-CAPACITY", ["PE-05","PE-08"]);
+addPe("MC-GPE-TRAINING", ["PE-11","PE-16"]);
+addPe("MC-GPE-FORCES-MECHANICS", ["PE-12","PE-13"]);
+addPe("MC-GPE-FLUIDS-MOMENTS", ["PE-14","PE-15"]);
+addLanguageTags("pe", PE_TAGS);
+
+const ENGLISH_TAGS = {};
+const addEnglish = (tag, ids) => ids.forEach(id => { ENGLISH_TAGS[id] = tag; });
+addEnglish("MC-GENG-LEXICAL-SYNTAX", ["ENG-01","ENG-03","ENG-08"]);
+addEnglish("MC-GENG-VIEWPOINT-IRONY", ["ENG-02","ENG-06"]);
+addEnglish("MC-GENG-CONTEXT-REGISTER", ["ENG-04","ENG-07","ENG-09"]);
+addEnglish("MC-GENG-TONE-METAPHOR", ["ENG-05","ENG-11"]);
+addEnglish("MC-GENG-AO2-METHOD", ["ENG-10","ENG-15"]);
+addEnglish("MC-GENG-INTERPRETATION", ["ENG-12","ENG-14"]);
+addEnglish("MC-GENG-COMPARISON-FORM", ["ENG-13","ENG-16"]);
+addLanguageTags("englit", ENGLISH_TAGS);
+addLanguageTags("engll", ENGLISH_TAGS);
+
+const MAND_TAGS = {};
+const addMand = (tag, ids) => ids.forEach(id => { MAND_TAGS[id] = tag; });
+addMand("MC-GMAND-READING-COMPREHENSION", ["MAND-01","MAND-03","MAND-05","MAND-07"]);
+addMand("MC-GMAND-DISCOURSE-MEANING", ["MAND-02","MAND-04"]);
+addMand("MC-GMAND-REGISTER-FORMAT", ["MAND-06","MAND-08"]);
+addLanguageTags("mand", MAND_TAGS);
+
+const MATH_TAGS = {};
+const addMath = (tag, ids) => ids.forEach(id => { MATH_TAGS[id] = tag; });
+addMath("MC-GMATH-DIFFERENTIATION", ["MATH-01","MATH-03","MATH-05","MATH-09","MATH-16"]);
+addMath("MC-GMATH-INTEGRATION", ["MATH-02","MATH-10"]);
+addMath("MC-GMATH-ALGEBRA-LOGS", ["MATH-04","MATH-06","MATH-12","MATH-13","MATH-15"]);
+addMath("MC-GMATH-BINOMIAL", ["MATH-07","MATH-14"]);
+addMath("MC-GMATH-PROOF-REASONING", ["MATH-08","MATH-11","STAT-07"]);
+addMath("MC-GMATH-COORDINATE-NUMERICAL", ["MATH-COV-01","MATH-COV-02","MATH-COV-03","MATH-COV-04"]);
+addMath("MC-GMATH-VECTORS", ["MATH-COV-05","MATH-COV-06","MATH-COV-13","MATH-COV-14"]);
+addMath("MC-GMATH-MECHANICS", ["MATH-COV-07","MATH-COV-08","MATH-COV-09","MATH-COV-10","MATH-COV-11","MATH-COV-12"]);
+addMath("MC-GMATH-NORMAL-SAMPLING", ["STAT-01","STAT-08"]);
+addMath("MC-GMATH-HYPOTHESIS", ["STAT-02","STAT-07"]);
+addMath("MC-GMATH-PROBABILITY", ["STAT-03","STAT-05"]);
+addMath("MC-GMATH-CORRELATION", ["STAT-04","STAT-06"]);
+for (const question of SUBJECTS.maths.banks.flatMap(bankId => BANKS[bankId]?.questions || [])) {
+  const sourceId = question.coverageVariant ? String(question.tag || "").replace(/^MC-/, "") : question.id;
+  if (MATH_TAGS[question.id] || MATH_TAGS[sourceId]) question.tag = MATH_TAGS[question.id] || MATH_TAGS[sourceId];
+}
+
+const BUS_TAGS = {};
+const addBus = (tag, ids) => ids.forEach(id => { BUS_TAGS[id] = tag; });
+addBus("MC-GBUS-MARKET-RESEARCH", ["BUS-01","BUS-T1-01","BUS-T1-02","BUS-T1-03","BUS-T1-04","BUS-T1-05","BUS-T1-08","BUS-T1-09","BUS-T1-10","BUS-12"]);
+addBus("MC-GBUS-MARKET-RESEARCH", ["BUS-08"]);
+addBus("MC-GBUS-STRATEGY-DECISIONS", ["BUS-05"]);
+addBus("MC-GBUS-PRICING", ["BUS-03","BUS-T1-06","BUS-T1-07","BUS-09"]);
+addBus("MC-GBUS-OWNERSHIP-STAKEHOLDERS", ["BUS-04","BUS-T1-11","BUS-T1-12","BUS-T1-13","BUS-T1-14","BUS-T1-15","BUS-T1-16","BUS-T1-17","BUS-LEADERS-01","BUS-LEADERS-02"]);
+addBus("MC-GBUS-PROFIT-BREAKEVEN", ["BUS-02","BUS-07","BUS-10","BUS-11","BUS-14","BUS-FINPLAN-02","BUS-T2-01","BUS-T2-02","BUS-T2-06","BUS-T2-07","BUS-T2-08"]);
+addBus("MC-GBUS-CASH-FINANCE", ["BUS-15","BUS-FINPLAN-01","BUS-T2-03","BUS-T2-04","BUS-T2-05","BUS-T2-09","BUS-T2-10","BUS-T2-11","BUS-T2-12","BUS-T2-13","BUS-T2-14","BUS-T2-15","BUS-T2-16","BUS-T2-17"]);
+addBus("MC-GBUS-PRODUCT-GROWTH", ["BUS-06","BUS-13","BUS-16","BUS-T3-06","BUS-T3-07","BUS-T3-08","BUS-T3-09","BUS-T3-10","BUS-T3-11","BUS-STRATEGY-01","BUS-T3-05"]);
+addBus("MC-GBUS-OPERATIONS", ["OPS-01","OPS-02","OPS-06","OPS-07","BUS-T3-01","BUS-T3-02","BUS-T3-03","BUS-T3-04"]);
+addBus("MC-GBUS-STRATEGY-DECISIONS", ["OPS-04","OPS-05","BUS-T3-12","BUS-T3-13","BUS-T3-14","BUS-T3-15","BUS-T3-16","BUS-T3-17","BUS-STRATEGY-02","BUS-STRATEGY-03","BUS-STRATEGY-04"]);
+addBus("MC-GBUS-INTEREST-CURRENCY", ["OPS-03","OPS-08","BUS-T4-06","BUS-T4-07","BUS-T4-08","BUS-T4-17"]);
+addBus("MC-GBUS-GLOBAL-TRADE", ["BUS-T4-01","BUS-T4-02","BUS-T4-03","BUS-T4-04","BUS-T4-05","BUS-T4-09","BUS-T4-11","BUS-T4-12","BUS-T4-13","BUS-T4B-01","BUS-T4B-04","BUS-T4B-05","BUS-GLOBAL-01","BUS-GLOBAL-02","A1-PHASE7-BUS4-01","A1-PHASE7-BUS4-02"]);
+addBus("MC-GBUS-ETHICS-RISK", ["BUS-T4-10","BUS-T4-14","BUS-T4-15","BUS-T4-16","BUS-T4B-02","BUS-T4B-03","BUS-T4B-06","BUS-T4B-07","BUS-T4B-08"]);
+for (const question of SUBJECTS.bus.banks.flatMap(bankId => BANKS[bankId]?.questions || [])) {
+  const inheritedTag = Array.isArray(question.tag) ? question.tag.find(tag => typeof tag === "string" && tag.startsWith("MC-")) : question.tag;
+  const sourceId = question.coverageVariant ? String(inheritedTag || "").replace(/^MC-/, "") : question.id;
+  if (BUS_TAGS[question.id] || BUS_TAGS[sourceId]) question.tag = BUS_TAGS[question.id] || BUS_TAGS[sourceId];
+}
+
+const CS_TAGS = {};
+const addCs = (tag, ids) => ids.forEach(id => { CS_TAGS[id] = tag; });
+addCs("MC-GCS-PROGRAMMING-ERRORS", ["CS-01","CS-02","CS-06","CS-C1A-03","CS-C1A-04","CS-C1A-05","CS-C1A-06","CS-C1A-07","CS-C1A-08","CS-C1A-18","CS-C1A-19","CS-C1A-20","CS-C1A-21"]);
+addCs("MC-GCS-ABSTRACTION", ["CS-C1A-01","CS-C1A-02"]);
+addCs("MC-GCS-ALGORITHMS", ["CS-03","CS-04","CS-C1A-09","CS-C1A-10","CS-C1A-11"]);
+addCs("MC-GCS-DATA-STRUCTURES", ["CS-05","CS-C1A-12","CS-C1A-13","CS-C1A-14","CS-C1A-15","CS-09","CS-10","CS-13","CS-15"]);
+addCs("MC-GCS-OOP", ["CS-C1A-16","CS-C1A-17"]);
+addCs("MC-GCS-NETWORK-PROTOCOLS", ["CS-07","CS-11","CS-12","CS-C2A-01","CS-C2A-02","CS-C2A-03","CS-C2A-04","CS-C2A-05","CS-C2A-06","CS-C1B-15","CS-C1B-16","CS-C1B-17","CS-C1B-18","CS-C1B-19","CS-C1B-20","CS-C1B-21"]);
+addCs("MC-GCS-CRYPTOGRAPHY", ["CS-08","CS-14","CS-C2A-08","CS-C2A-09","CS-C2A-19","CS-C2B-14","CS-C2B-15","CS-C2B-16","CS-C2B-17","CS-C2B-18"]);
+addCs("MC-GCS-DATABASES", ["CS-16","CS-C2A-10","CS-C2A-11","CS-C2A-12","CS-C2A-13","CS-C2B-10","CS-C2B-11","CS-C2B-12","CS-C2B-13"]);
+addCs("MC-GCS-SECURITY", ["CS-C2A-07","CS-C2A-08","CS-C2A-20","CS-C2A-21","CS-C2B-19","CS-C2B-20","CS-C2B-21"]);
+addCs("MC-GCS-ETHICS", ["CS-ETH-01","CS-ETH-02","CS-ETH-03","CS-ETH-04","CS-ETH-05","CS-ETH-06","CS-ETH-07","CS-ETH-08","CS-ETH-09","CS-ETH-10","CS-ETH-11","CS-ETH-12"]);
+addCs("MC-GCS-HARDWARE-ARCHITECTURE", ["CS-C1B-03","CS-C1B-04","CS-C1B-05","CS-C1B-06","CS-C1B-07","CS-C1B-08","CS-C2B-01","CS-C2B-02","CS-C2B-03","CS-C2B-04","CS-C2B-05","CS-C2B-06","CS-C2B-07","CS-C2B-08","CS-C2B-09"]);
+addCs("MC-GCS-DATA-REPRESENTATION", ["CS-C1B-09","CS-C1B-10","CS-C1B-11","CS-C1B-12","CS-C1B-13","CS-C1B-14","CS-C2A-18"]);
+addCs("MC-GCS-OPERATING-SYSTEMS", ["CS-C2A-15","CS-C2A-16","CS-C2A-17"]);
+CS_TAGS["CS-C2A-14"] = "MC-GCS-OPERATING-SYSTEMS";
+CS_TAGS["CS-C1B-01"] = "MC-GCS-PROGRAMMING-ERRORS";
+CS_TAGS["CS-C1B-02"] = "MC-GCS-PROGRAMMING-ERRORS";
+CS_TAGS["CS2-01"] = "MC-GCS-DATA-STRUCTURES";
+CS_TAGS["CS2-02"] = "MC-GCS-DATA-STRUCTURES";
+CS_TAGS["CS2-03"] = "MC-GCS-NETWORK-PROTOCOLS";
+CS_TAGS["CS2-04"] = "MC-GCS-NETWORK-PROTOCOLS";
+for (const question of SUBJECTS.cs.banks.flatMap(bankId => BANKS[bankId]?.questions || [])) {
+  const sourceId = question.coverageVariant ? String(question.tag || "").replace(/^MC-/, "") : question.id;
+  if (CS_TAGS[question.id] || CS_TAGS[sourceId]) question.tag = CS_TAGS[question.id] || CS_TAGS[sourceId];
+}
