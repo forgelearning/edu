@@ -22034,3 +22034,81 @@ const GCSE_GEO_UKL_TAGS = {
 for (const question of BANKS["GCSE-GEO-UKLAND"].questions) {
   if (GCSE_GEO_UKL_TAGS[question.id]) question.tag = GCSE_GEO_UKL_TAGS[question.id];
 }
+
+// Remove generated distractor padding from the final bank output. Several
+// older balancing passes append short phrases to stop the correct answer being
+// the uniquely longest option. Those phrases are visible test-taking cues and
+// read like noise when they survive into the question bank.
+//
+// Only suffixes are removed, so authored wording such as "in this context"
+// inside a complete sentence remains intact. If stripping a suffix would make
+// two options identical, retain that option for now: the duplicate needs a
+// content rewrite, not an automatic deletion.
+const GENERATED_OPTION_PADDING = /\s*\(?\s*(?:in this context|in context|in this case|for this decision|in this market|in this computing context|under standard assumptions|in a typical case|in the stated scenario|in the chemistry scenario given|under the chemical conditions described|for the reaction described in the question|in the stated business case|in a typical firm)\s*\)?[.!?]?\s*$/i;
+
+const stripGeneratedOptionPadding = value => {
+  let result = String(value);
+  let next;
+  do {
+    next = result.replace(GENERATED_OPTION_PADDING, "").trim();
+    if (next === result) break;
+    result = next;
+  } while (true);
+  return result;
+};
+
+const removeGeneratedOptionPadding = item => {
+  if (!item || !item.options) return;
+  const original = Object.values(item.options).map(value => String(value));
+  const cleaned = original.map(stripGeneratedOptionPadding);
+  const counts = new Map();
+  cleaned.forEach(value => {
+    const key = value.toLowerCase();
+    counts.set(key, (counts.get(key) || 0) + 1);
+  });
+  Object.keys(item.options).forEach((key, index) => {
+    const value = cleaned[index];
+    if (value && counts.get(value.toLowerCase()) === 1) item.options[key] = value;
+  });
+};
+
+Object.values(BANKS).forEach(bank => {
+  (bank.questions || []).forEach(question => {
+    removeGeneratedOptionPadding(question);
+    const reforge = question.reforge;
+    if (!reforge || !reforge.options) return;
+    const baseSet = new Set(Object.values(question.options || {}).map(value => String(value).toLowerCase()));
+    const reforgeOriginal = Object.values(reforge.options).map(value => String(value));
+    const reforgeCleaned = reforgeOriginal.map(stripGeneratedOptionPadding);
+    const reforgeSet = new Set(reforgeCleaned.map(value => value.toLowerCase()));
+    const originalSet = new Set(reforgeOriginal.map(value => value.toLowerCase()));
+    const isOnlyPaddingDistinction = reforgeSet.size === baseSet.size
+      && [...reforgeSet].every(value => baseSet.has(value))
+      && [...originalSet].some(value => !reforgeSet.has(value));
+    if (!isOnlyPaddingDistinction) removeGeneratedOptionPadding(reforge);
+  });
+});
+
+// Canonicalise the last legacy GCSE science tags. Their old BIO-/CHEM-/PHYS-
+// prefixes were valid identifiers but did not follow the shared MC-SEP-
+// taxonomy used by the rest of combined science.
+const LEGACY_TAG_ALIASES = {
+  "BIO-MICRO-01": "MC-SEP-BIO-MAGNIFICATION",
+  "BIO-MED-02": "MC-SEP-BIO-MONOCLONAL",
+  "BIO-DIFF-01": "MC-SEP-BIO-DIFFERENTIATION",
+  "BIO-GM-01": "MC-SEP-BIO-VECTOR",
+  "CHEM-MIX-01": "MC-SEP-CHEM-SEPARATION",
+  "PHYS-QUANT-01": "MC-SEP-PHYS-SCALAR-VECTOR",
+  "PHYS-STOP-01": "MC-SEP-PHYS-STOPPING-DISTANCE",
+  "BIO-PLANT-02": "MC-SEP-BIO-ROOT-HAIR",
+  "BIO-HUMAN-01": "MC-SEP-BIO-EUTROPHICATION",
+  "BIO-AUXIN-01": "MC-SEP-BIO-AUXIN",
+  "PHYS-PRESSURE-01": "MC-SEP-PHYS-PRESSURE"
+};
+Object.values(BANKS).forEach(bank => {
+  (bank.questions || []).forEach(question => {
+    if (typeof question.tag === "string" && LEGACY_TAG_ALIASES[question.tag]) {
+      question.tag = LEGACY_TAG_ALIASES[question.tag];
+    }
+  });
+});
