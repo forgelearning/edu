@@ -2078,6 +2078,42 @@ Object.assign(MC_LABELS, {
   "MC-GPHYS-MEASUREMENT":"Accuracy, precision, resolution, uncertainty and calibration are different checks"
 });
 
+Object.assign(MC_LABELS, {
+  "MC-GRS-ARGUMENTS":"Cosmological, teleological and ontological arguments make different logical moves",
+  "MC-GRS-PROBLEM-EVIL":"Logical incompatibility, evidential suffering and soul-making are different challenges",
+  "MC-GRS-EXPERIENCE-LANGUAGE":"Religious experience, verification and language theories use different standards of meaning",
+  "MC-GRS-KANT":"Kantian duty depends on universalising a maxim and treating people as ends",
+  "MC-GRS-UTILITARIANISM":"Act, rule, preference and qualitative utility judge outcomes in different ways",
+  "MC-GRS-NATURAL-LAW":"Natural law uses rational purposes and primary precepts, not whatever happens naturally",
+  "MC-GRS-SITUATION-ETHICS":"Situation ethics applies agape to context rather than following absolute rules",
+  "MC-GRS-META-ETHICS":"Emotivism, naturalistic fallacy and moral realism answer different meta-ethical questions",
+  "MC-GRS-RESPONSIBILITY":"Free will, moral responsibility and ethical evaluation require distinct judgements",
+  "MC-GRS-BUDDHIST-FOUNDATIONS":"Dukkha, anatta, karma and the path describe connected but different Buddhist teachings",
+  "MC-GRS-BUDDHIST-PRACTICE":"Sangha, stories, Pure Land and compassion describe different Buddhist practices or communities",
+  "MC-GHSC-DEVELOPMENT":"Cognitive, physical, emotional and psychosocial development are different changes",
+  "MC-GHSC-APPLICATION":"An assessment answer must apply care knowledge and weigh strengths and limitations",
+  "MC-GHSC-PERSON-CENTRED":"Autonomy, empowerment, dignity and person-centred care protect individual choice",
+  "MC-GHSC-EQUALITY":"Equality means fair access and reasonable adjustment, not identical treatment",
+  "MC-GHSC-SAFEGUARDING":"Confidentiality, safeguarding, whistleblowing and duty of care have different procedures",
+  "MC-GHSC-RISK-PRACTICE":"Hazards, risks, control measures and multidisciplinary practice answer different safety questions",
+  "MC-GHSC-RECORDS-CONSENT":"Records, boundaries and informed consent protect different aspects of professional care",
+  "MC-GHSC-COMMUNICATION":"Empathy, active listening, jargon and accessibility are different communication issues",
+  "MC-GHSC-PHYSIOLOGY":"Organs and processes such as gas exchange, circulation, insulin and synapses have distinct roles",
+  "MC-GHSC-PHYSICAL-HEALTH":"Fracture, bone density, movement and musculoskeletal independence are related but distinct",
+  "MC-GHSC-MENTAL-HEALTH":"Mental wellbeing, depression, CBT and person-centred support are not interchangeable",
+  "MC-GHSC-PUBLIC-HEALTH":"Vectors and public-health prevention describe different routes of reducing disease",
+  "MC-GMEDIA-AUDIENCE-ACTIVITY":"Audiences may actively use, resist, negotiate or be influenced by media in different models",
+  "MC-GMEDIA-REPRESENTATION-GENDER":"Representation constructs meaning and gendered power rather than mirroring reality",
+  "MC-GMEDIA-OWNERSHIP-POWER":"Ownership concentration affects power and diversity through institutional control",
+  "MC-GMEDIA-REGULATION-CONVERGENCE":"Digital convergence creates regulation problems that differ from broadcast standards",
+  "MC-GMEDIA-SEMIOTICS":"Denotation, anchorage, signs and mode of address organise media meaning differently",
+  "MC-GMEDIA-LANGUAGE-FORM":"Genre, lighting, close-up and narrative structure are different media-language choices",
+  "MC-GMEDIA-INDUSTRY-STRUCTURE":"Institutions, integration, PSB and synergy describe different industry relationships",
+  "MC-GMEDIA-CULTURAL-INDUSTRIES":"Cultural discount and globalisation affect how media travels between markets",
+  "MC-GMEDIA-DIGITAL-PARTICIPATION":"Gatekeeping, algorithms and user-generated content redistribute production power",
+  "MC-GMEDIA-AUDIENCE-MEASUREMENT":"Demographics, niches, fragmentation, ratings and target audiences measure different things"
+});
+
 if (typeof window !== 'undefined') {
   window.MC_LABELS = MC_LABELS;
   window.resolveMCLabel = resolveMCLabel;

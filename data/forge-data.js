@@ -22332,3 +22332,63 @@ for (const question of SUBJECTS.phys.banks.flatMap(bankId => BANKS[bankId]?.ques
   const sourceId = question.coverageVariant ? String(question.tag || "").replace(/^MC-/, "") : question.id;
   if (PHYS_TAGS[question.id] || PHYS_TAGS[sourceId]) question.tag = PHYS_TAGS[question.id] || PHYS_TAGS[sourceId];
 }
+
+// Religious Studies: group by the philosophical or theological confusion
+// being tested, allowing arguments and traditions to meet across paper banks.
+const RS_TAGS = {};
+const addRs = (tag, ids) => ids.forEach(id => { RS_TAGS[id] = tag; });
+addRs("MC-GRS-ARGUMENTS", ["RS-01","RS-02","RS-03","RS-E1-03","RS-E1-05","RS-E1B-03","RS-E1B-04"]);
+addRs("MC-GRS-PROBLEM-EVIL", ["RS-04","RS-E1-04","RS-E1B-06"]);
+addRs("MC-GRS-EXPERIENCE-LANGUAGE", ["RS-07","RS-E1-06","RS-E1-07","RS-E1-08","RS-E1-09","RS-E1B-07","RS-E1B-08"]);
+addRs("MC-GRS-KANT", ["RS-05","RS-E2-02","RS-E2B-02"]);
+addRs("MC-GRS-UTILITARIANISM", ["RS-06","RS-E2-01","RS-E2B-01","RS-E2B-05"]);
+addRs("MC-GRS-NATURAL-LAW", ["RS-08","RS-E2-03","RS-E2-07","RS-E2B-03","RS-E2B-07"]);
+addRs("MC-GRS-SITUATION-ETHICS", ["RS-09","RS-E2-04","RS-E2B-04"]);
+addRs("MC-GRS-META-ETHICS", ["RS-13","RS-14","RS-E2-05","RS-E2B-06"]);
+addRs("MC-GRS-RESPONSIBILITY", ["RS-15","RS-16","RS-E2B-08"]);
+addRs("MC-GRS-BUDDHIST-FOUNDATIONS", ["RS-E1-01","RS-E1-02","RS-E1B-01","RS-E1B-02","RS-PHASE5-01","RS-PHASE5-02","RS-PHASE5-03","RS-PHASE5-04","RS-BUDDHISM-01","RS-BUDDHISM-02","RS-BUDDHISM-03","RS-BUDDHISM-04","RS-BUDDHISM-05"]);
+addRs("MC-GRS-BUDDHIST-PRACTICE", ["RS-PHASE5-05","RS-PHASE5-06","RS-PHASE5-07","RS-PHASE5-08","RS-BUDDHISM-06","RS-BUDDHISM-07","RS-BUDDHISM-08"]);
+for (const question of SUBJECTS.rs.banks.flatMap(bankId => BANKS[bankId]?.questions || [])) {
+  const sourceId = question.coverageVariant ? String(question.tag || "").replace(/^MC-/, "") : question.id;
+  if (RS_TAGS[question.id] || RS_TAGS[sourceId]) question.tag = RS_TAGS[question.id] || RS_TAGS[sourceId];
+}
+
+// Health & Social Care: group by the care error or applied distinction, not
+// by anatomy, development or assessment section.
+const HSC_TAGS = {};
+const addHsc = (tag, ids) => ids.forEach(id => { HSC_TAGS[id] = tag; });
+addHsc("MC-GHSC-DEVELOPMENT", ["HSC-01","HSC-02","HSC-03","HSC-05","HSC-07","HSC-PHASE5-07"]);
+addHsc("MC-GHSC-APPLICATION", ["HSC-04","HSC-08","HSC-16"]);
+addHsc("MC-GHSC-PERSON-CENTRED", ["HSC-06","HSC-E1-02","HSC-E1-05","HSC-15","HSC-E2-07","HSC-E2B-03","HSC-E2B-07","HSC-ANATOMY-MH-04"]);
+addHsc("MC-GHSC-EQUALITY", ["HSC-E1-01","HSC-E1-07","HSC-E1B-03","HSC-14"]);
+addHsc("MC-GHSC-SAFEGUARDING", ["HSC-E1-04","HSC-E1-06","HSC-E1-09","HSC-E1B-07","HSC-10","HSC-13"]);
+addHsc("MC-GHSC-RISK-PRACTICE", ["HSC-E1-03","HSC-E1-08","HSC-E1B-06","HSC-E1B-08","HSC-E2B-08"]);
+addHsc("MC-GHSC-RECORDS-CONSENT", ["HSC-E1B-02","HSC-E1B-04","HSC-E1B-05"]);
+addHsc("MC-GHSC-COMMUNICATION", ["HSC-09","HSC-11","HSC-12","HSC-E2-08","HSC-E2B-04","HSC-E2B-05"]);
+addHsc("MC-GHSC-PHYSIOLOGY", ["HSC-E2-01","HSC-E2-02","HSC-E2-03","HSC-E2-04","HSC-E2-05","HSC-E2B-01","HSC-PHASE5-01","HSC-PHASE5-02","HSC-ANATOMY-MH-01","HSC-ANATOMY-MH-02"]);
+addHsc("MC-GHSC-PHYSICAL-HEALTH", ["HSC-E2-06","HSC-PHASE5-03","HSC-PHASE5-04"]);
+addHsc("MC-GHSC-MENTAL-HEALTH", ["HSC-E2-09","HSC-PHASE5-05","HSC-PHASE5-06","HSC-ANATOMY-MH-03"]);
+addHsc("MC-GHSC-PUBLIC-HEALTH", ["HSC-E2B-06","HSC-PHASE5-08"]);
+for (const question of SUBJECTS.hsc.banks.flatMap(bankId => BANKS[bankId]?.questions || [])) {
+  const sourceId = question.coverageVariant ? String(question.tag || "").replace(/^MC-/, "") : question.id;
+  if (HSC_TAGS[question.id] || HSC_TAGS[sourceId]) question.tag = HSC_TAGS[question.id] || HSC_TAGS[sourceId];
+}
+
+// Media: separate audience activity, representation, language, institutions
+// and regulation so a shared topic does not hide a different misconception.
+const MEDIA_TAGS = {};
+const addMedia = (tag, ids) => ids.forEach(id => { MEDIA_TAGS[id] = tag; });
+addMedia("MC-GMEDIA-AUDIENCE-ACTIVITY", ["MED-01","MED-03","MED-07","MED-08","MED-14","MEDIA-E2-01","MEDIA-E2-02","MEDIA-E2-03"]);
+addMedia("MC-GMEDIA-REPRESENTATION-GENDER", ["MED-04","MED-06","MEDIA-E1-04","MEDIA-E1-05","MEDIA-E2-09","MEDIA-E2-10"]);
+addMedia("MC-GMEDIA-OWNERSHIP-POWER", ["MED-02","MEDIA-E1-14","MEDIA-E2-07"]);
+addMedia("MC-GMEDIA-REGULATION-CONVERGENCE", ["MED-05","MED-16","MEDIA-E1-15","MEDIA-E2-08","MEDIA-E2-16"]);
+addMedia("MC-GMEDIA-SEMIOTICS", ["MEDIA-E1-01","MEDIA-E1-02","MEDIA-E1-03","MEDIA-E1-16"]);
+addMedia("MC-GMEDIA-LANGUAGE-FORM", ["MEDIA-E1-06","MEDIA-E1-07","MEDIA-E1-08","MEDIA-E1-09","MEDIA-E1-10"]);
+addMedia("MC-GMEDIA-INDUSTRY-STRUCTURE", ["MEDIA-E1-11","MEDIA-E1-12","MEDIA-E1-13","MED-09","MED-10","MED-11","MED-12"]);
+addMedia("MC-GMEDIA-CULTURAL-INDUSTRIES", ["MED-13","MEDIA-E2-11","MEDIA-E2-12"]);
+addMedia("MC-GMEDIA-DIGITAL-PARTICIPATION", ["MED-15","MEDIA-E2-13","MEDIA-E2-14","MEDIA-E2-15"]);
+addMedia("MC-GMEDIA-AUDIENCE-MEASUREMENT", ["MEDIA-E1-17","MEDIA-E2-04","MEDIA-E2-05","MEDIA-E2-06","MEDIA-E2-17"]);
+for (const question of SUBJECTS.media.banks.flatMap(bankId => BANKS[bankId]?.questions || [])) {
+  const sourceId = question.coverageVariant ? String(question.tag || "").replace(/^MC-/, "") : question.id;
+  if (MEDIA_TAGS[question.id] || MEDIA_TAGS[sourceId]) question.tag = MEDIA_TAGS[question.id] || MEDIA_TAGS[sourceId];
+}
