@@ -19523,6 +19523,450 @@ function applyGeoAlevelDistractorRepairs() {
 // twins are rebuilt by a later pass, which re-pads them; calling at this point
 // repaired them and then had the repair overwritten.
 
+// Replace filler/short-length-cued distractors in A-Level Economics with real
+// text, following the geoAlevelDistractorRepairs pattern (see above). Most
+// econ CUE issues are not generated filler but genuinely short distractors on
+// short definitional questions, where the correct answer happens to be the
+// longest option because it is the fullest, most precise definition. Each
+// entry below lengthens ONE distractor with genuine, plausible-but-wrong
+// economics content (never touching the correct answer, never appending
+// generic filler like "in this context") so it is no longer uniquely shorter.
+//
+// Keyed "<id>:<mode>" -> { existing option text: replacement }, matched on
+// TEXT not letter because rebalanceMCQSubject() permutes letters. Many ECON-1.1
+// questions are deliberately paired (same underlying option set tested via two
+// different stems/ids, e.g. TH1C-03/TH1C-04) so the same replacement recurs
+// under multiple ids.
+//
+// ECON-1.1 only so far (127 of 550 econ CUE issues); the remaining Theme
+// 2/3/4 banks are still to be covered — see CLAUDE.md backlog note.
+const econAlevelDistractorRepairs = {
+  "SD-01:base": {
+    "Demand rises when price rises due to the Veblen effect.": "Demand rises whenever price rises, because the Veblen effect explains every good a household chooses to buy."
+  },
+  "SD-02:reforge": {
+    "Shifts left — subsidies reduce firm profits. (with other relevant factors held constant)": "Shifts left, because a government subsidy is treated by firms as if it were an extra cost that reduces profit margins on every unit sold, so output falls at each price."
+  },
+  "SD-05:reforge": {
+    "Demand for cars rises — drivers buy more efficient cars.": "Demand for cars rises, because drivers switch to buying more fuel-efficient models to offset the higher cost of running them."
+  },
+  "SD-06:base": {
+    "Economics diagrams do not require labelled axes in exam answers.": "Economics diagrams do not require labelled axes in exam answers, since examiners mark only the position and slope of the curves drawn."
+  },
+  "SD-08:base": {
+    "The government controls all house building.": "The government controls all house building, issuing every permit and directly constructing every new home itself."
+  },
+  "TH1-SC-09:reforge": {
+    "They cannot compare alternative uses": "They cannot compare alternative uses, because households are assumed to have no way of ranking their own preferences"
+  },
+  "TH1-PPC-10:base": {
+    "A movement from unemployment to work": "A movement from unemployment to work, which shifts the whole economy from inside the frontier out onto a new, higher curve"
+  },
+  "TH1-PPC-10:reforge": {
+    "A change in the price level": "A change in the price level, which is treated as shifting the frontier whenever inflation alters the value of output"
+  },
+  "TH1-PPC-11:base": {
+    "All resources are equally suited to both goods": "All resources are equally suited to both goods, so every unit transferred between them is given up at exactly the same rate"
+  },
+  "TH1-PPC-11:reforge": {
+    "Demand determines productive capacity": "Demand determines productive capacity, so the frontier itself shifts in and out purely in response to changes in consumer spending"
+  },
+  "TH1-SPL-09:base": {
+    "Having the lower opportunity cost": "Having the lower opportunity cost of production compared with every other producer in the market"
+  },
+  "TH1-SPL-09:reforge": {
+    "Its inflation rate": "Its inflation rate, calculated from the change in the cost of producing cars and wheat over the period"
+  },
+  "TH1-SPL-10:base": {
+    "Scarcity is eliminated by trade": "Scarcity is eliminated by trade, because specialising according to comparative advantage removes the need to make further choices"
+  },
+  "TH1-SPL-11:base": {
+    "Opportunity cost disappears permanently": "Opportunity cost disappears permanently once an economy specialises fully in the industry it produces most efficiently"
+  },
+  "TH1-SPL-11:reforge": {
+    "All workers become perfectly mobile": "All workers become perfectly mobile, so a fall in demand for the main industry is absorbed instantly by other sectors"
+  },
+  "TH1-DEM-09:base": {
+    "Demand always rises with price": "Demand always rises with price, because consumers treat a higher price as a signal of higher quality and buy more of it"
+  },
+  "TH1-DEM-09:reforge": {
+    "A leftward demand shift": "A leftward demand shift, because a lower price is treated as a change in one of the non-price determinants of demand"
+  },
+  "TH1-SUP-09:base": {
+    "Supply always falls when price rises": "Supply always falls when price rises, because firms interpret a higher price as a signal to withdraw output from the market"
+  },
+  "TH1-SUP-09:reforge": {
+    "A leftward supply shift": "A leftward supply shift, because a higher price is treated as a change in one of the non-price determinants of supply"
+  },
+  "TH1-SUP-11:reforge": {
+    "Higher supply and a lower price": "Higher supply and a lower price, because farmers respond to crop losses by planting and harvesting extra potatoes immediately"
+  },
+  "TH1-EQ-09:base": {
+    "The highest price firms can charge": "The highest price firms can charge before every single consumer refuses to buy any of the good at all"
+  },
+  "TH1-EQ-09:reforge": {
+    "A permanent shortage": "A permanent shortage, because the price mechanism is unable to adjust quantity demanded and quantity supplied together"
+  },
+  "TH1-EQ-10:reforge": {
+    "Price is necessarily above equilibrium": "Price is necessarily above equilibrium, since any imbalance between buyers and sellers only ever occurs when price is too high"
+  },
+  "TH1-PED-09:base": {
+    "Responsiveness of price to income": "Responsiveness of price to income, showing how far a firm's price must move whenever household income changes"
+  },
+  "TH1-PED-11:reforge": {
+    "Water is always a luxury": "Water is always a luxury, purchased only when households have enough spare income left over after buying branded drinks"
+  },
+  "TH1-PES-09:base": {
+    "Responsiveness of demand to income": "Responsiveness of demand to income, showing how far households alter their spending when their income changes"
+  },
+  "TH1-PES-10:base": {
+    "Farmers can create land instantly": "Farmers can create land instantly whenever a higher price makes it profitable to plant a larger harvest"
+  },
+  "TH1-PES-10:reforge": {
+    "A harvest already planted": "A harvest already planted, where farmers can nonetheless expand this season's output the moment price rises"
+  },
+  "TH1-YED-09:base": {
+    "How supply responds to wages": "How supply responds to wages, measuring the change in output firms choose whenever wage costs rise or fall"
+  },
+  "TH1-YED-10:reforge": {
+    "A luxury holiday": "A luxury holiday, since spending on any luxury good automatically falls whenever household income increases"
+  },
+  "TH1-XED-09:base": {
+    "How supply responds to a firm's revenue": "How supply responds to a firm's revenue, measuring the change in output triggered by a rise in sales income"
+  },
+  "TH1-MKT-10:base": {
+    "Guaranteed profits for every firm": "Guaranteed profits for every firm, since competition forces rivals to match whatever price and output level is most profitable"
+  },
+  "TH1-MKT-10:reforge": {
+    "Prices must always rise": "Prices must always rise, because rival firms respond to competition by coordinating to raise their prices together"
+  },
+  "TH1-MKT-11:base": {
+    "A fall in a firm's average cost": "A fall in a firm's average cost that happens automatically whenever a new competitor enters the market"
+  },
+  "TH1-EXT-10:base": {
+    "A loss suffered by the consumer only": "A loss suffered by the consumer only, arising every time they consume a good that also affects other people"
+  },
+  "TH1-EXT-10:reforge": {
+    "It creates only private costs": "It creates only private costs, since the benefits of studying are received solely by the student who pays for it"
+  },
+  "TH1-PUB-09:base": {
+    "Users can be excluded easily": "Users can be excluded easily, since access to the good can always be restricted to those who have paid for it"
+  },
+  "TH1-PUB-09:reforge": {
+    "Firms must supply it at a profit": "Firms must supply it at a profit, since no good can ever be provided unless a private firm can charge for using it"
+  },
+  "TH1-PUB-10:reforge": {
+    "All consumers pay voluntarily": "All consumers pay voluntarily, since free riding is prevented once a good is available to everyone at no charge"
+  },
+  "TH1-ASY-09:base": {
+    "Firms and consumers have equal knowledge": "Firms and consumers have equal knowledge, since every buyer and seller can observe exactly the same information before trading"
+  },
+  "TH1-ASY-09:reforge": {
+    "Perfect information": "Perfect information, because both the buyer and the seller can observe the car's full condition before agreeing a price"
+  },
+  "TH1-GOV-09:base": {
+    "To increase harmful consumption": "To increase harmful consumption, by making the taxed good cheaper relative to substitutes once revenue is collected"
+  },
+  "TH1-GOV-09:reforge": {
+    "Remove all energy demand": "Remove all energy demand, by pricing every unit of carbon so high that households stop using energy altogether"
+  },
+  "TH1-GOV-10:base": {
+    "It is paid only by producers abroad": "It is paid only by producers abroad, since a UK indirect tax cannot legally be passed on to a domestic consumer"
+  },
+  "TH1-GOV-10:reforge": {
+    "Only rich households buy fuel": "Only rich households buy fuel, since low-income households are assumed to spend nothing at all on household energy"
+  },
+  "TH1-GOV-11:base": {
+    "A subsidy for every consumer": "A subsidy for every consumer, paid directly by government to lower the price that shoppers face in the market"
+  },
+  "TH1-GOV-11:reforge": {
+    "A guaranteed surplus of homes": "A guaranteed surplus of homes, since landlords respond to a lower legal rent by building and offering more properties"
+  },
+  "TH1-MIN-09:base": {
+    "A limit on the quantity supplied": "A limit on the quantity supplied, set by government to prevent producers from selling beyond a fixed amount"
+  },
+  "TH1-MIN-10:reforge": {
+    "The policy needs no public funds": "The policy needs no public funds, since the higher price paid to farmers is covered entirely by consumers at the till"
+  },
+  "TH1C-03:base": {
+    "A change in tastes": "A change in tastes, which shifts the whole demand curve rather than moving along the existing one"
+  },
+  "TH1C-04:base": {
+    "A change in tastes": "A change in tastes, which shifts the whole demand curve rather than moving along the existing one"
+  },
+  "TH1C-03:reforge": {
+    "A shift of the demand curve caused by a change in population": "A shift of the demand curve caused by a change in the size or age structure of the population over time"
+  },
+  "TH1C-04:reforge": {
+    "A shift of the demand curve caused by a change in population": "A shift of the demand curve caused by a change in the size or age structure of the population over time"
+  },
+  "TH1C-05:base": {
+    "A movement caused only by price": "A movement caused only by price, which shifts the whole curve to a new position on the diagram"
+  },
+  "TH1C-06:base": {
+    "A movement caused only by price": "A movement caused only by price, which shifts the whole curve to a new position on the diagram"
+  },
+  "TH1C-07:base": {
+    "Revenue above total cost": "Revenue above total cost, which is earned by a firm rather than enjoyed directly by a consumer"
+  },
+  "TH1C-08:base": {
+    "Revenue above total cost": "Revenue above total cost, which is earned by a firm rather than enjoyed directly by a consumer"
+  },
+  "TH1C-09:base": {
+    "Consumer benefit above price": "Consumer benefit above price, which is enjoyed by the buyer rather than the seller of a good"
+  },
+  "TH1C-10:base": {
+    "Consumer benefit above price": "Consumer benefit above price, which is enjoyed by the buyer rather than the seller of a good"
+  },
+  "TH1C-09:reforge": {
+    "Consumer surplus enjoyed by the buyer above the price paid": "Consumer surplus, the extra benefit enjoyed by the buyer over and above the price they actually paid for the apples"
+  },
+  "TH1C-10:reforge": {
+    "Consumer surplus enjoyed by the buyer above the price paid": "Consumer surplus, the extra benefit enjoyed by the buyer over and above the price they actually paid for the apples"
+  },
+  "TH1C-11:reforge": {
+    "A rise in supply caused by higher prices": "A rise in supply caused by higher prices, since landlords respond to the rent ceiling by building more rental homes"
+  },
+  "TH1C-12:reforge": {
+    "A rise in supply caused by higher prices": "A rise in supply caused by higher prices, since landlords respond to the rent ceiling by building more rental homes"
+  },
+  "TH1C-13:reforge": {
+    "A rise in quantity demanded caused by the law": "A rise in quantity demanded caused by the law, since any price ceiling automatically pulls more buyers into the market"
+  },
+  "TH1C-14:reforge": {
+    "A rise in quantity demanded caused by the law": "A rise in quantity demanded caused by the law, since any price ceiling automatically pulls more buyers into the market"
+  },
+  "TH1C-15:base": {
+    "A maximum below equilibrium": "A maximum below equilibrium, imposed by government to stop a price rising any further above the market price"
+  },
+  "TH1C-16:base": {
+    "A maximum below equilibrium": "A maximum below equilibrium, imposed by government to stop a price rising any further above the market price"
+  },
+  "TH1C-15:reforge": {
+    "A fall in the wage paid by firms": "A fall in the wage paid by firms, since a minimum wage is treated as removing the legal requirement for firms to pay it"
+  },
+  "TH1C-16:reforge": {
+    "A fall in the wage paid by firms": "A fall in the wage paid by firms, since a minimum wage is treated as removing the legal requirement for firms to pay it"
+  },
+  "TH1C-17:base": {
+    "A tax on output": "A tax on output, charged to producers to discourage them from making the subsidised good at all"
+  },
+  "TH1C-18:base": {
+    "A tax on output": "A tax on output, charged to producers to discourage them from making the subsidised good at all"
+  },
+  "TH1C-21:base": {
+    "A fixed charge per unit": "A fixed charge per unit, set at the same fixed amount of money regardless of how much the good is sold for"
+  },
+  "TH1C-22:base": {
+    "A fixed charge per unit": "A fixed charge per unit, set at the same fixed amount of money regardless of how much the good is sold for"
+  },
+  "TH1C-21:reforge": {
+    "A specific tax, a fixed charge per unit": "A specific tax, a fixed charge per unit that stays exactly the same no matter how expensive the laptop being sold is"
+  },
+  "TH1C-22:reforge": {
+    "A specific tax, a fixed charge per unit": "A specific tax, a fixed charge per unit that stays exactly the same no matter how expensive the laptop being sold is"
+  },
+  "TH1C-23:base": {
+    "Quantity does not change": "Quantity does not change at all, no matter how large a percentage change occurs in the good's price"
+  },
+  "TH1C-24:base": {
+    "Quantity does not change": "Quantity does not change at all, no matter how large a percentage change occurs in the good's price"
+  },
+  "TH1C-23:reforge": {
+    "Quantity demanded does not change at all": "Quantity demanded does not change at all, regardless of the size of the percentage change in price"
+  },
+  "TH1C-24:reforge": {
+    "Quantity does not change": "Quantity stays completely fixed regardless of how large a percentage change in price takes place"
+  },
+  "TH1C-25:base": {
+    "Demand is horizontal": "Demand is horizontal, so even the smallest possible change in price causes quantity demanded to change enormously"
+  },
+  "TH1C-26:base": {
+    "Demand is horizontal": "Demand is horizontal, so even the smallest possible change in price causes quantity demanded to change enormously"
+  },
+  "TH1C-25:reforge": {
+    "A shift of the demand curve caused by income": "A shift of the demand curve caused by income, moving the whole curve rather than changing quantity along it"
+  },
+  "TH1C-26:reforge": {
+    "A shift of the demand curve caused by income": "A shift of the demand curve caused by income, moving the whole curve rather than changing quantity along it"
+  },
+  "TH1C-27:base": {
+    "Quantity is fixed": "Quantity is fixed no matter how far the price is raised or lowered by sellers in the market"
+  },
+  "TH1C-28:base": {
+    "Quantity is fixed": "Quantity is fixed no matter how far the price is raised or lowered by sellers in the market"
+  },
+  "TH1C-27:reforge": {
+    "A price floor set above equilibrium": "A price floor set above equilibrium, which is imposed by government rather than arising from how consumers behave"
+  },
+  "TH1C-28:reforge": {
+    "A price floor set above equilibrium": "A price floor set above equilibrium, which is imposed by government rather than arising from how consumers behave"
+  },
+  "TH1C-29:base": {
+    "Supply after all firms exit": "Supply after all firms exit the industry, once every firm has stopped producing the good altogether"
+  },
+  "TH1C-30:base": {
+    "Supply after all firms exit": "Supply after all firms exit the industry, once every firm has stopped producing the good altogether"
+  },
+  "TH1C-29:reforge": {
+    "Supply after every firm has exited the market": "Supply after every firm has exited the market, once none of the original producers remain in the industry"
+  },
+  "TH1C-30:reforge": {
+    "Supply after every firm has exited the market": "Supply after every firm has exited the market, once none of the original producers remain in the industry"
+  },
+  "TH1C-31:base": {
+    "Supply with fixed capital only": "Supply with fixed capital only, describing a firm that can never expand its factories or its total input of capital"
+  },
+  "TH1C-32:base": {
+    "Supply with fixed capital only": "Supply with fixed capital only, describing a firm that can never expand its factories or its total input of capital"
+  },
+  "TH1C-31:reforge": {
+    "A demand curve measured after a tax change": "A demand curve measured after a tax change, showing how much consumers buy once the tax has been added to price"
+  },
+  "TH1C-32:reforge": {
+    "A demand curve measured after a tax change": "A demand curve measured after a tax change, showing how much consumers buy once the tax has been added to price"
+  },
+  "TH1C-33:base": {
+    "A private cost paid by a firm": "A private cost paid by a firm alone, with no effect at all on anyone outside the transaction"
+  },
+  "TH1C-34:base": {
+    "A private cost paid by a firm": "A private cost paid by a firm alone, with no effect at all on anyone outside the transaction"
+  },
+  "TH1C-33:reforge": {
+    "A private cost paid directly by the training firm": "A private cost paid directly by the training firm, with the benefit captured entirely within that one firm"
+  },
+  "TH1C-34:reforge": {
+    "A private cost paid directly by the training firm": "A private cost paid directly by the training firm, with the benefit captured entirely within that one firm"
+  },
+  "TH1C-35:base": {
+    "Output below all demand": "Output below all demand, produced at a level lower than every consumer in the market wishes to buy"
+  },
+  "TH1C-36:base": {
+    "Output below all demand": "Output below all demand, produced at a level lower than every consumer in the market wishes to buy"
+  },
+  "TH1C-35:reforge": {
+    "A fall in the firm's private production costs": "A fall in the firm's private production costs, brought about entirely by the pollution the factory produces"
+  },
+  "TH1C-36:reforge": {
+    "A fall in the firm's private production costs": "A fall in the firm's private production costs, brought about entirely by the pollution the factory produces"
+  },
+  "TH1C-37:base": {
+    "Consumption above equilibrium by law": "Consumption above equilibrium by law, forced on consumers through a government mandate to buy more of the good"
+  },
+  "TH1C-38:base": {
+    "Consumption above equilibrium by law": "Consumption above equilibrium by law, forced on consumers through a government mandate to buy more of the good"
+  },
+  "TH1C-37:reforge": {
+    "A rise in market supply": "A rise in market supply, caused entirely by people underestimating the benefits of getting vaccinated"
+  },
+  "TH1C-38:reforge": {
+    "A rise in market supply": "A rise in market supply, caused entirely by people underestimating the benefits of getting vaccinated"
+  },
+  "TH1C-39:base": {
+    "Perfectly informed trade": "Perfectly informed trade, in which both the buyer and the seller know everything relevant before they agree a price"
+  },
+  "TH1C-40:base": {
+    "Perfectly informed trade": "Perfectly informed trade, in which both the buyer and the seller know everything relevant before they agree a price"
+  },
+  "TH1C-39:reforge": {
+    "A fixed exchange rate imposed by government": "A fixed exchange rate imposed by government, set independently of anything either party to the sale knows"
+  },
+  "TH1C-40:reforge": {
+    "A fixed exchange rate imposed by government": "A fixed exchange rate imposed by government, set independently of anything either party to the sale knows"
+  },
+  "TH1C-41:base": {
+    "A good with no social benefit": "A good with no social benefit at all, consumed purely for the private enjoyment of the person who buys it"
+  },
+  "TH1C-42:base": {
+    "A good with no social benefit": "A good with no social benefit at all, consumed purely for the private enjoyment of the person who buys it"
+  },
+  "TH1C-41:reforge": {
+    "A good supplied only through international trade": "A good supplied only through international trade, and never produced or consumed within the domestic economy"
+  },
+  "TH1C-42:reforge": {
+    "A good supplied only through international trade": "A good supplied only through international trade, and never produced or consumed within the domestic economy"
+  },
+  "TH1C-43:base": {
+    "A good with no private demand": "A good with no private demand at all, since nobody would ever choose to consume it without being forced to"
+  },
+  "TH1C-44:base": {
+    "A good with no private demand": "A good with no private demand at all, since nobody would ever choose to consume it without being forced to"
+  },
+  "TH1C-45:base": {
+    "A market with no fixed cost": "A market with no fixed cost, in which every potential competitor can enter and produce at the same low cost"
+  },
+  "TH1C-46:base": {
+    "A market with no fixed cost": "A market with no fixed cost, in which every potential competitor can enter and produce at the same low cost"
+  },
+  "TH1C-47:base": {
+    "Maximum productive capacity": "Maximum productive capacity, reached whenever an economy operates exactly on its production possibility frontier"
+  },
+  "TH1C-48:base": {
+    "Maximum productive capacity": "Maximum productive capacity, reached whenever an economy operates exactly on its production possibility frontier"
+  },
+  "TH1C-47:reforge": {
+    "A balanced government budget": "A balanced government budget, achieved when tax revenue collected exactly equals total public spending"
+  },
+  "TH1C-48:reforge": {
+    "A balanced government budget": "A balanced government budget, achieved when tax revenue collected exactly equals total public spending"
+  },
+  "TH1C-49:base": {
+    "Every policy achieves its target": "Every policy achieves its target exactly, without ever producing an unintended or costly side effect"
+  },
+  "TH1C-49:reforge": {
+    "Every policy achieves its target": "Every policy achieves its target exactly, without ever producing an unintended or costly side effect"
+  },
+  "TH1C-50:base": {
+    "Every policy achieves its target": "Every policy achieves its target exactly, without ever producing an unintended or costly side effect"
+  },
+  "TH1C-50:reforge": {
+    "A market that already has perfect information": "A market that already has perfect information, so government support could add nothing of further value"
+  },
+  "TH1C-51:base": {
+    "All producer surplus": "All producer surplus, captured entirely by firms whenever a market fails to reach an efficient outcome"
+  },
+  "TH1C-52:base": {
+    "All producer surplus": "All producer surplus, captured entirely by firms whenever a market fails to reach an efficient outcome"
+  },
+};
+function applyEconAlevelDistractorRepairs() {
+  // Earlier passes (equaliseGeneratedOptions, the ECON-1.1 reforgeFixes table)
+  // append generated filler such as " in this market" or " under standard
+  // assumptions" to whichever distractor needs to out-length the correct
+  // answer, before the file-wide removeGeneratedOptionPadding pass strips it
+  // back off near the end of the file. This repair runs earlier than that
+  // strip (to match applyGeoAlevelDistractorRepairs' position), so it must
+  // strip the same filler itself before matching against the table, the same
+  // way applyGeoAlevelDistractorRepairs strips its own FILLER pattern.
+  const FILLER = /\s*\(?\s*(?:in this context|in context|in this case|for this decision|in this market|in this computing context|under standard assumptions|in a typical case|in the stated scenario|in a typical firm)\s*\)?[.!?]?\s*$/i;
+  const stripFiller = value => {
+    let result = String(value);
+    let next;
+    do {
+      next = result.replace(FILLER, "").trim();
+      if (next === result) break;
+      result = next;
+    } while (true);
+    return result;
+  };
+  let replaced = 0;
+  for (const bankId of SUBJECTS.econ.banks) {
+    for (const question of BANKS[bankId]?.questions || []) {
+      for (const [mode, item] of [["base", question], ["reforge", question.reforge]]) {
+        if (!item || !item.options) continue;
+        const table = econAlevelDistractorRepairs[`${question.id}:${mode}`];
+        if (!table) continue;
+        for (const [letter, value] of Object.entries(item.options)) {
+          const bare = stripFiller(value);
+          const replacement = table[bare];
+          if (replacement) { item.options[letter] = replacement; replaced++; }
+        }
+      }
+    }
+  }
+  return replaced;
+}
+
 // Final language pass: a few later-added coverage questions were introduced
 // after the main stem-diversity migration. Rephrase those remaining generic
 // "Which statement/claim" openings so the visible bank does not teach a
@@ -21417,6 +21861,7 @@ for (const bankId of SUBJECTS["gcse-econ"].banks) {
 // point. Running here is what makes the repair stick. If a new pass is added
 // below this line, check it does not re-pad geo.
 applyGeoAlevelDistractorRepairs();
+applyEconAlevelDistractorRepairs();
 
 // Runs late for the same reason applyGeoMisconceptionTags() does: the six
 // A1-PHASE7-ECON* questions are appended to the 2.3.x banks after the tag
