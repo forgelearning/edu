@@ -22534,6 +22534,47 @@ Object.values(BANKS).forEach(bank => {
   });
 });
 
+// Reforge twins whose only distinction was generated option padding need a
+// real alternative, not another suffix. Reuse a distractor authored for a
+// nearby question in the same bank, preferring matching stem vocabulary so
+// the replacement stays within the same concept area. This is deliberately
+// applied only when the two option sets are otherwise identical.
+const reforgeWords = text => new Set(String(text).toLowerCase().match(/[a-z][a-z'-]{3,}/g) || []);
+const reforgeStopWords = new Set(["what", "which", "that", "this", "from", "with", "when", "where", "does", "means", "used", "most", "main", "purpose", "following", "question", "case", "example", "generally", "usually"]);
+for (const bank of Object.values(BANKS)) {
+  const questions = bank.questions || [];
+  const candidates = questions.flatMap(source => {
+    const sourceWords = reforgeWords(source.stem);
+    return Object.entries(source.options || {})
+      .filter(([letter]) => letter !== source.correct)
+      .map(([, value]) => ({
+        value: stripGeneratedOptionPadding(value),
+        words: sourceWords
+      }));
+  });
+  for (const question of questions) {
+    const reforge = question.reforge;
+    if (!reforge?.options || !question.options) continue;
+    const baseValues = Object.values(question.options).map(value => stripGeneratedOptionPadding(value));
+    const refValues = Object.values(reforge.options).map(value => stripGeneratedOptionPadding(value));
+    const baseSet = new Set(baseValues.map(value => value.toLowerCase()));
+    const refSet = new Set(refValues.map(value => value.toLowerCase()));
+    if (baseSet.size !== refSet.size || [...baseSet].some(value => !refSet.has(value))) continue;
+    Object.keys(reforge.options).forEach((key, index) => { reforge.options[key] = refValues[index]; });
+    const target = Object.keys(reforge.options).find(key => key !== reforge.correct);
+    if (!target) continue;
+    const stemWords = [...reforgeWords(reforge.stem)].filter(word => !reforgeStopWords.has(word));
+    const replacement = candidates
+      .filter(candidate => candidate.value && !baseSet.has(candidate.value.toLowerCase()) && candidate.value.toLowerCase() !== String(reforge.options[reforge.correct]).toLowerCase())
+      .map(candidate => ({
+        candidate,
+        score: stemWords.reduce((score, word) => score + (candidate.words.has(word) ? 1 : 0), 0)
+      }))
+      .sort((a, b) => b.score - a.score || a.candidate.value.length - b.candidate.value.length)[0];
+    if (replacement) reforge.options[target] = replacement.candidate.value;
+  }
+}
+
 // Canonicalise the last legacy GCSE science tags. Their old BIO-/CHEM-/PHYS-
 // prefixes were valid identifiers but did not follow the shared MC-SEP-
 // taxonomy used by the rest of combined science.
