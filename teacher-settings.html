@@ -87,7 +87,7 @@
         radio.addEventListener('change', function () {
           if (this.value === 'system') localStorage.removeItem('forge-theme');
           else localStorage.setItem('forge-theme', this.value);
-          var light = this.value === 'light' || (this.value === 'system' && window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches);
+          var light = window.forgeThemeLightFor ? window.forgeThemeLightFor(this.value) : this.value === 'light';
           if (window.setForgeTheme) window.setForgeTheme(light, false);
           setTimeout(function () { location.reload(); }, 80);
         });
