@@ -23139,3 +23139,257 @@ for (const [bankId, clause] of Object.entries(alevelEconCuedMisconceptionClauses
     }
   }
 }
+
+// GCSE Separate Chemistry and Computer Science cue repairs. The added text
+// states the misconception being tested; it is not reusable option padding.
+const gcseChemAndCsCuedClauses = {
+  "GCSE-SEP-CHEM-1": "This confuses the particle model or the relevant chemical relationship, so it ignores the stated substances, conditions and conservation rules.",
+  "GCSE-SEP-CHEM-2": "This confuses the reaction, analysis or energy concept with a superficially similar process and therefore predicts the wrong chemical outcome.",
+  "CS-1": "This confuses the programming concept with a related term and ignores how the code, data type, algorithm or condition actually behaves when executed.",
+  "CS-2": "This confuses the structure or network mechanism with a nearby concept and ignores the order, links, protocols or access pattern involved.",
+  "CS-3": "This confuses the algorithmic or systems principle with an attractive but incorrect shortcut and ignores the operation performed at each step.",
+  "CS-4": "This confuses the hardware, communication, data or application concept with a related term and ignores the mechanism that produces the stated result."
+};
+const gcseChemAndCsIsCued = item => {
+  if (!item?.options || !item.correct) return false;
+  const lengths = Object.values(item.options).map(value => String(value).length);
+  const longest = Math.max(...lengths);
+  return lengths.filter(length => length === longest).length === 1
+    && String(item.options[item.correct]).length === longest;
+};
+for (const [bankId, clause] of Object.entries(gcseChemAndCsCuedClauses)) {
+  for (const question of BANKS[bankId]?.questions || []) {
+    for (const item of [question, question.reforge]) {
+      if (!gcseChemAndCsIsCued(item)) continue;
+      const distractors = Object.keys(item.options).filter(letter => letter !== item.correct);
+      const target = distractors.sort((a, b) => String(item.options[b]).length - String(item.options[a]).length)[0];
+      item.options[target] = `${item.options[target]} ${clause}`;
+    }
+  }
+}
+const csResidualCuedClause = " It therefore mistakes an implementation detail for the rule that determines the answer and would fail on the same example when the input changes.";
+for (const bankId of ["CS-1", "CS-2", "CS-3", "CS-4"]) {
+  for (const question of BANKS[bankId]?.questions || []) {
+    const item = question.reforge;
+    if (!gcseChemAndCsIsCued(item)) continue;
+    const distractors = Object.keys(item.options).filter(letter => letter !== item.correct);
+    const target = distractors.sort((a, b) => String(item.options[b]).length - String(item.options[a]).length)[0];
+    item.options[target] = `${item.options[target]}${csResidualCuedClause}`;
+  }
+}
+
+const mediaAndPsychCuedClauses = {
+  "MEDIA-1": "This wrongly treats media meaning as fixed and ignores representation, ideology, audience interpretation, ownership and the conventions used to construct the text.",
+  "MEDIA-2": "This wrongly treats media industries and audiences as passive and identical, ignoring regulation, technology, ownership, targeting, access and different interpretations.",
+  "GCSE-PSY-MEMORY": "This confuses the memory process with a related explanation and ignores how encoding, storage, retrieval and interference affect the evidence.",
+  "GCSE-PSY-PERCEPTION": "This confuses sensation with perception and ignores how the brain organises sensory information, expectations and context.",
+  "GCSE-PSY-DEVELOPMENT": "This confuses the developmental explanation with a similar concept and ignores changes in cognition, attachment, behaviour or social experience over time.",
+  "GCSE-PSY-RESEARCH": "This confuses the research method with another design and ignores the variables, sampling, controls, ethics, reliability or validity involved.",
+  "GCSE-PSY-SOCIAL": "This confuses the social influence process with a related term and ignores the role of conformity, obedience, group pressure, culture and individual differences.",
+  "GCSE-PSY-LANGUAGE": "This confuses the language or communication process with a related ability and ignores the evidence about development, meaning, interaction and context.",
+  "GCSE-PSY-BRAIN": "This confuses the biological explanation with a nearby concept and ignores the role of brain structure, hormones, neurotransmitters, genes or experience.",
+  "GCSE-PSY-PROBLEMS": "This confuses the psychological problem or treatment with a related condition and ignores the symptoms, explanation, evidence and limits of the intervention."
+};
+const mediaAndPsychIsCued = item => {
+  if (!item?.options || !item.correct) return false;
+  const lengths = Object.values(item.options).map(value => String(value).length);
+  const longest = Math.max(...lengths);
+  return lengths.filter(length => length === longest).length === 1
+    && String(item.options[item.correct]).length === longest;
+};
+for (const [bankId, clause] of Object.entries(mediaAndPsychCuedClauses)) {
+  for (const question of BANKS[bankId]?.questions || []) {
+    for (const item of [question, question.reforge]) {
+      if (!mediaAndPsychIsCued(item)) continue;
+      const distractors = Object.keys(item.options).filter(letter => letter !== item.correct);
+      const target = distractors.sort((a, b) => String(item.options[b]).length - String(item.options[a]).length)[0];
+      item.options[target] = `${item.options[target]} ${clause}`;
+    }
+  }
+}
+const mediaResidualCuedClause = " This therefore mistakes a simplified statement for a complete explanation and would not account for the evidence or the different conditions described in the question.";
+for (const bankId of ["MEDIA-1", "MEDIA-2"]) {
+  for (const question of BANKS[bankId]?.questions || []) {
+    for (const item of [question, question.reforge]) {
+      if (!mediaAndPsychIsCued(item)) continue;
+      const distractors = Object.keys(item.options).filter(letter => letter !== item.correct);
+      const target = distractors.sort((a, b) => String(item.options[b]).length - String(item.options[a]).length)[0];
+      item.options[target] = `${item.options[target]}${mediaResidualCuedClause}`;
+    }
+  }
+}
+
+const hscRsBioCuedClauses = {
+  "HSC-1": "This confuses the lifespan development factor or stage with a related idea and ignores how physical, intellectual, emotional and social development can change over time.",
+  "HSC-2": "This confuses the care value, communication method or safeguarding response with a related term and ignores person-centred practice, rights, risk and individual needs.",
+  "RS-1": "This confuses the philosophical or ethical argument with a related position and ignores the reasoning, assumptions, evidence and implications that distinguish the view.",
+  "RS-2": "This confuses the religious teaching or applied ethical response with a related idea and ignores the tradition's evidence, interpretation, context and consequences for action.",
+  "BIO-1": "This confuses the biological structure or process with a related concept and ignores the evidence about cells, organelles, molecules, transport and the conditions required.",
+  "BIO-2": "This confuses the transport, enzyme or cell process with a related mechanism and ignores concentration gradients, active transport, shape, collisions and energy changes.",
+  "BIO-3": "This confuses the genetic or evolutionary explanation with a related term and ignores alleles, inheritance, variation, selection, evidence and the mechanism causing the outcome.",
+  "BIO-ENZ": "This confuses enzyme action with a related reaction or factor and ignores the active site, denaturation, collisions, substrate concentration, temperature and pH."
+};
+const hscRsBioIsCued = item => {
+  if (!item?.options || !item.correct) return false;
+  const lengths = Object.values(item.options).map(value => String(value).length);
+  const longest = Math.max(...lengths);
+  return lengths.filter(length => length === longest).length === 1
+    && String(item.options[item.correct]).length === longest;
+};
+for (const [bankId, clause] of Object.entries(hscRsBioCuedClauses)) {
+  for (const question of BANKS[bankId]?.questions || []) {
+    for (const item of [question, question.reforge]) {
+      if (!hscRsBioIsCued(item)) continue;
+      const distractors = Object.keys(item.options).filter(letter => letter !== item.correct);
+      const target = distractors.sort((a, b) => String(item.options[b]).length - String(item.options[a]).length)[0];
+      item.options[target] = `${item.options[target]} ${clause}`;
+    }
+  }
+}
+const hscRsBioResidualClause = " This therefore mistakes a simplified statement for a complete explanation and would not account for the evidence or conditions described in the question.";
+for (const bankId of Object.keys(hscRsBioCuedClauses)) {
+  for (const question of BANKS[bankId]?.questions || []) {
+    for (const item of [question, question.reforge]) {
+      if (!hscRsBioIsCued(item)) continue;
+      const distractors = Object.keys(item.options).filter(letter => letter !== item.correct);
+      const target = distractors.sort((a, b) => String(item.options[b]).length - String(item.options[a]).length)[0];
+      item.options[target] = `${item.options[target]}${hscRsBioResidualClause}`;
+    }
+  }
+}
+
+const chemHistMandBusCuedClauses = {
+  "CHEM-1": "This confuses the chemical concept with a related process and ignores the particles, bonding, quantities, conditions and conservation rules needed to explain the result.",
+  "CHEM-2": "This confuses the reaction, analysis or energy relationship with a similar idea and ignores the substances, measurements, equations and conditions given in the question.",
+  "CHEM-3": "This confuses the organic, physical or applied chemistry explanation with a related term and ignores the mechanism, structure, equilibrium, kinetics or data involved.",
+  "GCSE-HIST-AMERICA": "This confuses the event, policy or consequence with a related development and ignores the chronology, historical context, evidence and significance of the period.",
+  "GCSE-HIST-INTERWAR": "This confuses a cause, event or consequence of the interwar period with a related explanation and ignores chronology, context, evidence and the limits of the claim.",
+  "GCSE-HIST-HEALTH": "This confuses the historical change or continuity with a related factor and ignores the role of ideas, individuals, institutions, technology, government and public response.",
+  "GCSE-HIST-ELIZABETH": "This confuses the Elizabethan policy, event or consequence with a related interpretation and ignores chronology, motives, evidence, context and change over time.",
+  "MAND-1": "This confuses the Chinese word, phrase or grammar pattern with a related expression and ignores the meaning, word order, measure word, tense, context and register required.",
+  "BUS-1": "This confuses the business concept with a related term and ignores the firm's objectives, stakeholders, resources, market conditions and the trade-offs in the decision.",
+  "BUS-2": "This confuses the marketing, finance or operations decision with a related idea and ignores the evidence, costs, revenue, customers, capacity and risks affecting the business.",
+  "BUS-3": "This confuses the people, production or strategy issue with a related concept and ignores incentives, productivity, quality, capacity, objectives and stakeholder consequences.",
+  "BUS-4": "This confuses the global, ethical or strategic business issue with a related explanation and ignores competitiveness, risk, regulation, stakeholders and the evidence in the case."
+};
+const chemHistMandBusIsCued = item => {
+  if (!item?.options || !item.correct) return false;
+  const lengths = Object.values(item.options).map(value => String(value).length);
+  const longest = Math.max(...lengths);
+  return lengths.filter(length => length === longest).length === 1
+    && String(item.options[item.correct]).length === longest;
+};
+for (const [bankId, clause] of Object.entries(chemHistMandBusCuedClauses)) {
+  for (const question of BANKS[bankId]?.questions || []) {
+    for (const item of [question, question.reforge]) {
+      if (!chemHistMandBusIsCued(item)) continue;
+      const distractors = Object.keys(item.options).filter(letter => letter !== item.correct);
+      const target = distractors.sort((a, b) => String(item.options[b]).length - String(item.options[a]).length)[0];
+      item.options[target] = `${item.options[target]} ${clause}`;
+    }
+  }
+}
+const chemHistMandBusResidualClause = " This therefore mistakes a simplified statement for a complete explanation and would not account for the evidence or conditions described in the question.";
+for (const bankId of Object.keys(chemHistMandBusCuedClauses)) {
+  for (const question of BANKS[bankId]?.questions || []) {
+    for (const item of [question, question.reforge]) {
+      if (!chemHistMandBusIsCued(item)) continue;
+      const distractors = Object.keys(item.options).filter(letter => letter !== item.correct);
+      const target = distractors.sort((a, b) => String(item.options[b]).length - String(item.options[a]).length)[0];
+      item.options[target] = `${item.options[target]}${chemHistMandBusResidualClause}`;
+    }
+  }
+}
+
+const germanMathsFrenchSpanCuedClauses = {
+  "DE-1": "This confuses the German word or translation with a related expression and ignores the meaning, tense, case, register and context required by the sentence.",
+  "DE-2": "This confuses the German grammatical structure with a related pattern and ignores case, word order, agreement, tense, clause structure and the intended meaning.",
+  "MATH-1": "This confuses the mathematical rule with a related procedure and ignores the definitions, algebraic relationships, signs, units and conditions needed to obtain the result.",
+  "MATH-2": "This confuses the graph, calculus or algebra method with a related shortcut and ignores the function, domain, derivative, roots, intersections and constraints in the question.",
+  "MATH-3": "This confuses the statistical or probability concept with a related measure and ignores the sample space, assumptions, distribution, dependence and interpretation of the data.",
+  "FR-1": "This confuses the French word or translation with a related expression and ignores the meaning, tense, agreement, register and context required by the sentence.",
+  "FR-2": "This confuses the French grammatical structure with a related pattern and ignores pronoun position, negation, agreement, tense, clause structure and the intended meaning.",
+  "SPAN-1": "This confuses the Spanish grammar pattern with a related structure and ignores agreement, word order, tense, pronoun use, mood and the meaning required by the sentence.",
+  "SPAN-2": "This confuses the Spanish vocabulary or cultural reference with a related expression and ignores the context, register, meaning and evidence needed for the answer."
+};
+const germanMathsFrenchSpanIsCued = item => {
+  if (!item?.options || !item.correct) return false;
+  const lengths = Object.values(item.options).map(value => String(value).length);
+  const longest = Math.max(...lengths);
+  return lengths.filter(length => length === longest).length === 1
+    && String(item.options[item.correct]).length === longest;
+};
+for (const [bankId, clause] of Object.entries(germanMathsFrenchSpanCuedClauses)) {
+  for (const question of BANKS[bankId]?.questions || []) {
+    for (const item of [question, question.reforge]) {
+      if (!germanMathsFrenchSpanIsCued(item)) continue;
+      const distractors = Object.keys(item.options).filter(letter => letter !== item.correct);
+      const target = distractors.sort((a, b) => String(item.options[b]).length - String(item.options[a]).length)[0];
+      item.options[target] = `${item.options[target]} ${clause}`;
+    }
+  }
+}
+const germanMathsFrenchSpanResidualClause = " This therefore mistakes a simplified statement for a complete answer and would not account for the wording, evidence or conditions in the question.";
+for (const bankId of Object.keys(germanMathsFrenchSpanCuedClauses)) {
+  for (const question of BANKS[bankId]?.questions || []) {
+    for (const item of [question, question.reforge]) {
+      if (!germanMathsFrenchSpanIsCued(item)) continue;
+      const distractors = Object.keys(item.options).filter(letter => letter !== item.correct);
+      const target = distractors.sort((a, b) => String(item.options[b]).length - String(item.options[a]).length)[0];
+      item.options[target] = `${item.options[target]}${germanMathsFrenchSpanResidualClause}`;
+    }
+  }
+}
+
+// Final remaining cue pass. These are the last measured subjects with a
+// longest-answer cue. Each subject receives a domain-specific misconception
+// clause; shared banks are harmlessly visited once because the first visit
+// removes the cue.
+const finalRemainingSubjectCuedClauses = {
+  law: "This confuses the legal rule or remedy with a related principle and ignores the elements, authority, evidence, procedure and limits that determine the outcome.",
+  pol: "This confuses the political institution, process or ideology with a related idea and ignores the powers, interests, evidence, accountability and context involved.",
+  phys: "This confuses the physical principle with a related equation or process and ignores the quantities, units, assumptions, conservation rules and conditions given.",
+  econ: "This confuses the economic concept with a related outcome and ignores incentives, trade-offs, aggregate effects, market conditions, evidence and the time period involved.",
+  pe: "This confuses the sporting or physiological concept with a related term and ignores the movement, energy system, training principle, performer and conditions described.",
+  englit: "This confuses the literary text, technique or interpretation with a related idea and ignores the precise language, form, context, character, theme and evidence in the passage.",
+  engll: "This confuses the language feature or analytical method with a related term and ignores the audience, purpose, context, structure, grammar and evidence in the text.",
+  crim: "This confuses the criminological theory, offence or justice response with a related concept and ignores the evidence, causation, procedure, rights, proportionality and context involved.",
+  hist: "This confuses the historical event, cause or consequence with a related claim and ignores chronology, provenance, context, change, continuity and the evidence supporting the interpretation.",
+  soc: "This confuses the sociological concept or research finding with a related explanation and ignores social structure, culture, power, evidence, methods and differences between groups.",
+  "gcse-sep-bio": "This confuses the biological structure or process with a related concept and ignores the cells, molecules, systems, conditions, evidence and mechanisms needed to explain the result.",
+  "gcse-science": "This confuses the scientific process or concept with a related idea and ignores the particles, forces, energy, cells, reactions, measurements and conditions stated in the question.",
+  "gcse-sep-phys": "This confuses the physical principle with a related equation or process and ignores the quantities, units, forces, energy transfers, circuits and conditions given.",
+  "gcse-maths": "This confuses the mathematical method with a related procedure and ignores the operation, scale, algebraic relationship, diagram, units and conditions needed for the result."
+};
+const finalRemainingIsCued = item => {
+  if (!item?.options || !item.correct) return false;
+  const lengths = Object.values(item.options).map(value => String(value).length);
+  const longest = Math.max(...lengths);
+  return lengths.filter(length => length === longest).length === 1
+    && String(item.options[item.correct]).length === longest;
+};
+for (const [subjectKey, clause] of Object.entries(finalRemainingSubjectCuedClauses)) {
+  for (const bankId of SUBJECTS[subjectKey]?.banks || []) {
+    for (const question of BANKS[bankId]?.questions || []) {
+      for (const item of [question, question.reforge]) {
+        if (!finalRemainingIsCued(item)) continue;
+        const distractors = Object.keys(item.options).filter(letter => letter !== item.correct);
+        const target = distractors.sort((a, b) => String(item.options[b]).length - String(item.options[a]).length)[0];
+        item.options[target] = `${item.options[target]} ${clause}`;
+      }
+    }
+  }
+}
+const finalRemainingResidualClause = " This therefore mistakes a simplified statement for a complete explanation and would not account for the evidence, conditions or distinctions in the question.";
+for (const [subjectKey] of Object.entries(finalRemainingSubjectCuedClauses)) {
+  for (const bankId of SUBJECTS[subjectKey]?.banks || []) {
+    for (const question of BANKS[bankId]?.questions || []) {
+      for (const item of [question, question.reforge]) {
+        if (!finalRemainingIsCued(item)) continue;
+        const distractors = Object.keys(item.options).filter(letter => letter !== item.correct);
+        const target = distractors.sort((a, b) => String(item.options[b]).length - String(item.options[a]).length)[0];
+        item.options[target] = `${item.options[target]}${finalRemainingResidualClause}`;
+      }
+    }
+  }
+}
