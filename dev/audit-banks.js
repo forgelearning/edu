@@ -210,6 +210,16 @@ const TAG_TAXONOMY_SUBJECTS = {
   hsc: 0,
   // Media: 200 questions now use 10 shared misconception groups.
   media: 0,
+  // Final language, PE, computing and quantitative banks are now curated.
+  french: 0,
+  span: 0,
+  pe: 0,
+  englit: 0,
+  engll: 0,
+  mand: 0,
+  bus: 0,
+  cs: 0,
+  maths: 0,
   // Combined science shares the separate sciences' MC-SEP-* taxonomy. The
   // remaining share is 15 questions whose tag names a topic, not an error.
   'gcse-science': 0.08,
@@ -293,6 +303,15 @@ const TAG_TAXONOMY_MECHANICAL = {
   'rs': 0,
   'hsc': 0,
   'media': 0,
+  'french': 0,
+  'span': 0,
+  'pe': 0,
+  'englit': 0,
+  'engll': 0,
+  'mand': 0,
+  'bus': 0,
+  'cs': 0,
+  'maths': 0,
   'gcse-maths': 0,
   // Was 0.996 when every tag was a bank code plus a position (MC-GEO-HAZ-27).
   // The concept-slug pass cleared that: the subject now measures 0, so the
