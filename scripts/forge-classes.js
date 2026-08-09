@@ -101,7 +101,15 @@
   function adopt(session) {
     if (!session || !session.classId) return list();
     if (session.studentName) use(session.studentName);
-    if (list().some(function (c) { return c.classId === session.classId; })) return list();
+    var existing = list().filter(function (c) { return c.classId === session.classId; })[0];
+    if (existing) {
+      existing.classCode = existing.classCode || session.classCode || null;
+      existing.className = existing.className || session.className || null;
+      existing.subject = existing.subject || session.classSubject || null;
+      existing.studentCode = existing.studentCode || session.studentCode || null;
+      save(list());
+      return list();
+    }
     return add({
       classId:     session.classId,
       classCode:   session.classCode   || null,
