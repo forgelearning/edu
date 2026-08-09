@@ -80,11 +80,6 @@ Six banks still use auto-generated slugs, largest single-use count first:
 
 | bank | questions | tags | single-use |
 |---|---|---|---|
-| `GCSE-GEO-INDIA` | 50 | 42 | 35 |
-| `GCSE-GEO-SKILLS` | 35 | 35 | 35 |
-| `GCSE-GEO-DECISIONS` | 41 | 36 | 31 |
-| `GCSE-GEO-RIVERFIELD` | 35 | 32 | 29 |
-| `GCSE-GEO-URBFIELD` | 35 | 32 | 29 |
 | `GCSE-GEO-URB` | 39 | 33 | 27 |
 
 `GCSE-GEO-DEV` and `GCSE-GEO-ENQUIRY` were curated before this work began.

@@ -198,10 +198,14 @@ const TAG_TAXONOMY_SUBJECTS = {
   // 16, 41 single-use -> 0), Forests Under Threat (44 -> 11, 40 -> 0),
   // Consuming Energy Resources (43 -> 14, 39 -> 0), People and the Biosphere
   // (41 -> 13, 37 -> 0), the UK's Evolving Physical Landscape (44 -> 14,
-  // 36 -> 0), and UK Human Landscapes (42 -> 13, 36 -> 0), taking the subject
-  // from 0.697 to 0.344. The other six banks still carry auto-generated
-  // per-question concept slugs; drop this figure as each one is curated.
-  'gcse-geo': 0.35,
+  // 36 -> 0), UK Human Landscapes (42 -> 13, 36 -> 0), and India (42 -> 13,
+  // 35 -> 0), and Skills (35 -> 10, 35 -> 0), taking the subject from 0.697
+  // to 0.234. Decisions (36 -> 10, 31 -> 0) then takes it to 0.186. The other
+  // Riverfield (32 -> 9, 29 -> 0) and Urban Fieldwork (32 -> 10, 29 -> 0)
+  // take it to 0.095; Urbanising World (33 -> 10, 27 -> 0) takes it to
+  // 0.053. All seven previously remaining banks are now curated.
+  // per-question concept slugs; keep this just above the measured residue.
+  'gcse-geo': 0.06,
   // 185 of 200 questions retagged onto 44 shared categories, taking the
   // single-use share from 0.930 to 0.010. The two tags left on one question
   // each are MC-EDU-ETHNIC and MC-TECH-01, both real categories with one
