@@ -199,9 +199,10 @@ const TAG_TAXONOMY_SUBJECTS = {
   // Consuming Energy Resources (43 -> 14, 39 -> 0), People and the Biosphere
   // (41 -> 13, 37 -> 0), the UK's Evolving Physical Landscape (44 -> 14,
   // 36 -> 0), UK Human Landscapes (42 -> 13, 36 -> 0), and India (42 -> 13,
-  // 35 -> 0), taking the subject from 0.697 to 0.289. The other five banks still carry auto-generated
+  // 35 -> 0), and Skills (35 -> 10, 35 -> 0), taking the subject from 0.697
+  // to 0.234. The other four banks still carry auto-generated
   // per-question concept slugs; drop this figure as each one is curated.
-  'gcse-geo': 0.30,
+  'gcse-geo': 0.24,
   // 185 of 200 questions retagged onto 44 shared categories, taking the
   // single-use share from 0.930 to 0.010. The two tags left on one question
   // each are MC-EDU-ETHNIC and MC-TECH-01, both real categories with one
