@@ -86,7 +86,7 @@ declare
   v_name text := left(btrim(coalesce(p_name, '')), 80);
   v_code text := upper(regexp_replace(btrim(coalesce(p_student_code, '')), '[^A-Z0-9]', '', 'g'));
 begin
-  if length(v_name) < 1 or length(v_code) < 8 then
+  if length(v_name) < 1 or length(v_code) < 4 then
     return;
   end if;
 
