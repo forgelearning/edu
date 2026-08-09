@@ -70,11 +70,13 @@ and when to merge.
 
 ## Remaining banks
 
-Ten banks still use auto-generated slugs, largest single-use count first:
+`GCSE-GEO-ENERGY` has since been curated too — see
+`docs/gcse-geo-energy-misconception-mapping.md`, which carries the current
+list. Nine banks still use auto-generated slugs, largest single-use count
+first:
 
 | bank | questions | tags | single-use |
 |---|---|---|---|
-| `GCSE-GEO-ENERGY` | 47 | 43 | 39 |
 | `GCSE-GEO-BIOSPHERE` | 45 | 41 | 37 |
 | `GCSE-GEO-UKLAND` | 52 | 44 | 36 |
 | `GCSE-GEO-UKHUMAN` | 48 | 42 | 36 |
