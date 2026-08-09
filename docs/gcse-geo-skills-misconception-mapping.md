@@ -67,5 +67,5 @@ but the useful intervention is the operation a student has confused:
 | `MC-GG-SKI-SUMMARY-STATISTICS` | Range, mode and density answer different questions | 3 | 15, 28, 31 |
 | `MC-GG-SKI-COMMUNICATE-EVIDENCE` | Command words determine the evidence and response | 3 | 17, 18, 19 |
 
-The three remaining banks are listed in
+The two remaining banks are listed in
 `docs/gcse-geo-uk-landscape-misconception-mapping.md`.
