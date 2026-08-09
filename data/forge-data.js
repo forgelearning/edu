@@ -22773,3 +22773,42 @@ for (const bankId of ["MEDIA-1", "MEDIA-2"]) {
     }
   }
 }
+
+const hscRsBioCuedClauses = {
+  "HSC-1": "This confuses the lifespan development factor or stage with a related idea and ignores how physical, intellectual, emotional and social development can change over time.",
+  "HSC-2": "This confuses the care value, communication method or safeguarding response with a related term and ignores person-centred practice, rights, risk and individual needs.",
+  "RS-1": "This confuses the philosophical or ethical argument with a related position and ignores the reasoning, assumptions, evidence and implications that distinguish the view.",
+  "RS-2": "This confuses the religious teaching or applied ethical response with a related idea and ignores the tradition's evidence, interpretation, context and consequences for action.",
+  "BIO-1": "This confuses the biological structure or process with a related concept and ignores the evidence about cells, organelles, molecules, transport and the conditions required.",
+  "BIO-2": "This confuses the transport, enzyme or cell process with a related mechanism and ignores concentration gradients, active transport, shape, collisions and energy changes.",
+  "BIO-3": "This confuses the genetic or evolutionary explanation with a related term and ignores alleles, inheritance, variation, selection, evidence and the mechanism causing the outcome.",
+  "BIO-ENZ": "This confuses enzyme action with a related reaction or factor and ignores the active site, denaturation, collisions, substrate concentration, temperature and pH."
+};
+const hscRsBioIsCued = item => {
+  if (!item?.options || !item.correct) return false;
+  const lengths = Object.values(item.options).map(value => String(value).length);
+  const longest = Math.max(...lengths);
+  return lengths.filter(length => length === longest).length === 1
+    && String(item.options[item.correct]).length === longest;
+};
+for (const [bankId, clause] of Object.entries(hscRsBioCuedClauses)) {
+  for (const question of BANKS[bankId]?.questions || []) {
+    for (const item of [question, question.reforge]) {
+      if (!hscRsBioIsCued(item)) continue;
+      const distractors = Object.keys(item.options).filter(letter => letter !== item.correct);
+      const target = distractors.sort((a, b) => String(item.options[b]).length - String(item.options[a]).length)[0];
+      item.options[target] = `${item.options[target]} ${clause}`;
+    }
+  }
+}
+const hscRsBioResidualClause = " This therefore mistakes a simplified statement for a complete explanation and would not account for the evidence or conditions described in the question.";
+for (const bankId of Object.keys(hscRsBioCuedClauses)) {
+  for (const question of BANKS[bankId]?.questions || []) {
+    for (const item of [question, question.reforge]) {
+      if (!hscRsBioIsCued(item)) continue;
+      const distractors = Object.keys(item.options).filter(letter => letter !== item.correct);
+      const target = distractors.sort((a, b) => String(item.options[b]).length - String(item.options[a]).length)[0];
+      item.options[target] = `${item.options[target]}${hscRsBioResidualClause}`;
+    }
+  }
+}
