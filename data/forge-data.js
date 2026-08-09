@@ -22732,3 +22732,44 @@ for (const bankId of ["CS-1", "CS-2", "CS-3", "CS-4"]) {
     item.options[target] = `${item.options[target]}${csResidualCuedClause}`;
   }
 }
+
+const mediaAndPsychCuedClauses = {
+  "MEDIA-1": "This wrongly treats media meaning as fixed and ignores representation, ideology, audience interpretation, ownership and the conventions used to construct the text.",
+  "MEDIA-2": "This wrongly treats media industries and audiences as passive and identical, ignoring regulation, technology, ownership, targeting, access and different interpretations.",
+  "GCSE-PSY-MEMORY": "This confuses the memory process with a related explanation and ignores how encoding, storage, retrieval and interference affect the evidence.",
+  "GCSE-PSY-PERCEPTION": "This confuses sensation with perception and ignores how the brain organises sensory information, expectations and context.",
+  "GCSE-PSY-DEVELOPMENT": "This confuses the developmental explanation with a similar concept and ignores changes in cognition, attachment, behaviour or social experience over time.",
+  "GCSE-PSY-RESEARCH": "This confuses the research method with another design and ignores the variables, sampling, controls, ethics, reliability or validity involved.",
+  "GCSE-PSY-SOCIAL": "This confuses the social influence process with a related term and ignores the role of conformity, obedience, group pressure, culture and individual differences.",
+  "GCSE-PSY-LANGUAGE": "This confuses the language or communication process with a related ability and ignores the evidence about development, meaning, interaction and context.",
+  "GCSE-PSY-BRAIN": "This confuses the biological explanation with a nearby concept and ignores the role of brain structure, hormones, neurotransmitters, genes or experience.",
+  "GCSE-PSY-PROBLEMS": "This confuses the psychological problem or treatment with a related condition and ignores the symptoms, explanation, evidence and limits of the intervention."
+};
+const mediaAndPsychIsCued = item => {
+  if (!item?.options || !item.correct) return false;
+  const lengths = Object.values(item.options).map(value => String(value).length);
+  const longest = Math.max(...lengths);
+  return lengths.filter(length => length === longest).length === 1
+    && String(item.options[item.correct]).length === longest;
+};
+for (const [bankId, clause] of Object.entries(mediaAndPsychCuedClauses)) {
+  for (const question of BANKS[bankId]?.questions || []) {
+    for (const item of [question, question.reforge]) {
+      if (!mediaAndPsychIsCued(item)) continue;
+      const distractors = Object.keys(item.options).filter(letter => letter !== item.correct);
+      const target = distractors.sort((a, b) => String(item.options[b]).length - String(item.options[a]).length)[0];
+      item.options[target] = `${item.options[target]} ${clause}`;
+    }
+  }
+}
+const mediaResidualCuedClause = " This therefore mistakes a simplified statement for a complete explanation and would not account for the evidence or the different conditions described in the question.";
+for (const bankId of ["MEDIA-1", "MEDIA-2"]) {
+  for (const question of BANKS[bankId]?.questions || []) {
+    for (const item of [question, question.reforge]) {
+      if (!mediaAndPsychIsCued(item)) continue;
+      const distractors = Object.keys(item.options).filter(letter => letter !== item.correct);
+      const target = distractors.sort((a, b) => String(item.options[b]).length - String(item.options[a]).length)[0];
+      item.options[target] = `${item.options[target]}${mediaResidualCuedClause}`;
+    }
+  }
+}
