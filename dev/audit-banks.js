@@ -226,8 +226,9 @@ const TAG_TAXONOMY_SUBJECTS = {
   // AD-shift-and-inflation, wages and AD, movement vs shift of SRAS,
   // asymmetric information and stock market crashes — each renamed from its
   // index form so it names the error rather than the question's position.
-  // See docs/econ-misconception-taxonomy-draft.md.
-  econ: 0.013,
+  // See docs/econ-misconception-taxonomy-draft.md. The six genuine singleton
+  // concepts are retained, so keep the floor just above 6/515 = 0.0117.
+  econ: 0.012,
   // All 238 questions retagged onto 52 shared MC-GEO-* categories, none of
   // which carries fewer than two questions, taking the single-use share from
   // 0.992 to 0.004. The 0.01 is not headroom: it is the single array-tagged
@@ -356,7 +357,7 @@ for (const [key, maxSingleShare] of Object.entries(TAG_TAXONOMY_SUBJECTS)) {
     distinctCarriers.set(q.tag, (distinctCarriers.get(q.tag) || 0) + 1);
   }
   const mechanical = sourceQuestions.filter(
-    (q) => q.tag === `MC-${q.id}` ||
+    (q) => (q.tag === `MC-${q.id}` && (distinctCarriers.get(q.tag) || 0) < 2) ||
       (isIndexTag(q.tag) && (distinctCarriers.get(q.tag) || 0) < 2)
   );
   if (sourceQuestions.length) {

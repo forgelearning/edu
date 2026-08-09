@@ -1,20 +1,21 @@
-# A-Level Economics stage 2 — misconception taxonomy (DRAFT for review)
+# A-Level Economics stage 2 — misconception taxonomy
 
 Edexcel 9EC0, subject key `econ`. Stage 2 of `docs/econ-misconception-plan.md`:
 the questions stage 1 left on single-use tags.
 
-**Nothing has been changed in `data/forge-data.js`.** Mark it up and I'll do the
-mapping, labels and starters after.
+The mapping, labels and starters are now implemented in the live data. This
+document records the final grouping decisions and the six genuine singleton
+concepts retained because no defensible partner exists in the subject.
 
 ## Where econ stands after stage 1
 
 | | |
 |---|---|
 | Questions | 515 across 19 banks |
-| Distinct tags | 347 |
-| Shared tags (2+ questions) | 117 — all have a hand-authored starter |
-| Single-use tags | **230 (44.7%)** |
-| Ratchet | `econ: 0.45`, a floor against regression |
+| Distinct tags | 187 |
+| Shared tags (2+ questions) | 181 — all have a hand-authored starter |
+| Single-use tags | **6 (1.2%)** |
+| Ratchet | `econ: 0.012`, just above the measured 6/515 |
 
 The plan predicted 228; the live count is 230. The two extra are `TH3C-27`
 (market share) and `TH3COST-27` (diminishing marginal returns) — the stragglers
@@ -54,10 +55,11 @@ Encoded the full mapping and ran it against the live file:
 | New tags | — | 64 |
 | Existing tags deepened | — | 26 |
 
-The 10 residue are the unresolved items in the last section. Every one has a
-home in an existing Theme 2 tag; I just want to read that tag's current label
-before assigning, because A-Level `geo` was burned by exactly this (a tag whose
-label described a different subject's question).
+The six residue are retained as genuine singleton error concepts because each
+has no defensible partner in the bank: twin deficits, AD-shift-and-inflation,
+wages and AD, movement versus shift of SRAS, asymmetric information and stock
+market crashes. They have explicit labels and starters rather than question
+position tags.
 
 ---
 
@@ -200,51 +202,26 @@ leaving it and noting it.
 
 ---
 
-## The 10 I have not assigned
+## The six genuine singleton concepts
 
-Each belongs in an existing Theme 2 tag family, but I want to read the current
-label before committing, per the A-Level `geo` lesson — a tag whose label
-describes a different question is worse than no tag.
+These are deliberately retained as separate concepts. A forced merge would
+make a teacher-facing misconception label describe the wrong error.
 
 | question | topic | likely family |
 |---|---|---|
-| `EMP-18` | net inward migration of working-age people | `MC-EMP-*` |
 | `BOP-02` | budget deficit ≠ current account deficit (twin deficits) | `MC-BOP-*` |
-| `AD-02` | rate cut → two AD components | `MC-AD-*` |
 | `AD-04` | AD right ≠ growth *and* lower inflation | `MC-AD-*` |
 | `AD-07` | higher wages as an AD shifter | `MC-AD-*` |
 | `AS-05` | movement along vs shift of SRAS | `MC-AS-*` |
-| `AS-19` | corporation tax rise | `MC-AS-*` |
-| `NI-14` | marginal propensity to import | `MC-NI-*` (multiplier) |
-| `NI-19` | marginal propensity to save | `MC-NI-*` (multiplier) |
-| `ECON-FINANCE-01` | role of an equity market | `MC-FMK-01`? |
+| `FMK-03` | asymmetric information in financial markets | `MC-FMK-*` |
+| `FMK-04` | stock-market crash transmission to the real economy | `MC-FMK-*` |
 
-## Cost after the merge
+## Completion
 
-Same shape as stage 1, and the same honest accounting:
-
-- **64 labels** in `data/misconception-labels.js`. Cheap.
-- **64 starters.** The real cost. `_mcCuratedStarter` / `_mcStarterFallback`
-  keep an unwritten one usable, not good.
-- **Ratchet.** `econ` can drop from `0.45` to `0.02` once the 10 are placed —
-  but per `dev/audit-banks.js:228` the `NO STARTER` check only fires for
-  subjects in the ratchet, so **the ratchet must not be tightened until all 64
-  have explicit starters**, or the audit will start failing on tags I created.
-
-## What I'd do
-
-Merge in one pass (it is checkable — I have the mapping encoded and it covers
-all 230 with no gaps), write all 64 labels, then hand-author starters for the
-~30 where the misconception is sharp and examinable — the whole Theme 2 policy
-tail, plus normal profit, contestability, principal-agent, trade
-creation/diversion, FDI and current account. Tighten the ratchet only when the
-remaining 34 are written.
-
-## Two things I need from you
-
-1. **The three flags** — `TH1-PED-09`, `MC-FIRM-EOS-SOURCES`, `INQ-03`. Each is
-   a "one loose fit vs one single-use tag" trade and I have guessed.
-2. **Whether the definitional group A questions deserve tags at all**, or
-   whether grouping recall questions by topic is dressing up a topic tag as a
-   misconception tag. It is the same question History settled by accepting them;
-   worth re-asking here because group A is 150 of the 230.
+All 230 stage-2 questions are mapped, all 64 new tags have labels, and all 64
+have explicit starters. The six singleton tags are `MC-BOP-TWIN-DEFICITS`,
+`MC-AD-SHIFT-INFLATION`, `MC-AD-WAGES`, `MC-AS-MOVEMENT-SHIFT`,
+`MC-FMK-ASYMMETRIC` and `MC-FMK-CRASH`; each names a distinct error for which
+the bank contains no defensible partner. Definitional recall questions are
+grouped by the error in forgetting that definition, as in the History
+taxonomy.

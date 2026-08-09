@@ -153,16 +153,17 @@ propagates into its `*-COV-*` copies and fixing the source fixes them all.
   fewer than two, with 52 hand-written starters — see
   `docs/geo-misconception-mapping.md`). Substantially done: `psych` (0.18).
   `gcse-geo` (640 questions; 34/640 single-use = 0.053 and 0% mechanical
-  tags after all 14 banks were hand-curated; see the bank mapping docs).
-  Stage 1 only: `econ`, which still has 230 questions on single-use tags and a
-  ratchet of 0.45 set as a floor against regression, not a claim of
-  completion. `gcse-geo` is now fully curated: its subject ratchets are 0.06
-  single-use and 0 mechanical, with labels and corrective starters for every
-  shared taxonomy tag.
+  tags after all 14 banks were hand-curated; see the bank mapping docs), and
+  `econ` (515 questions onto 187 labelled taxonomy tags; 6/515 single-use =
+  0.012 and 0 mechanical after stage 2; see
+  `docs/econ-misconception-taxonomy-draft.md`). `gcse-geo` is now fully
+  curated: its subject ratchets are 0.06 single-use and 0 mechanical, with
+  labels and corrective starters for every shared taxonomy tag. `econ` is
+  likewise complete apart from six genuine singleton concepts, each with an
+  explicit starter.
 
-  Next, roughly by value: `econ` stage 2 (drafted in
-  `docs/econ-misconception-taxonomy-draft.md`), then the ~15 subjects still at
-  100% per-question tags. The audit fails
+  Next, roughly by value: the ~15 subjects still at 100% per-question tags.
+  The audit fails
   if a subject listed in `TAG_TAXONOMY_SUBJECTS` regresses, if it exceeds its
   `TAG_TAXONOMY_MECHANICAL` share, or if an aggregatable tag has no starter;
   add a subject to both maps once it is retagged.
