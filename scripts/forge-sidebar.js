@@ -68,7 +68,7 @@ var _FORGE_ICONS = {
 
 // The outer gear path's source bounds sit 2px right of the 24px viewBox
 // centre; shift only that path so the centre ring and teeth share one axis.
-_FORGE_ICONS.settings = _FORGE_ICONS.settings.replace('<path d="M19.4', '<path transform="translate(-2 0)" d="M19.4');
+_FORGE_ICONS.settings = _FORGE_ICONS.settings.replace('<path d="M19.4', '<path transform="translate(-2 -0.5)" d="M19.4');
 
 // Below this width the rail is replaced by the bottom tab bar. Kept in sync
 // with the @media block in css/sidebar.css.
