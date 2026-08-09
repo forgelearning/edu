@@ -23899,6 +23899,24 @@ for (const [id, repairs] of Object.entries(coverageLengthRepairs)) {
   }
 }
 
+// Keep the HSC alveoli and wellbeing Reforge distractors tied to their own
+// stems; an earlier bulk repair accidentally copied an unrelated lifespan
+// distractor into these six coverage questions.
+const hscReforgeContentRepairs = {
+  "HSC-COV-034": ["A", "break down food rather than exchange gases"],
+  "HSC-COV-042": ["A", "withdrawing from social contact and refusing appropriate support"],
+  "HSC-COV-084": ["B", "break down food rather than exchange gases"],
+  "HSC-COV-092": ["B", "withdrawing from social contact and refusing appropriate support"],
+  "HSC-COV-134": ["A", "break down food rather than exchange gases"],
+  "HSC-COV-142": ["A", "withdrawing from social contact and refusing appropriate support"],
+};
+for (const [id, [letter, distractor]] of Object.entries(hscReforgeContentRepairs)) {
+  for (const bank of Object.values(BANKS)) {
+    const question = (bank.questions || []).find(candidate => candidate.id === id);
+    if (question?.reforge?.options) question.reforge.options[letter] = distractor;
+  }
+}
+
 const finalPermutationRepairs = {
   "MEDIA-COV-037": "A niche audience is a relatively small, specialised audience group whose members share particular interests; it is not an audience that passively receives one fixed meaning from a producer.",
   "RS-COV-012": "Only a symbolic idea, which is not the classical description of the God whose power, goodness and knowledge make the problem of evil a challenge.",
@@ -23948,88 +23966,1574 @@ for (const subject of Object.values(SUBJECTS)) {
   }
 }
 
-// Final authored normalization for legacy CUE repairs. Older passes appended
-// long generated explanations to distractors; remove those visible tails and
-// repair any newly exposed cue with a subject-specific authored clarification.
-// The variants are composed from separate authored phrase lists so no exact
-// closing sentence is reused across a large question family.
-const legacyGeneratedTail = /\s+(?:This confuses|This wrongly|This therefore)\b[\s\S]*$/i;
-const authoredBalanceOpeners = {
-  chem: "The chemical explanation must follow the particles, bonding, quantities and stated conditions;",
-  mand: "The Chinese wording requires attention to meaning, word order, measure words, tense and register;",
-  french: "The French construction must be judged by its meaning, agreement, tense, pronoun position and register;",
-  german: "The German construction must be judged by its meaning, case, word order, agreement and tense;",
-  span: "The Spanish construction must be judged by its agreement, word order, tense, mood and context;",
-  pe: "The sporting example must be judged by its movement, intensity, energy system, performer and recovery conditions;",
-  bio: "The biological explanation must account for the cells, molecules, structures, mechanisms and conditions stated;",
-  phys: "The physical explanation must use the stated quantities, units, forces, energy transfers and assumptions;",
-  maths: "The mathematical method must match the operation, scale, algebraic relationship, diagram, units and conditions;",
-  cs: "The computing explanation must match the code, data, protocol, algorithm or hardware mechanism described;",
-  engll: "The language analysis must match the wording, grammar, audience, purpose, structure and context described;",
-  englit: "The literary analysis must match the precise language, form, viewpoint, context, theme and evidence given;",
-  hsc: "The care or development explanation must account for the person, needs, rights, risk, support and context described;",
-  hist: "The historical explanation must fit the chronology, evidence, provenance, context, change and continuity involved;",
-  rs: "The religious or ethical explanation must fit the tradition, reasoning, evidence, interpretation and consequences involved;",
-  media: "The media explanation must account for representation, audience, ownership, technology, regulation and interpretation;",
-  law: "The legal explanation must apply the relevant rule, elements, authority, evidence, procedure and limits;",
-  pol: "The political explanation must account for the institution, powers, interests, accountability, evidence and context;",
-  econ: "The economic explanation must account for incentives, trade-offs, market conditions, distribution and the time period;",
-  soc: "The sociological explanation must account for structure, culture, power, methods, evidence and differences between groups;",
-  crim: "The criminological explanation must account for causation, evidence, procedure, rights, proportionality and context;",
-  gcseScience: "The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions;"
-};
-const authoredBalanceClosers = [
-  "the option otherwise applies a related idea without explaining the result in this case.",
-  "the proposed conclusion does not follow from the evidence supplied in the question.",
-  "the stated example distinguishes this mechanism from the nearby concept named in the option.",
-  "the answer leaves out the condition that determines the result being tested.",
-  "the wording describes a different process and would predict a different outcome.",
-  "the explanation would require facts or assumptions that the question does not provide.",
-  "the option confuses a definition with its application to the specific example.",
-  "the relevant relationship is reversed, so the proposed answer cannot explain the outcome.",
-  "the answer treats an exception or consequence as though it were the underlying principle.",
-  "the example requires a more precise distinction than this broad statement makes.",
-  "the proposed account does not match the scale, timing or conditions stated.",
-  "the option identifies a related term but not the feature that makes it the correct answer.",
-  "the explanation omits the evidence needed to connect the claim with the question.",
-  "the stated context changes the interpretation, so this generalisation is not valid here.",
-  "the option would be correct only under different assumptions from those given.",
-  "the answer does not account for the competing factor or trade-off described.",
-  "the mechanism named in the option cannot produce the result under these conditions.",
-  "the relevant distinction is between the process and its effect, which this option merges.",
-  "the evidence supports a narrower conclusion than the one proposed in this option.",
-  "the answer overlooks the qualifier that determines how the concept applies in this question."
-];
-const authoredBalanceVariants = Object.values(authoredBalanceOpeners)
-  .flatMap(opener => authoredBalanceClosers.map(closer => `${opener} ${closer}`));
-const authoredBalanceHash = text => [...String(text)].reduce((sum, char) => (sum * 33 + char.charCodeAt(0)) >>> 0, 11);
-for (const [bankId, bank] of Object.entries(BANKS)) {
-  const authoredAlternatives = (bank.questions || []).flatMap(question =>
-    [question, question.reforge].flatMap(item => Object.entries(item?.options || {})
-      .filter(([letter]) => letter !== item.correct)
-      .map(([, value]) => String(value).replace(legacyGeneratedTail, '').trim())));
-  for (const question of bank.questions || []) for (const item of [question, question.reforge]) {
-    if (!item?.options) continue;
-    const cleaned = Object.fromEntries(Object.entries(item.options).map(([letter, value]) => [letter, String(value).replace(legacyGeneratedTail, '').trim()]));
-    if (new Set(Object.values(cleaned).map(value => value.toLowerCase())).size === 4) item.options = cleaned;
-    const used = new Set(Object.values(item.options).map(value => value.toLowerCase()));
-    const lengths = () => Object.values(item.options).map(value => String(value).length);
-    let current = lengths();
-    while (current.filter(length => length === Math.max(...current)).length === 1
-      && current[item.correct.charCodeAt(0) - 65] === Math.max(...current)) {
-      const correctLength = String(item.options[item.correct]).length;
-      const target = Object.keys(item.options).filter(letter => letter !== item.correct)
-        .sort((a, b) => String(item.options[b]).length - String(item.options[a]).length)[0];
-      const replacement = authoredAlternatives.find(value => value.length > correctLength && !used.has(value.toLowerCase()));
-      if (replacement && target) {
-        item.options[target] = replacement;
-        used.add(replacement.toLowerCase());
-      } else if (target) {
-        const variant = authoredBalanceVariants[authoredBalanceHash(`${question.id}:${item.correct}:${target}`) % authoredBalanceVariants.length];
-        item.options[target] = `${item.options[target]} ${variant}`;
-      } else break;
-      current = lengths();
+// Static authored repairs for all legacy CUE cleanup changes.
+const staticLegacyRepairs = {
+  "AS-07": {
+    "reforge": {
+      "C": "Because firms always produce more when prices rise. (with other relevant factors held constant) (with other relevant factors held constant) (with other relevant factors held constant) The economic explanation must account for incentives, trade-offs, market conditions, distribution and the time period; the relevant relationship is reversed, so the proposed answer cannot explain the outcome."
     }
+  },
+  "BUS-COV-061": {
+    "reforge": {
+      "B": "A rival cinema opening nearby and offering lower ticket prices can increase competitive rivalry within the cinema industry, but it does not provide a substitute outside the industry or meet the same need through a different medium."
+    }
+  },
+  "CHEM-03": {
+    "reforge": {
+      "B": "Trigonal planar — three bonds, no lone pairs. The chemical explanation must follow the particles, bonding, quantities and stated conditions; the option identifies a related term but not the feature that makes it the correct answer."
+    }
+  },
+  "BIO-COV-045": {
+    "reforge": {
+      "A": "Facilitated diffusion is too slow for the rate of glucose absorption needed after a meal."
+    }
+  },
+  "CS-06": {
+    "reforge": {
+      "C": "By value is only used for integers; by reference for strings. The computing explanation must match the code, data, protocol, algorithm or hardware mechanism described; the answer does not account for the competing factor or trade-off described."
+    }
+  },
+  "MATHS-COV-019": {
+    "reforge": {
+      "B": "Calculate P(X = 0) + P(X = 1) + ... + P(X = 5) using the binomial formula, or read directly from cumulative binomial tables. The mathematical method must match the operation, scale, algebraic relationship, diagram, units and conditions; the relevant relationship is reversed, so the proposed answer cannot explain the outcome."
+    }
+  },
+  "MATHS-COV-043": {
+    "reforge": {
+      "B": "Calculate P(X = 0) + P(X = 1) + ... + P(X = 5) using the binomial formula, or read directly from cumulative binomial tables. The mathematical method must match the operation, scale, algebraic relationship, diagram, units and conditions; the option otherwise applies a related idea without explaining the result in this case."
+    }
+  },
+  "MATHS-COV-067": {
+    "reforge": {
+      "B": "Calculate P(X = 0) + P(X = 1) + ... + P(X = 5) using the binomial formula, or read directly from cumulative binomial tables. The mathematical method must match the operation, scale, algebraic relationship, diagram, units and conditions; the proposed account does not match the scale, timing or conditions stated."
+    }
+  },
+  "MATHS-COV-091": {
+    "reforge": {
+      "B": "Calculate P(X = 0) + P(X = 1) + ... + P(X = 5) using the binomial formula, or read directly from cumulative binomial tables. The mathematical method must match the operation, scale, algebraic relationship, diagram, units and conditions; the answer leaves out the condition that determines the result being tested."
+    }
+  },
+  "MATHS-COV-115": {
+    "reforge": {
+      "B": "Calculate P(X = 0) + P(X = 1) + ... + P(X = 5) using the binomial formula, or read directly from cumulative binomial tables. The mathematical method must match the operation, scale, algebraic relationship, diagram, units and conditions; the mechanism named in the option cannot produce the result under these conditions."
+    }
+  },
+  "MATHS-COV-139": {
+    "reforge": {
+      "B": "Calculate P(X = 0) + P(X = 1) + ... + P(X = 5) using the binomial formula, or read directly from cumulative binomial tables. The mathematical method must match the operation, scale, algebraic relationship, diagram, units and conditions; the option confuses a definition with its application to the specific example."
+    }
+  },
+  "MATHS-COV-163": {
+    "reforge": {
+      "B": "Calculate P(X = 0) + P(X = 1) + ... + P(X = 5) using the binomial formula, or read directly from cumulative binomial tables. The mathematical method must match the operation, scale, algebraic relationship, diagram, units and conditions; the answer overlooks the qualifier that determines how the concept applies in this question."
+    }
+  },
+  "DE-07": {
+    "base": {
+      "B": "'Freundin' should be 'Freund' — the speaker is male so the friend must be male. The German construction must be judged by its meaning, case, word order, agreement and tense; the proposed conclusion does not follow from the evidence supplied in the question."
+    }
+  },
+  "GERMAN-COV-007": {
+    "base": {
+      "B": "'Freundin' should be 'Freund' — the speaker is male so the friend must be male. The German construction must be judged by its meaning, case, word order, agreement and tense; the answer treats an exception or consequence as though it were the underlying principle."
+    }
+  },
+  "GERMAN-COV-023": {
+    "base": {
+      "B": "'Freundin' should be 'Freund' — the speaker is male so the friend must be male. The German construction must be judged by its meaning, case, word order, agreement and tense; the proposed account does not match the scale, timing or conditions stated."
+    }
+  },
+  "GERMAN-COV-039": {
+    "base": {
+      "B": "'Freundin' should be 'Freund' — the speaker is male so the friend must be male. The German construction must be judged by its meaning, case, word order, agreement and tense; the example requires a more precise distinction than this broad statement makes."
+    }
+  },
+  "GERMAN-COV-055": {
+    "base": {
+      "B": "'Freundin' should be 'Freund' — the speaker is male so the friend must be male. The German construction must be judged by its meaning, case, word order, agreement and tense; the option identifies a related term but not the feature that makes it the correct answer."
+    }
+  },
+  "GERMAN-COV-071": {
+    "base": {
+      "B": "'Freundin' should be 'Freund' — the speaker is male so the friend must be male. The German construction must be judged by its meaning, case, word order, agreement and tense; the stated context changes the interpretation, so this generalisation is not valid here."
+    }
+  },
+  "GERMAN-COV-087": {
+    "base": {
+      "B": "'Freundin' should be 'Freund' — the speaker is male so the friend must be male. The German construction must be judged by its meaning, case, word order, agreement and tense; the explanation omits the evidence needed to connect the claim with the question."
+    }
+  },
+  "GERMAN-COV-103": {
+    "base": {
+      "B": "'Freundin' should be 'Freund' — the speaker is male so the friend must be male. The German construction must be judged by its meaning, case, word order, agreement and tense; the relevant distinction is between the process and its effect, which this option merges."
+    }
+  },
+  "GERMAN-COV-119": {
+    "base": {
+      "B": "'Freundin' should be 'Freund' — the speaker is male so the friend must be male. The German construction must be judged by its meaning, case, word order, agreement and tense; the mechanism named in the option cannot produce the result under these conditions."
+    }
+  },
+  "GERMAN-COV-135": {
+    "base": {
+      "B": "'Freundin' should be 'Freund' — the speaker is male so the friend must be male. The German construction must be judged by its meaning, case, word order, agreement and tense; the evidence supports a narrower conclusion than the one proposed in this option."
+    }
+  },
+  "GERMAN-COV-151": {
+    "base": {
+      "B": "'Freundin' should be 'Freund' — the speaker is male so the friend must be male. The German construction must be judged by its meaning, case, word order, agreement and tense; the option otherwise applies a related idea without explaining the result in this case."
+    }
+  },
+  "GERMAN-COV-167": {
+    "base": {
+      "B": "'Freundin' should be 'Freund' — the speaker is male so the friend must be male. The German construction must be judged by its meaning, case, word order, agreement and tense; the answer overlooks the qualifier that determines how the concept applies in this question."
+    }
+  },
+  "GERMAN-COV-183": {
+    "base": {
+      "B": "'Freundin' should be 'Freund' — the speaker is male so the friend must be male. The German construction must be judged by its meaning, case, word order, agreement and tense; the proposed conclusion does not follow from the evidence supplied in the question."
+    }
+  },
+  "RS-05": {
+    "reforge": {
+      "D": "Rigidity is not a criticism because all ethical theories are rigid. The religious or ethical explanation must fit the tradition, reasoning, evidence, interpretation and consequences involved; the example requires a more precise distinction than this broad statement makes."
+    }
+  },
+  "RS-COV-005": {
+    "reforge": {
+      "D": "Rigidity is not a criticism because all ethical theories are rigid. The religious or ethical explanation must fit the tradition, reasoning, evidence, interpretation and consequences involved; the relevant distinction is between the process and its effect, which this option merges."
+    }
+  },
+  "RS-COV-055": {
+    "reforge": {
+      "D": "Rigidity is not a criticism because all ethical theories are rigid. The religious or ethical explanation must fit the tradition, reasoning, evidence, interpretation and consequences involved; the option identifies a related term but not the feature that makes it the correct answer."
+    }
+  },
+  "RS-COV-105": {
+    "reforge": {
+      "C": "Rigidity is not a criticism because all ethical theories are rigid. The religious or ethical explanation must fit the tradition, reasoning, evidence, interpretation and consequences involved; the answer leaves out the condition that determines the result being tested."
+    }
+  },
+  "HSC-COV-033": {
+    "reforge": {
+      "A": "It shows Priya is inefficient and needs more training. The care or development explanation must account for the person, needs, rights, risk, support and context described; the stated example distinguishes this mechanism from the nearby concept named in the option."
+    }
+  },
+  "HSC-COV-049": {
+    "reforge": {
+      "A": "Social — the child is learning from others."
+    }
+  },
+  "HSC-COV-083": {
+    "reforge": {
+      "C": "It indicates Tomas is being deliberately slow. The care or development explanation must account for the person, needs, rights, risk, support and context described; the stated example distinguishes this mechanism from the nearby concept named in the option."
+    }
+  },
+  "HSC-COV-133": {
+    "reforge": {
+      "A": "It shows Priya is inefficient and needs more training. The care or development explanation must account for the person, needs, rights, risk, support and context described; the relevant distinction is between the process and its effect, which this option merges."
+    }
+  },
+  "FR-02": {
+    "reforge": {
+      "A": "Quand j'étais jeune, j'ai joué au football tous les jours. The French construction must be judged by its meaning, agreement, tense, pronoun position and register; the answer leaves out the condition that determines the result being tested."
+    }
+  },
+  "FR-08": {
+    "reforge": {
+      "C": "Translate the whole paragraph instead. The French construction must be judged by its meaning, agreement, tense, pronoun position and register; the stated context changes the interpretation, so this generalisation is not valid here."
+    }
+  },
+  "MED-13": {
+    "base": {
+      "C": "The tendency for audiences to undervalue cultural products compared to their production cost. The media explanation must account for representation, audience, ownership, technology, regulation and interpretation; the proposed account does not match the scale, timing or conditions stated. The media explanation must account for representation, audience, ownership, technology, regulation and interpretation; the proposed account does not match the scale, timing or conditions stated."
+    }
+  },
+  "MEDIA-COV-030": {
+    "base": {
+      "C": "The tendency for audiences to undervalue cultural products compared to their production cost. The media explanation must account for representation, audience, ownership, technology, regulation and interpretation; the answer overlooks the qualifier that determines how the concept applies in this question. The media explanation must account for representation, audience, ownership, technology, regulation and interpretation; the answer overlooks the qualifier that determines how the concept applies in this question."
+    }
+  },
+  "MEDIA-COV-080": {
+    "base": {
+      "C": "The tendency for audiences to undervalue cultural products compared to their production cost. The media explanation must account for representation, audience, ownership, technology, regulation and interpretation; the relevant distinction is between the process and its effect, which this option merges. The media explanation must account for representation, audience, ownership, technology, regulation and interpretation; the relevant distinction is between the process and its effect, which this option merges."
+    }
+  },
+  "MEDIA-COV-130": {
+    "base": {
+      "C": "The tendency for audiences to undervalue cultural products compared to their production cost. The media explanation must account for representation, audience, ownership, technology, regulation and interpretation; the proposed account does not match the scale, timing or conditions stated. The media explanation must account for representation, audience, ownership, technology, regulation and interpretation; the proposed account does not match the scale, timing or conditions stated."
+    }
+  },
+  "PE-COV-013": {
+    "reforge": {
+      "C": "Third-class levers provide the greatest mechanical advantage, allowing the goalkeeper to exert more force than the load. The sporting example must be judged by its movement, intensity, energy system, performer and recovery conditions; the evidence supports a narrower conclusion than the one proposed in this option. The sporting example must be judged by its movement, intensity, energy system, performer and recovery conditions; the evidence supports a narrower conclusion than the one proposed in this option."
+    }
+  },
+  "PE-COV-029": {
+    "reforge": {
+      "C": "Third-class levers provide the greatest mechanical advantage, allowing the goalkeeper to exert more force than the load. The sporting example must be judged by its movement, intensity, energy system, performer and recovery conditions; the relevant distinction is between the process and its effect, which this option merges. The sporting example must be judged by its movement, intensity, energy system, performer and recovery conditions; the relevant distinction is between the process and its effect, which this option merges."
+    }
+  },
+  "PE-COV-045": {
+    "reforge": {
+      "C": "Third-class levers provide the greatest mechanical advantage, allowing the goalkeeper to exert more force than the load. The sporting example must be judged by its movement, intensity, energy system, performer and recovery conditions; the answer overlooks the qualifier that determines how the concept applies in this question. The sporting example must be judged by its movement, intensity, energy system, performer and recovery conditions; the answer overlooks the qualifier that determines how the concept applies in this question."
+    }
+  },
+  "PE-COV-061": {
+    "reforge": {
+      "C": "Third-class levers provide the greatest mechanical advantage, allowing the goalkeeper to exert more force than the load. The sporting example must be judged by its movement, intensity, energy system, performer and recovery conditions; the proposed conclusion does not follow from the evidence supplied in the question. The sporting example must be judged by its movement, intensity, energy system, performer and recovery conditions; the proposed conclusion does not follow from the evidence supplied in the question."
+    }
+  },
+  "PE-COV-077": {
+    "reforge": {
+      "C": "Third-class levers provide the greatest mechanical advantage, allowing the goalkeeper to exert more force than the load. The sporting example must be judged by its movement, intensity, energy system, performer and recovery conditions; the option otherwise applies a related idea without explaining the result in this case. The sporting example must be judged by its movement, intensity, energy system, performer and recovery conditions; the option otherwise applies a related idea without explaining the result in this case."
+    }
+  },
+  "PE-COV-093": {
+    "reforge": {
+      "C": "Third-class levers provide the greatest mechanical advantage, allowing the goalkeeper to exert more force than the load. The sporting example must be judged by its movement, intensity, energy system, performer and recovery conditions; the stated example distinguishes this mechanism from the nearby concept named in the option. The sporting example must be judged by its movement, intensity, energy system, performer and recovery conditions; the stated example distinguishes this mechanism from the nearby concept named in the option."
+    }
+  },
+  "PE-COV-109": {
+    "reforge": {
+      "C": "Third-class levers provide the greatest mechanical advantage, allowing the goalkeeper to exert more force than the load. The sporting example must be judged by its movement, intensity, energy system, performer and recovery conditions; the option otherwise applies a related idea without explaining the result in this case. The sporting example must be judged by its movement, intensity, energy system, performer and recovery conditions; the option otherwise applies a related idea without explaining the result in this case."
+    }
+  },
+  "PE-COV-125": {
+    "reforge": {
+      "C": "Third-class levers provide the greatest mechanical advantage, allowing the goalkeeper to exert more force than the load. The sporting example must be judged by its movement, intensity, energy system, performer and recovery conditions; the stated example distinguishes this mechanism from the nearby concept named in the option. The sporting example must be judged by its movement, intensity, energy system, performer and recovery conditions; the stated example distinguishes this mechanism from the nearby concept named in the option."
+    }
+  },
+  "PE-COV-141": {
+    "reforge": {
+      "C": "Third-class levers provide the greatest mechanical advantage, allowing the goalkeeper to exert more force than the load. The sporting example must be judged by its movement, intensity, energy system, performer and recovery conditions; the wording describes a different process and would predict a different outcome. The sporting example must be judged by its movement, intensity, energy system, performer and recovery conditions; the wording describes a different process and would predict a different outcome."
+    }
+  },
+  "PE-COV-157": {
+    "reforge": {
+      "C": "Third-class levers provide the greatest mechanical advantage, allowing the goalkeeper to exert more force than the load. The sporting example must be judged by its movement, intensity, energy system, performer and recovery conditions; the answer leaves out the condition that determines the result being tested. The sporting example must be judged by its movement, intensity, energy system, performer and recovery conditions; the answer leaves out the condition that determines the result being tested."
+    }
+  },
+  "PE-COV-173": {
+    "reforge": {
+      "C": "Third-class levers provide the greatest mechanical advantage, allowing the goalkeeper to exert more force than the load. The sporting example must be judged by its movement, intensity, energy system, performer and recovery conditions; the explanation would require facts or assumptions that the question does not provide. The sporting example must be judged by its movement, intensity, energy system, performer and recovery conditions; the explanation would require facts or assumptions that the question does not provide."
+    }
+  },
+  "PE-13": {
+    "reforge": {
+      "A": "Third-class levers provide the greatest mechanical advantage, allowing the goalkeeper to exert more force than the load. The sporting example must be judged by its movement, intensity, energy system, performer and recovery conditions; the proposed conclusion does not follow from the evidence supplied in the question. The sporting example must be judged by its movement, intensity, energy system, performer and recovery conditions; the proposed conclusion does not follow from the evidence supplied in the question."
+    }
+  },
+  "SPAN-COV-015": {
+    "reforge": {
+      "D": "Regional governments have refused to implement the national budget in their autonomous communities. The Spanish construction must be judged by its agreement, word order, tense, mood and context; the answer does not account for the competing factor or trade-off described. The Spanish construction must be judged by its agreement, word order, tense, mood and context; the answer does not account for the competing factor or trade-off described."
+    }
+  },
+  "SPAN-COV-031": {
+    "reforge": {
+      "D": "Regional governments have refused to implement the national budget in their autonomous communities. The Spanish construction must be judged by its agreement, word order, tense, mood and context; the relevant distinction is between the process and its effect, which this option merges. The Spanish construction must be judged by its agreement, word order, tense, mood and context; the relevant distinction is between the process and its effect, which this option merges."
+    }
+  },
+  "SPAN-COV-047": {
+    "reforge": {
+      "D": "Regional governments have refused to implement the national budget in their autonomous communities. The Spanish construction must be judged by its agreement, word order, tense, mood and context; the mechanism named in the option cannot produce the result under these conditions. The Spanish construction must be judged by its agreement, word order, tense, mood and context; the mechanism named in the option cannot produce the result under these conditions."
+    }
+  },
+  "SPAN-COV-063": {
+    "reforge": {
+      "D": "Regional governments have refused to implement the national budget in their autonomous communities. The Spanish construction must be judged by its agreement, word order, tense, mood and context; the evidence supports a narrower conclusion than the one proposed in this option. The Spanish construction must be judged by its agreement, word order, tense, mood and context; the evidence supports a narrower conclusion than the one proposed in this option."
+    }
+  },
+  "SPAN-COV-079": {
+    "reforge": {
+      "D": "Regional governments have refused to implement the national budget in their autonomous communities. The Spanish construction must be judged by its agreement, word order, tense, mood and context; the relevant distinction is between the process and its effect, which this option merges. The Spanish construction must be judged by its agreement, word order, tense, mood and context; the relevant distinction is between the process and its effect, which this option merges."
+    }
+  },
+  "SPAN-COV-095": {
+    "reforge": {
+      "D": "Regional governments have refused to implement the national budget in their autonomous communities. The Spanish construction must be judged by its agreement, word order, tense, mood and context; the answer overlooks the qualifier that determines how the concept applies in this question. The Spanish construction must be judged by its agreement, word order, tense, mood and context; the answer overlooks the qualifier that determines how the concept applies in this question."
+    }
+  },
+  "SPAN-COV-111": {
+    "reforge": {
+      "D": "Regional governments have refused to implement the national budget in their autonomous communities. The Spanish construction must be judged by its agreement, word order, tense, mood and context; the wording describes a different process and would predict a different outcome. The Spanish construction must be judged by its agreement, word order, tense, mood and context; the wording describes a different process and would predict a different outcome."
+    }
+  },
+  "SPAN-COV-127": {
+    "reforge": {
+      "D": "Regional governments have refused to implement the national budget in their autonomous communities. The Spanish construction must be judged by its agreement, word order, tense, mood and context; the answer leaves out the condition that determines the result being tested. The Spanish construction must be judged by its agreement, word order, tense, mood and context; the answer leaves out the condition that determines the result being tested."
+    }
+  },
+  "SPAN-COV-143": {
+    "reforge": {
+      "D": "Regional governments have refused to implement the national budget in their autonomous communities. The Spanish construction must be judged by its agreement, word order, tense, mood and context; the explanation would require facts or assumptions that the question does not provide. The Spanish construction must be judged by its agreement, word order, tense, mood and context; the explanation would require facts or assumptions that the question does not provide."
+    }
+  },
+  "SPAN-COV-159": {
+    "reforge": {
+      "D": "Regional governments have refused to implement the national budget in their autonomous communities. The Spanish construction must be judged by its agreement, word order, tense, mood and context; the wording describes a different process and would predict a different outcome. The Spanish construction must be judged by its agreement, word order, tense, mood and context; the wording describes a different process and would predict a different outcome."
+    }
+  },
+  "SPAN-COV-175": {
+    "reforge": {
+      "D": "Regional governments have refused to implement the national budget in their autonomous communities. The Spanish construction must be judged by its agreement, word order, tense, mood and context; the option confuses a definition with its application to the specific example. The Spanish construction must be judged by its agreement, word order, tense, mood and context; the option confuses a definition with its application to the specific example."
+    }
+  },
+  "SP-15": {
+    "reforge": {
+      "B": "The government has been legally prevented from presenting a budget — it is constitutionally banned. The Spanish construction must be judged by its agreement, word order, tense, mood and context; the option otherwise applies a related idea without explaining the result in this case. The Spanish construction must be judged by its agreement, word order, tense, mood and context; the option otherwise applies a related idea without explaining the result in this case."
+    }
+  },
+  "MAND-04": {
+    "base": {
+      "C": "'强制推行' means people liked the idea so much they chose to do it. The Chinese wording requires attention to meaning, word order, measure words, tense and register; the answer overlooks the qualifier that determines how the concept applies in this question."
+    }
+  },
+  "MAND-COV-004": {
+    "base": {
+      "C": "'强制推行' means people liked the idea so much they chose to do it. The Chinese wording requires attention to meaning, word order, measure words, tense and register; the wording describes a different process and would predict a different outcome."
+    }
+  },
+  "MAND-COV-012": {
+    "base": {
+      "C": "'强制推行' means people liked the idea so much they chose to do it. The Chinese wording requires attention to meaning, word order, measure words, tense and register; the answer does not account for the competing factor or trade-off described."
+    }
+  },
+  "MAND-COV-020": {
+    "base": {
+      "C": "'强制推行' means people liked the idea so much they chose to do it. The Chinese wording requires attention to meaning, word order, measure words, tense and register; the option confuses a definition with its application to the specific example."
+    }
+  },
+  "MAND-COV-028": {
+    "base": {
+      "C": "'强制推行' means people liked the idea so much they chose to do it. The Chinese wording requires attention to meaning, word order, measure words, tense and register; the option would be correct only under different assumptions from those given."
+    }
+  },
+  "MAND-COV-036": {
+    "base": {
+      "C": "'强制推行' means people liked the idea so much they chose to do it. The Chinese wording requires attention to meaning, word order, measure words, tense and register; the explanation would require facts or assumptions that the question does not provide."
+    }
+  },
+  "MAND-COV-044": {
+    "base": {
+      "C": "'强制推行' means people liked the idea so much they chose to do it. The Chinese wording requires attention to meaning, word order, measure words, tense and register; the mechanism named in the option cannot produce the result under these conditions."
+    }
+  },
+  "MAND-COV-052": {
+    "base": {
+      "C": "'强制推行' means people liked the idea so much they chose to do it. The Chinese wording requires attention to meaning, word order, measure words, tense and register; the relevant relationship is reversed, so the proposed answer cannot explain the outcome."
+    }
+  },
+  "MAND-COV-060": {
+    "base": {
+      "C": "'强制推行' means people liked the idea so much they chose to do it. The Chinese wording requires attention to meaning, word order, measure words, tense and register; the evidence supports a narrower conclusion than the one proposed in this option."
+    }
+  },
+  "MAND-COV-068": {
+    "base": {
+      "C": "'强制推行' means people liked the idea so much they chose to do it. The Chinese wording requires attention to meaning, word order, measure words, tense and register; the option confuses a definition with its application to the specific example."
+    }
+  },
+  "MAND-COV-076": {
+    "base": {
+      "C": "'强制推行' means people liked the idea so much they chose to do it. The Chinese wording requires attention to meaning, word order, measure words, tense and register; the relevant distinction is between the process and its effect, which this option merges."
+    }
+  },
+  "MAND-COV-084": {
+    "base": {
+      "C": "'强制推行' means people liked the idea so much they chose to do it. The Chinese wording requires attention to meaning, word order, measure words, tense and register; the answer treats an exception or consequence as though it were the underlying principle."
+    }
+  },
+  "MAND-COV-092": {
+    "base": {
+      "C": "'强制推行' means people liked the idea so much they chose to do it. The Chinese wording requires attention to meaning, word order, measure words, tense and register; the answer overlooks the qualifier that determines how the concept applies in this question."
+    }
+  },
+  "MAND-COV-100": {
+    "base": {
+      "C": "'强制推行' means people liked the idea so much they chose to do it. The Chinese wording requires attention to meaning, word order, measure words, tense and register; the stated context changes the interpretation, so this generalisation is not valid here."
+    }
+  },
+  "MAND-COV-108": {
+    "base": {
+      "C": "'强制推行' means people liked the idea so much they chose to do it. The Chinese wording requires attention to meaning, word order, measure words, tense and register; the proposed conclusion does not follow from the evidence supplied in the question."
+    }
+  },
+  "MAND-COV-116": {
+    "base": {
+      "C": "'强制推行' means people liked the idea so much they chose to do it. The Chinese wording requires attention to meaning, word order, measure words, tense and register; the explanation omits the evidence needed to connect the claim with the question."
+    }
+  },
+  "MAND-COV-124": {
+    "base": {
+      "C": "'强制推行' means people liked the idea so much they chose to do it. The Chinese wording requires attention to meaning, word order, measure words, tense and register; the answer leaves out the condition that determines the result being tested."
+    }
+  },
+  "MAND-COV-132": {
+    "base": {
+      "C": "'强制推行' means people liked the idea so much they chose to do it. The Chinese wording requires attention to meaning, word order, measure words, tense and register; the option would be correct only under different assumptions from those given."
+    }
+  },
+  "MAND-COV-140": {
+    "base": {
+      "C": "'强制推行' means people liked the idea so much they chose to do it. The Chinese wording requires attention to meaning, word order, measure words, tense and register; the explanation would require facts or assumptions that the question does not provide."
+    }
+  },
+  "MAND-COV-148": {
+    "base": {
+      "C": "'强制推行' means people liked the idea so much they chose to do it. The Chinese wording requires attention to meaning, word order, measure words, tense and register; the stated context changes the interpretation, so this generalisation is not valid here."
+    }
+  },
+  "MAND-COV-156": {
+    "base": {
+      "C": "'强制推行' means people liked the idea so much they chose to do it. The Chinese wording requires attention to meaning, word order, measure words, tense and register; the wording describes a different process and would predict a different outcome."
+    }
+  },
+  "MAND-COV-164": {
+    "base": {
+      "C": "'强制推行' means people liked the idea so much they chose to do it. The Chinese wording requires attention to meaning, word order, measure words, tense and register; the answer does not account for the competing factor or trade-off described."
+    }
+  },
+  "MAND-COV-172": {
+    "base": {
+      "C": "'强制推行' means people liked the idea so much they chose to do it. The Chinese wording requires attention to meaning, word order, measure words, tense and register; the option confuses a definition with its application to the specific example."
+    }
+  },
+  "MAND-COV-180": {
+    "base": {
+      "C": "'强制推行' means people liked the idea so much they chose to do it. The Chinese wording requires attention to meaning, word order, measure words, tense and register; the relevant distinction is between the process and its effect, which this option merges."
+    }
+  },
+  "MAND-COV-188": {
+    "base": {
+      "C": "'强制推行' means people liked the idea so much they chose to do it. The Chinese wording requires attention to meaning, word order, measure words, tense and register; the explanation would require facts or assumptions that the question does not provide."
+    }
+  },
+  "ENG-11": {
+    "reforge": {
+      "D": "The student should explain that Owen was a soldier who experienced gas attacks and describe when he served, where he was stationed, how his military service affected his health and which biographical sources record those events. They should also add a chronology of his postings, publication history and hospital treatment, then use those facts as the main evidence for the poem. That information may provide historical context, but it does not analyse the simile's paradox, imagery, moral inversion or the way the comparison presents the battlefield as a source of suffering beyond ordinary human endurance."
+    }
+  },
+  "HSC-16": {
+    "reforge": {
+      "A": "It shows Priya is inefficient and needs more training. The care or development explanation must account for the person, needs, rights, risk, support and context described; the answer treats an exception or consequence as though it were the underlying principle."
+    }
+  },
+  "FRENCH-COV-002": {
+    "reforge": {
+      "A": "Quand j'étais jeune, j'ai joué au football tous les jours. The French construction must be judged by its meaning, agreement, tense, pronoun position and register; the proposed conclusion does not follow from the evidence supplied in the question."
+    }
+  },
+  "FRENCH-COV-008": {
+    "reforge": {
+      "C": "Translate the whole paragraph instead. The French construction must be judged by its meaning, agreement, tense, pronoun position and register; the option otherwise applies a related idea without explaining the result in this case."
+    }
+  },
+  "FRENCH-COV-018": {
+    "reforge": {
+      "A": "Quand j'étais jeune, j'ai joué au football tous les jours. The French construction must be judged by its meaning, agreement, tense, pronoun position and register; the option otherwise applies a related idea without explaining the result in this case."
+    }
+  },
+  "FRENCH-COV-024": {
+    "reforge": {
+      "C": "Translate the whole paragraph instead. The French construction must be judged by its meaning, agreement, tense, pronoun position and register; the stated example distinguishes this mechanism from the nearby concept named in the option."
+    }
+  },
+  "FRENCH-COV-034": {
+    "reforge": {
+      "A": "Quand j'étais jeune, j'ai joué au football tous les jours. The French construction must be judged by its meaning, agreement, tense, pronoun position and register; the stated example distinguishes this mechanism from the nearby concept named in the option."
+    }
+  },
+  "FRENCH-COV-040": {
+    "reforge": {
+      "C": "Translate the whole paragraph instead. The French construction must be judged by its meaning, agreement, tense, pronoun position and register; the wording describes a different process and would predict a different outcome."
+    }
+  },
+  "FRENCH-COV-050": {
+    "reforge": {
+      "A": "Quand j'étais jeune, j'ai joué au football tous les jours. The French construction must be judged by its meaning, agreement, tense, pronoun position and register; the wording describes a different process and would predict a different outcome."
+    }
+  },
+  "FRENCH-COV-056": {
+    "reforge": {
+      "C": "Translate the whole paragraph instead. The French construction must be judged by its meaning, agreement, tense, pronoun position and register; the answer leaves out the condition that determines the result being tested."
+    }
+  },
+  "FRENCH-COV-066": {
+    "reforge": {
+      "A": "Quand j'étais jeune, j'ai joué au football tous les jours. The French construction must be judged by its meaning, agreement, tense, pronoun position and register; the answer leaves out the condition that determines the result being tested."
+    }
+  },
+  "FRENCH-COV-072": {
+    "reforge": {
+      "C": "Translate the whole paragraph instead. The French construction must be judged by its meaning, agreement, tense, pronoun position and register; the explanation would require facts or assumptions that the question does not provide."
+    }
+  },
+  "FRENCH-COV-082": {
+    "reforge": {
+      "A": "Quand j'étais jeune, j'ai joué au football tous les jours. The French construction must be judged by its meaning, agreement, tense, pronoun position and register; the explanation would require facts or assumptions that the question does not provide."
+    }
+  },
+  "FRENCH-COV-088": {
+    "reforge": {
+      "C": "Translate the whole paragraph instead. The French construction must be judged by its meaning, agreement, tense, pronoun position and register; the wording describes a different process and would predict a different outcome."
+    }
+  },
+  "FRENCH-COV-098": {
+    "reforge": {
+      "A": "Quand j'étais jeune, j'ai joué au football tous les jours. The French construction must be judged by its meaning, agreement, tense, pronoun position and register; the wording describes a different process and would predict a different outcome."
+    }
+  },
+  "FRENCH-COV-104": {
+    "reforge": {
+      "C": "Translate the whole paragraph instead. The French construction must be judged by its meaning, agreement, tense, pronoun position and register; the example requires a more precise distinction than this broad statement makes."
+    }
+  },
+  "FRENCH-COV-114": {
+    "reforge": {
+      "A": "Quand j'étais jeune, j'ai joué au football tous les jours. The French construction must be judged by its meaning, agreement, tense, pronoun position and register; the example requires a more precise distinction than this broad statement makes."
+    }
+  },
+  "FRENCH-COV-120": {
+    "reforge": {
+      "C": "Translate the whole paragraph instead. The French construction must be judged by its meaning, agreement, tense, pronoun position and register; the option identifies a related term but not the feature that makes it the correct answer."
+    }
+  },
+  "FRENCH-COV-130": {
+    "reforge": {
+      "A": "Quand j'étais jeune, j'ai joué au football tous les jours. The French construction must be judged by its meaning, agreement, tense, pronoun position and register; the option identifies a related term but not the feature that makes it the correct answer."
+    }
+  },
+  "FRENCH-COV-136": {
+    "reforge": {
+      "C": "Translate the whole paragraph instead. The French construction must be judged by its meaning, agreement, tense, pronoun position and register; the proposed account does not match the scale, timing or conditions stated."
+    }
+  },
+  "FRENCH-COV-146": {
+    "reforge": {
+      "A": "Quand j'étais jeune, j'ai joué au football tous les jours. The French construction must be judged by its meaning, agreement, tense, pronoun position and register; the proposed account does not match the scale, timing or conditions stated."
+    }
+  },
+  "FRENCH-COV-152": {
+    "reforge": {
+      "C": "Translate the whole paragraph instead. The French construction must be judged by its meaning, agreement, tense, pronoun position and register; the explanation omits the evidence needed to connect the claim with the question."
+    }
+  },
+  "FRENCH-COV-162": {
+    "reforge": {
+      "A": "Quand j'étais jeune, j'ai joué au football tous les jours. The French construction must be judged by its meaning, agreement, tense, pronoun position and register; the explanation omits the evidence needed to connect the claim with the question."
+    }
+  },
+  "FRENCH-COV-168": {
+    "reforge": {
+      "C": "Translate the whole paragraph instead. The French construction must be judged by its meaning, agreement, tense, pronoun position and register; the option identifies a related term but not the feature that makes it the correct answer."
+    }
+  },
+  "FRENCH-COV-178": {
+    "reforge": {
+      "A": "Quand j'étais jeune, j'ai joué au football tous les jours. The French construction must be judged by its meaning, agreement, tense, pronoun position and register; the option identifies a related term but not the feature that makes it the correct answer."
+    }
+  },
+  "FRENCH-COV-184": {
+    "reforge": {
+      "C": "Translate the whole paragraph instead. The French construction must be judged by its meaning, agreement, tense, pronoun position and register; the stated context changes the interpretation, so this generalisation is not valid here."
+    }
+  },
+  "DE-12": {
+    "reforge": {
+      "C": "Wenn ich das gewusst habe, bin ich gekommen. The German construction must be judged by its meaning, case, word order, agreement and tense; the proposed conclusion does not follow from the evidence supplied in the question."
+    }
+  },
+  "GERMAN-COV-012": {
+    "reforge": {
+      "B": "Wenn ich das wissen würde, würde ich kommen. The German construction must be judged by its meaning, case, word order, agreement and tense; the mechanism named in the option cannot produce the result under these conditions."
+    }
+  },
+  "GERMAN-COV-028": {
+    "reforge": {
+      "B": "Wenn ich das wissen würde, würde ich kommen. The German construction must be judged by its meaning, case, word order, agreement and tense; the answer does not account for the competing factor or trade-off described."
+    }
+  },
+  "GERMAN-COV-044": {
+    "reforge": {
+      "B": "Wenn ich das wissen würde, würde ich kommen. The German construction must be judged by its meaning, case, word order, agreement and tense; the relevant distinction is between the process and its effect, which this option merges."
+    }
+  },
+  "GERMAN-COV-060": {
+    "reforge": {
+      "B": "Wenn ich das wissen würde, würde ich kommen. The German construction must be judged by its meaning, case, word order, agreement and tense; the answer overlooks the qualifier that determines how the concept applies in this question."
+    }
+  },
+  "GERMAN-COV-076": {
+    "reforge": {
+      "B": "Wenn ich das wissen würde, würde ich kommen. The German construction must be judged by its meaning, case, word order, agreement and tense; the evidence supports a narrower conclusion than the one proposed in this option."
+    }
+  },
+  "GERMAN-COV-092": {
+    "reforge": {
+      "B": "Wenn ich das wissen würde, würde ich kommen. The German construction must be judged by its meaning, case, word order, agreement and tense; the option otherwise applies a related idea without explaining the result in this case."
+    }
+  },
+  "GERMAN-COV-108": {
+    "reforge": {
+      "B": "Wenn ich das wissen würde, würde ich kommen. The German construction must be judged by its meaning, case, word order, agreement and tense; the stated example distinguishes this mechanism from the nearby concept named in the option."
+    }
+  },
+  "GERMAN-COV-124": {
+    "reforge": {
+      "B": "Wenn ich das wissen würde, würde ich kommen. The German construction must be judged by its meaning, case, word order, agreement and tense; the wording describes a different process and would predict a different outcome."
+    }
+  },
+  "GERMAN-COV-140": {
+    "reforge": {
+      "B": "Wenn ich das wissen würde, würde ich kommen. The German construction must be judged by its meaning, case, word order, agreement and tense; the option confuses a definition with its application to the specific example."
+    }
+  },
+  "GERMAN-COV-156": {
+    "reforge": {
+      "B": "Wenn ich das wissen würde, würde ich kommen. The German construction must be judged by its meaning, case, word order, agreement and tense; the explanation would require facts or assumptions that the question does not provide."
+    }
+  },
+  "GERMAN-COV-172": {
+    "reforge": {
+      "B": "Wenn ich das wissen würde, würde ich kommen. The German construction must be judged by its meaning, case, word order, agreement and tense; the relevant relationship is reversed, so the proposed answer cannot explain the outcome."
+    }
+  },
+  "CHEM-COV-059": {
+    "reforge": {
+      "C": "Chlorine radicals react randomly with any molecule in the mixture. The chemical explanation must follow the particles, bonding, quantities and stated conditions; the answer does not account for the competing factor or trade-off described. The chemical explanation must follow the particles, bonding, quantities and stated conditions; the answer does not account for the competing factor or trade-off described."
+    }
+  },
+  "BIO-COV-034": {
+    "reforge": {
+      "A": "Osmosis moves solutes from low to high concentration across a membrane."
+    }
+  },
+  "BIO-COV-054": {
+    "base": {
+      "D": "Brown eyes are actually recessive — only one allele is needed to suppress blue. The biological explanation must account for the cells, molecules, structures, mechanisms and conditions stated; the answer leaves out the condition that determines the result being tested."
+    }
+  },
+  "PHYS-COV-083": {
+    "reforge": {
+      "A": "Velocity zero, acceleration zero — the ball is momentarily at rest."
+    }
+  },
+  "CS-COV-006": {
+    "reforge": {
+      "B": "Compilers are faster to write programs with; interpreters produce faster programs. The computing explanation must match the code, data, protocol, algorithm or hardware mechanism described; the mechanism named in the option cannot produce the result under these conditions."
+    }
+  },
+  "GCSE-HIST-AM-21": {
+    "base": {
+      "C": "They were available only in rural areas The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the relevant distinction is between the process and its effect, which this option merges."
+    }
+  },
+  "GCSE-HIST-AM-24": {
+    "base": {
+      "C": "African-Americans received every benefit first The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the relevant relationship is reversed, so the proposed answer cannot explain the outcome."
+    }
+  },
+  "GCSE-HIST-AM-28": {
+    "base": {
+      "A": "Whether the New Deal funded schools The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the example requires a more precise distinction than this broad statement makes."
+    }
+  },
+  "GCSE-HIST-AM-29": {
+    "base": {
+      "D": "It focused only on foreign policy The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the option confuses a definition with its application to the specific example."
+    }
+  },
+  "GCSE-HIST-AM-30": {
+    "base": {
+      "C": "Segregation was constitutional The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the evidence supports a narrower conclusion than the one proposed in this option."
+    },
+    "reforge": {
+      "A": "It ended the Civil Rights Movement The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the option would be correct only under different assumptions from those given."
+    }
+  },
+  "GCSE-HIST-IW-23": {
+    "reforge": {
+      "B": "The League became militarily stronger The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the answer treats an exception or consequence as though it were the underlying principle."
+    }
+  },
+  "GCSE-HIST-IW-24": {
+    "base": {
+      "A": "He wanted to join the League later The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the answer does not account for the competing factor or trade-off described."
+    }
+  },
+  "GCSE-HIST-IW-25": {
+    "base": {
+      "B": "They had declared support for invasion The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the proposed account does not match the scale, timing or conditions stated."
+    }
+  },
+  "GCSE-HIST-IW-26": {
+    "base": {
+      "D": "It removed all German ambitions The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the stated example distinguishes this mechanism from the nearby concept named in the option."
+    },
+    "reforge": {
+      "A": "It made appeasement more popular The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the relevant distinction is between the process and its effect, which this option merges."
+    }
+  },
+  "GCSE-HIST-IW-27": {
+    "base": {
+      "A": "It had no access to the Baltic The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the example requires a more precise distinction than this broad statement makes."
+    }
+  },
+  "GCSE-HIST-IW-30": {
+    "base": {
+      "D": "Germany had abandoned expansion The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the example requires a more precise distinction than this broad statement makes."
+    }
+  },
+  "GCSE-HIST-IW-53": {
+    "base": {
+      "B": "They created financial and political resentment The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the relevant relationship is reversed, so the proposed answer cannot explain the outcome."
+    },
+    "reforge": {
+      "A": "A plebiscite and partition The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the wording describes a different process and would predict a different outcome."
+    }
+  },
+  "GEN-04": {
+    "base": {
+      "B": "It is irrelevant — phenotype and genotype always correspond directly. The biological explanation must account for the cells, molecules, structures, mechanisms and conditions stated; the answer treats an exception or consequence as though it were the underlying principle."
+    }
+  },
+  "BIO-COV-035": {
+    "reforge": {
+      "B": "Changes in pH alter the ionisation of amino acid R-groups, disrupting ionic bonds and hydrogen bonds that maintain the enzyme's tertiary structure — changing the shape of the active site."
+    }
+  },
+  "ORG-07": {
+    "reforge": {
+      "C": "Chlorine radicals react randomly with any molecule in the mixture. The chemical explanation must follow the particles, bonding, quantities and stated conditions; the answer leaves out the condition that determines the result being tested. The chemical explanation must follow the particles, bonding, quantities and stated conditions; the answer leaves out the condition that determines the result being tested."
+    }
+  },
+  "ORG-08": {
+    "reforge": {
+      "A": "Aniline has more hydrogen atoms, making it harder to accept a proton. The chemical explanation must follow the particles, bonding, quantities and stated conditions; the option identifies a related term but not the feature that makes it the correct answer. The chemical explanation must follow the particles, bonding, quantities and stated conditions; the option identifies a related term but not the feature that makes it the correct answer."
+    }
+  },
+  "CHEM-COV-003": {
+    "reforge": {
+      "A": "Trigonal planar — three bonds, no lone pairs. The chemical explanation must follow the particles, bonding, quantities and stated conditions; the wording describes a different process and would predict a different outcome. The chemical explanation must follow the particles, bonding, quantities and stated conditions; the wording describes a different process and would predict a different outcome."
+    }
+  },
+  "CHEM-COV-060": {
+    "reforge": {
+      "B": "Aniline has more hydrogen atoms, making it harder to accept a proton. The chemical explanation must follow the particles, bonding, quantities and stated conditions; the option identifies a related term but not the feature that makes it the correct answer. The chemical explanation must follow the particles, bonding, quantities and stated conditions; the option identifies a related term but not the feature that makes it the correct answer."
+    }
+  },
+  "CHEM-COV-090": {
+    "reforge": {
+      "B": "Trigonal planar — three bonds, no lone pairs. The chemical explanation must follow the particles, bonding, quantities and stated conditions; the answer treats an exception or consequence as though it were the underlying principle."
+    }
+  },
+  "STAT-03": {
+    "reforge": {
+      "C": "No — the normal distribution cannot approximate a discrete distribution. The mathematical method must match the operation, scale, algebraic relationship, diagram, units and conditions; the answer overlooks the qualifier that determines how the concept applies in this question."
+    }
+  },
+  "EWQ-08": {
+    "reforge": {
+      "C": "Higher voltage increases the number of electrons, improving image brightness. The physical explanation must use the stated quantities, units, forces, energy transfers and assumptions; the option confuses a definition with its application to the specific example."
+    }
+  },
+  "PHYS-COV-036": {
+    "reforge": {
+      "B": "Higher voltage increases the number of electrons, improving image brightness. The physical explanation must use the stated quantities, units, forces, energy transfers and assumptions; the relevant relationship is reversed, so the proposed answer cannot explain the outcome."
+    }
+  },
+  "PHYS-COV-105": {
+    "reforge": {
+      "A": "Higher voltage produces brighter electrons that illuminate samples better. The physical explanation must use the stated quantities, units, forces, energy transfers and assumptions; the option confuses a definition with its application to the specific example."
+    }
+  },
+  "PHYS-COV-111": {
+    "reforge": {
+      "A": "The student is correct — current does decrease around a series circuit."
+    }
+  },
+  "OPS-08": {
+    "reforge": {
+      "C": "The manufacturer must reduce sterling prices to maintain market share. The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the option identifies a related term but not the feature that makes it the correct answer."
+    }
+  },
+  "GCSE-HIST-HP-16": {
+    "base": {
+      "C": "Operations became unnecessary The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the evidence supports a narrower conclusion than the one proposed in this option."
+    }
+  },
+  "GCSE-HIST-HP-18": {
+    "base": {
+      "D": "To make private insurance illegal The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the answer leaves out the condition that determines the result being tested."
+    }
+  },
+  "GCSE-HIST-HP-22": {
+    "base": {
+      "A": "Hospitals cannot treat illness The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the relevant relationship is reversed, so the proposed answer cannot explain the outcome."
+    }
+  },
+  "GCSE-HIST-EL-16": {
+    "base": {
+      "A": "There were no harvests anywhere The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the relevant distinction is between the process and its effect, which this option merges."
+    }
+  },
+  "GCSE-HIST-EL-17": {
+    "base": {
+      "B": "They wanted everyone to travel freely The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the explanation omits the evidence needed to connect the claim with the question."
+    }
+  },
+  "GCSE-HIST-EL-20": {
+    "reforge": {
+      "A": "She abolished the Church of England The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the option confuses a definition with its application to the specific example."
+    }
+  },
+  "GCSE-HIST-EL-21": {
+    "base": {
+      "B": "They supported the Settlement The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the answer overlooks the qualifier that determines how the concept applies in this question."
+    }
+  },
+  "SCI-PHYS1-06": {
+    "base": {
+      "A": "Energy is destroyed by friction The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the stated example distinguishes this mechanism from the nearby concept named in the option."
+    }
+  },
+  "SCI-PHYS1-15": {
+    "base": {
+      "D": "The road removes all forces The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the option confuses a definition with its application to the specific example."
+    }
+  },
+  "GCSE-PHASE6-PHYS1-02": {
+    "base": {
+      "D": "stays identical for every isotope The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the proposed conclusion does not follow from the evidence supplied in the question."
+    },
+    "reforge": {
+      "D": "1,800 m/s The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the proposed conclusion does not follow from the evidence supplied in the question."
+    }
+  },
+  "GCSE-PHASE6-BIO2-02": {
+    "base": {
+      "B": "the exact population of every species The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the evidence supports a narrower conclusion than the one proposed in this option."
+    },
+    "reforge": {
+      "A": "Releasing carbon dioxide The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the answer treats an exception or consequence as though it were the underlying principle."
+    }
+  },
+  "GCSE-PHASE6-CHEM2-01": {
+    "base": {
+      "D": "raising the products' energy only The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the relevant distinction is between the process and its effect, which this option merges."
+    },
+    "reforge": {
+      "B": "They have the same mass number The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the option confuses a definition with its application to the specific example."
+    }
+  },
+  "GCSE-SCIENCE-COV-054": {
+    "base": {
+      "B": "Energy is destroyed by friction The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the option would be correct only under different assumptions from those given."
+    }
+  },
+  "GCSE-PHASE6-PHYS2-02": {
+    "base": {
+      "A": "a resistor loses all its charge The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the answer does not account for the competing factor or trade-off described."
+    },
+    "reforge": {
+      "C": "Ampere The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the answer treats an exception or consequence as though it were the underlying principle."
+    }
+  },
+  "SEP-CHEM1-04": {
+    "base": {
+      "C": "They lose all attraction The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the proposed account does not match the scale, timing or conditions stated."
+    }
+  },
+  "SEP-CHEM1-06": {
+    "reforge": {
+      "A": "The reaction must be reversible The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the proposed account does not match the scale, timing or conditions stated."
+    }
+  },
+  "SEP-CHEM1-07": {
+    "reforge": {
+      "C": "The solution becomes neutral The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the option confuses a definition with its application to the specific example."
+    }
+  },
+  "SEP-CHEM1-09": {
+    "base": {
+      "B": "To separate an insoluble solid The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the relevant relationship is reversed, so the proposed answer cannot explain the outcome."
+    },
+    "reforge": {
+      "D": "It identifies ions by colour The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the relevant relationship is reversed, so the proposed answer cannot explain the outcome."
+    }
+  },
+  "SEP-CHEM1-11": {
+    "base": {
+      "B": "Theoretical ÷ actual × 100 The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the proposed account does not match the scale, timing or conditions stated."
+    },
+    "reforge": {
+      "C": "Products contain no mass The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the stated context changes the interpretation, so this generalisation is not valid here."
+    }
+  },
+  "SEP-CHEM1-15": {
+    "base": {
+      "D": "They have no chemical properties The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the mechanism named in the option cannot produce the result under these conditions."
+    },
+    "reforge": {
+      "B": "They are too large to enter cells The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the mechanism named in the option cannot produce the result under these conditions."
+    }
+  },
+  "GCSE-SEP-CHEM-COV-007": {
+    "reforge": {
+      "C": "The solution becomes neutral The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the evidence supports a narrower conclusion than the one proposed in this option."
+    }
+  },
+  "GCSE-SEP-CHEM-COV-009": {
+    "base": {
+      "B": "To separate an insoluble solid The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the proposed account does not match the scale, timing or conditions stated."
+    },
+    "reforge": {
+      "D": "It identifies ions by colour The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the proposed account does not match the scale, timing or conditions stated."
+    }
+  },
+  "GCSE-SEP-CHEM-COV-011": {
+    "base": {
+      "C": "Theoretical ÷ actual × 100 The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the explanation would require facts or assumptions that the question does not provide."
+    },
+    "reforge": {
+      "A": "Equilibrium always stops The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the proposed conclusion does not follow from the evidence supplied in the question."
+    }
+  },
+  "GCSE-SEP-CHEM-COV-015": {
+    "base": {
+      "C": "They have no chemical properties The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the relevant relationship is reversed, so the proposed answer cannot explain the outcome."
+    },
+    "reforge": {
+      "A": "They are too large to enter cells The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the relevant relationship is reversed, so the proposed answer cannot explain the outcome."
+    }
+  },
+  "GCSE-SEP-CHEM-COV-017": {
+    "base": {
+      "B": "The activation energy becomes zero The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the proposed conclusion does not follow from the evidence supplied in the question."
+    }
+  },
+  "GCSE-SEP-CHEM-COV-023": {
+    "base": {
+      "A": "To increase salt concentration The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the mechanism named in the option cannot produce the result under these conditions."
+    }
+  },
+  "GCSE-SEP-CHEM-COV-027": {
+    "base": {
+      "D": "To make crude oil renewable The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the explanation would require facts or assumptions that the question does not provide."
+    }
+  },
+  "GCSE-SEP-CHEM-COV-031": {
+    "reforge": {
+      "C": "Protons with neutrons The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the option identifies a related term but not the feature that makes it the correct answer."
+    }
+  },
+  "GCSE-SEP-CHEM-COV-039": {
+    "reforge": {
+      "C": "The solution becomes neutral The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the answer overlooks the qualifier that determines how the concept applies in this question."
+    }
+  },
+  "GCSE-SEP-CHEM-COV-041": {
+    "base": {
+      "B": "To separate an insoluble solid The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the option would be correct only under different assumptions from those given."
+    },
+    "reforge": {
+      "D": "It identifies ions by colour The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the option would be correct only under different assumptions from those given."
+    }
+  },
+  "GCSE-SEP-CHEM-COV-043": {
+    "base": {
+      "C": "Theoretical ÷ actual × 100 The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the option confuses a definition with its application to the specific example."
+    },
+    "reforge": {
+      "A": "Equilibrium always stops The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the stated example distinguishes this mechanism from the nearby concept named in the option."
+    }
+  },
+  "GCSE-SEP-CHEM-COV-047": {
+    "base": {
+      "C": "They have no chemical properties The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the answer treats an exception or consequence as though it were the underlying principle."
+    },
+    "reforge": {
+      "A": "They are too large to enter cells The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the answer treats an exception or consequence as though it were the underlying principle."
+    }
+  },
+  "GCSE-SEP-CHEM-COV-049": {
+    "base": {
+      "B": "The activation energy becomes zero The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the stated example distinguishes this mechanism from the nearby concept named in the option."
+    }
+  },
+  "GCSE-SEP-CHEM-COV-055": {
+    "base": {
+      "A": "To increase salt concentration The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the relevant distinction is between the process and its effect, which this option merges."
+    }
+  },
+  "GCSE-SEP-CHEM-COV-059": {
+    "base": {
+      "D": "To make crude oil renewable The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the option confuses a definition with its application to the specific example."
+    }
+  },
+  "GCSE-SEP-CHEM-COV-063": {
+    "reforge": {
+      "C": "Protons with neutrons The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the explanation omits the evidence needed to connect the claim with the question."
+    }
+  },
+  "GCSE-SEP-CHEM-COV-071": {
+    "reforge": {
+      "C": "The solution becomes neutral The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the answer leaves out the condition that determines the result being tested."
+    }
+  },
+  "GCSE-SEP-CHEM-COV-073": {
+    "base": {
+      "B": "To separate an insoluble solid The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the answer does not account for the competing factor or trade-off described."
+    },
+    "reforge": {
+      "D": "It identifies ions by colour The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the answer does not account for the competing factor or trade-off described."
+    }
+  },
+  "GCSE-SEP-CHEM-COV-075": {
+    "base": {
+      "C": "Theoretical ÷ actual × 100 The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the relevant relationship is reversed, so the proposed answer cannot explain the outcome."
+    },
+    "reforge": {
+      "A": "Equilibrium always stops The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the answer leaves out the condition that determines the result being tested."
+    }
+  },
+  "GCSE-SEP-CHEM-COV-079": {
+    "base": {
+      "C": "They have no chemical properties The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the example requires a more precise distinction than this broad statement makes."
+    },
+    "reforge": {
+      "A": "They are too large to enter cells The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the example requires a more precise distinction than this broad statement makes."
+    }
+  },
+  "GCSE-SEP-CHEM-COV-081": {
+    "base": {
+      "B": "The activation energy becomes zero The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the option confuses a definition with its application to the specific example."
+    }
+  },
+  "GCSE-SEP-CHEM-COV-087": {
+    "base": {
+      "A": "To increase salt concentration The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the evidence supports a narrower conclusion than the one proposed in this option."
+    }
+  },
+  "GCSE-SEP-CHEM-COV-091": {
+    "base": {
+      "D": "To make crude oil renewable The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the proposed account does not match the scale, timing or conditions stated."
+    }
+  },
+  "GCSE-SEP-CHEM-COV-095": {
+    "reforge": {
+      "C": "Protons with neutrons The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the stated context changes the interpretation, so this generalisation is not valid here."
+    }
+  },
+  "GCSE-SEP-CHEM-COV-103": {
+    "reforge": {
+      "C": "The solution becomes neutral The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the answer leaves out the condition that determines the result being tested."
+    }
+  },
+  "GCSE-SEP-CHEM-COV-105": {
+    "base": {
+      "B": "To separate an insoluble solid The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the answer does not account for the competing factor or trade-off described."
+    },
+    "reforge": {
+      "D": "It identifies ions by colour The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the answer does not account for the competing factor or trade-off described."
+    }
+  },
+  "GCSE-SEP-CHEM-COV-107": {
+    "base": {
+      "C": "Theoretical ÷ actual × 100 The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the relevant relationship is reversed, so the proposed answer cannot explain the outcome."
+    },
+    "reforge": {
+      "A": "Equilibrium always stops The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the answer leaves out the condition that determines the result being tested."
+    }
+  },
+  "GCSE-SEP-CHEM-COV-111": {
+    "base": {
+      "C": "They have no chemical properties The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the explanation omits the evidence needed to connect the claim with the question."
+    },
+    "reforge": {
+      "A": "They are too large to enter cells The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the explanation omits the evidence needed to connect the claim with the question."
+    }
+  },
+  "GCSE-SEP-CHEM-COV-113": {
+    "base": {
+      "B": "The activation energy becomes zero The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the option confuses a definition with its application to the specific example."
+    }
+  },
+  "GCSE-SEP-CHEM-COV-119": {
+    "base": {
+      "A": "To increase salt concentration The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the evidence supports a narrower conclusion than the one proposed in this option."
+    }
+  },
+  "GCSE-SEP-CHEM-COV-123": {
+    "base": {
+      "D": "To make crude oil renewable The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the proposed account does not match the scale, timing or conditions stated."
+    }
+  },
+  "GCSE-SEP-CHEM-COV-127": {
+    "reforge": {
+      "C": "Protons with neutrons The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the stated context changes the interpretation, so this generalisation is not valid here."
+    }
+  },
+  "GCSE-SEP-CHEM-COV-135": {
+    "reforge": {
+      "C": "The solution becomes neutral The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the wording describes a different process and would predict a different outcome."
+    }
+  },
+  "GCSE-SEP-CHEM-COV-137": {
+    "base": {
+      "B": "To separate an insoluble solid The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the mechanism named in the option cannot produce the result under these conditions."
+    },
+    "reforge": {
+      "D": "It identifies ions by colour The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the mechanism named in the option cannot produce the result under these conditions."
+    }
+  },
+  "GCSE-SEP-CHEM-COV-139": {
+    "base": {
+      "C": "Theoretical ÷ actual × 100 The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the answer treats an exception or consequence as though it were the underlying principle."
+    },
+    "reforge": {
+      "A": "Equilibrium always stops The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the wording describes a different process and would predict a different outcome."
+    }
+  },
+  "GCSE-SEP-CHEM-COV-143": {
+    "base": {
+      "C": "They have no chemical properties The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the stated context changes the interpretation, so this generalisation is not valid here."
+    },
+    "reforge": {
+      "A": "They are too large to enter cells The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the stated context changes the interpretation, so this generalisation is not valid here."
+    }
+  },
+  "GCSE-SEP-CHEM-COV-145": {
+    "base": {
+      "B": "The activation energy becomes zero The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the relevant relationship is reversed, so the proposed answer cannot explain the outcome."
+    }
+  },
+  "GCSE-SEP-CHEM-COV-151": {
+    "base": {
+      "A": "To increase salt concentration The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the stated example distinguishes this mechanism from the nearby concept named in the option."
+    }
+  },
+  "GCSE-SEP-CHEM-COV-155": {
+    "base": {
+      "D": "To make crude oil renewable The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the option identifies a related term but not the feature that makes it the correct answer."
+    }
+  },
+  "GCSE-SEP-CHEM-COV-159": {
+    "reforge": {
+      "C": "Protons with neutrons The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the option would be correct only under different assumptions from those given."
+    }
+  },
+  "GCSE-SEP-CHEM-COV-167": {
+    "reforge": {
+      "C": "The solution becomes neutral The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the explanation would require facts or assumptions that the question does not provide."
+    }
+  },
+  "SEP-CHEM2-01": {
+    "base": {
+      "B": "The activation energy becomes zero The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the mechanism named in the option cannot produce the result under these conditions."
+    }
+  },
+  "SEP-CHEM2-07": {
+    "base": {
+      "A": "To increase salt concentration The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the answer overlooks the qualifier that determines how the concept applies in this question."
+    }
+  },
+  "SEP-CHEM2-08": {
+    "reforge": {
+      "A": "It is harmless at every concentration The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the option identifies a related term but not the feature that makes it the correct answer."
+    }
+  },
+  "SEP-CHEM2-10": {
+    "base": {
+      "A": "All molecules have equal masses The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the mechanism named in the option cannot produce the result under these conditions."
+    },
+    "reforge": {
+      "B": "It is identical in every fraction The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the answer does not account for the competing factor or trade-off described."
+    }
+  },
+  "SEP-CHEM2-11": {
+    "base": {
+      "D": "To make crude oil renewable The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the example requires a more precise distinction than this broad statement makes."
+    }
+  },
+  "SEP-CHEM2-14": {
+    "base": {
+      "D": "It produces carbon dioxide only The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the answer leaves out the condition that determines the result being tested."
+    }
+  },
+  "SEP-CHEM2-15": {
+    "reforge": {
+      "C": "Protons with neutrons The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the option would be correct only under different assumptions from those given."
+    }
+  },
+  "SEP-CHEM2-16": {
+    "base": {
+      "B": "Carbon dioxide is not a greenhouse gas The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the proposed conclusion does not follow from the evidence supplied in the question."
+    },
+    "reforge": {
+      "A": "Increase unnecessary transport The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the stated example distinguishes this mechanism from the nearby concept named in the option."
+    }
+  },
+  "GCSE-SEP-CHEM-COV-004": {
+    "base": {
+      "C": "They lose all attraction The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the answer does not account for the competing factor or trade-off described."
+    }
+  },
+  "GCSE-SEP-CHEM-COV-006": {
+    "reforge": {
+      "D": "The reaction must be reversible The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the example requires a more precise distinction than this broad statement makes."
+    }
+  },
+  "GCSE-SEP-CHEM-COV-024": {
+    "reforge": {
+      "A": "It is harmless at every concentration The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the answer overlooks the qualifier that determines how the concept applies in this question."
+    }
+  },
+  "GCSE-SEP-CHEM-COV-026": {
+    "base": {
+      "B": "All molecules have equal masses The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the stated context changes the interpretation, so this generalisation is not valid here."
+    },
+    "reforge": {
+      "B": "It is identical in every fraction The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the option identifies a related term but not the feature that makes it the correct answer."
+    }
+  },
+  "GCSE-SEP-CHEM-COV-030": {
+    "base": {
+      "D": "It produces carbon dioxide only The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the option otherwise applies a related idea without explaining the result in this case."
+    }
+  },
+  "GCSE-SEP-CHEM-COV-032": {
+    "base": {
+      "B": "Carbon dioxide is not a greenhouse gas The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the example requires a more precise distinction than this broad statement makes."
+    },
+    "reforge": {
+      "A": "Increase unnecessary transport The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the proposed account does not match the scale, timing or conditions stated."
+    }
+  },
+  "GCSE-SEP-CHEM-COV-036": {
+    "base": {
+      "C": "They lose all attraction The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the mechanism named in the option cannot produce the result under these conditions."
+    }
+  },
+  "GCSE-SEP-CHEM-COV-038": {
+    "reforge": {
+      "D": "The reaction must be reversible The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the proposed account does not match the scale, timing or conditions stated."
+    }
+  },
+  "GCSE-SEP-CHEM-COV-056": {
+    "reforge": {
+      "A": "It is harmless at every concentration The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the option otherwise applies a related idea without explaining the result in this case."
+    }
+  },
+  "GCSE-SEP-CHEM-COV-058": {
+    "base": {
+      "B": "All molecules have equal masses The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the option would be correct only under different assumptions from those given."
+    },
+    "reforge": {
+      "B": "It is identical in every fraction The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the explanation omits the evidence needed to connect the claim with the question."
+    }
+  },
+  "GCSE-SEP-CHEM-COV-062": {
+    "base": {
+      "D": "It produces carbon dioxide only The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the proposed conclusion does not follow from the evidence supplied in the question."
+    }
+  },
+  "GCSE-SEP-CHEM-COV-064": {
+    "base": {
+      "B": "Carbon dioxide is not a greenhouse gas The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the proposed account does not match the scale, timing or conditions stated."
+    },
+    "reforge": {
+      "A": "Increase unnecessary transport The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the option identifies a related term but not the feature that makes it the correct answer."
+    }
+  },
+  "GCSE-SEP-CHEM-COV-068": {
+    "base": {
+      "C": "They lose all attraction The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the relevant distinction is between the process and its effect, which this option merges."
+    }
+  },
+  "GCSE-SEP-CHEM-COV-070": {
+    "reforge": {
+      "D": "The reaction must be reversible The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the option would be correct only under different assumptions from those given."
+    }
+  },
+  "GCSE-SEP-CHEM-COV-088": {
+    "reforge": {
+      "A": "It is harmless at every concentration The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the proposed conclusion does not follow from the evidence supplied in the question."
+    }
+  },
+  "GCSE-SEP-CHEM-COV-090": {
+    "base": {
+      "B": "All molecules have equal masses The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the evidence supports a narrower conclusion than the one proposed in this option."
+    },
+    "reforge": {
+      "B": "It is identical in every fraction The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the mechanism named in the option cannot produce the result under these conditions."
+    }
+  },
+  "GCSE-SEP-CHEM-COV-094": {
+    "base": {
+      "D": "It produces carbon dioxide only The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the stated example distinguishes this mechanism from the nearby concept named in the option."
+    }
+  },
+  "GCSE-SEP-CHEM-COV-096": {
+    "base": {
+      "B": "Carbon dioxide is not a greenhouse gas The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the option identifies a related term but not the feature that makes it the correct answer."
+    },
+    "reforge": {
+      "A": "Increase unnecessary transport The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the explanation omits the evidence needed to connect the claim with the question."
+    }
+  },
+  "GCSE-SEP-CHEM-COV-100": {
+    "base": {
+      "C": "They lose all attraction The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the option otherwise applies a related idea without explaining the result in this case."
+    }
+  },
+  "GCSE-SEP-CHEM-COV-102": {
+    "reforge": {
+      "D": "The reaction must be reversible The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the option would be correct only under different assumptions from those given."
+    }
+  },
+  "GCSE-SEP-CHEM-COV-120": {
+    "reforge": {
+      "A": "It is harmless at every concentration The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the wording describes a different process and would predict a different outcome."
+    }
+  },
+  "GCSE-SEP-CHEM-COV-122": {
+    "base": {
+      "B": "All molecules have equal masses The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the evidence supports a narrower conclusion than the one proposed in this option."
+    },
+    "reforge": {
+      "B": "It is identical in every fraction The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the mechanism named in the option cannot produce the result under these conditions."
+    }
+  },
+  "GCSE-SEP-CHEM-COV-126": {
+    "base": {
+      "D": "It produces carbon dioxide only The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the stated example distinguishes this mechanism from the nearby concept named in the option."
+    }
+  },
+  "GCSE-SEP-CHEM-COV-128": {
+    "base": {
+      "B": "Carbon dioxide is not a greenhouse gas The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the option identifies a related term but not the feature that makes it the correct answer."
+    },
+    "reforge": {
+      "A": "Increase unnecessary transport The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the explanation omits the evidence needed to connect the claim with the question."
+    }
+  },
+  "GCSE-SEP-CHEM-COV-132": {
+    "base": {
+      "C": "They lose all attraction The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the proposed conclusion does not follow from the evidence supplied in the question."
+    }
+  },
+  "GCSE-SEP-CHEM-COV-134": {
+    "reforge": {
+      "D": "The reaction must be reversible The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the answer does not account for the competing factor or trade-off described."
+    }
+  },
+  "GCSE-SEP-CHEM-COV-152": {
+    "reforge": {
+      "A": "It is harmless at every concentration The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the explanation would require facts or assumptions that the question does not provide."
+    }
+  },
+  "GCSE-SEP-CHEM-COV-154": {
+    "base": {
+      "B": "All molecules have equal masses The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the answer overlooks the qualifier that determines how the concept applies in this question."
+    },
+    "reforge": {
+      "B": "It is identical in every fraction The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the relevant distinction is between the process and its effect, which this option merges."
+    }
+  },
+  "GCSE-SEP-CHEM-COV-158": {
+    "base": {
+      "D": "It produces carbon dioxide only The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the answer leaves out the condition that determines the result being tested."
+    }
+  },
+  "GCSE-SEP-CHEM-COV-160": {
+    "base": {
+      "B": "Carbon dioxide is not a greenhouse gas The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the answer does not account for the competing factor or trade-off described."
+    },
+    "reforge": {
+      "A": "Increase unnecessary transport The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the mechanism named in the option cannot produce the result under these conditions."
+    }
+  },
+  "GCSE-SEP-CHEM-COV-164": {
+    "base": {
+      "C": "They lose all attraction The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the stated example distinguishes this mechanism from the nearby concept named in the option."
+    }
+  },
+  "GCSE-SEP-CHEM-COV-166": {
+    "reforge": {
+      "D": "The reaction must be reversible The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the mechanism named in the option cannot produce the result under these conditions."
+    }
+  },
+  "SEP-PHYS1-13": {
+    "base": {
+      "D": "Current is independent of voltage The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the answer leaves out the condition that determines the result being tested."
+    }
+  },
+  "GCSE-SEP-PHYS-COV-013": {
+    "base": {
+      "D": "Current is independent of voltage The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the answer treats an exception or consequence as though it were the underlying principle."
+    }
+  },
+  "GCSE-SEP-PHYS-COV-045": {
+    "base": {
+      "D": "Current is independent of voltage The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the example requires a more precise distinction than this broad statement makes."
+    }
+  },
+  "GCSE-SEP-PHYS-COV-077": {
+    "base": {
+      "D": "Current is independent of voltage The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the proposed account does not match the scale, timing or conditions stated."
+    }
+  },
+  "GCSE-SEP-PHYS-COV-109": {
+    "base": {
+      "D": "Current is independent of voltage The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the proposed account does not match the scale, timing or conditions stated."
+    }
+  },
+  "GCSE-SEP-PHYS-COV-141": {
+    "base": {
+      "D": "Current is independent of voltage The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the option would be correct only under different assumptions from those given."
+    }
+  },
+  "GCSE-SEP-BIO-COV-017": {
+    "base": {
+      "C": "Viruses have thick cell walls The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the answer overlooks the qualifier that determines how the concept applies in this question."
+    }
+  },
+  "GCSE-SEP-BIO-COV-031": {
+    "base": {
+      "B": "Trees produce no oxygen The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the explanation would require facts or assumptions that the question does not provide."
+    }
+  },
+  "GCSE-SEP-BIO-COV-049": {
+    "base": {
+      "C": "Viruses have thick cell walls The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the option otherwise applies a related idea without explaining the result in this case."
+    }
+  },
+  "GCSE-SEP-BIO-COV-063": {
+    "base": {
+      "B": "Trees produce no oxygen The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the option confuses a definition with its application to the specific example."
+    }
+  },
+  "GCSE-SEP-BIO-COV-081": {
+    "base": {
+      "C": "Viruses have thick cell walls The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the wording describes a different process and would predict a different outcome."
+    }
+  },
+  "GCSE-SEP-BIO-COV-095": {
+    "base": {
+      "B": "Trees produce no oxygen The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the relevant relationship is reversed, so the proposed answer cannot explain the outcome."
+    }
+  },
+  "GCSE-SEP-BIO-COV-113": {
+    "base": {
+      "C": "Viruses have thick cell walls The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the wording describes a different process and would predict a different outcome."
+    }
+  },
+  "GCSE-SEP-BIO-COV-127": {
+    "base": {
+      "B": "Trees produce no oxygen The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the relevant relationship is reversed, so the proposed answer cannot explain the outcome."
+    }
+  },
+  "GCSE-SEP-BIO-COV-145": {
+    "base": {
+      "C": "Viruses have thick cell walls The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the explanation would require facts or assumptions that the question does not provide."
+    }
+  },
+  "GCSE-SEP-BIO-COV-159": {
+    "base": {
+      "B": "Trees produce no oxygen The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the answer treats an exception or consequence as though it were the underlying principle."
+    }
+  },
+  "SEP-BIO2-01": {
+    "base": {
+      "C": "Viruses have thick cell walls The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the evidence supports a narrower conclusion than the one proposed in this option."
+    }
+  },
+  "SEP-BIO2-06": {
+    "base": {
+      "A": "Organisms choose useful mutations The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the proposed account does not match the scale, timing or conditions stated."
+    }
+  },
+  "SEP-BIO2-15": {
+    "base": {
+      "B": "Trees produce no oxygen The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the explanation omits the evidence needed to connect the claim with the question."
+    }
+  },
+  "GCSE-SEP-BIO-COV-022": {
+    "base": {
+      "A": "Organisms choose useful mutations The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the answer leaves out the condition that determines the result being tested."
+    }
+  },
+  "GCSE-SEP-BIO-COV-054": {
+    "base": {
+      "A": "Organisms choose useful mutations The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the wording describes a different process and would predict a different outcome."
+    }
+  },
+  "GCSE-SEP-BIO-COV-086": {
+    "base": {
+      "A": "Organisms choose useful mutations The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the explanation would require facts or assumptions that the question does not provide."
+    }
+  },
+  "GCSE-SEP-BIO-COV-118": {
+    "base": {
+      "A": "Organisms choose useful mutations The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the explanation would require facts or assumptions that the question does not provide."
+    }
+  },
+  "GCSE-SEP-BIO-COV-150": {
+    "base": {
+      "A": "Organisms choose useful mutations The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the example requires a more precise distinction than this broad statement makes."
+    }
+  },
+  "GCSE-PHASE6-MATH3-01": {
+    "base": {
+      "B": "18 is the most frequent value The mathematical method must match the operation, scale, algebraic relationship, diagram, units and conditions; the evidence supports a narrower conclusion than the one proposed in this option."
+    },
+    "reforge": {
+      "C": "−2 The mathematical method must match the operation, scale, algebraic relationship, diagram, units and conditions; the proposed conclusion does not follow from the evidence supplied in the question."
+    }
+  },
+  "SOC-FAM-09": {
+    "reforge": {
+      "A": "A couple continuing only while the relationship remains fulfilling fits the pure relationship The sociological explanation must account for structure, culture, power, methods, evidence and differences between groups; the relevant relationship is reversed, so the proposed answer cannot explain the outcome."
+    }
+  },
+  "SOC-BEL-10": {
+    "base": {
+      "A": "A set of ideas that explains society and can justify the interests of a powerful group The sociological explanation must account for structure, culture, power, methods, evidence and differences between groups; the proposed conclusion does not follow from the evidence supplied in the question."
+    }
+  },
+  "HIST-BRIT1-25": {
+    "reforge": {
+      "A": "It showed the government's difficulty in balancing public order with the political costs of force-feeding The historical explanation must fit the chronology, evidence, provenance, context, change and continuity involved; the evidence supports a narrower conclusion than the one proposed in this option."
+    }
+  },
+  "CRIM-AWARE-17": {
+    "base": {
+      "B": "Recorded numerical information about offences, victims, suspects or outcomes The criminological explanation must account for causation, evidence, procedure, rights, proportionality and context; the relevant relationship is reversed, so the proposed answer cannot explain the outcome."
+    }
+  },
+  "LAW-CRIM-22": {
+    "base": {
+      "A": "A partial defence requiring loss of self-control, a qualifying trigger and the objective normal-person test The legal explanation must apply the relevant rule, elements, authority, evidence, procedure and limits; the option identifies a related term but not the feature that makes it the correct answer."
+    }
+  },
+  "POL-UKGOV-06": {
+    "base": {
+      "C": "The principle that Parliament can make or unmake any law and cannot be overruled by a higher domestic authority The political explanation must account for the institution, powers, interests, accountability, evidence and context; the answer leaves out the condition that determines the result being tested."
+    }
+  },
+  "BUS-T4-05": {
+    "reforge": {
+      "A": "A firm borrowing from a domestic bank to finance local operations, without acquiring productive assets abroad."
+    }
+  }
+};
+for (const bank of Object.values(BANKS)) for (const question of bank.questions || []) {
+  const repairs = staticLegacyRepairs[question.id];
+  if (!repairs) continue;
+  for (const [variant, options] of Object.entries(repairs)) {
+    const item = variant === "base" ? question : question.reforge;
+    if (item?.options) Object.assign(item.options, options);
   }
 }
 
