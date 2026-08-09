@@ -39,8 +39,9 @@
 </head>
 <body class="forge-auth-ember">
 <script src="scripts/forge-state.js"></script>
+<script src="scripts/forge-page-actions.js"></script>
 <a class="forge-skip-link" href="#main-content">Skip to main content</a>
-<script>ForgeSidebar.mount({active:'school',items:[{key:'dashboard',href:'teacher.html',label:'Teacher dashboard'},{key:'school',href:'school-overview.html',label:'School overview'},{key:'present',href:'present.html',label:'Class Mode'}],footerItems:[]});</script>
+<script>ForgeSidebar.mount({active:'school',settingsHref:'teacher-settings.html',items:[{key:'dashboard',href:'teacher.html',label:'Teacher dashboard'},{key:'school',href:'school-overview.html',label:'School overview'},{key:'present',href:'present.html',label:'Class Mode'}],footerItems:[],signOut:function(){schoolSignOut();}});</script>
 <script src="scripts/forge-theme.js?v=20260808-theme2"></script>
 
 <div class="forge-u-12w34v1" id="sticky-nav"><div class="wrap-nav forge-u-s2pdxx"><nav>
@@ -107,9 +108,18 @@ function renderLogin(message) {
 }
 
 function signOut() {
-  localStorage.removeItem(TEACHER_SESSION_KEY);
+  schoolSignOut();
+}
+
+function schoolSignOut() {
+  var saved = teacherSession();
+  if (saved && saved.access_token && window.ForgeAPI && ForgeAPI.auth) ForgeAPI.auth.signOut(saved.access_token).catch(function() {});
+  try { localStorage.removeItem(TEACHER_SESSION_KEY); } catch (e) {}
+  if (window.ForgeRole) ForgeRole.clear('teacher');
   renderLogin('You have been signed out.');
 }
+
+window.forgeLogout = schoolSignOut;
 
 function verifyTeacherAccess() {
   var saved = teacherSession();
@@ -809,6 +819,44 @@ function renderDashboard() {
   h += '<p class="forge-u-13drfd2">Forge School Overview · read-only · updated live</p>';
 
   app.innerHTML = h;
+  wireSortableTables();
+}
+
+function wireSortableTables() {
+  app.querySelectorAll('#tab-subjects table, #tab-classes table, #tab-misconceptions table, #tab-performance table, #tab-spec table').forEach(function(table) {
+    var headers = table.querySelectorAll('thead th');
+    Array.prototype.forEach.call(headers, function(th, index) {
+      var label = th.textContent.trim() || 'Value';
+      var button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'table-sort-button';
+      button.setAttribute('aria-label', 'Sort by ' + label);
+      button.setAttribute('aria-sort', 'none');
+      button.innerHTML = '<span>' + label + '</span><span class="table-sort-icon" aria-hidden="true">↕</span>';
+      th.textContent = '';
+      th.appendChild(button);
+      button.addEventListener('click', function() {
+        var ascending = button.getAttribute('aria-sort') !== 'ascending';
+        Array.prototype.forEach.call(headers, function(other) {
+          var otherButton = other.querySelector('.table-sort-button');
+          if (otherButton) { otherButton.setAttribute('aria-sort', 'none'); otherButton.querySelector('.table-sort-icon').textContent = '↕'; }
+        });
+        button.setAttribute('aria-sort', ascending ? 'ascending' : 'descending');
+        button.querySelector('.table-sort-icon').textContent = ascending ? '↑' : '↓';
+        var rows = Array.prototype.slice.call(table.querySelectorAll('tbody tr'));
+        rows.sort(function(a, b) {
+          var aCell = a.cells[index], bCell = b.cells[index];
+          var aBar = aCell && aCell.querySelector('.heat-fill'), bBar = bCell && bCell.querySelector('.heat-fill');
+          var aText = aCell ? aCell.textContent.trim() : '', bText = bCell ? bCell.textContent.trim() : '';
+          var aValue = aBar ? parseFloat(aBar.style.width) : parseFloat((aText.match(/-?\d+(?:\.\d+)?/) || [])[0]);
+          var bValue = bBar ? parseFloat(bBar.style.width) : parseFloat((bText.match(/-?\d+(?:\.\d+)?/) || [])[0]);
+          var result = !isNaN(aValue) && !isNaN(bValue) ? aValue - bValue : !isNaN(aValue) ? -1 : !isNaN(bValue) ? 1 : aText.localeCompare(bText, undefined, {numeric:true, sensitivity:'base'});
+          return (ascending ? 1 : -1) * result;
+        });
+        rows.forEach(function(row) { table.tBodies[0].appendChild(row); });
+      });
+    });
+  });
 }
 
 function statCard(val, label, col) {

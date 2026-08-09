@@ -94,7 +94,9 @@ var ForgeSidebar = {
     var items = config.items || [];
     var footerItems = (config.footerItems || []).slice();
     if (!footerItems.some(function(it) { return it.key === 'settings'; })) {
-      footerItems.push({key:'settings', href: config.settingsHref || 'settings.html', label:'Settings'});
+      var defaultSettingsHref = window.ForgeRole && ForgeRole.get && ForgeRole.get() === 'teacher'
+        ? 'teacher-settings.html' : 'student-settings.html';
+      footerItems.push({key:'settings', href: config.settingsHref || defaultSettingsHref, label:'Settings'});
     }
     config.footerItems = footerItems;
 
