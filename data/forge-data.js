@@ -22793,6 +22793,11 @@ addRs("MC-GRS-META-ETHICS", ["RS-13","RS-14","RS-E2-05","RS-E2B-06"]);
 addRs("MC-GRS-RESPONSIBILITY", ["RS-15","RS-16","RS-E2B-08"]);
 addRs("MC-GRS-BUDDHIST-FOUNDATIONS", ["RS-E1-01","RS-E1-02","RS-E1B-01","RS-E1B-02","RS-PHASE5-01","RS-PHASE5-02","RS-PHASE5-03","RS-PHASE5-04","RS-BUDDHISM-01","RS-BUDDHISM-02","RS-BUDDHISM-03","RS-BUDDHISM-04","RS-BUDDHISM-05"]);
 addRs("MC-GRS-BUDDHIST-PRACTICE", ["RS-PHASE5-05","RS-PHASE5-06","RS-PHASE5-07","RS-PHASE5-08","RS-BUDDHISM-06","RS-BUDDHISM-07","RS-BUDDHISM-08"]);
+addRs("MC-GRS-FAITH-REASON", ["RS-E1B-05"]);
+addRs("MC-GRS-DIVINE-COMMAND", ["RS-10"]);
+addRs("MC-GRS-SANCTITY-QUALITY", ["RS-12","RS-E2-08"]);
+addRs("MC-GRS-DOUBLE-EFFECT", ["RS-E2-06"]);
+addRs("MC-GRS-VIRTUE-ETHICS", ["RS-11","RS-E2-09"]);
 for (const question of SUBJECTS.rs.banks.flatMap(bankId => BANKS[bankId]?.questions || [])) {
   const sourceId = question.coverageVariant ? String(question.tag || "").replace(/^MC-/, "") : question.id;
   if (RS_TAGS[question.id] || RS_TAGS[sourceId]) question.tag = RS_TAGS[question.id] || RS_TAGS[sourceId];
@@ -22814,6 +22819,8 @@ addHsc("MC-GHSC-PHYSIOLOGY", ["HSC-E2-01","HSC-E2-02","HSC-E2-03","HSC-E2-04","H
 addHsc("MC-GHSC-PHYSICAL-HEALTH", ["HSC-E2-06","HSC-PHASE5-03","HSC-PHASE5-04"]);
 addHsc("MC-GHSC-MENTAL-HEALTH", ["HSC-E2-09","HSC-PHASE5-05","HSC-PHASE5-06","HSC-ANATOMY-MH-03"]);
 addHsc("MC-GHSC-PUBLIC-HEALTH", ["HSC-E2B-06","HSC-PHASE5-08"]);
+addHsc("MC-GHSC-APPLICATION", ["HSC-E1B-01"]);
+addHsc("MC-GHSC-PHYSICAL-HEALTH", ["HSC-E2B-02"]);
 for (const question of SUBJECTS.hsc.banks.flatMap(bankId => BANKS[bankId]?.questions || [])) {
   const sourceId = question.coverageVariant ? String(question.tag || "").replace(/^MC-/, "") : question.id;
   if (HSC_TAGS[question.id] || HSC_TAGS[sourceId]) question.tag = HSC_TAGS[question.id] || HSC_TAGS[sourceId];
