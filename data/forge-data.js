@@ -22564,3 +22564,47 @@ for (const [key, replacements] of Object.entries(geoFinalCuedDistractorRepairs))
     for (const [letter, value] of Object.entries(replacements)) item.options[letter] = value;
   }
 }
+
+// GCSE Economics globalisation cue repairs. The alternatives are deliberately
+// plausible misconceptions, so option length is not the route to the answer.
+const gcseEconGlobalCuedDistractorRepairs = {
+  "GCSE-P2-GLOB-02:base": { A: "They reduce global connections by making firms serve only their domestic markets" },
+  "GCSE-P2-GLOB-02:reforge": { A: "A fall in capital flows between countries caused by reduced international investment" },
+  "GCSE-P2-GLOB-03:base": { A: "It removes access to overseas suppliers and makes international communication more expensive for firms" },
+  "GCSE-P2-GLOB-04:reforge": { A: "It guarantees that every profit earned by the multinational remains inside the host country" },
+  "GCSE-P2-GLOB-05:reforge": { A: "Guaranteed higher wages for all remaining workers because overseas production reduces domestic competition" },
+  "GCSE-P2-GLOB-06:reforge": { A: "To prevent any technology transfer from leaving the firm's home country and reaching local workers" },
+  "GCSE-P2-GLOB-07:reforge": { B: "The number of imports recorded, without considering health or education outcomes" },
+  "GCSE-P2-GLOB-08:reforge": { A: "Prevent international effects by isolating each country from foreign supply chains" },
+  "GCSE-P2-GLOB-09:base": { B: "Every country produces all of its goods and services alone without trade or finance" },
+  "GCSE-P2-GLOB-09:reforge": { A: "A firm operating only in its domestic market with no overseas suppliers or customers" },
+  "GCSE-P2-GLOB-10:base": { A: "Firms need no transport because components can reach factories without logistics" },
+  "GCSE-P2-GLOB-10:reforge": { A: "They end international competition by allowing firms to use only domestic inputs" },
+  "GCSE-P2-GLOB-11:base": { A: "All wages become identical because firms can recruit workers from every country" },
+  "GCSE-P2-GLOB-11:reforge": { B: "No worker can find employment abroad because national labour markets remain completely closed" },
+  "GCSE-P2-GLOB-12:base": { A: "They avoid all international markets and restrict production to a single domestic town" },
+  "GCSE-P2-GLOB-12:reforge": { A: "They cannot employ local workers because every task must be completed by staff from headquarters" },
+  "GCSE-P2-GLOB-13:reforge": { A: "The current account balance, which measures trade and financial flows but not schooling" },
+  "GCSE-P2-GLOB-14:base": { A: "Only current-year output, even if meeting today's targets exhausts resources" },
+  "GCSE-P2-GLOB-14:reforge": { A: "Increasing waste without controls while claiming that future clean-up will solve the problem" },
+  "GCSE-P2-GLOB-15:base": { A: "Imports are always banned, so consumers can buy products only from local firms" },
+  "GCSE-P2-GLOB-15:reforge": { B: "Firms cannot specialise because international trade prevents them from developing efficient production" },
+  "GCSE-P2-GLOB-16:base": { A: "It brings only benefits, because no economy can be harmed by shared shocks or foreign competition" },
+  "GCSE-P2-GLOB-16:reforge": { A: "To end all trade by making the country dependent on one domestic supplier" },
+  "GCSE-P2-GLOB-17:base": { B: "A ban on foreign investment that prevents goods and services crossing national borders" },
+  "GCSE-P2-GLOB-17:reforge": { A: "A restriction on all imports that prevents participating countries from trading freely" },
+  "GCSE-P2-GLOB-18:base": { A: "An agreement banning imports and preventing participating countries from exchanging goods and services" },
+  "GCSE-P2-GLOB-18:reforge": { A: "A firm's sales within one town, with no exchange of goods or services across borders" },
+  "GCSE-P2-GLOB-19:base": { A: "Domestic markets disappear because every country becomes entirely dependent on foreign suppliers" },
+  "GCSE-P2-GLOB-19:reforge": { B: "A restriction on foreign goods that prevents participating countries from trading across borders" },
+  "GCSE-P2-GLOB-20:base": { A: "A limit on exports that prevents participating countries from exchanging goods and services freely" },
+  "GCSE-P2-GLOB-20:reforge": { A: "A government paying benefits to households, with no goods or services crossing a national border" }
+};
+for (const [key, replacements] of Object.entries(gcseEconGlobalCuedDistractorRepairs)) {
+  const [id, mode] = key.split(":");
+  for (const question of BANKS["GCSE-ECON-P2-GLOBAL"]?.questions || []) {
+    if (question.id !== id) continue;
+    const item = mode === "base" ? question : question.reforge;
+    if (item?.options) for (const [letter, value] of Object.entries(replacements)) item.options[letter] = value;
+  }
+}
