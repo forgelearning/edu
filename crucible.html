@@ -137,7 +137,7 @@ var app = document.getElementById('app');
 // ===== JOIN =====
 function renderJoin(){
   var f=ForgeAuthCard.field('j-name','Your name',{placeholder:'e.g. Alex',autocomplete:'given-name'})
-       +ForgeAuthCard.field('j-student-code','Student code',{placeholder:'e.g. A1B2C3D4E5',upper:true})
+       +ForgeAuthCard.field('j-student-code','Student code',{placeholder:'e.g. 0472',upper:true})
        +ForgeAuthCard.field('j-code','Class code',{placeholder:'e.g. ECON-Y12',upper:true})
        +'<button class="auth-btn danger" id="j-btn" type="submit">Enter the Crucible \u2192</button>'
        +'<p class="auth-err" id="j-err"></p>'

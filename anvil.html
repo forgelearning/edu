@@ -124,7 +124,7 @@ ForgeApp.loading(app, { label: 'Loading Anvil', body: 'Finding the concepts that
 
 function renderLogin(){
   var f=ForgeAuthCard.field('a-name','Your name',{placeholder:'e.g. Alex',autocomplete:'given-name'})
-       +ForgeAuthCard.field('a-student-code','Student code',{placeholder:'e.g. A1B2C3D4E5',upper:true})
+       +ForgeAuthCard.field('a-student-code','Student code',{placeholder:'e.g. 0472',upper:true})
        +ForgeAuthCard.field('a-code','Class code',{placeholder:'e.g. ECON-Y12',upper:true})
        +'<button class="auth-btn" id="a-btn" type="submit">Open my Anvil \u2192</button>'
        +'<p class="auth-err" id="a-err"></p>';

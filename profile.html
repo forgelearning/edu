@@ -145,7 +145,7 @@ ForgeState.loading(app, { label: 'Loading your profile', body: 'Getting your pro
 
 function renderLogin(){
   var f=ForgeAuthCard.field('p-name','Your name',{placeholder:'e.g. Alex',autocomplete:'given-name'})
-       +ForgeAuthCard.field('p-student-code','Student code',{placeholder:'e.g. A1B2C3D4E5',upper:true})
+       +ForgeAuthCard.field('p-student-code','Student code',{placeholder:'e.g. 0472',upper:true})
        +ForgeAuthCard.field('p-code','Class code',{placeholder:'e.g. ECON-Y12-A',upper:true})
        +'<button class="auth-btn" id="p-btn" type="submit">Sign in \u2192</button>'
        +'<p class="auth-err" id="p-err"></p>';
