@@ -52,22 +52,24 @@
 <script>
 window.forgeOnClassSwitch = function(){ renderTeacherHome(); };
 window.forgeOnClassSelect = function(cls){ loadClassDashboard(cls); };
-ForgeSidebar.mount({
-  active: 'dashboard',
-  settingsHref: 'teacher-settings.html',
-  classSwitch: { label: 'Loading class…', addLabel: '↩ All your classes' },
-  items: [
-    {key:'dashboard', label:'Overview', onclick:"forgeGoto('heatmap')"},
-    {key:'students', label:'Class', onclick:"forgeGoto('class')"},
-    {key:'assignments', label:'Assignments', onclick:"forgeGoto('assignments')"},
-    {key:'misconceptions', label:'Spec Points', onclick:"forgeGoto('spec')"}
-  ],
-  footerItems: [
-    {key:'classes', href:'school-overview.html', label:'School Overview'},
-    {key:'present', href:'present.html', label:'Class Mode'}
-  ],
-  signOut: function(){ teacherSignOut(); }
-});
+function mountTeacherSidebar() {
+  ForgeSidebar.mount({
+    active: 'dashboard',
+    settingsHref: 'teacher-settings.html',
+    classSwitch: { label: 'Loading class…', addLabel: '↩ All your classes' },
+    items: [
+      {key:'dashboard', label:'Overview', onclick:"forgeGoto('heatmap')"},
+      {key:'students', label:'Class', onclick:"forgeGoto('class')"},
+      {key:'assignments', label:'Assignments', onclick:"forgeGoto('assignments')"},
+      {key:'misconceptions', label:'Spec Points', onclick:"forgeGoto('spec')"}
+    ],
+    footerItems: [
+      {key:'classes', href:'school-overview.html', label:'School Overview'},
+      {key:'present', href:'present.html', label:'Class Mode'}
+    ],
+    signOut: function(){ teacherSignOut(); }
+  });
+}
 </script>
 <main class="wrap" id="main-content">
   <div id="app" aria-live="polite"></div>
@@ -182,6 +184,7 @@ function setTeacherTitle(view) {
 
 function renderTeacherAuth(mode) {
   mode = mode || 'signin';
+  if (!currentTeacher && window.ForgeSidebar && typeof ForgeSidebar.destroy === 'function') ForgeSidebar.destroy();
   setTeacherTitle('Teacher Sign In');
   var app = document.getElementById('app');
   var h = '';
@@ -238,6 +241,7 @@ function renderTeacherAuth(mode) {
       action.then(function(data) {
         currentTeacher = data.user;
         headers.Authorization = 'Bearer ' + data.access_token;
+        mountTeacherSidebar();
         if (window.forgeTrack) forgeTrack(mode === 'signup' ? 'teacher_account_created' : 'teacher_signed_in', { role: 'teacher' });
         if (new URLSearchParams(location.search).get('tab') === 'create') renderLogin('create');
         else renderTeacherHome();
@@ -268,6 +272,7 @@ function teacherSignOut() {
   TeacherAuth.signOut();
   currentTeacher = null;
   headers.Authorization = 'Bearer ' + SUPABASE_KEY;
+  if (window.ForgeSidebar && typeof ForgeSidebar.destroy === 'function') ForgeSidebar.destroy();
   renderTeacherAuth('signin');
 }
 
@@ -2216,6 +2221,7 @@ TeacherAuth.getSession().then(function(sess) {
   if (window.ForgeRole) ForgeRole.set('teacher');
   currentTeacher = sess.user;
   headers.Authorization = 'Bearer ' + sess.access_token;
+  mountTeacherSidebar();
   if (window.ForgeSidebar) ForgeSidebar.setClassList(getJoinedClasses(), null);
   if (new URLSearchParams(location.search).get('tab') === 'create') renderLogin('create');
   else renderTeacherHome();
