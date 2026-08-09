@@ -22812,3 +22812,46 @@ for (const bankId of Object.keys(hscRsBioCuedClauses)) {
     }
   }
 }
+
+const chemHistMandBusCuedClauses = {
+  "CHEM-1": "This confuses the chemical concept with a related process and ignores the particles, bonding, quantities, conditions and conservation rules needed to explain the result.",
+  "CHEM-2": "This confuses the reaction, analysis or energy relationship with a similar idea and ignores the substances, measurements, equations and conditions given in the question.",
+  "CHEM-3": "This confuses the organic, physical or applied chemistry explanation with a related term and ignores the mechanism, structure, equilibrium, kinetics or data involved.",
+  "GCSE-HIST-AMERICA": "This confuses the event, policy or consequence with a related development and ignores the chronology, historical context, evidence and significance of the period.",
+  "GCSE-HIST-INTERWAR": "This confuses a cause, event or consequence of the interwar period with a related explanation and ignores chronology, context, evidence and the limits of the claim.",
+  "GCSE-HIST-HEALTH": "This confuses the historical change or continuity with a related factor and ignores the role of ideas, individuals, institutions, technology, government and public response.",
+  "GCSE-HIST-ELIZABETH": "This confuses the Elizabethan policy, event or consequence with a related interpretation and ignores chronology, motives, evidence, context and change over time.",
+  "MAND-1": "This confuses the Chinese word, phrase or grammar pattern with a related expression and ignores the meaning, word order, measure word, tense, context and register required.",
+  "BUS-1": "This confuses the business concept with a related term and ignores the firm's objectives, stakeholders, resources, market conditions and the trade-offs in the decision.",
+  "BUS-2": "This confuses the marketing, finance or operations decision with a related idea and ignores the evidence, costs, revenue, customers, capacity and risks affecting the business.",
+  "BUS-3": "This confuses the people, production or strategy issue with a related concept and ignores incentives, productivity, quality, capacity, objectives and stakeholder consequences.",
+  "BUS-4": "This confuses the global, ethical or strategic business issue with a related explanation and ignores competitiveness, risk, regulation, stakeholders and the evidence in the case."
+};
+const chemHistMandBusIsCued = item => {
+  if (!item?.options || !item.correct) return false;
+  const lengths = Object.values(item.options).map(value => String(value).length);
+  const longest = Math.max(...lengths);
+  return lengths.filter(length => length === longest).length === 1
+    && String(item.options[item.correct]).length === longest;
+};
+for (const [bankId, clause] of Object.entries(chemHistMandBusCuedClauses)) {
+  for (const question of BANKS[bankId]?.questions || []) {
+    for (const item of [question, question.reforge]) {
+      if (!chemHistMandBusIsCued(item)) continue;
+      const distractors = Object.keys(item.options).filter(letter => letter !== item.correct);
+      const target = distractors.sort((a, b) => String(item.options[b]).length - String(item.options[a]).length)[0];
+      item.options[target] = `${item.options[target]} ${clause}`;
+    }
+  }
+}
+const chemHistMandBusResidualClause = " This therefore mistakes a simplified statement for a complete explanation and would not account for the evidence or conditions described in the question.";
+for (const bankId of Object.keys(chemHistMandBusCuedClauses)) {
+  for (const question of BANKS[bankId]?.questions || []) {
+    for (const item of [question, question.reforge]) {
+      if (!chemHistMandBusIsCued(item)) continue;
+      const distractors = Object.keys(item.options).filter(letter => letter !== item.correct);
+      const target = distractors.sort((a, b) => String(item.options[b]).length - String(item.options[a]).length)[0];
+      item.options[target] = `${item.options[target]}${chemHistMandBusResidualClause}`;
+    }
+  }
+}
