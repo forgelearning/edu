@@ -1970,6 +1970,37 @@ Object.assign(MC_LABELS, {
   "MC-GLAW-CONTRACT-REMEDIES":"Damages, specific performance and mitigation respond to breach by different principles"
 });
 
+Object.assign(MC_LABELS, {
+  "MC-GPOL-UK-PARTICIPATION":"Democracy, participation, turnout, apathy and pressure groups describe different routes to influence",
+  "MC-GPOL-UK-ELECTORAL-SYSTEMS":"FPTP, proportional systems and seat types translate votes into representation differently",
+  "MC-GPOL-UK-PARTIES":"Party organisation, funding, leadership and party types have different functions",
+  "MC-GPOL-UK-IDEOLOGIES":"Conservatism, liberalism, socialism, feminism and the New Right make different claims",
+  "MC-GPOL-UK-MEDIA":"Media bias, agenda setting, polls and manifestos shape information without being mandates",
+  "MC-GPOL-UK-GOVERNMENT":"Minority, coalition and policy governments differ in authority and accountability",
+  "MC-GPOL-UK-REPRESENTATION":"Pluralism, elitism, dealignment, legitimacy and representation are different judgements",
+  "MC-GPOL-UK-CONSTITUTION":"Conventions, sovereignty, devolution, rule of law and codification describe different constitutional features",
+  "MC-GPOL-UK-PARLIAMENT":"Commons, Lords, committees, MPs and whips have different parliamentary roles",
+  "MC-GPOL-UK-EXECUTIVE":"Cabinet, ministerial responsibility and prime-ministerial power involve different constraints",
+  "MC-GPOL-UK-JUDICIARY":"Judicial review, Supreme Court and separation of powers concern different checks",
+  "MC-GPOL-UK-FEMINISM":"Liberal, radical, socialist and intersectional feminism explain equality and power differently",
+  "MC-GPOL-UK-RIGHTS":"Representation, human rights and constitutional reform protect rights through different mechanisms",
+  "MC-GPOL-UK-ACCOUNTABILITY":"Ministerial codes, opposition, privilege, devolution and resignation create different accountability routes",
+  "MC-GPOL-US-CONSTITUTION":"Federal powers, clauses, amendments and the Bill of Rights allocate authority differently",
+  "MC-GPOL-US-REVIEW":"Due process, equal protection and levels of scrutiny apply different constitutional tests",
+  "MC-GPOL-US-RIGHTS":"Civil-rights cases and legislation changed rights through different legal mechanisms",
+  "MC-GPOL-US-INTERPRETATION":"Originalism, living constitutionalism, activism, restraint and precedent interpret law differently",
+  "MC-GPOL-US-LIBERTIES":"Free exercise, establishment, speech, arms and redistricting raise distinct rights questions",
+  "MC-GPOL-US-INSTITUTIONS":"Appointments, legitimacy, bureaucracy, executive privilege and confirmation constrain institutions differently",
+  "MC-GPOL-US-FEDERALISM":"Federal-state conflict, grants, sovereignty and constitutional convention divide power differently",
+  "MC-GPOL-US-CONGRESS":"Congressional chambers, committees, filibuster, oversight and the purse perform different functions",
+  "MC-GPOL-US-PRESIDENCY":"Electoral selection, incumbency, orders, vetoes, treaties and agreements are distinct powers",
+  "MC-GPOL-US-EXECUTIVE-CHECKS":"War powers, impeachment, divided government, partisanship and gridlock limit executives differently",
+  "MC-GPOL-US-PARTICIPATION":"Lobbying, PACs, campaign finance, midterms and gerrymandering shape participation differently",
+  "MC-GPOL-US-REPRESENTATION":"Voting rules, suppression, racial and gender representation and media influence different outcomes",
+  "MC-GPOL-US-BUREAUCRACY":"Approval, lame-duck status, bureaucracy, iron triangles and networks describe different executive relations",
+  "MC-GPOL-US-EVALUATION":"Political efficacy, registration, comparison and effectiveness require evidence-based judgement"
+});
+
 if (typeof window !== 'undefined') {
   window.MC_LABELS = MC_LABELS;
   window.resolveMCLabel = resolveMCLabel;

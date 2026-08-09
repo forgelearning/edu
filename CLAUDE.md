@@ -168,6 +168,8 @@ propagates into its `*-COV-*` copies and fixing the source fixes them all.
   and 0 mechanical; see `docs/gcse-crim-misconception-mapping.md`).
   `law` (200 questions onto 22 shared `MC-GLAW-*` categories, 0 single-use
   and 0 mechanical; see `docs/law-misconception-mapping.md`).
+  `pol` (200 questions onto 28 shared `MC-GPOL-*` categories, 0 single-use
+  and 0 mechanical; see `docs/politics-misconception-mapping.md`).
 
   Next, roughly by value: the ~15 subjects still at 100% per-question tags.
   The audit fails
@@ -177,7 +179,7 @@ propagates into its `*-COV-*` copies and fixing the source fixes them all.
 
   Ranked by mechanical-tag share, the untouched backlog is: `chem` `bio` `phys`
   `rs` `hsc` `media` `french` `span` `pe` `englit`
-  `engll` `mand` and `gcse-hist` and `pol` all at 1.00,
+  `engll` `mand` and `gcse-hist` all at 1.00,
   `bus` 0.99, `cs` 0.89, `maths` 0.63.
 
   **`gcse-geo` is now fully curated.** The earlier note saying its tags

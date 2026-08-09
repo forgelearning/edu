@@ -22238,3 +22238,15 @@ addLawRange("CONTRACT", 41, 50, "MC-GLAW-CONTRACT-REMEDIES");
 for (const question of SUBJECTS.law.banks.flatMap(bankId => BANKS[bankId]?.questions || [])) {
   if (LAW_TAGS[question.id]) question.tag = LAW_TAGS[question.id];
 }
+
+const POL_TAGS = {};
+const addPolRange = (bank, first, last, tag) => {
+  for (let n = first; n <= last; n++) POL_TAGS[`POL-${bank}-${String(n).padStart(2, "0")}`] = tag;
+};
+addPolRange("UKPOL",1,10,"MC-GPOL-UK-PARTICIPATION"); addPolRange("UKPOL",11,16,"MC-GPOL-UK-ELECTORAL-SYSTEMS"); addPolRange("UKPOL",17,21,"MC-GPOL-UK-PARTIES"); addPolRange("UKPOL",22,29,"MC-GPOL-UK-IDEOLOGIES"); addPolRange("UKPOL",30,34,"MC-GPOL-UK-MEDIA"); addPolRange("UKPOL",35,40,"MC-GPOL-UK-GOVERNMENT"); addPolRange("UKPOL",41,50,"MC-GPOL-UK-REPRESENTATION");
+addPolRange("UKGOV",1,6,"MC-GPOL-UK-CONSTITUTION"); addPolRange("UKGOV",7,12,"MC-GPOL-UK-PARLIAMENT"); addPolRange("UKGOV",13,18,"MC-GPOL-UK-EXECUTIVE"); addPolRange("UKGOV",19,22,"MC-GPOL-UK-JUDICIARY"); addPolRange("UKGOV",23,30,"MC-GPOL-UK-FEMINISM"); addPolRange("UKGOV",31,36,"MC-GPOL-UK-RIGHTS"); addPolRange("UKGOV",37,50,"MC-GPOL-UK-ACCOUNTABILITY");
+addPolRange("USGOV",1,8,"MC-GPOL-US-CONSTITUTION"); addPolRange("USGOV",9,15,"MC-GPOL-US-REVIEW"); addPolRange("USGOV",16,23,"MC-GPOL-US-RIGHTS"); addPolRange("USGOV",24,30,"MC-GPOL-US-INTERPRETATION"); addPolRange("USGOV",31,36,"MC-GPOL-US-LIBERTIES"); addPolRange("USGOV",37,45,"MC-GPOL-US-INSTITUTIONS"); addPolRange("USGOV",46,50,"MC-GPOL-US-FEDERALISM");
+addPolRange("USPOL",1,10,"MC-GPOL-US-CONGRESS"); addPolRange("USPOL",11,20,"MC-GPOL-US-PRESIDENCY"); addPolRange("USPOL",21,27,"MC-GPOL-US-EXECUTIVE-CHECKS"); addPolRange("USPOL",28,32,"MC-GPOL-US-PARTICIPATION"); addPolRange("USPOL",33,38,"MC-GPOL-US-REPRESENTATION"); addPolRange("USPOL",39,45,"MC-GPOL-US-BUREAUCRACY"); addPolRange("USPOL",46,50,"MC-GPOL-US-EVALUATION");
+for (const question of SUBJECTS.pol.banks.flatMap(bankId => BANKS[bankId]?.questions || [])) {
+  if (POL_TAGS[question.id]) question.tag = POL_TAGS[question.id];
+}
