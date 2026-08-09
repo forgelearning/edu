@@ -74,5 +74,5 @@ scale, structure, mechanism or consequence:
 | `MC-GG-IND-WATER-WASTE` | Waste pollutants travel through water and air pathways | 4 | 11, 12, 38, FB-07 |
 | `MC-GG-IND-GEOGRAPHICAL-REPRESENTATION` | Site, situation, flows and comparison scales must not be swapped | 4 | 27, 29, 42, FB-01 |
 
-The two remaining banks are listed in
+The final remaining bank is listed in
 `docs/gcse-geo-uk-landscape-misconception-mapping.md`.

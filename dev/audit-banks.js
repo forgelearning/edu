@@ -202,9 +202,10 @@ const TAG_TAXONOMY_SUBJECTS = {
   // 35 -> 0), and Skills (35 -> 10, 35 -> 0), taking the subject from 0.697
   // to 0.234. Decisions (36 -> 10, 31 -> 0) then takes it to 0.186. The other
   // three banks still carry auto-generated. Riverfield (32 -> 9, 29 -> 0)
-  // then takes it to 0.141; the two remaining banks still carry slugs.
+  // and Urban Fieldwork (32 -> 10, 29 -> 0) then take it to 0.095; the final
+  // bank still carries slugs.
   // per-question concept slugs; drop this figure as each one is curated.
-  'gcse-geo': 0.15,
+  'gcse-geo': 0.10,
   // 185 of 200 questions retagged onto 44 shared categories, taking the
   // single-use share from 0.930 to 0.010. The two tags left on one question
   // each are MC-EDU-ETHNIC and MC-TECH-01, both real categories with one

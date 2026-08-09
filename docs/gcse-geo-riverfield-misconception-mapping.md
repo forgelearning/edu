@@ -59,5 +59,5 @@ The Darent case study is a setting, not the taxonomy. The groups target:
 | `MC-GG-RVF-FLOOD-PROCESSES` | Basin and geological conditions change flood response | 4 | 22, 23, 24, 26 |
 | `MC-GG-RVF-SEDIMENT-SAMPLING` | Sediment measures need standardisation and representative selection | 3 | 15, 28, 29 |
 
-The two remaining banks are listed in
+The final remaining bank is listed in
 `docs/gcse-geo-uk-landscape-misconception-mapping.md`.
