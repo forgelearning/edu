@@ -2,7 +2,7 @@
 
 **Audit date:** 9 August 2026  
 **Scope:** Forge repository at `/Users/michaelzanier/edu` as provided in this session.  
-**Overall assessment:** Promising learning product with a coherent core loop and unusually strong content guardrails, but not yet at a professional release bar. The principal risks are incomplete live verification, stale/incorrect public metadata, fragile multi-surface UI wiring, and a gap between structural question quality and the quality of the surrounding product experience.
+**Overall assessment:** Promising learning product with a coherent core loop and unusually strong content guardrails. The initial audit identified release risks in live verification, public metadata, semantic HTML, entitlement handling, and multi-surface navigation; the remediation passes below address the confirmed issues. Concurrent isolated-user permission testing and broader responsive/error-state coverage remain follow-up work.
 
 ## Executive judgement
 
@@ -17,39 +17,43 @@ I would rate the current product **6.5/10 for readiness**:
 - **Visual direction:** 7/10
 - **Navigation and information architecture:** 6/10
 - **Accessibility and semantic robustness:** 5/10
-- **Functional confidence:** 5/10 because live interaction was blocked by the browser permission boundary
+- **Functional confidence:** 7/10 after verifying the main student loop and a sequential disposable teacher/class/student workflow; concurrent isolated-user permissions and broader responsive/error-state coverage remain unverified.
 - **Release hygiene/SEO:** 5/10
 
 ## What was tested
 
-### Automated and source-level checks completed
+### Initial automated and source-level checks
 
 - `node dev/audit-banks.js`: passed; 7,510 gradeable stems checked, 0% cued stems and 0% cued reforge twins, with 0 structural issues.
 - `node dev/test-forge.js`: passed; 7,710 MCQs checked.
 - `node scripts/check-ui-system.js`: passed; 61 pages, no inline style blocks, no inline event attributes in maintained markup, no direct page-level Supabase transport, and no subject pages missing required shared CSS.
 - Local-reference scan: 0 broken local path references after correctly ignoring query strings and fragments.
-- `node scripts/check-content-readiness.js`: failed on stale content status for `hist`.
+- Initial `node scripts/check-content-readiness.js`: failed on stale content status for `hist`; the regenerated contract passes in the final verification.
 - `node scripts/check-routes.js`: could not run against the local server because this environment denied loopback HTTP access (`EPERM`); this is an environment limitation, not evidence that the routes are broken.
 - Repository inventory: 61 HTML pages, 33 canonical subjects, 168 banks, and 7,805 questions reported by the content-readiness script.
 - Duplicate-id scan found 10 source-level duplicate IDs; several are generated-template strings rather than guaranteed runtime DOM duplicates and need browser confirmation before being treated as defects.
 
-### Live interaction limitation
+### Initial live interaction limitation
 
-The in-app browser refused both `http://127.0.0.1:8000` and the canonical deployed site. I therefore could not honestly claim a completed click-by-click browser pass, responsive screenshot pass, network-console pass, or authenticated student/teacher pass. No temporary accounts were created, so there is no cleanup required. The report labels behavioral items as **needs live confirmation** rather than presenting source inference as observed runtime behavior.
+At the initial audit stage, the in-app browser refused both `http://127.0.0.1:8000` and the canonical deployed site. That initial snapshot could not claim a completed click-by-click browser pass, responsive screenshot pass, network-console pass, or authenticated student/teacher pass. The report therefore labels the original behavioral items as **needs live confirmation**; later dated sections record the browser permissions recovery and the completed disposable-account workflow.
 
 ## Findings by priority
 
-### P0 — release blocker: live authenticated workflows are unverified
+### P0 — initial release blocker: live authenticated workflows were unverified
+
+**Current status:** Partially resolved. The main student learning loop and a sequential disposable teacher/class/student workflow are now verified. Concurrent cross-user permission testing still requires isolated browser contexts because the in-app browser shares authentication storage between tabs.
 
 **Impact:** Student sign-up, student login, session refresh, dashboard data, Anvil, Crucible, assignments, teacher sign-up/invite, class creation, assignment creation, school overview, CSV export, and sign-out could not be exercised end to end.
 
 **Why it matters:** These are the product, not secondary pages. Static checks cannot catch a bad Supabase policy, an expired token path, a mismatched response shape, a missing empty state, a broken redirect, or a UI event that points to a missing function.
 
-**Required action:** Run a permitted browser pass with disposable student and teacher accounts. Test both fresh and returning sessions, expired/invalid sessions, empty datasets, failed requests, mobile widths, and destructive confirmations. Keep account creation/deletion auditable.
+**Remaining action:** Add a reproducible isolated-context browser suite covering fresh and returning sessions, expired/invalid sessions, empty datasets, failed requests, mobile widths, destructive confirmations, and cross-user reads/writes. Keep account creation/deletion auditable.
 
-### P1 — incorrect Open Graph URLs on five subject pages
+### P1 — initial finding: incorrect Open Graph URLs on five subject pages
 
-The following pages advertise the Sociology URL even though they are different routes:
+**Current status:** Resolved. All public pages now have matching `og:url` and canonical links; the final verification found zero metadata mismatches.
+
+The initial snapshot showed these pages advertising the Sociology URL even though they were different routes:
 
 - `a-level-geography.html`
 - `a-level-history.html`
@@ -57,39 +61,47 @@ The following pages advertise the Sociology URL even though they are different r
 - `law.html`
 - `politics.html`
 
-For example, `a-level-geography.html:11` contains `og:url` pointing to `a-level-sociology.html`; `law.html:11` does the same. This will produce wrong link previews, poor canonical identity, and confusing sharing behavior.
+For example, the initial `a-level-geography.html:11` and `law.html:11` values pointed to `a-level-sociology.html`, producing wrong link previews, poor canonical identity, and confusing sharing behavior.
 
-**Fix:** Set each `og:url` to the page’s own canonical URL and add explicit `<link rel="canonical">` tags consistently across all public routes.
+**Remediation applied:** Set each `og:url` to the page’s own canonical URL and add explicit `<link rel="canonical">` tags consistently across all public routes.
 
-### P1 — content-status data is stale
+### P1 — initial finding: content-status data is stale
 
-`node scripts/check-content-readiness.js` fails with `Stale content status for hist`. The generated file says `generatedAt: 2026-08-04T13:26:54.017Z` in `data/content-status.json:3`, while the current question data no longer matches the stored subject totals.
+**Current status:** Resolved. `data/content-status.json` was regenerated and the final content-readiness check reports a current contract.
+
+The initial `node scripts/check-content-readiness.js` run failed with `Stale content status for hist`. The initial generated file reported `generatedAt: 2026-08-04T13:26:54.017Z` in `data/content-status.json:3`, while the question data no longer matched the stored subject totals.
 
 **Impact:** Public subject pages can show inaccurate counts or rollout labels. This is especially damaging for a revision product because question-count and coverage claims are part of the trust proposition.
 
-**Fix:** Run `node scripts/build-content-status.js`, review the diff, and make generation part of the release/build process so stale status cannot ship.
+**Remediation applied:** Ran `node scripts/build-content-status.js` and reviewed the regenerated contract. Generation should still become a release/build requirement so stale status cannot ship.
 
-### P1 — dynamic product actions are not consistently keyboard/semantic-safe
+### P1 — initial finding: dynamic product actions are not consistently keyboard/semantic-safe
 
-The source scan found **690 buttons without an explicit `type` attribute** across the HTML pages. Many are harmless because they sit outside forms, but the pattern is unsafe and makes future regressions easy. The most important examples are the FAQ controls (`faq.html:82` onward), the landing-page demo options (`index.html:124` onward), and generated buttons in the student/teacher surfaces.
+**Current status:** Resolved for the audited static HTML surface. Every button now has an explicit type and the UI-system check passes; a future lint rule is still recommended.
+
+The initial source scan found **690 buttons without an explicit `type` attribute** across the HTML pages. Many were harmless because they sat outside forms, but the pattern was unsafe and made future regressions easy. The most important examples were the FAQ controls (`faq.html:82` onward), landing-page demo options (`index.html:124` onward), and generated buttons in the student/teacher surfaces.
 
 **Impact:** A button later moved inside a form can unexpectedly submit it. Controls also lack a single enforceable semantic contract across the static pages.
 
-**Fix:** Make every button explicit: `type="button"` for UI actions and `type="submit"` only for actual form submission. Add a lint rule that fails new buttons without a type.
+**Remediation applied:** Made every button explicit: `type="button"` for UI actions and `type="submit"` only for actual form submission. A future lint rule should fail new buttons without a type.
 
-### P1 — payment/trial flow needs a transactional review
+### P1 — initial finding: payment/trial flow needs a transactional review
 
-`forge-signup.html:284-290` creates the Supabase account and subscriber/trial record, then redirects directly to `forge-signup.html?paid=1`. The route name and success copy imply a Stripe return, but the shown code does not establish that a Stripe checkout session has been created or that payment/trial state has been verified server-side.
+**Current status:** Partially resolved. The client no longer uses a fake paid return or unused Stripe link, and Pro/trial access is checked from the session response. A real server-verified billing/webhook integration remains unimplemented.
 
-**Risk:** Account creation, trial entitlement, and payment status can drift apart. A client-controlled `paid=1` query flag is not a trustworthy payment proof.
+The initial `forge-signup.html:284-290` implementation created the Supabase account and subscriber/trial record, then redirected directly to `forge-signup.html?paid=1`. The route name and success copy implied a Stripe return, but the code did not establish that a Stripe checkout session had been created or that payment/trial state had been verified server-side.
 
-**Fix:** Move entitlement/payment confirmation to a server-verified flow. Treat the URL flag only as a display hint, never as authorization. Add tests for abandoned checkout, duplicate checkout, webhook delay, cancelled subscription, and refresh on the success URL.
+**Initial risk:** Account creation, trial entitlement, and payment status could drift apart. A client-controlled `paid=1` query flag was not trustworthy payment proof.
 
-### P1 — data transport exposes the public Supabase client configuration in shipped JavaScript
+**Remediation applied:** Removed the fake paid return state, made the confirmation explicitly trial-based, and enforced Pro/trial access from the session response. A real server-verified billing/webhook integration and tests for abandoned checkout, duplicate checkout, webhook delay, cancellation, and success-URL refresh remain future work.
+
+### P1 — initial finding: data transport exposes the public Supabase client configuration in shipped JavaScript
+
+**Current status:** Reviewed. The anonymous key remains public by design; the final Supabase smoke tests pass, but ongoing RLS/RPC authorization tests remain necessary as the schema evolves.
 
 `scripts/forge-api.js:5-11` includes the project URL and anonymous key. An anonymous Supabase key is normally public by design, so this is not automatically a secret leak. However, it makes the security of every table and RPC entirely dependent on RLS and function grants.
 
-**Required review:** Run `node dev/audit-supabase-security.js` against the live project and verify that anonymous access cannot read or mutate another student’s responses, subscriber rows, teacher data, class data, assignments, or analytics. Confirm that all sensitive operations are server-side/RPC protected.
+**Review completed:** Ran `node dev/audit-supabase-security.js` against the live project. The smoke tests confirmed the protected school overview and invite-code table boundaries and fail-closed free-student RPCs. Ongoing RLS/RPC authorization tests remain necessary as the schema evolves.
 
 ### P2 — public pages have metadata and content consistency drift
 
@@ -192,7 +204,9 @@ The teacher story is compelling because it connects response data to an action: 
 
 The default teacher view should answer one question: **what should I teach next, and which students need it?** Everything else should be drill-down.
 
-## Recommended remediation order
+## Original remediation order
+
+The following was the order proposed in the initial audit. Completed items are recorded in the dated remediation sections below; the remaining items are follow-up priorities.
 
 1. Enable a permitted end-to-end browser test and test real student/teacher workflows with disposable accounts.
 2. Fix the five incorrect `og:url` values and add canonical tags.
@@ -206,7 +220,7 @@ The default teacher view should answer one question: **what should I teach next,
 
 ## Final verdict
 
-Forge has a credible product core and a strong educational mechanism. The repository is not a fragile prototype in the content layer: the question-bank regression discipline is a real strength. The product is nevertheless not ready to be called fully audited or production-hardened because the highest-risk surfaces—authenticated behavior, permissions, persistence, and responsive interaction—remain unverified in a real browser session. Fix the metadata and freshness issues immediately, then prioritize a reproducible authenticated browser suite before investing in further visual polish.
+Forge has a credible product core and a strong educational mechanism. The repository is not a fragile prototype in the content layer: the question-bank regression discipline is a real strength. The priority fixes in this report are now merged and live-verified at the source/HTTP level, and the main student loop plus sequential teacher workflow have been exercised with disposable data. Forge should still add isolated-context browser coverage for concurrent permissions, responsive breakpoints, and deeper empty/error states before calling the audit fully closed.
 
 ## Live browser verification — 2026-08-09
 
