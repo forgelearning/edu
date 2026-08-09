@@ -41,7 +41,11 @@
 <script src="scripts/forge-state.js"></script>
 <script src="scripts/forge-page-actions.js"></script>
 <a class="forge-skip-link" href="#main-content">Skip to main content</a>
-<script>ForgeSidebar.mount({active:'school',settingsHref:'teacher-settings.html',items:[{key:'dashboard',href:'teacher.html',label:'Teacher dashboard'},{key:'school',href:'school-overview.html',label:'School overview'},{key:'present',href:'present.html',label:'Class Mode'}],footerItems:[],signOut:function(){schoolSignOut();}});</script>
+<script>
+function mountSchoolSidebar() {
+  ForgeSidebar.mount({active:'school',settingsHref:'teacher-settings.html',items:[{key:'dashboard',href:'teacher.html',label:'Teacher dashboard'},{key:'school',href:'school-overview.html',label:'School overview'},{key:'present',href:'present.html',label:'Class Mode'}],footerItems:[],signOut:function(){schoolSignOut();}});
+}
+</script>
 <script src="scripts/forge-theme.js?v=20260808-theme2"></script>
 
 <div class="forge-u-12w34v1" id="sticky-nav"><div class="wrap-nav forge-u-s2pdxx"><nav>
@@ -125,16 +129,19 @@ window.forgeLogout = schoolSignOut;
 function verifyTeacherAccess() {
   var saved = teacherSession();
   if (!saved || !saved.access_token) {
+    if (window.ForgeSidebar && typeof ForgeSidebar.destroy === 'function') ForgeSidebar.destroy();
     renderLogin();
     return;
   }
   ForgeAPI.auth.user(saved.access_token).then(function(user) {
     if (!user || !user.id) throw new Error('Teacher session invalid');
     hdrs.Authorization = 'Bearer ' + saved.access_token;
+    mountSchoolSidebar();
     renderLoading();
     loadData();
   }).catch(function() {
     localStorage.removeItem(TEACHER_SESSION_KEY);
+    if (window.ForgeSidebar && typeof ForgeSidebar.destroy === 'function') ForgeSidebar.destroy();
     renderLogin('Your teacher session has expired. Please sign in again.');
   });
 }
