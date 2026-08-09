@@ -36,6 +36,10 @@ const isCued = (item) => {
   );
 };
 
+const coverageComparableOption = (value) => String(value || '')
+  .replace(/\s*\(?\s*(?:in this context|in context|in this case|for this decision|in this market|in this computing context|under standard assumptions|in a typical case|in the stated scenario|in a typical firm)\s*\)?[.!?]?\s*$/i, '')
+  .trim().toLowerCase();
+
 // Maths scaffolds are legitimately terse — "√50 = √(25 × 2) = 5√2." is a
 // complete explanation — so only flag one that is missing or near-empty.
 const MIN_SCAFFOLD = 10;
@@ -117,6 +121,13 @@ for (const [bankId, bank] of Object.entries(BANKS)) {
       const texts = Object.values(item.options).map((v) => String(v).trim().toLowerCase());
       if (new Set(texts).size !== 4) {
         issues.push(`DUPLICATE OPTION TEXT: ${q.id}${label} (${bankId})`);
+      }
+      if (!label && q.coverageVariant) {
+        const key = coverageComparableOption(item.options[item.correct]);
+        const duplicate = Object.keys(item.options)
+          .filter(letter => letter !== item.correct)
+          .find(letter => coverageComparableOption(item.options[letter]) === key);
+        if (duplicate) issues.push(`COVERAGE DUPLICATE ANSWER: ${q.id} (${bankId}) ${duplicate} copies ${item.correct} apart from generated padding`);
       }
       if (label) {
         ref++; refKeys[item.correct]++;
@@ -520,7 +531,7 @@ if (!issues.length) console.log('none');
 // a reliable answer-selection shortcut. CUE was previously reported but
 // allowed the deploy gate to pass; with the current bank at 0%, regressions
 // must fail immediately.
-const fatal = issues.filter((i) => /^(UNGRADEABLE|BAD OPTION KEYS|MISSING BANK|DUPLICATE ID|NO OPTIONS|EMPTY STEM|CUE)/.test(i));
+const fatal = issues.filter((i) => /^(UNGRADEABLE|BAD OPTION KEYS|MISSING BANK|DUPLICATE ID|NO OPTIONS|EMPTY STEM|CUE|COVERAGE DUPLICATE ANSWER)/.test(i));
 if (fatal.length) {
   console.log(`\n${fatal.length} fatal issue(s) — these break questions for students.`);
   process.exit(1);

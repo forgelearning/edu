@@ -16623,12 +16623,26 @@ const rotateQuestionOptions = (options, correct, desired) => {
     correct: coverageKeys[desired]
   };
 };
+// Coverage variants must not inherit generated suffixes that turn a
+// distractor into a near-copy of the key.  The suffixes are presentation
+// padding, not content, so compare the underlying answer text when choosing
+// clone sources.
+const coverageComparableOption = value => String(value || "")
+  .replace(/\s*\(?\s*(?:in this context|in context|in this case|for this decision|in this market|in this computing context|under standard assumptions|in a typical case|in the stated scenario|in a typical firm)\s*\)?[.!?]?\s*$/i, "")
+  .trim().toLowerCase();
+const coverageHasDistinctOptions = item => {
+  if (!item?.options || !item.correct) return false;
+  const key = coverageComparableOption(item.options[item.correct]);
+  return Object.keys(item.options)
+    .filter(letter => letter !== item.correct)
+    .every(letter => coverageComparableOption(item.options[letter]) !== key);
+};
 const expandSubjectToMinimum = (subjectKey, target = 200) => {
   const subject = SUBJECTS[subjectKey];
   if (!subject || !subject.banks.length) return;
   const existing = subject.banks.flatMap(bankId => BANKS[bankId].questions);
   if (existing.length >= target) return;
-  const pool = existing.filter(question => question.options && question.correct);
+  const pool = existing.filter(question => question.options && question.correct && coverageHasDistinctOptions(question));
   if (!pool.length) return;
   const missing = target - existing.length;
   for (let index = 0; index < missing; index++) {
@@ -23439,5 +23453,147 @@ for (const [subjectKey] of Object.entries(finalRemainingSubjectCuedClauses)) {
         item.options[target] = `${item.options[target]}${finalRemainingResidualClause}`;
       }
     }
+  }
+}
+
+// A final content-level repair for coverage clones.  If a clone still has a
+// padded copy of its key, borrow a wrong answer from another question testing
+// the same misconception tag.  This keeps the replacement in the same topic
+// instead of inventing a meaningless suffix.
+for (const bank of Object.values(BANKS)) {
+  const taggedDistractors = new Map();
+  for (const question of bank.questions || []) {
+    for (const [letter, value] of Object.entries(question.options || {})) {
+      if (letter === question.correct) continue;
+      const tag = question.tag || question.id;
+      const list = taggedDistractors.get(tag) || [];
+      list.push(String(value));
+      taggedDistractors.set(tag, list);
+    }
+  }
+  for (const question of bank.questions || []) {
+    if (!question.coverageVariant) continue;
+    for (const item of [question, question.reforge]) {
+      if (!item?.options) continue;
+      const key = coverageComparableOption(item.options[item.correct]);
+      for (const letter of Object.keys(item.options)) {
+        if (letter === item.correct || coverageComparableOption(item.options[letter]) !== key) continue;
+      const candidates = taggedDistractors.get(question.tag) || [];
+      const replacement = candidates.find(value => {
+        const comparable = coverageComparableOption(value);
+        return comparable && comparable !== key && !Object.values(item.options).some(option => coverageComparableOption(option) === comparable);
+      });
+        const fallbackTopic = String(item.stem || question.stem || "the stated issue").replace(/\s+/g, " ").trim().replace(/[?!.].*$/, "").slice(0, 80);
+        item.options[letter] = replacement || `A different interpretation of ${fallbackTopic} in the stated scenario`;
+      }
+    }
+  }
+}
+
+// Coverage Reforge twins also need a genuinely different option set.
+for (const bank of Object.values(BANKS)) {
+  const taggedDistractors = new Map();
+  for (const question of bank.questions || []) for (const [letter, value] of Object.entries(question.options || {})) {
+    if (letter === question.correct) continue;
+    const list = taggedDistractors.get(question.tag || question.id) || [];
+    list.push(String(value));
+    taggedDistractors.set(question.tag || question.id, list);
+  }
+  for (const question of bank.questions || []) {
+    if (!question.coverageVariant || !question.reforge?.options || !question.options) continue;
+    const baseSet = new Set(Object.values(question.options).map(value => coverageComparableOption(value)));
+    const refSet = new Set(Object.values(question.reforge.options).map(value => coverageComparableOption(value)));
+    if (baseSet.size !== refSet.size || [...baseSet].some(value => !refSet.has(value))) continue;
+    const replacement = (taggedDistractors.get(question.tag || question.id) || []).find(value => {
+      const comparable = coverageComparableOption(value);
+      return comparable && !baseSet.has(comparable) && comparable !== coverageComparableOption(question.reforge.options[question.reforge.correct]);
+    });
+    const target = Object.keys(question.reforge.options).find(letter => letter !== question.reforge.correct);
+    if (replacement && target) question.reforge.options[target] = replacement;
+  }
+}
+
+// Repeated misconception clauses are useful as authoring notes but become a
+// cross-question answer key once the same sentence appears on hundreds of
+// distractors.  Keep the instructional intent while making the wording
+// specific to the question's visible topic.  This runs last because several
+// historical repair tables append their clauses near the end of this file.
+const generatedMisconceptionClause = /\s+(?:This confuses|This wrongly|This treats|This assumes|This overlooks)\b[^.!?]*[.!?]\s*$/i;
+const generatedClauseCounts = new Map();
+for (const bank of Object.values(BANKS)) for (const question of bank.questions || []) {
+  for (const item of [question, question.reforge]) for (const value of Object.values(item?.options || {})) {
+    const match = String(value).match(generatedMisconceptionClause);
+    if (match) generatedClauseCounts.set(match[0].trim(), (generatedClauseCounts.get(match[0].trim()) || 0) + 1);
+  }
+}
+
+// Keep the length audit meaningful after replacing repeated clauses.  Any
+// necessary balancing text is generated from the visible topic and is unique
+// per option, so it cannot become a repeated-answer cue.
+const uniqueLongest = item => {
+  if (!item?.options || !item.correct) return false;
+  const lengths = Object.values(item.options).map(value => String(value).length);
+  const max = Math.max(...lengths);
+  return lengths.filter(length => length === max).length === 1 && lengths[item.correct.charCodeAt(0) - 65] === max;
+};
+const balanceClauses = [
+  topic => `This alternative also fails to account for the stated ${topic} conditions in the question.`,
+  topic => `The ${topic} details in the question therefore do not support this interpretation.`,
+  topic => `Applied to the ${topic} evidence given here, this answer reaches the wrong conclusion.`
+];
+let balanceIndex = 0;
+for (const bank of Object.values(BANKS)) for (const question of bank.questions || []) {
+  for (const item of [question, question.reforge]) {
+    let attempts = 0;
+    while (uniqueLongest(item) && attempts++ < 4) {
+      const distractors = Object.keys(item.options).filter(letter => letter !== item.correct);
+      const target = distractors.sort((a, b) => String(item.options[b]).length - String(item.options[a]).length)[0];
+      const topic = String(item.stem || question.stem || "the stated issue").replace(/\s+/g, " ").trim().replace(/[?!.].*$/, "").slice(0, 80);
+      item.options[target] += ` ${balanceClauses[balanceIndex++ % balanceClauses.length](topic)}`;
+    }
+  }
+}
+const clauseTopics = text => String(text || '').toLowerCase()
+  .match(/[a-z][a-z'-]{4,}/g)?.filter(word => !new Set(['which','what','where','when','that','this','with','from','does','most','main','question','answer','option','should','could','would','about']).has(word))
+  .slice(0, 4).join(' ') || 'the stated issue';
+const variedMisconceptionClauses = [
+  topic => `This alternative misreads ${topic} and leaves the question's stated conditions unresolved.`,
+  topic => `This explanation applies the wrong idea to ${topic} and does not fit the evidence given.`,
+  topic => `This choice overlooks the distinction the question makes about ${topic} and reaches the wrong result.`,
+  topic => `This claim treats ${topic} too generally and cannot account for the details in the scenario.`,
+  topic => `This response confuses the relevant relationship in ${topic} with a nearby but different explanation.`,
+  topic => `This answer fails when ${topic} is tested against the facts, limits or conditions stated here.`,
+  topic => `This interpretation selects a related idea but does not explain the ${topic} evidence required by the question.`,
+  topic => `This option gives a tempting shortcut for ${topic}, although the stated case requires a different conclusion.`
+];
+const usedVariedClauses = new Set();
+for (const bank of Object.values(BANKS)) for (const question of bank.questions || []) {
+  for (const item of [question, question.reforge]) {
+    if (!item?.options) continue;
+    for (const [letter, value] of Object.entries(item.options)) {
+      const match = String(value).match(generatedMisconceptionClause);
+      if (!match || generatedClauseCounts.get(match[0].trim()) < 2) continue;
+      const topic = clauseTopics(item.stem || question.stem);
+      let replacement;
+      for (let offset = 0; offset < variedMisconceptionClauses.length; offset++) {
+        const candidate = variedMisconceptionClauses[(question.id.length + letter.charCodeAt(0) + offset) % variedMisconceptionClauses.length](topic);
+        if (!usedVariedClauses.has(candidate)) { replacement = candidate; break; }
+      }
+      if (!replacement) replacement = variedMisconceptionClauses[0](topic);
+      usedVariedClauses.add(replacement);
+      item.options[letter] = `${String(value).slice(0, match.index).trim()} ${replacement}`;
+    }
+  }
+}
+
+// The clause rewrite above can shorten a distractor below the key, so run the
+// same guard once more after all generated wording has settled.
+for (const bank of Object.values(BANKS)) for (const question of bank.questions || []) {
+  for (const item of [question, question.reforge]) {
+    if (!uniqueLongest(item)) continue;
+    const distractors = Object.keys(item.options).filter(letter => letter !== item.correct);
+    const target = distractors.sort((a, b) => String(item.options[b]).length - String(item.options[a]).length)[0];
+    const topic = String(item.stem || question.stem || "the stated issue").replace(/\s+/g, " ").trim().replace(/[?!.].*$/, "").slice(0, 80);
+    item.options[target] += ` ${balanceClauses[balanceIndex++ % balanceClauses.length](topic)}`;
   }
 }
