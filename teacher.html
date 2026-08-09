@@ -871,10 +871,7 @@ function renderDashboard() {
   h += '<div><p class="tag forge-u-l8gta7">Teacher Dashboard</p>';
   h += '<h1>' + dashState.className;
   if (dashState.classCode) {
-    h += ' <button type="button" id="class-code-pill" data-forge-action="copy-class-code" title="Copy class code" '
-       + 'style="font-family:\'JetBrains Mono\',monospace;font-size:13px;font-weight:700;letter-spacing:.06em;'
-       + 'color:var(--hot);background:var(--panel-2);border:1px solid var(--line);border-radius:var(--radius-sm);'
-       + 'padding:3px 10px;cursor:pointer;vertical-align:middle">' + dashState.classCode + ' ⎘</button>';
+    h += ' <button type="button" class="class-code-pill" id="class-code-pill" data-forge-action="copy-class-code" title="Copy class code">' + dashState.classCode + ' ⎘</button>';
   }
   h += '</h1></div>';
   h += '<div class="dash-header-actions"><a class="dash-primary forge-button forge-button--primary" href="#" id="dash-action">' + (wrongResponses.length ? 'Open misconceptions \u2192' : 'Create assignment \u2192') + '</a><div class="dash-meta"><b>' + students.length + '</b> student' + (students.length !== 1 ? 's' : '') + ' \u00b7 <b>' + totalQs + '</b> response' + (totalQs !== 1 ? 's' : '') + ' \u00b7 <button type="button" class="back-btn forge-u-gr3ipb" data-forge-action="render-teacher-home">\u2190 All classes</button></div></div>';

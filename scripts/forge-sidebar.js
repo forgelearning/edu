@@ -640,6 +640,20 @@ var ForgeSidebar = {
     if (this._signOutFn) this._signOutFn();
   },
 
+  // Auth pages can render their signed-out state in place. Remove the shell
+  // first so navigation never remains visible after the session is cleared.
+  destroy: function() {
+    ['#forge-badge', '#forge-sidebar', '#forge-sidebar-toggle', '#forge-tabbar',
+      '#forge-sheet-scrim', '#forge-pull-refresh', '#forge-notification-toast']
+      .forEach(function(selector) {
+        var node = document.querySelector(selector);
+        if (node) node.remove();
+      });
+    document.body.classList.remove('has-forge-sidebar', 'forge-sidebar-expanded');
+    this._config = null;
+    this._signOutFn = null;
+  },
+
   _runSidebarCall: function(call) {
     var value = String(call || '');
     if (value.indexOf('goto:') === 0 && typeof window.forgeGoto === 'function') {

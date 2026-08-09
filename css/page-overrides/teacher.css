@@ -26,6 +26,9 @@ h1,h2,h3{font-family:'Rethink Sans',sans-serif;color:var(--white);line-height:1.
 /* join */
 .join-input{width:100%;padding:12px 14px;border-radius:var(--radius-sm);border:1px solid var(--line);background:var(--panel);color:var(--white);font-family:'Poppins',sans-serif;font-size:15px;margin-bottom:14px;text-transform:uppercase}
 .join-input:focus{outline:none;border-color:var(--ember)}
+.class-code-pill{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;letter-spacing:.06em;color:var(--hot);background:var(--panel-2);border:1px solid var(--line);border-radius:var(--radius-sm);padding:3px 10px;cursor:pointer;vertical-align:middle}
+.class-code-pill:hover{border-color:var(--hot)}
+.class-code-pill:focus-visible{outline:2px solid var(--hot);outline-offset:3px}
 .join-input::placeholder{color:#7A756E;text-transform:none}
 .join-btn{width:100%;padding:13px;border-radius:var(--radius-sm);background:var(--ember);color:#fff;border:none;font-family:'Poppins',sans-serif;font-weight:600;font-size:15px;cursor:pointer}
 .join-btn:hover{background:var(--hot)}

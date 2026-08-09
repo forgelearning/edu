@@ -21,6 +21,13 @@
 
   function systemIsLight() { return !!(media && media.matches); }
 
+  // Keep settings pages and the shared shell on the same interpretation of
+  // the device preference. A page can use this without reaching into the
+  // theme module's private media-query state.
+  window.forgeThemeLightFor = function (preference) {
+    return preference === 'light' || (preference === 'system' && systemIsLight());
+  };
+
   window.setForgeTheme = function (light, persist) {
     renderTheme(!!light);
     if (persist) {

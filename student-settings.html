@@ -64,7 +64,8 @@
         radio.addEventListener('change', function () {
           if (this.value === 'system') localStorage.removeItem('forge-theme');
           else localStorage.setItem('forge-theme', this.value);
-          if (window.setForgeTheme) window.setForgeTheme(this.value === 'light', false);
+          var light = window.forgeThemeLightFor ? window.forgeThemeLightFor(this.value) : this.value === 'light';
+          if (window.setForgeTheme) window.setForgeTheme(light, false);
           location.reload();
         });
       });

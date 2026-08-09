@@ -116,6 +116,7 @@ function schoolSignOut() {
   if (saved && saved.access_token && window.ForgeAPI && ForgeAPI.auth) ForgeAPI.auth.signOut(saved.access_token).catch(function() {});
   try { localStorage.removeItem(TEACHER_SESSION_KEY); } catch (e) {}
   if (window.ForgeRole) ForgeRole.clear('teacher');
+  if (window.ForgeSidebar && typeof ForgeSidebar.destroy === 'function') ForgeSidebar.destroy();
   renderLogin('You have been signed out.');
 }
 
