@@ -66,6 +66,10 @@ var _FORGE_ICONS = {
   settings: '<circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.06.06-1.7 1.7-.06-.06a1.7 1.7 0 0 0-1.88-.34 1.7 1.7 0 0 0-1.03 1.56V20h-2.4v-.2a1.7 1.7 0 0 0-1.03-1.56 1.7 1.7 0 0 0-1.88.34l-.06.06-1.7-1.7.06-.06A1.7 1.7 0 0 0 8.46 15a1.7 1.7 0 0 0-1.56-1.03H6v-2.4h.9A1.7 1.7 0 0 0 8.46 10a1.7 1.7 0 0 0-.34-1.88l-.06-.06 1.7-1.7.06.06a1.7 1.7 0 0 0 1.88.34 1.7 1.7 0 0 0 1.03-1.56V5h2.4v.2a1.7 1.7 0 0 0 1.03 1.56 1.7 1.7 0 0 0 1.88-.34l.06-.06 1.7 1.7-.06.06A1.7 1.7 0 0 0 19.4 10a1.7 1.7 0 0 0 1.56 1.03H22v2.4h-1.04A1.7 1.7 0 0 0 19.4 15Z"></path>'
 };
 
+// The outer gear path's source bounds sit 2px right of the 24px viewBox
+// centre; shift only that path so the centre ring and teeth share one axis.
+_FORGE_ICONS.settings = _FORGE_ICONS.settings.replace('<path d="M19.4', '<path transform="translate(-2 0)" d="M19.4');
+
 // Below this width the rail is replaced by the bottom tab bar. Kept in sync
 // with the @media block in css/sidebar.css.
 var _FORGE_TABBAR_MAX = 820;
@@ -345,7 +349,7 @@ var ForgeSidebar = {
         var actions = {
           'toggle-class-menu': '_toggleClassMenu', 'signout': '_signOut', 'theme': '_toggleTheme',
           'toggle-sidebar': '_toggleSidebar', 'open-sheet': '_openSheet', 'close-sheet': '_closeSheet',
-          'sheet-add-class': '_sheetAddClass', 'sheet-signout': '_sheetSignOut', 'add-class': '_addClass'
+          'sheet-add-class': '_sheetAddClass', 'sheet-signout': '_sheetSignOut', 'add-class': '_addClass', 'navigate': '_navigate'
         };
         if (actions[actionName] && typeof ForgeSidebar[actions[actionName]] === 'function') {
           e.preventDefault();
@@ -478,6 +482,11 @@ var ForgeSidebar = {
   _sheetSelectClass: function(id) { this._closeSheet(); this._selectClass(id); },
   _sheetAddClass: function() { this._closeSheet(); this._addClass(); },
   _sheetSignOut: function() { this._closeSheet(); this._signOut(); },
+  _navigate: function(action) {
+    this._closeSheet();
+    var href = action && action.getAttribute('data-forge-sidebar-href');
+    if (href) window.location.href = href;
+  },
 
   // Pages that navigate in-place (teacher.html's tab SPA) call this so the
   // rail and the tab bar both follow along.
@@ -691,7 +700,7 @@ function _fsSheetItemHtml(it, activeKey) {
   // A sheet row that navigates in-page must also close the sheet.
   var attrs = it.onclick
     ? ' data-forge-sidebar-action="sidebar-call" data-forge-sidebar-call="' + _fsEsc(_fsSidebarCall(it.onclick)) + '"'
-    : (it.href ? ' href="' + _fsEsc(it.href) + '"' : ' data-forge-sidebar-action="close-sheet"');
+    : (it.href ? ' href="' + _fsEsc(it.href) + '" data-forge-sidebar-action="navigate" data-forge-sidebar-href="' + _fsEsc(it.href) + '"' : ' data-forge-sidebar-action="close-sheet"');
   return '<' + tag + ' class="fsheet-item' + (it.key === activeKey ? ' active' : '') + '" data-key="' + _fsEsc(it.key) + '"' +
     attrs + '>' +
     _fsIcon(it.key) +
