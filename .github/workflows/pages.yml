@@ -67,6 +67,12 @@ jobs:
       - name: Validate UI system
         run: node scripts/check-ui-system.js
 
+      - name: Validate content status freshness
+        run: node scripts/build-content-status.js --check
+
+      - name: Validate button types
+        run: node scripts/check-button-types.js
+
       - name: Configure Pages
         uses: actions/configure-pages@v5
 

@@ -12,7 +12,9 @@
     "cap:open:ios": "cap open ios",
     "cap:open:android": "cap open android",
     "staging": "node dev/staging-server.js",
-    "check": "node scripts/check-routes.js && node dev/test-forge.js && node dev/test-auth.js && node dev/test-forge-api.js && node dev/test-persistence.js"
+    "check:content-status": "node scripts/build-content-status.js --check",
+    "check:buttons": "node scripts/check-button-types.js",
+    "check": "node scripts/build-content-status.js --check && node scripts/check-button-types.js && node scripts/check-routes.js && node dev/test-forge.js && node dev/test-auth.js && node dev/test-forge-api.js && node dev/test-persistence.js"
   },
   "dependencies": {
     "@capacitor/android": "^7.6.8",

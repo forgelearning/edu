@@ -270,6 +270,10 @@ The Supabase dashboard was checked directly. Leaked-password protection cannot b
 
 Added explicit `type="button"` to all 690 previously untyped buttons across the static HTML surfaces. A form-context audit found none of the affected buttons inside forms, so submit behavior was not altered. The button-type count is now zero, and Forge/UI regression checks pass.
 
+## CI guardrails pass — 2026-08-09
+
+Added two automated release checks. `scripts/build-content-status.js --check` now compares the generated page/subject contract with the committed `data/content-status.json` while ignoring only its timestamp, so stale content metadata fails the build. `scripts/check-button-types.js` scans the maintained HTML sources and fails any button without an explicit type. Both checks are available through npm scripts and run in the GitHub Pages workflow. The new button lint also caught six untyped controls in the reusable GCSE subject template; those template controls are now explicit as well.
+
 ## Entitlement hardening pass — 2026-08-09
 
 Fixed the Pro login path in `forge-quiz.html`. It previously accepted any subscriber row and marked the session as Pro, including an expired trial. It now accepts only `pro` or unexpired `trial` access, gives expired trials a subscription message, signs them out, and persists accurate Pro/trial flags in local storage. Forge regression and UI-system checks pass.
