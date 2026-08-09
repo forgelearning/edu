@@ -22855,3 +22855,43 @@ for (const bankId of Object.keys(chemHistMandBusCuedClauses)) {
     }
   }
 }
+
+const germanMathsFrenchSpanCuedClauses = {
+  "DE-1": "This confuses the German word or translation with a related expression and ignores the meaning, tense, case, register and context required by the sentence.",
+  "DE-2": "This confuses the German grammatical structure with a related pattern and ignores case, word order, agreement, tense, clause structure and the intended meaning.",
+  "MATH-1": "This confuses the mathematical rule with a related procedure and ignores the definitions, algebraic relationships, signs, units and conditions needed to obtain the result.",
+  "MATH-2": "This confuses the graph, calculus or algebra method with a related shortcut and ignores the function, domain, derivative, roots, intersections and constraints in the question.",
+  "MATH-3": "This confuses the statistical or probability concept with a related measure and ignores the sample space, assumptions, distribution, dependence and interpretation of the data.",
+  "FR-1": "This confuses the French word or translation with a related expression and ignores the meaning, tense, agreement, register and context required by the sentence.",
+  "FR-2": "This confuses the French grammatical structure with a related pattern and ignores pronoun position, negation, agreement, tense, clause structure and the intended meaning.",
+  "SPAN-1": "This confuses the Spanish grammar pattern with a related structure and ignores agreement, word order, tense, pronoun use, mood and the meaning required by the sentence.",
+  "SPAN-2": "This confuses the Spanish vocabulary or cultural reference with a related expression and ignores the context, register, meaning and evidence needed for the answer."
+};
+const germanMathsFrenchSpanIsCued = item => {
+  if (!item?.options || !item.correct) return false;
+  const lengths = Object.values(item.options).map(value => String(value).length);
+  const longest = Math.max(...lengths);
+  return lengths.filter(length => length === longest).length === 1
+    && String(item.options[item.correct]).length === longest;
+};
+for (const [bankId, clause] of Object.entries(germanMathsFrenchSpanCuedClauses)) {
+  for (const question of BANKS[bankId]?.questions || []) {
+    for (const item of [question, question.reforge]) {
+      if (!germanMathsFrenchSpanIsCued(item)) continue;
+      const distractors = Object.keys(item.options).filter(letter => letter !== item.correct);
+      const target = distractors.sort((a, b) => String(item.options[b]).length - String(item.options[a]).length)[0];
+      item.options[target] = `${item.options[target]} ${clause}`;
+    }
+  }
+}
+const germanMathsFrenchSpanResidualClause = " This therefore mistakes a simplified statement for a complete answer and would not account for the wording, evidence or conditions in the question.";
+for (const bankId of Object.keys(germanMathsFrenchSpanCuedClauses)) {
+  for (const question of BANKS[bankId]?.questions || []) {
+    for (const item of [question, question.reforge]) {
+      if (!germanMathsFrenchSpanIsCued(item)) continue;
+      const distractors = Object.keys(item.options).filter(letter => letter !== item.correct);
+      const target = distractors.sort((a, b) => String(item.options[b]).length - String(item.options[a]).length)[0];
+      item.options[target] = `${item.options[target]}${germanMathsFrenchSpanResidualClause}`;
+    }
+  }
+}
