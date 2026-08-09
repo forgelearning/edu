@@ -235,7 +235,7 @@ function renderAnvilHome(){
   var resolved=getResolvedMCs();
   var total=active.length+resolved.length;
 
-  var h='<button class="back-btn" data-forge-action="anvil-back">\u2190 '+(anvilState.classId ? 'Log out' : 'Back to quiz')+'</button>';
+  var h='<button type="button" class="back-btn" data-forge-action="anvil-back">\u2190 '+(anvilState.classId ? 'Log out' : 'Back to quiz')+'</button>';
   h+='<div class="center forge-u-1y8kt2f">';
   h+='<p class="tag forge-u-l8gta7">THE ANVIL</p>';
   h+='<h1 class="forge-u-1oh0w3h">'+anvilState.studentName+'</h1>';
@@ -252,7 +252,7 @@ function renderAnvilHome(){
   var repairable=active.filter(function(m){return canRepair(m.tag);});
   if(repairable.length>0){
     var priority=repairable[0];
-    h+='<section class="forge-recommendation" aria-labelledby="anvil-next-title"><p class="forge-recommendation__eyebrow">Recommended next</p><h2 id="anvil-next-title" class="forge-recommendation__title">Repair '+(resolveMCLabel(priority.tag)||priority.tag)+'</h2><p class="forge-recommendation__copy">This misconception has fired '+priority.fires+' time'+(priority.fires===1?'':'s')+' and is the clearest repair to make now.</p><button class="forge-button forge-button--primary" data-forge-action="anvil-rework" data-tag="'+priority.tag+'">Start the repair →</button></section>';
+    h+='<section class="forge-recommendation" aria-labelledby="anvil-next-title"><p class="forge-recommendation__eyebrow">Recommended next</p><h2 id="anvil-next-title" class="forge-recommendation__title">Repair '+(resolveMCLabel(priority.tag)||priority.tag)+'</h2><p class="forge-recommendation__copy">This misconception has fired '+priority.fires+' time'+(priority.fires===1?'':'s')+' and is the clearest repair to make now.</p><button type="button" class="forge-button forge-button--primary" data-forge-action="anvil-rework" data-tag="'+priority.tag+'">Start the repair →</button></section>';
   }
 
   if(active.length===0 && resolved.length===0){
@@ -416,7 +416,7 @@ function renderReworkQuestion(tag,questions,lap,qIdx){
   // student already knows. The progress bar tracks the clearing streak
   // rather than a question count, which is what "done" means here.
   var h='<div class="quiz-header">';
-  h+='<button class="back-btn" data-forge-action="anvil-home">\u2190 Anvil</button>';
+  h+='<button type="button" class="back-btn" data-forge-action="anvil-home">\u2190 Anvil</button>';
   h+='<span class="bank-name">'+(label||tag)+'</span>';
   h+='<span class="mono" id="rw-streak">'+m.streak+' / '+CLEAR_THRESHOLD+' \u2713</span>';
   h+='</div>';
@@ -484,12 +484,12 @@ function renderReworkQuestion(tag,questions,lap,qIdx){
 
       if(isCorrect && m.streak>=CLEAR_THRESHOLD){
         fh='<div class="cleared-banner forge-u-f4v9hz"><h2>\u2713 Misconception cleared!</h2><p class="forge-u-1ybl9nb">'+tag+' \u2014 '+label+'<br>'+CLEAR_THRESHOLD+' correct in a row. This one is off your Anvil.</p></div>';
-        fh+='<button class="next-btn btn-glass btn-ember" id="rw-next">Back to Anvil \u2192</button><div class="clear"></div>';
+        fh+='<button type="button" class="next-btn btn-glass btn-ember" id="rw-next">Back to Anvil \u2192</button><div class="clear"></div>';
         fb.innerHTML=fh;
         document.getElementById('rw-next').onclick=function(){ renderAnvilHome(); };
       } else if(isCorrect){
         fh='<div class="praise-box">\u2713 Correct. Streak: '+m.streak+'/'+CLEAR_THRESHOLD+'</div>';
-        fh+='<button class="next-btn btn-glass btn-ember" id="rw-next">Next question \u2192</button><div class="clear"></div>';
+        fh+='<button type="button" class="next-btn btn-glass btn-ember" id="rw-next">Next question \u2192</button><div class="clear"></div>';
         fb.innerHTML=fh;
         document.getElementById('rw-next').onclick=function(){
           renderReworkQuestion(tag,questions,lap,qIdx+1);
@@ -499,7 +499,7 @@ function renderReworkQuestion(tag,questions,lap,qIdx){
         // placeholder some banks still carry, exactly as the quiz does.
         fh='<div class="scaffold-box"><span class="stag">'+tag+'</span><p>'+window.ForgeQuestion.scaffoldText(q)+'</p></div>';
         fh+='<div class="forge-u-1pk26m3">Streak reset to 0/'+CLEAR_THRESHOLD+'</div>';
-        fh+='<button class="next-btn btn-glass btn-ember" id="rw-next">Try again \u2192</button><div class="clear"></div>';
+        fh+='<button type="button" class="next-btn btn-glass btn-ember" id="rw-next">Try again \u2192</button><div class="clear"></div>';
         fb.innerHTML=fh;
         document.getElementById('rw-next').onclick=function(){
           renderReworkQuestion(tag,questions,lap,qIdx+1);

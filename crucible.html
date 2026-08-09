@@ -216,7 +216,7 @@ function renderSubject(){
     if(total<3) return;
     eligible++;
     var entry = ForgeClasses.forSubject(k);
-    h+='<button class="pick-btn" data-key="'+k+'">';
+    h+='<button type="button" class="pick-btn" data-key="'+k+'">';
     h+='<h3 style="color:'+s.color+'">'+s.label+'</h3>';
     h+='<div class="sub">'+s.sub+' \u00b7 '+total+' questions available'+(entry&&entry.className?' \u00b7 '+entry.className:'')+'</div>';
     h+='</button>';
@@ -232,7 +232,7 @@ function renderSubject(){
   h+='</div>';
   var saved=loadCrucibleRun();
   if(saved&&saved.status==='active'&&saved.subject&&saved.bank){
-    h+='<div class="forge-status forge-status--focus forge-u-1ltoyjw"><strong>Crucible run in progress</strong><br><span class="forge-text-13">You have answered '+(saved.answers||[]).length+' of '+(saved.questionIds||[]).length+' questions.</span><br><button class="forge-button forge-button--primary forge-u-so79xg" id="resume-crucible">Resume run →</button> <button class="forge-button forge-button--secondary forge-u-so79xg" id="discard-crucible">Start fresh</button></div>';
+    h+='<div class="forge-status forge-status--focus forge-u-1ltoyjw"><strong>Crucible run in progress</strong><br><span class="forge-text-13">You have answered '+(saved.answers||[]).length+' of '+(saved.questionIds||[]).length+' questions.</span><br><button type="button" class="forge-button forge-button--primary forge-u-so79xg" id="resume-crucible">Resume run →</button> <button type="button" class="forge-button forge-button--secondary forge-u-so79xg" id="discard-crucible">Start fresh</button></div>';
   }
   app.innerHTML=h + sessionBar();
   var resumeBtn=document.getElementById('resume-crucible');
@@ -259,7 +259,7 @@ function renderSubject(){
 function renderBank(){
   var subj=SUBJECTS[state.subject];
   var locked=state.classSubject&&state.classSubject===state.subject;
-  var h=locked?'':'<button class="back-btn" data-forge-action="crucible-subject">\u2190 Subjects</button>';
+  var h=locked?'':'<button type="button" class="back-btn" data-forge-action="crucible-subject">\u2190 Subjects</button>';
   h+='<p class="tag forge-u-1aakxi2">THE CRUCIBLE</p>';
   h+='<h2 class="forge-u-1y4dowp">'+subj.label+'</h2>';
   h+='<p class="forge-u-13n81an">Pick a topic bank or run the full subject mix.</p>';
@@ -275,7 +275,7 @@ function renderBank(){
     }) + sessionBar();
     return;
   }
-  h+='<button class="pick-btn" data-bank="ALL" style="border-color:'+subj.color+'30">';
+  h+='<button type="button" class="pick-btn" data-bank="ALL" style="border-color:'+subj.color+'30">';
   h+='<h3 style="color:'+subj.color+'">All topics mixed</h3>';
   h+='<div class="sub">'+allQs.length+' questions \u00b7 randomised</div>';
   h+='</button>';
@@ -283,7 +283,7 @@ function renderBank(){
     if(!BANKS[bk]) return;
     var qs=BANKS[bk].questions.filter(function(q){return !q.type&&q.reforge;});
     if(qs.length<2) return;
-    h+='<button class="pick-btn" data-bank="'+bk+'">';
+    h+='<button type="button" class="pick-btn" data-bank="'+bk+'">';
     h+='<h3>'+BANKS[bk].label+'</h3>';
     h+='<div class="sub">'+qs.length+' questions</div>';
     h+='</button>';
@@ -316,7 +316,7 @@ function buildQuestions(){
 function renderReady(){
   var subj=SUBJECTS[state.subject];
   var bankName=state.bank==='ALL'?'All topics':BANKS[state.bank].label;
-  var h='<button class="back-btn" data-forge-action="crucible-bank">\u2190 Back</button>';
+  var h='<button type="button" class="back-btn" data-forge-action="crucible-bank">\u2190 Back</button>';
   h+='<div class="center crucible-ready">';
   h+='<p class="tag forge-u-8jlsd7">THE CRUCIBLE</p>';
   h+='<h1 class="forge-u-1w1cjfn">Ready?</h1>';
@@ -332,7 +332,7 @@ function renderReady(){
   h+='<div>\u2713 Wrong answers go to your Anvil automatically</div>';
   h+='<div>\u2713 Timer stops for no one</div>';
   h+='</div>';
-  h+='<button class="forge-button forge-button--primary crucible-begin-btn forge-u-1vwx933" data-forge-action="crucible-start">Begin \u2192</button>';
+  h+='<button type="button" class="forge-button forge-button--primary crucible-begin-btn forge-u-1vwx933" data-forge-action="crucible-start">Begin \u2192</button>';
   h+='</div>';
   app.innerHTML=h;
 }
@@ -412,7 +412,7 @@ function renderQuestion(){
   h+='<div class="stem">'+q.stem+'</div>';
   h+='<div class="options" id="c-opts">';
   keys.forEach(function(k){
-    h+='<button class="opt forge-option" data-k="'+k+'"><span class="letter">'+k+'</span><span>'+q.options[k]+'</span></button>';
+    h+='<button type="button" class="opt forge-option" data-k="'+k+'"><span class="letter">'+k+'</span><span>'+q.options[k]+'</span></button>';
   });
   h+='</div>';
   h+='<div id="c-feedback"></div><div class="clear"></div>';
@@ -444,7 +444,7 @@ function renderQuestion(){
       } else {
         fb.innerHTML='<div class="no-scaffold"><b>No scaffold here.</b> That error has been sent to your Anvil. Rework it after.</div>';
       }
-      fb.innerHTML+='<button class="next-btn btn-glass btn-crimson" id="c-next">'+(state.idx+1<state.questions.length?'Next \u2192':'Finish \u2192')+'</button><div class="clear"></div>';
+      fb.innerHTML+='<button type="button" class="next-btn btn-glass btn-crimson" id="c-next">'+(state.idx+1<state.questions.length?'Next \u2192':'Finish \u2192')+'</button><div class="clear"></div>';
       document.getElementById('c-next').onclick=function(){
         state.idx++;
         saveCrucibleRun();
@@ -526,9 +526,9 @@ function renderResults(){
   }
 
   h+='<div class="forge-action-row">';
-  h+='<button class="forge-button forge-button--primary" data-forge-action="crucible-build">Run it again</button>';
-  h+='<button class="forge-button forge-button--secondary" data-forge-action="crucible-bank">Change bank</button>';
-  h+='<button class="forge-button forge-button--secondary" data-forge-action="crucible-back">Change subject</button>';
+  h+='<button type="button" class="forge-button forge-button--primary" data-forge-action="crucible-build">Run it again</button>';
+  h+='<button type="button" class="forge-button forge-button--secondary" data-forge-action="crucible-bank">Change bank</button>';
+  h+='<button type="button" class="forge-button forge-button--secondary" data-forge-action="crucible-back">Change subject</button>';
   h+='</div>';
   h+='<div class="center forge-mt-4">';
   h+='<a class="forge-u-1q6gxej" href="anvil.html">Rework your Anvil \u2192</a>';

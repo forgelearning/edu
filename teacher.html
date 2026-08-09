@@ -770,9 +770,9 @@ function renderLogin(activeTab) {
         r += '<span class="code-val">' + code + '</span>';
         r += '<span class="code-sub">' + name + ' \u00b7 ' + subjName + '</span>';
         r += '</div>';
-        r += '<button class="copy-btn" id="copy-code-btn">\u2398 Copy code</button>';
-        r += '<button class="copy-btn" id="share-edulink-btn">\uD83D\uDCCB Copy EduLink message</button>';
-        r += '<button class="join-btn" data-forge-action="created-dashboard">Open dashboard \u2192</button>';
+        r += '<button type="button" class="copy-btn" id="copy-code-btn">\u2398 Copy code</button>';
+        r += '<button type="button" class="copy-btn" id="share-edulink-btn">\uD83D\uDCCB Copy EduLink message</button>';
+        r += '<button type="button" class="join-btn" data-forge-action="created-dashboard">Open dashboard \u2192</button>';
         result.innerHTML = r;
         result.style.display = 'block';
         result.insertAdjacentHTML('afterbegin', ForgeState.html('success', {
@@ -871,13 +871,13 @@ function renderDashboard() {
   h += '<div><p class="tag forge-u-l8gta7">Teacher Dashboard</p>';
   h += '<h1>' + dashState.className;
   if (dashState.classCode) {
-    h += ' <button id="class-code-pill" data-forge-action="copy-class-code" title="Copy class code" '
+    h += ' <button type="button" id="class-code-pill" data-forge-action="copy-class-code" title="Copy class code" '
        + 'style="font-family:\'JetBrains Mono\',monospace;font-size:13px;font-weight:700;letter-spacing:.06em;'
        + 'color:var(--hot);background:var(--panel-2);border:1px solid var(--line);border-radius:var(--radius-sm);'
        + 'padding:3px 10px;cursor:pointer;vertical-align:middle">' + dashState.classCode + ' ⎘</button>';
   }
   h += '</h1></div>';
-  h += '<div class="dash-header-actions"><a class="dash-primary forge-button forge-button--primary" href="#" id="dash-action">' + (wrongResponses.length ? 'Open misconceptions \u2192' : 'Create assignment \u2192') + '</a><div class="dash-meta"><b>' + students.length + '</b> student' + (students.length !== 1 ? 's' : '') + ' \u00b7 <b>' + totalQs + '</b> response' + (totalQs !== 1 ? 's' : '') + ' \u00b7 <button class="back-btn forge-u-gr3ipb" data-forge-action="render-teacher-home">\u2190 All classes</button></div></div>';
+  h += '<div class="dash-header-actions"><a class="dash-primary forge-button forge-button--primary" href="#" id="dash-action">' + (wrongResponses.length ? 'Open misconceptions \u2192' : 'Create assignment \u2192') + '</a><div class="dash-meta"><b>' + students.length + '</b> student' + (students.length !== 1 ? 's' : '') + ' \u00b7 <b>' + totalQs + '</b> response' + (totalQs !== 1 ? 's' : '') + ' \u00b7 <button type="button" class="back-btn forge-u-gr3ipb" data-forge-action="render-teacher-home">\u2190 All classes</button></div></div>';
   h += '</div>';
 
   // Stats row
@@ -897,18 +897,18 @@ function renderDashboard() {
   h += '<div class="forge-card forge-card--focus forge-u-p7nziw"><div class="card-title">Needs attention today <span class="forge-meta">top misconception volume</span></div>';
   if(attentionRows.length){
     h += '<div class="forge-action-row forge-u-11yg588">';
-    attentionRows.slice(0,3).forEach(function(row,i){h += '<button class="forge-button forge-button--'+(i===0?'primary':'secondary')+' forge-u-1l0ycxr" data-forge-action="render-student" data-student-id="'+row.id+'"><span>'+(i===0?'Start with ':'')+teacherEsc(row.name)+'</span><span class="forge-meta">'+row.count+' open</span></button>';});
+    attentionRows.slice(0,3).forEach(function(row,i){h += '<button type="button" class="forge-button forge-button--'+(i===0?'primary':'secondary')+' forge-u-1l0ycxr" data-forge-action="render-student" data-student-id="'+row.id+'"><span>'+(i===0?'Start with ':'')+teacherEsc(row.name)+'</span><span class="forge-meta">'+row.count+' open</span></button>';});
     h += '</div><p class="forge-u-8g5nnq">The first student is the recommended starting point; open their profile to choose an intervention.</p>';
   } else h += '<p class="ui-meta-muted">No active misconception signals yet. Keep collecting responses.</p>';
   h += '</div>';
 
   // Tabs
   h += '<div class="tabs" role="tablist" aria-label="Teacher dashboard views">';
-  h += '<button class="tab active" data-view="heatmap" data-forge-action="switch-tab" data-tab="heatmap">Priority signals</button>';
-  h += '<button class="tab" data-view="class" data-forge-action="switch-tab" data-tab="class">Class overview</button>';
-  h += '<button class="tab" data-view="spec" data-forge-action="switch-tab" data-tab="spec">Spec points</button>';
-  h += '<button class="tab" data-view="assignments" data-forge-action="switch-tab" data-tab="assignments">Assignments</button>';
-  h += '<button class="tab" data-view="starters" data-forge-action="switch-tab" data-tab="starters">Corrective starters</button>';
+  h += '<button type="button" class="tab active" data-view="heatmap" data-forge-action="switch-tab" data-tab="heatmap">Priority signals</button>';
+  h += '<button type="button" class="tab" data-view="class" data-forge-action="switch-tab" data-tab="class">Class overview</button>';
+  h += '<button type="button" class="tab" data-view="spec" data-forge-action="switch-tab" data-tab="spec">Spec points</button>';
+  h += '<button type="button" class="tab" data-view="assignments" data-forge-action="switch-tab" data-tab="assignments">Assignments</button>';
+  h += '<button type="button" class="tab" data-view="starters" data-forge-action="switch-tab" data-tab="starters">Corrective starters</button>';
   h += '</div>';
 
   h += '<div class="panel active" id="panel-heatmap"></div>';
@@ -1535,11 +1535,11 @@ function renderAssignCard(asgn, students, responses, isArchived) {
   // Action buttons
   h += '<div class="asgn-actions">';
   if (isArchived) {
-    h += '<button class="asgn-action-btn" data-action="unarchive" data-id="' + asgn.id + '">Restore</button>';
+    h += '<button type="button" class="asgn-action-btn" data-action="unarchive" data-id="' + asgn.id + '">Restore</button>';
   } else {
-    h += '<button class="asgn-action-btn" data-action="archive" data-id="' + asgn.id + '">Archive</button>';
+    h += '<button type="button" class="asgn-action-btn" data-action="archive" data-id="' + asgn.id + '">Archive</button>';
   }
-  h += '<button class="asgn-action-btn danger" data-action="delete" data-id="' + asgn.id + '">Delete</button>';
+  h += '<button type="button" class="asgn-action-btn danger" data-action="delete" data-id="' + asgn.id + '">Delete</button>';
   h += '</div>';
   h += '</div>';
   return h;
@@ -1586,7 +1586,7 @@ function renderAssignments() {
     h += '</div>';
   });
   h += '</div>';
-  h += '<button class="join-btn" id="asgn-create-btn" disabled aria-disabled="true">Set assignment \u2192</button>';
+  h += '<button type="button" class="join-btn" id="asgn-create-btn" disabled aria-disabled="true">Set assignment \u2192</button>';
   h += '<p class="join-err" id="asgn-err"></p>';
   h += '</div>';
 
@@ -1719,7 +1719,7 @@ function renderAssignments() {
           + '3. Your assignment will appear at the top of the page';
         var toast = document.createElement('div');
         toast.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--panel);border:1px solid var(--ember);border-radius:var(--radius-md);padding:14px 18px;display:flex;gap:12px;align-items:center;z-index:999;box-shadow:0 4px 24px rgba(0,0,0,.4);max-width:340px';
-        toast.innerHTML = ForgeState.html('success', { label: 'Assignment set', body: 'Your class can now see this work. Share it with students.' }) + '<button id="toast-share" class="forge-button forge-button--primary">\uD83D\uDCCB Copy message</button>';
+        toast.innerHTML = ForgeState.html('success', { label: 'Assignment set', body: 'Your class can now see this work. Share it with students.' }) + '<button type="button" id="toast-share" class="forge-button forge-button--primary">\uD83D\uDCCB Copy message</button>';
         document.body.appendChild(toast);
         document.getElementById('toast-share').onclick = function() {
           navigator.clipboard.writeText(asgnShareText).then(function() {
@@ -1842,7 +1842,7 @@ function renderStarters(wrongResponses) {
     h += '<div class="misconception-card__header"><div><div class="card-title">Next interventions</div><h2 id="other-misconceptions-title">Other misconceptions this period</h2></div><span class="misconception-card__hint">Choose one to preview</span></div>';
     h += '<div class="misconception-grid">';
     others.forEach(function(tag) {
-      h += '<button class="misconception-chip" data-forge-action="show-starter" data-tag="' + teacherEsc(tag) + '"><span><strong>' + teacherEsc(tag) + '</strong><small>' + counts[tag].count + ' fires</small></span><span aria-hidden="true">→</span></button>';
+      h += '<button type="button" class="misconception-chip" data-forge-action="show-starter" data-tag="' + teacherEsc(tag) + '"><span><strong>' + teacherEsc(tag) + '</strong><small>' + counts[tag].count + ' fires</small></span><span aria-hidden="true">→</span></button>';
     });
     h += '</div></section>';
   }
@@ -1854,7 +1854,7 @@ window.showStarterFor = function(tag) {
   var el = document.getElementById('panel-starters');
   if (!el) return;
   var out = ''; out = renderStarterCard(tag, out, null);
-  el.innerHTML = out + '<button class="forge-u-166b9d9" data-forge-action="render-starters">&larr; Back to all starters</button>';
+  el.innerHTML = out + '<button type="button" class="forge-u-166b9d9" data-forge-action="render-starters">&larr; Back to all starters</button>';
 };
 
 function renderClassOverview(responses, students) {
@@ -1961,7 +1961,7 @@ function renderClassOverview(responses, students) {
   });
   h += '</select>';
   h += '<input type="text" id="rename-input" class="rename-input" placeholder="New display name">';
-  h += '<button id="rename-btn" class="join-btn forge-u-fnqu57">Save</button>';
+  h += '<button type="button" id="rename-btn" class="join-btn forge-u-fnqu57">Save</button>';
   h += '<p class="join-err" id="rename-err"></p>';
   h += '</div></div>';
 
@@ -2078,7 +2078,7 @@ window.renderStudent = function(studentId) {
   var activeMCs = knownMCs.filter(function(mc) { return mcData[mc].streak < ANVIL_CLEAR_THRESHOLD; });
   var resolvedMCs = knownMCs.filter(function(mc) { return mcData[mc].streak >= ANVIL_CLEAR_THRESHOLD; });
 
-  var h = '<button class="back-btn" data-forge-action="student-back">\u2190 Back to class</button>';
+  var h = '<button type="button" class="back-btn" data-forge-action="student-back">\u2190 Back to class</button>';
 
   h += '<div class="dash-header student-profile-header forge-mb-4"><div><p class="tag forge-u-l8gta7">Student Profile</p><h1>' + studentName + (extraTime > 0 ? ' <span class="extra-time-badge forge-u-1nzryid">+' + extraTime + '% time</span>' : '') + '</h1></div></div>';
 
