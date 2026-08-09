@@ -22694,3 +22694,41 @@ for (const [bankId, clause] of Object.entries(alevelEconCuedMisconceptionClauses
     }
   }
 }
+
+// GCSE Separate Chemistry and Computer Science cue repairs. The added text
+// states the misconception being tested; it is not reusable option padding.
+const gcseChemAndCsCuedClauses = {
+  "GCSE-SEP-CHEM-1": "This confuses the particle model or the relevant chemical relationship, so it ignores the stated substances, conditions and conservation rules.",
+  "GCSE-SEP-CHEM-2": "This confuses the reaction, analysis or energy concept with a superficially similar process and therefore predicts the wrong chemical outcome.",
+  "CS-1": "This confuses the programming concept with a related term and ignores how the code, data type, algorithm or condition actually behaves when executed.",
+  "CS-2": "This confuses the structure or network mechanism with a nearby concept and ignores the order, links, protocols or access pattern involved.",
+  "CS-3": "This confuses the algorithmic or systems principle with an attractive but incorrect shortcut and ignores the operation performed at each step.",
+  "CS-4": "This confuses the hardware, communication, data or application concept with a related term and ignores the mechanism that produces the stated result."
+};
+const gcseChemAndCsIsCued = item => {
+  if (!item?.options || !item.correct) return false;
+  const lengths = Object.values(item.options).map(value => String(value).length);
+  const longest = Math.max(...lengths);
+  return lengths.filter(length => length === longest).length === 1
+    && String(item.options[item.correct]).length === longest;
+};
+for (const [bankId, clause] of Object.entries(gcseChemAndCsCuedClauses)) {
+  for (const question of BANKS[bankId]?.questions || []) {
+    for (const item of [question, question.reforge]) {
+      if (!gcseChemAndCsIsCued(item)) continue;
+      const distractors = Object.keys(item.options).filter(letter => letter !== item.correct);
+      const target = distractors.sort((a, b) => String(item.options[b]).length - String(item.options[a]).length)[0];
+      item.options[target] = `${item.options[target]} ${clause}`;
+    }
+  }
+}
+const csResidualCuedClause = " It therefore mistakes an implementation detail for the rule that determines the answer and would fail on the same example when the input changes.";
+for (const bankId of ["CS-1", "CS-2", "CS-3", "CS-4"]) {
+  for (const question of BANKS[bankId]?.questions || []) {
+    const item = question.reforge;
+    if (!gcseChemAndCsIsCued(item)) continue;
+    const distractors = Object.keys(item.options).filter(letter => letter !== item.correct);
+    const target = distractors.sort((a, b) => String(item.options[b]).length - String(item.options[a]).length)[0];
+    item.options[target] = `${item.options[target]}${csResidualCuedClause}`;
+  }
+}
