@@ -52,5 +52,26 @@ for (const [key, subject] of Object.entries(data.SUBJECTS)) {
 }
 
 const output = { version: 1, generatedAt: new Date().toISOString(), pages, subjects };
+if (process.argv.includes('--check')) {
+  const target = path.join(root, 'data/content-status.json');
+  let current;
+  try {
+    current = JSON.parse(fs.readFileSync(target, 'utf8'));
+  } catch (error) {
+    console.error(`Content status is missing or invalid: ${error.message}`);
+    process.exit(1);
+  }
+  const comparable = value => {
+    const clone = JSON.parse(JSON.stringify(value));
+    delete clone.generatedAt;
+    return clone;
+  };
+  if (JSON.stringify(comparable(current)) !== JSON.stringify(comparable(output))) {
+    console.error('Stale content status: run node scripts/build-content-status.js and review the generated diff.');
+    process.exit(1);
+  }
+  console.log('Content status is current.');
+  process.exit(0);
+}
 fs.writeFileSync(path.join(root, 'data/content-status.json'), JSON.stringify(output, null, 2) + '\n');
 console.log(`Wrote content status for ${Object.keys(subjects).length} subjects and ${Object.keys(pages).length} marketing pages.`);
