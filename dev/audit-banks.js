@@ -194,7 +194,11 @@ const TAG_TAXONOMY_SUBJECTS = {
   // The only single-use tag left is MC-MATH-INVERSE; nothing else in the
   // subject tests inverse functions.
   'gcse-maths': 0.01,
-  'gcse-geo': 0.78,
+  // Being retagged bank by bank. Hazardous Earth is curated (49 tags -> 16,
+  // 41 single-use -> 0), taking the subject from 0.697 to 0.633. The other
+  // eleven banks still carry auto-generated per-question concept slugs; drop
+  // this figure as each one is curated.
+  'gcse-geo': 0.64,
   // 185 of 200 questions retagged onto 44 shared categories, taking the
   // single-use share from 0.930 to 0.010. The two tags left on one question
   // each are MC-EDU-ETHNIC and MC-TECH-01, both real categories with one
@@ -254,12 +258,12 @@ const TAG_TAXONOMY_MECHANICAL = {
   'gcse-sep-phys': 0,
   'gcse-science': 0,
   'gcse-maths': 0,
-  // 637 of 640 after the first collision repair, was 0.00. Not a regression — gcse-geo has never had a
-  // taxonomy. Every one of its 565 tags is a bank code plus a position
-  // (MC-GEO-HAZ-27, MC-ENQ-02), and none contains a concept word, but none
-  // matched MC-<id> either because the ids read GCSE-HAZ-27. It is the
-  // largest untagged subject left; see docs/gcse-geo-misconception-plan.md.
-  'gcse-geo': 0.996,
+  // Was 0.996 when every tag was a bank code plus a position (MC-GEO-HAZ-27).
+  // The concept-slug pass cleared that: the subject now measures 0, so the
+  // floor is closed. Note this ratchet alone says nothing about whether the
+  // subject aggregates — the slugs name concepts but 405 of 640 questions are
+  // still on a tag of their own, which is what TAG_TAXONOMY_SUBJECTS tracks.
+  'gcse-geo': 0,
   // 29 of 264, all in the Forensic and Cognitive banks added after the retag.
   psych: 0.12,
   // 67 of 212 — the residue of definitional questions that only a topic tag

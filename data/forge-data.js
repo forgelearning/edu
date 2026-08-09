@@ -21510,7 +21510,7 @@ for (const question of SUBJECTS["gcse-geo"].banks.flatMap((bankId) => BANKS[bank
 // one key; otherwise each key is derived from the concept words in the stem,
 // so teachers never see a bank-position code as a misconception label.
 const GCSE_GEO_REMAINING_BANKS = [
-  "GCSE-GEO-HAZ", "GCSE-GEO-INDIA", "GCSE-GEO-URB", "GCSE-GEO-UKLAND",
+  "GCSE-GEO-INDIA", "GCSE-GEO-URB", "GCSE-GEO-UKLAND",
   "GCSE-GEO-UKHUMAN", "GCSE-GEO-RIVERFIELD", "GCSE-GEO-URBFIELD",
   "GCSE-GEO-BIOSPHERE", "GCSE-GEO-FORESTS", "GCSE-GEO-ENERGY",
   "GCSE-GEO-DECISIONS", "GCSE-GEO-SKILLS"
@@ -21537,4 +21537,68 @@ for (const bankId of GCSE_GEO_REMAINING_BANKS) {
   for (const question of bank.questions) {
     if (semanticByOldTag.has(question.tag)) question.tag = semanticByOldTag.get(question.tag);
   }
+}
+
+// Hazardous Earth, curated. gcseGeoSemanticStem() above builds a key from the
+// first five content words of the stem, which gives every question a key of
+// its own: "correct definition of the asthenosphere" and "a student mixes up
+// lithosphere and asthenosphere" are the same misconception under two tags.
+// Readable, but nothing aggregates and no starter can attach. This maps the
+// bank onto 16 concepts a teacher can actually act on. Keyed by question id
+// rather than by stem so the grouping is explicit and reviewable; the eight
+// fill-blank twins are listed with their source's concept.
+// See docs/gcse-geo-hazards-misconception-mapping.md.
+const GCSE_GEO_HAZ_TAGS = {
+  // Plate boundaries: which boundary produces which hazard
+  "GCSE-HAZ-01": "MC-GG-HAZ-BOUNDARY", "GCSE-HAZ-02": "MC-GG-HAZ-BOUNDARY",
+  "GCSE-HAZ-11": "MC-GG-HAZ-BOUNDARY", "GCSE-HAZ-23": "MC-GG-HAZ-BOUNDARY",
+  "GCSE-HAZ-48": "MC-GG-HAZ-BOUNDARY", "GCSE-HAZ-FB-01": "MC-GG-HAZ-BOUNDARY",
+  "GCSE-HAZ-FB-02": "MC-GG-HAZ-BOUNDARY",
+  // Earth structure and why plates move at all
+  "GCSE-HAZ-09": "MC-GG-HAZ-STRUCTURE", "GCSE-HAZ-10": "MC-GG-HAZ-STRUCTURE",
+  "GCSE-HAZ-46": "MC-GG-HAZ-STRUCTURE",
+  // Hotspots sit away from boundaries
+  "GCSE-HAZ-12": "MC-GG-HAZ-HOTSPOT", "GCSE-HAZ-47": "MC-GG-HAZ-HOTSPOT",
+  // Volcano type drives eruption style and impact
+  "GCSE-HAZ-04": "MC-GG-HAZ-VOLCANO", "GCSE-HAZ-05": "MC-GG-HAZ-VOLCANO",
+  "GCSE-HAZ-33": "MC-GG-HAZ-VOLCANO", "GCSE-HAZ-FB-04": "MC-GG-HAZ-VOLCANO",
+  "GCSE-HAZ-FB-05": "MC-GG-HAZ-VOLCANO",
+  // Magnitude is logarithmic and does not decide the death toll
+  "GCSE-HAZ-03": "MC-GG-HAZ-MAGNITUDE", "GCSE-HAZ-49": "MC-GG-HAZ-MAGNITUDE",
+  "GCSE-HAZ-FB-03": "MC-GG-HAZ-MAGNITUDE",
+  // Primary vs secondary effects
+  "GCSE-HAZ-13": "MC-GG-HAZ-EFFECTS", "GCSE-HAZ-34": "MC-GG-HAZ-EFFECTS",
+  // Management: immediate vs long-term, monitoring vs prediction
+  "GCSE-HAZ-06": "MC-GG-HAZ-RESPONSE", "GCSE-HAZ-14": "MC-GG-HAZ-RESPONSE",
+  "GCSE-HAZ-25": "MC-GG-HAZ-RESPONSE", "GCSE-HAZ-43": "MC-GG-HAZ-RESPONSE",
+  "GCSE-HAZ-FB-06": "MC-GG-HAZ-RESPONSE",
+  // Risk is hazard x vulnerability, not hazard size alone
+  "GCSE-HAZ-15": "MC-GG-HAZ-VULNERABILITY", "GCSE-HAZ-44": "MC-GG-HAZ-VULNERABILITY",
+  "GCSE-HAZ-45": "MC-GG-HAZ-VULNERABILITY",
+  // Global atmospheric circulation
+  "GCSE-HAZ-16": "MC-GG-HAZ-CIRCULATION", "GCSE-HAZ-17": "MC-GG-HAZ-CIRCULATION",
+  "GCSE-HAZ-27": "MC-GG-HAZ-CIRCULATION", "GCSE-HAZ-35": "MC-GG-HAZ-CIRCULATION",
+  // Where and why tropical cyclones form, and why they decay
+  "GCSE-HAZ-18": "MC-GG-HAZ-CYCLONE-FORMATION", "GCSE-HAZ-24": "MC-GG-HAZ-CYCLONE-FORMATION",
+  "GCSE-HAZ-26": "MC-GG-HAZ-CYCLONE-FORMATION", "GCSE-HAZ-31": "MC-GG-HAZ-CYCLONE-FORMATION",
+  "GCSE-HAZ-32": "MC-GG-HAZ-CYCLONE-FORMATION",
+  // Cyclone anatomy: surge kills more often than wind
+  "GCSE-HAZ-07": "MC-GG-HAZ-CYCLONE-STRUCTURE", "GCSE-HAZ-08": "MC-GG-HAZ-CYCLONE-STRUCTURE",
+  "GCSE-HAZ-19": "MC-GG-HAZ-CYCLONE-STRUCTURE", "GCSE-HAZ-41": "MC-GG-HAZ-CYCLONE-STRUCTURE",
+  "GCSE-HAZ-42": "MC-GG-HAZ-CYCLONE-STRUCTURE", "GCSE-HAZ-FB-07": "MC-GG-HAZ-CYCLONE-STRUCTURE",
+  "GCSE-HAZ-FB-08": "MC-GG-HAZ-CYCLONE-STRUCTURE",
+  // Natural greenhouse effect vs the enhanced one
+  "GCSE-HAZ-20": "MC-GG-HAZ-GREENHOUSE", "GCSE-HAZ-29": "MC-GG-HAZ-GREENHOUSE",
+  // Proxy evidence for past climate
+  "GCSE-HAZ-21": "MC-GG-HAZ-EVIDENCE", "GCSE-HAZ-28": "MC-GG-HAZ-EVIDENCE",
+  "GCSE-HAZ-37": "MC-GG-HAZ-EVIDENCE",
+  // Natural forcing: orbital cycles and volcanic aerosols
+  "GCSE-HAZ-22": "MC-GG-HAZ-NATURAL-CAUSE", "GCSE-HAZ-38": "MC-GG-HAZ-NATURAL-CAUSE",
+  // Projections give a range because emissions are a choice
+  "GCSE-HAZ-30": "MC-GG-HAZ-PROJECTION", "GCSE-HAZ-40": "MC-GG-HAZ-PROJECTION",
+  // Oceans move heat and expand as they warm
+  "GCSE-HAZ-36": "MC-GG-HAZ-OCEAN", "GCSE-HAZ-39": "MC-GG-HAZ-OCEAN"
+};
+for (const question of BANKS["GCSE-GEO-HAZ"].questions) {
+  if (GCSE_GEO_HAZ_TAGS[question.id]) question.tag = GCSE_GEO_HAZ_TAGS[question.id];
 }
