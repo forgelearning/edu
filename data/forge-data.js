@@ -21512,7 +21512,7 @@ for (const question of SUBJECTS["gcse-geo"].banks.flatMap((bankId) => BANKS[bank
 const GCSE_GEO_REMAINING_BANKS = [
   "GCSE-GEO-INDIA", "GCSE-GEO-URB", "GCSE-GEO-UKLAND",
   "GCSE-GEO-UKHUMAN", "GCSE-GEO-RIVERFIELD", "GCSE-GEO-URBFIELD",
-  "GCSE-GEO-BIOSPHERE", "GCSE-GEO-FORESTS", "GCSE-GEO-ENERGY",
+  "GCSE-GEO-BIOSPHERE", "GCSE-GEO-ENERGY",
   "GCSE-GEO-DECISIONS", "GCSE-GEO-SKILLS"
 ];
 const GCSE_GEO_TAG_STOPWORDS = new Set("a an and are as at be by can does for from how is it may of on or should the their them these this to what when which why with would".split(" "));
@@ -21601,4 +21601,55 @@ const GCSE_GEO_HAZ_TAGS = {
 };
 for (const question of BANKS["GCSE-GEO-HAZ"].questions) {
   if (GCSE_GEO_HAZ_TAGS[question.id]) question.tag = GCSE_GEO_HAZ_TAGS[question.id];
+}
+
+// Forests Under Threat, curated on the same basis as Hazardous Earth above:
+// 44 stem-derived slugs, 40 of them carried by a single question, onto 11
+// concepts. Grouped by the error a student makes, so the two biomes are kept
+// apart where the contrast IS the point (adaptations, threats) and merged
+// where the underlying idea is shared (nutrient cycling, conservation
+// agreements). See docs/gcse-geo-forests-misconception-mapping.md.
+const GCSE_GEO_FOR_TAGS = {
+  // Rainforest adaptations are responses to light, rain and poor soil
+  "GCSE-FOR-02": "MC-GG-FOR-RF-ADAPTATION", "GCSE-FOR-14": "MC-GG-FOR-RF-ADAPTATION",
+  "GCSE-FOR-15": "MC-GG-FOR-RF-ADAPTATION", "GCSE-FOR-23": "MC-GG-FOR-RF-ADAPTATION",
+  "GCSE-FOR-FB-01": "MC-GG-FOR-RF-ADAPTATION",
+  // Taiga adaptations are responses to cold and a short growing season
+  "GCSE-FOR-05": "MC-GG-FOR-TAIGA-ADAPTATION", "GCSE-FOR-31": "MC-GG-FOR-TAIGA-ADAPTATION",
+  "GCSE-FOR-32": "MC-GG-FOR-TAIGA-ADAPTATION",
+  // Nutrients live in the biomass, not the soil — and why the taiga differs
+  "GCSE-FOR-03": "MC-GG-FOR-NUTRIENT", "GCSE-FOR-06": "MC-GG-FOR-NUTRIENT",
+  "GCSE-FOR-19": "MC-GG-FOR-NUTRIENT", "GCSE-FOR-25": "MC-GG-FOR-NUTRIENT",
+  "GCSE-FOR-33": "MC-GG-FOR-NUTRIENT",
+  // Food webs, keystone species and what biodiversity actually means
+  "GCSE-FOR-01": "MC-GG-FOR-INTERDEPENDENCE", "GCSE-FOR-04": "MC-GG-FOR-INTERDEPENDENCE",
+  "GCSE-FOR-18": "MC-GG-FOR-INTERDEPENDENCE", "GCSE-FOR-24": "MC-GG-FOR-INTERDEPENDENCE",
+  "GCSE-FOR-FB-02": "MC-GG-FOR-INTERDEPENDENCE",
+  // Why rainforest is cleared: the driver is usually commercial, not local
+  "GCSE-FOR-08": "MC-GG-FOR-RF-CAUSES", "GCSE-FOR-16": "MC-GG-FOR-RF-CAUSES",
+  "GCSE-FOR-26": "MC-GG-FOR-RF-CAUSES", "GCSE-FOR-37": "MC-GG-FOR-RF-CAUSES",
+  "GCSE-FOR-38": "MC-GG-FOR-RF-CAUSES",
+  // Measuring forest loss: rates, comparisons and the tools used
+  "GCSE-FOR-07": "MC-GG-FOR-RATES", "GCSE-FOR-10": "MC-GG-FOR-RATES",
+  "GCSE-FOR-27": "MC-GG-FOR-RATES",
+  // Taiga threats are largely indirect — pollution, pests, fire, access
+  "GCSE-FOR-09": "MC-GG-FOR-TAIGA-THREAT", "GCSE-FOR-28": "MC-GG-FOR-TAIGA-THREAT",
+  "GCSE-FOR-34": "MC-GG-FOR-TAIGA-THREAT", "GCSE-FOR-35": "MC-GG-FOR-TAIGA-THREAT",
+  "GCSE-FOR-36": "MC-GG-FOR-TAIGA-THREAT", "GCSE-FOR-44": "MC-GG-FOR-TAIGA-THREAT",
+  // Clear felling vs selective logging
+  "GCSE-FOR-13": "MC-GG-FOR-LOGGING", "GCSE-FOR-21": "MC-GG-FOR-LOGGING",
+  // International agreements, and why each one falls short
+  "GCSE-FOR-11": "MC-GG-FOR-AGREEMENTS", "GCSE-FOR-17": "MC-GG-FOR-AGREEMENTS",
+  "GCSE-FOR-20": "MC-GG-FOR-AGREEMENTS", "GCSE-FOR-30": "MC-GG-FOR-AGREEMENTS",
+  "GCSE-FOR-41": "MC-GG-FOR-AGREEMENTS", "GCSE-FOR-42": "MC-GG-FOR-AGREEMENTS",
+  "GCSE-FOR-FB-03": "MC-GG-FOR-AGREEMENTS",
+  // Sustainable use means managing the forest, not fencing it off
+  "GCSE-FOR-12": "MC-GG-FOR-SUSTAINABLE", "GCSE-FOR-22": "MC-GG-FOR-SUSTAINABLE",
+  "GCSE-FOR-39": "MC-GG-FOR-SUSTAINABLE", "GCSE-FOR-40": "MC-GG-FOR-SUSTAINABLE",
+  "GCSE-FOR-FB-04": "MC-GG-FOR-SUSTAINABLE",
+  // Protection creates winners and losers
+  "GCSE-FOR-29": "MC-GG-FOR-STAKEHOLDERS", "GCSE-FOR-43": "MC-GG-FOR-STAKEHOLDERS"
+};
+for (const question of BANKS["GCSE-GEO-FORESTS"].questions) {
+  if (GCSE_GEO_FOR_TAGS[question.id]) question.tag = GCSE_GEO_FOR_TAGS[question.id];
 }

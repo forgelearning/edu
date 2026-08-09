@@ -273,6 +273,18 @@ const MC_LABELS = {
   "MC-ENQ-12": "Fieldwork method limitation — float vs flow meter",
   "MC-ENQ-SAMPLING-BIAS": "Sampling bias — one convenient location may exclude parts of the target population",
   "MC-DEV-MEASURING-DEVELOPMENT": "Development is multidimensional — compare indicators rather than trusting one number",
+  // GCSE Geography — Forests Under Threat, curated taxonomy.
+  "MC-GG-FOR-RF-ADAPTATION": "Rainforest adaptations answer light, rain and poor soil",
+  "MC-GG-FOR-TAIGA-ADAPTATION": "Taiga adaptations answer cold and a short growing season",
+  "MC-GG-FOR-NUTRIENT": "Rainforest nutrients sit in the biomass, not the soil",
+  "MC-GG-FOR-INTERDEPENDENCE": "Remove one species and the whole web is affected",
+  "MC-GG-FOR-RF-CAUSES": "Commercial demand clears more forest than local need",
+  "MC-GG-FOR-RATES": "The taiga is being lost faster than people assume",
+  "MC-GG-FOR-TAIGA-THREAT": "Taiga threats are mostly indirect, not direct felling",
+  "MC-GG-FOR-LOGGING": "Selective logging still needs roads and still damages",
+  "MC-GG-FOR-AGREEMENTS": "Agreements bind only those who sign and enforce them",
+  "MC-GG-FOR-SUSTAINABLE": "Sustainable use manages the forest, it does not fence it off",
+  "MC-GG-FOR-STAKEHOLDERS": "Protection creates losers as well as winners",
   // GCSE Geography — Hazardous Earth, curated taxonomy replacing the
   // auto-generated per-question concept slugs.
   "MC-GG-HAZ-BOUNDARY": "The boundary type decides which hazard you get",

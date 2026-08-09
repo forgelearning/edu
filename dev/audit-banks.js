@@ -194,11 +194,12 @@ const TAG_TAXONOMY_SUBJECTS = {
   // The only single-use tag left is MC-MATH-INVERSE; nothing else in the
   // subject tests inverse functions.
   'gcse-maths': 0.01,
-  // Being retagged bank by bank. Hazardous Earth is curated (49 tags -> 16,
-  // 41 single-use -> 0), taking the subject from 0.697 to 0.633. The other
-  // eleven banks still carry auto-generated per-question concept slugs; drop
-  // this figure as each one is curated.
-  'gcse-geo': 0.64,
+  // Being retagged bank by bank. Curated so far: Hazardous Earth (49 tags ->
+  // 16, 41 single-use -> 0) and Forests Under Threat (44 -> 11, 40 -> 0),
+  // taking the subject from 0.697 to 0.575. The other ten banks still carry
+  // auto-generated per-question concept slugs; drop this figure as each one
+  // is curated.
+  'gcse-geo': 0.58,
   // 185 of 200 questions retagged onto 44 shared categories, taking the
   // single-use share from 0.930 to 0.010. The two tags left on one question
   // each are MC-EDU-ETHNIC and MC-TECH-01, both real categories with one
