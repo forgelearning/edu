@@ -75,5 +75,5 @@ intervention is the rule students have confused:
 | `MC-GG-UKH-URBAN-CHANGE` | Urban change redistributes land use and opportunity | 4 | 34, 35, 36, 37 |
 | `MC-GG-UKH-PLACE-ACCESS` | Quality of life depends on access and multiple conditions | 3 | 38, 41, 42 |
 
-The six remaining banks are listed in the previous bank's document,
+The five remaining banks are listed in the previous bank's document,
 `docs/gcse-geo-uk-landscape-misconception-mapping.md`.
