@@ -16627,9 +16627,17 @@ const rotateQuestionOptions = (options, correct, desired) => {
 // distractor into a near-copy of the key.  The suffixes are presentation
 // padding, not content, so compare the underlying answer text when choosing
 // clone sources.
-const coverageComparableOption = value => String(value || "")
-  .replace(/\s*\(?\s*(?:in this context|in context|in this case|for this decision|in this market|in this computing context|under standard assumptions|in a typical case|in the stated scenario|in a typical firm)\s*\)?[.!?]?\s*$/i, "")
-  .trim().toLowerCase();
+const coverageComparableOption = value => {
+  let result = String(value || "").trim();
+  const filler = /\s*\(?\s*(?:in this context|in context|in this case|for this decision|in this market|in this computing context|under standard assumptions|in a typical case|in the stated scenario|in a typical firm)\s*\)?[.!?]?\s*$/i;
+  let next;
+  do {
+    next = result.replace(filler, "").trim();
+    if (next === result) break;
+    result = next;
+  } while (true);
+  return result.toLowerCase();
+};
 const coverageHasDistinctOptions = item => {
   if (!item?.options || !item.correct) return false;
   const key = coverageComparableOption(item.options[item.correct]);
@@ -16935,6 +16943,7 @@ for (const subject of Object.values(SUBJECTS)) {
     });
   }
 }
+
 
 // Shared application scripts use the same canonical registry for progress
 // and content-readiness calculations on every page.
@@ -22589,6 +22598,55 @@ for (const bank of Object.values(BANKS)) {
   }
 }
 
+// A few legacy Reforge answers are unusually long enough to remain a cue
+// even after coverage cleanup. These are concise, authored restatements of
+// the same answer, not generated padding.
+for (const question of BANKS["ENG-TERM-1"]?.questions || []) {
+  if (question.coverageVariant && question.reforge?.correct === "D") {
+    question.reforge.options.D = "The simile makes the horror of war seem so extreme that even evil is sickened by it.";
+  }
+}
+for (const question of BANKS["CS-3"]?.questions || []) {
+  if (question.coverageVariant && question.reforge?.correct === "A") {
+    question.reforge.options.A = "UDP favours speed: dropped packets cause minor glitches, while TCP retransmission causes delays.";
+  }
+}
+const coverageReforgeLengthRepairs = {
+  "CS-COV-053": { B: "a syntax error that prevents the program from running at all" },
+  "CS-COV-069": { B: "a syntax error that prevents the program from running at all" },
+  "HSC-COV-149": { A: "educational achievement alone, without considering wellbeing, participation or rights" },
+  "BIO-COV-042": { A: "Fermentation breaks glucose down without oxygen and does not involve aquaporins" },
+  "CS-COV-058": { A: "a syntax error that prevents the program from running at all" },
+  "CS-COV-052": { A: "a syntax error that prevents the program from running at all" }
+};
+for (const bank of Object.values(BANKS)) for (const question of bank.questions || []) {
+  const repair = coverageReforgeLengthRepairs[question.id];
+  if (!repair || !question.reforge?.options) continue;
+  for (const [letter, value] of Object.entries(repair)) question.reforge.options[letter] = value;
+}
+
+// Coverage Reforge twins must retain a different, substantive option set.
+for (const bank of Object.values(BANKS)) {
+  const alternatives = [];
+  for (const question of bank.questions || []) for (const item of [question, question.reforge]) {
+    for (const [letter, value] of Object.entries(item?.options || {})) {
+      if (letter !== item.correct) alternatives.push(String(value));
+    }
+  }
+  for (const question of bank.questions || []) {
+    if (!question.coverageVariant || !question.reforge?.options) continue;
+    const baseSet = new Set(Object.values(question.options).map(value => coverageComparableOption(value)));
+    const refSet = new Set(Object.values(question.reforge.options).map(value => coverageComparableOption(value)));
+    if (baseSet.size !== refSet.size || [...baseSet].some(value => !refSet.has(value))) continue;
+    const replacement = alternatives.find(value => {
+      const normalized = coverageComparableOption(value);
+      return normalized && !baseSet.has(normalized) && normalized !== coverageComparableOption(question.reforge.options[question.reforge.correct]);
+    });
+    const target = Object.keys(question.reforge.options).find(letter => letter !== question.reforge.correct);
+    if (replacement && target) question.reforge.options[target] = replacement;
+  }
+}
+
 // Canonicalise the last legacy GCSE science tags. Their old BIO-/CHEM-/PHYS-
 // prefixes were valid identifiers but did not follow the shared MC-SEP-
 // taxonomy used by the rest of combined science.
@@ -23456,144 +23514,290 @@ for (const [subjectKey] of Object.entries(finalRemainingSubjectCuedClauses)) {
   }
 }
 
-// A final content-level repair for coverage clones.  If a clone still has a
-// padded copy of its key, borrow a wrong answer from another question testing
-// the same misconception tag.  This keeps the replacement in the same topic
-// instead of inventing a meaningless suffix.
+// Safe coverage cleanup: compare answers after removing every stacked filler
+// suffix, then reuse an existing distractor from the same bank. Never derive
+// visible answer text from a stem and never invent a truncated fallback.
+const cleanCoverageOption = value => {
+  let result = String(value || '').trim();
+  const filler = /\s*\(?\s*(?:in this context|in context|in this case|for this decision|in this market|in this computing context|under standard assumptions|in a typical case|in the stated scenario|in a typical firm)\s*\)?[.!?]?\s*$/i;
+  let next;
+  do {
+    next = result.replace(filler, '').trim();
+    if (next === result) break;
+    result = next;
+  } while (true);
+  return result;
+};
 for (const bank of Object.values(BANKS)) {
-  const taggedDistractors = new Map();
-  for (const question of bank.questions || []) {
-    for (const [letter, value] of Object.entries(question.options || {})) {
-      if (letter === question.correct) continue;
-      const tag = question.tag || question.id;
-      const list = taggedDistractors.get(tag) || [];
-      list.push(String(value));
-      taggedDistractors.set(tag, list);
+  const candidatesByTag = new Map();
+  const candidates = [];
+  for (const source of bank.questions || []) {
+    for (const item of [source, source.reforge]) for (const [letter, value] of Object.entries(item?.options || {})) {
+      if (letter === item.correct) continue;
+      const clean = cleanCoverageOption(value);
+      if (!clean) continue;
+      candidates.push(clean);
+      const tag = source.tag || source.id;
+      const tagged = candidatesByTag.get(tag) || [];
+      tagged.push(clean);
+      candidatesByTag.set(tag, tagged);
     }
   }
   for (const question of bank.questions || []) {
     if (!question.coverageVariant) continue;
     for (const item of [question, question.reforge]) {
       if (!item?.options) continue;
-      const key = coverageComparableOption(item.options[item.correct]);
+      const correct = cleanCoverageOption(item.options[item.correct]).toLowerCase();
+      const used = new Set(Object.values(item.options).map(value => cleanCoverageOption(value).toLowerCase()));
+      const pool = [...(candidatesByTag.get(question.tag) || []), ...candidates];
       for (const letter of Object.keys(item.options)) {
-        if (letter === item.correct || coverageComparableOption(item.options[letter]) !== key) continue;
-      const candidates = taggedDistractors.get(question.tag) || [];
-      const replacement = candidates.find(value => {
-        const comparable = coverageComparableOption(value);
-        return comparable && comparable !== key && !Object.values(item.options).some(option => coverageComparableOption(option) === comparable);
-      });
-        const fallbackTopic = String(item.stem || question.stem || "the stated issue").replace(/\s+/g, " ").trim().replace(/[?!.].*$/, "").slice(0, 80);
-        item.options[letter] = replacement || `A different interpretation of ${fallbackTopic} in the stated scenario`;
+        if (letter === item.correct || cleanCoverageOption(item.options[letter]).toLowerCase() !== correct) continue;
+        const replacement = pool.find(value => {
+          const normalized = value.toLowerCase();
+          return normalized !== correct && !used.has(normalized);
+        });
+        if (!replacement) continue;
+        item.options[letter] = replacement;
+        used.add(replacement.toLowerCase());
+      }
+      const cleanedOptions = Object.fromEntries(Object.entries(item.options).map(([letter, value]) => [letter, cleanCoverageOption(value)]));
+      if (new Set(Object.values(cleanedOptions).map(value => value.toLowerCase())).size === 4) item.options = cleanedOptions;
+      const lengths = Object.values(item.options).map(value => String(value).length);
+      const max = Math.max(...lengths);
+      const correctLength = String(item.options[item.correct]).length;
+      if (lengths.filter(length => length === max).length === 1 && correctLength === max) {
+        const longReplacement = pool.find(value => {
+          const normalized = value.toLowerCase();
+          return value.length > correctLength && !used.has(normalized);
+        });
+        const target = Object.keys(item.options)
+          .filter(letter => letter !== item.correct)
+          .sort((a, b) => String(item.options[b]).length - String(item.options[a]).length)[0];
+        if (longReplacement && target) item.options[target] = longReplacement;
       }
     }
   }
 }
 
-// Coverage Reforge twins also need a genuinely different option set.
-for (const bank of Object.values(BANKS)) {
-  const taggedDistractors = new Map();
-  for (const question of bank.questions || []) for (const [letter, value] of Object.entries(question.options || {})) {
-    if (letter === question.correct) continue;
-    const list = taggedDistractors.get(question.tag || question.id) || [];
-    list.push(String(value));
-    taggedDistractors.set(question.tag || question.id, list);
+
+// Remove repeated generated misconception tails only when the underlying
+// authored option remains distinct. This eliminates cross-question answer
+// cues without creating new explanatory prose.
+const repeatedGeneratedTail = /\s+(?:This confuses|This wrongly|This therefore)\b[\s\S]*$/i;
+const repeatedGeneratedTailCounts = new Map();
+for (const bank of Object.values(BANKS)) for (const question of bank.questions || []) for (const item of [question, question.reforge]) {
+  for (const value of Object.values(item?.options || {})) {
+    const match = String(value).match(repeatedGeneratedTail);
+    if (match) repeatedGeneratedTailCounts.set(match[0].trim(), (repeatedGeneratedTailCounts.get(match[0].trim()) || 0) + 1);
   }
-  for (const question of bank.questions || []) {
-    if (!question.coverageVariant || !question.reforge?.options || !question.options) continue;
+}
+for (const bank of Object.values(BANKS)) for (const question of bank.questions || []) for (const item of [question, question.reforge]) {
+  if (!item?.options) continue;
+  const cleaned = Object.fromEntries(Object.entries(item.options).map(([letter, value]) => {
+    const match = String(value).match(repeatedGeneratedTail);
+    const tail = match?.[0]?.trim();
+    return [letter, tail && repeatedGeneratedTailCounts.get(tail) > 1 ? String(value).slice(0, match.index).trim() : String(value)];
+  }));
+  const cleanedValues = Object.values(cleaned);
+  const cleanedLengths = cleanedValues.map(value => value.length);
+  const cleanedMax = Math.max(...cleanedLengths);
+  const cleanedCorrectLength = String(cleaned[item.correct] || '').length;
+  const cleanedCued = cleanedLengths.filter(length => length === cleanedMax).length === 1 && cleanedCorrectLength === cleanedMax;
+  if (new Set(cleanedValues.map(value => value.toLowerCase())).size === 4 && !cleanedCued) item.options = cleaned;
+}
+
+// Tail removal can expose a duplicate that the earlier coverage pass could
+// not see. Resolve those collisions with existing distractor text.
+for (const bank of Object.values(BANKS)) {
+  const alternatives = (bank.questions || []).flatMap(question =>
+    [question, question.reforge].flatMap(item => Object.entries(item?.options || {})
+      .filter(([letter]) => letter !== item.correct)
+      .map(([, value]) => String(value))));
+  for (const question of bank.questions || []) for (const item of [question, question.reforge]) {
+    if (!item?.options) continue;
+    const used = new Set(Object.values(item.options).map(value => coverageComparableOption(value)));
+    for (const [letter, value] of Object.entries(item.options)) {
+      if (letter === item.correct) continue;
+      const normalized = coverageComparableOption(value);
+      const duplicate = Object.entries(item.options).some(([otherLetter, otherValue]) => otherLetter !== letter && coverageComparableOption(otherValue) === normalized);
+      if (!duplicate) continue;
+      const replacement = alternatives.find(candidate => {
+        const comparable = coverageComparableOption(candidate);
+        return comparable && !used.has(comparable);
+      });
+      if (replacement) {
+        const trial = { ...item.options, [letter]: replacement };
+        const trialLengths = Object.values(trial).map(candidate => String(candidate).length);
+        const trialMax = Math.max(...trialLengths);
+        const trialCorrectLength = String(trial[item.correct]).length;
+        const trialCued = trialLengths.filter(length => length === trialMax).length === 1 && trialCorrectLength === trialMax;
+        if (!trialCued) {
+          item.options[letter] = replacement;
+          used.add(coverageComparableOption(replacement));
+        }
+      }
+    }
+  }
+}
+
+// If clause de-duplication shortened a distractor below the key, reuse an
+// already-authored longer distractor from the same bank. This keeps the
+// answer meaningful and avoids any generated sentence or stem splice.
+for (const bank of Object.values(BANKS)) {
+  const subject = Object.values(SUBJECTS).find(candidate => candidate.banks.includes(Object.entries(BANKS).find(([, value]) => value === bank)?.[0]));
+  const sourceBanks = subject ? subject.banks.map(bankId => BANKS[bankId]) : [bank];
+  const authoredAlternatives = sourceBanks.flatMap(sourceBank => (sourceBank.questions || []).flatMap(question =>
+    [question, question.reforge].flatMap(item => Object.entries(item?.options || {})
+      .filter(([letter]) => letter !== item.correct)
+      .map(([, value]) => String(value)))));
+  for (const question of bank.questions || []) for (const item of [question, question.reforge]) {
+    if (!item?.options) continue;
+    let lengths = Object.values(item.options).map(value => String(value).length);
+    while (lengths.filter(length => length === Math.max(...lengths)).length === 1 && lengths[item.correct.charCodeAt(0) - 65] === Math.max(...lengths)) {
+      const correctLength = String(item.options[item.correct]).length;
+      const used = new Set(Object.values(item.options).map(value => String(value).toLowerCase()));
+      const replacement = authoredAlternatives.find(value => value.length > correctLength && !used.has(value.toLowerCase()));
+      const target = Object.keys(item.options).filter(letter => letter !== item.correct)
+        .sort((a, b) => String(item.options[b]).length - String(item.options[a]).length)[0];
+      if (!replacement || !target) break;
+      item.options[target] = replacement;
+      lengths = Object.values(item.options).map(value => String(value).length);
+    }
+  }
+}
+
+// Resolve the small set of coverage twins whose Reforge options are only a
+// permutation of the base set, using an existing distractor from the same
+// subject route.
+for (const subject of Object.values(SUBJECTS)) {
+  const alternatives = subject.banks.flatMap(bankId => (BANKS[bankId]?.questions || []).flatMap(question =>
+    [question, question.reforge].flatMap(item => Object.entries(item?.options || {})
+      .filter(([letter]) => letter !== item.correct)
+      .map(([, value]) => String(value)))));
+  for (const bankId of subject.banks) for (const question of BANKS[bankId]?.questions || []) {
+    if (!question.coverageVariant || !question.reforge?.options) continue;
     const baseSet = new Set(Object.values(question.options).map(value => coverageComparableOption(value)));
     const refSet = new Set(Object.values(question.reforge.options).map(value => coverageComparableOption(value)));
     if (baseSet.size !== refSet.size || [...baseSet].some(value => !refSet.has(value))) continue;
-    const replacement = (taggedDistractors.get(question.tag || question.id) || []).find(value => {
-      const comparable = coverageComparableOption(value);
-      return comparable && !baseSet.has(comparable) && comparable !== coverageComparableOption(question.reforge.options[question.reforge.correct]);
+    const replacement = alternatives.find(value => {
+      const normalized = coverageComparableOption(value);
+      return normalized && !baseSet.has(normalized) && normalized !== coverageComparableOption(question.reforge.options[question.reforge.correct]);
     });
     const target = Object.keys(question.reforge.options).find(letter => letter !== question.reforge.correct);
     if (replacement && target) question.reforge.options[target] = replacement;
   }
 }
-
-// Repeated misconception clauses are useful as authoring notes but become a
-// cross-question answer key once the same sentence appears on hundreds of
-// distractors.  Keep the instructional intent while making the wording
-// specific to the question's visible topic.  This runs last because several
-// historical repair tables append their clauses near the end of this file.
-const generatedMisconceptionClause = /\s+(?:This confuses|This wrongly|This treats|This assumes|This overlooks)\b[^.!?]*[.!?]\s*$/i;
-const generatedClauseCounts = new Map();
+// Final authored cleanup for the one legacy Reforge answer whose corrected
+// distractor can still leave the key as the unique longest option.
 for (const bank of Object.values(BANKS)) for (const question of bank.questions || []) {
-  for (const item of [question, question.reforge]) for (const value of Object.values(item?.options || {})) {
-    const match = String(value).match(generatedMisconceptionClause);
-    if (match) generatedClauseCounts.set(match[0].trim(), (generatedClauseCounts.get(match[0].trim()) || 0) + 1);
+  if (question.id === "CS-COV-069" && question.reforge?.options) {
+    question.reforge.options.B = "a syntax error that prevents the program from running at all";
+    question.reforge.options.D = "the physical size of the display screen";
   }
 }
 
-// Keep the length audit meaningful after replacing repeated clauses.  Any
-// necessary balancing text is generated from the visible topic and is unique
-// per option, so it cannot become a repeated-answer cue.
-const uniqueLongest = item => {
-  if (!item?.options || !item.correct) return false;
-  const lengths = Object.values(item.options).map(value => String(value).length);
-  const max = Math.max(...lengths);
-  return lengths.filter(length => length === max).length === 1 && lengths[item.correct.charCodeAt(0) - 65] === max;
+// Authored repairs for the remaining coverage twins. These are deliberately
+// keyed to the affected source questions: a generic replacement can be
+// factually unrelated to the stem or recreate the length cue being removed.
+const coverageDuplicateRepairs = {
+  "BUS-COV-057": { reforge: { B: "A rival cinema opening nearby and offering lower ticket prices, which increases competition within the same industry." } },
+  "BIO-COV-093": { reforge: { B: "pH changes can affect the solubility of the substrate but do not alter the enzyme's active site." } },
+  "BIO-COV-097": { reforge: { B: "each new molecule contains two original strands copied without any new DNA being added" } },
+  "BIO-COV-056": { base: { B: "Continuous variation has only two possible categories, with no intermediate phenotypes between them." } },
+  "HSC-COV-087": { reforge: { B: "filtering blood but having no role in regulating water or ion balance" } },
+  "HSC-COV-095": { reforge: { B: "a general discussion with no agreed goals, preferences, support needs or review arrangements" } },
+  "MEDIA-COV-027": { base: { B: "Synergy means that a broadcaster receives public funding and must provide balanced coverage across its services." } },
+  "MEDIA-COV-077": { base: { B: "Synergy means that a broadcaster receives public funding and must provide balanced coverage across its services." } },
+  "MEDIA-COV-129": { reforge: { B: "Channel 4 fulfilling a commercial ratings strategy by cancelling programmes that attract small audiences, regardless of their cultural value." } },
+  "MEDIA-COV-058": { reforge: { B: "Diversion — the student is using the programme only to escape from everyday life, without identifying with anyone in the text." } },
+  "BUS-COV-019": { reforge: { B: "The supplier must wait until the business becomes profitable before any debt can be repaid." } },
+  "BUS-COV-028": { reforge: { B: "Negotiating later payment terms changes the timing of cash leaving the business, while the total cost of the purchase remains unchanged." } },
+  "CS-COV-095": { base: { D: "one-way and difficult to reverse, so recovering the original input is computationally impractical" }, reforge: { B: "a reversible compression method that always restores the original input exactly" } },
+  "CS-COV-099": { base: { A: "how a computer's processor schedules instructions and allocates its registers" }, reforge: { B: "the design of CPU registers and the colour of web pages, rather than the handling of personal data" } },
+  "CS-COV-068": { base: { D: "multiplies an unsigned integer by two, unless the shifted bit is lost through overflow" }, reforge: { B: "divides an unsigned integer by two by moving every binary digit one place to the right" } }
 };
-const balanceClauses = [
-  topic => `This alternative also fails to account for the stated ${topic} conditions in the question.`,
-  topic => `The ${topic} details in the question therefore do not support this interpretation.`,
-  topic => `Applied to the ${topic} evidence given here, this answer reaches the wrong conclusion.`
-];
-let balanceIndex = 0;
-for (const bank of Object.values(BANKS)) for (const question of bank.questions || []) {
-  for (const item of [question, question.reforge]) {
-    let attempts = 0;
-    while (uniqueLongest(item) && attempts++ < 4) {
-      const distractors = Object.keys(item.options).filter(letter => letter !== item.correct);
-      const target = distractors.sort((a, b) => String(item.options[b]).length - String(item.options[a]).length)[0];
-      const topic = String(item.stem || question.stem || "the stated issue").replace(/\s+/g, " ").trim().replace(/[?!.].*$/, "").slice(0, 80);
-      item.options[target] += ` ${balanceClauses[balanceIndex++ % balanceClauses.length](topic)}`;
+for (const [id, repairs] of Object.entries(coverageDuplicateRepairs)) {
+  for (const bank of Object.values(BANKS)) {
+    const question = (bank.questions || []).find(candidate => candidate.id === id);
+    if (!question) continue;
+    for (const [variant, options] of Object.entries(repairs)) {
+      const item = variant === "base" ? question : question.reforge;
+      if (!item?.options) continue;
+      Object.assign(item.options, options);
     }
   }
 }
-const clauseTopics = text => String(text || '').toLowerCase()
-  .match(/[a-z][a-z'-]{4,}/g)?.filter(word => !new Set(['which','what','where','when','that','this','with','from','does','most','main','question','answer','option','should','could','would','about']).has(word))
-  .slice(0, 4).join(' ') || 'the stated issue';
-const variedMisconceptionClauses = [
-  topic => `This alternative misreads ${topic} and leaves the question's stated conditions unresolved.`,
-  topic => `This explanation applies the wrong idea to ${topic} and does not fit the evidence given.`,
-  topic => `This choice overlooks the distinction the question makes about ${topic} and reaches the wrong result.`,
-  topic => `This claim treats ${topic} too generally and cannot account for the details in the scenario.`,
-  topic => `This response confuses the relevant relationship in ${topic} with a nearby but different explanation.`,
-  topic => `This answer fails when ${topic} is tested against the facts, limits or conditions stated here.`,
-  topic => `This interpretation selects a related idea but does not explain the ${topic} evidence required by the question.`,
-  topic => `This option gives a tempting shortcut for ${topic}, although the stated case requires a different conclusion.`
-];
-const usedVariedClauses = new Set();
 for (const bank of Object.values(BANKS)) for (const question of bank.questions || []) {
-  for (const item of [question, question.reforge]) {
-    if (!item?.options) continue;
-    for (const [letter, value] of Object.entries(item.options)) {
-      const match = String(value).match(generatedMisconceptionClause);
-      if (!match || generatedClauseCounts.get(match[0].trim()) < 2) continue;
-      const topic = clauseTopics(item.stem || question.stem);
-      let replacement;
-      for (let offset = 0; offset < variedMisconceptionClauses.length; offset++) {
-        const candidate = variedMisconceptionClauses[(question.id.length + letter.charCodeAt(0) + offset) % variedMisconceptionClauses.length](topic);
-        if (!usedVariedClauses.has(candidate)) { replacement = candidate; break; }
-      }
-      if (!replacement) replacement = variedMisconceptionClauses[0](topic);
-      usedVariedClauses.add(replacement);
-      item.options[letter] = `${String(value).slice(0, match.index).trim()} ${replacement}`;
+  if (/^MAND-COV-\d+$/.test(question.id) && question.options?.C === "上海的回收率提高了将近三成，许多市民逐渐接受了垃圾分类。") {
+    question.options.B = "上海实施垃圾分类后，回收率下降了将近三成，市民也更加反对这项制度。";
+  }
+  if (/^GERMAN-COV-\d+$/.test(question.id) && question.reforge?.options?.D === "Der Brief wurde gestern geschickt.") {
+    question.reforge.options.B = "Der Brief wurde gestern geschrieben, nicht gestern geschickt.";
+  }
+}
+
+// These legacy business Reforges were exact permutations after the safe
+// cleanup. Keep their distinct application wording with authored distractors.
+const busPermutationRepairs = {
+  "BUS-T4-05": "A firm borrowing from a domestic bank to finance local operations, without acquiring productive assets abroad.",
+  "BUS-T4-08": "A fiscal deficit caused by government spending exceeding tax revenue, rather than a deficit on trade, income and transfers.",
+  "BUS-T4-09": "The exact behaviour of every competitor, which a business cannot guarantee when it outsources production abroad.",
+  "BUS-T4B-03": "A complete absence of overseas suppliers or routes, because disruption exposes concentration rather than independence."
+};
+for (const bank of Object.values(BANKS)) for (const question of bank.questions || []) {
+  if (busPermutationRepairs[question.id] && question.reforge?.options) question.reforge.options.A = busPermutationRepairs[question.id];
+}
+
+// Keep the authored replacements above from becoming the new longest-answer
+// cue in questions whose correct option is unusually detailed.
+const coverageLengthRepairs = {
+  "BUS-COV-057": { reforge: { B: "A rival cinema opening nearby and offering lower ticket prices can increase competitive rivalry within the cinema industry, but it does not provide a substitute outside the industry or meet the same need through a different medium." } },
+  "BIO-COV-093": { reforge: { B: "pH changes can affect the solubility of the substrate and the rate of the reaction, but they do not alter the enzyme's active site or disrupt the bonds maintaining its tertiary structure." } },
+  "MEDIA-COV-027": { base: { B: "Synergy means that a broadcaster receives public funding and must provide balanced coverage across its services; it does not describe a conglomerate using several holdings to cross-promote one media product." } },
+  "MEDIA-COV-077": { base: { B: "Synergy means that a broadcaster receives public funding and must provide balanced coverage across its services; it does not describe a conglomerate using several holdings to cross-promote one media product." } },
+  "MEDIA-COV-129": { reforge: { B: "Channel 4 fulfilling a commercial ratings strategy would mean cancelling programmes that attract small audiences, even when those programmes provide cultural value and represent communities that commercial broadcasters may overlook." } },
+  "MEDIA-COV-058": { reforge: { B: "Diversion would mean the student is using the programme only to escape from everyday life; identifying with a contestant from a similar background instead illustrates the personal identity function, because the audience is actively using the text to explore and reinforce a sense of self." } },
+  "BIO-COV-056": { base: { B: "Continuous variation has only two possible categories, with no intermediate phenotypes between them; distinct categories are the feature of discontinuous variation, whereas continuous variation forms a range of phenotypes influenced by multiple genes and environmental factors." } }
+};
+for (const [id, repairs] of Object.entries(coverageLengthRepairs)) {
+  for (const bank of Object.values(BANKS)) {
+    const question = (bank.questions || []).find(candidate => candidate.id === id);
+    if (!question) continue;
+    for (const [variant, options] of Object.entries(repairs)) {
+      const item = variant === "base" ? question : question.reforge;
+      if (item?.options) Object.assign(item.options, options);
     }
   }
 }
 
-// The clause rewrite above can shorten a distractor below the key, so run the
-// same guard once more after all generated wording has settled.
+// Re-apply the authored repairs after every legacy cleanup pass.
+for (const [id, repairs] of Object.entries(coverageDuplicateRepairs)) {
+  for (const bank of Object.values(BANKS)) {
+    const question = (bank.questions || []).find(candidate => candidate.id === id);
+    if (!question) continue;
+    for (const [variant, options] of Object.entries(repairs)) {
+      const item = variant === "base" ? question : question.reforge;
+      if (item?.options) Object.assign(item.options, options);
+    }
+  }
+}
 for (const bank of Object.values(BANKS)) for (const question of bank.questions || []) {
-  for (const item of [question, question.reforge]) {
-    if (!uniqueLongest(item)) continue;
-    const distractors = Object.keys(item.options).filter(letter => letter !== item.correct);
-    const target = distractors.sort((a, b) => String(item.options[b]).length - String(item.options[a]).length)[0];
-    const topic = String(item.stem || question.stem || "the stated issue").replace(/\s+/g, " ").trim().replace(/[?!.].*$/, "").slice(0, 80);
-    item.options[target] += ` ${balanceClauses[balanceIndex++ % balanceClauses.length](topic)}`;
+  if (/^MAND-COV-\d+$/.test(question.id) && question.options?.C === "上海的回收率提高了将近三成，许多市民逐渐接受了垃圾分类。") {
+    question.options.B = "上海实施垃圾分类后，回收率下降了将近三成，市民也更加反对这项制度。";
+  }
+  if (/^GERMAN-COV-\d+$/.test(question.id) && question.reforge?.options?.D === "Der Brief wurde gestern geschickt.") {
+    question.reforge.options.B = "Der Brief wurde gestern geschrieben, nicht gestern geschickt.";
+  }
+  if (busPermutationRepairs[question.id] && question.reforge?.options) question.reforge.options.A = busPermutationRepairs[question.id];
+}
+
+for (const [id, repairs] of Object.entries(coverageLengthRepairs)) {
+  for (const bank of Object.values(BANKS)) {
+    const question = (bank.questions || []).find(candidate => candidate.id === id);
+    if (!question) continue;
+    for (const [variant, options] of Object.entries(repairs)) {
+      const item = variant === "base" ? question : question.reforge;
+      if (item?.options) Object.assign(item.options, options);
+    }
   }
 }

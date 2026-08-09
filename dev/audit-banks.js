@@ -36,9 +36,17 @@ const isCued = (item) => {
   );
 };
 
-const coverageComparableOption = (value) => String(value || '')
-  .replace(/\s*\(?\s*(?:in this context|in context|in this case|for this decision|in this market|in this computing context|under standard assumptions|in a typical case|in the stated scenario|in a typical firm)\s*\)?[.!?]?\s*$/i, '')
-  .trim().toLowerCase();
+const coverageComparableOption = (value) => {
+  let result = String(value || '').trim();
+  const filler = /\s*\(?\s*(?:in this context|in context|in this case|for this decision|in this market|in this computing context|under standard assumptions|in a typical case|in the stated scenario|in a typical firm)\s*\)?[.!?]?\s*$/i;
+  let next;
+  do {
+    next = result.replace(filler, '').trim();
+    if (next === result) break;
+    result = next;
+  } while (true);
+  return result.toLowerCase();
+};
 
 // Maths scaffolds are legitimately terse — "√50 = √(25 × 2) = 5√2." is a
 // complete explanation — so only flag one that is missing or near-empty.
@@ -121,6 +129,9 @@ for (const [bankId, bank] of Object.entries(BANKS)) {
       const texts = Object.values(item.options).map((v) => String(v).trim().toLowerCase());
       if (new Set(texts).size !== 4) {
         issues.push(`DUPLICATE OPTION TEXT: ${q.id}${label} (${bankId})`);
+      }
+      if (Object.values(item.options).some(value => /\bthe stated (?:A student|An entrepreneur|Which|What|How)\b/i.test(String(value)))) {
+        issues.push(`BROKEN GENERATED OPTION: ${q.id}${label} (${bankId}) contains a stem-spliced fallback`);
       }
       if (!label && q.coverageVariant) {
         const key = coverageComparableOption(item.options[item.correct]);
@@ -531,7 +542,7 @@ if (!issues.length) console.log('none');
 // a reliable answer-selection shortcut. CUE was previously reported but
 // allowed the deploy gate to pass; with the current bank at 0%, regressions
 // must fail immediately.
-const fatal = issues.filter((i) => /^(UNGRADEABLE|BAD OPTION KEYS|MISSING BANK|DUPLICATE ID|NO OPTIONS|EMPTY STEM|CUE|COVERAGE DUPLICATE ANSWER)/.test(i));
+const fatal = issues.filter((i) => /^(UNGRADEABLE|BAD OPTION KEYS|MISSING BANK|DUPLICATE ID|NO OPTIONS|EMPTY STEM|CUE|COVERAGE DUPLICATE ANSWER|BROKEN GENERATED OPTION)/.test(i));
 if (fatal.length) {
   console.log(`\n${fatal.length} fatal issue(s) — these break questions for students.`);
   process.exit(1);
