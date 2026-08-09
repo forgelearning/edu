@@ -1855,6 +1855,63 @@ Object.assign(MC_LABELS, {
   "MC-SEP-PHYS-PRESSURE": MC_LABELS["PHYS-PRESSURE-01"]
 });
 
+// GCSE Psychology: labels describe the error, not the paper or topic.
+Object.assign(MC_LABELS, {
+  "MC-GPSY-MEMORY-CAPACITY":"Memory capacity and duration are different properties",
+  "MC-GPSY-MEMORY-SERIAL":"Primacy and recency are both parts of serial-position recall",
+  "MC-GPSY-MEMORY-SYSTEMS":"Memory systems and their functions are being swapped",
+  "MC-GPSY-MEMORY-REHEARSAL":"Repeating information is confused with making it meaningful",
+  "MC-GPSY-MEMORY-RECONSTRUCTION":"Schemas guide reconstruction rather than replaying an exact record",
+  "MC-GPSY-MEMORY-INTERFERENCE":"Old and new learning disrupt recall in opposite directions",
+  "MC-GPSY-MEMORY-MISINFORMATION":"Post-event information can alter confident recollection",
+  "MC-GPSY-MEMORY-CONTEXT":"Recall cues include the original context or physical state",
+  "MC-GPSY-RESEARCH-RELIABILITY":"Evidence or measurement quality is confused with consistency",
+  "MC-GPSY-PERCEPTION-INTERPRETATION":"Perception interprets sensation rather than copying input",
+  "MC-GPSY-PERCEPTION-MONO":"Monocular depth cues are being confused with binocular cues",
+  "MC-GPSY-PERCEPTION-BINO":"Binocular depth depends on the two eyes working together",
+  "MC-GPSY-PERCEPTION-ILLUSIONS":"Illusions exploit depth or size assumptions rather than showing bad eyesight",
+  "MC-GPSY-PERCEPTION-AMBIGUITY":"Ambiguous figures allow more than one perceptual organisation",
+  "MC-GPSY-PERCEPTION-SET":"Perceptual set is shaped by expectation, motivation and experience",
+  "MC-GPSY-NATURE-NURTURE":"Biological influence and experience are different sides of development",
+  "MC-GPSY-DEV-SCHEMA":"Assimilation changes the fit to a schema; accommodation changes the schema",
+  "MC-GPSY-DEV-STAGES":"Piaget's stages are being assigned the wrong cognitive ability",
+  "MC-GPSY-DEV-EGOCENTRISM":"Egocentrism and conservation are distinct developmental limitations",
+  "MC-GPSY-DEV-MINDSET":"Beliefs about ability, effort and self-worth are being conflated",
+  "MC-GPSY-DEV-LEARNING-STYLES":"Learning-style preferences are not evidence that matching improves learning",
+  "MC-GPSY-DEV-BRAIN":"Brain development involves organisation and control, not one simple maturity switch",
+  "MC-GPSY-RESEARCH-VARIABLES":"Variables and hypotheses identify different parts of a testable prediction",
+  "MC-GPSY-RESEARCH-SAMPLING":"Sampling methods differ in selection rule and representativeness",
+  "MC-GPSY-RESEARCH-DESIGN":"Research designs trade control, order effects and realism differently",
+  "MC-GPSY-RESEARCH-METHODS":"A method's strength depends on the evidence it can actually produce",
+  "MC-GPSY-RESEARCH-CORRELATION":"Correlation shows association, not an experimental cause",
+  "MC-GPSY-SOC-CONFORMITY":"Conformity can follow acceptance, information or group unanimity",
+  "MC-GPSY-SOC-OBEDIENCE":"Obedience depends on authority, agency and gradual commitment",
+  "MC-GPSY-SOC-CHANGE":"Minority consistency and internal control can support social change",
+  "MC-GPSY-SOC-GROUP":"Anonymity, roles and norms can change effort and behaviour in groups",
+  "MC-GPSY-SOC-BYSTANDER":"Diffusion of responsibility explains reduced helping in a crowd",
+  "MC-GPSY-SOC-PREJUDICE":"Prejudice is an attitude; discrimination is behaviour",
+  "MC-GPSY-LANG-RELATIVITY":"Language may influence thought without necessarily determining it",
+  "MC-GPSY-LANG-STRUCTURE":"Phonemes, morphemes, syntax, semantics and pragmatics are different levels",
+  "MC-GPSY-LANG-EARLY-SPEECH":"Early speech errors describe different limits on word meaning and sentence form",
+  "MC-GPSY-LANG-COGNITION":"Speech, schemas and theory of mind connect language with social thinking",
+  "MC-GPSY-LANG-NONVERBAL":"Non-verbal signals include gaze, gesture, prosody and turn-taking",
+  "MC-GPSY-LANG-CONTEXT":"Context and communication barriers affect how an utterance is understood",
+  "MC-GPSY-LANG-CODE":"Code-switching and cultural variation change language use by audience",
+  "MC-GPSY-BRAIN-LOBES":"Brain areas support different functions without making the brain a set of isolated boxes",
+  "MC-GPSY-BRAIN-LANGUAGE":"Broca's, Wernicke's and wider language impairment are not interchangeable",
+  "MC-GPSY-BRAIN-SCANS":"Brain-imaging methods measure different signals and levels of activity",
+  "MC-GPSY-BRAIN-RECOVERY":"Neuroplasticity and rehabilitation explain recovery after damage",
+  "MC-GPSY-BRAIN-LATERALISATION":"Lateralisation, contralateral control and the corpus callosum describe different relationships",
+  "MC-GPSY-BRAIN-NEURAL":"Neurons communicate across synapses using chemical messengers",
+  "MC-GPSY-PROB-DIAGNOSIS":"Symptoms, diagnosis, reliability, validity and cultural bias answer different questions",
+  "MC-GPSY-PROB-BIOLOGY":"Biological explanation is not the same as biological treatment or quick effectiveness",
+  "MC-GPSY-PROB-THERAPY":"Behavioural, cognitive and exposure therapies use different mechanisms",
+  "MC-GPSY-PROB-STIGMA":"Stigma, institutionalisation and cultural bias describe different social harms",
+  "MC-GPSY-PROB-COGNITIVE":"The cognitive triad and learned helplessness explain different depressive processes",
+  "MC-GPSY-PROB-CONCEPTS":"A phobia and a compulsion are not the same symptom or trigger",
+  "MC-GPSY-PROB-TREATMENT-COURSE":"Relapse, adherence, placebo and comorbidity describe different treatment outcomes"
+});
+
 if (typeof window !== 'undefined') {
   window.MC_LABELS = MC_LABELS;
   window.resolveMCLabel = resolveMCLabel;

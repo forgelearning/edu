@@ -161,6 +161,9 @@ propagates into its `*-COV-*` copies and fixing the source fixes them all.
   labels and corrective starters for every shared taxonomy tag. `econ` is
   likewise complete apart from six genuine singleton concepts, each with an
   explicit starter.
+  `gcse-psych` (202 questions onto 53 shared `MC-GPSY-*` categories, 0
+  single-use and 0 mechanical; see
+  `docs/gcse-psych-misconception-mapping.md`).
 
   Next, roughly by value: the ~15 subjects still at 100% per-question tags.
   The audit fails
@@ -170,7 +173,7 @@ propagates into its `*-COV-*` copies and fixing the source fixes them all.
 
   Ranked by mechanical-tag share, the untouched backlog is: `chem` `bio` `phys`
   `rs` `hsc` `media` `french` `span` `pe` `englit`
-  `engll` `mand` `gcse-hist` `gcse-psych` and `crim`/`law`/`pol` all at 1.00,
+  `engll` `mand` `gcse-hist` and `crim`/`law`/`pol` all at 1.00,
   `bus` 0.99, `cs` 0.89, `maths` 0.63.
 
   **`gcse-geo` is now fully curated.** The earlier note saying its tags
