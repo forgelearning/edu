@@ -53,7 +53,7 @@ begin
 
   for v_i in 1..p_quantity loop
     loop
-      v_code := upper(encode(gen_random_bytes(5), 'hex'));
+      v_code := upper(encode(extensions.gen_random_bytes(5), 'hex'));
       v_hash := encode(extensions.digest(convert_to(v_code, 'UTF8'), 'sha256'::text), 'hex');
       exit when not exists (
         select 1 from public.student_access_codes where code_hash = v_hash
