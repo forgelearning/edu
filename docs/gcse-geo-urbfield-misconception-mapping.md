@@ -65,5 +65,5 @@ urban fieldwork:
 | `MC-GG-URF-QUESTIONNAIRE-QUALITY` | Wording and respondent groups affect perception data | 3 | 19, 27, 28 |
 | `MC-GG-URF-URBAN-EVIDENCE` | Footfall, noise and housing indicators reveal different conditions | 3 | 21, 22, 25 |
 
-The final remaining bank is listed in
-`docs/gcse-geo-uk-landscape-misconception-mapping.md`.
+All seven banks that were previously in the automated remainder are now
+curated; this completes the GCSE Geography misconception retag.

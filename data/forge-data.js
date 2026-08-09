@@ -21509,9 +21509,7 @@ for (const question of SUBJECTS["gcse-geo"].banks.flatMap((bankId) => BANKS[bank
 // concept keys. The source question and its fill-blank/coverage variants keep
 // one key; otherwise each key is derived from the concept words in the stem,
 // so teachers never see a bank-position code as a misconception label.
-const GCSE_GEO_REMAINING_BANKS = [
-  "GCSE-GEO-URB"
-];
+const GCSE_GEO_REMAINING_BANKS = [];
 const GCSE_GEO_TAG_STOPWORDS = new Set("a an and are as at be by can does for from how is it may of on or should the their them these this to what when which why with would".split(" "));
 function gcseGeoSemanticStem(stem) {
   const words = String(stem || "").toUpperCase().replace(/[^A-Z0-9 ]/g, " ").split(/\s+/)
@@ -21688,6 +21686,38 @@ const GCSE_GEO_URBFIELD_TAGS = {
 };
 for (const question of BANKS["GCSE-GEO-URBFIELD"]?.questions || []) {
   const tag = GCSE_GEO_URBFIELD_TAGS[question.id];
+  if (tag) question.tag = tag;
+}
+
+// Urbanising World, curated by the urban-process or intervention error.
+const GCSE_GEO_URB_TAGS = {
+  "GCSE-URB-01":"MC-GG-URB-MEGACITY-GROWTH", "GCSE-URB-11":"MC-GG-URB-MEGACITY-GROWTH",
+  "GCSE-URB-19":"MC-GG-URB-MEGACITY-GROWTH", "GCSE-URB-21":"MC-GG-URB-MEGACITY-GROWTH",
+  "GCSE-URB-FB-01":"MC-GG-URB-MEGACITY-GROWTH",
+  "GCSE-URB-02":"MC-GG-URB-MIGRATION-REALITY", "GCSE-URB-22":"MC-GG-URB-MIGRATION-REALITY",
+  "GCSE-URB-FB-02":"MC-GG-URB-MIGRATION-REALITY",
+  "GCSE-URB-03":"MC-GG-URB-INFORMAL-ECONOMY", "GCSE-URB-07":"MC-GG-URB-INFORMAL-ECONOMY",
+  "GCSE-URB-14":"MC-GG-URB-INFORMAL-ECONOMY", "GCSE-URB-23":"MC-GG-URB-INFORMAL-ECONOMY",
+  "GCSE-URB-FB-03":"MC-GG-URB-INFORMAL-ECONOMY",
+  "GCSE-URB-04":"MC-GG-URB-CITYWIDE-CHALLENGES", "GCSE-URB-08":"MC-GG-URB-CITYWIDE-CHALLENGES",
+  "GCSE-URB-09":"MC-GG-URB-CITYWIDE-CHALLENGES", "GCSE-URB-31":"MC-GG-URB-CITYWIDE-CHALLENGES",
+  "GCSE-URB-FB-04":"MC-GG-URB-CITYWIDE-CHALLENGES",
+  "GCSE-URB-05":"MC-GG-URB-REDEVELOPMENT-LIVELIHOODS", "GCSE-URB-10":"MC-GG-URB-REDEVELOPMENT-LIVELIHOODS",
+  "GCSE-URB-18":"MC-GG-URB-REDEVELOPMENT-LIVELIHOODS", "GCSE-URB-FB-05":"MC-GG-URB-REDEVELOPMENT-LIVELIHOODS",
+  "GCSE-URB-06":"MC-GG-URB-BOTTOM-UP-SERVICES", "GCSE-URB-33":"MC-GG-URB-BOTTOM-UP-SERVICES",
+  "GCSE-URB-FB-06":"MC-GG-URB-BOTTOM-UP-SERVICES",
+  "GCSE-URB-12":"MC-GG-URB-MEGACITY-STRUCTURE", "GCSE-URB-13":"MC-GG-URB-MEGACITY-STRUCTURE",
+  "GCSE-URB-20":"MC-GG-URB-MEGACITY-STRUCTURE",
+  "GCSE-URB-15":"MC-GG-URB-ACCESSIBILITY-LANDUSE", "GCSE-URB-16":"MC-GG-URB-ACCESSIBILITY-LANDUSE",
+  "GCSE-URB-24":"MC-GG-URB-ACCESSIBILITY-LANDUSE", "GCSE-URB-26":"MC-GG-URB-ACCESSIBILITY-LANDUSE",
+  "GCSE-URB-29":"MC-GG-URB-ACCESSIBILITY-LANDUSE",
+  "GCSE-URB-17":"MC-GG-URB-QUALITY-OF-LIFE", "GCSE-URB-30":"MC-GG-URB-QUALITY-OF-LIFE",
+  "GCSE-URB-32":"MC-GG-URB-QUALITY-OF-LIFE",
+  "GCSE-URB-25":"MC-GG-URB-URBAN-STRUCTURE", "GCSE-URB-27":"MC-GG-URB-URBAN-STRUCTURE",
+  "GCSE-URB-28":"MC-GG-URB-URBAN-STRUCTURE"
+};
+for (const question of BANKS["GCSE-GEO-URB"]?.questions || []) {
+  const tag = GCSE_GEO_URB_TAGS[question.id];
   if (tag) question.tag = tag;
 }
 

@@ -152,34 +152,31 @@ propagates into its `*-COV-*` copies and fixing the source fixes them all.
   categories) and `geo` (all 238 questions onto 52 categories, none carrying
   fewer than two, with 52 hand-written starters — see
   `docs/geo-misconception-mapping.md`). Substantially done: `psych` (0.18).
+  `gcse-geo` (640 questions; 34/640 single-use = 0.053 and 0% mechanical
+  tags after all 14 banks were hand-curated; see the bank mapping docs).
   Stage 1 only: `econ`, which still has 230 questions on single-use tags and a
   ratchet of 0.45 set as a floor against regression, not a claim of
-  completion. Listed as still needing a full semantic retag: `gcse-geo` (0.77
-  single-use and 0.996 mechanical. Its labels and corrective starters exist;
-  the Development and Enquiry banks use curated concept groups, while the
-  remaining banks now use readable question-aware concept slugs pending human
-  review of the highest-use groups.
+  completion. `gcse-geo` is now fully curated: its subject ratchets are 0.06
+  single-use and 0 mechanical, with labels and corrective starters for every
+  shared taxonomy tag.
 
   Next, roughly by value: `econ` stage 2 (drafted in
-  `docs/econ-misconception-taxonomy-draft.md`) and `gcse-geo`, then the ~15
-  subjects still at 100% per-question tags. The audit fails
+  `docs/econ-misconception-taxonomy-draft.md`), then the ~15 subjects still at
+  100% per-question tags. The audit fails
   if a subject listed in `TAG_TAXONOMY_SUBJECTS` regresses, if it exceeds its
   `TAG_TAXONOMY_MECHANICAL` share, or if an aggregatable tag has no starter;
   add a subject to both maps once it is retagged.
 
-  Ranked by mechanical-tag share, the untouched backlog is: `gcse-geo` 0.996,
-  then `chem` `bio` `phys` `rs` `hsc` `media` `french` `span` `pe` `englit`
+  Ranked by mechanical-tag share, the untouched backlog is: `chem` `bio` `phys`
+  `rs` `hsc` `media` `french` `span` `pe` `englit`
   `engll` `mand` `gcse-hist` `gcse-psych` and `crim`/`law`/`pol` all at 1.00,
   `bus` 0.99, `cs` 0.89, `maths` 0.63.
 
-  **`gcse-geo` is the biggest remaining taxonomy review job here, not the cheapest — the earlier note
-  saying its tags "already name topics" was wrong.** The first implementation
-  pass has now replaced the bank-position tags with readable concept keys. The
-  Development and Enquiry banks use curated groups; the remaining banks use
-  question-aware concept slugs derived from their stems, with coverage twins
-  retaining one key. The slugs are suitable for the pilot but the highest-use
-  groups should receive human subject review before being treated as a final
-  taxonomy.
+  **`gcse-geo` is now fully curated.** The earlier note saying its tags
+  "already name topics" was wrong: all 14 banks now use hand-reviewed,
+  question-id mappings grouped by underlying error, with coverage twins
+  retaining one key. Its remaining singleton concepts are genuine residual
+  categories rather than per-question slugs.
   mechanical check now catches all of this — see below.
 
   **A label and a starter existing does not mean a subject is done, either.**
