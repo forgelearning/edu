@@ -80,11 +80,13 @@ distinction a single "energy sources" tag would erase.
 
 ## Remaining banks
 
-Nine banks still use auto-generated slugs, largest single-use count first:
+`GCSE-GEO-BIOSPHERE` has since been curated too — see
+`docs/gcse-geo-biosphere-misconception-mapping.md`, which carries the current
+list. Eight banks still use auto-generated slugs, largest single-use count
+first:
 
 | bank | questions | tags | single-use |
 |---|---|---|---|
-| `GCSE-GEO-BIOSPHERE` | 45 | 41 | 37 |
 | `GCSE-GEO-UKLAND` | 52 | 44 | 36 |
 | `GCSE-GEO-UKHUMAN` | 48 | 42 | 36 |
 | `GCSE-GEO-INDIA` | 50 | 42 | 35 |

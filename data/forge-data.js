@@ -21512,7 +21512,6 @@ for (const question of SUBJECTS["gcse-geo"].banks.flatMap((bankId) => BANKS[bank
 const GCSE_GEO_REMAINING_BANKS = [
   "GCSE-GEO-INDIA", "GCSE-GEO-URB", "GCSE-GEO-UKLAND",
   "GCSE-GEO-UKHUMAN", "GCSE-GEO-RIVERFIELD", "GCSE-GEO-URBFIELD",
-  "GCSE-GEO-BIOSPHERE",
   "GCSE-GEO-DECISIONS", "GCSE-GEO-SKILLS"
 ];
 const GCSE_GEO_TAG_STOPWORDS = new Set("a an and are as at be by can does for from how is it may of on or should the their them these this to what when which why with would".split(" "));
@@ -21705,4 +21704,54 @@ const GCSE_GEO_ENE_TAGS = {
 };
 for (const question of BANKS["GCSE-GEO-ENERGY"].questions) {
   if (GCSE_GEO_ENE_TAGS[question.id]) question.tag = GCSE_GEO_ENE_TAGS[question.id];
+}
+
+// People and the Biosphere, curated: 41 stem-derived slugs, 37 of them on a
+// single question, onto 13 concepts. The distinction that matters most here is
+// scale — global climate sets where biomes are, local factors override that
+// within a zone, and human pressure acts on top of both. Prefix is MC-GG-BIO-,
+// which does not collide with the MC-SEP-BIO-* separate-science tags.
+// See docs/gcse-geo-biosphere-misconception-mapping.md.
+const GCSE_GEO_BIO_TAGS = {
+  // Climate sets the global pattern of biomes
+  "GCSE-BIO-01": "MC-GG-BIO-DISTRIBUTION", "GCSE-BIO-02": "MC-GG-BIO-DISTRIBUTION",
+  "GCSE-BIO-21": "MC-GG-BIO-DISTRIBUTION", "GCSE-BIO-29": "MC-GG-BIO-DISTRIBUTION",
+  "GCSE-BIO-40": "MC-GG-BIO-DISTRIBUTION", "GCSE-BIO-FB-01": "MC-GG-BIO-DISTRIBUTION",
+  // Reading a climate graph is a separate skill from knowing the pattern
+  "GCSE-BIO-20": "MC-GG-BIO-CLIMATE-GRAPH", "GCSE-BIO-41": "MC-GG-BIO-CLIMATE-GRAPH",
+  // Local controls override the global pattern within one climate zone
+  "GCSE-BIO-03": "MC-GG-BIO-LOCAL-FACTORS", "GCSE-BIO-15": "MC-GG-BIO-LOCAL-FACTORS",
+  "GCSE-BIO-22": "MC-GG-BIO-LOCAL-FACTORS", "GCSE-BIO-31": "MC-GG-BIO-LOCAL-FACTORS",
+  "GCSE-BIO-32": "MC-GG-BIO-LOCAL-FACTORS",
+  // Plant adaptations answer the limiting factor of their biome
+  "GCSE-BIO-28": "MC-GG-BIO-ADAPTATION", "GCSE-BIO-30": "MC-GG-BIO-ADAPTATION",
+  // Abiotic vs biotic, and who does what in a food chain
+  "GCSE-BIO-13": "MC-GG-BIO-STRUCTURE", "GCSE-BIO-14": "MC-GG-BIO-STRUCTURE",
+  "GCSE-BIO-34": "MC-GG-BIO-STRUCTURE",
+  // Clearing vegetation strips the soil, it does not enrich it
+  "GCSE-BIO-04": "MC-GG-BIO-SOIL", "GCSE-BIO-09": "MC-GG-BIO-SOIL",
+  // Provisioning, regulating, supporting, cultural
+  "GCSE-BIO-05": "MC-GG-BIO-SERVICES", "GCSE-BIO-23": "MC-GG-BIO-SERVICES",
+  "GCSE-BIO-33": "MC-GG-BIO-SERVICES", "GCSE-BIO-FB-02": "MC-GG-BIO-SERVICES",
+  // Putting a value on an ecosystem, and deciding under uncertainty
+  "GCSE-BIO-18": "MC-GG-BIO-VALUATION", "GCSE-BIO-19": "MC-GG-BIO-VALUATION",
+  // Sequestration removes carbon; not emitting merely avoids adding it
+  "GCSE-BIO-08": "MC-GG-BIO-CARBON", "GCSE-BIO-16": "MC-GG-BIO-CARBON",
+  "GCSE-BIO-FB-03": "MC-GG-BIO-CARBON",
+  // Indigenous use is sustainable subsistence, not commercial extraction
+  "GCSE-BIO-06": "MC-GG-BIO-INDIGENOUS", "GCSE-BIO-24": "MC-GG-BIO-INDIGENOUS",
+  // Commercial pressure and the pollution that follows it
+  "GCSE-BIO-07": "MC-GG-BIO-EXPLOITATION", "GCSE-BIO-17": "MC-GG-BIO-EXPLOITATION",
+  "GCSE-BIO-25": "MC-GG-BIO-EXPLOITATION", "GCSE-BIO-35": "MC-GG-BIO-EXPLOITATION",
+  // Malthus vs Boserup, and the graphs used as evidence for each
+  "GCSE-BIO-10": "MC-GG-BIO-POPULATION-THEORY", "GCSE-BIO-11": "MC-GG-BIO-POPULATION-THEORY",
+  "GCSE-BIO-26": "MC-GG-BIO-POPULATION-THEORY", "GCSE-BIO-27": "MC-GG-BIO-POPULATION-THEORY",
+  "GCSE-BIO-38": "MC-GG-BIO-POPULATION-THEORY", "GCSE-BIO-39": "MC-GG-BIO-POPULATION-THEORY",
+  "GCSE-BIO-FB-04": "MC-GG-BIO-POPULATION-THEORY",
+  // Consumption per person, not head count, drives the pressure
+  "GCSE-BIO-12": "MC-GG-BIO-DEMAND", "GCSE-BIO-36": "MC-GG-BIO-DEMAND",
+  "GCSE-BIO-37": "MC-GG-BIO-DEMAND"
+};
+for (const question of BANKS["GCSE-GEO-BIOSPHERE"].questions) {
+  if (GCSE_GEO_BIO_TAGS[question.id]) question.tag = GCSE_GEO_BIO_TAGS[question.id];
 }
