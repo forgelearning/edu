@@ -1945,6 +1945,31 @@ Object.assign(MC_LABELS, {
   "MC-GCRIM-JUSTICE-EVALUATION":"Victim support, inequality, effectiveness and proportionality require a balanced justice judgement"
 });
 
+Object.assign(MC_LABELS, {
+  "MC-GLAW-CRIM-ELEMENTS":"Actus reus, mens rea, causation and omissions are different offence elements",
+  "MC-GLAW-CRIM-NONFATAL":"Assault, battery, ABH, GBH and OAPA sections differ by harm and fault",
+  "MC-GLAW-CRIM-HOMICIDE":"Murder, malice, partial defences and infanticide answer different homicide questions",
+  "MC-GLAW-CRIM-DEFENCES":"Complete and partial defences require different triggers and standards",
+  "MC-GLAW-CRIM-PROPERTY":"Theft offences depend on appropriation, property, dishonesty, intent and force",
+  "MC-GLAW-CRIM-SYSTEM":"Sentencing, precedent, proof and attempted murder involve distinct legal tests",
+  "MC-GLAW-SYSTEM-COURTS":"Court hierarchy and jurisdiction determine where a case is heard or appealed",
+  "MC-GLAW-SYSTEM-ROLES":"Judges, juries, magistrates and legal professionals perform different roles",
+  "MC-GLAW-SYSTEM-ACCESS":"ADR, tribunals, funding and access to justice offer different routes to resolution",
+  "MC-GLAW-SYSTEM-LAWMAKING":"Primary and delegated legislation, consultation papers and reform bodies are distinct",
+  "MC-GLAW-SYSTEM-PARLIAMENT":"Parliamentary stages move a bill from introduction through scrutiny to an Act",
+  "MC-GLAW-SYSTEM-INTERPRETATION":"Statutory interpretation and legal reform use different rules and purposes",
+  "MC-GLAW-TORT-DUTY":"Duty of care and the existence of a relationship are not presumed in every harm",
+  "MC-GLAW-TORT-BREACH":"Breach depends on reasonable risk, standard of care and factual circumstances",
+  "MC-GLAW-TORT-CAUSATION":"Factual causation, legal causation and remoteness are separate limits on liability",
+  "MC-GLAW-TORT-DEFENCES":"Consent, contributory negligence and other defences reduce or defeat liability differently",
+  "MC-GLAW-TORT-REMEDIES":"Damages and injunctions aim to remedy different kinds of loss",
+  "MC-GLAW-CONTRACT-FORMATION":"Offer, acceptance, consideration, intention and capacity form a contract in different ways",
+  "MC-GLAW-CONTRACT-TERMS":"Terms, representations, conditions, warranties and exclusion clauses have different effects",
+  "MC-GLAW-CONTRACT-VITIATING":"Misrepresentation, mistake, duress and undue influence undermine agreement differently",
+  "MC-GLAW-CONTRACT-DISCHARGE":"Performance, breach, frustration and agreement end contractual duties differently",
+  "MC-GLAW-CONTRACT-REMEDIES":"Damages, specific performance and mitigation respond to breach by different principles"
+});
+
 if (typeof window !== 'undefined') {
   window.MC_LABELS = MC_LABELS;
   window.resolveMCLabel = resolveMCLabel;

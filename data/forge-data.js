@@ -22218,3 +22218,23 @@ addCrimRange("PUNISH", 43, 50, "MC-GCRIM-JUSTICE-EVALUATION");
 for (const question of SUBJECTS.crim.banks.flatMap(bankId => BANKS[bankId]?.questions || [])) {
   if (CRIM_TAGS[question.id]) question.tag = CRIM_TAGS[question.id];
 }
+
+const LAW_TAGS = {};
+const addLawRange = (bank, first, last, tag) => {
+  for (let n = first; n <= last; n++) LAW_TAGS[`LAW-${bank}-${String(n).padStart(2, "0")}`] = tag;
+};
+addLawRange("CRIM", 1, 11, "MC-GLAW-CRIM-ELEMENTS"); addLawRange("CRIM", 12, 18, "MC-GLAW-CRIM-NONFATAL");
+addLawRange("CRIM", 19, 24, "MC-GLAW-CRIM-HOMICIDE"); addLawRange("CRIM", 25, 33, "MC-GLAW-CRIM-DEFENCES");
+addLawRange("CRIM", 34, 43, "MC-GLAW-CRIM-PROPERTY"); addLawRange("CRIM", 44, 50, "MC-GLAW-CRIM-SYSTEM");
+addLawRange("SYSTEM", 1, 8, "MC-GLAW-SYSTEM-COURTS"); addLawRange("SYSTEM", 9, 16, "MC-GLAW-SYSTEM-ROLES");
+addLawRange("SYSTEM", 17, 24, "MC-GLAW-SYSTEM-ACCESS"); addLawRange("SYSTEM", 25, 30, "MC-GLAW-SYSTEM-LAWMAKING");
+addLawRange("SYSTEM", 31, 40, "MC-GLAW-SYSTEM-PARLIAMENT"); addLawRange("SYSTEM", 41, 50, "MC-GLAW-SYSTEM-INTERPRETATION");
+addLawRange("TORT", 1, 10, "MC-GLAW-TORT-DUTY"); addLawRange("TORT", 11, 20, "MC-GLAW-TORT-BREACH");
+addLawRange("TORT", 21, 30, "MC-GLAW-TORT-CAUSATION"); addLawRange("TORT", 31, 40, "MC-GLAW-TORT-DEFENCES");
+addLawRange("TORT", 41, 50, "MC-GLAW-TORT-REMEDIES");
+addLawRange("CONTRACT", 1, 10, "MC-GLAW-CONTRACT-FORMATION"); addLawRange("CONTRACT", 11, 20, "MC-GLAW-CONTRACT-TERMS");
+addLawRange("CONTRACT", 21, 30, "MC-GLAW-CONTRACT-VITIATING"); addLawRange("CONTRACT", 31, 40, "MC-GLAW-CONTRACT-DISCHARGE");
+addLawRange("CONTRACT", 41, 50, "MC-GLAW-CONTRACT-REMEDIES");
+for (const question of SUBJECTS.law.banks.flatMap(bankId => BANKS[bankId]?.questions || [])) {
+  if (LAW_TAGS[question.id]) question.tag = LAW_TAGS[question.id];
+}
