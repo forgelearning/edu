@@ -37,6 +37,7 @@
 <script src="scripts/forge-role.js"></script>
 <script src="scripts/forge-auth-card.js"></script>
 <script src="scripts/forge-classes.js?v=20260813"></script>
+<script src="scripts/forge-student-code.js?v=20260809"></script>
 <script src="scripts/forge-sidebar.js?v=20260809-gearcenter"></script>
 <script src="scripts/forge-product-analytics.js"></script>
 <script src="scripts/forge-page-actions.js"></script>
@@ -782,8 +783,9 @@ function renderJoin() {
 
   // Panel: Join class
   h += '<div class="forge-u-uydnfn" id="panel-class">';
-  h += '<p class="forge-u-152cbjr">Enter your name and the code your teacher gave you</p>';
+  h += '<p class="forge-u-152cbjr">Enter the three details your teacher gave you</p>';
   h += ForgeAuthCard.field('join-name', 'Your name', {placeholder:'First name and surname — e.g. James Morgan'});
+  h += ForgeAuthCard.field('join-student-code', 'Student code', {placeholder:'e.g. A1B2C3D4E5', upper:true});
   h += ForgeAuthCard.field('join-code', 'Class code', {placeholder:'e.g. ECON-Y12-A', upper:true});
   h += '<button class="auth-btn" id="join-btn" type="submit">Join class →</button>';
   h += '<p class="auth-err" id="join-err"></p>';
@@ -892,6 +894,7 @@ function renderJoin() {
   // Join class handler
   document.getElementById('join-btn').onclick = function() {
     var rawName = document.getElementById('join-name').value.trim();
+    var studentCode = document.getElementById('join-student-code').value.trim();
     var code = document.getElementById('join-code').value.trim().toUpperCase();
     var err  = document.getElementById('join-err');
     var btn  = document.getElementById('join-btn');
@@ -923,27 +926,37 @@ function renderJoin() {
     err.style.display = 'none';
 
     state.studentName = name;
-    joinClassByCode(name, code, function(joinErr, res) {
-      if (joinErr) {
-        err.textContent = joinErr;
-        err.style.display = 'block';
-        btn.disabled = false; btn.textContent = 'Join class \u2192';
-        return;
-      }
-      // Signing in anywhere recovers every class they're linked to, so a
-      // student on a new device doesn't re-enter each code.
-      ForgeClasses.syncFromServer(SUPABASE_URL, SUPABASE_KEY,
-        { studentId: res.studentId, classId: res.cls.id, classCode: code,
-          className: res.cls.name, subject: res.cls.subject, studentName: name }, function() {
-          activateClass(ForgeClasses.forSubject(res.cls.subject) || {
-            classId: res.cls.id, classCode: code, subject: res.cls.subject,
-            studentId: res.studentId, studentName: name
+    if (!studentCode) {
+      // Compatibility for classes created before private student codes were
+      // introduced. The database refuses this route once a class has active
+      // student codes, so it cannot bypass the protected flow.
+      joinClassByCode(name, code, function(joinErr, res) {
+        if (joinErr) { err.textContent = joinErr; err.style.display = 'block'; btn.disabled = false; btn.textContent = 'Join class →'; return; }
+        ForgeClasses.syncFromServer(SUPABASE_URL, SUPABASE_KEY,
+          { studentId: res.studentId, classId: res.cls.id, classCode: code,
+            className: res.cls.name, subject: res.cls.subject, studentName: name }, function() {
+            activateClass(ForgeClasses.forSubject(res.cls.subject) || {
+              classId: res.cls.id, classCode: code, subject: res.cls.subject,
+              studentId: res.studentId, studentName: name
+            });
+            ForgeAuth.goToLanding();
           });
-          // A successful student sign-in is an account/session entry point,
-          // so land on the dashboard first. Students can open Forge from the
-          // dashboard navigation when they are ready to practise.
-          ForgeAuth.goToLanding();
-        });
+      });
+      return;
+    }
+    ForgeStudentCode.join(code, studentCode, name).then(function(row) {
+      var res = { studentId: row.student_id, cls: { id: row.class_id, name: row.class_name, subject: row.subject } };
+      var cleanStudentCode = ForgeStudentCode.clean(studentCode);
+      ForgeClasses.add({ classId: res.cls.id, classCode: code, className: res.cls.name || null, subject: res.cls.subject || null, studentId: res.studentId, studentName: name, studentCode: cleanStudentCode });
+      try { localStorage.setItem('forge-student', JSON.stringify({ studentId: res.studentId, classId: res.cls.id, classCode: code, studentCode: cleanStudentCode, studentName: name, classSubject: res.cls.subject || null })); } catch (e) {}
+      ForgeClasses.syncFromServer(SUPABASE_URL, SUPABASE_KEY, { studentId: res.studentId, classId: res.cls.id, classCode: code, className: res.cls.name, subject: res.cls.subject, studentName: name, studentCode: cleanStudentCode }, function() {
+        activateClass(ForgeClasses.forSubject(res.cls.subject) || { classId: res.cls.id, classCode: code, subject: res.cls.subject, studentId: res.studentId, studentName: name, studentCode: cleanStudentCode });
+        ForgeAuth.goToLanding();
+      });
+    }).catch(function(joinErr) {
+      err.textContent = joinErr.message || 'Student code or class code not recognised.';
+      err.style.display = 'block';
+      btn.disabled = false; btn.textContent = 'Join class →';
     });
   };
 

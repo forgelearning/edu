@@ -108,7 +108,8 @@
       className:   session.className   || null,
       subject:     session.classSubject || null,
       studentId:   session.studentId   || null,
-      studentName: session.studentName || null
+      studentName: session.studentName || null,
+      studentCode: session.studentCode || null
     });
   }
 
@@ -148,7 +149,10 @@
     if (!mine.length) { done([]); return; }
 
     Promise.all(mine.map(function (c) {
-      return rpc(supabaseUrl, supabaseKey, 'get_student_own_responses', { p_student_id: c.studentId, p_code: c.classCode, p_name: c.studentName || fallbackName }).then(function (rows) {
+      var responsePromise = c.studentCode && global.ForgeStudentCode
+        ? global.ForgeStudentCode.responses(c.studentId, c.classCode, c.studentCode)
+        : rpc(supabaseUrl, supabaseKey, 'get_student_own_responses', { p_student_id: c.studentId, p_code: c.classCode, p_name: c.studentName || fallbackName });
+      return responsePromise.then(function (rows) {
         return (Array.isArray(rows) ? rows : []).map(function (row) {
           row._studentId = c.studentId;
           row._classId   = c.classId;
@@ -205,7 +209,8 @@
       className: anchor.className || null,
       subject: anchor.subject || null,
       studentId: anchor.studentId,
-      studentName: anchor.studentName
+      studentName: anchor.studentName,
+      studentCode: anchor.studentCode || null
     }]));
     done && done(list());
   }

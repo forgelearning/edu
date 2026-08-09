@@ -38,6 +38,7 @@
 <script src="scripts/forge-question.js"></script>
 <script src="scripts/forge-auth-card.js"></script>
 <script src="scripts/forge-classes.js?v=20260813"></script>
+<script src="scripts/forge-student-code.js?v=20260809"></script>
 <script src="scripts/forge-theme.js?v=20260808-theme2"></script>
 <script src="scripts/forge-sidebar.js?v=20260809-gearcenter"></script>
 <script src="scripts/forge-product-analytics.js"></script>
@@ -122,7 +123,8 @@ var anvilState = { studentId:null, classId:null, studentName:null, classSubject:
 ForgeApp.loading(app, { label: 'Loading Anvil', body: 'Finding the concepts that need another look.' });
 
 function renderLogin(){
-  var f=ForgeAuthCard.field('a-name','Your first name',{placeholder:'e.g. Alex',autocomplete:'given-name'})
+  var f=ForgeAuthCard.field('a-name','Your name',{placeholder:'e.g. Alex',autocomplete:'given-name'})
+       +ForgeAuthCard.field('a-student-code','Student code',{placeholder:'e.g. A1B2C3D4E5',upper:true})
        +ForgeAuthCard.field('a-code','Class code',{placeholder:'e.g. ECON-Y12',upper:true})
        +'<button class="auth-btn" id="a-btn" type="submit">Open my Anvil \u2192</button>'
        +'<p class="auth-err" id="a-err"></p>';
@@ -135,44 +137,38 @@ function renderLogin(){
 
   document.getElementById('a-btn').onclick=function(){
     var name=document.getElementById('a-name').value.trim();
+    var studentCode=document.getElementById('a-student-code').value.trim();
     var code=document.getElementById('a-code').value.trim().toUpperCase();
     var err=document.getElementById('a-err');
     var btn=document.getElementById('a-btn');
-    if(!name||!code){err.textContent='Enter your name and class code.';err.style.display='block';return;}
+    if(!name||!studentCode||!code){err.textContent='Enter your name, student code and class code.';err.style.display='block';return;}
     btn.disabled=true;btn.textContent='Checking details…';
 
     // Look up via RPC \u2014 classes/students tables are no longer directly
     // readable by an anonymous (no login) name+code session.
-    ForgeAPI.response(SUPABASE_URL + '/rest/v1/rpc/get_student_by_name_and_code', {
-      method: 'POST', headers: Object.assign({}, headers, {'Content-Type':'application/json'}),
-      body: JSON.stringify({ p_code: code, p_name: name })
-    }).then(function(r){ return r.json(); }).then(function(rows){
-      if(!Array.isArray(rows)||rows.length===0){
-        err.textContent='Class or student not found. Make sure you\u2019ve done the quiz first.';err.style.display='block';
-        btn.disabled=false;btn.textContent='Open my Anvil \u2192';return;
-      }
-      var match=rows[0];
+    ForgeStudentCode.join(code, studentCode, name).then(function(match){
       anvilState.studentId=match.student_id;
       anvilState.classId=match.class_id;
       anvilState.studentName=name;
       anvilState.classSubject=match.subject||null;
-      try { localStorage.setItem('forge-student', JSON.stringify({studentId: anvilState.studentId, classId: anvilState.classId, classCode: code, studentName: anvilState.studentName, classSubject: anvilState.classSubject})); } catch(e) {}
+      var cleanStudentCode=ForgeStudentCode.clean(studentCode);
+      try { localStorage.setItem('forge-student', JSON.stringify({studentId: anvilState.studentId, classId: anvilState.classId, classCode: code, studentCode: cleanStudentCode, studentName: anvilState.studentName, classSubject: anvilState.classSubject})); } catch(e) {}
       ForgeClasses.add({
         classId: anvilState.classId, classCode: code, className: match.class_name || null,
-        subject: anvilState.classSubject, studentId: anvilState.studentId, studentName: name
+        subject: anvilState.classSubject, studentId: anvilState.studentId, studentName: name, studentCode: cleanStudentCode
       });
       // The Anvil covers every class the student is in, not just this one —
       // misconceptions don't stop mattering because they signed in via a
       // different code.
       ForgeClasses.syncFromServer(SUPABASE_URL, SUPABASE_KEY,
-        {studentId: anvilState.studentId, classCode: code, studentName: name}, function(){});
+        {studentId: anvilState.studentId, classCode: code, studentName: name, studentCode: cleanStudentCode}, function(){});
       ForgeClasses.fetchLinkedResponses(SUPABASE_URL, SUPABASE_KEY,
-        {studentId: anvilState.studentId, classCode: code, studentName: name}, function(responses){
+        {studentId: anvilState.studentId, classCode: code, studentName: name, studentCode: cleanStudentCode}, function(responses){
         anvilState.responses = responses;
         buildMisconceptions();
         renderAnvilHome();
       });
-    });
+    }).catch(function(e){err.textContent=e.message||'Student code or class code not recognised.';err.style.display='block';btn.disabled=false;btn.textContent='Open my Anvil \u2192';});
   };
 }
 

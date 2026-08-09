@@ -65,6 +65,7 @@ ForgeSidebar.mount({
 <script src="data/forge-data.js?v=20260805"></script>
 <script src="data/misconception-labels.js?v=20260813"></script>
 <script src="scripts/forge-classes.js?v=20260813"></script>
+<script src="scripts/forge-student-code.js?v=20260809"></script>
 <script>
 var SUPABASE_URL = ForgeAPI.config.url;
 var SUPABASE_KEY = ForgeAPI.config.key;
@@ -143,7 +144,8 @@ var app=document.getElementById('app');
 ForgeState.loading(app, { label: 'Loading your profile', body: 'Getting your progress, strengths, and focus areas ready.' });
 
 function renderLogin(){
-  var f=ForgeAuthCard.field('p-name','Your first name',{placeholder:'e.g. Alex',autocomplete:'given-name'})
+  var f=ForgeAuthCard.field('p-name','Your name',{placeholder:'e.g. Alex',autocomplete:'given-name'})
+       +ForgeAuthCard.field('p-student-code','Student code',{placeholder:'e.g. A1B2C3D4E5',upper:true})
        +ForgeAuthCard.field('p-code','Class code',{placeholder:'e.g. ECON-Y12-A',upper:true})
        +'<button class="auth-btn" id="p-btn" type="submit">Sign in \u2192</button>'
        +'<p class="auth-err" id="p-err"></p>';
@@ -156,31 +158,28 @@ function renderLogin(){
 
   document.getElementById('p-btn').onclick=function(){
     var name=document.getElementById('p-name').value.trim();
+    var studentCode=document.getElementById('p-student-code').value.trim();
     var code=document.getElementById('p-code').value.trim().toUpperCase();
     var err=document.getElementById('p-err');
     var btn=document.getElementById('p-btn');
-    if(!name||!code){err.textContent='Enter your name and class code.';err.style.display='block';return;}
+    if(!name||!studentCode||!code){err.textContent='Enter your name, student code and class code.';err.style.display='block';return;}
     btn.disabled=true;btn.textContent='Checking details…';
     // Look up via RPC \u2014 classes/students tables are no longer directly
     // readable by an anonymous (no login) name+code session.
-    ForgeAPI.response(SUPABASE_URL + '/rest/v1/rpc/get_student_by_name_and_code', {
-      method: 'POST', headers: Object.assign({}, hdrs, {'Content-Type':'application/json'}),
-      body: JSON.stringify({ p_code: code, p_name: name })
-    }).then(function(r){ return r.json(); }).then(function(rows){
-      if(!Array.isArray(rows)||rows.length===0){err.textContent='Class or name not found. Make sure you\'ve done the quiz first.';err.style.display='block';btn.disabled=false;btn.textContent='Sign in \u2192';return;}
-      var match = rows[0];
+    ForgeStudentCode.join(code, studentCode, name).then(function(match){
       st.studentId=match.student_id;st.classId=match.class_id;st.studentName=name;st.isGCSE=classLevel(match.class_name)==='gcse';
-      try { localStorage.setItem('forge-student', JSON.stringify({studentId: st.studentId, classId: st.classId, classCode: code, studentName: st.studentName, classSubject: match.subject || null, isGCSE: st.isGCSE})); } catch(e) {}
+      var cleanStudentCode=ForgeStudentCode.clean(studentCode);
+      try { localStorage.setItem('forge-student', JSON.stringify({studentId: st.studentId, classId: st.classId, classCode: code, studentCode: cleanStudentCode, studentName: st.studentName, classSubject: match.subject || null, isGCSE: st.isGCSE})); } catch(e) {}
       ForgeClasses.add({
         classId: st.classId, classCode: code, className: match.class_name || null,
-        subject: match.subject || null, studentId: st.studentId, studentName: name
+        subject: match.subject || null, studentId: st.studentId, studentName: name, studentCode: cleanStudentCode
       });
       // Signing in here is still signing in — send them to the dashboard.
       // It restores from the same cached session, so no re-entry is needed.
       ForgeClasses.syncFromServer(SUPABASE_URL, SUPABASE_KEY,
-        {studentId: st.studentId, classCode: code, studentName: name},
+        {studentId: st.studentId, classCode: code, studentName: name, studentCode: cleanStudentCode},
         function(){ ForgeAuth.goToLanding(); });
-    });
+    }).catch(function(e){err.textContent=e.message||'Student code or class code not recognised.';err.style.display='block';btn.disabled=false;btn.textContent='Sign in \u2192';});
   };
 }
 
