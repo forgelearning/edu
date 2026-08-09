@@ -1309,7 +1309,7 @@ BANKS["GCSE-GEO-HAZ"] = {
       id:"GCSE-HAZ-01",spec:"GCSE-HAZ",stem:"At a destructive (subduction) plate boundary, what typically happens?",
       options:{A:"Two plates move apart, allowing magma to rise and form new crust",B:"Two continental plates collide and neither sinks, forming fold mountains but no volcanoes",C:"Two plates slide past each other with no vertical movement, causing earthquakes but rarely volcanoes",D:"The denser oceanic plate sinks beneath the lighter continental plate, causing earthquakes and volcanic activity"},
       correct:"D",tag:"MC-TEC-01",
-      scaffold:"Destructive = one plate (denser, oceanic) subducts beneath the other — the friction and melting causes both earthquakes and volcanoes. B describes a conservative boundary, C a constructive boundary, D a collision boundary.",
+      scaffold:"Destructive = one plate (usually denser oceanic crust) subducts beneath the other — friction causes earthquakes and melting can feed volcanoes. B describes a collision boundary, C a conservative boundary, and D a constructive boundary.",
       reforge:{stem:"At a conservative (transform) plate boundary, why do volcanoes rarely form even though earthquakes do?",options:{A:"Plates slide past each other with no subduction and no gap for magma to rise, so there's no route for magma to reach the surface",B:"Conservative boundaries only exist under the ocean",C:"Volcanoes only form at collision boundaries",D:"The plates move too slowly to generate any heat"},correct:"A"}
     },
     {
@@ -1323,7 +1323,7 @@ BANKS["GCSE-GEO-HAZ"] = {
       id:"GCSE-HAZ-03",spec:"GCSE-HAZ",stem:"Japan's 2011 Tohoku earthquake (magnitude 9.0) killed roughly 18,000 people. Haiti's 2010 earthquake (magnitude 7.0) — far less powerful — killed over 100,000. Which best explains this?",
       options:{A:"Earthquakes near the Caribbean are always more dangerous than those in the Pacific",B:"Development level shapes vulnerability — magnitude alone doesn't determine impact.",C:"Haiti's earthquake released more energy than Japan's",D:"Japan has fewer people living near the coast"},
       correct:"B",tag:"MC-TEC-02",
-      scaffold:"Development level shapes vulnerability: building codes, early warning systems, and emergency response — the exact contrast this pairing is designed to teach. Magnitude is a direct, logarithmic measure of energy release, so B is factually wrong; Japan actually has one of the world's highest coastal population densities.",
+      scaffold:"Development level shapes vulnerability: building codes, early warning systems and emergency response — the exact contrast this pairing is designed to teach. Magnitude is a direct, logarithmic measure of energy release, so B is factually wrong; Japan actually has one of the world's highest coastal population densities.",
       reforge:{stem:"A magnitude 8 earthquake strikes both a high-income and a low-income country simultaneously. Which statement best predicts outcomes?",options:{A:"Both countries suffer similar casualties since the magnitude is identical",B:"The low-income country likely suffers far greater loss of life due to weaker buildings, slower emergency response, and less effective warning systems",C:"The high-income country suffers more because its infrastructure is more complex",D:"Casualties are determined entirely by population density, not development level"},correct:"B"}
     },
     {
@@ -1437,7 +1437,7 @@ BANKS["GCSE-GEO-HAZ"] = {
       id:"GCSE-HAZ-09",spec:"GCSE-HAZ",stem:"Which is the correct definition of the asthenosphere?",
       options:{A:"The molten layer of iron and nickel that surrounds the inner core",B:"The semi-molten layer at the top of the mantle which flows due to convection currents, moving the solid lithosphere above",C:"The thicker, less dense crust that makes up the continents",D:"The solid rock that lies on top of the mantle, broken up into tectonic plates"},
       correct:"B",tag:"MC-HAZ-KT-01",
-      scaffold:"Layer order from the surface down: crust → lithosphere (crust + rigid upper mantle) → asthenosphere (semi-molten, flows via convection, carries the plates) → lower mantle → outer core (molten) → inner core (solid). B describes the lithosphere, C the outer core, D continental crust specifically.",
+      scaffold:"Layer order from the surface down: crust → lithosphere (crust + rigid upper mantle) → asthenosphere (semi-molten, flows via convection, carries the plates) → lower mantle → outer core (molten) → inner core (solid). B correctly describes the asthenosphere. C describes continental crust, while D describes the lithosphere — the solid crust and rigid upper mantle broken into tectonic plates.",
       reforge:{stem:"Which layer lies directly beneath the lithosphere and allows tectonic plates to move?",options:{A:"The asthenosphere, because it is semi-molten and flows via convection currents",B:"The inner core, because it is solid iron and nickel",C:"The continental crust, because it is thick and less dense",D:"The outer core, because it surrounds the inner core"},correct:"A"}
     },
     {
@@ -1451,7 +1451,7 @@ BANKS["GCSE-GEO-HAZ"] = {
       id:"GCSE-HAZ-11",spec:"GCSE-HAZ",stem:"What is subduction?",
       options:{A:"The rise in sea level caused by a tropical cyclone pushing water onto the shore",B:"A process where two plates slide past each other with no vertical movement",C:"A process at a destructive plate boundary where one plate is pushed below another and forced to sink into the asthenosphere",D:"A process where magma rises through the middle of a plate, away from any boundary"},
       correct:"C",tag:"MC-HAZ-KT-03",
-      scaffold:"Subduction only happens at destructive (convergent) boundaries, and always to the denser oceanic plate. B describes a conservative boundary, C describes a hotspot, D describes a storm surge — a good example of how exam distractors often swap in a different key term's definition.",
+      scaffold:"Subduction only happens at destructive (convergent) boundaries, and usually involves the denser oceanic plate sinking beneath continental or older oceanic crust. B describes a conservative boundary, C correctly describes subduction, and D describes a hotspot — a good example of how exam distractors swap in definitions of nearby key terms.",
       reforge:{stem:"Subduction always involves which type of crust sinking beneath the other at a destructive boundary?",options:{A:"Continental crust always sinks beneath oceanic crust",B:"Both plates sink together at equal rates",C:"Subduction can occur at a conservative boundary",D:"The denser oceanic crust sinks beneath the less dense continental (or another oceanic) crust"},correct:"D"}
     },
     {
@@ -1479,7 +1479,7 @@ BANKS["GCSE-GEO-HAZ"] = {
       id:"GCSE-HAZ-15",spec:"GCSE-HAZ",stem:"Which statement correctly defines hazard risk?",
       options:{A:"A hazard caused by processes on the land, as opposed to the atmosphere",B:"The magnitude of a hazard on the Richter scale",C:"The total economic cost of a hazard once it has occurred",D:"The probability that a natural hazard will negatively affect a population"},
       correct:"D",tag:"MC-HAZ-KT-07",
-      scaffold:"Hazard risk is about probability of harm, not just the physical size of the event — it depends on hazard, exposure and vulnerability together. D is actually the definition of a geological hazard, a different term entirely.",
+      scaffold:"Hazard risk is about the probability of harm to a population, not just the physical size of the event — it depends on the hazard, exposure and vulnerability together. A geological hazard is the physical process itself; risk is the potential for that process to cause harm.",
       reforge:{stem:"Two hazards have the same magnitude, but one occurs in a densely populated, poorly-prepared area. What best describes the difference in hazard risk?",options:{A:"Hazard risk is higher in the densely populated, poorly-prepared area, since risk depends on probability of harm to a population, not physical magnitude alone",B:"Hazard risk is identical in both cases since magnitude is identical",C:"Hazard risk only depends on the Richter scale reading",D:"Hazard risk cannot differ between two hazards of the same magnitude"},correct:"A"}
     },
     {
@@ -2521,14 +2521,14 @@ BANKS["GCSE-GEO-DEV"] = {
       id:"GCSE-DEV-03",spec:"GCSE-DEV",stem:"Which set of characteristics best describes an emerging country?",
       options:{A:"No industry, no trade links and a declining population",B:"Very high human development, a dominant service sector and an ageing population",C:"Rapid economic growth based on industrial development, rising incomes and high or medium human development",D:"Low human development, subsistence agriculture and very low incomes"},
       correct:"C",tag:"MC-DEV-03",
-      scaffold:"Edexcel B uses three categories: developing (low human development — poor quality of life, inadequate services), emerging (high/medium human development — rapid industrial-led growth, rising incomes, reasonable standard of living for most), and developed (very high human development — modern industries, high incomes). India, China and Brazil are the standard emerging examples. B describes a developing country; C describes a developed one.",
+      scaffold:"Edexcel B uses three categories: developing (low human development — poor quality of life, inadequate services), emerging (high/medium human development — rapid industrial-led growth, rising incomes, reasonable standard of living for most), and developed (very high human development — modern industries, high incomes). India, China and Brazil are standard emerging examples. B describes a developed country, while C describes an emerging country.",
       reforge:{stem:"Which of the following would be the strongest single piece of evidence that a country has moved from 'developing' to 'emerging'?",options:{A:"A sustained shift in employment and GDP from agriculture towards manufacturing and services, alongside rising GNI per capita",B:"Joining the United Nations",C:"A rise in the number of tourists visiting",D:"An increase in total population"},correct:"A"}
     },
     {
       id:"GCSE-DEV-04",spec:"GCSE-DEV",stem:"Which of the following is a HISTORICAL cause of global inequality?",
       options:{A:"Landlocked countries being cut off from seaborne trade",B:"Tropical cyclones repeatedly destroying infrastructure",C:"Corrupt governments failing to invest in healthcare",D:"Colonialism — richer nations took political control of other countries and exploited them economically"},
       correct:"D",tag:"MC-DEV-04",
-      scaffold:"Exams often ask you to sort causes into categories. Environmental: climate/hazards, disease, topography, landlocked position. Historical: colonialism and neo-colonialism, trade patterns. Political/economic: governance, corruption, international relations, resource security. Social: healthcare, education, demography, poverty. B is environmental, C is environmental, D is political — only A is historical.",
+      scaffold:"Exams often ask you to sort causes into categories. Environmental: climate/hazards, disease, topography and landlocked position. Historical: colonialism and neo-colonialism, trade patterns. Political/economic: governance, corruption, international relations and resource security. Social: healthcare, education, demography and poverty. A is environmental, B is environmental, C is political/economic, and D is historical.",
       reforge:{stem:"What distinguishes neo-colonialism from colonialism?",options:{A:"Neo-colonialism only affects countries that were never colonised",B:"Neo-colonialism uses indirect 'soft power' — trade terms, aid conditions, IGOs and TNC dominance — rather than the direct political and military control of colonialism",C:"They are two words for exactly the same process",D:"Neo-colonialism happened first, before colonialism"},correct:"B"}
     },
     {
@@ -2556,7 +2556,7 @@ BANKS["GCSE-GEO-DEV"] = {
       id:"GCSE-DEV-08",spec:"GCSE-DEV",stem:"Which of these is a TOP-DOWN development strategy?",
       options:{A:"An NGO training local farmers in improved growing techniques",B:"Micro-hydro schemes built and maintained by villagers in rural Nepal",C:"A microfinance loan enabling a woman to start a small business",D:"A hydroelectric power dam funded by a World Bank loan"},
       correct:"D",tag:"MC-DEV-08",
-      scaffold:"Top-down: large-scale, expensive, high technology, decided by governments/IGOs (IMF, World Bank), aimed at economic growth — dams, ports, airports, motorways. Bottom-up: small-scale, local, low-cost, often NGO-led, aimed at social development — wells, clinics, schools, farmer training, intermediate technology, microfinance, Fairtrade. B, C and D are all bottom-up.",
+      scaffold:"Top-down: large-scale, expensive, high technology, decided by governments/IGOs (IMF, World Bank), aimed at economic growth — dams, ports, airports, motorways. Bottom-up: small-scale, local, low-cost, often NGO-led, aimed at social development — wells, clinics, schools, farmer training, intermediate technology, microfinance, Fairtrade. A, B and C are bottom-up examples; D is top-down because the World Bank funds a large infrastructure project.",
       reforge:{stem:"A government builds a large HEP dam with an IGO loan. Which criticism is most specific to top-down strategies?",options:{A:"The project is too small to make any difference",B:"It only helps women",C:"Local people may not benefit at all, and a lack of local education and training makes the high-tech scheme costly to maintain",D:"It cannot be funded because IGOs never lend money"},correct:"C"}
     },
     {
@@ -2873,7 +2873,7 @@ BANKS["GCSE-GEO-INDIA"] = {
       id:"GCSE-IND-08",spec:"GCSE-IND",stem:"Which is a clear SOCIAL benefit of India's economic development?",
       options:{A:"An increase in car ownership in New Delhi",B:"Improved gender equality — more women have access to education, contraception and career opportunities",C:"A rise in carbon dioxide emissions",D:"An increase in the number of landfill sites"},
       correct:"B",tag:"MC-IND-08",
-      scaffold:"Sort impacts carefully — exam questions specify social, economic or environmental. Social positives: improved gender equality (education, literacy, family planning, career opportunities — though female literacy still trails male), better health across all age groups, rising average incomes. B, C and D are all environmental impacts, and negative ones.",
+      scaffold:"Sort impacts carefully — exam questions specify social, economic or environmental. A, B and C are environmental impacts, while D is a social benefit: contraception and career opportunities can improve women's autonomy and gender equality. India still has uneven access and a gender gap, so the benefit is real but not universal.",
       reforge:{stem:"Which is a social COST of India's rapid economic development?",options:{A:"Growth of illegal settlements around cities with poor housing, no clean water supply and increased spread of disease",B:"Improved access to family planning",C:"Increased literacy rates among women",D:"Rising average incomes"},correct:"A"}
     },
     {
@@ -2915,14 +2915,14 @@ BANKS["GCSE-GEO-INDIA"] = {
       id:"GCSE-IND-14",spec:"GCSE-IND",stem:"Which is a COST to India of its changing international relations?",
       options:{A:"Low tax rates offered to attract TNCs reduce government revenue available for investment in public services",B:"India becoming able to provide aid to other countries",C:"Increased trade with countries around the world",D:"Wages rising and improving average quality of life"},
       correct:"A",tag:"MC-IND-14",
-      scaffold:"Costs: pressure to cut greenhouse gas emissions may constrain development; low taxes for TNCs reduce revenue for services; increased reliance on TNCs; weak regulation causes environmental damage; rising military spending creates regional tension. Benefits: growth funds healthcare, education and infrastructure; wider trade; rising wages; India as aid donor; improved national security. B, C and D are all benefits.",
+      scaffold:"Costs include pressure to cut greenhouse gas emissions, low taxes for TNCs reducing government revenue, reliance on external firms, weak regulation and environmental damage. Benefits include growth funding healthcare, education and infrastructure, wider trade, rising wages, India becoming an aid donor and improved national security. B is a cost because low tax rates attract TNCs but reduce government revenue; C and D are benefits.",
       reforge:{stem:"India's increased defence spending is listed as both a cost and a benefit. Why?",options:{A:"Because it has no effect either way",B:"It improves national security, but can also heighten tensions with neighbours such as Pakistan and China and diverts money from public services",C:"Because defence spending is not really a form of spending",D:"Because defence spending only affects developed countries"},correct:"B"}
     },
     {
       id:"GCSE-IND-15",spec:"GCSE-IND",stem:"India is both a recipient and a source of foreign direct investment. Which fact demonstrates the outward flow?",
       options:{A:"Indian firms invested $17.24 billion abroad, and India is the second largest FDI contributor in the UK — including TVS Motors' £100 million in Norton Motorcycles",B:"Singapore provides 27% of investment into India",C:"India received $45 billion of FDI inflows in 2021",D:"Google invested US$1 billion in Bharti Airtel"},
       correct:"A",tag:"MC-IND-15",
-      scaffold:"Inflows (into India): $45bn in 2021, mainly from Singapore 27%, USA 18%, Mauritius 16%, Netherlands 8%, targeting automobiles, electrical machinery and textiles. Outflows (from India): $17.24bn invested abroad; second largest FDI contributor in the UK; Mastek invested £79m creating 1,600 UK jobs; TVS Motors £100m in Norton. B, C and D are all inflows — read the question direction carefully.",
+      scaffold:"Inflows into India include $45bn in 2021, mainly from Singapore (27%), the USA (18%), Mauritius (16%) and the Netherlands (8%), targeting automobiles, electrical machinery and textiles. Outflows from India include $17.24bn invested abroad, including Indian firms investing in the UK. A and B describe inflows; C is an outflow from India; D is a separate corporate-investment example, so read the direction carefully.",
       reforge:{stem:"What does India's position as a major outward investor suggest about Frank's dependency theory?",options:{A:"It confirms the theory exactly as Frank described it",B:"It shows India is still purely a raw material exporter",C:"It proves core countries no longer exist",D:"It challenges the theory — a former periphery country is now investing capital into core economies such as the UK"},correct:"D"}
     },
     {
@@ -21435,7 +21435,7 @@ const GCSE_GEO_DEV_SEMANTIC_TAGS = {
   "MC-DEV-11":"MC-DEV-DEBT-RELIEF", "MC-DEV-12":"MC-DEV-TNC-FDI",
   "MC-DEV-13":"MC-DEV-MULTIPLIER", "MC-DEV-14":"MC-DEV-DTM",
   "MC-DEV-15":"MC-DEV-AGEING-POPULATION", "MC-DEV-16":"MC-DEV-DEPENDENCY-DEMOGRAPHIC-DIVIDEND",
-  "MC-DEV-KT-01":"MC-DEV-DEVELOPMENT-CLASSIFICATION", "MC-DEV-KT-02":"MC-DEV-DEVELOPMENT-APPROACHES",
+  "MC-DEV-KT-01":"MC-DEV-BRANDT-LINE", "MC-DEV-KT-02":"MC-DEV-DEVELOPMENT-APPROACHES",
   "MC-DEV-KT-03":"MC-DEV-ECONOMIC-SYSTEMS", "MC-DEV-KT-04":"MC-DEV-MEASURING-DEVELOPMENT",
   "MC-DEV-KT-05":"MC-DEV-MEASURING-DEVELOPMENT", "MC-DEV-KT-06":"MC-DEV-HEALTH-INDICATORS",
   "MC-DEV-KT-07":"MC-DEV-INEQUALITY", "MC-DEV-KT-08":"MC-DEV-INFORMAL-ECONOMY",
@@ -21443,7 +21443,7 @@ const GCSE_GEO_DEV_SEMANTIC_TAGS = {
   "MC-DEV-KT-11":"MC-DEV-GOVERNANCE", "MC-DEV-KT-12":"MC-DEV-GOVERNANCE",
   "MC-DEV-KT-13":"MC-DEV-LOCATION-BARRIERS", "MC-DEV-KT-14":"MC-DEV-NGO",
   "MC-DEV-17":"MC-DEV-DEBT-RELIEF", "MC-DEV-18":"MC-DEV-AID-VS-FDI",
-  "MC-GEO-DEV-35":"MC-DEV-INEQUALITY", "MC-GEO-DEV-36":"MC-DEV-DEVELOPMENT-CLASSIFICATION",
+  "MC-GEO-DEV-35":"MC-DEV-INEQUALITY", "MC-GEO-DEV-36":"MC-DEV-DEMOGRAPHIC-PATTERN",
   "MC-GEO-DEV-37":"MC-DEV-HISTORICAL-INEQUALITY", "MC-GEO-DEV-38":"MC-DEV-DEVELOPMENT-APPROACHES",
   "MC-GEO-DEV-39":"MC-DEV-GLOBALISATION", "MC-GEO-DEV-40":"MC-DEV-ENVIRONMENTAL-COSTS",
   "MC-GEO-DEV-41":"MC-DEV-FLOW-LINE-MAPS", "MC-GEO-DEV-42":"MC-DEV-TNC-FDI",
@@ -21497,7 +21497,7 @@ Object.assign(GCSE_GEO_ENQ_SEMANTIC_TAGS, {
   "MC-GEO-ENQ-38":"MC-ENQ-PROPORTIONAL-SYMBOLS", "MC-GEO-ENQ-39":"MC-ENQ-STANDARDISATION",
   "MC-GEO-ENQ-40":"MC-ENQ-ANOMALIES", "MC-GEO-ENQ-41":"MC-ENQ-RELIABILITY-VALIDITY",
   "MC-GEO-ENQ-42":"MC-ENQ-TRIANGULATION", "MC-GEO-ENQ-43":"MC-ENQ-ETHICS",
-  "MC-GEO-ENQ-44":"MC-ENQ-EVALUATION-CONCLUSION"
+  "MC-GEO-ENQ-44":"MC-ENQ-CONCLUSION-EVIDENCE"
 });
 for (const question of SUBJECTS["gcse-geo"].banks.flatMap((bankId) => BANKS[bankId]?.questions || [])) {
   if (/^GCSE-ENQ/.test(question.spec || "") && GCSE_GEO_ENQ_SEMANTIC_TAGS[question.tag]) {
