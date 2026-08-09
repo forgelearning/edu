@@ -9,6 +9,7 @@
 <meta property="og:title" content="Forge — GCSE Mathematics (Edexcel 1MA1)">
 <meta property="og:description" content="GCSE Mathematics practice mapped to Edexcel (1MA1) — all three papers across Number, Algebra, Ratio, Geometry, Probability and Statistics.">
 <meta property="og:url" content="https://forgelearning.github.io/edu/gcse-maths.html">
+<link rel="canonical" href="https://forgelearning.github.io/edu/gcse-maths.html">
 <meta property="og:image" content="https://forgelearning.github.io/edu/og-image.png">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Forge — GCSE Mathematics (Edexcel 1MA1)">
@@ -40,7 +41,7 @@
   <div class="nav-right">
     <a class="nav-link nav-hide-sm" href="index.html#how">How it works</a>
     <div class="nav-drop-wrap nav-hide-sm">
-      <button class="nav-link forge-nav-menu-button" data-forge-action="schools-menu">For schools ▾</button>
+      <button type="button" class="nav-link forge-nav-menu-button" data-forge-action="schools-menu">For schools ▾</button>
       <div class="nav-drop-menu">
         <a href="faq.html">FAQ for schools</a>
         <a href="evidence.html">The evidence</a>
@@ -53,7 +54,7 @@
     <a class="nav-link nav-hide-sm" href="index.html#pricing">Pricing</a>
     <a class="nav-link nav-hide-sm" href="forge-quiz.html">Sign in</a>
     <a class="cta" href="index.html#waitlist">Get started</a>
-    <button class="theme-toggle" id="theme-toggle" data-forge-action="theme" aria-label="Toggle light/dark theme"><span class="theme-icon" aria-hidden="true"></span></button>
+    <button type="button" class="theme-toggle" id="theme-toggle" data-forge-action="theme" aria-label="Toggle light/dark theme"><span class="theme-icon" aria-hidden="true"></span></button>
   </div>
 </nav>
 </div></div>
@@ -120,10 +121,10 @@
     <div class="bq active">
       <div class="bq-head"><span class="spec mono"><b>Ratio & Proportion · Percentage Change</b></span><span class="fmt">Concept</span></div>
       <p class="q">A price increases by 20%, then decreases by 20%. A student says: "The price is back to what it started at." Why is this wrong?</p>
-      <button class="opt forge-option" data-right="1" data-mc="MC-RAT-01a" data-s="A 20% increase followed by a 20% decrease only cancels out if both percentages are taken of the same starting amount — the second 20% is taken of the new, larger amount, so it removes more than the first 20% added.">20% up then 20% down always cancels out exactly, because they're equal and opposite percentages</button>
-      <button class="opt forge-option">Percentage changes are multiplicative, not additive — increasing by 20% multiplies by 1.2, then decreasing the new (larger) amount by 20% multiplies by 0.8, giving 1.2 × 0.8 = 0.96 of the original: a 4% fall, not back to the start</button>
-      <button class="opt forge-option" data-mc="MC-RAT-01b" data-s="The final amount is 96% of the original — lower, not higher. The order the changes happen in doesn't change this outcome (0.8 × 1.2 gives the same result as 1.2 × 0.8).">The final price is higher than the original because the increase was applied first</button>
-      <button class="opt forge-option" data-mc="MC-RAT-01c" data-s="Percentage changes must be applied as multipliers to whatever amount currently exists, not added and subtracted as raw percentage points — 20% − 20% = 0% is a common but incorrect shortcut.">Percentage changes can be added and subtracted directly, so 20% − 20% = 0% overall</button>
+      <button type="button" class="opt forge-option" data-right="1" data-mc="MC-RAT-01a" data-s="A 20% increase followed by a 20% decrease only cancels out if both percentages are taken of the same starting amount — the second 20% is taken of the new, larger amount, so it removes more than the first 20% added.">20% up then 20% down always cancels out exactly, because they're equal and opposite percentages</button>
+      <button type="button" class="opt forge-option">Percentage changes are multiplicative, not additive — increasing by 20% multiplies by 1.2, then decreasing the new (larger) amount by 20% multiplies by 0.8, giving 1.2 × 0.8 = 0.96 of the original: a 4% fall, not back to the start</button>
+      <button type="button" class="opt forge-option" data-mc="MC-RAT-01b" data-s="The final amount is 96% of the original — lower, not higher. The order the changes happen in doesn't change this outcome (0.8 × 1.2 gives the same result as 1.2 × 0.8).">The final price is higher than the original because the increase was applied first</button>
+      <button type="button" class="opt forge-option" data-mc="MC-RAT-01c" data-s="Percentage changes must be applied as multipliers to whatever amount currently exists, not added and subtracted as raw percentage points — 20% − 20% = 0% is a common but incorrect shortcut.">Percentage changes can be added and subtracted directly, so 20% − 20% = 0% overall</button>
       <div class="scaffold"><span class="stag"></span><p></p></div>
       <p class="praise">Successive percentage changes multiply, they don't cancel — a classic "looks obvious, isn't" GCSE trap worth at least 2 marks whenever it appears. ✦</p>
     </div>
@@ -131,10 +132,10 @@
     <div class="bq">
       <div class="bq-head"><span class="spec mono"><b>Algebra · Order of Operations</b></span><span class="fmt">Concept</span></div>
       <p class="q">A student evaluates −3² and writes the answer as 9, reasoning "(negative) × (negative) = positive." Why is this wrong?</p>
-      <button class="opt forge-option" data-mc="MC-ALG-01a" data-s="−3² and (−3)² are genuinely different: −3² = −9 (square first, then negate), while (−3)² = 9 (negate first, then square). The brackets change what gets squared.">−3² and (−3)² always mean the same thing, so both equal 9</button>
-      <button class="opt forge-option" data-right="1">Without brackets, the exponent applies before the negative sign — −3² means −(3²) = −9, not (−3)² = 9; brackets are required to square the negative itself</button>
-      <button class="opt forge-option" data-mc="MC-ALG-01b" data-s="Negative numbers can absolutely be squared — (−3)² = 9 is a perfectly valid calculation. The issue here is purely about operation order, not whether squaring a negative is allowed.">Negative numbers can't be squared, so −3² is undefined</button>
-      <button class="opt forge-option" data-mc="MC-ALG-01c" data-s="Order of operations (BIDMAS) puts indices before any implied multiplication by −1 — the power is evaluated on the 3 alone, and the negative is applied to that result afterwards.">The order of operations means you apply the negative sign before the power, so −3² = (−3)² = 9</button>
+      <button type="button" class="opt forge-option" data-mc="MC-ALG-01a" data-s="−3² and (−3)² are genuinely different: −3² = −9 (square first, then negate), while (−3)² = 9 (negate first, then square). The brackets change what gets squared.">−3² and (−3)² always mean the same thing, so both equal 9</button>
+      <button type="button" class="opt forge-option" data-right="1">Without brackets, the exponent applies before the negative sign — −3² means −(3²) = −9, not (−3)² = 9; brackets are required to square the negative itself</button>
+      <button type="button" class="opt forge-option" data-mc="MC-ALG-01b" data-s="Negative numbers can absolutely be squared — (−3)² = 9 is a perfectly valid calculation. The issue here is purely about operation order, not whether squaring a negative is allowed.">Negative numbers can't be squared, so −3² is undefined</button>
+      <button type="button" class="opt forge-option" data-mc="MC-ALG-01c" data-s="Order of operations (BIDMAS) puts indices before any implied multiplication by −1 — the power is evaluated on the 3 alone, and the negative is applied to that result afterwards.">The order of operations means you apply the negative sign before the power, so −3² = (−3)² = 9</button>
       <div class="scaffold"><span class="stag"></span><p></p></div>
       <p class="praise">−3² ≠ (−3)² — one of the most common silent mark-losers on non-calculator papers, and it's purely a notation convention, not a maths concept students haven't been taught. ✦</p>
     </div>

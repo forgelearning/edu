@@ -1,6 +1,6 @@
 # Migrations
 
-Reviewed-then-applied. Nothing here has been run against production.
+Reviewed migrations. The entries marked applied have been run against production.
 
 ## 20260802 1800xx — security scoping
 
@@ -10,6 +10,9 @@ Reviewed-then-applied. Nothing here has been run against production.
 | `20260802180100_revoke_public_execute_on_rls_auto_enable.sql` | Removes an event-trigger function from the public API surface |
 | `20260802180200_revoke_api_grants_on_teacher_invite_codes.sql` | Drops `anon`/`authenticated` table grants on the invite-code table |
 | `20260804170000_enforce_free_daily_quota.sql` | Authorises free response writes by token and enforces the ten-question daily limit server-side |
+| `20260809120000_harden_backfill_function_search_path.sql` | Pins the maintenance function search path to `public, pg_temp` |
+
+Applied to production: all migrations listed above.
 | `ROLLBACK_20260802180000.sql` | Restores the previous state. Reintroduces the exposures — fix forward instead where possible |
 
 Apply in filename order.

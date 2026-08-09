@@ -36,8 +36,8 @@
   if(!events.length)h+=ForgeState.html('empty',{label:'No product events yet',body:'Complete a Forge or Crucible session on this device to see local diagnostics here.'});
   var statusLabel=analyticsStatus.mode==='remote'?'Remote ingestion active':analyticsStatus.mode==='remote-ready'?'Remote ingestion ready':'Local fallback active';
   var statusBody=analyticsStatus.mode==='remote'||analyticsStatus.mode==='remote-ready'?'New events are queued locally and submitted to the shared production event stream.':'Events are being kept locally until the production event stream is reachable.';
-  h+='<section class="insight-list forge-mt-4">'+ForgeState.html(analyticsStatus.mode==='local-fallback'?'error':'success',{label:statusLabel,body:statusBody})+'<p class="forge-meta forge-mt-3">This browser cannot display cross-user cohorts. Use the protected Supabase analytics queries for retention, adoption, and outcome analysis.</p><button class="forge-button forge-button--secondary" id="sync">Sync pending events</button></section>';
-  h+='<p class="forge-mt-4"><button class="forge-button forge-button--secondary" id="clear">Clear local events</button></p>';
+  h+='<section class="insight-list forge-mt-4">'+ForgeState.html(analyticsStatus.mode==='local-fallback'?'error':'success',{label:statusLabel,body:statusBody})+'<p class="forge-meta forge-mt-3">This browser cannot display cross-user cohorts. Use the protected Supabase analytics queries for retention, adoption, and outcome analysis.</p><button type="button" class="forge-button forge-button--secondary" id="sync">Sync pending events</button></section>';
+  h+='<p class="forge-mt-4"><button type="button" class="forge-button forge-button--secondary" id="clear">Clear local events</button></p>';
   document.getElementById('app').innerHTML=h;
   document.getElementById('clear').onclick=function(){forgeAnalytics.clearLocal();location.reload();};
   document.getElementById('sync').onclick=function(){forgeAnalytics.flush().then(function(){location.reload();});};

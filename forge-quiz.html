@@ -526,11 +526,11 @@ function joinMoreHtml() {
   var h = '<div class="forge-u-1kt0xuh" id="join-more">';
   h += '<div class="forge-u-8hgxgk">';
   h += '<span class="ui-meta-muted">Got a code for another class?</span>';
-  h += '<button class="forge-u-8q3i1z" id="jm-toggle">Join another class ↓</button>';
+  h += '<button type="button" class="forge-u-8q3i1z" id="jm-toggle">Join another class ↓</button>';
   h += '</div>';
   h += '<div class="forge-u-1karbkd" id="jm-form">';
   h += '<input id="jm-code" class="join-input forge-u-dtise6" type="text" placeholder="e.g. LH-RVN9">';
-  h += '<button id="jm-btn" class="join-btn btn-glass btn-ember forge-u-1og9mh9">Join class →</button>';
+  h += '<button type="button" id="jm-btn" class="join-btn btn-glass btn-ember forge-u-1og9mh9">Join class →</button>';
   h += '<p class="join-err" id="jm-err"></p>';
   h += '</div></div>';
   return h;
@@ -964,8 +964,10 @@ function renderJoin() {
       return ForgeAuth.getSession();
     }).then(function(result) {
       btn.disabled = false; btn.textContent = 'Log in \u2192';
-      if (!result || !result.subscriber) {
-        err.textContent = 'No active subscription found for this account.';
+      if (!result || !result.subscriber || (result.access !== 'pro' && result.access !== 'trial')) {
+        err.textContent = result && result.access === 'expired'
+          ? 'Your free trial has ended. Subscribe to keep Pro access.'
+          : 'No active Forge access found for this account.';
         err.style.display = 'block';
         ForgeAuth.signOut();
         return;
@@ -973,7 +975,9 @@ function renderJoin() {
       var sub = result.subscriber;
       state.studentName  = sub.name;
       ForgeClasses.use(sub.name);
-      state.isPaid       = true;
+      state.isPaid       = result.access === 'pro';
+      state.isTrial      = result.access === 'trial';
+      state.trialDaysLeft = result.daysLeft || 0;
       state.paidSubjects = sub.subjects || [];
       if (state.paidSubjects.length === 1 && SUBJECTS[state.paidSubjects[0]]) {
         state.subject      = state.paidSubjects[0];
@@ -982,7 +986,7 @@ function renderJoin() {
       } else {
         state.phase = 'subjects';
       }
-      try { localStorage.setItem('forge-student', JSON.stringify({ studentName: sub.name, isPaid: true, paidSubjects: sub.subjects || [], classSubject: state.classSubject || null })); } catch(e) {}
+      try { localStorage.setItem('forge-student', JSON.stringify({ studentName: sub.name, isPaid: state.isPaid, isTrial: state.isTrial, trialDaysLeft: state.trialDaysLeft, paidSubjects: sub.subjects || [], classSubject: state.classSubject || null })); } catch(e) {}
       // Signed in — send the student to their dashboard, not into the quiz.
       ForgeAuth.goToLanding();
     }).catch(function(e) {
@@ -1006,12 +1010,12 @@ function renderSubjects(){
     h += '<div class="forge-u-1rz1eg2" id="class-link-banner">';
     h += '<div class="forge-between-row">';
     h += '<span class="forge-u-1qo1pg">Optional</span>';
-    h += '<button class="forge-u-1f5fxqy" data-forge-action="toggle-class-link">Link to class ↓</button>';
+    h += '<button type="button" class="forge-u-1f5fxqy" data-forge-action="toggle-class-link">Link to class ↓</button>';
     h += '</div>';
     h += '<p class="forge-u-1tg6uy0">Is your teacher using Forge? <b class="forge-text-white">Enter their class code</b> to share your progress.</p>';
     h += '<div class="forge-u-1karbkd" id="class-link-form">';
     h += '<input id="ql-code" class="join-input forge-u-dtise6" type="text" placeholder="e.g. ECON-Y12-A">';
-    h += '<button id="ql-btn" class="join-btn btn-glass btn-ember forge-u-1og9mh9">Link to class →</button>';
+    h += '<button type="button" id="ql-btn" class="join-btn btn-glass btn-ember forge-u-1og9mh9">Link to class →</button>';
     h += '<p class="join-err" id="ql-err"></p>';
     h += '</div></div>';
   }
@@ -1049,7 +1053,7 @@ function renderSubjects(){
     }
     var entry = ForgeClasses.forSubject(k);
     if (entry && entry.className) countLabel += ' \u00b7 ' + entry.className;
-    h+='<button class="subject-btn" data-key="'+k+'" style="border-color:'+s.color+'25">';
+    h+='<button type="button" class="subject-btn" data-key="'+k+'" style="border-color:'+s.color+'25">';
     h+='<h3 style="color:'+s.color+'">'+s.label+'</h3>';
     h+='<div class="sub">'+s.sub+'</div>';
     h+='<div class="count">'+countLabel+'</div>';
@@ -1209,7 +1213,7 @@ function renderBanks(){
   var locked = state.classSubject && state.classSubject === state.subject && choices <= 1;
   var h='';
   // Only show back button if not locked to a subject
-  if (!locked) h+='<button class="back-btn" id="back-subj">\u2190 Subjects</button>';
+  if (!locked) h+='<button type="button" class="back-btn" id="back-subj">\u2190 Subjects</button>';
   h+='<div class="center"><p class="tag" style="color:'+subj.color+';margin-bottom:4px">FORGE</p>';
   h+='<h2 class="forge-u-1oh0w3h">'+subj.label+'</h2>';
   h+='<p class="forge-u-10yda30">'+subj.sub+'</p></div>';
@@ -1230,13 +1234,13 @@ function renderBanks(){
   var recommendedCount = (window.ForgeApp && ForgeApp.session) ? ForgeApp.session.questionsFor(recommendedQuestions.length) : Math.min(FORGE_SESSION_SIZE, recommendedQuestions.length || FORGE_SESSION_SIZE);
   var recommendedMinutes = (window.ForgeApp && ForgeApp.session) ? ForgeApp.session.estimatedMinutesFor(recommendedCount) : Math.max(4, Math.round(recommendedCount * 0.75));
   h += '<dl class="forge-session-detail"><div><dt>Topic</dt><dd>'+(recommended ? recommended.label : 'Current topic')+'</dd></div><div><dt>Questions</dt><dd>'+recommendedCount+'</dd></div><div><dt>Estimated time</dt><dd>~'+recommendedMinutes+' min</dd></div></dl>';
-  h += '<button class="forge-button forge-button--primary" id="start-recommended">Start recommended session →</button>';
+  h += '<button type="button" class="forge-button forge-button--primary" id="start-recommended">Start recommended session →</button>';
   h += '<p class="forge-session-change"><button class="forge-link-button" id="change-session" type="button">Change session</button> to choose a different bank.</p></section>';
   h+='<div class="bank-list" id="all-session-options" hidden>';
   subj.banks.forEach(function(key){
     var b=BANKS[key];
     var point = getSpecPoint({}, key);
-    h+='<button class="bank-btn" data-key="'+key+'">';
+    h+='<button type="button" class="bank-btn" data-key="'+key+'">';
     h+='<div class="code" style="color:'+b.color+'">'+key+'</div>';
     h+='<div class="name">'+(point ? point.title : b.label)+'</div>';
     if (point) h+='<div class="qcount">'+point.code+' · '+point.paper+'</div>';
@@ -1308,7 +1312,7 @@ function renderBanks(){
         bh += '<div class="forge-u-1hm6ozo">';
         relevantBanks.forEach(function(bk){
           var bankLabel = BANKS[bk] ? BANKS[bk].label : bk;
-          bh += '<button class="forge-u-1h97zoi" data-asgn-bank="'+bk+'">';
+          bh += '<button type="button" class="forge-u-1h97zoi" data-asgn-bank="'+bk+'">';
           bh += bankLabel+' \u2192</button>';
         });
         bh += '</div></div>';
@@ -1346,7 +1350,7 @@ function renderTrialExpiredWall() {
   h += '<div class="forge-u-xrboeu">';
   h += '<p class="forge-u-hptrzy">Stay on free</p>';
   h += '<p class="forge-u-1rniwep">10 questions per day · all subjects · scaffolds included</p>';
-  h += '<button class="forge-u-148bwq4" data-forge-action="quiz-free-tier">Continue for free →</button>';
+  h += '<button type="button" class="forge-u-148bwq4" data-forge-action="quiz-free-tier">Continue for free →</button>';
   h += '</div>';
 
   h += '</div>';
@@ -1379,7 +1383,7 @@ function renderLimitWall() {
   h += '<p class="forge-u-815kda">No card needed during trial · cancel anytime</p>';
   h += '</div>';
 
-  h += '<button class="skip-btn forge-mt-4" data-forge-action="quiz-back-banks">← Back to banks</button>';
+  h += '<button type="button" class="skip-btn forge-mt-4" data-forge-action="quiz-back-banks">← Back to banks</button>';
   h += '</div>';
 
   app.innerHTML = h;
@@ -1416,7 +1420,7 @@ function renderQuiz(){
   if(!q){state.phase='results';render();return;}
 
   var h='<div class="quiz-header">';
-  h+='<button class="back-btn" id="back-banks">\u2190 Banks</button>';
+  h+='<button type="button" class="back-btn" id="back-banks">\u2190 Banks</button>';
   h+='<span class="bank-name" style="color:'+bk.color+'">'+bk.label+'</span>';
   h+='<span>'+state.score+' \u2713</span></div>';
   h+='<p class="forge-u-lp9fq9">Focused session · '+state.questions.length+' questions · progress saves automatically</p>';
@@ -1665,7 +1669,7 @@ function renderReforge(q,el,color){
   h+='<div class="rf-stem">'+rf.stem+'</div>';
   h+='<div class="options" id="rf-opts">';
   keys.forEach(function(k){
-    h+='<button class="opt forge-option" data-k="'+k+'"><span class="letter">'+k+'</span><span>'+rf.options[k]+'</span></button>';
+    h+='<button type="button" class="opt forge-option" data-k="'+k+'"><span class="letter">'+k+'</span><span>'+rf.options[k]+'</span></button>';
   });
   h+='</div><div id="rf-feedback"></div></div>';
   el.innerHTML=h;
@@ -1747,9 +1751,9 @@ function renderResults(){
   h+='<dl class="forge-result-facts"><div><dt>Strongest repaired misconception</dt><dd>'+(remaining ? 'The error was surfaced and is ready for a targeted Anvil pass.' : 'You held the key ideas across this session.')+'</dd></div><div><dt>Remaining weak area</dt><dd>'+remainingLabel+'</dd></div></dl>';
   h+='<a class="forge-button forge-button--primary" href="'+nextHref+'" id="result-next-action">'+nextLabel+' →</a></section>';
   h+='<div class="forge-action-row forge-result-actions">';
-  h+='<button class="forge-button forge-button--secondary" id="retry">Retry session</button>';
-  h+='<button class="forge-button forge-button--secondary" id="all-banks">All banks</button>';
-  h+='<button class="forge-button forge-button--secondary" id="all-subj">Subjects</button>';
+  h+='<button type="button" class="forge-button forge-button--secondary" id="retry">Retry session</button>';
+  h+='<button type="button" class="forge-button forge-button--secondary" id="all-banks">All banks</button>';
+  h+='<button type="button" class="forge-button forge-button--secondary" id="all-subj">Subjects</button>';
   h+='</div>';
   h+='<nav class="forge-result-links" aria-label="Continue learning">';
   h+='<a class="forge-u-trem2d" href="teacher.html">Teacher? View dashboard \u2192</a>';
@@ -2153,7 +2157,7 @@ function renderMandarinReader() {
   var h = '';
 
   // Back button
-  h += '<button class="back-btn" data-forge-action="quiz-subjects">\u2190 Subjects</button>';
+  h += '<button type="button" class="back-btn" data-forge-action="quiz-subjects">\u2190 Subjects</button>';
 
   // Progress
   h += '<div class="progress-bar"><div class="progress-fill" style="width:'+pct+'%;background:#e8472a"></div></div>';
@@ -2201,7 +2205,7 @@ function renderMandarinReader() {
     h += '<div class="forge-u-1950rq5"><div class="forge-u-pn05gc">'+(qs.length-mrs.correct)+'</div><div class="forge-u-qqzwkq">Review</div></div>';
     h += '<div class="forge-u-1950rq5"><div class="forge-u-pn05gc">'+grade+'</div><div class="forge-u-qqzwkq">Rank</div></div>';
     h += '</div>';
-    h += '<button class="forge-u-1qc89jz" data-forge-action="mr-reset">Try again</button>';
+    h += '<button type="button" class="forge-u-1qc89jz" data-forge-action="mr-reset">Try again</button>';
     h += '</div>';
   }
 
@@ -2234,18 +2238,18 @@ function renderMandarinReader() {
       h += '<div class="forge-u-153sad2">';
       ['true','false'].forEach(function(v){
         var sel = tfVal === v;
-        h += '<button data-forge-action="mr-select-tf" data-question-id="'+q.id+'" data-value="'+v+'" style="flex:1;padding:9px;border-radius:var(--radius-sm);border:1px solid '+(sel?'#c9a84c':'var(--line)')+';background:'+(sel?'rgba(201,168,76,0.08)':'transparent')+';color:'+(sel?'#c9a84c':'#8A857E')+';font-size:13px;font-weight:600;cursor:pointer;font-family:\'Poppins\',sans-serif">'+(v==='true'?'✓ True':'✗ False')+'</button>';
+        h += '<button type="button" data-forge-action="mr-select-tf" data-question-id="'+q.id+'" data-value="'+v+'" style="flex:1;padding:9px;border-radius:var(--radius-sm);border:1px solid '+(sel?'#c9a84c':'var(--line)')+';background:'+(sel?'rgba(201,168,76,0.08)':'transparent')+';color:'+(sel?'#c9a84c':'#8A857E')+';font-size:13px;font-weight:600;cursor:pointer;font-family:\'Poppins\',sans-serif">'+(v==='true'?'✓ True':'✗ False')+'</button>';
       });
       h += '</div>';
       h += '<div id="mr-just-area-'+q.id+'" style="display:'+(tfVal?'block':'none')+'">';
       h += '<div class="forge-u-1da1bnv">Justify — quote directly from the text (in Chinese):</div>';
       h += '<textarea class="forge-u-1v8to55" id="mr-just-'+q.id+'" placeholder="Copy the relevant characters from the passage…"></textarea>';
       h += '</div>';
-      h += '<button data-forge-action="mr-submit" data-question-id="'+q.id+'" id="mr-sbtn-'+q.id+'" '+(isSubmitted||!tfVal?'disabled':'')+' style="width:100%;padding:10px;border-radius:var(--radius-sm);border:none;background:#e8472a;color:#fff;font-family:\'Poppins\',sans-serif;font-size:13px;font-weight:600;cursor:pointer;margin-top:12px;opacity:'+(isSubmitted||!tfVal?'.4':'1')+'">Check answer</button>';
+      h += '<button type="button" data-forge-action="mr-submit" data-question-id="'+q.id+'" id="mr-sbtn-'+q.id+'" '+(isSubmitted||!tfVal?'disabled':'')+' style="width:100%;padding:10px;border-radius:var(--radius-sm);border:none;background:#e8472a;color:#fff;font-family:\'Poppins\',sans-serif;font-size:13px;font-weight:600;cursor:pointer;margin-top:12px;opacity:'+(isSubmitted||!tfVal?'.4':'1')+'">Check answer</button>';
     } else if (q.type === 'find') {
       h += '<div class="forge-u-paoxfs">📌 '+q.lineRef+'</div>';
       h += '<input class="forge-u-1ldj335" id="mr-find-'+q.id+'" data-forge-action="mr-find-input" data-question-id="'+q.id+'" placeholder="Type the character(s) here…">';
-      h += '<button class="forge-u-9r1sf3" data-forge-action="mr-submit" data-question-id="'+q.id+'" id="mr-sbtn-'+q.id+'" disabled>Check answer</button>';
+      h += '<button type="button" class="forge-u-9r1sf3" data-forge-action="mr-submit" data-question-id="'+q.id+'" id="mr-sbtn-'+q.id+'" disabled>Check answer</button>';
     } else {
       var selK = mrs.mcqSel[q.id] || '';
       q.opts.forEach(function(o){
@@ -2256,12 +2260,12 @@ function renderMandarinReader() {
         var bgC = corr ? 'rgba(127,217,138,.08)' : wrong ? 'rgba(255,90,90,.07)' : sel ? 'rgba(201,168,76,.06)' : 'var(--panel-2)';
         var letterC = corr ? 'var(--good)' : wrong ? 'var(--bad)' : sel ? '#c9a84c' : '#8A857E';
         var textStyle = o.zh ? 'font-family:\'Noto Sans SC\',STHeiti,SimHei,sans-serif;font-size:14px' : '';
-        h += '<button data-forge-action="mr-select-mcq" data-question-id="'+q.id+'" data-letter="'+o.k+'" style="display:flex;align-items:flex-start;gap:10px;padding:11px 13px;border-radius:var(--radius-sm);border:1px solid '+borderC+';background:'+bgC+';cursor:pointer;text-align:left;width:100%;margin-bottom:7px;font-family:\'Poppins\',sans-serif">';
+        h += '<button type="button" data-forge-action="mr-select-mcq" data-question-id="'+q.id+'" data-letter="'+o.k+'" style="display:flex;align-items:flex-start;gap:10px;padding:11px 13px;border-radius:var(--radius-sm);border:1px solid '+borderC+';background:'+bgC+';cursor:pointer;text-align:left;width:100%;margin-bottom:7px;font-family:\'Poppins\',sans-serif">';
         h += '<span style="width:20px;height:20px;border-radius:50%;border:1px solid '+letterC+';display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;color:'+letterC+'">'+o.k+'</span>';
         h += '<span style="font-size:13px;line-height:1.5;color:var(--white);padding-top:1px;'+textStyle+'">'+o.t+'</span>';
         h += '</button>';
       });
-      h += '<button data-forge-action="mr-submit" data-question-id="'+q.id+'" id="mr-sbtn-'+q.id+'" '+(isSubmitted||!selK?'disabled':'')+' style="width:100%;padding:10px;border-radius:var(--radius-sm);border:none;background:#e8472a;color:#fff;font-family:\'Poppins\',sans-serif;font-size:13px;font-weight:600;cursor:pointer;margin-top:4px;opacity:'+(isSubmitted||!selK?'.4':'1')+'">Check answer</button>';
+      h += '<button type="button" data-forge-action="mr-submit" data-question-id="'+q.id+'" id="mr-sbtn-'+q.id+'" '+(isSubmitted||!selK?'disabled':'')+' style="width:100%;padding:10px;border-radius:var(--radius-sm);border:none;background:#e8472a;color:#fff;font-family:\'Poppins\',sans-serif;font-size:13px;font-weight:600;cursor:pointer;margin-top:4px;opacity:'+(isSubmitted||!selK?'.4':'1')+'">Check answer</button>';
     }
 
     // Feedback
