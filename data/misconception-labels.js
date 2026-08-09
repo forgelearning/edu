@@ -2034,6 +2034,50 @@ Object.assign(MC_LABELS, {
   "MC-GHIST-ELIZ-JUDGEMENT":"Historical significance and success require criteria and balanced evidence"
 });
 
+// Science labels name the error a student is making, not the specification
+// section where the question happened to be written.
+Object.assign(MC_LABELS, {
+  "MC-GCHEM-ATOMIC-STRUCTURE":"Atomic number, isotopes, electron shells and periodic trends are being conflated",
+  "MC-GCHEM-MOLES-FORMULAE":"A mole, relative mass and formula ratio answer different questions",
+  "MC-GCHEM-BONDING-STRUCTURE":"Bond type, electron-pair origin and structure are being mixed up",
+  "MC-GCHEM-MASS-SPECTRA":"Mass spectra and analytical signals measure specific ratios or environments",
+  "MC-GCHEM-ENERGETICS":"Enthalpy, entropy, feasibility and energy transfer are not interchangeable",
+  "MC-GCHEM-RATES":"Collision frequency, activation energy and rate equations describe different causes",
+  "MC-GCHEM-EQUILIBRIA":"Equilibrium position, reaction quotient and rate are being confused",
+  "MC-GCHEM-ACIDS-REDOX":"Acid-base, oxidation-state and electrode ideas answer different redox questions",
+  "MC-GCHEM-INORGANIC-TESTS":"Group trends, displacement and ion tests depend on different evidence",
+  "MC-GCHEM-ORGANIC-MECHANISMS":"Organic reaction type depends on the mechanism and bond change, not the reagent name alone",
+  "MC-GCHEM-FUNCTIONAL-GROUPS":"Functional groups and the transformations between them are being swapped",
+  "MC-GCHEM-ORGANIC-STRUCTURE":"Connectivity, stereochemistry, polymers and biomolecules describe different structures",
+  "MC-GCHEM-SYNTHESIS":"A synthesis route must specify the target, reagents, conditions and evaluation criteria",
+  "MC-GBIO-CELL-STRUCTURE":"Cell structures and their functions are being assigned to the wrong level",
+  "MC-GBIO-RESPIRATION-PHOTOSYNTHESIS":"Respiration and photosynthesis are distinct energy-transfer pathways",
+  "MC-GBIO-MEMBRANE-TRANSPORT":"Diffusion, osmosis, active transport and magnification use different definitions",
+  "MC-GBIO-DNA-PROTEIN":"Replication, transcription, translation and peptide bonding are different stages",
+  "MC-GBIO-CELL-DIVISION":"Mitosis, meiosis and variation processes are being confused",
+  "MC-GBIO-GENETICS":"Genotype, phenotype, inheritance and population allele frequency are not synonyms",
+  "MC-GBIO-EVOLUTION":"Natural selection, classification, biodiversity and disease describe different biological ideas",
+  "MC-GBIO-ENZYMES":"Enzyme activity depends on structure, active sites, inhibitors and conditions",
+  "MC-GBIO-INVESTIGATION":"Reliability, uncertainty and control variables improve different parts of an investigation",
+  "MC-GBIO-CIRCULATION":"Pressure, vessels, haemoglobin and tissue fluid explain different transport steps",
+  "MC-GBIO-HOMEOSTASIS":"Receptors, effectors, feedback, kidney and neurone mechanisms are being mixed",
+  "MC-GBIO-GENETIC-ENGINEERING":"Cloning, restriction enzymes and transgenic organisms describe different interventions",
+  "MC-GBIO-ECOLOGY-DISEASE":"Pathogens, decomposers, energy transfer and carrying capacity are different ecosystem roles",
+  "MC-GPHYS-RESULTANT-FORCE":"Zero resultant force means balanced forces, not that no forces act",
+  "MC-GPHYS-MOTION-GRAVITY":"Velocity, acceleration and gravitational mass effects are being confused",
+  "MC-GPHYS-WORK-ENERGY":"Work, energy, momentum and elastic energy use different relationships",
+  "MC-GPHYS-SCALAR-VECTOR":"A scalar has magnitude only; a vector also has direction",
+  "MC-GPHYS-GRAPHS-KINEMATICS":"A graph gradient or time constant must be matched to the quantity it represents",
+  "MC-GPHYS-SPRINGS-MATERIALS":"Stiffness, extension, stress, strain and stored energy are not the same property",
+  "MC-GPHYS-CIRCUITS":"Current, resistance, potential difference and electronic components play different roles",
+  "MC-GPHYS-WAVES":"Wave direction, particle motion, interference and intensity are distinct ideas",
+  "MC-GPHYS-QUANTUM-NUCLEAR":"Quantum, particle, nuclear and photon evidence answer different questions",
+  "MC-GPHYS-FIELDS-ELECTROMAGNETISM":"Electric, magnetic, gravitational and electromagnetic effects depend on different fields",
+  "MC-GPHYS-OSCILLATIONS-THERMAL":"Simple harmonic acceleration and internal energy describe different motion models",
+  "MC-GPHYS-ASTRONOMY":"Parallax, luminosity, red shift and imaging measure different astronomical quantities",
+  "MC-GPHYS-MEASUREMENT":"Accuracy, precision, resolution, uncertainty and calibration are different checks"
+});
+
 if (typeof window !== 'undefined') {
   window.MC_LABELS = MC_LABELS;
   window.resolveMCLabel = resolveMCLabel;
