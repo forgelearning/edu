@@ -21510,7 +21510,7 @@ for (const question of SUBJECTS["gcse-geo"].banks.flatMap((bankId) => BANKS[bank
 // one key; otherwise each key is derived from the concept words in the stem,
 // so teachers never see a bank-position code as a misconception label.
 const GCSE_GEO_REMAINING_BANKS = [
-  "GCSE-GEO-INDIA", "GCSE-GEO-URB", "GCSE-GEO-UKLAND",
+  "GCSE-GEO-INDIA", "GCSE-GEO-URB",
   "GCSE-GEO-UKHUMAN", "GCSE-GEO-RIVERFIELD", "GCSE-GEO-URBFIELD",
   "GCSE-GEO-DECISIONS", "GCSE-GEO-SKILLS"
 ];
@@ -21754,4 +21754,61 @@ const GCSE_GEO_BIO_TAGS = {
 };
 for (const question of BANKS["GCSE-GEO-BIOSPHERE"].questions) {
   if (GCSE_GEO_BIO_TAGS[question.id]) question.tag = GCSE_GEO_BIO_TAGS[question.id];
+}
+
+// UK's Evolving Physical Landscape, curated: 44 stem-derived slugs, 36 of them
+// on a single question, onto 14 concepts. The bank spans coasts, rivers and
+// glaciation, so the grouping follows the PROCESS being tested rather than the
+// landscape it happens in — weathering and mass movement sit together whether
+// the slope is a sea cliff or a valley side. Prefix MC-GG-UKL-, checked
+// against the A-Level GEO-COAST tags to avoid the cross-subject sharing that
+// previously mislabelled A-Level questions.
+// See docs/gcse-geo-uk-landscape-misconception-mapping.md.
+const GCSE_GEO_UKL_TAGS = {
+  // Rock type controls relief, permeability and runoff
+  "GCSE-UKLAND-18": "MC-GG-UKL-GEOLOGY", "GCSE-UKLAND-32": "MC-GG-UKL-GEOLOGY",
+  "GCSE-UKLAND-40": "MC-GG-UKL-GEOLOGY", "GCSE-UKLAND-41": "MC-GG-UKL-GEOLOGY",
+  // Sub-aerial: weathering and mass movement, not erosion
+  "GCSE-UKLAND-11": "MC-GG-UKL-SUBAERIAL", "GCSE-UKLAND-42": "MC-GG-UKL-SUBAERIAL",
+  "GCSE-UKLAND-43": "MC-GG-UKL-SUBAERIAL", "GCSE-UKLAND-48": "MC-GG-UKL-SUBAERIAL",
+  // The four marine erosion processes, and measuring the retreat they cause
+  "GCSE-UKLAND-01": "MC-GG-UKL-EROSION-PROCESS", "GCSE-UKLAND-09": "MC-GG-UKL-EROSION-PROCESS",
+  "GCSE-UKLAND-10": "MC-GG-UKL-EROSION-PROCESS", "GCSE-UKLAND-33": "MC-GG-UKL-EROSION-PROCESS",
+  "GCSE-UKLAND-FB-01": "MC-GG-UKL-EROSION-PROCESS",
+  // Rock alignment to the coast decides headlands, bays and coves
+  "GCSE-UKLAND-02": "MC-GG-UKL-COAST-STRUCTURE", "GCSE-UKLAND-12": "MC-GG-UKL-COAST-STRUCTURE",
+  "GCSE-UKLAND-44": "MC-GG-UKL-COAST-STRUCTURE", "GCSE-UKLAND-46": "MC-GG-UKL-COAST-STRUCTURE",
+  "GCSE-UKLAND-FB-02": "MC-GG-UKL-COAST-STRUCTURE",
+  // Crack, cave, arch, stack, stump — in that order
+  "GCSE-UKLAND-03": "MC-GG-UKL-STACK-SEQUENCE", "GCSE-UKLAND-45": "MC-GG-UKL-STACK-SEQUENCE",
+  "GCSE-UKLAND-FB-03": "MC-GG-UKL-STACK-SEQUENCE",
+  // Longshore drift and the landforms sediment movement builds
+  "GCSE-UKLAND-04": "MC-GG-UKL-LONGSHORE", "GCSE-UKLAND-27": "MC-GG-UKL-LONGSHORE",
+  "GCSE-UKLAND-47": "MC-GG-UKL-LONGSHORE", "GCSE-UKLAND-FB-04": "MC-GG-UKL-LONGSHORE",
+  // Hard vs soft engineering, and what each does downdrift
+  "GCSE-UKLAND-05": "MC-GG-UKL-COAST-MANAGE", "GCSE-UKLAND-13": "MC-GG-UKL-COAST-MANAGE",
+  "GCSE-UKLAND-14": "MC-GG-UKL-COAST-MANAGE", "GCSE-UKLAND-35": "MC-GG-UKL-COAST-MANAGE",
+  "GCSE-UKLAND-37": "MC-GG-UKL-COAST-MANAGE", "GCSE-UKLAND-FB-05": "MC-GG-UKL-COAST-MANAGE",
+  // Traction, saltation, suspension, solution
+  "GCSE-UKLAND-15": "MC-GG-UKL-RIVER-TRANSPORT", "GCSE-UKLAND-38": "MC-GG-UKL-RIVER-TRANSPORT",
+  // Downstream change along the long profile
+  "GCSE-UKLAND-06": "MC-GG-UKL-LONG-PROFILE", "GCSE-UKLAND-30": "MC-GG-UKL-LONG-PROFILE",
+  "GCSE-UKLAND-FB-06": "MC-GG-UKL-LONG-PROFILE",
+  // Meanders, and the deposition that builds a floodplain
+  "GCSE-UKLAND-07": "MC-GG-UKL-MEANDER", "GCSE-UKLAND-51": "MC-GG-UKL-MEANDER",
+  "GCSE-UKLAND-FB-07": "MC-GG-UKL-MEANDER",
+  // Building on a floodplain, and zoning as the response
+  "GCSE-UKLAND-16": "MC-GG-UKL-FLOODPLAIN-USE", "GCSE-UKLAND-29": "MC-GG-UKL-FLOODPLAIN-USE",
+  "GCSE-UKLAND-36": "MC-GG-UKL-FLOODPLAIN-USE",
+  // Reading a storm hydrograph and what changes its shape
+  "GCSE-UKLAND-17": "MC-GG-UKL-HYDROGRAPH", "GCSE-UKLAND-34": "MC-GG-UKL-HYDROGRAPH",
+  "GCSE-UKLAND-49": "MC-GG-UKL-HYDROGRAPH", "GCSE-UKLAND-50": "MC-GG-UKL-HYDROGRAPH",
+  // Why floods happen and what reduces them
+  "GCSE-UKLAND-08": "MC-GG-UKL-FLOOD-RISK", "GCSE-UKLAND-28": "MC-GG-UKL-FLOOD-RISK",
+  "GCSE-UKLAND-52": "MC-GG-UKL-FLOOD-RISK", "GCSE-UKLAND-FB-08": "MC-GG-UKL-FLOOD-RISK",
+  // Glacial erosion vs glacial deposition
+  "GCSE-UKLAND-31": "MC-GG-UKL-GLACIAL", "GCSE-UKLAND-39": "MC-GG-UKL-GLACIAL"
+};
+for (const question of BANKS["GCSE-GEO-UKLAND"].questions) {
+  if (GCSE_GEO_UKL_TAGS[question.id]) question.tag = GCSE_GEO_UKL_TAGS[question.id];
 }

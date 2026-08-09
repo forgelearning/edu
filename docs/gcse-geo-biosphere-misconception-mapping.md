@@ -76,11 +76,13 @@ specific, teachable error. One "biomes" tag would hide it.
 
 ## Remaining banks
 
-Eight banks still use auto-generated slugs, largest single-use count first:
+`GCSE-GEO-UKLAND` has since been curated too — see
+`docs/gcse-geo-uk-landscape-misconception-mapping.md`, which carries the
+current list. Seven banks still use auto-generated slugs, largest single-use
+count first:
 
 | bank | questions | tags | single-use |
 |---|---|---|---|
-| `GCSE-GEO-UKLAND` | 52 | 44 | 36 |
 | `GCSE-GEO-UKHUMAN` | 48 | 42 | 36 |
 | `GCSE-GEO-INDIA` | 50 | 42 | 35 |
 | `GCSE-GEO-SKILLS` | 35 | 35 | 35 |
