@@ -22652,3 +22652,45 @@ for (const [bankId, clause] of Object.entries(gcseEconCuedMisconceptionClauses))
     }
   }
 }
+
+// A-level Economics cue repairs for the remaining Theme 2, Theme 3 and
+// Theme 4 banks. These clauses expose the misconception behind each wrong
+// option; they are not generic length padding and ECON-1.1 is intentionally
+// excluded because it is being handled separately.
+const alevelEconCuedMisconceptionClauses = {
+  "2.1.1": "This wrongly assumes economic growth automatically raises every household's living standard without distributional or environmental costs.",
+  "2.1.2": "This wrongly treats inflation as a change in one price and ignores the general price level, real incomes and purchasing power.",
+  "2.1.3": "This wrongly treats unemployment as a personal choice and ignores cyclical, structural, frictional and seasonal causes.",
+  "2.1.4": "This wrongly assumes exports, imports and capital flows are unrelated to national income, competitiveness and the exchange rate.",
+  "2.2.1": "This wrongly assumes aggregate demand is unaffected by consumption, investment, government spending, exports or interest rates.",
+  "2.2.2": "This wrongly assumes firms can change output without facing changes in costs, productivity, capacity or resource availability.",
+  "2.2.3": "This wrongly assumes national income is unrelated to spending, withdrawals, injections and the circular flow of income.",
+  "2.3.1": "This wrongly ignores opportunity cost and assumes taxation and public spending can change demand without affecting incentives or borrowing.",
+  "2.3.2": "This wrongly assumes interest rates affect no household or firm decisions and have no consequences for demand, investment or the exchange rate.",
+  "2.3.3": "This wrongly assumes productivity and long-run capacity cannot respond to education, training, infrastructure, competition or incentives.",
+  "2.4.1": "This wrongly assumes income distribution alone determines welfare and that households have identical needs, assets and access to opportunities.",
+  "2.4.2": "This wrongly assumes poverty is fixed by personal income alone and ignores housing, public services, employment security and relative living costs.",
+  "2.5.1": "This wrongly assumes financial markets allocate funds without risk, information problems, liquidity constraints or changes in confidence.",
+  "2.5.2": "This wrongly assumes commercial banks only store money and cannot create deposits, provide credit or transmit monetary policy.",
+  "2.5.3": "This wrongly assumes a central bank can meet every objective without trade-offs between inflation, output, employment and financial stability.",
+  "3.1.1": "This wrongly assumes firms face no diseconomies, financing limits, management problems or conflicts between owners, workers and other stakeholders.",
+  "3.2.1": "This wrongly assumes revenue, costs and profit are unaffected by output, prices, fixed costs, variable costs and the time period considered.",
+  "4.1.1": "This wrongly assumes globalisation benefits every place equally and ignores trade-offs involving employment, inequality, supply-chain risk, sovereignty and the environment."
+};
+const alevelEconIsCued = item => {
+  if (!item?.options || !item.correct) return false;
+  const lengths = Object.values(item.options).map(value => String(value).length);
+  const longest = Math.max(...lengths);
+  return lengths.filter(length => length === longest).length === 1
+    && String(item.options[item.correct]).length === longest;
+};
+for (const [bankId, clause] of Object.entries(alevelEconCuedMisconceptionClauses)) {
+  for (const question of BANKS[bankId]?.questions || []) {
+    for (const item of [question, question.reforge]) {
+      if (!alevelEconIsCued(item)) continue;
+      const distractors = Object.keys(item.options).filter(letter => letter !== item.correct);
+      const target = distractors.sort((a, b) => String(item.options[b]).length - String(item.options[a]).length)[0];
+      item.options[target] = `${item.options[target]} ${clause}`;
+    }
+  }
+}
