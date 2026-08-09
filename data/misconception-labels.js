@@ -2182,6 +2182,14 @@ Object.assign(MC_LABELS, {
   "MC-GCS-OPERATING-SYSTEMS":"Operating-system services, memory management and device drivers have distinct roles"
 });
 
+Object.assign(MC_LABELS, {
+  "MC-GRS-FAITH-REASON":"Fideism gives faith priority over proof by reason",
+  "MC-GRS-DIVINE-COMMAND":"The Euthyphro dilemma challenges divine-command morality",
+  "MC-GRS-SANCTITY-QUALITY":"Sanctity and quality of life use different ethical criteria",
+  "MC-GRS-DOUBLE-EFFECT":"Intended effects differ from foreseen but unintended effects",
+  "MC-GRS-VIRTUE-ETHICS":"Virtue ethics develops character and practical wisdom rather than simple rule-following"
+});
+
 if (typeof window !== 'undefined') {
   window.MC_LABELS = MC_LABELS;
   window.resolveMCLabel = resolveMCLabel;

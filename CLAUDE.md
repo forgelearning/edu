@@ -99,7 +99,13 @@ key on answer text, never on letter), and `expandSubjectToMinimum()` clones
 existing questions to pad a subject to 200, so an error in a source question
 propagates into its `*-COV-*` copies and fixing the source fixes them all.
 
-## Known outstanding issues
+## Current status after PR #133
+
+- The full bank now has **0 longest-answer cues** across 7,510 stems and 7,510 Reforge twins. `dev/audit-banks.js` treats any future `CUE` as fatal.
+- The HSC and RS taxonomy residues are resolved: all active tags have concept labels, and RS now has 16 explicit starter activities. The audit currently reports 0 issues.
+- The paragraphs below retain historical context about how the taxonomy and cue backlogs were found. Re-measure the live checkout before treating any historical count or backlog ordering as current.
+
+## Historical notes and current outstanding issues
 
 - Reforge option sets are currently distinct across every MCQ; keep
   `dev/test-forge.js` running as new content lands.

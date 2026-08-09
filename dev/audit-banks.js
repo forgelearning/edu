@@ -516,8 +516,11 @@ for (const [type, list] of Object.entries(grouped).sort((a, b) => b[1].length - 
 }
 if (!issues.length) console.log('none');
 
-// Non-zero exit on anything that breaks a question for a student.
-const fatal = issues.filter((i) => /^(UNGRADEABLE|BAD OPTION KEYS|MISSING BANK|DUPLICATE ID|NO OPTIONS|EMPTY STEM)/.test(i));
+// Non-zero exit on anything that breaks a question for a student or creates
+// a reliable answer-selection shortcut. CUE was previously reported but
+// allowed the deploy gate to pass; with the current bank at 0%, regressions
+// must fail immediately.
+const fatal = issues.filter((i) => /^(UNGRADEABLE|BAD OPTION KEYS|MISSING BANK|DUPLICATE ID|NO OPTIONS|EMPTY STEM|CUE)/.test(i));
 if (fatal.length) {
   console.log(`\n${fatal.length} fatal issue(s) — these break questions for students.`);
   process.exit(1);
