@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Forge — Student Settings</title>
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css?v=20260808-navpolish">
+  <link rel="stylesheet" href="css/sidebar.css">
+  <link rel="stylesheet" href="css/components.css?v=20260812">
+  <link rel="stylesheet" href="css/page-overrides/settings.css">
+</head>
+<body>
+  <script src="scripts/forge-api.js"></script>
+  <script src="scripts/forge-role.js"></script>
+  <script src="scripts/forge-theme.js?v=20260808-theme2"></script>
+  <script src="scripts/forge-logo.js"></script>
+  <script src="scripts/forge-sidebar.js"></script>
+  <script src="forge-auth.js"></script>
+  <script>if (window.ForgeRole) ForgeRole.guard('student', 'student-dashboard.html');</script>
+  <script>
+    function studentSettingsSignOut() {
+      ForgeAuth.signOut();
+      window.location.href = 'student-dashboard.html';
+    }
+    ForgeSidebar.mount({
+      active: 'settings', settingsHref: 'student-settings.html', signOut: studentSettingsSignOut,
+      items: [
+        {key:'dashboard', href:'student-dashboard.html', label:'Dashboard'},
+        {key:'forge', href:'forge-quiz.html', label:'Forge'},
+        {key:'assignments', href:'assignments.html', label:'Assigned'},
+        {key:'anvil', href:'anvil.html', label:'Anvil'},
+        {key:'crucible', href:'crucible.html', label:'Crucible'}
+      ],
+      footerItems: [{key:'profile', href:'profile.html', label:'Profile'}]
+    });
+  </script>
+  <main class="wrap settings-page" id="main-content">
+    <header class="settings-hero">
+      <p class="settings-kicker">FORGE / STUDENT SETTINGS</p>
+      <h1>Settings</h1>
+      <p>Choose how Forge looks on this device and manage your student session.</p>
+    </header>
+    <section class="settings-section" aria-labelledby="appearance-title">
+      <div class="settings-section-heading"><div><p class="settings-kicker">APPEARANCE</p><h2 id="appearance-title">Choose your atmosphere</h2></div><span class="settings-section-mark" aria-hidden="true">◐</span></div>
+      <div class="settings-options" role="radiogroup" aria-label="Theme preference">
+        <label class="settings-option"><input type="radio" name="theme" value="system"><span><strong>Use device setting</strong><small>Follow light and dark mode automatically.</small></span></label>
+        <label class="settings-option"><input type="radio" name="theme" value="light"><span><strong>Light Forge</strong><small>Bright surfaces and ember accents.</small></span></label>
+        <label class="settings-option"><input type="radio" name="theme" value="dark"><span><strong>Dark Forge</strong><small>Low-light contrast for focused sessions.</small></span></label>
+      </div>
+    </section>
+    <section class="settings-section" aria-labelledby="account-title">
+      <div class="settings-section-heading"><div><p class="settings-kicker">SESSION</p><h2 id="account-title">Student session</h2></div><span class="settings-section-mark" aria-hidden="true">S</span></div>
+      <p class="settings-copy">Signing out clears this device’s saved student session.</p>
+      <button class="forge-button forge-button--danger" type="button" id="settings-sign-out">Sign out</button>
+    </section>
+  </main>
+  <script>
+    (function () {
+      var selected = localStorage.getItem('forge-theme') || 'system';
+      document.querySelectorAll('input[name="theme"]').forEach(function (radio) {
+        radio.checked = radio.value === selected;
+        radio.addEventListener('change', function () {
+          if (this.value === 'system') localStorage.removeItem('forge-theme');
+          else localStorage.setItem('forge-theme', this.value);
+          if (window.setForgeTheme) window.setForgeTheme(this.value === 'light', false);
+          location.reload();
+        });
+      });
+      document.getElementById('settings-sign-out').addEventListener('click', studentSettingsSignOut);
+    }());
+  </script>
+</body>
+</html>

@@ -76,11 +76,10 @@ misconception.
 
 ## Remaining banks
 
-Seven banks still use auto-generated slugs, largest single-use count first:
+Six banks still use auto-generated slugs, largest single-use count first:
 
 | bank | questions | tags | single-use |
 |---|---|---|---|
-| `GCSE-GEO-UKHUMAN` | 48 | 42 | 36 |
 | `GCSE-GEO-INDIA` | 50 | 42 | 35 |
 | `GCSE-GEO-SKILLS` | 35 | 35 | 35 |
 | `GCSE-GEO-DECISIONS` | 41 | 36 | 31 |

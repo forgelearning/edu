@@ -4,18 +4,18 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Forge — Profile</title>
-  <meta http-equiv="refresh" content="0;url=profile.html">
+  <meta http-equiv="refresh" content="0;url=student-settings.html">
   <script src="scripts/forge-page-actions.js"></script>
   <script>
     (function () {
       var teacherSession = null;
       try { teacherSession = JSON.parse(localStorage.getItem('forge-teacher-session') || 'null'); } catch (e) {}
-      var destination = (teacherSession && teacherSession.access_token ? 'teacher-settings.html' : 'profile.html') + window.location.search + window.location.hash;
+      var destination = (teacherSession && teacherSession.access_token ? 'teacher-settings.html' : 'student-settings.html') + window.location.search + window.location.hash;
       window.location.replace(destination);
     }());
   </script>
 </head>
 <body>
-  <p>Settings have moved to your <a href="profile.html">Forge profile</a>.</p>
+  <p>Opening Forge settings…</p>
 </body>
 </html>
