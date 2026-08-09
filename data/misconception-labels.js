@@ -1912,6 +1912,39 @@ Object.assign(MC_LABELS, {
   "MC-GPSY-PROB-TREATMENT-COURSE":"Relapse, adherence, placebo and comorbidity describe different treatment outcomes"
 });
 
+Object.assign(MC_LABELS, {
+  "MC-GCRIM-CRIME-CONSTRUCTION":"Crime, deviance, law and social change are not interchangeable",
+  "MC-GCRIM-CRIME-TYPES":"White-collar, corporate, organised, cyber, green and state crime describe different actors or harms",
+  "MC-GCRIM-TARGETED-CRIME":"Targeted crimes differ by motive, relationship and method of exploitation",
+  "MC-GCRIM-CRIME-MEASUREMENT":"Official records, surveys, self-report and the dark figure measure different parts of crime",
+  "MC-GCRIM-MEDIA-FRAMING":"Media selection, framing, myths and fear shape representation rather than crime rates directly",
+  "MC-GCRIM-CAMPAIGN-CHANGE":"Campaigns turn public concern into changes in awareness, policy or law",
+  "MC-GCRIM-MEDIA-POLICY":"Agenda setting and policy response connect publicity to official action without proving causation",
+  "MC-GCRIM-THEORY-CAUSATION":"Classical choice and positivist causation answer different questions about offending",
+  "MC-GCRIM-THEORY-LEARNING":"Psychological and social-learning explanations specify different learning mechanisms",
+  "MC-GCRIM-THEORY-STRAIN":"Strain, anomie and subculture explain blocked goals and group adaptations differently",
+  "MC-GCRIM-THEORY-CONFLICT":"Marxist and conflict approaches link law enforcement to class power and inequality",
+  "MC-GCRIM-THEORY-LABELLING":"Labelling focuses on social reaction and identity, not simply the original act",
+  "MC-GCRIM-THEORY-REALISM":"Left and right realism explain real harm, opportunity, control and disorder from different positions",
+  "MC-GCRIM-THEORY-CRITICAL":"Feminist, intersectional and critical approaches expose power that apparently neutral law can hide",
+  "MC-GCRIM-EVIDENCE-EVALUATION":"Reliability, validity, reductionism and determinism are separate ways to evaluate a theory",
+  "MC-GCRIM-THEORY-SYNTHESIS":"Comparison and integrated explanation require weighing evidence, ethics and policy use",
+  "MC-GCRIM-COURT-ROLES":"Investigators, scientists, prosecutors and the Full Code Test have different roles",
+  "MC-GCRIM-SCENE-DOCUMENTATION":"Preservation, scene logs, photographs and plans protect different kinds of evidence",
+  "MC-GCRIM-FORENSIC-METHODS":"Fingerprint, DNA, trace, ballistics, digital and CCTV evidence use different methods",
+  "MC-GCRIM-WITNESS-PROFILING":"Profiling, eyewitness accounts, cognitive interviews and experts provide different evidence",
+  "MC-GCRIM-EVIDENCE-INTEGRITY":"Physical evidence must remain traceable, uncontaminated, disclosed and admissible",
+  "MC-GCRIM-COURT-PROCESS":"Bail, court hierarchy, legal roles and prosecution advocacy are distinct steps in a case",
+  "MC-GCRIM-VERDICT-REVIEW":"Safe verdicts, appeals, case reviews and triangulation test whether justice was achieved",
+  "MC-GCRIM-SOCIAL-CONTROL":"Formal and informal control, law and policing depend on different sources of authority",
+  "MC-GCRIM-PUNISHMENT-AIMS":"Retribution, deterrence, rehabilitation, incapacitation and reparation pursue different aims",
+  "MC-GCRIM-SANCTIONS":"Custody, community sentences, fines, probation and recidivism describe different sanctions or outcomes",
+  "MC-GCRIM-DEATH-PENALTY":"Capital punishment debates combine deterrence claims, wrongful-conviction risk and abolition",
+  "MC-GCRIM-LEGITIMACY":"Confidence, legitimacy, procedural justice, consent and surveillance describe different relationships with authority",
+  "MC-GCRIM-RISK-PREVENTION":"Risk assessment and prevention policies target future harm through different levels of intervention",
+  "MC-GCRIM-JUSTICE-EVALUATION":"Victim support, inequality, effectiveness and proportionality require a balanced justice judgement"
+});
+
 if (typeof window !== 'undefined') {
   window.MC_LABELS = MC_LABELS;
   window.resolveMCLabel = resolveMCLabel;

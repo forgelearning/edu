@@ -190,6 +190,8 @@ const TAG_TAXONOMY_SUBJECTS = {
   psych: 0.18,
   // GCSE Psychology: all 202 questions now use shared misconception groups.
   'gcse-psych': 0,
+  // Criminology: 200 questions now use 30 shared misconception groups.
+  crim: 0,
   // Combined science shares the separate sciences' MC-SEP-* taxonomy. The
   // remaining share is 15 questions whose tag names a topic, not an error.
   'gcse-science': 0.08,
@@ -277,6 +279,7 @@ const TAG_TAXONOMY_MECHANICAL = {
   // 29 of 264, all in the Forensic and Cognitive banks added after the retag.
   psych: 0.12,
   'gcse-psych': 0,
+  'crim': 0,
   // 67 of 212 — the residue of definitional questions that only a topic tag
   // would cover, documented in docs/history-misconception-mapping.md. Was
   // 0.26 against the literal check; the extra 15 are MC-HIST-BRIT1-1 style

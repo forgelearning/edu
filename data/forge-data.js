@@ -22177,3 +22177,44 @@ const GCSE_PSY_TAGS = {
 for (const question of SUBJECTS["gcse-psych"].banks.flatMap(bankId => BANKS[bankId]?.questions || [])) {
   if (GCSE_PSY_TAGS[question.id]) question.tag = GCSE_PSY_TAGS[question.id];
 }
+
+// A-Level Criminology: group the generated definitions by the misconception
+// that makes neighbouring concepts easy to swap. The range declarations are
+// expanded into an id-keyed map so every assignment remains auditable.
+const CRIM_TAGS = {};
+const addCrimRange = (bank, first, last, tag) => {
+  for (let n = first; n <= last; n++) CRIM_TAGS[`CRIM-${bank}-${String(n).padStart(2, "0")}`] = tag;
+};
+addCrimRange("AWARE", 1, 6, "MC-GCRIM-CRIME-CONSTRUCTION");
+addCrimRange("AWARE", 7, 12, "MC-GCRIM-CRIME-TYPES");
+addCrimRange("AWARE", 13, 17, "MC-GCRIM-TARGETED-CRIME");
+addCrimRange("AWARE", 18, 25, "MC-GCRIM-CRIME-MEASUREMENT");
+addCrimRange("AWARE", 26, 34, "MC-GCRIM-MEDIA-FRAMING");
+addCrimRange("AWARE", 35, 39, "MC-GCRIM-CAMPAIGN-CHANGE");
+addCrimRange("AWARE", 40, 50, "MC-GCRIM-MEDIA-POLICY");
+addCrimRange("THEORY", 1, 9, "MC-GCRIM-THEORY-CAUSATION");
+addCrimRange("THEORY", 10, 17, "MC-GCRIM-THEORY-LEARNING");
+addCrimRange("THEORY", 18, 23, "MC-GCRIM-THEORY-STRAIN");
+addCrimRange("THEORY", 24, 26, "MC-GCRIM-THEORY-CONFLICT");
+addCrimRange("THEORY", 27, 30, "MC-GCRIM-THEORY-LABELLING");
+addCrimRange("THEORY", 31, 35, "MC-GCRIM-THEORY-REALISM");
+addCrimRange("THEORY", 36, 39, "MC-GCRIM-THEORY-CRITICAL");
+addCrimRange("THEORY", 40, 46, "MC-GCRIM-EVIDENCE-EVALUATION");
+addCrimRange("THEORY", 47, 50, "MC-GCRIM-THEORY-SYNTHESIS");
+addCrimRange("COURT", 1, 8, "MC-GCRIM-COURT-ROLES");
+addCrimRange("COURT", 9, 12, "MC-GCRIM-SCENE-DOCUMENTATION");
+addCrimRange("COURT", 13, 20, "MC-GCRIM-FORENSIC-METHODS");
+addCrimRange("COURT", 21, 25, "MC-GCRIM-WITNESS-PROFILING");
+addCrimRange("COURT", 26, 32, "MC-GCRIM-EVIDENCE-INTEGRITY");
+addCrimRange("COURT", 33, 40, "MC-GCRIM-COURT-PROCESS");
+addCrimRange("COURT", 41, 50, "MC-GCRIM-VERDICT-REVIEW");
+addCrimRange("PUNISH", 1, 5, "MC-GCRIM-SOCIAL-CONTROL");
+addCrimRange("PUNISH", 6, 14, "MC-GCRIM-PUNISHMENT-AIMS");
+addCrimRange("PUNISH", 15, 24, "MC-GCRIM-SANCTIONS");
+addCrimRange("PUNISH", 25, 28, "MC-GCRIM-DEATH-PENALTY");
+addCrimRange("PUNISH", 29, 34, "MC-GCRIM-LEGITIMACY");
+addCrimRange("PUNISH", 35, 42, "MC-GCRIM-RISK-PREVENTION");
+addCrimRange("PUNISH", 43, 50, "MC-GCRIM-JUSTICE-EVALUATION");
+for (const question of SUBJECTS.crim.banks.flatMap(bankId => BANKS[bankId]?.questions || [])) {
+  if (CRIM_TAGS[question.id]) question.tag = CRIM_TAGS[question.id];
+}
