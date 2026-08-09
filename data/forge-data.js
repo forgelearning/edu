@@ -22895,3 +22895,56 @@ for (const bankId of Object.keys(germanMathsFrenchSpanCuedClauses)) {
     }
   }
 }
+
+// Final remaining cue pass. These are the last measured subjects with a
+// longest-answer cue. Each subject receives a domain-specific misconception
+// clause; shared banks are harmlessly visited once because the first visit
+// removes the cue.
+const finalRemainingSubjectCuedClauses = {
+  law: "This confuses the legal rule or remedy with a related principle and ignores the elements, authority, evidence, procedure and limits that determine the outcome.",
+  pol: "This confuses the political institution, process or ideology with a related idea and ignores the powers, interests, evidence, accountability and context involved.",
+  phys: "This confuses the physical principle with a related equation or process and ignores the quantities, units, assumptions, conservation rules and conditions given.",
+  econ: "This confuses the economic concept with a related outcome and ignores incentives, trade-offs, aggregate effects, market conditions, evidence and the time period involved.",
+  pe: "This confuses the sporting or physiological concept with a related term and ignores the movement, energy system, training principle, performer and conditions described.",
+  englit: "This confuses the literary text, technique or interpretation with a related idea and ignores the precise language, form, context, character, theme and evidence in the passage.",
+  engll: "This confuses the language feature or analytical method with a related term and ignores the audience, purpose, context, structure, grammar and evidence in the text.",
+  crim: "This confuses the criminological theory, offence or justice response with a related concept and ignores the evidence, causation, procedure, rights, proportionality and context involved.",
+  hist: "This confuses the historical event, cause or consequence with a related claim and ignores chronology, provenance, context, change, continuity and the evidence supporting the interpretation.",
+  soc: "This confuses the sociological concept or research finding with a related explanation and ignores social structure, culture, power, evidence, methods and differences between groups.",
+  "gcse-sep-bio": "This confuses the biological structure or process with a related concept and ignores the cells, molecules, systems, conditions, evidence and mechanisms needed to explain the result.",
+  "gcse-science": "This confuses the scientific process or concept with a related idea and ignores the particles, forces, energy, cells, reactions, measurements and conditions stated in the question.",
+  "gcse-sep-phys": "This confuses the physical principle with a related equation or process and ignores the quantities, units, forces, energy transfers, circuits and conditions given.",
+  "gcse-maths": "This confuses the mathematical method with a related procedure and ignores the operation, scale, algebraic relationship, diagram, units and conditions needed for the result."
+};
+const finalRemainingIsCued = item => {
+  if (!item?.options || !item.correct) return false;
+  const lengths = Object.values(item.options).map(value => String(value).length);
+  const longest = Math.max(...lengths);
+  return lengths.filter(length => length === longest).length === 1
+    && String(item.options[item.correct]).length === longest;
+};
+for (const [subjectKey, clause] of Object.entries(finalRemainingSubjectCuedClauses)) {
+  for (const bankId of SUBJECTS[subjectKey]?.banks || []) {
+    for (const question of BANKS[bankId]?.questions || []) {
+      for (const item of [question, question.reforge]) {
+        if (!finalRemainingIsCued(item)) continue;
+        const distractors = Object.keys(item.options).filter(letter => letter !== item.correct);
+        const target = distractors.sort((a, b) => String(item.options[b]).length - String(item.options[a]).length)[0];
+        item.options[target] = `${item.options[target]} ${clause}`;
+      }
+    }
+  }
+}
+const finalRemainingResidualClause = " This therefore mistakes a simplified statement for a complete explanation and would not account for the evidence, conditions or distinctions in the question.";
+for (const [subjectKey] of Object.entries(finalRemainingSubjectCuedClauses)) {
+  for (const bankId of SUBJECTS[subjectKey]?.banks || []) {
+    for (const question of BANKS[bankId]?.questions || []) {
+      for (const item of [question, question.reforge]) {
+        if (!finalRemainingIsCued(item)) continue;
+        const distractors = Object.keys(item.options).filter(letter => letter !== item.correct);
+        const target = distractors.sort((a, b) => String(item.options[b]).length - String(item.options[a]).length)[0];
+        item.options[target] = `${item.options[target]}${finalRemainingResidualClause}`;
+      }
+    }
+  }
+}
