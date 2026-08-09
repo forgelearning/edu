@@ -21512,7 +21512,7 @@ for (const question of SUBJECTS["gcse-geo"].banks.flatMap((bankId) => BANKS[bank
 const GCSE_GEO_REMAINING_BANKS = [
   "GCSE-GEO-INDIA", "GCSE-GEO-URB", "GCSE-GEO-UKLAND",
   "GCSE-GEO-UKHUMAN", "GCSE-GEO-RIVERFIELD", "GCSE-GEO-URBFIELD",
-  "GCSE-GEO-BIOSPHERE", "GCSE-GEO-FORESTS", "GCSE-GEO-ENERGY",
+  "GCSE-GEO-BIOSPHERE",
   "GCSE-GEO-DECISIONS", "GCSE-GEO-SKILLS"
 ];
 const GCSE_GEO_TAG_STOPWORDS = new Set("a an and are as at be by can does for from how is it may of on or should the their them these this to what when which why with would".split(" "));
@@ -21601,4 +21601,108 @@ const GCSE_GEO_HAZ_TAGS = {
 };
 for (const question of BANKS["GCSE-GEO-HAZ"].questions) {
   if (GCSE_GEO_HAZ_TAGS[question.id]) question.tag = GCSE_GEO_HAZ_TAGS[question.id];
+}
+
+// Forests Under Threat, curated on the same basis as Hazardous Earth above:
+// 44 stem-derived slugs, 40 of them carried by a single question, onto 11
+// concepts. Grouped by the error a student makes, so the two biomes are kept
+// apart where the contrast IS the point (adaptations, threats) and merged
+// where the underlying idea is shared (nutrient cycling, conservation
+// agreements). See docs/gcse-geo-forests-misconception-mapping.md.
+const GCSE_GEO_FOR_TAGS = {
+  // Rainforest adaptations are responses to light, rain and poor soil
+  "GCSE-FOR-02": "MC-GG-FOR-RF-ADAPTATION", "GCSE-FOR-14": "MC-GG-FOR-RF-ADAPTATION",
+  "GCSE-FOR-15": "MC-GG-FOR-RF-ADAPTATION", "GCSE-FOR-23": "MC-GG-FOR-RF-ADAPTATION",
+  "GCSE-FOR-FB-01": "MC-GG-FOR-RF-ADAPTATION",
+  // Taiga adaptations are responses to cold and a short growing season
+  "GCSE-FOR-05": "MC-GG-FOR-TAIGA-ADAPTATION", "GCSE-FOR-31": "MC-GG-FOR-TAIGA-ADAPTATION",
+  "GCSE-FOR-32": "MC-GG-FOR-TAIGA-ADAPTATION",
+  // Nutrients live in the biomass, not the soil — and why the taiga differs
+  "GCSE-FOR-03": "MC-GG-FOR-NUTRIENT", "GCSE-FOR-06": "MC-GG-FOR-NUTRIENT",
+  "GCSE-FOR-19": "MC-GG-FOR-NUTRIENT", "GCSE-FOR-25": "MC-GG-FOR-NUTRIENT",
+  "GCSE-FOR-33": "MC-GG-FOR-NUTRIENT",
+  // Food webs, keystone species and what biodiversity actually means
+  "GCSE-FOR-01": "MC-GG-FOR-INTERDEPENDENCE", "GCSE-FOR-04": "MC-GG-FOR-INTERDEPENDENCE",
+  "GCSE-FOR-18": "MC-GG-FOR-INTERDEPENDENCE", "GCSE-FOR-24": "MC-GG-FOR-INTERDEPENDENCE",
+  "GCSE-FOR-FB-02": "MC-GG-FOR-INTERDEPENDENCE",
+  // Why rainforest is cleared: the driver is usually commercial, not local
+  "GCSE-FOR-08": "MC-GG-FOR-RF-CAUSES", "GCSE-FOR-16": "MC-GG-FOR-RF-CAUSES",
+  "GCSE-FOR-26": "MC-GG-FOR-RF-CAUSES", "GCSE-FOR-37": "MC-GG-FOR-RF-CAUSES",
+  "GCSE-FOR-38": "MC-GG-FOR-RF-CAUSES",
+  // Measuring forest loss: rates, comparisons and the tools used
+  "GCSE-FOR-07": "MC-GG-FOR-RATES", "GCSE-FOR-10": "MC-GG-FOR-RATES",
+  "GCSE-FOR-27": "MC-GG-FOR-RATES",
+  // Taiga threats are largely indirect — pollution, pests, fire, access
+  "GCSE-FOR-09": "MC-GG-FOR-TAIGA-THREAT", "GCSE-FOR-28": "MC-GG-FOR-TAIGA-THREAT",
+  "GCSE-FOR-34": "MC-GG-FOR-TAIGA-THREAT", "GCSE-FOR-35": "MC-GG-FOR-TAIGA-THREAT",
+  "GCSE-FOR-36": "MC-GG-FOR-TAIGA-THREAT", "GCSE-FOR-44": "MC-GG-FOR-TAIGA-THREAT",
+  // Clear felling vs selective logging
+  "GCSE-FOR-13": "MC-GG-FOR-LOGGING", "GCSE-FOR-21": "MC-GG-FOR-LOGGING",
+  // International agreements, and why each one falls short
+  "GCSE-FOR-11": "MC-GG-FOR-AGREEMENTS", "GCSE-FOR-17": "MC-GG-FOR-AGREEMENTS",
+  "GCSE-FOR-20": "MC-GG-FOR-AGREEMENTS", "GCSE-FOR-30": "MC-GG-FOR-AGREEMENTS",
+  "GCSE-FOR-41": "MC-GG-FOR-AGREEMENTS", "GCSE-FOR-42": "MC-GG-FOR-AGREEMENTS",
+  "GCSE-FOR-FB-03": "MC-GG-FOR-AGREEMENTS",
+  // Sustainable use means managing the forest, not fencing it off
+  "GCSE-FOR-12": "MC-GG-FOR-SUSTAINABLE", "GCSE-FOR-22": "MC-GG-FOR-SUSTAINABLE",
+  "GCSE-FOR-39": "MC-GG-FOR-SUSTAINABLE", "GCSE-FOR-40": "MC-GG-FOR-SUSTAINABLE",
+  "GCSE-FOR-FB-04": "MC-GG-FOR-SUSTAINABLE",
+  // Protection creates winners and losers
+  "GCSE-FOR-29": "MC-GG-FOR-STAKEHOLDERS", "GCSE-FOR-43": "MC-GG-FOR-STAKEHOLDERS"
+};
+for (const question of BANKS["GCSE-GEO-FORESTS"].questions) {
+  if (GCSE_GEO_FOR_TAGS[question.id]) question.tag = GCSE_GEO_FOR_TAGS[question.id];
+}
+
+// Consuming Energy Resources, curated on the same basis: 43 stem-derived
+// slugs, 39 of them on a single question, onto 14 concepts. The organising
+// distinction here is between what a source IS (classification), what decides
+// whether it gets used (reserves, price, security) and what it costs beyond
+// the bill (extraction impacts, hidden costs, stakeholders).
+// See docs/gcse-geo-energy-misconception-mapping.md.
+const GCSE_GEO_ENE_TAGS = {
+  // Renewable vs non-renewable, primary vs secondary
+  "GCSE-ENE-01": "MC-GG-ENE-CLASSIFY", "GCSE-ENE-13": "MC-GG-ENE-CLASSIFY",
+  "GCSE-ENE-14": "MC-GG-ENE-CLASSIFY", "GCSE-ENE-FB-01": "MC-GG-ENE-CLASSIFY",
+  // Conventional vs unconventional sources
+  "GCSE-ENE-07": "MC-GG-ENE-UNCONVENTIONAL", "GCSE-ENE-30": "MC-GG-ENE-UNCONVENTIONAL",
+  "GCSE-ENE-FB-03": "MC-GG-ENE-UNCONVENTIONAL",
+  // How particular renewables actually generate power
+  "GCSE-ENE-17": "MC-GG-ENE-RENEWABLE-TECH", "GCSE-ENE-18": "MC-GG-ENE-RENEWABLE-TECH",
+  "GCSE-ENE-22": "MC-GG-ENE-RENEWABLE-TECH",
+  // Who consumes energy, and why demand grows
+  "GCSE-ENE-04": "MC-GG-ENE-DEMAND", "GCSE-ENE-05": "MC-GG-ENE-DEMAND",
+  "GCSE-ENE-23": "MC-GG-ENE-DEMAND",
+  // Ecological and carbon footprint, including the two calculations
+  "GCSE-ENE-11": "MC-GG-ENE-FOOTPRINT", "GCSE-ENE-12": "MC-GG-ENE-FOOTPRINT",
+  "GCSE-ENE-28": "MC-GG-ENE-FOOTPRINT", "GCSE-ENE-43": "MC-GG-ENE-FOOTPRINT",
+  // Security is about reliability of supply, not owning the resource
+  "GCSE-ENE-09": "MC-GG-ENE-SECURITY", "GCSE-ENE-15": "MC-GG-ENE-SECURITY",
+  "GCSE-ENE-20": "MC-GG-ENE-SECURITY", "GCSE-ENE-33": "MC-GG-ENE-SECURITY",
+  "GCSE-ENE-42": "MC-GG-ENE-SECURITY", "GCSE-ENE-FB-02": "MC-GG-ENE-SECURITY",
+  "GCSE-ENE-FB-04": "MC-GG-ENE-SECURITY",
+  // A reserve is not production: cost and accessibility decide
+  "GCSE-ENE-03": "MC-GG-ENE-RESERVES", "GCSE-ENE-08": "MC-GG-ENE-RESERVES",
+  "GCSE-ENE-25": "MC-GG-ENE-RESERVES", "GCSE-ENE-31": "MC-GG-ENE-RESERVES",
+  // Oil price follows demand as much as supply
+  "GCSE-ENE-06": "MC-GG-ENE-PRICE", "GCSE-ENE-24": "MC-GG-ENE-PRICE",
+  "GCSE-ENE-32": "MC-GG-ENE-PRICE",
+  // Extraction damages more than the atmosphere
+  "GCSE-ENE-16": "MC-GG-ENE-EXTRACTION-IMPACT", "GCSE-ENE-34": "MC-GG-ENE-EXTRACTION-IMPACT",
+  "GCSE-ENE-35": "MC-GG-ENE-EXTRACTION-IMPACT",
+  // No source is impact-free, renewables and nuclear included
+  "GCSE-ENE-02": "MC-GG-ENE-HIDDEN-COST", "GCSE-ENE-10": "MC-GG-ENE-HIDDEN-COST",
+  "GCSE-ENE-19": "MC-GG-ENE-HIDDEN-COST", "GCSE-ENE-37": "MC-GG-ENE-HIDDEN-COST",
+  // Competing interests in any energy decision
+  "GCSE-ENE-29": "MC-GG-ENE-STAKEHOLDERS", "GCSE-ENE-36": "MC-GG-ENE-STAKEHOLDERS",
+  "GCSE-ENE-39": "MC-GG-ENE-STAKEHOLDERS",
+  // Intermittency is a grid problem, not a generation one
+  "GCSE-ENE-21": "MC-GG-ENE-INTERMITTENCY", "GCSE-ENE-38": "MC-GG-ENE-INTERMITTENCY",
+  // Hydrogen is a carrier that has to be made and stored
+  "GCSE-ENE-27": "MC-GG-ENE-HYDROGEN", "GCSE-ENE-41": "MC-GG-ENE-HYDROGEN",
+  // Conservation is using less; efficiency is using it better
+  "GCSE-ENE-26": "MC-GG-ENE-CONSERVATION", "GCSE-ENE-40": "MC-GG-ENE-CONSERVATION"
+};
+for (const question of BANKS["GCSE-GEO-ENERGY"].questions) {
+  if (GCSE_GEO_ENE_TAGS[question.id]) question.tag = GCSE_GEO_ENE_TAGS[question.id];
 }

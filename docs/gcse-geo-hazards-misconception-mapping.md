@@ -85,12 +85,13 @@ and the loose floor was hiding that.
 
 ## Remaining banks
 
-Eleven banks still use auto-generated slugs and need the same treatment,
-largest single-use count first:
+`GCSE-GEO-FORESTS` has since been curated too — see
+`docs/gcse-geo-forests-misconception-mapping.md`, which carries the current
+list. Ten banks still use auto-generated slugs, largest single-use count
+first:
 
 | bank | questions | tags | single-use |
 |---|---|---|---|
-| `GCSE-GEO-FORESTS` | 48 | 44 | 40 |
 | `GCSE-GEO-ENERGY` | 47 | 43 | 39 |
 | `GCSE-GEO-BIOSPHERE` | 45 | 41 | 37 |
 | `GCSE-GEO-UKLAND` | 52 | 44 | 36 |
