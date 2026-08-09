@@ -2001,6 +2001,39 @@ Object.assign(MC_LABELS, {
   "MC-GPOL-US-EVALUATION":"Political efficacy, registration, comparison and effectiveness require evidence-based judgement"
 });
 
+Object.assign(MC_LABELS, {
+  "MC-GHIST-AM-SOCIAL-CHANGE":"Prosperity and freedom in 1920s America were uneven across groups",
+  "MC-GHIST-AM-DEPRESSION":"Crash, unemployment, Hoover and New Deal responses involve different causes and aims",
+  "MC-GHIST-AM-CIVIL-RIGHTS":"Civil-rights change required different legal, protest and political pressures",
+  "MC-GHIST-AM-CULTURE":"Consumer culture, migration, media and suburbs changed society through different mechanisms",
+  "MC-GHIST-AM-RIGHTS-CASES":"Court decisions and movements challenged different forms of discrimination",
+  "MC-GHIST-AM-ECONOMIC-STATE":"New Deal, wartime production and government programmes had distinct economic effects",
+  "MC-GHIST-AM-WAR-COLD-WAR":"War, anti-communism and post-war policy changed opportunity and repression differently",
+  "MC-GHIST-AM-EQUALITY":"Later rights campaigns addressed race, gender and poverty through different reforms",
+  "MC-GHIST-IW-SETTLEMENT":"The post-war settlement combined aims, weaknesses and consequences that must be separated",
+  "MC-GHIST-IW-ROAD-TO-WAR":"Appeasement, aggression and outbreak describe different stages of the road to war",
+  "MC-GHIST-IW-DICTATORSHIP":"Dictatorship consolidated power through different political, economic and social methods",
+  "MC-GHIST-IW-APPEASEMENT":"Appeasement choices reflected motives and risks rather than one simple cause",
+  "MC-GHIST-IW-ALLIANCES":"Treaties, pacts and alliances changed strategic choices in different ways",
+  "MC-GHIST-IW-WAR-CAUSES":"The outbreak of war requires weighing long-term causes against immediate triggers",
+  "MC-GHIST-IW-JUDGEMENT":"Historical judgement needs comparative evidence rather than a narrative list",
+  "MC-GHIST-IW-CONSEQUENCES":"War consequences affected borders, economies and societies through different routes",
+  "MC-GHIST-HEALTH-BELIEFS":"Ideas about causes of illness changed with evidence, religion and inherited beliefs",
+  "MC-GHIST-HEALTH-PREVENTION":"Prevention and public health improved through different causes and levels of action",
+  "MC-GHIST-HEALTH-MEDICINE":"Medical treatments developed through changing knowledge, technology and testing",
+  "MC-GHIST-HEALTH-PUBLIC":"Public health responses depended on government, environment and social behaviour",
+  "MC-GHIST-HEALTH-INDUSTRIAL":"Industrialisation created both health problems and opportunities for reform",
+  "MC-GHIST-HEALTH-GOVERNMENT":"Government action, individuals and institutions contributed differently to change",
+  "MC-GHIST-HEALTH-JUDGEMENT":"Assessing medical change requires weighing pace, extent and limits of improvement",
+  "MC-GHIST-ELIZ-RELIGION":"Elizabethan religious settlement balanced doctrine, authority and practical enforcement",
+  "MC-GHIST-ELIZ-QUEEN":"Elizabeth's power depended on image, advisors, parliament and political constraints",
+  "MC-GHIST-ELIZ-CHALLENGES":"Rebellion and plots differed in motive, scale, threat and government response",
+  "MC-GHIST-ELIZ-FOREIGN":"Foreign policy balanced religion, security, money and intervention risks",
+  "MC-GHIST-ELIZ-ARMADA":"The Armada outcome resulted from planning, conditions, tactics and wider strategy",
+  "MC-GHIST-ELIZ-SOCIETY":"Elizabethan society and economy changed unevenly across status and region",
+  "MC-GHIST-ELIZ-JUDGEMENT":"Historical significance and success require criteria and balanced evidence"
+});
+
 if (typeof window !== 'undefined') {
   window.MC_LABELS = MC_LABELS;
   window.resolveMCLabel = resolveMCLabel;

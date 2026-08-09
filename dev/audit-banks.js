@@ -196,6 +196,8 @@ const TAG_TAXONOMY_SUBJECTS = {
   law: 0,
   // Politics: 200 questions now use 28 shared misconception groups.
   pol: 0,
+  // GCSE History: 200 questions now use 29 shared misconception groups.
+  'gcse-hist': 0,
   // Combined science shares the separate sciences' MC-SEP-* taxonomy. The
   // remaining share is 15 questions whose tag names a topic, not an error.
   'gcse-science': 0.08,
@@ -286,6 +288,7 @@ const TAG_TAXONOMY_MECHANICAL = {
   'crim': 0,
   'law': 0,
   'pol': 0,
+  'gcse-hist': 0,
   // 67 of 212 — the residue of definitional questions that only a topic tag
   // would cover, documented in docs/history-misconception-mapping.md. Was
   // 0.26 against the literal check; the extra 15 are MC-HIST-BRIT1-1 style

@@ -22250,3 +22250,17 @@ addPolRange("USPOL",1,10,"MC-GPOL-US-CONGRESS"); addPolRange("USPOL",11,20,"MC-G
 for (const question of SUBJECTS.pol.banks.flatMap(bankId => BANKS[bankId]?.questions || [])) {
   if (POL_TAGS[question.id]) question.tag = POL_TAGS[question.id];
 }
+
+const GCSE_HIST_TAGS = {};
+const addGHistRange = (bank, first, last, tag) => {
+  for (let n = first; n <= last; n++) GCSE_HIST_TAGS[`GCSE-HIST-${bank}-${String(n).padStart(2, "0")}`] = tag;
+};
+addGHistRange("AM",1,7,"MC-GHIST-AM-SOCIAL-CHANGE"); addGHistRange("AM",8,14,"MC-GHIST-AM-DEPRESSION"); addGHistRange("AM",15,20,"MC-GHIST-AM-CIVIL-RIGHTS"); addGHistRange("AM",21,26,"MC-GHIST-AM-CULTURE"); addGHistRange("AM",27,30,"MC-GHIST-AM-RIGHTS-CASES"); addGHistRange("AM",31,38,"MC-GHIST-AM-ECONOMIC-STATE"); addGHistRange("AM",39,46,"MC-GHIST-AM-WAR-COLD-WAR"); addGHistRange("AM",47,54,"MC-GHIST-AM-EQUALITY");
+addGHistRange("IW",1,7,"MC-GHIST-IW-SETTLEMENT"); addGHistRange("IW",8,15,"MC-GHIST-IW-ROAD-TO-WAR"); addGHistRange("IW",16,22,"MC-GHIST-IW-DICTATORSHIP"); addGHistRange("IW",23,29,"MC-GHIST-IW-APPEASEMENT"); addGHistRange("IW",30,36,"MC-GHIST-IW-ALLIANCES"); addGHistRange("IW",37,43,"MC-GHIST-IW-WAR-CAUSES"); addGHistRange("IW",44,49,"MC-GHIST-IW-JUDGEMENT"); addGHistRange("IW",50,54,"MC-GHIST-IW-CONSEQUENCES");
+addGHistRange("HP",1,7,"MC-GHIST-HEALTH-BELIEFS"); addGHistRange("HP",8,14,"MC-GHIST-HEALTH-PREVENTION"); addGHistRange("HP",15,21,"MC-GHIST-HEALTH-MEDICINE"); addGHistRange("HP",22,28,"MC-GHIST-HEALTH-PUBLIC"); addGHistRange("HP",29,35,"MC-GHIST-HEALTH-INDUSTRIAL"); addGHistRange("HP",36,41,"MC-GHIST-HEALTH-GOVERNMENT"); addGHistRange("HP",42,46,"MC-GHIST-HEALTH-JUDGEMENT");
+addGHistRange("HP",47,54,"MC-GHIST-HEALTH-JUDGEMENT");
+GCSE_HIST_TAGS["GCSE-HIST-HP-22"] = "MC-GHIST-HEALTH-PREVENTION";
+addGHistRange("EL",1,7,"MC-GHIST-ELIZ-RELIGION"); addGHistRange("EL",8,13,"MC-GHIST-ELIZ-QUEEN"); addGHistRange("EL",14,20,"MC-GHIST-ELIZ-CHALLENGES"); addGHistRange("EL",21,27,"MC-GHIST-ELIZ-FOREIGN"); addGHistRange("EL",28,34,"MC-GHIST-ELIZ-ARMADA"); addGHistRange("EL",35,40,"MC-GHIST-ELIZ-SOCIETY"); addGHistRange("EL",41,46,"MC-GHIST-ELIZ-JUDGEMENT"); addGHistRange("EL",47,54,"MC-GHIST-ELIZ-JUDGEMENT");
+for (const question of SUBJECTS["gcse-hist"].banks.flatMap(bankId => BANKS[bankId]?.questions || [])) {
+  if (GCSE_HIST_TAGS[question.id]) question.tag = GCSE_HIST_TAGS[question.id];
+}
