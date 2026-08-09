@@ -96,6 +96,7 @@ function getRank(xp){
 // Year 12-13 = A-Level, Year 7-11 = GCSE. See school-overview.html's classLevel.
 function classLevel(className) {
   var m = /^(\d+)/.exec(className || '');
+  if (/^gcse[-_]/i.test(className || '')) return 'gcse';
   if (!m) return 'alevel';
   var year = parseInt(m[1], 10);
   return year >= 12 ? 'alevel' : 'gcse';
@@ -237,7 +238,7 @@ function classInfo(){
     if(!c.classId)return;
     map[c.classId]={
       label: (c.subject && SUBJ_LABELS[c.subject]) || c.subject || c.className || null,
-      isGCSE: classLevel(c.className)==='gcse'
+      isGCSE: classLevel(c.className || c.subject)==='gcse'
     };
   });
   return map;

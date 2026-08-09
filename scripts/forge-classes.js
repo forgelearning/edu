@@ -202,15 +202,18 @@
   function syncFromServer(supabaseUrl, supabaseKey, anchor, done) {
     if (!anchor || !anchor.studentId || !anchor.classCode || !anchor.studentName) { done && done(list()); return; }
     use(anchor.studentName);
+    var previous = list().filter(function (c) {
+      return c.classId === anchor.classId || c.classCode === anchor.classCode;
+    })[0] || {};
     var others = load().filter(function (c) { return norm(c.studentName) !== norm(anchor.studentName); });
     save(others.concat([{
       classId: anchor.classId || null,
       classCode: anchor.classCode,
-      className: anchor.className || null,
-      subject: anchor.subject || null,
+      className: anchor.className || previous.className || null,
+      subject: anchor.subject || previous.subject || null,
       studentId: anchor.studentId,
       studentName: anchor.studentName,
-      studentCode: anchor.studentCode || null
+      studentCode: anchor.studentCode || previous.studentCode || null
     }]));
     done && done(list());
   }
