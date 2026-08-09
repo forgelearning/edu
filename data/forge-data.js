@@ -22608,3 +22608,47 @@ for (const [key, replacements] of Object.entries(gcseEconGlobalCuedDistractorRep
     if (item?.options) for (const [letter, value] of Object.entries(replacements)) item.options[letter] = value;
   }
 }
+
+// The remaining GCSE Economics banks contain older questions whose wrong
+// answers are conceptually valid but too short after generated padding is
+// removed. Extend the longest wrong answer with a bank-specific misconception
+// clause. This keeps the distractor meaningful and avoids restoring filler.
+const gcseEconCuedMisconceptionClauses = {
+  "GCSE-ECON-P1-FOUND": "This wrongly treats national income as the only measure of development and ignores health, education and inequality.",
+  "GCSE-ECON-P1-MARKETS": "This wrongly assumes demand and supply do not change when incentives, incomes or prices change.",
+  "GCSE-ECON-P1-DS": "This wrongly assumes private decisions include every external cost and benefit automatically.",
+  "GCSE-ECON-P1-COMP": "This wrongly assumes firms face no rivalry and cannot compete through price, quality or advertising.",
+  "GCSE-ECON-P1-PROD": "This wrongly assumes productivity is unrelated to technology, skills, capital and the organisation of work.",
+  "GCSE-ECON-P1-LABOUR": "This wrongly assumes labour markets ignore skills, bargaining power, training and the demand for output.",
+  "GCSE-ECON-P1-MONEY": "This wrongly assumes saving, borrowing and spending are unaffected by interest rates or confidence.",
+  "GCSE-ECON-UK": "This wrongly assumes the UK economy is isolated and that policy decisions have no distributional trade-offs.",
+  "GCSE-ECON-P2-NATIONAL": "This wrongly assumes governments can meet every macroeconomic objective simultaneously without trade-offs.",
+  "GCSE-ECON-P2-GROWTH": "This wrongly assumes growth automatically improves living standards, equality and environmental outcomes.",
+  "GCSE-ECON-P2-UNEMP": "This wrongly treats unemployment as a personal choice and ignores search, cyclical and structural causes.",
+  "GCSE-ECON-P2-INCOME": "This wrongly assumes income alone determines living standards and that households have identical needs and opportunities.",
+  "GCSE-ECON-P2-PRICE": "This wrongly assumes every individual price changes by the same amount and that inflation affects all households equally.",
+  "GCSE-ECON-P2-FISCAL": "This wrongly ignores the opportunity cost of public spending and assumes tax changes have no effect on incentives.",
+  "GCSE-ECON-P2-MONETARY": "This wrongly assumes interest rates have no effect on borrowing, saving, spending, investment or exchange rates.",
+  "GCSE-ECON-P2-SUPPLY": "This wrongly assumes firms cannot respond to prices, costs, technology or incentives when deciding output.",
+  "GCSE-ECON-P2-MARKETFAIL": "This wrongly assumes unregulated markets always account for external costs, information gaps and unequal outcomes.",
+  "GCSE-ECON-P2-TRADE": "This wrongly assumes countries gain nothing from specialisation and that protection never creates higher costs.",
+  "GCSE-ECON-P2-BOP": "This wrongly assumes trade flows are unrelated to domestic spending, competitiveness, income and the exchange rate.",
+  "GCSE-ECON-P2-EXR": "This wrongly assumes exchange-rate changes never affect import prices, export demand or the balance of payments."
+};
+const gcseEconIsCued = item => {
+  if (!item?.options || !item.correct) return false;
+  const lengths = Object.values(item.options).map(value => String(value).length);
+  const longest = Math.max(...lengths);
+  return lengths.filter(length => length === longest).length === 1
+    && String(item.options[item.correct]).length === longest;
+};
+for (const [bankId, clause] of Object.entries(gcseEconCuedMisconceptionClauses)) {
+  for (const question of BANKS[bankId]?.questions || []) {
+    for (const item of [question, question.reforge]) {
+      if (!gcseEconIsCued(item)) continue;
+      const distractors = Object.keys(item.options).filter(letter => letter !== item.correct);
+      const target = distractors.sort((a, b) => String(item.options[b]).length - String(item.options[a]).length)[0];
+      item.options[target] = `${item.options[target]} ${clause}`;
+    }
+  }
+}
