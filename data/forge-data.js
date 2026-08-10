@@ -30541,3 +30541,358 @@ for (const [id, repairs] of Object.entries(finalCSKeyingFix)) {
     }
   }
 }
+
+// Same corruption sweep as Business (#160), the root-cause algorithm fix
+// (#161), and Computer Science (#162) -- applied here to GCSE Maths, one
+// of the subjects flagged as still having pre-existing cross-topic
+// corruption baked in from before the algorithm fix.
+const finalGCSEMathsCorruptionRepairs = {
+ "MATH-P1-01": {
+  "base": {
+   "B": "72 × 10⁻⁴"
+  }
+ },
+ "GCSE-MATHS-COV-001": {
+  "base": {
+   "B": "72 × 10⁻⁴"
+  }
+ },
+ "GCSE-PHASE6-MATH1-01": {
+  "base": {
+   "B": "3,600,000",
+   "A": "0.00036"
+  },
+  "reforge": {
+   "C": "36,000"
+  }
+ },
+ "GCSE-PHASE6-MATH1-02": {
+  "reforge": {
+   "A": "x = 4, y = 5",
+   "C": "x = 3, y = 5",
+   "D": "x = 6, y = 1"
+  }
+ },
+ "MATH-P3-22": {
+  "base": {
+   "A": "x = 5.00 or −4.00",
+   "C": "x = 0.70 or −5.70"
+  }
+ },
+ "GCSE-PHASE6-MATH3-02": {
+  "base": {
+   "B": "y = (x − 2)(x + 5)",
+   "C": "x = 1 and −4",
+   "A": "y = x² + 7"
+  },
+  "reforge": {
+   "A": "y = (x + 2)(x + 5)",
+   "D": "x = −1 and −4",
+   "C": "x = 1 and 4"
+  }
+ },
+ "MATH-P1-20": {
+  "base": {
+   "C": "18 is the most frequent value The mathematical method must match the operation, scale, algebraic relationship, diagram, units and conditions; the evidence supports a narrower conclusion than the one proposed in this option.",
+   "B": "−2 The mathematical method must match the operation, scale, algebraic relationship, diagram, units and conditions; the proposed conclusion does not follow from the evidence supplied in the question.",
+   "A": "The mean must equal 18"
+  },
+  "reforge": {
+   "A": "The range is 18"
+  }
+ },
+ "GCSE-MATHS-COV-020": {
+  "base": {
+   "D": "18 is the most frequent value The mathematical method must match the operation, scale, algebraic relationship, diagram, units and conditions; the evidence supports a narrower conclusion than the one proposed in this option.",
+   "B": "−2 The mathematical method must match the operation, scale, algebraic relationship, diagram, units and conditions; the proposed conclusion does not follow from the evidence supplied in the question.",
+   "A": "The mean must equal 18"
+  },
+  "reforge": {
+   "B": "The range is 18"
+  }
+ },
+ "MATH-P3-35": {
+  "base": {
+   "B": "n = 12",
+   "A": "n = 9",
+   "D": "58"
+  }
+ },
+ "MATH-P3-14": {
+  "reforge": {
+   "C": "(−3, −7)",
+   "A": "(3, 1)",
+   "B": "(4, 5)"
+  }
+ },
+ "MATH-P3-32": {
+  "base": {
+   "C": "The difference between mean and mode"
+  },
+  "reforge": {
+   "D": "59",
+   "A": "29"
+  }
+ },
+ "MATH-P3-33": {
+  "base": {
+   "D": "The difference between mean and mode",
+   "B": "Mean",
+   "C": "59"
+  },
+  "reforge": {
+   "B": "The most common value"
+  }
+ },
+ "MATH-P3-18": {
+  "reforge": {
+   "C": "Most extreme value",
+   "B": "Observation count",
+   "A": "Total spread"
+  },
+  "base": {
+   "A": "99.7%",
+   "D": "50%"
+  }
+ },
+ "MATH-P3-29": {
+  "reforge": {
+   "B": "4.1",
+   "A": "3.8",
+   "D": "4.7"
+  }
+ },
+ "MATH-P3-30": {
+  "base": {
+   "A": "All values are 42",
+   "D": "25% at or below",
+   "C": "Lower 25%"
+  },
+  "reforge": {
+   "A": "Mean is 42",
+   "B": "Upper 75%"
+  }
+ },
+ "MATH-P3-06": {
+  "base": {
+   "A": "145°",
+   "C": "172°"
+  }
+ },
+ "MATH-P1-09": {
+  "base": {
+   "B": "0.37",
+   "D": "1.37"
+  },
+  "reforge": {
+   "A": "2.70",
+   "B": "100"
+  }
+ },
+ "GCSE-MATHS-COV-009": {
+  "base": {
+   "B": "0.37",
+   "D": "1.37"
+  },
+  "reforge": {
+   "C": "2.70",
+   "B": "100"
+  }
+ },
+ "GCSE-PHASE6-MATH2-02": {
+  "base": {
+   "D": "25/64",
+   "C": "20/56"
+  },
+  "reforge": {
+   "A": "3/10"
+  }
+ },
+ "MATH-P3-27": {
+  "base": {
+   "D": "112°",
+   "B": "292°"
+  },
+  "reforge": {
+   "C": "137°",
+   "D": "223°"
+  }
+ },
+ "MATH-P2-20": {
+  "base": {
+   "B": "405"
+  }
+ },
+ "GCSE-MATHS-COV-060": {
+  "base": {
+   "B": "405"
+  }
+ },
+ "MATH-P3-36": {
+  "base": {
+   "B": "96"
+  }
+ },
+ "MATH-P3-26": {
+  "base": {
+   "C": "(−3, −7)",
+   "D": "(12, −4)"
+  },
+  "reforge": {
+   "C": "(6, −1)"
+  }
+ },
+ "MATH-P3-34": {
+  "base": {
+   "A": "It removes the need for a starting value"
+  }
+ },
+ "MATH-P1-16": {
+  "base": {
+   "B": "n = 23",
+   "C": "n = 4"
+  },
+  "reforge": {
+   "A": "n = 6"
+  }
+ },
+ "GCSE-MATHS-COV-016": {
+  "base": {
+   "D": "n = 23",
+   "C": "n = 4"
+  },
+  "reforge": {
+   "A": "n = 6"
+  }
+ },
+ "MATH-P3-01": {
+  "base": {
+   "B": "y = (x − 2)(x + 5)",
+   "D": "y = (x + 2)(x + 5)",
+   "C": "x = 1 and −4"
+  },
+  "reforge": {
+   "D": "x = −1 and −4",
+   "A": "x = 1 and 4",
+   "B": "y = x² + 7"
+  }
+ },
+ "MATH-P3-25": {
+  "base": {
+   "D": "(x − 2)² + (y − 1)² = 25",
+   "B": "(x + 2)² + (y − 1)² = 5",
+   "C": "(−4, −2)"
+  }
+ },
+ "MATH-P3-15": {
+  "reforge": {
+   "D": "3 m",
+   "C": "8 m"
+  },
+  "base": {
+   "D": "5.8 m"
+  }
+ },
+ "MATH-P1-25": {
+  "base": {
+   "B": "x ≥ −3"
+  }
+ },
+ "GCSE-MATHS-COV-025": {
+  "base": {
+   "B": "x ≥ −3"
+  }
+ },
+ "MATH-P3-02": {
+  "base": {
+   "A": "−2 and −1"
+  }
+ },
+ "GCSE-PHASE6-MATH2-01": {
+  "reforge": {
+   "B": "40 + 4π cm",
+   "C": "10 + 4π cm",
+   "D": "20 + 2π cm"
+  }
+ },
+ "MATH-P2-08": {
+  "base": {
+   "A": "Mean"
+  },
+  "reforge": {
+   "A": "31"
+  }
+ },
+ "GCSE-MATHS-COV-048": {
+  "base": {
+   "A": "Mean"
+  },
+  "reforge": {
+   "A": "31"
+  }
+ },
+ "MATH-P3-11": {
+  "base": {
+   "A": "1/6"
+  }
+ },
+ "MATH-P3-04": {
+  "base": {
+   "A": "(−5, −1)"
+  }
+ },
+ "MATH-P2-13": {
+  "reforge": {
+   "A": "16 cm"
+  }
+ },
+ "GCSE-MATHS-COV-053": {
+  "reforge": {
+   "A": "16 cm"
+  }
+ },
+ "MATH-P3-23": {
+  "reforge": {
+   "C": "88.0 cm²"
+  }
+ },
+ "MATH-P2-04": {
+  "base": {
+   "A": "−5/2"
+  }
+ },
+ "GCSE-MATHS-COV-044": {
+  "base": {
+   "A": "−5/2"
+  }
+ },
+ "MATH-P3-19": {
+  "base": {
+   "B": "0.15"
+  }
+ }
+};
+for (const [id, repairs] of Object.entries(finalGCSEMathsCorruptionRepairs)) {
+  for (const bank of Object.values(BANKS)) {
+    const question = (bank.questions || []).find(candidate => candidate.id === id);
+    if (!question) continue;
+    for (const [variant, options] of Object.entries(repairs)) {
+      const item = variant === "base" ? question : question.reforge;
+      if (item?.options) Object.assign(item.options, options);
+    }
+  }
+}
+const finalGCSEMathsLengthRepairs = {
+  "GCSE-PHASE6-MATH1-01": { base: { C: "72 × 10⁻⁴, which is not standard form since the coefficient must be at least 1 and less than 10." } },
+  "MATH-P3-32": { reforge: { C: "Mean — a single average value, not the measure of spread shown by the length of the box." } }
+};
+for (const [id, repairs] of Object.entries(finalGCSEMathsLengthRepairs)) {
+  for (const bank of Object.values(BANKS)) {
+    const question = (bank.questions || []).find(candidate => candidate.id === id);
+    if (!question) continue;
+    for (const [variant, options] of Object.entries(repairs)) {
+      const item = variant === "base" ? question : question.reforge;
+      if (item?.options) Object.assign(item.options, options);
+    }
+  }
+}
