@@ -171,14 +171,19 @@ function logResponse(q, selectedKey, isCorrect, isReforge, reforgeCorrect) {
       },
       body: JSON.stringify(row)
     }).then(function() { return true; }).catch(function(e) { recordPersistenceError(e, row, 'authenticated-response'); return false; });
-  } else if (state.classId) {
+  } else if (state.classId && state.studentCode) {
     // Class-code students are anonymous, but their student/class pair is the
     // ownership boundary for response writes. Keep this path explicit so a
     // class session cannot silently fall through as a local-only quiz.
+    return ForgeStudentCode.recordResponse(state.studentId,state.classCode,state.studentCode,row).then(function() { return true; }).catch(function(e) {
+      recordPersistenceError(e, row, 'class-response');
+      return false;
+    });
+  } else if (state.classId) {
     return ForgeAPI.insert('responses', row, {
       headers: {'Prefer': 'return=minimal'}
     }).then(function() { return true; }).catch(function(e) {
-      recordPersistenceError(e, row, 'class-response');
+      recordPersistenceError(e, row, 'legacy-class-response');
       return false;
     });
   } else {
@@ -384,6 +389,8 @@ var state = {
   phase: 'join',
   studentId: null,
   classId: null,
+  classCode: null,
+  studentCode: null,
   studentName: null,
   classSubject: null,  // locked subject from class code
   isPaid: false,
@@ -507,12 +514,14 @@ function joinClassByCode(name, code, cb) {
 function activateClass(entry) {
   if (!entry) return;
   state.classId      = entry.classId;
+  state.classCode    = entry.classCode || null;
+  state.studentCode  = entry.studentCode || null;
   state.studentId    = entry.studentId;
   state.classSubject = entry.subject || null;
   if (entry.studentName) state.studentName = entry.studentName;
   try {
     localStorage.setItem('forge-student', JSON.stringify({
-      studentId: entry.studentId, classId: entry.classId, classCode: entry.classCode,
+      studentId: entry.studentId, classId: entry.classId, classCode: entry.classCode, studentCode: entry.studentCode,
       studentName: state.studentName, classSubject: entry.subject || null
     }));
   } catch(e) {}
@@ -1291,7 +1300,7 @@ function renderBanks(){
 
   // Load and display assignments if student is connected to a class
   if (state.classId && supa._configured()) {
-    supa.select('assignments', {'class_id': state.classId}).then(function(assignments){
+    ForgeStudentCode.assignments(state.studentId,state.classCode,state.studentCode,state.studentName).then(function(assignments){
       var banner = document.getElementById('assignment-banner');
       if (!banner || !assignments || assignments.length === 0) return;
 
@@ -2061,6 +2070,8 @@ if (!openSoloLogin && ForgeAuth.hasSession()) {
     if (savedSession && savedSession.studentName && savedSession.classId) {
       state.studentId    = savedSession.studentId    || null;
       state.classId      = savedSession.classId;
+      state.classCode    = savedSession.classCode || null;
+      state.studentCode  = savedSession.studentCode || null;
       state.studentName  = savedSession.studentName;
       state.classSubject = savedSession.classSubject || null;
       state.isPaid       = false;
@@ -2342,7 +2353,11 @@ function mrSubmit(qid) {
   // Log to Supabase
   if (state.studentId) {
     var row = { student_id: state.studentId, class_id: state.classId, question_id: qid, bank: 'MAN-EXP-1', subject: 'mandarin', selected_option: isCorrect ? q.answer : '?', is_correct: isCorrect, misconception_tag: isCorrect ? null : 'MC-MAN-01', reforge_attempted: false, reforge_correct: null };
-    supa.insert('responses', row);
+    if (state.classId && state.studentCode) {
+      ForgeStudentCode.recordResponse(state.studentId,state.classCode,state.studentCode,row).catch(function() {});
+    } else {
+      supa.insert('responses', row);
+    }
   }
 
   render();

@@ -878,7 +878,7 @@ function renderDashboard() {
   if (dashState.classCode) {
     h += ' <button type="button" class="class-code-pill" id="class-code-pill" data-forge-action="copy-class-code" title="Copy class code">' + dashState.classCode + ' ⎘</button>';
   }
-  h += '</h1><button type="button" class="forge-button forge-button--secondary" id="generate-student-codes">Generate student codes</button></div>';
+  h += '</h1><button type="button" class="forge-button forge-button--secondary" id="generate-student-codes">Generate student codes</button><button type="button" class="forge-button forge-button--secondary" id="migrate-existing-students">Migrate existing students</button></div>';
   h += '<div class="dash-header-actions"><a class="dash-primary forge-button forge-button--primary" href="#" id="dash-action">' + (wrongResponses.length ? 'Open misconceptions \u2192' : 'Create assignment \u2192') + '</a><div class="dash-meta"><b>' + students.length + '</b> student' + (students.length !== 1 ? 's' : '') + ' \u00b7 <b>' + totalQs + '</b> response' + (totalQs !== 1 ? 's' : '') + ' \u00b7 <button type="button" class="back-btn forge-u-gr3ipb" data-forge-action="render-teacher-home">\u2190 All classes</button></div></div>';
   h += '</div>';
 
@@ -943,6 +943,25 @@ function renderDashboard() {
       })
       .catch(function (error) { window.alert(error.message || 'Could not generate student codes.'); })
       .finally(function () { generateCodesBtn.disabled = false; generateCodesBtn.textContent = 'Generate student codes'; });
+  };
+  var migrateBtn = document.getElementById('migrate-existing-students');
+  if (migrateBtn) migrateBtn.onclick = function () {
+    if (!window.confirm('Generate private codes for every existing student in this class? Student IDs and response history will be preserved.')) return;
+    migrateBtn.disabled = true;
+    migrateBtn.textContent = 'Migrating…';
+    ForgeAPI.rpc('generate_student_access_codes_for_existing_students', { p_class_id: dashState.classId }, teacherApiOptions())
+      .then(function (rows) {
+        if (!Array.isArray(rows)) throw new Error('The server returned an invalid migration response.');
+        var csv = 'Student ID,Name,Student Code,Class Code\n' + rows.map(function (row) {
+          return [row.student_id, row.student_name, row.student_code, row.class_code].map(function (v) { return '"' + String(v || '').replace(/"/g, '""') + '"'; }).join(',');
+        }).join('\n') + '\n';
+        var url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
+        var link = document.createElement('a'); link.href = url; link.download = 'forge-migrated-student-codes-' + dashState.classCode + '.csv'; link.click();
+        setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+        window.alert(rows.length ? 'Downloaded ' + rows.length + ' private student codes. Keep this file private.' : 'All students already have private codes.');
+      })
+      .catch(function (error) { window.alert(error.message || 'Could not migrate existing students.'); })
+      .finally(function () { migrateBtn.disabled = false; migrateBtn.textContent = 'Migrate existing students'; });
   };
   var dashAction = document.getElementById('dash-action');
   if (dashAction) dashAction.onclick = function(e) { e.preventDefault(); switchTab(wrongResponses.length ? 'heatmap' : 'assignments', dashAction); };

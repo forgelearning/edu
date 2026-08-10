@@ -24657,71 +24657,71 @@ const staticLegacyRepairs = {
   },
   "GCSE-HIST-AM-21": {
     "base": {
-      "C": "They were available only in rural areas The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the relevant distinction is between the process and its effect, which this option merges."
+      "C": "They were available only in rural areas"
     }
   },
   "GCSE-HIST-AM-24": {
     "base": {
-      "C": "African-Americans received every benefit first The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the relevant relationship is reversed, so the proposed answer cannot explain the outcome."
+      "C": "African-Americans received every benefit first"
     }
   },
   "GCSE-HIST-AM-28": {
     "base": {
-      "A": "Whether the New Deal funded schools The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the example requires a more precise distinction than this broad statement makes."
+      "A": "Whether the New Deal funded schools"
     }
   },
   "GCSE-HIST-AM-29": {
     "base": {
-      "D": "It focused only on foreign policy The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the option confuses a definition with its application to the specific example."
+      "D": "It focused only on foreign policy"
     }
   },
   "GCSE-HIST-AM-30": {
     "base": {
-      "C": "Segregation was constitutional The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the evidence supports a narrower conclusion than the one proposed in this option."
+      "C": "Segregation was constitutional"
     },
     "reforge": {
-      "A": "It ended the Civil Rights Movement The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the option would be correct only under different assumptions from those given."
+      "A": "It ended the Civil Rights Movement"
     }
   },
   "GCSE-HIST-IW-23": {
     "reforge": {
-      "B": "The League became militarily stronger The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the answer treats an exception or consequence as though it were the underlying principle."
+      "B": "The League became militarily stronger"
     }
   },
   "GCSE-HIST-IW-24": {
     "base": {
-      "A": "He wanted to join the League later The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the answer does not account for the competing factor or trade-off described."
+      "A": "He wanted to join the League later"
     }
   },
   "GCSE-HIST-IW-25": {
     "base": {
-      "B": "They had declared support for invasion The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the proposed account does not match the scale, timing or conditions stated."
+      "B": "They had declared support for invasion"
     }
   },
   "GCSE-HIST-IW-26": {
     "base": {
-      "D": "It removed all German ambitions The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the stated example distinguishes this mechanism from the nearby concept named in the option."
+      "D": "It removed all German ambitions"
     },
     "reforge": {
-      "A": "It made appeasement more popular The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the relevant distinction is between the process and its effect, which this option merges."
+      "A": "It made appeasement more popular"
     }
   },
   "GCSE-HIST-IW-27": {
     "base": {
-      "A": "It had no access to the Baltic The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the example requires a more precise distinction than this broad statement makes."
+      "A": "It had no access to the Baltic"
     }
   },
   "GCSE-HIST-IW-30": {
     "base": {
-      "D": "Germany had abandoned expansion The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the example requires a more precise distinction than this broad statement makes."
+      "D": "Germany had abandoned expansion"
     }
   },
   "GCSE-HIST-IW-53": {
     "base": {
-      "B": "They created financial and political resentment The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the relevant relationship is reversed, so the proposed answer cannot explain the outcome."
+      "B": "They created financial and political resentment"
     },
     "reforge": {
-      "A": "A plebiscite and partition The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the wording describes a different process and would predict a different outcome."
+      "A": "A plebiscite and partition"
     }
   },
   "GEN-04": {
@@ -24786,42 +24786,42 @@ const staticLegacyRepairs = {
   },
   "OPS-08": {
     "reforge": {
-      "C": "The manufacturer must reduce sterling prices to maintain market share. The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the option identifies a related term but not the feature that makes it the correct answer."
+      "C": "The manufacturer must reduce sterling prices to maintain market share."
     }
   },
   "GCSE-HIST-HP-16": {
     "base": {
-      "C": "Operations became unnecessary The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the evidence supports a narrower conclusion than the one proposed in this option."
+      "C": "Operations became unnecessary"
     }
   },
   "GCSE-HIST-HP-18": {
     "base": {
-      "D": "To make private insurance illegal The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the answer leaves out the condition that determines the result being tested."
+      "D": "To make private insurance illegal"
     }
   },
   "GCSE-HIST-HP-22": {
     "base": {
-      "A": "Hospitals cannot treat illness The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the relevant relationship is reversed, so the proposed answer cannot explain the outcome."
+      "A": "Hospitals cannot treat illness"
     }
   },
   "GCSE-HIST-EL-16": {
     "base": {
-      "A": "There were no harvests anywhere The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the relevant distinction is between the process and its effect, which this option merges."
+      "A": "There were no harvests anywhere"
     }
   },
   "GCSE-HIST-EL-17": {
     "base": {
-      "B": "They wanted everyone to travel freely The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the explanation omits the evidence needed to connect the claim with the question."
+      "B": "They wanted everyone to travel freely"
     }
   },
   "GCSE-HIST-EL-20": {
     "reforge": {
-      "A": "She abolished the Church of England The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the option confuses a definition with its application to the specific example."
+      "A": "She abolished the Church of England"
     }
   },
   "GCSE-HIST-EL-21": {
     "base": {
-      "B": "They supported the Settlement The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the answer overlooks the qualifier that determines how the concept applies in this question."
+      "B": "They supported the Settlement"
     }
   },
   "SCI-PHYS1-06": {
@@ -25653,6 +25653,59 @@ const finalLengthCueRepairs = {
   "CHEM-COV-060": { reforge: { B: "Aniline has more hydrogen atoms, making it harder to accept a proton. The chemical explanation must follow the particles, bonding, quantities and stated conditions; the option identifies a related term but not the feature that makes it the correct answer, ignoring the resonance effect entirely." } }
 };
 for (const [id, repairs] of Object.entries(finalLengthCueRepairs)) {
+  for (const bank of Object.values(BANKS)) {
+    const question = (bank.questions || []).find(candidate => candidate.id === id);
+    if (!question) continue;
+    for (const [variant, options] of Object.entries(repairs)) {
+      const item = variant === "base" ? question : question.reforge;
+      if (item?.options) Object.assign(item.options, options);
+    }
+  }
+}
+
+// A full-audit pass found domain-mismatched text (leaked from a science
+// distractor-repair pass) glued onto 23 GCSE History/Business distractors,
+// e.g. "It focused only on foreign policy The science explanation must
+// account for the particles, forces, energy...". Stripping the leaked tail
+// left several of these too short relative to their correct answer, which
+// this repair fixes with genuine, period-appropriate wrong answers. Scoped
+// per question id and applied last so nothing downstream overwrites it.
+const finalHistoryDistractorRepairs = {
+  "GCSE-HIST-AM-21": { base: { C: "They were available only in rural areas, since electrification and radio-station coverage lagged behind cities." } },
+  "GCSE-HIST-AM-24": { base: { C: "African-Americans received every benefit first, since New Deal agencies prioritised Black communities over white ones." } },
+  "GCSE-HIST-AM-28": { base: { A: "Whether federal New Deal relief programmes had funded new schools equally across the segregated South." } },
+  "GCSE-HIST-AM-29": { base: { D: "It focused only on foreign policy and international trade agreements, ignoring domestic reform entirely." } },
+  "GCSE-HIST-AM-30": { base: { C: "Segregation was constitutional under the doctrine established decades earlier in Plessy v Ferguson." }, reforge: { A: "It ended the Civil Rights Movement by resolving every remaining dispute over racial equality." } },
+  "GCSE-HIST-IW-23": { reforge: { B: "The League became militarily stronger after member states pooled their armed forces against Italy." } },
+  "GCSE-HIST-IW-24": { base: { A: "He wanted to join the League later, once German rearmament had already been completed." } },
+  "GCSE-HIST-IW-25": { base: { B: "They had already declared their full support for German invasion of neighbouring states." } },
+  "GCSE-HIST-IW-26": { base: { D: "It removed all German ambitions to expand beyond territories where German speakers lived." }, reforge: { A: "It made appeasement more popular with the British public, who welcomed further concessions." } },
+  "GCSE-HIST-IW-27": { base: { A: "It had no access to the Baltic Sea and depended entirely on the corridor for trade." } },
+  "GCSE-HIST-IW-30": { base: { D: "Germany had abandoned expansion after the failure of the Munich Agreement negotiations." } },
+  "GCSE-HIST-IW-53": { base: { B: "They created financial and political resentment that made a wider war inevitable from the outset." }, reforge: { A: "A plebiscite and partition of the disputed territory between rival national claimants." } },
+  "GCSE-HIST-HP-16": { base: { C: "Operations became unnecessary once vaccination eliminated the diseases that caused them." } },
+  "GCSE-HIST-HP-18": { base: { D: "To make private insurance illegal and replace it entirely with state provision." } },
+  "GCSE-HIST-HP-22": { base: { A: "Hospitals cannot treat illness effectively without prevention programmes running alongside them." } },
+  "GCSE-HIST-EL-16": { base: { A: "There were no harvests anywhere in England throughout the whole of Elizabeth's reign." } },
+  "GCSE-HIST-EL-17": { base: { B: "They wanted everyone to travel freely between parishes without needing any permission." } },
+  "GCSE-HIST-EL-20": { reforge: { A: "She abolished the Church of England and restored papal authority across the realm." } },
+  "GCSE-HIST-EL-21": { base: { B: "They supported the Religious Settlement and rejected all missionary activity." } }
+};
+for (const [id, repairs] of Object.entries(finalHistoryDistractorRepairs)) {
+  for (const bank of Object.values(BANKS)) {
+    const question = (bank.questions || []).find(candidate => candidate.id === id);
+    if (!question) continue;
+    for (const [variant, options] of Object.entries(repairs)) {
+      const item = variant === "base" ? question : question.reforge;
+      if (item?.options) Object.assign(item.options, options);
+    }
+  }
+}
+
+const finalBusinessDistractorRepair = {
+  "OPS-08": { reforge: { C: "The manufacturer must reduce sterling prices to maintain market share, because this option treats depreciation as though it always squeezes overseas demand regardless of direction, forcing exporters to cut list prices to stay competitive against EU rivals." } }
+};
+for (const [id, repairs] of Object.entries(finalBusinessDistractorRepair)) {
   for (const bank of Object.values(BANKS)) {
     const question = (bank.questions || []).find(candidate => candidate.id === id);
     if (!question) continue;

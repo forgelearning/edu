@@ -237,9 +237,12 @@
       fetchAllResponses(supabaseUrl, supabaseKey, anchor && anchor.studentName, done);
       return;
     }
-    rpc(supabaseUrl, supabaseKey, 'get_student_own_responses', {
-      p_student_id: anchor.studentId, p_code: anchor.classCode, p_name: anchor.studentName
-    }).then(function (rows) {
+    var responseRequest = anchor.studentCode && global.ForgeStudentCode
+      ? global.ForgeStudentCode.responses(anchor.studentId, anchor.classCode, anchor.studentCode)
+      : rpc(supabaseUrl, supabaseKey, 'get_student_own_responses', {
+        p_student_id: anchor.studentId, p_code: anchor.classCode, p_name: anchor.studentName
+      });
+    responseRequest.then(function (rows) {
       var mapped = (Array.isArray(rows) ? rows : []).map(function (r) {
         r._studentId = anchor.studentId;
         r._classId   = anchor.classId || null;

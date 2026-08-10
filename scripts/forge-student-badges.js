@@ -142,7 +142,12 @@
   }
   function refreshAssignments() {
     if (!root.ForgeAPI || !root.ForgeAPI.get) return Promise.resolve([]);
-    return root.ForgeAPI.get('assignments', 'class_id=eq.' + encodeURIComponent(saved.classId) + '&order=due_date.asc').then(function (rows) {
+    var assignmentRequest = root.ForgeStudentCode && saved.studentId && saved.classCode
+      ? root.ForgeStudentCode.assignments(saved.studentId, saved.classCode, saved.studentCode, saved.studentName)
+      : (root.ForgeAuth && root.ForgeAuth.accessToken && root.ForgeAuth.accessToken())
+        ? root.ForgeAPI.get('assignments', 'class_id=eq.' + encodeURIComponent(saved.classId) + '&order=due_date.asc', { token: root.ForgeAuth.accessToken() })
+        : Promise.reject(new Error('No verified student session'));
+    return assignmentRequest.then(function (rows) {
       rows = Array.isArray(rows) ? rows : [];
       setAssignmentBadge(rows);
       rows.forEach(function (assignment) {
