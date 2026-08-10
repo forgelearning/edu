@@ -28151,3 +28151,2393 @@ for (const [id, repairs] of Object.entries(finalRootCauseLengthRepairs)) {
     }
   }
 }
+
+// Same corruption sweep as Business (see PR fixing bus and the root-cause
+// algorithm fix), applied to A-Level Computer Science, whose sparse tag
+// groups meant the subject-wide fallback still spliced off-topic text in
+// even after the algorithm fix. 920 corrupted distractors (text repeated
+// 3+ times verbatim across the subject) replaced with a genuine distractor
+// already authored for a different question sharing the same topic tag.
+const finalCSCorruptionRepairs = {
+ "CS-01": {
+  "base": {
+   "B": "1 2 3 4 5 6",
+   "D": "A OR B"
+  },
+  "reforge": {
+   "A": "compile code into machine language under the conditions described in the program"
+  }
+ },
+ "CS-C1A-07": {
+  "base": {
+   "A": "the delay before data transfer or response occurs",
+   "B": "a guarantee that the system is correct",
+   "D": "only after a user accepts the output"
+  },
+  "reforge": {
+   "B": "By reference is slower than by value.",
+   "D": "The computer's RAM is insufficient."
+  }
+ },
+ "CS-COV-001": {
+  "base": {
+   "A": "0 1 2 3 4 5",
+   "D": "A OR B"
+  },
+  "reforge": {
+   "B": "compile code into machine language under the conditions described in the program"
+  }
+ },
+ "CS-COV-061": {
+  "reforge": {
+   "A": "convert source code into HTML under the conditions described in the program",
+   "B": "programs only in cloud storage",
+   "D": "convert source code into HTML"
+  },
+  "base": {
+   "C": "a database without a processor",
+   "B": "finish all tasks immediately under the conditions described in the program",
+   "D": "store every event permanently"
+  }
+ },
+ "CS-COV-065": {
+  "reforge": {
+   "A": "convert source code into HTML under the conditions described in the program",
+   "C": "programs only in cloud storage",
+   "B": "convert source code into HTML"
+  },
+  "base": {
+   "D": "a database without a processor",
+   "C": "finish all tasks immediately under the conditions described in the program",
+   "A": "store every event permanently"
+  }
+ },
+ "CS-COV-062": {
+  "reforge": {
+   "A": "finish all tasks immediately under the conditions described in the program",
+   "B": "CPU instructions and passwords",
+   "D": "convert source code into HTML"
+  },
+  "base": {
+   "C": "programs only in cloud storage",
+   "D": "store every event permanently"
+  }
+ },
+ "CS-COV-078": {
+  "reforge": {
+   "A": "Uses a queue to track which nodes to visit next.",
+   "D": "one central server for every service",
+   "B": "every user's personal password"
+  },
+  "base": {
+   "C": "DFS cannot traverse graphs that contain cycles.",
+   "D": "guarantees every packet arrives",
+   "B": "TCP cannot handle video data."
+  }
+ },
+ "CS-COV-047": {
+  "reforge": {
+   "A": "instructions and data in the same memory",
+   "D": "without any copies or links",
+   "B": "encrypt a database field"
+  },
+  "base": {
+   "C": "A new system must be adopted immediately",
+   "B": "every field contains text"
+  }
+ },
+ "CS-COV-051": {
+  "reforge": {
+   "A": "a user to bypass authentication",
+   "B": "only the user's email content",
+   "C": "a faster CPU register only"
+  },
+  "base": {
+   "C": "a network cable as a keyboard",
+   "D": "the content of every website"
+  }
+ },
+ "CS-COV-059": {
+  "reforge": {
+   "A": "by a network router",
+   "C": "1 2 3 4 5 6",
+   "D": "Compilers are faster to write programs with; interpreters produce faster programs. The computing explanation must match the code, data, protocol, algorithm or hardware mechanism described; the mechanism named in the option cannot produce the result under these conditions."
+  },
+  "base": {
+   "B": "the keyboard is disconnected",
+   "A": "1 2 3 4",
+   "C": "A OR B"
+  }
+ },
+ "CS-COV-067": {
+  "reforge": {
+   "A": "a general-purpose desktop used for every task",
+   "C": "the speed of a printer",
+   "B": "identify a website"
+  },
+  "base": {
+   "C": "removes all metadata permanently",
+   "A": "used per database row",
+   "D": "multiplies an unsigned integer by two, unless the shifted bit is lost through overflow"
+  }
+ },
+ "CS-COV-095": {
+  "reforge": {
+   "A": "faster processor instructions"
+  },
+  "base": {
+   "C": "that a file has no copyright",
+   "B": "sending a packet to DNS"
+  }
+ },
+ "CS-COV-099": {
+  "reforge": {
+   "A": "prove who wrote a message",
+   "C": "a program that encrypts every file on a computer and demands payment, rather than a deceptive message or site designed to obtain information from a user"
+  },
+  "base": {
+   "C": "repair corrupted data"
+  }
+ },
+ "CS-COV-056": {
+  "reforge": {
+   "B": "A trusted third party holds the key and decrypts messages on both sides.",
+   "C": "that a database has no null values",
+   "D": "that a file has no copyright"
+  },
+  "base": {
+   "D": "Asymmetric encryption is illegal for commercial use.",
+   "B": "a different public key for every byte",
+   "A": "faster processor instructions"
+  }
+ },
+ "CS-COV-068": {
+  "reforge": {
+   "A": "remote access and scalable capacity",
+   "C": "used per database row"
+  },
+  "base": {
+   "A": "removes all metadata permanently",
+   "C": "the speed of a printer"
+  }
+ },
+ "CS-COV-080": {
+  "reforge": {
+   "A": "convert source code into HTML under the conditions described in the program",
+   "B": "CPU instructions and passwords",
+   "D": "convert source code into HTML"
+  },
+  "base": {
+   "B": "finish all tasks immediately under the conditions described in the program",
+   "C": "programs only in cloud storage",
+   "D": "store every event permanently"
+  }
+ },
+ "CS-C1A-19": {
+  "base": {
+   "A": "Encrypt sensitive data to prevent unauthorised access.",
+   "D": "small packets that may take different routes",
+   "B": "a guarantee that the system is correct"
+  },
+  "reforge": {
+   "D": "what output is guaranteed after every run",
+   "B": "By reference is slower than by value."
+  }
+ },
+ "CS-06": {
+  "base": {
+   "D": "what output is guaranteed after every run under the conditions described in the program",
+   "A": "chosen only from the middle of the range in the stated computing case"
+  }
+ },
+ "CS-C1A-04": {
+  "base": {
+   "C": "Subroutines can only be used once; programs can be reused.",
+   "A": "nodes that can act as both clients and servers"
+  },
+  "reforge": {
+   "A": "Python was designed for beginners and deliberately made slow.",
+   "B": "small packets that may take different routes",
+   "C": "what output is guaranteed after every run"
+  }
+ },
+ "CS-C1A-05": {
+  "base": {
+   "C": "Encrypt sensitive data to prevent unauthorised access.",
+   "D": "C programs are shorter than Python programs."
+  },
+  "reforge": {
+   "D": "small packets that may take different routes"
+  }
+ },
+ "CS-C1A-08": {
+  "reforge": {
+   "A": "Encrypt sensitive data to prevent unauthorised access.",
+   "B": "C programs are shorter than Python programs.",
+   "C": "small packets that may take different routes"
+  },
+  "base": {
+   "B": "what output is guaranteed after every run",
+   "C": "a guarantee that the system is correct"
+  }
+ },
+ "CS-C1A-18": {
+  "base": {
+   "A": "chosen only from the middle of the range in the stated computing case"
+  },
+  "reforge": {
+   "A": "nodes that can act as both clients and servers"
+  }
+ },
+ "CS-C1A-20": {
+  "base": {
+   "A": "Subroutines can only be used once; programs can be reused.",
+   "B": "C programs are shorter than Python programs."
+  },
+  "reforge": {
+   "B": "Python was designed for beginners and deliberately made slow.",
+   "A": "small packets that may take different routes",
+   "C": "what output is guaranteed after every run"
+  }
+ },
+ "CS-C1A-21": {
+  "base": {
+   "B": "Encrypt sensitive data to prevent unauthorised access.",
+   "D": "C programs are shorter than Python programs.",
+   "C": "small packets that may take different routes"
+  },
+  "reforge": {
+   "B": "Subroutines can only be used once; programs can be reused.",
+   "C": "a guarantee that the system is correct",
+   "D": "By reference is slower than by value."
+  }
+ },
+ "CS-COV-013": {
+  "base": {
+   "C": "Encrypt sensitive data to prevent unauthorised access.",
+   "D": "C programs are shorter than Python programs."
+  },
+  "reforge": {
+   "D": "small packets that may take different routes"
+  }
+ },
+ "CS-COV-029": {
+  "base": {
+   "B": "Encrypt sensitive data to prevent unauthorised access.",
+   "D": "C programs are shorter than Python programs.",
+   "C": "what output is guaranteed after every run"
+  },
+  "reforge": {
+   "D": "small packets that may take different routes",
+   "C": "a guarantee that the system is correct"
+  }
+ },
+ "CS-COV-045": {
+  "base": {
+   "D": "prevents every cyberattack under the conditions described in the program",
+   "C": "prove who wrote a message",
+   "B": "repair corrupted data"
+  },
+  "reforge": {
+   "D": "the colour of web pages",
+   "B": "the design of CPU registers and the colour of web pages, rather than the handling of personal data"
+  }
+ },
+ "CS-COV-049": {
+  "base": {
+   "D": "An error caused by using incorrect SQL syntax in a query.",
+   "A": "signal the processor that it needs attention",
+   "C": "instructions and data in the same memory"
+  },
+  "reforge": {
+   "B": "A new system must be adopted immediately",
+   "C": "sort columns alphabetically only"
+  }
+ },
+ "CS-COV-081": {
+  "base": {
+   "D": "finish all tasks immediately under the conditions described in the program",
+   "C": "a database without a processor",
+   "A": "CPU instructions and passwords"
+  },
+  "reforge": {
+   "B": "programs only in cloud storage",
+   "C": "store every event permanently"
+  }
+ },
+ "CS-C2A-07": {
+  "base": {
+   "D": "prevents every cyberattack under the conditions described in the program",
+   "A": "the colour of web pages",
+   "B": "repair corrupted data"
+  },
+  "reforge": {
+   "B": "a program that encrypts every file on a computer and demands payment, rather than a deceptive message or site designed to obtain information from a user",
+   "A": "the design of CPU registers and the colour of web pages, rather than the handling of personal data",
+   "D": "how a computer's processor schedules instructions and allocates its registers"
+  }
+ },
+ "CS-C2A-08": {
+  "base": {
+   "A": "prevents every cyberattack under the conditions described in the program",
+   "C": "prove who wrote a message",
+   "B": "the colour of web pages"
+  },
+  "reforge": {
+   "A": "repair corrupted data",
+   "B": "a program that encrypts every file on a computer and demands payment, rather than a deceptive message or site designed to obtain information from a user",
+   "C": "the design of CPU registers and the colour of web pages, rather than the handling of personal data"
+  }
+ },
+ "CS-C2A-11": {
+  "base": {
+   "D": "reduce unnecessary duplication and update anomalies",
+   "B": "A new system must be adopted immediately"
+  },
+  "reforge": {
+   "B": "instructions and data in the same memory",
+   "D": "sort columns alphabetically only"
+  }
+ },
+ "CS-C2A-12": {
+  "base": {
+   "A": "An error caused by using incorrect SQL syntax in a query.",
+   "B": "signal the processor that it needs attention",
+   "C": "A new system must be adopted immediately"
+  },
+  "reforge": {
+   "B": "A security vulnerability created by storing unencrypted sensitive data.",
+   "C": "sort columns alphabetically only",
+   "A": "identify a processor instruction"
+  }
+ },
+ "CS-C2A-13": {
+  "base": {
+   "B": "signal the processor that it needs attention",
+   "C": "identify a processor instruction",
+   "D": "sort every table automatically"
+  },
+  "reforge": {
+   "C": "uniquely identifies each record",
+   "D": "only the user's email content"
+  }
+ },
+ "CS-C2A-17": {
+  "base": {
+   "B": "guaranteed access without a network",
+   "C": "a network cable as a keyboard",
+   "D": "the content of every website"
+  },
+  "reforge": {
+   "B": "a user to bypass authentication",
+   "C": "only the user's email content",
+   "D": "a faster CPU register only"
+  }
+ },
+ "CS-C2A-20": {
+  "base": {
+   "A": "prove who wrote a message",
+   "C": "how a computer's processor schedules instructions and allocates its registers"
+  },
+  "reforge": {
+   "B": "the colour of web pages",
+   "A": "a program that encrypts every file on a computer and demands payment, rather than a deceptive message or site designed to obtain information from a user",
+   "C": "the design of CPU registers and the colour of web pages, rather than the handling of personal data"
+  }
+ },
+ "CS-C2A-21": {
+  "base": {
+   "D": "the colour of web pages",
+   "C": "how a computer's processor schedules instructions and allocates its registers"
+  },
+  "reforge": {
+   "B": "repair corrupted data",
+   "D": "a program that encrypts every file on a computer and demands payment, rather than a deceptive message or site designed to obtain information from a user",
+   "C": "the design of CPU registers and the colour of web pages, rather than the handling of personal data"
+  }
+ },
+ "CS-COV-006": {
+  "base": {
+   "B": "what output is guaranteed after every run under the conditions described in the program",
+   "A": "chosen only from the middle of the range in the stated computing case",
+   "D": "Python was designed for beginners and deliberately made slow."
+  }
+ },
+ "CS-COV-026": {
+  "base": {
+   "A": "chosen only from the middle of the range in the stated computing case"
+  },
+  "reforge": {
+   "C": "only the programmer's name under the conditions described in the program",
+   "A": "nodes that can act as both clients and servers",
+   "B": "C programs are shorter than Python programs."
+  }
+ },
+ "CS-C1B-08": {
+  "reforge": {
+   "B": "convert source code into HTML under the conditions described in the program",
+   "A": "a database without a processor",
+   "C": "programs only in cloud storage"
+  },
+  "base": {
+   "A": "finish all tasks immediately under the conditions described in the program",
+   "C": "store every event permanently",
+   "B": "convert source code into HTML"
+  }
+ },
+ "CS-C2B-02": {
+  "base": {
+   "A": "finish all tasks immediately under the conditions described in the program",
+   "C": "a database without a processor"
+  },
+  "reforge": {
+   "C": "programs only in cloud storage",
+   "A": "convert source code into HTML under the conditions described in the program",
+   "D": "store every event permanently"
+  }
+ },
+ "CS-C2B-04": {
+  "reforge": {
+   "A": "convert source code into HTML under the conditions described in the program",
+   "B": "store every event permanently",
+   "C": "convert source code into HTML"
+  },
+  "base": {
+   "A": "finish all tasks immediately under the conditions described in the program",
+   "C": "CPU instructions and passwords"
+  }
+ },
+ "CS-C2B-11": {
+  "base": {
+   "A": "Encrypt sensitive data to prevent unauthorised access."
+  },
+  "reforge": {
+   "B": "signal the processor that it needs attention",
+   "D": "A new system must be adopted immediately"
+  }
+ },
+ "CS-C2B-12": {
+  "base": {
+   "A": "A new system must be adopted immediately",
+   "B": "sort every table automatically",
+   "C": "only the user's email content"
+  },
+  "reforge": {
+   "A": "without any copies or links"
+  }
+ },
+ "CS-C2B-13": {
+  "base": {
+   "D": "A new system must be adopted immediately",
+   "B": "reduce unnecessary duplication and update anomalies",
+   "C": "sort columns alphabetically only"
+  },
+  "reforge": {
+   "C": "identify a processor instruction"
+  }
+ },
+ "CS-C2B-19": {
+  "base": {
+   "A": "prove who wrote a message",
+   "D": "repair corrupted data",
+   "B": "the design of CPU registers and the colour of web pages, rather than the handling of personal data"
+  },
+  "reforge": {
+   "A": "the colour of web pages",
+   "D": "a program that encrypts every file on a computer and demands payment, rather than a deceptive message or site designed to obtain information from a user",
+   "B": "how a computer's processor schedules instructions and allocates its registers"
+  }
+ },
+ "CS-C2B-20": {
+  "base": {
+   "A": "prove who wrote a message",
+   "B": "how a computer's processor schedules instructions and allocates its registers"
+  },
+  "reforge": {
+   "A": "repair corrupted data",
+   "B": "a program that encrypts every file on a computer and demands payment, rather than a deceptive message or site designed to obtain information from a user",
+   "C": "the design of CPU registers and the colour of web pages, rather than the handling of personal data"
+  }
+ },
+ "CS-C2B-21": {
+  "base": {
+   "B": "prove who wrote a message",
+   "C": "the colour of web pages",
+   "D": "a program that encrypts every file on a computer and demands payment, rather than a deceptive message or site designed to obtain information from a user"
+  },
+  "reforge": {
+   "C": "repair corrupted data",
+   "D": "the design of CPU registers and the colour of web pages, rather than the handling of personal data"
+  }
+ },
+ "CS-02": {
+  "base": {
+   "C": "compile code into machine language under the conditions described in the program",
+   "D": "only the programmer's name under the conditions described in the program"
+  },
+  "reforge": {
+   "A": "By value is only used for integers; by reference for strings. The computing explanation must match the code, data, protocol, algorithm or hardware mechanism described; the answer does not account for the competing factor or trade-off described.",
+   "C": "always creates a permanent executable first under the conditions described in the program"
+  }
+ },
+ "CS-COV-002": {
+  "base": {
+   "D": "compile code into machine language under the conditions described in the program",
+   "C": "only the programmer's name under the conditions described in the program"
+  },
+  "reforge": {
+   "A": "By value is only used for integers; by reference for strings. The computing explanation must match the code, data, protocol, algorithm or hardware mechanism described; the answer does not account for the competing factor or trade-off described.",
+   "B": "always creates a permanent executable first under the conditions described in the program"
+  }
+ },
+ "CS-07": {
+  "reforge": {
+   "D": "Python is interpreted (line by line at runtime) whereas C is compiled to machine code (direct CPU instructions) — interpretation adds overhead on every execution."
+  },
+  "base": {
+   "A": "increase a monitor's resolution under the conditions described in the program",
+   "B": "An error caused by using incorrect SQL syntax in a query."
+  }
+ },
+ "CS-08": {
+  "reforge": {
+   "D": "one-way and difficult to reverse, so recovering the original input is computationally impractical"
+  },
+  "base": {
+   "B": "a guarantee that the website is honest",
+   "C": "a different public key for every byte",
+   "A": "Public keys are longer and therefore provide stronger encryption by default."
+  }
+ },
+ "CS-11": {
+  "reforge": {
+   "C": "one central server for every service under the conditions described in the program",
+   "B": "guarantees every packet arrives under the conditions described in the program",
+   "D": "a type of CPU cache under the conditions described in the program"
+  },
+  "base": {
+   "A": "Python is interpreted (line by line at runtime) whereas C is compiled to machine code (direct CPU instructions) — interpretation adds overhead on every execution.",
+   "B": "increase a monitor's resolution under the conditions described in the program"
+  }
+ },
+ "CS-12": {
+  "base": {
+   "B": "Python is interpreted (line by line at runtime) whereas C is compiled to machine code (direct CPU instructions) — interpretation adds overhead on every execution.",
+   "C": "guarantees every packet arrives under the conditions described in the program",
+   "A": "a type of CPU cache under the conditions described in the program"
+  },
+  "reforge": {
+   "D": "increase a monitor's resolution under the conditions described in the program"
+  }
+ },
+ "CS-13": {
+  "base": {
+   "D": "Public keys are longer and therefore provide stronger encryption by default.",
+   "B": "only a fixed numeric index under the conditions described in the program",
+   "C": "A trusted third party holds the key and decrypts messages on both sides."
+  }
+ },
+ "CS-14": {
+  "base": {
+   "C": "one-way and difficult to reverse, so recovering the original input is computationally impractical",
+   "A": "a reversible compression method that always restores the original input exactly"
+  },
+  "reforge": {
+   "A": "two usernames with the same password under the conditions described in the program"
+  }
+ },
+ "CS-16": {
+  "base": {
+   "A": "sort columns alphabetically only under the conditions described in the program"
+  },
+  "reforge": {
+   "D": "remove every relationship from a database, leaving separate records with no links between related entities or tables"
+  }
+ },
+ "CS-C2A-04": {
+  "reforge": {
+   "C": "BFS is always faster than DFS for finding any path in a graph.",
+   "A": "It provides wireless connectivity to devices.",
+   "B": "MAC addresses only within one application"
+  },
+  "base": {
+   "A": "UDP provides better data security than TCP for video streams.",
+   "B": "DFS cannot traverse graphs that contain cycles.",
+   "C": "Convert the database from SQL to NoSQL format."
+  }
+ },
+ "CS-C2A-06": {
+  "reforge": {
+   "D": "UDP provides better data security than TCP for video streams.",
+   "A": "one central server for every service",
+   "C": "guarantees every packet arrives"
+  },
+  "base": {
+   "C": "An error caused by using incorrect SQL syntax in a query.",
+   "D": "uses stronger encryption automatically"
+  }
+ },
+ "CS-COV-034": {
+  "reforge": {
+   "C": "Symmetric encryption requires sharing a secret key in advance — a problem over public networks. Asymmetric uses a public/private key pair, avoiding this key-exchange vulnerability."
+  },
+  "base": {
+   "C": "only a fixed numeric index under the conditions described in the program",
+   "A": "A trusted third party holds the key and decrypts messages on both sides."
+  }
+ },
+ "CS-C1B-17": {
+  "reforge": {
+   "C": "UDP provides better data security than TCP for video streams.",
+   "B": "Convert the database from SQL to NoSQL format.",
+   "D": "It provides wireless connectivity to devices."
+  },
+  "base": {
+   "B": "An error caused by using incorrect SQL syntax in a query.",
+   "C": "MAC addresses only within one application",
+   "D": "uses stronger encryption automatically"
+  }
+ },
+ "CS-C2B-17": {
+  "reforge": {
+   "B": "Public keys are longer and therefore provide stronger encryption by default.",
+   "D": "Encryption is only used by governments.",
+   "C": "a guarantee that the website is honest"
+  },
+  "base": {
+   "D": "A trusted third party holds the key and decrypts messages on both sides.",
+   "C": "a different public key for every byte"
+  }
+ },
+ "CS-COV-008": {
+  "reforge": {
+   "D": "one-way and difficult to reverse, so recovering the original input is computationally impractical"
+  },
+  "base": {
+   "B": "Public keys are longer and therefore provide stronger encryption by default.",
+   "A": "a guarantee that the website is honest",
+   "D": "a different public key for every byte"
+  }
+ },
+ "CS-COV-036": {
+  "base": {
+   "C": "Python is interpreted (line by line at runtime) whereas C is compiled to machine code (direct CPU instructions) — interpretation adds overhead on every execution."
+  },
+  "reforge": {
+   "B": "increase a monitor's resolution under the conditions described in the program"
+  }
+ },
+ "CS-03": {
+  "base": {
+   "A": "Subroutines can only be used once; programs can be reused."
+  },
+  "reforge": {
+   "D": "how personal data is collected, used and protected"
+  }
+ },
+ "CS-C1A-09": {
+  "base": {
+   "B": "Linear search — it works on unsorted data.",
+   "C": "O(log n)",
+   "D": "O(1)"
+  },
+  "reforge": {
+   "B": "Up to 32 comparisons.",
+   "C": "stored in a stack"
+  }
+ },
+ "CS-COV-017": {
+  "base": {
+   "A": "Linear search — it works on unsorted data.",
+   "C": "Up to 32 comparisons.",
+   "D": "stored in a stack"
+  },
+  "reforge": {
+   "A": "O(log n)",
+   "C": "O(1)",
+   "D": "Up to 512 comparisons — it halves the list but still needs half the elements."
+  }
+ },
+ "CS-COV-003": {
+  "base": {
+   "A": "Subroutines can only be used once; programs can be reused."
+  },
+  "reforge": {
+   "B": "how personal data is collected, used and protected"
+  }
+ },
+ "CS-04": {
+  "base": {
+   "A": "Up to 512 comparisons — it halves the list but still needs half the elements."
+  },
+  "reforge": {
+   "A": "Subroutines can only be used once; programs can be reused.",
+   "D": "how personal data is collected, used and protected"
+  }
+ },
+ "CS-COV-033": {
+  "base": {
+   "A": "one central server for every service under the conditions described in the program",
+   "C": "increase a monitor's resolution under the conditions described in the program",
+   "D": "guarantees every packet arrives under the conditions described in the program"
+  },
+  "reforge": {
+   "B": "a type of CPU cache under the conditions described in the program"
+  }
+ },
+ "CS-COV-007": {
+  "reforge": {
+   "B": "Python is interpreted (line by line at runtime) whereas C is compiled to machine code (direct CPU instructions) — interpretation adds overhead on every execution.",
+   "D": "increase a monitor's resolution under the conditions described in the program"
+  },
+  "base": {
+   "B": "guarantees every packet arrives under the conditions described in the program",
+   "D": "An error caused by using incorrect SQL syntax in a query.",
+   "A": "Always finds the shortest path between two nodes."
+  }
+ },
+ "CS-COV-035": {
+  "reforge": {
+   "A": "When (rear + 1) % size == front — the next position rear would advance to is where front currently is, meaning no more space without overwriting existing elements.",
+   "B": "only a fixed numeric index under the conditions described in the program"
+  },
+  "base": {
+   "A": "It reuses vacated front positions by wrapping the rear pointer back to index 0 — preventing false 'full' conditions when space exists at the front of the array."
+  }
+ },
+ "CS-COV-039": {
+  "reforge": {
+   "D": "Python is interpreted (line by line at runtime) whereas C is compiled to machine code (direct CPU instructions) — interpretation adds overhead on every execution.",
+   "C": "increase a monitor's resolution under the conditions described in the program"
+  },
+  "base": {
+   "B": "one central server for every service",
+   "D": "the number of bits per second"
+  }
+ },
+ "CS-COV-004": {
+  "reforge": {
+   "B": "Up to 512 comparisons — it halves the list but still needs half the elements.",
+   "A": "how personal data is collected, used and protected"
+  },
+  "base": {
+   "A": "Subroutines can only be used once; programs can be reused.",
+   "D": "Linear search — it always finds the item faster."
+  }
+ },
+ "CS-05": {
+  "reforge": {
+   "B": "It reuses vacated front positions by wrapping the rear pointer back to index 0 — preventing false 'full' conditions when space exists at the front of the array."
+  },
+  "base": {
+   "B": "When the rear pointer equals the array size.",
+   "C": "a truth table and a compiler",
+   "D": "only a fixed numeric index"
+  }
+ },
+ "CS-COV-005": {
+  "reforge": {
+   "D": "It reuses vacated front positions by wrapping the rear pointer back to index 0 — preventing false 'full' conditions when space exists at the front of the array.",
+   "B": "only a fixed numeric index under the conditions described in the program"
+  },
+  "base": {
+   "B": "When the rear pointer equals the array size.",
+   "A": "a truth table and a compiler",
+   "D": "only a fixed numeric index"
+  }
+ },
+ "CS-COV-037": {
+  "base": {
+   "B": "Python is interpreted (line by line at runtime) whereas C is compiled to machine code (direct CPU instructions) — interpretation adds overhead on every execution.",
+   "A": "guarantees every packet arrives under the conditions described in the program"
+  },
+  "reforge": {
+   "D": "increase a monitor's resolution under the conditions described in the program",
+   "B": "a type of CPU cache under the conditions described in the program"
+  }
+ },
+ "CS-09": {
+  "reforge": {
+   "A": "It reuses vacated front positions by wrapping the rear pointer back to index 0 — preventing false 'full' conditions when space exists at the front of the array."
+  },
+  "base": {
+   "B": "only a fixed numeric index under the conditions described in the program",
+   "D": "An array — because pages are accessed by index number."
+  }
+ },
+ "CS-10": {
+  "reforge": {
+   "C": "Public keys are longer and therefore provide stronger encryption by default."
+  },
+  "base": {
+   "C": "Symmetric encryption requires sharing a secret key in advance — a problem over public networks. Asymmetric uses a public/private key pair, avoiding this key-exchange vulnerability."
+  }
+ },
+ "CS-15": {
+  "base": {
+   "D": "When (rear + 1) % size == front — the next position rear would advance to is where front currently is, meaning no more space without overwriting existing elements."
+  }
+ },
+ "CS-C1A-14": {
+  "base": {
+   "C": "a global variable in every function",
+   "A": "last in, first out"
+  },
+  "reforge": {
+   "A": "2d",
+   "C": "d",
+   "D": "Symmetric encryption requires sharing a secret key in advance — a problem over public networks. Asymmetric uses a public/private key pair, avoiding this key-exchange vulnerability."
+  }
+ },
+ "CS-C1A-15": {
+  "base": {
+   "D": "8 nodes — 2³, which would be height 3.",
+   "A": "a truth table and a compiler",
+   "B": "only a fixed numeric index"
+  },
+  "reforge": {
+   "A": "highest priority only",
+   "D": "an analogue voltage"
+  }
+ },
+ "CS-C1A-13": {
+  "base": {
+   "C": "16 nodes — 2⁴ = 16 (height 4, leaf nodes only).",
+   "D": "8 nodes — 2³, which would be height 3."
+  },
+  "reforge": {
+   "D": "When all elements have the same value."
+  }
+ },
+ "CS-COV-021": {
+  "base": {
+   "A": "16 nodes — 2⁴ = 16 (height 4, leaf nodes only).",
+   "D": "runs one source line and forgets it"
+  },
+  "reforge": {
+   "D": "8 nodes — 2³, which would be height 3.",
+   "A": "DFS cannot traverse graphs that contain cycles.",
+   "B": "a global variable in every function"
+  }
+ },
+ "CS-C1A-03": {
+  "reforge": {
+   "B": "what output is guaranteed after every run",
+   "A": "routes packets across a network",
+   "D": "the keyboard is disconnected"
+  },
+  "base": {
+   "D": "the input before a program starts"
+  }
+ },
+ "CS-COV-041": {
+  "base": {
+   "A": "UDP provides better data security than TCP for video streams.",
+   "B": "DFS cannot traverse graphs that contain cycles.",
+   "C": "Convert the database from SQL to NoSQL format."
+  },
+  "reforge": {
+   "C": "BFS is always faster than DFS for finding any path in a graph.",
+   "D": "It provides wireless connectivity to devices.",
+   "A": "MAC addresses only within one application"
+  }
+ },
+ "CS-C2A-01": {
+  "base": {
+   "B": "It provides wireless connectivity to devices.",
+   "C": "guarantees every packet arrives",
+   "D": "TCP cannot handle video data."
+  },
+  "reforge": {
+   "C": "every user's personal password",
+   "D": "the number of bits per second"
+  }
+ },
+ "CS-C2A-02": {
+  "base": {
+   "A": "one central server for every service",
+   "D": "a user account's password"
+  },
+  "reforge": {
+   "C": "uses stronger encryption automatically",
+   "A": "UDP is more secure than TCP.",
+   "D": "IP addresses into passwords"
+  }
+ },
+ "CS-C2A-05": {
+  "base": {
+   "C": "UDP provides better data security than TCP for video streams.",
+   "D": "Uses a queue to track which nodes to visit next."
+  },
+  "reforge": {
+   "D": "DFS cannot traverse graphs that contain cycles."
+  }
+ },
+ "CS-C1B-15": {
+  "base": {
+   "A": "Always finds the shortest path between two nodes.",
+   "D": "uses stronger encryption automatically",
+   "B": "guarantees every packet arrives"
+  },
+  "reforge": {
+   "D": "An error caused by using incorrect SQL syntax in a query.",
+   "B": "every user's personal password",
+   "A": "TCP cannot handle video data."
+  }
+ },
+ "CS-C1B-16": {
+  "reforge": {
+   "C": "Convert the database from SQL to NoSQL format.",
+   "A": "the number of bits per second",
+   "B": "UDP is more secure than TCP."
+  },
+  "base": {
+   "C": "It provides wireless connectivity to devices.",
+   "A": "every user's personal password",
+   "B": "TCP cannot handle video data."
+  }
+ },
+ "CS-C1B-18": {
+  "base": {
+   "D": "It provides wireless connectivity to devices.",
+   "A": "TCP cannot handle video data."
+  },
+  "reforge": {
+   "D": "Convert the database from SQL to NoSQL format.",
+   "A": "guarantees every packet arrives",
+   "C": "every user's personal password"
+  }
+ },
+ "CS-C1B-19": {
+  "base": {
+   "A": "An error caused by using incorrect SQL syntax in a query.",
+   "B": "MAC addresses only within one application",
+   "D": "one central server for every service"
+  },
+  "reforge": {
+   "B": "uses stronger encryption automatically",
+   "D": "guarantees every packet arrives"
+  }
+ },
+ "CS-C1B-20": {
+  "base": {
+   "C": "DFS cannot traverse graphs that contain cycles.",
+   "A": "TCP cannot handle video data."
+  },
+  "reforge": {
+   "C": "Uses a queue to track which nodes to visit next.",
+   "A": "one central server for every service",
+   "B": "guarantees every packet arrives"
+  }
+ },
+ "CS-C1B-21": {
+  "base": {
+   "C": "increase a monitor's resolution under the conditions described in the program",
+   "D": "UDP provides better data security than TCP for video streams."
+  },
+  "reforge": {
+   "D": "An error caused by using incorrect SQL syntax in a query."
+  }
+ },
+ "CS-COV-009": {
+  "reforge": {
+   "C": "converting decimal to binary",
+   "A": "copying a program exactly"
+  }
+ },
+ "CS-COV-093": {
+  "base": {
+   "B": "Symmetric encryption cannot handle web traffic.",
+   "C": "that a database has no null values"
+  },
+  "reforge": {
+   "D": "Asymmetric encryption is illegal for commercial use.",
+   "B": "faster processor instructions",
+   "A": "that a file has no copyright"
+  }
+ },
+ "CS-COV-097": {
+  "base": {
+   "A": "Asymmetric encryption is illegal for commercial use.",
+   "C": "that a database has no null values"
+  },
+  "reforge": {
+   "C": "a different public key for every byte",
+   "B": "faster processor instructions",
+   "A": "A trusted third party holds the key and decrypts messages on both sides."
+  }
+ },
+ "CS-C2A-09": {
+  "base": {
+   "B": "Symmetric encryption cannot handle web traffic.",
+   "C": "a guarantee that the website is honest",
+   "D": "a different public key for every byte"
+  },
+  "reforge": {
+   "B": "Asymmetric encryption is illegal for commercial use.",
+   "C": "faster processor instructions",
+   "D": "that a file has no copyright"
+  }
+ },
+ "CS-C2A-19": {
+  "base": {
+   "A": "Asymmetric encryption is illegal for commercial use.",
+   "B": "a guarantee that the website is honest",
+   "D": "that a database has no null values"
+  },
+  "reforge": {
+   "B": "a different public key for every byte",
+   "D": "faster processor instructions"
+  }
+ },
+ "CS-C2B-14": {
+  "base": {
+   "D": "Symmetric encryption cannot handle web traffic.",
+   "C": "a different public key for every byte",
+   "A": "that a database has no null values"
+  },
+  "reforge": {
+   "C": "Asymmetric encryption is illegal for commercial use.",
+   "D": "faster processor instructions"
+  }
+ },
+ "CS-C2B-18": {
+  "base": {
+   "A": "Asymmetric encryption is illegal for commercial use.",
+   "C": "a different public key for every byte"
+  },
+  "reforge": {
+   "D": "A trusted third party holds the key and decrypts messages on both sides.",
+   "A": "faster processor instructions"
+  }
+ },
+ "CS-COV-046": {
+  "base": {
+   "B": "Symmetric encryption cannot handle web traffic.",
+   "C": "a different public key for every byte",
+   "D": "that a file has no copyright"
+  },
+  "reforge": {
+   "D": "Asymmetric encryption is illegal for commercial use.",
+   "B": "that a database has no null values"
+  }
+ },
+ "CS-COV-094": {
+  "base": {
+   "C": "sending a packet to DNS",
+   "B": "one-way and difficult to reverse, so recovering the original input is computationally impractical",
+   "D": "Symmetric encryption cannot physically be used for internet-based communication."
+  },
+  "reforge": {
+   "A": "using only plain HTTP",
+   "B": "two usernames with the same password under the conditions described in the program",
+   "D": "a reversible compression method that always restores the original input exactly"
+  }
+ },
+ "CS-C1A-01": {
+  "base": {
+   "B": "converting decimal to binary",
+   "C": "copying a program exactly"
+  }
+ },
+ "CS-C1A-10": {
+  "reforge": {
+   "A": "O(1)",
+   "C": "Up to 512 comparisons — it halves the list but still needs half the elements."
+  },
+  "base": {
+   "A": "Subroutines can only be used once; programs can be reused.",
+   "D": "how personal data is collected, used and protected"
+  }
+ },
+ "CS-C1A-12": {
+  "reforge": {
+   "C": "2d",
+   "A": "d"
+  },
+  "base": {
+   "B": "Symmetric encryption requires sharing a secret key in advance — a problem over public networks. Asymmetric uses a public/private key pair, avoiding this key-exchange vulnerability."
+  }
+ },
+ "CS-COV-073": {
+  "base": {
+   "A": "Always finds the shortest path between two nodes.",
+   "C": "one central server for every service",
+   "B": "every user's personal password"
+  },
+  "reforge": {
+   "D": "An error caused by using incorrect SQL syntax in a query.",
+   "A": "guarantees every packet arrives",
+   "C": "TCP cannot handle video data."
+  }
+ },
+ "CS-C1B-05": {
+  "reforge": {
+   "B": "convert source code into HTML under the conditions described in the program",
+   "C": "CPU instructions and passwords",
+   "D": "store every event permanently"
+  },
+  "base": {
+   "C": "finish all tasks immediately under the conditions described in the program",
+   "B": "convert source code into HTML",
+   "D": "fixed-size pages and frames"
+  }
+ },
+ "CS-COV-011": {
+  "base": {
+   "C": "There is no practical difference."
+  },
+  "reforge": {
+   "B": "the input before a program starts"
+  }
+ },
+ "CS-ETH-02": {
+  "reforge": {
+   "A": "Increasing unnecessary data duplication in the stated computing case",
+   "B": "A firm's right to publish every record in the stated computing case",
+   "C": "It proves that the data is accurate in the stated computing case"
+  },
+  "base": {
+   "A": "To make all users administrators in the stated computing case",
+   "D": "It ensures the algorithm has no mathematical operations"
+  }
+ },
+ "CS-COV-012": {
+  "base": {
+   "A": "Subroutines can only be used once; programs can be reused.",
+   "C": "small packets that may take different routes"
+  },
+  "reforge": {
+   "B": "Python was designed for beginners and deliberately made slow.",
+   "C": "C programs are shorter than Python programs.",
+   "A": "what output is guaranteed after every run"
+  }
+ },
+ "CS-COV-060": {
+  "base": {
+   "B": "a type of network cable",
+   "A": "1 2 3 4"
+  },
+  "reforge": {
+   "D": "1 2 3 4 5 6",
+   "A": "Compilers are faster to write programs with; interpreters produce faster programs. The computing explanation must match the code, data, protocol, algorithm or hardware mechanism described; the mechanism named in the option cannot produce the result under these conditions.",
+   "C": "By value is only used for integers; by reference for strings. The computing explanation must match the code, data, protocol, algorithm or hardware mechanism described; the answer does not account for the competing factor or trade-off described."
+  }
+ },
+ "CS-COV-057": {
+  "base": {
+   "A": "prove who wrote a message",
+   "C": "the design of CPU registers and the colour of web pages, rather than the handling of personal data"
+  },
+  "reforge": {
+   "A": "the colour of web pages",
+   "C": "a program that encrypts every file on a computer and demands payment, rather than a deceptive message or site designed to obtain information from a user",
+   "D": "how a computer's processor schedules instructions and allocates its registers"
+  }
+ },
+ "CS-COV-089": {
+  "reforge": {
+   "D": "A new system must be adopted immediately",
+   "C": "every field contains text",
+   "A": "encrypt a database field"
+  },
+  "base": {
+   "A": "only the user's email content",
+   "C": "without any copies or links"
+  }
+ },
+ "CS-C1A-06": {
+  "base": {
+   "A": "C programs are shorter than Python programs.",
+   "C": "By reference is slower than by value.",
+   "D": "only after a user accepts the output"
+  },
+  "reforge": {
+   "C": "The computer's RAM is insufficient."
+  }
+ },
+ "CS-COV-014": {
+  "base": {
+   "B": "C programs are shorter than Python programs.",
+   "C": "By reference is slower than by value.",
+   "D": "The computer's RAM is insufficient."
+  },
+  "reforge": {
+   "C": "only after a user accepts the output",
+   "D": "There is no practical difference."
+  }
+ },
+ "CS-COV-077": {
+  "base": {
+   "B": "An error caused by using incorrect SQL syntax in a query.",
+   "D": "MAC addresses only within one application",
+   "C": "guarantees every packet arrives"
+  },
+  "reforge": {
+   "D": "UDP provides better data security than TCP for video streams.",
+   "A": "every user's personal password"
+  }
+ },
+ "CS-C1B-06": {
+  "reforge": {
+   "A": "finish all tasks immediately under the conditions described in the program",
+   "C": "programs only in cloud storage",
+   "D": "store every event permanently"
+  },
+  "base": {
+   "A": "larger and slower than external storage"
+  }
+ },
+ "CS-COV-015": {
+  "base": {
+   "B": "the delay before data transfer or response occurs",
+   "D": "By reference is slower than by value.",
+   "C": "only after a user accepts the output"
+  },
+  "reforge": {
+   "D": "Reduce data redundancy and update anomalies by organising data into well-structured tables with clear dependencies.",
+   "B": "what output is guaranteed after every run under the conditions described in the program"
+  }
+ },
+ "CS-COV-016": {
+  "base": {
+   "B": "Encrypt sensitive data to prevent unauthorised access.",
+   "C": "C programs are shorter than Python programs.",
+   "D": "what output is guaranteed after every run"
+  },
+  "reforge": {
+   "C": "Subroutines can only be used once; programs can be reused.",
+   "B": "a guarantee that the system is correct"
+  }
+ },
+ "CS-COV-018": {
+  "base": {
+   "A": "O(1)",
+   "D": "Up to 512 comparisons — it halves the list but still needs half the elements."
+  },
+  "reforge": {
+   "A": "Subroutines can only be used once; programs can be reused.",
+   "D": "how personal data is collected, used and protected"
+  }
+ },
+ "CS-ETH-10": {
+  "reforge": {
+   "A": "To make all users administrators",
+   "C": "Increasing unnecessary data duplication in the stated computing case",
+   "B": "A firm's right to publish every record in the stated computing case"
+  }
+ },
+ "CS-C1A-11": {
+  "base": {
+   "B": "Up to 512 comparisons — it halves the list but still needs half the elements.",
+   "D": "how personal data is collected, used and protected"
+  },
+  "reforge": {
+   "B": "Subroutines can only be used once; programs can be reused.",
+   "D": "Linear search — it always finds the item faster."
+  }
+ },
+ "CS-COV-019": {
+  "base": {
+   "C": "Up to 512 comparisons — it halves the list but still needs half the elements.",
+   "D": "Subroutines can only be used once; programs can be reused."
+  },
+  "reforge": {
+   "C": "Linear search — it always finds the item faster.",
+   "D": "Both are equally efficient for large datasets."
+  }
+ },
+ "CS-C2B-08": {
+  "reforge": {
+   "A": "larger and slower than external storage",
+   "B": "sending a packet to DNS",
+   "C": "translate a domain name"
+  },
+  "base": {
+   "A": "network authentication",
+   "B": "long-term file storage"
+  }
+ },
+ "CS-COV-020": {
+  "base": {
+   "D": "2d"
+  },
+  "reforge": {
+   "C": "d",
+   "D": "Symmetric encryption requires sharing a secret key in advance — a problem over public networks. Asymmetric uses a public/private key pair, avoiding this key-exchange vulnerability.",
+   "A": "When (rear + 1) % size == front — the next position rear would advance to is where front currently is, meaning no more space without overwriting existing elements."
+  }
+ },
+ "CS-COV-025": {
+  "reforge": {
+   "B": "A stack is LIFO (Last In First Out)"
+  }
+ },
+ "CS-COV-022": {
+  "base": {
+   "A": "a global variable in every function",
+   "B": "last in, first out"
+  },
+  "reforge": {
+   "A": "2d",
+   "B": "d",
+   "D": "Symmetric encryption requires sharing a secret key in advance — a problem over public networks. Asymmetric uses a public/private key pair, avoiding this key-exchange vulnerability."
+  }
+ },
+ "CS-COV-024": {
+  "base": {
+   "A": "A stack is LIFO (Last In First Out)"
+  }
+ },
+ "CS-COV-023": {
+  "base": {
+   "A": "8 nodes — 2³, which would be height 3.",
+   "B": "only a fixed numeric index",
+   "D": "an analogue voltage"
+  },
+  "reforge": {
+   "B": "highest priority only",
+   "A": "last in, first out",
+   "D": "When all elements have the same value."
+  }
+ },
+ "CS-COV-031": {
+  "base": {
+   "D": "Symmetric encryption requires sharing a secret key in advance — a problem over public networks. Asymmetric uses a public/private key pair, avoiding this key-exchange vulnerability."
+  },
+  "reforge": {
+   "B": "Public keys are longer and therefore provide stronger encryption by default.",
+   "A": "Random access — any element can be accessed directly by index."
+  }
+ },
+ "CS-COV-027": {
+  "base": {
+   "C": "C programs are shorter than Python programs.",
+   "B": "Encrypt sensitive data to prevent unauthorised access.",
+   "A": "By reference is slower than by value."
+  },
+  "reforge": {
+   "C": "Subroutines can only be used once; programs can be reused.",
+   "B": "a guarantee that the system is correct",
+   "A": "only after a user accepts the output"
+  }
+ },
+ "CS-COV-028": {
+  "base": {
+   "B": "Subroutines can only be used once; programs can be reused.",
+   "A": "small packets that may take different routes"
+  },
+  "reforge": {
+   "A": "Python was designed for beginners and deliberately made slow.",
+   "B": "C programs are shorter than Python programs.",
+   "C": "what output is guaranteed after every run"
+  }
+ },
+ "CS-C1A-17": {
+  "reforge": {
+   "B": "A stack is LIFO (Last In First Out)"
+  }
+ },
+ "CS-COV-042": {
+  "base": {
+   "C": "UDP provides better data security than TCP for video streams.",
+   "A": "DFS cannot traverse graphs that contain cycles.",
+   "B": "It provides wireless connectivity to devices."
+  },
+  "reforge": {
+   "D": "BFS is always faster than DFS for finding any path in a graph.",
+   "C": "Convert the database from SQL to NoSQL format."
+  }
+ },
+ "CS-C1B-07": {
+  "base": {
+   "B": "finish all tasks immediately under the conditions described in the program",
+   "D": "programs only in cloud storage",
+   "A": "store every event permanently"
+  },
+  "reforge": {
+   "B": "a database without a processor",
+   "D": "CPU instructions and passwords"
+  }
+ },
+ "CS-C1B-03": {
+  "base": {
+   "A": "finish all tasks immediately under the conditions described in the program",
+   "B": "a database without a processor",
+   "D": "CPU instructions and passwords"
+  },
+  "reforge": {
+   "B": "convert source code into HTML under the conditions described in the program",
+   "D": "store every event permanently",
+   "A": "convert source code into HTML"
+  }
+ },
+ "CS-C1B-04": {
+  "base": {
+   "A": "finish all tasks immediately under the conditions described in the program",
+   "C": "CPU instructions and passwords",
+   "B": "store every event permanently"
+  },
+  "reforge": {
+   "C": "convert source code into HTML under the conditions described in the program",
+   "A": "convert source code into HTML",
+   "B": "fixed-size pages and frames"
+  }
+ },
+ "CS-C2B-01": {
+  "base": {
+   "D": "finish all tasks immediately under the conditions described in the program",
+   "B": "a database without a processor",
+   "C": "CPU instructions and passwords"
+  },
+  "reforge": {
+   "C": "store every event permanently",
+   "B": "convert source code into HTML",
+   "D": "convert source code into HTML under the conditions described in the program"
+  }
+ },
+ "CS-C2B-03": {
+  "base": {
+   "A": "finish all tasks immediately under the conditions described in the program",
+   "D": "a database without a processor",
+   "B": "CPU instructions and passwords"
+  },
+  "reforge": {
+   "D": "convert source code into HTML under the conditions described in the program",
+   "B": "store every event permanently",
+   "A": "convert source code into HTML"
+  }
+ },
+ "CS-C2B-05": {
+  "reforge": {
+   "C": "convert source code into HTML under the conditions described in the program",
+   "B": "a database without a processor",
+   "D": "programs only in cloud storage"
+  },
+  "base": {
+   "C": "finish all tasks immediately under the conditions described in the program",
+   "B": "store every event permanently"
+  }
+ },
+ "CS-C2B-06": {
+  "base": {
+   "A": "finish all tasks immediately under the conditions described in the program"
+  },
+  "reforge": {
+   "D": "a database without a processor",
+   "C": "programs only in cloud storage",
+   "A": "convert source code into HTML under the conditions described in the program"
+  }
+ },
+ "CS-C2B-07": {
+  "base": {
+   "A": "finish all tasks immediately under the conditions described in the program",
+   "D": "programs only in cloud storage",
+   "B": "store every event permanently"
+  },
+  "reforge": {
+   "D": "CPU instructions and passwords",
+   "B": "convert source code into HTML"
+  }
+ },
+ "CS-C2B-09": {
+  "base": {
+   "B": "convert source code into HTML under the conditions described in the program",
+   "C": "a database without a processor",
+   "D": "CPU instructions and passwords"
+  },
+  "reforge": {
+   "C": "programs only in cloud storage",
+   "D": "store every event permanently"
+  }
+ },
+ "CS-C2A-14": {
+  "reforge": {
+   "C": "a user to bypass authentication",
+   "D": "a network cable as a keyboard",
+   "A": "only the user's email content"
+  },
+  "base": {
+   "C": "the content of every website",
+   "D": "a faster CPU register only"
+  }
+ },
+ "CS-ETH-04": {
+  "reforge": {
+   "C": "To make all users administrators",
+   "D": "Increasing unnecessary data duplication in the stated computing case",
+   "A": "A firm's right to publish every record in the stated computing case"
+  }
+ },
+ "CS-C2A-15": {
+  "reforge": {
+   "D": "guaranteed access without a network",
+   "A": "a network cable as a keyboard",
+   "B": "a faster CPU register only"
+  },
+  "base": {
+   "A": "a user to bypass authentication",
+   "B": "only the user's email content"
+  }
+ },
+ "CS-ETH-05": {
+  "reforge": {
+   "D": "It ensures the algorithm has no mathematical operations",
+   "A": "Replacing efficient hardware with older hardware"
+  },
+  "base": {
+   "D": "It prevents organisations from collecting data",
+   "C": "It proves that the data is accurate in the stated computing case"
+  }
+ },
+ "CS-COV-053": {
+  "base": {
+   "A": "guaranteed access without a network",
+   "D": "only the user's email content"
+  },
+  "reforge": {
+   "D": "a user to bypass authentication",
+   "B": "the content of every website"
+  }
+ },
+ "CS-C2A-16": {
+  "base": {
+   "C": "guaranteed access without a network",
+   "B": "a user to bypass authentication"
+  },
+  "reforge": {
+   "A": "a network cable as a keyboard",
+   "B": "only the user's email content",
+   "C": "the content of every website"
+  }
+ },
+ "CS-COV-069": {
+  "base": {
+   "A": "a defined interface allowing software components to communicate",
+   "B": "multiplies an unsigned integer by two"
+  },
+  "reforge": {
+   "B": "storing every bit twice under the conditions described in the program",
+   "C": "remote access and scalable capacity"
+  }
+ },
+ "CS-C2A-18": {
+  "base": {
+   "A": "a defined interface allowing software components to communicate",
+   "D": "a general-purpose desktop used for every task"
+  },
+  "reforge": {
+   "A": "storing every bit twice under the conditions described in the program",
+   "C": "multiplies an unsigned integer by two",
+   "D": "remote access and scalable capacity"
+  }
+ },
+ "CS-COV-058": {
+  "reforge": {
+   "A": "prove who wrote a message",
+   "C": "repair corrupted data",
+   "D": "how a computer's processor schedules instructions and allocates its registers"
+  },
+  "base": {
+   "A": "the colour of web pages",
+   "B": "a program that encrypts every file on a computer and demands payment, rather than a deceptive message or site designed to obtain information from a user",
+   "C": "the design of CPU registers and the colour of web pages, rather than the handling of personal data"
+  }
+ },
+ "CS-C1B-09": {
+  "base": {
+   "B": "a general-purpose desktop used for every task",
+   "C": "the speed of a printer",
+   "D": "identify a website"
+  },
+  "reforge": {
+   "B": "removes all metadata permanently",
+   "C": "used per database row",
+   "D": "multiplies an unsigned integer by two, unless the shifted bit is lost through overflow"
+  }
+ },
+ "CS-C1B-10": {
+  "base": {
+   "D": "removes all metadata permanently",
+   "A": "identify a website",
+   "C": "multiplies an unsigned integer by two, unless the shifted bit is lost through overflow"
+  },
+  "reforge": {
+   "D": "the speed of a printer",
+   "A": "used per database row",
+   "C": "a general-purpose desktop used for every task"
+  }
+ },
+ "CS-C1B-11": {
+  "base": {
+   "A": "a defined interface allowing software components to communicate",
+   "B": "a general-purpose desktop used for every task"
+  },
+  "reforge": {
+   "B": "storing every bit twice under the conditions described in the program",
+   "A": "multiplies an unsigned integer by two",
+   "D": "remote access and scalable capacity"
+  }
+ },
+ "CS-C1B-13": {
+  "base": {
+   "B": "always gives a smaller file than lossy compression",
+   "C": "multiplies an unsigned integer by two",
+   "D": "removes all metadata permanently"
+  },
+  "reforge": {
+   "C": "remote access and scalable capacity",
+   "D": "the speed of a printer"
+  }
+ },
+ "CS-C1B-14": {
+  "base": {
+   "A": "the speed of a printer",
+   "C": "storing every bit twice under the conditions described in the program"
+  },
+  "reforge": {
+   "D": "used per database row",
+   "C": "multiplies an unsigned integer by two, unless the shifted bit is lost through overflow",
+   "A": "divides an unsigned integer by two by moving every binary digit one place to the right"
+  }
+ },
+ "CS-COV-052": {
+  "base": {
+   "C": "guaranteed access without a network",
+   "D": "a network cable as a keyboard"
+  },
+  "reforge": {
+   "A": "a user to bypass authentication",
+   "C": "a faster CPU register only"
+  }
+ },
+ "CS-COV-085": {
+  "base": {
+   "B": "finish all tasks immediately under the conditions described in the program",
+   "A": "programs only in cloud storage"
+  },
+  "reforge": {
+   "D": "a database without a processor",
+   "C": "convert source code into HTML under the conditions described in the program"
+  }
+ },
+ "CS-C2B-10": {
+  "base": {
+   "D": "A new system must be adopted immediately",
+   "C": "without any copies or links",
+   "A": "every field contains text"
+  },
+  "reforge": {
+   "D": "encrypt a database field",
+   "C": "is always a foreign key",
+   "A": "instructions and data in the same memory"
+  }
+ },
+ "CS-C2B-16": {
+  "reforge": {
+   "C": "a different public key for every byte",
+   "B": "that a file has no copyright",
+   "A": "sending a packet to DNS"
+  },
+  "base": {
+   "B": "using only plain HTTP"
+  }
+ },
+ "CS-COV-096": {
+  "base": {
+   "D": "A trusted third party holds the key and decrypts messages on both sides.",
+   "B": "Encryption is only used by governments.",
+   "C": "a different public key for every byte"
+  },
+  "reforge": {
+   "B": "Public keys are longer and therefore provide stronger encryption by default.",
+   "D": "a guarantee that the website is honest"
+  }
+ },
+ "CS-COV-030": {
+  "base": {
+   "B": "only a fixed numeric index under the conditions described in the program",
+   "D": "An array — because pages are accessed by index number."
+  },
+  "reforge": {
+   "B": "Public keys are longer and therefore provide stronger encryption by default."
+  }
+ },
+ "CS-COV-066": {
+  "base": {
+   "A": "finish all tasks immediately under the conditions described in the program",
+   "C": "programs only in cloud storage",
+   "D": "CPU instructions and passwords"
+  },
+  "reforge": {
+   "A": "convert source code into HTML under the conditions described in the program",
+   "B": "store every event permanently",
+   "C": "convert source code into HTML"
+  }
+ },
+ "CS-C2A-03": {
+  "reforge": {
+   "A": "It provides wireless connectivity to devices.",
+   "D": "every user's personal password",
+   "B": "the number of bits per second"
+  },
+  "base": {
+   "B": "TCP cannot handle video data."
+  }
+ },
+ "CS-ETH-11": {
+  "reforge": {
+   "B": "It prevents organisations from collecting data",
+   "D": "A programmer choosing between languages",
+   "C": "A database containing duplicate records"
+  }
+ },
+ "CS-COV-038": {
+  "base": {
+   "A": "It provides wireless connectivity to devices.",
+   "B": "every user's personal password",
+   "D": "UDP is more secure than TCP."
+  },
+  "reforge": {
+   "C": "Convert the database from SQL to NoSQL format.",
+   "D": "TCP cannot handle video data.",
+   "B": "the number of bits per second"
+  }
+ },
+ "CS-COV-074": {
+  "base": {
+   "B": "It provides wireless connectivity to devices.",
+   "A": "every user's personal password",
+   "C": "TCP cannot handle video data."
+  },
+  "reforge": {
+   "D": "Convert the database from SQL to NoSQL format.",
+   "A": "the number of bits per second",
+   "C": "UDP is more secure than TCP."
+  }
+ },
+ "CS-COV-032": {
+  "base": {
+   "D": "Python is interpreted (line by line at runtime) whereas C is compiled to machine code (direct CPU instructions) — interpretation adds overhead on every execution.",
+   "B": "one central server for every service under the conditions described in the program"
+  },
+  "reforge": {
+   "D": "increase a monitor's resolution under the conditions described in the program",
+   "A": "guarantees every packet arrives under the conditions described in the program",
+   "B": "a type of CPU cache under the conditions described in the program"
+  }
+ },
+ "CS-COV-040": {
+  "base": {
+   "D": "guarantees every packet arrives",
+   "B": "the number of bits per second"
+  },
+  "reforge": {
+   "B": "It provides wireless connectivity to devices.",
+   "D": "TCP cannot handle video data.",
+   "C": "UDP is more secure than TCP."
+  }
+ },
+ "CS-COV-076": {
+  "base": {
+   "B": "It provides wireless connectivity to devices.",
+   "A": "guarantees every packet arrives"
+  },
+  "reforge": {
+   "D": "Convert the database from SQL to NoSQL format.",
+   "C": "every user's personal password",
+   "A": "TCP cannot handle video data."
+  }
+ },
+ "CS-ETH-12": {
+  "reforge": {
+   "A": "It guarantees decisions are free from bias",
+   "C": "Financial costs are the only concern",
+   "D": "It proves that the data is accurate"
+  }
+ },
+ "CS-COV-043": {
+  "base": {
+   "C": "An error caused by using incorrect SQL syntax in a query.",
+   "B": "uses stronger encryption automatically"
+  },
+  "reforge": {
+   "C": "UDP provides better data security than TCP for video streams.",
+   "D": "one central server for every service"
+  }
+ },
+ "CS-COV-098": {
+  "base": {
+   "C": "prove who wrote a message",
+   "A": "repair corrupted data",
+   "D": "the design of CPU registers and the colour of web pages, rather than the handling of personal data"
+  },
+  "reforge": {
+   "A": "the colour of web pages",
+   "B": "a program that encrypts every file on a computer and demands payment, rather than a deceptive message or site designed to obtain information from a user",
+   "C": "how a computer's processor schedules instructions and allocates its registers"
+  }
+ },
+ "CS-COV-044": {
+  "base": {
+   "A": "prove who wrote a message",
+   "B": "the colour of web pages",
+   "C": "the design of CPU registers and the colour of web pages, rather than the handling of personal data"
+  },
+  "reforge": {
+   "C": "repair corrupted data",
+   "D": "a program that encrypts every file on a computer and demands payment, rather than a deceptive message or site designed to obtain information from a user",
+   "A": "how a computer's processor schedules instructions and allocates its registers"
+  }
+ },
+ "CS-COV-100": {
+  "base": {
+   "A": "prove who wrote a message",
+   "C": "repair corrupted data",
+   "D": "the design of CPU registers and the colour of web pages, rather than the handling of personal data"
+  },
+  "reforge": {
+   "C": "the colour of web pages",
+   "B": "a program that encrypts every file on a computer and demands payment, rather than a deceptive message or site designed to obtain information from a user",
+   "A": "how a computer's processor schedules instructions and allocates its registers"
+  }
+ },
+ "CS-ETH-06": {
+  "base": {
+   "A": "It guarantees decisions are free from bias",
+   "C": "A website using a responsive layout"
+  },
+  "reforge": {
+   "A": "To make all users administrators",
+   "B": "Increasing unnecessary data duplication in the stated computing case",
+   "C": "A firm's right to publish every record in the stated computing case"
+  }
+ },
+ "CS-C2A-10": {
+  "base": {
+   "A": "instructions and data in the same memory",
+   "C": "only the user's email content"
+  },
+  "reforge": {
+   "A": "without any copies or links",
+   "C": "every field contains text"
+  }
+ },
+ "CS-ETH-09": {
+  "base": {
+   "C": "Increasing unnecessary data duplication in the stated computing case",
+   "D": "It proves that the data is accurate in the stated computing case"
+  },
+  "reforge": {
+   "B": "A firm's right to publish every record in the stated computing case",
+   "D": "It ensures the algorithm has no mathematical operations"
+  }
+ },
+ "CS-COV-048": {
+  "base": {
+   "B": "reduce unnecessary duplication and update anomalies",
+   "C": "sort columns alphabetically only"
+  },
+  "reforge": {
+   "B": "Encrypt sensitive data to prevent unauthorised access.",
+   "D": "instructions and data in the same memory",
+   "A": "identify a processor instruction"
+  }
+ },
+ "CS-COV-050": {
+  "base": {
+   "A": "signal the processor that it needs attention",
+   "C": "sort every table automatically",
+   "D": "without any copies or links"
+  },
+  "reforge": {
+   "C": "uniquely identifies each record",
+   "B": "only the user's email content",
+   "A": "Convert the database from SQL to NoSQL format."
+  }
+ },
+ "CS-COV-090": {
+  "base": {
+   "C": "Encrypt sensitive data to prevent unauthorised access."
+  },
+  "reforge": {
+   "A": "An error caused by using incorrect SQL syntax in a query."
+  }
+ },
+ "CS-COV-054": {
+  "base": {
+   "A": "guaranteed access without a network",
+   "B": "only the user's email content",
+   "D": "a faster CPU register only"
+  },
+  "reforge": {
+   "C": "a network cable as a keyboard",
+   "B": "the content of every website"
+  }
+ },
+ "CS-ETH-08": {
+  "reforge": {
+   "A": "Increasing unnecessary data duplication in the stated computing case",
+   "D": "A firm's right to publish every record in the stated computing case"
+  }
+ },
+ "CS-COV-055": {
+  "base": {
+   "D": "a defined interface allowing software components to communicate",
+   "A": "a general-purpose desktop used for every task",
+   "B": "the physical size of the display screen"
+  },
+  "reforge": {
+   "C": "multiplies an unsigned integer by two, unless the shifted bit is lost through overflow",
+   "D": "divides an unsigned integer by two by moving every binary digit one place to the right"
+  }
+ },
+ "CS-COV-071": {
+  "base": {
+   "B": "always gives a smaller file than lossy compression",
+   "A": "multiplies an unsigned integer by two",
+   "D": "remote access and scalable capacity"
+  },
+  "reforge": {
+   "B": "multiplies an unsigned integer by two, unless the shifted bit is lost through overflow",
+   "D": "divides an unsigned integer by two by moving every binary digit one place to the right",
+   "C": "storing every bit twice under the conditions described in the program"
+  }
+ },
+ "CS-C1B-02": {
+  "reforge": {
+   "A": "0 1 2 3 4 5",
+   "C": "Compilers are faster to write programs with; interpreters produce faster programs. The computing explanation must match the code, data, protocol, algorithm or hardware mechanism described; the mechanism named in the option cannot produce the result under these conditions."
+  },
+  "base": {
+   "A": "a type of network cable",
+   "D": "1 2 3 4"
+  }
+ },
+ "CS-COV-082": {
+  "base": {
+   "C": "finish all tasks immediately under the conditions described in the program",
+   "A": "programs only in cloud storage",
+   "D": "store every event permanently"
+  },
+  "reforge": {
+   "A": "convert source code into HTML under the conditions described in the program",
+   "B": "CPU instructions and passwords",
+   "C": "convert source code into HTML"
+  }
+ },
+ "CS-COV-070": {
+  "base": {
+   "A": "multiplies an unsigned integer by two, unless the shifted bit is lost through overflow"
+  },
+  "reforge": {
+   "D": "divides an unsigned integer by two by moving every binary digit one place to the right",
+   "C": "storing every bit twice under the conditions described in the program"
+  }
+ },
+ "CS-C1B-12": {
+  "base": {
+   "A": "multiplies an unsigned integer by two, unless the shifted bit is lost through overflow",
+   "B": "divides an unsigned integer by two by moving every binary digit one place to the right"
+  },
+  "reforge": {
+   "B": "storing every bit twice under the conditions described in the program"
+  }
+ },
+ "CS-COV-086": {
+  "base": {
+   "B": "finish all tasks immediately under the conditions described in the program",
+   "D": "CPU instructions and passwords"
+  },
+  "reforge": {
+   "D": "convert source code into HTML under the conditions described in the program",
+   "C": "store every event permanently"
+  }
+ },
+ "CS-C2B-15": {
+  "base": {
+   "A": "sending a packet to DNS",
+   "D": "using only plain HTTP",
+   "B": "two usernames with the same password under the conditions described in the program"
+  },
+  "reforge": {
+   "D": "one-way and difficult to reverse, so recovering the original input is computationally impractical",
+   "B": "Symmetric encryption cannot physically be used for internet-based communication.",
+   "A": "a reversible compression method that always restores the original input exactly"
+  }
+ },
+ "CS-ETH-01": {
+  "base": {
+   "B": "Increasing unnecessary data duplication in the stated computing case"
+  }
+ },
+ "CS-C1B-01": {
+  "base": {
+   "B": "the keyboard is disconnected",
+   "C": "0 1 2 3 4 5",
+   "D": "1 2 3 4"
+  },
+  "reforge": {
+   "C": "1 2 3 4 5 6",
+   "D": "A OR B",
+   "B": "Compilers are faster to write programs with; interpreters produce faster programs. The computing explanation must match the code, data, protocol, algorithm or hardware mechanism described; the mechanism named in the option cannot produce the result under these conditions."
+  }
+ },
+ "CS-COV-091": {
+  "base": {
+   "A": "sort every table automatically",
+   "B": "without any copies or links",
+   "C": "A new system must be adopted immediately"
+  },
+  "reforge": {
+   "A": "instructions and data in the same memory",
+   "C": "every field contains text",
+   "D": "encrypt a database field"
+  }
+ },
+ "CS-COV-063": {
+  "base": {
+   "B": "finish all tasks immediately under the conditions described in the program",
+   "C": "programs only in cloud storage",
+   "D": "store every event permanently"
+  },
+  "reforge": {
+   "A": "convert source code into HTML under the conditions described in the program",
+   "D": "convert source code into HTML"
+  }
+ },
+ "CS-COV-083": {
+  "base": {
+   "A": "finish all tasks immediately under the conditions described in the program",
+   "D": "CPU instructions and passwords"
+  },
+  "reforge": {
+   "C": "convert source code into HTML under the conditions described in the program",
+   "B": "store every event permanently",
+   "A": "convert source code into HTML"
+  }
+ },
+ "CS-COV-072": {
+  "base": {
+   "B": "the speed of a printer",
+   "D": "multiplies an unsigned integer by two, unless the shifted bit is lost through overflow"
+  },
+  "reforge": {
+   "D": "used per database row"
+  }
+ },
+ "CS-COV-079": {
+  "base": {
+   "D": "increase a monitor's resolution under the conditions described in the program",
+   "C": "An error caused by using incorrect SQL syntax in a query."
+  },
+  "reforge": {
+   "D": "guarantees every packet arrives under the conditions described in the program",
+   "A": "Always finds the shortest path between two nodes."
+  }
+ },
+ "CS-COV-075": {
+  "base": {
+   "A": "An error caused by using incorrect SQL syntax in a query.",
+   "C": "It provides wireless connectivity to devices."
+  },
+  "reforge": {
+   "C": "UDP provides better data security than TCP for video streams.",
+   "A": "Convert the database from SQL to NoSQL format.",
+   "D": "MAC addresses only within one application"
+  }
+ },
+ "CS-COV-087": {
+  "reforge": {
+   "D": "a network protocol that sends data between devices, rather than the processor step that reads the next instruction from memory",
+   "C": "convert source code into HTML under the conditions described in the program"
+  },
+  "base": {
+   "D": "larger and slower than external storage",
+   "A": "sending a packet to DNS",
+   "B": "translate a domain name"
+  }
+ },
+ "CS-COV-084": {
+  "base": {
+   "A": "finish all tasks immediately under the conditions described in the program",
+   "C": "programs only in cloud storage",
+   "D": "CPU instructions and passwords"
+  },
+  "reforge": {
+   "C": "convert source code into HTML under the conditions described in the program",
+   "A": "store every event permanently"
+  }
+ },
+ "CS-COV-088": {
+  "base": {
+   "A": "finish all tasks immediately under the conditions described in the program",
+   "B": "programs only in cloud storage",
+   "D": "store every event permanently"
+  },
+  "reforge": {
+   "C": "a database without a processor",
+   "B": "convert source code into HTML under the conditions described in the program",
+   "D": "convert source code into HTML"
+  }
+ },
+ "CS-COV-064": {
+  "base": {
+   "B": "larger and slower than external storage"
+  },
+  "reforge": {
+   "D": "finish all tasks immediately under the conditions described in the program"
+  }
+ },
+ "CS-COV-092": {
+  "base": {
+   "A": "reduce unnecessary duplication and update anomalies",
+   "B": "sort columns alphabetically only",
+   "C": "uniquely identifies each record"
+  },
+  "reforge": {
+   "C": "Encrypt sensitive data to prevent unauthorised access.",
+   "A": "identify a processor instruction"
+  }
+ }
+};
+for (const [id, repairs] of Object.entries(finalCSCorruptionRepairs)) {
+  for (const bank of Object.values(BANKS)) {
+    const question = (bank.questions || []).find(candidate => candidate.id === id);
+    if (!question) continue;
+    for (const [variant, options] of Object.entries(repairs)) {
+      const item = variant === "base" ? question : question.reforge;
+      if (item?.options) Object.assign(item.options, options);
+    }
+  }
+}
+// Residual length-cue fixes left after the cs corruption-repair pass above:
+// the same-tag replacement was necessarily shorter than the correct answer
+// for these 42 items, so the correct answer became the uniquely-longest
+// option. Extended the runner-up distractor with genuine reasoning instead.
+const finalCSLengthRepairs = {
+ "CS-03": {
+  "reforge": {
+   "C": "Both are equally efficient for large datasets, which ignores that binary search discards half the remaining items at every single comparison step while linear search does not."
+  }
+ },
+ "CS-04": {
+  "base": {
+   "A": "Up to 512 comparisons — it halves the list but still needs half the elements, a description of binary search's behaviour rather than what O(n squared) time complexity means."
+  },
+  "reforge": {
+   "A": "Subroutines can only be used once; programs can be reused, a claim about code reuse unrelated to bubble sort's time complexity."
+  }
+ },
+ "CS-07": {
+  "reforge": {
+   "D": "Python is interpreted line by line at runtime whereas C is compiled directly to machine code ahead of execution — this interpretation overhead is a completely separate issue from why streaming services choose UDP over TCP."
+  }
+ },
+ "CS-08": {
+  "reforge": {
+   "D": "One-way and difficult to reverse, so recovering the original input is computationally impractical — a description of hashing, not an explanation of why HTTPS actually combines two different encryption types together."
+  }
+ },
+ "CS-C1A-01": {
+  "base": {
+   "B": "Converting decimal to binary, a separate number-representation skill unrelated to what decomposition means in computational thinking."
+  }
+ },
+ "CS-C1A-17": {
+  "reforge": {
+   "B": "A stack is LIFO (Last In First Out), a data-structure fact unrelated to what encapsulation means in object-oriented programming."
+  }
+ },
+ "CS-COV-009": {
+  "reforge": {
+   "B": "It physically connects computers with cables, a description of networking hardware unrelated to what decomposition means in computational thinking."
+  }
+ },
+ "CS-COV-033": {
+  "base": {
+   "A": "One central server for every service, a client-server architecture description that has nothing to do with how TCP actually differs from UDP in the delivery guarantees each protocol provides."
+  }
+ },
+ "CS-COV-037": {
+  "reforge": {
+   "B": "A type of CPU cache, a hardware-memory concept that has nothing to do with what an update anomaly actually is or how database normalisation is used to prevent it."
+  }
+ },
+ "CS-COV-045": {
+  "base": {
+   "D": "Prevents every cyberattack, an impossible absolute claim unrelated to what phishing actually is as an attack technique."
+  }
+ },
+ "CS-COV-053": {
+  "base": {
+   "B": "A network cable as a keyboard, a nonsensical hardware substitution unrelated to what virtual memory actually uses to extend apparent main memory."
+  },
+  "reforge": {
+   "B": "The content of every website, an unrelated claim about web data rather than what virtual memory actually uses to extend apparent main memory."
+  }
+ },
+ "CS-11": {
+  "reforge": {
+   "C": "One central server for every service, a client-server architecture description unrelated to which OSI layer handles packet routing decisions."
+  }
+ },
+ "CS-12": {
+  "reforge": {
+   "D": "Increase a monitor's resolution, a display-hardware claim that has nothing to do with why UDP is generally preferred over TCP for live video streaming specifically."
+  }
+ },
+ "CS-13": {
+  "base": {
+   "A": "Only a fixed numeric index, a description that does not explain what practical problem a circular queue's wraparound design of the rear pointer is actually intended to solve."
+  }
+ },
+ "CS-14": {
+  "base": {
+   "A": "A reversible compression method that always restores the original input exactly, a description of lossless compression unrelated to how public key cryptography actually works."
+  },
+  "reforge": {
+   "D": "Two usernames sharing the same password, an authentication weakness that has nothing whatsoever to do with the key-exchange problem public key cryptography was actually designed to solve."
+  }
+ },
+ "CS-16": {
+  "base": {
+   "A": "Sort columns alphabetically only, a cosmetic reordering unrelated to what normalisation in relational databases is actually intended to achieve."
+  },
+  "reforge": {
+   "D": "Remove every relationship from a database, leaving separate records with no links between related entities, the opposite of what normalisation and update anomalies are about."
+  }
+ },
+ "CS-C2A-08": {
+  "base": {
+   "A": "Prevents every cyberattack, an impossible absolute claim unrelated to what phishing actually is as an attack technique."
+  }
+ },
+ "CS-C2A-14": {
+  "reforge": {
+   "A": "Only the user's email content, a narrow and unrelated claim rather than the actual primary advantage cloud storage provides."
+  }
+ },
+ "CS-C2A-15": {
+  "base": {
+   "A": "A user to bypass authentication, a security-vulnerability description unrelated to what an operating system actually manages."
+  },
+  "reforge": {
+   "A": "A network cable as a keyboard, a nonsensical hardware substitution unrelated to what an operating system actually manages."
+  }
+ },
+ "CS-C2A-16": {
+  "base": {
+   "B": "A user to bypass authentication, a security-vulnerability description unrelated to what virtual memory actually uses to extend apparent main memory."
+  },
+  "reforge": {
+   "C": "The content of every website, an unrelated claim about web data rather than what virtual memory actually uses to extend apparent main memory."
+  }
+ },
+ "CS-C2A-17": {
+  "base": {
+   "B": "Guaranteed access without a network, a claim unrelated to what a device driver actually allows the operating system to do."
+  },
+  "reforge": {
+   "B": "A user to bypass authentication, a security-vulnerability description unrelated to what a device driver actually allows the operating system to do."
+  }
+ },
+ "CS-COV-054": {
+  "base": {
+   "A": "Guaranteed access without a network, a claim unrelated to what a device driver actually allows the operating system to do."
+  },
+  "reforge": {
+   "D": "A user to bypass authentication, a security-vulnerability description unrelated to what a device driver actually allows the operating system to do."
+  }
+ },
+ "CS-COV-003": {
+  "reforge": {
+   "A": "Linear search — it always finds the item faster, which reverses the real efficiency comparison between linear and binary search on sorted data."
+  }
+ },
+ "CS-COV-035": {
+  "reforge": {
+   "A": "When (rear plus one) modulo size equals front — a description of a circular queue being full, unrelated to why public key cryptography solves the key-exchange problem symmetric encryption cannot."
+  }
+ },
+ "CS-COV-051": {
+  "reforge": {
+   "A": "A user to bypass authentication, a security-vulnerability description unrelated to the actual primary advantage cloud storage provides."
+  }
+ },
+ "CS-COV-055": {
+  "reforge": {
+   "C": "Multiplies an unsigned integer by two, unless the shifted bit is lost through overflow, a bitwise-arithmetic description unrelated to what a lossless compression method actually does."
+  }
+ },
+ "CS-COV-071": {
+  "reforge": {
+   "C": "Storing every bit twice, a naive redundancy scheme unrelated to how a lossy image format actually reduces file size."
+  }
+ },
+ "CS-COV-004": {
+  "base": {
+   "A": "Subroutines can only be used once; programs can be reused, a claim about code reuse unrelated to what O(n squared) time complexity means."
+  },
+  "reforge": {
+   "B": "Up to 512 comparisons — it halves the list but still needs half the elements, a description of binary search's behaviour rather than bubble sort's time complexity."
+  }
+ },
+ "CS-COV-008": {
+  "reforge": {
+   "D": "One-way and difficult to reverse, so recovering the original input is computationally impractical — a description of hashing, not an explanation of why HTTPS actually combines two different encryption types together."
+  }
+ },
+ "CS-COV-032": {
+  "reforge": {
+   "A": "Guarantees every packet arrives, a reliability claim that describes TCP rather than which OSI layer handles routing decisions."
+  }
+ },
+ "CS-COV-036": {
+  "reforge": {
+   "B": "Increase a monitor's resolution, a display-hardware claim that has nothing at all to do with why BFS is preferred over DFS for finding a shortest path in a graph."
+  }
+ },
+ "CS-COV-052": {
+  "base": {
+   "C": "Guaranteed access without a network, a claim unrelated to what an operating system actually manages on a device."
+  },
+  "reforge": {
+   "B": "The content of every website, an unrelated claim about web data rather than what an operating system actually manages on a device."
+  }
+ }
+};
+for (const [id, repairs] of Object.entries(finalCSLengthRepairs)) {
+  for (const bank of Object.values(BANKS)) {
+    const question = (bank.questions || []).find(candidate => candidate.id === id);
+    if (!question) continue;
+    for (const [variant, options] of Object.entries(repairs)) {
+      const item = variant === "base" ? question : question.reforge;
+      if (item?.options) Object.assign(item.options, options);
+    }
+  }
+}
+// Correcting a keying mistake in the previous repair: two fixes targeted the
+// CORRECT answer's key instead of the intended distractor, overwriting the
+// correct answer text. Restore the correct answers and extend the actual
+// distractor instead.
+const finalCSKeyingFix = {
+  "CS-13": { base: {
+    A: "It reuses vacated front positions by wrapping the rear pointer back to index 0 — preventing false 'full' conditions when space exists at the front of the array.",
+    B: "Only a fixed numeric index, a description that does not explain what practical problem a circular queue's wraparound design of the rear pointer is actually intended to solve."
+  } },
+  "CS-14": { reforge: {
+    D: "Symmetric encryption requires sharing a secret key in advance — a problem over public networks. Asymmetric uses a public/private key pair, avoiding this key-exchange vulnerability.",
+    A: "Two usernames sharing the same password, an authentication weakness that has nothing whatsoever to do with the key-exchange problem public key cryptography was actually designed to solve."
+  } }
+};
+for (const [id, repairs] of Object.entries(finalCSKeyingFix)) {
+  for (const bank of Object.values(BANKS)) {
+    const question = (bank.questions || []).find(candidate => candidate.id === id);
+    if (!question) continue;
+    for (const [variant, options] of Object.entries(repairs)) {
+      const item = variant === "base" ? question : question.reforge;
+      if (item?.options) Object.assign(item.options, options);
+    }
+  }
+}
