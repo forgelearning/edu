@@ -27,19 +27,19 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Validate question bank
-        run: node scripts/check-question-bank.js
+        run: node scripts/checks/check-question-bank.js
 
       - name: Validate subject-page counts
-        run: node scripts/check-subject-counts.js
+        run: node scripts/checks/check-subject-counts.js
 
       - name: Validate specification coverage
-        run: node scripts/check-spec-coverage.js
+        run: node scripts/checks/check-spec-coverage.js
 
       - name: Validate stem diversity
-        run: node scripts/check-stem-diversity.js
+        run: node scripts/checks/check-stem-diversity.js
 
       - name: Validate stem language
-        run: node scripts/check-stem-language.js
+        run: node scripts/checks/check-stem-language.js
 
       - name: Audit distractor balance and structure
         run: node dev/audit-banks.js
@@ -58,20 +58,20 @@ jobs:
           exit 1
 
       - name: Validate routes and local links
-        run: node scripts/check-routes.js
+        run: node scripts/checks/check-routes.js
 
       - name: Stop static server
         if: always()
         run: kill "$SERVER_PID" 2>/dev/null || true
 
       - name: Validate UI system
-        run: node scripts/check-ui-system.js
+        run: node scripts/checks/check-ui-system.js
 
       - name: Validate content status freshness
-        run: node scripts/build-content-status.js --check
+        run: node scripts/build/build-content-status.js --check
 
       - name: Validate button types
-        run: node scripts/check-button-types.js
+        run: node scripts/checks/check-button-types.js
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
@@ -94,12 +94,9 @@ jobs:
             --exclude='supabase/' \
             --exclude='templates/' \
             --exclude='CLAUDE.md' \
-            --exclude='scripts/check-*.js' \
-            --exclude='scripts/build-*.js' \
-            --exclude='scripts/migrate-*.js' \
-            --exclude='scripts/extract-*.js' \
-            --exclude='scripts/clean-*.js' \
-            --exclude='scripts/merge-*.js' \
+            --exclude='scripts/checks/' \
+            --exclude='scripts/build/' \
+            --exclude='scripts/maintenance/' \
             ./ _site/
           test -f _site/index.html
           echo "Staged $(find _site -type f | wc -l) files (repo has $(git ls-files | wc -l))"

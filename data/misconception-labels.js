@@ -1124,7 +1124,7 @@ const MC_LABELS = {
 
   // A-Level History (AQA 7042). These 38 replace the generated per-question
   // tags on 141 of the 208 History questions — see the block at the end of
-  // data/forge-data.js and docs/history-misconception-mapping.md. The label
+  // data/forge-data.js and docs/misconceptions/a-level/history-misconception-mapping.md. The label
   // names the ERROR, not the topic, so it reads as a diagnosis on the heatmap.
   "MC-HIST-LIB-WELFARE": "Liberal reforms treated as a finished welfare state",
   "MC-HIST-CONTRIB": "Contributory vs non-contributory provision confused",
@@ -1168,7 +1168,7 @@ const MC_LABELS = {
   // ---- A-Level Economics, stage 1. These 74 replace the generated
   // per-question tags on the concept pairs in ECON-1.1, 3.1.1, 3.2.1 and
   // 4.1.1; see econMisconceptionTags in data/forge-data.js and
-  // docs/econ-misconception-plan.md. Each names the ERROR, not the concept,
+  // docs/misconceptions/a-level/econ-misconception-plan.md. Each names the ERROR, not the concept,
   // so the heatmap row reads as a diagnosis.
   "MC-MICRO-MOVEMENT": "Movement along demand confused with a shift",
   "MC-MICRO-SHIFT": "Demand shift attributed to a change in the good's own price",
@@ -1246,7 +1246,7 @@ const MC_LABELS = {
   "MC-GLOB-IMPORT-SUB": "Import substitution confused with export-led growth",
 
   // ---- A-Level Sociology. See socMisconceptionTags in data/forge-data.js and
-  // docs/soc-misconception-taxonomy-draft.md. Each names the error, not the
+  // docs/misconceptions/a-level/soc-misconception-taxonomy-draft.md. Each names the error, not the
   // topic. The methods labels are shared across SOC-THEORY, SOC-RESEARCH and
   // SOC-MET, which is where most of the aggregation comes from.
   "MC-EDU-POLICY": "Education policy aims confused with their measured effects",
@@ -1502,7 +1502,7 @@ const MC_LABELS = {
   "MC-SEP-PHYS-INSULATION": "Insulation slows conduction and convection",
 
   // A-Level Geography (Edexcel 9GE0) — 52 categories covering all 238
-  // questions. See docs/geo-misconception-mapping.md for the assignment and
+  // questions. See docs/misconceptions/a-level/geo-misconception-mapping.md for the assignment and
   // for why these are MC-GEO-* rather than the MC-TEC-*/MC-COAST-* tags the
   // banks used to share with gcse-geo.
   "MC-GEO-TEC-MARGIN": "Plate margins — which plate subducts, and where quakes occur",
@@ -1762,7 +1762,7 @@ function resolveMCIntervention(tag, subject) {
 
 // A-Level Economics stage 2. Labels for the 69 tags created when the 230
 // questions still on single-use tags were mapped onto shared categories.
-// See docs/econ-misconception-taxonomy-draft.md.
+// See docs/misconceptions/a-level/econ-misconception-taxonomy-draft.md.
 Object.assign(MC_LABELS, {
   // --- Theme 1 microeconomics
   "MC-MICRO-EQUILIBRIUM": "Equilibrium read as the price sellers want",

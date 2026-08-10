@@ -149,35 +149,35 @@ propagates into its `*-COV-*` copies and fixing the source fixes them all.
   Fully done: `gcse-econ` (420 questions onto 76 shared
   `MC-GE-*` tags), the three `gcse-sep-*` sciences (600 questions on 96 shared
   topic tags), `gcse-science` (212 questions from 156 tags onto 83, reusing the
-  `MC-SEP-*` set — see `docs/gcse-science-misconception-mapping.md`),
+  `MC-SEP-*` set — see `docs/misconceptions/gcse/gcse-science-misconception-mapping.md`),
   `gcse-maths` (126 tags onto 90; all 90 labelled, 89 with a hand-written
   starter — its tags were already topical and merely split by a numeric
   suffix, so the work was merging variants, not designing a taxonomy),
   `hist` (37 shared `MC-HIST-*` tags, see
-  `docs/history-misconception-mapping.md`), `soc` (185 questions onto 44
+  `docs/misconceptions/a-level/history-misconception-mapping.md`), `soc` (185 questions onto 44
   categories) and `geo` (all 238 questions onto 52 categories, none carrying
   fewer than two, with 52 hand-written starters — see
-  `docs/geo-misconception-mapping.md`). Substantially done: `psych` (0.18).
+  `docs/misconceptions/a-level/geo-misconception-mapping.md`). Substantially done: `psych` (0.18).
   `gcse-geo` (640 questions; 34/640 single-use = 0.053 and 0% mechanical
   tags after all 14 banks were hand-curated; see the bank mapping docs), and
   `econ` (515 questions onto 187 labelled taxonomy tags; 6/515 single-use =
   0.012 and 0 mechanical after stage 2; see
-  `docs/econ-misconception-taxonomy-draft.md`). `gcse-geo` is now fully
+  `docs/misconceptions/a-level/econ-misconception-taxonomy-draft.md`). `gcse-geo` is now fully
   curated: its subject ratchets are 0.06 single-use and 0 mechanical, with
   labels and corrective starters for every shared taxonomy tag. `econ` is
   likewise complete apart from six genuine singleton concepts, each with an
   explicit starter.
   `gcse-psych` (202 questions onto 53 shared `MC-GPSY-*` categories, 0
   single-use and 0 mechanical; see
-  `docs/gcse-psych-misconception-mapping.md`).
+  `docs/misconceptions/gcse/gcse-psych-misconception-mapping.md`).
   `crim` (200 questions onto 30 shared `MC-GCRIM-*` categories, 0 single-use
-  and 0 mechanical; see `docs/gcse-crim-misconception-mapping.md`).
+  and 0 mechanical; see `docs/misconceptions/gcse/gcse-crim-misconception-mapping.md`).
   `law` (200 questions onto 22 shared `MC-GLAW-*` categories, 0 single-use
-  and 0 mechanical; see `docs/law-misconception-mapping.md`).
+  and 0 mechanical; see `docs/misconceptions/a-level/law-misconception-mapping.md`).
   `pol` (200 questions onto 28 shared `MC-GPOL-*` categories, 0 single-use
-  and 0 mechanical; see `docs/politics-misconception-mapping.md`).
+  and 0 mechanical; see `docs/misconceptions/a-level/politics-misconception-mapping.md`).
   `gcse-hist` (200 questions onto 29 shared `MC-GHIST-*` categories, 0
-  single-use and 0 mechanical; see `docs/gcse-hist-misconception-mapping.md`).
+  single-use and 0 mechanical; see `docs/misconceptions/gcse/gcse-hist-misconception-mapping.md`).
 
   Next, roughly by value: the ~15 subjects still at 100% per-question tags.
   The audit fails
@@ -247,7 +247,7 @@ Bank *structure* is otherwise healthy: `dev/audit-banks.js` reports 0 issues
 and 0% cued stems and twins.
 
 Question counts: the tools count different things, so quote the tool rather
-than a single number. `scripts/check-question-bank.js` reports 7,601 questions
+than a single number. `scripts/checks/check-question-bank.js` reports 7,601 questions
 (everything, including the short/extended-answer shapes); `dev/audit-banks.js`
 reports on 7,506 gradeable MCQ stems; `dev/test-forge.js` checks 7,706 MCQs
 including reforge twins.

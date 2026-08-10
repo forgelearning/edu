@@ -237,7 +237,7 @@ const TAG_TAXONOMY_SUBJECTS = {
   span: 0,
   // German was missed when French and Spanish were retagged in the same PR —
   // every source question still carried tag: "MC-" + id. 28 questions onto
-  // 10 shared MC-GDE-* tags; see docs/german-misconception-mapping.md.
+  // 10 shared MC-GDE-* tags; see docs/misconceptions/a-level/german-misconception-mapping.md.
   german: 0,
   pe: 0,
   englit: 0,
@@ -271,7 +271,7 @@ const TAG_TAXONOMY_SUBJECTS = {
   soc: 0.02,
   // 141 of 208 questions retagged onto 38 shared MC-HIST-* tags. The residue
   // is the 67 purely definitional questions that only a TOPIC tag would cover
-  // (see docs/history-misconception-mapping.md), plus four taxonomy tags
+  // (see docs/misconceptions/a-level/history-misconception-mapping.md), plus four taxonomy tags
   // sitting on a single question each until the rewrite pass gives them a
   // second. The rewrite pass has now landed: all 38 tags aggregate, and the
   // four extra questions took the share to 0.316, so the ratchet tightens
@@ -284,7 +284,7 @@ const TAG_TAXONOMY_SUBJECTS = {
   // AD-shift-and-inflation, wages and AD, movement vs shift of SRAS,
   // asymmetric information and stock market crashes — each renamed from its
   // index form so it names the error rather than the question's position.
-  // See docs/econ-misconception-taxonomy-draft.md. The six genuine singleton
+  // See docs/misconceptions/a-level/econ-misconception-taxonomy-draft.md. The six genuine singleton
   // concepts are retained, so keep the floor just above 6/515 = 0.0117.
   econ: 0.012,
   // All 238 questions retagged onto 52 shared MC-GEO-* categories, none of
@@ -354,7 +354,7 @@ const TAG_TAXONOMY_MECHANICAL = {
   'pol': 0,
   'gcse-hist': 0,
   // 67 of 212 — the residue of definitional questions that only a topic tag
-  // would cover, documented in docs/history-misconception-mapping.md. Was
+  // would cover, documented in docs/misconceptions/a-level/history-misconception-mapping.md. Was
   // 0.26 against the literal check; the extra 15 are MC-HIST-BRIT1-1 style
   // positional tags in the same residue.
   hist: 0.32,
