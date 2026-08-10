@@ -23944,6 +23944,17 @@ for (const bank of Object.values(BANKS)) {
 // If clause de-duplication shortened a distractor below the key, reuse an
 // already-authored longer distractor from the same bank. This keeps the
 // answer meaningful and avoids any generated sentence or stem splice.
+//
+// A full audit found this previously pulled its replacement from a pool
+// spanning the WHOLE subject, with no topical relevance check — so a
+// break-even question could end up with a marketing-orientation distractor
+// spliced in, and one such sentence got reused across 154 unrelated
+// questions in A-Level Business alone. Every subject fed through this loop
+// already carries a meaningful, hand-curated misconception tag per question
+// (see the "current status" notes above on the taxonomy work), so prefer a
+// same-tag alternative first — it is guaranteed to be on-topic for the
+// question being repaired — and only fall back to the old subject-wide pool
+// if no same-tag candidate is long enough.
 for (const bank of Object.values(BANKS)) {
   const subject = Object.values(SUBJECTS).find(candidate => candidate.banks.includes(Object.entries(BANKS).find(([, value]) => value === bank)?.[0]));
   const sourceBanks = subject ? subject.banks.map(bankId => BANKS[bankId]) : [bank];
@@ -23951,13 +23962,28 @@ for (const bank of Object.values(BANKS)) {
     [question, question.reforge].flatMap(item => Object.entries(item?.options || {})
       .filter(([letter]) => letter !== item.correct)
       .map(([, value]) => String(value)))));
+  const alternativesByTag = new Map();
+  for (const sourceBank of sourceBanks) for (const sourceQuestion of sourceBank.questions || []) {
+    if (!sourceQuestion.tag) continue;
+    const values = [sourceQuestion, sourceQuestion.reforge].flatMap(item => Object.entries(item?.options || {})
+      .filter(([letter]) => letter !== item.correct)
+      .map(([, value]) => String(value)));
+    if (!alternativesByTag.has(sourceQuestion.tag)) alternativesByTag.set(sourceQuestion.tag, []);
+    alternativesByTag.get(sourceQuestion.tag).push(...values);
+  }
   for (const question of bank.questions || []) for (const item of [question, question.reforge]) {
     if (!item?.options) continue;
+    const sibling = item === question ? question.reforge : question;
+    const tagAlternatives = question.tag ? (alternativesByTag.get(question.tag) || []) : [];
     let lengths = Object.values(item.options).map(value => String(value).length);
     while (lengths.filter(length => length === Math.max(...lengths)).length === 1 && lengths[item.correct.charCodeAt(0) - 65] === Math.max(...lengths)) {
       const correctLength = String(item.options[item.correct]).length;
-      const used = new Set(Object.values(item.options).map(value => String(value).toLowerCase()));
-      const replacement = authoredAlternatives.find(value => value.length > correctLength && !used.has(value.toLowerCase()));
+      const used = new Set([
+        ...Object.values(item.options).map(value => String(value).toLowerCase()),
+        ...(sibling && sibling.options ? Object.values(sibling.options).map(value => String(value).toLowerCase()) : [])
+      ]);
+      const replacement = tagAlternatives.find(value => value.length > correctLength && !used.has(value.toLowerCase()))
+        || authoredAlternatives.find(value => value.length > correctLength && !used.has(value.toLowerCase()));
       const target = Object.keys(item.options).filter(letter => letter !== item.correct)
         .sort((a, b) => String(item.options[b]).length - String(item.options[a]).length)[0];
       if (!replacement || !target) break;
@@ -28099,6 +28125,23 @@ const finalBusinessLengthRepairs2 = {
  }
 };
 for (const [id, repairs] of Object.entries(finalBusinessLengthRepairs2)) {
+  for (const bank of Object.values(BANKS)) {
+    const question = (bank.questions || []).find(candidate => candidate.id === id);
+    if (!question) continue;
+    for (const [variant, options] of Object.entries(repairs)) {
+      const item = variant === "base" ? question : question.reforge;
+      if (item?.options) Object.assign(item.options, options);
+    }
+  }
+}
+// Three residual length cues left by the root-cause fix above (the same-tag
+// pool had nothing long enough available for these three specific items).
+const finalRootCauseLengthRepairs = {
+  "MED-15": { reforge: { B: "Cultivation theory — audiences are being cultivated to seek dramatic content over time through repeated, long-term exposure to sensationalised coverage across many broadcasts, which describes a slow shift in attitudes and expectations rather than a single viral clip reaching millions overnight." } },
+  "MAND-04": { reforge: { D: "More than 30% — 将近 implies exceeding the figure, when in fact it means the rate approached but did not quite reach the stated percentage." } },
+  "EWQ-05": { reforge: { B: "Above the threshold, the work function increases with intensity, when in fact the work function is a fixed property of the metal that never changes with the intensity of the incoming light, only with which metal is used." } }
+};
+for (const [id, repairs] of Object.entries(finalRootCauseLengthRepairs)) {
   for (const bank of Object.values(BANKS)) {
     const question = (bank.questions || []).find(candidate => candidate.id === id);
     if (!question) continue;
