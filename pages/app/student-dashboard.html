@@ -233,9 +233,7 @@ function renderDashboard(){
   if (window.ForgeSidebar) ForgeSidebar.setBadge('anvil', activeMCs.length || null);
   try { localStorage.setItem('forge-anvil-open', String(activeMCs.length)); } catch(e) {}
   if (st.classId) {
-    ForgeAPI.response(SUPABASE_URL+'/rest/v1/assignments?select=id,due_date,created_at,banks&class_id=eq.'+st.classId, {
-      headers:{apikey:SUPABASE_KEY,Authorization:'Bearer '+SUPABASE_KEY}
-    }).then(function(r){return r.json();}).then(function(rows){
+    ForgeStudentCode.assignments(st.studentId,st.classCode,st.studentCode,st.studentName).then(function(rows){
       var today=new Date(); today.setHours(0,0,0,0);
       var count=(Array.isArray(rows)?rows:[]).filter(function(a){
         var banks=[]; try { banks=typeof a.banks==='string'?JSON.parse(a.banks):a.banks||[]; } catch(e) {}
