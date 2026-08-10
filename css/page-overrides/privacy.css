@@ -85,8 +85,9 @@ h1,h2,h3,h4{font-family:'Rethink Sans',sans-serif}
 .page-header .tag{display:inline-flex;align-items:center;gap:10px}
 .page-header .tag::before{content:"";width:28px;height:2px;background:var(--ember);display:inline-block}
 .doc-layout{display:grid;grid-template-columns:minmax(170px,210px) minmax(0,760px);gap:clamp(32px,6vw,80px);align-items:start;justify-content:center}
-.doc-nav{display:flex;flex-direction:column;position:sticky;top:28px;padding-top:6px}
+.doc-nav{display:flex;flex-direction:column;position:sticky;top:28px;padding-top:6px;text-align:left}
 .doc-nav-title{font:600 10px/1.2 'JetBrains Mono',monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-bottom:14px}
+.doc-nav-title,.doc-nav a,.toc-box,.toc-box-title,.toc-links{text-align:left}
 .doc-nav a{color:var(--slate);font-size:12px;line-height:1.35;text-decoration:none;padding:7px 10px;border-left:1px solid var(--line);transition:color .18s ease,border-color .18s ease,transform .18s ease}
 .doc-nav a:hover,.doc-nav a:focus-visible{color:var(--hot);border-left-color:var(--hot);transform:translateX(3px)}
 .toc-box{display:none}
