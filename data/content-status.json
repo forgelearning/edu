@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-08-09T06:42:22.919Z",
+  "generatedAt": "2026-08-10T11:19:20.372Z",
   "pages": {
     "economics.html": "econ",
     "psychology.html": "psych",
@@ -39,7 +39,7 @@
   "subjects": {
     "econ": {
       "tier": "full",
-      "questions": 515,
+      "questions": 536,
       "banks": 19,
       "coverage": 100
     },
