@@ -992,3 +992,141 @@ body.overdrive-instrument #waitlist #email:focus{outline:none!important;border-c
   .audit-test.overdrive-instrument .hero{gap:16px}
   .audit-test.overdrive-instrument .hero .ctas{margin-top:8px}
 }
+
+/* ── Landing collection: authored full-page variants ─────────────────── */
+
+/* The URL identifies the variant; the page does not need a decorative
+   concept label competing with its product promise. */
+body.audit-test.overdrive-ember .hero-copy::before,
+body.audit-test.overdrive-sequence .hero-copy::before,
+body.audit-test.overdrive-instrument .hero-copy::before{content:none!important;display:none!important}
+
+/* Keep the collapsing brand control away from centred page copy on narrow
+   screens. It remains fixed and immediately reachable without covering the
+   current section heading. */
+@media(max-width:900px){
+  body.audit-test #sticky-nav.nav-collapsed{left:auto;right:10px;transform:none}
+}
+
+@media(max-width:600px){
+  body.audit-test #sticky-nav.nav-collapsed{left:50%;right:auto;width:calc(100% - 20px);transform:translateX(-50%);cursor:default;overflow:visible}
+  body.audit-test #sticky-nav.nav-collapsed nav{justify-content:flex-start;padding:10px}
+  body.audit-test #sticky-nav.nav-collapsed .logo{flex:1 1 auto!important;justify-content:flex-start!important;gap:8px!important}
+  body.audit-test #sticky-nav.nav-collapsed #nav-logo::after{display:block!important}
+  body.audit-test #sticky-nav.nav-collapsed .nav-right{position:static;right:auto;top:auto;transform:none;opacity:1;pointer-events:auto;padding-left:0;transition:opacity .18s ease}
+}
+
+/* 1. Living Misconception Loop — one continuous trace from mistake to
+   teacher action. The trace is the authored motion moment; generic repeated
+   section entrances are intentionally disabled. */
+body.audit-test.overdrive-sequence{--sequence-progress:0}
+body.audit-test.overdrive-sequence main>section>.wrap,
+body.audit-test.overdrive-sequence .modes .mode,
+body.audit-test.overdrive-sequence .vs-card,
+body.audit-test.overdrive-sequence .price-card,
+body.audit-test.overdrive-sequence .audit-faq-item{animation:none!important;filter:none!important;opacity:1!important;transform:none}
+body.audit-test.overdrive-sequence main{background:
+  radial-gradient(circle at 50% 12%,rgba(255,201,60,.055),transparent 24rem),
+  linear-gradient(180deg,#15120f 0%,#1b1612 48%,#141210 100%)}
+body.audit-test.overdrive-sequence main::before{opacity:.7;background:
+  linear-gradient(90deg,transparent calc(50% - .5px),rgba(255,201,60,.11) 50%,transparent calc(50% + .5px))}
+body.audit-test.overdrive-sequence #how .loop .step{opacity:.62;transition:opacity .45s cubic-bezier(.16,1,.3,1),transform .45s cubic-bezier(.16,1,.3,1),border-color .3s,box-shadow .3s}
+body.audit-test.overdrive-sequence #how .loop .step.is-sequence-active{opacity:1;transform:translateY(-6px);border-color:rgba(255,201,60,.62);box-shadow:0 30px 70px -42px rgba(213,92,19,.72)}
+body.audit-test.overdrive-sequence #how .loop .step.is-sequence-active .n{color:var(--hot)}
+body.audit-test.overdrive-sequence #how .loop::after{content:"";position:absolute;left:calc(16.66% + 9px);right:calc(16.66% + 9px);top:50%;height:2px;background:linear-gradient(90deg,var(--ember),var(--hot));transform:scaleX(var(--sequence-progress));transform-origin:left;box-shadow:0 0 20px rgba(255,201,60,.32);pointer-events:none}
+.forge-sequence-meter{position:fixed;right:18px;bottom:18px;z-index:90;width:238px;padding:16px 18px 18px;border:1px solid rgba(255,201,60,.3);border-radius:14px;background:rgba(20,17,14,.86);backdrop-filter:blur(18px) saturate(150%);-webkit-backdrop-filter:blur(18px) saturate(150%);box-shadow:0 24px 64px -30px rgba(0,0,0,.9);color:#c9c1b8;pointer-events:none;opacity:0;transform:translateY(14px) scale(.98);transition:opacity .35s cubic-bezier(.16,1,.3,1),transform .35s cubic-bezier(.16,1,.3,1)}
+.forge-sequence-meter.is-visible{opacity:1;transform:none}
+.forge-sequence-meter__label{display:block;margin-bottom:8px;color:#d39a50;font:600 9px/1.2 'JetBrains Mono',monospace;letter-spacing:.11em;text-transform:uppercase}
+.forge-sequence-meter__stage{display:block;color:var(--white);font:800 18px/1.15 'Sora',sans-serif;letter-spacing:-.02em}
+.forge-sequence-meter__copy{display:block;min-height:34px;margin-top:5px;font-size:11px;line-height:1.5}
+.forge-sequence-meter__rail{display:block;height:2px;margin-top:12px;overflow:hidden;background:rgba(255,255,255,.12)}
+.forge-sequence-meter__rail i{display:block;width:100%;height:100%;background:linear-gradient(90deg,var(--ember),var(--hot));transform:scaleX(var(--sequence-progress));transform-origin:left;box-shadow:0 0 12px rgba(255,201,60,.4)}
+
+/* 2. Precision Product Showcase — the product frames take visual authority,
+   focus as they enter, and reorganise into a legible horizontal tool strip
+   instead of shrinking a desktop sidebar on phones. */
+body.audit-test.overdrive-instrument #students .audit-app-preview,
+body.audit-test.overdrive-instrument #teachers .audit-app-preview{opacity:.82;transform:translateY(18px) scale(.992);transition:opacity .65s cubic-bezier(.16,1,.3,1),transform .65s cubic-bezier(.16,1,.3,1),border-color .35s,box-shadow .35s}
+body.audit-test.overdrive-instrument #students .audit-app-preview.is-showcase-active,
+body.audit-test.overdrive-instrument #teachers .audit-app-preview.is-showcase-active{opacity:1;transform:none;border-color:rgba(255,201,60,.34);box-shadow:0 38px 92px -44px rgba(0,0,0,.92),0 18px 48px -34px rgba(213,92,19,.45)}
+body.audit-test.overdrive-instrument .audit-side-item{transition:background .22s,color .22s,transform .22s cubic-bezier(.16,1,.3,1)}
+body.audit-test.overdrive-instrument .audit-side-item:hover{transform:translateX(3px)}
+body.audit-test.overdrive-instrument .audit-side-item.active{box-shadow:inset 0 0 0 1px rgba(255,201,60,.13)}
+body.audit-test.overdrive-instrument .audit-app-main{background:
+  linear-gradient(rgba(255,201,60,.018) 1px,transparent 1px),
+  linear-gradient(90deg,rgba(255,201,60,.018) 1px,transparent 1px);
+  background-size:28px 28px}
+
+/* 3. Ember Theatre — a single responsive heat field moves through the page.
+   It is fixed, pointer-transparent, and progressively enhanced only when the
+   dedicated variant script is available. */
+body.audit-test.overdrive-ember{--ember-x:72%;--ember-y:44%;--ember-scroll:0;isolation:isolate;background:#130f0c}
+.forge-ember-atmosphere{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;background:#130f0c}
+.forge-ember-atmosphere i{position:absolute;display:block;border-radius:50%;will-change:transform,opacity}
+.forge-ember-atmosphere i:nth-child(1){left:calc(var(--ember-x) - 24rem);top:calc(var(--ember-y) - 24rem);width:48rem;height:48rem;background:radial-gradient(circle,rgba(213,92,19,.32) 0%,rgba(213,92,19,.1) 38%,transparent 70%);filter:blur(24px);opacity:.78;transition:left .5s cubic-bezier(.16,1,.3,1),top .5s cubic-bezier(.16,1,.3,1)}
+.forge-ember-atmosphere i:nth-child(2){left:-18rem;bottom:-22rem;width:54rem;height:54rem;background:radial-gradient(circle,rgba(255,201,60,.16),rgba(122,46,10,.08) 42%,transparent 70%);filter:blur(34px);animation:forge-ember-breathe 10s ease-in-out infinite alternate}
+.forge-ember-atmosphere i:nth-child(3){right:-22rem;top:18%;width:46rem;height:46rem;background:radial-gradient(circle,rgba(255,91,35,.18),transparent 68%);filter:blur(30px);animation:forge-ember-breathe 13s ease-in-out -4s infinite alternate-reverse}
+@keyframes forge-ember-breathe{from{opacity:.35;transform:translate3d(-2%,2%,0) scale(.96)}to{opacity:.72;transform:translate3d(4%,-3%,0) scale(1.06)}}
+body.audit-test.overdrive-ember .hero-shell,
+body.audit-test.overdrive-ember main,
+body.audit-test.overdrive-ember .wrap:has(> footer){position:relative;z-index:1}
+body.audit-test.overdrive-ember .hero-shell{background:
+  radial-gradient(circle at var(--ember-x) var(--ember-y),rgba(255,118,29,.2),transparent 22rem),
+  linear-gradient(135deg,rgba(26,20,16,.84),rgba(16,13,11,.96))}
+body.audit-test.overdrive-ember main{background:rgba(19,15,12,.72);backdrop-filter:blur(2px)}
+body.audit-test.overdrive-ember main>section{transition:border-color .5s,background-color .5s,box-shadow .5s}
+body.audit-test.overdrive-ember main>section.is-ember-active{border-top-color:rgba(255,201,60,.38);box-shadow:inset 0 92px 140px -150px rgba(255,119,32,.72)}
+body.audit-test.overdrive-ember .hero .demo{border-color:rgba(255,201,60,.34);background:linear-gradient(145deg,rgba(40,28,20,.9),rgba(20,16,13,.92));box-shadow:0 46px 110px -36px rgba(213,92,19,.82),0 26px 68px -44px rgba(0,0,0,.92)}
+body.audit-test.overdrive-ember .mode{background:linear-gradient(150deg,rgba(46,31,22,.78),rgba(24,19,16,.82))}
+body.audit-test.overdrive-ember .wait{background:rgba(18,12,9,.36)}
+
+/* 4. Precision × Ember — one deliberate composition, not a fourth visual
+   language. The fusion route receives both parent classes so Precision owns
+   the product framing while Ember owns the atmosphere and section heat. */
+body.audit-test.overdrive-fusion .forge-ember-atmosphere{background:
+  radial-gradient(circle at 50% 0%,rgba(255,201,60,.035),transparent 30rem),
+  #130f0c}
+
+/* Responsive composition shared by the finished variants. */
+@media(max-width:760px){
+  .forge-sequence-meter{display:none}
+  body.audit-test.overdrive-sequence #how .loop::after{left:24px;right:auto;top:0;bottom:0;width:2px;height:auto;transform:scaleY(var(--sequence-progress));transform-origin:top}
+  body.audit-test.overdrive-sequence #how .loop .step.is-sequence-active{transform:translateX(4px)}
+}
+
+@media(max-width:680px){
+  body.audit-test.overdrive-instrument .audit-app-sidebar{display:flex;flex-direction:row;flex-wrap:nowrap;align-items:center;gap:6px;min-height:0;padding:10px 12px;overflow-x:auto;overscroll-behavior-inline:contain;scroll-snap-type:x proximity;border-right:0;border-bottom:1px solid var(--line);scrollbar-width:thin}
+  body.audit-test.overdrive-instrument .audit-app-brand{display:none}
+  body.audit-test.overdrive-instrument .audit-side-item{flex:0 0 auto;width:auto;min-height:42px;padding:9px 11px;scroll-snap-align:start}
+  body.audit-test.overdrive-instrument .audit-side-item:hover{transform:none}
+  body.audit-test.overdrive-instrument .audit-side-item.active::before{left:8px;right:8px;top:auto;bottom:-10px;width:auto;height:2px;border-radius:2px 2px 0 0}
+  body.audit-test.overdrive-instrument .audit-app-sidebar-foot{display:none}
+  body.audit-test.overdrive-instrument .audit-app-main{padding:16px!important}
+  body.audit-test.overdrive-instrument .audit-real-student-dashboard h1{font-size:23px}
+  body.audit-test.overdrive-instrument .audit-real-student-dashboard .forge-progress-note,
+  body.audit-test.overdrive-instrument .audit-real-student-dashboard .forge-card{font-size:11.5px;line-height:1.5}
+  body.audit-test.overdrive-instrument .audit-real-student-dashboard .mod-row{padding:10px 11px}
+  body.audit-test.overdrive-instrument .audit-real-teacher-dashboard .dash-header h2{font-size:24px!important}
+  body.audit-test.overdrive-instrument .audit-real-teacher-dashboard .ui-recommendation__title{font-size:22px!important}
+}
+
+@media(max-width:520px){
+  body.audit-test.overdrive-ember .wait form,
+  body.audit-test.overdrive-sequence .wait form,
+  body.audit-test.overdrive-instrument .wait form{display:grid;grid-template-columns:minmax(0,1fr);gap:8px;padding:8px;border-radius:16px}
+  body.audit-test.overdrive-ember .wait input[type=email],
+  body.audit-test.overdrive-sequence .wait input[type=email],
+  body.audit-test.overdrive-instrument .wait input[type=email]{width:100%;min-height:48px;padding:10px 14px;text-align:center}
+  body.audit-test.overdrive-ember .wait button,
+  body.audit-test.overdrive-sequence .wait button,
+  body.audit-test.overdrive-instrument .wait button{width:100%;min-height:48px;border-radius:10px}
+  .forge-ember-atmosphere i:nth-child(1){width:32rem;height:32rem;left:calc(var(--ember-x) - 16rem);top:calc(var(--ember-y) - 16rem);filter:blur(18px)}
+  .forge-ember-atmosphere i:nth-child(2),.forge-ember-atmosphere i:nth-child(3){width:34rem;height:34rem}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .forge-ember-atmosphere i{animation:none!important;transition:none!important}
+  body.audit-test.overdrive-instrument #students .audit-app-preview,
+  body.audit-test.overdrive-instrument #teachers .audit-app-preview{opacity:1;transform:none;transition:none}
+  body.audit-test.overdrive-sequence #how .loop .step{opacity:1;transform:none!important;transition:none}
+}
