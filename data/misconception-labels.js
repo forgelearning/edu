@@ -1807,6 +1807,7 @@ Object.assign(MC_LABELS, {
   "MC-BNK-FUNCTIONS": "Commercial bank and central bank functions merged",
   "MC-BNK-MONEY-CREATION": "Banks assumed only to lend out existing deposits",
   "MC-BNK-MORAL-HAZARD": "Bailouts judged on stability alone, moral hazard omitted",
+  "MC-BNK-STABILITY": "Financial stability tools treated as guaranteeing zero risk",
   "MC-CB-FIN-STABILITY": "FPC and MPC roles swapped",
   // --- Theme 3 firms, revenue and costs
   "MC-FIRM-GROWTH-MOTIVE": "Growth assumed always to raise profit",
