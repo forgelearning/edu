@@ -9931,7 +9931,7 @@ const gcseSciencePaper46ConciseAnswers = {
   "SCI-BIO2-22:base":"Nutrient recycling", "SCI-BIO2-22:reforge":"Decay",
   "SCI-BIO2-23:base":"Less CO2 uptake", "SCI-BIO2-23:reforge":"Tree planting",
   "SCI-BIO2-24:base":"Alternative feeding links", "SCI-BIO2-24:reforge":"Feeding relationships",
-  "SCI-CHEM2-13:base":"Outer electron farther", "SCI-CHEM2-13:reforge":"One-negative ion",
+  "SCI-CHEM2-13:base":"Outer electron farther", "SCI-CHEM2-13:reforge":"One-positive ion",
   "SCI-CHEM2-14:base":"Reactivity falls", "SCI-CHEM2-14:reforge":"One-negative ion",
   "SCI-CHEM2-15:base":"Weak interatomic forces", "SCI-CHEM2-15:reforge":"Boiling points rise",
   "SCI-CHEM2-16:base":"More collisions", "SCI-CHEM2-16:reforge":"Control other variables",

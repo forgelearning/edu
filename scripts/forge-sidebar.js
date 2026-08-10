@@ -24,7 +24,7 @@ var _FORGE_LOGO_LIGHT = (window.ForgeLogo || {}).light || '';
   if (!document.querySelector('link[rel="manifest"]')) {
     var manifest = document.createElement('link');
     manifest.rel = 'manifest';
-    manifest.href = 'manifest.json';
+    manifest.href = '/manifest.json';
     document.head.appendChild(manifest);
   }
   if (!document.querySelector('meta[name="theme-color"]')) {
@@ -36,12 +36,12 @@ var _FORGE_LOGO_LIGHT = (window.ForgeLogo || {}).light || '';
   if (!document.querySelector('link[href$="css/pwa.css"]')) {
     var link = document.createElement('link');
     link.rel = 'stylesheet';
-    link.href = 'css/pwa.css?v=1';
+    link.href = '/css/pwa.css?v=1';
     document.head.appendChild(link);
   }
   if (!document.querySelector('script[data-forge-pwa]')) {
     var script = document.createElement('script');
-    script.src = 'scripts/forge-pwa.js?v=1';
+    script.src = '/scripts/forge-pwa.js?v=1';
     script.setAttribute('data-forge-pwa', '');
     document.head.appendChild(script);
   }

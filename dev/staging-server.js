@@ -82,6 +82,16 @@ function serveFile(req, res, pathname) {
 
 const server = http.createServer((req, res) => {
   const url = new URL(req.url, 'http://127.0.0.1');
+  if (req.method === 'OPTIONS') {
+    res.writeHead(204, {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, PATCH, DELETE, OPTIONS',
+      'Access-Control-Allow-Headers': req.headers['access-control-request-headers'] || 'authorization, apikey, content-type, prefer',
+      'Access-Control-Max-Age': '86400'
+    });
+    res.end();
+    return;
+  }
   if (url.pathname === '/mock-supabase/rest/v1/rpc/record_free_response') {
     responseCount += 1;
     if (mode === 'quota') return json(res, 200, {allowed:false, reason:'daily_limit', used:10});
