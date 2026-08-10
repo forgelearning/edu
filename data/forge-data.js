@@ -33149,3 +33149,515 @@ for (const [id, repairs] of Object.entries(finalMediaCorruptionRepairs)) {
     }
   }
 }
+// Same corruption sweep as Business (#160), the root-cause algorithm fix
+// (#161), Computer Science (#162), GCSE Maths (#163), and Media Studies
+// (#164) -- applied here to GCSE Combined Science, the last of the
+// subjects flagged as still having pre-existing cross-topic corruption
+// baked in from before the algorithm fix.
+const finalGCSEScienceCorruptionRepairs = {
+ "GCSE-PHASE6-BIO1-01": {
+  "reforge": {
+   "B": "The active site disappears permanently",
+   "D": "It becomes a substrate",
+   "C": "It produces more heat"
+  }
+ },
+ "GCSE-PHASE6-BIO1-02": {
+  "reforge": {
+   "A": "Mutations are caused only by exercise",
+   "D": "A visible characteristic",
+   "C": "Allele"
+  }
+ },
+ "SCI-PHYS1-11": {
+  "base": {
+   "A": "The exact colour of every extinct organism"
+  }
+ },
+ "SCI-BIO2-13": {
+  "base": {
+   "B": "Every individual gains a useful mutation"
+  }
+ },
+ "SCI-BIO1-05": {
+  "base": {
+   "B": "100%"
+  }
+ },
+ "GCSE-SCIENCE-COV-005": {
+  "base": {
+   "B": "100%"
+  },
+  "reforge": {
+   "B": "75%",
+   "A": "No alleles for that gene"
+  }
+ },
+ "SCI-BIO1-06": {
+  "base": {
+   "C": "Each cell receives different genes"
+  },
+  "reforge": {
+   "B": "Two identical dominant alleles"
+  }
+ },
+ "GCSE-SCIENCE-COV-006": {
+  "base": {
+   "C": "Each cell receives different genes"
+  },
+  "reforge": {
+   "B": "Two identical dominant alleles"
+  }
+ },
+ "SCI-BIO1-07": {
+  "base": {
+   "B": "Identical offspring in every generation"
+  }
+ },
+ "GCSE-SCIENCE-COV-007": {
+  "base": {
+   "C": "Identical offspring in every generation"
+  }
+ },
+ "SCI-BIO1-08": {
+  "base": {
+   "A": "It always improves survival",
+   "B": "All mutations are harmful"
+  }
+ },
+ "GCSE-SCIENCE-COV-031": {
+  "base": {
+   "C": "Trees create carbon dioxide by absorbing light",
+   "A": "Salt, water and carbon dioxide",
+   "D": "Filter the acid before mixing"
+  },
+  "reforge": {
+   "B": "Water and oxygen",
+   "A": "Metal and carbon"
+  }
+ },
+ "SCI-CHEM1-07": {
+  "base": {
+   "B": "Trees create carbon dioxide by absorbing light",
+   "A": "Salt, water and carbon dioxide"
+  },
+  "reforge": {
+   "D": "Water and oxygen"
+  }
+ },
+ "GCSE-SCIENCE-COV-008": {
+  "base": {
+   "A": "It always improves survival",
+   "D": "All mutations are harmful"
+  }
+ },
+ "GCSE-PHASE6-CHEM1-02": {
+  "base": {
+   "A": "They form neutral gases only",
+   "C": "Trees create carbon dioxide by absorbing light"
+  },
+  "reforge": {
+   "C": "The allele appears because the population tries",
+   "D": "They move through the wire",
+   "A": "A proton from the wire"
+  }
+ },
+ "SCI-BIO2-17": {
+  "base": {
+   "B": "Trees create carbon dioxide by absorbing light"
+  }
+ },
+ "GCSE-PHASE6-PHYS2-01": {
+  "base": {
+   "D": "0.75 V",
+   "A": "Trees create carbon dioxide by absorbing light"
+  },
+  "reforge": {
+   "C": "1.33 V",
+   "B": "The allele appears because the population tries",
+   "D": "36 Ω"
+  }
+ },
+ "SCI-BIO1-15": {
+  "reforge": {
+   "C": "A lower substrate concentration"
+  }
+ },
+ "GCSE-SCIENCE-COV-015": {
+  "reforge": {
+   "C": "A lower substrate concentration"
+  }
+ },
+ "GCSE-SCIENCE-COV-025": {
+  "base": {
+   "B": "Neutrons minus electrons"
+  }
+ },
+ "GCSE-PHASE6-CHEM1-01": {
+  "reforge": {
+   "D": "Antibiotics create useful organs",
+   "C": "Magnetic repulsion",
+   "B": "Gravity alone"
+  }
+ },
+ "SCI-CHEM1-05": {
+  "base": {
+   "B": "They have different element symbols"
+  },
+  "reforge": {
+   "A": "The solution becomes colourless"
+  }
+ },
+ "GCSE-SCIENCE-COV-037": {
+  "base": {
+   "A": "their molecules become larger"
+  }
+ },
+ "SCI-CHEM1-13": {
+  "base": {
+   "C": "their molecules become larger"
+  }
+ },
+ "GCSE-SCIENCE-COV-049": {
+  "base": {
+   "B": "14 m/s²"
+  },
+  "reforge": {
+   "A": "The object is moving fastest"
+  }
+ },
+ "SCI-PHYS1-01": {
+  "base": {
+   "B": "14 m/s²",
+   "C": "Energy"
+  }
+ },
+ "SCI-PHYS1-10": {
+  "reforge": {
+   "B": "Alpha",
+   "C": "Microwaves"
+  }
+ },
+ "GCSE-SCIENCE-COV-051": {
+  "base": {
+   "C": "35 m"
+  },
+  "reforge": {
+   "A": "Mass becomes negative",
+   "B": "Energy transferred"
+  }
+ },
+ "GCSE-PHASE6-PHYS1-01": {
+  "reforge": {
+   "A": "Acceleration only",
+   "C": "14 m/s²",
+   "D": "Energy"
+  }
+ },
+ "GCSE-PHASE6-PHYS1-02": {
+  "reforge": {
+   "A": "The time for all nuclei to decay",
+   "B": "The time for radiation to stop"
+  }
+ },
+ "GCSE-SCIENCE-COV-055": {
+  "base": {
+   "A": "It halves"
+  },
+  "reforge": {
+   "A": "The force becomes mass"
+  }
+ },
+ "SCI-PHYS1-07": {
+  "reforge": {
+   "D": "It becomes mass"
+  }
+ },
+ "SCI-CHEM1-03": {
+  "base": {
+   "B": "The beaker"
+  },
+  "reforge": {
+   "C": "They all become gases"
+  }
+ },
+ "GCSE-SCIENCE-COV-027": {
+  "base": {
+   "B": "The beaker",
+   "D": "Salt"
+  },
+  "reforge": {
+   "B": "They become new atoms",
+   "A": "They all become gases"
+  }
+ },
+ "GCSE-SCIENCE-COV-028": {
+  "base": {
+   "C": "They have different element symbols",
+   "B": "Titration"
+  }
+ },
+ "SCI-BIO2-01": {
+  "reforge": {
+   "A": "The plant loses all chlorophyll"
+  },
+  "base": {
+   "C": "A type of root tissue",
+   "D": "A hormone in animals"
+  }
+ },
+ "GCSE-SCIENCE-COV-029": {
+  "base": {
+   "B": "Filter the acid before mixing"
+  },
+  "reforge": {
+   "A": "It neutralises the salt"
+  }
+ },
+ "GCSE-SCIENCE-COV-030": {
+  "base": {
+   "B": "It has no hydrogen ions"
+  },
+  "reforge": {
+   "A": "A neutral solution"
+  }
+ },
+ "SCI-CHEM1-08": {
+  "base": {
+   "A": "remove all ions from solution"
+  }
+ },
+ "GCSE-SCIENCE-COV-032": {
+  "base": {
+   "A": "remove all ions from solution"
+  },
+  "reforge": {
+   "C": "They form neutral gases only"
+  }
+ },
+ "SCI-CHEM1-09": {
+  "reforge": {
+   "A": "No carbon dioxide is produced anywhere"
+  }
+ },
+ "GCSE-SCIENCE-COV-033": {
+  "base": {
+   "A": "Every individual gains a useful mutation",
+   "C": "Aluminium has no melting point"
+  },
+  "reforge": {
+   "A": "No carbon dioxide is produced anywhere"
+  }
+ },
+ "SCI-CHEM1-10": {
+  "base": {
+   "A": "Direct current changes direction constantly"
+  }
+ },
+ "GCSE-SCIENCE-COV-034": {
+  "base": {
+   "A": "Direct current changes direction constantly"
+  },
+  "reforge": {
+   "A": "Copper carbonate"
+  }
+ },
+ "SCI-CHEM1-11": {
+  "base": {
+   "A": "High temperature always gives the highest yield"
+  },
+  "reforge": {
+   "D": "Temperature has no effect",
+   "B": "They have different element symbols"
+  }
+ },
+ "GCSE-SCIENCE-COV-035": {
+  "base": {
+   "A": "High temperature always gives the highest yield",
+   "D": "Temperature has no effect"
+  },
+  "reforge": {
+   "B": "They have different element symbols",
+   "A": "It has no effect on gases"
+  }
+ },
+ "SCI-CHEM1-12": {
+  "reforge": {
+   "A": "It always stops",
+   "C": "Changes the equilibrium yield"
+  }
+ },
+ "GCSE-SCIENCE-COV-036": {
+  "base": {
+   "A": "It removes the catalyst"
+  },
+  "reforge": {
+   "A": "It always stops"
+  }
+ },
+ "SCI-CHEM1-21": {
+  "base": {
+   "B": "It always stops"
+  }
+ },
+ "GCSE-SCIENCE-COV-045": {
+  "base": {
+   "B": "It always stops"
+  }
+ },
+ "SCI-PHYS1-17": {
+  "reforge": {
+   "B": "A smaller height"
+  }
+ },
+ "SCI-PHYS2-18": {
+  "base": {
+   "D": "A wire becomes radioactive"
+  }
+ },
+ "GCSE-SCIENCE-COV-050": {
+  "base": {
+   "B": "It supplies extra power during normal use"
+  },
+  "reforge": {
+   "B": "Speed"
+  }
+ },
+ "SCI-PHYS1-14": {
+  "reforge": {
+   "B": "1,800 m/s",
+   "C": "Energy"
+  },
+  "base": {
+   "C": "14 m/s²"
+  }
+ },
+ "GCSE-SCIENCE-COV-056": {
+  "base": {
+   "A": "A complete record of all life",
+   "D": "It becomes radioactive"
+  },
+  "reforge": {
+   "B": "Its energy is always destroyed",
+   "A": "Its frequency must become zero"
+  }
+ },
+ "SCI-PHYS1-08": {
+  "base": {
+   "A": "The number of particles"
+  },
+  "reforge": {
+   "A": "Its energy is always destroyed"
+  }
+ },
+ "SCI-PHYS1-03": {
+  "reforge": {
+   "B": "Mass becomes negative"
+  }
+ },
+ "SCI-PHYS1-04": {
+  "reforge": {
+   "A": "7 N"
+  }
+ },
+ "GCSE-SCIENCE-COV-052": {
+  "base": {
+   "B": "F = m ÷ a"
+  },
+  "reforge": {
+   "A": "7 N"
+  }
+ },
+ "SCI-PHYS1-05": {
+  "base": {
+   "B": "Acceleration increases forever"
+  }
+ },
+ "GCSE-SCIENCE-COV-053": {
+  "base": {
+   "B": "7 N"
+  },
+  "reforge": {
+   "A": "Acceleration increases forever"
+  }
+ },
+ "SCI-PHYS1-20": {
+  "reforge": {
+   "A": "25 Hz"
+  }
+ },
+ "SCI-PHYS1-24": {
+  "base": {
+   "A": "Gamma"
+  }
+ },
+ "SCI-PHYS2-06": {
+  "base": {
+   "D": "Its mass disappears"
+  }
+ },
+ "SCI-PHYS2-13": {
+  "base": {
+   "C": "Less mass"
+  }
+ },
+ "GCSE-PHASE6-BIO2-01": {
+  "reforge": {
+   "C": "Stomata always close",
+   "D": "They digest starch"
+  }
+ },
+ "GCSE-PHASE6-BIO2-02": {
+  "reforge": {
+   "C": "Energy is created by decomposers",
+   "D": "Only one sequence of feeding"
+  }
+ },
+ "SCI-CHEM2-01": {
+  "base": {
+   "C": "Chlorine is a metal",
+   "D": "It always increases"
+  }
+ },
+ "GCSE-PHASE6-CHEM2-01": {
+  "reforge": {
+   "C": "The activation energy becomes infinite",
+   "D": "By multiplying time by temperature"
+  }
+ },
+ "GCSE-PHASE6-CHEM2-02": {
+  "reforge": {
+   "C": "It always falls",
+   "D": "It absorbs heat from the surroundings"
+  }
+ },
+ "GCSE-PHASE6-PHYS2-02": {
+  "reforge": {
+   "A": "Use a shorter coil with no turns",
+   "D": "Reduce the wire length to zero"
+  }
+ },
+ "SCI-PHYS2-05": {
+  "base": {
+   "B": "A smaller mass"
+  }
+ },
+ "GCSE-SCIENCE-COV-054": {
+  "base": {
+   "D": "Useful force multiplied by distance only"
+  },
+  "reforge": {
+   "B": "Halving speed"
+  }
+ }
+};
+for (const [id, repairs] of Object.entries(finalGCSEScienceCorruptionRepairs)) {
+  for (const bank of Object.values(BANKS)) {
+    const question = (bank.questions || []).find(candidate => candidate.id === id);
+    if (!question) continue;
+    for (const [variant, options] of Object.entries(repairs)) {
+      const item = variant === "base" ? question : question.reforge;
+      if (item?.options) Object.assign(item.options, options);
+    }
+  }
+}
