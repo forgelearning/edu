@@ -44,6 +44,21 @@ jobs:
       - name: Audit distractor balance and structure
         run: node dev/audit-banks.js
 
+      - name: Audit Supabase security boundary
+        run: node dev/audit-supabase-security.js
+
+      - name: Run Forge regression tests
+        run: node dev/test-forge.js
+
+      - name: Run Forge auth contract tests
+        run: node dev/test-auth.js
+
+      - name: Run Forge API failure-contract tests
+        run: node dev/test-forge-api.js
+
+      - name: Run Forge persistence recovery tests
+        run: node dev/test-persistence.js
+
       - name: Build public site
         run: node scripts/build/build-pages-site.js
 
