@@ -22986,6 +22986,38 @@ addSpanish("MC-GSP-ANALYSIS-RESEARCH", ["SP-09","SP-10","SP-COV-11"]);
 addSpanish("MC-GSP-IMMIGRATION-POLITICS", ["SP-14","SP-15"]);
 addLanguageTags("span", SPAN_TAGS);
 
+// German never received the same retag as French and Spanish above: every
+// source question kept tag: "MC-" + id, so nothing aggregated for the
+// teacher heatmap even though the taxonomy fix landed for the other three
+// languages in the same PR. Grouped by the underlying grammar rule or theme,
+// not by exercise type, mirroring the French/Spanish granularity.
+// See docs/german-misconception-mapping.md.
+const GERMAN_TAGS = {};
+const addGerman = (tag, ids) => ids.forEach(id => { GERMAN_TAGS[id] = tag; });
+// The verb or preposition decides the case, not the noun's role in English.
+addGerman("MC-GDE-CASE", ["DE-01","DE-09","DE-10","DE-11"]);
+// Grammatical gender governs pronouns and adjective endings, not meaning.
+addGerman("MC-GDE-GENDER-AGREEMENT", ["DE-02","DE-07"]);
+// Werden means "to become", forms the passive, and marks a process in
+// progress — three distinct uses, none of them "to be".
+addGerman("MC-GDE-WERDEN", ["DE-03","DE-05","DE-13"]);
+// The conjugated verb or the infinitive moves to a fixed position that does
+// not follow English word order.
+addGerman("MC-GDE-WORD-ORDER", ["DE-04","DE-06","DE-16"]);
+// German tense choice does not map word-for-word onto an English tense.
+addGerman("MC-GDE-TENSE", ["DE-08","DE-14"]);
+// Conditional and purpose clauses need a fixed German sentence pattern.
+addGerman("MC-GDE-CONSTRUCTIONS", ["DE-12","DE-15"]);
+// Reunification reshaped politics, identity and everyday life together.
+addGerman("MC-GDE-REUNIFICATION", ["DE-COV-05","DE-COV-06","DE-COV-10","DE-COV-11"]);
+// Immigration spans lived experience, public opinion and policy at once.
+addGerman("MC-GDE-IMMIGRATION", ["DE-COV-04","DE-COV-08","DE-COV-09"]);
+// Cultural products are evidence of social change, not neutral facts.
+addGerman("MC-GDE-CULTURE-SOCIETY", ["DE-COV-03","DE-COV-07"]);
+// Each specification theme and assessment task covers a distinct area.
+addGerman("MC-GDE-COURSE-TOPICS", ["DE-COV-01","DE-COV-02","DE-COV-12"]);
+addLanguageTags("german", GERMAN_TAGS);
+
 const PE_TAGS = {};
 const addPe = (tag, ids) => ids.forEach(id => { PE_TAGS[id] = tag; });
 addPe("MC-GPE-CARDIAC-OXYGEN", ["PE-01","PE-02"]);
