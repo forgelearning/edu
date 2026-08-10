@@ -4,9 +4,10 @@
  * render time (progress, subject colour, answer state, and similar data). */
 const fs = require('fs');
 const path = require('path');
+const { listPageFiles } = require('../support/page-files');
 const root = path.resolve(__dirname, '..', '..');
 const cssFile = path.join(root, 'css/generated-utilities.css');
-const pages = fs.readdirSync(root).filter(name => name.endsWith('.html'));
+const pages = listPageFiles();
 const styles = new Map();
 
 function isDynamic(style) {
@@ -27,8 +28,7 @@ function addClass(tag, className) {
   return tag.replace(/<([a-z0-9-]+)/i, `<$1 class="${className}"`);
 }
 
-for (const name of pages) {
-  const file = path.join(root, name);
+for (const file of pages) {
   const before = fs.readFileSync(file, 'utf8');
   const after = before.replace(/<[^>]*style="([^"]*)"[^>]*>/g, (tag, style) => {
     if (isDynamic(style)) return tag;

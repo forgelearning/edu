@@ -3,10 +3,11 @@
 // acquire accidental form-submit behavior when markup is moved or reused.
 const fs = require('fs');
 const path = require('path');
+const { repoRoot, listPageFiles } = require('../support/page-files');
 
-const root = path.join(__dirname, '..', '..');
+const root = repoRoot;
 const files = [
-  ...fs.readdirSync(root).filter(name => name.endsWith('.html')).map(name => path.join(root, name)),
+  ...listPageFiles(),
   path.join(root, 'dev/sidebar-test.html'),
   path.join(root, 'dev/teacher-dashboard-test.html'),
   path.join(root, 'templates/gcse-subject-template.html')

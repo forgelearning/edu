@@ -11,10 +11,11 @@
     "cap:copy": "npm run mobile:build && cap copy",
     "cap:open:ios": "cap open ios",
     "cap:open:android": "cap open android",
-    "staging": "node dev/staging-server.js",
+    "pages:build": "node scripts/build/build-pages-site.js",
+    "staging": "npm run pages:build && node dev/staging-server.js",
     "check:content-status": "node scripts/build/build-content-status.js --check",
     "check:buttons": "node scripts/checks/check-button-types.js",
-    "check": "node scripts/build/build-content-status.js --check && node scripts/checks/check-button-types.js && node scripts/checks/check-routes.js && node dev/test-forge.js && node dev/test-auth.js && node dev/test-forge-api.js && node dev/test-persistence.js"
+    "check": "node scripts/build/build-content-status.js --check && node scripts/build/build-pages-site.js && node scripts/checks/check-button-types.js && node scripts/checks/check-routes.js && node dev/test-forge.js && node dev/test-auth.js && node dev/test-forge-api.js && node dev/test-persistence.js"
   },
   "dependencies": {
     "@capacitor/android": "^7.6.8",

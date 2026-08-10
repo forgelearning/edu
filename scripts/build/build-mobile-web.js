@@ -1,6 +1,7 @@
 /* Build the Capacitor web bundle without changing the public static website. */
 var fs = require('fs');
 var path = require('path');
+var buildPagesSite = require('./build-pages-site');
 
 var root = path.resolve(__dirname, '..', '..');
 var out = path.join(root, 'mobile-web');
@@ -21,10 +22,11 @@ function copyTree(source, target) {
   });
 }
 
+buildPagesSite();
 fs.rmSync(out, { recursive: true, force: true });
 fs.mkdirSync(out, { recursive: true });
-copyTree(root, out);
-fs.copyFileSync(path.join(root, 'role-select.html'), path.join(out, 'index.html'));
+copyTree(path.join(root, '_site'), out);
+fs.copyFileSync(path.join(root, '_site', 'role-select.html'), path.join(out, 'index.html'));
 // The static app has no bundler, so expose the Capacitor Local Notifications
 // UMD bundle to the native WebView on demand.
 fs.copyFileSync(

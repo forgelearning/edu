@@ -1,7 +1,8 @@
 const fs = require('fs');
 
 const root = __dirname + '/../..';
-const template = fs.readFileSync(`${root}/gcse-science.html`, 'utf8');
+const pagesRoot = `${root}/pages/subjects/gcse`;
+const template = fs.readFileSync(`${pagesRoot}/gcse-science.html`, 'utf8');
 
 const pages = [
   {
@@ -108,5 +109,5 @@ for (const config of pages) {
   page = page.replace(/<span class="subj-stat-n">144<\/span>/g, `<span class="subj-stat-n">${config.count}</span>`);
   page = page.replace(/GCSE Combined Science/g, config.title);
   page = page.replace(/1SC0/g, config.code);
-  fs.writeFileSync(`${root}/${config.file}`, page);
+  fs.writeFileSync(`${pagesRoot}/${config.file}`, page);
 }

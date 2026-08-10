@@ -44,11 +44,14 @@ jobs:
       - name: Audit distractor balance and structure
         run: node dev/audit-banks.js
 
+      - name: Build public site
+        run: node scripts/build/build-pages-site.js
+
       # check-routes.js is an HTTP smoke test, not a static check — it needs the
       # site actually being served before it can request anything.
       - name: Serve site for route smoke test
         run: |
-          python3 -m http.server 4173 --bind 127.0.0.1 >/dev/null 2>&1 &
+          python3 -m http.server 4173 --bind 127.0.0.1 --directory _site >/dev/null 2>&1 &
           echo "SERVER_PID=$!" >> "$GITHUB_ENV"
           for _ in $(seq 1 30); do
             curl -sf http://127.0.0.1:4173/index.html >/dev/null && exit 0
@@ -76,30 +79,10 @@ jobs:
       - name: Configure Pages
         uses: actions/configure-pages@v5
 
-      # Publish only the static site. Uploading the repo root shipped 554
-      # .claude/ tooling files — 76% of the artifact — to a public website and
-      # made every deployment slower than it needed to be. Nothing excluded
-      # here is referenced by any page; check-routes.js still runs against the
-      # full checkout above.
-      - name: Stage site
-        run: |
-          rsync -a --delete \
-            --exclude='.git/' \
-            --exclude='.github/' \
-            --exclude='.claude/' \
-            --exclude='.impeccable/' \
-            --exclude='_site/' \
-            --exclude='dev/' \
-            --exclude='docs/' \
-            --exclude='supabase/' \
-            --exclude='templates/' \
-            --exclude='CLAUDE.md' \
-            --exclude='scripts/checks/' \
-            --exclude='scripts/build/' \
-            --exclude='scripts/maintenance/' \
-            ./ _site/
-          test -f _site/index.html
-          echo "Staged $(find _site -type f | wc -l) files (repo has $(git ls-files | wc -l))"
+      # Public URLs stay flat in _site even though their sources are organized
+      # under pages/ in the repository.
+      - name: Verify public site
+        run: test -f _site/index.html && echo "Built $(find _site -type f | wc -l) public files"
 
       - name: Upload site
         uses: actions/upload-pages-artifact@v5

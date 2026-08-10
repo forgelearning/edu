@@ -10,8 +10,9 @@
 const fs = require('fs');
 const path = require('path');
 const vm = require('vm');
+const { repoRoot, pageFile } = require('../support/page-files');
 
-const root = path.join(__dirname, '..', '..');
+const root = repoRoot;
 
 const sandbox = {};
 vm.createContext(sandbox);
@@ -68,7 +69,7 @@ const PAGES = [
 let problems = 0;
 
 for (const { file, key } of PAGES) {
-  const filePath = path.join(root, file);
+  const filePath = pageFile(file);
   if (!fs.existsSync(filePath)) {
     console.log(`SKIP  ${file} — file not found`);
     continue;

@@ -5,7 +5,8 @@
 const fs = require('fs');
 const path = require('path');
 const root = path.resolve(__dirname, '..', '..');
-const files = fs.readdirSync(root).filter(name => name.endsWith('.html'));
+const { listPageFiles } = require('../support/page-files');
+const files = listPageFiles();
 const styles = new Map([
   ['background:rgba(127,217,138,.15);color:var(--good)', 'ui-badge-good'],
   ['background:rgba(127,217,138,.12);color:var(--good)', 'ui-badge-good-soft'],
@@ -36,8 +37,7 @@ function addClass(tag, className) {
 }
 
 let changed = 0;
-for (const name of files) {
-  const file = path.join(root, name);
+for (const file of files) {
   const before = fs.readFileSync(file, 'utf8');
   let after = before;
   for (const [style, className] of styles) {

@@ -4,8 +4,9 @@ const fs = require('fs');
 const path = require('path');
 const http = require('http');
 const https = require('https');
+const { repoRoot } = require('../support/page-files');
 const base = process.env.FORGE_BASE_URL || 'http://127.0.0.1:4173';
-const root = path.resolve(__dirname, '..', '..');
+const root = path.join(repoRoot, '_site');
 const pages = fs.readdirSync(root).filter(name => name.endsWith('.html'));
 const localRefs = new Set();
 

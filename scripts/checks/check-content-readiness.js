@@ -6,8 +6,9 @@
 const fs = require('fs');
 const path = require('path');
 const vm = require('vm');
+const { repoRoot, listPageFiles, pageFile } = require('../support/page-files');
 
-const root = path.join(__dirname, '..', '..');
+const root = repoRoot;
 const statusPath = path.join(root, 'data/content-status.json');
 const data = {};
 vm.createContext(data);
@@ -16,9 +17,9 @@ const registry = {};
 vm.createContext(registry);
 vm.runInContext(fs.readFileSync(path.join(root, 'data/spec-registry.js'), 'utf8') + '\nthis.SPEC_REGISTRY=SPEC_REGISTRY;', registry);
 
-const subjectPages = fs.readdirSync(root).filter(file => file.endsWith('.html') && /^(a-level-|gcse-|economics|psychology|law|politics|criminology)/.test(file));
+const subjectPages = listPageFiles().filter(file => /^(a-level-|gcse-|economics|psychology|law|politics|criminology)/.test(path.basename(file)));
 const missing = subjectPages.filter(file => {
-  const html = fs.readFileSync(path.join(root, file), 'utf8');
+  const html = fs.readFileSync(file, 'utf8');
   return !html.includes('css/content-status.css') || !html.includes('scripts/forge-content-status.js');
 });
 if (missing.length) {
@@ -62,7 +63,7 @@ if (!fs.existsSync(statusPath)) {
 }
 const status = JSON.parse(fs.readFileSync(statusPath, 'utf8'));
 for (const [page, key] of Object.entries(status.pages || {})) {
-  if (!fs.existsSync(path.join(root, page))) {
+  try { pageFile(page); } catch {
     console.error(`Content status references missing marketing page: ${page}`);
     process.exit(1);
   }

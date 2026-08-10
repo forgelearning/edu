@@ -4,9 +4,10 @@
  * canonical markup rules. It only touches explicit root HTML entry points. */
 const fs = require('fs');
 const path = require('path');
+const { listPageFiles } = require('../support/page-files');
 
 const root = path.resolve(__dirname, '..', '..');
-const pages = fs.readdirSync(root).filter(name => name.endsWith('.html'));
+const pages = listPageFiles();
 const replacements = [
   [/scripts\/forge-sidebar\.js(?!\?v=)/g, 'scripts/forge-sidebar.js?v=20260802'],
   [/class="forge-logo-dark"([\s\S]*?)class="forge-logo-img"/g, 'class="forge-logo-dark forge-logo-img"$1'],
@@ -40,8 +41,7 @@ const replacements = [
 ];
 
 let changed = 0;
-for (const name of pages) {
-  const file = path.join(root, name);
+for (const file of pages) {
   const before = fs.readFileSync(file, 'utf8');
   let after = before;
   for (const [pattern, replacement] of replacements) after = after.replace(pattern, replacement);
