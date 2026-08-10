@@ -11,7 +11,7 @@ h1,h2,h3{font-family:'Rethink Sans',sans-serif;color:var(--white);line-height:1.
 .theme-toggle{background:var(--panel);border:1px solid var(--line);color:var(--slate);font-family:'JetBrains Mono',monospace;font-size:12px;padding:6px 12px;border-radius:var(--radius-sm);cursor:pointer;z-index:99}
 .theme-toggle:hover{color:var(--white);border-color:var(--ember)}
 
-.teacher-entry{display:grid;grid-template-columns:minmax(0,1fr) minmax(360px,440px);gap:clamp(40px,7vw,96px);align-items:center;max-width:none;margin:0;min-height:calc(100vh - 136px)}
+.teacher-entry{display:grid;grid-template-columns:minmax(0,1fr) minmax(360px,440px);gap:clamp(40px,7vw,96px);align-items:center;max-width:1080px;margin:0 auto;min-height:calc(100vh - 136px)}
 .teacher-entry-copy{max-width:68ch;padding:24px 0}
 .teacher-entry-copy .tag{display:block;margin-bottom:12px}
 .teacher-entry-copy h1{font-size:clamp(30px,4vw,48px);margin-bottom:18px}
