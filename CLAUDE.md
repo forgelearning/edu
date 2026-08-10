@@ -265,30 +265,28 @@ etc.) — treat every completion claim in it as stale by default.
 - A-Level Geography is intentionally marked Developing until every active route
   point is mapped. That is about spec-point coverage (91%) and is unrelated to
   its misconception tagging, which is complete.
-- **The 0% cued figure is partly manufactured, and this is the big one.**
-  About fifteen copy-pasted loops in `data/forge-data.js` do
-  `while (options[distractor].length <= options[correct].length)
-  options[distractor] += " in this context";`. That satisfies the
-  answer-length rule by appending filler to a distractor, which is a *stronger*
-  cue than the length it hides — a student eliminates the option trailing in
-  repeated filler. **6,149 options across 30 subjects** are affected: `englit`
-  and `engll` 492 each, `pe` 406, `span` 351, `mand` 288, `german` 278,
-  `french` 269, `bus` 268, `gcse-psych` 262, and on down. None of them is ever
-  a correct answer — the filler exists to make distractors out-length the key.
+- **The "in this context" filler-padding bug is fixed — re-verify before
+  trusting the paragraph below.** It used to describe 6,149 affected options
+  across 30 subjects (`englit`, `engll`, `pe`, `span`, `mand`, `german`,
+  `french`, `bus`, `gcse-psych`, and others). A live scan on 2026-08-10
+  (`grep`/`vm`-load `data/forge-data.js`, search every option in every bank
+  for `/in this context/i`) found **zero** occurrences anywhere in the file —
+  `englit`, `engll`, `pe`, `span`, `mand`, `german`, `french`, `bus` and
+  `gcse-psych` all came back clean, and a full-file sweep across every
+  subject confirmed it. The padding loops
+  (`while (options[distractor].length <= options[correct].length)
+  options[distractor] += " in this context";`) and the curated repair tables
+  (`geoOptionRepairs`, `separateScienceOptionRepairs`,
+  `geoAlevelDistractorRepairs`, `econAlevelDistractorRepairs`) are both still
+  in `data/forge-data.js`, so the mechanism that could reintroduce this is
+  unchanged — re-run the scan above before assuming a future edit hasn't
+  brought it back. `dev/audit-banks.js` reports 0% cued stems and twins,
+  consistent with this.
 
-  A-Level `geo` is fixed (187 → 0) via `geoAlevelDistractorRepairs`, following
-  the `geoOptionRepairs` / `separateScienceOptionRepairs` pattern that
-  `gcse-geo` and the separate sciences already use: a curated table of genuine
-  replacement text, so the padding loop has nothing to do. The rest is a
-  content job — each replacement must be written, since the alternatives are
-  padding or shortening correct answers, and the latter is what produced the
-  override-table defects above. `dev/audit-banks.js` does not currently fail on
-  filler; adding that check would stop it spreading.
-
-  Two gotchas if you extend this: match on option **text, not letter**
-  (`rebalanceMCQSubject()` permutes letters), and run the repair **last** —
-  some reforge twins are rebuilt by later passes and will overwrite an earlier
-  repair.
+  Two gotchas if you ever need to extend a repair table like these: match on
+  option **text, not letter** (`rebalanceMCQSubject()` permutes letters), and
+  run the repair **last** — some reforge twins are rebuilt by later passes
+  and will overwrite an earlier repair.
 - `TAG_TAXONOMY_SUBJECTS` counts array-valued tags as a single composite key
   rather than incrementing each member, so a question tagged
   `["MC-A","MC-TECH-02"]` reads as used-once no matter how many questions
