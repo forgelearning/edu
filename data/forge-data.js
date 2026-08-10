@@ -472,13 +472,13 @@ BANKS["2.3.1"] = {
       id:"FIS-07",spec:"2.3.1",stem:"Which of the following is a problem with using fiscal policy to manage aggregate demand?",
       options:{A:"It works too quickly — the economy overheats before the policy can be reversed.",B:"Time lags: recognition lag (identifying the problem)",C:"Fiscal policy has no effect on AD.",D:"Only the Bank of England can change government spending."},correct:"B",tag:"MC-FIS-07",
       scaffold:"Three lags: (1) Recognition — takes time to confirm a recession is happening. (2) Implementation — budgets are annual; emergency measures need political approval. (3) Impact — spending takes time to feed through (contracts, hiring). By the time the stimulus hits, the economy may have already recovered → pro-cyclical rather than counter-cyclical.",
-      reforge:{stem:"Compared to fiscal policy, monetary policy has one key advantage in terms of timing. What is it?",options:{A:"Monetary policy has no time lags at all.",B:"The MPC meets regularly and can change interest rates quickly without needing parliamentary approval, reducing the implementation lag.",C:"Monetary policy works instantly on the economy. (with other relevant factors held constant) (with other relevant factors held constant)",D:"Fiscal policy is always faster."},correct:"B"}
+      reforge:{stem:"Compared to fiscal policy, monetary policy has one key advantage in terms of timing. What is it?",options:{A:"Monetary policy has no time lags at all.",B:"The MPC meets regularly and can change interest rates quickly without needing parliamentary approval, reducing the implementation lag.",C:"Monetary policy works instantly on the economy. (with other relevant factors held constant)",D:"Fiscal policy is always faster."},correct:"B"}
     },
     {
       id:"FIS-08",spec:"2.3.1",stem:"Crowding out occurs when:",
       options:{A:"Government spending replaces private spending",B:"The government spends less than it taxes.",C:"Exports crowd out imports.",D:"The private sector spends more than the government."},correct:"A",tag:"MC-FIS-08",
       scaffold:"Government borrows to fund higher G → increased demand for loanable funds → interest rates rise → private firms face higher borrowing costs → private I falls. The government spending 'crowds out' private investment. This is a key evaluation point against expansionary fiscal policy. Note: crowding out is weaker when there's spare capacity (interest rates don't rise as much).",
-      reforge:{stem:"When is crowding out LEAST likely to occur?",options:{A:"During a deep recession with very low interest rates and spare capacity — government borrowing doesn't push rates up significantly because demand for private borrowing is already weak.",B:"When the economy is at full capacity.",C:"When the government runs a surplus.",D:"Crowding out always occurs regardless of conditions. (with other relevant factors held constant) (with other relevant factors held constant) (with other relevant factors held constant)"},correct:"A"}
+      reforge:{stem:"When is crowding out LEAST likely to occur?",options:{A:"During a deep recession with very low interest rates and spare capacity — government borrowing doesn't push rates up significantly because demand for private borrowing is already weak.",B:"When the economy is at full capacity.",C:"When the government runs a surplus.",D:"Crowding out always occurs regardless of conditions. (with other relevant factors held constant)"},correct:"A"}
     }
   ]
 };
@@ -516,7 +516,7 @@ BANKS["2.3.2"] = {
       id:"MON-05",spec:"2.3.2",stem:"A limitation of monetary policy is that it may be ineffective when:",
       options:{A:"Inflation is high.",B:"Interest rates are near zero (liquidity trap)",C:"The exchange rate is floating.",D:"The economy is growing."},correct:"B",tag:"MC-MON-05",
       scaffold:"Liquidity trap: rates at/near zero → can't cut further. QE injects liquidity but banks may hoard it (risk aversion) rather than lend. Firms may not invest even at 0% if expected returns are negative (low confidence). Japan's 'lost decades' illustrate this. Monetary policy is 'pushing on a string.'",
-      reforge:{stem:"During the 2008 crisis, despite very low interest rates, bank lending remained subdued. Which concept explains this?",options:{A:"The multiplier was too large. (with other relevant factors held constant) (with other relevant factors held constant)",B:"A liquidity trap: risk-averse banks and cautious borrowers mean low rates fail to boost spending.",C:"Interest rates were too high.",D:"Fiscal policy was too tight."},correct:"B"}
+      reforge:{stem:"During the 2008 crisis, despite very low interest rates, bank lending remained subdued. Which concept explains this?",options:{A:"The multiplier was too large. (with other relevant factors held constant)",B:"A liquidity trap: risk-averse banks and cautious borrowers mean low rates fail to boost spending.",C:"Interest rates were too high.",D:"Fiscal policy was too tight."},correct:"B"}
     },
     {
       id:"MON-06",spec:"2.3.2",stem:"Higher interest rates tend to cause the exchange rate to:",
@@ -535,7 +535,7 @@ BANKS["2.3.2"] = {
       id:"MON-08",spec:"2.3.2",stem:"Forward guidance is a monetary policy tool where the central bank:",
       options:{A:"Sets interest rates 10 years in advance.",B:"Forces banks to lend at specific rates.",C:"Communicates its future policy intentions to influence expectations",D:"Pegs the exchange rate."},correct:"C",tag:"MC-MON-08",
       scaffold:"Forward guidance: the BoE signals where it expects rates to go (e.g. 'rates will remain low until unemployment falls below 7%'). This manages expectations — if firms believe rates will stay low, they're more likely to invest now. It works through the expectations channel rather than direct rate changes.",
-      reforge:{stem:"The BoE announces: 'We do not expect to raise rates for at least 12 months.' What is this intended to achieve?",options:{A:"Force banks to lower rates immediately.",B:"Increase inflation expectations to dangerous levels. (with other relevant factors held constant) (with other relevant factors held constant)",C:"Reduce uncertainty and encourage spending/investment now — businesses and households can plan knowing borrowing costs will remain stable.",D:"Replace QE entirely."},correct:"C"}
+      reforge:{stem:"The BoE announces: 'We do not expect to raise rates for at least 12 months.' What is this intended to achieve?",options:{A:"Force banks to lower rates immediately.",B:"Increase inflation expectations to dangerous levels. (with other relevant factors held constant)",C:"Reduce uncertainty and encourage spending/investment now — businesses and households can plan knowing borrowing costs will remain stable.",D:"Replace QE entirely."},correct:"C"}
     }
   ]
 };
@@ -560,7 +560,7 @@ BANKS["2.3.3"] = {
       id:"SSP-03",spec:"2.3.3",stem:"A student lists 'cutting interest rates' as a supply-side policy. Why is this incorrect?",
       options:{A:"lower rates boost the supply side.",B:"Cutting interest rates is monetary policy aimed at boosting AD (demand-side)",C:"Interest rates have no economic effect.",D:"Only the government can implement supply-side policies. (in the market described)"},correct:"B",tag:"MC-SSP-03",
       scaffold:"Supply-side policies specifically target productive capacity (LRAS). Interest rate cuts target AD through the monetary transmission mechanism. Yes, lower rates may encourage I (which builds capacity over time), but the primary classification is monetary/demand-side. Examiners want clean categorisation.",
-      reforge:{stem:"Which of these is correctly classified as a supply-side policy?",options:{A:"Quantitative easing.",B:"Reducing corporation tax to incentivise business investment and attract FDI — targeting the productive capacity of the economy.",C:"Increasing government spending on benefits. (with other relevant factors held constant) (with other relevant factors held constant)",D:"Cutting VAT to boost consumer spending."},correct:"B"}
+      reforge:{stem:"Which of these is correctly classified as a supply-side policy?",options:{A:"Quantitative easing.",B:"Reducing corporation tax to incentivise business investment and attract FDI — targeting the productive capacity of the economy.",C:"Increasing government spending on benefits. (with other relevant factors held constant)",D:"Cutting VAT to boost consumer spending."},correct:"B"}
     },
     {
       id:"SSP-04",spec:"2.3.3",stem:"Evaluate the effectiveness of supply-side policies in reducing unemployment. (12 marks — 8 KAA + 4 EV)",
@@ -752,13 +752,13 @@ BANKS["2.5.2"] = {
       id:"BNK-01",spec:"2.5.2",stem:"The primary function of commercial banks is:",
       options:{A:"Setting interest rates for the economy.",B:"Financial intermediation",C:"Printing money.",D:"Regulating other financial institutions."},correct:"B",tag:"MC-BNK-01",
       scaffold:"Commercial banks are intermediaries: they pool deposits (liabilities) and lend them out (assets), earning the spread between deposit and lending rates. They also: provide payment systems, offer financial products (insurance, investments), and — crucially — create money through the credit creation multiplier.",
-      reforge:{stem:"A bank pays 2% interest on savings accounts and charges 6% on loans. The 4% difference is called:",options:{A:"Inflation.",B:"The interest rate spread (or margin) — this is how the bank earns profit from its core intermediation role.",C:"The base rate.",D:"Quantitative easing. (with other relevant factors held constant) (with other relevant factors held constant)"},correct:"B"}
+      reforge:{stem:"A bank pays 2% interest on savings accounts and charges 6% on loans. The 4% difference is called:",options:{A:"Inflation.",B:"The interest rate spread (or margin) — this is how the bank earns profit from its core intermediation role.",C:"The base rate.",D:"Quantitative easing. (with other relevant factors held constant)"},correct:"B"}
     },
     {
       id:"BNK-02",spec:"2.5.2",stem:"How do commercial banks 'create' money?",
       options:{A:"Through the credit creation multiplier: when a bank receives a deposit",B:"They print banknotes in their vaults.",C:"They cannot create money — only the central bank can.",D:"By raising interest rates."},correct:"A",tag:"MC-BNK-02",
       scaffold:"Example: £1,000 deposited, 10% reserve ratio. Bank lends £900 → deposited elsewhere → that bank lends £810 → and so on. Total money created = £1,000 × (1/0.1) = £10,000. Banks don't print money — they create it through lending. This is why bank regulation matters: excessive lending inflates the money supply.",
-      reforge:{stem:"If the reserve ratio increases from 10% to 20%, what happens to the credit creation multiplier?",options:{A:"It halves because banks hold more reserves, leaving less available to lend.",B:"It doubles.",C:"It is unchanged. (with other relevant factors held constant) (with other relevant factors held constant)",D:"It becomes zero."},correct:"A"}
+      reforge:{stem:"If the reserve ratio increases from 10% to 20%, what happens to the credit creation multiplier?",options:{A:"It halves because banks hold more reserves, leaving less available to lend.",B:"It doubles.",C:"It is unchanged. (with other relevant factors held constant)",D:"It becomes zero."},correct:"A"}
     },
     {
       id:"BNK-03",spec:"2.5.2",stem:"Evaluate whether the government was right to bail out the banks in 2008. (4 marks)",
@@ -777,7 +777,7 @@ BANKS["2.5.2"] = {
       id:"BNK-05",spec:"2.5.2",stem:"Why are banks sometimes described as 'too big to fail'?",
       options:{A:"Because large banks are always profitable.",B:"Because the government owns them.",C:"Because they hold all the country's gold reserves.",D:"Because their failure would cause systemic risk"},correct:"D",tag:"MC-BNK-03",
       scaffold:"Systemic risk: banks lend to each other (interbank market). If one large bank fails → other banks lose money → they can't lend → credit freezes → businesses can't borrow → layoffs, closures, recession. This interconnectedness makes government reluctant to let them fail — but bailouts create moral hazard.",
-      reforge:{stem:"A policy of 'too big to fail' creates moral hazard because:",options:{A:"Banks become too cautious.",B:"Small banks are unfairly treated. (with other relevant factors held constant) (with other relevant factors held constant) (with other relevant factors held constant)",C:"It increases competition.",D:"Banks take excessive risks knowing they'll be rescued if things go wrong — the implicit government guarantee removes the downside, incentivising reckless behaviour."},correct:"D"}
+      reforge:{stem:"A policy of 'too big to fail' creates moral hazard because:",options:{A:"Banks become too cautious.",B:"Small banks are unfairly treated. (with other relevant factors held constant)",C:"It increases competition.",D:"Banks take excessive risks knowing they'll be rescued if things go wrong — the implicit government guarantee removes the downside, incentivising reckless behaviour."},correct:"D"}
     }
   ]
 };
@@ -24032,7 +24032,7 @@ const staticLegacyRepairs = {
   },
   "MATHS-COV-043": {
     "reforge": {
-      "B": "Calculate P(X = 0) + P(X = 1) + ... + P(X = 5) using the binomial formula, or read directly from cumulative binomial tables. The mathematical method must match the operation, scale, algebraic relationship, diagram, units and conditions; the option otherwise applies a related idea without explaining the result in this case."
+      "B": "Calculate P(X = 0) + P(X = 1) + ... + P(X = 5) using the binomial formula, or read directly from cumulative binomial tables. The mathematical method must match the operation, scale, algebraic relationship, diagram, units and conditions; the described total omits one of the required probability terms."
     }
   },
   "MATHS-COV-067": {
@@ -24112,7 +24112,7 @@ const staticLegacyRepairs = {
   },
   "GERMAN-COV-151": {
     "base": {
-      "B": "'Freundin' should be 'Freund' — the speaker is male so the friend must be male. The German construction must be judged by its meaning, case, word order, agreement and tense; the option otherwise applies a related idea without explaining the result in this case."
+      "B": "'Freundin' should be 'Freund' — the speaker is male so the friend must be male. The German construction must be judged by its meaning, case, word order, agreement and tense; the option confuses a definition with its application to the specific example."
     }
   },
   "GERMAN-COV-167": {
@@ -24177,142 +24177,142 @@ const staticLegacyRepairs = {
   },
   "MED-13": {
     "base": {
-      "C": "The tendency for audiences to undervalue cultural products compared to their production cost. The media explanation must account for representation, audience, ownership, technology, regulation and interpretation; the proposed account does not match the scale, timing or conditions stated. The media explanation must account for representation, audience, ownership, technology, regulation and interpretation; the proposed account does not match the scale, timing or conditions stated."
+      "C": "The tendency for audiences to undervalue cultural products compared to their production cost. The media explanation must account for representation, audience, ownership, technology, regulation and interpretation; the proposed account does not match the scale, timing or conditions stated."
     }
   },
   "MEDIA-COV-030": {
     "base": {
-      "C": "The tendency for audiences to undervalue cultural products compared to their production cost. The media explanation must account for representation, audience, ownership, technology, regulation and interpretation; the answer overlooks the qualifier that determines how the concept applies in this question. The media explanation must account for representation, audience, ownership, technology, regulation and interpretation; the answer overlooks the qualifier that determines how the concept applies in this question."
+      "C": "The tendency for audiences to undervalue cultural products compared to their production cost. The media explanation must account for representation, audience, ownership, technology, regulation and interpretation; the answer overlooks the qualifier that determines how the concept applies in this question."
     }
   },
   "MEDIA-COV-080": {
     "base": {
-      "C": "The tendency for audiences to undervalue cultural products compared to their production cost. The media explanation must account for representation, audience, ownership, technology, regulation and interpretation; the relevant distinction is between the process and its effect, which this option merges. The media explanation must account for representation, audience, ownership, technology, regulation and interpretation; the relevant distinction is between the process and its effect, which this option merges."
+      "C": "The tendency for audiences to undervalue cultural products compared to their production cost. The media explanation must account for representation, audience, ownership, technology, regulation and interpretation; the relevant distinction is between the process and its effect, which this option merges."
     }
   },
   "MEDIA-COV-130": {
     "base": {
-      "C": "The tendency for audiences to undervalue cultural products compared to their production cost. The media explanation must account for representation, audience, ownership, technology, regulation and interpretation; the proposed account does not match the scale, timing or conditions stated. The media explanation must account for representation, audience, ownership, technology, regulation and interpretation; the proposed account does not match the scale, timing or conditions stated."
+      "C": "The tendency for audiences to undervalue cultural products compared to their production cost. The media explanation must account for representation, audience, ownership, technology, regulation and interpretation; the proposed account does not match the scale, timing or conditions stated."
     }
   },
   "PE-COV-013": {
     "reforge": {
-      "C": "Third-class levers provide the greatest mechanical advantage, allowing the goalkeeper to exert more force than the load. The sporting example must be judged by its movement, intensity, energy system, performer and recovery conditions; the evidence supports a narrower conclusion than the one proposed in this option. The sporting example must be judged by its movement, intensity, energy system, performer and recovery conditions; the evidence supports a narrower conclusion than the one proposed in this option."
+      "C": "Third-class levers provide the greatest mechanical advantage, allowing the goalkeeper to exert more force than the load. The sporting example must be judged by its movement, intensity, energy system, performer and recovery conditions; the evidence supports a narrower conclusion than the one proposed in this option."
     }
   },
   "PE-COV-029": {
     "reforge": {
-      "C": "Third-class levers provide the greatest mechanical advantage, allowing the goalkeeper to exert more force than the load. The sporting example must be judged by its movement, intensity, energy system, performer and recovery conditions; the relevant distinction is between the process and its effect, which this option merges. The sporting example must be judged by its movement, intensity, energy system, performer and recovery conditions; the relevant distinction is between the process and its effect, which this option merges."
+      "C": "Third-class levers provide the greatest mechanical advantage, allowing the goalkeeper to exert more force than the load. The sporting example must be judged by its movement, intensity, energy system, performer and recovery conditions; the relevant distinction is between the process and its effect, which this option merges."
     }
   },
   "PE-COV-045": {
     "reforge": {
-      "C": "Third-class levers provide the greatest mechanical advantage, allowing the goalkeeper to exert more force than the load. The sporting example must be judged by its movement, intensity, energy system, performer and recovery conditions; the answer overlooks the qualifier that determines how the concept applies in this question. The sporting example must be judged by its movement, intensity, energy system, performer and recovery conditions; the answer overlooks the qualifier that determines how the concept applies in this question."
+      "C": "Third-class levers provide the greatest mechanical advantage, allowing the goalkeeper to exert more force than the load. The sporting example must be judged by its movement, intensity, energy system, performer and recovery conditions; the answer overlooks the qualifier that determines how the concept applies in this question."
     }
   },
   "PE-COV-061": {
     "reforge": {
-      "C": "Third-class levers provide the greatest mechanical advantage, allowing the goalkeeper to exert more force than the load. The sporting example must be judged by its movement, intensity, energy system, performer and recovery conditions; the proposed conclusion does not follow from the evidence supplied in the question. The sporting example must be judged by its movement, intensity, energy system, performer and recovery conditions; the proposed conclusion does not follow from the evidence supplied in the question."
+      "C": "Third-class levers provide the greatest mechanical advantage, allowing the goalkeeper to exert more force than the load. The sporting example must be judged by its movement, intensity, energy system, performer and recovery conditions; the proposed conclusion does not follow from the evidence supplied in the question."
     }
   },
   "PE-COV-077": {
     "reforge": {
-      "C": "Third-class levers provide the greatest mechanical advantage, allowing the goalkeeper to exert more force than the load. The sporting example must be judged by its movement, intensity, energy system, performer and recovery conditions; the option otherwise applies a related idea without explaining the result in this case. The sporting example must be judged by its movement, intensity, energy system, performer and recovery conditions; the option otherwise applies a related idea without explaining the result in this case."
+      "C": "Third-class levers provide the greatest mechanical advantage, allowing the goalkeeper to exert more force than the load. The sporting example must be judged by its movement, intensity, energy system, performer and recovery conditions; the mechanism named in the option cannot produce the result under these conditions."
     }
   },
   "PE-COV-093": {
     "reforge": {
-      "C": "Third-class levers provide the greatest mechanical advantage, allowing the goalkeeper to exert more force than the load. The sporting example must be judged by its movement, intensity, energy system, performer and recovery conditions; the stated example distinguishes this mechanism from the nearby concept named in the option. The sporting example must be judged by its movement, intensity, energy system, performer and recovery conditions; the stated example distinguishes this mechanism from the nearby concept named in the option."
+      "C": "Third-class levers provide the greatest mechanical advantage, allowing the goalkeeper to exert more force than the load. The sporting example must be judged by its movement, intensity, energy system, performer and recovery conditions; the stated example distinguishes this mechanism from the nearby concept named in the option."
     }
   },
   "PE-COV-109": {
     "reforge": {
-      "C": "Third-class levers provide the greatest mechanical advantage, allowing the goalkeeper to exert more force than the load. The sporting example must be judged by its movement, intensity, energy system, performer and recovery conditions; the option otherwise applies a related idea without explaining the result in this case. The sporting example must be judged by its movement, intensity, energy system, performer and recovery conditions; the option otherwise applies a related idea without explaining the result in this case."
+      "C": "Third-class levers provide the greatest mechanical advantage, allowing the goalkeeper to exert more force than the load. The sporting example must be judged by its movement, intensity, energy system, performer and recovery conditions; the mechanism named in the option cannot produce the result under these conditions."
     }
   },
   "PE-COV-125": {
     "reforge": {
-      "C": "Third-class levers provide the greatest mechanical advantage, allowing the goalkeeper to exert more force than the load. The sporting example must be judged by its movement, intensity, energy system, performer and recovery conditions; the stated example distinguishes this mechanism from the nearby concept named in the option. The sporting example must be judged by its movement, intensity, energy system, performer and recovery conditions; the stated example distinguishes this mechanism from the nearby concept named in the option."
+      "C": "Third-class levers provide the greatest mechanical advantage, allowing the goalkeeper to exert more force than the load. The sporting example must be judged by its movement, intensity, energy system, performer and recovery conditions; the stated example distinguishes this mechanism from the nearby concept named in the option."
     }
   },
   "PE-COV-141": {
     "reforge": {
-      "C": "Third-class levers provide the greatest mechanical advantage, allowing the goalkeeper to exert more force than the load. The sporting example must be judged by its movement, intensity, energy system, performer and recovery conditions; the wording describes a different process and would predict a different outcome. The sporting example must be judged by its movement, intensity, energy system, performer and recovery conditions; the wording describes a different process and would predict a different outcome."
+      "C": "Third-class levers provide the greatest mechanical advantage, allowing the goalkeeper to exert more force than the load. The sporting example must be judged by its movement, intensity, energy system, performer and recovery conditions; the wording describes a different process and would predict a different outcome."
     }
   },
   "PE-COV-157": {
     "reforge": {
-      "C": "Third-class levers provide the greatest mechanical advantage, allowing the goalkeeper to exert more force than the load. The sporting example must be judged by its movement, intensity, energy system, performer and recovery conditions; the answer leaves out the condition that determines the result being tested. The sporting example must be judged by its movement, intensity, energy system, performer and recovery conditions; the answer leaves out the condition that determines the result being tested."
+      "C": "Third-class levers provide the greatest mechanical advantage, allowing the goalkeeper to exert more force than the load. The sporting example must be judged by its movement, intensity, energy system, performer and recovery conditions; the answer leaves out the condition that determines the result being tested."
     }
   },
   "PE-COV-173": {
     "reforge": {
-      "C": "Third-class levers provide the greatest mechanical advantage, allowing the goalkeeper to exert more force than the load. The sporting example must be judged by its movement, intensity, energy system, performer and recovery conditions; the explanation would require facts or assumptions that the question does not provide. The sporting example must be judged by its movement, intensity, energy system, performer and recovery conditions; the explanation would require facts or assumptions that the question does not provide."
+      "C": "Third-class levers provide the greatest mechanical advantage, allowing the goalkeeper to exert more force than the load. The sporting example must be judged by its movement, intensity, energy system, performer and recovery conditions; the explanation would require facts or assumptions that the question does not provide."
     }
   },
   "PE-13": {
     "reforge": {
-      "A": "Third-class levers provide the greatest mechanical advantage, allowing the goalkeeper to exert more force than the load. The sporting example must be judged by its movement, intensity, energy system, performer and recovery conditions; the proposed conclusion does not follow from the evidence supplied in the question. The sporting example must be judged by its movement, intensity, energy system, performer and recovery conditions; the proposed conclusion does not follow from the evidence supplied in the question."
+      "A": "Third-class levers provide the greatest mechanical advantage, allowing the goalkeeper to exert more force than the load. The sporting example must be judged by its movement, intensity, energy system, performer and recovery conditions; the proposed conclusion does not follow from the evidence supplied in the question."
     }
   },
   "SPAN-COV-015": {
     "reforge": {
-      "D": "Regional governments have refused to implement the national budget in their autonomous communities. The Spanish construction must be judged by its agreement, word order, tense, mood and context; the answer does not account for the competing factor or trade-off described. The Spanish construction must be judged by its agreement, word order, tense, mood and context; the answer does not account for the competing factor or trade-off described."
+      "D": "Regional governments have refused to implement the national budget in their autonomous communities. The Spanish construction must be judged by its agreement, word order, tense, mood and context; the answer does not account for the competing factor or trade-off described."
     }
   },
   "SPAN-COV-031": {
     "reforge": {
-      "D": "Regional governments have refused to implement the national budget in their autonomous communities. The Spanish construction must be judged by its agreement, word order, tense, mood and context; the relevant distinction is between the process and its effect, which this option merges. The Spanish construction must be judged by its agreement, word order, tense, mood and context; the relevant distinction is between the process and its effect, which this option merges."
+      "D": "Regional governments have refused to implement the national budget in their autonomous communities. The Spanish construction must be judged by its agreement, word order, tense, mood and context; the relevant distinction is between the process and its effect, which this option merges."
     }
   },
   "SPAN-COV-047": {
     "reforge": {
-      "D": "Regional governments have refused to implement the national budget in their autonomous communities. The Spanish construction must be judged by its agreement, word order, tense, mood and context; the mechanism named in the option cannot produce the result under these conditions. The Spanish construction must be judged by its agreement, word order, tense, mood and context; the mechanism named in the option cannot produce the result under these conditions."
+      "D": "Regional governments have refused to implement the national budget in their autonomous communities. The Spanish construction must be judged by its agreement, word order, tense, mood and context; the mechanism named in the option cannot produce the result under these conditions."
     }
   },
   "SPAN-COV-063": {
     "reforge": {
-      "D": "Regional governments have refused to implement the national budget in their autonomous communities. The Spanish construction must be judged by its agreement, word order, tense, mood and context; the evidence supports a narrower conclusion than the one proposed in this option. The Spanish construction must be judged by its agreement, word order, tense, mood and context; the evidence supports a narrower conclusion than the one proposed in this option."
+      "D": "Regional governments have refused to implement the national budget in their autonomous communities. The Spanish construction must be judged by its agreement, word order, tense, mood and context; the evidence supports a narrower conclusion than the one proposed in this option."
     }
   },
   "SPAN-COV-079": {
     "reforge": {
-      "D": "Regional governments have refused to implement the national budget in their autonomous communities. The Spanish construction must be judged by its agreement, word order, tense, mood and context; the relevant distinction is between the process and its effect, which this option merges. The Spanish construction must be judged by its agreement, word order, tense, mood and context; the relevant distinction is between the process and its effect, which this option merges."
+      "D": "Regional governments have refused to implement the national budget in their autonomous communities. The Spanish construction must be judged by its agreement, word order, tense, mood and context; the relevant distinction is between the process and its effect, which this option merges."
     }
   },
   "SPAN-COV-095": {
     "reforge": {
-      "D": "Regional governments have refused to implement the national budget in their autonomous communities. The Spanish construction must be judged by its agreement, word order, tense, mood and context; the answer overlooks the qualifier that determines how the concept applies in this question. The Spanish construction must be judged by its agreement, word order, tense, mood and context; the answer overlooks the qualifier that determines how the concept applies in this question."
+      "D": "Regional governments have refused to implement the national budget in their autonomous communities. The Spanish construction must be judged by its agreement, word order, tense, mood and context; the answer overlooks the qualifier that determines how the concept applies in this question."
     }
   },
   "SPAN-COV-111": {
     "reforge": {
-      "D": "Regional governments have refused to implement the national budget in their autonomous communities. The Spanish construction must be judged by its agreement, word order, tense, mood and context; the wording describes a different process and would predict a different outcome. The Spanish construction must be judged by its agreement, word order, tense, mood and context; the wording describes a different process and would predict a different outcome."
+      "D": "Regional governments have refused to implement the national budget in their autonomous communities. The Spanish construction must be judged by its agreement, word order, tense, mood and context; the wording describes a different process and would predict a different outcome."
     }
   },
   "SPAN-COV-127": {
     "reforge": {
-      "D": "Regional governments have refused to implement the national budget in their autonomous communities. The Spanish construction must be judged by its agreement, word order, tense, mood and context; the answer leaves out the condition that determines the result being tested. The Spanish construction must be judged by its agreement, word order, tense, mood and context; the answer leaves out the condition that determines the result being tested."
+      "D": "Regional governments have refused to implement the national budget in their autonomous communities. The Spanish construction must be judged by its agreement, word order, tense, mood and context; the answer leaves out the condition that determines the result being tested."
     }
   },
   "SPAN-COV-143": {
     "reforge": {
-      "D": "Regional governments have refused to implement the national budget in their autonomous communities. The Spanish construction must be judged by its agreement, word order, tense, mood and context; the explanation would require facts or assumptions that the question does not provide. The Spanish construction must be judged by its agreement, word order, tense, mood and context; the explanation would require facts or assumptions that the question does not provide."
+      "D": "Regional governments have refused to implement the national budget in their autonomous communities. The Spanish construction must be judged by its agreement, word order, tense, mood and context; the explanation would require facts or assumptions that the question does not provide."
     }
   },
   "SPAN-COV-159": {
     "reforge": {
-      "D": "Regional governments have refused to implement the national budget in their autonomous communities. The Spanish construction must be judged by its agreement, word order, tense, mood and context; the wording describes a different process and would predict a different outcome. The Spanish construction must be judged by its agreement, word order, tense, mood and context; the wording describes a different process and would predict a different outcome."
+      "D": "Regional governments have refused to implement the national budget in their autonomous communities. The Spanish construction must be judged by its agreement, word order, tense, mood and context; the wording describes a different process and would predict a different outcome."
     }
   },
   "SPAN-COV-175": {
     "reforge": {
-      "D": "Regional governments have refused to implement the national budget in their autonomous communities. The Spanish construction must be judged by its agreement, word order, tense, mood and context; the option confuses a definition with its application to the specific example. The Spanish construction must be judged by its agreement, word order, tense, mood and context; the option confuses a definition with its application to the specific example."
+      "D": "Regional governments have refused to implement the national budget in their autonomous communities. The Spanish construction must be judged by its agreement, word order, tense, mood and context; the option confuses a definition with its application to the specific example."
     }
   },
   "SP-15": {
     "reforge": {
-      "B": "The government has been legally prevented from presenting a budget — it is constitutionally banned. The Spanish construction must be judged by its agreement, word order, tense, mood and context; the option otherwise applies a related idea without explaining the result in this case. The Spanish construction must be judged by its agreement, word order, tense, mood and context; the option otherwise applies a related idea without explaining the result in this case."
+      "B": "The government has been legally prevented from presenting a budget — it is constitutionally banned. The Spanish construction must be judged by its agreement, word order, tense, mood and context; the proposed conclusion does not follow from the evidence supplied in the question."
     }
   },
   "MAND-04": {
@@ -24457,12 +24457,12 @@ const staticLegacyRepairs = {
   },
   "FRENCH-COV-008": {
     "reforge": {
-      "C": "Translate the whole paragraph instead. The French construction must be judged by its meaning, agreement, tense, pronoun position and register; the option otherwise applies a related idea without explaining the result in this case."
+      "C": "Translate the whole paragraph instead. The French construction must be judged by its meaning, agreement, tense, pronoun position and register; the answer overlooks the qualifier that determines how the concept applies in this question."
     }
   },
   "FRENCH-COV-018": {
     "reforge": {
-      "A": "Quand j'étais jeune, j'ai joué au football tous les jours. The French construction must be judged by its meaning, agreement, tense, pronoun position and register; the option otherwise applies a related idea without explaining the result in this case."
+      "A": "Quand j'étais jeune, j'ai joué au football tous les jours. The French construction must be judged by its meaning, agreement, tense, pronoun position and register; the relevant distinction is between the process and its effect, which this option merges."
     }
   },
   "FRENCH-COV-024": {
@@ -24602,7 +24602,7 @@ const staticLegacyRepairs = {
   },
   "GERMAN-COV-092": {
     "reforge": {
-      "B": "Wenn ich das wissen würde, würde ich kommen. The German construction must be judged by its meaning, case, word order, agreement and tense; the option otherwise applies a related idea without explaining the result in this case."
+      "B": "Wenn ich das wissen würde, würde ich kommen. The German construction must be judged by its meaning, case, word order, agreement and tense; the wording describes a different process and would predict a different outcome."
     }
   },
   "GERMAN-COV-108": {
@@ -24632,7 +24632,7 @@ const staticLegacyRepairs = {
   },
   "CHEM-COV-059": {
     "reforge": {
-      "C": "Chlorine radicals react randomly with any molecule in the mixture. The chemical explanation must follow the particles, bonding, quantities and stated conditions; the answer does not account for the competing factor or trade-off described. The chemical explanation must follow the particles, bonding, quantities and stated conditions; the answer does not account for the competing factor or trade-off described."
+      "C": "Chlorine radicals react randomly with any molecule in the mixture. The chemical explanation must follow the particles, bonding, quantities and stated conditions; the answer does not account for the competing factor or trade-off described."
     }
   },
   "BIO-COV-034": {
@@ -24736,22 +24736,22 @@ const staticLegacyRepairs = {
   },
   "ORG-07": {
     "reforge": {
-      "C": "Chlorine radicals react randomly with any molecule in the mixture. The chemical explanation must follow the particles, bonding, quantities and stated conditions; the answer leaves out the condition that determines the result being tested. The chemical explanation must follow the particles, bonding, quantities and stated conditions; the answer leaves out the condition that determines the result being tested."
+      "C": "Chlorine radicals react randomly with any molecule in the mixture. The chemical explanation must follow the particles, bonding, quantities and stated conditions; the answer leaves out the condition that determines the result being tested."
     }
   },
   "ORG-08": {
     "reforge": {
-      "A": "Aniline has more hydrogen atoms, making it harder to accept a proton. The chemical explanation must follow the particles, bonding, quantities and stated conditions; the option identifies a related term but not the feature that makes it the correct answer. The chemical explanation must follow the particles, bonding, quantities and stated conditions; the option identifies a related term but not the feature that makes it the correct answer."
+      "A": "Aniline has more hydrogen atoms, making it harder to accept a proton. The chemical explanation must follow the particles, bonding, quantities and stated conditions; the option identifies a related term but not the feature that makes it the correct answer."
     }
   },
   "CHEM-COV-003": {
     "reforge": {
-      "A": "Trigonal planar — three bonds, no lone pairs. The chemical explanation must follow the particles, bonding, quantities and stated conditions; the wording describes a different process and would predict a different outcome. The chemical explanation must follow the particles, bonding, quantities and stated conditions; the wording describes a different process and would predict a different outcome."
+      "A": "Trigonal planar — three bonds, no lone pairs. The chemical explanation must follow the particles, bonding, quantities and stated conditions; the wording describes a different process and would predict a different outcome."
     }
   },
   "CHEM-COV-060": {
     "reforge": {
-      "B": "Aniline has more hydrogen atoms, making it harder to accept a proton. The chemical explanation must follow the particles, bonding, quantities and stated conditions; the option identifies a related term but not the feature that makes it the correct answer. The chemical explanation must follow the particles, bonding, quantities and stated conditions; the option identifies a related term but not the feature that makes it the correct answer."
+      "B": "Aniline has more hydrogen atoms, making it harder to accept a proton. The chemical explanation must follow the particles, bonding, quantities and stated conditions; the option identifies a related term but not the feature that makes it the correct answer."
     }
   },
   "CHEM-COV-090": {
@@ -25231,7 +25231,7 @@ const staticLegacyRepairs = {
   },
   "GCSE-SEP-CHEM-COV-030": {
     "base": {
-      "D": "It produces carbon dioxide only The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the option otherwise applies a related idea without explaining the result in this case."
+      "D": "It produces carbon dioxide only. The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the answer leaves out the condition that determines the result being tested."
     }
   },
   "GCSE-SEP-CHEM-COV-032": {
@@ -25254,7 +25254,7 @@ const staticLegacyRepairs = {
   },
   "GCSE-SEP-CHEM-COV-056": {
     "reforge": {
-      "A": "It is harmless at every concentration The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the option otherwise applies a related idea without explaining the result in this case."
+      "A": "It is harmless at every concentration. The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the explanation would require facts or assumptions that the question does not provide."
     }
   },
   "GCSE-SEP-CHEM-COV-058": {
@@ -25316,7 +25316,7 @@ const staticLegacyRepairs = {
   },
   "GCSE-SEP-CHEM-COV-100": {
     "base": {
-      "C": "They lose all attraction The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the option otherwise applies a related idea without explaining the result in this case."
+      "C": "They lose all attraction. The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the option identifies a related term but not the feature that makes it the correct answer."
     }
   },
   "GCSE-SEP-CHEM-COV-102": {
@@ -25438,7 +25438,7 @@ const staticLegacyRepairs = {
   },
   "GCSE-SEP-BIO-COV-049": {
     "base": {
-      "C": "Viruses have thick cell walls The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the option otherwise applies a related idea without explaining the result in this case."
+      "C": "Viruses have thick cell walls. The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the relevant distinction is between the process and its effect, which this option merges."
     }
   },
   "GCSE-SEP-BIO-COV-063": {
@@ -25599,6 +25599,60 @@ for (const bank of Object.values(BANKS)) for (const question of bank.questions |
 }
 
 for (const [id, repairs] of Object.entries(coverageLengthRepairs)) {
+  for (const bank of Object.values(BANKS)) {
+    const question = (bank.questions || []).find(candidate => candidate.id === id);
+    if (!question) continue;
+    for (const [variant, options] of Object.entries(repairs)) {
+      const item = variant === "base" ? question : question.reforge;
+      if (item?.options) Object.assign(item.options, options);
+    }
+  }
+}
+
+// A full-audit pass found 34 items where a Reforge distractor was shortened
+// by a duplicate-text cleanup elsewhere in this file, leaving the correct
+// answer as the uniquely longest option (a length cue). Extending the
+// distractor text (rather than the shared, widely-reused correct-answer
+// text) avoids rippling into unrelated questions that reuse the same
+// correct-answer string as a rotated distractor. Runs last so nothing
+// downstream can overwrite it.
+const finalLengthCueRepairs = {
+  "FIS-08": { reforge: { D: "Crowding out always occurs regardless of conditions. (with other relevant factors held constant) Even during a deep recession with substantial spare capacity, this option asserts interest rates would rise regardless — which contradicts the loanable funds model whenever the economy is not at full employment." } },
+  "MED-13": { base: { C: "The tendency for audiences to undervalue cultural products compared to their production cost. The media explanation must account for representation, audience, ownership, technology, regulation and interpretation; the proposed account does not match the scale, timing or conditions stated. Cultural discount describes audience reception of a text, not the pricing or subsidy arrangements between broadcasters." } },
+  "MEDIA-COV-030": { base: { C: "The tendency for audiences to undervalue cultural products compared to their production cost. The media explanation must account for representation, audience, ownership, technology, regulation and interpretation; the answer overlooks the qualifier that determines how the concept applies in this question. The qualifier is that cultural discount is about audience appeal, not about financial discounting between distributors." } },
+  "MEDIA-COV-080": { base: { C: "The tendency for audiences to undervalue cultural products compared to their production cost. The media explanation must account for representation, audience, ownership, technology, regulation and interpretation; the relevant distinction is between the process and its effect, which this option merges. Underestimating production cost is a financial judgement; cultural discount concerns audience appeal, a separate effect." } },
+  "MEDIA-COV-130": { base: { C: "The tendency for audiences to undervalue cultural products compared to their production cost. The media explanation must account for representation, audience, ownership, technology, regulation and interpretation; the proposed account does not match the scale, timing or conditions stated. The stem asks about audience reception across cultures, which financial subsidy arrangements do not describe." } },
+  "PE-COV-013": { reforge: { C: "Third-class levers provide the greatest mechanical advantage, allowing the goalkeeper to exert more force than the load. The sporting example must be judged by its movement, intensity, energy system, performer and recovery conditions; the evidence supports a narrower conclusion than the one proposed in this option. A narrower, accurate claim would restrict the benefit to range of motion and speed, not force output." } },
+  "PE-COV-029": { reforge: { C: "Third-class levers provide the greatest mechanical advantage, allowing the goalkeeper to exert more force than the load. The sporting example must be judged by its movement, intensity, energy system, performer and recovery conditions; the relevant distinction is between the process and its effect, which this option merges. The lever class is the process; the resulting force output is the effect, and the two should not be treated as identical." } },
+  "PE-COV-045": { reforge: { C: "Third-class levers provide the greatest mechanical advantage, allowing the goalkeeper to exert more force than the load. The sporting example must be judged by its movement, intensity, energy system, performer and recovery conditions; the answer overlooks the qualifier that determines how the concept applies in this question. The qualifier is that mechanical advantage and mechanical disadvantage are opposites, so 'greatest advantage' cannot describe a third-class lever." } },
+  "PE-COV-061": { reforge: { C: "Third-class levers provide the greatest mechanical advantage, allowing the goalkeeper to exert more force than the load. The sporting example must be judged by its movement, intensity, energy system, performer and recovery conditions; the proposed conclusion does not follow from the evidence supplied in the question. The evidence in the stem describes reduced force output, which supports a disadvantage, not an advantage." } },
+  "PE-COV-077": { reforge: { C: "Third-class levers provide the greatest mechanical advantage, allowing the goalkeeper to exert more force than the load. The sporting example must be judged by its movement, intensity, energy system, performer and recovery conditions; the mechanism named in the option cannot produce the result under these conditions. A third-class lever mechanically cannot amplify force beyond the effort applied, regardless of the athlete or sport." } },
+  "PE-COV-093": { reforge: { C: "Third-class levers provide the greatest mechanical advantage, allowing the goalkeeper to exert more force than the load. The sporting example must be judged by its movement, intensity, energy system, performer and recovery conditions; the stated example distinguishes this mechanism from the nearby concept named in the option. First-class and second-class levers are the arrangements that can provide genuine mechanical advantage, not third-class." } },
+  "PE-COV-109": { reforge: { C: "Third-class levers provide the greatest mechanical advantage, allowing the goalkeeper to exert more force than the load. The sporting example must be judged by its movement, intensity, energy system, performer and recovery conditions; the mechanism named in the option cannot produce the result under these conditions. Mechanical advantage requires an effort arm longer than the load arm, the opposite of the third-class arrangement described here." } },
+  "PE-COV-125": { reforge: { C: "Third-class levers provide the greatest mechanical advantage, allowing the goalkeeper to exert more force than the load. The sporting example must be judged by its movement, intensity, energy system, performer and recovery conditions; the stated example distinguishes this mechanism from the nearby concept named in the option. Only lever classes where the load arm exceeds the effort arm can produce a genuine mechanical advantage." } },
+  "PE-COV-141": { reforge: { C: "Third-class levers provide the greatest mechanical advantage, allowing the goalkeeper to exert more force than the load. The sporting example must be judged by its movement, intensity, energy system, performer and recovery conditions; the wording describes a different process and would predict a different outcome. A process that changes force output would alter maximum force, not the speed and range of movement described here." } },
+  "PE-COV-157": { reforge: { C: "Third-class levers provide the greatest mechanical advantage, allowing the goalkeeper to exert more force than the load. The sporting example must be judged by its movement, intensity, energy system, performer and recovery conditions; the answer leaves out the condition that determines the result being tested. The missing condition is that force output falls whenever mechanical advantage falls below one, true of every third-class lever." } },
+  "PE-COV-173": { reforge: { C: "Third-class levers provide the greatest mechanical advantage, allowing the goalkeeper to exert more force than the load. The sporting example must be judged by its movement, intensity, energy system, performer and recovery conditions; the explanation would require facts or assumptions that the question does not provide. No assumption in the stem supports extra force production; the stem instead describes range of motion and speed." } },
+  "PE-13": { reforge: { A: "Third-class levers provide the greatest mechanical advantage, allowing the goalkeeper to exert more force than the load. The sporting example must be judged by its movement, intensity, energy system, performer and recovery conditions; the proposed conclusion does not follow from the evidence supplied in the question. Greater force output would require the load arm to exceed the effort arm, which a third-class lever does not provide." } },
+  "SPAN-COV-015": { reforge: { D: "Regional governments have refused to implement the national budget in their autonomous communities. The Spanish construction must be judged by its agreement, word order, tense, mood and context; the answer does not account for the competing factor or trade-off described. The trade-off is that regional refusal explains delay, not a constitutional prohibition on presenting a budget at all." } },
+  "SPAN-COV-031": { reforge: { D: "Regional governments have refused to implement the national budget in their autonomous communities. The Spanish construction must be judged by its agreement, word order, tense, mood and context; the relevant distinction is between the process and its effect, which this option merges. Regional refusal is a political process; a constitutional ban would be a legal effect, and the two are not the same thing." } },
+  "SPAN-COV-047": { reforge: { D: "Regional governments have refused to implement the national budget in their autonomous communities. The Spanish construction must be judged by its agreement, word order, tense, mood and context; the mechanism named in the option cannot produce the result under these conditions. Regional non-cooperation cannot itself create a binding legal prohibition on the national government presenting a budget." } },
+  "SPAN-COV-063": { reforge: { D: "Regional governments have refused to implement the national budget in their autonomous communities. The Spanish construction must be judged by its agreement, word order, tense, mood and context; the evidence supports a narrower conclusion than the one proposed in this option. A narrower, accurate claim would say only that regional cooperation is required for implementation, not for presentation." } },
+  "SPAN-COV-079": { reforge: { D: "Regional governments have refused to implement the national budget in their autonomous communities. The Spanish construction must be judged by its agreement, word order, tense, mood and context; the relevant distinction is between the process and its effect, which this option merges. The stem describes a legal prohibition, whereas this option describes only a political disagreement over implementation." } },
+  "SPAN-COV-095": { reforge: { D: "Regional governments have refused to implement the national budget in their autonomous communities. The Spanish construction must be judged by its agreement, word order, tense, mood and context; the answer overlooks the qualifier that determines how the concept applies in this question. The qualifier is that the stem specifies presentation of the budget, not its later implementation across regions." } },
+  "SPAN-COV-111": { reforge: { D: "Regional governments have refused to implement the national budget in their autonomous communities. The Spanish construction must be judged by its agreement, word order, tense, mood and context; the wording describes a different process and would predict a different outcome. That process concerns implementation after approval, while the stem concerns whether the budget can be presented at all." } },
+  "SPAN-COV-127": { reforge: { D: "Regional governments have refused to implement the national budget in their autonomous communities. The Spanish construction must be judged by its agreement, word order, tense, mood and context; the answer leaves out the condition that determines the result being tested. The missing condition is the constitutional rule that triggered the ban, which this option never identifies." } },
+  "SPAN-COV-143": { reforge: { D: "Regional governments have refused to implement the national budget in their autonomous communities. The Spanish construction must be judged by its agreement, word order, tense, mood and context; the explanation would require facts or assumptions that the question does not provide. Nothing in the stem describes regional refusal; it describes a national constitutional restriction instead." } },
+  "SPAN-COV-159": { reforge: { D: "Regional governments have refused to implement the national budget in their autonomous communities. The Spanish construction must be judged by its agreement, word order, tense, mood and context; the wording describes a different process and would predict a different outcome. Implementation disputes between regions and the state are a separate issue from whether a budget may be presented nationally." } },
+  "SPAN-COV-175": { reforge: { D: "Regional governments have refused to implement the national budget in their autonomous communities. The Spanish construction must be judged by its agreement, word order, tense, mood and context; the option confuses a definition with its application to the specific example. The definition of a constitutional ban is a fixed legal rule, not a description of any single region's behaviour." } },
+  "SP-15": { reforge: { B: "The government has been legally prevented from presenting a budget — it is constitutionally banned. The Spanish construction must be judged by its agreement, word order, tense, mood and context; the proposed conclusion does not follow from the evidence supplied in the question. The stem states a constitutional prohibition on presentation, which regional refusal to implement does not establish." } },
+  "CHEM-COV-059": { reforge: { C: "Chlorine radicals react randomly with any molecule in the mixture. The chemical explanation must follow the particles, bonding, quantities and stated conditions; the answer does not account for the competing factor or trade-off described. The competing factor is that further substitution becomes progressively less likely as CH₃Cl is consumed, so the mixture is not produced by random reaction alone." } },
+  "ORG-07": { reforge: { C: "Chlorine radicals react randomly with any molecule in the mixture. The chemical explanation must follow the particles, bonding, quantities and stated conditions; the answer leaves out the condition that determines the result being tested. The missing condition is the ratio of chlorine to methane, which determines how far the substitution proceeds." } },
+  "ORG-08": { reforge: { A: "Aniline has more hydrogen atoms, making it harder to accept a proton. The chemical explanation must follow the particles, bonding, quantities and stated conditions; the option identifies a related term but not the feature that makes it the correct answer, ignoring the resonance effect." } },
+  "CHEM-COV-003": { reforge: { A: "Trigonal planar — three bonds, no lone pairs. The chemical explanation must follow the particles, bonding, quantities and stated conditions; the wording describes a different process and would predict a different outcome, not this molecule's shape." } },
+  "CHEM-COV-060": { reforge: { B: "Aniline has more hydrogen atoms, making it harder to accept a proton. The chemical explanation must follow the particles, bonding, quantities and stated conditions; the option identifies a related term but not the feature that makes it the correct answer, ignoring the resonance effect entirely." } }
+};
+for (const [id, repairs] of Object.entries(finalLengthCueRepairs)) {
   for (const bank of Object.values(BANKS)) {
     const question = (bank.questions || []).find(candidate => candidate.id === id);
     if (!question) continue;
