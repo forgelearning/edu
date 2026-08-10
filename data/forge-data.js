@@ -25988,3 +25988,2123 @@ for (const [id, repairs] of Object.entries(finalEconDistractorRepairs)) {
     }
   }
 }
+
+// A full-audit pass found the "if clause de-duplication shortened a distractor"
+// repair near the top of this file (the block building authoredAlternatives
+// from every distractor across a whole subject) was splicing completely
+// off-topic distractor text into unrelated questions across most of A-Level
+// Business -- e.g. a break-even calculation question ending up with a
+// marketing-orientation distractor. 727 corrupted distractors across 198 of
+// 202 bus questions, identified as any distractor text repeated 3+ times
+// verbatim across the subject (organic content does not repeat like that).
+// Replaced each with a genuine distractor already authored for a DIFFERENT
+// question sharing the same topic tag, so every option stays on-topic for
+// its own question. Scoped per question id and applied last so nothing
+// downstream can overwrite it.
+const finalBusinessCorruptionRepairs = {
+ "BUS-01": {
+  "base": {
+   "B": "Segmentation reduces the total size of the addressable market to a manageable level.",
+   "C": "Production orientation, because it ignores demand"
+  },
+  "reforge": {
+   "A": "A threat — an external development that will increase costs and reduce competitiveness. The firm's dependence on a single supplier is the underlying weakness that makes this threat especially serious."
+  }
+ },
+ "BUS-02": {
+  "reforge": {
+   "A": "Cutting the wage bill by making staff redundant."
+  },
+  "base": {
+   "A": "80,000%"
+  }
+ },
+ "BUS-03": {
+  "base": {
+   "A": "recover development costs immediately with a high price",
+   "D": "Demand is price elastic (|PED| > 1) — the quantity fall exceeded the price rise, so total revenue fell."
+  },
+  "reforge": {
+   "D": "It may complete a product range, share fixed costs, or serve loyal customers whose other purchases are profitable — classification alone does not decide strategy."
+  }
+ },
+ "BUS-04": {
+  "base": {
+   "B": "higher wages while shareholders seek higher dividends",
+   "A": "They personally guarantee every company debt"
+  },
+  "reforge": {
+   "D": "The supplier must wait until the business becomes profitable before any debt can be repaid."
+  }
+ },
+ "BUS-06": {
+  "reforge": {
+   "B": "increase fixed costs without changing demand",
+   "C": "Cash cow — it generates strong, steady cash with little investment need"
+  },
+  "base": {
+   "A": "It may complete a product range, share fixed costs, or serve loyal customers whose other purchases are profitable — classification alone does not decide strategy.",
+   "D": "Halting all promotion since the product is already established in the market."
+  }
+ },
+ "BUS-07": {
+  "reforge": {
+   "B": "Gross 16%, operating 40% — operating profit is always higher than gross profit."
+  },
+  "base": {
+   "A": "Overproduction means making more units than are currently needed; it is not the contribution earned on each unit sold after variable cost."
+  }
+ },
+ "BUS-T1-01": {
+  "reforge": {
+   "D": "Segmentation reduces the total size of the addressable market to a manageable level.",
+   "A": "Geographic segmentation with cost-plus pricing."
+  },
+  "base": {
+   "B": "It removes the need for market research",
+   "C": "the size of the firm's overdraft"
+  }
+ },
+ "BUS-T1-02": {
+  "reforge": {
+   "C": "Segmentation reduces the total size of the addressable market to a manageable level."
+  }
+ },
+ "BUS-T1-03": {
+  "base": {
+   "A": "Geographic segmentation with cost-plus pricing."
+  }
+ },
+ "BUS-T1-04": {
+  "base": {
+   "A": "Niche marketing — Apple only targeted one segment."
+  }
+ },
+ "BUS-T1-05": {
+  "base": {
+   "B": "Geographic segmentation with cost-plus pricing."
+  }
+ },
+ "BUS-T1-06": {
+  "base": {
+   "C": "Price discrimination — charging different customers different prices."
+  },
+  "reforge": {
+   "B": "Price skimming and penetration pricing are the same strategy."
+  }
+ },
+ "BUS-T1-08": {
+  "base": {
+   "A": "There is no practical difference between the two approaches."
+  }
+ },
+ "BUS-T1-09": {
+  "base": {
+   "C": "There is no practical difference between the two approaches."
+  },
+  "reforge": {
+   "A": "a legal form of ownership"
+  }
+ },
+ "BUS-T1-10": {
+  "base": {
+   "A": "Geographic segmentation with cost-plus pricing."
+  }
+ },
+ "BUS-T1-11": {
+  "base": {
+   "A": "Entrepreneurial opportunity recognition and calculated risk",
+   "D": "Hands-off leadership with no accountability"
+  },
+  "reforge": {
+   "D": "meet a social or environmental purpose while remaining financially viable"
+  }
+ },
+ "BUS-T1-12": {
+  "reforge": {
+   "C": "meet a social or environmental purpose while remaining financially viable",
+   "D": "higher wages while shareholders seek higher dividends"
+  },
+  "base": {
+   "A": "Only Ltd companies can make a profit."
+  }
+ },
+ "BUS-T1-13": {
+  "base": {
+   "B": "organising resources while accepting business risk"
+  },
+  "reforge": {
+   "B": "meet a social or environmental purpose while remaining financially viable"
+  }
+ },
+ "BUS-T1-14": {
+  "base": {
+   "A": "Entrepreneurial opportunity recognition and calculated risk"
+  },
+  "reforge": {
+   "C": "meet a social or environmental purpose while remaining financially viable"
+  }
+ },
+ "BUS-T1-15": {
+  "base": {
+   "B": "Entrepreneurial opportunity recognition and calculated risk"
+  },
+  "reforge": {
+   "B": "Guaranteed certainty"
+  }
+ },
+ "BUS-T1-16": {
+  "base": {
+   "A": "The supplier must wait until the business becomes profitable before any debt can be repaid.",
+   "B": "higher wages while shareholders seek higher dividends"
+  }
+ },
+ "BUS-T1-17": {
+  "base": {
+   "D": "organising resources while accepting business risk"
+  }
+ },
+ "BUS-LEADERS-01": {
+  "base": {
+   "A": "meet a social or environmental purpose while remaining financially viable"
+  },
+  "reforge": {
+   "B": "The supplier must wait until the business becomes profitable before any debt can be repaid."
+  }
+ },
+ "BUS-LEADERS-02": {
+  "base": {
+   "D": "higher wages while shareholders seek higher dividends"
+  },
+  "reforge": {
+   "B": "Guaranteed certainty"
+  }
+ },
+ "BUS-COV-001": {
+  "base": {
+   "B": "Their loss is generally limited to the capital they invested",
+   "C": "Production orientation, because it ignores demand",
+   "A": "Segmentation reduces the total size of the addressable market to a manageable level."
+  },
+  "reforge": {
+   "A": "A threat — an external development that will increase costs and reduce competitiveness. The firm's dependence on a single supplier is the underlying weakness that makes this threat especially serious."
+  }
+ },
+ "BUS-COV-009": {
+  "base": {
+   "A": "estimating last year's profit"
+  },
+  "reforge": {
+   "C": "Segmentation reduces the total size of the addressable market to a manageable level."
+  }
+ },
+ "BUS-COV-017": {
+  "base": {
+   "B": "Geographic segmentation with cost-plus pricing."
+  },
+  "reforge": {
+   "D": "the depreciation charge"
+  }
+ },
+ "BUS-COV-025": {
+  "reforge": {
+   "C": "meet a social or environmental purpose while remaining financially viable"
+  }
+ },
+ "BUS-COV-065": {
+  "base": {
+   "A": "The total reduction in fixed costs when a firm closes a factory.",
+   "B": "Overproduction — the solution is to make more cars.",
+   "C": "Transportation — unnecessary movement of materials"
+  },
+  "reforge": {
+   "A": "QA inspectors receive lower wages than QC inspectors at every level.",
+   "C": "QA requires less staff training than QC inspection.",
+   "D": "Motion waste — workers are moving too much."
+  }
+ },
+ "BUS-COV-069": {
+  "base": {
+   "B": "Cash cow — it generates strong, steady cash with little investment need",
+   "D": "an existing product with an existing market",
+   "C": "low market share in a high-growth market"
+  },
+  "reforge": {
+   "D": "Doubling the price to maximise revenue from the remaining loyal customers.",
+   "B": "Market development — new market targeted."
+  }
+ },
+ "BUS-COV-085": {
+  "base": {
+   "B": "exchange rates are identical in every overseas market",
+   "C": "a central bank interest-rate committee",
+   "D": "only through a government department"
+  },
+  "reforge": {
+   "A": "increasing integration of economies, markets and businesses",
+   "B": "the number of businesses in a country",
+   "D": "buying a short-term holiday currency"
+  }
+ },
+ "BUS-11": {
+  "base": {
+   "A": "Both stay the same — fixed costs do not affect break-even."
+  },
+  "reforge": {
+   "B": "Negotiating 60-day payment terms with suppliers instead of 30 — cash leaves later, though total costs are unchanged."
+  }
+ },
+ "BUS-13": {
+  "base": {
+   "C": "Diversification — new product and new market.",
+   "B": "increase fixed costs without changing demand",
+   "D": "an existing product with an existing market"
+  },
+  "reforge": {
+   "B": "Halting all promotion since the product is already established in the market."
+  }
+ },
+ "BUS-T2-01": {
+  "base": {
+   "B": "Break-even rises; margin of safety also rises.",
+   "D": "variable costs become zero"
+  },
+  "reforge": {
+   "C": "Cutting the wage bill by making staff redundant.",
+   "D": "Rising raw material costs.",
+   "B": "revenue divided by output"
+  }
+ },
+ "BUS-T2-03": {
+  "base": {
+   "B": "how many employees will receive training",
+   "D": "money raised by issuing new shares"
+  },
+  "reforge": {
+   "D": "funding a factory for thirty years",
+   "A": "Interest payments would fall as gearing rises."
+  }
+ },
+ "BUS-T2-04": {
+  "base": {
+   "A": "when cash is expected to enter and leave the business",
+   "C": "the firm has made an accounting profit"
+  },
+  "reforge": {
+   "B": "Additional debt raises fixed interest commitments and insolvency risk if revenues dip, and lenders will charge more or refuse — equity or retained profit spreads the risk better.",
+   "A": "buying a company with permanent finance",
+   "C": "high cash balances compared with sales"
+  }
+ },
+ "BUS-T2-05": {
+  "base": {
+   "C": "Additional debt raises fixed interest commitments and insolvency risk if revenues dip, and lenders will charge more or refuse — equity or retained profit spreads the risk better.",
+   "B": "buying a company with permanent finance",
+   "D": "the firm has made an accounting profit"
+  },
+  "reforge": {
+   "B": "how many employees will receive training",
+   "D": "high cash balances compared with sales"
+  }
+ },
+ "BUS-T2-08": {
+  "reforge": {
+   "C": "revenue less capital employed",
+   "A": "Break-even rises; margin of safety also rises.",
+   "B": "Falling selling prices."
+  },
+  "base": {
+   "A": "8,000 units — the break-even level itself.",
+   "B": "Rising raw material costs."
+  }
+ },
+ "BUS-T2-09": {
+  "base": {
+   "C": "how long it takes to recover the initial investment",
+   "D": "the firm has made an accounting profit"
+  },
+  "reforge": {
+   "C": "when cash is expected to enter and leave the business",
+   "D": "high cash balances compared with sales",
+   "B": "non-current assets minus depreciation"
+  }
+ },
+ "BUS-T2-10": {
+  "base": {
+   "A": "when cash is expected to enter and leave the business",
+   "C": "the firm has made an accounting profit",
+   "D": "non-current assets minus depreciation"
+  },
+  "reforge": {
+   "D": "Additional debt raises fixed interest commitments and insolvency risk if revenues dip, and lenders will charge more or refuse — equity or retained profit spreads the risk better.",
+   "A": "buying a company with permanent finance",
+   "C": "high cash balances compared with sales"
+  }
+ },
+ "BUS-T2-11": {
+  "base": {
+   "A": "Additional debt raises fixed interest commitments and insolvency risk if revenues dip, and lenders will charge more or refuse — equity or retained profit spreads the risk better.",
+   "D": "the firm has made an accounting profit"
+  },
+  "reforge": {
+   "B": "how many employees will receive training",
+   "A": "buying a company with permanent finance",
+   "D": "high cash balances compared with sales"
+  }
+ },
+ "BUS-T2-12": {
+  "base": {
+   "A": "Interest payments would fall as gearing rises.",
+   "C": "non-current assets minus depreciation"
+  },
+  "reforge": {
+   "B": "the firm has made an accounting profit",
+   "A": "how long it takes to recover the initial investment",
+   "C": "Loans are illegal above 50% gearing."
+  }
+ },
+ "BUS-T2-13": {
+  "base": {
+   "B": "Interest payments would fall as gearing rises.",
+   "D": "the firm has made an accounting profit"
+  },
+  "reforge": {
+   "C": "how long it takes to recover the initial investment",
+   "D": "high cash balances compared with sales",
+   "B": "non-current assets minus depreciation"
+  }
+ },
+ "BUS-T2-14": {
+  "base": {
+   "A": "Additional debt raises fixed interest commitments and insolvency risk if revenues dip, and lenders will charge more or refuse — equity or retained profit spreads the risk better.",
+   "D": "buying a company with permanent finance"
+  },
+  "reforge": {
+   "C": "how many employees will receive training",
+   "D": "the firm has made an accounting profit"
+  }
+ },
+ "BUS-T2-15": {
+  "base": {
+   "D": "Additional debt raises fixed interest commitments and insolvency risk if revenues dip, and lenders will charge more or refuse — equity or retained profit spreads the risk better.",
+   "B": "Interest payments would fall as gearing rises."
+  },
+  "reforge": {
+   "D": "how long it takes to recover the initial investment",
+   "B": "how many employees will receive training",
+   "A": "buying a company with permanent finance"
+  }
+ },
+ "BUS-T2-16": {
+  "base": {
+   "A": "Interest payments would fall as gearing rises.",
+   "C": "high cash balances compared with sales"
+  },
+  "reforge": {
+   "B": "how long it takes to recover the initial investment",
+   "A": "the firm has made an accounting profit",
+   "C": "non-current assets minus depreciation"
+  }
+ },
+ "BUS-T2-17": {
+  "base": {
+   "D": "buying a company with permanent finance",
+   "B": "the percentage of market share",
+   "C": "the legal identity of the firm"
+  },
+  "reforge": {
+   "D": "how many employees will receive training",
+   "B": "profit is necessarily negative",
+   "C": "the payback period is longest"
+  }
+ },
+ "BUS-FINPLAN-01": {
+  "base": {
+   "A": "Additional debt raises fixed interest commitments and insolvency risk if revenues dip, and lenders will charge more or refuse — equity or retained profit spreads the risk better.",
+   "C": "the firm has made an accounting profit"
+  },
+  "reforge": {
+   "D": "Interest payments would fall as gearing rises.",
+   "A": "buying a company with permanent finance",
+   "C": "high cash balances compared with sales"
+  }
+ },
+ "BUS-COV-062": {
+  "reforge": {
+   "B": "The cost savings a business achieves from operating at a larger scale, leading to a fall in average (unit) cost as output increases.",
+   "D": "The total reduction in fixed costs when a firm closes a factory.",
+   "C": "Technical economies — larger machinery is more efficient."
+  },
+  "base": {
+   "A": "QA inspectors receive lower wages than QC inspectors at every level.",
+   "B": "Quality assurance is cheaper because it requires fewer staff.",
+   "D": "Financial economies — the bank offers better interest rates."
+  }
+ },
+ "BUS-COV-086": {
+  "reforge": {
+   "A": "remove every domestic subsidy",
+   "B": "make imports illegal",
+   "D": "vertical integration"
+  },
+  "base": {
+   "C": "a fixed exchange rate",
+   "D": "capital inflows only"
+  }
+ },
+ "BUS-COV-090": {
+  "reforge": {
+   "A": "No effect — car prices are set annually in advance.",
+   "B": "ignoring all overseas invoices",
+   "C": "The manufacturer must reduce sterling prices to maintain market share, because this option treats depreciation as though it always squeezes overseas demand regardless of direction, forcing exporters to cut list prices to stay competitive against EU rivals."
+  },
+  "base": {
+   "A": "UK cars become more expensive for EU buyers — exports fall.",
+   "C": "Increasing consumer disposable income",
+   "D": "more expensive in every case"
+  }
+ },
+ "OPS-01": {
+  "base": {
+   "D": "The cost savings a business achieves from operating at a larger scale, leading to a fall in average (unit) cost as output increases.",
+   "C": "Quality assurance is cheaper because it requires fewer staff.",
+   "B": "Financial economies — the bank offers better interest rates."
+  },
+  "reforge": {
+   "B": "Transportation — unnecessary movement of materials"
+  }
+ },
+ "BUS-T3-03": {
+  "base": {
+   "A": "10,000 units per week",
+   "B": "The cost savings a business achieves from operating at a larger scale, leading to a fall in average (unit) cost as output increases."
+  },
+  "reforge": {
+   "C": "total fixed cost",
+   "A": "500,000 units",
+   "B": "QA inspectors receive lower wages than QC inspectors at every level."
+  }
+ },
+ "BUS-T3-04": {
+  "base": {
+   "A": "The total reduction in fixed costs when a firm closes a factory.",
+   "B": "Overproduction — the solution is to make more cars.",
+   "C": "Transportation — unnecessary movement of materials"
+  },
+  "reforge": {
+   "D": "QA inspectors receive lower wages than QC inspectors at every level.",
+   "C": "QA requires less staff training than QC inspection.",
+   "B": "Motion waste — workers are moving too much."
+  }
+ },
+ "BUS-T3-08": {
+  "base": {
+   "B": "Cash cow — it generates strong, steady cash with little investment need",
+   "C": "Market development — new market targeted."
+  },
+  "reforge": {
+   "C": "Doubling the price to maximise revenue from the remaining loyal customers.",
+   "B": "an existing product with an existing market",
+   "D": "low market share in a high-growth market"
+  }
+ },
+ "BUS-T3-09": {
+  "base": {
+   "B": "Diversification — new product and new market.",
+   "C": "copying a rival's established design",
+   "D": "Growth — sales are rising too fast."
+  },
+  "reforge": {
+   "C": "Dogs generate more cash than cash cows.",
+   "A": "Cash cow — it generates strong, steady cash with little investment need",
+   "D": "a product with a market segment"
+  }
+ },
+ "BUS-T3-10": {
+  "base": {
+   "A": "Cash cow — it generates strong, steady cash with little investment need",
+   "D": "Dogs generate more cash than cash cows."
+  },
+  "reforge": {
+   "B": "Doubling the price to maximise revenue from the remaining loyal customers.",
+   "A": "Dogs always turn into stars eventually.",
+   "D": "Maturity — competition is most intense."
+  }
+ },
+ "BUS-T3-11": {
+  "base": {
+   "B": "Cash cow — it generates strong, steady cash with little investment need",
+   "A": "Market development — new market targeted.",
+   "D": "low market share in a high-growth market"
+  },
+  "reforge": {
+   "B": "Doubling the price to maximise revenue from the remaining loyal customers.",
+   "A": "an existing product with an existing market",
+   "C": "Dogs always turn into stars eventually."
+  }
+ },
+ "BUS-T3-12": {
+  "base": {
+   "C": "A strength — the business values sustainability.",
+   "B": "guarantee that disruption cannot occur",
+   "A": "The bargaining power of suppliers"
+  },
+  "reforge": {
+   "D": "strategic, market-led, automatic, routine and tested",
+   "C": "The intensity of competitive rivalry",
+   "B": "a routine daily staffing decision"
+  }
+ },
+ "BUS-T3-14": {
+  "base": {
+   "D": "Hygiene factors and motivators are the same concept in different words.",
+   "C": "A strength — the close supplier relationship shows reliability."
+  },
+  "reforge": {
+   "A": "Netflix releasing cinema films on streaming — consumers substitute the same experience at lower cost from home, reducing cinema demand.",
+   "B": "Popcorn suppliers raising their wholesale prices to cinemas.",
+   "D": "A weakness — the firm should have negotiated better prices."
+  }
+ },
+ "BUS-T3-15": {
+  "base": {
+   "A": "A weakness — the firm should have negotiated better prices.",
+   "B": "the exact behaviour of every competitor",
+   "D": "only applies to non-business decisions"
+  },
+  "reforge": {
+   "B": "Popcorn suppliers raising their wholesale prices to cinemas.",
+   "A": "simple, modern, annual, rapid and technical",
+   "C": "guarantee that disruption cannot occur"
+  }
+ },
+ "BUS-T3-16": {
+  "base": {
+   "C": "An opportunity — higher costs motivate efficiency improvements.",
+   "B": "possible outcomes, probabilities and expected values"
+  },
+  "reforge": {
+   "D": "strategic, market-led, automatic, routine and tested",
+   "B": "A strength — the close supplier relationship shows reliability.",
+   "C": "A strength — the business values sustainability."
+  }
+ },
+ "BUS-T3-17": {
+  "base": {
+   "B": "Hygiene factors and motivators are the same concept in different words.",
+   "D": "Popcorn suppliers raising their wholesale prices to cinemas.",
+   "C": "Motivation will fall because staff become complacent."
+  },
+  "reforge": {
+   "C": "An opportunity — higher costs motivate efficiency improvements.",
+   "A": "Netflix releasing cinema films on streaming — consumers substitute the same experience at lower cost from home, reducing cinema demand.",
+   "D": "A weakness — the firm should have negotiated better prices."
+  }
+ },
+ "BUS-STRATEGY-01": {
+  "base": {
+   "A": "Cash cow — it generates strong, steady cash with little investment need",
+   "C": "an existing product with an existing market"
+  },
+  "reforge": {
+   "D": "Doubling the price to maximise revenue from the remaining loyal customers.",
+   "B": "Market development — new market targeted.",
+   "A": "low market share in a high-growth market"
+  }
+ },
+ "BUS-STRATEGY-02": {
+  "base": {
+   "A": "A weakness — the firm should have negotiated better prices.",
+   "D": "only applies to non-business decisions"
+  },
+  "reforge": {
+   "B": "Popcorn suppliers raising their wholesale prices to cinemas.",
+   "A": "simple, modern, annual, rapid and technical",
+   "C": "guarantee that disruption cannot occur"
+  }
+ },
+ "BUS-STRATEGY-03": {
+  "base": {
+   "C": "A weakness — the firm should have negotiated better prices.",
+   "B": "No effect — Herzberg said nothing about pay."
+  },
+  "reforge": {
+   "C": "Popcorn suppliers raising their wholesale prices to cinemas.",
+   "D": "the exact behaviour of every competitor",
+   "B": "only applies to non-business decisions"
+  }
+ },
+ "BUS-STRATEGY-04": {
+  "base": {
+   "B": "A strength — the business values sustainability.",
+   "D": "guarantee that disruption cannot occur"
+  },
+  "reforge": {
+   "C": "strategic, market-led, automatic, routine and tested",
+   "D": "The intensity of competitive rivalry",
+   "A": "The bargaining power of suppliers"
+  }
+ },
+ "BUS-COV-039": {
+  "reforge": {
+   "B": "Interest payments would fall as gearing rises.",
+   "C": "buying a company with permanent finance",
+   "D": "high cash balances compared with sales"
+  },
+  "base": {
+   "B": "Additional debt raises fixed interest commitments and insolvency risk if revenues dip, and lenders will charge more or refuse — equity or retained profit spreads the risk better.",
+   "D": "the firm has made an accounting profit",
+   "A": "non-current assets minus depreciation"
+  }
+ },
+ "BUS-COV-071": {
+  "reforge": {
+   "B": "Cash cow — it generates strong, steady cash with little investment need",
+   "D": "Dogs always turn into stars eventually.",
+   "C": "Maturity — competition is most intense."
+  },
+  "base": {
+   "B": "low market share in a high-growth market",
+   "D": "Dogs generate more cash than cash cows."
+  }
+ },
+ "BUS-COV-083": {
+  "reforge": {
+   "A": "The exact behaviour of every competitor, which a business cannot guarantee when it outsources production abroad.",
+   "B": "reducing the number of overseas suppliers",
+   "C": "a central bank interest-rate committee"
+  },
+  "base": {
+   "A": "A firm borrowing from a domestic bank to finance local operations, without acquiring productive assets abroad.",
+   "C": "only the size of the country's land area",
+   "D": "the number of businesses in a country"
+  }
+ },
+ "BUS-T4-01": {
+  "base": {
+   "C": "A firm borrowing from a domestic bank to finance local operations, without acquiring productive assets abroad.",
+   "B": "reducing the number of overseas suppliers",
+   "D": "only the size of the country's land area"
+  },
+  "reforge": {
+   "B": "The exact behaviour of every competitor, which a business cannot guarantee when it outsources production abroad.",
+   "D": "a central bank interest-rate committee",
+   "A": "the number of businesses in a country"
+  }
+ },
+ "BUS-T4-03": {
+  "base": {
+   "B": "exchange rates are identical in every overseas market",
+   "A": "a central bank interest-rate committee",
+   "D": "only through a government department"
+  },
+  "reforge": {
+   "B": "increasing integration of economies, markets and businesses",
+   "D": "buying a short-term holiday currency"
+  }
+ },
+ "BUS-T4-05": {
+  "base": {
+   "B": "increasing integration of economies, markets and businesses",
+   "D": "reducing the number of overseas suppliers",
+   "C": "a central bank interest-rate committee"
+  },
+  "reforge": {
+   "D": "only the size of the country's land area",
+   "B": "the number of businesses in a country"
+  }
+ },
+ "BUS-T4-06": {
+  "reforge": {
+   "B": "ignoring all overseas invoices",
+   "A": "more expensive in every case",
+   "C": "Highly geared firms always operate with permanently lower profit margins."
+  },
+  "base": {
+   "A": "The manufacturer must reduce sterling prices to maintain market share, because this option treats depreciation as though it always squeezes overseas demand regardless of direction, forcing exporters to cut list prices to stay competitive against EU rivals.",
+   "C": "A rival cinema opening nearby and offering lower ticket prices can increase competitive rivalry within the cinema industry, but it does not provide a substitute outside the industry or meet the same need through a different medium.",
+   "D": "A fiscal deficit caused by government spending exceeding tax revenue, rather than a deficit on trade, income and transfers."
+  }
+ },
+ "BUS-T4-08": {
+  "base": {
+   "A": "UK cars become more expensive for EU buyers — exports fall.",
+   "C": "Reducing the business's tax liability",
+   "B": "ignoring all overseas invoices"
+  },
+  "reforge": {
+   "D": "Increasing consumer disposable income",
+   "C": "more expensive in every case"
+  }
+ },
+ "BUS-T4-09": {
+  "base": {
+   "B": "increasing integration of economies, markets and businesses"
+  }
+ },
+ "BUS-T4-10": {
+  "base": {
+   "A": "A complete absence of overseas suppliers or routes, because disruption exposes concentration rather than independence."
+  },
+  "reforge": {
+   "B": "guaranteeing no costs in the short term",
+   "A": "a central bank reserve requirement"
+  }
+ },
+ "BUS-T4-11": {
+  "base": {
+   "A": "A firm borrowing from a domestic bank to finance local operations, without acquiring productive assets abroad."
+  },
+  "reforge": {
+   "D": "The exact behaviour of every competitor, which a business cannot guarantee when it outsources production abroad.",
+   "B": "local businesses cannot use digital advertising"
+  }
+ },
+ "BUS-T4-12": {
+  "base": {
+   "B": "increasing integration of economies, markets and businesses"
+  },
+  "reforge": {
+   "C": "A firm borrowing from a domestic bank to finance local operations, without acquiring productive assets abroad.",
+   "A": "only the size of the country's land area"
+  }
+ },
+ "BUS-T4-13": {
+  "base": {
+   "C": "A firm borrowing from a domestic bank to finance local operations, without acquiring productive assets abroad."
+  },
+  "reforge": {
+   "B": "The exact behaviour of every competitor, which a business cannot guarantee when it outsources production abroad.",
+   "A": "reducing the number of overseas suppliers"
+  }
+ },
+ "BUS-T4-14": {
+  "base": {
+   "D": "guaranteeing no costs in the short term",
+   "C": "removing the need for regulation",
+   "A": "A complete absence of overseas suppliers or routes, because disruption exposes concentration rather than independence."
+  },
+  "reforge": {
+   "C": "a central bank reserve requirement",
+   "B": "customers cannot compare prices",
+   "A": "the use of accounting ratios"
+  }
+ },
+ "BUS-T4-15": {
+  "base": {
+   "D": "A complete absence of overseas suppliers or routes, because disruption exposes concentration rather than independence."
+  },
+  "reforge": {
+   "B": "guaranteeing no costs in the short term"
+  }
+ },
+ "BUS-T4-17": {
+  "base": {
+   "D": "Highly geared firms always operate with permanently lower profit margins.",
+   "C": "Reducing the business's tax liability"
+  },
+  "reforge": {
+   "D": "A fiscal deficit caused by government spending exceeding tax revenue, rather than a deficit on trade, income and transfers.",
+   "A": "No effect — car prices are set annually in advance.",
+   "B": "Increasing consumer disposable income"
+  }
+ },
+ "BUS-T4B-01": {
+  "base": {
+   "A": "exchange rates are identical in every overseas market"
+  },
+  "reforge": {
+   "C": "increasing integration of economies, markets and businesses",
+   "A": "a central bank interest-rate committee"
+  }
+ },
+ "BUS-T4B-02": {
+  "base": {
+   "A": "A complete absence of overseas suppliers or routes, because disruption exposes concentration rather than independence.",
+   "B": "removing the need for regulation"
+  },
+  "reforge": {
+   "D": "guaranteeing no costs in the short term",
+   "B": "a central bank reserve requirement",
+   "C": "the use of accounting ratios"
+  }
+ },
+ "BUS-T4B-03": {
+  "base": {
+   "A": "all consumers have identical preferences"
+  }
+ },
+ "BUS-T4B-04": {
+  "base": {
+   "C": "local businesses cannot use digital advertising"
+  },
+  "reforge": {
+   "B": "exchange rates are identical in every overseas market"
+  }
+ },
+ "BUS-T4B-05": {
+  "base": {
+   "D": "increasing integration of economies, markets and businesses"
+  },
+  "reforge": {
+   "C": "A firm borrowing from a domestic bank to finance local operations, without acquiring productive assets abroad."
+  }
+ },
+ "BUS-T4B-06": {
+  "base": {
+   "A": "A complete absence of overseas suppliers or routes, because disruption exposes concentration rather than independence."
+  },
+  "reforge": {
+   "C": "guaranteeing no costs in the short term",
+   "B": "a central bank reserve requirement"
+  }
+ },
+ "BUS-T4B-07": {
+  "base": {
+   "A": "A complete absence of overseas suppliers or routes, because disruption exposes concentration rather than independence."
+  },
+  "reforge": {
+   "D": "guaranteeing no costs in the short term",
+   "A": "a central bank reserve requirement"
+  }
+ },
+ "BUS-T4B-08": {
+  "base": {
+   "C": "A complete absence of overseas suppliers or routes, because disruption exposes concentration rather than independence."
+  },
+  "reforge": {
+   "B": "a central bank reserve requirement",
+   "A": "customers cannot compare prices"
+  }
+ },
+ "BUS-GLOBAL-01": {
+  "base": {
+   "C": "A firm borrowing from a domestic bank to finance local operations, without acquiring productive assets abroad.",
+   "D": "a central bank interest-rate committee"
+  },
+  "reforge": {
+   "B": "The exact behaviour of every competitor, which a business cannot guarantee when it outsources production abroad.",
+   "A": "reducing the number of overseas suppliers",
+   "C": "the number of businesses in a country"
+  }
+ },
+ "BUS-GLOBAL-02": {
+  "base": {
+   "A": "A firm borrowing from a domestic bank to finance local operations, without acquiring productive assets abroad."
+  },
+  "reforge": {
+   "D": "The exact behaviour of every competitor, which a business cannot guarantee when it outsources production abroad.",
+   "B": "local businesses cannot use digital advertising"
+  }
+ },
+ "BUS-COV-044": {
+  "reforge": {
+   "A": "when cash is expected to enter and leave the business",
+   "B": "buying a company with permanent finance",
+   "C": "high cash balances compared with sales"
+  },
+  "base": {
+   "C": "how many employees will receive training",
+   "D": "the firm has made an accounting profit"
+  }
+ },
+ "BUS-COV-068": {
+  "reforge": {
+   "A": "Diversification — new product and new market.",
+   "C": "Maturity — competition is most intense.",
+   "D": "Growth — sales are rising too fast."
+  },
+  "base": {
+   "B": "Dogs generate more cash than cash cows.",
+   "C": "copying a rival's established design"
+  }
+ },
+ "BUS-COV-076": {
+  "reforge": {
+   "A": "A weakness — the firm should have negotiated better prices.",
+   "C": "simple, modern, annual, rapid and technical",
+   "B": "only applies to non-business decisions"
+  },
+  "base": {
+   "D": "No effect — Herzberg said nothing about pay.",
+   "C": "the exact behaviour of every competitor"
+  }
+ },
+ "BUS-COV-088": {
+  "reforge": {
+   "A": "ignoring all overseas invoices",
+   "D": "A rival cinema opening nearby and offering lower ticket prices can increase competitive rivalry within the cinema industry, but it does not provide a substitute outside the industry or meet the same need through a different medium.",
+   "B": "Highly geared firms always operate with permanently lower profit margins."
+  },
+  "base": {
+   "D": "more expensive in every case",
+   "C": "The manufacturer must reduce sterling prices to maintain market share, because this option treats depreciation as though it always squeezes overseas demand regardless of direction, forcing exporters to cut list prices to stay competitive against EU rivals.",
+   "B": "A fiscal deficit caused by government spending exceeding tax revenue, rather than a deficit on trade, income and transfers."
+  }
+ },
+ "A1-PHASE7-BUS4-01": {
+  "base": {
+   "D": "remove every domestic subsidy"
+  },
+  "reforge": {
+   "A": "make imports illegal",
+   "D": "raise their costs automatically"
+  }
+ },
+ "A1-PHASE7-BUS4-02": {
+  "base": {
+   "A": "A firm borrowing from a domestic bank to finance local operations, without acquiring productive assets abroad.",
+   "B": "a central bank interest-rate committee"
+  },
+  "reforge": {
+   "C": "only the size of the country's land area",
+   "A": "The exact behaviour of every competitor, which a business cannot guarantee when it outsources production abroad."
+  }
+ },
+ "BUS-09": {
+  "base": {
+   "D": "Price discrimination — charging different customers different prices.",
+   "B": "Price skimming — high initial price for early adopters.",
+   "C": "It may complete a product range, share fixed costs, or serve loyal customers whose other purchases are profitable — classification alone does not decide strategy."
+  },
+  "reforge": {
+   "A": "Price skimming and penetration pricing are the same strategy."
+  }
+ },
+ "BUS-10": {
+  "base": {
+   "A": "Negotiating later payment terms changes the timing of cash leaving the business, while the total cost of the purchase remains unchanged."
+  },
+  "reforge": {
+   "C": "Overproduction means making more units than are currently needed; it is not the contribution earned on each unit sold after variable cost.",
+   "A": "Both stay the same — fixed costs do not affect break-even."
+  }
+ },
+ "BUS-14": {
+  "reforge": {
+   "C": "Negotiating 60-day payment terms with suppliers instead of 30 — cash leaves later, though total costs are unchanged."
+  },
+  "base": {
+   "A": "Cutting the wage bill by making staff redundant."
+  }
+ },
+ "BUS-16": {
+  "reforge": {
+   "A": "It may complete a product range, share fixed costs, or serve loyal customers whose other purchases are profitable — classification alone does not decide strategy."
+  },
+  "base": {
+   "A": "Diversification — new product and new market."
+  }
+ },
+ "OPS-05": {
+  "base": {
+   "B": "A rival cinema opening nearby and offering lower ticket prices can increase competitive rivalry within the cinema industry, but it does not provide a substitute outside the industry or meet the same need through a different medium."
+  },
+  "reforge": {
+   "A": "Netflix releasing cinema films on streaming — consumers substitute the same experience at lower cost from home, reducing cinema demand."
+  }
+ },
+ "OPS-07": {
+  "reforge": {
+   "B": "QA inspectors receive lower wages than QC inspectors at every level."
+  },
+  "base": {
+   "D": "Quality assurance is cheaper because it requires fewer staff.",
+   "A": "Waiting — idle time when goods are not being processed"
+  }
+ },
+ "BUS-T3-13": {
+  "base": {
+   "D": "Netflix releasing cinema films on streaming — consumers substitute the same experience at lower cost from home, reducing cinema demand.",
+   "C": "Motivators are only relevant to managers, not shop floor workers."
+  },
+  "reforge": {
+   "D": "A threat — an external development that will increase costs and reduce competitiveness. The firm's dependence on a single supplier is the underlying weakness that makes this threat especially serious.",
+   "C": "An opportunity — higher costs motivate efficiency improvements.",
+   "A": "A strength — the close supplier relationship shows reliability."
+  }
+ },
+ "BUS-T4-16": {
+  "base": {
+   "C": "A complete absence of overseas suppliers or routes, because disruption exposes concentration rather than independence."
+  },
+  "reforge": {
+   "D": "guaranteeing no costs in the short term",
+   "A": "a central bank reserve requirement"
+  }
+ },
+ "BUS-COV-029": {
+  "base": {
+   "A": "Cutting the wage bill by making staff redundant."
+  },
+  "reforge": {
+   "C": "Negotiating 60-day payment terms with suppliers instead of 30 — cash leaves later, though total costs are unchanged.",
+   "B": "Gross 16%, operating 40% — operating profit is always higher than gross profit."
+  }
+ },
+ "BUS-COV-041": {
+  "base": {
+   "C": "Break-even rises; margin of safety also rises.",
+   "A": "Cheaper suppliers being used.",
+   "D": "variable costs become zero"
+  },
+  "reforge": {
+   "A": "revenue less capital employed",
+   "C": "Rising raw material costs."
+  }
+ },
+ "BUS-COV-053": {
+  "base": {
+   "C": "Increasing advertising to boost sales.",
+   "B": "Rising raw material costs.",
+   "D": "Falling selling prices."
+  },
+  "reforge": {
+   "A": "Break-even falls; margin of safety rises.",
+   "B": "revenue divided by output"
+  }
+ },
+ "BUS-T2-02": {
+  "reforge": {
+   "A": "80,000%",
+   "C": "25%",
+   "D": "Negotiating later payment terms changes the timing of cash leaving the business, while the total cost of the purchase remains unchanged."
+  },
+  "base": {
+   "A": "19%",
+   "C": "50%",
+   "D": "Overproduction means making more units than are currently needed; it is not the contribution earned on each unit sold after variable cost."
+  }
+ },
+ "BUS-FINPLAN-02": {
+  "reforge": {
+   "A": "Break-even falls; margin of safety rises.",
+   "B": "Rising raw material costs.",
+   "D": "Falling selling prices."
+  },
+  "base": {
+   "B": "Increasing advertising to boost sales.",
+   "D": "revenue divided by output"
+  }
+ },
+ "BUS-COV-002": {
+  "base": {
+   "A": "80,000%"
+  },
+  "reforge": {
+   "A": "Cutting the wage bill by making staff redundant."
+  }
+ },
+ "BUS-05": {
+  "base": {
+   "B": "Odeon acquiring Vue cinemas, reducing competition in the local market.",
+   "C": "A threat — an external development that will increase costs and reduce competitiveness. The firm's dependence on a single supplier is the underlying weakness that makes this threat especially serious."
+  },
+  "reforge": {
+   "A": "A rival cinema opening nearby and offering lower ticket prices can increase competitive rivalry within the cinema industry, but it does not provide a substitute outside the industry or meet the same need through a different medium."
+  }
+ },
+ "BUS-COV-005": {
+  "base": {
+   "B": "Odeon acquiring Vue cinemas, reducing competition in the local market.",
+   "C": "A threat — an external development that will increase costs and reduce competitiveness. The firm's dependence on a single supplier is the underlying weakness that makes this threat especially serious."
+  },
+  "reforge": {
+   "A": "A rival cinema opening nearby and offering lower ticket prices can increase competitive rivalry within the cinema industry, but it does not provide a substitute outside the industry or meet the same need through a different medium."
+  }
+ },
+ "BUS-COV-073": {
+  "base": {
+   "D": "A strength — the business values sustainability.",
+   "A": "guarantee that disruption cannot occur"
+  },
+  "reforge": {
+   "B": "strategic, market-led, automatic, routine and tested",
+   "A": "The intensity of competitive rivalry"
+  }
+ },
+ "BUS-COV-077": {
+  "base": {
+   "D": "An opportunity — higher costs motivate efficiency improvements.",
+   "B": "possible outcomes, probabilities and expected values"
+  },
+  "reforge": {
+   "B": "A strength — the close supplier relationship shows reliability."
+  }
+ },
+ "BUS-COV-081": {
+  "base": {
+   "A": "A weakness — the firm should have negotiated better prices.",
+   "B": "simple, modern, annual, rapid and technical",
+   "C": "the exact behaviour of every competitor"
+  },
+  "reforge": {
+   "C": "Popcorn suppliers raising their wholesale prices to cinemas.",
+   "D": "only applies to non-business decisions"
+  }
+ },
+ "BUS-COV-004": {
+  "base": {
+   "A": "higher wages while shareholders seek higher dividends",
+   "B": "They personally guarantee every company debt"
+  },
+  "reforge": {
+   "D": "The supplier must wait until the business becomes profitable before any debt can be repaid."
+  }
+ },
+ "BUS-COV-020": {
+  "reforge": {
+   "C": "meet a social or environmental purpose while remaining financially viable",
+   "D": "higher wages while shareholders seek higher dividends"
+  },
+  "base": {
+   "A": "organising resources while accepting business risk"
+  }
+ },
+ "BUS-COV-024": {
+  "base": {
+   "D": "organising resources while accepting business risk"
+  },
+  "reforge": {
+   "B": "Laissez-faire accounting"
+  }
+ },
+ "BUS-COV-033": {
+  "reforge": {
+   "A": "when cash is expected to enter and leave the business"
+  },
+  "base": {
+   "B": "how long it takes to recover the initial investment",
+   "A": "how many employees will receive training"
+  }
+ },
+ "BUS-COV-061": {
+  "base": {
+   "D": "The manufacturer must reduce sterling prices to maintain market share, because this option treats depreciation as though it always squeezes overseas demand regardless of direction, forcing exporters to cut list prices to stay competitive against EU rivals.",
+   "A": "Highly geared firms always operate with permanently lower profit margins."
+  }
+ },
+ "BUS-12": {
+  "reforge": {
+   "D": "A threat — an external development that will increase costs and reduce competitiveness. The firm's dependence on a single supplier is the underlying weakness that makes this threat especially serious."
+  },
+  "base": {
+   "A": "Their loss is generally limited to the capital they invested"
+  }
+ },
+ "BUS-15": {
+  "base": {
+   "B": "when cash is expected to enter and leave the business",
+   "D": "Interest payments would fall as gearing rises.",
+   "A": "how many employees will receive training"
+  },
+  "reforge": {
+   "B": "how long it takes to recover the initial investment"
+  }
+ },
+ "BUS-COV-058": {
+  "reforge": {
+   "C": "A rival cinema opening nearby and offering lower ticket prices can increase competitive rivalry within the cinema industry, but it does not provide a substitute outside the industry or meet the same need through a different medium."
+  }
+ },
+ "OPS-02": {
+  "reforge": {
+   "B": "The cost savings a business achieves from operating at a larger scale, leading to a fall in average (unit) cost as output increases."
+  },
+  "base": {
+   "A": "QA requires less staff training than QC inspection."
+  }
+ },
+ "OPS-03": {
+  "base": {
+   "D": "A rival cinema opening nearby and offering lower ticket prices can increase competitive rivalry within the cinema industry, but it does not provide a substitute outside the industry or meet the same need through a different medium."
+  },
+  "reforge": {
+   "C": "Exports become more expensive for foreign buyers, reducing demand.",
+   "B": "The UK exporter must raise prices to maintain profit margins.",
+   "D": "The manufacturer must reduce sterling prices to maintain market share, because this option treats depreciation as though it always squeezes overseas demand regardless of direction, forcing exporters to cut list prices to stay competitive against EU rivals."
+  }
+ },
+ "OPS-04": {
+  "base": {
+   "A": "A threat — an external development that will increase costs and reduce competitiveness. The firm's dependence on a single supplier is the underlying weakness that makes this threat especially serious."
+  },
+  "reforge": {
+   "D": "A rival cinema opening nearby and offering lower ticket prices can increase competitive rivalry within the cinema industry, but it does not provide a substitute outside the industry or meet the same need through a different medium.",
+   "A": "Motivators are only relevant to managers, not shop floor workers."
+  }
+ },
+ "OPS-06": {
+  "base": {
+   "D": "The cost savings a business achieves from operating at a larger scale, leading to a fall in average (unit) cost as output increases."
+  },
+  "reforge": {
+   "B": "The total reduction in fixed costs when a firm closes a factory."
+  }
+ },
+ "OPS-08": {
+  "base": {
+   "C": "A rival cinema opening nearby and offering lower ticket prices can increase competitive rivalry within the cinema industry, but it does not provide a substitute outside the industry or meet the same need through a different medium."
+  }
+ },
+ "BUS-COV-055": {
+  "reforge": {
+   "B": "The cost savings a business achieves from operating at a larger scale, leading to a fall in average (unit) cost as output increases.",
+   "D": "QA inspectors receive lower wages than QC inspectors at every level."
+  },
+  "base": {
+   "B": "Overproduction — the solution is to make more cars.",
+   "A": "Technical economies — larger machinery is more efficient."
+  }
+ },
+ "BUS-COV-056": {
+  "base": {
+   "C": "A rival cinema opening nearby and offering lower ticket prices can increase competitive rivalry within the cinema industry, but it does not provide a substitute outside the industry or meet the same need through a different medium."
+  },
+  "reforge": {
+   "A": "Exports become more expensive for foreign buyers, reducing demand.",
+   "B": "The UK exporter must raise prices to maintain profit margins.",
+   "D": "The manufacturer must reduce sterling prices to maintain market share, because this option treats depreciation as though it always squeezes overseas demand regardless of direction, forcing exporters to cut list prices to stay competitive against EU rivals."
+  }
+ },
+ "BUS-COV-006": {
+  "base": {
+   "B": "It may complete a product range, share fixed costs, or serve loyal customers whose other purchases are profitable — classification alone does not decide strategy.",
+   "D": "Halting all promotion since the product is already established in the market."
+  },
+  "reforge": {
+   "B": "increase fixed costs without changing demand",
+   "D": "Cash cow — it generates strong, steady cash with little investment need"
+  }
+ },
+ "BUS-T3-05": {
+  "reforge": {
+   "A": "It may complete a product range, share fixed costs, or serve loyal customers whose other purchases are profitable — classification alone does not decide strategy.",
+   "D": "Doubling the price to maximise revenue from the remaining loyal customers.",
+   "C": "Diversification — new product and new market."
+  },
+  "base": {
+   "D": "Halting all promotion since the product is already established in the market.",
+   "C": "Cash cow — it generates strong, steady cash with little investment need",
+   "B": "increase fixed costs without changing demand"
+  }
+ },
+ "BUS-T3-06": {
+  "reforge": {
+   "A": "copying a rival's established design",
+   "B": "closes its original outlets",
+   "D": "Product development"
+  },
+  "base": {
+   "C": "Decline — sales are falling.",
+   "D": "merging with a supplier"
+  }
+ },
+ "BUS-COV-007": {
+  "base": {
+   "A": "Overproduction means making more units than are currently needed; it is not the contribution earned on each unit sold after variable cost."
+  },
+  "reforge": {
+   "B": "Gross 16%, operating 40% — operating profit is always higher than gross profit."
+  }
+ },
+ "BUS-COV-035": {
+  "base": {
+   "A": "Break-even rises; margin of safety also rises.",
+   "D": "variable costs become zero",
+   "C": "Rising raw material costs."
+  },
+  "reforge": {
+   "C": "Cheaper suppliers being used."
+  }
+ },
+ "BUS-COV-008": {
+  "base": {
+   "B": "It removes the need for market research",
+   "C": "the size of the firm's overdraft",
+   "D": "a lower fixed cost by definition"
+  },
+  "reforge": {
+   "B": "Niche marketing — Apple only targeted one segment.",
+   "A": "Production orientation, because it ignores demand"
+  }
+ },
+ "BUS-COV-012": {
+  "reforge": {
+   "C": "A threat — an external development that will increase costs and reduce competitiveness. The firm's dependence on a single supplier is the underlying weakness that makes this threat especially serious."
+  },
+  "base": {
+   "A": "Geographic segmentation with cost-plus pricing."
+  }
+ },
+ "BUS-COV-016": {
+  "reforge": {
+   "C": "Capital structure",
+   "B": "a legal form of ownership"
+  },
+  "base": {
+   "A": "There is no practical difference between the two approaches."
+  }
+ },
+ "BUS-COV-018": {
+  "base": {
+   "B": "Removal of all decision-making responsibility"
+  },
+  "reforge": {
+   "A": "They personally guarantee every company debt"
+  }
+ },
+ "BUS-COV-019": {
+  "base": {
+   "A": "Only Ltd companies can make a profit.",
+   "D": "£50,000 — only from personal savings."
+  },
+  "reforge": {
+   "A": "Entrepreneurial opportunity recognition and calculated risk"
+  }
+ },
+ "BUS-COV-023": {
+  "reforge": {
+   "B": "Guaranteed certainty"
+  },
+  "base": {
+   "B": "The supplier must wait until the business becomes profitable before any debt can be repaid.",
+   "D": "higher wages while shareholders seek higher dividends"
+  }
+ },
+ "BUS-COV-022": {
+  "reforge": {
+   "B": "Guaranteed certainty",
+   "A": "The supplier must wait until the business becomes profitable before any debt can be repaid."
+  },
+  "base": {
+   "B": "Entrepreneurial opportunity recognition and calculated risk",
+   "C": "Removal of all decision-making responsibility"
+  }
+ },
+ "BUS-COV-026": {
+  "reforge": {
+   "B": "Guaranteed certainty",
+   "A": "The supplier must wait until the business becomes profitable before any debt can be repaid."
+  },
+  "base": {
+   "C": "Removal of all decision-making responsibility"
+  }
+ },
+ "BUS-COV-013": {
+  "base": {
+   "B": "Price discrimination — charging different customers different prices."
+  },
+  "reforge": {
+   "D": "Price skimming and penetration pricing are the same strategy."
+  }
+ },
+ "BUS-COV-027": {
+  "base": {
+   "A": "Demand is perfectly inelastic — quantity did not respond at all to the price change.",
+   "B": "Price discrimination — charging different customers different prices."
+  }
+ },
+ "BUS-COV-021": {
+  "base": {
+   "B": "higher wages while shareholders seek higher dividends"
+  }
+ },
+ "BUS-COV-052": {
+  "base": {
+   "A": "Additional debt raises fixed interest commitments and insolvency risk if revenues dip, and lenders will charge more or refuse — equity or retained profit spreads the risk better.",
+   "C": "buying a company with permanent finance",
+   "B": "the firm has made an accounting profit"
+  },
+  "reforge": {
+   "A": "Interest payments would fall as gearing rises.",
+   "D": "high cash balances compared with sales"
+  }
+ },
+ "BUS-COV-080": {
+  "base": {
+   "A": "A weakness — the firm should have negotiated better prices."
+  },
+  "reforge": {
+   "D": "Popcorn suppliers raising their wholesale prices to cinemas.",
+   "C": "simple, modern, annual, rapid and technical"
+  }
+ },
+ "BUS-COV-034": {
+  "reforge": {
+   "D": "It may complete a product range, share fixed costs, or serve loyal customers whose other purchases are profitable — classification alone does not decide strategy."
+  },
+  "base": {
+   "B": "Cash cow — it generates strong, steady cash with little investment need",
+   "A": "Diversification — new product and new market."
+  }
+ },
+ "BUS-COV-037": {
+  "base": {
+   "C": "how many employees will receive training",
+   "D": "funding a factory for thirty years"
+  },
+  "reforge": {
+   "A": "Interest payments would fall as gearing rises.",
+   "D": "the firm has no non-current assets"
+  }
+ },
+ "BUS-COV-045": {
+  "base": {
+   "A": "Additional debt raises fixed interest commitments and insolvency risk if revenues dip, and lenders will charge more or refuse — equity or retained profit spreads the risk better.",
+   "D": "buying a company with permanent finance"
+  },
+  "reforge": {
+   "C": "how many employees will receive training",
+   "D": "the firm has made an accounting profit"
+  }
+ },
+ "BUS-COV-049": {
+  "base": {
+   "C": "Additional debt raises fixed interest commitments and insolvency risk if revenues dip, and lenders will charge more or refuse — equity or retained profit spreads the risk better.",
+   "B": "Interest payments would fall as gearing rises."
+  },
+  "reforge": {
+   "A": "how long it takes to recover the initial investment"
+  }
+ },
+ "BUS-T2-07": {
+  "base": {
+   "B": "Break-even rises; margin of safety also rises.",
+   "D": "Cheaper suppliers being used.",
+   "A": "revenue divided by output"
+  },
+  "reforge": {
+   "B": "Cutting the wage bill by making staff redundant.",
+   "D": "variable costs become zero",
+   "A": "Rising raw material costs."
+  }
+ },
+ "BUS-COV-057": {
+  "reforge": {
+   "A": "Hygiene factors and motivators are the same concept in different words."
+  }
+ },
+ "BUS-COV-075": {
+  "base": {
+   "B": "Hygiene factors and motivators are the same concept in different words.",
+   "C": "Popcorn suppliers raising their wholesale prices to cinemas."
+  },
+  "reforge": {
+   "D": "An opportunity — higher costs motivate efficiency improvements.",
+   "A": "Netflix releasing cinema films on streaming — consumers substitute the same experience at lower cost from home, reducing cinema demand.",
+   "C": "A weakness — the firm should have negotiated better prices."
+  }
+ },
+ "BUS-COV-089": {
+  "base": {
+   "C": "The manufacturer must reduce sterling prices to maintain market share, because this option treats depreciation as though it always squeezes overseas demand regardless of direction, forcing exporters to cut list prices to stay competitive against EU rivals.",
+   "A": "A fiscal deficit caused by government spending exceeding tax revenue, rather than a deficit on trade, income and transfers.",
+   "D": "Highly geared firms always operate with permanently lower profit margins."
+  },
+  "reforge": {
+   "A": "A rival cinema opening nearby and offering lower ticket prices can increase competitive rivalry within the cinema industry, but it does not provide a substitute outside the industry or meet the same need through a different medium.",
+   "C": "Exports become more expensive for foreign buyers, reducing demand."
+  }
+ },
+ "BUS-T4-07": {
+  "base": {
+   "B": "The manufacturer must reduce sterling prices to maintain market share, because this option treats depreciation as though it always squeezes overseas demand regardless of direction, forcing exporters to cut list prices to stay competitive against EU rivals.",
+   "D": "A fiscal deficit caused by government spending exceeding tax revenue, rather than a deficit on trade, income and transfers."
+  },
+  "reforge": {
+   "C": "A rival cinema opening nearby and offering lower ticket prices can increase competitive rivalry within the cinema industry, but it does not provide a substitute outside the industry or meet the same need through a different medium.",
+   "D": "Highly geared firms always operate with permanently lower profit margins.",
+   "B": "Exports become more expensive for foreign buyers, reducing demand."
+  }
+ },
+ "BUS-COV-014": {
+  "base": {
+   "B": "Price skimming only applies to supermarkets."
+  },
+  "reforge": {
+   "D": "It may complete a product range, share fixed costs, or serve loyal customers whose other purchases are profitable — classification alone does not decide strategy."
+  }
+ },
+ "BUS-COV-028": {
+  "base": {
+   "D": "Both 40% — gross and operating margins are always identical by accounting definition."
+  },
+  "reforge": {
+   "A": "Gross 16%, operating 40% — operating profit is always higher than gross profit."
+  }
+ },
+ "BUS-COV-010": {
+  "base": {
+   "C": "Geographic segmentation with cost-plus pricing."
+  },
+  "reforge": {
+   "A": "500,000 units"
+  }
+ },
+ "BUS-COV-030": {
+  "base": {
+   "A": "There is no practical difference between the two approaches."
+  }
+ },
+ "BUS-COV-054": {
+  "base": {
+   "B": "Segmentation reduces the total size of the addressable market to a manageable level.",
+   "C": "Their loss is generally limited to the capital they invested"
+  },
+  "reforge": {
+   "D": "Production orientation, because it ignores demand"
+  }
+ },
+ "BUS-COV-066": {
+  "base": {
+   "A": "It may complete a product range, share fixed costs, or serve loyal customers whose other purchases are profitable — classification alone does not decide strategy.",
+   "B": "Doubling the price to maximise revenue from the remaining loyal customers.",
+   "C": "Cash cow — it generates strong, steady cash with little investment need"
+  },
+  "reforge": {
+   "C": "Halting all promotion since the product is already established in the market.",
+   "D": "Diversification — new product and new market.",
+   "A": "increase fixed costs without changing demand"
+  }
+ },
+ "BUS-COV-070": {
+  "base": {
+   "B": "Diversification — new product and new market.",
+   "C": "Maturity — competition is most intense.",
+   "D": "a product with a market segment"
+  },
+  "reforge": {
+   "D": "Cash cow — it generates strong, steady cash with little investment need",
+   "B": "Growth — sales are rising too fast."
+  }
+ },
+ "BUS-T3-07": {
+  "reforge": {
+   "A": "Diversification — new product and new market.",
+   "B": "Maturity — competition is most intense.",
+   "C": "Growth — sales are rising too fast."
+  },
+  "base": {
+   "B": "Dogs generate more cash than cash cows.",
+   "D": "copying a rival's established design"
+  }
+ },
+ "BUS-COV-031": {
+  "base": {
+   "D": "Diversification — new product and new market.",
+   "C": "increase fixed costs without changing demand"
+  },
+  "reforge": {
+   "A": "Halting all promotion since the product is already established in the market.",
+   "B": "Doubling the price to maximise revenue from the remaining loyal customers."
+  }
+ },
+ "BUS-COV-032": {
+  "base": {
+   "A": "Cutting the wage bill by making staff redundant.",
+   "B": "Break-even rises; margin of safety also rises."
+  }
+ },
+ "BUS-COV-038": {
+  "base": {
+   "D": "when cash is expected to enter and leave the business",
+   "C": "buying a company with permanent finance"
+  },
+  "reforge": {
+   "B": "Additional debt raises fixed interest commitments and insolvency risk if revenues dip, and lenders will charge more or refuse — equity or retained profit spreads the risk better."
+  }
+ },
+ "BUS-COV-046": {
+  "base": {
+   "D": "Interest payments would fall as gearing rises.",
+   "B": "high cash balances compared with sales"
+  },
+  "reforge": {
+   "B": "how long it takes to recover the initial investment"
+  }
+ },
+ "BUS-COV-050": {
+  "base": {
+   "B": "Interest payments would fall as gearing rises.",
+   "C": "the firm has made an accounting profit"
+  },
+  "reforge": {
+   "D": "how long it takes to recover the initial investment"
+  }
+ },
+ "BUS-COV-036": {
+  "base": {
+   "A": "80,000%",
+   "C": "50%",
+   "B": "Overproduction means making more units than are currently needed; it is not the contribution earned on each unit sold after variable cost."
+  },
+  "reforge": {
+   "A": "19%",
+   "C": "25%",
+   "D": "Negotiating later payment terms changes the timing of cash leaving the business, while the total cost of the purchase remains unchanged."
+  }
+ },
+ "BUS-T2-06": {
+  "base": {
+   "A": "Increasing advertising to boost sales.",
+   "C": "Rising raw material costs.",
+   "D": "Falling selling prices."
+  },
+  "reforge": {
+   "C": "Break-even falls; margin of safety rises.",
+   "D": "25% of fixed costs.",
+   "A": "40,000 units"
+  }
+ },
+ "BUS-COV-040": {
+  "base": {
+   "D": "Increasing advertising to boost sales.",
+   "C": "revenue divided by output",
+   "B": "25% of fixed costs."
+  },
+  "reforge": {
+   "A": "Break-even falls; margin of safety rises.",
+   "B": "Falling selling prices.",
+   "D": "40,000 units"
+  }
+ },
+ "BUS-COV-042": {
+  "base": {
+   "A": "8,000 units — the break-even level itself.",
+   "D": "Rising raw material costs."
+  },
+  "reforge": {
+   "A": "Break-even rises; margin of safety also rises.",
+   "C": "variable costs become zero",
+   "B": "Falling selling prices."
+  }
+ },
+ "BUS-COV-043": {
+  "base": {
+   "C": "how long it takes to recover the initial investment",
+   "A": "high cash balances compared with sales"
+  },
+  "reforge": {
+   "D": "the firm has made an accounting profit",
+   "C": "non-current assets minus depreciation",
+   "A": "when cash is expected to enter and leave the business"
+  }
+ },
+ "BUS-COV-078": {
+  "base": {
+   "D": "Hygiene factors and motivators are the same concept in different words.",
+   "A": "An opportunity — higher costs motivate efficiency improvements.",
+   "B": "Popcorn suppliers raising their wholesale prices to cinemas."
+  },
+  "reforge": {
+   "C": "Netflix releasing cinema films on streaming — consumers substitute the same experience at lower cost from home, reducing cinema demand.",
+   "B": "A weakness — the firm should have negotiated better prices."
+  }
+ },
+ "BUS-COV-047": {
+  "base": {
+   "D": "Interest payments would fall as gearing rises.",
+   "C": "the firm has made an accounting profit"
+  },
+  "reforge": {
+   "D": "how long it takes to recover the initial investment",
+   "A": "high cash balances compared with sales"
+  }
+ },
+ "BUS-COV-048": {
+  "reforge": {
+   "C": "Interest payments would fall as gearing rises.",
+   "D": "buying a company with permanent finance"
+  },
+  "base": {
+   "B": "how many employees will receive training"
+  }
+ },
+ "BUS-COV-074": {
+  "base": {
+   "C": "Netflix releasing cinema films on streaming — consumers substitute the same experience at lower cost from home, reducing cinema demand.",
+   "A": "Motivators are only relevant to managers, not shop floor workers."
+  },
+  "reforge": {
+   "B": "A threat — an external development that will increase costs and reduce competitiveness. The firm's dependence on a single supplier is the underlying weakness that makes this threat especially serious.",
+   "C": "An opportunity — higher costs motivate efficiency improvements."
+  }
+ },
+ "BUS-COV-051": {
+  "base": {
+   "C": "buying a company with permanent finance",
+   "A": "profit is necessarily negative"
+  },
+  "reforge": {
+   "B": "how many employees will receive training",
+   "C": "the percentage of market share"
+  }
+ },
+ "BUS-T3-01": {
+  "reforge": {
+   "A": "The cost savings a business achieves from operating at a larger scale, leading to a fall in average (unit) cost as output increases.",
+   "C": "Quality assurance is cheaper because it requires fewer staff.",
+   "D": "Technical economies — larger machinery is more efficient."
+  },
+  "base": {
+   "B": "QA inspectors receive lower wages than QC inspectors at every level.",
+   "C": "The total reduction in fixed costs when a firm closes a factory.",
+   "D": "Financial economies — the bank offers better interest rates."
+  }
+ },
+ "BUS-COV-064": {
+  "base": {
+   "B": "10,000 units per week",
+   "D": "The cost savings a business achieves from operating at a larger scale, leading to a fall in average (unit) cost as output increases."
+  },
+  "reforge": {
+   "C": "500,000 units",
+   "B": "QA inspectors receive lower wages than QC inspectors at every level."
+  }
+ },
+ "BUS-COV-067": {
+  "base": {
+   "C": "remove a product immediately",
+   "D": "merging with a supplier"
+  },
+  "reforge": {
+   "A": "copying a rival's established design",
+   "B": "closes its original outlets",
+   "C": "Product development"
+  }
+ },
+ "BUS-COV-079": {
+  "base": {
+   "B": "Diversification — new product and new market."
+  },
+  "reforge": {
+   "D": "increase fixed costs without changing demand",
+   "B": "an existing product with an existing market"
+  }
+ },
+ "BUS-COV-082": {
+  "base": {
+   "A": "A strength — the business values sustainability.",
+   "B": "guarantee that disruption cannot occur"
+  },
+  "reforge": {
+   "C": "strategic, market-led, automatic, routine and tested",
+   "A": "The intensity of competitive rivalry"
+  }
+ },
+ "BUS-T4-04": {
+  "base": {
+   "C": "imports exceed exports",
+   "B": "make imports illegal"
+  },
+  "reforge": {
+   "D": "remove every domestic subsidy",
+   "C": "capital inflows only",
+   "A": "vertical integration"
+  }
+ },
+ "BUS-T4-02": {
+  "reforge": {
+   "A": "prevent firms from exporting",
+   "B": "capital inflows only",
+   "C": "set one global wage"
+  },
+  "base": {
+   "A": "a restriction on all exports",
+   "C": "make imports illegal",
+   "D": "vertical integration"
+  }
+ },
+ "BUS-COV-059": {
+  "base": {
+   "B": "The cost savings a business achieves from operating at a larger scale, leading to a fall in average (unit) cost as output increases.",
+   "C": "Financial economies — the bank offers better interest rates."
+  },
+  "reforge": {
+   "D": "The total reduction in fixed costs when a firm closes a factory.",
+   "A": "Technical economies — larger machinery is more efficient."
+  }
+ },
+ "BUS-COV-063": {
+  "base": {
+   "B": "10,000 units per week",
+   "D": "500,000 units"
+  },
+  "reforge": {
+   "D": "total fixed cost",
+   "B": "labour turnover",
+   "A": "The cost savings a business achieves from operating at a larger scale, leading to a fall in average (unit) cost as output increases."
+  }
+ },
+ "BUS-COV-015": {
+  "base": {
+   "D": "There is no practical difference between the two approaches."
+  }
+ },
+ "BUS-COV-060": {
+  "base": {
+   "A": "QA inspectors receive lower wages than QC inspectors at every level.",
+   "C": "Quality assurance is cheaper because it requires fewer staff."
+  }
+ },
+ "BUS-T3-02": {
+  "base": {
+   "C": "10,000 units per week",
+   "D": "labour turnover"
+  },
+  "reforge": {
+   "B": "total fixed cost",
+   "D": "500,000 units"
+  }
+ },
+ "BUS-COV-072": {
+  "base": {
+   "D": "Cash cow — it generates strong, steady cash with little investment need",
+   "C": "an existing product with an existing market"
+  },
+  "reforge": {
+   "D": "Doubling the price to maximise revenue from the remaining loyal customers.",
+   "A": "Market development — new market targeted."
+  }
+ },
+ "BUS-COV-084": {
+  "base": {
+   "B": "a restriction on all exports",
+   "A": "make imports illegal",
+   "C": "vertical integration"
+  },
+  "reforge": {
+   "D": "prevent firms from exporting",
+   "A": "capital inflows only",
+   "C": "set one global wage"
+  }
+ },
+ "BUS-COV-087": {
+  "base": {
+   "D": "local businesses cannot use digital advertising"
+  },
+  "reforge": {
+   "D": "reducing the number of overseas suppliers",
+   "B": "only the size of the country's land area"
+  }
+ }
+};
+for (const [id, repairs] of Object.entries(finalBusinessCorruptionRepairs)) {
+  for (const bank of Object.values(BANKS)) {
+    const question = (bank.questions || []).find(candidate => candidate.id === id);
+    if (!question) continue;
+    for (const [variant, options] of Object.entries(repairs)) {
+      const item = variant === "base" ? question : question.reforge;
+      if (item?.options) Object.assign(item.options, options);
+    }
+  }
+}
+// Residual length-cue fixes left after the corruption-repair pass above:
+// the same-tag replacement was necessarily shorter than the correct answer
+// for these 37 items (the tag pool had nothing longer available), so the
+// correct answer became the uniquely-longest option. Extended the runner-up
+// distractor with genuine reasoning instead. Scoped per question id and
+// applied last.
+const finalBusinessLengthRepairs = {
+ "BUS-04": {
+  "reforge": {
+   "D": "The supplier must wait until the business becomes profitable before any debt can be repaid, since a sole trader's personal assets are legally ring-fenced from business creditors."
+  }
+ },
+ "BUS-COV-004": {
+  "reforge": {
+   "D": "The supplier must wait until the business becomes profitable before any debt can be repaid, since a sole trader's personal assets are legally ring-fenced from business creditors."
+  }
+ },
+ "BUS-COV-033": {
+  "reforge": {
+   "A": "When cash is expected to enter and leave the business, a liquidity timing question a lender assesses separately from the firm's existing gearing level before agreeing to any further borrowing at all."
+  }
+ },
+ "BUS-15": {
+  "reforge": {
+   "B": "How long it takes to recover the initial investment, an investment-appraisal measure lenders use instead of gearing when deciding whether further borrowing for expansion is genuinely affordable."
+  },
+  "base": {
+   "A": "How many employees will receive training, a workforce-planning question unrelated to whether retained profit or a loan is the better source of expansion finance."
+  }
+ },
+ "BUS-13": {
+  "base": {
+   "C": "Diversification — new product and new market, requiring heavy investment with no guarantee of the steady cash a high-share, low-growth product already provides."
+  },
+  "reforge": {
+   "B": "Halting all promotion since the product is already established in the market, even though this risks losing the loyal, repeat-purchasing customers a dog product still profitably serves."
+  }
+ },
+ "BUS-COV-031": {
+  "reforge": {
+   "A": "Halting all promotion since the product is already established in the market, even though this risks losing the loyal, repeat-purchasing customers a dog product still profitably serves."
+  }
+ },
+ "BUS-T2-05": {
+  "reforge": {
+   "B": "How many employees will receive training, a workforce-planning question unrelated to why retained profit counts as an internal source of finance."
+  }
+ },
+ "BUS-COV-039": {
+  "reforge": {
+   "B": "Interest payments would fall as gearing rises, which reverses the real relationship between gearing and the interest a firm has to pay."
+  }
+ },
+ "BUS-T2-11": {
+  "reforge": {
+   "B": "How many employees will receive training, a workforce-planning question unrelated to what a balance sheet actually records."
+  }
+ },
+ "BUS-T2-14": {
+  "reforge": {
+   "A": "In more than one country, a description of multinational operations rather than what the payback method in investment appraisal actually measures."
+  }
+ },
+ "BUS-T2-15": {
+  "reforge": {
+   "B": "How many employees will receive training, a workforce-planning question unrelated to when net present value turns positive."
+  }
+ },
+ "BUS-FINPLAN-01": {
+  "reforge": {
+   "A": "Buying a company with permanent finance, a description of an acquisition rather than what a cash-flow forecast is used to predict."
+  }
+ },
+ "BUS-COV-052": {
+  "reforge": {
+   "A": "Interest payments would fall as gearing rises, which reverses the real relationship between gearing and the interest a firm has to pay."
+  }
+ },
+ "OPS-02": {
+  "reforge": {
+   "B": "The cost savings a business achieves from operating at a larger scale, leading to a fall in average unit cost as output rises — a definition of economies of scale, not a lean waste category at all."
+  }
+ },
+ "OPS-07": {
+  "base": {
+   "B": "The total reduction in fixed costs when a firm closes a factory, a rationalisation outcome rather than what economies of scale actually describes."
+  }
+ },
+ "BUS-COV-060": {
+  "base": {
+   "D": "The total reduction in fixed costs when a firm closes a factory, a rationalisation outcome rather than what economies of scale actually describes."
+  }
+ },
+ "OPS-05": {
+  "reforge": {
+   "A": "Netflix releasing cinema films on streaming — consumers substitute the same experience at lower cost from home, reducing cinema demand, an example of a threat drawn from a completely different industry."
+  }
+ },
+ "OPS-06": {
+  "base": {
+   "D": "The cost savings a business achieves from operating at a larger scale, leading to a fall in average unit cost — a definition of economies of scale, not what distinguishes quality assurance from quality control."
+  },
+  "reforge": {
+   "B": "The total reduction in fixed costs when a firm closes a factory, a rationalisation outcome rather than why quality assurance is more cost-effective than quality control."
+  }
+ },
+ "BUS-COV-059": {
+  "base": {
+   "B": "The cost savings a business achieves from operating at a larger scale, leading to a fall in average unit cost — a definition of economies of scale, not what distinguishes quality assurance from quality control."
+  },
+  "reforge": {
+   "C": "QA inspectors receive lower wages than QC inspectors at every level, a pay claim rather than an explanation of why quality assurance is more cost-effective than quality control."
+  }
+ },
+ "BUS-COV-055": {
+  "reforge": {
+   "B": "The cost savings a business achieves from operating at a larger scale, leading to a fall in average unit cost as output rises — a definition of economies of scale, not a lean waste category at all."
+  }
+ },
+ "BUS-T4-10": {
+  "reforge": {
+   "A": "A central bank reserve requirement, a monetary-policy detail unrelated to ethical concerns raised by global supply chains."
+  }
+ },
+ "BUS-T4-14": {
+  "reforge": {
+   "C": "A central bank reserve requirement, a monetary-policy detail unrelated to why a global marketing strategy may need local adaptation."
+  }
+ },
+ "BUS-T4-16": {
+  "reforge": {
+   "A": "A central bank reserve requirement, a monetary-policy detail unrelated to what generally characterises an emerging market."
+  }
+ },
+ "BUS-T4B-02": {
+  "reforge": {
+   "D": "Guaranteeing no costs in the short term, an outcome no genuine transfer-pricing decision could actually deliver for a multinational."
+  }
+ },
+ "BUS-T4B-06": {
+  "reforge": {
+   "C": "Guaranteeing no costs in the short term, an outcome no assessment of a firm's country risk could actually deliver."
+  }
+ },
+ "BUS-T4B-07": {
+  "reforge": {
+   "D": "Guaranteeing no costs in the short term, an outcome unrelated to why a low-wage competitive advantage may weaken over time."
+  }
+ },
+ "BUS-T4B-08": {
+  "reforge": {
+   "D": "Guaranteeing no costs in the short term, an outcome unrelated to why corporate social responsibility may improve long-term performance."
+  }
+ }
+};
+for (const [id, repairs] of Object.entries(finalBusinessLengthRepairs)) {
+  for (const bank of Object.values(BANKS)) {
+    const question = (bank.questions || []).find(candidate => candidate.id === id);
+    if (!question) continue;
+    for (const [variant, options] of Object.entries(repairs)) {
+      const item = variant === "base" ? question : question.reforge;
+      if (item?.options) Object.assign(item.options, options);
+    }
+  }
+}
+// The last 6 of the 37 residual length-cue fixes, missed in the first pass.
+const finalBusinessLengthRepairs2 = {
+ "BUS-COV-045": {
+  "reforge": {
+   "C": "How many employees will receive training, a workforce-planning question unrelated to what a balance sheet actually records at a point in time."
+  }
+ },
+ "BUS-COV-049": {
+  "reforge": {
+   "A": "How long it takes to recover the initial investment, the payback measure rather than what makes net present value positive for a project."
+  }
+ },
+ "BUS-09": {
+  "reforge": {
+   "A": "Price skimming and penetration pricing are the same strategy, which confuses two opposite pricing approaches with each other entirely."
+  }
+ },
+ "OPS-07": {
+  "reforge": {
+   "B": "QA inspectors receive lower wages than QC inspectors at every level, a pay claim rather than the type of economy of scale bulk-buying actually represents."
+  }
+ },
+ "BUS-T4-15": {
+  "reforge": {
+   "B": "Guaranteeing no costs in the short term, an outcome unrelated to what a remittance actually is."
+  }
+ },
+ "BUS-T4B-03": {
+  "base": {
+   "A": "All consumers have identical preferences, an assumption unrelated to what a supply-chain disruption is most likely to expose."
+  }
+ }
+};
+for (const [id, repairs] of Object.entries(finalBusinessLengthRepairs2)) {
+  for (const bank of Object.values(BANKS)) {
+    const question = (bank.questions || []).find(candidate => candidate.id === id);
+    if (!question) continue;
+    for (const [variant, options] of Object.entries(repairs)) {
+      const item = variant === "base" ? question : question.reforge;
+      if (item?.options) Object.assign(item.options, options);
+    }
+  }
+}
