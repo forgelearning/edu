@@ -93,6 +93,14 @@ correct-answer text. Length balancing does *not* depend on these tables;
 `equaliseGeneratedOptions()` in the rebalance pass handles it, and the audit
 reports 0% cued without them.
 
+A full audit on 2026-08-10 diffed all ~313 entries across these five tables
+against the pre-override literal and found one more live instance of this bug:
+`SCI-CHEM2-13`'s Reforge twin had its correct answer rewritten from
+"One-positive ions" to "One-negative ion" — a real factual flip (Group 1
+metals form +1 cations), not a paraphrase. Fixed. Re-run this diff before
+trusting the tables are clean; a one-off audit doesn't prove the next edit
+won't reintroduce the same class of bug.
+
 Two other passes rewrite questions after the literals, worth knowing for the
 same reason: `rebalanceMCQSubject()` swaps option *letters* (so always match a
 key on answer text, never on letter), and `expandSubjectToMinimum()` clones
@@ -105,12 +113,59 @@ propagates into its `*-COV-*` copies and fixing the source fixes them all.
 - The HSC and RS taxonomy residues are resolved: all active tags have concept labels, and RS now has 16 explicit starter activities. The audit currently reports 0 issues.
 - The paragraphs below retain historical context about how the taxonomy and cue backlogs were found. Re-measure the live checkout before treating any historical count or backlog ordering as current.
 
+## Current status after the 2026-08-10 full audit
+
+A session-long audit (structural checks, the full `npm run check` gate, a
+diff of every override-table rewrite against its pre-override literal, live
+browser QA against the staging harness, and a manual scaffold-quality read
+of GCSE History/Psychology) found the paragraphs below were badly stale —
+several backlogs they describe as open were already finished, most likely by
+other concurrent sessions that didn't update this file. What the audit
+actually found and fixed:
+
+- **The misconception-tagging backlog is done.** Every subject this file
+  used to list as "untouched" (`chem`, `bio`, `phys`, `rs`, `hsc`, `media`,
+  `french`, `span`, `german`, `pe`, `englit`, `engll`, `mand`, `bus`, `cs`,
+  `maths`) is at `0` in both `TAG_TAXONOMY_SUBJECTS` and
+  `TAG_TAXONOMY_MECHANICAL` in `dev/audit-banks.js` right now. Re-read those
+  two maps directly rather than trusting the narrative below — it describes
+  how the backlog was worked through, not its current state.
+- **The distractor-padding filler bug is fixed**, and was far smaller than
+  described below by the time of this audit: 41 options with a duplicated
+  closing clause (a repair pass had run twice), 12 options reusing an
+  identical boilerplate closing sentence as their only distinguishing
+  content, and — found while fixing those — 23 GCSE History/Business
+  distractors with a completely unrelated science-repair sentence glued onto
+  the end (`"It focused only on foreign policy The science explanation must
+  account for the particles, forces, energy..."`), from a repair script that
+  matched the wrong subject. All fixed via question-scoped repair tables
+  applied last in the file. `dev/audit-banks.js` reports 0 issues.
+- **GCSE Psychology's scaffolds were already clean**; **GCSE History's were
+  not** — all 96 questions across its four banks carried a placeholder
+  scaffold (`"This tests the specified <bank-id> knowledge point: <answer>"`)
+  instead of an explanation. Replaced with genuine content.
+  `dev/check-gcse-scaffolds.js` reports 0 placeholder-style.
+- `dev/test-forge.js`/CI gap: `.github/workflows/pages.yml` didn't run
+  `dev/test-forge.js`, `dev/test-auth.js`, `dev/test-forge-api.js`,
+  `dev/test-persistence.js`, or `dev/audit-supabase-security.js` — only local
+  `npm run check` did. That's how a broken `forge-auth.js` path (from the
+  page-reorg PR) shipped to `main` unnoticed. Fixed; CI now runs all five.
+
+**Lesson for the next session**: re-measure before trusting any "done" or
+"backlog" claim in this file, including the ones just added above — that is
+the recurring failure mode this audit kept finding.
+
 ## Historical notes and current outstanding issues
+
+**Superseded by "Current status after the 2026-08-10 full audit" above** —
+the misconception-tagging backlog, GCSE History's scaffolds, and the filler
+bug this section describes as open are all now fixed. Kept below only for
+whatever genuinely-still-useful mechanics it documents (how
+`TAG_TAXONOMY_SUBJECTS` counts array tags, why `englit`/`engll` share banks,
+etc.) — treat every completion claim in it as stale by default.
 
 - Reforge option sets are currently distinct across every MCQ; keep
   `dev/test-forge.js` running as new content lands.
-- GCSE History and GCSE Psychology still need ongoing scaffold-quality review;
-  structural checks cannot judge whether an explanation genuinely teaches.
 - Misconception labels and starter activities remain a product-quality backlog:
   the teacher heatmap should show human-readable labels and useful intervention
   suggestions for every active tag. The blocker is *tagging*, not starters —
@@ -247,7 +302,8 @@ Bank *structure* is otherwise healthy: `dev/audit-banks.js` reports 0 issues
 and 0% cued stems and twins.
 
 Question counts: the tools count different things, so quote the tool rather
-than a single number. `scripts/checks/check-question-bank.js` reports 7,601 questions
-(everything, including the short/extended-answer shapes); `dev/audit-banks.js`
-reports on 7,506 gradeable MCQ stems; `dev/test-forge.js` checks 7,706 MCQs
-including reforge twins.
+than a single number, and re-run rather than trust this line — it drifts as
+content lands. As of 2026-08-10: `scripts/checks/check-question-bank.js`
+reports 7,605 questions (everything, including the short/extended-answer
+shapes); `dev/audit-banks.js` reports on 7,510 gradeable MCQ stems;
+`dev/test-forge.js` checks 7,710 MCQs including reforge twins.
