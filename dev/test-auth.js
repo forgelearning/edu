@@ -63,7 +63,7 @@ context.ForgeSidebar = {
 };
 vm.createContext(context);
 vm.runInContext(fs.readFileSync(path.join(root, 'scripts/forge-api.js'), 'utf8'), context);
-vm.runInContext(fs.readFileSync(path.join(root, 'forge-auth.js'), 'utf8'), context);
+vm.runInContext(fs.readFileSync(path.join(root, 'public/forge-auth.js'), 'utf8'), context);
 
 async function run() {
   store.set('forge-auth-session', JSON.stringify({ access_token: 'access-old', refresh_token: 'refresh-old', user: { id: 'user-1' } }));
