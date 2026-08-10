@@ -2,11 +2,12 @@
 /* Lightweight UI-system guardrail. Run with: node scripts/checks/check-ui-system.js */
 const fs = require('fs');
 const path = require('path');
+const { repoRoot, listPageFiles } = require('../support/page-files');
 
-const root = path.resolve(__dirname, '..', '..');
-const htmlFiles = fs.readdirSync(root).filter(name => name.endsWith('.html'));
+const root = repoRoot;
+const htmlFiles = listPageFiles();
 const maintainedHtmlFiles = [
-  ...htmlFiles.map(name => path.join(root, name)),
+  ...htmlFiles,
   ...['dev/sidebar-test.html', 'dev/teacher-dashboard-test.html', 'templates/gcse-subject-template.html'].map(name => path.join(root, name))
 ];
 const failures = [];

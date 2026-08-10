@@ -4,8 +4,9 @@
  * data attributes; execution stays in forge-page-actions.js. */
 const fs = require('fs');
 const path = require('path');
+const { listPageFiles } = require('../support/page-files');
 const root = path.resolve(__dirname, '..', '..');
-const files = fs.readdirSync(root).filter(name => name.endsWith('.html'));
+const files = listPageFiles();
 
 const rules = [
   [/onclick="\(function\(\)\{var h=document\.documentElement,b=document\.querySelector\('\.theme-toggle'\);[^\"]*?\}\)\(\)"/g, 'data-forge-action="theme"'],
@@ -46,8 +47,7 @@ const rules = [
 ];
 
 let changed = 0;
-for (const name of files) {
-  const file = path.join(root, name);
+for (const file of files) {
   const before = fs.readFileSync(file, 'utf8');
   let after = before;
   for (const [pattern, replacement] of rules) after = after.replace(pattern, replacement);

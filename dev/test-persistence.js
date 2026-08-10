@@ -1,7 +1,7 @@
 const fs = require('fs');
 const assert = require('assert');
 
-const quiz = fs.readFileSync('forge-quiz.html', 'utf8');
+const quiz = fs.readFileSync('pages/app/forge-quiz.html', 'utf8');
 
 function count(pattern) {
   return (quiz.match(pattern) || []).length;

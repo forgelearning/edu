@@ -4,13 +4,14 @@
  * HTML so it is reviewable, cacheable, and never mixed into document markup. */
 const fs = require('fs');
 const path = require('path');
+const { listPageFiles } = require('../support/page-files');
 const root = path.resolve(__dirname, '..', '..');
 const outDir = path.join(root, 'css/page-overrides');
 fs.mkdirSync(outDir, { recursive: true });
-const pages = fs.readdirSync(root).filter(name => name.endsWith('.html'));
+const pages = listPageFiles();
 let changed = 0;
-for (const name of pages) {
-  const file = path.join(root, name);
+for (const file of pages) {
+  const name = path.basename(file);
   const before = fs.readFileSync(file, 'utf8');
   const blocks = [...before.matchAll(/<style(?:\s[^>]*)?>([\s\S]*?)<\/style>/gi)];
   if (!blocks.length) continue;
