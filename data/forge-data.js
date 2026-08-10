@@ -30896,3 +30896,2256 @@ for (const [id, repairs] of Object.entries(finalGCSEMathsLengthRepairs)) {
     }
   }
 }
+
+// Same corruption sweep as Business (#160), the root-cause algorithm fix
+// (#161), Computer Science (#162), and GCSE Maths (#163) -- applied here
+// to Media Studies, one of the subjects flagged as still having
+// pre-existing cross-topic corruption baked in from before the algorithm
+// fix. Media's topic-tag groups are thin, so a meaningful share of the
+// length-cue fixes below fall back to a subject-wide (not same-tag)
+// replacement -- still a genuine, previously-authored Media Studies
+// distractor, just not guaranteed to share this exact question's topic.
+const finalMediaCorruptionRepairs = {
+ "MED-01": {
+  "base": {
+   "B": "Audiences are active users of media who choose texts purposefully to satisfy specific needs: information/surveillance, personal identity, social integration and entertainment. The audience uses the media, rather than the media using the audience.",
+   "C": "Audiences process media effects in two cognitive stages: conscious and unconscious.",
+   "D": "A negotiated reading — they partially accepted the message."
+  },
+  "reforge": {
+   "A": "Diversion would mean the student is using the programme only to escape from everyday life; identifying with a contestant from a similar background instead illustrates the personal identity function, because the audience is actively using the text to explore and reinforce a sense of self.",
+   "B": "Production budget",
+   "D": "Reception theory"
+  }
+ },
+ "MEDIA-E1-03": {
+  "base": {
+   "A": "Maximise audience ratings above all other considerations.",
+   "B": "Institutional ownership",
+   "D": "A mode of address"
+  },
+  "reforge": {
+   "A": "A rating",
+   "B": "Ownership pattern"
+  }
+ },
+ "MEDIA-E1-06": {
+  "base": {
+   "A": "Maximise audience ratings above all other considerations.",
+   "C": "the geography of a whole setting",
+   "D": "removes the need for marketing"
+  }
+ },
+ "MEDIA-E1-07": {
+  "base": {
+   "D": "Self-regulation — the label polices its own content.",
+   "A": "the geography of a whole setting",
+   "B": "removes the need for marketing"
+  },
+  "reforge": {
+   "A": "A public service announcement",
+   "B": "Naturalistic underexposure",
+   "D": "Oppositional reading"
+  }
+ },
+ "MEDIA-E1-08": {
+  "base": {
+   "A": "Self-regulation — the label polices its own content.",
+   "B": "the geography of a whole setting",
+   "C": "removes the need for marketing"
+  },
+  "reforge": {
+   "C": "Low-key lighting"
+  }
+ },
+ "MEDIA-E1-09": {
+  "base": {
+   "B": "Self-regulation — the label polices its own content.",
+   "C": "the geography of a whole setting",
+   "D": "removes the need for marketing"
+  },
+  "reforge": {
+   "A": "Maximise audience ratings above all other considerations.",
+   "C": "Naturalistic underexposure",
+   "D": "Oppositional reading"
+  }
+ },
+ "MEDIA-COV-001": {
+  "base": {
+   "A": "Audiences are active users of media who choose texts purposefully to satisfy specific needs: information/surveillance, personal identity, social integration and entertainment. The audience uses the media, rather than the media using the audience.",
+   "C": "Audiences process media effects in two cognitive stages: conscious and unconscious.",
+   "D": "A negotiated reading — they partially accepted the message."
+  },
+  "reforge": {
+   "B": "Diversion would mean the student is using the programme only to escape from everyday life; identifying with a contestant from a similar background instead illustrates the personal identity function, because the audience is actively using the text to explore and reinforce a sense of self.",
+   "A": "Production budget",
+   "C": "Reception theory"
+  }
+ },
+ "MEDIA-COV-011": {
+  "base": {
+   "A": "Maximise audience ratings above all other considerations.",
+   "B": "Institutional ownership",
+   "D": "A mode of address"
+  },
+  "reforge": {
+   "A": "A rating",
+   "B": "Ownership pattern"
+  }
+ },
+ "MEDIA-COV-015": {
+  "base": {
+   "D": "Self-regulation — the label polices its own content.",
+   "C": "the geography of a whole setting",
+   "B": "removes the need for marketing"
+  },
+  "reforge": {
+   "A": "A public service announcement",
+   "B": "Naturalistic underexposure",
+   "D": "Oppositional reading"
+  }
+ },
+ "MEDIA-COV-031": {
+  "base": {
+   "B": "Diversion would mean the student is using the programme only to escape from everyday life; identifying with a contestant from a similar background instead illustrates the personal identity function, because the audience is actively using the text to explore and reinforce a sense of self.",
+   "D": "Audiences process media effects in two cognitive stages: conscious and unconscious.",
+   "C": "A negotiated reading — they partially accepted the message."
+  },
+  "reforge": {
+   "D": "Cultivation theory — audiences are being cultivated to seek dramatic content over time through repeated, long-term exposure to sensationalised coverage across many broadcasts, which describes a slow shift in attitudes and expectations rather than a single viral clip reaching millions overnight.",
+   "A": "The hypodermic model",
+   "B": "Production budget"
+  }
+ },
+ "MEDIA-COV-035": {
+  "base": {
+   "B": "A negotiated reading — they partially accepted the message.",
+   "A": "Reception theory",
+   "D": "Regulatory code"
+  },
+  "reforge": {
+   "D": "Production budget",
+   "C": "Two-step flow",
+   "B": "Diversion would mean the student is using the programme only to escape from everyday life; identifying with a contestant from a similar background instead illustrates the personal identity function, because the audience is actively using the text to explore and reinforce a sense of self."
+  }
+ },
+ "MEDIA-COV-037": {
+  "base": {
+   "B": "Self-regulation — the label polices its own content.",
+   "A": "Global conglomerate",
+   "C": "A preferred reading"
+  },
+  "reforge": {
+   "C": "Primary institution",
+   "D": "Ownership structure"
+  }
+ },
+ "MEDIA-COV-045": {
+  "base": {
+   "B": "Local regulation only",
+   "A": "Rating",
+   "C": "The tendency for audiences to undervalue cultural products compared to their production cost. The media explanation must account for representation, audience, ownership, technology, regulation and interpretation; the answer overlooks the qualifier that determines how the concept applies in this question. The qualifier is that cultural discount is about audience appeal, not about financial discounting between distributors."
+  },
+  "reforge": {
+   "C": "Audience isolation",
+   "A": "Gatekeeping",
+   "D": "The tendency for audiences to undervalue cultural products compared to their production cost. The media explanation must account for representation, audience, ownership, technology, regulation and interpretation; the relevant distinction is between the process and its effect, which this option merges. Underestimating production cost is a financial judgement; cultural discount concerns audience appeal, a separate effect."
+  }
+ },
+ "MEDIA-COV-047": {
+  "base": {
+   "D": "Synergy — TikTok and news broadcasters benefit from sharing the same content.",
+   "B": "Rating measures ideology",
+   "C": "Institutional ownership"
+  },
+  "reforge": {
+   "B": "User-generated producer",
+   "D": "Genre removes choice"
+  }
+ },
+ "MEDIA-COV-051": {
+  "base": {
+   "B": "Audiences are active users of media who choose texts purposefully to satisfy specific needs: information/surveillance, personal identity, social integration and entertainment. The audience uses the media, rather than the media using the audience.",
+   "A": "Audiences process media effects in two cognitive stages: conscious and unconscious.",
+   "D": "The hypodermic model"
+  },
+  "reforge": {
+   "C": "Production budget",
+   "D": "Reception theory",
+   "B": "Diversion would mean the student is using the programme only to escape from everyday life; identifying with a contestant from a similar background instead illustrates the personal identity function, because the audience is actively using the text to explore and reinforce a sense of self."
+  }
+ },
+ "MEDIA-COV-053": {
+  "base": {
+   "C": "Diversion would mean the student is using the programme only to escape from everyday life; identifying with a contestant from a similar background instead illustrates the personal identity function, because the audience is actively using the text to explore and reinforce a sense of self.",
+   "B": "Audiences process media effects in two cognitive stages: conscious and unconscious.",
+   "A": "A negotiated reading — they partially accepted the message."
+  },
+  "reforge": {
+   "A": "Audiences are active users of media who choose texts purposefully to satisfy specific needs: information/surveillance, personal identity, social integration and entertainment. The audience uses the media, rather than the media using the audience.",
+   "C": "The hypodermic model",
+   "D": "Production budget"
+  }
+ },
+ "MEDIA-COV-057": {
+  "reforge": {
+   "A": "Diversion would mean the student is using the programme only to escape from everyday life; identifying with a contestant from a similar background instead illustrates the personal identity function, because the audience is actively using the text to explore and reinforce a sense of self.",
+   "C": "A negotiated reading — they partially accepted the message.",
+   "B": "Reception theory"
+  },
+  "base": {
+   "C": "Audiences are active users of media who choose texts purposefully to satisfy specific needs: information/surveillance, personal identity, social integration and entertainment. The audience uses the media, rather than the media using the audience.",
+   "A": "The hypodermic model",
+   "D": "Production budget"
+  }
+ },
+ "MEDIA-COV-059": {
+  "reforge": {
+   "B": "Maximise audience ratings above all other considerations.",
+   "C": "A mode of address"
+  },
+  "base": {
+   "B": "Self-regulation — the label polices its own content.",
+   "A": "Ownership pattern",
+   "D": "A rating"
+  }
+ },
+ "MEDIA-COV-061": {
+  "base": {
+   "A": "Institutional ownership",
+   "B": "Ownership pattern",
+   "C": "Maximise audience ratings above all other considerations."
+  },
+  "reforge": {
+   "C": "A mode of address",
+   "D": "A rating",
+   "A": "A negotiated reading — they partially accepted the message."
+  }
+ },
+ "MEDIA-COV-065": {
+  "base": {
+   "C": "Self-regulation — the label polices its own content.",
+   "A": "Naturalistic underexposure"
+  },
+  "reforge": {
+   "A": "Maximise audience ratings above all other considerations.",
+   "B": "A public service announcement"
+  }
+ },
+ "MEDIA-COV-069": {
+  "reforge": {
+   "A": "The process by which audiences become more homogeneous in their media consumption habits.",
+   "C": "An example of synergy — the BAFTA award drives subscriptions.",
+   "D": "Horizontal audience fragmentation"
+  },
+  "base": {
+   "C": "The regulatory requirement for balanced coverage across different media outlets.",
+   "B": "Maximise audience ratings above all other considerations.",
+   "A": "Self-regulation — the label polices its own content."
+  }
+ },
+ "MEDIA-COV-075": {
+  "reforge": {
+   "B": "a restriction on digital distribution",
+   "C": "A preferred reading",
+   "D": "A stereotype"
+  },
+  "base": {
+   "B": "Primary institution",
+   "A": "A niche audience is a relatively small, specialised audience group whose members share particular interests; it is not an audience that passively receives one fixed meaning from a producer.",
+   "D": "A production code"
+  }
+ },
+ "MEDIA-COV-081": {
+  "base": {
+   "A": "Diversion would mean the student is using the programme only to escape from everyday life; identifying with a contestant from a similar background instead illustrates the personal identity function, because the audience is actively using the text to explore and reinforce a sense of self.",
+   "D": "The hypodermic model"
+  },
+  "reforge": {
+   "C": "A negotiated reading — they partially accepted the message.",
+   "B": "Production budget",
+   "A": "Cultivation theory — audiences are being cultivated to seek dramatic content over time through repeated, long-term exposure to sensationalised coverage across many broadcasts, which describes a slow shift in attitudes and expectations rather than a single viral clip reaching millions overnight."
+  }
+ },
+ "MEDIA-COV-085": {
+  "base": {
+   "B": "A negotiated reading — they partially accepted the message.",
+   "A": "Regulatory code",
+   "C": "Two-step flow"
+  },
+  "reforge": {
+   "D": "Production budget",
+   "A": "Reception theory",
+   "C": "Diversion would mean the student is using the programme only to escape from everyday life; identifying with a contestant from a similar background instead illustrates the personal identity function, because the audience is actively using the text to explore and reinforce a sense of self."
+  }
+ },
+ "MEDIA-COV-087": {
+  "base": {
+   "B": "A niche audience is a relatively small, specialised audience group whose members share particular interests; it is not an audience that passively receives one fixed meaning from a producer.",
+   "D": "Primary institution",
+   "C": "A production code"
+  },
+  "reforge": {
+   "A": "Self-regulation — the label polices its own content.",
+   "B": "A preferred reading",
+   "D": "Ownership structure"
+  }
+ },
+ "MEDIA-COV-095": {
+  "base": {
+   "B": "Local regulation only",
+   "C": "Gatekeeping",
+   "D": "The tendency for audiences to undervalue cultural products compared to their production cost. The media explanation must account for representation, audience, ownership, technology, regulation and interpretation; the answer overlooks the qualifier that determines how the concept applies in this question. The qualifier is that cultural discount is about audience appeal, not about financial discounting between distributors."
+  },
+  "reforge": {
+   "A": "Audience isolation",
+   "B": "Rating",
+   "D": "The tendency for audiences to undervalue cultural products compared to their production cost. The media explanation must account for representation, audience, ownership, technology, regulation and interpretation; the relevant distinction is between the process and its effect, which this option merges. Underestimating production cost is a financial judgement; cultural discount concerns audience appeal, a separate effect."
+  }
+ },
+ "MEDIA-COV-097": {
+  "base": {
+   "D": "Synergy — TikTok and news broadcasters benefit from sharing the same content.",
+   "C": "Institutional ownership",
+   "A": "A preferred reading"
+  },
+  "reforge": {
+   "C": "professional institutions that create all media content for passive audiences, rather than ordinary users who create and share content themselves.",
+   "A": "User-generated producer",
+   "B": "Genre removes choice"
+  }
+ },
+ "MEDIA-COV-101": {
+  "base": {
+   "B": "Audiences are active users of media who choose texts purposefully to satisfy specific needs: information/surveillance, personal identity, social integration and entertainment. The audience uses the media, rather than the media using the audience.",
+   "C": "Audiences process media effects in two cognitive stages: conscious and unconscious.",
+   "A": "A negotiated reading — they partially accepted the message."
+  },
+  "reforge": {
+   "C": "Diversion would mean the student is using the programme only to escape from everyday life; identifying with a contestant from a similar background instead illustrates the personal identity function, because the audience is actively using the text to explore and reinforce a sense of self.",
+   "A": "Production budget",
+   "D": "Reception theory"
+  }
+ },
+ "MEDIA-COV-111": {
+  "base": {
+   "C": "Maximise audience ratings above all other considerations.",
+   "B": "Institutional ownership",
+   "D": "A mode of address"
+  },
+  "reforge": {
+   "A": "A rating",
+   "B": "Ownership pattern"
+  }
+ },
+ "MEDIA-COV-115": {
+  "base": {
+   "D": "Self-regulation — the label polices its own content.",
+   "A": "the geography of a whole setting",
+   "B": "removes the need for marketing"
+  },
+  "reforge": {
+   "A": "A public service announcement",
+   "B": "Naturalistic underexposure",
+   "D": "Oppositional reading"
+  }
+ },
+ "MEDIA-COV-131": {
+  "base": {
+   "B": "Diversion would mean the student is using the programme only to escape from everyday life; identifying with a contestant from a similar background instead illustrates the personal identity function, because the audience is actively using the text to explore and reinforce a sense of self.",
+   "D": "Audiences process media effects in two cognitive stages: conscious and unconscious.",
+   "A": "A negotiated reading — they partially accepted the message."
+  },
+  "reforge": {
+   "D": "Cultivation theory — audiences are being cultivated to seek dramatic content over time through repeated, long-term exposure to sensationalised coverage across many broadcasts, which describes a slow shift in attitudes and expectations rather than a single viral clip reaching millions overnight.",
+   "C": "The hypodermic model",
+   "B": "Production budget"
+  }
+ },
+ "MEDIA-COV-135": {
+  "base": {
+   "B": "A negotiated reading — they partially accepted the message.",
+   "C": "Reception theory",
+   "D": "Regulatory code"
+  },
+  "reforge": {
+   "D": "Production budget",
+   "A": "Two-step flow",
+   "B": "Diversion would mean the student is using the programme only to escape from everyday life; identifying with a contestant from a similar background instead illustrates the personal identity function, because the audience is actively using the text to explore and reinforce a sense of self."
+  }
+ },
+ "MEDIA-COV-137": {
+  "base": {
+   "A": "A niche audience is a relatively small, specialised audience group whose members share particular interests; it is not an audience that passively receives one fixed meaning from a producer.",
+   "D": "Primary institution",
+   "C": "Ownership structure"
+  },
+  "reforge": {
+   "A": "Self-regulation — the label polices its own content.",
+   "B": "A preferred reading",
+   "C": "A production code"
+  }
+ },
+ "MEDIA-COV-145": {
+  "base": {
+   "A": "Local regulation only",
+   "D": "Rating",
+   "C": "The tendency for audiences to undervalue cultural products compared to their production cost. The media explanation must account for representation, audience, ownership, technology, regulation and interpretation; the answer overlooks the qualifier that determines how the concept applies in this question. The qualifier is that cultural discount is about audience appeal, not about financial discounting between distributors."
+  },
+  "reforge": {
+   "B": "Audience isolation",
+   "A": "Gatekeeping",
+   "C": "The tendency for audiences to undervalue cultural products compared to their production cost. The media explanation must account for representation, audience, ownership, technology, regulation and interpretation; the relevant distinction is between the process and its effect, which this option merges. Underestimating production cost is a financial judgement; cultural discount concerns audience appeal, a separate effect."
+  }
+ },
+ "MEDIA-COV-147": {
+  "base": {
+   "D": "Synergy — TikTok and news broadcasters benefit from sharing the same content.",
+   "B": "Institutional ownership",
+   "A": "Genre removes choice"
+  },
+  "reforge": {
+   "C": "professional institutions that create all media content for passive audiences, rather than ordinary users who create and share content themselves.",
+   "B": "User-generated producer",
+   "D": "A preferred reading"
+  }
+ },
+ "MEDIA-E2-01": {
+  "base": {
+   "B": "The hypodermic model",
+   "C": "Two-step flow",
+   "D": "Diversion would mean the student is using the programme only to escape from everyday life; identifying with a contestant from a similar background instead illustrates the personal identity function, because the audience is actively using the text to explore and reinforce a sense of self."
+  },
+  "reforge": {
+   "B": "Reception theory",
+   "C": "A negotiated reading — they partially accepted the message."
+  }
+ },
+ "MEDIA-E2-02": {
+  "base": {
+   "C": "A negotiated reading — they partially accepted the message.",
+   "A": "Regulatory code",
+   "D": "Two-step flow"
+  },
+  "reforge": {
+   "D": "Reception theory",
+   "C": "Diversion would mean the student is using the programme only to escape from everyday life; identifying with a contestant from a similar background instead illustrates the personal identity function, because the audience is actively using the text to explore and reinforce a sense of self."
+  }
+ },
+ "MEDIA-E2-03": {
+  "base": {
+   "A": "The hypodermic model",
+   "B": "Regulatory code",
+   "D": "Diversion would mean the student is using the programme only to escape from everyday life; identifying with a contestant from a similar background instead illustrates the personal identity function, because the audience is actively using the text to explore and reinforce a sense of self."
+  },
+  "reforge": {
+   "B": "A negotiated reading — they partially accepted the message."
+  }
+ },
+ "MEDIA-E2-04": {
+  "base": {
+   "B": "A niche audience is a relatively small, specialised audience group whose members share particular interests; it is not an audience that passively receives one fixed meaning from a producer.",
+   "C": "A preferred reading",
+   "A": "Ownership structure"
+  },
+  "reforge": {
+   "C": "A stereotype"
+  }
+ },
+ "MEDIA-E2-05": {
+  "base": {
+   "B": "Global conglomerate",
+   "C": "Primary institution",
+   "D": "A niche audience is a relatively small, specialised audience group whose members share particular interests; it is not an audience that passively receives one fixed meaning from a producer."
+  },
+  "reforge": {
+   "C": "A preferred reading",
+   "B": "Gatekeeper"
+  }
+ },
+ "MEDIA-E2-12": {
+  "base": {
+   "B": "Gatekeeping",
+   "A": "The tendency for audiences to undervalue cultural products compared to their production cost. The media explanation must account for representation, audience, ownership, technology, regulation and interpretation; the answer overlooks the qualifier that determines how the concept applies in this question. The qualifier is that cultural discount is about audience appeal, not about financial discounting between distributors.",
+   "C": "The tendency for audiences to undervalue cultural products compared to their production cost. The media explanation must account for representation, audience, ownership, technology, regulation and interpretation; the relevant distinction is between the process and its effect, which this option merges. Underestimating production cost is a financial judgement; cultural discount concerns audience appeal, a separate effect."
+  },
+  "reforge": {
+   "D": "Rating"
+  }
+ },
+ "MEDIA-E2-13": {
+  "base": {
+   "C": "Synergy — TikTok and news broadcasters benefit from sharing the same content.",
+   "B": "Rating measures ideology",
+   "D": "Institutional ownership"
+  },
+  "reforge": {
+   "C": "Cultivation theory — audiences are being cultivated to seek dramatic content over time through repeated, long-term exposure to sensationalised coverage across many broadcasts, which describes a slow shift in attitudes and expectations rather than a single viral clip reaching millions overnight.",
+   "B": "professional institutions that create all media content for passive audiences, rather than ordinary users who create and share content themselves."
+  }
+ },
+ "MEDIA-E2-14": {
+  "base": {
+   "D": "Synergy — TikTok and news broadcasters benefit from sharing the same content.",
+   "C": "Rating measures ideology",
+   "A": "User-generated producer"
+  }
+ },
+ "MEDIA-E2-15": {
+  "base": {
+   "D": "User-generated producer",
+   "A": "Synergy — TikTok and news broadcasters benefit from sharing the same content.",
+   "B": "A preferred reading"
+  }
+ },
+ "MEDIA-COV-038": {
+  "reforge": {
+   "A": "An example of synergy — the BAFTA award drives subscriptions.",
+   "C": "Primary institution",
+   "D": "A production code"
+  },
+  "base": {
+   "A": "A niche audience is a relatively small, specialised audience group whose members share particular interests; it is not an audience that passively receives one fixed meaning from a producer.",
+   "B": "A preferred reading",
+   "C": "Ownership structure"
+  }
+ },
+ "MEDIA-COV-040": {
+  "reforge": {
+   "A": "Maximise audience ratings above all other considerations.",
+   "B": "Narrative order"
+  },
+  "base": {
+   "D": "Self-regulation — the label polices its own content.",
+   "B": "Genre convention",
+   "C": "Lighting codes"
+  }
+ },
+ "MEDIA-COV-042": {
+  "reforge": {
+   "A": "All news programmes must give exactly equal time to all political parties.",
+   "B": "The hypodermic model",
+   "C": "Cultivation only"
+  },
+  "base": {
+   "A": "Convergence — different technologies delivering the same content.",
+   "C": "Distribution channel",
+   "D": "Genre convention"
+  }
+ },
+ "MEDIA-COV-060": {
+  "reforge": {
+   "B": "a legal ownership document",
+   "C": "Ownership pattern"
+  },
+  "base": {
+   "A": "Self-regulation — the label polices its own content.",
+   "B": "A mode of address",
+   "D": "A rating"
+  }
+ },
+ "MEDIA-COV-064": {
+  "reforge": {
+   "A": "A negotiated reading — they partially accepted the message.",
+   "D": "removes the need for marketing",
+   "B": "Naturalistic underexposure"
+  },
+  "base": {
+   "C": "Maximise audience ratings above all other considerations.",
+   "B": "A public service announcement",
+   "D": "Oppositional reading"
+  }
+ },
+ "MEDIA-COV-090": {
+  "reforge": {
+   "A": "Maximise audience ratings above all other considerations.",
+   "B": "Genre convention",
+   "C": "Lighting codes"
+  },
+  "base": {
+   "A": "Single-text audience",
+   "C": "Narrative order",
+   "D": "Self-regulation — the label polices its own content."
+  }
+ },
+ "MEDIA-COV-138": {
+  "reforge": {
+   "A": "An example of synergy — the BAFTA award drives subscriptions.",
+   "C": "Primary institution",
+   "B": "A production code"
+  },
+  "base": {
+   "A": "A niche audience is a relatively small, specialised audience group whose members share particular interests; it is not an audience that passively receives one fixed meaning from a producer.",
+   "D": "A preferred reading",
+   "C": "Ownership structure"
+  }
+ },
+ "MEDIA-COV-140": {
+  "reforge": {
+   "B": "Maximise audience ratings above all other considerations.",
+   "C": "Narrative order"
+  },
+  "base": {
+   "A": "Self-regulation — the label polices its own content.",
+   "B": "Genre convention",
+   "D": "Lighting codes"
+  }
+ },
+ "MEDIA-COV-142": {
+  "reforge": {
+   "A": "All news programmes must give exactly equal time to all political parties.",
+   "D": "The hypodermic model",
+   "C": "Cultivation only"
+  },
+  "base": {
+   "A": "Convergence — different technologies delivering the same content.",
+   "C": "Distribution channel",
+   "B": "Genre convention"
+  }
+ },
+ "MED-02": {
+  "reforge": {
+   "B": "a small independent production",
+   "A": "Lighting codes",
+   "C": "Channel 4 fulfilling a commercial ratings strategy would mean cancelling programmes that attract small audiences, even when those programmes provide cultural value and represent communities that commercial broadcasters may overlook."
+  },
+  "base": {
+   "A": "Synergy means that a broadcaster receives public funding and must provide balanced coverage across its services; it does not describe a conglomerate using several holdings to cross-promote one media product.",
+   "C": "Genre convention",
+   "D": "Narrative order"
+  }
+ },
+ "MED-03": {
+  "reforge": {
+   "C": "Audiences are active users of media who choose texts purposefully to satisfy specific needs: information/surveillance, personal identity, social integration and entertainment. The audience uses the media, rather than the media using the audience.",
+   "B": "The hypodermic model",
+   "D": "Production budget"
+  },
+  "base": {
+   "B": "Diversion would mean the student is using the programme only to escape from everyday life; identifying with a contestant from a similar background instead illustrates the personal identity function, because the audience is actively using the text to explore and reinforce a sense of self.",
+   "A": "Audiences process media effects in two cognitive stages: conscious and unconscious.",
+   "D": "A negotiated reading — they partially accepted the message."
+  }
+ },
+ "MED-06": {
+  "reforge": {
+   "A": "Audiences are active users of media who choose texts purposefully to satisfy specific needs: information/surveillance, personal identity, social integration and entertainment. The audience uses the media, rather than the media using the audience.",
+   "B": "Genre convention",
+   "C": "Cultivation only"
+  },
+  "base": {
+   "C": "Diversion would mean the student is using the programme only to escape from everyday life; identifying with a contestant from a similar background instead illustrates the personal identity function, because the audience is actively using the text to explore and reinforce a sense of self.",
+   "A": "Distribution channel",
+   "D": "The hypodermic model"
+  }
+ },
+ "MED-07": {
+  "base": {
+   "A": "Audiences are active users of media who choose texts purposefully to satisfy specific needs: information/surveillance, personal identity, social integration and entertainment. The audience uses the media, rather than the media using the audience.",
+   "B": "A negotiated reading — they partially accepted the message.",
+   "D": "The hypodermic model"
+  },
+  "reforge": {
+   "C": "Diversion would mean the student is using the programme only to escape from everyday life; identifying with a contestant from a similar background instead illustrates the personal identity function, because the audience is actively using the text to explore and reinforce a sense of self.",
+   "B": "Production budget",
+   "D": "Reception theory"
+  }
+ },
+ "MED-08": {
+  "base": {
+   "C": "Diversion would mean the student is using the programme only to escape from everyday life; identifying with a contestant from a similar background instead illustrates the personal identity function, because the audience is actively using the text to explore and reinforce a sense of self.",
+   "A": "A negotiated reading — they partially accepted the message.",
+   "B": "The hypodermic model"
+  },
+  "reforge": {
+   "D": "Channel 4 fulfilling a commercial ratings strategy would mean cancelling programmes that attract small audiences, even when those programmes provide cultural value and represent communities that commercial broadcasters may overlook.",
+   "A": "Production budget",
+   "C": "Reception theory"
+  }
+ },
+ "MEDIA-COV-003": {
+  "reforge": {
+   "C": "Audiences are active users of media who choose texts purposefully to satisfy specific needs: information/surveillance, personal identity, social integration and entertainment. The audience uses the media, rather than the media using the audience.",
+   "B": "The hypodermic model",
+   "D": "Production budget"
+  },
+  "base": {
+   "B": "Diversion would mean the student is using the programme only to escape from everyday life; identifying with a contestant from a similar background instead illustrates the personal identity function, because the audience is actively using the text to explore and reinforce a sense of self.",
+   "A": "Audiences process media effects in two cognitive stages: conscious and unconscious.",
+   "D": "A negotiated reading — they partially accepted the message."
+  }
+ },
+ "MEDIA-COV-007": {
+  "base": {
+   "C": "Audiences are active users of media who choose texts purposefully to satisfy specific needs: information/surveillance, personal identity, social integration and entertainment. The audience uses the media, rather than the media using the audience.",
+   "B": "A negotiated reading — they partially accepted the message.",
+   "D": "The hypodermic model"
+  },
+  "reforge": {
+   "A": "Diversion would mean the student is using the programme only to escape from everyday life; identifying with a contestant from a similar background instead illustrates the personal identity function, because the audience is actively using the text to explore and reinforce a sense of self.",
+   "B": "Production budget",
+   "D": "Reception theory"
+  }
+ },
+ "MEDIA-COV-029": {
+  "base": {
+   "C": "Channel 4 fulfilling a commercial ratings strategy would mean cancelling programmes that attract small audiences, even when those programmes provide cultural value and represent communities that commercial broadcasters may overlook.",
+   "A": "The regulatory requirement for balanced coverage across different media outlets.",
+   "B": "Vertical integration — multiple platforms owned by one company."
+  },
+  "reforge": {
+   "D": "Audiences are active users of media who choose texts purposefully to satisfy specific needs: information/surveillance, personal identity, social integration and entertainment. The audience uses the media, rather than the media using the audience.",
+   "C": "Convergence — different technologies delivering the same content.",
+   "A": "An example of synergy — the BAFTA award drives subscriptions."
+  }
+ },
+ "MEDIA-COV-079": {
+  "base": {
+   "C": "Channel 4 fulfilling a commercial ratings strategy would mean cancelling programmes that attract small audiences, even when those programmes provide cultural value and represent communities that commercial broadcasters may overlook.",
+   "D": "The regulatory requirement for balanced coverage across different media outlets.",
+   "B": "Vertical integration — multiple platforms owned by one company."
+  },
+  "reforge": {
+   "D": "Audiences are active users of media who choose texts purposefully to satisfy specific needs: information/surveillance, personal identity, social integration and entertainment. The audience uses the media, rather than the media using the audience.",
+   "B": "Convergence — different technologies delivering the same content."
+  }
+ },
+ "MEDIA-COV-103": {
+  "reforge": {
+   "A": "Audiences are active users of media who choose texts purposefully to satisfy specific needs: information/surveillance, personal identity, social integration and entertainment. The audience uses the media, rather than the media using the audience.",
+   "B": "The hypodermic model",
+   "D": "Production budget"
+  },
+  "base": {
+   "B": "Diversion would mean the student is using the programme only to escape from everyday life; identifying with a contestant from a similar background instead illustrates the personal identity function, because the audience is actively using the text to explore and reinforce a sense of self.",
+   "C": "Audiences process media effects in two cognitive stages: conscious and unconscious.",
+   "D": "A negotiated reading — they partially accepted the message."
+  }
+ },
+ "MEDIA-COV-107": {
+  "base": {
+   "A": "Audiences are active users of media who choose texts purposefully to satisfy specific needs: information/surveillance, personal identity, social integration and entertainment. The audience uses the media, rather than the media using the audience.",
+   "B": "A negotiated reading — they partially accepted the message.",
+   "D": "The hypodermic model"
+  },
+  "reforge": {
+   "C": "Diversion would mean the student is using the programme only to escape from everyday life; identifying with a contestant from a similar background instead illustrates the personal identity function, because the audience is actively using the text to explore and reinforce a sense of self.",
+   "B": "Production budget",
+   "D": "Reception theory"
+  }
+ },
+ "MEDIA-COV-129": {
+  "base": {
+   "C": "Audiences are active users of media who choose texts purposefully to satisfy specific needs: information/surveillance, personal identity, social integration and entertainment. The audience uses the media, rather than the media using the audience.",
+   "D": "The regulatory requirement for balanced coverage across different media outlets.",
+   "A": "Convergence — different technologies delivering the same content."
+  },
+  "reforge": {
+   "C": "The process by which audiences become more homogeneous in their media consumption habits.",
+   "A": "Vertical integration — multiple platforms owned by one company."
+  }
+ },
+ "MED-10": {
+  "reforge": {
+   "C": "Channel 4 fulfilling a commercial ratings strategy would mean cancelling programmes that attract small audiences, even when those programmes provide cultural value and represent communities that commercial broadcasters may overlook.",
+   "B": "An example of synergy — the BAFTA award drives subscriptions."
+  },
+  "base": {
+   "A": "Vertical integration — multiple platforms owned by one company.",
+   "C": "Maximise audience ratings above all other considerations.",
+   "D": "Synergy means that a broadcaster receives public funding and must provide balanced coverage across its services; it does not describe a conglomerate using several holdings to cross-promote one media product."
+  }
+ },
+ "MED-11": {
+  "base": {
+   "D": "Diversion would mean the student is using the programme only to escape from everyday life; identifying with a contestant from a similar background instead illustrates the personal identity function, because the audience is actively using the text to explore and reinforce a sense of self.",
+   "A": "Synergy means that a broadcaster receives public funding and must provide balanced coverage across its services; it does not describe a conglomerate using several holdings to cross-promote one media product."
+  },
+  "reforge": {
+   "C": "Channel 4 fulfilling a commercial ratings strategy would mean cancelling programmes that attract small audiences, even when those programmes provide cultural value and represent communities that commercial broadcasters may overlook.",
+   "D": "Convergence — different technologies delivering the same content."
+  }
+ },
+ "MED-12": {
+  "base": {
+   "C": "Channel 4 fulfilling a commercial ratings strategy would mean cancelling programmes that attract small audiences, even when those programmes provide cultural value and represent communities that commercial broadcasters may overlook.",
+   "B": "The regulatory requirement for balanced coverage across different media outlets."
+  },
+  "reforge": {
+   "D": "Audiences are active users of media who choose texts purposefully to satisfy specific needs: information/surveillance, personal identity, social integration and entertainment. The audience uses the media, rather than the media using the audience.",
+   "A": "Convergence — different technologies delivering the same content."
+  }
+ },
+ "MED-05": {
+  "reforge": {
+   "A": "All news programmes must give exactly equal time to all political parties.",
+   "B": "professional institutions that create all media content for passive audiences, rather than ordinary users who create and share content themselves."
+  },
+  "base": {
+   "B": "Audiences are active users of media who choose texts purposefully to satisfy specific needs: information/surveillance, personal identity, social integration and entertainment. The audience uses the media, rather than the media using the audience.",
+   "C": "a restriction on digital distribution",
+   "D": "Vertical editing"
+  }
+ },
+ "MEDIA-COV-033": {
+  "base": {
+   "C": "All news programmes must give exactly equal time to all political parties.",
+   "D": "Neither — freedom of expression protects both from regulation.",
+   "A": "Diversion would mean the student is using the programme only to escape from everyday life; identifying with a contestant from a similar background instead illustrates the personal identity function, because the audience is actively using the text to explore and reinforce a sense of self."
+  },
+  "reforge": {
+   "B": "a restriction on digital distribution",
+   "A": "Vertical editing",
+   "C": "Cultivation theory — audiences are being cultivated to seek dramatic content over time through repeated, long-term exposure to sensationalised coverage across many broadcasts, which describes a slow shift in attitudes and expectations rather than a single viral clip reaching millions overnight."
+  }
+ },
+ "MEDIA-COV-083": {
+  "base": {
+   "B": "a restriction on digital distribution",
+   "D": "Vertical editing",
+   "A": "Diversion would mean the student is using the programme only to escape from everyday life; identifying with a contestant from a similar background instead illustrates the personal identity function, because the audience is actively using the text to explore and reinforce a sense of self."
+  }
+ },
+ "MEDIA-COV-133": {
+  "base": {
+   "C": "All news programmes must give exactly equal time to all political parties.",
+   "A": "Neither — freedom of expression protects both from regulation.",
+   "B": "Diversion would mean the student is using the programme only to escape from everyday life; identifying with a contestant from a similar background instead illustrates the personal identity function, because the audience is actively using the text to explore and reinforce a sense of self."
+  },
+  "reforge": {
+   "C": "a restriction on digital distribution",
+   "A": "Vertical editing",
+   "D": "Cultivation theory — audiences are being cultivated to seek dramatic content over time through repeated, long-term exposure to sensationalised coverage across many broadcasts, which describes a slow shift in attitudes and expectations rather than a single viral clip reaching millions overnight."
+  }
+ },
+ "MED-16": {
+  "base": {
+   "C": "a restriction on digital distribution",
+   "B": "Diversion would mean the student is using the programme only to escape from everyday life; identifying with a contestant from a similar background instead illustrates the personal identity function, because the audience is actively using the text to explore and reinforce a sense of self."
+  },
+  "reforge": {
+   "A": "Vertical editing",
+   "D": "Cultivation theory — audiences are being cultivated to seek dramatic content over time through repeated, long-term exposure to sensationalised coverage across many broadcasts, which describes a slow shift in attitudes and expectations rather than a single viral clip reaching millions overnight."
+  }
+ },
+ "MEDIA-E1-14": {
+  "base": {
+   "A": "Maximise audience ratings above all other considerations.",
+   "C": "Lighting codes"
+  },
+  "reforge": {
+   "B": "Narrative order"
+  }
+ },
+ "MEDIA-E2-07": {
+  "base": {
+   "A": "Self-regulation — the label polices its own content.",
+   "B": "Genre convention"
+  },
+  "reforge": {
+   "B": "Maximise audience ratings above all other considerations."
+  }
+ },
+ "MEDIA-COV-002": {
+  "base": {
+   "A": "a small independent production",
+   "D": "Genre convention"
+  },
+  "reforge": {
+   "B": "Channel 4 fulfilling a commercial ratings strategy would mean cancelling programmes that attract small audiences, even when those programmes provide cultural value and represent communities that commercial broadcasters may overlook.",
+   "A": "Narrative order",
+   "C": "Lighting codes"
+  }
+ },
+ "MEDIA-COV-022": {
+  "base": {
+   "A": "Maximise audience ratings above all other considerations.",
+   "C": "Single-text audience",
+   "B": "Genre convention"
+  },
+  "reforge": {
+   "B": "Narrative order",
+   "C": "Lighting codes"
+  }
+ },
+ "MEDIA-COV-052": {
+  "base": {
+   "A": "Synergy means that a broadcaster receives public funding and must provide balanced coverage across its services; it does not describe a conglomerate using several holdings to cross-promote one media product.",
+   "D": "Narrative order",
+   "B": "Lighting codes"
+  },
+  "reforge": {
+   "C": "Single-text audience",
+   "B": "Genre convention",
+   "D": "Channel 4 fulfilling a commercial ratings strategy would mean cancelling programmes that attract small audiences, even when those programmes provide cultural value and represent communities that commercial broadcasters may overlook."
+  }
+ },
+ "MEDIA-COV-072": {
+  "base": {
+   "B": "Single-text audience",
+   "C": "Narrative order",
+   "D": "Maximise audience ratings above all other considerations."
+  },
+  "reforge": {
+   "D": "Genre convention",
+   "B": "Lighting codes",
+   "A": "A negotiated reading — they partially accepted the message."
+  }
+ },
+ "MEDIA-COV-102": {
+  "base": {
+   "A": "a small independent production",
+   "B": "Genre convention"
+  },
+  "reforge": {
+   "D": "Channel 4 fulfilling a commercial ratings strategy would mean cancelling programmes that attract small audiences, even when those programmes provide cultural value and represent communities that commercial broadcasters may overlook.",
+   "A": "Narrative order",
+   "C": "Lighting codes"
+  }
+ },
+ "MEDIA-COV-122": {
+  "base": {
+   "A": "Maximise audience ratings above all other considerations.",
+   "C": "Single-text audience",
+   "D": "Genre convention"
+  },
+  "reforge": {
+   "B": "Narrative order",
+   "C": "Lighting codes"
+  }
+ },
+ "MEDIA-COV-026": {
+  "reforge": {
+   "A": "Synergy means that a broadcaster receives public funding and must provide balanced coverage across its services; it does not describe a conglomerate using several holdings to cross-promote one media product.",
+   "C": "Convergence — different technologies delivering the same content.",
+   "B": "An example of synergy — the BAFTA award drives subscriptions."
+  },
+  "base": {
+   "D": "Channel 4 fulfilling a commercial ratings strategy would mean cancelling programmes that attract small audiences, even when those programmes provide cultural value and represent communities that commercial broadcasters may overlook.",
+   "A": "The regulatory requirement for balanced coverage across different media outlets.",
+   "C": "Vertical integration — multiple platforms owned by one company."
+  }
+ },
+ "MEDIA-COV-028": {
+  "reforge": {
+   "C": "Channel 4 fulfilling a commercial ratings strategy would mean cancelling programmes that attract small audiences, even when those programmes provide cultural value and represent communities that commercial broadcasters may overlook.",
+   "B": "The regulatory requirement for balanced coverage across different media outlets.",
+   "D": "Vertical integration — multiple platforms owned by one company."
+  },
+  "base": {
+   "B": "Diversion would mean the student is using the programme only to escape from everyday life; identifying with a contestant from a similar background instead illustrates the personal identity function, because the audience is actively using the text to explore and reinforce a sense of self.",
+   "D": "Synergy means that a broadcaster receives public funding and must provide balanced coverage across its services; it does not describe a conglomerate using several holdings to cross-promote one media product.",
+   "A": "Convergence — different technologies delivering the same content."
+  }
+ },
+ "MEDIA-COV-076": {
+  "reforge": {
+   "B": "Synergy means that a broadcaster receives public funding and must provide balanced coverage across its services; it does not describe a conglomerate using several holdings to cross-promote one media product.",
+   "C": "Convergence — different technologies delivering the same content."
+  },
+  "base": {
+   "A": "Channel 4 fulfilling a commercial ratings strategy would mean cancelling programmes that attract small audiences, even when those programmes provide cultural value and represent communities that commercial broadcasters may overlook.",
+   "B": "The regulatory requirement for balanced coverage across different media outlets.",
+   "D": "Vertical integration — multiple platforms owned by one company."
+  }
+ },
+ "MEDIA-COV-078": {
+  "reforge": {
+   "C": "Channel 4 fulfilling a commercial ratings strategy would mean cancelling programmes that attract small audiences, even when those programmes provide cultural value and represent communities that commercial broadcasters may overlook.",
+   "A": "The regulatory requirement for balanced coverage across different media outlets."
+  },
+  "base": {
+   "B": "Diversion would mean the student is using the programme only to escape from everyday life; identifying with a contestant from a similar background instead illustrates the personal identity function, because the audience is actively using the text to explore and reinforce a sense of self.",
+   "C": "Synergy means that a broadcaster receives public funding and must provide balanced coverage across its services; it does not describe a conglomerate using several holdings to cross-promote one media product.",
+   "A": "Convergence — different technologies delivering the same content."
+  }
+ },
+ "MEDIA-COV-126": {
+  "reforge": {
+   "A": "Synergy means that a broadcaster receives public funding and must provide balanced coverage across its services; it does not describe a conglomerate using several holdings to cross-promote one media product.",
+   "C": "Convergence — different technologies delivering the same content.",
+   "D": "An example of synergy — the BAFTA award drives subscriptions."
+  },
+  "base": {
+   "B": "Channel 4 fulfilling a commercial ratings strategy would mean cancelling programmes that attract small audiences, even when those programmes provide cultural value and represent communities that commercial broadcasters may overlook.",
+   "A": "The regulatory requirement for balanced coverage across different media outlets.",
+   "C": "Vertical integration — multiple platforms owned by one company."
+  }
+ },
+ "MEDIA-COV-128": {
+  "reforge": {
+   "B": "Channel 4 fulfilling a commercial ratings strategy would mean cancelling programmes that attract small audiences, even when those programmes provide cultural value and represent communities that commercial broadcasters may overlook.",
+   "A": "The regulatory requirement for balanced coverage across different media outlets.",
+   "D": "Vertical integration — multiple platforms owned by one company."
+  },
+  "base": {
+   "B": "Diversion would mean the student is using the programme only to escape from everyday life; identifying with a contestant from a similar background instead illustrates the personal identity function, because the audience is actively using the text to explore and reinforce a sense of self.",
+   "C": "Synergy means that a broadcaster receives public funding and must provide balanced coverage across its services; it does not describe a conglomerate using several holdings to cross-promote one media product.",
+   "D": "Convergence — different technologies delivering the same content."
+  }
+ },
+ "MED-04": {
+  "base": {
+   "A": "Channel 4 fulfilling a commercial ratings strategy would mean cancelling programmes that attract small audiences, even when those programmes provide cultural value and represent communities that commercial broadcasters may overlook.",
+   "B": "a completely unique character",
+   "C": "Distribution channel"
+  },
+  "reforge": {
+   "A": "Audiences are active users of media who choose texts purposefully to satisfy specific needs: information/surveillance, personal identity, social integration and entertainment. The audience uses the media, rather than the media using the audience.",
+   "C": "Genre convention",
+   "D": "Cultivation only"
+  }
+ },
+ "MEDIA-E2-09": {
+  "base": {
+   "B": "Convergence — different technologies delivering the same content.",
+   "C": "Distribution channel",
+   "D": "Genre convention"
+  },
+  "reforge": {
+   "B": "secrecy and menace in every context"
+  }
+ },
+ "MEDIA-E2-10": {
+  "base": {
+   "A": "The regulatory requirement for balanced coverage across different media outlets.",
+   "D": "The hypodermic model",
+   "C": "Genre convention"
+  },
+  "reforge": {
+   "C": "a completely unique character",
+   "B": "Distribution channel",
+   "D": "Cultivation only"
+  }
+ },
+ "MEDIA-COV-004": {
+  "base": {
+   "A": "Channel 4 fulfilling a commercial ratings strategy would mean cancelling programmes that attract small audiences, even when those programmes provide cultural value and represent communities that commercial broadcasters may overlook.",
+   "B": "a completely unique character",
+   "D": "Distribution channel"
+  },
+  "reforge": {
+   "B": "Audiences are active users of media who choose texts purposefully to satisfy specific needs: information/surveillance, personal identity, social integration and entertainment. The audience uses the media, rather than the media using the audience.",
+   "D": "Genre convention",
+   "C": "Cultivation only"
+  }
+ },
+ "MEDIA-COV-006": {
+  "reforge": {
+   "A": "Audiences are active users of media who choose texts purposefully to satisfy specific needs: information/surveillance, personal identity, social integration and entertainment. The audience uses the media, rather than the media using the audience.",
+   "D": "Genre convention",
+   "C": "Cultivation only"
+  },
+  "base": {
+   "C": "Diversion would mean the student is using the programme only to escape from everyday life; identifying with a contestant from a similar background instead illustrates the personal identity function, because the audience is actively using the text to explore and reinforce a sense of self.",
+   "A": "Distribution channel",
+   "B": "The hypodermic model"
+  }
+ },
+ "MEDIA-COV-054": {
+  "base": {
+   "A": "Channel 4 fulfilling a commercial ratings strategy would mean cancelling programmes that attract small audiences, even when those programmes provide cultural value and represent communities that commercial broadcasters may overlook.",
+   "C": "a completely unique character",
+   "B": "Genre convention"
+  },
+  "reforge": {
+   "A": "Audiences are active users of media who choose texts purposefully to satisfy specific needs: information/surveillance, personal identity, social integration and entertainment. The audience uses the media, rather than the media using the audience.",
+   "C": "The hypodermic model",
+   "D": "Cultivation only"
+  }
+ },
+ "MEDIA-COV-056": {
+  "reforge": {
+   "A": "Audiences are active users of media who choose texts purposefully to satisfy specific needs: information/surveillance, personal identity, social integration and entertainment. The audience uses the media, rather than the media using the audience.",
+   "B": "The hypodermic model",
+   "D": "Cultivation only"
+  },
+  "base": {
+   "C": "Diversion would mean the student is using the programme only to escape from everyday life; identifying with a contestant from a similar background instead illustrates the personal identity function, because the audience is actively using the text to explore and reinforce a sense of self.",
+   "D": "Distribution channel",
+   "B": "Genre convention"
+  }
+ },
+ "MEDIA-COV-104": {
+  "base": {
+   "D": "are created only by audiences",
+   "B": "Channel 4 fulfilling a commercial ratings strategy would mean cancelling programmes that attract small audiences, even when those programmes provide cultural value and represent communities that commercial broadcasters may overlook.",
+   "C": "Distribution channel"
+  },
+  "reforge": {
+   "A": "Audiences are active users of media who choose texts purposefully to satisfy specific needs: information/surveillance, personal identity, social integration and entertainment. The audience uses the media, rather than the media using the audience.",
+   "D": "Genre convention",
+   "B": "Cultivation only"
+  }
+ },
+ "MEDIA-COV-106": {
+  "reforge": {
+   "A": "Audiences are active users of media who choose texts purposefully to satisfy specific needs: information/surveillance, personal identity, social integration and entertainment. The audience uses the media, rather than the media using the audience.",
+   "B": "Genre convention",
+   "C": "Cultivation only"
+  },
+  "base": {
+   "C": "Diversion would mean the student is using the programme only to escape from everyday life; identifying with a contestant from a similar background instead illustrates the personal identity function, because the audience is actively using the text to explore and reinforce a sense of self.",
+   "A": "Distribution channel",
+   "D": "The hypodermic model"
+  }
+ },
+ "MEDIA-E1-05": {
+  "base": {
+   "D": "Maximise audience ratings above all other considerations.",
+   "B": "Distribution channel",
+   "C": "The hypodermic model"
+  },
+  "reforge": {
+   "C": "Self-regulation — the label polices its own content.",
+   "B": "Genre convention",
+   "D": "Cultivation only"
+  }
+ },
+ "MEDIA-COV-008": {
+  "base": {
+   "C": "Diversion would mean the student is using the programme only to escape from everyday life; identifying with a contestant from a similar background instead illustrates the personal identity function, because the audience is actively using the text to explore and reinforce a sense of self.",
+   "D": "Audiences process media effects in two cognitive stages: conscious and unconscious.",
+   "B": "A negotiated reading — they partially accepted the message."
+  },
+  "reforge": {
+   "A": "The hypodermic model",
+   "B": "Production budget"
+  }
+ },
+ "MEDIA-COV-058": {
+  "base": {
+   "C": "Cultivation theory — audiences are being cultivated to seek dramatic content over time through repeated, long-term exposure to sensationalised coverage across many broadcasts, which describes a slow shift in attitudes and expectations rather than a single viral clip reaching millions overnight.",
+   "A": "Audiences process media effects in two cognitive stages: conscious and unconscious.",
+   "D": "Production budget"
+  },
+  "reforge": {
+   "A": "A negotiated reading — they partially accepted the message.",
+   "C": "The hypodermic model"
+  }
+ },
+ "MEDIA-COV-108": {
+  "base": {
+   "D": "Diversion would mean the student is using the programme only to escape from everyday life; identifying with a contestant from a similar background instead illustrates the personal identity function, because the audience is actively using the text to explore and reinforce a sense of self.",
+   "A": "Audiences process media effects in two cognitive stages: conscious and unconscious.",
+   "B": "A negotiated reading — they partially accepted the message."
+  },
+  "reforge": {
+   "B": "The hypodermic model",
+   "C": "Production budget"
+  }
+ },
+ "MEDIA-COV-005": {
+  "base": {
+   "B": "Audiences are active users of media who choose texts purposefully to satisfy specific needs: information/surveillance, personal identity, social integration and entertainment. The audience uses the media, rather than the media using the audience.",
+   "C": "Neither — freedom of expression protects both from regulation.",
+   "A": "a restriction on digital distribution"
+  },
+  "reforge": {
+   "A": "Vertical editing",
+   "C": "professional institutions that create all media content for passive audiences, rather than ordinary users who create and share content themselves."
+  }
+ },
+ "MEDIA-COV-055": {
+  "base": {
+   "B": "Audiences are active users of media who choose texts purposefully to satisfy specific needs: information/surveillance, personal identity, social integration and entertainment. The audience uses the media, rather than the media using the audience.",
+   "C": "a restriction on digital distribution",
+   "D": "Vertical editing"
+  },
+  "reforge": {
+   "A": "Neither — freedom of expression protects both from regulation."
+  }
+ },
+ "MEDIA-COV-105": {
+  "base": {
+   "A": "Audiences are active users of media who choose texts purposefully to satisfy specific needs: information/surveillance, personal identity, social integration and entertainment. The audience uses the media, rather than the media using the audience.",
+   "C": "Neither — freedom of expression protects both from regulation.",
+   "D": "a restriction on digital distribution"
+  },
+  "reforge": {
+   "A": "Vertical editing",
+   "B": "professional institutions that create all media content for passive audiences, rather than ordinary users who create and share content themselves."
+  }
+ },
+ "MEDIA-COV-049": {
+  "base": {
+   "D": "a restriction on digital distribution",
+   "A": "All news programmes must give exactly equal time to all political parties.",
+   "C": "Neither — freedom of expression protects both from regulation."
+  },
+  "reforge": {
+   "B": "Vertical editing",
+   "C": "A negotiated reading — they partially accepted the message."
+  }
+ },
+ "MEDIA-COV-099": {
+  "base": {
+   "D": "a restriction on digital distribution",
+   "B": "All news programmes must give exactly equal time to all political parties."
+  },
+  "reforge": {
+   "B": "Vertical editing",
+   "C": "Neither — freedom of expression protects both from regulation."
+  }
+ },
+ "MEDIA-COV-149": {
+  "base": {
+   "A": "a restriction on digital distribution",
+   "B": "All news programmes must give exactly equal time to all political parties.",
+   "C": "Neither — freedom of expression protects both from regulation."
+  },
+  "reforge": {
+   "C": "Vertical editing",
+   "D": "A negotiated reading — they partially accepted the message."
+  }
+ },
+ "MEDIA-E2-16": {
+  "base": {
+   "C": "A negotiated reading — they partially accepted the message."
+  },
+  "reforge": {
+   "C": "All news programmes must give exactly equal time to all political parties.",
+   "B": "Neither — freedom of expression protects both from regulation.",
+   "D": "Vertical editing"
+  }
+ },
+ "MEDIA-E2-08": {
+  "base": {
+   "B": "Cultivation — US audiences have been cultivated to prefer domestic content."
+  },
+  "reforge": {
+   "C": "All news programmes must give exactly equal time to all political parties.",
+   "B": "a restriction on digital distribution"
+  }
+ },
+ "MEDIA-E1-01": {
+  "base": {
+   "B": "Self-regulation — the label polices its own content.",
+   "C": "Institutional ownership",
+   "D": "A mode of address"
+  },
+  "reforge": {
+   "B": "Ownership pattern",
+   "C": "A rating"
+  }
+ },
+ "MEDIA-E1-02": {
+  "base": {
+   "C": "Self-regulation — the label polices its own content.",
+   "A": "Institutional ownership",
+   "D": "Ownership pattern"
+  },
+  "reforge": {
+   "A": "A rating"
+  }
+ },
+ "MEDIA-E1-16": {
+  "base": {
+   "A": "Self-regulation — the label polices its own content.",
+   "B": "Ownership pattern"
+  },
+  "reforge": {
+   "D": "A rating",
+   "C": "A mode of address"
+  }
+ },
+ "MEDIA-COV-009": {
+  "base": {
+   "A": "Self-regulation — the label polices its own content.",
+   "C": "Institutional ownership",
+   "D": "A mode of address"
+  },
+  "reforge": {
+   "B": "Ownership pattern",
+   "C": "A rating"
+  }
+ },
+ "MEDIA-COV-109": {
+  "base": {
+   "B": "Self-regulation — the label polices its own content.",
+   "C": "Institutional ownership",
+   "A": "A mode of address"
+  },
+  "reforge": {
+   "B": "Ownership pattern",
+   "C": "A rating"
+  }
+ },
+ "MEDIA-E1-11": {
+  "reforge": {
+   "C": "Channel 4 fulfilling a commercial ratings strategy would mean cancelling programmes that attract small audiences, even when those programmes provide cultural value and represent communities that commercial broadcasters may overlook.",
+   "B": "Synergy means that a broadcaster receives public funding and must provide balanced coverage across its services; it does not describe a conglomerate using several holdings to cross-promote one media product.",
+   "A": "The process by which audiences become more homogeneous in their media consumption habits."
+  },
+  "base": {
+   "A": "The regulatory requirement for balanced coverage across different media outlets.",
+   "B": "Vertical integration — multiple platforms owned by one company.",
+   "D": "An example of synergy — the BAFTA award drives subscriptions."
+  }
+ },
+ "MEDIA-COV-019": {
+  "reforge": {
+   "C": "Channel 4 fulfilling a commercial ratings strategy would mean cancelling programmes that attract small audiences, even when those programmes provide cultural value and represent communities that commercial broadcasters may overlook.",
+   "B": "Synergy means that a broadcaster receives public funding and must provide balanced coverage across its services; it does not describe a conglomerate using several holdings to cross-promote one media product.",
+   "A": "The process by which audiences become more homogeneous in their media consumption habits."
+  },
+  "base": {
+   "A": "The regulatory requirement for balanced coverage across different media outlets.",
+   "B": "Vertical integration — multiple platforms owned by one company.",
+   "D": "An example of synergy — the BAFTA award drives subscriptions."
+  }
+ },
+ "MEDIA-COV-119": {
+  "reforge": {
+   "C": "Channel 4 fulfilling a commercial ratings strategy would mean cancelling programmes that attract small audiences, even when those programmes provide cultural value and represent communities that commercial broadcasters may overlook.",
+   "B": "Synergy means that a broadcaster receives public funding and must provide balanced coverage across its services; it does not describe a conglomerate using several holdings to cross-promote one media product.",
+   "A": "The process by which audiences become more homogeneous in their media consumption habits."
+  },
+  "base": {
+   "C": "The regulatory requirement for balanced coverage across different media outlets.",
+   "B": "Vertical integration — multiple platforms owned by one company.",
+   "D": "An example of synergy — the BAFTA award drives subscriptions."
+  }
+ },
+ "MEDIA-COV-010": {
+  "base": {
+   "A": "a legal ownership document",
+   "D": "Institutional ownership"
+  },
+  "reforge": {
+   "A": "A mode of address",
+   "C": "Ownership pattern"
+  }
+ },
+ "MEDIA-COV-074": {
+  "base": {
+   "D": "Self-regulation — the label polices its own content.",
+   "C": "Ownership pattern",
+   "A": "A rating"
+  },
+  "reforge": {
+   "B": "Institutional ownership",
+   "C": "A mode of address"
+  }
+ },
+ "MEDIA-COV-110": {
+  "base": {
+   "A": "a legal ownership document",
+   "B": "Institutional ownership"
+  },
+  "reforge": {
+   "A": "A mode of address",
+   "C": "Ownership pattern"
+  }
+ },
+ "MEDIA-E1-15": {
+  "reforge": {
+   "A": "All news programmes must give exactly equal time to all political parties.",
+   "B": "Neither — freedom of expression protects both from regulation."
+  },
+  "base": {
+   "A": "a restriction on digital distribution",
+   "B": "Vertical editing"
+  }
+ },
+ "MEDIA-COV-023": {
+  "reforge": {
+   "A": "All news programmes must give exactly equal time to all political parties.",
+   "B": "Neither — freedom of expression protects both from regulation."
+  },
+  "base": {
+   "C": "a restriction on digital distribution",
+   "B": "Vertical editing"
+  }
+ },
+ "MEDIA-COV-123": {
+  "reforge": {
+   "A": "All news programmes must give exactly equal time to all political parties.",
+   "B": "Neither — freedom of expression protects both from regulation."
+  },
+  "base": {
+   "A": "a restriction on digital distribution",
+   "B": "Vertical editing"
+  }
+ },
+ "MEDIA-E2-11": {
+  "reforge": {
+   "B": "The tendency for audiences to undervalue cultural products compared to their production cost. The media explanation must account for representation, audience, ownership, technology, regulation and interpretation; the answer overlooks the qualifier that determines how the concept applies in this question. The qualifier is that cultural discount is about audience appeal, not about financial discounting between distributors."
+  },
+  "base": {
+   "A": "The tendency for audiences to undervalue cultural products compared to their production cost. The media explanation must account for representation, audience, ownership, technology, regulation and interpretation; the proposed account does not match the scale, timing or conditions stated. The stem asks about audience reception across cultures, which financial subsidy arrangements do not describe.",
+   "B": "Local regulation only",
+   "D": "Audience isolation"
+  }
+ },
+ "MEDIA-E1-13": {
+  "reforge": {
+   "D": "Channel 4 fulfilling a commercial ratings strategy would mean cancelling programmes that attract small audiences, even when those programmes provide cultural value and represent communities that commercial broadcasters may overlook.",
+   "A": "Synergy means that a broadcaster receives public funding and must provide balanced coverage across its services; it does not describe a conglomerate using several holdings to cross-promote one media product.",
+   "C": "The process by which audiences become more homogeneous in their media consumption habits."
+  },
+  "base": {
+   "C": "Convergence — different technologies delivering the same content.",
+   "B": "Self-regulation — the label polices its own content.",
+   "D": "Horizontal audience fragmentation"
+  }
+ },
+ "MEDIA-COV-021": {
+  "reforge": {
+   "D": "Channel 4 fulfilling a commercial ratings strategy would mean cancelling programmes that attract small audiences, even when those programmes provide cultural value and represent communities that commercial broadcasters may overlook.",
+   "A": "Synergy means that a broadcaster receives public funding and must provide balanced coverage across its services; it does not describe a conglomerate using several holdings to cross-promote one media product.",
+   "C": "The process by which audiences become more homogeneous in their media consumption habits."
+  },
+  "base": {
+   "B": "Convergence — different technologies delivering the same content.",
+   "A": "Self-regulation — the label polices its own content.",
+   "C": "Horizontal audience fragmentation"
+  }
+ },
+ "MEDIA-COV-121": {
+  "reforge": {
+   "D": "Channel 4 fulfilling a commercial ratings strategy would mean cancelling programmes that attract small audiences, even when those programmes provide cultural value and represent communities that commercial broadcasters may overlook.",
+   "A": "Synergy means that a broadcaster receives public funding and must provide balanced coverage across its services; it does not describe a conglomerate using several holdings to cross-promote one media product.",
+   "C": "The process by which audiences become more homogeneous in their media consumption habits."
+  },
+  "base": {
+   "A": "Convergence — different technologies delivering the same content.",
+   "D": "Self-regulation — the label polices its own content.",
+   "C": "Horizontal audience fragmentation"
+  }
+ },
+ "MEDIA-E1-04": {
+  "base": {
+   "A": "Maximise audience ratings above all other considerations.",
+   "B": "a completely unique character",
+   "C": "The hypodermic model"
+  },
+  "reforge": {
+   "A": "Cultivation only"
+  }
+ },
+ "MEDIA-COV-013": {
+  "base": {
+   "A": "Maximise audience ratings above all other considerations.",
+   "B": "Distribution channel",
+   "C": "The hypodermic model"
+  },
+  "reforge": {
+   "C": "Self-regulation — the label polices its own content.",
+   "B": "Genre convention",
+   "D": "Cultivation only"
+  }
+ },
+ "MEDIA-COV-043": {
+  "base": {
+   "B": "The regulatory requirement for balanced coverage across different media outlets.",
+   "A": "Distribution channel",
+   "D": "The hypodermic model"
+  },
+  "reforge": {
+   "D": "Audiences process media effects in two cognitive stages: conscious and unconscious.",
+   "C": "Genre convention",
+   "B": "Cultivation only"
+  }
+ },
+ "MEDIA-COV-063": {
+  "base": {
+   "C": "Maximise audience ratings above all other considerations.",
+   "B": "The hypodermic model"
+  },
+  "reforge": {
+   "A": "Distribution channel",
+   "B": "Genre convention",
+   "D": "A negotiated reading — they partially accepted the message."
+  }
+ },
+ "MEDIA-COV-093": {
+  "base": {
+   "B": "The regulatory requirement for balanced coverage across different media outlets.",
+   "A": "The hypodermic model",
+   "C": "Genre convention"
+  },
+  "reforge": {
+   "D": "Audiences process media effects in two cognitive stages: conscious and unconscious.",
+   "A": "Distribution channel",
+   "C": "Cultivation only"
+  }
+ },
+ "MEDIA-COV-113": {
+  "base": {
+   "D": "Maximise audience ratings above all other considerations.",
+   "A": "Distribution channel",
+   "C": "The hypodermic model"
+  },
+  "reforge": {
+   "C": "Self-regulation — the label polices its own content.",
+   "B": "Genre convention",
+   "D": "Cultivation only"
+  }
+ },
+ "MEDIA-COV-143": {
+  "base": {
+   "B": "The regulatory requirement for balanced coverage across different media outlets.",
+   "C": "Distribution channel",
+   "D": "The hypodermic model"
+  },
+  "reforge": {
+   "D": "Audiences process media effects in two cognitive stages: conscious and unconscious.",
+   "A": "Genre convention",
+   "B": "Cultivation only"
+  }
+ },
+ "MEDIA-COV-012": {
+  "base": {
+   "A": "Maximise audience ratings above all other considerations.",
+   "B": "a completely unique character",
+   "D": "Distribution channel"
+  },
+  "reforge": {
+   "C": "The hypodermic model",
+   "B": "Genre convention",
+   "D": "Cultivation only"
+  }
+ },
+ "MEDIA-COV-062": {
+  "base": {
+   "A": "Maximise audience ratings above all other considerations.",
+   "C": "The hypodermic model",
+   "B": "Genre convention"
+  },
+  "reforge": {
+   "A": "A negotiated reading — they partially accepted the message.",
+   "C": "Distribution channel",
+   "D": "Cultivation only"
+  }
+ },
+ "MEDIA-COV-092": {
+  "base": {
+   "A": "Convergence — different technologies delivering the same content.",
+   "D": "Distribution channel",
+   "B": "Cultivation only"
+  },
+  "reforge": {
+   "B": "All news programmes must give exactly equal time to all political parties.",
+   "C": "The hypodermic model",
+   "D": "Genre convention"
+  }
+ },
+ "MEDIA-COV-112": {
+  "base": {
+   "B": "Maximise audience ratings above all other considerations.",
+   "C": "Distribution channel"
+  },
+  "reforge": {
+   "C": "The hypodermic model",
+   "B": "Genre convention",
+   "D": "Cultivation only"
+  }
+ },
+ "MEDIA-COV-014": {
+  "base": {
+   "C": "Maximise audience ratings above all other considerations.",
+   "B": "the geography of a whole setting",
+   "A": "removes the need for marketing"
+  }
+ },
+ "MEDIA-COV-114": {
+  "base": {
+   "C": "Maximise audience ratings above all other considerations.",
+   "D": "the geography of a whole setting",
+   "A": "removes the need for marketing"
+  }
+ },
+ "MEDIA-COV-016": {
+  "base": {
+   "B": "Self-regulation — the label polices its own content.",
+   "C": "the geography of a whole setting",
+   "D": "removes the need for marketing"
+  },
+  "reforge": {
+   "C": "Documentary-only",
+   "B": "Naturalistic underexposure"
+  }
+ },
+ "MEDIA-COV-066": {
+  "reforge": {
+   "C": "the geography of a whole setting",
+   "B": "Naturalistic underexposure",
+   "A": "Maximise audience ratings above all other considerations."
+  },
+  "base": {
+   "C": "removes the need for marketing",
+   "D": "A public service announcement",
+   "A": "Self-regulation — the label polices its own content."
+  }
+ },
+ "MEDIA-COV-116": {
+  "base": {
+   "B": "Self-regulation — the label polices its own content.",
+   "D": "the geography of a whole setting",
+   "A": "removes the need for marketing"
+  },
+  "reforge": {
+   "C": "Documentary-only",
+   "B": "Naturalistic underexposure"
+  }
+ },
+ "MEDIA-COV-017": {
+  "base": {
+   "C": "Self-regulation — the label polices its own content.",
+   "D": "the geography of a whole setting",
+   "A": "A public service announcement"
+  },
+  "reforge": {
+   "A": "Maximise audience ratings above all other considerations.",
+   "C": "Naturalistic underexposure",
+   "D": "Oppositional reading"
+  }
+ },
+ "MEDIA-COV-067": {
+  "reforge": {
+   "B": "Maximise audience ratings above all other considerations.",
+   "D": "A public service announcement",
+   "C": "Oppositional reading"
+  },
+  "base": {
+   "D": "removes the need for marketing",
+   "A": "Naturalistic underexposure",
+   "B": "Self-regulation — the label polices its own content."
+  }
+ },
+ "MEDIA-COV-117": {
+  "base": {
+   "C": "Self-regulation — the label polices its own content.",
+   "A": "the geography of a whole setting",
+   "B": "A public service announcement"
+  },
+  "reforge": {
+   "A": "Maximise audience ratings above all other considerations.",
+   "C": "Naturalistic underexposure",
+   "D": "Oppositional reading"
+  }
+ },
+ "MEDIA-COV-068": {
+  "base": {
+   "B": "the geography of a whole setting",
+   "A": "Low-key chiaroscuro",
+   "D": "Low-key lighting"
+  },
+  "reforge": {
+   "D": "secrecy and menace in every context",
+   "B": "A genre institution",
+   "C": "Documentary-only"
+  }
+ },
+ "MEDIA-E1-10": {
+  "base": {
+   "A": "the geography of a whole setting",
+   "C": "Negotiated rejection",
+   "D": "Low-key chiaroscuro"
+  },
+  "reforge": {
+   "A": "secrecy and menace in every context"
+  }
+ },
+ "MEDIA-COV-018": {
+  "base": {
+   "A": "the geography of a whole setting",
+   "C": "Negotiated rejection",
+   "D": "Low-key chiaroscuro"
+  },
+  "reforge": {
+   "B": "secrecy and menace in every context"
+  }
+ },
+ "MEDIA-COV-118": {
+  "base": {
+   "A": "the geography of a whole setting",
+   "C": "Negotiated rejection",
+   "B": "Low-key chiaroscuro"
+  },
+  "reforge": {
+   "B": "secrecy and menace in every context"
+  }
+ },
+ "MEDIA-E1-12": {
+  "base": {
+   "A": "Self-regulation — the label polices its own content.",
+   "B": "only two unrelated products",
+   "C": "User-generated content"
+  },
+  "reforge": {
+   "D": "Channel 4 fulfilling a commercial ratings strategy would mean cancelling programmes that attract small audiences, even when those programmes provide cultural value and represent communities that commercial broadcasters may overlook."
+  }
+ },
+ "MEDIA-COV-020": {
+  "base": {
+   "B": "Self-regulation — the label polices its own content.",
+   "D": "broadcast only to subscribers",
+   "A": "Public service broadcasting"
+  },
+  "reforge": {
+   "C": "Channel 4 fulfilling a commercial ratings strategy would mean cancelling programmes that attract small audiences, even when those programmes provide cultural value and represent communities that commercial broadcasters may overlook.",
+   "B": "Synergy means that a broadcaster receives public funding and must provide balanced coverage across its services; it does not describe a conglomerate using several holdings to cross-promote one media product."
+  }
+ },
+ "MEDIA-COV-070": {
+  "reforge": {
+   "C": "Maximise audience ratings above all other considerations.",
+   "D": "User-generated content"
+  },
+  "base": {
+   "C": "Self-regulation — the label polices its own content.",
+   "B": "Public service broadcasting"
+  }
+ },
+ "MEDIA-COV-120": {
+  "base": {
+   "B": "Self-regulation — the label polices its own content.",
+   "C": "broadcast only to subscribers",
+   "D": "Public service broadcasting"
+  },
+  "reforge": {
+   "C": "Channel 4 fulfilling a commercial ratings strategy would mean cancelling programmes that attract small audiences, even when those programmes provide cultural value and represent communities that commercial broadcasters may overlook.",
+   "B": "Synergy means that a broadcaster receives public funding and must provide balanced coverage across its services; it does not describe a conglomerate using several holdings to cross-promote one media product."
+  }
+ },
+ "MEDIA-COV-024": {
+  "reforge": {
+   "D": "A rating"
+  },
+  "base": {
+   "B": "Self-regulation — the label polices its own content.",
+   "C": "Institutional ownership",
+   "D": "A mode of address"
+  }
+ },
+ "MEDIA-COV-124": {
+  "reforge": {
+   "D": "A rating"
+  },
+  "base": {
+   "B": "Self-regulation — the label polices its own content.",
+   "D": "Institutional ownership",
+   "A": "A mode of address"
+  }
+ },
+ "MEDIA-COV-071": {
+  "base": {
+   "B": "Convergence — different technologies delivering the same content.",
+   "D": "Self-regulation — the label polices its own content.",
+   "C": "Public service broadcasting"
+  },
+  "reforge": {
+   "D": "The regulatory requirement for balanced coverage across different media outlets.",
+   "A": "only two unrelated products"
+  }
+ },
+ "MEDIA-COV-027": {
+  "reforge": {
+   "D": "Channel 4 fulfilling a commercial ratings strategy would mean cancelling programmes that attract small audiences, even when those programmes provide cultural value and represent communities that commercial broadcasters may overlook.",
+   "B": "Vertical integration — multiple platforms owned by one company.",
+   "C": "An example of synergy — the BAFTA award drives subscriptions."
+  },
+  "base": {
+   "A": "The regulatory requirement for balanced coverage across different media outlets.",
+   "D": "Convergence — different technologies delivering the same content."
+  }
+ },
+ "MEDIA-COV-077": {
+  "reforge": {
+   "D": "Channel 4 fulfilling a commercial ratings strategy would mean cancelling programmes that attract small audiences, even when those programmes provide cultural value and represent communities that commercial broadcasters may overlook.",
+   "C": "An example of synergy — the BAFTA award drives subscriptions."
+  },
+  "base": {
+   "C": "Vertical integration — multiple platforms owned by one company."
+  }
+ },
+ "MEDIA-COV-127": {
+  "base": {
+   "B": "Synergy means that a broadcaster receives public funding and must provide balanced coverage across its services; it does not describe a conglomerate using several holdings to cross-promote one media product.",
+   "C": "Convergence — different technologies delivering the same content.",
+   "D": "Vertical integration — multiple platforms owned by one company."
+  },
+  "reforge": {
+   "D": "Channel 4 fulfilling a commercial ratings strategy would mean cancelling programmes that attract small audiences, even when those programmes provide cultural value and represent communities that commercial broadcasters may overlook.",
+   "B": "An example of synergy — the BAFTA award drives subscriptions.",
+   "A": "Maximise audience ratings above all other considerations."
+  }
+ },
+ "MEDIA-COV-073": {
+  "reforge": {
+   "B": "Vertical editing"
+  },
+  "base": {
+   "A": "All news programmes must give exactly equal time to all political parties.",
+   "C": "Neither — freedom of expression protects both from regulation."
+  }
+ },
+ "MEDIA-COV-041": {
+  "base": {
+   "D": "Neither — freedom of expression protects both from regulation.",
+   "A": "Vertical editing",
+   "C": "All news programmes must give exactly equal time to all political parties."
+  },
+  "reforge": {
+   "B": "Cultivation — US audiences have been cultivated to prefer domestic content."
+  }
+ },
+ "MEDIA-COV-091": {
+  "base": {
+   "D": "Cultivation — US audiences have been cultivated to prefer domestic content.",
+   "B": "Vertical editing"
+  },
+  "reforge": {
+   "B": "a restriction on digital distribution",
+   "C": "All news programmes must give exactly equal time to all political parties."
+  }
+ },
+ "MEDIA-COV-141": {
+  "base": {
+   "A": "Neither — freedom of expression protects both from regulation.",
+   "B": "Vertical editing",
+   "C": "All news programmes must give exactly equal time to all political parties."
+  },
+  "reforge": {
+   "C": "Cultivation — US audiences have been cultivated to prefer domestic content."
+  }
+ },
+ "MEDIA-E1-17": {
+  "base": {
+   "B": "A niche audience is a relatively small, specialised audience group whose members share particular interests; it is not an audience that passively receives one fixed meaning from a producer.",
+   "C": "Primary institution",
+   "D": "A preferred reading"
+  },
+  "reforge": {
+   "A": "media products cannot be targeted",
+   "B": "A production code",
+   "D": "A stereotype"
+  }
+ },
+ "MEDIA-COV-025": {
+  "base": {
+   "A": "A niche audience is a relatively small, specialised audience group whose members share particular interests; it is not an audience that passively receives one fixed meaning from a producer.",
+   "C": "Primary institution",
+   "D": "A preferred reading"
+  },
+  "reforge": {
+   "A": "media products cannot be targeted",
+   "B": "A production code",
+   "D": "A stereotype"
+  }
+ },
+ "MEDIA-COV-039": {
+  "base": {
+   "C": "A niche audience is a relatively small, specialised audience group whose members share particular interests; it is not an audience that passively receives one fixed meaning from a producer.",
+   "B": "Primary institution",
+   "D": "A preferred reading"
+  },
+  "reforge": {
+   "D": "Global conglomerate",
+   "A": "Self-regulation — the label polices its own content.",
+   "B": "A production code"
+  }
+ },
+ "MEDIA-COV-089": {
+  "base": {
+   "A": "A niche audience is a relatively small, specialised audience group whose members share particular interests; it is not an audience that passively receives one fixed meaning from a producer.",
+   "D": "A preferred reading",
+   "C": "Ownership structure"
+  },
+  "reforge": {
+   "A": "Self-regulation — the label polices its own content.",
+   "C": "Primary institution",
+   "B": "A production code"
+  }
+ },
+ "MEDIA-COV-125": {
+  "base": {
+   "B": "Global conglomerate",
+   "C": "Primary institution",
+   "A": "A niche audience is a relatively small, specialised audience group whose members share particular interests; it is not an audience that passively receives one fixed meaning from a producer."
+  },
+  "reforge": {
+   "A": "media products cannot be targeted",
+   "B": "A production code",
+   "D": "A stereotype"
+  }
+ },
+ "MEDIA-COV-139": {
+  "base": {
+   "A": "A niche audience is a relatively small, specialised audience group whose members share particular interests; it is not an audience that passively receives one fixed meaning from a producer.",
+   "B": "Primary institution",
+   "D": "A preferred reading"
+  },
+  "reforge": {
+   "D": "Global conglomerate",
+   "C": "Self-regulation — the label polices its own content.",
+   "B": "A production code"
+  }
+ },
+ "MEDIA-E2-06": {
+  "base": {
+   "A": "A niche audience is a relatively small, specialised audience group whose members share particular interests; it is not an audience that passively receives one fixed meaning from a producer.",
+   "D": "Global conglomerate",
+   "C": "Primary institution"
+  }
+ },
+ "MED-09": {
+  "reforge": {
+   "A": "Synergy means that a broadcaster receives public funding and must provide balanced coverage across its services; it does not describe a conglomerate using several holdings to cross-promote one media product.",
+   "B": "Vertical integration — multiple platforms owned by one company."
+  },
+  "base": {
+   "D": "Channel 4 fulfilling a commercial ratings strategy would mean cancelling programmes that attract small audiences, even when those programmes provide cultural value and represent communities that commercial broadcasters may overlook.",
+   "B": "The regulatory requirement for balanced coverage across different media outlets.",
+   "C": "Convergence — different technologies delivering the same content."
+  }
+ },
+ "MED-14": {
+  "base": {
+   "A": "Diversion would mean the student is using the programme only to escape from everyday life; identifying with a contestant from a similar background instead illustrates the personal identity function, because the audience is actively using the text to explore and reinforce a sense of self.",
+   "D": "The hypodermic model"
+  },
+  "reforge": {
+   "C": "A negotiated reading — they partially accepted the message.",
+   "B": "Production budget",
+   "A": "Cultivation theory — audiences are being cultivated to seek dramatic content over time through repeated, long-term exposure to sensationalised coverage across many broadcasts, which describes a slow shift in attitudes and expectations rather than a single viral clip reaching millions overnight."
+  }
+ },
+ "MEDIA-COV-034": {
+  "base": {
+   "A": "A negotiated reading — they partially accepted the message.",
+   "C": "Reception theory",
+   "D": "Two-step flow"
+  },
+  "reforge": {
+   "C": "Production budget",
+   "B": "Regulatory code",
+   "A": "Diversion would mean the student is using the programme only to escape from everyday life; identifying with a contestant from a similar background instead illustrates the personal identity function, because the audience is actively using the text to explore and reinforce a sense of self."
+  }
+ },
+ "MEDIA-COV-036": {
+  "base": {
+   "D": "The hypodermic model",
+   "B": "Reception theory",
+   "A": "Diversion would mean the student is using the programme only to escape from everyday life; identifying with a contestant from a similar background instead illustrates the personal identity function, because the audience is actively using the text to explore and reinforce a sense of self."
+  },
+  "reforge": {
+   "B": "A negotiated reading — they partially accepted the message.",
+   "C": "Regulatory code",
+   "D": "Two-step flow"
+  }
+ },
+ "MEDIA-COV-084": {
+  "base": {
+   "A": "A negotiated reading — they partially accepted the message.",
+   "D": "Reception theory",
+   "B": "Two-step flow"
+  },
+  "reforge": {
+   "C": "Production budget",
+   "D": "Regulatory code",
+   "B": "Diversion would mean the student is using the programme only to escape from everyday life; identifying with a contestant from a similar background instead illustrates the personal identity function, because the audience is actively using the text to explore and reinforce a sense of self."
+  }
+ },
+ "MEDIA-COV-086": {
+  "base": {
+   "C": "A negotiated reading — they partially accepted the message.",
+   "B": "Regulatory code",
+   "A": "Two-step flow"
+  },
+  "reforge": {
+   "A": "Production budget",
+   "C": "Reception theory",
+   "D": "Diversion would mean the student is using the programme only to escape from everyday life; identifying with a contestant from a similar background instead illustrates the personal identity function, because the audience is actively using the text to explore and reinforce a sense of self."
+  }
+ },
+ "MEDIA-COV-134": {
+  "base": {
+   "A": "A negotiated reading — they partially accepted the message.",
+   "C": "Reception theory",
+   "B": "Two-step flow"
+  },
+  "reforge": {
+   "C": "Production budget",
+   "D": "Regulatory code",
+   "A": "Diversion would mean the student is using the programme only to escape from everyday life; identifying with a contestant from a similar background instead illustrates the personal identity function, because the audience is actively using the text to explore and reinforce a sense of self."
+  }
+ },
+ "MEDIA-COV-136": {
+  "base": {
+   "C": "The hypodermic model",
+   "B": "Reception theory",
+   "D": "Diversion would mean the student is using the programme only to escape from everyday life; identifying with a contestant from a similar background instead illustrates the personal identity function, because the audience is actively using the text to explore and reinforce a sense of self."
+  },
+  "reforge": {
+   "A": "A negotiated reading — they partially accepted the message.",
+   "B": "Regulatory code",
+   "D": "Two-step flow"
+  }
+ },
+ "MED-15": {
+  "base": {
+   "A": "Diversion would mean the student is using the programme only to escape from everyday life; identifying with a contestant from a similar background instead illustrates the personal identity function, because the audience is actively using the text to explore and reinforce a sense of self.",
+   "B": "Stereotype controls production",
+   "D": "Rating measures ideology"
+  },
+  "reforge": {
+   "C": "User-generated producer"
+  }
+ },
+ "MEDIA-COV-030": {
+  "reforge": {
+   "C": "The tendency for audiences to undervalue cultural products compared to their production cost. The media explanation must account for representation, audience, ownership, technology, regulation and interpretation; the proposed account does not match the scale, timing or conditions stated. The stem asks about audience reception across cultures, which financial subsidy arrangements do not describe.",
+   "A": "Gatekeeping",
+   "D": "Rating"
+  },
+  "base": {
+   "A": "Local regulation only",
+   "B": "Audience isolation"
+  }
+ },
+ "MEDIA-COV-032": {
+  "reforge": {
+   "D": "The tendency for audiences to undervalue cultural products compared to their production cost. The media explanation must account for representation, audience, ownership, technology, regulation and interpretation; the proposed account does not match the scale, timing or conditions stated. The stem asks about audience reception across cultures, which financial subsidy arrangements do not describe.",
+   "B": "User-generated producer",
+   "A": "Institutional ownership"
+  },
+  "base": {
+   "D": "Cultivation theory — audiences are being cultivated to seek dramatic content over time through repeated, long-term exposure to sensationalised coverage across many broadcasts, which describes a slow shift in attitudes and expectations rather than a single viral clip reaching millions overnight.",
+   "B": "Stereotype controls production",
+   "C": "Rating measures ideology"
+  }
+ },
+ "MEDIA-COV-080": {
+  "reforge": {
+   "B": "Local regulation only",
+   "A": "Rating",
+   "D": "The tendency for audiences to undervalue cultural products compared to their production cost. The media explanation must account for representation, audience, ownership, technology, regulation and interpretation; the proposed account does not match the scale, timing or conditions stated. The stem asks about audience reception across cultures, which financial subsidy arrangements do not describe."
+  },
+  "base": {
+   "B": "Audience isolation",
+   "D": "Gatekeeping"
+  }
+ },
+ "MEDIA-COV-082": {
+  "reforge": {
+   "B": "The tendency for audiences to undervalue cultural products compared to their production cost. The media explanation must account for representation, audience, ownership, technology, regulation and interpretation; the proposed account does not match the scale, timing or conditions stated. The stem asks about audience reception across cultures, which financial subsidy arrangements do not describe.",
+   "C": "User-generated producer",
+   "A": "Institutional ownership"
+  },
+  "base": {
+   "A": "Cultivation theory — audiences are being cultivated to seek dramatic content over time through repeated, long-term exposure to sensationalised coverage across many broadcasts, which describes a slow shift in attitudes and expectations rather than a single viral clip reaching millions overnight.",
+   "C": "Stereotype controls production",
+   "D": "Rating measures ideology"
+  }
+ },
+ "MEDIA-COV-130": {
+  "reforge": {
+   "C": "The tendency for audiences to undervalue cultural products compared to their production cost. The media explanation must account for representation, audience, ownership, technology, regulation and interpretation; the proposed account does not match the scale, timing or conditions stated. Cultural discount describes audience reception of a text, not the pricing or subsidy arrangements between broadcasters.",
+   "A": "Gatekeeping",
+   "B": "Rating"
+  },
+  "base": {
+   "A": "Local regulation only",
+   "D": "Audience isolation"
+  }
+ },
+ "MEDIA-COV-132": {
+  "reforge": {
+   "D": "The tendency for audiences to undervalue cultural products compared to their production cost. The media explanation must account for representation, audience, ownership, technology, regulation and interpretation; the proposed account does not match the scale, timing or conditions stated. The stem asks about audience reception across cultures, which financial subsidy arrangements do not describe.",
+   "C": "User-generated producer",
+   "B": "Institutional ownership"
+  },
+  "base": {
+   "A": "Cultivation theory — audiences are being cultivated to seek dramatic content over time through repeated, long-term exposure to sensationalised coverage across many broadcasts, which describes a slow shift in attitudes and expectations rather than a single viral clip reaching millions overnight.",
+   "B": "Stereotype controls production",
+   "D": "Rating measures ideology"
+  }
+ },
+ "MEDIA-COV-050": {
+  "reforge": {
+   "C": "Self-regulation — the label polices its own content.",
+   "A": "Primary institution",
+   "B": "Ownership structure"
+  },
+  "base": {
+   "A": "A niche audience is a relatively small, specialised audience group whose members share particular interests; it is not an audience that passively receives one fixed meaning from a producer.",
+   "C": "A preferred reading",
+   "D": "A production code"
+  }
+ },
+ "MEDIA-COV-088": {
+  "base": {
+   "D": "Global conglomerate",
+   "B": "A niche audience is a relatively small, specialised audience group whose members share particular interests; it is not an audience that passively receives one fixed meaning from a producer.",
+   "C": "A production code"
+  },
+  "reforge": {
+   "B": "Primary institution",
+   "A": "Ownership structure",
+   "D": "An example of synergy — the BAFTA award drives subscriptions."
+  }
+ },
+ "MEDIA-COV-100": {
+  "base": {
+   "A": "A niche audience is a relatively small, specialised audience group whose members share particular interests; it is not an audience that passively receives one fixed meaning from a producer.",
+   "B": "Primary institution",
+   "D": "Ownership structure"
+  },
+  "reforge": {
+   "C": "Global conglomerate",
+   "B": "Self-regulation — the label polices its own content.",
+   "D": "A production code"
+  }
+ },
+ "MEDIA-COV-150": {
+  "reforge": {
+   "C": "Self-regulation — the label polices its own content.",
+   "A": "Primary institution",
+   "D": "Ownership structure"
+  },
+  "base": {
+   "A": "A niche audience is a relatively small, specialised audience group whose members share particular interests; it is not an audience that passively receives one fixed meaning from a producer.",
+   "C": "A preferred reading",
+   "B": "A production code"
+  }
+ },
+ "MED-13": {
+  "base": {
+   "B": "Cultivation — US audiences have been cultivated to prefer domestic content.",
+   "D": "Local regulation only"
+  },
+  "reforge": {
+   "A": "The tendency for audiences to undervalue cultural products compared to their production cost. The media explanation must account for representation, audience, ownership, technology, regulation and interpretation; the proposed account does not match the scale, timing or conditions stated. The stem asks about audience reception across cultures, which financial subsidy arrangements do not describe.",
+   "B": "Gatekeeping",
+   "D": "Rating"
+  }
+ },
+ "MEDIA-COV-044": {
+  "base": {
+   "D": "Cultivation — US audiences have been cultivated to prefer domestic content.",
+   "B": "Audience isolation",
+   "A": "The tendency for audiences to undervalue cultural products compared to their production cost. The media explanation must account for representation, audience, ownership, technology, regulation and interpretation; the answer overlooks the qualifier that determines how the concept applies in this question. The qualifier is that cultural discount is about audience appeal, not about financial discounting between distributors."
+  },
+  "reforge": {
+   "B": "The tendency for audiences to undervalue cultural products compared to their production cost. The media explanation must account for representation, audience, ownership, technology, regulation and interpretation; the proposed account does not match the scale, timing or conditions stated. The stem asks about audience reception across cultures, which financial subsidy arrangements do not describe.",
+   "C": "Gatekeeping",
+   "D": "Rating"
+  }
+ },
+ "MEDIA-COV-094": {
+  "base": {
+   "C": "The tendency for audiences to undervalue cultural products compared to their production cost. The media explanation must account for representation, audience, ownership, technology, regulation and interpretation; the proposed account does not match the scale, timing or conditions stated. The stem asks about audience reception across cultures, which financial subsidy arrangements do not describe.",
+   "B": "Gatekeeping",
+   "A": "Rating"
+  },
+  "reforge": {
+   "A": "Local regulation only",
+   "C": "Audience isolation",
+   "D": "The tendency for audiences to undervalue cultural products compared to their production cost. The media explanation must account for representation, audience, ownership, technology, regulation and interpretation; the answer overlooks the qualifier that determines how the concept applies in this question. The qualifier is that cultural discount is about audience appeal, not about financial discounting between distributors."
+  }
+ },
+ "MEDIA-COV-144": {
+  "base": {
+   "C": "Cultivation — US audiences have been cultivated to prefer domestic content.",
+   "B": "Audience isolation",
+   "D": "The tendency for audiences to undervalue cultural products compared to their production cost. The media explanation must account for representation, audience, ownership, technology, regulation and interpretation; the answer overlooks the qualifier that determines how the concept applies in this question. The qualifier is that cultural discount is about audience appeal, not about financial discounting between distributors."
+  },
+  "reforge": {
+   "A": "The tendency for audiences to undervalue cultural products compared to their production cost. The media explanation must account for representation, audience, ownership, technology, regulation and interpretation; the proposed account does not match the scale, timing or conditions stated. The stem asks about audience reception across cultures, which financial subsidy arrangements do not describe.",
+   "B": "Gatekeeping",
+   "D": "Rating"
+  }
+ },
+ "MEDIA-COV-046": {
+  "reforge": {
+   "A": "professional institutions that create all media content for passive audiences, rather than ordinary users who create and share content themselves.",
+   "C": "Institutional ownership",
+   "D": "A preferred reading"
+  },
+  "base": {
+   "B": "Synergy — TikTok and news broadcasters benefit from sharing the same content.",
+   "A": "User-generated producer",
+   "C": "Genre removes choice"
+  }
+ },
+ "MEDIA-COV-096": {
+  "base": {
+   "B": "Synergy — TikTok and news broadcasters benefit from sharing the same content.",
+   "D": "Institutional ownership",
+   "C": "A preferred reading"
+  },
+  "reforge": {
+   "A": "professional institutions that create all media content for passive audiences, rather than ordinary users who create and share content themselves.",
+   "D": "User-generated producer",
+   "B": "Genre removes choice"
+  }
+ },
+ "MEDIA-COV-146": {
+  "reforge": {
+   "A": "professional institutions that create all media content for passive audiences, rather than ordinary users who create and share content themselves.",
+   "C": "Institutional ownership",
+   "B": "A preferred reading"
+  },
+  "base": {
+   "D": "Synergy — TikTok and news broadcasters benefit from sharing the same content.",
+   "A": "User-generated producer",
+   "C": "Genre removes choice"
+  }
+ },
+ "MEDIA-COV-048": {
+  "base": {
+   "D": "Synergy — TikTok and news broadcasters benefit from sharing the same content.",
+   "B": "Rating measures ideology",
+   "C": "Institutional ownership"
+  },
+  "reforge": {
+   "B": "professional institutions that create all media content for passive audiences, rather than ordinary users who create and share content themselves.",
+   "A": "Genre removes choice",
+   "D": "A preferred reading"
+  }
+ },
+ "MEDIA-COV-098": {
+  "base": {
+   "A": "Synergy — TikTok and news broadcasters benefit from sharing the same content.",
+   "C": "Institutional ownership",
+   "D": "A preferred reading"
+  },
+  "reforge": {
+   "B": "professional institutions that create all media content for passive audiences, rather than ordinary users who create and share content themselves.",
+   "C": "User-generated producer",
+   "A": "Genre removes choice"
+  }
+ },
+ "MEDIA-COV-148": {
+  "base": {
+   "A": "Synergy — TikTok and news broadcasters benefit from sharing the same content.",
+   "B": "Rating measures ideology",
+   "D": "Institutional ownership"
+  },
+  "reforge": {
+   "C": "professional institutions that create all media content for passive audiences, rather than ordinary users who create and share content themselves.",
+   "B": "Genre removes choice",
+   "D": "A preferred reading"
+  }
+ },
+ "MEDIA-E2-17": {
+  "base": {
+   "B": "A niche audience is a relatively small, specialised audience group whose members share particular interests; it is not an audience that passively receives one fixed meaning from a producer.",
+   "C": "Global conglomerate",
+   "D": "Primary institution"
+  }
+ }
+};
+for (const [id, repairs] of Object.entries(finalMediaCorruptionRepairs)) {
+  for (const bank of Object.values(BANKS)) {
+    const question = (bank.questions || []).find(candidate => candidate.id === id);
+    if (!question) continue;
+    for (const [variant, options] of Object.entries(repairs)) {
+      const item = variant === "base" ? question : question.reforge;
+      if (item?.options) Object.assign(item.options, options);
+    }
+  }
+}
