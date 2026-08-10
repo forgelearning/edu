@@ -58,11 +58,11 @@ document.body.classList.add('audit-test');
   } else if (variant === 'ember' || variant === 'sequence' || variant === 'instrument') {
     document.body.classList.add('overdrive-' + variant);
     document.documentElement.dataset.overdriveVariant = variant;
-  } else if (!variant) {
-    // The approved landing page is Precision Instrument. Keep direct file
-    // opens and the canonical URL on the same reviewed visual system.
-    document.body.classList.add('overdrive-instrument');
-    document.documentElement.dataset.overdriveVariant = 'instrument';
+  } else {
+    // Precision × Ember is the approved landing page. Keep direct file opens,
+    // the canonical URL, and unknown variant values on the reviewed fusion.
+    document.body.classList.add('overdrive-instrument', 'overdrive-ember', 'overdrive-fusion');
+    document.documentElement.dataset.overdriveVariant = 'fusion';
   }
 })();
 </script>
