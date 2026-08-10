@@ -235,6 +235,10 @@ const TAG_TAXONOMY_SUBJECTS = {
   // Final language, PE, computing and quantitative banks are now curated.
   french: 0,
   span: 0,
+  // German was missed when French and Spanish were retagged in the same PR —
+  // every source question still carried tag: "MC-" + id. 28 questions onto
+  // 10 shared MC-GDE-* tags; see docs/german-misconception-mapping.md.
+  german: 0,
   pe: 0,
   englit: 0,
   engll: 0,
@@ -327,6 +331,7 @@ const TAG_TAXONOMY_MECHANICAL = {
   'media': 0,
   'french': 0,
   'span': 0,
+  'german': 0,
   'pe': 0,
   'englit': 0,
   'engll': 0,
