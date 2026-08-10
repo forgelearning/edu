@@ -1087,6 +1087,24 @@ body.audit-test.overdrive-fusion .forge-ember-atmosphere{background:
   radial-gradient(circle at 50% 0%,rgba(255,201,60,.035),transparent 30rem),
   #130f0c}
 
+/* Fusion keeps the Ember field in light mode, but translates it into warm
+   daylight surfaces instead of mixing Precision's dark text with Ember's
+   night palette. The conversion strip remains dark by design. */
+html[data-theme="light"] body.audit-test.overdrive-fusion{background:#f7f2eb}
+html[data-theme="light"] body.audit-test.overdrive-fusion .forge-ember-atmosphere{background:
+  radial-gradient(circle at 50% 0%,rgba(229,85,15,.07),transparent 30rem),
+  linear-gradient(145deg,#fbf8f4,#f1e8dd)}
+html[data-theme="light"] body.audit-test.overdrive-fusion .forge-ember-atmosphere i:nth-child(1){background:radial-gradient(circle,rgba(229,85,15,.16) 0%,rgba(229,85,15,.055) 38%,transparent 70%);filter:blur(28px);opacity:.66}
+html[data-theme="light"] body.audit-test.overdrive-fusion .forge-ember-atmosphere i:nth-child(2){background:radial-gradient(circle,rgba(200,133,0,.12),rgba(229,85,15,.035) 42%,transparent 70%);opacity:.48}
+html[data-theme="light"] body.audit-test.overdrive-fusion .forge-ember-atmosphere i:nth-child(3){background:radial-gradient(circle,rgba(229,85,15,.1),transparent 68%);opacity:.42}
+html[data-theme="light"] body.audit-test.overdrive-fusion .hero-shell{background:
+  radial-gradient(circle at var(--ember-x) var(--ember-y),rgba(229,85,15,.12),transparent 22rem),
+  radial-gradient(circle at 18% 78%,rgba(200,133,0,.075),transparent 25rem),
+  linear-gradient(135deg,rgba(250,250,248,.94),rgba(242,236,228,.97))}
+html[data-theme="light"] body.audit-test.overdrive-fusion main{background:rgba(250,248,244,.8);backdrop-filter:blur(2px)}
+html[data-theme="light"] body.audit-test.overdrive-fusion main>section.is-ember-active{border-top-color:rgba(229,85,15,.32);box-shadow:inset 0 92px 140px -150px rgba(229,85,15,.42)}
+html[data-theme="light"] body.audit-test.overdrive-fusion .mode{background:linear-gradient(150deg,rgba(255,255,255,.94),rgba(247,241,235,.92))}
+
 /* Responsive composition shared by the finished variants. */
 @media(max-width:760px){
   .forge-sequence-meter{display:none}
