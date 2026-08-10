@@ -44,7 +44,11 @@ function apiScript() {
       request: request,
       rpc: function(name, payload){ return request('/rest/v1/rpc/' + name, {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload || {})}); },
       insert: function(name, row){ return request('/rest/v1/' + name, {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(row || {})}); },
-      response: function(url, options){ return request(url.replace(base, ''), options); },
+      response: function(url, options){
+        return request(url.replace(base, ''), options).then(function(body){
+          return { ok: true, status: 200, json: function () { return Promise.resolve(body); }, text: function () { return Promise.resolve(typeof body === 'string' ? body : JSON.stringify(body)); } };
+        });
+      },
       get: function(){ return Promise.resolve([]); },
       patch: function(){ return Promise.resolve([]); },
       remove: function(){ return Promise.resolve([]); },
@@ -91,6 +95,10 @@ const server = http.createServer((req, res) => {
     });
     res.end();
     return;
+  }
+  if (url.pathname === '/mock-supabase/rest/v1/rpc/create_free_student') {
+    if (mode === 'network-failure') return json(res, 503, {message:'Staging API is intentionally unavailable'});
+    return json(res, 200, [{student_id: 'staging-free-student-1'}]);
   }
   if (url.pathname === '/mock-supabase/rest/v1/rpc/record_free_response') {
     responseCount += 1;
