@@ -38,7 +38,7 @@
 // A-Level History was retagged the same way: 141 of its 208 questions moved
 // from per-question ids onto 37 shared MC-HIST-* tags, all with starters
 // below. The other 67 keep their per-question tag deliberately — see
-// docs/history-misconception-mapping.md.
+// docs/misconceptions/a-level/history-misconception-mapping.md.
 //
 // Shapes in use: sort, classify, distinguish, correct, diagnose, diagram,
 // chain, compare, evaluate, apply, match, trace, sequence, rewrite, graph,
@@ -1242,7 +1242,7 @@ var MC_FINAL_HAND_AUTHORED = {
   "MC-SP-COV-04":{type:"sequence",title:"Franco to Democratic Memory",instruction:"Build the historical chain and identify where memory and interpretation enter the account.",prompt:"Franco dictatorship → repression and control → transition to democracy → debates over historical memory.",answer:"The dictatorship involved political repression, censorship and centralisation; the transition changed institutions but did not erase all consequences. Contemporary debates over memory show how the past remains politically and socially contested."},
 
   // ---- A-Level History (AQA 7042). One per misconception tag introduced by
-  // the retag in data/forge-data.js; see docs/history-misconception-mapping.md.
+  // the retag in data/forge-data.js; see docs/misconceptions/a-level/history-misconception-mapping.md.
   // MC-HIST-NEWLIB, -WARCAUSE, -NEWDEAL-END and -DISSOLUTION currently sit on a
   // single question each, so they are browsable but will not reach the heatmap
   // until each gains a second question in the rewrite pass.
@@ -1296,7 +1296,7 @@ Object.keys(MC_FINAL_HAND_AUTHORED).forEach(function (tag) {
 // where the misconception is sharpest and most examinable. The other 49
 // resolve through _mcCuratedStarter / _mcStarterFallback below, which anchor
 // the activity to the question itself rather than to a generic drill.
-// See docs/econ-misconception-plan.md.
+// See docs/misconceptions/a-level/econ-misconception-plan.md.
 var MC_ECON_STAGE1_HAND_AUTHORED = {
   "MC-MICRO-MOVEMENT":{type:"classify",title:"Along the Curve, or the Whole Curve?",instruction:"For each change, decide whether demand for coffee MOVES ALONG the curve or the CURVE SHIFTS. One is a trap — it does both, in a specific order.",items:["The price of coffee falls","Consumer incomes rise","The price of tea rises","A new tax raises the price of coffee","A health scare about caffeine","Coffee shops run an advertising campaign"],answer:"Movement along: a fall in the price of coffee (an extension of demand). Shift: incomes rising, the price of tea rising, the health scare, and advertising — all change how much is demanded AT EVERY PRICE. The trap is the tax. A tax on coffee shifts the SUPPLY curve left, and it is the resulting rise in price that produces a MOVEMENT ALONG demand — so the tax shifts one curve and moves along the other, which is exactly the sequence students collapse. The rule, and it has no exceptions: only a change in the good's OWN PRICE moves you along the demand curve. Everything else shifts it. If your explanation of a demand shift contains the words 'because the price changed', you have made this error."},
   "MC-MICRO-CONSUMER-SURPLUS":{type:"diagram",title:"Shade the Two Surpluses",instruction:"Draw a supply and demand diagram in equilibrium. Shade consumer surplus in one colour and producer surplus in another, and label the boundaries of each. Then write what the shaded area MEASURES in words.",prompt:"Common error: shading the area below the price line for consumer surplus, on the reasoning that consumers pay it.",answer:"Consumer surplus is the area BELOW the demand curve and ABOVE the price line, from zero to the equilibrium quantity. Producer surplus is the area ABOVE the supply curve and BELOW the price line. In words: consumer surplus is what buyers were WILLING to pay minus what they actually paid — a benefit they keep, not a payment they make. That is why it sits above the price: everyone to the left of equilibrium would have paid more than the market price and did not have to. Producer surplus is the mirror image — what sellers received minus the minimum they would have accepted. Shading below the price for consumers gets it exactly backwards: that area is total expenditure, which is money that changes hands, not surplus at all."},

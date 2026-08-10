@@ -17402,7 +17402,7 @@ for (const entry of historyAddedQuestions) {
 //
 // Single-use share falls from 73.4% to 45.0%. The remaining 228 single-use
 // questions are definitional and hand-authored items needing a designed
-// taxonomy — stage 2, see docs/econ-misconception-plan.md. econ is therefore
+// taxonomy — stage 2, see docs/misconceptions/a-level/econ-misconception-plan.md. econ is therefore
 // NOT yet added to TAG_TAXONOMY_SUBJECTS in dev/audit-banks.js.
 const econMisconceptionTags = {
   // Theme 1 microeconomics (ECON-1.1)
@@ -17501,7 +17501,7 @@ const econMisconceptionTags = {
   //
   // Single-use share falls 0.447 -> 0.012, and the six that remain carry a
   // tag naming the error rather than the question's position, so the
-  // mechanical share is 0. See docs/econ-misconception-taxonomy-draft.md.
+  // mechanical share is 0. See docs/misconceptions/a-level/econ-misconception-taxonomy-draft.md.
   // --- Theme 1 microeconomics — the definitional TH1-* set and the hand-authored SD-*
   "SD-03":"MC-MICRO-EQUILIBRIUM","TH1-EQ-09":"MC-MICRO-EQUILIBRIUM",
   "TH1-EQ-10":"MC-MICRO-EQUILIBRIUM","TH1-EQ-11":"MC-MICRO-EQUILIBRIUM",
@@ -17696,7 +17696,7 @@ function applyEconMisconceptionTags() {
 // Same caveat as History: the eight uniform banks are definition-recall, so a
 // fire on one of their tags means "missed a definition in the area where this
 // error lives", not "holds this error". Education and Methods do not have that
-// limitation. See docs/soc-misconception-taxonomy-draft.md.
+// limitation. See docs/misconceptions/a-level/soc-misconception-taxonomy-draft.md.
 const socMisconceptionTags = {
   "SOC-STRAT-12":"MC-EDU-CLASS","EDU-03":"MC-EDU-CLASS","EDU-21":"MC-EDU-CLASS","EDU-23":"MC-EDU-CLASS",
   "EDU-28":"MC-EDU-CLASS",
@@ -17784,7 +17784,7 @@ for (const bankId of SUBJECTS.soc.banks) {
 // (Tudor foreign policy, the People's War, Vietnam and Watergate), and the
 // only tag that would cover them names a TOPIC, not an error. The spec-point
 // accuracy table already reports topic-level weakness, from better evidence.
-// See docs/history-misconception-mapping.md for the full assignment.
+// See docs/misconceptions/a-level/history-misconception-mapping.md for the full assignment.
 //
 // Caveat worth keeping in view: these stems are generated definition-recall
 // ("What does X refer to?"), so a fire here means "missed a definition in the
@@ -18967,7 +18967,7 @@ applyGeoMisconceptionTags();
 // return periods and hazard maps.
 //
 // This is a geo-only fix. The same filler affects 6,149 options across 30
-// subjects; see docs/geo-misconception-mapping.md.
+// subjects; see docs/misconceptions/a-level/geo-misconception-mapping.md.
 const geoAlevelDistractorRepairs = {
   "TEC-01:base": {
     "Continental plates are anchored by mountain ranges and cannot move.": "Continental crust is anchored by the mountain ranges along its margin, so it cannot be forced downwards by the oceanic plate."
@@ -22236,7 +22236,7 @@ for (const question of BANKS["GCSE-GEO-UKHUMAN"]?.questions || []) {
 // bank onto 16 concepts a teacher can actually act on. Keyed by question id
 // rather than by stem so the grouping is explicit and reviewable; the eight
 // fill-blank twins are listed with their source's concept.
-// See docs/gcse-geo-hazards-misconception-mapping.md.
+// See docs/misconceptions/gcse/gcse-geo-hazards-misconception-mapping.md.
 const GCSE_GEO_HAZ_TAGS = {
   // Plate boundaries: which boundary produces which hazard
   "GCSE-HAZ-01": "MC-GG-HAZ-BOUNDARY", "GCSE-HAZ-02": "MC-GG-HAZ-BOUNDARY",
@@ -22297,7 +22297,7 @@ for (const question of BANKS["GCSE-GEO-HAZ"].questions) {
 // concepts. Grouped by the error a student makes, so the two biomes are kept
 // apart where the contrast IS the point (adaptations, threats) and merged
 // where the underlying idea is shared (nutrient cycling, conservation
-// agreements). See docs/gcse-geo-forests-misconception-mapping.md.
+// agreements). See docs/misconceptions/gcse/gcse-geo-forests-misconception-mapping.md.
 const GCSE_GEO_FOR_TAGS = {
   // Rainforest adaptations are responses to light, rain and poor soil
   "GCSE-FOR-02": "MC-GG-FOR-RF-ADAPTATION", "GCSE-FOR-14": "MC-GG-FOR-RF-ADAPTATION",
@@ -22348,7 +22348,7 @@ for (const question of BANKS["GCSE-GEO-FORESTS"].questions) {
 // distinction here is between what a source IS (classification), what decides
 // whether it gets used (reserves, price, security) and what it costs beyond
 // the bill (extraction impacts, hidden costs, stakeholders).
-// See docs/gcse-geo-energy-misconception-mapping.md.
+// See docs/misconceptions/gcse/gcse-geo-energy-misconception-mapping.md.
 const GCSE_GEO_ENE_TAGS = {
   // Renewable vs non-renewable, primary vs secondary
   "GCSE-ENE-01": "MC-GG-ENE-CLASSIFY", "GCSE-ENE-13": "MC-GG-ENE-CLASSIFY",
@@ -22401,7 +22401,7 @@ for (const question of BANKS["GCSE-GEO-ENERGY"].questions) {
 // scale — global climate sets where biomes are, local factors override that
 // within a zone, and human pressure acts on top of both. Prefix is MC-GG-BIO-,
 // which does not collide with the MC-SEP-BIO-* separate-science tags.
-// See docs/gcse-geo-biosphere-misconception-mapping.md.
+// See docs/misconceptions/gcse/gcse-geo-biosphere-misconception-mapping.md.
 const GCSE_GEO_BIO_TAGS = {
   // Climate sets the global pattern of biomes
   "GCSE-BIO-01": "MC-GG-BIO-DISTRIBUTION", "GCSE-BIO-02": "MC-GG-BIO-DISTRIBUTION",
@@ -22453,7 +22453,7 @@ for (const question of BANKS["GCSE-GEO-BIOSPHERE"].questions) {
 // the slope is a sea cliff or a valley side. Prefix MC-GG-UKL-, checked
 // against the A-Level GEO-COAST tags to avoid the cross-subject sharing that
 // previously mislabelled A-Level questions.
-// See docs/gcse-geo-uk-landscape-misconception-mapping.md.
+// See docs/misconceptions/gcse/gcse-geo-uk-landscape-misconception-mapping.md.
 const GCSE_GEO_UKL_TAGS = {
   // Rock type controls relief, permeability and runoff
   "GCSE-UKLAND-18": "MC-GG-UKL-GEOLOGY", "GCSE-UKLAND-32": "MC-GG-UKL-GEOLOGY",
@@ -22991,7 +22991,7 @@ addLanguageTags("span", SPAN_TAGS);
 // teacher heatmap even though the taxonomy fix landed for the other three
 // languages in the same PR. Grouped by the underlying grammar rule or theme,
 // not by exercise type, mirroring the French/Spanish granularity.
-// See docs/german-misconception-mapping.md.
+// See docs/misconceptions/a-level/german-misconception-mapping.md.
 const GERMAN_TAGS = {};
 const addGerman = (tag, ids) => ids.forEach(id => { GERMAN_TAGS[id] = tag; });
 // The verb or preposition decides the case, not the noun's role in English.
