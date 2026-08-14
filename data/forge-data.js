@@ -16829,6 +16829,830 @@ const expandSubjectToMinimum = (subjectKey, target = 200) => {
   }
 };
 
+// ===== A-LEVEL BIOLOGY: GENUINE QUESTION EXPANSION =====
+// bio previously reached its 200-question floor via expandSubjectToMinimum(),
+// which clones existing questions. A later pass strips the "(application
+// variant N)" suffix from a clone stem, so 78 of the 202 questions a student
+// saw were byte-identical repeats of another question in the same subject.
+// These 113 authored questions take the source count to 200, so the expansion
+// pass finds enough questions and generates no coverage variants for bio.
+const bioExpansion = (bankId, questions) => questions.forEach(question => BANKS[bankId].questions.push(question));
+bioExpansion("BIO-1", [
+  {
+    id:"BIO-N1-01",stem:"A student increases the magnification of a light microscope but the two structures still appear as one blur. This is because the microscope is limited by its:",
+    options:{A:"Resolution — how far apart two points must be to be seen separately",B:"Magnification, which cannot exceed ×400 on any instrument.",C:"Eyepiece graticule, which must be recalibrated for every objective lens used.",D:"Depth of field, which determines how much of the specimen is in focus at once."},
+    correct:"A",tag:"MC-GBIO-CELL-STRUCTURE",
+    scaffold:"Magnification = how many times larger the image is. Resolution = the ability to distinguish two close points as separate, set by the wavelength of the radiation used. Light (~400-700nm) gives ~200nm resolution; electrons (much shorter wavelength) give ~0.1nm. Magnifying beyond the resolving limit gives 'empty magnification' — a bigger but no clearer image. This is why organelles like ribosomes need an electron microscope.",
+    reforge:{stem:"Why can a transmission electron microscope resolve ribosomes when a light microscope cannot?",options:{A:"Electron microscopes use a much higher magnification setting.",B:"Electrons have a far shorter wavelength than light, so the resolving limit is much smaller",C:"Ribosomes are stained more darkly in electron microscopy preparations.",D:"Light microscopes cannot be used on dead tissue, and ribosomes break down in living cells."},correct:"B"}
+  },
+  {
+    id:"BIO-N1-02",stem:"Which statement correctly compares a transmission electron microscope (TEM) with a scanning electron microscope (SEM)?",
+    options:{A:"TEM produces a 3D surface view; SEM produces a 2D section.",B:"Both can be used on living specimens held in a vacuum chamber.",C:"TEM transmits electrons through a section; SEM reflects them",D:"SEM has a higher resolution than TEM in all standard applications."},
+    correct:"C",tag:"MC-GBIO-CELL-STRUCTURE",
+    scaffold:"TEM: electrons transmitted through an ultra-thin section, denser regions absorb more electrons and appear darker, gives a 2D internal image, highest resolution (~0.1nm). SEM: electrons bounced off a surface coated in metal, gives a 3D surface image, lower resolution (~5-10nm). Both require a vacuum, so specimens must be dead — a common exam trap. Both need staining with heavy metals, which can create artefacts.",
+    reforge:{stem:"A researcher wants a three-dimensional image of the surface of a pollen grain. Which instrument and reason are correct?",options:{A:"TEM, because it has the highest available resolution.",B:"Light microscope, because the specimen can remain alive throughout.",C:"TEM, because electrons pass through the specimen to build depth.",D:"SEM, because reflected electrons build a 3D surface image"},correct:"D"}
+  },
+  {
+    id:"BIO-N1-03",stem:"The Golgi apparatus is best described as the organelle that:",
+    options:{A:"Synthesises ATP using an electron transport chain across folded membranes.",B:"Modifies, sorts and packages proteins into vesicles for secretion",C:"Contains hydrolytic enzymes that digest worn-out organelles and engulfed material.",D:"Assembles polypeptides by reading the codon sequence carried on messenger RNA."},
+    correct:"B",tag:"MC-GBIO-CELL-STRUCTURE",
+    scaffold:"Secretory pathway order: ribosome on RER makes polypeptide → RER folds it → transport vesicle → Golgi (cis face receives, trans face releases) modifies it (adds carbohydrate to form glycoproteins, trims chains) → secretory vesicle → cell surface membrane (exocytosis). The Golgi also forms lysosomes. Students often say the Golgi 'makes' proteins — it modifies and packages them; the ribosome makes them.",
+    reforge:{stem:"Goblet cells secreting mucus have an unusually large Golgi apparatus. What does this most directly indicate?",options:{A:"A high rate of packaging glycoproteins for export",B:"A high rate of aerobic respiration to supply ATP.",C:"A large store of hydrolytic enzymes for digesting bacteria.",D:"Extensive DNA replication in preparation for cell division."},correct:"A"}
+  },
+  {
+    id:"BIO-N1-04",stem:"Rough endoplasmic reticulum differs from smooth endoplasmic reticulum because only rough ER:",
+    options:{A:"Is enclosed by a double membrane continuous with the nuclear envelope.",B:"Synthesises and stores lipids, phospholipids and steroid hormones.",C:"Is found exclusively in animal cells rather than in plant cells.",D:"Has ribosomes bound to its outer surface, so it processes polypeptides"},
+    correct:"D",tag:"MC-GBIO-CELL-STRUCTURE",
+    scaffold:"RER: ribosomes attached to the cytosolic surface, folds and transports proteins destined for secretion or membranes — abundant in pancreatic and plasma cells. SER: no ribosomes, makes lipids and steroids, stores and releases calcium ions — abundant in liver cells and muscle (sarcoplasmic reticulum). Both are continuous with the nuclear envelope. The presence or absence of ribosomes is the defining difference.",
+    reforge:{stem:"Liver cells that detoxify drugs contain extensive smooth endoplasmic reticulum. This is because SER:",options:{A:"Provides attachment sites for ribosomes making detoxifying enzymes.",B:"Stores the cell's genetic information for enzyme synthesis.",C:"Carries enzymes that metabolise lipid-soluble drugs",D:"Generates the ATP required for active transport of toxins."},correct:"C"}
+  },
+  {
+    id:"BIO-N1-05",stem:"Lysosomes are able to digest cellular material without destroying the rest of the cell because:",
+    options:{A:"Their hydrolytic enzymes are enclosed within a single membrane",B:"Their enzymes are permanently inactive until the cell dies.",C:"They contain no enzymes, only concentrated acid for chemical breakdown.",D:"They are located only in the nucleus, away from the cytoplasmic organelles."},
+    correct:"A",tag:"MC-GBIO-CELL-STRUCTURE",
+    scaffold:"Lysosomes are membrane-bound vesicles from the Golgi containing hydrolases (proteases, lipases, nucleases) that work at an acidic pH (~5), maintained by proton pumps in the lysosomal membrane. Roles: digesting material taken in by phagocytosis, autophagy of worn organelles, apoptosis, and releasing enzymes outside the cell (e.g. the acrosome in sperm). The cytosol is near pH 7, so leaked enzymes work poorly — a second layer of protection.",
+    reforge:{stem:"The acrosome of a sperm cell is a specialised lysosome. Its function is to:",options:{A:"Supply ATP for the movement of the flagellum.",B:"Release enzymes that digest a path to the egg",C:"Store the haploid nucleus until fertilisation occurs.",D:"Recycle worn-out mitochondria in the sperm midpiece."},correct:"B"}
+  },
+  {
+    id:"BIO-N1-06",stem:"Mitochondria and chloroplasts both contain 70S ribosomes and circular DNA. This observation is used as evidence for:",
+    options:{A:"The fluid mosaic model of membrane structure.",B:"The semi-conservative nature of DNA replication.",C:"The endosymbiotic theory of eukaryotic organelle origin",D:"The principle that all cells arise from pre-existing cells."},
+    correct:"C",tag:"MC-GBIO-CELL-STRUCTURE",
+    scaffold:"Endosymbiotic theory: mitochondria and chloroplasts descend from free-living prokaryotes engulfed by an ancestral eukaryote. Evidence: 70S (prokaryote-type) ribosomes, circular naked DNA, double membrane (inner from the prokaryote, outer from the host vesicle), self-replication by binary fission, and their own protein synthesis. This also explains why some antibiotics targeting 70S ribosomes have mitochondrial side effects.",
+    reforge:{stem:"Which additional feature of mitochondria supports the endosymbiotic theory?",options:{A:"They are surrounded by a single phospholipid membrane.",B:"Their enzymes are synthesised entirely by ribosomes in the cytosol.",C:"They are found only in animal cells and never in plants.",D:"They divide by binary fission independently of nuclear division"},correct:"D"}
+  },
+  {
+    id:"BIO-N1-07",stem:"Plant cell walls and fungal cell walls differ in that plant walls are made mainly of:",
+    options:{A:"Peptidoglycan, whereas fungal walls are made of cellulose.",B:"Cellulose, whereas fungal walls are made largely of chitin",C:"Chitin, whereas fungal walls are made largely of cellulose.",D:"Glycogen, whereas fungal walls are built from cross-linked structural proteins."},
+    correct:"B",tag:"MC-GBIO-CELL-STRUCTURE",
+    scaffold:"Cell wall composition by group: plants — cellulose (β-glucose, straight chains, hydrogen-bonded into microfibrils); fungi — chitin (a nitrogen-containing polysaccharide); bacteria — peptidoglycan (murein, a polysaccharide cross-linked by peptides, the target of penicillin). All resist osmotic lysis by exerting an inward pressure. Confusing chitin with cellulose is one of the most common classification errors.",
+    reforge:{stem:"Penicillin inhibits the cross-linking of peptidoglycan. Why does this harm bacteria but not human cells?",options:{A:"Human cells have peptidoglycan only in the nuclear envelope.",B:"Human cells replace their cell walls rapidly enough to compensate.",C:"Human cells have no cell wall and no peptidoglycan",D:"Human cells use chitin rather than peptidoglycan in their walls."},correct:"C"}
+  },
+  {
+    id:"BIO-N1-08",stem:"In a chloroplast, the light-dependent reactions occur on the:",
+    options:{A:"Stroma, where the enzyme rubisco fixes carbon dioxide into glycerate 3-phosphate.",B:"Outer chloroplast membrane, which is freely permeable to small molecules.",C:"Intergranal lamellae only, which contain no photosynthetic pigment.",D:"Thylakoid membranes, which hold the photosystems and electron carriers"},
+    correct:"D",tag:"MC-GBIO-RESPIRATION-PHOTOSYNTHESIS",
+    scaffold:"Chloroplast structure maps onto function. Thylakoid membranes (stacked into grana) carry chlorophyll in photosystems I and II, electron carriers and ATP synthase — site of the light-dependent stage producing ATP, reduced NADP and oxygen. The stroma is the fluid matrix containing rubisco, and is the site of the light-independent stage (Calvin cycle). A large surface area of thylakoid maximises light capture.",
+    reforge:{stem:"Which product of the light-dependent reactions is required by the Calvin cycle in the stroma?",options:{A:"Oxygen released from the photolysis of water.",B:"Carbon dioxide diffusing in through the stomata.",C:"Reduced NADP, used to reduce GP to triose phosphate",D:"Chlorophyll transported out of the thylakoid membranes."},correct:"C"}
+  },
+  {
+    id:"BIO-N1-09",stem:"The nucleolus is the region of the nucleus responsible for:",
+    options:{A:"Manufacturing ribosomal RNA and assembling ribosome subunits",B:"Controlling the movement of mRNA through nuclear pores.",C:"Storing the cell's supply of ATP for nuclear division.",D:"Separating sister chromatids during the anaphase stage of mitosis."},
+    correct:"A",tag:"MC-GBIO-CELL-STRUCTURE",
+    scaffold:"The nucleolus is a dense, non-membrane-bound region of the nucleus where rRNA is transcribed and combined with protein to form ribosome subunits, which then leave through nuclear pores. Cells with high protein synthesis rates (e.g. secretory cells) have prominent nucleoli. Distinguish it from: the nuclear envelope (double membrane with pores), chromatin (DNA + histones), and the nuclear pores themselves (control mRNA export).",
+    reforge:{stem:"A cell is observed to have a very large nucleolus. What is the most reasonable inference?",options:{A:"The cell is about to undergo meiosis rather than mitosis.",B:"The cell is making ribosomes rapidly for protein output",C:"The cell has stopped transcribing DNA entirely.",D:"The cell contains an unusually large number of lysosomes."},correct:"B"}
+  },
+  {
+    id:"BIO-N1-10",stem:"Water's ability to act as a transport medium in xylem depends most directly on:",
+    options:{A:"Its low specific heat capacity, which allows rapid temperature change.",B:"Its role as a non-polar solvent for lipids and steroid hormones.",C:"Hydrogen bonding, which produces cohesion between water molecules",D:"Its high density at 4°C, which causes ice to float on liquid water."},
+    correct:"C",tag:"MC-GBIO-CELL-STRUCTURE",
+    scaffold:"Water is polar (uneven charge distribution) so molecules hydrogen-bond to each other. Consequences: cohesion (columns of water are pulled up xylem without breaking), adhesion to vessel walls, high surface tension, high specific heat capacity (stable temperatures), high latent heat of vaporisation (evaporative cooling), and excellent solvent properties for polar and ionic solutes. Note water is a poor solvent for non-polar substances such as lipids.",
+    reforge:{stem:"The cohesion-tension theory explains water movement up the xylem. Cohesion refers to:",options:{A:"The attraction between water molecules and the lignified vessel wall.",B:"The evaporation of water from the spongy mesophyll into air spaces.",C:"The active transport of water molecules by carrier proteins.",D:"Hydrogen bonds holding water molecules in a continuous column"},correct:"D"}
+  },
+  {
+    id:"BIO-N1-11",stem:"A condensation reaction between two monosaccharides produces:",
+    options:{A:"Two smaller monomers and one molecule of ATP.",B:"A disaccharide and a molecule of water",C:"Two monosaccharides with an added hydroxyl group each.",D:"A polypeptide chain linked by peptide bonds between amino groups."},
+    correct:"B",tag:"MC-GBIO-CELL-STRUCTURE",
+    scaffold:"Condensation: monomers join, a covalent bond forms, and one water molecule is released per bond. Hydrolysis is the reverse — water is used to break the bond. Bond names by molecule: glycosidic (carbohydrates), peptide (proteins), ester (triglycerides), phosphodiester (nucleic acids). Counting trick: joining n monomers into a chain releases n−1 water molecules.",
+    reforge:{stem:"How many water molecules are released when 8 amino acids join to form a single polypeptide?",options:{A:"7, because one water is lost per peptide bond formed",B:"8, one for each amino acid in the chain.",C:"16, two for each peptide bond in the chain.",D:"0, because peptide bond formation is a hydrolysis reaction."},correct:"A"}
+  },
+  {
+    id:"BIO-N1-12",stem:"Cellulose is suited to its structural role because it consists of:",
+    options:{A:"Branched chains of α-glucose that pack into dense compact granules.",B:"Coiled α-glucose chains held by 1,4 and 1,6 glycosidic bonds.",C:"Amino acids joined by disulfide bridges into a fibrous sheet.",D:"Straight β-glucose chains hydrogen-bonded into strong microfibrils"},
+    correct:"D",tag:"MC-GBIO-CELL-STRUCTURE",
+    scaffold:"α-glucose polymers are storage molecules: starch (amylose — unbranched helix; amylopectin — branched, 1,6 bonds give many ends for rapid hydrolysis) in plants, glycogen (more branched still) in animals. β-glucose polymers are structural: alternate monomers flip 180°, giving straight chains that hydrogen-bond side by side into microfibrils of great tensile strength. The α/β distinction is the whole explanation for the difference in function.",
+    reforge:{stem:"Glycogen is more highly branched than amylose. What advantage does this give animals?",options:{A:"It makes glycogen soluble enough to be transported in the blood.",B:"It allows glycogen to be used as a structural component of cell walls.",C:"More free ends allow faster hydrolysis to glucose when demand rises",D:"It prevents glycogen from ever being broken down by enzymes."},correct:"C"}
+  },
+  {
+    id:"BIO-N1-13",stem:"A phospholipid differs from a triglyceride in that a phospholipid has:",
+    options:{A:"One fatty acid replaced by a phosphate, making it amphipathic",B:"Three fatty acids attached to a glycerol backbone by ester bonds.",C:"No glycerol component in its molecular structure at all.",D:"A hydrophilic tail region and a hydrophobic head group."},
+    correct:"A",tag:"MC-GBIO-CELL-STRUCTURE",
+    scaffold:"Triglyceride = glycerol + 3 fatty acids (3 ester bonds), entirely hydrophobic, used for energy storage, insulation and protection. Phospholipid = glycerol + 2 fatty acids + phosphate group. The phosphate head is hydrophilic (polar), the fatty acid tails hydrophobic. In water, phospholipids self-assemble into a bilayer with tails inward — the structural basis of all cell membranes. Note option D reverses head and tail: the head is hydrophilic.",
+    reforge:{stem:"Why do phospholipids spontaneously form a bilayer when mixed with water?",options:{A:"All parts of the molecule are repelled by water equally.",B:"Hydrophilic heads face the water while hydrophobic tails face in",C:"The ester bonds are hydrolysed, releasing the fatty acid tails.",D:"Phosphate groups form covalent bonds with surrounding water molecules."},correct:"B"}
+  },
+  {
+    id:"BIO-N1-14",stem:"The tertiary structure of a protein is best described as:",
+    options:{A:"The sequence of amino acids held together by peptide bonds.",B:"The α-helix or β-pleated sheet formed by hydrogen bonding.",C:"The overall 3D shape of one polypeptide, held by R-group interactions",D:"The association of two or more polypeptide chains into one functional protein."},
+    correct:"C",tag:"MC-GBIO-DNA-PROTEIN",
+    scaffold:"Primary — amino acid sequence (peptide bonds). Secondary — local folding into α-helix or β-pleated sheet (hydrogen bonds between backbone C=O and N-H). Tertiary — the whole chain folds into a precise 3D shape, held by hydrogen bonds, ionic bonds between charged R-groups, disulfide bridges between cysteines, and hydrophobic interactions. Quaternary — two or more polypeptides (e.g. haemoglobin's four chains), sometimes with a prosthetic group.",
+    reforge:{stem:"Haemoglobin consists of four polypeptide chains each bound to a haem group. Which structural level does this describe?",options:{A:"Primary structure, because the amino acid sequence determines everything.",B:"Secondary structure, because α-helices are present in each chain.",C:"Tertiary structure, because each chain folds into a 3D shape.",D:"Quaternary structure, because several polypeptides form one protein"},correct:"D"}
+  },
+  {
+    id:"BIO-N1-15",stem:"A mutation replaces a cysteine residue in the interior of an enzyme with alanine. The most likely direct consequence is:",
+    options:{A:"The primary structure is unaffected by the substitution.",B:"A disulfide bridge cannot form, so tertiary structure destabilises",C:"The enzyme gains an additional active site elsewhere on the chain.",D:"Transcription of the gene stops completely at that point."},
+    correct:"B",tag:"MC-GBIO-DNA-PROTEIN",
+    scaffold:"Disulfide bridges are strong covalent bonds between the -SH groups of two cysteine residues. They stabilise tertiary structure, and are common in extracellular proteins (e.g. antibodies, keratin) that must resist harsh conditions. Losing one usually makes the protein less stable and more easily denatured; if it distorts the active site the enzyme loses activity. Note the primary structure IS changed — the amino acid sequence differs.",
+    reforge:{stem:"Keratin in hair is rich in cysteine. Why does a chemical that reduces disulfide bridges allow hair to be reshaped?",options:{A:"Breaking those cross-links lets the chains slide and re-set",B:"It converts keratin from a globular protein into a fibrous one.",C:"It hydrolyses every peptide bond in the keratin chains.",D:"It replaces cysteine residues with alanine along the chain."},correct:"A"}
+  },
+  {
+    id:"BIO-N1-16",stem:"Globular proteins such as enzymes differ from fibrous proteins such as collagen because globular proteins are typically:",
+    options:{A:"Composed only of non-polar amino acids throughout the chain.",B:"Insoluble, with a highly repetitive amino acid sequence.",C:"Unable to be denatured by changes in temperature or pH.",D:"Soluble and compact, with hydrophilic R-groups outermost"},
+    correct:"D",tag:"MC-GBIO-DNA-PROTEIN",
+    scaffold:"Globular: compact spherical tertiary structure, hydrophobic R-groups turned inward and hydrophilic outward, therefore soluble; roles are metabolic (enzymes, haemoglobin, antibodies, insulin); sequence is irregular and precise. Fibrous: long parallel chains, often cross-linked, repetitive sequence, insoluble, structural roles (collagen, keratin, elastin). Solubility follows directly from where the hydrophilic groups sit.",
+    reforge:{stem:"Collagen's strength comes largely from three polypeptide chains wound together and cross-linked. This makes collagen suitable for:",options:{A:"Catalysing reactions in the cytoplasm at high rates.",B:"Structural roles such as tendons and artery walls",C:"Transporting oxygen around the body in red blood cells.",D:"Acting as a soluble hormone carried in the bloodstream."},correct:"B"}
+  },
+  {
+    id:"BIO-N1-17",stem:"A student heats a food sample with Benedict's reagent and obtains a brick-red precipitate. This shows the presence of:",
+    options:{A:"A reducing sugar, which has reduced copper(II) ions",B:"A protein containing at least two peptide bonds.",C:"A lipid, which has formed a cloudy white emulsion.",D:"Starch, which has formed a blue-black complex with the reagent."},
+    correct:"A",tag:"MC-GBIO-INVESTIGATION",
+    scaffold:"Benedict's test: add reagent, heat in a water bath. Reducing sugars (all monosaccharides, plus maltose and lactose) reduce blue Cu²⁺ to brick-red Cu₂O. Colour sequence with increasing concentration: blue → green → yellow → orange → brick-red, so the test is semi-quantitative. Non-reducing sugars (sucrose) give no colour change until boiled with acid first, then neutralised, and re-tested. Starch uses iodine, not Benedict's.",
+    reforge:{stem:"A solution gives a negative Benedict's result, but after boiling with hydrochloric acid and neutralising it gives a brick-red precipitate. The solution contained:",options:{A:"A lipid such as a triglyceride.",B:"A protein with several peptide bonds.",C:"A non-reducing sugar such as sucrose, now hydrolysed",D:"Starch, which was broken down into maltose by the acid."},correct:"C"}
+  },
+  {
+    id:"BIO-N1-18",stem:"The biuret test detects proteins by producing which colour change?",
+    options:{A:"Blue to blue-black on addition of the reagent.",B:"Colourless to a cloudy white emulsion after shaking.",C:"Blue to purple or lilac, with no heating required",D:"Blue to brick-red when heated in a water bath."},
+    correct:"C",tag:"MC-GBIO-INVESTIGATION",
+    scaffold:"Biuret: sodium hydroxide then dilute copper(II) sulfate (or ready-mixed reagent). Peptide bonds form a violet complex with Cu²⁺ — pale blue → purple/lilac. No heating needed, which distinguishes it from Benedict's. Colour intensity increases with protein concentration. Summary of the four standard tests: starch — iodine (blue-black); reducing sugar — Benedict's (brick-red); protein — biuret (purple); lipid — emulsion test (white emulsion).",
+    reforge:{stem:"Which observation would confirm the presence of a lipid in a food sample?",options:{A:"A white emulsion forms when ethanol extract meets water",B:"A purple colour develops on adding biuret reagent.",C:"A blue-black colour develops on adding iodine solution.",D:"A brick-red precipitate forms on heating with Benedict's reagent."},correct:"A"}
+  },
+  {
+    id:"BIO-N1-19",stem:"An RNA nucleotide differs from a DNA nucleotide in that RNA contains:",
+    options:{A:"Deoxyribose sugar and the base thymine.",B:"Ribose sugar and the base uracil in place of thymine",C:"A phosphate group, which DNA nucleotides lack entirely.",D:"Two complementary polynucleotide strands wound into a double helix."},
+    correct:"B",tag:"MC-GBIO-DNA-PROTEIN",
+    scaffold:"DNA: deoxyribose, bases A T C G, double-stranded antiparallel helix, stable long-term store of information. RNA: ribose (extra OH at carbon 2), bases A U C G, usually single-stranded, shorter-lived. Both are polymers of nucleotides (pentose + phosphate + base) joined by phosphodiester bonds. Option D describes DNA's structure rather than a nucleotide difference — read carefully whether a question asks about the nucleotide or the whole molecule.",
+    reforge:{stem:"In a DNA molecule, the two strands are held together by:",options:{A:"Phosphodiester bonds between adjacent bases on opposite strands.",B:"Ester bonds between deoxyribose and phosphate groups.",C:"Disulfide bridges between complementary purine bases.",D:"Hydrogen bonds between base pairs, two A-T and three C-G"},correct:"D"}
+  },
+  {
+    id:"BIO-N1-20",stem:"During transcription, the enzyme RNA polymerase:",
+    options:{A:"Joins amino acids together to form a growing polypeptide chain.",B:"Removes RNA primers and replaces them with DNA nucleotides.",C:"Joins Okazaki fragments on the lagging strand of replicating DNA.",D:"Builds mRNA complementary to the template DNA strand"},
+    correct:"D",tag:"MC-GBIO-DNA-PROTEIN",
+    scaffold:"Transcription (nucleus): DNA helix unwinds, RNA polymerase reads the template (antisense) strand 3'→5' and builds mRNA 5'→3' using complementary base pairing, with uracil opposite adenine. In eukaryotes the pre-mRNA is spliced — introns removed, exons joined — before leaving through a nuclear pore. Translation (ribosome) then reads mRNA codons, with tRNA anticodons delivering amino acids. Keep the two processes and their enzymes distinct.",
+    reforge:{stem:"A DNA template strand reads TAC GGA. What is the corresponding mRNA sequence?",options:{A:"TAC GGA, identical to the template strand.",B:"ATG CCT, matching the coding strand exactly.",C:"AUG CCU, with uracil substituted for thymine",D:"UAC GGA, with the sequence otherwise unchanged."},correct:"C"}
+  },
+  {
+    id:"BIO-N1-21",stem:"A tRNA molecule's anticodon is complementary to:",
+    options:{A:"A codon of three bases on the messenger RNA strand",B:"The entire template strand of the transcribed gene.",C:"The amino acid it carries at its attachment site.",D:"The ribosomal RNA that forms the small ribosomal subunit."},
+    correct:"A",tag:"MC-GBIO-DNA-PROTEIN",
+    scaffold:"Translation: mRNA binds the small ribosomal subunit; tRNA with an anticodon complementary to the mRNA codon binds at the ribosome's binding sites, bringing a specific amino acid; a peptide bond forms; the ribosome moves one codon along; the tRNA is released and recycled. Each tRNA is specific to one amino acid. Start codon AUG (methionine); stop codons UAA, UAG, UGA carry no amino acid and end translation.",
+    reforge:{stem:"The genetic code is described as degenerate. This means that:",options:{A:"Some codons in the mRNA are never translated by any organism.",B:"Most amino acids are coded for by more than one codon",C:"Each codon can specify several different amino acids.",D:"The code differs substantially between bacteria and mammals."},correct:"B"}
+  },
+  {
+    id:"BIO-N1-22",stem:"During which stage of mitosis do chromatids separate and move to opposite poles?",
+    options:{A:"Prophase, as the nuclear envelope breaks down.",B:"Metaphase, as chromosomes line up on the equator.",C:"Telophase, as two new nuclear envelopes re-form.",D:"Anaphase, as spindle fibres shorten and pull"},
+    correct:"D",tag:"MC-GBIO-CELL-DIVISION",
+    scaffold:"Mitosis (PMAT): Prophase — chromosomes condense and become visible as two sister chromatids, nuclear envelope breaks down, spindle forms. Metaphase — chromosomes align on the equator, attached by centromeres to spindle fibres. Anaphase — centromeres divide, spindle fibres shorten, chromatids pulled to opposite poles (requires ATP). Telophase — chromosomes decondense, nuclear envelopes re-form. Cytokinesis then divides the cytoplasm.",
+    reforge:{stem:"A drug prevents spindle fibres from shortening. At which stage would dividing cells become arrested?",options:{A:"Interphase, before DNA replication begins.",B:"Prophase, before the nuclear envelope breaks down.",C:"Anaphase, because chromatids could not be pulled apart",D:"Telophase, because nuclear envelopes could not re-form."},correct:"C"}
+  },
+  {
+    id:"BIO-N1-23",stem:"Crossing over during meiosis increases genetic variation because it:",
+    options:{A:"Doubles the number of chromosomes present in each gamete.",B:"Exchanges alleles between non-sister chromatids of homologues",C:"Causes every gamete produced to be genetically identical.",D:"Introduces entirely new base sequences by copying errors in the DNA."},
+    correct:"B",tag:"MC-GBIO-CELL-DIVISION",
+    scaffold:"Meiosis generates variation in three ways: (1) crossing over in prophase I — homologous chromosomes pair as bivalents, chiasmata form, and non-sister chromatids exchange equivalent segments, producing new allele combinations on a chromosome; (2) independent assortment in metaphase I and II — the random orientation of each bivalent gives 2ⁿ combinations; (3) random fertilisation. Mutation is a separate source and is not part of meiosis itself.",
+    reforge:{stem:"A cell with 4 pairs of homologous chromosomes undergoes meiosis. How many different combinations arise from independent assortment alone?",options:{A:"16, calculated as 2⁴ for four pairs",B:"8, calculated as 4 × 2 for the two divisions.",C:"4, one for each homologous pair present.",D:"256, calculated as 4⁴ for four pairs."},correct:"A"}
+  },
+  {
+    id:"BIO-N1-24",stem:"Checkpoints in the cell cycle are important because they:",
+    options:{A:"Increase the rate of division in all healthy body tissues.",B:"Ensure that every daughter cell receives a haploid chromosome set.",C:"Provide the ATP required for spindle fibre movement in anaphase.",D:"Verify DNA has replicated correctly before division"},
+    correct:"D",tag:"MC-GBIO-CELL-DIVISION",
+    scaffold:"The cell cycle is interphase (G1 — growth and protein synthesis; S — DNA replication; G2 — further growth and checking) then mitosis and cytokinesis. Checkpoints: G1/S checks cell size, nutrients and DNA damage; G2/M checks DNA is fully and correctly replicated; the spindle assembly checkpoint in metaphase checks all chromosomes are attached. Failure of checkpoint control allows damaged cells to divide, which underlies tumour formation.",
+    reforge:{stem:"Many cancer treatments target rapidly dividing cells. Why does this cause side effects such as hair loss?",options:{A:"Hair follicle cells contain unusually high numbers of mitochondria.",B:"Hair follicle cells also divide rapidly, so they are affected too",C:"The drugs are transported preferentially to the scalp in the blood.",D:"Hair follicle cells lack cell cycle checkpoints altogether."},correct:"B"}
+  },
+  {
+    id:"BIO-N1-25",stem:"A totipotent stem cell differs from a pluripotent stem cell because a totipotent cell can:",
+    options:{A:"Form any cell type, including extra-embryonic tissue",B:"Divide only a limited number of times before dying.",C:"Be obtained only from adult bone marrow samples.",D:"Differentiate into blood cells but no other tissue type."},
+    correct:"A",tag:"MC-GBIO-CELL-DIVISION",
+    scaffold:"Potency scale: totipotent — can form any cell type plus placental/extra-embryonic tissue (only the zygote and first few divisions); pluripotent — any cell type of the body but not extra-embryonic (embryonic stem cells, iPS cells); multipotent — a limited range within a lineage (haematopoietic stem cells in bone marrow); unipotent — one type only (cardiomyocyte precursors). Differentiation happens because different genes are expressed, not because genes are lost.",
+    reforge:{stem:"All body cells contain the same genes, yet a neurone differs from a liver cell because:",options:{A:"Liver cells have lost the genes needed to form neurones.",B:"Neurones contain extra chromosomes acquired during differentiation.",C:"Different genes are transcribed and translated in each cell type",D:"The genetic code is read in a different direction in each tissue."},correct:"C"}
+  },
+  {
+    id:"BIO-N1-26",stem:"Osmosis is best defined as the movement of water molecules:",
+    options:{A:"Against a water potential gradient using energy from ATP.",B:"From a lower to a higher water potential through a membrane.",C:"From higher to lower water potential across a partially permeable membrane",D:"Through protein channels only, and never through the phospholipid bilayer."},
+    correct:"C",tag:"MC-GBIO-MEMBRANE-TRANSPORT",
+    scaffold:"Water potential (Ψ) is measured in kPa; pure water is 0 and all solutions are negative. Water moves down the gradient, from less negative (higher Ψ) to more negative (lower Ψ). Adding solute lowers Ψ. Osmosis is passive — no ATP. In plant cells, pressure potential from the wall opposes water entry; the cell becomes turgid. In animal cells there is no wall, so excess water entry causes lysis. Saying water moves 'to higher concentration' inverts the rule — think water potential, not solute concentration.",
+    reforge:{stem:"A plant cell with a water potential of −600 kPa is placed in a solution of −400 kPa. What happens?",options:{A:"Water enters, because the solution has the higher water potential",B:"Water leaves the cell, because the solution is more concentrated.",C:"No net movement occurs, because both values are negative.",D:"Water leaves the cell and the cell membrane pulls away from the wall."},correct:"A"}
+  },
+  {
+    id:"BIO-N1-27",stem:"Active transport differs from facilitated diffusion because active transport:",
+    options:{A:"Uses channel proteins rather than any carrier proteins.",B:"Requires ATP and moves substances against the gradient",C:"Occurs only across the membranes of plant cells.",D:"Moves substances down their concentration gradient more quickly."},
+    correct:"B",tag:"MC-GBIO-MEMBRANE-TRANSPORT",
+    scaffold:"Passive processes (no ATP, down the gradient): simple diffusion (small non-polar — O₂, CO₂), facilitated diffusion (channel or carrier proteins for ions, glucose, amino acids), osmosis (water, partly via aquaporins). Active transport: carrier protein changes shape using ATP hydrolysis, moves substances against the gradient — e.g. the sodium-potassium pump, mineral uptake by root hairs. Both facilitated diffusion and active transport use proteins; the ATP and the gradient direction are what separate them.",
+    reforge:{stem:"Cells lining the small intestine are treated with a respiratory inhibitor. Glucose uptake by active transport stops because:",options:{A:"Carrier proteins are denatured by the inhibitor directly.",B:"The concentration gradient of glucose is immediately reversed.",C:"No ATP is produced, so carrier proteins cannot change shape",D:"The phospholipid bilayer becomes impermeable to all solutes."},correct:"C"}
+  },
+  {
+    id:"BIO-N1-28",stem:"Cholesterol in an animal cell surface membrane functions to:",
+    options:{A:"Act as a receptor site for peptide hormones such as insulin.",B:"Transport ions across the membrane down their electrochemical gradient.",C:"Provide the cell with a store of energy for aerobic respiration.",D:"Regulate fluidity by packing between phospholipid tails"},
+    correct:"D",tag:"MC-GBIO-MEMBRANE-TRANSPORT",
+    scaffold:"Membrane components and roles: phospholipids — the bilayer itself; cholesterol — sits between the fatty acid tails, restricting movement at higher temperatures and preventing tight packing at low temperatures, so it buffers fluidity and reduces permeability to ions; glycoproteins and glycolipids — cell recognition, receptors and adhesion; channel and carrier proteins — transport; enzymes. Cholesterol is a steroid lipid, not a protein, so it cannot act as a hormone receptor.",
+    reforge:{stem:"Beetroot cells release pigment when placed in solvent or at high temperature. This is because both treatments:",options:{A:"Increase the rate of active transport out of the vacuole.",B:"Disrupt membrane structure, increasing permeability",C:"Cause the cells to become turgid and burst open.",D:"Convert cholesterol in the membrane into phospholipid."},correct:"B"}
+  },
+  {
+    id:"BIO-N1-29",stem:"Phagocytosis of a bacterium by a neutrophil involves:",
+    options:{A:"Engulfing the bacterium into a vesicle that fuses with a lysosome",B:"Diffusion of the bacterium through channel proteins in the membrane.",C:"Active transport of bacterial proteins across the cell surface membrane.",D:"Osmotic entry of the bacterium down a water potential gradient."},
+    correct:"A",tag:"MC-GBIO-ECOLOGY-DISEASE",
+    scaffold:"Phagocytosis is bulk transport, not diffusion — pathogens are far too large for membrane proteins. Sequence: chemicals released by the pathogen attract the phagocyte (chemotaxis); receptors bind to antigens or attached antibodies (opsonins); the membrane engulfs the pathogen forming a phagosome; lysosomes fuse to form a phagolysosome; hydrolytic enzymes digest it; harmless products are absorbed and antigens may be displayed on the surface. Endocytosis and exocytosis both require ATP.",
+    reforge:{stem:"After a phagocyte digests a pathogen, it may display the pathogen's antigens on its own surface. This cell is then acting as:",options:{A:"A memory cell, providing long-term immunity to reinfection.",B:"A plasma cell, secreting large quantities of antibody.",C:"An antigen-presenting cell, activating T lymphocytes",D:"A red blood cell, transporting antigens around the body."},correct:"C"}
+  },
+  {
+    id:"BIO-N1-30",stem:"A student uses an eyepiece graticule to measure cells. The graticule must first be calibrated with a stage micrometer because:",
+    options:{A:"The stage micrometer magnifies the specimen further.",B:"The graticule scale has no fixed units of its own",C:"The graticule alters the resolution of the objective lens.",D:"Cells change size when viewed under different objective lenses."},
+    correct:"B",tag:"MC-GBIO-INVESTIGATION",
+    scaffold:"An eyepiece graticule is an arbitrary scale in the eyepiece; its divisions represent a different real distance at each objective magnification. A stage micrometer is a slide with a known scale (usually 1mm divided into 100 divisions of 10μm). Calibration: line the two scales up, count how many graticule divisions match a known micrometer length, and calculate μm per division. Recalibrate whenever the objective is changed.",
+    reforge:{stem:"At ×400, 25 eyepiece graticule divisions align with 0.25mm on the stage micrometer. One graticule division equals:",options:{A:"25 μm, because 0.25mm divided by 25 gives 25 μm.",B:"0.01 μm, because 0.25 divided by 25 equals 0.01.",C:"100 μm, because the magnification is ×400 at this setting.",D:"10 μm, because 0.25mm is 250 μm and 250 ÷ 25 = 10"},correct:"D"}
+  }
+]);
+bioExpansion("BIO-2", [
+  {
+    id:"BIO-N2-01",stem:"Alveoli are adapted for efficient gas exchange mainly because they provide:",
+    options:{A:"A thick, muscular wall that actively pumps oxygen into the blood.",B:"A dry surface that prevents gases from dissolving before diffusion.",C:"A large surface area with a very short diffusion pathway",D:"A store of haemoglobin held within the alveolar epithelial cells."},
+    correct:"C",tag:"MC-GBIO-CIRCULATION",
+    scaffold:"Fick's law: rate of diffusion ∝ (surface area × concentration difference) ÷ thickness. Alveolar adaptations map onto each term — roughly 300 million alveoli give a huge surface area; the alveolar epithelium and capillary endothelium are each one flattened cell thick, so the pathway is ~0.3μm; continuous blood flow and ventilation maintain the concentration gradient. The moist lining is needed because gases must dissolve before diffusing.",
+    reforge:{stem:"Emphysema destroys the walls between alveoli, merging them into larger air spaces. Gas exchange becomes less efficient because:",options:{A:"The diffusion pathway becomes shorter than normal.",B:"The surface area for diffusion is reduced",C:"The concentration gradient for oxygen is reversed.",D:"Haemoglobin can no longer bind oxygen molecules."},correct:"B"}
+  },
+  {
+    id:"BIO-N2-02",stem:"During inspiration in a mammal, the diaphragm and external intercostal muscles:",
+    options:{A:"Contract, increasing thoracic volume and lowering lung pressure",B:"Relax, allowing elastic recoil to force air out of the alveoli.",C:"Contract, decreasing thoracic volume and raising internal pressure.",D:"Remain unchanged, since air movement depends only on diffusion gradients."},
+    correct:"A",tag:"MC-GBIO-CIRCULATION",
+    scaffold:"Inspiration is active: diaphragm contracts and flattens, external intercostals contract pulling the ribcage up and out, thoracic volume increases, pressure falls below atmospheric, and air flows in down the pressure gradient. Normal expiration is largely passive: muscles relax, elastic recoil reduces volume, pressure rises, air flows out. Forced expiration adds contraction of the internal intercostals and abdominal muscles. Air always moves down a pressure gradient, not by diffusion.",
+    reforge:{stem:"Which measurement would be obtained using a spirometer during quiet breathing?",options:{A:"Partial pressure of oxygen in the pulmonary artery.",B:"The percentage saturation of haemoglobin in the alveolar capillaries.",C:"The number of alveoli recruited during each breath.",D:"Tidal volume, the volume of air moved in one normal breath"},correct:"D"}
+  },
+  {
+    id:"BIO-N2-03",stem:"Fish gills use a countercurrent flow system, in which water and blood flow:",
+    options:{A:"In the same direction, so equilibrium is reached rapidly.",B:"In pulses that alternate between the two directions.",C:"In opposite directions, maintaining a gradient throughout",D:"At right angles, so oxygen diffuses across the shortest distance."},
+    correct:"C",tag:"MC-GBIO-CIRCULATION",
+    scaffold:"Countercurrent: water flows across the gill lamellae in the opposite direction to blood flow in the capillaries. At every point along the lamella the water has a higher oxygen concentration than the adjacent blood, so a diffusion gradient is maintained across the entire length and roughly 80% of the oxygen is extracted. With parallel (concurrent) flow, the two would reach equilibrium halfway along and only ~50% could be absorbed.",
+    reforge:{stem:"Why does a parallel flow system extract less oxygen than a countercurrent system?",options:{A:"Blood and water reach equilibrium partway along the lamella",B:"Parallel flow requires more ATP to maintain the water current.",C:"Parallel flow reduces the total surface area of the gill lamellae.",D:"Oxygen diffuses backwards into the water along the whole lamella."},correct:"A"}
+  },
+  {
+    id:"BIO-N2-04",stem:"Insects transport respiratory gases directly to their tissues using:",
+    options:{A:"Haemoglobin dissolved in the haemolymph of the open circulation.",B:"A tracheal system of tubes opening at spiracles",C:"Gill lamellae supported by a bony operculum.",D:"Alveoli ventilated by a muscular diaphragm."},
+    correct:"B",tag:"MC-GBIO-CIRCULATION",
+    scaffold:"Insects have no respiratory pigment for gas transport. Air enters through spiracles (which can close to limit water loss), passes along tracheae, then into fine tracheoles that reach individual cells. Gases move by diffusion, aided in active insects by abdominal pumping and by fluid withdrawal from tracheole ends, which increases the air-filled surface. The chitinous exoskeleton is impermeable, so gas exchange must be internal — a compromise between exchange and water conservation.",
+    reforge:{stem:"During flight, fluid is withdrawn from the ends of an insect's tracheoles. The effect is to:",options:{A:"Reduce water loss through the spiracles to zero.",B:"Increase the volume of haemolymph reaching the flight muscles.",C:"Expose more surface for diffusion to active muscle",D:"Prevent carbon dioxide from leaving the tissues."},correct:"C"}
+  },
+  {
+    id:"BIO-N2-05",stem:"The left ventricle has a thicker muscular wall than the right ventricle because it must:",
+    options:{A:"Generate higher pressure to pump blood around the body",B:"Hold a substantially greater volume of blood at each beat.",C:"Pump blood at a faster rate than the right side of the heart.",D:"Resist the higher pressure of blood returning from the lungs."},
+    correct:"A",tag:"MC-GBIO-CIRCULATION",
+    scaffold:"Both ventricles eject the same volume per beat; the difference is pressure. The right ventricle pumps to the lungs only — a short, low-resistance circuit where high pressure would damage capillaries and force fluid into alveoli. The left ventricle pumps into the aorta and around the entire systemic circuit, so it needs far more muscle. Atria have thin walls because they only push blood into the ventricles below them.",
+    reforge:{stem:"Why would a hole in the septum between the two ventricles reduce oxygen delivery to tissues?",options:{A:"Blood would bypass the heart and enter the lungs directly.",B:"The atria would no longer contract before the ventricles.",C:"Oxygenated and deoxygenated blood would mix in the heart",D:"The semilunar valves would be unable to close during diastole."},correct:"C"}
+  },
+  {
+    id:"BIO-N2-06",stem:"The atrioventricular valves close during ventricular systole because:",
+    options:{A:"Nerve impulses from the sinoatrial node cause the valve cusps to contract.",B:"The atria relax and draw the valve cusps upwards.",C:"Ventricular pressure rises above atrial pressure, forcing the cusps shut",D:"The semilunar valves open, creating suction in the atria above."},
+    correct:"C",tag:"MC-GBIO-CIRCULATION",
+    scaffold:"Valves are passive — they open and close according to pressure differences on either side, never by contracting. Cardiac cycle: atrial systole (atria contract, AV valves open, ventricles fill); ventricular systole (ventricular pressure exceeds atrial, AV valves shut giving the first heart sound, then exceeds arterial pressure so semilunar valves open); diastole (ventricles relax, pressure falls below arterial, semilunar valves shut giving the second sound). Tendinous cords stop the AV cusps inverting.",
+    reforge:{stem:"On a pressure-time graph of the cardiac cycle, the semilunar valves open at the moment when:",options:{A:"Ventricular pressure rises above aortic pressure",B:"Atrial pressure rises above ventricular pressure.",C:"Ventricular pressure falls below atrial pressure.",D:"Aortic pressure reaches its minimum value."},correct:"A"}
+  },
+  {
+    id:"BIO-N2-07",stem:"The purpose of the delay at the atrioventricular node is to ensure that:",
+    options:{A:"The heart rate is reduced during periods of rest.",B:"The atria empty completely before the ventricles contract",C:"The sinoatrial node can reset before the next impulse.",D:"Blood in the coronary arteries is replenished between beats."},
+    correct:"B",tag:"MC-GBIO-CIRCULATION",
+    scaffold:"Conduction pathway: SAN (pacemaker in the right atrial wall) fires, the wave spreads across both atria causing atrial systole; the non-conducting fibrous tissue between atria and ventricles prevents direct spread; the AVN delays the impulse ~0.1s so atrial contraction finishes and ventricles fill fully; the impulse then travels down the bundle of His to the Purkyne fibres in the apex, so ventricles contract from the bottom up, pushing blood upwards into the arteries.",
+    reforge:{stem:"Why do the Purkyne fibres carry the impulse to the apex of the heart before the ventricles contract?",options:{A:"So the atria and ventricles contract at exactly the same moment.",B:"So the semilunar valves close before ventricular systole begins.",C:"So the coronary arteries fill before the ventricles empty.",D:"So contraction begins at the base and forces blood upwards"},correct:"D"}
+  },
+  {
+    id:"BIO-N2-08",stem:"Arteries differ structurally from veins in that arteries have:",
+    options:{A:"A wider lumen and numerous semilunar valves along their length.",B:"A single layer of endothelium with no muscle or elastic tissue.",C:"Walls composed entirely of collagen with no elastic fibres.",D:"Thick walls with more elastic tissue and smooth muscle"},
+    correct:"D",tag:"MC-GBIO-CIRCULATION",
+    scaffold:"Arteries: thick walls, much elastic tissue (stretch during systole and recoil during diastole, smoothing flow and maintaining pressure), smooth muscle for vasoconstriction, narrow lumen, no valves — pressure is high and flow is continuous. Veins: thin walls, wide lumen, little muscle or elastic tissue, valves to prevent backflow, and they rely on skeletal muscle contraction to return blood at low pressure. Capillaries: one cell thick endothelium for exchange.",
+    reforge:{stem:"Veins contain valves but arteries generally do not. This is because blood in veins:",options:{A:"Is at low pressure and would otherwise flow backwards",B:"Contains no dissolved oxygen to drive its movement.",C:"Is pumped directly by contraction of the vein walls.",D:"Moves faster than blood in the corresponding arteries."},correct:"A"}
+  },
+  {
+    id:"BIO-N2-09",stem:"The oxygen dissociation curve for haemoglobin is S-shaped (sigmoid) because:",
+    options:{A:"Oxygen binds only at very high partial pressures in the tissues.",B:"Haemoglobin releases all four oxygen molecules simultaneously.",C:"Carbon dioxide competes with oxygen for the same binding site.",D:"Binding the first oxygen makes further binding easier"},
+    correct:"D",tag:"MC-GBIO-CIRCULATION",
+    scaffold:"Haemoglobin has four haem groups. The first oxygen binds with difficulty (shallow initial slope), but binding changes the quaternary structure so the remaining sites bind more readily — cooperative binding, giving the steep middle section. Saturation then plateaus as sites fill. The steep region sits at tissue partial pressures, so a small fall in pO₂ causes a large release of oxygen — exactly where it is needed.",
+    reforge:{stem:"Actively respiring muscle produces carbon dioxide, shifting the dissociation curve to the right. This Bohr effect means haemoglobin:",options:{A:"Binds oxygen more readily in the tissues than in the lungs.",B:"Releases more oxygen at a given partial pressure",C:"Becomes permanently denatured by the lower pH.",D:"Carries carbon dioxide instead of oxygen in the plasma."},correct:"B"}
+  },
+  {
+    id:"BIO-N2-10",stem:"Fetal haemoglobin has a higher affinity for oxygen than adult haemoglobin. This is necessary because:",
+    options:{A:"The fetus respires anaerobically throughout development.",B:"Fetal blood must load oxygen at the placenta",C:"Fetal tissues require less oxygen than adult tissues do.",D:"Fetal haemoglobin contains no haem groups to bind oxygen."},
+    correct:"B",tag:"MC-GBIO-CIRCULATION",
+    scaffold:"At the placenta, maternal blood has already given up some oxygen, so the partial pressure is relatively low. Fetal haemoglobin's dissociation curve lies to the left of the adult curve — at any given pO₂ it is more saturated — so oxygen transfers from maternal to fetal blood down the gradient. The same principle explains why organisms in low-oxygen environments (llamas at altitude, lugworms in mud) have left-shifted curves.",
+    reforge:{stem:"A llama living at high altitude has a dissociation curve to the left of that of a lowland mammal. This adaptation allows it to:",options:{A:"Release oxygen more readily to its respiring tissues.",B:"Reduce the total amount of haemoglobin needed in the blood.",C:"Load oxygen despite the low partial pressure in air",D:"Prevent carbon dioxide from binding to haemoglobin at altitude."},correct:"C"}
+  },
+  {
+    id:"BIO-N2-11",stem:"Tissue fluid is formed at the arterial end of a capillary bed mainly because:",
+    options:{A:"Hydrostatic pressure exceeds the opposing oncotic pressure",B:"Plasma proteins are actively pumped out of the capillary.",C:"Red blood cells squeeze through gaps in the endothelium.",D:"The water potential of the plasma is higher than that of the tissue."},
+    correct:"A",tag:"MC-GBIO-CIRCULATION",
+    scaffold:"At the arterial end, high hydrostatic (blood) pressure forces water and small solutes out through gaps in the capillary endothelium; plasma proteins are too large to leave, so they stay and lower the water potential of the blood. At the venous end, hydrostatic pressure has fallen while the oncotic (osmotic) pull of the retained proteins is unchanged, so most fluid returns by osmosis. The remaining ~10% drains into lymph capillaries and returns via the thoracic duct.",
+    reforge:{stem:"Severe protein deficiency causes oedema — accumulation of tissue fluid. This is because low plasma protein concentration:",options:{A:"Increases hydrostatic pressure at the arterial end of capillaries.",B:"Blocks the lymphatic vessels draining the tissue.",C:"Raises blood water potential, so less fluid returns by osmosis",D:"Prevents red blood cells from entering the capillary bed."},correct:"C"}
+  },
+  {
+    id:"BIO-N2-12",stem:"Xylem vessels are adapted for water transport because they are:",
+    options:{A:"Living cells with dense cytoplasm and many mitochondria.",B:"Composed of sieve tubes connected by perforated end plates.",C:"Dead, hollow tubes with lignified walls and no end walls",D:"Surrounded by companion cells that supply them with ATP."},
+    correct:"C",tag:"MC-GBIO-CIRCULATION",
+    scaffold:"Xylem: dead at maturity, no cytoplasm or end walls, forming a continuous hollow tube; lignified walls give strength and waterproofing and prevent collapse under tension; pits allow lateral movement. Transports water and mineral ions upwards only, passively. Phloem: living sieve tube elements with perforated sieve plates, supported by companion cells with many mitochondria; transports assimilates (mainly sucrose) both up and down, requiring ATP.",
+    reforge:{stem:"A ring of bark including the phloem is removed from a tree trunk. Sugars accumulate above the ring because:",options:{A:"Xylem transport of water has been interrupted at that point.",B:"Lignin from the bark blocks the vessels below the ring.",C:"Root pressure forces sucrose upwards past the cut.",D:"Translocation of sucrose down the stem has been prevented"},correct:"D"}
+  },
+  {
+    id:"BIO-N2-13",stem:"Transpiration rate would be expected to increase most when:",
+    options:{A:"Humidity rises and air movement around the leaf falls.",B:"Air movement increases and humidity falls",C:"Light intensity falls, causing stomata to close.",D:"Temperature falls, reducing the kinetic energy of water molecules."},
+    correct:"B",tag:"MC-GBIO-CIRCULATION",
+    scaffold:"Transpiration is evaporation from mesophyll cell walls followed by diffusion of vapour out through stomata. Increased by: higher light (stomata open), higher temperature (more kinetic energy, steeper gradient), lower humidity (steeper water potential gradient), more air movement (removes the humid boundary layer). Decreased by high humidity, still air and darkness. A potometer actually measures water uptake, which approximates transpiration since most uptake is lost as vapour.",
+    reforge:{stem:"A potometer measures water uptake rather than transpiration directly. This is an acceptable approximation because:",options:{A:"Water uptake and transpiration are entirely unrelated processes.",B:"Around 99% of water taken up is lost as vapour",C:"The plant stores all absorbed water in the xylem vessels.",D:"Photosynthesis consumes most of the water that is absorbed."},correct:"B"}
+  },
+  {
+    id:"BIO-N2-14",stem:"Xerophytes such as marram grass reduce water loss by:",
+    options:{A:"Increasing stomatal density on the upper leaf surface.",B:"Removing the waxy cuticle to allow evaporative cooling.",C:"Growing broad, thin leaves with a large surface area.",D:"Rolling leaves and sinking stomata into pits"},
+    correct:"D",tag:"MC-GBIO-CIRCULATION",
+    scaffold:"Xerophytic adaptations all reduce the water potential gradient or the area for evaporation: thick waxy cuticle; stomata sunken in pits and surrounded by hairs, trapping humid air so the gradient is shallow; rolled leaves enclosing a humid chamber; reduced leaves or spines (cacti) minimising surface area; stomata opening at night (CAM). Hydrophytes show the opposite — stomata on the upper surface, air spaces for buoyancy.",
+    reforge:{stem:"Cacti have spines instead of broad leaves and carry out photosynthesis in the stem. The main advantage is:",options:{A:"A greatly reduced surface area for water loss by transpiration",B:"An increased number of stomata for gas exchange.",C:"A higher rate of water uptake through the spines.",D:"A thinner cuticle allowing more light to reach the chloroplasts."},correct:"A"}
+  },
+  {
+    id:"BIO-N2-15",stem:"According to the mass flow hypothesis, sucrose is loaded into phloem at the source by:",
+    options:{A:"Simple diffusion through the phospholipid bilayer of sieve tubes.",B:"Osmosis driven by the higher water potential of the sieve tube.",C:"Active transport, using companion cells and a proton gradient",D:"Passive uptake through open sieve plate pores from the xylem."},
+    correct:"C",tag:"MC-GBIO-CIRCULATION",
+    scaffold:"Loading at the source: companion cells actively pump H⁺ out using ATP, then H⁺ re-enters via a cotransporter bringing sucrose with it; sucrose passes into the sieve tube. This lowers the water potential there, so water enters from the xylem by osmosis, raising hydrostatic pressure. At the sink, sucrose is removed and used or stored, water leaves, and pressure falls. The resulting pressure gradient drives mass flow from source to sink.",
+    reforge:{stem:"Which observation provides evidence supporting the mass flow hypothesis?",options:{A:"Xylem vessels are dead and lignified at maturity.",B:"Sap exudes from a cut aphid stylet, showing phloem pressure",C:"Transpiration continues at night when stomata are closed.",D:"Sucrose is found in equal concentrations at source and sink."},correct:"B"}
+  },
+  {
+    id:"BIO-N2-16",stem:"Guard cells open the stomatal pore when they:",
+    options:{A:"Take up potassium ions and water, becoming turgid",B:"Lose water to neighbouring epidermal cells and become flaccid.",C:"Actively transport carbon dioxide into the leaf air spaces.",D:"Increase the thickness of the cuticle on the outer wall."},
+    correct:"A",tag:"MC-GBIO-CIRCULATION",
+    scaffold:"Guard cells have unevenly thickened walls — the inner wall bordering the pore is thicker and less elastic. Active uptake of K⁺ lowers water potential, water enters by osmosis, and the cells become turgid; because the outer wall stretches more than the inner, the pair bows apart and the pore opens. Water loss reverses this and the pore closes. Abscisic acid released in drought triggers closure even in light.",
+    reforge:{stem:"During drought, abscisic acid causes stomata to close. The immediate benefit to the plant is:",options:{A:"An increased rate of carbon dioxide uptake for photosynthesis.",B:"A greater rate of water uptake by the root hair cells.",C:"Reduced water loss by transpiration through the stomatal pores",D:"Faster translocation of sucrose from source to sink."},correct:"C"}
+  },
+  {
+    id:"BIO-N2-17",stem:"Root hair cells are adapted for absorbing mineral ions because they have:",
+    options:{A:"A large surface area and many mitochondria for uptake",B:"A thick waxy cuticle preventing solute loss to the soil.",C:"Chloroplasts for producing glucose used in ion uptake.",D:"Lignified walls that resist the entry of water by osmosis."},
+    correct:"A",tag:"MC-GBIO-MEMBRANE-TRANSPORT",
+    scaffold:"Root hairs are long extensions of epidermal cells, giving a large surface area in contact with soil water. Mineral ions are usually more concentrated inside the cell than in soil water, so uptake is by active transport — hence the many mitochondria supplying ATP. Taking up ions lowers the cell's water potential, so water then follows by osmosis. Water crosses the cortex by the apoplast, symplast and vacuolar pathways.",
+    reforge:{stem:"Water crossing the root cortex must pass through the symplast pathway at the endodermis because:",options:{A:"The apoplast route carries water faster than the cells can absorb it.",B:"Root hair cells have no cytoplasmic connections to the cortex.",C:"Xylem vessels are living and require cytoplasmic contact.",D:"The waterproof Casparian strip blocks the apoplast route"},correct:"D"}
+  },
+  {
+    id:"BIO-N2-18",stem:"A single circulatory system is less efficient for large active mammals than a double system because in a single system blood:",
+    options:{A:"Cannot carry oxygen bound to a respiratory pigment.",B:"Loses pressure passing through the gas exchange capillaries",C:"Passes through the heart twice for every complete circuit.",D:"Travels only to the respiratory surface and never to the tissues."},
+    correct:"B",tag:"MC-GBIO-CIRCULATION",
+    scaffold:"Single circulation (fish): blood passes through the heart once per circuit — heart → gills → body → heart. Pressure drops substantially crossing the narrow gill capillaries, so blood reaches the body slowly. Double circulation (mammals, birds): pulmonary and systemic circuits, blood returns to the heart to be repressurised before going to the body, allowing a fast delivery rate and high metabolic rate. Insects have an open system with haemolymph in a haemocoel.",
+    reforge:{stem:"In an open circulatory system such as an insect's, transport is less precisely controlled because haemolymph:",options:{A:"Is pumped at very high pressure through closed vessels.",B:"Carries oxygen bound to haemoglobin in red cells.",C:"Bathes tissues directly rather than staying in vessels",D:"Passes through the heart twice in every circuit of the body."},correct:"C"}
+  },
+  {
+    id:"BIO-N2-19",stem:"Atheroma formation in a coronary artery increases the risk of myocardial infarction because it:",
+    options:{A:"Increases the elasticity of the artery wall during systole.",B:"Narrows the lumen, reducing blood flow to cardiac muscle",C:"Raises the oxygen concentration of blood in the coronary vessels.",D:"Prevents the atrioventricular valves from closing fully."},
+    correct:"B",tag:"MC-GBIO-CIRCULATION",
+    scaffold:"Sequence: damage to the endothelium (from high blood pressure, smoking, high LDL) → inflammatory response → cholesterol and white cells accumulate forming a plaque (atheroma) → lumen narrows and the wall stiffens → blood flow falls. If a plaque ruptures, a clot (thrombus) forms and may block the artery completely. In a coronary artery this starves cardiac muscle of oxygen, causing a myocardial infarction; in a cerebral artery it causes a stroke.",
+    reforge:{stem:"Why does an aneurysm most often develop at a site already weakened by atheroma?",options:{A:"The weakened wall stretches and bulges under arterial pressure",B:"Blood flow through the artery becomes faster and smoother.",C:"The artery wall gains additional elastic fibres at that point.",D:"Cholesterol dissolves the lignin in the vessel wall."},correct:"A"}
+  },
+  {
+    id:"BIO-N2-20",stem:"Which sequence correctly traces a red blood cell from the vena cava to the aorta?",
+    options:{A:"Right atrium → left ventricle → pulmonary vein → lungs → aorta.",B:"Left atrium → left ventricle → pulmonary artery → lungs → aorta.",C:"Right atrium → right ventricle → lungs → left atrium → left ventricle → aorta",D:"Right ventricle → right atrium → lungs → left ventricle → left atrium → aorta."},
+    correct:"C",tag:"MC-GBIO-CIRCULATION",
+    scaffold:"Deoxygenated blood: vena cava → right atrium → tricuspid valve → right ventricle → pulmonary artery → lungs. Oxygenated blood: pulmonary vein → left atrium → bicuspid valve → left ventricle → aorta → body. Two rules resolve most confusion: arteries always carry blood away from the heart (so the pulmonary artery carries deoxygenated blood), and blood always passes atrium → ventricle, never the reverse.",
+    reforge:{stem:"The pulmonary artery is unusual among arteries because it:",options:{A:"Carries deoxygenated blood away from the heart",B:"Carries blood towards the heart from the lungs.",C:"Contains valves along its entire length.",D:"Has a thinner wall than the corresponding vein."},correct:"A"}
+  },
+  {
+    id:"BIO-N2-21",stem:"Starch is digested to glucose by the combined action of:",
+    options:{A:"Endopeptidases and exopeptidases in the stomach lumen.",B:"Lipase and bile salts in the duodenum.",C:"Amylase and then maltase in the small intestine",D:"Trypsin secreted by the pancreas and activated by enterokinase."},
+    correct:"C",tag:"MC-GBIO-MEMBRANE-TRANSPORT",
+    scaffold:"Carbohydrate digestion: salivary and pancreatic amylase hydrolyse starch to maltose; membrane-bound disaccharidases in the ileum epithelium (maltase, sucrase, lactase) complete the job to monosaccharides. Protein: endopeptidases cut internal bonds creating more ends, exopeptidases remove terminal amino acids, dipeptidases finish. Lipid: bile salts emulsify into droplets increasing surface area, then lipase hydrolyses to fatty acids and monoglycerides which form micelles.",
+    reforge:{stem:"Bile salts contain no enzymes, yet they increase the rate of lipid digestion because they:",options:{A:"Hydrolyse ester bonds in triglyceride molecules directly.",B:"Neutralise pancreatic lipase before it reaches the ileum.",C:"Emulsify lipids into droplets, raising surface area",D:"Transport fatty acids across the epithelial cell membrane."},correct:"C"}
+  },
+  {
+    id:"BIO-N2-22",stem:"Glucose is absorbed from the ileum lumen into epithelial cells against its concentration gradient by:",
+    options:{A:"Simple diffusion through the phospholipid bilayer.",B:"Co-transport with sodium ions, driven by ATP",C:"Osmosis following the movement of water molecules.",D:"Exocytosis of vesicles containing dissolved glucose."},
+    correct:"B",tag:"MC-GBIO-MEMBRANE-TRANSPORT",
+    scaffold:"Co-transport in the ileum: the sodium-potassium pump on the basal membrane actively removes Na⁺ from the epithelial cell using ATP, creating a low internal Na⁺ concentration. Na⁺ then diffuses in from the lumen through a co-transporter protein, carrying glucose with it — even against the glucose gradient. Glucose then leaves into the blood by facilitated diffusion. The ATP is used indirectly, which is why this is called secondary active transport.",
+    reforge:{stem:"Villi and microvilli increase absorption in the ileum principally by:",options:{A:"Producing additional digestive enzymes in the lumen.",B:"Reducing the distance between the lumen and the lacteal.",C:"Actively pumping nutrients into the hepatic portal vein.",D:"Greatly increasing the surface area for absorption"},correct:"D"}
+  },
+  {
+    id:"BIO-N2-23",stem:"Cholera toxin causes severe diarrhoea because it:",
+    options:{A:"Destroys the villi, preventing all nutrient absorption.",B:"Blocks the sodium-potassium pump on the basal membrane.",C:"Digests the phospholipid bilayer of epithelial cell membranes.",D:"Opens chloride channels, so ions and water leave cells"},
+    correct:"D",tag:"MC-GBIO-ECOLOGY-DISEASE",
+    scaffold:"Vibrio cholerae toxin permanently opens CFTR chloride channels in the intestinal epithelium. Cl⁻ floods into the lumen, Na⁺ follows to balance charge, and the lumen's water potential falls sharply, so water leaves the cells and blood by osmosis — producing watery diarrhoea and dangerous dehydration. Oral rehydration solutions contain both glucose and sodium precisely because the co-transporter still works and drags water back in with them.",
+    reforge:{stem:"Oral rehydration solutions contain glucose as well as salts. The glucose is included because it:",options:{A:"Provides the energy needed to kill the cholera bacteria.",B:"Allows sodium co-transport, so water is reabsorbed",C:"Lowers the water potential of the intestinal lumen further.",D:"Neutralises the toxin released by the bacteria."},correct:"B"}
+  },
+  {
+    id:"BIO-N2-24",stem:"Haemoglobin transports most carbon dioxide from respiring tissues in the form of:",
+    options:{A:"Hydrogencarbonate ions dissolved in the blood plasma",B:"Carbaminohaemoglobin within the red blood cells.",C:"Carbon dioxide gas dissolved directly in the plasma.",D:"Carbonic anhydrase bound to the red cell membrane."},
+    correct:"A",tag:"MC-GBIO-CIRCULATION",
+    scaffold:"CO₂ transport: about 85% as hydrogencarbonate ions, ~10% as carbaminohaemoglobin, ~5% dissolved in plasma. In the red cell, carbonic anhydrase catalyses CO₂ + H₂O → H₂CO₃, which dissociates into H⁺ and HCO₃⁻. HCO₃⁻ diffuses into the plasma and Cl⁻ moves in to maintain charge balance (the chloride shift). The H⁺ is buffered by haemoglobin forming haemoglobinic acid, and this fall in pH is what causes the Bohr shift.",
+    reforge:{stem:"The chloride shift refers to the movement of chloride ions:",options:{A:"Out of the red blood cell as hydrogencarbonate enters it.",B:"From the plasma into the red cell to balance charge",C:"Across the alveolar epithelium into the air in the lungs.",D:"From haemoglobin into the plasma during oxygen loading."},correct:"B"}
+  },
+  {
+    id:"BIO-N2-25",stem:"A student calculates cardiac output. The correct relationship is:",
+    options:{A:"Cardiac output = stroke volume ÷ heart rate.",B:"Cardiac output = heart rate ÷ stroke volume.",C:"Cardiac output = stroke volume + heart rate.",D:"Cardiac output = stroke volume × heart rate"},
+    correct:"D",tag:"MC-GBIO-CIRCULATION",
+    scaffold:"Cardiac output (cm³ min⁻¹) = stroke volume (cm³ per beat) × heart rate (beats min⁻¹). Typical resting values: 70cm³ × 70 bpm ≈ 4900cm³ min⁻¹. During exercise both terms rise, so output can reach 20-30 dm³ min⁻¹. Trained athletes have a larger stroke volume, so their resting heart rate is lower for the same output — this is why bradycardia in an athlete is a sign of fitness rather than illness.",
+    reforge:{stem:"An athlete has a stroke volume of 100cm³ and a resting heart rate of 50 bpm. Their cardiac output is:",options:{A:"150 cm³ min⁻¹, found by adding the two values.",B:"2 cm³ min⁻¹, found by dividing 100 by 50.",C:"5000 cm³ min⁻¹, found by multiplying 100 by 50",D:"0.5 cm³ min⁻¹, found by dividing 50 by 100."},correct:"C"}
+  },
+  {
+    id:"BIO-N2-26",stem:"Lymph differs from tissue fluid mainly in that lymph:",
+    options:{A:"Contains lymphocytes and more fatty acids, draining to veins",B:"Contains red blood cells and plasma proteins in high concentration.",C:"Is pumped directly by the left ventricle of the heart.",D:"Is formed at the arterial end of every capillary bed."},
+    correct:"A",tag:"MC-GBIO-CIRCULATION",
+    scaffold:"Tissue fluid forms from plasma at the arterial end of capillaries; most returns at the venous end. The ~10% that does not enters blind-ended lymph capillaries as lymph. Lymph is similar to tissue fluid but contains more lymphocytes (added at lymph nodes) and, after a meal, many fatty acids absorbed via the lacteals of the villi. It moves by skeletal muscle compression with valves preventing backflow, returning to the blood at the subclavian veins.",
+    reforge:{stem:"Lymph vessels contain valves and lie between skeletal muscles. This arrangement is necessary because lymph:",options:{A:"Is under high pressure from ventricular contraction.",B:"Has no pump and relies on body movement to flow",C:"Must flow in both directions to reach the lymph nodes.",D:"Contains red blood cells that would otherwise settle out."},correct:"B"}
+  },
+  {
+    id:"BIO-N2-27",stem:"Surface area to volume ratio explains why large organisms need specialised exchange surfaces. As an organism gets larger, its:",
+    options:{A:"Surface area increases faster than its volume does.",B:"Volume and surface area increase at exactly the same rate.",C:"Surface area to volume ratio falls, so diffusion is too slow",D:"Metabolic rate per unit mass rises, requiring less oxygen overall."},
+    correct:"C",tag:"MC-GBIO-CIRCULATION",
+    scaffold:"Surface area scales with length², volume with length³, so the ratio falls as size increases. A single-celled organism has a ratio high enough for diffusion across the body surface to supply every part. Larger organisms have a small ratio and a longer diffusion pathway to the centre, so they need specialised exchange surfaces (alveoli, gills, villi) plus a mass transport system to carry substances between the exchange surface and the tissues.",
+    reforge:{stem:"A small mammal loses heat faster per gram of body mass than a large mammal. This is because the small mammal has:",options:{A:"A lower metabolic rate per unit of body mass.",B:"A thicker layer of insulating fat beneath the skin.",C:"A larger surface area relative to its volume",D:"A smaller total surface area across its whole body."},correct:"C"}
+  },
+  {
+    id:"BIO-N2-28",stem:"Which feature of capillaries most directly enables efficient exchange with tissues?",
+    options:{A:"A thick layer of smooth muscle allowing vasoconstriction.",B:"Walls one cell thick, giving a short diffusion distance",C:"Valves at intervals preventing the backflow of blood.",D:"A wide lumen allowing rapid, high-pressure blood flow."},
+    correct:"B",tag:"MC-GBIO-CIRCULATION",
+    scaffold:"Capillary adaptations: endothelium one cell thick so the diffusion pathway is minimal; a lumen roughly the diameter of a red blood cell, which slows flow and forces cells against the wall, increasing time and closeness for exchange; gaps (fenestrations) between endothelial cells letting plasma and small solutes leave; extensive branching giving a large total surface area and ensuring no cell is far from a capillary.",
+    reforge:{stem:"Blood flows more slowly through capillaries than through arteries. This is beneficial because it:",options:{A:"Reduces the total surface area available for exchange.",B:"Prevents plasma proteins from leaving the capillary.",C:"Increases the hydrostatic pressure at the venous end.",D:"Allows more time for diffusion into the tissues"},correct:"D"}
+  }
+]);
+bioExpansion("BIO-3", [
+  {
+    id:"BIO-N3-01",stem:"The specific immune response differs from the non-specific response because the specific response:",
+    options:{A:"Acts within minutes of any pathogen entering the body.",B:"Targets particular antigens and produces memory cells",C:"Relies entirely on physical barriers such as skin and mucus.",D:"Involves phagocytosis of any foreign material encountered."},
+    correct:"B",tag:"MC-GBIO-ECOLOGY-DISEASE",
+    scaffold:"Non-specific defences act the same way against any pathogen and are immediate: physical and chemical barriers (skin, mucus, stomach acid, lysozyme in tears), phagocytosis, and inflammation. Specific defences are slower to start but antigen-specific and leave memory cells: cell-mediated immunity (T lymphocytes) and humoral immunity (B lymphocytes and antibodies). The memory component is what makes vaccination possible.",
+    reforge:{stem:"Why is the secondary immune response faster and larger than the primary response?",options:{A:"Antibodies from the primary response remain in the blood permanently.",B:"The pathogen's antigens change to a form more easily recognised.",C:"Memory cells are already present and rapidly divide into plasma cells",D:"Phagocytes engulf the pathogen before it can reproduce at all."},correct:"C"}
+  },
+  {
+    id:"BIO-N3-02",stem:"An antibody molecule is best described as a:",
+    options:{A:"Carbohydrate marker displayed on the surface of a pathogen.",B:"Steroid hormone released by activated T lymphocytes.",C:"Phospholipid that disrupts the bacterial cell membrane.",D:"Protein whose variable regions bind a specific antigen"},
+    correct:"D",tag:"MC-GBIO-ECOLOGY-DISEASE",
+    scaffold:"Antibodies (immunoglobulins) are Y-shaped proteins of four polypeptide chains — two heavy, two light — held by disulfide bridges. The variable region at the tips differs between antibodies and gives specificity, forming an antigen-antibody complex with a complementary antigen. The constant region is the same within a class and binds phagocyte receptors. Actions include agglutination (clumping pathogens for easier phagocytosis) and neutralising toxins.",
+    reforge:{stem:"Agglutination by antibodies assists the immune response because it:",options:{A:"Clumps pathogens so phagocytes engulf many at once",B:"Directly lyses the cell membrane of every bacterium present.",C:"Converts the antigen into a harmless carbohydrate.",D:"Stimulates the pathogen to reproduce more slowly in the blood."},correct:"A"}
+  },
+  {
+    id:"BIO-N3-03",stem:"A vaccine produces active immunity because it:",
+    options:{A:"Stimulates the body to make its own antibodies and memory",B:"Supplies ready-made antibodies taken from an immune donor.",C:"Kills all pathogens already present in the bloodstream.",D:"Provides temporary protection lasting only a few weeks."},
+    correct:"A",tag:"MC-GBIO-ECOLOGY-DISEASE",
+    scaffold:"Active immunity: the individual's own immune system responds to antigen, so memory cells form and protection is long-lasting. Natural active — infection; artificial active — vaccination. Passive immunity: antibodies come from elsewhere, so protection is immediate but short-lived and no memory cells form. Natural passive — across the placenta or in breast milk; artificial passive — antivenom or immunoglobulin injection.",
+    reforge:{stem:"A patient bitten by a venomous snake is given antivenom containing antibodies. This provides:",options:{A:"Natural active immunity, because the body meets the antigen.",B:"Artificial active immunity, because the treatment is injected.",C:"Natural passive immunity, because antibodies come from another organism.",D:"Artificial passive immunity, giving immediate but short-lived protection"},correct:"D"}
+  },
+  {
+    id:"BIO-N3-04",stem:"Herd immunity protects unvaccinated individuals in a population because:",
+    options:{A:"Vaccinated individuals produce antibodies that circulate to others.",B:"Enough people are immune that transmission is disrupted",C:"The pathogen mutates into a harmless form within vaccinated hosts.",D:"Unvaccinated individuals develop memory cells without exposure."},
+    correct:"B",tag:"MC-GBIO-ECOLOGY-DISEASE",
+    scaffold:"Herd immunity works at population level: if a high enough proportion is immune, an infected individual is unlikely to meet a susceptible one, so chains of transmission break. This protects those who cannot be vaccinated — infants, the immunocompromised, those with allergies. The threshold depends on how transmissible the pathogen is (measles needs ~95%, others less). Antibodies are not shared between individuals; only the interruption of transmission is shared.",
+    reforge:{stem:"Influenza vaccines must be reformulated each year mainly because the virus:",options:{A:"Loses its outer lipid envelope over time in the population.",B:"Becomes resistant to the antibiotics used alongside vaccination.",C:"Undergoes antigenic variation, so memory cells fail to match",D:"Reproduces too slowly to be detected by the immune system."},correct:"C"}
+  },
+  {
+    id:"BIO-N3-05",stem:"Antibiotics are ineffective against viral infections because viruses:",
+    options:{A:"Reproduce far more slowly than bacterial cells do.",B:"Are always enclosed in a protective lipid envelope.",C:"Possess a peptidoglycan wall that antibiotics cannot penetrate.",D:"Lack the walls and ribosomes that antibiotics target"},
+    correct:"D",tag:"MC-GBIO-ECOLOGY-DISEASE",
+    scaffold:"Antibiotics act on features unique to bacteria — peptidoglycan wall synthesis (penicillin), 70S ribosomes (tetracycline, streptomycin), bacterial DNA gyrase. Viruses are not cells: they have no wall, no ribosomes and no metabolism of their own, using host machinery instead, so there is nothing for an antibiotic to target. Antivirals must instead block viral enzymes such as reverse transcriptase or protease. Prescribing antibiotics for viral illness adds no benefit and drives resistance.",
+    reforge:{stem:"Antibiotic resistance spreads rapidly through bacterial populations partly because bacteria can:",options:{A:"Deliberately mutate in response to the antibiotic present.",B:"Transfer resistance genes on plasmids by conjugation",C:"Develop immunity using memory cells after first exposure.",D:"Convert the antibiotic into a nutrient source for growth."},correct:"B"}
+  },
+  {
+    id:"BIO-N3-06",stem:"Natural selection leads to evolution only when the selected characteristic is:",
+    options:{A:"Heritable, so advantageous alleles are passed to offspring",B:"Acquired during the organism's own lifetime through use.",C:"Present in every individual of the population equally.",D:"Determined solely by the environment rather than by genes."},
+    correct:"A",tag:"MC-GBIO-EVOLUTION",
+    scaffold:"Natural selection requires: variation within the population (ultimately from mutation, plus meiosis and random fertilisation); a selection pressure; differential survival and reproduction; and — crucially — heritability, so the advantageous alleles increase in frequency in the next generation. Acquired characteristics (Lamarck's model) are not inherited. Note that selection acts on phenotypes but changes allele frequencies, and organisms do not mutate 'in order to' adapt.",
+    reforge:{stem:"Which statement about mutation and selection is correct?",options:{A:"Bacteria mutate in response to an antibiotic in order to survive it.",B:"Mutation only occurs when a population is under selection pressure.",C:"Mutations occur randomly; the environment then selects among them",D:"Selection creates new alleles that were not previously present."},correct:"C"}
+  },
+  {
+    id:"BIO-N3-07",stem:"Directional selection differs from stabilising selection in that directional selection:",
+    options:{A:"Always reduces the total genetic diversity of a population to zero.",B:"Favours individuals with the modal, average phenotype.",C:"Shifts the mean phenotype towards one extreme of the range",D:"Splits one population into two distinct non-breeding species."},
+    correct:"C",tag:"MC-GBIO-EVOLUTION",
+    scaffold:"Stabilising selection favours intermediate phenotypes and acts against both extremes, reducing variation — human birth mass is the standard example, and it predominates in a stable environment. Directional selection favours one extreme, shifting the mean in that direction — antibiotic resistance and peppered moth colouration are examples, and it predominates when the environment changes. Disruptive selection favours both extremes against the middle and can begin speciation.",
+    reforge:{stem:"Human birth mass shows a narrow range, with high mortality at both very low and very high masses. This illustrates:",options:{A:"Stabilising selection, favouring the mean phenotype",B:"Directional selection towards a higher birth mass.",C:"Disruptive selection favouring both extreme masses.",D:"Genetic drift acting on a small isolated population."},correct:"A"}
+  },
+  {
+    id:"BIO-N3-08",stem:"Allopatric speciation begins when two populations become:",
+    options:{A:"Reproductively isolated by a behavioural difference in the same area.",B:"Geographically separated, so gene flow between them stops",C:"Identical in allele frequency through interbreeding.",D:"Subject to precisely the same selection pressures."},
+    correct:"B",tag:"MC-GBIO-EVOLUTION",
+    scaffold:"Speciation requires reproductive isolation so gene pools diverge. Allopatric: a geographical barrier (river, mountain, ocean) splits the population; different selection pressures and independent mutation cause divergence until interbreeding is no longer possible. Sympatric: isolation arises without geographical separation — behavioural (different courtship or breeding season), mechanical, or through polyploidy, which is common in plants and can produce a new species in one generation.",
+    reforge:{stem:"Two plant populations in the same field cannot interbreed because one has become tetraploid. This is an example of:",options:{A:"Allopatric speciation caused by a geographical barrier.",B:"Genetic drift in a small founder population.",C:"Directional selection acting on flower colour.",D:"Sympatric speciation, without geographical separation"},correct:"D"}
+  },
+  {
+    id:"BIO-N3-09",stem:"Genetic drift has a greater effect on small populations because:",
+    options:{A:"Small populations experience stronger selection pressures.",B:"Mutation rates per individual are higher in small populations.",C:"Chance changes in allele frequency have larger effects",D:"Small populations always contain more heterozygous individuals."},
+    correct:"C",tag:"MC-GBIO-EVOLUTION",
+    scaffold:"Genetic drift is random change in allele frequency between generations due to chance in which individuals reproduce. In a large population these fluctuations largely cancel out; in a small one a single chance event can remove an allele entirely. The founder effect (a few individuals colonise a new area) and genetic bottlenecks (population crash) both create small populations with reduced genetic diversity, making them vulnerable to disease and environmental change.",
+    reforge:{stem:"A population crashes to 20 individuals then recovers to thousands. The likely genetic consequence is:",options:{A:"An increase in the number of alleles present in the population.",B:"No change, because population size has been restored.",C:"A permanent change in the mutation rate of every gene.",D:"Reduced genetic diversity, as alleles were lost in the crash"},correct:"D"}
+  },
+  {
+    id:"BIO-N3-10",stem:"In the Hardy-Weinberg equation, the term 2pq represents the frequency of:",
+    options:{A:"Homozygous recessive individuals in the population",B:"Heterozygous individuals in the population.",C:"The dominant allele within the whole gene pool.",D:"All individuals showing the dominant phenotype."},
+    correct:"B",tag:"MC-GBIO-GENETICS",
+    scaffold:"Allele frequencies: p + q = 1, where p is the dominant and q the recessive allele. Genotype frequencies: p² + 2pq + q² = 1, where p² is homozygous dominant, 2pq heterozygous, q² homozygous recessive. Method: the recessive phenotype gives q² directly, so q = √q², then p = 1 − q, then 2pq. Assumptions: large population, random mating, no mutation, no migration, no selection — real populations rarely meet all of these.",
+    reforge:{stem:"In a population, 16% show the recessive phenotype. What is the frequency of the dominant allele?",options:{A:"0.16, read directly from the recessive percentage.",B:"0.4, because q² = 0.16 so q = 0.4.",C:"0.6, because q = 0.4 and p = 1 − 0.4",D:"0.84, found by subtracting 0.16 from 1."},correct:"C"}
+  },
+  {
+    id:"BIO-N3-11",stem:"A test cross is carried out to determine whether an organism showing the dominant phenotype is:",
+    options:{A:"Carrying a mutation in its mitochondrial DNA.",B:"Homozygous dominant or heterozygous for that gene",C:"Male or female in a species without visible dimorphism.",D:"Capable of producing viable gametes at all."},
+    correct:"B",tag:"MC-GBIO-GENETICS",
+    scaffold:"A test cross crosses the unknown individual with a homozygous recessive. If the unknown is homozygous dominant (AA), all offspring show the dominant phenotype. If heterozygous (Aa), roughly half the offspring show the recessive phenotype — because the recessive parent contributes only recessive alleles, offspring phenotypes reveal the unknown's gametes directly. Remember genotype is the alleles present; phenotype is the characteristic expressed.",
+    reforge:{stem:"A black guinea pig is crossed with a white (homozygous recessive) one. Half the offspring are white. The black parent's genotype is:",options:{A:"Homozygous dominant, since black is the dominant phenotype.",B:"Homozygous recessive, since white offspring appeared.",C:"Heterozygous, since it passed on a recessive allele",D:"Impossible to determine from this cross alone."},correct:"C"}
+  },
+  {
+    id:"BIO-N3-12",stem:"A woman who is a carrier for haemophilia (X-linked recessive) has children with an unaffected man. The probability that a son is affected is:",
+    options:{A:"0%, because males cannot inherit the condition.",B:"25%, counting all children of both sexes.",C:"100%, because sons always inherit the mother's X chromosome.",D:"50%, because each son inherits one of her two X chromosomes"},
+    correct:"D",tag:"MC-GBIO-GENETICS",
+    scaffold:"X-linked recessive: the allele is on the X chromosome. Females (XX) need two copies to be affected and can be carriers; males (XY) have only one X, so a single recessive allele is expressed — which is why such conditions are far commoner in males. Carrier mother XᴴXʰ × unaffected father XᴴY gives XᴴXᴴ, XᴴXʰ, XᴴY, XʰY. So half of sons are affected, half of daughters are carriers, and 25% of all children are affected sons.",
+    reforge:{stem:"Why are X-linked recessive conditions far more common in males than in females?",options:{A:"Males have only one X, so one recessive allele is expressed",B:"Males inherit two copies of every X-linked gene.",C:"The Y chromosome carries a second copy of the same allele.",D:"Females cannot inherit X-linked alleles from their fathers."},correct:"A"}
+  },
+  {
+    id:"BIO-N3-13",stem:"Epistasis occurs when:",
+    options:{A:"A gene at one locus masks the expression of another gene",B:"Two alleles of the same gene are both fully expressed together.",C:"A single gene controls several unrelated characteristics.",D:"Genes on the same chromosome are inherited together."},
+    correct:"A",tag:"MC-GBIO-GENETICS",
+    scaffold:"Epistasis — a gene at one locus affects the expression of a gene at a different locus, distorting the expected dihybrid 9:3:3:1 ratio into ratios such as 9:7, 12:3:1 or 9:3:4. Distinguish from: codominance (both alleles of one gene expressed, e.g. AB blood group); multiple alleles (more than two alleles exist for one gene); autosomal linkage (genes on the same chromosome inherited together, reducing recombinants).",
+    reforge:{stem:"A dihybrid cross gives a 9:7 ratio rather than 9:3:3:1. The most likely explanation is:",options:{A:"Codominance between the two alleles of one gene.",B:"Sex linkage of both genes to the X chromosome.",C:"Epistasis, with one gene masking the other",D:"Random genetic drift in a small breeding population."},correct:"C"}
+  },
+  {
+    id:"BIO-N3-14",stem:"The three domains of life in modern classification are:",
+    options:{A:"Plants, animals and fungi.",B:"Bacteria, Archaea and Eukarya",C:"Prokaryotes, eukaryotes and viruses.",D:"Kingdom, phylum and class."},
+    correct:"B",tag:"MC-GBIO-EVOLUTION",
+    scaffold:"Woese's three-domain system separates Archaea from Bacteria because their rRNA sequences, membrane lipids and cell wall chemistry differ fundamentally — Archaea are in some ways closer to Eukarya. The hierarchy below domain is: kingdom, phylum, class, order, family, genus, species. Binomial naming uses genus (capitalised) and species, italicised. Viruses are excluded from this system as they are not cellular.",
+    reforge:{stem:"Classification based on DNA and RNA sequence comparison is considered more reliable than one based on physical features because:",options:{A:"Sequence data reflects evolutionary relatedness directly",B:"Physical features cannot be measured accurately in any organism.",C:"DNA sequences are identical within a whole kingdom.",D:"Molecular methods do not require any living specimens."},correct:"A"}
+  },
+  {
+    id:"BIO-N3-15",stem:"Species richness alone is an incomplete measure of biodiversity because it ignores:",
+    options:{A:"The total number of different species present in the area.",B:"The geographical size of the habitat being sampled.",C:"The date on which the sampling was carried out.",D:"The relative abundance of individuals in each species"},
+    correct:"D",tag:"MC-GBIO-ECOLOGY-DISEASE",
+    scaffold:"Species richness counts how many species are present. An index of diversity also weights how evenly individuals are distributed among them: two communities with 5 species each are not equally diverse if one has them in equal numbers and the other is dominated by a single species. Simpson's index D = 1 − Σ(n/N)², where n is the number of individuals of one species and N the total; higher values indicate greater diversity and usually greater stability.",
+    reforge:{stem:"Two woodlands each contain 6 species. Woodland A has them in roughly equal numbers; woodland B is 90% one species. Which is correct?",options:{A:"Both have identical diversity because richness is equal.",B:"Woodland A has higher diversity, being more evenly spread",C:"Woodland B has higher diversity because one species dominates.",D:"Diversity cannot be compared without knowing the woodland areas."},correct:"B"}
+  },
+  {
+    id:"BIO-N3-16",stem:"Using random quadrats rather than choosing sampling sites by eye is important because it:",
+    options:{A:"Guarantees every species in the habitat will be recorded.",B:"Increases the total number of quadrats that can be placed.",C:"Removes bias, so the sample represents the habitat",D:"Eliminates the need to repeat the sampling procedure."},
+    correct:"C",tag:"MC-GBIO-INVESTIGATION",
+    scaffold:"Random sampling (coordinates from random number generation) avoids the unconscious bias of picking interesting-looking patches, so the estimate is representative and can be treated statistically. Use enough quadrats for a reliable mean. Systematic sampling along a transect is used deliberately where an environmental gradient exists (e.g. up a shore), because there the aim is to show how distribution changes rather than to estimate an overall mean.",
+    reforge:{stem:"A student investigates how plant species change from the sea up a rocky shore. The most appropriate method is:",options:{A:"Random quadrats scattered across the whole shore area.",B:"A single large quadrat placed at the midpoint of the shore.",C:"Mark-release-recapture using marked individual plants.",D:"A belt transect running from the water's edge inland"},correct:"D"}
+  },
+  {
+    id:"BIO-N3-17",stem:"In the mark-release-recapture method, the population estimate would be too high if:",
+    options:{A:"Every marked individual were recaptured in the second sample.",B:"Marked individuals were more likely to be eaten or to leave",C:"The marks were completely waterproof and long-lasting.",D:"The two sampling occasions were only one hour apart."},
+    correct:"B",tag:"MC-GBIO-INVESTIGATION",
+    scaffold:"Estimate = (n₁ × n₂) ÷ m, where n₁ and n₂ are the sample sizes and m the number of marked recaptures. A smaller m inflates the estimate. Assumptions: marking does not affect survival or behaviour, marks are not lost, enough time is allowed for mixing but not so much that births, deaths or migration change the population, and the population is closed. Marks that increase predation reduce m and therefore overestimate the population.",
+    reforge:{stem:"60 woodlice are marked and released. A later sample of 80 contains 12 marked individuals. The estimated population is:",options:{A:"400, calculated as (60 × 80) ÷ 12",B:"152, calculated as 60 + 80 + 12.",C:"12, the number of recaptured marked individuals.",D:"48, calculated as 60 × 80 ÷ 100."},correct:"A"}
+  },
+  {
+    id:"BIO-N3-18",stem:"Only about 10% of energy is transferred between trophic levels mainly because:",
+    options:{A:"Producers convert all incoming light energy into biomass.",B:"Energy is destroyed as it passes along the food chain.",C:"Energy is lost in respiration, excretion and faeces",D:"Consumers are unable to digest any plant material at all."},
+    correct:"C",tag:"MC-GBIO-ECOLOGY-DISEASE",
+    scaffold:"Losses between trophic levels: not all of the organism is eaten (roots, bones), not all eaten material is digested (lost in faeces), and much assimilated energy is released as heat during respiration or lost in excretory products such as urea. Energy is transferred and dissipated, never destroyed. These losses explain why food chains rarely exceed 4-5 levels and why a given area supports more people on a plant-based diet than on meat.",
+    reforge:{stem:"Net primary productivity is best defined as:",options:{A:"The total light energy falling on the producers in an area.",B:"The energy lost by producers in respiration each year.",C:"The energy transferred to the primary consumers annually.",D:"Gross primary productivity minus respiratory losses"},correct:"D"}
+  },
+  {
+    id:"BIO-N3-19",stem:"Nitrogen-fixing bacteria such as Rhizobium benefit plants by converting:",
+    options:{A:"Atmospheric nitrogen into usable ammonium compounds",B:"Nitrates in the soil into nitrogen gas released to the air.",C:"Ammonium compounds into nitrites and then nitrates.",D:"Plant proteins into ammonia during decomposition."},
+    correct:"A",tag:"MC-GBIO-ECOLOGY-DISEASE",
+    scaffold:"Nitrogen cycle roles: nitrogen fixation (Rhizobium in root nodules, free-living Azotobacter) — N₂ to ammonium; ammonification (saprobionts) — organic nitrogen in dead matter and urea to ammonium; nitrification (Nitrosomonas then Nitrobacter, both requiring oxygen) — ammonium to nitrite to nitrate; denitrification (anaerobic bacteria in waterlogged soil) — nitrate back to N₂, reducing soil fertility. Ploughing aerates soil, favouring nitrification over denitrification.",
+    reforge:{stem:"Waterlogged soil becomes less fertile largely because anaerobic conditions favour:",options:{A:"Nitrogen fixation by free-living soil bacteria.",B:"Denitrifying bacteria, converting nitrate to nitrogen",C:"Nitrifying bacteria, which require oxygen to function.",D:"Saprobiotic decomposition of dead organic material."},correct:"B"}
+  },
+  {
+    id:"BIO-N3-20",stem:"Eutrophication of a river following fertiliser runoff leads to fish deaths because:",
+    options:{A:"Nitrates are directly toxic to fish at any concentration.",B:"Algal blooms increase the oxygen concentration to lethal levels.",C:"Algal blooms block light, and decomposers deplete oxygen",D:"Fertiliser lowers the water temperature below the fish's tolerance."},
+    correct:"C",tag:"MC-GBIO-ECOLOGY-DISEASE",
+    scaffold:"Sequence: leached nitrate and phosphate enrich the water → algal bloom at the surface → light is blocked from submerged plants, which die → saprobiotic bacteria decompose the dead plants and algae, multiplying rapidly → aerobic respiration by these bacteria depletes dissolved oxygen (measured as high BOD) → fish and invertebrates suffocate. The oxygen depletion, not the nitrate itself, is what kills the fish.",
+    reforge:{stem:"A high biochemical oxygen demand (BOD) in a water sample indicates:",options:{A:"A high concentration of dissolved oxygen available to fish.",B:"A large population of aerobic microbes using oxygen",C:"That the water contains no organic pollution at all.",D:"A low rate of decomposition of organic material."},correct:"B"}
+  },
+  {
+    id:"BIO-N3-21",stem:"Primary succession differs from secondary succession because primary succession:",
+    options:{A:"Always ends in a grassland rather than a woodland climax.",B:"Occurs only after a fire has destroyed existing vegetation.",C:"Involves no change in species diversity over time.",D:"Begins on bare rock or newly exposed ground with no soil"},
+    correct:"D",tag:"MC-GBIO-ECOLOGY-DISEASE",
+    scaffold:"Primary succession starts on newly formed or exposed surfaces with no soil (lava flows, sand dunes, bare rock). Pioneer species (lichens, mosses) tolerate extreme conditions, weather the rock and add organic matter on death, forming soil. Each seral stage changes abiotic conditions, allowing larger species that outcompete the previous ones, until a stable climax community forms. Secondary succession begins where soil already exists, so it proceeds faster.",
+    reforge:{stem:"Pioneer species are essential to primary succession because they:",options:{A:"Prevent any other species from colonising the area later.",B:"Weather the rock and add organic matter, forming soil",C:"Are the tallest and most competitive species in the sere.",D:"Reduce the biodiversity of the developing community."},correct:"B"}
+  },
+  {
+    id:"BIO-N3-22",stem:"Conservation of a habitat differs from preservation because conservation:",
+    options:{A:"Involves active management of a habitat still in use",B:"Prevents all human access to the protected area.",C:"Applies only to species that are already extinct in the wild.",D:"Leaves the habitat entirely undisturbed by any intervention."},
+    correct:"A",tag:"MC-GBIO-ECOLOGY-DISEASE",
+    scaffold:"Preservation means leaving an area untouched, excluding human activity. Conservation is dynamic management that maintains biodiversity while allowing sustainable human use — coppicing, controlled grazing, rotational felling, replanting, seed banks, captive breeding and reintroduction. Conservation reasons are ecological (ecosystem stability, genetic resources), economic (medicines, crops, tourism) and ethical. Succession is often deliberately arrested to preserve a valued seral stage such as heathland.",
+    reforge:{stem:"Grazing is used to maintain chalk grassland. Removing the grazing animals would cause the habitat to:",options:{A:"Undergo succession towards scrub and woodland",B:"Remain permanently unchanged as grassland.",C:"Revert immediately to bare rock with no soil.",D:"Increase its grassland species diversity indefinitely."},correct:"A"}
+  },
+  {
+    id:"BIO-N3-23",stem:"HIV eventually causes AIDS because the virus destroys:",
+    options:{A:"Red blood cells, preventing oxygen transport to tissues.",B:"T helper cells, so the specific response is not coordinated",C:"Platelets, so the blood is unable to clot normally.",D:"Phagocytes, removing all non-specific defence against pathogens."},
+    correct:"B",tag:"MC-GBIO-ECOLOGY-DISEASE",
+    scaffold:"HIV is a retrovirus: it binds CD4 receptors on T helper cells, reverse transcriptase copies its RNA into DNA, which integrates into the host genome. Replication destroys T helper cells. Because T helper cells activate B cells, cytotoxic T cells and phagocytes, losing them disables the whole specific response. AIDS is the resulting condition in which opportunistic infections and cancers take hold. Antiretrovirals target reverse transcriptase and protease.",
+    reforge:{stem:"Reverse transcriptase is a useful drug target in HIV treatment because it:",options:{A:"Is required by all human cells for normal DNA replication.",B:"Forms the outer protein coat surrounding the viral RNA.",C:"Binds the virus to the CD4 receptor on the host cell.",D:"Catalyses a step unique to the virus, absent in humans"},correct:"D"}
+  },
+  {
+    id:"BIO-N3-24",stem:"A monoclonal antibody is described as a useful diagnostic tool because it:",
+    options:{A:"Binds one specific antigen, allowing precise detection",B:"Destroys every pathogen present in a blood sample.",C:"Is produced naturally by all lymphocytes in the body.",D:"Reacts with a wide range of unrelated antigens at once."},
+    correct:"A",tag:"MC-GBIO-GENETIC-ENGINEERING",
+    scaffold:"Monoclonal antibodies are identical copies from a single B cell clone, made by fusing an antibody-producing B cell with a myeloma (tumour) cell to form a hybridoma that both secretes antibody and divides indefinitely. Their single specificity supports pregnancy testing (detecting hCG), ELISA diagnostics, and targeted cancer therapy where a drug is attached to an antibody specific to a tumour cell antigen, reducing damage to healthy tissue.",
+    reforge:{stem:"In an ELISA test, an enzyme is attached to the second antibody in order to:",options:{A:"Destroy any antigen that has not bound to the first antibody.",B:"Prevent the antibody from binding to the wrong antigen.",C:"Produce a colour change showing that the antigen is present",D:"Increase the specificity of the first antibody's binding site."},correct:"C"}
+  },
+  {
+    id:"BIO-N3-25",stem:"A restriction endonuclease is used in genetic engineering to:",
+    options:{A:"Cut DNA at a specific sequence, often leaving sticky ends",B:"Join the sugar-phosphate backbones of two DNA fragments.",C:"Produce DNA from an mRNA template in a single step.",D:"Amplify a DNA fragment through repeated heating and cooling."},
+    correct:"A",tag:"MC-GBIO-GENETIC-ENGINEERING",
+    scaffold:"Toolkit: restriction endonuclease cuts at a palindromic recognition sequence, often producing staggered sticky ends; DNA ligase joins sugar-phosphate backbones; reverse transcriptase makes cDNA from mRNA (useful because it lacks introns); PCR amplifies fragments using primers, DNA polymerase and thermal cycling. Cutting the gene and the plasmid vector with the SAME enzyme is what makes their sticky ends complementary so they anneal.",
+    reforge:{stem:"Why must the same restriction enzyme be used to cut both the gene and the plasmid vector?",options:{A:"So that both fragments are cut into pieces of identical length.",B:"So that DNA ligase is not required to complete the joining.",C:"So that the plasmid loses its antibiotic resistance marker gene.",D:"So the sticky ends are complementary and can base-pair together"},correct:"D"}
+  },
+  {
+    id:"BIO-N3-26",stem:"In the polymerase chain reaction, the mixture is heated to about 95°C in order to:",
+    options:{A:"Activate the primers so they can bind to the template.",B:"Allow Taq polymerase to extend the new DNA strands.",C:"Destroy any contaminating enzymes in the reaction tube.",D:"Break hydrogen bonds, separating the two DNA strands"},
+    correct:"D",tag:"MC-GBIO-GENETIC-ENGINEERING",
+    scaffold:"PCR cycle: denaturation ~95°C separates strands by breaking hydrogen bonds; annealing ~55°C lets primers bind either side of the target sequence; extension ~72°C lets Taq polymerase build new strands from free nucleotides. Taq comes from a thermophilic bacterium so it survives the denaturation step — ordinary DNA polymerase would denature. Each cycle doubles the DNA, so n cycles give 2ⁿ copies.",
+    reforge:{stem:"Starting with one DNA molecule, how many copies exist after 5 complete PCR cycles?",options:{A:"10, because each cycle adds two more copies.",B:"5, one for each cycle completed.",C:"32, because the quantity doubles each cycle",D:"25, because the number is squared each cycle."},correct:"C"}
+  },
+  {
+    id:"BIO-N3-27",stem:"Gel electrophoresis separates DNA fragments principally according to their:",
+    options:{A:"Base sequence, with A-T rich fragments moving fastest.",B:"Ability to bind to a specific gene probe.",C:"Length, because shorter fragments travel further",D:"Total number of hydrogen bonds between the two strands."},
+    correct:"C",tag:"MC-GBIO-GENETIC-ENGINEERING",
+    scaffold:"DNA is negatively charged because of its phosphate groups, so it moves towards the anode when a voltage is applied across the gel. The gel acts as a molecular sieve: short fragments travel further in a given time, long ones lag. Fragments of known size run alongside as a ladder for comparison. Bands are then visualised with a stain or by using labelled gene probes that hybridise to complementary sequences.",
+    reforge:{stem:"DNA moves towards the positive electrode during electrophoresis because DNA:",options:{A:"Is heated to break the hydrogen bonds before loading.",B:"Carries a negative charge due to its phosphate groups",C:"Binds to positively charged dye molecules in the gel.",D:"Contains more purine than pyrimidine bases overall."},correct:"B"}
+  },
+  {
+    id:"BIO-N3-28",stem:"Genetic fingerprinting is possible because individuals differ in the:",
+    options:{A:"Sequence of the genes coding for their enzymes.",B:"Number of repeats in non-coding regions of their DNA",C:"Total number of chromosomes present in each body cell.",D:"Type of nitrogenous bases found within their DNA."},
+    correct:"B",tag:"MC-GBIO-GENETIC-ENGINEERING",
+    scaffold:"Most of the human genome is non-coding, and includes short tandem repeats (VNTRs/STRs) whose repeat number varies greatly between individuals while being inherited from both parents. Method: extract DNA, amplify the repeat regions by PCR, separate by electrophoresis, and compare band patterns. Applications include forensic identification, paternity testing and establishing relatedness in conservation breeding programmes. Identical twins share the same pattern.",
+    reforge:{stem:"In a paternity test, the child's genetic fingerprint should show bands that:",options:{A:"Are all matched in the mother's or the father's profile",B:"Are entirely absent from both parents' profiles.",C:"Match the mother's profile exactly, band for band.",D:"Contain twice as many bands as either parent's profile."},correct:"A"}
+  }
+]);
+bioExpansion("BIO-ENZ", [
+  {
+    id:"BIO-N4-01",stem:"Enzymes increase the rate of a reaction because they:",
+    options:{A:"Raise the temperature of the reacting solution locally.",B:"Increase the total energy released by the reaction overall.",C:"Are consumed as the reaction proceeds to completion.",D:"Lower the activation energy needed for the reaction"},
+    correct:"D",tag:"MC-GBIO-ENZYMES",
+    scaffold:"An enzyme provides an alternative route with a lower activation energy, so a greater proportion of collisions have enough energy at any given temperature. It does not change the overall energy difference between substrate and product, does not make an energetically unfavourable reaction favourable, and is unchanged at the end — so a small quantity can catalyse many reactions. Enzymes are biological catalysts, and each is specific to a substrate.",
+    reforge:{stem:"On an energy level diagram, the effect of an enzyme is shown by:",options:{A:"A lower peak between reactants and products",B:"A larger difference in energy between reactants and products.",C:"A higher peak between reactants and products.",D:"The products being at a lower energy level than before."},correct:"A"}
+  },
+  {
+    id:"BIO-N4-02",stem:"The induced fit model improves on the lock and key model because it proposes that the:",
+    options:{A:"Substrate changes shape to fit a rigid, unchanging active site.",B:"Active site changes shape slightly as the substrate binds",C:"Enzyme binds any substrate regardless of its shape.",D:"Active site is formed only from the primary structure of the protein."},
+    correct:"B",tag:"MC-GBIO-ENZYMES",
+    scaffold:"Lock and key: the active site is a fixed complementary shape. Induced fit: the active site is flexible and moulds around the substrate as it binds, and this conformational change strains the substrate's bonds, which helps lower activation energy. Induced fit explains why some enzymes act on a small range of similar substrates, and why the fit improves after initial binding. Both models require the active site's shape to be determined by tertiary structure.",
+    reforge:{stem:"Enzyme specificity ultimately depends on which level of protein structure?",options:{A:"Primary structure alone, since it lists the amino acids.",B:"Secondary structure, since α-helices form the active site.",C:"Tertiary structure, which sets the active site's shape",D:"Quaternary structure, which all enzymes must possess."},correct:"C"}
+  },
+  {
+    id:"BIO-N4-03",stem:"Above its optimum temperature, enzyme activity falls sharply because:",
+    options:{A:"Vibration breaks bonds holding the tertiary structure together",B:"The substrate molecules move too quickly to collide with the enzyme.",C:"The enzyme's primary structure is hydrolysed into amino acids.",D:"The activation energy of the reaction increases with temperature."},
+    correct:"A",tag:"MC-GBIO-ENZYMES",
+    scaffold:"Below the optimum, raising temperature increases kinetic energy, so successful collisions and enzyme-substrate complex formation increase. Above the optimum, increased vibration breaks the hydrogen and ionic bonds maintaining tertiary structure; the active site is no longer complementary and the enzyme denatures. Denaturation is usually irreversible; peptide bonds are unaffected, so the primary structure remains intact — a common misconception in exam answers.",
+    reforge:{stem:"Denaturation by heat is usually irreversible, whereas a small pH change may be reversible. This is because heat:",options:{A:"Removes the substrate from the reaction mixture entirely.",B:"Converts the enzyme into a different type of protein.",C:"Only affects enzymes that have a quaternary structure.",D:"Disrupts many bonds, so the shape cannot re-form"},correct:"D"}
+  },
+  {
+    id:"BIO-N4-04",stem:"A pH far from an enzyme's optimum reduces activity because changes in H⁺ concentration:",
+    options:{A:"Reduce the number of substrate molecules present in solution.",B:"Increase the activation energy required for the reaction.",C:"Disrupt ionic bonds between charged R-groups",D:"Convert the enzyme's active site into a second binding site."},
+    correct:"C",tag:"MC-GBIO-ENZYMES",
+    scaffold:"H⁺ and OH⁻ ions interact with the charged R-groups (-NH₃⁺, -COO⁻) that form ionic bonds and hydrogen bonds in the tertiary structure. Altering the charges disrupts these bonds, so the active site changes shape and the substrate no longer fits. Small deviations are often reversible; large ones denature the enzyme. Optima vary with environment: pepsin ~pH 2 in the stomach, trypsin ~pH 8 in the duodenum, most intracellular enzymes near pH 7.",
+    reforge:{stem:"Pepsin has an optimum of about pH 2 while trypsin's is about pH 8. This is because each enzyme:",options:{A:"Contains a different number of active sites per molecule.",B:"Functions in a region of the gut with that pH",C:"Acts on a substrate that only exists at that pH.",D:"Has no tertiary structure at any other pH value."},correct:"B"}
+  },
+  {
+    id:"BIO-N4-05",stem:"In an enzyme-catalysed reaction with excess substrate, increasing enzyme concentration increases the rate because:",
+    options:{A:"Each enzyme molecule is used up faster at higher concentration.",B:"More active sites are available for enzyme-substrate complexes",C:"The activation energy falls further as enzyme concentration rises.",D:"The substrate becomes the limiting factor immediately."},
+    correct:"B",tag:"MC-GBIO-ENZYMES",
+    scaffold:"With substrate in excess, rate is proportional to enzyme concentration — more active sites means more complexes per second, and the graph is a straight line through the origin. If substrate becomes limiting the line plateaus. Conversely, at fixed enzyme concentration, increasing substrate raises the rate until all active sites are continuously occupied (saturation), after which the rate plateaus at Vmax and only more enzyme will increase it.",
+    reforge:{stem:"A graph of rate against substrate concentration plateaus at high substrate concentration because:",options:{A:"The substrate begins to inhibit the enzyme competitively.",B:"The enzyme has denatured at that concentration.",C:"All active sites are occupied, so the enzyme is saturated",D:"The activation energy has risen to its maximum value."},correct:"C"}
+  },
+  {
+    id:"BIO-N4-06",stem:"A competitive inhibitor reduces enzyme activity because it:",
+    options:{A:"Permanently denatures the tertiary structure of the enzyme.",B:"Binds to the substrate rather than to the enzyme itself.",C:"Increases the enzyme's affinity for its normal substrate.",D:"Has a shape like the substrate and occupies the active site"},
+    correct:"D",tag:"MC-GBIO-ENZYMES",
+    scaffold:"Competitive inhibitor: structurally similar to the substrate, binds reversibly at the active site, blocking substrate entry. Its effect is reduced by raising substrate concentration, since substrate then out-competes it — so Vmax is eventually still reached, just more slowly. Non-competitive inhibitor: binds at an allosteric site elsewhere, changing the active site's shape; raising substrate concentration does not overcome it, so Vmax is genuinely lowered.",
+    reforge:{stem:"Adding more substrate restores the rate in one inhibited reaction but not in another. The second reaction most likely involves:",options:{A:"A non-competitive inhibitor bound at an allosteric site",B:"A competitive inhibitor with a shape like the substrate.",C:"An enzyme operating below its optimum temperature.",D:"A reaction that has reached chemical equilibrium."},correct:"A"}
+  },
+  {
+    id:"BIO-N4-07",stem:"End-product inhibition is biologically useful because it:",
+    options:{A:"Increases the rate of the pathway when product levels are high.",B:"Permanently destroys the enzymes once the product is formed.",C:"Regulates a pathway according to how much product is needed",D:"Allows the pathway to run in reverse when substrate is scarce."},
+    correct:"C",tag:"MC-GBIO-ENZYMES",
+    scaffold:"In end-product (feedback) inhibition, the final product of a pathway acts as a non-competitive inhibitor of an enzyme early in that pathway, usually the first committed step. When product accumulates, the pathway slows; when product is used up, inhibition lifts and the pathway resumes. This prevents wasteful overproduction and accumulation of intermediates, and is a negative feedback mechanism — the same control logic as in homeostasis.",
+    reforge:{stem:"End-product inhibition is described as negative feedback because the:",options:{A:"Product increases the activity of the enzyme that made it.",B:"Rising product level reduces the process producing it",C:"Enzyme is destroyed each time product concentration rises.",D:"Pathway operates only when the product is entirely absent."},correct:"B"}
+  },
+  {
+    id:"BIO-N4-08",stem:"Many enzymes require a cofactor. A coenzyme differs from a prosthetic group in that a coenzyme:",
+    options:{A:"Is always an inorganic ion such as chloride or zinc.",B:"Forms the active site of the enzyme it assists.",C:"Permanently inhibits the enzyme after a single reaction.",D:"Is an organic molecule that binds only temporarily"},
+    correct:"D",tag:"MC-GBIO-ENZYMES",
+    scaffold:"Cofactor is the umbrella term. Inorganic cofactors are ions — chloride ions for amylase, zinc for carbonic anhydrase. Organic cofactors are coenzymes, often vitamin-derived (NAD, FAD, coenzyme A), which bind temporarily, carry chemical groups or electrons between enzymes, and are then recycled. A prosthetic group is a cofactor permanently bound to the enzyme, such as the zinc ion in carbonic anhydrase or haem in catalase.",
+    reforge:{stem:"NAD acts as a coenzyme in respiration by:",options:{A:"Providing a permanent active site for dehydrogenase enzymes.",B:"Catalysing the hydrolysis of ATP to ADP and phosphate.",C:"Acting as a non-competitive inhibitor of the Krebs cycle.",D:"Accepting hydrogen atoms and carrying them to the chain"},correct:"D"}
+  },
+  {
+    id:"BIO-N4-09",stem:"Immobilised enzymes are widely used in industry mainly because they:",
+    options:{A:"Can be recovered and reused, leaving product pure",B:"Work considerably faster than free enzymes in solution.",C:"Are unaffected by any change in temperature or pH.",D:"Do not require a substrate to catalyse their reaction."},
+    correct:"A",tag:"MC-GBIO-ENZYMES",
+    scaffold:"Immobilisation traps enzymes in alginate beads, on membranes or on inert supports. Advantages: the enzyme is easily separated and reused, product is not contaminated so purification costs fall, the process can run continuously, and stability to temperature and pH is improved. Disadvantages: setup cost, and the rate is often slightly lower because substrate must diffuse to the trapped enzyme. Lactose-free milk production is the standard example.",
+    reforge:{stem:"Immobilised enzymes often show a slightly lower reaction rate than free enzymes because:",options:{A:"The enzyme denatures immediately on immobilisation.",B:"The active site is destroyed by the alginate gel.",C:"Substrate must diffuse into the bead to reach the site",D:"Immobilised enzymes require a higher activation energy."},correct:"C"}
+  },
+  {
+    id:"BIO-N4-10",stem:"In an investigation of catalase activity, oxygen volume is collected every 30 seconds. The initial rate of reaction is best found from:",
+    options:{A:"The total volume of gas collected by the end of the experiment.",B:"The mean volume collected across all time intervals.",C:"The gradient of the tangent at the start of the curve",D:"The time taken for the reaction to stop completely."},
+    correct:"C",tag:"MC-GBIO-INVESTIGATION",
+    scaffold:"Rate falls over time as substrate is used up, so a single overall figure understates the true enzyme activity. The initial rate — the gradient at t = 0, where substrate is still in excess — is the fair basis for comparing conditions. Draw a tangent at the origin and calculate its gradient (volume ÷ time). Where a curve is not plotted, using the first 30 seconds only is an acceptable approximation of the initial rate.",
+    reforge:{stem:"Why does the rate of an enzyme-catalysed reaction fall as the reaction proceeds?",options:{A:"Substrate concentration decreases, so fewer complexes form",B:"The enzyme is used up in forming the products.",C:"The activation energy increases over the course of the reaction.",D:"Product molecules always denature the enzyme on contact."},correct:"A"}
+  },
+  {
+    id:"BIO-N4-11",stem:"In an enzyme experiment, a buffer solution is added in order to:",
+    options:{A:"Increase the reaction rate by supplying extra substrate.",B:"Keep pH constant so it is not an uncontrolled variable",C:"Raise the temperature to the enzyme's optimum value.",D:"Prevent the enzyme from binding to its substrate too quickly."},
+    correct:"B",tag:"MC-GBIO-INVESTIGATION",
+    scaffold:"A buffer resists pH change, holding pH constant so any observed effect can be attributed to the independent variable. Controlled variables in a typical enzyme practical: temperature (water bath), pH (buffer), enzyme and substrate concentration and volume, and time. Repeats allow a mean and reveal anomalies; identifying the independent, dependent and controlled variables correctly is what makes the investigation valid.",
+    reforge:{stem:"A student investigates the effect of temperature on amylase. Which is the dependent variable?",options:{A:"The temperature of each water bath used.",B:"The time taken for starch to be digested",C:"The concentration of the amylase solution.",D:"The volume of buffer added to each tube."},correct:"B"}
+  },
+  {
+    id:"BIO-N4-12",stem:"Glycolysis differs from the Krebs cycle in that glycolysis:",
+    options:{A:"Requires oxygen to be present in order to proceed.",B:"Produces the majority of a cell's ATP directly.",C:"Takes place in the mitochondrial matrix of the cell.",D:"Occurs in the cytoplasm and needs no oxygen"},
+    correct:"D",tag:"MC-GBIO-RESPIRATION-PHOTOSYNTHESIS",
+    scaffold:"Aerobic respiration stages: glycolysis (cytoplasm, anaerobic, glucose → 2 pyruvate, net 2 ATP + 2 reduced NAD); link reaction (matrix, pyruvate → acetyl CoA + CO₂ + reduced NAD); Krebs cycle (matrix, per turn: 2 CO₂, 3 reduced NAD, 1 reduced FAD, 1 ATP); oxidative phosphorylation (inner membrane, electron transport chain and chemiosmosis, ~26-28 ATP, oxygen as final electron acceptor). Most ATP comes from the last stage, not from glycolysis.",
+    reforge:{stem:"Oxygen is described as the final electron acceptor in aerobic respiration. Without it:",options:{A:"Glycolysis alone would stop immediately in the cytoplasm.",B:"The Krebs cycle would continue at an increased rate.",C:"ATP would still be produced normally by chemiosmosis.",D:"The chain backs up and reduced NAD is not reoxidised"},correct:"D"}
+  },
+  {
+    id:"BIO-N4-13",stem:"In anaerobic respiration in muscle, pyruvate is converted to lactate in order to:",
+    options:{A:"Produce a large additional quantity of ATP directly.",B:"Provide carbon dioxide for transport in the blood.",C:"Regenerate oxidised NAD so glycolysis can continue",D:"Store energy in a form that can be respired in the mitochondria."},
+    correct:"C",tag:"MC-GBIO-RESPIRATION-PHOTOSYNTHESIS",
+    scaffold:"Without oxygen the electron transport chain stops, so reduced NAD cannot be reoxidised there. Reducing pyruvate to lactate (animals) or to ethanol and CO₂ (yeast and plants) oxidises reduced NAD back to NAD, allowing glycolysis and its small ATP yield to continue. No further ATP is made in the conversion itself. Lactate is later transported to the liver and oxidised back to pyruvate or converted to glycogen, which requires oxygen — the oxygen debt.",
+    reforge:{stem:"Yeast respiring anaerobically produces ethanol and carbon dioxide, whereas muscle produces lactate only. Both pathways share the function of:",options:{A:"Oxidising reduced NAD so glycolysis can continue",B:"Generating 38 molecules of ATP per glucose molecule.",C:"Producing carbon dioxide for use in photosynthesis.",D:"Supplying pyruvate to the Krebs cycle in the matrix."},correct:"A"}
+  },
+  {
+    id:"BIO-N4-14",stem:"A respiratory quotient (RQ) of 1.0 indicates that the substrate being respired is:",
+    options:{A:"Protein, respired during prolonged starvation.",B:"Lipid, which requires more oxygen per carbon atom.",C:"A mixture of lipid and protein in equal proportion.",D:"Carbohydrate, respired aerobically"},
+    correct:"D",tag:"MC-GBIO-RESPIRATION-PHOTOSYNTHESIS",
+    scaffold:"RQ = CO₂ produced ÷ O₂ consumed. Carbohydrate gives 1.0 (C₆H₁₂O₆ + 6O₂ → 6CO₂ + 6H₂O). Lipid gives about 0.7 — lipids are more reduced, so more oxygen is needed per carbon released. Protein is around 0.9. An RQ above 1.0 indicates some anaerobic respiration is occurring, since CO₂ is produced without corresponding oxygen uptake. RQ is measured with a respirometer, using soda lime to absorb CO₂.",
+    reforge:{stem:"In a respirometer, potassium hydroxide solution is included in order to:",options:{A:"Supply oxygen to the respiring organisms in the tube.",B:"Maintain a constant temperature inside the apparatus.",C:"Prevent the organisms from respiring anaerobically.",D:"Absorb carbon dioxide, so movement shows oxygen use"},correct:"D"}
+  },
+  {
+    id:"BIO-N4-15",stem:"In the light-independent reaction, the enzyme rubisco catalyses the combination of carbon dioxide with:",
+    options:{A:"Triose phosphate, forming glucose directly.",B:"Ribulose bisphosphate, forming two molecules of GP",C:"Reduced NADP, forming ATP for the light-dependent stage.",D:"Chlorophyll, releasing electrons into the transport chain."},
+    correct:"B",tag:"MC-GBIO-RESPIRATION-PHOTOSYNTHESIS",
+    scaffold:"Calvin cycle: CO₂ + RuBP (5C) → 2 × GP (3C), catalysed by rubisco; GP is reduced to triose phosphate (TP) using reduced NADP and ATP from the light-dependent stage; most TP regenerates RuBP using further ATP, and a small proportion leaves to make glucose, amino acids and lipids. Six turns fix six CO₂ and yield one hexose. Limiting either CO₂ or light stops the cycle — a standard data question.",
+    reforge:{stem:"If a plant is suddenly deprived of carbon dioxide, the immediate effect on the Calvin cycle is that:",options:{A:"Triose phosphate accumulates while GP concentration falls.",B:"Both RuBP and GP concentrations rise sharply together.",C:"RuBP accumulates while GP concentration falls",D:"The light-dependent reaction stops before the Calvin cycle."},correct:"C"}
+  },
+  {
+    id:"BIO-N4-16",stem:"Photolysis of water during the light-dependent reaction supplies:",
+    options:{A:"Carbon dioxide for fixation by rubisco in the stroma.",B:"Electrons to replace those lost from photosystem II",C:"ATP directly to the light-independent reaction.",D:"Glucose for use in respiration by the plant cell."},
+    correct:"B",tag:"MC-GBIO-RESPIRATION-PHOTOSYNTHESIS",
+    scaffold:"Light excites electrons in photosystem II, which pass along the electron transport chain in the thylakoid membrane; the energy released pumps protons into the thylakoid space, and their return through ATP synthase makes ATP (chemiosmosis). Photolysis (2H₂O → 4H⁺ + 4e⁻ + O₂) replaces the lost electrons, supplies protons for reducing NADP, and releases oxygen as a by-product — the origin of atmospheric oxygen.",
+    reforge:{stem:"The oxygen released by a photosynthesising plant originates from:",options:{A:"Carbon dioxide absorbed through the stomata.",B:"Water molecules split during photolysis",C:"Glucose broken down in the mitochondria.",D:"Reduced NADP produced in the stroma."},correct:"B"}
+  },
+  {
+    id:"BIO-N4-17",stem:"Negative feedback maintains homeostasis by ensuring that a change in a factor triggers a response that:",
+    options:{A:"Amplifies the original change until a threshold is reached.",B:"Reverses the change, returning the factor to its set point",C:"Has no effect until the change becomes dangerously large.",D:"Permanently resets the body's normal set point to a new value."},
+    correct:"B",tag:"MC-GBIO-HOMEOSTASIS",
+    scaffold:"Negative feedback loop: receptor detects deviation from the set point → coordinator (often the hypothalamus or an endocrine gland) processes it → effector produces a response that opposes the change → the factor returns towards normal and the stimulus is removed. Separate mechanisms for raising and lowering a factor allow far more sensitive control. Positive feedback amplifies a change instead — as in oxytocin during labour or the depolarisation of a neurone.",
+    reforge:{stem:"Which of these is an example of positive rather than negative feedback?",options:{A:"Insulin secretion lowering a raised blood glucose concentration.",B:"Sweating in response to a rise in core body temperature.",C:"Vasoconstriction reducing heat loss when the body cools.",D:"Oxytocin release increasing uterine contractions during labour"},correct:"D"}
+  },
+  {
+    id:"BIO-N4-18",stem:"Insulin lowers blood glucose concentration principally by:",
+    options:{A:"Stimulating the conversion of glycogen into glucose in the liver.",B:"Reducing the rate of respiration in all body cells.",C:"Increasing glucose uptake by cells and its conversion to glycogen",D:"Preventing glucose from being absorbed in the small intestine."},
+    correct:"C",tag:"MC-GBIO-HOMEOSTASIS",
+    scaffold:"Beta cells of the islets of Langerhans secrete insulin when glucose is high: more glucose transporters move into cell membranes, uptake and respiration increase, and glycogenesis (glucose → glycogen) occurs in liver and muscle. Alpha cells secrete glucagon when glucose is low: glycogenolysis (glycogen → glucose) and gluconeogenesis (glucose from non-carbohydrate sources) in the liver. Adrenaline also raises glucose. Note the similar names carefully — glycogenesis stores, glycogenolysis releases.",
+    reforge:{stem:"Type 1 diabetes differs from type 2 in that in type 1 the:",options:{A:"Liver is unable to store any glycogen at all.",B:"Body produces excessive quantities of insulin.",C:"Beta cells are destroyed, so little insulin is made",D:"Cells become less responsive to normal insulin levels."},correct:"C"}
+  },
+  {
+    id:"BIO-N4-19",stem:"The loop of Henle enables the production of concentrated urine by:",
+    options:{A:"Filtering large plasma proteins out of the blood in the glomerulus.",B:"Actively reabsorbing all glucose from the filtrate.",C:"Creating a high solute concentration in the medulla",D:"Secreting additional water into the distal convoluted tubule."},
+    correct:"C",tag:"MC-GBIO-HOMEOSTASIS",
+    scaffold:"The countercurrent multiplier: the ascending limb actively pumps Na⁺ and Cl⁻ into the medullary tissue fluid and is impermeable to water; this lowers the water potential of the medulla, so water leaves the descending limb by osmosis, concentrating the filtrate. The gradient built up means that as filtrate passes down the collecting duct, water can leave by osmosis. A longer loop gives a steeper gradient — desert mammals have notably long loops.",
+    reforge:{stem:"ADH increases water reabsorption by making the collecting duct walls:",options:{A:"More permeable to water, by inserting aquaporins",B:"Impermeable to water, so filtrate stays dilute.",C:"Able to actively transport water against its gradient.",D:"Permeable to sodium ions but not to water."},correct:"A"}
+  },
+  {
+    id:"BIO-N4-20",stem:"Ultrafiltration at the glomerulus separates substances mainly according to:",
+    options:{A:"Their solubility in the lipid bilayer of the capillary wall.",B:"Molecular size, with proteins and blood cells retained",C:"Their electrical charge, with all negative ions retained.",D:"Whether they can be actively transported by carrier proteins."},
+    correct:"B",tag:"MC-GBIO-HOMEOSTASIS",
+    scaffold:"High hydrostatic pressure in the glomerulus (the efferent arteriole is narrower than the afferent) forces small molecules — water, glucose, urea, ions — through the capillary fenestrations, basement membrane and podocyte filtration slits. The basement membrane is the actual filter, retaining plasma proteins and blood cells. Glucose is then entirely reabsorbed at the proximal convoluted tubule by co-transport, which is why glucose in urine suggests diabetes.",
+    reforge:{stem:"Protein in the urine suggests damage to which structure?",options:{A:"The loop of Henle in the kidney medulla.",B:"The basement membrane of the glomerulus",C:"The collecting duct's response to ADH.",D:"The proximal convoluted tubule microvilli."},correct:"B"}
+  },
+  {
+    id:"BIO-N4-21",stem:"During strenuous exercise, core body temperature is prevented from rising excessively by:",
+    options:{A:"Vasodilation of skin arterioles and increased sweating",B:"Vasoconstriction of skin arterioles and shivering.",C:"Raising the metabolic rate of the liver further.",D:"Erection of body hairs to trap an insulating air layer."},
+    correct:"A",tag:"MC-GBIO-HOMEOSTASIS",
+    scaffold:"Cooling responses: vasodilation of skin arterioles brings more blood near the surface so more heat is radiated; sweating uses the high latent heat of vaporisation of water; hairs lie flat; metabolic rate falls. Warming responses: vasoconstriction, shivering (involuntary muscle contraction releasing heat), hairs erected to trap air, and increased metabolic rate. The hypothalamus coordinates both, using thermoreceptors in the skin and in the hypothalamus itself.",
+    reforge:{stem:"Sweating cools the body effectively because water:",options:{A:"Has a very low specific heat capacity.",B:"Requires much energy to evaporate",C:"Conducts heat away rapidly through the skin.",D:"Reduces the metabolic rate of the skin cells."},correct:"B"}
+  },
+  {
+    id:"BIO-N4-22",stem:"A resting neurone maintains its resting potential of about −70 mV mainly through the action of:",
+    options:{A:"Voltage-gated sodium channels opening along the axon.",B:"The myelin sheath insulating the axon membrane.",C:"The sodium-potassium pump, 3 Na⁺ out per 2 K⁺ in",D:"Diffusion of chloride ions into the axon cytoplasm."},
+    correct:"C",tag:"MC-GBIO-HOMEOSTASIS",
+    scaffold:"At rest, the sodium-potassium pump uses ATP to move 3 Na⁺ out for every 2 K⁺ in; the membrane is more permeable to K⁺, which leaks back out, leaving the inside negative relative to the outside. Depolarisation: a stimulus opens voltage-gated Na⁺ channels, Na⁺ floods in and the potential rises to about +40 mV. Repolarisation: Na⁺ channels close, K⁺ channels open and K⁺ leaves. Hyperpolarisation then follows before the resting potential is restored.",
+    reforge:{stem:"Saltatory conduction increases the speed of an impulse along a myelinated axon because depolarisation:",options:{A:"Occurs only at the nodes of Ranvier, so the impulse jumps",B:"Happens simultaneously along the entire length of the axon.",C:"Requires no movement of sodium ions at all.",D:"Is prevented by the refractory period at each node."},correct:"A"}
+  },
+  {
+    id:"BIO-N4-23",stem:"The refractory period following an action potential is important because it:",
+    options:{A:"Increases the amplitude of each successive action potential.",B:"Allows the impulse to travel in both directions equally.",C:"Ensures impulses travel one way and limits their frequency",D:"Prevents the sodium-potassium pump from using any ATP."},
+    correct:"C",tag:"MC-GBIO-HOMEOSTASIS",
+    scaffold:"During the refractory period the voltage-gated sodium channels are inactivated, so no new action potential can be generated in that region. Consequences: the impulse cannot travel backwards, so it is unidirectional; action potentials are discrete and separated; and there is an upper limit to firing frequency. Because action potentials are all-or-nothing and constant in size, a stronger stimulus is encoded as a higher frequency, not a larger amplitude.",
+    reforge:{stem:"Action potentials are described as all-or-nothing. A stronger stimulus is therefore represented by:",options:{A:"A larger amplitude for each individual action potential.",B:"A slower conduction speed along the axon.",C:"A higher frequency of action potentials",D:"A longer refractory period between impulses."},correct:"C"}
+  },
+  {
+    id:"BIO-N4-24",stem:"At a cholinergic synapse, the arrival of an action potential at the presynaptic membrane causes:",
+    options:{A:"Direct electrical flow of ions across the synaptic cleft.",B:"Acetylcholinesterase to be released into the cleft.",C:"Sodium channels on the presynaptic membrane to close.",D:"Calcium ions to enter, so vesicles fuse and release ACh"},
+    correct:"D",tag:"MC-GBIO-HOMEOSTASIS",
+    scaffold:"Sequence: action potential depolarises the presynaptic membrane → voltage-gated Ca²⁺ channels open → Ca²⁺ influx causes vesicles of acetylcholine to fuse with the membrane and release by exocytosis → ACh diffuses across the cleft and binds receptors on the postsynaptic membrane → Na⁺ channels open, and if threshold is reached an action potential is generated. Acetylcholinesterase then hydrolyses ACh, so the response stops and the products are recycled.",
+    reforge:{stem:"A drug that inhibits acetylcholinesterase would cause the postsynaptic neurone to:",options:{A:"Stop responding to any further stimulation.",B:"Continue to be stimulated, as ACh remains",C:"Release its own neurotransmitter into the cleft.",D:"Become permanently hyperpolarised and inactive."},correct:"B"}
+  },
+  {
+    id:"BIO-N4-25",stem:"Which structure in a muscle fibre contains the calcium ions released during contraction?",
+    options:{A:"The mitochondrion in the sarcoplasm.",B:"The Z line at the end of each sarcomere.",C:"The sarcoplasmic reticulum",D:"The myosin head within the thick filament."},
+    correct:"C",tag:"MC-GBIO-HOMEOSTASIS",
+    scaffold:"Sliding filament theory: an impulse travels down T-tubules → the sarcoplasmic reticulum releases Ca²⁺ → Ca²⁺ binds troponin, moving tropomyosin and exposing binding sites on actin → myosin heads attach forming cross-bridges → the power stroke pulls actin inward, using ADP release → ATP binds and detaches the head, and hydrolysis re-cocks it. The sarcomere shortens: the I band and H zone narrow while the A band stays the same length.",
+    reforge:{stem:"During contraction, the sarcomere shortens. Which observation is correct?",options:{A:"The A band stays the same while the H zone narrows",B:"The A band shortens while the I band lengthens.",C:"Both the actin and myosin filaments become shorter.",D:"The Z lines move further apart from each other."},correct:"A"}
+  },
+  {
+    id:"BIO-N4-26",stem:"ATP is described as the universal energy currency of cells because it:",
+    options:{A:"Stores far more energy per molecule than glucose does.",B:"Releases a usable amount of energy in one hydrolysis",C:"Can be stored in large quantities for long periods.",D:"Is produced only within the mitochondria of eukaryotic cells."},
+    correct:"B",tag:"MC-GBIO-RESPIRATION-PHOTOSYNTHESIS",
+    scaffold:"ATP = adenine + ribose + three phosphates. Hydrolysis of the terminal phosphate by ATP hydrolase releases about 30.6 kJ mol⁻¹ — a small, immediately usable packet, unlike glucose which releases far more in one go and needs many steps. ATP is not a long-term store: it is made and used continuously, resynthesised from ADP + Pi by ATP synthase. Its roles include active transport, muscle contraction, synthesis reactions and phosphorylating other molecules to make them more reactive.",
+    reforge:{stem:"ATP is a poor long-term energy store compared with glycogen or lipid because ATP is:",options:{A:"Unable to be hydrolysed once it has been synthesised.",B:"Produced only during anaerobic respiration in muscle.",C:"Unstable and continuously recycled, not stored",D:"Insoluble in the cytoplasm of most animal cells."},correct:"C"}
+  },
+  {
+    id:"BIO-N4-27",stem:"In a colorimeter experiment measuring enzyme activity, a calibration curve is produced in order to:",
+    options:{A:"Convert absorbance readings into a concentration value",B:"Ensure the colorimeter remains at a constant temperature.",C:"Remove any anomalous results from the data set.",D:"Increase the rate of the enzyme-catalysed reaction."},
+    correct:"A",tag:"MC-GBIO-INVESTIGATION",
+    scaffold:"A colorimeter measures how much light of a chosen wavelength a solution absorbs. Known standard concentrations are measured first and plotted as a calibration curve; unknown samples are then read off against it. Set the colorimeter to zero with a blank (distilled water or the reaction mixture without substrate), and choose the filter of the colour most strongly absorbed. This gives quantitative, continuous data rather than a subjective colour judgement.",
+    reforge:{stem:"Using a colorimeter rather than judging colour by eye improves an investigation mainly because the data are:",options:{A:"Collected more quickly from each sample tube.",B:"Objective and quantitative, reducing bias",C:"Guaranteed to be free from all experimental error.",D:"Unaffected by the concentration of the solution."},correct:"B"}
+  }
+]);
+bioExpansion("BIO-1", [
+  {
+    id:"BIO-N1-31",stem:"A student views a slide of onion epidermis and sees cells that have shrunk away from the cell wall. The cells have been placed in a solution that is:",
+    options:{A:"Isotonic, so there is no net movement of water either way.",B:"Hypotonic, causing the cells to take up water and swell.",C:"Pure water, giving the highest possible water potential.",D:"Hypertonic, so water has left the cells and they are plasmolysed"},
+    correct:"D",tag:"MC-GBIO-MEMBRANE-TRANSPORT",
+    scaffold:"Plasmolysis: in a solution of lower water potential than the cell, water leaves by osmosis, the protoplast shrinks and pulls away from the cell wall. Incipient plasmolysis is the point at which the membrane just begins to detach, and is used to estimate the cell's own water potential. In a hypotonic solution the reverse happens: water enters, the cell becomes turgid, and the wall prevents bursting — unlike an animal cell, which lyses.",
+    reforge:{stem:"Why does an animal cell burst in pure water while a plant cell does not?",options:{A:"The animal cell has a higher water potential than the plant cell.",B:"The plant cell wall resists expansion and prevents bursting",C:"The animal cell membrane is impermeable to water molecules.",D:"The plant cell actively pumps the excess water back out."},correct:"B"}
+  },
+  {
+    id:"BIO-N1-32",stem:"A gene mutation substitutes one base for another, but the resulting protein is unchanged. This is because the genetic code is:",
+    options:{A:"Degenerate, so more than one codon can specify the same amino acid",B:"Universal, so the same codons are used across all organisms.",C:"Non-overlapping, so each base is read only once.",D:"Read in triplets from a fixed starting point on the strand."},
+    correct:"A",tag:"MC-GBIO-DNA-PROTEIN",
+    scaffold:"Substitution mutations can be silent (a degenerate code means the new codon still specifies the same amino acid), missense (a different amino acid, which may alter the tertiary structure and function), or nonsense (a premature stop codon, truncating the protein). Insertions and deletions are usually more damaging because they cause a frameshift, changing every codon downstream. Which effect occurs depends on the position and the type of change.",
+    reforge:{stem:"Why is a single base deletion usually more damaging than a single base substitution?",options:{A:"Deletions always remove an entire gene from the chromosome.",B:"Substitutions cannot change the amino acid that is coded for.",C:"It causes a frameshift, altering every codon that follows",D:"Deletions prevent the DNA from being replicated at all."},correct:"C"}
+  }
+]);
+
 [
   "bus", "chem", "bio", "phys", "cs", "maths", "german", "rs", "hsc",
   "french", "media", "pe", "span", "englit", "engll", "mand",
@@ -33654,6 +34478,57 @@ const finalGCSEScienceCorruptionRepairs = {
 for (const [id, repairs] of Object.entries(finalGCSEScienceCorruptionRepairs)) {
   for (const bank of Object.values(BANKS)) {
     const question = (bank.questions || []).find(candidate => candidate.id === id);
+    if (!question) continue;
+    for (const [variant, options] of Object.entries(repairs)) {
+      const item = variant === "base" ? question : question.reforge;
+      if (item?.options) Object.assign(item.options, options);
+    }
+  }
+}
+
+// A-Level Biology: concise restatements of correct answers that were long
+// enough to be the uniquely-longest option, which lets a student score above
+// chance by picking the longest one. These legacy answers read as mini mark
+// schemes (up to 239 characters against distractors of ~70); each rewrite
+// below preserves the same fact in fewer words rather than padding the
+// distractors, which is what equaliseGeneratedOptions() would otherwise do.
+// Applied last so no earlier pass can reinstate the long form.
+const bioAnswerLengthRepairs = {
+  "BIO-02": { reforge: { D: "Human cells have 80S ribosomes, which streptomycin cannot bind" } },
+  "BIO-COV-002": { reforge: { D: "Human cells have 80S ribosomes, which streptomycin cannot bind" } },
+  "BIO-03": { reforge: { A: "Each new molecule keeps one parent strand and one new strand" } },
+  "BIO-04": { reforge: { B: "Glucose must move into epithelial cells against its gradient, needing ATP" } },
+  "BIO-06": { reforge: { D: "Stabilises membrane fluidity across a range of temperatures" } },
+  "BIO-08": { reforge: { B: "pH alters R-group ionisation, disrupting bonds that hold the active site" } },
+  "BIO-09": { reforge: { C: "Water enters by osmosis and the cell becomes turgid as the wall resists" } },
+  "BIO-10": { reforge: { D: "Sodium moving down its gradient drags glucose" } },
+  "BIO-11": { reforge: { A: "By lowering the activation energy required" } },
+  "BIO-12": { reforge: { B: "Its active site shape has changed, so substrate no longer fits" } },
+  "BIO-14": { reforge: { D: "A large surface area with a thin, short diffusion pathway" } },
+  "BIO-15": { reforge: { A: "It needs ATP and reduced NADP" } },
+  "GEN-01": {
+    base: { A: "Most DNA is non-coding: introns, regulatory and repetitive sequences" },
+    reforge: { C: "Non-coding promoters and enhancers regulate gene expression" }
+  },
+  "GEN-02": { reforge: { D: "Both matter: assortment gives 2²³ combinations, crossing over adds more" } },
+  "GEN-03": { reforge: { A: "Males have one X, so a single recessive allele is expressed" } },
+  "GEN-04": { reforge: { B: "Heterozygous carriers are unaffected, so the allele escapes selection" } },
+  "GEN-05": { reforge: { C: "No gene flow, so allele frequencies diverge" } },
+  "GEN-06": {
+    base: { B: "Discontinuous variation gives distinct categories; continuous gives a range forming a normal distribution" },
+    reforge: { D: "Many genes add small effects, and environment broadens the range" }
+  },
+  "GEN-08": {
+    base: { D: "Resistance alleles already existed; the antibiotic killed susceptible bacteria" },
+    reforge: { B: "The antibiotic selected pre-existing resistant variants rather than causing them" }
+  },
+  "BIO-ENZ-02": { base: { B: "Thermal energy breaks bonds holding the tertiary structure and active site" } },
+  "BIO-ENZ-03": { base: { C: "Activity falls as ionic and hydrogen bonds break, altering the active site" } },
+  "BIO-ENZ-06": { reforge: { D: "Vmax falls, Km unchanged: the inhibitor cannot be outcompeted" } }
+};
+for (const [id, repairs] of Object.entries(bioAnswerLengthRepairs)) {
+  for (const bankId of SUBJECTS.bio.banks) {
+    const question = (BANKS[bankId].questions || []).find(candidate => candidate.id === id);
     if (!question) continue;
     for (const [variant, options] of Object.entries(repairs)) {
       const item = variant === "base" ? question : question.reforge;
