@@ -5940,7 +5940,7 @@ SUBJECTS["mand"] = {
   label: "IB Mandarin",
   sub: "IB Language B SL Diploma — Text Handling & Written Production",
   color: "#b45309",
-  banks: ["MAND-1"]
+  banks: ["MAND-1","MAND-2"]
 };
 
 // ===== MEDIA STUDIES BANK 1 — Theoretical Framework =====
@@ -6728,6 +6728,455 @@ BANKS["MAND-1"] = {
       correct:"B",tag:"MC-MAND-08",
       scaffold:"IB Criterion C (Language) at higher levels requires: (1) varied and sophisticated vocabulary (批判性思维, 综合素质培养, 教学理念, 全面发展); (2) complex sentence structures — 虽然...但... concessive + 因此 causal connector; (3) formal register — 贵校 (your esteemed school), 强烈建议 (strongly recommend), 引进 (introduce/adopt); (4) precise and nuanced expression, not repetition. Option A is too simple and informal (我觉得, 好很多). Option C is simplistic and lacks argument. Option D is vague and colloquial (试试看). Option B: concessive structure, formal vocabulary, clear recommendation — this is what distinguishes a Band 5 from a Band 3 response. Letter conventions: 尊敬的校长 (Dear Principal), 此致，敬礼 (Yours sincerely).",
       reforge:{stem:"Which closing for the formal letter to the principal is correct?",options:{A:"好的，再见！",B:"谢谢你看我的信。",C:"此致\n敬礼\n[姓名]\n[日期]",D:"希望你认真考虑，拜拜！"},correct:"C"}
+    }
+  ]
+};
+
+// ===== MANDARIN BANK 2 — Identities (身份认同) =====
+// Authored to replace expandSubjectToMinimum() clone padding. Before this,
+// `mand` had 8 source questions cloned into 192 coverage variants, so a
+// student saw the same eight items cycled twenty-five times.
+//
+// Two constraints are load-bearing here, beyond the usual authoring standard:
+//   1. The correct answer is never the longest option. For Mandarin this is
+//      not merely a cue problem — equaliseGeneratedOptions() appends the
+//      English filler " in this case" / " for this decision" to a distractor
+//      whenever the key is longest, which would render as English garbage
+//      glued onto Chinese text.
+//   2. Base and Reforge keys each cycle A/B/C/D so both land at 25% per
+//      letter. The letters are assigned as each question is written, never
+//      permuted afterwards by script.
+
+BANKS["MAND-2"] = {
+  label: "Identities — 身份认同",
+  color: "#be123c",
+  questions: [
+    // ---- Passage A: bicultural identity (Q1-4) ----
+    {
+      id:"MAND-ID-01",
+      stem:"Read this personal account (Identities — 身份认同), then answer the question.\n\n【自述】两种文化之间\n\n我叫王小华，在英国出生，但是我的父母都来自中国广东。在家里我们说广东话和普通话，在学校我说英语。小时候我常常觉得自己「不够中国，也不够英国」，有点困惑。上了中学以后，我开始认真学中文，也参加了中文学校的活动。现在我觉得，拥有两种文化不是负担，而是一种财富。我既能理解中国人重视家庭的观念，也欣赏英国人独立思考的习惯。\n\nQ: 根据文章，王小华小时候有什么感受？",
+      options:{
+        A:"她觉得自己不完全属于任何一种文化，感到困惑。",
+        B:"她觉得学中文很容易，因为父母在家都说中文。",
+        C:"她认为英国文化比中国文化更适合自己的性格和生活方式。",
+        D:"她从小就为自己的双重文化背景感到骄傲。"
+      },
+      correct:"A",tag:"MC-GMAND-IDENTITY-CULTURE",
+      scaffold:"Locate the evidence before choosing. 小时候我常常觉得自己「不够中国，也不够英国」，有点困惑 — the two negations plus 困惑 (kùnhuò, confused) give option A directly. Option D reverses the timeline: pride comes 上了中学以后 (after starting secondary school), not 小时候. Option C is never stated — she values something from each culture, not one over the other. Exam habit: when a question fixes a time (小时候), check that your answer describes that time and not a later stage of the text. Vocabulary: 困惑 = confused; 负担 (fùdān) = burden; 财富 (cáifù) = wealth, asset.",
+      reforge:{stem:"根据同一篇自述，王小华现在怎么看待自己的双重文化背景？",options:{A:"她认为双重文化让她失去了自己的身份认同。",B:"她想放弃其中一种文化，只保留另外一种比较方便的文化。",C:"她把它看作一种财富，而不是负担。",D:"她觉得两种文化之间的矛盾一直没有解决。"},correct:"C"}
+    },
+    {
+      id:"MAND-ID-02",
+      stem:"Using the same 两种文化之间 text: 文中「不是负担，而是一种财富」这个结构表达了什么？",
+      options:{
+        A:"她认为双重文化确实是一种沉重的负担。",
+        B:"先否定一个说法，再提出真正的看法。",
+        C:"她觉得学两种语言要花很多钱，所以是负担。",
+        D:"她想在两种文化之间做出选择，只保留最有用的那一种。"
+      },
+      correct:"B",tag:"MC-GMAND-DISCOURSE-MEANING",
+      scaffold:"不是 A，而是 B (bùshì...ér shì) = 'not A, but rather B'. The first clause rejects a expected reading, the second supplies the writer's actual position — so the emphasis always falls on the SECOND half. Here: 负担 is rejected, 财富 is asserted. Students routinely mark the first clause as the writer's view; it is the one being denied. Compare the neighbouring pairs: 不但…而且 (not only…but also — both true, addition), 虽然…但是 (although…but — concession), 不是…而是 (correction). Only 不是…而是 denies the first element outright.",
+      reforge:{stem:"哪一句正确使用了「不是……而是……」？",options:{A:"他不是学生，而是也在这个学校工作。",B:"他不是因为累，而是因为忙，所以没来。",C:"他不是老师，而且是医生。",D:"他不是喜欢运动，而是不但喜欢音乐也喜欢画画。"},correct:"B"}
+    },
+    {
+      id:"MAND-ID-03",
+      stem:"Using the same 两种文化之间 text: 王小华欣赏英国文化的哪一点？",
+      options:{
+        A:"独立思考的习惯。",
+        B:"英国人特别重视家庭观念。",
+        C:"英国人的饮食习惯和生活节奏都比较健康。",
+        D:"英国人喜欢学习外语。"
+      },
+      correct:"A",tag:"MC-GMAND-IDENTITY-CULTURE",
+      scaffold:"The final sentence splits the two cultures deliberately: 既能理解中国人重视家庭的观念，也欣赏英国人独立思考的习惯. 重视家庭 is attributed to Chinese culture, 独立思考 to British — option B swaps them, which is the trap this question is built around. When a text pairs two cultures with two attributes, map each attribute to its culture before reading the options; the distractor you are most likely to fall for is the correct attribute assigned to the wrong side. Vocabulary: 欣赏 (xīnshǎng) = appreciate; 独立思考 (dúlì sīkǎo) = independent thinking.",
+      reforge:{stem:"根据同一篇自述，王小华认为中国文化的哪一个特点值得理解？",options:{A:"重视家庭的观念。",B:"鼓励年轻人独立思考的传统。",C:"注重个人隐私和个人空间的生活方式。",D:"喜欢用外语跟别人交流的习惯。"},correct:"A"}
+    },
+    {
+      id:"MAND-ID-04",
+      stem:"Using the same 两种文化之间 text: 「既能理解……也欣赏……」表示什么关系？",
+      options:{
+        A:"表示选择关系，两者之中只能选择其中一个。",
+        B:"并列关系——两方面同时具备。",
+        C:"表示因果关系，前面是原因，后面是结果。",
+        D:"表示转折关系，前后意思相反。"
+      },
+      correct:"B",tag:"MC-GMAND-DISCOURSE-MEANING",
+      scaffold:"既…也… (jì…yě…) is a paired coordinating connector: both things are true at once, with no contrast and no choice between them. It is the structural proof that Wang Xiaohua holds both cultures simultaneously — which is the whole argument of the passage, so the grammar and the meaning support each other. Contrast the paired connectors you need for IB Criterion C: 既…也… (both), 不但…而且… (not only…but also, escalating), 或者…或者… (either…or, choice), 虽然…但是… (although…but, concession), 因为…所以… (cause and effect).",
+      reforge:{stem:"「这家餐厅____干净，____便宜。」填入哪一组最合适？",options:{A:"因为……所以……",B:"虽然……但是……",C:"既……也……",D:"不是……而是……"},correct:"C"}
+    },
+
+    // ---- Passage B: young people's eating habits (Q5-8) ----
+    {
+      id:"MAND-ID-05",
+      stem:"Read this article extract (Identities — 健康与饮食), then answer the question.\n\n【文章】年轻人的饮食变化\n\n最近几年，中国年轻人的饮食习惯发生了明显的变化。外卖越来越方便，很多大学生一天三顿都点外卖。营养专家指出，外卖菜品往往油多、盐多，长期食用容易导致肥胖和其他健康问题。不过，也有一些年轻人开始关注健康饮食，他们选择自己做饭，多吃蔬菜水果，少吃油炸食品。有调查显示，愿意自己下厨的年轻人比五年前增加了两成。\n\nQ: 营养专家对外卖有什么看法？",
+      options:{
+        A:"外卖比自己做饭更有营养，适合学生天天食用。",
+        B:"外卖只适合老年人，年轻人不应该点。",
+        C:"外卖油和盐较多，长期吃可能引起健康问题。",
+        D:"外卖的价格太贵，大学生应该少点，这样才能节省每个月的生活费。"
+      },
+      correct:"C",tag:"MC-GMAND-HEALTH-WELLBEING",
+      scaffold:"营养专家指出，外卖菜品往往油多、盐多，长期食用容易导致肥胖和其他健康问题 — the expert's objection is nutritional, not financial. Option D introduces cost, which the text never raises about 外卖; inventing a plausible-but-absent reason is the commonest way to lose a comprehension mark. Note 往往 (wǎngwǎng, 'tend to, more often than not') — it hedges the claim, so an option saying 外卖一定不健康 would also overstate the text. Vocabulary: 营养 (yíngyǎng) = nutrition; 导致 (dǎozhì) = lead to, cause; 肥胖 (féipàng) = obesity.",
+      reforge:{stem:"根据同一篇文章，哪一个说法符合原文？",options:{A:"有些年轻人开始自己做饭，注意健康。",B:"所有年轻人都天天点外卖，没有例外。",C:"营养专家认为外卖是年轻人最好的选择，因为方便又便宜。",D:"没有任何年轻人关心健康饮食的问题。"},correct:"A"}
+    },
+    {
+      id:"MAND-ID-06",
+      stem:"Using the same 饮食变化 article: 文中「增加了两成」是什么意思？",
+      options:{
+        A:"增加了两倍。",
+        B:"增加了大约百分之二，这是一个非常小的变化。",
+        C:"增加了两个百分点。",
+        D:"增加了百分之二十。"
+      },
+      correct:"D",tag:"MC-GMAND-VOCAB-IN-CONTEXT",
+      scaffold:"成 (chéng) as a proportion word means one tenth. 两成 = 2/10 = 20%; 三成 = 30%; 九成 = 90%. Do not confuse it with 倍 (bèi, 'times/fold'): 增加了两倍 means increased by a factor of two, a completely different figure — that is option A's trap. Nor with 百分点 (percentage points). IB Paper 2 texts use 成 constantly in survey and statistics reporting, and a mis-glossed number turns a correct comprehension into a wrong answer. Related: 将近三成 = nearly 30%; 超过一半 = more than half.",
+      reforge:{stem:"「这家公司的利润下降了四成」是什么意思？",options:{A:"下降了四倍。",B:"下降了大约百分之四，变化很小。",C:"下降了四个百分点，比去年略低一些。",D:"下降了百分之四十。"},correct:"D"}
+    },
+    {
+      id:"MAND-ID-07",
+      stem:"Using the same 饮食变化 article: 「一天三顿都点外卖」中的「顿」是什么词类？",
+      options:{
+        A:"量词，用于计算吃饭的次数。",
+        B:"动词，表示吃饭这个动作。",
+        C:"连词，用来连接前后两个句子。",
+        D:"形容词，形容饭菜的分量很多。"
+      },
+      correct:"A",tag:"MC-GMAND-MEASURE-WORDS",
+      scaffold:"顿 (dùn) is a measure word (量词) used for meals and, separately, for scoldings or beatings: 三顿饭, 一顿批评. Chinese requires a measure word between a number and a noun, and the right one is fixed by the noun — 一顿饭 not 一个饭. Measure words worth knowing for Identities texts: 顿 (meals), 位 (people, polite), 口 (family members), 只 (animals), 件 (clothes, matters), 碗 (bowlfuls), 杯 (cupfuls), 次 (occurrences). Using 个 as a universal default is the single most recognisable marker of a weak IB script.",
+      reforge:{stem:"「我们家有五____人。」填入哪个量词最合适？",options:{A:"口",B:"只",C:"件",D:"位"},correct:"A"}
+    },
+    {
+      id:"MAND-ID-08",
+      stem:"Using the same 饮食变化 article: 作者用「不过」这个词，作用是什么？",
+      options:{
+        A:"总结前面所有的内容，从而得出最后的结论。",
+        B:"转折——引出与前面相反的另一面情况。",
+        C:"举例说明前面提到的观点。",
+        D:"说明前后两件事情之间的因果关系。"
+      },
+      correct:"B",tag:"MC-GMAND-DISCOURSE-MEANING",
+      scaffold:"不过 (bùguò) marks a turn: everything before it described the unhealthy trend (外卖, 油多盐多, 肥胖), everything after it describes the counter-trend (自己做饭, 多吃蔬菜水果). Spotting the pivot word tells you the text has two sides, which is exactly what a 'according to the text, which is true' question tests. 不过 is slightly softer and more conversational than 但是 or 然而, but functions identically. Other signals to watch for in Paper 2: 然而 (however), 相比之下 (by comparison), 另一方面 (on the other hand), 总之 (in short).",
+      reforge:{stem:"「这件衣服很漂亮，____有点贵。」填入哪个词最合适？",options:{A:"所以",B:"不过",C:"因为",D:"于是"},correct:"B"}
+    },
+
+    // ---- Passage C: hobbies and personality (Q9-12) ----
+    {
+      id:"MAND-ID-09",
+      stem:"Read this interview (Identities — 性格与爱好), then answer the question.\n\n【访谈】爱好与性格\n\n记者：你觉得爱好会影响一个人的性格吗？\n林老师：当然会。我教了二十年书，发现喜欢团队运动的学生一般比较外向，善于合作；而喜欢阅读、画画的学生往往更安静，观察力强。不过我要强调，这不是绝对的。性格是天生的，也是环境培养的，爱好只是其中一个因素。最重要的是让孩子找到真正喜欢的事情，而不是父母替他们决定。\n\nQ: 林老师认为爱好和性格是什么关系？",
+      options:{
+        A:"爱好完全决定一个人的性格。",
+        B:"爱好和性格之间没有任何关系。",
+        C:"爱好会影响性格，但只是其中一个因素。",
+        D:"性格完全由父母决定，孩子的爱好一点影响也没有，这一点毫无疑问。"
+      },
+      correct:"C",tag:"MC-GMAND-IDENTITY-CULTURE",
+      scaffold:"Lin's answer has two halves and you need both: 当然会 (yes, hobbies do affect personality) AND 这不是绝对的…爱好只是其中一个因素 (but it is not absolute — only one factor). Option A takes only the first half, option B only the second. IB comprehension rewards the qualified reading; when a speaker says 不过我要强调 (but I want to stress), the qualification that follows is the part the question is usually testing. Vocabulary: 绝对 (juéduì) = absolute; 天生 (tiānshēng) = innate, inborn; 培养 (péiyǎng) = cultivate, nurture; 因素 (yīnsù) = factor.",
+      reforge:{stem:"文中「性格是天生的，也是环境培养的」说明林老师的看法是：",options:{A:"性格完全由遗传决定。",B:"性格完全由后天的环境决定。",C:"性格由先天和后天两方面共同形成。",D:"性格在人出生以后就不会再有任何改变了。"},correct:"C"}
+    },
+    {
+      id:"MAND-ID-10",
+      stem:"Using the same 爱好与性格 interview: 林老师对父母的建议是什么？",
+      options:{
+        A:"父母应该替孩子选择最有用的爱好。",
+        B:"父母应该禁止孩子参加团队运动。",
+        C:"父母应该要求孩子既学阅读又学画画，这样性格才会全面发展。",
+        D:"让孩子自己找到真正喜欢的事情。"
+      },
+      correct:"D",tag:"MC-GMAND-IDENTITY-CULTURE",
+      scaffold:"最重要的是让孩子找到真正喜欢的事情，而不是父母替他们决定 — again the 不是…而是 shape (here as 而不是), and again the emphasis sits on the asserted half, not the denied one. Option A is precisely what the sentence rejects. Watch 最重要的是 (most importantly): in an interview text it flags the speaker's headline recommendation, which is what a 'what does X advise' question is looking for. Vocabulary: 替 (tì) = on behalf of, in place of; 禁止 (jìnzhǐ) = forbid.",
+      reforge:{stem:"根据同一篇访谈，下面哪一个做法最符合林老师的建议？",options:{A:"父母根据孩子的成绩决定他学什么。",B:"父母带孩子尝试不同活动，再让他自己选择。",C:"父母要求所有孩子都参加团队运动来改变性格。",D:"父母替孩子报名参加最热门、将来最有用的那个课外班。"},correct:"B"}
+    },
+    {
+      id:"MAND-ID-11",
+      stem:"Using the same 爱好与性格 interview: 「而不是父母替他们决定」中的「替」是什么意思？",
+      options:{
+        A:"表示「虽然」，用来连接两个意思相反的句子。",
+        B:"表示「和」，连接并列的两个人。",
+        C:"表示「代替、为」某人做某事。",
+        D:"表示「因为」，说明前面的原因。"
+      },
+      correct:"C",tag:"MC-GMAND-VOCAB-IN-CONTEXT",
+      scaffold:"替 (tì) is a preposition meaning 'in place of / on behalf of': 我替你去 = I'll go instead of you; 父母替孩子决定 = parents decide on the child's behalf. It overlaps with 为 (wèi) but carries a stronger sense of substitution — doing the thing someone else should be doing themselves, which is exactly the criticism Lin is making. Note 替 is also a verb meaning 'replace' (替换). IB vocabulary-in-context questions want the meaning as used HERE, so anchor the gloss to the surrounding sentence rather than reciting a dictionary entry.",
+      reforge:{stem:"「我今天生病了，请你____我上课。」填入哪个词最合适？",options:{A:"跟",B:"比",C:"替",D:"从"},correct:"C"}
+    },
+    {
+      id:"MAND-ID-12",
+      stem:"Using the same 爱好与性格 interview: 根据林老师的观察，喜欢阅读和画画的学生有什么特点？",
+      options:{
+        A:"特别外向，善于跟别人合作。",
+        B:"学习成绩一定比其他同学更好。",
+        C:"完全不喜欢任何形式的体育运动。",
+        D:"比较安静，观察力强。"
+      },
+      correct:"D",tag:"MC-GMAND-READING-COMPREHENSION",
+      scaffold:"The interview pairs each hobby type with its traits: 团队运动 → 外向、善于合作; 阅读、画画 → 安静、观察力强. Option A gives the traits of the other group — the same swap trap as MAND-ID-03. Options B and C add claims the text never makes (成绩, 不喜欢运动); note especially that 'quiet' does not imply 'dislikes sport', an inference students supply themselves. Vocabulary: 外向 (wàixiàng) = extroverted; 内向 (nèixiàng) = introverted; 观察力 (guānchálì) = powers of observation; 善于 (shànyú) = be good at.",
+      reforge:{stem:"根据同一篇访谈，喜欢团队运动的学生一般有什么特点？",options:{A:"观察力特别强，喜欢一个人安静地思考问题。",B:"性格比较内向，不太愿意跟别人说话。",C:"对艺术和文学作品有非常浓厚的兴趣。",D:"比较外向，善于合作。"},correct:"D"}
+    },
+
+    // ---- Passage D: adolescent mental health (Q13-16) ----
+    {
+      id:"MAND-ID-13",
+      stem:"Read these lecture notes (Identities — 心理健康), then answer the question.\n\n【讲座笔记】青少年的心理健康\n\n讲座提到，很多青少年不愿意谈论自己的心理问题，因为担心别人觉得自己「软弱」。其实，心理健康和身体健康一样重要。感冒了会去看医生，心情长期低落也应该寻求帮助。学校的辅导老师、信任的朋友和家人都可以是倾诉的对象。讲座最后提醒我们：求助不是软弱的表现，而是勇敢和成熟的表现。\n\nQ: 为什么很多青少年不愿意谈论自己的心理问题？",
+      options:{
+        A:"他们担心别人认为自己软弱。",
+        B:"他们觉得心理问题根本不存在。",
+        C:"学校里没有辅导老师可以帮助他们。",
+        D:"他们认为身体健康比心理健康重要得多，所以没有必要讨论心理问题。"
+      },
+      correct:"A",tag:"MC-GMAND-HEALTH-WELLBEING",
+      scaffold:"因为担心别人觉得自己「软弱」 answers the 为什么 directly — the barrier is fear of others' judgement, i.e. stigma. Option D inverts the lecture's central claim (心理健康和身体健康一样重要), and option C contradicts 学校的辅导老师…可以是倾诉的对象. When a text puts a word in 「」quotation marks, as with 软弱 here, it usually signals a label the speaker considers mistaken — useful for predicting the conclusion. Vocabulary: 软弱 (ruǎnruò) = weak; 低落 (dīluò) = low (of mood); 寻求帮助 (xúnqiú bāngzhù) = seek help; 倾诉 (qīngsù) = confide in.",
+      reforge:{stem:"根据讲座笔记，下面哪一个说法最符合讲座的观点？",options:{A:"心理健康和身体健康同样重要。",B:"只有身体生病了才需要看医生和寻求帮助。",C:"青少年应该自己解决心理问题，不要麻烦别人。",D:"心情长期低落是每个青少年都会经历的正常现象，完全不需要重视。"},correct:"A"}
+    },
+    {
+      id:"MAND-ID-14",
+      stem:"Using the same 心理健康 notes: 讲座用「感冒了会去看医生」做比喻，目的是什么？",
+      options:{
+        A:"说明感冒是青少年最常见的一种疾病。",
+        B:"说明心情低落时也应该寻求帮助。",
+        C:"说明医生能够治疗所有的心理问题。",
+        D:"说明青少年应该更加注意预防感冒，以免影响学习和考试时的正常发挥。"
+      },
+      correct:"B",tag:"MC-GMAND-DISCOURSE-MEANING",
+      scaffold:"This is an analogy question, not a comprehension question about colds. The comparison runs: physical illness → see a doctor, therefore mental difficulty → seek help. The point of the analogy is the second half. Option A treats the vehicle of the comparison as the topic, which is the standard error; option C over-extends it (the lecture never claims doctors cure everything, and it lists 辅导老师、朋友、家人 as well). Exam habit: when a text offers an everyday example, ask what it is an example OF — the answer is almost always the abstract claim in the neighbouring sentence.",
+      reforge:{stem:"讲座提到「学校的辅导老师、信任的朋友和家人」，这是为了说明什么？",options:{A:"青少年只应该向专业的心理医生求助。",B:"可以倾诉的对象不止一个。",C:"家人比朋友更适合作为倾诉的对象。",D:"学校应该聘请更多的辅导老师来帮助有心理困扰的学生。"},correct:"B"}
+    },
+    {
+      id:"MAND-ID-15",
+      stem:"Using the same 心理健康 notes: 「求助不是软弱的表现，而是勇敢和成熟的表现」用了什么结构？",
+      options:{
+        A:"「因为……所以……」的因果结构。",
+        B:"「只有……才……」的必要条件结构，强调唯一的途径。",
+        C:"「不是……而是……」的否定加肯定结构。",
+        D:"「如果……就……」的假设条件结构。"
+      },
+      correct:"C",tag:"MC-GMAND-DISCOURSE-MEANING",
+      scaffold:"Recognising the pattern tells you where the lecture's conclusion sits: 不是…而是… denies 软弱 and asserts 勇敢和成熟. Placing this at the very end is deliberate — it reframes the stigma named in the opening sentence, so the notes close by answering the problem they opened with. Being able to name the structure AND say what it does for the argument is what separates a Criterion-level comment from a label. The four patterns in the options are the high-frequency IB set; make sure you can both recognise and produce each.",
+      reforge:{stem:"「他____努力，____能成功。」填入哪一组最合适？",options:{A:"不是……而是……",B:"虽然……但是……",C:"只有……才……",D:"不但……而且……"},correct:"C"}
+    },
+    {
+      id:"MAND-ID-16",
+      stem:"Using the same 心理健康 notes: 「心情长期低落」中的「长期」说明了什么？",
+      options:{
+        A:"心情低落的程度非常严重。",
+        B:"这种情况只出现过一两次而已。",
+        C:"任何时候心情不好都必须马上去看医生，一次也不能忽略。",
+        D:"这种状态持续了很长的时间。"
+      },
+      correct:"D",tag:"MC-GMAND-VOCAB-IN-CONTEXT",
+      scaffold:"长期 (chángqī) describes duration, not intensity — 'over a long period', contrasted with 短期 (short-term). The lecture uses it to draw a line: ordinary passing low mood is not the concern; a state that persists is. Option A confuses duration with severity (that would be 严重 or 强烈), which is the distinction being tested. This precision matters for writing too — IB examiners reward 长期以来 (for a long time now), 短期内 (in the short term), 目前 (at present) used accurately in argument. Vocabulary: 持续 (chíxù) = continue, persist.",
+      reforge:{stem:"「短期内」这个词的意思是：",options:{A:"在很短的时间之内。",B:"在非常长的一段时间之内。",C:"在过去的某一个时间点上。",D:"在将来某一个还没有确定下来的时间。"},correct:"A"}
+    },
+
+    // ---- Q17-24: vocabulary and grammar on the Identities theme ----
+    {
+      id:"MAND-ID-17",
+      stem:"要表达「我对中国文化很感兴趣」，哪个句子的结构正确？",
+      options:{
+        A:"我对中国文化很感兴趣。",
+        B:"我很感兴趣中国文化。",
+        C:"我中国文化很感兴趣对。",
+        D:"我感兴趣对于中国文化非常地深刻而且全面。"
+      },
+      correct:"A",tag:"MC-GMAND-GRAMMAR-PATTERNS",
+      scaffold:"感兴趣 takes the fixed frame 对 + [object] + 感兴趣 — the object goes BEFORE the verb phrase, introduced by 对 (duì). 感兴趣 cannot take a direct object after it, which rules out option B, the mistake English speakers make most often because English puts the object last ('interested IN Chinese culture'). Related patterns with the same shape: 对……有帮助 (helpful for), 对……有影响 (has an influence on), 对……负责 (responsible for), 对……过敏 (allergic to). Learn the frame, not the individual sentence.",
+      reforge:{stem:"「运动____身体健康很有帮助。」填入哪个词最合适？",options:{A:"对",B:"把",C:"被",D:"跟"},correct:"A"}
+    },
+    {
+      id:"MAND-ID-18",
+      stem:"「他长得很像他爸爸」中的「像」是什么意思？",
+      options:{
+        A:"想念、思念某个人。",
+        B:"相似、看起来差不多。",
+        C:"图像或者照片。",
+        D:"好像将要发生某一件事情的样子。"
+      },
+      correct:"B",tag:"MC-GMAND-VOCAB-IN-CONTEXT",
+      scaffold:"像 (xiàng) = resemble, be similar to. Distinguish the near-homophones that trip students in listening as well as reading: 像 (resemble), 想 (think, miss, want), 象 (elephant; also in 现象 phenomenon), 相 (mutual, as in 相同). Option A is 想, option C is 图像/相片. Also note the second use of 像: 好像 (hǎoxiàng) = 'it seems', which is option D's distractor — a genuinely different function, so context decides. 长得像 is the standard way to say someone takes after a relative in appearance.",
+      reforge:{stem:"「我很____我的家乡和以前的朋友。」填入哪个词最合适？",options:{A:"象",B:"想",C:"像",D:"相"},correct:"B"}
+    },
+    {
+      id:"MAND-ID-19",
+      stem:"「她性格很____，见到陌生人也一点都不害羞。」填入哪个词最合适？",
+      options:{
+        A:"内向",
+        B:"认真负责而且做事非常仔细",
+        C:"外向",
+        D:"安静"
+      },
+      correct:"C",tag:"MC-GMAND-VOCAB-IN-CONTEXT",
+      scaffold:"The second clause is the evidence: 见到陌生人也不害羞 (not shy even meeting strangers) points to 外向 (wàixiàng, extroverted). 内向 is its antonym and options B and D describe unrelated traits — conscientiousness and quietness are not the opposite of shyness. Technique for gap-fill: read past the gap first. The clause AFTER a blank is usually the disambiguator, and students who choose from the options alone pick whichever word they recognise. Personality vocabulary for Identities: 外向/内向, 开朗 (cheerful), 害羞 (shy), 幽默 (humorous), 耐心 (patient), 认真 (conscientious), 固执 (stubborn).",
+      reforge:{stem:"「他很____，从来不主动跟别人说话。」填入哪个词最合适？",options:{A:"开朗活泼而且非常喜欢交朋友",B:"幽默",C:"内向",D:"外向"},correct:"C"}
+    },
+    {
+      id:"MAND-ID-20",
+      stem:"下面哪一句正确使用了「越来越」？",
+      options:{
+        A:"他越来越很高了，比去年高了很多。",
+        B:"他越高越来了。",
+        C:"他很越来越高。",
+        D:"他长得越来越高了。"
+      },
+      correct:"D",tag:"MC-GMAND-GRAMMAR-PATTERNS",
+      scaffold:"越来越 + adjective = 'more and more…'. The construction already carries the degree, so it cannot combine with another degree adverb such as 很 or 非常 — that is why options A and C are wrong, and it is the single commonest error with this pattern. Do not confuse it with the different structure 越……越…… (the more X, the more Y): 越忙越开心 = the busier, the happier. Both are examinable; 越来越 describes change over time, 越…越… describes a correlation between two things.",
+      reforge:{stem:"「天气____冷了，你要多穿一点衣服。」填入哪个词最合适？",options:{A:"越冷越",B:"很越来越",C:"非常越来越",D:"越来越"},correct:"D"}
+    },
+    {
+      id:"MAND-ID-21",
+      stem:"「我是独生子女」这句话的意思是什么？",
+      options:{
+        A:"家里只有我一个孩子。",
+        B:"我在家里排行最小。",
+        C:"我有一个哥哥和一个姐姐。",
+        D:"我有很多兄弟姐妹，家里总是非常热闹。"
+      },
+      correct:"A",tag:"MC-GMAND-IDENTITY-CULTURE",
+      scaffold:"独生子女 (dúshēng zǐnǚ) = only child — 独生 'sole-born' plus 子女 'sons and daughters'. The term carries social weight in Chinese texts because of the one-child policy (独生子女政策, in force 1979–2015), so Identities and Social Organisation passages use it when discussing family structure, ageing populations and pressure on the young. Related family vocabulary: 兄弟姐妹 (siblings), 长辈 (elders), 晚辈 (juniors), 表哥/堂弟 (cousins on the mother's / father's side — Chinese distinguishes them, English does not).",
+      reforge:{stem:"「独生子女政策」在中国实行的主要目的是什么？",options:{A:"控制人口的快速增长。",B:"鼓励每个家庭生更多的孩子。",C:"提高国民的整体教育水平。",D:"让年轻人可以更早地离开家乡到城市里去工作和生活。"},correct:"A"}
+    },
+    {
+      id:"MAND-ID-22",
+      stem:"「我从小就住在这里」中的「从小」是什么意思？",
+      options:{
+        A:"从比较小的那个地方开始。",
+        B:"从很小的时候开始。",
+        C:"从上小学的时候开始。",
+        D:"从最近这几年才开始，时间其实并不算长。"
+      },
+      correct:"B",tag:"MC-GMAND-VOCAB-IN-CONTEXT",
+      scaffold:"从小 (cóngxiǎo) = 'since childhood' — 小 here means young in age, not small in size. It belongs to a family of fixed 从- time expressions worth memorising as units: 从小 (since childhood), 从此 (from then on), 从来 (ever, always — usually with 不/没), 从前 (formerly, once upon a time). Option C is 从小学开始, a different and more specific claim. Note also that 从小 usually attaches to a habit or trait that has persisted, which is why it appears so often in self-introduction and identity writing.",
+      reforge:{stem:"「他____没去过中国。」填入哪个词最合适？",options:{A:"从小",B:"从前",C:"从来",D:"从此"},correct:"C"}
+    },
+    {
+      id:"MAND-ID-23",
+      stem:"「他不但会说中文，____会说日文。」填入哪个词最合适？",
+      options:{
+        A:"可是",
+        B:"而且",
+        C:"因为",
+        D:"虽然但是同时也"
+      },
+      correct:"B",tag:"MC-GMAND-DISCOURSE-MEANING",
+      scaffold:"不但…而且… (bùdàn…érqiě…) = 'not only…but also', an escalating pair: the second item adds to and outdoes the first. Because 不但 appears in the first clause, the second clause is grammatically committed to 而且 (or 还/也) — connectors in Chinese come in fixed pairs and mixing halves from different pairs is a Criterion C error. Contrast the pairs directly: 不但…而且 (addition), 虽然…但是 (concession), 因为…所以 (cause), 不是…而是 (correction), 既…也 (both).",
+      reforge:{stem:"「这家餐厅不但菜好吃，____服务也很好。」填入哪个词最合适？",options:{A:"但是",B:"所以",C:"还",D:"如果"},correct:"C"}
+    },
+    {
+      id:"MAND-ID-24",
+      stem:"「自豪」这个词最接近下面哪个意思？",
+      options:{
+        A:"感到害羞，不好意思",
+        B:"感到担心而且没有信心",
+        C:"感到生气",
+        D:"感到骄傲"
+      },
+      correct:"D",tag:"MC-GMAND-VOCAB-IN-CONTEXT",
+      scaffold:"自豪 (zìháo) = proud, in the positive sense of taking pride in something worthwhile — 我为我的家乡感到自豪. Its near-synonym 骄傲 (jiāo'ào) carries both meanings: 'proud' positively, but also 'arrogant' negatively (他很骄傲 usually criticises someone). 自豪 has no negative reading, so it is the safer choice in IB writing when you mean legitimate pride. Common frame: 为……感到自豪 = to feel proud of. Antonyms: 惭愧 (ashamed), 害羞 (shy — a different concept, embarrassment rather than shame).",
+      reforge:{stem:"下面哪一句最合适地使用了「自豪」？",options:{A:"他考试没考好，觉得很自豪。",B:"他太自豪了，从来不听别人的意见和建议。",C:"这次考试很难，我有点自豪。",D:"我为自己的国家感到自豪。"},correct:"D"}
+    },
+
+    // ---- Q25-32: register, text-type conventions and cultural knowledge ----
+    {
+      id:"MAND-ID-25",
+      stem:"给中文老师写一封正式的电子邮件，哪个称呼最合适？",
+      options:{
+        A:"尊敬的李老师：",
+        B:"嗨，李老师！",
+        C:"亲爱的日记：",
+        D:"各位同学们大家好，今天我想跟大家说一件事情"
+      },
+      correct:"A",tag:"MC-GMAND-REGISTER-FORMAT",
+      scaffold:"IB Criterion B awards marks for text-type conventions independently of language quality, so the wrong opening loses marks even in an otherwise strong script. Formal letter or email to a teacher: 尊敬的 X 老师： on its own line, colon not comma. Option B is informal (fine to a friend, not to a teacher); option C is a diary opening; option D is a speech opening addressed to an audience. Match the salutation to the text type: letter/email 尊敬的…；diary 日期 + 星期；speech 尊敬的老师们，亲爱的同学们；blog 各位网友.",
+      reforge:{stem:"这封正式邮件的结尾，哪一个最合适？",options:{A:"好的，就这样，拜拜！",B:"此致\n敬礼",C:"谢谢你看完我写的这封邮件，希望你能早点回复我。",D:"我写完了，再见。"},correct:"B"}
+    },
+    {
+      id:"MAND-ID-26",
+      stem:"中国人过春节的时候，最常说的祝福语是哪一个？",
+      options:{
+        A:"一路平安",
+        B:"恭喜发财",
+        C:"生日快乐",
+        D:"祝你身体健康、工作顺利、万事如意"
+      },
+      correct:"B",tag:"MC-GMAND-FESTIVALS-CUSTOMS",
+      scaffold:"恭喜发财 (gōngxǐ fācái, 'wishing you prosperity') is the characteristic Spring Festival greeting, alongside 新年快乐 and 万事如意. Match greetings to occasions: 一路平安 / 一路顺风 for someone travelling; 生日快乐 for a birthday; 恭喜发财 and 新年快乐 for 春节; 中秋节快乐 for Mid-Autumn. Option D is a generic all-purpose set of good wishes — usable at New Year but not distinctive to it, and the question asks for the characteristic one. Cultural knowledge of this kind is assessed in the IB oral as well as in Paper 2 texts.",
+      reforge:{stem:"朋友明天要坐飞机去中国，你应该对他说什么？",options:{A:"恭喜发财",B:"祝你考试顺利，取得非常好的成绩",C:"新年快乐",D:"一路平安"},correct:"D"}
+    },
+    {
+      id:"MAND-ID-27",
+      stem:"「您」和「你」的区别是什么？",
+      options:{
+        A:"两个词完全一样，可以随便使用。",
+        B:"「您」一般只用在关系很好的朋友之间。",
+        C:"「您」更礼貌，用于长辈或不熟悉的人。",
+        D:"「你」比「您」更礼貌，应该用于老师、长辈等需要表示尊敬的对象。"
+      },
+      correct:"C",tag:"MC-GMAND-REGISTER-FORMAT",
+      scaffold:"您 (nín) is the polite second-person pronoun: use it for teachers, elders, customers, officials and strangers, especially in written correspondence. 你 is neutral-to-familiar. Option D inverts the pair, which is the error being tested. Two practical notes: 您 has no standard plural 您们 — use 各位 or 大家 for a polite plural; and register must be consistent, so a letter that opens 尊敬的老师 and then uses 你 throughout undercuts its own formality. Related polite forms: 贵校 (your school), 请问 (may I ask), 麻烦您 (may I trouble you).",
+      reforge:{stem:"给校长写正式信件时，称呼对方应该用哪个词？",options:{A:"你",B:"你们大家",C:"他",D:"您"},correct:"D"}
+    },
+    {
+      id:"MAND-ID-28",
+      stem:"写演讲稿（演讲）的时候，下面哪一个结尾最合适？",
+      options:{
+        A:"就这样吧，我说完了，拜拜。",
+        B:"此致敬礼，希望您能够认真考虑我提出的这些建议。",
+        C:"我写完了。",
+        D:"谢谢大家！"
+      },
+      correct:"D",tag:"MC-GMAND-REGISTER-FORMAT",
+      scaffold:"A speech closes by addressing the audience: 谢谢大家！, often preceded by a call to action (让我们一起…) or a summary (总之…). Option B is the closing of a formal LETTER — 此致敬礼 is written correspondence only and appears every year in scripts where students have mixed up the two text types. Options A and C are too casual and break the public-speaking register. Speech conventions to reproduce: open 尊敬的老师们，亲爱的同学们：大家好！, signpost with 首先/其次/最后, close 谢谢大家.",
+      reforge:{stem:"演讲稿的开头，哪一个最合适？",options:{A:"亲爱的日记：今天我想谈谈环保的问题。",B:"尊敬的老师们，亲爱的同学们：大家好！",C:"2024年11月1日 星期五",D:"根据最新的统计数据显示，我们学校的垃圾回收率并不算高。"},correct:"B"}
+    },
+    {
+      id:"MAND-ID-29",
+      stem:"中秋节最主要的习俗是什么？",
+      options:{
+        A:"赏月、吃月饼。",
+        B:"吃粽子、赛龙舟。",
+        C:"放鞭炮、贴春联。",
+        D:"登高、插茱萸，同时还要一起喝菊花酒来庆祝这个节日。"
+      },
+      correct:"A",tag:"MC-GMAND-FESTIVALS-CUSTOMS",
+      scaffold:"Match each festival to its customs — this is standard IB cultural content and the distractors here are all real customs of OTHER festivals. 中秋节 (Mid-Autumn, 8th lunar month, 15th day): 赏月 moon-gazing, 吃月饼 mooncakes, family reunion (团圆). 端午节 (Dragon Boat): 粽子, 赛龙舟, commemorating 屈原. 春节 (Spring Festival): 放鞭炮, 贴春联, 红包, 年夜饭. 重阳节 (Double Ninth): 登高, 插茱萸, 菊花酒. The theme of 中秋 is reunion, which is why it appears in Identities and Experiences texts about family and homesickness.",
+      reforge:{stem:"端午节的时候，人们通常吃什么？",options:{A:"月饼",B:"汤圆、元宵等各种各样的甜食",C:"饺子",D:"粽子"},correct:"D"}
+    },
+    {
+      id:"MAND-ID-30",
+      stem:"在IB中文的个人口头评估（口语考试）中，学生应该怎么做？",
+      options:{
+        A:"只背诵事先准备好的稿子，完全不看图片。",
+        B:"遇到不会说的词就直接用英文代替。",
+        C:"根据图片描述，并联系相关主题展开讨论。",
+        D:"尽量说得越快越好，这样可以在有限的时间里表达更多的内容。"
+      },
+      correct:"C",tag:"MC-GMAND-REGISTER-FORMAT",
+      scaffold:"The individual oral is built on a stimulus image: describe what you see (描述), then connect it to one of the five themes and develop an opinion (联系主题、表达看法). Marks come from that development, not from coverage. Option A fails because a memorised speech ignores the image and collapses in the follow-up discussion; option B costs marks directly, since English words are not credited; option D sacrifices accuracy and clarity for volume. Practical technique: if a word escapes you, paraphrase in Chinese (那种用来……的东西) rather than switching language — examiners credit the circumlocution.",
+      reforge:{stem:"口语考试时，如果有一个词你不会说，最好的做法是什么？",options:{A:"用中文换一种说法来解释这个意思。",B:"停下来不说话，等考官提示你。",C:"直接说英文，然后继续说下去。",D:"重复前面已经说过的句子，一直到想起那个词为止。"},correct:"A"}
+    },
+    {
+      id:"MAND-ID-31",
+      stem:"写「我的家乡」这一类的文章，下面哪个开头最好？",
+      options:{
+        A:"我的家乡就是我出生的那个地方，其实也没有什么特别的。",
+        B:"家乡的意思就是一个人出生的地方。",
+        C:"根据统计，中国有很多城市和乡村，人口分布并不平均。",
+        D:"每当我想起家乡，脑海里就浮现出那条小河。"
+      },
+      correct:"D",tag:"MC-GMAND-REGISTER-FORMAT",
+      scaffold:"A personal descriptive piece should open with a concrete image or a specific memory, which immediately creates voice and gives the rest of the writing something to develop. Option D does that with 每当……就…… ('whenever…, then…') plus a single sharp detail (那条小河). Option B opens by defining the title — a dictionary opening that wastes the first sentence; option C adopts a statistical register belonging to a report, not a personal text; option A is dismissive and gives the writer nothing to build on. IB Criterion B rewards openings that establish purpose and register in the first line.",
+      reforge:{stem:"「每当我想起家乡，____浮现出那条小河。」填入哪个词最合适？",options:{A:"虽然",B:"因为",C:"如果",D:"就"},correct:"D"}
+    },
+    {
+      id:"MAND-ID-32",
+      stem:"一位学生写道：「我认为学习母语以外的语言对身份认同有帮助。」哪一句最能有力地支持这个观点？",
+      options:{
+        A:"因为学外语很有意思，而且现在很多学校都开设了外语课程。",
+        B:"因为会说两种语言的人在找工作的时候机会更多，收入水平通常也会更高一些。",
+        C:"因为学一门语言就是学一种看世界的方式，能让人重新理解自己的文化。",
+        D:"因为考试的时候多一门语言可以多拿一些分数。"
+      },
+      correct:"C",tag:"MC-GMAND-IDENTITY-CULTURE",
+      scaffold:"The claim is about 身份认同 (identity), so the supporting reason must connect language to identity — option C does, via perspective and re-understanding one's own culture. Options B and D are real arguments for language learning but support a DIFFERENT claim (economic and academic benefit); option A is too weak to support anything. This is the evaluation skill IB Paper 1 and the written assignment both reward: a reason is only strong if it supports the specific proposition made, not the general topic. When planning an argument, write the claim first, then test each reason against it.",
+      reforge:{stem:"一位学生认为「青少年应该少用社交媒体」。下面哪一个理由最能支持这个观点？",options:{A:"因为社交媒体上的广告实在太多了。",B:"因为长时间使用会挤占睡眠和面对面交流的时间。",C:"因为有些社交媒体软件需要付费才能使用全部的功能。",D:"因为父母那一代人年轻的时候并没有社交媒体，生活也过得很好。"},correct:"B"}
     }
   ]
 };
