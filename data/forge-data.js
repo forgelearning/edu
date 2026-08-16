@@ -15183,6 +15183,18 @@ const addAlevelHistoryBank = (bankId, label, spec, rawRows) => {
     questions: rows.map((row, index) => {
       const next = rows[(index + 1) % rows.length];
       const previous = rows[(index + rows.length - 1) % rows.length];
+      const others = [];
+      for (let step = 2; step < rows.length; step++) others.push(rows[(index + step) % rows.length]);
+      // Was a fixed throwaway in both slots ("It had no meaningful effect on
+      // britain 1918-1957", "It cannot be tested using historical evidence") —
+      // see pickFourthOption above the sociology bank builder. The Reforge slot
+      // used to be patched later by a pass that borrowed a distractor from the
+      // question's own base options; that reused one definition across 43
+      // twins, so borrowing a real application here replaces both problems.
+      const fourth = pickFourthOption(others.map(other => other.definition),
+        new Set([row.definition, next.definition, previous.definition]), String(row.definition).length);
+      const fourthApplication = pickFourthOption(others.map(other => other.application),
+        new Set([row.application, next.application, previous.application]), String(row.application).length);
       return {
         id:`${bankId}-${String(index + 1).padStart(2, "0")}`,
         spec,
@@ -15191,7 +15203,7 @@ const addAlevelHistoryBank = (bankId, label, spec, rawRows) => {
           A:row.definition,
           B:next.definition,
           C:previous.definition,
-          D:`It had no meaningful effect on ${label.toLowerCase()}`
+          D:fourth
         },
         correct:"A",
         tag:`MC-${bankId}-${index + 1}`,
@@ -15202,7 +15214,7 @@ const addAlevelHistoryBank = (bankId, label, spec, rawRows) => {
             A:row.application,
             B:previous.application,
             C:next.application,
-            D:`It cannot be tested using historical evidence`
+            D:fourthApplication
           },
           correct:"A"
         }
@@ -21852,22 +21864,13 @@ for (const question of BANKS["CHEM-1"].questions) {
   }
 }
 
-// History content pass: remove the repeated non-answer distractor that was
-// attached to coverage questions across all five A-level History banks.
-for (const bankId of ["HIST-BRIT1", "HIST-BRIT2", "HIST-USA1", "HIST-USA2", "HIST-TUDOR"]) {
-  for (const question of BANKS[bankId].questions) {
-    if (!question.reforge) continue;
-    const genericLetter = Object.keys(question.reforge.options).find(letter =>
-      String(question.reforge.options[letter]).trim().toLowerCase() === "it cannot be tested using historical evidence"
-    );
-    if (!genericLetter) continue;
-    const replacement = Object.entries(question.options)
-      .filter(([letter, value]) => letter !== question.correct && String(value).trim().toLowerCase() !== String(question.reforge.options[question.reforge.correct]).trim().toLowerCase())
-      .map(([, value]) => String(value).replace(/\s+(?:in this context|in this case|for this decision)/gi, "").trim())
-      .find(value => !Object.values(question.reforge.options).some(existing => String(existing).trim().toLowerCase() === value.toLowerCase()));
-    if (replacement) question.reforge.options[genericLetter] = replacement;
-  }
-}
+// The History content pass that used to sit here replaced the repeated
+// non-answer Reforge distractor ("It cannot be tested using historical
+// evidence") by borrowing a distractor from the question's own base options.
+// addAlevelHistoryBank now builds that slot from a real application instead,
+// so the pass had nothing left to match. Removed rather than left in place:
+// it also reused a single base definition across 43 twins, which is the same
+// repetition problem in a quieter form.
 // Hand-authored Reforge twin fix for PHYS-2. Same generator bug as
 // PHYS-1/PHYS-3: the E2 series glued a templated phrase in front of
 // an identical stem, and the COV series repeated the same fact.
