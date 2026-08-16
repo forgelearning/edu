@@ -11433,7 +11433,12 @@ addGcseMathsBank("GCSE-MATH-P2", "Paper 2 — Calculator", "1MA1 Paper 2", "#1d4
   {id:"MATH-P2-04",stem:"Solve x² − 5x − 4 = 0, giving answers to 2 decimal places.",options:{A:"x = 5.70 or −0.70",B:"x = 5.00 or −4.00",C:"x = 0.70 or −5.70",D:"x = 4.56 or −0.88"},correct:"A",scaffold:"Using the quadratic formula gives x = (5 ± √41)/2, so x ≈ 5.70 or −0.70.",tag:"MATH-QUADRATIC",reforge:{stem:"Solve 2x² + 3x − 7 = 0 to 2 decimal places.",options:{A:"x = 2.77 or −1.27",B:"x = 1.27 or −2.77",C:"x = 1.77 or −2.27",D:"x = 0.77 or −3.27"},correct:"B"}},
   {id:"MATH-P2-05",stem:"The equation of a line is y = 3x − 4. What is its gradient?",options:{A:"−4",B:"3",C:"4",D:"1/3"},correct:"B",scaffold:"In y = mx + c, m is the gradient and c is the y-intercept. Here m = 3.",tag:"MATH-GRAPHS",reforge:{stem:"What is the y-intercept of y = −2x + 7?",options:{A:"−2",B:"2",C:"7",D:"−7"},correct:"C"}},
   {id:"MATH-P2-06",stem:"A cylinder has radius 4 cm and height 10 cm. Find its volume to 3 significant figures.",options:{A:"126 cm³",B:"251 cm³",C:"503 cm³",D:"1005 cm³"},correct:"C",scaffold:"Volume = πr²h = π × 4² × 10 = 160π ≈ 503 cm³.",tag:"MATH-VOLUME",reforge:{stem:"Find the volume of a sphere with radius 3 cm to 3 significant figures.",options:{A:"28.3 cm³",B:"36.0 cm³",C:"113 cm³",D:"339 cm³"},correct:"C"}},
-  {id:"MATH-P2-07",stem:"A bag contains 5 red and 3 blue counters. Two are taken without replacement. Find P(two red).",options:{A:"5/8",B:"25/64",C:"5/14",D:"20/56"},correct:"C",scaffold:"The probability is 5/8 × 4/7 = 20/56 = 5/14.",tag:"MATH-PROBABILITY2",reforge:{stem:"A box has 4 green and 6 yellow counters. Two are taken without replacement. Find P(two yellow).",options:{A:"3/10",B:"1/3",C:"1/2",D:"2/5"},correct:"B"}},
+  // Option D used to read "20/56", which the scaffold itself states equals the
+  // keyed answer 5/14 — so a student who worked it out correctly but did not
+  // simplify picked D and was marked wrong. Replaced with P(red then blue),
+  // 5/8 × 3/7, which is a genuine misreading of the question rather than a
+  // second correct answer.
+  {id:"MATH-P2-07",stem:"A bag contains 5 red and 3 blue counters. Two are taken without replacement. Find P(two red).",options:{A:"5/8",B:"25/64",C:"5/14",D:"15/56"},correct:"C",scaffold:"The probability is 5/8 × 4/7 = 20/56 = 5/14.",tag:"MATH-PROBABILITY2",reforge:{stem:"A box has 4 green and 6 yellow counters. Two are taken without replacement. Find P(two yellow).",options:{A:"3/10",B:"1/3",C:"1/2",D:"2/5"},correct:"B"}},
   {id:"MATH-P2-08",stem:"The first quartile is 18 and the third quartile is 41. Find the interquartile range.",options:{A:"19",B:"23",C:"29",D:"59"},correct:"B",scaffold:"Interquartile range = upper quartile − lower quartile = 41 − 18 = 23.",tag:"MATH-IQR",reforge:{stem:"What does the interquartile range measure?",options:{A:"The total of all values",B:"The spread of the middle half",C:"The most common value",D:"The difference between mean and mode"},correct:"B"}},
   {id:"MATH-P2-09",stem:"A frequency table has values 2, 4 and 7 with frequencies 3, 5 and 2. Find the mean.",options:{A:"3.8",B:"4.1",C:"4.0",D:"4.7"},correct:"C",scaffold:"Total frequency is 10 and the total of fx is 6 + 20 + 14 = 40, so the mean is 4.0.",tag:"MATH-FREQUENCY",reforge:{stem:"Values 1, 3 and 8 have frequencies 4, 2 and 4. Find the mean.",options:{A:"3.6",B:"4.0",C:"4.2",D:"4.8"},correct:"C"}},
   {id:"MATH-P2-10",stem:"A point is enlarged by scale factor 3 about the origin. What happens to its distance from the origin?",options:{A:"It is divided by 3.0",B:"It is unchanged",C:"It is multiplied by 3",D:"It is increased by 9.0"},correct:"C",scaffold:"An enlargement with centre at the origin multiplies both coordinates and therefore the distance from the origin by the scale factor 3.",tag:"MATH-TRANSFORM",reforge:{stem:"What does a scale factor −1 do about the origin?",options:{A:"A reflection in the origin",B:"A translation right",C:"An enlargement by 1",D:"A reflection in the x-axis only"},correct:"A"}},
@@ -19959,6 +19964,587 @@ chemExpansion("CHEM-2", [
     correct:"B",tag:"MC-GCHEM-ENERGETICS",
     scaffold:"Feasibility requires ΔG ≤ 0, and ΔG = ΔH − TΔS, so the minimum temperature is T = ΔH ÷ ΔS. The units must match: ΔH in kJ mol⁻¹ must be converted to J mol⁻¹ (×1000), or ΔS converted to kJ K⁻¹ mol⁻¹ (÷1000). Here 50,000 ÷ 100 = 500 K. Failing to convert is the single commonest error, and produces answers wrong by a factor of a thousand.",
     reforge:{stem:"In the equation ΔG = ΔH − TΔS, the most common error is failing to:",options:{A:"Convert ΔS into kJ",B:"Use the correct sign for ΔG.",C:"Measure the temperature at all.",D:"Include the activation energy term."},correct:"A"}
+  }
+]);
+
+// ===== GCSE MATHS: GENUINE QUESTION EXPANSION =====
+// gcse-maths reached its 200-question floor via expandSubjectToMinimum(),
+// which clones existing questions; a later pass strips the "(application
+// variant N)" suffix, leaving 48 of its 206 questions as byte-identical
+// repeats. These 74 authored questions take the source count to 200 so the
+// expansion pass generates no coverage variants at all.
+const mathsExpansion = (bankId, questions) => questions.forEach(question => BANKS[bankId].questions.push(question));
+mathsExpansion("GCSE-MATH-P1", [
+  {
+    id:"MATH-N1-01",stem:"Work out 3/4 + 2/5.",
+    options:{A:"5/9",B:"23/20",C:"23/40",D:"5/20"},
+    correct:"B",tag:"MC-MATH-FRACTIONS",
+    scaffold:"Adding fractions needs a common denominator, never adding numerators and denominators separately. For 3/4 + 2/5 the lowest common denominator is 20: 3/4 = 15/20 and 2/5 = 8/20, so the sum is 23/20, or 1 3/20 as a mixed number. The answer 5/9 comes from adding tops and bottoms, which is the single most common error here — check by estimating: 3/4 is nearly 1 and 2/5 is nearly a half, so the answer must exceed 1.",
+    reforge:{stem:"Work out 2/3 × 3/8, giving your answer in its simplest form.",options:{A:"1/4",B:"6/11",C:"5/11",D:"16/9"},correct:"A"}
+  },
+  {
+    id:"MATH-N1-02",stem:"Work out 2/5 ÷ 3/10.",
+    options:{A:"6/50",B:"3/4",C:"4/3",D:"2/15"},
+    correct:"C",tag:"MC-MATH-FRACTIONS2",
+    scaffold:"To divide by a fraction, multiply by its reciprocal: 2/5 ÷ 3/10 = 2/5 × 10/3 = 20/15 = 4/3. Flipping the wrong fraction, or multiplying without flipping at all, produces the usual wrong answers. A sense check helps: 3/10 is smaller than 2/5, so the answer must be greater than 1, which rules out every option below 1 immediately.",
+    reforge:{stem:"Work out 1 1/2 ÷ 3/4.",options:{A:"9/8",B:"2",C:"1 1/8",D:"4/9"},correct:"B"}
+  },
+  {
+    id:"MATH-N1-03",stem:"Write 0.375 as a fraction in its simplest form.",
+    options:{A:"3/8",B:"375/100",C:"3/4",D:"1/3"},
+    correct:"A",tag:"MC-MATH-DECIMALPERCENT",
+    scaffold:"0.375 has three decimal places, so it equals 375/1000. Divide top and bottom by 125 to get 3/8. Useful conversions to memorise: 1/8 = 0.125, 1/4 = 0.25, 3/8 = 0.375, 1/2 = 0.5, 5/8 = 0.625, 3/4 = 0.75. A fraction gives a recurring decimal exactly when its simplified denominator has a prime factor other than 2 or 5.",
+    reforge:{stem:"Which fraction produces a recurring rather than a terminating decimal?",options:{A:"7/20",B:"9/25",C:"5/16",D:"4/15"},correct:"D"}
+  },
+  {
+    id:"MATH-N1-04",stem:"Express 0.4̇ (0.444...) as a fraction in its simplest form.",
+    options:{A:"4/9",B:"4/10",C:"44/100",D:"1/9"},
+    correct:"A",tag:"MC-MATH-RECURRING",
+    scaffold:"Let x = 0.444... Multiply by 10 because one digit recurs: 10x = 4.444... Subtracting gives 9x = 4, so x = 4/9. For two recurring digits multiply by 100 and divide by 99; for three, by 1000 and divide by 999. So 0.4̇5̇ = 45/99 = 5/11. Always simplify at the end and check by dividing back.",
+    reforge:{stem:"Express 0.2̇7̇ (0.272727...) as a fraction in its simplest form.",options:{A:"27/100",B:"3/11",C:"27/90",D:"1/27"},correct:"B"}
+  },
+  {
+    id:"MATH-N1-05",stem:"Simplify 5(2x − 3) − 2(x − 4).",
+    options:{A:"8x − 7",B:"8x − 23",C:"12x − 7",D:"8x + 5"},
+    correct:"A",tag:"MC-MATH-ALGEBRA",
+    scaffold:"Expand each bracket, watching the sign in front of the second: 5(2x − 3) = 10x − 15, and −2(x − 4) = −2x + 8. Note the minus times minus gives +8, which is where most errors occur. Collecting terms gives 10x − 2x = 8x and −15 + 8 = −7, so 8x − 7. Substituting a value such as x = 1 into both the original and your answer is a quick check.",
+    reforge:{stem:"Expand and simplify (x + 3)(x − 5).",options:{A:"x² − 15",B:"x² + 2x − 15",C:"x² − 2x − 15",D:"x² − 2x + 15"},correct:"C"}
+  },
+  {
+    id:"MATH-N1-06",stem:"Factorise fully 12x² + 18x.",
+    options:{A:"6x(2x + 3)",B:"6(2x² + 3x)",C:"3x(4x + 6)",D:"2x(6x + 9)"},
+    correct:"A",tag:"MC-MATH-FACTORISE",
+    scaffold:"Take out the highest common factor of both the numbers and the letters. The HCF of 12 and 18 is 6, and both terms contain x, so the factor is 6x, leaving 6x(2x + 3). The other options are all partially factorised: each still has a common factor inside the bracket, so none is 'fully' factorised. Expanding your answer is the fastest way to confirm it.",
+    reforge:{stem:"Factorise x² + 7x + 12.",options:{A:"(x + 2)(x + 6)",B:"(x + 12)(x + 1)",C:"(x − 3)(x − 4)",D:"(x + 3)(x + 4)"},correct:"D"}
+  },
+  {
+    id:"MATH-N1-07",stem:"Solve 4x − 7 = 2x + 9.",
+    options:{A:"x = 1",B:"x = 8",C:"x = 16",D:"x = 2"},
+    correct:"B",tag:"MC-MATH-EQUATIONS",
+    scaffold:"Collect the letters on one side and the numbers on the other, doing the same to both sides. Subtracting 2x gives 2x − 7 = 9; adding 7 gives 2x = 16; dividing by 2 gives x = 8. Substituting back is essential: 4(8) − 7 = 25 and 2(8) + 9 = 25, so both sides agree. Answer C is what you get by forgetting the final division.",
+    reforge:{stem:"Solve 3(x + 2) = 21.",options:{A:"x = 5",B:"x = 7",C:"x = 9",D:"x = 6.3"},correct:"A"}
+  },
+  {
+    id:"MATH-N1-08",stem:"Solve the simultaneous equations 2x + y = 11 and x − y = 1.",
+    options:{A:"x = 3, y = 5",B:"x = 5, y = 4",C:"x = 4, y = 3",D:"x = 6, y = 5"},
+    correct:"C",tag:"MC-MATH-SIMULTANEOUS",
+    scaffold:"Adding the two equations eliminates y because +y and −y cancel: 3x = 12, so x = 4. Substituting into x − y = 1 gives 4 − y = 1, so y = 3. Always substitute into the equation you did not use to derive x, and check both equations: 2(4) + 3 = 11 and 4 − 3 = 1. If the signs of the letter you want to remove match, subtract; if they differ, add.",
+    reforge:{stem:"Solve 3x + 2y = 16 and x + 2y = 8.",options:{A:"x = 2, y = 5",B:"x = 4, y = 2",C:"x = 3, y = 3.5",D:"x = 8, y = 0"},correct:"B"}
+  },
+  {
+    id:"MATH-N1-09",stem:"The nth term of a sequence is 4n − 1. What is the 10th term?",
+    options:{A:"39",B:"40",C:"36",D:"41"},
+    correct:"A",tag:"MC-MATH-NTH",
+    scaffold:"Substitute n = 10 into 4n − 1: 4 × 10 = 40, then subtract 1 to get 39. To find the nth term of a linear sequence, the coefficient of n is the common difference, and the constant is the term that would come 'before the first', at n = 0. For 3, 7, 11, 15 the difference is 4 and the zeroth term is −1, giving 4n − 1 — the same sequence as here.",
+    reforge:{stem:"Find the nth term of the sequence 7, 12, 17, 22, ...",options:{A:"7n + 5",B:"5n + 7",C:"5n + 2",D:"n + 5"},correct:"C"}
+  },
+  {
+    id:"MATH-N1-10",stem:"A sequence begins 2, 6, 18, 54. What is the next term?",
+    options:{A:"108",B:"58",C:"162",D:"216"},
+    correct:"C",tag:"MC-MATH-GEOMETRIC",
+    scaffold:"Check for a common difference first; here there is none. Check for a common ratio: 6 ÷ 2 = 3, 18 ÷ 6 = 3, 54 ÷ 18 = 3, so the sequence is geometric with ratio 3 and the next term is 54 × 3 = 162. Answer A comes from doubling instead. Other sequence types to recognise: quadratic (second differences constant), triangular, square and Fibonacci-style.",
+    reforge:{stem:"Which sequence is quadratic?",options:{A:"3, 6, 12, 24",B:"2, 5, 10, 17",C:"5, 9, 13, 17",D:"1, 1, 2, 3, 5"},correct:"B"}
+  },
+  {
+    id:"MATH-N1-11",stem:"Simplify (x⁵ × x³) ÷ x².",
+    options:{A:"x⁶",B:"x¹⁰",C:"x⁷",D:"x⁴"},
+    correct:"A",tag:"MC-MATH-INDICES",
+    scaffold:"Multiplying powers of the same base adds the indices, dividing subtracts them: x⁵ × x³ = x⁸, then x⁸ ÷ x² = x⁶. Other rules: (xᵃ)ᵇ = x^(ab), x⁰ = 1, x⁻ⁿ = 1/xⁿ, and x^(1/2) = √x. Multiplying the indices instead of adding is the usual slip, and gives x¹⁵ ÷ x² here.",
+    reforge:{stem:"Evaluate 16^(3/4).",options:{A:"12",B:"4",C:"64",D:"8"},correct:"D"}
+  },
+  {
+    id:"MATH-N1-12",stem:"Simplify √50 + √8 in the form a√2.",
+    options:{A:"7√2",B:"√58",C:"5√2",D:"10√2"},
+    correct:"A",tag:"MC-MATH-SURDS",
+    scaffold:"Simplify each surd by finding the largest square factor: √50 = √25 × √2 = 5√2, and √8 = √4 × √2 = 2√2. Since both are now multiples of √2 they can be added: 5√2 + 2√2 = 7√2. Surds can only be added when the number under the root matches, so √50 + √8 is not √58 — a check by decimal gives 7.07 + 2.83 ≈ 9.9, and 7√2 ≈ 9.9.",
+    reforge:{stem:"Rationalise the denominator of 6/√3.",options:{A:"6√3",B:"2√3",C:"√2",D:"3√3"},correct:"B"}
+  },
+  {
+    id:"MATH-N1-13",stem:"Increase 240 by 35%.",
+    options:{A:"275",B:"84",C:"324",D:"356"},
+    correct:"C",tag:"MC-MATH-PERCENT",
+    scaffold:"Use a multiplier: increasing by 35% means multiplying by 1.35, so 240 × 1.35 = 324. Decreasing by 35% would use 0.65. Without a calculator, 10% of 240 is 24, so 30% is 72 and 5% is 12, giving 84 to add to 240 — again 324. Answer B is the increase itself rather than the new total, a distinction worth reading carefully in the question.",
+    reforge:{stem:"A price falls from 80 to 68. What is the percentage decrease?",options:{A:"12%",B:"15%",C:"17.6%",D:"20%"},correct:"B"}
+  },
+  {
+    id:"MATH-N1-14",stem:"A bag contains red and blue counters in the ratio 3:7. There are 40 counters altogether. How many are blue?",
+    options:{A:"12",B:"21",C:"28",D:"30"},
+    correct:"C",tag:"MC-MATH-RATIO",
+    scaffold:"Add the ratio parts to find the total number of shares: 3 + 7 = 10. Divide the total by the number of shares: 40 ÷ 10 = 4 counters per share. Blue has 7 shares, so 7 × 4 = 28. Check the parts add back to the total: 12 red + 28 blue = 40. A frequent error is dividing by one of the ratio numbers rather than by their sum.",
+    reforge:{stem:"Two numbers are in the ratio 2:5. The larger is 35. What is the smaller?",options:{A:"14",B:"10",C:"17.5",D:"7"},correct:"A"}
+  },
+  {
+    id:"MATH-N1-15",stem:"Find the highest common factor of 24 and 60.",
+    options:{A:"6",B:"4",C:"12",D:"120"},
+    correct:"C",tag:"MC-MATH-FACTORS",
+    scaffold:"Write each number as a product of primes: 24 = 2³ × 3 and 60 = 2² × 3 × 5. The HCF takes the lowest power of each shared prime: 2² × 3 = 12. The LCM takes the highest power of every prime appearing: 2³ × 3 × 5 = 120, which is option D — so read carefully which is asked. A useful check is that HCF × LCM equals the product of the two numbers: 12 × 120 = 1440 = 24 × 60.",
+    reforge:{stem:"Find the lowest common multiple of 8 and 12.",options:{A:"96",B:"4",C:"48",D:"24"},correct:"D"}
+  },
+  {
+    id:"MATH-N1-16",stem:"Write 0.00046 in standard form.",
+    options:{A:"4.6 × 10⁻⁴",B:"46 × 10⁻⁵",C:"4.6 × 10⁴",D:"0.46 × 10⁻³"},
+    correct:"A",tag:"MC-MATH-STANDARD2",
+    scaffold:"Standard form is A × 10ⁿ where A is at least 1 and less than 10. Moving the point in 0.00046 four places right gives 4.6, and because the original number is smaller than 1 the index is negative: 4.6 × 10⁻⁴. Options B and D have coefficients outside the required range, so although they are numerically equal they are not in standard form — a distinction examiners test deliberately.",
+    reforge:{stem:"Work out (3 × 10⁵) × (2 × 10⁻²), giving your answer in standard form.",options:{A:"6 × 10⁻¹⁰",B:"5 × 10³",C:"6 × 10³",D:"6 × 10⁷"},correct:"C"}
+  },
+  {
+    id:"MATH-N1-17",stem:"A triangle has angles of 40° and 75°. What is the third angle?",
+    options:{A:"115°",B:"65°",C:"75°",D:"55°"},
+    correct:"B",tag:"MC-MATH-ANGLES",
+    scaffold:"Angles in a triangle sum to 180°, so the third is 180 − 40 − 75 = 65°. Related facts: angles on a straight line sum to 180°, angles around a point to 360°, and angles in a quadrilateral to 360°. In an isosceles triangle the two base angles are equal, which often supplies a missing value. Answer A is the sum of the two given angles rather than the remainder.",
+    reforge:{stem:"The exterior angle of a regular polygon is 30°. How many sides does it have?",options:{A:"6",B:"10",C:"12",D:"30"},correct:"C"}
+  },
+  {
+    id:"MATH-N1-18",stem:"What is the sum of the interior angles of a hexagon?",
+    options:{A:"720°",B:"1080°",C:"360°",D:"540°"},
+    correct:"A",tag:"MC-MATH-POLYGON",
+    scaffold:"Interior angle sum = (n − 2) × 180°, so for n = 6 that is 4 × 180 = 720°. For a regular polygon, divide by n to get each interior angle: 720 ÷ 6 = 120°. Exterior angles always sum to 360° regardless of the number of sides, so each exterior angle of a regular hexagon is 60°, and interior plus exterior always gives 180°.",
+    reforge:{stem:"Each interior angle of a regular polygon is 140°. How many sides does it have?",options:{A:"7",B:"8",C:"9",D:"10"},correct:"C"}
+  },
+  {
+    id:"MATH-N1-19",stem:"A right-angled triangle has shorter sides of 6 cm and 8 cm. How long is the hypotenuse?",
+    options:{A:"14 cm",B:"10 cm",C:"48 cm",D:"7 cm"},
+    correct:"B",tag:"MC-MATH-PYTHAGORAS",
+    scaffold:"Pythagoras gives a² + b² = c², so 6² + 8² = 36 + 64 = 100, and c = √100 = 10 cm. To find a shorter side instead, subtract: c² − a² = b². Recognising the common triples 3-4-5, 5-12-13 and 8-15-17 (and multiples such as 6-8-10 here) saves time. The hypotenuse is always the longest side and always opposite the right angle, so an answer smaller than 8 cm must be wrong.",
+    reforge:{stem:"A right-angled triangle has a hypotenuse of 13 cm and one shorter side of 5 cm. Find the other side.",options:{A:"8 cm",B:"18 cm",C:"12 cm",D:"14 cm"},correct:"C"}
+  },
+  {
+    id:"MATH-N1-20",stem:"What is the area of a triangle with base 12 cm and perpendicular height 7 cm?",
+    options:{A:"84 cm²",B:"42 cm²",C:"19 cm²",D:"38 cm²"},
+    correct:"B",tag:"MC-MATH-AREA2",
+    scaffold:"Area of a triangle = ½ × base × perpendicular height = ½ × 12 × 7 = 42 cm². Forgetting the half gives 84, which is option A. The height must be perpendicular to the chosen base, not a slanted side. Related formulae: parallelogram = base × height; trapezium = ½(a + b) × h. Area is always in square units.",
+    reforge:{stem:"A trapezium has parallel sides of 5 cm and 9 cm and a height of 6 cm. What is its area?",options:{A:"42 cm²",B:"270 cm²",C:"84 cm²",D:"27 cm²"},correct:"A"}
+  },
+  {
+    id:"MATH-N1-21",stem:"A circle has radius 5 cm. What is its area, in terms of π?",
+    options:{A:"10π cm²",B:"100π cm²",C:"25π cm²",D:"5π cm²"},
+    correct:"C",tag:"MC-MATH-CIRCLE",
+    scaffold:"Area of a circle = πr² = π × 5² = 25π cm². Circumference = 2πr = 10π cm, which is option A — mixing the two formulae is the commonest error, so note that area uses the square and gives square units. If the diameter is given, halve it first: a circle of diameter 10 cm also has area 25π cm².",
+    reforge:{stem:"A circle has a diameter of 14 cm. What is its circumference, in terms of π?",options:{A:"49π cm",B:"196π cm",C:"28π cm",D:"14π cm"},correct:"D"}
+  },
+  {
+    id:"MATH-N1-22",stem:"A cuboid measures 4 cm by 5 cm by 6 cm. What is its volume?",
+    options:{A:"120 cm³",B:"148 cm³",C:"15 cm³",D:"74 cm³"},
+    correct:"A",tag:"MC-MATH-VOLUME",
+    scaffold:"Volume of a cuboid = length × width × height = 4 × 5 × 6 = 120 cm³. Surface area is different: 2(4×5 + 5×6 + 4×6) = 2(20 + 30 + 24) = 148 cm², which is option B — check whether the question asks for volume (cubic units) or surface area (square units). For a prism generally, volume = cross-sectional area × length.",
+    reforge:{stem:"A cylinder has radius 3 cm and height 10 cm. What is its volume, in terms of π?",options:{A:"30π cm³",B:"90π cm³",C:"60π cm³",D:"900π cm³"},correct:"B"}
+  },
+  {
+    id:"MATH-N1-23",stem:"A fair six-sided dice is rolled once. What is the probability of scoring a number greater than 4?",
+    options:{A:"1/6",B:"1/2",C:"1/3",D:"2/3"},
+    correct:"C",tag:"MC-MATH-SIMPLEPROB",
+    scaffold:"Numbers greater than 4 are 5 and 6, so 2 outcomes out of 6, giving 2/6 = 1/3. Listing the successful outcomes explicitly avoids the frequent error of including 4 itself, which would give 1/2. Probabilities always lie between 0 and 1, and the probabilities of all possible outcomes sum to 1, so P(not greater than 4) = 2/3.",
+    reforge:{stem:"The probability that it rains is 0.3. What is the probability that it does not rain?",options:{A:"0.3",B:"1.3",C:"0.5",D:"0.7"},correct:"D"}
+  },
+  {
+    id:"MATH-N1-24",stem:"A coin is flipped twice. What is the probability of getting two heads?",
+    options:{A:"1/2",B:"1/4",C:"1/3",D:"3/4"},
+    correct:"B",tag:"MC-MATH-PROBRULES",
+    scaffold:"For independent events, multiply the probabilities: ½ × ½ = ¼. Listing the sample space HH, HT, TH, TT confirms one favourable outcome in four. Use 'and' for multiply and 'or' for add, taking care that adding only applies to mutually exclusive outcomes. With dependent events, such as drawing without replacement, the second probability must be adjusted.",
+    reforge:{stem:"A bag has 5 red and 3 blue balls. Two are drawn without replacement. P(both red) is:",options:{A:"25/64",B:"5/14",C:"15/56",D:"5/8"},correct:"B"}
+  },
+  {
+    id:"MATH-N1-25",stem:"Find the mean of 4, 7, 9, 12 and 13.",
+    options:{A:"9",B:"9.5",C:"45",D:"8"},
+    correct:"A",tag:"MC-MATH-MEAN2",
+    scaffold:"Mean = total ÷ how many = (4 + 7 + 9 + 12 + 13) ÷ 5 = 45 ÷ 5 = 9. The median is the middle value once ordered, here also 9; the mode is the most frequent, and there is none here; the range is 13 − 4 = 9, a measure of spread rather than average. Answer C is the total, so read whether the mean or the sum is wanted.",
+    reforge:{stem:"Five numbers have a mean of 12. Four of them are 10, 11, 13 and 14. What is the fifth?",options:{A:"12",B:"48",C:"14",D:"11"},correct:"A"}
+  }
+]);
+mathsExpansion("GCSE-MATH-P2", [
+  {
+    id:"MATH-N2-01",stem:"A car travels 150 km in 2.5 hours. What is its average speed?",
+    options:{A:"375 km/h",B:"60 km/h",C:"37.5 km/h",D:"75 km/h"},
+    correct:"B",tag:"MC-MATH-SPEED",
+    scaffold:"Speed = distance ÷ time = 150 ÷ 2.5 = 60 km/h. The formula triangle gives distance = speed × time and time = distance ÷ speed. Units must be consistent: a time given in minutes must be converted to hours before dividing, so 90 minutes is 1.5 hours, not 1.30. Multiplying instead of dividing gives 375, which is option A.",
+    reforge:{stem:"A train travels at 80 km/h for 45 minutes. How far does it go?",options:{A:"60 km",B:"3600 km",C:"36 km",D:"106.7 km"},correct:"A"}
+  },
+  {
+    id:"MATH-N2-02",stem:"An object has mass 240 g and volume 30 cm³. What is its density?",
+    options:{A:"7200 g/cm³",B:"0.125 g/cm³",C:"8 g/cm³",D:"270 g/cm³"},
+    correct:"C",tag:"MC-MATH-COMPOUND",
+    scaffold:"Density = mass ÷ volume = 240 ÷ 30 = 8 g/cm³. Rearranging gives mass = density × volume and volume = mass ÷ density. Pressure works the same way: pressure = force ÷ area, in N/m² or pascals. In every compound measure, check that units match the answer required — a density in kg/m³ needs mass in kg and volume in m³.",
+    reforge:{stem:"A force of 200 N acts on an area of 0.5 m². What is the pressure?",options:{A:"100 N/m²",B:"400 N/m²",C:"0.0025 N/m²",D:"200.5 N/m²"},correct:"B"}
+  },
+  {
+    id:"MATH-N2-03",stem:"£3000 is invested at 4% compound interest per year. What is the value after 3 years, to the nearest pound?",
+    options:{A:"£3360",B:"£3374",C:"£3120",D:"£3374.59"},
+    correct:"B",tag:"MC-MATH-EXPONENTIAL",
+    scaffold:"Compound interest uses a multiplier raised to the number of periods: 3000 × 1.04³ = 3000 × 1.124864 = £3374.59, which is £3374 to the nearest pound. Simple interest would add 4% of the original each year, giving 3000 + 360 = £3360 — option A, and always less than compound over more than one year. For depreciation use a multiplier below 1, such as 0.85 for a 15% annual fall.",
+    reforge:{stem:"A car worth £12,000 depreciates by 20% each year. What is it worth after 2 years?",options:{A:"£7200",B:"£9600",C:"£7680",D:"£4800"},correct:"C"}
+  },
+  {
+    id:"MATH-N2-04",stem:"In a right-angled triangle the side opposite a 35° angle is 8 cm. The hypotenuse is:",
+    options:{A:"4.59 cm",B:"11.4 cm",C:"13.9 cm",D:"9.77 cm"},
+    correct:"C",tag:"MC-MATH-TRIG",
+    scaffold:"Label the sides relative to the given angle, then use SOHCAHTOA. Here we have the opposite and want the hypotenuse, so use sine: sin 35° = 8 ÷ h, giving h = 8 ÷ sin 35° = 8 ÷ 0.5736 = 13.9 cm. Multiplying instead of dividing gives 4.59 cm. Check plausibility: the hypotenuse is the longest side, so it must exceed 8 cm — which rules out option A at once.",
+    reforge:{stem:"In a right-angled triangle the adjacent side is 12 cm and the hypotenuse is 15 cm. The angle between them is:",options:{A:"36.9°",B:"53.1°",C:"38.7°",D:"51.3°"},correct:"A"}
+  },
+  {
+    id:"MATH-N2-05",stem:"A triangle has sides 7 cm and 9 cm with an included angle of 40°. Its area is:",
+    options:{A:"31.5 cm²",B:"20.2 cm²",C:"48.3 cm²",D:"63 cm²"},
+    correct:"B",tag:"MC-MATH-TRIANGLERULES",
+    scaffold:"Area = ½ab sin C, using two sides and the angle between them: ½ × 7 × 9 × sin 40° = 31.5 × 0.6428 = 20.2 cm². Option A is what you get by omitting the sine. Use the sine rule when you have a matching side and opposite angle, and the cosine rule when you have three sides, or two sides with the angle between them and need the third side.",
+    reforge:{stem:"A triangle has sides 5 cm and 8 cm with an included angle of 60°. The third side is:",options:{A:"9.85 cm",B:"11.4 cm",C:"7 cm",D:"13 cm"},correct:"C"}
+  },
+  {
+    id:"MATH-N2-06",stem:"A bearing is measured from north. What is the bearing of due west?",
+    options:{A:"090°",B:"180°",C:"360°",D:"270°"},
+    correct:"D",tag:"MC-MATH-BEARINGS",
+    scaffold:"Bearings are measured clockwise from north and always written with three figures: north 000°, east 090°, south 180°, west 270°. A back bearing is found by adding 180° if the original is below 180°, or subtracting 180° if it is above. So if B is on a bearing of 070° from A, then A is on a bearing of 250° from B.",
+    reforge:{stem:"B is on a bearing of 125° from A. What is the bearing of A from B?",options:{A:"235°",B:"055°",C:"305°",D:"245°"},correct:"C"}
+  },
+  {
+    id:"MATH-N2-07",stem:"A map has a scale of 1:25,000. A distance of 4 cm on the map represents what real distance?",
+    options:{A:"1 km",B:"100 m",C:"10 km",D:"6.25 km"},
+    correct:"A",tag:"MC-MATH-SCALE",
+    scaffold:"A scale of 1:25,000 means 1 cm on the map is 25,000 cm in reality. So 4 cm represents 100,000 cm. Convert: 100,000 cm ÷ 100 = 1000 m = 1 km. The conversions to keep straight are 100 cm in a metre and 1000 m in a kilometre, so 100,000 cm in a kilometre. Working in the wrong direction — dividing by the scale rather than multiplying — is the usual error.",
+    reforge:{stem:"On a 1:50,000 map, how many centimetres represent a real distance of 3 km?",options:{A:"1.5 cm",B:"60 cm",C:"15 cm",D:"6 cm"},correct:"D"}
+  },
+  {
+    id:"MATH-N2-08",stem:"Two similar triangles have corresponding sides of 6 cm and 9 cm. The smaller has area 20 cm². The area of the larger is:",
+    options:{A:"30 cm²",B:"45 cm²",C:"67.5 cm²",D:"180 cm²"},
+    correct:"B",tag:"MC-MATH-TRANSFORM2",
+    scaffold:"For similar shapes the length scale factor is 9 ÷ 6 = 1.5. Areas scale by the square of that factor, so 1.5² = 2.25, giving 20 × 2.25 = 45 cm². Volumes scale by the cube, 1.5³ = 3.375. Multiplying the area by the length factor alone gives 30 cm², option A, and is the commonest error in this topic.",
+    reforge:{stem:"Two similar solids have heights in the ratio 2:3. The smaller has volume 16 cm³. The larger has volume:",options:{A:"24 cm³",B:"36 cm³",C:"54 cm³",D:"108 cm³"},correct:"C"}
+  },
+  {
+    id:"MATH-N2-09",stem:"Solve x² − 5x + 6 = 0.",
+    options:{A:"x = 2 or x = 3",B:"x = −2 or x = −3",C:"x = 1 or x = 6",D:"x = 5 or x = 6"},
+    correct:"A",tag:"MC-MATH-QUADRATIC",
+    scaffold:"Factorise by finding two numbers that multiply to +6 and add to −5: those are −2 and −3, giving (x − 2)(x − 3) = 0, so x = 2 or x = 3. Note the signs: the roots are the values that make each bracket zero, so a bracket of (x − 2) gives a root of +2. Substituting back is the check: 4 − 10 + 6 = 0 and 9 − 15 + 6 = 0.",
+    reforge:{stem:"Solve x² + 2x − 8 = 0.",options:{A:"x = 2 or x = 4",B:"x = −2 or x = 4",C:"x = 2 or x = −4",D:"x = −2 or x = −4"},correct:"C"}
+  },
+  {
+    id:"MATH-N2-10",stem:"Using the quadratic formula, the discriminant of 2x² + 3x + 5 = 0 is:",
+    options:{A:"−49",B:"−31",C:"9",D:"31"},
+    correct:"B",tag:"MC-MATH-QUADRATIC2",
+    scaffold:"The discriminant is b² − 4ac, here 3² − 4(2)(5) = 9 − 40 = −31. Because it is negative there are no real roots, so the parabola never crosses the x-axis. A discriminant of zero means one repeated root and the curve touches the axis; a positive value means two distinct roots. Sign errors when a or c is negative are the usual difficulty.",
+    reforge:{stem:"A quadratic has discriminant equal to 0. This means the equation has:",options:{A:"No real roots at all",B:"Two distinct real roots",C:"One repeated real root",D:"Three real roots"},correct:"C"}
+  },
+  {
+    id:"MATH-N2-11",stem:"A straight line passes through (0, 3) with gradient 2. Its equation is:",
+    options:{A:"y = 3x + 2",B:"y = 2x + 3",C:"y = 2x − 3",D:"y = 3x − 2"},
+    correct:"B",tag:"MC-MATH-LINEARGRAPH",
+    scaffold:"A straight line has equation y = mx + c, where m is the gradient and c the y-intercept. With gradient 2 and intercept 3 the equation is y = 2x + 3. Swapping m and c gives option A, a frequent slip. Gradient between two points is (change in y) ÷ (change in x). Parallel lines share a gradient; perpendicular gradients multiply to −1.",
+    reforge:{stem:"A line is perpendicular to y = 4x − 1. Its gradient is:",options:{A:"−1/4",B:"4",C:"0.25",D:"−4"},correct:"A"}
+  },
+  {
+    id:"MATH-N2-12",stem:"Find the gradient of the line joining (1, 4) and (5, 16).",
+    options:{A:"4",B:"1/3",C:"12",D:"3"},
+    correct:"D",tag:"MC-MATH-COORDINATES",
+    scaffold:"Gradient = (y₂ − y₁) ÷ (x₂ − x₁) = (16 − 4) ÷ (5 − 1) = 12 ÷ 4 = 3. Take the coordinates in the same order top and bottom, or the sign will be wrong. The midpoint of the same two points is ((1+5)/2, (4+16)/2) = (3, 10), and the length is found by Pythagoras: √(4² + 12²) = √160.",
+    reforge:{stem:"What is the midpoint of the line joining (2, 7) and (8, 3)?",options:{A:"(3, 2)",B:"(10, 10)",C:"(6, 4)",D:"(5, 5)"},correct:"D"}
+  },
+  {
+    id:"MATH-N2-13",stem:"Solve the inequality 3x + 4 < 19.",
+    options:{A:"x < 5",B:"x > 5",C:"x < 7.67",D:"x < 15"},
+    correct:"A",tag:"MC-MATH-INEQUALITY",
+    scaffold:"Solve as for an equation: subtract 4 to get 3x < 15, then divide by 3 to get x < 5. The inequality sign only reverses when multiplying or dividing by a negative number, so −2x > 6 becomes x < −3. On a number line, use an open circle for < or > and a filled circle for ≤ or ≥.",
+    reforge:{stem:"Solve −2x + 1 ≥ 9.",options:{A:"x ≥ −4",B:"x ≤ −4",C:"x ≥ 4",D:"x ≤ 4"},correct:"B"}
+  },
+  {
+    id:"MATH-N2-14",stem:"y is directly proportional to x. When x = 4, y = 20. What is y when x = 7?",
+    options:{A:"23",B:"11.4",C:"35",D:"140"},
+    correct:"C",tag:"MC-MATH-PROPORTION",
+    scaffold:"Direct proportion means y = kx. From x = 4 and y = 20, k = 5, so y = 5x and when x = 7, y = 35. Inverse proportion means y = k/x, so as one doubles the other halves. Adding the difference in x rather than scaling gives 23, option A — proportion is multiplicative, not additive, which is the key distinction being tested.",
+    reforge:{stem:"y is inversely proportional to x. When x = 3, y = 12. What is y when x = 6?",options:{A:"24",B:"9",C:"15",D:"6"},correct:"D"}
+  },
+  {
+    id:"MATH-N2-15",stem:"A number is 47 when rounded to the nearest whole number. Its lower bound is:",
+    options:{A:"46.5",B:"46",C:"47.4",D:"46.9"},
+    correct:"A",tag:"MC-MATH-BOUNDS",
+    scaffold:"Rounding to the nearest whole number means the value lies within half a unit either side: the lower bound is 46.5 and the upper bound 47.5. The upper bound is written as 47.5 even though a value exactly 47.5 would round up, because it is the limit of the interval. For a value given to 1 decimal place, the bounds are ±0.05; to the nearest 10, ±5.",
+    reforge:{stem:"A length is 8.4 cm to 1 decimal place. Its upper bound is:",options:{A:"8.5 cm",B:"8.45 cm",C:"8.49 cm",D:"8.44 cm"},correct:"B"}
+  },
+  {
+    id:"MATH-N2-16",stem:"Estimate the value of (39.2 × 5.1) ÷ 1.97 by rounding each number to 1 significant figure.",
+    options:{A:"200",B:"100",C:"20",D:"120"},
+    correct:"B",tag:"MC-MATH-ESTIMATION",
+    scaffold:"Round each number to 1 significant figure: 39.2 → 40, 5.1 → 5, 1.97 → 2. Then (40 × 5) ÷ 2 = 200 ÷ 2 = 100. Estimation questions want the rounding shown, not the exact answer, and the point is to check whether a calculator result is plausible. The true value here is 101.5, so the estimate is close.",
+    reforge:{stem:"Estimate √(48.6 ÷ 3.1) by rounding to 1 significant figure.",options:{A:"16",B:"5",C:"4",D:"2.5"},correct:"C"}
+  },
+  {
+    id:"MATH-N2-17",stem:"A frequency table records marks. The class 10 < m ≤ 20 has frequency 8. What is used as the midpoint for estimating the mean?",
+    options:{A:"20",B:"10",C:"8",D:"15"},
+    correct:"D",tag:"MC-MATH-FREQUENCY",
+    scaffold:"For grouped data the exact values are unknown, so the class midpoint stands in for them: (10 + 20) ÷ 2 = 15. Estimated mean = Σ(midpoint × frequency) ÷ Σfrequency. The answer is an estimate precisely because the original values are lost. The modal class is the one with the highest frequency, and the class containing the median is found by counting to the middle position.",
+    reforge:{stem:"Why is the mean from a grouped frequency table only an estimate?",options:{A:"The frequencies may be recorded wrongly",B:"The exact data values are not known",C:"The classes are of unequal width",D:"The total frequency is always approximate"},correct:"B"}
+  },
+  {
+    id:"MATH-N2-18",stem:"A cumulative frequency graph is used to estimate the median of 60 values. Which cumulative frequency should be read off?",
+    options:{A:"60",B:"15",C:"30",D:"45"},
+    correct:"C",tag:"MC-MATH-CUMFREQ",
+    scaffold:"For a cumulative frequency curve the median is read at half the total, here 30. The lower quartile is at a quarter (15) and the upper quartile at three quarters (45), so the interquartile range is UQ − LQ. Cumulative frequency is always plotted against the upper class boundary, not the midpoint — plotting at the midpoint is a common and costly error.",
+    reforge:{stem:"The lower quartile is 24 and the upper quartile is 39. What is the interquartile range?",options:{A:"15",B:"63",C:"31.5",D:"7.5"},correct:"A"}
+  },
+  {
+    id:"MATH-N2-19",stem:"A scatter graph shows points falling from top left to bottom right. This shows:",
+    options:{A:"Positive correlation",B:"No correlation at all",C:"A causal relationship",D:"Negative correlation"},
+    correct:"D",tag:"MC-MATH-SCATTER",
+    scaffold:"A downward trend from left to right shows negative correlation: as one variable increases the other decreases. Upward shows positive correlation, and scattered points show none. Correlation does not prove causation — a third factor may explain both. A line of best fit can be used to predict within the data range (interpolation); predicting beyond it (extrapolation) is unreliable.",
+    reforge:{stem:"Using a line of best fit to predict a value far outside the range of the data is unreliable because it is:",options:{A:"Interpolation, which assumes linearity",B:"Extrapolation, beyond the evidence",C:"Correlation without causation",D:"An estimate of the mean"},correct:"B"}
+  },
+  {
+    id:"MATH-N2-20",stem:"A histogram has a class of width 5 and frequency density 3. What is the frequency of that class?",
+    options:{A:"1.67",B:"8",C:"15",D:"3"},
+    correct:"C",tag:"MC-MATH-HISTOGRAM",
+    scaffold:"In a histogram the area of each bar gives the frequency, so frequency = frequency density × class width = 3 × 5 = 15. Rearranged, frequency density = frequency ÷ class width. Histograms are used when classes have unequal widths, which is why the height is a density rather than the frequency itself — reading the height as the frequency is the standard error.",
+    reforge:{stem:"A class of width 4 contains 20 values. Its frequency density is:",options:{A:"80",B:"24",C:"16",D:"5"},correct:"D"}
+  },
+  {
+    id:"MATH-N2-21",stem:"A spinner has 4 equal sections. It is spun 200 times. Approximately how many times would you expect a particular section?",
+    options:{A:"50",B:"4",C:"200",D:"25"},
+    correct:"A",tag:"MC-MATH-PROBABILITY2",
+    scaffold:"Expected frequency = probability × number of trials = ¼ × 200 = 50. Relative frequency, found from experimental results, estimates probability and becomes more reliable as the number of trials increases. A result differing from the expectation does not prove bias — random variation is expected — but a large and persistent difference over many trials suggests the spinner is not fair.",
+    reforge:{stem:"A coin is flipped 100 times and lands heads 56 times. The relative frequency of heads is:",options:{A:"0.5",B:"56",C:"0.56",D:"0.44"},correct:"C"}
+  },
+  {
+    id:"MATH-N2-22",stem:"Two events are mutually exclusive. P(A) = 0.3 and P(B) = 0.45. What is P(A or B)?",
+    options:{A:"0.135",B:"0.75",C:"0.15",D:"0.25"},
+    correct:"B",tag:"MC-MATH-PROBABILITY4",
+    scaffold:"Mutually exclusive events cannot both happen, so P(A or B) = P(A) + P(B) = 0.3 + 0.45 = 0.75. Multiplying instead gives 0.135, which would apply to independent events both occurring. If events are not mutually exclusive, subtract the overlap: P(A or B) = P(A) + P(B) − P(A and B). Any probability above 1 signals an error.",
+    reforge:{stem:"Events A and B are independent with P(A) = 0.5 and P(B) = 0.2. P(A and B) is:",options:{A:"0.7",B:"0.3",C:"0.25",D:"0.1"},correct:"D"}
+  },
+  {
+    id:"MATH-N2-23",stem:"A sample is chosen so that every member of the population has an equal chance of selection. This is:",
+    options:{A:"A stratified sample",B:"A random sample",C:"A biased sample",D:"A systematic sample"},
+    correct:"B",tag:"MC-MATH-SAMPLING",
+    scaffold:"Random sampling gives every member an equal chance, so the sample should be representative. Stratified sampling divides the population into groups and takes a number from each in proportion to group size. Systematic sampling takes every nth member. A biased sample over-represents part of the population — asking only people leaving a gym about exercise habits is the classic example.",
+    reforge:{stem:"A school has 600 girls and 400 boys. A stratified sample of 50 should contain how many boys?",options:{A:"25",B:"30",C:"20",D:"40"},correct:"C"}
+  },
+  {
+    id:"MATH-N2-24",stem:"A shape is enlarged by scale factor 3 about the origin. A point at (2, 4) moves to:",
+    options:{A:"(5, 7)",B:"(6, 12)",C:"(2/3, 4/3)",D:"(6, 4)"},
+    correct:"B",tag:"MC-MATH-TRANSFORM",
+    scaffold:"An enlargement about the origin multiplies both coordinates by the scale factor: (2, 4) becomes (6, 12). A scale factor between 0 and 1 makes the shape smaller; a negative factor puts the image on the opposite side of the centre and inverts it. Enlargement changes size but not shape, so the image is similar to the object with all angles unchanged.",
+    reforge:{stem:"A point (5, 2) is translated by the vector (−3, 4). Its image is:",options:{A:"(2, 6)",B:"(8, −2)",C:"(−15, 8)",D:"(2, −2)"},correct:"A"}
+  },
+  {
+    id:"MATH-N2-25",stem:"The vector a = (3, −1) and b = (2, 5). What is a + b?",
+    options:{A:"(6, −5)",B:"(1, −6)",C:"(5, 4)",D:"(5, −6)"},
+    correct:"C",tag:"MC-MATH-VECTORS",
+    scaffold:"Add vectors component by component: (3 + 2, −1 + 5) = (5, 4). Subtracting reverses the second vector's components, and multiplying by a scalar multiplies both. Two vectors are parallel when one is a scalar multiple of the other. The magnitude of (5, 4) is √(5² + 4²) = √41, found by Pythagoras.",
+    reforge:{stem:"Which vector is parallel to (2, 3)?",options:{A:"(3, 2)",B:"(6, 9)",C:"(−2, 3)",D:"(4, 5)"},correct:"B"}
+  }
+]);
+mathsExpansion("GCSE-MATH-P3", [
+  {
+    id:"MATH-N3-01",stem:"Make x the subject of y = 3x + 7.",
+    options:{A:"x = (y − 7)/3",B:"x = y/3 − 7",C:"x = 3y − 7",D:"x = (y + 7)/3"},
+    correct:"A",tag:"MC-MATH-ALGEBRAPRAC",
+    scaffold:"Reverse the operations applied to x, in the opposite order. Since x is multiplied by 3 then 7 is added, subtract 7 first: y − 7 = 3x, then divide by 3: x = (y − 7)/3. Option B divides only part of the expression, which is the standard error — the whole of y − 7 must be divided. Substituting a number checks it: if x = 2, y = 13, and (13 − 7)/3 = 2.",
+    reforge:{stem:"Make r the subject of A = πr².",options:{A:"r = A/π²",B:"r = √(A/π)",C:"r = A²/π",D:"r = √(A × π)"},correct:"B"}
+  },
+  {
+    id:"MATH-N3-02",stem:"Simplify (x² − 9)/(x + 3).",
+    options:{A:"x − 3",B:"x − 9",C:"x + 3",D:"x² − 3"},
+    correct:"A",tag:"MC-MATH-QUADRATIC3",
+    scaffold:"Factorise before cancelling. The numerator is a difference of two squares: x² − 9 = (x + 3)(x − 3). The (x + 3) then cancels with the denominator, leaving x − 3. Only whole factors may be cancelled, never individual terms — cancelling the 9 with the 3 is invalid. Recognising a² − b² = (a + b)(a − b) is what makes this quick.",
+    reforge:{stem:"Factorise x² − 25.",options:{A:"(x − 5)(x − 5)",B:"(x + 5)²",C:"(x + 5)(x − 5)",D:"x(x − 25)"},correct:"C"}
+  },
+  {
+    id:"MATH-N3-03",stem:"Write x² + 6x + 5 in completed square form.",
+    options:{A:"(x + 3)² + 5",B:"(x + 6)² − 31",C:"(x + 3)² − 4",D:"(x + 3)² + 14"},
+    correct:"C",tag:"MC-MATH-QUADRATICGRAPH",
+    scaffold:"Halve the coefficient of x to get the number inside the bracket: 6 ÷ 2 = 3, giving (x + 3)². Expanding that gives x² + 6x + 9, which is 4 more than needed, so subtract 4: (x + 3)² − 4. Completed square form reveals the turning point directly, here (−3, −4), and the minimum value of the expression is −4.",
+    reforge:{stem:"The graph of y = (x − 2)² + 5 has a turning point at:",options:{A:"(2, 5)",B:"(−2, 5)",C:"(2, −5)",D:"(5, 2)"},correct:"A"}
+  },
+  {
+    id:"MATH-N3-04",stem:"The graph of y = x² is translated 4 units up. Its new equation is:",
+    options:{A:"y = (x + 4)²",B:"y = x² + 4",C:"y = (x − 4)²",D:"y = x² − 4"},
+    correct:"B",tag:"MC-MATH-GRAPHTRANS",
+    scaffold:"Adding a constant outside the function shifts the graph vertically: y = f(x) + a moves up by a. Changes inside the bracket shift horizontally and in the opposite direction to the sign: y = f(x + a) moves left by a. So y = (x − 4)² is a shift 4 right, not up. Also, y = −f(x) reflects in the x-axis and y = f(−x) reflects in the y-axis.",
+    reforge:{stem:"The graph of y = f(x) is transformed to y = f(x − 3). This is a translation of:",options:{A:"3 units left",B:"3 units upward",C:"3 units down",D:"3 units right"},correct:"D"}
+  },
+  {
+    id:"MATH-N3-05",stem:"A circle has centre O. Angle at the centre subtended by an arc is 80°. The angle at the circumference from the same arc is:",
+    options:{A:"160°",B:"80°",C:"40°",D:"100°"},
+    correct:"C",tag:"MC-MATH-CIRCLETHEOREM",
+    scaffold:"The angle at the centre is twice the angle at the circumference standing on the same arc, so the circumference angle is 80 ÷ 2 = 40°. Other circle theorems: the angle in a semicircle is 90°; opposite angles of a cyclic quadrilateral sum to 180°; angles in the same segment are equal; a tangent meets a radius at 90°; and tangents from an external point are equal in length.",
+    reforge:{stem:"In a cyclic quadrilateral, one angle is 110°. The opposite angle is:",options:{A:"110°",B:"70°",C:"55°",D:"90°"},correct:"B"}
+  },
+  {
+    id:"MATH-N3-06",stem:"A tangent touches a circle at point P. The angle between the tangent and the radius at P is:",
+    options:{A:"90°",B:"45°",C:"180°",D:"It varies with the circle's size"},
+    correct:"A",tag:"MC-MATH-TANGENT",
+    scaffold:"A tangent is always perpendicular to the radius at the point of contact, giving 90° regardless of the circle's size. This creates a right-angled triangle whenever a tangent, radius and another line are involved, so Pythagoras or trigonometry can then be used. Two tangents drawn from the same external point are equal in length, which produces an isosceles triangle.",
+    reforge:{stem:"Two tangents are drawn to a circle from the same external point. They are:",options:{A:"Always perpendicular to each other",B:"Equal in length",C:"Parallel to the radius",D:"Always longer than the diameter"},correct:"B"}
+  },
+  {
+    id:"MATH-N3-07",stem:"A sector has radius 6 cm and angle 60°. Its area, in terms of π, is:",
+    options:{A:"36π cm²",B:"12π cm²",C:"2π cm²",D:"6π cm²"},
+    correct:"D",tag:"MC-MATH-SECTOR",
+    scaffold:"A sector is a fraction of the circle given by angle ÷ 360. Area = (60/360) × π × 6² = (1/6) × 36π = 6π cm². Arc length uses the same fraction of the circumference: (1/6) × 2π × 6 = 2π cm. The perimeter of a sector is the arc plus two radii, so here 2π + 12 cm — forgetting the radii is the usual omission.",
+    reforge:{stem:"A sector has radius 10 cm and angle 90°. Its arc length, in terms of π, is:",options:{A:"25π cm",B:"20π cm",C:"5π cm",D:"10π cm"},correct:"C"}
+  },
+  {
+    id:"MATH-N3-08",stem:"A sphere has radius 3 cm. Its volume, in terms of π, is:",
+    options:{A:"36π cm³",B:"12π cm³",C:"27π cm³",D:"9π cm³"},
+    correct:"A",tag:"MC-MATH-SPHERE",
+    scaffold:"Volume of a sphere = (4/3)πr³ = (4/3)π × 27 = 36π cm³. Surface area = 4πr² = 36π cm² — the same number here by coincidence at r = 3, so check the units and which is asked. For a cone, volume = (1/3)πr²h and curved surface area = πrl, where l is the slant height found by Pythagoras from r and h.",
+    reforge:{stem:"A cone has radius 4 cm and height 9 cm. Its volume, in terms of π, is:",options:{A:"144π cm³",B:"36π cm³",C:"48π cm³",D:"12π cm³"},correct:"C"}
+  },
+  {
+    id:"MATH-N3-09",stem:"Prove that the sum of two consecutive integers is always odd. Which expression best starts the proof?",
+    options:{A:"2n and 2n + 2",B:"n and n + 2",C:"n and n + 1",D:"2n + 1 and 2n + 3"},
+    correct:"C",tag:"MC-MATH-PROOF",
+    scaffold:"Consecutive integers are n and n + 1, whose sum is 2n + 1 — always odd, since it is one more than a multiple of 2. Choosing 2n and 2n + 2 assumes both are even, which does not represent the general case. In algebraic proof, use 2n for any even number, 2n + 1 for any odd number, and finish by stating the conclusion in words rather than stopping at the algebra.",
+    reforge:{stem:"Which expression represents any odd number?",options:{A:"2n",B:"n + 1",C:"n² + 1",D:"2n + 1"},correct:"D"}
+  },
+  {
+    id:"MATH-N3-10",stem:"A function is defined as f(x) = 2x − 5. What is f(4)?",
+    options:{A:"3",B:"13",C:"−3",D:"8"},
+    correct:"A",tag:"MC-MATH-SUBSTITUTION",
+    scaffold:"Substitute 4 for x: f(4) = 2(4) − 5 = 8 − 5 = 3. Function notation simply means 'the value of the expression when x takes that value'. A composite function fg(x) means apply g first then f, working from the inside out. The inverse f⁻¹(x) reverses the function, found by writing y = 2x − 5 and making x the subject: f⁻¹(x) = (x + 5)/2.",
+    reforge:{stem:"If f(x) = 2x − 5, what is f⁻¹(x)?",options:{A:"(x − 5)/2",B:"5 − 2x",C:"(x + 5)/2",D:"2x + 5"},correct:"C"}
+  },
+  {
+    id:"MATH-N3-11",stem:"The median of 3, 8, 5, 12, 7, 9 is:",
+    options:{A:"7",B:"8.5",C:"7.5",D:"9"},
+    correct:"C",tag:"MC-MATH-MEDIAN",
+    scaffold:"Order the values first: 3, 5, 7, 8, 9, 12. With six values there is no single middle, so take the mean of the third and fourth: (7 + 8) ÷ 2 = 7.5. Forgetting to order the data is the commonest error and would give a wrong middle value. For n values, the median position is (n + 1) ÷ 2, here 3.5, meaning halfway between the third and fourth.",
+    reforge:{stem:"Which average is least affected by one unusually large value?",options:{A:"The arithmetic mean",B:"The range",C:"The median",D:"The total"},correct:"C"}
+  },
+  {
+    id:"MATH-N3-12",stem:"A set of data has range 24 and lowest value 7. Its highest value is:",
+    options:{A:"17",B:"31",C:"24",D:"168"},
+    correct:"B",tag:"MC-MATH-RANGE",
+    scaffold:"Range = highest − lowest, so highest = range + lowest = 24 + 7 = 31. The range measures spread, not average, and is easily distorted by a single outlier — which is why the interquartile range, covering the middle 50% of the data, is often preferred. Subtracting rather than adding gives 17, option A.",
+    reforge:{stem:"The interquartile range is often preferred to the range because it:",options:{A:"Uses every value in the data set",B:"Is unaffected by extreme values",C:"Is always a larger number",D:"Gives the average of the data"},correct:"B"}
+  },
+  {
+    id:"MATH-N3-13",stem:"Convert 2.5 hours into minutes.",
+    options:{A:"250 minutes",B:"205 minutes",C:"150 minutes",D:"125 minutes"},
+    correct:"C",tag:"MC-MATH-TIME",
+    scaffold:"There are 60 minutes in an hour, so 2.5 × 60 = 150 minutes. Time is not decimal: 2.5 hours is 2 hours 30 minutes, not 2 hours 50. This matters in speed calculations, where a journey of 1 hour 45 minutes must be entered as 1.75 hours, not 1.45. Converting minutes to hours means dividing by 60.",
+    reforge:{stem:"A journey takes 1 hour 45 minutes. Written as a decimal number of hours, this is:",options:{A:"1.45 hours",B:"1.75 hours",C:"1.34 hours",D:"1.9 hours"},correct:"B"}
+  },
+  {
+    id:"MATH-N3-14",stem:"What is 5/8 written as a percentage?",
+    options:{A:"58%",B:"1.6%",C:"62.5%",D:"80.0%"},
+    correct:"C",tag:"MC-MATH-PERCENT2",
+    scaffold:"Convert the fraction to a decimal by dividing: 5 ÷ 8 = 0.625, then multiply by 100 to get 62.5%. Alternatively scale the fraction to a denominator of 100. Working the division the wrong way round gives 1.6, and reading the digits directly gives 58% — both common. Useful benchmarks: 1/8 = 12.5%, 1/4 = 25%, 1/3 ≈ 33.3%, 3/5 = 60%.",
+    reforge:{stem:"Which of these is the largest value?",options:{A:"0.65",B:"3/5",C:"62.0%",D:"5/8"},correct:"A"}
+  },
+  {
+    id:"MATH-N3-15",stem:"A shop reduces a £45 coat by 20%, then by a further 10% in a later sale. The final price is:",
+    options:{A:"£31.50",B:"£32.40",C:"£36.00",D:"£34.50"},
+    correct:"B",tag:"MC-MATH-PERCENT",
+    scaffold:"Apply the multipliers in turn: 45 × 0.8 = £36, then 36 × 0.9 = £32.40. Successive percentage changes must not be added — 20% then 10% is not a 30% reduction, which would give £31.50, option A. The combined multiplier is 0.8 × 0.9 = 0.72, an overall reduction of 28%. The same logic applies to successive increases.",
+    reforge:{stem:"A price rises by 10% then falls by 10%. Compared with the original, the final price is:",options:{A:"Exactly the same",B:"1% higher",C:"1% lower",D:"10% lower"},correct:"C"}
+  },
+  {
+    id:"MATH-N3-16",stem:"£240 is shared between A and B in the ratio 5:3. How much more does A receive than B?",
+    options:{A:"£60",B:"£150",C:"£90",D:"£30"},
+    correct:"A",tag:"MC-MATH-RATIO2",
+    scaffold:"Total shares = 5 + 3 = 8, so each share is 240 ÷ 8 = £30. A receives 5 × 30 = £150 and B receives 3 × 30 = £90. The difference is £60 — or more directly, the difference is 2 shares, 2 × 30 = £60. Read carefully whether the question wants one person's amount, the difference, or the total; option B is A's share rather than the difference.",
+    reforge:{stem:"A recipe uses flour and sugar in the ratio 7:2. If 350 g of flour is used, how much sugar is needed?",options:{A:"175 g",B:"50 g",C:"140 g",D:"100 g"},correct:"D"}
+  },
+  {
+    id:"MATH-N3-17",stem:"Which of these is a reciprocal graph?",
+    options:{A:"y = x²",B:"y = 2ˣ",C:"y = 1/x",D:"y = 2x + 1"},
+    correct:"C",tag:"MC-MATH-RECIPROCAL",
+    scaffold:"y = 1/x is a reciprocal graph, forming two curves in opposite quadrants with the axes as asymptotes and no value at x = 0. Recognise the standard shapes: linear is a straight line; quadratic a parabola; cubic has an S-shape; exponential y = aˣ rises increasingly steeply and never reaches zero; and reciprocal approaches but never touches both axes.",
+    reforge:{stem:"The graph of y = 3ˣ passes through which point?",options:{A:"(0, 3)",B:"(1, 1)",C:"(0, 0)",D:"(0, 1)"},correct:"D"}
+  },
+  {
+    id:"MATH-N3-18",stem:"Two lines have gradients 2 and 2. The lines are:",
+    options:{A:"Perpendicular",B:"Parallel",C:"Identical",D:"Intersecting at right angles"},
+    correct:"B",tag:"MC-MATH-PARALLEL",
+    scaffold:"Lines with equal gradients are parallel; they are identical only if the y-intercepts also match, which is not stated here. Perpendicular lines have gradients whose product is −1, so a gradient of 2 pairs with −½. To test whether two lines meet, compare gradients: equal gradients and different intercepts means they never meet.",
+    reforge:{stem:"A line perpendicular to y = −3x + 2 has gradient:",options:{A:"1/3",B:"3",C:"−3",D:"−1/3"},correct:"A"}
+  },
+  {
+    id:"MATH-N3-19",stem:"An iterative formula is used to solve an equation. The process is repeated until successive values:",
+    options:{A:"Reach exactly zero",B:"Agree to the required accuracy",C:"Begin to increase steadily each time",D:"Differ by more than 1"},
+    correct:"B",tag:"MC-MATH-ITERATION",
+    scaffold:"Iteration substitutes a starting value into a rearranged formula, feeds the result back in, and repeats until successive values agree to the accuracy asked for — the values converge on a root. The answer is a numerical approximation, not an exact solution. Not every rearrangement converges: some diverge, moving further from the root with each step, so the given rearrangement must be used.",
+    reforge:{stem:"An iteration produces values that move further apart each time. The sequence is:",options:{A:"Converging steadily on the root value",B:"Diverging, so the rearrangement fails",C:"Exactly at the solution",D:"Rounding correctly"},correct:"B"}
+  },
+  {
+    id:"MATH-N3-20",stem:"In a Venn diagram, the region representing A ∩ B contains elements that are:",
+    options:{A:"In A or B or both",B:"In neither A nor B",C:"In both A and B",D:"In A but not B"},
+    correct:"C",tag:"MC-MATH-COMPLEMENT",
+    scaffold:"The intersection A ∩ B holds elements in both sets — the overlap. The union A ∪ B holds elements in either or both. The complement A′ holds everything in the universal set not in A. Probabilities are read from a Venn diagram by counting the elements in the relevant region and dividing by the total in the universal set.",
+    reforge:{stem:"A set has 30 elements in the universal set, with 12 in A. How many are in A′?",options:{A:"12",B:"30",C:"42",D:"18"},correct:"D"}
+  },
+  {
+    id:"MATH-N3-21",stem:"A quantity grows by 5% per year. Its multiplier for one year is:",
+    options:{A:"1.05",B:"0.95",C:"5",D:"1.5"},
+    correct:"A",tag:"MC-MATH-EXPONENTIAL",
+    scaffold:"A 5% increase multiplies by 1.05; a 5% decrease by 0.95. Over n years, raise the multiplier to the power n. Writing 1.5 for 5% is a frequent slip — that would be a 50% increase. To find the original value after a known percentage change, divide by the multiplier rather than applying the reverse percentage, which is the classic reverse-percentage trap.",
+    reforge:{stem:"After a 20% increase a price is £60. What was the original price?",options:{A:"£48",B:"£72",C:"£40",D:"£50"},correct:"D"}
+  },
+  {
+    id:"MATH-N3-22",stem:"Which measure would best summarise the most common shoe size sold in a shop?",
+    options:{A:"The mean",B:"The mode",C:"The range",D:"The median"},
+    correct:"B",tag:"MC-MATH-STATISTICS",
+    scaffold:"The mode is the most frequently occurring value and is the only average that works for categorical data such as colour or shoe size, where a mean would be meaningless in practice. The mean uses every value but is distorted by outliers; the median is the middle value and resists outliers. Choosing the appropriate average for the context is what these questions test.",
+    reforge:{stem:"A data set contains one extremely large outlier. Which average is most distorted by it?",options:{A:"The mean",B:"The mode",C:"The median",D:"None of them"},correct:"A"}
+  },
+  {
+    id:"MATH-N3-23",stem:"A measurement is recorded as 12 cm to the nearest centimetre. The error interval is:",
+    options:{A:"11 ≤ x < 13",B:"11.5 ≤ x < 12.5",C:"11.95 ≤ x < 12.05",D:"12 ≤ x < 13"},
+    correct:"B",tag:"MC-MATH-BOUNDS2",
+    scaffold:"To the nearest centimetre means the true value is within half a centimetre either side, so 11.5 ≤ x < 12.5. The lower bound uses ≤ because 11.5 rounds up to 12, and the upper uses < because 12.5 would round to 13. For a value to the nearest 10, the interval is ±5; to 2 decimal places, ±0.005. Bounds are combined carefully in calculations: for a maximum quotient, divide the upper bound by the lower.",
+    reforge:{stem:"To find the maximum value of a ÷ b from bounds, you should use:",options:{A:"Upper a ÷ upper b",B:"Lower a ÷ lower b",C:"Upper a ÷ lower b",D:"Lower a ÷ upper b"},correct:"C"}
+  },
+  {
+    id:"MATH-N3-24",stem:"A calculation gives 3.14159 on a calculator. Rounded to 3 significant figures this is:",
+    options:{A:"3.141",B:"3.14",C:"3.142",D:"314"},
+    correct:"B",tag:"MC-MATH-ERROR",
+    scaffold:"Significant figures are counted from the first non-zero digit: 3, 1 and 4 are the first three, and the next digit is 1, so there is no rounding up — the answer is 3.14. To 4 significant figures it would be 3.142, since the fifth digit is 5. Leading zeros are never significant, so 0.00456 has three significant figures, while zeros between digits are.",
+    reforge:{stem:"How many significant figures does 0.00509 have?",options:{A:"5",B:"6",C:"2",D:"3"},correct:"D"}
+  }
+]);
+
+mathsExpansion("GCSE-MATH-P1", [
+  {
+    id:"MATH-N4-01",stem:"Work out 3² + 4 × 2.",
+    options:{A:"26",B:"17",C:"22",D:"13"},
+    correct:"B",tag:"MC-MATH-NUMBER",
+    scaffold:"Follow the order of operations: indices first, then multiplication and division, then addition and subtraction. So 3² = 9, then 4 × 2 = 8, and 9 + 8 = 17. Working strictly left to right gives (9 + 4) × 2 = 26, which is option A and the commonest error. Brackets override everything, so (3² + 4) × 2 would indeed be 26.",
+    reforge:{stem:"Work out 20 − 6 ÷ 2.",options:{A:"7",B:"14",C:"17",D:"13"},correct:"C"}
+  },
+  {
+    id:"MATH-N4-02",stem:"Write 84 as a product of its prime factors.",
+    options:{A:"2 × 42",B:"2² × 3 × 7",C:"4 × 21",D:"2 × 3 × 14"},
+    correct:"B",tag:"MC-MATH-FACTORS",
+    scaffold:"Divide repeatedly by the smallest prime that fits: 84 ÷ 2 = 42, 42 ÷ 2 = 21, 21 ÷ 3 = 7, and 7 is prime. So 84 = 2 × 2 × 3 × 7 = 2² × 3 × 7. Every factor in the final answer must itself be prime, which is why the other options fail — 42, 4, 21 and 14 are all composite. Prime factorisation is the basis of finding HCF and LCM.",
+    reforge:{stem:"Which of these numbers is prime?",options:{A:"51",B:"57",C:"91",D:"29"},correct:"D"}
+  }
+]);
+mathsExpansion("GCSE-MATH-P2", [
+  {
+    id:"MATH-N4-03",stem:"A recipe for 4 people uses 600 g of rice. How much is needed for 6 people?",
+    options:{A:"900 g",B:"800 g",C:"1000 g",D:"400 g"},
+    correct:"A",tag:"MC-MATH-PROPORTION",
+    scaffold:"Find the amount for one person, then scale: 600 ÷ 4 = 150 g each, so 6 × 150 = 900 g. Alternatively multiply by the ratio 6/4 = 1.5, giving 600 × 1.5 = 900 g. Adding 200 g because there are 2 more people gives 800 g, option B, and treats a multiplicative relationship as an additive one — the standard error in proportion questions.",
+    reforge:{stem:"5 identical books weigh 1.2 kg. What do 8 weigh?",options:{A:"1.5 kg",B:"1.92 kg",C:"2.4 kg",D:"0.75 kg"},correct:"B"}
+  },
+  {
+    id:"MATH-N4-04",stem:"A shop sells 3 pens for £1.44. What is the cost of 7 pens?",
+    options:{A:"£3.36",B:"£10.08",C:"£4.32",D:"£2.88"},
+    correct:"A",tag:"MC-MATH-MEASURES",
+    scaffold:"Find the unit cost then scale: £1.44 ÷ 3 = £0.48 per pen, so 7 × £0.48 = £3.36. This 'best buy' method also compares deals: work out the price per item or per 100 g for each offer and pick the lower. Multiplying by 7 without first dividing by 3 gives £10.08, which is option B.",
+    reforge:{stem:"Which is better value: 500 g for £2.00, or 800 g for £3.04?",options:{A:"The 500 g pack",B:"They cost the same per gram",C:"The 800 g pack",D:"It cannot be compared"},correct:"C"}
+  }
+]);
+mathsExpansion("GCSE-MATH-P3", [
+  {
+    id:"MATH-N4-05",stem:"Expand and simplify (2x + 3)(x − 4).",
+    options:{A:"2x² − 12",B:"2x² − 5x − 12",C:"2x² + 11x − 12",D:"2x² − 5x + 12"},
+    correct:"B",tag:"MC-MATH-QUADRATIC3",
+    scaffold:"Multiply every term in the first bracket by every term in the second: 2x × x = 2x², 2x × −4 = −8x, 3 × x = 3x, 3 × −4 = −12. Collecting the middle terms gives −8x + 3x = −5x, so the answer is 2x² − 5x − 12. Sign errors on the final constant are the usual problem: positive times negative gives negative.",
+    reforge:{stem:"Expand and simplify (x − 3)².",options:{A:"x² − 9",B:"x² + 9",C:"x² − 6x + 9",D:"x² − 6x − 9"},correct:"C"}
+  },
+  {
+    id:"MATH-N4-06",stem:"A box plot shows a minimum of 12, lower quartile 18, median 24, upper quartile 31 and maximum 40. The interquartile range is:",
+    options:{A:"28",B:"22",C:"16",D:"13"},
+    correct:"D",tag:"MC-MATH-IQR",
+    scaffold:"Interquartile range = upper quartile − lower quartile = 31 − 18 = 13. The full range is maximum − minimum = 40 − 12 = 28, which is option A, so read carefully which spread is wanted. The IQR covers the middle half of the data and so is not distorted by extreme values, which makes it the better comparison when outliers are present.",
+    reforge:{stem:"Two box plots have the same median, but one has a much larger interquartile range. That data set is:",options:{A:"More spread out in the middle half",B:"Higher on average across the whole set",C:"Smaller in total size",D:"Free of any outliers"},correct:"A"}
   }
 ]);
 
@@ -36897,5 +37483,35 @@ for (const [id, variants] of Object.entries(chemAnswerLengthRepairs)) {
         if (replacement) item.options[letter] = replacement;
       }
     }
+  }
+}
+
+// GCSE Maths: merge thirteen single-use tags into the shared category that
+// already covers the same misconception. These were previously masked: each
+// tag was used once by a source question and once again by that question's
+// coverage-variant clone, so the taxonomy ratchet in dev/audit-banks.js
+// counted it as shared. Removing the clones exposed them as genuine
+// singletons — exactly the effect CLAUDE.md warns about when reading a 0 in
+// TAG_TAXONOMY_SUBJECTS. Every target below already carries a label in
+// data/misconception-labels.js and a starter in data/starter-activities.js.
+const gcseMathsTagMerges = {
+  "MATH-P1-11": "MC-MATH-NTH",          // continuing a linear sequence
+  "MATH-P1-32": "MC-MATH-NTH",          // evaluating an nth term
+  "MATH-P1-24": "MC-MATH-EQUATIONS",    // solving a linear equation
+  "MATH-P1-27": "MC-MATH-ANGLES",       // angle sum of a quadrilateral
+  "MATH-P1-29": "MC-MATH-VOLUME",       // volume of a cuboid
+  "MATH-P1-35": "MC-MATH-POLYGON",      // perimeter of a regular polygon
+  "MATH-P2-35": "MC-MATH-POLYGON",      // exterior angle of a regular polygon
+  "MATH-P1-36": "MC-MATH-TRANSFORM",    // translation as a vector
+  "MATH-P1-37": "MC-MATH-CIRCLE",       // radius from diameter
+  "MATH-P2-01": "MC-MATH-STANDARD2",    // arithmetic in standard form
+  "MATH-P2-05": "MC-MATH-LINEARGRAPH",  // gradient from y = mx + c
+  "MATH-P2-27": "MC-MATH-SCATTER",      // interpreting correlation
+  "MATH-P3-20": "MC-MATH-SUBSTITUTION"  // inverse of a linear function
+};
+for (const [id, tag] of Object.entries(gcseMathsTagMerges)) {
+  for (const bankId of SUBJECTS["gcse-maths"].banks) {
+    const question = (BANKS[bankId].questions || []).find(candidate => candidate.id === id);
+    if (question) question.tag = tag;
   }
 }
