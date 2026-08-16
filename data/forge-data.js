@@ -17772,6 +17772,731 @@ bioExpansion("BIO-1", [
   }
 ]);
 
+// ===== A-LEVEL COMPUTER SCIENCE: GENUINE QUESTION EXPANSION =====
+// cs reached its 200-question floor via expandSubjectToMinimum(), which
+// clones existing questions; a later pass strips the "(application variant
+// N)" suffix, leaving 67 of its 212 questions as byte-identical repeats.
+// These 88 authored questions take the source count to 200 so the expansion
+// pass generates no coverage variants at all.
+const csExpansion = (bankId, questions) => questions.forEach(question => BANKS[bankId].questions.push(question));
+csExpansion("CS-1", [
+  {
+    id:"CS-N1-01",stem:"A programmer uses a WHILE loop where the condition is checked before the body executes. Which statement is correct?",
+    options:{A:"The body always executes at least once regardless of the condition.",B:"The loop is equivalent to a FOR loop in every possible case.",C:"The body may never execute if the condition is false initially",D:"The condition is evaluated only after the first full iteration."},
+    correct:"C",tag:"MC-GCS-PROGRAMMING-ERRORS",
+    scaffold:"WHILE is a pre-conditioned loop: the condition is tested first, so if it is false at the start the body runs zero times. REPEAT...UNTIL (or do-while) is post-conditioned: the body runs once before any test, so it always executes at least once. FOR is a count-controlled loop used when the number of iterations is known in advance. Choosing the wrong one is a common source of logic errors that produce no error message.",
+    reforge:{stem:"Which loop construct guarantees its body runs at least once?",options:{A:"A WHILE loop, because the condition is checked first.",B:"A REPEAT...UNTIL loop, tested at the end",C:"A FOR loop, because the count is fixed before entry.",D:"A nested loop, because the inner body is always reached."},correct:"B"}
+  },
+  {
+    id:"CS-N1-02",stem:"A variable declared inside a subroutine cannot be accessed from the main program. This is because it has:",
+    options:{A:"Global scope, so it is destroyed after declaration.",B:"Local scope, so it exists only in that subroutine",C:"Static typing, which prevents external access.",D:"Been passed by reference to the calling routine."},
+    correct:"B",tag:"MC-GCS-ABSTRACTION",
+    scaffold:"Scope determines where an identifier is visible. Local variables exist only inside the subroutine that declares them and are destroyed when it returns, so the same name can be reused elsewhere without collision. Global variables are visible throughout the program, which makes them convenient but risky: any routine can modify them, making bugs hard to trace. Good practice is to keep variables local and communicate through parameters and return values.",
+    reforge:{stem:"Why is heavy use of global variables generally discouraged?",options:{A:"Any part of the program can change them, hiding bugs",B:"They use significantly more memory than local variables.",C:"They cannot be used inside subroutines at all.",D:"They are automatically destroyed between statements."},correct:"A"}
+  },
+  {
+    id:"CS-N1-03",stem:"Passing a parameter by reference rather than by value means the subroutine receives:",
+    options:{A:"A copy of the data, so the original cannot be changed.",B:"Only the data type, with the value supplied later.",C:"The value converted into a string representation.",D:"The memory address, so changes affect the original"},
+    correct:"D",tag:"MC-GCS-ABSTRACTION",
+    scaffold:"By value: a copy is made, so modifications inside the subroutine do not affect the caller's variable — safer, but uses more memory for large structures. By reference: the address is passed, so the subroutine works on the original — efficient for large arrays and allows multiple values to be returned, but changes can surprise the caller. Knowing which a language uses explains why some subroutines appear to modify their arguments and others do not.",
+    reforge:{stem:"A subroutine sorts a large array in place without returning it, and the caller sees the sorted result. The array was passed:",options:{A:"By value, so a copy was sorted and discarded.",B:"As a constant, which cannot be modified.",C:"By reference, so the original was modified",D:"As a literal, which has no memory address."},correct:"C"}
+  },
+  {
+    id:"CS-N1-04",stem:"Which of these is a logic error rather than a syntax error?",
+    options:{A:"A missing closing bracket at the end of a statement.",B:"A program that runs but divides by the wrong count",C:"A misspelled keyword that the compiler cannot recognise.",D:"A missing semicolon in a language that requires one."},
+    correct:"B",tag:"MC-GCS-PROGRAMMING-ERRORS",
+    scaffold:"Syntax error: the code breaks the language's grammar, so it will not compile or interpret — the error is reported before execution. Logic error: the code is valid and runs, but produces the wrong result, so nothing is reported and only testing reveals it. Runtime error: the code is valid but fails during execution, such as division by zero or accessing an array index out of bounds. Logic errors are the hardest because the program appears to work.",
+    reforge:{stem:"A program crashes partway through with 'index out of range'. This is best classified as:",options:{A:"A syntax error, because the code structure is invalid.",B:"A logic error, because the output is incorrect.",C:"A design error that prevents compilation.",D:"A runtime error, because it occurs during execution"},correct:"D"}
+  },
+  {
+    id:"CS-N1-05",stem:"In a linear search of an unsorted list of n items, the worst-case number of comparisons is:",
+    options:{A:"log₂ n, because the list is repeatedly halved.",B:"n, because every item may need to be checked",C:"n², because each item is compared with every other.",D:"1, because the item is found immediately."},
+    correct:"B",tag:"MC-GCS-ALGORITHMS",
+    scaffold:"Linear search checks each element in turn: best case 1 comparison, worst case n, average n/2. It works on unsorted data. Binary search repeatedly halves a sorted list, giving a worst case of log₂ n — far better for large n, but it requires the data to be sorted first. So for a single search of unsorted data, linear search may be quicker overall than sorting and then binary searching.",
+    reforge:{stem:"Binary search on a sorted list of 1000 items requires at most about how many comparisons?",options:{A:"1000, since each item may be checked in turn.",B:"500, since on average half the list is examined.",C:"10, since log₂ 1000 is just under 10",D:"3, since the list is divided into three parts."},correct:"C"}
+  },
+  {
+    id:"CS-N1-06",stem:"A bubble sort makes a complete pass through a list without performing any swaps. This indicates that the list is:",
+    options:{A:"Reversed, so the sort must start again.",B:"Too large for the algorithm to process.",C:"Sorted, so the algorithm can stop early",D:"Corrupted, since a swap should always occur."},
+    correct:"C",tag:"MC-GCS-ALGORITHMS",
+    scaffold:"Bubble sort repeatedly compares adjacent pairs and swaps those out of order, so after each pass the largest remaining item settles at the end. A pass with no swaps means every adjacent pair is already in order, so the whole list is sorted — an optimised implementation uses a swapped flag to terminate then, giving a best case of O(n). The worst and average cases remain O(n²), which is why it is a teaching algorithm rather than a practical one.",
+    reforge:{stem:"Merge sort is generally preferred to bubble sort for large data sets because its time complexity is:",options:{A:"O(n²), which grows more slowly than bubble sort's O(n).",B:"O(n log n), which scales far better than O(n²)",C:"O(1), because the time taken does not depend on n.",D:"O(log n), because the data is never fully traversed."},correct:"B"}
+  },
+  {
+    id:"CS-N1-07",stem:"A recursive subroutine must include a base case in order to:",
+    options:{A:"Improve the readability of the code for other programmers.",B:"Stop the recursion, preventing a stack overflow",C:"Allow the subroutine to accept more than one parameter.",D:"Convert the recursion into an equivalent iteration."},
+    correct:"B",tag:"MC-GCS-ALGORITHMS",
+    scaffold:"Recursion needs two parts: a base case that returns without calling itself, and a recursive case that moves closer to the base case. Each call adds a stack frame holding parameters and the return address; without a reachable base case the stack grows until it overflows. Recursion often expresses tree and divide-and-conquer problems elegantly, but iteration is usually more memory-efficient since it needs no stack frames.",
+    reforge:{stem:"Compared with an equivalent iterative version, a recursive solution typically uses more:",options:{A:"Disk storage, because each call is written to a file.",B:"Network bandwidth, because calls are sent remotely.",C:"Memory, because each call adds a stack frame",D:"Processor cores, because calls execute in parallel."},correct:"C"}
+  },
+  {
+    id:"CS-N1-08",stem:"Which statement best describes the difference between a compiler and an interpreter?",
+    options:{A:"A compiler translates all the code first; an interpreter line by line",B:"A compiler executes code directly without producing any output file.",C:"An interpreter produces a standalone executable; a compiler does not.",D:"An interpreter only works with assembly language source code."},
+    correct:"A",tag:"MC-GCS-PROGRAMMING-ERRORS",
+    scaffold:"Compiler: translates the entire source into object code in one go, reporting all errors together; the resulting executable runs quickly and without the source, but compilation takes time and the output is platform-specific. Interpreter: translates and executes one statement at a time, so errors surface at the point of failure and development is quicker, but execution is slower and the interpreter must be present. Assemblers translate assembly language into machine code one-to-one.",
+    reforge:{stem:"Why is an interpreter often preferred during program development?",options:{A:"It produces faster-running code than a compiler does.",B:"It removes the need to test the program at all.",C:"It converts the program into platform-independent machine code.",D:"Errors are reported as each statement runs, easing debugging"},correct:"D"}
+  },
+  {
+    id:"CS-N1-09",stem:"An array differs from a record (struct) in that an array normally holds items that are:",
+    options:{A:"Always sorted into ascending order automatically.",B:"Stored on disk rather than in main memory.",C:"All of the same data type, accessed by index",D:"Limited to a maximum of 256 elements."},
+    correct:"C",tag:"MC-GCS-DATA-STRUCTURES",
+    scaffold:"Array: a fixed-size, ordered collection of elements of one type, accessed by numeric index, stored contiguously so element addresses can be calculated directly. Record: a collection of fields that may be of different types, accessed by field name — suited to modelling one entity such as a student. A list may be dynamic and hold mixed types depending on the language. Choosing correctly is about whether items are the same kind of thing or different attributes of one thing.",
+    reforge:{stem:"A programmer needs to store a student's name, date of birth and exam mark together. The most appropriate structure is:",options:{A:"A one-dimensional array of integers.",B:"A record, because the fields differ in type",C:"A stack, because the data is added in order.",D:"A queue, because the records arrive sequentially."},correct:"B"}
+  },
+  {
+    id:"CS-N1-10",stem:"A stack is described as a LIFO structure. This means the item removed is always the one that was:",
+    options:{A:"Added most recently, at the top",B:"Added first, at the base of the stack.",C:"Assigned the highest priority value.",D:"Stored at the lowest memory address."},
+    correct:"A",tag:"MC-GCS-DATA-STRUCTURES",
+    scaffold:"Stack: Last In First Out, with push and pop operating at one end (the top) tracked by a stack pointer. Used for call return addresses, undo functionality and expression evaluation. Queue: First In First Out, with enqueue at the rear and dequeue at the front, tracked by two pointers. Used for print spooling and buffering. A circular queue reuses freed space at the front by wrapping the rear pointer round.",
+    reforge:{stem:"Which application is best modelled by a queue rather than a stack?",options:{A:"Reversing the characters in a string.",B:"Storing return addresses during subroutine calls.",C:"Implementing the undo function in an editor.",D:"Managing print jobs in order of arrival"},correct:"D"}
+  },
+  {
+    id:"CS-N1-11",stem:"In a circular queue, the rear pointer wraps around to the start of the array in order to:",
+    options:{A:"Sort the items into the order they will be removed.",B:"Guarantee the queue can never become full.",C:"Convert the queue into a stack when required.",D:"Reuse space freed at the front by earlier removals"},
+    correct:"D",tag:"MC-GCS-DATA-STRUCTURES",
+    scaffold:"In a linear queue, repeated dequeues leave unusable empty space at the front while the rear pointer advances toward the end of the array. A circular queue treats the array as a ring: when the rear reaches the last index it wraps to index 0, reusing that space. Full and empty conditions must then be distinguished carefully, usually with a counter or by leaving one slot unused, since front and rear coincide in both states.",
+    reforge:{stem:"Why must a circular queue distinguish the full and empty states carefully?",options:{A:"The front and rear pointers can be equal in both cases",B:"The array indices become negative when wrapping occurs.",C:"Items are stored in two arrays simultaneously.",D:"The queue reverses its order once it wraps around."},correct:"A"}
+  },
+  {
+    id:"CS-N1-12",stem:"Which traversal of a binary tree visits the left subtree, then the node, then the right subtree?",
+    options:{A:"Pre-order traversal.",B:"In-order traversal.",C:"Post-order traversal.",D:"Breadth-first traversal."},
+    correct:"B",tag:"MC-GCS-DATA-STRUCTURES",
+    scaffold:"Pre-order: node, left, right — used to copy a tree or produce prefix notation. In-order: left, node, right — on a binary search tree this outputs the values in ascending order. Post-order: left, right, node — used to delete a tree safely and to produce postfix (Reverse Polish) notation. A binary search tree keeps smaller values left and larger right, giving O(log n) search when reasonably balanced and O(n) when badly unbalanced.",
+    reforge:{stem:"Searching a binary search tree degrades to O(n) when the tree:",options:{A:"Contains only integer values.",B:"Is traversed in post-order rather than in-order.",C:"Becomes unbalanced, resembling a list",D:"Holds more than 1000 nodes in total."},correct:"C"}
+  },
+  {
+    id:"CS-N1-13",stem:"A linked list stores each item together with:",
+    options:{A:"A pointer to the next node",B:"A complete copy of the entire list.",C:"Its position expressed as an array index.",D:"A checksum used to verify the data."},
+    correct:"A",tag:"MC-GCS-DATA-STRUCTURES",
+    scaffold:"Each node holds data plus a pointer to the next node; the last points to null. Advantages over an array: size can grow and shrink dynamically, and inserting or deleting requires only pointer changes rather than shifting elements. Disadvantages: no direct indexed access, so finding the nth item means traversing from the start, and extra memory is used for pointers. A doubly linked list adds a backward pointer, allowing traversal in both directions.",
+    reforge:{stem:"Inserting an item into the middle of a linked list is usually faster than into an array because:",options:{A:"Linked lists are always stored in contiguous memory.",B:"Arrays must be sorted before any insertion.",C:"Linked lists automatically compress their data.",D:"Only two pointers change, with no elements shifted"},correct:"D"}
+  },
+  {
+    id:"CS-N1-14",stem:"In object-oriented programming, encapsulation refers to:",
+    options:{A:"Creating a new class that inherits from an existing one.",B:"Allowing one method name to behave differently in different classes.",C:"Bundling data with its methods and restricting direct access",D:"Producing multiple instances of a class at runtime."},
+    correct:"C",tag:"MC-GCS-OOP",
+    scaffold:"Encapsulation: attributes are made private and accessed through public methods (getters and setters), so an object controls its own state and validation cannot be bypassed. Inheritance: a subclass acquires the attributes and methods of a superclass, and may extend or override them. Polymorphism: the same method call behaves differently depending on the object's class. Abstraction: exposing only essential features and hiding implementation detail.",
+    reforge:{stem:"A Dog class and a Cat class each provide their own speak() method, and calling speak() on either gives the appropriate sound. This demonstrates:",options:{A:"Polymorphism, as the same call differs per class",B:"Encapsulation, since the method data is private.",C:"Instantiation, since objects are created from classes.",D:"Aggregation, since the classes are combined."},correct:"A"}
+  },
+  {
+    id:"CS-N1-15",stem:"Making a class attribute private rather than public mainly ensures that:",
+    options:{A:"The attribute occupies less memory when the object is created.",B:"It can only change through methods that validate the value",C:"The attribute is shared by every instance of the class.",D:"Subclasses are prevented from inheriting the class at all."},
+    correct:"B",tag:"MC-GCS-OOP",
+    scaffold:"Private attributes cannot be read or written directly from outside the class; access goes through public methods. This lets the class enforce validation (rejecting a negative age, for example), change its internal representation without breaking other code, and keep invariants true. It is the practical benefit of encapsulation. Note private does not mean the attribute is unique per object — that is the difference between instance and class (static) attributes.",
+    reforge:{stem:"A setter method rejects any age below zero before storing it. This illustrates the benefit of:",options:{A:"Inheritance, because behaviour is reused.",B:"Instantiation, because objects are created.",C:"Encapsulation, as the class controls its state",D:"Overloading, because the method has several forms."},correct:"C"}
+  },
+  {
+    id:"CS-N1-16",stem:"A subclass overriding a method inherited from its superclass means the subclass:",
+    options:{A:"Provides its own implementation of that method",B:"Deletes the method from the superclass permanently.",C:"Calls the superclass method twice in succession.",D:"Prevents any further subclasses being created."},
+    correct:"A",tag:"MC-GCS-OOP",
+    scaffold:"Overriding: a subclass redefines an inherited method with the same name and signature, so the subclass version runs for objects of that type — the mechanism behind polymorphism. Overloading (a different idea) is several methods sharing a name but differing in parameters, resolved at compile time. Inheritance models an 'is-a' relationship; composition, where one object contains another, models 'has-a' and is often more flexible.",
+    reforge:{stem:"A Car class contains an Engine object as one of its attributes. This relationship is best described as:",options:{A:"Inheritance, because a Car is a kind of Engine.",B:"Polymorphism, because Engine behaves differently.",C:"Overriding, because Car redefines Engine's methods.",D:"Composition, because a Car has an Engine"},correct:"D"}
+  },
+  {
+    id:"CS-N1-17",stem:"The denary number 45 is represented in 8-bit binary as:",
+    options:{A:"00101100",B:"01011010",C:"00101101",D:"00110101"},
+    correct:"C",tag:"MC-GCS-DATA-REPRESENTATION",
+    scaffold:"Place values in 8-bit binary are 128, 64, 32, 16, 8, 4, 2, 1. For 45: 32 fits leaving 13, 8 fits leaving 5, 4 fits leaving 1, then 1 fits leaving 0 — so 32+8+4+1, giving 00101101. Check by adding the set bits back. A useful sanity test is that an odd number must end in 1 and an even number in 0, which immediately rules out several distractors.",
+    reforge:{stem:"What is the denary value of the 8-bit binary number 00011010?",options:{A:"52, from adding 32, 16 and 4.",B:"13, from adding 8, 4 and 1.",C:"20, from adding 16 and 4.",D:"26, from adding 16, 8 and 2"},correct:"D"}
+  },
+  {
+    id:"CS-N1-18",stem:"Two's complement is used to represent negative integers because it:",
+    options:{A:"Allows subtraction to be done by binary addition",B:"Doubles the range of positive values that can be stored.",C:"Removes the need to store a sign bit at all.",D:"Stores the magnitude and sign in two separate bytes."},
+    correct:"A",tag:"MC-GCS-DATA-REPRESENTATION",
+    scaffold:"To negate a number in two's complement, invert all bits and add 1. The most significant bit indicates sign (1 = negative), and an 8-bit range is −128 to +127. Its advantage over sign-and-magnitude is that there is only one representation of zero and that subtraction becomes addition of the negative, so the same adder circuit handles both — simplifying the ALU considerably.",
+    reforge:{stem:"In 8-bit two's complement, what is the representation of −5?",options:{A:"10000101, using a sign bit with the magnitude.",B:"11111010, by inverting the bits of 5 only.",C:"11111011, by inverting 5 and adding 1",D:"00000101, since the sign is stored separately."},correct:"C"}
+  },
+  {
+    id:"CS-N1-19",stem:"Hexadecimal is often used by programmers to represent binary because it:",
+    options:{A:"Can store larger numbers than binary in the same space.",B:"Is the format processors use internally for arithmetic.",C:"Removes the need for any binary conversion.",D:"Is compact, each digit mapping to four bits"},
+    correct:"D",tag:"MC-GCS-DATA-REPRESENTATION",
+    scaffold:"One hex digit represents exactly four bits, so a byte is two hex digits — 11111010 becomes FA. This makes long binary values shorter to write and much easier to read and check, reducing transcription errors in memory addresses, colour codes and MAC addresses. Hex is purely a human convenience: the machine still stores binary, and no information is added or removed by the notation.",
+    reforge:{stem:"The binary value 10110110 written in hexadecimal is:",options:{A:"B6, since 1011 is B and 0110 is 6",B:"6B, since the nibbles are read right to left.",C:"A6, since 1011 is A and 0110 is 6.",D:"B9, since 0110 is 9."},correct:"A"}
+  },
+  {
+    id:"CS-N1-20",stem:"Increasing the sample rate when recording digital audio will:",
+    options:{A:"Reduce the file size while improving the sound quality.",B:"Capture higher frequencies, increasing file size",C:"Increase the number of bits used for each individual sample.",D:"Have no effect unless the bit depth is also reduced."},
+    correct:"B",tag:"MC-GCS-DATA-REPRESENTATION",
+    scaffold:"Sample rate (Hz) is how many times per second the amplitude is measured; higher rates capture higher frequencies more faithfully. Bit depth is how many bits record each sample; more bits give finer amplitude resolution and less quantisation noise. File size ≈ sample rate × bit depth × duration × channels. Both improve fidelity and both increase size — keep the two ideas distinct, as questions often swap them deliberately.",
+    reforge:{stem:"An audio file is 44,100 Hz, 16-bit, mono, lasting 10 seconds. Which change would halve the file size?",options:{A:"Doubling the sample rate to 88,200 Hz.",B:"Recording in stereo instead of mono.",C:"Reducing the bit depth to 8 bits",D:"Increasing the duration to 20 seconds."},correct:"C"}
+  },
+  {
+    id:"CS-N1-21",stem:"Lossless compression differs from lossy compression because lossless compression:",
+    options:{A:"Always produces a smaller file than lossy compression does.",B:"Can only be applied to text files and never to images.",C:"Allows the original data to be reconstructed exactly",D:"Discards data judged imperceptible to the user."},
+    correct:"C",tag:"MC-GCS-DATA-REPRESENTATION",
+    scaffold:"Lossless (ZIP, PNG, FLAC, run-length encoding, Huffman coding) removes redundancy so the original is restored bit for bit — essential for text, code and archives. Lossy (JPEG, MP3) permanently discards detail the eye or ear is less sensitive to, giving much smaller files at the cost of fidelity, and repeated re-encoding degrades quality further. The choice depends on whether exact reconstruction matters, not on which compresses more.",
+    reforge:{stem:"Run-length encoding would compress which image most effectively?",options:{A:"A photograph with continuous gradients of colour.",B:"A logo with large blocks of one colour",C:"A heavily textured image with random pixel noise.",D:"An image already compressed using JPEG."},correct:"B"}
+  },
+  {
+    id:"CS-N1-22",stem:"An ASCII character set using 7 bits can represent how many distinct characters?",
+    options:{A:"128, calculated as 2⁷",B:"127, since one code is reserved.",C:"256, calculated as 2⁸.",D:"49, calculated as 7²."},
+    correct:"A",tag:"MC-GCS-DATA-REPRESENTATION",
+    scaffold:"n bits give 2ⁿ distinct combinations, so 7-bit ASCII gives 128 codes (0–127) covering English letters, digits, punctuation and control characters. Extended ASCII uses 8 bits for 256. Unicode uses more bits — UTF-8 is variable-length, from one byte for ASCII-compatible characters up to four — allowing over a million code points so that most of the world's writing systems and emoji can be represented.",
+    reforge:{stem:"Unicode was introduced mainly to overcome which limitation of ASCII?",options:{A:"ASCII files could not be compressed effectively.",B:"ASCII stored characters as images rather than codes.",C:"ASCII required more storage per character than Unicode.",D:"ASCII could not represent non-English writing systems"},correct:"D"}
+  }
+]);
+csExpansion("CS-2", [
+  {
+    id:"CS-N2-01",stem:"In the TCP/IP model, which layer is responsible for routing packets between networks?",
+    options:{A:"The application layer, which formats data for the user program.",B:"The transport layer, which splits data into segments and checks delivery.",C:"The link layer, which handles transmission over the physical medium.",D:"The internet layer, which addresses and routes packets"},
+    correct:"D",tag:"MC-GCS-NETWORK-PROTOCOLS",
+    scaffold:"TCP/IP has four layers. Application (HTTP, FTP, SMTP) — produces the data. Transport (TCP, UDP) — splits it into segments, adds port numbers, and for TCP handles acknowledgement and reordering. Internet (IP) — adds source and destination IP addresses and routes packets across networks. Link — frames the data for the physical medium and uses MAC addresses. Each layer adds its own header, and the receiving stack strips them in reverse.",
+    reforge:{stem:"Layering a protocol stack is useful mainly because it:",options:{A:"Lets one layer be changed without rewriting the others",B:"Guarantees that no packet is ever lost in transit.",C:"Removes the need for addressing at the internet layer.",D:"Makes every protocol run at the same speed."},correct:"A"}
+  },
+  {
+    id:"CS-N2-02",stem:"TCP is preferred to UDP for transferring a file because TCP:",
+    options:{A:"Acknowledges segments and retransmits losses",B:"Has a smaller header, so it uses less bandwidth.",C:"Sends data without establishing a connection first.",D:"Delivers segments faster by skipping error checking."},
+    correct:"A",tag:"MC-GCS-NETWORK-PROTOCOLS",
+    scaffold:"TCP is connection-oriented: it performs a three-way handshake, numbers segments, acknowledges them, retransmits losses and reassembles in order — reliable but with more overhead and latency. UDP is connectionless: it just sends, with a small header and no acknowledgement or reordering. Files, web pages and email need TCP's reliability; live video, voice and online gaming prefer UDP because a late packet is worse than a missing one.",
+    reforge:{stem:"Live video calling usually uses UDP rather than TCP because:",options:{A:"UDP encrypts the stream automatically.",B:"Retransmitting a late packet only adds delay",C:"UDP guarantees every frame arrives in order.",D:"TCP cannot carry audio or video data."},correct:"B"}
+  },
+  {
+    id:"CS-N2-03",stem:"A subnet mask of 255.255.255.0 means that in each IP address:",
+    options:{A:"All four octets identify the individual host.",B:"The first three octets are the network, the last the host",C:"The first octet identifies the network and the rest the host.",D:"The address is reserved for private use only."},
+    correct:"B",tag:"MC-GCS-NETWORK-PROTOCOLS",
+    scaffold:"A subnet mask splits an IPv4 address into a network part and a host part. Where a mask octet is 255 (binary 11111111), those bits belong to the network; where it is 0, they identify the host. So 255.255.255.0 (a /24) gives 256 addresses per subnet, of which 254 are usable — the lowest is the network address and the highest is the broadcast address. Routers compare the network part to decide whether traffic stays local or is forwarded.",
+    reforge:{stem:"How many usable host addresses does a /24 subnet provide?",options:{A:"256, since eight host bits give 2⁸ addresses.",B:"255, because only the broadcast address is reserved.",C:"254, as network and broadcast addresses are reserved",D:"128, because half the range is reserved for routing."},correct:"C"}
+  },
+  {
+    id:"CS-N2-04",stem:"The Domain Name System (DNS) exists mainly to:",
+    options:{A:"Encrypt traffic between a browser and a web server.",B:"Assign IP addresses automatically to devices joining a network.",C:"Translate human-readable domain names into IP addresses",D:"Divide a large network into smaller broadcast domains."},
+    correct:"C",tag:"MC-GCS-NETWORK-PROTOCOLS",
+    scaffold:"DNS resolves names like example.com to IP addresses, querying a hierarchy of resolvers, root, top-level and authoritative servers, with results cached to reduce lookups. Distinguish it from DHCP, which leases IP addresses to devices joining a network; NAT, which maps many private addresses to one public one; and TLS, which encrypts traffic. Exam questions often list all four and rely on students confusing DNS with DHCP.",
+    reforge:{stem:"A laptop joins a home network and is given an IP address automatically. Which protocol did this?",options:{A:"DNS, because it resolves the network name.",B:"HTTPS, because the connection is secured.",C:"NAT, because the address is private.",D:"DHCP, which leases addresses to clients"},correct:"D"}
+  },
+  {
+    id:"CS-N2-05",stem:"Packet switching differs from circuit switching because packet switching:",
+    options:{A:"Reserves a dedicated path for the whole conversation.",B:"Requires all data to travel by an identical route.",C:"Can only be used across a single local network.",D:"Sends packets independently by varying routes"},
+    correct:"D",tag:"MC-GCS-NETWORK-PROTOCOLS",
+    scaffold:"Circuit switching reserves a physical path for the duration of a call — guaranteed bandwidth, but the circuit is wasted during silence. Packet switching breaks data into packets, each with a header carrying source, destination and sequence number; routers forward each packet by whatever route is best at that moment, so packets may arrive out of order and are reassembled at the destination. It uses the network far more efficiently and copes with link failure.",
+    reforge:{stem:"Why does each packet carry a sequence number?",options:{A:"So out-of-order packets can be reassembled",B:"So routers can encrypt each packet separately.",C:"So the packet can be compressed before sending.",D:"So the sender knows which port to use."},correct:"A"}
+  },
+  {
+    id:"CS-N2-06",stem:"A firewall protects a network principally by:",
+    options:{A:"Inspecting traffic and blocking it by rule",B:"Encrypting every file stored on the connected computers.",C:"Removing viruses already installed on a workstation.",D:"Creating backups of data before it leaves the network."},
+    correct:"A",tag:"MC-GCS-SECURITY",
+    scaffold:"A firewall filters traffic at the network boundary using rules about IP addresses, ports and protocols, and may inspect packet contents. It cannot remove malware already inside, recover data or replace backups. Layered defence matters: firewalls control traffic, anti-malware detects malicious software, encryption protects data if it is stolen, access control limits what each user can reach, and patching closes known vulnerabilities.",
+    reforge:{stem:"Encryption protects stolen data because the attacker:",options:{A:"Cannot copy the file from the storage device.",B:"Cannot read it without the decryption key",C:"Is prevented from connecting to the network.",D:"Triggers an alert whenever the file is opened."},correct:"B"}
+  },
+  {
+    id:"CS-N2-07",stem:"In symmetric encryption, the same key is used to encrypt and decrypt. The main practical problem this creates is:",
+    options:{A:"It is far slower than asymmetric encryption.",B:"Distributing the key securely to the other party",C:"It cannot be used for large volumes of data.",D:"The ciphertext is always longer than the plaintext."},
+    correct:"B",tag:"MC-GCS-CRYPTOGRAPHY",
+    scaffold:"Symmetric encryption (AES) is fast and suits bulk data, but both parties need the same secret key, and sending it over an insecure channel exposes it. Asymmetric encryption uses a public key to encrypt and a mathematically related private key to decrypt, solving distribution but running much more slowly. In practice TLS combines them: asymmetric encryption establishes a shared session key, then symmetric encryption protects the actual traffic.",
+    reforge:{stem:"HTTPS uses asymmetric encryption at the start of a session and symmetric encryption afterwards because this:",options:{A:"Avoids the need for any certificates.",B:"Makes the connection impossible to intercept.",C:"Solves key distribution, then gets symmetric speed",D:"Allows the server to store the private key publicly."},correct:"C"}
+  },
+  {
+    id:"CS-N2-08",stem:"A digital signature allows a recipient to verify that a message:",
+    options:{A:"Was compressed before it was transmitted.",B:"Travelled by the shortest available route.",C:"Cannot be read by anyone other than the recipient.",D:"Came from the stated sender and was not altered"},
+    correct:"D",tag:"MC-GCS-CRYPTOGRAPHY",
+    scaffold:"To sign, the sender hashes the message and encrypts the hash with their private key. The recipient decrypts it with the sender's public key and compares against their own hash of the message. A match proves authenticity (only the private key holder could have signed) and integrity (any change alters the hash). Note it does not provide confidentiality — the message itself is not encrypted unless that is done separately.",
+    reforge:{stem:"A digital certificate issued by a certificate authority mainly confirms that:",options:{A:"The website's traffic is compressed efficiently.",B:"The site has never suffered a security breach.",C:"The website is free of malware.",D:"A public key belongs to that organisation"},correct:"D"}
+  },
+  {
+    id:"CS-N2-09",stem:"A hashing algorithm used for storing passwords should be:",
+    options:{A:"Reversible, so the original password can be recovered.",B:"Fast enough to hash millions of guesses per second.",C:"Compressible, so hashes take little storage.",D:"One-way, so the stored value cannot be reversed"},
+    correct:"D",tag:"MC-GCS-CRYPTOGRAPHY",
+    scaffold:"Hashing is deliberately one-way: it maps input to a fixed-length digest that cannot practically be reversed, so a stolen database does not reveal passwords. Verification re-hashes the entered password and compares digests. Good password hashing is deliberately slow to resist brute force, and adds a random salt per user so identical passwords give different hashes and precomputed rainbow tables fail. Encryption, by contrast, is designed to be reversed with a key.",
+    reforge:{stem:"Adding a random salt to each password before hashing prevents:",options:{A:"Users from choosing weak or common passwords.",B:"Precomputed rainbow tables from matching the hashes",C:"The hash function from ever producing a collision.",D:"Administrators from resetting a forgotten password."},correct:"B"}
+  },
+  {
+    id:"CS-N2-10",stem:"A phishing attack differs from most other attacks because it primarily exploits:",
+    options:{A:"Human trust rather than a technical vulnerability",B:"An unpatched flaw in the operating system kernel.",C:"Weak encryption on the wireless access point.",D:"A buffer overflow in the web server software."},
+    correct:"A",tag:"MC-GCS-SECURITY",
+    scaffold:"Phishing uses social engineering: a message that appears to come from a trusted source persuades the user to reveal credentials or open an attachment. Because the weakness is human, the defences are training, verifying senders, and multi-factor authentication rather than patching. Contrast with technical attacks: SQL injection exploits unvalidated input, denial of service overwhelms capacity, and brute force tries many keys.",
+    reforge:{stem:"SQL injection is best prevented by:",options:{A:"Using a longer administrator password.",B:"Validating and parameterising input",C:"Encrypting the database backups.",D:"Installing a faster web server."},correct:"B"}
+  },
+  {
+    id:"CS-N2-11",stem:"In a relational database, a foreign key is:",
+    options:{A:"A field that uniquely identifies each record in its own table.",B:"An attribute referring to another table's primary key",C:"An index created to speed up searching a large table.",D:"A key encrypted before the database is stored on disk."},
+    correct:"B",tag:"MC-GCS-DATABASES",
+    scaffold:"A primary key uniquely identifies each record in its table. A foreign key is an attribute in a second table holding the value of that primary key, creating the relationship between them and enforcing referential integrity — you cannot reference a record that does not exist. A composite key uses two or more fields together where no single field is unique, which is how many-to-many relationships are resolved through a linking table.",
+    reforge:{stem:"A many-to-many relationship between Students and Courses is normally implemented using:",options:{A:"A single table containing repeated course fields.",B:"Two tables joined directly by their primary keys.",C:"A linking table holding both foreign keys",D:"An index on the student name field."},correct:"C"}
+  },
+  {
+    id:"CS-N2-12",stem:"A database table is in first normal form when it contains:",
+    options:{A:"No partial dependency on part of a composite key.",B:"No transitive dependency between non-key attributes.",C:"No repeating groups; each field holds one value",D:"No foreign keys referring to any other table."},
+    correct:"C",tag:"MC-GCS-DATABASES",
+    scaffold:"1NF — atomic values only, no repeating groups. 2NF — in 1NF and no partial dependency, so no non-key attribute depends on only part of a composite key. 3NF — in 2NF and no transitive dependency, so no non-key attribute depends on another non-key attribute. Normalisation removes redundancy, prevents update, insert and delete anomalies, and saves storage, at the cost of needing joins when querying.",
+    reforge:{stem:"The main benefit of normalising a database to 3NF is that it:",options:{A:"Makes every query run faster than before.",B:"Removes the need for any primary keys.",C:"Allows all data to be stored in one table.",D:"Reduces redundancy and update anomalies"},correct:"D"}
+  },
+  {
+    id:"CS-N2-13",stem:"Which SQL statement returns only students whose mark is above 70?",
+    options:{A:"SELECT * FROM Students ORDER BY Mark > 70;",B:"SELECT * FROM Students HAVING Mark;",C:"SELECT Mark FROM Students GROUP BY 70;",D:"SELECT * FROM Students WHERE Mark > 70;"},
+    correct:"D",tag:"MC-GCS-DATABASES",
+    scaffold:"SELECT chooses fields, FROM names the table, WHERE filters individual rows, ORDER BY sorts the result, GROUP BY aggregates rows, and HAVING filters those aggregated groups. The common error is using HAVING where WHERE is needed: WHERE filters before grouping and works on raw rows, HAVING filters after grouping and works on aggregate values such as COUNT or AVG.",
+    reforge:{stem:"Which clause filters rows after they have been grouped by an aggregate function?",options:{A:"WHERE, because it always filters rows.",B:"ORDER BY, because it arranges the results.",C:"HAVING, which applies to grouped rows",D:"SELECT, because it chooses the fields."},correct:"C"}
+  },
+  {
+    id:"CS-N2-14",stem:"A transaction in a database system is described as atomic. This means it:",
+    options:{A:"Either completes fully or has no effect",B:"Runs faster than any other type of query.",C:"Affects only one record in one table.",D:"Cannot be rolled back once it has started."},
+    correct:"A",tag:"MC-GCS-DATABASES",
+    scaffold:"ACID properties: Atomicity — all operations in a transaction succeed or none do, so a transfer never debits without crediting. Consistency — the database moves from one valid state to another. Isolation — concurrent transactions do not interfere, usually enforced by record locking. Durability — once committed, changes survive a crash, supported by a transaction log used to recover.",
+    reforge:{stem:"Record locking during a transaction primarily prevents:",options:{A:"The database from exceeding its storage quota.",B:"Two users updating the same record simultaneously",C:"A user from reading data they lack permission for.",D:"The transaction log from becoming too large."},correct:"B"}
+  },
+  {
+    id:"CS-N2-15",stem:"Client-server differs from peer-to-peer because in client-server:",
+    options:{A:"Every device both requests and supplies resources equally.",B:"Resources are centrally managed by dedicated servers",C:"No device can act as a client at any time.",D:"Devices must all run the same operating system."},
+    correct:"B",tag:"MC-GCS-NETWORK-PROTOCOLS",
+    scaffold:"Client-server centralises storage, security, backup and updates on dedicated servers — easier to manage and secure, but the server is a single point of failure and costs more. Peer-to-peer gives every device equal status, sharing resources directly: cheap, resilient and easy to set up for small networks, but backup and security are inconsistent and performance degrades as peers join and leave. Scale and administration usually decide which is appropriate.",
+    reforge:{stem:"A drawback of a client-server network compared with peer-to-peer is that:",options:{A:"Backups must be performed separately on every device.",B:"Server failure can stop many users working at once",C:"Security policies cannot be applied centrally.",D:"It is impossible to share files between users."},correct:"B"}
+  },
+  {
+    id:"CS-N2-16",stem:"Increasing the bandwidth of a network connection directly increases the:",
+    options:{A:"Physical distance the signal can travel unaided.",B:"Number of devices that may be assigned an IP address.",C:"Volume of data that can be transferred per second",D:"Security of the data while it is in transit."},
+    correct:"C",tag:"MC-GCS-NETWORK-PROTOCOLS",
+    scaffold:"Bandwidth is capacity — how much data can pass per second. Latency is delay — how long a packet takes to arrive, affected by distance, routing hops and congestion. They are independent: a satellite link can have high bandwidth and high latency. Throughput is what is actually achieved, always at or below bandwidth once protocol overhead, errors, contention and the slowest link in the path are taken into account.",
+    reforge:{stem:"A satellite link has high bandwidth but users report slow response when clicking links. The likely cause is:",options:{A:"Insufficient bandwidth for the traffic volume.",B:"An incorrectly configured subnet mask.",C:"High latency from the signal's travel distance",D:"Excessive use of packet compression."},correct:"C"}
+  },
+  {
+    id:"CS-N2-17",stem:"A hash table offers average-case O(1) lookup because the key is:",
+    options:{A:"Compared with every stored key until a match is found.",B:"Sorted so that binary search can be applied.",C:"Stored twice, once in each of two parallel arrays.",D:"Converted by a hash function directly into an index"},
+    correct:"D",tag:"MC-GCS-DATA-STRUCTURES",
+    scaffold:"A hash function maps a key to an array index, so an item can be reached without searching — average O(1) for insertion, deletion and lookup. Two keys mapping to the same index is a collision, handled by chaining (a list at each slot) or open addressing (probing for the next free slot). Performance degrades as the load factor rises, and in the worst case, with everything colliding, lookup becomes O(n).",
+    reforge:{stem:"Two different keys hash to the same index. This is called a:",options:{A:"Collision, resolved by chaining or probing",B:"Traversal, resolved by rebalancing the structure.",C:"Overflow, resolved by increasing the key length.",D:"Rehash, resolved by sorting the array."},correct:"A"}
+  },
+  {
+    id:"CS-N2-18",stem:"A graph differs from a tree because a graph may contain:",
+    options:{A:"Cycles, and need not be connected",B:"Only one route between any two nodes.",C:"A single node designated as the root.",D:"At most two children for each node."},
+    correct:"A",tag:"MC-GCS-DATA-STRUCTURES",
+    scaffold:"A tree is a connected acyclic graph with a root, where exactly one path links any two nodes. A general graph has no root, may be disconnected, and may contain cycles; edges may be directed or undirected and carry weights. Graphs are represented by an adjacency matrix (fast lookup, wasteful for sparse graphs) or an adjacency list (compact for sparse graphs). They model road networks, social connections and dependencies.",
+    reforge:{stem:"An adjacency list is usually preferred to an adjacency matrix when the graph is:",options:{A:"Dense, with most possible edges present.",B:"Sparse, with relatively few edges",C:"Undirected rather than directed.",D:"Guaranteed to contain no cycles."},correct:"B"}
+  },
+  {
+    id:"CS-N2-19",stem:"Dijkstra's algorithm is used to find:",
+    options:{A:"Whether a graph contains any cycles.",B:"The shortest path from one node to the others",C:"The order in which to visit every node exactly once.",D:"The minimum number of colours needed for a graph."},
+    correct:"B",tag:"MC-GCS-ALGORITHMS",
+    scaffold:"Dijkstra's algorithm finds the lowest-cost path from a start node to all others in a weighted graph with non-negative weights. It keeps a tentative distance for each node, repeatedly selects the unvisited node with the smallest distance, and relaxes its neighbours. A* extends it with a heuristic estimating remaining distance, which usually reaches a specific target faster. Negative edge weights break Dijkstra's assumption and need a different algorithm.",
+    reforge:{stem:"A* usually finds a route to a specific destination faster than Dijkstra's algorithm because it:",options:{A:"Ignores the weights attached to the edges.",B:"Examines every node in the graph first.",C:"Uses a heuristic to guide the search",D:"Requires the graph to contain no cycles."},correct:"C"}
+  },
+  {
+    id:"CS-N2-20",stem:"A breadth-first traversal of a graph is normally implemented using:",
+    options:{A:"A stack, so the deepest node is explored first.",B:"Recursion with no additional data structure.",C:"A binary search tree of visited nodes.",D:"A queue, so nodes are explored level by level"},
+    correct:"D",tag:"MC-GCS-DATA-STRUCTURES",
+    scaffold:"Breadth-first search uses a queue: visit a node, enqueue its unvisited neighbours, then dequeue the next — exploring level by level, which finds the fewest-edge path in an unweighted graph. Depth-first search uses a stack (often the call stack via recursion), following one branch as far as possible before backtracking — useful for detecting cycles and topological sorting. Both need a visited set to avoid revisiting nodes in a cyclic graph.",
+    reforge:{stem:"Why must a graph traversal keep a set of visited nodes?",options:{A:"To sort the nodes into ascending order.",B:"To calculate the total weight of the edges.",C:"To prevent revisiting nodes and looping",D:"To convert the graph into a binary tree."},correct:"C"}
+  },
+  {
+    id:"CS-N2-21",stem:"Compared with a physical server, a virtual machine allows an organisation to:",
+    options:{A:"Remove the need for any operating system.",B:"Guarantee that no hardware failure can occur.",C:"Increase raw processing speed beyond the hardware.",D:"Run several isolated systems on one machine"},
+    correct:"D",tag:"MC-GCS-OPERATING-SYSTEMS",
+    scaffold:"A hypervisor lets one physical machine host several virtual machines, each with its own operating system, isolated from the others. Benefits: better hardware utilisation, easy snapshots and migration, isolation for testing, and rapid provisioning. Costs: virtualisation overhead means slightly lower performance than bare metal, and the host remains a single point of hardware failure. Cloud computing sells this capacity on demand.",
+    reforge:{stem:"A drawback of running many virtual machines on a single host is that:",options:{A:"One hardware failure can affect every hosted system",B:"Each machine must run an identical operating system.",C:"Snapshots of a virtual machine cannot be taken.",D:"Virtual machines cannot be connected to a network."},correct:"A"}
+  },
+  {
+    id:"CS-N2-22",stem:"An operating system's scheduler exists to:",
+    options:{A:"Translate high-level source code into machine code.",B:"Decide which process uses the processor next",C:"Store files in directories on secondary storage.",D:"Detect and remove malicious software automatically."},
+    correct:"B",tag:"MC-GCS-OPERATING-SYSTEMS",
+    scaffold:"The scheduler allocates processor time between processes so that a single core appears to run many programs at once. Common policies: round robin gives each process a fixed time slice; shortest job first minimises average waiting time but can starve long jobs; priority scheduling favours important processes and may use ageing to prevent starvation. Other OS roles are memory management, file management, device drivers and user security.",
+    reforge:{stem:"Round robin scheduling gives each process a fixed time slice mainly to:",options:{A:"Complete the shortest jobs before any others.",B:"Ensure every process gets a fair share",C:"Guarantee that no process is ever interrupted.",D:"Reduce the amount of memory each process needs."},correct:"B"}
+  }
+]);
+csExpansion("CS-3", [
+  {
+    id:"CS-N3-01",stem:"During the fetch-execute cycle, the program counter holds:",
+    options:{A:"The data most recently read from main memory.",B:"The result of the last arithmetic operation performed.",C:"The address of the next instruction to be fetched",D:"The instruction currently being decoded by the control unit."},
+    correct:"C",tag:"MC-GCS-HARDWARE-ARCHITECTURE",
+    scaffold:"Registers in the cycle: the Program Counter holds the address of the next instruction; the Memory Address Register holds the address being accessed; the Memory Data Register holds the data or instruction fetched; the Current Instruction Register holds the instruction being decoded; the Accumulator holds arithmetic results. Fetch: PC to MAR, memory to MDR, MDR to CIR, PC incremented. Then decode and execute.",
+    reforge:{stem:"Which register holds the address of the memory location currently being accessed?",options:{A:"The Current Instruction Register.",B:"The Memory Address Register",C:"The Accumulator.",D:"The Program Counter."},correct:"B"}
+  },
+  {
+    id:"CS-N3-02",stem:"Cache memory improves performance mainly because it:",
+    options:{A:"Stores data permanently when the power is switched off.",B:"Increases the total amount of addressable main memory.",C:"Allows several processes to share one processor core.",D:"Holds frequently used data closer and faster than RAM"},
+    correct:"D",tag:"MC-GCS-HARDWARE-ARCHITECTURE",
+    scaffold:"The memory hierarchy trades speed against capacity and cost: registers, then L1/L2/L3 cache, then RAM, then secondary storage. Cache is small, fast, and holds recently or frequently used instructions and data, exploiting locality of reference. A cache hit avoids a slow RAM access; a miss costs extra time. More cache helps until the working set fits, after which the benefit falls away — which is why cache size alone does not determine speed.",
+    reforge:{stem:"Cache is effective largely because programs show locality of reference, meaning they:",options:{A:"Tend to reuse the same data and nearby addresses",B:"Always execute instructions in a random order.",C:"Store all their variables in secondary storage.",D:"Use exactly the same amount of memory throughout."},correct:"A"}
+  },
+  {
+    id:"CS-N3-03",stem:"Increasing the number of processor cores gives the greatest benefit when the workload:",
+    options:{A:"Consists of one long strictly sequential calculation.",B:"Is limited by the speed of the hard disk.",C:"Requires frequent access to a single shared variable.",D:"Can be divided into tasks that run independently"},
+    correct:"D",tag:"MC-GCS-HARDWARE-ARCHITECTURE",
+    scaffold:"Extra cores help only where work can run in parallel. A strictly sequential task gains nothing, and Amdahl's law says overall speed-up is limited by the fraction that must stay sequential. Parallel work also brings overhead: splitting tasks, communication, and synchronising shared data. Other factors affecting performance are clock speed, cache size, word length, bus width, and whether the bottleneck is actually the processor at all.",
+    reforge:{stem:"A program runs no faster on a quad-core processor than on a single core. The most likely reason is that it:",options:{A:"Uses too little RAM for the extra cores.",B:"Was written in a high-level language.",C:"Has an unusually large instruction set.",D:"Cannot be divided into parallel tasks"},correct:"D"}
+  },
+  {
+    id:"CS-N3-04",stem:"A RISC processor differs from a CISC processor because RISC uses:",
+    options:{A:"Variable-length instructions that each do more work.",B:"A small set of simple, fixed-length instructions",C:"Microcode to interpret every complex instruction.",D:"Fewer registers but a much larger cache."},
+    correct:"B",tag:"MC-GCS-HARDWARE-ARCHITECTURE",
+    scaffold:"RISC: few simple instructions, fixed length, mostly one cycle each, many registers, easy to pipeline, lower power — dominant in mobile devices. CISC: many complex variable-length instructions, each possibly several cycles, implemented in microcode, fewer registers, so compilers emit fewer instructions per task. RISC needs more instructions but executes them faster and pipelines them more readily, which is why power efficiency favours it.",
+    reforge:{stem:"Pipelining improves processor throughput by:",options:{A:"Executing every instruction in a single clock cycle.",B:"Removing the need for the fetch-execute cycle.",C:"Overlapping the stages of consecutive instructions",D:"Storing instructions permanently in cache memory."},correct:"C"}
+  },
+  {
+    id:"CS-N3-05",stem:"Virtual memory allows a computer to:",
+    options:{A:"Increase the physical amount of RAM installed.",B:"Store data permanently without a hard disk.",C:"Run programs entirely inside the processor cache.",D:"Use secondary storage as an extension of RAM"},
+    correct:"D",tag:"MC-GCS-OPERATING-SYSTEMS",
+    scaffold:"Virtual memory lets the operating system move pages of memory between RAM and a swap area on disk, so programs larger than physical RAM can run and each process sees its own address space. The cost is speed: disk is far slower than RAM. If too little RAM is available the system spends most of its time swapping pages rather than executing — thrashing — and the cure is more RAM or fewer concurrent processes.",
+    reforge:{stem:"A computer becomes extremely slow with constant disk activity when many programs are open. This is:",options:{A:"A cache miss cascade in the processor.",B:"Thrashing, from excessive page swapping",C:"A scheduling deadlock between processes.",D:"Fragmentation of the file allocation table."},correct:"B"}
+  },
+  {
+    id:"CS-N3-06",stem:"An interrupt allows a peripheral device to:",
+    options:{A:"Write directly to the processor's registers at any time.",B:"Take permanent control of the processor from the OS.",C:"Signal the processor that it needs attention",D:"Increase the clock speed while transferring data."},
+    correct:"C",tag:"MC-GCS-OPERATING-SYSTEMS",
+    scaffold:"An interrupt is a signal that something needs attention. At the end of the current fetch-execute cycle the processor checks the interrupt register; if a higher-priority interrupt is pending it pushes the current contents of its registers onto a stack, runs the interrupt service routine, then pops them back and resumes. This avoids polling, where the processor repeatedly checks devices and wastes cycles doing so.",
+    reforge:{stem:"Why are the contents of the registers pushed onto a stack before an interrupt is serviced?",options:{A:"So the interrupted program can resume correctly",B:"So the interrupt can be given a higher priority.",C:"So the data can be written to secondary storage.",D:"So the processor can increase its clock speed."},correct:"A"}
+  },
+  {
+    id:"CS-N3-07",stem:"The Boolean expression A AND (NOT A) always evaluates to:",
+    options:{A:"False, for every possible value of A",B:"True, for every possible value of A.",C:"The same value as A.",D:"The opposite value to A."},
+    correct:"A",tag:"MC-GCS-ABSTRACTION",
+    scaffold:"A AND NOT A is always false, and A OR NOT A is always true — the complement laws. Other identities worth knowing: A AND A = A, A OR A = A (idempotence); A AND 1 = A, A OR 0 = A (identity); A AND 0 = 0, A OR 1 = 1 (annulment); and De Morgan's laws, NOT(A AND B) = NOT A OR NOT B, NOT(A OR B) = NOT A AND NOT B. These simplify circuits and reduce the number of logic gates required.",
+    reforge:{stem:"Applying De Morgan's law, NOT (A OR B) is equivalent to:",options:{A:"NOT A OR NOT B.",B:"A AND B.",C:"A OR NOT B.",D:"NOT A AND NOT B"},correct:"D"}
+  },
+  {
+    id:"CS-N3-08",stem:"A half adder differs from a full adder because a half adder:",
+    options:{A:"Produces a sum but never a carry output.",B:"Cannot accept a carry input",C:"Uses only OR gates in its construction.",D:"Adds two complete bytes rather than two bits."},
+    correct:"B",tag:"MC-GCS-ABSTRACTION",
+    scaffold:"A half adder adds two bits, producing sum (XOR) and carry (AND), but has no carry input, so it can only be used for the least significant bit. A full adder takes three inputs — two bits plus a carry in — and produces sum and carry out, so full adders can be chained into a ripple carry adder for multi-bit addition. Understanding this explains how the ALU performs arithmetic from simple gates.",
+    reforge:{stem:"In a half adder, the sum output is produced by which gate?",options:{A:"An AND gate, which also gives the carry.",B:"An OR gate combining both inputs.",C:"An XOR gate, 1 when inputs differ",D:"A NOT gate applied to one input."},correct:"C"}
+  },
+  {
+    id:"CS-N3-09",stem:"A procedural program differs from an object-oriented one because a procedural program is organised around:",
+    options:{A:"Classes that bundle attributes with their methods.",B:"Rules and facts queried by an inference engine.",C:"Functions with no side effects and immutable data.",D:"Sequences of instructions grouped into procedures"},
+    correct:"D",tag:"MC-GCS-ABSTRACTION",
+    scaffold:"Procedural: instructions grouped into procedures acting on separate data structures. Object-oriented: state and behaviour bundled into objects, supporting encapsulation, inheritance and polymorphism, which suits large systems needing reuse. Functional: computation as evaluation of functions without side effects, with immutable data, which makes reasoning and parallelism easier. Declarative and logic paradigms state what is required and let the system determine how.",
+    reforge:{stem:"A key characteristic of the functional paradigm is that functions:",options:{A:"Must always be defined inside a class.",B:"Produce no side effects",C:"Can only be called from the main program.",D:"Always modify the variables passed to them."},correct:"B"}
+  },
+  {
+    id:"CS-N3-10",stem:"Decomposition as a computational thinking technique means:",
+    options:{A:"Removing unnecessary detail to focus on the essentials.",B:"Identifying patterns shared between different problems.",C:"Breaking a problem into smaller manageable sub-problems",D:"Writing a step-by-step sequence to solve a problem."},
+    correct:"C",tag:"MC-GCS-ABSTRACTION",
+    scaffold:"Computational thinking: decomposition breaks a problem into smaller parts that can be solved and tested separately; abstraction removes irrelevant detail so the essential structure is visible; pattern recognition spots similarities that let existing solutions be reused; algorithmic thinking sets out the ordered steps. They are distinct — a question describing 'ignoring detail that does not matter' is abstraction, not decomposition.",
+    reforge:{stem:"A map of the underground railway omits actual distances and street layout. This is an example of:",options:{A:"Abstraction, because irrelevant detail is removed",B:"Decomposition, because the network is split up.",C:"Pattern recognition, because lines look similar.",D:"Algorithmic thinking, because routes are ordered."},correct:"A"}
+  },
+  {
+    id:"CS-N3-11",stem:"Which situation shows a stack overflow rather than a logic error?",
+    options:{A:"A recursive function without a reachable base case",B:"A loop that runs one more time than intended.",C:"An average calculated by dividing by the wrong total.",D:"A comparison using > where >= was required."},
+    correct:"A",tag:"MC-GCS-PROGRAMMING-ERRORS",
+    scaffold:"Each function call pushes a stack frame holding parameters, local variables and the return address. Unbounded recursion keeps pushing frames until the stack's memory is exhausted, producing a stack overflow — a runtime error that halts the program. The other options describe logic errors: the program runs to completion but produces the wrong answer, and only testing against expected results reveals them.",
+    reforge:{stem:"Boundary testing of a function accepting marks from 0 to 100 should include:",options:{A:"Only typical values such as 45 and 72.",B:"Only values far outside the range, such as 5000.",C:"Random values chosen automatically at runtime.",D:"Values at and either side of 0 and 100"},correct:"D"}
+  },
+  {
+    id:"CS-N3-12",stem:"White box testing differs from black box testing because white box testing:",
+    options:{A:"Is always performed by the end users of the system.",B:"Examines the internal code and its execution paths",C:"Tests only the inputs and outputs of the program.",D:"Can only be carried out after the system is released."},
+    correct:"B",tag:"MC-GCS-PROGRAMMING-ERRORS",
+    scaffold:"White box testing uses knowledge of the code to exercise particular paths, branches and conditions, aiming for coverage. Black box testing ignores the internals and checks that given inputs produce expected outputs, including normal, boundary and erroneous data. Alpha testing happens in-house, beta testing with real users before release. A test plan should record the data used, the reason for choosing it, and the expected result.",
+    reforge:{stem:"Erroneous test data for a field expecting a positive integer would be:",options:{A:"The value 1, the smallest valid entry.",B:"The value 50, a typical valid entry.",C:"The text 'seven', not an integer",D:"The value 100, the largest valid entry."},correct:"C"}
+  },
+  {
+    id:"CS-N3-13",stem:"In the waterfall model of development, each stage:",
+    options:{A:"Runs concurrently with all the other stages.",B:"Is repeated in short cycles with user feedback.",C:"Can be skipped if the deadline is tight.",D:"Is completed before the next one begins"},
+    correct:"D",tag:"MC-GCS-ABSTRACTION",
+    scaffold:"Waterfall runs analysis, design, implementation, testing, maintenance in sequence — clear documentation and milestones, but requirements are fixed early and change is expensive, so it suits stable, safety-critical projects. Agile works in short iterations delivering working software, with continuous user involvement, welcoming changing requirements but producing less documentation and less predictable overall cost. The choice depends on how stable the requirements are.",
+    reforge:{stem:"Agile development is usually preferred when:",options:{A:"Every requirement is known precisely at the start.",B:"Requirements are likely to change",C:"Formal documentation is the main deliverable.",D:"No user contact is possible during development."},correct:"B"}
+  },
+  {
+    id:"CS-N3-14",stem:"Big O notation describes an algorithm's:",
+    options:{A:"Exact running time in seconds on given hardware.",B:"Total number of lines of source code.",C:"How resource use grows as input size increases",D:"Number of syntax errors found during compilation."},
+    correct:"C",tag:"MC-GCS-ALGORITHMS",
+    scaffold:"Big O expresses how time or space requirements scale with input size n, ignoring constants and hardware. Common orders from best: O(1) constant, O(log n) logarithmic (binary search), O(n) linear (linear search), O(n log n) (merge and quick sort), O(n²) quadratic (bubble and insertion sort), O(2ⁿ) exponential. For small n a 'worse' algorithm may be faster in practice; Big O matters as n grows large.",
+    reforge:{stem:"Which time complexity describes an algorithm whose running time is unaffected by input size?",options:{A:"O(1), constant time",B:"O(n), linear time.",C:"O(log n), logarithmic time.",D:"O(n²), quadratic time."},correct:"A"}
+  },
+  {
+    id:"CS-N3-15",stem:"Merge sort is described as a divide-and-conquer algorithm because it:",
+    options:{A:"Compares each adjacent pair and swaps them repeatedly.",B:"Splits the list, sorts each half, then merges them",C:"Selects the smallest remaining item on every pass.",D:"Inserts each item into its correct position in turn."},
+    correct:"B",tag:"MC-GCS-ALGORITHMS",
+    scaffold:"Merge sort recursively halves the list until single elements remain, then merges sorted sublists back together — O(n log n) in all cases, stable, but needing extra memory proportional to n. Quick sort partitions around a pivot: O(n log n) on average and in place, but O(n²) if pivots are chosen badly. Bubble, insertion and selection sorts are O(n²) but simple, and insertion sort performs well on nearly sorted data.",
+    reforge:{stem:"Quick sort degrades to O(n²) when the chosen pivot:",options:{A:"Is always the median value of the list.",B:"Divides the list into two equal halves.",C:"Is selected at random each time.",D:"Is repeatedly the smallest or largest"},correct:"D"}
+  },
+  {
+    id:"CS-N3-16",stem:"A binary search requires that the list being searched is:",
+    options:{A:"Stored in a linked list rather than an array.",B:"Made up entirely of unique integer values.",C:"Sorted into order before the search begins",D:"Shorter than 1000 items in total."},
+    correct:"C",tag:"MC-GCS-ALGORITHMS",
+    scaffold:"Binary search compares the target with the middle element and discards the half that cannot contain it, repeating until found or the range is empty — O(log n), but only valid on sorted data. Linear search works on unsorted data at O(n). If a list is searched once, sorting first (at least O(n log n)) costs more than a single linear search; if it is searched repeatedly, sorting once and using binary search pays off.",
+    reforge:{stem:"A list will be searched thousands of times. Sorting it once first is worthwhile because:",options:{A:"Sorting reduces the memory the list occupies.",B:"Linear search cannot be used on large lists.",C:"Repeated binary searches beat linear ones",D:"Sorting removes any duplicate entries automatically."},correct:"C"}
+  },
+  {
+    id:"CS-N3-17",stem:"Which feature of an integrated development environment helps most when locating a logic error?",
+    options:{A:"Syntax highlighting, which colours language keywords.",B:"Auto-indentation, which formats the code layout.",C:"Code completion, which suggests identifier names.",D:"A debugger with breakpoints and variable watches"},
+    correct:"D",tag:"MC-GCS-PROGRAMMING-ERRORS",
+    scaffold:"An IDE bundles an editor, translator and debugging tools. Syntax highlighting, auto-indentation and code completion speed up writing and help avoid syntax errors, but none of them reveal a logic error, because the code is valid. A debugger does: breakpoints pause execution at a chosen line, stepping runs one statement at a time, and variable watches show values changing, so the point where actual behaviour diverges from intended behaviour can be found.",
+    reforge:{stem:"Stepping through code one line at a time while watching variable values is called:",options:{A:"Compiling, which translates the whole program at once.",B:"Tracing, which follows execution step by step",C:"Linking, which combines object files.",D:"Profiling, which measures memory usage."},correct:"B"}
+  },
+  {
+    id:"CS-N3-18",stem:"In an immediate addressing instruction, the operand holds:",
+    options:{A:"The value to be used directly",B:"The memory address holding the value.",C:"The address of a register containing an address.",D:"An offset added to the program counter."},
+    correct:"A",tag:"MC-GCS-HARDWARE-ARCHITECTURE",
+    scaffold:"Addressing modes: immediate — the operand is the value itself, fast but limited in size; direct — the operand is a memory address holding the value; indirect — the operand gives an address that holds the address of the value, allowing pointers; indexed — a base address plus the contents of an index register, which is how arrays are accessed efficiently. Each trades flexibility against the number of memory accesses required.",
+    reforge:{stem:"Indexed addressing is particularly useful for:",options:{A:"Stepping through the elements of an array",B:"Storing a single constant value in a register.",C:"Preventing the program counter from incrementing.",D:"Translating assembly into machine code."},correct:"A"}
+  },
+  {
+    id:"CS-N3-19",stem:"A queue implemented as a linked list rather than a fixed array mainly gains:",
+    options:{A:"The ability to grow without a fixed capacity",B:"Faster access to an element by its index position.",C:"Guaranteed contiguous storage in memory.",D:"Automatic sorting of the items it contains."},
+    correct:"A",tag:"MC-GCS-DATA-STRUCTURES",
+    scaffold:"An array-based queue has a fixed capacity, needs a circular implementation to reuse freed space, and offers direct indexed access. A linked-list queue grows and shrinks dynamically, with enqueue and dequeue as simple pointer changes, but uses extra memory for pointers, loses contiguous storage and cannot be indexed directly. The right choice depends on whether the maximum size is known and whether indexed access is needed.",
+    reforge:{stem:"A disadvantage of a linked-list implementation compared with an array is that:",options:{A:"It cannot store items of different sizes.",B:"Its maximum capacity is fixed at compile time.",C:"Finding the nth item means traversing the list",D:"Insertion always requires shifting every element."},correct:"C"}
+  },
+  {
+    id:"CS-N3-20",stem:"A binary search tree offers O(log n) search only when the tree is:",
+    options:{A:"Traversed using a post-order algorithm.",B:"Stored in a contiguous block of memory.",C:"Built entirely from unique prime numbers.",D:"Reasonably balanced rather than skewed"},
+    correct:"D",tag:"MC-GCS-DATA-STRUCTURES",
+    scaffold:"In a binary search tree, values smaller than a node go left and larger go right, so each comparison halves the remaining search space — O(log n) when the tree is balanced. Inserting already-sorted data produces a skewed tree that is effectively a linked list, giving O(n). Self-balancing variants such as AVL and red-black trees rotate nodes on insertion to keep the height logarithmic and guarantee the better bound.",
+    reforge:{stem:"Inserting the already-sorted values 1, 2, 3, 4, 5 into an empty binary search tree produces:",options:{A:"A perfectly balanced tree of minimum height.",B:"A tree with two children at every level.",C:"An empty tree, since duplicates are rejected.",D:"A skewed tree behaving like a linked list"},correct:"D"}
+  },
+  {
+    id:"CS-N3-21",stem:"Reverse Polish notation is used in expression evaluation because it:",
+    options:{A:"Uses fewer characters than infix in every case.",B:"Can represent only addition and subtraction.",C:"Converts all operands into binary automatically.",D:"Needs no brackets and suits stack evaluation"},
+    correct:"D",tag:"MC-GCS-DATA-STRUCTURES",
+    scaffold:"In Reverse Polish (postfix) notation operators follow their operands, so precedence is unambiguous and brackets are unnecessary. Evaluation uses a stack: push operands, and on meeting an operator pop the required number, apply it, and push the result. Infix 3 + 4 × 2 becomes 3 4 2 × +. It corresponds to a post-order traversal of the expression tree, which is why compilers use it internally.",
+    reforge:{stem:"The infix expression (5 + 2) * 3 written in Reverse Polish notation is:",options:{A:"5 2 3 + *",B:"5 2 + 3 *",C:"* + 5 2 3",D:"5 + 2 * 3"},correct:"B"}
+  },
+  {
+    id:"CS-N3-22",stem:"A compiler's lexical analysis stage is responsible for:",
+    options:{A:"Allocating memory addresses to each variable.",B:"Checking that the program's logic produces correct output.",C:"Optimising the generated machine code for speed.",D:"Grouping characters into tokens and removing whitespace"},
+    correct:"D",tag:"MC-GCS-PROGRAMMING-ERRORS",
+    scaffold:"Compilation stages: lexical analysis turns the character stream into tokens, strips whitespace and comments, and builds the symbol table; syntax analysis checks the tokens against the language grammar and builds a parse tree, reporting syntax errors; semantic analysis checks type compatibility and declarations; code generation produces object code; optimisation improves speed or size. No stage can detect a logic error — the program's intent is not knowable to the compiler.",
+    reforge:{stem:"Which error would a compiler be unable to detect?",options:{A:"A missing closing bracket at the end of a long expression.",B:"A mean calculated with the wrong divisor",C:"Assigning a string value to an integer variable.",D:"A misspelled reserved keyword."},correct:"B"}
+  }
+]);
+csExpansion("CS-4", [
+  {
+    id:"CS-N4-01",stem:"Adding the 8-bit two's complement numbers 01010000 and 01100000 produces an overflow because the result:",
+    options:{A:"Exceeds the range representable in 8 bits",B:"Contains more than four set bits in total.",C:"Requires a carry out of the least significant bit.",D:"Cannot be converted back into denary."},
+    correct:"A",tag:"MC-GCS-DATA-REPRESENTATION",
+    scaffold:"In 8-bit two's complement the range is −128 to +127. 01010000 is 80 and 01100000 is 96; their sum, 176, exceeds 127. The tell-tale sign is that adding two positives gives a result with the sign bit set — here 10110000, which reads as −80. Overflow is detected when the carry into the sign bit differs from the carry out of it. Adding numbers of opposite sign can never overflow.",
+    reforge:{stem:"Adding two negative 8-bit two's complement numbers gives a result with a 0 in the sign bit. This indicates:",options:{A:"A rounding error in the fractional part.",B:"Normal behaviour, since negatives sum to a positive.",C:"Overflow, as two negatives cannot sum positive",D:"An underflow of the mantissa."},correct:"C"}
+  },
+  {
+    id:"CS-N4-02",stem:"In a floating point number, increasing the number of bits given to the exponent rather than the mantissa:",
+    options:{A:"Guarantees that all values become exact.",B:"Increases the range but reduces the precision",C:"Increases both the range and the precision.",D:"Has no effect unless the sign bit also changes."},
+    correct:"B",tag:"MC-GCS-DATA-REPRESENTATION",
+    scaffold:"A floating point number splits its bits between mantissa and exponent. The mantissa sets precision — how many significant figures can be held; the exponent sets range — how large or small a magnitude is possible. With a fixed total width the two trade off directly. Normalisation maximises precision by ensuring the mantissa starts 0.1 for positives or 1.0 for negatives, so no bits are wasted on leading duplicates of the sign bit.",
+    reforge:{stem:"Normalising a floating point mantissa is done in order to:",options:{A:"Reduce the number of bits the exponent requires.",B:"Convert the number into two's complement form.",C:"Guarantee the number can be stored without overflow.",D:"Use the mantissa bits for maximum precision"},correct:"D"}
+  },
+  {
+    id:"CS-N4-03",stem:"A fixed point representation differs from floating point because fixed point has:",
+    options:{A:"A binary point in a set position",B:"An exponent field that scales the value stored.",C:"A larger range for the same number of bits.",D:"No ability to represent negative values at all."},
+    correct:"A",tag:"MC-GCS-DATA-REPRESENTATION",
+    scaffold:"Fixed point places the binary point at a set position, so the absolute precision is constant and arithmetic is fast and predictable — useful in financial and embedded systems. Floating point moves the point using an exponent, giving a far greater range for the same width, but the spacing between representable values grows with magnitude and most decimal fractions cannot be stored exactly. That inexactness is why equality comparisons on floats are unreliable.",
+    reforge:{stem:"Comparing two floating point values with = is unreliable mainly because:",options:{A:"Floating point values are stored as text internally.",B:"Many decimal fractions cannot be represented exactly",C:"The exponent is always rounded up to the nearest power.",D:"Floating point numbers cannot hold negative values."},correct:"B"}
+  },
+  {
+    id:"CS-N4-04",stem:"A bitmap image scaled up to twice its original size typically appears blurred because:",
+    options:{A:"The colour depth is automatically reduced.",B:"The file is recompressed using a lossy algorithm.",C:"A fixed pixel count is stretched over more area",D:"The image is converted into a vector representation."},
+    correct:"C",tag:"MC-GCS-DATA-REPRESENTATION",
+    scaffold:"A bitmap stores a grid of pixels, so enlarging it stretches a fixed pixel count over more space and the software must interpolate, producing blur or visible blocks. A vector image stores shapes as mathematical descriptions — points, lines, curves and fills — so it can be scaled to any size without loss and usually needs less storage for flat-colour graphics. Photographs suit bitmaps; logos and diagrams suit vectors.",
+    reforge:{stem:"Which image would be most suitable for storing in a vector format?",options:{A:"A photograph of a landscape with fine detail.",B:"A scanned page with handwritten annotations.",C:"A textured background with random noise.",D:"A company logo made of flat shapes and text"},correct:"D"}
+  },
+  {
+    id:"CS-N4-05",stem:"The file size of an uncompressed bitmap is calculated as:",
+    options:{A:"Width plus height plus colour depth.",B:"Width divided by height, times colour depth.",C:"Colour depth divided by the number of pixels.",D:"Width times height times colour depth"},
+    correct:"D",tag:"MC-GCS-DATA-REPRESENTATION",
+    scaffold:"File size in bits = width in pixels × height in pixels × colour depth in bits; divide by 8 for bytes, by 1024 for kibibytes. Colour depth of n bits allows 2ⁿ colours, so 8 bits gives 256 and 24 bits gives about 16.7 million. Doubling both width and height quadruples the pixel count and so the size. Metadata adds a small overhead beyond the pixel data itself.",
+    reforge:{stem:"An image is 100 × 200 pixels with a colour depth of 8 bits. Its uncompressed size is:",options:{A:"20,000 bytes, one byte per pixel",B:"160,000 bytes, multiplying all three values.",C:"2,500 bytes, dividing the pixel count by 8.",D:"1,600 bytes, using 8 bits per row."},correct:"A"}
+  },
+  {
+    id:"CS-N4-06",stem:"Parity checking can fail to detect an error when:",
+    options:{A:"A single bit has been changed during transmission.",B:"The parity bit itself is corrupted in transit.",C:"An even number of bits has been changed",D:"The data is transmitted at a very high speed."},
+    correct:"C",tag:"MC-GCS-DATA-REPRESENTATION",
+    scaffold:"A parity bit makes the number of 1s odd or even as agreed. A single flipped bit changes the count and is detected; two flipped bits restore the original parity and pass undetected. Parity detects but cannot correct. Checksums add values across a block and detect more errors; cyclic redundancy checks use polynomial division and are stronger still; majority voting and Hamming codes can locate and correct errors at the cost of extra bits.",
+    reforge:{stem:"Which technique can not only detect an error but also correct it?",options:{A:"A single parity bit added to each byte.",B:"A checksum appended to the data block.",C:"A cyclic redundancy check on the frame.",D:"A Hamming code using parity bits"},correct:"D"}
+  },
+  {
+    id:"CS-N4-07",stem:"Solid state storage differs from a magnetic hard disk because solid state storage:",
+    options:{A:"Uses flash memory with no moving parts",B:"Stores data on rotating magnetised platters.",C:"Requires constant power to retain its contents.",D:"Offers unlimited write cycles without degradation."},
+    correct:"A",tag:"MC-GCS-HARDWARE-ARCHITECTURE",
+    scaffold:"Solid state drives use NAND flash: no moving parts, so they are fast, silent, shock-resistant and low-power, but cost more per gigabyte and have a finite number of write cycles per cell. Magnetic disks use rotating platters and moving heads: cheaper per gigabyte and long-lived for archives, but slower, noisier and fragile. Optical media are cheap and portable but slow and low-capacity. All three are non-volatile, unlike RAM.",
+    reforge:{stem:"Which storage type is volatile, losing its contents when power is removed?",options:{A:"A solid state drive using flash memory.",B:"RAM used as the computer's main memory",C:"An optical disc such as a DVD.",D:"A magnetic hard disk drive."},correct:"B"}
+  },
+  {
+    id:"CS-N4-08",stem:"RAID 1 improves on a single disk mainly by:",
+    options:{A:"Splitting data across disks for greater speed.",B:"Compressing data so more fits on each disk.",C:"Mirroring data so a disk failure loses nothing",D:"Encrypting data automatically as it is written."},
+    correct:"C",tag:"MC-GCS-HARDWARE-ARCHITECTURE",
+    scaffold:"RAID 0 stripes data across disks for speed and full capacity but no redundancy — one failure loses everything. RAID 1 mirrors identical copies, so a failure loses nothing, at the cost of half the usable capacity. RAID 5 stripes with distributed parity, surviving one disk failure with better capacity efficiency. Note RAID protects against hardware failure, not against deletion, ransomware or fire, so it is not a substitute for backups.",
+    reforge:{stem:"Why is a RAID array not a substitute for taking backups?",options:{A:"RAID arrays are slower than a single disk.",B:"RAID cannot be used with solid state drives.",C:"RAID stores only compressed copies of files.",D:"It does not protect against deletion"},correct:"D"}
+  },
+  {
+    id:"CS-N4-09",stem:"Under UK data protection law, personal data must be:",
+    options:{A:"Retained permanently in case it is needed later.",B:"Kept no longer than necessary for its purpose",C:"Shared with any organisation that requests it.",D:"Stored only on servers outside the United Kingdom."},
+    correct:"B",tag:"MC-GCS-ETHICS",
+    scaffold:"Data protection principles: process lawfully, fairly and transparently; collect for specified purposes only; collect only what is adequate and relevant (data minimisation); keep it accurate and up to date; retain no longer than necessary; keep it secure; and be accountable. Individuals have rights of access, rectification, erasure, portability and objection. Breaches affecting rights must be reported to the regulator, normally within 72 hours.",
+    reforge:{stem:"A website collects a date of birth it has no use for. Which principle does this breach?",options:{A:"Data minimisation: collect only what is needed",B:"Accuracy, since the date may be entered wrongly.",C:"Storage limitation, since data is kept too long.",D:"Integrity, since the data is not encrypted."},correct:"A"}
+  },
+  {
+    id:"CS-N4-10",stem:"Under the Computer Misuse Act, gaining access to a system without permission is an offence:",
+    options:{A:"Only when the intruder causes damage to data.",B:"Only where the system belongs to a government body.",C:"Even if nothing is altered or copied",D:"Only if the intruder profits financially from it."},
+    correct:"C",tag:"MC-GCS-ETHICS",
+    scaffold:"The Computer Misuse Act creates offences of unauthorised access (the basic offence, committed even if nothing is changed), unauthorised access with intent to commit a further offence, unauthorised modification of material, and making or supplying tools for such purposes. Authorisation is the deciding factor, which is why penetration testers require explicit written permission before testing a client's systems.",
+    reforge:{stem:"A penetration tester avoids committing an offence under the Act because they have:",options:{A:"Published their findings openly afterwards.",B:"Used only tools that are freely available.",C:"Avoided modifying any of the data found.",D:"Written authorisation from the owner"},correct:"D"}
+  },
+  {
+    id:"CS-N4-11",stem:"Open source software differs from proprietary software because open source:",
+    options:{A:"Makes the source code available to modify",B:"Is always free of any charge to the end user.",C:"Comes with a guaranteed support contract.",D:"May never be used for commercial purposes."},
+    correct:"A",tag:"MC-GCS-ETHICS",
+    scaffold:"Open source licences grant the right to read, modify and redistribute the source, often requiring derivative works to carry the same licence. Advantages: adaptable, auditable, no licence fee, community fixes. Disadvantages: support may be informal, and expertise is needed to adapt it. Proprietary software keeps source closed, provides formal support and warranties, but ties the user to the vendor. Note open source is about rights, not price.",
+    reforge:{stem:"A likely disadvantage of adopting open source software in a business is:",options:{A:"The source code cannot be inspected for flaws.",B:"Formal vendor support may not be available",C:"The software can never be modified in-house.",D:"Licence fees increase with each additional user."},correct:"B"}
+  },
+  {
+    id:"CS-N4-12",stem:"An algorithm used to decide loan applications is found to reject one demographic group far more often. The most likely explanation is that:",
+    options:{A:"Machine learning models cannot process numerical data.",B:"The algorithm was written in a low-level language.",C:"Bias in the historical training data has been learned",D:"The training set was too small to run at all."},
+    correct:"C",tag:"MC-GCS-ETHICS",
+    scaffold:"A model learns the patterns in its training data, including historical human bias, and can reproduce or amplify it while appearing objective. Mitigations: audit training data for representativeness, test outcomes across groups, keep humans in the loop for consequential decisions, and require explainability so a decision can be challenged. Accountability is a live issue since responsibility may sit with the developer, deployer or data provider.",
+    reforge:{stem:"Requiring an automated decision system to be explainable matters mainly because it:",options:{A:"Guarantees the system will never make an error.",B:"Reduces the processing power the model needs.",C:"Allows people to understand and challenge it",D:"Removes the need to test the system before release."},correct:"C"}
+  },
+  {
+    id:"CS-N4-13",stem:"Compared with an on-premises server, cloud computing typically offers:",
+    options:{A:"Complete independence from any network connection.",B:"Full physical control over where data is stored.",C:"A one-off cost with no ongoing charges.",D:"Capacity that can be scaled up or down on demand"},
+    correct:"D",tag:"MC-GCS-ETHICS",
+    scaffold:"Cloud computing offers elastic capacity, access from anywhere, and shifts maintenance and hardware cost to the provider, replacing capital expenditure with ongoing subscription. Drawbacks: dependence on connectivity, ongoing cost that can exceed ownership over time, reduced control over data location which raises legal and compliance questions, and the risk of vendor lock-in when migrating away proves expensive.",
+    reforge:{stem:"A significant legal concern when storing personal data with a cloud provider is:",options:{A:"The servers may be in another jurisdiction",B:"Cloud storage cannot be encrypted at rest.",C:"Data in the cloud cannot be backed up.",D:"Cloud providers never offer service guarantees."},correct:"A"}
+  },
+  {
+    id:"CS-N4-14",stem:"An embedded system differs from a general-purpose computer because it is:",
+    options:{A:"Always more powerful than a desktop machine.",B:"Designed for one dedicated function",C:"Unable to accept any input from sensors.",D:"Incapable of being connected to a network."},
+    correct:"B",tag:"MC-GCS-HARDWARE-ARCHITECTURE",
+    scaffold:"An embedded system is built into a larger device to perform a specific task — a washing machine controller, engine management, a router. It has limited resources, low power draw, and firmware that rarely changes, so it can be optimised, cheap and highly reliable. Many are real-time systems where a late answer is a wrong answer. General-purpose computers trade that efficiency for the flexibility to run arbitrary software.",
+    reforge:{stem:"A car's airbag controller is a real-time system, meaning it must:",options:{A:"Store a permanent log of every journey taken.",B:"Run several unrelated applications at once.",C:"Respond within a guaranteed time limit",D:"Be reprogrammed by the driver when required."},correct:"C"}
+  },
+  {
+    id:"CS-N4-15",stem:"Serial transmission is generally preferred to parallel over long distances because parallel transmission suffers from:",
+    options:{A:"An inability to carry binary data at all.",B:"A requirement for an unbroken fibre optic link.",C:"Skew, as bits on different wires arrive apart",D:"A maximum speed fixed by international standards."},
+    correct:"C",tag:"MC-GCS-NETWORK-PROTOCOLS",
+    scaffold:"Parallel transmission sends bits simultaneously on separate wires — fast over very short distances, but over longer runs the wires' slightly different characteristics cause skew, and adjacent wires interfere through crosstalk. Serial sends one bit at a time on a single line, avoiding both, and modern serial standards run at very high clock rates. This is why USB, SATA and Ethernet are serial despite parallel appearing faster in principle.",
+    reforge:{stem:"Simplex transmission differs from half duplex because simplex allows data to travel:",options:{A:"In both directions, but only one way at a time.",B:"In both directions simultaneously.",C:"Only between devices on the same network.",D:"In one direction only"},correct:"D"}
+  },
+  {
+    id:"CS-N4-16",stem:"Increasing the bit rate of a transmission channel means it carries:",
+    options:{A:"Fewer errors during each second of transmission.",B:"More bits per second along the channel",C:"Signals over a greater physical distance.",D:"A more secure form of encrypted data."},
+    correct:"B",tag:"MC-GCS-NETWORK-PROTOCOLS",
+    scaffold:"Bit rate is bits transmitted per second. Baud rate is signal changes per second; where each signal change encodes more than one bit, bit rate exceeds baud rate — bit rate = baud rate × bits per signal. Bandwidth is the channel's capacity, and higher bandwidth supports a higher bit rate. Latency is delay and is independent of all three, which is why a high bit rate does not guarantee a responsive connection.",
+    reforge:{stem:"A channel operates at 2000 baud and encodes 4 bits per signal change. Its bit rate is:",options:{A:"500 bits per second, dividing baud by bits.",B:"2004 bits per second, adding the two values.",C:"8000 bits per second, multiplying baud by bits",D:"2000 bits per second, since baud equals bit rate."},correct:"C"}
+  },
+  {
+    id:"CS-N4-17",stem:"In a star network topology, every device connects to:",
+    options:{A:"A single shared backbone cable running past each node.",B:"Two neighbouring devices forming a closed loop.",C:"Every other device by a dedicated individual cable.",D:"A central switch that forwards traffic between them"},
+    correct:"D",tag:"MC-GCS-NETWORK-PROTOCOLS",
+    scaffold:"Star: each device has its own link to a central switch — one cable failure affects only that device, performance is good because the switch forwards frames only to their destination, but the switch is a single point of failure. Bus: one shared backbone, cheap but collision-prone and hard to fault-find. Mesh: many redundant paths, extremely resilient but expensive in cabling, which is why it suits wireless and backbone networks.",
+    reforge:{stem:"A mesh topology's main advantage over a star is that it:",options:{A:"Provides multiple redundant paths between nodes",B:"Requires substantially less cabling to install.",C:"Depends on a single central switch.",D:"Prevents any data collisions from occurring."},correct:"A"}
+  },
+  {
+    id:"CS-N4-18",stem:"A switch differs from a hub because a switch:",
+    options:{A:"Forwards each frame only to its destination port",B:"Broadcasts every frame to all connected devices.",C:"Assigns IP addresses to devices as they connect.",D:"Converts between wired and wireless signalling."},
+    correct:"A",tag:"MC-GCS-NETWORK-PROTOCOLS",
+    scaffold:"A hub repeats every frame to all ports, wasting bandwidth and causing collisions. A switch learns which MAC address sits on which port and forwards frames only there, so segments can transmit simultaneously. A router works at the network layer, connecting different networks using IP addresses and choosing routes. A gateway translates between different protocols. Exam questions rely on students conflating switch and router.",
+    reforge:{stem:"A router differs from a switch because a router:",options:{A:"Operates only within a single local network.",B:"Connects networks using IP addresses",C:"Uses MAC addresses to forward every frame.",D:"Repeats incoming signals to all its ports."},correct:"B"}
+  },
+  {
+    id:"CS-N4-19",stem:"In a Wi-Fi network, the SSID identifies:",
+    options:{A:"The encryption standard protecting the traffic.",B:"The unique hardware address of the access point.",C:"The wireless network by name",D:"The channel number the network transmits on."},
+    correct:"C",tag:"MC-GCS-NETWORK-PROTOCOLS",
+    scaffold:"The SSID is the network's broadcast name. Security comes from the encryption standard: WEP is obsolete and broken, WPA2 uses AES and remains widely used, WPA3 strengthens key exchange and protects weaker passwords. Hiding the SSID or filtering MAC addresses adds only marginal difficulty since both can be observed or spoofed, so a strong passphrase with current encryption is what actually secures a wireless network.",
+    reforge:{stem:"Hiding a network's SSID provides only limited security because:",options:{A:"The name is still visible in device traffic",B:"Hidden networks cannot use any encryption.",C:"The router broadcasts the passphrase instead.",D:"Devices must connect using WEP when it is hidden."},correct:"A"}
+  },
+  {
+    id:"CS-N4-20",stem:"CSMA/CA is used in wireless networks rather than CSMA/CD because wireless devices:",
+    options:{A:"Transmit at a much lower overall data rate.",B:"Never experience interference from other signals.",C:"Cannot detect collisions while transmitting",D:"Are always connected to a central switch."},
+    correct:"C",tag:"MC-GCS-NETWORK-PROTOCOLS",
+    scaffold:"On wired Ethernet a device can listen while sending, so CSMA/CD detects a collision and backs off. A wireless transmitter cannot hear a weak remote signal over its own transmission, and the hidden node problem means two stations may not hear each other at all. CSMA/CA therefore avoids collisions in advance: listen, wait a random interval, optionally exchange request-to-send and clear-to-send, then transmit and await acknowledgement.",
+    reforge:{stem:"The hidden node problem occurs when two wireless devices:",options:{A:"Share an identical MAC address by mistake.",B:"Use different encryption standards.",C:"Are assigned the same IP address by the router.",D:"Can reach the access point but not each other"},correct:"D"}
+  },
+  {
+    id:"CS-N4-21",stem:"A protocol is best described as:",
+    options:{A:"A physical cable standard for connecting devices.",B:"An agreed set of rules governing communication",C:"A program that translates source code to machine code.",D:"The maximum data rate a network can sustain."},
+    correct:"B",tag:"MC-GCS-NETWORK-PROTOCOLS",
+    scaffold:"A protocol is an agreed set of rules covering message format, sequence, timing, addressing and error handling, so devices from different manufacturers interoperate. Common examples: HTTP and HTTPS for web pages, FTP for file transfer, SMTP for sending mail with POP3 and IMAP for retrieving it, TCP and UDP at the transport layer, IP for addressing and routing. Standards matter because without them equipment could not communicate.",
+    reforge:{stem:"Which protocol is used to retrieve email while leaving it stored on the server?",options:{A:"SMTP, which is used to send outgoing mail.",B:"FTP, which transfers files between hosts.",C:"IMAP, which syncs mail on the server",D:"POP3, which downloads and removes messages."},correct:"C"}
+  },
+  {
+    id:"CS-N4-22",stem:"Lossy compression would be inappropriate for:",
+    options:{A:"A photograph shared on a social media feed.",B:"A streamed music track for casual listening.",C:"A thumbnail preview of a video clip.",D:"A spreadsheet of financial transactions"},
+    correct:"D",tag:"MC-GCS-DATA-REPRESENTATION",
+    scaffold:"Lossy compression permanently discards detail chosen to be least noticeable, giving large savings for photographs, music and video where approximate reproduction is acceptable. It is unsuitable wherever exact reconstruction matters — text, spreadsheets, program code, archives, medical images — because a changed value is simply wrong rather than slightly degraded. Repeated lossy re-encoding compounds the loss, a further reason to prefer lossless for masters.",
+    reforge:{stem:"Repeatedly opening and re-saving a JPEG image degrades quality because each save:",options:{A:"Increases the image's colour depth automatically.",B:"Converts the image into a vector format.",C:"Applies lossy compression to degraded data",D:"Adds metadata that overwrites some pixels."},correct:"C"}
+  }
+]);
+
+csExpansion("CS-1", [
+  {
+    id:"CS-N5-01",stem:"In most languages, the expression \"7\" + 3 causes an error or unexpected output because:",
+    options:{A:"The string and the integer are different data types",B:"Addition is not defined for any numeric values.",C:"Quotation marks always denote a comment line.",D:"Integers cannot appear on the right of an operator."},
+    correct:"A",tag:"MC-GCS-PROGRAMMING-ERRORS",
+    scaffold:"\"7\" is a string; 3 is an integer. Some languages raise a type error, others silently concatenate or coerce, which hides the bug. Casting converts deliberately: int(\"7\") gives 7, str(3) gives \"3\". Statically typed languages check types at compile time and catch this early; dynamically typed ones check at runtime, so the error surfaces only when that line executes — a reason to validate and cast input read from a keyboard or file.",
+    reforge:{stem:"Input read from a keyboard is usually returned as a string, so before arithmetic it must be:",options:{A:"Cast to a numeric type such as integer",B:"Stored in a global rather than a local variable.",C:"Written to a file and then read back.",D:"Compared with a constant of the same name."},correct:"A"}
+  },
+  {
+    id:"CS-N5-02",stem:"In a two-dimensional array declared as scores[row][column], the first index usually selects the:",
+    options:{A:"Data type stored at that position.",B:"Row; the second selects the column",C:"Total number of elements in the array.",D:"Memory address where the array begins."},
+    correct:"B",tag:"MC-GCS-DATA-STRUCTURES",
+    scaffold:"A two-dimensional array is an array of arrays: the first index selects the row, the second the element within it. Nested loops traverse it, the outer over rows and the inner over columns. It suits grids — a seating plan, a game board, a table of results. Off-by-one errors are common at the boundaries, so check whether indices start at 0 and whether the upper limit is inclusive.",
+    reforge:{stem:"Traversing every element of a two-dimensional array normally requires:",options:{A:"Two nested loops, for rows and columns",B:"A single loop running the length of one row.",C:"A recursive call for each individual element.",D:"A stack holding the address of every element."},correct:"A"}
+  },
+  {
+    id:"CS-N5-03",stem:"Declaring a value as a constant rather than a variable means it:",
+    options:{A:"Occupies no memory while the program runs.",B:"Is stored in secondary storage automatically.",C:"Cannot be changed while the program runs",D:"Is visible only inside the current subroutine."},
+    correct:"C",tag:"MC-GCS-ABSTRACTION",
+    scaffold:"A constant is assigned once and cannot be reassigned, so an accidental write is caught rather than silently corrupting the value. Using named constants such as VAT_RATE also makes code self-documenting and means a change to the rate is made in one place rather than scattered through the program. This is separate from scope, which governs where a name is visible, and from data type, which governs what values it may hold.",
+    reforge:{stem:"Replacing the literal 0.20 throughout a program with a named constant VAT_RATE mainly improves:",options:{A:"Maintainability, since one edit changes every use",B:"Execution speed, since constants are read faster.",C:"Memory use, since the value is stored once only.",D:"Security, since the value becomes encrypted."},correct:"A"}
+  }
+]);
+csExpansion("CS-2", [
+  {
+    id:"CS-N5-04",stem:"Network Address Translation allows several devices to share one public IP address by:",
+    options:{A:"Encrypting the traffic leaving the local network.",B:"Assigning each device the same private address.",C:"Compressing the packet headers before sending.",D:"Rewriting addresses and ports at the router"},
+    correct:"D",tag:"MC-GCS-NETWORK-PROTOCOLS",
+    scaffold:"NAT lets a router map many private addresses (10.x, 172.16-31.x, 192.168.x) onto one public address, tracking which internal device and port each connection belongs to so replies return correctly. It conserves the limited IPv4 address space and incidentally hides the internal structure, since unsolicited inbound traffic has no mapping. IPv6's much larger address space removes the original need for it.",
+    reforge:{stem:"IPv6 was introduced principally to address which limitation of IPv4?",options:{A:"IPv4 packets could not be routed between networks.",B:"IPv4 provided too few addresses for demand",C:"IPv4 was unable to carry encrypted traffic.",D:"IPv4 headers could not include a checksum."},correct:"B"}
+  },
+  {
+    id:"CS-N5-05",stem:"An incremental backup differs from a full backup because an incremental backup copies:",
+    options:{A:"Only files changed since the last backup",B:"Every file held on the system each time.",C:"Only files larger than a set threshold size.",D:"The operating system but not any user data."},
+    correct:"A",tag:"MC-GCS-SECURITY",
+    scaffold:"A full backup copies everything: slow to make, quick to restore. An incremental copies only what changed since the previous backup of any kind: fast and small, but restoring needs the last full backup plus every incremental since, so one missing set breaks the chain. A differential copies everything changed since the last full backup: larger each day, but restoring needs only two sets. Backups should be tested and stored off-site.",
+    reforge:{stem:"Restoring from differential backups is simpler than from incremental ones because it needs:",options:{A:"No full backup to be taken at any point.",B:"Only the most recent differential set",C:"Every differential taken since the last full backup.",D:"A separate backup of the operating system."},correct:"B"}
+  },
+  {
+    id:"CS-N5-06",stem:"A proxy server placed between users and the internet can:",
+    options:{A:"Increase the physical bandwidth of the connection.",B:"Replace the need for any IP addressing.",C:"Cache pages and filter requests centrally",D:"Guarantee that no traffic is ever encrypted."},
+    correct:"C",tag:"MC-GCS-NETWORK-PROTOCOLS",
+    scaffold:"A proxy makes requests on behalf of clients, so it can cache frequently requested pages to cut external traffic and improve response, enforce content filtering and acceptable-use policy, log activity, and hide client addresses from the destination. It is a control and performance measure rather than a security boundary in itself: a firewall still governs which traffic may pass at all.",
+    reforge:{stem:"Caching at a proxy server improves response time because a repeated request can be answered:",options:{A:"By reducing the size of the page requested.",B:"By compressing the page before delivery.",C:"Only after the origin server confirms it.",D:"From local storage, not the origin server"},correct:"D"}
+  }
+]);
+csExpansion("CS-3", [
+  {
+    id:"CS-N5-07",stem:"Insertion sort performs particularly well when the input list is:",
+    options:{A:"In reverse order, its worst possible case.",B:"Made up entirely of identical values.",C:"Already nearly sorted",D:"Longer than several million items."},
+    correct:"C",tag:"MC-GCS-ALGORITHMS",
+    scaffold:"Insertion sort takes each item and moves it back past larger items into place. On nearly sorted data few shifts are needed, approaching O(n); on reverse-sorted data every item moves the whole way, giving O(n²). It is stable, sorts in place, and has low overhead, so library sorts often use it for small sublists inside a faster O(n log n) algorithm rather than recursing all the way down.",
+    reforge:{stem:"A sorting algorithm is described as stable when it:",options:{A:"Never requires more memory than the list itself.",B:"Always completes in the same time regardless of input.",C:"Preserves the original order of equal-valued items",D:"Can be interrupted and resumed without error."},correct:"C"}
+  },
+  {
+    id:"CS-N5-08",stem:"A linker is needed after compilation in order to:",
+    options:{A:"Check the source code for syntax errors.",B:"Translate assembly mnemonics into machine code.",C:"Combine object files and libraries",D:"Allocate processor time between running processes."},
+    correct:"C",tag:"MC-GCS-PROGRAMMING-ERRORS",
+    scaffold:"A compiler turns each source file into an object file with unresolved references to code defined elsewhere. The linker resolves those references, combining object files with library routines into a single executable. Static linking copies library code into the executable, giving a larger but self-contained file; dynamic linking resolves at load time from shared libraries, keeping files smaller and allowing the library to be patched independently. A loader then places it in memory.",
+    reforge:{stem:"Dynamic linking rather than static linking keeps executables smaller because library code is:",options:{A:"Compressed inside the executable file.",B:"Rewritten into a more compact instruction set.",C:"Shared at run time rather than copied in",D:"Discarded once the program has started."},correct:"C"}
+  },
+  {
+    id:"CS-N5-09",stem:"Which problem is undecidable, meaning no algorithm can solve it for every possible input?",
+    options:{A:"Sorting a list of integers into ascending order.",B:"Determining whether an arbitrary program will halt",C:"Finding the shortest path through a weighted graph.",D:"Testing whether a given number is prime."},
+    correct:"B",tag:"MC-GCS-ABSTRACTION",
+    scaffold:"The halting problem is undecidable: Turing proved no general algorithm can determine, for every program and input, whether it terminates. This is a limit of computation itself, not of current hardware or cleverness. Distinguish it from intractable problems, which are solvable in principle but take impractically long as input grows, such as the travelling salesman problem by brute force — those become feasible again with heuristics giving good rather than optimal answers.",
+    reforge:{stem:"A problem described as intractable differs from an undecidable one because it:",options:{A:"Has no algorithmic solution of any kind.",B:"Applies only to programs written recursively.",C:"Can be solved, but not in a practical time",D:"Produces a different answer on each run."},correct:"C"}
+  }
+]);
+csExpansion("CS-4", [
+  {
+    id:"CS-N5-10",stem:"An analogue-to-digital converter is required when a computer takes input from:",
+    options:{A:"A keyboard producing scan codes for each key.",B:"A mouse reporting movement as digital counts.",C:"A file already stored in binary on a disk.",D:"A microphone producing a varying signal"},
+    correct:"D",tag:"MC-GCS-DATA-REPRESENTATION",
+    scaffold:"Physical quantities such as sound pressure, temperature and light vary continuously, so an ADC samples them at intervals and represents each sample as a binary number. Sampling rate and bit depth determine how faithfully the original is captured, and the Nyquist principle requires sampling at least twice the highest frequency present to avoid aliasing. A DAC reverses the process to drive speakers. Keyboards and mice already produce digital signals.",
+    reforge:{stem:"Sampling an audio signal at less than twice its highest frequency causes:",options:{A:"Aliasing, distorting the sound",B:"An increase in the resulting file size.",C:"The bit depth to be reduced automatically.",D:"The signal to be converted back to analogue."},correct:"A"}
+  },
+  {
+    id:"CS-N5-11",stem:"A GPU is better suited than a CPU to rendering graphics because a GPU has:",
+    options:{A:"A much higher clock speed on a single core.",B:"Direct access to secondary storage devices.",C:"A larger instruction set for general tasks.",D:"Many simple cores acting in parallel"},
+    correct:"D",tag:"MC-GCS-HARDWARE-ARCHITECTURE",
+    scaffold:"A CPU has a few powerful, flexible cores optimised for sequential work with complex branching. A GPU has thousands of simpler cores designed to apply the same operation to many data items simultaneously, which suits shading pixels or transforming vertices. That same pattern makes GPUs effective for machine learning and simulation, but poor for branch-heavy sequential logic, where the CPU remains faster.",
+    reforge:{stem:"Which workload would gain least from being moved to a GPU?",options:{A:"Applying one filter to every pixel of an image.",B:"Multiplying two very large matrices together.",C:"Sequential logic with heavy branching",D:"Training a neural network on a large data set."},correct:"C"}
+  },
+  {
+    id:"CS-N5-12",stem:"Unicode requires more storage per character than ASCII because Unicode:",
+    options:{A:"Stores each character as a compressed image.",B:"Always uses exactly four bytes per character.",C:"Includes a checksum with every character stored.",D:"Encodes far more characters"},
+    correct:"D",tag:"MC-GCS-DATA-REPRESENTATION",
+    scaffold:"ASCII uses 7 bits for 128 characters, covering English text. Unicode assigns code points to over a million characters across the world's writing systems plus symbols and emoji, so it needs more bits. UTF-8 is variable-length: one byte for characters matching ASCII, up to four for others, so English text is barely larger while other scripts remain representable. This backwards compatibility is why UTF-8 dominates on the web.",
+    reforge:{stem:"UTF-8 is widely used partly because a file of plain English text encoded in UTF-8 is:",options:{A:"Always exactly half the size of the ASCII version.",B:"Stored without any character encoding at all.",C:"Automatically encrypted during transmission.",D:"Almost identical in size to the ASCII version"},correct:"D"}
+  }
+]);
+
 [
   "bus", "chem", "bio", "phys", "cs", "maths", "german", "rs", "hsc",
   "french", "media", "pe", "span", "englit", "engll", "mand",
@@ -22333,44 +23058,13 @@ for (const bankId of ["BUS-2", "BUS-3", "BUS-4"]) {
   for (const question of BANKS[bankId].questions) enforceNoUniqueLongestAnswer(question.reforge);
 }
 
-// Computer Science content pass: make the generic-frame twins use their own
-// parent distractors, eliminating repeated compiler/interpreter and scheduling
-// distractors while preserving the preverified answer letters.
-const csRepairFramePattern = /^(During a practical programming task, a student|A computing case presents the following problem:|A student applies this idea to a different computing example:|In a new computing scenario:)/i;
-const cleanCSOption = value => String(value)
-  .replace(/\s+(?:for this decision|in this case|in this context|under standard assumptions|in a typical case|in the stated scenario)/gi, "")
-  .replace(/\s{2,}/g, " ")
-  .trim();
-for (const bankId of ["CS-1", "CS-2", "CS-3", "CS-4"]) {
-  for (const question of BANKS[bankId].questions) {
-    if (!question.reforge || !csRepairFramePattern.test(String(question.reforge.stem))) continue;
-    const answer = String(question.options[question.correct]);
-    const distractors = Object.entries(question.options)
-      .filter(([letter]) => letter !== question.correct)
-      .map(([, value]) => cleanCSOption(value));
-    const options = {};
-    let distractorIndex = 0;
-    for (const letter of ["A", "B", "C", "D"]) {
-      options[letter] = letter === question.reforge.correct ? answer : distractors[distractorIndex++];
-    }
-    const normalise = values => Object.values(values).map(value => String(value).toLowerCase()).sort().join("\u001f");
-    if (normalise(options) === normalise(question.options)) {
-      const firstDistractor = ["A", "B", "C", "D"].find(letter => letter !== question.reforge.correct);
-      options[firstDistractor] += " in the stated computing case";
-    }
-    question.reforge.options = options;
-    const otherLetters = ["A", "B", "C", "D"].filter(letter => letter !== question.reforge.correct);
-    const balanceTails = [" under the conditions described in the program", " for the computing scenario given", " in the system described in the question"];
-    let tailIndex = 0;
-    const answerLength = String(question.reforge.options[question.reforge.correct]).length;
-    while (Math.max(...otherLetters.map(letter => String(question.reforge.options[letter]).length)) < answerLength && tailIndex < 40) {
-      const letter = otherLetters[tailIndex % otherLetters.length];
-      const tail = balanceTails[Math.floor(tailIndex / otherLetters.length) % balanceTails.length];
-      if (!String(question.reforge.options[letter]).endsWith(tail)) question.reforge.options[letter] += tail;
-      tailIndex++;
-    }
-  }
-}
+// The Computer Science content pass that used to sit here rebuilt each
+// generic-frame Reforge twin from the question's OWN base distractors plus the
+// base answer. That made the twin a copy of its parent, which is why it then
+// needed a duplicate guard appending " in the stated computing case" and a
+// length guard appending " under the conditions described in the program" —
+// filler that reached 154 options across 96 questions. The Reforge literals
+// underneath are sound, so the pass is removed and they are used directly.
 
 // ============================================================
 // GCSE Economics (OCR J205) misconception taxonomy.
@@ -31145,16 +31839,6 @@ const finalCSCorruptionRepairs = {
   }
  }
 };
-for (const [id, repairs] of Object.entries(finalCSCorruptionRepairs)) {
-  for (const bank of Object.values(BANKS)) {
-    const question = (bank.questions || []).find(candidate => candidate.id === id);
-    if (!question) continue;
-    for (const [variant, options] of Object.entries(repairs)) {
-      const item = variant === "base" ? question : question.reforge;
-      if (item?.options) Object.assign(item.options, options);
-    }
-  }
-}
 // Residual length-cue fixes left after the cs corruption-repair pass above:
 // the same-tag replacement was necessarily shorter than the correct answer
 // for these 42 items, so the correct answer became the uniquely-longest
@@ -34553,6 +35237,46 @@ for (const [id, repairs] of Object.entries(bioAnswerLengthRepairs)) {
     for (const [variant, options] of Object.entries(repairs)) {
       const item = variant === "base" ? question : question.reforge;
       if (item?.options) Object.assign(item.options, options);
+    }
+  }
+}
+
+// A-Level Computer Science: concise restatements of five correct answers that
+// were long enough to be the uniquely-longest option, which lets a student
+// score above chance by picking the longest one. These ran to 132-163
+// characters against distractors of ~45. Matched on option TEXT rather than
+// letter, because rebalanceMCQSubject() permutes letters and a letter-keyed
+// table applied afterwards lands on whichever option happens to sit there —
+// the bug that made finalCSCorruptionRepairs splice unrelated text into
+// CS-01. Applied last so no earlier pass can reinstate the long form.
+const csAnswerLengthRepairs = {
+  "CS-02": { reforge: {
+    "Python is interpreted (line by line at runtime) whereas C is compiled to machine code (direct CPU instructions) — interpretation adds overhead on every execution.":
+      "Python is interpreted at runtime; C is compiled" } },
+  "CS-05": { reforge: {
+    "A stack — each visited page is pushed onto the stack; pressing back pops the most recent page (LIFO), returning to the previous one.":
+      "A stack, since back pops the most recent page" } },
+  "CS-12": { base: {
+    "Provides reliable, ordered delivery through acknowledgements, retransmission of lost packets, and flow control — at the cost of greater overhead and latency.":
+      "Provides reliable, ordered delivery with acknowledgements" } },
+  "CS-13": { reforge: {
+    "When (rear + 1) % size == front — the next position rear would advance to is where front currently is, meaning no more space without overwriting existing elements.":
+      "When (rear + 1) % size == front" } },
+  "CS-15": { reforge: {
+    "DFS finds a path but not necessarily the shortest — it goes deep first. BFS explores level by level and guarantees the shortest path in an unweighted graph.":
+      "BFS explores level by level, so it finds the shortest path" } }
+};
+for (const [id, variants] of Object.entries(csAnswerLengthRepairs)) {
+  for (const bankId of SUBJECTS.cs.banks) {
+    const question = (BANKS[bankId].questions || []).find(candidate => candidate.id === id);
+    if (!question) continue;
+    for (const [variant, replacements] of Object.entries(variants)) {
+      const item = variant === "base" ? question : question.reforge;
+      if (!item?.options) continue;
+      for (const [letter, value] of Object.entries(item.options)) {
+        const replacement = replacements[String(value)];
+        if (replacement) item.options[letter] = replacement;
+      }
     }
   }
 }
