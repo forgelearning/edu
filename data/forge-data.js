@@ -4998,7 +4998,11 @@ BANKS["CHEM-1"] = {
       options:{A:"Weighted mean mass of all naturally occurring isotopes relative to 1/12 of carbon-12.",B:"It isn't wrong — atoms can legitimately have fractional numbers of protons.",C:"Chlorine has a relative atomic mass of 35.5 because it has 35.5 neutrons.",D:"Relative atomic mass equals the number of electrons in the neutral atom."},
       correct:"A",tag:"MC-CHEM-01",
       scaffold:"Relative atomic mass (Ar) = weighted mean mass of naturally occurring isotopes relative to 1/12 of carbon-12. Chlorine: 75% 35Cl + 25% 37Cl → Ar = (0.75×35) + (0.25×37) = 35.5. Every individual chlorine ATOM has exactly 17 protons (atomic number = proton number = always whole). The fractional Ar reflects the isotopic mixture in a sample — not any individual atom.",
-      reforge:{stem:"Bromine has two isotopes: 79Br (50.7%) and 81Br (49.3%). Calculate the relative atomic mass of bromine to 1 decimal place.",options:{A:"80.0",B:"79.5 (= (0.507×79) + (0.493×81) = 40.05 + 39.93 = 79.98 ≈ 80.0)",C:"80.5",D:"79.0"},correct:"B"}
+      // Was keyed to an option labelled "79.5" whose own working read
+      // "= 40.05 + 39.93 = 79.98 ≈ 80.0" — so a student calculating correctly
+      // got 80.0, picked the option reading 80.0, and was marked wrong. The
+      // working belongs in the scaffold, not inside an option label.
+      reforge:{stem:"Bromine has two isotopes: 79Br (50.7%) and 81Br (49.3%). Calculate the relative atomic mass of bromine to 1 decimal place.",options:{A:"80.0",B:"79.5",C:"80.5",D:"79.0"},correct:"A"}
     },
     {
       id:"CHEM-02",stem:"Which of the following correctly explains why the second ionisation energy of sodium is much higher than the first?",
@@ -19145,6 +19149,816 @@ busExpansion("BUS-2", [
     correct:"A",tag:"MC-GBUS-CASH-FINANCE",
     scaffold:"Depreciation spreads the cost of a non-current asset across its useful life, matching the cost to the periods that benefit. It reduces recorded profit and the asset's book value, but no cash leaves the business in that period — the cash went when the asset was bought. This is a common source of confusion between profit and cash flow, and it is why depreciation is added back when converting profit into operating cash flow.",
     reforge:{stem:"When converting operating profit into cash flow, depreciation is added back because it:",options:{A:"Never involved an outflow of cash",B:"Represents cash received from customers.",C:"Increases the value of the asset held.",D:"Is a payment made to the tax authority."},correct:"A"}
+  }
+]);
+
+// ===== A-LEVEL CHEMISTRY: GENUINE QUESTION EXPANSION =====
+// chem reached its 200-question floor via expandSubjectToMinimum(), which
+// clones existing questions; a later pass strips the "(application variant
+// N)" suffix, leaving 54 of its 202 questions as byte-identical repeats.
+// These 111 authored questions take the source count to 200 so the expansion
+// pass generates no coverage variants at all.
+const chemExpansion = (bankId, questions) => questions.forEach(question => BANKS[bankId].questions.push(question));
+chemExpansion("CHEM-1", [
+  {
+    id:"CHEM-N1-01",stem:"An atom of ³⁷Cl contains:",
+    options:{A:"17 protons, 20 neutrons and 17 electrons",B:"20 protons, 17 neutrons and 20 electrons.",C:"37 protons, 17 neutrons and 37 electrons.",D:"17 protons, 37 neutrons and 20 electrons."},
+    correct:"A",tag:"MC-GCHEM-ATOMIC-STRUCTURE",
+    scaffold:"Atomic number = proton number, and fixes the element. Mass number = protons + neutrons. So for ³⁷Cl: 17 protons (chlorine is element 17), 37 − 17 = 20 neutrons, and 17 electrons in a neutral atom. Isotopes of an element share proton number but differ in neutron number, so they have identical chemistry — electrons determine reactions — but different masses, which is what mass spectrometry separates.",
+    reforge:{stem:"Two isotopes of the same element always have the same:",options:{A:"Number of neutrons in the nucleus.",B:"Mass number for each atom.",C:"Number of protons and electrons",D:"Density in the solid state."},correct:"C"}
+  },
+  {
+    id:"CHEM-N1-02",stem:"The electron configuration of a chromium atom is unusual because it is:",
+    options:{A:"[Ar]4s²3d⁴, following the normal filling order.",B:"[Ar]4s¹3d⁵, giving a half-filled 3d subshell",C:"[Ar]4s²3d⁶, with the 4s filled first.",D:"[Ar]3d⁸, with no 4s electrons at all."},
+    correct:"B",tag:"MC-GCHEM-ATOMIC-STRUCTURE",
+    scaffold:"Chromium is [Ar]4s¹3d⁵ and copper is [Ar]4s¹3d¹⁰: promoting one 4s electron gives a half-filled or full 3d subshell, which is slightly lower in energy. Note that when transition metals form ions, the 4s electrons are lost first even though 4s fills first — so Fe²⁺ is [Ar]3d⁶, not [Ar]4s²3d⁴. That ordering catches students out more often than the chromium and copper exceptions themselves.",
+    reforge:{stem:"Which is the correct electron configuration of an Fe²⁺ ion?",options:{A:"[Ar]4s²3d⁴, losing two 3d electrons.",B:"[Ar]4s¹3d⁵, promoting one electron.",C:"[Ar]4s²3d⁶, unchanged from the atom.",D:"[Ar]3d⁶, losing 4s first"},correct:"D"}
+  },
+  {
+    id:"CHEM-N1-03",stem:"First ionisation energy generally decreases down a group because:",
+    options:{A:"Nuclear charge decreases down the group.",B:"The outer electrons pair up in the same orbital.",C:"The outer electron is further out, more shielded",D:"Atoms become more electronegative down the group."},
+    correct:"C",tag:"MC-GCHEM-ATOMIC-STRUCTURE",
+    scaffold:"Three factors set ionisation energy: nuclear charge, distance of the outer electron from the nucleus, and shielding by inner shells. Down a group, nuclear charge rises but distance and shielding rise more, so attraction on the outer electron weakens and ionisation energy falls. Across a period, nuclear charge rises with little change in shielding, so it generally increases — with dips at Group 3 (2p higher than 2s) and Group 6 (paired 2p electrons repel).",
+    reforge:{stem:"The first ionisation energy of sulfur is lower than that of phosphorus because in sulfur:",options:{A:"Two electrons pair in one 3p orbital and repel",B:"The nuclear charge is smaller than phosphorus.",C:"There is an additional filled inner shell.",D:"The outer electron occupies a 4s orbital."},correct:"A"}
+  },
+  {
+    id:"CHEM-N1-04",stem:"In a time-of-flight mass spectrometer, ions are accelerated so that they all have the same:",
+    options:{A:"Velocity as they enter the flight tube.",B:"Mass-to-charge ratio on detection.",C:"Number of neutrons in the nucleus.",D:"Kinetic energy entering the flight tube"},
+    correct:"D",tag:"MC-GCHEM-MASS-SPECTRA",
+    scaffold:"Stages: ionisation (electrospray or electron impact), acceleration to constant kinetic energy, drift through a field-free flight tube, then detection. Since KE = ½mv² is equal for all ions, heavier ions travel more slowly and arrive later, so time of flight gives m/z. The detector converts ion arrivals into current, and relative peak heights give isotopic abundances, from which relative atomic mass is calculated as a weighted mean.",
+    reforge:{stem:"In a mass spectrum, a heavier isotope reaches the detector later because it has a:",options:{A:"Greater charge on each ion formed.",B:"Lower velocity at equal energy",C:"Smaller mass-to-charge ratio overall.",D:"Longer path length through the tube."},correct:"B"}
+  },
+  {
+    id:"CHEM-N1-05",stem:"One mole of any substance contains:",
+    options:{A:"6.02 × 10²³ particles",B:"12 g of that substance exactly.",C:"24 dm³ of gas at any temperature.",D:"The same mass as one mole of carbon."},
+    correct:"A",tag:"MC-GCHEM-MOLES-FORMULAE",
+    scaffold:"A mole is 6.02 × 10²³ particles (the Avogadro constant). Key relationships: moles = mass ÷ Mr; moles = concentration × volume in dm³; and for a gas at room temperature and pressure, moles = volume in dm³ ÷ 24. The molar gas volume applies only at the stated conditions, and the ideal gas equation pV = nRT covers the general case with pressure in Pa, volume in m³ and temperature in K.",
+    reforge:{stem:"How many moles are present in 88 g of carbon dioxide (Mr = 44)?",options:{A:"44 moles, from 88 divided by 2.",B:"0.5 moles, from 44 divided by 88.",C:"2 moles, from 88 divided by 44",D:"3872 moles, from 88 multiplied by 44."},correct:"C"}
+  },
+  {
+    id:"CHEM-N1-06",stem:"The empirical formula of a compound gives the:",
+    options:{A:"Actual number of atoms in one molecule.",B:"Arrangement of atoms in three dimensions.",C:"Total mass of one mole of the compound.",D:"Simplest whole-number ratio of atoms"},
+    correct:"D",tag:"MC-GCHEM-MOLES-FORMULAE",
+    scaffold:"Empirical formula is the simplest whole-number ratio; molecular formula gives the actual numbers and is a whole-number multiple of it. To find an empirical formula: divide each percentage or mass by the atomic mass, divide through by the smallest result, then scale to whole numbers. Ethane is CH₃ empirical, C₂H₆ molecular. Ionic compounds and giant structures are always written as empirical formulae since no discrete molecule exists.",
+    reforge:{stem:"A compound has empirical formula CH₂ and a relative molecular mass of 56. Its molecular formula is:",options:{A:"C₄H₈, since 56 ÷ 14 gives 4",B:"CH₂, unchanged from the empirical formula.",C:"C₂H₄, since 56 ÷ 28 gives 2.",D:"C₅H₁₀, since 56 is close to 70."},correct:"A"}
+  },
+  {
+    id:"CHEM-N1-07",stem:"The percentage yield of a reaction is calculated as:",
+    options:{A:"Theoretical yield divided by actual yield, times 100.",B:"Mass of product divided by mass of all reactants.",C:"Actual yield divided by theoretical yield, times 100",D:"Moles of product divided by moles of solvent."},
+    correct:"C",tag:"MC-GCHEM-MOLES-FORMULAE",
+    scaffold:"Percentage yield = (actual ÷ theoretical) × 100, and is below 100% because of incomplete reaction, reversible equilibria, competing side reactions, and losses during transfer and purification. Atom economy = (Mr of desired product ÷ total Mr of reactants) × 100, and measures how much of the reactant mass ends up as the wanted product. Addition reactions have 100% atom economy; substitution reactions do not.",
+    reforge:{stem:"An addition reaction has a higher atom economy than a substitution reaction because it:",options:{A:"Always produces a higher percentage yield.",B:"Requires no catalyst to proceed.",C:"Runs at a lower temperature.",D:"Forms only one product, wasting no atoms"},correct:"D"}
+  },
+  {
+    id:"CHEM-N1-08",stem:"An ionic bond is best described as the electrostatic attraction between:",
+    options:{A:"Oppositely charged ions in a lattice",B:"Nuclei and a shared pair of electrons.",C:"Positive ions and delocalised electrons.",D:"Permanent dipoles on adjacent molecules."},
+    correct:"A",tag:"MC-GCHEM-BONDING-STRUCTURE",
+    scaffold:"Ionic: electrons transferred from metal to non-metal, giving oppositely charged ions held in a giant lattice — high melting point, brittle, conducts only when molten or dissolved. Covalent: a shared pair attracted to both nuclei. Metallic: positive ions in a sea of delocalised electrons — conducts when solid, malleable. Ionic character increases with electronegativity difference, and bonding sits on a continuum rather than in strict categories.",
+    reforge:{stem:"Sodium chloride conducts electricity when molten but not when solid because the ions:",options:{A:"Gain extra electrons on melting.",B:"Are free to move only in the liquid",C:"Become covalently bonded when solid.",D:"Lose their charge in the solid lattice."},correct:"B"}
+  },
+  {
+    id:"CHEM-N1-09",stem:"A dative covalent bond differs from an ordinary covalent bond because:",
+    options:{A:"It is significantly weaker once formed.",B:"The electrons are transferred rather than shared.",C:"Both shared electrons come from one atom",D:"It forms only between identical atoms."},
+    correct:"C",tag:"MC-GCHEM-BONDING-STRUCTURE",
+    scaffold:"In a dative (coordinate) bond both electrons in the shared pair come from one atom, usually via a lone pair — as in NH₄⁺, where nitrogen's lone pair bonds to H⁺, and in H₃O⁺ and complex ions with ligands. Once formed it is identical in length and strength to any other covalent bond of that type, which is why all four N–H bonds in the ammonium ion are equivalent. It is shown by an arrow from donor to acceptor.",
+    reforge:{stem:"All four N–H bonds in the ammonium ion are identical in length. This shows that a dative bond:",options:{A:"Is weaker than a normal covalent bond.",B:"Prevents the ion from carrying a charge.",C:"Only forms at high temperature.",D:"Is identical to any covalent bond"},correct:"D"}
+  },
+  {
+    id:"CHEM-N1-10",stem:"Applying electron pair repulsion theory, a molecule of ammonia is:",
+    options:{A:"Trigonal planar with bond angles of 120°.",B:"Pyramidal with bond angles of about 107°",C:"Tetrahedral with bond angles of 109.5°.",D:"Linear with bond angles of 180°."},
+    correct:"B",tag:"MC-GCHEM-BONDING-STRUCTURE",
+    scaffold:"Electron pairs repel to maximum separation, and lone pairs repel more strongly than bonding pairs, reducing bond angles by about 2.5° each. Methane: 4 bonding pairs, tetrahedral, 109.5°. Ammonia: 3 bonding + 1 lone, pyramidal, 107°. Water: 2 bonding + 2 lone, bent, 104.5°. Count total electron pairs around the central atom first, then subtract for the shape actually described, which refers only to atom positions.",
+    reforge:{stem:"The bond angle in water is smaller than in ammonia because water has:",options:{A:"Two lone pairs, repelling more",B:"A greater number of bonding pairs.",C:"A heavier central atom than nitrogen.",D:"Hydrogen bonding between molecules."},correct:"A"}
+  },
+  {
+    id:"CHEM-N1-11",stem:"Electronegativity is best defined as the ability of an atom to:",
+    options:{A:"Lose electrons and form a positive ion.",B:"Conduct electricity in the molten state.",C:"Attract a bonding pair of electrons",D:"Form the largest number of covalent bonds."},
+    correct:"C",tag:"MC-GCHEM-BONDING-STRUCTURE",
+    scaffold:"Electronegativity rises across a period as nuclear charge increases with similar shielding, and falls down a group as the bonding pair sits further from the nucleus and is more shielded. Fluorine is the most electronegative element. A difference between bonded atoms creates a polar bond with δ+ and δ− ends. A molecule is only polar overall if those bond dipoles do not cancel by symmetry — CO₂ is non-polar despite polar bonds.",
+    reforge:{stem:"Carbon dioxide has polar bonds but is a non-polar molecule because the:",options:{A:"Bonds are too weak to create a dipole.",B:"Oxygen atoms have no lone pairs.",C:"Molecule contains only double bonds.",D:"Dipoles cancel in a linear molecule"},correct:"D"}
+  },
+  {
+    id:"CHEM-N1-12",stem:"Van der Waals (London) forces arise from:",
+    options:{A:"Instantaneous dipoles inducing others",B:"Permanent dipoles on polar molecules only.",C:"Hydrogen bonded to nitrogen, oxygen or fluorine.",D:"The transfer of electrons between molecules."},
+    correct:"A",tag:"MC-GCHEM-BONDING-STRUCTURE",
+    scaffold:"Intermolecular forces in increasing strength: London forces (present in all molecules, from momentary uneven electron distribution, stronger with more electrons and greater surface contact); permanent dipole–dipole (polar molecules); hydrogen bonding (H bonded to N, O or F interacting with a lone pair). These determine melting and boiling points, not the covalent bonds inside molecules, which are unbroken when a simple molecular substance melts.",
+    reforge:{stem:"Boiling a sample of liquid bromine requires energy to overcome:",options:{A:"The covalent bonds within each Br₂ molecule.",B:"Hydrogen bonds between bromine molecules.",C:"London forces between the molecules",D:"Ionic attractions in a giant lattice."},correct:"C"}
+  },
+  {
+    id:"CHEM-N1-13",stem:"Water has an unusually high boiling point for its molecular mass because of:",
+    options:{A:"Its very strong covalent O–H bonds.",B:"Hydrogen bonding between molecules",C:"Its giant covalent lattice structure.",D:"Ionic attraction between H⁺ and OH⁻."},
+    correct:"B",tag:"MC-GCHEM-BONDING-STRUCTURE",
+    scaffold:"Each water molecule can form up to four hydrogen bonds — two through its lone pairs and two through its hydrogens — giving an extensive network that requires much energy to break, hence the high boiling point. Ice is less dense than liquid water because hydrogen bonds hold the molecules in an open lattice with the molecules further apart on average than in the liquid, which is why ice floats.",
+    reforge:{stem:"Ice is less dense than liquid water because hydrogen bonds hold molecules:",options:{A:"Closer together than in the liquid.",B:"In rapidly moving random positions.",C:"In an open lattice, further apart",D:"In pairs rather than larger clusters."},correct:"C"}
+  },
+  {
+    id:"CHEM-N1-14",stem:"Diamond has a very high melting point because it has:",
+    options:{A:"Strong London forces between layers.",B:"Delocalised electrons throughout the structure.",C:"A giant covalent lattice of strong bonds",D:"Ions held in a regular repeating lattice."},
+    correct:"C",tag:"MC-GCHEM-BONDING-STRUCTURE",
+    scaffold:"Diamond: each carbon bonded to four others in a giant covalent lattice, very hard, extremely high melting point, non-conducting since all outer electrons are in bonds. Graphite: three bonds per carbon in layers with weak forces between them, so layers slide (lubricant), and the fourth delocalised electron allows conduction along layers. Both are carbon: the difference is structure, which is why properties differ so sharply.",
+    reforge:{stem:"Graphite conducts electricity but diamond does not because in graphite each carbon atom:",options:{A:"Forms four bonds instead of three.",B:"Has one delocalised electron",C:"Carries a permanent negative charge.",D:"Is held by weak London forces only."},correct:"B"}
+  },
+  {
+    id:"CHEM-N1-15",stem:"Metals are malleable because:",
+    options:{A:"Layers of ions can slide past each other",B:"Covalent bonds break and reform easily.",C:"The ions are held only by London forces.",D:"Delocalised electrons hold ions rigidly in place."},
+    correct:"A",tag:"MC-GCHEM-BONDING-STRUCTURE",
+    scaffold:"Metallic bonding is the attraction between positive ions and a sea of delocalised electrons. Layers of ions can slide without breaking the bonding, since the electron sea is non-directional — hence malleability and ductility. Delocalised electrons also carry charge and heat, giving high conductivity. Bond strength, and so melting point, rises with greater ionic charge and smaller ionic radius: magnesium melts far higher than sodium.",
+    reforge:{stem:"Magnesium has a higher melting point than sodium mainly because Mg²⁺ ions:",options:{A:"Are larger than sodium ions.",B:"Form covalent bonds with each other.",C:"A higher charge and more electrons",D:"Are held together by hydrogen bonding."},correct:"C"}
+  },
+  {
+    id:"CHEM-N1-16",stem:"In the equation pV = nRT, the temperature must be expressed in:",
+    options:{A:"Degrees Celsius above freezing point.",B:"Kelvin, the absolute scale",C:"Whatever unit the pressure uses.",D:"Degrees Fahrenheit for consistency."},
+    correct:"B",tag:"MC-GCHEM-MOLES-FORMULAE",
+    scaffold:"For pV = nRT use SI units throughout: pressure in pascals, volume in m³ (1 dm³ = 1 × 10⁻³ m³), temperature in kelvin (K = °C + 273), n in moles, R = 8.31 J K⁻¹ mol⁻¹. Unit conversion is where most marks are lost, particularly cm³ to m³ (divide by 10⁶). The equation assumes ideal behaviour: negligible molecular volume and no intermolecular forces, which fails at high pressure and low temperature.",
+    reforge:{stem:"Real gases deviate most from ideal behaviour at:",options:{A:"High temperature and low pressure.",B:"Standard room temperature and pressure.",C:"High temperature and high volume.",D:"Low temperature and high pressure"},correct:"D"}
+  },
+  {
+    id:"CHEM-N1-17",stem:"A student dissolves 0.1 mol of solute in water and makes the solution up to 500 cm³. The concentration is:",
+    options:{A:"0.05 mol dm⁻³, from 0.1 × 0.5.",B:"50 mol dm⁻³, from 0.1 × 500.",C:"0.2 mol dm⁻³, from 0.1 ÷ 0.5",D:"2.0 mol dm⁻³, from 500 ÷ 0.1 ÷ 1000."},
+    correct:"C",tag:"MC-GCHEM-MOLES-FORMULAE",
+    scaffold:"Concentration (mol dm⁻³) = moles ÷ volume in dm³, so convert cm³ to dm³ by dividing by 1000 first: 500 cm³ = 0.5 dm³, giving 0.1 ÷ 0.5 = 0.2 mol dm⁻³. In titration calculations, find moles of the known solution from concentration × volume, use the balanced equation's ratio to get moles of the unknown, then divide by its volume. Forgetting the cm³ to dm³ conversion is the commonest error.",
+    reforge:{stem:"In a titration, 25.0 cm³ of 0.100 mol dm⁻³ NaOH reacts exactly with HCl in a 1:1 ratio. Moles of HCl are:",options:{A:"2.50 × 10⁻³ mol",B:"2.50 mol, from 25.0 × 0.100.",C:"0.250 mol, from 25.0 ÷ 100.",D:"4.00 × 10⁻³ mol, from 0.100 ÷ 25.0."},correct:"A"}
+  },
+  {
+    id:"CHEM-N1-18",stem:"In a titration, the burette is rinsed with the solution it will contain rather than with water because water would:",
+    options:{A:"React chemically with the burette glass.",B:"Prevent the indicator changing colour.",C:"Make the tap leak during the titration.",D:"Dilute it, giving a larger titre"},
+    correct:"D",tag:"MC-GCHEM-INORGANIC-TESTS",
+    scaffold:"Rinse the burette and pipette with the solutions they will hold; the conical flask may be rinsed with distilled water, since extra water there does not change the moles of substance present. Take an initial rough titration then repeat until titres agree within 0.10 cm³, and average only those concordant results. Read the bottom of the meniscus at eye level to avoid parallax error, and add dropwise near the endpoint.",
+    reforge:{stem:"Concordant titres in a titration are those that agree within:",options:{A:"1.00 cm³ of one another.",B:"0.10 cm³ of one another",C:"5.00 cm³ of one another.",D:"0.01 cm³ of one another."},correct:"B"}
+  },
+  {
+    id:"CHEM-N1-19",stem:"Adding acidified silver nitrate to a solution produces a cream precipitate. The halide present is:",
+    options:{A:"Chloride, which gives a white precipitate.",B:"Bromide, which gives a cream precipitate",C:"Iodide, which gives a yellow precipitate.",D:"Fluoride, which gives no precipitate."},
+    correct:"B",tag:"MC-GCHEM-INORGANIC-TESTS",
+    scaffold:"Silver nitrate halide tests: chloride gives white AgCl (dissolves in dilute ammonia); bromide gives cream AgBr (dissolves in concentrated ammonia); iodide gives pale yellow AgI (insoluble in concentrated ammonia); fluoride gives no precipitate. Acidify with dilute nitric acid first to remove carbonate and hydroxide ions, which would otherwise precipitate and give a false positive. Solubility in ammonia distinguishes the three.",
+    reforge:{stem:"Nitric acid is added before silver nitrate in the halide test in order to:",options:{A:"Increase the solubility of the silver halide.",B:"Speed up the precipitation reaction.",C:"Remove carbonate ions that also precipitate",D:"Convert the halide ions into halogens."},correct:"C"}
+  },
+  {
+    id:"CHEM-N1-20",stem:"A gas turns damp red litmus paper blue. The gas is:",
+    options:{A:"Carbon dioxide, from a carbonate.",B:"Chlorine, from an oxidation reaction.",C:"Hydrogen, from a metal and acid.",D:"Ammonia, from warming with alkali"},
+    correct:"D",tag:"MC-GCHEM-INORGANIC-TESTS",
+    scaffold:"Gas tests: ammonia turns damp red litmus blue and is released when an ammonium salt is warmed with sodium hydroxide; carbon dioxide turns limewater milky; hydrogen gives a squeaky pop with a lit splint; oxygen relights a glowing splint; chlorine bleaches damp litmus. For anions: carbonate fizzes with acid giving CO₂; sulfate gives a white precipitate with acidified barium chloride; halides are identified with acidified silver nitrate.",
+    reforge:{stem:"Acidified barium chloride added to a solution gives a white precipitate. This indicates:",options:{A:"Sulfate ions are present",B:"Carbonate ions are present.",C:"Chloride ions are present.",D:"Ammonium ions are present."},correct:"A"}
+  },
+  {
+    id:"CHEM-N1-21",stem:"Successive ionisation energies for an element show a large jump between the third and fourth values. The element is in:",
+    options:{A:"Group 1, with one outer electron.",B:"Group 2, with two outer electrons.",C:"Group 3, with three outer electrons",D:"Group 4, with four outer electrons."},
+    correct:"C",tag:"MC-GCHEM-ATOMIC-STRUCTURE",
+    scaffold:"A large jump appears when the next electron must come from a shell closer to the nucleus with less shielding. The number of electrons removed before the jump equals the number in the outer shell, giving the group number. A jump between the 3rd and 4th means three outer electrons, so Group 3. Successive ionisation energies always increase, since removing an electron from an increasingly positive ion is progressively harder.",
+    reforge:{stem:"Successive ionisation energies of any element always increase because each electron is removed from a:",options:{A:"Progressively more positive ion",B:"Shell with increasing shielding.",C:"Larger and more diffuse atom.",D:"Region of lower nuclear charge."},correct:"A"}
+  },
+  {
+    id:"CHEM-N1-22",stem:"Which statement about the atomic radius trend across Period 3 is correct?",
+    options:{A:"It increases because more shells are added.",B:"It stays constant since the shell number is fixed.",C:"It increases because shielding rises sharply.",D:"It decreases as nuclear charge rises"},
+    correct:"D",tag:"MC-GCHEM-ATOMIC-STRUCTURE",
+    scaffold:"Across a period, protons are added to the nucleus while electrons enter the same shell, so shielding barely changes and the increasing nuclear charge pulls the outer shell inwards — atomic radius decreases. Down a group, an extra shell is added each time and shielding rises, so radius increases. Ionic radii follow related trends: cations are smaller than their atoms, anions larger, because of the changed electron-to-proton ratio.",
+    reforge:{stem:"A sodium ion is smaller than a sodium atom because the ion has:",options:{A:"Gained an electron into a new shell.",B:"Lost its outer shell entirely",C:"A smaller nuclear charge than the atom.",D:"More shielding from inner electrons."},correct:"B"}
+  },
+  {
+    id:"CHEM-N1-23",stem:"The mass spectrum of an element shows peaks at m/z 24 (79%), 25 (10%) and 26 (11%). Its relative atomic mass is:",
+    options:{A:"25.0, the middle of the three values.",B:"24.3, the weighted mean",C:"75.0, the sum of the three m/z values.",D:"24.0, the most abundant isotope alone."},
+    correct:"B",tag:"MC-GCHEM-MASS-SPECTRA",
+    scaffold:"Relative atomic mass is the weighted mean: multiply each isotope's mass by its fractional abundance and add. Here (0.79×24) + (0.10×25) + (0.11×26) = 18.96 + 2.50 + 2.86 = 24.32, so 24.3 — magnesium. Two common errors are taking a simple average of the masses, ignoring abundance, and quoting only the most abundant isotope. Where abundances are given as peak heights, divide each by the total first.",
+    reforge:{stem:"Relative atomic mass is calculated as a weighted mean rather than a simple average because:",options:{A:"Isotopes have different chemical properties.",B:"Peak heights are always equal in a spectrum.",C:"The isotopes are present in unequal amounts",D:"Mass spectrometers cannot detect light isotopes."},correct:"C"}
+  },
+  {
+    id:"CHEM-N1-24",stem:"A molecule of BF₃ is trigonal planar because the central boron atom has:",
+    options:{A:"Three bonding pairs and no lone pairs",B:"Four bonding pairs and no lone pairs.",C:"Three bonding pairs and one lone pair.",D:"Two bonding pairs and two lone pairs."},
+    correct:"A",tag:"MC-GCHEM-BONDING-STRUCTURE",
+    scaffold:"Count electron pairs around the central atom, then subtract lone pairs to name the shape: 2 pairs linear (180°), 3 trigonal planar (120°), 4 tetrahedral (109.5°), 5 trigonal bipyramidal (120° and 90°), 6 octahedral (90°). BF₃ has three bonding pairs and no lone pairs, so it is trigonal planar. Boron is an exception to the octet rule here, having only six electrons in its outer shell.",
+    reforge:{stem:"A molecule with six bonding pairs and no lone pairs around the central atom is:",options:{A:"Trigonal bipyramidal, with 120° and 90° angles.",B:"Tetrahedral, with 109.5° bond angles.",C:"Octahedral, with 90° bond angles",D:"Trigonal planar, with 120° bond angles."},correct:"C"}
+  },
+  {
+    id:"CHEM-N1-25",stem:"Iodine has a higher boiling point than chlorine because iodine molecules have:",
+    options:{A:"Stronger covalent bonds within the molecule.",B:"More electrons, so stronger forces",C:"Permanent dipoles that chlorine lacks.",D:"Hydrogen bonding between the molecules."},
+    correct:"B",tag:"MC-GCHEM-BONDING-STRUCTURE",
+    scaffold:"Down Group 7 the molecules gain electrons, so instantaneous dipoles are larger and London forces stronger, raising melting and boiling points: chlorine gas, bromine liquid, iodine solid at room temperature. The covalent bond within each molecule actually weakens down the group, but that bond is not broken on boiling — a distinction worth stating explicitly, since it is a frequent source of confused answers.",
+    reforge:{stem:"When iodine sublimes, the forces overcome are:",options:{A:"The I–I covalent bonds within molecules.",B:"Ionic attractions in the crystal lattice.",C:"London forces between I₂ molecules",D:"Hydrogen bonds linking the molecules."},correct:"C"}
+  },
+  {
+    id:"CHEM-N1-26",stem:"In the reaction Mg + 2HCl → MgCl₂ + H₂, magnesium is:",
+    options:{A:"Oxidised, losing electrons",B:"Reduced, gaining electrons.",C:"Neither oxidised nor reduced.",D:"Acting as a catalyst only."},
+    correct:"A",tag:"MC-GCHEM-ACIDS-REDOX",
+    scaffold:"Oxidation Is Loss of electrons, Reduction Is Gain. Magnesium goes from 0 to +2, losing two electrons, so it is oxidised and acts as the reducing agent. Hydrogen goes from +1 to 0, gaining electrons, so it is reduced and HCl is the oxidising agent. Assign oxidation numbers systematically: uncombined elements 0, simple ions their charge, oxygen usually −2, hydrogen usually +1, and the total equals the overall charge.",
+    reforge:{stem:"What is the oxidation number of sulfur in the sulfate ion, SO₄²⁻?",options:{A:"−2, the same as the overall charge.",B:"+4, matching the number of oxygens.",C:"+6, since 4 × (−2) plus x equals −2",D:"0, since it is a combined element."},correct:"C"}
+  },
+  {
+    id:"CHEM-N1-27",stem:"A Brønsted–Lowry acid is defined as a species that:",
+    options:{A:"Accepts a pair of electrons.",B:"Releases hydroxide ions in water.",C:"Increases the pH of a solution.",D:"Donates a proton"},
+    correct:"D",tag:"MC-GCHEM-ACIDS-REDOX",
+    scaffold:"Brønsted–Lowry: an acid donates a proton, a base accepts one. Each acid has a conjugate base formed by losing H⁺, and each base a conjugate acid. Strong acids dissociate fully so [H⁺] equals the acid concentration; weak acids dissociate partially, needing Ka. Note strength (extent of dissociation) is separate from concentration (amount per volume) — a concentrated weak acid is entirely possible.",
+    reforge:{stem:"A concentrated solution of ethanoic acid has a higher pH than a dilute solution of hydrochloric acid because ethanoic acid:",options:{A:"Contains fewer hydrogen atoms per molecule.",B:"Only partially dissociates in solution",C:"Is present at a lower concentration.",D:"Acts as a base rather than an acid."},correct:"B"}
+  },
+  {
+    id:"CHEM-N1-28",stem:"Which pair of substances would form a buffer solution?",
+    options:{A:"A strong acid and a strong base in equal amounts.",B:"A strong acid and water in any proportion.",C:"A weak acid and its salt with a strong base",D:"A weak base and a strong base together."},
+    correct:"C",tag:"MC-GCHEM-ACIDS-REDOX",
+    scaffold:"A buffer resists pH change on adding small amounts of acid or alkali, and is made from a weak acid with its conjugate base (e.g. ethanoic acid and sodium ethanoate), or a weak base with its conjugate acid. Added H⁺ is removed by the conjugate base and added OH⁻ by the weak acid, so pH shifts little. pH is calculated from Ka and the acid-to-salt ratio; a buffer works best when that ratio is near 1.",
+    reforge:{stem:"When a small amount of acid is added to an ethanoic acid / ethanoate buffer, the pH changes little because:",options:{A:"The ethanoate ions react with the added H⁺",B:"The water present neutralises all the acid.",C:"Ethanoic acid dissociates completely.",D:"The buffer prevents any reaction occurring."},correct:"A"}
+  },
+  {
+    id:"CHEM-N1-29",stem:"A student must dilute a concentrated acid. The correct procedure is to:",
+    options:{A:"Add water to the concentrated acid quickly.",B:"Add acid to water slowly, stirring",C:"Mix equal volumes in a stoppered flask.",D:"Heat the acid before adding any water."},
+    correct:"B",tag:"MC-GCHEM-INORGANIC-TESTS",
+    scaffold:"Dilution is strongly exothermic, so acid is added to water — the larger volume of water absorbs the heat released. Adding water to concentrated acid can make the small volume boil and spit corrosive liquid. Standard precautions: eye protection, work over a tray or sink, add slowly with stirring, and allow the solution to cool before making up to the mark in a volumetric flask, since warm liquid contracts on cooling.",
+    reforge:{stem:"A solution is made up to the mark in a volumetric flask while still warm. The measured concentration will be:",options:{A:"Unaffected by the temperature.",B:"Impossible to determine at all.",C:"Too low, since the liquid expanded.",D:"Too high; it contracts on cooling"},correct:"D"}
+  },
+  {
+    id:"CHEM-N1-30",stem:"The bonding in an ammonium ion, NH₄⁺, includes:",
+    options:{A:"Four identical bonds, one dative",B:"Four ionic bonds between N⁻ and H⁺.",C:"Three covalent bonds and one hydrogen bond.",D:"Two dative bonds and two ionic bonds."},
+    correct:"A",tag:"MC-GCHEM-BONDING-STRUCTURE",
+    scaffold:"Ammonia has three N–H bonds and one lone pair. That lone pair forms a dative covalent bond to H⁺, giving NH₄⁺ with four bonds. Once formed all four are identical, and the ion is tetrahedral with 109.5° angles — the lone pair is now bonding, so there is no lone-pair compression. The positive charge belongs to the ion as a whole rather than sitting on any one atom.",
+    reforge:{stem:"The bond angle in the ammonium ion is 109.5° rather than 107° because the ion has:",options:{A:"A heavier central atom than ammonia.",B:"An overall positive charge.",C:"No remaining lone pair on nitrogen",D:"Weaker N–H bonds than ammonia."},correct:"C"}
+  },
+  {
+    id:"CHEM-N1-31",stem:"Which species has the same number of electrons as a neon atom?",
+    options:{A:"A sodium ion, Na⁺",B:"A magnesium atom, Mg.",C:"A chloride ion, Cl⁻.",D:"A fluorine atom, F."},
+    correct:"A",tag:"MC-GCHEM-ATOMIC-STRUCTURE",
+    scaffold:"Isoelectronic species have the same electron count. Neon has 10. Na⁺ (11 protons, 10 electrons), Mg²⁺, F⁻ and O²⁻ are all isoelectronic with neon. Among isoelectronic species, the one with the most protons has the smallest radius, since the same electron cloud is pulled in more strongly — so the order of size runs O²⁻ > F⁻ > Ne > Na⁺ > Mg²⁺.",
+    reforge:{stem:"Among the isoelectronic species O²⁻, F⁻, Na⁺ and Mg²⁺, the smallest is:",options:{A:"O²⁻, with the fewest protons.",B:"F⁻, with one negative charge.",C:"Na⁺, with eleven protons.",D:"Mg²⁺, with the most protons"},correct:"D"}
+  },
+  {
+    id:"CHEM-N1-32",stem:"The molar mass of calcium carbonate, CaCO₃, is:",
+    options:{A:"68 g mol⁻¹, adding Ca and C only.",B:"100 g mol⁻¹, from 40 + 12 + 48",C:"84 g mol⁻¹, using one oxygen atom.",D:"140 g mol⁻¹, counting calcium twice."},
+    correct:"B",tag:"MC-GCHEM-MOLES-FORMULAE",
+    scaffold:"Molar mass sums the relative atomic masses of every atom in the formula: Ca 40 + C 12 + (O 16 × 3 = 48) = 100 g mol⁻¹. Watch brackets, since Ca(OH)₂ contains two oxygens and two hydrogens, and water of crystallisation, since CuSO₄·5H₂O includes 5 × 18 = 90. Errors in molar mass propagate through every subsequent calculation, so it is worth checking before continuing.",
+    reforge:{stem:"What is the molar mass of Ca(OH)₂?",options:{A:"57 g mol⁻¹, counting one OH group.",B:"74 g mol⁻¹, from 40 + 2(16 + 1)",C:"58 g mol⁻¹, ignoring the hydrogens.",D:"114 g mol⁻¹, doubling the calcium."},correct:"B"}
+  },
+  {
+    id:"CHEM-N1-33",stem:"A reaction is described as exothermic when:",
+    options:{A:"The products have more energy than the reactants.",B:"The surroundings become cooler during it.",C:"Energy is released, so ΔH is negative",D:"It requires a catalyst to proceed at all."},
+    correct:"C",tag:"MC-GCHEM-ENERGETICS",
+    scaffold:"Exothermic: energy released to the surroundings, temperature rises, ΔH negative, products lower in energy than reactants — combustion, neutralisation, most oxidations. Endothermic: energy absorbed, temperature falls, ΔH positive — thermal decomposition, photosynthesis. The sign convention describes the system, so a rising thermometer reading in the surroundings corresponds to a negative ΔH, which is a frequent point of confusion.",
+    reforge:{stem:"A student dissolves a salt and the temperature of the solution falls. The dissolving process is:",options:{A:"Endothermic, with a positive ΔH",B:"Exothermic, with a negative ΔH.",C:"At equilibrium, so ΔH is zero.",D:"Catalysed by the water present."},correct:"A"}
+  },
+  {
+    id:"CHEM-N1-34",stem:"Hess's law allows an enthalpy change to be calculated indirectly because the total enthalpy change is:",
+    options:{A:"Always zero for a complete cycle of steps.",B:"Independent of the route taken",C:"Proportional to the number of steps used.",D:"Determined only by the activation energy."},
+    correct:"B",tag:"MC-GCHEM-ENERGETICS",
+    scaffold:"Hess's law states that the enthalpy change of a reaction is the same regardless of route, since enthalpy is a state function. This lets values be found that cannot be measured directly, such as the enthalpy of formation of an unstable compound. Using formation data: ΔH = ΣΔHf(products) − ΣΔHf(reactants). Using combustion data the arrows point the other way: ΔH = ΣΔHc(reactants) − ΣΔHc(products).",
+    reforge:{stem:"Using standard enthalpies of formation, the enthalpy change of a reaction equals:",options:{A:"Reactants minus products, then halved.",B:"The sum of all values in the cycle.",C:"Products minus reactants",D:"Products plus reactants."},correct:"C"}
+  },
+  {
+    id:"CHEM-N1-35",stem:"Bond enthalpy calculations give only approximate values because tabulated bond enthalpies are:",
+    options:{A:"Measured only for ionic compounds.",B:"Always quoted for the liquid state.",C:"Calculated rather than measured.",D:"Mean values across compounds"},
+    correct:"D",tag:"MC-GCHEM-ENERGETICS",
+    scaffold:"Mean bond enthalpies are averages across many different compounds, so the actual C–H bond in methane differs slightly from that in ethanol. They also apply to gaseous species, so calculations involving liquids or solids ignore the enthalpy of vaporisation. ΔH = bonds broken − bonds made: breaking is endothermic and making is exothermic, so a reaction is exothermic when the bonds formed are stronger overall.",
+    reforge:{stem:"Using bond enthalpies, a reaction is exothermic when the energy needed to break bonds is:",options:{A:"Less than the energy released making bonds",B:"Greater than the energy released making bonds.",C:"Exactly equal to the energy released.",D:"Zero for all the reactant molecules."},correct:"A"}
+  },
+  {
+    id:"CHEM-N1-36",stem:"The standard enthalpy of formation of an element in its standard state is:",
+    options:{A:"Always negative and large.",B:"Equal to its enthalpy of combustion.",C:"Zero by definition",D:"Impossible to define."},
+    correct:"C",tag:"MC-GCHEM-ENERGETICS",
+    scaffold:"Standard enthalpy of formation is the change when one mole of a compound forms from its elements in their standard states under standard conditions (100 kPa, stated temperature, usually 298 K). For an element already in its standard state no change occurs, so the value is zero — which is why elements drop out of Hess cycle calculations. Standard enthalpy of combustion is the change on completely burning one mole in excess oxygen.",
+    reforge:{stem:"Standard enthalpy of combustion is defined for the complete burning of:",options:{A:"Any convenient mass of the substance.",B:"One mole in excess oxygen",C:"One gram of the substance in air.",D:"The substance until oxygen runs out."},correct:"B"}
+  },
+  {
+    id:"CHEM-N1-37",stem:"In a calorimetry experiment, the main reason the measured enthalpy change is smaller than the true value is:",
+    options:{A:"Heat loss to the surroundings",B:"The reaction going to completion too quickly.",C:"Using distilled water rather than tap water.",D:"The thermometer reading in Celsius."},
+    correct:"A",tag:"MC-GCHEM-ENERGETICS",
+    scaffold:"Calorimetry uses q = mcΔT, where m is the mass of solution (not of the reactant), c is 4.18 J g⁻¹ K⁻¹ for aqueous solutions, and ΔT the temperature change; divide by moles for ΔH per mole, and make it negative if exothermic. Errors: heat lost to surroundings and apparatus, incomplete reaction, and evaporation. Insulation, a lid, and extrapolating a cooling curve back to the moment of mixing all reduce the loss.",
+    reforge:{stem:"In q = mcΔT for a neutralisation in solution, m refers to the mass of:",options:{A:"The acid added to the flask only.",B:"The calorimeter and its lid.",C:"The solution in the calorimeter",D:"The solid reactant used."},correct:"C"}
+  }
+]);
+chemExpansion("CHEM-2", [
+  {
+    id:"CHEM-N2-01",stem:"Increasing the temperature increases the rate of reaction mainly because:",
+    options:{A:"Activation energy is lowered by heating.",B:"More particles exceed the energy",C:"The particles become physically larger.",D:"The enthalpy change becomes more negative."},
+    correct:"B",tag:"MC-GCHEM-RATES",
+    scaffold:"Raising temperature increases the mean kinetic energy, so a much larger fraction of collisions exceeds the activation energy — the dominant effect — and collisions also become more frequent. On a Maxwell–Boltzmann distribution the curve flattens and shifts right, with the area beyond Ea increasing sharply. Temperature does not change Ea itself; only a catalyst does that, by providing an alternative pathway.",
+    reforge:{stem:"On a Maxwell–Boltzmann distribution, raising the temperature causes the peak to:",options:{A:"Rise and shift towards lower energy.",B:"Stay in exactly the same position.",C:"Lower and shift to higher energy",D:"Disappear entirely from the graph."},correct:"C"}
+  },
+  {
+    id:"CHEM-N2-02",stem:"A catalyst increases the rate of reaction by:",
+    options:{A:"Increasing the average energy of the particles.",B:"Shifting the equilibrium towards the products.",C:"Raising the frequency of all collisions.",D:"Providing a route with lower activation energy"},
+    correct:"D",tag:"MC-GCHEM-RATES",
+    scaffold:"A catalyst offers an alternative pathway of lower activation energy, so a greater proportion of collisions succeed. It is not consumed overall, does not change ΔH, and does not shift the position of equilibrium — it speeds the forward and reverse reactions equally, so equilibrium is simply reached sooner. Heterogeneous catalysts are in a different phase and work by adsorption at active sites; homogeneous catalysts share the phase.",
+    reforge:{stem:"Adding a catalyst to a reversible reaction at equilibrium will:",options:{A:"Shift the position towards the products.",B:"Reduce the yield of the reaction.",C:"Have no effect on the position",D:"Make the reaction more exothermic."},correct:"C"}
+  },
+  {
+    id:"CHEM-N2-03",stem:"Increasing the concentration of a solution increases reaction rate because there are:",
+    options:{A:"More particles per volume, more collisions",B:"Particles with higher individual kinetic energy.",C:"Fewer successful collisions per second.",D:"Weaker bonds within each reactant molecule."},
+    correct:"A",tag:"MC-GCHEM-RATES",
+    scaffold:"Collision theory: a reaction occurs when particles collide with at least the activation energy and in the correct orientation. Raising concentration or the pressure of a gas packs more particles into the same volume, so collisions are more frequent, though the proportion that succeed is unchanged. Increasing the surface area of a solid exposes more particles to collision. Only temperature and catalysts change the proportion of successful collisions.",
+    reforge:{stem:"Powdering a solid reactant increases the rate because it increases the:",options:{A:"Activation energy of the reaction.",B:"Average kinetic energy of particles.",C:"Concentration of the solid.",D:"Surface area exposed to collisions"},correct:"D"}
+  },
+  {
+    id:"CHEM-N2-04",stem:"For a reaction that is first order with respect to A, doubling [A] will:",
+    options:{A:"Leave the rate unchanged.",B:"Double the rate",C:"Quadruple the rate.",D:"Halve the rate."},
+    correct:"B",tag:"MC-GCHEM-RATES",
+    scaffold:"Order shows how rate depends on concentration: zero order gives no change when concentration is doubled, first order doubles the rate, second order quadruples it. Orders are found experimentally, not from the balanced equation. The rate equation is rate = k[A]^m[B]^n, and the overall order is m + n. Units of k depend on the overall order — s⁻¹ for first order, mol⁻¹ dm³ s⁻¹ for second.",
+    reforge:{stem:"Doubling [B] leaves the rate unchanged. The reaction is:",options:{A:"First order with respect to B.",B:"Second order with respect to B.",C:"Zero order with respect to B",D:"Impossible to assign an order."},correct:"C"}
+  },
+  {
+    id:"CHEM-N2-05",stem:"The rate-determining step of a reaction mechanism is the:",
+    options:{A:"Fastest step, which finishes first.",B:"Step producing the most product.",C:"Final step of the whole mechanism.",D:"Slowest step, limiting the rate"},
+    correct:"D",tag:"MC-GCHEM-RATES",
+    scaffold:"In a multi-step mechanism the slowest step limits the overall rate, so only species involved in that step (and any preceding fast equilibrium) appear in the rate equation. This is why the rate equation can be used as evidence for a proposed mechanism: the orders show how many of each species take part up to and including the rate-determining step, and species appearing only afterwards do not feature.",
+    reforge:{stem:"A species appears in the balanced equation but not in the rate equation. This suggests it:",options:{A:"Is not in the rate-determining step",B:"Must be acting as a catalyst.",C:"Is present in very low concentration.",D:"Has been measured incorrectly."},correct:"A"}
+  },
+  {
+    id:"CHEM-N2-06",stem:"For an exothermic forward reaction at equilibrium, raising the temperature will:",
+    options:{A:"Shift the equilibrium towards the products.",B:"Shift the equilibrium towards the reactants",C:"Leave the position of equilibrium unchanged.",D:"Stop the reverse reaction entirely."},
+    correct:"B",tag:"MC-GCHEM-EQUILIBRIA",
+    scaffold:"Le Chatelier: a system at equilibrium shifts to oppose an imposed change. Raising temperature favours the endothermic direction, which for an exothermic forward reaction means shifting back towards reactants and lowering yield — though rate increases, which is the compromise behind industrial conditions. Raising pressure favours the side with fewer gas moles. Concentration changes shift away from whatever was added.",
+    reforge:{stem:"In N₂ + 3H₂ ⇌ 2NH₃, increasing the pressure shifts the equilibrium:",options:{A:"Towards the reactants, which have fewer moles.",B:"In neither direction, since moles are equal.",C:"Towards products, with fewer gas moles",D:"Towards whichever side is exothermic."},correct:"C"}
+  },
+  {
+    id:"CHEM-N2-07",stem:"The Haber process uses a compromise temperature of about 450 °C because a lower temperature would give:",
+    options:{A:"A higher yield but too slow a rate",B:"A lower yield and a slower rate.",C:"A higher yield and a faster rate.",D:"No change in either yield or rate."},
+    correct:"A",tag:"MC-GCHEM-EQUILIBRIA",
+    scaffold:"Ammonia synthesis is exothermic, so a low temperature favours yield but makes the rate impractically slow; around 450 °C with an iron catalyst is the compromise. High pressure (about 200 atm) favours the product side, which has fewer gas moles, but very high pressures raise plant and safety costs. Removing ammonia by condensation and recycling unreacted gases raises the overall conversion beyond the single-pass equilibrium yield.",
+    reforge:{stem:"Ammonia is removed from the Haber process mixture by cooling in order to:",options:{A:"Reduce the pressure inside the reactor.",B:"Shift the equilibrium further towards products",C:"Increase the activation energy of the reaction.",D:"Prevent the iron catalyst from working."},correct:"B"}
+  },
+  {
+    id:"CHEM-N2-08",stem:"For the equilibrium A(g) + B(g) ⇌ C(g), the expression for Kc is:",
+    options:{A:"[A][B] ÷ [C]",B:"[A] + [B] − [C].",C:"[C] ÷ ([A][B])",D:"[C] × [A] × [B]."},
+    correct:"C",tag:"MC-GCHEM-EQUILIBRIA",
+    scaffold:"Kc is products over reactants, each concentration raised to the power of its balancing number. Kc changes only with temperature: adding a catalyst or altering pressure or concentration shifts the position of equilibrium but leaves Kc unchanged. A large Kc means the equilibrium lies well to the right. Kp uses partial pressures for gases, calculated as mole fraction × total pressure, and pure solids and liquids are omitted from both.",
+    reforge:{stem:"Which change alters the value of Kc for a given reaction?",options:{A:"Adding a suitable catalyst.",B:"Changing the temperature",C:"Increasing the total pressure.",D:"Adding more of a reactant."},correct:"B"}
+  },
+  {
+    id:"CHEM-N2-09",stem:"In a Kp expression, the partial pressure of a gas is calculated as:",
+    options:{A:"Total pressure divided by number of gases.",B:"Moles of gas multiplied by the gas constant.",C:"Mole fraction multiplied by total pressure",D:"Total pressure minus the vapour pressure."},
+    correct:"C",tag:"MC-GCHEM-EQUILIBRIA",
+    scaffold:"Partial pressure = mole fraction × total pressure, where mole fraction is moles of that gas ÷ total moles of gas. Kp is written as products over reactants using partial pressures raised to their balancing numbers, and its units depend on the total powers involved. Solids and pure liquids do not appear. Check that the mole fractions of all gases sum to 1 before substituting — a quick way to catch arithmetic slips.",
+    reforge:{stem:"A mixture contains 2 mol of X and 3 mol of Y at a total pressure of 500 kPa. The partial pressure of X is:",options:{A:"200 kPa, from (2/5) × 500",B:"250 kPa, from half the total.",C:"1000 kPa, from 2 × 500.",D:"300 kPa, from (3/5) × 500."},correct:"A"}
+  },
+  {
+    id:"CHEM-N2-10",stem:"The pH of a solution is defined as:",
+    options:{A:"The concentration of hydrogen ions directly.",B:"The negative logarithm of [H⁺]",C:"The logarithm of hydroxide concentration.",D:"The ratio of acid to base concentration."},
+    correct:"B",tag:"MC-GCHEM-ACIDS-REDOX",
+    scaffold:"pH = −log₁₀[H⁺], so a fall of one pH unit means a tenfold rise in [H⁺]. For a strong monoprotic acid, [H⁺] equals the acid concentration. For a strong base, find [OH⁻], then use Kw = [H⁺][OH⁻] = 1.0 × 10⁻¹⁴ at 298 K to get [H⁺]. For a weak acid, Ka = [H⁺]²/[HA] under the usual approximations. Kw varies with temperature, so neutral pH is only 7 at 298 K.",
+    reforge:{stem:"A solution of pH 3 compared with one of pH 5 has a hydrogen ion concentration that is:",options:{A:"Two times greater.",B:"Ten times smaller.",C:"100 times greater",D:"Exactly the same."},correct:"C"}
+  },
+  {
+    id:"CHEM-N2-11",stem:"In a titration of a strong acid with a strong base, the pH at the equivalence point is:",
+    options:{A:"7, since the salt formed is neutral",B:"Above 9, because the base is strong.",C:"Below 4, because the acid is strong.",D:"Impossible to predict from the data."},
+    correct:"A",tag:"MC-GCHEM-ACIDS-REDOX",
+    scaffold:"Equivalence pH depends on the salt formed: strong acid with strong base gives pH 7; weak acid with strong base gives above 7 (the anion hydrolyses); strong acid with weak base gives below 7. The indicator must change colour within the vertical section of the curve — phenolphthalein for weak acid/strong base, methyl orange for strong acid/weak base. A weak acid with a weak base has no sharp vertical section, so no indicator is suitable.",
+    reforge:{stem:"Phenolphthalein rather than methyl orange is used for a weak acid and strong base titration because its range:",options:{A:"Covers the whole pH scale.",B:"Lies in the vertical section, above pH 7",C:"Is below pH 4, where the curve is steep.",D:"Is unaffected by the acid used."},correct:"B"}
+  },
+  {
+    id:"CHEM-N2-12",stem:"The ionic product of water, Kw, increases as temperature rises because the dissociation of water is:",
+    options:{A:"Exothermic, so heat pushes it backwards.",B:"Catalysed by the water molecules present.",C:"Independent of the temperature applied.",D:"Endothermic, so heat pushes it forwards"},
+    correct:"D",tag:"MC-GCHEM-ACIDS-REDOX",
+    scaffold:"Water dissociates endothermically, so raising the temperature shifts the equilibrium right, increasing both [H⁺] and [OH⁻] and hence Kw. Pure water stays neutral because the two remain equal, but its pH falls below 7 above 298 K — neutral does not mean pH 7 at all temperatures. Kw = 1.0 × 10⁻¹⁴ only at 298 K, so any pH calculation involving a base must use the Kw value for the stated temperature.",
+    reforge:{stem:"At 50 °C the pH of pure water is below 7. The water is:",options:{A:"Acidic, since pH is below 7.",B:"Still neutral: [H⁺] = [OH⁻]",C:"Alkaline, since Kw has increased.",D:"No longer able to dissociate."},correct:"B"}
+  },
+  {
+    id:"CHEM-N2-13",stem:"Entropy is best described as a measure of the:",
+    options:{A:"Total energy stored within a substance.",B:"Rate at which a reaction proceeds.",C:"Disorder, or ways of arranging",D:"Strength of the bonds within a molecule."},
+    correct:"C",tag:"MC-GCHEM-ENERGETICS",
+    scaffold:"Entropy rises from solid to liquid to gas, and when the number of gaseous moles increases or a solid dissolves. ΔS(system) = ΣS(products) − ΣS(reactants). Feasibility uses ΔG = ΔH − TΔS: a reaction is feasible when ΔG is negative or zero. An endothermic reaction can therefore be feasible if ΔS is sufficiently positive and the temperature high enough, which is why thermal decompositions proceed on heating.",
+    reforge:{stem:"An endothermic reaction becomes feasible at high temperature when:",options:{A:"ΔS is positive, so TΔS exceeds ΔH",B:"ΔS is negative and ΔH is large.",C:"ΔG becomes increasingly positive.",D:"The activation energy falls to zero."},correct:"A"}
+  },
+  {
+    id:"CHEM-N2-14",stem:"A reaction is thermodynamically feasible when the value of ΔG is:",
+    options:{A:"Positive and large.",B:"Equal to the activation energy.",C:"Exactly equal to ΔH.",D:"Negative or zero"},
+    correct:"D",tag:"MC-GCHEM-ENERGETICS",
+    scaffold:"ΔG = ΔH − TΔS, with ΔS in kJ K⁻¹ mol⁻¹ to match ΔH — converting from J is a frequent slip. Feasible means ΔG ≤ 0. Setting ΔG = 0 gives the minimum feasible temperature, T = ΔH ÷ ΔS. Note feasibility is not the same as observable reaction: a feasible reaction with a very high activation energy may not proceed at a measurable rate, which is why diamond does not turn into graphite.",
+    reforge:{stem:"A reaction has ΔG negative but does not appear to occur at room temperature. The most likely reason is:",options:{A:"ΔS must have been calculated wrongly.",B:"A very high activation energy",C:"The reaction is endothermic.",D:"Entropy decreases during the reaction."},correct:"B"}
+  },
+  {
+    id:"CHEM-N2-15",stem:"In a Born–Haber cycle, lattice enthalpy of formation refers to the energy change when:",
+    options:{A:"One mole of lattice from gaseous ions",B:"One mole of a compound forms from its elements.",C:"Gaseous atoms each gain one electron.",D:"A solid is completely dissolved in water."},
+    correct:"A",tag:"MC-GCHEM-ENERGETICS",
+    scaffold:"A Born–Haber cycle links enthalpy of formation with atomisation, ionisation energies, electron affinities and lattice enthalpy. Lattice formation enthalpy (gaseous ions to solid) is exothermic; lattice dissociation is the reverse and endothermic — check which sign a question expects. Lattice enthalpy becomes more exothermic with higher ionic charges and smaller ionic radii, since attraction between the ions is stronger.",
+    reforge:{stem:"Magnesium oxide has a more exothermic lattice enthalpy than sodium chloride because its ions are:",options:{A:"Larger and more highly shielded.",B:"Held together by covalent bonds.",C:"More highly charged and smaller",D:"Present in a different crystal shape."},correct:"C"}
+  },
+  {
+    id:"CHEM-N2-16",stem:"A difference between theoretical and experimental lattice enthalpy suggests the compound has:",
+    options:{A:"Been measured with a faulty calorimeter.",B:"Some covalent character in its bonding",C:"No ionic bonding whatsoever.",D:"An unusually high melting point."},
+    correct:"B",tag:"MC-GCHEM-ENERGETICS",
+    scaffold:"Theoretical values assume a purely ionic model of spherical ions. Where the experimental (Born–Haber) value is more exothermic, the bonding has covalent character: a small, highly charged cation polarises a large, polarisable anion, distorting its electron cloud. The effect grows with greater cation charge, smaller cation size and larger anion — which is why silver iodide deviates far more than sodium chloride.",
+    reforge:{stem:"Polarisation of an anion by a cation is greatest when the cation is:",options:{A:"Large with a low charge.",B:"Identical in size to the anion.",C:"Neutral rather than charged.",D:"Small with a high charge"},correct:"D"}
+  },
+  {
+    id:"CHEM-N2-17",stem:"In an electrochemical cell, the electrode with the more negative standard electrode potential will:",
+    options:{A:"Be reduced, gaining electrons.",B:"Be oxidised, losing electrons",C:"Remain unchanged throughout.",D:"Act as the positive terminal."},
+    correct:"B",tag:"MC-GCHEM-ACIDS-REDOX",
+    scaffold:"The more negative electrode is the better reducing agent, so it is oxidised and acts as the negative terminal; the more positive electrode is reduced. Cell EMF = E(more positive) − E(more negative), and a positive EMF means the reaction is feasible. Standard conditions are 298 K, 100 kPa and 1.0 mol dm⁻³ solutions, measured against a standard hydrogen electrode defined as 0.00 V.",
+    reforge:{stem:"Two half-cells have E values of −0.76 V and +0.34 V. The EMF of the cell is:",options:{A:"−0.42 V, adding the two values.",B:"0.76 V, taking the larger magnitude.",C:"1.10 V, from +0.34 − (−0.76)",D:"0.34 V, using the positive value only."},correct:"C"}
+  },
+  {
+    id:"CHEM-N2-18",stem:"Standard electrode potentials are measured relative to which reference?",
+    options:{A:"A copper electrode in copper sulfate.",B:"A platinum electrode in pure water.",C:"A silver–silver chloride electrode.",D:"The standard hydrogen electrode"},
+    correct:"D",tag:"MC-GCHEM-ACIDS-REDOX",
+    scaffold:"The standard hydrogen electrode — hydrogen gas at 100 kPa bubbled over platinised platinum in 1.0 mol dm⁻³ H⁺ at 298 K — is assigned 0.00 V, because only potential differences can be measured, never an absolute electrode potential. A high-resistance voltmeter is used so negligible current flows and the cell stays at equilibrium, and a salt bridge of saturated KNO₃ completes the circuit without introducing another potential.",
+    reforge:{stem:"A salt bridge is used in an electrochemical cell in order to:",options:{A:"Complete the circuit and balance charge",B:"Supply electrons to the negative electrode.",C:"Prevent any current from flowing.",D:"Increase the cell's measured EMF."},correct:"A"}
+  },
+  {
+    id:"CHEM-N2-19",stem:"A reaction predicted to be feasible from electrode potentials may not occur because:",
+    options:{A:"The EMF value must have been negative.",B:"Feasibility ignores the reaction rate",C:"Electrode potentials apply only to metals.",D:"The reaction would violate Hess's law."},
+    correct:"B",tag:"MC-GCHEM-ACIDS-REDOX",
+    scaffold:"Electrode potentials indicate thermodynamic feasibility only. A reaction with positive EMF may still be immeasurably slow if the activation energy is high. Predictions also assume standard conditions: changing concentration shifts the electrode potential, as Le Chatelier applied to the half-equation predicts, so a reaction infeasible under standard conditions may become feasible when concentrations differ substantially.",
+    reforge:{stem:"Increasing the concentration of Cu²⁺ in a Cu²⁺/Cu half-cell makes its electrode potential:",options:{A:"More negative, opposing the change.",B:"Unchanged, since E values are fixed.",C:"More positive, favouring reduction",D:"Equal to zero at all concentrations."},correct:"C"}
+  },
+  {
+    id:"CHEM-N2-20",stem:"A hydrogen fuel cell differs from a conventional cell because it:",
+    options:{A:"Produces carbon dioxide as its only product.",B:"Stores all its reactants internally from the start.",C:"Requires recharging from mains electricity.",D:"Is continuously supplied with fuel and oxygen"},
+    correct:"D",tag:"MC-GCHEM-ACIDS-REDOX",
+    scaffold:"A fuel cell is fed continuously with hydrogen and oxygen, so it does not run down or need recharging, and produces only water at the point of use, with high efficiency since no combustion or turbine stage is involved. Drawbacks: hydrogen is difficult and energy-intensive to produce, store and transport, most is currently made from methane, and cells use expensive platinum catalysts — so the environmental case depends on how the hydrogen was made.",
+    reforge:{stem:"The environmental benefit of a hydrogen fuel cell depends most on:",options:{A:"How the hydrogen was produced",B:"The volume of water it produces.",C:"The temperature at which it operates.",D:"Whether it uses a salt bridge."},correct:"A"}
+  },
+  {
+    id:"CHEM-N2-21",stem:"Transition metals can form coloured compounds because their ions have:",
+    options:{A:"A full d subshell in every oxidation state.",B:"Partially filled d orbitals split in energy",C:"Only s electrons available for bonding.",D:"An unusually large atomic radius."},
+    correct:"B",tag:"MC-GCHEM-BONDING-STRUCTURE",
+    scaffold:"A transition metal forms at least one ion with a partially filled d subshell. Ligands split the d orbitals into two energy levels; electrons absorb visible light to jump the gap, and the transmitted complementary colour is what we see. The size of the gap, and so the colour, depends on the ligand, the oxidation state and the coordination number. Scandium and zinc are excluded: Sc³⁺ is d⁰ and Zn²⁺ is d¹⁰, so both are colourless.",
+    reforge:{stem:"Zinc is not classed as a transition metal because its common ion has a d subshell that is:",options:{A:"Completely empty of electrons.",B:"Split into two energy levels.",C:"Completely full",D:"Partially filled with unpaired electrons."},correct:"C"}
+  },
+  {
+    id:"CHEM-N2-22",stem:"A ligand is best described as a species that:",
+    options:{A:"Donates a lone pair to a metal ion",B:"Accepts electrons from a metal ion.",C:"Removes the charge from a complex ion.",D:"Catalyses the formation of a precipitate."},
+    correct:"A",tag:"MC-GCHEM-BONDING-STRUCTURE",
+    scaffold:"A ligand donates a lone pair to a central metal ion, forming a dative covalent bond. Monodentate ligands (H₂O, NH₃, Cl⁻) donate one pair; bidentate ligands such as ethanedioate donate two; multidentate ligands such as EDTA donate several. Coordination number is the number of dative bonds — commonly 6 (octahedral) or 4 (tetrahedral or square planar). Larger ligands such as Cl⁻ often give 4-coordinate complexes.",
+    reforge:{stem:"A complex ion with six water ligands around a central metal ion is:",options:{A:"Tetrahedral, with 109.5° angles.",B:"Square planar, with 90° angles.",C:"Linear, with 180° angles.",D:"Octahedral, with 90° angles"},correct:"D"}
+  },
+  {
+    id:"CHEM-N2-23",stem:"The chelate effect makes a complex with a bidentate ligand more stable mainly because the substitution:",
+    options:{A:"Releases far more energy as heat.",B:"Increases the system entropy",C:"Reduces the coordination number.",D:"Removes the charge on the complex."},
+    correct:"B",tag:"MC-GCHEM-BONDING-STRUCTURE",
+    scaffold:"Replacing monodentate ligands with multidentate ones increases the number of free particles — one EDTA replacing six water molecules turns two species into seven — so entropy rises substantially while ΔH is close to zero, since similar numbers of dative bonds break and form. ΔG = ΔH − TΔS is therefore negative, driven almost entirely by the entropy term. This is why EDTA complexes are used to sequester metal ions.",
+    reforge:{stem:"In a chelate substitution, ΔH is close to zero because the number of dative bonds:",options:{A:"Falls sharply during the reaction.",B:"Is roughly unchanged overall",C:"Doubles as the ligand binds.",D:"Depends only on temperature."},correct:"B"}
+  },
+  {
+    id:"CHEM-N2-24",stem:"Adding excess ammonia solution to copper(II) sulfate solution gives:",
+    options:{A:"A permanent pale blue precipitate.",B:"A colourless solution with no change.",C:"A deep blue solution forms",D:"A brown precipitate of copper metal."},
+    correct:"C",tag:"MC-GCHEM-INORGANIC-TESTS",
+    scaffold:"With a little ammonia, Cu²⁺ gives a pale blue precipitate of Cu(OH)₂ as ammonia acts as a base. With excess, ligand substitution replaces four water molecules to give the deep blue [Cu(NH₃)₄(H₂O)₂]²⁺. Comparable tests: Fe²⁺ gives a green precipitate darkening to brown in air, Fe³⁺ a red-brown precipitate, and Al³⁺ a white precipitate that redissolves in excess sodium hydroxide but not in excess ammonia.",
+    reforge:{stem:"A white precipitate forms with sodium hydroxide and redissolves in excess. The ion present is:",options:{A:"Fe³⁺, giving a red-brown precipitate.",B:"Al³⁺, which is amphoteric",C:"Cu²⁺, giving a blue precipitate.",D:"Fe²⁺, giving a green precipitate."},correct:"B"}
+  },
+  {
+    id:"CHEM-N2-25",stem:"Heterogeneous catalysts such as iron in the Haber process work by:",
+    options:{A:"Dissolving fully in the reaction mixture.",B:"Adsorbing reactants onto active sites",C:"Raising the activation energy of the reaction.",D:"Being consumed steadily as products form."},
+    correct:"B",tag:"MC-GCHEM-RATES",
+    scaffold:"A heterogeneous catalyst is in a different phase from the reactants. Molecules adsorb onto active sites, which weakens their bonds and holds them in favourable orientations; reaction follows and products desorb. Increasing surface area — using a support medium or fine mesh — raises activity for less metal. Catalysts are poisoned when impurities such as sulfur bind irreversibly to active sites, which is why feedstocks are purified first.",
+    reforge:{stem:"Sulfur impurities poison a heterogeneous catalyst because they:",options:{A:"React with the desired product.",B:"Raise the temperature of the reactor.",C:"Bind irreversibly to the active sites",D:"Dissolve the catalyst in the gas stream."},correct:"C"}
+  },
+  {
+    id:"CHEM-N2-26",stem:"Which measurement would allow the rate of a reaction producing a gas to be followed continuously?",
+    options:{A:"The colour of the final solution.",B:"The total mass of catalyst added.",C:"The pH measured after completion.",D:"Volume of gas collected over time"},
+    correct:"D",tag:"MC-GCHEM-RATES",
+    scaffold:"Continuous methods track a property as the reaction proceeds: gas volume in a syringe, mass loss on a balance as gas escapes, colour change by colorimetry, or conductivity where ion numbers change. Initial rate is found from the gradient of the tangent at t = 0, since concentrations are known exactly then. Clock reactions instead measure the time to reach a fixed visible endpoint, giving a rate proportional to 1/t.",
+    reforge:{stem:"In a clock reaction, the rate is taken as proportional to:",options:{A:"1 ÷ time to reach the endpoint",B:"The total time multiplied by volume.",C:"The mass of product formed.",D:"The temperature of the mixture."},correct:"A"}
+  },
+  {
+    id:"CHEM-N2-27",stem:"The Arrhenius equation shows that the rate constant k increases with temperature because the term:",
+    options:{A:"Ea increases as temperature rises.",B:"e^(−Ea/RT) increases as T increases",C:"R decreases at higher temperatures.",D:"A falls as the reaction proceeds."},
+    correct:"B",tag:"MC-GCHEM-RATES",
+    scaffold:"k = Ae^(−Ea/RT). Raising T makes the exponent less negative, so the exponential term and therefore k increase — a small temperature rise can change rate substantially. Taking logs gives ln k = ln A − Ea/RT, so plotting ln k against 1/T yields a straight line of gradient −Ea/R, from which activation energy is found. A is the pre-exponential factor, relating to collision frequency and orientation.",
+    reforge:{stem:"A plot of ln k against 1/T has a gradient equal to:",options:{A:"Ea ÷ R, always positive.",B:"−Ea/R, giving Ea",C:"ln A, the intercept value.",D:"The order of the reaction."},correct:"B"}
+  },
+  {
+    id:"CHEM-N2-28",stem:"A dynamic equilibrium is characterised by:",
+    options:{A:"Both reactions stopping completely.",B:"Equal concentrations of reactants and products.",C:"Equal forward and reverse rates",D:"The complete conversion of reactants."},
+    correct:"C",tag:"MC-GCHEM-EQUILIBRIA",
+    scaffold:"At dynamic equilibrium both reactions continue at equal rates in a closed system, so macroscopic concentrations stay constant — but they are not necessarily equal, and neither reaction has stopped. Position depends on conditions; Kc depends only on temperature. A common misconception is that equilibrium means a 50:50 mixture, which is only true when Kc happens to equal 1 for that stoichiometry.",
+    reforge:{stem:"At equilibrium the concentrations of reactants and products are:",options:{A:"Always exactly equal to each other.",B:"Constant, but not always equal",C:"Changing steadily over time.",D:"Both reduced to zero."},correct:"B"}
+  },
+  {
+    id:"CHEM-N2-29",stem:"Sulfuric acid is described as a diprotic acid because each molecule can donate:",
+    options:{A:"One proton per molecule.",B:"Two protons per molecule",C:"Four protons per molecule.",D:"Two electrons per molecule."},
+    correct:"B",tag:"MC-GCHEM-ACIDS-REDOX",
+    scaffold:"Monoprotic acids (HCl, HNO₃) donate one proton, diprotic (H₂SO₄) two, triprotic (H₃PO₄) three. In titration calculations the stoichiometric ratio matters: H₂SO₄ reacts with NaOH in a 1:2 ratio, so half as many moles of acid are needed for a given amount of alkali. Forgetting this ratio and assuming 1:1 is one of the commonest arithmetical errors in volumetric analysis.",
+    reforge:{stem:"How many moles of NaOH react completely with 0.05 mol of H₂SO₄?",options:{A:"0.025 mol, half the acid amount.",B:"0.05 mol, in a 1:1 ratio.",C:"0.10 mol, in a 1:2 ratio",D:"0.20 mol, in a 1:4 ratio."},correct:"C"}
+  },
+  {
+    id:"CHEM-N2-30",stem:"Which change would increase the yield of products in an exothermic gas reaction that produces fewer moles of gas?",
+    options:{A:"Raising the temperature substantially.",B:"Adding a suitable catalyst.",C:"Lower temperature, higher pressure",D:"Removing some of the reactant gases."},
+    correct:"C",tag:"MC-GCHEM-EQUILIBRIA",
+    scaffold:"For an exothermic reaction, lowering temperature shifts equilibrium towards products; where the product side has fewer gas moles, raising pressure does the same. Both raise yield but lower temperature reduces rate, hence industrial compromise conditions. A catalyst changes neither the position nor the yield. Removing product as it forms shifts the equilibrium forward and is often the most economical route to high conversion.",
+    reforge:{stem:"Continuously removing a product from an equilibrium mixture will:",options:{A:"Shift the equilibrium towards the products",B:"Shift the equilibrium towards the reactants.",C:"Have no effect on the position.",D:"Increase the value of Kc."},correct:"A"}
+  },
+  {
+    id:"CHEM-N2-31",stem:"The oxidation number of chlorine changes from 0 to −1 in a reaction. Chlorine has been:",
+    options:{A:"Oxidised, acting as a reducing agent.",B:"Reduced, acting as an oxidising agent",C:"Neither oxidised nor reduced.",D:"Converted into a different element."},
+    correct:"B",tag:"MC-GCHEM-ACIDS-REDOX",
+    scaffold:"A fall in oxidation number is reduction, and the species reduced is the oxidising agent — it oxidised something else. A rise is oxidation, and that species is the reducing agent. In disproportionation a single element is simultaneously oxidised and reduced, as when chlorine reacts with cold dilute sodium hydroxide going to both −1 and +1. Balance redox half-equations by adding H₂O, H⁺ and electrons in that order.",
+    reforge:{stem:"Chlorine reacts with cold dilute NaOH forming both Cl⁻ and ClO⁻. This is an example of:",options:{A:"Neutralisation of an acid.",B:"A precipitation reaction.",C:"Disproportionation",D:"Thermal decomposition."},correct:"C"}
+  },
+  {
+    id:"CHEM-N2-32",stem:"Which of these would be the best conditions for a fast rate but a reduced equilibrium yield in an exothermic reaction?",
+    options:{A:"Low temperature and no catalyst.",B:"High temperature",C:"Low pressure with fewer product moles.",D:"Removing the catalyst entirely."},
+    correct:"B",tag:"MC-GCHEM-EQUILIBRIA",
+    scaffold:"Rate and yield often pull in opposite directions for exothermic reactions: high temperature speeds the reaction but shifts equilibrium back towards reactants, lowering yield. Industry therefore chooses a moderate compromise temperature with a catalyst to restore rate, plus pressure chosen from the mole balance, and recycles unreacted material. Explaining that compromise, rather than naming a single optimum, is what such questions are testing.",
+    reforge:{stem:"A catalyst is valuable in an industrial equilibrium process because it allows:",options:{A:"A higher yield at the same temperature.",B:"The equilibrium position to shift right.",C:"Kc to be increased substantially.",D:"An acceptable rate at lower temperature"},correct:"D"}
+  },
+  {
+    id:"CHEM-N2-33",stem:"In the reaction of a metal carbonate with dilute acid, the gas evolved would:",
+    options:{A:"Turn limewater milky",B:"Relight a glowing splint.",C:"Give a squeaky pop with a lit splint.",D:"Turn damp red litmus paper blue."},
+    correct:"A",tag:"MC-GCHEM-INORGANIC-TESTS",
+    scaffold:"Carbonates react with dilute acid to give a salt, water and carbon dioxide, which turns limewater milky as insoluble calcium carbonate forms. Contrast: hydrogen from metal and acid gives a squeaky pop; oxygen relights a glowing splint; ammonia turns damp red litmus blue. Effervescence alone does not identify a gas, so the confirmatory test matters — several reactions fizz without producing carbon dioxide.",
+    reforge:{stem:"Limewater turns milky with carbon dioxide because the gas forms:",options:{A:"Soluble calcium hydrogencarbonate.",B:"Insoluble calcium carbonate",C:"Calcium metal and oxygen.",D:"A precipitate of calcium oxide."},correct:"B"}
+  },
+  {
+    id:"CHEM-N2-34",stem:"A student needs to make 250 cm³ of a standard solution. The correct apparatus is a:",
+    options:{A:"Measuring cylinder of 250 cm³.",B:"Conical flask marked at 250 cm³.",C:"Volumetric flask of 250 cm³",D:"Burette filled to the 250 mark."},
+    correct:"C",tag:"MC-GCHEM-INORGANIC-TESTS",
+    scaffold:"A volumetric flask is calibrated to contain one precise volume and is used for standard solutions: weigh the solute accurately, dissolve fully in a beaker, transfer with rinsings, then make up to the graduation mark with the bottom of the meniscus on the line and invert to mix. A measuring cylinder is far less precise, and a conical flask is not calibrated for accurate volume at all — it is a reaction vessel.",
+    reforge:{stem:"The beaker used to dissolve the solid is rinsed into the volumetric flask in order to:",options:{A:"Cool the solution before making up.",B:"Remove any dissolved gases present.",C:"Neutralise any acid on the glass.",D:"Transfer all of the solute"},correct:"D"}
+  },
+  {
+    id:"CHEM-N2-35",stem:"An increase in pressure has no effect on the position of an equilibrium when:",
+    options:{A:"The reaction is exothermic in the forward direction.",B:"A catalyst is present in the mixture.",C:"The number of gas moles is equal on both sides",D:"The temperature is held constant."},
+    correct:"C",tag:"MC-GCHEM-EQUILIBRIA",
+    scaffold:"Pressure changes shift equilibrium towards the side with fewer gas moles. If both sides have equal numbers of gas moles — as in H₂ + I₂ ⇌ 2HI — there is no shift, though rate still increases because collisions are more frequent. Count only gaseous species: solids and liquids are excluded. Adding an inert gas at constant volume changes total pressure but not partial pressures, so it has no effect either.",
+    reforge:{stem:"Adding argon to a gaseous equilibrium at constant volume has no effect because it leaves:",options:{A:"The temperature of the system lower.",B:"The partial pressures unchanged",C:"The value of Kp increased.",D:"The activation energy unaltered."},correct:"B"}
+  },
+  {
+    id:"CHEM-N2-36",stem:"Which pair correctly matches an ion with its flame colour?",
+    options:{A:"Sodium — lilac flame.",B:"Potassium — yellow flame.",C:"Copper(II) — brick red flame.",D:"Calcium — brick red flame"},
+    correct:"D",tag:"MC-GCHEM-INORGANIC-TESTS",
+    scaffold:"Flame colours: lithium crimson, sodium yellow, potassium lilac, calcium brick red, barium apple green, copper(II) blue-green. Heat energy promotes electrons to higher levels; as they fall back they emit light of a characteristic wavelength set by the energy gap. Use a nichrome wire cleaned in concentrated hydrochloric acid between tests, since sodium contamination is intense and masks weaker colours.",
+    reforge:{stem:"A flame test wire is cleaned with concentrated hydrochloric acid between tests mainly to:",options:{A:"Remove contamination masking colour",B:"Increase the temperature of the flame.",C:"Convert the sample into a chloride.",D:"Prevent the wire from melting."},correct:"A"}
+  },
+  {
+    id:"CHEM-N2-37",stem:"The first electron affinity of an element is the enthalpy change when:",
+    options:{A:"One mole of gaseous atoms each gains an electron",B:"One mole of gaseous atoms each loses an electron.",C:"One mole of a compound forms from its elements.",D:"One mole of solid forms from gaseous ions."},
+    correct:"A",tag:"MC-GCHEM-ENERGETICS",
+    scaffold:"First electron affinity — one mole of gaseous atoms each gaining an electron to form 1− ions — is exothermic, since the nucleus attracts the added electron. Second electron affinity is endothermic, because an electron must be forced onto an already negative ion against repulsion. Both appear in Born–Haber cycles for oxides and sulfides, and getting the sign of the second value wrong is a frequent source of lost marks.",
+    reforge:{stem:"The second electron affinity of oxygen is endothermic because the electron is added to:",options:{A:"A neutral gaseous atom.",B:"A negative ion, against repulsion",C:"A positively charged nucleus.",D:"A solid lattice rather than a gas."},correct:"B"}
+  }
+]);
+chemExpansion("CHEM-3", [
+  {
+    id:"CHEM-N3-01",stem:"Members of a homologous series always share the same:",
+    options:{A:"Relative molecular mass.",B:"Number of carbon atoms.",C:"General formula and group",D:"Boiling point and density."},
+    correct:"C",tag:"MC-GCHEM-ORGANIC-STRUCTURE",
+    scaffold:"A homologous series shares a general formula and functional group, with successive members differing by CH₂. Chemical properties are similar because the functional group governs reactivity, while physical properties change gradually as chain length grows — boiling point rises with stronger London forces. Alkanes are CₙH₂ₙ₊₂, alkenes CₙH₂ₙ, alcohols CₙH₂ₙ₊₁OH, and carboxylic acids CₙH₂ₙ₊₁COOH.",
+    reforge:{stem:"Boiling point increases along a homologous series because longer molecules have:",options:{A:"Stronger covalent bonds in the chain.",B:"Stronger London forces",C:"More hydrogen bonding in every case.",D:"A different functional group present."},correct:"B"}
+  },
+  {
+    id:"CHEM-N3-02",stem:"Structural isomers are compounds with the same:",
+    options:{A:"Molecular formula but different structures",B:"Structure but different molecular formulae.",C:"Empirical formula and identical structure.",D:"Boiling point but different reactivity."},
+    correct:"A",tag:"MC-GCHEM-ORGANIC-STRUCTURE",
+    scaffold:"Structural isomers share a molecular formula but differ in atom connectivity: chain isomers (branching), position isomers (functional group location) and functional group isomers (different group entirely, as with propanal and propanone). Stereoisomers share connectivity but differ in spatial arrangement — E/Z isomerism from restricted rotation about a C=C, and optical isomerism from a chiral carbon carrying four different groups.",
+    reforge:{stem:"Propanal and propanone are examples of:",options:{A:"Chain isomers differing in branching.",B:"Optical isomers of one another.",C:"Functional group isomers",D:"E/Z isomers about a double bond."},correct:"C"}
+  },
+  {
+    id:"CHEM-N3-03",stem:"E/Z isomerism can occur about a carbon–carbon double bond because:",
+    options:{A:"The bond is longer than a single bond.",B:"Rotation about the bond is restricted",C:"The carbons carry a permanent charge.",D:"Double bonds are always polar."},
+    correct:"B",tag:"MC-GCHEM-ORGANIC-STRUCTURE",
+    scaffold:"A C=C consists of a sigma bond plus a pi bond formed by sideways overlap of p orbitals; breaking the pi bond to rotate costs too much energy at ordinary temperatures, so groups are locked in position. E/Z isomerism additionally requires each double-bond carbon to carry two different groups. Priority is assigned by atomic number: Z has the higher-priority groups on the same side, E on opposite sides.",
+    reforge:{stem:"E/Z isomerism is impossible when one carbon of the C=C carries:",options:{A:"Two identical groups",B:"Two different alkyl groups.",C:"A halogen and a hydrogen.",D:"A hydroxyl and a methyl group."},correct:"A"}
+  },
+  {
+    id:"CHEM-N3-04",stem:"A chiral carbon atom is one that is bonded to:",
+    options:{A:"Two identical groups and two different ones.",B:"Three groups and one lone pair.",C:"A double bond and two other groups.",D:"Four different groups"},
+    correct:"D",tag:"MC-GCHEM-ORGANIC-STRUCTURE",
+    scaffold:"A chiral centre carries four different groups, giving two non-superimposable mirror images called enantiomers. These have identical physical and chemical properties in an achiral environment but rotate plane-polarised light in opposite directions, and can behave very differently in biological systems, which are themselves chiral. A racemic mixture contains equal amounts of both and shows no net optical rotation.",
+    reforge:{stem:"A racemic mixture shows no optical activity because it contains:",options:{A:"No chiral centres at any position.",B:"Equal amounts of both enantiomers",C:"Only the E isomer of the compound.",D:"Molecules with a plane of symmetry."},correct:"B"}
+  },
+  {
+    id:"CHEM-N3-05",stem:"The complete combustion of an alkane produces:",
+    options:{A:"Carbon monoxide and water only.",B:"Carbon and hydrogen gas.",C:"Carbon dioxide and water",D:"Carbon dioxide and hydrogen."},
+    correct:"C",tag:"MC-GCHEM-FUNCTIONAL-GROUPS",
+    scaffold:"Complete combustion in excess oxygen gives carbon dioxide and water. Incomplete combustion in limited oxygen gives carbon monoxide — toxic because it binds irreversibly to haemoglobin — and carbon particulates, which cause respiratory harm and global dimming. Sulfur impurities burn to sulfur dioxide, causing acid rain; and at high engine temperatures nitrogen and oxygen combine to form nitrogen oxides.",
+    reforge:{stem:"Nitrogen oxides form in a car engine because the high temperature causes:",options:{A:"Sulfur impurities in the fuel to burn.",B:"Incomplete combustion of the hydrocarbon.",C:"Nitrogen and oxygen from air to react",D:"The catalytic converter to break down."},correct:"C"}
+  },
+  {
+    id:"CHEM-N3-06",stem:"The reaction of methane with chlorine in ultraviolet light proceeds by:",
+    options:{A:"Free radical substitution",B:"Electrophilic addition.",C:"Nucleophilic substitution.",D:"Elimination of hydrogen chloride."},
+    correct:"A",tag:"MC-GCHEM-ORGANIC-MECHANISMS",
+    scaffold:"Free radical substitution has three stages. Initiation: UV light homolytically splits Cl₂ into two chlorine radicals. Propagation: Cl• + CH₄ → •CH₃ + HCl, then •CH₃ + Cl₂ → CH₃Cl + Cl•, so one initiation event causes many cycles. Termination: two radicals combine. The mechanism gives a mixture of mono-, di- and further substituted products plus ethane, which limits its synthetic usefulness.",
+    reforge:{stem:"Free radical substitution is of limited use in synthesis because it produces:",options:{A:"Only a single pure product.",B:"A mixture of substitution products",C:"No reaction without a catalyst.",D:"Exclusively ethane as the product."},correct:"B"}
+  },
+  {
+    id:"CHEM-N3-07",stem:"Alkenes readily undergo addition reactions because the C=C bond has:",
+    options:{A:"A permanent positive charge.",B:"An unusually long bond length.",C:"High electron density",D:"No pi bond to be broken."},
+    correct:"C",tag:"MC-GCHEM-ORGANIC-MECHANISMS",
+    scaffold:"The pi bond is an exposed region of high electron density above and below the plane, so it attracts electrophiles — electron pair acceptors. In electrophilic addition to an alkene, the pi electrons attack the electrophile, forming a carbocation intermediate which is then attacked by a nucleophile. With HBr and an unsymmetrical alkene, Markovnikov's rule applies: the major product forms via the more stable carbocation.",
+    reforge:{stem:"Adding HBr to propene gives mainly 2-bromopropane because the intermediate formed is a:",options:{A:"Primary carbocation, which is more stable.",B:"Free radical rather than an ion.",C:"Tertiary carbocation with three alkyl groups.",D:"Secondary carbocation, which is more stable"},correct:"D"}
+  },
+  {
+    id:"CHEM-N3-08",stem:"Bromine water is decolourised by an alkene because the alkene undergoes:",
+    options:{A:"Combustion in the presence of bromine.",B:"Electrophilic addition across C=C",C:"Free radical substitution of a hydrogen.",D:"Oxidation to a carboxylic acid."},
+    correct:"B",tag:"MC-GCHEM-FUNCTIONAL-GROUPS",
+    scaffold:"Bromine water is the standard test for unsaturation: orange bromine water is decolourised as bromine adds across the C=C. An alkane produces no change without UV light. The bromine molecule is polarised as it approaches the electron-rich pi bond, becoming an induced dipole, and the resulting Br⁺ acts as the electrophile. Other alkene tests include decolourising acidified potassium manganate(VII), which forms a diol.",
+    reforge:{stem:"Bromine becomes an electrophile as it approaches an alkene because the pi electrons:",options:{A:"Are transferred completely to bromine.",B:"Form a covalent bond with both atoms.",C:"Induce a dipole in the Br₂ molecule",D:"Remove one electron from bromine."},correct:"C"}
+  },
+  {
+    id:"CHEM-N3-09",stem:"Addition polymerisation of alkenes produces a polymer with:",
+    options:{A:"Water eliminated at each linkage.",B:"Alternating single and double bonds.",C:"Two different monomer units required.",D:"The monomer empirical formula"},
+    correct:"D",tag:"MC-GCHEM-SYNTHESIS",
+    scaffold:"Addition polymerisation joins alkene monomers by opening the C=C, with no other product formed — so atom economy is 100% and the repeat unit has the same empirical formula as the monomer. Condensation polymerisation instead loses a small molecule, usually water or HCl, at each linkage, and needs monomers with two functional groups: diols with dicarboxylic acids for polyesters, diamines for polyamides.",
+    reforge:{stem:"Polyesters are formed by condensation polymerisation, which differs from addition because it:",options:{A:"Eliminates a small molecule",B:"Requires only one type of monomer.",C:"Has an atom economy of 100%.",D:"Opens a carbon–carbon double bond."},correct:"A"}
+  },
+  {
+    id:"CHEM-N3-10",stem:"The reaction of a haloalkane with aqueous sodium hydroxide produces an alcohol by:",
+    options:{A:"Electrophilic addition.",B:"Free radical substitution.",C:"Nucleophilic substitution",D:"Elimination of a hydrogen halide."},
+    correct:"C",tag:"MC-GCHEM-ORGANIC-MECHANISMS",
+    scaffold:"The carbon–halogen bond is polar, with carbon δ+, so it is attacked by nucleophiles: OH⁻ gives an alcohol, CN⁻ gives a nitrile (extending the carbon chain by one), and ammonia gives an amine. Conditions decide the outcome with hydroxide: aqueous solution favours substitution to the alcohol, whereas hot ethanolic hydroxide favours elimination to form an alkene.",
+    reforge:{stem:"Hot ethanolic sodium hydroxide reacting with a haloalkane gives mainly:",options:{A:"An alcohol, by substitution.",B:"An alkene, by elimination",C:"A nitrile, by chain extension.",D:"An amine, by addition of ammonia."},correct:"B"}
+  },
+  {
+    id:"CHEM-N3-11",stem:"The rate of hydrolysis of haloalkanes increases from chloro to iodo because the carbon–halogen bond:",
+    options:{A:"Becomes weaker down the group",B:"Becomes more polar down the group.",C:"Increases in strength down the group.",D:"Changes from covalent to ionic."},
+    correct:"A",tag:"MC-GCHEM-ORGANIC-MECHANISMS",
+    scaffold:"Bond enthalpy falls from C–F through C–Cl and C–Br to C–I, so the C–I bond breaks most readily and iodoalkanes hydrolyse fastest. This outweighs bond polarity, which runs the opposite way — C–F is by far the most polar yet fluoroalkanes are the least reactive. Rates are compared by warming each haloalkane with silver nitrate in ethanol and timing the appearance of the silver halide precipitate.",
+    reforge:{stem:"Bond polarity would predict fluoroalkanes to hydrolyse fastest, yet they are slowest. This shows that:",options:{A:"Polarity is the dominant factor throughout.",B:"Fluorine forms no bond with carbon.",C:"Bond enthalpy is the controlling factor",D:"The reaction is not a substitution."},correct:"C"}
+  },
+  {
+    id:"CHEM-N3-12",stem:"Oxidation of a primary alcohol with acidified potassium dichromate under distillation gives:",
+    options:{A:"A ketone, collected as it forms.",B:"A carboxylic acid, after full reflux.",C:"An alkene by dehydration.",D:"An aldehyde, distilled off as formed"},
+    correct:"D",tag:"MC-GCHEM-FUNCTIONAL-GROUPS",
+    scaffold:"Primary alcohols oxidise first to an aldehyde and then to a carboxylic acid: distilling the aldehyde off as it forms stops the reaction there, while heating under reflux with excess oxidising agent gives the acid. Secondary alcohols oxidise to ketones and go no further. Tertiary alcohols are not oxidised, since there is no hydrogen on the carbon bearing the OH group. The dichromate turns from orange to green when oxidation occurs.",
+    reforge:{stem:"A tertiary alcohol is not oxidised by acidified dichromate because the carbon bearing the OH group has:",options:{A:"No hydrogen atom attached",B:"Too many hydrogen atoms attached.",C:"A double bond to oxygen already.",D:"A permanent positive charge."},correct:"A"}
+  },
+  {
+    id:"CHEM-N3-13",stem:"A student must confirm that a carbonyl compound is an aldehyde rather than a ketone. The best reagent is:",
+    options:{A:"Bromine water, decolourised by aldehydes.",B:"Tollens' reagent, giving a silver mirror",C:"Sodium carbonate, fizzing with aldehydes.",D:"Universal indicator, turning red with ketones."},
+    correct:"B",tag:"MC-GCHEM-INORGANIC-TESTS",
+    scaffold:"Aldehydes are readily oxidised to carboxylic acids, ketones are not. Tollens' reagent gives a silver mirror with an aldehyde only; Fehling's or Benedict's solution turns from blue to a brick-red precipitate with an aliphatic aldehyde. Both carbonyls give an orange precipitate with 2,4-dinitrophenylhydrazine, confirming C=O but not distinguishing the two — so the pair of tests is used together.",
+    reforge:{stem:"An orange precipitate with 2,4-DNPH confirms the presence of:",options:{A:"A carbon–carbon double bond.",B:"A hydroxyl group only.",C:"A carbonyl group",D:"A carboxylic acid group."},correct:"C"}
+  },
+  {
+    id:"CHEM-N3-14",stem:"Carboxylic acids react with sodium carbonate to produce:",
+    options:{A:"Carbon dioxide, water, salt",B:"Hydrogen gas and a salt only.",C:"An ester and water.",D:"An alcohol and carbon monoxide."},
+    correct:"A",tag:"MC-GCHEM-FUNCTIONAL-GROUPS",
+    scaffold:"Carboxylic acids are weak acids that still show typical acid reactions: effervescence with carbonates giving CO₂, and salt formation with metals, metal oxides and alkalis. The fizz with sodium carbonate distinguishes a carboxylic acid from a phenol or alcohol, neither of which reacts. Esterification with an alcohol requires a concentrated sulfuric acid catalyst and gives a sweet-smelling ester plus water.",
+    reforge:{stem:"Effervescence with sodium carbonate distinguishes a carboxylic acid from:",options:{A:"Another carboxylic acid of longer chain.",B:"An alcohol, which does not react",C:"A metal carbonate in solution.",D:"An inorganic strong acid."},correct:"B"}
+  },
+  {
+    id:"CHEM-N3-15",stem:"Esterification of a carboxylic acid with an alcohol requires:",
+    options:{A:"Aqueous sodium hydroxide at room temperature.",B:"Ultraviolet light and chlorine gas.",C:"A concentrated sulfuric acid catalyst",D:"Acidified potassium dichromate under reflux."},
+    correct:"C",tag:"MC-GCHEM-SYNTHESIS",
+    scaffold:"Ester formation is a reversible condensation catalysed by concentrated sulfuric acid, producing an ester and water; the acid also removes water, shifting equilibrium towards the product. Esters are sweet-smelling and used as flavourings, perfumes and solvents. Hydrolysis reverses it: acid hydrolysis is reversible and gives the acid and alcohol, while alkaline hydrolysis is irreversible, giving the carboxylate salt and alcohol.",
+    reforge:{stem:"Alkaline hydrolysis of an ester goes to completion, unlike acid hydrolysis, because it produces:",options:{A:"The carboxylate salt, not the acid",B:"Water as one of the products.",C:"An alcohol of shorter chain length.",D:"A catalyst that is regenerated."},correct:"A"}
+  },
+  {
+    id:"CHEM-N3-16",stem:"Fractional distillation of crude oil separates hydrocarbons according to differences in their:",
+    options:{A:"Chemical reactivity with oxygen.",B:"Boiling point, from chain length",C:"Density in the liquid state.",D:"Colour when heated in the column."},
+    correct:"B",tag:"MC-GCHEM-SYNTHESIS",
+    scaffold:"Crude oil is separated by fractional distillation: it is vaporised and fed into a column with a temperature gradient, so each fraction condenses where the temperature matches its boiling range. Longer chains have stronger London forces, higher boiling points, and condense lower down. Cracking then converts surplus long-chain fractions into shorter, more valuable alkanes and alkenes, matching supply to demand.",
+    reforge:{stem:"Catalytic cracking of long-chain alkanes is carried out mainly to:",options:{A:"Increase the average chain length.",B:"Remove sulfur from the fractions.",C:"Produce shorter, useful molecules",D:"Convert alkenes back into alkanes."},correct:"C"}
+  },
+  {
+    id:"CHEM-N3-17",stem:"In infrared spectroscopy, a broad absorption between 3230 and 3550 cm⁻¹ indicates:",
+    options:{A:"A C=O bond in an aldehyde.",B:"A C–H bond in an alkane.",C:"A C≡N bond in a nitrile.",D:"An O–H bond in an alcohol"},
+    correct:"D",tag:"MC-GCHEM-ORGANIC-STRUCTURE",
+    scaffold:"Bonds absorb infrared at characteristic wavenumbers as they vibrate. Key values: O–H in alcohols broad at 3230–3550; O–H in carboxylic acids very broad at 2500–3300; C=O sharp and strong at 1680–1750; C–H around 2850–3100; N–H at 3300–3500. The fingerprint region below 1500 cm⁻¹ is complex but unique to each compound, so it identifies a substance by comparison with a database spectrum.",
+    reforge:{stem:"The fingerprint region of an infrared spectrum is useful because it:",options:{A:"Shows only the C=O absorptions clearly.",B:"Is unique to a particular compound",C:"Contains no absorptions at all.",D:"Gives the relative molecular mass."},correct:"B"}
+  },
+  {
+    id:"CHEM-N3-18",stem:"In a mass spectrum of an organic compound, the molecular ion peak gives the:",
+    options:{A:"Relative molecular mass",B:"Number of carbon atoms only.",C:"Empirical formula directly.",D:"Boiling point of the substance."},
+    correct:"A",tag:"MC-GCHEM-MASS-SPECTRA",
+    scaffold:"The molecular ion peak, M, is at the highest m/z (ignoring isotope peaks) and gives the relative molecular mass. Fragmentation peaks arise from the molecular ion breaking apart, and their differences identify lost groups: a loss of 15 indicates CH₃, 29 indicates C₂H₅ or CHO, and 17 indicates OH. An M+1 peak arises from carbon-13, and its relative height indicates the number of carbon atoms.",
+    reforge:{stem:"A fragment peak 15 units below the molecular ion peak indicates the loss of:",options:{A:"An OH group.",B:"A CH₃ group",C:"A C₂H₅ group.",D:"A CHO group."},correct:"B"}
+  },
+  {
+    id:"CHEM-N3-19",stem:"In proton NMR, the number of peaks in a spectrum indicates the number of:",
+    options:{A:"Hydrogen atoms in the whole molecule.",B:"Carbon atoms in the main chain.",C:"Different hydrogen environments",D:"Functional groups present in the compound."},
+    correct:"C",tag:"MC-GCHEM-ORGANIC-STRUCTURE",
+    scaffold:"In ¹H NMR the number of peaks gives the number of different proton environments; the integration ratio gives the relative numbers of protons in each; chemical shift indicates the environment type; and splitting follows the n+1 rule, where a peak splits into one more than the number of protons on adjacent carbons. TMS is the reference standard at 0 ppm, and CDCl₃ is used as a solvent because it contains no ordinary protons.",
+    reforge:{stem:"A peak in a proton NMR spectrum is split into a triplet. This indicates the adjacent carbon carries:",options:{A:"One hydrogen atom.",B:"Three hydrogen atoms.",C:"No hydrogen atoms.",D:"Two hydrogen atoms"},correct:"D"}
+  },
+  {
+    id:"CHEM-N3-20",stem:"Benzene does not readily undergo addition reactions because its delocalised ring is:",
+    options:{A:"Highly strained and unstable.",B:"More stable than three double bonds",C:"Unable to attract any electrophiles.",D:"Composed of single bonds only."},
+    correct:"B",tag:"MC-GCHEM-ORGANIC-MECHANISMS",
+    scaffold:"Benzene's six delocalised pi electrons are spread evenly above and below the ring, making all C–C bonds equal in length and the molecule more stable than the theoretical cyclohexa-1,3,5-triene — the difference is the delocalisation energy, shown by comparing enthalpies of hydrogenation. Addition would destroy that stability, so benzene undergoes electrophilic substitution instead, retaining the aromatic ring.",
+    reforge:{stem:"Benzene reacts with electrophiles by substitution rather than addition because substitution:",options:{A:"Requires no catalyst to proceed.",B:"Produces a more reactive product.",C:"Preserves the delocalised ring",D:"Breaks all six carbon–carbon bonds."},correct:"C"}
+  },
+  {
+    id:"CHEM-N3-21",stem:"Nitration of benzene requires concentrated nitric acid and concentrated sulfuric acid in order to generate:",
+    options:{A:"The nitronium ion, NO₂⁺",B:"A free radical from nitric acid.",C:"A nucleophilic nitrate ion.",D:"Hydrogen gas as the electrophile."},
+    correct:"A",tag:"MC-GCHEM-ORGANIC-MECHANISMS",
+    scaffold:"Sulfuric acid protonates nitric acid, which loses water to form the nitronium ion NO₂⁺ — the electrophile. It is attacked by the delocalised ring, forming an unstable intermediate that loses H⁺ to restore aromaticity; the sulfuric acid catalyst is regenerated. Friedel–Crafts alkylation and acylation follow the same electrophilic substitution pattern, using an AlCl₃ halogen carrier to generate the electrophile.",
+    reforge:{stem:"In Friedel–Crafts acylation, aluminium chloride acts as a:",options:{A:"Nucleophile attacking the ring.",B:"Reducing agent for the acyl group.",C:"Solvent for the reaction mixture.",D:"Halogen carrier for it"},correct:"D"}
+  },
+  {
+    id:"CHEM-N3-22",stem:"Primary aliphatic amines are more basic than ammonia because alkyl groups:",
+    options:{A:"Withdraw electron density from nitrogen.",B:"Push electron density onto the nitrogen",C:"Remove the lone pair entirely.",D:"Form hydrogen bonds with water."},
+    correct:"B",tag:"MC-GCHEM-FUNCTIONAL-GROUPS",
+    scaffold:"Basicity depends on the availability of nitrogen's lone pair to accept a proton. Alkyl groups are electron-releasing, increasing lone pair availability, so primary aliphatic amines are stronger bases than ammonia. Aromatic amines such as phenylamine are weaker, because the lone pair is partly delocalised into the benzene ring and so less available. Amines are made from haloalkanes with excess ammonia, or by reducing nitriles or nitroarenes.",
+    reforge:{stem:"Phenylamine is a weaker base than ethylamine because its nitrogen lone pair is:",options:{A:"Delocalised into the benzene ring",B:"Involved in a dative covalent bond.",C:"Removed by the aromatic system.",D:"Shielded by two alkyl groups."},correct:"A"}
+  },
+  {
+    id:"CHEM-N3-23",stem:"An amino acid exists as a zwitterion at its isoelectric point because it contains:",
+    options:{A:"Only a basic amine group.",B:"Two identical carboxyl groups.",C:"An acidic and a basic group",D:"A chiral centre in every case."},
+    correct:"C",tag:"MC-GCHEM-FUNCTIONAL-GROUPS",
+    scaffold:"Amino acids carry both –COOH and –NH₂, so they are amphoteric. At the isoelectric point the carboxyl group is deprotonated and the amine protonated, giving a zwitterion with no overall charge. In acid the molecule gains a proton and becomes positive; in alkali it loses one and becomes negative. All amino acids except glycine have a chiral centre, since glycine's side chain is a hydrogen.",
+    reforge:{stem:"Glycine is the only common amino acid that is not chiral because its side chain is:",options:{A:"A methyl group.",B:"A carboxyl group.",C:"An amine group.",D:"A hydrogen atom"},correct:"D"}
+  },
+  {
+    id:"CHEM-N3-24",stem:"Thin-layer chromatography separates compounds according to their relative:",
+    options:{A:"Boiling points in the mobile phase.",B:"Affinity for each of the phases",C:"Molecular masses alone.",D:"Colours under ultraviolet light."},
+    correct:"B",tag:"MC-GCHEM-INORGANIC-TESTS",
+    scaffold:"In TLC the stationary phase is a thin solid layer and the mobile phase a solvent moving up the plate. A component with greater affinity for the mobile phase travels further. Rf = distance moved by spot ÷ distance moved by solvent front, and is constant for a compound under fixed conditions. The baseline must be pencil, and drawn above the solvent level so the spots are not washed off.",
+    reforge:{stem:"The baseline on a TLC plate is drawn in pencil rather than pen because ink would:",options:{A:"Prevent the solvent rising up the plate.",B:"React chemically with the stationary phase.",C:"Dissolve and travel up the plate",D:"Make the spots invisible under UV light."},correct:"C"}
+  },
+  {
+    id:"CHEM-N3-25",stem:"Heating a reaction mixture under reflux allows a reaction to be carried out at high temperature without:",
+    options:{A:"Losing volatile substances",B:"Requiring any catalyst to be present.",C:"Changing the position of equilibrium.",D:"Producing any unwanted by-products."},
+    correct:"A",tag:"MC-GCHEM-INORGANIC-TESTS",
+    scaffold:"In reflux, vapour rises into a vertical condenser, condenses and returns to the flask, so the mixture can be heated for a long period without loss of volatile reactants or products. Anti-bumping granules give smooth boiling, and the apparatus must never be sealed, or pressure would build dangerously. Distillation instead collects a product as it forms, which is how an aldehyde is isolated before further oxidation.",
+    reforge:{stem:"Anti-bumping granules are added to a reflux flask in order to:",options:{A:"Catalyse the reaction taking place.",B:"Absorb any water produced.",C:"Raise the boiling point of the mixture.",D:"Promote smooth and even boiling"},correct:"D"}
+  },
+  {
+    id:"CHEM-N3-26",stem:"Recrystallisation purifies a solid product by exploiting the fact that impurities:",
+    options:{A:"Have a much higher melting point.",B:"Stay dissolved in cold solvent",C:"Evaporate away during heating.",D:"React with the chosen solvent."},
+    correct:"B",tag:"MC-GCHEM-INORGANIC-TESTS",
+    scaffold:"Recrystallisation: dissolve the crude solid in the minimum volume of hot solvent, filter hot to remove insoluble impurities, cool slowly so the product crystallises while soluble impurities stay in solution, then filter under reduced pressure, wash with a little cold solvent and dry. Yield is always reduced, since some product stays dissolved. Purity is checked by melting point: a pure solid melts sharply at the literature value.",
+    reforge:{stem:"An impure solid melts over a range and below its literature value. This indicates the sample is:",options:{A:"Pure but incorrectly identified.",B:"Impure, so the range broadens",C:"Completely free of any solvent.",D:"A different physical state entirely."},correct:"B"}
+  },
+  {
+    id:"CHEM-N3-27",stem:"The general formula of an alkene is:",
+    options:{A:"CₙH₂ₙ₊₂",B:"CₙH₂ₙ",C:"CₙH₂ₙ₋₂.",D:"CₙH₂ₙ₊₁OH."},
+    correct:"B",tag:"MC-GCHEM-ORGANIC-STRUCTURE",
+    scaffold:"Alkanes CₙH₂ₙ₊₂ are saturated; alkenes CₙH₂ₙ contain one C=C and are unsaturated; alcohols are CₙH₂ₙ₊₁OH. Each degree of unsaturation — a double bond or a ring — removes two hydrogens from the saturated formula, which lets a molecular formula be checked against a proposed structure. Note cycloalkanes share the alkene general formula, so formula alone does not prove a double bond is present.",
+    reforge:{stem:"A compound with formula C₄H₈ could be either an alkene or a:",options:{A:"Straight-chain alkane.",B:"Primary alcohol.",C:"Cycloalkane",D:"Carboxylic acid."},correct:"C"}
+  },
+  {
+    id:"CHEM-N3-28",stem:"In the IUPAC name 2-methylbutan-1-ol, the number 1 indicates the position of the:",
+    options:{A:"Methyl branch on the chain.",B:"Longest carbon chain's end.",C:"Double bond in the molecule.",D:"Hydroxyl functional group"},
+    correct:"D",tag:"MC-GCHEM-ORGANIC-STRUCTURE",
+    scaffold:"Naming: find the longest chain containing the functional group for the stem, number from the end giving the functional group the lowest locant, name substituents alphabetically with their positions, and use di-, tri- for repeats. So 2-methylbutan-1-ol is a four-carbon chain with OH on carbon 1 and a methyl on carbon 2. The suffix identifies the principal functional group, and the locant before it gives its position.",
+    reforge:{stem:"When numbering a carbon chain, the direction is chosen so that the functional group receives:",options:{A:"The lowest possible number",B:"The highest possible number.",C:"The same number as any branch.",D:"No number at all in the name."},correct:"A"}
+  },
+  {
+    id:"CHEM-N3-29",stem:"A nucleophile is best described as a species that:",
+    options:{A:"Accepts a pair of electrons.",B:"Donates a pair of electrons",C:"Always carries a positive charge.",D:"Contains an unpaired electron."},
+    correct:"B",tag:"MC-GCHEM-ORGANIC-MECHANISMS",
+    scaffold:"A nucleophile donates an electron pair, so it is attracted to electron-deficient (δ+) carbon — OH⁻, CN⁻, NH₃ and water are examples, each with a lone pair or negative charge. An electrophile accepts an electron pair and is attracted to electron-rich sites such as a C=C. A free radical has an unpaired electron and is neither. Curly arrows always show the movement of an electron pair, from the donor to the acceptor.",
+    reforge:{stem:"In a reaction mechanism, a curly arrow represents the movement of:",options:{A:"A single unpaired electron.",B:"An entire atom between molecules.",C:"A pair of electrons",D:"A proton from acid to base."},correct:"C"}
+  },
+  {
+    id:"CHEM-N3-30",stem:"Which pair of reagents would convert a nitrile into a primary amine?",
+    options:{A:"Aqueous sodium hydroxide, heated under reflux.",B:"Acidified potassium dichromate solution.",C:"Concentrated nitric and sulfuric acids.",D:"LiAlH₄, or hydrogen with a catalyst"},
+    correct:"D",tag:"MC-GCHEM-SYNTHESIS",
+    scaffold:"Nitriles are reduced to primary amines using LiAlH₄ in dry ether, or hydrogen with a nickel catalyst. They are useful in synthesis because the CN⁻ substitution step extends the carbon chain by one, and the nitrile can then be reduced to an amine or hydrolysed to a carboxylic acid. Planning a multi-step synthesis means tracking both the functional group changes and the carbon count at each stage.",
+    reforge:{stem:"Reacting a haloalkane with KCN is useful in synthesis because it:",options:{A:"Lengthens the chain by one carbon",B:"Removes a carbon from the chain.",C:"Converts the compound to an alkene.",D:"Introduces a hydroxyl group directly."},correct:"A"}
+  },
+  {
+    id:"CHEM-N3-31",stem:"Phenol reacts with bromine water at room temperature without a catalyst, unlike benzene, because the:",
+    options:{A:"Hydroxyl group withdraws electron density.",B:"Ring in phenol contains no delocalisation.",C:"Oxygen lone pair enriches the ring",D:"Molecule is far smaller than benzene."},
+    correct:"C",tag:"MC-GCHEM-ORGANIC-MECHANISMS",
+    scaffold:"In phenol, a lone pair on the oxygen is partly delocalised into the ring, raising its electron density so it polarises bromine without a halogen carrier — giving an immediate white precipitate of 2,4,6-tribromophenol and decolourising bromine water. Benzene needs a catalyst and more forcing conditions. Phenol is also weakly acidic, reacting with sodium hydroxide but not with sodium carbonate, unlike carboxylic acids.",
+    reforge:{stem:"Phenol reacts with sodium hydroxide but not with sodium carbonate, showing that phenol is:",options:{A:"A stronger acid than carboxylic acids.",B:"Weakly acidic, less than an acid",C:"Completely neutral in solution.",D:"A base rather than an acid."},correct:"B"}
+  },
+  {
+    id:"CHEM-N3-32",stem:"An addition polymer is difficult to dispose of because its carbon backbone is:",
+    options:{A:"Unreactive and non-biodegradable",B:"Highly reactive towards water.",C:"Held together by hydrogen bonds.",D:"Broken down rapidly by sunlight."},
+    correct:"A",tag:"MC-GCHEM-SYNTHESIS",
+    scaffold:"Addition polymers have saturated, non-polar carbon backbones with strong C–C and C–H bonds, so they resist chemical attack and are not biodegradable, persisting for centuries. Disposal options: landfill (space and leachate), incineration (energy recovery but toxic emissions if PVC is present), and recycling (needs sorting). Condensation polymers such as polyesters contain polar links that can be hydrolysed, so they break down more readily.",
+    reforge:{stem:"Polyesters are more easily broken down than poly(ethene) because polyesters contain:",options:{A:"A saturated hydrocarbon backbone.",B:"Only carbon–carbon single bonds.",C:"Ester links, which hydrolyse",D:"No repeating monomer units."},correct:"C"}
+  },
+  {
+    id:"CHEM-N3-33",stem:"Which technique would best determine the structure of an unknown organic compound?",
+    options:{A:"Measuring its melting point alone.",B:"Observing its colour and smell.",C:"Weighing a sample accurately.",D:"Combining NMR, IR and mass spectra"},
+    correct:"D",tag:"MC-GCHEM-ORGANIC-STRUCTURE",
+    scaffold:"Structure determination combines techniques: mass spectrometry gives relative molecular mass and fragmentation clues; infrared identifies functional groups present; ¹H and ¹³C NMR reveal the carbon–hydrogen skeleton through environments, integration and splitting; and elemental analysis gives the empirical formula. No single method is sufficient, which is why exam questions supply several data sets and expect them to be reconciled.",
+    reforge:{stem:"Elemental analysis of a compound provides its:",options:{A:"Empirical formula",B:"Full three-dimensional structure.",C:"Boiling point and density.",D:"Number of proton environments."},correct:"A"}
+  },
+  {
+    id:"CHEM-N3-34",stem:"Optical isomers are difficult to separate by ordinary means because they have identical:",
+    options:{A:"Arrangements of atoms in space.",B:"Physical properties when achiral",C:"Effects on plane-polarised light.",D:"Numbers of chiral centres always."},
+    correct:"B",tag:"MC-GCHEM-ORGANIC-STRUCTURE",
+    scaffold:"Enantiomers share melting point, boiling point, density and solubility in ordinary solvents, so distillation and recrystallisation cannot separate them; they differ only in the direction they rotate plane-polarised light and in behaviour towards other chiral species. This matters pharmaceutically, since one enantiomer may be therapeutic and the other inactive or harmful, so drug synthesis aims to produce a single enantiomer.",
+    reforge:{stem:"Producing a single enantiomer of a drug rather than a racemic mixture matters because the other enantiomer may be:",options:{A:"Identical in every biological respect.",B:"Impossible to synthesise at all.",C:"Inactive or harmful in the body",D:"More soluble in organic solvents."},correct:"C"}
+  },
+  {
+    id:"CHEM-N3-35",stem:"A student obtains a low percentage yield in an organic preparation. The most likely cause is:",
+    options:{A:"Losses in transfer and purification",B:"Weighing the product too accurately.",C:"Using a reflux condenser correctly.",D:"An error in the balanced equation."},
+    correct:"A",tag:"MC-GCHEM-SYNTHESIS",
+    scaffold:"Yields fall below theoretical because of incomplete or reversible reaction, competing side reactions, and mechanical losses when transferring between vessels, filtering, and washing crystals. Recrystallisation always sacrifices some product, since a little stays dissolved. Improvements: excess of the cheaper reagent, removing product to shift equilibrium, and minimising transfers. Distinguish yield, which measures how much was obtained, from purity, which measures what it contains.",
+    reforge:{stem:"Percentage yield and purity are different measures because purity describes:",options:{A:"How much product was obtained overall.",B:"The proportion that is product",C:"The speed at which the reaction occurred.",D:"The cost of the reagents used."},correct:"B"}
+  },
+  {
+    id:"CHEM-N3-36",stem:"Ethanol produced by fermentation differs from ethanol produced by hydration of ethene in that fermentation:",
+    options:{A:"Runs continuously at high temperature.",B:"Produces a much purer product directly.",C:"Uses a renewable feedstock, in batches",D:"Requires a phosphoric acid catalyst."},
+    correct:"C",tag:"MC-GCHEM-SYNTHESIS",
+    scaffold:"Fermentation uses sugars from a renewable crop with yeast at about 35 °C, is a slow batch process giving impure dilute ethanol needing distillation, but has low energy needs and is close to carbon neutral. Hydration of ethene uses a finite crude oil feedstock with steam and a phosphoric acid catalyst at high temperature and pressure, but runs continuously and gives a pure product with high atom economy.",
+    reforge:{stem:"Hydration of ethene is preferred industrially where the priority is:",options:{A:"Using a renewable plant feedstock.",B:"Minimising energy consumption.",C:"Avoiding the need for any catalyst.",D:"Continuous production of ethanol"},correct:"D"}
+  },
+  {
+    id:"CHEM-N3-37",stem:"A curly arrow starting at a lone pair and pointing to a carbon atom represents:",
+    options:{A:"A nucleophile attacking that carbon",B:"An electrophile leaving the molecule.",C:"The homolytic breaking of a bond.",D:"A proton transferring to the carbon."},
+    correct:"A",tag:"MC-GCHEM-ORGANIC-MECHANISMS",
+    scaffold:"Curly arrows show electron pair movement, starting from a lone pair, a negative charge, or a bond, and pointing where the pair goes. An arrow from a lone pair to a δ+ carbon shows nucleophilic attack; an arrow from a bond to an atom shows heterolytic fission, giving ions. Half-headed arrows show single-electron movement in radical mechanisms. Marks are usually awarded for arrow position and direction, so precision matters.",
+    reforge:{stem:"Heterolytic fission of a covalent bond produces:",options:{A:"Two radicals with unpaired electrons.",B:"Two oppositely charged ions",C:"Two identical neutral atoms.",D:"No products until a catalyst is added."},correct:"B"}
+  }
+]);
+
+chemExpansion("CHEM-1", [
+  {
+    id:"CHEM-N4-01",stem:"A student reports a titre of 24.5 cm³ from a burette. The uncertainty in that titre is:",
+    options:{A:"±0.10 cm³, from two readings",B:"±0.05 cm³, from a single reading.",C:"±0.50 cm³, the smallest scale division.",D:"±1.00 cm³, the practical limit of reading."},
+    correct:"A",tag:"MC-GCHEM-INORGANIC-TESTS",
+    scaffold:"A burette is read to ±0.05 cm³, and a titre needs an initial and a final reading, so uncertainties add to ±0.10 cm³. Percentage uncertainty = (uncertainty ÷ measurement) × 100, so a larger titre reduces the percentage error — one reason to use a titre above 20 cm³. Overall uncertainty in a calculated result is found by adding the percentage uncertainties of each measurement contributing to it.",
+    reforge:{stem:"To reduce the percentage uncertainty in a titration, a student should aim for a titre that is:",options:{A:"As large as the burette allows",B:"As small as the burette can measure.",C:"Exactly equal to the pipette volume.",D:"Unrelated to the uncertainty involved."},correct:"A"}
+  }
+]);
+chemExpansion("CHEM-2", [
+  {
+    id:"CHEM-N4-02",stem:"A reaction has ΔH = +50 kJ mol⁻¹ and ΔS = +100 J K⁻¹ mol⁻¹. The minimum temperature for feasibility is:",
+    options:{A:"0.5 K, from 50 divided by 100.",B:"500 K, from 50,000 ÷ 100",C:"5000 K, from 50 times 100.",D:"150 K, from 50 plus 100."},
+    correct:"B",tag:"MC-GCHEM-ENERGETICS",
+    scaffold:"Feasibility requires ΔG ≤ 0, and ΔG = ΔH − TΔS, so the minimum temperature is T = ΔH ÷ ΔS. The units must match: ΔH in kJ mol⁻¹ must be converted to J mol⁻¹ (×1000), or ΔS converted to kJ K⁻¹ mol⁻¹ (÷1000). Here 50,000 ÷ 100 = 500 K. Failing to convert is the single commonest error, and produces answers wrong by a factor of a thousand.",
+    reforge:{stem:"In the equation ΔG = ΔH − TΔS, the most common error is failing to:",options:{A:"Convert ΔS into kJ",B:"Use the correct sign for ΔG.",C:"Measure the temperature at all.",D:"Include the activation energy term."},correct:"A"}
   }
 ]);
 
@@ -35974,6 +36788,105 @@ const busAnswerLengthRepairs = {
 };
 for (const [id, variants] of Object.entries(busAnswerLengthRepairs)) {
   for (const bankId of SUBJECTS.bus.banks) {
+    const question = (BANKS[bankId].questions || []).find(candidate => candidate.id === id);
+    if (!question) continue;
+    for (const [variant, replacements] of Object.entries(variants)) {
+      const item = variant === "base" ? question : question.reforge;
+      if (!item?.options) continue;
+      for (const [letter, value] of Object.entries(item.options)) {
+        const replacement = replacements[String(value)];
+        if (replacement) item.options[letter] = replacement;
+      }
+    }
+  }
+}
+
+// A-Level Chemistry: concise restatements of twenty correct answers that were
+// long enough to be the uniquely-longest option, which lets a student score
+// above chance by picking the longest one. Several ran past 200 characters
+// against distractors of ~50, reading as mini mark schemes rather than
+// options. They surfaced once the coverage-variant clones were removed.
+// Matched on option TEXT rather than letter, because rebalanceMCQSubject()
+// permutes letters and a letter-keyed table applied afterwards lands on
+// whichever option happens to sit there. Applied last.
+const chemAnswerLengthRepairs = {
+  "CHEM-02": {
+    reforge: { "Group 2 — large jump occurs between 2nd and 3rd IE, indicating two outer-shell electrons are removed relatively easily before the inner shell is breached.":
+      "Group 2" }
+  },
+  "CHEM-04": {
+    reforge: { "I₂ is a simple molecular structure — melting only requires overcoming weak London dispersion forces between molecules. SiO₂ is a giant covalent lattice requiring thousands of strong covalent bonds to be broken.":
+      "I₂ is simple molecular; SiO₂ is a giant lattice" }
+  },
+  "CHEM-06": {
+    reforge: { "Atomic radius increases and shielding from more inner electron shells increases — bonding electrons are further from the nucleus and less strongly attracted, reducing electronegativity.":
+      "Radius and shielding both increase" }
+  },
+  "CHEM-07": {
+    reforge: { "Neon has two naturally occurring isotopes — ²⁰Ne and ²²Ne — differing in the number of neutrons. The height of each peak indicates the relative abundance of each isotope.":
+      "Neon has two isotopes, ²⁰Ne and ²²Ne" }
+  },
+  "CHEM-08": {
+    base: { "Ionic compounds conduct when MOLTEN or in SOLUTION because the ions become free to move and carry charge — not because of free electrons.":
+      "Ionic compounds conduct when molten or dissolved" },
+    reforge: { "Metals contain a 'sea' of delocalised electrons that can move freely through the lattice in all states. Ionic compounds have no free electrons — in the solid state, ions are fixed and cannot carry charge.":
+      "Metals have delocalised electrons" }
+  },
+  "CHEM-09": {
+    reforge: { "HF forms hydrogen bonds (F is highly electronegative with lone pairs), which are stronger than the permanent dipole-dipole forces in HCl.":
+      "HF forms hydrogen bonds, stronger than dipoles" }
+  },
+  "CHEM-11": {
+    reforge: { "Leaves the yield unchanged — a catalyst speeds both directions equally, reaching the same equilibrium faster.":
+      "Leaves the yield unchanged, reaching it faster" }
+  },
+  "CHEM-13": {
+    reforge: { "Temperature increases the frequency of collisions AND greatly increases the proportion of particles exceeding the activation energy — the latter effect dominates.":
+      "More particles exceed the activation energy" }
+  },
+  "CHEM-14": {
+    reforge: { "Once formed, the dative bond is indistinguishable from the other three covalent N–H bonds — all four are equivalent.":
+      "All four N–H bonds become equivalent" }
+  },
+  "CHEM-16": {
+    reforge: { "Atoms have more shells and greater shielding, increasing the atomic radius so the nucleus attracts the bonding pair less strongly, despite the higher nuclear charge.":
+      "More shells and shielding outweigh the charge" }
+  },
+  "ORG-01": {
+    base: { "Stereoisomerism — specifically E/Z isomerism and optical isomerism, which have the same connectivity but differ in spatial arrangement.":
+      "Stereoisomerism" }
+  },
+  "ORG-02": {
+    base: { "Because ethene is an alkene — it is unsaturated and the pi bond opens to accommodate both bromine atoms, producing a saturated product with no atoms lost.":
+      "Ethene is unsaturated, so the pi bond opens" },
+    reforge: { "Alkanes have no pi bond, so there is nothing for an electrophile to attack; substitution (via radical mechanism) is possible instead.":
+      "Alkanes have no pi bond to attack" }
+  },
+  "ORG-03": {
+    base: { "To generate a more powerful electrophile (Br⁺ or Br-FeBr₃ complex) — Br₂ alone is not electrophilic enough to attack the stable aromatic ring.":
+      "To generate a stronger electrophile" },
+    reforge: { "Benzene's delocalised pi system confers aromatic stability (~150 kJ/mol). Addition would destroy this — costing more energy than it releases — so substitution, which preserves the ring, is strongly favoured.":
+      "Substitution preserves the aromatic stability" }
+  },
+  "ORG-04": {
+    reforge: { "Diethyl ether — at 140°C with excess alcohol, intermolecular condensation occurs (two alcohol molecules lose water to form an ether); the lower temperature is insufficient for intramolecular elimination to ethene.":
+      "Diethyl ether, from intermolecular condensation" }
+  },
+  "ORG-05": {
+    reforge: { "Tollens' (Ag⁺) and Fehling's (Cu²⁺) oxidise aldehydes but not ketones (silver mirror / brick-red precipitate); K₂Cr₂O₇ oxidises both, so it cannot distinguish between them.":
+      "Tollens' and Fehling's oxidise only aldehydes" }
+  },
+  "ORG-06": {
+    reforge: { "Esterification is reversible — the ester can hydrolyse back. Yield is improved by removing water, using excess reactant, or removing the ester as it forms (Le Chatelier's principle).":
+      "Esterification is reversible, so yield is limited" }
+  },
+  "ORG-08": {
+    base: { "The lone pair on the nitrogen atom accepts a proton from an acid (or water), acting as a Brønsted-Lowry base.":
+      "The nitrogen lone pair accepts a proton" }
+  }
+};
+for (const [id, variants] of Object.entries(chemAnswerLengthRepairs)) {
+  for (const bankId of SUBJECTS.chem.banks) {
     const question = (BANKS[bankId].questions || []).find(candidate => candidate.id === id);
     if (!question) continue;
     for (const [variant, replacements] of Object.entries(variants)) {
