@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-08-10T11:19:20.372Z",
+  "generatedAt": "2026-08-16T21:05:43.131Z",
   "pages": {
     "economics.html": "econ",
     "psychology.html": "psych",
@@ -188,9 +188,9 @@
       "coverage": 100
     },
     "mand": {
-      "tier": "developing",
+      "tier": "full",
       "questions": 200,
-      "banks": 1,
+      "banks": 2,
       "coverage": 100
     },
     "gcse-hist": {
