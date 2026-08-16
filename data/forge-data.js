@@ -18497,6 +18497,657 @@ csExpansion("CS-4", [
   }
 ]);
 
+// ===== A-LEVEL BUSINESS: GENUINE QUESTION EXPANSION =====
+// bus reached its 200-question floor via expandSubjectToMinimum(), which
+// clones existing questions; a later pass strips the "(application variant
+// N)" suffix, leaving 62 of its 202 questions as byte-identical repeats.
+// These 88 authored questions take the source count to 200 so the expansion
+// pass generates no coverage variants at all.
+const busExpansion = (bankId, questions) => questions.forEach(question => BANKS[bankId].questions.push(question));
+busExpansion("BUS-1", [
+  {
+    id:"BUS-N1-01",stem:"A firm using primary research rather than secondary research is:",
+    options:{A:"Gathering new data for its own specific purpose",B:"Relying on government statistics already published.",C:"Reading a competitor's annual report for cost data.",D:"Using last year's sales figures from its own records."},
+    correct:"A",tag:"MC-GBUS-MARKET-RESEARCH",
+    scaffold:"Primary research is collected first-hand for the decision at hand — surveys, interviews, focus groups, observation, test marketing. It is current and specific but costs more and takes longer. Secondary research uses data gathered by someone else or previously by the firm — government statistics, trade journals, competitor accounts, internal sales records. It is cheap and quick but may be dated, less relevant, or collected for a different purpose.",
+    reforge:{stem:"A start-up with a very limited budget needs an overview of market size quickly. It should begin with:",options:{A:"A programme of in-depth customer interviews.",B:"Test marketing the product in three regions.",C:"Secondary research, which is cheaper and faster",D:"A national survey of several thousand consumers."},correct:"C"}
+  },
+  {
+    id:"BUS-N1-02",stem:"A firm uses a quota sample rather than a random sample. This means respondents are:",
+    options:{A:"Chosen entirely at random from the population.",B:"Selected to match set proportions of each group",C:"Limited to existing customers of the business.",D:"Interviewed only once the product has launched."},
+    correct:"B",tag:"MC-GBUS-MARKET-RESEARCH",
+    scaffold:"Random sampling gives every member of the population an equal chance of selection, so results can be generalised with known confidence, but it is costly and slow. Quota sampling fills preset proportions — say 50% male, 30% aged under 25 — so it is quicker and cheaper and ensures each group appears, but selection within each quota is not random, so bias can enter. Larger samples reduce sampling error but raise cost.",
+    reforge:{stem:"Increasing sample size from 100 to 1,000 respondents mainly affects the research by:",options:{A:"Removing the need to identify a target market.",B:"Guaranteeing the findings will be correct.",C:"Eliminating all forms of interviewer bias.",D:"Reducing sampling error, at greater cost"},correct:"D"}
+  },
+  {
+    id:"BUS-N1-03",stem:"Market segmentation involves dividing a market into groups of buyers who:",
+    options:{A:"Are located in the same geographical region only.",B:"Have identical incomes and occupations.",C:"Share similar characteristics or needs",D:"Have already purchased the firm's product."},
+    correct:"C",tag:"MC-GBUS-MARKET-RESEARCH",
+    scaffold:"Segments can be defined demographically (age, gender, income, occupation), geographically, psychographically (attitudes, lifestyle, values) or behaviourally (usage rate, loyalty, benefits sought). Segmenting lets a firm tailor the marketing mix, target promotion efficiently and often charge more to a group that values the offer. The costs are a smaller addressable market per segment and higher complexity in production and promotion.",
+    reforge:{stem:"A car manufacturer targets buyers who value environmental responsibility above cost. This segmentation is:",options:{A:"Geographic, based on where buyers live.",B:"Psychographic, based on values",C:"Demographic, based on age and income.",D:"Behavioural, based on purchase frequency."},correct:"B"}
+  },
+  {
+    id:"BUS-N1-04",stem:"A product with a high market share in a low-growth market is classified on the Boston Matrix as a:",
+    options:{A:"Problem child, needing heavy investment to grow.",B:"Star, requiring investment to defend its position.",C:"Dog, with weak share in a weak market.",D:"Cash cow, generating funds for other products"},
+    correct:"D",tag:"MC-GBUS-PRODUCT-GROWTH",
+    scaffold:"Boston Matrix by share and market growth: Star — high share, high growth, needs investment but promises future returns. Cash cow — high share, low growth, generates surplus cash to fund others. Problem child (question mark) — low share, high growth, needs investment with uncertain outcome. Dog — low share, low growth, usually divested. A balanced portfolio uses cash cows to fund stars and selected problem children.",
+    reforge:{stem:"Why does a firm want cash cows in its portfolio even though their markets are barely growing?",options:{A:"They generate cash to fund others",B:"They require the largest marketing budgets.",C:"They always have the highest profit margins.",D:"They guarantee future growth in market share."},correct:"A"}
+  },
+  {
+    id:"BUS-N1-05",stem:"A product entering the decline stage of its life cycle would typically show:",
+    options:{A:"Falling sales, prompting extension or exit",B:"Rapidly rising sales and growing market share.",C:"Its highest promotional spending of any stage.",D:"Sales stable at their peak level."},
+    correct:"A",tag:"MC-GBUS-PRODUCT-GROWTH",
+    scaffold:"Life cycle stages: development (costs, no sales), introduction (low sales, heavy promotion, often losses), growth (rising sales, profits emerge, competitors enter), maturity (peak sales, intense competition, price pressure), decline (falling sales). Extension strategies — new markets, new packaging, product updates, price cuts — prolong maturity. The cycle explains cash-flow patterns and why a firm needs products at different stages.",
+    reforge:{stem:"Which action is an extension strategy rather than a new product launch?",options:{A:"Closing the production line and exiting the market.",B:"Developing an entirely different product category.",C:"Reformulating and repackaging the existing product",D:"Selling the brand name to a competitor."},correct:"C"}
+  },
+  {
+    id:"BUS-N1-06",stem:"A firm sets price below cost temporarily to drive rivals from the market. This is:",
+    options:{A:"Price skimming, charging a high launch price.",B:"Predatory pricing, likely unlawful",C:"Cost-plus pricing, adding a margin to unit cost.",D:"Psychological pricing, ending prices at .99."},
+    correct:"B",tag:"MC-GBUS-PRICING",
+    scaffold:"Pricing strategies: skimming — high launch price for innovative products, recovering development costs from early adopters. Penetration — low price to win share quickly. Cost-plus — unit cost plus a margin, simple but ignores demand. Competitive — matching rivals. Psychological — £9.99. Predatory — below cost to eliminate competitors, which is unlawful in the UK and EU. Price discrimination charges different groups different prices for the same product.",
+    reforge:{stem:"A rail operator charges more at peak times than off-peak for the same journey. This is:",options:{A:"Predatory pricing aimed at rival operators.",B:"Penetration pricing to build market share.",C:"Cost-plus pricing based on the journey cost.",D:"Price discrimination between customer groups"},correct:"D"}
+  },
+  {
+    id:"BUS-N1-07",stem:"If demand for a product is price inelastic, a price increase will:",
+    options:{A:"Reduce total revenue because sales fall sharply.",B:"Leave total revenue completely unchanged.",C:"Increase total revenue, as quantity falls less",D:"Increase the quantity demanded by consumers."},
+    correct:"C",tag:"MC-GBUS-PRICING",
+    scaffold:"Price elasticity of demand = % change in quantity ÷ % change in price. Inelastic (between 0 and −1): quantity responds less than proportionately, so raising price raises revenue — typical of necessities, addictive goods and strong brands with few substitutes. Elastic (below −1): quantity responds more than proportionately, so raising price cuts revenue. Elasticity is influenced by substitutes, necessity, brand loyalty and the time available to adjust.",
+    reforge:{stem:"Which factor makes demand for a product more price elastic?",options:{A:"The availability of many close substitutes",B:"Strong brand loyalty among regular buyers.",C:"The product being an essential necessity.",D:"The product taking a very small share of income."},correct:"A"}
+  },
+  {
+    id:"BUS-N1-08",stem:"A firm's income elasticity of demand is measured as +2.5. Its product is:",
+    options:{A:"An inferior good, bought less as income rises.",B:"A necessity with weak response to income.",C:"A good with no relationship to income at all.",D:"A luxury, demand outpacing income"},
+    correct:"D",tag:"MC-GBUS-PRICING",
+    scaffold:"Income elasticity = % change in quantity ÷ % change in income. Positive means a normal good; above +1 marks a luxury, where demand rises faster than income and sales are highly sensitive to the economic cycle. Between 0 and +1 is a necessity, relatively stable through a downturn. A negative figure indicates an inferior good, bought more as incomes fall — value ranges and budget travel are examples.",
+    reforge:{stem:"During a recession, which type of product would a firm expect to see rising demand for?",options:{A:"Luxury goods with high positive income elasticity.",B:"Goods with income elasticity close to zero.",C:"Inferior goods, with negative income elasticity",D:"Products with perfectly inelastic demand."},correct:"C"}
+  },
+  {
+    id:"BUS-N1-09",stem:"A firm adopting a niche marketing strategy rather than mass marketing accepts:",
+    options:{A:"A smaller market, but less competition",B:"Lower prices in return for very high volume.",C:"Higher production costs but a wider customer base.",D:"Greater reliance on economies of scale."},
+    correct:"A",tag:"MC-GBUS-PRODUCT-GROWTH",
+    scaffold:"Mass marketing targets the whole market with one mix: high volume, economies of scale, lower unit costs, but intense competition and thin margins. Niche marketing serves a small distinct segment: less competition, stronger customer loyalty and often a price premium, but limited volume, fewer scale economies, and vulnerability if that segment's tastes shift or a larger rival enters. Neither is inherently better; it depends on the firm's resources and market.",
+    reforge:{stem:"A key risk of relying on a single market niche is that the firm:",options:{A:"Cannot charge a premium price for its product.",B:"Must always compete on cost with large rivals.",C:"Is unable to build any customer loyalty.",D:"Is exposed if that segment's demand falls"},correct:"D"}
+  },
+  {
+    id:"BUS-N1-10",stem:"Adding value means a business:",
+    options:{A:"Increases the quantity of raw materials purchased.",B:"Raises the selling price above the cost of inputs",C:"Reduces the number of stages in production.",D:"Lowers its selling price to attract more buyers."},
+    correct:"B",tag:"MC-GBUS-PRODUCT-GROWTH",
+    scaffold:"Added value is the difference between the price charged and the cost of bought-in inputs. It can be created through branding, design, quality, convenience, speed of service, customer experience or after-sales support. Higher added value supports better margins and some insulation from price competition. Note it is not the same as profit, which is what remains after all costs including labour and overheads are met.",
+    reforge:{stem:"A coffee shop charges £3.50 for a coffee whose ingredients cost £0.40. The added value comes mainly from:",options:{A:"The wholesale cost of the coffee beans.",B:"The tax paid on the final sale price.",C:"Branding, service and convenience",D:"The quantity of coffee sold each day."},correct:"C"}
+  },
+  {
+    id:"BUS-N1-11",stem:"A business with a flat organisational structure rather than a tall one typically has:",
+    options:{A:"A very narrow span of control at every level.",B:"More layers of management between top and bottom.",C:"Wider spans of control and fewer layers",D:"Slower communication from the top downwards."},
+    correct:"C",tag:"MC-GBUS-STRATEGY-DECISIONS",
+    scaffold:"A tall structure has many layers and narrow spans of control: close supervision and clear promotion paths, but slow communication, higher management costs and less delegation. A flat structure has few layers and wide spans: faster communication, lower overheads and more delegation, which can motivate staff, but managers may be stretched and supervision is lighter. Delayering removes layers to cut cost and speed decisions, at some risk to workload and morale.",
+    reforge:{stem:"A firm delayers its management structure. A likely drawback is that remaining managers face:",options:{A:"Narrower spans of control than before.",B:"Increased workload for managers",C:"Slower communication with the shop floor.",D:"Reduced authority to make any decisions."},correct:"B"}
+  },
+  {
+    id:"BUS-N1-12",stem:"According to Herzberg, improving pay and working conditions will mainly:",
+    options:{A:"Motivate staff to increase their productivity.",B:"Satisfy self-actualisation needs at the top of the hierarchy.",C:"Create job enrichment through greater responsibility.",D:"Prevent dissatisfaction rather than create motivation"},
+    correct:"D",tag:"MC-GBUS-STRATEGY-DECISIONS",
+    scaffold:"Herzberg separates hygiene factors — pay, conditions, supervision, company policy, job security — which cause dissatisfaction when poor but do not motivate when good, from motivators — achievement, recognition, responsibility, advancement, the work itself — which do. The practical implication is job enrichment: giving more challenging and complete tasks. Contrast with Taylor, who saw pay as the prime motivator, and Maslow's hierarchy of needs.",
+    reforge:{stem:"Which action best reflects Herzberg's motivators rather than hygiene factors?",options:{A:"Giving responsibility for a whole task",B:"Improving the staff canteen and rest areas.",C:"Introducing a small annual pay increase.",D:"Revising the company's disciplinary policy."},correct:"A"}
+  },
+  {
+    id:"BUS-N1-13",stem:"A high labour turnover rate is most likely to increase a firm's:",
+    options:{A:"Recruitment and training costs",B:"Level of accumulated staff experience.",C:"Long-term employee loyalty.",D:"Overall labour productivity."},
+    correct:"A",tag:"MC-GBUS-STRATEGY-DECISIONS",
+    scaffold:"Labour turnover = staff leaving ÷ average number employed × 100. High turnover raises recruitment, selection and induction costs, loses accumulated know-how, disrupts teams and can damage service quality. Some turnover is healthy, bringing new ideas. Causes include poor pay relative to rivals, weak management, limited progression, and a buoyant local labour market. Retention responses include better reward, training, progression routes and job design.",
+    reforge:{stem:"A firm's labour turnover is far above the industry average. The most useful first step is to:",options:{A:"Reduce the training budget to cut costs.",B:"Increase output targets for remaining staff.",C:"Recruit only temporary staff in future.",D:"Investigate why employees leave"},correct:"D"}
+  },
+  {
+    id:"BUS-N1-14",stem:"Which measure shows how much output each employee produces?",
+    options:{A:"Total revenue divided by the number of employees.",B:"Output per employee over a period",C:"Total wage cost divided by units produced.",D:"Employees leaving divided by employees hired."},
+    correct:"B",tag:"MC-GBUS-OPERATIONS",
+    scaffold:"Labour productivity = total output ÷ number of employees. Raising it lowers unit labour cost and improves competitiveness, and can be achieved through training, better equipment, improved motivation, or reorganising the production process. Distinguish it from labour cost per unit, which also depends on wage rates: a highly paid but very productive workforce can still be cheaper per unit than a low-paid, low-productivity one.",
+    reforge:{stem:"A firm's wages rise 10% while output per worker rises 25%. The labour cost per unit will:",options:{A:"Rise, because wages have increased.",B:"Stay exactly the same as before.",C:"Fall, as productivity rose more",D:"Become impossible to calculate."},correct:"C"}
+  },
+  {
+    id:"BUS-N1-15",stem:"A firm choosing to outsource part of its recruitment process is most likely seeking:",
+    options:{A:"Complete control over every hiring decision.",B:"Specialist expertise at lower fixed cost",C:"To increase the size of its own HR department.",D:"To avoid complying with employment legislation."},
+    correct:"B",tag:"MC-GBUS-OPERATIONS",
+    scaffold:"Outsourcing hands an activity to an external provider, converting fixed costs into variable ones and giving access to specialist skills and capacity. Risks include reduced control over quality, dependence on the supplier, possible loss of internal expertise, and reputational exposure if the provider behaves badly. Legal duties such as employment and data protection law remain with the firm; they cannot be outsourced along with the task.",
+    reforge:{stem:"A significant risk of outsourcing customer service is that the firm:",options:{A:"Must permanently increase its own headcount.",B:"Becomes exempt from consumer protection law.",C:"Loses direct control over service quality",D:"Converts variable costs into fixed costs."},correct:"C"}
+  },
+  {
+    id:"BUS-N1-16",stem:"A private limited company differs from a public limited company because a private company:",
+    options:{A:"Has unlimited liability for its shareholders.",B:"Is not required to keep any financial records.",C:"Must be owned by a single individual.",D:"Cannot sell shares to the general public"},
+    correct:"D",tag:"MC-GBUS-OWNERSHIP-STAKEHOLDERS",
+    scaffold:"Both private (Ltd) and public (plc) companies are separate legal entities with limited liability and must file accounts. A private company cannot offer shares to the public, so ownership stays closed and control is easier to retain, but raising large sums is harder. A plc can list and raise capital from the public, gaining access to finance and profile, at the cost of dilution, greater disclosure, takeover risk and short-term market pressure.",
+    reforge:{stem:"A family firm converts from Ltd to plc. The most likely drawback is:",options:{A:"Losing limited liability protection entirely.",B:"Becoming unable to pay dividends to owners.",C:"Being required to publish accounts for the first time.",D:"Diluted ownership and possible loss of control"},correct:"D"}
+  },
+  {
+    id:"BUS-N1-17",stem:"A conflict between shareholders and employees typically arises because shareholders prioritise:",
+    options:{A:"Returns, while employees seek pay",B:"Lower prices, while employees want higher prices.",C:"Environmental performance over all financial returns.",D:"Slower growth, while employees demand rapid expansion."},
+    correct:"A",tag:"MC-GBUS-OWNERSHIP-STAKEHOLDERS",
+    scaffold:"Stakeholders include shareholders, employees, customers, suppliers, government, local communities and pressure groups. Their objectives conflict: dividends versus wages, low prices versus supplier margins, expansion versus local environmental impact, short-term profit versus long-term investment. Stakeholder mapping by power and interest helps a firm decide whom to manage closely, keep satisfied, keep informed or simply monitor.",
+    reforge:{stem:"A stakeholder with high power but low interest in a decision should generally be:",options:{A:"Ignored until the decision is implemented.",B:"Kept satisfied, to avoid obstruction",C:"Managed closely with detailed daily involvement.",D:"Given full control over the final decision."},correct:"B"}
+  },
+  {
+    id:"BUS-N1-18",stem:"A social enterprise differs from a conventional company because it primarily:",
+    options:{A:"Avoids paying any tax on its trading activity.",B:"Reinvests surpluses for a social aim",C:"Operates only with volunteer, unpaid labour.",D:"Is prohibited from generating any surplus."},
+    correct:"B",tag:"MC-GBUS-OWNERSHIP-STAKEHOLDERS",
+    scaffold:"A social enterprise trades commercially but exists to achieve a social or environmental purpose, reinvesting most surplus rather than distributing it to shareholders. It must still be financially viable, pay staff and meet its obligations. Distinguish it from a charity, which is constituted differently and relies more on donations, and from corporate social responsibility, which is a conventional firm's voluntary conduct alongside its profit objective.",
+    reforge:{stem:"A profit-seeking firm publishes a sustainability report and cuts packaging waste. This is best described as:",options:{A:"Becoming a registered social enterprise.",B:"Converting into a charitable organisation.",C:"Corporate social responsibility",D:"A legal requirement under company law."},correct:"C"}
+  },
+  {
+    id:"BUS-N1-19",stem:"A SMART objective differs from a general aim because it is:",
+    options:{A:"Concerned only with financial performance.",B:"Set by employees rather than by managers.",C:"Specific and measurable with a time limit",D:"Guaranteed to be achieved within the year."},
+    correct:"C",tag:"MC-GBUS-STRATEGY-DECISIONS",
+    scaffold:"An aim is a broad long-term intention; objectives translate it into targets. SMART objectives are Specific, Measurable, Achievable, Realistic and Time-bound, which makes progress reviewable and responsibility clear. Corporate objectives cascade into functional objectives for marketing, finance, operations and HR. Poorly set objectives — vague, unrealistic or conflicting between functions — undermine motivation and make performance impossible to judge.",
+    reforge:{stem:"Which objective is SMART rather than a general aim?",options:{A:"To become the best-known brand in the industry.",B:"To increase market share by 5% within 12 months",C:"To improve customer satisfaction over time.",D:"To grow the business as much as possible."},correct:"B"}
+  },
+  {
+    id:"BUS-N1-20",stem:"In a SWOT analysis, a new competitor entering the market would be recorded as:",
+    options:{A:"A strength, since it validates the market.",B:"A weakness in the firm's internal resources.",C:"An opportunity to increase total market size.",D:"A threat: external and unfavourable"},
+    correct:"D",tag:"MC-GBUS-STRATEGY-DECISIONS",
+    scaffold:"SWOT separates internal factors the firm controls — strengths and weaknesses such as brand, skills, finance, capacity — from external factors it does not: opportunities and threats such as competitors, regulation, technology and economic conditions. The commonest error is classifying an external development as a weakness. SWOT is a summary tool: its value lies in the strategy drawn from it, not in the list itself.",
+    reforge:{stem:"A firm's over-reliance on one major customer is best recorded in a SWOT analysis as:",options:{A:"A weakness: internal and unfavourable",B:"A threat, because the customer is external.",C:"An opportunity to deepen the relationship.",D:"A strength, because sales are guaranteed."},correct:"A"}
+  },
+  {
+    id:"BUS-N1-21",stem:"A decision tree helps managers by:",
+    options:{A:"Quantifying expected values of options",B:"Removing all uncertainty from the decision.",C:"Guaranteeing the most profitable outcome occurs.",D:"Replacing the need for any market research."},
+    correct:"A",tag:"MC-GBUS-STRATEGY-DECISIONS",
+    scaffold:"A decision tree sets out options, chance events with estimated probabilities, and financial outcomes, then works backwards computing expected values: EV = Σ(probability × outcome), less the cost of the option. It forces explicit assumptions and comparison. Limitations: probabilities are estimates and often subjective, it ignores qualitative factors such as staff morale and reputation, and it can give false confidence in a single number.",
+    reforge:{stem:"An option has a 60% chance of £100,000 profit and a 40% chance of £50,000 loss. Its expected value is:",options:{A:"£50,000, taking the average of the two outcomes.",B:"£150,000, adding the two possible outcomes.",C:"£40,000, from £60,000 less £20,000",D:"£100,000, taking the most likely outcome."},correct:"C"}
+  },
+  {
+    id:"BUS-N1-22",stem:"Ansoff's matrix describes selling an existing product into a new market as:",
+    options:{A:"Market penetration within the current market.",B:"Product development for existing customers.",C:"Market development",D:"Diversification into unrelated activity."},
+    correct:"C",tag:"MC-GBUS-PRODUCT-GROWTH",
+    scaffold:"Ansoff's matrix by product and market: market penetration — existing product, existing market, lowest risk, achieved through promotion, loyalty schemes or price. Market development — existing product, new market, such as exporting or a new segment. Product development — new product, existing market. Diversification — new product, new market, the highest risk since neither is familiar, though it spreads risk across activities.",
+    reforge:{stem:"A UK bakery begins exporting its existing range to France. On Ansoff's matrix this is:",options:{A:"Diversification, since France is unfamiliar.",B:"Market development into a new market",C:"Product development for the same customers.",D:"Market penetration in the current market."},correct:"B"}
+  }
+]);
+busExpansion("BUS-2", [
+  {
+    id:"BUS-N2-01",stem:"Which calculation gives the contribution earned on each unit sold?",
+    options:{A:"Selling price less variable cost",B:"Selling price minus total fixed costs.",C:"Total revenue minus total costs.",D:"Fixed costs divided by units sold."},
+    correct:"A",tag:"MC-GBUS-PROFIT-BREAKEVEN",
+    scaffold:"Contribution per unit = selling price − variable cost per unit. Total contribution = contribution per unit × units sold, and this contributes first to fixed costs, then to profit. Profit = total contribution − fixed costs. Break-even output = fixed costs ÷ contribution per unit. Keeping contribution and profit distinct is essential: a product with positive contribution may still leave the firm loss-making if fixed costs are not covered.",
+    reforge:{stem:"A product sells for £30 with variable costs of £18. Fixed costs are £60,000. Break-even output is:",options:{A:"2,000 units, from £60,000 ÷ £30.",B:"3,333 units, from £60,000 ÷ £18.",C:"5,000 units, from £60,000 ÷ £12",D:"60,000 units, equal to the fixed costs."},correct:"C"}
+  },
+  {
+    id:"BUS-N2-02",stem:"The margin of safety measures the amount by which:",
+    options:{A:"Revenue exceeds total variable costs.",B:"Current output exceeds break-even output",C:"Fixed costs exceed contribution earned.",D:"Selling price exceeds the nearest competitor's."},
+    correct:"B",tag:"MC-GBUS-PROFIT-BREAKEVEN",
+    scaffold:"Margin of safety = current (or budgeted) output − break-even output, sometimes shown as a percentage of current output. It indicates how far sales can fall before losses begin, so a larger margin means lower risk. It can be widened by raising price, cutting variable costs, reducing fixed costs or increasing sales volume. Break-even analysis assumes costs and price are constant, which limits its use in volatile markets.",
+    reforge:{stem:"A key limitation of break-even analysis is its assumption that:",options:{A:"Fixed costs vary directly with output.",B:"All output produced is given away free.",C:"Contribution per unit is always negative.",D:"Selling price stays constant throughout"},correct:"D"}
+  },
+  {
+    id:"BUS-N2-03",stem:"A firm is profitable but runs out of cash. The most likely explanation is that:",
+    options:{A:"It has no fixed costs to cover each month.",B:"Its selling price is below variable cost.",C:"Customers pay long after sales are recorded",D:"It has recorded revenue it never actually earned."},
+    correct:"C",tag:"MC-GBUS-CASH-FINANCE",
+    scaffold:"Profit is revenue less costs over a period; cash flow is money actually entering and leaving. They diverge because credit sales are recorded as revenue before cash arrives, stock is paid for before it sells, capital purchases consume cash without appearing as an expense, and depreciation is a cost with no cash movement. Rapidly growing firms often fail through overtrading: profitable on paper but unable to fund working capital.",
+    reforge:{stem:"Overtrading occurs when a business:",options:{A:"Deliberately reduces its sales volume.",B:"Sells only to cash-paying customers.",C:"Holds excessive cash reserves in the bank.",D:"Expands beyond its working capital"},correct:"D"}
+  },
+  {
+    id:"BUS-N2-04",stem:"Improving a cash-flow forecast by extending supplier payment terms:",
+    options:{A:"Increases cash outflow in the current period.",B:"Delays outflows, straining suppliers",C:"Raises total profit for the financial year.",D:"Has no effect on the timing of any cash movement."},
+    correct:"B",tag:"MC-GBUS-CASH-FINANCE",
+    scaffold:"Cash flow can be improved by speeding inflows — chasing debtors, offering settlement discounts, factoring invoices, taking deposits — or delaying outflows through longer supplier credit and leasing rather than buying. Each has a cost: discounts reduce revenue, factoring charges a fee, and stretching suppliers can damage relationships or lose favourable terms. Note these timing measures change cash, not profit.",
+    reforge:{stem:"Debt factoring improves cash flow but reduces profit because the factor:",options:{A:"Charges a fee for advancing the money",B:"Refuses to collect from any late payers.",C:"Requires the firm to increase its prices.",D:"Delays payment until customers settle in full."},correct:"A"}
+  },
+  {
+    id:"BUS-N2-05",stem:"Retained profit as a source of finance has the advantage that it:",
+    options:{A:"Is available to every business regardless of trading history.",B:"Carries no interest and no loss of ownership",C:"Provides an unlimited amount of funding.",D:"Requires no approval from the company's owners."},
+    correct:"B",tag:"MC-GBUS-CASH-FINANCE",
+    scaffold:"Internal finance — retained profit, sale of assets, tighter working capital — is cheap and involves no interest or dilution, but is limited in scale and unavailable to new firms. External finance includes bank loans (interest, often secured), overdrafts (flexible, expensive, repayable on demand), share capital (no repayment but dilutes ownership and control), venture capital, leasing and trade credit. Choice depends on purpose, amount, cost, risk and control.",
+    reforge:{stem:"A firm needs finance for a machine it will use for ten years. The least appropriate source is:",options:{A:"A ten-year bank loan secured on the asset.",B:"An issue of new ordinary shares.",C:"A bank overdraft repayable on demand",D:"Retained profit accumulated over past years."},correct:"C"}
+  },
+  {
+    id:"BUS-N2-06",stem:"A firm's gross profit margin is calculated as:",
+    options:{A:"Operating profit divided by capital employed.",B:"Net profit divided by the number of shares.",C:"Gross profit divided by revenue, times 100",D:"Revenue divided by total costs, times 100."},
+    correct:"C",tag:"MC-GBUS-PROFIT-BREAKEVEN",
+    scaffold:"Gross profit = revenue − cost of sales; gross margin = gross profit ÷ revenue × 100, showing how efficiently the firm buys and produces. Operating profit deducts overheads; net profit deducts interest and tax. A falling gross margin with a stable net margin points to rising input or production costs; a stable gross margin with a falling net margin points to rising overheads, interest or tax. Margins are best judged against trend and industry norms.",
+    reforge:{stem:"A firm's gross margin is unchanged but its net margin has fallen. The most likely cause is:",options:{A:"An increase in the cost of raw materials.",B:"A rise in overheads or interest charges",C:"A fall in the selling price of its products.",D:"A reduction in the volume of goods sold."},correct:"B"}
+  },
+  {
+    id:"BUS-N2-07",stem:"A current ratio of 0.6:1 suggests that a business:",
+    options:{A:"Holds too much cash in low-return accounts.",B:"Is highly profitable relative to its competitors.",C:"May struggle to meet short-term liabilities",D:"Has no long-term borrowings outstanding."},
+    correct:"C",tag:"MC-GBUS-CASH-FINANCE",
+    scaffold:"Current ratio = current assets ÷ current liabilities, with roughly 1.5–2:1 often cited as comfortable, though the right level varies by sector. Below 1:1 means short-term debts exceed short-term assets, indicating possible liquidity difficulty. Far above 2:1 may mean cash or stock sitting idle. The acid test ratio excludes stock, since stock may not convert to cash quickly, and is the stricter measure for firms holding slow-moving inventory.",
+    reforge:{stem:"The acid test ratio differs from the current ratio because it excludes:",options:{A:"Trade receivables owed by customers.",B:"Cash held in the firm's bank account.",C:"All of the firm's current liabilities.",D:"Inventory, which may be slow to sell"},correct:"D"}
+  },
+  {
+    id:"BUS-N2-08",stem:"A high gearing ratio indicates that a firm is:",
+    options:{A:"Financed largely by long-term borrowing",B:"Holding an unusually large cash balance.",C:"Generating high profits relative to sales.",D:"Owned entirely by its original founders."},
+    correct:"A",tag:"MC-GBUS-CASH-FINANCE",
+    scaffold:"Gearing = non-current liabilities ÷ capital employed × 100; above roughly 50% is usually considered highly geared. High gearing means greater reliance on debt: interest must be paid regardless of trading, so profits and cash are vulnerable to rate rises and downturns, but owners keep control and returns are magnified in good years. Low gearing is safer but may mean the firm is missing growth opportunities.",
+    reforge:{stem:"A highly geared firm is most exposed to which external change?",options:{A:"A fall in the corporation tax rate.",B:"A rise in interest rates on its borrowing",C:"An increase in consumer disposable income.",D:"A strengthening of the domestic currency."},correct:"B"}
+  },
+  {
+    id:"BUS-N2-09",stem:"Payback period as an investment appraisal method measures:",
+    options:{A:"The total profit an investment earns over its life.",B:"The time taken to recover the initial outlay",C:"The present value of all future cash flows.",D:"The average annual return as a percentage."},
+    correct:"B",tag:"MC-GBUS-STRATEGY-DECISIONS",
+    scaffold:"Payback = time to recover the initial cost, favouring liquidity and quick returns; simple to calculate but it ignores all cash flows after payback and the time value of money. Average rate of return expresses average annual profit as a percentage of the investment, capturing the whole life but still ignoring timing. Net present value discounts future flows to today's value, which is the most complete but depends on the discount rate chosen.",
+    reforge:{stem:"Net present value is considered superior to payback because it:",options:{A:"Requires no estimate of future cash flows.",B:"Always produces a positive result.",C:"Accounts for the time value of money",D:"Can be calculated without a discount rate."},correct:"C"}
+  },
+  {
+    id:"BUS-N2-10",stem:"A budget variance is described as adverse when:",
+    options:{A:"Actual revenue exceeds the budgeted figure.",B:"The budget was set at the start of the year.",C:"Actual and budgeted figures are identical.",D:"Actual costs are higher than budgeted"},
+    correct:"D",tag:"MC-GBUS-PROFIT-BREAKEVEN",
+    scaffold:"A favourable variance improves profit: revenue above budget or costs below it. An adverse variance worsens profit: revenue below budget or costs above it. Note the direction matters more than the sign — higher costs are adverse, higher revenue is favourable. Variance analysis directs attention to where actual performance diverges from plan, but the cause must then be investigated: an adverse labour variance might reflect wage rises, inefficiency, or an over-optimistic budget.",
+    reforge:{stem:"Zero-based budgeting differs from historical budgeting because each cost must be:",options:{A:"Justified afresh, not from last year",B:"Set at exactly the previous year's level.",C:"Increased in line with the rate of inflation.",D:"Approved by the firm's external auditors."},correct:"A"}
+  },
+  {
+    id:"BUS-N2-11",stem:"Delegated budgets are most likely to improve motivation because managers:",
+    options:{A:"Are no longer accountable for their spending.",B:"Have authority over spending in their own area",C:"Can ignore the firm's overall corporate objectives.",D:"Face no consequences for adverse variances."},
+    correct:"B",tag:"MC-GBUS-STRATEGY-DECISIONS",
+    scaffold:"Delegating budgets gives junior managers authority over their own area, which can motivate through responsibility and produce better-informed decisions from people closest to the work. Risks: managers may pursue departmental rather than corporate goals, budgets may be inflated to create slack, and weak financial skills can lead to poor control. Effective delegation therefore needs training, clear limits and review against corporate objectives.",
+    reforge:{stem:"A risk of delegating budgets is that departmental managers may:",options:{A:"Lose all interest in controlling their costs.",B:"Be unable to spend any of the allocation.",C:"Build in slack by overstating their needs",D:"Automatically reduce their own headcount."},correct:"C"}
+  },
+  {
+    id:"BUS-N2-12",stem:"A firm's promotional mix refers to the combination of:",
+    options:{A:"Product, price, place and promotion decisions.",B:"Fixed and variable costs in the marketing budget.",C:"Methods used to communicate with customers",D:"Distribution channels reaching the final consumer."},
+    correct:"C",tag:"MC-GBUS-PRICING",
+    scaffold:"The promotional mix covers advertising, sales promotion, personal selling, public relations, direct marketing and digital channels. The choice depends on the target audience, budget, product type and stage of the life cycle: personal selling suits complex high-value industrial goods, mass advertising suits fast-moving consumer goods. Do not confuse the promotional mix with the marketing mix, which is the wider 4Ps or 7Ps.",
+    reforge:{stem:"A firm selling complex machinery to a small number of industrial buyers should emphasise:",options:{A:"National television advertising campaigns.",B:"Personal selling by a technical sales team",C:"Money-off coupons in consumer magazines.",D:"Social media influencer partnerships."},correct:"B"}
+  },
+  {
+    id:"BUS-N2-13",stem:"Distribution through a wholesaler rather than direct to retailers usually means the producer:",
+    options:{A:"Retains complete control of the final selling price.",B:"Reaches more small retailers at lower cost",C:"Earns a higher margin on each unit sold.",D:"Deals directly with every end consumer."},
+    correct:"B",tag:"MC-GBUS-OPERATIONS",
+    scaffold:"Longer channels — producer to wholesaler to retailer to consumer — reach many small outlets efficiently, with the wholesaler breaking bulk and holding stock, but each intermediary takes a margin and the producer loses control over presentation and price. Direct channels, including e-commerce, protect margin and customer relationship but require the producer to handle storage, fulfilment and marketing itself.",
+    reforge:{stem:"A producer switching to selling direct online gains mainly:",options:{A:"Reduced responsibility for order fulfilment.",B:"Guaranteed shelf space in major retailers.",C:"Lower spending on marketing activity.",D:"A higher margin and direct customer data"},correct:"D"}
+  },
+  {
+    id:"BUS-N2-14",stem:"A strong brand allows a business to:",
+    options:{A:"Avoid competition law and consumer regulation.",B:"Eliminate the need for any market research.",C:"Charge a premium and build repeat custom",D:"Guarantee its costs will never increase."},
+    correct:"C",tag:"MC-GBUS-PRODUCT-GROWTH",
+    scaffold:"Brands create recognition, trust and emotional association, supporting premium pricing, repeat purchase, easier launch of new products and stronger bargaining power with retailers. Building one requires sustained investment in quality, consistency and promotion, and the value can be destroyed quickly by a quality or ethical failure. Brand strength typically makes demand less price elastic, since substitutes feel less acceptable to loyal buyers.",
+    reforge:{stem:"Successful branding usually makes demand for a product:",options:{A:"Less price elastic, since buyers are loyal",B:"More price elastic, since buyers compare more.",C:"Perfectly elastic at the market price.",D:"Completely unrelated to the price charged."},correct:"A"}
+  },
+  {
+    id:"BUS-N2-15",stem:"Digital marketing offers a measurable advantage over traditional advertising because it:",
+    options:{A:"Removes the need to define a target market.",B:"Guarantees a higher conversion rate.",C:"Tracks response and targets behaviour",D:"Costs nothing to run once set up."},
+    correct:"C",tag:"MC-GBUS-MARKET-RESEARCH",
+    scaffold:"Digital channels allow precise targeting by demographics, interests and past behaviour, real-time measurement of clicks and conversions, rapid adjustment of campaigns, and lower entry cost than broadcast media. Limits: ad fatigue and blockers, privacy regulation restricting tracking, reliance on platform algorithms the firm does not control, and reputational risk from public complaints spreading quickly.",
+    reforge:{stem:"A constraint on behavioural targeting in digital marketing is:",options:{A:"The impossibility of measuring click rates.",B:"Data protection law limiting use of personal data",C:"The high cost relative to television advertising.",D:"The inability to change a campaign once live."},correct:"B"}
+  },
+  {
+    id:"BUS-N2-16",stem:"A firm holding buffer stock is primarily protecting itself against:",
+    options:{A:"Unexpected demand or delivery delays",B:"An increase in its long-term interest costs.",C:"A fall in the market value of its shares.",D:"Changes in corporation tax legislation."},
+    correct:"A",tag:"MC-GBUS-OPERATIONS",
+    scaffold:"Buffer stock is the minimum level held to absorb unexpected demand or late supplier delivery, preventing lost sales and production stoppages. It ties up cash, occupies storage and risks obsolescence. Just-in-time minimises stock, cutting holding costs and freeing capital, but demands reliable suppliers and leaves no cushion against disruption. The choice trades holding cost against the cost and likelihood of running out.",
+    reforge:{stem:"A firm adopting just-in-time stock control becomes more vulnerable to:",options:{A:"Rising warehouse and storage costs.",B:"Stock becoming obsolete before sale.",C:"Cash being tied up in unsold inventory.",D:"Disruption in its supply chain"},correct:"D"}
+  },
+  {
+    id:"BUS-N2-17",stem:"Capacity utilisation is calculated as:",
+    options:{A:"Maximum output divided by current output.",B:"Current output over maximum output",C:"Total revenue divided by total fixed costs.",D:"Units produced divided by employees."},
+    correct:"B",tag:"MC-GBUS-OPERATIONS",
+    scaffold:"Capacity utilisation = current output ÷ maximum possible output × 100. High utilisation spreads fixed costs over more units, lowering unit cost, but leaves no slack for extra orders, machine maintenance or staff pressure. Low utilisation means idle capacity and high unit fixed costs. Around 90% is often seen as a working optimum. Capacity can be flexed through subcontracting, temporary staff, overtime or rationalisation.",
+    reforge:{stem:"Operating at 98% capacity for a sustained period risks:",options:{A:"Fixed costs per unit rising sharply.",B:"An inability to sell the output produced.",C:"No slack for maintenance or extra orders",D:"A permanent fall in labour productivity."},correct:"C"}
+  },
+  {
+    id:"BUS-N2-18",stem:"Economies of scale cause a firm's:",
+    options:{A:"Total costs to fall as output increases.",B:"Fixed costs to become variable costs.",C:"Selling price to rise with higher volume.",D:"Average cost per unit to fall"},
+    correct:"D",tag:"MC-GBUS-OPERATIONS",
+    scaffold:"Internal economies include purchasing (bulk discounts), technical (larger, more efficient plant), managerial (specialist staff), marketing (fixed campaign cost spread wider) and financial (cheaper borrowing). External economies arise from the industry's growth in an area. Diseconomies follow from excessive size: communication breakdown, coordination difficulty, weaker motivation. Note total cost still rises with output; it is average cost that falls.",
+    reforge:{stem:"Diseconomies of scale most commonly arise from:",options:{A:"Bulk-buying discounts from major suppliers.",B:"Poor communication as the firm grows",C:"Spreading marketing costs over more units.",D:"Access to cheaper long-term borrowing."},correct:"B"}
+  },
+  {
+    id:"BUS-N2-19",stem:"Lean production aims principally to:",
+    options:{A:"Maximise stock levels held at every stage.",B:"Increase the number of quality inspectors.",C:"Reduce waste across the production process",D:"Lengthen the product development cycle."},
+    correct:"C",tag:"MC-GBUS-OPERATIONS",
+    scaffold:"Lean production minimises waste of time, materials, movement, defects and stock. Techniques include just-in-time, kaizen (continuous small improvements suggested by staff), cell production, and total quality management, which builds quality into the process rather than inspecting it at the end. Benefits are lower cost, better quality and faster response; risks are vulnerability to disruption and the cultural change required of the workforce.",
+    reforge:{stem:"Kaizen differs from a one-off efficiency programme because it relies on:",options:{A:"Continuous small staff improvements",B:"A single large investment in new machinery.",C:"External consultants redesigning the factory.",D:"Inspecting finished goods more thoroughly."},correct:"A"}
+  },
+  {
+    id:"BUS-N2-20",stem:"Total quality management differs from traditional quality control because it:",
+    options:{A:"Inspects only a random sample of finished goods.",B:"Applies solely to the firm's suppliers.",C:"Relies on a separate quality department.",D:"Makes every employee responsible for quality"},
+    correct:"D",tag:"MC-GBUS-OPERATIONS",
+    scaffold:"Quality control inspects output at the end and rejects or reworks defects, so waste has already occurred. Quality assurance builds checks into each stage. Total quality management goes further, making quality every employee's responsibility with a culture of getting it right first time and treating the next stage as an internal customer. TQM reduces waste and rework but requires training, commitment and time before benefits appear.",
+    reforge:{stem:"A benefit of preventing defects rather than inspecting for them is that the firm:",options:{A:"Needs no staff training in quality methods.",B:"Avoids the cost of rework and scrapped output",C:"Can raise its selling price automatically.",D:"No longer needs to monitor customer feedback."},correct:"B"}
+  },
+  {
+    id:"BUS-N2-21",stem:"A firm's unit cost will fall if:",
+    options:{A:"Output rises while fixed costs stay the same",B:"Fixed costs rise faster than output does.",C:"Variable cost per unit increases sharply.",D:"Output falls while fixed costs are unchanged."},
+    correct:"A",tag:"MC-GBUS-PROFIT-BREAKEVEN",
+    scaffold:"Unit cost = total cost ÷ output. Because fixed costs are spread over more units, raising output lowers unit cost even when variable cost per unit is constant — the basis of economies of scale. Unit cost also falls if variable cost per unit is reduced through cheaper inputs, better productivity or less waste. Lower unit cost supports either wider margins or more competitive pricing.",
+    reforge:{stem:"Fixed costs are £40,000. At 4,000 units the fixed cost per unit is £10. At 8,000 units it becomes:",options:{A:"£20, since costs double with output.",B:"£10, since fixed costs never change.",C:"£5, spread over more units",D:"£40,000, unchanged in total per unit."},correct:"C"}
+  },
+  {
+    id:"BUS-N2-22",stem:"A firm's working capital is calculated as:",
+    options:{A:"Total assets minus total liabilities.",B:"Non-current assets minus depreciation.",C:"Share capital plus retained profit.",D:"Current assets less liabilities"},
+    correct:"D",tag:"MC-GBUS-CASH-FINANCE",
+    scaffold:"Working capital = current assets − current liabilities, funding day-to-day operations: paying suppliers and wages while waiting for customers to pay. Too little risks being unable to meet obligations even while profitable; too much means cash, stock or receivables sitting idle instead of earning a return. It is managed by controlling inventory, chasing receivables promptly and negotiating supplier terms.",
+    reforge:{stem:"Reducing the time customers take to pay would most directly improve a firm's:",options:{A:"Gross profit margin on each sale.",B:"Working capital and cash position",C:"Gearing ratio and long-term debt.",D:"Capacity utilisation in the factory."},correct:"B"}
+  }
+]);
+busExpansion("BUS-3", [
+  {
+    id:"BUS-N3-01",stem:"A rise in interest rates is most likely to reduce demand for a firm selling:",
+    options:{A:"Basic groceries bought weekly by households.",B:"Products typically bought on credit",C:"Goods sold only for immediate cash payment.",D:"Services with no capital cost to the buyer."},
+    correct:"B",tag:"MC-GBUS-INTEREST-CURRENCY",
+    scaffold:"Higher interest rates raise borrowing costs, so demand falls most for big-ticket items usually bought on credit — cars, furniture, housing. Households with mortgages also have less disposable income, and firms face higher costs on existing variable-rate debt and may postpone investment. Savers gain. Highly geared firms and those selling income-elastic goods are hit hardest; sellers of cheap necessities are relatively insulated.",
+    reforge:{stem:"Besides reducing consumer demand, a rise in interest rates directly affects a highly geared firm by:",options:{A:"Reducing the corporation tax it must pay.",B:"Lowering the wages it pays employees.",C:"Increasing its interest costs",D:"Raising the market value of its shares."},correct:"C"}
+  },
+  {
+    id:"BUS-N3-02",stem:"A UK exporter benefits most when the pound:",
+    options:{A:"Weakens, making its goods cheaper abroad",B:"Strengthens against all other currencies.",C:"Is fixed permanently against the euro.",D:"Rises sharply against the US dollar."},
+    correct:"A",tag:"MC-GBUS-INTEREST-CURRENCY",
+    scaffold:"Use SPICED: Strong Pound, Imports Cheaper, Exports Dearer. A weaker pound makes UK exports cheaper in foreign currency, boosting competitiveness and export volumes, but makes imported raw materials and components dearer, squeezing margins for firms reliant on them. A stronger pound reverses both. The net effect depends on how much a firm exports versus imports, and on the price elasticity of its products.",
+    reforge:{stem:"A UK manufacturer imports most of its components and sells only within the UK. A weaker pound will:",options:{A:"Leave its costs entirely unaffected.",B:"Reduce the price of its imported components.",C:"Increase its export revenue substantially.",D:"Raise its input costs, squeezing margins"},correct:"D"}
+  },
+  {
+    id:"BUS-N3-03",stem:"During a recession, a firm selling luxury goods should expect:",
+    options:{A:"Demand to rise as consumers trade up.",B:"Demand to fall as incomes are squeezed",C:"Demand to remain completely unchanged.",D:"Its costs to fall in proportion to demand."},
+    correct:"B",tag:"MC-GBUS-INTEREST-CURRENCY",
+    scaffold:"A recession means falling real GDP, rising unemployment and lower confidence, so income-elastic goods suffer most while inferior goods and cheap necessities may gain. Firms respond by cutting costs, delaying investment, promoting value ranges or targeting more resilient segments. The business cycle — boom, downturn, recession, recovery — shapes which strategies fit, and firms with low gearing and strong cash reserves cope better.",
+    reforge:{stem:"Which response to a recession is most consistent with maintaining long-term competitiveness?",options:{A:"Cutting all research and development spending.",B:"Reducing quality to lower the selling price.",C:"Targeting more resilient market segments",D:"Ceasing all staff training immediately."},correct:"C"}
+  },
+  {
+    id:"BUS-N3-04",stem:"An increase in the National Living Wage most directly raises a firm's:",
+    options:{A:"Interest payments on outstanding loans.",B:"Corporation tax liability for the year.",C:"Spending on imported raw materials.",D:"Labour costs in low-wage sectors"},
+    correct:"D",tag:"MC-GBUS-ETHICS-RISK",
+    scaffold:"A higher minimum wage raises costs most in labour-intensive, low-wage sectors such as retail, hospitality and care. Firms may respond by raising prices, accepting lower margins, investing in automation, reducing hours or improving productivity. There can be offsetting benefits: lower turnover, better motivation and higher spending power among low-paid consumers. The net effect depends on labour intensity and the ability to pass costs on.",
+    reforge:{stem:"A labour-intensive firm facing a large minimum wage rise is most likely to consider:",options:{A:"Investing in automation",B:"Increasing the number of low-paid staff.",C:"Reducing the prices charged to customers.",D:"Extending credit terms to its suppliers."},correct:"A"}
+  },
+  {
+    id:"BUS-N3-05",stem:"Competition law in the UK primarily aims to prevent:",
+    options:{A:"Firms from making any profit at all.",B:"All mergers between competing businesses.",C:"Anti-competitive practices",D:"Businesses from advertising to consumers."},
+    correct:"C",tag:"MC-GBUS-ETHICS-RISK",
+    scaffold:"Competition authorities act against cartels and price fixing, abuse of a dominant market position, predatory pricing and mergers that would substantially reduce competition. The purpose is to protect consumers through choice, fair prices and innovation. Firms face fines, forced divestment and reputational damage. Not all mergers are blocked — only those likely to harm competition in the relevant market.",
+    reforge:{stem:"Two rival firms secretly agree to keep prices high. This is:",options:{A:"Legitimate competitive benchmarking.",B:"A cartel, which is unlawful",C:"An example of price discrimination.",D:"A form of penetration pricing."},correct:"B"}
+  },
+  {
+    id:"BUS-N3-06",stem:"Consumer protection legislation requires that goods sold are:",
+    options:{A:"Sold at the lowest price in the market.",B:"Manufactured entirely within the UK.",C:"Available with unlimited free replacements.",D:"Of satisfactory quality and as described"},
+    correct:"D",tag:"MC-GBUS-ETHICS-RISK",
+    scaffold:"Consumer law requires goods to be of satisfactory quality, fit for purpose and as described, with remedies of repair, replacement or refund. Related duties cover accurate advertising, clear pricing and cancellation rights on distance selling. Compliance raises costs through quality systems and returns handling, but protects reputation; breaches bring fines, compensation and lasting damage to trust, which is usually the larger cost.",
+    reforge:{stem:"The main business case for exceeding minimum legal standards on product safety is:",options:{A:"It removes the need to hold any insurance.",B:"Regulators will exempt the firm from inspection.",C:"Protecting reputation, avoiding recalls",D:"Competitors are legally required to follow suit."},correct:"C"}
+  },
+  {
+    id:"BUS-N3-07",stem:"A firm pursuing a cost leadership strategy competes primarily by:",
+    options:{A:"Charging the highest price in the market.",B:"Achieving the lowest unit costs",C:"Serving a very small specialist niche only.",D:"Offering the widest possible product range."},
+    correct:"B",tag:"MC-GBUS-STRATEGY-DECISIONS",
+    scaffold:"Porter's generic strategies: cost leadership — lowest cost base, allowing competitive prices or wider margins, usually needing scale and tight efficiency. Differentiation — a distinctive offer justifying a premium, through brand, quality, design or service. Focus — either cost or differentiation applied to a narrow segment. Porter argued that firms attempting several at once risk being 'stuck in the middle', with no clear advantage.",
+    reforge:{stem:"A firm with mid-range prices, average quality and no distinctive appeal is described by Porter as:",options:{A:"Pursuing a successful focus strategy.",B:"A clear differentiator in its market.",C:"An established cost leader.",D:"Stuck in the middle"},correct:"D"}
+  },
+  {
+    id:"BUS-N3-08",stem:"In Porter's five forces, the bargaining power of suppliers is greatest when:",
+    options:{A:"Few suppliers exist and switching is costly",B:"Many suppliers compete for the firm's business.",C:"The input is a standard, widely available commodity.",D:"The buying firm can easily produce the input itself."},
+    correct:"A",tag:"MC-GBUS-STRATEGY-DECISIONS",
+    scaffold:"Porter's five forces assess industry attractiveness: supplier power, buyer power, threat of new entrants, threat of substitutes, and competitive rivalry. Supplier power rises where suppliers are few, inputs are differentiated or switching costs are high. Buyer power rises where buyers are large, concentrated or face low switching costs. High forces overall compress margins, which shapes whether to enter, invest in or exit a market.",
+    reforge:{stem:"High barriers to entry in an industry most directly reduce:",options:{A:"The bargaining power of existing buyers.",B:"The threat of new competitors entering",C:"Rivalry between established firms.",D:"The availability of substitute products."},correct:"B"}
+  },
+  {
+    id:"BUS-N3-09",stem:"Backward vertical integration involves a firm acquiring:",
+    options:{A:"A direct competitor at the same stage.",B:"An unrelated business in another industry.",C:"A supplier earlier in its supply chain",D:"A retailer that sells its finished goods."},
+    correct:"C",tag:"MC-GBUS-STRATEGY-DECISIONS",
+    scaffold:"Backward vertical integration acquires a supplier, securing input supply, quality and margin. Forward integration acquires a distributor or retailer, capturing the route to market and customer relationship. Horizontal integration acquires a competitor at the same stage, gaining share and scale. Conglomerate integration acquires an unrelated business, spreading risk but often lacking synergy and stretching management expertise.",
+    reforge:{stem:"A coffee chain buys the plantations that grow its beans. The main benefit sought is:",options:{A:"Entry into an entirely unrelated market.",B:"Increased share of the retail coffee market.",C:"Access to a wider range of customers.",D:"Security of supply and control of quality"},correct:"D"}
+  },
+  {
+    id:"BUS-N3-10",stem:"Many mergers fail to deliver expected benefits mainly because of:",
+    options:{A:"An automatic loss of limited liability status.",B:"A legal requirement to reduce total output.",C:"Incompatible cultures and poor integration",D:"The impossibility of achieving any synergies."},
+    correct:"C",tag:"MC-GBUS-STRATEGY-DECISIONS",
+    scaffold:"Expected synergies — cost savings, cross-selling, shared expertise — frequently fail to appear because cultures clash, key staff leave, systems prove hard to integrate, management attention is diverted, and the acquirer overpays after optimistic forecasts. Successful integration needs early cultural due diligence, clear communication, retention of key people and realistic timescales. Organic growth is slower but avoids these risks.",
+    reforge:{stem:"Compared with acquisition, organic growth typically offers:",options:{A:"Faster access to new markets and capacity.",B:"Slower but lower-risk expansion",C:"Immediate elimination of a competitor.",D:"Instant economies of scale on completion."},correct:"B"}
+  },
+  {
+    id:"BUS-N3-11",stem:"A business continuity plan is designed to ensure a firm can:",
+    options:{A:"Avoid paying insurance premiums on its assets.",B:"Guarantee that no disruption ever occurs.",C:"Eliminate all risk from its operations.",D:"Keep operating, or recover quickly"},
+    correct:"D",tag:"MC-GBUS-ETHICS-RISK",
+    scaffold:"Continuity planning identifies critical activities and the threats to them — fire, flood, cyber attack, supplier failure, key staff loss — then sets out preventive measures, backup arrangements, recovery priorities and communication. It cannot prevent every disruption; the aim is to limit downtime and damage. Related tools include risk assessment by likelihood and impact, insurance to transfer risk, and diversifying suppliers to reduce dependence.",
+    reforge:{stem:"Sourcing a critical component from two suppliers rather than one is an example of:",options:{A:"Reducing risk by avoiding dependence",B:"Transferring the risk to an insurer.",C:"Accepting the risk without any action.",D:"Eliminating the risk of disruption entirely."},correct:"A"}
+  },
+  {
+    id:"BUS-N3-12",stem:"A firm's corporate culture is best described as:",
+    options:{A:"The legal structure under which it is registered.",B:"The shared values and behaviours of its people",C:"The written contracts held with its employees.",D:"The formal organisational chart it publishes."},
+    correct:"B",tag:"MC-GBUS-STRATEGY-DECISIONS",
+    scaffold:"Culture is the shared values, attitudes and accepted behaviours that shape how work is actually done — 'the way we do things here'. Handy's types include power, role, task and person cultures. Culture affects motivation, risk-taking, innovation and how change is received; it is slow to shift because it rests on habits and beliefs rather than rules, which is why culture clash so often undermines mergers and restructuring.",
+    reforge:{stem:"Changing an established corporate culture is difficult mainly because it:",options:{A:"Requires approval from the government regulator.",B:"Is fixed by the company's legal constitution.",C:"Rests on ingrained habits and shared beliefs",D:"Can only be altered by recruiting new directors."},correct:"C"}
+  },
+  {
+    id:"BUS-N3-13",stem:"Kotter and Schlesinger identify a common cause of resistance to change as:",
+    options:{A:"Excessive consultation with the workforce.",B:"Employees fully understanding the reasons.",C:"Managers communicating the plan too clearly.",D:"Fear of losing status, security or income"},
+    correct:"D",tag:"MC-GBUS-STRATEGY-DECISIONS",
+    scaffold:"Resistance arises from self-interest, misunderstanding, low tolerance of change and genuine disagreement about its merits. Kotter and Schlesinger's responses range from education and communication, and participation, through facilitation and negotiation, to manipulation and coercion. The cooperative approaches take longer but produce more durable commitment; coercion is fast but breeds resentment and often fails once attention moves elsewhere.",
+    reforge:{stem:"Which approach to overcoming resistance is likely to produce the most durable commitment?",options:{A:"Imposing the change by management authority.",B:"Involving employees in planning the change",C:"Announcing the change without explanation.",D:"Offering a one-off payment to accept it."},correct:"B"}
+  },
+  {
+    id:"BUS-N3-14",stem:"A firm becoming a flexible organisation is most likely to increase its use of:",
+    options:{A:"Permanent full-time contracts for all staff.",B:"A single rigid production process.",C:"Temporary, part-time and outsourced labour",D:"Long-term fixed supplier agreements only."},
+    correct:"C",tag:"MC-GBUS-OPERATIONS",
+    scaffold:"Flexibility can be numerical (varying headcount through temporary, part-time and agency staff), functional (multi-skilled staff moving between roles) or financial (performance-related pay). It lets a firm match capacity to fluctuating demand and control fixed costs, but can reduce job security, weaken commitment and loyalty, raise training needs, and risk losing accumulated expertise if too much work sits outside the permanent workforce.",
+    reforge:{stem:"A drawback of relying heavily on temporary staff is that the firm may experience:",options:{A:"Higher fixed costs during quiet periods.",B:"Reduced ability to vary capacity.",C:"An inability to recruit at short notice.",D:"Weaker commitment and loss of expertise"},correct:"D"}
+  },
+  {
+    id:"BUS-N3-15",stem:"A firm's break-even output rises when:",
+    options:{A:"Fixed costs rise, contribution flat",B:"Contribution per unit rises sharply.",C:"Variable cost per unit is reduced.",D:"Selling price is increased significantly."},
+    correct:"A",tag:"MC-GBUS-PROFIT-BREAKEVEN",
+    scaffold:"Break-even output = fixed costs ÷ contribution per unit. It rises when fixed costs increase or when contribution falls, whether from a lower selling price or higher variable cost. It falls when fixed costs are cut, price is raised or variable costs are reduced. Reading this relationship correctly is what most break-even questions test: identify which term has moved and in which direction.",
+    reforge:{stem:"A firm raises its selling price with all costs unchanged. Its break-even output will:",options:{A:"Rise, because revenue per unit is higher.",B:"Fall, because contribution per unit is higher",C:"Stay the same, since fixed costs are unchanged.",D:"Become impossible to calculate."},correct:"B"}
+  },
+  {
+    id:"BUS-N3-16",stem:"Research and development spending is best described as an investment because it:",
+    options:{A:"Guarantees a profitable new product will result.",B:"Is treated as a variable cost of production.",C:"Incurs cost now for uncertain future returns",D:"Is fully recovered within the same financial year."},
+    correct:"C",tag:"MC-GBUS-PRODUCT-GROWTH",
+    scaffold:"R&D consumes cash now against uncertain future benefit, so it pressures short-term profit while underpinning long-term competitiveness. Firms in fast-moving sectors such as pharmaceuticals and technology must spend heavily or fall behind; most projects fail, and returns depend on protecting the outcome through patents. Cutting R&D flatters this year's profit and is a common short-termism trap that weakens the firm later.",
+    reforge:{stem:"A patent supports a firm's return on research spending by:",options:{A:"Guaranteeing demand for the new product.",B:"Reducing the cost of the research itself.",C:"Removing the need to market the product.",D:"Preventing rivals copying it"},correct:"D"}
+  },
+  {
+    id:"BUS-N3-17",stem:"Short-termism in a listed company is usually driven by:",
+    options:{A:"Pressure to deliver quick results to shareholders",B:"The absence of any published financial reporting.",C:"A legal requirement to reinvest all profits.",D:"Long-term incentive schemes for directors."},
+    correct:"A",tag:"MC-GBUS-OWNERSHIP-STAKEHOLDERS",
+    scaffold:"Quarterly reporting and share-price sensitivity push managers toward decisions that flatter near-term figures — cutting R&D, training or maintenance, deferring investment, or pursuing buybacks — at the expense of long-term capability. Counterweights include long-term incentive plans, patient or family ownership, private ownership away from public markets, and clear communication of strategy so investors judge progress on the right measures.",
+    reforge:{stem:"Which ownership structure is generally least exposed to short-term market pressure?",options:{A:"A listed public limited company.",B:"A company with widely dispersed institutional shareholders.",C:"A private family-owned business",D:"A firm preparing for a stock market flotation."},correct:"C"}
+  },
+  {
+    id:"BUS-N3-18",stem:"A firm calculating its return on capital employed is measuring:",
+    options:{A:"Cash generated from day-to-day operations.",B:"Operating profit over capital employed",C:"The proportion of finance raised through debt.",D:"Revenue growth compared with the previous year."},
+    correct:"B",tag:"MC-GBUS-PROFIT-BREAKEVEN",
+    scaffold:"ROCE = operating profit ÷ capital employed × 100, showing how efficiently the finance invested in the business generates operating returns. It is the headline efficiency measure for comparing firms of different sizes and judging whether returns exceed the cost of capital. It should be read alongside margins, liquidity and gearing, and compared against trend and industry norms rather than a universal benchmark.",
+    reforge:{stem:"A firm's ROCE falls while its operating profit is unchanged. This implies that:",options:{A:"Its selling prices must have fallen.",B:"Its gross margin has necessarily declined.",C:"Capital employed has increased",D:"Its liquidity position has improved."},correct:"C"}
+  },
+  {
+    id:"BUS-N3-19",stem:"A pressure group campaigning against a firm's environmental record is most likely to affect the firm through:",
+    options:{A:"A direct legal power to close its factories.",B:"Setting the rate of corporation tax it pays.",C:"Control over the firm's dividend policy.",D:"Reputational damage influencing consumers"},
+    correct:"D",tag:"MC-GBUS-ETHICS-RISK",
+    scaffold:"Pressure groups lack formal authority but exert influence through publicity, consumer boycotts, lobbying for regulation, shareholder activism and media coverage. Their impact depends on how visible the brand is, how much consumers care, and how quickly the issue spreads. Firms respond by improving practice, engaging with the group, or reporting transparently — usually cheaper than defending a sustained campaign.",
+    reforge:{stem:"The most sustainable response to credible pressure group criticism is usually to:",options:{A:"Address the practice being criticised",B:"Increase advertising spending to drown it out.",C:"Threaten legal action against the campaigners.",D:"Ignore the campaign until it subsides."},correct:"A"}
+  },
+  {
+    id:"BUS-N3-20",stem:"A firm adopting an ethical sourcing policy is most likely to face:",
+    options:{A:"Lower input costs and higher volumes.",B:"Higher costs but stronger brand trust",C:"Exemption from consumer protection law.",D:"A legal guarantee of increased sales."},
+    correct:"B",tag:"MC-GBUS-ETHICS-RISK",
+    scaffold:"Ethical sourcing — fair wages, safe conditions, environmental standards, no child labour — typically raises input costs and narrows the supplier pool, while requiring auditing. Benefits include reduced reputational and legal risk, access to ethically minded customers, better staff retention and more resilient supplier relationships. Whether it pays depends on whether the firm's customers value it enough to accept the price.",
+    reforge:{stem:"The business case for ethical sourcing is strongest when a firm's customers are:",options:{A:"Buying purely on the lowest available price.",B:"Unaware of where the products originate.",C:"Willing to pay more for responsible sourcing",D:"Buying an undifferentiated commodity product."},correct:"C"}
+  },
+  {
+    id:"BUS-N3-21",stem:"Automation of a production process is most likely to raise:",
+    options:{A:"Fixed costs, but lower labour cost",B:"Variable costs per unit produced.",C:"The number of production employees needed.",D:"The firm's break-even output permanently."},
+    correct:"A",tag:"MC-GBUS-OPERATIONS",
+    scaffold:"Automation requires capital investment, raising fixed costs and depreciation, while cutting labour cost per unit and often improving consistency and speed. Break-even output usually rises initially because fixed costs are higher, so automation pays only at sufficient volume. Other consequences include redundancy costs and morale effects, a need for different technical skills, and reduced flexibility if the equipment is highly specialised.",
+    reforge:{stem:"Automation is least likely to be justified for a firm that:",options:{A:"Produces very high volumes of a standard item.",B:"Faces rapidly rising wage costs.",C:"Requires highly consistent product quality.",D:"Produces small batches of varied bespoke items"},correct:"D"}
+  },
+  {
+    id:"BUS-N3-22",stem:"Critical path analysis helps a project manager identify:",
+    options:{A:"The total profit the project will generate.",B:"The cheapest supplier for each material.",C:"Activities that cannot be delayed at all",D:"The number of employees the firm should recruit."},
+    correct:"C",tag:"MC-GBUS-OPERATIONS",
+    scaffold:"Critical path analysis maps activities, their durations and dependencies, giving the earliest start and latest finish times. The critical path is the longest sequence, with zero float, so any delay there delays the whole project. Float on other activities shows where slack exists and resources can be moved from. Limits: durations are estimates, the network needs updating as conditions change, and it says nothing about cost or quality.",
+    reforge:{stem:"An activity with two days of float means it can be delayed by two days without:",options:{A:"Requiring any additional resources.",B:"Delaying the project's completion date",C:"Affecting the quality of the work done.",D:"Increasing the total cost of the project."},correct:"B"}
+  }
+]);
+busExpansion("BUS-4", [
+  {
+    id:"BUS-N4-01",stem:"Globalisation has increased trade partly because of:",
+    options:{A:"Rising tariff barriers between major economies.",B:"Falling transport and communication costs",C:"A worldwide decline in containerised shipping.",D:"Governments restricting foreign investment."},
+    correct:"B",tag:"MC-GBUS-GLOBAL-TRADE",
+    scaffold:"Drivers of globalisation include containerisation and cheaper transport, digital communication, trade liberalisation through the WTO and trade blocs, deregulation of capital movements, and the growth of multinationals. Consequences: larger markets, access to cheaper inputs, greater competition, and interdependence that transmits shocks quickly. Criticisms centre on labour standards, environmental cost and uneven distribution of gains.",
+    reforge:{stem:"A consequence of greater global interdependence is that a firm becomes more exposed to:",options:{A:"Domestic competition only.",B:"Changes in its local council's policy.",C:"Economic shocks originating overseas",D:"Reduced choice of potential suppliers."},correct:"C"}
+  },
+  {
+    id:"BUS-N4-02",stem:"A tariff imposed on imported goods is:",
+    options:{A:"A tax that raises the price of imports",B:"A physical limit on the quantity imported.",C:"A subsidy paid to domestic producers.",D:"A standard that imported goods must meet."},
+    correct:"A",tag:"MC-GBUS-GLOBAL-TRADE",
+    scaffold:"Protectionist measures: tariffs are taxes raising import prices; quotas physically limit quantities; subsidies lower domestic producers' costs; and non-tariff barriers use standards, licensing and administrative requirements. They protect domestic jobs and infant industries in the short run, but raise consumer prices, reduce choice, invite retaliation and shelter inefficiency. Exporting firms face them as a direct barrier to market entry.",
+    reforge:{stem:"A quota differs from a tariff because a quota:",options:{A:"Raises government revenue on each unit imported.",B:"Applies only to services rather than goods.",C:"Lowers the price paid by domestic consumers.",D:"Limits the quantity that may be imported"},correct:"D"}
+  },
+  {
+    id:"BUS-N4-03",stem:"A firm choosing to enter a foreign market through a joint venture rather than direct investment gains:",
+    options:{A:"Complete control over all strategic decisions.",B:"Local knowledge and shared risk",C:"The whole of any profit generated.",D:"Freedom from local regulation."},
+    correct:"B",tag:"MC-GBUS-GLOBAL-TRADE",
+    scaffold:"Entry methods trade control against risk. Exporting is lowest cost and risk but distant from the customer. Licensing and franchising use local partners' capital and knowledge for a fee or royalty, with some loss of quality control. Joint ventures share cost, risk and local expertise but also profit and control, and can suffer partner disputes. Wholly owned direct investment gives full control and profit at the highest cost and risk.",
+    reforge:{stem:"A common difficulty with international joint ventures is:",options:{A:"The absence of any local market knowledge.",B:"Being unable to share the capital cost.",C:"Disagreement between partners over strategy",D:"Full exposure to all of the investment risk."},correct:"C"}
+  },
+  {
+    id:"BUS-N4-04",stem:"Offshoring differs from outsourcing because offshoring specifically involves:",
+    options:{A:"Handing an activity to an external provider.",B:"Returning production to the home country.",C:"Selling a business division to a competitor.",D:"Relocating an activity to another country"},
+    correct:"D",tag:"MC-GBUS-GLOBAL-TRADE",
+    scaffold:"Outsourcing means using an external provider, which may be domestic. Offshoring means moving the activity abroad, whether to a third party or the firm's own subsidiary. Motives are lower labour costs, skills availability, proximity to markets and favourable tax or regulation. Risks include quality control, longer and more fragile supply chains, cultural and time-zone friction, currency exposure and reputational scrutiny of labour standards.",
+    reforge:{stem:"Reshoring production to the home country is most often motivated by:",options:{A:"Rising overseas costs and risk",B:"A desire to reduce domestic employment.",C:"Lower quality standards at home.",D:"Increased tariffs on domestic sales."},correct:"A"}
+  },
+  {
+    id:"BUS-N4-05",stem:"A multinational is most likely to standardise its product globally when:",
+    options:{A:"Local tastes differ sharply between markets.",B:"Each country has distinct legal requirements.",C:"Consumer needs are similar across markets",D:"Distribution channels vary widely by country."},
+    correct:"C",tag:"MC-GBUS-GLOBAL-TRADE",
+    scaffold:"Standardisation — one product and message worldwide — captures economies of scale, consistent branding and lower development cost, and suits globally similar needs, as in technology and luxury goods. Adaptation (glocalisation) tailors product, promotion or packaging to local tastes, language, regulation and buying power. Most firms sit between the two, keeping a global brand while adapting flavours, sizes, pricing or advertising locally.",
+    reforge:{stem:"A fast-food chain selling different menu items in India than in the UK is practising:",options:{A:"Full standardisation of its global offer.",B:"Adaptation of the product to local tastes",C:"Offshoring of its production facilities.",D:"Vertical integration of its supply chain."},correct:"B"}
+  },
+  {
+    id:"BUS-N4-06",stem:"Hofstede's model of national culture is useful to a multinational because it:",
+    options:{A:"Predicts exchange rate movements accurately.",B:"Sets the tariff rate applying in each market.",C:"Measures the size of each national market.",D:"Differences affecting management"},
+    correct:"D",tag:"MC-GBUS-GLOBAL-TRADE",
+    scaffold:"Hofstede compares national cultures on dimensions including power distance, individualism versus collectivism, uncertainty avoidance, masculinity versus femininity, and long-term orientation. It helps anticipate how management style, negotiation, incentives, hierarchy and marketing messages may need to differ between countries. Its limitations are that it describes averages, can encourage stereotyping, and rests on data that ages as societies change.",
+    reforge:{stem:"A significant limitation of using Hofstede's dimensions is that they:",options:{A:"Describe averages, risking stereotypes",B:"Apply only to firms in the service sector.",C:"Change unpredictably from month to month.",D:"Cannot be compared between two countries."},correct:"A"}
+  },
+  {
+    id:"BUS-N4-07",stem:"An emerging economy is typically attractive to a multinational because of its:",
+    options:{A:"Fully mature and saturated consumer market.",B:"Rapid growth and rising consumer incomes",C:"Highly restrictive limits on foreign ownership.",D:"Established and unchanging market shares."},
+    correct:"B",tag:"MC-GBUS-GLOBAL-TRADE",
+    scaffold:"Emerging economies offer fast GDP growth, a growing middle class, urbanisation, and often lower production costs — attractive when home markets are saturated. Risks include political instability, weaker legal protection for contracts and intellectual property, currency volatility, infrastructure gaps, and unfamiliar regulation. Firms manage these through joint ventures with local partners, staged entry and careful political risk assessment.",
+    reforge:{stem:"Which risk is most specific to operating in a less politically stable emerging market?",options:{A:"Competition from other international firms.",B:"The need to adapt products to local tastes.",C:"Weak enforcement of contract rights",D:"Rising labour costs as the economy grows."},correct:"C"}
+  },
+  {
+    id:"BUS-N4-08",stem:"A firm's international competitiveness is improved most directly by:",
+    options:{A:"Raising its prices above those of rivals.",B:"Increasing the length of its supply chain.",C:"Reducing its spending on staff training.",D:"Raising productivity against wage costs"},
+    correct:"D",tag:"MC-GBUS-GLOBAL-TRADE",
+    scaffold:"Price competitiveness depends on unit labour costs — wages relative to productivity — plus exchange rates, input costs and scale. Non-price competitiveness rests on quality, design, brand, reliability, service and delivery speed, and is generally more durable because it is harder to copy and less exposed to currency swings. Sustained investment in skills, technology and innovation underpins both.",
+    reforge:{stem:"Non-price competitiveness is often more sustainable than price competitiveness because it is:",options:{A:"Guaranteed by international trade agreements.",B:"Harder for rivals to imitate quickly",C:"Unaffected by changes in consumer taste.",D:"Cheaper to achieve in the short term."},correct:"B"}
+  },
+  {
+    id:"BUS-N4-09",stem:"A trade bloc such as the EU single market primarily benefits member firms by:",
+    options:{A:"Removing barriers to trade between members",B:"Guaranteeing identical prices in every country.",C:"Eliminating competition within the bloc.",D:"Fixing exchange rates against all currencies."},
+    correct:"A",tag:"MC-GBUS-GLOBAL-TRADE",
+    scaffold:"A trade bloc removes tariffs and quotas between members and harmonises standards, enlarging the accessible market and enabling economies of scale. Costs: a common external tariff can raise input prices from outside the bloc, competition within it intensifies, and members accept shared rules limiting national policy. Trade creation refers to new trade between members; trade diversion to trade shifted away from cheaper non-members.",
+    reforge:{stem:"Trade diversion occurs when a trade bloc causes members to buy from:",options:{A:"The cheapest available global supplier.",B:"A less efficient member of the bloc",C:"Domestic suppliers only, ignoring all imports.",D:"Suppliers chosen at random within the bloc."},correct:"B"}
+  },
+  {
+    id:"BUS-N4-10",stem:"A UK firm importing components priced in US dollars faces exchange rate risk because:",
+    options:{A:"Its selling prices are fixed by regulation.",B:"Tariffs on components change every quarter.",C:"A weaker pound raises the cost in sterling",D:"Its suppliers must accept payment in sterling."},
+    correct:"C",tag:"MC-GBUS-INTEREST-CURRENCY",
+    scaffold:"Transaction risk arises where payments or receipts are in foreign currency and rates move between agreeing and settling. Firms manage it by hedging with forward contracts fixing a future rate, invoicing in their own currency, or matching foreign currency revenues against costs — a natural hedge. Hedging brings certainty for budgeting but has a cost and removes any benefit from a favourable move.",
+    reforge:{stem:"A forward exchange contract helps a firm mainly by:",options:{A:"Guaranteeing a profit on the transaction.",B:"Eliminating the need to pay the supplier.",C:"Allowing it to benefit from every rate move.",D:"Fixing the rate, making costs predictable"},correct:"D"}
+  },
+  {
+    id:"BUS-N4-11",stem:"A multinational accused of paying very low wages overseas typically defends this by arguing that wages are:",
+    options:{A:"Set entirely by the firm's own shareholders.",B:"Above the local rate and minimum",C:"Identical to those paid in its home country.",D:"Unrelated to local living costs entirely."},
+    correct:"B",tag:"MC-GBUS-ETHICS-RISK",
+    scaffold:"Multinationals argue they pay at or above local rates and legal minima, create employment and transfer skills. Critics respond that legal minima may be below a living wage, that comparison with the home country reveals the gap, and that competitive pressure drives a race to the bottom. Reputational exposure is greatest for consumer-facing brands, which is why many now publish supplier audits and set standards above local law.",
+    reforge:{stem:"Consumer-facing brands face greater pressure over overseas labour standards mainly because:",options:{A:"They are subject to different employment law.",B:"Their supply chains are always shorter.",C:"Their reputation directly affects sales",D:"They pay higher rates of corporation tax."},correct:"C"}
+  },
+  {
+    id:"BUS-N4-12",stem:"Transfer pricing allows a multinational to:",
+    options:{A:"Fix the retail price charged in every country.",B:"Avoid all regulation of its overseas operations.",C:"Set prices between its own subsidiaries",D:"Guarantee identical profit margins worldwide."},
+    correct:"C",tag:"MC-GBUS-ETHICS-RISK",
+    scaffold:"Transfer pricing sets the price at which one subsidiary sells to another. Because it shifts where profit is recorded, it can move profit toward low-tax jurisdictions. It is legal where prices reflect genuine arm's-length value, but aggressive use attracts regulatory challenge, back-tax demands and reputational damage. Tax authorities increasingly require documentation justifying that intra-group prices match market rates.",
+    reforge:{stem:"Aggressive transfer pricing exposes a multinational chiefly to:",options:{A:"Reputational and tax challenge",B:"A legal ban on trading internationally.",C:"An automatic rise in its labour costs.",D:"Loss of limited liability for its directors."},correct:"A"}
+  },
+  {
+    id:"BUS-N4-13",stem:"A firm's decision to locate production near its target market rather than at lowest cost is most likely driven by:",
+    options:{A:"A wish to increase total transport distance.",B:"The availability of cheaper overseas labour.",C:"Lower corporation tax in the home country.",D:"Shorter lead times, less transport"},
+    correct:"D",tag:"MC-GBUS-OPERATIONS",
+    scaffold:"Location decisions weigh labour cost and availability, proximity to markets and suppliers, transport and infrastructure, government incentives and tariffs, exchange rates, and political stability. Producing near the market cuts lead times and shipping cost, eases responsiveness and may avoid tariffs, but may raise labour cost. The right balance depends on how bulky the product is, how fast demand changes and how price sensitive customers are.",
+    reforge:{stem:"Producing close to the target market is most valuable for goods that are:",options:{A:"Bulky, with fast-changing demand",B:"Small, light and non-perishable.",C:"Stored for several years before sale.",D:"Sold at identical prices worldwide."},correct:"A"}
+  },
+  {
+    id:"BUS-N4-14",stem:"Foreign direct investment differs from portfolio investment because FDI involves:",
+    options:{A:"Buying shares purely for financial return.",B:"Lending money to an overseas government.",C:"A lasting interest and control abroad",D:"Exporting finished goods to another country."},
+    correct:"C",tag:"MC-GBUS-GLOBAL-TRADE",
+    scaffold:"FDI establishes a lasting interest and management influence in an overseas enterprise, through building facilities, acquisition or a controlling stake. Portfolio investment buys financial assets for return without control and can be withdrawn quickly. Host countries generally prefer FDI because it brings jobs, skills, technology and tax revenue and is less volatile, though it raises concerns about foreign ownership of strategic assets.",
+    reforge:{stem:"Host governments often prefer FDI to portfolio investment because FDI is:",options:{A:"Exempt from all forms of local taxation.",B:"Less easily withdrawn at short notice",C:"Guaranteed to be more profitable.",D:"Restricted to the financial services sector."},correct:"B"}
+  },
+  {
+    id:"BUS-N4-15",stem:"A firm exporting for the first time is most likely to reduce its risk by:",
+    options:{A:"Investing immediately in an overseas factory.",B:"Acquiring a competitor in the target country.",C:"Using an agent or distributor in the market",D:"Setting up a wholly owned foreign subsidiary."},
+    correct:"C",tag:"MC-GBUS-GLOBAL-TRADE",
+    scaffold:"Staged internationalisation limits exposure: begin by exporting through an agent or distributor who already knows the market's customers, regulation and channels, then deepen commitment as knowledge grows — a sales office, then a joint venture, then wholly owned operations. Each step raises control and potential return alongside cost and risk. Committing heavily before understanding the market is a common and expensive error.",
+    reforge:{stem:"As a firm moves from exporting through agents to a wholly owned subsidiary, it gains control but also:",options:{A:"Loses access to the overseas market.",B:"Reduces its total capital investment.",C:"Removes all exchange rate exposure.",D:"Takes on greater cost and risk"},correct:"D"}
+  },
+  {
+    id:"BUS-N4-16",stem:"A weaker domestic currency helps a firm competing against imports because:",
+    options:{A:"Imported rival products become dearer",B:"Its own export prices rise abroad.",C:"Its imported raw materials become cheaper.",D:"Interest rates automatically fall."},
+    correct:"A",tag:"MC-GBUS-INTEREST-CURRENCY",
+    scaffold:"A weaker currency raises the domestic price of imports, helping firms that compete with them, and lowers the foreign-currency price of exports, helping exporters. It simultaneously raises the cost of imported inputs, so a firm reliant on foreign components is squeezed. The overall effect on any given firm depends on the balance between its foreign currency costs and revenues — matching the two is a natural hedge.",
+    reforge:{stem:"A firm with foreign currency revenues roughly equal to its foreign currency costs has:",options:{A:"Maximum exposure to exchange rate movements.",B:"A natural hedge against currency movements",C:"No need to trade internationally at all.",D:"A guaranteed profit on overseas sales."},correct:"B"}
+  },
+  {
+    id:"BUS-N4-17",stem:"The main argument that globalisation harms some developed-economy workers is that it:",
+    options:{A:"Increases the price of imported consumer goods.",B:"Prevents firms from investing overseas.",C:"Shifts lower-skilled work abroad",D:"Reduces the total size of the world market."},
+    correct:"C",tag:"MC-GBUS-GLOBAL-TRADE",
+    scaffold:"Globalisation lowers consumer prices, widens choice and raises incomes in many developing economies, but relocation of lower-skilled production can displace workers in developed economies, with losses concentrated in particular regions and industries while gains are spread thinly. Policy responses include retraining, regional investment and education, since the aggregate gain does not automatically reach those who bear the cost.",
+    reforge:{stem:"A common policy response to job losses caused by offshoring is:",options:{A:"Banning all imports from lower-cost economies.",B:"Requiring firms to raise their prices.",C:"Fixing the exchange rate permanently.",D:"Retraining and regional investment programmes"},correct:"D"}
+  },
+  {
+    id:"BUS-N4-18",stem:"A global brand gains most of its value from:",
+    options:{A:"The physical assets recorded on its balance sheet.",B:"Consistent recognition and trust across markets",C:"The number of countries it holds patents in.",D:"Its total spending on advertising last year."},
+    correct:"B",tag:"MC-GBUS-PRODUCT-GROWTH",
+    scaffold:"A global brand delivers consistent recognition, trust and meaning across borders, supporting premium pricing, cheaper market entry for new products and scale economies in promotion. It requires consistent quality and message worldwide, so a failure in one market can damage the brand everywhere — which is why multinationals monitor supplier conduct and product safety globally rather than market by market.",
+    reforge:{stem:"A quality failure in one overseas market threatens a global brand because reputation is:",options:{A:"Protected by international trademark law.",B:"Measured separately in each country.",C:"Shared across all its markets",D:"Recorded as an asset in the accounts."},correct:"C"}
+  },
+  {
+    id:"BUS-N4-19",stem:"A firm assessing whether to enter a new country would use PESTLE analysis to examine:",
+    options:{A:"Its own internal strengths and weaknesses.",B:"The float available on each project activity.",C:"The contribution earned per unit sold.",D:"External political and social factors"},
+    correct:"D",tag:"MC-GBUS-STRATEGY-DECISIONS",
+    scaffold:"PESTLE covers Political, Economic, Social, Technological, Legal and Environmental factors — all external to the firm. It is used to scan the operating environment before entering a market or planning strategy, and complements SWOT, which combines internal strengths and weaknesses with external opportunities and threats. The value lies in identifying which factors materially affect this firm, rather than listing every possible influence.",
+    reforge:{stem:"An ageing population in a target market would be recorded under PESTLE as:",options:{A:"A social factor affecting demand patterns",B:"A political factor set by government.",C:"A technological factor changing production.",D:"A legal factor requiring compliance."},correct:"A"}
+  },
+  {
+    id:"BUS-N4-20",stem:"A firm's decision to franchise internationally rather than open its own outlets means it:",
+    options:{A:"Retains full control of daily operations.",B:"Must fund every new outlet from its own capital.",C:"Expands using franchisees' capital",D:"Takes on all the operating risk in each market."},
+    correct:"C",tag:"MC-GBUS-GLOBAL-TRADE",
+    scaffold:"Franchising lets a firm expand quickly using franchisees' capital and local knowledge while earning fees and royalties, with limited capital risk of its own. The trade-off is reduced control: inconsistent standards at one franchise can damage the brand everywhere, so franchisors invest heavily in training, specification and monitoring. Disputes over territory, fees and standards are common and contracts must anticipate them.",
+    reforge:{stem:"The principal risk a franchisor accepts when expanding through franchising is:",options:{A:"Providing all the capital for expansion.",B:"Inconsistent standards harming it",C:"Losing the right to earn any royalties.",D:"Being unable to enter foreign markets."},correct:"B"}
+  },
+  {
+    id:"BUS-N4-21",stem:"Corporate social responsibility reporting is most valuable to a multinational when it:",
+    options:{A:"Replaces the need for audited financial accounts.",B:"Is prepared only for the home market.",C:"Focuses solely on charitable donations.",D:"Reports verifiable performance against targets"},
+    correct:"D",tag:"MC-GBUS-ETHICS-RISK",
+    scaffold:"Credible CSR reporting sets measurable targets — emissions, waste, supplier audits, safety, diversity — and reports verified progress, including shortfalls. It supports reputation, investor confidence and staff recruitment, and increasingly meets regulatory expectations. Reporting that lists donations without measurable operational change invites accusations of greenwashing, which does more reputational harm than not reporting at all.",
+    reforge:{stem:"Greenwashing describes a firm that:",options:{A:"Overstates its environmental performance",B:"Invests heavily in reducing emissions.",C:"Publishes independently audited targets.",D:"Reports honestly on missed objectives."},correct:"A"}
+  },
+  {
+    id:"BUS-N4-22",stem:"A firm's supply chain becomes more vulnerable as it globalises mainly because:",
+    options:{A:"Suppliers become easier to inspect in person.",B:"Transport costs fall with longer distances.",C:"Longer chains have more points of failure",D:"Fewer suppliers exist in the world market."},
+    correct:"C",tag:"MC-GBUS-OPERATIONS",
+    scaffold:"Global supply chains add distance, intermediaries, border formalities and currency exposure, so there are more points at which disruption can occur — port closures, weather, political action, supplier failure — and lead times are longer, making recovery slower. Resilience measures include dual sourcing, holding strategic buffer stock, regional rather than single global sourcing, and mapping the chain beyond immediate first-tier suppliers.",
+    reforge:{stem:"Mapping suppliers beyond the first tier helps a firm because disruption often begins:",options:{A:"Only within the firm's own factories.",B:"At the retailer selling to consumers.",C:"With the customer's payment terms.",D:"Deeper in the chain"},correct:"D"}
+  }
+]);
+
+busExpansion("BUS-1", [
+  {
+    id:"BUS-N5-01",stem:"A firm's market share is calculated as its:",
+    options:{A:"Sales as a share of total market sales",B:"Profit divided by the capital it employs.",C:"Revenue divided by the number of competitors.",D:"Growth rate compared with the previous year."},
+    correct:"A",tag:"MC-GBUS-MARKET-RESEARCH",
+    scaffold:"Market share = firm's sales ÷ total market sales × 100, by value or by volume. Rising share suggests the firm is outperforming rivals; a firm can grow sales yet lose share if the whole market is growing faster. Share matters because it indicates competitive position and bargaining power with suppliers and retailers, and often correlates with scale economies. Market size and growth are separate measures and should not be confused with it.",
+    reforge:{stem:"A firm's sales rise 5% while the whole market grows 12%. Its market share has:",options:{A:"Fallen, since rivals grew faster",B:"Risen, since sales increased.",C:"Stayed exactly the same as before.",D:"Become impossible to determine."},correct:"A"}
+  }
+]);
+busExpansion("BUS-2", [
+  {
+    id:"BUS-N5-02",stem:"Depreciation appears in a firm's accounts as:",
+    options:{A:"A cost with no matching cash outflow",B:"A cash payment made to the asset's supplier.",C:"An increase in the firm's current assets.",D:"A form of dividend paid to shareholders."},
+    correct:"A",tag:"MC-GBUS-CASH-FINANCE",
+    scaffold:"Depreciation spreads the cost of a non-current asset across its useful life, matching the cost to the periods that benefit. It reduces recorded profit and the asset's book value, but no cash leaves the business in that period — the cash went when the asset was bought. This is a common source of confusion between profit and cash flow, and it is why depreciation is added back when converting profit into operating cash flow.",
+    reforge:{stem:"When converting operating profit into cash flow, depreciation is added back because it:",options:{A:"Never involved an outflow of cash",B:"Represents cash received from customers.",C:"Increases the value of the asset held.",D:"Is a payment made to the tax authority."},correct:"A"}
+  }
+]);
+
 [
   "bus", "chem", "bio", "phys", "cs", "maths", "german", "rs", "hsc",
   "french", "media", "pe", "span", "englit", "engll", "mand",
@@ -29454,16 +30105,15 @@ const finalBusinessCorruptionRepairs = {
   }
  }
 };
-for (const [id, repairs] of Object.entries(finalBusinessCorruptionRepairs)) {
-  for (const bank of Object.values(BANKS)) {
-    const question = (bank.questions || []).find(candidate => candidate.id === id);
-    if (!question) continue;
-    for (const [variant, options] of Object.entries(repairs)) {
-      const item = variant === "base" ? question : question.reforge;
-      if (item?.options) Object.assign(item.options, options);
-    }
-  }
-}
+// The loop that applied finalBusinessCorruptionRepairs used to sit here. That
+// table replaced repeated distractors with donated ones from same-tag
+// questions, but it is keyed by option LETTER and ran after
+// rebalanceMCQSubject() permutes letters, so each donation landed on
+// whichever option then sat at that letter — BUS-02, a break-even
+// calculation, ended up offering "Cutting the wage bill by making staff
+// redundant" as an answer. Authoring 90 genuine questions removed the COV
+// ids behind 325 of its entries; the rest are dropped and the sound
+// literals stand.
 // Residual length-cue fixes left after the corruption-repair pass above:
 // the same-tag replacement was necessarily shorter than the correct answer
 // for these 37 items (the tag pool had nothing longer available), so the
@@ -35268,6 +35918,62 @@ const csAnswerLengthRepairs = {
 };
 for (const [id, variants] of Object.entries(csAnswerLengthRepairs)) {
   for (const bankId of SUBJECTS.cs.banks) {
+    const question = (BANKS[bankId].questions || []).find(candidate => candidate.id === id);
+    if (!question) continue;
+    for (const [variant, replacements] of Object.entries(variants)) {
+      const item = variant === "base" ? question : question.reforge;
+      if (!item?.options) continue;
+      for (const [letter, value] of Object.entries(item.options)) {
+        const replacement = replacements[String(value)];
+        if (replacement) item.options[letter] = replacement;
+      }
+    }
+  }
+}
+
+// A-Level Business: concise restatements of nine correct answers that were
+// long enough to be the uniquely-longest option, which lets a student score
+// above chance by picking the longest one. These ran to 111-182 characters
+// against distractors of ~45. Matched on option TEXT rather than letter,
+// because rebalanceMCQSubject() permutes letters and a letter-keyed table
+// applied afterwards lands on whichever option happens to sit there — the bug
+// that had BUS-02, a break-even calculation, offering "Cutting the wage bill
+// by making staff redundant" as an option. Applied last.
+const busAnswerLengthRepairs = {
+  "BUS-01": { reforge: {
+    "Market orientation — Apple identified consumer needs and desires first, then developed the product around them.":
+      "Market orientation — Apple researched consumer needs first" } },
+  "BUS-05": { reforge: {
+    "Dissatisfaction may fall (hygiene factors improved) but motivation will not necessarily increase — the company needs to also address motivators like responsibility and recognition.":
+      "Dissatisfaction may fall, but motivation will not necessarily rise" } },
+  "BUS-10": { reforge: {
+    "Negotiating 60-day payment terms with suppliers instead of 30 — cash leaves later, though total costs are unchanged.":
+      "Negotiating 60-day supplier terms instead of 30" } },
+  "BUS-12": { reforge: {
+    "Behavioural segmentation (commuters vs leisure travellers) with price discrimination — commuters have inelastic demand and pay more.":
+      "Behavioural segmentation with price discrimination" } },
+  "OPS-03": {
+    base: {
+      "Raising borrowing costs for the firm and reducing consumer spending on credit-financed purchases, potentially depressing demand and increasing financial risk for highly geared firms.":
+        "Raising borrowing costs, dampening demand" },
+    reforge: {
+      "Highly geared firms carry large debt — rising interest rates increase their repayment costs directly, squeezing profit margins more than for low-geared competitors.":
+        "Highly geared firms face larger repayment increases" }
+  },
+  "OPS-04": {
+    base: {
+      "The power of buyers to switch to alternatives from outside the industry that meet the same need — limiting the prices firms can charge":
+        "Buyers switching to substitutes outside it" },
+    reforge: {
+      "Netflix releasing cinema films on streaming — consumers substitute the same experience at lower cost from home, reducing cinema demand.":
+        "Streaming films at home substitutes for cinema" }
+  },
+  "OPS-08": { base: {
+    "The exporter's goods become cheaper in foreign currency, making them more price-competitive abroad and potentially increasing export volume — though import costs also rise.":
+      "Exports become cheaper abroad, though imports cost more" } }
+};
+for (const [id, variants] of Object.entries(busAnswerLengthRepairs)) {
+  for (const bankId of SUBJECTS.bus.banks) {
     const question = (BANKS[bankId].questions || []).find(candidate => candidate.id === id);
     if (!question) continue;
     for (const [variant, replacements] of Object.entries(variants)) {
