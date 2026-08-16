@@ -15385,16 +15385,34 @@ retireBank("HIST-1");
 retireBank("HIST-2");
 
 // ===== WJEC LEVEL 3 APPLIED CRIMINOLOGY: FOUR-UNIT ROUTE =====
+// The fourth option used to be a fixed throwaway ("It has no meaningful
+// relevance to criminological analysis"). A permanently-wrong option that
+// appears in every question is free to eliminate, so a 4-option question was
+// really a 3-option one — and because the Reforge twin carried the same trick,
+// most questions were effectively 2-option. Draw a real definition from
+// another row instead, preferring one at least as long as the keyed answer so
+// the correct option is never the uniquely longest and no later pass has to
+// pad the distractors to hide a cue.
+const pickFourthOption = (candidates, used, minLength) => {
+  const distinct = candidates.filter(value => value && !used.has(value));
+  return distinct.find(value => value.length >= minLength) || distinct[0] || null;
+};
 const addCriminologyBank = (bankId, label, spec, rawRows) => {
   const rows = rawRows.map(row => { const [term, definition, application] = row.split("|"); return {term, definition, application}; });
   BANKS[bankId] = {label, color:"#374151", questions:rows.map((row, index) => {
     const next = rows[(index + 1) % rows.length];
     const previous = rows[(index + rows.length - 1) % rows.length];
+    const others = [];
+    for (let step = 2; step < rows.length; step++) others.push(rows[(index + step) % rows.length]);
+    const fourth = pickFourthOption(others.map(other => other.definition),
+      new Set([row.definition, next.definition, previous.definition]), row.definition.length);
+    const fourthApplication = pickFourthOption(others.map(other => other.application),
+      new Set([row.application, next.application, previous.application]), row.application.length);
     return {id:`${bankId}-${String(index + 1).padStart(2, "0")}`,spec,
       stem:`Which statement best explains ${row.term}?`,
-      options:{A:row.definition,B:next.definition,C:previous.definition,D:`It has no meaningful relevance to criminological analysis`},correct:"A",tag:`MC-${bankId}-${index + 1}`,
+      options:{A:row.definition,B:next.definition,C:previous.definition,D:fourth},correct:"A",tag:`MC-${bankId}-${index + 1}`,
       scaffold:`${row.term}: ${row.definition}. Apply the concept to evidence, context, reliability and consequences when building a WJEC response.`,
-      reforge:{stem:`A criminologist is applying ${row.term}. Which judgement is most accurate?`,options:{A:row.application,B:previous.application,C:next.application,D:`It cannot be evaluated using evidence or case material`},correct:"A"}};
+      reforge:{stem:`A criminologist is applying ${row.term}. Which judgement is most accurate?`,options:{A:row.application,B:previous.application,C:next.application,D:fourthApplication},correct:"A"}};
   })};
 };
 
@@ -15633,7 +15651,16 @@ const addLawPoliticsBank = (bankId, label, spec, rawRows) => {
   const rows = rawRows.map(row => { const [term, definition, application] = row.split("|"); return {term, definition, application}; });
   BANKS[bankId] = {label, color:"#1e3a5f", questions:rows.map((row, index) => {
     const next = rows[(index + 1) % rows.length], previous = rows[(index + rows.length - 1) % rows.length];
-    return {id:`${bankId}-${String(index + 1).padStart(2, "0")}`,spec,stem:`Which statement best explains ${row.term}?`,options:{A:row.definition,B:next.definition,C:previous.definition,D:`It has no significant relevance to the topic being tested`},correct:"A",tag:`MC-${bankId}-${index + 1}`,scaffold:`${row.term}: ${row.definition}. Apply the rule or concept to the facts, authority and evaluation required by the question.`,reforge:{stem:`A student is applying ${row.term}. Which statement is most accurate?`,options:{A:row.application,B:previous.application,C:next.application,D:`It cannot be applied to a problem or evaluation question`},correct:"A"}};
+    const others = [];
+    for (let step = 2; step < rows.length; step++) others.push(rows[(index + step) % rows.length]);
+    // Same throwaway-option fix as addCriminologyBank above: a fourth option
+    // that is wrong in every question tells a student nothing and costs them
+    // nothing to discard. Use a real definition from elsewhere in the bank.
+    const fourth = pickFourthOption(others.map(other => other.definition),
+      new Set([row.definition, next.definition, previous.definition]), row.definition.length);
+    const fourthApplication = pickFourthOption(others.map(other => other.application),
+      new Set([row.application, next.application, previous.application]), row.application.length);
+    return {id:`${bankId}-${String(index + 1).padStart(2, "0")}`,spec,stem:`Which statement best explains ${row.term}?`,options:{A:row.definition,B:next.definition,C:previous.definition,D:fourth},correct:"A",tag:`MC-${bankId}-${index + 1}`,scaffold:`${row.term}: ${row.definition}. Apply the rule or concept to the facts, authority and evaluation required by the question.`,reforge:{stem:`A student is applying ${row.term}. Which statement is most accurate?`,options:{A:row.application,B:previous.application,C:next.application,D:fourthApplication},correct:"A"}};
   })};
 };
 
@@ -16045,9 +16072,33 @@ const rebalanceLawPolitics = bankIds => bankIds.forEach(bankId => BANKS[bankId].
   });
 }));
 
+// These supplement questions previously used three fixed throwaway options
+// ("It is unrelated to...", "It cannot be assessed using evidence", and so on)
+// in BOTH the stem and the Reforge twin, so every distractor was discardable
+// without reading the question — a four-option item that was really a
+// one-option item. Borrow genuine definitions and applications already
+// authored for other questions in the same bank, preferring a first
+// distractor at least as long as the keyed answer so rebalanceLawPolitics()
+// never has to pad anything with " in this context".
+const pickSupplementDistractors = (candidates, own) => {
+  const used = new Set([own]);
+  const pool = candidates.filter(value => value && !used.has(value));
+  const chosen = [];
+  const longer = pool.find(value => value.length >= own.length);
+  if (longer) { chosen.push(longer); used.add(longer); }
+  for (const value of pool) {
+    if (chosen.length >= 3) break;
+    if (!used.has(value)) { chosen.push(value); used.add(value); }
+  }
+  return chosen;
+};
 const addLawPoliticsSupplement = (bankId, rows) => rows.forEach(([term, definition, application]) => {
   const bank = BANKS[bankId], id = `${bankId}-${String(bank.questions.length + 1).padStart(2, "0")}`;
-  bank.questions.push({id, spec:bank.questions[0].spec, stem:`Which statement best explains ${term}?`, options:{A:definition,B:`It is unrelated to ${bank.label.toLowerCase()}`,C:`It has no effect on legal or political outcomes`,D:`It cannot be assessed using evidence`}, correct:"A", tag:`MC-${id}`, scaffold:`${term}: ${definition}. Apply the point to the relevant authority, institution or scenario.`, reforge:{stem:`Which application of ${term} is most accurate?`, options:{A:application,B:`It always produces the opposite result`,C:`It cannot be applied to a real example`,D:`It removes the need for evaluation`}, correct:"A"}});
+  const definitions = bank.questions.map(question => String(question.options[question.correct]));
+  const applications = bank.questions.map(question => String(question.reforge.options[question.reforge.correct]));
+  const [dB, dC, dD] = pickSupplementDistractors(definitions, definition);
+  const [aB, aC, aD] = pickSupplementDistractors(applications, application);
+  bank.questions.push({id, spec:bank.questions[0].spec, stem:`Which statement best explains ${term}?`, options:{A:definition,B:dB,C:dC,D:dD}, correct:"A", tag:`MC-${id}`, scaffold:`${term}: ${definition}. Apply the point to the relevant authority, institution or scenario.`, reforge:{stem:`Which application of ${term} is most accurate?`, options:{A:application,B:aB,C:aC,D:aD}, correct:"A"}});
 });
 
 addLawPoliticsSupplement("LAW-CRIM", [["assault occasioning ABH", "An assault or battery causing harm more than transient or trifling", "The injury is assessed objectively while mens rea relates to the underlying assault"] , ["attempted murder", "An attempt requiring intent to kill rather than merely cause serious injury", "The prosecution must prove specific intent even if the intended killing was impossible"]]);
