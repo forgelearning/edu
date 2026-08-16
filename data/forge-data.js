@@ -20548,6 +20548,3033 @@ mathsExpansion("GCSE-MATH-P3", [
   }
 ]);
 
+// ===== A-LEVEL PHYSICS: GENUINE QUESTION EXPANSION =====
+// phys reached its 200-question floor via expandSubjectToMinimum(), which
+// clones existing questions; a later pass strips the "(application variant
+// N)" suffix, leaving 42 of its 200 questions as byte-identical repeats.
+// These 131 authored questions take the source count to 200 so the expansion
+// pass generates no coverage variants at all.
+const physExpansion = (bankId, questions) => questions.forEach(question => BANKS[bankId].questions.push(question));
+physExpansion("PHYS-1", [
+ {
+  "id": "PHYS-N1-01",
+  "stem": "Which quantity is a vector rather than a scalar?",
+  "options": {
+   "A": "Velocity",
+   "B": "Speed",
+   "C": "Mass",
+   "D": "Energy stored in a system"
+  },
+  "correct": "A",
+  "tag": "MC-GPHYS-SCALAR-VECTOR",
+  "scaffold": "Scalars have magnitude only: mass, speed, distance, energy, temperature, time. Vectors have magnitude and direction: velocity, displacement, force, acceleration, momentum. The pairs matter — distance is scalar while displacement is vector, and speed is scalar while velocity is vector. A body moving in a complete circle has travelled a distance but has zero displacement, and so zero average velocity.",
+  "reforge": {
+   "stem": "A runner completes one lap of a 400 m track. Their displacement is:",
+   "options": {
+    "A": "400 m",
+    "B": "200 m",
+    "C": "0 m",
+    "D": "800 m"
+   },
+   "correct": "C"
+  }
+ },
+ {
+  "id": "PHYS-N1-02",
+  "stem": "Two forces of 3 N and 4 N act at right angles. The magnitude of the resultant is:",
+  "options": {
+   "A": "7 N",
+   "B": "5 N",
+   "C": "12 N",
+   "D": "1 N"
+  },
+  "correct": "B",
+  "tag": "MC-GPHYS-SCALAR-VECTOR",
+  "scaffold": "Perpendicular vectors combine by Pythagoras: √(3² + 4²) = √25 = 5 N. Adding magnitudes directly (7 N) is only valid when the vectors are parallel and in the same direction; subtracting (1 N) applies when they are antiparallel. The direction of the resultant is found with tan θ = opposite ÷ adjacent, here tan θ = 4/3, giving 53° from the 3 N force.",
+  "reforge": {
+   "stem": "A force of 20 N acts at 30° to the horizontal. Its horizontal component is:",
+   "options": {
+    "A": "20 ÷ cos 30° = 23.1 N",
+    "B": "20 sin 30° = 10 N",
+    "C": "20 tan 30° = 11.5 N",
+    "D": "20 cos 30° = 17.3 N"
+   },
+   "correct": "D"
+  }
+ },
+ {
+  "id": "PHYS-N1-03",
+  "stem": "The gradient of a velocity–time graph represents:",
+  "options": {
+   "A": "Displacement",
+   "B": "Distance travelled",
+   "C": "Acceleration",
+   "D": "Momentum"
+  },
+  "correct": "C",
+  "tag": "MC-GPHYS-GRAPHS-KINEMATICS",
+  "scaffold": "On a displacement–time graph the gradient gives velocity. On a velocity–time graph the gradient gives acceleration and the area beneath gives displacement. On an acceleration–time graph the area beneath gives change in velocity. Reading the area where the gradient is wanted, or the reverse, is the standard error — check which quantity the axes actually carry before deciding.",
+  "reforge": {
+   "stem": "The area under a velocity–time graph represents:",
+   "options": {
+    "A": "Displacement",
+    "B": "Force applied",
+    "C": "Acceleration",
+    "D": "Power"
+   },
+   "correct": "A"
+  }
+ },
+ {
+  "id": "PHYS-N1-04",
+  "stem": "A car accelerates uniformly from rest at 3 m s⁻² for 8 s. Its final velocity is:",
+  "options": {
+   "A": "96 m s⁻¹",
+   "B": "0.375 m s⁻¹",
+   "C": "11 m s⁻¹",
+   "D": "24 m s⁻¹"
+  },
+  "correct": "D",
+  "tag": "MC-GPHYS-GRAPHS-KINEMATICS",
+  "scaffold": "Use v = u + at with u = 0, a = 3 and t = 8, giving v = 0 + 24 = 24 m s⁻¹. The four suvat equations apply only to uniform acceleration. List the known quantities first, then choose the equation containing exactly one unknown. Taking a consistent sign convention matters when motion reverses direction, since a and v may then have opposite signs.",
+  "reforge": {
+   "stem": "A ball is dropped from rest. Using g = 9.81 m s⁻², how far does it fall in 2.0 s?",
+   "options": {
+    "A": "9.8 m",
+    "B": "19.6 m",
+    "C": "39.2 m",
+    "D": "4.9 m"
+   },
+   "correct": "B"
+  }
+ },
+ {
+  "id": "PHYS-N1-05",
+  "stem": "An object is in equilibrium. This means the resultant force on it is:",
+  "options": {
+   "A": "Zero, so it has no acceleration",
+   "B": "Equal to its weight",
+   "C": "Increasing steadily",
+   "D": "Equal to the object's total weight"
+  },
+  "correct": "A",
+  "tag": "MC-GPHYS-RESULTANT-FORCE",
+  "scaffold": "Equilibrium means zero resultant force and zero resultant moment, so the object has no acceleration — it is either at rest or moving at constant velocity. Newton's first law makes the same point: a body continues in its state of motion unless acted on by a resultant force. Constant velocity therefore does not imply zero force, only that the forces present balance.",
+  "reforge": {
+   "stem": "A skydiver falls at constant velocity. The forces on them are:",
+   "options": {
+    "A": "Weight greater than drag",
+    "B": "Drag greater than weight",
+    "C": "Balanced, giving zero resultant",
+    "D": "Zero, since there is no acceleration"
+   },
+   "correct": "C"
+  }
+ },
+ {
+  "id": "PHYS-N1-06",
+  "stem": "A resultant force of 12 N acts on a 4 kg mass. Its acceleration is:",
+  "options": {
+   "A": "48 m s⁻²",
+   "B": "3 m s⁻²",
+   "C": "8 m s⁻²",
+   "D": "0.33 m s⁻²"
+  },
+  "correct": "B",
+  "tag": "MC-GPHYS-RESULTANT-FORCE",
+  "scaffold": "Newton's second law gives F = ma, so a = F ÷ m = 12 ÷ 4 = 3 m s⁻². The force used must be the resultant, not one individual force — if several forces act, combine them first. Mass is in kilograms and force in newtons; using grams gives an answer a thousand times too large. Weight is a force, W = mg, and differs from mass, which is a scalar measured in kg.",
+  "reforge": {
+   "stem": "An object of mass 5.0 kg is on Earth where g = 9.81 N kg⁻¹. Its weight is:",
+   "options": {
+    "A": "9.81 N",
+    "B": "5.0 N",
+    "C": "0.51 N",
+    "D": "49 N"
+   },
+   "correct": "D"
+  }
+ },
+ {
+  "id": "PHYS-N1-07",
+  "stem": "Newton's third law states that forces occur in pairs which are equal in magnitude, opposite in direction and:",
+  "options": {
+   "A": "Act on the same single object",
+   "B": "Always cancel to zero",
+   "C": "Act on different objects",
+   "D": "Are of different types"
+  },
+  "correct": "C",
+  "tag": "MC-GPHYS-RESULTANT-FORCE",
+  "scaffold": "A third-law pair acts on two different bodies, is of the same type, and the two forces are equal and opposite. Because they act on different objects they never cancel each other — cancelling only happens between forces on the same body. A book on a table: the book's weight and the table's normal contact force are not a third-law pair, since both act on the book; they happen to balance because the book is in equilibrium.",
+  "reforge": {
+   "stem": "A book rests on a table. The Newton's third law pair to the book's weight is the:",
+   "options": {
+    "A": "Gravitational pull of the book on the Earth",
+    "B": "Weight of the table",
+    "C": "Friction between the book and the table surface",
+    "D": "Friction between book and table"
+   },
+   "correct": "A"
+  }
+ },
+ {
+  "id": "PHYS-N1-08",
+  "stem": "The moment of a force about a point is calculated as:",
+  "options": {
+   "A": "Force × time",
+   "B": "Force divided by the distance from the pivot",
+   "C": "Force × mass",
+   "D": "Force × perpendicular distance"
+  },
+  "correct": "D",
+  "tag": "MC-GPHYS-RESULTANT-FORCE",
+  "scaffold": "Moment = force × perpendicular distance from the pivot, measured in N m. The distance must be perpendicular to the line of action, which is why a force applied along a line through the pivot has zero moment. The principle of moments states that for equilibrium the sum of clockwise moments equals the sum of anticlockwise moments about any point.",
+  "reforge": {
+   "stem": "A 30 N force acts 0.4 m from a pivot, perpendicular to the bar. Its moment is:",
+   "options": {
+    "A": "75 N m",
+    "B": "12 N m",
+    "C": "30.4 N m",
+    "D": "0.013 N m"
+   },
+   "correct": "B"
+  }
+ },
+ {
+  "id": "PHYS-N1-09",
+  "stem": "A uniform beam balances on a pivot. A 20 N weight sits 0.6 m to the left. A weight 0.4 m to the right must be:",
+  "options": {
+   "A": "30 N",
+   "B": "12 N",
+   "C": "20 N",
+   "D": "8 N"
+  },
+  "correct": "A",
+  "tag": "MC-GPHYS-RESULTANT-FORCE",
+  "scaffold": "Apply the principle of moments: clockwise = anticlockwise, so 20 × 0.6 = F × 0.4, giving 12 = 0.4F and F = 30 N. The nearer the pivot, the larger the force needed. For a uniform beam the weight acts at its centre, which must be included when the beam is not pivoted at its midpoint. Taking moments about the pivot removes the unknown pivot reaction from the calculation.",
+  "reforge": {
+   "stem": "Taking moments about the pivot is convenient because the pivot's reaction force has:",
+   "options": {
+    "A": "No magnitude at all",
+    "B": "A very large moment",
+    "C": "Zero moment about that point",
+    "D": "A very large moment about that point"
+   },
+   "correct": "C"
+  }
+ },
+ {
+  "id": "PHYS-N1-10",
+  "stem": "Work done by a constant force is calculated as:",
+  "options": {
+   "A": "Force × time",
+   "B": "Force × distance along the force",
+   "C": "Force multiplied by the time for which it acts",
+   "D": "Force × mass"
+  },
+  "correct": "B",
+  "tag": "MC-GPHYS-WORK-ENERGY",
+  "scaffold": "Work done W = Fs cos θ, where θ is the angle between the force and the displacement, measured in joules. When the force is perpendicular to the motion, cos 90° = 0 and no work is done — which is why the centripetal force in circular motion does no work and the speed stays constant. Work done equals energy transferred, so the two are always measured in the same unit.",
+  "reforge": {
+   "stem": "A force acts perpendicular to an object's motion. The work done by that force is:",
+   "options": {
+    "A": "Equal to Fs",
+    "B": "Half of Fs",
+    "C": "Negative",
+    "D": "Zero"
+   },
+   "correct": "D"
+  }
+ },
+ {
+  "id": "PHYS-N1-11",
+  "stem": "A 2.0 kg object moves at 6.0 m s⁻¹. Its kinetic energy is:",
+  "options": {
+   "A": "12 J",
+   "B": "6.0 J",
+   "C": "36 J",
+   "D": "72 J"
+  },
+  "correct": "C",
+  "tag": "MC-GPHYS-WORK-ENERGY",
+  "scaffold": "Kinetic energy = ½mv² = ½ × 2.0 × 36 = 36 J. Note the velocity is squared, so doubling the speed quadruples the kinetic energy — forgetting to square gives 6 J, and forgetting the half gives 72 J. Gravitational potential energy near the Earth's surface is mgΔh. In the absence of resistive forces the sum of the two is conserved.",
+  "reforge": {
+   "stem": "An object of mass 3.0 kg is raised 2.0 m. Using g = 9.81 N kg⁻¹, the gain in potential energy is:",
+   "options": {
+    "A": "58.9 J",
+    "B": "6.0 J",
+    "C": "29.4 J",
+    "D": "1.5 J"
+   },
+   "correct": "A"
+  }
+ },
+ {
+  "id": "PHYS-N1-12",
+  "stem": "Power is best defined as:",
+  "options": {
+   "A": "The total energy transferred",
+   "B": "Force multiplied by distance",
+   "C": "Force multiplied by distance moved",
+   "D": "Energy transferred per unit time"
+  },
+  "correct": "D",
+  "tag": "MC-GPHYS-WORK-ENERGY",
+  "scaffold": "Power = energy transferred ÷ time, measured in watts, where one watt is one joule per second. For a body moving at steady speed against a resistive force, P = Fv, since power is the rate of doing work. Efficiency = useful output ÷ total input, expressed as a decimal or percentage, and can never exceed 1 — an answer above 100% signals an arithmetic error.",
+  "reforge": {
+   "stem": "A motor takes 500 J of input energy and delivers 350 J usefully. Its efficiency is:",
+   "options": {
+    "A": "143%",
+    "B": "70%",
+    "C": "30%",
+    "D": "150%"
+   },
+   "correct": "B"
+  }
+ },
+ {
+  "id": "PHYS-N1-13",
+  "stem": "The principle of conservation of momentum applies when:",
+  "options": {
+   "A": "No external resultant force acts on the system",
+   "B": "The collision is perfectly elastic and nothing else",
+   "C": "Kinetic energy is also conserved",
+   "D": "The objects have equal mass"
+  },
+  "correct": "A",
+  "tag": "MC-GPHYS-MOTION-GRAVITY",
+  "scaffold": "Momentum p = mv is conserved in any collision or explosion provided no external resultant force acts, whether the collision is elastic or inelastic. Kinetic energy is conserved only in an elastic collision; in an inelastic one some becomes internal energy or sound, though momentum is still conserved. Momentum is a vector, so direction matters and a consistent sign convention must be chosen.",
+  "reforge": {
+   "stem": "In an inelastic collision, which quantity is not conserved?",
+   "options": {
+    "A": "Momentum",
+    "B": "Total energy of the system",
+    "C": "Kinetic energy",
+    "D": "Mass"
+   },
+   "correct": "C"
+  }
+ },
+ {
+  "id": "PHYS-N1-14",
+  "stem": "A 2.0 kg trolley moving at 3.0 m s⁻¹ collides and sticks to a stationary 1.0 kg trolley. Their common velocity is:",
+  "options": {
+   "A": "3.0 m s⁻¹",
+   "B": "2.0 m s⁻¹",
+   "C": "1.5 m s⁻¹",
+   "D": "6.0 m s⁻¹"
+  },
+  "correct": "B",
+  "tag": "MC-GPHYS-MOTION-GRAVITY",
+  "scaffold": "Conserve momentum: total before = (2.0 × 3.0) + (1.0 × 0) = 6.0 kg m s⁻¹. After the collision the combined mass is 3.0 kg, so v = 6.0 ÷ 3.0 = 2.0 m s⁻¹. The objects stick together, so this is an inelastic collision and kinetic energy falls from 9.0 J to 6.0 J, the difference becoming internal energy and sound.",
+  "reforge": {
+   "stem": "Impulse is equal to:",
+   "options": {
+    "A": "Force × distance",
+    "B": "Force ÷ time",
+    "C": "Mass multiplied by acceleration produced",
+    "D": "Force × time, and to Δmomentum"
+   },
+   "correct": "D"
+  }
+ },
+ {
+  "id": "PHYS-N1-15",
+  "stem": "For a spring obeying Hooke's law, the extension is:",
+  "options": {
+   "A": "Inversely proportional to the force",
+   "B": "Independent of the force",
+   "C": "Directly proportional to the force applied",
+   "D": "Inversely proportional to the applied force"
+  },
+  "correct": "C",
+  "tag": "MC-GPHYS-SPRINGS-MATERIALS",
+  "scaffold": "Hooke's law gives F = kΔL, so extension is proportional to force up to the limit of proportionality. Beyond that the graph curves; past the elastic limit the material no longer returns to its original length. The gradient of a force–extension graph is the spring constant k in N m⁻¹, and the area beneath it is the elastic strain energy stored, ½FΔL or ½kΔL².",
+  "reforge": {
+   "stem": "A spring of stiffness 200 N m⁻¹ is extended by 0.10 m. The energy stored is:",
+   "options": {
+    "A": "1.0 J",
+    "B": "2.0 J",
+    "C": "20 J",
+    "D": "0.50 J"
+   },
+   "correct": "A"
+  }
+ },
+ {
+  "id": "PHYS-N1-16",
+  "stem": "The Young modulus of a material is defined as:",
+  "options": {
+   "A": "Force × area",
+   "B": "Strain ÷ stress",
+   "C": "Force ÷ extension",
+   "D": "Stress ÷ strain"
+  },
+  "correct": "D",
+  "tag": "MC-GPHYS-SPRINGS-MATERIALS",
+  "scaffold": "Young modulus E = stress ÷ strain, where stress = F ÷ A in pascals and strain = ΔL ÷ L and has no units. E therefore has the same units as stress, Pa. It is a property of the material, unlike the spring constant, which also depends on the specimen's dimensions. On a stress–strain graph the gradient of the straight portion gives E, and the area beneath gives energy per unit volume.",
+  "reforge": {
+   "stem": "Strain has no units because it is:",
+   "options": {
+    "A": "Measured in pascals",
+    "B": "A ratio of two lengths",
+    "C": "A force per unit area",
+    "D": "Always a very small number"
+   },
+   "correct": "B"
+  }
+ },
+ {
+  "id": "PHYS-N1-17",
+  "stem": "A material that undergoes very little plastic deformation before breaking is described as:",
+  "options": {
+   "A": "Brittle",
+   "B": "Ductile",
+   "C": "Elastic",
+   "D": "Malleable"
+  },
+  "correct": "A",
+  "tag": "MC-GPHYS-SPRINGS-MATERIALS",
+  "scaffold": "Brittle materials such as glass and ceramics break soon after the elastic limit with little plastic deformation. Ductile materials such as copper deform plastically a great deal and can be drawn into wires. Elastic behaviour means returning to the original shape when the load is removed; plastic means a permanent change remains. A stress–strain graph distinguishes them by how much curve follows the straight elastic section.",
+  "reforge": {
+   "stem": "Plastic deformation means that when the load is removed the material:",
+   "options": {
+    "A": "Returns exactly to its original length",
+    "B": "Becomes stronger than before",
+    "C": "Keeps a permanent change in shape",
+    "D": "Breaks immediately"
+   },
+   "correct": "C"
+  }
+ },
+ {
+  "id": "PHYS-N1-18",
+  "stem": "A projectile is launched horizontally. Ignoring air resistance, its horizontal velocity:",
+  "options": {
+   "A": "Decreases steadily",
+   "B": "Remains constant",
+   "C": "Reaches zero at the top",
+   "D": "Increases with time"
+  },
+  "correct": "B",
+  "tag": "MC-GPHYS-MOTION-GRAVITY",
+  "scaffold": "Projectile motion is analysed by treating the horizontal and vertical components independently. Horizontally there is no force (ignoring drag), so velocity is constant. Vertically the acceleration is g downwards, so vertical velocity changes uniformly. The two are linked only by time. This is why a ball dropped and a ball fired horizontally from the same height land together.",
+  "reforge": {
+   "stem": "A ball is dropped and another is fired horizontally from the same height at the same moment. They land:",
+   "options": {
+    "A": "Depending on the horizontal speed",
+    "B": "The dropped one first",
+    "C": "The fired one first",
+    "D": "At the same time"
+   },
+   "correct": "D"
+  }
+ },
+ {
+  "id": "PHYS-N1-19",
+  "stem": "An object moves in a circle at constant speed. Its acceleration is:",
+  "options": {
+   "A": "Zero, since the speed is constant",
+   "B": "Directed along the velocity",
+   "C": "Directed towards the centre",
+   "D": "Directed away from the centre"
+  },
+  "correct": "C",
+  "tag": "MC-GPHYS-MOTION-GRAVITY",
+  "scaffold": "In uniform circular motion the speed is constant but the velocity is not, because its direction changes continuously. The acceleration, and so the resultant force, points towards the centre — centripetal, meaning centre-seeking. Its magnitude is v²/r or ω²r. There is no outward 'centrifugal force' acting on the body; the outward sensation is the body's inertia.",
+  "reforge": {
+   "stem": "The centripetal force on a car cornering on a level road is provided by:",
+   "options": {
+    "A": "Friction between tyres and road",
+    "B": "The normal contact force",
+    "C": "The weight of the car",
+    "D": "The engine's forward driving force"
+   },
+   "correct": "A"
+  }
+ },
+ {
+  "id": "PHYS-N1-20",
+  "stem": "Newton's law of gravitation states that the force between two masses is proportional to:",
+  "options": {
+   "A": "The difference of the masses only",
+   "B": "The sum of the masses and inversely to their separation",
+   "C": "The sum of the masses and inversely to their separation distance",
+   "D": "The masses, inversely to separation squared"
+  },
+  "correct": "D",
+  "tag": "MC-GPHYS-MOTION-GRAVITY",
+  "scaffold": "F = Gm₁m₂/r², an inverse square law, always attractive, acting along the line joining the centres of mass. Doubling the separation quarters the force. Gravitational field strength g = F/m in N kg⁻¹, and near a spherical mass g = GM/r². Inside a uniform shell the field is zero. The same inverse square form appears in Coulomb's law for electric charges.",
+  "reforge": {
+   "stem": "If the distance between two masses is doubled, the gravitational force between them becomes:",
+   "options": {
+    "A": "Half as large",
+    "B": "A quarter as large",
+    "C": "Twice as large",
+    "D": "Four times as large"
+   },
+   "correct": "B"
+  }
+ },
+ {
+  "id": "PHYS-N1-21",
+  "stem": "For a satellite to remain above one fixed point on the ground, it must orbit:",
+  "options": {
+   "A": "Above the equator, period 24 h",
+   "B": "Over the poles at low altitude",
+   "C": "Over the poles at a very low altitude",
+   "D": "With a period of 12 hours"
+  },
+  "correct": "A",
+  "tag": "MC-GPHYS-ASTRONOMY",
+  "scaffold": "A geostationary satellite stays above one point on the Earth's surface, so it must orbit above the equator, in the same direction as the Earth's rotation, with a period of 24 hours. That period fixes the radius through Kepler's third law, T² ∝ r³, giving about 36,000 km altitude. Polar orbits are lower and faster, giving whole-surface coverage over successive passes, which suits imaging rather than communications.",
+  "reforge": {
+   "stem": "Kepler's third law relates orbital period T and radius r by:",
+   "options": {
+    "A": "T ∝ r",
+    "B": "T³ ∝ r²",
+    "C": "T² ∝ r³",
+    "D": "T ∝ 1/r"
+   },
+   "correct": "C"
+  }
+ },
+ {
+  "id": "PHYS-N1-22",
+  "stem": "The unit of the physical quantity found from force × distance is the:",
+  "options": {
+   "A": "Watt",
+   "B": "Joule",
+   "C": "Newton",
+   "D": "Pascal"
+  },
+  "correct": "B",
+  "tag": "MC-GPHYS-MEASUREMENT",
+  "scaffold": "Force × distance gives work or energy, measured in joules, where 1 J = 1 N m. Base SI units are kg, m, s, A, K, mol and cd; derived units are combinations, so the joule is kg m² s⁻². Checking that both sides of an equation reduce to the same base units — homogeneity — is a quick way to detect an incorrectly recalled formula.",
+  "reforge": {
+   "stem": "Expressed in SI base units, the joule is equivalent to:",
+   "options": {
+    "A": "kg m s⁻²",
+    "B": "kg m⁻¹ s⁻²",
+    "C": "kg m² s⁻³",
+    "D": "kg m² s⁻²"
+   },
+   "correct": "D"
+  }
+ },
+ {
+  "id": "PHYS-N1-23",
+  "stem": "A measurement has a small random error but a large systematic error. The results are:",
+  "options": {
+   "A": "Accurate but not precise",
+   "B": "Both accurate and precise",
+   "C": "Precise but not accurate",
+   "D": "Neither accurate nor precise"
+  },
+  "correct": "C",
+  "tag": "MC-GPHYS-MEASUREMENT",
+  "scaffold": "Precision describes how closely repeated readings agree and is limited by random error; accuracy describes how close they are to the true value and is spoilt by systematic error. Random errors are reduced by repeating and averaging; systematic errors are not, and must be found and corrected — a zero error on an instrument being the classic example. A tightly grouped but consistently offset set of readings is precise but inaccurate.",
+  "reforge": {
+   "stem": "Repeating a measurement and taking a mean reduces:",
+   "options": {
+    "A": "Random error",
+    "B": "Zero error",
+    "C": "Systematic error",
+    "D": "Percentage uncertainty in the instrument"
+   },
+   "correct": "A"
+  }
+ },
+ {
+  "id": "PHYS-N1-24",
+  "stem": "A length is measured as 25.0 cm with an absolute uncertainty of 0.5 cm. The percentage uncertainty is:",
+  "options": {
+   "A": "0.5%",
+   "B": "5.0%",
+   "C": "12.5%",
+   "D": "2.0%"
+  },
+  "correct": "D",
+  "tag": "MC-GPHYS-MEASUREMENT",
+  "scaffold": "Percentage uncertainty = (absolute uncertainty ÷ measurement) × 100 = (0.5 ÷ 25.0) × 100 = 2.0%. When quantities are multiplied or divided, add their percentage uncertainties; when added or subtracted, add their absolute uncertainties. When a quantity is raised to a power n, multiply its percentage uncertainty by n — so a squared term doubles it.",
+  "reforge": {
+   "stem": "A quantity with 3% uncertainty is cubed. The uncertainty in the result is:",
+   "options": {
+    "A": "3%",
+    "B": "9%",
+    "C": "27%",
+    "D": "1%"
+   },
+   "correct": "B"
+  }
+ },
+ {
+  "id": "PHYS-N1-25",
+  "stem": "A displacement–time graph is a horizontal straight line. The object is:",
+  "options": {
+   "A": "Stationary",
+   "B": "Moving at constant velocity",
+   "C": "Accelerating uniformly",
+   "D": "Decelerating"
+  },
+  "correct": "A",
+  "tag": "MC-GPHYS-GRAPHS-KINEMATICS",
+  "scaffold": "A horizontal line on a displacement–time graph has zero gradient, so velocity is zero and the object is stationary. A straight sloping line means constant velocity, and a curve means changing velocity, so acceleration. On a velocity–time graph a horizontal line means constant velocity, and a horizontal line at zero means stationary — the same shape carries different meaning depending on the axes.",
+  "reforge": {
+   "stem": "A velocity–time graph is a horizontal line above the time axis. The object is:",
+   "options": {
+    "A": "Stationary",
+    "B": "Changing direction continuously",
+    "C": "Moving at constant velocity",
+    "D": "Changing direction"
+   },
+   "correct": "C"
+  }
+ },
+ {
+  "id": "PHYS-N1-26",
+  "stem": "The terminal velocity of a falling object is reached when:",
+  "options": {
+   "A": "Its weight exceeds the drag force",
+   "B": "The drag force equals its weight",
+   "C": "Its acceleration reaches g",
+   "D": "Air resistance becomes zero"
+  },
+  "correct": "B",
+  "tag": "MC-GPHYS-RESULTANT-FORCE",
+  "scaffold": "As speed increases, drag increases until it balances weight; the resultant force is then zero, acceleration is zero and the object falls at constant terminal velocity. Note it is still moving, just no longer speeding up. On a velocity–time graph the curve flattens to a horizontal line. Increasing the surface area, as with a parachute, raises drag at a given speed and so lowers terminal velocity.",
+  "reforge": {
+   "stem": "A skydiver opens a parachute. Their terminal velocity:",
+   "options": {
+    "A": "Increases, since the drag force rises",
+    "B": "Stays the same",
+    "C": "Falls to zero immediately",
+    "D": "Decreases, since drag rises"
+   },
+   "correct": "D"
+  }
+ },
+ {
+  "id": "PHYS-N1-27",
+  "stem": "A 60 W lamp is switched on for 300 s. The energy transferred is:",
+  "options": {
+   "A": "360 joules",
+   "B": "5 J",
+   "C": "18000 J",
+   "D": "360 J"
+  },
+  "correct": "C",
+  "tag": "MC-GPHYS-WORK-ENERGY",
+  "scaffold": "Energy = power × time = 60 × 300 = 18,000 J, or 18 kJ. Watts are joules per second, so the time must be in seconds — using minutes here would give an answer 60 times too small. In electrical contexts the same relationship appears as E = VIt, since power P = VI, and the kilowatt-hour used for domestic billing is 3.6 × 10⁶ J.",
+  "reforge": {
+   "stem": "Power is related to force and velocity for steady motion by:",
+   "options": {
+    "A": "P = Fv",
+    "B": "P = F ÷ v",
+    "C": "P = F + v",
+    "D": "P = Fv²"
+   },
+   "correct": "A"
+  }
+ },
+ {
+  "id": "PHYS-N1-28",
+  "stem": "A car of mass 1200 kg accelerates from 10 m s⁻¹ to 20 m s⁻¹. The increase in kinetic energy is:",
+  "options": {
+   "A": "60 kJ",
+   "B": "240 kJ",
+   "C": "120 kJ",
+   "D": "180 kJ"
+  },
+  "correct": "D",
+  "tag": "MC-GPHYS-WORK-ENERGY",
+  "scaffold": "Kinetic energy before = ½ × 1200 × 100 = 60,000 J; after = ½ × 1200 × 400 = 240,000 J. The increase is 180,000 J = 180 kJ. Because v is squared, doubling the speed quadruples the kinetic energy, so the increase is three times the original value — not double. Calculating ½m(v − u)² instead of the difference of the two energies is the standard error.",
+  "reforge": {
+   "stem": "Doubling an object's speed changes its kinetic energy by a factor of:",
+   "options": {
+    "A": "2",
+    "B": "4",
+    "C": "√2",
+    "D": "8"
+   },
+   "correct": "B"
+  }
+ },
+ {
+  "id": "PHYS-N1-29",
+  "stem": "A force of 5.0 N acts for 4.0 s on a body. The impulse delivered is:",
+  "options": {
+   "A": "20 N s",
+   "B": "1.25 N s",
+   "C": "0.8 N s",
+   "D": "9.0 N s"
+  },
+  "correct": "A",
+  "tag": "MC-GPHYS-MOTION-GRAVITY",
+  "scaffold": "Impulse = FΔt = 5.0 × 4.0 = 20 N s, and equals the change in momentum, so its unit is equivalently kg m s⁻¹. On a force–time graph the area beneath gives the impulse. Extending the time over which momentum changes reduces the force required — the principle behind crumple zones, airbags and bending the knees on landing.",
+  "reforge": {
+   "stem": "A car's crumple zone reduces the force on occupants in a crash by:",
+   "options": {
+    "A": "Reducing the change in momentum",
+    "B": "Increasing the mass of the car",
+    "C": "Increasing the time taken to stop",
+    "D": "Reducing the total change in momentum"
+   },
+   "correct": "C"
+  }
+ },
+ {
+  "id": "PHYS-N1-30",
+  "stem": "Two forces act on an object in opposite directions along the same line: 15 N and 9 N. The resultant is:",
+  "options": {
+   "A": "24 N",
+   "B": "6 N",
+   "C": "135 N",
+   "D": "1.67 N"
+  },
+  "correct": "B",
+  "tag": "MC-GPHYS-RESULTANT-FORCE",
+  "scaffold": "Antiparallel forces subtract: 15 − 9 = 6 N, acting in the direction of the larger force. Parallel forces in the same direction add to 24 N. Perpendicular forces combine by Pythagoras. For forces at other angles, resolve each into horizontal and vertical components, sum each direction separately, then recombine — the general method that covers all these special cases.",
+  "reforge": {
+   "stem": "To combine forces acting at an arbitrary angle, the general method is to:",
+   "options": {
+    "A": "Add their magnitudes directly",
+    "B": "Multiply the magnitudes together",
+    "C": "Add their magnitudes together directly",
+    "D": "Resolve, then recombine"
+   },
+   "correct": "D"
+  }
+ },
+ {
+  "id": "PHYS-N1-31",
+  "stem": "A body of mass 0.5 kg has momentum 4.0 kg m s⁻¹. Its velocity is:",
+  "options": {
+   "A": "2.0 m s⁻¹",
+   "B": "0.125 m s⁻¹",
+   "C": "8.0 m s⁻¹",
+   "D": "4.5 m s⁻¹"
+  },
+  "correct": "C",
+  "tag": "MC-GPHYS-MOTION-GRAVITY",
+  "scaffold": "Momentum p = mv, so v = p ÷ m = 4.0 ÷ 0.5 = 8.0 m s⁻¹. Dividing the wrong way round gives 0.125. Momentum is a vector in the direction of the velocity, measured in kg m s⁻¹ or equivalently N s. Newton's second law in its general form states that resultant force equals the rate of change of momentum, which reduces to F = ma when mass is constant.",
+  "reforge": {
+   "stem": "Newton's second law in its general form states that resultant force equals the:",
+   "options": {
+    "A": "Rate of change of momentum",
+    "B": "Product of mass and velocity",
+    "C": "Change in kinetic energy",
+    "D": "Rate of change of displacement"
+   },
+   "correct": "A"
+  }
+ },
+ {
+  "id": "PHYS-N1-32",
+  "stem": "A trolley is released on a frictionless slope. As it descends, its gravitational potential energy:",
+  "options": {
+   "A": "Increases as kinetic energy increases",
+   "B": "Increases as the kinetic energy also increases",
+   "C": "Is destroyed",
+   "D": "Converts to kinetic energy"
+  },
+  "correct": "D",
+  "tag": "MC-GPHYS-WORK-ENERGY",
+  "scaffold": "With no resistive forces, mechanical energy is conserved: the loss in gravitational potential energy equals the gain in kinetic energy, so mgΔh = ½mv². The mass cancels, which is why the speed at the bottom of a frictionless slope does not depend on mass. When friction or drag acts, some energy becomes internal energy and the final kinetic energy is correspondingly smaller.",
+  "reforge": {
+   "stem": "An object falls 5.0 m from rest with no air resistance. Using g = 9.81 m s⁻², its speed on landing is:",
+   "options": {
+    "A": "49 m s⁻¹",
+    "B": "9.9 m s⁻¹",
+    "C": "25 m s⁻¹",
+    "D": "5.0 m s⁻¹"
+   },
+   "correct": "B"
+  }
+ },
+ {
+  "id": "PHYS-N1-33",
+  "stem": "The centre of mass of a uniform rectangular sheet is located:",
+  "options": {
+   "A": "At its centre",
+   "B": "Along its longest edge",
+   "C": "At one corner",
+   "D": "Outside the sheet"
+  },
+  "correct": "A",
+  "tag": "MC-GPHYS-RESULTANT-FORCE",
+  "scaffold": "For a uniform object the centre of mass sits at the geometric centre. It is the point where the whole weight can be taken to act, which simplifies moment calculations. For an irregular shape it can be found by suspending the object from two different points and marking the vertical through each. An object topples when the vertical line through its centre of mass falls outside its base.",
+  "reforge": {
+   "stem": "An object topples over when the vertical line through its centre of mass:",
+   "options": {
+    "A": "Passes through the centre of the base",
+    "B": "Is parallel to the base",
+    "C": "Falls outside the base",
+    "D": "Passes through the highest point"
+   },
+   "correct": "C"
+  }
+ },
+ {
+  "id": "PHYS-N1-34",
+  "stem": "An object decelerates uniformly from 20 m s⁻¹ to rest in 5.0 s. Its acceleration is:",
+  "options": {
+   "A": "4.0 m s⁻²",
+   "B": "−4.0 m s⁻²",
+   "C": "−100 m s⁻²",
+   "D": "−0.25 m s⁻²"
+  },
+  "correct": "B",
+  "tag": "MC-GPHYS-GRAPHS-KINEMATICS",
+  "scaffold": "Acceleration = (v − u) ÷ t = (0 − 20) ÷ 5.0 = −4.0 m s⁻². The negative sign shows the acceleration opposes the motion, which is what deceleration means; quoting the magnitude alone loses the direction information. Sign conventions matter throughout kinematics: choose a positive direction at the start and apply it consistently to displacement, velocity and acceleration.",
+  "reforge": {
+   "stem": "Using v² = u² + 2as, an object decelerating at 4.0 m s⁻² from 20 m s⁻¹ stops after:",
+   "options": {
+    "A": "5.0 m",
+    "B": "100 m",
+    "C": "25 m",
+    "D": "50 m"
+   },
+   "correct": "D"
+  }
+ },
+ {
+  "id": "PHYS-N1-35",
+  "stem": "Which pair correctly matches a quantity with its SI unit?",
+  "options": {
+   "A": "Force — pascal",
+   "B": "Pressure — measured in newtons",
+   "C": "Momentum — kg m s⁻¹",
+   "D": "Power — joule"
+  },
+  "correct": "C",
+  "tag": "MC-GPHYS-MEASUREMENT",
+  "scaffold": "Momentum is kg m s⁻¹, equivalently N s. Force is measured in newtons, pressure in pascals (N m⁻²), energy in joules and power in watts (J s⁻¹). Confusing energy with power is the commonest slip: energy is a total, power is a rate. Checking units is a fast way to test whether a recalled formula is right, since an equation must be dimensionally consistent.",
+  "reforge": {
+   "stem": "The pascal is equivalent to:",
+   "options": {
+    "A": "N m⁻²",
+    "B": "N m",
+    "C": "J s⁻¹",
+    "D": "kg m s⁻²"
+   },
+   "correct": "A"
+  }
+ },
+ {
+  "id": "PHYS-N1-36",
+  "stem": "A stress–strain graph for a ductile metal shows a straight line followed by a curve. The straight portion represents:",
+  "options": {
+   "A": "Plastic deformation",
+   "B": "Permanent plastic deformation",
+   "C": "The breaking stress",
+   "D": "Elastic, obeying Hooke"
+  },
+  "correct": "D",
+  "tag": "MC-GPHYS-SPRINGS-MATERIALS",
+  "scaffold": "The straight section shows proportional, elastic behaviour, with gradient equal to the Young modulus. The limit of proportionality is where the line first curves; the elastic limit follows, beyond which deformation is permanent. The yield point is where extension increases sharply for little extra stress, and the ultimate tensile stress is the maximum before fracture.",
+  "reforge": {
+   "stem": "The gradient of the straight section of a stress–strain graph gives the:",
+   "options": {
+    "A": "Spring constant",
+    "B": "Young modulus",
+    "C": "Breaking stress",
+    "D": "Strain energy"
+   },
+   "correct": "B"
+  }
+ },
+ {
+  "id": "PHYS-N1-37",
+  "stem": "A wire of cross-sectional area 2.0 × 10⁻⁶ m² carries a tension of 40 N. The stress is:",
+  "options": {
+   "A": "2.0 × 10⁷ Pa",
+   "B": "8.0 × 10⁻⁵ Pa",
+   "C": "5.0 × 10⁻⁸ Pa",
+   "D": "40 Pa"
+  },
+  "correct": "A",
+  "tag": "MC-GPHYS-SPRINGS-MATERIALS",
+  "scaffold": "Stress = force ÷ area = 40 ÷ (2.0 × 10⁻⁶) = 2.0 × 10⁷ Pa. Dividing by a small power of ten produces a large answer, so a result smaller than the force signals an inverted calculation. If the diameter is given rather than the area, find A = πr² first, remembering to halve the diameter — forgetting that step introduces a factor of four.",
+  "reforge": {
+   "stem": "A wire of original length 2.0 m extends by 4.0 mm. The strain is:",
+   "options": {
+    "A": "0.50",
+    "B": "8.0 × 10⁻³",
+    "C": "2.0 × 10⁻³",
+    "D": "2.0"
+   },
+   "correct": "C"
+  }
+ },
+ {
+  "id": "PHYS-N1-38",
+  "stem": "Two objects of different mass are dropped in a vacuum. They:",
+  "options": {
+   "A": "Fall with acceleration proportional to mass",
+   "B": "Fall with the same acceleration",
+   "C": "Reach different terminal velocities",
+   "D": "Fall at constant velocity"
+  },
+  "correct": "B",
+  "tag": "MC-GPHYS-MOTION-GRAVITY",
+  "scaffold": "In a vacuum the only force is weight, W = mg, so acceleration a = F ÷ m = mg ÷ m = g for every mass. The mass cancels, so all objects fall at the same rate. In air, drag depends on shape and area rather than mass alone, which is why a feather falls more slowly — the difference is due to air resistance, not to gravity acting differently.",
+  "reforge": {
+   "stem": "A feather falls more slowly than a stone in air because of the difference in:",
+   "options": {
+    "A": "Their masses being different",
+    "B": "Weight alone",
+    "C": "Their masses only",
+    "D": "Air resistance, not gravity"
+   },
+   "correct": "D"
+  }
+ },
+ {
+  "id": "PHYS-N1-39",
+  "stem": "The gravitational field strength at a point is defined as:",
+  "options": {
+   "A": "Energy per unit mass",
+   "B": "Energy stored per unit mass",
+   "C": "Force per unit mass",
+   "D": "Mass per unit volume"
+  },
+  "correct": "C",
+  "tag": "MC-GPHYS-MOTION-GRAVITY",
+  "scaffold": "Gravitational field strength g = F ÷ m, measured in N kg⁻¹, and is numerically equal to the free-fall acceleration in m s⁻². Around a point or spherical mass, g = GM/r², falling with the inverse square of distance from the centre. Field lines point towards the mass and their spacing indicates field strength; uniformly spaced parallel lines represent a uniform field, as near the Earth's surface.",
+  "reforge": {
+   "stem": "Gravitational field lines near the Earth's surface are drawn parallel and evenly spaced because the field there is:",
+   "options": {
+    "A": "Uniform over small distances",
+    "B": "Zero",
+    "C": "Radial and steadily weakening",
+    "D": "Repulsive"
+   },
+   "correct": "A"
+  }
+ },
+ {
+  "id": "PHYS-N1-40",
+  "stem": "An astronaut in orbit appears weightless because they are:",
+  "options": {
+   "A": "Beyond the Earth's gravitational field entirely",
+   "B": "Shielded by the spacecraft",
+   "C": "Moving too fast for gravity to act",
+   "D": "In free fall together with the spacecraft"
+  },
+  "correct": "D",
+  "tag": "MC-GPHYS-ASTRONOMY",
+  "scaffold": "In orbit gravity is still strong — it provides the centripetal force keeping the spacecraft in its path. Both astronaut and craft accelerate towards the Earth at the same rate, so there is no contact force between them and no sensation of weight. Apparent weightlessness therefore means free fall, not the absence of gravity, which is the most common misconception in this topic.",
+  "reforge": {
+   "stem": "The centripetal force keeping a satellite in orbit is provided by:",
+   "options": {
+    "A": "Its engines firing continuously",
+    "B": "Gravitational attraction to the Earth",
+    "C": "Air resistance in the upper atmosphere",
+    "D": "The satellite's own momentum"
+   },
+   "correct": "B"
+  }
+ },
+ {
+  "id": "PHYS-N1-41",
+  "stem": "A student records 5 repeat readings that differ slightly. The best estimate of the true value is:",
+  "options": {
+   "A": "The mean of the readings",
+   "B": "The smallest reading",
+   "C": "The most recent reading taken",
+   "D": "The largest reading"
+  },
+  "correct": "A",
+  "tag": "MC-GPHYS-MEASUREMENT",
+  "scaffold": "Averaging repeats reduces the effect of random error, so the mean is the best estimate. Anomalous results should be identified and excluded before averaging, with a reason given. The uncertainty may be estimated as half the range of the readings. Repeating does nothing for systematic error, which shifts every reading in the same direction and must be traced to its cause.",
+  "reforge": {
+   "stem": "Readings of 4.1, 4.2, 4.0 and 6.8 are recorded. The correct treatment is to:",
+   "options": {
+    "A": "Average all four values",
+    "B": "Use only the largest value",
+    "C": "Exclude 6.8, giving a reason",
+    "D": "Repeat until 6.8 appears again"
+   },
+   "correct": "C"
+  }
+ },
+ {
+  "id": "PHYS-N1-42",
+  "stem": "A quantity is stated as 4.50 × 10³ m. The number of significant figures is:",
+  "options": {
+   "A": "Two",
+   "B": "3",
+   "C": "Four",
+   "D": "Six"
+  },
+  "correct": "B",
+  "tag": "MC-GPHYS-MEASUREMENT",
+  "scaffold": "In standard form only the coefficient carries significant figures, so 4.50 × 10³ has three — the trailing zero counts because it is stated deliberately. A calculated result should be quoted to the same number of significant figures as the least precise input, and intermediate values should be carried at full precision to avoid rounding errors accumulating.",
+  "reforge": {
+   "stem": "A calculation uses values given to 2 and 4 significant figures. The answer should be quoted to:",
+   "options": {
+    "A": "3 significant figures",
+    "B": "4 significant figures",
+    "C": "6 significant figures",
+    "D": "2 significant figures"
+   },
+   "correct": "D"
+  }
+ },
+ {
+  "id": "PHYS-N1-43",
+  "stem": "A velocity–time graph shows a straight line sloping downwards to cross the time axis. After crossing, the object is:",
+  "options": {
+   "A": "Stationary",
+   "B": "Accelerating forwards",
+   "C": "Moving the opposite way",
+   "D": "Moving at a constant speed"
+  },
+  "correct": "C",
+  "tag": "MC-GPHYS-GRAPHS-KINEMATICS",
+  "scaffold": "Below the time axis the velocity is negative, so the object moves in the opposite direction to before. The gradient is unchanged, so the acceleration is constant throughout — the object slowed, stopped momentarily at the crossing point, and then reversed. Area below the axis counts as negative displacement, so the total displacement may be less than the total distance travelled.",
+  "reforge": {
+   "stem": "On a velocity–time graph, area below the time axis represents:",
+   "options": {
+    "A": "Negative displacement",
+    "B": "Negative acceleration",
+    "C": "Zero displacement",
+    "D": "Distance travelled forwards only"
+   },
+   "correct": "A"
+  }
+ },
+ {
+  "id": "PHYS-N1-44",
+  "stem": "A lift accelerates upwards. The reading on a scale beneath a passenger is:",
+  "options": {
+   "A": "Zero",
+   "B": "Equal to their true weight",
+   "C": "Equal to their true weight throughout",
+   "D": "Greater than their true weight"
+  },
+  "correct": "D",
+  "tag": "MC-GPHYS-RESULTANT-FORCE",
+  "scaffold": "The scale reads the normal contact force. Accelerating upwards requires a net upward force, so N − W = ma and N = m(g + a), greater than the weight. Accelerating downwards gives N = m(g − a), less than the weight, and in free fall a = g so N = 0, which is apparent weightlessness. The true weight mg is unchanged throughout; only the contact force varies.",
+  "reforge": {
+   "stem": "A lift's cable breaks and it falls freely. The scale reading beneath a passenger is:",
+   "options": {
+    "A": "Double their weight",
+    "B": "Zero",
+    "C": "Their true weight",
+    "D": "Half their weight"
+   },
+   "correct": "B"
+  }
+ },
+ {
+  "id": "PHYS-N1-45",
+  "stem": "An object is dropped from a height and air resistance is significant. As it falls, its acceleration:",
+  "options": {
+   "A": "Decreases towards zero",
+   "B": "Increases steadily",
+   "C": "Stays constant at g",
+   "D": "Becomes negative immediately"
+  },
+  "correct": "A",
+  "tag": "MC-GPHYS-RESULTANT-FORCE",
+  "scaffold": "At release, drag is zero and acceleration equals g. As speed rises, drag rises, so the resultant force and therefore acceleration fall. When drag equals weight the acceleration reaches zero and the object continues at terminal velocity. Note the object keeps speeding up throughout — it is the rate of increase that falls, which is why the velocity–time curve flattens rather than turning downwards.",
+  "reforge": {
+   "stem": "While an object approaches terminal velocity, its speed is:",
+   "options": {
+    "A": "Decreasing",
+    "B": "Constant from the moment of release",
+    "C": "Still increasing, but more slowly",
+    "D": "Zero"
+   },
+   "correct": "C"
+  }
+ }
+]);
+physExpansion("PHYS-2", [
+ {
+  "id": "PHYS-N2-01",
+  "stem": "Electric current is defined as the rate of flow of:",
+  "options": {
+   "A": "Energy",
+   "B": "Charge",
+   "C": "Voltage",
+   "D": "Resistance"
+  },
+  "correct": "B",
+  "tag": "MC-GPHYS-CIRCUITS",
+  "scaffold": "Current I = ΔQ/Δt, measured in amperes, where one ampere is one coulomb per second. Conventional current is drawn from positive to negative, whereas electrons actually drift from negative to positive — the convention predates the discovery of the electron. Charge is quantised in units of e = 1.60 × 10⁻¹⁹ C, so a total charge is always a whole number multiple of that value.",
+  "reforge": {
+   "stem": "A current of 2.0 A flows for 30 s. The charge transferred is:",
+   "options": {
+    "A": "15 C",
+    "B": "0.067 C",
+    "C": "32 C",
+    "D": "60 C"
+   },
+   "correct": "D"
+  }
+ },
+ {
+  "id": "PHYS-N2-02",
+  "stem": "Potential difference across a component is defined as:",
+  "options": {
+   "A": "Current flowing per unit resistance",
+   "B": "Charge per unit time",
+   "C": "Energy transferred per unit charge",
+   "D": "Force per unit charge"
+  },
+  "correct": "C",
+  "tag": "MC-GPHYS-CIRCUITS",
+  "scaffold": "Potential difference V = W/Q, energy transferred per coulomb, measured in volts. Electromotive force is defined the same way but refers to energy supplied per coulomb by a source rather than delivered to a component. The distinction matters in circuits with internal resistance, where terminal pd is less than emf because some energy is dissipated inside the source.",
+  "reforge": {
+   "stem": "A cell of emf 12 V has internal resistance. When current flows, the terminal pd is:",
+   "options": {
+    "A": "Less than 12 V",
+    "B": "Exactly 12 V",
+    "C": "Greater than 12 V",
+    "D": "Zero"
+   },
+   "correct": "A"
+  }
+ },
+ {
+  "id": "PHYS-N2-03",
+  "stem": "A resistor carries 0.50 A with 6.0 V across it. Its resistance is:",
+  "options": {
+   "A": "3.0 Ω",
+   "B": "0.083 Ω",
+   "C": "6.5 Ω",
+   "D": "12 Ω"
+  },
+  "correct": "D",
+  "tag": "MC-GPHYS-CIRCUITS",
+  "scaffold": "Ohm's law gives R = V ÷ I = 6.0 ÷ 0.50 = 12 Ω. Dividing the wrong way round gives 0.083. Ohm's law applies to an ohmic conductor at constant temperature, where a current–voltage graph is a straight line through the origin. A filament lamp is non-ohmic: as current rises the filament heats, resistance increases and the graph curves.",
+  "reforge": {
+   "stem": "The I–V graph for a filament lamp curves rather than being straight because as current increases the filament:",
+   "options": {
+    "A": "Cools, lowering resistance",
+    "B": "Heats, raising resistance",
+    "C": "Carries no current",
+    "D": "Becomes superconducting"
+   },
+   "correct": "B"
+  }
+ },
+ {
+  "id": "PHYS-N2-04",
+  "stem": "Two 6 Ω resistors are connected in series. The total resistance is:",
+  "options": {
+   "A": "12 Ω",
+   "B": "3 Ω",
+   "C": "36 Ω",
+   "D": "0.33 Ω"
+  },
+  "correct": "A",
+  "tag": "MC-GPHYS-CIRCUITS",
+  "scaffold": "In series resistances add: R = R₁ + R₂ = 12 Ω, and the total is always larger than the largest individual resistor. In parallel 1/R = 1/R₁ + 1/R₂, so two 6 Ω resistors give 3 Ω, and the total is always smaller than the smallest individual one. Checking the answer against those two rules catches most arithmetic slips immediately.",
+  "reforge": {
+   "stem": "Two 6 Ω resistors are connected in parallel. The total resistance is:",
+   "options": {
+    "A": "12 Ω",
+    "B": "6 Ω",
+    "C": "3 Ω",
+    "D": "0.33 Ω"
+   },
+   "correct": "C"
+  }
+ },
+ {
+  "id": "PHYS-N2-05",
+  "stem": "In a series circuit, the current through each component is:",
+  "options": {
+   "A": "Divided between components",
+   "B": "The same everywhere",
+   "C": "Greatest at the battery",
+   "D": "Zero in the last component"
+  },
+  "correct": "B",
+  "tag": "MC-GPHYS-CIRCUITS",
+  "scaffold": "In series there is only one path, so current is identical at every point, while the pd divides between components in proportion to their resistance. In parallel each branch has the full supply pd across it, and the currents in the branches add to the total. These follow from conservation of charge at a junction and conservation of energy around a loop — Kirchhoff's two laws.",
+  "reforge": {
+   "stem": "Kirchhoff's first law, that currents into a junction equal currents out, follows from conservation of:",
+   "options": {
+    "A": "Energy",
+    "B": "Momentum",
+    "C": "Mass",
+    "D": "Charge"
+   },
+   "correct": "D"
+  }
+ },
+ {
+  "id": "PHYS-N2-06",
+  "stem": "The power dissipated by a resistor can be calculated as:",
+  "options": {
+   "A": "P = V ÷ I",
+   "B": "P = IR²",
+   "C": "P = I²R",
+   "D": "P = V ÷ R"
+  },
+  "correct": "C",
+  "tag": "MC-GPHYS-CIRCUITS",
+  "scaffold": "Power P = VI, and substituting Ohm's law gives the equivalent forms P = I²R and P = V²/R. Choose whichever form matches the quantities given. Because power depends on the square of the current, doubling the current quadruples the heating — the reason electrical transmission uses high voltage and low current to reduce losses in the cables.",
+  "reforge": {
+   "stem": "Electricity is transmitted at high voltage and low current mainly to reduce:",
+   "options": {
+    "A": "Power lost as heat in the cables",
+    "B": "The cost of the cables",
+    "C": "The voltage delivered to the consumer",
+    "D": "The frequency of the supply"
+   },
+   "correct": "A"
+  }
+ },
+ {
+  "id": "PHYS-N2-07",
+  "stem": "The resistivity of a material is related to resistance by R = ρL/A. Doubling the length of a wire will:",
+  "options": {
+   "A": "Halve the resistance",
+   "B": "Leave resistance unchanged",
+   "C": "Quarter the resistance",
+   "D": "Double the resistance"
+  },
+  "correct": "D",
+  "tag": "MC-GPHYS-CIRCUITS",
+  "scaffold": "R = ρL/A, so resistance is proportional to length and inversely proportional to cross-sectional area. Doubling the length doubles R; doubling the diameter quadruples the area and so quarters R. Resistivity ρ is a property of the material, measured in Ω m, and varies with temperature — rising for metals and falling for semiconductors such as a thermistor.",
+  "reforge": {
+   "stem": "The resistance of a thermistor as temperature rises typically:",
+   "options": {
+    "A": "Increases sharply",
+    "B": "Decreases",
+    "C": "Stays constant",
+    "D": "Falls to zero"
+   },
+   "correct": "B"
+  }
+ },
+ {
+  "id": "PHYS-N2-08",
+  "stem": "A potential divider with two equal resistors across a 12 V supply gives an output of:",
+  "options": {
+   "A": "6 V",
+   "B": "12 V",
+   "C": "24 V",
+   "D": "3 V"
+  },
+  "correct": "A",
+  "tag": "MC-GPHYS-CIRCUITS",
+  "scaffold": "A potential divider splits the supply in the ratio of the resistances: Vout = Vin × R₂/(R₁ + R₂). With equal resistors the output is half the supply, 6 V. Replacing one resistor with an LDR or thermistor makes the output vary with light or temperature, which is how sensor circuits are built. Drawing current from the output alters the ratio, so the loading effect must be considered.",
+  "reforge": {
+   "stem": "In a potential divider, replacing one fixed resistor with a light-dependent resistor makes the output vary with:",
+   "options": {
+    "A": "Temperature",
+    "B": "Supply frequency",
+    "C": "Light intensity",
+    "D": "Current direction"
+   },
+   "correct": "C"
+  }
+ },
+ {
+  "id": "PHYS-N2-09",
+  "stem": "The emf of a cell with internal resistance is given by ε = I(R + r). The term Ir represents:",
+  "options": {
+   "A": "The terminal potential difference",
+   "B": "The 'lost volts' inside the cell",
+   "C": "The energy stored in the cell",
+   "D": "The power output"
+  },
+  "correct": "B",
+  "tag": "MC-GPHYS-CIRCUITS",
+  "scaffold": "Internal resistance causes energy dissipation inside the source, so terminal pd V = ε − Ir. Plotting V against I gives a straight line with intercept ε and gradient −r. As current increases the terminal pd falls, which is why a car's headlights dim when the starter motor draws a large current. Maximum power is delivered to the external circuit when R equals r.",
+  "reforge": {
+   "stem": "A graph of terminal pd against current for a cell has gradient equal to:",
+   "options": {
+    "A": "The emf",
+    "B": "The power output",
+    "C": "The external circuit resistance",
+    "D": "Minus the internal resistance"
+   },
+   "correct": "D"
+  }
+ },
+ {
+  "id": "PHYS-N2-10",
+  "stem": "In a transverse wave, the oscillations are:",
+  "options": {
+   "A": "Parallel to the direction in which energy travels",
+   "B": "In circles around the source",
+   "C": "Perpendicular to the direction of energy transfer",
+   "D": "Absent altogether"
+  },
+  "correct": "C",
+  "tag": "MC-GPHYS-WAVES",
+  "scaffold": "Transverse waves oscillate perpendicular to the direction of travel — light and all electromagnetic waves, water waves, and waves on a string. Longitudinal waves oscillate parallel to it, forming compressions and rarefactions, as in sound. Only transverse waves can be polarised, which is direct evidence that light is transverse and that sound is not.",
+  "reforge": {
+   "stem": "Sound cannot be polarised because it is a:",
+   "options": {
+    "A": "Longitudinal wave",
+    "B": "Transverse wave",
+    "C": "Standing wave",
+    "D": "Electromagnetic wave"
+   },
+   "correct": "A"
+  }
+ },
+ {
+  "id": "PHYS-N2-11",
+  "stem": "A wave has frequency 50 Hz and wavelength 6.0 m. Its speed is:",
+  "options": {
+   "A": "0.12 m s⁻¹",
+   "B": "8.3 m s⁻¹",
+   "C": "56 m s⁻¹",
+   "D": "300 m s⁻¹"
+  },
+  "correct": "D",
+  "tag": "MC-GPHYS-WAVES",
+  "scaffold": "The wave equation gives v = fλ = 50 × 6.0 = 300 m s⁻¹. Frequency is the number of complete oscillations per second in hertz, and is set by the source; wavelength is the distance between adjacent points in phase. When a wave passes into a new medium the frequency stays the same while the speed and wavelength change together, which is what causes refraction.",
+  "reforge": {
+   "stem": "When a wave passes from one medium into another, the quantity that stays the same is its:",
+   "options": {
+    "A": "Speed",
+    "B": "Frequency",
+    "C": "Wavelength",
+    "D": "Amplitude"
+   },
+   "correct": "B"
+  }
+ },
+ {
+  "id": "PHYS-N2-12",
+  "stem": "Two waves are in antiphase. Their phase difference is:",
+  "options": {
+   "A": "π rad",
+   "B": "π/2 rad",
+   "C": "0 rad",
+   "D": "2π rad"
+  },
+  "correct": "A",
+  "tag": "MC-GPHYS-WAVES",
+  "scaffold": "A phase difference of π radians, or 180°, means antiphase: a crest of one aligns with a trough of the other, giving destructive interference. A difference of 0 or 2π means in phase, giving constructive interference. Path difference relates to phase: a whole number of wavelengths gives constructive interference, an odd number of half wavelengths gives destructive.",
+  "reforge": {
+   "stem": "Two coherent waves arrive with a path difference of exactly one wavelength. The interference is:",
+   "options": {
+    "A": "Partially destructive",
+    "B": "Destructive",
+    "C": "Constructive",
+    "D": "Impossible to determine"
+   },
+   "correct": "C"
+  }
+ },
+ {
+  "id": "PHYS-N2-13",
+  "stem": "For a stable interference pattern, the two sources must be:",
+  "options": {
+   "A": "Sources of two different frequencies",
+   "B": "Coherent, with constant phase",
+   "C": "Very far apart",
+   "D": "Of unequal amplitude"
+  },
+  "correct": "B",
+  "tag": "MC-GPHYS-WAVES",
+  "scaffold": "Coherence means a constant phase relationship and therefore the same frequency, which is why laser light produces clear fringes while two separate lamps do not. Young's double slit experiment uses a single source split into two to guarantee coherence. Fringe spacing w = λD/s, so the pattern spreads with longer wavelength, greater screen distance, or narrower slit separation.",
+  "reforge": {
+   "stem": "In Young's double slit experiment, increasing the slit separation makes the fringes:",
+   "options": {
+    "A": "Wider apart",
+    "B": "Disappear entirely",
+    "C": "Brighter but unchanged in spacing",
+    "D": "Closer together"
+   },
+   "correct": "D"
+  }
+ },
+ {
+  "id": "PHYS-N2-14",
+  "stem": "A stationary wave is formed when two waves of the same frequency travel:",
+  "options": {
+   "A": "In the same direction",
+   "B": "At right angles",
+   "C": "In opposite directions",
+   "D": "In the same direction as each other"
+  },
+  "correct": "C",
+  "tag": "MC-GPHYS-WAVES",
+  "scaffold": "A stationary wave forms from two identical waves travelling in opposite directions, usually an incident wave and its reflection. Nodes are points of zero amplitude and antinodes points of maximum; the distance between adjacent nodes is half a wavelength. Unlike a progressive wave, no net energy is transferred along a stationary wave and all points between nodes oscillate in phase.",
+  "reforge": {
+   "stem": "On a stationary wave, the distance between two adjacent nodes is:",
+   "options": {
+    "A": "Half a wavelength",
+    "B": "One wavelength",
+    "C": "A quarter of a wavelength",
+    "D": "Two wavelengths"
+   },
+   "correct": "A"
+  }
+ },
+ {
+  "id": "PHYS-N2-15",
+  "stem": "Total internal reflection can occur only when light travels:",
+  "options": {
+   "A": "From a less dense medium into a more dense medium",
+   "B": "Through a vacuum",
+   "C": "Along the normal",
+   "D": "Dense to less dense, above the critical angle"
+  },
+  "correct": "D",
+  "tag": "MC-GPHYS-WAVES",
+  "scaffold": "Total internal reflection requires light to move from a higher to a lower refractive index medium, and the angle of incidence to exceed the critical angle, where sin C = n₂/n₁. Optical fibres exploit this with a core of higher index than the cladding, so light is confined. At exactly the critical angle the refracted ray travels along the boundary at 90°.",
+  "reforge": {
+   "stem": "In an optical fibre, the cladding has a refractive index that is:",
+   "options": {
+    "A": "Higher than the core",
+    "B": "Lower than the core",
+    "C": "Equal to the core",
+    "D": "Equal to air"
+   },
+   "correct": "B"
+  }
+ },
+ {
+  "id": "PHYS-N2-16",
+  "stem": "Light passes from air into glass. Its speed:",
+  "options": {
+   "A": "Decreases",
+   "B": "Stays the same",
+   "C": "Increases",
+   "D": "Falls to zero"
+  },
+  "correct": "A",
+  "tag": "MC-GPHYS-WAVES",
+  "scaffold": "Refractive index n = c ÷ v, so a medium with n greater than 1 slows light: glass with n = 1.5 gives v = 2.0 × 10⁸ m s⁻¹. Slowing at the boundary bends the ray towards the normal. Snell's law states n₁ sin θ₁ = n₂ sin θ₂. Frequency is unchanged, so the wavelength shortens in proportion to the speed.",
+  "reforge": {
+   "stem": "Light enters glass of refractive index 1.5 from air. The ray bends:",
+   "options": {
+    "A": "Away from the normal",
+    "B": "Along the boundary",
+    "C": "Towards the normal",
+    "D": "Straight back out"
+   },
+   "correct": "C"
+  }
+ },
+ {
+  "id": "PHYS-N2-17",
+  "stem": "Diffraction of a wave through a gap is most pronounced when the gap width is:",
+  "options": {
+   "A": "Much larger than the wavelength",
+   "B": "Comparable to the wavelength",
+   "C": "Exactly zero",
+   "D": "Unrelated to the wavelength"
+  },
+  "correct": "B",
+  "tag": "MC-GPHYS-WAVES",
+  "scaffold": "Diffraction is greatest when the gap is about the same size as the wavelength; a much wider gap gives little spreading. This is why sound, with wavelengths of around a metre, diffracts around doorways while light, at hundreds of nanometres, does not noticeably. A diffraction grating uses many slits to give sharp maxima at angles satisfying d sin θ = nλ.",
+  "reforge": {
+   "stem": "For a diffraction grating, the positions of the maxima are given by:",
+   "options": {
+    "A": "v = fλ",
+    "B": "n = c ÷ v",
+    "C": "n = c/v",
+    "D": "d sinθ=nλ"
+   },
+   "correct": "D"
+  }
+ },
+ {
+  "id": "PHYS-N2-18",
+  "stem": "Polarisation of light provides evidence that light is:",
+  "options": {
+   "A": "A longitudinal wave",
+   "B": "A stream of particles only",
+   "C": "A transverse wave",
+   "D": "Unable to travel in a vacuum"
+  },
+  "correct": "C",
+  "tag": "MC-GPHYS-WAVES",
+  "scaffold": "Only transverse waves can be polarised, because the oscillation has a direction perpendicular to travel that a filter can select. A polarising filter transmits one plane of oscillation; a second filter at 90° to the first blocks the light entirely. Applications include polarised sunglasses reducing glare from horizontal surfaces, and the use of polarising filters in photography and stress analysis.",
+  "reforge": {
+   "stem": "Two polarising filters are placed with their axes at 90° to each other. The light transmitted is:",
+   "options": {
+    "A": "Reduced to zero",
+    "B": "Halved in intensity",
+    "C": "Unchanged in intensity",
+    "D": "Doubled in intensity"
+   },
+   "correct": "A"
+  }
+ },
+ {
+  "id": "PHYS-N2-19",
+  "stem": "The amplitude of a wave determines its:",
+  "options": {
+   "A": "Its speed through the given medium",
+   "B": "Frequency of oscillation",
+   "C": "Wavelength",
+   "D": "Energy, as amplitude squared"
+  },
+  "correct": "D",
+  "tag": "MC-GPHYS-WAVES",
+  "scaffold": "Wave intensity is proportional to the square of the amplitude, so doubling the amplitude quadruples the energy carried. Amplitude is independent of frequency, wavelength and speed. For sound, greater amplitude means greater loudness; for light, greater brightness. Intensity also obeys an inverse square law with distance from a point source, since the energy spreads over a growing spherical area.",
+  "reforge": {
+   "stem": "The intensity of radiation from a point source at distance r varies as:",
+   "options": {
+    "A": "1 ÷ r, inversely with distance",
+    "B": "1/r²",
+    "C": "r",
+    "D": "r²"
+   },
+   "correct": "B"
+  }
+ },
+ {
+  "id": "PHYS-N2-20",
+  "stem": "A simple pendulum undergoes simple harmonic motion. Its acceleration is:",
+  "options": {
+   "A": "Proportional to x, towards centre",
+   "B": "Constant in magnitude and direction",
+   "C": "Constant in both magnitude and direction",
+   "D": "Zero at the extremes of motion"
+  },
+  "correct": "A",
+  "tag": "MC-GPHYS-OSCILLATIONS-THERMAL",
+  "scaffold": "Simple harmonic motion is defined by a = −ω²x: acceleration proportional to displacement and always directed towards equilibrium, hence the minus sign. Acceleration is therefore greatest at maximum displacement and zero at the centre, while velocity is greatest at the centre and zero at the extremes. The period of a simple pendulum is T = 2π√(l/g), independent of amplitude for small angles.",
+  "reforge": {
+   "stem": "In simple harmonic motion, the velocity of the oscillator is greatest:",
+   "options": {
+    "A": "At maximum displacement from centre",
+    "B": "Midway between them",
+    "C": "At the equilibrium position",
+    "D": "Constant throughout"
+   },
+   "correct": "C"
+  }
+ },
+ {
+  "id": "PHYS-N2-21",
+  "stem": "The period of a mass–spring oscillator is given by T = 2π√(m/k). Increasing the mass will:",
+  "options": {
+   "A": "Decrease the period",
+   "B": "Increase the period",
+   "C": "Leave the period unchanged",
+   "D": "Stop the oscillation"
+  },
+  "correct": "B",
+  "tag": "MC-GPHYS-OSCILLATIONS-THERMAL",
+  "scaffold": "T = 2π√(m/k), so period increases with the square root of mass and decreases with stiffer springs. Quadrupling the mass doubles the period. Note that amplitude does not appear, so for small oscillations the period is independent of how far the mass is displaced — this isochronous property is what made pendulums useful as clocks.",
+  "reforge": {
+   "stem": "For a simple pendulum undergoing small oscillations, the period depends on:",
+   "options": {
+    "A": "The mass of the bob",
+    "B": "The amplitude of swing",
+    "C": "The material the bob is made from",
+    "D": "The length of the pendulum"
+   },
+   "correct": "D"
+  }
+ },
+ {
+  "id": "PHYS-N2-22",
+  "stem": "Resonance occurs when a system is driven at a frequency equal to its:",
+  "options": {
+   "A": "Damping frequency",
+   "B": "Half the natural frequency",
+   "C": "Natural frequency",
+   "D": "Double the natural frequency"
+  },
+  "correct": "C",
+  "tag": "MC-GPHYS-OSCILLATIONS-THERMAL",
+  "scaffold": "At resonance the driving frequency matches the natural frequency, energy transfer to the system is maximum and amplitude peaks sharply. Damping reduces the peak amplitude and broadens the resonance curve, shifting the maximum slightly below the natural frequency. Engineers damp structures to avoid destructive resonance, while instruments and radio tuning circuits exploit it deliberately.",
+  "reforge": {
+   "stem": "Increasing the damping of a resonating system will:",
+   "options": {
+    "A": "Lower the peak, broaden it",
+    "B": "Increase the peak amplitude",
+    "C": "Raise the natural frequency",
+    "D": "Increase the peak amplitude sharply"
+   },
+   "correct": "A"
+  }
+ },
+ {
+  "id": "PHYS-N2-23",
+  "stem": "The internal energy of a system is the sum of the:",
+  "options": {
+   "A": "Chemical energies of its bonds",
+   "B": "Work done and heat supplied",
+   "C": "Work done on it plus heat supplied",
+   "D": "Kinetic and potential of particles"
+  },
+  "correct": "D",
+  "tag": "MC-GPHYS-OSCILLATIONS-THERMAL",
+  "scaffold": "Internal energy is the total randomly distributed kinetic and potential energy of the particles. Raising temperature increases the mean kinetic energy; changing state alters the potential energy while temperature stays constant, which is why a substance melting absorbs energy without getting hotter. Absolute temperature in kelvin is proportional to mean kinetic energy, so 0 K corresponds to minimum internal energy.",
+  "reforge": {
+   "stem": "During melting, the temperature stays constant because the energy supplied changes the particles':",
+   "options": {
+    "A": "Kinetic energy of the particles",
+    "B": "Potential, breaking bonds",
+    "C": "Mass",
+    "D": "Total number"
+   },
+   "correct": "B"
+  }
+ },
+ {
+  "id": "PHYS-N2-24",
+  "stem": "The specific heat capacity of a substance is the energy needed to raise the temperature of:",
+  "options": {
+   "A": "1 kg by 1 K",
+   "B": "1 mole by 1 K",
+   "C": "Any mass by 1 K",
+   "D": "1 kg through a change of state"
+  },
+  "correct": "A",
+  "tag": "MC-GPHYS-OSCILLATIONS-THERMAL",
+  "scaffold": "Specific heat capacity c is energy per kilogram per kelvin, used in Q = mcΔT. Specific latent heat is the energy per kilogram to change state at constant temperature, used in Q = mL, with separate values for fusion and vaporisation. A common error is applying mcΔT during a change of state, when the temperature is not changing at all and mL applies instead.",
+  "reforge": {
+   "stem": "To calculate the energy needed to boil water already at 100 °C, the correct equation is:",
+   "options": {
+    "A": "Q = mcΔT",
+    "B": "Q = mgh",
+    "C": "Q = mL",
+    "D": "Q = ½mv²"
+   },
+   "correct": "C"
+  }
+ },
+ {
+  "id": "PHYS-N2-25",
+  "stem": "For an ideal gas at constant temperature, pressure and volume are related by:",
+  "options": {
+   "A": "p ∝ V",
+   "B": "p ∝ 1/V",
+   "C": "p ∝ V²",
+   "D": "p is independent of V"
+  },
+  "correct": "B",
+  "tag": "MC-GPHYS-OSCILLATIONS-THERMAL",
+  "scaffold": "Boyle's law states pV = constant at fixed temperature, so pressure is inversely proportional to volume. Charles's law gives V ∝ T at constant pressure, and the pressure law p ∝ T at constant volume, both with T in kelvin. Combining them gives the ideal gas equation pV = nRT. Converting Celsius to kelvin by adding 273 is essential; using Celsius directly produces nonsense.",
+  "reforge": {
+   "stem": "In the ideal gas equation pV = nRT, the temperature must be expressed in:",
+   "options": {
+    "A": "Degrees Celsius",
+    "B": "Degrees Fahrenheit",
+    "C": "Any consistent unit",
+    "D": "Kelvin"
+   },
+   "correct": "D"
+  }
+ },
+ {
+  "id": "PHYS-N2-26",
+  "stem": "A magnetic field exerts a force on a current-carrying wire. The force is greatest when the wire is:",
+  "options": {
+   "A": "Aligned parallel to the field",
+   "B": "At 45° to the field",
+   "C": "Perpendicular to the field",
+   "D": "Carrying no current"
+  },
+  "correct": "C",
+  "tag": "MC-GPHYS-FIELDS-ELECTROMAGNETISM",
+  "scaffold": "F = BIL sin θ, so the force is maximum when the wire is perpendicular to the field (θ = 90°) and zero when parallel. Fleming's left-hand rule gives the direction: first finger field, second finger current, thumb motion. Magnetic flux density B is measured in tesla, where one tesla produces one newton per amp per metre on a perpendicular conductor.",
+  "reforge": {
+   "stem": "A wire carries 3.0 A perpendicular to a field of 0.20 T over a length of 0.50 m. The force is:",
+   "options": {
+    "A": "0.30 N",
+    "B": "3.7 N",
+    "C": "0.033 N",
+    "D": "1.2 N"
+   },
+   "correct": "A"
+  }
+ },
+ {
+  "id": "PHYS-N2-27",
+  "stem": "Faraday's law states that the induced emf is proportional to the rate of change of:",
+  "options": {
+   "A": "Current",
+   "B": "Charge",
+   "C": "Current flowing in the coil",
+   "D": "Magnetic flux linkage"
+  },
+  "correct": "D",
+  "tag": "MC-GPHYS-FIELDS-ELECTROMAGNETISM",
+  "scaffold": "Faraday's law gives ε = −N dΦ/dt, so a faster change of flux, or more turns, induces a larger emf. Lenz's law supplies the minus sign: the induced current opposes the change producing it, which is a statement of energy conservation. Flux Φ = BA cos θ, and flux linkage is NΦ. A stationary magnet in a coil induces nothing, since the flux is not changing.",
+  "reforge": {
+   "stem": "The minus sign in Faraday's law expresses Lenz's law, which follows from conservation of:",
+   "options": {
+    "A": "Charge",
+    "B": "Energy",
+    "C": "Momentum",
+    "D": "Magnetic flux"
+   },
+   "correct": "B"
+  }
+ },
+ {
+  "id": "PHYS-N2-28",
+  "stem": "A transformer works on alternating current but not direct current because it requires:",
+  "options": {
+   "A": "A continuously changing magnetic flux",
+   "B": "A high resistance in the primary",
+   "C": "A very high frequency supply",
+   "D": "A very high frequency alternating supply"
+  },
+  "correct": "A",
+  "tag": "MC-GPHYS-FIELDS-ELECTROMAGNETISM",
+  "scaffold": "A transformer relies on a changing flux in the core inducing an emf in the secondary, so a steady direct current produces nothing after the initial switch-on. The turns ratio gives Vs/Vp = Ns/Np. For an ideal transformer power is conserved, so stepping voltage up steps current down. Real losses come from resistance in the windings, eddy currents, and hysteresis in the core.",
+  "reforge": {
+   "stem": "A transformer has 100 primary turns and 400 secondary turns with 12 V input. The output voltage is:",
+   "options": {
+    "A": "3 V",
+    "B": "12 V",
+    "C": "48 V",
+    "D": "400 V"
+   },
+   "correct": "C"
+  }
+ },
+ {
+  "id": "PHYS-N2-29",
+  "stem": "Eddy currents in a transformer core are reduced by:",
+  "options": {
+   "A": "Using a solid iron core",
+   "B": "Laminating the core",
+   "C": "Increasing the supply voltage",
+   "D": "Removing the core entirely"
+  },
+  "correct": "B",
+  "tag": "MC-GPHYS-FIELDS-ELECTROMAGNETISM",
+  "scaffold": "Laminating the core with insulated layers breaks the paths available to eddy currents, cutting the heat they generate. Other transformer losses: resistive heating in the windings, reduced by thicker low-resistance wire; and hysteresis loss, reduced by using a soft magnetic material that magnetises and demagnetises easily. Removing the core would drastically reduce flux linkage and so the induced emf.",
+  "reforge": {
+   "stem": "Resistive heating in transformer windings is reduced by using wire that is:",
+   "options": {
+    "A": "Thinner and longer",
+    "B": "Made from a poorer conductor",
+    "C": "Wound in fewer turns",
+    "D": "Thicker, lower resistance"
+   },
+   "correct": "D"
+  }
+ },
+ {
+  "id": "PHYS-N2-30",
+  "stem": "The root mean square value of an alternating voltage is related to its peak value by:",
+  "options": {
+   "A": "Vrms = Vpeak",
+   "B": "Vrms = Vpeak × √2",
+   "C": "Vrms = Vpeak ÷ √2",
+   "D": "Vrms = Vpeak ÷ 2"
+  },
+  "correct": "C",
+  "tag": "MC-GPHYS-FIELDS-ELECTROMAGNETISM",
+  "scaffold": "For a sinusoidal supply, Vrms = Vpeak ÷ √2, and likewise for current. The rms value is the direct current equivalent that would deliver the same average power, which is why mains electricity quoted as 230 V is an rms value with a peak of about 325 V. Average power is VrmsIrms, half the peak power.",
+  "reforge": {
+   "stem": "UK mains is quoted as 230 V. Its peak voltage is approximately:",
+   "options": {
+    "A": "325 V",
+    "B": "163 V",
+    "C": "230 V",
+    "D": "460 V"
+   },
+   "correct": "A"
+  }
+ },
+ {
+  "id": "PHYS-N2-31",
+  "stem": "A charged particle moves parallel to a magnetic field. The magnetic force on it is:",
+  "options": {
+   "A": "Maximum",
+   "B": "Equal to BQv",
+   "C": "Directed along the field",
+   "D": "Zero"
+  },
+  "correct": "D",
+  "tag": "MC-GPHYS-FIELDS-ELECTROMAGNETISM",
+  "scaffold": "F = BQv sin θ, so a particle moving parallel to the field (θ = 0) feels no force, while one moving perpendicular feels the maximum BQv. That perpendicular force is always at right angles to the velocity, so it does no work and the speed is unchanged — the particle follows a circular path of radius r = mv/BQ. This is the basis of the cyclotron and the mass spectrometer.",
+  "reforge": {
+   "stem": "A charged particle enters a magnetic field perpendicular to it. Its subsequent path is:",
+   "options": {
+    "A": "A straight line",
+    "B": "Circular",
+    "C": "A parabola",
+    "D": "A spiral inwards"
+   },
+   "correct": "B"
+  }
+ },
+ {
+  "id": "PHYS-N2-32",
+  "stem": "Electric field strength at a point is best described as the:",
+  "options": {
+   "A": "Force per unit charge",
+   "B": "Force per unit mass",
+   "C": "Energy per unit charge",
+   "D": "Charge per unit area"
+  },
+  "correct": "A",
+  "tag": "MC-GPHYS-FIELDS-ELECTROMAGNETISM",
+  "scaffold": "Electric field strength E = F/Q in N C⁻¹ or V m⁻¹. Around a point charge E = kQ/r², an inverse square law like gravitation, but electric forces can attract or repel while gravity only attracts. Between parallel plates the field is uniform, with E = V/d. Field lines run from positive to negative and are perpendicular to the conductor surface.",
+  "reforge": {
+   "stem": "Two parallel plates 0.02 m apart have a pd of 200 V. The field strength between them is:",
+   "options": {
+    "A": "4 V m⁻¹",
+    "B": "0.0001 V m⁻¹",
+    "C": "10,000 V m⁻¹",
+    "D": "200 V m⁻¹"
+   },
+   "correct": "C"
+  }
+ },
+ {
+  "id": "PHYS-N2-33",
+  "stem": "A capacitor stores energy in the form of:",
+  "options": {
+   "A": "A magnetic field around its plates",
+   "B": "An electric field between plates",
+   "C": "Chemical energy",
+   "D": "Kinetic energy of electrons"
+  },
+  "correct": "B",
+  "tag": "MC-GPHYS-FIELDS-ELECTROMAGNETISM",
+  "scaffold": "Capacitance C = Q/V in farads, and the energy stored is W = ½QV = ½CV². The half arises because the pd rises as charge accumulates, so the average pd during charging is half the final value. On a graph of charge against pd the area beneath gives the energy. During discharge through a resistor the charge decays exponentially with time constant τ = RC.",
+  "reforge": {
+   "stem": "A capacitor discharges through a resistor. The time constant of the circuit is:",
+   "options": {
+    "A": "R/C",
+    "B": "C/R",
+    "C": "1/RC",
+    "D": "RC"
+   },
+   "correct": "D"
+  }
+ },
+ {
+  "id": "PHYS-N2-34",
+  "stem": "After one time constant, the charge remaining on a discharging capacitor falls to about:",
+  "options": {
+   "A": "50% of the initial value",
+   "B": "63% of the initial value",
+   "C": "37% of the initial value",
+   "D": "Zero"
+  },
+  "correct": "C",
+  "tag": "MC-GPHYS-FIELDS-ELECTROMAGNETISM",
+  "scaffold": "Exponential decay follows Q = Q₀e^(−t/RC). After one time constant t = RC, so Q = Q₀e⁻¹ ≈ 0.37Q₀ — about 37% remains, meaning 63% has been lost. The same fraction applies to current and pd. Because the decay is exponential the charge never reaches exactly zero, and the half-life of the decay is 0.69RC.",
+  "reforge": {
+   "stem": "Doubling the resistance in a capacitor discharge circuit makes the discharge:",
+   "options": {
+    "A": "Twice as slow",
+    "B": "Twice as fast",
+    "C": "Unchanged in rate",
+    "D": "Instantaneous"
+   },
+   "correct": "A"
+  }
+ },
+ {
+  "id": "PHYS-N2-35",
+  "stem": "A step-up transformer increases voltage. The current in the secondary coil is therefore:",
+  "options": {
+   "A": "Increased in exactly the same ratio",
+   "B": "Reduced to zero",
+   "C": "Unchanged",
+   "D": "Decreased, since power is conserved"
+  },
+  "correct": "D",
+  "tag": "MC-GPHYS-FIELDS-ELECTROMAGNETISM",
+  "scaffold": "For an ideal transformer, input power equals output power: VpIp = VsIs. Stepping the voltage up by a factor therefore steps the current down by the same factor. This is what makes long-distance transmission efficient, since power lost in cables is I²R and reducing the current has a squared effect. Transformers cannot increase power — only trade voltage against current.",
+  "reforge": {
+   "stem": "An ideal transformer steps 240 V up to 960 V. If the primary current is 8.0 A, the secondary current is:",
+   "options": {
+    "A": "32 A",
+    "B": "2.0 A",
+    "C": "8.0 A",
+    "D": "0.5 A"
+   },
+   "correct": "B"
+  }
+ },
+ {
+  "id": "PHYS-N2-36",
+  "stem": "In a circuit, a component with a very high resistance placed in parallel with another will:",
+  "options": {
+   "A": "Carry very little current",
+   "B": "Carry most of the current",
+   "C": "Carry almost all of the current",
+   "D": "Stop all current flowing"
+  },
+  "correct": "A",
+  "tag": "MC-GPHYS-CIRCUITS",
+  "scaffold": "In parallel each branch has the same pd, so by I = V/R the branch with higher resistance carries the smaller current — current takes the path of least resistance in that proportional sense. Adding any parallel branch lowers the total resistance, since it adds another route for charge. Voltmeters are designed with very high resistance so they draw negligible current from the circuit they measure.",
+  "reforge": {
+   "stem": "An ideal voltmeter has very high resistance so that it:",
+   "options": {
+    "A": "Reduces the supply voltage",
+    "B": "Increases the total circuit current",
+    "C": "Draws negligible current",
+    "D": "Protects the battery"
+   },
+   "correct": "C"
+  }
+ },
+ {
+  "id": "PHYS-N2-37",
+  "stem": "An ammeter should be connected in a circuit:",
+  "options": {
+   "A": "In parallel with the component",
+   "B": "In series with the component",
+   "C": "Across the battery only",
+   "D": "In place of the battery"
+  },
+  "correct": "B",
+  "tag": "MC-GPHYS-CIRCUITS",
+  "scaffold": "An ammeter measures current, so it must be in series to carry the same current as the component, and it is designed with very low resistance to avoid altering the circuit. A voltmeter measures pd across a component and so goes in parallel, with very high resistance. Connecting an ammeter in parallel across a supply creates a near short circuit and can damage it.",
+  "reforge": {
+   "stem": "An ideal ammeter has very low resistance so that it:",
+   "options": {
+    "A": "Increases the current measured",
+    "B": "Protects the circuit against short circuits",
+    "C": "Can be used as a voltmeter",
+    "D": "Does not reduce circuit current"
+   },
+   "correct": "D"
+  }
+ },
+ {
+  "id": "PHYS-N2-38",
+  "stem": "The number of electrons passing a point per second is doubled. The current:",
+  "options": {
+   "A": "Halves",
+   "B": "Stays the same",
+   "C": "Doubles",
+   "D": "Quadruples"
+  },
+  "correct": "C",
+  "tag": "MC-GPHYS-CIRCUITS",
+  "scaffold": "Current is the rate of flow of charge, so doubling the number of charge carriers passing per second doubles the current. In terms of drift velocity, I = nAvq, where n is the number density of carriers, A the cross-sectional area, v the drift velocity and q the charge on each. Drift velocity is surprisingly slow, typically under a millimetre per second, although the electric field is established almost instantly.",
+  "reforge": {
+   "stem": "In the equation I = nAvq, the symbol v represents the:",
+   "options": {
+    "A": "Drift velocity of the carriers",
+    "B": "Volume of the conductor",
+    "C": "Voltage across the wire",
+    "D": "Speed of the electric field itself"
+   },
+   "correct": "A"
+  }
+ },
+ {
+  "id": "PHYS-N2-39",
+  "stem": "Sound travels faster in solids than in gases mainly because in solids the particles are:",
+  "options": {
+   "A": "More massive",
+   "B": "Electrically charged rather than neutral",
+   "C": "Moving more quickly",
+   "D": "More closely spaced and strongly bonded"
+  },
+  "correct": "D",
+  "tag": "MC-GPHYS-WAVES",
+  "scaffold": "Sound is a longitudinal mechanical wave transmitted by particle interaction, so closer spacing and stronger bonds pass the disturbance on faster: roughly 340 m s⁻¹ in air, 1500 m s⁻¹ in water and 5000 m s⁻¹ in steel. Sound cannot travel through a vacuum at all, since there are no particles — unlike electromagnetic waves, which need no medium.",
+  "reforge": {
+   "stem": "Sound cannot travel through a vacuum because it requires:",
+   "options": {
+    "A": "A magnetic field",
+    "B": "A material medium",
+    "C": "A high temperature",
+    "D": "An electric charge"
+   },
+   "correct": "B"
+  }
+ },
+ {
+  "id": "PHYS-N2-40",
+  "stem": "A wave's frequency is 250 Hz. Its period is:",
+  "options": {
+   "A": "0.004 s",
+   "B": "250 s",
+   "C": "4.0 s",
+   "D": "0.25 seconds"
+  },
+  "correct": "A",
+  "tag": "MC-GPHYS-WAVES",
+  "scaffold": "Period T = 1/f = 1/250 = 0.004 s, or 4 ms. Period is the time for one complete oscillation, frequency the number per second, so they are reciprocals. Getting them the wrong way round produces answers out by a large factor, so a quick sanity check helps: a high frequency must correspond to a very short period.",
+  "reforge": {
+   "stem": "A wave has a period of 0.02 s. Its frequency is:",
+   "options": {
+    "A": "0.02 Hz",
+    "B": "20 Hz",
+    "C": "50 Hz",
+    "D": "2 Hz"
+   },
+   "correct": "C"
+  }
+ },
+ {
+  "id": "PHYS-N2-41",
+  "stem": "Two identical resistors in parallel are connected to a supply. Compared with one resistor alone, the total current drawn is:",
+  "options": {
+   "A": "Halved",
+   "B": "Doubled",
+   "C": "Unchanged",
+   "D": "Quartered"
+  },
+  "correct": "B",
+  "tag": "MC-GPHYS-CIRCUITS",
+  "scaffold": "Adding a parallel branch halves the total resistance, and since the supply pd is unchanged, I = V/R means the total current doubles. Each branch still carries the same current it would have alone. This is why adding appliances to a household ring main increases total current draw and why circuits are fused — too many parallel loads can exceed the safe current.",
+  "reforge": {
+   "stem": "Adding more components in parallel to a supply causes the total resistance to:",
+   "options": {
+    "A": "Increase",
+    "B": "Become infinite",
+    "C": "Stay the same",
+    "D": "Decrease"
+   },
+   "correct": "D"
+  }
+ },
+ {
+  "id": "PHYS-N2-42",
+  "stem": "The damping of an oscillating system that returns to equilibrium in the shortest time without overshooting is described as:",
+  "options": {
+   "A": "Light damping of the system",
+   "B": "Heavy damping",
+   "C": "Critical damping",
+   "D": "No damping"
+  },
+  "correct": "C",
+  "tag": "MC-GPHYS-OSCILLATIONS-THERMAL",
+  "scaffold": "Light damping gives gradually decaying oscillations; critical damping returns the system to equilibrium in the shortest time with no oscillation; heavy or over-damping returns it slowly without oscillating. Critical damping is what car suspension and analogue meter needles aim for. Damping always removes energy from the system, reducing amplitude while leaving the natural frequency almost unchanged.",
+  "reforge": {
+   "stem": "Car suspension systems are designed to be close to critically damped so that the car:",
+   "options": {
+    "A": "Returns to level quickly without bouncing",
+    "B": "Oscillates for a long time after every bump",
+    "C": "Never moves at all",
+    "D": "Resonates with the road surface"
+   },
+   "correct": "A"
+  }
+ },
+ {
+  "id": "PHYS-N2-43",
+  "stem": "A gas is compressed rapidly with no heat exchange. Its internal energy:",
+  "options": {
+   "A": "Decreases",
+   "B": "Falls to zero",
+   "C": "Stays constant during the compression",
+   "D": "Increases: work is done on it"
+  },
+  "correct": "D",
+  "tag": "MC-GPHYS-OSCILLATIONS-THERMAL",
+  "scaffold": "The first law of thermodynamics states ΔU = Q + W: the change in internal energy equals heat supplied plus work done on the system. With no heat transfer, compressing the gas does work on it, so internal energy and therefore temperature rise — which is why a bicycle pump warms up. Expansion by the gas does work on the surroundings and cools it.",
+  "reforge": {
+   "stem": "A gas expands and does work on its surroundings with no heat supplied. Its temperature:",
+   "options": {
+    "A": "Rises",
+    "B": "Falls",
+    "C": "Stays constant",
+    "D": "Doubles"
+   },
+   "correct": "B"
+  }
+ },
+ {
+  "id": "PHYS-N2-44",
+  "stem": "Two coherent sources produce a path difference of half a wavelength at a point. The result there is:",
+  "options": {
+   "A": "A minimum of intensity",
+   "B": "A maximum of intensity",
+   "C": "No wave at all arriving",
+   "D": "A change of frequency"
+  },
+  "correct": "A",
+  "tag": "MC-GPHYS-WAVES",
+  "scaffold": "A path difference of an odd number of half wavelengths puts the waves in antiphase, so they interfere destructively and the intensity is a minimum — zero if the amplitudes are equal. A whole number of wavelengths gives constructive interference and a maximum. Energy is not destroyed at a minimum; it is redistributed to the maxima elsewhere in the pattern.",
+  "reforge": {
+   "stem": "At a point of destructive interference, the energy that would have arrived is:",
+   "options": {
+    "A": "Destroyed",
+    "B": "Converted to heat",
+    "C": "Redistributed to the maxima",
+    "D": "Reflected back to the source"
+   },
+   "correct": "C"
+  }
+ },
+ {
+  "id": "PHYS-N2-45",
+  "stem": "Increasing the temperature of a fixed mass of gas at constant volume causes the pressure to:",
+  "options": {
+   "A": "Fall, since the particles spread further out",
+   "B": "Rise: collisions more frequent",
+   "C": "Stay the same",
+   "D": "Fall to zero at 100 °C"
+  },
+  "correct": "B",
+  "tag": "MC-GPHYS-OSCILLATIONS-THERMAL",
+  "scaffold": "Kinetic theory explains pressure as the result of particle collisions with the container walls. Raising temperature increases mean particle speed, so collisions are both more frequent and more forceful, raising pressure — the pressure law, p ∝ T in kelvin. Extrapolating a pressure–temperature graph back to zero pressure gives absolute zero, −273 °C, which is how that value is determined experimentally.",
+  "reforge": {
+   "stem": "Extrapolating a graph of gas pressure against Celsius temperature to zero pressure gives:",
+   "options": {
+    "A": "0 °C",
+    "B": "100 degrees",
+    "C": "273 °C",
+    "D": "−273 °C"
+   },
+   "correct": "D"
+  }
+ }
+]);
+physExpansion("PHYS-3", [
+ {
+  "id": "PHYS-N3-01",
+  "stem": "The photoelectric effect provides evidence that light behaves as:",
+  "options": {
+   "A": "A continuous wave and nothing else",
+   "B": "A stream of electrons",
+   "C": "Discrete packets called photons",
+   "D": "A longitudinal wave"
+  },
+  "correct": "C",
+  "tag": "MC-GPHYS-QUANTUM-NUCLEAR",
+  "scaffold": "Wave theory predicts that any frequency of light should eventually eject electrons if intense enough, and that emission should be delayed at low intensity. Neither happens. Emission is instantaneous and occurs only above a threshold frequency, whatever the intensity — explained if light arrives as photons of energy E = hf, each interacting with one electron. Intensity then sets the number of photons, not the energy of each.",
+  "reforge": {
+   "stem": "Below the threshold frequency, increasing the intensity of the light causes:",
+   "options": {
+    "A": "No electrons to be emitted at all",
+    "B": "Electrons to be emitted with less energy",
+    "C": "Electrons to be emitted more slowly",
+    "D": "More electrons to be emitted"
+   },
+   "correct": "A"
+  }
+ },
+ {
+  "id": "PHYS-N3-02",
+  "stem": "In the photoelectric equation hf = φ + Ek(max), the term φ represents the:",
+  "options": {
+   "A": "Photon momentum",
+   "B": "Maximum kinetic energy of electrons",
+   "C": "Frequency of the light",
+   "D": "Work function of the metal"
+  },
+  "correct": "D",
+  "tag": "MC-GPHYS-QUANTUM-NUCLEAR",
+  "scaffold": "The work function φ is the minimum energy needed to remove an electron from the metal surface, so the threshold frequency satisfies hf₀ = φ. Any photon energy above that appears as kinetic energy of the emitted electron, with the maximum given by hf − φ. Plotting Ek(max) against f gives a straight line of gradient h and intercept −φ, which is how the Planck constant is measured.",
+  "reforge": {
+   "stem": "A graph of maximum kinetic energy against frequency for the photoelectric effect has gradient equal to:",
+   "options": {
+    "A": "The work function",
+    "B": "The Planck constant",
+    "C": "The threshold frequency",
+    "D": "The electron charge"
+   },
+   "correct": "B"
+  }
+ },
+ {
+  "id": "PHYS-N3-03",
+  "stem": "A photon has frequency 5.0 × 10¹⁴ Hz. Using h = 6.63 × 10⁻³⁴ J s, its energy is:",
+  "options": {
+   "A": "3.3 × 10⁻¹⁹ J",
+   "B": "1.3 × 10⁻⁴⁸ J",
+   "C": "7.5 × 10⁴⁷ J",
+   "D": "6.6 × 10⁻³⁴ J"
+  },
+  "correct": "A",
+  "tag": "MC-GPHYS-QUANTUM-NUCLEAR",
+  "scaffold": "Photon energy E = hf = 6.63 × 10⁻³⁴ × 5.0 × 10¹⁴ = 3.3 × 10⁻¹⁹ J. Where wavelength is given instead, use E = hc/λ. Because these energies are tiny, the electronvolt is often used: 1 eV = 1.60 × 10⁻¹⁹ J, so this photon carries about 2.1 eV. Dividing rather than multiplying by h is the usual arithmetic slip.",
+  "reforge": {
+   "stem": "An energy of 3.2 × 10⁻¹⁹ J expressed in electronvolts is approximately:",
+   "options": {
+    "A": "3.2 eV",
+    "B": "1.6 eV",
+    "C": "2.0 eV",
+    "D": "0.5 eV"
+   },
+   "correct": "C"
+  }
+ },
+ {
+  "id": "PHYS-N3-04",
+  "stem": "The de Broglie wavelength of a particle is given by:",
+  "options": {
+   "A": "λ = hp",
+   "B": "λ = h/p",
+   "C": "λ = p/h",
+   "D": "λ = hf"
+  },
+  "correct": "B",
+  "tag": "MC-GPHYS-QUANTUM-NUCLEAR",
+  "scaffold": "De Broglie proposed λ = h/p = h/mv, so every particle has an associated wavelength. Because h is so small, the wavelength is negligible for everyday objects but comparable to atomic spacing for electrons, which is why electron diffraction through a thin graphite film is observable. That experiment is the direct evidence for wave–particle duality in matter.",
+  "reforge": {
+   "stem": "Electron diffraction provides evidence that particles can behave as:",
+   "options": {
+    "A": "Charged spheres only",
+    "B": "Photons",
+    "C": "Nuclei",
+    "D": "Waves"
+   },
+   "correct": "D"
+  }
+ },
+ {
+  "id": "PHYS-N3-05",
+  "stem": "An electron in an atom moves from a higher to a lower energy level. The result is:",
+  "options": {
+   "A": "Absorption of a photon",
+   "B": "Emission of an alpha particle",
+   "C": "Emission of a photon",
+   "D": "An increase in the mass of the atom"
+  },
+  "correct": "C",
+  "tag": "MC-GPHYS-QUANTUM-NUCLEAR",
+  "scaffold": "Energy levels in an atom are discrete, so transitions emit or absorb photons of precisely defined energy: hf = E₁ − E₂. Downward transitions emit, upward transitions absorb. This produces line spectra rather than continuous ones — emission lines where a hot gas radiates, and dark absorption lines where a cool gas absorbs from a continuous background, as in the Sun's spectrum.",
+  "reforge": {
+   "stem": "Line spectra rather than continuous spectra are evidence that atomic energy levels are:",
+   "options": {
+    "A": "Discrete",
+    "B": "Continuous",
+    "C": "Always negative",
+    "D": "Identical in all elements"
+   },
+   "correct": "A"
+  }
+ },
+ {
+  "id": "PHYS-N3-06",
+  "stem": "In fluorescence, an atom absorbs an ultraviolet photon and emits visible light because it:",
+  "options": {
+   "A": "Emits a single photon of higher energy instead",
+   "B": "Splits into two atoms",
+   "C": "Loses an electron permanently",
+   "D": "Emits lower-energy photons in stages"
+  },
+  "correct": "D",
+  "tag": "MC-GPHYS-QUANTUM-NUCLEAR",
+  "scaffold": "Absorbing a high-energy ultraviolet photon excites an electron to a high level. It then returns in several smaller steps, each emitting a photon of lower energy and so longer wavelength, some in the visible range. Energy is conserved: the emitted photons' energies sum to no more than the absorbed one. This is how fluorescent tubes convert ultraviolet from a mercury discharge into visible light.",
+  "reforge": {
+   "stem": "The photons emitted during fluorescence have a wavelength that is:",
+   "options": {
+    "A": "Shorter than the absorbed photon",
+    "B": "Longer than the absorbed photon",
+    "C": "The same as the absorbed photon",
+    "D": "Unrelated to the absorbed photon"
+   },
+   "correct": "B"
+  }
+ },
+ {
+  "id": "PHYS-N3-07",
+  "stem": "An alpha particle consists of:",
+  "options": {
+   "A": "Two protons, two neutrons",
+   "B": "A single electron",
+   "C": "A single high-energy photon",
+   "D": "A proton only"
+  },
+  "correct": "A",
+  "tag": "MC-GPHYS-QUANTUM-NUCLEAR",
+  "scaffold": "Alpha is a helium nucleus: 2 protons and 2 neutrons, charge +2e, strongly ionising but stopped by paper or a few centimetres of air. Beta-minus is a fast electron from a neutron decaying, stopped by a few millimetres of aluminium. Gamma is a high-energy photon with no charge or mass, reduced but never fully stopped by lead. Ionising power and penetrating power run in opposite orders.",
+  "reforge": {
+   "stem": "Which type of radiation is the most penetrating but the least ionising?",
+   "options": {
+    "A": "Alpha",
+    "B": "Beta",
+    "C": "Gamma",
+    "D": "All are equal"
+   },
+   "correct": "C"
+  }
+ },
+ {
+  "id": "PHYS-N3-08",
+  "stem": "In beta-minus decay, a neutron in the nucleus changes into a:",
+  "options": {
+   "A": "Proton only",
+   "B": "Proton, electron, antineutrino",
+   "C": "A positron together with a neutrino",
+   "D": "Alpha particle"
+  },
+  "correct": "B",
+  "tag": "MC-GPHYS-QUANTUM-NUCLEAR",
+  "scaffold": "Beta-minus decay: n → p + e⁻ + antineutrino. The proton number rises by one and the nucleon number is unchanged. Beta-plus decay is the reverse: p → n + e⁺ + neutrino, lowering proton number. The neutrino was postulated because the emitted electrons have a range of energies rather than a single value, which would otherwise breach conservation of energy and momentum.",
+  "reforge": {
+   "stem": "The existence of the neutrino was proposed to account for the fact that beta particles are emitted with:",
+   "options": {
+    "A": "One single fixed energy value",
+    "B": "Negative mass",
+    "C": "No energy at all",
+    "D": "A continuous range"
+   },
+   "correct": "D"
+  }
+ },
+ {
+  "id": "PHYS-N3-09",
+  "stem": "A nuclide has 92 protons and 146 neutrons. Its nucleon number is:",
+  "options": {
+   "A": "92",
+   "B": "146",
+   "C": "238",
+   "D": "54"
+  },
+  "correct": "C",
+  "tag": "MC-GPHYS-QUANTUM-NUCLEAR",
+  "scaffold": "Nucleon number A = protons + neutrons = 92 + 146 = 238; proton number Z = 92 identifies the element as uranium. Isotopes share Z but differ in A. In nuclear equations both A and Z must balance on each side, which is how the identity of a decay product is deduced — alpha emission reduces A by 4 and Z by 2.",
+  "reforge": {
+   "stem": "A nucleus emits an alpha particle. Its nucleon number decreases by:",
+   "options": {
+    "A": "4",
+    "B": "2",
+    "C": "1",
+    "D": "0"
+   },
+   "correct": "A"
+  }
+ },
+ {
+  "id": "PHYS-N3-10",
+  "stem": "The half-life of a radioactive isotope is the time taken for:",
+  "options": {
+   "A": "All the nuclei to decay",
+   "B": "The mass of the sample to halve",
+   "C": "The activity to fall to zero",
+   "D": "Half the remaining nuclei"
+  },
+  "correct": "D",
+  "tag": "MC-GPHYS-QUANTUM-NUCLEAR",
+  "scaffold": "Half-life is the time for half the remaining undecayed nuclei to decay, and is constant for a given isotope regardless of how much is present, because decay is a random process with a fixed probability per nucleus per unit time. Activity A = λN falls exponentially, so after n half-lives the fraction remaining is (½)ⁿ. Radioactive decay is unaffected by temperature, pressure or chemical state.",
+  "reforge": {
+   "stem": "After 3 half-lives, the fraction of the original nuclei remaining is:",
+   "options": {
+    "A": "1/3",
+    "B": "1/8",
+    "C": "1/6",
+    "D": "1/9"
+   },
+   "correct": "B"
+  }
+ },
+ {
+  "id": "PHYS-N3-11",
+  "stem": "A sample has activity 800 Bq and a half-life of 5 days. Its activity after 15 days is:",
+  "options": {
+   "A": "100 Bq",
+   "B": "400 Bq",
+   "C": "267 Bq",
+   "D": "0 Bq"
+  },
+  "correct": "A",
+  "tag": "MC-GPHYS-QUANTUM-NUCLEAR",
+  "scaffold": "15 days is three half-lives, so the activity halves three times: 800 → 400 → 200 → 100 Bq. Equivalently A = A₀(½)³ = 800/8. The becquerel is one decay per second. Because decay is exponential, the activity approaches but never reaches zero, so answers of exactly zero after a finite time are always wrong.",
+  "reforge": {
+   "stem": "The activity of a source is related to the number of undecayed nuclei by:",
+   "options": {
+    "A": "A = λ/N",
+    "B": "A = N/λ",
+    "C": "A = λN",
+    "D": "A = λN²"
+   },
+   "correct": "C"
+  }
+ },
+ {
+  "id": "PHYS-N3-12",
+  "stem": "The binding energy of a nucleus is the energy required to:",
+  "options": {
+   "A": "Remove a single electron from the atom",
+   "B": "Separate it into free nucleons",
+   "C": "Cause the nucleus to fission",
+   "D": "Ionise the atom completely"
+  },
+  "correct": "B",
+  "tag": "MC-GPHYS-QUANTUM-NUCLEAR",
+  "scaffold": "Binding energy is the work needed to pull a nucleus apart into free nucleons, and appears as the mass defect: the nucleus is lighter than its separate nucleons, with ΔE = Δmc². Binding energy per nucleon peaks near iron-56, which is why fusing light nuclei and splitting heavy ones both release energy — each moves the products towards that peak.",
+  "reforge": {
+   "stem": "Energy is released in both fusion of light nuclei and fission of heavy nuclei because both increase the:",
+   "options": {
+    "A": "Total number of nucleons present",
+    "B": "Proton number",
+    "C": "Mass of the products",
+    "D": "Binding energy per nucleon"
+   },
+   "correct": "D"
+  }
+ },
+ {
+  "id": "PHYS-N3-13",
+  "stem": "In nuclear fission, a heavy nucleus is typically induced to split by absorbing a:",
+  "options": {
+   "A": "Proton",
+   "B": "Gamma photon",
+   "C": "Neutron",
+   "D": "Beta particle"
+  },
+  "correct": "C",
+  "tag": "MC-GPHYS-QUANTUM-NUCLEAR",
+  "scaffold": "A slow (thermal) neutron is absorbed by uranium-235, making it unstable so that it splits into two smaller nuclei plus two or three fast neutrons and considerable energy. Those neutrons can induce further fissions — a chain reaction. Neutrons are used because they are uncharged and so are not repelled by the nucleus, unlike protons or alpha particles.",
+  "reforge": {
+   "stem": "In a nuclear reactor, the moderator's function is to:",
+   "options": {
+    "A": "Slow the neutrons down",
+    "B": "Absorb excess neutrons",
+    "C": "Cool the reactor core",
+    "D": "Shield the operators"
+   },
+   "correct": "A"
+  }
+ },
+ {
+  "id": "PHYS-N3-14",
+  "stem": "Control rods in a nuclear reactor work by:",
+  "options": {
+   "A": "Slowing neutrons to thermal speeds",
+   "B": "Reflecting neutrons back into the fuel rods",
+   "C": "Transferring heat to the coolant",
+   "D": "Absorbing neutrons to control rate"
+  },
+  "correct": "D",
+  "tag": "MC-GPHYS-QUANTUM-NUCLEAR",
+  "scaffold": "Control rods of boron or cadmium absorb neutrons, and raising or lowering them adjusts how many are available to cause further fission, keeping the chain reaction critical and steady. The moderator, often graphite or water, slows neutrons so uranium-235 absorbs them efficiently — a distinct role. The coolant removes heat, and thick concrete and lead shielding protects against radiation.",
+  "reforge": {
+   "stem": "A chain reaction is described as critical when each fission causes, on average:",
+   "options": {
+    "A": "No further fissions",
+    "B": "Exactly one further fission",
+    "C": "Two further fissions",
+    "D": "An increasing number of fissions"
+   },
+   "correct": "B"
+  }
+ },
+ {
+  "id": "PHYS-N3-15",
+  "stem": "Nuclear fusion requires extremely high temperatures in order to:",
+  "options": {
+   "A": "Overcome electrostatic repulsion",
+   "B": "Melt the nuclei together",
+   "C": "Ionise the air surrounding the reactor",
+   "D": "Slow the nuclei down"
+  },
+  "correct": "A",
+  "tag": "MC-GPHYS-QUANTUM-NUCLEAR",
+  "scaffold": "Nuclei are positively charged, so they repel; fusing them requires enough kinetic energy to bring them within range of the strong nuclear force, which acts only over about 10⁻¹⁵ m. That means temperatures of millions of kelvin, plus high density and sufficient confinement time. Achieving all three simultaneously on Earth is the central engineering difficulty of fusion power.",
+  "reforge": {
+   "stem": "The strong nuclear force differs from the electrostatic force in that it is:",
+   "options": {
+    "A": "Weaker than gravity",
+    "B": "Always repulsive",
+    "C": "Effective over short ranges",
+    "D": "Acting only upon orbital electrons"
+   },
+   "correct": "C"
+  }
+ },
+ {
+  "id": "PHYS-N3-16",
+  "stem": "Rutherford's alpha scattering experiment showed that the atom's positive charge is:",
+  "options": {
+   "A": "Spread evenly throughout the whole atom",
+   "B": "Concentrated in a tiny dense nucleus",
+   "C": "Carried by the electrons",
+   "D": "Absent altogether"
+  },
+  "correct": "B",
+  "tag": "MC-GPHYS-QUANTUM-NUCLEAR",
+  "scaffold": "Most alpha particles passed straight through the gold foil, showing the atom is mostly empty space. A small fraction deflected through large angles, and a very few came almost straight back, which requires a concentrated positive charge of large mass — the nucleus. This disproved the plum pudding model, in which charge was spread evenly and only small deflections would be expected.",
+  "reforge": {
+   "stem": "That most alpha particles passed straight through the gold foil showed the atom is:",
+   "options": {
+    "A": "Uniformly solid",
+    "B": "Made only of electrons",
+    "C": "Negatively charged overall",
+    "D": "Mostly empty space"
+   },
+   "correct": "D"
+  }
+ },
+ {
+  "id": "PHYS-N3-17",
+  "stem": "Which particle is a lepton?",
+  "options": {
+   "A": "Proton",
+   "B": "Neutrons",
+   "C": "Electron",
+   "D": "Pion"
+  },
+  "correct": "C",
+  "tag": "MC-GPHYS-QUANTUM-NUCLEAR",
+  "scaffold": "Leptons — electrons, muons, taus and their neutrinos — are fundamental and do not feel the strong force. Hadrons feel the strong force and are made of quarks: baryons contain three quarks (protons, neutrons), while mesons contain a quark and an antiquark (pions, kaons). Lepton number and baryon number are separately conserved in every interaction, which constrains which decays are possible.",
+  "reforge": {
+   "stem": "A baryon such as a proton is composed of:",
+   "options": {
+    "A": "Three quarks",
+    "B": "Two quarks",
+    "C": "A quark and an antiquark",
+    "D": "No quarks at all"
+   },
+   "correct": "A"
+  }
+ },
+ {
+  "id": "PHYS-N3-18",
+  "stem": "A proton is composed of the quark combination:",
+  "options": {
+   "A": "ddd",
+   "B": "udd",
+   "C": "uuu",
+   "D": "uud"
+  },
+  "correct": "D",
+  "tag": "MC-GPHYS-QUANTUM-NUCLEAR",
+  "scaffold": "An up quark has charge +2/3 and a down quark −1/3. A proton is uud: 2/3 + 2/3 − 1/3 = +1. A neutron is udd: 2/3 − 1/3 − 1/3 = 0. Checking that the charges sum correctly is the quickest way to confirm a quark composition. In beta-minus decay a down quark changes into an up quark, which is what converts a neutron into a proton.",
+  "reforge": {
+   "stem": "In beta-minus decay, the quark change that occurs is:",
+   "options": {
+    "A": "An up quark becomes a down quark",
+    "B": "A down quark becomes an up quark",
+    "C": "A quark is destroyed",
+    "D": "Two quarks combine"
+   },
+   "correct": "B"
+  }
+ },
+ {
+  "id": "PHYS-N3-19",
+  "stem": "When a particle meets its antiparticle, the result is:",
+  "options": {
+   "A": "Annihilation, producing photons",
+   "B": "A single larger particle forming",
+   "C": "No interaction at all",
+   "D": "Emission of a neutron"
+  },
+  "correct": "A",
+  "tag": "MC-GPHYS-QUANTUM-NUCLEAR",
+  "scaffold": "Annihilation converts the entire mass of both particles into energy as two photons, each of at least E = mc² for one particle, with two produced to conserve momentum. Pair production is the reverse: a photon of sufficient energy creates a particle–antiparticle pair, requiring a minimum photon energy of 2mc² and the presence of a nucleus to conserve momentum. PET scanning uses annihilation of positrons.",
+  "reforge": {
+   "stem": "Pair production requires a photon with a minimum energy equal to:",
+   "options": {
+    "A": "mc²",
+    "B": "½mc²",
+    "C": "2mc²",
+    "D": "hf/2"
+   },
+   "correct": "C"
+  }
+ },
+ {
+  "id": "PHYS-N3-20",
+  "stem": "An X-ray tube produces X-rays when fast electrons:",
+  "options": {
+   "A": "Are absorbed by the cathode",
+   "B": "Decelerate on striking the anode",
+   "C": "Are emitted directly from a radioactive source",
+   "D": "Travel through a magnetic field"
+  },
+  "correct": "B",
+  "tag": "MC-GPHYS-QUANTUM-NUCLEAR",
+  "scaffold": "Electrons accelerated through a high pd strike a heavy metal target and decelerate sharply, radiating a continuous X-ray spectrum (bremsstrahlung), with characteristic sharp lines superimposed from inner-shell electron transitions in the target atoms. The maximum X-ray photon energy equals the electron's kinetic energy, eV, so the minimum wavelength is set by the accelerating voltage.",
+  "reforge": {
+   "stem": "Increasing the accelerating voltage in an X-ray tube changes the minimum X-ray wavelength produced by making it:",
+   "options": {
+    "A": "Longer",
+    "B": "Zero",
+    "C": "Unchanged",
+    "D": "Shorter"
+   },
+   "correct": "D"
+  }
+ },
+ {
+  "id": "PHYS-N3-21",
+  "stem": "The intensity of gamma radiation passing through an absorber falls:",
+  "options": {
+   "A": "Linearly with thickness",
+   "B": "To zero at a definite range",
+   "C": "Exponentially with thickness",
+   "D": "Only if the absorber is charged"
+  },
+  "correct": "C",
+  "tag": "MC-GPHYS-QUANTUM-NUCLEAR",
+  "scaffold": "Gamma intensity follows I = I₀e^(−μx), an exponential decay, so it is reduced but never entirely stopped — there is no definite range, unlike alpha and beta which have finite ranges. The half-value thickness is the depth halving the intensity. Alpha and beta lose energy through repeated ionising collisions and so stop abruptly, which is why their absorption curves look quite different.",
+  "reforge": {
+   "stem": "Unlike gamma radiation, alpha particles in a material have:",
+   "options": {
+    "A": "A definite, finite range",
+    "B": "An exponential absorption curve",
+    "C": "No interaction with matter",
+    "D": "Increasing energy with depth"
+   },
+   "correct": "A"
+  }
+ },
+ {
+  "id": "PHYS-N3-22",
+  "stem": "Background radiation must be subtracted from readings because it comes from:",
+  "options": {
+   "A": "The detector's own internal circuitry",
+   "B": "Cosmic rays alone",
+   "C": "The sample being measured",
+   "D": "Natural and artificial sources"
+  },
+  "correct": "D",
+  "tag": "MC-GPHYS-QUANTUM-NUCLEAR",
+  "scaffold": "Background radiation comes from radon gas, rocks and soil, cosmic rays, food and drink, and artificial sources chiefly medical. It is always present, so the background count rate must be measured separately and subtracted to obtain the true count from a source. Because decay is random, counts fluctuate, so longer counting times give more reliable averages.",
+  "reforge": {
+   "stem": "Radioactive decay is described as a random process, which means the:",
+   "options": {
+    "A": "Half-life of the isotope changes unpredictably",
+    "B": "When a nucleus decays is unpredictable",
+    "C": "Activity increases over time",
+    "D": "Decay depends on temperature"
+   },
+   "correct": "B"
+  }
+ },
+ {
+  "id": "PHYS-N3-23",
+  "stem": "A capacitor of 100 μF is charged to 12 V. The charge stored is:",
+  "options": {
+   "A": "1.2 × 10⁻³ C",
+   "B": "8.3 C",
+   "C": "1200 coulombs",
+   "D": "12 C"
+  },
+  "correct": "A",
+  "tag": "MC-GPHYS-CIRCUITS",
+  "scaffold": "Q = CV = 100 × 10⁻⁶ × 12 = 1.2 × 10⁻³ C, or 1.2 mC. The micro prefix means 10⁻⁶, and failing to convert is the usual error, giving an answer a million times too large. The energy stored is W = ½QV = ½ × 1.2 × 10⁻³ × 12 = 7.2 × 10⁻³ J, or equivalently ½CV².",
+  "reforge": {
+   "stem": "The energy stored by a 100 μF capacitor charged to 12 V is:",
+   "options": {
+    "A": "1.2 × 10⁻³ J",
+    "B": "14.4 J",
+    "C": "7.2 × 10⁻³ J",
+    "D": "0.6 J"
+   },
+   "correct": "C"
+  }
+ },
+ {
+  "id": "PHYS-N3-24",
+  "stem": "Two capacitors are connected in parallel. The total capacitance is:",
+  "options": {
+   "A": "Found by adding the reciprocals",
+   "B": "The sum of the capacitances",
+   "C": "Always smaller than either",
+   "D": "The product of the two"
+  },
+  "correct": "B",
+  "tag": "MC-GPHYS-CIRCUITS",
+  "scaffold": "Capacitors behave opposite to resistors: in parallel capacitances add, since the effective plate area increases; in series the reciprocals add, giving a total smaller than the smallest. Series capacitors share the same charge while the pd divides; parallel capacitors share the same pd while the charge divides. Confusing these with the resistor rules is the standard error.",
+  "reforge": {
+   "stem": "Two identical capacitors are connected in series. The total capacitance is:",
+   "options": {
+    "A": "Double one capacitor",
+    "B": "Zero",
+    "C": "Equal to one capacitor",
+    "D": "Half one capacitor"
+   },
+   "correct": "D"
+  }
+ },
+ {
+  "id": "PHYS-N3-25",
+  "stem": "A wave is described as electromagnetic. This means it:",
+  "options": {
+   "A": "Requires a material medium to travel through",
+   "B": "Is longitudinal in nature",
+   "C": "Oscillating electric and magnetic fields",
+   "D": "Travels at the speed of sound"
+  },
+  "correct": "C",
+  "tag": "MC-GPHYS-WAVES",
+  "scaffold": "Electromagnetic waves are transverse oscillations of perpendicular electric and magnetic fields, requiring no medium and travelling at 3.00 × 10⁸ m s⁻¹ in a vacuum. The spectrum runs from radio (longest wavelength, lowest frequency and photon energy) through microwave, infrared, visible, ultraviolet and X-ray to gamma. Photon energy rises with frequency, which is why the short-wavelength end is ionising.",
+  "reforge": {
+   "stem": "Which electromagnetic radiation has the highest photon energy?",
+   "options": {
+    "A": "Gamma rays",
+    "B": "Infrared",
+    "C": "Ultraviolet",
+    "D": "Radio waves"
+   },
+   "correct": "A"
+  }
+ },
+ {
+  "id": "PHYS-N3-26",
+  "stem": "Light of wavelength 600 nm has a frequency of approximately:",
+  "options": {
+   "A": "600 Hz",
+   "B": "1.8 × 10² Hz",
+   "C": "2.0 × 10⁻¹⁵ Hz",
+   "D": "5.0 × 10¹⁴ Hz"
+  },
+  "correct": "D",
+  "tag": "MC-GPHYS-WAVES",
+  "scaffold": "Rearranging c = fλ gives f = c ÷ λ = (3.00 × 10⁸) ÷ (600 × 10⁻⁹) = 5.0 × 10¹⁴ Hz. Converting nanometres to metres is essential: 1 nm = 10⁻⁹ m. Visible light spans roughly 400 nm (violet) to 700 nm (red), corresponding to frequencies around 4–7.5 × 10¹⁴ Hz, so any answer far outside that range signals a conversion error.",
+  "reforge": {
+   "stem": "The energy of a photon is related to its wavelength by:",
+   "options": {
+    "A": "E = hλ",
+    "B": "E = hc/λ",
+    "C": "E = λ/hc",
+    "D": "E = h/λc"
+   },
+   "correct": "B"
+  }
+ },
+ {
+  "id": "PHYS-N3-27",
+  "stem": "A stationary wave on a string fixed at both ends has its fundamental frequency when the string length equals:",
+  "options": {
+   "A": "Half a wavelength",
+   "B": "One wavelength",
+   "C": "Two wavelengths",
+   "D": "A quarter of a wavelength"
+  },
+  "correct": "A",
+  "tag": "MC-GPHYS-WAVES",
+  "scaffold": "With both ends fixed there must be a node at each end, so the fundamental has a single antinode and the string holds half a wavelength: λ = 2L. Harmonics follow at integer multiples of that frequency. For a pipe closed at one end there is a node at the closed end and an antinode at the open end, so the fundamental fits a quarter wavelength and only odd harmonics appear.",
+  "reforge": {
+   "stem": "A pipe closed at one end produces which harmonics?",
+   "options": {
+    "A": "All harmonics",
+    "B": "Only even harmonics",
+    "C": "Only odd harmonics",
+    "D": "No harmonics"
+   },
+   "correct": "C"
+  }
+ },
+ {
+  "id": "PHYS-N3-28",
+  "stem": "Increasing the tension in a vibrating string raises the fundamental frequency because the wave speed:",
+  "options": {
+   "A": "Decreases",
+   "B": "Increases",
+   "C": "Stays constant",
+   "D": "Becomes zero"
+  },
+  "correct": "B",
+  "tag": "MC-GPHYS-WAVES",
+  "scaffold": "Wave speed on a string is v = √(T/μ), where T is tension and μ mass per unit length. Since the fundamental wavelength is fixed at 2L, f = v/2L rises with tension and falls with a heavier string. This is why tightening a guitar string raises its pitch, and why the thicker strings sound lower at the same tension and length.",
+  "reforge": {
+   "stem": "A thicker string of greater mass per unit length, at the same tension and length, produces a fundamental frequency that is:",
+   "options": {
+    "A": "Higher",
+    "B": "Zero",
+    "C": "The same",
+    "D": "Lower"
+   },
+   "correct": "D"
+  }
+ },
+ {
+  "id": "PHYS-N3-29",
+  "stem": "A converging lens forms a real image when the object is placed:",
+  "options": {
+   "A": "At the focal point",
+   "B": "Between the lens and the focal point",
+   "C": "Beyond the focal length",
+   "D": "At the lens surface"
+  },
+  "correct": "C",
+  "tag": "MC-GPHYS-WAVES",
+  "scaffold": "A converging lens forms a real, inverted image when the object lies beyond the focal length; inside the focal length it forms a virtual, upright, magnified image, as in a magnifying glass. Real images can be projected onto a screen because the rays actually meet; virtual images cannot. The lens equation 1/f = 1/u + 1/v relates the distances, with sign conventions applied consistently.",
+  "reforge": {
+   "stem": "A virtual image differs from a real image in that it:",
+   "options": {
+    "A": "Cannot be projected onto a screen",
+    "B": "Is always inverted",
+    "C": "Is always smaller",
+    "D": "Forms only when using curved mirrors"
+   },
+   "correct": "A"
+  }
+ },
+ {
+  "id": "PHYS-N3-30",
+  "stem": "The Doppler effect causes the observed frequency of a source moving away from an observer to be:",
+  "options": {
+   "A": "Higher than emitted",
+   "B": "Zero",
+   "C": "Unchanged",
+   "D": "Lower than emitted"
+  },
+  "correct": "D",
+  "tag": "MC-GPHYS-ASTRONOMY",
+  "scaffold": "A receding source stretches the observed wavelength and lowers the frequency; an approaching source compresses it and raises the frequency. For light this appears as redshift and blueshift. The redshift of distant galaxies, increasing with distance, is the observational basis of Hubble's law and the evidence that the universe is expanding.",
+  "reforge": {
+   "stem": "The redshift of distant galaxies increasing with distance is evidence that the universe is:",
+   "options": {
+    "A": "Contracting",
+    "B": "Expanding",
+    "C": "Static",
+    "D": "Rotating"
+   },
+   "correct": "B"
+  }
+ },
+ {
+  "id": "PHYS-N3-31",
+  "stem": "Hubble's law states that a galaxy's recession velocity is proportional to its:",
+  "options": {
+   "A": "Distance from us",
+   "B": "Mass",
+   "C": "Temperature",
+   "D": "Apparent brightness"
+  },
+  "correct": "A",
+  "tag": "MC-GPHYS-ASTRONOMY",
+  "scaffold": "Hubble's law gives v = H₀d, so more distant galaxies recede faster. The reciprocal of the Hubble constant estimates the age of the universe. Together with the cosmic microwave background radiation and the observed abundance of light elements, this is the principal evidence for the Big Bang model. Uncertainty in H₀ is the main uncertainty in the age estimate.",
+  "reforge": {
+   "stem": "The cosmic microwave background radiation is evidence for the Big Bang because it is:",
+   "options": {
+    "A": "Emitted by nearby stars",
+    "B": "Produced by collisions between distant galaxies",
+    "C": "Radiation left from the hot early universe",
+    "D": "A form of visible light only"
+   },
+   "correct": "C"
+  }
+ },
+ {
+  "id": "PHYS-N3-32",
+  "stem": "A star's luminosity is best described as the:",
+  "options": {
+   "A": "Brightness as it appears from Earth",
+   "B": "Total power radiated by the star",
+   "C": "Surface temperature",
+   "D": "Distance from Earth"
+  },
+  "correct": "B",
+  "tag": "MC-GPHYS-ASTRONOMY",
+  "scaffold": "Luminosity is the total power output in watts, an intrinsic property. Apparent brightness depends additionally on distance, following an inverse square law, so a very luminous distant star can appear fainter than a nearby dim one. Stefan's law gives L = 4πr²σT⁴, so luminosity depends strongly on temperature, and Wien's law relates peak wavelength to temperature by λmaxT = constant.",
+  "reforge": {
+   "stem": "Wien's displacement law states that a hotter star has a peak emission wavelength that is:",
+   "options": {
+    "A": "Longer",
+    "B": "Zero",
+    "C": "Unchanged",
+    "D": "Shorter"
+   },
+   "correct": "D"
+  }
+ },
+ {
+  "id": "PHYS-N3-33",
+  "stem": "On a Hertzsprung–Russell diagram, most stars lie along the:",
+  "options": {
+   "A": "Supergiant branch",
+   "B": "White dwarf region",
+   "C": "Main sequence",
+   "D": "Horizontal axis only"
+  },
+  "correct": "C",
+  "tag": "MC-GPHYS-ASTRONOMY",
+  "scaffold": "The Hertzsprung–Russell diagram plots luminosity against temperature, with temperature increasing to the left. Most stars, including the Sun, spend the majority of their lives on the main sequence fusing hydrogen. Red giants and supergiants lie above and to the right, being cool but very luminous because they are large; white dwarfs lie below and to the left, hot but faint because they are small.",
+  "reforge": {
+   "stem": "A red giant is very luminous despite its low surface temperature because it has a very large:",
+   "options": {
+    "A": "Radius",
+    "B": "Mass",
+    "C": "Density",
+    "D": "Rotation rate"
+   },
+   "correct": "A"
+  }
+ },
+ {
+  "id": "PHYS-N3-34",
+  "stem": "A star of mass similar to the Sun will end its life as a:",
+  "options": {
+   "A": "Black hole",
+   "B": "Neutron star",
+   "C": "Supernova remnant only",
+   "D": "White dwarf"
+  },
+  "correct": "D",
+  "tag": "MC-GPHYS-ASTRONOMY",
+  "scaffold": "Low and intermediate mass stars swell to red giants, shed their outer layers as a planetary nebula and leave a white dwarf supported by electron degeneracy pressure, below the Chandrasekhar limit of about 1.4 solar masses. More massive stars end in a supernova, leaving a neutron star or, above roughly 3 solar masses of remnant core, a black hole. Mass at the end of life determines the outcome.",
+  "reforge": {
+   "stem": "A stellar remnant more massive than about 3 solar masses is expected to become a:",
+   "options": {
+    "A": "White dwarf",
+    "B": "Black hole",
+    "C": "Red giant",
+    "D": "Main sequence star"
+   },
+   "correct": "B"
+  }
+ },
+ {
+  "id": "PHYS-N3-35",
+  "stem": "A telescope's resolving power is improved most directly by increasing the:",
+  "options": {
+   "A": "Diameter of the objective aperture",
+   "B": "Magnification of the eyepiece lens",
+   "C": "Length of the tube",
+   "D": "Number of lenses used"
+  },
+  "correct": "A",
+  "tag": "MC-GPHYS-ASTRONOMY",
+  "scaffold": "Resolving power is limited by diffraction, following the Rayleigh criterion θ ≈ λ/D, so a larger aperture D gives finer resolution and also collects more light, revealing fainter objects. Increasing eyepiece magnification enlarges the image but cannot recover detail the aperture never resolved — this is why large telescopes are built with large mirrors rather than merely stronger eyepieces.",
+  "reforge": {
+   "stem": "Increasing magnification beyond the resolving limit of a telescope produces an image that is:",
+   "options": {
+    "A": "Sharper and far more detailed",
+    "B": "Brighter and sharper",
+    "C": "Larger but no more detailed",
+    "D": "Smaller but clearer"
+   },
+   "correct": "C"
+  }
+ },
+ {
+  "id": "PHYS-N3-36",
+  "stem": "A current-carrying coil in a magnetic field experiences a turning effect. This is the principle of the:",
+  "options": {
+   "A": "Transformer core",
+   "B": "Electric motor",
+   "C": "Capacitor",
+   "D": "Diode"
+  },
+  "correct": "B",
+  "tag": "MC-GPHYS-FIELDS-ELECTROMAGNETISM",
+  "scaffold": "Opposite sides of the coil carry current in opposite directions, so by F = BIL the forces on them act oppositely and produce a couple that rotates the coil — the motor effect. A split-ring commutator reverses the current every half turn to keep rotation continuous. A generator is the reverse process, using rotation to induce an emf by Faraday's law.",
+  "reforge": {
+   "stem": "The purpose of a split-ring commutator in a d.c. motor is to:",
+   "options": {
+    "A": "Reduce the current drawn",
+    "B": "Smooth the output voltage",
+    "C": "Increase the magnetic field strength",
+    "D": "Reverse the current every half turn"
+   },
+   "correct": "D"
+  }
+ },
+ {
+  "id": "PHYS-N3-37",
+  "stem": "Magnetic flux through a coil is greatest when the plane of the coil is:",
+  "options": {
+   "A": "Aligned parallel to the field",
+   "B": "At 45° to the field",
+   "C": "Perpendicular to the field",
+   "D": "Rotating rapidly"
+  },
+  "correct": "C",
+  "tag": "MC-GPHYS-FIELDS-ELECTROMAGNETISM",
+  "scaffold": "Flux Φ = BA cos θ, where θ is measured between the field and the normal to the coil. Flux is maximum when the field is along the normal — that is, when the plane of the coil is perpendicular to the field — and zero when the field lies in the plane of the coil. Careful reading of whether an angle is to the plane or to the normal avoids the commonest error here.",
+  "reforge": {
+   "stem": "A coil is rotated in a uniform magnetic field. The induced emf is greatest when the flux is:",
+   "options": {
+    "A": "Changing most rapidly",
+    "B": "At its maximum possible value",
+    "C": "Zero and unchanging",
+    "D": "Constant"
+   },
+   "correct": "A"
+  }
+ },
+ {
+  "id": "PHYS-N3-38",
+  "stem": "An electron is accelerated through a pd of 100 V. Its gain in kinetic energy is:",
+  "options": {
+   "A": "100 J",
+   "B": "6.3 × 10¹⁶ J",
+   "C": "1.6 × 10⁻²¹ J",
+   "D": "1.6 × 10⁻¹⁷ J"
+  },
+  "correct": "D",
+  "tag": "MC-GPHYS-QUANTUM-NUCLEAR",
+  "scaffold": "Energy gained = eV = 1.60 × 10⁻¹⁹ × 100 = 1.6 × 10⁻¹⁷ J, equivalently 100 eV. Setting this equal to ½mv² gives the final speed. The electronvolt is convenient precisely because the numerical value in eV equals the accelerating voltage, avoiding repeated multiplication by e until a final conversion to joules is needed.",
+  "reforge": {
+   "stem": "One electronvolt is defined as the energy gained by an electron accelerated through:",
+   "options": {
+    "A": "One joule",
+    "B": "One volt",
+    "C": "One coulomb",
+    "D": "One newton"
+   },
+   "correct": "B"
+  }
+ },
+ {
+  "id": "PHYS-N3-39",
+  "stem": "In a discharge tube, an excited gas produces a line emission spectrum consisting of:",
+  "options": {
+   "A": "Bright lines at specific wavelengths",
+   "B": "A continuous band of all colours",
+   "C": "Dark lines against a bright background",
+   "D": "No visible light at all"
+  },
+  "correct": "A",
+  "tag": "MC-GPHYS-QUANTUM-NUCLEAR",
+  "scaffold": "Electrons excited in a discharge tube fall back through discrete energy levels, emitting photons at specific wavelengths and producing bright lines on a dark background. An absorption spectrum shows the reverse: dark lines on a continuous background where a cool gas has absorbed those same wavelengths. Because the level structure is unique to each element, spectra identify elements — including in distant stars.",
+  "reforge": {
+   "stem": "Dark lines in the Sun's spectrum are caused by cooler gases in its atmosphere that:",
+   "options": {
+    "A": "Emit those wavelengths",
+    "B": "Reflect all wavelengths",
+    "C": "Absorb those wavelengths",
+    "D": "Produce a continuous spectrum"
+   },
+   "correct": "C"
+  }
+ },
+ {
+  "id": "PHYS-N3-40",
+  "stem": "The activity of a radioactive source is measured in:",
+  "options": {
+   "A": "Grays",
+   "B": "Becquerels",
+   "C": "Sieverts of dose",
+   "D": "Coulombs"
+  },
+  "correct": "B",
+  "tag": "MC-GPHYS-QUANTUM-NUCLEAR",
+  "scaffold": "Activity is measured in becquerels, one decay per second. Absorbed dose is measured in grays, one joule per kilogram of tissue, and equivalent dose in sieverts, which weights the absorbed dose by the type of radiation to reflect biological harm — alpha being far more damaging internally than gamma for the same absorbed energy. Distinguishing these three quantities is frequently tested.",
+  "reforge": {
+   "stem": "Equivalent dose in sieverts differs from absorbed dose in grays because it accounts for the:",
+   "options": {
+    "A": "Mass of the tissue",
+    "B": "Distance from the radioactive source",
+    "C": "Half-life of the source",
+    "D": "Radiation type and its effect"
+   },
+   "correct": "D"
+  }
+ },
+ {
+  "id": "PHYS-N3-41",
+  "stem": "A student uses a light gate and timer to measure acceleration. The main advantage over a stopwatch is:",
+  "options": {
+   "A": "It measures distance directly",
+   "B": "It requires no calibration",
+   "C": "It removes reaction-time error",
+   "D": "It eliminates all systematic error"
+  },
+  "correct": "C",
+  "tag": "MC-GPHYS-MEASUREMENT",
+  "scaffold": "Reaction time in starting and stopping a stopwatch introduces a random error of order 0.2 s, which is significant over short intervals. A light gate triggers electronically, removing it. It does not remove systematic errors such as a misaligned gate or an incorrectly measured card length. Reducing uncertainty further means taking repeats and using the largest practical distances and times.",
+  "reforge": {
+   "stem": "Using a longer distance when measuring average speed reduces the:",
+   "options": {
+    "A": "Percentage uncertainty in timing",
+    "B": "Systematic error in the metre ruler",
+    "C": "True value of the speed",
+    "D": "Need for any repeats"
+   },
+   "correct": "A"
+  }
+ }
+]);
+
 [
   "bus", "chem", "bio", "phys", "cs", "maths", "german", "rs", "hsc",
   "french", "media", "pe", "span", "englit", "engll", "mand",
@@ -37513,5 +40540,111 @@ for (const [id, tag] of Object.entries(gcseMathsTagMerges)) {
   for (const bankId of SUBJECTS["gcse-maths"].banks) {
     const question = (BANKS[bankId].questions || []).find(candidate => candidate.id === id);
     if (question) question.tag = tag;
+  }
+}
+
+// A-Level Physics: concise restatements of sixteen correct answers that were
+// long enough to be the uniquely-longest option, which lets a student score
+// above chance by picking the longest one. Several carried their full working
+// or explanation inside the option label — up to 131 characters against
+// distractors of ~35 — which belongs in the scaffold, not the option. They
+// surfaced once the coverage-variant clones were removed. Matched on option
+// TEXT rather than letter, because rebalanceMCQSubject() permutes letters and
+// a letter-keyed table applied afterwards lands on whichever option happens to
+// sit there. Applied last.
+const physAnswerLengthRepairs = {
+  "PHYS-04": {
+    reforge: {
+      "−18.5 m (s = 15×4 + ½×(−9.81)×16 = 60 − 78.5 = −18.5 m — it has gone above and come back below the start)":
+        "−18.5 m",
+      "18.5 m":
+        "18.5 m above the start" }
+  },
+  "PHYS-05": {
+    reforge: {
+      "Spring A stores more (EPE_A = ½×200×0.01 = 1 J; EPE_B = ½×50×0.01 = 0.25 J — stiffer spring stores more for the same extension).":
+        "Spring A stores more, being stiffer" }
+  },
+  "PHYS-08": {
+    reforge: {
+      "They hit simultaneously — gravitational acceleration on the Moon is 1.6 m/s² for all objects regardless of mass, since acceleration = F/m = mg/m = g.":
+        "They hit simultaneously, whatever their mass" }
+  },
+  "PHYS-09": {
+    reforge: {
+      "Zero velocity but a non-zero acceleration down the slope, caused by the component of gravity along the incline.":
+        "Zero velocity, non-zero acceleration" }
+  },
+  "PHYS-11": {
+    reforge: {
+      "They can be polarised — restricted to oscillate in a single plane — which is impossible for longitudinal waves.":
+        "They can be polarised" }
+  },
+  "PHYS-13": {
+    reforge: {
+      "Distance 400 m, displacement 0 m — displacement is the straight-line vector from start to finish, which is zero for a complete lap.":
+        "Distance 400 m, displacement 0 m" }
+  },
+  "PHYS-14": {
+    reforge: {
+      "Some energy per coulomb (the 'lost volts') is dissipated across the battery's internal resistance, so terminal p.d. = e.m.f. − Ir.":
+        "Some energy per coulomb is lost inside the cell" }
+  },
+  "PHYS-15": {
+    reforge: {
+      "Air resistance has a much greater decelerating effect on the low-mass, high-surface-area feather relative to its weight, so it reaches terminal velocity almost immediately.":
+        "Air resistance affects the feather far more" }
+  },
+  "EWQ-01": {
+    base: {
+      "Current is a flow of charge, and charge is conserved — the same current flows through all components in a series circuit. It is energy (as potential difference) that is 'used up', not current.":
+        "Charge is conserved, so current is the same throughout" }
+  },
+  "EWQ-02": {
+    base: {
+      "Output voltage decreases — as thermistor resistance falls, a smaller fraction of total resistance is across it, so it takes a smaller share of the supply voltage.":
+        "Output voltage decreases" },
+    reforge: {
+      "Output increases — as thermistor resistance falls, more of the supply voltage falls across the fixed resistor (V_out = V_supply × R_fixed/(R_fixed + R_thermistor) — denominator falls, fraction rises).":
+        "Output increases as the fixed resistor takes more" }
+  },
+  "EWQ-04": {
+    base: {
+      "The wave nature of light — constructive interference (path difference = nλ) produces bright fringes; destructive interference (path difference = (n+½)λ) produces dark fringes.":
+        "The wave nature of light, shown by interference" }
+  },
+  "EWQ-05": {
+    base: {
+      "Light below a threshold frequency ejects no electrons regardless of intensity, and increasing intensity above the threshold increases the number but not the energy of emitted electrons.":
+        "Below a threshold frequency no electrons are ejected" }
+  },
+  "EWQ-06": {
+    base: {
+      "Adding a parallel path provides an additional route for current — the total current from the supply increases for the same voltage, so the combined resistance (R = V/I) is lower.":
+        "A parallel path adds another route for current" }
+  },
+  "EWQ-07": {
+    base: {
+      "A node is a point of zero displacement — the two waves always destructively interfere, so the medium never moves there.":
+        "A node is a point of zero displacement" }
+  },
+  "EWQ-08": {
+    base: {
+      "The electron's de Broglie wavelength is much smaller than visible light (around 10⁻¹¹ m), which is why electron microscopes resolve features that optical microscopes cannot.":
+        "The electron wavelength is far shorter than light" }
+  }
+};
+for (const [id, variants] of Object.entries(physAnswerLengthRepairs)) {
+  for (const bankId of SUBJECTS.phys.banks) {
+    const question = (BANKS[bankId].questions || []).find(candidate => candidate.id === id);
+    if (!question) continue;
+    for (const [variant, replacements] of Object.entries(variants)) {
+      const item = variant === "base" ? question : question.reforge;
+      if (!item?.options) continue;
+      for (const [letter, value] of Object.entries(item.options)) {
+        const replacement = replacements[String(value)];
+        if (replacement) item.options[letter] = replacement;
+      }
+    }
   }
 }
