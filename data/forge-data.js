@@ -14421,10 +14421,27 @@ rebalanceAlevelExtension(["SOC-EDU","SOC-MET","GEO-TEC","GEO-COAST","GEO-REGEN",
 // ===== A LEVEL SOCIOLOGY — PAPER 2 & 3 TOPIC BANKS =====
 // Each topic contributes 18 distinct concepts, taking Sociology from 56 to
 // exactly 200 questions while keeping the existing two Paper 1 banks intact.
+// Shared by the sociology, geography, criminology and law/politics bank
+// builders below. Each used to give every question a fixed fourth option
+// asserting the content was irrelevant ("It has no significant effect on
+// families and households"). An option that is wrong in every question is free
+// to eliminate, so a four-option item was really a three-option one — and with
+// the Reforge twin carrying the same trick, most were effectively two-option.
+// Borrow a real definition or application from elsewhere in the same bank,
+// preferring one at least as long as the keyed answer: the length preference
+// matters because enforceNoUniqueLongestAnswer() and rebalanceLawPolitics()
+// resolve a longest-answer cue by appending " in this context" to distractors,
+// so without it this fix would swap a throwaway option for a padded one.
+const pickFourthOption = (candidates, used, minLength) => {
+  const distinct = candidates.filter(value => value && !used.has(value));
+  return distinct.find(value => value.length >= minLength) || distinct[0] || null;
+};
 const addSocTopicBank = (bankId, label, spec, rows) => {
   BANKS[bankId] = {label, color:"#7f1d1d", questions: rows.map((row, index) => {
     const next = rows[(index + 1) % rows.length];
     const prev = rows[(index + rows.length - 1) % rows.length];
+    const others = [];
+    for (let step = 2; step < rows.length; step++) others.push(rows[(index + step) % rows.length]);
     const stemFrames = [
       term => `What is meant by ${term}?`,
       term => `Which example best illustrates ${term}?`,
@@ -14444,9 +14461,9 @@ const addSocTopicBank = (bankId, label, spec, rows) => {
     return {
       id:`${bankId}-${String(index + 1).padStart(2,"0")}`, spec,
       stem:stemFrames[index % stemFrames.length](row.term),
-      options:{A:row.definition,B:next.definition,C:prev.definition,D:`It has no significant effect on ${label.toLowerCase()}`}, correct:"A",tag:`MC-${bankId}-${index + 1}`,
+      options:{A:row.definition,B:next.definition,C:prev.definition,D:pickFourthOption(others.map(other => other.definition), new Set([row.definition, next.definition, prev.definition]), String(row.definition).length)}, correct:"A",tag:`MC-${bankId}-${index + 1}`,
       scaffold:`${row.term}: ${row.definition} ${row.scaffold || "Use the definition, apply it to the context and evaluate its significance."}`,
-      reforge:{stem:reforgeFrames[index % reforgeFrames.length](row.term),options:{A:row.application,B:prev.application,C:next.application,D:`It is unrelated to ${label.toLowerCase()} and cannot be applied to social evidence`},correct:"A"}
+      reforge:{stem:reforgeFrames[index % reforgeFrames.length](row.term),options:{A:row.application,B:prev.application,C:next.application,D:pickFourthOption(others.map(other => other.application), new Set([row.application, next.application, prev.application]), String(row.application).length)},correct:"A"}
     };
   })};
   SUBJECTS["soc"].banks.push(bankId);
@@ -14636,18 +14653,67 @@ rebalanceSociety(["SOC-EDU","SOC-MET","SOC-FAM","SOC-BEL","SOC-MED","SOC-STRAT",
 SUBJECTS["soc"].banks = ["SOC-EDU","SOC-MET","SOC-FAM","SOC-BEL","SOC-MED","SOC-STRAT","SOC-CRIME","SOC-THEORY","SOC-GLOB","SOC-RESEARCH"];
 SUBJECTS["soc"].sub = "AQA 7192 — current specification: Papers 1–3, 13 numbered content points";
 
+// Hand-authored fourth options for A-Level Geography Year 2 questions. These
+// were previously applied by geoAlevelDistractorRepairs, which matched the
+// fixed throwaway text the generator used to emit. Now that the generator no
+// longer emits that text those entries would never match, so the authored
+// wording is kept here and consulted directly, in preference to borrowing a
+// definition from elsewhere in the bank.
+const geoAuthoredFourthOptions = {
+  "GEO-WATER-05:base": "The volume of water held in storage at a single moment within a whole drainage basin",
+  "GEO-WATER-07:base": "Water entering a drainage basin as precipitation, as snowmelt or as flow from an upstream channel",
+  "GEO-WATER-11:reforge": "Deep permeable soils on gentle slopes usually generate the most surface runoff",
+  "GEO-WATER-23:base": "The share of a country's total water supply that is drawn directly from underground aquifers",
+  "GEO-CARBON-01:base": "The movement of carbon between the atmosphere and living organisms alone, excluding rocks and oceans",
+  "GEO-CARBON-04:base": "The total mass of carbon currently held in the world's oceans, soils and rocks combined",
+  "GEO-CARBON-09:reforge": "Cold, waterlogged conditions accelerate decomposition and release carbon rapidly",
+  "GEO-CARBON-12:reforge": "Nitrogen and oxygen are the two most important greenhouse gases in the atmosphere",
+  "GEO-CARBON-13:base": "The natural warming that keeps the planet habitable, unaltered by human activity",
+  "GEO-CARBON-14:reforge": "Carbon intensity measures the total emissions of a country regardless of its output",
+  "GEO-CARBON-16:reforge": "Draining peatland halts decomposition and locks the stored carbon away permanently",
+  "GEO-CARBON-18:reforge": "Acidification raises ocean pH and strengthens the shells built by marine organisms",
+  "GEO-CARBON-21:base": "The movement of energy resources along pipelines and shipping routes between trading states",
+  "GEO-CARBON-24:base": "The total quantity of energy that a country is able to generate from its domestic sources",
+  "GEO-CARBON-27:reforge": "Energy poverty occurs only in countries that have no domestic energy resources at all",
+  "GEO-CARBON-30:base": "The tendency for resource-rich states to grow more slowly than resource-poor ones do",
+  "GEO-CARBON-32:reforge": "CCS captures every tonne of carbon dioxide emitted and needs no additional energy",
+  "GEO-CARBON-35:base": "The principle that every country should cut emissions by exactly the same amount",
+  "GEO-SUPER-14:reforge": "Every member of the Security Council holds an equal veto over its resolutions",
+  "GEO-SUPER-35:reforge": "Global inequality has been eliminated by the growth of international trade",
+  "GEO-HEALTH-01:reforge": "Health is measured only by the absence of any diagnosed physical disease",
+  "GEO-HEALTH-07:base": "The movement of populations out of rural areas and into the cities as a country becomes more developed",
+  "GEO-HEALTH-09:base": "A disease passed directly between people through contact, air, water or an insect vector",
+  "GEO-HEALTH-10:reforge": "A pandemic is defined by the severity of a disease rather than by its spread",
+  "GEO-HEALTH-16:base": "The obligation on every state to accept international rulings on its internal affairs",
+  "GEO-HEALTH-24:base": "A body that is created and funded by national governments in order to deliver their own aid programmes overseas",
+  "GEO-HEALTH-25:reforge": "The WHO can compel its member states to adopt the health policies it sets",
+  "GEO-HEALTH-29:reforge": "A programme should be judged on the size of its budget rather than its outcomes",
+  "GEO-HEALTH-34:base": "The transfer of all health provision from private organisations back towards the state",
+  "GEO-HEALTH-36:base": "Action judged solely by whether it achieved its stated aim within the planned budget",
+};
+
 // ===== A LEVEL GEOGRAPHY — YEAR 2 TOPIC BANKS =====
 // The four Year 2 units from the course outline each receive 37 questions.
 const addGeoYear2Bank = (bankId, label, spec, rows) => {
   BANKS[bankId] = {label, color:"#0f766e", questions: rows.map((row, index) => {
     const next = rows[(index + 1) % rows.length];
     const prev = rows[(index + rows.length - 1) % rows.length];
+    const others = [];
+    for (let step = 2; step < rows.length; step++) others.push(rows[(index + step) % rows.length]);
+    const id = `${bankId}-${String(index + 1).padStart(2,"0")}`;
+    // Prefer the hand-authored fourth option where one exists, otherwise
+    // borrow a real definition from elsewhere in the bank. Either way the
+    // fixed throwaway that used to sit here is gone.
+    const fourth = geoAuthoredFourthOptions[`${id}:base`]
+      || pickFourthOption(others.map(other => other.definition), new Set([row.definition, next.definition, prev.definition]), String(row.definition).length);
+    const fourthApplication = geoAuthoredFourthOptions[`${id}:reforge`]
+      || pickFourthOption(others.map(other => other.application), new Set([row.application, next.application, prev.application]), String(row.application).length);
     return {
-      id:`${bankId}-${String(index + 1).padStart(2,"0")}`, spec,
+      id, spec,
       stem:`Which statement best describes ${row.term}?`,
-      options:{A:row.definition,B:next.definition,C:prev.definition,D:`It has no significant geographical effect on ${label.toLowerCase()}`}, correct:"A",tag:`MC-${bankId}-${index + 1}`,
+      options:{A:row.definition,B:next.definition,C:prev.definition,D:fourth}, correct:"A",tag:`MC-${bankId}-${index + 1}`,
       scaffold:`${row.term}: ${row.definition} ${row.scaffold || "Apply the concept to place, scale and consequence before reaching a judgement."}`,
-      reforge:{stem:`A student is applying ${row.term} to a case study. Which statement is most accurate?`,options:{A:row.application,B:prev.application,C:next.application,D:`It cannot be applied to geographical evidence or decision-making`},correct:"A"}
+      reforge:{stem:`A student is applying ${row.term} to a case study. Which statement is most accurate?`,options:{A:row.application,B:prev.application,C:next.application,D:fourthApplication},correct:"A"}
     };
   })};
   SUBJECTS["geo"].banks.push(bankId);
@@ -15385,18 +15451,8 @@ retireBank("HIST-1");
 retireBank("HIST-2");
 
 // ===== WJEC LEVEL 3 APPLIED CRIMINOLOGY: FOUR-UNIT ROUTE =====
-// The fourth option used to be a fixed throwaway ("It has no meaningful
-// relevance to criminological analysis"). A permanently-wrong option that
-// appears in every question is free to eliminate, so a 4-option question was
-// really a 3-option one — and because the Reforge twin carried the same trick,
-// most questions were effectively 2-option. Draw a real definition from
-// another row instead, preferring one at least as long as the keyed answer so
-// the correct option is never the uniquely longest and no later pass has to
-// pad the distractors to hide a cue.
-const pickFourthOption = (candidates, used, minLength) => {
-  const distinct = candidates.filter(value => value && !used.has(value));
-  return distinct.find(value => value.length >= minLength) || distinct[0] || null;
-};
+// Fourth option drawn from a real definition rather than a fixed throwaway —
+// see pickFourthOption above the sociology bank builder for why.
 const addCriminologyBank = (bankId, label, spec, rawRows) => {
   const rows = rawRows.map(row => { const [term, definition, application] = row.split("|"); return {term, definition, application}; });
   BANKS[bankId] = {label, color:"#374151", questions:rows.map((row, index) => {
@@ -20279,17 +20335,8 @@ const geoAlevelDistractorRepairs = {
   "GEO-WATER-04:reforge": {
     "Throughflow transfers water through soil towards a river channel": "Throughflow transfers water laterally through the soil towards a river channel"
   },
-  "GEO-WATER-05:base": {
-    "It has no significant geographical effect on water cycle and water insecurity": "The volume of water held in storage at a single moment within a whole drainage basin"
-  },
-  "GEO-WATER-07:base": {
-    "It has no significant geographical effect on water cycle and water insecurity": "Water entering a drainage basin as precipitation, as snowmelt or as flow from an upstream channel"
-  },
   "GEO-WATER-08:reforge": {
     "Permeable soil and low-intensity rainfall can increase infiltration": "Permeable soil combined with low-intensity rainfall can increase infiltration"
-  },
-  "GEO-WATER-11:reforge": {
-    "It cannot be applied to geographical evidence or decision-making": "Deep permeable soils on gentle slopes usually generate the most surface runoff"
   },
   "GEO-WATER-18:reforge": {
     "Low rainfall combined with high demand can create drought conditions": "Low rainfall combined with unusually high demand can create drought conditions"
@@ -20302,9 +20349,6 @@ const geoAlevelDistractorRepairs = {
   },
   "GEO-WATER-22:reforge": {
     "A high-meat diet usually has a larger water footprint than a plant-based diet": "A high-meat diet usually carries a larger water footprint than a plant-based diet"
-  },
-  "GEO-WATER-23:base": {
-    "It has no significant geographical effect on water cycle and water insecurity": "The share of a country's total water supply that is drawn directly from underground aquifers"
   },
   "GEO-WATER-27:reforge": {
     "Reservoir storage can improve urban water security during dry seasons": "Reservoir storage can improve urban water security throughout the dry season"
@@ -20321,62 +20365,20 @@ const geoAlevelDistractorRepairs = {
   "WATER-GAP-02:reforge": {
     "Low demand during a wet season": "Unusually low demand during a wet season"
   },
-  "GEO-CARBON-01:base": {
-    "It has no significant geographical effect on carbon cycle and energy security": "The movement of carbon between the atmosphere and living organisms alone, excluding rocks and oceans"
-  },
   "GEO-CARBON-01:reforge": {
     "Energy insecurity can increase when prices rise or supply routes are disrupted": "Energy insecurity can increase whenever prices rise or key supply routes are disrupted"
   },
   "GEO-CARBON-03:reforge": {
     "A finite carbon budget means delay increases the scale of later cuts": "A finite carbon budget means that delay increases the scale of the cuts required later"
   },
-  "GEO-CARBON-04:base": {
-    "It has no significant geographical effect on carbon cycle and energy security": "The total mass of carbon currently held in the world's oceans, soils and rocks combined"
-  },
   "GEO-CARBON-07:base": {
     "The release of energy from organic matter, returning carbon dioxide to the atmosphere": "The release of stored energy from organic matter, returning carbon dioxide back to the atmosphere"
-  },
-  "GEO-CARBON-09:reforge": {
-    "It cannot be applied to geographical evidence or decision-making": "Cold, waterlogged conditions accelerate decomposition and release carbon rapidly"
-  },
-  "GEO-CARBON-12:reforge": {
-    "It cannot be applied to geographical evidence or decision-making": "Nitrogen and oxygen are the two most important greenhouse gases in the atmosphere"
-  },
-  "GEO-CARBON-13:base": {
-    "It has no significant geographical effect on carbon cycle and energy security": "The natural warming that keeps the planet habitable, unaltered by human activity"
-  },
-  "GEO-CARBON-14:reforge": {
-    "It cannot be applied to geographical evidence or decision-making": "Carbon intensity measures the total emissions of a country regardless of its output"
-  },
-  "GEO-CARBON-16:reforge": {
-    "It cannot be applied to geographical evidence or decision-making": "Draining peatland halts decomposition and locks the stored carbon away permanently"
-  },
-  "GEO-CARBON-18:reforge": {
-    "It cannot be applied to geographical evidence or decision-making": "Acidification raises ocean pH and strengthens the shells built by marine organisms"
-  },
-  "GEO-CARBON-21:base": {
-    "It has no significant geographical effect on carbon cycle and energy security": "The movement of energy resources along pipelines and shipping routes between trading states"
-  },
-  "GEO-CARBON-24:base": {
-    "It has no significant geographical effect on carbon cycle and energy security": "The total quantity of energy that a country is able to generate from its domestic sources"
-  },
-  "GEO-CARBON-27:reforge": {
-    "It cannot be applied to geographical evidence or decision-making": "Energy poverty occurs only in countries that have no domestic energy resources at all"
-  },
-  "GEO-CARBON-30:base": {
-    "It has no significant geographical effect on carbon cycle and energy security": "The tendency for resource-rich states to grow more slowly than resource-poor ones do"
   },
   "GEO-CARBON-30:reforge": {
     "Import dependence can grow when domestic production falls below demand": "Import dependence can grow whenever domestic production falls below the level of national demand"
   },
   "GEO-CARBON-32:base": {
     "Compensating for emissions by funding activities that reduce or remove emissions elsewhere": "Compensating for emissions by funding activities that reduce or remove emissions in another place"
-  },
-  "GEO-CARBON-32:reforge": {
-    "It cannot be applied to geographical evidence or decision-making": "CCS captures every tonne of carbon dioxide emitted and needs no additional energy"
-  },
-  "GEO-CARBON-35:base": {
-    "It has no significant geographical effect on carbon cycle and energy security": "The principle that every country should cut emissions by exactly the same amount"
   },
   "GEO-CARBON-35:reforge": {
     "Domestic renewable generation can reduce dependence on imported fuels": "Domestic renewable generation can reduce a country's dependence on imported fuels"
@@ -20410,9 +20412,6 @@ const geoAlevelDistractorRepairs = {
   },
   "GEO-SUPER-12:reforge": {
     "A regional power shaping neighbouring governments has a sphere of influence": "A regional power shaping the decisions of neighbouring governments has a sphere of influence"
-  },
-  "GEO-SUPER-14:reforge": {
-    "It cannot be applied to geographical evidence or decision-making": "Every member of the Security Council holds an equal veto over its resolutions"
   },
   "GEO-SUPER-16:reforge": {
     "Trade, migration and digital communication intensify globalisation": "Trade, migration and digital communication have together intensified globalisation"
@@ -20459,35 +20458,17 @@ const geoAlevelDistractorRepairs = {
   "GEO-SUPER-35:base": {
     "Dispute or violence connected to the control or meaning of a boundary": "Dispute or violence connected to the control of a boundary or else to its meaning"
   },
-  "GEO-SUPER-35:reforge": {
-    "It cannot be applied to geographical evidence or decision-making": "Global inequality has been eliminated by the growth of international trade"
-  },
   "GEO-HEALTH-01:base": {
     "The study and management of health issues that affect populations across national borders": "The study and management of the health issues that affect populations across national borders"
-  },
-  "GEO-HEALTH-01:reforge": {
-    "It cannot be applied to geographical evidence or decision-making": "Health is measured only by the absence of any diagnosed physical disease"
   },
   "GEO-HEALTH-05:reforge": {
     "A falling infant mortality rate can indicate better maternal and child healthcare": "A falling infant mortality rate can indicate improved maternal and child healthcare services"
   },
-  "GEO-HEALTH-07:base": {
-    "It has no significant geographical effect on health, human rights and intervention": "The movement of populations out of rural areas and into the cities as a country becomes more developed"
-  },
   "GEO-HEALTH-07:reforge": {
     "A falling infant mortality rate can indicate better maternal and child healthcare": "A falling infant mortality rate can indicate stronger maternal and child healthcare provision"
   },
-  "GEO-HEALTH-09:base": {
-    "It has no significant geographical effect on health, human rights and intervention": "A disease passed directly between people through contact, air, water or an insect vector"
-  },
-  "GEO-HEALTH-10:reforge": {
-    "It cannot be applied to geographical evidence or decision-making": "A pandemic is defined by the severity of a disease rather than by its spread"
-  },
   "GEO-HEALTH-14:reforge": {
     "Income, housing, education and employment are social determinants of health": "Income, housing, education and employment are the social determinants of health"
-  },
-  "GEO-HEALTH-16:base": {
-    "It has no significant geographical effect on health, human rights and intervention": "The obligation on every state to accept international rulings on its internal affairs"
   },
   "GEO-HEALTH-16:reforge": {
     "The principle of universality means rights should not depend on citizenship": "The principle of universality means that rights should not depend on citizenship"
@@ -20504,23 +20485,8 @@ const geoAlevelDistractorRepairs = {
   "GEO-HEALTH-20:reforge": {
     "Conflict can create displacement without an international border crossing": "Conflict can create displacement without any crossing of an international border"
   },
-  "GEO-HEALTH-24:base": {
-    "It has no significant geographical effect on health, human rights and intervention": "A body that is created and funded by national governments in order to deliver their own aid programmes overseas"
-  },
-  "GEO-HEALTH-25:reforge": {
-    "It cannot be applied to geographical evidence or decision-making": "The WHO can compel its member states to adopt the health policies it sets"
-  },
-  "GEO-HEALTH-29:reforge": {
-    "It cannot be applied to geographical evidence or decision-making": "A programme should be judged on the size of its budget rather than its outcomes"
-  },
   "GEO-HEALTH-33:reforge": {
     "A low-cost treatment that local workers can maintain may be appropriate": "A low-cost treatment that local health workers can maintain may be appropriate"
-  },
-  "GEO-HEALTH-34:base": {
-    "It has no significant geographical effect on health, human rights and intervention": "The transfer of all health provision from private organisations back towards the state"
-  },
-  "GEO-HEALTH-36:base": {
-    "It has no significant geographical effect on health, human rights and intervention": "Action judged solely by whether it achieved its stated aim within the planned budget"
   },
   "GEO-HEALTH-36:reforge": {
     "Surge capacity and trained staff improve resilience during outbreaks": "Surge capacity and well-trained staff improve resilience during outbreaks"
