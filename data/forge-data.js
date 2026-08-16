@@ -4998,7 +4998,11 @@ BANKS["CHEM-1"] = {
       options:{A:"Weighted mean mass of all naturally occurring isotopes relative to 1/12 of carbon-12.",B:"It isn't wrong — atoms can legitimately have fractional numbers of protons.",C:"Chlorine has a relative atomic mass of 35.5 because it has 35.5 neutrons.",D:"Relative atomic mass equals the number of electrons in the neutral atom."},
       correct:"A",tag:"MC-CHEM-01",
       scaffold:"Relative atomic mass (Ar) = weighted mean mass of naturally occurring isotopes relative to 1/12 of carbon-12. Chlorine: 75% 35Cl + 25% 37Cl → Ar = (0.75×35) + (0.25×37) = 35.5. Every individual chlorine ATOM has exactly 17 protons (atomic number = proton number = always whole). The fractional Ar reflects the isotopic mixture in a sample — not any individual atom.",
-      reforge:{stem:"Bromine has two isotopes: 79Br (50.7%) and 81Br (49.3%). Calculate the relative atomic mass of bromine to 1 decimal place.",options:{A:"80.0",B:"79.5 (= (0.507×79) + (0.493×81) = 40.05 + 39.93 = 79.98 ≈ 80.0)",C:"80.5",D:"79.0"},correct:"B"}
+      // Was keyed to an option labelled "79.5" whose own working read
+      // "= 40.05 + 39.93 = 79.98 ≈ 80.0" — so a student calculating correctly
+      // got 80.0, picked the option reading 80.0, and was marked wrong. The
+      // working belongs in the scaffold, not inside an option label.
+      reforge:{stem:"Bromine has two isotopes: 79Br (50.7%) and 81Br (49.3%). Calculate the relative atomic mass of bromine to 1 decimal place.",options:{A:"80.0",B:"79.5",C:"80.5",D:"79.0"},correct:"A"}
     },
     {
       id:"CHEM-02",stem:"Which of the following correctly explains why the second ionisation energy of sodium is much higher than the first?",
@@ -11429,7 +11433,12 @@ addGcseMathsBank("GCSE-MATH-P2", "Paper 2 — Calculator", "1MA1 Paper 2", "#1d4
   {id:"MATH-P2-04",stem:"Solve x² − 5x − 4 = 0, giving answers to 2 decimal places.",options:{A:"x = 5.70 or −0.70",B:"x = 5.00 or −4.00",C:"x = 0.70 or −5.70",D:"x = 4.56 or −0.88"},correct:"A",scaffold:"Using the quadratic formula gives x = (5 ± √41)/2, so x ≈ 5.70 or −0.70.",tag:"MATH-QUADRATIC",reforge:{stem:"Solve 2x² + 3x − 7 = 0 to 2 decimal places.",options:{A:"x = 2.77 or −1.27",B:"x = 1.27 or −2.77",C:"x = 1.77 or −2.27",D:"x = 0.77 or −3.27"},correct:"B"}},
   {id:"MATH-P2-05",stem:"The equation of a line is y = 3x − 4. What is its gradient?",options:{A:"−4",B:"3",C:"4",D:"1/3"},correct:"B",scaffold:"In y = mx + c, m is the gradient and c is the y-intercept. Here m = 3.",tag:"MATH-GRAPHS",reforge:{stem:"What is the y-intercept of y = −2x + 7?",options:{A:"−2",B:"2",C:"7",D:"−7"},correct:"C"}},
   {id:"MATH-P2-06",stem:"A cylinder has radius 4 cm and height 10 cm. Find its volume to 3 significant figures.",options:{A:"126 cm³",B:"251 cm³",C:"503 cm³",D:"1005 cm³"},correct:"C",scaffold:"Volume = πr²h = π × 4² × 10 = 160π ≈ 503 cm³.",tag:"MATH-VOLUME",reforge:{stem:"Find the volume of a sphere with radius 3 cm to 3 significant figures.",options:{A:"28.3 cm³",B:"36.0 cm³",C:"113 cm³",D:"339 cm³"},correct:"C"}},
-  {id:"MATH-P2-07",stem:"A bag contains 5 red and 3 blue counters. Two are taken without replacement. Find P(two red).",options:{A:"5/8",B:"25/64",C:"5/14",D:"20/56"},correct:"C",scaffold:"The probability is 5/8 × 4/7 = 20/56 = 5/14.",tag:"MATH-PROBABILITY2",reforge:{stem:"A box has 4 green and 6 yellow counters. Two are taken without replacement. Find P(two yellow).",options:{A:"3/10",B:"1/3",C:"1/2",D:"2/5"},correct:"B"}},
+  // Option D used to read "20/56", which the scaffold itself states equals the
+  // keyed answer 5/14 — so a student who worked it out correctly but did not
+  // simplify picked D and was marked wrong. Replaced with P(red then blue),
+  // 5/8 × 3/7, which is a genuine misreading of the question rather than a
+  // second correct answer.
+  {id:"MATH-P2-07",stem:"A bag contains 5 red and 3 blue counters. Two are taken without replacement. Find P(two red).",options:{A:"5/8",B:"25/64",C:"5/14",D:"15/56"},correct:"C",scaffold:"The probability is 5/8 × 4/7 = 20/56 = 5/14.",tag:"MATH-PROBABILITY2",reforge:{stem:"A box has 4 green and 6 yellow counters. Two are taken without replacement. Find P(two yellow).",options:{A:"3/10",B:"1/3",C:"1/2",D:"2/5"},correct:"B"}},
   {id:"MATH-P2-08",stem:"The first quartile is 18 and the third quartile is 41. Find the interquartile range.",options:{A:"19",B:"23",C:"29",D:"59"},correct:"B",scaffold:"Interquartile range = upper quartile − lower quartile = 41 − 18 = 23.",tag:"MATH-IQR",reforge:{stem:"What does the interquartile range measure?",options:{A:"The total of all values",B:"The spread of the middle half",C:"The most common value",D:"The difference between mean and mode"},correct:"B"}},
   {id:"MATH-P2-09",stem:"A frequency table has values 2, 4 and 7 with frequencies 3, 5 and 2. Find the mean.",options:{A:"3.8",B:"4.1",C:"4.0",D:"4.7"},correct:"C",scaffold:"Total frequency is 10 and the total of fx is 6 + 20 + 14 = 40, so the mean is 4.0.",tag:"MATH-FREQUENCY",reforge:{stem:"Values 1, 3 and 8 have frequencies 4, 2 and 4. Find the mean.",options:{A:"3.6",B:"4.0",C:"4.2",D:"4.8"},correct:"C"}},
   {id:"MATH-P2-10",stem:"A point is enlarged by scale factor 3 about the origin. What happens to its distance from the origin?",options:{A:"It is divided by 3.0",B:"It is unchanged",C:"It is multiplied by 3",D:"It is increased by 9.0"},correct:"C",scaffold:"An enlargement with centre at the origin multiplies both coordinates and therefore the distance from the origin by the scale factor 3.",tag:"MATH-TRANSFORM",reforge:{stem:"What does a scale factor −1 do about the origin?",options:{A:"A reflection in the origin",B:"A translation right",C:"An enlargement by 1",D:"A reflection in the x-axis only"},correct:"A"}},
@@ -19146,6 +19155,4424 @@ busExpansion("BUS-2", [
     scaffold:"Depreciation spreads the cost of a non-current asset across its useful life, matching the cost to the periods that benefit. It reduces recorded profit and the asset's book value, but no cash leaves the business in that period — the cash went when the asset was bought. This is a common source of confusion between profit and cash flow, and it is why depreciation is added back when converting profit into operating cash flow.",
     reforge:{stem:"When converting operating profit into cash flow, depreciation is added back because it:",options:{A:"Never involved an outflow of cash",B:"Represents cash received from customers.",C:"Increases the value of the asset held.",D:"Is a payment made to the tax authority."},correct:"A"}
   }
+]);
+
+// ===== A-LEVEL CHEMISTRY: GENUINE QUESTION EXPANSION =====
+// chem reached its 200-question floor via expandSubjectToMinimum(), which
+// clones existing questions; a later pass strips the "(application variant
+// N)" suffix, leaving 54 of its 202 questions as byte-identical repeats.
+// These 111 authored questions take the source count to 200 so the expansion
+// pass generates no coverage variants at all.
+const chemExpansion = (bankId, questions) => questions.forEach(question => BANKS[bankId].questions.push(question));
+chemExpansion("CHEM-1", [
+  {
+    id:"CHEM-N1-01",stem:"An atom of ³⁷Cl contains:",
+    options:{A:"17 protons, 20 neutrons and 17 electrons",B:"20 protons, 17 neutrons and 20 electrons.",C:"37 protons, 17 neutrons and 37 electrons.",D:"17 protons, 37 neutrons and 20 electrons."},
+    correct:"A",tag:"MC-GCHEM-ATOMIC-STRUCTURE",
+    scaffold:"Atomic number = proton number, and fixes the element. Mass number = protons + neutrons. So for ³⁷Cl: 17 protons (chlorine is element 17), 37 − 17 = 20 neutrons, and 17 electrons in a neutral atom. Isotopes of an element share proton number but differ in neutron number, so they have identical chemistry — electrons determine reactions — but different masses, which is what mass spectrometry separates.",
+    reforge:{stem:"Two isotopes of the same element always have the same:",options:{A:"Number of neutrons in the nucleus.",B:"Mass number for each atom.",C:"Number of protons and electrons",D:"Density in the solid state."},correct:"C"}
+  },
+  {
+    id:"CHEM-N1-02",stem:"The electron configuration of a chromium atom is unusual because it is:",
+    options:{A:"[Ar]4s²3d⁴, following the normal filling order.",B:"[Ar]4s¹3d⁵, giving a half-filled 3d subshell",C:"[Ar]4s²3d⁶, with the 4s filled first.",D:"[Ar]3d⁸, with no 4s electrons at all."},
+    correct:"B",tag:"MC-GCHEM-ATOMIC-STRUCTURE",
+    scaffold:"Chromium is [Ar]4s¹3d⁵ and copper is [Ar]4s¹3d¹⁰: promoting one 4s electron gives a half-filled or full 3d subshell, which is slightly lower in energy. Note that when transition metals form ions, the 4s electrons are lost first even though 4s fills first — so Fe²⁺ is [Ar]3d⁶, not [Ar]4s²3d⁴. That ordering catches students out more often than the chromium and copper exceptions themselves.",
+    reforge:{stem:"Which is the correct electron configuration of an Fe²⁺ ion?",options:{A:"[Ar]4s²3d⁴, losing two 3d electrons.",B:"[Ar]4s¹3d⁵, promoting one electron.",C:"[Ar]4s²3d⁶, unchanged from the atom.",D:"[Ar]3d⁶, losing 4s first"},correct:"D"}
+  },
+  {
+    id:"CHEM-N1-03",stem:"First ionisation energy generally decreases down a group because:",
+    options:{A:"Nuclear charge decreases down the group.",B:"The outer electrons pair up in the same orbital.",C:"The outer electron is further out, more shielded",D:"Atoms become more electronegative down the group."},
+    correct:"C",tag:"MC-GCHEM-ATOMIC-STRUCTURE",
+    scaffold:"Three factors set ionisation energy: nuclear charge, distance of the outer electron from the nucleus, and shielding by inner shells. Down a group, nuclear charge rises but distance and shielding rise more, so attraction on the outer electron weakens and ionisation energy falls. Across a period, nuclear charge rises with little change in shielding, so it generally increases — with dips at Group 3 (2p higher than 2s) and Group 6 (paired 2p electrons repel).",
+    reforge:{stem:"The first ionisation energy of sulfur is lower than that of phosphorus because in sulfur:",options:{A:"Two electrons pair in one 3p orbital and repel",B:"The nuclear charge is smaller than phosphorus.",C:"There is an additional filled inner shell.",D:"The outer electron occupies a 4s orbital."},correct:"A"}
+  },
+  {
+    id:"CHEM-N1-04",stem:"In a time-of-flight mass spectrometer, ions are accelerated so that they all have the same:",
+    options:{A:"Velocity as they enter the flight tube.",B:"Mass-to-charge ratio on detection.",C:"Number of neutrons in the nucleus.",D:"Kinetic energy entering the flight tube"},
+    correct:"D",tag:"MC-GCHEM-MASS-SPECTRA",
+    scaffold:"Stages: ionisation (electrospray or electron impact), acceleration to constant kinetic energy, drift through a field-free flight tube, then detection. Since KE = ½mv² is equal for all ions, heavier ions travel more slowly and arrive later, so time of flight gives m/z. The detector converts ion arrivals into current, and relative peak heights give isotopic abundances, from which relative atomic mass is calculated as a weighted mean.",
+    reforge:{stem:"In a mass spectrum, a heavier isotope reaches the detector later because it has a:",options:{A:"Greater charge on each ion formed.",B:"Lower velocity at equal energy",C:"Smaller mass-to-charge ratio overall.",D:"Longer path length through the tube."},correct:"B"}
+  },
+  {
+    id:"CHEM-N1-05",stem:"One mole of any substance contains:",
+    options:{A:"6.02 × 10²³ particles",B:"12 g of that substance exactly.",C:"24 dm³ of gas at any temperature.",D:"The same mass as one mole of carbon."},
+    correct:"A",tag:"MC-GCHEM-MOLES-FORMULAE",
+    scaffold:"A mole is 6.02 × 10²³ particles (the Avogadro constant). Key relationships: moles = mass ÷ Mr; moles = concentration × volume in dm³; and for a gas at room temperature and pressure, moles = volume in dm³ ÷ 24. The molar gas volume applies only at the stated conditions, and the ideal gas equation pV = nRT covers the general case with pressure in Pa, volume in m³ and temperature in K.",
+    reforge:{stem:"How many moles are present in 88 g of carbon dioxide (Mr = 44)?",options:{A:"44 moles, from 88 divided by 2.",B:"0.5 moles, from 44 divided by 88.",C:"2 moles, from 88 divided by 44",D:"3872 moles, from 88 multiplied by 44."},correct:"C"}
+  },
+  {
+    id:"CHEM-N1-06",stem:"The empirical formula of a compound gives the:",
+    options:{A:"Actual number of atoms in one molecule.",B:"Arrangement of atoms in three dimensions.",C:"Total mass of one mole of the compound.",D:"Simplest whole-number ratio of atoms"},
+    correct:"D",tag:"MC-GCHEM-MOLES-FORMULAE",
+    scaffold:"Empirical formula is the simplest whole-number ratio; molecular formula gives the actual numbers and is a whole-number multiple of it. To find an empirical formula: divide each percentage or mass by the atomic mass, divide through by the smallest result, then scale to whole numbers. Ethane is CH₃ empirical, C₂H₆ molecular. Ionic compounds and giant structures are always written as empirical formulae since no discrete molecule exists.",
+    reforge:{stem:"A compound has empirical formula CH₂ and a relative molecular mass of 56. Its molecular formula is:",options:{A:"C₄H₈, since 56 ÷ 14 gives 4",B:"CH₂, unchanged from the empirical formula.",C:"C₂H₄, since 56 ÷ 28 gives 2.",D:"C₅H₁₀, since 56 is close to 70."},correct:"A"}
+  },
+  {
+    id:"CHEM-N1-07",stem:"The percentage yield of a reaction is calculated as:",
+    options:{A:"Theoretical yield divided by actual yield, times 100.",B:"Mass of product divided by mass of all reactants.",C:"Actual yield divided by theoretical yield, times 100",D:"Moles of product divided by moles of solvent."},
+    correct:"C",tag:"MC-GCHEM-MOLES-FORMULAE",
+    scaffold:"Percentage yield = (actual ÷ theoretical) × 100, and is below 100% because of incomplete reaction, reversible equilibria, competing side reactions, and losses during transfer and purification. Atom economy = (Mr of desired product ÷ total Mr of reactants) × 100, and measures how much of the reactant mass ends up as the wanted product. Addition reactions have 100% atom economy; substitution reactions do not.",
+    reforge:{stem:"An addition reaction has a higher atom economy than a substitution reaction because it:",options:{A:"Always produces a higher percentage yield.",B:"Requires no catalyst to proceed.",C:"Runs at a lower temperature.",D:"Forms only one product, wasting no atoms"},correct:"D"}
+  },
+  {
+    id:"CHEM-N1-08",stem:"An ionic bond is best described as the electrostatic attraction between:",
+    options:{A:"Oppositely charged ions in a lattice",B:"Nuclei and a shared pair of electrons.",C:"Positive ions and delocalised electrons.",D:"Permanent dipoles on adjacent molecules."},
+    correct:"A",tag:"MC-GCHEM-BONDING-STRUCTURE",
+    scaffold:"Ionic: electrons transferred from metal to non-metal, giving oppositely charged ions held in a giant lattice — high melting point, brittle, conducts only when molten or dissolved. Covalent: a shared pair attracted to both nuclei. Metallic: positive ions in a sea of delocalised electrons — conducts when solid, malleable. Ionic character increases with electronegativity difference, and bonding sits on a continuum rather than in strict categories.",
+    reforge:{stem:"Sodium chloride conducts electricity when molten but not when solid because the ions:",options:{A:"Gain extra electrons on melting.",B:"Are free to move only in the liquid",C:"Become covalently bonded when solid.",D:"Lose their charge in the solid lattice."},correct:"B"}
+  },
+  {
+    id:"CHEM-N1-09",stem:"A dative covalent bond differs from an ordinary covalent bond because:",
+    options:{A:"It is significantly weaker once formed.",B:"The electrons are transferred rather than shared.",C:"Both shared electrons come from one atom",D:"It forms only between identical atoms."},
+    correct:"C",tag:"MC-GCHEM-BONDING-STRUCTURE",
+    scaffold:"In a dative (coordinate) bond both electrons in the shared pair come from one atom, usually via a lone pair — as in NH₄⁺, where nitrogen's lone pair bonds to H⁺, and in H₃O⁺ and complex ions with ligands. Once formed it is identical in length and strength to any other covalent bond of that type, which is why all four N–H bonds in the ammonium ion are equivalent. It is shown by an arrow from donor to acceptor.",
+    reforge:{stem:"All four N–H bonds in the ammonium ion are identical in length. This shows that a dative bond:",options:{A:"Is weaker than a normal covalent bond.",B:"Prevents the ion from carrying a charge.",C:"Only forms at high temperature.",D:"Is identical to any covalent bond"},correct:"D"}
+  },
+  {
+    id:"CHEM-N1-10",stem:"Applying electron pair repulsion theory, a molecule of ammonia is:",
+    options:{A:"Trigonal planar with bond angles of 120°.",B:"Pyramidal with bond angles of about 107°",C:"Tetrahedral with bond angles of 109.5°.",D:"Linear with bond angles of 180°."},
+    correct:"B",tag:"MC-GCHEM-BONDING-STRUCTURE",
+    scaffold:"Electron pairs repel to maximum separation, and lone pairs repel more strongly than bonding pairs, reducing bond angles by about 2.5° each. Methane: 4 bonding pairs, tetrahedral, 109.5°. Ammonia: 3 bonding + 1 lone, pyramidal, 107°. Water: 2 bonding + 2 lone, bent, 104.5°. Count total electron pairs around the central atom first, then subtract for the shape actually described, which refers only to atom positions.",
+    reforge:{stem:"The bond angle in water is smaller than in ammonia because water has:",options:{A:"Two lone pairs, repelling more",B:"A greater number of bonding pairs.",C:"A heavier central atom than nitrogen.",D:"Hydrogen bonding between molecules."},correct:"A"}
+  },
+  {
+    id:"CHEM-N1-11",stem:"Electronegativity is best defined as the ability of an atom to:",
+    options:{A:"Lose electrons and form a positive ion.",B:"Conduct electricity in the molten state.",C:"Attract a bonding pair of electrons",D:"Form the largest number of covalent bonds."},
+    correct:"C",tag:"MC-GCHEM-BONDING-STRUCTURE",
+    scaffold:"Electronegativity rises across a period as nuclear charge increases with similar shielding, and falls down a group as the bonding pair sits further from the nucleus and is more shielded. Fluorine is the most electronegative element. A difference between bonded atoms creates a polar bond with δ+ and δ− ends. A molecule is only polar overall if those bond dipoles do not cancel by symmetry — CO₂ is non-polar despite polar bonds.",
+    reforge:{stem:"Carbon dioxide has polar bonds but is a non-polar molecule because the:",options:{A:"Bonds are too weak to create a dipole.",B:"Oxygen atoms have no lone pairs.",C:"Molecule contains only double bonds.",D:"Dipoles cancel in a linear molecule"},correct:"D"}
+  },
+  {
+    id:"CHEM-N1-12",stem:"Van der Waals (London) forces arise from:",
+    options:{A:"Instantaneous dipoles inducing others",B:"Permanent dipoles on polar molecules only.",C:"Hydrogen bonded to nitrogen, oxygen or fluorine.",D:"The transfer of electrons between molecules."},
+    correct:"A",tag:"MC-GCHEM-BONDING-STRUCTURE",
+    scaffold:"Intermolecular forces in increasing strength: London forces (present in all molecules, from momentary uneven electron distribution, stronger with more electrons and greater surface contact); permanent dipole–dipole (polar molecules); hydrogen bonding (H bonded to N, O or F interacting with a lone pair). These determine melting and boiling points, not the covalent bonds inside molecules, which are unbroken when a simple molecular substance melts.",
+    reforge:{stem:"Boiling a sample of liquid bromine requires energy to overcome:",options:{A:"The covalent bonds within each Br₂ molecule.",B:"Hydrogen bonds between bromine molecules.",C:"London forces between the molecules",D:"Ionic attractions in a giant lattice."},correct:"C"}
+  },
+  {
+    id:"CHEM-N1-13",stem:"Water has an unusually high boiling point for its molecular mass because of:",
+    options:{A:"Its very strong covalent O–H bonds.",B:"Hydrogen bonding between molecules",C:"Its giant covalent lattice structure.",D:"Ionic attraction between H⁺ and OH⁻."},
+    correct:"B",tag:"MC-GCHEM-BONDING-STRUCTURE",
+    scaffold:"Each water molecule can form up to four hydrogen bonds — two through its lone pairs and two through its hydrogens — giving an extensive network that requires much energy to break, hence the high boiling point. Ice is less dense than liquid water because hydrogen bonds hold the molecules in an open lattice with the molecules further apart on average than in the liquid, which is why ice floats.",
+    reforge:{stem:"Ice is less dense than liquid water because hydrogen bonds hold molecules:",options:{A:"Closer together than in the liquid.",B:"In rapidly moving random positions.",C:"In an open lattice, further apart",D:"In pairs rather than larger clusters."},correct:"C"}
+  },
+  {
+    id:"CHEM-N1-14",stem:"Diamond has a very high melting point because it has:",
+    options:{A:"Strong London forces between layers.",B:"Delocalised electrons throughout the structure.",C:"A giant covalent lattice of strong bonds",D:"Ions held in a regular repeating lattice."},
+    correct:"C",tag:"MC-GCHEM-BONDING-STRUCTURE",
+    scaffold:"Diamond: each carbon bonded to four others in a giant covalent lattice, very hard, extremely high melting point, non-conducting since all outer electrons are in bonds. Graphite: three bonds per carbon in layers with weak forces between them, so layers slide (lubricant), and the fourth delocalised electron allows conduction along layers. Both are carbon: the difference is structure, which is why properties differ so sharply.",
+    reforge:{stem:"Graphite conducts electricity but diamond does not because in graphite each carbon atom:",options:{A:"Forms four bonds instead of three.",B:"Has one delocalised electron",C:"Carries a permanent negative charge.",D:"Is held by weak London forces only."},correct:"B"}
+  },
+  {
+    id:"CHEM-N1-15",stem:"Metals are malleable because:",
+    options:{A:"Layers of ions can slide past each other",B:"Covalent bonds break and reform easily.",C:"The ions are held only by London forces.",D:"Delocalised electrons hold ions rigidly in place."},
+    correct:"A",tag:"MC-GCHEM-BONDING-STRUCTURE",
+    scaffold:"Metallic bonding is the attraction between positive ions and a sea of delocalised electrons. Layers of ions can slide without breaking the bonding, since the electron sea is non-directional — hence malleability and ductility. Delocalised electrons also carry charge and heat, giving high conductivity. Bond strength, and so melting point, rises with greater ionic charge and smaller ionic radius: magnesium melts far higher than sodium.",
+    reforge:{stem:"Magnesium has a higher melting point than sodium mainly because Mg²⁺ ions:",options:{A:"Are larger than sodium ions.",B:"Form covalent bonds with each other.",C:"A higher charge and more electrons",D:"Are held together by hydrogen bonding."},correct:"C"}
+  },
+  {
+    id:"CHEM-N1-16",stem:"In the equation pV = nRT, the temperature must be expressed in:",
+    options:{A:"Degrees Celsius above freezing point.",B:"Kelvin, the absolute scale",C:"Whatever unit the pressure uses.",D:"Degrees Fahrenheit for consistency."},
+    correct:"B",tag:"MC-GCHEM-MOLES-FORMULAE",
+    scaffold:"For pV = nRT use SI units throughout: pressure in pascals, volume in m³ (1 dm³ = 1 × 10⁻³ m³), temperature in kelvin (K = °C + 273), n in moles, R = 8.31 J K⁻¹ mol⁻¹. Unit conversion is where most marks are lost, particularly cm³ to m³ (divide by 10⁶). The equation assumes ideal behaviour: negligible molecular volume and no intermolecular forces, which fails at high pressure and low temperature.",
+    reforge:{stem:"Real gases deviate most from ideal behaviour at:",options:{A:"High temperature and low pressure.",B:"Standard room temperature and pressure.",C:"High temperature and high volume.",D:"Low temperature and high pressure"},correct:"D"}
+  },
+  {
+    id:"CHEM-N1-17",stem:"A student dissolves 0.1 mol of solute in water and makes the solution up to 500 cm³. The concentration is:",
+    options:{A:"0.05 mol dm⁻³, from 0.1 × 0.5.",B:"50 mol dm⁻³, from 0.1 × 500.",C:"0.2 mol dm⁻³, from 0.1 ÷ 0.5",D:"2.0 mol dm⁻³, from 500 ÷ 0.1 ÷ 1000."},
+    correct:"C",tag:"MC-GCHEM-MOLES-FORMULAE",
+    scaffold:"Concentration (mol dm⁻³) = moles ÷ volume in dm³, so convert cm³ to dm³ by dividing by 1000 first: 500 cm³ = 0.5 dm³, giving 0.1 ÷ 0.5 = 0.2 mol dm⁻³. In titration calculations, find moles of the known solution from concentration × volume, use the balanced equation's ratio to get moles of the unknown, then divide by its volume. Forgetting the cm³ to dm³ conversion is the commonest error.",
+    reforge:{stem:"In a titration, 25.0 cm³ of 0.100 mol dm⁻³ NaOH reacts exactly with HCl in a 1:1 ratio. Moles of HCl are:",options:{A:"2.50 × 10⁻³ mol",B:"2.50 mol, from 25.0 × 0.100.",C:"0.250 mol, from 25.0 ÷ 100.",D:"4.00 × 10⁻³ mol, from 0.100 ÷ 25.0."},correct:"A"}
+  },
+  {
+    id:"CHEM-N1-18",stem:"In a titration, the burette is rinsed with the solution it will contain rather than with water because water would:",
+    options:{A:"React chemically with the burette glass.",B:"Prevent the indicator changing colour.",C:"Make the tap leak during the titration.",D:"Dilute it, giving a larger titre"},
+    correct:"D",tag:"MC-GCHEM-INORGANIC-TESTS",
+    scaffold:"Rinse the burette and pipette with the solutions they will hold; the conical flask may be rinsed with distilled water, since extra water there does not change the moles of substance present. Take an initial rough titration then repeat until titres agree within 0.10 cm³, and average only those concordant results. Read the bottom of the meniscus at eye level to avoid parallax error, and add dropwise near the endpoint.",
+    reforge:{stem:"Concordant titres in a titration are those that agree within:",options:{A:"1.00 cm³ of one another.",B:"0.10 cm³ of one another",C:"5.00 cm³ of one another.",D:"0.01 cm³ of one another."},correct:"B"}
+  },
+  {
+    id:"CHEM-N1-19",stem:"Adding acidified silver nitrate to a solution produces a cream precipitate. The halide present is:",
+    options:{A:"Chloride, which gives a white precipitate.",B:"Bromide, which gives a cream precipitate",C:"Iodide, which gives a yellow precipitate.",D:"Fluoride, which gives no precipitate."},
+    correct:"B",tag:"MC-GCHEM-INORGANIC-TESTS",
+    scaffold:"Silver nitrate halide tests: chloride gives white AgCl (dissolves in dilute ammonia); bromide gives cream AgBr (dissolves in concentrated ammonia); iodide gives pale yellow AgI (insoluble in concentrated ammonia); fluoride gives no precipitate. Acidify with dilute nitric acid first to remove carbonate and hydroxide ions, which would otherwise precipitate and give a false positive. Solubility in ammonia distinguishes the three.",
+    reforge:{stem:"Nitric acid is added before silver nitrate in the halide test in order to:",options:{A:"Increase the solubility of the silver halide.",B:"Speed up the precipitation reaction.",C:"Remove carbonate ions that also precipitate",D:"Convert the halide ions into halogens."},correct:"C"}
+  },
+  {
+    id:"CHEM-N1-20",stem:"A gas turns damp red litmus paper blue. The gas is:",
+    options:{A:"Carbon dioxide, from a carbonate.",B:"Chlorine, from an oxidation reaction.",C:"Hydrogen, from a metal and acid.",D:"Ammonia, from warming with alkali"},
+    correct:"D",tag:"MC-GCHEM-INORGANIC-TESTS",
+    scaffold:"Gas tests: ammonia turns damp red litmus blue and is released when an ammonium salt is warmed with sodium hydroxide; carbon dioxide turns limewater milky; hydrogen gives a squeaky pop with a lit splint; oxygen relights a glowing splint; chlorine bleaches damp litmus. For anions: carbonate fizzes with acid giving CO₂; sulfate gives a white precipitate with acidified barium chloride; halides are identified with acidified silver nitrate.",
+    reforge:{stem:"Acidified barium chloride added to a solution gives a white precipitate. This indicates:",options:{A:"Sulfate ions are present",B:"Carbonate ions are present.",C:"Chloride ions are present.",D:"Ammonium ions are present."},correct:"A"}
+  },
+  {
+    id:"CHEM-N1-21",stem:"Successive ionisation energies for an element show a large jump between the third and fourth values. The element is in:",
+    options:{A:"Group 1, with one outer electron.",B:"Group 2, with two outer electrons.",C:"Group 3, with three outer electrons",D:"Group 4, with four outer electrons."},
+    correct:"C",tag:"MC-GCHEM-ATOMIC-STRUCTURE",
+    scaffold:"A large jump appears when the next electron must come from a shell closer to the nucleus with less shielding. The number of electrons removed before the jump equals the number in the outer shell, giving the group number. A jump between the 3rd and 4th means three outer electrons, so Group 3. Successive ionisation energies always increase, since removing an electron from an increasingly positive ion is progressively harder.",
+    reforge:{stem:"Successive ionisation energies of any element always increase because each electron is removed from a:",options:{A:"Progressively more positive ion",B:"Shell with increasing shielding.",C:"Larger and more diffuse atom.",D:"Region of lower nuclear charge."},correct:"A"}
+  },
+  {
+    id:"CHEM-N1-22",stem:"Which statement about the atomic radius trend across Period 3 is correct?",
+    options:{A:"It increases because more shells are added.",B:"It stays constant since the shell number is fixed.",C:"It increases because shielding rises sharply.",D:"It decreases as nuclear charge rises"},
+    correct:"D",tag:"MC-GCHEM-ATOMIC-STRUCTURE",
+    scaffold:"Across a period, protons are added to the nucleus while electrons enter the same shell, so shielding barely changes and the increasing nuclear charge pulls the outer shell inwards — atomic radius decreases. Down a group, an extra shell is added each time and shielding rises, so radius increases. Ionic radii follow related trends: cations are smaller than their atoms, anions larger, because of the changed electron-to-proton ratio.",
+    reforge:{stem:"A sodium ion is smaller than a sodium atom because the ion has:",options:{A:"Gained an electron into a new shell.",B:"Lost its outer shell entirely",C:"A smaller nuclear charge than the atom.",D:"More shielding from inner electrons."},correct:"B"}
+  },
+  {
+    id:"CHEM-N1-23",stem:"The mass spectrum of an element shows peaks at m/z 24 (79%), 25 (10%) and 26 (11%). Its relative atomic mass is:",
+    options:{A:"25.0, the middle of the three values.",B:"24.3, the weighted mean",C:"75.0, the sum of the three m/z values.",D:"24.0, the most abundant isotope alone."},
+    correct:"B",tag:"MC-GCHEM-MASS-SPECTRA",
+    scaffold:"Relative atomic mass is the weighted mean: multiply each isotope's mass by its fractional abundance and add. Here (0.79×24) + (0.10×25) + (0.11×26) = 18.96 + 2.50 + 2.86 = 24.32, so 24.3 — magnesium. Two common errors are taking a simple average of the masses, ignoring abundance, and quoting only the most abundant isotope. Where abundances are given as peak heights, divide each by the total first.",
+    reforge:{stem:"Relative atomic mass is calculated as a weighted mean rather than a simple average because:",options:{A:"Isotopes have different chemical properties.",B:"Peak heights are always equal in a spectrum.",C:"The isotopes are present in unequal amounts",D:"Mass spectrometers cannot detect light isotopes."},correct:"C"}
+  },
+  {
+    id:"CHEM-N1-24",stem:"A molecule of BF₃ is trigonal planar because the central boron atom has:",
+    options:{A:"Three bonding pairs and no lone pairs",B:"Four bonding pairs and no lone pairs.",C:"Three bonding pairs and one lone pair.",D:"Two bonding pairs and two lone pairs."},
+    correct:"A",tag:"MC-GCHEM-BONDING-STRUCTURE",
+    scaffold:"Count electron pairs around the central atom, then subtract lone pairs to name the shape: 2 pairs linear (180°), 3 trigonal planar (120°), 4 tetrahedral (109.5°), 5 trigonal bipyramidal (120° and 90°), 6 octahedral (90°). BF₃ has three bonding pairs and no lone pairs, so it is trigonal planar. Boron is an exception to the octet rule here, having only six electrons in its outer shell.",
+    reforge:{stem:"A molecule with six bonding pairs and no lone pairs around the central atom is:",options:{A:"Trigonal bipyramidal, with 120° and 90° angles.",B:"Tetrahedral, with 109.5° bond angles.",C:"Octahedral, with 90° bond angles",D:"Trigonal planar, with 120° bond angles."},correct:"C"}
+  },
+  {
+    id:"CHEM-N1-25",stem:"Iodine has a higher boiling point than chlorine because iodine molecules have:",
+    options:{A:"Stronger covalent bonds within the molecule.",B:"More electrons, so stronger forces",C:"Permanent dipoles that chlorine lacks.",D:"Hydrogen bonding between the molecules."},
+    correct:"B",tag:"MC-GCHEM-BONDING-STRUCTURE",
+    scaffold:"Down Group 7 the molecules gain electrons, so instantaneous dipoles are larger and London forces stronger, raising melting and boiling points: chlorine gas, bromine liquid, iodine solid at room temperature. The covalent bond within each molecule actually weakens down the group, but that bond is not broken on boiling — a distinction worth stating explicitly, since it is a frequent source of confused answers.",
+    reforge:{stem:"When iodine sublimes, the forces overcome are:",options:{A:"The I–I covalent bonds within molecules.",B:"Ionic attractions in the crystal lattice.",C:"London forces between I₂ molecules",D:"Hydrogen bonds linking the molecules."},correct:"C"}
+  },
+  {
+    id:"CHEM-N1-26",stem:"In the reaction Mg + 2HCl → MgCl₂ + H₂, magnesium is:",
+    options:{A:"Oxidised, losing electrons",B:"Reduced, gaining electrons.",C:"Neither oxidised nor reduced.",D:"Acting as a catalyst only."},
+    correct:"A",tag:"MC-GCHEM-ACIDS-REDOX",
+    scaffold:"Oxidation Is Loss of electrons, Reduction Is Gain. Magnesium goes from 0 to +2, losing two electrons, so it is oxidised and acts as the reducing agent. Hydrogen goes from +1 to 0, gaining electrons, so it is reduced and HCl is the oxidising agent. Assign oxidation numbers systematically: uncombined elements 0, simple ions their charge, oxygen usually −2, hydrogen usually +1, and the total equals the overall charge.",
+    reforge:{stem:"What is the oxidation number of sulfur in the sulfate ion, SO₄²⁻?",options:{A:"−2, the same as the overall charge.",B:"+4, matching the number of oxygens.",C:"+6, since 4 × (−2) plus x equals −2",D:"0, since it is a combined element."},correct:"C"}
+  },
+  {
+    id:"CHEM-N1-27",stem:"A Brønsted–Lowry acid is defined as a species that:",
+    options:{A:"Accepts a pair of electrons.",B:"Releases hydroxide ions in water.",C:"Increases the pH of a solution.",D:"Donates a proton"},
+    correct:"D",tag:"MC-GCHEM-ACIDS-REDOX",
+    scaffold:"Brønsted–Lowry: an acid donates a proton, a base accepts one. Each acid has a conjugate base formed by losing H⁺, and each base a conjugate acid. Strong acids dissociate fully so [H⁺] equals the acid concentration; weak acids dissociate partially, needing Ka. Note strength (extent of dissociation) is separate from concentration (amount per volume) — a concentrated weak acid is entirely possible.",
+    reforge:{stem:"A concentrated solution of ethanoic acid has a higher pH than a dilute solution of hydrochloric acid because ethanoic acid:",options:{A:"Contains fewer hydrogen atoms per molecule.",B:"Only partially dissociates in solution",C:"Is present at a lower concentration.",D:"Acts as a base rather than an acid."},correct:"B"}
+  },
+  {
+    id:"CHEM-N1-28",stem:"Which pair of substances would form a buffer solution?",
+    options:{A:"A strong acid and a strong base in equal amounts.",B:"A strong acid and water in any proportion.",C:"A weak acid and its salt with a strong base",D:"A weak base and a strong base together."},
+    correct:"C",tag:"MC-GCHEM-ACIDS-REDOX",
+    scaffold:"A buffer resists pH change on adding small amounts of acid or alkali, and is made from a weak acid with its conjugate base (e.g. ethanoic acid and sodium ethanoate), or a weak base with its conjugate acid. Added H⁺ is removed by the conjugate base and added OH⁻ by the weak acid, so pH shifts little. pH is calculated from Ka and the acid-to-salt ratio; a buffer works best when that ratio is near 1.",
+    reforge:{stem:"When a small amount of acid is added to an ethanoic acid / ethanoate buffer, the pH changes little because:",options:{A:"The ethanoate ions react with the added H⁺",B:"The water present neutralises all the acid.",C:"Ethanoic acid dissociates completely.",D:"The buffer prevents any reaction occurring."},correct:"A"}
+  },
+  {
+    id:"CHEM-N1-29",stem:"A student must dilute a concentrated acid. The correct procedure is to:",
+    options:{A:"Add water to the concentrated acid quickly.",B:"Add acid to water slowly, stirring",C:"Mix equal volumes in a stoppered flask.",D:"Heat the acid before adding any water."},
+    correct:"B",tag:"MC-GCHEM-INORGANIC-TESTS",
+    scaffold:"Dilution is strongly exothermic, so acid is added to water — the larger volume of water absorbs the heat released. Adding water to concentrated acid can make the small volume boil and spit corrosive liquid. Standard precautions: eye protection, work over a tray or sink, add slowly with stirring, and allow the solution to cool before making up to the mark in a volumetric flask, since warm liquid contracts on cooling.",
+    reforge:{stem:"A solution is made up to the mark in a volumetric flask while still warm. The measured concentration will be:",options:{A:"Unaffected by the temperature.",B:"Impossible to determine at all.",C:"Too low, since the liquid expanded.",D:"Too high; it contracts on cooling"},correct:"D"}
+  },
+  {
+    id:"CHEM-N1-30",stem:"The bonding in an ammonium ion, NH₄⁺, includes:",
+    options:{A:"Four identical bonds, one dative",B:"Four ionic bonds between N⁻ and H⁺.",C:"Three covalent bonds and one hydrogen bond.",D:"Two dative bonds and two ionic bonds."},
+    correct:"A",tag:"MC-GCHEM-BONDING-STRUCTURE",
+    scaffold:"Ammonia has three N–H bonds and one lone pair. That lone pair forms a dative covalent bond to H⁺, giving NH₄⁺ with four bonds. Once formed all four are identical, and the ion is tetrahedral with 109.5° angles — the lone pair is now bonding, so there is no lone-pair compression. The positive charge belongs to the ion as a whole rather than sitting on any one atom.",
+    reforge:{stem:"The bond angle in the ammonium ion is 109.5° rather than 107° because the ion has:",options:{A:"A heavier central atom than ammonia.",B:"An overall positive charge.",C:"No remaining lone pair on nitrogen",D:"Weaker N–H bonds than ammonia."},correct:"C"}
+  },
+  {
+    id:"CHEM-N1-31",stem:"Which species has the same number of electrons as a neon atom?",
+    options:{A:"A sodium ion, Na⁺",B:"A magnesium atom, Mg.",C:"A chloride ion, Cl⁻.",D:"A fluorine atom, F."},
+    correct:"A",tag:"MC-GCHEM-ATOMIC-STRUCTURE",
+    scaffold:"Isoelectronic species have the same electron count. Neon has 10. Na⁺ (11 protons, 10 electrons), Mg²⁺, F⁻ and O²⁻ are all isoelectronic with neon. Among isoelectronic species, the one with the most protons has the smallest radius, since the same electron cloud is pulled in more strongly — so the order of size runs O²⁻ > F⁻ > Ne > Na⁺ > Mg²⁺.",
+    reforge:{stem:"Among the isoelectronic species O²⁻, F⁻, Na⁺ and Mg²⁺, the smallest is:",options:{A:"O²⁻, with the fewest protons.",B:"F⁻, with one negative charge.",C:"Na⁺, with eleven protons.",D:"Mg²⁺, with the most protons"},correct:"D"}
+  },
+  {
+    id:"CHEM-N1-32",stem:"The molar mass of calcium carbonate, CaCO₃, is:",
+    options:{A:"68 g mol⁻¹, adding Ca and C only.",B:"100 g mol⁻¹, from 40 + 12 + 48",C:"84 g mol⁻¹, using one oxygen atom.",D:"140 g mol⁻¹, counting calcium twice."},
+    correct:"B",tag:"MC-GCHEM-MOLES-FORMULAE",
+    scaffold:"Molar mass sums the relative atomic masses of every atom in the formula: Ca 40 + C 12 + (O 16 × 3 = 48) = 100 g mol⁻¹. Watch brackets, since Ca(OH)₂ contains two oxygens and two hydrogens, and water of crystallisation, since CuSO₄·5H₂O includes 5 × 18 = 90. Errors in molar mass propagate through every subsequent calculation, so it is worth checking before continuing.",
+    reforge:{stem:"What is the molar mass of Ca(OH)₂?",options:{A:"57 g mol⁻¹, counting one OH group.",B:"74 g mol⁻¹, from 40 + 2(16 + 1)",C:"58 g mol⁻¹, ignoring the hydrogens.",D:"114 g mol⁻¹, doubling the calcium."},correct:"B"}
+  },
+  {
+    id:"CHEM-N1-33",stem:"A reaction is described as exothermic when:",
+    options:{A:"The products have more energy than the reactants.",B:"The surroundings become cooler during it.",C:"Energy is released, so ΔH is negative",D:"It requires a catalyst to proceed at all."},
+    correct:"C",tag:"MC-GCHEM-ENERGETICS",
+    scaffold:"Exothermic: energy released to the surroundings, temperature rises, ΔH negative, products lower in energy than reactants — combustion, neutralisation, most oxidations. Endothermic: energy absorbed, temperature falls, ΔH positive — thermal decomposition, photosynthesis. The sign convention describes the system, so a rising thermometer reading in the surroundings corresponds to a negative ΔH, which is a frequent point of confusion.",
+    reforge:{stem:"A student dissolves a salt and the temperature of the solution falls. The dissolving process is:",options:{A:"Endothermic, with a positive ΔH",B:"Exothermic, with a negative ΔH.",C:"At equilibrium, so ΔH is zero.",D:"Catalysed by the water present."},correct:"A"}
+  },
+  {
+    id:"CHEM-N1-34",stem:"Hess's law allows an enthalpy change to be calculated indirectly because the total enthalpy change is:",
+    options:{A:"Always zero for a complete cycle of steps.",B:"Independent of the route taken",C:"Proportional to the number of steps used.",D:"Determined only by the activation energy."},
+    correct:"B",tag:"MC-GCHEM-ENERGETICS",
+    scaffold:"Hess's law states that the enthalpy change of a reaction is the same regardless of route, since enthalpy is a state function. This lets values be found that cannot be measured directly, such as the enthalpy of formation of an unstable compound. Using formation data: ΔH = ΣΔHf(products) − ΣΔHf(reactants). Using combustion data the arrows point the other way: ΔH = ΣΔHc(reactants) − ΣΔHc(products).",
+    reforge:{stem:"Using standard enthalpies of formation, the enthalpy change of a reaction equals:",options:{A:"Reactants minus products, then halved.",B:"The sum of all values in the cycle.",C:"Products minus reactants",D:"Products plus reactants."},correct:"C"}
+  },
+  {
+    id:"CHEM-N1-35",stem:"Bond enthalpy calculations give only approximate values because tabulated bond enthalpies are:",
+    options:{A:"Measured only for ionic compounds.",B:"Always quoted for the liquid state.",C:"Calculated rather than measured.",D:"Mean values across compounds"},
+    correct:"D",tag:"MC-GCHEM-ENERGETICS",
+    scaffold:"Mean bond enthalpies are averages across many different compounds, so the actual C–H bond in methane differs slightly from that in ethanol. They also apply to gaseous species, so calculations involving liquids or solids ignore the enthalpy of vaporisation. ΔH = bonds broken − bonds made: breaking is endothermic and making is exothermic, so a reaction is exothermic when the bonds formed are stronger overall.",
+    reforge:{stem:"Using bond enthalpies, a reaction is exothermic when the energy needed to break bonds is:",options:{A:"Less than the energy released making bonds",B:"Greater than the energy released making bonds.",C:"Exactly equal to the energy released.",D:"Zero for all the reactant molecules."},correct:"A"}
+  },
+  {
+    id:"CHEM-N1-36",stem:"The standard enthalpy of formation of an element in its standard state is:",
+    options:{A:"Always negative and large.",B:"Equal to its enthalpy of combustion.",C:"Zero by definition",D:"Impossible to define."},
+    correct:"C",tag:"MC-GCHEM-ENERGETICS",
+    scaffold:"Standard enthalpy of formation is the change when one mole of a compound forms from its elements in their standard states under standard conditions (100 kPa, stated temperature, usually 298 K). For an element already in its standard state no change occurs, so the value is zero — which is why elements drop out of Hess cycle calculations. Standard enthalpy of combustion is the change on completely burning one mole in excess oxygen.",
+    reforge:{stem:"Standard enthalpy of combustion is defined for the complete burning of:",options:{A:"Any convenient mass of the substance.",B:"One mole in excess oxygen",C:"One gram of the substance in air.",D:"The substance until oxygen runs out."},correct:"B"}
+  },
+  {
+    id:"CHEM-N1-37",stem:"In a calorimetry experiment, the main reason the measured enthalpy change is smaller than the true value is:",
+    options:{A:"Heat loss to the surroundings",B:"The reaction going to completion too quickly.",C:"Using distilled water rather than tap water.",D:"The thermometer reading in Celsius."},
+    correct:"A",tag:"MC-GCHEM-ENERGETICS",
+    scaffold:"Calorimetry uses q = mcΔT, where m is the mass of solution (not of the reactant), c is 4.18 J g⁻¹ K⁻¹ for aqueous solutions, and ΔT the temperature change; divide by moles for ΔH per mole, and make it negative if exothermic. Errors: heat lost to surroundings and apparatus, incomplete reaction, and evaporation. Insulation, a lid, and extrapolating a cooling curve back to the moment of mixing all reduce the loss.",
+    reforge:{stem:"In q = mcΔT for a neutralisation in solution, m refers to the mass of:",options:{A:"The acid added to the flask only.",B:"The calorimeter and its lid.",C:"The solution in the calorimeter",D:"The solid reactant used."},correct:"C"}
+  }
+]);
+chemExpansion("CHEM-2", [
+  {
+    id:"CHEM-N2-01",stem:"Increasing the temperature increases the rate of reaction mainly because:",
+    options:{A:"Activation energy is lowered by heating.",B:"More particles exceed the energy",C:"The particles become physically larger.",D:"The enthalpy change becomes more negative."},
+    correct:"B",tag:"MC-GCHEM-RATES",
+    scaffold:"Raising temperature increases the mean kinetic energy, so a much larger fraction of collisions exceeds the activation energy — the dominant effect — and collisions also become more frequent. On a Maxwell–Boltzmann distribution the curve flattens and shifts right, with the area beyond Ea increasing sharply. Temperature does not change Ea itself; only a catalyst does that, by providing an alternative pathway.",
+    reforge:{stem:"On a Maxwell–Boltzmann distribution, raising the temperature causes the peak to:",options:{A:"Rise and shift towards lower energy.",B:"Stay in exactly the same position.",C:"Lower and shift to higher energy",D:"Disappear entirely from the graph."},correct:"C"}
+  },
+  {
+    id:"CHEM-N2-02",stem:"A catalyst increases the rate of reaction by:",
+    options:{A:"Increasing the average energy of the particles.",B:"Shifting the equilibrium towards the products.",C:"Raising the frequency of all collisions.",D:"Providing a route with lower activation energy"},
+    correct:"D",tag:"MC-GCHEM-RATES",
+    scaffold:"A catalyst offers an alternative pathway of lower activation energy, so a greater proportion of collisions succeed. It is not consumed overall, does not change ΔH, and does not shift the position of equilibrium — it speeds the forward and reverse reactions equally, so equilibrium is simply reached sooner. Heterogeneous catalysts are in a different phase and work by adsorption at active sites; homogeneous catalysts share the phase.",
+    reforge:{stem:"Adding a catalyst to a reversible reaction at equilibrium will:",options:{A:"Shift the position towards the products.",B:"Reduce the yield of the reaction.",C:"Have no effect on the position",D:"Make the reaction more exothermic."},correct:"C"}
+  },
+  {
+    id:"CHEM-N2-03",stem:"Increasing the concentration of a solution increases reaction rate because there are:",
+    options:{A:"More particles per volume, more collisions",B:"Particles with higher individual kinetic energy.",C:"Fewer successful collisions per second.",D:"Weaker bonds within each reactant molecule."},
+    correct:"A",tag:"MC-GCHEM-RATES",
+    scaffold:"Collision theory: a reaction occurs when particles collide with at least the activation energy and in the correct orientation. Raising concentration or the pressure of a gas packs more particles into the same volume, so collisions are more frequent, though the proportion that succeed is unchanged. Increasing the surface area of a solid exposes more particles to collision. Only temperature and catalysts change the proportion of successful collisions.",
+    reforge:{stem:"Powdering a solid reactant increases the rate because it increases the:",options:{A:"Activation energy of the reaction.",B:"Average kinetic energy of particles.",C:"Concentration of the solid.",D:"Surface area exposed to collisions"},correct:"D"}
+  },
+  {
+    id:"CHEM-N2-04",stem:"For a reaction that is first order with respect to A, doubling [A] will:",
+    options:{A:"Leave the rate unchanged.",B:"Double the rate",C:"Quadruple the rate.",D:"Halve the rate."},
+    correct:"B",tag:"MC-GCHEM-RATES",
+    scaffold:"Order shows how rate depends on concentration: zero order gives no change when concentration is doubled, first order doubles the rate, second order quadruples it. Orders are found experimentally, not from the balanced equation. The rate equation is rate = k[A]^m[B]^n, and the overall order is m + n. Units of k depend on the overall order — s⁻¹ for first order, mol⁻¹ dm³ s⁻¹ for second.",
+    reforge:{stem:"Doubling [B] leaves the rate unchanged. The reaction is:",options:{A:"First order with respect to B.",B:"Second order with respect to B.",C:"Zero order with respect to B",D:"Impossible to assign an order."},correct:"C"}
+  },
+  {
+    id:"CHEM-N2-05",stem:"The rate-determining step of a reaction mechanism is the:",
+    options:{A:"Fastest step, which finishes first.",B:"Step producing the most product.",C:"Final step of the whole mechanism.",D:"Slowest step, limiting the rate"},
+    correct:"D",tag:"MC-GCHEM-RATES",
+    scaffold:"In a multi-step mechanism the slowest step limits the overall rate, so only species involved in that step (and any preceding fast equilibrium) appear in the rate equation. This is why the rate equation can be used as evidence for a proposed mechanism: the orders show how many of each species take part up to and including the rate-determining step, and species appearing only afterwards do not feature.",
+    reforge:{stem:"A species appears in the balanced equation but not in the rate equation. This suggests it:",options:{A:"Is not in the rate-determining step",B:"Must be acting as a catalyst.",C:"Is present in very low concentration.",D:"Has been measured incorrectly."},correct:"A"}
+  },
+  {
+    id:"CHEM-N2-06",stem:"For an exothermic forward reaction at equilibrium, raising the temperature will:",
+    options:{A:"Shift the equilibrium towards the products.",B:"Shift the equilibrium towards the reactants",C:"Leave the position of equilibrium unchanged.",D:"Stop the reverse reaction entirely."},
+    correct:"B",tag:"MC-GCHEM-EQUILIBRIA",
+    scaffold:"Le Chatelier: a system at equilibrium shifts to oppose an imposed change. Raising temperature favours the endothermic direction, which for an exothermic forward reaction means shifting back towards reactants and lowering yield — though rate increases, which is the compromise behind industrial conditions. Raising pressure favours the side with fewer gas moles. Concentration changes shift away from whatever was added.",
+    reforge:{stem:"In N₂ + 3H₂ ⇌ 2NH₃, increasing the pressure shifts the equilibrium:",options:{A:"Towards the reactants, which have fewer moles.",B:"In neither direction, since moles are equal.",C:"Towards products, with fewer gas moles",D:"Towards whichever side is exothermic."},correct:"C"}
+  },
+  {
+    id:"CHEM-N2-07",stem:"The Haber process uses a compromise temperature of about 450 °C because a lower temperature would give:",
+    options:{A:"A higher yield but too slow a rate",B:"A lower yield and a slower rate.",C:"A higher yield and a faster rate.",D:"No change in either yield or rate."},
+    correct:"A",tag:"MC-GCHEM-EQUILIBRIA",
+    scaffold:"Ammonia synthesis is exothermic, so a low temperature favours yield but makes the rate impractically slow; around 450 °C with an iron catalyst is the compromise. High pressure (about 200 atm) favours the product side, which has fewer gas moles, but very high pressures raise plant and safety costs. Removing ammonia by condensation and recycling unreacted gases raises the overall conversion beyond the single-pass equilibrium yield.",
+    reforge:{stem:"Ammonia is removed from the Haber process mixture by cooling in order to:",options:{A:"Reduce the pressure inside the reactor.",B:"Shift the equilibrium further towards products",C:"Increase the activation energy of the reaction.",D:"Prevent the iron catalyst from working."},correct:"B"}
+  },
+  {
+    id:"CHEM-N2-08",stem:"For the equilibrium A(g) + B(g) ⇌ C(g), the expression for Kc is:",
+    options:{A:"[A][B] ÷ [C]",B:"[A] + [B] − [C].",C:"[C] ÷ ([A][B])",D:"[C] × [A] × [B]."},
+    correct:"C",tag:"MC-GCHEM-EQUILIBRIA",
+    scaffold:"Kc is products over reactants, each concentration raised to the power of its balancing number. Kc changes only with temperature: adding a catalyst or altering pressure or concentration shifts the position of equilibrium but leaves Kc unchanged. A large Kc means the equilibrium lies well to the right. Kp uses partial pressures for gases, calculated as mole fraction × total pressure, and pure solids and liquids are omitted from both.",
+    reforge:{stem:"Which change alters the value of Kc for a given reaction?",options:{A:"Adding a suitable catalyst.",B:"Changing the temperature",C:"Increasing the total pressure.",D:"Adding more of a reactant."},correct:"B"}
+  },
+  {
+    id:"CHEM-N2-09",stem:"In a Kp expression, the partial pressure of a gas is calculated as:",
+    options:{A:"Total pressure divided by number of gases.",B:"Moles of gas multiplied by the gas constant.",C:"Mole fraction multiplied by total pressure",D:"Total pressure minus the vapour pressure."},
+    correct:"C",tag:"MC-GCHEM-EQUILIBRIA",
+    scaffold:"Partial pressure = mole fraction × total pressure, where mole fraction is moles of that gas ÷ total moles of gas. Kp is written as products over reactants using partial pressures raised to their balancing numbers, and its units depend on the total powers involved. Solids and pure liquids do not appear. Check that the mole fractions of all gases sum to 1 before substituting — a quick way to catch arithmetic slips.",
+    reforge:{stem:"A mixture contains 2 mol of X and 3 mol of Y at a total pressure of 500 kPa. The partial pressure of X is:",options:{A:"200 kPa, from (2/5) × 500",B:"250 kPa, from half the total.",C:"1000 kPa, from 2 × 500.",D:"300 kPa, from (3/5) × 500."},correct:"A"}
+  },
+  {
+    id:"CHEM-N2-10",stem:"The pH of a solution is defined as:",
+    options:{A:"The concentration of hydrogen ions directly.",B:"The negative logarithm of [H⁺]",C:"The logarithm of hydroxide concentration.",D:"The ratio of acid to base concentration."},
+    correct:"B",tag:"MC-GCHEM-ACIDS-REDOX",
+    scaffold:"pH = −log₁₀[H⁺], so a fall of one pH unit means a tenfold rise in [H⁺]. For a strong monoprotic acid, [H⁺] equals the acid concentration. For a strong base, find [OH⁻], then use Kw = [H⁺][OH⁻] = 1.0 × 10⁻¹⁴ at 298 K to get [H⁺]. For a weak acid, Ka = [H⁺]²/[HA] under the usual approximations. Kw varies with temperature, so neutral pH is only 7 at 298 K.",
+    reforge:{stem:"A solution of pH 3 compared with one of pH 5 has a hydrogen ion concentration that is:",options:{A:"Two times greater.",B:"Ten times smaller.",C:"100 times greater",D:"Exactly the same."},correct:"C"}
+  },
+  {
+    id:"CHEM-N2-11",stem:"In a titration of a strong acid with a strong base, the pH at the equivalence point is:",
+    options:{A:"7, since the salt formed is neutral",B:"Above 9, because the base is strong.",C:"Below 4, because the acid is strong.",D:"Impossible to predict from the data."},
+    correct:"A",tag:"MC-GCHEM-ACIDS-REDOX",
+    scaffold:"Equivalence pH depends on the salt formed: strong acid with strong base gives pH 7; weak acid with strong base gives above 7 (the anion hydrolyses); strong acid with weak base gives below 7. The indicator must change colour within the vertical section of the curve — phenolphthalein for weak acid/strong base, methyl orange for strong acid/weak base. A weak acid with a weak base has no sharp vertical section, so no indicator is suitable.",
+    reforge:{stem:"Phenolphthalein rather than methyl orange is used for a weak acid and strong base titration because its range:",options:{A:"Covers the whole pH scale.",B:"Lies in the vertical section, above pH 7",C:"Is below pH 4, where the curve is steep.",D:"Is unaffected by the acid used."},correct:"B"}
+  },
+  {
+    id:"CHEM-N2-12",stem:"The ionic product of water, Kw, increases as temperature rises because the dissociation of water is:",
+    options:{A:"Exothermic, so heat pushes it backwards.",B:"Catalysed by the water molecules present.",C:"Independent of the temperature applied.",D:"Endothermic, so heat pushes it forwards"},
+    correct:"D",tag:"MC-GCHEM-ACIDS-REDOX",
+    scaffold:"Water dissociates endothermically, so raising the temperature shifts the equilibrium right, increasing both [H⁺] and [OH⁻] and hence Kw. Pure water stays neutral because the two remain equal, but its pH falls below 7 above 298 K — neutral does not mean pH 7 at all temperatures. Kw = 1.0 × 10⁻¹⁴ only at 298 K, so any pH calculation involving a base must use the Kw value for the stated temperature.",
+    reforge:{stem:"At 50 °C the pH of pure water is below 7. The water is:",options:{A:"Acidic, since pH is below 7.",B:"Still neutral: [H⁺] = [OH⁻]",C:"Alkaline, since Kw has increased.",D:"No longer able to dissociate."},correct:"B"}
+  },
+  {
+    id:"CHEM-N2-13",stem:"Entropy is best described as a measure of the:",
+    options:{A:"Total energy stored within a substance.",B:"Rate at which a reaction proceeds.",C:"Disorder, or ways of arranging",D:"Strength of the bonds within a molecule."},
+    correct:"C",tag:"MC-GCHEM-ENERGETICS",
+    scaffold:"Entropy rises from solid to liquid to gas, and when the number of gaseous moles increases or a solid dissolves. ΔS(system) = ΣS(products) − ΣS(reactants). Feasibility uses ΔG = ΔH − TΔS: a reaction is feasible when ΔG is negative or zero. An endothermic reaction can therefore be feasible if ΔS is sufficiently positive and the temperature high enough, which is why thermal decompositions proceed on heating.",
+    reforge:{stem:"An endothermic reaction becomes feasible at high temperature when:",options:{A:"ΔS is positive, so TΔS exceeds ΔH",B:"ΔS is negative and ΔH is large.",C:"ΔG becomes increasingly positive.",D:"The activation energy falls to zero."},correct:"A"}
+  },
+  {
+    id:"CHEM-N2-14",stem:"A reaction is thermodynamically feasible when the value of ΔG is:",
+    options:{A:"Positive and large.",B:"Equal to the activation energy.",C:"Exactly equal to ΔH.",D:"Negative or zero"},
+    correct:"D",tag:"MC-GCHEM-ENERGETICS",
+    scaffold:"ΔG = ΔH − TΔS, with ΔS in kJ K⁻¹ mol⁻¹ to match ΔH — converting from J is a frequent slip. Feasible means ΔG ≤ 0. Setting ΔG = 0 gives the minimum feasible temperature, T = ΔH ÷ ΔS. Note feasibility is not the same as observable reaction: a feasible reaction with a very high activation energy may not proceed at a measurable rate, which is why diamond does not turn into graphite.",
+    reforge:{stem:"A reaction has ΔG negative but does not appear to occur at room temperature. The most likely reason is:",options:{A:"ΔS must have been calculated wrongly.",B:"A very high activation energy",C:"The reaction is endothermic.",D:"Entropy decreases during the reaction."},correct:"B"}
+  },
+  {
+    id:"CHEM-N2-15",stem:"In a Born–Haber cycle, lattice enthalpy of formation refers to the energy change when:",
+    options:{A:"One mole of lattice from gaseous ions",B:"One mole of a compound forms from its elements.",C:"Gaseous atoms each gain one electron.",D:"A solid is completely dissolved in water."},
+    correct:"A",tag:"MC-GCHEM-ENERGETICS",
+    scaffold:"A Born–Haber cycle links enthalpy of formation with atomisation, ionisation energies, electron affinities and lattice enthalpy. Lattice formation enthalpy (gaseous ions to solid) is exothermic; lattice dissociation is the reverse and endothermic — check which sign a question expects. Lattice enthalpy becomes more exothermic with higher ionic charges and smaller ionic radii, since attraction between the ions is stronger.",
+    reforge:{stem:"Magnesium oxide has a more exothermic lattice enthalpy than sodium chloride because its ions are:",options:{A:"Larger and more highly shielded.",B:"Held together by covalent bonds.",C:"More highly charged and smaller",D:"Present in a different crystal shape."},correct:"C"}
+  },
+  {
+    id:"CHEM-N2-16",stem:"A difference between theoretical and experimental lattice enthalpy suggests the compound has:",
+    options:{A:"Been measured with a faulty calorimeter.",B:"Some covalent character in its bonding",C:"No ionic bonding whatsoever.",D:"An unusually high melting point."},
+    correct:"B",tag:"MC-GCHEM-ENERGETICS",
+    scaffold:"Theoretical values assume a purely ionic model of spherical ions. Where the experimental (Born–Haber) value is more exothermic, the bonding has covalent character: a small, highly charged cation polarises a large, polarisable anion, distorting its electron cloud. The effect grows with greater cation charge, smaller cation size and larger anion — which is why silver iodide deviates far more than sodium chloride.",
+    reforge:{stem:"Polarisation of an anion by a cation is greatest when the cation is:",options:{A:"Large with a low charge.",B:"Identical in size to the anion.",C:"Neutral rather than charged.",D:"Small with a high charge"},correct:"D"}
+  },
+  {
+    id:"CHEM-N2-17",stem:"In an electrochemical cell, the electrode with the more negative standard electrode potential will:",
+    options:{A:"Be reduced, gaining electrons.",B:"Be oxidised, losing electrons",C:"Remain unchanged throughout.",D:"Act as the positive terminal."},
+    correct:"B",tag:"MC-GCHEM-ACIDS-REDOX",
+    scaffold:"The more negative electrode is the better reducing agent, so it is oxidised and acts as the negative terminal; the more positive electrode is reduced. Cell EMF = E(more positive) − E(more negative), and a positive EMF means the reaction is feasible. Standard conditions are 298 K, 100 kPa and 1.0 mol dm⁻³ solutions, measured against a standard hydrogen electrode defined as 0.00 V.",
+    reforge:{stem:"Two half-cells have E values of −0.76 V and +0.34 V. The EMF of the cell is:",options:{A:"−0.42 V, adding the two values.",B:"0.76 V, taking the larger magnitude.",C:"1.10 V, from +0.34 − (−0.76)",D:"0.34 V, using the positive value only."},correct:"C"}
+  },
+  {
+    id:"CHEM-N2-18",stem:"Standard electrode potentials are measured relative to which reference?",
+    options:{A:"A copper electrode in copper sulfate.",B:"A platinum electrode in pure water.",C:"A silver–silver chloride electrode.",D:"The standard hydrogen electrode"},
+    correct:"D",tag:"MC-GCHEM-ACIDS-REDOX",
+    scaffold:"The standard hydrogen electrode — hydrogen gas at 100 kPa bubbled over platinised platinum in 1.0 mol dm⁻³ H⁺ at 298 K — is assigned 0.00 V, because only potential differences can be measured, never an absolute electrode potential. A high-resistance voltmeter is used so negligible current flows and the cell stays at equilibrium, and a salt bridge of saturated KNO₃ completes the circuit without introducing another potential.",
+    reforge:{stem:"A salt bridge is used in an electrochemical cell in order to:",options:{A:"Complete the circuit and balance charge",B:"Supply electrons to the negative electrode.",C:"Prevent any current from flowing.",D:"Increase the cell's measured EMF."},correct:"A"}
+  },
+  {
+    id:"CHEM-N2-19",stem:"A reaction predicted to be feasible from electrode potentials may not occur because:",
+    options:{A:"The EMF value must have been negative.",B:"Feasibility ignores the reaction rate",C:"Electrode potentials apply only to metals.",D:"The reaction would violate Hess's law."},
+    correct:"B",tag:"MC-GCHEM-ACIDS-REDOX",
+    scaffold:"Electrode potentials indicate thermodynamic feasibility only. A reaction with positive EMF may still be immeasurably slow if the activation energy is high. Predictions also assume standard conditions: changing concentration shifts the electrode potential, as Le Chatelier applied to the half-equation predicts, so a reaction infeasible under standard conditions may become feasible when concentrations differ substantially.",
+    reforge:{stem:"Increasing the concentration of Cu²⁺ in a Cu²⁺/Cu half-cell makes its electrode potential:",options:{A:"More negative, opposing the change.",B:"Unchanged, since E values are fixed.",C:"More positive, favouring reduction",D:"Equal to zero at all concentrations."},correct:"C"}
+  },
+  {
+    id:"CHEM-N2-20",stem:"A hydrogen fuel cell differs from a conventional cell because it:",
+    options:{A:"Produces carbon dioxide as its only product.",B:"Stores all its reactants internally from the start.",C:"Requires recharging from mains electricity.",D:"Is continuously supplied with fuel and oxygen"},
+    correct:"D",tag:"MC-GCHEM-ACIDS-REDOX",
+    scaffold:"A fuel cell is fed continuously with hydrogen and oxygen, so it does not run down or need recharging, and produces only water at the point of use, with high efficiency since no combustion or turbine stage is involved. Drawbacks: hydrogen is difficult and energy-intensive to produce, store and transport, most is currently made from methane, and cells use expensive platinum catalysts — so the environmental case depends on how the hydrogen was made.",
+    reforge:{stem:"The environmental benefit of a hydrogen fuel cell depends most on:",options:{A:"How the hydrogen was produced",B:"The volume of water it produces.",C:"The temperature at which it operates.",D:"Whether it uses a salt bridge."},correct:"A"}
+  },
+  {
+    id:"CHEM-N2-21",stem:"Transition metals can form coloured compounds because their ions have:",
+    options:{A:"A full d subshell in every oxidation state.",B:"Partially filled d orbitals split in energy",C:"Only s electrons available for bonding.",D:"An unusually large atomic radius."},
+    correct:"B",tag:"MC-GCHEM-BONDING-STRUCTURE",
+    scaffold:"A transition metal forms at least one ion with a partially filled d subshell. Ligands split the d orbitals into two energy levels; electrons absorb visible light to jump the gap, and the transmitted complementary colour is what we see. The size of the gap, and so the colour, depends on the ligand, the oxidation state and the coordination number. Scandium and zinc are excluded: Sc³⁺ is d⁰ and Zn²⁺ is d¹⁰, so both are colourless.",
+    reforge:{stem:"Zinc is not classed as a transition metal because its common ion has a d subshell that is:",options:{A:"Completely empty of electrons.",B:"Split into two energy levels.",C:"Completely full",D:"Partially filled with unpaired electrons."},correct:"C"}
+  },
+  {
+    id:"CHEM-N2-22",stem:"A ligand is best described as a species that:",
+    options:{A:"Donates a lone pair to a metal ion",B:"Accepts electrons from a metal ion.",C:"Removes the charge from a complex ion.",D:"Catalyses the formation of a precipitate."},
+    correct:"A",tag:"MC-GCHEM-BONDING-STRUCTURE",
+    scaffold:"A ligand donates a lone pair to a central metal ion, forming a dative covalent bond. Monodentate ligands (H₂O, NH₃, Cl⁻) donate one pair; bidentate ligands such as ethanedioate donate two; multidentate ligands such as EDTA donate several. Coordination number is the number of dative bonds — commonly 6 (octahedral) or 4 (tetrahedral or square planar). Larger ligands such as Cl⁻ often give 4-coordinate complexes.",
+    reforge:{stem:"A complex ion with six water ligands around a central metal ion is:",options:{A:"Tetrahedral, with 109.5° angles.",B:"Square planar, with 90° angles.",C:"Linear, with 180° angles.",D:"Octahedral, with 90° angles"},correct:"D"}
+  },
+  {
+    id:"CHEM-N2-23",stem:"The chelate effect makes a complex with a bidentate ligand more stable mainly because the substitution:",
+    options:{A:"Releases far more energy as heat.",B:"Increases the system entropy",C:"Reduces the coordination number.",D:"Removes the charge on the complex."},
+    correct:"B",tag:"MC-GCHEM-BONDING-STRUCTURE",
+    scaffold:"Replacing monodentate ligands with multidentate ones increases the number of free particles — one EDTA replacing six water molecules turns two species into seven — so entropy rises substantially while ΔH is close to zero, since similar numbers of dative bonds break and form. ΔG = ΔH − TΔS is therefore negative, driven almost entirely by the entropy term. This is why EDTA complexes are used to sequester metal ions.",
+    reforge:{stem:"In a chelate substitution, ΔH is close to zero because the number of dative bonds:",options:{A:"Falls sharply during the reaction.",B:"Is roughly unchanged overall",C:"Doubles as the ligand binds.",D:"Depends only on temperature."},correct:"B"}
+  },
+  {
+    id:"CHEM-N2-24",stem:"Adding excess ammonia solution to copper(II) sulfate solution gives:",
+    options:{A:"A permanent pale blue precipitate.",B:"A colourless solution with no change.",C:"A deep blue solution forms",D:"A brown precipitate of copper metal."},
+    correct:"C",tag:"MC-GCHEM-INORGANIC-TESTS",
+    scaffold:"With a little ammonia, Cu²⁺ gives a pale blue precipitate of Cu(OH)₂ as ammonia acts as a base. With excess, ligand substitution replaces four water molecules to give the deep blue [Cu(NH₃)₄(H₂O)₂]²⁺. Comparable tests: Fe²⁺ gives a green precipitate darkening to brown in air, Fe³⁺ a red-brown precipitate, and Al³⁺ a white precipitate that redissolves in excess sodium hydroxide but not in excess ammonia.",
+    reforge:{stem:"A white precipitate forms with sodium hydroxide and redissolves in excess. The ion present is:",options:{A:"Fe³⁺, giving a red-brown precipitate.",B:"Al³⁺, which is amphoteric",C:"Cu²⁺, giving a blue precipitate.",D:"Fe²⁺, giving a green precipitate."},correct:"B"}
+  },
+  {
+    id:"CHEM-N2-25",stem:"Heterogeneous catalysts such as iron in the Haber process work by:",
+    options:{A:"Dissolving fully in the reaction mixture.",B:"Adsorbing reactants onto active sites",C:"Raising the activation energy of the reaction.",D:"Being consumed steadily as products form."},
+    correct:"B",tag:"MC-GCHEM-RATES",
+    scaffold:"A heterogeneous catalyst is in a different phase from the reactants. Molecules adsorb onto active sites, which weakens their bonds and holds them in favourable orientations; reaction follows and products desorb. Increasing surface area — using a support medium or fine mesh — raises activity for less metal. Catalysts are poisoned when impurities such as sulfur bind irreversibly to active sites, which is why feedstocks are purified first.",
+    reforge:{stem:"Sulfur impurities poison a heterogeneous catalyst because they:",options:{A:"React with the desired product.",B:"Raise the temperature of the reactor.",C:"Bind irreversibly to the active sites",D:"Dissolve the catalyst in the gas stream."},correct:"C"}
+  },
+  {
+    id:"CHEM-N2-26",stem:"Which measurement would allow the rate of a reaction producing a gas to be followed continuously?",
+    options:{A:"The colour of the final solution.",B:"The total mass of catalyst added.",C:"The pH measured after completion.",D:"Volume of gas collected over time"},
+    correct:"D",tag:"MC-GCHEM-RATES",
+    scaffold:"Continuous methods track a property as the reaction proceeds: gas volume in a syringe, mass loss on a balance as gas escapes, colour change by colorimetry, or conductivity where ion numbers change. Initial rate is found from the gradient of the tangent at t = 0, since concentrations are known exactly then. Clock reactions instead measure the time to reach a fixed visible endpoint, giving a rate proportional to 1/t.",
+    reforge:{stem:"In a clock reaction, the rate is taken as proportional to:",options:{A:"1 ÷ time to reach the endpoint",B:"The total time multiplied by volume.",C:"The mass of product formed.",D:"The temperature of the mixture."},correct:"A"}
+  },
+  {
+    id:"CHEM-N2-27",stem:"The Arrhenius equation shows that the rate constant k increases with temperature because the term:",
+    options:{A:"Ea increases as temperature rises.",B:"e^(−Ea/RT) increases as T increases",C:"R decreases at higher temperatures.",D:"A falls as the reaction proceeds."},
+    correct:"B",tag:"MC-GCHEM-RATES",
+    scaffold:"k = Ae^(−Ea/RT). Raising T makes the exponent less negative, so the exponential term and therefore k increase — a small temperature rise can change rate substantially. Taking logs gives ln k = ln A − Ea/RT, so plotting ln k against 1/T yields a straight line of gradient −Ea/R, from which activation energy is found. A is the pre-exponential factor, relating to collision frequency and orientation.",
+    reforge:{stem:"A plot of ln k against 1/T has a gradient equal to:",options:{A:"Ea ÷ R, always positive.",B:"−Ea/R, giving Ea",C:"ln A, the intercept value.",D:"The order of the reaction."},correct:"B"}
+  },
+  {
+    id:"CHEM-N2-28",stem:"A dynamic equilibrium is characterised by:",
+    options:{A:"Both reactions stopping completely.",B:"Equal concentrations of reactants and products.",C:"Equal forward and reverse rates",D:"The complete conversion of reactants."},
+    correct:"C",tag:"MC-GCHEM-EQUILIBRIA",
+    scaffold:"At dynamic equilibrium both reactions continue at equal rates in a closed system, so macroscopic concentrations stay constant — but they are not necessarily equal, and neither reaction has stopped. Position depends on conditions; Kc depends only on temperature. A common misconception is that equilibrium means a 50:50 mixture, which is only true when Kc happens to equal 1 for that stoichiometry.",
+    reforge:{stem:"At equilibrium the concentrations of reactants and products are:",options:{A:"Always exactly equal to each other.",B:"Constant, but not always equal",C:"Changing steadily over time.",D:"Both reduced to zero."},correct:"B"}
+  },
+  {
+    id:"CHEM-N2-29",stem:"Sulfuric acid is described as a diprotic acid because each molecule can donate:",
+    options:{A:"One proton per molecule.",B:"Two protons per molecule",C:"Four protons per molecule.",D:"Two electrons per molecule."},
+    correct:"B",tag:"MC-GCHEM-ACIDS-REDOX",
+    scaffold:"Monoprotic acids (HCl, HNO₃) donate one proton, diprotic (H₂SO₄) two, triprotic (H₃PO₄) three. In titration calculations the stoichiometric ratio matters: H₂SO₄ reacts with NaOH in a 1:2 ratio, so half as many moles of acid are needed for a given amount of alkali. Forgetting this ratio and assuming 1:1 is one of the commonest arithmetical errors in volumetric analysis.",
+    reforge:{stem:"How many moles of NaOH react completely with 0.05 mol of H₂SO₄?",options:{A:"0.025 mol, half the acid amount.",B:"0.05 mol, in a 1:1 ratio.",C:"0.10 mol, in a 1:2 ratio",D:"0.20 mol, in a 1:4 ratio."},correct:"C"}
+  },
+  {
+    id:"CHEM-N2-30",stem:"Which change would increase the yield of products in an exothermic gas reaction that produces fewer moles of gas?",
+    options:{A:"Raising the temperature substantially.",B:"Adding a suitable catalyst.",C:"Lower temperature, higher pressure",D:"Removing some of the reactant gases."},
+    correct:"C",tag:"MC-GCHEM-EQUILIBRIA",
+    scaffold:"For an exothermic reaction, lowering temperature shifts equilibrium towards products; where the product side has fewer gas moles, raising pressure does the same. Both raise yield but lower temperature reduces rate, hence industrial compromise conditions. A catalyst changes neither the position nor the yield. Removing product as it forms shifts the equilibrium forward and is often the most economical route to high conversion.",
+    reforge:{stem:"Continuously removing a product from an equilibrium mixture will:",options:{A:"Shift the equilibrium towards the products",B:"Shift the equilibrium towards the reactants.",C:"Have no effect on the position.",D:"Increase the value of Kc."},correct:"A"}
+  },
+  {
+    id:"CHEM-N2-31",stem:"The oxidation number of chlorine changes from 0 to −1 in a reaction. Chlorine has been:",
+    options:{A:"Oxidised, acting as a reducing agent.",B:"Reduced, acting as an oxidising agent",C:"Neither oxidised nor reduced.",D:"Converted into a different element."},
+    correct:"B",tag:"MC-GCHEM-ACIDS-REDOX",
+    scaffold:"A fall in oxidation number is reduction, and the species reduced is the oxidising agent — it oxidised something else. A rise is oxidation, and that species is the reducing agent. In disproportionation a single element is simultaneously oxidised and reduced, as when chlorine reacts with cold dilute sodium hydroxide going to both −1 and +1. Balance redox half-equations by adding H₂O, H⁺ and electrons in that order.",
+    reforge:{stem:"Chlorine reacts with cold dilute NaOH forming both Cl⁻ and ClO⁻. This is an example of:",options:{A:"Neutralisation of an acid.",B:"A precipitation reaction.",C:"Disproportionation",D:"Thermal decomposition."},correct:"C"}
+  },
+  {
+    id:"CHEM-N2-32",stem:"Which of these would be the best conditions for a fast rate but a reduced equilibrium yield in an exothermic reaction?",
+    options:{A:"Low temperature and no catalyst.",B:"High temperature",C:"Low pressure with fewer product moles.",D:"Removing the catalyst entirely."},
+    correct:"B",tag:"MC-GCHEM-EQUILIBRIA",
+    scaffold:"Rate and yield often pull in opposite directions for exothermic reactions: high temperature speeds the reaction but shifts equilibrium back towards reactants, lowering yield. Industry therefore chooses a moderate compromise temperature with a catalyst to restore rate, plus pressure chosen from the mole balance, and recycles unreacted material. Explaining that compromise, rather than naming a single optimum, is what such questions are testing.",
+    reforge:{stem:"A catalyst is valuable in an industrial equilibrium process because it allows:",options:{A:"A higher yield at the same temperature.",B:"The equilibrium position to shift right.",C:"Kc to be increased substantially.",D:"An acceptable rate at lower temperature"},correct:"D"}
+  },
+  {
+    id:"CHEM-N2-33",stem:"In the reaction of a metal carbonate with dilute acid, the gas evolved would:",
+    options:{A:"Turn limewater milky",B:"Relight a glowing splint.",C:"Give a squeaky pop with a lit splint.",D:"Turn damp red litmus paper blue."},
+    correct:"A",tag:"MC-GCHEM-INORGANIC-TESTS",
+    scaffold:"Carbonates react with dilute acid to give a salt, water and carbon dioxide, which turns limewater milky as insoluble calcium carbonate forms. Contrast: hydrogen from metal and acid gives a squeaky pop; oxygen relights a glowing splint; ammonia turns damp red litmus blue. Effervescence alone does not identify a gas, so the confirmatory test matters — several reactions fizz without producing carbon dioxide.",
+    reforge:{stem:"Limewater turns milky with carbon dioxide because the gas forms:",options:{A:"Soluble calcium hydrogencarbonate.",B:"Insoluble calcium carbonate",C:"Calcium metal and oxygen.",D:"A precipitate of calcium oxide."},correct:"B"}
+  },
+  {
+    id:"CHEM-N2-34",stem:"A student needs to make 250 cm³ of a standard solution. The correct apparatus is a:",
+    options:{A:"Measuring cylinder of 250 cm³.",B:"Conical flask marked at 250 cm³.",C:"Volumetric flask of 250 cm³",D:"Burette filled to the 250 mark."},
+    correct:"C",tag:"MC-GCHEM-INORGANIC-TESTS",
+    scaffold:"A volumetric flask is calibrated to contain one precise volume and is used for standard solutions: weigh the solute accurately, dissolve fully in a beaker, transfer with rinsings, then make up to the graduation mark with the bottom of the meniscus on the line and invert to mix. A measuring cylinder is far less precise, and a conical flask is not calibrated for accurate volume at all — it is a reaction vessel.",
+    reforge:{stem:"The beaker used to dissolve the solid is rinsed into the volumetric flask in order to:",options:{A:"Cool the solution before making up.",B:"Remove any dissolved gases present.",C:"Neutralise any acid on the glass.",D:"Transfer all of the solute"},correct:"D"}
+  },
+  {
+    id:"CHEM-N2-35",stem:"An increase in pressure has no effect on the position of an equilibrium when:",
+    options:{A:"The reaction is exothermic in the forward direction.",B:"A catalyst is present in the mixture.",C:"The number of gas moles is equal on both sides",D:"The temperature is held constant."},
+    correct:"C",tag:"MC-GCHEM-EQUILIBRIA",
+    scaffold:"Pressure changes shift equilibrium towards the side with fewer gas moles. If both sides have equal numbers of gas moles — as in H₂ + I₂ ⇌ 2HI — there is no shift, though rate still increases because collisions are more frequent. Count only gaseous species: solids and liquids are excluded. Adding an inert gas at constant volume changes total pressure but not partial pressures, so it has no effect either.",
+    reforge:{stem:"Adding argon to a gaseous equilibrium at constant volume has no effect because it leaves:",options:{A:"The temperature of the system lower.",B:"The partial pressures unchanged",C:"The value of Kp increased.",D:"The activation energy unaltered."},correct:"B"}
+  },
+  {
+    id:"CHEM-N2-36",stem:"Which pair correctly matches an ion with its flame colour?",
+    options:{A:"Sodium — lilac flame.",B:"Potassium — yellow flame.",C:"Copper(II) — brick red flame.",D:"Calcium — brick red flame"},
+    correct:"D",tag:"MC-GCHEM-INORGANIC-TESTS",
+    scaffold:"Flame colours: lithium crimson, sodium yellow, potassium lilac, calcium brick red, barium apple green, copper(II) blue-green. Heat energy promotes electrons to higher levels; as they fall back they emit light of a characteristic wavelength set by the energy gap. Use a nichrome wire cleaned in concentrated hydrochloric acid between tests, since sodium contamination is intense and masks weaker colours.",
+    reforge:{stem:"A flame test wire is cleaned with concentrated hydrochloric acid between tests mainly to:",options:{A:"Remove contamination masking colour",B:"Increase the temperature of the flame.",C:"Convert the sample into a chloride.",D:"Prevent the wire from melting."},correct:"A"}
+  },
+  {
+    id:"CHEM-N2-37",stem:"The first electron affinity of an element is the enthalpy change when:",
+    options:{A:"One mole of gaseous atoms each gains an electron",B:"One mole of gaseous atoms each loses an electron.",C:"One mole of a compound forms from its elements.",D:"One mole of solid forms from gaseous ions."},
+    correct:"A",tag:"MC-GCHEM-ENERGETICS",
+    scaffold:"First electron affinity — one mole of gaseous atoms each gaining an electron to form 1− ions — is exothermic, since the nucleus attracts the added electron. Second electron affinity is endothermic, because an electron must be forced onto an already negative ion against repulsion. Both appear in Born–Haber cycles for oxides and sulfides, and getting the sign of the second value wrong is a frequent source of lost marks.",
+    reforge:{stem:"The second electron affinity of oxygen is endothermic because the electron is added to:",options:{A:"A neutral gaseous atom.",B:"A negative ion, against repulsion",C:"A positively charged nucleus.",D:"A solid lattice rather than a gas."},correct:"B"}
+  }
+]);
+chemExpansion("CHEM-3", [
+  {
+    id:"CHEM-N3-01",stem:"Members of a homologous series always share the same:",
+    options:{A:"Relative molecular mass.",B:"Number of carbon atoms.",C:"General formula and group",D:"Boiling point and density."},
+    correct:"C",tag:"MC-GCHEM-ORGANIC-STRUCTURE",
+    scaffold:"A homologous series shares a general formula and functional group, with successive members differing by CH₂. Chemical properties are similar because the functional group governs reactivity, while physical properties change gradually as chain length grows — boiling point rises with stronger London forces. Alkanes are CₙH₂ₙ₊₂, alkenes CₙH₂ₙ, alcohols CₙH₂ₙ₊₁OH, and carboxylic acids CₙH₂ₙ₊₁COOH.",
+    reforge:{stem:"Boiling point increases along a homologous series because longer molecules have:",options:{A:"Stronger covalent bonds in the chain.",B:"Stronger London forces",C:"More hydrogen bonding in every case.",D:"A different functional group present."},correct:"B"}
+  },
+  {
+    id:"CHEM-N3-02",stem:"Structural isomers are compounds with the same:",
+    options:{A:"Molecular formula but different structures",B:"Structure but different molecular formulae.",C:"Empirical formula and identical structure.",D:"Boiling point but different reactivity."},
+    correct:"A",tag:"MC-GCHEM-ORGANIC-STRUCTURE",
+    scaffold:"Structural isomers share a molecular formula but differ in atom connectivity: chain isomers (branching), position isomers (functional group location) and functional group isomers (different group entirely, as with propanal and propanone). Stereoisomers share connectivity but differ in spatial arrangement — E/Z isomerism from restricted rotation about a C=C, and optical isomerism from a chiral carbon carrying four different groups.",
+    reforge:{stem:"Propanal and propanone are examples of:",options:{A:"Chain isomers differing in branching.",B:"Optical isomers of one another.",C:"Functional group isomers",D:"E/Z isomers about a double bond."},correct:"C"}
+  },
+  {
+    id:"CHEM-N3-03",stem:"E/Z isomerism can occur about a carbon–carbon double bond because:",
+    options:{A:"The bond is longer than a single bond.",B:"Rotation about the bond is restricted",C:"The carbons carry a permanent charge.",D:"Double bonds are always polar."},
+    correct:"B",tag:"MC-GCHEM-ORGANIC-STRUCTURE",
+    scaffold:"A C=C consists of a sigma bond plus a pi bond formed by sideways overlap of p orbitals; breaking the pi bond to rotate costs too much energy at ordinary temperatures, so groups are locked in position. E/Z isomerism additionally requires each double-bond carbon to carry two different groups. Priority is assigned by atomic number: Z has the higher-priority groups on the same side, E on opposite sides.",
+    reforge:{stem:"E/Z isomerism is impossible when one carbon of the C=C carries:",options:{A:"Two identical groups",B:"Two different alkyl groups.",C:"A halogen and a hydrogen.",D:"A hydroxyl and a methyl group."},correct:"A"}
+  },
+  {
+    id:"CHEM-N3-04",stem:"A chiral carbon atom is one that is bonded to:",
+    options:{A:"Two identical groups and two different ones.",B:"Three groups and one lone pair.",C:"A double bond and two other groups.",D:"Four different groups"},
+    correct:"D",tag:"MC-GCHEM-ORGANIC-STRUCTURE",
+    scaffold:"A chiral centre carries four different groups, giving two non-superimposable mirror images called enantiomers. These have identical physical and chemical properties in an achiral environment but rotate plane-polarised light in opposite directions, and can behave very differently in biological systems, which are themselves chiral. A racemic mixture contains equal amounts of both and shows no net optical rotation.",
+    reforge:{stem:"A racemic mixture shows no optical activity because it contains:",options:{A:"No chiral centres at any position.",B:"Equal amounts of both enantiomers",C:"Only the E isomer of the compound.",D:"Molecules with a plane of symmetry."},correct:"B"}
+  },
+  {
+    id:"CHEM-N3-05",stem:"The complete combustion of an alkane produces:",
+    options:{A:"Carbon monoxide and water only.",B:"Carbon and hydrogen gas.",C:"Carbon dioxide and water",D:"Carbon dioxide and hydrogen."},
+    correct:"C",tag:"MC-GCHEM-FUNCTIONAL-GROUPS",
+    scaffold:"Complete combustion in excess oxygen gives carbon dioxide and water. Incomplete combustion in limited oxygen gives carbon monoxide — toxic because it binds irreversibly to haemoglobin — and carbon particulates, which cause respiratory harm and global dimming. Sulfur impurities burn to sulfur dioxide, causing acid rain; and at high engine temperatures nitrogen and oxygen combine to form nitrogen oxides.",
+    reforge:{stem:"Nitrogen oxides form in a car engine because the high temperature causes:",options:{A:"Sulfur impurities in the fuel to burn.",B:"Incomplete combustion of the hydrocarbon.",C:"Nitrogen and oxygen from air to react",D:"The catalytic converter to break down."},correct:"C"}
+  },
+  {
+    id:"CHEM-N3-06",stem:"The reaction of methane with chlorine in ultraviolet light proceeds by:",
+    options:{A:"Free radical substitution",B:"Electrophilic addition.",C:"Nucleophilic substitution.",D:"Elimination of hydrogen chloride."},
+    correct:"A",tag:"MC-GCHEM-ORGANIC-MECHANISMS",
+    scaffold:"Free radical substitution has three stages. Initiation: UV light homolytically splits Cl₂ into two chlorine radicals. Propagation: Cl• + CH₄ → •CH₃ + HCl, then •CH₃ + Cl₂ → CH₃Cl + Cl•, so one initiation event causes many cycles. Termination: two radicals combine. The mechanism gives a mixture of mono-, di- and further substituted products plus ethane, which limits its synthetic usefulness.",
+    reforge:{stem:"Free radical substitution is of limited use in synthesis because it produces:",options:{A:"Only a single pure product.",B:"A mixture of substitution products",C:"No reaction without a catalyst.",D:"Exclusively ethane as the product."},correct:"B"}
+  },
+  {
+    id:"CHEM-N3-07",stem:"Alkenes readily undergo addition reactions because the C=C bond has:",
+    options:{A:"A permanent positive charge.",B:"An unusually long bond length.",C:"High electron density",D:"No pi bond to be broken."},
+    correct:"C",tag:"MC-GCHEM-ORGANIC-MECHANISMS",
+    scaffold:"The pi bond is an exposed region of high electron density above and below the plane, so it attracts electrophiles — electron pair acceptors. In electrophilic addition to an alkene, the pi electrons attack the electrophile, forming a carbocation intermediate which is then attacked by a nucleophile. With HBr and an unsymmetrical alkene, Markovnikov's rule applies: the major product forms via the more stable carbocation.",
+    reforge:{stem:"Adding HBr to propene gives mainly 2-bromopropane because the intermediate formed is a:",options:{A:"Primary carbocation, which is more stable.",B:"Free radical rather than an ion.",C:"Tertiary carbocation with three alkyl groups.",D:"Secondary carbocation, which is more stable"},correct:"D"}
+  },
+  {
+    id:"CHEM-N3-08",stem:"Bromine water is decolourised by an alkene because the alkene undergoes:",
+    options:{A:"Combustion in the presence of bromine.",B:"Electrophilic addition across C=C",C:"Free radical substitution of a hydrogen.",D:"Oxidation to a carboxylic acid."},
+    correct:"B",tag:"MC-GCHEM-FUNCTIONAL-GROUPS",
+    scaffold:"Bromine water is the standard test for unsaturation: orange bromine water is decolourised as bromine adds across the C=C. An alkane produces no change without UV light. The bromine molecule is polarised as it approaches the electron-rich pi bond, becoming an induced dipole, and the resulting Br⁺ acts as the electrophile. Other alkene tests include decolourising acidified potassium manganate(VII), which forms a diol.",
+    reforge:{stem:"Bromine becomes an electrophile as it approaches an alkene because the pi electrons:",options:{A:"Are transferred completely to bromine.",B:"Form a covalent bond with both atoms.",C:"Induce a dipole in the Br₂ molecule",D:"Remove one electron from bromine."},correct:"C"}
+  },
+  {
+    id:"CHEM-N3-09",stem:"Addition polymerisation of alkenes produces a polymer with:",
+    options:{A:"Water eliminated at each linkage.",B:"Alternating single and double bonds.",C:"Two different monomer units required.",D:"The monomer empirical formula"},
+    correct:"D",tag:"MC-GCHEM-SYNTHESIS",
+    scaffold:"Addition polymerisation joins alkene monomers by opening the C=C, with no other product formed — so atom economy is 100% and the repeat unit has the same empirical formula as the monomer. Condensation polymerisation instead loses a small molecule, usually water or HCl, at each linkage, and needs monomers with two functional groups: diols with dicarboxylic acids for polyesters, diamines for polyamides.",
+    reforge:{stem:"Polyesters are formed by condensation polymerisation, which differs from addition because it:",options:{A:"Eliminates a small molecule",B:"Requires only one type of monomer.",C:"Has an atom economy of 100%.",D:"Opens a carbon–carbon double bond."},correct:"A"}
+  },
+  {
+    id:"CHEM-N3-10",stem:"The reaction of a haloalkane with aqueous sodium hydroxide produces an alcohol by:",
+    options:{A:"Electrophilic addition.",B:"Free radical substitution.",C:"Nucleophilic substitution",D:"Elimination of a hydrogen halide."},
+    correct:"C",tag:"MC-GCHEM-ORGANIC-MECHANISMS",
+    scaffold:"The carbon–halogen bond is polar, with carbon δ+, so it is attacked by nucleophiles: OH⁻ gives an alcohol, CN⁻ gives a nitrile (extending the carbon chain by one), and ammonia gives an amine. Conditions decide the outcome with hydroxide: aqueous solution favours substitution to the alcohol, whereas hot ethanolic hydroxide favours elimination to form an alkene.",
+    reforge:{stem:"Hot ethanolic sodium hydroxide reacting with a haloalkane gives mainly:",options:{A:"An alcohol, by substitution.",B:"An alkene, by elimination",C:"A nitrile, by chain extension.",D:"An amine, by addition of ammonia."},correct:"B"}
+  },
+  {
+    id:"CHEM-N3-11",stem:"The rate of hydrolysis of haloalkanes increases from chloro to iodo because the carbon–halogen bond:",
+    options:{A:"Becomes weaker down the group",B:"Becomes more polar down the group.",C:"Increases in strength down the group.",D:"Changes from covalent to ionic."},
+    correct:"A",tag:"MC-GCHEM-ORGANIC-MECHANISMS",
+    scaffold:"Bond enthalpy falls from C–F through C–Cl and C–Br to C–I, so the C–I bond breaks most readily and iodoalkanes hydrolyse fastest. This outweighs bond polarity, which runs the opposite way — C–F is by far the most polar yet fluoroalkanes are the least reactive. Rates are compared by warming each haloalkane with silver nitrate in ethanol and timing the appearance of the silver halide precipitate.",
+    reforge:{stem:"Bond polarity would predict fluoroalkanes to hydrolyse fastest, yet they are slowest. This shows that:",options:{A:"Polarity is the dominant factor throughout.",B:"Fluorine forms no bond with carbon.",C:"Bond enthalpy is the controlling factor",D:"The reaction is not a substitution."},correct:"C"}
+  },
+  {
+    id:"CHEM-N3-12",stem:"Oxidation of a primary alcohol with acidified potassium dichromate under distillation gives:",
+    options:{A:"A ketone, collected as it forms.",B:"A carboxylic acid, after full reflux.",C:"An alkene by dehydration.",D:"An aldehyde, distilled off as formed"},
+    correct:"D",tag:"MC-GCHEM-FUNCTIONAL-GROUPS",
+    scaffold:"Primary alcohols oxidise first to an aldehyde and then to a carboxylic acid: distilling the aldehyde off as it forms stops the reaction there, while heating under reflux with excess oxidising agent gives the acid. Secondary alcohols oxidise to ketones and go no further. Tertiary alcohols are not oxidised, since there is no hydrogen on the carbon bearing the OH group. The dichromate turns from orange to green when oxidation occurs.",
+    reforge:{stem:"A tertiary alcohol is not oxidised by acidified dichromate because the carbon bearing the OH group has:",options:{A:"No hydrogen atom attached",B:"Too many hydrogen atoms attached.",C:"A double bond to oxygen already.",D:"A permanent positive charge."},correct:"A"}
+  },
+  {
+    id:"CHEM-N3-13",stem:"A student must confirm that a carbonyl compound is an aldehyde rather than a ketone. The best reagent is:",
+    options:{A:"Bromine water, decolourised by aldehydes.",B:"Tollens' reagent, giving a silver mirror",C:"Sodium carbonate, fizzing with aldehydes.",D:"Universal indicator, turning red with ketones."},
+    correct:"B",tag:"MC-GCHEM-INORGANIC-TESTS",
+    scaffold:"Aldehydes are readily oxidised to carboxylic acids, ketones are not. Tollens' reagent gives a silver mirror with an aldehyde only; Fehling's or Benedict's solution turns from blue to a brick-red precipitate with an aliphatic aldehyde. Both carbonyls give an orange precipitate with 2,4-dinitrophenylhydrazine, confirming C=O but not distinguishing the two — so the pair of tests is used together.",
+    reforge:{stem:"An orange precipitate with 2,4-DNPH confirms the presence of:",options:{A:"A carbon–carbon double bond.",B:"A hydroxyl group only.",C:"A carbonyl group",D:"A carboxylic acid group."},correct:"C"}
+  },
+  {
+    id:"CHEM-N3-14",stem:"Carboxylic acids react with sodium carbonate to produce:",
+    options:{A:"Carbon dioxide, water, salt",B:"Hydrogen gas and a salt only.",C:"An ester and water.",D:"An alcohol and carbon monoxide."},
+    correct:"A",tag:"MC-GCHEM-FUNCTIONAL-GROUPS",
+    scaffold:"Carboxylic acids are weak acids that still show typical acid reactions: effervescence with carbonates giving CO₂, and salt formation with metals, metal oxides and alkalis. The fizz with sodium carbonate distinguishes a carboxylic acid from a phenol or alcohol, neither of which reacts. Esterification with an alcohol requires a concentrated sulfuric acid catalyst and gives a sweet-smelling ester plus water.",
+    reforge:{stem:"Effervescence with sodium carbonate distinguishes a carboxylic acid from:",options:{A:"Another carboxylic acid of longer chain.",B:"An alcohol, which does not react",C:"A metal carbonate in solution.",D:"An inorganic strong acid."},correct:"B"}
+  },
+  {
+    id:"CHEM-N3-15",stem:"Esterification of a carboxylic acid with an alcohol requires:",
+    options:{A:"Aqueous sodium hydroxide at room temperature.",B:"Ultraviolet light and chlorine gas.",C:"A concentrated sulfuric acid catalyst",D:"Acidified potassium dichromate under reflux."},
+    correct:"C",tag:"MC-GCHEM-SYNTHESIS",
+    scaffold:"Ester formation is a reversible condensation catalysed by concentrated sulfuric acid, producing an ester and water; the acid also removes water, shifting equilibrium towards the product. Esters are sweet-smelling and used as flavourings, perfumes and solvents. Hydrolysis reverses it: acid hydrolysis is reversible and gives the acid and alcohol, while alkaline hydrolysis is irreversible, giving the carboxylate salt and alcohol.",
+    reforge:{stem:"Alkaline hydrolysis of an ester goes to completion, unlike acid hydrolysis, because it produces:",options:{A:"The carboxylate salt, not the acid",B:"Water as one of the products.",C:"An alcohol of shorter chain length.",D:"A catalyst that is regenerated."},correct:"A"}
+  },
+  {
+    id:"CHEM-N3-16",stem:"Fractional distillation of crude oil separates hydrocarbons according to differences in their:",
+    options:{A:"Chemical reactivity with oxygen.",B:"Boiling point, from chain length",C:"Density in the liquid state.",D:"Colour when heated in the column."},
+    correct:"B",tag:"MC-GCHEM-SYNTHESIS",
+    scaffold:"Crude oil is separated by fractional distillation: it is vaporised and fed into a column with a temperature gradient, so each fraction condenses where the temperature matches its boiling range. Longer chains have stronger London forces, higher boiling points, and condense lower down. Cracking then converts surplus long-chain fractions into shorter, more valuable alkanes and alkenes, matching supply to demand.",
+    reforge:{stem:"Catalytic cracking of long-chain alkanes is carried out mainly to:",options:{A:"Increase the average chain length.",B:"Remove sulfur from the fractions.",C:"Produce shorter, useful molecules",D:"Convert alkenes back into alkanes."},correct:"C"}
+  },
+  {
+    id:"CHEM-N3-17",stem:"In infrared spectroscopy, a broad absorption between 3230 and 3550 cm⁻¹ indicates:",
+    options:{A:"A C=O bond in an aldehyde.",B:"A C–H bond in an alkane.",C:"A C≡N bond in a nitrile.",D:"An O–H bond in an alcohol"},
+    correct:"D",tag:"MC-GCHEM-ORGANIC-STRUCTURE",
+    scaffold:"Bonds absorb infrared at characteristic wavenumbers as they vibrate. Key values: O–H in alcohols broad at 3230–3550; O–H in carboxylic acids very broad at 2500–3300; C=O sharp and strong at 1680–1750; C–H around 2850–3100; N–H at 3300–3500. The fingerprint region below 1500 cm⁻¹ is complex but unique to each compound, so it identifies a substance by comparison with a database spectrum.",
+    reforge:{stem:"The fingerprint region of an infrared spectrum is useful because it:",options:{A:"Shows only the C=O absorptions clearly.",B:"Is unique to a particular compound",C:"Contains no absorptions at all.",D:"Gives the relative molecular mass."},correct:"B"}
+  },
+  {
+    id:"CHEM-N3-18",stem:"In a mass spectrum of an organic compound, the molecular ion peak gives the:",
+    options:{A:"Relative molecular mass",B:"Number of carbon atoms only.",C:"Empirical formula directly.",D:"Boiling point of the substance."},
+    correct:"A",tag:"MC-GCHEM-MASS-SPECTRA",
+    scaffold:"The molecular ion peak, M, is at the highest m/z (ignoring isotope peaks) and gives the relative molecular mass. Fragmentation peaks arise from the molecular ion breaking apart, and their differences identify lost groups: a loss of 15 indicates CH₃, 29 indicates C₂H₅ or CHO, and 17 indicates OH. An M+1 peak arises from carbon-13, and its relative height indicates the number of carbon atoms.",
+    reforge:{stem:"A fragment peak 15 units below the molecular ion peak indicates the loss of:",options:{A:"An OH group.",B:"A CH₃ group",C:"A C₂H₅ group.",D:"A CHO group."},correct:"B"}
+  },
+  {
+    id:"CHEM-N3-19",stem:"In proton NMR, the number of peaks in a spectrum indicates the number of:",
+    options:{A:"Hydrogen atoms in the whole molecule.",B:"Carbon atoms in the main chain.",C:"Different hydrogen environments",D:"Functional groups present in the compound."},
+    correct:"C",tag:"MC-GCHEM-ORGANIC-STRUCTURE",
+    scaffold:"In ¹H NMR the number of peaks gives the number of different proton environments; the integration ratio gives the relative numbers of protons in each; chemical shift indicates the environment type; and splitting follows the n+1 rule, where a peak splits into one more than the number of protons on adjacent carbons. TMS is the reference standard at 0 ppm, and CDCl₃ is used as a solvent because it contains no ordinary protons.",
+    reforge:{stem:"A peak in a proton NMR spectrum is split into a triplet. This indicates the adjacent carbon carries:",options:{A:"One hydrogen atom.",B:"Three hydrogen atoms.",C:"No hydrogen atoms.",D:"Two hydrogen atoms"},correct:"D"}
+  },
+  {
+    id:"CHEM-N3-20",stem:"Benzene does not readily undergo addition reactions because its delocalised ring is:",
+    options:{A:"Highly strained and unstable.",B:"More stable than three double bonds",C:"Unable to attract any electrophiles.",D:"Composed of single bonds only."},
+    correct:"B",tag:"MC-GCHEM-ORGANIC-MECHANISMS",
+    scaffold:"Benzene's six delocalised pi electrons are spread evenly above and below the ring, making all C–C bonds equal in length and the molecule more stable than the theoretical cyclohexa-1,3,5-triene — the difference is the delocalisation energy, shown by comparing enthalpies of hydrogenation. Addition would destroy that stability, so benzene undergoes electrophilic substitution instead, retaining the aromatic ring.",
+    reforge:{stem:"Benzene reacts with electrophiles by substitution rather than addition because substitution:",options:{A:"Requires no catalyst to proceed.",B:"Produces a more reactive product.",C:"Preserves the delocalised ring",D:"Breaks all six carbon–carbon bonds."},correct:"C"}
+  },
+  {
+    id:"CHEM-N3-21",stem:"Nitration of benzene requires concentrated nitric acid and concentrated sulfuric acid in order to generate:",
+    options:{A:"The nitronium ion, NO₂⁺",B:"A free radical from nitric acid.",C:"A nucleophilic nitrate ion.",D:"Hydrogen gas as the electrophile."},
+    correct:"A",tag:"MC-GCHEM-ORGANIC-MECHANISMS",
+    scaffold:"Sulfuric acid protonates nitric acid, which loses water to form the nitronium ion NO₂⁺ — the electrophile. It is attacked by the delocalised ring, forming an unstable intermediate that loses H⁺ to restore aromaticity; the sulfuric acid catalyst is regenerated. Friedel–Crafts alkylation and acylation follow the same electrophilic substitution pattern, using an AlCl₃ halogen carrier to generate the electrophile.",
+    reforge:{stem:"In Friedel–Crafts acylation, aluminium chloride acts as a:",options:{A:"Nucleophile attacking the ring.",B:"Reducing agent for the acyl group.",C:"Solvent for the reaction mixture.",D:"Halogen carrier for it"},correct:"D"}
+  },
+  {
+    id:"CHEM-N3-22",stem:"Primary aliphatic amines are more basic than ammonia because alkyl groups:",
+    options:{A:"Withdraw electron density from nitrogen.",B:"Push electron density onto the nitrogen",C:"Remove the lone pair entirely.",D:"Form hydrogen bonds with water."},
+    correct:"B",tag:"MC-GCHEM-FUNCTIONAL-GROUPS",
+    scaffold:"Basicity depends on the availability of nitrogen's lone pair to accept a proton. Alkyl groups are electron-releasing, increasing lone pair availability, so primary aliphatic amines are stronger bases than ammonia. Aromatic amines such as phenylamine are weaker, because the lone pair is partly delocalised into the benzene ring and so less available. Amines are made from haloalkanes with excess ammonia, or by reducing nitriles or nitroarenes.",
+    reforge:{stem:"Phenylamine is a weaker base than ethylamine because its nitrogen lone pair is:",options:{A:"Delocalised into the benzene ring",B:"Involved in a dative covalent bond.",C:"Removed by the aromatic system.",D:"Shielded by two alkyl groups."},correct:"A"}
+  },
+  {
+    id:"CHEM-N3-23",stem:"An amino acid exists as a zwitterion at its isoelectric point because it contains:",
+    options:{A:"Only a basic amine group.",B:"Two identical carboxyl groups.",C:"An acidic and a basic group",D:"A chiral centre in every case."},
+    correct:"C",tag:"MC-GCHEM-FUNCTIONAL-GROUPS",
+    scaffold:"Amino acids carry both –COOH and –NH₂, so they are amphoteric. At the isoelectric point the carboxyl group is deprotonated and the amine protonated, giving a zwitterion with no overall charge. In acid the molecule gains a proton and becomes positive; in alkali it loses one and becomes negative. All amino acids except glycine have a chiral centre, since glycine's side chain is a hydrogen.",
+    reforge:{stem:"Glycine is the only common amino acid that is not chiral because its side chain is:",options:{A:"A methyl group.",B:"A carboxyl group.",C:"An amine group.",D:"A hydrogen atom"},correct:"D"}
+  },
+  {
+    id:"CHEM-N3-24",stem:"Thin-layer chromatography separates compounds according to their relative:",
+    options:{A:"Boiling points in the mobile phase.",B:"Affinity for each of the phases",C:"Molecular masses alone.",D:"Colours under ultraviolet light."},
+    correct:"B",tag:"MC-GCHEM-INORGANIC-TESTS",
+    scaffold:"In TLC the stationary phase is a thin solid layer and the mobile phase a solvent moving up the plate. A component with greater affinity for the mobile phase travels further. Rf = distance moved by spot ÷ distance moved by solvent front, and is constant for a compound under fixed conditions. The baseline must be pencil, and drawn above the solvent level so the spots are not washed off.",
+    reforge:{stem:"The baseline on a TLC plate is drawn in pencil rather than pen because ink would:",options:{A:"Prevent the solvent rising up the plate.",B:"React chemically with the stationary phase.",C:"Dissolve and travel up the plate",D:"Make the spots invisible under UV light."},correct:"C"}
+  },
+  {
+    id:"CHEM-N3-25",stem:"Heating a reaction mixture under reflux allows a reaction to be carried out at high temperature without:",
+    options:{A:"Losing volatile substances",B:"Requiring any catalyst to be present.",C:"Changing the position of equilibrium.",D:"Producing any unwanted by-products."},
+    correct:"A",tag:"MC-GCHEM-INORGANIC-TESTS",
+    scaffold:"In reflux, vapour rises into a vertical condenser, condenses and returns to the flask, so the mixture can be heated for a long period without loss of volatile reactants or products. Anti-bumping granules give smooth boiling, and the apparatus must never be sealed, or pressure would build dangerously. Distillation instead collects a product as it forms, which is how an aldehyde is isolated before further oxidation.",
+    reforge:{stem:"Anti-bumping granules are added to a reflux flask in order to:",options:{A:"Catalyse the reaction taking place.",B:"Absorb any water produced.",C:"Raise the boiling point of the mixture.",D:"Promote smooth and even boiling"},correct:"D"}
+  },
+  {
+    id:"CHEM-N3-26",stem:"Recrystallisation purifies a solid product by exploiting the fact that impurities:",
+    options:{A:"Have a much higher melting point.",B:"Stay dissolved in cold solvent",C:"Evaporate away during heating.",D:"React with the chosen solvent."},
+    correct:"B",tag:"MC-GCHEM-INORGANIC-TESTS",
+    scaffold:"Recrystallisation: dissolve the crude solid in the minimum volume of hot solvent, filter hot to remove insoluble impurities, cool slowly so the product crystallises while soluble impurities stay in solution, then filter under reduced pressure, wash with a little cold solvent and dry. Yield is always reduced, since some product stays dissolved. Purity is checked by melting point: a pure solid melts sharply at the literature value.",
+    reforge:{stem:"An impure solid melts over a range and below its literature value. This indicates the sample is:",options:{A:"Pure but incorrectly identified.",B:"Impure, so the range broadens",C:"Completely free of any solvent.",D:"A different physical state entirely."},correct:"B"}
+  },
+  {
+    id:"CHEM-N3-27",stem:"The general formula of an alkene is:",
+    options:{A:"CₙH₂ₙ₊₂",B:"CₙH₂ₙ",C:"CₙH₂ₙ₋₂.",D:"CₙH₂ₙ₊₁OH."},
+    correct:"B",tag:"MC-GCHEM-ORGANIC-STRUCTURE",
+    scaffold:"Alkanes CₙH₂ₙ₊₂ are saturated; alkenes CₙH₂ₙ contain one C=C and are unsaturated; alcohols are CₙH₂ₙ₊₁OH. Each degree of unsaturation — a double bond or a ring — removes two hydrogens from the saturated formula, which lets a molecular formula be checked against a proposed structure. Note cycloalkanes share the alkene general formula, so formula alone does not prove a double bond is present.",
+    reforge:{stem:"A compound with formula C₄H₈ could be either an alkene or a:",options:{A:"Straight-chain alkane.",B:"Primary alcohol.",C:"Cycloalkane",D:"Carboxylic acid."},correct:"C"}
+  },
+  {
+    id:"CHEM-N3-28",stem:"In the IUPAC name 2-methylbutan-1-ol, the number 1 indicates the position of the:",
+    options:{A:"Methyl branch on the chain.",B:"Longest carbon chain's end.",C:"Double bond in the molecule.",D:"Hydroxyl functional group"},
+    correct:"D",tag:"MC-GCHEM-ORGANIC-STRUCTURE",
+    scaffold:"Naming: find the longest chain containing the functional group for the stem, number from the end giving the functional group the lowest locant, name substituents alphabetically with their positions, and use di-, tri- for repeats. So 2-methylbutan-1-ol is a four-carbon chain with OH on carbon 1 and a methyl on carbon 2. The suffix identifies the principal functional group, and the locant before it gives its position.",
+    reforge:{stem:"When numbering a carbon chain, the direction is chosen so that the functional group receives:",options:{A:"The lowest possible number",B:"The highest possible number.",C:"The same number as any branch.",D:"No number at all in the name."},correct:"A"}
+  },
+  {
+    id:"CHEM-N3-29",stem:"A nucleophile is best described as a species that:",
+    options:{A:"Accepts a pair of electrons.",B:"Donates a pair of electrons",C:"Always carries a positive charge.",D:"Contains an unpaired electron."},
+    correct:"B",tag:"MC-GCHEM-ORGANIC-MECHANISMS",
+    scaffold:"A nucleophile donates an electron pair, so it is attracted to electron-deficient (δ+) carbon — OH⁻, CN⁻, NH₃ and water are examples, each with a lone pair or negative charge. An electrophile accepts an electron pair and is attracted to electron-rich sites such as a C=C. A free radical has an unpaired electron and is neither. Curly arrows always show the movement of an electron pair, from the donor to the acceptor.",
+    reforge:{stem:"In a reaction mechanism, a curly arrow represents the movement of:",options:{A:"A single unpaired electron.",B:"An entire atom between molecules.",C:"A pair of electrons",D:"A proton from acid to base."},correct:"C"}
+  },
+  {
+    id:"CHEM-N3-30",stem:"Which pair of reagents would convert a nitrile into a primary amine?",
+    options:{A:"Aqueous sodium hydroxide, heated under reflux.",B:"Acidified potassium dichromate solution.",C:"Concentrated nitric and sulfuric acids.",D:"LiAlH₄, or hydrogen with a catalyst"},
+    correct:"D",tag:"MC-GCHEM-SYNTHESIS",
+    scaffold:"Nitriles are reduced to primary amines using LiAlH₄ in dry ether, or hydrogen with a nickel catalyst. They are useful in synthesis because the CN⁻ substitution step extends the carbon chain by one, and the nitrile can then be reduced to an amine or hydrolysed to a carboxylic acid. Planning a multi-step synthesis means tracking both the functional group changes and the carbon count at each stage.",
+    reforge:{stem:"Reacting a haloalkane with KCN is useful in synthesis because it:",options:{A:"Lengthens the chain by one carbon",B:"Removes a carbon from the chain.",C:"Converts the compound to an alkene.",D:"Introduces a hydroxyl group directly."},correct:"A"}
+  },
+  {
+    id:"CHEM-N3-31",stem:"Phenol reacts with bromine water at room temperature without a catalyst, unlike benzene, because the:",
+    options:{A:"Hydroxyl group withdraws electron density.",B:"Ring in phenol contains no delocalisation.",C:"Oxygen lone pair enriches the ring",D:"Molecule is far smaller than benzene."},
+    correct:"C",tag:"MC-GCHEM-ORGANIC-MECHANISMS",
+    scaffold:"In phenol, a lone pair on the oxygen is partly delocalised into the ring, raising its electron density so it polarises bromine without a halogen carrier — giving an immediate white precipitate of 2,4,6-tribromophenol and decolourising bromine water. Benzene needs a catalyst and more forcing conditions. Phenol is also weakly acidic, reacting with sodium hydroxide but not with sodium carbonate, unlike carboxylic acids.",
+    reforge:{stem:"Phenol reacts with sodium hydroxide but not with sodium carbonate, showing that phenol is:",options:{A:"A stronger acid than carboxylic acids.",B:"Weakly acidic, less than an acid",C:"Completely neutral in solution.",D:"A base rather than an acid."},correct:"B"}
+  },
+  {
+    id:"CHEM-N3-32",stem:"An addition polymer is difficult to dispose of because its carbon backbone is:",
+    options:{A:"Unreactive and non-biodegradable",B:"Highly reactive towards water.",C:"Held together by hydrogen bonds.",D:"Broken down rapidly by sunlight."},
+    correct:"A",tag:"MC-GCHEM-SYNTHESIS",
+    scaffold:"Addition polymers have saturated, non-polar carbon backbones with strong C–C and C–H bonds, so they resist chemical attack and are not biodegradable, persisting for centuries. Disposal options: landfill (space and leachate), incineration (energy recovery but toxic emissions if PVC is present), and recycling (needs sorting). Condensation polymers such as polyesters contain polar links that can be hydrolysed, so they break down more readily.",
+    reforge:{stem:"Polyesters are more easily broken down than poly(ethene) because polyesters contain:",options:{A:"A saturated hydrocarbon backbone.",B:"Only carbon–carbon single bonds.",C:"Ester links, which hydrolyse",D:"No repeating monomer units."},correct:"C"}
+  },
+  {
+    id:"CHEM-N3-33",stem:"Which technique would best determine the structure of an unknown organic compound?",
+    options:{A:"Measuring its melting point alone.",B:"Observing its colour and smell.",C:"Weighing a sample accurately.",D:"Combining NMR, IR and mass spectra"},
+    correct:"D",tag:"MC-GCHEM-ORGANIC-STRUCTURE",
+    scaffold:"Structure determination combines techniques: mass spectrometry gives relative molecular mass and fragmentation clues; infrared identifies functional groups present; ¹H and ¹³C NMR reveal the carbon–hydrogen skeleton through environments, integration and splitting; and elemental analysis gives the empirical formula. No single method is sufficient, which is why exam questions supply several data sets and expect them to be reconciled.",
+    reforge:{stem:"Elemental analysis of a compound provides its:",options:{A:"Empirical formula",B:"Full three-dimensional structure.",C:"Boiling point and density.",D:"Number of proton environments."},correct:"A"}
+  },
+  {
+    id:"CHEM-N3-34",stem:"Optical isomers are difficult to separate by ordinary means because they have identical:",
+    options:{A:"Arrangements of atoms in space.",B:"Physical properties when achiral",C:"Effects on plane-polarised light.",D:"Numbers of chiral centres always."},
+    correct:"B",tag:"MC-GCHEM-ORGANIC-STRUCTURE",
+    scaffold:"Enantiomers share melting point, boiling point, density and solubility in ordinary solvents, so distillation and recrystallisation cannot separate them; they differ only in the direction they rotate plane-polarised light and in behaviour towards other chiral species. This matters pharmaceutically, since one enantiomer may be therapeutic and the other inactive or harmful, so drug synthesis aims to produce a single enantiomer.",
+    reforge:{stem:"Producing a single enantiomer of a drug rather than a racemic mixture matters because the other enantiomer may be:",options:{A:"Identical in every biological respect.",B:"Impossible to synthesise at all.",C:"Inactive or harmful in the body",D:"More soluble in organic solvents."},correct:"C"}
+  },
+  {
+    id:"CHEM-N3-35",stem:"A student obtains a low percentage yield in an organic preparation. The most likely cause is:",
+    options:{A:"Losses in transfer and purification",B:"Weighing the product too accurately.",C:"Using a reflux condenser correctly.",D:"An error in the balanced equation."},
+    correct:"A",tag:"MC-GCHEM-SYNTHESIS",
+    scaffold:"Yields fall below theoretical because of incomplete or reversible reaction, competing side reactions, and mechanical losses when transferring between vessels, filtering, and washing crystals. Recrystallisation always sacrifices some product, since a little stays dissolved. Improvements: excess of the cheaper reagent, removing product to shift equilibrium, and minimising transfers. Distinguish yield, which measures how much was obtained, from purity, which measures what it contains.",
+    reforge:{stem:"Percentage yield and purity are different measures because purity describes:",options:{A:"How much product was obtained overall.",B:"The proportion that is product",C:"The speed at which the reaction occurred.",D:"The cost of the reagents used."},correct:"B"}
+  },
+  {
+    id:"CHEM-N3-36",stem:"Ethanol produced by fermentation differs from ethanol produced by hydration of ethene in that fermentation:",
+    options:{A:"Runs continuously at high temperature.",B:"Produces a much purer product directly.",C:"Uses a renewable feedstock, in batches",D:"Requires a phosphoric acid catalyst."},
+    correct:"C",tag:"MC-GCHEM-SYNTHESIS",
+    scaffold:"Fermentation uses sugars from a renewable crop with yeast at about 35 °C, is a slow batch process giving impure dilute ethanol needing distillation, but has low energy needs and is close to carbon neutral. Hydration of ethene uses a finite crude oil feedstock with steam and a phosphoric acid catalyst at high temperature and pressure, but runs continuously and gives a pure product with high atom economy.",
+    reforge:{stem:"Hydration of ethene is preferred industrially where the priority is:",options:{A:"Using a renewable plant feedstock.",B:"Minimising energy consumption.",C:"Avoiding the need for any catalyst.",D:"Continuous production of ethanol"},correct:"D"}
+  },
+  {
+    id:"CHEM-N3-37",stem:"A curly arrow starting at a lone pair and pointing to a carbon atom represents:",
+    options:{A:"A nucleophile attacking that carbon",B:"An electrophile leaving the molecule.",C:"The homolytic breaking of a bond.",D:"A proton transferring to the carbon."},
+    correct:"A",tag:"MC-GCHEM-ORGANIC-MECHANISMS",
+    scaffold:"Curly arrows show electron pair movement, starting from a lone pair, a negative charge, or a bond, and pointing where the pair goes. An arrow from a lone pair to a δ+ carbon shows nucleophilic attack; an arrow from a bond to an atom shows heterolytic fission, giving ions. Half-headed arrows show single-electron movement in radical mechanisms. Marks are usually awarded for arrow position and direction, so precision matters.",
+    reforge:{stem:"Heterolytic fission of a covalent bond produces:",options:{A:"Two radicals with unpaired electrons.",B:"Two oppositely charged ions",C:"Two identical neutral atoms.",D:"No products until a catalyst is added."},correct:"B"}
+  }
+]);
+
+chemExpansion("CHEM-1", [
+  {
+    id:"CHEM-N4-01",stem:"A student reports a titre of 24.5 cm³ from a burette. The uncertainty in that titre is:",
+    options:{A:"±0.10 cm³, from two readings",B:"±0.05 cm³, from a single reading.",C:"±0.50 cm³, the smallest scale division.",D:"±1.00 cm³, the practical limit of reading."},
+    correct:"A",tag:"MC-GCHEM-INORGANIC-TESTS",
+    scaffold:"A burette is read to ±0.05 cm³, and a titre needs an initial and a final reading, so uncertainties add to ±0.10 cm³. Percentage uncertainty = (uncertainty ÷ measurement) × 100, so a larger titre reduces the percentage error — one reason to use a titre above 20 cm³. Overall uncertainty in a calculated result is found by adding the percentage uncertainties of each measurement contributing to it.",
+    reforge:{stem:"To reduce the percentage uncertainty in a titration, a student should aim for a titre that is:",options:{A:"As large as the burette allows",B:"As small as the burette can measure.",C:"Exactly equal to the pipette volume.",D:"Unrelated to the uncertainty involved."},correct:"A"}
+  }
+]);
+chemExpansion("CHEM-2", [
+  {
+    id:"CHEM-N4-02",stem:"A reaction has ΔH = +50 kJ mol⁻¹ and ΔS = +100 J K⁻¹ mol⁻¹. The minimum temperature for feasibility is:",
+    options:{A:"0.5 K, from 50 divided by 100.",B:"500 K, from 50,000 ÷ 100",C:"5000 K, from 50 times 100.",D:"150 K, from 50 plus 100."},
+    correct:"B",tag:"MC-GCHEM-ENERGETICS",
+    scaffold:"Feasibility requires ΔG ≤ 0, and ΔG = ΔH − TΔS, so the minimum temperature is T = ΔH ÷ ΔS. The units must match: ΔH in kJ mol⁻¹ must be converted to J mol⁻¹ (×1000), or ΔS converted to kJ K⁻¹ mol⁻¹ (÷1000). Here 50,000 ÷ 100 = 500 K. Failing to convert is the single commonest error, and produces answers wrong by a factor of a thousand.",
+    reforge:{stem:"In the equation ΔG = ΔH − TΔS, the most common error is failing to:",options:{A:"Convert ΔS into kJ",B:"Use the correct sign for ΔG.",C:"Measure the temperature at all.",D:"Include the activation energy term."},correct:"A"}
+  }
+]);
+
+// ===== GCSE MATHS: GENUINE QUESTION EXPANSION =====
+// gcse-maths reached its 200-question floor via expandSubjectToMinimum(),
+// which clones existing questions; a later pass strips the "(application
+// variant N)" suffix, leaving 48 of its 206 questions as byte-identical
+// repeats. These 74 authored questions take the source count to 200 so the
+// expansion pass generates no coverage variants at all.
+const mathsExpansion = (bankId, questions) => questions.forEach(question => BANKS[bankId].questions.push(question));
+mathsExpansion("GCSE-MATH-P1", [
+  {
+    id:"MATH-N1-01",stem:"Work out 3/4 + 2/5.",
+    options:{A:"5/9",B:"23/20",C:"23/40",D:"5/20"},
+    correct:"B",tag:"MC-MATH-FRACTIONS",
+    scaffold:"Adding fractions needs a common denominator, never adding numerators and denominators separately. For 3/4 + 2/5 the lowest common denominator is 20: 3/4 = 15/20 and 2/5 = 8/20, so the sum is 23/20, or 1 3/20 as a mixed number. The answer 5/9 comes from adding tops and bottoms, which is the single most common error here — check by estimating: 3/4 is nearly 1 and 2/5 is nearly a half, so the answer must exceed 1.",
+    reforge:{stem:"Work out 2/3 × 3/8, giving your answer in its simplest form.",options:{A:"1/4",B:"6/11",C:"5/11",D:"16/9"},correct:"A"}
+  },
+  {
+    id:"MATH-N1-02",stem:"Work out 2/5 ÷ 3/10.",
+    options:{A:"6/50",B:"3/4",C:"4/3",D:"2/15"},
+    correct:"C",tag:"MC-MATH-FRACTIONS2",
+    scaffold:"To divide by a fraction, multiply by its reciprocal: 2/5 ÷ 3/10 = 2/5 × 10/3 = 20/15 = 4/3. Flipping the wrong fraction, or multiplying without flipping at all, produces the usual wrong answers. A sense check helps: 3/10 is smaller than 2/5, so the answer must be greater than 1, which rules out every option below 1 immediately.",
+    reforge:{stem:"Work out 1 1/2 ÷ 3/4.",options:{A:"9/8",B:"2",C:"1 1/8",D:"4/9"},correct:"B"}
+  },
+  {
+    id:"MATH-N1-03",stem:"Write 0.375 as a fraction in its simplest form.",
+    options:{A:"3/8",B:"375/100",C:"3/4",D:"1/3"},
+    correct:"A",tag:"MC-MATH-DECIMALPERCENT",
+    scaffold:"0.375 has three decimal places, so it equals 375/1000. Divide top and bottom by 125 to get 3/8. Useful conversions to memorise: 1/8 = 0.125, 1/4 = 0.25, 3/8 = 0.375, 1/2 = 0.5, 5/8 = 0.625, 3/4 = 0.75. A fraction gives a recurring decimal exactly when its simplified denominator has a prime factor other than 2 or 5.",
+    reforge:{stem:"Which fraction produces a recurring rather than a terminating decimal?",options:{A:"7/20",B:"9/25",C:"5/16",D:"4/15"},correct:"D"}
+  },
+  {
+    id:"MATH-N1-04",stem:"Express 0.4̇ (0.444...) as a fraction in its simplest form.",
+    options:{A:"4/9",B:"4/10",C:"44/100",D:"1/9"},
+    correct:"A",tag:"MC-MATH-RECURRING",
+    scaffold:"Let x = 0.444... Multiply by 10 because one digit recurs: 10x = 4.444... Subtracting gives 9x = 4, so x = 4/9. For two recurring digits multiply by 100 and divide by 99; for three, by 1000 and divide by 999. So 0.4̇5̇ = 45/99 = 5/11. Always simplify at the end and check by dividing back.",
+    reforge:{stem:"Express 0.2̇7̇ (0.272727...) as a fraction in its simplest form.",options:{A:"27/100",B:"3/11",C:"27/90",D:"1/27"},correct:"B"}
+  },
+  {
+    id:"MATH-N1-05",stem:"Simplify 5(2x − 3) − 2(x − 4).",
+    options:{A:"8x − 7",B:"8x − 23",C:"12x − 7",D:"8x + 5"},
+    correct:"A",tag:"MC-MATH-ALGEBRA",
+    scaffold:"Expand each bracket, watching the sign in front of the second: 5(2x − 3) = 10x − 15, and −2(x − 4) = −2x + 8. Note the minus times minus gives +8, which is where most errors occur. Collecting terms gives 10x − 2x = 8x and −15 + 8 = −7, so 8x − 7. Substituting a value such as x = 1 into both the original and your answer is a quick check.",
+    reforge:{stem:"Expand and simplify (x + 3)(x − 5).",options:{A:"x² − 15",B:"x² + 2x − 15",C:"x² − 2x − 15",D:"x² − 2x + 15"},correct:"C"}
+  },
+  {
+    id:"MATH-N1-06",stem:"Factorise fully 12x² + 18x.",
+    options:{A:"6x(2x + 3)",B:"6(2x² + 3x)",C:"3x(4x + 6)",D:"2x(6x + 9)"},
+    correct:"A",tag:"MC-MATH-FACTORISE",
+    scaffold:"Take out the highest common factor of both the numbers and the letters. The HCF of 12 and 18 is 6, and both terms contain x, so the factor is 6x, leaving 6x(2x + 3). The other options are all partially factorised: each still has a common factor inside the bracket, so none is 'fully' factorised. Expanding your answer is the fastest way to confirm it.",
+    reforge:{stem:"Factorise x² + 7x + 12.",options:{A:"(x + 2)(x + 6)",B:"(x + 12)(x + 1)",C:"(x − 3)(x − 4)",D:"(x + 3)(x + 4)"},correct:"D"}
+  },
+  {
+    id:"MATH-N1-07",stem:"Solve 4x − 7 = 2x + 9.",
+    options:{A:"x = 1",B:"x = 8",C:"x = 16",D:"x = 2"},
+    correct:"B",tag:"MC-MATH-EQUATIONS",
+    scaffold:"Collect the letters on one side and the numbers on the other, doing the same to both sides. Subtracting 2x gives 2x − 7 = 9; adding 7 gives 2x = 16; dividing by 2 gives x = 8. Substituting back is essential: 4(8) − 7 = 25 and 2(8) + 9 = 25, so both sides agree. Answer C is what you get by forgetting the final division.",
+    reforge:{stem:"Solve 3(x + 2) = 21.",options:{A:"x = 5",B:"x = 7",C:"x = 9",D:"x = 6.3"},correct:"A"}
+  },
+  {
+    id:"MATH-N1-08",stem:"Solve the simultaneous equations 2x + y = 11 and x − y = 1.",
+    options:{A:"x = 3, y = 5",B:"x = 5, y = 4",C:"x = 4, y = 3",D:"x = 6, y = 5"},
+    correct:"C",tag:"MC-MATH-SIMULTANEOUS",
+    scaffold:"Adding the two equations eliminates y because +y and −y cancel: 3x = 12, so x = 4. Substituting into x − y = 1 gives 4 − y = 1, so y = 3. Always substitute into the equation you did not use to derive x, and check both equations: 2(4) + 3 = 11 and 4 − 3 = 1. If the signs of the letter you want to remove match, subtract; if they differ, add.",
+    reforge:{stem:"Solve 3x + 2y = 16 and x + 2y = 8.",options:{A:"x = 2, y = 5",B:"x = 4, y = 2",C:"x = 3, y = 3.5",D:"x = 8, y = 0"},correct:"B"}
+  },
+  {
+    id:"MATH-N1-09",stem:"The nth term of a sequence is 4n − 1. What is the 10th term?",
+    options:{A:"39",B:"40",C:"36",D:"41"},
+    correct:"A",tag:"MC-MATH-NTH",
+    scaffold:"Substitute n = 10 into 4n − 1: 4 × 10 = 40, then subtract 1 to get 39. To find the nth term of a linear sequence, the coefficient of n is the common difference, and the constant is the term that would come 'before the first', at n = 0. For 3, 7, 11, 15 the difference is 4 and the zeroth term is −1, giving 4n − 1 — the same sequence as here.",
+    reforge:{stem:"Find the nth term of the sequence 7, 12, 17, 22, ...",options:{A:"7n + 5",B:"5n + 7",C:"5n + 2",D:"n + 5"},correct:"C"}
+  },
+  {
+    id:"MATH-N1-10",stem:"A sequence begins 2, 6, 18, 54. What is the next term?",
+    options:{A:"108",B:"58",C:"162",D:"216"},
+    correct:"C",tag:"MC-MATH-GEOMETRIC",
+    scaffold:"Check for a common difference first; here there is none. Check for a common ratio: 6 ÷ 2 = 3, 18 ÷ 6 = 3, 54 ÷ 18 = 3, so the sequence is geometric with ratio 3 and the next term is 54 × 3 = 162. Answer A comes from doubling instead. Other sequence types to recognise: quadratic (second differences constant), triangular, square and Fibonacci-style.",
+    reforge:{stem:"Which sequence is quadratic?",options:{A:"3, 6, 12, 24",B:"2, 5, 10, 17",C:"5, 9, 13, 17",D:"1, 1, 2, 3, 5"},correct:"B"}
+  },
+  {
+    id:"MATH-N1-11",stem:"Simplify (x⁵ × x³) ÷ x².",
+    options:{A:"x⁶",B:"x¹⁰",C:"x⁷",D:"x⁴"},
+    correct:"A",tag:"MC-MATH-INDICES",
+    scaffold:"Multiplying powers of the same base adds the indices, dividing subtracts them: x⁵ × x³ = x⁸, then x⁸ ÷ x² = x⁶. Other rules: (xᵃ)ᵇ = x^(ab), x⁰ = 1, x⁻ⁿ = 1/xⁿ, and x^(1/2) = √x. Multiplying the indices instead of adding is the usual slip, and gives x¹⁵ ÷ x² here.",
+    reforge:{stem:"Evaluate 16^(3/4).",options:{A:"12",B:"4",C:"64",D:"8"},correct:"D"}
+  },
+  {
+    id:"MATH-N1-12",stem:"Simplify √50 + √8 in the form a√2.",
+    options:{A:"7√2",B:"√58",C:"5√2",D:"10√2"},
+    correct:"A",tag:"MC-MATH-SURDS",
+    scaffold:"Simplify each surd by finding the largest square factor: √50 = √25 × √2 = 5√2, and √8 = √4 × √2 = 2√2. Since both are now multiples of √2 they can be added: 5√2 + 2√2 = 7√2. Surds can only be added when the number under the root matches, so √50 + √8 is not √58 — a check by decimal gives 7.07 + 2.83 ≈ 9.9, and 7√2 ≈ 9.9.",
+    reforge:{stem:"Rationalise the denominator of 6/√3.",options:{A:"6√3",B:"2√3",C:"√2",D:"3√3"},correct:"B"}
+  },
+  {
+    id:"MATH-N1-13",stem:"Increase 240 by 35%.",
+    options:{A:"275",B:"84",C:"324",D:"356"},
+    correct:"C",tag:"MC-MATH-PERCENT",
+    scaffold:"Use a multiplier: increasing by 35% means multiplying by 1.35, so 240 × 1.35 = 324. Decreasing by 35% would use 0.65. Without a calculator, 10% of 240 is 24, so 30% is 72 and 5% is 12, giving 84 to add to 240 — again 324. Answer B is the increase itself rather than the new total, a distinction worth reading carefully in the question.",
+    reforge:{stem:"A price falls from 80 to 68. What is the percentage decrease?",options:{A:"12%",B:"15%",C:"17.6%",D:"20%"},correct:"B"}
+  },
+  {
+    id:"MATH-N1-14",stem:"A bag contains red and blue counters in the ratio 3:7. There are 40 counters altogether. How many are blue?",
+    options:{A:"12",B:"21",C:"28",D:"30"},
+    correct:"C",tag:"MC-MATH-RATIO",
+    scaffold:"Add the ratio parts to find the total number of shares: 3 + 7 = 10. Divide the total by the number of shares: 40 ÷ 10 = 4 counters per share. Blue has 7 shares, so 7 × 4 = 28. Check the parts add back to the total: 12 red + 28 blue = 40. A frequent error is dividing by one of the ratio numbers rather than by their sum.",
+    reforge:{stem:"Two numbers are in the ratio 2:5. The larger is 35. What is the smaller?",options:{A:"14",B:"10",C:"17.5",D:"7"},correct:"A"}
+  },
+  {
+    id:"MATH-N1-15",stem:"Find the highest common factor of 24 and 60.",
+    options:{A:"6",B:"4",C:"12",D:"120"},
+    correct:"C",tag:"MC-MATH-FACTORS",
+    scaffold:"Write each number as a product of primes: 24 = 2³ × 3 and 60 = 2² × 3 × 5. The HCF takes the lowest power of each shared prime: 2² × 3 = 12. The LCM takes the highest power of every prime appearing: 2³ × 3 × 5 = 120, which is option D — so read carefully which is asked. A useful check is that HCF × LCM equals the product of the two numbers: 12 × 120 = 1440 = 24 × 60.",
+    reforge:{stem:"Find the lowest common multiple of 8 and 12.",options:{A:"96",B:"4",C:"48",D:"24"},correct:"D"}
+  },
+  {
+    id:"MATH-N1-16",stem:"Write 0.00046 in standard form.",
+    options:{A:"4.6 × 10⁻⁴",B:"46 × 10⁻⁵",C:"4.6 × 10⁴",D:"0.46 × 10⁻³"},
+    correct:"A",tag:"MC-MATH-STANDARD2",
+    scaffold:"Standard form is A × 10ⁿ where A is at least 1 and less than 10. Moving the point in 0.00046 four places right gives 4.6, and because the original number is smaller than 1 the index is negative: 4.6 × 10⁻⁴. Options B and D have coefficients outside the required range, so although they are numerically equal they are not in standard form — a distinction examiners test deliberately.",
+    reforge:{stem:"Work out (3 × 10⁵) × (2 × 10⁻²), giving your answer in standard form.",options:{A:"6 × 10⁻¹⁰",B:"5 × 10³",C:"6 × 10³",D:"6 × 10⁷"},correct:"C"}
+  },
+  {
+    id:"MATH-N1-17",stem:"A triangle has angles of 40° and 75°. What is the third angle?",
+    options:{A:"115°",B:"65°",C:"75°",D:"55°"},
+    correct:"B",tag:"MC-MATH-ANGLES",
+    scaffold:"Angles in a triangle sum to 180°, so the third is 180 − 40 − 75 = 65°. Related facts: angles on a straight line sum to 180°, angles around a point to 360°, and angles in a quadrilateral to 360°. In an isosceles triangle the two base angles are equal, which often supplies a missing value. Answer A is the sum of the two given angles rather than the remainder.",
+    reforge:{stem:"The exterior angle of a regular polygon is 30°. How many sides does it have?",options:{A:"6",B:"10",C:"12",D:"30"},correct:"C"}
+  },
+  {
+    id:"MATH-N1-18",stem:"What is the sum of the interior angles of a hexagon?",
+    options:{A:"720°",B:"1080°",C:"360°",D:"540°"},
+    correct:"A",tag:"MC-MATH-POLYGON",
+    scaffold:"Interior angle sum = (n − 2) × 180°, so for n = 6 that is 4 × 180 = 720°. For a regular polygon, divide by n to get each interior angle: 720 ÷ 6 = 120°. Exterior angles always sum to 360° regardless of the number of sides, so each exterior angle of a regular hexagon is 60°, and interior plus exterior always gives 180°.",
+    reforge:{stem:"Each interior angle of a regular polygon is 140°. How many sides does it have?",options:{A:"7",B:"8",C:"9",D:"10"},correct:"C"}
+  },
+  {
+    id:"MATH-N1-19",stem:"A right-angled triangle has shorter sides of 6 cm and 8 cm. How long is the hypotenuse?",
+    options:{A:"14 cm",B:"10 cm",C:"48 cm",D:"7 cm"},
+    correct:"B",tag:"MC-MATH-PYTHAGORAS",
+    scaffold:"Pythagoras gives a² + b² = c², so 6² + 8² = 36 + 64 = 100, and c = √100 = 10 cm. To find a shorter side instead, subtract: c² − a² = b². Recognising the common triples 3-4-5, 5-12-13 and 8-15-17 (and multiples such as 6-8-10 here) saves time. The hypotenuse is always the longest side and always opposite the right angle, so an answer smaller than 8 cm must be wrong.",
+    reforge:{stem:"A right-angled triangle has a hypotenuse of 13 cm and one shorter side of 5 cm. Find the other side.",options:{A:"8 cm",B:"18 cm",C:"12 cm",D:"14 cm"},correct:"C"}
+  },
+  {
+    id:"MATH-N1-20",stem:"What is the area of a triangle with base 12 cm and perpendicular height 7 cm?",
+    options:{A:"84 cm²",B:"42 cm²",C:"19 cm²",D:"38 cm²"},
+    correct:"B",tag:"MC-MATH-AREA2",
+    scaffold:"Area of a triangle = ½ × base × perpendicular height = ½ × 12 × 7 = 42 cm². Forgetting the half gives 84, which is option A. The height must be perpendicular to the chosen base, not a slanted side. Related formulae: parallelogram = base × height; trapezium = ½(a + b) × h. Area is always in square units.",
+    reforge:{stem:"A trapezium has parallel sides of 5 cm and 9 cm and a height of 6 cm. What is its area?",options:{A:"42 cm²",B:"270 cm²",C:"84 cm²",D:"27 cm²"},correct:"A"}
+  },
+  {
+    id:"MATH-N1-21",stem:"A circle has radius 5 cm. What is its area, in terms of π?",
+    options:{A:"10π cm²",B:"100π cm²",C:"25π cm²",D:"5π cm²"},
+    correct:"C",tag:"MC-MATH-CIRCLE",
+    scaffold:"Area of a circle = πr² = π × 5² = 25π cm². Circumference = 2πr = 10π cm, which is option A — mixing the two formulae is the commonest error, so note that area uses the square and gives square units. If the diameter is given, halve it first: a circle of diameter 10 cm also has area 25π cm².",
+    reforge:{stem:"A circle has a diameter of 14 cm. What is its circumference, in terms of π?",options:{A:"49π cm",B:"196π cm",C:"28π cm",D:"14π cm"},correct:"D"}
+  },
+  {
+    id:"MATH-N1-22",stem:"A cuboid measures 4 cm by 5 cm by 6 cm. What is its volume?",
+    options:{A:"120 cm³",B:"148 cm³",C:"15 cm³",D:"74 cm³"},
+    correct:"A",tag:"MC-MATH-VOLUME",
+    scaffold:"Volume of a cuboid = length × width × height = 4 × 5 × 6 = 120 cm³. Surface area is different: 2(4×5 + 5×6 + 4×6) = 2(20 + 30 + 24) = 148 cm², which is option B — check whether the question asks for volume (cubic units) or surface area (square units). For a prism generally, volume = cross-sectional area × length.",
+    reforge:{stem:"A cylinder has radius 3 cm and height 10 cm. What is its volume, in terms of π?",options:{A:"30π cm³",B:"90π cm³",C:"60π cm³",D:"900π cm³"},correct:"B"}
+  },
+  {
+    id:"MATH-N1-23",stem:"A fair six-sided dice is rolled once. What is the probability of scoring a number greater than 4?",
+    options:{A:"1/6",B:"1/2",C:"1/3",D:"2/3"},
+    correct:"C",tag:"MC-MATH-SIMPLEPROB",
+    scaffold:"Numbers greater than 4 are 5 and 6, so 2 outcomes out of 6, giving 2/6 = 1/3. Listing the successful outcomes explicitly avoids the frequent error of including 4 itself, which would give 1/2. Probabilities always lie between 0 and 1, and the probabilities of all possible outcomes sum to 1, so P(not greater than 4) = 2/3.",
+    reforge:{stem:"The probability that it rains is 0.3. What is the probability that it does not rain?",options:{A:"0.3",B:"1.3",C:"0.5",D:"0.7"},correct:"D"}
+  },
+  {
+    id:"MATH-N1-24",stem:"A coin is flipped twice. What is the probability of getting two heads?",
+    options:{A:"1/2",B:"1/4",C:"1/3",D:"3/4"},
+    correct:"B",tag:"MC-MATH-PROBRULES",
+    scaffold:"For independent events, multiply the probabilities: ½ × ½ = ¼. Listing the sample space HH, HT, TH, TT confirms one favourable outcome in four. Use 'and' for multiply and 'or' for add, taking care that adding only applies to mutually exclusive outcomes. With dependent events, such as drawing without replacement, the second probability must be adjusted.",
+    reforge:{stem:"A bag has 5 red and 3 blue balls. Two are drawn without replacement. P(both red) is:",options:{A:"25/64",B:"5/14",C:"15/56",D:"5/8"},correct:"B"}
+  },
+  {
+    id:"MATH-N1-25",stem:"Find the mean of 4, 7, 9, 12 and 13.",
+    options:{A:"9",B:"9.5",C:"45",D:"8"},
+    correct:"A",tag:"MC-MATH-MEAN2",
+    scaffold:"Mean = total ÷ how many = (4 + 7 + 9 + 12 + 13) ÷ 5 = 45 ÷ 5 = 9. The median is the middle value once ordered, here also 9; the mode is the most frequent, and there is none here; the range is 13 − 4 = 9, a measure of spread rather than average. Answer C is the total, so read whether the mean or the sum is wanted.",
+    reforge:{stem:"Five numbers have a mean of 12. Four of them are 10, 11, 13 and 14. What is the fifth?",options:{A:"12",B:"48",C:"14",D:"11"},correct:"A"}
+  }
+]);
+mathsExpansion("GCSE-MATH-P2", [
+  {
+    id:"MATH-N2-01",stem:"A car travels 150 km in 2.5 hours. What is its average speed?",
+    options:{A:"375 km/h",B:"60 km/h",C:"37.5 km/h",D:"75 km/h"},
+    correct:"B",tag:"MC-MATH-SPEED",
+    scaffold:"Speed = distance ÷ time = 150 ÷ 2.5 = 60 km/h. The formula triangle gives distance = speed × time and time = distance ÷ speed. Units must be consistent: a time given in minutes must be converted to hours before dividing, so 90 minutes is 1.5 hours, not 1.30. Multiplying instead of dividing gives 375, which is option A.",
+    reforge:{stem:"A train travels at 80 km/h for 45 minutes. How far does it go?",options:{A:"60 km",B:"3600 km",C:"36 km",D:"106.7 km"},correct:"A"}
+  },
+  {
+    id:"MATH-N2-02",stem:"An object has mass 240 g and volume 30 cm³. What is its density?",
+    options:{A:"7200 g/cm³",B:"0.125 g/cm³",C:"8 g/cm³",D:"270 g/cm³"},
+    correct:"C",tag:"MC-MATH-COMPOUND",
+    scaffold:"Density = mass ÷ volume = 240 ÷ 30 = 8 g/cm³. Rearranging gives mass = density × volume and volume = mass ÷ density. Pressure works the same way: pressure = force ÷ area, in N/m² or pascals. In every compound measure, check that units match the answer required — a density in kg/m³ needs mass in kg and volume in m³.",
+    reforge:{stem:"A force of 200 N acts on an area of 0.5 m². What is the pressure?",options:{A:"100 N/m²",B:"400 N/m²",C:"0.0025 N/m²",D:"200.5 N/m²"},correct:"B"}
+  },
+  {
+    id:"MATH-N2-03",stem:"£3000 is invested at 4% compound interest per year. What is the value after 3 years, to the nearest pound?",
+    options:{A:"£3360",B:"£3374",C:"£3120",D:"£3374.59"},
+    correct:"B",tag:"MC-MATH-EXPONENTIAL",
+    scaffold:"Compound interest uses a multiplier raised to the number of periods: 3000 × 1.04³ = 3000 × 1.124864 = £3374.59, which is £3374 to the nearest pound. Simple interest would add 4% of the original each year, giving 3000 + 360 = £3360 — option A, and always less than compound over more than one year. For depreciation use a multiplier below 1, such as 0.85 for a 15% annual fall.",
+    reforge:{stem:"A car worth £12,000 depreciates by 20% each year. What is it worth after 2 years?",options:{A:"£7200",B:"£9600",C:"£7680",D:"£4800"},correct:"C"}
+  },
+  {
+    id:"MATH-N2-04",stem:"In a right-angled triangle the side opposite a 35° angle is 8 cm. The hypotenuse is:",
+    options:{A:"4.59 cm",B:"11.4 cm",C:"13.9 cm",D:"9.77 cm"},
+    correct:"C",tag:"MC-MATH-TRIG",
+    scaffold:"Label the sides relative to the given angle, then use SOHCAHTOA. Here we have the opposite and want the hypotenuse, so use sine: sin 35° = 8 ÷ h, giving h = 8 ÷ sin 35° = 8 ÷ 0.5736 = 13.9 cm. Multiplying instead of dividing gives 4.59 cm. Check plausibility: the hypotenuse is the longest side, so it must exceed 8 cm — which rules out option A at once.",
+    reforge:{stem:"In a right-angled triangle the adjacent side is 12 cm and the hypotenuse is 15 cm. The angle between them is:",options:{A:"36.9°",B:"53.1°",C:"38.7°",D:"51.3°"},correct:"A"}
+  },
+  {
+    id:"MATH-N2-05",stem:"A triangle has sides 7 cm and 9 cm with an included angle of 40°. Its area is:",
+    options:{A:"31.5 cm²",B:"20.2 cm²",C:"48.3 cm²",D:"63 cm²"},
+    correct:"B",tag:"MC-MATH-TRIANGLERULES",
+    scaffold:"Area = ½ab sin C, using two sides and the angle between them: ½ × 7 × 9 × sin 40° = 31.5 × 0.6428 = 20.2 cm². Option A is what you get by omitting the sine. Use the sine rule when you have a matching side and opposite angle, and the cosine rule when you have three sides, or two sides with the angle between them and need the third side.",
+    reforge:{stem:"A triangle has sides 5 cm and 8 cm with an included angle of 60°. The third side is:",options:{A:"9.85 cm",B:"11.4 cm",C:"7 cm",D:"13 cm"},correct:"C"}
+  },
+  {
+    id:"MATH-N2-06",stem:"A bearing is measured from north. What is the bearing of due west?",
+    options:{A:"090°",B:"180°",C:"360°",D:"270°"},
+    correct:"D",tag:"MC-MATH-BEARINGS",
+    scaffold:"Bearings are measured clockwise from north and always written with three figures: north 000°, east 090°, south 180°, west 270°. A back bearing is found by adding 180° if the original is below 180°, or subtracting 180° if it is above. So if B is on a bearing of 070° from A, then A is on a bearing of 250° from B.",
+    reforge:{stem:"B is on a bearing of 125° from A. What is the bearing of A from B?",options:{A:"235°",B:"055°",C:"305°",D:"245°"},correct:"C"}
+  },
+  {
+    id:"MATH-N2-07",stem:"A map has a scale of 1:25,000. A distance of 4 cm on the map represents what real distance?",
+    options:{A:"1 km",B:"100 m",C:"10 km",D:"6.25 km"},
+    correct:"A",tag:"MC-MATH-SCALE",
+    scaffold:"A scale of 1:25,000 means 1 cm on the map is 25,000 cm in reality. So 4 cm represents 100,000 cm. Convert: 100,000 cm ÷ 100 = 1000 m = 1 km. The conversions to keep straight are 100 cm in a metre and 1000 m in a kilometre, so 100,000 cm in a kilometre. Working in the wrong direction — dividing by the scale rather than multiplying — is the usual error.",
+    reforge:{stem:"On a 1:50,000 map, how many centimetres represent a real distance of 3 km?",options:{A:"1.5 cm",B:"60 cm",C:"15 cm",D:"6 cm"},correct:"D"}
+  },
+  {
+    id:"MATH-N2-08",stem:"Two similar triangles have corresponding sides of 6 cm and 9 cm. The smaller has area 20 cm². The area of the larger is:",
+    options:{A:"30 cm²",B:"45 cm²",C:"67.5 cm²",D:"180 cm²"},
+    correct:"B",tag:"MC-MATH-TRANSFORM2",
+    scaffold:"For similar shapes the length scale factor is 9 ÷ 6 = 1.5. Areas scale by the square of that factor, so 1.5² = 2.25, giving 20 × 2.25 = 45 cm². Volumes scale by the cube, 1.5³ = 3.375. Multiplying the area by the length factor alone gives 30 cm², option A, and is the commonest error in this topic.",
+    reforge:{stem:"Two similar solids have heights in the ratio 2:3. The smaller has volume 16 cm³. The larger has volume:",options:{A:"24 cm³",B:"36 cm³",C:"54 cm³",D:"108 cm³"},correct:"C"}
+  },
+  {
+    id:"MATH-N2-09",stem:"Solve x² − 5x + 6 = 0.",
+    options:{A:"x = 2 or x = 3",B:"x = −2 or x = −3",C:"x = 1 or x = 6",D:"x = 5 or x = 6"},
+    correct:"A",tag:"MC-MATH-QUADRATIC",
+    scaffold:"Factorise by finding two numbers that multiply to +6 and add to −5: those are −2 and −3, giving (x − 2)(x − 3) = 0, so x = 2 or x = 3. Note the signs: the roots are the values that make each bracket zero, so a bracket of (x − 2) gives a root of +2. Substituting back is the check: 4 − 10 + 6 = 0 and 9 − 15 + 6 = 0.",
+    reforge:{stem:"Solve x² + 2x − 8 = 0.",options:{A:"x = 2 or x = 4",B:"x = −2 or x = 4",C:"x = 2 or x = −4",D:"x = −2 or x = −4"},correct:"C"}
+  },
+  {
+    id:"MATH-N2-10",stem:"Using the quadratic formula, the discriminant of 2x² + 3x + 5 = 0 is:",
+    options:{A:"−49",B:"−31",C:"9",D:"31"},
+    correct:"B",tag:"MC-MATH-QUADRATIC2",
+    scaffold:"The discriminant is b² − 4ac, here 3² − 4(2)(5) = 9 − 40 = −31. Because it is negative there are no real roots, so the parabola never crosses the x-axis. A discriminant of zero means one repeated root and the curve touches the axis; a positive value means two distinct roots. Sign errors when a or c is negative are the usual difficulty.",
+    reforge:{stem:"A quadratic has discriminant equal to 0. This means the equation has:",options:{A:"No real roots at all",B:"Two distinct real roots",C:"One repeated real root",D:"Three real roots"},correct:"C"}
+  },
+  {
+    id:"MATH-N2-11",stem:"A straight line passes through (0, 3) with gradient 2. Its equation is:",
+    options:{A:"y = 3x + 2",B:"y = 2x + 3",C:"y = 2x − 3",D:"y = 3x − 2"},
+    correct:"B",tag:"MC-MATH-LINEARGRAPH",
+    scaffold:"A straight line has equation y = mx + c, where m is the gradient and c the y-intercept. With gradient 2 and intercept 3 the equation is y = 2x + 3. Swapping m and c gives option A, a frequent slip. Gradient between two points is (change in y) ÷ (change in x). Parallel lines share a gradient; perpendicular gradients multiply to −1.",
+    reforge:{stem:"A line is perpendicular to y = 4x − 1. Its gradient is:",options:{A:"−1/4",B:"4",C:"0.25",D:"−4"},correct:"A"}
+  },
+  {
+    id:"MATH-N2-12",stem:"Find the gradient of the line joining (1, 4) and (5, 16).",
+    options:{A:"4",B:"1/3",C:"12",D:"3"},
+    correct:"D",tag:"MC-MATH-COORDINATES",
+    scaffold:"Gradient = (y₂ − y₁) ÷ (x₂ − x₁) = (16 − 4) ÷ (5 − 1) = 12 ÷ 4 = 3. Take the coordinates in the same order top and bottom, or the sign will be wrong. The midpoint of the same two points is ((1+5)/2, (4+16)/2) = (3, 10), and the length is found by Pythagoras: √(4² + 12²) = √160.",
+    reforge:{stem:"What is the midpoint of the line joining (2, 7) and (8, 3)?",options:{A:"(3, 2)",B:"(10, 10)",C:"(6, 4)",D:"(5, 5)"},correct:"D"}
+  },
+  {
+    id:"MATH-N2-13",stem:"Solve the inequality 3x + 4 < 19.",
+    options:{A:"x < 5",B:"x > 5",C:"x < 7.67",D:"x < 15"},
+    correct:"A",tag:"MC-MATH-INEQUALITY",
+    scaffold:"Solve as for an equation: subtract 4 to get 3x < 15, then divide by 3 to get x < 5. The inequality sign only reverses when multiplying or dividing by a negative number, so −2x > 6 becomes x < −3. On a number line, use an open circle for < or > and a filled circle for ≤ or ≥.",
+    reforge:{stem:"Solve −2x + 1 ≥ 9.",options:{A:"x ≥ −4",B:"x ≤ −4",C:"x ≥ 4",D:"x ≤ 4"},correct:"B"}
+  },
+  {
+    id:"MATH-N2-14",stem:"y is directly proportional to x. When x = 4, y = 20. What is y when x = 7?",
+    options:{A:"23",B:"11.4",C:"35",D:"140"},
+    correct:"C",tag:"MC-MATH-PROPORTION",
+    scaffold:"Direct proportion means y = kx. From x = 4 and y = 20, k = 5, so y = 5x and when x = 7, y = 35. Inverse proportion means y = k/x, so as one doubles the other halves. Adding the difference in x rather than scaling gives 23, option A — proportion is multiplicative, not additive, which is the key distinction being tested.",
+    reforge:{stem:"y is inversely proportional to x. When x = 3, y = 12. What is y when x = 6?",options:{A:"24",B:"9",C:"15",D:"6"},correct:"D"}
+  },
+  {
+    id:"MATH-N2-15",stem:"A number is 47 when rounded to the nearest whole number. Its lower bound is:",
+    options:{A:"46.5",B:"46",C:"47.4",D:"46.9"},
+    correct:"A",tag:"MC-MATH-BOUNDS",
+    scaffold:"Rounding to the nearest whole number means the value lies within half a unit either side: the lower bound is 46.5 and the upper bound 47.5. The upper bound is written as 47.5 even though a value exactly 47.5 would round up, because it is the limit of the interval. For a value given to 1 decimal place, the bounds are ±0.05; to the nearest 10, ±5.",
+    reforge:{stem:"A length is 8.4 cm to 1 decimal place. Its upper bound is:",options:{A:"8.5 cm",B:"8.45 cm",C:"8.49 cm",D:"8.44 cm"},correct:"B"}
+  },
+  {
+    id:"MATH-N2-16",stem:"Estimate the value of (39.2 × 5.1) ÷ 1.97 by rounding each number to 1 significant figure.",
+    options:{A:"200",B:"100",C:"20",D:"120"},
+    correct:"B",tag:"MC-MATH-ESTIMATION",
+    scaffold:"Round each number to 1 significant figure: 39.2 → 40, 5.1 → 5, 1.97 → 2. Then (40 × 5) ÷ 2 = 200 ÷ 2 = 100. Estimation questions want the rounding shown, not the exact answer, and the point is to check whether a calculator result is plausible. The true value here is 101.5, so the estimate is close.",
+    reforge:{stem:"Estimate √(48.6 ÷ 3.1) by rounding to 1 significant figure.",options:{A:"16",B:"5",C:"4",D:"2.5"},correct:"C"}
+  },
+  {
+    id:"MATH-N2-17",stem:"A frequency table records marks. The class 10 < m ≤ 20 has frequency 8. What is used as the midpoint for estimating the mean?",
+    options:{A:"20",B:"10",C:"8",D:"15"},
+    correct:"D",tag:"MC-MATH-FREQUENCY",
+    scaffold:"For grouped data the exact values are unknown, so the class midpoint stands in for them: (10 + 20) ÷ 2 = 15. Estimated mean = Σ(midpoint × frequency) ÷ Σfrequency. The answer is an estimate precisely because the original values are lost. The modal class is the one with the highest frequency, and the class containing the median is found by counting to the middle position.",
+    reforge:{stem:"Why is the mean from a grouped frequency table only an estimate?",options:{A:"The frequencies may be recorded wrongly",B:"The exact data values are not known",C:"The classes are of unequal width",D:"The total frequency is always approximate"},correct:"B"}
+  },
+  {
+    id:"MATH-N2-18",stem:"A cumulative frequency graph is used to estimate the median of 60 values. Which cumulative frequency should be read off?",
+    options:{A:"60",B:"15",C:"30",D:"45"},
+    correct:"C",tag:"MC-MATH-CUMFREQ",
+    scaffold:"For a cumulative frequency curve the median is read at half the total, here 30. The lower quartile is at a quarter (15) and the upper quartile at three quarters (45), so the interquartile range is UQ − LQ. Cumulative frequency is always plotted against the upper class boundary, not the midpoint — plotting at the midpoint is a common and costly error.",
+    reforge:{stem:"The lower quartile is 24 and the upper quartile is 39. What is the interquartile range?",options:{A:"15",B:"63",C:"31.5",D:"7.5"},correct:"A"}
+  },
+  {
+    id:"MATH-N2-19",stem:"A scatter graph shows points falling from top left to bottom right. This shows:",
+    options:{A:"Positive correlation",B:"No correlation at all",C:"A causal relationship",D:"Negative correlation"},
+    correct:"D",tag:"MC-MATH-SCATTER",
+    scaffold:"A downward trend from left to right shows negative correlation: as one variable increases the other decreases. Upward shows positive correlation, and scattered points show none. Correlation does not prove causation — a third factor may explain both. A line of best fit can be used to predict within the data range (interpolation); predicting beyond it (extrapolation) is unreliable.",
+    reforge:{stem:"Using a line of best fit to predict a value far outside the range of the data is unreliable because it is:",options:{A:"Interpolation, which assumes linearity",B:"Extrapolation, beyond the evidence",C:"Correlation without causation",D:"An estimate of the mean"},correct:"B"}
+  },
+  {
+    id:"MATH-N2-20",stem:"A histogram has a class of width 5 and frequency density 3. What is the frequency of that class?",
+    options:{A:"1.67",B:"8",C:"15",D:"3"},
+    correct:"C",tag:"MC-MATH-HISTOGRAM",
+    scaffold:"In a histogram the area of each bar gives the frequency, so frequency = frequency density × class width = 3 × 5 = 15. Rearranged, frequency density = frequency ÷ class width. Histograms are used when classes have unequal widths, which is why the height is a density rather than the frequency itself — reading the height as the frequency is the standard error.",
+    reforge:{stem:"A class of width 4 contains 20 values. Its frequency density is:",options:{A:"80",B:"24",C:"16",D:"5"},correct:"D"}
+  },
+  {
+    id:"MATH-N2-21",stem:"A spinner has 4 equal sections. It is spun 200 times. Approximately how many times would you expect a particular section?",
+    options:{A:"50",B:"4",C:"200",D:"25"},
+    correct:"A",tag:"MC-MATH-PROBABILITY2",
+    scaffold:"Expected frequency = probability × number of trials = ¼ × 200 = 50. Relative frequency, found from experimental results, estimates probability and becomes more reliable as the number of trials increases. A result differing from the expectation does not prove bias — random variation is expected — but a large and persistent difference over many trials suggests the spinner is not fair.",
+    reforge:{stem:"A coin is flipped 100 times and lands heads 56 times. The relative frequency of heads is:",options:{A:"0.5",B:"56",C:"0.56",D:"0.44"},correct:"C"}
+  },
+  {
+    id:"MATH-N2-22",stem:"Two events are mutually exclusive. P(A) = 0.3 and P(B) = 0.45. What is P(A or B)?",
+    options:{A:"0.135",B:"0.75",C:"0.15",D:"0.25"},
+    correct:"B",tag:"MC-MATH-PROBABILITY4",
+    scaffold:"Mutually exclusive events cannot both happen, so P(A or B) = P(A) + P(B) = 0.3 + 0.45 = 0.75. Multiplying instead gives 0.135, which would apply to independent events both occurring. If events are not mutually exclusive, subtract the overlap: P(A or B) = P(A) + P(B) − P(A and B). Any probability above 1 signals an error.",
+    reforge:{stem:"Events A and B are independent with P(A) = 0.5 and P(B) = 0.2. P(A and B) is:",options:{A:"0.7",B:"0.3",C:"0.25",D:"0.1"},correct:"D"}
+  },
+  {
+    id:"MATH-N2-23",stem:"A sample is chosen so that every member of the population has an equal chance of selection. This is:",
+    options:{A:"A stratified sample",B:"A random sample",C:"A biased sample",D:"A systematic sample"},
+    correct:"B",tag:"MC-MATH-SAMPLING",
+    scaffold:"Random sampling gives every member an equal chance, so the sample should be representative. Stratified sampling divides the population into groups and takes a number from each in proportion to group size. Systematic sampling takes every nth member. A biased sample over-represents part of the population — asking only people leaving a gym about exercise habits is the classic example.",
+    reforge:{stem:"A school has 600 girls and 400 boys. A stratified sample of 50 should contain how many boys?",options:{A:"25",B:"30",C:"20",D:"40"},correct:"C"}
+  },
+  {
+    id:"MATH-N2-24",stem:"A shape is enlarged by scale factor 3 about the origin. A point at (2, 4) moves to:",
+    options:{A:"(5, 7)",B:"(6, 12)",C:"(2/3, 4/3)",D:"(6, 4)"},
+    correct:"B",tag:"MC-MATH-TRANSFORM",
+    scaffold:"An enlargement about the origin multiplies both coordinates by the scale factor: (2, 4) becomes (6, 12). A scale factor between 0 and 1 makes the shape smaller; a negative factor puts the image on the opposite side of the centre and inverts it. Enlargement changes size but not shape, so the image is similar to the object with all angles unchanged.",
+    reforge:{stem:"A point (5, 2) is translated by the vector (−3, 4). Its image is:",options:{A:"(2, 6)",B:"(8, −2)",C:"(−15, 8)",D:"(2, −2)"},correct:"A"}
+  },
+  {
+    id:"MATH-N2-25",stem:"The vector a = (3, −1) and b = (2, 5). What is a + b?",
+    options:{A:"(6, −5)",B:"(1, −6)",C:"(5, 4)",D:"(5, −6)"},
+    correct:"C",tag:"MC-MATH-VECTORS",
+    scaffold:"Add vectors component by component: (3 + 2, −1 + 5) = (5, 4). Subtracting reverses the second vector's components, and multiplying by a scalar multiplies both. Two vectors are parallel when one is a scalar multiple of the other. The magnitude of (5, 4) is √(5² + 4²) = √41, found by Pythagoras.",
+    reforge:{stem:"Which vector is parallel to (2, 3)?",options:{A:"(3, 2)",B:"(6, 9)",C:"(−2, 3)",D:"(4, 5)"},correct:"B"}
+  }
+]);
+mathsExpansion("GCSE-MATH-P3", [
+  {
+    id:"MATH-N3-01",stem:"Make x the subject of y = 3x + 7.",
+    options:{A:"x = (y − 7)/3",B:"x = y/3 − 7",C:"x = 3y − 7",D:"x = (y + 7)/3"},
+    correct:"A",tag:"MC-MATH-ALGEBRAPRAC",
+    scaffold:"Reverse the operations applied to x, in the opposite order. Since x is multiplied by 3 then 7 is added, subtract 7 first: y − 7 = 3x, then divide by 3: x = (y − 7)/3. Option B divides only part of the expression, which is the standard error — the whole of y − 7 must be divided. Substituting a number checks it: if x = 2, y = 13, and (13 − 7)/3 = 2.",
+    reforge:{stem:"Make r the subject of A = πr².",options:{A:"r = A/π²",B:"r = √(A/π)",C:"r = A²/π",D:"r = √(A × π)"},correct:"B"}
+  },
+  {
+    id:"MATH-N3-02",stem:"Simplify (x² − 9)/(x + 3).",
+    options:{A:"x − 3",B:"x − 9",C:"x + 3",D:"x² − 3"},
+    correct:"A",tag:"MC-MATH-QUADRATIC3",
+    scaffold:"Factorise before cancelling. The numerator is a difference of two squares: x² − 9 = (x + 3)(x − 3). The (x + 3) then cancels with the denominator, leaving x − 3. Only whole factors may be cancelled, never individual terms — cancelling the 9 with the 3 is invalid. Recognising a² − b² = (a + b)(a − b) is what makes this quick.",
+    reforge:{stem:"Factorise x² − 25.",options:{A:"(x − 5)(x − 5)",B:"(x + 5)²",C:"(x + 5)(x − 5)",D:"x(x − 25)"},correct:"C"}
+  },
+  {
+    id:"MATH-N3-03",stem:"Write x² + 6x + 5 in completed square form.",
+    options:{A:"(x + 3)² + 5",B:"(x + 6)² − 31",C:"(x + 3)² − 4",D:"(x + 3)² + 14"},
+    correct:"C",tag:"MC-MATH-QUADRATICGRAPH",
+    scaffold:"Halve the coefficient of x to get the number inside the bracket: 6 ÷ 2 = 3, giving (x + 3)². Expanding that gives x² + 6x + 9, which is 4 more than needed, so subtract 4: (x + 3)² − 4. Completed square form reveals the turning point directly, here (−3, −4), and the minimum value of the expression is −4.",
+    reforge:{stem:"The graph of y = (x − 2)² + 5 has a turning point at:",options:{A:"(2, 5)",B:"(−2, 5)",C:"(2, −5)",D:"(5, 2)"},correct:"A"}
+  },
+  {
+    id:"MATH-N3-04",stem:"The graph of y = x² is translated 4 units up. Its new equation is:",
+    options:{A:"y = (x + 4)²",B:"y = x² + 4",C:"y = (x − 4)²",D:"y = x² − 4"},
+    correct:"B",tag:"MC-MATH-GRAPHTRANS",
+    scaffold:"Adding a constant outside the function shifts the graph vertically: y = f(x) + a moves up by a. Changes inside the bracket shift horizontally and in the opposite direction to the sign: y = f(x + a) moves left by a. So y = (x − 4)² is a shift 4 right, not up. Also, y = −f(x) reflects in the x-axis and y = f(−x) reflects in the y-axis.",
+    reforge:{stem:"The graph of y = f(x) is transformed to y = f(x − 3). This is a translation of:",options:{A:"3 units left",B:"3 units upward",C:"3 units down",D:"3 units right"},correct:"D"}
+  },
+  {
+    id:"MATH-N3-05",stem:"A circle has centre O. Angle at the centre subtended by an arc is 80°. The angle at the circumference from the same arc is:",
+    options:{A:"160°",B:"80°",C:"40°",D:"100°"},
+    correct:"C",tag:"MC-MATH-CIRCLETHEOREM",
+    scaffold:"The angle at the centre is twice the angle at the circumference standing on the same arc, so the circumference angle is 80 ÷ 2 = 40°. Other circle theorems: the angle in a semicircle is 90°; opposite angles of a cyclic quadrilateral sum to 180°; angles in the same segment are equal; a tangent meets a radius at 90°; and tangents from an external point are equal in length.",
+    reforge:{stem:"In a cyclic quadrilateral, one angle is 110°. The opposite angle is:",options:{A:"110°",B:"70°",C:"55°",D:"90°"},correct:"B"}
+  },
+  {
+    id:"MATH-N3-06",stem:"A tangent touches a circle at point P. The angle between the tangent and the radius at P is:",
+    options:{A:"90°",B:"45°",C:"180°",D:"It varies with the circle's size"},
+    correct:"A",tag:"MC-MATH-TANGENT",
+    scaffold:"A tangent is always perpendicular to the radius at the point of contact, giving 90° regardless of the circle's size. This creates a right-angled triangle whenever a tangent, radius and another line are involved, so Pythagoras or trigonometry can then be used. Two tangents drawn from the same external point are equal in length, which produces an isosceles triangle.",
+    reforge:{stem:"Two tangents are drawn to a circle from the same external point. They are:",options:{A:"Always perpendicular to each other",B:"Equal in length",C:"Parallel to the radius",D:"Always longer than the diameter"},correct:"B"}
+  },
+  {
+    id:"MATH-N3-07",stem:"A sector has radius 6 cm and angle 60°. Its area, in terms of π, is:",
+    options:{A:"36π cm²",B:"12π cm²",C:"2π cm²",D:"6π cm²"},
+    correct:"D",tag:"MC-MATH-SECTOR",
+    scaffold:"A sector is a fraction of the circle given by angle ÷ 360. Area = (60/360) × π × 6² = (1/6) × 36π = 6π cm². Arc length uses the same fraction of the circumference: (1/6) × 2π × 6 = 2π cm. The perimeter of a sector is the arc plus two radii, so here 2π + 12 cm — forgetting the radii is the usual omission.",
+    reforge:{stem:"A sector has radius 10 cm and angle 90°. Its arc length, in terms of π, is:",options:{A:"25π cm",B:"20π cm",C:"5π cm",D:"10π cm"},correct:"C"}
+  },
+  {
+    id:"MATH-N3-08",stem:"A sphere has radius 3 cm. Its volume, in terms of π, is:",
+    options:{A:"36π cm³",B:"12π cm³",C:"27π cm³",D:"9π cm³"},
+    correct:"A",tag:"MC-MATH-SPHERE",
+    scaffold:"Volume of a sphere = (4/3)πr³ = (4/3)π × 27 = 36π cm³. Surface area = 4πr² = 36π cm² — the same number here by coincidence at r = 3, so check the units and which is asked. For a cone, volume = (1/3)πr²h and curved surface area = πrl, where l is the slant height found by Pythagoras from r and h.",
+    reforge:{stem:"A cone has radius 4 cm and height 9 cm. Its volume, in terms of π, is:",options:{A:"144π cm³",B:"36π cm³",C:"48π cm³",D:"12π cm³"},correct:"C"}
+  },
+  {
+    id:"MATH-N3-09",stem:"Prove that the sum of two consecutive integers is always odd. Which expression best starts the proof?",
+    options:{A:"2n and 2n + 2",B:"n and n + 2",C:"n and n + 1",D:"2n + 1 and 2n + 3"},
+    correct:"C",tag:"MC-MATH-PROOF",
+    scaffold:"Consecutive integers are n and n + 1, whose sum is 2n + 1 — always odd, since it is one more than a multiple of 2. Choosing 2n and 2n + 2 assumes both are even, which does not represent the general case. In algebraic proof, use 2n for any even number, 2n + 1 for any odd number, and finish by stating the conclusion in words rather than stopping at the algebra.",
+    reforge:{stem:"Which expression represents any odd number?",options:{A:"2n",B:"n + 1",C:"n² + 1",D:"2n + 1"},correct:"D"}
+  },
+  {
+    id:"MATH-N3-10",stem:"A function is defined as f(x) = 2x − 5. What is f(4)?",
+    options:{A:"3",B:"13",C:"−3",D:"8"},
+    correct:"A",tag:"MC-MATH-SUBSTITUTION",
+    scaffold:"Substitute 4 for x: f(4) = 2(4) − 5 = 8 − 5 = 3. Function notation simply means 'the value of the expression when x takes that value'. A composite function fg(x) means apply g first then f, working from the inside out. The inverse f⁻¹(x) reverses the function, found by writing y = 2x − 5 and making x the subject: f⁻¹(x) = (x + 5)/2.",
+    reforge:{stem:"If f(x) = 2x − 5, what is f⁻¹(x)?",options:{A:"(x − 5)/2",B:"5 − 2x",C:"(x + 5)/2",D:"2x + 5"},correct:"C"}
+  },
+  {
+    id:"MATH-N3-11",stem:"The median of 3, 8, 5, 12, 7, 9 is:",
+    options:{A:"7",B:"8.5",C:"7.5",D:"9"},
+    correct:"C",tag:"MC-MATH-MEDIAN",
+    scaffold:"Order the values first: 3, 5, 7, 8, 9, 12. With six values there is no single middle, so take the mean of the third and fourth: (7 + 8) ÷ 2 = 7.5. Forgetting to order the data is the commonest error and would give a wrong middle value. For n values, the median position is (n + 1) ÷ 2, here 3.5, meaning halfway between the third and fourth.",
+    reforge:{stem:"Which average is least affected by one unusually large value?",options:{A:"The arithmetic mean",B:"The range",C:"The median",D:"The total"},correct:"C"}
+  },
+  {
+    id:"MATH-N3-12",stem:"A set of data has range 24 and lowest value 7. Its highest value is:",
+    options:{A:"17",B:"31",C:"24",D:"168"},
+    correct:"B",tag:"MC-MATH-RANGE",
+    scaffold:"Range = highest − lowest, so highest = range + lowest = 24 + 7 = 31. The range measures spread, not average, and is easily distorted by a single outlier — which is why the interquartile range, covering the middle 50% of the data, is often preferred. Subtracting rather than adding gives 17, option A.",
+    reforge:{stem:"The interquartile range is often preferred to the range because it:",options:{A:"Uses every value in the data set",B:"Is unaffected by extreme values",C:"Is always a larger number",D:"Gives the average of the data"},correct:"B"}
+  },
+  {
+    id:"MATH-N3-13",stem:"Convert 2.5 hours into minutes.",
+    options:{A:"250 minutes",B:"205 minutes",C:"150 minutes",D:"125 minutes"},
+    correct:"C",tag:"MC-MATH-TIME",
+    scaffold:"There are 60 minutes in an hour, so 2.5 × 60 = 150 minutes. Time is not decimal: 2.5 hours is 2 hours 30 minutes, not 2 hours 50. This matters in speed calculations, where a journey of 1 hour 45 minutes must be entered as 1.75 hours, not 1.45. Converting minutes to hours means dividing by 60.",
+    reforge:{stem:"A journey takes 1 hour 45 minutes. Written as a decimal number of hours, this is:",options:{A:"1.45 hours",B:"1.75 hours",C:"1.34 hours",D:"1.9 hours"},correct:"B"}
+  },
+  {
+    id:"MATH-N3-14",stem:"What is 5/8 written as a percentage?",
+    options:{A:"58%",B:"1.6%",C:"62.5%",D:"80.0%"},
+    correct:"C",tag:"MC-MATH-PERCENT2",
+    scaffold:"Convert the fraction to a decimal by dividing: 5 ÷ 8 = 0.625, then multiply by 100 to get 62.5%. Alternatively scale the fraction to a denominator of 100. Working the division the wrong way round gives 1.6, and reading the digits directly gives 58% — both common. Useful benchmarks: 1/8 = 12.5%, 1/4 = 25%, 1/3 ≈ 33.3%, 3/5 = 60%.",
+    reforge:{stem:"Which of these is the largest value?",options:{A:"0.65",B:"3/5",C:"62.0%",D:"5/8"},correct:"A"}
+  },
+  {
+    id:"MATH-N3-15",stem:"A shop reduces a £45 coat by 20%, then by a further 10% in a later sale. The final price is:",
+    options:{A:"£31.50",B:"£32.40",C:"£36.00",D:"£34.50"},
+    correct:"B",tag:"MC-MATH-PERCENT",
+    scaffold:"Apply the multipliers in turn: 45 × 0.8 = £36, then 36 × 0.9 = £32.40. Successive percentage changes must not be added — 20% then 10% is not a 30% reduction, which would give £31.50, option A. The combined multiplier is 0.8 × 0.9 = 0.72, an overall reduction of 28%. The same logic applies to successive increases.",
+    reforge:{stem:"A price rises by 10% then falls by 10%. Compared with the original, the final price is:",options:{A:"Exactly the same",B:"1% higher",C:"1% lower",D:"10% lower"},correct:"C"}
+  },
+  {
+    id:"MATH-N3-16",stem:"£240 is shared between A and B in the ratio 5:3. How much more does A receive than B?",
+    options:{A:"£60",B:"£150",C:"£90",D:"£30"},
+    correct:"A",tag:"MC-MATH-RATIO2",
+    scaffold:"Total shares = 5 + 3 = 8, so each share is 240 ÷ 8 = £30. A receives 5 × 30 = £150 and B receives 3 × 30 = £90. The difference is £60 — or more directly, the difference is 2 shares, 2 × 30 = £60. Read carefully whether the question wants one person's amount, the difference, or the total; option B is A's share rather than the difference.",
+    reforge:{stem:"A recipe uses flour and sugar in the ratio 7:2. If 350 g of flour is used, how much sugar is needed?",options:{A:"175 g",B:"50 g",C:"140 g",D:"100 g"},correct:"D"}
+  },
+  {
+    id:"MATH-N3-17",stem:"Which of these is a reciprocal graph?",
+    options:{A:"y = x²",B:"y = 2ˣ",C:"y = 1/x",D:"y = 2x + 1"},
+    correct:"C",tag:"MC-MATH-RECIPROCAL",
+    scaffold:"y = 1/x is a reciprocal graph, forming two curves in opposite quadrants with the axes as asymptotes and no value at x = 0. Recognise the standard shapes: linear is a straight line; quadratic a parabola; cubic has an S-shape; exponential y = aˣ rises increasingly steeply and never reaches zero; and reciprocal approaches but never touches both axes.",
+    reforge:{stem:"The graph of y = 3ˣ passes through which point?",options:{A:"(0, 3)",B:"(1, 1)",C:"(0, 0)",D:"(0, 1)"},correct:"D"}
+  },
+  {
+    id:"MATH-N3-18",stem:"Two lines have gradients 2 and 2. The lines are:",
+    options:{A:"Perpendicular",B:"Parallel",C:"Identical",D:"Intersecting at right angles"},
+    correct:"B",tag:"MC-MATH-PARALLEL",
+    scaffold:"Lines with equal gradients are parallel; they are identical only if the y-intercepts also match, which is not stated here. Perpendicular lines have gradients whose product is −1, so a gradient of 2 pairs with −½. To test whether two lines meet, compare gradients: equal gradients and different intercepts means they never meet.",
+    reforge:{stem:"A line perpendicular to y = −3x + 2 has gradient:",options:{A:"1/3",B:"3",C:"−3",D:"−1/3"},correct:"A"}
+  },
+  {
+    id:"MATH-N3-19",stem:"An iterative formula is used to solve an equation. The process is repeated until successive values:",
+    options:{A:"Reach exactly zero",B:"Agree to the required accuracy",C:"Begin to increase steadily each time",D:"Differ by more than 1"},
+    correct:"B",tag:"MC-MATH-ITERATION",
+    scaffold:"Iteration substitutes a starting value into a rearranged formula, feeds the result back in, and repeats until successive values agree to the accuracy asked for — the values converge on a root. The answer is a numerical approximation, not an exact solution. Not every rearrangement converges: some diverge, moving further from the root with each step, so the given rearrangement must be used.",
+    reforge:{stem:"An iteration produces values that move further apart each time. The sequence is:",options:{A:"Converging steadily on the root value",B:"Diverging, so the rearrangement fails",C:"Exactly at the solution",D:"Rounding correctly"},correct:"B"}
+  },
+  {
+    id:"MATH-N3-20",stem:"In a Venn diagram, the region representing A ∩ B contains elements that are:",
+    options:{A:"In A or B or both",B:"In neither A nor B",C:"In both A and B",D:"In A but not B"},
+    correct:"C",tag:"MC-MATH-COMPLEMENT",
+    scaffold:"The intersection A ∩ B holds elements in both sets — the overlap. The union A ∪ B holds elements in either or both. The complement A′ holds everything in the universal set not in A. Probabilities are read from a Venn diagram by counting the elements in the relevant region and dividing by the total in the universal set.",
+    reforge:{stem:"A set has 30 elements in the universal set, with 12 in A. How many are in A′?",options:{A:"12",B:"30",C:"42",D:"18"},correct:"D"}
+  },
+  {
+    id:"MATH-N3-21",stem:"A quantity grows by 5% per year. Its multiplier for one year is:",
+    options:{A:"1.05",B:"0.95",C:"5",D:"1.5"},
+    correct:"A",tag:"MC-MATH-EXPONENTIAL",
+    scaffold:"A 5% increase multiplies by 1.05; a 5% decrease by 0.95. Over n years, raise the multiplier to the power n. Writing 1.5 for 5% is a frequent slip — that would be a 50% increase. To find the original value after a known percentage change, divide by the multiplier rather than applying the reverse percentage, which is the classic reverse-percentage trap.",
+    reforge:{stem:"After a 20% increase a price is £60. What was the original price?",options:{A:"£48",B:"£72",C:"£40",D:"£50"},correct:"D"}
+  },
+  {
+    id:"MATH-N3-22",stem:"Which measure would best summarise the most common shoe size sold in a shop?",
+    options:{A:"The mean",B:"The mode",C:"The range",D:"The median"},
+    correct:"B",tag:"MC-MATH-STATISTICS",
+    scaffold:"The mode is the most frequently occurring value and is the only average that works for categorical data such as colour or shoe size, where a mean would be meaningless in practice. The mean uses every value but is distorted by outliers; the median is the middle value and resists outliers. Choosing the appropriate average for the context is what these questions test.",
+    reforge:{stem:"A data set contains one extremely large outlier. Which average is most distorted by it?",options:{A:"The mean",B:"The mode",C:"The median",D:"None of them"},correct:"A"}
+  },
+  {
+    id:"MATH-N3-23",stem:"A measurement is recorded as 12 cm to the nearest centimetre. The error interval is:",
+    options:{A:"11 ≤ x < 13",B:"11.5 ≤ x < 12.5",C:"11.95 ≤ x < 12.05",D:"12 ≤ x < 13"},
+    correct:"B",tag:"MC-MATH-BOUNDS2",
+    scaffold:"To the nearest centimetre means the true value is within half a centimetre either side, so 11.5 ≤ x < 12.5. The lower bound uses ≤ because 11.5 rounds up to 12, and the upper uses < because 12.5 would round to 13. For a value to the nearest 10, the interval is ±5; to 2 decimal places, ±0.005. Bounds are combined carefully in calculations: for a maximum quotient, divide the upper bound by the lower.",
+    reforge:{stem:"To find the maximum value of a ÷ b from bounds, you should use:",options:{A:"Upper a ÷ upper b",B:"Lower a ÷ lower b",C:"Upper a ÷ lower b",D:"Lower a ÷ upper b"},correct:"C"}
+  },
+  {
+    id:"MATH-N3-24",stem:"A calculation gives 3.14159 on a calculator. Rounded to 3 significant figures this is:",
+    options:{A:"3.141",B:"3.14",C:"3.142",D:"314"},
+    correct:"B",tag:"MC-MATH-ERROR",
+    scaffold:"Significant figures are counted from the first non-zero digit: 3, 1 and 4 are the first three, and the next digit is 1, so there is no rounding up — the answer is 3.14. To 4 significant figures it would be 3.142, since the fifth digit is 5. Leading zeros are never significant, so 0.00456 has three significant figures, while zeros between digits are.",
+    reforge:{stem:"How many significant figures does 0.00509 have?",options:{A:"5",B:"6",C:"2",D:"3"},correct:"D"}
+  }
+]);
+
+mathsExpansion("GCSE-MATH-P1", [
+  {
+    id:"MATH-N4-01",stem:"Work out 3² + 4 × 2.",
+    options:{A:"26",B:"17",C:"22",D:"13"},
+    correct:"B",tag:"MC-MATH-NUMBER",
+    scaffold:"Follow the order of operations: indices first, then multiplication and division, then addition and subtraction. So 3² = 9, then 4 × 2 = 8, and 9 + 8 = 17. Working strictly left to right gives (9 + 4) × 2 = 26, which is option A and the commonest error. Brackets override everything, so (3² + 4) × 2 would indeed be 26.",
+    reforge:{stem:"Work out 20 − 6 ÷ 2.",options:{A:"7",B:"14",C:"17",D:"13"},correct:"C"}
+  },
+  {
+    id:"MATH-N4-02",stem:"Write 84 as a product of its prime factors.",
+    options:{A:"2 × 42",B:"2² × 3 × 7",C:"4 × 21",D:"2 × 3 × 14"},
+    correct:"B",tag:"MC-MATH-FACTORS",
+    scaffold:"Divide repeatedly by the smallest prime that fits: 84 ÷ 2 = 42, 42 ÷ 2 = 21, 21 ÷ 3 = 7, and 7 is prime. So 84 = 2 × 2 × 3 × 7 = 2² × 3 × 7. Every factor in the final answer must itself be prime, which is why the other options fail — 42, 4, 21 and 14 are all composite. Prime factorisation is the basis of finding HCF and LCM.",
+    reforge:{stem:"Which of these numbers is prime?",options:{A:"51",B:"57",C:"91",D:"29"},correct:"D"}
+  }
+]);
+mathsExpansion("GCSE-MATH-P2", [
+  {
+    id:"MATH-N4-03",stem:"A recipe for 4 people uses 600 g of rice. How much is needed for 6 people?",
+    options:{A:"900 g",B:"800 g",C:"1000 g",D:"400 g"},
+    correct:"A",tag:"MC-MATH-PROPORTION",
+    scaffold:"Find the amount for one person, then scale: 600 ÷ 4 = 150 g each, so 6 × 150 = 900 g. Alternatively multiply by the ratio 6/4 = 1.5, giving 600 × 1.5 = 900 g. Adding 200 g because there are 2 more people gives 800 g, option B, and treats a multiplicative relationship as an additive one — the standard error in proportion questions.",
+    reforge:{stem:"5 identical books weigh 1.2 kg. What do 8 weigh?",options:{A:"1.5 kg",B:"1.92 kg",C:"2.4 kg",D:"0.75 kg"},correct:"B"}
+  },
+  {
+    id:"MATH-N4-04",stem:"A shop sells 3 pens for £1.44. What is the cost of 7 pens?",
+    options:{A:"£3.36",B:"£10.08",C:"£4.32",D:"£2.88"},
+    correct:"A",tag:"MC-MATH-MEASURES",
+    scaffold:"Find the unit cost then scale: £1.44 ÷ 3 = £0.48 per pen, so 7 × £0.48 = £3.36. This 'best buy' method also compares deals: work out the price per item or per 100 g for each offer and pick the lower. Multiplying by 7 without first dividing by 3 gives £10.08, which is option B.",
+    reforge:{stem:"Which is better value: 500 g for £2.00, or 800 g for £3.04?",options:{A:"The 500 g pack",B:"They cost the same per gram",C:"The 800 g pack",D:"It cannot be compared"},correct:"C"}
+  }
+]);
+mathsExpansion("GCSE-MATH-P3", [
+  {
+    id:"MATH-N4-05",stem:"Expand and simplify (2x + 3)(x − 4).",
+    options:{A:"2x² − 12",B:"2x² − 5x − 12",C:"2x² + 11x − 12",D:"2x² − 5x + 12"},
+    correct:"B",tag:"MC-MATH-QUADRATIC3",
+    scaffold:"Multiply every term in the first bracket by every term in the second: 2x × x = 2x², 2x × −4 = −8x, 3 × x = 3x, 3 × −4 = −12. Collecting the middle terms gives −8x + 3x = −5x, so the answer is 2x² − 5x − 12. Sign errors on the final constant are the usual problem: positive times negative gives negative.",
+    reforge:{stem:"Expand and simplify (x − 3)².",options:{A:"x² − 9",B:"x² + 9",C:"x² − 6x + 9",D:"x² − 6x − 9"},correct:"C"}
+  },
+  {
+    id:"MATH-N4-06",stem:"A box plot shows a minimum of 12, lower quartile 18, median 24, upper quartile 31 and maximum 40. The interquartile range is:",
+    options:{A:"28",B:"22",C:"16",D:"13"},
+    correct:"D",tag:"MC-MATH-IQR",
+    scaffold:"Interquartile range = upper quartile − lower quartile = 31 − 18 = 13. The full range is maximum − minimum = 40 − 12 = 28, which is option A, so read carefully which spread is wanted. The IQR covers the middle half of the data and so is not distorted by extreme values, which makes it the better comparison when outliers are present.",
+    reforge:{stem:"Two box plots have the same median, but one has a much larger interquartile range. That data set is:",options:{A:"More spread out in the middle half",B:"Higher on average across the whole set",C:"Smaller in total size",D:"Free of any outliers"},correct:"A"}
+  }
+]);
+
+// ===== A-LEVEL PHYSICS: GENUINE QUESTION EXPANSION =====
+// phys reached its 200-question floor via expandSubjectToMinimum(), which
+// clones existing questions; a later pass strips the "(application variant
+// N)" suffix, leaving 42 of its 200 questions as byte-identical repeats.
+// These 131 authored questions take the source count to 200 so the expansion
+// pass generates no coverage variants at all.
+const physExpansion = (bankId, questions) => questions.forEach(question => BANKS[bankId].questions.push(question));
+physExpansion("PHYS-1", [
+ {
+  "id": "PHYS-N1-01",
+  "stem": "Which quantity is a vector rather than a scalar?",
+  "options": {
+   "A": "Velocity",
+   "B": "Speed",
+   "C": "Mass",
+   "D": "Energy stored in a system"
+  },
+  "correct": "A",
+  "tag": "MC-GPHYS-SCALAR-VECTOR",
+  "scaffold": "Scalars have magnitude only: mass, speed, distance, energy, temperature, time. Vectors have magnitude and direction: velocity, displacement, force, acceleration, momentum. The pairs matter — distance is scalar while displacement is vector, and speed is scalar while velocity is vector. A body moving in a complete circle has travelled a distance but has zero displacement, and so zero average velocity.",
+  "reforge": {
+   "stem": "A runner completes one lap of a 400 m track. Their displacement is:",
+   "options": {
+    "A": "400 m",
+    "B": "200 m",
+    "C": "0 m",
+    "D": "800 m"
+   },
+   "correct": "C"
+  }
+ },
+ {
+  "id": "PHYS-N1-02",
+  "stem": "Two forces of 3 N and 4 N act at right angles. The magnitude of the resultant is:",
+  "options": {
+   "A": "7 N",
+   "B": "5 N",
+   "C": "12 N",
+   "D": "1 N"
+  },
+  "correct": "B",
+  "tag": "MC-GPHYS-SCALAR-VECTOR",
+  "scaffold": "Perpendicular vectors combine by Pythagoras: √(3² + 4²) = √25 = 5 N. Adding magnitudes directly (7 N) is only valid when the vectors are parallel and in the same direction; subtracting (1 N) applies when they are antiparallel. The direction of the resultant is found with tan θ = opposite ÷ adjacent, here tan θ = 4/3, giving 53° from the 3 N force.",
+  "reforge": {
+   "stem": "A force of 20 N acts at 30° to the horizontal. Its horizontal component is:",
+   "options": {
+    "A": "20 ÷ cos 30° = 23.1 N",
+    "B": "20 sin 30° = 10 N",
+    "C": "20 tan 30° = 11.5 N",
+    "D": "20 cos 30° = 17.3 N"
+   },
+   "correct": "D"
+  }
+ },
+ {
+  "id": "PHYS-N1-03",
+  "stem": "The gradient of a velocity–time graph represents:",
+  "options": {
+   "A": "Displacement",
+   "B": "Distance travelled",
+   "C": "Acceleration",
+   "D": "Momentum"
+  },
+  "correct": "C",
+  "tag": "MC-GPHYS-GRAPHS-KINEMATICS",
+  "scaffold": "On a displacement–time graph the gradient gives velocity. On a velocity–time graph the gradient gives acceleration and the area beneath gives displacement. On an acceleration–time graph the area beneath gives change in velocity. Reading the area where the gradient is wanted, or the reverse, is the standard error — check which quantity the axes actually carry before deciding.",
+  "reforge": {
+   "stem": "The area under a velocity–time graph represents:",
+   "options": {
+    "A": "Displacement",
+    "B": "Force applied",
+    "C": "Acceleration",
+    "D": "Power"
+   },
+   "correct": "A"
+  }
+ },
+ {
+  "id": "PHYS-N1-04",
+  "stem": "A car accelerates uniformly from rest at 3 m s⁻² for 8 s. Its final velocity is:",
+  "options": {
+   "A": "96 m s⁻¹",
+   "B": "0.375 m s⁻¹",
+   "C": "11 m s⁻¹",
+   "D": "24 m s⁻¹"
+  },
+  "correct": "D",
+  "tag": "MC-GPHYS-GRAPHS-KINEMATICS",
+  "scaffold": "Use v = u + at with u = 0, a = 3 and t = 8, giving v = 0 + 24 = 24 m s⁻¹. The four suvat equations apply only to uniform acceleration. List the known quantities first, then choose the equation containing exactly one unknown. Taking a consistent sign convention matters when motion reverses direction, since a and v may then have opposite signs.",
+  "reforge": {
+   "stem": "A ball is dropped from rest. Using g = 9.81 m s⁻², how far does it fall in 2.0 s?",
+   "options": {
+    "A": "9.8 m",
+    "B": "19.6 m",
+    "C": "39.2 m",
+    "D": "4.9 m"
+   },
+   "correct": "B"
+  }
+ },
+ {
+  "id": "PHYS-N1-05",
+  "stem": "An object is in equilibrium. This means the resultant force on it is:",
+  "options": {
+   "A": "Zero, so it has no acceleration",
+   "B": "Equal to its weight",
+   "C": "Increasing steadily",
+   "D": "Equal to the object's total weight"
+  },
+  "correct": "A",
+  "tag": "MC-GPHYS-RESULTANT-FORCE",
+  "scaffold": "Equilibrium means zero resultant force and zero resultant moment, so the object has no acceleration — it is either at rest or moving at constant velocity. Newton's first law makes the same point: a body continues in its state of motion unless acted on by a resultant force. Constant velocity therefore does not imply zero force, only that the forces present balance.",
+  "reforge": {
+   "stem": "A skydiver falls at constant velocity. The forces on them are:",
+   "options": {
+    "A": "Weight greater than drag",
+    "B": "Drag greater than weight",
+    "C": "Balanced, giving zero resultant",
+    "D": "Zero, since there is no acceleration"
+   },
+   "correct": "C"
+  }
+ },
+ {
+  "id": "PHYS-N1-06",
+  "stem": "A resultant force of 12 N acts on a 4 kg mass. Its acceleration is:",
+  "options": {
+   "A": "48 m s⁻²",
+   "B": "3 m s⁻²",
+   "C": "8 m s⁻²",
+   "D": "0.33 m s⁻²"
+  },
+  "correct": "B",
+  "tag": "MC-GPHYS-RESULTANT-FORCE",
+  "scaffold": "Newton's second law gives F = ma, so a = F ÷ m = 12 ÷ 4 = 3 m s⁻². The force used must be the resultant, not one individual force — if several forces act, combine them first. Mass is in kilograms and force in newtons; using grams gives an answer a thousand times too large. Weight is a force, W = mg, and differs from mass, which is a scalar measured in kg.",
+  "reforge": {
+   "stem": "An object of mass 5.0 kg is on Earth where g = 9.81 N kg⁻¹. Its weight is:",
+   "options": {
+    "A": "9.81 N",
+    "B": "5.0 N",
+    "C": "0.51 N",
+    "D": "49 N"
+   },
+   "correct": "D"
+  }
+ },
+ {
+  "id": "PHYS-N1-07",
+  "stem": "Newton's third law states that forces occur in pairs which are equal in magnitude, opposite in direction and:",
+  "options": {
+   "A": "Act on the same single object",
+   "B": "Always cancel to zero",
+   "C": "Act on different objects",
+   "D": "Are of different types"
+  },
+  "correct": "C",
+  "tag": "MC-GPHYS-RESULTANT-FORCE",
+  "scaffold": "A third-law pair acts on two different bodies, is of the same type, and the two forces are equal and opposite. Because they act on different objects they never cancel each other — cancelling only happens between forces on the same body. A book on a table: the book's weight and the table's normal contact force are not a third-law pair, since both act on the book; they happen to balance because the book is in equilibrium.",
+  "reforge": {
+   "stem": "A book rests on a table. The Newton's third law pair to the book's weight is the:",
+   "options": {
+    "A": "Gravitational pull of the book on the Earth",
+    "B": "Weight of the table",
+    "C": "Friction between the book and the table surface",
+    "D": "Friction between book and table"
+   },
+   "correct": "A"
+  }
+ },
+ {
+  "id": "PHYS-N1-08",
+  "stem": "The moment of a force about a point is calculated as:",
+  "options": {
+   "A": "Force × time",
+   "B": "Force divided by the distance from the pivot",
+   "C": "Force × mass",
+   "D": "Force × perpendicular distance"
+  },
+  "correct": "D",
+  "tag": "MC-GPHYS-RESULTANT-FORCE",
+  "scaffold": "Moment = force × perpendicular distance from the pivot, measured in N m. The distance must be perpendicular to the line of action, which is why a force applied along a line through the pivot has zero moment. The principle of moments states that for equilibrium the sum of clockwise moments equals the sum of anticlockwise moments about any point.",
+  "reforge": {
+   "stem": "A 30 N force acts 0.4 m from a pivot, perpendicular to the bar. Its moment is:",
+   "options": {
+    "A": "75 N m",
+    "B": "12 N m",
+    "C": "30.4 N m",
+    "D": "0.013 N m"
+   },
+   "correct": "B"
+  }
+ },
+ {
+  "id": "PHYS-N1-09",
+  "stem": "A uniform beam balances on a pivot. A 20 N weight sits 0.6 m to the left. A weight 0.4 m to the right must be:",
+  "options": {
+   "A": "30 N",
+   "B": "12 N",
+   "C": "20 N",
+   "D": "8 N"
+  },
+  "correct": "A",
+  "tag": "MC-GPHYS-RESULTANT-FORCE",
+  "scaffold": "Apply the principle of moments: clockwise = anticlockwise, so 20 × 0.6 = F × 0.4, giving 12 = 0.4F and F = 30 N. The nearer the pivot, the larger the force needed. For a uniform beam the weight acts at its centre, which must be included when the beam is not pivoted at its midpoint. Taking moments about the pivot removes the unknown pivot reaction from the calculation.",
+  "reforge": {
+   "stem": "Taking moments about the pivot is convenient because the pivot's reaction force has:",
+   "options": {
+    "A": "No magnitude at all",
+    "B": "A very large moment",
+    "C": "Zero moment about that point",
+    "D": "A very large moment about that point"
+   },
+   "correct": "C"
+  }
+ },
+ {
+  "id": "PHYS-N1-10",
+  "stem": "Work done by a constant force is calculated as:",
+  "options": {
+   "A": "Force × time",
+   "B": "Force × distance along the force",
+   "C": "Force multiplied by the time for which it acts",
+   "D": "Force × mass"
+  },
+  "correct": "B",
+  "tag": "MC-GPHYS-WORK-ENERGY",
+  "scaffold": "Work done W = Fs cos θ, where θ is the angle between the force and the displacement, measured in joules. When the force is perpendicular to the motion, cos 90° = 0 and no work is done — which is why the centripetal force in circular motion does no work and the speed stays constant. Work done equals energy transferred, so the two are always measured in the same unit.",
+  "reforge": {
+   "stem": "A force acts perpendicular to an object's motion. The work done by that force is:",
+   "options": {
+    "A": "Equal to Fs",
+    "B": "Half of Fs",
+    "C": "Negative",
+    "D": "Zero"
+   },
+   "correct": "D"
+  }
+ },
+ {
+  "id": "PHYS-N1-11",
+  "stem": "A 2.0 kg object moves at 6.0 m s⁻¹. Its kinetic energy is:",
+  "options": {
+   "A": "12 J",
+   "B": "6.0 J",
+   "C": "36 J",
+   "D": "72 J"
+  },
+  "correct": "C",
+  "tag": "MC-GPHYS-WORK-ENERGY",
+  "scaffold": "Kinetic energy = ½mv² = ½ × 2.0 × 36 = 36 J. Note the velocity is squared, so doubling the speed quadruples the kinetic energy — forgetting to square gives 6 J, and forgetting the half gives 72 J. Gravitational potential energy near the Earth's surface is mgΔh. In the absence of resistive forces the sum of the two is conserved.",
+  "reforge": {
+   "stem": "An object of mass 3.0 kg is raised 2.0 m. Using g = 9.81 N kg⁻¹, the gain in potential energy is:",
+   "options": {
+    "A": "58.9 J",
+    "B": "6.0 J",
+    "C": "29.4 J",
+    "D": "1.5 J"
+   },
+   "correct": "A"
+  }
+ },
+ {
+  "id": "PHYS-N1-12",
+  "stem": "Power is best defined as:",
+  "options": {
+   "A": "The total energy transferred",
+   "B": "Force multiplied by distance",
+   "C": "Force multiplied by distance moved",
+   "D": "Energy transferred per unit time"
+  },
+  "correct": "D",
+  "tag": "MC-GPHYS-WORK-ENERGY",
+  "scaffold": "Power = energy transferred ÷ time, measured in watts, where one watt is one joule per second. For a body moving at steady speed against a resistive force, P = Fv, since power is the rate of doing work. Efficiency = useful output ÷ total input, expressed as a decimal or percentage, and can never exceed 1 — an answer above 100% signals an arithmetic error.",
+  "reforge": {
+   "stem": "A motor takes 500 J of input energy and delivers 350 J usefully. Its efficiency is:",
+   "options": {
+    "A": "143%",
+    "B": "70%",
+    "C": "30%",
+    "D": "150%"
+   },
+   "correct": "B"
+  }
+ },
+ {
+  "id": "PHYS-N1-13",
+  "stem": "The principle of conservation of momentum applies when:",
+  "options": {
+   "A": "No external resultant force acts on the system",
+   "B": "The collision is perfectly elastic and nothing else",
+   "C": "Kinetic energy is also conserved",
+   "D": "The objects have equal mass"
+  },
+  "correct": "A",
+  "tag": "MC-GPHYS-MOTION-GRAVITY",
+  "scaffold": "Momentum p = mv is conserved in any collision or explosion provided no external resultant force acts, whether the collision is elastic or inelastic. Kinetic energy is conserved only in an elastic collision; in an inelastic one some becomes internal energy or sound, though momentum is still conserved. Momentum is a vector, so direction matters and a consistent sign convention must be chosen.",
+  "reforge": {
+   "stem": "In an inelastic collision, which quantity is not conserved?",
+   "options": {
+    "A": "Momentum",
+    "B": "Total energy of the system",
+    "C": "Kinetic energy",
+    "D": "Mass"
+   },
+   "correct": "C"
+  }
+ },
+ {
+  "id": "PHYS-N1-14",
+  "stem": "A 2.0 kg trolley moving at 3.0 m s⁻¹ collides and sticks to a stationary 1.0 kg trolley. Their common velocity is:",
+  "options": {
+   "A": "3.0 m s⁻¹",
+   "B": "2.0 m s⁻¹",
+   "C": "1.5 m s⁻¹",
+   "D": "6.0 m s⁻¹"
+  },
+  "correct": "B",
+  "tag": "MC-GPHYS-MOTION-GRAVITY",
+  "scaffold": "Conserve momentum: total before = (2.0 × 3.0) + (1.0 × 0) = 6.0 kg m s⁻¹. After the collision the combined mass is 3.0 kg, so v = 6.0 ÷ 3.0 = 2.0 m s⁻¹. The objects stick together, so this is an inelastic collision and kinetic energy falls from 9.0 J to 6.0 J, the difference becoming internal energy and sound.",
+  "reforge": {
+   "stem": "Impulse is equal to:",
+   "options": {
+    "A": "Force × distance",
+    "B": "Force ÷ time",
+    "C": "Mass multiplied by acceleration produced",
+    "D": "Force × time, and to Δmomentum"
+   },
+   "correct": "D"
+  }
+ },
+ {
+  "id": "PHYS-N1-15",
+  "stem": "For a spring obeying Hooke's law, the extension is:",
+  "options": {
+   "A": "Inversely proportional to the force",
+   "B": "Independent of the force",
+   "C": "Directly proportional to the force applied",
+   "D": "Inversely proportional to the applied force"
+  },
+  "correct": "C",
+  "tag": "MC-GPHYS-SPRINGS-MATERIALS",
+  "scaffold": "Hooke's law gives F = kΔL, so extension is proportional to force up to the limit of proportionality. Beyond that the graph curves; past the elastic limit the material no longer returns to its original length. The gradient of a force–extension graph is the spring constant k in N m⁻¹, and the area beneath it is the elastic strain energy stored, ½FΔL or ½kΔL².",
+  "reforge": {
+   "stem": "A spring of stiffness 200 N m⁻¹ is extended by 0.10 m. The energy stored is:",
+   "options": {
+    "A": "1.0 J",
+    "B": "2.0 J",
+    "C": "20 J",
+    "D": "0.50 J"
+   },
+   "correct": "A"
+  }
+ },
+ {
+  "id": "PHYS-N1-16",
+  "stem": "The Young modulus of a material is defined as:",
+  "options": {
+   "A": "Force × area",
+   "B": "Strain ÷ stress",
+   "C": "Force ÷ extension",
+   "D": "Stress ÷ strain"
+  },
+  "correct": "D",
+  "tag": "MC-GPHYS-SPRINGS-MATERIALS",
+  "scaffold": "Young modulus E = stress ÷ strain, where stress = F ÷ A in pascals and strain = ΔL ÷ L and has no units. E therefore has the same units as stress, Pa. It is a property of the material, unlike the spring constant, which also depends on the specimen's dimensions. On a stress–strain graph the gradient of the straight portion gives E, and the area beneath gives energy per unit volume.",
+  "reforge": {
+   "stem": "Strain has no units because it is:",
+   "options": {
+    "A": "Measured in pascals",
+    "B": "A ratio of two lengths",
+    "C": "A force per unit area",
+    "D": "Always a very small number"
+   },
+   "correct": "B"
+  }
+ },
+ {
+  "id": "PHYS-N1-17",
+  "stem": "A material that undergoes very little plastic deformation before breaking is described as:",
+  "options": {
+   "A": "Brittle",
+   "B": "Ductile",
+   "C": "Elastic",
+   "D": "Malleable"
+  },
+  "correct": "A",
+  "tag": "MC-GPHYS-SPRINGS-MATERIALS",
+  "scaffold": "Brittle materials such as glass and ceramics break soon after the elastic limit with little plastic deformation. Ductile materials such as copper deform plastically a great deal and can be drawn into wires. Elastic behaviour means returning to the original shape when the load is removed; plastic means a permanent change remains. A stress–strain graph distinguishes them by how much curve follows the straight elastic section.",
+  "reforge": {
+   "stem": "Plastic deformation means that when the load is removed the material:",
+   "options": {
+    "A": "Returns exactly to its original length",
+    "B": "Becomes stronger than before",
+    "C": "Keeps a permanent change in shape",
+    "D": "Breaks immediately"
+   },
+   "correct": "C"
+  }
+ },
+ {
+  "id": "PHYS-N1-18",
+  "stem": "A projectile is launched horizontally. Ignoring air resistance, its horizontal velocity:",
+  "options": {
+   "A": "Decreases steadily",
+   "B": "Remains constant",
+   "C": "Reaches zero at the top",
+   "D": "Increases with time"
+  },
+  "correct": "B",
+  "tag": "MC-GPHYS-MOTION-GRAVITY",
+  "scaffold": "Projectile motion is analysed by treating the horizontal and vertical components independently. Horizontally there is no force (ignoring drag), so velocity is constant. Vertically the acceleration is g downwards, so vertical velocity changes uniformly. The two are linked only by time. This is why a ball dropped and a ball fired horizontally from the same height land together.",
+  "reforge": {
+   "stem": "A ball is dropped and another is fired horizontally from the same height at the same moment. They land:",
+   "options": {
+    "A": "Depending on the horizontal speed",
+    "B": "The dropped one first",
+    "C": "The fired one first",
+    "D": "At the same time"
+   },
+   "correct": "D"
+  }
+ },
+ {
+  "id": "PHYS-N1-19",
+  "stem": "An object moves in a circle at constant speed. Its acceleration is:",
+  "options": {
+   "A": "Zero, since the speed is constant",
+   "B": "Directed along the velocity",
+   "C": "Directed towards the centre",
+   "D": "Directed away from the centre"
+  },
+  "correct": "C",
+  "tag": "MC-GPHYS-MOTION-GRAVITY",
+  "scaffold": "In uniform circular motion the speed is constant but the velocity is not, because its direction changes continuously. The acceleration, and so the resultant force, points towards the centre — centripetal, meaning centre-seeking. Its magnitude is v²/r or ω²r. There is no outward 'centrifugal force' acting on the body; the outward sensation is the body's inertia.",
+  "reforge": {
+   "stem": "The centripetal force on a car cornering on a level road is provided by:",
+   "options": {
+    "A": "Friction between tyres and road",
+    "B": "The normal contact force",
+    "C": "The weight of the car",
+    "D": "The engine's forward driving force"
+   },
+   "correct": "A"
+  }
+ },
+ {
+  "id": "PHYS-N1-20",
+  "stem": "Newton's law of gravitation states that the force between two masses is proportional to:",
+  "options": {
+   "A": "The difference of the masses only",
+   "B": "The sum of the masses and inversely to their separation",
+   "C": "The sum of the masses and inversely to their separation distance",
+   "D": "The masses, inversely to separation squared"
+  },
+  "correct": "D",
+  "tag": "MC-GPHYS-MOTION-GRAVITY",
+  "scaffold": "F = Gm₁m₂/r², an inverse square law, always attractive, acting along the line joining the centres of mass. Doubling the separation quarters the force. Gravitational field strength g = F/m in N kg⁻¹, and near a spherical mass g = GM/r². Inside a uniform shell the field is zero. The same inverse square form appears in Coulomb's law for electric charges.",
+  "reforge": {
+   "stem": "If the distance between two masses is doubled, the gravitational force between them becomes:",
+   "options": {
+    "A": "Half as large",
+    "B": "A quarter as large",
+    "C": "Twice as large",
+    "D": "Four times as large"
+   },
+   "correct": "B"
+  }
+ },
+ {
+  "id": "PHYS-N1-21",
+  "stem": "For a satellite to remain above one fixed point on the ground, it must orbit:",
+  "options": {
+   "A": "Above the equator, period 24 h",
+   "B": "Over the poles at low altitude",
+   "C": "Over the poles at a very low altitude",
+   "D": "With a period of 12 hours"
+  },
+  "correct": "A",
+  "tag": "MC-GPHYS-ASTRONOMY",
+  "scaffold": "A geostationary satellite stays above one point on the Earth's surface, so it must orbit above the equator, in the same direction as the Earth's rotation, with a period of 24 hours. That period fixes the radius through Kepler's third law, T² ∝ r³, giving about 36,000 km altitude. Polar orbits are lower and faster, giving whole-surface coverage over successive passes, which suits imaging rather than communications.",
+  "reforge": {
+   "stem": "Kepler's third law relates orbital period T and radius r by:",
+   "options": {
+    "A": "T ∝ r",
+    "B": "T³ ∝ r²",
+    "C": "T² ∝ r³",
+    "D": "T ∝ 1/r"
+   },
+   "correct": "C"
+  }
+ },
+ {
+  "id": "PHYS-N1-22",
+  "stem": "The unit of the physical quantity found from force × distance is the:",
+  "options": {
+   "A": "Watt",
+   "B": "Joule",
+   "C": "Newton",
+   "D": "Pascal"
+  },
+  "correct": "B",
+  "tag": "MC-GPHYS-MEASUREMENT",
+  "scaffold": "Force × distance gives work or energy, measured in joules, where 1 J = 1 N m. Base SI units are kg, m, s, A, K, mol and cd; derived units are combinations, so the joule is kg m² s⁻². Checking that both sides of an equation reduce to the same base units — homogeneity — is a quick way to detect an incorrectly recalled formula.",
+  "reforge": {
+   "stem": "Expressed in SI base units, the joule is equivalent to:",
+   "options": {
+    "A": "kg m s⁻²",
+    "B": "kg m⁻¹ s⁻²",
+    "C": "kg m² s⁻³",
+    "D": "kg m² s⁻²"
+   },
+   "correct": "D"
+  }
+ },
+ {
+  "id": "PHYS-N1-23",
+  "stem": "A measurement has a small random error but a large systematic error. The results are:",
+  "options": {
+   "A": "Accurate but not precise",
+   "B": "Both accurate and precise",
+   "C": "Precise but not accurate",
+   "D": "Neither accurate nor precise"
+  },
+  "correct": "C",
+  "tag": "MC-GPHYS-MEASUREMENT",
+  "scaffold": "Precision describes how closely repeated readings agree and is limited by random error; accuracy describes how close they are to the true value and is spoilt by systematic error. Random errors are reduced by repeating and averaging; systematic errors are not, and must be found and corrected — a zero error on an instrument being the classic example. A tightly grouped but consistently offset set of readings is precise but inaccurate.",
+  "reforge": {
+   "stem": "Repeating a measurement and taking a mean reduces:",
+   "options": {
+    "A": "Random error",
+    "B": "Zero error",
+    "C": "Systematic error",
+    "D": "Percentage uncertainty in the instrument"
+   },
+   "correct": "A"
+  }
+ },
+ {
+  "id": "PHYS-N1-24",
+  "stem": "A length is measured as 25.0 cm with an absolute uncertainty of 0.5 cm. The percentage uncertainty is:",
+  "options": {
+   "A": "0.5%",
+   "B": "5.0%",
+   "C": "12.5%",
+   "D": "2.0%"
+  },
+  "correct": "D",
+  "tag": "MC-GPHYS-MEASUREMENT",
+  "scaffold": "Percentage uncertainty = (absolute uncertainty ÷ measurement) × 100 = (0.5 ÷ 25.0) × 100 = 2.0%. When quantities are multiplied or divided, add their percentage uncertainties; when added or subtracted, add their absolute uncertainties. When a quantity is raised to a power n, multiply its percentage uncertainty by n — so a squared term doubles it.",
+  "reforge": {
+   "stem": "A quantity with 3% uncertainty is cubed. The uncertainty in the result is:",
+   "options": {
+    "A": "3%",
+    "B": "9%",
+    "C": "27%",
+    "D": "1%"
+   },
+   "correct": "B"
+  }
+ },
+ {
+  "id": "PHYS-N1-25",
+  "stem": "A displacement–time graph is a horizontal straight line. The object is:",
+  "options": {
+   "A": "Stationary",
+   "B": "Moving at constant velocity",
+   "C": "Accelerating uniformly",
+   "D": "Decelerating"
+  },
+  "correct": "A",
+  "tag": "MC-GPHYS-GRAPHS-KINEMATICS",
+  "scaffold": "A horizontal line on a displacement–time graph has zero gradient, so velocity is zero and the object is stationary. A straight sloping line means constant velocity, and a curve means changing velocity, so acceleration. On a velocity–time graph a horizontal line means constant velocity, and a horizontal line at zero means stationary — the same shape carries different meaning depending on the axes.",
+  "reforge": {
+   "stem": "A velocity–time graph is a horizontal line above the time axis. The object is:",
+   "options": {
+    "A": "Stationary",
+    "B": "Changing direction continuously",
+    "C": "Moving at constant velocity",
+    "D": "Changing direction"
+   },
+   "correct": "C"
+  }
+ },
+ {
+  "id": "PHYS-N1-26",
+  "stem": "The terminal velocity of a falling object is reached when:",
+  "options": {
+   "A": "Its weight exceeds the drag force",
+   "B": "The drag force equals its weight",
+   "C": "Its acceleration reaches g",
+   "D": "Air resistance becomes zero"
+  },
+  "correct": "B",
+  "tag": "MC-GPHYS-RESULTANT-FORCE",
+  "scaffold": "As speed increases, drag increases until it balances weight; the resultant force is then zero, acceleration is zero and the object falls at constant terminal velocity. Note it is still moving, just no longer speeding up. On a velocity–time graph the curve flattens to a horizontal line. Increasing the surface area, as with a parachute, raises drag at a given speed and so lowers terminal velocity.",
+  "reforge": {
+   "stem": "A skydiver opens a parachute. Their terminal velocity:",
+   "options": {
+    "A": "Increases, since the drag force rises",
+    "B": "Stays the same",
+    "C": "Falls to zero immediately",
+    "D": "Decreases, since drag rises"
+   },
+   "correct": "D"
+  }
+ },
+ {
+  "id": "PHYS-N1-27",
+  "stem": "A 60 W lamp is switched on for 300 s. The energy transferred is:",
+  "options": {
+   "A": "360 joules",
+   "B": "5 J",
+   "C": "18000 J",
+   "D": "360 J"
+  },
+  "correct": "C",
+  "tag": "MC-GPHYS-WORK-ENERGY",
+  "scaffold": "Energy = power × time = 60 × 300 = 18,000 J, or 18 kJ. Watts are joules per second, so the time must be in seconds — using minutes here would give an answer 60 times too small. In electrical contexts the same relationship appears as E = VIt, since power P = VI, and the kilowatt-hour used for domestic billing is 3.6 × 10⁶ J.",
+  "reforge": {
+   "stem": "Power is related to force and velocity for steady motion by:",
+   "options": {
+    "A": "P = Fv",
+    "B": "P = F ÷ v",
+    "C": "P = F + v",
+    "D": "P = Fv²"
+   },
+   "correct": "A"
+  }
+ },
+ {
+  "id": "PHYS-N1-28",
+  "stem": "A car of mass 1200 kg accelerates from 10 m s⁻¹ to 20 m s⁻¹. The increase in kinetic energy is:",
+  "options": {
+   "A": "60 kJ",
+   "B": "240 kJ",
+   "C": "120 kJ",
+   "D": "180 kJ"
+  },
+  "correct": "D",
+  "tag": "MC-GPHYS-WORK-ENERGY",
+  "scaffold": "Kinetic energy before = ½ × 1200 × 100 = 60,000 J; after = ½ × 1200 × 400 = 240,000 J. The increase is 180,000 J = 180 kJ. Because v is squared, doubling the speed quadruples the kinetic energy, so the increase is three times the original value — not double. Calculating ½m(v − u)² instead of the difference of the two energies is the standard error.",
+  "reforge": {
+   "stem": "Doubling an object's speed changes its kinetic energy by a factor of:",
+   "options": {
+    "A": "2",
+    "B": "4",
+    "C": "√2",
+    "D": "8"
+   },
+   "correct": "B"
+  }
+ },
+ {
+  "id": "PHYS-N1-29",
+  "stem": "A force of 5.0 N acts for 4.0 s on a body. The impulse delivered is:",
+  "options": {
+   "A": "20 N s",
+   "B": "1.25 N s",
+   "C": "0.8 N s",
+   "D": "9.0 N s"
+  },
+  "correct": "A",
+  "tag": "MC-GPHYS-MOTION-GRAVITY",
+  "scaffold": "Impulse = FΔt = 5.0 × 4.0 = 20 N s, and equals the change in momentum, so its unit is equivalently kg m s⁻¹. On a force–time graph the area beneath gives the impulse. Extending the time over which momentum changes reduces the force required — the principle behind crumple zones, airbags and bending the knees on landing.",
+  "reforge": {
+   "stem": "A car's crumple zone reduces the force on occupants in a crash by:",
+   "options": {
+    "A": "Reducing the change in momentum",
+    "B": "Increasing the mass of the car",
+    "C": "Increasing the time taken to stop",
+    "D": "Reducing the total change in momentum"
+   },
+   "correct": "C"
+  }
+ },
+ {
+  "id": "PHYS-N1-30",
+  "stem": "Two forces act on an object in opposite directions along the same line: 15 N and 9 N. The resultant is:",
+  "options": {
+   "A": "24 N",
+   "B": "6 N",
+   "C": "135 N",
+   "D": "1.67 N"
+  },
+  "correct": "B",
+  "tag": "MC-GPHYS-RESULTANT-FORCE",
+  "scaffold": "Antiparallel forces subtract: 15 − 9 = 6 N, acting in the direction of the larger force. Parallel forces in the same direction add to 24 N. Perpendicular forces combine by Pythagoras. For forces at other angles, resolve each into horizontal and vertical components, sum each direction separately, then recombine — the general method that covers all these special cases.",
+  "reforge": {
+   "stem": "To combine forces acting at an arbitrary angle, the general method is to:",
+   "options": {
+    "A": "Add their magnitudes directly",
+    "B": "Multiply the magnitudes together",
+    "C": "Add their magnitudes together directly",
+    "D": "Resolve, then recombine"
+   },
+   "correct": "D"
+  }
+ },
+ {
+  "id": "PHYS-N1-31",
+  "stem": "A body of mass 0.5 kg has momentum 4.0 kg m s⁻¹. Its velocity is:",
+  "options": {
+   "A": "2.0 m s⁻¹",
+   "B": "0.125 m s⁻¹",
+   "C": "8.0 m s⁻¹",
+   "D": "4.5 m s⁻¹"
+  },
+  "correct": "C",
+  "tag": "MC-GPHYS-MOTION-GRAVITY",
+  "scaffold": "Momentum p = mv, so v = p ÷ m = 4.0 ÷ 0.5 = 8.0 m s⁻¹. Dividing the wrong way round gives 0.125. Momentum is a vector in the direction of the velocity, measured in kg m s⁻¹ or equivalently N s. Newton's second law in its general form states that resultant force equals the rate of change of momentum, which reduces to F = ma when mass is constant.",
+  "reforge": {
+   "stem": "Newton's second law in its general form states that resultant force equals the:",
+   "options": {
+    "A": "Rate of change of momentum",
+    "B": "Product of mass and velocity",
+    "C": "Change in kinetic energy",
+    "D": "Rate of change of displacement"
+   },
+   "correct": "A"
+  }
+ },
+ {
+  "id": "PHYS-N1-32",
+  "stem": "A trolley is released on a frictionless slope. As it descends, its gravitational potential energy:",
+  "options": {
+   "A": "Increases as kinetic energy increases",
+   "B": "Increases as the kinetic energy also increases",
+   "C": "Is destroyed",
+   "D": "Converts to kinetic energy"
+  },
+  "correct": "D",
+  "tag": "MC-GPHYS-WORK-ENERGY",
+  "scaffold": "With no resistive forces, mechanical energy is conserved: the loss in gravitational potential energy equals the gain in kinetic energy, so mgΔh = ½mv². The mass cancels, which is why the speed at the bottom of a frictionless slope does not depend on mass. When friction or drag acts, some energy becomes internal energy and the final kinetic energy is correspondingly smaller.",
+  "reforge": {
+   "stem": "An object falls 5.0 m from rest with no air resistance. Using g = 9.81 m s⁻², its speed on landing is:",
+   "options": {
+    "A": "49 m s⁻¹",
+    "B": "9.9 m s⁻¹",
+    "C": "25 m s⁻¹",
+    "D": "5.0 m s⁻¹"
+   },
+   "correct": "B"
+  }
+ },
+ {
+  "id": "PHYS-N1-33",
+  "stem": "The centre of mass of a uniform rectangular sheet is located:",
+  "options": {
+   "A": "At its centre",
+   "B": "Along its longest edge",
+   "C": "At one corner",
+   "D": "Outside the sheet"
+  },
+  "correct": "A",
+  "tag": "MC-GPHYS-RESULTANT-FORCE",
+  "scaffold": "For a uniform object the centre of mass sits at the geometric centre. It is the point where the whole weight can be taken to act, which simplifies moment calculations. For an irregular shape it can be found by suspending the object from two different points and marking the vertical through each. An object topples when the vertical line through its centre of mass falls outside its base.",
+  "reforge": {
+   "stem": "An object topples over when the vertical line through its centre of mass:",
+   "options": {
+    "A": "Passes through the centre of the base",
+    "B": "Is parallel to the base",
+    "C": "Falls outside the base",
+    "D": "Passes through the highest point"
+   },
+   "correct": "C"
+  }
+ },
+ {
+  "id": "PHYS-N1-34",
+  "stem": "An object decelerates uniformly from 20 m s⁻¹ to rest in 5.0 s. Its acceleration is:",
+  "options": {
+   "A": "4.0 m s⁻²",
+   "B": "−4.0 m s⁻²",
+   "C": "−100 m s⁻²",
+   "D": "−0.25 m s⁻²"
+  },
+  "correct": "B",
+  "tag": "MC-GPHYS-GRAPHS-KINEMATICS",
+  "scaffold": "Acceleration = (v − u) ÷ t = (0 − 20) ÷ 5.0 = −4.0 m s⁻². The negative sign shows the acceleration opposes the motion, which is what deceleration means; quoting the magnitude alone loses the direction information. Sign conventions matter throughout kinematics: choose a positive direction at the start and apply it consistently to displacement, velocity and acceleration.",
+  "reforge": {
+   "stem": "Using v² = u² + 2as, an object decelerating at 4.0 m s⁻² from 20 m s⁻¹ stops after:",
+   "options": {
+    "A": "5.0 m",
+    "B": "100 m",
+    "C": "25 m",
+    "D": "50 m"
+   },
+   "correct": "D"
+  }
+ },
+ {
+  "id": "PHYS-N1-35",
+  "stem": "Which pair correctly matches a quantity with its SI unit?",
+  "options": {
+   "A": "Force — pascal",
+   "B": "Pressure — measured in newtons",
+   "C": "Momentum — kg m s⁻¹",
+   "D": "Power — joule"
+  },
+  "correct": "C",
+  "tag": "MC-GPHYS-MEASUREMENT",
+  "scaffold": "Momentum is kg m s⁻¹, equivalently N s. Force is measured in newtons, pressure in pascals (N m⁻²), energy in joules and power in watts (J s⁻¹). Confusing energy with power is the commonest slip: energy is a total, power is a rate. Checking units is a fast way to test whether a recalled formula is right, since an equation must be dimensionally consistent.",
+  "reforge": {
+   "stem": "The pascal is equivalent to:",
+   "options": {
+    "A": "N m⁻²",
+    "B": "N m",
+    "C": "J s⁻¹",
+    "D": "kg m s⁻²"
+   },
+   "correct": "A"
+  }
+ },
+ {
+  "id": "PHYS-N1-36",
+  "stem": "A stress–strain graph for a ductile metal shows a straight line followed by a curve. The straight portion represents:",
+  "options": {
+   "A": "Plastic deformation",
+   "B": "Permanent plastic deformation",
+   "C": "The breaking stress",
+   "D": "Elastic, obeying Hooke"
+  },
+  "correct": "D",
+  "tag": "MC-GPHYS-SPRINGS-MATERIALS",
+  "scaffold": "The straight section shows proportional, elastic behaviour, with gradient equal to the Young modulus. The limit of proportionality is where the line first curves; the elastic limit follows, beyond which deformation is permanent. The yield point is where extension increases sharply for little extra stress, and the ultimate tensile stress is the maximum before fracture.",
+  "reforge": {
+   "stem": "The gradient of the straight section of a stress–strain graph gives the:",
+   "options": {
+    "A": "Spring constant",
+    "B": "Young modulus",
+    "C": "Breaking stress",
+    "D": "Strain energy"
+   },
+   "correct": "B"
+  }
+ },
+ {
+  "id": "PHYS-N1-37",
+  "stem": "A wire of cross-sectional area 2.0 × 10⁻⁶ m² carries a tension of 40 N. The stress is:",
+  "options": {
+   "A": "2.0 × 10⁷ Pa",
+   "B": "8.0 × 10⁻⁵ Pa",
+   "C": "5.0 × 10⁻⁸ Pa",
+   "D": "40 Pa"
+  },
+  "correct": "A",
+  "tag": "MC-GPHYS-SPRINGS-MATERIALS",
+  "scaffold": "Stress = force ÷ area = 40 ÷ (2.0 × 10⁻⁶) = 2.0 × 10⁷ Pa. Dividing by a small power of ten produces a large answer, so a result smaller than the force signals an inverted calculation. If the diameter is given rather than the area, find A = πr² first, remembering to halve the diameter — forgetting that step introduces a factor of four.",
+  "reforge": {
+   "stem": "A wire of original length 2.0 m extends by 4.0 mm. The strain is:",
+   "options": {
+    "A": "0.50",
+    "B": "8.0 × 10⁻³",
+    "C": "2.0 × 10⁻³",
+    "D": "2.0"
+   },
+   "correct": "C"
+  }
+ },
+ {
+  "id": "PHYS-N1-38",
+  "stem": "Two objects of different mass are dropped in a vacuum. They:",
+  "options": {
+   "A": "Fall with acceleration proportional to mass",
+   "B": "Fall with the same acceleration",
+   "C": "Reach different terminal velocities",
+   "D": "Fall at constant velocity"
+  },
+  "correct": "B",
+  "tag": "MC-GPHYS-MOTION-GRAVITY",
+  "scaffold": "In a vacuum the only force is weight, W = mg, so acceleration a = F ÷ m = mg ÷ m = g for every mass. The mass cancels, so all objects fall at the same rate. In air, drag depends on shape and area rather than mass alone, which is why a feather falls more slowly — the difference is due to air resistance, not to gravity acting differently.",
+  "reforge": {
+   "stem": "A feather falls more slowly than a stone in air because of the difference in:",
+   "options": {
+    "A": "Their masses being different",
+    "B": "Weight alone",
+    "C": "Their masses only",
+    "D": "Air resistance, not gravity"
+   },
+   "correct": "D"
+  }
+ },
+ {
+  "id": "PHYS-N1-39",
+  "stem": "The gravitational field strength at a point is defined as:",
+  "options": {
+   "A": "Energy per unit mass",
+   "B": "Energy stored per unit mass",
+   "C": "Force per unit mass",
+   "D": "Mass per unit volume"
+  },
+  "correct": "C",
+  "tag": "MC-GPHYS-MOTION-GRAVITY",
+  "scaffold": "Gravitational field strength g = F ÷ m, measured in N kg⁻¹, and is numerically equal to the free-fall acceleration in m s⁻². Around a point or spherical mass, g = GM/r², falling with the inverse square of distance from the centre. Field lines point towards the mass and their spacing indicates field strength; uniformly spaced parallel lines represent a uniform field, as near the Earth's surface.",
+  "reforge": {
+   "stem": "Gravitational field lines near the Earth's surface are drawn parallel and evenly spaced because the field there is:",
+   "options": {
+    "A": "Uniform over small distances",
+    "B": "Zero",
+    "C": "Radial and steadily weakening",
+    "D": "Repulsive"
+   },
+   "correct": "A"
+  }
+ },
+ {
+  "id": "PHYS-N1-40",
+  "stem": "An astronaut in orbit appears weightless because they are:",
+  "options": {
+   "A": "Beyond the Earth's gravitational field entirely",
+   "B": "Shielded by the spacecraft",
+   "C": "Moving too fast for gravity to act",
+   "D": "In free fall together with the spacecraft"
+  },
+  "correct": "D",
+  "tag": "MC-GPHYS-ASTRONOMY",
+  "scaffold": "In orbit gravity is still strong — it provides the centripetal force keeping the spacecraft in its path. Both astronaut and craft accelerate towards the Earth at the same rate, so there is no contact force between them and no sensation of weight. Apparent weightlessness therefore means free fall, not the absence of gravity, which is the most common misconception in this topic.",
+  "reforge": {
+   "stem": "The centripetal force keeping a satellite in orbit is provided by:",
+   "options": {
+    "A": "Its engines firing continuously",
+    "B": "Gravitational attraction to the Earth",
+    "C": "Air resistance in the upper atmosphere",
+    "D": "The satellite's own momentum"
+   },
+   "correct": "B"
+  }
+ },
+ {
+  "id": "PHYS-N1-41",
+  "stem": "A student records 5 repeat readings that differ slightly. The best estimate of the true value is:",
+  "options": {
+   "A": "The mean of the readings",
+   "B": "The smallest reading",
+   "C": "The most recent reading taken",
+   "D": "The largest reading"
+  },
+  "correct": "A",
+  "tag": "MC-GPHYS-MEASUREMENT",
+  "scaffold": "Averaging repeats reduces the effect of random error, so the mean is the best estimate. Anomalous results should be identified and excluded before averaging, with a reason given. The uncertainty may be estimated as half the range of the readings. Repeating does nothing for systematic error, which shifts every reading in the same direction and must be traced to its cause.",
+  "reforge": {
+   "stem": "Readings of 4.1, 4.2, 4.0 and 6.8 are recorded. The correct treatment is to:",
+   "options": {
+    "A": "Average all four values",
+    "B": "Use only the largest value",
+    "C": "Exclude 6.8, giving a reason",
+    "D": "Repeat until 6.8 appears again"
+   },
+   "correct": "C"
+  }
+ },
+ {
+  "id": "PHYS-N1-42",
+  "stem": "A quantity is stated as 4.50 × 10³ m. The number of significant figures is:",
+  "options": {
+   "A": "Two",
+   "B": "3",
+   "C": "Four",
+   "D": "Six"
+  },
+  "correct": "B",
+  "tag": "MC-GPHYS-MEASUREMENT",
+  "scaffold": "In standard form only the coefficient carries significant figures, so 4.50 × 10³ has three — the trailing zero counts because it is stated deliberately. A calculated result should be quoted to the same number of significant figures as the least precise input, and intermediate values should be carried at full precision to avoid rounding errors accumulating.",
+  "reforge": {
+   "stem": "A calculation uses values given to 2 and 4 significant figures. The answer should be quoted to:",
+   "options": {
+    "A": "3 significant figures",
+    "B": "4 significant figures",
+    "C": "6 significant figures",
+    "D": "2 significant figures"
+   },
+   "correct": "D"
+  }
+ },
+ {
+  "id": "PHYS-N1-43",
+  "stem": "A velocity–time graph shows a straight line sloping downwards to cross the time axis. After crossing, the object is:",
+  "options": {
+   "A": "Stationary",
+   "B": "Accelerating forwards",
+   "C": "Moving the opposite way",
+   "D": "Moving at a constant speed"
+  },
+  "correct": "C",
+  "tag": "MC-GPHYS-GRAPHS-KINEMATICS",
+  "scaffold": "Below the time axis the velocity is negative, so the object moves in the opposite direction to before. The gradient is unchanged, so the acceleration is constant throughout — the object slowed, stopped momentarily at the crossing point, and then reversed. Area below the axis counts as negative displacement, so the total displacement may be less than the total distance travelled.",
+  "reforge": {
+   "stem": "On a velocity–time graph, area below the time axis represents:",
+   "options": {
+    "A": "Negative displacement",
+    "B": "Negative acceleration",
+    "C": "Zero displacement",
+    "D": "Distance travelled forwards only"
+   },
+   "correct": "A"
+  }
+ },
+ {
+  "id": "PHYS-N1-44",
+  "stem": "A lift accelerates upwards. The reading on a scale beneath a passenger is:",
+  "options": {
+   "A": "Zero",
+   "B": "Equal to their true weight",
+   "C": "Equal to their true weight throughout",
+   "D": "Greater than their true weight"
+  },
+  "correct": "D",
+  "tag": "MC-GPHYS-RESULTANT-FORCE",
+  "scaffold": "The scale reads the normal contact force. Accelerating upwards requires a net upward force, so N − W = ma and N = m(g + a), greater than the weight. Accelerating downwards gives N = m(g − a), less than the weight, and in free fall a = g so N = 0, which is apparent weightlessness. The true weight mg is unchanged throughout; only the contact force varies.",
+  "reforge": {
+   "stem": "A lift's cable breaks and it falls freely. The scale reading beneath a passenger is:",
+   "options": {
+    "A": "Double their weight",
+    "B": "Zero",
+    "C": "Their true weight",
+    "D": "Half their weight"
+   },
+   "correct": "B"
+  }
+ },
+ {
+  "id": "PHYS-N1-45",
+  "stem": "An object is dropped from a height and air resistance is significant. As it falls, its acceleration:",
+  "options": {
+   "A": "Decreases towards zero",
+   "B": "Increases steadily",
+   "C": "Stays constant at g",
+   "D": "Becomes negative immediately"
+  },
+  "correct": "A",
+  "tag": "MC-GPHYS-RESULTANT-FORCE",
+  "scaffold": "At release, drag is zero and acceleration equals g. As speed rises, drag rises, so the resultant force and therefore acceleration fall. When drag equals weight the acceleration reaches zero and the object continues at terminal velocity. Note the object keeps speeding up throughout — it is the rate of increase that falls, which is why the velocity–time curve flattens rather than turning downwards.",
+  "reforge": {
+   "stem": "While an object approaches terminal velocity, its speed is:",
+   "options": {
+    "A": "Decreasing",
+    "B": "Constant from the moment of release",
+    "C": "Still increasing, but more slowly",
+    "D": "Zero"
+   },
+   "correct": "C"
+  }
+ }
+]);
+physExpansion("PHYS-2", [
+ {
+  "id": "PHYS-N2-01",
+  "stem": "Electric current is defined as the rate of flow of:",
+  "options": {
+   "A": "Energy",
+   "B": "Charge",
+   "C": "Voltage",
+   "D": "Resistance"
+  },
+  "correct": "B",
+  "tag": "MC-GPHYS-CIRCUITS",
+  "scaffold": "Current I = ΔQ/Δt, measured in amperes, where one ampere is one coulomb per second. Conventional current is drawn from positive to negative, whereas electrons actually drift from negative to positive — the convention predates the discovery of the electron. Charge is quantised in units of e = 1.60 × 10⁻¹⁹ C, so a total charge is always a whole number multiple of that value.",
+  "reforge": {
+   "stem": "A current of 2.0 A flows for 30 s. The charge transferred is:",
+   "options": {
+    "A": "15 C",
+    "B": "0.067 C",
+    "C": "32 C",
+    "D": "60 C"
+   },
+   "correct": "D"
+  }
+ },
+ {
+  "id": "PHYS-N2-02",
+  "stem": "Potential difference across a component is defined as:",
+  "options": {
+   "A": "Current flowing per unit resistance",
+   "B": "Charge per unit time",
+   "C": "Energy transferred per unit charge",
+   "D": "Force per unit charge"
+  },
+  "correct": "C",
+  "tag": "MC-GPHYS-CIRCUITS",
+  "scaffold": "Potential difference V = W/Q, energy transferred per coulomb, measured in volts. Electromotive force is defined the same way but refers to energy supplied per coulomb by a source rather than delivered to a component. The distinction matters in circuits with internal resistance, where terminal pd is less than emf because some energy is dissipated inside the source.",
+  "reforge": {
+   "stem": "A cell of emf 12 V has internal resistance. When current flows, the terminal pd is:",
+   "options": {
+    "A": "Less than 12 V",
+    "B": "Exactly 12 V",
+    "C": "Greater than 12 V",
+    "D": "Zero"
+   },
+   "correct": "A"
+  }
+ },
+ {
+  "id": "PHYS-N2-03",
+  "stem": "A resistor carries 0.50 A with 6.0 V across it. Its resistance is:",
+  "options": {
+   "A": "3.0 Ω",
+   "B": "0.083 Ω",
+   "C": "6.5 Ω",
+   "D": "12 Ω"
+  },
+  "correct": "D",
+  "tag": "MC-GPHYS-CIRCUITS",
+  "scaffold": "Ohm's law gives R = V ÷ I = 6.0 ÷ 0.50 = 12 Ω. Dividing the wrong way round gives 0.083. Ohm's law applies to an ohmic conductor at constant temperature, where a current–voltage graph is a straight line through the origin. A filament lamp is non-ohmic: as current rises the filament heats, resistance increases and the graph curves.",
+  "reforge": {
+   "stem": "The I–V graph for a filament lamp curves rather than being straight because as current increases the filament:",
+   "options": {
+    "A": "Cools, lowering resistance",
+    "B": "Heats, raising resistance",
+    "C": "Carries no current",
+    "D": "Becomes superconducting"
+   },
+   "correct": "B"
+  }
+ },
+ {
+  "id": "PHYS-N2-04",
+  "stem": "Two 6 Ω resistors are connected in series. The total resistance is:",
+  "options": {
+   "A": "12 Ω",
+   "B": "3 Ω",
+   "C": "36 Ω",
+   "D": "0.33 Ω"
+  },
+  "correct": "A",
+  "tag": "MC-GPHYS-CIRCUITS",
+  "scaffold": "In series resistances add: R = R₁ + R₂ = 12 Ω, and the total is always larger than the largest individual resistor. In parallel 1/R = 1/R₁ + 1/R₂, so two 6 Ω resistors give 3 Ω, and the total is always smaller than the smallest individual one. Checking the answer against those two rules catches most arithmetic slips immediately.",
+  "reforge": {
+   "stem": "Two 6 Ω resistors are connected in parallel. The total resistance is:",
+   "options": {
+    "A": "12 Ω",
+    "B": "6 Ω",
+    "C": "3 Ω",
+    "D": "0.33 Ω"
+   },
+   "correct": "C"
+  }
+ },
+ {
+  "id": "PHYS-N2-05",
+  "stem": "In a series circuit, the current through each component is:",
+  "options": {
+   "A": "Divided between components",
+   "B": "The same everywhere",
+   "C": "Greatest at the battery",
+   "D": "Zero in the last component"
+  },
+  "correct": "B",
+  "tag": "MC-GPHYS-CIRCUITS",
+  "scaffold": "In series there is only one path, so current is identical at every point, while the pd divides between components in proportion to their resistance. In parallel each branch has the full supply pd across it, and the currents in the branches add to the total. These follow from conservation of charge at a junction and conservation of energy around a loop — Kirchhoff's two laws.",
+  "reforge": {
+   "stem": "Kirchhoff's first law, that currents into a junction equal currents out, follows from conservation of:",
+   "options": {
+    "A": "Energy",
+    "B": "Momentum",
+    "C": "Mass",
+    "D": "Charge"
+   },
+   "correct": "D"
+  }
+ },
+ {
+  "id": "PHYS-N2-06",
+  "stem": "The power dissipated by a resistor can be calculated as:",
+  "options": {
+   "A": "P = V ÷ I",
+   "B": "P = IR²",
+   "C": "P = I²R",
+   "D": "P = V ÷ R"
+  },
+  "correct": "C",
+  "tag": "MC-GPHYS-CIRCUITS",
+  "scaffold": "Power P = VI, and substituting Ohm's law gives the equivalent forms P = I²R and P = V²/R. Choose whichever form matches the quantities given. Because power depends on the square of the current, doubling the current quadruples the heating — the reason electrical transmission uses high voltage and low current to reduce losses in the cables.",
+  "reforge": {
+   "stem": "Electricity is transmitted at high voltage and low current mainly to reduce:",
+   "options": {
+    "A": "Power lost as heat in the cables",
+    "B": "The cost of the cables",
+    "C": "The voltage delivered to the consumer",
+    "D": "The frequency of the supply"
+   },
+   "correct": "A"
+  }
+ },
+ {
+  "id": "PHYS-N2-07",
+  "stem": "The resistivity of a material is related to resistance by R = ρL/A. Doubling the length of a wire will:",
+  "options": {
+   "A": "Halve the resistance",
+   "B": "Leave resistance unchanged",
+   "C": "Quarter the resistance",
+   "D": "Double the resistance"
+  },
+  "correct": "D",
+  "tag": "MC-GPHYS-CIRCUITS",
+  "scaffold": "R = ρL/A, so resistance is proportional to length and inversely proportional to cross-sectional area. Doubling the length doubles R; doubling the diameter quadruples the area and so quarters R. Resistivity ρ is a property of the material, measured in Ω m, and varies with temperature — rising for metals and falling for semiconductors such as a thermistor.",
+  "reforge": {
+   "stem": "The resistance of a thermistor as temperature rises typically:",
+   "options": {
+    "A": "Increases sharply",
+    "B": "Decreases",
+    "C": "Stays constant",
+    "D": "Falls to zero"
+   },
+   "correct": "B"
+  }
+ },
+ {
+  "id": "PHYS-N2-08",
+  "stem": "A potential divider with two equal resistors across a 12 V supply gives an output of:",
+  "options": {
+   "A": "6 V",
+   "B": "12 V",
+   "C": "24 V",
+   "D": "3 V"
+  },
+  "correct": "A",
+  "tag": "MC-GPHYS-CIRCUITS",
+  "scaffold": "A potential divider splits the supply in the ratio of the resistances: Vout = Vin × R₂/(R₁ + R₂). With equal resistors the output is half the supply, 6 V. Replacing one resistor with an LDR or thermistor makes the output vary with light or temperature, which is how sensor circuits are built. Drawing current from the output alters the ratio, so the loading effect must be considered.",
+  "reforge": {
+   "stem": "In a potential divider, replacing one fixed resistor with a light-dependent resistor makes the output vary with:",
+   "options": {
+    "A": "Temperature",
+    "B": "Supply frequency",
+    "C": "Light intensity",
+    "D": "Current direction"
+   },
+   "correct": "C"
+  }
+ },
+ {
+  "id": "PHYS-N2-09",
+  "stem": "The emf of a cell with internal resistance is given by ε = I(R + r). The term Ir represents:",
+  "options": {
+   "A": "The terminal potential difference",
+   "B": "The 'lost volts' inside the cell",
+   "C": "The energy stored in the cell",
+   "D": "The power output"
+  },
+  "correct": "B",
+  "tag": "MC-GPHYS-CIRCUITS",
+  "scaffold": "Internal resistance causes energy dissipation inside the source, so terminal pd V = ε − Ir. Plotting V against I gives a straight line with intercept ε and gradient −r. As current increases the terminal pd falls, which is why a car's headlights dim when the starter motor draws a large current. Maximum power is delivered to the external circuit when R equals r.",
+  "reforge": {
+   "stem": "A graph of terminal pd against current for a cell has gradient equal to:",
+   "options": {
+    "A": "The emf",
+    "B": "The power output",
+    "C": "The external circuit resistance",
+    "D": "Minus the internal resistance"
+   },
+   "correct": "D"
+  }
+ },
+ {
+  "id": "PHYS-N2-10",
+  "stem": "In a transverse wave, the oscillations are:",
+  "options": {
+   "A": "Parallel to the direction in which energy travels",
+   "B": "In circles around the source",
+   "C": "Perpendicular to the direction of energy transfer",
+   "D": "Absent altogether"
+  },
+  "correct": "C",
+  "tag": "MC-GPHYS-WAVES",
+  "scaffold": "Transverse waves oscillate perpendicular to the direction of travel — light and all electromagnetic waves, water waves, and waves on a string. Longitudinal waves oscillate parallel to it, forming compressions and rarefactions, as in sound. Only transverse waves can be polarised, which is direct evidence that light is transverse and that sound is not.",
+  "reforge": {
+   "stem": "Sound cannot be polarised because it is a:",
+   "options": {
+    "A": "Longitudinal wave",
+    "B": "Transverse wave",
+    "C": "Standing wave",
+    "D": "Electromagnetic wave"
+   },
+   "correct": "A"
+  }
+ },
+ {
+  "id": "PHYS-N2-11",
+  "stem": "A wave has frequency 50 Hz and wavelength 6.0 m. Its speed is:",
+  "options": {
+   "A": "0.12 m s⁻¹",
+   "B": "8.3 m s⁻¹",
+   "C": "56 m s⁻¹",
+   "D": "300 m s⁻¹"
+  },
+  "correct": "D",
+  "tag": "MC-GPHYS-WAVES",
+  "scaffold": "The wave equation gives v = fλ = 50 × 6.0 = 300 m s⁻¹. Frequency is the number of complete oscillations per second in hertz, and is set by the source; wavelength is the distance between adjacent points in phase. When a wave passes into a new medium the frequency stays the same while the speed and wavelength change together, which is what causes refraction.",
+  "reforge": {
+   "stem": "When a wave passes from one medium into another, the quantity that stays the same is its:",
+   "options": {
+    "A": "Speed",
+    "B": "Frequency",
+    "C": "Wavelength",
+    "D": "Amplitude"
+   },
+   "correct": "B"
+  }
+ },
+ {
+  "id": "PHYS-N2-12",
+  "stem": "Two waves are in antiphase. Their phase difference is:",
+  "options": {
+   "A": "π rad",
+   "B": "π/2 rad",
+   "C": "0 rad",
+   "D": "2π rad"
+  },
+  "correct": "A",
+  "tag": "MC-GPHYS-WAVES",
+  "scaffold": "A phase difference of π radians, or 180°, means antiphase: a crest of one aligns with a trough of the other, giving destructive interference. A difference of 0 or 2π means in phase, giving constructive interference. Path difference relates to phase: a whole number of wavelengths gives constructive interference, an odd number of half wavelengths gives destructive.",
+  "reforge": {
+   "stem": "Two coherent waves arrive with a path difference of exactly one wavelength. The interference is:",
+   "options": {
+    "A": "Partially destructive",
+    "B": "Destructive",
+    "C": "Constructive",
+    "D": "Impossible to determine"
+   },
+   "correct": "C"
+  }
+ },
+ {
+  "id": "PHYS-N2-13",
+  "stem": "For a stable interference pattern, the two sources must be:",
+  "options": {
+   "A": "Sources of two different frequencies",
+   "B": "Coherent, with constant phase",
+   "C": "Very far apart",
+   "D": "Of unequal amplitude"
+  },
+  "correct": "B",
+  "tag": "MC-GPHYS-WAVES",
+  "scaffold": "Coherence means a constant phase relationship and therefore the same frequency, which is why laser light produces clear fringes while two separate lamps do not. Young's double slit experiment uses a single source split into two to guarantee coherence. Fringe spacing w = λD/s, so the pattern spreads with longer wavelength, greater screen distance, or narrower slit separation.",
+  "reforge": {
+   "stem": "In Young's double slit experiment, increasing the slit separation makes the fringes:",
+   "options": {
+    "A": "Wider apart",
+    "B": "Disappear entirely",
+    "C": "Brighter but unchanged in spacing",
+    "D": "Closer together"
+   },
+   "correct": "D"
+  }
+ },
+ {
+  "id": "PHYS-N2-14",
+  "stem": "A stationary wave is formed when two waves of the same frequency travel:",
+  "options": {
+   "A": "In the same direction",
+   "B": "At right angles",
+   "C": "In opposite directions",
+   "D": "In the same direction as each other"
+  },
+  "correct": "C",
+  "tag": "MC-GPHYS-WAVES",
+  "scaffold": "A stationary wave forms from two identical waves travelling in opposite directions, usually an incident wave and its reflection. Nodes are points of zero amplitude and antinodes points of maximum; the distance between adjacent nodes is half a wavelength. Unlike a progressive wave, no net energy is transferred along a stationary wave and all points between nodes oscillate in phase.",
+  "reforge": {
+   "stem": "On a stationary wave, the distance between two adjacent nodes is:",
+   "options": {
+    "A": "Half a wavelength",
+    "B": "One wavelength",
+    "C": "A quarter of a wavelength",
+    "D": "Two wavelengths"
+   },
+   "correct": "A"
+  }
+ },
+ {
+  "id": "PHYS-N2-15",
+  "stem": "Total internal reflection can occur only when light travels:",
+  "options": {
+   "A": "From a less dense medium into a more dense medium",
+   "B": "Through a vacuum",
+   "C": "Along the normal",
+   "D": "Dense to less dense, above the critical angle"
+  },
+  "correct": "D",
+  "tag": "MC-GPHYS-WAVES",
+  "scaffold": "Total internal reflection requires light to move from a higher to a lower refractive index medium, and the angle of incidence to exceed the critical angle, where sin C = n₂/n₁. Optical fibres exploit this with a core of higher index than the cladding, so light is confined. At exactly the critical angle the refracted ray travels along the boundary at 90°.",
+  "reforge": {
+   "stem": "In an optical fibre, the cladding has a refractive index that is:",
+   "options": {
+    "A": "Higher than the core",
+    "B": "Lower than the core",
+    "C": "Equal to the core",
+    "D": "Equal to air"
+   },
+   "correct": "B"
+  }
+ },
+ {
+  "id": "PHYS-N2-16",
+  "stem": "Light passes from air into glass. Its speed:",
+  "options": {
+   "A": "Decreases",
+   "B": "Stays the same",
+   "C": "Increases",
+   "D": "Falls to zero"
+  },
+  "correct": "A",
+  "tag": "MC-GPHYS-WAVES",
+  "scaffold": "Refractive index n = c ÷ v, so a medium with n greater than 1 slows light: glass with n = 1.5 gives v = 2.0 × 10⁸ m s⁻¹. Slowing at the boundary bends the ray towards the normal. Snell's law states n₁ sin θ₁ = n₂ sin θ₂. Frequency is unchanged, so the wavelength shortens in proportion to the speed.",
+  "reforge": {
+   "stem": "Light enters glass of refractive index 1.5 from air. The ray bends:",
+   "options": {
+    "A": "Away from the normal",
+    "B": "Along the boundary",
+    "C": "Towards the normal",
+    "D": "Straight back out"
+   },
+   "correct": "C"
+  }
+ },
+ {
+  "id": "PHYS-N2-17",
+  "stem": "Diffraction of a wave through a gap is most pronounced when the gap width is:",
+  "options": {
+   "A": "Much larger than the wavelength",
+   "B": "Comparable to the wavelength",
+   "C": "Exactly zero",
+   "D": "Unrelated to the wavelength"
+  },
+  "correct": "B",
+  "tag": "MC-GPHYS-WAVES",
+  "scaffold": "Diffraction is greatest when the gap is about the same size as the wavelength; a much wider gap gives little spreading. This is why sound, with wavelengths of around a metre, diffracts around doorways while light, at hundreds of nanometres, does not noticeably. A diffraction grating uses many slits to give sharp maxima at angles satisfying d sin θ = nλ.",
+  "reforge": {
+   "stem": "For a diffraction grating, the positions of the maxima are given by:",
+   "options": {
+    "A": "v = fλ",
+    "B": "n = c ÷ v",
+    "C": "n = c/v",
+    "D": "d sinθ=nλ"
+   },
+   "correct": "D"
+  }
+ },
+ {
+  "id": "PHYS-N2-18",
+  "stem": "Polarisation of light provides evidence that light is:",
+  "options": {
+   "A": "A longitudinal wave",
+   "B": "A stream of particles only",
+   "C": "A transverse wave",
+   "D": "Unable to travel in a vacuum"
+  },
+  "correct": "C",
+  "tag": "MC-GPHYS-WAVES",
+  "scaffold": "Only transverse waves can be polarised, because the oscillation has a direction perpendicular to travel that a filter can select. A polarising filter transmits one plane of oscillation; a second filter at 90° to the first blocks the light entirely. Applications include polarised sunglasses reducing glare from horizontal surfaces, and the use of polarising filters in photography and stress analysis.",
+  "reforge": {
+   "stem": "Two polarising filters are placed with their axes at 90° to each other. The light transmitted is:",
+   "options": {
+    "A": "Reduced to zero",
+    "B": "Halved in intensity",
+    "C": "Unchanged in intensity",
+    "D": "Doubled in intensity"
+   },
+   "correct": "A"
+  }
+ },
+ {
+  "id": "PHYS-N2-19",
+  "stem": "The amplitude of a wave determines its:",
+  "options": {
+   "A": "Its speed through the given medium",
+   "B": "Frequency of oscillation",
+   "C": "Wavelength",
+   "D": "Energy, as amplitude squared"
+  },
+  "correct": "D",
+  "tag": "MC-GPHYS-WAVES",
+  "scaffold": "Wave intensity is proportional to the square of the amplitude, so doubling the amplitude quadruples the energy carried. Amplitude is independent of frequency, wavelength and speed. For sound, greater amplitude means greater loudness; for light, greater brightness. Intensity also obeys an inverse square law with distance from a point source, since the energy spreads over a growing spherical area.",
+  "reforge": {
+   "stem": "The intensity of radiation from a point source at distance r varies as:",
+   "options": {
+    "A": "1 ÷ r, inversely with distance",
+    "B": "1/r²",
+    "C": "r",
+    "D": "r²"
+   },
+   "correct": "B"
+  }
+ },
+ {
+  "id": "PHYS-N2-20",
+  "stem": "A simple pendulum undergoes simple harmonic motion. Its acceleration is:",
+  "options": {
+   "A": "Proportional to x, towards centre",
+   "B": "Constant in magnitude and direction",
+   "C": "Constant in both magnitude and direction",
+   "D": "Zero at the extremes of motion"
+  },
+  "correct": "A",
+  "tag": "MC-GPHYS-OSCILLATIONS-THERMAL",
+  "scaffold": "Simple harmonic motion is defined by a = −ω²x: acceleration proportional to displacement and always directed towards equilibrium, hence the minus sign. Acceleration is therefore greatest at maximum displacement and zero at the centre, while velocity is greatest at the centre and zero at the extremes. The period of a simple pendulum is T = 2π√(l/g), independent of amplitude for small angles.",
+  "reforge": {
+   "stem": "In simple harmonic motion, the velocity of the oscillator is greatest:",
+   "options": {
+    "A": "At maximum displacement from centre",
+    "B": "Midway between them",
+    "C": "At the equilibrium position",
+    "D": "Constant throughout"
+   },
+   "correct": "C"
+  }
+ },
+ {
+  "id": "PHYS-N2-21",
+  "stem": "The period of a mass–spring oscillator is given by T = 2π√(m/k). Increasing the mass will:",
+  "options": {
+   "A": "Decrease the period",
+   "B": "Increase the period",
+   "C": "Leave the period unchanged",
+   "D": "Stop the oscillation"
+  },
+  "correct": "B",
+  "tag": "MC-GPHYS-OSCILLATIONS-THERMAL",
+  "scaffold": "T = 2π√(m/k), so period increases with the square root of mass and decreases with stiffer springs. Quadrupling the mass doubles the period. Note that amplitude does not appear, so for small oscillations the period is independent of how far the mass is displaced — this isochronous property is what made pendulums useful as clocks.",
+  "reforge": {
+   "stem": "For a simple pendulum undergoing small oscillations, the period depends on:",
+   "options": {
+    "A": "The mass of the bob",
+    "B": "The amplitude of swing",
+    "C": "The material the bob is made from",
+    "D": "The length of the pendulum"
+   },
+   "correct": "D"
+  }
+ },
+ {
+  "id": "PHYS-N2-22",
+  "stem": "Resonance occurs when a system is driven at a frequency equal to its:",
+  "options": {
+   "A": "Damping frequency",
+   "B": "Half the natural frequency",
+   "C": "Natural frequency",
+   "D": "Double the natural frequency"
+  },
+  "correct": "C",
+  "tag": "MC-GPHYS-OSCILLATIONS-THERMAL",
+  "scaffold": "At resonance the driving frequency matches the natural frequency, energy transfer to the system is maximum and amplitude peaks sharply. Damping reduces the peak amplitude and broadens the resonance curve, shifting the maximum slightly below the natural frequency. Engineers damp structures to avoid destructive resonance, while instruments and radio tuning circuits exploit it deliberately.",
+  "reforge": {
+   "stem": "Increasing the damping of a resonating system will:",
+   "options": {
+    "A": "Lower the peak, broaden it",
+    "B": "Increase the peak amplitude",
+    "C": "Raise the natural frequency",
+    "D": "Increase the peak amplitude sharply"
+   },
+   "correct": "A"
+  }
+ },
+ {
+  "id": "PHYS-N2-23",
+  "stem": "The internal energy of a system is the sum of the:",
+  "options": {
+   "A": "Chemical energies of its bonds",
+   "B": "Work done and heat supplied",
+   "C": "Work done on it plus heat supplied",
+   "D": "Kinetic and potential of particles"
+  },
+  "correct": "D",
+  "tag": "MC-GPHYS-OSCILLATIONS-THERMAL",
+  "scaffold": "Internal energy is the total randomly distributed kinetic and potential energy of the particles. Raising temperature increases the mean kinetic energy; changing state alters the potential energy while temperature stays constant, which is why a substance melting absorbs energy without getting hotter. Absolute temperature in kelvin is proportional to mean kinetic energy, so 0 K corresponds to minimum internal energy.",
+  "reforge": {
+   "stem": "During melting, the temperature stays constant because the energy supplied changes the particles':",
+   "options": {
+    "A": "Kinetic energy of the particles",
+    "B": "Potential, breaking bonds",
+    "C": "Mass",
+    "D": "Total number"
+   },
+   "correct": "B"
+  }
+ },
+ {
+  "id": "PHYS-N2-24",
+  "stem": "The specific heat capacity of a substance is the energy needed to raise the temperature of:",
+  "options": {
+   "A": "1 kg by 1 K",
+   "B": "1 mole by 1 K",
+   "C": "Any mass by 1 K",
+   "D": "1 kg through a change of state"
+  },
+  "correct": "A",
+  "tag": "MC-GPHYS-OSCILLATIONS-THERMAL",
+  "scaffold": "Specific heat capacity c is energy per kilogram per kelvin, used in Q = mcΔT. Specific latent heat is the energy per kilogram to change state at constant temperature, used in Q = mL, with separate values for fusion and vaporisation. A common error is applying mcΔT during a change of state, when the temperature is not changing at all and mL applies instead.",
+  "reforge": {
+   "stem": "To calculate the energy needed to boil water already at 100 °C, the correct equation is:",
+   "options": {
+    "A": "Q = mcΔT",
+    "B": "Q = mgh",
+    "C": "Q = mL",
+    "D": "Q = ½mv²"
+   },
+   "correct": "C"
+  }
+ },
+ {
+  "id": "PHYS-N2-25",
+  "stem": "For an ideal gas at constant temperature, pressure and volume are related by:",
+  "options": {
+   "A": "p ∝ V",
+   "B": "p ∝ 1/V",
+   "C": "p ∝ V²",
+   "D": "p is independent of V"
+  },
+  "correct": "B",
+  "tag": "MC-GPHYS-OSCILLATIONS-THERMAL",
+  "scaffold": "Boyle's law states pV = constant at fixed temperature, so pressure is inversely proportional to volume. Charles's law gives V ∝ T at constant pressure, and the pressure law p ∝ T at constant volume, both with T in kelvin. Combining them gives the ideal gas equation pV = nRT. Converting Celsius to kelvin by adding 273 is essential; using Celsius directly produces nonsense.",
+  "reforge": {
+   "stem": "In the ideal gas equation pV = nRT, the temperature must be expressed in:",
+   "options": {
+    "A": "Degrees Celsius",
+    "B": "Degrees Fahrenheit",
+    "C": "Any consistent unit",
+    "D": "Kelvin"
+   },
+   "correct": "D"
+  }
+ },
+ {
+  "id": "PHYS-N2-26",
+  "stem": "A magnetic field exerts a force on a current-carrying wire. The force is greatest when the wire is:",
+  "options": {
+   "A": "Aligned parallel to the field",
+   "B": "At 45° to the field",
+   "C": "Perpendicular to the field",
+   "D": "Carrying no current"
+  },
+  "correct": "C",
+  "tag": "MC-GPHYS-FIELDS-ELECTROMAGNETISM",
+  "scaffold": "F = BIL sin θ, so the force is maximum when the wire is perpendicular to the field (θ = 90°) and zero when parallel. Fleming's left-hand rule gives the direction: first finger field, second finger current, thumb motion. Magnetic flux density B is measured in tesla, where one tesla produces one newton per amp per metre on a perpendicular conductor.",
+  "reforge": {
+   "stem": "A wire carries 3.0 A perpendicular to a field of 0.20 T over a length of 0.50 m. The force is:",
+   "options": {
+    "A": "0.30 N",
+    "B": "3.7 N",
+    "C": "0.033 N",
+    "D": "1.2 N"
+   },
+   "correct": "A"
+  }
+ },
+ {
+  "id": "PHYS-N2-27",
+  "stem": "Faraday's law states that the induced emf is proportional to the rate of change of:",
+  "options": {
+   "A": "Current",
+   "B": "Charge",
+   "C": "Current flowing in the coil",
+   "D": "Magnetic flux linkage"
+  },
+  "correct": "D",
+  "tag": "MC-GPHYS-FIELDS-ELECTROMAGNETISM",
+  "scaffold": "Faraday's law gives ε = −N dΦ/dt, so a faster change of flux, or more turns, induces a larger emf. Lenz's law supplies the minus sign: the induced current opposes the change producing it, which is a statement of energy conservation. Flux Φ = BA cos θ, and flux linkage is NΦ. A stationary magnet in a coil induces nothing, since the flux is not changing.",
+  "reforge": {
+   "stem": "The minus sign in Faraday's law expresses Lenz's law, which follows from conservation of:",
+   "options": {
+    "A": "Charge",
+    "B": "Energy",
+    "C": "Momentum",
+    "D": "Magnetic flux"
+   },
+   "correct": "B"
+  }
+ },
+ {
+  "id": "PHYS-N2-28",
+  "stem": "A transformer works on alternating current but not direct current because it requires:",
+  "options": {
+   "A": "A continuously changing magnetic flux",
+   "B": "A high resistance in the primary",
+   "C": "A very high frequency supply",
+   "D": "A very high frequency alternating supply"
+  },
+  "correct": "A",
+  "tag": "MC-GPHYS-FIELDS-ELECTROMAGNETISM",
+  "scaffold": "A transformer relies on a changing flux in the core inducing an emf in the secondary, so a steady direct current produces nothing after the initial switch-on. The turns ratio gives Vs/Vp = Ns/Np. For an ideal transformer power is conserved, so stepping voltage up steps current down. Real losses come from resistance in the windings, eddy currents, and hysteresis in the core.",
+  "reforge": {
+   "stem": "A transformer has 100 primary turns and 400 secondary turns with 12 V input. The output voltage is:",
+   "options": {
+    "A": "3 V",
+    "B": "12 V",
+    "C": "48 V",
+    "D": "400 V"
+   },
+   "correct": "C"
+  }
+ },
+ {
+  "id": "PHYS-N2-29",
+  "stem": "Eddy currents in a transformer core are reduced by:",
+  "options": {
+   "A": "Using a solid iron core",
+   "B": "Laminating the core",
+   "C": "Increasing the supply voltage",
+   "D": "Removing the core entirely"
+  },
+  "correct": "B",
+  "tag": "MC-GPHYS-FIELDS-ELECTROMAGNETISM",
+  "scaffold": "Laminating the core with insulated layers breaks the paths available to eddy currents, cutting the heat they generate. Other transformer losses: resistive heating in the windings, reduced by thicker low-resistance wire; and hysteresis loss, reduced by using a soft magnetic material that magnetises and demagnetises easily. Removing the core would drastically reduce flux linkage and so the induced emf.",
+  "reforge": {
+   "stem": "Resistive heating in transformer windings is reduced by using wire that is:",
+   "options": {
+    "A": "Thinner and longer",
+    "B": "Made from a poorer conductor",
+    "C": "Wound in fewer turns",
+    "D": "Thicker, lower resistance"
+   },
+   "correct": "D"
+  }
+ },
+ {
+  "id": "PHYS-N2-30",
+  "stem": "The root mean square value of an alternating voltage is related to its peak value by:",
+  "options": {
+   "A": "Vrms = Vpeak",
+   "B": "Vrms = Vpeak × √2",
+   "C": "Vrms = Vpeak ÷ √2",
+   "D": "Vrms = Vpeak ÷ 2"
+  },
+  "correct": "C",
+  "tag": "MC-GPHYS-FIELDS-ELECTROMAGNETISM",
+  "scaffold": "For a sinusoidal supply, Vrms = Vpeak ÷ √2, and likewise for current. The rms value is the direct current equivalent that would deliver the same average power, which is why mains electricity quoted as 230 V is an rms value with a peak of about 325 V. Average power is VrmsIrms, half the peak power.",
+  "reforge": {
+   "stem": "UK mains is quoted as 230 V. Its peak voltage is approximately:",
+   "options": {
+    "A": "325 V",
+    "B": "163 V",
+    "C": "230 V",
+    "D": "460 V"
+   },
+   "correct": "A"
+  }
+ },
+ {
+  "id": "PHYS-N2-31",
+  "stem": "A charged particle moves parallel to a magnetic field. The magnetic force on it is:",
+  "options": {
+   "A": "Maximum",
+   "B": "Equal to BQv",
+   "C": "Directed along the field",
+   "D": "Zero"
+  },
+  "correct": "D",
+  "tag": "MC-GPHYS-FIELDS-ELECTROMAGNETISM",
+  "scaffold": "F = BQv sin θ, so a particle moving parallel to the field (θ = 0) feels no force, while one moving perpendicular feels the maximum BQv. That perpendicular force is always at right angles to the velocity, so it does no work and the speed is unchanged — the particle follows a circular path of radius r = mv/BQ. This is the basis of the cyclotron and the mass spectrometer.",
+  "reforge": {
+   "stem": "A charged particle enters a magnetic field perpendicular to it. Its subsequent path is:",
+   "options": {
+    "A": "A straight line",
+    "B": "Circular",
+    "C": "A parabola",
+    "D": "A spiral inwards"
+   },
+   "correct": "B"
+  }
+ },
+ {
+  "id": "PHYS-N2-32",
+  "stem": "Electric field strength at a point is best described as the:",
+  "options": {
+   "A": "Force per unit charge",
+   "B": "Force per unit mass",
+   "C": "Energy per unit charge",
+   "D": "Charge per unit area"
+  },
+  "correct": "A",
+  "tag": "MC-GPHYS-FIELDS-ELECTROMAGNETISM",
+  "scaffold": "Electric field strength E = F/Q in N C⁻¹ or V m⁻¹. Around a point charge E = kQ/r², an inverse square law like gravitation, but electric forces can attract or repel while gravity only attracts. Between parallel plates the field is uniform, with E = V/d. Field lines run from positive to negative and are perpendicular to the conductor surface.",
+  "reforge": {
+   "stem": "Two parallel plates 0.02 m apart have a pd of 200 V. The field strength between them is:",
+   "options": {
+    "A": "4 V m⁻¹",
+    "B": "0.0001 V m⁻¹",
+    "C": "10,000 V m⁻¹",
+    "D": "200 V m⁻¹"
+   },
+   "correct": "C"
+  }
+ },
+ {
+  "id": "PHYS-N2-33",
+  "stem": "A capacitor stores energy in the form of:",
+  "options": {
+   "A": "A magnetic field around its plates",
+   "B": "An electric field between plates",
+   "C": "Chemical energy",
+   "D": "Kinetic energy of electrons"
+  },
+  "correct": "B",
+  "tag": "MC-GPHYS-FIELDS-ELECTROMAGNETISM",
+  "scaffold": "Capacitance C = Q/V in farads, and the energy stored is W = ½QV = ½CV². The half arises because the pd rises as charge accumulates, so the average pd during charging is half the final value. On a graph of charge against pd the area beneath gives the energy. During discharge through a resistor the charge decays exponentially with time constant τ = RC.",
+  "reforge": {
+   "stem": "A capacitor discharges through a resistor. The time constant of the circuit is:",
+   "options": {
+    "A": "R/C",
+    "B": "C/R",
+    "C": "1/RC",
+    "D": "RC"
+   },
+   "correct": "D"
+  }
+ },
+ {
+  "id": "PHYS-N2-34",
+  "stem": "After one time constant, the charge remaining on a discharging capacitor falls to about:",
+  "options": {
+   "A": "50% of the initial value",
+   "B": "63% of the initial value",
+   "C": "37% of the initial value",
+   "D": "Zero"
+  },
+  "correct": "C",
+  "tag": "MC-GPHYS-FIELDS-ELECTROMAGNETISM",
+  "scaffold": "Exponential decay follows Q = Q₀e^(−t/RC). After one time constant t = RC, so Q = Q₀e⁻¹ ≈ 0.37Q₀ — about 37% remains, meaning 63% has been lost. The same fraction applies to current and pd. Because the decay is exponential the charge never reaches exactly zero, and the half-life of the decay is 0.69RC.",
+  "reforge": {
+   "stem": "Doubling the resistance in a capacitor discharge circuit makes the discharge:",
+   "options": {
+    "A": "Twice as slow",
+    "B": "Twice as fast",
+    "C": "Unchanged in rate",
+    "D": "Instantaneous"
+   },
+   "correct": "A"
+  }
+ },
+ {
+  "id": "PHYS-N2-35",
+  "stem": "A step-up transformer increases voltage. The current in the secondary coil is therefore:",
+  "options": {
+   "A": "Increased in exactly the same ratio",
+   "B": "Reduced to zero",
+   "C": "Unchanged",
+   "D": "Decreased, since power is conserved"
+  },
+  "correct": "D",
+  "tag": "MC-GPHYS-FIELDS-ELECTROMAGNETISM",
+  "scaffold": "For an ideal transformer, input power equals output power: VpIp = VsIs. Stepping the voltage up by a factor therefore steps the current down by the same factor. This is what makes long-distance transmission efficient, since power lost in cables is I²R and reducing the current has a squared effect. Transformers cannot increase power — only trade voltage against current.",
+  "reforge": {
+   "stem": "An ideal transformer steps 240 V up to 960 V. If the primary current is 8.0 A, the secondary current is:",
+   "options": {
+    "A": "32 A",
+    "B": "2.0 A",
+    "C": "8.0 A",
+    "D": "0.5 A"
+   },
+   "correct": "B"
+  }
+ },
+ {
+  "id": "PHYS-N2-36",
+  "stem": "In a circuit, a component with a very high resistance placed in parallel with another will:",
+  "options": {
+   "A": "Carry very little current",
+   "B": "Carry most of the current",
+   "C": "Carry almost all of the current",
+   "D": "Stop all current flowing"
+  },
+  "correct": "A",
+  "tag": "MC-GPHYS-CIRCUITS",
+  "scaffold": "In parallel each branch has the same pd, so by I = V/R the branch with higher resistance carries the smaller current — current takes the path of least resistance in that proportional sense. Adding any parallel branch lowers the total resistance, since it adds another route for charge. Voltmeters are designed with very high resistance so they draw negligible current from the circuit they measure.",
+  "reforge": {
+   "stem": "An ideal voltmeter has very high resistance so that it:",
+   "options": {
+    "A": "Reduces the supply voltage",
+    "B": "Increases the total circuit current",
+    "C": "Draws negligible current",
+    "D": "Protects the battery"
+   },
+   "correct": "C"
+  }
+ },
+ {
+  "id": "PHYS-N2-37",
+  "stem": "An ammeter should be connected in a circuit:",
+  "options": {
+   "A": "In parallel with the component",
+   "B": "In series with the component",
+   "C": "Across the battery only",
+   "D": "In place of the battery"
+  },
+  "correct": "B",
+  "tag": "MC-GPHYS-CIRCUITS",
+  "scaffold": "An ammeter measures current, so it must be in series to carry the same current as the component, and it is designed with very low resistance to avoid altering the circuit. A voltmeter measures pd across a component and so goes in parallel, with very high resistance. Connecting an ammeter in parallel across a supply creates a near short circuit and can damage it.",
+  "reforge": {
+   "stem": "An ideal ammeter has very low resistance so that it:",
+   "options": {
+    "A": "Increases the current measured",
+    "B": "Protects the circuit against short circuits",
+    "C": "Can be used as a voltmeter",
+    "D": "Does not reduce circuit current"
+   },
+   "correct": "D"
+  }
+ },
+ {
+  "id": "PHYS-N2-38",
+  "stem": "The number of electrons passing a point per second is doubled. The current:",
+  "options": {
+   "A": "Halves",
+   "B": "Stays the same",
+   "C": "Doubles",
+   "D": "Quadruples"
+  },
+  "correct": "C",
+  "tag": "MC-GPHYS-CIRCUITS",
+  "scaffold": "Current is the rate of flow of charge, so doubling the number of charge carriers passing per second doubles the current. In terms of drift velocity, I = nAvq, where n is the number density of carriers, A the cross-sectional area, v the drift velocity and q the charge on each. Drift velocity is surprisingly slow, typically under a millimetre per second, although the electric field is established almost instantly.",
+  "reforge": {
+   "stem": "In the equation I = nAvq, the symbol v represents the:",
+   "options": {
+    "A": "Drift velocity of the carriers",
+    "B": "Volume of the conductor",
+    "C": "Voltage across the wire",
+    "D": "Speed of the electric field itself"
+   },
+   "correct": "A"
+  }
+ },
+ {
+  "id": "PHYS-N2-39",
+  "stem": "Sound travels faster in solids than in gases mainly because in solids the particles are:",
+  "options": {
+   "A": "More massive",
+   "B": "Electrically charged rather than neutral",
+   "C": "Moving more quickly",
+   "D": "More closely spaced and strongly bonded"
+  },
+  "correct": "D",
+  "tag": "MC-GPHYS-WAVES",
+  "scaffold": "Sound is a longitudinal mechanical wave transmitted by particle interaction, so closer spacing and stronger bonds pass the disturbance on faster: roughly 340 m s⁻¹ in air, 1500 m s⁻¹ in water and 5000 m s⁻¹ in steel. Sound cannot travel through a vacuum at all, since there are no particles — unlike electromagnetic waves, which need no medium.",
+  "reforge": {
+   "stem": "Sound cannot travel through a vacuum because it requires:",
+   "options": {
+    "A": "A magnetic field",
+    "B": "A material medium",
+    "C": "A high temperature",
+    "D": "An electric charge"
+   },
+   "correct": "B"
+  }
+ },
+ {
+  "id": "PHYS-N2-40",
+  "stem": "A wave's frequency is 250 Hz. Its period is:",
+  "options": {
+   "A": "0.004 s",
+   "B": "250 s",
+   "C": "4.0 s",
+   "D": "0.25 seconds"
+  },
+  "correct": "A",
+  "tag": "MC-GPHYS-WAVES",
+  "scaffold": "Period T = 1/f = 1/250 = 0.004 s, or 4 ms. Period is the time for one complete oscillation, frequency the number per second, so they are reciprocals. Getting them the wrong way round produces answers out by a large factor, so a quick sanity check helps: a high frequency must correspond to a very short period.",
+  "reforge": {
+   "stem": "A wave has a period of 0.02 s. Its frequency is:",
+   "options": {
+    "A": "0.02 Hz",
+    "B": "20 Hz",
+    "C": "50 Hz",
+    "D": "2 Hz"
+   },
+   "correct": "C"
+  }
+ },
+ {
+  "id": "PHYS-N2-41",
+  "stem": "Two identical resistors in parallel are connected to a supply. Compared with one resistor alone, the total current drawn is:",
+  "options": {
+   "A": "Halved",
+   "B": "Doubled",
+   "C": "Unchanged",
+   "D": "Quartered"
+  },
+  "correct": "B",
+  "tag": "MC-GPHYS-CIRCUITS",
+  "scaffold": "Adding a parallel branch halves the total resistance, and since the supply pd is unchanged, I = V/R means the total current doubles. Each branch still carries the same current it would have alone. This is why adding appliances to a household ring main increases total current draw and why circuits are fused — too many parallel loads can exceed the safe current.",
+  "reforge": {
+   "stem": "Adding more components in parallel to a supply causes the total resistance to:",
+   "options": {
+    "A": "Increase",
+    "B": "Become infinite",
+    "C": "Stay the same",
+    "D": "Decrease"
+   },
+   "correct": "D"
+  }
+ },
+ {
+  "id": "PHYS-N2-42",
+  "stem": "The damping of an oscillating system that returns to equilibrium in the shortest time without overshooting is described as:",
+  "options": {
+   "A": "Light damping of the system",
+   "B": "Heavy damping",
+   "C": "Critical damping",
+   "D": "No damping"
+  },
+  "correct": "C",
+  "tag": "MC-GPHYS-OSCILLATIONS-THERMAL",
+  "scaffold": "Light damping gives gradually decaying oscillations; critical damping returns the system to equilibrium in the shortest time with no oscillation; heavy or over-damping returns it slowly without oscillating. Critical damping is what car suspension and analogue meter needles aim for. Damping always removes energy from the system, reducing amplitude while leaving the natural frequency almost unchanged.",
+  "reforge": {
+   "stem": "Car suspension systems are designed to be close to critically damped so that the car:",
+   "options": {
+    "A": "Returns to level quickly without bouncing",
+    "B": "Oscillates for a long time after every bump",
+    "C": "Never moves at all",
+    "D": "Resonates with the road surface"
+   },
+   "correct": "A"
+  }
+ },
+ {
+  "id": "PHYS-N2-43",
+  "stem": "A gas is compressed rapidly with no heat exchange. Its internal energy:",
+  "options": {
+   "A": "Decreases",
+   "B": "Falls to zero",
+   "C": "Stays constant during the compression",
+   "D": "Increases: work is done on it"
+  },
+  "correct": "D",
+  "tag": "MC-GPHYS-OSCILLATIONS-THERMAL",
+  "scaffold": "The first law of thermodynamics states ΔU = Q + W: the change in internal energy equals heat supplied plus work done on the system. With no heat transfer, compressing the gas does work on it, so internal energy and therefore temperature rise — which is why a bicycle pump warms up. Expansion by the gas does work on the surroundings and cools it.",
+  "reforge": {
+   "stem": "A gas expands and does work on its surroundings with no heat supplied. Its temperature:",
+   "options": {
+    "A": "Rises",
+    "B": "Falls",
+    "C": "Stays constant",
+    "D": "Doubles"
+   },
+   "correct": "B"
+  }
+ },
+ {
+  "id": "PHYS-N2-44",
+  "stem": "Two coherent sources produce a path difference of half a wavelength at a point. The result there is:",
+  "options": {
+   "A": "A minimum of intensity",
+   "B": "A maximum of intensity",
+   "C": "No wave at all arriving",
+   "D": "A change of frequency"
+  },
+  "correct": "A",
+  "tag": "MC-GPHYS-WAVES",
+  "scaffold": "A path difference of an odd number of half wavelengths puts the waves in antiphase, so they interfere destructively and the intensity is a minimum — zero if the amplitudes are equal. A whole number of wavelengths gives constructive interference and a maximum. Energy is not destroyed at a minimum; it is redistributed to the maxima elsewhere in the pattern.",
+  "reforge": {
+   "stem": "At a point of destructive interference, the energy that would have arrived is:",
+   "options": {
+    "A": "Destroyed",
+    "B": "Converted to heat",
+    "C": "Redistributed to the maxima",
+    "D": "Reflected back to the source"
+   },
+   "correct": "C"
+  }
+ },
+ {
+  "id": "PHYS-N2-45",
+  "stem": "Increasing the temperature of a fixed mass of gas at constant volume causes the pressure to:",
+  "options": {
+   "A": "Fall, since the particles spread further out",
+   "B": "Rise: collisions more frequent",
+   "C": "Stay the same",
+   "D": "Fall to zero at 100 °C"
+  },
+  "correct": "B",
+  "tag": "MC-GPHYS-OSCILLATIONS-THERMAL",
+  "scaffold": "Kinetic theory explains pressure as the result of particle collisions with the container walls. Raising temperature increases mean particle speed, so collisions are both more frequent and more forceful, raising pressure — the pressure law, p ∝ T in kelvin. Extrapolating a pressure–temperature graph back to zero pressure gives absolute zero, −273 °C, which is how that value is determined experimentally.",
+  "reforge": {
+   "stem": "Extrapolating a graph of gas pressure against Celsius temperature to zero pressure gives:",
+   "options": {
+    "A": "0 °C",
+    "B": "100 degrees",
+    "C": "273 °C",
+    "D": "−273 °C"
+   },
+   "correct": "D"
+  }
+ }
+]);
+physExpansion("PHYS-3", [
+ {
+  "id": "PHYS-N3-01",
+  "stem": "The photoelectric effect provides evidence that light behaves as:",
+  "options": {
+   "A": "A continuous wave and nothing else",
+   "B": "A stream of electrons",
+   "C": "Discrete packets called photons",
+   "D": "A longitudinal wave"
+  },
+  "correct": "C",
+  "tag": "MC-GPHYS-QUANTUM-NUCLEAR",
+  "scaffold": "Wave theory predicts that any frequency of light should eventually eject electrons if intense enough, and that emission should be delayed at low intensity. Neither happens. Emission is instantaneous and occurs only above a threshold frequency, whatever the intensity — explained if light arrives as photons of energy E = hf, each interacting with one electron. Intensity then sets the number of photons, not the energy of each.",
+  "reforge": {
+   "stem": "Below the threshold frequency, increasing the intensity of the light causes:",
+   "options": {
+    "A": "No electrons to be emitted at all",
+    "B": "Electrons to be emitted with less energy",
+    "C": "Electrons to be emitted more slowly",
+    "D": "More electrons to be emitted"
+   },
+   "correct": "A"
+  }
+ },
+ {
+  "id": "PHYS-N3-02",
+  "stem": "In the photoelectric equation hf = φ + Ek(max), the term φ represents the:",
+  "options": {
+   "A": "Photon momentum",
+   "B": "Maximum kinetic energy of electrons",
+   "C": "Frequency of the light",
+   "D": "Work function of the metal"
+  },
+  "correct": "D",
+  "tag": "MC-GPHYS-QUANTUM-NUCLEAR",
+  "scaffold": "The work function φ is the minimum energy needed to remove an electron from the metal surface, so the threshold frequency satisfies hf₀ = φ. Any photon energy above that appears as kinetic energy of the emitted electron, with the maximum given by hf − φ. Plotting Ek(max) against f gives a straight line of gradient h and intercept −φ, which is how the Planck constant is measured.",
+  "reforge": {
+   "stem": "A graph of maximum kinetic energy against frequency for the photoelectric effect has gradient equal to:",
+   "options": {
+    "A": "The work function",
+    "B": "The Planck constant",
+    "C": "The threshold frequency",
+    "D": "The electron charge"
+   },
+   "correct": "B"
+  }
+ },
+ {
+  "id": "PHYS-N3-03",
+  "stem": "A photon has frequency 5.0 × 10¹⁴ Hz. Using h = 6.63 × 10⁻³⁴ J s, its energy is:",
+  "options": {
+   "A": "3.3 × 10⁻¹⁹ J",
+   "B": "1.3 × 10⁻⁴⁸ J",
+   "C": "7.5 × 10⁴⁷ J",
+   "D": "6.6 × 10⁻³⁴ J"
+  },
+  "correct": "A",
+  "tag": "MC-GPHYS-QUANTUM-NUCLEAR",
+  "scaffold": "Photon energy E = hf = 6.63 × 10⁻³⁴ × 5.0 × 10¹⁴ = 3.3 × 10⁻¹⁹ J. Where wavelength is given instead, use E = hc/λ. Because these energies are tiny, the electronvolt is often used: 1 eV = 1.60 × 10⁻¹⁹ J, so this photon carries about 2.1 eV. Dividing rather than multiplying by h is the usual arithmetic slip.",
+  "reforge": {
+   "stem": "An energy of 3.2 × 10⁻¹⁹ J expressed in electronvolts is approximately:",
+   "options": {
+    "A": "3.2 eV",
+    "B": "1.6 eV",
+    "C": "2.0 eV",
+    "D": "0.5 eV"
+   },
+   "correct": "C"
+  }
+ },
+ {
+  "id": "PHYS-N3-04",
+  "stem": "The de Broglie wavelength of a particle is given by:",
+  "options": {
+   "A": "λ = hp",
+   "B": "λ = h/p",
+   "C": "λ = p/h",
+   "D": "λ = hf"
+  },
+  "correct": "B",
+  "tag": "MC-GPHYS-QUANTUM-NUCLEAR",
+  "scaffold": "De Broglie proposed λ = h/p = h/mv, so every particle has an associated wavelength. Because h is so small, the wavelength is negligible for everyday objects but comparable to atomic spacing for electrons, which is why electron diffraction through a thin graphite film is observable. That experiment is the direct evidence for wave–particle duality in matter.",
+  "reforge": {
+   "stem": "Electron diffraction provides evidence that particles can behave as:",
+   "options": {
+    "A": "Charged spheres only",
+    "B": "Photons",
+    "C": "Nuclei",
+    "D": "Waves"
+   },
+   "correct": "D"
+  }
+ },
+ {
+  "id": "PHYS-N3-05",
+  "stem": "An electron in an atom moves from a higher to a lower energy level. The result is:",
+  "options": {
+   "A": "Absorption of a photon",
+   "B": "Emission of an alpha particle",
+   "C": "Emission of a photon",
+   "D": "An increase in the mass of the atom"
+  },
+  "correct": "C",
+  "tag": "MC-GPHYS-QUANTUM-NUCLEAR",
+  "scaffold": "Energy levels in an atom are discrete, so transitions emit or absorb photons of precisely defined energy: hf = E₁ − E₂. Downward transitions emit, upward transitions absorb. This produces line spectra rather than continuous ones — emission lines where a hot gas radiates, and dark absorption lines where a cool gas absorbs from a continuous background, as in the Sun's spectrum.",
+  "reforge": {
+   "stem": "Line spectra rather than continuous spectra are evidence that atomic energy levels are:",
+   "options": {
+    "A": "Discrete",
+    "B": "Continuous",
+    "C": "Always negative",
+    "D": "Identical in all elements"
+   },
+   "correct": "A"
+  }
+ },
+ {
+  "id": "PHYS-N3-06",
+  "stem": "In fluorescence, an atom absorbs an ultraviolet photon and emits visible light because it:",
+  "options": {
+   "A": "Emits a single photon of higher energy instead",
+   "B": "Splits into two atoms",
+   "C": "Loses an electron permanently",
+   "D": "Emits lower-energy photons in stages"
+  },
+  "correct": "D",
+  "tag": "MC-GPHYS-QUANTUM-NUCLEAR",
+  "scaffold": "Absorbing a high-energy ultraviolet photon excites an electron to a high level. It then returns in several smaller steps, each emitting a photon of lower energy and so longer wavelength, some in the visible range. Energy is conserved: the emitted photons' energies sum to no more than the absorbed one. This is how fluorescent tubes convert ultraviolet from a mercury discharge into visible light.",
+  "reforge": {
+   "stem": "The photons emitted during fluorescence have a wavelength that is:",
+   "options": {
+    "A": "Shorter than the absorbed photon",
+    "B": "Longer than the absorbed photon",
+    "C": "The same as the absorbed photon",
+    "D": "Unrelated to the absorbed photon"
+   },
+   "correct": "B"
+  }
+ },
+ {
+  "id": "PHYS-N3-07",
+  "stem": "An alpha particle consists of:",
+  "options": {
+   "A": "Two protons, two neutrons",
+   "B": "A single electron",
+   "C": "A single high-energy photon",
+   "D": "A proton only"
+  },
+  "correct": "A",
+  "tag": "MC-GPHYS-QUANTUM-NUCLEAR",
+  "scaffold": "Alpha is a helium nucleus: 2 protons and 2 neutrons, charge +2e, strongly ionising but stopped by paper or a few centimetres of air. Beta-minus is a fast electron from a neutron decaying, stopped by a few millimetres of aluminium. Gamma is a high-energy photon with no charge or mass, reduced but never fully stopped by lead. Ionising power and penetrating power run in opposite orders.",
+  "reforge": {
+   "stem": "Which type of radiation is the most penetrating but the least ionising?",
+   "options": {
+    "A": "Alpha",
+    "B": "Beta",
+    "C": "Gamma",
+    "D": "All are equal"
+   },
+   "correct": "C"
+  }
+ },
+ {
+  "id": "PHYS-N3-08",
+  "stem": "In beta-minus decay, a neutron in the nucleus changes into a:",
+  "options": {
+   "A": "Proton only",
+   "B": "Proton, electron, antineutrino",
+   "C": "A positron together with a neutrino",
+   "D": "Alpha particle"
+  },
+  "correct": "B",
+  "tag": "MC-GPHYS-QUANTUM-NUCLEAR",
+  "scaffold": "Beta-minus decay: n → p + e⁻ + antineutrino. The proton number rises by one and the nucleon number is unchanged. Beta-plus decay is the reverse: p → n + e⁺ + neutrino, lowering proton number. The neutrino was postulated because the emitted electrons have a range of energies rather than a single value, which would otherwise breach conservation of energy and momentum.",
+  "reforge": {
+   "stem": "The existence of the neutrino was proposed to account for the fact that beta particles are emitted with:",
+   "options": {
+    "A": "One single fixed energy value",
+    "B": "Negative mass",
+    "C": "No energy at all",
+    "D": "A continuous range"
+   },
+   "correct": "D"
+  }
+ },
+ {
+  "id": "PHYS-N3-09",
+  "stem": "A nuclide has 92 protons and 146 neutrons. Its nucleon number is:",
+  "options": {
+   "A": "92",
+   "B": "146",
+   "C": "238",
+   "D": "54"
+  },
+  "correct": "C",
+  "tag": "MC-GPHYS-QUANTUM-NUCLEAR",
+  "scaffold": "Nucleon number A = protons + neutrons = 92 + 146 = 238; proton number Z = 92 identifies the element as uranium. Isotopes share Z but differ in A. In nuclear equations both A and Z must balance on each side, which is how the identity of a decay product is deduced — alpha emission reduces A by 4 and Z by 2.",
+  "reforge": {
+   "stem": "A nucleus emits an alpha particle. Its nucleon number decreases by:",
+   "options": {
+    "A": "4",
+    "B": "2",
+    "C": "1",
+    "D": "0"
+   },
+   "correct": "A"
+  }
+ },
+ {
+  "id": "PHYS-N3-10",
+  "stem": "The half-life of a radioactive isotope is the time taken for:",
+  "options": {
+   "A": "All the nuclei to decay",
+   "B": "The mass of the sample to halve",
+   "C": "The activity to fall to zero",
+   "D": "Half the remaining nuclei"
+  },
+  "correct": "D",
+  "tag": "MC-GPHYS-QUANTUM-NUCLEAR",
+  "scaffold": "Half-life is the time for half the remaining undecayed nuclei to decay, and is constant for a given isotope regardless of how much is present, because decay is a random process with a fixed probability per nucleus per unit time. Activity A = λN falls exponentially, so after n half-lives the fraction remaining is (½)ⁿ. Radioactive decay is unaffected by temperature, pressure or chemical state.",
+  "reforge": {
+   "stem": "After 3 half-lives, the fraction of the original nuclei remaining is:",
+   "options": {
+    "A": "1/3",
+    "B": "1/8",
+    "C": "1/6",
+    "D": "1/9"
+   },
+   "correct": "B"
+  }
+ },
+ {
+  "id": "PHYS-N3-11",
+  "stem": "A sample has activity 800 Bq and a half-life of 5 days. Its activity after 15 days is:",
+  "options": {
+   "A": "100 Bq",
+   "B": "400 Bq",
+   "C": "267 Bq",
+   "D": "0 Bq"
+  },
+  "correct": "A",
+  "tag": "MC-GPHYS-QUANTUM-NUCLEAR",
+  "scaffold": "15 days is three half-lives, so the activity halves three times: 800 → 400 → 200 → 100 Bq. Equivalently A = A₀(½)³ = 800/8. The becquerel is one decay per second. Because decay is exponential, the activity approaches but never reaches zero, so answers of exactly zero after a finite time are always wrong.",
+  "reforge": {
+   "stem": "The activity of a source is related to the number of undecayed nuclei by:",
+   "options": {
+    "A": "A = λ/N",
+    "B": "A = N/λ",
+    "C": "A = λN",
+    "D": "A = λN²"
+   },
+   "correct": "C"
+  }
+ },
+ {
+  "id": "PHYS-N3-12",
+  "stem": "The binding energy of a nucleus is the energy required to:",
+  "options": {
+   "A": "Remove a single electron from the atom",
+   "B": "Separate it into free nucleons",
+   "C": "Cause the nucleus to fission",
+   "D": "Ionise the atom completely"
+  },
+  "correct": "B",
+  "tag": "MC-GPHYS-QUANTUM-NUCLEAR",
+  "scaffold": "Binding energy is the work needed to pull a nucleus apart into free nucleons, and appears as the mass defect: the nucleus is lighter than its separate nucleons, with ΔE = Δmc². Binding energy per nucleon peaks near iron-56, which is why fusing light nuclei and splitting heavy ones both release energy — each moves the products towards that peak.",
+  "reforge": {
+   "stem": "Energy is released in both fusion of light nuclei and fission of heavy nuclei because both increase the:",
+   "options": {
+    "A": "Total number of nucleons present",
+    "B": "Proton number",
+    "C": "Mass of the products",
+    "D": "Binding energy per nucleon"
+   },
+   "correct": "D"
+  }
+ },
+ {
+  "id": "PHYS-N3-13",
+  "stem": "In nuclear fission, a heavy nucleus is typically induced to split by absorbing a:",
+  "options": {
+   "A": "Proton",
+   "B": "Gamma photon",
+   "C": "Neutron",
+   "D": "Beta particle"
+  },
+  "correct": "C",
+  "tag": "MC-GPHYS-QUANTUM-NUCLEAR",
+  "scaffold": "A slow (thermal) neutron is absorbed by uranium-235, making it unstable so that it splits into two smaller nuclei plus two or three fast neutrons and considerable energy. Those neutrons can induce further fissions — a chain reaction. Neutrons are used because they are uncharged and so are not repelled by the nucleus, unlike protons or alpha particles.",
+  "reforge": {
+   "stem": "In a nuclear reactor, the moderator's function is to:",
+   "options": {
+    "A": "Slow the neutrons down",
+    "B": "Absorb excess neutrons",
+    "C": "Cool the reactor core",
+    "D": "Shield the operators"
+   },
+   "correct": "A"
+  }
+ },
+ {
+  "id": "PHYS-N3-14",
+  "stem": "Control rods in a nuclear reactor work by:",
+  "options": {
+   "A": "Slowing neutrons to thermal speeds",
+   "B": "Reflecting neutrons back into the fuel rods",
+   "C": "Transferring heat to the coolant",
+   "D": "Absorbing neutrons to control rate"
+  },
+  "correct": "D",
+  "tag": "MC-GPHYS-QUANTUM-NUCLEAR",
+  "scaffold": "Control rods of boron or cadmium absorb neutrons, and raising or lowering them adjusts how many are available to cause further fission, keeping the chain reaction critical and steady. The moderator, often graphite or water, slows neutrons so uranium-235 absorbs them efficiently — a distinct role. The coolant removes heat, and thick concrete and lead shielding protects against radiation.",
+  "reforge": {
+   "stem": "A chain reaction is described as critical when each fission causes, on average:",
+   "options": {
+    "A": "No further fissions",
+    "B": "Exactly one further fission",
+    "C": "Two further fissions",
+    "D": "An increasing number of fissions"
+   },
+   "correct": "B"
+  }
+ },
+ {
+  "id": "PHYS-N3-15",
+  "stem": "Nuclear fusion requires extremely high temperatures in order to:",
+  "options": {
+   "A": "Overcome electrostatic repulsion",
+   "B": "Melt the nuclei together",
+   "C": "Ionise the air surrounding the reactor",
+   "D": "Slow the nuclei down"
+  },
+  "correct": "A",
+  "tag": "MC-GPHYS-QUANTUM-NUCLEAR",
+  "scaffold": "Nuclei are positively charged, so they repel; fusing them requires enough kinetic energy to bring them within range of the strong nuclear force, which acts only over about 10⁻¹⁵ m. That means temperatures of millions of kelvin, plus high density and sufficient confinement time. Achieving all three simultaneously on Earth is the central engineering difficulty of fusion power.",
+  "reforge": {
+   "stem": "The strong nuclear force differs from the electrostatic force in that it is:",
+   "options": {
+    "A": "Weaker than gravity",
+    "B": "Always repulsive",
+    "C": "Effective over short ranges",
+    "D": "Acting only upon orbital electrons"
+   },
+   "correct": "C"
+  }
+ },
+ {
+  "id": "PHYS-N3-16",
+  "stem": "Rutherford's alpha scattering experiment showed that the atom's positive charge is:",
+  "options": {
+   "A": "Spread evenly throughout the whole atom",
+   "B": "Concentrated in a tiny dense nucleus",
+   "C": "Carried by the electrons",
+   "D": "Absent altogether"
+  },
+  "correct": "B",
+  "tag": "MC-GPHYS-QUANTUM-NUCLEAR",
+  "scaffold": "Most alpha particles passed straight through the gold foil, showing the atom is mostly empty space. A small fraction deflected through large angles, and a very few came almost straight back, which requires a concentrated positive charge of large mass — the nucleus. This disproved the plum pudding model, in which charge was spread evenly and only small deflections would be expected.",
+  "reforge": {
+   "stem": "That most alpha particles passed straight through the gold foil showed the atom is:",
+   "options": {
+    "A": "Uniformly solid",
+    "B": "Made only of electrons",
+    "C": "Negatively charged overall",
+    "D": "Mostly empty space"
+   },
+   "correct": "D"
+  }
+ },
+ {
+  "id": "PHYS-N3-17",
+  "stem": "Which particle is a lepton?",
+  "options": {
+   "A": "Proton",
+   "B": "Neutrons",
+   "C": "Electron",
+   "D": "Pion"
+  },
+  "correct": "C",
+  "tag": "MC-GPHYS-QUANTUM-NUCLEAR",
+  "scaffold": "Leptons — electrons, muons, taus and their neutrinos — are fundamental and do not feel the strong force. Hadrons feel the strong force and are made of quarks: baryons contain three quarks (protons, neutrons), while mesons contain a quark and an antiquark (pions, kaons). Lepton number and baryon number are separately conserved in every interaction, which constrains which decays are possible.",
+  "reforge": {
+   "stem": "A baryon such as a proton is composed of:",
+   "options": {
+    "A": "Three quarks",
+    "B": "Two quarks",
+    "C": "A quark and an antiquark",
+    "D": "No quarks at all"
+   },
+   "correct": "A"
+  }
+ },
+ {
+  "id": "PHYS-N3-18",
+  "stem": "A proton is composed of the quark combination:",
+  "options": {
+   "A": "ddd",
+   "B": "udd",
+   "C": "uuu",
+   "D": "uud"
+  },
+  "correct": "D",
+  "tag": "MC-GPHYS-QUANTUM-NUCLEAR",
+  "scaffold": "An up quark has charge +2/3 and a down quark −1/3. A proton is uud: 2/3 + 2/3 − 1/3 = +1. A neutron is udd: 2/3 − 1/3 − 1/3 = 0. Checking that the charges sum correctly is the quickest way to confirm a quark composition. In beta-minus decay a down quark changes into an up quark, which is what converts a neutron into a proton.",
+  "reforge": {
+   "stem": "In beta-minus decay, the quark change that occurs is:",
+   "options": {
+    "A": "An up quark becomes a down quark",
+    "B": "A down quark becomes an up quark",
+    "C": "A quark is destroyed",
+    "D": "Two quarks combine"
+   },
+   "correct": "B"
+  }
+ },
+ {
+  "id": "PHYS-N3-19",
+  "stem": "When a particle meets its antiparticle, the result is:",
+  "options": {
+   "A": "Annihilation, producing photons",
+   "B": "A single larger particle forming",
+   "C": "No interaction at all",
+   "D": "Emission of a neutron"
+  },
+  "correct": "A",
+  "tag": "MC-GPHYS-QUANTUM-NUCLEAR",
+  "scaffold": "Annihilation converts the entire mass of both particles into energy as two photons, each of at least E = mc² for one particle, with two produced to conserve momentum. Pair production is the reverse: a photon of sufficient energy creates a particle–antiparticle pair, requiring a minimum photon energy of 2mc² and the presence of a nucleus to conserve momentum. PET scanning uses annihilation of positrons.",
+  "reforge": {
+   "stem": "Pair production requires a photon with a minimum energy equal to:",
+   "options": {
+    "A": "mc²",
+    "B": "½mc²",
+    "C": "2mc²",
+    "D": "hf/2"
+   },
+   "correct": "C"
+  }
+ },
+ {
+  "id": "PHYS-N3-20",
+  "stem": "An X-ray tube produces X-rays when fast electrons:",
+  "options": {
+   "A": "Are absorbed by the cathode",
+   "B": "Decelerate on striking the anode",
+   "C": "Are emitted directly from a radioactive source",
+   "D": "Travel through a magnetic field"
+  },
+  "correct": "B",
+  "tag": "MC-GPHYS-QUANTUM-NUCLEAR",
+  "scaffold": "Electrons accelerated through a high pd strike a heavy metal target and decelerate sharply, radiating a continuous X-ray spectrum (bremsstrahlung), with characteristic sharp lines superimposed from inner-shell electron transitions in the target atoms. The maximum X-ray photon energy equals the electron's kinetic energy, eV, so the minimum wavelength is set by the accelerating voltage.",
+  "reforge": {
+   "stem": "Increasing the accelerating voltage in an X-ray tube changes the minimum X-ray wavelength produced by making it:",
+   "options": {
+    "A": "Longer",
+    "B": "Zero",
+    "C": "Unchanged",
+    "D": "Shorter"
+   },
+   "correct": "D"
+  }
+ },
+ {
+  "id": "PHYS-N3-21",
+  "stem": "The intensity of gamma radiation passing through an absorber falls:",
+  "options": {
+   "A": "Linearly with thickness",
+   "B": "To zero at a definite range",
+   "C": "Exponentially with thickness",
+   "D": "Only if the absorber is charged"
+  },
+  "correct": "C",
+  "tag": "MC-GPHYS-QUANTUM-NUCLEAR",
+  "scaffold": "Gamma intensity follows I = I₀e^(−μx), an exponential decay, so it is reduced but never entirely stopped — there is no definite range, unlike alpha and beta which have finite ranges. The half-value thickness is the depth halving the intensity. Alpha and beta lose energy through repeated ionising collisions and so stop abruptly, which is why their absorption curves look quite different.",
+  "reforge": {
+   "stem": "Unlike gamma radiation, alpha particles in a material have:",
+   "options": {
+    "A": "A definite, finite range",
+    "B": "An exponential absorption curve",
+    "C": "No interaction with matter",
+    "D": "Increasing energy with depth"
+   },
+   "correct": "A"
+  }
+ },
+ {
+  "id": "PHYS-N3-22",
+  "stem": "Background radiation must be subtracted from readings because it comes from:",
+  "options": {
+   "A": "The detector's own internal circuitry",
+   "B": "Cosmic rays alone",
+   "C": "The sample being measured",
+   "D": "Natural and artificial sources"
+  },
+  "correct": "D",
+  "tag": "MC-GPHYS-QUANTUM-NUCLEAR",
+  "scaffold": "Background radiation comes from radon gas, rocks and soil, cosmic rays, food and drink, and artificial sources chiefly medical. It is always present, so the background count rate must be measured separately and subtracted to obtain the true count from a source. Because decay is random, counts fluctuate, so longer counting times give more reliable averages.",
+  "reforge": {
+   "stem": "Radioactive decay is described as a random process, which means the:",
+   "options": {
+    "A": "Half-life of the isotope changes unpredictably",
+    "B": "When a nucleus decays is unpredictable",
+    "C": "Activity increases over time",
+    "D": "Decay depends on temperature"
+   },
+   "correct": "B"
+  }
+ },
+ {
+  "id": "PHYS-N3-23",
+  "stem": "A capacitor of 100 μF is charged to 12 V. The charge stored is:",
+  "options": {
+   "A": "1.2 × 10⁻³ C",
+   "B": "8.3 C",
+   "C": "1200 coulombs",
+   "D": "12 C"
+  },
+  "correct": "A",
+  "tag": "MC-GPHYS-CIRCUITS",
+  "scaffold": "Q = CV = 100 × 10⁻⁶ × 12 = 1.2 × 10⁻³ C, or 1.2 mC. The micro prefix means 10⁻⁶, and failing to convert is the usual error, giving an answer a million times too large. The energy stored is W = ½QV = ½ × 1.2 × 10⁻³ × 12 = 7.2 × 10⁻³ J, or equivalently ½CV².",
+  "reforge": {
+   "stem": "The energy stored by a 100 μF capacitor charged to 12 V is:",
+   "options": {
+    "A": "1.2 × 10⁻³ J",
+    "B": "14.4 J",
+    "C": "7.2 × 10⁻³ J",
+    "D": "0.6 J"
+   },
+   "correct": "C"
+  }
+ },
+ {
+  "id": "PHYS-N3-24",
+  "stem": "Two capacitors are connected in parallel. The total capacitance is:",
+  "options": {
+   "A": "Found by adding the reciprocals",
+   "B": "The sum of the capacitances",
+   "C": "Always smaller than either",
+   "D": "The product of the two"
+  },
+  "correct": "B",
+  "tag": "MC-GPHYS-CIRCUITS",
+  "scaffold": "Capacitors behave opposite to resistors: in parallel capacitances add, since the effective plate area increases; in series the reciprocals add, giving a total smaller than the smallest. Series capacitors share the same charge while the pd divides; parallel capacitors share the same pd while the charge divides. Confusing these with the resistor rules is the standard error.",
+  "reforge": {
+   "stem": "Two identical capacitors are connected in series. The total capacitance is:",
+   "options": {
+    "A": "Double one capacitor",
+    "B": "Zero",
+    "C": "Equal to one capacitor",
+    "D": "Half one capacitor"
+   },
+   "correct": "D"
+  }
+ },
+ {
+  "id": "PHYS-N3-25",
+  "stem": "A wave is described as electromagnetic. This means it:",
+  "options": {
+   "A": "Requires a material medium to travel through",
+   "B": "Is longitudinal in nature",
+   "C": "Oscillating electric and magnetic fields",
+   "D": "Travels at the speed of sound"
+  },
+  "correct": "C",
+  "tag": "MC-GPHYS-WAVES",
+  "scaffold": "Electromagnetic waves are transverse oscillations of perpendicular electric and magnetic fields, requiring no medium and travelling at 3.00 × 10⁸ m s⁻¹ in a vacuum. The spectrum runs from radio (longest wavelength, lowest frequency and photon energy) through microwave, infrared, visible, ultraviolet and X-ray to gamma. Photon energy rises with frequency, which is why the short-wavelength end is ionising.",
+  "reforge": {
+   "stem": "Which electromagnetic radiation has the highest photon energy?",
+   "options": {
+    "A": "Gamma rays",
+    "B": "Infrared",
+    "C": "Ultraviolet",
+    "D": "Radio waves"
+   },
+   "correct": "A"
+  }
+ },
+ {
+  "id": "PHYS-N3-26",
+  "stem": "Light of wavelength 600 nm has a frequency of approximately:",
+  "options": {
+   "A": "600 Hz",
+   "B": "1.8 × 10² Hz",
+   "C": "2.0 × 10⁻¹⁵ Hz",
+   "D": "5.0 × 10¹⁴ Hz"
+  },
+  "correct": "D",
+  "tag": "MC-GPHYS-WAVES",
+  "scaffold": "Rearranging c = fλ gives f = c ÷ λ = (3.00 × 10⁸) ÷ (600 × 10⁻⁹) = 5.0 × 10¹⁴ Hz. Converting nanometres to metres is essential: 1 nm = 10⁻⁹ m. Visible light spans roughly 400 nm (violet) to 700 nm (red), corresponding to frequencies around 4–7.5 × 10¹⁴ Hz, so any answer far outside that range signals a conversion error.",
+  "reforge": {
+   "stem": "The energy of a photon is related to its wavelength by:",
+   "options": {
+    "A": "E = hλ",
+    "B": "E = hc/λ",
+    "C": "E = λ/hc",
+    "D": "E = h/λc"
+   },
+   "correct": "B"
+  }
+ },
+ {
+  "id": "PHYS-N3-27",
+  "stem": "A stationary wave on a string fixed at both ends has its fundamental frequency when the string length equals:",
+  "options": {
+   "A": "Half a wavelength",
+   "B": "One wavelength",
+   "C": "Two wavelengths",
+   "D": "A quarter of a wavelength"
+  },
+  "correct": "A",
+  "tag": "MC-GPHYS-WAVES",
+  "scaffold": "With both ends fixed there must be a node at each end, so the fundamental has a single antinode and the string holds half a wavelength: λ = 2L. Harmonics follow at integer multiples of that frequency. For a pipe closed at one end there is a node at the closed end and an antinode at the open end, so the fundamental fits a quarter wavelength and only odd harmonics appear.",
+  "reforge": {
+   "stem": "A pipe closed at one end produces which harmonics?",
+   "options": {
+    "A": "All harmonics",
+    "B": "Only even harmonics",
+    "C": "Only odd harmonics",
+    "D": "No harmonics"
+   },
+   "correct": "C"
+  }
+ },
+ {
+  "id": "PHYS-N3-28",
+  "stem": "Increasing the tension in a vibrating string raises the fundamental frequency because the wave speed:",
+  "options": {
+   "A": "Decreases",
+   "B": "Increases",
+   "C": "Stays constant",
+   "D": "Becomes zero"
+  },
+  "correct": "B",
+  "tag": "MC-GPHYS-WAVES",
+  "scaffold": "Wave speed on a string is v = √(T/μ), where T is tension and μ mass per unit length. Since the fundamental wavelength is fixed at 2L, f = v/2L rises with tension and falls with a heavier string. This is why tightening a guitar string raises its pitch, and why the thicker strings sound lower at the same tension and length.",
+  "reforge": {
+   "stem": "A thicker string of greater mass per unit length, at the same tension and length, produces a fundamental frequency that is:",
+   "options": {
+    "A": "Higher",
+    "B": "Zero",
+    "C": "The same",
+    "D": "Lower"
+   },
+   "correct": "D"
+  }
+ },
+ {
+  "id": "PHYS-N3-29",
+  "stem": "A converging lens forms a real image when the object is placed:",
+  "options": {
+   "A": "At the focal point",
+   "B": "Between the lens and the focal point",
+   "C": "Beyond the focal length",
+   "D": "At the lens surface"
+  },
+  "correct": "C",
+  "tag": "MC-GPHYS-WAVES",
+  "scaffold": "A converging lens forms a real, inverted image when the object lies beyond the focal length; inside the focal length it forms a virtual, upright, magnified image, as in a magnifying glass. Real images can be projected onto a screen because the rays actually meet; virtual images cannot. The lens equation 1/f = 1/u + 1/v relates the distances, with sign conventions applied consistently.",
+  "reforge": {
+   "stem": "A virtual image differs from a real image in that it:",
+   "options": {
+    "A": "Cannot be projected onto a screen",
+    "B": "Is always inverted",
+    "C": "Is always smaller",
+    "D": "Forms only when using curved mirrors"
+   },
+   "correct": "A"
+  }
+ },
+ {
+  "id": "PHYS-N3-30",
+  "stem": "The Doppler effect causes the observed frequency of a source moving away from an observer to be:",
+  "options": {
+   "A": "Higher than emitted",
+   "B": "Zero",
+   "C": "Unchanged",
+   "D": "Lower than emitted"
+  },
+  "correct": "D",
+  "tag": "MC-GPHYS-ASTRONOMY",
+  "scaffold": "A receding source stretches the observed wavelength and lowers the frequency; an approaching source compresses it and raises the frequency. For light this appears as redshift and blueshift. The redshift of distant galaxies, increasing with distance, is the observational basis of Hubble's law and the evidence that the universe is expanding.",
+  "reforge": {
+   "stem": "The redshift of distant galaxies increasing with distance is evidence that the universe is:",
+   "options": {
+    "A": "Contracting",
+    "B": "Expanding",
+    "C": "Static",
+    "D": "Rotating"
+   },
+   "correct": "B"
+  }
+ },
+ {
+  "id": "PHYS-N3-31",
+  "stem": "Hubble's law states that a galaxy's recession velocity is proportional to its:",
+  "options": {
+   "A": "Distance from us",
+   "B": "Mass",
+   "C": "Temperature",
+   "D": "Apparent brightness"
+  },
+  "correct": "A",
+  "tag": "MC-GPHYS-ASTRONOMY",
+  "scaffold": "Hubble's law gives v = H₀d, so more distant galaxies recede faster. The reciprocal of the Hubble constant estimates the age of the universe. Together with the cosmic microwave background radiation and the observed abundance of light elements, this is the principal evidence for the Big Bang model. Uncertainty in H₀ is the main uncertainty in the age estimate.",
+  "reforge": {
+   "stem": "The cosmic microwave background radiation is evidence for the Big Bang because it is:",
+   "options": {
+    "A": "Emitted by nearby stars",
+    "B": "Produced by collisions between distant galaxies",
+    "C": "Radiation left from the hot early universe",
+    "D": "A form of visible light only"
+   },
+   "correct": "C"
+  }
+ },
+ {
+  "id": "PHYS-N3-32",
+  "stem": "A star's luminosity is best described as the:",
+  "options": {
+   "A": "Brightness as it appears from Earth",
+   "B": "Total power radiated by the star",
+   "C": "Surface temperature",
+   "D": "Distance from Earth"
+  },
+  "correct": "B",
+  "tag": "MC-GPHYS-ASTRONOMY",
+  "scaffold": "Luminosity is the total power output in watts, an intrinsic property. Apparent brightness depends additionally on distance, following an inverse square law, so a very luminous distant star can appear fainter than a nearby dim one. Stefan's law gives L = 4πr²σT⁴, so luminosity depends strongly on temperature, and Wien's law relates peak wavelength to temperature by λmaxT = constant.",
+  "reforge": {
+   "stem": "Wien's displacement law states that a hotter star has a peak emission wavelength that is:",
+   "options": {
+    "A": "Longer",
+    "B": "Zero",
+    "C": "Unchanged",
+    "D": "Shorter"
+   },
+   "correct": "D"
+  }
+ },
+ {
+  "id": "PHYS-N3-33",
+  "stem": "On a Hertzsprung–Russell diagram, most stars lie along the:",
+  "options": {
+   "A": "Supergiant branch",
+   "B": "White dwarf region",
+   "C": "Main sequence",
+   "D": "Horizontal axis only"
+  },
+  "correct": "C",
+  "tag": "MC-GPHYS-ASTRONOMY",
+  "scaffold": "The Hertzsprung–Russell diagram plots luminosity against temperature, with temperature increasing to the left. Most stars, including the Sun, spend the majority of their lives on the main sequence fusing hydrogen. Red giants and supergiants lie above and to the right, being cool but very luminous because they are large; white dwarfs lie below and to the left, hot but faint because they are small.",
+  "reforge": {
+   "stem": "A red giant is very luminous despite its low surface temperature because it has a very large:",
+   "options": {
+    "A": "Radius",
+    "B": "Mass",
+    "C": "Density",
+    "D": "Rotation rate"
+   },
+   "correct": "A"
+  }
+ },
+ {
+  "id": "PHYS-N3-34",
+  "stem": "A star of mass similar to the Sun will end its life as a:",
+  "options": {
+   "A": "Black hole",
+   "B": "Neutron star",
+   "C": "Supernova remnant only",
+   "D": "White dwarf"
+  },
+  "correct": "D",
+  "tag": "MC-GPHYS-ASTRONOMY",
+  "scaffold": "Low and intermediate mass stars swell to red giants, shed their outer layers as a planetary nebula and leave a white dwarf supported by electron degeneracy pressure, below the Chandrasekhar limit of about 1.4 solar masses. More massive stars end in a supernova, leaving a neutron star or, above roughly 3 solar masses of remnant core, a black hole. Mass at the end of life determines the outcome.",
+  "reforge": {
+   "stem": "A stellar remnant more massive than about 3 solar masses is expected to become a:",
+   "options": {
+    "A": "White dwarf",
+    "B": "Black hole",
+    "C": "Red giant",
+    "D": "Main sequence star"
+   },
+   "correct": "B"
+  }
+ },
+ {
+  "id": "PHYS-N3-35",
+  "stem": "A telescope's resolving power is improved most directly by increasing the:",
+  "options": {
+   "A": "Diameter of the objective aperture",
+   "B": "Magnification of the eyepiece lens",
+   "C": "Length of the tube",
+   "D": "Number of lenses used"
+  },
+  "correct": "A",
+  "tag": "MC-GPHYS-ASTRONOMY",
+  "scaffold": "Resolving power is limited by diffraction, following the Rayleigh criterion θ ≈ λ/D, so a larger aperture D gives finer resolution and also collects more light, revealing fainter objects. Increasing eyepiece magnification enlarges the image but cannot recover detail the aperture never resolved — this is why large telescopes are built with large mirrors rather than merely stronger eyepieces.",
+  "reforge": {
+   "stem": "Increasing magnification beyond the resolving limit of a telescope produces an image that is:",
+   "options": {
+    "A": "Sharper and far more detailed",
+    "B": "Brighter and sharper",
+    "C": "Larger but no more detailed",
+    "D": "Smaller but clearer"
+   },
+   "correct": "C"
+  }
+ },
+ {
+  "id": "PHYS-N3-36",
+  "stem": "A current-carrying coil in a magnetic field experiences a turning effect. This is the principle of the:",
+  "options": {
+   "A": "Transformer core",
+   "B": "Electric motor",
+   "C": "Capacitor",
+   "D": "Diode"
+  },
+  "correct": "B",
+  "tag": "MC-GPHYS-FIELDS-ELECTROMAGNETISM",
+  "scaffold": "Opposite sides of the coil carry current in opposite directions, so by F = BIL the forces on them act oppositely and produce a couple that rotates the coil — the motor effect. A split-ring commutator reverses the current every half turn to keep rotation continuous. A generator is the reverse process, using rotation to induce an emf by Faraday's law.",
+  "reforge": {
+   "stem": "The purpose of a split-ring commutator in a d.c. motor is to:",
+   "options": {
+    "A": "Reduce the current drawn",
+    "B": "Smooth the output voltage",
+    "C": "Increase the magnetic field strength",
+    "D": "Reverse the current every half turn"
+   },
+   "correct": "D"
+  }
+ },
+ {
+  "id": "PHYS-N3-37",
+  "stem": "Magnetic flux through a coil is greatest when the plane of the coil is:",
+  "options": {
+   "A": "Aligned parallel to the field",
+   "B": "At 45° to the field",
+   "C": "Perpendicular to the field",
+   "D": "Rotating rapidly"
+  },
+  "correct": "C",
+  "tag": "MC-GPHYS-FIELDS-ELECTROMAGNETISM",
+  "scaffold": "Flux Φ = BA cos θ, where θ is measured between the field and the normal to the coil. Flux is maximum when the field is along the normal — that is, when the plane of the coil is perpendicular to the field — and zero when the field lies in the plane of the coil. Careful reading of whether an angle is to the plane or to the normal avoids the commonest error here.",
+  "reforge": {
+   "stem": "A coil is rotated in a uniform magnetic field. The induced emf is greatest when the flux is:",
+   "options": {
+    "A": "Changing most rapidly",
+    "B": "At its maximum possible value",
+    "C": "Zero and unchanging",
+    "D": "Constant"
+   },
+   "correct": "A"
+  }
+ },
+ {
+  "id": "PHYS-N3-38",
+  "stem": "An electron is accelerated through a pd of 100 V. Its gain in kinetic energy is:",
+  "options": {
+   "A": "100 J",
+   "B": "6.3 × 10¹⁶ J",
+   "C": "1.6 × 10⁻²¹ J",
+   "D": "1.6 × 10⁻¹⁷ J"
+  },
+  "correct": "D",
+  "tag": "MC-GPHYS-QUANTUM-NUCLEAR",
+  "scaffold": "Energy gained = eV = 1.60 × 10⁻¹⁹ × 100 = 1.6 × 10⁻¹⁷ J, equivalently 100 eV. Setting this equal to ½mv² gives the final speed. The electronvolt is convenient precisely because the numerical value in eV equals the accelerating voltage, avoiding repeated multiplication by e until a final conversion to joules is needed.",
+  "reforge": {
+   "stem": "One electronvolt is defined as the energy gained by an electron accelerated through:",
+   "options": {
+    "A": "One joule",
+    "B": "One volt",
+    "C": "One coulomb",
+    "D": "One newton"
+   },
+   "correct": "B"
+  }
+ },
+ {
+  "id": "PHYS-N3-39",
+  "stem": "In a discharge tube, an excited gas produces a line emission spectrum consisting of:",
+  "options": {
+   "A": "Bright lines at specific wavelengths",
+   "B": "A continuous band of all colours",
+   "C": "Dark lines against a bright background",
+   "D": "No visible light at all"
+  },
+  "correct": "A",
+  "tag": "MC-GPHYS-QUANTUM-NUCLEAR",
+  "scaffold": "Electrons excited in a discharge tube fall back through discrete energy levels, emitting photons at specific wavelengths and producing bright lines on a dark background. An absorption spectrum shows the reverse: dark lines on a continuous background where a cool gas has absorbed those same wavelengths. Because the level structure is unique to each element, spectra identify elements — including in distant stars.",
+  "reforge": {
+   "stem": "Dark lines in the Sun's spectrum are caused by cooler gases in its atmosphere that:",
+   "options": {
+    "A": "Emit those wavelengths",
+    "B": "Reflect all wavelengths",
+    "C": "Absorb those wavelengths",
+    "D": "Produce a continuous spectrum"
+   },
+   "correct": "C"
+  }
+ },
+ {
+  "id": "PHYS-N3-40",
+  "stem": "The activity of a radioactive source is measured in:",
+  "options": {
+   "A": "Grays",
+   "B": "Becquerels",
+   "C": "Sieverts of dose",
+   "D": "Coulombs"
+  },
+  "correct": "B",
+  "tag": "MC-GPHYS-QUANTUM-NUCLEAR",
+  "scaffold": "Activity is measured in becquerels, one decay per second. Absorbed dose is measured in grays, one joule per kilogram of tissue, and equivalent dose in sieverts, which weights the absorbed dose by the type of radiation to reflect biological harm — alpha being far more damaging internally than gamma for the same absorbed energy. Distinguishing these three quantities is frequently tested.",
+  "reforge": {
+   "stem": "Equivalent dose in sieverts differs from absorbed dose in grays because it accounts for the:",
+   "options": {
+    "A": "Mass of the tissue",
+    "B": "Distance from the radioactive source",
+    "C": "Half-life of the source",
+    "D": "Radiation type and its effect"
+   },
+   "correct": "D"
+  }
+ },
+ {
+  "id": "PHYS-N3-41",
+  "stem": "A student uses a light gate and timer to measure acceleration. The main advantage over a stopwatch is:",
+  "options": {
+   "A": "It measures distance directly",
+   "B": "It requires no calibration",
+   "C": "It removes reaction-time error",
+   "D": "It eliminates all systematic error"
+  },
+  "correct": "C",
+  "tag": "MC-GPHYS-MEASUREMENT",
+  "scaffold": "Reaction time in starting and stopping a stopwatch introduces a random error of order 0.2 s, which is significant over short intervals. A light gate triggers electronically, removing it. It does not remove systematic errors such as a misaligned gate or an incorrectly measured card length. Reducing uncertainty further means taking repeats and using the largest practical distances and times.",
+  "reforge": {
+   "stem": "Using a longer distance when measuring average speed reduces the:",
+   "options": {
+    "A": "Percentage uncertainty in timing",
+    "B": "Systematic error in the metre ruler",
+    "C": "True value of the speed",
+    "D": "Need for any repeats"
+   },
+   "correct": "A"
+  }
+ }
 ]);
 
 [
@@ -35974,6 +40401,241 @@ const busAnswerLengthRepairs = {
 };
 for (const [id, variants] of Object.entries(busAnswerLengthRepairs)) {
   for (const bankId of SUBJECTS.bus.banks) {
+    const question = (BANKS[bankId].questions || []).find(candidate => candidate.id === id);
+    if (!question) continue;
+    for (const [variant, replacements] of Object.entries(variants)) {
+      const item = variant === "base" ? question : question.reforge;
+      if (!item?.options) continue;
+      for (const [letter, value] of Object.entries(item.options)) {
+        const replacement = replacements[String(value)];
+        if (replacement) item.options[letter] = replacement;
+      }
+    }
+  }
+}
+
+// A-Level Chemistry: concise restatements of twenty correct answers that were
+// long enough to be the uniquely-longest option, which lets a student score
+// above chance by picking the longest one. Several ran past 200 characters
+// against distractors of ~50, reading as mini mark schemes rather than
+// options. They surfaced once the coverage-variant clones were removed.
+// Matched on option TEXT rather than letter, because rebalanceMCQSubject()
+// permutes letters and a letter-keyed table applied afterwards lands on
+// whichever option happens to sit there. Applied last.
+const chemAnswerLengthRepairs = {
+  "CHEM-02": {
+    reforge: { "Group 2 — large jump occurs between 2nd and 3rd IE, indicating two outer-shell electrons are removed relatively easily before the inner shell is breached.":
+      "Group 2" }
+  },
+  "CHEM-04": {
+    reforge: { "I₂ is a simple molecular structure — melting only requires overcoming weak London dispersion forces between molecules. SiO₂ is a giant covalent lattice requiring thousands of strong covalent bonds to be broken.":
+      "I₂ is simple molecular; SiO₂ is a giant lattice" }
+  },
+  "CHEM-06": {
+    reforge: { "Atomic radius increases and shielding from more inner electron shells increases — bonding electrons are further from the nucleus and less strongly attracted, reducing electronegativity.":
+      "Radius and shielding both increase" }
+  },
+  "CHEM-07": {
+    reforge: { "Neon has two naturally occurring isotopes — ²⁰Ne and ²²Ne — differing in the number of neutrons. The height of each peak indicates the relative abundance of each isotope.":
+      "Neon has two isotopes, ²⁰Ne and ²²Ne" }
+  },
+  "CHEM-08": {
+    base: { "Ionic compounds conduct when MOLTEN or in SOLUTION because the ions become free to move and carry charge — not because of free electrons.":
+      "Ionic compounds conduct when molten or dissolved" },
+    reforge: { "Metals contain a 'sea' of delocalised electrons that can move freely through the lattice in all states. Ionic compounds have no free electrons — in the solid state, ions are fixed and cannot carry charge.":
+      "Metals have delocalised electrons" }
+  },
+  "CHEM-09": {
+    reforge: { "HF forms hydrogen bonds (F is highly electronegative with lone pairs), which are stronger than the permanent dipole-dipole forces in HCl.":
+      "HF forms hydrogen bonds, stronger than dipoles" }
+  },
+  "CHEM-11": {
+    reforge: { "Leaves the yield unchanged — a catalyst speeds both directions equally, reaching the same equilibrium faster.":
+      "Leaves the yield unchanged, reaching it faster" }
+  },
+  "CHEM-13": {
+    reforge: { "Temperature increases the frequency of collisions AND greatly increases the proportion of particles exceeding the activation energy — the latter effect dominates.":
+      "More particles exceed the activation energy" }
+  },
+  "CHEM-14": {
+    reforge: { "Once formed, the dative bond is indistinguishable from the other three covalent N–H bonds — all four are equivalent.":
+      "All four N–H bonds become equivalent" }
+  },
+  "CHEM-16": {
+    reforge: { "Atoms have more shells and greater shielding, increasing the atomic radius so the nucleus attracts the bonding pair less strongly, despite the higher nuclear charge.":
+      "More shells and shielding outweigh the charge" }
+  },
+  "ORG-01": {
+    base: { "Stereoisomerism — specifically E/Z isomerism and optical isomerism, which have the same connectivity but differ in spatial arrangement.":
+      "Stereoisomerism" }
+  },
+  "ORG-02": {
+    base: { "Because ethene is an alkene — it is unsaturated and the pi bond opens to accommodate both bromine atoms, producing a saturated product with no atoms lost.":
+      "Ethene is unsaturated, so the pi bond opens" },
+    reforge: { "Alkanes have no pi bond, so there is nothing for an electrophile to attack; substitution (via radical mechanism) is possible instead.":
+      "Alkanes have no pi bond to attack" }
+  },
+  "ORG-03": {
+    base: { "To generate a more powerful electrophile (Br⁺ or Br-FeBr₃ complex) — Br₂ alone is not electrophilic enough to attack the stable aromatic ring.":
+      "To generate a stronger electrophile" },
+    reforge: { "Benzene's delocalised pi system confers aromatic stability (~150 kJ/mol). Addition would destroy this — costing more energy than it releases — so substitution, which preserves the ring, is strongly favoured.":
+      "Substitution preserves the aromatic stability" }
+  },
+  "ORG-04": {
+    reforge: { "Diethyl ether — at 140°C with excess alcohol, intermolecular condensation occurs (two alcohol molecules lose water to form an ether); the lower temperature is insufficient for intramolecular elimination to ethene.":
+      "Diethyl ether, from intermolecular condensation" }
+  },
+  "ORG-05": {
+    reforge: { "Tollens' (Ag⁺) and Fehling's (Cu²⁺) oxidise aldehydes but not ketones (silver mirror / brick-red precipitate); K₂Cr₂O₇ oxidises both, so it cannot distinguish between them.":
+      "Tollens' and Fehling's oxidise only aldehydes" }
+  },
+  "ORG-06": {
+    reforge: { "Esterification is reversible — the ester can hydrolyse back. Yield is improved by removing water, using excess reactant, or removing the ester as it forms (Le Chatelier's principle).":
+      "Esterification is reversible, so yield is limited" }
+  },
+  "ORG-08": {
+    base: { "The lone pair on the nitrogen atom accepts a proton from an acid (or water), acting as a Brønsted-Lowry base.":
+      "The nitrogen lone pair accepts a proton" }
+  }
+};
+for (const [id, variants] of Object.entries(chemAnswerLengthRepairs)) {
+  for (const bankId of SUBJECTS.chem.banks) {
+    const question = (BANKS[bankId].questions || []).find(candidate => candidate.id === id);
+    if (!question) continue;
+    for (const [variant, replacements] of Object.entries(variants)) {
+      const item = variant === "base" ? question : question.reforge;
+      if (!item?.options) continue;
+      for (const [letter, value] of Object.entries(item.options)) {
+        const replacement = replacements[String(value)];
+        if (replacement) item.options[letter] = replacement;
+      }
+    }
+  }
+}
+
+// GCSE Maths: merge thirteen single-use tags into the shared category that
+// already covers the same misconception. These were previously masked: each
+// tag was used once by a source question and once again by that question's
+// coverage-variant clone, so the taxonomy ratchet in dev/audit-banks.js
+// counted it as shared. Removing the clones exposed them as genuine
+// singletons — exactly the effect CLAUDE.md warns about when reading a 0 in
+// TAG_TAXONOMY_SUBJECTS. Every target below already carries a label in
+// data/misconception-labels.js and a starter in data/starter-activities.js.
+const gcseMathsTagMerges = {
+  "MATH-P1-11": "MC-MATH-NTH",          // continuing a linear sequence
+  "MATH-P1-32": "MC-MATH-NTH",          // evaluating an nth term
+  "MATH-P1-24": "MC-MATH-EQUATIONS",    // solving a linear equation
+  "MATH-P1-27": "MC-MATH-ANGLES",       // angle sum of a quadrilateral
+  "MATH-P1-29": "MC-MATH-VOLUME",       // volume of a cuboid
+  "MATH-P1-35": "MC-MATH-POLYGON",      // perimeter of a regular polygon
+  "MATH-P2-35": "MC-MATH-POLYGON",      // exterior angle of a regular polygon
+  "MATH-P1-36": "MC-MATH-TRANSFORM",    // translation as a vector
+  "MATH-P1-37": "MC-MATH-CIRCLE",       // radius from diameter
+  "MATH-P2-01": "MC-MATH-STANDARD2",    // arithmetic in standard form
+  "MATH-P2-05": "MC-MATH-LINEARGRAPH",  // gradient from y = mx + c
+  "MATH-P2-27": "MC-MATH-SCATTER",      // interpreting correlation
+  "MATH-P3-20": "MC-MATH-SUBSTITUTION"  // inverse of a linear function
+};
+for (const [id, tag] of Object.entries(gcseMathsTagMerges)) {
+  for (const bankId of SUBJECTS["gcse-maths"].banks) {
+    const question = (BANKS[bankId].questions || []).find(candidate => candidate.id === id);
+    if (question) question.tag = tag;
+  }
+}
+
+// A-Level Physics: concise restatements of sixteen correct answers that were
+// long enough to be the uniquely-longest option, which lets a student score
+// above chance by picking the longest one. Several carried their full working
+// or explanation inside the option label — up to 131 characters against
+// distractors of ~35 — which belongs in the scaffold, not the option. They
+// surfaced once the coverage-variant clones were removed. Matched on option
+// TEXT rather than letter, because rebalanceMCQSubject() permutes letters and
+// a letter-keyed table applied afterwards lands on whichever option happens to
+// sit there. Applied last.
+const physAnswerLengthRepairs = {
+  "PHYS-04": {
+    reforge: {
+      "−18.5 m (s = 15×4 + ½×(−9.81)×16 = 60 − 78.5 = −18.5 m — it has gone above and come back below the start)":
+        "−18.5 m",
+      "18.5 m":
+        "18.5 m above the start" }
+  },
+  "PHYS-05": {
+    reforge: {
+      "Spring A stores more (EPE_A = ½×200×0.01 = 1 J; EPE_B = ½×50×0.01 = 0.25 J — stiffer spring stores more for the same extension).":
+        "Spring A stores more, being stiffer" }
+  },
+  "PHYS-08": {
+    reforge: {
+      "They hit simultaneously — gravitational acceleration on the Moon is 1.6 m/s² for all objects regardless of mass, since acceleration = F/m = mg/m = g.":
+        "They hit simultaneously, whatever their mass" }
+  },
+  "PHYS-09": {
+    reforge: {
+      "Zero velocity but a non-zero acceleration down the slope, caused by the component of gravity along the incline.":
+        "Zero velocity, non-zero acceleration" }
+  },
+  "PHYS-11": {
+    reforge: {
+      "They can be polarised — restricted to oscillate in a single plane — which is impossible for longitudinal waves.":
+        "They can be polarised" }
+  },
+  "PHYS-13": {
+    reforge: {
+      "Distance 400 m, displacement 0 m — displacement is the straight-line vector from start to finish, which is zero for a complete lap.":
+        "Distance 400 m, displacement 0 m" }
+  },
+  "PHYS-14": {
+    reforge: {
+      "Some energy per coulomb (the 'lost volts') is dissipated across the battery's internal resistance, so terminal p.d. = e.m.f. − Ir.":
+        "Some energy per coulomb is lost inside the cell" }
+  },
+  "PHYS-15": {
+    reforge: {
+      "Air resistance has a much greater decelerating effect on the low-mass, high-surface-area feather relative to its weight, so it reaches terminal velocity almost immediately.":
+        "Air resistance affects the feather far more" }
+  },
+  "EWQ-01": {
+    base: {
+      "Current is a flow of charge, and charge is conserved — the same current flows through all components in a series circuit. It is energy (as potential difference) that is 'used up', not current.":
+        "Charge is conserved, so current is the same throughout" }
+  },
+  "EWQ-02": {
+    base: {
+      "Output voltage decreases — as thermistor resistance falls, a smaller fraction of total resistance is across it, so it takes a smaller share of the supply voltage.":
+        "Output voltage decreases" },
+    reforge: {
+      "Output increases — as thermistor resistance falls, more of the supply voltage falls across the fixed resistor (V_out = V_supply × R_fixed/(R_fixed + R_thermistor) — denominator falls, fraction rises).":
+        "Output increases as the fixed resistor takes more" }
+  },
+  "EWQ-04": {
+    base: {
+      "The wave nature of light — constructive interference (path difference = nλ) produces bright fringes; destructive interference (path difference = (n+½)λ) produces dark fringes.":
+        "The wave nature of light, shown by interference" }
+  },
+  "EWQ-05": {
+    base: {
+      "Light below a threshold frequency ejects no electrons regardless of intensity, and increasing intensity above the threshold increases the number but not the energy of emitted electrons.":
+        "Below a threshold frequency no electrons are ejected" }
+  },
+  "EWQ-06": {
+    base: {
+      "Adding a parallel path provides an additional route for current — the total current from the supply increases for the same voltage, so the combined resistance (R = V/I) is lower.":
+        "A parallel path adds another route for current" }
+  },
+  "EWQ-07": {
+    base: {
+      "A node is a point of zero displacement — the two waves always destructively interfere, so the medium never moves there.":
+        "A node is a point of zero displacement" }
+  },
+  "EWQ-08": {
+    base: {
+      "The electron's de Broglie wavelength is much smaller than visible light (around 10⁻¹¹ m), which is why electron microscopes resolve features that optical microscopes cannot.":
+        "The electron wavelength is far shorter than light" }
+  }
+};
+for (const [id, variants] of Object.entries(physAnswerLengthRepairs)) {
+  for (const bankId of SUBJECTS.phys.banks) {
     const question = (BANKS[bankId].questions || []).find(candidate => candidate.id === id);
     if (!question) continue;
     for (const [variant, replacements] of Object.entries(variants)) {
