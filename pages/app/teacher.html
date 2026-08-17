@@ -302,6 +302,9 @@ function rowsOrEmpty(value) {
 function normaliseSchoolName(value) {
   return String(value == null ? '' : value).replace(/\s+/g, ' ').trim();
 }
+function schoolIdentityKey(value) {
+  return normaliseSchoolName(value).toLowerCase();
+}
 
 function supaDelete(table, id) {
   return ForgeAPI.remove(table, id, teacherApiOptions()).then(function() { return true; });
@@ -741,7 +744,7 @@ function renderLogin(activeTab) {
       for (var i = 0; i < 4; i++) rand += chars[Math.floor(Math.random() * chars.length)];
       var code = prefix + '-' + rand;
 
-      supaInsert('classes', { name: name, subject: subj, code: code, teacher_name: teacher, school: school, teacher_user_id: currentTeacher ? currentTeacher.id : null }).then(function(rows) {
+      supaInsert('classes', { name: name, subject: subj, code: code, teacher_name: teacher, school: school, school_key: schoolIdentityKey(school), teacher_user_id: currentTeacher ? currentTeacher.id : null }).then(function(rows) {
         createBtn.disabled = false; createBtn.textContent = 'Create class \u2192';
         var cls = Array.isArray(rows) ? rows[0] : rows;
         if (window.forgeTrack) forgeTrack('teacher_class_created', { subject: subj });

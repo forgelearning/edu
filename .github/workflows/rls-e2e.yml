@@ -1,0 +1,28 @@
+name: Coded-student RLS end-to-end
+
+on:
+  pull_request:
+    branches: ["main"]
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  coded-student-rls:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # The service role is only used to create and clean up disposable ZZ-E2E
+      # records. Every student operation uses the public anon key. The script
+      # fails closed when this secret is absent, so this cannot become a silent
+      # skip in a release check.
+      - name: Run coded-student RLS end-to-end test
+        env:
+          FORGE_SERVICE_ROLE_KEY: ${{ secrets.FORGE_SERVICE_ROLE_KEY }}
+          FORGE_E2E_REQUIRED: '1'
+        run: npm run check:e2e
