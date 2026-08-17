@@ -123,7 +123,32 @@ lower the baseline when a fix lands. They live in `CONTENT_BASELINES`.
 |---|---|---|
 | `NULL OPTION` | **0 — never raise** | A content-free dismissal ("It has no significant relevance to the topic being tested"). Makes a 4-option question a 3-option one, so guessing pays 33% and reported accuracy inflates. |
 | `SHORT CUE` | 394 | The correct answer is uniquely the shortest *and* under 55% of mean distractor length. The mirror of `CUE`. |
-| `RECYCLED DISTRACTOR` | 73 | One distractor string used in more than 8 distinct source questions (`-COV-n` stripped, so coverage clones don't count). |
+| `RECYCLED DISTRACTOR` | 46 | One distractor string used in more than 8 distinct source questions (`-COV-n` stripped, so coverage clones don't count). |
+
+The audit prints the true count of each next to its baseline. Only the first
+ten of each are listed, so **never count the printed lines** — that reads as a
+26x improvement when nothing has changed.
+
+### The anti-cue loop is the biggest single source of recycling
+
+The loop near the end of `data/forge-data.js` that removes longest-answer cues
+works by swapping the longest distractor for an *already-authored* one that is
+longer than the key. It used `.find()` over a subject-wide pool, so the first
+long-enough entry won — and won for every question reaching the fallback. In
+A-Level Economics the pool starts at `ECON-1.1/SD-01`, so that one question's
+two distractors were sprayed across **211 and 85** unrelated questions (a
+Veblen-effect option offered in macro questions about GDP growth). The code
+already carried a comment about the same thing happening to A-Level Business.
+
+Now tiered tag → same bank → subject, picking the **least-used** candidate
+rather than the first. That took the Veblen string from 211 questions to 2 and
+`RECYCLED DISTRACTOR` from 73 to 46, with `CUE` still 0.
+
+It is not a full fix. The strategy itself is wrong: any loop that must find a
+distractor *longer than the key* will eventually reach outside the topic, so
+`2.2.2/AS-08` can still end up offering "Price (£ or P) on the vertical axis…"
+in a question about VAT and SRAS. The real fix is authoring distractors of
+comparable length in the source, which is what the `SHORT CUE` backlog is.
 
 `SHORT CUE` is the reason these exist. It is not a static backlog: it drifted
 from 371 to 394 **during** the hand-fixing of the null-option problem, unseen,

@@ -732,10 +732,18 @@ if (taxonomy.length) {
 const CONTENT_BASELINES = {
   'SHORT CUE': 394,
   'NULL OPTION': 0,
-  'RECYCLED DISTRACTOR': 73
+  'RECYCLED DISTRACTOR': 46
 };
 if (!args.length) {
   let regressed = false;
+  // Always print the true count. Only the first ten of each are listed below,
+  // so counting printed lines understates the total — easy to misread as a
+  // win.
+  console.log('\ncontent-quality counts (baseline in brackets):');
+  for (const [prefix, baseline] of Object.entries(CONTENT_BASELINES)) {
+    const count = issues.filter((i) => i.startsWith(prefix + ':')).length;
+    console.log(`  ${prefix.padEnd(21)} ${String(count).padStart(4)}  (${baseline})`);
+  }
   for (const [prefix, baseline] of Object.entries(CONTENT_BASELINES)) {
     const count = issues.filter((i) => i.startsWith(prefix + ':')).length;
     if (count > baseline) {
