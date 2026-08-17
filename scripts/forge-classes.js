@@ -237,8 +237,22 @@
       fetchAllResponses(supabaseUrl, supabaseKey, anchor && anchor.studentName, done);
       return;
     }
-    var responseRequest = anchor.studentCode && global.ForgeStudentCode
-      ? global.ForgeStudentCode.responses(anchor.studentId, anchor.classCode, anchor.studentCode)
+    /* A caller that rebuilds this anchor by hand and forgets studentCode used
+       to fall through to the legacy RPC below. That RPC is disabled for coded
+       classes and answers [], so the Anvil, Profile and Dashboard all reported
+       "nothing here yet" to students with a full history. Recover the code from
+       the cached session rather than degrading, and make the mistake loud. */
+    var studentCode = anchor.studentCode || null;
+    if (!studentCode) {
+      var cached = null;
+      try { cached = JSON.parse(global.localStorage.getItem('forge-student') || 'null'); } catch (e) { cached = null; }
+      if (cached && cached.studentCode && String(cached.studentId) === String(anchor.studentId)) {
+        studentCode = cached.studentCode;
+        console.warn('ForgeClasses.fetchLinkedResponses: anchor was missing studentCode for a coded student; recovered it from the cached session. Fix the caller.', anchor);
+      }
+    }
+    var responseRequest = studentCode && global.ForgeStudentCode
+      ? global.ForgeStudentCode.responses(anchor.studentId, anchor.classCode, studentCode)
       : rpc(supabaseUrl, supabaseKey, 'get_student_own_responses', {
         p_student_id: anchor.studentId, p_code: anchor.classCode, p_name: anchor.studentName
       });
@@ -254,8 +268,11 @@
          which misconceptions are still live — unsorted, it counts a streak
          backwards and reads a repaired misconception as unrepaired. */
       mapped.sort(function (a, b) { return (a.created_at || '') < (b.created_at || '') ? -1 : 1; });
-      done(mapped);
-    }).catch(function () { done([]); });
+      done(mapped, null);
+      /* Second argument is the failure, so a caller can tell "read failed" from
+         "genuinely nothing answered". Callers that ignore it keep the old
+         behaviour. */
+    }).catch(function (error) { done([], error || new Error('Response read failed')); });
   }
 
   /* Responses for a free, no-account student.

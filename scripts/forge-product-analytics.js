@@ -51,7 +51,16 @@
           anonymous_id: event.anonymousId,
           session_id: event.sessionId,
           details: event.details
-        }, { headers: { 'Prefer': 'resolution=ignore-duplicates,return=minimal' } }).then(function () { sent++; });
+        // Do NOT add resolution=ignore-duplicates here. PostgREST turns it into
+        // ON CONFLICT, which needs SELECT on the table; anon/authenticated hold
+        // INSERT only, so every event 401'd and product_events stayed empty.
+        // client_event_id is the primary key, so a genuine replay fails with
+        // 409 and is treated as already-delivered below.
+        }, { headers: { 'Prefer': 'return=minimal' } }).then(function () { sent++; })
+          .catch(function (error) {
+            if (error && error.status === 409) { sent++; return; }
+            throw error;
+          });
       });
     }, Promise.resolve()).then(function () {
       var sentIds = {};

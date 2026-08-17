@@ -37,6 +37,7 @@
 <script src="scripts/forge-auth-card.js"></script>
 <script src="scripts/forge-classes.js?v=20260813"></script>
 <script src="scripts/forge-student-code.js?v=20260809"></script>
+<script src="scripts/forge-response-writer.js?v=20260817"></script>
 <script src="scripts/forge-theme.js?v=20260808-theme2"></script>
 <script src="scripts/forge-sidebar.js?v=20260809-gearcenter"></script>
 <script src="scripts/forge-product-analytics.js"></script>
@@ -122,12 +123,17 @@ function shuffle(a){var b=[...a];for(var i=b.length-1;i>0;i--){var j=Math.floor(
 var state = {
   phase: 'join',
   studentId: null, classId: null, studentName: null,
+  // classCode/studentCode are the write credential for a coded class student.
+  // Without them every response write is rejected by RLS, so they have to be
+  // restored alongside the ids on every session path, not just on join.
+  classCode: null, studentCode: null, freeToken: null,
   classSubject: null,
   paidSubjects: [],
   extraTime: 0,
   subject: null, bank: null,
   questions: [], idx: 0,
   answers: [], // {q, selected, correct, timeLeft}
+  saveFailures: 0,
   timeLeft: CRUCIBLE_TIME,
   timer: null
 };
@@ -164,6 +170,7 @@ function renderJoin(){
       state.classSubject=match.subject||null;
       state.extraTime=match.extra_time||0;
       var cleanStudentCode=ForgeStudentCode.clean(studentCode);
+      state.classCode=code;state.studentCode=cleanStudentCode;
       try { localStorage.setItem('forge-student', JSON.stringify({studentId: state.studentId, classId: state.classId, classCode: code, studentCode: cleanStudentCode, studentName: state.studentName, classSubject: state.classSubject})); } catch(e) {}
       ForgeClasses.add({
         classId: state.classId, classCode: code, className: match.class_name || null,
@@ -428,7 +435,7 @@ function renderQuestion(){
       if(window.forgeTrack) forgeTrack('crucible_question_answered',{bank:state.bank,correct:isCorrect});
       state.answers.push({q:q,selected:k,correct:isCorrect,timedOut:false});
       saveCrucibleRun();
-      logAnswer(q,k,isCorrect);
+      var saving=logAnswer(q,k,isCorrect);
 
       opts.forEach(function(x){
         x.classList.add('answered');
@@ -441,7 +448,17 @@ function renderQuestion(){
       if(isCorrect){
         fb.innerHTML='<div class="forge-u-7q8pd2">\u2713 Correct.</div>';
       } else {
-        fb.innerHTML='<div class="no-scaffold"><b>No scaffold here.</b> That error has been sent to your Anvil. Rework it after.</div>';
+        // Don't promise Anvil delivery before the write lands. Claiming it and
+        // then losing the row is worse than saying nothing.
+        fb.innerHTML='<div class="no-scaffold"><b>No scaffold here.</b> <span id="c-anvil-state">Saving this error to your Anvil…</span></div>';
+        saving.then(function(saved){
+          var el=document.getElementById('c-anvil-state');
+          if(!el) return;
+          el.textContent=saved
+            ? 'That error has been sent to your Anvil. Rework it after.'
+            : 'We couldn’t sync this answer. It stays on this device — reconnect and it will not be lost from your run.';
+          if(!saved) el.className='forge-status forge-status--error';
+        });
       }
       fb.innerHTML+='<button type="button" class="next-btn btn-glass btn-crimson" id="c-next">'+(state.idx+1<state.questions.length?'Next \u2192':'Finish \u2192')+'</button><div class="clear"></div>';
       document.getElementById('c-next').onclick=function(){
@@ -458,9 +475,13 @@ function renderQuestion(){
   });
 }
 
+/* Resolves to true only once the server has accepted the row. The caller uses
+   that to decide whether it may claim the error reached the Anvil — this used
+   to be a direct `responses` insert, which RLS rejects for coded students, so
+   every Crucible answer was discarded while the UI said it had been saved. */
 function logAnswer(q,selectedKey,isCorrect){
-  if(!state.studentId) return;
-  supaInsert('responses',{
+  if(!state.studentId) return Promise.resolve(false);
+  return ForgeResponseWriter.save(state,{
     student_id:state.studentId,
     class_id:state.classId,
     question_id:q.id+'-CRU',
@@ -471,6 +492,9 @@ function logAnswer(q,selectedKey,isCorrect){
     misconception_tag:isCorrect?null:(q.tag||null),
     reforge_attempted:false,
     reforge_correct:null
+  }).then(function(outcome){
+    if(!outcome.ok && !isCorrect) state.saveFailures++;
+    return outcome.ok;
   });
 }
 
@@ -496,7 +520,10 @@ function renderResults(){
   var wrong=state.answers.filter(function(a){return !a.correct;});
   if(wrong.length>0){
     h+='<div class="forge-u-1qqcf3a">';
-    h+='<p class="tag forge-u-1xtvs35">Sent to your Anvil</p>';
+    // Same rule as the per-question feedback: only claim delivery for rows the
+    // server actually accepted.
+    h+='<p class="tag forge-u-1xtvs35">'+(state.saveFailures>0?'Not all errors reached your Anvil':'Sent to your Anvil')+'</p>';
+    if(state.saveFailures>0) h+=ForgeState.html('error',{label:'Some answers didn’t sync',body:state.saveFailures+' of '+wrong.length+' errors could not be saved to your Anvil. Reconnect and run the Crucible again to record them.'});
     wrong.forEach(function(a){
       var tag=a.q.tag;
       if(Array.isArray(tag)) tag=tag[0];
@@ -641,6 +668,7 @@ function checkLocalSessionCrucible() {
     state.studentId   = freeSession.studentId;
     state.studentName = freeSession.name;
     state.classId     = null;
+    state.freeToken   = freeSession.freeToken || null;
     state.phase = 'subject';
     render();
     return;
@@ -652,6 +680,8 @@ function checkLocalSessionCrucible() {
       state.studentId    = savedSession.studentId;
       state.classId      = savedSession.classId;
       state.studentName  = savedSession.studentName;
+      state.classCode    = savedSession.classCode || null;
+      state.studentCode  = savedSession.studentCode || null;
       state.classSubject = savedSession.classSubject || null;
 
       // Sessions from before multi-class support only know about one class.
@@ -665,7 +695,8 @@ function checkLocalSessionCrucible() {
 
       // Pick up classes joined on the student's other devices.
       ForgeClasses.syncFromServer(SUPABASE_URL, SUPABASE_KEY, {
-        studentId: state.studentId, classCode: savedSession.classCode, studentName: state.studentName
+        studentId: state.studentId, classCode: savedSession.classCode,
+        studentCode: savedSession.studentCode, studentName: state.studentName
       }, function(){ settlePhase(); });
 
       // Offer every class the student has joined (in Crucible or Forge —

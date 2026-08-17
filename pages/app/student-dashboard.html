@@ -488,7 +488,10 @@ function forgeSignOut(){
       var applyLevelAndLoad = function(){
         if (!saved.classCode) { renderLogin(); return; } // older cached session predates classCode caching — needs one re-entry
         ForgeClasses.adopt(saved);
-        var anchor = {studentId: st.studentId, classCode: saved.classCode, studentName: st.studentName};
+        // studentCode is required: without it the read falls through to the
+        // legacy RPC, which is disabled for coded classes and returns [], so a
+        // returning student is told "Your first practice session is waiting."
+        var anchor = {studentId: st.studentId, classCode: saved.classCode, studentCode: saved.studentCode, studentName: st.studentName};
         ForgeClasses.syncFromServer(SUPABASE_URL, SUPABASE_KEY, anchor, function(){});
         ForgeClasses.fetchLinkedResponses(SUPABASE_URL, SUPABASE_KEY, anchor, function(r){
           st.responses = r;
