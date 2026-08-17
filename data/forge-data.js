@@ -31023,6 +31023,41 @@ for (const bank of Object.values(BANKS)) {
 // same-tag alternative first — it is guaranteed to be on-topic for the
 // question being repaired — and only fall back to the old subject-wide pool
 // if no same-tag candidate is long enough.
+//
+// That same-tag preference reduced the problem but did not fix it, because the
+// fallback still used `.find()`: the FIRST pool entry long enough wins, and it
+// wins for every question that reaches the fallback. The econ pool is built in
+// bank order starting at ECON-1.1/SD-01, so SD-01's two distractors were
+// sprayed across 210 and 85 unrelated questions — a Veblen-effect option
+// offered in macro questions about GDP growth and inflation.
+//
+// Two changes stop that recurring:
+//   1. Tier the pools tag -> same bank -> subject. A same-bank distractor is
+//      far likelier to be on-topic than one from anywhere in the subject.
+//   2. Within a tier, pick the LEAST-USED candidate rather than the first,
+//      counting uses across the whole pass. Reuse then spreads instead of
+//      concentrating, and no single string can run away.
+// `dev/audit-banks.js` RECYCLED DISTRACTOR is the regression guard.
+const distractorReuse = new Map();
+const reuseCount = (value) => distractorReuse.get(String(value).toLowerCase()) || 0;
+const noteReuse = (value) => {
+  const key = String(value).toLowerCase();
+  distractorReuse.set(key, (distractorReuse.get(key) || 0) + 1);
+};
+// Least-used candidate that is long enough and not already in this question.
+const pickAlternative = (tiers, minLength, used) => {
+  for (const tier of tiers) {
+    let best = null, bestCount = Infinity;
+    for (const value of tier) {
+      if (value.length <= minLength) continue;
+      if (used.has(value.toLowerCase())) continue;
+      const count = reuseCount(value);
+      if (count < bestCount) { best = value; bestCount = count; if (count === 0) break; }
+    }
+    if (best) return best;
+  }
+  return null;
+};
 for (const bank of Object.values(BANKS)) {
   const subject = Object.values(SUBJECTS).find(candidate => candidate.banks.includes(Object.entries(BANKS).find(([, value]) => value === bank)?.[0]));
   const sourceBanks = subject ? subject.banks.map(bankId => BANKS[bankId]) : [bank];
@@ -31030,6 +31065,13 @@ for (const bank of Object.values(BANKS)) {
     [question, question.reforge].flatMap(item => Object.entries(item?.options || {})
       .filter(([letter]) => letter !== item.correct)
       .map(([, value]) => String(value)))));
+  // Middle tier: distractors authored inside this bank. Same topic by
+  // construction, so a repair stays recognisably about the right thing even
+  // when the question's tag has nothing long enough.
+  const bankAlternatives = (bank.questions || []).flatMap(question =>
+    [question, question.reforge].flatMap(item => Object.entries(item?.options || {})
+      .filter(([letter]) => letter !== item.correct)
+      .map(([, value]) => String(value))));
   const alternativesByTag = new Map();
   for (const sourceBank of sourceBanks) for (const sourceQuestion of sourceBank.questions || []) {
     if (!sourceQuestion.tag) continue;
@@ -31050,12 +31092,12 @@ for (const bank of Object.values(BANKS)) {
         ...Object.values(item.options).map(value => String(value).toLowerCase()),
         ...(sibling && sibling.options ? Object.values(sibling.options).map(value => String(value).toLowerCase()) : [])
       ]);
-      const replacement = tagAlternatives.find(value => value.length > correctLength && !used.has(value.toLowerCase()))
-        || authoredAlternatives.find(value => value.length > correctLength && !used.has(value.toLowerCase()));
+      const replacement = pickAlternative([tagAlternatives, bankAlternatives, authoredAlternatives], correctLength, used);
       const target = Object.keys(item.options).filter(letter => letter !== item.correct)
         .sort((a, b) => String(item.options[b]).length - String(item.options[a]).length)[0];
       if (!replacement || !target) break;
       item.options[target] = replacement;
+      noteReuse(replacement);
       lengths = Object.values(item.options).map(value => String(value).length);
     }
   }
