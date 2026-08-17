@@ -402,7 +402,10 @@ function renderDashboard() {
   h += '<div class="forge-u-7547uz">';
   h += '<div><p class="tag forge-u-l8gta7">School Overview</p>';
   h += '<h1 class="ui-stat-large">Mayfield Grammar</h1>';
-  h += '<p class="dash-meta">Read-only · no individual student names · updated live</p></div>';
+  // The old wording was "no individual student names". Initials plus class and
+  // subject are not anonymous in a small group, so state what is actually
+  // shown rather than implying more protection than exists.
+  h += '<p class="dash-meta">Read-only · initials only, and individual bands hidden below 10 qualifying students · updated live</p></div>';
   h += '<button type="button" class="signout-btn" data-forge-action="logout">Sign out</button>';
   h += '</div>';
 
@@ -616,16 +619,34 @@ function renderDashboard() {
     };
   }).sort(function(a, b) { return b.acc - a.acc; });
 
+  // Small-sample suppression. Students are shown as initials plus their class
+  // and subject, which is not anonymous in a small cohort: in a class of two,
+  // "bottom 10%" names one of them to anyone who knows the group. Below this
+  // threshold the bands are withheld rather than shown with a caveat.
+  var MIN_BAND_COHORT = 10;
   var bandSize = Math.max(1, Math.ceil(rankedStudents.length * 0.1));
-  var top10 = rankedStudents.slice(0, bandSize);
-  var bottom10 = rankedStudents.slice(-bandSize).sort(function(a,b){ return a.acc - b.acc; });
+  var cohortTooSmall = rankedStudents.length < MIN_BAND_COHORT;
+  var top10 = cohortTooSmall ? [] : rankedStudents.slice(0, bandSize);
+  var bottom10 = cohortTooSmall ? [] : rankedStudents.slice(-bandSize).sort(function(a,b){ return a.acc - b.acc; });
+  // "Bottom 10%" is a rank, not a judgement — in a strong cohort the lowest
+  // student may still be at 73%. Carry the actual range so a leader reading
+  // this does not treat a relative position as a performance concern.
+  var bottomRange = bottom10.length
+    ? bottom10[0].acc + '%–' + bottom10[bottom10.length - 1].acc + '%'
+    : null;
+  var suppressionNote = '<p class="forge-u-10yda30">Individual bands are hidden until at least '
+    + MIN_BAND_COHORT + ' students in this view have answered 5 or more questions. '
+    + 'With fewer than that, initials and class make a student identifiable. '
+    + rankedStudents.length + ' currently qualify.</p>';
 
   h += '<div id="tab-performance" style="display:' + (activeTab === 'performance' ? 'block' : 'none') + '">';
 
   // Top 10%
   h += '<div class="card forge-mb-5">';
   h += '<div class="card-title forge-text-good">🔥 Top 10% — ' + top10.length + ' student' + (top10.length !== 1 ? 's' : '') + ' <span class="forge-u-1dueybt">· minimum 5 questions answered</span></div>';
-  if (top10.length === 0) {
+  if (cohortTooSmall) {
+    h += suppressionNote;
+  } else if (top10.length === 0) {
     h += '<p class="forge-u-10yda30">Not enough data yet — students need to answer at least 5 questions.</p>';
   } else {
     h += '<table class="overview-table"><thead><tr><th>Rank</th><th>Name</th><th>Class</th><th>Subject</th><th>Questions</th><th>Accuracy</th></tr></thead><tbody>';
@@ -647,8 +668,11 @@ function renderDashboard() {
 
   // Bottom 10%
   h += '<div class="card">';
-  h += '<div class="card-title forge-text-bad">⚠️ Bottom 10% — ' + bottom10.length + ' student' + (bottom10.length !== 1 ? 's' : '') + ' <span class="forge-u-1dueybt">· may need intervention</span></div>';
-  if (bottom10.length === 0) {
+  h += '<div class="card-title forge-text-bad">⚠️ Lowest 10% by accuracy — ' + bottom10.length + ' student' + (bottom10.length !== 1 ? 's' : '')
+    + ' <span class="forge-u-1dueybt">· ' + (bottomRange ? 'currently ' + bottomRange + ' — a rank, not a pass mark' : 'relative rank within this view') + '</span></div>';
+  if (cohortTooSmall) {
+    h += suppressionNote;
+  } else if (bottom10.length === 0) {
     h += '<p class="forge-u-10yda30">Not enough data yet.</p>';
   } else {
     h += '<table class="overview-table"><thead><tr><th>Rank</th><th>Name</th><th>Class</th><th>Subject</th><th>Questions</th><th>Accuracy</th></tr></thead><tbody>';

@@ -92,6 +92,7 @@
         '<input id="' + id + '" class="auth-input" type="' + (o.type || 'text') + '"' +
           (o.placeholder ? ' placeholder="' + o.placeholder + '"' : '') +
           (o.autocomplete ? ' autocomplete="' + o.autocomplete + '"' : '') +
+          (o.list ? ' list="' + o.list + '"' : '') +
           ' enterkeyhint="' + enterHint + '"' +
           (o.upper ? ' autocapitalize="characters" style="text-transform:uppercase"' : '') +
         '></div>';

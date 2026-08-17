@@ -292,6 +292,17 @@ function rowsOrEmpty(value) {
   return Array.isArray(value) ? value : [];
 }
 
+/* School is the grouping key for the whole School Overview, and it is free
+   text. Trailing spaces and doubled spaces alone were enough to fork it, so
+   normalise whitespace on the way in. Case is deliberately preserved — the
+   overview RPC already folds case, and rewriting a teacher's capitalisation
+   is not this function's business. Abbreviations ("MGSG" for "Mayfield
+   Grammar School") cannot be merged safely by rule and are left alone; the
+   datalist exists to stop them being created in the first place. */
+function normaliseSchoolName(value) {
+  return String(value == null ? '' : value).replace(/\s+/g, ' ').trim();
+}
+
 function supaDelete(table, id) {
   return ForgeAPI.remove(table, id, teacherApiOptions()).then(function() { return true; });
 }
@@ -582,7 +593,13 @@ function renderLogin(activeTab) {
 
   // Create panel
   h += '<div id="lp-create" style="display:' + (activeTab === 'create' ? 'block' : 'none') + '">';
-  h += ForgeAuthCard.field('c-school', 'School name', {placeholder:'e.g. Mount Grace School'});
+  // School is free text, and retyping it is how one school becomes three:
+  // production held "Mayfield Grammar School", "mayfield grammar school" and
+  // "MGSG" as separate entities, splitting the School Overview. The datalist
+  // offers the teacher's existing spellings so they pick rather than retype;
+  // the create handler normalises whatever is typed.
+  h += ForgeAuthCard.field('c-school', 'School name', {placeholder:'e.g. Mount Grace School', list:'c-school-options'});
+  h += '<datalist id="c-school-options"></datalist>';
   h += ForgeAuthCard.field('c-name', 'Class name', {placeholder:'e.g. Year 12 Economics'});
   h += ForgeAuthCard.field('c-teacher', 'Your name', {placeholder:'e.g. Mr Zanier'});
   h += '<div class="auth-field"><label class="auth-label" for="c-subj">Subject</label>';
@@ -619,6 +636,22 @@ function renderLogin(activeTab) {
         opts += '<option value="' + s.key + '">' + s.label + ' (' + s.spec + ')</option>';
       });
       sel.innerHTML = opts;
+    }
+    // Offer the teacher's existing school spellings so a second class joins the
+    // same school rather than founding a new one. Populated from the server
+    // because the local class list does not carry the school name.
+    if (currentTeacher && currentTeacher.id) {
+      supaGet('classes', 'teacher_user_id=eq.' + encodeURIComponent(currentTeacher.id) + '&select=school').then(function(rows) {
+        var options = document.getElementById('c-school-options');
+        if (!options) return;
+        var seen = {}, names = [];
+        (rows || []).forEach(function(row) {
+          var name = normaliseSchoolName(row && row.school);
+          if (!name || seen[name.toLowerCase()]) return;
+          seen[name.toLowerCase()] = true; names.push(name);
+        });
+        options.innerHTML = names.map(function(name) { return '<option value="' + teacherEsc(name) + '"></option>'; }).join('');
+      }).catch(function() {});
     }
     // When school name is blurred, re-filter to grey out subjects THIS teacher already created at that school
     var schoolInput = document.getElementById('c-school');
@@ -684,7 +717,7 @@ function renderLogin(activeTab) {
   var createBtn = document.getElementById('c-btn');
   if (createBtn) {
     createBtn.onclick = function() {
-      var school = document.getElementById('c-school').value.trim();
+      var school = normaliseSchoolName(document.getElementById('c-school').value);
       var name = document.getElementById('c-name').value.trim();
       var teacher = document.getElementById('c-teacher').value.trim();
       var subj = document.getElementById('c-subj').value;
