@@ -17,6 +17,15 @@ Applied to production: all migrations listed above.
 
 Apply in filename order.
 
+## 20260817 1930xx — school identity
+
+| File | What it does |
+|---|---|
+| `20260817190621_normalize_school_identity.sql` | Adds a durable `classes.school_key`, a private alias table, a trigger for direct inserts, and scopes School Overview by the canonical key |
+| `20260817190646_canonicalize_school_display.sql` | Rewrites existing rows that share a known alias to the canonical display spelling |
+
+Applied to production: both migrations listed above.
+
 After deployment, run `node dev/audit-supabase-security.js`. The check is
 read-only and verifies that the overview and invite-code table are not public,
 that free-history is token-gated, and that the free quota RPC rejects an
@@ -59,12 +68,10 @@ pupils and are now excluded. This is a correction, not a regression.
 
 ### What this does *not* fix
 
-`classes.school` is free text typed at class creation. Matching is normalised
-on `lower(btrim(...))` — which already merges the real
-`mayfield grammar school` / `Mayfield Grammar School` pair — but
-`Mayfield Grammar` and `Mayfield Grammar School` remain different schools.
-A `schools` table with a foreign key is the durable fix and is deliberately
-out of scope here.
+Unknown abbreviations are not guessed or merged automatically. Add an explicit
+row to `school_aliases` after confirming that an alias belongs to the same
+organisation; the trigger will then canonicalise future writes and the
+display migration can safely merge existing rows.
 
 Scoping rule is "a caller sees the schools where they own at least one class."
 If School Overview is meant for leadership rather than every teacher, that
