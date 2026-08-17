@@ -962,7 +962,7 @@ function renderDashboard() {
       '<div class="card danger-zone">'
       + '<h3>Delete ' + teacherEsc(dashState.className || 'this class') + '?</h3>'
       + '<p>This removes the class, its <b>' + students.length + '</b> student' + (students.length !== 1 ? 's' : '')
-      + '</b>, their access codes, its assignments and all <b>' + totalQs + '</b> recorded answer' + (totalQs !== 1 ? 's' : '')
+      + ', their access codes, its assignments and all <b>' + totalQs + '</b> recorded answer' + (totalQs !== 1 ? 's' : '')
       + '. It cannot be undone.</p>'
       + '<p>Type <code>' + teacherEsc(dashState.classCode || '') + '</code> to confirm.</p>'
       + '<input type="text" id="delete-class-confirm" autocomplete="off" spellcheck="false" aria-label="Type the class code to confirm deletion">'
