@@ -26,6 +26,25 @@ Content figures come from evaluating `data/forge-data.js` after all rewrite
 passes, i.e. what a student actually sees — 15,063 gradeable items (7,531 stems
 + 7,532 reforge twins).
 
+### Re-measured against `main` at rebase time
+
+The content sections below were first measured against `main` at `5505a31e`.
+`main` has since landed a run of distractor and clone-padding repairs, so every
+figure was re-measured before this document was merged. Where a finding has been
+fixed by that work it is marked here rather than quietly left overstated.
+
+| § | Finding | At audit | Now | Status |
+|---|---|---|---|---|
+| 2.5 | Content-free "null option" distractors | 1,807 items (12.0%) | **10 items (0.1%)** | **Largely fixed on `main`** — crim, pol, law, geo, hist, soc all now 0 |
+| 2.6 | Off-topic econ boilerplate | 211 questions | **211 questions** | Unchanged |
+| 2.4 | Shortest-answer cue | 150 stems / 221 twins | **159 / 235** | Slightly worse; `mand` is now the worst subject at 8.5% |
+| 2.7 | Distractor-lengthening rewrites | 366 | **336** | Reduced (`geoAlevelDistractorRepairs` 187 → 157); mechanism intact |
+| 2.8 | `SD-08` truncated correct answer | truncated | truncated | Unchanged |
+| 2.8 | `econ` subtitle contradicts bank list | wrong | wrong | Unchanged |
+
+Re-run these measurements before acting on any figure below; that is the
+recurring failure this repository keeps hitting.
+
 ---
 
 ## Part 1 — Confirmed P0s (independent reproduction)
@@ -203,6 +222,11 @@ another. Both are stale.
 
 ### 2.5 Content-free "null option" distractors — 12% of the bank
 
+> **Largely fixed on `main` since this was written.** Re-measured at rebase:
+> 10 affected items (0.1%), with crim, pol, law, geo, hist and soc all at zero.
+> The analysis is kept because the detection method is worth keeping as a check
+> (see the remediation list), and 10 residual items remain.
+
 A distractor a student can eliminate without knowing any subject content
 ("It has no significant relevance to the topic being tested").
 
@@ -362,13 +386,18 @@ The companion audit's remediation list stands. I would insert:
    adoption telemetry.
 2. **Alongside its item 8** — add `UPDATE`/`DELETE` policies on `classes` *first*,
    and make the client treat a `204` with zero affected rows as a failure.
-3. **New, before content work** — extend `dev/audit-banks.js` with three checks:
-   shortest-answer cue, distractor text reused across unrelated questions in the
-   same subject, and content-free option phrases. All three are cheap and would
-   have caught §2.4–2.6 automatically.
-4. **New** — retire the four distractor-lengthening tables and rewrite those 366
-   distractors as plausible alternatives.
+3. **New, before further content work** — extend `dev/audit-banks.js` with three
+   checks: shortest-answer cue, distractor text reused across unrelated
+   questions in the same subject, and content-free option phrases. All three are
+   cheap and would have caught §2.4–2.6 automatically. This matters more now
+   that §2.5 has been fixed by hand: without a ratchet it will drift back, and
+   §2.4 has already got slightly worse as new content landed.
+4. **New** — retire the four distractor-lengthening tables (336 rewrites at last
+   measurement) and rewrite those distractors as plausible alternatives.
 
-Criminology, Politics and Law should not be marketed as exam-ready until §2.5 is
-addressed; at 100% null-option coverage their reported accuracy figures are not
-meaningful.
+The caveat this document originally carried — that Criminology, Politics and Law
+should not be marketed as exam-ready until §2.5 was addressed — has been met by
+the distractor-replacement work on `main`. All three are now at zero null-option
+coverage. Their historic accuracy figures were inflated by the old three-option
+effect, so treat any pre-fix reported accuracy for those subjects as not
+comparable with post-fix figures.
