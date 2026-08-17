@@ -48,7 +48,8 @@
         p_misconception_tag: row.misconception_tag || null,
         p_spec_point: row.spec_point || null,
         p_reforge_attempted: !!row.reforge_attempted,
-        p_reforge_correct: row.reforge_correct == null ? null : !!row.reforge_correct
+        p_reforge_correct: row.reforge_correct == null ? null : !!row.reforge_correct,
+        p_assignment_id: row.assignment_id || null
       }).then(function (result) {
         if (!result || result.allowed !== true) throw new Error('Student response session is not valid.');
         return result;

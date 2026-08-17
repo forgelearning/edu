@@ -90,7 +90,8 @@
         p_is_correct: row.is_correct,
         p_misconception_tag: row.misconception_tag,
         p_reforge_attempted: row.reforge_attempted,
-        p_reforge_correct: row.reforge_correct
+        p_reforge_correct: row.reforge_correct,
+        p_assignment_id: row.assignment_id || null
       }).then(function (result) {
         if (result && result.allowed === false) return { ok: false, refused: true, result: result };
         return ok(result);

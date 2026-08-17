@@ -156,7 +156,8 @@ function logResponse(q, selectedKey, isCorrect, isReforge, reforgeCorrect) {
     // without this correct answers logged no spec point at all.
     spec_point: q.spec || MC_TO_SPEC[q.tag] || null,
     reforge_attempted: isReforge || false,
-    reforge_correct: isReforge ? reforgeCorrect : null
+    reforge_correct: isReforge ? reforgeCorrect : null,
+    assignment_id: state.assignmentId || null
   };
   // Use auth token for trial/paid students so RLS policies pass correctly
   var token = (state.isPaid || state.isTrial) ? ForgeAuth.accessToken() : null;
@@ -201,7 +202,8 @@ function logResponse(q, selectedKey, isCorrect, isReforge, reforgeCorrect) {
         p_is_correct: row.is_correct,
         p_misconception_tag: row.misconception_tag,
         p_reforge_attempted: row.reforge_attempted,
-        p_reforge_correct: row.reforge_correct
+        p_reforge_correct: row.reforge_correct,
+        p_assignment_id: row.assignment_id || null
       }).then(function(result) {
         // The server is authoritative. If a stale local meter lets one more
         // question render, stop here and show the same limit wall rather than
@@ -393,6 +395,7 @@ var state = {
   studentCode: null,
   studentName: null,
   classSubject: null,  // locked subject from class code
+  assignmentId: null,  // exact assignment attribution for assigned practice
   isPaid: false,
   isTrial: false,
   trialDaysLeft: 0,
@@ -441,6 +444,7 @@ function forgeCompleteSession() {
 }
 var requestedBank = new URLSearchParams(location.search).get('bank');
 var requestedClassId = new URLSearchParams(location.search).get('class_id');
+var requestedAssignmentId = new URLSearchParams(location.search).get('assignment_id');
 var requestedAssignmentTitle = new URLSearchParams(location.search).get('assignment_title');
 var requestedSubject = new URLSearchParams(location.search).get('subject');
 var openClassJoin = new URLSearchParams(location.search).get('mode') === 'class';
@@ -739,6 +743,7 @@ function render() {
     // subject bank list.
     state.subject = getSubjectForBank(requestedBank);
     if (requestedClassId) state.classId = requestedClassId;
+    if (requestedAssignmentId) state.assignmentId = requestedAssignmentId;
     var requestedClass = ForgeClasses.forSubject(state.subject);
     if (requestedClass) activateClass(requestedClass);
     var launchRequestedBank = function() {
@@ -1277,6 +1282,7 @@ function renderBanks(){
   var recommendedBtn=document.getElementById('start-recommended');
   if(recommendedBtn) recommendedBtn.onclick=function(){
     if(!recommended || !recommendedQuestions.length) return;
+    state.assignmentId = null;
     state.bank=recommendedBank; forgeStartSession(recommendedBank,recommendedQuestions);
     ensurePaidStudentId().then(function(){state.phase='quiz';render();});
   };
@@ -1288,6 +1294,7 @@ function renderBanks(){
   if (backBtn) backBtn.onclick=function(){state.phase='subjects';render();};
   app.querySelectorAll('.bank-btn').forEach(function(b){
     b.onclick=function(){
+      state.assignmentId = null;
       state.bank=b.dataset.key;
       var rawQs=BANKS[b.dataset.key].questions.filter(function(q){return !q.type||q.type==='fill_blank';});
       forgeStartSession(state.bank, rawQs);
@@ -1334,7 +1341,7 @@ function renderBanks(){
         bh += '<div class="forge-u-1hm6ozo">';
         relevantBanks.forEach(function(bk){
           var bankLabel = BANKS[bk] ? BANKS[bk].label : bk;
-          bh += '<button type="button" class="forge-u-1h97zoi" data-asgn-bank="'+bk+'">';
+          bh += '<button type="button" class="forge-u-1h97zoi" data-asgn-bank="'+bk+'" data-asgn-id="'+asgn.id+'">';
           bh += bankLabel+' \u2192</button>';
         });
         bh += '</div></div>';
@@ -1345,6 +1352,7 @@ function renderBanks(){
         banner.querySelectorAll('[data-asgn-bank]').forEach(function(btn){
           btn.onclick = function(){
             var bk = btn.getAttribute('data-asgn-bank');
+            state.assignmentId = btn.getAttribute('data-asgn-id') || null;
             state.bank = bk;
             var rawQs = BANKS[bk].questions.filter(function(q){return !q.type||q.type==='fill_blank';});
             forgeStartSession(state.bank, rawQs);
@@ -1791,8 +1799,9 @@ function renderResults(){
     forgeStartSession(state.bank, rawQs2);
     state.phase='quiz';render();
   };
-  document.getElementById('all-banks').onclick=function(){state.phase='banks';render();};
+  document.getElementById('all-banks').onclick=function(){state.assignmentId=null;state.phase='banks';render();};
   document.getElementById('all-subj').onclick=function(){
+    state.assignmentId=null;
     if(state.classSubject){state.phase='banks';}else{state.phase='subjects';}
     render();
   };

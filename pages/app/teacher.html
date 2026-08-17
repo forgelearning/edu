@@ -914,8 +914,9 @@ function renderDashboard() {
   if (dashState.classCode) {
     h += ' <button type="button" class="class-code-pill" id="class-code-pill" data-forge-action="copy-class-code" title="Copy class code">' + dashState.classCode + ' ⎘</button>';
   }
-  h += '</h1><button type="button" class="forge-button forge-button--secondary" id="generate-student-codes">Generate student codes</button><button type="button" class="forge-button forge-button--secondary" id="migrate-existing-students">Migrate existing students</button><button type="button" class="forge-button forge-button--secondary forge-button--danger" id="delete-class">Delete class</button></div>';
+  h += '</h1><button type="button" class="forge-button forge-button--secondary" id="generate-student-codes" aria-expanded="false" aria-controls="generate-codes-panel">Generate student codes</button><button type="button" class="forge-button forge-button--secondary" id="migrate-existing-students">Migrate existing students</button><button type="button" class="forge-button forge-button--secondary forge-button--danger" id="delete-class">Delete class</button></div>';
   h += '<div id="delete-class-panel" hidden></div>';
+  h += '<div id="generate-codes-panel" class="code-generation-panel" hidden></div>';
   h += '<div class="dash-header-actions"><a class="dash-primary forge-button forge-button--primary" href="#" id="dash-action">' + (wrongResponses.length ? 'Open misconceptions \u2192' : 'Create assignment \u2192') + '</a><div class="dash-meta"><b>' + students.length + '</b> student' + (students.length !== 1 ? 's' : '') + ' \u00b7 <b>' + totalQs + '</b> response' + (totalQs !== 1 ? 's' : '') + ' \u00b7 <button type="button" class="back-btn forge-u-gr3ipb" data-forge-action="render-teacher-home">\u2190 All classes</button></div></div>';
   h += '</div>';
 
@@ -959,27 +960,67 @@ function renderDashboard() {
 
   app.innerHTML = h;
   var generateCodesBtn = document.getElementById('generate-student-codes');
-  if (generateCodesBtn) generateCodesBtn.onclick = function () {
-    var quantity = window.prompt('How many student codes?', '25');
-    if (quantity === null) return;
-    quantity = parseInt(quantity, 10);
-    if (!Number.isInteger(quantity) || quantity < 1 || quantity > 200) { window.alert('Enter a whole number from 1 to 200.'); return; }
-    generateCodesBtn.disabled = true;
-    generateCodesBtn.textContent = 'Generating…';
-    ForgeAPI.rpc('generate_student_access_codes', { p_class_id: dashState.classId, p_quantity: quantity }, teacherApiOptions())
-      .then(function (rows) {
-        if (!Array.isArray(rows) || rows.length !== quantity) throw new Error('The server did not return the requested number of codes.');
-        var csv = 'Student Code,Name,Class Code\n' + rows.map(function (row) {
-          return [row.student_code, '', row.class_code].map(function (v) { return '"' + String(v || '').replace(/"/g, '""') + '"'; }).join(',');
-        }).join('\n') + '\n';
-        var blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
-        var url = URL.createObjectURL(blob);
-        var link = document.createElement('a'); link.href = url; link.download = 'forge-student-codes-' + dashState.classCode + '.csv'; link.click();
-        setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
-        window.alert('Downloaded ' + rows.length + ' student codes. Keep this file private.');
-      })
-      .catch(function (error) { window.alert(error.message || 'Could not generate student codes.'); })
-      .finally(function () { generateCodesBtn.disabled = false; generateCodesBtn.textContent = 'Generate student codes'; });
+  var generateCodesPanel = document.getElementById('generate-codes-panel');
+  if (generateCodesBtn && generateCodesPanel) generateCodesBtn.onclick = function () {
+    if (!generateCodesPanel.hidden) {
+      generateCodesPanel.hidden = true;
+      generateCodesPanel.innerHTML = '';
+      generateCodesBtn.setAttribute('aria-expanded', 'false');
+      return;
+    }
+    generateCodesPanel.hidden = false;
+    generateCodesPanel.innerHTML = '<div class="card code-generation-card" role="dialog" aria-labelledby="generate-codes-title">'
+      + '<h3 id="generate-codes-title">Generate student codes</h3>'
+      + '<p>Create a private batch of one-time access codes for this class.</p>'
+      + '<label for="student-code-quantity">Number of codes</label>'
+      + '<input type="number" id="student-code-quantity" min="1" max="200" step="1" value="25" inputmode="numeric">'
+      + '<div class="forge-action-row"><button type="button" class="forge-button forge-button--secondary" id="generate-codes-cancel">Cancel</button>'
+      + '<button type="button" class="forge-button forge-button--primary" id="generate-codes-submit">Generate and download</button></div>'
+      + '<div id="generate-codes-state" class="code-generation-status" role="status" aria-live="polite"></div></div>';
+    generateCodesBtn.setAttribute('aria-expanded', 'true');
+    var quantityInput = document.getElementById('student-code-quantity');
+    var cancelBtn = document.getElementById('generate-codes-cancel');
+    var submitBtn = document.getElementById('generate-codes-submit');
+    var stateHost = document.getElementById('generate-codes-state');
+    var closePanel = function () {
+      generateCodesPanel.hidden = true;
+      generateCodesPanel.innerHTML = '';
+      generateCodesBtn.setAttribute('aria-expanded', 'false');
+      generateCodesBtn.focus();
+    };
+    cancelBtn.onclick = closePanel;
+    submitBtn.onclick = function () {
+      var quantity = Number(quantityInput.value);
+      if (!Number.isInteger(quantity) || quantity < 1 || quantity > 200) {
+        stateHost.className = 'code-generation-status code-generation-status--error';
+        stateHost.textContent = 'Enter a whole number from 1 to 200.';
+        quantityInput.focus();
+        return;
+      }
+      submitBtn.disabled = true;
+      cancelBtn.disabled = true;
+      stateHost.className = 'code-generation-status';
+      stateHost.textContent = 'Generating codes…';
+      ForgeAPI.rpc('generate_student_access_codes', { p_class_id: dashState.classId, p_quantity: quantity }, teacherApiOptions())
+        .then(function (rows) {
+          if (!Array.isArray(rows) || rows.length !== quantity) throw new Error('The server did not return the requested number of codes.');
+          var csv = 'Student Code,Name,Class Code\n' + rows.map(function (row) {
+            return [row.student_code, '', row.class_code].map(function (v) { return '"' + String(v || '').replace(/"/g, '""') + '"'; }).join(',');
+          }).join('\n') + '\n';
+          var blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+          var url = URL.createObjectURL(blob);
+          var link = document.createElement('a'); link.href = url; link.download = 'forge-student-codes-' + dashState.classCode + '.csv'; link.click();
+          setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+          stateHost.className = 'code-generation-status code-generation-status--success';
+          stateHost.textContent = 'Downloaded ' + rows.length + ' student codes. Keep this file private.';
+        })
+        .catch(function (error) {
+          stateHost.className = 'code-generation-status code-generation-status--error';
+          stateHost.textContent = error.message || 'Could not generate student codes.';
+        })
+        .finally(function () { submitBtn.disabled = false; cancelBtn.disabled = false; });
+    };
+    quantityInput.focus();
   };
   /* Deleting a class cascades to its students, access codes, assignments and
      every response they hold (see 20260810130000_cascade_class_cleanup.sql), so
