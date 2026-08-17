@@ -110,6 +110,37 @@ propagates into its `*-COV-*` copies and fixing the source fixes them all.
 ## Current status after PR #133
 
 - The full bank now has **0 longest-answer cues** across 7,510 stems and 7,510 Reforge twins. `dev/audit-banks.js` treats any future `CUE` as fatal.
+
+## Three content-quality ratchets (added 2026-08-17)
+
+`dev/audit-banks.js` now also checks three ways a question can be answered
+without knowing the subject. A structurally perfect bank can fail all three, so
+nothing else in the suite could see them. Each follows the
+`PERMUTED_REFORGE_BASELINE` convention: fail on regression, and tell you to
+lower the baseline when a fix lands. They live in `CONTENT_BASELINES`.
+
+| Check | Baseline | Meaning |
+|---|---|---|
+| `NULL OPTION` | **0 — never raise** | A content-free dismissal ("It has no significant relevance to the topic being tested"). Makes a 4-option question a 3-option one, so guessing pays 33% and reported accuracy inflates. |
+| `SHORT CUE` | 394 | The correct answer is uniquely the shortest *and* under 55% of mean distractor length. The mirror of `CUE`. |
+| `RECYCLED DISTRACTOR` | 73 | One distractor string used in more than 8 distinct source questions (`-COV-n` stripped, so coverage clones don't count). |
+
+`SHORT CUE` is the reason these exist. It is not a static backlog: it drifted
+from 371 to 394 **during** the hand-fixing of the null-option problem, unseen,
+because nothing was watching. Pin a check before starting a content fix, not
+after.
+
+`SHORT CUE` and `RECYCLED DISTRACTOR` are hand-authoring backlogs — each entry
+needs a plausible replacement written for that specific question. Do **not**
+clear them with a bulk rewrite script; that is what produced the padding passes
+and the Veblen contamination in the first place. Rewriting just ten null
+options by hand still introduced three near-duplicate option pairs that only a
+manual read caught.
+
+Considered and rejected: a token-similarity check for near-duplicate options.
+It flags 420 pairs, but most are legitimate — `"Output rises, price level
+rises"` vs `"Output rises, price level unchanged"` is a good option set, and MFL
+conjugation options necessarily share tokens. It would be noise.
 - The HSC and RS taxonomy residues are resolved: all active tags have concept labels, and RS now has 16 explicit starter activities. The audit currently reports 0 issues.
 - The paragraphs below retain historical context about how the taxonomy and cue backlogs were found. Re-measure the live checkout before treating any historical count or backlog ordering as current.
 
