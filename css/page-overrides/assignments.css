@@ -121,3 +121,8 @@ body{font-family:'Poppins',sans-serif;color:var(--slate)}h1,h2{font-family:'Reth
   .mission-control__action{transition:none}
   .mission-control__action:hover{transform:none}
 }
+
+/* A finished bank still links to its questions, but must not read as
+   outstanding work — students were reopening completed banks. */
+.topic--complete{background:rgba(127,217,138,.12);color:var(--good);border-color:rgba(127,217,138,.28)}
+#list>.card .topic--complete{border-color:rgba(127,217,138,.28)}

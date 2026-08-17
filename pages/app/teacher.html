@@ -76,6 +76,9 @@ function mountTeacherSidebar() {
 </main>
 
 <script src="data/forge-data.js"></script>
+<!-- Assignment attainment is defined once, in forge-assignment-progress.js, and
+     shared with the student's assignment view so the two cannot disagree. -->
+<script>window.ForgeAssignmentBanks=BANKS;</script><script src="scripts/forge-assignment-progress.js"></script>
 <script src="data/misconception-labels.js?v=20260813"></script>
 <script src="data/starter-activities.js?v=20260813"></script>
 <script>
@@ -878,7 +881,8 @@ function renderDashboard() {
   if (dashState.classCode) {
     h += ' <button type="button" class="class-code-pill" id="class-code-pill" data-forge-action="copy-class-code" title="Copy class code">' + dashState.classCode + ' ⎘</button>';
   }
-  h += '</h1><button type="button" class="forge-button forge-button--secondary" id="generate-student-codes">Generate student codes</button><button type="button" class="forge-button forge-button--secondary" id="migrate-existing-students">Migrate existing students</button></div>';
+  h += '</h1><button type="button" class="forge-button forge-button--secondary" id="generate-student-codes">Generate student codes</button><button type="button" class="forge-button forge-button--secondary" id="migrate-existing-students">Migrate existing students</button><button type="button" class="forge-button forge-button--secondary forge-button--danger" id="delete-class">Delete class</button></div>';
+  h += '<div id="delete-class-panel" hidden></div>';
   h += '<div class="dash-header-actions"><a class="dash-primary forge-button forge-button--primary" href="#" id="dash-action">' + (wrongResponses.length ? 'Open misconceptions \u2192' : 'Create assignment \u2192') + '</a><div class="dash-meta"><b>' + students.length + '</b> student' + (students.length !== 1 ? 's' : '') + ' \u00b7 <b>' + totalQs + '</b> response' + (totalQs !== 1 ? 's' : '') + ' \u00b7 <button type="button" class="back-btn forge-u-gr3ipb" data-forge-action="render-teacher-home">\u2190 All classes</button></div></div>';
   h += '</div>';
 
@@ -889,7 +893,7 @@ function renderDashboard() {
   h += '<div class="stat stat--priority" title="Correct answers divided by answered questions"><span class="stat-n ' + accuracyClass + '">' + (totalQs === 0 ? '—' : accuracy + '%') + '</span><span class="stat-l">Class accuracy</span></div>';
   h += '<div class="stat stat--priority"><span class="stat-n stat-n-hot">' + Object.keys(uniqueMCs).length + '</span><span class="stat-l">Open misconception signals</span></div>';
   h += '</div>';
-  h += '<div class="stat-support"><span>' + students.length + ' students</span><span>' + totalQs + ' answers</span><span>' + reforgeCorrect.length + '/' + reforgeAttempts.length + ' reforges passed</span></div>';
+  h += '<div class="stat-support"><span>' + students.length + ' student' + (students.length !== 1 ? 's' : '') + '</span><span>' + totalQs + ' answer' + (totalQs !== 1 ? 's' : '') + '</span><span>' + reforgeCorrect.length + '/' + reforgeAttempts.length + ' reforges passed</span></div>';
   h += '<section class="ui-recommendation" aria-labelledby="teacher-next-action-title">';
   h += '<p class="ui-recommendation__eyebrow">Next best action</p>';
   h += '<h2 class="ui-recommendation__title" id="teacher-next-action-title">' + (wrongResponses.length ? 'Address the strongest misconception signal' : 'Create the first focused assignment') + '</h2>';
@@ -944,6 +948,60 @@ function renderDashboard() {
       .catch(function (error) { window.alert(error.message || 'Could not generate student codes.'); })
       .finally(function () { generateCodesBtn.disabled = false; generateCodesBtn.textContent = 'Generate student codes'; });
   };
+  /* Deleting a class cascades to its students, access codes, assignments and
+     every response they hold (see 20260810130000_cascade_class_cleanup.sql), so
+     it asks the teacher to type the class code rather than accepting a single
+     click. Deliberately not window.confirm: native dialogs are unreliable in
+     the Capacitor shells this repo builds. */
+  var deleteClassBtn = document.getElementById('delete-class');
+  var deletePanel = document.getElementById('delete-class-panel');
+  if (deleteClassBtn && deletePanel) deleteClassBtn.onclick = function () {
+    if (!deletePanel.hidden) { deletePanel.hidden = true; deletePanel.innerHTML = ''; return; }
+    deletePanel.hidden = false;
+    deletePanel.innerHTML =
+      '<div class="card danger-zone">'
+      + '<h3>Delete ' + teacherEsc(dashState.className || 'this class') + '?</h3>'
+      + '<p>This removes the class, its <b>' + students.length + '</b> student' + (students.length !== 1 ? 's' : '')
+      + '</b>, their access codes, its assignments and all <b>' + totalQs + '</b> recorded answer' + (totalQs !== 1 ? 's' : '')
+      + '. It cannot be undone.</p>'
+      + '<p>Type <code>' + teacherEsc(dashState.classCode || '') + '</code> to confirm.</p>'
+      + '<input type="text" id="delete-class-confirm" autocomplete="off" spellcheck="false" aria-label="Type the class code to confirm deletion">'
+      + '<div class="forge-action-row">'
+      + '<button type="button" class="forge-button forge-button--secondary" id="delete-class-cancel">Cancel</button>'
+      + '<button type="button" class="forge-button forge-button--danger" id="delete-class-confirm-btn" disabled>Delete permanently</button>'
+      + '</div><div id="delete-class-state"></div></div>';
+
+    var input = document.getElementById('delete-class-confirm');
+    var confirmBtn = document.getElementById('delete-class-confirm-btn');
+    var stateHost = document.getElementById('delete-class-state');
+    input.oninput = function () {
+      confirmBtn.disabled = input.value.trim().toUpperCase() !== String(dashState.classCode || '').toUpperCase();
+    };
+    document.getElementById('delete-class-cancel').onclick = function () { deletePanel.hidden = true; deletePanel.innerHTML = ''; };
+    confirmBtn.onclick = function () {
+      confirmBtn.disabled = true; confirmBtn.textContent = 'Deleting…';
+      var deletedId = dashState.classId;
+      // supaDelete now rejects when the delete matched no rows, so an
+      // RLS-filtered no-op can no longer be reported as success.
+      supaDelete('classes', deletedId).then(function () {
+        var kept = getJoinedClasses().filter(function (c) { return String(c.id) !== String(deletedId); });
+        try { localStorage.setItem(_joinedClassesKey(), JSON.stringify(kept)); } catch (e) {}
+        dashState.classId = null;
+        if (window.ForgeSidebar) { ForgeSidebar.setClassLabel('No class open'); ForgeSidebar.setClassList(kept, null); }
+        renderTeacherHome();
+      }).catch(function (error) {
+        confirmBtn.disabled = false; confirmBtn.textContent = 'Delete permanently';
+        stateHost.innerHTML = ''; // teacherInlineState appends; don't stack retries
+        teacherInlineState(stateHost, 'error', {
+          label: 'Class wasn’t deleted',
+          body: error && error.code === 'DELETE_NO_ROWS'
+            ? 'You can only delete classes you created. Ask whoever set this class up to remove it.'
+            : 'Check your connection and try again.'
+        });
+      });
+    };
+  };
+
   var migrateBtn = document.getElementById('migrate-existing-students');
   if (migrateBtn) migrateBtn.onclick = function () {
     if (!window.confirm('Generate private codes for every existing student in this class? Student IDs and response history will be preserved.')) return;
@@ -1510,17 +1568,17 @@ function assignmentQuestionTotal(banks) {
   }, 0);
 }
 
+/* Delegates to ForgeAssignmentProgress so the teacher and the student compute
+   attainment from the same rule. This function used to implement its own —
+   strict bank match (excluding Anvil/Crucible rows the student's version
+   included) and first-seen dedup over rows sorted newest-first (the student's
+   arrived in RPC order). Same data, different answers: student 0%, teacher 38%,
+   quiz evidence 31%. Only the shape of the returned object is local. */
 function assignmentStudentProgress(asgn, studentId, responses) {
-  var banks = assignmentBanks(asgn), created = asgn.created_at ? new Date(asgn.created_at) : null;
-  var seen = {}, correct = 0, answered = 0;
-  responses.forEach(function(r) {
-    if (r.student_id !== studentId || banks.indexOf(r.bank) === -1) return;
-    if (created && (!r.created_at || new Date(r.created_at) < created)) return;
-    var id = String(r.question_id || '').replace(/-RF$/, ''), key = r.bank + '|' + id;
-    if (seen[key]) return;
-    seen[key] = true; answered++;
-    if (r.is_correct) correct++;
-  });
+  var banks = assignmentBanks(asgn);
+  var mine = responses.filter(function(r) { return r && r.student_id === studentId; });
+  var shared = ForgeAssignmentProgress.progress(asgn, mine);
+  var answered = shared.answered, correct = shared.correct;
   var total = assignmentQuestionTotal(banks);
   var sessionTotal = Math.max(1, Math.ceil(total / 8));
   return {

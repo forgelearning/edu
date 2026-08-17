@@ -66,7 +66,12 @@ var SUPABASE_KEY = ForgeAPI.config.key;
 var hdrs = { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY };
 var app = document.getElementById('app');
 var activeTab = window.location.hash === '#analytics' ? 'misconceptions' : 'subjects';
-var activeLevel = 'alevel';
+// Defaults to the whole school. The stat card is labelled "School-wide
+// accuracy", and it used to open on the A-Level tab and quietly report the
+// A-Level figure under that label — the one number a leader is most likely to
+// quote in a meeting. 'all' keeps the headline honest; the key-stage tabs
+// remain available and relabel the card when selected.
+var activeLevel = 'all';
 
 // Classes are named "<year><letter>/<subject code>" (e.g. "12B/Bs" for a
 // Year 12 A-Level class, "10A/Gg" for a Year 10 GCSE class). There's no
@@ -83,6 +88,10 @@ function switchLevel(level) {
   activeLevel = level;
   renderDashboard();
 }
+
+// 'all' means no key-stage filter at all.
+function matchesLevel(level) { return activeLevel === 'all' || level === activeLevel; }
+function levelLabel() { return activeLevel === 'all' ? 'School-wide' : activeLevel === 'gcse' ? 'GCSE' : 'A-Level'; }
 
 
 
@@ -199,10 +208,12 @@ function renderDashboard() {
     return cid ? classLevelMap[cid] : null;
   }
 
-  var classes   = data.classes.filter(function(c) { return classLevel(c) === activeLevel; });
+  var classes   = data.classes.filter(function(c) { return matchesLevel(classLevel(c)); });
   var classIdSet = {}; classes.forEach(function(c) { classIdSet[c.id] = true; });
   var students  = data.students.filter(function(s) { return s.class_id && classIdSet[s.class_id]; });
-  var responses = data.responses.filter(function(r) { return responseLevel(r) === activeLevel; });
+  // On 'all', keep rows whose level can't be resolved rather than dropping
+  // them — otherwise the school total silently undercounts.
+  var responses = data.responses.filter(function(r) { return activeLevel === 'all' ? true : responseLevel(r) === activeLevel; });
 
   // Aggregate stats
   var totalClasses  = classes.length;
@@ -399,6 +410,7 @@ function renderDashboard() {
   var alevelCount = data.classes.filter(function(c) { return classLevel(c) === 'alevel'; }).length;
   var gcseCount   = data.classes.filter(function(c) { return classLevel(c) === 'gcse'; }).length;
   h += '<div class="tabs">';
+  h += '<button type="button" class="tab' + (activeLevel === 'all' ? ' active' : '') + '" data-forge-action="switch-level" data-level="all">All (' + (alevelCount + gcseCount) + ')</button>';
   h += '<button type="button" class="tab' + (activeLevel === 'alevel' ? ' active' : '') + '" data-forge-action="switch-level" data-level="alevel">A-Level (' + alevelCount + ')</button>';
   h += '<button type="button" class="tab' + (activeLevel === 'gcse' ? ' active' : '') + '" data-forge-action="switch-level" data-level="gcse">GCSE (' + gcseCount + ')</button>';
   h += '</div>';
@@ -406,7 +418,9 @@ function renderDashboard() {
   // Stat cards
   h += '<div class="stat-grid">';
   h += statCard(totalClasses, 'Active classes', 'var(--white)');
-  h += statCard(avgAcc + '%', 'School-wide accuracy', avgAcc >= 70 ? 'var(--good)' : avgAcc >= 50 ? 'var(--hot)' : 'var(--bad)');
+  // Label follows the filter, so the number can never be read as school-wide
+  // when it isn't.
+  h += statCard(avgAcc + '%', levelLabel() + ' accuracy', avgAcc >= 70 ? 'var(--good)' : avgAcc >= 50 ? 'var(--hot)' : 'var(--bad)');
   h += '</div>';
   h += '<div class="stat-support"><span>' + totalStudents + ' students enrolled</span><span>' + activeStudents7d + ' active in 7 days</span><span>' + totalResponses + ' answers recorded</span></div>';
 
@@ -429,8 +443,8 @@ function renderDashboard() {
 
   if (totalClasses === 0) {
     h += '<div class="card forge-u-1ihppe3">'
-      + 'No ' + (activeLevel === 'gcse' ? 'GCSE' : 'A-Level') + ' classes yet. '
-      + 'Once a class is created with a Year 7-11 code (e.g. "10A/Gg"), it\'ll appear here automatically.'
+      + (activeLevel === 'all' ? 'No classes yet. ' : 'No ' + (activeLevel === 'gcse' ? 'GCSE' : 'A-Level') + ' classes yet. ')
+      + 'Once a class is created with a year-group code (e.g. "10A/Gg" or "12B/Bs"), it\'ll appear here automatically.'
       + '</div>';
     app.innerHTML = h;
     return;

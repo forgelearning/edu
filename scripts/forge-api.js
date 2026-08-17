@@ -76,7 +76,26 @@
       return request('/rest/v1/' + name, Object.assign(defaults, options));
     },
     patch: function (name, id, row, options) { return request('/rest/v1/' + name + '?id=eq.' + encodeURIComponent(id), Object.assign({ method: 'PATCH', headers: { 'Content-Type': 'application/json', 'Prefer': 'return=representation' }, body: JSON.stringify(row) }, options || {})); },
-    remove: function (name, id, options) { return request('/rest/v1/' + name + '?id=eq.' + encodeURIComponent(id), Object.assign({ method: 'DELETE' }, options || {})); }
+    /* Asks for the deleted rows back and rejects when none came.
+       PostgREST answers 204 No Content whether a DELETE removed a row or
+       matched nothing, so an RLS-filtered delete looked exactly like a
+       successful one — a "Delete class" button reported success and removed
+       nothing. Callers that need the rows get them; callers that don't still
+       get a promise that rejects when the delete did not happen. */
+    remove: function (name, id, options) {
+      options = options || {};
+      var headers = Object.assign({ 'Prefer': 'return=representation' }, options.headers || {});
+      return request('/rest/v1/' + name + '?id=eq.' + encodeURIComponent(id), Object.assign({}, options, { method: 'DELETE', headers: headers }))
+        .then(function (rows) {
+          if (Array.isArray(rows) && rows.length === 0) {
+            var error = new Error('Nothing was deleted. You may not have permission to remove this record.');
+            error.code = 'DELETE_NO_ROWS';
+            error.status = 403;
+            throw error;
+          }
+          return rows;
+        });
+    }
   };
 
   root.ForgeAPI.auth = {
