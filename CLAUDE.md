@@ -111,6 +111,20 @@ propagates into its `*-COV-*` copies and fixing the source fixes them all.
 
 - The full bank now has **0 longest-answer cues** across 7,510 stems and 7,510 Reforge twins. `dev/audit-banks.js` treats any future `CUE` as fatal.
 
+  **Read that number carefully.** It is true of what a student sees, and it is
+  produced almost entirely by a runtime patch rather than by authoring. Remove
+  the anti-cue loop and **2,499 of 15,063 items (16.6%)** have the correct
+  answer as the single longest option — `gcse-econ` 69.4%, `econ` 50.9%,
+  `gcse-psych` 44.3%. Run `node dev/audit-source-cues.js` to re-measure; it
+  loads the bank with and without the loop and reports only, never failing a
+  build.
+
+  So the loop is load-bearing, not a tidy-up. Breaking it would instantly cue
+  a sixth of the bank. Fixing the source questions is what would let it be
+  deleted — and it is also the only way to fix the recycling it causes, since
+  a loop that must find a distractor longer than the key has to take one from
+  somewhere.
+
 ## Three content-quality ratchets (added 2026-08-17)
 
 `dev/audit-banks.js` now also checks three ways a question can be answered
@@ -155,12 +169,25 @@ from 371 to 394 **during** the hand-fixing of the null-option problem, unseen,
 because nothing was watching. Pin a check before starting a content fix, not
 after.
 
-`SHORT CUE` and `RECYCLED DISTRACTOR` are hand-authoring backlogs — each entry
-needs a plausible replacement written for that specific question. Do **not**
-clear them with a bulk rewrite script; that is what produced the padding passes
-and the Veblen contamination in the first place. Rewriting just ten null
-options by hand still introduced three near-duplicate option pairs that only a
-manual read caught.
+Before treating either as hand-authoring, check whether the anti-cue loop
+caused it — `node dev/audit-source-cues.js` loads the bank with and without
+that loop. Measured on 2026-08-17:
+
+| Backlog | Created by the loop | Authored in source |
+|---|---|---|
+| `SHORT CUE` (394) | **1** | **393** |
+| `RECYCLED DISTRACTOR` (46) | **24** | **22** |
+
+So `SHORT CUE` really is a hand-authoring backlog — that was worth checking and
+the obvious hypothesis (that the loop shortened keys relative to swapped-in long
+distractors) is wrong. Roughly half the remaining recycling is still mechanical
+and will only fall when the source cues that force the swap are fixed.
+
+For the genuinely authored half: each entry needs a plausible replacement
+written for that specific question. Do **not** clear them with a bulk rewrite
+script; that is what produced the padding passes and the Veblen contamination in
+the first place. Rewriting just ten null options by hand still introduced three
+near-duplicate option pairs that only a manual read caught.
 
 Considered and rejected: a token-similarity check for near-duplicate options.
 It flags 420 pairs, but most are legitimate — `"Output rises, price level
