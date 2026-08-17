@@ -1369,7 +1369,7 @@ BANKS["ECON-1.1"] = {
     },
     {
       id:"SD-08",stem:"Price elasticity of supply (PES) for new housing is very low in the short run. Which factor MOST explains this?",
-      options:{A:"Low demand for housing.",B:"Builders choose not to respond to higher prices.",C:"The government controls all house building.",D:"Supply of housing is constrained by planning permission, construction time"},correct:"D",tag:"MC-SD-08",
+      options:{A:"Low demand for housing.",B:"Builders choose not to respond to higher prices.",C:"The government controls all house building.",D:"Supply of housing is constrained by planning permission and construction time."},correct:"D",tag:"MC-SD-08",
       scaffold:"PES factors: time period (supply more elastic in long run), spare capacity (elastic if factories idle), ease of storage (storable goods more elastic), factor mobility (can resources switch to this industry?). Housing: long production time, planning constraints, land scarcity → very low PES (inelastic). Implication: a rise in house prices leads to little new supply in the short run, mainly just higher prices — relevant to UK housing crisis.",
       reforge:{stem:"PES for oil extracted from the North Sea is low because:",options:{A:"There is too much oil — supply is very elastic.",B:"Oil prices are controlled by the government.",C:"North Sea oil is of poor quality.",D:"Extraction requires large fixed capital investment and infrastructure that cannot be rapidly scaled up in response to price rises — making supply inelastic in the short run."},correct:"D"}
     }
@@ -2216,7 +2216,7 @@ BANKS["GCSE-GEO-URBFIELD"] = {
     },
     {
       id:"GCSE-URF-02",spec:"GCSE-URF",stem:"Why is Stratford, London a strong location for an urban change enquiry linked to regeneration theory?",
-      options:{A:"It has no variation in building age or land use",B:"It has no public transport links, making data collection easier",C:"It is entirely rural, so it cannot be used for an urban enquiry",D:"It contains sharply contrasting land use within a small area — older estates like Carpenters alongside post-Olympic regeneration such as East Village and the Olympic Park"},
+      options:{A:"It has no variation in building age or land use",B:"It has no public transport links, making data collection easier",C:"It has had no regeneration investment, so change cannot be measured",D:"It contains sharply contrasting land use within a small area — older estates like Carpenters alongside post-Olympic regeneration such as East Village and the Olympic Park"},
       correct:"D",tag:"MC-URF-02",
       scaffold:"Regeneration is investment to reverse the decline of a run-down area. Stratford is unusually compressed for fieldwork purposes: Carpenters Estate (1960s social housing, some now vacant pending redevelopment) sits close to East Village (former 2012 Olympic Athletes' Village, now private and rented housing) and the Queen Elizabeth Olympic Park (redeveloped green and leisure space). This lets students compare pre- and post-regeneration environments on a single day's fieldwork.",
       reforge:{stem:"A student annotates a photograph of Carpenters Estate: 'older, low-rise blocks with visible signs of disrepair, contrasting with the new East Village development nearby.' What analytical skill is this annotation demonstrating?",options:{A:"Secondary data analysis — since photographs cannot be primary data",B:"Qualitative analysis — using an annotation to add explanatory meaning to a photograph, not just a label",C:"Statistical analysis — since it refers to a measurable value",D:"Quantitative analysis — calculating a numerical value from the photograph"},correct:"B"}
@@ -8945,7 +8945,7 @@ addGeo640("GCSE-GEO-RIVERFIELD", "GCSE-RIVERFIELD", [
   ["GCSE-RVF-25","Which is a useful qualitative method for assessing flood risk?","Calculate discharge from width and velocity","Annotate land use and bank condition","Measure depth at fixed intervals","Record pebble length with callipers","B","Annotated photographs or field sketches can record vegetation, defences, buildings and land use that influence exposure and runoff.","What makes an annotated river photograph analytical?","It includes only the date and weather","It is drawn without looking at the site","Labels explain how features affect risk","It replaces every quantitative measurement","C"],
   ["GCSE-RVF-26","Why use an Environment Agency flood-risk map?","It is primary data collected by the class","It shows exact future flood depths with certainty","It removes the need for site observations","It provides wider secondary-risk context","D","Flood maps show modelled zones beyond the limited sites students can visit, but assumptions and dates should be considered.","What is one limitation of a flood-risk map?","Modelled zones contain uncertainty","Maps cannot display areas or boundaries","Flood risk never changes over time","Secondary data have no source date","A"],
   ["GCSE-RVF-27","How can ranging poles help measure river gradient?","They calculate water chemistry automatically","They provide reference heights for angle measurement","They record velocity below the water surface","They sort sediment into size groups","B","Poles placed a measured distance apart provide consistent sighting points for a clinometer reading.","What reduces error in a clinometer gradient survey?","Hold poles at different unknown heights","Estimate distance without a tape","Use equal marked sighting heights","Take only one hurried reading","C"],
-  ["GCSE-RVF-28","Why use a roundness chart when studying river sediment?","It measures the mineral composition exactly","It determines the age of each pebble","It weighs suspended sediment in the flow","It standardises visual shape estimates","D","A reference scale makes judgements of angularity or roundness more consistent between observers.","What is one limitation of a roundness chart?","Matching shapes remains partly subjective","It cannot be used at more than one site","It measures only river velocity","It guarantees identical observer scores","A"],
+  ["GCSE-RVF-28","Why use a roundness chart when studying river sediment?","It measures the mineral composition exactly","It determines the age of each pebble","It weighs suspended sediment in the flow","It standardises visual shape estimates","D","A reference scale makes judgements of angularity or roundness more consistent between observers.","What is one limitation of a roundness chart?","Matching shapes remains partly subjective","It requires laboratory equipment that cannot be taken into the field","It measures only river velocity","It guarantees identical observer scores","A"],
   ["GCSE-RVF-29","How can selecting only easy-to-reach pebbles bias a sediment sample?","It guarantees a random sample","Accessible material may be unrepresentative","It increases the river's sediment load","It makes every pebble equally rounded","B","Convenience sampling may overrepresent deposits near one bank or exposed bar rather than the whole channel.","Which method gives each visible pebble a more equal selection chance?","Choose only the largest stones","Collect stones beside the access path","Use random coordinates or numbers","Select the smoothest pebble first","C"],
   ["GCSE-RVF-30","Why repeat river measurements in different seasons?","Season never affects river discharge","Repeated visits remove every safety risk","One season always represents annual conditions","Flow and channel conditions vary over time","D","Seasonal rainfall, vegetation and antecedent conditions can change discharge, velocity and sediment exposure.","What does a single summer visit limit most?","Confidence that results represent the year","Accuracy of the map's north arrow","Ability to identify the river name","Whether measurements have units","A"],
   ["GCSE-RVF-31","Which control is most important before entering a river channel?","Increase sample size before checking depth","Assess depth, flow and safe access","Wear ordinary shoes to feel the bed","Work alone to reduce disturbance","B","A dynamic risk assessment should consider velocity, depth, slippery surfaces, weather and safe entry points.","What should students do if flow becomes faster after heavy rain?","Continue because the plan cannot change","Stand farther apart across the channel","Stop in-channel work and reassess","Remove buoyancy aids to move easily","C"],
@@ -11089,7 +11089,7 @@ BANKS["PSY-APP"] = {
       },
       correct:"C",tag:"MC-APP-COG",
       scaffold:"Inference means drawing conclusions about unobservable internal processes from observable behaviour. You cannot see rehearsal happening, but if a distractor task that blocks rehearsal destroys recall, you can infer that rehearsal was doing the work. This is the cognitive approach's answer to the behaviourist 'black box' objection: you can study the mind scientifically without observing it directly. The trade-off, and the standard evaluation point, is that inference can drift into machine reductionism — comparing the mind to a computer captures information flow but ignores emotion and motivation, which demonstrably affect memory. Note that D is false: the cognitive approach is strongly scientific, using controlled lab experiments.",
-      reforge:{stem:"What is the main limitation of the computer analogy used by cognitive psychologists?",options:{A:"It cannot be applied to memory or attention research",B:"It ignores the influence of emotion and motivation on processing",C:"It relies entirely on introspective self-report data",D:"It prevents cognitive psychologists from using laboratory experiments"},correct:"B"}
+      reforge:{stem:"What is the main limitation of the computer analogy used by cognitive psychologists?",options:{A:"It treats memory as reconstructive rather than as stored representation",B:"It ignores the influence of emotion and motivation on processing",C:"It relies entirely on introspective self-report data",D:"It prevents cognitive psychologists from using laboratory experiments"},correct:"B"}
     },
     {
       id:"APP-12",
@@ -11478,7 +11478,7 @@ BANKS["PSY-BIO"] = {
       id:"PSYBIO-17",
       stem:"What is a limitation of fMRI as a research technique?",
       options:{
-        A:"It cannot be used with living human participants under any circumstances at all",
+        A:"It exposes participants to ionising radiation during each scan",
         B:"Its poor temporal resolution means there is a delay of several seconds",
         C:"It provides no information about the location of brain activity",
         D:"It requires electrodes to be surgically implanted into the cortex"
@@ -12512,7 +12512,7 @@ BANKS["PSY-ID"] = {
       },
       correct:"D",tag:"MC-ID-IDIO",
       scaffold:"The idiographic approach's depth is bought at the cost of breadth: conclusions drawn from one person, often studied through subjective methods such as unstructured interviews, cannot easily be extended to anyone else. Freud's Little Hans is the standard example — an entire theory of phobias built on a single boy, interpreted by a researcher already committed to the theory. Balance this in evaluation: idiographic work provides depth that averaged group data conceals, it can falsify a general law with a single counter-example, and it often generates hypotheses that nomothetic research then tests. The nomothetic weakness is the mirror image — it can lose the individual in the average.",
-      reforge:{stem:"What is the main criticism of the nomothetic approach?",options:{A:"It cannot produce any generalisable scientific laws",B:"It loses the individual experience within group averages",C:"It relies entirely on subjective case study evidence alone",D:"It cannot be used to formulate testable hypotheses"},correct:"B"}
+      reforge:{stem:"What is the main criticism of the nomothetic approach?",options:{A:"It cannot produce any generalisable scientific laws",B:"It loses the individual experience within group averages",C:"It relies entirely on subjective case study evidence alone",D:"It depends on unstructured qualitative interviews for its data"},correct:"B"}
     },
     {
       id:"PSYID-13",
@@ -13250,7 +13250,7 @@ BANKS["PSY-ATT"].questions.push(
       options:{
         A:"It may measure the specific relationship rather than the child's overall attachment",
         B:"It has consistently been shown to have extremely poor inter-observer reliability overall",
-        C:"It cannot be used with infants who are older than three months of age",
+        C:"It relies on parental self-report rather than direct observation",
         D:"The procedure lacks standardisation, so it cannot be replicated by others"
       },
       correct:"A",tag:"MC-ATT-06",
@@ -13319,7 +13319,7 @@ BANKS["PSY-PATH"].questions.push(
       options:{
         A:"It relies entirely upon a normal distribution curve in order to identify abnormality",
         B:"Some people with serious disorders continue to function apparently normally",
-        C:"It cannot be applied to any behaviour occurring outside a clinical setting",
+        C:"It classifies any culturally unusual behaviour as a disorder",
         D:"It takes no account of the level of distress experienced by the individual"
       },
       correct:"B",tag:"MC-PATH-DEF",
@@ -13658,7 +13658,10 @@ BANKS["4.1.1"].questions.push(
 );
 
 SUBJECTS["econ"].banks.push("3.1.1","3.2.1","4.1.1");
-SUBJECTS["econ"].sub = "Edexcel 9EC0 — Themes 2, 3 & 4";
+// The bank list opens with ECON-1.1 (Theme 1) and the quiz serves it, so the
+// old "Themes 2, 3 & 4" subtitle contradicted the content on the quiz header,
+// the subject card and Class Mode.
+SUBJECTS["econ"].sub = "Edexcel 9EC0 — Themes 1-4";
 
 // ===== A LEVEL GEOGRAPHY (EDEXCEL 9GE0) — PAPERS 1–3 FOUNDATION SET =====
 BANKS["GEO-COAST"] = {
@@ -14716,7 +14719,7 @@ BANKS["PSY-STR"] = {
       id:"STR-14",stem:"Biofeedback works by:",
       options:{A:"Giving real-time information about bodily functions so they can be controlled",B:"Administering small doses of medication whenever arousal rises",C:"Exposing the client repeatedly to the feared situation until the fear fades away",D:"Restructuring the irrational beliefs that underlie the stress response"},correct:"A",tag:"MC-STR-BIOFEEDBACK",
       scaffold:"Biofeedback monitors an involuntary function — heart rate, muscle tension, skin conductance — and displays it to the client as a tone or visual signal. The client experiments with relaxation techniques and sees the immediate effect, so operant conditioning reinforces whatever lowers arousal; eventually the skill transfers away from the machine. It is non-invasive with no side effects and gives the client a sense of control, which is valuable in itself. The main criticisms are that it is expensive and equipment-dependent, and that its benefits may come simply from the relaxation training rather than from the feedback, since relaxation alone often produces similar results.",
-      reforge:{stem:"What is the main criticism of biofeedback's effectiveness?",options:{A:"It causes serious physical side effects in most clients",B:"Relaxation alone may produce the same benefits without equipment",C:"It cannot be used with anyone over the age of sixty",D:"It has never once been properly tested in any controlled research study"},correct:"B"}
+      reforge:{stem:"What is the main criticism of biofeedback's effectiveness?",options:{A:"It causes serious physical side effects in most clients",B:"Relaxation alone may produce the same benefits without equipment",C:"It requires the participant to be unaware they are being monitored",D:"It has never once been properly tested in any controlled research study"},correct:"B"}
     },
     {
       id:"STR-15",stem:"Which finding best describes gender differences in coping with stress?",
@@ -14808,7 +14811,7 @@ addAlevelExtensionRows("SOC-EDU", "7192-EDU", [
 addAlevelExtensionRows("SOC-MET", "7192-MET", [
   {id:"MET-21",stem:"What is the main strength of a pilot study?",options:{A:"It guarantees a representative national sample",B:"It identifies problems with questions or procedures before the main study",C:"It removes the need for ethical approval",D:"It reliably produces much more valid data than the final study itself would"},correct:"B",reforge:{stem:"A pilot questionnaire reveals that pupils misunderstand a key term. The researcher should:",options:{A:"Ignore the problem to preserve reliability",B:"Revise the wording before collecting the main data",C:"Remove all open questions from the study",D:"Publish the pilot as the final sample"},correct:"B"}},
   {id:"MET-22",stem:"What is a sampling frame?",options:{A:"A list of all members of the target population from which a sample can be drawn",B:"The overall theoretical perspective that guides an entire research project's design",C:"The timetable used to conduct participant observation",D:"A coding system for analysing interview transcripts"},correct:"A",reforge:{stem:"Which source could provide a sampling frame for a school survey?",options:{A:"The school's pupil register",B:"A researcher's personal diary",C:"A newspaper editorial",D:"A completed essay from one pupil"},correct:"A"}},
-  {id:"MET-23",stem:"Why can snowball sampling be useful when researching hidden populations?",options:{A:"Existing participants can introduce the researcher to others in the group",B:"It gives every person in the country an equal chance of selection",C:"It prevents participants influencing the sample",D:"It always produces a large random sample"},correct:"A",reforge:{stem:"What is a major weakness of snowball sampling?",options:{A:"It can over-represent people connected to the first participants",B:"It cannot be used to study any social group",C:"It makes all interviews fully structured",D:"It guarantees that non-participants are selected"},correct:"A"}},
+  {id:"MET-23",stem:"Why can snowball sampling be useful when researching hidden populations?",options:{A:"Existing participants can introduce the researcher to others in the group",B:"It gives every person in the country an equal chance of selection",C:"It prevents participants influencing the sample",D:"It always produces a large random sample"},correct:"A",reforge:{stem:"What is a major weakness of snowball sampling?",options:{A:"It can over-represent people connected to the first participants",B:"It requires a complete sampling frame before recruitment begins",C:"It makes all interviews fully structured",D:"It guarantees that non-participants are selected"},correct:"A"}},
   {id:"MET-24",stem:"What does operationalisation involve?",options:{A:"Turning an abstract concept into measurable indicators",B:"Replacing primary data with official statistics",C:"Selecting only participants who agree with the hypothesis",D:"Allowing respondents to choose the research method"},correct:"A",reforge:{stem:"Which is an operationalised measure of social class?",options:{A:"A participant's occupation coded into a class category",B:"A researcher's personal view of inequality",C:"The title of a sociology textbook",D:"An unrecorded conversation about society"},correct:"A"}},
   {id:"MET-25",stem:"What is researcher objectivity?",options:{A:"Keeping personal values from distorting the research process",B:"Choosing only quantitative methods for every study",C:"Ensuring all participants agree with the hypothesis",D:"Avoiding any contact with participants"},correct:"A",reforge:{stem:"Which practice is most likely to improve objectivity?",options:{A:"Using transparent procedures and reflecting on researcher bias",B:"Deleting evidence that challenges the hypothesis",C:"Allowing the funder to change participants' answers",D:"Avoiding publication of the research method"},correct:"A"}},
   {id:"MET-26",stem:"What is a longitudinal study designed to do?",options:{A:"Follow the same people or group over an extended period",B:"Compare different countries at one moment only",C:"Observe a single interaction without recording it",D:"Use only documents produced before the research began"},correct:"A",reforge:{stem:"Why can longitudinal research help explain educational inequality?",options:{A:"It can show how early experiences relate to later outcomes",B:"It removes all problems caused by participant dropout",C:"It guarantees that every variable is controlled",D:"It produces no information about change over time"},correct:"A"}},
@@ -18438,7 +18441,7 @@ csExpansion("CS-2", [
   },
   {
     id:"CS-N2-07",stem:"In symmetric encryption, the same key is used to encrypt and decrypt. The main practical problem this creates is:",
-    options:{A:"It is far slower than asymmetric encryption.",B:"Distributing the key securely to the other party",C:"It cannot be used for large volumes of data.",D:"The ciphertext is always longer than the plaintext."},
+    options:{A:"It is far slower than asymmetric encryption.",B:"Distributing the key securely to the other party",C:"The key must be sent with the message for decryption to work.",D:"The ciphertext is always longer than the plaintext."},
     correct:"B",tag:"MC-GCS-CRYPTOGRAPHY",
     scaffold:"Symmetric encryption (AES) is fast and suits bulk data, but both parties need the same secret key, and sending it over an insecure channel exposes it. Asymmetric encryption uses a public key to encrypt and a mathematically related private key to decrypt, solving distribution but running much more slowly. In practice TLS combines them: asymmetric encryption establishes a shared session key, then symmetric encryption protects the actual traffic.",
     reforge:{stem:"HTTPS uses asymmetric encryption at the start of a session and symmetric encryption afterwards because this:",options:{A:"Avoids the need for any certificates.",B:"Makes the connection impossible to intercept.",C:"Solves key distribution, then gets symmetric speed",D:"Allows the server to store the private key publicly."},correct:"C"}

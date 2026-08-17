@@ -36,6 +36,46 @@ const isCued = (item) => {
   );
 };
 
+// The mirror image of isCued, and the reason it needs one: the fix for a
+// longest-answer cue is to shorten the key or pad the distractors, and both
+// overshoot into a *shortest*-answer cue. That is equally free marks, and
+// nothing here could see it — the count drifted from 371 to 394 during a run
+// of hand-fixes precisely because no check was watching.
+const SHORT_CUE_RATIO = 0.55;
+const isShortCued = (item) => {
+  const entries = Object.entries(item.options).map(([k, v]) => [k, String(v).trim().length]);
+  if (entries.length < 2) return false;
+  const lengths = entries.map(([, l]) => l);
+  const min = Math.min(...lengths);
+  const correctLen = String(item.options[item.correct] || '').trim().length;
+  if (lengths.filter((l) => l === min).length !== 1 || correctLen !== min) return false;
+  const others = entries.filter(([k]) => k !== item.correct).map(([, l]) => l);
+  const mean = others.reduce((a, b) => a + b, 0) / others.length;
+  return correctLen / Math.max(1, mean) < SHORT_CUE_RATIO;
+};
+
+// An option a student can eliminate without knowing any subject content
+// ("It has no significant relevance to the topic being tested"). These make a
+// four-option question a three-option one, so guessing pays 33% not 25% and
+// the subject's reported accuracy is inflated. Criminology, Politics and Law
+// once carried one in every single question.
+const NULL_OPTION_PATTERNS = [
+  /\bit has no (?:significant|meaningful) /i,
+  /\bit cannot be (?:applied|assessed|evaluated|used)\b/i,
+  /\bit had no meaningful effect\b/i,
+  /\bno significant relevance\b/i,
+  /\bit removes the need for evaluation\b/i
+];
+const isNullOption = (value) => NULL_OPTION_PATTERNS.some((p) => p.test(String(value || '')));
+
+// A distractor pasted into questions it has nothing to do with. Generated and
+// repair passes have twice sprayed one string across a whole subject — an
+// A-Level Economics macro question offering "Demand rises whenever price
+// rises, because the Veblen effect…" is free elimination and reads as broken.
+const RECYCLED_MIN_LENGTH = 25;
+const RECYCLED_MAX_QUESTIONS = 8;
+const distractorUses = new Map(); // text -> Set of "subject|sourceQuestionId"
+
 const coverageComparableOption = (value) => {
   let result = String(value || '').trim();
   const filler = /\s*\(?\s*(?:in this context|in context|in this case|for this decision|in this market|in this computing context|under standard assumptions|in a typical case|in the stated scenario|in a typical firm)\s*\)?[.!?]?\s*$/i;
@@ -140,6 +180,27 @@ for (const [bankId, bank] of Object.entries(BANKS)) {
           .find(letter => coverageComparableOption(item.options[letter]) === key);
         if (duplicate) issues.push(`COVERAGE DUPLICATE ANSWER: ${q.id} (${bankId}) ${duplicate} copies ${item.correct} apart from generated padding`);
       }
+      // Content-quality checks that apply equally to a stem and its twin.
+      // Reuse is counted against the SOURCE question: coverage clones
+      // legitimately share their parent's options, so strip -COV-n first or
+      // every padded subject reads as recycling.
+      const sourceId = String(q.id).replace(/-COV-\d+$/, '');
+      const subjectKey = bankToSubject[bankId];
+      for (const [letter, value] of Object.entries(item.options)) {
+        if (letter === item.correct) continue;
+        if (isNullOption(value)) {
+          issues.push(`NULL OPTION: ${q.id}${label} (${bankId}) ${letter} is a content-free dismissal — "${String(value).slice(0, 60)}"`);
+        }
+        const text = String(value || '').trim();
+        if (text.length >= RECYCLED_MIN_LENGTH) {
+          if (!distractorUses.has(text)) distractorUses.set(text, new Set());
+          distractorUses.get(text).add(`${subjectKey}|${sourceId}`);
+        }
+      }
+      if (isShortCued(item)) {
+        issues.push(`SHORT CUE: correct option is far shorter than every distractor - ${q.id}${label} (${bankId})`);
+      }
+
       if (label) {
         ref++; refKeys[item.correct]++;
         if (isCued(item)) { cuedRef++; issues.push(`CUE: longest option is correct - ${q.id}${label} (${bankId})`); }
@@ -458,6 +519,23 @@ for (const [key, maxSingleShare] of Object.entries(TAG_TAXONOMY_SUBJECTS)) {
   // copy of hundreds of near-identical activities into this source file.
 }
 
+// Recycled distractors can only be judged after the whole pass: one string
+// appearing in two questions is ordinary, the same string in eighty is a
+// generation or repair script that sprayed it across a subject.
+const recycled = [];
+for (const [text, users] of distractorUses) {
+  if (users.size <= RECYCLED_MAX_QUESTIONS) continue;
+  const subjects = new Set([...users].map((u) => u.split('|')[0]));
+  recycled.push({ text, questions: users.size, subjects: [...subjects] });
+}
+recycled.sort((a, b) => b.questions - a.questions);
+for (const entry of recycled) {
+  issues.push(
+    `RECYCLED DISTRACTOR: used in ${entry.questions} questions across ${entry.subjects.join(', ')} — ` +
+    `"${entry.text.slice(0, 70)}"`
+  );
+}
+
 const pct = (a, b) => (b ? Math.round((a / b) * 100) + '%' : '-');
 const fmt = (k) => ['A', 'B', 'C', 'D'].map((l) => k[l]).join('/');
 
@@ -633,6 +711,51 @@ if (taxonomy.length) {
 // bank by bank — this only stops that count from growing. Only enforced on
 // a full run (no bank/subject filter), since a partial run can't see the
 // true total. Lower PERMUTED_REFORGE_BASELINE as banks get fixed.
+// Content-quality ratchets. Same contract as PERMUTED_REFORGE_BASELINE: fail
+// on regression, and say so when a fix lets the baseline drop. All three
+// detect ways a question can be answered without knowing the subject, which
+// no structural check can see — a bank where every question carries the same
+// throwaway option is structurally perfect.
+//
+// NULL OPTION is at 0 and must stay there: the last 10 were rewritten as real
+// misconceptions when this check was added, and the 1,807 before them were
+// cleared by the distractor replacement work. Never raise it.
+//
+// SHORT CUE and RECYCLED DISTRACTOR are large hand-authoring backlogs. Each
+// entry needs a plausible replacement written for that specific question, and
+// a script that rewrites options in bulk is exactly what created these two
+// problems — see CLAUDE.md on the padding passes. So they are pinned at their
+// current level to stop the bleeding, and lowered as banks are rewritten.
+// SHORT CUE had already drifted from 371 to 394 unnoticed before this check
+// existed, which is the argument for pinning it now rather than after the
+// backlog is cleared.
+const CONTENT_BASELINES = {
+  'SHORT CUE': 394,
+  'NULL OPTION': 0,
+  'RECYCLED DISTRACTOR': 73
+};
+if (!args.length) {
+  let regressed = false;
+  for (const [prefix, baseline] of Object.entries(CONTENT_BASELINES)) {
+    const count = issues.filter((i) => i.startsWith(prefix + ':')).length;
+    if (count > baseline) {
+      regressed = true;
+      console.log(`\n${prefix} regressed: ${count} > baseline ${baseline}.`);
+      issues.filter((i) => i.startsWith(prefix + ':')).slice(0, 10).forEach((i) => console.log(`  ${i}`));
+      if (count > 10) console.log(`  … and ${count - 10} more`);
+    } else if (count < baseline) {
+      console.log(`\n${prefix} improved: ${count} < baseline ${baseline}. Lower it in dev/audit-banks.js to lock the gain in.`);
+    }
+  }
+  if (regressed) {
+    console.log(
+      '\nThese let a student score above chance without subject knowledge. ' +
+      'Rewrite the option rather than raising the baseline.'
+    );
+    process.exit(1);
+  }
+}
+
 const PERMUTED_REFORGE_BASELINE = 0;
 if (!args.length && totals.permutedRef > PERMUTED_REFORGE_BASELINE) {
   console.log(
