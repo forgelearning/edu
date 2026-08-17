@@ -165,6 +165,17 @@ h1,h2,h3{font-family:'Rethink Sans',sans-serif;color:var(--white);line-height:1.
 .subj-select option{background:var(--panel);color:var(--white)}
 
 /* created code display */
+.code-generation-panel{margin:0 0 18px}
+.code-generation-card{max-width:520px;border-color:var(--ember);box-shadow:0 14px 32px -24px rgba(0,0,0,.55)}
+.code-generation-card h3{margin:0 0 8px;color:var(--white);font-size:18px}
+.code-generation-card p{margin:0 0 14px;color:var(--slate);font-size:13px;line-height:1.55}
+.code-generation-card label{display:block;margin-bottom:6px;color:var(--white);font:600 12px 'Poppins',sans-serif}
+.code-generation-card input{width:140px;padding:10px 12px;border-radius:var(--radius-sm);border:1px solid var(--line);background:var(--panel-2);color:var(--white);font:14px 'JetBrains Mono',monospace}
+.code-generation-card input:focus{outline:2px solid var(--ember);outline-offset:2px;border-color:var(--ember)}
+.code-generation-status{min-height:20px;margin-top:12px;color:var(--slate);font-size:12px;line-height:1.45}
+.code-generation-status:not(:empty){padding:8px 10px;border-radius:var(--radius-sm);background:var(--panel-2);border:1px solid var(--line)}
+.code-generation-status--success{color:var(--good);border-color:color-mix(in srgb,var(--good) 45%,var(--line))}
+.code-generation-status--error{color:var(--bad);border-color:color-mix(in srgb,var(--bad) 45%,var(--line))}
 .code-display{background:var(--panel-2);border:1px solid var(--line);border-radius:var(--radius-md);padding:18px;text-align:center;margin-bottom:14px}
 .code-display .code-val{font-family:'JetBrains Mono',monospace;font-size:26px;font-weight:700;color:var(--hot);letter-spacing:.1em;display:block;margin:6px 0}
 .code-display .code-sub{font-size:12px;color:#8A857E}

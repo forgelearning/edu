@@ -9,9 +9,11 @@
  * event 401'd on an upsert the anon role may not perform. None of those are
  * reachable without talking to the real policies.
  *
- * Opt-in. Needs a service-role key to seed and tear down its own disposable
- * class; everything the student does uses the anon key, exactly as the browser
- * would.
+ * Needs a service-role key to seed and tear down its own disposable class;
+ * everything the student does uses the anon key, exactly as the browser would.
+ * Local runs without the key remain an explicit skip, while CI and
+ * `FORGE_E2E_REQUIRED=1` fail closed so the release gate cannot silently omit
+ * this policy-level regression check.
  *
  *   FORGE_SERVICE_ROLE_KEY=... node dev/test-coded-student-e2e.js
  *
@@ -37,6 +39,7 @@ const SERVICE_KEY = process.env.FORGE_SERVICE_ROLE_KEY || '';
 if (!SERVICE_KEY) {
   console.log('SKIP: coded-student e2e needs FORGE_SERVICE_ROLE_KEY to seed a disposable class.');
   console.log('      Set it to run this check against the deployed RLS policies.');
+  if (process.env.CI === 'true' || process.env.FORGE_E2E_REQUIRED === '1') process.exit(1);
   process.exit(0);
 }
 
@@ -68,6 +71,7 @@ const CODE_HASH = crypto.createHash('sha256').update(STUDENT_CODE, 'utf8').diges
 
 let classId = null;
 let studentId = null;
+let assignmentId = null;
 
 async function main() {
   console.log('Coded-student end-to-end (deployed RLS)\n');
@@ -79,6 +83,13 @@ async function main() {
   });
   classId = created.body && created.body[0] && created.body[0].id;
   if (!check('seed: disposable class created', !!classId, JSON.stringify(created.body))) return;
+
+  const assignment = await req('/rest/v1/assignments', {
+    method: 'POST', key: SERVICE_KEY, prefer: 'return=representation',
+    body: { class_id: classId, title: 'ZZ-E2E Assignment', banks: ['ECON-1.1'], due_date: '2099-01-01' }
+  });
+  assignmentId = assignment.body && assignment.body[0] && assignment.body[0].id;
+  if (!check('seed: disposable assignment created', !!assignmentId, JSON.stringify(assignment.body))) return;
 
   const code = await req('/rest/v1/student_access_codes', {
     method: 'POST', key: SERVICE_KEY, prefer: 'return=representation',
@@ -96,12 +107,13 @@ async function main() {
   // ── writes: one per surface that records a response ─────────────────────
   const write = (row) => rpc('record_student_response_with_code', Object.assign({
     p_student_id: studentId, p_class_code: CLASS_CODE, p_student_code: STUDENT_CODE,
-    p_misconception_tag: null, p_spec_point: null, p_reforge_attempted: false, p_reforge_correct: null
+    p_misconception_tag: null, p_spec_point: null, p_reforge_attempted: false, p_reforge_correct: null,
+    p_assignment_id: null
   }, row));
 
   const forgeWrong = await write({
     p_question_id: 'ZZ-E2E-Q1', p_bank: 'ECON-1.1', p_subject: 'econ',
-    p_selected_option: 'A', p_is_correct: false, p_misconception_tag: 'MC-E2E-TAG', p_spec_point: '1.1'
+    p_selected_option: 'A', p_is_correct: false, p_misconception_tag: 'MC-E2E-TAG', p_spec_point: '1.1', p_assignment_id: assignmentId
   });
   check('Forge: wrong answer accepted', forgeWrong.body && forgeWrong.body.allowed === true, JSON.stringify(forgeWrong.body));
 
@@ -142,6 +154,7 @@ async function main() {
   const rows = Array.isArray(withCode.body) ? withCode.body : [];
   check('read with student code returns all four responses', rows.length === 4, 'got ' + rows.length);
   check('misconception tag survives the round trip', rows.some((r) => r && r.misconception_tag === 'MC-E2E-TAG'));
+  check('assignment id survives the response round trip', rows.some((r) => r && r.assignment_id === assignmentId));
 
   const legacy = await rpc('get_student_own_responses', {
     p_student_id: studentId, p_code: CLASS_CODE, p_name: 'ZZ E2E Student'
