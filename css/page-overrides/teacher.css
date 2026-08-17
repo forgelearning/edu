@@ -439,3 +439,13 @@ html[data-overdrive="control-room"] .teacher-entry{position:relative}
   html[data-overdrive="command-centre"] .stat-row--priority,html[data-overdrive="control-room"] .stat-row--priority{grid-template-columns:1fr}
   html[data-overdrive="command-centre"] .stat--priority:first-child{grid-column:auto}
 }
+
+/* Destructive class deletion. Deliberately quieter than the primary actions —
+   it should be findable, not inviting. */
+.forge-button--danger{border-color:color-mix(in srgb,var(--bad) 55%,var(--line));color:var(--bad)}
+.forge-button--danger:hover:not(:disabled){background:color-mix(in srgb,var(--bad) 10%,transparent)}
+.forge-button--danger:disabled{opacity:.5;cursor:not-allowed}
+.danger-zone{margin-top:12px;border-color:color-mix(in srgb,var(--bad) 40%,var(--line))}
+.danger-zone h3{margin:0 0 8px;color:var(--bad)}
+.danger-zone code{padding:1px 6px;border-radius:var(--radius-sm);background:var(--panel-2);font-family:'JetBrains Mono',monospace}
+.danger-zone input{width:100%;margin:8px 0 12px;padding:10px 12px;border:1px solid var(--line);border-radius:var(--radius-sm);background:var(--panel);color:inherit;font-family:'JetBrains Mono',monospace}
