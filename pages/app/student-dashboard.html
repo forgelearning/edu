@@ -55,6 +55,7 @@ ForgeSidebar.mount({
 <script src="scripts/forge-assignment-progress.js"></script><script defer src="scripts/forge-student-badges.js?v=20260807"></script>
 <script src="scripts/forge-student-code.js?v=20260809"></script>
 <script src="data/forge-data.js"></script>
+<script src="scripts/forge-misconception-state.js"></script>
 
 <main class="wrap" id="main-content">
   <div id="app" aria-live="polite"></div>
@@ -216,20 +217,10 @@ function renderDashboard(){
   var rank=getRank(xp);
   var streak=calcStreak(responses);
 
-  // Misconceptions — same chronological derivation as the full profile view
-  var mcData={};
-  var chronological=responses.slice().sort(function(a,b){return (a.created_at||'')<(b.created_at||'')?-1:1;});
-  chronological.forEach(function(r){
-    if(!r.misconception_tag)return;
-    var tag=r.misconception_tag;
-    if(!mcData[tag])mcData[tag]={fires:0,streak:0};
-    if(r.reforge_attempted){
-      if(r.reforge_correct)mcData[tag].streak++; else mcData[tag].streak=0;
-    } else if(!r.is_correct){
-      mcData[tag].fires++;mcData[tag].streak=0;
-    }
-  });
-  var activeMCs=Object.keys(mcData).filter(function(t){return mcData[t].fires>0&&mcData[t].streak<3;});
+  // One lifecycle owner keeps Dashboard, Anvil, Profile and Teacher aligned.
+  var misconceptionSummary=ForgeMisconceptions.summarize(responses);
+  var mcData=misconceptionSummary.data;
+  var activeMCs=misconceptionSummary.active;
   if (window.ForgeSidebar) ForgeSidebar.setBadge('anvil', activeMCs.length || null);
   try { localStorage.setItem('forge-anvil-open', String(activeMCs.length)); } catch(e) {}
   if (st.classId) {
@@ -267,7 +258,9 @@ function renderDashboard(){
   var subjectData={};
   responses.forEach(function(r){
     var subj=r.subject||'unknown';
-    if(subj==='unknown')return;
+    // Legacy repair rows used activity names as subjects. Keep them available
+    // to Anvil/Crucible modules, but never rank them as curriculum subjects.
+    if(subj==='unknown'||subj==='anvil'||subj==='crucible')return;
     if(!subjectData[subj])subjectData[subj]={total:0,correct:0};
     subjectData[subj].total++;
     if(r.is_correct)subjectData[subj].correct++;

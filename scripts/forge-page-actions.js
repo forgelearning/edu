@@ -70,4 +70,16 @@
   }
   document.addEventListener('click', handle);
   document.addEventListener('input', handle);
+  document.addEventListener('keydown', function(event){
+    var tab=event.target.closest('[role="tab"]');
+    if(!tab||!tab.closest('[role="tablist"]')) return;
+    var tabs=Array.prototype.slice.call(tab.closest('[role="tablist"]').querySelectorAll('[role="tab"]'));
+    var index=tabs.indexOf(tab),next=null;
+    if(event.key==='ArrowRight'||event.key==='ArrowDown') next=tabs[(index+1)%tabs.length];
+    if(event.key==='ArrowLeft'||event.key==='ArrowUp') next=tabs[(index-1+tabs.length)%tabs.length];
+    if(event.key==='Home') next=tabs[0];
+    if(event.key==='End') next=tabs[tabs.length-1];
+    if(!next) return;
+    event.preventDefault();next.focus();next.click();
+  });
 }());

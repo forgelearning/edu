@@ -89,13 +89,19 @@
   function progress(assignment,payload){
     var banks=list(assignment&&assignment.banks), allowed={};
     banks.forEach(function(bank){allowed[key(bank)]=bank;});
-    var seen={}, answered=0, correct=0;
+    var seen={}, countedByBank={}, answered=0, correct=0;
     countable(assignment,payload).forEach(function(entry){
       var bank=allowed[key(entry.bank)]||bankForQuestion(entry.id);
       if(!bank||!allowed[key(bank)]) return;
       var marker=bank+'|'+entry.id;
       if(seen[marker]) return;
-      seen[marker]=true; answered++;
+      seen[marker]=true;
+      countedByBank[bank]=countedByBank[bank]||0;
+      // An assignment is one focused session (up to eight questions) per
+      // bank. Later free-practice answers from the same bank must not inflate
+      // either the numerator or denominator after that session is complete.
+      if(countedByBank[bank]>=bankTotal(bank)) return;
+      countedByBank[bank]++; answered++;
       if(entry.correct) correct++;
     });
     var total=banks.reduce(function(sum,bank){
@@ -103,7 +109,7 @@
       var available=data&&data.questions?data.questions.filter(function(q){return !q.type||q.type==='fill_blank';}).length:0;
       return sum+Math.min(8,available);
     },0);
-    return {answered:Math.min(answered,total),correct:correct,total:total,complete:total>0&&answered>=total};
+    return {answered:answered,correct:correct,total:total,complete:total>0&&answered>=total};
   }
 
   /* How many of a single bank's assigned questions have been answered. The
@@ -116,15 +122,16 @@
   }
   function bankProgress(assignment,bank,payload){
     var wanted=key(bank), seen={}, answered=0, correct=0;
+    var total=bankTotal(bank);
     countable(assignment,payload).forEach(function(entry){
       var responseBank=key(entry.bank)===wanted?bank:bankForQuestion(entry.id);
       if(!responseBank||key(responseBank)!==wanted) return;
       if(seen[entry.id]) return;
+      if(answered>=total) return;
       seen[entry.id]=true; answered++;
       if(entry.correct) correct++;
     });
-    var total=bankTotal(bank);
-    return {answered:Math.min(answered,total),correct:correct,total:total,complete:total>0&&answered>=total};
+    return {answered:answered,correct:correct,total:total,complete:total>0&&answered>=total};
   }
 
   /* The bank a student should actually open next: the first one in the

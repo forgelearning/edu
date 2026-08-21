@@ -104,6 +104,18 @@ eq('repeat answers to one question count once',
     row({ question_id: 'A-1', is_correct: true, created_at: at(3) })
   ]).correct, 0);
 
+// Once a bank's assigned eight-question session is complete, later practice
+// in that bank must not push accuracy above 100% or rewrite the original mark.
+eq('later bank practice cannot inflate a completed assignment',
+  (() => {
+    const rows = [];
+    for (let i = 1; i <= 10; i++) {
+      rows.push(row({ question_id: 'A-' + i, is_correct: i !== 1, created_at: at(i) }));
+    }
+    const p = P.progress({ id: 'asgn-one', banks: JSON.stringify(['BANK-A']), created_at: CREATED }, rows);
+    return { answered: p.answered, correct: p.correct, accuracy: Math.round((p.correct / p.answered) * 100) };
+  })(), { answered: 8, correct: 7, accuracy: 88 });
+
 // Per-bank progress, which drives "Open next assignment".
 eq('bankProgress is scoped to its own bank',
   (() => {
@@ -140,4 +152,4 @@ eq('student and teacher agree on the same data',
 
 console.log('');
 if (failures) { console.error('Assignment scoring tests FAILED (' + failures + ').'); process.exit(1); }
-console.log('Assignment scoring tests passed (' + 11 + ' cases).');
+console.log('Assignment scoring tests passed (' + 12 + ' cases).');

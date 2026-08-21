@@ -151,7 +151,10 @@ function logResponse(q, selectedKey, isCorrect, isReforge, reforgeCorrect) {
     subject: getSubjectForBank(state.bank),
     selected_option: selectedKey,
     is_correct: isCorrect,
-    misconception_tag: isCorrect ? null : (q.tag || null),
+    // A successful Re-forge still belongs to the misconception it repairs.
+    // Older builds dropped the tag on correct twins, making every downstream
+    // surface disagree about whether the signal had been addressed.
+    misconception_tag: isReforge ? (q.tag || null) : (isCorrect ? null : (q.tag || null)),
     // Fall back to the tag map: most banks carry a tag but no explicit spec, and
     // without this correct answers logged no spec point at all.
     spec_point: q.spec || MC_TO_SPEC[q.tag] || null,
@@ -381,7 +384,9 @@ var SPEC_TO_SUBJECT = {
 // ===== DATA =====
 </script>
 <script src="data/spec-registry.js"></script>
-<script src="data/forge-data.js?v=20260805"></script>
+<script src="data/forge-catalog.js?v=20260821"></script>
+<script src="scripts/forge-data-loader.js?v=20260821"></script>
+<script src="scripts/forge-misconception-state.js"></script>
 <script>
 
 function shuffle(a){var b=[...a];for(var i=b.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
@@ -402,7 +407,8 @@ var state = {
   paidSubjects: [],
   weightMap: {},       // spaced repetition: questionId → priority weight
   bankStats: {},       // latest per-topic accuracy used by the recommendation
-  sessionWrongTags: [] // the session's clearest repair signal
+  sessionWrongTags: [], // misconceptions that fired in this session
+  sessionReforgedTags: [] // fired misconceptions repaired by their twin
 };
 var FORGE_SESSION_SIZE = (window.ForgeApp && ForgeApp.session.defaultQuestionCount) || 8;
 var FORGE_SESSION_PREFIX = 'forge-session:';
@@ -432,6 +438,7 @@ function forgeStartSession(bank, rawQs) {
   if(window.forgeTrack) forgeTrack('forge_session_started',{bank:bank,question_count:state.questions.length});
   state.idx = 0; state.score = 0;
   state.sessionWrongTags = [];
+  state.sessionReforgedTags = [];
   try { localStorage.setItem(forgeSessionKey(bank), JSON.stringify({completedIds: completed, questionIds: state.questions.map(function(q){return q.id;}), idx: 0, score: 0, updatedAt: Date.now()})); } catch(e) {}
 }
 function forgeCompleteSession() {
@@ -742,6 +749,13 @@ function render() {
     // subject before starting so restoration cannot fall back to the full
     // subject bank list.
     state.subject = getSubjectForBank(requestedBank);
+    if(!ForgeData.isLoaded(state.subject)){
+      app.innerHTML='<div class="forge-status forge-status--loading" role="status" aria-live="polite">Loading assigned questions…</div>'+sessionBar();
+      ForgeData.loadSubject(state.subject).then(render).catch(function(){
+        app.innerHTML='<div class="forge-status forge-status--error" role="alert">We couldn’t load this assignment. Check your connection and try again.</div>'+sessionBar();
+      });
+      return;
+    }
     if (requestedClassId) state.classId = requestedClassId;
     if (requestedAssignmentId) state.assignmentId = requestedAssignmentId;
     var requestedClass = ForgeClasses.forSubject(state.subject);
@@ -1075,7 +1089,7 @@ function renderSubjects(){
     if (s.readerMode) {
       countLabel = MANDARIN_PASSAGES.length + ' reading passage' + (MANDARIN_PASSAGES.length === 1 ? '' : 's');
     } else {
-      var n=s.banks.reduce(function(t,b){return t+BANKS[b].questions.length},0);
+      var n=s.banks.reduce(function(t,b){return t+(BANKS[b].questionCount||BANKS[b].questions.length)},0);
       countLabel = s.banks.length+' banks \u00b7 '+n+' questions';
     }
     var entry = ForgeClasses.forSubject(k);
@@ -1233,6 +1247,14 @@ function renderSubjects(){
 
 function renderBanks(){
   var subj=SUBJECTS[state.subject];
+  if(!ForgeData.isLoaded(state.subject)){
+    app.innerHTML='<div class="forge-status forge-status--loading" role="status" aria-live="polite">Loading '+subj.label+' questions…</div>'+sessionBar();
+    ForgeData.loadSubject(state.subject).then(render).catch(function(){
+      app.innerHTML='<div class="forge-status forge-status--error" role="alert">We couldn’t load these questions. <button type="button" class="forge-button forge-button--secondary" id="retry-question-data">Try again</button></div>'+sessionBar();
+      var retry=document.getElementById('retry-question-data');if(retry)retry.onclick=render;
+    });
+    return;
+  }
   // Students in more than one class always need a way back to their other
   // subjects, so only lock when this really is their only one.
   var choices = ForgeClasses.subjects(SUBJECTS).length
@@ -1724,6 +1746,7 @@ function renderReforge(q,el,color){
       });
       var rfb=document.getElementById('rf-feedback');
       if(isCorrect){
+        if(q.tag&&state.sessionReforgedTags.indexOf(q.tag)===-1) state.sessionReforgedTags.push(q.tag);
         rfb.innerHTML='<div class="forge-u-1wiwwwz">\u2713 Reforged.</div>';
       }else{
         rfb.innerHTML='<div class="forge-u-jm24uy"><div class="forge-u-o1x2qa">Not quite \u2014 the answer is <strong>'+rf.correct+'</strong>.</div><div class="rf-scaffold"><span class="stag">Re-read the scaffold</span><p>'+ForgeQuestion.scaffoldText(q)+'</p></div></div>';
@@ -1766,8 +1789,10 @@ function renderResults(){
   var pct=Math.round((state.score/state.questions.length)*100);
   var col=pct>=75?'var(--good)':pct>=50?'var(--hot)':'var(--bad)';
   var confidence = pct >= 80 ? 'High confidence' : pct >= 60 ? 'Building confidence' : 'Needs another pass';
-  var remaining = state.sessionWrongTags.length ? state.sessionWrongTags[0] : null;
-  var remainingLabel = remaining || 'No clear weak area in this session';
+  var sessionSignals=ForgeMisconceptions.session(state.sessionWrongTags,state.sessionReforgedTags);
+  var repaired=sessionSignals.repaired.length?sessionSignals.repaired[0]:null;
+  var remaining=sessionSignals.remaining.length?sessionSignals.remaining[0]:null;
+  var remainingLabel = remaining || 'No unresolved error from this session';
   var nextHref = remaining ? 'anvil.html' : 'crucible.html';
   var nextLabel = remaining ? 'Repair this in Anvil' : 'Pressure-test in Crucible';
   var h='<div class="results">';
@@ -1778,7 +1803,7 @@ function renderResults(){
   h+='<section class="forge-result-story" aria-labelledby="result-next-title">';
   h+='<p class="forge-recommendation__eyebrow">Session readout</p>';
   h+='<h2 id="result-next-title">'+(remaining ? 'Your next repair is clear.' : 'Your recall is ready for pressure.')+'</h2>';
-  h+='<dl class="forge-result-facts"><div><dt>Strongest repaired misconception</dt><dd>'+(remaining ? 'The error was surfaced and is ready for a targeted Anvil pass.' : 'You held the key ideas across this session.')+'</dd></div><div><dt>Remaining weak area</dt><dd>'+remainingLabel+'</dd></div></dl>';
+  h+='<dl class="forge-result-facts"><div><dt>Repaired this session</dt><dd>'+(repaired||'No Re-forge completed')+'</dd></div><div><dt>Still needs repair</dt><dd>'+remainingLabel+'</dd></div></dl>';
   h+='<a class="forge-button forge-button--primary" href="'+nextHref+'" id="result-next-action">'+nextLabel+' →</a></section>';
   h+='<div class="forge-action-row forge-result-actions">';
   h+='<button type="button" class="forge-button forge-button--secondary" id="retry">Retry session</button>';
