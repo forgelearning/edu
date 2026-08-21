@@ -15,7 +15,7 @@
     "staging": "npm run pages:build && node dev/staging-server.js",
     "check:content-status": "node scripts/build/build-content-status.js --check",
     "check:buttons": "node scripts/checks/check-button-types.js",
-    "check": "node scripts/build/build-content-status.js --check && node scripts/checks/check-question-bank.js && node scripts/checks/check-subject-counts.js && node scripts/checks/check-spec-coverage.js && node scripts/checks/check-stem-diversity.js && node scripts/checks/check-stem-language.js && node dev/audit-banks.js && node dev/audit-supabase-security.js && node scripts/build/build-pages-site.js && node scripts/checks/check-ui-system.js && node scripts/checks/check-button-types.js && node scripts/checks/check-routes.js && node dev/test-forge.js && node dev/test-auth.js && node dev/test-forge-api.js && node dev/test-persistence.js && node dev/test-assignment-scoring.js",
+    "check": "node scripts/build/build-content-status.js --check && node scripts/checks/check-question-bank.js && node scripts/checks/check-subject-counts.js && node scripts/checks/check-spec-coverage.js && node scripts/checks/check-stem-diversity.js && node scripts/checks/check-stem-language.js && node dev/audit-banks.js && node dev/audit-supabase-security.js && node scripts/build/build-pages-site.js && node scripts/checks/check-ui-system.js && node scripts/checks/check-button-types.js && node scripts/checks/run-route-check.js && node dev/test-forge.js && node dev/test-auth.js && node dev/test-forge-api.js && node dev/test-persistence.js && node dev/test-assignment-scoring.js",
     "check:e2e": "node dev/test-coded-student-e2e.js"
   },
   "dependencies": {

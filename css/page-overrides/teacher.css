@@ -453,3 +453,15 @@ html[data-overdrive="control-room"] .teacher-entry{position:relative}
 .danger-zone h3{margin:0 0 8px;color:var(--bad)}
 .danger-zone code{padding:1px 6px;border-radius:var(--radius-sm);background:var(--panel-2);font-family:'JetBrains Mono',monospace}
 .danger-zone input{width:100%;margin:8px 0 12px;padding:10px 12px;border:1px solid var(--line);border-radius:var(--radius-sm);background:var(--panel);color:inherit;font-family:'JetBrains Mono',monospace}
+
+/* F2 — student access codes are shown on screen, not only downloaded. The
+   server returns each code once and stores only its hash, so a blocked
+   download used to lose them permanently. */
+.codes-card{margin:14px 0 18px;max-width:720px}
+.codes-card h3{margin:0 0 8px;font-size:17px;color:var(--white)}
+.codes-card p{margin:0 0 14px;color:var(--muted);font-size:14px;line-height:1.55;max-width:60ch}
+.codes-card input[type="number"]{width:120px;margin-bottom:14px;padding:10px 12px;border:1px solid var(--line);border-radius:var(--radius-sm);background:var(--panel-2);color:var(--white);font:inherit}
+.codes-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:6px;margin:0 0 16px;padding:0 0 0 4px;max-height:320px;overflow-y:auto;list-style-position:inside}
+.codes-list li{padding:7px 10px;border:1px solid var(--line);border-radius:var(--radius-xs);background:var(--panel-2);font-size:13px;color:var(--dim)}
+.codes-list code{font-family:'JetBrains Mono',monospace;font-size:13.5px;letter-spacing:.04em;color:var(--white);user-select:all}
+.codes-name{display:block;margin-bottom:2px;color:var(--muted);font-size:12px}

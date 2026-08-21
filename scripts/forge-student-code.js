@@ -36,19 +36,36 @@
     },
     recordResponse: function (studentId, classCode, studentCode, row) {
       row = row || {};
-      return rpc('record_student_response_with_code', {
-        p_student_id: studentId,
-        p_class_code: String(classCode || '').trim().toUpperCase(),
-        p_student_code: clean(studentCode),
-        p_question_id: row.question_id,
-        p_bank: row.bank,
-        p_subject: row.subject,
-        p_selected_option: row.selected_option,
-        p_is_correct: !!row.is_correct,
-        p_misconception_tag: row.misconception_tag || null,
-        p_spec_point: row.spec_point || null,
-        p_reforge_attempted: !!row.reforge_attempted,
-        p_reforge_correct: row.reforge_correct == null ? null : !!row.reforge_correct
+      function payload(withAssignment) {
+        var args = {
+          p_student_id: studentId,
+          p_class_code: String(classCode || '').trim().toUpperCase(),
+          p_student_code: clean(studentCode),
+          p_question_id: row.question_id,
+          p_bank: row.bank,
+          p_subject: row.subject,
+          p_selected_option: row.selected_option,
+          p_is_correct: !!row.is_correct,
+          p_misconception_tag: row.misconception_tag || null,
+          p_spec_point: row.spec_point || null,
+          p_reforge_attempted: !!row.reforge_attempted,
+          p_reforge_correct: row.reforge_correct == null ? null : !!row.reforge_correct
+        };
+        // The RPC is overloaded: naming p_assignment_id selects the variant
+        // that records it. Only send the key when there is a value, so the
+        // 12-argument form still resolves unambiguously for free practice.
+        if (withAssignment && row.assignment_id) args.p_assignment_id = row.assignment_id;
+        return args;
+      }
+
+      return rpc('record_student_response_with_code', payload(true)).then(function (result) {
+        // The RPC refuses an assignment id that does not belong to this class.
+        // A stale link must not cost the student their answer, so record it
+        // again unattributed rather than failing the write.
+        if (result && result.allowed === false && result.reason === 'invalid_assignment' && row.assignment_id) {
+          return rpc('record_student_response_with_code', payload(false));
+        }
+        return result;
       }).then(function (result) {
         if (!result || result.allowed !== true) throw new Error('Student response session is not valid.');
         return result;

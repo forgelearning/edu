@@ -95,6 +95,7 @@ function supaInsert(t,row){
 // ===== DATA =====
 </script>
 <script src="data/forge-data.js?v=20260805"></script>
+<script src="data/misconception-labels.js"></script>
 <script>
 
 // ===== END DATA =====
@@ -531,7 +532,10 @@ function renderResults(){
       h+='<div class="result-row">';
       h+='<span class="result-icon forge-text-bad">\u2715</span>';
       h+='<span class="result-info">'+a.q.stem.substring(0,80)+(a.q.stem.length>80?'\u2026':'')+'</span>';
-      h+='<span class="result-mc">'+(tag||'—')+'</span>';
+      // Show the misconception in words. The raw code was only ever an
+      // internal identifier — students have no way to read it.
+      var tagLabel=(window.resolveMCLabel && resolveMCLabel(tag))||'';
+      h+='<span class="result-mc">'+(tagLabel||'—')+'</span>';
       h+='</div>';
     });
     h+='</div>';

@@ -938,6 +938,7 @@ function renderDashboard() {
     h += ' <button type="button" class="class-code-pill" id="class-code-pill" data-forge-action="copy-class-code" title="Copy class code">' + dashState.classCode + ' ⎘</button>';
   }
   h += '</h1><button type="button" class="forge-button forge-button--secondary" id="generate-student-codes">Generate student codes</button><button type="button" class="forge-button forge-button--secondary" id="migrate-existing-students">Migrate existing students</button><button type="button" class="forge-button forge-button--secondary forge-button--danger" id="delete-class">Delete class</button></div>';
+  h += '<div id="student-codes-panel" hidden></div>';
   h += '<div id="delete-class-panel" hidden></div>';
   h += '<div class="dash-header-actions"><a class="dash-primary forge-button forge-button--primary" href="#" id="dash-action">' + (wrongResponses.length ? 'Open misconceptions \u2192' : 'Create assignment \u2192') + '</a><div class="dash-meta"><b>' + students.length + '</b> student' + (students.length !== 1 ? 's' : '') + ' \u00b7 <b>' + totalQs + '</b> response' + (totalQs !== 1 ? 's' : '') + ' \u00b7 <button type="button" class="back-btn forge-u-gr3ipb" data-forge-action="render-teacher-home">\u2190 All classes</button></div></div>';
   h += '</div>';
@@ -981,28 +982,124 @@ function renderDashboard() {
   h += '<div class="forge-u-uydnfn" id="panel-student"></div>';
 
   app.innerHTML = h;
+  /* Generating codes deliberately avoids window.prompt/alert and a
+     download-only result, for two reasons.
+
+     First, native dialogs are unreliable in the Capacitor shells this repo
+     builds — the same reason delete-class below uses an in-page confirmation.
+     window.prompt() throws outright in some embedded webviews ("prompt() is
+     not supported"), which took this button out entirely.
+
+     Second, the server returns each code exactly once and stores only its
+     SHA-256 hash. If the CSV download is blocked, those codes are gone for
+     good and the class has to be re-issued. So the codes are shown on screen,
+     copyable, and the CSV is offered as well rather than instead. */
   var generateCodesBtn = document.getElementById('generate-student-codes');
-  if (generateCodesBtn) generateCodesBtn.onclick = function () {
-    var quantity = window.prompt('How many student codes?', '25');
-    if (quantity === null) return;
-    quantity = parseInt(quantity, 10);
-    if (!Number.isInteger(quantity) || quantity < 1 || quantity > 200) { window.alert('Enter a whole number from 1 to 200.'); return; }
-    generateCodesBtn.disabled = true;
-    generateCodesBtn.textContent = 'Generating…';
-    ForgeAPI.rpc('generate_student_access_codes', { p_class_id: dashState.classId, p_quantity: quantity }, teacherApiOptions())
-      .then(function (rows) {
-        if (!Array.isArray(rows) || rows.length !== quantity) throw new Error('The server did not return the requested number of codes.');
-        var csv = 'Student Code,Name,Class Code\n' + rows.map(function (row) {
-          return [row.student_code, '', row.class_code].map(function (v) { return '"' + String(v || '').replace(/"/g, '""') + '"'; }).join(',');
-        }).join('\n') + '\n';
-        var blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
-        var url = URL.createObjectURL(blob);
-        var link = document.createElement('a'); link.href = url; link.download = 'forge-student-codes-' + dashState.classCode + '.csv'; link.click();
-        setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
-        window.alert('Downloaded ' + rows.length + ' student codes. Keep this file private.');
-      })
-      .catch(function (error) { window.alert(error.message || 'Could not generate student codes.'); })
-      .finally(function () { generateCodesBtn.disabled = false; generateCodesBtn.textContent = 'Generate student codes'; });
+  var codesPanel = document.getElementById('student-codes-panel');
+
+  function closeCodesPanel() {
+    if (!codesPanel) return;
+    codesPanel.hidden = true;
+    codesPanel.innerHTML = '';
+  }
+
+  function codesCsv(rows, withNames) {
+    var header = withNames ? 'Student Code,Name,Class Code\n' : 'Student Code,Name,Class Code\n';
+    return header + rows.map(function (row) {
+      return [row.student_code, withNames ? (row.student_name || '') : '', row.class_code]
+        .map(function (v) { return '"' + String(v || '').replace(/"/g, '""') + '"'; }).join(',');
+    }).join('\n') + '\n';
+  }
+
+  function offerCsv(rows, filenamePrefix, withNames) {
+    var blob = new Blob([codesCsv(rows, withNames)], { type: 'text/csv;charset=utf-8' });
+    var url = URL.createObjectURL(blob);
+    var link = document.createElement('a');
+    link.href = url;
+    link.download = filenamePrefix + '-' + dashState.classCode + '.csv';
+    link.click();
+    setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+  }
+
+  function renderCodes(rows, opts) {
+    opts = opts || {};
+    if (!codesPanel) return;
+    var withNames = !!opts.withNames;
+    var h = '<div class="card codes-card">';
+    h += '<h3>' + rows.length + ' student code' + (rows.length !== 1 ? 's' : '') + ' for ' + teacherEsc(dashState.className || 'this class') + '</h3>';
+    h += '<p>Each code works once, for one student. <b>They are shown here only now</b> — the server keeps a hash, not the code, so save them before you close this.</p>';
+    h += '<ol class="codes-list">';
+    rows.forEach(function (row) {
+      h += '<li>' + (withNames ? '<span class="codes-name">' + teacherEsc(row.student_name || '') + '</span>' : '') +
+           '<code>' + teacherEsc(row.student_code) + '</code></li>';
+    });
+    h += '</ol>';
+    h += '<div class="forge-action-row">';
+    h += '<button type="button" class="forge-button forge-button--primary" id="codes-copy">Copy all codes</button>';
+    h += '<button type="button" class="forge-button forge-button--secondary" id="codes-csv">Download CSV</button>';
+    h += '<button type="button" class="forge-button forge-button--secondary" id="codes-close">Done</button>';
+    h += '</div><div id="codes-state"></div></div>';
+    codesPanel.hidden = false;
+    codesPanel.innerHTML = h;
+
+    document.getElementById('codes-close').onclick = closeCodesPanel;
+    document.getElementById('codes-csv').onclick = function () { offerCsv(rows, opts.filenamePrefix || 'forge-student-codes', withNames); };
+    document.getElementById('codes-copy').onclick = function () {
+      var text = rows.map(function (row) {
+        return (withNames && row.student_name ? row.student_name + '\t' : '') + row.student_code + '\t' + row.class_code;
+      }).join('\n');
+      var button = document.getElementById('codes-copy');
+      navigator.clipboard.writeText(text).then(function () {
+        button.textContent = '✓ Copied';
+        setTimeout(function () { button.textContent = 'Copy all codes'; }, 2000);
+      }).catch(function () {
+        teacherInlineState(document.getElementById('codes-state'), 'error', {
+          label: 'Couldn’t copy',
+          body: 'Select the codes above and copy them manually, or download the CSV.'
+        });
+      });
+    };
+  }
+
+  if (generateCodesBtn && codesPanel) generateCodesBtn.onclick = function () {
+    if (!codesPanel.hidden) { closeCodesPanel(); return; }
+    codesPanel.hidden = false;
+    codesPanel.innerHTML =
+      '<div class="card codes-card">'
+      + '<h3>Generate student codes</h3>'
+      + '<p>One private code per student. Give each student one code — it is how Forge tells them apart.</p>'
+      + '<label class="auth-label" for="codes-qty">How many?</label>'
+      + '<input type="number" id="codes-qty" min="1" max="200" step="1" value="25" inputmode="numeric">'
+      + '<div class="forge-action-row">'
+      + '<button type="button" class="forge-button forge-button--secondary" id="codes-cancel">Cancel</button>'
+      + '<button type="button" class="forge-button forge-button--primary" id="codes-go">Generate</button>'
+      + '</div><div id="codes-state"></div></div>';
+
+    document.getElementById('codes-cancel').onclick = closeCodesPanel;
+    document.getElementById('codes-go').onclick = function () {
+      var stateHost = document.getElementById('codes-state');
+      var goBtn = document.getElementById('codes-go');
+      var quantity = parseInt(document.getElementById('codes-qty').value, 10);
+      stateHost.innerHTML = '';
+      if (!Number.isInteger(quantity) || quantity < 1 || quantity > 200) {
+        teacherInlineState(stateHost, 'error', { label: 'Enter a number from 1 to 200', body: 'One code per student in the class.' });
+        return;
+      }
+      goBtn.disabled = true; goBtn.textContent = 'Generating…';
+      ForgeAPI.rpc('generate_student_access_codes', { p_class_id: dashState.classId, p_quantity: quantity }, teacherApiOptions())
+        .then(function (rows) {
+          if (!Array.isArray(rows) || rows.length !== quantity) throw new Error('The server did not return the requested number of codes.');
+          renderCodes(rows, { filenamePrefix: 'forge-student-codes' });
+        })
+        .catch(function (error) {
+          goBtn.disabled = false; goBtn.textContent = 'Generate';
+          stateHost.innerHTML = '';
+          teacherInlineState(stateHost, 'error', {
+            label: 'Codes weren’t generated',
+            body: (error && error.message) || 'Check your connection and try again.'
+          });
+        });
+    };
   };
   /* Deleting a class cascades to its students, access codes, assignments and
      every response they hold (see 20260810130000_cascade_class_cleanup.sql), so
@@ -1058,24 +1155,53 @@ function renderDashboard() {
     };
   };
 
+  /* Same story as generating codes: no native dialogs, and the codes are put
+     on screen rather than only into a download the webview may refuse. This
+     one matters more — it is the migration off the legacy name-only join, so
+     losing its output means the class cannot move over. */
   var migrateBtn = document.getElementById('migrate-existing-students');
-  if (migrateBtn) migrateBtn.onclick = function () {
-    if (!window.confirm('Generate private codes for every existing student in this class? Student IDs and response history will be preserved.')) return;
-    migrateBtn.disabled = true;
-    migrateBtn.textContent = 'Migrating…';
-    ForgeAPI.rpc('generate_student_access_codes_for_existing_students', { p_class_id: dashState.classId }, teacherApiOptions())
-      .then(function (rows) {
-        if (!Array.isArray(rows)) throw new Error('The server returned an invalid migration response.');
-        var csv = 'Student ID,Name,Student Code,Class Code\n' + rows.map(function (row) {
-          return [row.student_id, row.student_name, row.student_code, row.class_code].map(function (v) { return '"' + String(v || '').replace(/"/g, '""') + '"'; }).join(',');
-        }).join('\n') + '\n';
-        var url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
-        var link = document.createElement('a'); link.href = url; link.download = 'forge-migrated-student-codes-' + dashState.classCode + '.csv'; link.click();
-        setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
-        window.alert(rows.length ? 'Downloaded ' + rows.length + ' private student codes. Keep this file private.' : 'All students already have private codes.');
-      })
-      .catch(function (error) { window.alert(error.message || 'Could not migrate existing students.'); })
-      .finally(function () { migrateBtn.disabled = false; migrateBtn.textContent = 'Migrate existing students'; });
+  if (migrateBtn && codesPanel) migrateBtn.onclick = function () {
+    if (!codesPanel.hidden) { closeCodesPanel(); return; }
+    codesPanel.hidden = false;
+    codesPanel.innerHTML =
+      '<div class="card codes-card">'
+      + '<h3>Give existing students private codes?</h3>'
+      + '<p>Every student already in ' + teacherEsc(dashState.className || 'this class') + ' gets one private code. '
+      + 'Their student records and answer history are kept exactly as they are — only how they sign in changes.</p>'
+      + '<div class="forge-action-row">'
+      + '<button type="button" class="forge-button forge-button--secondary" id="codes-cancel">Cancel</button>'
+      + '<button type="button" class="forge-button forge-button--primary" id="codes-go">Generate codes</button>'
+      + '</div><div id="codes-state"></div></div>';
+
+    document.getElementById('codes-cancel').onclick = closeCodesPanel;
+    document.getElementById('codes-go').onclick = function () {
+      var stateHost = document.getElementById('codes-state');
+      var goBtn = document.getElementById('codes-go');
+      goBtn.disabled = true; goBtn.textContent = 'Migrating…';
+      stateHost.innerHTML = '';
+      ForgeAPI.rpc('generate_student_access_codes_for_existing_students', { p_class_id: dashState.classId }, teacherApiOptions())
+        .then(function (rows) {
+          if (!Array.isArray(rows)) throw new Error('The server returned an invalid migration response.');
+          if (!rows.length) {
+            stateHost.innerHTML = '';
+            teacherInlineState(stateHost, 'success', {
+              label: 'Nothing to migrate',
+              body: 'Every student in this class already has a private code.'
+            });
+            goBtn.disabled = false; goBtn.textContent = 'Generate codes';
+            return;
+          }
+          renderCodes(rows, { withNames: true, filenamePrefix: 'forge-migrated-student-codes' });
+        })
+        .catch(function (error) {
+          goBtn.disabled = false; goBtn.textContent = 'Generate codes';
+          stateHost.innerHTML = '';
+          teacherInlineState(stateHost, 'error', {
+            label: 'Migration didn’t run',
+            body: (error && error.message) || 'Check your connection and try again.'
+          });
+        });
+    };
   };
   var dashAction = document.getElementById('dash-action');
   if (dashAction) dashAction.onclick = function(e) { e.preventDefault(); switchTab(wrongResponses.length ? 'heatmap' : 'assignments', dashAction); };

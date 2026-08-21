@@ -152,13 +152,20 @@ function logResponse(q, selectedKey, isCorrect, isReforge, reforgeCorrect) {
     subject: getSubjectForBank(state.bank),
     selected_option: selectedKey,
     is_correct: isCorrect,
-    misconception_tag: isCorrect ? null : (q.tag || null),
+    // A re-forge always carries the tag it is repairing, right or wrong. It
+    // used to be dropped whenever the student got it right (isCorrect ? null),
+    // and the Anvil skips rows with no tag — so a successful re-forge was
+    // invisible there: the streak never advanced and the misconception could
+    // never be cleared from the quiz, while a failed one still counted and
+    // reset it. Only wrong first attempts should attribute a new misconception.
+    misconception_tag: (isReforge || !isCorrect) ? (q.tag || null) : null,
     // Fall back to the tag map: most banks carry a tag but no explicit spec, and
     // without this correct answers logged no spec point at all.
     spec_point: q.spec || MC_TO_SPEC[q.tag] || null,
     reforge_attempted: isReforge || false,
     reforge_correct: isReforge ? reforgeCorrect : null
   };
+  if (requestedAssignmentId) row.assignment_id = requestedAssignmentId;
   // Use auth token for trial/paid students so RLS policies pass correctly
   var token = (state.isPaid || state.isTrial) ? ForgeAuth.accessToken() : null;
   if (token) {
@@ -381,6 +388,7 @@ var SPEC_TO_SUBJECT = {
 </script>
 <script src="data/spec-registry.js"></script>
 <script src="data/forge-data.js?v=20260805"></script>
+<script src="data/misconception-labels.js"></script>
 <script>
 
 function shuffle(a){var b=[...a];for(var i=b.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
@@ -443,6 +451,12 @@ function forgeCompleteSession() {
 var requestedBank = new URLSearchParams(location.search).get('bank');
 var requestedClassId = new URLSearchParams(location.search).get('class_id');
 var requestedAssignmentTitle = new URLSearchParams(location.search).get('assignment_title');
+// Which assignment this session belongs to. The database has taken an
+// assignment id on the write RPC since 20260817121000_responses_assignment_id,
+// but nothing ever sent one: every response row had assignment_id null, so
+// completion was inferred from "answers in the assigned banks" and work done
+// before an assignment existed counted towards it.
+var requestedAssignmentId = new URLSearchParams(location.search).get('assignment_id');
 var requestedSubject = new URLSearchParams(location.search).get('subject');
 var openClassJoin = new URLSearchParams(location.search).get('mode') === 'class';
 var openSoloLogin = new URLSearchParams(location.search).get('mode') === 'solo';
@@ -1769,7 +1783,11 @@ function renderResults(){
   var col=pct>=75?'var(--good)':pct>=50?'var(--hot)':'var(--bad)';
   var confidence = pct >= 80 ? 'High confidence' : pct >= 60 ? 'Building confidence' : 'Needs another pass';
   var remaining = state.sessionWrongTags.length ? state.sessionWrongTags[0] : null;
-  var remainingLabel = remaining || 'No clear weak area in this session';
+  // Show the readable label, not the internal tag. resolveMCLabel yields ''
+  // for the rare tag it cannot derive, so keep a plain-English fallback.
+  var remainingLabel = remaining
+    ? ((window.resolveMCLabel && resolveMCLabel(remaining)) || 'One idea from this session needs another pass')
+    : 'No clear weak area in this session';
   var nextHref = remaining ? 'anvil.html' : 'crucible.html';
   var nextLabel = remaining ? 'Repair this in Anvil' : 'Pressure-test in Crucible';
   var h='<div class="results">';

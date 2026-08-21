@@ -38,6 +38,7 @@
   <link rel="stylesheet" href="css/auth-ember.css?v=20260817-auth2">
 </head>
 <body class="forge-auth-ember">
+<script src="scripts/forge-teacher-ui.js"></script>
 <script src="scripts/forge-state.js"></script>
 <script src="scripts/forge-page-actions.js"></script>
 <a class="forge-skip-link" href="#main-content">Skip to main content</a>
@@ -163,7 +164,7 @@ function renderLoading() {
 }
 
 // ── DATA ─────────────────────────────────────────────────────
-var data = { classes: [], students: [], responses: [] };
+var data = { classes: [], students: [], responses: [], schoolName: null };
 
 function loadData() {
   supaRpc('get_school_overview').then(function(result) {
@@ -175,13 +176,16 @@ function loadData() {
       if (result.reason === 'no_school') {
         ForgeState.empty(app, {
           label: 'No school linked to your account',
-          body: 'The overview covers the school on your classes. Create a class with your school name to see it here.'
+          body: 'The overview covers the school on your teacher invite. Create your account with your school\u2019s invite code to see it here.'
         });
       } else {
         renderLogin('Please sign in again to view the school overview.');
       }
       return;
     }
+    // The heading used to be a hardcoded string, so every school saw another
+    // school's name over its own figures. The RPC reports whose data this is.
+    data.schoolName = result.school_name || null;
     data.classes   = result.classes   || [];
     data.students  = result.students  || [];
     data.responses = (result.responses || []).slice().sort(function(a, b) {
@@ -401,7 +405,7 @@ function renderDashboard() {
   // Header
   h += '<div class="forge-u-7547uz">';
   h += '<div><p class="tag forge-u-l8gta7">School Overview</p>';
-  h += '<h1 class="ui-stat-large">Mayfield Grammar</h1>';
+  h += '<h1 class="ui-stat-large">' + ForgeTeacherUI.escape(data.schoolName || 'Your school') + '</h1>';
   h += '<p class="dash-meta">Read-only · no individual student names · updated live</p></div>';
   h += '<button type="button" class="signout-btn" data-forge-action="logout">Sign out</button>';
   h += '</div>';
