@@ -44,6 +44,27 @@ Question shapes in use: standard multiple choice; `type: "fill_blank"`
 (`model_answer_outline`). The last three have no `correct` field — that is
 expected, not a defect.
 
+## Two invariants added on 2026-08-21 — don't undo them by accident
+
+**A class's school is server-derived, not typed.** `classes.school` and
+`school_key` are filled by a `before insert` trigger from the teacher's row in
+`teacher_profiles`, and the insert is refused outright when that row is missing.
+The only way to get one is `claim_teacher_invite(code)`, and invite codes now
+carry the school they admit you to. So: don't add a school field back to the
+create-class form, and don't scope anything by the typed string — the overview
+scopes by the profile. Sign-up itself is still open (blocking it needs an auth
+hook this plan doesn't have), but an unclaimed account cannot create a class and
+`get_school_overview` answers `no_school`.
+
+**`ECON100_SCAFFOLDS` must stay complete.** The four generated Economics banks
+(`ECON-1.1`, `3.1.1`, `3.2.1`, `4.1.1`) build two questions per concept from a
+factory. Its scaffolds used to be templates built from the answer — "Use the
+definition of X... <answer> gives the relevant economic conclusion" — which
+restated the answer instead of teaching it, across 150 questions. Each of the 86
+concepts now has a hand-written scaffold keyed by topic, shared by both
+questions in the pair. A concept added to those tables without an entry silently
+falls back to the old template, so add the scaffold at the same time.
+
 ## Concurrent sessions — read this
 
 More than one session often has this repo open, and `data/forge-data.js` is the
@@ -109,13 +130,13 @@ propagates into its `*-COV-*` copies and fixing the source fixes them all.
 
 ## Current status after PR #133
 
-- The full bank now has **0 longest-answer cues** across 7,510 stems and 7,510 Reforge twins. `dev/audit-banks.js` treats any future `CUE` as fatal.
+- The full bank now has **0 longest-answer cues** across 7,531 stems and 7,531 Reforge twins. `dev/audit-banks.js` treats any future `CUE` as fatal.
 
   **Read that number carefully.** It is true of what a student sees, and it is
   produced almost entirely by a runtime patch rather than by authoring. Remove
-  the anti-cue loop and **2,499 of 15,063 items (16.6%)** have the correct
-  answer as the single longest option — `gcse-econ` 69.4%, `econ` 50.9%,
-  `gcse-psych` 44.3%. Run `node dev/audit-source-cues.js` to re-measure; it
+  the anti-cue loop and **2,430 of 15,063 items (16.1%)** have the correct
+  answer as the single longest option — `gcse-econ` 61.2%, `econ` 50.9%,
+  `gcse-psych` 44.3%. (Re-measured 2026-08-21.) Run `node dev/audit-source-cues.js` to re-measure; it
   loads the bank with and without the loop and reports only, never failing a
   build.
 
@@ -136,8 +157,8 @@ lower the baseline when a fix lands. They live in `CONTENT_BASELINES`.
 | Check | Baseline | Meaning |
 |---|---|---|
 | `NULL OPTION` | **0 — never raise** | A content-free dismissal ("It has no significant relevance to the topic being tested"). Makes a 4-option question a 3-option one, so guessing pays 33% and reported accuracy inflates. |
-| `SHORT CUE` | 394 | The correct answer is uniquely the shortest *and* under 55% of mean distractor length. The mirror of `CUE`. |
-| `RECYCLED DISTRACTOR` | 46 | One distractor string used in more than 8 distinct source questions (`-COV-n` stripped, so coverage clones don't count). |
+| `SHORT CUE` | 393 | The correct answer is uniquely the shortest *and* under 55% of mean distractor length. The mirror of `CUE`. |
+| `RECYCLED DISTRACTOR` | 44 | One distractor string used in more than 8 distinct source questions (`-COV-n` stripped, so coverage clones don't count). |
 
 The audit prints the true count of each next to its baseline. Only the first
 ten of each are listed, so **never count the printed lines** — that reads as a
@@ -156,7 +177,7 @@ already carried a comment about the same thing happening to A-Level Business.
 
 Now tiered tag → same bank → subject, picking the **least-used** candidate
 rather than the first. That took the Veblen string from 211 questions to 2 and
-`RECYCLED DISTRACTOR` from 73 to 46, with `CUE` still 0.
+`RECYCLED DISTRACTOR` from 73 to 46 (44 as of 2026-08-21), with `CUE` still 0.
 
 It is not a full fix. The strategy itself is wrong: any loop that must find a
 distractor *longer than the key* will eventually reach outside the topic, so
@@ -171,12 +192,13 @@ after.
 
 Before treating either as hand-authoring, check whether the anti-cue loop
 caused it — `node dev/audit-source-cues.js` loads the bank with and without
-that loop. Measured on 2026-08-17:
+that loop. Re-measured on 2026-08-21 by running `dev/audit-banks.js` against a
+copy of the bank with the loop stripped out:
 
 | Backlog | Created by the loop | Authored in source |
 |---|---|---|
-| `SHORT CUE` (394) | **1** | **393** |
-| `RECYCLED DISTRACTOR` (46) | **24** | **22** |
+| `SHORT CUE` (393) | **1** | **392** |
+| `RECYCLED DISTRACTOR` (44) | **21** | **23** |
 
 So `SHORT CUE` really is a hand-authoring backlog — that was worth checking and
 the obvious hypothesis (that the loop shortened keys relative to swapped-in long
@@ -385,6 +407,7 @@ and 0% cued stems and twins.
 Question counts: the tools count different things, so quote the tool rather
 than a single number, and re-run rather than trust this line — it drifts as
 content lands. As of 2026-08-10: `scripts/checks/check-question-bank.js`
-reports 7,605 questions (everything, including the short/extended-answer
-shapes); `dev/audit-banks.js` reports on 7,510 gradeable MCQ stems;
-`dev/test-forge.js` checks 7,710 MCQs including reforge twins.
+reports 7,626 questions (everything, including the short/extended-answer
+shapes); `dev/audit-banks.js` reports on 7,531 gradeable MCQ stems;
+`dev/test-forge.js` checks 7,731 MCQs including reforge twins. (Measured
+2026-08-21.)
