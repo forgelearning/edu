@@ -45,7 +45,7 @@ h1,h2,h3{font-family:'Rethink Sans',sans-serif;color:var(--white);line-height:1.
 .dash-primary:hover{background:var(--hot);color:var(--coal)}
 
 .tabs{display:flex;align-items:center;gap:4px;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-md);padding:4px;margin-bottom:24px;flex-wrap:wrap}
-.tab{font-family:'Poppins',sans-serif;font-weight:600;font-size:13px;color:var(--slate);background:transparent;border:none;padding:9px 18px;border-radius:var(--radius-sm);cursor:pointer;white-space:nowrap}
+.tab{min-height:44px;font-family:'Poppins',sans-serif;font-weight:600;font-size:13px;color:var(--slate);background:transparent;border:none;padding:9px 18px;border-radius:var(--radius-sm);cursor:pointer;white-space:nowrap}
 .tab:hover{color:var(--white)}
 .tab.active{background:var(--ember);color:var(--coal)}
 @media(max-width:600px){.tabs{display:flex;flex-wrap:nowrap;max-width:100%;overflow-x:auto;scrollbar-width:none}.tabs::-webkit-scrollbar{display:none}.tab{flex:0 0 auto}.dash-header-actions{align-items:flex-start;width:100%}}

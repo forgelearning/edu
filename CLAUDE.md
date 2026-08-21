@@ -136,7 +136,7 @@ lower the baseline when a fix lands. They live in `CONTENT_BASELINES`.
 | Check | Baseline | Meaning |
 |---|---|---|
 | `NULL OPTION` | **0 — never raise** | A content-free dismissal ("It has no significant relevance to the topic being tested"). Makes a 4-option question a 3-option one, so guessing pays 33% and reported accuracy inflates. |
-| `SHORT CUE` | 394 | The correct answer is uniquely the shortest *and* under 55% of mean distractor length. The mirror of `CUE`. |
+| `SHORT CUE` | 392 | The correct answer is uniquely the shortest *and* under 55% of mean distractor length. The mirror of `CUE`. |
 | `RECYCLED DISTRACTOR` | 42 | One distractor string used in more than 8 distinct source questions. Coverage clones are excluded via the `coverageVariant` flag — an earlier version stripped a `-COV-n` suffix instead, which turned `MAND-COV-011` into `MAND` and collapsed all 80 Mandarin clones into one pseudo-question. |
 
 The audit prints the true count of each next to its baseline. Only the first

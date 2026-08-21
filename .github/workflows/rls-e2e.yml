@@ -13,16 +13,31 @@ permissions:
 jobs:
   coded-student-rls:
     runs-on: ubuntu-latest
+    env:
+      FORGE_SERVICE_ROLE_KEY: ${{ secrets.FORGE_SERVICE_ROLE_KEY }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       # The service role is only used to create and clean up disposable ZZ-E2E
       # records. Every student operation uses the public anon key. The script
       # fails closed when this secret is absent, so this cannot become a silent
       # skip in a release check.
       - name: Run coded-student RLS end-to-end test
+        if: ${{ env.FORGE_SERVICE_ROLE_KEY != '' }}
         env:
-          FORGE_SERVICE_ROLE_KEY: ${{ secrets.FORGE_SERVICE_ROLE_KEY }}
           FORGE_E2E_REQUIRED: '1'
         run: npm run check:e2e
+
+      # GitHub deliberately withholds repository secrets from untrusted PR
+      # contexts. Keep PR checks informative without weakening the release
+      # gate: main pushes and manual runs still fail if the key is absent.
+      - name: Report unavailable PR secret
+        if: ${{ env.FORGE_SERVICE_ROLE_KEY == '' && github.event_name == 'pull_request' }}
+        run: echo "Coded-student RLS e2e skipped because GitHub did not expose FORGE_SERVICE_ROLE_KEY to this pull request."
+
+      - name: Require service key for release runs
+        if: ${{ env.FORGE_SERVICE_ROLE_KEY == '' && github.event_name != 'pull_request' }}
+        run: |
+          echo "FORGE_SERVICE_ROLE_KEY is required for main and manually dispatched RLS checks."
+          exit 1
