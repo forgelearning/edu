@@ -299,7 +299,9 @@ h1,h2,h3{font-family:'Rethink Sans',sans-serif;color:var(--white);line-height:1.
 .dash-header h1{font-size:clamp(28px,4vw,44px);letter-spacing:-.04em}
 .dash-primary{min-height:46px;padding:0 18px;box-shadow:0 12px 26px -20px rgba(213,92,19,.9);transition:background .18s ease,color .18s ease,transform .18s ease,box-shadow .18s ease}
 .dash-primary:hover{transform:translateY(-2px);box-shadow:0 18px 30px -20px rgba(213,92,19,1)}
-.stat-row--priority{grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;max-width:none}
+/* Exactly two cards are rendered into this row, so it is a two-column grid.
+   It was repeat(3,...), which left a permanently empty third column. */
+.stat-row--priority{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;max-width:none}
 .stat--priority{position:relative;min-height:112px;display:flex;flex-direction:column;justify-content:center;overflow:hidden;contain:layout paint}
 .stat--priority::after{content:"";position:absolute;right:-18px;bottom:-28px;width:88px;height:88px;border-radius:50%;background:rgba(255,201,60,.08);pointer-events:none}
 .stat--priority:first-child{border-color:rgba(255,107,44,.5)}
@@ -325,14 +327,12 @@ h1,h2,h3{font-family:'Rethink Sans',sans-serif;color:var(--white);line-height:1.
   .wrap{max-width:none}
   .dash-header::before{margin-bottom:12px}
   .stat-row--priority{grid-template-columns:1fr 1fr}
-  .stat--priority:first-child{grid-column:1/-1}
   .stat--priority{min-height:92px}
   .tabs{position:static}
   .ui-recommendation__title{max-width:22ch}
 }
 @media(max-width:520px){
   .stat-row--priority{grid-template-columns:1fr}
-  .stat--priority:first-child{grid-column:auto}
   .stat--priority{min-height:84px}
   .ui-recommendation::after{top:18px;right:18px}
   .ui-recommendation__title{padding-right:40px}
@@ -408,7 +408,7 @@ h1,h2,h3{font-family:'Rethink Sans',sans-serif;color:var(--white);line-height:1.
    directions without committing one as the default dashboard treatment. */
 html[data-overdrive="command-centre"] .wrap{max-width:1380px}
 html[data-overdrive="command-centre"] .dash-header::before{content:"COMMAND CENTRE / INTERVENTION QUEUE"}
-html[data-overdrive="command-centre"] .stat-row--priority{grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+html[data-overdrive="command-centre"] .stat-row--priority{grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
 html[data-overdrive="command-centre"] .stat--priority{min-height:138px;text-align:left;align-items:flex-start;padding:22px}
 html[data-overdrive="command-centre"] .stat-l{margin-top:8px}
 html[data-overdrive="command-centre"] .ui-recommendation{padding:28px 30px}
@@ -425,7 +425,7 @@ html[data-overdrive="learning-loop"] .stat--priority:nth-child(3){border-color:v
 html[data-overdrive="control-room"] body{background:#100f0e}
 html[data-overdrive="control-room"] .wrap{max-width:1440px}
 html[data-overdrive="control-room"] .dash-header::before{content:"FORGE CONTROL ROOM / LIVE SIGNALS";color:var(--hot)}
-html[data-overdrive="control-room"] .stat-row--priority{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+html[data-overdrive="control-room"] .stat-row--priority{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 html[data-overdrive="control-room"] .stat--priority{background:var(--panel-2);border-color:rgba(255,201,60,.3);border-radius:var(--radius-sm);min-height:104px}
 html[data-overdrive="control-room"] .tabs{border-color:rgba(255,201,60,.32);background:var(--panel-2)}
 html[data-overdrive="control-room"] .heat-row{border-radius:var(--radius-sm);background:var(--panel-2)}
@@ -435,13 +435,11 @@ html[data-overdrive="control-room"] .teacher-entry::before{content:"FORGE CONTRO
 html[data-overdrive="control-room"] .teacher-entry{position:relative}
 @media(max-width:820px){
   html[data-overdrive="command-centre"] .stat-row--priority{grid-template-columns:1fr 1fr}
-  html[data-overdrive="command-centre"] .stat--priority:first-child{grid-column:1/-1}
   html[data-overdrive="learning-loop"] .ui-recommendation{padding:22px}
   html[data-overdrive="control-room"] .stat-row--priority{grid-template-columns:1fr 1fr}
 }
 @media(max-width:520px){
   html[data-overdrive="command-centre"] .stat-row--priority,html[data-overdrive="control-room"] .stat-row--priority{grid-template-columns:1fr}
-  html[data-overdrive="command-centre"] .stat--priority:first-child{grid-column:auto}
 }
 
 /* Destructive class deletion. Deliberately quieter than the primary actions —

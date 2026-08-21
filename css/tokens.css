@@ -10,6 +10,10 @@
   --line:#3A342E;
   --ember:#D55C13;
   --hot:#FFC93C;
+  /* Accent for small text. --hot is legible on the dark ground, but its light
+     counterpart (#C88500) is only 3.08:1 on white — below the 4.5:1 that 12px
+     text needs — so the light theme overrides it below. */
+  --accent-text:#FFC93C;
   --slate:#B8B4AD;
   --white:#F5F1EA;
   --good:#7FD98A;
@@ -58,6 +62,7 @@
   --line:#E0DDD8;
   --ember:#E5550F;
   --hot:#C88500;
+  --accent-text:#B4470C;
   --slate:#6B6660;
   --white:#1A1816;
   --good:#1B8C2A;

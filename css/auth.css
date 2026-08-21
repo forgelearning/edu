@@ -107,7 +107,7 @@
    themes, matching .auth-btn above, and flatten the ghost back to an
    outline so the pair still reads as primary + secondary. */
 [data-theme="light"] .auth-card .btn-primary.btn-glass{background:var(--ember)!important;border-color:rgba(213,92,19,.45)!important;color:#fff!important;box-shadow:inset 0 1px 0 rgba(255,201,60,.4),0 12px 28px -14px rgba(213,92,19,.75)!important}
-[data-theme="light"] .auth-card .btn-primary.btn-glass::after{background:rgba(255,255,255,.14)}
+[data-theme="light"] .auth-card .btn-primary.btn-glass::after{background:linear-gradient(to bottom,rgba(255,255,255,.18),rgba(255,255,255,0))}
 [data-theme="light"] .auth-card .btn-ghost.btn-glass{background:transparent!important;border:1px solid var(--line)!important;color:var(--slate)!important;box-shadow:none!important}
 [data-theme="light"] .auth-card .btn-ghost.btn-glass::after{display:none}
 [data-theme="light"] .auth-card .btn-ghost.btn-glass:hover{border-color:var(--ember)!important;color:var(--ember)!important;box-shadow:none!important}
