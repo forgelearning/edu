@@ -134,3 +134,11 @@
   .auth-card{padding:26px 20px}
   .auth-title{font-size:21px}
 }
+
+/* "This is a shared device" on the class-join form. Pairs with
+   scripts/forge-student-session.js, which shortens how long the student's
+   code is kept when this is ticked. */
+.join-shared{display:flex;align-items:flex-start;gap:10px;margin:-4px 0 16px;cursor:pointer;color:var(--muted);font-size:13.5px;line-height:1.45}
+.join-shared input{margin:2px 0 0;width:17px;height:17px;flex:0 0 auto;accent-color:var(--ember);cursor:pointer}
+.join-shared:hover{color:var(--white)}
+.join-shared input:focus-visible{outline:2px solid var(--ember);outline-offset:2px}

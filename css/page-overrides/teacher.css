@@ -53,6 +53,10 @@ h1,h2,h3{font-family:'Rethink Sans',sans-serif;color:var(--white);line-height:1.
 .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-lg);padding:24px;margin-bottom:18px}
 .card-title{font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:#8A857E;margin-bottom:14px}
 
+/* Read-only school on the create-class form. The school is derived from the
+   teacher's invite code server-side, so it is shown rather than typed. */
+.cc-school{margin:0;padding:11px 14px;border:1px solid var(--line);border-radius:var(--radius-sm);background:var(--panel-2);color:var(--white);font-weight:600}
+.cc-school[data-unlinked="true"]{color:var(--dim);font-weight:400}
 .stat-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-bottom:10px}
 .stat-row--priority{max-width:760px}
 .stat-support{display:flex;gap:12px;flex-wrap:wrap;margin:0 0 22px;color:var(--dim);font:12px 'JetBrains Mono',monospace}

@@ -239,18 +239,42 @@ function renderTeacherAuth(mode) {
 
     btn.disabled = true; btn.textContent = 'Please wait...';
 
-    function doAuth() {
+    function doAuth(invite) {
       var action = mode === 'signup' ? TeacherAuth.signUp(email, password) : TeacherAuth.signIn(email, password);
       action.then(function(data) {
         currentTeacher = data.user;
         headers.Authorization = 'Bearer ' + data.access_token;
+        // The invite code is what binds this account to a school, and that
+        // binding is made server-side. The check before doAuth() is only fast
+        // feedback: anyone can reach /auth/v1/signup directly with the public
+        // anon key, so an account that never claims an invite has to be inert
+        // rather than merely un-nudged. claim_teacher_invite() is the only way
+        // to get a teacher_profiles row, and without one the database refuses
+        // to create a class and the school overview reports no_school.
+        if (mode !== 'signup') return loadTeacherProfile();
+        return ForgeAPI.rpc('claim_teacher_invite', { p_code: invite }, teacherApiOptions())
+          .then(function(res) {
+            if (!res || res.ok !== true) {
+              var problem = new Error(res && res.reason === 'invalid_code'
+                ? 'That invite code was not recognised. Check with your school.'
+                : 'We couldn’t confirm your school invite. Try again.');
+              problem.provisioning = true;
+              throw problem;
+            }
+            teacherSchool = res.school || null;
+          });
+      }).then(function() {
         mountTeacherSidebar();
         if (window.forgeTrack) forgeTrack(mode === 'signup' ? 'teacher_account_created' : 'teacher_signed_in', { role: 'teacher' });
         if (new URLSearchParams(location.search).get('tab') === 'create') renderLogin('create');
         else renderTeacherHome();
       }).catch(function(e) {
         btn.disabled = false; btn.textContent = mode === 'signup' ? 'Create account →' : 'Sign in →';
-        err.textContent = 'We couldn’t sign you in. Check your details and try again.'; err.style.display = 'block';
+        // A sign-up whose invite did not check out leaves an account that can
+        // do nothing. Don't leave it signed in looking usable.
+        if (e && e.provisioning) { TeacherAuth.signOut(); currentTeacher = null; headers.Authorization = 'Bearer ' + SUPABASE_KEY; }
+        err.textContent = (e && e.provisioning && e.message) || 'We couldn’t sign you in. Check your details and try again.';
+        err.style.display = 'block';
       });
     }
 
@@ -263,7 +287,7 @@ function renderTeacherAuth(mode) {
           err.style.display = 'block';
           return;
         }
-        doAuth();
+        doAuth(invite);
       });
     } else {
       doAuth();
@@ -304,6 +328,21 @@ function supaInsert(table, row) { return ForgeAPI.insert(table, row, teacherApiO
 // (the code itself is never readable from the client, only this boolean).
 function validateInviteCode(code) {
   return ForgeAPI.rpc('validate_teacher_invite', { p_code: code }, teacherApiOptions()).catch(function() { return false; });
+}
+
+// Which school this teacher was invited into. Set from the server, never from
+// anything typed into this page — the school used to be a free-text field on
+// the create-class form, which is what let an account read another school's
+// overview simply by typing its name.
+var teacherSchool = null;
+
+function loadTeacherProfile() {
+  return ForgeAPI.rpc('get_teacher_profile', {}, teacherApiOptions())
+    .then(function(res) {
+      teacherSchool = (res && res.provisioned) ? res.school : null;
+      return res;
+    })
+    .catch(function() { teacherSchool = null; return null; });
 }
 
 // Subject list — derived from the shared SUBJECTS data (data/forge-data.js) so new
@@ -582,7 +621,13 @@ function renderLogin(activeTab) {
 
   // Create panel
   h += '<div id="lp-create" style="display:' + (activeTab === 'create' ? 'block' : 'none') + '">';
-  h += ForgeAuthCard.field('c-school', 'School name', {placeholder:'e.g. Mount Grace School'});
+  // School is no longer typed. It comes from the invite code this account was
+  // created with, so a class can only ever land in the school that invited the
+  // teacher. Shown read-only for confirmation.
+  h += '<div class="auth-field"><span class="auth-label">School</span>' +
+       '<p class="cc-school" id="c-school-label"' + (teacherSchool ? '' : ' data-unlinked="true"') + '>' +
+       (teacherSchool ? teacherEsc(teacherSchool) : 'Not linked to a school yet') +
+       '</p></div>';
   h += ForgeAuthCard.field('c-name', 'Class name', {placeholder:'e.g. Year 12 Economics'});
   h += ForgeAuthCard.field('c-teacher', 'Your name', {placeholder:'e.g. Mr Zanier'});
   h += '<div class="auth-field"><label class="auth-label" for="c-subj">Subject</label>';
@@ -620,13 +665,13 @@ function renderLogin(activeTab) {
       });
       sel.innerHTML = opts;
     }
-    // When school name is blurred, re-filter to grey out subjects THIS teacher already created at that school
-    var schoolInput = document.getElementById('c-school');
-    if (schoolInput) {
-      schoolInput.addEventListener('blur', function() {
-        var school = schoolInput.value.trim();
-        if (!school || !currentTeacher || !currentTeacher.id) return;
-        supaGet('classes', 'school=ilike.' + encodeURIComponent(school) + '&teacher_user_id=eq.' + encodeURIComponent(currentTeacher.id)).then(function(existing) {
+    // Grey out subjects this teacher already has a class for. This used to be
+    // triggered by blurring the school field and filtered on the typed school;
+    // the school is now fixed per teacher, so filter on the teacher alone and
+    // run it as soon as the form is shown.
+    (function() {
+      if (currentTeacher && currentTeacher.id) {
+        supaGet('classes', 'teacher_user_id=eq.' + encodeURIComponent(currentTeacher.id)).then(function(existing) {
           var usedSubjects = {};
           (existing || []).forEach(function(c) { if (c.subject) usedSubjects[c.subject] = true; });
           var sel2 = document.getElementById('c-subj');
@@ -636,13 +681,13 @@ function renderLogin(activeTab) {
             if (!usedSubjects[s.key]) {
               opts2 += '<option value="' + s.key + '">' + s.label + ' (' + s.spec + ')</option>';
             } else {
-              opts2 += '<option class="forge-u-41pj58" value="" disabled>' + s.label + ' — you already have a class for this at this school</option>';
+              opts2 += '<option class="forge-u-41pj58" value="" disabled>' + s.label + ' — you already have a class for this</option>';
             }
           });
           sel2.innerHTML = opts2;
         }).catch(function() {});
-      });
-    }
+      }
+    }());
   }
 
   // View dashboard handler
@@ -684,7 +729,6 @@ function renderLogin(activeTab) {
   var createBtn = document.getElementById('c-btn');
   if (createBtn) {
     createBtn.onclick = function() {
-      var school = document.getElementById('c-school').value.trim();
       var name = document.getElementById('c-name').value.trim();
       var teacher = document.getElementById('c-teacher').value.trim();
       var subj = document.getElementById('c-subj').value;
@@ -693,7 +737,10 @@ function renderLogin(activeTab) {
       err.style.display = 'none';
       result.style.display = 'none';
 
-      if (!school) { err.textContent = 'Enter your school name.'; err.style.display = 'block'; return; }
+      if (!teacherSchool) {
+        err.textContent = 'This account isn’t linked to a school yet. Create it again using your school’s invite code, or ask your school for one.';
+        err.style.display = 'block'; return;
+      }
       if (!name) { err.textContent = 'Enter a class name.'; err.style.display = 'block'; return; }
       if (!teacher) { err.textContent = 'Enter your name.'; err.style.display = 'block'; return; }
       if (!subj) { err.textContent = 'Select a subject.'; err.style.display = 'block'; return; }
@@ -708,7 +755,10 @@ function renderLogin(activeTab) {
       for (var i = 0; i < 4; i++) rand += chars[Math.floor(Math.random() * chars.length)];
       var code = prefix + '-' + rand;
 
-      supaInsert('classes', { name: name, subject: subj, code: code, teacher_name: teacher, school: school, teacher_user_id: currentTeacher ? currentTeacher.id : null }).then(function(rows) {
+      // No school field is sent: a trigger fills school/school_key from the
+      // teacher's invited school and rejects the insert if there isn't one, so
+      // a class cannot be filed under a school the teacher merely names.
+      supaInsert('classes', { name: name, subject: subj, code: code, teacher_name: teacher, teacher_user_id: currentTeacher ? currentTeacher.id : null }).then(function(rows) {
         createBtn.disabled = false; createBtn.textContent = 'Create class \u2192';
         var cls = Array.isArray(rows) ? rows[0] : rows;
         if (window.forgeTrack) forgeTrack('teacher_class_created', { subject: subj });
@@ -821,7 +871,13 @@ function renderLogin(activeTab) {
         };
       }).catch(function(e) {
         createBtn.disabled = false; createBtn.textContent = 'Create class \u2192';
-        err.textContent = 'We couldn’t create the class. Check your connection and try again.';
+        // The database refuses a class from an account with no school invite.
+        // Say so plainly rather than blaming the connection.
+        var unprovisioned = e && (e.message === 'teacher_not_provisioned' ||
+          (e.body && e.body.message === 'teacher_not_provisioned'));
+        err.textContent = unprovisioned
+          ? 'This account isn’t linked to a school yet. Ask your school for an invite code and create your account with it.'
+          : 'We couldn’t create the class. Check your connection and try again.';
         err.style.display = 'block';
       });
     };
@@ -2323,8 +2379,12 @@ TeacherAuth.getSession().then(function(sess) {
   headers.Authorization = 'Bearer ' + sess.access_token;
   mountTeacherSidebar();
   if (window.ForgeSidebar) ForgeSidebar.setClassList(getJoinedClasses(), null);
-  if (new URLSearchParams(location.search).get('tab') === 'create') renderLogin('create');
-  else renderTeacherHome();
+  // The create-class form shows the teacher's school rather than asking for
+  // it, so the profile has to be loaded before the first render.
+  loadTeacherProfile().then(function() {
+    if (new URLSearchParams(location.search).get('tab') === 'create') renderLogin('create');
+    else renderTeacherHome();
+  });
 });
 </script>
 <script src="scripts/nav.js"></script>
