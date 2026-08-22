@@ -738,7 +738,7 @@ if (taxonomy.length) {
 const CONTENT_BASELINES = {
   'SHORT CUE': 392,
   'NULL OPTION': 0,
-  'RECYCLED DISTRACTOR': 42
+  'RECYCLED DISTRACTOR': 1
 };
 if (!args.length) {
   let regressed = false;
