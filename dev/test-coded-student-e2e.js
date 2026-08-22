@@ -68,18 +68,40 @@ const stamp = Date.now().toString(36).toUpperCase();
 const CLASS_CODE = 'ZZE2E-' + stamp.slice(-4);
 const STUDENT_CODE = crypto.randomBytes(5).toString('hex').toUpperCase();
 const CODE_HASH = crypto.createHash('sha256').update(STUDENT_CODE, 'utf8').digest('hex');
+const TEACHER_EMAIL = 'zz-e2e-' + stamp.toLowerCase() + '@forge-e2e.invalid';
+const TEACHER_PASSWORD = 'ZZ-e2e-' + crypto.randomBytes(12).toString('hex') + '!';
 
 let classId = null;
 let studentId = null;
 let assignmentId = null;
+let teacherUserId = null;
 
 async function main() {
   console.log('Coded-student end-to-end (deployed RLS)\n');
 
   // ── seed ────────────────────────────────────────────────────────────────
+  // A class now needs an owner with a teacher_profiles row: the
+  // classes_apply_teacher_school trigger refuses the insert otherwise, and
+  // fills school/school_key from that profile rather than from the body.
+  // (20260821200100_bind_teachers_to_invited_school.sql.) The trigger applies
+  // to the service role too, so the test seeds a real teacher rather than an
+  // ownerless class.
+  const teacher = await req('/auth/v1/admin/users', {
+    method: 'POST', key: SERVICE_KEY,
+    body: { email: TEACHER_EMAIL, password: TEACHER_PASSWORD, email_confirm: true }
+  });
+  teacherUserId = teacher.body && teacher.body.id;
+  if (!check('seed: disposable teacher created', !!teacherUserId, JSON.stringify(teacher.body))) return;
+
+  const profile = await req('/rest/v1/teacher_profiles', {
+    method: 'POST', key: SERVICE_KEY, prefer: 'return=representation',
+    body: { user_id: teacherUserId, school_key: 'zz e2e school', school_name: 'ZZ E2E School', invite_code: 'ZZ-E2E' }
+  });
+  if (!check('seed: teacher provisioned to a school', profile.status === 201, JSON.stringify(profile.body))) return;
+
   const created = await req('/rest/v1/classes', {
     method: 'POST', key: SERVICE_KEY, prefer: 'return=representation',
-    body: { code: CLASS_CODE, name: 'ZZ-E2E Disposable', subject: 'econ', teacher_name: 'ZZ E2E', school: 'ZZ E2E School' }
+    body: { code: CLASS_CODE, name: 'ZZ-E2E Disposable', subject: 'econ', teacher_name: 'ZZ E2E', teacher_user_id: teacherUserId }
   });
   classId = created.body && created.body[0] && created.body[0].id;
   if (!check('seed: disposable class created', !!classId, JSON.stringify(created.body))) return;
@@ -192,6 +214,10 @@ async function cleanup() {
     await req('/rest/v1/classes?id=eq.' + classId, { method: 'DELETE', key: SERVICE_KEY });
   }
   await req('/rest/v1/product_events?event_name=eq.zz_e2e_probe', { method: 'DELETE', key: SERVICE_KEY });
+  if (teacherUserId) {
+    await req('/rest/v1/teacher_profiles?user_id=eq.' + teacherUserId, { method: 'DELETE', key: SERVICE_KEY });
+    await req('/auth/v1/admin/users/' + teacherUserId, { method: 'DELETE', key: SERVICE_KEY });
+  }
 
   const left = await req('/rest/v1/classes?select=id&code=eq.' + CLASS_CODE, { key: SERVICE_KEY });
   check('cleanup: disposable class removed', Array.isArray(left.body) && left.body.length === 0, JSON.stringify(left.body));
