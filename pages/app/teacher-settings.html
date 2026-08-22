@@ -73,7 +73,41 @@
     <section class="settings-section" aria-labelledby="account-title">
       <div class="settings-section-heading"><div><p class="settings-kicker">ACCOUNT</p><h2 id="account-title">Your teacher account</h2></div><span class="settings-section-mark" aria-hidden="true">T</span></div>
       <div class="settings-account" id="settings-account-copy">Checking your teacher session…</div>
+
+      <div class="settings-field">
+        <label class="settings-label" for="settings-display-name">Display name</label>
+        <p class="settings-help">The name students see on their class. Saving updates it on every class you own.</p>
+        <input class="settings-input" type="text" id="settings-display-name" autocomplete="name" placeholder="e.g. Mr Zanier">
+        <button class="forge-button forge-button--secondary" type="button" id="settings-save-name">Save name</button>
+        <div id="settings-name-state" role="status" aria-live="polite"></div>
+      </div>
+
+      <div class="settings-field">
+        <label class="settings-label" for="settings-password">New password</label>
+        <p class="settings-help">At least 8 characters. You stay signed in on this device.</p>
+        <input class="settings-input" type="password" id="settings-password" autocomplete="new-password" placeholder="New password">
+        <input class="settings-input" type="password" id="settings-password-confirm" autocomplete="new-password" placeholder="Confirm new password">
+        <button class="forge-button forge-button--secondary" type="button" id="settings-save-password">Change password</button>
+        <div id="settings-password-state" role="status" aria-live="polite"></div>
+      </div>
+
       <button class="forge-button forge-button--danger" type="button" id="settings-sign-out">Sign out</button>
+    </section>
+
+    <section class="settings-section" aria-labelledby="data-title">
+      <div class="settings-section-heading"><div><p class="settings-kicker">YOUR DATA</p><h2 id="data-title">Export or erase your class data</h2></div><span class="settings-section-mark" aria-hidden="true">↧</span></div>
+      <p class="settings-help">Forge holds your classes, the students in them, their answers and your assignments. See the <a href="privacy.html">privacy notice</a> for how long it is kept.</p>
+
+      <div class="settings-field">
+        <button class="forge-button forge-button--secondary" type="button" id="settings-export">Download my data (JSON)</button>
+        <div id="settings-export-state" role="status" aria-live="polite"></div>
+      </div>
+
+      <div class="settings-field">
+        <p class="settings-help">Erasing removes every class you own, along with its students, their access codes, their answers and its assignments. It cannot be undone.</p>
+        <button class="forge-button forge-button--danger" type="button" id="settings-erase">Erase all my class data…</button>
+        <div id="settings-erase-panel" hidden></div>
+      </div>
     </section>
   </main>
 
@@ -107,6 +141,161 @@
         account.innerHTML = '<strong>No teacher session</strong><span>Sign in to the teacher dashboard to continue.</span>';
       }
       document.getElementById('settings-sign-out').addEventListener('click', teacherSettingsSignOut);
+
+      /* ---------- account and data controls (P4) ---------- */
+
+      function tokenOf() {
+        var session = loadTeacherSession();
+        return session && session.access_token ? session.access_token : null;
+      }
+      // ForgeState is the shared status/error presenter used across the app.
+      function say(hostId, kind, label, body) {
+        var host = document.getElementById(hostId);
+        if (!host) return;
+        host.innerHTML = window.ForgeState ? ForgeState.html(kind, { label: label, body: body }) : (label + (body ? ' \u2014 ' + body : ''));
+      }
+
+      // Display name. Stored on the auth user so it survives, and pushed onto
+      // every class the teacher owns, which is where students actually see it.
+      var nameInput = document.getElementById('settings-display-name');
+      var currentTeacherId = saved && saved.user ? saved.user.id : null;
+      if (saved && saved.user && saved.user.user_metadata && saved.user.user_metadata.name) {
+        nameInput.value = saved.user.user_metadata.name;
+      }
+      document.getElementById('settings-save-name').addEventListener('click', function () {
+        var token = tokenOf();
+        var value = nameInput.value.trim();
+        if (!token) { say('settings-name-state', 'error', 'You are signed out', 'Sign in again to change your name.'); return; }
+        if (!value) { say('settings-name-state', 'error', 'Enter a name', 'This is the name students see on their class.'); return; }
+        say('settings-name-state', 'loading', 'Saving your name', 'Updating your account and your classes.');
+        ForgeAPI.request('/auth/v1/user', {
+          method: 'PUT', token: token,
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ data: { name: value } })
+        }).then(function (user) {
+          var session = loadTeacherSession();
+          if (session) { session.user = user || session.user; try { localStorage.setItem(TEACHER_SESSION_KEY, JSON.stringify(session)); } catch (e) {} }
+          var owner = currentTeacherId || (user && user.id);
+          if (!owner) return null;
+          return ForgeAPI.get('classes', 'teacher_user_id=eq.' + encodeURIComponent(owner) + '&select=id', { token: token })
+            .then(function (rows) {
+              return Promise.all((rows || []).map(function (row) {
+                return ForgeAPI.patch('classes', row.id, { teacher_name: value }, { token: token });
+              }));
+            });
+        }).then(function () {
+          say('settings-name-state', 'success', 'Name saved', 'Your classes now show this name.');
+        }).catch(function (error) {
+          say('settings-name-state', 'error', 'Name not saved', (error && error.message) || 'Check your connection and try again.');
+        });
+      });
+
+      // Password.
+      document.getElementById('settings-save-password').addEventListener('click', function () {
+        var token = tokenOf();
+        var next = document.getElementById('settings-password').value;
+        var confirmValue = document.getElementById('settings-password-confirm').value;
+        if (!token) { say('settings-password-state', 'error', 'You are signed out', 'Sign in again to change your password.'); return; }
+        if (next.length < 8) { say('settings-password-state', 'error', 'Password too short', 'Use at least 8 characters.'); return; }
+        if (next !== confirmValue) { say('settings-password-state', 'error', 'Passwords do not match', 'Type the same password twice.'); return; }
+        say('settings-password-state', 'loading', 'Changing your password', 'This only takes a moment.');
+        ForgeAPI.auth.updatePassword(next, token).then(function () {
+          document.getElementById('settings-password').value = '';
+          document.getElementById('settings-password-confirm').value = '';
+          say('settings-password-state', 'success', 'Password changed', 'Use the new password next time you sign in.');
+        }).catch(function (error) {
+          say('settings-password-state', 'error', 'Password not changed', (error && error.message) || 'You may need to sign in again first.');
+        });
+      });
+
+      // Export. Everything this teacher's account can reach, in one file.
+      document.getElementById('settings-export').addEventListener('click', function () {
+        var token = tokenOf();
+        var owner = currentTeacherId;
+        if (!token || !owner) { say('settings-export-state', 'error', 'You are signed out', 'Sign in again to export your data.'); return; }
+        say('settings-export-state', 'loading', 'Collecting your data', 'Classes, students, assignments and answers.');
+        ForgeAPI.get('classes', 'teacher_user_id=eq.' + encodeURIComponent(owner), { token: token }).then(function (classes) {
+          classes = classes || [];
+          if (!classes.length) return { classes: [], students: [], assignments: [], responses: [] };
+          var ids = classes.map(function (c) { return c.id; }).join(',');
+          var scope = 'class_id=in.(' + ids + ')';
+          return Promise.all([
+            ForgeAPI.get('students', scope, { token: token }),
+            ForgeAPI.get('assignments', scope, { token: token }),
+            ForgeAPI.get('responses', scope + '&order=created_at.asc', { token: token })
+          ]).then(function (parts) {
+            return { classes: classes, students: parts[0] || [], assignments: parts[1] || [], responses: parts[2] || [] };
+          });
+        }).then(function (data) {
+          var payload = {
+            exported_at: new Date().toISOString(),
+            teacher: { id: owner, email: (saved && saved.user && saved.user.email) || null },
+            counts: { classes: data.classes.length, students: data.students.length, assignments: data.assignments.length, responses: data.responses.length },
+            classes: data.classes, students: data.students, assignments: data.assignments, responses: data.responses
+          };
+          var url = URL.createObjectURL(new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' }));
+          var link = document.createElement('a');
+          link.href = url; link.download = 'forge-teacher-data-' + new Date().toISOString().slice(0, 10) + '.json';
+          link.click();
+          setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+          say('settings-export-state', 'success', 'Download started',
+            payload.counts.classes + ' class' + (payload.counts.classes !== 1 ? 'es' : '') + ', ' +
+            payload.counts.students + ' student' + (payload.counts.students !== 1 ? 's' : '') + ' and ' +
+            payload.counts.responses + ' answer' + (payload.counts.responses !== 1 ? 's' : '') + '. Keep this file private.');
+        }).catch(function (error) {
+          say('settings-export-state', 'error', 'Export failed', (error && error.message) || 'Check your connection and try again.');
+        });
+      });
+
+      /* Erasure. The browser cannot delete the login itself — that needs an
+         administrator — but it can remove everything the account holds, which
+         is the pupil data a school has to be able to erase. Deleting a class
+         cascades to its students, access codes, assignments and responses. */
+      var erasePanel = document.getElementById('settings-erase-panel');
+      document.getElementById('settings-erase').addEventListener('click', function () {
+        if (!erasePanel.hidden) { erasePanel.hidden = true; erasePanel.innerHTML = ''; return; }
+        erasePanel.hidden = false;
+        erasePanel.innerHTML = '<div class="settings-danger" role="dialog" aria-labelledby="erase-title">'
+          + '<h3 id="erase-title">Erase all class data?</h3>'
+          + '<p>Type <code>ERASE</code> to confirm. Every class you own goes, with its students, their codes, their answers and its assignments.</p>'
+          + '<input class="settings-input" type="text" id="settings-erase-confirm" autocomplete="off" spellcheck="false" aria-label="Type ERASE to confirm">'
+          + '<div class="forge-action-row">'
+          + '<button class="forge-button forge-button--secondary" type="button" id="settings-erase-cancel">Cancel</button>'
+          + '<button class="forge-button forge-button--danger" type="button" id="settings-erase-confirm-btn" disabled>Erase permanently</button>'
+          + '</div><div id="settings-erase-state" role="status" aria-live="polite"></div>'
+          + '<p class="settings-help">Your sign-in stays until an administrator removes it. Ask your school, or use the contact route in the <a href="privacy.html">privacy notice</a>.</p></div>';
+        var confirmInput = document.getElementById('settings-erase-confirm');
+        var confirmBtn = document.getElementById('settings-erase-confirm-btn');
+        confirmInput.addEventListener('input', function () {
+          confirmBtn.disabled = confirmInput.value.trim().toUpperCase() !== 'ERASE';
+        });
+        document.getElementById('settings-erase-cancel').addEventListener('click', function () {
+          erasePanel.hidden = true; erasePanel.innerHTML = '';
+        });
+        confirmBtn.addEventListener('click', function () {
+          var token = tokenOf();
+          var owner = currentTeacherId;
+          if (!token || !owner) { say('settings-erase-state', 'error', 'You are signed out', 'Sign in again to erase your data.'); return; }
+          confirmBtn.disabled = true;
+          say('settings-erase-state', 'loading', 'Erasing your class data', 'This may take a moment.');
+          ForgeAPI.get('classes', 'teacher_user_id=eq.' + encodeURIComponent(owner) + '&select=id', { token: token })
+            .then(function (rows) {
+              rows = rows || [];
+              if (!rows.length) return 0;
+              return Promise.all(rows.map(function (row) {
+                return ForgeAPI.remove('classes', row.id, { token: token });
+              })).then(function () { return rows.length; });
+            })
+            .then(function (removed) {
+              say('settings-erase-state', 'success', 'Class data erased',
+                removed + ' class' + (removed !== 1 ? 'es' : '') + ' and everything in ' + (removed === 1 ? 'it' : 'them') + ' removed.');
+            })
+            .catch(function (error) {
+              confirmBtn.disabled = false;
+              say('settings-erase-state', 'error', 'Nothing was erased', (error && error.message) || 'Check your connection and try again.');
+            });
+        });
+      });
     }());
   </script>
 </body>

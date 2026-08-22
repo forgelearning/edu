@@ -41260,3 +41260,124 @@ for (const [id, variants] of Object.entries(physAnswerLengthRepairs)) {
     }
   }
 }
+
+/* ── C2: redistribute over-used distractors ──────────────────────────────────
+ *
+ * `dev/audit-banks.js` fails a build when one distractor string appears in more
+ * than eight distinct source questions. Half of that backlog is created by the
+ * anti-cue loop; the other half comes from generation passes that rebuilt a
+ * Reforge option set by taking the FIRST acceptable candidate out of a shared
+ * pool. First-match means one string wins for every question that reaches the
+ * fallback: "Thought cannot be studied" ended up in 25 GCSE Psychology
+ * questions, and "They define and limit the national government's authority" in
+ * ten Politics ones.
+ *
+ * This is the same failure, and the same fix, as the anti-cue loop documented in
+ * CLAUDE.md: stop taking the first candidate and take the LEAST-USED one. It
+ * runs last, after every repair table, because earlier passes rebuild Reforge
+ * twins and would otherwise overwrite it.
+ *
+ * It only ever swaps in a string already authored as a distractor in the same
+ * bank, so nothing is invented and no option is padded. It refuses a swap that
+ * would duplicate an option, collide with the key, make the correct answer the
+ * single longest option, or leave a Reforge set identical to its base set.
+ */
+(function redistributeOverusedDistractors() {
+  const MIN_LENGTH = 25;   // mirrors RECYCLED_MIN_LENGTH in the audit
+  const MAX_USES = 6;      // audit fails above 8; leave headroom
+
+  const bankToSubject = {};
+  for (const [key, subject] of Object.entries(SUBJECTS)) {
+    for (const bankId of subject.banks || []) if (!bankToSubject[bankId]) bankToSubject[bankId] = key;
+  }
+
+  // Every distractor slot in a source (non-coverage) question.
+  const slots = [];
+  for (const [bankId, bank] of Object.entries(BANKS)) {
+    for (const question of bank.questions || []) {
+      if (question.coverageVariant === true || /-COV-\d+$/.test(String(question.id))) continue;
+      for (const item of [question, question.reforge]) {
+        if (!item || !item.options || !item.correct) continue;
+        for (const [letter, value] of Object.entries(item.options)) {
+          if (letter === item.correct) continue;
+          const text = String(value || '').trim();
+          if (text.length < MIN_LENGTH) continue;
+          slots.push({ bankId, question, item, letter, text, key: bankToSubject[bankId] + '|' + question.id });
+        }
+      }
+    }
+  }
+
+  const usesByText = new Map();
+  for (const slot of slots) {
+    if (!usesByText.has(slot.text)) usesByText.set(slot.text, new Set());
+    usesByText.get(slot.text).add(slot.key);
+  }
+
+  // Candidate pools: distractor strings already authored in the same bank,
+  // falling back to the wider subject when a bank's own pool is exhausted.
+  // Tiered the same way the anti-cue loop is (bank, then subject) so a swap
+  // stays as close to the question's topic as possible.
+  const poolByBank = new Map();
+  const poolBySubject = new Map();
+  for (const slot of slots) {
+    if (!poolByBank.has(slot.bankId)) poolByBank.set(slot.bankId, new Set());
+    poolByBank.get(slot.bankId).add(slot.text);
+    const subjectKey = bankToSubject[slot.bankId];
+    if (!subjectKey) continue;
+    if (!poolBySubject.has(subjectKey)) poolBySubject.set(subjectKey, new Set());
+    poolBySubject.get(subjectKey).add(slot.text);
+  }
+
+  const overUsed = [...usesByText.entries()]
+    .filter(([, keys]) => keys.size > MAX_USES)
+    .sort((a, b) => b[1].size - a[1].size)
+    .map(([text]) => text);
+  if (!overUsed.length) return;
+
+  const uses = (text) => (usesByText.get(text) || new Set()).size;
+
+  for (const text of overUsed) {
+    // Newest-first so the earliest questions keep the original wording.
+    const affected = slots.filter((slot) => slot.item.options[slot.letter] === text).reverse();
+    for (const slot of affected) {
+      if (uses(text) <= MAX_USES) break;
+      const current = Object.values(slot.item.options).map((v) => String(v).trim());
+      const correctText = String(slot.item.options[slot.item.correct]).trim();
+      const subjectKey = bankToSubject[slot.bankId];
+      const tiered = [...(poolByBank.get(slot.bankId) || [])];
+      const bankPool = new Set(tiered);
+      for (const candidate of (poolBySubject.get(subjectKey) || [])) {
+        if (!bankPool.has(candidate)) tiered.push(candidate);
+      }
+      const candidates = tiered
+        .filter((candidate) => candidate !== text && !current.includes(candidate))
+        .sort((a, b) => {
+          const inBank = (v) => (bankPool.has(v) ? 0 : 1);
+          return inBank(a) - inBank(b) || uses(a) - uses(b) || (a < b ? -1 : 1);
+        });
+
+      const replacement = candidates.find((candidate) => {
+        const trial = { ...slot.item.options, [slot.letter]: candidate };
+        const lengths = Object.values(trial).map((v) => String(v).length);
+        const longest = Math.max(...lengths);
+        const cued = lengths.filter((l) => l === longest).length === 1 && correctText.length === longest;
+        if (cued) return false;
+        // A Reforge whose options match its base set stops testing transfer.
+        if (slot.item !== slot.question && slot.question.options) {
+          const baseSet = new Set(Object.values(slot.question.options).map((v) => String(v).trim()));
+          const trialSet = new Set(Object.values(trial).map((v) => String(v).trim()));
+          if (trialSet.size === baseSet.size && [...trialSet].every((v) => baseSet.has(v))) return false;
+        }
+        return true;
+      });
+      if (!replacement) continue;
+
+      slot.item.options[slot.letter] = replacement;
+      usesByText.get(text).delete(slot.key);
+      if (!usesByText.has(replacement)) usesByText.set(replacement, new Set());
+      usesByText.get(replacement).add(slot.key);
+      slot.text = replacement;
+    }
+  }
+}());

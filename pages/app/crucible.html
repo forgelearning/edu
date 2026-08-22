@@ -564,7 +564,7 @@ function renderResults(){
   h+='<p class="tag forge-u-mj6mom">CRUCIBLE COMPLETE</p>';
   h+='<div class="big-pct" style="color:'+col+'">'+pct+'%</div>';
   h+='<div class="results-detail">'+correct+' / '+total+' correct \u00b7 '+mins+'m '+(secs<10?'0':'')+secs+'s</div>';
-  if(unsaved) h+=ForgeState.html('error',{label:'This result is not fully saved',body:unsaved+' of '+total+' answers could not be recorded. Your local run has been kept; reconnect before starting another Crucible.'});
+  if(unsaved) h+=ForgeState.html('error',{label:'This result is not fully saved',body:unsaved+' of '+total+' answer'+(total!==1?'s':'')+' could not be recorded. Your local run has been kept; reconnect before starting another Crucible.'});
   h+='<div class="forge-success forge-u-1ltoyjw"><div class="forge-success-title">'+(pct>=75?'Strong pressure-test.':'Useful pressure-test.')+'</div><div class="forge-success-copy">'+(pct>=75?'You held up well under timed conditions.':'Your weak spots are now visible. Rework your Anvil, then try the Crucible again.')+'</div></div>';
   h+='</div>';
 

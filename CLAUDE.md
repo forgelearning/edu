@@ -158,13 +158,26 @@ lower the baseline when a fix lands. They live in `CONTENT_BASELINES`.
 |---|---|---|
 | `NULL OPTION` | **0 — never raise** | A content-free dismissal ("It has no significant relevance to the topic being tested"). Makes a 4-option question a 3-option one, so guessing pays 33% and reported accuracy inflates. |
 | `SHORT CUE` | 392 | The correct answer is uniquely the shortest *and* under 55% of mean distractor length. The mirror of `CUE`. |
-| `RECYCLED DISTRACTOR` | 42 | One distractor string used in more than 8 distinct source questions. Coverage clones are excluded via the `coverageVariant` flag — an earlier version stripped a `-COV-n` suffix instead, which turned `MAND-COV-011` into `MAND` and collapsed all 80 Mandarin clones into one pseudo-question. |
+| `RECYCLED DISTRACTOR` | 1 | One distractor string used in more than 8 distinct source questions. Coverage clones are excluded via the `coverageVariant` flag — an earlier version stripped a `-COV-n` suffix instead, which turned `MAND-COV-011` into `MAND` and collapsed all 80 Mandarin clones into one pseudo-question. |
 
 The audit prints the true count of each next to its baseline. Only the first
 ten of each are listed, so **never count the printed lines** — that reads as a
 26x improvement when nothing has changed.
 
-### The anti-cue loop is the biggest single source of recycling
+### The anti-cue loop is now the only source of recycling
+
+The redistribution pass at the end of `data/forge-data.js` cleared the authored
+half (42 entries down to 1, measured 2026-08-22). It applies the same fix this
+section describes for the anti-cue loop — take the **least-used** candidate, not
+the first — to the generation passes that rebuilt Reforge option sets from a
+shared pool. First-match there had put "Thought cannot be studied" in 25 GCSE
+Psychology questions. It only ever swaps in a string already authored as a
+distractor in the same bank (then the same subject), and refuses any swap that
+would duplicate an option, collide with the key, cue the answer by length, or
+leave a Reforge set identical to its base set. It runs last because earlier
+passes rebuild Reforge twins and would overwrite it.
+
+### The anti-cue loop was the biggest single source of recycling
 
 The loop near the end of `data/forge-data.js` that removes longest-answer cues
 works by swapping the longest distractor for an *already-authored* one that is
@@ -197,13 +210,20 @@ copy of the bank with the loop stripped out:
 
 | Backlog | Created by the loop | Authored in source |
 |---|---|---|
-| `SHORT CUE` (393) | **1** | **392** |
-| `RECYCLED DISTRACTOR` (44) | **21** | **23** |
+| `SHORT CUE` (392) | **1** | **391** |
+| `RECYCLED DISTRACTOR` (1) | **1** | **0** |
 
 So `SHORT CUE` really is a hand-authoring backlog — that was worth checking and
 the obvious hypothesis (that the loop shortened keys relative to swapped-in long
-distractors) is wrong. Roughly half the remaining recycling is still mechanical
-and will only fall when the source cues that force the swap are fixed.
+distractors) is wrong.
+
+The recycling backlog is now the other way round: the authored half is cleared
+(see the redistribution pass at the end of `data/forge-data.js`) and the single
+remaining entry is one the anti-cue loop creates. It cannot be swapped out
+without making the correct answer the longest option — `2.5.2/BNK-08` keeps a
+182-character distractor against a 139-character key purely to out-length it —
+so it will only fall when that key is rewritten. That is `SHORT CUE`/`CUE`
+work, not recycling work.
 
 **And check whether the subject is even a candidate for hand-authoring.** The
 `SHORT CUE` backlog is concentrated in `gcse-geo` (84), `mand` (45),
