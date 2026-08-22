@@ -167,6 +167,9 @@ function renderLoading() {
 
 // ── DATA ─────────────────────────────────────────────────────
 var data = { classes: [], students: [], responses: [], schoolName: null };
+// Rows for the tables renderDashboard builds that exportCSV would otherwise
+// have to recompute. Kept here so the CSV can never drift from the table.
+var extraExportRows = {};
 
 function loadData() {
   supaRpc('get_school_overview').then(function(result) {
@@ -202,6 +205,10 @@ function loadData() {
 
 // ── DASHBOARD ────────────────────────────────────────────────
 function renderDashboard() {
+  // Smallest group this dashboard will report on its own. Used by the
+  // performance bands lower down and by the cohort comparison.
+  var MIN_BAND_COHORT = 10;
+
   // Resolve level from the *full* unfiltered data first, so orphaned
   // responses (class_id = null) still get attributed to the right level
   // via their student's class, before we filter anything down.
@@ -464,6 +471,212 @@ function renderDashboard() {
     return;
   }
 
+  /* ── Is it working? (P3) ─────────────────────────────────────────────────
+     Everything above answers "what is wrong". These four blocks answer the
+     questions a head or deputy asks first: is it improving, who has stopped
+     using it, how does it look by year group and by teacher, and are the
+     pupils with access arrangements keeping up. Trend and adoption come from
+     the response timestamps the payload already carried; teacher_name and
+     extra_time were added to it by
+     20260822090000_school_overview_adoption_fields.sql. */
+  var DAY_MS = 86400000;
+  var now = Date.now();
+  var esc = window.ForgeTeacherUI ? ForgeTeacherUI.escape : function (v) { return String(v == null ? '' : v); };
+  function pct(correct, total) { return total ? Math.round((correct / total) * 100) : null; }
+  function showPct(v) { return v == null ? '—' : v + '%'; }
+
+  // A. Momentum — scored answers and accuracy per week, most recent last.
+  var WEEKS = 6;
+  var weeks = [];
+  for (var w = WEEKS - 1; w >= 0; w--) {
+    var end = now - (w * 7 * DAY_MS);
+    weeks.push({ start: end - (7 * DAY_MS), end: end, total: 0, correct: 0, students: {} });
+  }
+  scoredResponses.forEach(function (r) {
+    var t = Date.parse(r.created_at || '');
+    if (!t) return;
+    for (var i = 0; i < weeks.length; i++) {
+      if (t > weeks[i].start && t <= weeks[i].end) {
+        weeks[i].total++;
+        if (r.is_correct) weeks[i].correct++;
+        weeks[i].students[r.student_id] = true;
+        break;
+      }
+    }
+  });
+  var weeksWithData = weeks.filter(function (x) { return x.total > 0; });
+  var latest = weeks[weeks.length - 1];
+  var priorWeeks = weeks.slice(0, -1).filter(function (x) { return x.total > 0; });
+  var priorTotal = priorWeeks.reduce(function (a, x) { return a + x.total; }, 0);
+  var priorCorrect = priorWeeks.reduce(function (a, x) { return a + x.correct; }, 0);
+  var latestAcc = pct(latest.correct, latest.total);
+  var priorAcc = pct(priorCorrect, priorTotal);
+  var accDelta = (latestAcc == null || priorAcc == null) ? null : latestAcc - priorAcc;
+
+  h += '<section class="card school-momentum" aria-labelledby="momentum-title">';
+  h += '<div class="card-title" id="momentum-title">Momentum <span class="forge-u-1dueybt">· last ' + WEEKS + ' weeks, scored answers only</span></div>';
+  if (!weeksWithData.length) {
+    h += '<p class="ui-meta-muted">No scored answers in the last ' + WEEKS + ' weeks, so there is no trend to show yet.</p>';
+  } else {
+    var peak = Math.max.apply(null, weeks.map(function (x) { return x.total; })) || 1;
+    h += '<p class="school-momentum__lead">This week: <b>' + latest.total + '</b> scored answer' + (latest.total !== 1 ? 's' : '')
+      + ' from <b>' + Object.keys(latest.students).length + '</b> student' + (Object.keys(latest.students).length !== 1 ? 's' : '')
+      + ', accuracy <b>' + showPct(latestAcc) + '</b>'
+      + (accDelta == null ? ' (no earlier weeks to compare)'
+          : ' — <span class="' + (accDelta > 0 ? 'forge-text-good' : accDelta < 0 ? 'forge-text-bad' : '') + '">'
+            + (accDelta > 0 ? '+' : '') + accDelta + ' point' + (Math.abs(accDelta) !== 1 ? 's' : '') + ' on the previous ' + priorWeeks.length + ' week' + (priorWeeks.length !== 1 ? 's' : '') + '</span>')
+      + '.</p>';
+    h += '<ol class="school-weeks">';
+    weeks.forEach(function (x) {
+      var label = new Date(x.end - DAY_MS).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+      var a = pct(x.correct, x.total);
+      h += '<li><span class="school-weeks__label">w/e ' + esc(label) + '</span>'
+        + '<span class="school-weeks__bar" role="img" aria-label="' + x.total + ' scored answers">'
+        + '<span class="school-weeks__fill" style="--scale:' + Math.round((x.total / peak) * 100) + '%"></span></span>'
+        + '<span class="school-weeks__n">' + x.total + '</span>'
+        + '<span class="school-weeks__acc">' + showPct(a) + '</span></li>';
+    });
+    h += '</ol>';
+  }
+  h += '</section>';
+
+  // B. Adoption — a class that stopped is invisible in an accuracy table.
+  var lastByClass = {};
+  var recent14ByClass = {};
+  scoredResponses.forEach(function (r) {
+    var cid = r.class_id || studentClassMap[r.student_id];
+    if (!cid) return;
+    var t = Date.parse(r.created_at || '');
+    if (!t) return;
+    if (!lastByClass[cid] || t > lastByClass[cid]) lastByClass[cid] = t;
+    if (t > now - (14 * DAY_MS)) recent14ByClass[cid] = (recent14ByClass[cid] || 0) + 1;
+  });
+  var adoption = classes.map(function (c) {
+    var last = lastByClass[c.id] || null;
+    var days = last ? Math.floor((now - last) / DAY_MS) : null;
+    var state = last == null ? 'never' : days <= 7 ? 'active' : days <= 14 ? 'slowing' : 'dormant';
+    return { cls: c, last: last, days: days, recent: recent14ByClass[c.id] || 0, state: state };
+  }).sort(function (a, b) {
+    var rank = { never: 0, dormant: 1, slowing: 2, active: 3 };
+    if (rank[a.state] !== rank[b.state]) return rank[a.state] - rank[b.state];
+    return (b.last || 0) - (a.last || 0);
+  });
+  var stalled = adoption.filter(function (x) { return x.state === 'never' || x.state === 'dormant'; });
+  var stateLabel = { never: 'Never started', dormant: 'Dormant', slowing: 'Slowing', active: 'Active' };
+
+  h += '<section class="card school-adoption" aria-labelledby="adoption-title">';
+  h += '<div class="card-title" id="adoption-title">Adoption <span class="forge-u-1dueybt">· needs attention first</span>'
+    + ' <button type="button" class="export-btn" data-forge-action="export-csv" data-tab="adoption">Export CSV</button></div>';
+  h += '<p class="school-adoption__lead">' + (stalled.length
+    ? '<b>' + stalled.length + '</b> of <b>' + adoption.length + '</b> class' + (adoption.length !== 1 ? 'es' : '') + ' have recorded nothing in the last fortnight.'
+    : 'Every class has recorded work in the last fortnight.') + '</p>';
+  h += '<div class="table-scroll"><table><thead><tr><th>Class</th><th>Teacher</th><th>Status</th><th>Last answer</th><th>Answers (14d)</th></tr></thead><tbody>';
+  adoption.forEach(function (x) {
+    h += '<tr><td>' + esc(x.cls.name || x.cls.code) + '</td>'
+      + '<td>' + esc(x.cls.teacher_name || '—') + '</td>'
+      + '<td><span class="adoption-pill adoption-pill--' + x.state + '">' + stateLabel[x.state] + '</span></td>'
+      + '<td>' + (x.days == null ? 'never' : x.days === 0 ? 'today' : x.days + ' day' + (x.days !== 1 ? 's' : '') + ' ago') + '</td>'
+      + '<td>' + x.recent + '</td></tr>';
+  });
+  h += '</tbody></table></div></section>';
+  extraExportRows.adoption = [['Class','Teacher','Status','Days since last answer','Answers last 14 days']].concat(
+    adoption.map(function (x) {
+      return [x.cls.name || x.cls.code, x.cls.teacher_name || '', stateLabel[x.state], x.days == null ? 'never' : x.days, x.recent];
+    }));
+
+  // C. Grouping — schools are run by year group and by teacher, not by class id.
+  function groupRows(keyOf) {
+    var map = {};
+    classes.forEach(function (c) {
+      var key = keyOf(c);
+      if (!key) return;
+      if (!map[key]) map[key] = { key: key, classes: 0, students: 0, total: 0, correct: 0 };
+      map[key].classes++;
+    });
+    students.forEach(function (st) {
+      var c = classes.find(function (x) { return x.id === st.class_id; });
+      var key = c && keyOf(c);
+      if (key && map[key]) map[key].students++;
+    });
+    scoredResponses.forEach(function (r) {
+      var cid = r.class_id || studentClassMap[r.student_id];
+      var c = cid && classes.find(function (x) { return x.id === cid; });
+      var key = c && keyOf(c);
+      if (!key || !map[key]) return;
+      map[key].total++;
+      if (r.is_correct) map[key].correct++;
+    });
+    return Object.keys(map).map(function (k) { return map[k]; }).sort(function (a, b) {
+      var aa = pct(a.correct, a.total), bb = pct(b.correct, b.total);
+      if (aa == null) return 1;
+      if (bb == null) return -1;
+      return aa - bb;
+    });
+  }
+  // Class names encode the year group: "12A/Ec" -> 12.
+  var byYear = groupRows(function (c) {
+    var m = String(c.name || '').match(/^\s*(\d{1,2})/);
+    return m ? 'Year ' + m[1] : null;
+  });
+  var byTeacher = groupRows(function (c) { return (c.teacher_name || '').trim() || null; });
+
+  function groupTable(title, rows, firstHeading, tabKey) {
+    if (!rows.length) return '';
+    var out = '<section class="card" aria-label="' + esc(title) + '">';
+    out += '<div class="card-title">' + esc(title) + ' <span class="forge-u-1dueybt">· weakest first</span>'
+      + ' <button type="button" class="export-btn" data-forge-action="export-csv" data-tab="' + tabKey + '">Export CSV</button></div>';
+    out += '<div class="table-scroll"><table><thead><tr><th>' + esc(firstHeading) + '</th><th>Classes</th><th>Students</th><th>Scored answers</th><th>Accuracy</th></tr></thead><tbody>';
+    rows.forEach(function (r) {
+      var a = pct(r.correct, r.total);
+      out += '<tr><td>' + esc(r.key) + '</td><td>' + r.classes + '</td><td>' + r.students + '</td><td>' + r.total + '</td>'
+        + '<td>' + showPct(a) + '</td></tr>';
+    });
+    return out + '</tbody></table></div></section>';
+  }
+  h += groupTable('By year group', byYear, 'Year group', 'years');
+  h += groupTable('By teacher', byTeacher, 'Teacher', 'teachers');
+  function groupExport(heading, rows) {
+    return [[heading,'Classes','Students','Scored answers','Accuracy']].concat(rows.map(function (r) {
+      var a = pct(r.correct, r.total);
+      return [r.key, r.classes, r.students, r.total, a == null ? '' : a + '%'];
+    }));
+  }
+  extraExportRows.years = groupExport('Year group', byYear);
+  extraExportRows.teachers = groupExport('Teacher', byTeacher);
+
+  // D. Access arrangements. Forge records extra time per pupil; it does not
+  // hold pupil premium, SEND or EAL, so those splits are not available here
+  // without collecting them first.
+  var cohorts = { extra: { label: 'With extra time', students: 0, total: 0, correct: 0 },
+                  standard: { label: 'Standard time', students: 0, total: 0, correct: 0 } };
+  var cohortOf = {};
+  students.forEach(function (st) {
+    var key = (Number(st.extra_time) > 0) ? 'extra' : 'standard';
+    cohortOf[st.id] = key;
+    cohorts[key].students++;
+  });
+  scoredResponses.forEach(function (r) {
+    var key = cohortOf[r.student_id];
+    if (!key) return;
+    cohorts[key].total++;
+    if (r.is_correct) cohorts[key].correct++;
+  });
+  h += '<section class="card school-cohort" aria-labelledby="cohort-title">';
+  h += '<div class="card-title" id="cohort-title">Access arrangements <span class="forge-u-1dueybt">· extra time vs standard</span></div>';
+  if (cohorts.extra.students < MIN_BAND_COHORT) {
+    h += '<p class="ui-meta-muted">Withheld until at least ' + MIN_BAND_COHORT + ' students in this view have extra time recorded — '
+      + 'with fewer, the comparison identifies them. Currently ' + cohorts.extra.students + '.</p>';
+  } else {
+    h += '<div class="table-scroll"><table><thead><tr><th>Cohort</th><th>Students</th><th>Scored answers</th><th>Accuracy</th></tr></thead><tbody>';
+    ['extra', 'standard'].forEach(function (key) {
+      var c = cohorts[key];
+      h += '<tr><td>' + c.label + '</td><td>' + c.students + '</td><td>' + c.total + '</td><td>' + showPct(pct(c.correct, c.total)) + '</td></tr>';
+    });
+    h += '</tbody></table></div>';
+  }
+  h += '<p class="ui-meta-muted">Pupil premium, SEND and EAL are not shown: Forge does not record them.</p>';
+  h += '</section>';
+
   // Detail views are deliberately secondary to the leadership focus above.
   h += '<details class="tab-more school-detail-views"' + (activeTab !== 'subjects' ? ' open' : '') + '>';
   h += '<summary>Explore detail</summary><div class="tabs" role="tablist" aria-label="School detail views">';
@@ -635,7 +848,8 @@ function renderDashboard() {
   // and subject, which is not anonymous in a small cohort: in a class of two,
   // "bottom 10%" names one of them to anyone who knows the group. Below this
   // threshold the bands are withheld rather than shown with a caveat.
-  var MIN_BAND_COHORT = 10;
+  // (Declared at the top of renderDashboard so the cohort comparison above can
+  // apply the same rule.)
   var bandSize = Math.max(1, Math.ceil(rankedStudents.length * 0.1));
   var cohortTooSmall = rankedStudents.length < MIN_BAND_COHORT;
   var top10 = cohortTooSmall ? [] : rankedStudents.slice(0, bandSize);
@@ -956,7 +1170,9 @@ window.exportCSV = function(type) {
   });
   var exportScored=ForgeMetrics.scored(exportResponses);
 
-  if (type === 'subjects') {
+  if (extraExportRows[type]) {
+    rows = extraExportRows[type];
+  } else if (type === 'subjects') {
     rows.push(['Subject','Classes','Students','Scored answers','Accuracy','Top misconception']);
     var subjectMap = {};
     exportClasses.forEach(function(cls) {
