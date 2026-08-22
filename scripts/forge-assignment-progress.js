@@ -77,6 +77,7 @@
         id:rawId,
         bank:response.bank,
         correct:!!(response.is_correct||response.isCorrect),
+        selected:response.selected_option!=null?response.selected_option:(response.selectedOption!=null?response.selectedOption:null),
         at:response.created_at?new Date(response.created_at).getTime():0
       });
     });
@@ -86,10 +87,16 @@
     return out;
   }
 
-  function progress(assignment,payload){
+  /* The attempts that actually make up the score, in the order they counted.
+     `progress` reduces this to numbers and `review` renders it question by
+     question. They must not each re-derive it: the score a student sees and
+     the answers they are shown as the reason for that score would then be
+     free to disagree, which is the same failure the rules above document
+     between the student and teacher surfaces. */
+  function counted(assignment,payload){
     var banks=list(assignment&&assignment.banks), allowed={};
     banks.forEach(function(bank){allowed[key(bank)]=bank;});
-    var seen={}, countedByBank={}, answered=0, correct=0;
+    var seen={}, countedByBank={}, out=[];
     countable(assignment,payload).forEach(function(entry){
       var bank=allowed[key(entry.bank)]||bankForQuestion(entry.id);
       if(!bank||!allowed[key(bank)]) return;
@@ -101,15 +108,46 @@
       // bank. Later free-practice answers from the same bank must not inflate
       // either the numerator or denominator after that session is complete.
       if(countedByBank[bank]>=bankTotal(bank)) return;
-      countedByBank[bank]++; answered++;
-      if(entry.correct) correct++;
+      countedByBank[bank]++;
+      out.push({id:entry.id,bank:bank,correct:entry.correct,selected:entry.selected,at:entry.at});
     });
+    return out;
+  }
+
+  function progress(assignment,payload){
+    var banks=list(assignment&&assignment.banks);
+    var entries=counted(assignment,payload), correct=0;
+    entries.forEach(function(entry){if(entry.correct) correct++;});
     var total=banks.reduce(function(sum,bank){
       var data=bankData()[bank];
       var available=data&&data.questions?data.questions.filter(function(q){return !q.type||q.type==='fill_blank';}).length:0;
       return sum+Math.min(8,available);
     },0);
-    return {answered:answered,correct:correct,total:total,complete:total>0&&answered>=total};
+    return {answered:entries.length,correct:correct,total:total,complete:total>0&&entries.length>=total};
+  }
+
+  /* Per-question review of assigned work: what was asked, what the student
+     chose, and what the right answer was. Only the attempts that scored are
+     listed, so the review adds up to the percentage shown on the card. */
+  function review(assignment,payload){
+    var all=bankData();
+    return counted(assignment,payload).map(function(entry){
+      var data=all[entry.bank];
+      var question=(data&&data.questions||[]).filter(function(q){return String(q.id)===entry.id;})[0]||null;
+      var options=question&&question.options||[];
+      var correctKey=question&&question.correct!=null?String(question.correct):null;
+      var selectedKey=entry.selected!=null?String(entry.selected):null;
+      return {
+        id:entry.id,
+        bank:entry.bank,
+        bankLabel:data&&data.label||entry.bank,
+        correct:entry.correct,
+        stem:question&&(question.stem||question.question||question.template)||null,
+        selectedLabel:selectedKey!=null&&options[selectedKey]!=null?options[selectedKey]:null,
+        correctLabel:correctKey!=null&&options[correctKey]!=null?options[correctKey]:null,
+        scaffold:question&&question.scaffold||null
+      };
+    });
   }
 
   /* How many of a single bank's assigned questions have been answered. The
@@ -145,5 +183,5 @@
     return banks[0]||null;
   }
 
-  window.ForgeAssignmentProgress={rows:rows,progress:progress,bankProgress:bankProgress,nextBank:nextBank,localSessionRows:localSessionRows};
+  window.ForgeAssignmentProgress={rows:rows,progress:progress,review:review,bankProgress:bankProgress,nextBank:nextBank,localSessionRows:localSessionRows};
 })(window);
