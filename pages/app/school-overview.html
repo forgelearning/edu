@@ -433,7 +433,7 @@ function renderDashboard() {
   // when it isn't.
   h += statCard(avgAcc==null?'—':avgAcc + '%', levelLabel() + ' accuracy', avgAcc==null?'var(--dim)':avgAcc >= 70 ? 'var(--good)' : avgAcc >= 50 ? 'var(--hot)' : 'var(--bad)');
   h += '</div>';
-  h += '<div class="stat-support"><span>' + totalStudents + ' students enrolled</span><span>' + activeStudents7d + ' active in 7 days</span><span>' + totalResponses + ' scored answers</span></div>';
+  h += '<div class="stat-support"><span>' + totalStudents + ' student' + (totalStudents !== 1 ? 's' : '') + ' enrolled</span><span>' + activeStudents7d + ' active in 7 days</span><span>' + totalResponses + ' scored answer' + (totalResponses !== 1 ? 's' : '') + '</span></div>';
   h += '<p class="forge-meta">Accuracy = correct scored answers ÷ scored answers in the selected view. Initial Forge, assignment and Crucible answers are scored; Re-forge attempts are excluded. Active in 7 days means at least one recorded learning activity.</p>';
 
   var focusClass = classEngagement.filter(function(cls){return cls.responses>=5;}).sort(function(a, b) {
@@ -593,7 +593,7 @@ function renderDashboard() {
       h += '<td class="forge-u-bz6rry">' + (idx + 1) + '</td>';
       h += '<td class="forge-u-5goeua"><span class="mc-tag">' + item.mc + '</span>' + (subj ? '<br><span class="forge-u-cdz8f3">' + subj + '</span>' : '') + '</td>';
       h += '<td class="forge-u-5l3n0d">' + label + '</td>';
-      h += '<td class="forge-u-1vqnr5n">' + item.count + ' fires</td>';
+      h += '<td class="forge-u-1vqnr5n">' + item.count + ' fire' + (item.count !== 1 ? 's' : '') + '</td>';
       var rfPct = item.reforges > 0 ? Math.round((item.reforgeCorrect / item.reforges) * 100) : null;
       var rfCol = rfPct === null ? '#5a5858' : rfPct >= 70 ? 'var(--good)' : rfPct >= 40 ? 'var(--hot)' : 'var(--bad)';
       var rfLabel = item.reforges === 0 ? '<span class="forge-u-n1ww6x">—</span>'
