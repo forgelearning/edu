@@ -18,3 +18,16 @@ body{font-family:'Poppins',sans-serif}
 .settings-action-row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.settings-status{color:var(--slate);font:500 11px 'JetBrains Mono',monospace}.settings-account{display:flex;flex-direction:column;gap:3px;padding:14px 15px;margin-bottom:16px;border:1px solid var(--line);border-radius:var(--radius-md);background:color-mix(in srgb,var(--panel) 72%,transparent);color:var(--slate);font-size:13px}.settings-account strong{color:var(--white);font-size:15px}.settings-account span{color:var(--dim)}
 .forge-button--danger{border-color:color-mix(in srgb,var(--bad) 55%,var(--line));color:var(--bad)}
 @media(max-width:820px){.settings-page{padding-top:28px;padding-bottom:110px}.settings-section{padding:20px}.settings-hero{padding-top:8px}}
+
+/* P4 — account and data controls. The page was a theme picker; these are the
+   name, password, export and erasure controls added alongside it. */
+.settings-field{margin-top:20px;padding-top:18px;border-top:1px solid var(--line)}
+.settings-field:first-of-type{margin-top:18px}
+.settings-label{display:block;margin-bottom:4px;color:var(--white);font-weight:600;font-size:14px}
+.settings-help{margin:0 0 10px;color:var(--muted);font-size:13px;line-height:1.5;max-width:62ch}
+.settings-input{display:block;width:100%;max-width:360px;margin-bottom:10px;padding:11px 13px;border:1px solid var(--line);border-radius:var(--radius-sm);background:var(--panel-2);color:var(--white);font:15px 'Poppins',sans-serif}
+.settings-input:focus{outline:none;border-color:var(--ember)}
+.settings-danger{margin-top:14px;padding:18px;border:1px solid var(--bad);border-radius:var(--radius-md);background:var(--panel-2)}
+.settings-danger h3{margin:0 0 8px;color:var(--white);font-size:16px}
+.settings-danger code{padding:1px 6px;border-radius:var(--radius-xs);background:var(--panel);font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--hot)}
+.settings-field [role="status"]:not(:empty){margin-top:10px}
