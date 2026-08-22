@@ -157,8 +157,7 @@ h1,h2,h3{font-family:'Rethink Sans',sans-serif;color:var(--white);line-height:1.
 .mod-row:focus-visible{outline:2px solid var(--hot);outline-offset:3px}
 .mod-icon{background:var(--surface-action-subtle);color:var(--ember)}
 .mod-name{font-family:'Rethink Sans',sans-serif;font-size:16px;letter-spacing:-.01em}
-.mod-action{color:var(--accent-text)}
-[data-theme="light"] .mod-action{opacity:1}
+.mod-action{color:var(--hot)}
 .forge-status{margin-top:4px;padding:20px;background:var(--glass-panel)}
 .forge-status .ui-state-title{font-family:'Rethink Sans',sans-serif;font-size:22px;color:var(--white)}
 .forge-status .ui-state-action{margin-top:12px;min-height:46px}

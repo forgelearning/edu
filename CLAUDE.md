@@ -157,8 +157,8 @@ lower the baseline when a fix lands. They live in `CONTENT_BASELINES`.
 | Check | Baseline | Meaning |
 |---|---|---|
 | `NULL OPTION` | **0 — never raise** | A content-free dismissal ("It has no significant relevance to the topic being tested"). Makes a 4-option question a 3-option one, so guessing pays 33% and reported accuracy inflates. |
-| `SHORT CUE` | 393 | The correct answer is uniquely the shortest *and* under 55% of mean distractor length. The mirror of `CUE`. |
-| `RECYCLED DISTRACTOR` | 44 | One distractor string used in more than 8 distinct source questions (`-COV-n` stripped, so coverage clones don't count). |
+| `SHORT CUE` | 392 | The correct answer is uniquely the shortest *and* under 55% of mean distractor length. The mirror of `CUE`. |
+| `RECYCLED DISTRACTOR` | 42 | One distractor string used in more than 8 distinct source questions. Coverage clones are excluded via the `coverageVariant` flag — an earlier version stripped a `-COV-n` suffix instead, which turned `MAND-COV-011` into `MAND` and collapsed all 80 Mandarin clones into one pseudo-question. |
 
 The audit prints the true count of each next to its baseline. Only the first
 ten of each are listed, so **never count the printed lines** — that reads as a
@@ -204,6 +204,23 @@ So `SHORT CUE` really is a hand-authoring backlog — that was worth checking an
 the obvious hypothesis (that the loop shortened keys relative to swapped-in long
 distractors) is wrong. Roughly half the remaining recycling is still mechanical
 and will only fall when the source cues that force the swap are fixed.
+
+**And check whether the subject is even a candidate for hand-authoring.** The
+`SHORT CUE` backlog is concentrated in `gcse-geo` (84), `mand` (45),
+`gcse-science` (34) and `gcse-hist` (26) — but Mandarin's 45 are not authoring
+debt at all:
+
+- Its coverage clones carry generated long distractors that belong to other
+  questions (a sentence about spending too long on social media, offered in a
+  restaurant grammar question). **0 source questions and 12 clones** hold that
+  string, so there is no parent to correct — it is produced during cloning.
+- Those long options drag the mean distractor length up, which is what pushes
+  the ratio under 0.55. The correct answers are fine: a one-character particle
+  is the right answer to a one-character gap-fill, and character counts are not
+  comparable between a Chinese particle and an injected sentence.
+
+Rewriting 45 Mandarin keys would make the questions worse and the metric
+better. Confirm a subject's short cues are real before spending effort on them.
 
 For the genuinely authored half: each entry needs a plausible replacement
 written for that specific question. Do **not** clear them with a bulk rewrite

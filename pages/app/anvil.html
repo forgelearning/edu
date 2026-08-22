@@ -86,6 +86,7 @@ function supaInsert(table,row){
 </script>
 <script src="data/forge-data.js?v=20260805"></script>
 <script src="data/misconception-labels.js?v=20260813"></script>
+<script src="scripts/forge-misconception-state.js"></script>
 <script>
 
 // ===== END DATA =====
@@ -180,32 +181,21 @@ function renderLogin(){
 }
 
 function buildMisconceptions(){
-  var mc={};
+  var summary=ForgeMisconceptions.summarize(anvilState.responses,{threshold:CLEAR_THRESHOLD});
+  var mc=summary.data;
   anvilState.responses.forEach(function(r){
-    if(!r.misconception_tag) return;
-    var tag=r.misconception_tag;
-    if(!mc[tag]) mc[tag]={tag:tag,fires:0,reforgeAttempts:0,reforgeCorrect:0,streak:0,history:[],studentId:null,classId:null};
+    var tag=ForgeMisconceptions.tagForRow(r);
+    if(!tag||!mc[tag]) return;
+    if(mc[tag].studentId===undefined){mc[tag].studentId=null;mc[tag].classId=null;mc[tag].subject=null;}
 
     // Remember which class this misconception came from so re-forging it
     // writes back against that class's student row, not whichever class
     // happened to be active.
     if(r._studentId){ mc[tag].studentId=r._studentId; mc[tag].classId=r._classId; }
-
-    if(r.reforge_attempted){
-      mc[tag].reforgeAttempts++;
-      if(r.reforge_correct){
-        mc[tag].reforgeCorrect++;
-        mc[tag].streak++;
-        mc[tag].history.push(true);
-      } else {
-        mc[tag].streak=0;
-        mc[tag].history.push(false);
-      }
-    } else if(!r.is_correct){
-      mc[tag].fires++;
-      mc[tag].streak=0;
-      mc[tag].history.push(false);
-    }
+    // Repair is an activity type, not a curriculum subject. Preserve the
+    // subject that raised the misconception so Anvil evidence strengthens the
+    // right subject instead of creating a synthetic "anvil" subject/grade.
+    if(r.subject && r.subject!=='anvil' && r.subject!=='crucible') mc[tag].subject=r.subject;
   });
   anvilState.misconceptions=mc;
 }
@@ -456,7 +446,7 @@ function renderReworkQuestion(tag,questions,lap,qIdx){
         class_id:m.classId||anvilState.classId,
         question_id:q.id+'-ANVIL',
         bank:tag,
-        subject:'anvil',
+        subject:m.subject||anvilState.classSubject||null,
         selected_option:k,
         is_correct:isCorrect,
         misconception_tag:tag,

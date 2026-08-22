@@ -42,7 +42,11 @@
     if (!session.studentId) return Promise.resolve({ ok: false, detail: detailFor(new Error('No student session'), row, 'no-session') });
     if (!root.ForgeAPI || !root.ForgeAPI.config) return Promise.resolve(fail(new Error('ForgeAPI unavailable'), row, 'no-api'));
 
-    var token = (session.isPaid || session.isTrial) && root.ForgeAuth && root.ForgeAuth.accessToken
+    // An authenticated student may also be accessing Crucible through a
+    // linked school class after a personal trial expires. Use their auth token
+    // whenever one exists; entitlement is decided by the page before a run,
+    // while RLS remains the authority for row ownership.
+    var token = root.ForgeAuth && root.ForgeAuth.accessToken
       ? root.ForgeAuth.accessToken()
       : null;
 
@@ -90,7 +94,8 @@
         p_is_correct: row.is_correct,
         p_misconception_tag: row.misconception_tag,
         p_reforge_attempted: row.reforge_attempted,
-        p_reforge_correct: row.reforge_correct
+        p_reforge_correct: row.reforge_correct,
+        p_assignment_id: row.assignment_id || null
       }).then(function (result) {
         if (result && result.allowed === false) return { ok: false, refused: true, result: result };
         return ok(result);

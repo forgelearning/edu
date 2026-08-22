@@ -106,7 +106,7 @@ var CRUCIBLE_RUN_PREFIX = 'forge-crucible-run:';
 ForgeApp.loading(document.getElementById('app'), { label: 'Loading Crucible', body: 'Getting your timed practice ready.' });
 function crucibleRunKey() { return CRUCIBLE_RUN_PREFIX + String(state.studentId || 'anon') + ':' + String(state.classId || 'none'); }
 function loadCrucibleRun() { try { return JSON.parse(localStorage.getItem(crucibleRunKey()) || 'null'); } catch(e) { return null; } }
-function saveCrucibleRun() { try { localStorage.setItem(crucibleRunKey(), JSON.stringify({status:'active',subject:state.subject,bank:state.bank,questionIds:state.questions.map(function(q){return q.id;}),answers:state.answers.map(function(a){return {id:a.q.id,selected:a.selected,correct:a.correct,timedOut:a.timedOut};}),idx:state.idx,timeLeft:state.timeLeft,updatedAt:Date.now()})); } catch(e) {} }
+function saveCrucibleRun() { try { localStorage.setItem(crucibleRunKey(), JSON.stringify({status:'active',subject:state.subject,bank:state.bank,questionIds:state.questions.map(function(q){return q.id;}),answers:state.answers.map(function(a){return {id:a.q.id,selected:a.selected,correct:a.correct,timedOut:a.timedOut,saved:!!a.saved};}),idx:state.idx,timeLeft:state.timeLeft,updatedAt:Date.now()})); } catch(e) {} }
 function clearCrucibleRun() { try { localStorage.removeItem(crucibleRunKey()); } catch(e) {} }
 function restoreCrucibleRun() {
   var saved=loadCrucibleRun();
@@ -116,7 +116,7 @@ function restoreCrucibleRun() {
   var questions=saved.questionIds.map(function(id){return byId[id];}).filter(Boolean);
   if(!questions.length) return false;
   state.subject=saved.subject; state.bank=saved.bank; state.questions=questions; state.idx=Math.min(saved.idx||0,questions.length-1); state.timeLeft=saved.timeLeft||CRUCIBLE_TIME;
-  state.answers=(saved.answers||[]).map(function(a){return {q:byId[a.id],selected:a.selected,correct:a.correct,timedOut:a.timedOut};}).filter(function(a){return a.q;});
+  state.answers=(saved.answers||[]).map(function(a){return {q:byId[a.id],selected:a.selected,correct:a.correct,timedOut:a.timedOut,saved:!!a.saved};}).filter(function(a){return a.q;});
   state.phase='quiz'; return true;
 }
 
@@ -129,13 +129,14 @@ var state = {
   // Without them every response write is rejected by RLS, so they have to be
   // restored alongside the ids on every session path, not just on join.
   classCode: null, studentCode: null, freeToken: null,
+  isPaid: false, isTrial: false,
   classSubject: null,
   paidSubjects: [],
   extraTime: 0,
   subject: null, bank: null,
   questions: [], idx: 0,
   answers: [], // {q, selected, correct, timeLeft}
-  saveFailures: 0,
+  pendingSave: null,
   timeLeft: CRUCIBLE_TIME,
   timer: null
 };
@@ -149,7 +150,8 @@ function renderJoin(){
        +ForgeAuthCard.field('j-code','Class code',{placeholder:'e.g. ECON-Y12',upper:true})
        +'<button class="auth-btn danger" id="j-btn" type="submit">Enter the Crucible \u2192</button>'
        +'<p class="auth-err" id="j-err"></p>'
-       +'<button class="auth-btn-ghost" id="j-skip" type="button">Practise without a class</button>';
+       +'<a class="auth-btn-ghost" href="forge-quiz.html?mode=solo">Log in with a Pro account</a>'
+       +'<a class="forge-u-1u5pwzm" href="forge-signup.html">Start a 7-day Pro trial</a>';
   app.innerHTML=ForgeAuthCard.shell({
     title:'No hints. No scaffolds.<br>Just the question.',
     sub:'5 minutes. 6 questions. Wrong answers go straight to your Anvil.'
@@ -196,7 +198,18 @@ function renderJoin(){
       render();
     }).catch(function(e){err.textContent=e.message||'Student code or class code not recognised.';err.style.display='block';btn.disabled=false;btn.textContent='Enter the Crucible \u2192';});
   };
-  document.getElementById('j-skip').onclick=function(){state.studentName='Anonymous';state.phase='subject';render();};
+}
+
+function hasCrucibleAccess(){
+  return !!(state.classId||state.isPaid||state.isTrial);
+}
+
+function renderLocked(){
+  app.innerHTML=ForgeState.html('empty',{
+    label:'Crucible is included with Pro and class access',
+    body:'Join a teacher’s class, start a Pro trial, or log in to run timed pressure-tests. Free Forge practice is still available.',
+    action:{label:'Start a Pro trial',href:'forge-signup.html'}
+  })+'<div class="forge-action-row"><a class="forge-button forge-button--secondary" href="forge-quiz.html?mode=class">Join a class</a><a class="forge-button forge-button--secondary" href="forge-quiz.html">Continue free practice</a></div>';
 }
 
 // ===== SUBJECT PICKER =====
@@ -347,6 +360,11 @@ function renderReady(){
 
 // ===== CRUCIBLE QUESTION =====
 window.startCrucible=function(){
+  if(!hasCrucibleAccess()){
+    state.phase='locked';
+    render();
+    return;
+  }
   state.phase='quiz';
   if(window.forgeTrack) forgeTrack('crucible_started',{bank:state.bank,question_count:state.questions.length});
   // Apply extra time if student has access arrangement
@@ -381,12 +399,26 @@ function updateTimer(){
 
 function timeUp(){
   if(window.forgeTrack) forgeTrack('crucible_timed_out',{bank:state.bank,answered:state.answers.length,total:state.questions.length});
+  // Network latency must never erase an answer or make the timed score depend
+  // on how quickly the save endpoint responds. Let the in-flight write settle,
+  // then show a truthful saved/unsaved result.
+  if(state.pendingSave){
+    state.pendingSave.then(function(){state.phase='results';render();});
+    return;
+  }
   // Auto-submit current question if unanswered
   var opts=document.querySelectorAll('.opt:not(.answered)');
   if(opts.length>0){
     var q=state.questions[state.idx];
-    state.answers.push({q:q,selected:null,correct:false,timedOut:true});
-    logAnswer(q,null,false);
+    var answer={q:q,selected:null,correct:false,timedOut:true,saved:false};
+    state.answers.push(answer);
+    saveCrucibleRun();
+    logAnswer(q,null,false).then(function(outcome){
+      answer.saved=!!outcome.ok;
+      state.phase='results';
+      render();
+    });
+    return;
   }
   // Move to results
   state.phase='results';
@@ -435,9 +467,9 @@ function renderQuestion(){
       var k=o.dataset.k;
       var isCorrect=k===q.correct;
       if(window.forgeTrack) forgeTrack('crucible_question_answered',{bank:state.bank,correct:isCorrect});
-      state.answers.push({q:q,selected:k,correct:isCorrect,timedOut:false});
+      var answer={q:q,selected:k,correct:isCorrect,timedOut:false,saved:false};
+      state.answers.push(answer);
       saveCrucibleRun();
-      var saving=logAnswer(q,k,isCorrect);
 
       opts.forEach(function(x){
         x.classList.add('answered');
@@ -448,22 +480,14 @@ function renderQuestion(){
 
       var fb=document.getElementById('c-feedback');
       if(isCorrect){
-        fb.innerHTML='<div class="forge-u-7q8pd2">\u2713 Correct.</div>';
+        fb.innerHTML='<div class="forge-u-7q8pd2">\u2713 Correct.</div><div id="c-save-state" class="forge-status" role="status">Saving this answer…</div>';
       } else {
-        // Don't promise Anvil delivery before the write lands. Claiming it and
-        // then losing the row is worse than saying nothing.
-        fb.innerHTML='<div class="no-scaffold"><b>No scaffold here.</b> <span id="c-anvil-state">Saving this error to your Anvil…</span></div>';
-        saving.then(function(saved){
-          var el=document.getElementById('c-anvil-state');
-          if(!el) return;
-          el.textContent=saved
-            ? 'That error has been sent to your Anvil. Rework it after.'
-            : 'We couldn’t sync this answer. It stays on this device — reconnect and it will not be lost from your run.';
-          if(!saved) el.className='forge-status forge-status--error';
-        });
+        fb.innerHTML='<div class="no-scaffold"><b>Incorrect. No scaffold here.</b> <span id="c-anvil-state">Saving this error to your Anvil…</span></div><div id="c-save-state" class="forge-status" role="status">Saving this answer…</div>';
       }
-      fb.innerHTML+='<button type="button" class="next-btn btn-glass btn-crimson" id="c-next">'+(state.idx+1<state.questions.length?'Next \u2192':'Finish \u2192')+'</button><div class="clear"></div>';
-      document.getElementById('c-next').onclick=function(){
+      fb.innerHTML+='<button type="button" class="next-btn btn-glass btn-crimson" id="c-next" disabled>Saving…</button><button type="button" class="forge-button forge-button--secondary" id="c-retry-save" hidden>Retry save</button><div class="clear"></div>';
+      var nextButton=document.getElementById('c-next');
+      var retryButton=document.getElementById('c-retry-save');
+      nextButton.onclick=function(){
         state.idx++;
         saveCrucibleRun();
         if(state.idx>=state.questions.length){
@@ -473,16 +497,43 @@ function renderQuestion(){
           renderQuestion();
         }
       };
+      function attemptSave(){
+        retryButton.hidden=true;
+        nextButton.disabled=true;
+        nextButton.textContent='Saving…';
+        var status=document.getElementById('c-save-state');
+        status.className='forge-status';
+        status.textContent='Saving this answer…';
+        state.pendingSave=logAnswer(q,k,isCorrect);
+        state.pendingSave.then(function(outcome){
+          state.pendingSave=null;
+          answer.saved=!!outcome.ok;
+          saveCrucibleRun();
+          if(outcome.ok){
+            status.textContent='Answer saved.';
+            nextButton.disabled=false;
+            nextButton.textContent=state.idx+1<state.questions.length?'Next \u2192':'Finish \u2192';
+            var anvilState=document.getElementById('c-anvil-state');
+            if(anvilState) anvilState.textContent='That error has been sent to your Anvil. Rework it after.';
+            return;
+          }
+          status.className='forge-status forge-status--error';
+          status.textContent=outcome.refused
+            ? 'This run is not included in your current access. Join a class or use Pro to save it.'
+            : 'We couldn’t save this answer. Check your connection, then retry.';
+          retryButton.hidden=false;
+        });
+      }
+      retryButton.onclick=attemptSave;
+      attemptSave();
     };
   });
 }
 
-/* Resolves to true only once the server has accepted the row. The caller uses
-   that to decide whether it may claim the error reached the Anvil — this used
-   to be a direct `responses` insert, which RLS rejects for coded students, so
-   every Crucible answer was discarded while the UI said it had been saved. */
+/* Returns the writer outcome so the caller can distinguish a quota/access
+   refusal from a network failure and cannot advance until the row is saved. */
 function logAnswer(q,selectedKey,isCorrect){
-  if(!state.studentId) return Promise.resolve(false);
+  if(!state.studentId) return Promise.resolve({ok:false,detail:{source:'no-student'}});
   return ForgeResponseWriter.save(state,{
     student_id:state.studentId,
     class_id:state.classId,
@@ -494,9 +545,6 @@ function logAnswer(q,selectedKey,isCorrect){
     misconception_tag:isCorrect?null:(q.tag||null),
     reforge_attempted:false,
     reforge_correct:null
-  }).then(function(outcome){
-    if(!outcome.ok && !isCorrect) state.saveFailures++;
-    return outcome.ok;
   });
 }
 
@@ -508,13 +556,15 @@ function renderResults(){
   var col=pct>=75?'var(--good)':pct>=50?'var(--hot)':'var(--bad)';
   var timeUsed=CRUCIBLE_TIME-state.timeLeft;
   var mins=Math.floor(timeUsed/60),secs=timeUsed%60;
+  var unsaved=state.answers.filter(function(a){return !a.saved;}).length;
 
   var h='<div class="results-card">';
-  clearCrucibleRun();
+  if(!unsaved) clearCrucibleRun();
   if(window.forgeTrack) forgeTrack('crucible_completed',{bank:state.bank,score:correct,total:total});
   h+='<p class="tag forge-u-mj6mom">CRUCIBLE COMPLETE</p>';
   h+='<div class="big-pct" style="color:'+col+'">'+pct+'%</div>';
   h+='<div class="results-detail">'+correct+' / '+total+' correct \u00b7 '+mins+'m '+(secs<10?'0':'')+secs+'s</div>';
+  if(unsaved) h+=ForgeState.html('error',{label:'This result is not fully saved',body:unsaved+' of '+total+' answers could not be recorded. Your local run has been kept; reconnect before starting another Crucible.'});
   h+='<div class="forge-success forge-u-1ltoyjw"><div class="forge-success-title">'+(pct>=75?'Strong pressure-test.':'Useful pressure-test.')+'</div><div class="forge-success-copy">'+(pct>=75?'You held up well under timed conditions.':'Your weak spots are now visible. Rework your Anvil, then try the Crucible again.')+'</div></div>';
   h+='</div>';
 
@@ -524,8 +574,8 @@ function renderResults(){
     h+='<div class="forge-u-1qqcf3a">';
     // Same rule as the per-question feedback: only claim delivery for rows the
     // server actually accepted.
-    h+='<p class="tag forge-u-1xtvs35">'+(state.saveFailures>0?'Not all errors reached your Anvil':'Sent to your Anvil')+'</p>';
-    if(state.saveFailures>0) h+=ForgeState.html('error',{label:'Some answers didn’t sync',body:state.saveFailures+' of '+wrong.length+' errors could not be saved to your Anvil. Reconnect and run the Crucible again to record them.'});
+    var unsavedErrors=wrong.filter(function(a){return !a.saved;}).length;
+    h+='<p class="tag forge-u-1xtvs35">'+(unsavedErrors>0?'Not all errors reached your Anvil':'Sent to your Anvil')+'</p>';
     wrong.forEach(function(a){
       var tag=a.q.tag;
       if(Array.isArray(tag)) tag=tag[0];
@@ -569,6 +619,7 @@ function renderResults(){
 
 function render(){
   if(state.phase==='join') renderJoin();
+  else if(state.phase==='locked') renderLocked();
   else if(state.phase==='subject') renderSubject();
   else if(state.phase==='bank') renderBank();
   else if(state.phase==='ready') renderReady();
@@ -593,6 +644,8 @@ function restoreSession() {
     ForgeAuth.getSession().then(function(result) {
       if (result && result.subscriber) {
         var sub = result.subscriber;
+        state.isPaid       = result.access === 'pro';
+        state.isTrial      = result.access === 'trial';
         state.studentName  = sub.name;
         state.paidSubjects = sub.subjects || [];
         state.classSubject = null;
@@ -602,18 +655,35 @@ function restoreSession() {
         var authUser = ForgeAuth.currentUser();
         if (!authUser) { checkLocalSessionCrucible(); return; }
 
-        ForgeAPI.response(SUPABASE_URL + '/rest/v1/students?select=id,class_id,extra_time&auth_user_id=eq.' + authUser.id + '&class_id=not.is.null', {
+        ForgeAPI.response(SUPABASE_URL + '/rest/v1/students?select=id,class_id,extra_time&auth_user_id=eq.' + authUser.id, {
           headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + (token || SUPABASE_KEY) }
         }).then(function(r) { return r.json(); }).then(function(rows) {
-          if (!Array.isArray(rows) || rows.length === 0) {
-            // No class enrolments — use paidSubjects or show all
-            state.phase = 'subject';
+          rows=Array.isArray(rows)?rows:[];
+          var soloRow=rows.filter(function(row){return !row.class_id;})[0];
+          var classRows=rows.filter(function(row){return !!row.class_id;});
+          state.studentId=(soloRow||classRows[0]||{}).id||null;
+          if(!soloRow&&classRows[0]) state.classId=classRows[0].class_id;
+          if (classRows.length === 0) {
+            if((state.isPaid||state.isTrial)&&!state.studentId){
+              ForgeAPI.response(SUPABASE_URL + '/rest/v1/students', {
+                method:'POST',
+                headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+token,'Content-Type':'application/json','Prefer':'return=representation'},
+                body:JSON.stringify({name:state.studentName||'Student',class_id:null,auth_user_id:authUser.id})
+              }).then(function(response){return response.json();}).then(function(inserted){
+                state.studentId=(Array.isArray(inserted)&&inserted[0])?inserted[0].id:null;
+                if(state.studentId) try { localStorage.setItem('forge-paid-student',JSON.stringify({studentId:state.studentId,name:state.studentName})); } catch(e) {}
+                state.phase=state.studentId?'subject':'locked';
+                render();
+              }).catch(function(){state.phase='locked';render();});
+              return;
+            }
+            state.phase = (state.isPaid||state.isTrial)&&state.studentId ? 'subject' : 'locked';
             render();
             return;
           }
 
           // Get all class IDs
-          var classIds = rows.map(function(r) { return r.class_id; });
+          var classIds = classRows.map(function(r) { return r.class_id; });
 
           // Fetch class details to get subjects — via RPC, since the
           // classes table itself is no longer directly readable by students.
@@ -635,7 +705,7 @@ function restoreSession() {
 
             // Get max extra_time across all student rows
             var maxExtraTime = 0;
-            rows.forEach(function(r) { if ((r.extra_time || 0) > maxExtraTime) maxExtraTime = r.extra_time || 0; });
+            classRows.forEach(function(r) { if ((r.extra_time || 0) > maxExtraTime) maxExtraTime = r.extra_time || 0; });
             state.extraTime = maxExtraTime;
 
             // Store most recent class for fallback
@@ -674,7 +744,7 @@ function checkLocalSessionCrucible() {
     state.studentName = freeSession.name;
     state.classId     = null;
     state.freeToken   = freeSession.freeToken || null;
-    state.phase = 'subject';
+    state.phase = 'locked';
     render();
     return;
   }

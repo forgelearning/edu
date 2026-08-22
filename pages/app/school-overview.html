@@ -23,6 +23,8 @@
      from, since Anvil rows log subject:'anvil' rather than the real subject. -->
 <script src="data/forge-data.js"></script>
 <script src="data/misconception-labels.js?v=20260813"></script>
+<script src="scripts/forge-misconception-state.js"></script>
+<script src="scripts/forge-metrics.js"></script>
 
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-RGZ9J6Q8H9"></script>
@@ -218,21 +220,22 @@ function renderDashboard() {
   // On 'all', keep rows whose level can't be resolved rather than dropping
   // them — otherwise the school total silently undercounts.
   var responses = data.responses.filter(function(r) { return activeLevel === 'all' ? true : responseLevel(r) === activeLevel; });
+  var scoredResponses=ForgeMetrics.scored(responses);
 
   // Aggregate stats
   var totalClasses  = classes.length;
   var totalStudents = students.length;
-  var totalResponses = responses.length;
-  var avgAcc = 0;
+  var totalResponses = scoredResponses.length;
+  var avgAcc = null;
   if (totalResponses > 0) {
-    var correct = responses.filter(function(r) { return r.is_correct; }).length;
+    var correct = scoredResponses.filter(function(r) { return r.is_correct; }).length;
     avgAcc = Math.round((correct / totalResponses) * 100);
   }
 
   // Last 7 days activity
   var weekAgo = new Date(); weekAgo.setDate(weekAgo.getDate() - 7);
-  var recentResponses = responses.filter(function(r) { return new Date(r.created_at) > weekAgo; });
-  var activeStudents7d = new Set(recentResponses.map(function(r) { return r.student_id; })).size;
+  var recentActivityResponses = responses.filter(function(r) { return new Date(r.created_at) > weekAgo; });
+  var activeStudents7d = new Set(recentActivityResponses.map(function(r) { return r.student_id; })).size;
 
   // Build lookup maps so orphaned responses (class_id = null) can be
   // attributed to the correct class/subject via student_id -> students -> class_id.
@@ -242,7 +245,7 @@ function renderDashboard() {
   classes.forEach(function(cls) { if (cls.subject) classSubjectMap[cls.id] = cls.subject; });
 
   // Question id / misconception tag → subject key. Mirrors teacher.html: the
-  // Anvil logs subject:'anvil' (the source page, not the subject), so without
+  // Legacy Anvil rows log subject:'anvil' (the source page, not the subject), so without
   // this an Economics reforge is indistinguishable from a Computing one and
   // gets counted against whichever class the student happens to sit in.
   var QID_TO_SUBJECT = {};
@@ -292,8 +295,8 @@ function renderDashboard() {
   // Prefers the stored class_id; falls back to the student's class if null.
   function resolveResponse(r) {
     var classId = r.class_id || studentClassMap[r.student_id] || null;
-    // subjectForResponse, not r.subject: the latter is 'anvil' on every reforge,
-    // which is not a real subject key, so reforges fell out of the subject
+    // subjectForResponse, not r.subject: legacy rows may store the source page
+    // instead of a real subject key, so reforges fell out of the subject
     // breakdown entirely instead of counting toward the subject they came from.
     var subject  = subjectForResponse(r) || (classId ? classSubjectMap[classId] : null) || null;
     return { classId: classId, subject: subject };
@@ -311,7 +314,7 @@ function renderDashboard() {
       subjectMap[cls.subject].students++;
     });
   });
-  responses.forEach(function(r) {
+  scoredResponses.forEach(function(r) {
     var resolved = resolveResponse(r);
     var subj = resolved.subject;
     if (!subj) return; // genuinely unattributable - skip
@@ -319,8 +322,9 @@ function renderDashboard() {
     if (!subjectMap[subj]) return;
     subjectMap[subj].responses++;
     if (r.is_correct) subjectMap[subj].correct++;
-    if (!r.is_correct && r.misconception_tag) {
-      subjectMap[subj].mcs[r.misconception_tag] = (subjectMap[subj].mcs[r.misconception_tag] || 0) + 1;
+    var scoredTag=ForgeMisconceptions.tagForRow(r);
+    if (!r.is_correct && scoredTag) {
+      subjectMap[subj].mcs[scoredTag] = (subjectMap[subj].mcs[scoredTag] || 0) + 1;
     }
   });
 
@@ -330,22 +334,22 @@ function renderDashboard() {
   var mcReforgeCorrect = {};  // tag -> reforge successes
   var mcSubjectTotals = {}; // tag -> { subject -> count }
   responses.forEach(function(r) {
-    if (!r.is_correct && r.misconception_tag) {
-      mcTotals[r.misconception_tag] = (mcTotals[r.misconception_tag] || 0) + 1;
+    var tag=ForgeMisconceptions.tagForRow(r);
+    if (!r.reforge_attempted && !r.is_correct && tag) {
+      mcTotals[tag] = (mcTotals[tag] || 0) + 1;
       var resolved = resolveResponse(r);
       var subj = resolved.subject;
       // Exclude page-source values that aren't real subjects
       var ignoredSources = ['anvil','crucible','forge',''];
       if (subj && ignoredSources.indexOf(subj.toLowerCase()) === -1) {
-        if (!mcSubjectTotals[r.misconception_tag]) mcSubjectTotals[r.misconception_tag] = {};
-        mcSubjectTotals[r.misconception_tag][subj] = (mcSubjectTotals[r.misconception_tag][subj] || 0) + 1;
+        if (!mcSubjectTotals[tag]) mcSubjectTotals[tag] = {};
+        mcSubjectTotals[tag][subj] = (mcSubjectTotals[tag][subj] || 0) + 1;
       }
     }
-    // Track reforge attempts against the misconception tag regardless of initial correctness
-    if (r.reforge_attempted && r.misconception_tag) {
-      mcReforgeTotals[r.misconception_tag] = (mcReforgeTotals[r.misconception_tag] || 0) + 1;
+    if (r.reforge_attempted && tag) {
+      mcReforgeTotals[tag] = (mcReforgeTotals[tag] || 0) + 1;
       if (r.reforge_correct) {
-        mcReforgeCorrect[r.misconception_tag] = (mcReforgeCorrect[r.misconception_tag] || 0) + 1;
+        mcReforgeCorrect[tag] = (mcReforgeCorrect[tag] || 0) + 1;
       }
     }
   });
@@ -370,7 +374,7 @@ function renderDashboard() {
     // Include responses logged with this class_id AND orphaned responses
     // from students in this class (class_id = null but student belongs here)
     var classStudentIds = new Set(classStudents.map(function(s) { return s.id; }));
-    var classResponses = responses.filter(function(r) {
+    var classResponses = scoredResponses.filter(function(r) {
       // Only include responses that match this class's subject, resolving the
       // real subject of a reforge rather than waving all reforges through.
       if (!subjectMatches(r, cls)) return false;
@@ -378,7 +382,7 @@ function renderDashboard() {
       if (!r.class_id && classStudentIds.has(r.student_id)) return true;
       return false;
     });
-    var activeIds = new Set(recentResponses.filter(function(r) {
+    var activeIds = new Set(recentActivityResponses.filter(function(r) {
       if (!subjectMatches(r, cls)) return false;
       if (r.class_id === cls.id) return true;
       if (!r.class_id && classStudentIds.has(r.student_id)) return true;
@@ -406,14 +410,17 @@ function renderDashboard() {
   h += '<div class="forge-u-7547uz">';
   h += '<div><p class="tag forge-u-l8gta7">School Overview</p>';
   h += '<h1 class="ui-stat-large">' + ForgeTeacherUI.escape(data.schoolName || 'Your school') + '</h1>';
-  h += '<p class="dash-meta">Read-only · no individual student names · updated live</p></div>';
+  // The old wording was "no individual student names". Initials plus class and
+  // subject are not anonymous in a small group, so state what is actually
+  // shown rather than implying more protection than exists.
+  h += '<p class="dash-meta">Read-only \u00b7 initials only, and individual bands hidden below 10 qualifying students \u00b7 updated live</p></div>';
   h += '<button type="button" class="signout-btn" data-forge-action="logout">Sign out</button>';
   h += '</div>';
 
   // Level toggle
   var alevelCount = data.classes.filter(function(c) { return classLevel(c) === 'alevel'; }).length;
   var gcseCount   = data.classes.filter(function(c) { return classLevel(c) === 'gcse'; }).length;
-  h += '<div class="tabs">';
+  h += '<div class="tabs" role="group" aria-label="Filter overview by qualification level">';
   h += '<button type="button" class="tab' + (activeLevel === 'all' ? ' active' : '') + '" data-forge-action="switch-level" data-level="all">All (' + (alevelCount + gcseCount) + ')</button>';
   h += '<button type="button" class="tab' + (activeLevel === 'alevel' ? ' active' : '') + '" data-forge-action="switch-level" data-level="alevel">A-Level (' + alevelCount + ')</button>';
   h += '<button type="button" class="tab' + (activeLevel === 'gcse' ? ' active' : '') + '" data-forge-action="switch-level" data-level="gcse">GCSE (' + gcseCount + ')</button>';
@@ -421,28 +428,31 @@ function renderDashboard() {
 
   // Stat cards
   h += '<div class="stat-grid">';
-  h += statCard(totalClasses, 'Active classes', 'var(--white)');
+  h += statCard(totalClasses, 'Classes in view', 'var(--white)');
   // Label follows the filter, so the number can never be read as school-wide
   // when it isn't.
-  h += statCard(avgAcc + '%', levelLabel() + ' accuracy', avgAcc >= 70 ? 'var(--good)' : avgAcc >= 50 ? 'var(--hot)' : 'var(--bad)');
+  h += statCard(avgAcc==null?'—':avgAcc + '%', levelLabel() + ' accuracy', avgAcc==null?'var(--dim)':avgAcc >= 70 ? 'var(--good)' : avgAcc >= 50 ? 'var(--hot)' : 'var(--bad)');
   h += '</div>';
-  h += '<div class="stat-support"><span>' + totalStudents + ' students enrolled</span><span>' + activeStudents7d + ' active in 7 days</span><span>' + totalResponses + ' answers recorded</span></div>';
+  h += '<div class="stat-support"><span>' + totalStudents + ' students enrolled</span><span>' + activeStudents7d + ' active in 7 days</span><span>' + totalResponses + ' scored answers</span></div>';
+  h += '<p class="forge-meta">Accuracy = correct scored answers ÷ scored answers in the selected view. Initial Forge, assignment and Crucible answers are scored; Re-forge attempts are excluded. Active in 7 days means at least one recorded learning activity.</p>';
 
-  var focusClass = classEngagement.slice().sort(function(a, b) {
-    if (a.responses === 0 && b.responses > 0) return -1;
-    if (b.responses === 0 && a.responses > 0) return 1;
-    return a.acc - b.acc;
+  var focusClass = classEngagement.filter(function(cls){return cls.responses>=5;}).sort(function(a, b) {
+    return a.acc-b.acc||b.responses-a.responses;
   })[0];
   if (focusClass) {
-    var focusCopy = focusClass.responses === 0
-      ? focusClass.name + ' has no recorded answers yet. Start there before interpreting school-wide trends.'
-      : focusClass.name + ' is currently the lowest-accuracy active class at ' + focusClass.acc + '%. Review its priority signals first.';
+    var focusCopy = focusClass.name + ' has the lowest accuracy among classes with at least five scored answers: ' + focusClass.acc + '% across ' + focusClass.responses + ' answers. Review its open signals first.';
     h += '<section class="ui-recommendation" aria-labelledby="school-focus-title">';
     h += '<p class="ui-recommendation__eyebrow">Leadership focus</p>';
     h += '<h2 class="ui-recommendation__title" id="school-focus-title">Start with ' + focusClass.name + '</h2>';
     h += '<p class="ui-recommendation__copy">' + focusCopy + '</p>';
     h += '<a class="ui-state-action" href="teacher.html">Open priority signals</a>';
     h += '</section>';
+  } else if(totalClasses>0) {
+    h += '<section class="ui-recommendation" aria-labelledby="school-focus-title">';
+    h += '<p class="ui-recommendation__eyebrow">Leadership focus</p>';
+    h += '<h2 class="ui-recommendation__title" id="school-focus-title">Build a reliable baseline</h2>';
+    h += '<p class="ui-recommendation__copy">No class in this view has five scored answers yet, so an accuracy-based priority would be unreliable. Collect more responses before comparing classes.</p>';
+    h += '<a class="ui-state-action" href="teacher.html">Open classes</a></section>';
   }
 
   if (totalClasses === 0) {
@@ -456,20 +466,20 @@ function renderDashboard() {
 
   // Detail views are deliberately secondary to the leadership focus above.
   h += '<details class="tab-more school-detail-views"' + (activeTab !== 'subjects' ? ' open' : '') + '>';
-  h += '<summary>Explore detail</summary><div class="tabs">';
-  h += '<button type="button" class="tab' + (activeTab === 'subjects' ? ' active' : '') + '" data-forge-action="switch-tab" data-tab="subjects">By subject</button>';
-  h += '<button type="button" class="tab' + (activeTab === 'classes' ? ' active' : '') + '" data-forge-action="switch-tab" data-tab="classes">By class</button>';
-  h += '<button type="button" class="tab' + (activeTab === 'misconceptions' ? ' active' : '') + '" data-forge-action="switch-tab" data-tab="misconceptions">Misconception league</button>';
-  h += '<button type="button" class="tab' + (activeTab === 'performance' ? ' active' : '') + '" data-forge-action="switch-tab" data-tab="performance">Performance bands</button>';
-  h += '<button type="button" class="tab' + (activeTab === 'spec' ? ' active' : '') + '" data-forge-action="switch-tab" data-tab="spec">Spec points</button>';
+  h += '<summary>Explore detail</summary><div class="tabs" role="tablist" aria-label="School detail views">';
+  ['subjects','classes','misconceptions','performance','spec'].forEach(function(tabKey){
+    var labels={subjects:'By subject',classes:'By class',misconceptions:'Misconception league',performance:'Performance bands',spec:'Spec points'};
+    var selected=activeTab===tabKey;
+    h += '<button type="button" role="tab" id="detail-tab-'+tabKey+'" aria-controls="tab-'+tabKey+'" aria-selected="'+selected+'" tabindex="'+(selected?'0':'-1')+'" class="tab' + (selected ? ' active' : '') + '" data-forge-action="switch-tab" data-tab="'+tabKey+'">'+labels[tabKey]+'</button>';
+  });
   h += '</div></details>';
 
   // Subject tab
-  h += '<div id="tab-subjects" style="display:' + (activeTab === 'subjects' ? 'block' : 'none') + '">';
+  h += '<div id="tab-subjects" role="tabpanel" aria-labelledby="detail-tab-subjects"' + (activeTab === 'subjects' ? '' : ' hidden') + '>';
   h += '<div class="card">';
   h += '<div class="card-title">Subject breakdown <button type="button" class="export-btn" data-forge-action="export-csv" data-tab="subjects">Export CSV</button></div>';
   h += '<table class="overview-table"><thead><tr>';
-  h += '<th>Subject</th><th>Classes</th><th>Students</th><th>Questions answered</th><th>Accuracy</th><th>Top misconception</th>';
+  h += '<th>Subject</th><th>Classes</th><th>Students</th><th>Scored answers</th><th>Accuracy</th><th>Top misconception</th>';
   h += '</tr></thead><tbody>';
   Object.keys(subjectMap).sort().forEach(function(subj) {
     var s = subjectMap[subj];
@@ -490,11 +500,11 @@ function renderDashboard() {
   h += '</tbody></table></div></div>';
 
   // Classes tab
-  h += '<div id="tab-classes" style="display:' + (activeTab === 'classes' ? 'block' : 'none') + '">';
+  h += '<div id="tab-classes" role="tabpanel" aria-labelledby="detail-tab-classes"' + (activeTab === 'classes' ? '' : ' hidden') + '>';
   h += '<div class="card">';
   h += '<div class="card-title">Class engagement <button type="button" class="export-btn" data-forge-action="export-csv" data-tab="classes">Export CSV</button></div>';
   h += '<table class="overview-table"><thead><tr>';
-  h += '<th>Class</th><th>Subject</th><th>Students</th><th>Questions answered</th><th>Active last 7d</th><th>Accuracy</th><th>Engagement</th>';
+  h += '<th>Class</th><th>Subject</th><th>Students</th><th>Scored answers</th><th>Active last 7d</th><th>Accuracy</th><th>Engagement</th>';
   h += '</tr></thead><tbody>';
   if (classEngagement.length === 0) {
     h += '<tr><td colspan="7">' + ForgeState.html('empty', { label: 'No class data yet', body: 'Create a class and invite students to see engagement here.' }) + '</td></tr>';
@@ -515,7 +525,7 @@ function renderDashboard() {
   h += '</tbody></table></div></div>';
 
   // Misconceptions tab
-  h += '<div id="tab-misconceptions" style="display:' + (activeTab === 'misconceptions' ? 'block' : 'none') + '">';
+  h += '<div id="tab-misconceptions" role="tabpanel" aria-labelledby="detail-tab-misconceptions"' + (activeTab === 'misconceptions' ? '' : ' hidden') + '>';
   h += '<div class="card">';
   h += '<div class="card-title">School-wide misconception league — top 10 <button type="button" class="export-btn" data-forge-action="export-csv" data-tab="misconceptions">Export CSV</button></div>';
   if (mcLeague.length === 0) {
@@ -573,7 +583,8 @@ function renderDashboard() {
       return m ? (MC_PREFIX_SUBJ[m[1]] || '') : '';
     }
     var maxCount = mcLeague[0].count;
-    h += '<table class="overview-table"><thead><tr><th>Rank</th><th>Tag</th><th>Misconception</th><th>Fires</th><th>Reforged</th><th>Prevalence</th></tr></thead><tbody>';
+    h += '<p class="forge-u-lsrsa5">Fires are incorrect scored answers. Re-forged shows successful attempts over all attempts. Relative volume compares each signal with the highest-fire signal in this view.</p>';
+    h += '<table class="overview-table"><thead><tr><th>Rank</th><th>Tag</th><th>Misconception</th><th>Fires</th><th>Re-forged</th><th>Relative volume</th></tr></thead><tbody>';
     mcLeague.forEach(function(item, idx) {
       var pct = Math.round((item.count / maxCount) * 100);
       var label = resolveMCLabel(item.mc) || '—';
@@ -596,10 +607,10 @@ function renderDashboard() {
   h += '</div></div>';
 
   // ── Performance bands ───────────────────────────────────────
-  // Only class-enrolled students with >= 5 responses
+  // Only class-enrolled students with >= 5 scored answers
   var enrolledStudentIds = new Set(students.filter(function(s) { return s.class_id; }).map(function(s) { return s.id; }));
   var studentStats = {};
-  responses.forEach(function(r) {
+  scoredResponses.forEach(function(r) {
     if (!enrolledStudentIds.has(r.student_id)) return;
     if (!studentStats[r.student_id]) studentStats[r.student_id] = { total: 0, correct: 0 };
     studentStats[r.student_id].total++;
@@ -620,19 +631,37 @@ function renderDashboard() {
     };
   }).sort(function(a, b) { return b.acc - a.acc; });
 
+  // Small-sample suppression. Students are shown as initials plus their class
+  // and subject, which is not anonymous in a small cohort: in a class of two,
+  // "bottom 10%" names one of them to anyone who knows the group. Below this
+  // threshold the bands are withheld rather than shown with a caveat.
+  var MIN_BAND_COHORT = 10;
   var bandSize = Math.max(1, Math.ceil(rankedStudents.length * 0.1));
-  var top10 = rankedStudents.slice(0, bandSize);
-  var bottom10 = rankedStudents.slice(-bandSize).sort(function(a,b){ return a.acc - b.acc; });
+  var cohortTooSmall = rankedStudents.length < MIN_BAND_COHORT;
+  var top10 = cohortTooSmall ? [] : rankedStudents.slice(0, bandSize);
+  var bottom10 = cohortTooSmall ? [] : rankedStudents.slice(-bandSize).sort(function(a,b){ return a.acc - b.acc; });
+  // "Bottom 10%" is a rank, not a judgement — in a strong cohort the lowest
+  // student may still be at 73%. Carry the actual range so a leader reading
+  // this does not treat a relative position as a performance concern.
+  var bottomRange = bottom10.length
+    ? bottom10[0].acc + '%–' + bottom10[bottom10.length - 1].acc + '%'
+    : null;
+  var suppressionNote = '<p class="forge-u-10yda30">Individual bands are hidden until at least '
+    + MIN_BAND_COHORT + ' students in this view have recorded 5 or more scored answers. '
+    + 'With fewer than that, initials and class make a student identifiable. '
+    + rankedStudents.length + ' currently qualify.</p>';
 
-  h += '<div id="tab-performance" style="display:' + (activeTab === 'performance' ? 'block' : 'none') + '">';
+  h += '<div id="tab-performance" role="tabpanel" aria-labelledby="detail-tab-performance"' + (activeTab === 'performance' ? '' : ' hidden') + '>';
 
   // Top 10%
   h += '<div class="card forge-mb-5">';
-  h += '<div class="card-title forge-text-good">🔥 Top 10% — ' + top10.length + ' student' + (top10.length !== 1 ? 's' : '') + ' <span class="forge-u-1dueybt">· minimum 5 questions answered</span></div>';
-  if (top10.length === 0) {
-    h += '<p class="forge-u-10yda30">Not enough data yet — students need to answer at least 5 questions.</p>';
+  h += '<div class="card-title forge-text-good">🔥 Top 10% — ' + top10.length + ' student' + (top10.length !== 1 ? 's' : '') + ' <span class="forge-u-1dueybt">· minimum 5 scored answers</span></div>';
+  if (cohortTooSmall) {
+    h += suppressionNote;
+  } else if (top10.length === 0) {
+    h += '<p class="forge-u-10yda30">Not enough data yet — students need at least 5 scored answers.</p>';
   } else {
-    h += '<table class="overview-table"><thead><tr><th>Rank</th><th>Name</th><th>Class</th><th>Subject</th><th>Questions</th><th>Accuracy</th></tr></thead><tbody>';
+    h += '<table class="overview-table"><thead><tr><th>Rank</th><th>Name</th><th>Class</th><th>Subject</th><th>Scored answers</th><th>Accuracy</th></tr></thead><tbody>';
     top10.forEach(function(s, i) {
       var accCol = s.acc >= 80 ? 'var(--good)' : s.acc >= 60 ? 'var(--hot)' : 'var(--bad)';
       var subjDisplay = s.subject ? s.subject.charAt(0).toUpperCase() + s.subject.slice(1).toLowerCase() : '—';
@@ -651,11 +680,14 @@ function renderDashboard() {
 
   // Bottom 10%
   h += '<div class="card">';
-  h += '<div class="card-title forge-text-bad">⚠️ Bottom 10% — ' + bottom10.length + ' student' + (bottom10.length !== 1 ? 's' : '') + ' <span class="forge-u-1dueybt">· may need intervention</span></div>';
-  if (bottom10.length === 0) {
+  h += '<div class="card-title forge-text-bad">⚠️ Lowest 10% by accuracy — ' + bottom10.length + ' student' + (bottom10.length !== 1 ? 's' : '')
+    + ' <span class="forge-u-1dueybt">· ' + (bottomRange ? 'currently ' + bottomRange + ' — a rank, not a pass mark' : 'relative rank within this view') + '</span></div>';
+  if (cohortTooSmall) {
+    h += suppressionNote;
+  } else if (bottom10.length === 0) {
     h += '<p class="forge-u-10yda30">Not enough data yet.</p>';
   } else {
-    h += '<table class="overview-table"><thead><tr><th>Rank</th><th>Name</th><th>Class</th><th>Subject</th><th>Questions</th><th>Accuracy</th></tr></thead><tbody>';
+    h += '<table class="overview-table"><thead><tr><th>Rank</th><th>Name</th><th>Class</th><th>Subject</th><th>Scored answers</th><th>Accuracy</th></tr></thead><tbody>';
     bottom10.forEach(function(s, i) {
       var accCol = s.acc >= 80 ? 'var(--good)' : s.acc >= 60 ? 'var(--hot)' : 'var(--bad)';
       var subjDisplay = s.subject ? s.subject.charAt(0).toUpperCase() + s.subject.slice(1).toLowerCase() : '—';
@@ -801,8 +833,8 @@ function renderDashboard() {
 
   // ── Spec points tab ─────────────────────────────────────
   var specTotals = {};
-  responses.forEach(function(r) {
-    var sp = r.spec_point || MC_TO_SPEC[r.misconception_tag] || null;
+  scoredResponses.forEach(function(r) {
+    var sp = r.spec_point || MC_TO_SPEC[ForgeMisconceptions.tagForRow(r)] || null;
     if (!sp || sp === 'TECH') return;
     if (!specTotals[sp]) specTotals[sp] = { total: 0, correct: 0, students: {} };
     specTotals[sp].total++;
@@ -816,14 +848,14 @@ function renderDashboard() {
     return accA - accB; // weakest first
   });
 
-  h += '<div id="tab-spec" style="display:' + (activeTab === 'spec' ? 'block' : 'none') + '">';
+  h += '<div id="tab-spec" role="tabpanel" aria-labelledby="detail-tab-spec"' + (activeTab === 'spec' ? '' : ' hidden') + '>';
   h += '<div class="card">';
   h += '<div class="card-title">School-wide Spec Point Accuracy — weakest first</div>';
   if (specKeys.length === 0) {
-    h += '<p class="forge-u-h0y9b4">No spec point data yet. Spec tracking requires questions answered after the latest platform update.</p>';
+    h += '<p class="forge-u-h0y9b4">No spec point data yet. Spec tracking requires scored answers recorded after the latest platform update.</p>';
   } else {
     h += '<p class="forge-u-lsrsa5">Only spec points with logged responses shown. Sorted by accuracy, lowest first.</p>';
-    h += '<table class="overview-table"><thead><tr><th>Spec point</th><th>Subject</th><th>Questions</th><th>Students</th><th>Accuracy</th><th></th></tr></thead><tbody>';
+    h += '<table class="overview-table"><thead><tr><th>Spec point</th><th>Subject</th><th>Scored answers</th><th>Students</th><th>Accuracy</th><th></th></tr></thead><tbody>';
     specKeys.forEach(function(sp) {
       var d = specTotals[sp];
       var acc = Math.round((d.correct / d.total) * 100);
@@ -889,14 +921,15 @@ function statCard(val, label, col) {
   return '<div class="stat-card"><span class="stat-n" style="color:' + col + '">' + val + '</span><span class="stat-l">' + label + '</span></div>';
 }
 
-window.switchTab = function(tab) {
+window.switchTab = function(tab, selectedButton) {
   activeTab = tab;
   ['subjects','classes','misconceptions','performance','spec'].forEach(function(t) {
     var el = document.getElementById('tab-' + t);
-    if (el) el.style.display = t === tab ? 'block' : 'none';
+    if (el) el.hidden = t !== tab;
   });
-  document.querySelectorAll('.tab').forEach(function(btn) {
-    btn.classList.toggle('active', btn.textContent.toLowerCase().includes(tab.replace('misconceptions','misconception')));
+  document.querySelectorAll('.school-detail-views [role="tab"]').forEach(function(btn) {
+    var selected=btn===selectedButton||btn.dataset.tab===tab;
+    btn.classList.toggle('active',selected);btn.setAttribute('aria-selected',String(selected));btn.tabIndex=selected?0:-1;
   });
 };
 
@@ -913,23 +946,33 @@ window.exportCSV = function(type) {
     var subject  = r.subject  || (classId ? classSubjectMapExp[classId] : null) || null;
     return { classId: classId, subject: subject };
   }
+  var exportClasses=data.classes.filter(function(cls){return matchesLevel(classLevel(cls));});
+  var exportClassIds=new Set(exportClasses.map(function(cls){return cls.id;}));
+  var exportStudents=data.students.filter(function(student){return student.class_id&&exportClassIds.has(student.class_id);});
+  var exportResponses=data.responses.filter(function(r){
+    if(activeLevel==='all') return true;
+    var resolved=resolveExp(r);
+    return resolved.classId&&exportClassIds.has(resolved.classId);
+  });
+  var exportScored=ForgeMetrics.scored(exportResponses);
 
   if (type === 'subjects') {
-    rows.push(['Subject','Classes','Students','Questions answered','Accuracy','Top misconception']);
+    rows.push(['Subject','Classes','Students','Scored answers','Accuracy','Top misconception']);
     var subjectMap = {};
-    data.classes.forEach(function(cls) {
+    exportClasses.forEach(function(cls) {
       if (!cls.subject) return;
       if (!subjectMap[cls.subject]) subjectMap[cls.subject] = { classes:0, students:0, responses:0, correct:0, mcs:{} };
       subjectMap[cls.subject].classes++;
-      data.students.filter(function(s){return s.class_id===cls.id;}).forEach(function(){subjectMap[cls.subject].students++;});
+      exportStudents.filter(function(s){return s.class_id===cls.id;}).forEach(function(){subjectMap[cls.subject].students++;});
     });
-    data.responses.forEach(function(r) {
+    exportScored.forEach(function(r) {
       var resolved = resolveExp(r);
       var subj = resolved.subject;
       if (!subj || !subjectMap[subj]) return;
       subjectMap[subj].responses++;
       if (r.is_correct) subjectMap[subj].correct++;
-      if (!r.is_correct && r.misconception_tag) subjectMap[subj].mcs[r.misconception_tag] = (subjectMap[subj].mcs[r.misconception_tag]||0)+1;
+      var tag=ForgeMisconceptions.tagForRow(r);
+      if (!r.is_correct && tag) subjectMap[subj].mcs[tag] = (subjectMap[subj].mcs[tag]||0)+1;
     });
     Object.keys(subjectMap).sort().forEach(function(s) {
       var sm = subjectMap[s];
@@ -938,15 +981,15 @@ window.exportCSV = function(type) {
       rows.push([s, sm.classes, sm.students, sm.responses, acc+'%', topMC]);
     });
   } else if (type === 'classes') {
-    rows.push(['Class','Subject','Students','Questions answered','Active last 7d','Accuracy']);
+    rows.push(['Class','Subject','Students','Scored answers','Active last 7d','Accuracy']);
     var weekAgo = new Date(); weekAgo.setDate(weekAgo.getDate()-7);
-    data.classes.forEach(function(cls) {
-      var cs = data.students.filter(function(s){return s.class_id===cls.id;});
+    exportClasses.forEach(function(cls) {
+      var cs = exportStudents.filter(function(s){return s.class_id===cls.id;});
       var csIds = new Set(cs.map(function(s){return s.id;}));
-      var cr = data.responses.filter(function(r){
+      var cr = exportScored.filter(function(r){
         return r.class_id===cls.id || (!r.class_id && csIds.has(r.student_id));
       });
-      var activeIds = new Set(data.responses.filter(function(r){
+      var activeIds = new Set(exportResponses.filter(function(r){
         return (r.class_id===cls.id||(!r.class_id&&csIds.has(r.student_id)))&&new Date(r.created_at)>weekAgo;
       }).map(function(r){return r.student_id;}));
       var acc = cr.length>0?Math.round((cr.filter(function(r){return r.is_correct;}).length/cr.length)*100):0;
@@ -957,11 +1000,12 @@ window.exportCSV = function(type) {
     var mcTotalsExp = {};
     var mcReforgesExp = {};
     var mcReforgeCorrectExp = {};
-    data.responses.forEach(function(r){
-      if(!r.is_correct&&r.misconception_tag) mcTotalsExp[r.misconception_tag]=(mcTotalsExp[r.misconception_tag]||0)+1;
-      if(r.reforge_attempted&&r.misconception_tag){
-        mcReforgesExp[r.misconception_tag]=(mcReforgesExp[r.misconception_tag]||0)+1;
-        if(r.reforge_correct) mcReforgeCorrectExp[r.misconception_tag]=(mcReforgeCorrectExp[r.misconception_tag]||0)+1;
+    exportResponses.forEach(function(r){
+      var tag=ForgeMisconceptions.tagForRow(r);
+      if(!r.reforge_attempted&&!r.is_correct&&tag) mcTotalsExp[tag]=(mcTotalsExp[tag]||0)+1;
+      if(r.reforge_attempted&&tag){
+        mcReforgesExp[tag]=(mcReforgesExp[tag]||0)+1;
+        if(r.reforge_correct) mcReforgeCorrectExp[tag]=(mcReforgeCorrectExp[tag]||0)+1;
       }
     });
     Object.keys(mcTotalsExp).sort(function(a,b){return mcTotalsExp[b]-mcTotalsExp[a];}).slice(0,20).forEach(function(mc,i){

@@ -67,6 +67,7 @@ ForgeSidebar.mount({
 <script src="data/misconception-labels.js?v=20260813"></script>
 <script src="scripts/forge-classes.js?v=20260813"></script>
 <script src="scripts/forge-student-code.js?v=20260809"></script>
+<script src="scripts/forge-misconception-state.js"></script>
 <script>
 var SUPABASE_URL = ForgeAPI.config.url;
 var SUPABASE_KEY = ForgeAPI.config.key;
@@ -184,30 +185,9 @@ function renderLogin(){
   };
 }
 
-/* Misconception state for a set of responses. Must be processed
-   chronologically (oldest first) so streaks accumulate correctly. */
+/* Compatibility wrapper: the lifecycle itself is shared with every surface. */
 function mcSummary(rows){
-  var mcData={};
-  rows.slice().sort(function(a,b){
-    return (a.created_at||'') < (b.created_at||'') ? -1 : 1;
-  }).forEach(function(r){
-    if(!r.misconception_tag)return;
-    var tag=r.misconception_tag;
-    if(!mcData[tag])mcData[tag]={fires:0,reforgeCorrect:0,streak:0};
-    if(r.reforge_attempted){
-      if(r.reforge_correct){mcData[tag].reforgeCorrect++;mcData[tag].streak++;}
-      else mcData[tag].streak=0;
-    } else if(!r.is_correct){
-      mcData[tag].fires++;mcData[tag].streak=0;
-    }
-  });
-  var active=Object.keys(mcData).filter(function(t){return mcData[t].fires>0&&mcData[t].streak<3;});
-  active.sort(function(a,b){return mcData[b].fires-mcData[a].fires;});
-  return {
-    data: mcData,
-    active: active,
-    total: Object.keys(mcData).filter(function(t){return mcData[t].fires>0;}).length
-  };
+  return ForgeMisconceptions.summarize(rows);
 }
 
 /* Everything calcGrade needs for one slice of responses. */
@@ -225,10 +205,6 @@ function gradeFor(rows, isGCSE){
 
 // Display names for the subject keys stored on classes and responses.
 var SUBJ_LABELS = {econ:'Economics',psych:'Psychology',soc:'Sociology',geo:'Geography',bus:'Business',chem:'Chemistry',bio:'Biology',phys:'Physics',hist:'History',law:'Law',crim:'Criminology',pol:'Politics',maths:'Maths',german:'German',french:'French',cs:'Computer Science',rs:'Religious Studies',hsc:'Health & Social Care'};
-// Repair (Anvil) and pressure-test (Crucible) rows carry these as their
-// `subject`. They are internal markers, not subjects a student studies, so
-// they must never appear in a subject list or win "strongest subject".
-var PSEUDO_SUBJECTS = {anvil:true, crucible:true};
 
 /* The classes the student is in, keyed by class id. Responses are tagged
    with the class they came from, so a student taking four subjects gets a
@@ -258,7 +234,7 @@ function renderProfile(){
   var rank=getRank(xp);
   var nextRank=RANKS[RANKS.indexOf(rank)+1];
   var streak=calcStreak(responses);
-  var resolved=responses.filter(function(r){return r.reforge_attempted&&r.reforge_correct;}).length;
+  var resolved=mcSummary(responses).resolved.length;
 
   var mcAll=mcSummary(responses);
   var mcData=mcAll.data, activeMCs=mcAll.active, totalMCs=mcAll.total;
@@ -271,6 +247,10 @@ function renderProfile(){
   var byClass={}, order=[];
   responses.forEach(function(r){
     var cid = r._classId || r.class_id;
+    // Older activity rows stored subject:"anvil"/"crucible". Keep them as
+    // repair evidence when their class identifies the real subject, but do not
+    // let an unscoped legacy row create a synthetic predicted-grade card.
+    if((r.subject==='anvil'||r.subject==='crucible')&&!(cid&&classes[cid])) return;
     // Older response rows may not carry class_id. Subject is still a stable
     // boundary, so keep those results visible instead of collapsing them.
     var key = (cid && classes[cid]) ? cid : (r.subject ? 'subject:'+r.subject : '_other');
@@ -443,7 +423,7 @@ function renderProfile(){
     // 'anvil' and 'crucible' are internal markers on repair and pressure-test
     // rows, not subjects a student studies. Listing them here put "anvil" in
     // the subject table (and made it the "strongest subject" on the dashboard).
-    var subjects = Object.keys(subjectData).filter(function(s){return s!=='unknown' && !PSEUDO_SUBJECTS[s];});
+    var subjects = Object.keys(subjectData).filter(function(s){return s!=='unknown' && s!=='anvil' && s!=='crucible';});
     if (subjects.length > 0) {
       h += '<div class="card forge-mt-4">';
       h += '<div class="card-title">Subject breakdown</div>';

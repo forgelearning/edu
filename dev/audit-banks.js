@@ -181,9 +181,15 @@ for (const [bankId, bank] of Object.entries(BANKS)) {
         if (duplicate) issues.push(`COVERAGE DUPLICATE ANSWER: ${q.id} (${bankId}) ${duplicate} copies ${item.correct} apart from generated padding`);
       }
       // Content-quality checks that apply equally to a stem and its twin.
-      // Reuse is counted against the SOURCE question: coverage clones
-      // legitimately share their parent's options, so strip -COV-n first or
-      // every padded subject reads as recycling.
+      //
+      // Reuse is counted against the SOURCE question, because coverage clones
+      // legitimately share their parent's options. This used to strip a
+      // -COV-n suffix, which works for ids like SD-01-COV-2 but silently
+      // breaks for banks whose coverage ids ARE the whole id: MAND-COV-011
+      // stripped to "MAND", collapsing all 80 Mandarin clones into one
+      // pseudo-question and hiding every recycled distractor in the subject.
+      // The coverageVariant flag says the same thing without parsing ids.
+      const isCoverageClone = q.coverageVariant === true || /-COV-\d+$/.test(String(q.id));
       const sourceId = String(q.id).replace(/-COV-\d+$/, '');
       const subjectKey = bankToSubject[bankId];
       for (const [letter, value] of Object.entries(item.options)) {
@@ -192,7 +198,7 @@ for (const [bankId, bank] of Object.entries(BANKS)) {
           issues.push(`NULL OPTION: ${q.id}${label} (${bankId}) ${letter} is a content-free dismissal — "${String(value).slice(0, 60)}"`);
         }
         const text = String(value || '').trim();
-        if (text.length >= RECYCLED_MIN_LENGTH) {
+        if (text.length >= RECYCLED_MIN_LENGTH && !isCoverageClone) {
           if (!distractorUses.has(text)) distractorUses.set(text, new Set());
           distractorUses.get(text).add(`${subjectKey}|${sourceId}`);
         }
@@ -730,9 +736,9 @@ if (taxonomy.length) {
 // existed, which is the argument for pinning it now rather than after the
 // backlog is cleared.
 const CONTENT_BASELINES = {
-  'SHORT CUE': 393,
+  'SHORT CUE': 392,
   'NULL OPTION': 0,
-  'RECYCLED DISTRACTOR': 44
+  'RECYCLED DISTRACTOR': 42
 };
 if (!args.length) {
   let regressed = false;

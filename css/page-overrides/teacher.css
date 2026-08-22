@@ -45,7 +45,7 @@ h1,h2,h3{font-family:'Rethink Sans',sans-serif;color:var(--white);line-height:1.
 .dash-primary:hover{background:var(--hot);color:var(--coal)}
 
 .tabs{display:flex;align-items:center;gap:4px;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-md);padding:4px;margin-bottom:24px;flex-wrap:wrap}
-.tab{font-family:'Poppins',sans-serif;font-weight:600;font-size:13px;color:var(--slate);background:transparent;border:none;padding:9px 18px;border-radius:var(--radius-sm);cursor:pointer;white-space:nowrap}
+.tab{min-height:44px;font-family:'Poppins',sans-serif;font-weight:600;font-size:13px;color:var(--slate);background:transparent;border:none;padding:9px 18px;border-radius:var(--radius-sm);cursor:pointer;white-space:nowrap}
 .tab:hover{color:var(--white)}
 .tab.active{background:var(--ember);color:var(--coal)}
 @media(max-width:600px){.tabs{display:flex;flex-wrap:nowrap;max-width:100%;overflow-x:auto;scrollbar-width:none}.tabs::-webkit-scrollbar{display:none}.tab{flex:0 0 auto}.dash-header-actions{align-items:flex-start;width:100%}}
@@ -169,6 +169,17 @@ h1,h2,h3{font-family:'Rethink Sans',sans-serif;color:var(--white);line-height:1.
 .subj-select option{background:var(--panel);color:var(--white)}
 
 /* created code display */
+.code-generation-panel{margin:0 0 18px}
+.code-generation-card{max-width:520px;border-color:var(--ember);box-shadow:0 14px 32px -24px rgba(0,0,0,.55)}
+.code-generation-card h3{margin:0 0 8px;color:var(--white);font-size:18px}
+.code-generation-card p{margin:0 0 14px;color:var(--slate);font-size:13px;line-height:1.55}
+.code-generation-card label{display:block;margin-bottom:6px;color:var(--white);font:600 12px 'Poppins',sans-serif}
+.code-generation-card input{width:140px;padding:10px 12px;border-radius:var(--radius-sm);border:1px solid var(--line);background:var(--panel-2);color:var(--white);font:14px 'JetBrains Mono',monospace}
+.code-generation-card input:focus{outline:2px solid var(--ember);outline-offset:2px;border-color:var(--ember)}
+.code-generation-status{min-height:20px;margin-top:12px;color:var(--slate);font-size:12px;line-height:1.45}
+.code-generation-status:not(:empty){padding:8px 10px;border-radius:var(--radius-sm);background:var(--panel-2);border:1px solid var(--line)}
+.code-generation-status--success{color:var(--good);border-color:color-mix(in srgb,var(--good) 45%,var(--line))}
+.code-generation-status--error{color:var(--bad);border-color:color-mix(in srgb,var(--bad) 45%,var(--line))}
 .code-display{background:var(--panel-2);border:1px solid var(--line);border-radius:var(--radius-md);padding:18px;text-align:center;margin-bottom:14px}
 .code-display .code-val{font-family:'JetBrains Mono',monospace;font-size:26px;font-weight:700;color:var(--hot);letter-spacing:.1em;display:block;margin:6px 0}
 .code-display .code-sub{font-size:12px;color:#8A857E}
@@ -452,14 +463,12 @@ html[data-overdrive="control-room"] .teacher-entry{position:relative}
 .danger-zone code{padding:1px 6px;border-radius:var(--radius-sm);background:var(--panel-2);font-family:'JetBrains Mono',monospace}
 .danger-zone input{width:100%;margin:8px 0 12px;padding:10px 12px;border:1px solid var(--line);border-radius:var(--radius-sm);background:var(--panel);color:inherit;font-family:'JetBrains Mono',monospace}
 
-/* F2 — student access codes are shown on screen, not only downloaded. The
-   server returns each code once and stores only its hash, so a blocked
-   download used to lose them permanently. */
-.codes-card{margin:14px 0 18px;max-width:720px}
-.codes-card h3{margin:0 0 8px;font-size:17px;color:var(--white)}
-.codes-card p{margin:0 0 14px;color:var(--muted);font-size:14px;line-height:1.55;max-width:60ch}
-.codes-card input[type="number"]{width:120px;margin-bottom:14px;padding:10px 12px;border:1px solid var(--line);border-radius:var(--radius-sm);background:var(--panel-2);color:var(--white);font:inherit}
-.codes-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:6px;margin:0 0 16px;padding:0 0 0 4px;max-height:320px;overflow-y:auto;list-style-position:inside}
+/* F2 — the returned access codes are shown on screen, not only downloaded.
+   generate_student_access_codes returns each code once and stores only its
+   hash, so a download the webview blocks would lose them permanently. */
+.generated-codes{margin-top:16px;padding-top:14px;border-top:1px solid var(--line)}
+.generated-codes__note{margin:0 0 10px;color:var(--muted);font-size:13px;line-height:1.5}
+.codes-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:6px;margin:0 0 14px;padding:0 0 0 4px;max-height:320px;overflow-y:auto;list-style-position:inside}
 .codes-list li{padding:7px 10px;border:1px solid var(--line);border-radius:var(--radius-xs);background:var(--panel-2);font-size:13px;color:var(--dim)}
 .codes-list code{font-family:'JetBrains Mono',monospace;font-size:13.5px;letter-spacing:.04em;color:var(--white);user-select:all}
 .codes-name{display:block;margin-bottom:2px;color:var(--muted);font-size:12px}

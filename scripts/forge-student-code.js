@@ -36,8 +36,8 @@
     },
     recordResponse: function (studentId, classCode, studentCode, row) {
       row = row || {};
-      function payload(withAssignment) {
-        var args = {
+      function payload(assignmentId) {
+        return {
           p_student_id: studentId,
           p_class_code: String(classCode || '').trim().toUpperCase(),
           p_student_code: clean(studentCode),
@@ -49,21 +49,17 @@
           p_misconception_tag: row.misconception_tag || null,
           p_spec_point: row.spec_point || null,
           p_reforge_attempted: !!row.reforge_attempted,
-          p_reforge_correct: row.reforge_correct == null ? null : !!row.reforge_correct
+          p_reforge_correct: row.reforge_correct == null ? null : !!row.reforge_correct,
+          p_assignment_id: assignmentId || null
         };
-        // The RPC is overloaded: naming p_assignment_id selects the variant
-        // that records it. Only send the key when there is a value, so the
-        // 12-argument form still resolves unambiguously for free practice.
-        if (withAssignment && row.assignment_id) args.p_assignment_id = row.assignment_id;
-        return args;
       }
 
-      return rpc('record_student_response_with_code', payload(true)).then(function (result) {
+      return rpc('record_student_response_with_code', payload(row.assignment_id)).then(function (result) {
         // The RPC refuses an assignment id that does not belong to this class.
         // A stale link must not cost the student their answer, so record it
         // again unattributed rather than failing the write.
         if (result && result.allowed === false && result.reason === 'invalid_assignment' && row.assignment_id) {
-          return rpc('record_student_response_with_code', payload(false));
+          return rpc('record_student_response_with_code', payload(null));
         }
         return result;
       }).then(function (result) {

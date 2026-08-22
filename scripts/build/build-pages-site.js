@@ -5,6 +5,7 @@
 const fs = require('fs');
 const path = require('path');
 const { repoRoot, listPageFiles } = require('../support/page-files');
+const buildQuestionPayloads = require('./build-question-payloads');
 
 const output = path.join(repoRoot, '_site');
 const runtimeDirectories = ['assets', 'css', 'data'];
@@ -23,6 +24,7 @@ function copyTree(source, target, filter = () => true) {
 }
 
 function build() {
+  buildQuestionPayloads();
   fs.rmSync(output, { recursive: true, force: true });
   fs.mkdirSync(output, { recursive: true });
 

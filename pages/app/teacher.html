@@ -79,6 +79,8 @@ function mountTeacherSidebar() {
 <!-- Assignment attainment is defined once, in forge-assignment-progress.js, and
      shared with the student's assignment view so the two cannot disagree. -->
 <script>window.ForgeAssignmentBanks=BANKS;</script><script src="scripts/forge-assignment-progress.js"></script>
+<script src="scripts/forge-misconception-state.js"></script>
+<script src="scripts/forge-metrics.js"></script>
 <script src="data/misconception-labels.js?v=20260813"></script>
 <script src="data/starter-activities.js?v=20260813"></script>
 <script>
@@ -314,6 +316,20 @@ function supaGet(table, params) { return ForgeAPI.get(table, params, teacherApiO
 // returns that object instead of allowing `.map()` to break the whole class view.
 function rowsOrEmpty(value) {
   return Array.isArray(value) ? value : [];
+}
+
+/* School is the grouping key for the whole School Overview, and it is free
+   text. Trailing spaces and doubled spaces alone were enough to fork it, so
+   normalise whitespace on the way in. Case is deliberately preserved — the
+   overview RPC already folds case, and rewriting a teacher's capitalisation
+   is not this function's business. Abbreviations ("MGSG" for "Mayfield
+   Grammar School") cannot be merged safely by rule and are left alone; the
+   datalist exists to stop them being created in the first place. */
+function normaliseSchoolName(value) {
+  return String(value == null ? '' : value).replace(/\s+/g, ' ').trim();
+}
+function schoolIdentityKey(value) {
+  return normaliseSchoolName(value).toLowerCase();
 }
 
 function supaDelete(table, id) {
@@ -910,25 +926,30 @@ function renderDashboard() {
   students.forEach(function(s) { studentMap[s.id] = s.name; });
 
   // Stats
-  var totalQs = responses.length;
-  var correct = responses.filter(function(r) { return r.is_correct; }).length;
-  var accuracy = totalQs > 0 ? Math.round((correct / totalQs) * 100) : 0;
-  var wrongResponses = responses.filter(function(r) { return !r.is_correct && r.misconception_tag; });
+  var classMetric = ForgeMetrics.accuracy(responses);
+  var totalQs = classMetric.total;
+  var correct = classMetric.correct;
+  var accuracy = classMetric.percent==null?0:classMetric.percent;
+  var wrongResponses = classMetric.answers.filter(function(r) { return !r.is_correct && ForgeMisconceptions.tagForRow(r); });
   var uniqueMCs = {};
-  wrongResponses.forEach(function(r) { uniqueMCs[r.misconception_tag] = true; });
+  var attention={};
+  students.forEach(function(student){
+    var summary=ForgeMisconceptions.summarize(responses.filter(function(r){return r.student_id===student.id;}));
+    summary.active.forEach(function(tag){uniqueMCs[tag]=true;});
+    if(summary.active.length) attention[student.id]=summary.active.length;
+  });
+  var openSignalCount=Object.keys(uniqueMCs).length;
   var reforgeAttempts = responses.filter(function(r) { return r.reforge_attempted; });
   var reforgeCorrect = reforgeAttempts.filter(function(r) { return r.reforge_correct; });
   forgeSyncTeacherWidgetData({
     classId: String(dashState.classId || ''),
     className: String(dashState.className || ''),
     accuracy: accuracy,
-    openSignals: Object.keys(uniqueMCs).length,
+    openSignals: openSignalCount,
     students: students.length,
     responses: totalQs,
-    secondary: wrongResponses.length ? 'Open priority signals' : 'No open priority signals'
+    secondary: openSignalCount ? 'Open priority signals' : 'No open priority signals'
   });
-  var attention={};
-  wrongResponses.forEach(function(r){attention[r.student_id]=(attention[r.student_id]||0)+1;});
   var attentionRows=Object.keys(attention).map(function(id){return {id:id,name:(studentMap[id]||'Student'),count:attention[id]};}).sort(function(a,b){return b.count-a.count;}).slice(0,5);
 
   var h = '<div class="dash-header">';
@@ -937,10 +958,10 @@ function renderDashboard() {
   if (dashState.classCode) {
     h += ' <button type="button" class="class-code-pill" id="class-code-pill" data-forge-action="copy-class-code" title="Copy class code">' + dashState.classCode + ' 📋</button>';
   }
-  h += '</h1><button type="button" class="forge-button forge-button--secondary" id="generate-student-codes">Generate student codes</button><button type="button" class="forge-button forge-button--secondary" id="migrate-existing-students">Migrate existing students</button><button type="button" class="forge-button forge-button--secondary forge-button--danger" id="delete-class">Delete class</button></div>';
-  h += '<div id="student-codes-panel" hidden></div>';
+  h += '</h1><button type="button" class="forge-button forge-button--secondary" id="generate-student-codes" aria-expanded="false" aria-controls="generate-codes-panel">Generate student codes</button><button type="button" class="forge-button forge-button--secondary" id="migrate-existing-students">Migrate existing students</button><button type="button" class="forge-button forge-button--secondary forge-button--danger" id="delete-class">Delete class</button></div>';
   h += '<div id="delete-class-panel" hidden></div>';
-  h += '<div class="dash-header-actions"><a class="dash-primary forge-button forge-button--primary" href="#" id="dash-action">' + (wrongResponses.length ? 'Open misconceptions \u2192' : 'Create assignment \u2192') + '</a><div class="dash-meta"><b>' + students.length + '</b> student' + (students.length !== 1 ? 's' : '') + ' \u00b7 <b>' + totalQs + '</b> response' + (totalQs !== 1 ? 's' : '') + ' \u00b7 <button type="button" class="back-btn forge-u-gr3ipb" data-forge-action="render-teacher-home">\u2190 All classes</button></div></div>';
+  h += '<div id="generate-codes-panel" class="code-generation-panel" hidden></div>';
+  h += '<div class="dash-header-actions"><a class="dash-primary forge-button forge-button--primary" href="#" id="dash-action">' + (openSignalCount ? 'Open misconceptions \u2192' : 'Create assignment \u2192') + '</a><div class="dash-meta"><b>' + students.length + '</b> student' + (students.length !== 1 ? 's' : '') + ' \u00b7 <b>' + totalQs + '</b> scored answer' + (totalQs !== 1 ? 's' : '') + ' \u00b7 <button type="button" class="back-btn forge-u-gr3ipb" data-forge-action="render-teacher-home">\u2190 All classes</button></div></div>';
   h += '</div>';
 
   // Stats row
@@ -948,14 +969,15 @@ function renderDashboard() {
   h += '<div class="stat-row stat-row--priority">';
   var accuracyClass = totalQs === 0 ? 'stat-n-muted' : accuracy >= 70 ? 'stat-n-good' : accuracy >= 50 ? 'stat-n-hot' : 'stat-n-bad';
   h += '<div class="stat stat--priority" title="Correct answers divided by answered questions"><span class="stat-n ' + accuracyClass + '">' + (totalQs === 0 ? '—' : accuracy + '%') + '</span><span class="stat-l">Class accuracy</span></div>';
-  h += '<div class="stat stat--priority"><span class="stat-n stat-n-hot">' + Object.keys(uniqueMCs).length + '</span><span class="stat-l">Open misconception signals</span></div>';
+  h += '<div class="stat stat--priority"><span class="stat-n stat-n-hot">' + openSignalCount + '</span><span class="stat-l">Open misconception signals</span></div>';
   h += '</div>';
-  h += '<div class="stat-support"><span>' + students.length + ' student' + (students.length !== 1 ? 's' : '') + '</span><span>' + totalQs + ' answer' + (totalQs !== 1 ? 's' : '') + '</span><span>' + reforgeCorrect.length + '/' + reforgeAttempts.length + ' reforges passed</span></div>';
+  h += '<div class="stat-support"><span>' + students.length + ' student' + (students.length !== 1 ? 's' : '') + '</span><span>' + totalQs + ' scored answer' + (totalQs !== 1 ? 's' : '') + '</span><span>' + reforgeCorrect.length + '/' + reforgeAttempts.length + ' Re-forge attempts passed</span></div>';
+  h += '<p class="forge-meta">Class accuracy = correct scored answers ÷ scored answers. Initial Forge, assignment and Crucible answers are scored; Re-forge repair attempts are excluded. Open signals use the shared three-success resolution rule.</p>';
   h += '<section class="ui-recommendation" aria-labelledby="teacher-next-action-title">';
   h += '<p class="ui-recommendation__eyebrow">Next best action</p>';
-  h += '<h2 class="ui-recommendation__title" id="teacher-next-action-title">' + (wrongResponses.length ? 'Address the strongest misconception signal' : 'Create the first focused assignment') + '</h2>';
-  h += '<p class="ui-recommendation__copy">' + (wrongResponses.length ? 'Start with the students and misconception volume shown below, then use the secondary views only when you need supporting detail.' : 'There is not enough response data for a reliable intervention yet. Set a short assignment to establish the first signal.') + '</p>';
-  h += '<a class="ui-state-action" href="#panel-' + (wrongResponses.length ? 'heatmap' : 'assignments') + '" data-forge-action="next-action">' + (wrongResponses.length ? 'Open priority signals' : 'Open assignments') + '</a>';
+  h += '<h2 class="ui-recommendation__title" id="teacher-next-action-title">' + (openSignalCount ? 'Address the strongest misconception signal' : 'Create the first focused assignment') + '</h2>';
+  h += '<p class="ui-recommendation__copy">' + (openSignalCount ? 'Start with the students and open misconceptions shown below, then use the secondary views only when you need supporting detail.' : 'There is not enough unresolved misconception data for an intervention yet. Set a short assignment to establish the first signal.') + '</p>';
+  h += '<a class="ui-state-action" href="#panel-' + (openSignalCount ? 'heatmap' : 'assignments') + '" data-forge-action="next-action">' + (openSignalCount ? 'Open priority signals' : 'Open assignments') + '</a>';
   h += '</section>';
   h += '<div class="forge-card forge-card--focus forge-u-p7nziw"><div class="card-title">Needs attention today <span class="forge-meta">top misconception volume</span></div>';
   if(attentionRows.length){
@@ -967,139 +989,123 @@ function renderDashboard() {
 
   // Tabs
   h += '<div class="tabs" role="tablist" aria-label="Teacher dashboard views">';
-  h += '<button type="button" class="tab active" data-view="heatmap" data-forge-action="switch-tab" data-tab="heatmap">Priority signals</button>';
-  h += '<button type="button" class="tab" data-view="class" data-forge-action="switch-tab" data-tab="class">Class overview</button>';
-  h += '<button type="button" class="tab" data-view="spec" data-forge-action="switch-tab" data-tab="spec">Spec points</button>';
-  h += '<button type="button" class="tab" data-view="assignments" data-forge-action="switch-tab" data-tab="assignments">Assignments</button>';
-  h += '<button type="button" class="tab" data-view="starters" data-forge-action="switch-tab" data-tab="starters">Corrective starters</button>';
+  h += '<button type="button" class="tab active" role="tab" id="tab-heatmap" aria-controls="panel-heatmap" aria-selected="true" tabindex="0" data-view="heatmap" data-forge-action="switch-tab" data-tab="heatmap">Priority signals</button>';
+  h += '<button type="button" class="tab" role="tab" id="tab-class" aria-controls="panel-class" aria-selected="false" tabindex="-1" data-view="class" data-forge-action="switch-tab" data-tab="class">Class overview</button>';
+  h += '<button type="button" class="tab" role="tab" id="tab-spec" aria-controls="panel-spec" aria-selected="false" tabindex="-1" data-view="spec" data-forge-action="switch-tab" data-tab="spec">Spec points</button>';
+  h += '<button type="button" class="tab" role="tab" id="tab-assignments" aria-controls="panel-assignments" aria-selected="false" tabindex="-1" data-view="assignments" data-forge-action="switch-tab" data-tab="assignments">Assignments</button>';
+  h += '<button type="button" class="tab" role="tab" id="tab-starters" aria-controls="panel-starters" aria-selected="false" tabindex="-1" data-view="starters" data-forge-action="switch-tab" data-tab="starters">Corrective starters</button>';
   h += '</div>';
 
-  h += '<div class="panel active" id="panel-heatmap"></div>';
-  h += '<div class="panel" id="panel-class"></div>';
-  h += '<div class="panel" id="panel-spec"></div>';
-  h += '<div class="panel" id="panel-assignments"></div>';
-  h += '<div class="panel" id="panel-starters"></div>';
+  h += '<div class="panel active" role="tabpanel" aria-labelledby="tab-heatmap" id="panel-heatmap"></div>';
+  h += '<div class="panel" role="tabpanel" aria-labelledby="tab-class" id="panel-class" hidden></div>';
+  h += '<div class="panel" role="tabpanel" aria-labelledby="tab-spec" id="panel-spec" hidden></div>';
+  h += '<div class="panel" role="tabpanel" aria-labelledby="tab-assignments" id="panel-assignments" hidden></div>';
+  h += '<div class="panel" role="tabpanel" aria-labelledby="tab-starters" id="panel-starters" hidden></div>';
   h += '<div class="forge-u-uydnfn" id="panel-student"></div>';
 
   app.innerHTML = h;
-  /* Generating codes deliberately avoids window.prompt/alert and a
+  /* Generating codes deliberately avoids native browser dialogs and a
      download-only result, for two reasons.
 
      First, native dialogs are unreliable in the Capacitor shells this repo
-     builds — the same reason delete-class below uses an in-page confirmation.
-     window.prompt() throws outright in some embedded webviews ("prompt() is
-     not supported"), which took this button out entirely.
+     builds — the same reason delete-class above uses an in-page confirmation.
+     A native text prompt throws outright in some embedded webviews, which took
+     this button out entirely.
 
      Second, the server returns each code exactly once and stores only its
      SHA-256 hash. If the CSV download is blocked, those codes are gone for
      good and the class has to be re-issued. So the codes are shown on screen,
      copyable, and the CSV is offered as well rather than instead. */
-  var generateCodesBtn = document.getElementById('generate-student-codes');
-  var codesPanel = document.getElementById('student-codes-panel');
-
-  function closeCodesPanel() {
-    if (!codesPanel) return;
-    codesPanel.hidden = true;
-    codesPanel.innerHTML = '';
-  }
-
-  function codesCsv(rows, withNames) {
-    var header = withNames ? 'Student Code,Name,Class Code\n' : 'Student Code,Name,Class Code\n';
-    return header + rows.map(function (row) {
-      return [row.student_code, withNames ? (row.student_name || '') : '', row.class_code]
-        .map(function (v) { return '"' + String(v || '').replace(/"/g, '""') + '"'; }).join(',');
-    }).join('\n') + '\n';
-  }
-
-  function offerCsv(rows, filenamePrefix, withNames) {
-    var blob = new Blob([codesCsv(rows, withNames)], { type: 'text/csv;charset=utf-8' });
-    var url = URL.createObjectURL(blob);
-    var link = document.createElement('a');
-    link.href = url;
-    link.download = filenamePrefix + '-' + dashState.classCode + '.csv';
-    link.click();
-    setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
-  }
-
-  function renderCodes(rows, opts) {
-    opts = opts || {};
-    if (!codesPanel) return;
-    var withNames = !!opts.withNames;
-    var h = '<div class="card codes-card">';
-    h += '<h3>' + rows.length + ' student code' + (rows.length !== 1 ? 's' : '') + ' for ' + teacherEsc(dashState.className || 'this class') + '</h3>';
-    h += '<p>Each code works once, for one student. <b>They are shown here only now</b> — the server keeps a hash, not the code, so save them before you close this.</p>';
-    h += '<ol class="codes-list">';
-    rows.forEach(function (row) {
-      h += '<li>' + (withNames ? '<span class="codes-name">' + teacherEsc(row.student_name || '') + '</span>' : '') +
-           '<code>' + teacherEsc(row.student_code) + '</code></li>';
-    });
-    h += '</ol>';
-    h += '<div class="forge-action-row">';
-    h += '<button type="button" class="forge-button forge-button--primary" id="codes-copy">Copy all codes</button>';
-    h += '<button type="button" class="forge-button forge-button--secondary" id="codes-csv">Download CSV</button>';
-    h += '<button type="button" class="forge-button forge-button--secondary" id="codes-close">Done</button>';
-    h += '</div><div id="codes-state"></div></div>';
-    codesPanel.hidden = false;
-    codesPanel.innerHTML = h;
-
-    document.getElementById('codes-close').onclick = closeCodesPanel;
-    document.getElementById('codes-csv').onclick = function () { offerCsv(rows, opts.filenamePrefix || 'forge-student-codes', withNames); };
-    document.getElementById('codes-copy').onclick = function () {
+  function renderGeneratedCodes(rows, withNames) {
+    var panel = document.getElementById('generate-codes-panel');
+    if (!panel || !rows || !rows.length) return;
+    var existing = document.getElementById('generated-codes');
+    if (existing) existing.remove();
+    var wrap = document.createElement('div');
+    wrap.id = 'generated-codes';
+    wrap.className = 'generated-codes';
+    wrap.innerHTML = '<p class="generated-codes__note">Shown once \u2014 the server keeps a hash, not the code. Save these before you close this panel.</p>'
+      + '<ol class="codes-list">' + rows.map(function (row) {
+          return '<li>' + (withNames && row.student_name ? '<span class="codes-name">' + teacherEsc(row.student_name) + '</span>' : '')
+            + '<code>' + teacherEsc(row.student_code) + '</code></li>';
+        }).join('') + '</ol>'
+      + '<button type="button" class="forge-button forge-button--secondary" id="copy-generated-codes">Copy all codes</button>';
+    panel.appendChild(wrap);
+    document.getElementById('copy-generated-codes').onclick = function () {
+      var button = document.getElementById('copy-generated-codes');
       var text = rows.map(function (row) {
         return (withNames && row.student_name ? row.student_name + '\t' : '') + row.student_code + '\t' + row.class_code;
       }).join('\n');
-      var button = document.getElementById('codes-copy');
       navigator.clipboard.writeText(text).then(function () {
-        button.textContent = '✓ Copied';
+        button.textContent = '\u2713 Copied';
         setTimeout(function () { button.textContent = 'Copy all codes'; }, 2000);
-      }).catch(function () {
-        teacherInlineState(document.getElementById('codes-state'), 'error', {
-          label: 'Couldn’t copy',
-          body: 'Select the codes above and copy them manually, or download the CSV.'
-        });
-      });
+      }).catch(function () { button.textContent = 'Select the codes above to copy'; });
     };
   }
 
-  if (generateCodesBtn && codesPanel) generateCodesBtn.onclick = function () {
-    if (!codesPanel.hidden) { closeCodesPanel(); return; }
-    codesPanel.hidden = false;
-    codesPanel.innerHTML =
-      '<div class="card codes-card">'
-      + '<h3>Generate student codes</h3>'
-      + '<p>One private code per student. Give each student one code — it is how Forge tells them apart.</p>'
-      + '<label class="auth-label" for="codes-qty">How many?</label>'
-      + '<input type="number" id="codes-qty" min="1" max="200" step="1" value="25" inputmode="numeric">'
-      + '<div class="forge-action-row">'
-      + '<button type="button" class="forge-button forge-button--secondary" id="codes-cancel">Cancel</button>'
-      + '<button type="button" class="forge-button forge-button--primary" id="codes-go">Generate</button>'
-      + '</div><div id="codes-state"></div></div>';
-
-    document.getElementById('codes-cancel').onclick = closeCodesPanel;
-    document.getElementById('codes-go').onclick = function () {
-      var stateHost = document.getElementById('codes-state');
-      var goBtn = document.getElementById('codes-go');
-      var quantity = parseInt(document.getElementById('codes-qty').value, 10);
-      stateHost.innerHTML = '';
+  var generateCodesBtn = document.getElementById('generate-student-codes');
+  var generateCodesPanel = document.getElementById('generate-codes-panel');
+  if (generateCodesBtn && generateCodesPanel) generateCodesBtn.onclick = function () {
+    if (!generateCodesPanel.hidden) {
+      generateCodesPanel.hidden = true;
+      generateCodesPanel.innerHTML = '';
+      generateCodesBtn.setAttribute('aria-expanded', 'false');
+      return;
+    }
+    generateCodesPanel.hidden = false;
+    generateCodesPanel.innerHTML = '<div class="card code-generation-card" role="dialog" aria-labelledby="generate-codes-title">'
+      + '<h3 id="generate-codes-title">Generate student codes</h3>'
+      + '<p>Create a private batch of one-time access codes for this class.</p>'
+      + '<label for="student-code-quantity">Number of codes</label>'
+      + '<input type="number" id="student-code-quantity" min="1" max="200" step="1" value="25" inputmode="numeric">'
+      + '<div class="forge-action-row"><button type="button" class="forge-button forge-button--secondary" id="generate-codes-cancel">Cancel</button>'
+      + '<button type="button" class="forge-button forge-button--primary" id="generate-codes-submit">Generate and download</button></div>'
+      + '<div id="generate-codes-state" class="code-generation-status" role="status" aria-live="polite"></div></div>';
+    generateCodesBtn.setAttribute('aria-expanded', 'true');
+    var quantityInput = document.getElementById('student-code-quantity');
+    var cancelBtn = document.getElementById('generate-codes-cancel');
+    var submitBtn = document.getElementById('generate-codes-submit');
+    var stateHost = document.getElementById('generate-codes-state');
+    var closePanel = function () {
+      generateCodesPanel.hidden = true;
+      generateCodesPanel.innerHTML = '';
+      generateCodesBtn.setAttribute('aria-expanded', 'false');
+      generateCodesBtn.focus();
+    };
+    cancelBtn.onclick = closePanel;
+    submitBtn.onclick = function () {
+      var quantity = Number(quantityInput.value);
       if (!Number.isInteger(quantity) || quantity < 1 || quantity > 200) {
-        teacherInlineState(stateHost, 'error', { label: 'Enter a number from 1 to 200', body: 'One code per student in the class.' });
+        stateHost.className = 'code-generation-status code-generation-status--error';
+        stateHost.textContent = 'Enter a whole number from 1 to 200.';
+        quantityInput.focus();
         return;
       }
-      goBtn.disabled = true; goBtn.textContent = 'Generating…';
+      submitBtn.disabled = true;
+      cancelBtn.disabled = true;
+      stateHost.className = 'code-generation-status';
+      stateHost.textContent = 'Generating codes…';
       ForgeAPI.rpc('generate_student_access_codes', { p_class_id: dashState.classId, p_quantity: quantity }, teacherApiOptions())
         .then(function (rows) {
           if (!Array.isArray(rows) || rows.length !== quantity) throw new Error('The server did not return the requested number of codes.');
-          renderCodes(rows, { filenamePrefix: 'forge-student-codes' });
+          var csv = 'Student Code,Name,Class Code\n' + rows.map(function (row) {
+            return [row.student_code, '', row.class_code].map(function (v) { return '"' + String(v || '').replace(/"/g, '""') + '"'; }).join(',');
+          }).join('\n') + '\n';
+          var blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+          var url = URL.createObjectURL(blob);
+          var link = document.createElement('a'); link.href = url; link.download = 'forge-student-codes-' + dashState.classCode + '.csv'; link.click();
+          setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+          stateHost.className = 'code-generation-status code-generation-status--success';
+          stateHost.textContent = 'Downloaded ' + rows.length + ' student codes. Keep this file private.';
+          renderGeneratedCodes(rows, false);
         })
         .catch(function (error) {
-          goBtn.disabled = false; goBtn.textContent = 'Generate';
-          stateHost.innerHTML = '';
-          teacherInlineState(stateHost, 'error', {
-            label: 'Codes weren’t generated',
-            body: (error && error.message) || 'Check your connection and try again.'
-          });
-        });
+          stateHost.className = 'code-generation-status code-generation-status--error';
+          stateHost.textContent = error.message || 'Could not generate student codes.';
+        })
+        .finally(function () { submitBtn.disabled = false; cancelBtn.disabled = false; });
     };
+    quantityInput.focus();
   };
   /* Deleting a class cascades to its students, access codes, assignments and
      every response they hold (see 20260810130000_cascade_class_cleanup.sql), so
@@ -1115,7 +1121,7 @@ function renderDashboard() {
       '<div class="card danger-zone">'
       + '<h3>Delete ' + teacherEsc(dashState.className || 'this class') + '?</h3>'
       + '<p>This removes the class, its <b>' + students.length + '</b> student' + (students.length !== 1 ? 's' : '')
-      + '</b>, their access codes, its assignments and all <b>' + totalQs + '</b> recorded answer' + (totalQs !== 1 ? 's' : '')
+      + ', their access codes, its assignments and all <b>' + totalQs + '</b> recorded answer' + (totalQs !== 1 ? 's' : '')
       + '. It cannot be undone.</p>'
       + '<p>Type <code>' + teacherEsc(dashState.classCode || '') + '</code> to confirm.</p>'
       + '<input type="text" id="delete-class-confirm" autocomplete="off" spellcheck="false" aria-label="Type the class code to confirm deletion">'
@@ -1159,54 +1165,66 @@ function renderDashboard() {
      on screen rather than only into a download the webview may refuse. This
      one matters more — it is the migration off the legacy name-only join, so
      losing its output means the class cannot move over. */
+  /* Migration keeps the same no-native-dialog rule as generation above, and
+     matters more: it is the move off the legacy name-only join, so losing its
+     output means the class cannot come across. This flow previously relied on
+     native browser dialogs plus a download-only result. */
   var migrateBtn = document.getElementById('migrate-existing-students');
-  if (migrateBtn && codesPanel) migrateBtn.onclick = function () {
-    if (!codesPanel.hidden) { closeCodesPanel(); return; }
-    codesPanel.hidden = false;
-    codesPanel.innerHTML =
-      '<div class="card codes-card">'
-      + '<h3>Give existing students private codes?</h3>'
+  if (migrateBtn && generateCodesPanel) migrateBtn.onclick = function () {
+    if (!generateCodesPanel.hidden) {
+      generateCodesPanel.hidden = true;
+      generateCodesPanel.innerHTML = '';
+      return;
+    }
+    generateCodesPanel.hidden = false;
+    generateCodesPanel.innerHTML = '<div class="card code-generation-card" role="dialog" aria-labelledby="migrate-codes-title">'
+      + '<h3 id="migrate-codes-title">Give existing students private codes?</h3>'
       + '<p>Every student already in ' + teacherEsc(dashState.className || 'this class') + ' gets one private code. '
-      + 'Their student records and answer history are kept exactly as they are — only how they sign in changes.</p>'
-      + '<div class="forge-action-row">'
-      + '<button type="button" class="forge-button forge-button--secondary" id="codes-cancel">Cancel</button>'
-      + '<button type="button" class="forge-button forge-button--primary" id="codes-go">Generate codes</button>'
-      + '</div><div id="codes-state"></div></div>';
-
-    document.getElementById('codes-cancel').onclick = closeCodesPanel;
-    document.getElementById('codes-go').onclick = function () {
-      var stateHost = document.getElementById('codes-state');
-      var goBtn = document.getElementById('codes-go');
-      goBtn.disabled = true; goBtn.textContent = 'Migrating…';
-      stateHost.innerHTML = '';
+      + 'Their student records and answer history are kept exactly as they are \u2014 only how they sign in changes.</p>'
+      + '<div class="forge-action-row"><button type="button" class="forge-button forge-button--secondary" id="migrate-codes-cancel">Cancel</button>'
+      + '<button type="button" class="forge-button forge-button--primary" id="migrate-codes-submit">Generate codes</button></div>'
+      + '<div id="migrate-codes-state" class="code-generation-status" role="status" aria-live="polite"></div></div>';
+    var cancelBtn = document.getElementById('migrate-codes-cancel');
+    var submitBtn = document.getElementById('migrate-codes-submit');
+    var stateHost = document.getElementById('migrate-codes-state');
+    cancelBtn.onclick = function () {
+      generateCodesPanel.hidden = true;
+      generateCodesPanel.innerHTML = '';
+      migrateBtn.focus();
+    };
+    submitBtn.onclick = function () {
+      submitBtn.disabled = true; cancelBtn.disabled = true;
+      stateHost.className = 'code-generation-status';
+      stateHost.textContent = 'Migrating\u2026';
       ForgeAPI.rpc('generate_student_access_codes_for_existing_students', { p_class_id: dashState.classId }, teacherApiOptions())
         .then(function (rows) {
           if (!Array.isArray(rows)) throw new Error('The server returned an invalid migration response.');
           if (!rows.length) {
-            stateHost.innerHTML = '';
-            teacherInlineState(stateHost, 'success', {
-              label: 'Nothing to migrate',
-              body: 'Every student in this class already has a private code.'
-            });
-            goBtn.disabled = false; goBtn.textContent = 'Generate codes';
+            stateHost.className = 'code-generation-status code-generation-status--success';
+            stateHost.textContent = 'Every student in this class already has a private code.';
             return;
           }
-          renderCodes(rows, { withNames: true, filenamePrefix: 'forge-migrated-student-codes' });
+          var csv = 'Student ID,Name,Student Code,Class Code\n' + rows.map(function (row) {
+            return [row.student_id, row.student_name, row.student_code, row.class_code].map(function (v) { return '"' + String(v || '').replace(/"/g, '""') + '"'; }).join(',');
+          }).join('\n') + '\n';
+          var url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
+          var link = document.createElement('a'); link.href = url; link.download = 'forge-migrated-student-codes-' + dashState.classCode + '.csv'; link.click();
+          setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+          stateHost.className = 'code-generation-status code-generation-status--success';
+          stateHost.textContent = 'Generated ' + rows.length + ' private student code' + (rows.length !== 1 ? 's' : '') + '. Keep them private.';
+          renderGeneratedCodes(rows, true);
         })
         .catch(function (error) {
-          goBtn.disabled = false; goBtn.textContent = 'Generate codes';
-          stateHost.innerHTML = '';
-          teacherInlineState(stateHost, 'error', {
-            label: 'Migration didn’t run',
-            body: (error && error.message) || 'Check your connection and try again.'
-          });
-        });
+          stateHost.className = 'code-generation-status code-generation-status--error';
+          stateHost.textContent = (error && error.message) || 'Could not migrate existing students.';
+        })
+        .finally(function () { submitBtn.disabled = false; cancelBtn.disabled = false; });
     };
   };
   var dashAction = document.getElementById('dash-action');
-  if (dashAction) dashAction.onclick = function(e) { e.preventDefault(); switchTab(wrongResponses.length ? 'heatmap' : 'assignments', dashAction); };
+  if (dashAction) dashAction.onclick = function(e) { e.preventDefault(); switchTab(openSignalCount ? 'heatmap' : 'assignments', dashAction); };
   var nextAction = document.querySelector('[data-forge-action="next-action"]');
-  if (nextAction) nextAction.onclick = function(e) { e.preventDefault(); switchTab(wrongResponses.length ? 'heatmap' : 'assignments', nextAction); };
+  if (nextAction) nextAction.onclick = function(e) { e.preventDefault(); switchTab(openSignalCount ? 'heatmap' : 'assignments', nextAction); };
   if (window.ForgeSidebar) {
     ForgeSidebar.setClassLabel(dashState.className);
     ForgeSidebar.setClassList(getJoinedClasses(), dashState.classId);
@@ -1240,12 +1258,13 @@ window.copyClassCode = function(btn) {
 };
 
 window.switchTab = function(view, btn) {
-  document.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('active'); });
-  if (btn && btn.classList) btn.classList.add('active');
+  document.querySelectorAll('.tabs[role="tablist"] [role="tab"]').forEach(function(t) { t.classList.remove('active');t.setAttribute('aria-selected','false');t.tabIndex=-1; });
+  if (btn && btn.classList) {btn.classList.add('active');btn.setAttribute('aria-selected','true');btn.tabIndex=0;}
   var more = document.querySelector('.tab-more');
   if (more && btn && more.contains(btn)) more.open = false;
-  document.querySelectorAll('.panel').forEach(function(p) { p.classList.remove('active'); });
+  document.querySelectorAll('.panel[role="tabpanel"]').forEach(function(p) { p.classList.remove('active');p.hidden=true; });
   document.getElementById('panel-' + view).classList.add('active');
+  document.getElementById('panel-' + view).hidden=false;
   document.getElementById('panel-student').style.display = 'none';
   if (view === 'spec') renderSpecBreakdown(forClassSubject(dashState.responses));
   // Keep the sidebar rail and the mobile tab bar in step with the in-page tabs.
@@ -2330,37 +2349,18 @@ window.renderStudent = function(studentId) {
 
   var allStudentResponses = dashState.responses.filter(function(r) { return r.student_id === studentId; });
   var studentResponses = forClassSubject(allStudentResponses);
-  var total = studentResponses.length;
-  var correct = studentResponses.filter(function(r) { return r.is_correct; }).length;
-  var acc = total > 0 ? Math.round((correct / total) * 100) : 0;
-
-  // Misconception breakdown — mirrors the Anvil's own rule (ANVIL_CLEAR_THRESHOLD
-  // consecutive correct reforges clears it), walked in chronological order so a
-  // later re-fire resets the streak the same way it does for the student.
-  var mcData = {};
-  studentResponses.slice().sort(function(a, b) { return new Date(a.created_at) - new Date(b.created_at); })
-    .forEach(function(r) {
-      var tag = r.misconception_tag;
-      if (!tag) return;
-      if (!mcData[tag]) mcData[tag] = { fires: 0, reforgeAttempts: 0, reforgeCorrect: 0, streak: 0 };
-      var d = mcData[tag];
-      if (r.reforge_attempted) {
-        d.reforgeAttempts++;
-        if (r.reforge_correct) { d.reforgeCorrect++; d.streak++; }
-        else { d.streak = 0; }
-      } else if (!r.is_correct) {
-        d.fires++;
-        d.streak = 0;
-      }
-    });
+  var studentMetric=ForgeMetrics.accuracy(studentResponses);
+  var total=studentMetric.total;
+  var correct=studentMetric.correct;
+  var acc=studentMetric.percent==null?0:studentMetric.percent;
+  var misconceptionSummary=ForgeMisconceptions.summarize(studentResponses,{threshold:ANVIL_CLEAR_THRESHOLD});
+  var mcData=misconceptionSummary.data;
 
   var reforgeTotal = studentResponses.filter(function(r) { return r.reforge_attempted; }).length;
   var reforgePass = studentResponses.filter(function(r) { return r.reforge_attempted && r.reforge_correct; }).length;
-  // A tag counts if it ever fired OR the student has reforged it — the original
-  // wrong answer may sit outside this class's subject filter.
-  var knownMCs = Object.keys(mcData).filter(function(mc) { return mcData[mc].fires > 0 || mcData[mc].reforgeAttempts > 0; });
-  var activeMCs = knownMCs.filter(function(mc) { return mcData[mc].streak < ANVIL_CLEAR_THRESHOLD; });
-  var resolvedMCs = knownMCs.filter(function(mc) { return mcData[mc].streak >= ANVIL_CLEAR_THRESHOLD; });
+  var knownMCs=misconceptionSummary.known;
+  var activeMCs=misconceptionSummary.active;
+  var resolvedMCs=misconceptionSummary.resolved;
 
   var h = '<button type="button" class="back-btn" data-forge-action="student-back">\u2190 Back to class</button>';
 
@@ -2368,7 +2368,7 @@ window.renderStudent = function(studentId) {
 
   h += '<div class="stat-row">';
   h += '<div class="stat"><span class="stat-n" style="color:' + (acc >= 70 ? 'var(--good)' : acc >= 50 ? 'var(--hot)' : 'var(--bad)') + '">' + acc + '%</span><span class="stat-l">Accuracy</span></div>';
-  h += '<div class="stat"><span class="stat-n forge-text-white">' + total + '</span><span class="stat-l">Questions</span></div>';
+  h += '<div class="stat"><span class="stat-n forge-text-white">' + total + '</span><span class="stat-l">Scored answers</span></div>';
   h += '<div class="stat"><span class="stat-n forge-text-hot">' + activeMCs.length + '</span><span class="stat-l">Active misconceptions</span></div>';
   h += '<div class="stat"><span class="stat-n forge-text-good">' + reforgePass + '/' + reforgeTotal + '</span><span class="stat-l">Reforges passed</span></div>';
   h += '</div>';
