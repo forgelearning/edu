@@ -134,9 +134,10 @@ propagates into its `*-COV-*` copies and fixing the source fixes them all.
 
   **Read that number carefully.** It is true of what a student sees, and it is
   produced almost entirely by a runtime patch rather than by authoring. Remove
-  the anti-cue loop and **2,430 of 15,063 items (16.1%)** have the correct
+  the anti-cue loop and **2,411 of 15,063 items (16.0%)** have the correct
   answer as the single longest option — `gcse-econ` 61.2%, `econ` 50.9%,
-  `gcse-psych` 44.3%. (Re-measured 2026-08-21.) Run `node dev/audit-source-cues.js` to re-measure; it
+  `gcse-psych` 39.9%. (Re-measured 2026-08-22, after the recycling
+  redistribution pass changed some distractors.) Run `node dev/audit-source-cues.js` to re-measure; it
   loads the bank with and without the loop and reports only, never failing a
   build.
 
