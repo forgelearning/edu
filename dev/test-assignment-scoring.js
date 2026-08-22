@@ -17,8 +17,19 @@ const vm = require('vm');
 const root = path.resolve(__dirname, '..');
 const sandbox = { window: {}, console };
 sandbox.window.ForgeAssignmentBanks = {
-  'BANK-A': { questions: Array.from({ length: 20 }, (_, i) => ({ id: 'A-' + (i + 1) })) },
-  'BANK-B': { questions: Array.from({ length: 20 }, (_, i) => ({ id: 'B-' + (i + 1) })) }
+  'BANK-A': {
+    label: 'Bank A',
+    // Enough of a real question shape for the per-question review to resolve
+    // stems, option text and scaffolds the way it does against live banks.
+    questions: Array.from({ length: 20 }, (_, i) => ({
+      id: 'A-' + (i + 1),
+      stem: 'Stem A' + (i + 1),
+      options: { A: 'A-option-' + (i + 1), B: 'B-option-' + (i + 1) },
+      correct: 'A',
+      scaffold: 'Scaffold A' + (i + 1)
+    }))
+  },
+  'BANK-B': { label: 'Bank B', questions: Array.from({ length: 20 }, (_, i) => ({ id: 'B-' + (i + 1) })) }
 };
 sandbox.localStorage = { getItem: () => null, setItem: () => {} };
 vm.createContext(sandbox);
@@ -26,7 +37,9 @@ vm.runInContext(fs.readFileSync(path.join(root, 'scripts', 'forge-assignment-pro
 const P = sandbox.window.ForgeAssignmentProgress;
 
 let failures = 0;
+let cases = 0;
 function eq(name, actual, expected) {
+  cases++;
   const a = JSON.stringify(actual), e = JSON.stringify(expected);
   if (a === e) { console.log('  ok   ' + name); return; }
   failures++;
@@ -150,6 +163,48 @@ eq('student and teacher agree on the same data',
     return { student: pct(student), teacher: pct(teacher), answered: student.answered };
   })(), { student: 50, teacher: 50, answered: 2 });
 
+/* Per-question review. A completed assignment reports a percentage; the review
+   is the evidence behind it, so it must list exactly the attempts the score
+   counted — no reforge twins, no other activities, no pre-assignment work. */
+const reviewRows = [
+  row({ question_id: 'A-1', is_correct: true, selected_option: 'A', created_at: at(1) }),
+  row({ question_id: 'A-2', is_correct: false, selected_option: 'B', created_at: at(2) }),
+  row({ question_id: 'A-2-RF', is_correct: true, selected_option: 'A', created_at: at(3) }),
+  row({ question_id: 'A-3-CRU', bank: 'A-MIX', is_correct: true, selected_option: 'A', created_at: at(4) })
+];
+
+eq('review lists one entry per scored attempt',
+  P.review(assignment, reviewRows).map((e) => e.id), ['A-1', 'A-2']);
+
+eq('review agrees with the score it explains',
+  (() => {
+    const p = P.progress(assignment, reviewRows);
+    const r = P.review(assignment, reviewRows);
+    return { answered: p.answered, entries: r.length, correct: p.correct, marked: r.filter((e) => e.correct).length };
+  })(), { answered: 2, entries: 2, correct: 1, marked: 1 });
+
+eq('review resolves the question, the chosen option and the right one',
+  (() => {
+    const wrong = P.review(assignment, reviewRows).find((e) => !e.correct);
+    return {
+      stem: wrong.stem,
+      bankLabel: wrong.bankLabel,
+      selectedLabel: wrong.selectedLabel,
+      correctLabel: wrong.correctLabel,
+      scaffold: wrong.scaffold
+    };
+  })(), { stem: 'Stem A2', bankLabel: 'Bank A', selectedLabel: 'B-option-2', correctLabel: 'A-option-2', scaffold: 'Scaffold A2' });
+
+// Offline rows are reconstructed from a local session and carry no chosen
+// option. The review must say so rather than invent one.
+eq('review reports an unrecorded answer instead of guessing',
+  (() => {
+    const e = P.review(assignment, [row({ question_id: 'A-4', is_correct: false, created_at: at(1) })])[0];
+    return { selectedLabel: e.selectedLabel, correct: e.correct };
+  })(), { selectedLabel: null, correct: false });
+
+eq('review is empty for an assignment with no scored work', P.review(assignment, []), []);
+
 console.log('');
 if (failures) { console.error('Assignment scoring tests FAILED (' + failures + ').'); process.exit(1); }
-console.log('Assignment scoring tests passed (' + 12 + ' cases).');
+console.log('Assignment scoring tests passed (' + cases + ' cases).');
