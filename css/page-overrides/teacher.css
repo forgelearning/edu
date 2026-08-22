@@ -53,6 +53,10 @@ h1,h2,h3{font-family:'Rethink Sans',sans-serif;color:var(--white);line-height:1.
 .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-lg);padding:24px;margin-bottom:18px}
 .card-title{font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:#8A857E;margin-bottom:14px}
 
+/* Read-only school on the create-class form. The school is derived from the
+   teacher's invite code server-side, so it is shown rather than typed. */
+.cc-school{margin:0;padding:11px 14px;border:1px solid var(--line);border-radius:var(--radius-sm);background:var(--panel-2);color:var(--white);font-weight:600}
+.cc-school[data-unlinked="true"]{color:var(--dim);font-weight:400}
 .stat-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-bottom:10px}
 .stat-row--priority{max-width:760px}
 .stat-support{display:flex;gap:12px;flex-wrap:wrap;margin:0 0 22px;color:var(--dim);font:12px 'JetBrains Mono',monospace}
@@ -306,7 +310,9 @@ h1,h2,h3{font-family:'Rethink Sans',sans-serif;color:var(--white);line-height:1.
 .dash-header h1{font-size:clamp(28px,4vw,44px);letter-spacing:-.04em}
 .dash-primary{min-height:46px;padding:0 18px;box-shadow:0 12px 26px -20px rgba(213,92,19,.9);transition:background .18s ease,color .18s ease,transform .18s ease,box-shadow .18s ease}
 .dash-primary:hover{transform:translateY(-2px);box-shadow:0 18px 30px -20px rgba(213,92,19,1)}
-.stat-row--priority{grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;max-width:none}
+/* Exactly two cards are rendered into this row, so it is a two-column grid.
+   It was repeat(3,...), which left a permanently empty third column. */
+.stat-row--priority{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;max-width:none}
 .stat--priority{position:relative;min-height:112px;display:flex;flex-direction:column;justify-content:center;overflow:hidden;contain:layout paint}
 .stat--priority::after{content:"";position:absolute;right:-18px;bottom:-28px;width:88px;height:88px;border-radius:50%;background:rgba(255,201,60,.08);pointer-events:none}
 .stat--priority:first-child{border-color:rgba(255,107,44,.5)}
@@ -332,14 +338,12 @@ h1,h2,h3{font-family:'Rethink Sans',sans-serif;color:var(--white);line-height:1.
   .wrap{max-width:none}
   .dash-header::before{margin-bottom:12px}
   .stat-row--priority{grid-template-columns:1fr 1fr}
-  .stat--priority:first-child{grid-column:1/-1}
   .stat--priority{min-height:92px}
   .tabs{position:static}
   .ui-recommendation__title{max-width:22ch}
 }
 @media(max-width:520px){
   .stat-row--priority{grid-template-columns:1fr}
-  .stat--priority:first-child{grid-column:auto}
   .stat--priority{min-height:84px}
   .ui-recommendation::after{top:18px;right:18px}
   .ui-recommendation__title{padding-right:40px}
@@ -415,7 +419,7 @@ h1,h2,h3{font-family:'Rethink Sans',sans-serif;color:var(--white);line-height:1.
    directions without committing one as the default dashboard treatment. */
 html[data-overdrive="command-centre"] .wrap{max-width:1380px}
 html[data-overdrive="command-centre"] .dash-header::before{content:"COMMAND CENTRE / INTERVENTION QUEUE"}
-html[data-overdrive="command-centre"] .stat-row--priority{grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+html[data-overdrive="command-centre"] .stat-row--priority{grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
 html[data-overdrive="command-centre"] .stat--priority{min-height:138px;text-align:left;align-items:flex-start;padding:22px}
 html[data-overdrive="command-centre"] .stat-l{margin-top:8px}
 html[data-overdrive="command-centre"] .ui-recommendation{padding:28px 30px}
@@ -432,7 +436,7 @@ html[data-overdrive="learning-loop"] .stat--priority:nth-child(3){border-color:v
 html[data-overdrive="control-room"] body{background:#100f0e}
 html[data-overdrive="control-room"] .wrap{max-width:1440px}
 html[data-overdrive="control-room"] .dash-header::before{content:"FORGE CONTROL ROOM / LIVE SIGNALS";color:var(--hot)}
-html[data-overdrive="control-room"] .stat-row--priority{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+html[data-overdrive="control-room"] .stat-row--priority{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 html[data-overdrive="control-room"] .stat--priority{background:var(--panel-2);border-color:rgba(255,201,60,.3);border-radius:var(--radius-sm);min-height:104px}
 html[data-overdrive="control-room"] .tabs{border-color:rgba(255,201,60,.32);background:var(--panel-2)}
 html[data-overdrive="control-room"] .heat-row{border-radius:var(--radius-sm);background:var(--panel-2)}
@@ -442,13 +446,11 @@ html[data-overdrive="control-room"] .teacher-entry::before{content:"FORGE CONTRO
 html[data-overdrive="control-room"] .teacher-entry{position:relative}
 @media(max-width:820px){
   html[data-overdrive="command-centre"] .stat-row--priority{grid-template-columns:1fr 1fr}
-  html[data-overdrive="command-centre"] .stat--priority:first-child{grid-column:1/-1}
   html[data-overdrive="learning-loop"] .ui-recommendation{padding:22px}
   html[data-overdrive="control-room"] .stat-row--priority{grid-template-columns:1fr 1fr}
 }
 @media(max-width:520px){
   html[data-overdrive="command-centre"] .stat-row--priority,html[data-overdrive="control-room"] .stat-row--priority{grid-template-columns:1fr}
-  html[data-overdrive="command-centre"] .stat--priority:first-child{grid-column:auto}
 }
 
 /* Destructive class deletion. Deliberately quieter than the primary actions —
@@ -460,3 +462,13 @@ html[data-overdrive="control-room"] .teacher-entry{position:relative}
 .danger-zone h3{margin:0 0 8px;color:var(--bad)}
 .danger-zone code{padding:1px 6px;border-radius:var(--radius-sm);background:var(--panel-2);font-family:'JetBrains Mono',monospace}
 .danger-zone input{width:100%;margin:8px 0 12px;padding:10px 12px;border:1px solid var(--line);border-radius:var(--radius-sm);background:var(--panel);color:inherit;font-family:'JetBrains Mono',monospace}
+
+/* F2 — the returned access codes are shown on screen, not only downloaded.
+   generate_student_access_codes returns each code once and stores only its
+   hash, so a download the webview blocks would lose them permanently. */
+.generated-codes{margin-top:16px;padding-top:14px;border-top:1px solid var(--line)}
+.generated-codes__note{margin:0 0 10px;color:var(--muted);font-size:13px;line-height:1.5}
+.codes-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:6px;margin:0 0 14px;padding:0 0 0 4px;max-height:320px;overflow-y:auto;list-style-position:inside}
+.codes-list li{padding:7px 10px;border:1px solid var(--line);border-radius:var(--radius-xs);background:var(--panel-2);font-size:13px;color:var(--dim)}
+.codes-list code{font-family:'JetBrains Mono',monospace;font-size:13.5px;letter-spacing:.04em;color:var(--white);user-select:all}
+.codes-name{display:block;margin-bottom:2px;color:var(--muted);font-size:12px}

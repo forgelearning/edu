@@ -107,7 +107,7 @@
    themes, matching .auth-btn above, and flatten the ghost back to an
    outline so the pair still reads as primary + secondary. */
 [data-theme="light"] .auth-card .btn-primary.btn-glass{background:var(--ember)!important;border-color:rgba(213,92,19,.45)!important;color:#fff!important;box-shadow:inset 0 1px 0 rgba(255,201,60,.4),0 12px 28px -14px rgba(213,92,19,.75)!important}
-[data-theme="light"] .auth-card .btn-primary.btn-glass::after{background:rgba(255,255,255,.14)}
+[data-theme="light"] .auth-card .btn-primary.btn-glass::after{background:linear-gradient(to bottom,rgba(255,255,255,.18),rgba(255,255,255,0))}
 [data-theme="light"] .auth-card .btn-ghost.btn-glass{background:transparent!important;border:1px solid var(--line)!important;color:var(--slate)!important;box-shadow:none!important}
 [data-theme="light"] .auth-card .btn-ghost.btn-glass::after{display:none}
 [data-theme="light"] .auth-card .btn-ghost.btn-glass:hover{border-color:var(--ember)!important;color:var(--ember)!important;box-shadow:none!important}
@@ -134,3 +134,11 @@
   .auth-card{padding:26px 20px}
   .auth-title{font-size:21px}
 }
+
+/* "This is a shared device" on the class-join form. Pairs with
+   scripts/forge-student-session.js, which shortens how long the student's
+   code is kept when this is ticked. */
+.join-shared{display:flex;align-items:flex-start;gap:10px;margin:-4px 0 16px;cursor:pointer;color:var(--muted);font-size:13.5px;line-height:1.45}
+.join-shared input{margin:2px 0 0;width:17px;height:17px;flex:0 0 auto;accent-color:var(--ember);cursor:pointer}
+.join-shared:hover{color:var(--white)}
+.join-shared input:focus-visible{outline:2px solid var(--ember);outline-offset:2px}

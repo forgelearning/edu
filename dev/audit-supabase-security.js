@@ -57,5 +57,30 @@ function assertStatus(name, result, accepted) {
   assertStatus('free quota RPC is present and fail-closed', quota, [200]);
   if (!quota.body || quota.body.allowed !== false) throw new Error('free quota RPC accepted an invalid session');
 
+  // Free-tier students are the class_id-is-null rows. The teacher policies used
+  // to grant every one of them to any authenticated account; they are now
+  // scoped to the caller's own pupils. Anonymous reads must stay empty too — a
+  // non-empty result here means a policy has been widened back.
+  const unlinkedStudents = await request('/rest/v1/students?select=id&class_id=is.null&limit=1');
+  assertStatus('unlinked students are not readable anonymously', unlinkedStudents, [200, 401, 403]);
+  if (Array.isArray(unlinkedStudents.body) && unlinkedStudents.body.length !== 0) {
+    throw new Error('free-tier student rows are readable without a teacher session');
+  }
+
+  const unlinkedResponses = await request('/rest/v1/responses?select=id&class_id=is.null&limit=1');
+  assertStatus('unlinked responses are not readable anonymously', unlinkedResponses, [200, 401, 403]);
+  if (Array.isArray(unlinkedResponses.body) && unlinkedResponses.body.length !== 0) {
+    throw new Error('free-tier response rows are readable without a teacher session');
+  }
+
+  // Teacher provisioning: the profile that binds an account to a school is
+  // written only by claim_teacher_invite(), never through the table API.
+  assertStatus('teacher_profiles table is not public', await request('/rest/v1/teacher_profiles?select=*'), [401, 403, 404]);
+
+  const claim = await request('/rest/v1/rpc/claim_teacher_invite', {
+    method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ p_code: 'SECURITY-SMOKE' })
+  });
+  assertStatus('invite claim needs a teacher session', claim, [401, 403, 404]);
+
   console.log('Supabase security smoke tests passed.');
 })().catch(error => { console.error(error.message); process.exit(1); });

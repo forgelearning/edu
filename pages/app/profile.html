@@ -34,6 +34,7 @@
 
 <script src="scripts/forge-logo.js"></script>
 <script src="scripts/forge-role.js"></script>
+<script src="scripts/forge-student-session.js"></script>
 <script src="scripts/forge-auth-card.js"></script>
 <script src="scripts/forge-theme.js?v=20260808-theme2"></script>
 <script src="scripts/forge-sidebar.js?v=20260809-gearcenter"></script>
@@ -350,7 +351,7 @@ function renderProfile(){
     h+='<div class="stat"><span class="stat-n" style="color:'+accCol+'">'+acc+'%</span><span class="stat-l">Overall accuracy</span></div>';
     h+='<div class="stat"><span class="stat-n forge-text-white">'+total+'</span><span class="stat-l">Questions answered</span></div>';
     h+='<div class="stat"><span class="stat-n forge-text-bad">'+activeMCs.length+'</span><span class="stat-l">Active misconceptions</span></div>';
-    h+='<div class="stat"><span class="stat-n forge-text-good">'+resolved+'</span><span class="stat-l">Reforged &amp; resolved</span></div>';
+    h+='<div class="stat"><span class="stat-n forge-text-good">'+resolved+'</span><span class="stat-l">Re-forges passed</span></div>';
     h+='</div></div>';
 
     // Two-col: focus areas + strengths
@@ -375,13 +376,13 @@ function renderProfile(){
       });
       activeMCs.slice(0,3).forEach(function(tag){
         var d=mcData[tag];
-        var label=resolveMCLabel(tag)||tag;
+        var label=resolveMCLabel(tag)||'An idea from this topic';
         h+='<div class="focus-item">';
         h+='<div class="focus-head">';
-        h+='<span class="focus-pill forge-u-1ec8uss">'+tag+'</span>';
+        h+='<span class="focus-pill forge-u-1ec8uss">'+label+'</span>';
         h+='<span class="focus-acc forge-text-bad">'+d.fires+' fire'+(d.fires!==1?'s':'')+'</span>';
         h+='</div>';
-        h+='<div class="focus-detail">'+label+'. Hit the <a class="forge-u-xad1ay" href="anvil.html">Anvil</a> to rework it.</div>';
+        h+='<div class="focus-detail">Hit the <a class="forge-u-xad1ay" href="anvil.html">Anvil</a> to rework it.</div>';
         h+='</div>';
       });
     }
@@ -406,6 +407,10 @@ function renderProfile(){
     // Subject breakdown
     var subjectData = {};
     responses.forEach(function(r) {
+      // Count first attempts only, the same rule the header stat uses. The
+      // two disagreed before: the header excluded re-forges and this table
+      // included them, so the same student saw 22 and 23 on one screen.
+      if (r.reforge_attempted) return;
       var subj = r.subject || 'unknown';
       if (!subjectData[subj]) subjectData[subj] = { total:0, correct:0, banks:{}, mcs:{} };
       subjectData[subj].total++;
@@ -415,7 +420,10 @@ function renderProfile(){
         subjectData[subj].mcs[r.misconception_tag] = (subjectData[subj].mcs[r.misconception_tag]||0)+1;
       }
     });
-    var subjects = Object.keys(subjectData).filter(function(s){return s!=='unknown';});
+    // 'anvil' and 'crucible' are internal markers on repair and pressure-test
+    // rows, not subjects a student studies. Listing them here put "anvil" in
+    // the subject table (and made it the "strongest subject" on the dashboard).
+    var subjects = Object.keys(subjectData).filter(function(s){return s!=='unknown' && s!=='anvil' && s!=='crucible';});
     if (subjects.length > 0) {
       h += '<div class="card forge-mt-4">';
       h += '<div class="card-title">Subject breakdown</div>';
@@ -439,7 +447,8 @@ function renderProfile(){
         h += '<td class="profile-accuracy" style="padding:10px 8px;text-align:center;font-family:\'JetBrains Mono\',monospace;font-size:13px;font-weight:600;color:'+scol+'">'+sacc+'%</td>';
         h += '<td class="forge-u-1rlm34s">';
         if (topMCLabel) {
-          h += '<span class="forge-u-e2msq1">'+topMC+'</span>';
+          // The internal tag was printed above the label. Students can't read
+          // a code like MC-INF-RATE-VS-LEVEL; the label alone is the useful bit.
           h += '<span class="forge-u-19j2vc3">'+topMCLabel.slice(0,38)+(topMCLabel.length>38?'…':'')+'</span>';
         } else {
           h += '<span class="forge-u-fxiby9">✓ None yet</span>';
@@ -508,9 +517,8 @@ function renderProfile(){
     } else {
       activeMCs.forEach(function(tag){
         var d=mcData[tag];
-        var label=resolveMCLabel(tag)||tag;
+        var label=resolveMCLabel(tag)||'An idea from this topic';
         h+='<div class="mc-item">';
-        h+='<span class="focus-tag">'+tag+'</span>';
         h+='<span class="mc-detail">'+label+'</span>';
         h+='<span class="mc-fires forge-text-bad">'+d.fires+'×</span>';
         h+='</div>';
@@ -525,7 +533,7 @@ function renderProfile(){
       h+='<div class="card">';
       h+='<div class="card-title forge-text-good">✓ Cleared from Anvil</div>';
       resolvedTags.forEach(function(tag){
-        var label=resolveMCLabel(tag)||tag;
+        var label=resolveMCLabel(tag)||'An idea from this topic';
         h+='<div class="strength-item"><span class="strength-label">'+label+'</span><span class="strength-acc">cleared</span></div>';
       });
       h+='</div>';

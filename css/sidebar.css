@@ -17,10 +17,18 @@ body.has-forge-sidebar #sticky-nav{display:none!important}
 
 #forge-badge{position:fixed;top:16px;left:16px;z-index:200;display:inline-flex;align-items:center;gap:10px;height:52px;padding:0 18px 0 14px;background:var(--glass-bg);backdrop-filter:blur(var(--glass-blur)) saturate(160%);-webkit-backdrop-filter:blur(var(--glass-blur)) saturate(160%);border:1px solid var(--line);border-radius:var(--radius-pill);box-shadow:0 20px 50px -20px rgba(0,0,0,.5);overflow:hidden;text-decoration:none;cursor:pointer;transition:box-shadow .15s ease}
 #forge-badge:hover{box-shadow:0 20px 50px -16px rgba(213,92,19,.35)}
-#forge-notification-toast{position:fixed;left:50%;bottom:calc(82px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:260;display:flex;align-items:center;gap:10px;max-width:min(92vw,420px);padding:13px 16px;border:1px solid color-mix(in srgb,var(--line) 80%,var(--ember));border-radius:18px;background:color-mix(in srgb,var(--panel) 84%,transparent);backdrop-filter:blur(24px) saturate(160%);-webkit-backdrop-filter:blur(24px) saturate(160%);box-shadow:0 18px 42px rgba(0,0,0,.3);color:var(--white);font-size:13px;line-height:1.3;animation:forge-notification-in .24s ease-out}
-#forge-notification-toast strong{font-weight:800;white-space:nowrap}
-#forge-notification-toast span{color:var(--muted)}
-#forge-notification-toast button{border:0;background:none;color:var(--hot);font:inherit;font-weight:800;white-space:nowrap;cursor:pointer}
+#forge-notification-toast{position:fixed;left:50%;bottom:calc(82px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:260;display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px;max-width:min(92vw,420px);padding:13px 16px;border:1px solid color-mix(in srgb,var(--line) 80%,var(--ember));border-radius:18px;background:color-mix(in srgb,var(--panel) 84%,transparent);backdrop-filter:blur(24px) saturate(160%);-webkit-backdrop-filter:blur(24px) saturate(160%);box-shadow:0 18px 42px rgba(0,0,0,.3);color:var(--white);font-size:13px;line-height:1.3;animation:forge-notification-in .24s ease-out}
+/* The title and the action were both nowrap while the body span could shrink
+   without limit, so a real assignment title squeezed the body into a narrow
+   five-line ribbon over the page's primary button. The row wraps instead, and
+   the body is allowed to take the full width once it does. */
+#forge-notification-toast strong{font-weight:800}
+#forge-notification-toast span{flex:1 1 12ch;min-width:0;color:var(--muted)}
+#forge-notification-toast button{flex:0 0 auto;border:0;background:none;color:var(--hot);font:inherit;font-weight:800;white-space:nowrap;cursor:pointer}
+@media(max-width:460px){
+  #forge-notification-toast{flex-direction:column;align-items:flex-start;gap:6px}
+  #forge-notification-toast span{flex:0 0 auto}
+}
 #forge-notification-toast.is-leaving{opacity:0;transform:translate(-50%,8px);transition:opacity .2s ease,transform .2s ease}
 @keyframes forge-notification-in{from{opacity:0;transform:translate(-50%,10px)}to{opacity:1;transform:translate(-50%,0)}}
 #forge-pull-refresh{position:fixed;top:calc(8px + env(safe-area-inset-top,0px));left:50%;z-index:250;display:flex;align-items:center;gap:7px;padding:7px 12px;border:1px solid var(--line);border-radius:999px;background:color-mix(in srgb,var(--panel) 84%,transparent);backdrop-filter:blur(18px) saturate(150%);-webkit-backdrop-filter:blur(18px) saturate(150%);box-shadow:0 8px 24px rgba(0,0,0,.18);color:var(--muted);font-size:11px;font-weight:700;opacity:0;transform:translate(-50%,-12px);pointer-events:none;transition:opacity .18s ease,transform .18s ease}

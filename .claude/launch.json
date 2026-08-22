@@ -1,6 +1,0 @@
-{
-  "version": "0.0.1",
-  "configurations": [
-    { "name": "forge-site", "runtimeExecutable": "node", "runtimeArgs": ["dev/plain-server.js", "4180"], "port": 4180 }
-  ]
-}

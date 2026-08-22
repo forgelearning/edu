@@ -241,18 +241,42 @@ function renderTeacherAuth(mode) {
 
     btn.disabled = true; btn.textContent = 'Please wait...';
 
-    function doAuth() {
+    function doAuth(invite) {
       var action = mode === 'signup' ? TeacherAuth.signUp(email, password) : TeacherAuth.signIn(email, password);
       action.then(function(data) {
         currentTeacher = data.user;
         headers.Authorization = 'Bearer ' + data.access_token;
+        // The invite code is what binds this account to a school, and that
+        // binding is made server-side. The check before doAuth() is only fast
+        // feedback: anyone can reach /auth/v1/signup directly with the public
+        // anon key, so an account that never claims an invite has to be inert
+        // rather than merely un-nudged. claim_teacher_invite() is the only way
+        // to get a teacher_profiles row, and without one the database refuses
+        // to create a class and the school overview reports no_school.
+        if (mode !== 'signup') return loadTeacherProfile();
+        return ForgeAPI.rpc('claim_teacher_invite', { p_code: invite }, teacherApiOptions())
+          .then(function(res) {
+            if (!res || res.ok !== true) {
+              var problem = new Error(res && res.reason === 'invalid_code'
+                ? 'That invite code was not recognised. Check with your school.'
+                : 'We couldn’t confirm your school invite. Try again.');
+              problem.provisioning = true;
+              throw problem;
+            }
+            teacherSchool = res.school || null;
+          });
+      }).then(function() {
         mountTeacherSidebar();
         if (window.forgeTrack) forgeTrack(mode === 'signup' ? 'teacher_account_created' : 'teacher_signed_in', { role: 'teacher' });
         if (new URLSearchParams(location.search).get('tab') === 'create') renderLogin('create');
         else renderTeacherHome();
       }).catch(function(e) {
         btn.disabled = false; btn.textContent = mode === 'signup' ? 'Create account →' : 'Sign in →';
-        err.textContent = 'We couldn’t sign you in. Check your details and try again.'; err.style.display = 'block';
+        // A sign-up whose invite did not check out leaves an account that can
+        // do nothing. Don't leave it signed in looking usable.
+        if (e && e.provisioning) { TeacherAuth.signOut(); currentTeacher = null; headers.Authorization = 'Bearer ' + SUPABASE_KEY; }
+        err.textContent = (e && e.provisioning && e.message) || 'We couldn’t sign you in. Check your details and try again.';
+        err.style.display = 'block';
       });
     }
 
@@ -265,7 +289,7 @@ function renderTeacherAuth(mode) {
           err.style.display = 'block';
           return;
         }
-        doAuth();
+        doAuth(invite);
       });
     } else {
       doAuth();
@@ -320,6 +344,21 @@ function supaInsert(table, row) { return ForgeAPI.insert(table, row, teacherApiO
 // (the code itself is never readable from the client, only this boolean).
 function validateInviteCode(code) {
   return ForgeAPI.rpc('validate_teacher_invite', { p_code: code }, teacherApiOptions()).catch(function() { return false; });
+}
+
+// Which school this teacher was invited into. Set from the server, never from
+// anything typed into this page — the school used to be a free-text field on
+// the create-class form, which is what let an account read another school's
+// overview simply by typing its name.
+var teacherSchool = null;
+
+function loadTeacherProfile() {
+  return ForgeAPI.rpc('get_teacher_profile', {}, teacherApiOptions())
+    .then(function(res) {
+      teacherSchool = (res && res.provisioned) ? res.school : null;
+      return res;
+    })
+    .catch(function() { teacherSchool = null; return null; });
 }
 
 // Subject list — derived from the shared SUBJECTS data (data/forge-data.js) so new
@@ -598,13 +637,13 @@ function renderLogin(activeTab) {
 
   // Create panel
   h += '<div id="lp-create" style="display:' + (activeTab === 'create' ? 'block' : 'none') + '">';
-  // School is free text, and retyping it is how one school becomes three:
-  // production held "Mayfield Grammar School", "mayfield grammar school" and
-  // "MGSG" as separate entities, splitting the School Overview. The datalist
-  // offers the teacher's existing spellings so they pick rather than retype;
-  // the create handler normalises whatever is typed.
-  h += ForgeAuthCard.field('c-school', 'School name', {placeholder:'e.g. Mount Grace School', list:'c-school-options'});
-  h += '<datalist id="c-school-options"></datalist>';
+  // School is no longer typed. It comes from the invite code this account was
+  // created with, so a class can only ever land in the school that invited the
+  // teacher. Shown read-only for confirmation.
+  h += '<div class="auth-field"><span class="auth-label">School</span>' +
+       '<p class="cc-school" id="c-school-label"' + (teacherSchool ? '' : ' data-unlinked="true"') + '>' +
+       (teacherSchool ? teacherEsc(teacherSchool) : 'Not linked to a school yet') +
+       '</p></div>';
   h += ForgeAuthCard.field('c-name', 'Class name', {placeholder:'e.g. Year 12 Economics'});
   h += ForgeAuthCard.field('c-teacher', 'Your name', {placeholder:'e.g. Mr Zanier'});
   h += '<div class="auth-field"><label class="auth-label" for="c-subj">Subject</label>';
@@ -642,29 +681,13 @@ function renderLogin(activeTab) {
       });
       sel.innerHTML = opts;
     }
-    // Offer the teacher's existing school spellings so a second class joins the
-    // same school rather than founding a new one. Populated from the server
-    // because the local class list does not carry the school name.
-    if (currentTeacher && currentTeacher.id) {
-      supaGet('classes', 'teacher_user_id=eq.' + encodeURIComponent(currentTeacher.id) + '&select=school').then(function(rows) {
-        var options = document.getElementById('c-school-options');
-        if (!options) return;
-        var seen = {}, names = [];
-        (rows || []).forEach(function(row) {
-          var name = normaliseSchoolName(row && row.school);
-          if (!name || seen[name.toLowerCase()]) return;
-          seen[name.toLowerCase()] = true; names.push(name);
-        });
-        options.innerHTML = names.map(function(name) { return '<option value="' + teacherEsc(name) + '"></option>'; }).join('');
-      }).catch(function() {});
-    }
-    // When school name is blurred, re-filter to grey out subjects THIS teacher already created at that school
-    var schoolInput = document.getElementById('c-school');
-    if (schoolInput) {
-      schoolInput.addEventListener('blur', function() {
-        var school = schoolInput.value.trim();
-        if (!school || !currentTeacher || !currentTeacher.id) return;
-        supaGet('classes', 'school=ilike.' + encodeURIComponent(school) + '&teacher_user_id=eq.' + encodeURIComponent(currentTeacher.id)).then(function(existing) {
+    // Grey out subjects this teacher already has a class for. This used to be
+    // triggered by blurring the school field and filtered on the typed school;
+    // the school is now fixed per teacher, so filter on the teacher alone and
+    // run it as soon as the form is shown.
+    (function() {
+      if (currentTeacher && currentTeacher.id) {
+        supaGet('classes', 'teacher_user_id=eq.' + encodeURIComponent(currentTeacher.id)).then(function(existing) {
           var usedSubjects = {};
           (existing || []).forEach(function(c) { if (c.subject) usedSubjects[c.subject] = true; });
           var sel2 = document.getElementById('c-subj');
@@ -674,13 +697,13 @@ function renderLogin(activeTab) {
             if (!usedSubjects[s.key]) {
               opts2 += '<option value="' + s.key + '">' + s.label + ' (' + s.spec + ')</option>';
             } else {
-              opts2 += '<option class="forge-u-41pj58" value="" disabled>' + s.label + ' — you already have a class for this at this school</option>';
+              opts2 += '<option class="forge-u-41pj58" value="" disabled>' + s.label + ' — you already have a class for this</option>';
             }
           });
           sel2.innerHTML = opts2;
         }).catch(function() {});
-      });
-    }
+      }
+    }());
   }
 
   // View dashboard handler
@@ -722,7 +745,6 @@ function renderLogin(activeTab) {
   var createBtn = document.getElementById('c-btn');
   if (createBtn) {
     createBtn.onclick = function() {
-      var school = normaliseSchoolName(document.getElementById('c-school').value);
       var name = document.getElementById('c-name').value.trim();
       var teacher = document.getElementById('c-teacher').value.trim();
       var subj = document.getElementById('c-subj').value;
@@ -731,7 +753,10 @@ function renderLogin(activeTab) {
       err.style.display = 'none';
       result.style.display = 'none';
 
-      if (!school) { err.textContent = 'Enter your school name.'; err.style.display = 'block'; return; }
+      if (!teacherSchool) {
+        err.textContent = 'This account isn’t linked to a school yet. Create it again using your school’s invite code, or ask your school for one.';
+        err.style.display = 'block'; return;
+      }
       if (!name) { err.textContent = 'Enter a class name.'; err.style.display = 'block'; return; }
       if (!teacher) { err.textContent = 'Enter your name.'; err.style.display = 'block'; return; }
       if (!subj) { err.textContent = 'Select a subject.'; err.style.display = 'block'; return; }
@@ -746,7 +771,10 @@ function renderLogin(activeTab) {
       for (var i = 0; i < 4; i++) rand += chars[Math.floor(Math.random() * chars.length)];
       var code = prefix + '-' + rand;
 
-      supaInsert('classes', { name: name, subject: subj, code: code, teacher_name: teacher, school: school, school_key: schoolIdentityKey(school), teacher_user_id: currentTeacher ? currentTeacher.id : null }).then(function(rows) {
+      // No school field is sent: a trigger fills school/school_key from the
+      // teacher's invited school and rejects the insert if there isn't one, so
+      // a class cannot be filed under a school the teacher merely names.
+      supaInsert('classes', { name: name, subject: subj, code: code, teacher_name: teacher, teacher_user_id: currentTeacher ? currentTeacher.id : null }).then(function(rows) {
         createBtn.disabled = false; createBtn.textContent = 'Create class \u2192';
         var cls = Array.isArray(rows) ? rows[0] : rows;
         if (window.forgeTrack) forgeTrack('teacher_class_created', { subject: subj });
@@ -816,7 +844,7 @@ function renderLogin(activeTab) {
         r += '<span class="code-val">' + code + '</span>';
         r += '<span class="code-sub">' + name + ' \u00b7 ' + subjName + '</span>';
         r += '</div>';
-        r += '<button type="button" class="copy-btn" id="copy-code-btn">\u2398 Copy code</button>';
+        r += '<button type="button" class="copy-btn" id="copy-code-btn">\uD83D\uDCCB Copy code</button>';
         r += '<button type="button" class="copy-btn" id="share-edulink-btn">\uD83D\uDCCB Copy EduLink message</button>';
         r += '<button type="button" class="join-btn" data-forge-action="created-dashboard">Open dashboard \u2192</button>';
         result.innerHTML = r;
@@ -843,7 +871,7 @@ function renderLogin(activeTab) {
             document.getElementById('copy-code-btn').textContent = '\u2713 Copied!';
             setTimeout(function() {
               var b = document.getElementById('copy-code-btn');
-              if (b) b.textContent = '\u2398 Copy code';
+              if (b) b.textContent = '\uD83D\uDCCB Copy code';
             }, 2000);
           });
         };
@@ -859,7 +887,13 @@ function renderLogin(activeTab) {
         };
       }).catch(function(e) {
         createBtn.disabled = false; createBtn.textContent = 'Create class \u2192';
-        err.textContent = 'We couldn’t create the class. Check your connection and try again.';
+        // The database refuses a class from an account with no school invite.
+        // Say so plainly rather than blaming the connection.
+        var unprovisioned = e && (e.message === 'teacher_not_provisioned' ||
+          (e.body && e.body.message === 'teacher_not_provisioned'));
+        err.textContent = unprovisioned
+          ? 'This account isn’t linked to a school yet. Ask your school for an invite code and create your account with it.'
+          : 'We couldn’t create the class. Check your connection and try again.';
         err.style.display = 'block';
       });
     };
@@ -922,7 +956,7 @@ function renderDashboard() {
   h += '<div><p class="tag forge-u-l8gta7">Teacher Dashboard</p>';
   h += '<h1>' + dashState.className;
   if (dashState.classCode) {
-    h += ' <button type="button" class="class-code-pill" id="class-code-pill" data-forge-action="copy-class-code" title="Copy class code">' + dashState.classCode + ' ⎘</button>';
+    h += ' <button type="button" class="class-code-pill" id="class-code-pill" data-forge-action="copy-class-code" title="Copy class code">' + dashState.classCode + ' 📋</button>';
   }
   h += '</h1><button type="button" class="forge-button forge-button--secondary" id="generate-student-codes" aria-expanded="false" aria-controls="generate-codes-panel">Generate student codes</button><button type="button" class="forge-button forge-button--secondary" id="migrate-existing-students">Migrate existing students</button><button type="button" class="forge-button forge-button--secondary forge-button--danger" id="delete-class">Delete class</button></div>';
   h += '<div id="delete-class-panel" hidden></div>';
@@ -970,6 +1004,45 @@ function renderDashboard() {
   h += '<div class="forge-u-uydnfn" id="panel-student"></div>';
 
   app.innerHTML = h;
+  /* Generating codes deliberately avoids native browser dialogs and a
+     download-only result, for two reasons.
+
+     First, native dialogs are unreliable in the Capacitor shells this repo
+     builds — the same reason delete-class above uses an in-page confirmation.
+     A native text prompt throws outright in some embedded webviews, which took
+     this button out entirely.
+
+     Second, the server returns each code exactly once and stores only its
+     SHA-256 hash. If the CSV download is blocked, those codes are gone for
+     good and the class has to be re-issued. So the codes are shown on screen,
+     copyable, and the CSV is offered as well rather than instead. */
+  function renderGeneratedCodes(rows, withNames) {
+    var panel = document.getElementById('generate-codes-panel');
+    if (!panel || !rows || !rows.length) return;
+    var existing = document.getElementById('generated-codes');
+    if (existing) existing.remove();
+    var wrap = document.createElement('div');
+    wrap.id = 'generated-codes';
+    wrap.className = 'generated-codes';
+    wrap.innerHTML = '<p class="generated-codes__note">Shown once \u2014 the server keeps a hash, not the code. Save these before you close this panel.</p>'
+      + '<ol class="codes-list">' + rows.map(function (row) {
+          return '<li>' + (withNames && row.student_name ? '<span class="codes-name">' + teacherEsc(row.student_name) + '</span>' : '')
+            + '<code>' + teacherEsc(row.student_code) + '</code></li>';
+        }).join('') + '</ol>'
+      + '<button type="button" class="forge-button forge-button--secondary" id="copy-generated-codes">Copy all codes</button>';
+    panel.appendChild(wrap);
+    document.getElementById('copy-generated-codes').onclick = function () {
+      var button = document.getElementById('copy-generated-codes');
+      var text = rows.map(function (row) {
+        return (withNames && row.student_name ? row.student_name + '\t' : '') + row.student_code + '\t' + row.class_code;
+      }).join('\n');
+      navigator.clipboard.writeText(text).then(function () {
+        button.textContent = '\u2713 Copied';
+        setTimeout(function () { button.textContent = 'Copy all codes'; }, 2000);
+      }).catch(function () { button.textContent = 'Select the codes above to copy'; });
+    };
+  }
+
   var generateCodesBtn = document.getElementById('generate-student-codes');
   var generateCodesPanel = document.getElementById('generate-codes-panel');
   if (generateCodesBtn && generateCodesPanel) generateCodesBtn.onclick = function () {
@@ -1024,6 +1097,7 @@ function renderDashboard() {
           setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
           stateHost.className = 'code-generation-status code-generation-status--success';
           stateHost.textContent = 'Downloaded ' + rows.length + ' student codes. Keep this file private.';
+          renderGeneratedCodes(rows, false);
         })
         .catch(function (error) {
           stateHost.className = 'code-generation-status code-generation-status--error';
@@ -1087,24 +1161,65 @@ function renderDashboard() {
     };
   };
 
+  /* Same story as generating codes: no native dialogs, and the codes are put
+     on screen rather than only into a download the webview may refuse. This
+     one matters more — it is the migration off the legacy name-only join, so
+     losing its output means the class cannot move over. */
+  /* Migration keeps the same no-native-dialog rule as generation above, and
+     matters more: it is the move off the legacy name-only join, so losing its
+     output means the class cannot come across. This flow previously relied on
+     native browser dialogs plus a download-only result. */
   var migrateBtn = document.getElementById('migrate-existing-students');
-  if (migrateBtn) migrateBtn.onclick = function () {
-    if (!window.confirm('Generate private codes for every existing student in this class? Student IDs and response history will be preserved.')) return;
-    migrateBtn.disabled = true;
-    migrateBtn.textContent = 'Migrating…';
-    ForgeAPI.rpc('generate_student_access_codes_for_existing_students', { p_class_id: dashState.classId }, teacherApiOptions())
-      .then(function (rows) {
-        if (!Array.isArray(rows)) throw new Error('The server returned an invalid migration response.');
-        var csv = 'Student ID,Name,Student Code,Class Code\n' + rows.map(function (row) {
-          return [row.student_id, row.student_name, row.student_code, row.class_code].map(function (v) { return '"' + String(v || '').replace(/"/g, '""') + '"'; }).join(',');
-        }).join('\n') + '\n';
-        var url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
-        var link = document.createElement('a'); link.href = url; link.download = 'forge-migrated-student-codes-' + dashState.classCode + '.csv'; link.click();
-        setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
-        window.alert(rows.length ? 'Downloaded ' + rows.length + ' private student codes. Keep this file private.' : 'All students already have private codes.');
-      })
-      .catch(function (error) { window.alert(error.message || 'Could not migrate existing students.'); })
-      .finally(function () { migrateBtn.disabled = false; migrateBtn.textContent = 'Migrate existing students'; });
+  if (migrateBtn && generateCodesPanel) migrateBtn.onclick = function () {
+    if (!generateCodesPanel.hidden) {
+      generateCodesPanel.hidden = true;
+      generateCodesPanel.innerHTML = '';
+      return;
+    }
+    generateCodesPanel.hidden = false;
+    generateCodesPanel.innerHTML = '<div class="card code-generation-card" role="dialog" aria-labelledby="migrate-codes-title">'
+      + '<h3 id="migrate-codes-title">Give existing students private codes?</h3>'
+      + '<p>Every student already in ' + teacherEsc(dashState.className || 'this class') + ' gets one private code. '
+      + 'Their student records and answer history are kept exactly as they are \u2014 only how they sign in changes.</p>'
+      + '<div class="forge-action-row"><button type="button" class="forge-button forge-button--secondary" id="migrate-codes-cancel">Cancel</button>'
+      + '<button type="button" class="forge-button forge-button--primary" id="migrate-codes-submit">Generate codes</button></div>'
+      + '<div id="migrate-codes-state" class="code-generation-status" role="status" aria-live="polite"></div></div>';
+    var cancelBtn = document.getElementById('migrate-codes-cancel');
+    var submitBtn = document.getElementById('migrate-codes-submit');
+    var stateHost = document.getElementById('migrate-codes-state');
+    cancelBtn.onclick = function () {
+      generateCodesPanel.hidden = true;
+      generateCodesPanel.innerHTML = '';
+      migrateBtn.focus();
+    };
+    submitBtn.onclick = function () {
+      submitBtn.disabled = true; cancelBtn.disabled = true;
+      stateHost.className = 'code-generation-status';
+      stateHost.textContent = 'Migrating\u2026';
+      ForgeAPI.rpc('generate_student_access_codes_for_existing_students', { p_class_id: dashState.classId }, teacherApiOptions())
+        .then(function (rows) {
+          if (!Array.isArray(rows)) throw new Error('The server returned an invalid migration response.');
+          if (!rows.length) {
+            stateHost.className = 'code-generation-status code-generation-status--success';
+            stateHost.textContent = 'Every student in this class already has a private code.';
+            return;
+          }
+          var csv = 'Student ID,Name,Student Code,Class Code\n' + rows.map(function (row) {
+            return [row.student_id, row.student_name, row.student_code, row.class_code].map(function (v) { return '"' + String(v || '').replace(/"/g, '""') + '"'; }).join(',');
+          }).join('\n') + '\n';
+          var url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
+          var link = document.createElement('a'); link.href = url; link.download = 'forge-migrated-student-codes-' + dashState.classCode + '.csv'; link.click();
+          setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+          stateHost.className = 'code-generation-status code-generation-status--success';
+          stateHost.textContent = 'Generated ' + rows.length + ' private student code' + (rows.length !== 1 ? 's' : '') + '. Keep them private.';
+          renderGeneratedCodes(rows, true);
+        })
+        .catch(function (error) {
+          stateHost.className = 'code-generation-status code-generation-status--error';
+          stateHost.textContent = (error && error.message) || 'Could not migrate existing students.';
+        })
+        .finally(function () { submitBtn.disabled = false; cancelBtn.disabled = false; });
+    };
   };
   var dashAction = document.getElementById('dash-action');
   if (dashAction) dashAction.onclick = function(e) { e.preventDefault(); switchTab(openSignalCount ? 'heatmap' : 'assignments', dashAction); };
@@ -1126,7 +1241,7 @@ window.copyClassCode = function(btn) {
   var code = dashState.classCode;
   if (!code) return;
   var done = function() {
-    var original = code + ' ⎘';
+    var original = code + ' 📋';
     btn.textContent = 'Copied ✓';
     setTimeout(function() { btn.textContent = original; }, 1400);
   };
@@ -1585,7 +1700,7 @@ function renderBrowseStarters() {
     return;
   }
   h += '<p class="forge-u-1rniwep">No class data loaded — pick a misconception tag to preview its starter activity. Once students complete questions, the top-firing tag will be recommended automatically.</p>';
-  h += '<select class="forge-u-1vs062b" id="tag-picker">';
+  h += '<select class="subj-select" id="tag-picker">';
   h += '<option value="">— pick a misconception tag —</option>';
 
   // Group by subject prefix
@@ -1988,7 +2103,7 @@ function renderStarters(wrongResponses) {
       return;
     }
     h += '<p class="forge-u-1rniwep">No class data yet — pick a misconception tag to preview its starter activity.</p>';
-    h += '<select class="forge-u-1vs062b" id="tag-picker">';
+    h += '<select class="subj-select" id="tag-picker">';
     h += '<option value="">— pick a misconception tag —</option>';
     var groups = {};
     allTags.forEach(function(tag) { var g = tag.split('-')[0]+'-'+tag.split('-')[1]; if(!groups[g])groups[g]=[]; groups[g].push(tag); });
@@ -2390,8 +2505,12 @@ TeacherAuth.getSession().then(function(sess) {
   headers.Authorization = 'Bearer ' + sess.access_token;
   mountTeacherSidebar();
   if (window.ForgeSidebar) ForgeSidebar.setClassList(getJoinedClasses(), null);
-  if (new URLSearchParams(location.search).get('tab') === 'create') renderLogin('create');
-  else renderTeacherHome();
+  // The create-class form shows the teacher's school rather than asking for
+  // it, so the profile has to be loaded before the first render.
+  loadTeacherProfile().then(function() {
+    if (new URLSearchParams(location.search).get('tab') === 'create') renderLogin('create');
+    else renderTeacherHome();
+  });
 });
 </script>
 <script src="scripts/nav.js"></script>

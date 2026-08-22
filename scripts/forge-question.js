@@ -28,7 +28,14 @@
     if(correct){
       return '<div class="praise-box">\u2713 Nailed it.</div><button class="next-btn btn-glass btn-ember" id="next-btn">Next \u2192</button><div class="clear"></div>';
     }
-    var html = '<div class="scaffold-box"><span class="stag">'+question.tag+'</span><p>'+scaffoldText(question)+'</p></div>';
+    // Students used to see the raw taxonomy code here (MC-MICRO-CORRECTIVE-TAX).
+    // It means nothing to them, and a readable label already exists for
+    // essentially every tag — the Anvil and the teacher views use it.
+    // resolveMCLabel returns '' when it genuinely cannot derive one, in which
+    // case show no chip rather than falling back to the code.
+    var label = (typeof window !== 'undefined' && window.resolveMCLabel) ? window.resolveMCLabel(question.tag) : '';
+    var chip = label ? '<span class="stag">'+label+'</span>' : '';
+    var html = '<div class="scaffold-box">'+chip+'<p>'+scaffoldText(question)+'</p></div>';
     if(question.reforge){
       html += '<button class="reforge-trigger" id="rf-btn">Re-forge \u2192</button><div id="rf-area" class="hidden"></div>';
     }

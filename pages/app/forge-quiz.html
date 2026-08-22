@@ -35,6 +35,7 @@
 <script src="scripts/forge-theme.js?v=20260808-theme2"></script>
 <script src="scripts/forge-logo.js"></script>
 <script src="scripts/forge-role.js"></script>
+<script src="scripts/forge-student-session.js"></script>
 <script src="scripts/forge-auth-card.js"></script>
 <script src="scripts/forge-classes.js?v=20260813"></script>
 <script src="scripts/forge-student-code.js?v=20260809"></script>
@@ -152,8 +153,9 @@ function logResponse(q, selectedKey, isCorrect, isReforge, reforgeCorrect) {
     selected_option: selectedKey,
     is_correct: isCorrect,
     // A successful Re-forge still belongs to the misconception it repairs.
-    // Older builds dropped the tag on correct twins, making every downstream
-    // surface disagree about whether the signal had been addressed.
+    // Older builds dropped the tag on correct twins, so the Anvil — which skips
+    // untagged rows — never advanced the streak and the signal could not be
+    // cleared from the quiz, while a failed twin still counted and reset it.
     misconception_tag: isReforge ? (q.tag || null) : (isCorrect ? null : (q.tag || null)),
     // Fall back to the tag map: most banks carry a tag but no explicit spec, and
     // without this correct answers logged no spec point at all.
@@ -162,6 +164,7 @@ function logResponse(q, selectedKey, isCorrect, isReforge, reforgeCorrect) {
     reforge_correct: isReforge ? reforgeCorrect : null,
     assignment_id: state.assignmentId || null
   };
+  if (requestedAssignmentId) row.assignment_id = requestedAssignmentId;
   // Use auth token for trial/paid students so RLS policies pass correctly
   var token = (state.isPaid || state.isTrial) ? ForgeAuth.accessToken() : null;
   if (token) {
@@ -387,6 +390,7 @@ var SPEC_TO_SUBJECT = {
 <script src="data/forge-catalog.js?v=20260821"></script>
 <script src="scripts/forge-data-loader.js?v=20260821"></script>
 <script src="scripts/forge-misconception-state.js"></script>
+<script src="data/misconception-labels.js"></script>
 <script>
 
 function shuffle(a){var b=[...a];for(var i=b.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
@@ -453,6 +457,12 @@ var requestedBank = new URLSearchParams(location.search).get('bank');
 var requestedClassId = new URLSearchParams(location.search).get('class_id');
 var requestedAssignmentId = new URLSearchParams(location.search).get('assignment_id');
 var requestedAssignmentTitle = new URLSearchParams(location.search).get('assignment_title');
+// Which assignment this session belongs to. The database has taken an
+// assignment id on the write RPC since 20260817121000_responses_assignment_id,
+// but nothing ever sent one: every response row had assignment_id null, so
+// completion was inferred from "answers in the assigned banks" and work done
+// before an assignment existed counted towards it.
+var requestedAssignmentId = new URLSearchParams(location.search).get('assignment_id');
 var requestedSubject = new URLSearchParams(location.search).get('subject');
 var openClassJoin = new URLSearchParams(location.search).get('mode') === 'class';
 var openSoloLogin = new URLSearchParams(location.search).get('mode') === 'solo';
@@ -815,6 +825,12 @@ function renderJoin() {
   h += ForgeAuthCard.field('join-name', 'Your name', {placeholder:'First name and surname — e.g. James Morgan'});
   h += ForgeAuthCard.field('join-student-code', 'Student code', {placeholder:'e.g. A1B2C3D4E5', upper:true});
   h += ForgeAuthCard.field('join-code', 'Class code', {placeholder:'e.g. ECON-Y12-A', upper:true});
+  // Your student code is kept on this device so you don't retype it. On a
+  // shared machine that would hand the next person your account, so offer the
+  // short-lived option — see scripts/forge-student-session.js.
+  h += '<label class="join-shared" for="join-shared">' +
+       '<input type="checkbox" id="join-shared">' +
+       '<span>This is a shared device — forget me after the lesson</span></label>';
   h += '<button class="auth-btn" id="join-btn" type="submit">Join class →</button>';
   h += '<p class="auth-err" id="join-err"></p>';
   h += '</div>';
@@ -975,6 +991,9 @@ function renderJoin() {
     ForgeStudentCode.join(code, studentCode, name).then(function(row) {
       var res = { studentId: row.student_id, cls: { id: row.class_id, name: row.class_name, subject: row.subject } };
       var cleanStudentCode = ForgeStudentCode.clean(studentCode);
+      // Start the session clock, and remember whether this device is shared.
+      var sharedBox = document.getElementById('join-shared');
+      if (window.ForgeStudentSession) ForgeStudentSession.begin(!!(sharedBox && sharedBox.checked));
       ForgeClasses.add({ classId: res.cls.id, classCode: code, className: res.cls.name || null, subject: res.cls.subject || null, studentId: res.studentId, studentName: name, studentCode: cleanStudentCode });
       try { localStorage.setItem('forge-student', JSON.stringify({ studentId: res.studentId, classId: res.cls.id, classCode: code, studentCode: cleanStudentCode, studentName: name, classSubject: res.cls.subject || null })); } catch (e) {}
       ForgeClasses.syncFromServer(SUPABASE_URL, SUPABASE_KEY, { studentId: res.studentId, classId: res.cls.id, classCode: code, className: res.cls.name, subject: res.cls.subject, studentName: name, studentCode: cleanStudentCode }, function() {
@@ -1790,9 +1809,14 @@ function renderResults(){
   var col=pct>=75?'var(--good)':pct>=50?'var(--hot)':'var(--bad)';
   var confidence = pct >= 80 ? 'High confidence' : pct >= 60 ? 'Building confidence' : 'Needs another pass';
   var sessionSignals=ForgeMisconceptions.session(state.sessionWrongTags,state.sessionReforgedTags);
-  var repaired=sessionSignals.repaired.length?sessionSignals.repaired[0]:null;
+  var repairedTag=sessionSignals.repaired.length?sessionSignals.repaired[0]:null;
   var remaining=sessionSignals.remaining.length?sessionSignals.remaining[0]:null;
-  var remainingLabel = remaining || 'No unresolved error from this session';
+  // Students see the readable label, never the internal MC- code.
+  function mcLabel(tag){ return (window.resolveMCLabel && resolveMCLabel(tag)) || ''; }
+  var repaired = repairedTag ? (mcLabel(repairedTag) || 'An error you re-forged correctly') : null;
+  var remainingLabel = remaining
+    ? (mcLabel(remaining) || 'One idea from this session needs another pass')
+    : 'No unresolved error from this session';
   var nextHref = remaining ? 'anvil.html' : 'crucible.html';
   var nextLabel = remaining ? 'Repair this in Anvil' : 'Pressure-test in Crucible';
   var h='<div class="results">';
