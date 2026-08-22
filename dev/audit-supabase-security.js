@@ -31,6 +31,23 @@ function assertStatus(name, result, accepted) {
   // Invite codes are only reachable through validate_teacher_invite().
   assertStatus('invite-code table is not public', await request('/rest/v1/teacher_invite_codes?select=*'), [401, 403, 404]);
 
+  // Code coverage is counts about a class, but it is reached through a definer
+  // function over a table that has no RLS policies at all, so anonymous callers
+  // must be refused outright. 404 also passes, for a checkout whose migration
+  // has not been applied to this project yet.
+  assertStatus('code-coverage RPC is not public', await request('/rest/v1/rpc/class_student_code_coverage', {
+    method: 'POST', headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ p_class_id: '00000000-0000-0000-0000-000000000000' })
+  }), [401, 403, 404]);
+
+  // The table behind it holds code hashes and is fail-closed by having no
+  // policies. A 200 with rows here means one was added.
+  const codeRows = await request('/rest/v1/student_access_codes?select=id&limit=1');
+  assertStatus('student access codes are not readable anonymously', codeRows, [200, 401, 403, 404]);
+  if (Array.isArray(codeRows.body) && codeRows.body.length !== 0) {
+    throw new Error('student_access_codes rows are readable without a session');
+  }
+
   // The free-history RPC may return an empty set for a fake bearer token, but
   // it must not return another student's rows or allow a missing token.
   const free = await request('/rest/v1/rpc/get_free_student_responses', {

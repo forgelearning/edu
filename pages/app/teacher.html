@@ -961,6 +961,7 @@ function renderDashboard() {
   h += '</h1><button type="button" class="forge-button forge-button--secondary" id="generate-student-codes" aria-expanded="false" aria-controls="generate-codes-panel">Generate student codes</button><button type="button" class="forge-button forge-button--secondary" id="migrate-existing-students">Migrate existing students</button><button type="button" class="forge-button forge-button--secondary forge-button--danger" id="delete-class">Delete class</button></div>';
   h += '<div id="delete-class-panel" hidden></div>';
   h += '<div id="generate-codes-panel" class="code-generation-panel" hidden></div>';
+  h += '<div id="code-coverage-note" class="code-coverage" role="status" hidden></div>';
   h += '<div class="dash-header-actions"><a class="dash-primary forge-button forge-button--primary" href="#" id="dash-action">' + (openSignalCount ? 'Open misconceptions \u2192' : 'Create assignment \u2192') + '</a><div class="dash-meta"><b>' + students.length + '</b> student' + (students.length !== 1 ? 's' : '') + ' \u00b7 <b>' + totalQs + '</b> scored answer' + (totalQs !== 1 ? 's' : '') + ' \u00b7 <button type="button" class="back-btn forge-u-gr3ipb" data-forge-action="render-teacher-home">\u2190 All classes</button></div></div>';
   h += '</div>';
 
@@ -1045,6 +1046,41 @@ function renderDashboard() {
 
   var generateCodesBtn = document.getElementById('generate-student-codes');
   var generateCodesPanel = document.getElementById('generate-codes-panel');
+
+  /* Tell a teacher when their class still signs in by name.
+     Issuing private codes has been possible since 20260810160000, but the two
+     buttons above look identical whether a class is fully migrated or has no
+     codes at all, so nothing ever prompted anyone to run it: 26 of the 27
+     classes in the pilot have no codes, and every pupil in them signs in on
+     name alone. The counts come from class_student_code_coverage, which is
+     scoped to the class's owner and returns numbers only, never a hash.
+     Read-only and best-effort — a class dashboard must still render if it
+     fails, so there is no error branch beyond staying silent. */
+  (function renderCodeCoverage() {
+    var note = document.getElementById('code-coverage-note');
+    if (!note || !dashState.classId) return;
+    ForgeAPI.rpc('class_student_code_coverage', { p_class_id: dashState.classId }, teacherApiOptions())
+      .then(function (rows) {
+        var row = Array.isArray(rows) ? rows[0] : rows;
+        if (!row) return;
+        var total = Number(row.students) || 0;
+        var covered = Number(row.with_code) || 0;
+        var missing = total - covered;
+        if (total === 0 || missing <= 0) return;
+        note.hidden = false;
+        note.innerHTML = '<p class="code-coverage__lead"><b>' + missing + '</b> of <b>' + total + '</b> student'
+          + (total !== 1 ? 's' : '') + ' in this class sign' + (missing === 1 ? 's' : '')
+          + ' in by name alone.</p>'
+          + '<p class="code-coverage__body">A private code means only that student can open their own work and answer history. '
+          + 'Issuing them keeps every existing student record and answer exactly as it is — only how they sign in changes.</p>'
+          + '<button type="button" class="forge-button forge-button--primary" id="code-coverage-action">Give them private codes</button>';
+        document.getElementById('code-coverage-action').onclick = function () {
+          var migrate = document.getElementById('migrate-existing-students');
+          if (migrate) migrate.click();
+        };
+      })
+      .catch(function () {});
+  }());
   if (generateCodesBtn && generateCodesPanel) generateCodesBtn.onclick = function () {
     if (!generateCodesPanel.hidden) {
       generateCodesPanel.hidden = true;
@@ -1213,6 +1249,11 @@ function renderDashboard() {
           stateHost.className = 'code-generation-status code-generation-status--success';
           stateHost.textContent = 'Generated ' + rows.length + ' private student code' + (rows.length !== 1 ? 's' : '') + '. Keep them private.';
           renderGeneratedCodes(rows, true);
+          // The prompt that sent the teacher here has just been answered. The
+          // codes above are shown once, so clear the prompt rather than
+          // re-render the dashboard out from under them.
+          var coverageNote = document.getElementById('code-coverage-note');
+          if (coverageNote) { coverageNote.hidden = true; coverageNote.innerHTML = ''; }
         })
         .catch(function (error) {
           stateHost.className = 'code-generation-status code-generation-status--error';

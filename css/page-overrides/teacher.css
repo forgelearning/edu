@@ -472,3 +472,12 @@ html[data-overdrive="control-room"] .teacher-entry{position:relative}
 .codes-list li{padding:7px 10px;border:1px solid var(--line);border-radius:var(--radius-xs);background:var(--panel-2);font-size:13px;color:var(--dim)}
 .codes-list code{font-family:'JetBrains Mono',monospace;font-size:13.5px;letter-spacing:.04em;color:var(--white);user-select:all}
 .codes-name{display:block;margin-bottom:2px;color:var(--muted);font-size:12px}
+
+/* Prompt shown when a class still has pupils signing in by name. Deliberately
+   sits in the class header rather than in a settings page: the capability to
+   issue codes was already there and unused precisely because nothing surfaced
+   the gap where the teacher was looking. */
+.code-coverage{max-width:560px;margin:0 0 18px;padding:14px 16px;border:1px solid var(--ember);border-left-width:3px;border-radius:var(--radius-sm);background:var(--panel-2)}
+.code-coverage__lead{margin:0 0 6px;color:var(--white);font-size:15px;line-height:1.45}
+.code-coverage__body{margin:0 0 12px;color:var(--dim);font-size:13px;line-height:1.5}
+.code-coverage .forge-button{margin:0}
