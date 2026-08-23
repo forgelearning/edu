@@ -59,9 +59,9 @@ function mountTeacherSidebar() {
     classSwitch: { label: 'Loading class…', addLabel: '↩ All your classes' },
     items: [
       {key:'dashboard', label:'Overview', onclick:"forgeGoto('heatmap')"},
-      {key:'students', label:'Class', onclick:"forgeGoto('class')"},
+      {key:'students', label:'Class & students', onclick:"forgeGoto('class')"},
       {key:'assignments', label:'Assignments', onclick:"forgeGoto('assignments')"},
-      {key:'misconceptions', label:'Spec Points', onclick:"forgeGoto('spec')"}
+      {key:'misconceptions', label:'Spec points', onclick:"forgeGoto('spec')"}
     ],
     footerItems: [
       {key:'classes', href:'school-overview.html', label:'School Overview'},
@@ -958,41 +958,38 @@ function renderDashboard() {
   if (dashState.classCode) {
     h += ' <button type="button" class="class-code-pill" id="class-code-pill" data-forge-action="copy-class-code" title="Copy class code">' + dashState.classCode + ' 📋</button>';
   }
-  h += '</h1><button type="button" class="forge-button forge-button--secondary" id="generate-student-codes" aria-expanded="false" aria-controls="generate-codes-panel">Generate student codes</button><button type="button" class="forge-button forge-button--secondary" id="migrate-existing-students">Migrate existing students</button><button type="button" class="forge-button forge-button--secondary forge-button--danger" id="delete-class">Delete class</button></div>';
+  h += '</h1><details class="dash-tools"><summary>Class tools</summary><div class="dash-tools__menu"><button type="button" class="forge-button forge-button--secondary" id="generate-student-codes" aria-expanded="false" aria-controls="generate-codes-panel">Generate student codes</button><button type="button" class="forge-button forge-button--secondary" id="migrate-existing-students">Migrate existing students</button><button type="button" class="forge-button forge-button--secondary forge-button--danger" id="delete-class">Delete class</button><div class="dash-tool-group"><span class="dash-tool-group__label">Rename a student</span><div class="dash-tool-group__controls"><label class="forge-sr-only" for="rename-select">Student to rename</label><select id="rename-select" class="forge-u-1o9xvhi"><option value="">Select student…</option>' + students.map(function(student) { return '<option value="' + student.id + '">' + teacherEsc(student.display_name || student.name || 'Student') + '</option>'; }).join('') + '</select><input type="text" id="rename-input" class="rename-input" placeholder="New display name"><button type="button" id="rename-btn" class="forge-button forge-button--secondary">Save</button></div><p class="join-err" id="rename-err"></p></div></div></details></div>';
   h += '<div id="delete-class-panel" hidden></div>';
   h += '<div id="generate-codes-panel" class="code-generation-panel" hidden></div>';
-  h += '<div id="code-coverage-note" class="code-coverage" role="status" hidden></div>';
-  h += '<div class="dash-header-actions"><a class="dash-primary forge-button forge-button--primary" href="#" id="dash-action">' + (openSignalCount ? 'Open misconceptions \u2192' : 'Create assignment \u2192') + '</a><div class="dash-meta"><b>' + students.length + '</b> student' + (students.length !== 1 ? 's' : '') + ' \u00b7 <b>' + totalQs + '</b> scored answer' + (totalQs !== 1 ? 's' : '') + ' \u00b7 <button type="button" class="back-btn forge-u-gr3ipb" data-forge-action="render-teacher-home">\u2190 All classes</button></div></div>';
+  h += '<div class="dash-header-actions"><div class="dash-meta"><b>' + students.length + '</b> student' + (students.length !== 1 ? 's' : '') + ' \u00b7 <b>' + totalQs + '</b> scored answer' + (totalQs !== 1 ? 's' : '') + '</div><button type="button" class="back-btn forge-u-gr3ipb" data-forge-action="render-teacher-home">\u2190 All classes</button></div>';
   h += '</div>';
 
   // Stats row
-  h += '<p class="forge-u-scng4v">Start with the priority below, then use the secondary views when you need detail.</p>';
   h += '<div class="stat-row stat-row--priority">';
   var accuracyClass = totalQs === 0 ? 'stat-n-muted' : accuracy >= 70 ? 'stat-n-good' : accuracy >= 50 ? 'stat-n-hot' : 'stat-n-bad';
   h += '<div class="stat stat--priority" title="Correct answers divided by answered questions"><span class="stat-n ' + accuracyClass + '">' + (totalQs === 0 ? '—' : accuracy + '%') + '</span><span class="stat-l">Class accuracy</span></div>';
-  h += '<div class="stat stat--priority"><span class="stat-n stat-n-hot">' + openSignalCount + '</span><span class="stat-l">Open misconception signals</span></div>';
+  h += '<div class="stat stat--priority"><span class="stat-n stat-n-hot">' + openSignalCount + '</span><span class="stat-l" title="Repeated misconception patterns that are still active">Open misconception signals</span></div>';
   h += '</div>';
-  h += '<div class="stat-support"><span>' + students.length + ' student' + (students.length !== 1 ? 's' : '') + '</span><span>' + totalQs + ' scored answer' + (totalQs !== 1 ? 's' : '') + '</span><span>' + reforgeCorrect.length + '/' + reforgeAttempts.length + ' Re-forge attempts passed</span></div>';
-  h += '<p class="forge-meta">Class accuracy = correct scored answers ÷ scored answers. Initial Forge, assignment and Crucible answers are scored; Re-forge repair attempts are excluded. Open signals use the shared three-success resolution rule.</p>';
+  h += '<div class="stat-support"><span>' + students.length + ' student' + (students.length !== 1 ? 's' : '') + '</span><span>' + totalQs + ' scored answer' + (totalQs !== 1 ? 's' : '') + '</span><span title="Re-forge means a repair attempt after an initial misconception">' + reforgeCorrect.length + '/' + reforgeAttempts.length + ' Re-forge repair attempts passed</span></div>';
+  h += '<details class="dash-explainer"><summary>How these numbers are calculated</summary><p>Class accuracy = correct scored answers ÷ scored answers. Initial Forge, assignment and Crucible answers are scored; Re-forge repair attempts are excluded. Open signals use the shared three-success resolution rule.</p></details>';
+  h += '<div id="code-coverage-note" class="code-coverage" role="status" hidden></div>';
   h += '<section class="ui-recommendation" aria-labelledby="teacher-next-action-title">';
   h += '<p class="ui-recommendation__eyebrow">Next best action</p>';
   h += '<h2 class="ui-recommendation__title" id="teacher-next-action-title">' + (openSignalCount ? 'Address the strongest misconception signal' : 'Create the first focused assignment') + '</h2>';
   h += '<p class="ui-recommendation__copy">' + (openSignalCount ? 'Start with the students and open misconceptions shown below, then use the secondary views only when you need supporting detail.' : 'There is not enough unresolved misconception data for an intervention yet. Set a short assignment to establish the first signal.') + '</p>';
   h += '<a class="ui-state-action" href="#panel-' + (openSignalCount ? 'heatmap' : 'assignments') + '" data-forge-action="next-action">' + (openSignalCount ? 'Open priority signals' : 'Open assignments') + '</a>';
-  h += '</section>';
-  h += '<div class="forge-card forge-card--focus forge-u-p7nziw"><div class="card-title">Needs attention today <span class="forge-meta">top misconception volume</span></div>';
   if(attentionRows.length){
-    h += '<div class="forge-action-row forge-u-11yg588">';
-    attentionRows.slice(0,3).forEach(function(row,i){h += '<button type="button" class="forge-button forge-button--'+(i===0?'primary':'secondary')+' forge-u-1l0ycxr" data-forge-action="render-student" data-student-id="'+row.id+'"><span>'+(i===0?'Start with ':'')+teacherEsc(row.name)+'</span><span class="forge-meta">'+row.count+' open</span></button>';});
-    h += '</div><p class="forge-u-8g5nnq">The first student is the recommended starting point; open their profile to choose an intervention.</p>';
-  } else h += '<p class="ui-meta-muted">No active misconception signals yet. Keep collecting responses.</p>';
-  h += '</div>';
+    h += '<div class="next-action-students"><span class="next-action-students__label">Start with the student carrying the most open signals</span><div class="forge-action-row">';
+    attentionRows.slice(0,3).forEach(function(row,i){h += '<button type="button" class="forge-button forge-button--secondary" data-forge-action="render-student" data-student-id="'+row.id+'"><span>'+(i===0?'Start with ':'')+teacherEsc(row.name)+'</span><span class="forge-meta">'+row.count+' open</span></button>';});
+    h += '</div></div>';
+  } else h += '<p class="ui-meta-muted next-action-empty">No active misconception signals yet. Keep collecting responses.</p>';
+  h += '</section>';
 
   // Tabs
   h += '<div class="tabs" role="tablist" aria-label="Teacher dashboard views">';
   h += '<button type="button" class="tab active" role="tab" id="tab-heatmap" aria-controls="panel-heatmap" aria-selected="true" tabindex="0" data-view="heatmap" data-forge-action="switch-tab" data-tab="heatmap">Priority signals</button>';
   h += '<button type="button" class="tab" role="tab" id="tab-class" aria-controls="panel-class" aria-selected="false" tabindex="-1" data-view="class" data-forge-action="switch-tab" data-tab="class">Class overview</button>';
-  h += '<button type="button" class="tab" role="tab" id="tab-spec" aria-controls="panel-spec" aria-selected="false" tabindex="-1" data-view="spec" data-forge-action="switch-tab" data-tab="spec">Spec points</button>';
+  h += '<button type="button" class="tab" role="tab" id="tab-spec" aria-controls="panel-spec" aria-selected="false" tabindex="-1" title="Specification areas and accuracy" data-view="spec" data-forge-action="switch-tab" data-tab="spec">Spec points</button>';
   h += '<button type="button" class="tab" role="tab" id="tab-assignments" aria-controls="panel-assignments" aria-selected="false" tabindex="-1" data-view="assignments" data-forge-action="switch-tab" data-tab="assignments">Assignments</button>';
   h += '<button type="button" class="tab" role="tab" id="tab-starters" aria-controls="panel-starters" aria-selected="false" tabindex="-1" data-view="starters" data-forge-action="switch-tab" data-tab="starters">Corrective starters</button>';
   h += '</div>';
@@ -1005,6 +1002,23 @@ function renderDashboard() {
   h += '<div class="forge-u-uydnfn" id="panel-student"></div>';
 
   app.innerHTML = h;
+
+  var renameBtn = document.getElementById('rename-btn');
+  if (renameBtn) renameBtn.onclick = function() {
+    var sid = document.getElementById('rename-select').value;
+    var newName = document.getElementById('rename-input').value.trim();
+    var err = document.getElementById('rename-err');
+    err.style.display = 'none';
+    if (!sid) { err.textContent = 'Select a student.'; err.style.display = 'block'; return; }
+    if (!newName) { err.textContent = 'Enter a name.'; err.style.display = 'block'; return; }
+    renameBtn.disabled = true; renameBtn.textContent = 'Saving…';
+    supaPatch('students', sid, { display_name: newName }).then(function() {
+      var student = dashState.students.find(function(s) { return s.id === sid; });
+      if (student) student.display_name = newName;
+      renderDashboard();
+    }).catch(function() { renameBtn.disabled = false; renameBtn.textContent = 'Save'; teacherInlineState(renameBtn.parentNode.parentNode, 'error', { label: 'Name wasn’t saved', body: 'Check your connection and try again.' }); });
+  };
+
   /* Generating codes deliberately avoids native browser dialogs and a
      download-only result, for two reasons.
 
@@ -1069,11 +1083,10 @@ function renderDashboard() {
         if (total === 0 || missing <= 0) return;
         note.hidden = false;
         note.innerHTML = '<p class="code-coverage__lead"><b>' + missing + '</b> of <b>' + total + '</b> student'
-          + (total !== 1 ? 's' : '') + ' in this class sign' + (missing === 1 ? 's' : '')
-          + ' in by name alone.</p>'
-          + '<p class="code-coverage__body">A private code means only that student can open their own work and answer history. '
-          + 'Issuing them keeps every existing student record and answer exactly as it is — only how they sign in changes.</p>'
-          + '<button type="button" class="forge-button forge-button--primary" id="code-coverage-action">Give them private codes</button>';
+          + (total !== 1 ? 's' : '') + ' still sign' + (missing === 1 ? 's' : '')
+          + ' in by name.</p>'
+          + '<p class="code-coverage__body">A private code lets each student open only their own work and answer history. Existing records stay unchanged.</p>'
+          + '<button type="button" class="forge-button forge-button--primary" id="code-coverage-action">Issue private codes</button>';
         document.getElementById('code-coverage-action').onclick = function () {
           var migrate = document.getElementById('migrate-existing-students');
           if (migrate) migrate.click();
@@ -2113,8 +2126,8 @@ function renderHeatmap(wrongResponses) {
     var studentCount = Object.keys(c.students).length;
 
     h += '<div class="heat-row ' + level + '">';
-    h += '<span class="heat-tag">' + tag + '</span>';
-    if (label) h += '<span class="heat-label">' + label + '</span>';
+    h += '<span class="heat-label">' + (label || tag) + '</span>';
+    h += '<span class="heat-tag">' + (label ? tag : 'Unlabelled signal') + '</span>';
     h += '<span class="heat-spec">' + banks + '</span>';
     h += '<div class="heat-bar"><div class="heat-fill" style="width:' + pct + '%"></div></div>';
     h += '<span class="heat-count">' + c.count + ' error' + (c.count !== 1 ? 's' : '') + ' \u00b7 ' + studentCount + ' student' + (studentCount !== 1 ? 's' : '') + '</span>';
@@ -2292,23 +2305,6 @@ function renderClassOverview(responses, students) {
 
   h += '</tbody></table></div></div>';
 
-  // Rename section below table
-  h += '<div class="card forge-u-1bzpq1k"><div class="card-title">Rename a student</div>';
-  h += '<p class="forge-u-1hzqkjr">If a student has used an inappropriate name, select them and enter a replacement. The original name is preserved in the database.</p>';
-  h += '<div class="forge-u-w2i2oa">';
-  h += '<label class="forge-sr-only" for="rename-select">Student to rename</label><select class="forge-u-1o9xvhi" id="rename-select">';
-  h += '<option value="">Select student…</option>';
-  sorted.forEach(function(sid) {
-    var student = dashState.students.find(function(s) { return s.id === sid; }) || {};
-    var displayName = student.display_name || perStudent[sid].name;
-    h += '<option value="' + sid + '">' + teacherEsc(displayName) + '</option>';
-  });
-  h += '</select>';
-  h += '<input type="text" id="rename-input" class="rename-input" placeholder="New display name">';
-  h += '<button type="button" id="rename-btn" class="join-btn forge-u-fnqu57">Save</button>';
-  h += '<p class="join-err" id="rename-err"></p>';
-  h += '</div></div>';
-
   el.innerHTML = h;
 
   // The responsive table keeps the click-to-drill-down behaviour usable by
@@ -2355,27 +2351,6 @@ function renderClassOverview(responses, students) {
     sel.setAttribute('data-prev', sel.value);
   });
 
-  // Wire rename
-  var renameBtn = document.getElementById('rename-btn');
-  if (renameBtn) {
-    renameBtn.onclick = function() {
-      var sid = document.getElementById('rename-select').value;
-      var newName = document.getElementById('rename-input').value.trim();
-      var err = document.getElementById('rename-err');
-      err.style.display = 'none';
-      if (!sid) { err.textContent = 'Select a student.'; err.style.display = 'block'; return; }
-      if (!newName) { err.textContent = 'Enter a name.'; err.style.display = 'block'; return; }
-      renameBtn.disabled = true; renameBtn.textContent = 'Saving…';
-      supaPatch('students', sid, { display_name: newName }).then(function() {
-        var student = dashState.students.find(function(s) { return s.id === sid; });
-        if (student) student.display_name = newName;
-        renameBtn.disabled = false; renameBtn.textContent = 'Save';
-        document.getElementById('rename-input').value = '';
-        document.getElementById('rename-select').value = '';
-        renderClassOverview(dashState.responses, dashState.students);
-      }).catch(function() { renameBtn.disabled = false; renameBtn.textContent = 'Save'; teacherInlineState(renameBtn.parentNode, 'error', { label: 'Name wasn’t saved', body: 'Check your connection and try again.' }); });
-    };
-  }
 }
 
 window.renderStudent = function(studentId) {
@@ -2416,7 +2391,7 @@ window.renderStudent = function(studentId) {
 
   // Active misconceptions (Anvil)
   if (activeMCs.length > 0) {
-    h += '<div class="card forge-u-1ce7cf7"><div class="card-title forge-text-bad">Anvil \u2014 still active</div>';
+    h += '<details class="card profile-disclosure forge-u-1ce7cf7"><summary class="profile-disclosure__summary"><span class="profile-disclosure__label forge-text-bad">Anvil — still active</span><span class="profile-disclosure__meta">' + activeMCs.length + ' active</span></summary><div class="profile-disclosure__body">';
     activeMCs.sort(function(a, b) { return mcData[b].fires - mcData[a].fires; });
     activeMCs.forEach(function(mc) {
       var d = mcData[mc];
@@ -2427,12 +2402,12 @@ window.renderStudent = function(studentId) {
       h += '<span class="mc-fires forge-text-bad">Fired ' + d.fires + '\u00d7 \u00b7 Reforged ' + d.reforgeCorrect + '/' + d.reforgeAttempts + '</span>';
       h += '</div>';
     });
-    h += '</div>';
+    h += '</div></details>';
   }
 
   // Resolved
   if (resolvedMCs.length > 0) {
-    h += '<div class="card forge-u-5cp4nn"><div class="card-title forge-text-good">Resolved \u2014 reforged successfully</div>';
+    h += '<details class="card profile-disclosure forge-u-5cp4nn"><summary class="profile-disclosure__summary"><span class="profile-disclosure__label forge-text-good">Resolved misconceptions</span><span class="profile-disclosure__meta">' + resolvedMCs.length + ' resolved</span></summary><div class="profile-disclosure__body">';
     resolvedMCs.forEach(function(mc) {
       var d = mcData[mc];
       var label = resolveMCLabel(mc) || mc;
@@ -2442,7 +2417,7 @@ window.renderStudent = function(studentId) {
       h += '<span class="mc-fires forge-text-good">Resolved \u2713</span>';
       h += '</div>';
     });
-    h += '</div>';
+    h += '</div></details>';
   }
 
   if (activeMCs.length === 0 && resolvedMCs.length === 0) {
@@ -2453,7 +2428,7 @@ window.renderStudent = function(studentId) {
   var reforgeHistory = studentResponses.filter(function(r) { return r.reforge_attempted; })
     .sort(function(a, b) { return new Date(b.created_at) - new Date(a.created_at); });
   if (reforgeHistory.length > 0) {
-    h += '<div class="card"><div class="card-title">Reforge history — ' + reforgeHistory.length + ' attempt' + (reforgeHistory.length !== 1 ? 's' : '') + '</div>';
+    h += '<details class="card profile-disclosure"><summary class="profile-disclosure__summary"><span class="profile-disclosure__label">Reforge history</span><span class="profile-disclosure__meta">' + reforgeHistory.length + ' attempt' + (reforgeHistory.length !== 1 ? 's' : '') + '</span></summary><div class="profile-disclosure__body">';
     reforgeHistory.forEach(function(r) {
       var mc = r.misconception_tag;
       var label = mc ? (resolveMCLabel(mc) || mc) : (r.bank || 'Unknown topic');
@@ -2464,7 +2439,7 @@ window.renderStudent = function(studentId) {
       h += '<span class="mc-fires" style="color:' + (r.reforge_correct ? 'var(--good)' : 'var(--bad)') + '">' + (r.reforge_correct ? '✓ Passed' : '✗ Failed') + (when ? ' · ' + when : '') + '</span>';
       h += '</div>';
     });
-    h += '</div>';
+    h += '</div></details>';
   }
 
   // Crucible sessions — cluster this student's Crucible answers into runs by timestamp,
@@ -2483,7 +2458,7 @@ window.renderStudent = function(studentId) {
   });
   crucibleSessions.reverse();
   if (crucibleSessions.length > 0) {
-    h += '<div class="card"><div class="card-title">Crucible sessions — ' + crucibleSessions.length + ' run' + (crucibleSessions.length !== 1 ? 's' : '') + '<span class="forge-u-rsj30h">Duration is estimated from answer timestamps</span></div>';
+    h += '<details class="card profile-disclosure"><summary class="profile-disclosure__summary"><span class="profile-disclosure__label">Crucible sessions</span><span class="profile-disclosure__meta">' + crucibleSessions.length + ' run' + (crucibleSessions.length !== 1 ? 's' : '') + ' · estimated duration</span></summary><div class="profile-disclosure__body">';
     crucibleSessions.slice(0, 10).forEach(function(sess) {
       var start = new Date(sess.answers[0].created_at);
       var end = new Date(sess.answers[sess.answers.length - 1].created_at);
@@ -2500,7 +2475,7 @@ window.renderStudent = function(studentId) {
       h += '<span class="mc-fires" style="color:' + col + '">⏱ ' + durLabel + '</span>';
       h += '</div>';
     });
-    h += '</div>';
+    h += '</div></details>';
   }
 
   // Spec point breakdown
@@ -2514,7 +2489,7 @@ window.renderStudent = function(studentId) {
   });
   var specKeys = Object.keys(specData).sort();
   if (specKeys.length > 0) {
-    h += '<div class="card"><div class="card-title">Spec Point Breakdown</div>';
+    h += '<details class="card profile-disclosure"><summary class="profile-disclosure__summary"><span class="profile-disclosure__label">Spec point breakdown</span><span class="profile-disclosure__meta">' + specKeys.length + ' points</span></summary><div class="profile-disclosure__body">';
     h += '<table class="forge-u-k85mqv">';
     h += '<thead><tr class="forge-u-sd7dny"><th class="forge-u-3ebq6">Spec</th><th>Subject</th><th>Questions</th><th>Accuracy</th><th class="forge-u-urn98g">Bar</th></tr></thead><tbody>';
     specKeys.forEach(function(sp) {
@@ -2530,6 +2505,7 @@ window.renderStudent = function(studentId) {
       h += '</tr>';
     });
     h += '</tbody></table></div>';
+    h += '</details>';
   }
 
   el.innerHTML = h;
