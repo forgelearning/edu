@@ -40,7 +40,7 @@
 <link rel="stylesheet" href="css/discovery.css?v=20260808-navpolish">
   <link rel="stylesheet" href="css/generated-utilities.css">
 <link rel="stylesheet" href="css/page-overrides/index.css?v=20260810-overdrive-fusion-light">
-<link rel="stylesheet" href="css/page-overrides/landing-redesign.css?v=20260823-priority-pass">
+<link rel="stylesheet" href="css/page-overrides/landing-redesign.css?v=20260823-finish-pass">
 </head>
 <body>
 <!--
@@ -125,12 +125,12 @@ document.body.classList.add('landing-redesign');
       <button type="button" class="opt" data-mc="MC-INF-02" data-s="If inflation is positive at all, the cost of living is still going <b>up</b>. A fall from 4.2% to 2.1% means living costs rose 2.1%. The headline is wrong, and examiners test exactly this.">The cost of living has fallen by 2.1%</button>
       <button type="button" class="opt" data-mc="MC-INF-01" data-s="Disinflation is a slowdown in the <b>rate</b> of inflation. Prices are still rising, just more slowly. Deflation only occurs when the rate goes below zero and the price level actually falls.">The economy has entered deflation</button>
 
-      <div class="scaffold" id="scaffold">
+      <div class="scaffold" id="scaffold" tabindex="-1">
         <span class="stag" id="stag">MC-INF-01</span>
         <p id="stext"></p>
         <div class="next"><button type="button" id="reforge">Re-forge it: same concept, new question</button></div>
       </div>
-      <p class="praise" id="praise">Correct. Prices are still rising, just more slowly: disinflation.</p>
+      <p class="praise" id="praise" tabindex="-1">Correct. Prices are still rising, just more slowly: disinflation.</p>
     </div>
     <div class="demo-foot"><p class="foot">Every wrong answer is tagged to a misconception drawn from examiners' reports. This question is live in the Forge bank.</p><button type="button" class="demo-reset" id="demo-reset" hidden>Reset demo</button></div>
   </div>
@@ -140,6 +140,7 @@ document.body.classList.add('landing-redesign');
 
 <main id="main-content" tabindex="-1">
 <section class="landing-new proof-rail" aria-label="How Forge is built">
+  <p class="wrap proof-rail-mobile-summary">Examiner-report grounded, specification mapped, and private by design.</p>
   <div class="wrap proof-rail-grid">
     <div>
       <strong>Examiner-report grounded</strong>
@@ -215,6 +216,7 @@ document.body.classList.add('landing-redesign');
       <div class="section-intro">
         <h2>One learning loop. Two useful views.</h2>
         <p>Students see the weakness they can repair now. Teachers see the pattern worth teaching next. The same misconception data serves both without turning practice into surveillance.</p>
+        <p class="product-language"><strong>Anvil</strong> repairs missed ideas. <strong>Crucible</strong> checks they hold under pressure.</p>
       </div>
       <div class="audience-tabs" role="tablist" aria-label="Choose a Forge product view">
         <button type="button" class="audience-tab is-active" id="audience-student-tab" role="tab" aria-selected="true" aria-controls="audience-student-panel" data-audience="student">Student view</button>
@@ -309,11 +311,11 @@ document.body.classList.add('landing-redesign');
       </dl>
       <div class="subject-directory" aria-label="Featured live subject pages">
         <div class="subject-directory-head"><span>Featured live subjects</span><a href="guides.html">How coverage works</a></div>
-        <a href="economics.html"><span><strong>Economics</strong><small>A Level · Edexcel 9EC0 · Live</small></span></a>
-        <a href="psychology.html"><span><strong>Psychology</strong><small>A Level · AQA 7182 · Live</small></span></a>
-        <a href="a-level-biology.html"><span><strong>Biology</strong><small>A Level · OCR A H420 · Live</small></span></a>
-        <a href="gcse-science.html"><span><strong>Combined Science</strong><small>GCSE · Edexcel 1SC0 · Live</small></span></a>
-        <a href="gcse-maths.html"><span><strong>Mathematics</strong><small>GCSE · Edexcel 1MA1 · Live</small></span></a>
+        <a href="economics.html"><span><strong>Economics</strong><small>A Level · Edexcel 9EC0 · Live</small></span><span class="subject-cue">View subject<svg viewBox="0 0 18 18" aria-hidden="true"><path d="M4 9h9M10 5l4 4-4 4"/></svg></span></a>
+        <a href="psychology.html"><span><strong>Psychology</strong><small>A Level · AQA 7182 · Live</small></span><span class="subject-cue">View subject<svg viewBox="0 0 18 18" aria-hidden="true"><path d="M4 9h9M10 5l4 4-4 4"/></svg></span></a>
+        <a href="a-level-biology.html"><span><strong>Biology</strong><small>A Level · OCR A H420 · Live</small></span><span class="subject-cue">View subject<svg viewBox="0 0 18 18" aria-hidden="true"><path d="M4 9h9M10 5l4 4-4 4"/></svg></span></a>
+        <a href="gcse-science.html"><span><strong>Combined Science</strong><small>GCSE · Edexcel 1SC0 · Live</small></span><span class="subject-cue">View subject<svg viewBox="0 0 18 18" aria-hidden="true"><path d="M4 9h9M10 5l4 4-4 4"/></svg></span></a>
+        <a href="gcse-maths.html"><span><strong>Mathematics</strong><small>GCSE · Edexcel 1MA1 · Live</small></span><span class="subject-cue">View subject<svg viewBox="0 0 18 18" aria-hidden="true"><path d="M4 9h9M10 5l4 4-4 4"/></svg></span></a>
         <div class="subject-directory-foot"><span>Each subject page shows its current banks and question totals.</span><a href="faq.html">Subject FAQs</a></div>
       </div>
     </div>
@@ -363,6 +365,6 @@ document.body.classList.add('landing-redesign');
 
 <script src="data/forge-catalog.js?v=20260823-production"></script>
 <script src="scripts/forge-page-actions.js?v=20260823-production"></script>
-<script src="scripts/landing-redesign.js?v=20260823-priority-pass"></script>
+<script src="scripts/landing-redesign.js?v=20260823-finish-pass"></script>
 </body>
 </html>

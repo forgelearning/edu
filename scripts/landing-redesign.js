@@ -32,8 +32,7 @@
         document.querySelectorAll('.audience-panel').forEach(function (panel) { panel.hidden = panel !== target; });
         if (moveFocus) target.focus({ preventScroll: true });
       }
-      if (document.startViewTransition && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) document.startViewTransition(commit);
-      else commit();
+      commit();
     }
 
     tabs.forEach(function (tab, index) {
@@ -92,6 +91,11 @@
       if (className) demo.classList.add(className);
     }
     function lockOptions(scope) { scope.querySelectorAll('.opt').forEach(function (option) { option.disabled = true; }); }
+    function focusFeedback(element) {
+      if (!element) return;
+      element.tabIndex = -1;
+      window.requestAnimationFrame(function () { element.focus({ preventScroll: true }); });
+    }
 
     function bindInitialQuestion() {
       var scaffold = document.getElementById('scaffold');
@@ -108,6 +112,7 @@
             praise.classList.add('show');
             setState('Concept understood', 'is-complete');
             reset.hidden = false;
+            focusFeedback(praise);
             return;
           }
           option.classList.add('wrong');
@@ -117,6 +122,8 @@
           text.innerHTML = option.getAttribute('data-s') || 'Review the idea, then apply it in a new context.';
           scaffold.classList.add('show');
           setState('Repair started', 'is-learning');
+          reset.hidden = false;
+          focusFeedback(scaffold);
         });
       });
       reforge.addEventListener('click', showReforgedQuestion);
@@ -126,24 +133,29 @@
       setState('Fresh proof', 'is-learning');
       body.classList.add('demo-body--reforged');
       body.innerHTML = '<p class="stimulus">Japan records annual inflation of −0.4%. A report says consumer prices are now lower than one year ago.</p>' +
-        '<p class="q">Which term describes this change in the price level?</p>' +
+        '<p class="q" tabindex="-1">Which term describes this change in the price level?</p>' +
         '<button type="button" class="opt">Disinflation</button><button type="button" class="opt" data-right="1">Deflation</button>' +
         '<button type="button" class="opt">Reflation</button><button type="button" class="opt">Stagflation</button>' +
-        '<p class="praise" id="praise2">Concept repaired. Below-zero inflation means the price level fell.</p>' +
-        '<p class="praise forge-text-bad" id="miss2">Not yet. Below zero means deflation: the price level itself fell. The full app would add this idea to Anvil for another pass.</p>';
+        '<p class="praise" id="praise2" tabindex="-1">Concept repaired. Below-zero inflation means the price level fell.</p>' +
+        '<p class="praise forge-text-bad" id="miss2" tabindex="-1">Not yet. Below zero means deflation: the price level itself fell. The full app would add this idea to Anvil for another pass.</p>';
+      focusFeedback(body.querySelector('.q'));
       body.querySelectorAll('.opt').forEach(function (option) {
         option.addEventListener('click', function () {
           lockOptions(body);
           var right = body.querySelector('[data-right]');
           if (option.hasAttribute('data-right')) {
             option.classList.add('correct');
-            document.getElementById('praise2').classList.add('show');
+            var repaired = document.getElementById('praise2');
+            repaired.classList.add('show');
             setState('Concept repaired', 'is-repaired');
+            focusFeedback(repaired);
           } else {
             option.classList.add('wrong');
             if (right) right.classList.add('correct');
-            document.getElementById('miss2').classList.add('show');
+            var missed = document.getElementById('miss2');
+            missed.classList.add('show');
             setState('Needs another pass', 'is-learning');
+            focusFeedback(missed);
           }
           reset.hidden = false;
         });
