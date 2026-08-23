@@ -383,7 +383,7 @@
           <div class="faq-a">
             <p>It depends on how they access Forge:</p>
             <ul>
-              <li><strong>Class-joined students</strong> — enter a display name and their teacher's class code. That display name may be visible to classmates on the class-only leaderboard; no email address is required</li>
+              <li><strong>Class-joined students</strong> — enter a display name, their teacher's class code, and an individual private student code. The display name may be visible to classmates on the class-only leaderboard; no email address is required</li>
               <li><strong>Free-tier students</strong> — enter only a display name. No email, no account</li>
               <li><strong>Pro/trial subscribers</strong> — provide an email address and create a password. This is necessary to enable cross-device login and is stored securely via Supabase Auth (bcrypt hashed; neither Forge nor Supabase can recover a plaintext password)</li>
             </ul>
@@ -410,7 +410,7 @@
           </button>
           <div class="faq-a">
             <p>For schools on a paid licence, a formal DPA is available and recommended. It covers the processing activities, sub-processors, data subject rights, breach notification procedures, and retention schedules.</p>
-            <p>For individual teachers using Forge informally (e.g. as a free trial), a DPA is not legally required if students join via class code only (no email collection). However, we recommend notifying students and parents that their display name and response data are stored in accordance with the privacy policy.</p>
+            <p>For individual teachers using Forge informally (e.g. as a free trial), a DPA is not legally required if students use the class-linked flow only (no email collection). However, we recommend notifying students and parents that their display name and response data are stored in accordance with the privacy policy.</p>
             <p>Contact forge.educator@gmail.com to request a DPA.</p>
           </div>
         </div>
@@ -463,7 +463,7 @@
             <span class="faq-chevron" aria-hidden="true">▼</span>
           </button>
           <div class="faq-a">
-            <p>Students enter a display name when joining. The join form asks for at least a first name and surname, but preserves the complete entered name rather than reducing it to a surname initial; excess whitespace is trimmed.</p>
+            <p>Students enter a display name when joining. The join form asks for at least a first name and surname, preserves the complete entered name rather than reducing it to a surname initial, and trims excess whitespace.</p>
             <p>If a student enters an inappropriate name, teachers can <strong>rename any student</strong> from the class overview in the teacher dashboard. The replacement display name is what appears in teacher views and the class-only leaderboard.</p>
             <p>Teachers should ask students to use an appropriate classroom display name and follow their school's naming expectations.</p>
           </div>
@@ -555,7 +555,7 @@
             <span class="faq-chevron" aria-hidden="true">▼</span>
           </button>
           <div class="faq-a">
-            <p>Yes. Teachers can set up a class, share a class code with students, and use the full teacher dashboard at no cost during the current pilot phase. Students can join and answer questions for free (with the 10 questions/day limit unless they self-subscribe).</p>
+            <p>Yes. Teachers can set up a class, share the class code and individual private student codes, and use the full teacher dashboard at no cost during the current pilot phase. Class-joined students can answer questions without the free-tier daily limit; students using Forge without a class remain on the 10 questions/day free tier unless they self-subscribe.</p>
             <p>Schools interested in a full-access pilot — where all students in a class or year group get unlimited access — should contact forge.educator@gmail.com to arrange terms.</p>
           </div>
         </div>

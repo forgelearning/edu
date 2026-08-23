@@ -54,7 +54,7 @@
     <span class="tag">Legal</span>
     <h1>Privacy & Data</h1>
     <p>How Forge collects, uses and protects personal data — for students, teachers, and the schools that purchase Forge. This document also serves as our Data Processing Agreement for institutional customers.</p>
-    <span class="last-updated">Last updated: August 2026 · Version 2.1</span>
+    <span class="last-updated">Last updated: August 2026 · Version 2.2</span>
   </div>
 
   <div class="doc-layout">
@@ -90,7 +90,7 @@
       </div>
 
       <div class="notice good">
-        <strong>Plain-English summary</strong> — Forge collects only what it needs to work. Students using the free tier enter only a name. Students who create a Pro or trial account provide an email address and password — these are stored securely via Supabase Auth and never shared with third parties for commercial purposes. We do not sell data or run advertising profiles. Public Forge pages use Google Analytics 4 only after an analytics consent choice; student quiz data is not used for site analytics. Teachers use authenticated email/password accounts, with invite codes required for new teacher accounts.
+        <strong>Plain-English summary</strong> — Forge collects only what it needs to work. Students using the free tier enter only a name. Students joining a class provide a display name, class code and individual private student code; no email address is required. Students who create a Pro or trial account provide an email address and password — these are stored securely via Supabase Auth and never shared with third parties for commercial purposes. We do not sell data or run advertising profiles. Public Forge pages use Google Analytics 4 only after an analytics consent choice; student quiz data is not used for site analytics. Teachers use authenticated email/password accounts, with invite codes required for new teacher accounts.
       </div>
 
       <!-- 1. WHO WE ARE -->
@@ -112,12 +112,13 @@
         </ul>
         <p>A random anonymous identifier is generated and stored in their browser (localStorage) and in our database to persist progress on that device. No email address, password, or personal contact information is collected.</p>
 
-        <h3>Students joining with a class code</h3>
-        <p>Students joining a teacher's class enter a display name and their teacher's class code. The same data as the free tier is collected, plus the class association. No email address is required.</p>
+        <h3>Students joining with a class code and private student code</h3>
+        <p>Students joining a teacher's class enter a display name, their teacher's class code, and the individual private student code issued to them by the teacher. The same data as the free tier is collected, plus the class association and the credential used to authenticate that student's class access. No email address is required.</p>
         <table>
           <thead><tr><th>Data</th><th>Purpose</th><th>Legal basis</th></tr></thead>
           <tbody>
             <tr><td>Display name</td><td>Identify the student in the teacher dashboard and, for class-joined students, the class-only leaderboard</td><td>Legitimate interests (providing the service)</td></tr>
+            <tr><td>Private student code</td><td>Authenticate the student's access to their own class-linked work and answer history</td><td>Legitimate interests (providing the service)</td></tr>
             <tr><td>Question responses</td><td>Track accuracy, identify misconceptions, power the Anvil and profile</td><td>Legitimate interests (providing the service)</td></tr>
             <tr><td>Misconception tags</td><td>Derive the Anvil, corrective starters, and student profile</td><td>Legitimate interests (providing the service)</td></tr>
             <tr><td>XP and streak data</td><td>Power gamification and leaderboard features</td><td>Legitimate interests (providing the service)</td></tr>
@@ -228,7 +229,7 @@
           <li>Data hosted in EU-West (Ireland) by default</li>
         </ul>
         <p>Student Pro/trial accounts are authenticated using <strong>Supabase Auth</strong>. Passwords are hashed with bcrypt before storage — neither Forge nor Supabase can recover a plaintext password. Access tokens are short-lived (1 hour) and refreshed automatically using a long-lived refresh token stored in browser localStorage.</p>
-        <p>Teacher dashboard access is controlled by authenticated teacher accounts. Student class codes should still be treated as access credentials and shared only with enrolled students.</p>
+        <p>Teacher dashboard access is controlled by authenticated teacher accounts. Class codes identify a class; private student codes authenticate individual class access. Both should be treated as access credentials and shared only with enrolled students, with each private code given only to its named student.</p>
         <p>In the event of a personal data breach that is likely to result in risk to individuals, we will notify the ICO within 72 hours and affected schools within the same window, as required by Article 33 UK GDPR.</p>
       </section>
 
@@ -238,7 +239,7 @@
         <p>Forge does not use cookies. We use <strong>browser localStorage</strong> to:</p>
         <ul>
           <li>Remember your theme preference (dark/light mode)</li>
-          <li>Store your session (display name, class code) so you do not have to re-enter it when navigating between the Quiz, Anvil, Crucible and Profile pages</li>
+          <li>Store your session (display name, class code and, for protected class-linked students, private student code) so you do not have to re-enter it when navigating between the Quiz, Assigned, Anvil, Crucible, Dashboard and Profile pages</li>
           <li>Store your anonymous free-tier identifier (a randomly generated token, not linked to any personal information)</li>
           <li>Store your Supabase Auth session token (access token + refresh token) if you have a Pro or trial account — this allows you to stay logged in across visits without re-entering your password</li>
         </ul>
@@ -290,7 +291,7 @@
         <p>The Controller shall:</p>
         <ul>
           <li>Ensure it has a lawful basis for processing student data and has fulfilled any transparency obligations to students and parents under UK GDPR (e.g. by including Forge in its school privacy notice)</li>
-          <li>Ensure that class codes are distributed only to enrolled students</li>
+          <li>Ensure that class codes and private student codes are distributed only to enrolled students, with each private code given to its named student</li>
           <li>Notify the Processor promptly if it becomes aware of any breach involving Forge data</li>
           <li>Not instruct the Processor to process data in a way that would violate applicable data protection law</li>
         </ul>
