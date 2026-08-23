@@ -11,6 +11,16 @@ const output = path.join(repoRoot, '_site');
 const runtimeDirectories = ['assets', 'css', 'data'];
 const runtimeFiles = ['.nojekyll'];
 const publicFiles = ['forge-auth.js', 'manifest.json', 'og-image.png', 'service-worker.js'];
+const sharedUiVersion = '20260823-motion';
+const sharedUiAssets = [
+  'css/tokens.css',
+  'css/base.css',
+  'css/components.css',
+  'css/states.css',
+  'css/sidebar.css',
+  'scripts/forge-page-actions.js',
+  'scripts/forge-state.js'
+];
 
 function copyTree(source, target, filter = () => true) {
   fs.mkdirSync(target, { recursive: true });
@@ -21,6 +31,13 @@ function copyTree(source, target, filter = () => true) {
     if (entry.isDirectory()) copyTree(from, to, filter);
     else fs.copyFileSync(from, to);
   }
+}
+
+function versionSharedUiAssets(source) {
+  return sharedUiAssets.reduce((html, asset) => {
+    const escaped = asset.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    return html.replace(new RegExp(`${escaped}(?:\\?v=[^"'\\s>]+)?`, 'g'), `${asset}?v=${sharedUiVersion}`);
+  }, source);
 }
 
 function build() {
@@ -38,7 +55,8 @@ function build() {
     const destination = path.join(output, path.basename(source));
     if (destinations.has(destination)) throw new Error(`Duplicate public page: ${path.basename(source)}`);
     destinations.add(destination);
-    fs.copyFileSync(source, destination);
+    const html = fs.readFileSync(source, 'utf8');
+    fs.writeFileSync(destination, versionSharedUiAssets(html));
   }
   if (!fs.existsSync(path.join(output, 'index.html'))) throw new Error('Build did not produce index.html');
   console.log(`Built ${destinations.size} HTML pages and public assets in ${output}`);

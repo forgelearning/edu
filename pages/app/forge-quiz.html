@@ -751,8 +751,13 @@ function registerFreeStudent(name, token) {
 }
 
 var app = document.getElementById('app');
+var hasRenderedForgeSurface = false;
 
-function render() {
+function render(skipMotion) {
+  if (skipMotion !== true && hasRenderedForgeSurface && window.ForgeMotion && typeof window.ForgeMotion.update === 'function') {
+    return window.ForgeMotion.update(app, function () { return render(true); });
+  }
+  hasRenderedForgeSurface = true;
   document.body.classList.toggle('forge-login-screen', state.phase === 'join');
   if (requestedBank && BANKS[requestedBank] && (state.studentName || state.classId) && state.phase !== 'quiz') {
     // Assignment links are bank-specific. Establish both the bank and its

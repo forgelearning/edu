@@ -3,25 +3,51 @@
 @import url('components.css');
 
 *{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth;scroll-padding-top:88px}
-body{background:var(--coal);color:var(--slate);font-family:'IBM Plex Sans',sans-serif;font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased;min-width:320px}
-h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.08;letter-spacing:-.015em}
+html{scroll-behavior:smooth;scroll-padding-top:88px;color-scheme:dark;scrollbar-color:var(--line) var(--coal);scrollbar-width:thin}
+html[data-theme="light"]{color-scheme:light}
+body{background:var(--coal);color:var(--slate);font-family:'IBM Plex Sans',sans-serif;font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased;min-width:320px;caret-color:var(--ember)}
+h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.08;letter-spacing:-.015em;text-wrap:balance}
+p,li,dd{overflow-wrap:anywhere}
 .mono{font-family:'JetBrains Mono',monospace}
-a{color:var(--hot)}
+a{color:var(--hot);text-underline-offset:.18em;text-decoration-thickness:from-font}
 .wrap{max-width:1080px;margin:0 auto;padding:0 var(--space-6)}
 .tag{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--ember)}
 :focus-visible{outline:2px solid var(--hot);outline-offset:3px;border-radius:var(--radius-xs)}
-@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+::selection{background:var(--hot);color:var(--coal)}
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-track{background:var(--coal)}
+::-webkit-scrollbar-thumb{background:var(--line);border:2px solid var(--coal);border-radius:var(--radius-pill)}
+::-webkit-scrollbar-thumb:hover{background:var(--dim)}
+
+/* Cross-document navigation and in-app surface swaps share the same motion
+   thesis: old content clears quickly, then the new surface resolves into
+   focus. Content remains visible when view transitions are unavailable. */
+@view-transition{navigation:auto}
+::view-transition-old(root){animation:forge-page-out var(--motion-exit) var(--ease-forge-in) both}
+::view-transition-new(root){animation:forge-page-in 280ms var(--ease-forge) both}
+::view-transition-group(forge-surface){animation-duration:var(--motion-enter);animation-timing-function:var(--ease-forge)}
+::view-transition-old(forge-surface){animation:forge-surface-out var(--motion-exit) var(--ease-forge-in) both}
+::view-transition-new(forge-surface){animation:forge-surface-in var(--motion-enter) var(--ease-forge) both}
+html.forge-motion-local::view-transition-old(root),html.forge-motion-local::view-transition-new(root){animation:none;mix-blend-mode:normal}
+@keyframes forge-page-out{to{opacity:0;filter:blur(1.5px);clip-path:inset(0 1.2% 0 0)}}
+@keyframes forge-page-in{from{opacity:0;filter:blur(3px);clip-path:inset(0 0 4% 0)}to{opacity:1;filter:none;clip-path:inset(0)}}
+@keyframes forge-surface-out{to{opacity:0;filter:blur(1.5px);clip-path:inset(0 1.5% 0 0)}}
+@keyframes forge-surface-in{from{opacity:0;filter:blur(3px);clip-path:inset(0 0 5% 0)}to{opacity:1;filter:none;clip-path:inset(0)}}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  ::view-transition-old(root),::view-transition-new(root),::view-transition-old(forge-surface),::view-transition-new(forge-surface){animation:none!important}
+}
 
 /* nav — floating pill, fixed to the viewport, collapses to just the badge
    on scroll down (nav-collapsed class, toggled by scripts/nav.js), expands
    again on scroll up or on tap while collapsed. */
 body{padding-top:88px}
-#sticky-nav{position:fixed;top:max(14px,env(safe-area-inset-top));left:50%;transform:translateX(-50%);width:calc(100% - 24px);max-width:1080px;z-index:100;background:var(--glass-bg);backdrop-filter:blur(var(--glass-blur)) saturate(160%);-webkit-backdrop-filter:blur(var(--glass-blur)) saturate(160%);border:1px solid var(--line);border-radius:var(--radius-pill);box-shadow:0 20px 50px -20px rgba(0,0,0,.5);transition:width .4s cubic-bezier(.4,0,.2,1),top .3s ease,box-shadow .3s ease}
+#sticky-nav{position:fixed;top:max(14px,env(safe-area-inset-top));left:50%;transform:translateX(-50%);width:calc(100% - 24px);max-width:1080px;z-index:100;background:var(--glass-bg);backdrop-filter:blur(var(--glass-blur)) saturate(160%);-webkit-backdrop-filter:blur(var(--glass-blur)) saturate(160%);border:1px solid var(--line);border-radius:var(--radius-pill);box-shadow:0 20px 50px -20px rgba(0,0,0,.5);transition:width var(--motion-layout) var(--ease-forge),top var(--motion-enter) var(--ease-forge),box-shadow var(--motion-enter) var(--ease-forge)}
 [data-theme="light"] #sticky-nav{box-shadow:0 20px 50px -24px rgba(0,0,0,.18)}
 #sticky-nav .wrap-nav{max-width:none}
-#sticky-nav nav{padding:10px 10px 10px 20px;transition:padding .4s cubic-bezier(.4,0,.2,1)}
-#sticky-nav .nav-right{transition:opacity .25s ease .18s}
+#sticky-nav nav{padding:10px 10px 10px 20px;transition:padding var(--motion-layout) var(--ease-forge)}
+#sticky-nav .nav-right{transition:opacity var(--motion-enter) var(--ease-forge)}
 /* The landing page carries its logo as data-URI images so it also works when
    opened directly from disk. Keep those assets bounded at the navigation
    boundary; a malformed/legacy class attribute must never be able to make a
@@ -29,8 +55,8 @@ body{padding-top:88px}
 #sticky-nav #nav-shield > img{display:block;width:auto;height:38px;max-width:none}
 #sticky-nav #nav-logotext > img{display:block;width:auto;height:34px;max-width:none}
 #sticky-nav #nav-logo{line-height:1;display:inline-flex;align-items:center;gap:20px;text-decoration:none}
-#sticky-nav #nav-shield{display:inline-flex;align-items:center;flex-shrink:0;transition:transform .4s ease}
-#sticky-nav #nav-logotext{display:inline-flex;align-items:center;overflow:hidden;transition:opacity .4s ease,width .4s ease,transform .4s ease}
+#sticky-nav #nav-shield{display:inline-flex;align-items:center;flex-shrink:0;transition:transform var(--motion-layout) var(--ease-forge)}
+#sticky-nav #nav-logotext{display:inline-flex;align-items:center;overflow:hidden;transition:opacity var(--motion-layout) var(--ease-forge),width var(--motion-layout) var(--ease-forge),transform var(--motion-layout) var(--ease-forge)}
 @media(min-width:900px){
   body{padding-top:96px}
   #sticky-nav{top:max(16px,env(safe-area-inset-top));width:calc(100% - 32px)}
@@ -82,8 +108,12 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:var(--
 .nav-drop-btn{background:var(--panel);border:1px solid var(--line);color:var(--slate);font-family:'JetBrains Mono',monospace;font-size:12px;padding:7px var(--space-4);border-radius:var(--radius-sm);cursor:pointer;transition:background .15s,color .15s;white-space:nowrap}
 .nav-drop-btn:hover{color:var(--white);border-color:var(--ember)}
 .nav-drop-wrap{position:relative}
-.nav-drop-menu{display:none;position:absolute;top:calc(100% + 6px);right:0;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-md);padding:6px;min-width:160px;z-index:200;box-shadow:0 8px 24px rgba(0,0,0,.18)}
-.nav-drop-menu.open{display:block}
+.nav-drop-menu{display:none;position:absolute;top:calc(100% + 6px);right:0;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-md);padding:6px;min-width:160px;z-index:200;box-shadow:var(--shadow-popover);transform-origin:top right}
+.nav-drop-menu.open{display:block;animation:forge-popover-in 180ms var(--ease-forge) both}
+.nav-drop-menu.is-closing{display:block;pointer-events:none;animation:forge-popover-out 110ms var(--ease-forge-in) both}
+.nav-drop-menu.open.is-closing{animation:forge-popover-out 110ms var(--ease-forge-in) both}
+@keyframes forge-popover-in{from{opacity:0;transform:translateY(-4px) scale(.985);filter:blur(2px)}to{opacity:1;transform:none;filter:none}}
+@keyframes forge-popover-out{to{opacity:0;transform:translateY(-3px) scale(.99);filter:blur(1px)}}
 .nav-drop-menu a{display:block;padding:var(--space-2) var(--space-3);color:var(--slate);text-decoration:none;font-size:13px;border-radius:6px;white-space:nowrap}
 .nav-drop-menu a:hover{background:var(--panel-2);color:var(--white)}
 
@@ -164,8 +194,10 @@ html:not([data-theme="light"]) .btn-ember:hover:not(:disabled){background:#E8681
    signed in used to be redirected to the teacher's dashboard with no
    explanation; this is the interstitial that replaced it. Styled from the
    theme tokens so it works before a page's own CSS has done anything. */
-#forge-role-conflict{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;padding:24px;background:rgba(9,7,6,.82);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
-.forge-role-conflict__card{max-width:440px;width:100%;padding:28px 26px;border:1px solid var(--line);border-radius:var(--radius-lg);background:var(--panel);box-shadow:0 30px 60px -30px rgba(0,0,0,.8)}
+#forge-role-conflict{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;padding:24px;background:rgba(9,7,6,.82);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);animation:forge-scrim-in var(--motion-enter) var(--ease-forge) both}
+.forge-role-conflict__card{max-width:440px;width:100%;padding:28px 26px;border:1px solid var(--line);border-radius:var(--radius-lg);background:var(--panel);box-shadow:var(--shadow-raised);animation:forge-dialog-in var(--motion-enter) var(--ease-forge) both}
+@keyframes forge-scrim-in{from{opacity:0}to{opacity:1}}
+@keyframes forge-dialog-in{from{opacity:0;transform:scale(.975);filter:blur(3px)}to{opacity:1;transform:none;filter:none}}
 .forge-role-conflict__card h1{margin:0 0 10px;font-size:20px;line-height:1.25;color:var(--white)}
 .forge-role-conflict__card p{margin:0 0 20px;color:var(--muted);font-size:14.5px;line-height:1.55}
 .forge-role-conflict__actions{display:flex;flex-direction:column;gap:10px}

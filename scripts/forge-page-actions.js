@@ -1,16 +1,153 @@
 /* Shared, delegated page actions. Keep simple UI wiring out of markup. */
 (function () {
+  var motionMedia = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : null;
+  var activeSurface = null;
+  var entryAnimations = typeof WeakMap === 'function' ? new WeakMap() : null;
+  var lastEntries = typeof WeakMap === 'function' ? new WeakMap() : null;
+  var motionActions = {
+    'student-overview': true, 'student-forge': true, 'student-anvil': true, 'student-crucible': true,
+    'dashboard-heatmap': true, 'dashboard-class': true, 'dashboard-student': true,
+    'dashboard-starter': true, 'dashboard-assignments': true, 'student-back': true,
+    'quiz-free-tier': true, 'quiz-back-banks': true, 'quiz-subjects': true, 'mr-reset': true,
+    'signup-step-1': true, 'signup-step-2': true, 'switch-level': true, 'switch-tab': true,
+    'anvil-home': true, 'crucible-start': true, 'crucible-build': true, 'crucible-subject': true,
+    'crucible-bank': true, 'crucible-back': true, 'render-student': true,
+    'render-teacher-home': true, 'render-starters': true, 'show-starter': true, 'anvil-rework': true
+  };
+
+  function reducedMotion() {
+    return Boolean(motionMedia && motionMedia.matches);
+  }
+
+  function surfaceFor(element) {
+    var nearby = element && element.closest
+      ? element.closest('[data-forge-motion-surface],[role="tabpanel"],.auth-card,#app')
+      : null;
+    return nearby || document.getElementById('app') || document.querySelector('[data-forge-motion-surface],main');
+  }
+
+  function enterSurface(surface) {
+    if (!surface || reducedMotion() || typeof surface.animate !== 'function') return null;
+    var now = Date.now();
+    if (lastEntries && now - (lastEntries.get(surface) || 0) < 100) return null;
+    if (lastEntries) lastEntries.set(surface, now);
+    if (entryAnimations && entryAnimations.get(surface)) entryAnimations.get(surface).cancel();
+    var animation = surface.animate([
+      { opacity: 0, filter: 'blur(3px)', clipPath: 'inset(0 0 5% 0)' },
+      { opacity: 1, filter: 'blur(0)', clipPath: 'inset(0)' }
+    ], { duration: 240, easing: 'cubic-bezier(.16,1,.3,1)' });
+    if (entryAnimations) entryAnimations.set(surface, animation);
+    animation.finished.then(function () {
+      if (entryAnimations && entryAnimations.get(surface) === animation) entryAnimations.delete(surface);
+    }, function () {});
+    return animation;
+  }
+
+  function updateSurface(element, update) {
+    var surface = surfaceFor(element);
+    if (!surface || reducedMotion() || activeSurface) return update();
+
+    if (typeof document.startViewTransition === 'function') {
+      activeSurface = surface;
+      var root = document.documentElement;
+      var oldName = surface.style.viewTransitionName;
+      root.classList.add('forge-motion-local');
+      surface.style.viewTransitionName = 'forge-surface';
+      var transition = document.startViewTransition(update);
+      function clean() {
+        surface.style.viewTransitionName = oldName;
+        root.classList.remove('forge-motion-local');
+        activeSurface = null;
+      }
+      transition.finished.then(clean, clean);
+      return transition;
+    }
+
+    if (typeof surface.animate !== 'function') return update();
+    activeSurface = surface;
+    var exit = surface.animate([
+      { opacity: 1, filter: 'blur(0)', clipPath: 'inset(0)' },
+      { opacity: 0, filter: 'blur(1.5px)', clipPath: 'inset(0 1.5% 0 0)' }
+    ], { duration: 100, easing: 'cubic-bezier(.7,0,.84,0)', fill: 'forwards' });
+    function replace() {
+      exit.cancel();
+      var result;
+      try { result = update(); }
+      finally { activeSurface = null; }
+      enterSurface(surface);
+      return result;
+    }
+    return exit.finished.then(replace, replace);
+  }
+
+  function watchSurface(surface) {
+    if (!surface || surface.dataset.forgeMotionReady || typeof MutationObserver !== 'function' || typeof requestAnimationFrame !== 'function') return;
+    surface.dataset.forgeMotionReady = 'true';
+    var ready = false;
+    var frame = 0;
+    new MutationObserver(function (records) {
+      if (!ready || reducedMotion() || activeSurface) return;
+      var changed = records.some(function (record) {
+        return record.target === surface && (record.addedNodes.length || record.removedNodes.length);
+      });
+      if (!changed || frame) return;
+      frame = requestAnimationFrame(function () {
+        frame = 0;
+        enterSurface(surface);
+      });
+    }).observe(surface, { childList: true, subtree: false });
+    requestAnimationFrame(function () { ready = true; });
+  }
+
+  function initMotion() {
+    document.querySelectorAll('#app,[data-forge-motion-surface]').forEach(watchSurface);
+  }
+
+  window.ForgeMotion = {
+    enter: enterSurface,
+    update: updateSurface,
+    reduced: reducedMotion
+  };
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initMotion);
+  else initMotion();
+
+  function closeMenu(menu) {
+    if (!menu || !menu.classList.contains('open')) return;
+    var button = menu.previousElementSibling;
+    if (button) button.setAttribute('aria-expanded', 'false');
+    if (menu._forgeCloseTimer) clearTimeout(menu._forgeCloseTimer);
+    if (reducedMotion()) {
+      menu.classList.remove('open', 'is-closing');
+      return;
+    }
+    menu.classList.add('is-closing');
+    menu._forgeCloseTimer = setTimeout(function () {
+      menu.classList.remove('open', 'is-closing');
+      menu._forgeCloseTimer = 0;
+    }, 115);
+  }
+
+  function openMenu(menu, button) {
+    if (!menu) return;
+    if (menu._forgeCloseTimer) clearTimeout(menu._forgeCloseTimer);
+    menu._forgeCloseTimer = 0;
+    menu.classList.remove('is-closing');
+    menu.classList.add('open');
+    if (button) button.setAttribute('aria-expanded', 'true');
+  }
+
   function invoke(action, element) {
     if (action === 'theme' && typeof window.toggleTheme === 'function') return window.toggleTheme();
     if (action === 'schools-menu') {
       var menu = element.nextElementSibling;
       var wasOpen = menu && menu.classList.contains('open');
       document.querySelectorAll('#sticky-nav .nav-drop-menu').forEach(function(other){
-        if (other !== menu) other.classList.remove('open');
+        if (other !== menu) closeMenu(other);
       });
       if (menu) {
-        if (wasOpen) menu.classList.remove('open');
-        else menu.classList.add('open');
+        if (wasOpen) closeMenu(menu);
+        else openMenu(menu, element);
       }
       return menu;
     }
@@ -66,7 +203,12 @@
     var target = event.target.closest('[data-forge-action]');
     if (!target) return;
     if (event.type === 'click') event.preventDefault();
-    invoke(target.getAttribute('data-forge-action'), target);
+    var action = target.getAttribute('data-forge-action');
+    if (event.type === 'click' && motionActions[action]) {
+      updateSurface(target, function () { return invoke(action, target); });
+      return;
+    }
+    invoke(action, target);
   }
   document.addEventListener('click', handle);
   document.addEventListener('input', handle);
