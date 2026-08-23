@@ -149,3 +149,23 @@ body{font-family:'Poppins',sans-serif;color:var(--slate)}h1,h2{font-family:'Reth
 .assignment-review-label{display:block;color:var(--dim);font:600 10px/1.4 'JetBrains Mono',monospace;letter-spacing:.08em;text-transform:uppercase}
 .assignment-review-scaffold{margin:8px 0 0;padding-top:8px;border-top:1px dashed var(--line);color:var(--dim);font-size:12.5px;line-height:1.55}
 @media(prefers-reduced-motion:reduce){.assignment-review-summary::after{transition:none}}
+
+/* Assignment card rhythm pass: keep the topic action visibly separate from
+   the completion track, and prevent the grid from forcing a narrow viewport
+   to scroll horizontally. */
+#list>.card{min-width:0;row-gap:16px}
+#list>.card>*{min-width:0}
+#list>.card>div:last-of-type{grid-area:topics;display:flex;flex-wrap:wrap;gap:8px;margin-top:0;padding-top:0;min-width:0}
+#list>.card .assignment-progress{min-width:0}
+
+@media(max-width:760px){
+  .wrap{width:100%;max-width:none;padding-left:16px;padding-right:16px}
+  .mission-control{grid-template-columns:1fr;gap:18px;margin:26px 0 22px;padding:22px 18px}
+  .mission-control__readout{min-width:0;grid-template-columns:auto 1fr}
+  .mission-control__action{margin-top:14px}
+  #list>.card{grid-template-columns:minmax(0,1fr);grid-template-areas:"title" "meta" "status" "progress" "topics";row-gap:12px;padding:20px 16px}
+  #list>.card .status{justify-self:start;margin-top:8px}
+  #list>.card .assignment-progress{margin-top:12px}
+  #list>.card .assignment-progress-label{align-items:flex-start;flex-direction:column;gap:4px}
+  #list>.card>div:last-of-type{padding-top:4px}
+}

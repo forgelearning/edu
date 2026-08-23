@@ -174,7 +174,7 @@ h1,h2,h3{font-family:'Rethink Sans',sans-serif;color:var(--white);line-height:1.
 /* Student dashboard pass: turn the profile into a calm, decisive practice
    launchpad. The next useful action leads; supporting evidence follows. */
 .wrap{max-width:900px}
-#app{max-width:760px}
+#app{max-width:960px}
 #app::before{content:"STUDENT WORKSPACE / LIVE PROFILE";display:block;margin:0 0 14px;color:var(--dim);font:600 10px/1 'JetBrains Mono',monospace;letter-spacing:.1em;text-align:center}
 .eyebrow{display:inline-flex;align-items:center;gap:9px}
 .eyebrow::before{content:"";width:22px;height:2px;background:var(--ember);display:inline-block}
@@ -236,3 +236,9 @@ html[data-overdrive="control-room"] .mod-row:hover{border-color:var(--hot);box-s
   html[data-overdrive="command-centre"] #app h1{text-align:left;max-width:14ch}
   html[data-overdrive="learning-loop"] .forge-loop-step{min-height:52px}
 }
+
+/* Desktop canvas pass: the dashboard is a launchpad, so its primary panels
+   should occupy the available reading width instead of floating in a narrow
+   column on wide screens. Keep the content itself bounded at a comfortable
+   application width and let the existing mobile rules take over below 820px. */
+.wrap{max-width:1120px}
