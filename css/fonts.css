@@ -1,0 +1,48 @@
+/* Local, privacy-preserving type assets for Forge's public and product UI. */
+@font-face{
+  font-family:'Rethink Sans';
+  font-style:normal;
+  font-weight:400 800;
+  font-display:swap;
+  src:url('../assets/fonts/rethink-sans-latin.woff2') format('woff2');
+}
+
+@font-face{
+  font-family:'Poppins';
+  font-style:normal;
+  font-weight:400;
+  font-display:swap;
+  src:url('../assets/fonts/poppins-400-latin.woff2') format('woff2');
+}
+
+@font-face{
+  font-family:'Poppins';
+  font-style:normal;
+  font-weight:500;
+  font-display:swap;
+  src:url('../assets/fonts/poppins-500-latin.woff2') format('woff2');
+}
+
+@font-face{
+  font-family:'Poppins';
+  font-style:normal;
+  font-weight:600;
+  font-display:swap;
+  src:url('../assets/fonts/poppins-600-latin.woff2') format('woff2');
+}
+
+@font-face{
+  font-family:'Poppins';
+  font-style:normal;
+  font-weight:700;
+  font-display:swap;
+  src:url('../assets/fonts/poppins-700-latin.woff2') format('woff2');
+}
+
+@font-face{
+  font-family:'JetBrains Mono';
+  font-style:normal;
+  font-weight:400 600;
+  font-display:swap;
+  src:url('../assets/fonts/jetbrains-mono-latin.woff2') format('woff2');
+}

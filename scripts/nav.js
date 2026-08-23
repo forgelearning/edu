@@ -49,7 +49,10 @@ document.addEventListener('click', function(e) {
   // The collapsed logo is still a real navigation link. Do not swallow the
   // first click just to expand the pill; that makes the brand mark feel like
   // a dead control and violates normal link expectations.
-  navEl.addEventListener('click', function(){
-    if (collapsed) expand();
+  navEl.addEventListener('click', function(event){
+    // The landing page's compact state keeps a real Menu control available.
+    // Let that control open in place instead of expanding the full desktop bar
+    // and immediately removing the focused trigger from view.
+    if (collapsed && !event.target.closest('.landing-menu-wrap')) expand();
   });
 })();
