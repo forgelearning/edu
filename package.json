@@ -4,6 +4,7 @@
   "private": true,
   "description": "Forge Learning mobile shell",
   "scripts": {
+    "benchmark:performance": "npm run pages:build && node dev/benchmark-performance.js",
     "mobile:build": "node scripts/build/build-mobile-web.js",
     "cap:add:ios": "cap add ios",
     "cap:add:android": "cap add android",

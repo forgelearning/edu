@@ -75,7 +75,8 @@ function mountTeacherSidebar() {
   <div id="app" aria-live="polite"></div>
 </main>
 
-<script src="data/forge-data.js"></script>
+<script src="data/forge-catalog.js?v=20260823"></script>
+<script src="data/forge-question-index.js?v=20260823"></script>
 <!-- Assignment attainment is defined once, in forge-assignment-progress.js, and
      shared with the student's assignment view so the two cannot disagree. -->
 <script>window.ForgeAssignmentBanks=BANKS;</script><script src="scripts/forge-assignment-progress.js"></script>
@@ -1461,12 +1462,12 @@ var MC_TO_SPEC = {
 // spec point read 0%. Resolve the spec from the question itself instead.
 var QID_TO_SPEC = (function() {
   var map = {};
-  if (typeof BANKS === 'undefined') return map;
-  Object.keys(BANKS).forEach(function(bk) {
-    (BANKS[bk].questions || []).forEach(function(q) {
-      var sp = q.spec || MC_TO_SPEC[q.tag] || null;
-      if (sp) map[q.id] = sp;
-    });
+  var index = typeof FORGE_QUESTION_INDEX !== 'undefined' ? FORGE_QUESTION_INDEX : {};
+  Object.keys(index.subjects || {}).forEach(function(id) {
+    var tags = (index.tags && index.tags[id]) || [];
+    var sp = index.specs && index.specs[id] || null;
+    for (var i = 0; !sp && i < tags.length; i++) sp = MC_TO_SPEC[tags[i]] || null;
+    if (sp) map[id] = sp;
   });
   return map;
 })();
@@ -1486,36 +1487,14 @@ function baseQuestionId(qid) {
 // Computing one by its subject column alone. The question id still identifies
 // the bank it came from, and the bank belongs to exactly one subject.
 var QID_TO_SUBJECT = (function() {
-  var map = {};
-  if (typeof BANKS === 'undefined' || typeof SUBJECTS === 'undefined') return map;
-  Object.keys(SUBJECTS).forEach(function(sk) {
-    (SUBJECTS[sk].banks || []).forEach(function(bk) {
-      if (!BANKS[bk]) return;
-      (BANKS[bk].questions || []).forEach(function(q) { map[q.id] = sk; });
-    });
-  });
-  return map;
+  return typeof FORGE_QUESTION_INDEX !== 'undefined' ? FORGE_QUESTION_INDEX.subjects || {} : {};
 })();
 
 // Misconception tag → subject, as a second route home: an Anvil row's `bank` is
 // the tag it was forged from, so a tag identifies the subject even when the
 // question id doesn't resolve.
 var MC_TO_SUBJECT = (function() {
-  var map = {};
-  if (typeof BANKS === 'undefined' || typeof SUBJECTS === 'undefined') return map;
-  Object.keys(SUBJECTS).forEach(function(sk) {
-    (SUBJECTS[sk].banks || []).forEach(function(bk) {
-      if (!BANKS[bk]) return;
-      // A few questions carry an array of tags; map each element, or the key
-      // becomes a stringified array and every real tag on it goes unmapped.
-      (BANKS[bk].questions || []).forEach(function(q) {
-        if (!q.tag) return;
-        var tags = Array.isArray(q.tag) ? q.tag : [q.tag];
-        tags.forEach(function(t) { if (t) map[t] = sk; });
-      });
-    });
-  });
-  return map;
+  return typeof FORGE_QUESTION_INDEX !== 'undefined' ? FORGE_QUESTION_INDEX.misconceptionSubjects || {} : {};
 })();
 
 // The real subject a response belongs to, seeing through the 'anvil'/'crucible'
@@ -1790,10 +1769,10 @@ function renderBrowseStarters() {
 
 // ===== ASSIGNMENTS =====
 
-// Bank label lookup — derived from the shared BANKS data (data/forge-data.js).
+// Bank label lookup — derived from the generated lightweight catalogue.
 var BANK_LABELS = {};
 Object.keys(BANKS).forEach(function(key) { BANK_LABELS[key] = BANKS[key].label; });
-// Subject → banks map — derived from the shared SUBJECTS data (data/forge-data.js).
+// Subject → banks map — derived from the generated lightweight catalogue.
 var SUBJECT_BANKS = {};
 Object.keys(SUBJECTS).forEach(function(key) { SUBJECT_BANKS[key] = SUBJECTS[key].banks; });
 
@@ -1817,8 +1796,8 @@ function assignmentBanks(asgn) {
 function assignmentQuestionTotal(banks) {
   return banks.reduce(function(total, bank) {
     var data = BANKS[bank];
-    if (!data || !Array.isArray(data.questions)) return total;
-    var available = data.questions.filter(function(q) { return !q.type || q.type === 'fill_blank'; }).length;
+    if (!data) return total;
+    var available = data.assignableQuestionCount!=null ? data.assignableQuestionCount : (data.questions||[]).filter(function(q) { return !q.type || q.type === 'fill_blank'; }).length;
     return total + Math.min(8, available);
   }, 0);
 }

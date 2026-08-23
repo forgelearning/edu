@@ -57,7 +57,7 @@ ForgeSidebar.mount({
 <script>if (window.ForgeRole) ForgeRole.guard('student', 'teacher.html');</script>
 <script src="scripts/forge-assignment-progress.js"></script><script defer src="scripts/forge-student-badges.js?v=20260807"></script>
 <script src="scripts/forge-student-code.js?v=20260809"></script>
-<script src="data/forge-data.js"></script>
+<script src="data/forge-catalog.js?v=20260823"></script>
 <script src="scripts/forge-misconception-state.js"></script>
 
 <main class="wrap" id="main-content">
@@ -248,7 +248,8 @@ function renderDashboard(){
               ids[String(localResponse.question_id||'').replace(/-RF$/,'')]=true;
             });
           } catch(e) {}
-          return Object.keys(ids).length < Math.min(8,bankData.questions.filter(function(q){return !q.type||q.type==='fill_blank';}).length);
+          var available=bankData.assignableQuestionCount!=null?bankData.assignableQuestionCount:(bankData.questionCount||0);
+          return Object.keys(ids).length < Math.min(8,available);
         });
         return incomplete;
       }).length;

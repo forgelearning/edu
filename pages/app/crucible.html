@@ -94,7 +94,8 @@ function supaInsert(t,row){
 
 // ===== DATA =====
 </script>
-<script src="data/forge-data.js?v=20260805"></script>
+<script src="data/forge-catalog.js?v=20260823"></script>
+<script src="scripts/forge-data-loader.js?v=20260823"></script>
 <script src="data/misconception-labels.js"></script>
 <script>
 
@@ -233,7 +234,7 @@ function renderSubject(){
   var eligible = 0;
   subjectKeys.forEach(function(k) {
     var s=SUBJECTS[k];
-    var total=s.banks.reduce(function(t,b){return t+(BANKS[b]?BANKS[b].questions.filter(function(q){return !q.type&&q.reforge;}).length:0);},0);
+    var total=s.banks.reduce(function(t,b){return t+(BANKS[b]?BANKS[b].crucibleQuestionCount||0:0);},0);
     if(total<3) return;
     eligible++;
     var entry = ForgeClasses.forSubject(k);
@@ -257,7 +258,12 @@ function renderSubject(){
   }
   app.innerHTML=h + sessionBar();
   var resumeBtn=document.getElementById('resume-crucible');
-  if(resumeBtn) resumeBtn.onclick=function(){if(restoreCrucibleRun()){startCrucible();}};
+  if(resumeBtn) resumeBtn.onclick=function(){
+    ForgeApp.loading(app,{label:'Loading your run',body:'Restoring the questions and time remaining.'});
+    ForgeData.loadSubject(saved.subject).then(function(){if(restoreCrucibleRun()){startCrucible();}}).catch(function(){
+      app.innerHTML=ForgeState.html('error',{label:'Your run could not be restored',body:'The question data is unavailable. Check your connection and try again.'})+sessionBar();
+    });
+  };
   var discardBtn=document.getElementById('discard-crucible');
   if(discardBtn) discardBtn.onclick=function(){clearCrucibleRun();renderSubject();};
   app.querySelectorAll('.pick-btn').forEach(function(b){
@@ -621,6 +627,12 @@ function render(){
   if(state.phase==='join') renderJoin();
   else if(state.phase==='locked') renderLocked();
   else if(state.phase==='subject') renderSubject();
+  else if(state.phase==='bank'&&!ForgeData.isLoaded(state.subject)){
+    ForgeApp.loading(app,{label:'Loading '+(SUBJECTS[state.subject]&&SUBJECTS[state.subject].label||'subject'),body:'Getting your timed practice questions ready.'});
+    ForgeData.loadSubject(state.subject).then(render).catch(function(){
+      app.innerHTML=ForgeState.html('error',{label:'Questions are unavailable',body:'We couldn’t load this subject. Check your connection and try again.'})+sessionBar();
+    });
+  }
   else if(state.phase==='bank') renderBank();
   else if(state.phase==='ready') renderReady();
   else if(state.phase==='quiz') renderQuestion();

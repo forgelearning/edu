@@ -10,6 +10,11 @@
   }
   function key(value){return String(value==null?'':value).trim().toLowerCase();}
   function bankData(){ return window.ForgeAssignmentBanks || window.BANKS || {}; }
+  function availableQuestionCount(data){
+    if(!data) return 0;
+    if(data.assignableQuestionCount!=null) return data.assignableQuestionCount;
+    return (data.questions||[]).filter(function(q){return !q.type||q.type==='fill_blank';}).length;
+  }
   function bankForQuestion(id){
     var wanted=String(id||'').replace(/-RF$/,'');
     var all=bankData();
@@ -120,7 +125,7 @@
     entries.forEach(function(entry){if(entry.correct) correct++;});
     var total=banks.reduce(function(sum,bank){
       var data=bankData()[bank];
-      var available=data&&data.questions?data.questions.filter(function(q){return !q.type||q.type==='fill_blank';}).length:0;
+      var available=availableQuestionCount(data);
       return sum+Math.min(8,available);
     },0);
     return {answered:entries.length,correct:correct,total:total,complete:total>0&&entries.length>=total};
@@ -155,7 +160,7 @@
      "Open next assignment" always reopened the first bank. */
   function bankTotal(bank){
     var data=bankData()[bank];
-    var available=data&&data.questions?data.questions.filter(function(q){return !q.type||q.type==='fill_blank';}).length:0;
+    var available=availableQuestionCount(data);
     return Math.min(8,available);
   }
   function bankProgress(assignment,bank,payload){

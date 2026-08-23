@@ -21,7 +21,8 @@
 <script src="scripts/forge-product-analytics.js"></script>
 <!-- BANKS/SUBJECTS: needed to work out which subject a reforge actually came
      from, since Anvil rows log subject:'anvil' rather than the real subject. -->
-<script src="data/forge-data.js"></script>
+<script src="data/forge-catalog.js?v=20260823"></script>
+<script src="data/forge-question-index.js?v=20260823"></script>
 <script src="data/misconception-labels.js?v=20260813"></script>
 <script src="scripts/forge-misconception-state.js"></script>
 <script src="scripts/forge-metrics.js"></script>
@@ -255,19 +256,8 @@ function renderDashboard() {
   // Legacy Anvil rows log subject:'anvil' (the source page, not the subject), so without
   // this an Economics reforge is indistinguishable from a Computing one and
   // gets counted against whichever class the student happens to sit in.
-  var QID_TO_SUBJECT = {};
-  var MC_TO_SUBJECT = {};
-  if (typeof BANKS !== 'undefined' && typeof SUBJECTS !== 'undefined') {
-    Object.keys(SUBJECTS).forEach(function(sk) {
-      (SUBJECTS[sk].banks || []).forEach(function(bk) {
-        if (!BANKS[bk]) return;
-        (BANKS[bk].questions || []).forEach(function(q) {
-          QID_TO_SUBJECT[q.id] = sk;
-          if (q.tag) MC_TO_SUBJECT[q.tag] = sk;
-        });
-      });
-    });
-  }
+  var QID_TO_SUBJECT = typeof FORGE_QUESTION_INDEX !== 'undefined' ? FORGE_QUESTION_INDEX.subjects || {} : {};
+  var MC_TO_SUBJECT = typeof FORGE_QUESTION_INDEX !== 'undefined' ? FORGE_QUESTION_INDEX.misconceptionSubjects || {} : {};
 
   // Reforge suffixes stack (GRO-01-RF-ANVIL), so strip them repeatedly.
   function baseQuestionId(qid) {

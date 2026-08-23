@@ -2808,7 +2808,7 @@ document.body.classList.add('audit-test');
 })();
 </script>
 
-<script src="data/forge-data.js"></script>
+<script src="data/forge-catalog.js?v=20260823"></script>
 <script>
 (function(){
   if (typeof SUBJECTS === 'undefined' || typeof BANKS === 'undefined') return;
@@ -2817,7 +2817,7 @@ document.body.classList.add('audit-test');
     if (!s || !s.banks) return;
     var bankCount = s.banks.length;
     var qCount = s.banks.reduce(function(sum, b){
-      return sum + (BANKS[b] && BANKS[b].questions ? BANKS[b].questions.length : 0);
+      return sum + (BANKS[b] ? BANKS[b].questionCount || 0 : 0);
     }, 0);
     var statEl = card.querySelector('.subj-stat');
     if (statEl) statEl.innerHTML = '<span class="subj-stat-n">' + qCount + '</span> questions · ' + bankCount + ' bank' + (bankCount === 1 ? '' : 's');
@@ -2842,7 +2842,7 @@ document.body.classList.add('audit-test');
     cards.forEach(function(card, index){
       var s = SUBJECTS[card.dataset.subj];
       card.__forgeQuestionCount = s && s.banks ? s.banks.reduce(function(sum, b){
-        return sum + (BANKS[b] && BANKS[b].questions ? BANKS[b].questions.length : 0);
+        return sum + (BANKS[b] ? BANKS[b].questionCount || 0 : 0);
       }, 0) : 0;
       card.__forgeOriginalIndex = index;
     });
