@@ -134,14 +134,35 @@ propagates into its `*-COV-*` copies and fixing the source fixes them all.
 
   **Read that number carefully.** It is true of what a student sees, and it is
   produced almost entirely by a runtime patch rather than by authoring. Remove
-  the anti-cue loop and **2,430 of 15,063 items (16.1%)** have the correct
-  answer as the single longest option — `gcse-econ` 61.2%, `econ` 50.9%,
-  `gcse-psych` 44.3%. (Re-measured 2026-08-21.) Run `node dev/audit-source-cues.js` to re-measure; it
-  loads the bank with and without the loop and reports only, never failing a
-  build.
+  the anti-cue loop and **1,638 of 15,159 items (10.8%)** have the correct
+  answer as the single longest option — `gcse-psych` 39.9%, `gcse-hist` 34.8%,
+  `bus` 32.6%, `cs` 26.7%, `econ` 26.0%. (Re-measured 2026-08-26. The previous
+  figure here was 2,430 / 16.1% naming `gcse-econ` 61.2% as the worst subject;
+  `gcse-econ`, `gcse-geo` and `geo` are all at **0** now. Other sessions cleared
+  them without updating this file, which is the recurring failure mode — always
+  re-measure.)
+
+  Two tools read this, both loading the bank with and without the loop via
+  `dev/lib/source-bank.js`:
+
+  - `node dev/audit-source-cues.js` — diagnostic. Reports the split by subject
+    and never fails a build. Use it to understand the shape of the backlog.
+  - `node dev/check-source-cues.js` — the gate, in `npm run check` and CI.
+    Ratchets the total against `SOURCE_CUE_BASELINE` so the backlog cannot
+    grow. Pass a bank id or subject key (`node dev/check-source-cues.js
+    GCSE-GEO-URB`) to list the offending ids while authoring; filtered runs
+    never fail, since a partial run cannot see the pinned total.
+
+  **`dev/audit-banks.js` cannot catch a newly cued question**, which is why the
+  gate above exists. The audit measures the post-loop bank, so a fresh batch
+  where the key is the giveaway every time passes it cleanly — that is exactly
+  what happened to the first draft of the Year 10 GCSE Geography extension
+  (12 of 12 cued, `npm run check` green). Writing a nuanced correct answer
+  against blunt distractors is the natural way to write a question, so expect
+  to trip this and fix it by lengthening a distractor, never by padding the key.
 
   So the loop is load-bearing, not a tidy-up. Breaking it would instantly cue
-  a sixth of the bank. Fixing the source questions is what would let it be
+  roughly a tenth of the bank. Fixing the source questions is what would let it be
   deleted — and it is also the only way to fix the recycling it causes, since
   a loop that must find a distractor longer than the key has to take one from
   somewhere.

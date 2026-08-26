@@ -44,6 +44,9 @@ jobs:
       - name: Audit distractor balance and structure
         run: node dev/audit-banks.js
 
+      - name: Ratchet longest-answer cues in the source
+        run: node dev/check-source-cues.js
+
       - name: Audit Supabase security boundary
         run: node dev/audit-supabase-security.js
 

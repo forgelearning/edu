@@ -9,9 +9,13 @@
  * question whose correct answer was the longest option.
  *
  * This script loads the bank twice — once as-is, once with that loop removed —
- * so the debt underneath the patch is visible. It is reporting-only and never
- * fails a build: the number is large, it is not a regression, and pinning a
- * ratchet on it would just block every PR.
+ * so the debt underneath the patch is visible. It is reporting-only: use it to
+ * understand the backlog and its shape.
+ *
+ * `dev/check-source-cues.js` is the gate built on the same measurement. It
+ * ratchets the total so the backlog cannot grow, and lists offending ids for a
+ * single bank while you are authoring. This script is the diagnostic; that one
+ * fails the build.
  *
  * Run it before deciding that a cue-related backlog is hand-authoring work.
  * When this was written, 393 of the 394 SHORT CUE items were authored that way
@@ -20,44 +24,19 @@
  */
 'use strict';
 
-const fs = require('fs');
-const path = require('path');
+const { loadBankPair, bankToSubject } = require('./lib/source-bank.js');
 
-const SRC = path.join(__dirname, '..', 'data', 'forge-data.js');
-const lines = fs.readFileSync(SRC, 'utf8').split('\n');
-
-// The loop is delimited by these two comments. Matching on them rather than on
-// line numbers means this keeps working as the file grows around it.
-const START_MARK = 'If clause de-duplication shortened a distractor below the key';
-const END_MARK = 'Resolve the small set of coverage twins whose Reforge options are only a';
-const start = lines.findIndex((l) => l.includes(START_MARK));
-const end = lines.findIndex((l) => l.includes(END_MARK));
-if (start === -1 || end === -1 || end <= start) {
-  console.error(
-    'Could not locate the anti-cue loop in data/forge-data.js.\n' +
-    'It is delimited by two comments; if they were reworded, update START_MARK/END_MARK here.'
-  );
-  process.exit(2);
-}
-
-const load = (source) => new Function('window', source + ';return {BANKS:BANKS,SUBJECTS:SUBJECTS};')({});
-const patched = load(lines.join('\n'));
-const raw = load(lines.slice(0, start).concat(lines.slice(end)).join('\n'));
-
-const subjectOf = (data) => {
-  const map = {};
-  for (const key of Object.keys(data.SUBJECTS)) {
-    for (const bank of data.SUBJECTS[key].banks || []) if (!map[bank]) map[bank] = key;
-  }
-  return map;
-};
+// Locating and stripping the anti-cue loop lives in dev/lib/source-bank.js,
+// shared with dev/check-source-cues.js — one copy of a heuristic that depends
+// on two comments in data/forge-data.js keeping their wording.
+const { patched, raw } = loadBankPair();
 
 function cueStats(data) {
-  const bankToSubject = subjectOf(data);
+  const subjectFor = bankToSubject(data);
   const per = {};
   let total = 0, cued = 0;
   for (const bankId of Object.keys(data.BANKS)) {
-    const subject = bankToSubject[bankId] || '(orphan)';
+    const subject = subjectFor[bankId] || '(orphan)';
     for (const question of data.BANKS[bankId].questions || []) {
       for (const item of [question, question.reforge]) {
         if (!item || !item.options || typeof item.correct !== 'string') continue;
