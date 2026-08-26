@@ -9553,6 +9553,105 @@ BANKS["GCSE-GEO-UKLAND"].questions.push(
      options:{A:"Attrition wears fragments down as they collide and are carried along",B:"The river deposits its smallest particles first, leaving rounded ones behind",C:"Rounded pebbles are carried into the river by tributaries near the mouth",D:"Chemical weathering dissolves the corners of every pebble in the channel"},correct:"A"}}
 );
 
+// Year 10 pilot extension — Paper 2: UK's Evolving Human Landscape.
+BANKS["GCSE-GEO-UKHUMAN"].questions.push(
+  {id:"GCSE-UKHUMAN-Y10-01",spec:"GCSE-UKHUMAN",tag:"MC-GG-UKH-URBAN-CHANGE",
+   stem:"A green belt surrounds many UK cities. A student says its purpose is to give city residents somewhere pleasant to visit. Why is this incomplete?",
+   options:{A:"Its main purpose is preventing urban sprawl and stopping towns merging",B:"Green belt land is owned by the public and is entirely open for recreation everywhere",C:"Green belts exist only to protect rare wildlife habitats from any development",D:"Green belt land must legally be left completely unfarmed and unused at all times"},
+   correct:"A",
+   scaffold:"A green belt is a planning restriction, not a park. Its purposes are to check unrestricted sprawl, prevent neighbouring towns merging, safeguard countryside and encourage building on derelict urban land instead. Much of it is private farmland with no public access, which is why the recreation answer only captures a side effect.",
+   reforge:{stem:"What is the strongest argument made by those who want green belt land released for housing?",
+     options:{A:"Green belt land contains no farmland or wildlife of any value whatsoever",B:"Restricting land supply near cities pushes house prices beyond local incomes",C:"Building on green belt land would immediately end all commuting into cities",D:"Green belts were designed to be removed entirely after a fixed period of time"},correct:"B"}},
+
+  {id:"GCSE-UKHUMAN-Y10-02",spec:"GCSE-UKHUMAN",tag:"MC-GG-UKH-URBAN-CHANGE",
+   stem:"A council must choose between a brownfield and a greenfield site for new housing. What is the main disadvantage of the brownfield option?",
+   options:{A:"Brownfield sites are always located far from any existing public transport",B:"Building on brownfield land increases pressure on countryside at the urban fringe",C:"Previous industrial use may mean contaminated ground that is costly to clear",D:"Brownfield sites have no existing services such as water, power or drainage"},
+   correct:"C",
+   scaffold:"Brownfield is previously developed land inside the built-up area. It reuses existing infrastructure and takes pressure off the countryside, which is why planning policy favours it. The cost is real though: demolition, contamination from former industry, and awkward site shapes make it more expensive per home than a clear greenfield site.",
+   reforge:{stem:"Why does UK planning policy generally favour brownfield sites over greenfield ones?",
+     options:{A:"Brownfield sites are always considerably cheaper to build houses on",B:"Greenfield sites are legally protected everywhere in the UK from development",C:"Greenfield development is the only way to provide any affordable housing",D:"It reuses derelict urban land and reduces pressure on the countryside"},correct:"D"}},
+
+  {id:"GCSE-UKHUMAN-Y10-03",spec:"GCSE-UKHUMAN",tag:"MC-GG-UKH-STRUCTURAL-CHANGE",
+   stem:"Average incomes and life expectancy are generally higher in the South East than in parts of the North East. What is the main historical reason?",
+   options:{A:"The North East has a much colder climate, which directly lowers all of its local incomes",B:"Heavy industry declined in the North while services and finance grew in the South",C:"The North East has always had a far smaller population than the South East",D:"Government has never invested any money in northern regions at any point"},
+   correct:"B",
+   scaffold:"The North-South divide is a legacy of structural change. Coal, steel, shipbuilding and textiles employed whole northern towns, and their closure from the 1970s removed the economic base. Growth since then has concentrated in London and the South East around finance, services and quaternary work, so the gap widened rather than closed.",
+   reforge:{stem:"Which policy is most directly aimed at reducing the UK's North-South divide?",
+     options:{A:"Investing in transport and enterprise zones in northern city regions",B:"Encouraging further expansion of financial services within central London",C:"Restricting the number of people permitted to live in northern England",D:"Increasing the rate of tax paid by every household living in the North"},correct:"A"}},
+
+  {id:"GCSE-UKHUMAN-Y10-04",spec:"GCSE-UKHUMAN",tag:"MC-GG-UKH-RURAL-HOUSING",
+   stem:"In some Cornish villages more than a third of homes are second homes or holiday lets. Beyond high prices, what is the main effect on the community?",
+   options:{A:"Second-home owners increase demand for local schools throughout the year",B:"Holiday lets guarantee permanent full-time employment for every single local resident",C:"Second homes have no measurable effect on how village services are used at all",D:"Off-season the village empties, so shops, buses and schools lose year-round users"},
+   correct:"D",
+   scaffold:"Second homes remove permanent residents from the population. Shops, pubs, bus routes and primary schools need year-round customers and pupils to survive, so a village that is busy in August and empty in February loses the services that make it liveable. That in turn pushes more young families out, which is the spiral local housing policies try to break.",
+   reforge:{stem:"Why do some Cornish parishes now require new-build homes to be for permanent residents only?",
+     options:{A:"To increase the total number of tourists visiting the parish each summer",B:"To keep housing available for local people and sustain year-round services",C:"Because national law forbids anyone from owning more than one single house",D:"To reduce the amount of council tax that second-home owners have to pay"},correct:"B"}},
+
+  {id:"GCSE-UKHUMAN-Y10-05",spec:"GCSE-UKHUMAN",tag:"MC-GG-UKH-RURAL-ECONOMY",
+   stem:"Cornwall has invested heavily in superfast broadband across rural areas. How does this support economic diversification?",
+   options:{A:"Broadband directly reopens the county's former tin mines and fishing fleets",B:"It guarantees that every resident of Cornwall will find well-paid seasonal work",C:"Broadband removes the need for Cornwall to have any transport links at all",D:"It lets people run businesses and work remotely, adding year-round income"},
+   correct:"D",
+   scaffold:"Cornwall's problem is dependence on seasonal, low-wage tourism and declining primary industry. Connectivity lets knowledge-based businesses operate from a peripheral location and allows remote workers to live there year-round, which spreads income across the calendar instead of concentrating it in the summer. It is diversification, not replacement.",
+   reforge:{stem:"Why is economic diversification particularly important for a rural area dependent on tourism?",
+     options:{A:"Diversification removes the need to attract any visitors to the area again",B:"Tourism is the only sector that can ever operate in a rural area anywhere",C:"It reduces vulnerability to a bad season, poor weather or changing tastes",D:"Diversifying always produces higher wages than tourism does in every case"},correct:"C"}},
+
+  {id:"GCSE-UKHUMAN-Y10-06",spec:"GCSE-UKHUMAN",tag:"MC-GG-UKH-PLACE-ACCESS",
+   stem:"A city centre draws shoppers from a 40 km radius, while a village shop serves only its own parish. Which term describes this difference?",
+   options:{A:"Population density measured across the surrounding administrative region",B:"Sphere of influence — the area a settlement's services actually draw people from",C:"The rural-urban continuum, running all the way from the remotest countryside to the core",D:"Net migration between the city centre and the villages that surround it"},
+   correct:"B",
+   scaffold:"Sphere of influence grows with the range of services offered. A village shop sells low-order convenience goods people will not travel for; a city centre offers high-order comparison goods, hospitals and universities that justify a long journey. This is why settlement hierarchy and sphere of influence are two sides of the same idea.",
+   reforge:{stem:"Why does a large hospital have a bigger sphere of influence than a village post office?",
+     options:{A:"Hospitals are always built in the exact geographical centre of a region",B:"Post offices are legally restricted to serving one single parish at a time",C:"Village services cost more money to use, so fewer people travel to them",D:"People will travel much further for a specialised, high-order service"},correct:"D"}},
+
+  {id:"GCSE-UKHUMAN-Y10-07",spec:"GCSE-UKHUMAN",tag:"MC-GG-UKH-POPULATION-PATTERNS",
+   stem:"A Cornish parish has a median age of 54 against a UK median of 40. What is the most likely combination of causes?",
+   options:{A:"A very high birth rate combined with sustained migration of young families in",B:"An unusually high death rate among the older residents of the parish itself",C:"Young adults leaving for work and study while retired people move in",D:"The parish has recently been redrawn to include a large new housing estate"},
+   correct:"C",
+   scaffold:"Two flows work in the same direction. Young adults leave rural areas for universities and urban jobs, and retirees move in for the environment and lower housing costs relative to cities. Neither alone would age the population as sharply; together they hollow out the middle of the pyramid and raise demand for health and social care.",
+   reforge:{stem:"What is the main service pressure created by an ageing rural population?",
+     options:{A:"Sharply rising demand for new primary school places across the parish",B:"Rising demand for healthcare and social care, often far from the nearest hospital",C:"A rapid increase in the number of people who are looking for full-time work locally",D:"Increased need for university places within the immediate local area"},correct:"B"}},
+
+  {id:"GCSE-UKHUMAN-Y10-08",spec:"GCSE-UKHUMAN",tag:"MC-GG-UKH-CONNECTIVITY",
+   stem:"Crossrail cut journey times across London and property values rose sharply near its new stations before it even opened. What does this show?",
+   options:{A:"Transport investment reshapes accessibility, and land values follow it",B:"Property values in London are determined entirely by the age of the housing",C:"Rail investment has no effect on where people choose to live or work",D:"Journey times matter to businesses but never influence any residential choice"},
+   correct:"A",
+   scaffold:"Accessibility is what land value responds to. A station that puts central London within thirty minutes changes what a location is worth for housing and offices alike, and the market prices that in as soon as the scheme is certain. It is the same mechanism as the Jubilee Line Extension in Docklands, at a larger scale.",
+   reforge:{stem:"Why is improved transport connectivity often described as a driver of regeneration rather than just a convenience?",
+     options:{A:"Because new railway lines are always built through the poorest districts",B:"Because faster journeys reduce the total population of the whole of the city region",C:"Because better access attracts investment, businesses and residents to an area",D:"Because it removes the need for any other investment in a run-down area"},correct:"C"}},
+
+  {id:"GCSE-UKHUMAN-Y10-09",spec:"GCSE-UKHUMAN",tag:"MC-GG-UKH-POPULATION-PATTERNS",
+   stem:"London's population has a notably large share of people aged 20 to 35 compared with the UK average. What best explains this?",
+   options:{A:"London has a much higher birth rate than every other region of the UK",B:"People aged over 60 are not permitted to live within the Greater London area",C:"Life expectancy in London is far lower than it is elsewhere in the country",D:"Internal migration of young adults arriving for work, study and opportunity"},
+   correct:"D",
+   scaffold:"Internal migration is selective by age. Young adults are the most mobile group, moving to London for universities, graduate jobs and the range of opportunity a large labour market offers. Many later leave when they have children and want space, which is why London's pyramid bulges in the twenties and thins again in the forties.",
+   reforge:{stem:"Why do many people leave London in their thirties and forties despite moving there earlier?",
+     options:{A:"Housing costs and space push families out towards commuter towns",B:"Employment opportunities in London disappear entirely after the age of thirty",C:"People are required to leave the capital once they have started a family",D:"Transport connections from London to other regions become unavailable"},correct:"A"}},
+
+  {id:"GCSE-UKHUMAN-Y10-10",spec:"GCSE-UKHUMAN",tag:"MC-GG-UKH-STRUCTURAL-CHANGE",
+   stem:"A former industrial town replaces lost factory jobs with distribution warehouse and call-centre work. A student calls this a complete recovery. Why is that too simple?",
+   options:{A:"Replacement service jobs are often lower paid, part-time or on insecure contracts",B:"Warehouse and call-centre jobs cannot legally be created in former industrial towns",C:"The new jobs employ exactly the same number of people as the factories did",D:"Service-sector employment always pays considerably more than manufacturing work"},
+   correct:"A",
+   scaffold:"Counting jobs is not the same as counting job quality. Manufacturing work was often unionised, full-time and skilled, with wages that supported a household. Much of what replaced it is lower paid and less secure, so a town can restore its employment rate while household incomes and stability stay below what they were.",
+   reforge:{stem:"Which evidence would best test whether a town has genuinely recovered from deindustrialisation?",
+     options:{A:"The total number of business premises currently standing in the town",B:"The number of people who describe the town as having recovered",C:"Median household income and job security, not just the employment rate",D:"The number of new shops that have opened up in the town centre this year"},correct:"C"}},
+
+  {id:"GCSE-UKHUMAN-Y10-11",spec:"GCSE-UKHUMAN",tag:"MC-GG-UKH-INVESTMENT",
+   stem:"A Japanese car manufacturer opens a UK plant employing 4,000 people. Which is the strongest reason to treat this as a mixed outcome for the UK?",
+   options:{A:"Foreign firms are simply not permitted to employ any UK workers in their own factories",B:"The plant brings jobs and skills, but decisions and profits sit outside the UK",C:"The plant will certainly employ more people than any UK-owned firm could",D:"Foreign direct investment has no measurable effect on UK employment levels"},
+   correct:"B",
+   scaffold:"FDI delivers real gains: jobs, training, supply-chain contracts and export earnings. The vulnerability is control. A decision made at headquarters abroad, responding to costs or trade rules elsewhere, can close the plant regardless of local performance, and the profit is repatriated rather than reinvested locally by default.",
+   reforge:{stem:"Why is a region that depends heavily on one large foreign-owned employer considered vulnerable?",
+     options:{A:"Foreign-owned firms are legally obliged to close after a fixed number of years",B:"Large employers always pay lower wages than small local firms do",C:"Such regions are barred from attracting any further outside investment",D:"A decision made abroad can remove the region's main employer at short notice"},correct:"D"}},
+
+  {id:"GCSE-UKHUMAN-Y10-12",spec:"GCSE-UKHUMAN",tag:"MC-GG-UKH-CULTURAL-MIGRATION",
+   stem:"Migrants make up a disproportionate share of NHS and construction staff in London. What does this best illustrate?",
+   options:{A:"Migration to the UK is driven entirely by the availability of public services",B:"Migrants only ever work in the public sector rather than in private businesses",C:"Migration fills specific labour shortages that the resident workforce leaves unmet",D:"Every sector of the London economy has an identical proportion of migrant workers in it"},
+   correct:"C",
+   scaffold:"Labour migration responds to demand. Where a sector cannot recruit enough workers domestically, whether through training bottlenecks, pay or an ageing workforce, migration fills the gap. That is why the effect is concentrated in particular sectors rather than spread evenly, and why restricting it has sector-specific consequences.",
+   reforge:{stem:"Why does an ageing UK population strengthen the economic argument for inward migration?",
+     options:{A:"Migrants of working age help support a growing retired dependent population",B:"Migration causes the total UK population to fall back to its earlier level",C:"An ageing population reduces demand for healthcare and social care workers",D:"Older residents are legally required to be replaced by new arrivals each year"},correct:"A"}}
+);
+
 const geo640BalancePlans = {
   "GCSE-GEO-HAZ":[/^GCSE-HAZ-(3[5-9]|4[0-9])$/,"BCDABCDABCDABCD","BDCADADCCDCABAD"],
   "GCSE-GEO-DEV":[/^GCSE-DEV-(4[3-9]|5[0-6])$/,"ABCDABCDABCDAB","CCCBCBADCDCBBC"],
