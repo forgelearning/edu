@@ -9452,6 +9452,107 @@ BANKS["GCSE-GEO-INDIA"].questions.push(
      options:{A:"A choropleth map shading each state by its total resident population",B:"A pie chart showing each state's percentage share of national land area",C:"A scatter graph plotting each state's literacy rate against its rainfall",D:"A proportional flow-line map with arrow widths scaled to the flow size"},correct:"D"}}
 );
 
+// Year 10 pilot extension — Paper 2: UK's Evolving Physical Landscape.
+// Two new tags (WAVE-TYPE, UPPER-COURSE) cover gaps the existing 14 could not
+// describe honestly; both carry a label and a starter.
+BANKS["GCSE-GEO-UKLAND"].questions.push(
+  {id:"GCSE-UKLAND-Y10-01",spec:"GCSE-UKLAND",tag:"MC-GG-UKL-WAVE-TYPE",
+   stem:"A beach is built up over a calm summer and cut back during winter storms. What difference between wave types explains this?",
+   options:{A:"Constructive waves have a stronger swash; destructive ones a stronger backwash",B:"Constructive waves occur in winter, and destructive waves only ever in the summer",C:"Destructive waves carry far more sand onto the beach than constructive waves",D:"Wave type has no influence on whether a beach gains or loses any material"},
+   correct:"A",
+   scaffold:"The balance of swash and backwash decides whether sediment stays. Constructive waves are low and long, so a powerful swash carries material up the beach and a weak backwash leaves it there. Destructive waves are tall and steep with a short swash and a strong backwash that drags sediment offshore, so the beach is scoured.",
+   reforge:{stem:"Which combination describes a destructive wave?",
+     options:{A:"Low height, long wavelength, strong swash and a weak backwash",B:"Tall and steep, with a weak swash and a much stronger backwash",C:"Tall and steep, with a strong swash that builds the beach profile up",D:"Low height and long wavelength, with almost no swash or backwash at all"},correct:"B"}},
+
+  {id:"GCSE-UKLAND-Y10-02",spec:"GCSE-UKLAND",tag:"MC-GG-UKL-WAVE-TYPE",
+   stem:"Wave energy reaching a UK beach depends partly on fetch. What does fetch mean?",
+   options:{A:"The depth of the water measured directly offshore from the beach",B:"The distance of open water a wind blows across before reaching the coast",C:"The height a wave reaches at the moment it finally breaks on the shore",D:"The total number of waves that break on a beach in any given single hour"},
+   correct:"B",
+   scaffold:"The longer the fetch, the more time and distance the wind has to transfer energy into the water, so the larger the waves arriving. This is why the Atlantic-facing coasts of Cornwall receive far more powerful waves than sheltered stretches of the North Sea coast, and why fetch is part of explaining where erosion is fastest.",
+   reforge:{stem:"Two UK beaches experience the same wind speed, but one receives much larger waves. What is the most likely reason?",
+     options:{A:"One beach is composed of sand while the other is made of shingle",B:"The two beaches are at slightly different heights above mean sea level",C:"That beach has a much longer fetch of open water facing the wind",D:"One beach happens to face north while the other one faces to the south"},correct:"C"}},
+
+  {id:"GCSE-UKLAND-Y10-03",spec:"GCSE-UKLAND",tag:"MC-GG-UKL-UPPER-COURSE",
+   stem:"A waterfall in the upper course has a deep plunge pool and a steep gorge downstream of it. How did the gorge form?",
+   options:{A:"The gorge was cut by a glacier long before the waterfall existed",B:"Deposition of large boulders gradually built up the steep gorge walls",C:"The waterfall retreated upstream, leaving the gorge it cut behind it",D:"The gorge formed first and the waterfall later flowed into its lower end"},
+   correct:"C",
+   scaffold:"Hard rock overlies softer rock. The softer rock is undercut, leaving an overhang that eventually collapses, and the waterfall shifts a short distance upstream. Repeat that over thousands of years and the retreating waterfall leaves a steep-sided gorge marking every position it once occupied.",
+   reforge:{stem:"Why does a waterfall retreat upstream over time?",
+     options:{A:"Because the river's discharge falls steadily as the years go by",B:"Because deposition at the base slowly pushes the whole waterfall back",C:"Because the plunge pool fills completely with sediment and blocks it",D:"Softer rock beneath is undercut until the hard overhang collapses"},correct:"D"}},
+
+  {id:"GCSE-UKLAND-Y10-04",spec:"GCSE-UKLAND",tag:"MC-GG-UKL-UPPER-COURSE",
+   stem:"An upper-course valley is narrow and steep-sided, with interlocking spurs. Which process dominates here?",
+   options:{A:"Vertical erosion cutting downwards, with weathering loosening the sides",B:"Lateral erosion swinging the channel sideways across a wide flat floor",C:"Deposition of fine silt building up the valley floor after each flood",D:"Glacial erosion widening the valley into a broad U-shaped cross-profile"},
+   correct:"A",
+   scaffold:"Near the source the river is steep and turbulent but carries a coarse, angular load, so its energy goes into cutting downwards. The valley sides are then loosened by weathering and mass movement, giving a narrow V-shape. The river lacks the power to cut sideways, so it winds around obstacles, leaving spurs that interlock.",
+   reforge:{stem:"What is the key difference between a V-shaped valley and a U-shaped valley in the UK uplands?",
+     options:{A:"A V-shaped valley is always found closer to the mouth of the river",B:"A U-shaped valley was cut by a glacier widening a former river valley",C:"A U-shaped valley is produced entirely by deposition rather than erosion",D:"A V-shaped valley forms only where the underlying rock is limestone"},correct:"B"}},
+
+  {id:"GCSE-UKLAND-Y10-05",spec:"GCSE-UKLAND",tag:"MC-GG-UKL-MEANDER",
+   stem:"A curved lake sits on a floodplain, separated from the river channel beside it. How did it form?",
+   options:{A:"A glacier scooped out a curved hollow that later filled with rainwater",B:"A meander neck was cut through in a flood and the old bend was sealed off",C:"The river deposited a curved levee that trapped water permanently behind it",D:"Groundwater rose to the surface along a curved line of permeable rock"},
+   correct:"B",
+   scaffold:"Erosion on the outside of two adjacent bends narrows the neck of land between them. In a high-discharge flood the river breaks through, taking the shorter, steeper route. Flow through the old bend slows, so deposition seals both ends and leaves an oxbow lake that gradually silts up.",
+   reforge:{stem:"Why does an oxbow lake become cut off from the river rather than staying connected to it?",
+     options:{A:"The lake is lifted above the river as the floodplain rises over time",B:"Farmers deliberately dam both ends of the old bend in order to create a reservoir",C:"Flow through the old bend slows, so deposition seals off both of its ends",D:"The river changes direction entirely and flows away from the old bend"},correct:"C"}},
+
+  {id:"GCSE-UKLAND-Y10-06",spec:"GCSE-UKLAND",tag:"MC-GG-UKL-LONGSHORE",
+   stem:"A spit extends across a river mouth and its far end curves landwards, with salt marsh behind it. What explains the curved end?",
+   options:{A:"The river's current pushes the end of the spit back towards the land",B:"Salt marsh vegetation physically drags the end of the spit round as it grows",C:"Occasional changes in the prevailing wind direction curve the end round",D:"Spits always form in a curve because of the rotation of the Earth itself"},
+   correct:"C",
+   scaffold:"Longshore drift moves sediment along the coast and deposits it where the coastline changes direction, building a spit into open water. A secondary wind direction periodically pushes the exposed end landwards, producing recurved hooks. Behind the spit the water is sheltered, so silt settles and salt marsh develops.",
+   reforge:{stem:"Why does salt marsh develop behind a spit rather than in front of it?",
+     options:{A:"The sheltered water behind the spit is calm enough for silt to settle",B:"Salt marsh plants can only grow on the seaward side of any sandy spit",C:"The water behind a spit is deeper, which suits marsh vegetation better",D:"Wave energy behind a spit is much higher, which brings in more sediment"},correct:"A"}},
+
+  {id:"GCSE-UKLAND-Y10-07",spec:"GCSE-UKLAND",tag:"MC-GG-UKL-COAST-MANAGE",
+   stem:"A council chooses beach nourishment over building a new sea wall. What is the main trade-off it has accepted?",
+   options:{A:"Nourishment is far more expensive to install than a sea wall would be",B:"Nourishment permanently ends all erosion along that stretch of coastline",C:"It is cheaper and looks natural, but must be repeated as sand washes away",D:"Nourishment protects the cliff but removes the beach that tourists come for"},
+   correct:"C",
+   scaffold:"Soft engineering works with natural processes rather than against them. Nourishment costs far less than a sea wall, keeps the beach for tourism and absorbs wave energy. The cost is recurring: the added sand is itself eroded, so it needs topping up every few years, and the sediment has to be dredged from somewhere else.",
+   reforge:{stem:"Which is the clearest example of soft engineering on a coastline?",
+     options:{A:"A concrete sea wall with a curved recurved face at its top",B:"A rock armour revetment placed at the base of an eroding cliff",C:"A line of timber groynes built out across the beach at intervals",D:"Replanting marram grass to stabilise dunes behind a sandy beach"},correct:"D"}},
+
+  {id:"GCSE-UKLAND-Y10-08",spec:"GCSE-UKLAND",tag:"MC-GG-UKL-COAST-MANAGE",
+   stem:"On part of the Holderness Coast the shoreline management plan is 'no active intervention', while Mappleton is defended. Why defend some stretches and not others?",
+   options:{A:"Undefended stretches have no erosion occurring along them at present",B:"Defences can only ever be built where the cliff is made of resistant hard rock",C:"Stretches are chosen at random because erosion rates cannot be predicted",D:"Defences are placed where the value at risk justifies the cost of protection"},
+   correct:"D",
+   scaffold:"Coastal management is a cost-benefit judgement. Mappleton's road and homes justified rock groynes and a revetment; long stretches of farmland do not, because the cost of defending them exceeds the value of the land lost. That is why holding the line everywhere was abandoned, and it is what makes the policy contested by those living on undefended stretches.",
+   reforge:{stem:"What is the main criticism made by landowners on an undefended stretch of coast next to a defended one?",
+     options:{A:"Defences upcoast starve their beach of sediment, so erosion speeds up",B:"Defended stretches attract more storms towards the neighbouring coastline",C:"Building defences anywhere raises sea level along the whole coastline",D:"Undefended land becomes more valuable, which raises the tax paid on it"},correct:"A"}},
+
+  {id:"GCSE-UKLAND-Y10-09",spec:"GCSE-UKLAND",tag:"MC-GG-UKL-SUBAERIAL",
+   stem:"Holderness cliffs of boulder clay slump after heavy rain, forming a curved scar and a lobe of mud at the base. Is this erosion?",
+   options:{A:"Yes — slumping is a marine erosion process driven by wave action",B:"No — it is mass movement, where saturated material slides down under gravity",C:"Yes — the rain itself erodes the whole cliff face by dissolving the clay away",D:"No — it is chemical weathering breaking the clay down where it sits"},
+   correct:"B",
+   scaffold:"Waves erode the cliff foot and steepen it, but the slump itself is mass movement: rain saturates the permeable clay, adds weight and reduces friction, so a block rotates and slides. The two work together, which is why Holderness retreats fastest after wet winters, and why a question can ask for both marine and sub-aerial processes.",
+   reforge:{stem:"How do sub-aerial processes and marine erosion combine to make a cliff retreat?",
+     options:{A:"Sub-aerial processes act only after all of the marine erosion has fully stopped",B:"Both processes are simply different names for exactly the same thing",C:"Waves undercut the base while weathering and mass movement weaken the face",D:"Marine erosion protects the cliff from the sub-aerial processes above it"},correct:"C"}},
+
+  {id:"GCSE-UKLAND-Y10-10",spec:"GCSE-UKLAND",tag:"MC-GG-UKL-GEOLOGY",
+   stem:"Two neighbouring drainage basins receive identical rainfall, but the one on impermeable clay floods far more often. Why?",
+   options:{A:"Clay basins always receive more intense rainfall than any other basin",B:"Clay dissolves in rainwater, which adds extra volume to the river channel",C:"Impermeable rock stores all the water underground and releases it all at once",D:"Water cannot infiltrate clay, so it runs off the surface into the river fast"},
+   correct:"D",
+   scaffold:"Permeability decides the route water takes. Through permeable chalk or limestone, water infiltrates and travels slowly underground, arriving at the channel over days. On impermeable clay or granite it stays on the surface, so it reaches the river within hours: a shorter lag time and a higher, sharper peak discharge.",
+   reforge:{stem:"Why do chalk and limestone areas often have few surface streams?",
+     options:{A:"Rainfall in these areas evaporates before it can ever reach the ground",B:"Water infiltrates through joints and travels underground instead",C:"These rocks are impermeable, so all the water is held on the surface",D:"Chalk and limestone are too hard for any river channel to cut into them"},correct:"B"}},
+
+  {id:"GCSE-UKLAND-Y10-11",spec:"GCSE-UKLAND",tag:"MC-GG-UKL-HYDROGRAPH",
+   stem:"Two hydrographs from the same storm show one basin with a lag time of 4 hours and a high sharp peak, the other 14 hours with a low broad peak. Which is more likely to be urbanised?",
+   options:{A:"The 4-hour basin, because impermeable surfaces and drains deliver water fast",B:"Neither, because urbanisation has no effect at all on a storm hydrograph",C:"The 14-hour basin, because urban drainage always slows water down",D:"The 14-hour basin, because cities store the water in reservoirs before release"},
+   correct:"A",
+   scaffold:"Urbanisation replaces soil and vegetation with tarmac and roofs, and adds drains that carry water straight to the channel. Infiltration and interception both fall, so water arrives quickly and together: lag time shortens and the peak rises. A flashy hydrograph is the signature of an urban, impermeable or steep basin.",
+   reforge:{stem:"Which change would lengthen a basin's lag time rather than shorten it?",
+     options:{A:"Paving over front gardens and driveways across a large housing estate",B:"Extending the storm drain network to reach more of the built-up area",C:"A prolonged wet spell that leaves the basin's soils fully saturated",D:"Planting woodland across the upper part of the drainage basin"},correct:"D"}},
+
+  {id:"GCSE-UKLAND-Y10-12",spec:"GCSE-UKLAND",tag:"MC-GG-UKL-LONG-PROFILE",
+   stem:"Moving downstream, a river's gradient falls but its discharge and velocity rise. A student calls this a contradiction. Why is it not?",
+   options:{A:"Velocity downstream is in fact lower than it is in the steep upper course",B:"Gradient is the only factor that has any influence on a river's velocity",C:"Discharge falls downstream as water is lost, which offsets the gradient",D:"Tributaries add water and the channel becomes smoother, reducing friction"},
+   correct:"D",
+   scaffold:"Steepness is not the whole story. In the upper course a shallow channel choked with large angular boulders creates enormous friction, so despite the gradient the water is slow. Downstream, tributaries raise discharge and the channel is deeper, wider and smoother, so proportionally less water touches the bed and velocity rises.",
+   reforge:{stem:"Why does a river's load become smaller and rounder towards the mouth?",
+     options:{A:"Attrition wears fragments down as they collide and are carried along",B:"The river deposits its smallest particles first, leaving rounded ones behind",C:"Rounded pebbles are carried into the river by tributaries near the mouth",D:"Chemical weathering dissolves the corners of every pebble in the channel"},correct:"A"}}
+);
+
 const geo640BalancePlans = {
   "GCSE-GEO-HAZ":[/^GCSE-HAZ-(3[5-9]|4[0-9])$/,"BCDABCDABCDABCD","BDCADADCCDCABAD"],
   "GCSE-GEO-DEV":[/^GCSE-DEV-(4[3-9]|5[0-6])$/,"ABCDABCDABCDAB","CCCBCBADCDCBBC"],

@@ -288,6 +288,8 @@ const MC_LABELS = {
   "MC-GG-UKL-HYDROGRAPH": "Lag time runs from peak rainfall to peak discharge",
   "MC-GG-UKL-FLOOD-RISK": "Surfaces and land use change the flood, not just the rain",
   "MC-GG-UKL-GLACIAL": "Erosion carves hollows; deposition leaves mounds",
+  "MC-GG-UKL-WAVE-TYPE": "Swash builds the beach; backwash drags it away",
+  "MC-GG-UKL-UPPER-COURSE": "Upstream the river cuts down, not sideways",
   // GCSE Geography — People and the Biosphere, curated taxonomy.
   "MC-GG-BIO-DISTRIBUTION": "Climate, not latitude alone, sets where biomes are",
   "MC-GG-BIO-CLIMATE-GRAPH": "Read the range and the pattern, not one figure",
