@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-08-26T19:36:55.223Z",
+  "generatedAt": "2026-08-27T19:23:16.868Z",
   "pages": {
     "economics.html": "econ",
     "psychology.html": "psych",
@@ -63,7 +63,7 @@
     },
     "gcse-geo": {
       "tier": "full",
-      "questions": 712,
+      "questions": 748,
       "banks": 14,
       "coverage": 100
     },
