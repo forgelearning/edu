@@ -947,16 +947,21 @@ const gcseSpecRoutes = [
     ["P2-EXR", "Paper 2", "Exchange rates"],
     ["P2-GLOBAL", "Paper 2", "Globalisation and the global economy"]
   ]],
+  // Edexcel B 1GB0 is three papers: 1 Global Geographical Issues, 2 UK
+  // Geographical Issues (which is where BOTH fieldwork enquiries are assessed),
+  // 3 People and Environment Issues. Seven of these carried the wrong paper
+  // until 2026-08-27 — see scripts/checks/check-paper-mapping.js, which pins
+  // the mapping so it cannot drift again.
   ["gcse-geo", "Edexcel", "GCSE Geography B (1GB0)", [
     ["HAZ", "Paper 1", "Hazardous Earth"], ["DEV", "Paper 1", "Development dynamics"],
     ["IND", "Paper 1", "The development of an emerging country: India"],
     ["URB", "Paper 1", "Challenges of an urbanising world"],
-    ["UKLAND", "Paper 1", "The UK's evolving physical landscape"],
+    ["UKLAND", "Paper 2", "The UK's evolving physical landscape"],
     ["UKHUMAN", "Paper 2", "The UK's evolving human landscape"],
-    ["ENQ", "Paper 3", "Geographical investigations and fieldwork"],
-    ["RVF", "Paper 3", "River fieldwork"], ["URF", "Paper 3", "Urban fieldwork"],
-    ["BIO", "Paper 1", "People and the biosphere"], ["FOR", "Paper 1", "Forests under threat"],
-    ["ENE", "Paper 1", "Consuming energy resources"],
+    ["ENQ", "Paper 2", "Geographical investigations and fieldwork"],
+    ["RVF", "Paper 2", "River fieldwork"], ["URF", "Paper 2", "Urban fieldwork"],
+    ["BIO", "Paper 3", "People and the biosphere"], ["FOR", "Paper 3", "Forests under threat"],
+    ["ENE", "Paper 3", "Consuming energy resources"],
     ["DEC", "Paper 3", "Making geographical decisions"],
     ["SKILLS", "Paper 3", "Geographical skills"]
   ]],

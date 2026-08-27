@@ -35,6 +35,9 @@ jobs:
       - name: Validate specification coverage
         run: node scripts/checks/check-spec-coverage.js
 
+      - name: Validate exam paper mapping
+        run: node scripts/checks/check-paper-mapping.js
+
       - name: Validate stem diversity
         run: node scripts/checks/check-stem-diversity.js
 
