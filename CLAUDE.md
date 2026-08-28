@@ -178,7 +178,7 @@ lower the baseline when a fix lands. They live in `CONTENT_BASELINES`.
 | Check | Baseline | Meaning |
 |---|---|---|
 | `NULL OPTION` | **0 — never raise** | A content-free dismissal ("It has no significant relevance to the topic being tested"). Makes a 4-option question a 3-option one, so guessing pays 33% and reported accuracy inflates. |
-| `SHORT CUE` | 392 | The correct answer is uniquely the shortest *and* under 55% of mean distractor length. The mirror of `CUE`. |
+| `SHORT CUE` | 384 | The correct answer is uniquely the shortest *and* under 55% of mean distractor length. The mirror of `CUE`. |
 | `RECYCLED DISTRACTOR` | 1 | One distractor string used in more than 8 distinct source questions. Coverage clones are excluded via the `coverageVariant` flag — an earlier version stripped a `-COV-n` suffix instead, which turned `MAND-COV-011` into `MAND` and collapsed all 80 Mandarin clones into one pseudo-question. |
 
 The audit prints the true count of each next to its baseline. Only the first
@@ -231,7 +231,7 @@ copy of the bank with the loop stripped out:
 
 | Backlog | Created by the loop | Authored in source |
 |---|---|---|
-| `SHORT CUE` (392) | **1** | **391** |
+| `SHORT CUE` (384, was 392) | **1** | **383** |
 | `RECYCLED DISTRACTOR` (1) | **1** | **0** |
 
 So `SHORT CUE` really is a hand-authoring backlog — that was worth checking and
@@ -247,7 +247,7 @@ so it will only fall when that key is rewritten. That is `SHORT CUE`/`CUE`
 work, not recycling work.
 
 **And check whether the subject is even a candidate for hand-authoring.** The
-`SHORT CUE` backlog is concentrated in `gcse-geo` (84), `mand` (45),
+`SHORT CUE` backlog is concentrated in `gcse-geo` (76), `mand` (45),
 `gcse-science` (34) and `gcse-hist` (26) — but Mandarin's 45 are not authoring
 debt at all:
 
@@ -262,6 +262,24 @@ debt at all:
 
 Rewriting 45 Mandarin keys would make the questions worse and the metric
 better. Confirm a subject's short cues are real before spending effort on them.
+
+**In `gcse-geo`, check `compactGeoCorrectOption` before blaming the author.**
+`GCSE-GEO-HAZ` was cleared on 2026-08-28 (8 short cues to 0, subject 84 to 76,
+total 392 to 384) and only half of it was authoring debt. The other half was
+that pass: when a gcse-geo key is the uniquely longest option it is cut down
+mechanically, and the cut lands mid-clause. Students were being shown
+"and less effective warning systems" as the answer to an earthquake-impact
+question, "A destructive boundary" with the global effect the stem asks for
+sliced off, and "moving the solid lithosphere above" as the definition of the
+asthenosphere. Each was a good full sentence in the literal. There is a
+hand-written escape hatch — `geoConciseCorrectOverrides` — but the durable fix
+is to author the key short enough that the pass never fires, which is what was
+done here; that let the `GCSE-HAZ-11` override entry be deleted as dead.
+
+The remaining four were the real thing — a correctly terse key
+("Methane from livestock", "Condensation releases heat") against verbose
+distractors — and were fixed by shortening the distractors, never by padding
+the key.
 
 For the genuinely authored half: each entry needs a plausible replacement
 written for that specific question. Do **not** clear them with a bulk rewrite
