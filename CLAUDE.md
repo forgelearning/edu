@@ -134,9 +134,11 @@ propagates into its `*-COV-*` copies and fixing the source fixes them all.
 
   **Read that number carefully.** It is true of what a student sees, and it is
   produced almost entirely by a runtime patch rather than by authoring. Remove
-  the anti-cue loop and **1,638 of 15,159 items (10.8%)** have the correct
+  the anti-cue loop and **1,615 of 15,327 items (10.5%)** have the correct
   answer as the single longest option — `gcse-psych` 39.9%, `gcse-hist` 34.8%,
-  `bus` 32.6%, `cs` 26.7%, `econ` 26.0%. (Re-measured 2026-08-26. The previous
+  `bus` 32.6%, `cs` 26.7%, `econ` 26.0%. (Total re-measured 2026-08-28 after the
+  separate-science keys were rewritten; the per-subject shares are from
+  2026-08-26 and were not re-run. The previous
   figure here was 2,430 / 16.1% naming `gcse-econ` 61.2% as the worst subject;
   `gcse-econ`, `gcse-geo` and `geo` are all at **0** now. Other sessions cleared
   them without updating this file, which is the recurring failure mode — always
@@ -178,7 +180,7 @@ lower the baseline when a fix lands. They live in `CONTENT_BASELINES`.
 | Check | Baseline | Meaning |
 |---|---|---|
 | `NULL OPTION` | **0 — never raise** | A content-free dismissal ("It has no significant relevance to the topic being tested"). Makes a 4-option question a 3-option one, so guessing pays 33% and reported accuracy inflates. |
-| `SHORT CUE` | 308 | The correct answer is uniquely the shortest *and* under 55% of mean distractor length. The mirror of `CUE`. |
+| `SHORT CUE` | 301 | The correct answer is uniquely the shortest *and* under 55% of mean distractor length. The mirror of `CUE`. |
 | `RECYCLED DISTRACTOR` | 1 | One distractor string used in more than 8 distinct source questions. Coverage clones are excluded via the `coverageVariant` flag — an earlier version stripped a `-COV-n` suffix instead, which turned `MAND-COV-011` into `MAND` and collapsed all 80 Mandarin clones into one pseudo-question. |
 
 The audit prints the true count of each next to its baseline. Only the first
@@ -231,7 +233,7 @@ copy of the bank with the loop stripped out:
 
 | Backlog | Created by the loop | Authored in source |
 |---|---|---|
-| `SHORT CUE` (308, was 392 on 2026-08-21) | **1** | **307** |
+| `SHORT CUE` (301, was 392 on 2026-08-21) | **1** | **300** |
 | `RECYCLED DISTRACTOR` (1) | **1** | **0** |
 
 So `SHORT CUE` really is a hand-authoring backlog — that was worth checking and
@@ -311,6 +313,27 @@ Three consequences worth knowing:
 Where a key was correctly terse ("Methane from livestock", "Traction",
 "A spit", "Census data") the fix was to shorten the distractors instead, never
 to pad the key.
+
+**The separate sciences had the identical pass, and it is also gone
+(2026-08-28).** `compactSeparateScienceOption` cut any `gcse-sep-*` key that
+was the uniquely longest option, so students were shown "Gravitational" as the
+energy store gained when lifting an object, "Current entering equals" as what
+happens at a junction, "It creates changing" for why a transformer needs AC,
+and "Number complete waves per" as the definition of frequency.
+
+`separateScienceOptionRepairs` had hand-restored 45 of them, one entry per
+question — which is exactly why the damage was invisible: those 45 looked fine
+while **298 others stayed broken**, and Chemistry measured clean because its
+share happened to be covered. Do not read a repair table as evidence a pass is
+harmless.
+
+Fixed at source: 48 source questions carried the whole thing (the other 250
+were `-COV-` clones that inherit, so fixing the parent fixed them all). Nearly
+every key here was already a correct, minimal definition — "Cell membrane",
+"Potential difference", "Carbon dioxide" — so the fix was almost always to
+lengthen a distractor, not to shorten the key. Both the pass and all 45 repair
+entries are deleted; the rendered bank changed on only one question, the one
+whose repair entry was still restoring a long key.
 
 For the genuinely authored half: each entry needs a plausible replacement
 written for that specific question. Do **not** clear them with a bulk rewrite
