@@ -134,8 +134,8 @@ propagates into its `*-COV-*` copies and fixing the source fixes them all.
 
   **Read that number carefully.** It is true of what a student sees, and it is
   produced almost entirely by a runtime patch rather than by authoring. Remove
-  the anti-cue loop and **1,410 of 15,327 items (9.2%)** have the correct
-  answer as the single longest option — `gcse-hist` 34.8%, `bus` 31.6%, `gcse-psych` 28.7%,
+  the anti-cue loop and **1,262 of 15,327 items (8.2%)** have the correct
+  answer as the single longest option — `bus` 31.6%, `gcse-psych` 26.7%, `cs` 26.7%,
   `bus` 32.6%, `cs` 26.7%, `econ` 26.1%. (Both the total and the per-subject
   shares re-measured 2026-08-28 with `dev/audit-source-cues.js`, after the
   separate-science, law, rs, maths and hist keys were rewritten. `law`, `rs`,
@@ -181,7 +181,7 @@ lower the baseline when a fix lands. They live in `CONTENT_BASELINES`.
 | Check | Baseline | Meaning |
 |---|---|---|
 | `NULL OPTION` | **0 — never raise** | A content-free dismissal ("It has no significant relevance to the topic being tested"). Makes a 4-option question a 3-option one, so guessing pays 33% and reported accuracy inflates. |
-| `SHORT CUE` | 298 | The correct answer is uniquely the shortest *and* under 55% of mean distractor length. The mirror of `CUE`. |
+| `SHORT CUE` | 296 | The correct answer is uniquely the shortest *and* under 55% of mean distractor length. The mirror of `CUE`. |
 | `RECYCLED DISTRACTOR` | 1 | One distractor string used in more than 8 distinct source questions. Coverage clones are excluded via the `coverageVariant` flag — an earlier version stripped a `-COV-n` suffix instead, which turned `MAND-COV-011` into `MAND` and collapsed all 80 Mandarin clones into one pseudo-question. |
 
 The audit prints the true count of each next to its baseline. Only the first
@@ -234,7 +234,7 @@ copy of the bank with the loop stripped out:
 
 | Backlog | Created by the loop | Authored in source |
 |---|---|---|
-| `SHORT CUE` (298, was 392 on 2026-08-21) | **1** | **297** |
+| `SHORT CUE` (296, was 392 on 2026-08-21) | **1** | **295** |
 | `RECYCLED DISTRACTOR` (1) | **1** | **0** |
 
 So `SHORT CUE` really is a hand-authoring backlog — that was worth checking and
@@ -566,6 +566,24 @@ etc.) — treat every completion claim in it as stale by default.
   than 8 source questions 18 → 11 (the rest are numeric maths options and one
   media term). `gcse-psych` source cues 161 → 116 with no hand-authoring, and
   the total fell 1434 → 1410.
+
+  **`gcse-hist` was a second generator, `addHistoryDepth` (fixed the same day).**
+  It builds each depth question's three distractors from *other questions'
+  answers* at fixed offsets (+5/+11/+17 for the stem, +3/+9/+15 for the twin),
+  so whether the key came out longest was luck of the wording. `depthDistractorsFor`
+  keeps the offsets — they spread each answer's reuse evenly, which is worth
+  preserving — but if none of the three picks is at least as long as the key it
+  walks on from the same offset for one that is. Applied to `addPsychDepth` too,
+  which has the same shape. That alone took `gcse-hist` from 55 source cues to 8.
+
+  The other 84 `gcse-hist` cues were genuine authoring, fixed by extending one
+  distractor per question with real historical content. **Extend a string that
+  is a key in another question and you simply move the cue there** — the depth
+  banks reuse every answer as a distractor elsewhere, so check before editing.
+
+  `gcse-hist` and A-Level `hist` are now both at 0. Subject total 1410 → 1262
+  (8.2%); the worst subjects are now `bus` 31.6%, `gcse-psych` 26.7%, `cs` 26.7%
+  and `econ` 26.1%.
 
   Four subjects (`SOC-FAM`, `CRIM-COURT`, `POL-UKGOV`, `hsc`) build questions
   from a **shared pool of definitions, where each definition is the key in one
