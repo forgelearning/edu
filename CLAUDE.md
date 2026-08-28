@@ -288,9 +288,14 @@ Three consequences worth knowing:
   byte-identical across all 15,327 options, with `CUE` 0, `SHORT CUE` 308 and
   the source-cue total unchanged. Keep gcse-geo keys no longer than their
   distractors and nothing needs to grow back.
-  **Six padding loops of the same shape remain elsewhere in the file** (search
-  `in this context";`) for other subjects. They are the mechanism behind the
-  padding bug described further down, and are still live.
+  **The six padding loops elsewhere in the file are gone too.** They sat inside
+  the separate-science repair pass and the five `rebalance*` helpers (which
+  still permute the answer letter — only the padding was removed). Between them
+  they appended `" in this context"` 239 times per load, and not one of those
+  strings survived to the rendered bank: deleting all six left every option
+  byte-identical, checked by evaluating the file before and after and diffing
+  all 15,756 option sets. `grep 'in this context";'` now returns nothing, so the
+  padding bug can no longer come back on its own.
 - **Five keys had been surviving by a three-table round trip** — cut by the
   compaction pass, restored by `geoOptionRepairs`, then protected from `CUE` by
   a deliberately inflated distractor in the repair table near the end of the
@@ -480,14 +485,14 @@ etc.) — treat every completion claim in it as stale by default.
   for `/in this context/i`) found **zero** occurrences anywhere in the file —
   `englit`, `engll`, `pe`, `span`, `mand`, `german`, `french`, `bus` and
   `gcse-psych` all came back clean, and a full-file sweep across every
-  subject confirmed it. The padding loops
+  subject confirmed it. **The padding loops themselves were deleted on
+  2026-08-28** — all seven of them
   (`while (options[distractor].length <= options[correct].length)
-  options[distractor] += " in this context";`) and the curated repair tables
-  (`geoOptionRepairs`, `separateScienceOptionRepairs`,
-  `geoAlevelDistractorRepairs`, `econAlevelDistractorRepairs`) are both still
-  in `data/forge-data.js`, so the mechanism that could reintroduce this is
-  unchanged — re-run the scan above before assuming a future edit hasn't
-  brought it back. `dev/audit-banks.js` reports 0% cued stems and twins,
+  options[distractor] += " in this context";`), so the mechanism that could
+  reintroduce this is gone rather than dormant, and `grep 'in this context";'`
+  returns nothing. `geoOptionRepairs` went with them; the other repair tables
+  (`separateScienceOptionRepairs`, `geoAlevelDistractorRepairs`,
+  `econAlevelDistractorRepairs`) remain and are still used. `dev/audit-banks.js` reports 0% cued stems and twins,
   consistent with this.
 
   Two gotchas if you ever need to extend a repair table like these: match on

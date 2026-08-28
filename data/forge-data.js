@@ -12861,9 +12861,8 @@ for (const bankId of ["GCSE-SEP-CHEM-1","GCSE-SEP-CHEM-2","GCSE-SEP-PHYS-1","GCS
       if (!item || !item.options || !item.options[item.correct]) continue;
       const repair = separateScienceOptionRepairs[`${question.id}:${mode}`];
       if (repair) item.options[item.correct] = repair;
-      const length = value => String(value).length;
-      const distractor = Object.keys(item.options).filter(key => key !== item.correct).sort((a, b) => length(item.options[b]) - length(item.options[a]))[0];
-      while (length(item.options[distractor]) <= length(item.options[item.correct])) item.options[distractor] += " in this context";
+      // No length padding here: the pass that appended " in this context" to a
+      // distractor was deleted — every string it produced was overwritten later.
     }
   }
 }
@@ -15986,18 +15985,15 @@ addAlevelExtensionRows("GEO-P3", "9GE0-P3", [
   {id:"P3-GC-12",stem:"What does resilience mean in a global system?",options:{A:"The capacity to absorb disruption and recover or adapt",B:"The complete absence of risk from future events",C:"A country's refusal to trade with other places",D:"The speed at which a population grows"},correct:"A",reforge:{stem:"Which strategy can improve supply-chain resilience?",options:{A:"Diversifying suppliers and maintaining alternative transport routes",B:"Relying on one overseas supplier for every component",C:"Removing all emergency stock from warehouses",D:"Concentrating production in one vulnerable location"},correct:"A"}}
 ]);
 
+// Permutes the answer letter only. It used to also pad a distractor with
+// " in this context" when the key was longest; that produced nothing the later
+// passes did not overwrite, so it was removed.
 const rebalanceAlevelExtension = (bankIds, basePlan, reforgePlan) => {
   bankIds.forEach(bankId => BANKS[bankId].questions.forEach((q, index) => {
     [[q, basePlan[index % basePlan.length]], [q.reforge, reforgePlan[index % reforgePlan.length]]].forEach(([item, target]) => {
       if (!item || !item.options || !item.correct) return;
       if (item.correct !== target) {
         const saved = item.options[target]; item.options[target] = item.options[item.correct]; item.options[item.correct] = saved; item.correct = target;
-      }
-      const lengths = Object.fromEntries(Object.entries(item.options).map(([key, value]) => [key, String(value).length]));
-      const max = Math.max(...Object.values(lengths));
-      if (lengths[item.correct] === max && Object.values(lengths).filter(value => value === max).length === 1) {
-        const distractor = Object.keys(item.options).filter(key => key !== item.correct).sort((a, b) => lengths[b] - lengths[a])[0];
-        item.options[distractor] += " in this context";
       }
     });
   }));
@@ -16223,16 +16219,13 @@ addSocTopicBank("SOC-RESEARCH", "Research Methods Extension", "7192-RESEARCH", [
   {term:"research ethics",definition:"Principles governing the protection, treatment and rights of research participants",application:"Avoiding harm and securing consent are ethical requirements"}
 ]);
 
+// Permutes the answer letter only. It used to also pad a distractor with
+// " in this context" when the key was longest; that produced nothing the later
+// passes did not overwrite, so it was removed.
 const rebalanceSociety = bankIds => bankIds.forEach(bankId => BANKS[bankId].questions.forEach((q, index) => {
   [[q,["A","B","C","D"][index % 4]],[q.reforge,["C","D","A","B"][index % 4]]].forEach(([item,target]) => {
     if (!item || !item.options) return;
     if (item.correct !== target) { const saved=item.options[target]; item.options[target]=item.options[item.correct]; item.options[item.correct]=saved; item.correct=target; }
-    const lengths=Object.fromEntries(Object.entries(item.options).map(([key,value])=>[key,String(value).length]));
-    const max=Math.max(...Object.values(lengths));
-    if (lengths[item.correct]===max && Object.values(lengths).filter(value=>value===max).length===1) {
-      const distractor=Object.keys(item.options).filter(key=>key!==item.correct).sort((a,b)=>lengths[b]-lengths[a])[0];
-      item.options[distractor] += " in this context";
-    }
   });
 }));
 rebalanceSociety(["SOC-EDU","SOC-MET","SOC-FAM","SOC-BEL","SOC-MED","SOC-STRAT","SOC-CRIME","SOC-THEORY","SOC-GLOB","SOC-RESEARCH"]);
@@ -17024,6 +17017,9 @@ addAlevelHistoryBank("HIST-TUDOR", "Tudor Historical Investigation", "AQA-NEA-TU
   "Tudor monarchy judgement|Tudor rulers were strongest when legitimacy, finance, religion and patronage worked together|A historical investigation should compare individual monarchs and recognise limits to royal power"
 ]);
 
+// Permutes the answer letter only. It used to also pad a distractor with
+// " in this context" when the key was longest; that produced nothing the later
+// passes did not overwrite, so it was removed.
 const rebalanceAlevelHistory = bankIds => bankIds.forEach(bankId => BANKS[bankId].questions.forEach((question, index) => {
   [[question, ["A", "B", "C", "D"][index % 4]], [question.reforge, ["C", "D", "A", "B"][index % 4]]].forEach(([item, target]) => {
     const source = item.correct;
@@ -17032,12 +17028,6 @@ const rebalanceAlevelHistory = bankIds => bankIds.forEach(bankId => BANKS[bankId
       item.options[target] = item.options[source];
       item.options[source] = saved;
       item.correct = target;
-    }
-    let lengths = Object.fromEntries(Object.entries(item.options).map(([key, value]) => [key, String(value).length]));
-    while (lengths[item.correct] > Math.max(...Object.entries(lengths).filter(([key]) => key !== item.correct).map(([, value]) => value))) {
-      const distractor = Object.keys(item.options).filter(key => key !== item.correct).sort((a, b) => lengths[b] - lengths[a])[0];
-      item.options[distractor] += " in this context";
-      lengths = Object.fromEntries(Object.entries(item.options).map(([key, value]) => [key, String(value).length]));
     }
   });
 }));
@@ -17282,15 +17272,12 @@ addCriminologyBank("CRIM-PUNISH", "Unit 4: Crime and Punishment", "WJEC-U4", [
   "proportionate policy|A response calibrated to the seriousness, likelihood and consequences of the problem|Proportionality protects rights while allowing effective prevention"
 ]);
 
+// Permutes the answer letter only. It used to also pad a distractor with
+// " in this context" when the key was longest; that produced nothing the later
+// passes did not overwrite, so it was removed.
 const rebalanceCriminology = bankIds => bankIds.forEach(bankId => BANKS[bankId].questions.forEach((question, index) => {
   [[question, ["A", "B", "C", "D"][index % 4]], [question.reforge, ["C", "D", "A", "B"][index % 4]]].forEach(([item, target]) => {
     if (item.correct !== target) { const saved = item.options[target]; item.options[target] = item.options[item.correct]; item.options[item.correct] = saved; item.correct = target; }
-    let lengths = Object.fromEntries(Object.entries(item.options).map(([key, value]) => [key, String(value).length]));
-    while (lengths[item.correct] > Math.max(...Object.entries(lengths).filter(([key]) => key !== item.correct).map(([, value]) => value))) {
-      const distractor = Object.keys(item.options).filter(key => key !== item.correct).sort((a, b) => lengths[b] - lengths[a])[0];
-      item.options[distractor] += " in this context";
-      lengths = Object.fromEntries(Object.entries(item.options).map(([key, value]) => [key, String(value).length]));
-    }
   });
 }));
 
@@ -17715,14 +17702,12 @@ addLawPoliticsBank("POL-USPOL", "Paper 3: US Congress, Presidency & Participatio
   "US politics conclusion|A balanced conclusion linking institutions, participation, rights and power|The best answers recognise both constitutional design and political practice"
 ]);
 
+// Permutes the answer letter only. It used to also pad a distractor with
+// " in this context" when the key was longest; that produced nothing the later
+// passes did not overwrite, so it was removed.
 const rebalanceLawPolitics = bankIds => bankIds.forEach(bankId => BANKS[bankId].questions.forEach((question, index) => {
   [[question, ["A", "B", "C", "D"][index % 4]], [question.reforge, ["C", "D", "A", "B"][index % 4]]].forEach(([item, target]) => {
     if (item.correct !== target) { const saved = item.options[target]; item.options[target] = item.options[item.correct]; item.options[item.correct] = saved; item.correct = target; }
-    let lengths = Object.fromEntries(Object.entries(item.options).map(([key, value]) => [key, String(value).length]));
-    while (lengths[item.correct] > Math.max(...Object.entries(lengths).filter(([key]) => key !== item.correct).map(([, value]) => value))) {
-      const distractor = Object.keys(item.options).filter(key => key !== item.correct).sort((a, b) => lengths[b] - lengths[a])[0]; item.options[distractor] += " in this context";
-      lengths = Object.fromEntries(Object.entries(item.options).map(([key, value]) => [key, String(value).length]));
-    }
   });
 }));
 
