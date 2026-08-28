@@ -500,6 +500,32 @@ etc.) — treat every completion claim in it as stale by default.
 - A-Level Geography is intentionally marked Developing until every active route
   point is mapped. That is about spec-point coverage (91%) and is unrelated to
   its misconception tagging, which is complete.
+- **A second boilerplate filler is also gone (2026-08-28).** Separate from the
+  `" in this context"` padding, three repair tables (`staticLegacyRepairs`,
+  `finalLengthCueRepairs`, `finalMediaCorruptionRepairs`) held **167 option
+  strings ending in a subject-specific essay clause** — "… The science
+  explanation must account for the particles, forces, energy, cells, reactions,
+  measurements and conditions; the option confuses a definition with its
+  application." A student could discard those on sight, and 152 of them reached
+  the rendered bank. All are stripped, and `grep 'must account for'` now returns
+  nothing.
+
+  **That filler was load-bearing, which is the part worth understanding.** It
+  existed to stop the correct answer being the longest option, so removing it
+  exposed **155 real CUEs** underneath, from 30 source questions. Those were
+  fixed by authoring — mostly by shortening keys that had grown into
+  mini-essays (one HSC key ran to 209 characters, a Media key to 339).
+
+  Four subjects (`SOC-FAM`, `CRIM-COURT`, `POL-UKGOV`, `hsc`) build questions
+  from a **shared pool of definitions, where each definition is the key in one
+  question and a distractor in others**. In such a pool the single longest
+  definition always cues its own question, so fixing one question just moves the
+  cue to its neighbour — expect to chase it in circles. The stable fix is to
+  make the pool's **two longest definitions exactly equal in length**: `CUE`
+  fires only on a *uniquely* longest option, so a tie ends the oscillation for
+  good. That is why some definitions in those banks are worded to an exact
+  character count.
+
 - **The "in this context" filler-padding bug is fixed — re-verify before
   trusting the paragraph below.** It used to describe 6,149 affected options
   across 30 subjects (`englit`, `engll`, `pe`, `span`, `mand`, `german`,

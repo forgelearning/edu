@@ -5777,49 +5777,49 @@ BANKS["HSC-1"] = {
       options:{A:"The first relationship only matters in adulthood.",B:"Any relationship formed before school starts counts as a critical period.",C:"Critical period means the child must bond with both parents equally.",D:"There is a biologically sensitive window (approximately the first 2.5 years) during which"},
       correct:"D",tag:"MC-HSC-02",
       scaffold:"Bowlby: monotropy (primary attachment figure), critical/sensitive period (0–2.5 years), internal working model (template for future relationships). Key application: maternal deprivation hypothesis — prolonged separation causes irreversible damage (intellectual retardation, affectionless psychopathy). Ainsworth's Strange Situation identified three attachment types: secure, insecure-avoidant, insecure-ambivalent. Exam technique: use the theorist + concept + link to the specific care scenario.",
-      reforge:{stem:"A care worker notices a looked-after child aged 8 struggles to form trusting relationships with adults. Which theoretical explanation is most relevant?",options:{A:"Erikson — the child has not resolved the Industry vs Inferiority stage.",B:"Bowlby — disrupted early attachment may have produced an internal working model of relationships as unreliable, affecting future social development.",C:"Piaget — the child is in the preoperational stage.",D:"Maslow — the child's safety needs are unmet."},correct:"B"}
+      reforge:{stem:"A care worker notices a looked-after child aged 8 struggles to form trusting relationships with adults. Which theoretical explanation is most relevant?",options:{A:"Erikson — the child has not yet resolved the Industry versus Inferiority stage of development",B:"Bowlby — disrupted early attachment can leave an internal working model of adults as unreliable",C:"Piaget — the child is in the preoperational stage.",D:"Maslow — the child's safety needs are unmet."},correct:"B"}
     },
     {
       id:"HSC-03",stem:"Erikson's psychosocial theory describes a conflict in adolescence between Identity and Role Confusion. What is the key developmental task of this stage?",
       options:{A:"Establishing a coherent sense of self",B:"Developing trust in carers.",C:"Developing competence and industry at school.",D:"Forming intimate relationships with peers."},
       correct:"A",tag:"MC-HSC-03",
       scaffold:"Erikson's 8 stages — each has a psychosocial conflict resolved through experience: Infancy (Trust vs Mistrust), Early childhood (Autonomy vs Shame), Play age (Initiative vs Guilt), School age (Industry vs Inferiority), Adolescence (Identity vs Role Confusion), Young adult (Intimacy vs Isolation), Middle adult (Generativity vs Stagnation), Late adult (Integrity vs Despair). Exam tip: name the stage, name the conflict, explain the consequence of poor resolution for wellbeing.",
-      reforge:{stem:"A 70-year-old reflects on a life well-lived with pride and minimal regret. According to Erikson, which successful resolution does this represent?",options:{A:"Intimacy vs Isolation — close relationships were formed.",B:"Integrity vs Despair — the final stage; successful resolution produces a sense of meaning and acceptance rather than bitterness or fear of death.",C:"Generativity vs Stagnation — the person contributed to society.",D:"Identity vs Role Confusion — the person knows who they are."},correct:"B"}
+      reforge:{stem:"A 70-year-old reflects on a life well-lived with pride and minimal regret. According to Erikson, which successful resolution does this represent?",options:{A:"Intimacy vs Isolation — close relationships were formed.",B:"Integrity vs Despair — the final stage, resolved as meaning and acceptance",C:"Generativity vs Stagnation — the person has contributed to society and the next generation",D:"Identity vs Role Confusion — the person knows who they are."},correct:"B"}
     },
     {
       id:"HSC-04",stem:"In an OCR H&SC exam, a student is asked to 'assess' a care approach. What does 'assess' require them to do?",
       options:{A:"Describe the care approach in detail.",B:"Consider the strengths and limitations of the care approach",C:"Explain how the care approach works.",D:"Compare it to another approach only."},
       correct:"B",tag:"MC-HSC-04",
       scaffold:"Command word breakdown — OCR H604: Describe = say what; Explain = say what and why; Analyse = examine in detail, identifying causes/impacts; Assess = weigh strengths against limitations, reach a judgement; Evaluate = make a value judgement about effectiveness/value with supporting evidence. 'Assess' and 'Evaluate' questions require a conclusion. Not doing so caps your response at the lower bands.",
-      reforge:{stem:"A student answer ends with: 'Person-centred care has many benefits and some drawbacks.' Why would this not reach the top band?",options:{A:"It is too short.",B:"It does not reach a reasoned judgement — the student must weigh the evidence and state which, overall, is more significant, giving a supported conclusion rather than a generic balance statement.",C:"It mentions drawbacks, which is not required.",D:"Top-band answers only discuss benefits."},correct:"B"}
+      reforge:{stem:"A student answer ends with: 'Person-centred care has many benefits and some drawbacks.' Why would this not reach the top band?",options:{A:"It is too short.",B:"It states a balance without judging which side is more significant",C:"It mentions drawbacks, which is not required.",D:"Top-band answers are expected to discuss only the benefits of the approach"},correct:"B"}
     },
     {
       id:"HSC-05",stem:"Maslow's Hierarchy of Needs is applied in health and social care contexts. Which level must be satisfied before an individual can focus on 'esteem needs'?",
       options:{A:"Self-actualisation must be achieved first before lower needs become relevant.",B:"Only cognitive and safety needs must be met before esteem needs are pursued.",C:"Physiological, safety, and love/belonging needs must all be substantially met first.",D:"Only physiological needs need to be satisfied before all others can be addressed."},
       correct:"C",tag:"MC-HSC-05",
       scaffold:"Maslow's hierarchy (bottom to top): Physiological (food, water, sleep, warmth) → Safety (security, stability, freedom from fear) → Love/Belonging (relationships, friendship, intimacy) → Esteem (achievement, recognition, respect) → Self-Actualisation (realising potential). Application in H&SC: a service user experiencing homelessness (physiological/safety deficits) cannot focus on esteem or self-actualisation until basic needs are addressed. Person-centred care aims to meet needs across all levels.",
-      reforge:{stem:"A residential care home ensures residents have nutritious meals, safe living conditions, regular social activities, and opportunities to pursue hobbies. Which needs are being addressed, from bottom to top?",options:{A:"Self-actualisation only.",B:"Physiological (meals), Safety (safe conditions), Love/Belonging (social activities), and Esteem/Self-actualisation (hobbies) — all levels addressed.",C:"Only physiological and safety needs.",D:"Esteem needs only, via activities."},correct:"B"}
+      reforge:{stem:"A residential care home ensures residents have nutritious meals, safe living conditions, regular social activities, and opportunities to pursue hobbies. Which needs are being addressed, from bottom to top?",options:{A:"Self-actualisation only.",B:"Physiological, safety, love/belonging and esteem needs are all addressed here",C:"Only the physiological and safety needs at the bottom of the hierarchy are addressed",D:"Esteem needs only, via activities."},correct:"B"}
     },
     {
       id:"HSC-06",stem:"A care worker provides care that reflects the individual's preferences, values and choices rather than the organisation's convenience. What principle does this best illustrate?",
       options:{A:"Duty of care.",B:"Safeguarding.",C:"Equality of opportunity.",D:"Person-centred care"},
       correct:"D",tag:"MC-HSC-06",
       scaffold:"Person-centred care (Rogers-influenced in H&SC): individualism, rights, choice, privacy, independence, dignity, respect. Contrast with paternalistic or task-centred care. In exam answers: name the principle, explain what it means in this context, link to impact on the individual's wellbeing (PIES). Care plans should reflect individual preferences: always say what it looks like in practice, not just the label.",
-      reforge:{stem:"A nurse ignores a patient's wish to refuse a particular treatment because 'it is for their own good'. Which value is being violated?",options:{A:"Confidentiality.",B:"Autonomy and the principle of person-centred care — the patient's right to make informed decisions about their own care is not being respected.",C:"Equality.",D:"Duty of care — the nurse is prioritising safety."},correct:"B"}
+      reforge:{stem:"A nurse ignores a patient's wish to refuse a particular treatment because 'it is for their own good'. Which value is being violated?",options:{A:"Confidentiality.",B:"Autonomy — the patient's right to make informed decisions about their own care",C:"Equality.",D:"Duty of care — the nurse is prioritising the patient's physical safety over their stated wishes"},correct:"B"}
     },
     {
       id:"HSC-07",stem:"During late adulthood (65+), which physical change is most directly linked to increased falls risk?",
       options:{A:"Reduced muscle mass (sarcopenia) and declining bone density increase falls risk directly.",B:"Decreased lung capacity causes breathlessness but is not linked to falls risk.",C:"Greying hair and skin changes are normal ageing but unrelated to falls risk.",D:"Reduced metabolic rate affects energy but is not a primary falls risk factor."},
       correct:"A",tag:"MC-HSC-07",
       scaffold:"Physical changes in late adulthood relevant to H&SC practice: decreased muscle mass → reduced strength and balance; decreased bone density → increased fracture risk; reduced reaction time → slower responses; sensory decline (vision, hearing) → communication barriers. Application: care plans should include falls risk assessments, physiotherapy referrals, appropriate footwear, environmental adaptations. Link physical change to impact on independence and emotional wellbeing (PIES interconnection).",
-      reforge:{stem:"Which care intervention most directly addresses the increased falls risk associated with physical changes in late adulthood?",options:{A:"Encouraging intellectual hobbies such as reading.",B:"A multifactorial falls prevention programme: strength and balance exercises, medication review (some medications affect balance), vision check, and home hazard assessment.",C:"Nutritional support to prevent weight loss.",D:"Social activities to reduce loneliness."},correct:"B"}
+      reforge:{stem:"Which care intervention most directly addresses the increased falls risk associated with physical changes in late adulthood?",options:{A:"Encouraging intellectual hobbies such as reading, puzzles and other activities that keep the mind active",B:"A falls programme: strength and balance work, medication review, vision check and home hazard assessment",C:"Nutritional support to prevent weight loss.",D:"Social activities to reduce loneliness."},correct:"B"}
     },
     {
       id:"HSC-08",stem:"A student uses the term 'service user' throughout their answer. Why might examiners credit 'individual' or the specific role (resident, patient, client) instead?",
       options:{A:"'Service user' is an outdated term that H&SC no longer uses.",B:"Person-centred care values recognise the importance of not reducing people to their relati",C:"'Service user' can only refer to adults, not children.",D:"'Service user' implies the person is dependent, which contradicts empowerment."},
       correct:"B",tag:"MC-HSC-08",
       scaffold:"Exam technique: OCR H604 mark schemes reward application of care values in language as well as content. Higher-band answers: name the individual using their given name or role (e.g. 'Aisha, the service user, stated...'), reference specific care values by name, link theory to individual impact. Generic descriptions of 'service users receiving care' are lower-band. The 8-mark and 10-mark extended questions require this level of application to reach Band 3/4.",
-      reforge:{stem:"An exam question gives a scenario about 'James, a 78-year-old with early-stage dementia living in a care home.' A top-band answer would:",options:{A:"Describe dementia symptoms in general.",B:"Refer to James by name throughout, link theories and care values directly to his specific situation, and reach a reasoned judgement about the most appropriate care approach for his circumstances.",C:"List all the PIES changes that occur in late adulthood.",D:"Explain all of Maslow's hierarchy without reference to James."},correct:"B"}
+      reforge:{stem:"An exam question gives a scenario about 'James, a 78-year-old with early-stage dementia living in a care home.' A top-band answer would:",options:{A:"Describe dementia symptoms in general.",B:"Refer to James by name, link care values to his situation, and judge the most appropriate approach",C:"List all the PIES changes that occur in late adulthood.",D:"Explain the whole of Maslow's hierarchy of needs without any reference to James or his circumstances"},correct:"B"}
     }
   ]
 };
@@ -6119,13 +6119,13 @@ BANKS["MEDIA-2"] = {
       stem:"In Hesmondhalgh's analysis of cultural industries, the 'cultural discount' refers to:",
       options:{
         A:"The reduced price at which media companies sell content to developing nations.",
-        B:"The reduction in value or appeal a cultural product suffers when exported to a different cultural context — local references, humour and cultural specificity make content less appealing to overseas audiences, explaining why US content often dominates global markets (it is made for a large domestic market and engineered for broad appeal).",
+        B:"The loss of value a cultural product suffers when exported to a different cultural market",
         C:"The tendency for audiences to undervalue cultural products compared to their production cost.",
         D:"The financial discount applied to public service content that receives subsidy."
       },
       correct:"B",tag:"MC-MED-13",
       scaffold:"Cultural discount (Hoskins & Mirus, developed by Hesmondhalgh): when media crosses cultural boundaries, local specificity reduces its value to foreign audiences. US media minimises cultural discount by: producing for large domestic market (economies of scale), using universal genres (action, romance), English language advantage, minimal cultural specificity. This gives US content a competitive advantage globally — other nations' content faces higher discount barriers. Counter-examples: Korean Wave (Hallyu) — K-drama, K-pop have reduced their cultural discount through universal genre conventions + distinctive aesthetics. Exam: connect to global media dominance debates.",
-      reforge:{stem:"A British sitcom with jokes about specific UK institutions (NHS, the BBC, British politics) struggles to attract audiences in the United States. This illustrates:",options:{A:"Conglomeration — US media companies block foreign content.",B:"The cultural discount — the British sitcom's specific cultural references reduce its appeal to US audiences who lack the contextual knowledge to appreciate the humour, making it less commercially viable in the US market compared to content engineered for broad international appeal.",C:"Regulation — US broadcasters are not permitted to air British content.",D:"Cultivation — US audiences have been cultivated to prefer domestic content."},correct:"B"}
+      reforge:{stem:"A British sitcom with jokes about specific UK institutions (NHS, the BBC, British politics) struggles to attract audiences in the United States. This illustrates:",options:{A:"Conglomeration — US media companies block foreign content.",B:"The cultural discount — UK-specific references reduce the sitcom's appeal abroad",C:"Regulation — US broadcasters are not permitted to air British content.",D:"Cultivation — US audiences have been cultivated to prefer domestic content."},correct:"B"}
     },
     {
       id:"MED-14",
@@ -6151,7 +6151,7 @@ BANKS["MEDIA-2"] = {
       },
       correct:"B",tag:"MC-MED-15",
       scaffold:"UGC and the 'prosumer' (Toffler): audiences as producers. Platforms enabling UGC: YouTube, TikTok, Instagram, Twitch, podcasting. Challenges to legacy media: (1) Gatekeeping disrupted — publishers no longer control what reaches audiences; (2) Revenue diverted — advertising follows attention, which increasingly goes to UGC platforms; (3) Speed — UGC often breaks news faster than journalists; (4) Scale — YouTube alone uploads 500 hours of video per minute. BUT: quality control, misinformation, algorithmic curation create new problems (Livingstone & Lunt). Gauntlett's 'making is connecting' — cultural participation is democratised. Critical view: platform companies (not creators) capture most of the value; precarious 'creator economy'.",
-      reforge:{stem:"A teenager's home video of a local flood goes viral on TikTok, reaching 10 million viewers before any news broadcaster has covered the story. This illustrates:",options:{A:"Cultivation theory — audiences are being cultivated to seek dramatic content.",B:"How UGC challenges traditional media gatekeeping — the teenager acts as both producer and distributor, bypassing editorial processes that would normally control what reaches a mass audience, and the platform's algorithm distributes the content at a scale and speed legacy media cannot match.",C:"The two-step flow — the teenager is acting as an opinion leader.",D:"Synergy — TikTok and news broadcasters benefit from sharing the same content."},correct:"B"}
+      reforge:{stem:"A teenager's home video of a local flood goes viral on TikTok, reaching 10 million viewers before any news broadcaster has covered the story. This illustrates:",options:{A:"Cultivation theory — audiences are being cultivated to seek dramatic content.",B:"How UGC bypasses gatekeeping — the teenager is both producer and distributor",C:"The two-step flow — the teenager is acting as an opinion leader.",D:"Synergy — TikTok and news broadcasters benefit from sharing the same content."},correct:"B"}
     },
     {
       id:"MED-16",
@@ -7478,10 +7478,10 @@ BANKS["HSC-2"] = {
   questions: [
     {
       id:"HSC-09",stem:"A care worker says to a distressed resident: 'I understand this feels overwhelming for you right now.' Their colleague says: 'You poor thing, how awful.' What distinction do these responses illustrate?",
-      options:{A:"Empathy means reflecting the person's feelings from their perspective; sympathy means feeling sorry for them from the outside.",B:"Active listening versus passive listening — one involves full attention, the other does not.",C:"Formal versus informal communication registers used in professional and personal settings.",D:"Verbal versus non-verbal communication — words compared to body language and gesture."},
+      options:{A:"Empathy reflects the person's feelings from their perspective; sympathy feels sorry from outside",B:"Active listening versus passive listening — one involves full attention and checking, the other does not",C:"Formal versus informal communication registers used in professional and personal settings.",D:"Verbal versus non-verbal communication — words compared to body language and gesture."},
       correct:"A",tag:"MC-HSC-09",
       scaffold:"Empathy: entering the person's frame of reference, communicating understanding of THEIR experience — central to person-centred practice (Rogers). Sympathy: observer's own emotional reaction, which can feel patronising and positions the person as pitiable. Exam application: link empathy to outcomes — trust, disclosure, emotional wellbeing (PIES). Higher bands name the value AND show its impact on the individual.",
-      reforge:{stem:"Why is empathy generally preferred over sympathy in professional care relationships?",options:{A:"Empathy takes less time to express during busy shifts.",B:"Sympathy is illegal in regulated care settings.",C:"Empathy maintains the person's dignity and supports trust, while sympathy can feel patronising and creates distance.",D:"Empathy avoids any emotional involvement with the individual."},correct:"C"}
+      reforge:{stem:"Why is empathy generally preferred over sympathy in professional care relationships?",options:{A:"Empathy takes less time to express during busy shifts.",B:"Sympathy is illegal in regulated care settings.",C:"Empathy protects dignity; sympathy can feel patronising",D:"Empathy avoids any emotional involvement with the individual."},correct:"C"}
     },
     {
       id:"HSC-10",stem:"A young person discloses to a support worker that they are being harmed at home, then says 'promise you won't tell anyone.' What is the correct professional response to this request?",
@@ -7495,42 +7495,42 @@ BANKS["HSC-2"] = {
       options:{A:"Maintaining steady eye contact while internally planning what you will say next.",B:"Taking comprehensive written notes throughout so every word is captured accurately.",C:"Paraphrasing, reflecting feelings, open body language, and allowing silences",D:"Nodding continuously and verbally agreeing with every statement the person makes."},
       correct:"C",tag:"MC-HSC-11",
       scaffold:"Active listening (SOLER: Squarely face, Open posture, Lean in, Eye contact, Relax): paraphrasing, reflecting, summarising, minimal encouragers, tolerating silence, clarifying questions. Constant note-taking breaks connection; constant agreement is not listening. Link to communication cycle (Argyle): message sent → received → decoded → feedback. Application marks come from linking the technique to the individual's needs — e.g. slower pace for someone with dementia.",
-      reforge:{stem:"Argyle's communication cycle suggests communication fails most often when:",options:{A:"A message is decoded differently from how it was intended and no feedback loop exists to catch the misunderstanding.",B:"Two people speak different first languages.",C:"The message is delivered too slowly.",D:"Written communication is used instead of spoken."},correct:"A"}
+      reforge:{stem:"Argyle's communication cycle suggests communication fails most often when:",options:{A:"The message is decoded differently, with no feedback",B:"Two people speak different first languages.",C:"The message is delivered too slowly.",D:"Written communication is used instead of spoken words"},correct:"A"}
     },
     {
       id:"HSC-12",stem:"A consultant tells a patient: 'Your MI presented atypically, so we're starting dual antiplatelet therapy post-PCI.' Which barrier to communication does this illustrate, and what is the appropriate adjustment?",
       options:{A:"A physical barrier — the solution is a quieter room.",B:"Jargon — technical language excludes the patient",C:"An emotional barrier — the solution is postponing the conversation.",D:"A cultural barrier — the solution is an interpreter."},
       correct:"B",tag:"MC-HSC-12",
       scaffold:"Barriers: language/jargon, sensory impairment, environmental (noise, privacy), emotional (fear, distress), cultural, cognitive (dementia, learning disability). Each barrier has matched adjustments: plain language + teach-back for jargon; hearing loops/BSL for sensory; advocacy and easy-read for cognitive. Top-band answers name barrier + specific adjustment + impact on the individual (empowerment, informed consent, reduced anxiety).",
-      reforge:{stem:"The 'teach-back' method checks understanding by:",options:{A:"Testing the patient with a written quiz after the appointment.",B:"Having a relative confirm they understood on the patient's behalf.",C:"Asking the person to explain in their own words what they have understood, so gaps can be corrected immediately.",D:"Repeating the same explanation twice at a slower speed."},correct:"C"}
+      reforge:{stem:"The 'teach-back' method checks understanding by:",options:{A:"Testing the patient with a written quiz after the appointment.",B:"Having a relative confirm they understood on the patient's behalf.",C:"Asking the person to explain in their own words what they heard",D:"Repeating the same explanation twice at a slower speed."},correct:"C"}
     },
     {
       id:"HSC-13",stem:"A care assistant notices a colleague roughly handling residents and mocking them. Reporting this concern through the organisation's procedures is known as:",
       options:{A:"Grievance — a complaint about your own employment terms.",B:"Mediation — resolving the dispute informally between colleagues.",C:"Supervision — discussing practice with your line manager at a scheduled meeting.",D:"Whistleblowing — raising concerns about wrongdoing or poor practice that puts others at risk"},
       correct:"D",tag:"MC-HSC-13",
       scaffold:"Whistleblowing: reporting concerns about danger, illegality, or poor practice affecting others — protected disclosure. Distinct from a grievance (about your own situation). Route: line manager or designated safeguarding lead first, escalating to regulator if unaddressed. Duty of care requires acting — witnessing and not reporting is itself a failure. Exam link: connect to the individual impact (abuse prevented, dignity protected) and to organisational culture.",
-      reforge:{stem:"Why does a duty of care mean the care assistant MUST act rather than stay silent?",options:{A:"Staying silent while aware of harm makes the observer complicit in the risk to residents — duty of care extends to acting on concerns, not just personal conduct.",B:"Because colleagues who report receive a financial reward.",C:"Because all conversations in care homes are recorded.",D:"Because the colleague would eventually report themselves."},correct:"A"}
+      reforge:{stem:"Why does a duty of care mean the care assistant MUST act rather than stay silent?",options:{A:"Staying silent about known harm makes the observer complicit; duty of care covers acting on concerns",B:"Because colleagues who report receive a financial reward.",C:"Because all conversations in care homes are recorded.",D:"Because the colleague involved would eventually report the incident themselves anyway"},correct:"A"}
     },
     {
       id:"HSC-14",stem:"A day centre gives every attendee identical printed activity schedules. A visually impaired attendee cannot read theirs. The manager says 'we treat everyone the same here.' What principle is being misunderstood?",
       options:{A:"Confidentiality — printed activity schedules should not be shared with all attendees.",B:"Equality means equal access through different provision, not identical treatment",C:"Safeguarding — printed schedules create a data protection risk for vulnerable adults.",D:"Independence — attendees should create their own personalised activity schedules."},
       correct:"B",tag:"MC-HSC-14",
       scaffold:"Equality vs uniformity: treating people 'the same' can produce unequal outcomes when needs differ. Reasonable adjustments give equal ACCESS. Equity: adjusting provision to need. Link to values: dignity, inclusion, anti-discriminatory practice. Strong answers use the concrete adjustment (large print, braille, audio, digital screen reader) and its impact: participation, independence, self-esteem.",
-      reforge:{stem:"Which scenario shows equitable rather than merely identical provision?",options:{A:"All residents receive the same standard meal regardless of dietary needs.",B:"Every patient is allocated exactly ten minutes with the GP.",C:"All notices are displayed at the same height in the same font.",D:"A hospital provides interpreters for patients who need them while others attend appointments unsupported — different provision, equal access to care."},correct:"D"}
+      reforge:{stem:"Which scenario shows equitable rather than merely identical provision?",options:{A:"All residents receive exactly the same standard meal regardless of their individual dietary needs or preferences",B:"Every patient is allocated exactly ten minutes with the GP.",C:"All notices are displayed at the same height in the same font.",D:"A hospital provides interpreters only for the patients who need them: different provision, equal access"},correct:"D"}
     },
     {
       id:"HSC-15",stem:"An elderly man with capacity refuses medication that his family insists he should take. Care staff continue offering information but respect his refusal. Which two principles are being balanced?",
-      options:{A:"Empowerment and autonomy (his right to decide) balanced against duty of care (staff's obligation to inform and review).",B:"Confidentiality against data protection — both legal frameworks govern care decisions.",C:"Safeguarding against whistleblowing — the two overlap in this scenario.",D:"Equality against diversity — the care home must treat all residents consistently."},
+      options:{A:"Empowerment and autonomy against duty of care: his right to decide, staff's duty to inform",B:"Confidentiality against data protection — both of these legal frameworks govern care decisions",C:"Safeguarding against whistleblowing — the two overlap in this scenario.",D:"Equality against diversity — the care home must treat all residents consistently."},
       correct:"A",tag:"MC-HSC-15",
       scaffold:"A person with capacity has the right to refuse treatment even where refusal seems unwise — autonomy is not conditional on making the choice professionals prefer. Duty of care is met by informing, documenting, reviewing, and keeping the offer open — not by overriding. Family wishes do not override the individual's decision. Capacity is decision-specific and assumed unless assessed otherwise. Classic exam scenario: distinguish respecting refusal from neglect.",
-      reforge:{stem:"If the same man were assessed as LACKING capacity for this decision, what changes?",options:{A:"Nothing — refusal is always final regardless of capacity.",B:"Decisions would be made in his best interests, involving him as far as possible, choosing the least restrictive option, and consulting those who know him.",C:"His family would gain the automatic legal right to decide everything.",D:"Staff could administer any treatment without consultation."},correct:"B"}
+      reforge:{stem:"If the same man were assessed as LACKING capacity for this decision, what changes?",options:{A:"Nothing — refusal is always final regardless of capacity.",B:"Decisions pass to a best-interests process: involve him, choose the least restrictive option, consult",C:"His family would gain an automatic legal right to decide everything on his behalf from then on",D:"Staff could administer any treatment without consultation."},correct:"B"}
     },
     {
       id:"HSC-16",stem:"An exam scenario describes 'Priya, a support worker, helping Tomas, who has early-stage dementia, choose his own clothes each morning even though dressing him would be quicker.' The question asks you to explain the care value shown. Which answer earns application marks?",
       options:{A:"Priya is showing a care value, which is important in health and social care settings.",B:"The care value shown is independence, which all workers must demonstrate in practice.",C:"Priya promotes Tomas's independence by supporting choice rather than doing it for him",D:"Priya is being kind, which makes Tomas happy and reflects good professional conduct."},
       correct:"C",tag:"MC-HSC-16",
       scaffold:"Application formula: name the value → show it in THIS scenario (use the names, quote the action) → explain the impact on THIS individual (link to PIES or condition). Generic answers ('this is important in care') score AO1 only. The dementia link matters: retaining skills and autonomy slows learned helplessness and supports identity. This structure applies to every scenario question in the paper.",
-      reforge:{stem:"Why does the phrase 'even though dressing him would be quicker' matter for the answer?",options:{A:"It shows Priya is inefficient and needs more training.",B:"It suggests the care home is understaffed.",C:"It indicates Tomas is being deliberately slow.",D:"It signals the deliberate trade-off: Priya prioritises Tomas's independence over task-efficiency, which is exactly what person-centred practice requires — naming this trade-off demonstrates real understanding."},correct:"D"}
+      reforge:{stem:"Why does the phrase 'even though dressing him would be quicker' matter for the answer?",options:{A:"It shows Priya is inefficient and needs more training in personal care",B:"It suggests the care home is understaffed.",C:"It indicates Tomas is being deliberately slow.",D:"It names the trade-off: independence is prioritised over speed"},correct:"D"}
     }
   ]
 };
@@ -10419,9 +10419,9 @@ BANKS["BIO-3"] = {
       stem:"Natural selection acts on phenotype, not genotype. Which statement best explains why this distinction matters?",
       options:{
         A:"It means that only visible characteristics can evolve.",
-        B:"It is irrelevant — phenotype and genotype always correspond directly.",
+        B:"It is irrelevant, because phenotype and genotype always correspond directly to one another",
         C:"It means that environmental adaptations cannot be inherited.",
-        D:"Carriers of recessive alleles (Aa) have the same phenotype as dominant homozygotes (AA) but different genotypes — selection cannot distinguish them, so recessive alleles persist in the population even when they reduce fitness in homozygous form."
+        D:"Carriers (Aa) look like AA homozygotes, so selection cannot remove recessive alleles"
       },
       correct:"D",tag:"MC-GEN-04",
       scaffold:"Selection acts on phenotype — what the organism looks like and how it functions. Carriers (Aa) are phenotypically normal but carry one copy of a harmful recessive allele. Selection cannot eliminate the recessive allele from carriers. This explains why harmful recessive alleles (e.g. cystic fibrosis allele) persist at low frequency in populations — they are 'hidden' in heterozygous carriers and only exposed to selection in homozygous recessives (aa).",
@@ -11188,7 +11188,7 @@ BANKS["GCSE-SCI-PHYS-1"] = {
     gcseScienceQuestion("SCI-PHYS1-03", "1SC0 Topic 2", "What does the gradient of a distance–time graph represent?", {A:"Acceleration",B:"Speed",C:"Force",D:"Energy"}, "B", "The gradient is change in distance divided by change in time, which is speed. A steeper line represents a greater speed.", "MC-SEP-PHYS-MOTION", {stem:"What does a horizontal section on a distance–time graph show?",options:{A:"The object is stationary",B:"The object is accelerating",C:"The object has zero mass",D:"The object is moving fastest"},correct:"A"}),
     gcseScienceQuestion("SCI-PHYS1-04", "1SC0 Topic 2", "A resultant force acts on an object. What must happen?", {A:"Its mass changes",B:"It accelerates",C:"It becomes stationary",D:"Its temperature falls"}, "B", "A non-zero resultant force causes acceleration. The acceleration may be a change in speed, direction or both.", "MC-SEP-PHYS-NEWTON", {stem:"What is the resultant force when an object moves at constant velocity?",options:{A:"Zero",B:"Equal to its weight",C:"Greater than its mass",D:"Always forwards"},correct:"A"}),
     gcseScienceQuestion("SCI-PHYS1-05", "1SC0 Topic 2", "Which equation links force, mass and acceleration?", {A:"F = m ÷ a",B:"F = m × a",C:"F = a ÷ m",D:"F = m + a"}, "B", "Newton's second law is F = m × a. The force is measured in newtons when mass is in kilograms and acceleration in m/s².", "MC-SEP-PHYS-NEWTON", {stem:"A 4 kg trolley accelerates at 3 m/s². What is the resultant force?",options:{A:"0.75 N",B:"1.3 N",C:"7 N",D:"12 N"},correct:"D"}),
-    gcseScienceQuestion("SCI-PHYS1-06", "1SC0 Topic 3", "Which statement describes conservation of energy?", {A:"Energy is destroyed by friction",B:"Energy is created in batteries",C:"Energy is transferred, not created or destroyed",D:"Only useful energy is conserved"}, "C", "The total energy of a closed system remains constant. Transfers may spread energy to the surroundings, often by heating.", "MC-SEP-PHYS-ENERGY", {stem:"What happens to energy dissipated by friction?",options:{A:"It disappears",B:"It is transferred to the thermal store",C:"It becomes mass",D:"It stops existing in a closed system"},correct:"B"}),
+    gcseScienceQuestion("SCI-PHYS1-06", "1SC0 Topic 3", "Which statement describes conservation of energy?", {A:"Energy is destroyed by friction between the surfaces",B:"Energy is created in batteries",C:"Energy is transferred, not created or destroyed",D:"Only useful energy is conserved"}, "C", "The total energy of a closed system remains constant. Transfers may spread energy to the surroundings, often by heating.", "MC-SEP-PHYS-ENERGY", {stem:"What happens to energy dissipated by friction?",options:{A:"It disappears",B:"It is transferred to the thermal store",C:"It becomes mass",D:"It stops existing in a closed system"},correct:"B"}),
     gcseScienceQuestion("SCI-PHYS1-07", "1SC0 Topic 3", "A 2 kg object is lifted 5 m. Using g = 10 N/kg, what is its gravitational potential energy increase?", {A:"4 J",B:"10 J",C:"25 J",D:"100 J"}, "D", "Gravitational potential energy change = mass × gravitational field strength × height = 2 × 10 × 5 = 100 J.", "MC-SEP-PHYS-ENERGY", {stem:"Which change increases the gravitational potential energy gained when lifting an object?",options:{A:"A smaller height",B:"A smaller mass",C:"A greater height",D:"A lower gravitational field strength"},correct:"C"}),
     gcseScienceQuestion("SCI-PHYS1-08", "1SC0 Topic 4", "Which feature is common to all transverse waves?", {A:"Oscillations are parallel to travel",B:"Oscillations are perpendicular to travel",C:"They require a vacuum",D:"They cannot be reflected"}, "B", "In a transverse wave, the vibrations are at right angles to the direction of energy transfer. Light and water waves are examples.", "MC-SEP-PHYS-WAVE", {stem:"What is the frequency of a wave with a period of 0.25 s?",options:{A:"0.25 Hz",B:"2 Hz",C:"4 Hz",D:"25 Hz"},correct:"C"}),
     gcseScienceQuestion("SCI-PHYS1-09", "1SC0 Topic 4", "What happens when a wave is refracted as it enters a different medium?", {A:"Its speed and direction may change",B:"Its energy is always destroyed",C:"Its frequency must become zero",D:"It becomes radioactive"}, "A", "Refraction occurs because wave speed changes at a boundary. This can change direction; frequency remains set by the source.", "MC-SEP-PHYS-WAVE", {stem:"What is the amplitude of a wave most closely related to?",options:{A:"The energy transferred",B:"The wave's frequency only",C:"The time period only",D:"The number of particles"},correct:"A"}),
@@ -11415,7 +11415,7 @@ BANKS["GCSE-SCI-CHEM-1"].questions.push(
 BANKS["GCSE-SCI-PHYS-1"].questions.push(
   gcseScienceQuestion("SCI-PHYS1-13", "1SC0 Topic 2", "A runner changes velocity from 4 m/s to 10 m/s in 3 s. What is the acceleration?", {A:"2 m/s²",B:"3 m/s²",C:"6 m/s²",D:"14 m/s²"}, "A", "Acceleration = change in velocity ÷ time = (10 − 4) ÷ 3 = 2 m/s².", "MC-SEP-PHYS-MOTION", {stem:"What does negative acceleration mean?",options:{A:"Velocity changes in the negative direction",B:"The object has no velocity",C:"Mass becomes negative",D:"No force acts"},correct:"A"}),
   gcseScienceQuestion("SCI-PHYS1-14", "1SC0 Topic 2", "What does the area under a velocity–time graph represent?", {A:"Distance travelled",B:"Acceleration only",C:"Mass",D:"Resultant force"}, "A", "The area under a velocity–time graph gives distance travelled. For a rectangle, calculate base × height; for a triangle, use half × base × height.", "MC-SEP-PHYS-MOTION", {stem:"What does the gradient of a velocity–time graph show?",options:{A:"Acceleration",B:"Distance",C:"Mass",D:"Energy transferred"},correct:"A"}),
-  gcseScienceQuestion("SCI-PHYS1-15", "1SC0 Topic 2", "Why does a longer stopping distance increase collision risk?", {A:"There is more distance for energy to be dissipated",B:"The vehicle loses its mass",C:"The brakes create momentum",D:"The road removes all forces"}, "A", "A moving vehicle has kinetic energy. Brakes and other resistive forces need distance and time to transfer that energy, so a longer stopping distance increases risk.", "PHYS-STOP-01", {stem:"What can increase thinking distance?",options:{A:"Higher speed or slower reaction",B:"Better concentration",C:"Dry road surface",D:"Brighter headlights only"},correct:"A"}),
+  gcseScienceQuestion("SCI-PHYS1-15", "1SC0 Topic 2", "Why does a longer stopping distance increase collision risk?", {A:"There is more distance for energy to be dissipated",B:"The vehicle loses its mass",C:"The brakes create extra momentum in the moving vehicle",D:"The road removes all forces"}, "A", "A moving vehicle has kinetic energy. Brakes and other resistive forces need distance and time to transfer that energy, so a longer stopping distance increases risk.", "PHYS-STOP-01", {stem:"What can increase thinking distance?",options:{A:"Higher speed or slower reaction",B:"Better concentration",C:"Dry road surface",D:"Brighter headlights only"},correct:"A"}),
   gcseScienceQuestion("SCI-PHYS1-16", "1SC0 Topic 2", "What happens when a falling object reaches terminal velocity?", {A:"Resistive force balances weight",B:"Weight becomes zero",C:"Acceleration increases forever",D:"The object reverses direction"}, "A", "As speed rises, air resistance increases. At terminal velocity, air resistance equals weight, so the resultant force and acceleration are zero.", "MC-SEP-PHYS-NEWTON", {stem:"Why does a parachutist slow after opening a parachute?",options:{A:"Air resistance increases",B:"Weight disappears",C:"Gravity reverses",D:"Mass falls to zero"},correct:"A"}),
   gcseScienceQuestion("SCI-PHYS1-17", "1SC0 Topic 3", "What is the efficiency of a device?", {A:"Useful output energy divided by total input energy",B:"Total input divided by time only",C:"Wasted energy divided by mass",D:"Useful force multiplied by distance only"}, "A", "Efficiency = useful output energy ÷ total input energy. It can be expressed as a decimal or multiplied by 100 for a percentage.", "MC-SEP-PHYS-ENERGY", {stem:"Why can no real device be 100% efficient?",options:{A:"Some energy is dissipated",B:"Energy is destroyed",C:"Input energy is always zero",D:"Useful output cannot exist"},correct:"A"}),
   gcseScienceQuestion("SCI-PHYS1-18", "1SC0 Topic 3", "A machine transfers 900 J in 30 s. What is its power?", {A:"30 W",B:"270 W",C:"870 W",D:"27,000 W"}, "A", "Power = energy transferred ÷ time = 900 ÷ 30 = 30 W.", "MC-SEP-PHYS-POWER", {stem:"What does a high power rating indicate?",options:{A:"More energy transferred per second",B:"Less energy can ever be used",C:"The device has no resistance",D:"The device must be 100% efficient"},correct:"A"}),
@@ -15973,9 +15973,9 @@ addSocTopicBank("SOC-FAM", "Families and Households", "7192-FAM", [
   {term:"triple shift",definition:"Women performing paid work, domestic labour and emotional work",application:"A woman working for pay, running the home and managing family relationships faces a triple shift"},
   {term:"dark side of the family",definition:"The idea that families can involve conflict, abuse and unequal power as well as support",application:"Domestic abuse challenges the view that the family is always a safe haven"},
   {term:"serial monogamy",definition:"A pattern of successive exclusive relationships rather than one lifelong marriage",application:"Repeated partnerships after separation illustrate serial monogamy"},
-  {term:"confluent love",definition:"Giddens' negotiated relationship based on mutual satisfaction rather than duty",application:"Partners staying together while the relationship meets both people's needs reflects confluent love"},
-  {term:"pure relationship",definition:"A relationship maintained while both partners gain satisfaction from it",application:"A couple continuing only while the relationship remains fulfilling fits the pure relationship"},
-  {term:"family diversity",definition:"The growth of different family forms and household arrangements",application:"Lone-parent, reconstituted and same-sex households illustrate family diversity"},
+  {term:"confluent love",definition:"Giddens' negotiated relationship based on mutual satisfaction rather than duty",application:"Partners staying together only while the relationship keeps on meeting both people's needs is confluent love"},
+  {term:"pure relationship",definition:"A relationship maintained while both partners gain satisfaction from it",application:"A couple continuing only while the relationship stays personally fulfilling is a pure relationship"},
+  {term:"family diversity",definition:"The growth of different family forms and household arrangements",application:"Lone-parent, reconstituted, cohabiting and same-sex households all illustrate growing family diversity today"},
   {term:"beanpole family",definition:"A vertically extended family with several living generations but few members in each generation",application:"Grandparents, parents and children living across generations form a beanpole pattern"},
   {term:"modified extended family",definition:"An extended family kept connected through support and communication despite living apart",application:"Relatives living in different towns but sharing childcare form a modified extended family"},
   {term:"migration and family networks",definition:"Movement between countries or regions can reshape care, identity and financial support",application:"Remittances and digital contact can maintain transnational family relationships"},
@@ -15996,9 +15996,9 @@ addSocTopicBank("SOC-BEL", "Beliefs in Society", "7192-BEL", [
   {term:"anomie",definition:"A condition of normlessness in which traditional rules lose their authority",application:"Rapid social change can create uncertainty and weaken shared moral rules"},
   {term:"opium of the people",definition:"Marx's view that religion comforts the oppressed while legitimising inequality",application:"Promising reward after death may reduce resistance to exploitation"},
   {term:"theodicy",definition:"A religious explanation attempting to reconcile suffering with belief in a good and powerful deity",application:"Free will or future compensation can be used as a theodicy"},
-  {term:"ideology",definition:"A set of ideas that explains society and can justify the interests of a powerful group",application:"Religious ideas may legitimate existing class or gender relations"},
+  {term:"ideology",definition:"A set of ideas that explains society and can be used to justify the interests of a powerful ruling group",application:"Religious ideas may legitimate existing class or gender relations"},
   {term:"secularisation",definition:"The declining social significance, influence or membership of religion",application:"Falling attendance and reduced institutional influence indicate secularisation"},
-  {term:"religious market theory",definition:"The view that demand for religion remains when organisations compete to offer meaningful choices",application:"Competing churches may increase participation by offering different religious products"},
+  {term:"religious market theory",definition:"The view that demand for religion remains strong when competing organisations offer meaningful choices",application:"Competing churches may increase participation by offering different religious products"},
   {term:"globalisation and religion",definition:"Worldwide connections can spread beliefs, movements and religious conflict",application:"Migration and digital media can extend a faith across national borders"},
   {term:"fundamentalism",definition:"A movement seeking strict adherence to sacred texts and traditional teachings",application:"Rejecting modern reinterpretations in favour of literal scripture is fundamentalist"},
   {term:"religious revival",definition:"A renewed growth or public influence of religious belief and practice",application:"A rapid increase in worship or religious activism can be a revival"},
@@ -16990,8 +16990,8 @@ addCriminologyBank("CRIM-AWARE", "Unit 1: Changing Awareness of Crime", "WJEC-U1
   "honour crime|Abuse or violence claimed to defend family or community honour|The concept must not excuse abuse and can involve hidden victimisation",
   "domestic abuse|Controlling, coercive, threatening or violent behaviour within an intimate or family relationship|It is often hidden and victims may face barriers to reporting",
   "human trafficking|The exploitation and movement of people through coercion, deception or force|It is transnational and difficult to detect because victims may fear authorities",
-  "terrorism|Violence or threats intended to influence a government or intimidate a population for a political or ideological cause|Its definition and prevention policies are politically contested",
-  "crime statistics|Recorded numerical information about offences, victims, suspects or outcomes|Statistics measure official processes as well as underlying behaviour",
+  "terrorism|Violence or threats intended to intimidate a population for a political or ideological cause|Its definition and prevention policies are politically contested",
+  "crime statistics|Recorded numerical information about offences, victims, suspects and criminal justice outcomes|Statistics measure official processes as well as underlying behaviour",
   "police recorded crime|Offences recorded by the police after coming to their attention|It is useful for workload and serious crimes but depends on reporting and recording practice",
   "Crime Survey for England and Wales|A large victimisation survey asking people about experiences of crime|It captures some unreported crime but excludes some populations and offences",
   "self-report study|Research asking people to disclose offences they have committed|It can reveal hidden offending but relies on honesty and memory",
@@ -17048,7 +17048,7 @@ addCriminologyBank("CRIM-THEORY", "Unit 2: Criminological Theories", "WJEC-U2", 
   "Merton's anomie|The tension produced when cultural success goals are not matched by legitimate means|It helps explain some acquisitive crime in unequal societies",
   "institutional anomie|The idea that economic values dominate other institutions and weaken social controls|It links crime to the organisation of society rather than individual pathology",
   "subcultural theory|The view that groups develop norms that support behaviour rejected by wider society|It explains group patterns but can stereotype working-class communities",
-  "status frustration|The experience of failure to gain status through mainstream routes, leading some young people to alternative values|It was used to explain delinquent subcultures",
+  "status frustration|Failure to gain status through mainstream routes, pushing some young people towards alternative values|It was used to explain delinquent subcultures",
   "conflict subculture|A subculture where violence provides status or protection in areas with limited legitimate opportunities|It may explain some violence but risks treating communities as uniform",
   "Marxist theory|The view that crime and law reflect class inequality and capitalist interests|It highlights power and selective enforcement but may underplay victimisation and agency",
   "criminogenic capitalism|The claim that competitive profit-seeking and inequality generate pressures and opportunities for crime|It links white-collar and street crime to economic structures",
@@ -17086,8 +17086,8 @@ addCriminologyBank("CRIM-COURT", "Unit 3: From Crime Scene to Courtroom", "WJEC-
   "police investigator|An officer who gathers intelligence, interviews people and builds an investigation|Decision-making can be affected by resources, assumptions and pressure",
   "Crown Prosecution Service|The independent body that advises on and conducts many criminal prosecutions|It applies a legal test rather than simply following police suspicion",
   "Full Code Test|The CPS test requiring sufficient evidence for a realistic prospect of conviction and public interest|Both stages must be satisfied before prosecution normally proceeds",
-  "evidential stage|The first part of the Full Code Test asking whether admissible evidence gives a realistic prospect of conviction|It protects against cases based only on suspicion",
-  "public interest stage|The second part of the Full Code Test considering whether prosecution is required in the public interest|It involves factors such as seriousness, culpability and impact",
+  "evidential stage|The Full Code Test's first part: does admissible evidence give a realistic prospect of conviction|It protects against cases based only on suspicion",
+  "public interest stage|The second part of the Full Code Test, considering whether a prosecution is required in the public interest|It involves factors such as seriousness, culpability and impact",
   "crime scene preservation|Securing and restricting access to an area where evidence may be found|It reduces contamination and protects the integrity of the investigation",
   "scene log|A record of everyone entering or leaving a crime scene and why|It helps demonstrate continuity and identify possible contamination",
   "photographic evidence|Images recording the scene, position and condition of objects or injuries|Photographs preserve context that may be lost when evidence is moved",
@@ -17122,7 +17122,7 @@ addCriminologyBank("CRIM-COURT", "Unit 3: From Crime Scene to Courtroom", "WJEC-
   "prosecution counsel|The lawyer presenting the case on behalf of the state|They must present evidence fairly and comply with disclosure duties",
   "safe verdict|A verdict supported by reliable, admissible and properly tested evidence|Reviewing safety focuses on whether the conviction can be trusted",
   "just verdict|A verdict reached through a fair process and proportionate application of law|Justice includes procedure, evidence, rights and public confidence",
-  "miscarriage of justice|A serious failure of the criminal process resulting in an unsafe conviction or failure to protect the innocent|It can arise from evidence error, misconduct, bias or poor representation",
+  "miscarriage of justice|A serious failure of the criminal process leading to an unsafe conviction or a failure to protect innocents|It can arise from evidence error, misconduct, bias or poor representation",
   "appeal|A legal process challenging a conviction, sentence or procedural decision|Appeals correct errors but are not simply a second chance to retry every case",
   "case review|A structured re-examination of evidence, procedure and legal decisions|It can identify new evidence or weaknesses in an earlier verdict",
   "case study method|Using a real criminal case to assess evidence, roles and outcomes|Case studies make evaluation concrete but may not generalise to every case",
@@ -17477,10 +17477,10 @@ addLawPoliticsBank("POL-UKGOV", "Paper 2: UK Government & Feminism", "EDEXCEL-9P
   "uncodified constitution|A constitution not contained in a single authoritative document|It can adapt quickly but may be less clear and less entrenched",
   "constitutional convention|A non-legal rule of political practice followed because it is considered binding|Conventions can change through political pressure and precedent",
   "rule of law in government|The principle that public bodies and citizens are subject to law|It limits arbitrary executive action and supports judicial review",
-  "parliamentary sovereignty|The principle that Parliament can make or unmake any law and cannot be overruled by a higher domestic authority|Devolution, rights law and international commitments complicate its operation",
+  "parliamentary sovereignty|The principle that Parliament can make or unmake any law and is not overruled by a higher domestic authority|Devolution, rights law and international commitments complicate its operation",
   "devolution|The transfer of powers from central government to legislatures or executives in Scotland, Wales and Northern Ireland|It increases territorial self-government but creates asymmetry and tensions",
-  "House of Commons|The elected chamber that forms governments, scrutinises ministers and makes law|Its party majority strongly affects executive power",
-  "House of Lords|The appointed and hereditary revising chamber|It scrutinises and revises legislation but cannot normally permanently block the Commons",
+  "House of Commons|The elected chamber that forms governments, scrutinises ministers and passes the laws that bind the country at large|Its party majority strongly affects executive power",
+  "House of Lords|The appointed and hereditary chamber that revises legislation|It scrutinises and revises legislation but cannot normally permanently block the Commons",
   "select committee|A cross-party committee investigating policy, administration or expenditure|Evidence and reports improve scrutiny but governments may resist recommendations",
   "backbench MP|A Member of Parliament who is not a government or opposition frontbench spokesperson|Backbenchers can influence policy through committees, amendments and rebellion",
   "whip|A party official managing parliamentary attendance, voting and discipline|Whips help governments pass business but rebellion demonstrates limits",
@@ -27075,23 +27075,23 @@ appendGenerated("GCSE-SCI-BIO-1", [
 ], "GCSE-PHASE6-BIO1");
 appendGenerated("GCSE-SCI-BIO-2", [
   ["Transpiration is the loss of water vapour mainly from: ","leaves through stomata","roots through xylem only","seeds through chloroplasts","flowers through phloem", "Water vapour diffuses out through open stomata in leaves."],
-  ["A food web is useful because it shows: ","interconnected feeding relationships in a community","only one linear energy transfer","the exact population of every species","the chemical formula of glucose", "Food webs show that organisms may have several prey and predators."]
+  ["A food web is useful because it shows: ","interconnected feeding relationships in a community","only one linear energy transfer","the exact population size of every species in the habitat","the chemical formula of glucose", "Food webs show that organisms may have several prey and predators."]
 ], "GCSE-PHASE6-BIO2");
 appendGenerated("GCSE-SCI-CHEM-1", [
   ["Ionic compounds conduct electricity when molten because: ","their ions are free to move","their atoms become neutral","their electrons disappear","their molecules become larger", "Ions are fixed in a solid lattice but mobile when molten or dissolved."],
   ["Electrolysis of an aqueous solution uses electricity to: ","decompose ionic substances into products","increase the mass of every electrode","remove all ions from solution","turn every metal into a gas", "Electrical energy drives a non-spontaneous chemical decomposition."]
 ], "GCSE-PHASE6-CHEM1");
 appendGenerated("GCSE-SCI-CHEM-2", [
-  ["A catalyst increases reaction rate by: ","providing an alternative pathway with lower activation energy","increasing the enthalpy change","being used up completely","raising the products' energy only", "A catalyst changes the pathway and is regenerated at the end."],
+  ["A catalyst increases reaction rate by: ","providing an alternative pathway with lower activation energy","increasing the enthalpy change","being used up completely","raising the energy of the products and nothing else in the reaction", "A catalyst changes the pathway and is regenerated at the end."],
   ["A fuel is useful because it releases energy when it: ","undergoes combustion","dissolves in water","freezes at room temperature","becomes a catalyst", "Combustion transfers chemical energy to the surroundings, often as heat." ]
 ], "GCSE-PHASE6-CHEM2");
 appendGenerated("GCSE-SCI-PHYS-1", [
   ["The gradient of a velocity–time graph represents: ","acceleration","distance travelled","force divided by mass only","power", "Acceleration is the change in velocity per unit time, shown by the gradient."],
-  ["During radioactive decay, the activity of a sample: ","decreases over time but may never reach exactly zero","increases at a constant rate","becomes negative immediately","stays identical for every isotope", "Random decay produces an overall exponential decrease in activity." ]
+  ["During radioactive decay, the activity of a sample: ","decreases over time but may never reach exactly zero","increases at a constant rate","becomes negative immediately","stays exactly identical for every isotope of the element", "Random decay produces an overall exponential decrease in activity." ]
 ], "GCSE-PHASE6-PHYS1");
 appendGenerated("GCSE-SCI-PHYS-2", [
   ["The resistance of a component is calculated using: ","potential difference divided by current","current divided by charge","power divided by time","energy multiplied by voltage", "Ohm's law gives resistance R = V ÷ I."],
-  ["An electric motor uses the motor effect when: ","a current-carrying conductor experiences a force in a magnetic field","a resistor loses all its charge","a transformer has no coils","a fuse increases current", "The force on a current-carrying conductor can produce rotation." ]
+  ["An electric motor uses the motor effect when: ","a current-carrying conductor experiences a force in a magnetic field","a resistor loses all of its stored charge into the rest of the circuit","a transformer has no coils","a fuse increases current", "The force on a current-carrying conductor can produce rotation." ]
 ], "GCSE-PHASE6-PHYS2");
 
 // appendGenerated derives tag = "MC-" + id, which gives each Phase 6 item a tag
@@ -32317,11 +32317,6 @@ for (const subject of Object.values(SUBJECTS)) {
 
 // Static authored repairs for all legacy CUE cleanup changes.
 const staticLegacyRepairs = {
-  "AS-07": {
-    "reforge": {
-      "C": "Because firms always produce more when prices rise. The economic explanation must account for incentives, trade-offs, market conditions, distribution and the time period; the relevant relationship is reversed, so the proposed answer cannot explain the outcome."
-    }
-  },
   "BUS-COV-061": {
     "reforge": {
       "B": "A rival cinema opening nearby and offering lower ticket prices can increase competitive rivalry within the cinema industry, but it does not provide a substitute outside the industry or meet the same need through a different medium."
@@ -32462,24 +32457,9 @@ const staticLegacyRepairs = {
       "C": "Rigidity is not a criticism because all ethical theories are rigid. The religious or ethical explanation must fit the tradition, reasoning, evidence, interpretation and consequences involved; the answer leaves out the condition that determines the result being tested."
     }
   },
-  "HSC-COV-033": {
-    "reforge": {
-      "A": "It shows Priya is inefficient and needs more training. The care or development explanation must account for the person, needs, rights, risk, support and context described; the stated example distinguishes this mechanism from the nearby concept named in the option."
-    }
-  },
   "HSC-COV-049": {
     "reforge": {
       "A": "Social — the child is learning from others."
-    }
-  },
-  "HSC-COV-083": {
-    "reforge": {
-      "C": "It indicates Tomas is being deliberately slow. The care or development explanation must account for the person, needs, rights, risk, support and context described; the stated example distinguishes this mechanism from the nearby concept named in the option."
-    }
-  },
-  "HSC-COV-133": {
-    "reforge": {
-      "A": "It shows Priya is inefficient and needs more training. The care or development explanation must account for the person, needs, rights, risk, support and context described; the relevant distinction is between the process and its effect, which this option merges."
     }
   },
   "FR-02": {
@@ -32490,26 +32470,6 @@ const staticLegacyRepairs = {
   "FR-08": {
     "reforge": {
       "C": "Translate the whole paragraph instead. The French construction must be judged by its meaning, agreement, tense, pronoun position and register; the stated context changes the interpretation, so this generalisation is not valid here."
-    }
-  },
-  "MED-13": {
-    "base": {
-      "C": "The tendency for audiences to undervalue cultural products compared to their production cost. The media explanation must account for representation, audience, ownership, technology, regulation and interpretation; the proposed account does not match the scale, timing or conditions stated."
-    }
-  },
-  "MEDIA-COV-030": {
-    "base": {
-      "C": "The tendency for audiences to undervalue cultural products compared to their production cost. The media explanation must account for representation, audience, ownership, technology, regulation and interpretation; the answer overlooks the qualifier that determines how the concept applies in this question."
-    }
-  },
-  "MEDIA-COV-080": {
-    "base": {
-      "C": "The tendency for audiences to undervalue cultural products compared to their production cost. The media explanation must account for representation, audience, ownership, technology, regulation and interpretation; the relevant distinction is between the process and its effect, which this option merges."
-    }
-  },
-  "MEDIA-COV-130": {
-    "base": {
-      "C": "The tendency for audiences to undervalue cultural products compared to their production cost. The media explanation must account for representation, audience, ownership, technology, regulation and interpretation; the proposed account does not match the scale, timing or conditions stated."
     }
   },
   "PE-COV-013": {
@@ -32762,11 +32722,6 @@ const staticLegacyRepairs = {
       "D": "The student should explain that Owen was a soldier who experienced gas attacks and describe when he served, where he was stationed, how his military service affected his health and which biographical sources record those events. They should also add a chronology of his postings, publication history and hospital treatment, then use those facts as the main evidence for the poem. That information may provide historical context, but it does not analyse the simile's paradox, imagery, moral inversion or the way the comparison presents the battlefield as a source of suffering beyond ordinary human endurance."
     }
   },
-  "HSC-16": {
-    "reforge": {
-      "A": "It shows Priya is inefficient and needs more training. The care or development explanation must account for the person, needs, rights, risk, support and context described; the answer treats an exception or consequence as though it were the underlying principle."
-    }
-  },
   "FRENCH-COV-002": {
     "reforge": {
       "A": "Quand j'étais jeune, j'ai joué au football tous les jours. The French construction must be judged by its meaning, agreement, tense, pronoun position and register; the proposed conclusion does not follow from the evidence supplied in the question."
@@ -32957,11 +32912,6 @@ const staticLegacyRepairs = {
       "A": "Osmosis moves solutes from low to high concentration across a membrane."
     }
   },
-  "BIO-COV-054": {
-    "base": {
-      "D": "Brown eyes are actually recessive — only one allele is needed to suppress blue. The biological explanation must account for the cells, molecules, structures, mechanisms and conditions stated; the answer leaves out the condition that determines the result being tested."
-    }
-  },
   "PHYS-COV-083": {
     "reforge": {
       "A": "Velocity zero, acceleration zero — the ball is momentarily at rest."
@@ -33039,11 +32989,6 @@ const staticLegacyRepairs = {
     },
     "reforge": {
       "A": "A plebiscite and partition"
-    }
-  },
-  "GEN-04": {
-    "base": {
-      "B": "It is irrelevant — phenotype and genotype always correspond directly. The biological explanation must account for the cells, molecules, structures, mechanisms and conditions stated; the answer treats an exception or consequence as though it were the underlying principle."
     }
   },
   "BIO-COV-035": {
@@ -33141,698 +33086,6 @@ const staticLegacyRepairs = {
       "B": "They supported the Settlement"
     }
   },
-  "SCI-PHYS1-06": {
-    "base": {
-      "A": "Energy is destroyed by friction The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the stated example distinguishes this mechanism from the nearby concept named in the option."
-    }
-  },
-  "SCI-PHYS1-15": {
-    "base": {
-      "D": "The road removes all forces The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the option confuses a definition with its application to the specific example."
-    }
-  },
-  "GCSE-PHASE6-PHYS1-02": {
-    "base": {
-      "D": "stays identical for every isotope The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the proposed conclusion does not follow from the evidence supplied in the question."
-    },
-    "reforge": {
-      "D": "1,800 m/s The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the proposed conclusion does not follow from the evidence supplied in the question."
-    }
-  },
-  "GCSE-PHASE6-BIO2-02": {
-    "base": {
-      "B": "the exact population of every species The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the evidence supports a narrower conclusion than the one proposed in this option."
-    },
-    "reforge": {
-      "A": "Releasing carbon dioxide The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the answer treats an exception or consequence as though it were the underlying principle."
-    }
-  },
-  "GCSE-PHASE6-CHEM2-01": {
-    "base": {
-      "D": "raising the products' energy only The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the relevant distinction is between the process and its effect, which this option merges."
-    },
-    "reforge": {
-      "B": "They have the same mass number The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the option confuses a definition with its application to the specific example."
-    }
-  },
-  "GCSE-SCIENCE-COV-054": {
-    "base": {
-      "B": "Energy is destroyed by friction The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the option would be correct only under different assumptions from those given."
-    }
-  },
-  "GCSE-PHASE6-PHYS2-02": {
-    "base": {
-      "A": "a resistor loses all its charge The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the answer does not account for the competing factor or trade-off described."
-    },
-    "reforge": {
-      "C": "Ampere The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the answer treats an exception or consequence as though it were the underlying principle."
-    }
-  },
-  "SEP-CHEM1-04": {
-    "base": {
-      "C": "They lose all attraction The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the proposed account does not match the scale, timing or conditions stated."
-    }
-  },
-  "SEP-CHEM1-06": {
-    "reforge": {
-      "A": "The reaction must be reversible The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the proposed account does not match the scale, timing or conditions stated."
-    }
-  },
-  "SEP-CHEM1-07": {
-    "reforge": {
-      "C": "The solution becomes neutral The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the option confuses a definition with its application to the specific example."
-    }
-  },
-  "SEP-CHEM1-09": {
-    "base": {
-      "B": "To separate an insoluble solid The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the relevant relationship is reversed, so the proposed answer cannot explain the outcome."
-    },
-    "reforge": {
-      "D": "It identifies ions by colour The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the relevant relationship is reversed, so the proposed answer cannot explain the outcome."
-    }
-  },
-  "SEP-CHEM1-11": {
-    "base": {
-      "B": "Theoretical ÷ actual × 100 The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the proposed account does not match the scale, timing or conditions stated."
-    },
-    "reforge": {
-      "C": "Products contain no mass The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the stated context changes the interpretation, so this generalisation is not valid here."
-    }
-  },
-  "SEP-CHEM1-15": {
-    "base": {
-      "D": "They have no chemical properties The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the mechanism named in the option cannot produce the result under these conditions."
-    },
-    "reforge": {
-      "B": "They are too large to enter cells The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the mechanism named in the option cannot produce the result under these conditions."
-    }
-  },
-  "GCSE-SEP-CHEM-COV-007": {
-    "reforge": {
-      "C": "The solution becomes neutral The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the evidence supports a narrower conclusion than the one proposed in this option."
-    }
-  },
-  "GCSE-SEP-CHEM-COV-009": {
-    "base": {
-      "B": "To separate an insoluble solid The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the proposed account does not match the scale, timing or conditions stated."
-    },
-    "reforge": {
-      "D": "It identifies ions by colour The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the proposed account does not match the scale, timing or conditions stated."
-    }
-  },
-  "GCSE-SEP-CHEM-COV-011": {
-    "base": {
-      "C": "Theoretical ÷ actual × 100 The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the explanation would require facts or assumptions that the question does not provide."
-    },
-    "reforge": {
-      "A": "Equilibrium always stops The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the proposed conclusion does not follow from the evidence supplied in the question."
-    }
-  },
-  "GCSE-SEP-CHEM-COV-015": {
-    "base": {
-      "C": "They have no chemical properties The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the relevant relationship is reversed, so the proposed answer cannot explain the outcome."
-    },
-    "reforge": {
-      "A": "They are too large to enter cells The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the relevant relationship is reversed, so the proposed answer cannot explain the outcome."
-    }
-  },
-  "GCSE-SEP-CHEM-COV-017": {
-    "base": {
-      "B": "The activation energy becomes zero The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the proposed conclusion does not follow from the evidence supplied in the question."
-    }
-  },
-  "GCSE-SEP-CHEM-COV-023": {
-    "base": {
-      "A": "To increase salt concentration The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the mechanism named in the option cannot produce the result under these conditions."
-    }
-  },
-  "GCSE-SEP-CHEM-COV-027": {
-    "base": {
-      "D": "To make crude oil renewable The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the explanation would require facts or assumptions that the question does not provide."
-    }
-  },
-  "GCSE-SEP-CHEM-COV-031": {
-    "reforge": {
-      "C": "Protons with neutrons The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the option identifies a related term but not the feature that makes it the correct answer."
-    }
-  },
-  "GCSE-SEP-CHEM-COV-039": {
-    "reforge": {
-      "C": "The solution becomes neutral The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the answer overlooks the qualifier that determines how the concept applies in this question."
-    }
-  },
-  "GCSE-SEP-CHEM-COV-041": {
-    "base": {
-      "B": "To separate an insoluble solid The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the option would be correct only under different assumptions from those given."
-    },
-    "reforge": {
-      "D": "It identifies ions by colour The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the option would be correct only under different assumptions from those given."
-    }
-  },
-  "GCSE-SEP-CHEM-COV-043": {
-    "base": {
-      "C": "Theoretical ÷ actual × 100 The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the option confuses a definition with its application to the specific example."
-    },
-    "reforge": {
-      "A": "Equilibrium always stops The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the stated example distinguishes this mechanism from the nearby concept named in the option."
-    }
-  },
-  "GCSE-SEP-CHEM-COV-047": {
-    "base": {
-      "C": "They have no chemical properties The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the answer treats an exception or consequence as though it were the underlying principle."
-    },
-    "reforge": {
-      "A": "They are too large to enter cells The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the answer treats an exception or consequence as though it were the underlying principle."
-    }
-  },
-  "GCSE-SEP-CHEM-COV-049": {
-    "base": {
-      "B": "The activation energy becomes zero The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the stated example distinguishes this mechanism from the nearby concept named in the option."
-    }
-  },
-  "GCSE-SEP-CHEM-COV-055": {
-    "base": {
-      "A": "To increase salt concentration The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the relevant distinction is between the process and its effect, which this option merges."
-    }
-  },
-  "GCSE-SEP-CHEM-COV-059": {
-    "base": {
-      "D": "To make crude oil renewable The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the option confuses a definition with its application to the specific example."
-    }
-  },
-  "GCSE-SEP-CHEM-COV-063": {
-    "reforge": {
-      "C": "Protons with neutrons The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the explanation omits the evidence needed to connect the claim with the question."
-    }
-  },
-  "GCSE-SEP-CHEM-COV-071": {
-    "reforge": {
-      "C": "The solution becomes neutral The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the answer leaves out the condition that determines the result being tested."
-    }
-  },
-  "GCSE-SEP-CHEM-COV-073": {
-    "base": {
-      "B": "To separate an insoluble solid The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the answer does not account for the competing factor or trade-off described."
-    },
-    "reforge": {
-      "D": "It identifies ions by colour The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the answer does not account for the competing factor or trade-off described."
-    }
-  },
-  "GCSE-SEP-CHEM-COV-075": {
-    "base": {
-      "C": "Theoretical ÷ actual × 100 The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the relevant relationship is reversed, so the proposed answer cannot explain the outcome."
-    },
-    "reforge": {
-      "A": "Equilibrium always stops The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the answer leaves out the condition that determines the result being tested."
-    }
-  },
-  "GCSE-SEP-CHEM-COV-079": {
-    "base": {
-      "C": "They have no chemical properties The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the example requires a more precise distinction than this broad statement makes."
-    },
-    "reforge": {
-      "A": "They are too large to enter cells The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the example requires a more precise distinction than this broad statement makes."
-    }
-  },
-  "GCSE-SEP-CHEM-COV-081": {
-    "base": {
-      "B": "The activation energy becomes zero The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the option confuses a definition with its application to the specific example."
-    }
-  },
-  "GCSE-SEP-CHEM-COV-087": {
-    "base": {
-      "A": "To increase salt concentration The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the evidence supports a narrower conclusion than the one proposed in this option."
-    }
-  },
-  "GCSE-SEP-CHEM-COV-091": {
-    "base": {
-      "D": "To make crude oil renewable The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the proposed account does not match the scale, timing or conditions stated."
-    }
-  },
-  "GCSE-SEP-CHEM-COV-095": {
-    "reforge": {
-      "C": "Protons with neutrons The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the stated context changes the interpretation, so this generalisation is not valid here."
-    }
-  },
-  "GCSE-SEP-CHEM-COV-103": {
-    "reforge": {
-      "C": "The solution becomes neutral The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the answer leaves out the condition that determines the result being tested."
-    }
-  },
-  "GCSE-SEP-CHEM-COV-105": {
-    "base": {
-      "B": "To separate an insoluble solid The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the answer does not account for the competing factor or trade-off described."
-    },
-    "reforge": {
-      "D": "It identifies ions by colour The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the answer does not account for the competing factor or trade-off described."
-    }
-  },
-  "GCSE-SEP-CHEM-COV-107": {
-    "base": {
-      "C": "Theoretical ÷ actual × 100 The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the relevant relationship is reversed, so the proposed answer cannot explain the outcome."
-    },
-    "reforge": {
-      "A": "Equilibrium always stops The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the answer leaves out the condition that determines the result being tested."
-    }
-  },
-  "GCSE-SEP-CHEM-COV-111": {
-    "base": {
-      "C": "They have no chemical properties The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the explanation omits the evidence needed to connect the claim with the question."
-    },
-    "reforge": {
-      "A": "They are too large to enter cells The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the explanation omits the evidence needed to connect the claim with the question."
-    }
-  },
-  "GCSE-SEP-CHEM-COV-113": {
-    "base": {
-      "B": "The activation energy becomes zero The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the option confuses a definition with its application to the specific example."
-    }
-  },
-  "GCSE-SEP-CHEM-COV-119": {
-    "base": {
-      "A": "To increase salt concentration The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the evidence supports a narrower conclusion than the one proposed in this option."
-    }
-  },
-  "GCSE-SEP-CHEM-COV-123": {
-    "base": {
-      "D": "To make crude oil renewable The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the proposed account does not match the scale, timing or conditions stated."
-    }
-  },
-  "GCSE-SEP-CHEM-COV-127": {
-    "reforge": {
-      "C": "Protons with neutrons The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the stated context changes the interpretation, so this generalisation is not valid here."
-    }
-  },
-  "GCSE-SEP-CHEM-COV-135": {
-    "reforge": {
-      "C": "The solution becomes neutral The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the wording describes a different process and would predict a different outcome."
-    }
-  },
-  "GCSE-SEP-CHEM-COV-137": {
-    "base": {
-      "B": "To separate an insoluble solid The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the mechanism named in the option cannot produce the result under these conditions."
-    },
-    "reforge": {
-      "D": "It identifies ions by colour The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the mechanism named in the option cannot produce the result under these conditions."
-    }
-  },
-  "GCSE-SEP-CHEM-COV-139": {
-    "base": {
-      "C": "Theoretical ÷ actual × 100 The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the answer treats an exception or consequence as though it were the underlying principle."
-    },
-    "reforge": {
-      "A": "Equilibrium always stops The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the wording describes a different process and would predict a different outcome."
-    }
-  },
-  "GCSE-SEP-CHEM-COV-143": {
-    "base": {
-      "C": "They have no chemical properties The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the stated context changes the interpretation, so this generalisation is not valid here."
-    },
-    "reforge": {
-      "A": "They are too large to enter cells The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the stated context changes the interpretation, so this generalisation is not valid here."
-    }
-  },
-  "GCSE-SEP-CHEM-COV-145": {
-    "base": {
-      "B": "The activation energy becomes zero The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the relevant relationship is reversed, so the proposed answer cannot explain the outcome."
-    }
-  },
-  "GCSE-SEP-CHEM-COV-151": {
-    "base": {
-      "A": "To increase salt concentration The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the stated example distinguishes this mechanism from the nearby concept named in the option."
-    }
-  },
-  "GCSE-SEP-CHEM-COV-155": {
-    "base": {
-      "D": "To make crude oil renewable The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the option identifies a related term but not the feature that makes it the correct answer."
-    }
-  },
-  "GCSE-SEP-CHEM-COV-159": {
-    "reforge": {
-      "C": "Protons with neutrons The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the option would be correct only under different assumptions from those given."
-    }
-  },
-  "GCSE-SEP-CHEM-COV-167": {
-    "reforge": {
-      "C": "The solution becomes neutral The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the explanation would require facts or assumptions that the question does not provide."
-    }
-  },
-  "SEP-CHEM2-01": {
-    "base": {
-      "B": "The activation energy becomes zero The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the mechanism named in the option cannot produce the result under these conditions."
-    }
-  },
-  "SEP-CHEM2-07": {
-    "base": {
-      "A": "To increase salt concentration The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the answer overlooks the qualifier that determines how the concept applies in this question."
-    }
-  },
-  "SEP-CHEM2-08": {
-    "reforge": {
-      "A": "It is harmless at every concentration The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the option identifies a related term but not the feature that makes it the correct answer."
-    }
-  },
-  "SEP-CHEM2-10": {
-    "base": {
-      "A": "All molecules have equal masses The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the mechanism named in the option cannot produce the result under these conditions."
-    },
-    "reforge": {
-      "B": "It is identical in every fraction The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the answer does not account for the competing factor or trade-off described."
-    }
-  },
-  "SEP-CHEM2-11": {
-    "base": {
-      "D": "To make crude oil renewable The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the example requires a more precise distinction than this broad statement makes."
-    }
-  },
-  "SEP-CHEM2-14": {
-    "base": {
-      "D": "It produces carbon dioxide only The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the answer leaves out the condition that determines the result being tested."
-    }
-  },
-  "SEP-CHEM2-15": {
-    "reforge": {
-      "C": "Protons with neutrons The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the option would be correct only under different assumptions from those given."
-    }
-  },
-  "SEP-CHEM2-16": {
-    "base": {
-      "B": "Carbon dioxide is not a greenhouse gas The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the proposed conclusion does not follow from the evidence supplied in the question."
-    },
-    "reforge": {
-      "A": "Increase unnecessary transport The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the stated example distinguishes this mechanism from the nearby concept named in the option."
-    }
-  },
-  "GCSE-SEP-CHEM-COV-004": {
-    "base": {
-      "C": "They lose all attraction The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the answer does not account for the competing factor or trade-off described."
-    }
-  },
-  "GCSE-SEP-CHEM-COV-006": {
-    "reforge": {
-      "D": "The reaction must be reversible The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the example requires a more precise distinction than this broad statement makes."
-    }
-  },
-  "GCSE-SEP-CHEM-COV-024": {
-    "reforge": {
-      "A": "It is harmless at every concentration The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the answer overlooks the qualifier that determines how the concept applies in this question."
-    }
-  },
-  "GCSE-SEP-CHEM-COV-026": {
-    "base": {
-      "B": "All molecules have equal masses The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the stated context changes the interpretation, so this generalisation is not valid here."
-    },
-    "reforge": {
-      "B": "It is identical in every fraction The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the option identifies a related term but not the feature that makes it the correct answer."
-    }
-  },
-  "GCSE-SEP-CHEM-COV-030": {
-    "base": {
-      "D": "It produces carbon dioxide only. The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the answer leaves out the condition that determines the result being tested."
-    }
-  },
-  "GCSE-SEP-CHEM-COV-032": {
-    "base": {
-      "B": "Carbon dioxide is not a greenhouse gas The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the example requires a more precise distinction than this broad statement makes."
-    },
-    "reforge": {
-      "A": "Increase unnecessary transport The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the proposed account does not match the scale, timing or conditions stated."
-    }
-  },
-  "GCSE-SEP-CHEM-COV-036": {
-    "base": {
-      "C": "They lose all attraction The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the mechanism named in the option cannot produce the result under these conditions."
-    }
-  },
-  "GCSE-SEP-CHEM-COV-038": {
-    "reforge": {
-      "D": "The reaction must be reversible The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the proposed account does not match the scale, timing or conditions stated."
-    }
-  },
-  "GCSE-SEP-CHEM-COV-056": {
-    "reforge": {
-      "A": "It is harmless at every concentration. The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the explanation would require facts or assumptions that the question does not provide."
-    }
-  },
-  "GCSE-SEP-CHEM-COV-058": {
-    "base": {
-      "B": "All molecules have equal masses The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the option would be correct only under different assumptions from those given."
-    },
-    "reforge": {
-      "B": "It is identical in every fraction The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the explanation omits the evidence needed to connect the claim with the question."
-    }
-  },
-  "GCSE-SEP-CHEM-COV-062": {
-    "base": {
-      "D": "It produces carbon dioxide only The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the proposed conclusion does not follow from the evidence supplied in the question."
-    }
-  },
-  "GCSE-SEP-CHEM-COV-064": {
-    "base": {
-      "B": "Carbon dioxide is not a greenhouse gas The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the proposed account does not match the scale, timing or conditions stated."
-    },
-    "reforge": {
-      "A": "Increase unnecessary transport The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the option identifies a related term but not the feature that makes it the correct answer."
-    }
-  },
-  "GCSE-SEP-CHEM-COV-068": {
-    "base": {
-      "C": "They lose all attraction The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the relevant distinction is between the process and its effect, which this option merges."
-    }
-  },
-  "GCSE-SEP-CHEM-COV-070": {
-    "reforge": {
-      "D": "The reaction must be reversible The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the option would be correct only under different assumptions from those given."
-    }
-  },
-  "GCSE-SEP-CHEM-COV-088": {
-    "reforge": {
-      "A": "It is harmless at every concentration The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the proposed conclusion does not follow from the evidence supplied in the question."
-    }
-  },
-  "GCSE-SEP-CHEM-COV-090": {
-    "base": {
-      "B": "All molecules have equal masses The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the evidence supports a narrower conclusion than the one proposed in this option."
-    },
-    "reforge": {
-      "B": "It is identical in every fraction The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the mechanism named in the option cannot produce the result under these conditions."
-    }
-  },
-  "GCSE-SEP-CHEM-COV-094": {
-    "base": {
-      "D": "It produces carbon dioxide only The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the stated example distinguishes this mechanism from the nearby concept named in the option."
-    }
-  },
-  "GCSE-SEP-CHEM-COV-096": {
-    "base": {
-      "B": "Carbon dioxide is not a greenhouse gas The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the option identifies a related term but not the feature that makes it the correct answer."
-    },
-    "reforge": {
-      "A": "Increase unnecessary transport The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the explanation omits the evidence needed to connect the claim with the question."
-    }
-  },
-  "GCSE-SEP-CHEM-COV-100": {
-    "base": {
-      "C": "They lose all attraction. The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the option identifies a related term but not the feature that makes it the correct answer."
-    }
-  },
-  "GCSE-SEP-CHEM-COV-102": {
-    "reforge": {
-      "D": "The reaction must be reversible The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the option would be correct only under different assumptions from those given."
-    }
-  },
-  "GCSE-SEP-CHEM-COV-120": {
-    "reforge": {
-      "A": "It is harmless at every concentration The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the wording describes a different process and would predict a different outcome."
-    }
-  },
-  "GCSE-SEP-CHEM-COV-122": {
-    "base": {
-      "B": "All molecules have equal masses The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the evidence supports a narrower conclusion than the one proposed in this option."
-    },
-    "reforge": {
-      "B": "It is identical in every fraction The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the mechanism named in the option cannot produce the result under these conditions."
-    }
-  },
-  "GCSE-SEP-CHEM-COV-126": {
-    "base": {
-      "D": "It produces carbon dioxide only The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the stated example distinguishes this mechanism from the nearby concept named in the option."
-    }
-  },
-  "GCSE-SEP-CHEM-COV-128": {
-    "base": {
-      "B": "Carbon dioxide is not a greenhouse gas The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the option identifies a related term but not the feature that makes it the correct answer."
-    },
-    "reforge": {
-      "A": "Increase unnecessary transport The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the explanation omits the evidence needed to connect the claim with the question."
-    }
-  },
-  "GCSE-SEP-CHEM-COV-132": {
-    "base": {
-      "C": "They lose all attraction The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the proposed conclusion does not follow from the evidence supplied in the question."
-    }
-  },
-  "GCSE-SEP-CHEM-COV-134": {
-    "reforge": {
-      "D": "The reaction must be reversible The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the answer does not account for the competing factor or trade-off described."
-    }
-  },
-  "GCSE-SEP-CHEM-COV-152": {
-    "reforge": {
-      "A": "It is harmless at every concentration The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the explanation would require facts or assumptions that the question does not provide."
-    }
-  },
-  "GCSE-SEP-CHEM-COV-154": {
-    "base": {
-      "B": "All molecules have equal masses The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the answer overlooks the qualifier that determines how the concept applies in this question."
-    },
-    "reforge": {
-      "B": "It is identical in every fraction The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the relevant distinction is between the process and its effect, which this option merges."
-    }
-  },
-  "GCSE-SEP-CHEM-COV-158": {
-    "base": {
-      "D": "It produces carbon dioxide only The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the answer leaves out the condition that determines the result being tested."
-    }
-  },
-  "GCSE-SEP-CHEM-COV-160": {
-    "base": {
-      "B": "Carbon dioxide is not a greenhouse gas The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the answer does not account for the competing factor or trade-off described."
-    },
-    "reforge": {
-      "A": "Increase unnecessary transport The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the mechanism named in the option cannot produce the result under these conditions."
-    }
-  },
-  "GCSE-SEP-CHEM-COV-164": {
-    "base": {
-      "C": "They lose all attraction The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the stated example distinguishes this mechanism from the nearby concept named in the option."
-    }
-  },
-  "GCSE-SEP-CHEM-COV-166": {
-    "reforge": {
-      "D": "The reaction must be reversible The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the mechanism named in the option cannot produce the result under these conditions."
-    }
-  },
-  "SEP-PHYS1-13": {
-    "base": {
-      "D": "Current is independent of voltage The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the answer leaves out the condition that determines the result being tested."
-    }
-  },
-  "GCSE-SEP-PHYS-COV-013": {
-    "base": {
-      "D": "Current is independent of voltage The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the answer treats an exception or consequence as though it were the underlying principle."
-    }
-  },
-  "GCSE-SEP-PHYS-COV-045": {
-    "base": {
-      "D": "Current is independent of voltage The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the example requires a more precise distinction than this broad statement makes."
-    }
-  },
-  "GCSE-SEP-PHYS-COV-077": {
-    "base": {
-      "D": "Current is independent of voltage The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the proposed account does not match the scale, timing or conditions stated."
-    }
-  },
-  "GCSE-SEP-PHYS-COV-109": {
-    "base": {
-      "D": "Current is independent of voltage The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the proposed account does not match the scale, timing or conditions stated."
-    }
-  },
-  "GCSE-SEP-PHYS-COV-141": {
-    "base": {
-      "D": "Current is independent of voltage The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the option would be correct only under different assumptions from those given."
-    }
-  },
-  "GCSE-SEP-BIO-COV-017": {
-    "base": {
-      "C": "Viruses have thick cell walls The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the answer overlooks the qualifier that determines how the concept applies in this question."
-    }
-  },
-  "GCSE-SEP-BIO-COV-031": {
-    "base": {
-      "B": "Trees produce no oxygen The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the explanation would require facts or assumptions that the question does not provide."
-    }
-  },
-  "GCSE-SEP-BIO-COV-049": {
-    "base": {
-      "C": "Viruses have thick cell walls. The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the relevant distinction is between the process and its effect, which this option merges."
-    }
-  },
-  "GCSE-SEP-BIO-COV-063": {
-    "base": {
-      "B": "Trees produce no oxygen The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the option confuses a definition with its application to the specific example."
-    }
-  },
-  "GCSE-SEP-BIO-COV-081": {
-    "base": {
-      "C": "Viruses have thick cell walls The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the wording describes a different process and would predict a different outcome."
-    }
-  },
-  "GCSE-SEP-BIO-COV-095": {
-    "base": {
-      "B": "Trees produce no oxygen The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the relevant relationship is reversed, so the proposed answer cannot explain the outcome."
-    }
-  },
-  "GCSE-SEP-BIO-COV-113": {
-    "base": {
-      "C": "Viruses have thick cell walls The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the wording describes a different process and would predict a different outcome."
-    }
-  },
-  "GCSE-SEP-BIO-COV-127": {
-    "base": {
-      "B": "Trees produce no oxygen The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the relevant relationship is reversed, so the proposed answer cannot explain the outcome."
-    }
-  },
-  "GCSE-SEP-BIO-COV-145": {
-    "base": {
-      "C": "Viruses have thick cell walls The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the explanation would require facts or assumptions that the question does not provide."
-    }
-  },
-  "GCSE-SEP-BIO-COV-159": {
-    "base": {
-      "B": "Trees produce no oxygen The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the answer treats an exception or consequence as though it were the underlying principle."
-    }
-  },
-  "SEP-BIO2-01": {
-    "base": {
-      "C": "Viruses have thick cell walls The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the evidence supports a narrower conclusion than the one proposed in this option."
-    }
-  },
-  "SEP-BIO2-06": {
-    "base": {
-      "A": "Organisms choose useful mutations The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the proposed account does not match the scale, timing or conditions stated."
-    }
-  },
-  "SEP-BIO2-15": {
-    "base": {
-      "B": "Trees produce no oxygen The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the explanation omits the evidence needed to connect the claim with the question."
-    }
-  },
-  "GCSE-SEP-BIO-COV-022": {
-    "base": {
-      "A": "Organisms choose useful mutations The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the answer leaves out the condition that determines the result being tested."
-    }
-  },
-  "GCSE-SEP-BIO-COV-054": {
-    "base": {
-      "A": "Organisms choose useful mutations The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the wording describes a different process and would predict a different outcome."
-    }
-  },
-  "GCSE-SEP-BIO-COV-086": {
-    "base": {
-      "A": "Organisms choose useful mutations The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the explanation would require facts or assumptions that the question does not provide."
-    }
-  },
-  "GCSE-SEP-BIO-COV-118": {
-    "base": {
-      "A": "Organisms choose useful mutations The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the explanation would require facts or assumptions that the question does not provide."
-    }
-  },
-  "GCSE-SEP-BIO-COV-150": {
-    "base": {
-      "A": "Organisms choose useful mutations The science explanation must account for the particles, forces, energy, cells, reactions, measurements and conditions; the example requires a more precise distinction than this broad statement makes."
-    }
-  },
   "GCSE-PHASE6-MATH3-01": {
     "base": {
       "B": "18 is the most frequent value The mathematical method must match the operation, scale, algebraic relationship, diagram, units and conditions; the evidence supports a narrower conclusion than the one proposed in this option."
@@ -33841,34 +33094,14 @@ const staticLegacyRepairs = {
       "C": "−2 The mathematical method must match the operation, scale, algebraic relationship, diagram, units and conditions; the proposed conclusion does not follow from the evidence supplied in the question."
     }
   },
-  "SOC-FAM-09": {
-    "reforge": {
-      "A": "A couple continuing only while the relationship remains fulfilling fits the pure relationship The sociological explanation must account for structure, culture, power, methods, evidence and differences between groups; the relevant relationship is reversed, so the proposed answer cannot explain the outcome."
-    }
-  },
-  "SOC-BEL-10": {
-    "base": {
-      "A": "A set of ideas that explains society and can justify the interests of a powerful group The sociological explanation must account for structure, culture, power, methods, evidence and differences between groups; the proposed conclusion does not follow from the evidence supplied in the question."
-    }
-  },
   "HIST-BRIT1-25": {
     "reforge": {
       "A": "It showed the government's difficulty in balancing public order with the political costs of force-feeding The historical explanation must fit the chronology, evidence, provenance, context, change and continuity involved; the evidence supports a narrower conclusion than the one proposed in this option."
     }
   },
-  "CRIM-AWARE-17": {
-    "base": {
-      "B": "Recorded numerical information about offences, victims, suspects or outcomes The criminological explanation must account for causation, evidence, procedure, rights, proportionality and context; the relevant relationship is reversed, so the proposed answer cannot explain the outcome."
-    }
-  },
   "LAW-CRIM-22": {
     "base": {
       "A": "A partial defence requiring loss of self-control, a qualifying trigger and the objective normal-person test The legal explanation must apply the relevant rule, elements, authority, evidence, procedure and limits; the option identifies a related term but not the feature that makes it the correct answer."
-    }
-  },
-  "POL-UKGOV-06": {
-    "base": {
-      "C": "The principle that Parliament can make or unmake any law and cannot be overruled by a higher domestic authority The political explanation must account for the institution, powers, interests, accountability, evidence and context; the answer leaves out the condition that determines the result being tested."
     }
   },
   "BUS-T4-05": {
@@ -33935,10 +33168,10 @@ for (const [id, repairs] of Object.entries(coverageLengthRepairs)) {
 // downstream can overwrite it.
 const finalLengthCueRepairs = {
   "FIS-08": { reforge: { D: "Crowding out always occurs regardless of conditions. Even during a deep recession with substantial spare capacity, this option asserts interest rates would rise regardless — which contradicts the loanable funds model whenever the economy is not at full employment." } },
-  "MED-13": { base: { C: "The tendency for audiences to undervalue cultural products compared to their production cost. The media explanation must account for representation, audience, ownership, technology, regulation and interpretation; the proposed account does not match the scale, timing or conditions stated. Cultural discount describes audience reception of a text, not the pricing or subsidy arrangements between broadcasters." } },
-  "MEDIA-COV-030": { base: { C: "The tendency for audiences to undervalue cultural products compared to their production cost. The media explanation must account for representation, audience, ownership, technology, regulation and interpretation; the answer overlooks the qualifier that determines how the concept applies in this question. The qualifier is that cultural discount is about audience appeal, not about financial discounting between distributors." } },
-  "MEDIA-COV-080": { base: { C: "The tendency for audiences to undervalue cultural products compared to their production cost. The media explanation must account for representation, audience, ownership, technology, regulation and interpretation; the relevant distinction is between the process and its effect, which this option merges. Underestimating production cost is a financial judgement; cultural discount concerns audience appeal, a separate effect." } },
-  "MEDIA-COV-130": { base: { C: "The tendency for audiences to undervalue cultural products compared to their production cost. The media explanation must account for representation, audience, ownership, technology, regulation and interpretation; the proposed account does not match the scale, timing or conditions stated. The stem asks about audience reception across cultures, which financial subsidy arrangements do not describe." } },
+  "MED-13": { base: { C: "The tendency for audiences to undervalue cultural products compared to their production cost" } },
+  "MEDIA-COV-030": { base: { C: "The tendency for audiences to undervalue cultural products compared to their production cost" } },
+  "MEDIA-COV-080": { base: { C: "The tendency for audiences to undervalue cultural products compared to their production cost" } },
+  "MEDIA-COV-130": { base: { C: "The tendency for audiences to undervalue cultural products compared to their production cost" } },
   "PE-COV-013": { reforge: { C: "Third-class levers provide the greatest mechanical advantage, allowing the goalkeeper to exert more force than the load. The sporting example must be judged by its movement, intensity, energy system, performer and recovery conditions; the evidence supports a narrower conclusion than the one proposed in this option. A narrower, accurate claim would restrict the benefit to range of motion and speed, not force output." } },
   "PE-COV-029": { reforge: { C: "Third-class levers provide the greatest mechanical advantage, allowing the goalkeeper to exert more force than the load. The sporting example must be judged by its movement, intensity, energy system, performer and recovery conditions; the relevant distinction is between the process and its effect, which this option merges. The lever class is the process; the resulting force output is the effect, and the two should not be treated as identical." } },
   "PE-COV-045": { reforge: { C: "Third-class levers provide the greatest mechanical advantage, allowing the goalkeeper to exert more force than the load. The sporting example must be judged by its movement, intensity, energy system, performer and recovery conditions; the answer overlooks the qualifier that determines how the concept applies in this question. The qualifier is that mechanical advantage and mechanical disadvantage are opposites, so 'greatest advantage' cannot describe a third-class lever." } },
@@ -39184,12 +38417,12 @@ const finalMediaCorruptionRepairs = {
   "base": {
    "B": "Local regulation only",
    "A": "Rating",
-   "C": "The tendency for audiences to undervalue cultural products compared to their production cost. The media explanation must account for representation, audience, ownership, technology, regulation and interpretation; the answer overlooks the qualifier that determines how the concept applies in this question. The qualifier is that cultural discount is about audience appeal, not about financial discounting between distributors."
+   "C": "The tendency for audiences to undervalue cultural products compared to their production cost"
   },
   "reforge": {
    "C": "Audience isolation",
    "A": "Gatekeeping",
-   "D": "The tendency for audiences to undervalue cultural products compared to their production cost. The media explanation must account for representation, audience, ownership, technology, regulation and interpretation; the relevant distinction is between the process and its effect, which this option merges. Underestimating production cost is a financial judgement; cultural discount concerns audience appeal, a separate effect."
+   "D": "The tendency for audiences to undervalue cultural products compared to their production cost"
   }
  },
  "MEDIA-COV-047": {
@@ -39335,12 +38568,12 @@ const finalMediaCorruptionRepairs = {
   "base": {
    "B": "Local regulation only",
    "C": "Gatekeeping",
-   "D": "The tendency for audiences to undervalue cultural products compared to their production cost. The media explanation must account for representation, audience, ownership, technology, regulation and interpretation; the answer overlooks the qualifier that determines how the concept applies in this question. The qualifier is that cultural discount is about audience appeal, not about financial discounting between distributors."
+   "D": "The tendency for audiences to undervalue cultural products compared to their production cost"
   },
   "reforge": {
    "A": "Audience isolation",
    "B": "Rating",
-   "D": "The tendency for audiences to undervalue cultural products compared to their production cost. The media explanation must account for representation, audience, ownership, technology, regulation and interpretation; the relevant distinction is between the process and its effect, which this option merges. Underestimating production cost is a financial judgement; cultural discount concerns audience appeal, a separate effect."
+   "D": "The tendency for audiences to undervalue cultural products compared to their production cost"
   }
  },
  "MEDIA-COV-097": {
@@ -39430,12 +38663,12 @@ const finalMediaCorruptionRepairs = {
   "base": {
    "A": "Local regulation only",
    "D": "Rating",
-   "C": "The tendency for audiences to undervalue cultural products compared to their production cost. The media explanation must account for representation, audience, ownership, technology, regulation and interpretation; the answer overlooks the qualifier that determines how the concept applies in this question. The qualifier is that cultural discount is about audience appeal, not about financial discounting between distributors."
+   "C": "The tendency for audiences to undervalue cultural products compared to their production cost"
   },
   "reforge": {
    "B": "Audience isolation",
    "A": "Gatekeeping",
-   "C": "The tendency for audiences to undervalue cultural products compared to their production cost. The media explanation must account for representation, audience, ownership, technology, regulation and interpretation; the relevant distinction is between the process and its effect, which this option merges. Underestimating production cost is a financial judgement; cultural discount concerns audience appeal, a separate effect."
+   "C": "The tendency for audiences to undervalue cultural products compared to their production cost"
   }
  },
  "MEDIA-COV-147": {
@@ -39506,8 +38739,8 @@ const finalMediaCorruptionRepairs = {
  "MEDIA-E2-12": {
   "base": {
    "B": "Gatekeeping",
-   "A": "The tendency for audiences to undervalue cultural products compared to their production cost. The media explanation must account for representation, audience, ownership, technology, regulation and interpretation; the answer overlooks the qualifier that determines how the concept applies in this question. The qualifier is that cultural discount is about audience appeal, not about financial discounting between distributors.",
-   "C": "The tendency for audiences to undervalue cultural products compared to their production cost. The media explanation must account for representation, audience, ownership, technology, regulation and interpretation; the relevant distinction is between the process and its effect, which this option merges. Underestimating production cost is a financial judgement; cultural discount concerns audience appeal, a separate effect."
+   "A": "The tendency for audiences to undervalue cultural products compared to their production cost",
+   "C": "The tendency for audiences to undervalue cultural products compared to their production cost"
   },
   "reforge": {
    "D": "Rating"
@@ -40410,10 +39643,10 @@ const finalMediaCorruptionRepairs = {
  },
  "MEDIA-E2-11": {
   "reforge": {
-   "B": "The tendency for audiences to undervalue cultural products compared to their production cost. The media explanation must account for representation, audience, ownership, technology, regulation and interpretation; the answer overlooks the qualifier that determines how the concept applies in this question. The qualifier is that cultural discount is about audience appeal, not about financial discounting between distributors."
+   "B": "The tendency for audiences to undervalue cultural products compared to their production cost"
   },
   "base": {
-   "A": "The tendency for audiences to undervalue cultural products compared to their production cost. The media explanation must account for representation, audience, ownership, technology, regulation and interpretation; the proposed account does not match the scale, timing or conditions stated. The stem asks about audience reception across cultures, which financial subsidy arrangements do not describe.",
+   "A": "The tendency for audiences to undervalue cultural products compared to their production cost",
    "B": "Local regulation only",
    "D": "Audience isolation"
   }
@@ -41037,7 +40270,7 @@ const finalMediaCorruptionRepairs = {
  },
  "MEDIA-COV-030": {
   "reforge": {
-   "C": "The tendency for audiences to undervalue cultural products compared to their production cost. The media explanation must account for representation, audience, ownership, technology, regulation and interpretation; the proposed account does not match the scale, timing or conditions stated. The stem asks about audience reception across cultures, which financial subsidy arrangements do not describe.",
+   "C": "The tendency for audiences to undervalue cultural products compared to their production cost",
    "A": "Gatekeeping",
    "D": "Rating"
   },
@@ -41048,7 +40281,7 @@ const finalMediaCorruptionRepairs = {
  },
  "MEDIA-COV-032": {
   "reforge": {
-   "D": "The tendency for audiences to undervalue cultural products compared to their production cost. The media explanation must account for representation, audience, ownership, technology, regulation and interpretation; the proposed account does not match the scale, timing or conditions stated. The stem asks about audience reception across cultures, which financial subsidy arrangements do not describe.",
+   "D": "The tendency for audiences to undervalue cultural products compared to their production cost",
    "B": "User-generated producer",
    "A": "Institutional ownership"
   },
@@ -41062,7 +40295,7 @@ const finalMediaCorruptionRepairs = {
   "reforge": {
    "B": "Local regulation only",
    "A": "Rating",
-   "D": "The tendency for audiences to undervalue cultural products compared to their production cost. The media explanation must account for representation, audience, ownership, technology, regulation and interpretation; the proposed account does not match the scale, timing or conditions stated. The stem asks about audience reception across cultures, which financial subsidy arrangements do not describe."
+   "D": "The tendency for audiences to undervalue cultural products compared to their production cost"
   },
   "base": {
    "B": "Audience isolation",
@@ -41071,7 +40304,7 @@ const finalMediaCorruptionRepairs = {
  },
  "MEDIA-COV-082": {
   "reforge": {
-   "B": "The tendency for audiences to undervalue cultural products compared to their production cost. The media explanation must account for representation, audience, ownership, technology, regulation and interpretation; the proposed account does not match the scale, timing or conditions stated. The stem asks about audience reception across cultures, which financial subsidy arrangements do not describe.",
+   "B": "The tendency for audiences to undervalue cultural products compared to their production cost",
    "C": "User-generated producer",
    "A": "Institutional ownership"
   },
@@ -41083,7 +40316,7 @@ const finalMediaCorruptionRepairs = {
  },
  "MEDIA-COV-130": {
   "reforge": {
-   "C": "The tendency for audiences to undervalue cultural products compared to their production cost. The media explanation must account for representation, audience, ownership, technology, regulation and interpretation; the proposed account does not match the scale, timing or conditions stated. Cultural discount describes audience reception of a text, not the pricing or subsidy arrangements between broadcasters.",
+   "C": "The tendency for audiences to undervalue cultural products compared to their production cost",
    "A": "Gatekeeping",
    "B": "Rating"
   },
@@ -41094,7 +40327,7 @@ const finalMediaCorruptionRepairs = {
  },
  "MEDIA-COV-132": {
   "reforge": {
-   "D": "The tendency for audiences to undervalue cultural products compared to their production cost. The media explanation must account for representation, audience, ownership, technology, regulation and interpretation; the proposed account does not match the scale, timing or conditions stated. The stem asks about audience reception across cultures, which financial subsidy arrangements do not describe.",
+   "D": "The tendency for audiences to undervalue cultural products compared to their production cost",
    "C": "User-generated producer",
    "B": "Institutional ownership"
   },
@@ -41158,7 +40391,7 @@ const finalMediaCorruptionRepairs = {
    "D": "Local regulation only"
   },
   "reforge": {
-   "A": "The tendency for audiences to undervalue cultural products compared to their production cost. The media explanation must account for representation, audience, ownership, technology, regulation and interpretation; the proposed account does not match the scale, timing or conditions stated. The stem asks about audience reception across cultures, which financial subsidy arrangements do not describe.",
+   "A": "The tendency for audiences to undervalue cultural products compared to their production cost",
    "B": "Gatekeeping",
    "D": "Rating"
   }
@@ -41167,34 +40400,34 @@ const finalMediaCorruptionRepairs = {
   "base": {
    "D": "Cultivation — US audiences have been cultivated to prefer domestic content.",
    "B": "Audience isolation",
-   "A": "The tendency for audiences to undervalue cultural products compared to their production cost. The media explanation must account for representation, audience, ownership, technology, regulation and interpretation; the answer overlooks the qualifier that determines how the concept applies in this question. The qualifier is that cultural discount is about audience appeal, not about financial discounting between distributors."
+   "A": "The tendency for audiences to undervalue cultural products compared to their production cost"
   },
   "reforge": {
-   "B": "The tendency for audiences to undervalue cultural products compared to their production cost. The media explanation must account for representation, audience, ownership, technology, regulation and interpretation; the proposed account does not match the scale, timing or conditions stated. The stem asks about audience reception across cultures, which financial subsidy arrangements do not describe.",
+   "B": "The tendency for audiences to undervalue cultural products compared to their production cost",
    "C": "Gatekeeping",
    "D": "Rating"
   }
  },
  "MEDIA-COV-094": {
   "base": {
-   "C": "The tendency for audiences to undervalue cultural products compared to their production cost. The media explanation must account for representation, audience, ownership, technology, regulation and interpretation; the proposed account does not match the scale, timing or conditions stated. The stem asks about audience reception across cultures, which financial subsidy arrangements do not describe.",
+   "C": "The tendency for audiences to undervalue cultural products compared to their production cost",
    "B": "Gatekeeping",
    "A": "Rating"
   },
   "reforge": {
    "A": "Local regulation only",
    "C": "Audience isolation",
-   "D": "The tendency for audiences to undervalue cultural products compared to their production cost. The media explanation must account for representation, audience, ownership, technology, regulation and interpretation; the answer overlooks the qualifier that determines how the concept applies in this question. The qualifier is that cultural discount is about audience appeal, not about financial discounting between distributors."
+   "D": "The tendency for audiences to undervalue cultural products compared to their production cost"
   }
  },
  "MEDIA-COV-144": {
   "base": {
    "C": "Cultivation — US audiences have been cultivated to prefer domestic content.",
    "B": "Audience isolation",
-   "D": "The tendency for audiences to undervalue cultural products compared to their production cost. The media explanation must account for representation, audience, ownership, technology, regulation and interpretation; the answer overlooks the qualifier that determines how the concept applies in this question. The qualifier is that cultural discount is about audience appeal, not about financial discounting between distributors."
+   "D": "The tendency for audiences to undervalue cultural products compared to their production cost"
   },
   "reforge": {
-   "A": "The tendency for audiences to undervalue cultural products compared to their production cost. The media explanation must account for representation, audience, ownership, technology, regulation and interpretation; the proposed account does not match the scale, timing or conditions stated. The stem asks about audience reception across cultures, which financial subsidy arrangements do not describe.",
+   "A": "The tendency for audiences to undervalue cultural products compared to their production cost",
    "B": "Gatekeeping",
    "D": "Rating"
   }
@@ -41749,7 +40982,7 @@ const finalGCSEScienceCorruptionRepairs = {
  },
  "GCSE-PHASE6-BIO2-02": {
   "reforge": {
-   "C": "Energy is created by decomposers",
+   "C": "Energy is created by decomposers in the soil community",
    "D": "Only one sequence of feeding"
   }
  },
@@ -41761,7 +40994,7 @@ const finalGCSEScienceCorruptionRepairs = {
  },
  "GCSE-PHASE6-CHEM2-01": {
   "reforge": {
-   "C": "The activation energy becomes infinite",
+   "C": "The activation energy becomes infinitely large for the reaction",
    "D": "By multiplying time by temperature"
   }
  },
@@ -41773,7 +41006,7 @@ const finalGCSEScienceCorruptionRepairs = {
  },
  "GCSE-PHASE6-PHYS2-02": {
   "reforge": {
-   "A": "Use a shorter coil with no turns",
+   "A": "Use a much shorter coil that has no turns of wire wound around the core",
    "D": "Reduce the wire length to zero"
   }
  },
