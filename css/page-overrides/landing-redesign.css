@@ -38,17 +38,18 @@ body.landing-redesign .section-intro p,
 body.landing-redesign .evidence-intro>p{max-width:67ch;margin:0;color:var(--landing-muted);font:400 clamp(16px,1.8vw,19px)/1.62 'Poppins',sans-serif;text-wrap:pretty}
 
 /* First viewport: decisive promise plus the live product, no preamble. */
-body.landing-redesign .hero-shell{min-height:auto;margin-top:-96px;padding:132px 0 68px;background:var(--landing-paper);isolation:isolate}
+body.landing-redesign .hero-shell{min-height:auto;margin-top:-96px;padding:108px 0 44px;background:var(--landing-paper);isolation:isolate}
+body.landing-redesign .hero-shell>.wrap{max-width:1240px}
 body.landing-redesign .hero-shell::before{content:"";position:absolute;left:52%;top:2%;width:48vw;height:48vw;max-width:700px;max-height:700px;border:1px solid color-mix(in srgb,var(--ember) 18%,transparent);border-radius:50%;transform:translateX(-8%);pointer-events:none;z-index:0}
 body.landing-redesign .hero-shell::after{content:"";position:absolute;left:52%;top:13%;width:34vw;height:34vw;max-width:500px;max-height:500px;border:1px solid color-mix(in srgb,var(--hot) 16%,transparent);border-radius:50%;transform:translateX(8%);pointer-events:none;z-index:0}
 body.landing-redesign .hero-shell .hero-glow{background:radial-gradient(circle at 78% 48%,color-mix(in srgb,var(--ember) 12%,transparent),transparent 28rem)}
 body.landing-redesign .hero-shell .hero-vignette{background:linear-gradient(90deg,color-mix(in srgb,var(--landing-paper) 38%,transparent),transparent 50%,color-mix(in srgb,var(--landing-paper) 12%,transparent))}
-body.landing-redesign .hero{grid-template-columns:.9fr 1.1fr;gap:clamp(44px,6vw,76px);align-items:center}
-body.landing-redesign .hero h1{max-width:11.8ch;margin:0 0 20px;color:var(--landing-ink);font:700 clamp(52px,6vw,76px)/.94 'Rethink Sans',sans-serif;letter-spacing:-.04em}
+body.landing-redesign .hero{grid-template-columns:1.08fr 1fr;gap:clamp(40px,5vw,64px);align-items:center}
+body.landing-redesign .hero h1{max-width:16ch;margin:0 0 20px;color:var(--landing-ink);font:700 clamp(52px,5.4vw,72px)/.98 'Rethink Sans',sans-serif;letter-spacing:-.04em;text-wrap:balance}
 body.landing-redesign .hero h1 em{display:inline;color:var(--ember);font-style:normal;text-shadow:none}
-body.landing-redesign .hero p.lede{max-width:48ch;color:var(--landing-muted);font:400 clamp(17px,1.55vw,20px)/1.58 'Poppins',sans-serif}
+body.landing-redesign .hero p.lede{max-width:56ch;color:var(--landing-muted);font:400 clamp(17px,1.55vw,20px)/1.58 'Poppins',sans-serif}
 body.landing-redesign .hero p.lede strong{color:var(--landing-ink);font-weight:600}
-body.landing-redesign .hero-proofline{display:flex;flex-wrap:wrap;gap:8px 20px;max-width:52ch;margin:17px 0 0;color:var(--landing-muted);font:600 12px/1.35 'Poppins',sans-serif}
+body.landing-redesign .hero-proofline{display:flex;flex-wrap:wrap;gap:8px 24px;max-width:60ch;margin:17px 0 0;color:var(--landing-muted);font:600 12px/1.35 'Poppins',sans-serif}
 body.landing-redesign .hero-proofline span{position:relative;padding-left:15px}
 body.landing-redesign .hero-proofline span::before{content:"";position:absolute;left:0;top:.48em;width:6px;height:6px;border-radius:50%;background:var(--ember)}
 body.landing-redesign .hero .ctas{margin-top:23px;gap:16px;align-items:center}
@@ -90,14 +91,16 @@ body.landing-redesign .demo .scaffold:focus,
 body.landing-redesign .demo .praise:focus,
 body.landing-redesign .demo .q[tabindex]:focus{outline:2px solid var(--hot);outline-offset:4px}
 
-/* Consent remains visible without bisecting the hero-to-product path. */
-body.landing-redesign #analytics-consent-banner{position:fixed!important;left:50%!important;right:auto!important;bottom:max(14px,env(safe-area-inset-bottom))!important;top:auto!important;z-index:500!important;width:calc(100% - 28px)!important;max-width:760px!important;margin:0!important;transform:translateX(-50%);background:color-mix(in srgb,var(--landing-paper-raised) 92%,transparent);box-shadow:0 20px 55px -24px rgba(0,0,0,.55)}
-body.landing-redesign.has-consent-banner{padding-bottom:82px!important}
+/* Consent sits inline in the hero copy column (analytics-consent.js pins it
+   static with an inline !important), so style it in place — never reposition
+   it, and never give it a transform: on a static box that shifts it off-screen. */
+body.landing-redesign #analytics-consent-banner{width:100%;max-width:none;margin:18px 0 0;transform:none;background:color-mix(in srgb,var(--landing-paper-raised) 96%,transparent);border-color:var(--landing-rule);box-shadow:0 14px 34px -26px rgba(0,0,0,.45)}
+body.landing-redesign.has-consent-banner{padding-bottom:0!important}
 
 /* Compact credibility rail. */
 body.landing-redesign .proof-rail{padding:0!important;background:var(--landing-deep)!important;border-top:0!important;color:var(--landing-cream)}
 body.landing-redesign .proof-rail-mobile-summary{display:none}
-body.landing-redesign .proof-rail-grid{display:grid;grid-template-columns:repeat(3,1fr);padding-top:34px;padding-bottom:34px}
+body.landing-redesign .proof-rail-grid{display:grid;grid-template-columns:repeat(3,1fr);padding-top:26px;padding-bottom:26px}
 body.landing-redesign .proof-rail-grid>div{padding:0 30px;border-left:1px solid rgba(255,248,238,.16)}
 body.landing-redesign .proof-rail-grid>div:first-child{padding-left:0;border-left:0}
 body.landing-redesign .proof-rail-grid>div:last-child{padding-right:0}
@@ -337,7 +340,6 @@ body.landing-redesign .landing-footer-base{border-color:var(--landing-rule);padd
   body.landing-redesign #analytics-consent-banner{align-items:stretch;flex-direction:column;gap:9px;padding:12px!important;border-radius:14px!important}
   body.landing-redesign .analytics-consent-actions{display:grid;grid-template-columns:1fr 1fr}
   body.landing-redesign .analytics-consent-actions button{width:100%}
-  body.landing-redesign.has-consent-banner{padding-bottom:148px!important}
   body.landing-redesign .repair-story .section-intro{margin-bottom:38px}
   body.landing-redesign .repair-stage{grid-template-columns:36px minmax(0,1fr);gap:16px;padding:24px 4px}
   body.landing-redesign .repair-stage-number{width:34px;height:34px;font-size:13px}
