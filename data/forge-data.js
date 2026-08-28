@@ -5016,7 +5016,7 @@ BANKS["CHEM-1"] = {
       options:{A:"oxygen has no lone pairs in water.",B:"Water has three bonds, not two.",C:"Oxygen has 6 valence electrons: 2 are used in bonds with hydrogen",D:"Lone pairs are optional in dot-and-cross diagrams."},
       correct:"C",tag:"MC-CHEM-03",
       scaffold:"Water: O has 6 valence electrons. Shares 1 with each H (2 bonding pairs). Remaining 4 electrons = 2 lone pairs on O. VSEPR: 4 electron pairs around O (tetrahedral electron geometry) but 2 are lone pairs → bent/V-shaped molecule. Bond angle ≈ 104.5° (less than 109.5° because lone pairs repel more than bonding pairs). Without lone pairs, students predict 180° (linear) — wrong.",
-      reforge:{stem:"Using VSEPR theory, predict the shape of NH₃ (ammonia). Nitrogen has 5 valence electrons.",options:{A:"Trigonal planar — three bonds, no lone pairs.",B:"Trigonal pyramidal — nitrogen forms 3 bonds (using 3 electrons) and has 1 lone pair remaining. Four electron pairs (3 bonding + 1 lone) → tetrahedral electron geometry → trigonal pyramidal molecular shape, bond angle ≈ 107°.",C:"Linear — like CO₂.",D:"Tetrahedral — same as methane."},correct:"B"}
+      reforge:{stem:"Using VSEPR theory, predict the shape of NH₃ (ammonia). Nitrogen has 5 valence electrons.",options:{A:"Trigonal planar — three bonds and no lone pairs.",B:"Trigonal pyramidal — three bonds, one lone pair",C:"Linear — like CO₂.",D:"Tetrahedral — same as methane."},correct:"B"}
     },
     {
       id:"CHEM-04",stem:"Which type of bonding explains why diamond has a very high melting point?",
@@ -5519,7 +5519,7 @@ BANKS["CS-1"] = {
       options:{A:"There is no difference — both do the same thing.",B:"Subroutines can only be used once; programs can be reused.",C:"A subroutine is a reusable, named block of code for one task within a program.",D:"Programs are written in high-level languages; subroutines in low-level."},
       correct:"C",tag:"MC-CS-06",
       scaffold:"Subroutines (functions/procedures): named blocks, called with parameters, may return values. Benefits: reduce code duplication, easier to test and debug individual components, improve readability, enable team development. Procedures: don't return values. Functions: return values. Passing parameters: by value (copy — original unchanged), by reference (original changed). Eduqas expects you to write and trace subroutines.",
-      reforge:{stem:"A function is passed a variable 'by reference' rather than 'by value.' What is the key difference?",options:{A:"By reference is slower than by value.",B:"By reference passes the memory address — changes inside the function affect the original variable. By value passes a copy — the original is unaffected. By reference is more memory efficient but risks unintended side effects.",C:"By value is only used for integers; by reference for strings.",D:"There is no practical difference."},correct:"B"}
+      reforge:{stem:"A function is passed a variable 'by reference' rather than 'by value.' What is the key difference?",options:{A:"By reference is slower than by value.",B:"It passes the memory address, so changes affect the original",C:"By value is only used for integers; by reference for strings.",D:"There is no practical difference."},correct:"B"}
     },
     {
       id:"CS-07",stem:"In the context of networking, what is the role of the TCP/IP protocol suite?",
@@ -5573,14 +5573,14 @@ BANKS["MATH-1"] = {
       options:{A:"2x³ + 2x² − 3x",B:"2x³ + 2x² − 3x + C",C:"12x + 4",D:"6x³ + 4x² − 3x + C"},
       correct:"B",tag:"MC-MATH-02",
       scaffold:"Indefinite integration always requires + C (the constant of integration). Each term: add 1 to the power and divide by the new power. 6x² → 2x³, 4x → 2x², −3 → −3x. Missing C loses a mark every time.",
-      reforge:{stem:"A student writes ∫8x dx = 4x². What is wrong?",options:{A:"Nothing — 4x² is correct.",B:"The + C is missing. The full answer is 4x² + C — omitting the constant of integration is an error.",C:"The coefficient should be 8x².",D:"Integration of 8x is 8x²."},correct:"B"}
+      reforge:{stem:"A student writes ∫8x dx = 4x². What is wrong?",options:{A:"Nothing — 4x² is correct.",B:"The + C is missing; it is 4x² + C",C:"The coefficient should have been 8x²",D:"Integration of 8x is 8x²."},correct:"B"}
     },
     {
       id:"MATH-03",stem:"Use the chain rule to differentiate y = (3x + 2)⁵.",
-      options:{A:"5(3x + 2)⁴",B:"(3x + 2)⁴",C:"15(3x + 2)⁴",D:"5(3)⁴"},
+      options:{A:"5 × (3x + 2)⁴",B:"(3x + 2)⁴ alone",C:"15(3x + 2)⁴",D:"5(3)⁴"},
       correct:"C",tag:"MC-MATH-01",
       scaffold:"Chain rule: dy/dx = n·(inner)^(n−1) · d/dx(inner). Outer → 5(3x+2)⁴, inner derivative = 3. Multiply: 5(3x+2)⁴ × 3 = 15(3x+2)⁴. Forgetting to multiply by the inner derivative is the most common chain rule error.",
-      reforge:{stem:"Differentiate y = (2x − 1)⁶.",options:{A:"6(2x − 1)⁵",B:"12(2x − 1)⁵",C:"6(2)⁵",D:"2(2x − 1)⁵"},correct:"B"}
+      reforge:{stem:"Differentiate y = (2x − 1)⁶.",options:{A:"6 × (2x − 1)⁵",B:"12(2x − 1)⁵",C:"6(2)⁵ only",D:"2(2x − 1)⁵"},correct:"B"}
     },
     {
       id:"MATH-04",stem:"Complete the square for x² + 6x + 11.",
@@ -5591,31 +5591,31 @@ BANKS["MATH-1"] = {
     },
     {
       id:"MATH-05",stem:"f(x) = x³ − 3x² − 9x + 5. A student sets f(x) = 0 to find the turning points. What is the error?",
-      options:{A:"No error — f(x) = 0 gives turning points.",B:"f(x) = 0 and f′(x) = 0 are the same for cubics.",C:"Turning points cannot be found algebraically.",D:"Turning points need f′(x) = 0; f(x) = 0 finds the roots instead."},
+      options:{A:"No error — f(x) = 0 gives turning points.",B:"f(x) = 0 and f′(x) = 0 are the same for cubics.",C:"Turning points cannot be found algebraically.",D:"Turning points need f′(x) = 0, not f(x) = 0"},
       correct:"D",tag:"MC-MATH-05",
       scaffold:"Roots: f(x) = 0 (where the curve crosses the x-axis). Turning points: f′(x) = 0 (where the gradient is zero). These are different locations. Find f′(x), set it to 0, solve for x, then substitute back into f(x) for the y-coordinate.",
-      reforge:{stem:"Given f(x) = x² − 4x + 3, which equation gives the x-coordinate of the minimum point?",options:{A:"x² − 4x + 3 = 0",B:"f′(x) = 2x − 4 = 0, giving x = 2.",C:"f(0) = 3",D:"f(x) = 1"},correct:"B"}
+      reforge:{stem:"Given f(x) = x² − 4x + 3, which equation gives the x-coordinate of the minimum point?",options:{A:"x² − 4x + 3 = 0 exactly",B:"f′(x) = 2x − 4 = 0",C:"f(0) = 3",D:"f(x) = 1"},correct:"B"}
     },
     {
       id:"MATH-06",stem:"A student writes: log(a + b) = log(a) + log(b). Is this correct?",
-      options:{A:"No. The product law is log(a × b) = log(a) + log(b)",B:"Yes — this is the product law.",C:"It depends on the base.",D:"Yes, but only for natural logs."},
+      options:{A:"No — the product law needs log(a × b)",B:"Yes — this is the product law.",C:"It depends on the base.",D:"Yes, but only for natural logarithms."},
       correct:"A",tag:"MC-MATH-06",
       scaffold:"Log laws: log(ab) = log(a) + log(b), log(a/b) = log(a) − log(b), log(aⁿ) = n·log(a). log(a + b) cannot be simplified — this is one of the most-penalised errors in A Level Maths.",
-      reforge:{stem:"Simplify log₂(8) + log₂(4).",options:{A:"log₂(12)",B:"log₂(32) = 5, using the product law: log₂(8 × 4) = log₂(32) = 5.",C:"log₂(2)",D:"7"},correct:"B"}
+      reforge:{stem:"Simplify log₂(8) + log₂(4).",options:{A:"log₂(12) exactly",B:"log₂(32) = 5",C:"log₂(2)",D:"7"},correct:"B"}
     },
     {
       id:"MATH-07",stem:"In the binomial expansion of (1 + x)⁵, what is the coefficient of x³?",
       options:{A:"10",B:"5",C:"15",D:"20"},
       correct:"A",tag:"MC-MATH-07",
       scaffold:"Use ⁿCᵣ for the coefficient: ⁵C₃ = 5! / (3! × 2!) = (5 × 4) / (2 × 1) = 10. Common error: confusing r with n − r, or mis-applying the formula. Always identify which term you need and apply ⁿCᵣ carefully.",
-      reforge:{stem:"In (2 + x)⁴, what is the coefficient of x²?",options:{A:"6",B:"24, since ⁴C₂ × 2² = 6 × 4 = 24.",C:"12",D:"4"},correct:"B"}
+      reforge:{stem:"In (2 + x)⁴, what is the coefficient of x²?",options:{A:"6",B:"24",C:"12",D:"4"},correct:"B"}
     },
     {
       id:"MATH-08",stem:"A proof by contradiction starts: 'Assume √2 is irrational.' What is wrong with this opening?",
-      options:{A:"that is the correct assumption.",B:"Proof by contradiction requires assuming the opposite of what you want to prove",C:"The proof must begin with a definition.",D:"Contradiction cannot be used for irrational numbers."},
+      options:{A:"that is the correct assumption.",B:"You must assume the opposite of the claim",C:"The proof must begin with a definition.",D:"Contradiction cannot be used for irrational numbers."},
       correct:"B",tag:"MC-MATH-08",
       scaffold:"Structure: (1) State what you want to prove. (2) Assume the negation. (3) Derive a logical contradiction through valid steps. (4) Conclude the assumption is false, so the original statement must be true. The assumption must be stated explicitly — this earns a mark.",
-      reforge:{stem:"To prove there are infinitely many primes by contradiction, you start by assuming:",options:{A:"There are infinitely many primes.",B:"There are finitely many primes — then construct a number not divisible by any of them, producing a contradiction.",C:"2 is not prime.",D:"All odd numbers are prime."},correct:"B"}
+      reforge:{stem:"To prove there are infinitely many primes by contradiction, you start by assuming:",options:{A:"There are infinitely many primes.",B:"There are finitely many primes.",C:"2 is not prime.",D:"All odd numbers are prime."},correct:"B"}
     }
   ]
 };
@@ -5703,59 +5703,59 @@ BANKS["RS-1"] = {
   questions: [
     {
       id:"RS-01",stem:"Aquinas's Cosmological Argument concludes that there must be an 'Unmoved Mover'. What is the key logical move that makes this necessary?",
-      options:{A:"Everything requires a cause, and the universe is beautiful, so God must exist.",B:"The universe is contingent, and contingent things could not have always existed.",C:"An infinite regress of causes is impossible, so there must be a first, uncaused cause",D:"Design implies a designer, so the universe must have been caused."},
+      options:{A:"Everything requires a cause, and the universe is beautiful, so God must exist.",B:"The universe is contingent, and contingent things could not have always existed.",C:"An infinite regress is impossible, so a first cause exists",D:"Design implies a designer, so the universe must have been caused."},
       correct:"C",tag:"MC-RS-01",
       scaffold:"Aquinas's First Way: motion requires a mover → cannot regress to infinity → must be a first mover, itself unmoved. The infinite regress problem is the key move. Don't confuse with the Ontological Argument (a priori) or the argument from contingency (Leibniz's form). Examiners penalise conflation of the five ways.",
-      reforge:{stem:"Which philosopher argued that the universe could be 'brute fact' — simply existing without a cause — as a direct challenge to the Cosmological Argument?",options:{A:"Aquinas",B:"Bertrand Russell — denying the need for a first cause outside the universe.",C:"Descartes",D:"Kant"},correct:"B"}
+      reforge:{stem:"Which philosopher argued that the universe could be 'brute fact' — simply existing without a cause — as a direct challenge to the Cosmological Argument?",options:{A:"Aquinas",B:"Bertrand Russell",C:"Descartes' method of doubt",D:"Kant"},correct:"B"}
     },
     {
       id:"RS-02",stem:"Paley's Teleological Argument uses the analogy of a watch. What is Hume's most direct criticism of this analogical argument?",
-      options:{A:"The universe is not complex enough to need a designer.",B:"Paley did not account for the existence of evil.",C:"The watch analogy proves the universe is eternal.",D:"An analogy between the universe and a watch is too weak"},
+      options:{A:"The universe is not complex enough to need a designer.",B:"Paley did not account for the existence of evil.",C:"The watch analogy proves the universe is eternal.",D:"The watch analogy is too weak"},
       correct:"D",tag:"MC-RS-02",
       scaffold:"Hume (Dialogues Concerning Natural Religion): analogical arguments only work where the two things compared are sufficiently similar. The universe differs from a watch in almost every relevant respect — it is unique, we have no experience of universe-creation. Hume also notes the argument, even if valid, might support a committee of gods or a very imperfect designer. Don't confuse Hume's critique with Darwin's (evolution provides a non-designer explanation).",
-      reforge:{stem:"Darwin's theory of evolution is used against the Teleological Argument primarily because it:",options:{A:"Proves the universe is 14 billion years old.",B:"Provides a non-intentional explanation for apparent design in living things — natural selection, not a designer, produces complexity.",C:"Shows God could not have known the outcome of creation.",D:"Establishes that the universe had no beginning."},correct:"B"}
+      reforge:{stem:"Darwin's theory of evolution is used against the Teleological Argument primarily because it:",options:{A:"Proves the universe is 14 billion years old.",B:"Natural selection explains design without a designer",C:"Shows God could not have known the outcome of creation.",D:"Establishes that the universe had no beginning."},correct:"B"}
     },
     {
       id:"RS-03",stem:"Anselm's Ontological Argument claims God must exist because God is 'that than which nothing greater can be conceived'. What is Kant's objection?",
       options:{A:"'Existence' is not a predicate",B:"God is beyond human understanding.",C:"The argument works in logic but not in the real world.",D:"Anselm's God is too limited to be a true deity."},
       correct:"A",tag:"MC-RS-03",
       scaffold:"Kant: existence is not a real predicate — it doesn't add to our concept of a thing. Saying '100 thalers exist' tells us nothing about the nature of 100 thalers that 'possible 100 thalers' doesn't. The Ontological Argument treats existence as a perfection/property, which Kant denies. Gaunilo's objection is different: same logic would prove a perfect island exists.",
-      reforge:{stem:"Gaunilo's 'Lost Island' objection to Anselm argues that:",options:{A:"Islands cannot be perfect because they are material.",B:"If Anselm's logic were valid, we could prove the existence of a perfect island — which is absurd; therefore the logic is flawed.",C:"God is not the greatest conceivable being.",D:"The argument requires empirical evidence."},correct:"B"}
+      reforge:{stem:"Gaunilo's 'Lost Island' objection to Anselm argues that:",options:{A:"Islands cannot be perfect because they are material.",B:"The same logic would prove a perfect island exists",C:"God is not the greatest conceivable being.",D:"The argument requires empirical evidence."},correct:"B"}
     },
     {
       id:"RS-04",stem:"A student writes: 'The Problem of Evil proves God does not exist.' What is the most precise philosophical challenge to this claim?",
-      options:{A:"Evil is an illusion — it does not really exist.",B:"The logical Problem of Evil concludes God and evil are logically incompatible",C:"God created evil on purpose to test humans.",D:"Evil only proves God is not all-knowing."},
+      options:{A:"Evil is an illusion — it does not really exist.",B:"God and evil are logically incompatible",C:"God created evil on purpose to test humans.",D:"Evil only proves God is not all-knowing."},
       correct:"B",tag:"MC-RS-04",
       scaffold:"Distinguish: Logical PoE (Mackie) — contradiction between God's attributes and evil's existence. Evidential PoE (Rowe) — even if not logically impossible, the quantity/nature of evil makes God's existence unlikely. Theodicies (Irenaeus/Hick: soul-making; Augustinian: free will and the fall) attempt reconciliation. A top 15-mark answer identifies the form of the PoE and evaluates specific theodicies.",
-      reforge:{stem:"Hick's 'soul-making' theodicy argues that evil and suffering exist because:",options:{A:"God is not powerful enough to remove them.",B:"They are necessary conditions for humans to develop virtues — moral and spiritual growth requires a challenging environment, not a paradise.",C:"Humans caused evil through the Fall.",D:"Evil is an absence of good, not a real thing."},correct:"B"}
+      reforge:{stem:"Hick's 'soul-making' theodicy argues that evil and suffering exist because:",options:{A:"God is not powerful enough to remove them.",B:"They are the conditions in which virtues develop",C:"Humans caused evil through the Fall.",D:"Evil is merely an absence of good, not a real thing at all."},correct:"B"}
     },
     {
       id:"RS-05",stem:"In Kantian Ethics, what is the fundamental principle of the Categorical Imperative's first formulation?",
       options:{A:"Act so as to produce the greatest happiness for the greatest number.",B:"Always treat others as you would wish to be treated.",C:"Act only according to a maxim that you could",D:"Act in accordance with your duty to God."},
       correct:"C",tag:"MC-RS-05",
       scaffold:"Kant's first formulation: universalisability. Test: could I consistently will everyone to act on this maxim? Lying fails — if everyone lied, the practice of truth-telling (on which lying depends) would collapse. This is a priori — derived from reason, not consequences. Don't confuse with the second formulation (humanity as end in itself) or the Golden Rule (which is consequentialist in spirit).",
-      reforge:{stem:"A student says 'Kantian ethics is too rigid — it ignores consequences.' Which is the most precise evaluation of this criticism?",options:{A:"Kant is wrong because consequences always matter more than duty.",B:"This is a genuine strength of Kantianism — consistency and duty-based rules prevent manipulation of outcomes — but it can lead to counter-intuitive results (e.g. Kant says you must not lie even to a murderer asking where your friend is hiding).",C:"Kant did consider consequences — he just weighted them less.",D:"Rigidity is not a criticism because all ethical theories are rigid."},correct:"B"}
+      reforge:{stem:"A student says 'Kantian ethics is too rigid — it ignores consequences.' Which is the most precise evaluation of this criticism?",options:{A:"Kant is wrong because consequences always matter more than duty.",B:"A real strength — duty-based rules resist manipulation",C:"Kant did consider consequences — he just weighted them less.",D:"Rigidity is not a criticism because all ethical theories are rigid."},correct:"B"}
     },
     {
       id:"RS-06",stem:"Bentham's Utilitarianism judges actions by the 'hedonic calculus'. What is Mill's main refinement to Bentham's position?",
       options:{A:"Mill rejected pleasure as a criterion and replaced it with duty.",B:"Mill argued that only the pleasure of the majority should count.",C:"Mill replaced the hedonic calculus with the principle of utility.",D:"Mill introduced a qualitative distinction between pleasures"},
       correct:"D",tag:"MC-RS-06",
       scaffold:"Bentham: quantity only — any pleasure counts equally. Mill: quality matters — 'better to be Socrates dissatisfied than a fool satisfied.' Higher pleasures: intellectual, aesthetic, moral. Lower pleasures: bodily. Key evaluative point: Mill's distinction may be elitist and hard to measure. Mill also introduces Rule Utilitarianism (rules that tend to maximise utility) vs. Bentham's Act Utilitarianism.",
-      reforge:{stem:"Which scenario best illustrates a critique of Act Utilitarianism?",options:{A:"Telling a small lie that prevents significant harm.",B:"Punishing an innocent person to prevent a riot that would harm more people — which Act Utilitarianism could in principle justify, despite our strong moral intuitions against it.",C:"Following a rule against lying even when lying would help.",D:"Calculating the greatest happiness for a small group only."},correct:"B"}
+      reforge:{stem:"Which scenario best illustrates a critique of Act Utilitarianism?",options:{A:"Telling a small lie that prevents significant harm.",B:"Punishing an innocent person to prevent a riot",C:"Following a rule against lying even when lying would help.",D:"Calculating the greatest happiness for a small group only."},correct:"B"}
     },
     {
       id:"RS-07",stem:"What does 'religious experience as proof of God's existence' most fundamentally rely on for its validity?",
       options:{A:"The Principle of Credulity (Swinburne)",B:"The experience must be shared by multiple people simultaneously.",C:"Scientific instruments must be able to verify the experience.",D:"The experience must alter the person's behaviour permanently."},
       correct:"A",tag:"MC-RS-07",
       scaffold:"Swinburne's two principles: (1) Principle of Credulity — rational to believe what experience seems to show, absent defeaters. (2) Principle of Testimony — rational to believe what others sincerely report experiencing. Key challenges: religious experiences may be hallucinations, explicable through psychology (Freud — wish-fulfilment; Persinger — temporal lobe stimulation), or culturally conditioned. James's four marks (ineffability, noetic quality, transience, passivity) describe but don't verify.",
-      reforge:{stem:"Freud's explanation of religious belief suggests that:",options:{A:"Religion is a rational response to observable design in the universe.",B:"Religious belief is a projection — an illusion rooted in unconscious wishes (security, father-figure) — not evidence of God's actual existence.",C:"Religious experience is impossible to explain scientifically.",D:"Religion evolved as a tool for social cohesion only."},correct:"B"}
+      reforge:{stem:"Freud's explanation of religious belief suggests that:",options:{A:"Religion is a rational response to observable design in the universe.",B:"Belief is a projection of unconscious wishes",C:"Religious experience is impossible to explain scientifically.",D:"Religion evolved as a tool for social cohesion only."},correct:"B"}
     },
     {
       id:"RS-08",stem:"A student writes: 'Natural Law theory says whatever is natural is morally right.' Why is this an inadequate account of Aquinas's Natural Law?",
-      options:{A:"Natural Law is entirely based on divine commands revealed through scripture.",B:"Aquinas's Natural Law is about God-given rational purposes (telos) in human nature, not what happens naturally.",C:"Aquinas did not believe natural processes had any moral or theological significance.",D:"Natural Law applies exclusively to sexual ethics and reproduction."},
+      options:{A:"Natural Law is entirely based on divine commands revealed through scripture.",B:"It concerns God-given purposes, not what occurs naturally",C:"Aquinas did not believe natural processes had any moral or theological significance.",D:"Natural Law applies exclusively to sexual ethics and reproduction."},
       correct:"B",tag:"MC-RS-08",
       scaffold:"Key distinction: Natural Law ≠ 'whatever animals do' or 'whatever is statistically normal'. It refers to rational, teleological purposes embedded in human nature by God: preserve life, reproduce, educate children, live in community, know God. The primary precepts are absolute; secondary precepts apply them to specific situations. Moore's 'naturalistic fallacy' (is/ought gap) is a distinct challenge — you cannot derive moral 'ought' from natural 'is'.",
-      reforge:{stem:"Which of the following would Aquinas's Natural Law most clearly prohibit, and why?",options:{A:"Drinking alcohol — because it is a natural substance.",B:"Deliberately killing an innocent person — because it violates the primary precept to preserve life, a fundamental God-given rational end.",C:"Competing in sport — because it risks injury.",D:"Eating meat — because it harms animals."},correct:"B"}
+      reforge:{stem:"Which of the following would Aquinas's Natural Law most clearly prohibit, and why?",options:{A:"Drinking alcohol — because it is a natural substance.",B:"Deliberately killing an innocent person",C:"Competing in sport — because it risks injury.",D:"Eating meat — because it harms animals."},correct:"B"}
     }
   ]
 };
@@ -7414,59 +7414,59 @@ BANKS["RS-2"] = {
   questions: [
     {
       id:"RS-09",stem:"Fletcher's Situation Ethics claims there is only one intrinsically good thing. What is it?",
-      options:{A:"Agape — selfless, unconditional love; every rule can be set aside if love is better served.",B:"Happiness — the greatest pleasure for the greatest number of people.",C:"Obedience to God's revealed commands in scripture.",D:"Virtue — a settled disposition of good character built through habit."},
+      options:{A:"Agape — selfless love that can override any rule",B:"Happiness — the greatest pleasure for the greatest number of people.",C:"Obedience to God's revealed commands in scripture.",D:"Virtue — a settled disposition of good character built through habit."},
       correct:"A",tag:"MC-RS-09",
       scaffold:"Fletcher: agape is the sole intrinsic good; everything else is instrumentally good. Four working principles: pragmatism, relativism, positivism, personalism. Six propositions include: love is the only norm, love and justice are the same, love wills the neighbour's good. Key criticism: how do we predict which act is most loving? It collapses into a form of act utilitarianism with love replacing pleasure.",
-      reforge:{stem:"A critic says Situation Ethics is 'really just utilitarianism with love substituted for happiness.' What feature of Fletcher's theory does this criticism target?",options:{A:"Its reliance on scripture as the final authority.",B:"Its consequentialist structure — judging each act by predicted outcomes.",C:"Its claim that rules can never be broken.",D:"Its focus on building character over time."},correct:"B"}
+      reforge:{stem:"A critic says Situation Ethics is 'really just utilitarianism with love substituted for happiness.' What feature of Fletcher's theory does this criticism target?",options:{A:"Its reliance on scripture as the final authority.",B:"It judges each act by predicted outcomes",C:"Its claim that rules can never be broken.",D:"Its focus on building character over time."},correct:"B"}
     },
     {
       id:"RS-10",stem:"The Euthyphro dilemma poses a problem for Divine Command Theory. Which pair of options captures the dilemma?",
       options:{A:"Either God exists or morality exists — Plato argues the two are mutually exclusive.",B:"Either scripture is literal or metaphorical — the dilemma concerns biblical interpretation.",C:"Either things are good independently of God (limiting his authority)",D:"Either humans are free or God is omniscient — the classic free will versus foreknowledge problem."},
       correct:"C",tag:"MC-RS-10",
       scaffold:"From Plato's Euthyphro. Horn 1: if God commands what is already good, goodness exists independently and God is not the source of morality. Horn 2: if things are good merely because God commands them, morality is arbitrary — cruelty could have been good had God commanded it. Responses: the 'third way' (God's nature IS goodness — Aquinas), or biting the bullet on divine sovereignty (Ockham).",
-      reforge:{stem:"Aquinas's response to the Euthyphro dilemma argues that:",options:{A:"Morality is entirely independent of God.",B:"God's commands are arbitrary but must still be obeyed.",C:"The dilemma is unanswerable and Divine Command Theory fails.",D:"The dilemma is false — goodness is neither prior to God nor arbitrary, because God's own unchanging nature is the standard of goodness."},correct:"D"}
+      reforge:{stem:"Aquinas's response to the Euthyphro dilemma argues that:",options:{A:"Morality is entirely independent of God.",B:"God's commands are arbitrary but must still be obeyed.",C:"The dilemma is unanswerable and Divine Command Theory fails.",D:"God's own nature is the standard of goodness"},correct:"D"}
     },
     {
       id:"RS-11",stem:"A student writes: 'Aristotle's golden mean tells us always to act moderately.' Why is this inaccurate?",
       options:{A:"Aristotle rejected the idea of a mean entirely — that virtue concept belongs to Plato.",B:"The golden mean applies only to intellectual virtues such as wisdom, not moral ones.",C:"The mean is arithmetic — the exact midpoint between the two extreme vices in every case.",D:"The mean is relative to the person and situation"},
       correct:"D",tag:"MC-RS-11",
       scaffold:"The doctrine of the mean: virtue lies between excess and deficiency (courage between rashness and cowardice), but it is the mean 'relative to us', judged by practical wisdom (phronesis), not a mathematical midpoint. Some actions are intrinsically wrong with no mean. Virtue is acquired by habituation and aims at eudaimonia (flourishing). Common exam error: treating the mean as 'always be moderate'.",
-      reforge:{stem:"For Aristotle, a person becomes courageous primarily by:",options:{A:"Repeatedly performing courageous acts until courage becomes a settled disposition of character.",B:"Learning the correct definition of courage.",C:"Following the commands of a moral authority.",D:"Calculating which acts produce the best outcomes."},correct:"A"}
+      reforge:{stem:"For Aristotle, a person becomes courageous primarily by:",options:{A:"Repeating courageous acts until courage becomes settled",B:"Learning the correct definition of courage.",C:"Following the commands of a moral authority.",D:"Calculating which single acts produce the best outcomes."},correct:"A"}
     },
     {
       id:"RS-12",stem:"In the euthanasia debate, the 'sanctity of life' and 'quality of life' positions differ fundamentally on:",
-      options:{A:"Whether pain relief should ever be given to patients who are near death.",B:"Whether life has intrinsic value regardless of condition, or depends on quality of experience.",C:"Whether euthanasia should be administered by doctors or authorised family members.",D:"Whether the law should formally distinguish active from passive euthanasia in sentencing."},
+      options:{A:"Whether pain relief should ever be given to patients who are near death.",B:"Whether life has value regardless of its quality",C:"Whether euthanasia should be administered by doctors or authorised family members.",D:"Whether the law should formally distinguish active from passive euthanasia in sentencing."},
       correct:"B",tag:"MC-RS-12",
       scaffold:"Sanctity of life (religious roots): life is a sacred gift from God, intrinsically valuable, not ours to end — supported by imago dei and 'do not kill'. Quality of life: value depends on the person's experience — autonomy, suffering, capacity for meaningful life (Singer, Glover). Middle positions: doctrine of double effect (pain relief that foreseeably shortens life), ordinary vs extraordinary means. Strong answers apply BOTH lenses to the same case.",
-      reforge:{stem:"The doctrine of double effect permits a doctor to give life-shortening pain relief when:",options:{A:"The patient has signed a consent form requesting death.",B:"The family agrees that death is in the patient's interests.",C:"The intention is to relieve pain, death is a foreseen but unintended side effect, and the relief is proportionate to the suffering.",D:"The patient has fewer than six months to live."},correct:"C"}
+      reforge:{stem:"The doctrine of double effect permits a doctor to give life-shortening pain relief when:",options:{A:"The patient has signed a consent form requesting death.",B:"The family agrees that death is in the patient's interests.",C:"Pain relief is intended; death is foreseen, not intended",D:"The patient has fewer than six months to live."},correct:"C"}
     },
     {
       id:"RS-13",stem:"Ayer's emotivism claims that moral statements such as 'stealing is wrong' are:",
-      options:{A:"True or false depending on the consequences of stealing.",B:"Commands issued by society to control behaviour.",C:"Expressions of emotion — closer to 'boo to stealing!' than to factual claims",D:"Statements about God's will expressed in secular language."},
+      options:{A:"True or false depending on the consequences of stealing.",B:"Commands issued by society to control behaviour.",C:"Expressions of emotion, not factual claims",D:"Statements about God's will expressed in secular language."},
       correct:"C",tag:"MC-RS-13",
       scaffold:"Ayer (Language, Truth and Logic): the verification principle — meaningful statements are either analytic or empirically verifiable. Moral claims are neither, so they lack factual meaning; they express approval/disapproval ('boo/hurrah theory'). Criticisms: the verification principle fails its own test; moral disagreement seems to be about more than feelings (we argue with reasons); Hare's prescriptivism refines this — moral language also prescribes universalisable action.",
-      reforge:{stem:"A standard objection to the verification principle underlying emotivism is that:",options:{A:"The principle itself is neither analytic nor empirically verifiable, so by its own standard it is meaningless.",B:"It makes all scientific claims meaningless.",C:"It proves that moral statements are objectively true.",D:"It was rejected by Ayer before he published it."},correct:"A"}
+      reforge:{stem:"A standard objection to the verification principle underlying emotivism is that:",options:{A:"By its own standard the principle is meaningless",B:"It makes all scientific claims meaningless.",C:"It proves that moral statements are objectively true.",D:"It was rejected by Ayer before he published it."},correct:"A"}
     },
     {
       id:"RS-14",stem:"Moore's 'naturalistic fallacy' in meta-ethics is the error of:",
       options:{A:"The naturalistic fallacy is the belief that whatever occurs in nature is morally good.",B:"Defining 'good' in natural terms (e.g. pleasure or survival) fails",C:"The naturalistic fallacy is deriving natural laws directly from moral principles.",D:"The naturalistic fallacy claims moral facts do not exist in any objective sense."},
       correct:"B",tag:"MC-RS-14",
       scaffold:"Moore (Principia Ethica): 'good' cannot be defined in natural terms. Open question argument: for any proposed definition ('good = pleasant'), it remains an open, sensible question whether that thing is good — so the definition fails. Related but distinct: Hume's is/ought gap (cannot derive prescriptive conclusions from descriptive premises alone). Students often conflate the two — Moore targets definitions; Hume targets inferences.",
-      reforge:{stem:"Hume's is/ought gap differs from Moore's naturalistic fallacy because Hume's point concerns:",options:{A:"The definition of the word 'good'.",B:"Whether goodness is a natural property.",C:"The existence of God as a source of morality.",D:"The logical move from descriptive premises (what is) to prescriptive conclusions (what ought to be) — no valid inference connects them without a moral premise."},correct:"D"}
+      reforge:{stem:"Hume's is/ought gap differs from Moore's naturalistic fallacy because Hume's point concerns:",options:{A:"The definition of the word 'good'.",B:"Whether goodness is a natural property.",C:"The existence of God as a source of morality.",D:"Moving from what is to what ought to be"},correct:"D"}
     },
     {
       id:"RS-15",stem:"Hard determinism holds that free will is an illusion because every choice is fully caused by prior events. What follows for moral responsibility on this view?",
-      options:{A:"Moral responsibility collapses under hard determinism — praise and blame lose their desert-based justification.",B:"People remain fully responsible because they subjectively experience their choices as free.",C:"Only criminals lose moral responsibility under determinism; law-abiding people are exempt.",D:"Responsibility transfers entirely from individuals to God as the first cause of all events."},
+      options:{A:"Praise and blame lose their desert-based justification",B:"People stay responsible because their choices feel free.",C:"Only criminals lose responsibility; others are exempt",D:"Responsibility passes to God as the first cause."},
       correct:"A",tag:"MC-RS-15",
       scaffold:"Hard determinism (e.g. d'Holbach; Clarence Darrow's legal defences): universal causation + incompatibilism → no free will → no desert-based responsibility. Libertarianism: genuine agent causation exists (Kant's noumenal self; conscience as evidence). Compatibilism (Hume, Ayer): freedom means acting according to your own desires without external constraint — free will and determinism are compatible. Exam trap: treating compatibilism as a weak halfway house rather than a distinct redefinition of freedom.",
-      reforge:{stem:"A compatibilist would say a person acts freely when:",options:{A:"Their action has no prior cause whatsoever.",B:"They act on their own desires without external coercion — even if those desires were themselves causally determined.",C:"They could have done otherwise in an absolute, uncaused sense.",D:"A random quantum event initiates their decision."},correct:"B"}
+      reforge:{stem:"A compatibilist would say a person acts freely when:",options:{A:"Their action has no prior cause whatsoever.",B:"They act on their own desires, free of coercion",C:"They could have done otherwise in an absolute, uncaused sense.",D:"A random quantum event initiates their decision."},correct:"B"}
     },
     {
       id:"RS-16",stem:"An Eduqas evaluation question asks: 'Ethical theories are of no practical use in moral decision-making.' Discuss. What does a top-band response require?",
       options:{A:"A description of every ethical theory on the specification, listed in order.",B:"A firm personal opinion stated clearly in the introduction and repeated in the conclusion.",C:"Sustained evaluation of the claim against specific theories and cases",D:"Equal paragraph lengths for each side, presenting both views without taking any position."},
       correct:"C",tag:"MC-RS-16",
       scaffold:"AO2 band descriptors reward: sustained argument, evaluation of the actual claim (not just describing theories), use of scholarly views as tools of argument, counter-argument handled rather than listed, and a conclusion that follows from the reasoning. Common failure: 'juxtaposition' — describing one view, then another, without ever weighing them. Phrases that signal evaluation: 'this succeeds only if...', 'the force of this depends on...', 'a stronger objection is...'.",
-      reforge:{stem:"Which sentence shows genuine AO2 evaluation rather than AO1 description?",options:{A:"Kant believed we should act only on universalisable maxims.",B:"Utilitarianism was developed by Bentham and refined by Mill.",C:"There are many different ethical theories that people use.",D:"Kant's refusal to permit lying even to save a life suggests the theory prizes consistency over the very persons it claims to respect — a tension Kantians must resolve."},correct:"D"}
+      reforge:{stem:"Which sentence shows genuine AO2 evaluation rather than AO1 description?",options:{A:"Kant believed we should act only on universalisable maxims.",B:"Utilitarianism was developed by Bentham and refined by Mill.",C:"There are many different ethical theories that people use.",D:"It prizes consistency over the persons it respects"},correct:"D"}
     }
   ]
 };
@@ -7673,56 +7673,56 @@ BANKS["MATH-2"] = {
       options:{A:"Use the second derivative test: positive means minimum, negative means maximum.",B:"A stationary point is always a minimum if x is positive.",C:"Substitute x = 2 into the original function — a positive y-value means minimum.",D:"All stationary points on a cubic are minima."},
       correct:"A",tag:"MC-MATH-09",
       scaffold:"Second derivative test: f''(x) > 0 → local minimum (curve concave up); f''(x) < 0 → local maximum. f''(x) = 0 → INCONCLUSIVE (could be max, min, or point of inflection — e.g. y = x⁴ has f''(0) = 0 but a minimum at 0). Then use the gradient table: sign of f'(x) just before and after. Common mark loss: asserting 'f''=0 means point of inflection' — false without checking.",
-      reforge:{stem:"For y = x⁴, we have dy/dx = 4x³ = 0 at x = 0, and d²y/dx² = 12x² = 0 at x = 0. What is the nature of the stationary point?",options:{A:"A point of inflection, because the second derivative is zero.",B:"A minimum — the second derivative test is inconclusive, but the gradient is negative before 0 and positive after, so it is a minimum.",C:"A maximum, because x⁴ grows very fast.",D:"Cannot be determined."},correct:"B"}
+      reforge:{stem:"For y = x⁴, we have dy/dx = 4x³ = 0 at x = 0, and d²y/dx² = 12x² = 0 at x = 0. What is the nature of the stationary point?",options:{A:"A point of inflection, because the second derivative is zero.",B:"A minimum — the gradient turns negative to positive",C:"A maximum, because x⁴ grows very fast.",D:"Cannot be determined."},correct:"B"}
     },
     {
       id:"MATH-10",stem:"A student writes: ∫(3x² + 2) dx = x³ + 2x. What mark would this typically lose, and why?",
-      options:{A:"None — the answer is fully correct.",B:"All marks — the integration itself is wrong.",C:"The final accuracy mark — the '+ C' constant of integration is missing.",D:"The method mark — integration should start by differentiating."},
+      options:{A:"None — the answer is fully correct.",B:"All marks — the integration itself is wrong.",C:"The final accuracy mark — '+ C' is missing",D:"The method mark — integration should start by differentiating."},
       correct:"C",tag:"MC-MATH-10",
       scaffold:"Indefinite integrals always need + C: differentiating any constant gives zero, so infinitely many functions share the same derivative. + C matters materially in differential equations, where a boundary condition determines C. Definite integrals need NO constant (it cancels in F(b) − F(a)). Examiner reports list omitted + C among the most frequent avoidable losses at A Level.",
-      reforge:{stem:"A curve has dy/dx = 6x and passes through (1, 5). Find y.",options:{A:"y = 3x² — integrate and stop.",B:"y = 6x² + C for any C.",C:"y = 3x² + 5.",D:"y = 3x² + 2 — integrate to get 3x² + C, then substitute (1, 5): 5 = 3 + C, so C = 2."},correct:"D"}
+      reforge:{stem:"A curve has dy/dx = 6x and passes through (1, 5). Find y.",options:{A:"y = 3x², forgetting C",B:"y = 6x² + C",C:"y = 3x² + 5",D:"y = 3x² + 2"},correct:"D"}
     },
     {
       id:"MATH-11",stem:"For the quadratic 3x² − 5x + k = 0 to have two distinct real roots, what condition must k satisfy?",
-      options:{A:"k > 25/12 — the discriminant must be negative.",B:"k < 25/12 — the discriminant b² − 4ac = 25 − 12k must be strictly positive.",C:"k = 25/12 exactly.",D:"k can be any real number; all quadratics have two roots."},
+      options:{A:"k > 25/12",B:"k < 25/12",C:"k = 25/12",D:"Any real k"},
       correct:"B",tag:"MC-MATH-11",
       scaffold:"Discriminant Δ = b² − 4ac. Two distinct real roots: Δ > 0. Equal (repeated) roots: Δ = 0. No real roots: Δ < 0. Here: 25 − 12k > 0 → k < 25/12. Traps: (1) sign errors when b is negative — b² is always positive; (2) mixing up strict vs non-strict inequalities — 'real roots' (allowing equal) means Δ ≥ 0, 'distinct' means Δ > 0; (3) forgetting that 'no real roots' still means two complex roots.",
-      reforge:{stem:"The line y = 2x + c is tangent to the curve y = x². What does tangency tell us about the discriminant of x² − 2x − c = 0?",options:{A:"It equals zero — tangency means exactly one repeated intersection point, so 4 + 4c = 0 and c = −1.",B:"It is positive — the line crosses twice.",C:"It is negative — the line never meets the curve.",D:"The discriminant is irrelevant to tangency."},correct:"A"}
+      reforge:{stem:"The line y = 2x + c is tangent to the curve y = x². What does tangency tell us about the discriminant of x² − 2x − c = 0?",options:{A:"It equals zero, giving c = −1",B:"It is positive — the line crosses twice.",C:"It is negative — the line never meets the curve.",D:"The discriminant is irrelevant to tangency."},correct:"A"}
     },
     {
       id:"MATH-12",stem:"A student sketches y = f(x + 3) by shifting y = f(x) three units to the RIGHT. What has gone wrong?",
-      options:{A:"Nothing — f(x + 3) shifts right by 3.",B:"The shift should be vertical, not horizontal.",C:"f(x + 3) shifts LEFT by 3: the input reaches any given value 3 units earlier. Right shifts come from f(x − 3).",D:"f(x + 3) stretches the graph horizontally by factor 3."},
+      options:{A:"Nothing — f(x + 3) shifts right by 3.",B:"The shift should be vertical, not horizontal.",C:"f(x + 3) shifts LEFT by 3, not right",D:"f(x + 3) stretches the graph horizontally by factor 3."},
       correct:"C",tag:"MC-MATH-12",
       scaffold:"Transformations inside the bracket act on x and go the 'wrong way': f(x + a) → left a; f(x − a) → right a; f(ax) → horizontal stretch factor 1/a. Outside the bracket acts on y, intuitively: f(x) + a → up a; af(x) → vertical stretch factor a. Combined transformations: apply inside-the-bracket changes to x-coordinates and outside changes to y-coordinates independently. This 'inside is counterintuitive' rule is one of the most-tested sketch skills.",
-      reforge:{stem:"The graph of y = f(2x) compared with y = f(x) is:",options:{A:"Stretched horizontally by factor 2 — everything is twice as wide.",B:"Compressed horizontally by factor 1/2 — the input doubles, so features occur at half the x-value.",C:"Stretched vertically by factor 2.",D:"Reflected in the y-axis."},correct:"B"}
+      reforge:{stem:"The graph of y = f(2x) compared with y = f(x) is:",options:{A:"Stretched horizontally by factor 2 — everything is twice as wide.",B:"Compressed horizontally by factor 1/2",C:"Stretched vertically by factor 2.",D:"Reflected in the y-axis."},correct:"B"}
     },
     {
       id:"MATH-13",stem:"Complete the square for y = x² − 6x + 11 and state the turning point.",
       options:{A:"y = (x − 3)² + 2, turning point (3, 2).",B:"y = (x − 6)² + 11, turning point (6, 11).",C:"y = (x + 3)² + 2, turning point (−3, 2).",D:"y = (x − 3)² + 11, turning point (3, 11)."},
       correct:"A",tag:"MC-MATH-13",
       scaffold:"y = x² + bx + c = (x + b/2)² − (b/2)² + c. Here: (x − 3)² − 9 + 11 = (x − 3)² + 2. Turning point: (−b/2, c − b²/4) — for the form (x − p)² + q it is (p, q), minimum since the coefficient of x² is positive. Sign trap: (x − 3)² gives turning point at x = +3, not −3. When a ≠ 1, factor out a from the x-terms first. Completing the square also proves the quadratic formula and identifies max/min without calculus.",
-      reforge:{stem:"What is the minimum VALUE of y = x² − 6x + 11 (not the x where it occurs)?",options:{A:"3 — the x-coordinate of the vertex.",B:"11 — the constant term.",C:"2 — the completed-square form (x − 3)² + 2 shows the squared term is at least 0, so y is at least 2.",D:"−9 — the subtracted square."},correct:"C"}
+      reforge:{stem:"What is the minimum VALUE of y = x² − 6x + 11 (not the x where it occurs)?",options:{A:"3 — the x-coordinate of the vertex.",B:"11 — the constant term.",C:"2 — from (x − 3)² + 2",D:"−9 — the subtracted square."},correct:"C"}
     },
     {
       id:"MATH-14",stem:"A student expands (2 + x)⁵ and writes the x³ term as ⁵C₃ x³ = 10x³. What has been forgotten?",
-      options:{A:"Nothing — 10x³ is the correct term.",B:"The remaining power of the FIRST term: the x³ term is ⁵C₃ · 2² · x³ = 10 · 4 · x³ = 40x³.",C:"The binomial coefficient should be ⁵C₂.",D:"Powers of x cannot exceed 2 in this expansion."},
+      options:{A:"Nothing — 10x³ is the correct term.",B:"The 2² is missing; it is 40x³",C:"The binomial coefficient should have been ⁵C₂.",D:"Powers of x cannot exceed 2 in this expansion."},
       correct:"B",tag:"MC-MATH-14",
       scaffold:"(a + b)ⁿ general term: ⁿCᵣ aⁿ⁻ʳ bʳ — BOTH factors carry powers. Dropping aⁿ⁻ʳ when a ≠ 1 is the classic slip: here a = 2 contributes 2² = 4. Second trap: (2 − x)⁵ — the sign belongs to b = −x, so odd powers of x are negative. Third: 'coefficient of x³' means the number only (40), while 'term in x³' means 40x³ — read the question. Check: coefficients of (2+x)⁵ should sum to 3⁵ = 243 when x = 1.",
-      reforge:{stem:"In the expansion of (3 − 2x)⁴, the coefficient of x² is:",options:{A:"⁴C₂ · 3² · (−2)² = 6 · 9 · 4 = 216 — both remaining powers included, and (−2)² is positive.",B:"⁴C₂ = 6 — just the binomial coefficient.",C:"−216 — the negative sign carries through.",D:"54 — using 3² but forgetting (−2)²."},correct:"A"}
+      reforge:{stem:"In the expansion of (3 − 2x)⁴, the coefficient of x² is:",options:{A:"216, since (−2)² is positive",B:"⁴C₂ = 6 — just the binomial coefficient.",C:"−216 — the negative sign carries through.",D:"54 — using 3² but forgetting (−2)²."},correct:"A"}
     },
     {
       id:"MATH-15",stem:"A student simplifies log(x + y) to log x + log y. Why is this wrong?",
-      options:{A:"It is correct — logs turn addition into addition.",B:"The correct rule is log(x + y) = log x · log y.",C:"There is no rule for log(x + y) — only for products.",D:"The rule only fails when x and y are negative."},
+      options:{A:"It is correct — logs turn addition into addition.",B:"The correct rule is log(x + y) = log x · log y.",C:"There is no rule for log(x + y)",D:"The rule only fails when x and y are negative."},
       correct:"C",tag:"MC-MATH-15",
       scaffold:"Log laws: log a + log b = log(ab); log a − log b = log(a/b); log aⁿ = n log a. There is no simplification for log(a + b) or log(a − b) — full stop. Related invented rules to unlearn: log(a)/log(b) ≠ log(a/b) (the left side is change-of-base material), and (log a)ⁿ ≠ log(aⁿ). Domain trap: solutions of log equations must keep every argument positive — always check candidates against the original equation.",
-      reforge:{stem:"Solve log₂(x) + log₂(x − 2) = 3.",options:{A:"x = 4 only — combine to log₂(x(x−2)) = 3, so x² − 2x = 8, giving x = 4 or x = −2, but x = −2 makes both arguments negative and must be rejected.",B:"x = 4 or x = −2 — both roots of the quadratic.",C:"x = −2 only.",D:"x = 8 — since 2³ = 8."},correct:"A"}
+      reforge:{stem:"Solve log₂(x) + log₂(x − 2) = 3.",options:{A:"x = 4 only",B:"x = 4 or x = −2",C:"x = −2 only",D:"x = 8"},correct:"A"}
     },
     {
       id:"MATH-16",stem:"Differentiate y = (3x² + 1)/x with respect to x. A student answers dy/dx = 6x/1 = 6x, 'differentiating top and bottom separately'. What is the correct approach at AS level?",
-      options:{A:"Differentiate numerator and denominator separately — the quotient rule is applied term by term.",B:"Split the fraction first: y = 3x + x⁻¹, so dy/dx = 3 − x⁻² — the fraction must be resolved algebraically before differentiating.",C:"Multiply numerator and denominator by x, then differentiate the resulting expression.",D:"dy/dx = 6x · x = 6x² — the product rule has been applied incorrectly."},
+      options:{A:"Differentiate top and bottom separately",B:"Split the fraction first: dy/dx = 3 − x⁻²",C:"Multiply through by x, then differentiate",D:"dy/dx = 6x · x = 6x²"},
       correct:"B",tag:"MC-MATH-16",
       scaffold:"Differentiation is term-by-term ONLY for sums and differences — never across a quotient or product. At AS: rewrite first — split fractions (each numerator term over the denominator), convert roots and reciprocals to index form (√x = x^½, 1/x² = x⁻²), THEN apply the power rule. 'Differentiate top and bottom' is a persistent invented rule. The quotient rule arrives in Year 2, but splitting remains faster whenever it is possible.",
-      reforge:{stem:"Differentiate y = (x³ + 4√x)/x².",options:{A:"dy/dx = 3x²/2x — top over bottom derivatives.",B:"dy/dx = x + 4x^(−3/2).",C:"dy/dx = 1 − 6x^(−5/2) — split into x + 4x^(−3/2) first, then differentiate term by term.",D:"dy/dx = 3x² + 2x^(−1/2)."},correct:"C"}
+      reforge:{stem:"Differentiate y = (x³ + 4√x)/x².",options:{A:"dy/dx = 3x²/2x — top over bottom derivatives.",B:"dy/dx = x + 4x^(−3/2).",C:"dy/dx = 1 − 6x^(−5/2)",D:"dy/dx = 3x² + 2x^(−1/2)."},correct:"C"}
     }
   ]
 };
@@ -10575,7 +10575,7 @@ BANKS["CHEM-3"] = {
       },
       correct:"D",tag:"MC-ORG-07",
       scaffold:"Free radical substitution mechanism — three stages: (1) Initiation: Cl₂ + UV → 2Cl• (homolytic fission — each atom takes one electron from the shared pair); (2) Propagation: Cl• + CH₄ → HCl + CH₃•; then CH₃• + Cl₂ → CH₃Cl + Cl•. Radicals are regenerated — the chain continues; (3) Termination: two radicals combine (Cl•+Cl•, CH₃•+Cl•, CH₃•+CH₃•) — radicals consumed, chain ends. Initiation creates the first radicals. A common error: stating propagation creates the initial radicals.",
-      reforge:{stem:"Why does free radical substitution typically produce a mixture of products?",options:{A:"The UV light selectively breaks different bonds each time.",B:"Once the methyl radical is formed, it can react with excess Cl₂ to form CH₃Cl, but the product CH₃Cl itself can undergo further substitution — giving CH₂Cl₂, CHCl₃, and CCl₄ as the radical chain continues. Controlling the ratio of reactants limits but cannot eliminate this mixture.",C:"Chlorine radicals react randomly with any molecule in the mixture.",D:"The reaction is reversible, regenerating methane and chlorine."},correct:"B"}
+      reforge:{stem:"Why does free radical substitution typically produce a mixture of products?",options:{A:"The UV light selectively breaks different bonds each time.",B:"CH₃Cl can substitute again, giving CH₂Cl₂ and CHCl₃",C:"Chlorine radicals react randomly with any molecule in the mixture.",D:"The reaction is reversible, regenerating methane and chlorine."},correct:"B"}
     },
     {
       id:"ORG-08",
@@ -10588,7 +10588,7 @@ BANKS["CHEM-3"] = {
       },
       correct:"D",tag:"MC-ORG-08",
       scaffold:"Amines (R-NH₂): nitrogen has a lone pair of electrons available to donate. As a Brønsted-Lowry base: R-NH₂ + H⁺ → R-NH₃⁺ (proton accepted). In water: R-NH₂ + H₂O ⇌ R-NH₃⁺ + OH⁻ (weak base). Basicity increases with electron-donating alkyl groups (which increase electron density on N, making the lone pair more available). Aromatic amines (aniline) are weaker bases — the lone pair is delocalised into the benzene ring, reducing availability. Ammonia is a weak base (Kb = 1.8×10⁻⁵), not a strong base.",
-      reforge:{stem:"Why is aniline (C₆H₅NH₂) a weaker base than methylamine (CH₃NH₂)?",options:{A:"Aniline has more hydrogen atoms, making it harder to accept a proton.",B:"In aniline, the lone pair on nitrogen is partially delocalised into the aromatic ring (resonance) — reducing its availability to accept a proton. In methylamine, the methyl group donates electrons to nitrogen, increasing lone pair availability and basicity.",C:"The benzene ring in aniline physically blocks access to the nitrogen.",D:"Methylamine is not actually more basic than aniline."},correct:"B"}
+      reforge:{stem:"Why is aniline (C₆H₅NH₂) a weaker base than methylamine (CH₃NH₂)?",options:{A:"Aniline has more hydrogen atoms, making it harder to accept a proton.",B:"The nitrogen lone pair is delocalised into the ring",C:"The benzene ring in aniline physically blocks access to the nitrogen.",D:"Methylamine is not actually more basic than aniline."},correct:"B"}
     }
   ]
 };
@@ -10602,7 +10602,7 @@ BANKS["MATH-3"] = {
       stem:"A large data set has mean 50 and standard deviation 10. A student says a value of 75 is 'very unusual.' What statistical concept justifies this claim?",
       options:{
         A:"75 is above the median, so it is unusual.",
-        B:"75 is exactly 2.5 standard deviations above the mean — using the normal distribution, approximately 99.4% of values lie within 2.5 SDs of the mean, so values beyond ±2.5 SD are rare.",
+        B:"75 is 2.5 standard deviations above the mean",
         C:"75 is the maximum possible value in any data set.",
         D:"75 lies outside the interquartile range."
       },
@@ -10617,37 +10617,37 @@ BANKS["MATH-3"] = {
         A:"Accept H₀ — the p-value is less than 5%.",
         B:"The result is inconclusive — more data is needed.",
         C:"Reject H₀ — the p-value is greater than 0.03.",
-        D:"Reject H₀ — the p-value (0.03) is less than the significance level (0.05), so the result is statistically significant at the 5% level."
+        D:"Reject H₀ — p = 0.03 is below the 5% level"
       },
       correct:"D",tag:"MC-STAT-02",
       scaffold:"p-value: the probability of obtaining a result at least as extreme as the observed one, assuming H₀ is true. Decision rule: if p-value < significance level (α), reject H₀. Here p = 0.03 < 0.05 = α → reject H₀. Never 'accept H₀' — we either reject it or 'fail to reject' it. Rejecting H₀ does not prove H₁ — it means the evidence against H₀ is sufficiently strong at this significance level.",
-      reforge:{stem:"A test gives p = 0.06 at the 5% significance level. What is the correct conclusion?",options:{A:"Reject H₀ — the difference is almost significant.",B:"Fail to reject H₀ — the p-value (0.06) exceeds the significance level (0.05), so there is insufficient evidence to reject H₀ at the 5% level. The result is not statistically significant.",C:"Accept H₁ — the p-value is close to the significance level.",D:"The test must be repeated at the 10% level."},correct:"B"}
+      reforge:{stem:"A test gives p = 0.06 at the 5% significance level. What is the correct conclusion?",options:{A:"Reject H₀ — the difference is almost significant.",B:"Fail to reject H₀ — p = 0.06 exceeds 5%",C:"Accept H₁ — the p-value is close to the significance level.",D:"The test must be repeated at the 10% level."},correct:"B"}
     },
     {
       id:"STAT-03",
       stem:"X ~ B(20, 0.3). A student wants P(X ≤ 5). Which approach is correct?",
       options:{
-        A:"Calculate P(X = 0) + P(X = 1) + ... + P(X = 5) using the binomial formula, or read directly from cumulative binomial tables.",
+        A:"Sum the binomial P(X = 0) to P(X = 5)",
         B:"Use the normal distribution because n > 10.",
         C:"Use the Poisson distribution because the events are independent.",
         D:"Standardise x = 5 and use the normal distribution table."
       },
       correct:"A",tag:"MC-STAT-03",
       scaffold:"X ~ B(n, p): fixed n trials, each with probability p of success, independent trials, binary outcome. P(X = r) = ⁿCᵣ × pʳ × (1−p)ⁿ⁻ʳ. Cumulative: P(X ≤ r) = Σ from 0 to r. The normal approximation (np > 5 and n(1-p) > 5) can be used for large n, but with n=20 and p=0.3: np=6, n(1-p)=14 — marginal. Poisson approximates binomial when n large and p small (not here). For exact calculation, use binomial tables or formula.",
-      reforge:{stem:"For X ~ B(20, 0.3), would a normal approximation be appropriate?",options:{A:"Yes — any binomial with n > 10 can use the normal approximation.",B:"Marginal — np = 6 and nq = 14 both exceed 5, so the normal approximation is technically valid, but n = 20 is not large, so the exact binomial gives a more accurate result. Normal approximation improves as n increases.",C:"No — the normal distribution cannot approximate a discrete distribution.",D:"Yes — the Poisson approximation should be used here."},correct:"B"}
+      reforge:{stem:"For X ~ B(20, 0.3), would a normal approximation be appropriate?",options:{A:"Yes — any binomial with n > 10",B:"Marginal — np and nq exceed 5, but n = 20 is small",C:"No — the normal distribution cannot approximate a discrete distribution.",D:"Yes — use the Poisson approximation"},correct:"B"}
     },
     {
       id:"STAT-04",
       stem:"The product moment correlation coefficient r = −0.92 for a bivariate data set. Which interpretation is correct?",
       options:{
-        A:"There is strong negative linear correlation — as x increases, y tends to decrease, with the relationship close to linear.",
+        A:"There is strong negative linear correlation",
         B:"There is strong positive linear correlation.",
         C:"92% of the variation in y is explained by x.",
         D:"The regression line has gradient −0.92."
       },
       correct:"A",tag:"MC-STAT-04",
       scaffold:"PMCC (r): measures strength and direction of linear correlation. Range: −1 ≤ r ≤ 1. r = −0.92: strong (close to −1) negative (inverse) linear correlation. Exam traps: (1) r² = 0.846 = proportion of variation explained (not r itself); (2) r is not the gradient of the regression line (that's b in y = a + bx); (3) correlation ≠ causation; (4) r only measures LINEAR correlation — a perfect curve could have r ≈ 0.",
-      reforge:{stem:"r = 0.85 for a data set. A student claims 85% of the variation in y is explained by x. What is the correct figure?",options:{A:"85% — r itself gives the proportion of variation in y explained by x.",B:"72.25% — the coefficient of determination is r², not r itself. Here r² = 0.85² = 0.7225, so ~72.25% of variation in y is explained by x.",C:"42.5% — calculated as half of r, which has no statistical meaning.",D:"0.85% — r is treated as a percentage without being squared first."},correct:"B"}
+      reforge:{stem:"r = 0.85 for a data set. A student claims 85% of the variation in y is explained by x. What is the correct figure?",options:{A:"85% — r itself gives the proportion of variation in y explained by x.",B:"72.25% — the figure needed is r², not r",C:"42.5% — calculated as half of r, which has no statistical meaning.",D:"0.85% — r is treated as a percentage without being squared first."},correct:"B"}
     },
     {
       id:"STAT-05",
@@ -10669,24 +10669,24 @@ BANKS["MATH-3"] = {
         A:"The value of y when x = 0.",
         B:"The correlation between x and y.",
         C:"The percentage of variation in y explained by x.",
-        D:"For every one-unit increase in x, y is predicted to increase by 2.5 units."
+        D:"y rises by 2.5 for each unit of x"
       },
       correct:"D",tag:"MC-STAT-06",
       scaffold:"Regression line ŷ = a + bx: a = y-intercept (predicted value of y when x = 0); b = gradient (rate of change — for each 1-unit increase in x, y changes by b units). Gradient b ≠ correlation r. b tells you the size of the relationship; r tells you its strength. Both can be positive or negative, but they are different quantities. Exam trap: confusing gradient with r² or with the y-intercept.",
-      reforge:{stem:"For the line ŷ = 3 + 2.5x, what does the y-intercept 3 represent?",options:{A:"The gradient of the regression line.",B:"The correlation coefficient.",C:"The increase in y for each unit increase in x.",D:"The predicted value of y when x = 0 — the baseline level of y before x has any effect."},correct:"D"}
+      reforge:{stem:"For the line ŷ = 3 + 2.5x, what does the y-intercept 3 represent?",options:{A:"The gradient of the regression line.",B:"The correlation coefficient.",C:"The increase in y for each unit increase in x.",D:"The predicted value of y when x = 0"},correct:"D"}
     },
     {
       id:"STAT-07",
       stem:"A one-tailed hypothesis test at 5% significance tests H₀: p = 0.5 vs H₁: p > 0.5. The critical region is X ≥ 13 for X ~ B(20, 0.5). What does 'critical region' mean?",
       options:{
         A:"The range of values where H₀ is definitely true.",
-        B:"The range of test statistic values that would lead to rejection of H₀ — values extreme enough that they are unlikely under H₀.",
+        B:"The values of the statistic that reject H₀",
         C:"The range where the p-value equals the significance level exactly.",
         D:"The values of x that are most probable under H₀."
       },
       correct:"B",tag:"MC-STAT-07",
       scaffold:"Critical region: the set of values of the test statistic for which H₀ is rejected. Chosen so P(X in critical region | H₀ true) ≤ α (significance level). For X ~ B(20, 0.5), one-tailed at 5%: find smallest c such that P(X ≥ c) ≤ 0.05. If c = 13: P(X ≥ 13) ≈ 0.0577 > 5% → not in critical region. P(X ≥ 14) ≈ 0.0318 ≤ 5% → critical region is X ≥ 14. The actual significance level is the probability of the critical region under H₀.",
-      reforge:{stem:"An observed value x = 14 falls in the critical region (X ≥ 14) at the 5% significance level. What is the correct conclusion?",options:{A:"H₀ is proved to be false beyond any doubt.",B:"There is a 5% probability that H₀ is true given this data.",C:"Reject H₀ — the observed value falls in the critical region, providing sufficient evidence at the 5% level to support H₁.",D:"Accept H₁ with 95% certainty — the alternative hypothesis is now proven."},correct:"C"}
+      reforge:{stem:"An observed value x = 14 falls in the critical region (X ≥ 14) at the 5% significance level. What is the correct conclusion?",options:{A:"H₀ is proved to be false beyond any doubt.",B:"There is a 5% probability that H₀ is true given this data.",C:"Reject H₀ — the value is in the critical region",D:"Accept H₁ with 95% certainty — the alternative hypothesis is now proven."},correct:"C"}
     },
     {
       id:"STAT-08",
@@ -10695,11 +10695,11 @@ BANKS["MATH-3"] = {
         A:"The sample mean always equals the population mean.",
         B:"The sample mean has the same distribution as the population.",
         C:"As sample size increases, the standard deviation of the sampling distribution increases.",
-        D:"By the Central Limit Theorem, for large n, the sample mean is approximately normally distributed regardless of the population distribution, with mean μ and standard deviation σ/√n."
+        D:"By the Central Limit Theorem it is approximately normal"
       },
       correct:"D",tag:"MC-STAT-08",
       scaffold:"Sampling distribution of X̄: mean = μ (unbiased estimator), standard deviation = σ/√n (standard error). Central Limit Theorem: for large n (typically n ≥ 30), X̄ ~ N(μ, σ²/n) approximately, regardless of population shape. This is why the normal distribution is so powerful — even non-normal populations produce normally distributed sample means for large samples. As n increases, standard error σ/√n decreases — the sample mean becomes a more precise estimate.",
-      reforge:{stem:"A population has σ = 15. How does increasing the sample size from n = 25 to n = 100 affect the standard error?",options:{A:"Standard error increases from 3 to 1.5.",B:"Standard error halves — from σ/√25 = 3 to σ/√100 = 1.5, because the standard error is inversely proportional to √n. Quadrupling sample size halves the standard error.",C:"Standard error stays the same — it depends only on σ.",D:"Standard error doubles from 3 to 6."},correct:"B"}
+      reforge:{stem:"A population has σ = 15. How does increasing the sample size from n = 25 to n = 100 affect the standard error?",options:{A:"Standard error increases from 3 to 1.5.",B:"Standard error halves, from 3 to 1.5",C:"Standard error stays the same — it depends only on σ.",D:"Standard error doubles from 3 to 6."},correct:"B"}
     }
   ]
 };
@@ -10907,7 +10907,7 @@ BANKS["PHYS-3"] = {
       },
       correct:"C",tag:"MC-EWQ-08",
       scaffold:"de Broglie: λ = h/p = h/mv. For an electron accelerated through V: KE = eV = ½mv² → v = √(2eV/m). With V=1000V: v ≈ 1.9×10⁷ m/s, λ ≈ 3.9×10⁻¹¹ m ≈ 0.04 nm. Visible light: 400–700 nm. The electron wavelength is ~10,000× shorter → can resolve atomic-scale features. Higher accelerating voltage → higher KE → higher momentum → shorter wavelength (λ = h/p, p larger). Used in electron microscopes and supports wave-particle duality.",
-      reforge:{stem:"Why does increasing the accelerating voltage of an electron microscope improve its resolution?",options:{A:"Higher voltage produces brighter electrons that illuminate samples better.",B:"Higher voltage increases electron energy and momentum — since λ = h/p, greater momentum means shorter de Broglie wavelength, and shorter wavelength allows resolution of smaller features (resolution limit ≈ wavelength).",C:"Higher voltage increases the number of electrons, improving image brightness.",D:"Resolution depends on the detector, not the electron wavelength."},correct:"B"}
+      reforge:{stem:"Why does increasing the accelerating voltage of an electron microscope improve its resolution?",options:{A:"Higher voltage produces brighter electrons that illuminate samples better.",B:"Greater momentum shortens the de Broglie wavelength",C:"Higher voltage increases the number of electrons, improving image brightness.",D:"Resolution depends on the detector, not the electron wavelength."},correct:"B"}
     }
   ]
 };
@@ -16716,10 +16716,10 @@ const addAlevelHistoryBank = (bankId, label, spec, rawRows) => {
 };
 
 addAlevelHistoryBank("HIST-BRIT1", "Britain 1906–1918", "AQA-2M-BRIT1", [
-  "Liberal landslide of 1906|The Liberals won a large Commons majority after the Conservatives were weakened by tariff controversy and division|The result gave Campbell-Bannerman's government room to pursue welfare and constitutional reform",
+  "Liberal landslide of 1906|A Liberal landslide after Conservative splits over tariffs|The result gave Campbell-Bannerman's government room to pursue welfare and constitutional reform",
   "Joseph Chamberlain's tariff reform|A campaign for imperial preference and protection rather than unrestricted free trade|It divided Conservatives and helped the Liberals present free trade as a popular economic interest",
   "New Liberalism|A Liberal approach that accepted greater state action to address poverty and social risks|It provided the political framework for reforms such as school meals, pensions and national insurance",
-  "1902 Education Act|A measure that replaced school boards with local education authorities and supported denominational schools|It strengthened central direction and caused tension with Nonconformist Liberal voters",
+  "1902 Education Act|It replaced school boards with local education authorities|It strengthened central direction and caused tension with Nonconformist Liberal voters",
   "school meals|The provision of meals for children whose families could not afford adequate food|It addressed physical welfare and helped make poverty a matter of public policy",
   "medical inspections|Checks on children's health carried out through the school system|They exposed poor health and created evidence supporting wider welfare intervention",
   "Old Age Pensions Act 1908|A non-contributory pension for many people aged over seventy|It offered limited security to elderly people but excluded many and remained modest in value",
@@ -16732,7 +16732,7 @@ addAlevelHistoryBank("HIST-BRIT1", "Britain 1906–1918", "AQA-2M-BRIT1", [
   "Parliament Act 1911|Legislation limiting the Lords' power to veto money bills and delaying other public bills|It reduced the upper chamber's ability to block elected-government programmes",
   "Home Rule crisis|The political conflict over proposals for an Irish parliament within the United Kingdom|It threatened civil conflict and exposed the limits of parliamentary compromise",
   "Third Home Rule Bill|The 1912 proposal to create an Irish legislature while retaining Westminster responsibilities|It intensified Unionist resistance and made Ireland central to British politics",
-  "Ulster Covenant|A 1912 pledge by Ulster Unionists to resist Home Rule|It demonstrated organised opposition and the willingness of opponents to mobilise outside normal parliamentary channels",
+  "Ulster Covenant|A 1912 pledge by Ulster Unionists to resist Home Rule|It showed organised opposition mobilising outside Parliament",
   "Ulster Volunteer Force|A Unionist armed organisation formed to resist implementation of Home Rule|Its existence made the possibility of armed confrontation more credible",
   "Irish Volunteers|A nationalist force created partly in response to the Ulster Volunteers|It increased pressure on the British government and deepened the militarisation of the crisis",
   "Curragh incident|The 1914 refusal or threatened refusal of army officers to enforce Home Rule against Ulster|It revealed the political sensitivity of using the army in a domestic constitutional dispute",
@@ -16740,8 +16740,8 @@ addAlevelHistoryBank("HIST-BRIT1", "Britain 1906–1918", "AQA-2M-BRIT1", [
   "women's suffrage campaign|The organised movement seeking votes for women through constitutional and militant methods|It made political citizenship a national issue but did not secure equal voting rights before 1918",
   "suffragette militancy|Tactics such as window-breaking, arson and hunger strikes used by parts of the WSPU|It attracted publicity but also allowed opponents to portray the campaign as disorderly",
   "WSPU|The Women's Social and Political Union led by Emmeline Pankhurst|Its militant strategy kept suffrage visible but narrowed the movement's appeal to some observers",
-  "NUWSS|The National Union of Women's Suffrage Societies led by Millicent Fawcett|Its constitutional campaigning built a respectable mass movement and maintained pressure through elections and petitions",
-  "Cat and Mouse Act 1913|A law allowing temporary release of hunger-striking prisoners before re-arrest|It showed the government's difficulty in balancing public order with the political costs of force-feeding",
+  "NUWSS|The National Union of Women's Suffrage Societies led by Millicent Fawcett|Constitutional campaigning built a respectable mass movement",
+  "Cat and Mouse Act 1913|A law allowing temporary release of hunger-striking prisoners before re-arrest|It showed the political cost of force-feeding",
   "1914 outbreak of war|Britain entered the European conflict after Germany invaded Belgium|The war postponed the immediate Home Rule crisis and transformed the role of the state",
   "wartime coalition|A government including leading Liberals and Conservatives formed during the First World War|It reduced normal party competition while concentrating authority in a national emergency",
   "Defence of the Realm Act|Wartime legislation granting the government extensive powers over information, industry and behaviour|It increased executive power and restricted civil liberties in the name of security",
@@ -16751,10 +16751,10 @@ addAlevelHistoryBank("HIST-BRIT1", "Britain 1906–1918", "AQA-2M-BRIT1", [
   "Representation of the People Act 1918|A reform that extended the vote to most men and some women over thirty meeting a property qualification|It transformed the electorate while stopping short of equal adult suffrage",
   "1918 general election|The first election held after the Representation of the People Act and the wartime coalition|It confirmed the Conservatives' strength and marked the decline of the pre-war Liberal system",
   "impact of the First World War on Britain|The war increased state capacity, debt, social expectations and imperial strain|Its effects created both a stronger welfare consensus and serious post-war economic problems",
-  "Liberal decline|The collapse of the Liberal Party as the main alternative to the Conservatives|It reflected wartime divisions, leadership conflict and the rise of Labour as a mass working-class party",
+  "Liberal decline|The collapse of the Liberal Party as the main alternative to the Conservatives|Wartime splits, leadership conflict and Labour's rise",
   "rise of Labour|The growth of Labour's electoral and organisational importance before and during the First World War|It was supported by trade-union links, expanded suffrage and the Liberals' loss of support",
   "pre-war welfare reform|The Liberal programme of intervention before 1914|It improved provision but was limited by means tests, contribution rules and continuing poverty",
-  "Liberal social investigation|Surveys and reports documenting poverty and working-class living conditions|They gave reformers evidence that poverty could reflect structural conditions rather than individual failure",
+  "Liberal social investigation|Surveys and reports documenting poverty and working-class living conditions|They showed poverty could be structural, not personal failure",
   "National Insurance finance|The system divided costs between workers, employers and the state|It made welfare politically and financially sustainable but left coverage incomplete",
   "Britain and the First World War judgement|The war brought social and political change but imposed heavy economic and human costs|A balanced judgement must compare state-building and reform with debt, loss and post-war instability"
 ]);
@@ -16769,7 +16769,7 @@ addAlevelHistoryBank("HIST-BRIT2", "Britain 1918–1957", "AQA-2M-BRIT2", [
   "second Labour government 1929|A Labour administration formed after the 1929 election without an overall majority|It faced the Depression and internal disagreement over how to respond to unemployment",
   "Wall Street Crash impact|The international financial crisis reduced trade, investment and demand|Britain was affected through exports and industry even though the financial crash was not itself a British event",
   "Great Depression in Britain|A period of falling output and severe regional unemployment during the early 1930s|Its effects were uneven, with the staple industrial regions suffering most",
-  "Hungry Thirties debate|The argument over whether the 1930s were defined by widespread hardship or improving living standards for many|Regional and class differences mean a single national description is misleading",
+  "Hungry Thirties debate|Whether the 1930s meant hardship or rising living standards for many|Regional and class differences mean a single national description is misleading",
   "means test|An assessment of household resources used to determine eligibility for unemployment assistance|It reduced public spending but caused resentment because families felt their privacy and dignity were invaded",
   "National Government 1931|A government formed across party lines during the financial crisis and led by MacDonald|It restored confidence but weakened Labour and enabled Conservative dominance",
   "going off the gold standard|Britain abandoned the fixed gold parity of sterling in 1931|It allowed interest rates to fall and supported recovery, although it signalled financial weakness",
@@ -16792,14 +16792,14 @@ addAlevelHistoryBank("HIST-BRIT2", "Britain 1918–1957", "AQA-2M-BRIT2", [
   "nationalisation|The transfer of major industries such as coal, rail and steel into public ownership|It aimed to modernise strategic industries but produced mixed results and did not remove all problems",
   "welfare state|A system of public provision designed to protect citizens from social risks|Post-war welfare expanded security but remained dependent on economic resources and political choices",
   "post-war consensus|Broad agreement between major parties on welfare, mixed economy and demand management|It provided stability but did not mean that parties or voters agreed on every policy",
-  "austerity after 1945|Controls and shortages that continued because Britain faced debt, rationing and balance-of-payments problems|Victory in war did not produce immediate prosperity and limited Labour's room for manoeuvre",
+  "austerity after 1945|Continued controls and shortages caused by debt and rationing|Victory in war did not produce immediate prosperity and limited Labour's room for manoeuvre",
   "Marshall Aid|US economic assistance provided to European countries after the Second World War|It supported recovery but came with economic and strategic expectations",
   "end of empire|The accelerated process of decolonisation after the Second World War|It reduced Britain's global power and changed the meaning of national influence",
   "Suez Crisis 1956|Britain, France and Israel attacked Egypt after Nasser nationalised the canal, then withdrew under pressure|It exposed Britain's dependence on the USA and marked a sharp decline in imperial confidence",
   "1951 Conservative return|The Conservatives returned to office under Churchill despite the continuation of much welfare provision|It suggested voters wanted a change of government without rejecting the main elements of the post-war settlement",
   "Butler Education Act 1944|The act reorganising secondary education and raising the school-leaving age|It expanded opportunity while creating a selective tripartite structure that reproduced some inequalities",
   "1950s affluence|Rising wages, consumer goods and home ownership for many households after austerity|It improved material living standards but did not erase regional or class differences",
-  "Britain 1918–1957 judgement|The period combined depression, war and reconstruction with major changes in state and society|A strong judgement weighs living standards, political change, welfare and Britain's changing international position"
+  "Britain 1918–1957 judgement|The period combined depression, war and reconstruction with major changes in state and society|Weighing living standards, welfare and Britain's world role"
 ]);
 
 addAlevelHistoryBank("HIST-USA1", "USA 1865–1920", "AQA-1K-USA1", [
@@ -16841,8 +16841,8 @@ addAlevelHistoryBank("HIST-USA1", "USA 1865–1920", "AQA-1K-USA1", [
   "Open Door policy|The US proposal that foreign powers should have equal trading access in China|It sought commercial opportunity without formal partition of China",
   "Roosevelt Corollary|The claim that the USA could intervene in Latin America to prevent European involvement|It extended the Monroe Doctrine and justified a more assertive regional role",
   "First World War entry|The USA entered the war in 1917 after neutrality became difficult to sustain|It increased American global influence but also revived debate over isolationism",
-  "Fourteenth Amendment enforcement|Federal protection of citizenship rights was weakened when courts and administrations tolerated state resistance|It shows why constitutional change did not automatically produce racial equality",
-  "USA 1865–1920 judgement|The USA became an industrial and international power while racial inequality and political corruption persisted|A balanced judgement must compare economic transformation with the limits of freedom and democracy"
+  "Fourteenth Amendment enforcement|Federal protection weakened as courts tolerated resistance|It shows why constitutional change did not automatically produce racial equality",
+  "USA 1865–1920 judgement|The USA became an industrial and international power while racial inequality and political corruption persisted|Compare economic change against limits on freedom"
 ]);
 
 addAlevelHistoryBank("HIST-USA2", "USA 1920–1975", "AQA-1K-USA2", [
@@ -16906,7 +16906,7 @@ addAlevelHistoryBank("HIST-TUDOR", "Tudor Historical Investigation", "AQA-NEA-TU
   "Dissolution of the monasteries|The closure and transfer of monastic property to the Crown and its supporters|It increased royal resources and patronage but provoked resentment and rebellion",
   "Pilgrimage of Grace|The large 1536 rebellion in northern England against religious and governmental change|It showed the depth of popular and elite resistance but lacked sustained coordination",
   "Thomas Cromwell|Henry VIII's minister who reorganised government and managed the Reformation|His success depended on solving royal problems but his fall showed the danger of losing favour",
-  "Act of Six Articles|The 1539 law reaffirming several traditional Catholic doctrines|It demonstrates that the English Reformation was politically controlled rather than consistently Protestant",
+  "Act of Six Articles|The 1539 law reaffirming several traditional Catholic doctrines|The Reformation was politically driven, not consistently Protestant",
   "Henry VIII's succession acts|Legislation altering the order of succession and legitimising or excluding his children|It made parliament central to dynastic security and reflected uncertainty over heirs",
   "Edward VI's minority|The reign of Edward VI was dominated by competing regents and religious reformers|It reduced direct royal control and made faction especially important",
   "Somerset's rule|Edward Seymour governed as Lord Protector during the early years of Edward VI|His social and military policies created opposition and contributed to his fall",
@@ -16925,7 +16925,7 @@ addAlevelHistoryBank("HIST-TUDOR", "Tudor Historical Investigation", "AQA-NEA-TU
   "Ridolfi Plot|A Catholic conspiracy involving Mary Queen of Scots and foreign support|It reinforced fears that religious dissent could become treason",
   "Spanish Armada 1588|The failed Spanish attempt to escort an invasion force to England|Its defeat strengthened Elizabeth's image but was aided by strategy, weather and Spanish problems",
   "Elizabethan poor relief|Local and national measures culminating in the 1601 Poor Law to address poverty|It shows the growth of state regulation while distinguishing the deserving from the idle poor",
-  "Tudor government and Parliament|The monarch relied on Parliament for legislation and taxation but controlled much policy through the Privy Council|It demonstrates strong monarchy rather than absolute rule",
+  "Tudor government and Parliament|Parliament was needed for taxation; the Council ran policy|It demonstrates strong monarchy rather than absolute rule",
   "Privy Council|A small group of advisers and administrators who helped the monarch govern|Its growing importance allowed Tudor rulers to coordinate policy while managing faction",
   "Tudor monarchy judgement|Tudor rulers were strongest when legitimacy, finance, religion and patronage worked together|A historical investigation should compare individual monarchs and recognise limits to royal power"
 ]);
@@ -17221,18 +17221,18 @@ const addLawPoliticsBank = (bankId, label, spec, rawRows) => {
 addLawPoliticsBank("LAW-CRIM", "Paper 1: Criminal Law", "OCR-LAW-P1", [
   "criminal law|Law defining offences against the state and setting penalties|A prosecution must prove the required elements beyond reasonable doubt",
   "actus reus|The external element of a criminal offence|The prosecution must prove the prohibited act, omission or state of affairs",
-  "mens rea|The mental element required for a criminal offence|Different offences require intention, recklessness, knowledge or another specified state of mind",
+  "mens rea|The mental element required for a criminal offence|Intention, recklessness or another required state of mind",
   "intention|A decision to bring about a consequence or, in some cases, awareness it is virtually certain|Direct and oblique intention are distinguished using the facts and jury directions",
-  "subjective recklessness|Taking an unjustified risk while actually foreseeing it|The test focuses on what this defendant foresaw, not what a reasonable person would have seen",
-  "omission liability|Criminal responsibility for failing to act where a legal duty exists|A duty may arise from a relationship, contract, assumption of care or creation of danger",
-  "causation|The link between the defendant's conduct and the prohibited result|Factual and legal causation must be established without an intervening event breaking the chain",
+  "subjective recklessness|Taking an unjustified risk while actually foreseeing it|What this defendant foresaw, not the reasonable person",
+  "omission liability|Criminal responsibility for failing to act where a legal duty exists|From a relationship, contract, assumed care or created danger",
+  "causation|The link between the defendant's conduct and the prohibited result|Factual and legal causation, with no break in the chain",
   "factual causation|The result would not have occurred but for the defendant's conduct|It is the starting point for result crimes such as homicide and non-fatal offences",
   "legal causation|The conduct must be an operating and substantial cause of the result|The law does not require the defendant to be the only cause",
   "thin skull rule|A defendant takes the victim as found, including unusual vulnerabilities|A pre-existing condition normally does not break causation",
   "intervening act|A later event that may break the chain between conduct and result|The court asks whether the event was independent, foreseeable and sufficiently potent",
   "assault|An intentional or reckless act causing another to apprehend immediate unlawful violence|Words and context can make an act threatening even without physical contact",
   "battery|The intentional or reckless application of unlawful force to another|Even slight touching can qualify if unlawful and without consent",
-  "ABH|Actual bodily harm that is more than transient or trifling|The injury must be proved and the defendant needs only mens rea for the assault or battery",
+  "ABH|Actual bodily harm that is more than transient or trifling|Injury proved, with mens rea only for the assault",
   "GBH|Grievous bodily harm meaning really serious harm|The seriousness is judged objectively while mens rea concerns the relevant assault",
   "wounding|A break in the continuity of the skin|A wound can be minor but must involve both layers of skin",
   "section 18 OAPA|The offence of wounding or causing GBH with intent to cause serious harm|Specific intent makes it more serious than section 20",
@@ -17240,27 +17240,27 @@ addLawPoliticsBank("LAW-CRIM", "Paper 1: Criminal Law", "OCR-LAW-P1", [
   "transferred malice|The defendant's mens rea transfers from the intended victim to the actual victim|It does not normally transfer between entirely different types of offence",
   "murder|The unlawful killing of a human being under the King's peace with malice aforethought|The prosecution must prove unlawful killing and intention to kill or cause GBH",
   "malice aforethought|The mens rea of murder consisting of intention to kill or cause GBH|The phrase is historical and does not require personal spite or hatred",
-  "diminished responsibility|A partial defence reducing murder to manslaughter where a recognised medical condition substantially impairs responsibility|Medical evidence and the statutory requirements must be established",
-  "loss of control|A partial defence requiring loss of self-control, a qualifying trigger and the objective normal-person test|It replaced provocation and cannot be based solely on considered revenge",
-  "infanticide|A statutory offence applying where a mother kills her child while affected by childbirth or lactation disturbance|It recognises a specific mental condition and carries manslaughter-level treatment",
+  "diminished responsibility|A partial defence reducing murder to manslaughter|Medical evidence and the statutory requirements must be established",
+  "loss of control|Loss of self-control with a qualifying trigger|It replaced provocation and cannot be based solely on considered revenge",
+  "infanticide|A statutory offence where a mother kills her child while disturbed|It recognises a specific mental condition and carries manslaughter-level treatment",
   "self-defence|A complete defence where reasonable force is used in response to an honestly perceived threat|Necessity and proportionality are central, with special rules for householders",
   "duress by threats|A defence where threats of death or serious injury cause the defendant to offend|The threat must operate on the defendant and the ordinary-person test must be satisfied",
   "duress of circumstances|A defence where circumstances create a threat of death or serious injury|It is distinct from threats made by a person but follows similar necessity reasoning",
   "necessity|A limited defence based on avoiding a greater harm|English criminal law applies it cautiously and usually requires imminent serious danger",
-  "insanity|A legal defence based on a defect of reason from a disease of the mind under the M'Naghten rules|It can lead to a special verdict rather than an ordinary acquittal",
-  "automatism|Involuntary conduct caused by an external factor|The defendant must lack control and the condition must not be self-induced in the relevant way",
-  "intoxication|A state caused by alcohol or drugs that may affect mens rea|The effect differs for specific and basic intent offences and voluntary versus involuntary intoxication",
-  "attempt|An offence committed when a person intends the full offence and performs an act more than merely preparatory|The law intervenes before the completed offence",
+  "insanity|A legal defence based on a defect of reason from a disease of the mind|It can lead to a special verdict rather than an ordinary acquittal",
+  "automatism|Involuntary conduct caused by an external factor|Loss of control that is not self-induced",
+  "intoxication|A state caused by alcohol or drugs that may affect mens rea|It differs for specific and basic intent offences",
+  "attempt|Intending the full offence and going beyond mere preparation|The law intervenes before the completed offence",
   "impossibility in attempts|The fact that completion was impossible does not necessarily prevent liability for an attempt|The focus is on the defendant's intention and acts on the facts as believed",
   "theft|Dishonestly appropriating property belonging to another with intention permanently to deprive|All actus reus and mens rea elements must be proved",
   "appropriation|Assuming any right of an owner over property|An appropriation may occur even where the owner appears to consent",
   "property under theft|Money and other property recognised by the Theft Act|Land, things in action and information have special rules",
   "belonging to another|Property in another's possession, control or proprietary right|Trusts and mistaken transfers can create difficult ownership questions",
-  "dishonesty|The defendant's conduct is dishonest according to the current legal test|The court considers the defendant's actual knowledge or belief about facts and applies ordinary standards",
+  "dishonesty|The defendant's conduct is dishonest according to the current legal test|The defendant's own belief about the facts, judged by ordinary standards",
   "intention permanently to deprive|Intending to treat property as one's own regardless of the owner's rights|Borrowing can qualify where it is equivalent to an outright taking",
   "robbery|Theft accompanied by force or threat of force immediately before or at the time of stealing|The force must be used in order to steal",
-  "burglary|Entering a building or part of a building as a trespasser with the relevant intent or committing a further offence inside|The statutory alternatives must be kept distinct",
-  "criminal damage|Destroying or damaging property belonging to another intentionally or recklessly without lawful excuse|Damage can be temporary and the property need not be completely destroyed",
+  "burglary|Entering a building as a trespasser with the relevant intent|The statutory alternatives must be kept distinct",
+  "criminal damage|Damaging another's property intentionally or recklessly|Damage can be temporary and the property need not be completely destroyed",
   "aggravated criminal damage|Criminal damage done intending or being reckless as to endangering life|The danger must arise from the damage rather than merely accompany it",
   "sentencing principles|The principles courts use to impose a lawful and proportionate sentence|Seriousness, culpability, harm, aggravation and mitigation all matter",
   "precedent in criminal law|Earlier decisions guiding later courts on legal principles|Binding authority promotes consistency but can be distinguished on facts",
@@ -17270,7 +17270,7 @@ addLawPoliticsBank("LAW-CRIM", "Paper 1: Criminal Law", "OCR-LAW-P1", [
 ]);
 
 addLawPoliticsBank("LAW-SYSTEM", "Paper 2: English Legal System", "OCR-LAW-P2-SYS", [
-  "civil law|Law resolving disputes between individuals, organisations or other private parties|The usual remedy is compensation or another civil order rather than punishment",
+  "civil law|Law resolving disputes between individuals, organisations or other private parties|Compensation or another civil order, not punishment",
   "criminal court hierarchy|The structure from magistrates' courts to the Crown Court and appellate courts|Jurisdiction and appeal routes depend on offence and decision",
   "magistrates' court|The first court for all criminal cases and the trial court for less serious offences|Lay magistrates usually sit with a legal adviser",
   "Crown Court|The court trying serious indictable offences and hearing some appeals|A judge manages law and sentence while a jury decides guilt",
@@ -17278,14 +17278,14 @@ addLawPoliticsBank("LAW-SYSTEM", "Paper 2: English Legal System", "OCR-LAW-P2-SY
   "High Court|A senior court handling complex civil cases and some judicial review|Its divisions have different specialist jurisdictions",
   "Court of Appeal|An appellate court reviewing decisions from lower courts|Permission and grounds of appeal limit when a case can be reconsidered",
   "Supreme Court|The highest court of appeal for most UK civil and criminal matters|Its decisions create authoritative precedent for lower courts",
-  "judicial independence|The principle that judges decide cases without improper pressure|Security of tenure and institutional safeguards support impartial decisions",
-  "solicitor|A legal professional advising clients, preparing cases and representing them in many hearings|Solicitors often manage the client relationship and evidence",
+  "judicial independence|The principle that judges decide cases without improper pressure|Security of tenure supports impartiality",
+  "solicitor|A legal professional advising clients and preparing their cases|Solicitors often manage the client relationship and evidence",
   "barrister|A specialist advocate and legal adviser, often instructed for higher-court work|Advocacy and independent opinion are central roles",
   "legal executive|A qualified legal professional specialising in a particular area|The role provides another route into legal practice",
   "paralegal|A worker carrying out legal tasks without being a qualified solicitor or barrister|Paralegals support research, documents and case preparation",
   "judge's role|Managing hearings, applying law, ruling on evidence and sentencing where appropriate|Judges must remain impartial while ensuring a fair process",
   "jury role|A group of lay people deciding facts and verdict in a criminal trial|The judge directs on law and the jury applies it to evidence",
-  "lay magistrate|A trained volunteer who hears less serious criminal cases with legal advice|Magistrates provide community participation but may lack specialist expertise",
+  "lay magistrate|A trained volunteer who hears less serious criminal cases with legal advice|Community participation, but limited expertise",
   "alternative dispute resolution|Methods such as negotiation, mediation and arbitration used outside a full trial|ADR can be quicker and cheaper but may not suit every dispute",
   "mediation|A neutral mediator helps parties reach their own agreement|The mediator does not normally impose a binding decision",
   "arbitration|An arbitrator hears evidence and makes a decision, usually under an agreed process|It offers expertise and privacy but can be costly and limited on appeal",
@@ -17308,48 +17308,48 @@ addLawPoliticsBank("LAW-SYSTEM", "Paper 2: English Legal System", "OCR-LAW-P2-SY
   "literal rule|Interpreting statutory words using their ordinary meaning|It respects parliamentary wording but can produce absurd results",
   "golden rule|A modification of ordinary meaning to avoid an absurd result|It offers limited correction while preserving the text",
   "mischief rule|Interpreting an Act by identifying the problem Parliament intended to remedy|It promotes purpose but gives judges more discretion",
-  "purposive approach|Interpreting legislation in light of its broader purpose|It can produce practical results but may be criticised as judicial lawmaking",
+  "purposive approach|Interpreting legislation in light of its broader purpose|Practical results, but criticised as judicial lawmaking",
   "binding precedent|A legal principle from a higher court that a lower court must follow|It supports certainty unless distinguished or overruled",
   "persuasive precedent|A decision a court may consider but is not obliged to follow|Foreign courts, lower courts and dissenting judgments can persuade",
   "ratio decidendi|The legal reason necessary for a court's decision|The ratio forms the binding part of precedent",
   "obiter dictum|A remark made by a judge that is not necessary to the decision|It may be influential but is not binding in the same way",
   "distinguishing precedent|Showing that material facts differ so an earlier decision need not apply|It allows flexibility while respecting authority",
   "overruling precedent|A higher court replaces an earlier legal rule in a later case|It changes the law for future cases subject to precedent rules",
-  "human rights protection|Legal protection for fundamental freedoms and dignity|Courts and public bodies must act compatibly with rights subject to the legal framework",
+  "human rights protection|Legal protection for fundamental freedoms and dignity|Public bodies must act compatibly with Convention rights",
   "law reform evaluation|Assessing whether the legal system is accessible, certain, fair and responsive|Evaluation should identify both efficiency gains and constitutional risks"
 ]);
 
 addLawPoliticsBank("LAW-TORT", "Paper 2: Tort Law", "OCR-LAW-P2-TORT", [
   "tort|A civil wrong giving rise to a claim by the injured party|The claimant normally seeks a remedy from the defendant",
   "negligence|A failure to take reasonable care causing foreseeable harm|The claimant must prove duty, breach, causation and damage",
-  "duty of care|A legal obligation to take reasonable care towards another|The modern approach asks about foreseeability, proximity and whether it is fair, just and reasonable",
+  "duty of care|A legal obligation to take reasonable care towards another|Foreseeability, proximity, and whether it is fair and just",
   "reasonable foreseeability|The harm was a kind of harm a reasonable person could anticipate|It limits liability to risks that should have been recognised",
   "proximity|A sufficiently close relationship between claimant and defendant|Physical, causal or relational closeness can matter",
   "Caparo test|A three-stage approach using foreseeability, proximity and fairness for novel duties|It helps courts avoid unlimited expansion of negligence liability",
   "breach of duty|Conduct falling below the standard of the reasonable person|The risk, seriousness, cost of precautions and social value are considered",
   "reasonable person|The objective standard used to judge ordinary care|The defendant's personal inexperience usually does not lower the standard",
   "professional standard|The standard expected of a reasonably competent member of the relevant profession|Expert practice helps courts assess breach but is not automatically decisive",
-  "Bolam test|A professional is not negligent if acting in accordance with a responsible body of professional opinion|The opinion must be logically defensible under later refinement",
+  "Bolam test|Not negligent if a responsible body of opinion supports it|The opinion must be logically defensible under later refinement",
   "child standard|A child is judged against a reasonable child of the same age|The law recognises developmental differences",
   "learner driver standard|A learner driver is judged against the competent qualified driver standard|Inexperience is not normally a defence",
   "risk magnitude|The likelihood and seriousness of potential harm|Greater risk generally requires more precautions",
-  "social utility|The value or urgency of the defendant's activity|Courts may allow greater risk where an activity serves an important public purpose",
+  "social utility|The value or urgency of the defendant's activity|Greater risk is allowed for public benefit",
   "factual causation|The harm would not have happened but for the defendant's breach|The claimant must link breach to actual damage",
   "legal causation in tort|The breach must be an effective cause rather than a merely background condition|An intervening act may break the chain",
   "novus actus interveniens|A new intervening act that becomes the legal cause of harm|Its independence and foreseeability determine whether liability ends",
   "remoteness|A limit on liability for consequences that were not reasonably foreseeable|The kind of harm must generally be foreseeable, not every detail",
-  "eggshell skull in tort|The defendant is liable for the full extent of harm to a claimant with an unusual vulnerability|The initial kind of injury must still be foreseeable",
+  "eggshell skull in tort|Liability for the full harm to a vulnerable claimant|The initial kind of injury must still be foreseeable",
   "psychiatric harm|A medically recognised psychiatric illness caused by the defendant's breach|The law distinguishes primary and secondary victims",
   "primary victim|A person directly involved in an accident who is within the zone of physical danger|Reasonable foreseeability of personal injury is important",
   "secondary victim|A person witnessing injury to another who claims psychiatric harm|Strict control mechanisms limit who can recover",
-  "occupiers' liability|Duties owed by those controlling premises to lawful visitors and sometimes trespassers|The status of the claimant and condition of the premises matter",
+  "occupiers' liability|Duties owed by occupiers to visitors on their premises|The status of the claimant and condition of the premises matter",
   "lawful visitor|A person with express or implied permission to enter premises|The Occupiers' Liability Act 1957 sets the common visitor duty",
-  "trespasser duty|The limited duty owed to a non-permitted entrant under the Occupiers' Liability Act 1984|The occupier must know of the danger and expect the trespasser may encounter it",
+  "trespasser duty|The limited duty owed to trespassers|The occupier knows of the danger and the trespasser",
   "warning sign|Information intended to alert visitors to a risk|A warning does not automatically discharge an occupier's duty",
-  "vicarious liability|One person or organisation is held liable for another's tort because of a qualifying relationship|Employers may be liable for employees acting in the course of employment",
+  "vicarious liability|Liability for another's tort through their relationship|Employers may be liable for employees acting in the course of employment",
   "course of employment|The conduct sufficiently connected with the work assigned to the employee|A close connection can include wrongful ways of doing authorised acts",
-  "independent contractor|A person carrying out work for another but running their own business|The hirer is not generally vicariously liable, subject to non-delegable duties and exceptions",
-  "employer's direct duty|An employer's own duty to provide competent staff, safe equipment, systems and premises|Delegating work does not always remove personal responsibility",
+  "independent contractor|A person carrying out work for another but running their own business|The hirer is usually not vicariously liable",
+  "employer's direct duty|The employer's own duty to provide safe staff and plant|Delegating work does not always remove personal responsibility",
   "private nuisance|Unreasonable interference with a claimant's use or enjoyment of land|Duration, locality, sensitivity and public benefit can be relevant",
   "public nuisance|An unreasonable interference with a right shared by the public|A private claimant usually needs special damage beyond the general public",
   "trespass to land|Direct and unjustified interference with land in another's possession|Actual damage is not always required",
@@ -17357,12 +17357,12 @@ addLawPoliticsBank("LAW-TORT", "Paper 2: Tort Law", "OCR-LAW-P2-TORT", [
   "defamation|Publication of a statement causing or likely to cause serious harm to reputation|Truth, honest opinion and public interest can provide defences",
   "contributory negligence|The claimant's own lack of reasonable care contributed to the damage|Damages may be reduced to reflect responsibility",
   "volenti|The claimant freely and knowingly agreed to accept the risk|True consent is difficult to prove in many accident cases",
-  "illegality defence|A claimant may be prevented from relying on a claim connected with their own illegal conduct|The court considers coherence and public policy rather than applying a simple automatic rule",
-  "damages|A monetary award compensating for loss or harm|The aim is usually to put the claimant as far as money can into the pre-tort position",
+  "illegality defence|A claim tied to the claimant's own illegality may fail|The court weighs coherence and public policy",
+  "damages|A monetary award compensating for loss or harm|To restore the claimant's pre-tort position",
   "general damages|Compensation for non-quantifiable loss such as pain, suffering or loss of amenity|Courts use guidance and comparable awards",
   "special damages|Compensation for specifically calculated financial losses|Receipts, records and future projections support the claim",
-  "injunction in tort|A court order requiring a person to do or stop doing something|It can prevent continuing nuisance or protect rights where damages are inadequate",
-  "remoteness evaluation|The policy limit preventing disproportionate responsibility for unforeseeable consequences|It balances compensation with fairness to defendants",
+  "injunction in tort|A court order requiring a person to do or stop doing something|It stops continuing nuisance where damages fail",
+  "remoteness evaluation|A policy limit on unforeseeable consequences|It balances compensation with fairness to defendants",
   "tort reform|Changes intended to make civil liability clearer, fairer or more efficient|Reform debates include costs, insurance, access and defensive practice",
   "negligence problem question|A structured application of duty, breach, causation, remoteness, defences and remedy|IRAC helps organise a legally supported conclusion",
   "tort precedent|Earlier judicial decisions shaping the boundaries of civil liability|Cases illustrate rules but must be applied to material facts",
@@ -17383,7 +17383,7 @@ addLawPoliticsBank("LAW-CONTRACT", "Paper 3: Contract Law", "OCR-LAW-P3", [
   "past consideration|An act completed before a promise is made|It is generally not good consideration because it was not given in exchange",
   "existing duty|A duty already owed that may or may not amount to consideration for a new promise|The legal effect depends on whether something practical or additional is provided",
   "promissory estoppel|A promise may be binding without consideration where reliance makes it inequitable to withdraw|It is usually a shield rather than an independent cause of action",
-  "intention to create legal relations|The parties must intend their agreement to have legal consequences|Commercial agreements presume intention while domestic agreements usually presume the opposite",
+  "intention to create legal relations|The parties must intend their agreement to have legal consequences|Commercial agreements presume intention; domestic do not",
   "capacity|The legal ability to enter an enforceable contract|Minors, people lacking mental capacity and companies have special rules",
   "terms|Contractual promises forming part of the agreement|The classification and importance of a term affect the remedy for breach",
   "express term|A term expressly agreed orally or in writing|Courts interpret it using the words and context of the agreement",
@@ -17396,7 +17396,7 @@ addLawPoliticsBank("LAW-CONTRACT", "Paper 3: Contract Law", "OCR-LAW-P3", [
   "incorporation by notice|Terms may be incorporated if reasonable notice is given before or at contracting|A late notice normally fails",
   "incorporation by course of dealings|A consistent and regular pattern of previous contracts may incorporate terms|A single earlier transaction is usually insufficient",
   "exclusion clause|A term attempting to exclude or limit liability|It must be incorporated, cover the breach and survive statutory control",
-  "contra proferentem|Ambiguous exclusion wording is interpreted against the party relying on it|The principle has reduced significance where legislation and context control interpretation",
+  "contra proferentem|Ambiguous exclusion wording is interpreted against the party relying on it|It matters less where legislation controls meaning",
   "Consumer Rights Act 2015|Legislation controlling unfair terms and protecting consumer rights|Businesses cannot contract out of core statutory protections",
   "misrepresentation|An untrue statement of existing fact or law inducing a contract|The remedy depends on whether it was fraudulent, negligent or innocent",
   "fraudulent misrepresentation|A false statement made knowingly, without belief in its truth or recklessly|Rescission and damages are available for losses caused by the fraud",
@@ -17407,9 +17407,9 @@ addLawPoliticsBank("LAW-CONTRACT", "Paper 3: Contract Law", "OCR-LAW-P3", [
   "undue influence|Unacceptable influence causing a person to enter a transaction|A relationship of trust and suspicious transaction can shift the evidential burden",
   "mistake|A fundamental misunderstanding affecting agreement or the validity of a contract|Common, mutual and unilateral mistakes have different effects",
   "privity|Only parties to a contract can usually enforce its rights or be liable under it|The Contracts Rights of Third Parties Act 1999 creates exceptions",
-  "discharge by performance|Contractual obligations end when parties perform what was promised|Complete performance is the normal rule but substantial performance may be accepted with deduction",
+  "discharge by performance|Contractual obligations end when parties perform what was promised|Complete performance is the rule; substantial may suffice",
   "discharge by agreement|Parties agree to release, vary or replace their contractual obligations|Fresh consideration or a deed may be required depending on the arrangement",
-  "discharge by frustration|An unforeseen event makes performance impossible, illegal or radically different|The contract ends automatically, subject to limits such as self-induced frustration",
+  "discharge by frustration|An unforeseen event makes performance impossible, illegal or radically different|The contract ends automatically, with limits",
   "discharge by breach|A serious breach or repudiation allows the innocent party to terminate and claim damages|The response depends on term classification and election",
   "anticipatory breach|A party indicates before performance is due that they will not perform|The innocent party may accept the breach or affirm the contract",
   "damages for breach|A monetary remedy compensating loss caused by breach|Remoteness, mitigation and proof limit the award",
@@ -17654,8 +17654,8 @@ const addLawPoliticsSupplement = (bankId, rows) => rows.forEach(([term, definiti
 });
 
 addLawPoliticsSupplement("LAW-CRIM", [["assault occasioning ABH", "An assault or battery causing harm more than transient or trifling", "The injury is assessed objectively while mens rea relates to the underlying assault"] , ["attempted murder", "An attempt requiring intent to kill rather than merely cause serious injury", "The prosecution must prove specific intent even if the intended killing was impossible"]]);
-addLawPoliticsSupplement("LAW-SYSTEM", [["judicial precedent", "The practice of following legal principles from earlier decisions", "It promotes consistency while allowing distinction and appellate development"], ["statutory interpretation", "The process by which courts determine the meaning of legislation", "Judges use established rules and sometimes purpose to resolve ambiguity"], ["civil procedure", "The rules governing how a civil claim is started, managed and resolved", "Procedure supports fairness, efficiency and proportionate use of court resources"]]);
-addLawPoliticsSupplement("LAW-TORT", [["duty to trespassers", "The limited occupier duty arising where a known danger may affect a known or expected trespasser", "The statutory conditions must be established before liability is imposed"], ["pure economic loss", "Financial loss not resulting from physical injury or property damage", "Recovery is restricted in negligence to avoid unlimited liability"]]);
+addLawPoliticsSupplement("LAW-SYSTEM", [["judicial precedent", "The practice of following legal principles from earlier decisions", "Consistency, with room to distinguish cases"], ["statutory interpretation", "The process by which courts determine the meaning of legislation", "Judges use established rules and sometimes purpose to resolve ambiguity"], ["civil procedure", "The rules governing how a civil claim is started, managed and resolved", "It supports fairness and efficient use of resources"]]);
+addLawPoliticsSupplement("LAW-TORT", [["duty to trespassers", "A limited duty to expected trespassers", "The statutory conditions must be established before liability is imposed"], ["pure economic loss", "Financial loss not resulting from physical injury or property damage", "Recovery is restricted in negligence to avoid unlimited liability"]]);
 addLawPoliticsSupplement("LAW-CONTRACT", [["entire agreement clause", "A term stating that the written contract contains the whole agreement", "It may limit reliance on earlier statements but cannot defeat statutory protection"], ["unfair term", "A contract term causing significant imbalance contrary to good faith", "Consumer legislation can make such a term non-binding"]]);
 addLawPoliticsSupplement("POL-UKPOL", [["party identification", "A voter's psychological attachment to a political party", "It can guide voting even when a voter disagrees with a particular policy"], ["political socialisation", "The process through which people develop political attitudes and behaviours", "Family, education, media, peers and events all contribute"]]);
 addLawPoliticsSupplement("POL-UKGOV", [["devolved competence", "A policy area legally assigned to a devolved institution", "Disputes arise when Westminster and devolved governments interpret powers differently"], ["parliamentary privilege", "Legal protections allowing Parliament and members to perform their functions freely", "Privilege supports scrutiny but is not a licence for every form of conduct"], ["opposition party", "The largest non-government party holding the executive to account", "Opposition uses questions, debates, committees and media to scrutinise ministers"], ["shadow cabinet", "Senior opposition politicians mirroring government departments", "It develops alternative policy and prepares for possible office"], ["constitutional monarchy", "A monarchy where the monarch's powers are limited by constitutional rules and democratic government", "The monarch performs formal and ceremonial roles while ministers govern"], ["ministerial resignation", "A minister leaving office because of disagreement, error or misconduct", "Resignation is a political accountability mechanism rather than usually a legal requirement"]]);
@@ -18267,25 +18267,25 @@ appendGenerated("HSC-2", [
 ], "HSC-E2");
 appendGenerated("RS-1", [
   ["The Four Noble Truths are associated with:","Buddhism","Christianity","Judaism","Sikhism", "They explain suffering, its origin, its cessation and the path to its cessation."],
-  ["Anatta means:","the Buddhist teaching of non-self","the existence of a creator God","a ritual offering","a caste system", "Anatta challenges the idea of a permanent, independent self."],
-  ["The ontological argument attempts to establish God's existence from:","the concept or definition of a greatest conceivable being","observation of biological adaptation","the experience of evil","a moral command only", "Anselm's argument treats necessary existence as part of the greatest conceivable being."],
-  ["The problem of evil challenges belief in a God who is:","omnipotent, omnibenevolent and omniscient","finite and morally indifferent","only a symbolic idea","limited to one location", "The challenge asks how evil can exist alongside these traditional divine attributes."],
-  ["Paley's design argument compares the universe to:","a watch requiring an intelligent designer","a moral law","a mathematical proof","a Buddhist meditation", "The analogy infers design from order and purpose, though critics challenge the comparison."],
-  ["A religious experience is often described as:","an encounter or awareness interpreted as related to the divine","a laboratory measurement","a legal contract","a political election", "Religious experiences may be individual, corporate, mystical or conversion experiences."],
-  ["A strength of the verification principle is that it:","asks whether statements can be meaningfully tested or verified","proves every religious claim true","accepts all metaphysical claims without question","defines morality as pleasure", "Logical positivism challenged statements it considered empirically meaningless."],
-  ["The challenge from religious diversity suggests:","different religions make competing truth claims","all religions teach exactly the same doctrine","religion has no cultural context","only atheists have beliefs", "Plurality raises questions about revelation, interpretation and religious certainty."],
-  ["A religious language analogy approach argues that language:","can be understood through its role within a form of life","must always describe physical objects","has one meaning in every context","cannot express commitment", "Wittgenstein's later approach links meaning with use and language games."]
+  ["Anatta means:","the Buddhist teaching of non-self","the existence of a single creator God","a ritual offering","a caste system", "Anatta challenges the idea of a permanent, independent self."],
+  ["The ontological argument attempts to establish God's existence from:","the concept or definition of a greatest conceivable being","the observation of biological adaptation in living things","the experience of evil","a moral command only", "Anselm's argument treats necessary existence as part of the greatest conceivable being."],
+  ["The problem of evil challenges belief in a God who is:","omnipotent, omnibenevolent and omniscient","finite in power, morally indifferent and limited","only a symbolic idea","limited to one location", "The challenge asks how evil can exist alongside these traditional divine attributes."],
+  ["Paley's design argument compares the universe to:","a watch requiring an intelligent designer","a moral law","a mathematical proof","a Buddhist meditation practice performed daily", "The analogy infers design from order and purpose, though critics challenge the comparison."],
+  ["A religious experience is often described as:","an encounter or awareness interpreted as related to the divine","a laboratory measurement of some quite ordinary physical quantities","a legal contract","a political election", "Religious experiences may be individual, corporate, mystical or conversion experiences."],
+  ["A strength of the verification principle is that it:","asks whether statements can be meaningfully tested or verified","proves every religious claim true","accepts every metaphysical claim without question or any evidence","defines morality as pleasure", "Logical positivism challenged statements it considered empirically meaningless."],
+  ["The challenge from religious diversity suggests:","different religions make competing truth claims","all religions teach exactly the same core doctrine","religion has no cultural context","only atheists have beliefs", "Plurality raises questions about revelation, interpretation and religious certainty."],
+  ["A religious language analogy approach argues that language:","can be understood through its role within a form of life","must always describe directly observable physical objects","has one meaning in every context","cannot express commitment", "Wittgenstein's later approach links meaning with use and language games."]
 ], "RS-E1");
 appendGenerated("RS-2", [
   ["Utilitarianism judges an action mainly by:","the consequences for overall happiness or welfare","whether it follows a fixed rule regardless of outcome","the agent's social class","whether it is traditional", "Act utilitarianism calculates the likely balance of pleasure and pain."],
-  ["Kant's categorical imperative is:","a universal moral duty that does not depend on desired outcomes","a calculation of pleasure","a rule applying only to rulers","an emotion-based response", "Kant grounds morality in rational duty and universalisation."],
-  ["Natural law begins with:","basic human purposes and primary precepts","the greatest happiness principle","the view that no moral truths exist","private preference only", "Aquinas links moral reasoning to human flourishing and reason."],
-  ["Situation ethics bases moral decisions on:","agape or selfless love applied to the situation","absolute rules with no exceptions","the cheapest available choice","legal precedent only", "Fletcher argues that love should guide flexible decisions."],
-  ["Emotivism claims moral statements primarily express:","emotions or attitudes rather than objective facts","scientific measurements","commands issued by God","historical events", "Ayer and Stevenson treat moral language as expressive and sometimes persuasive."],
-  ["The doctrine of double effect is used to distinguish:","intended effects from foreseen but unintended effects","legal and illegal actions only","pleasure from pain measurements","faith from reason", "It may allow an action with a bad side effect when the bad effect is not intended and conditions are met."],
-  ["Aquinas argued that conscience is:","reason applying moral knowledge to a particular action","a private feeling with no rational basis","the same as social pressure","a divine voice heard by everyone", "Conscience involves synderesis and applying moral principles."],
-  ["Abortion debates may involve the principle of:","sanctity or quality of human life","the cosmological argument only","aesthetic judgement","economic growth", "Ethical arguments compare competing accounts of personhood, rights and consequences."],
-  ["A strength of virtue ethics is that it focuses on:","developing character and practical wisdom","calculating every consequence exactly","following rules without context","rejecting moral education", "Aristotle asks what a virtuous person would characteristically do." ]
+  ["Kant's categorical imperative is:","a universal moral duty that does not depend on desired outcomes","a calculation of pleasure","a rule that applies only to rulers, judges and their own lawmakers","an emotion-based response", "Kant grounds morality in rational duty and universalisation."],
+  ["Natural law begins with:","basic human purposes and primary precepts","the greatest happiness principle","the view that no moral truths exist at all","private preference only", "Aquinas links moral reasoning to human flourishing and reason."],
+  ["Situation ethics bases moral decisions on:","agape or selfless love applied to the situation","absolute rules that allow for no exceptions at all","the cheapest available choice","legal precedent only", "Fletcher argues that love should guide flexible decisions."],
+  ["Emotivism claims moral statements primarily express:","emotions or attitudes rather than objective facts","precise measurements of purely scientific quantities","commands issued by God","historical events", "Ayer and Stevenson treat moral language as expressive and sometimes persuasive."],
+  ["The doctrine of double effect is used to distinguish:","intended effects from foreseen but unintended effects","the difference between the legal and the illegal actions","pleasure measured against pain","faith from reason", "It may allow an action with a bad side effect when the bad effect is not intended and conditions are met."],
+  ["Aquinas argued that conscience is:","reason applying moral knowledge to a particular action","a private feeling that has no rational basis of any kind","the same as social pressure","a divine voice heard by everyone", "Conscience involves synderesis and applying moral principles."],
+  ["Abortion debates may involve the principle of:","sanctity or quality of human life","the cosmological argument on its own","aesthetic judgement","economic growth", "Ethical arguments compare competing accounts of personhood, rights and consequences."],
+  ["A strength of virtue ethics is that it focuses on:","developing character and practical wisdom","calculating every possible consequence exactly","following rules without context","rejecting moral education", "Aristotle asks what a virtuous person would characteristically do." ]
 ], "RS-E2");
 
 SUBJECTS["hsc"].sub = "OCR H125 — Units F090–F093 and optional units";
@@ -18313,24 +18313,24 @@ appendGenerated("HSC-2", [
   ["A care professional should escalate a deterioration because:","early action may prevent serious harm","only doctors can observe change","records are unnecessary","the person must always wait for an appointment", "Escalation follows local policy and supports timely clinical assessment."]
 ], "HSC-E2B");
 appendGenerated("RS-1", [
-  ["The Eightfold Path is intended to support:","the cessation of suffering","worship of a creator","a caste hierarchy","material success", "The path develops ethical conduct, mental discipline and wisdom."],
-  ["Karma in Buddhism concerns:","the moral consequences of intentional actions","a creator's judgement only","a scientific law of motion","a temple building", "Intentional actions shape future experience within Buddhist teaching."],
-  ["The cosmological argument reasons from:","contingent or changing things to a necessary cause","the definition of perfection only","a private mystical experience","the existence of moral disagreement", "Cosmological arguments use causation, contingency or dependence as starting points."],
+  ["The Eightfold Path is intended to support:","the cessation of suffering","the worship of a single creator","a caste hierarchy","material success", "The path develops ethical conduct, mental discipline and wisdom."],
+  ["Karma in Buddhism concerns:","the moral consequences of intentional actions","a creator's final judgement passed on the soul","a scientific law of motion","a temple building", "Intentional actions shape future experience within Buddhist teaching."],
+  ["The cosmological argument reasons from:","contingent or changing things to a necessary cause","the definition of perfection only","a private mystical experience","the existence of widespread disagreement about morality", "Cosmological arguments use causation, contingency or dependence as starting points."],
   ["The teleological argument is also called the argument from:","design or purpose","language games","free will only","religious diversity", "It infers an ordering intelligence from apparent purpose or regularity."],
-  ["A fideist approach gives priority to:","faith rather than proof by reason","laboratory testing of God","mathematical certainty","legal evidence", "Fideism argues that religious commitment cannot be reduced to rational proof."],
-  ["The concept of soul-making is associated with:","Irenaean approaches to the problem of evil","logical positivism","act utilitarianism","the design argument only", "Hick develops the idea that challenges can contribute to moral and spiritual development."],
-  ["A conversion experience involves:","a significant change in religious belief or commitment","a change of legal name","a scientific experiment","a political vote", "Conversion accounts vary from sudden experiences to gradual transformation."],
-  ["A criticism of religious experience as evidence is that it may be:","private, subjective and difficult to verify independently","too public to interpret","unrelated to the person experiencing it","always repeatable in a laboratory", "Critics question reliability, alternative explanations and the leap from experience to God."]
+  ["A fideist approach gives priority to:","faith rather than proof by reason","the laboratory testing of God's existence","mathematical certainty","legal evidence", "Fideism argues that religious commitment cannot be reduced to rational proof."],
+  ["The concept of soul-making is associated with:","Irenaean approaches to the problem of evil","logical positivism","act utilitarianism","the design argument considered entirely on its own", "Hick develops the idea that challenges can contribute to moral and spiritual development."],
+  ["A conversion experience involves:","a significant change in religious belief or commitment","a change of legal name","a carefully controlled scientific experiment in a laboratory","a political vote", "Conversion accounts vary from sudden experiences to gradual transformation."],
+  ["A criticism of religious experience as evidence is that it may be:","private, subjective and difficult to verify independently","too public to interpret","entirely unrelated to the person who actually experiences them","always repeatable in a laboratory", "Critics question reliability, alternative explanations and the leap from experience to God."]
 ], "RS-E1B");
 appendGenerated("RS-2", [
-  ["Rule utilitarianism differs from act utilitarianism by:","judging actions by rules that generally maximise welfare","rejecting consequences completely","following Kant's categorical imperative","using only personal emotion", "Rule utilitarianism uses general rules justified by their consequences."],
-  ["Kant's principle of humanity requires people to be treated:","as ends in themselves, never merely as means","as resources whenever useful","according to their wealth","without rational agency", "Respect for rational persons limits using people instrumentally."],
-  ["A weakness of natural law is that:","some primary precepts may be disputed or difficult to apply","it has no account of human purpose","it always ignores reason","it is identical to utilitarianism", "Critics debate whether fixed purposes can resolve modern moral cases."],
-  ["Fletcher's situation ethics rejects:","absolute rules that apply regardless of context","love as a moral guide","practical judgement","the importance of consequences", "Situation ethics treats agape as the sole norm but applies it flexibly."],
-  ["Preference utilitarianism assesses:","the satisfaction of preferences or interests","only physical pleasure","whether an action follows tradition","the agent's intention alone", "Singer's approach broadens welfare beyond simple pleasure and pain."],
-  ["The naturalistic fallacy warns against:","defining moral goodness solely in natural or factual terms","using evidence in ethics","considering consequences","distinguishing facts from values", "Moore argues that good cannot simply be reduced to another natural property."],
-  ["Aquinas' primary precept to live in an ordered society supports:","cooperation, law and the common good","random moral choice","rejection of community","the view that no rules matter", "The primary precepts guide secondary precepts and practical moral reasoning."],
-  ["An ethical dilemma occurs when:","important moral duties or values conflict","there is only one obvious option","no person is affected","the decision is purely mathematical", "Dilemmas require reasoned comparison of competing principles and consequences."]
+  ["Rule utilitarianism differs from act utilitarianism by:","judging actions by rules that generally maximise welfare","rejecting consequences completely","following Kant's categorical imperative in every possible case","using only personal emotion", "Rule utilitarianism uses general rules justified by their consequences."],
+  ["Kant's principle of humanity requires people to be treated:","as ends in themselves, never merely as means","as resources to be used up whenever they are useful","according to their wealth","without rational agency", "Respect for rational persons limits using people instrumentally."],
+  ["A weakness of natural law is that:","some primary precepts may be disputed or difficult to apply","it offers no account whatsoever of any real or apparent human purpose","it always ignores reason","it is identical to utilitarianism", "Critics debate whether fixed purposes can resolve modern moral cases."],
+  ["Fletcher's situation ethics rejects:","absolute rules that apply regardless of context","love as a moral guide","practical judgement","the importance of carefully weighing consequences", "Situation ethics treats agape as the sole norm but applies it flexibly."],
+  ["Preference utilitarianism assesses:","the satisfaction of preferences or interests","only physical pleasure","whether an action follows established tradition","the agent's intention alone", "Singer's approach broadens welfare beyond simple pleasure and pain."],
+  ["The naturalistic fallacy warns against:","defining moral goodness solely in natural or factual terms","using evidence in ethics","considering consequences","distinguishing between ordinary factual claims and value claims", "Moore argues that good cannot simply be reduced to another natural property."],
+  ["Aquinas' primary precept to live in an ordered society supports:","cooperation, law and the common good","random moral choice","rejection of community","the view that no moral rules matter at all", "The primary precepts guide secondary precepts and practical moral reasoning."],
+  ["An ethical dilemma occurs when:","important moral duties or values conflict","there is only one obvious option","no person is affected","the decision is a purely mathematical one", "Dilemmas require reasoned comparison of competing principles and consequences."]
 ], "RS-E2B");
 rebalanceMCQSubject(["HSC-1","HSC-2","RS-1","RS-2"]);
 
@@ -25656,14 +25656,14 @@ for (const code of ["2.3.1", "2.3.2", "2.3.3", "2.4.1", "2.4.2", "2.5.1", "2.5.2
 }
 
 appendGenerated("HIST-BRIT2", [
-  ["Why did Conservative governments after 1951 claim that Britain had achieved an 'affluent society'?","Rising wages, wider consumer ownership and higher living standards were visible for many households","All poverty and regional inequality had disappeared","Britain had abandoned a mixed economy completely","The welfare state had been dismantled", "Post-war affluence was real but uneven, with poverty and inequality persisting in some groups and regions."],
-  ["What was an important feature of the post-war consensus in Britain?","Both major parties accepted a mixed economy and key welfare-state commitments","Both parties rejected public ownership and national insurance","The Conservatives and Labour shared one foreign policy on every issue","Neither party supported government intervention in the economy", "The consensus involved broad acceptance of welfare provision, full employment aims and a mixed economy, despite differences in emphasis."],
-  ["Why was the 1956 Suez Crisis damaging to Anthony Eden's government?","The failed intervention exposed Britain's reduced international power and caused political pressure at home","It led directly to the creation of the NHS","It ended all Conservative support for decolonisation in 1951","It caused the General Strike of 1926", "US opposition and the forced withdrawal demonstrated limits on Britain's ability to act as a great power."],
-  ["Which development helped change everyday life in Britain during the 1950s?","Greater access to cars, televisions and household consumer goods","The end of all private home ownership","A return to wartime rationing across every product","The removal of secondary education", "Consumer goods became more widely available, although access and prosperity remained uneven."],
+  ["Why did Conservative governments after 1951 claim that Britain had achieved an 'affluent society'?","Rising wages and wider ownership of consumer goods","All poverty and regional inequality had disappeared","Britain had abandoned a mixed economy completely","The welfare state had been dismantled", "Post-war affluence was real but uneven, with poverty and inequality persisting in some groups and regions."],
+  ["What was an important feature of the post-war consensus in Britain?","Both parties accepted the mixed economy and welfare state","Both parties rejected public ownership and national insurance","The Conservatives and Labour shared one foreign policy on every issue","Neither party supported government intervention in the economy", "The consensus involved broad acceptance of welfare provision, full employment aims and a mixed economy, despite differences in emphasis."],
+  ["Why was the 1956 Suez Crisis damaging to Anthony Eden's government?","It exposed Britain's reduced international power","It led directly to the creation of the NHS","It ended all Conservative support for decolonisation in 1951","It caused the General Strike of 1926", "US opposition and the forced withdrawal demonstrated limits on Britain's ability to act as a great power."],
+  ["Which development helped change everyday life in Britain during the 1950s?","More cars, televisions and household appliances","The end of all private home ownership","A return to wartime rationing across every product","The removal of secondary education", "Consumer goods became more widely available, although access and prosperity remained uneven."],
   ["Why did the welfare state remain politically significant after 1951?","It had become a widely expected part of social citizenship","Most voters wanted all public services privatised immediately","It applied only to wealthy households","It was replaced by voluntary charity", "The Conservatives maintained major welfare institutions because they had become embedded in expectations about government responsibility."],
-  ["What was a limitation of measuring post-war prosperity through average income alone?","It could conceal regional, class and household differences in living standards","It always overstated poverty in every region","It measured political participation rather than material conditions","It excluded all changes in consumer spending", "Averages can hide unequal distribution, housing costs, insecurity and differences between regions."],
-  ["How did decolonisation affect Britain's position in the 1950s?","It reduced the empire and encouraged a closer focus on alliances and economic interests","It expanded British control over every major colony","It made Britain independent of the United States","It ended all migration to Britain", "Decolonisation reduced formal imperial power while Britain sought influence through diplomacy, trade and alliances."],
-  ["Why did Macmillan's government emphasise that people had 'never had it so good'?","The slogan presented rising prosperity as evidence of successful Conservative government","It acknowledged that unemployment had reached zero everywhere","It announced the end of the welfare state","It described Britain's defeat at Suez", "The phrase was political messaging that highlighted prosperity while critics pointed to inequality and persistent social problems."],
+  ["What was a limitation of measuring post-war prosperity through average income alone?","It can hide regional and class differences","It always overstated poverty in every region","It measured political participation rather than material conditions","It excluded all changes in consumer spending", "Averages can hide unequal distribution, housing costs, insecurity and differences between regions."],
+  ["How did decolonisation affect Britain's position in the 1950s?","It shrank the empire and shifted focus","It expanded British control over every major colony","It made Britain independent of the United States","It ended all migration to Britain", "Decolonisation reduced formal imperial power while Britain sought influence through diplomacy, trade and alliances."],
+  ["Why did Macmillan's government emphasise that people had 'never had it so good'?","It sold prosperity as Conservative success","It acknowledged that unemployment had reached zero everywhere","It announced the end of the welfare state","It described Britain's defeat at Suez", "The phrase was political messaging that highlighted prosperity while critics pointed to inequality and persistent social problems."],
 ], "HIST-2M6-GAPS");
 for (const question of BANKS["HIST-BRIT2"].questions.slice(-8)) question.specPointId = "aqa-a-hist-2m-6";
 
@@ -26398,14 +26398,14 @@ const geoMisconceptionTags = {
 // six per-question tags behind. See applyGeoMisconceptionTags().
 
 appendGenerated("RS-1", [
-  ["In Buddhist teaching, dukkha refers most closely to:","the unsatisfactory and unstable nature of conditioned existence","a permanent personal soul","a creator deity who judges actions","a ritual performed only by monks", "Dukkha includes suffering, dissatisfaction and the inability of changing things to provide lasting security."],
-  ["The Four Noble Truths begin with the claim that:","life as ordinarily experienced involves dukkha","all desire is immediately fulfilled","the self is permanent and unchanging","karma has no effect on rebirth", "The first truth identifies dukkha; the remaining truths explain its cause, cessation and the path."],
-  ["In Buddhism, anatta means that:","there is no permanent, independent self","every person has an eternal soul","the body is identical to the Buddha","karma is determined by social class", "Anatta challenges the idea of a fixed, enduring self, linking identity to changing processes."],
-  ["The Eightfold Path is intended to:","provide a practical route towards the cessation of dukkha","prove the existence of a creator God","replace meditation with political action","teach that wealth is the highest good", "The path combines ethical conduct, mental discipline and wisdom."],
-  ["Karma in Buddhist ethics is best understood as:","the moral significance of intentional actions and their consequences","a fixed fate that cannot be influenced","a punishment imposed by a creator deity","a ritual performed after death only", "Intention is central: actions shape future experience and patterns of rebirth."],
-  ["Theravada Buddhism places particular emphasis on:","the arhat ideal and monastic practice","the worship of a creator God","salvation through one eternal self","rejecting meditation as unnecessary", "Theravada commonly emphasises the arhat path, the Pali Canon and monastic discipline."],
-  ["Mahayana Buddhism commonly presents the bodhisattva as someone who:","delays final liberation to assist other sentient beings","rejects compassion as a source of wisdom","seeks wealth as proof of enlightenment","believes only monks can reach liberation", "The bodhisattva ideal places compassionate activity for all beings at the centre of practice."],
-  ["Nirvana is described in Buddhist teaching as:","the ending of craving, ignorance and the cycle of dukkha","a permanent heaven created by a deity","a reward purchased through wealth","a form of political authority", "Nirvana is liberation from the causes of suffering and the cycle of rebirth."],
+  ["In Buddhist teaching, dukkha refers most closely to:","the unsatisfactory and unstable nature of conditioned existence","a permanent personal soul","a creator deity who judges every single human action ever taken","a ritual performed only by monks", "Dukkha includes suffering, dissatisfaction and the inability of changing things to provide lasting security."],
+  ["The Four Noble Truths begin with the claim that:","life as ordinarily experienced involves dukkha","all desire is immediately fulfilled","the self is permanent, unchanging and independent","karma has no effect on rebirth", "The first truth identifies dukkha; the remaining truths explain its cause, cessation and the path."],
+  ["In Buddhism, anatta means that:","there is no permanent, independent self","every person has an eternal soul","the body is identical to the Buddha's own body","karma is determined by social class", "Anatta challenges the idea of a fixed, enduring self, linking identity to changing processes."],
+  ["The Eightfold Path is intended to:","provide a practical route towards the cessation of dukkha","prove the existence of a creator God","replace meditation entirely with organised political action","teach that wealth is the highest good", "The path combines ethical conduct, mental discipline and wisdom."],
+  ["Karma in Buddhist ethics is best understood as:","the moral significance of intentional actions","a fixed fate that cannot ever be influenced by anyone","a punishment imposed upon the soul by an all-powerful creator god","a ritual performed after death only", "Intention is central: actions shape future experience and patterns of rebirth."],
+  ["Theravada Buddhism places particular emphasis on:","the arhat ideal and monastic practice","the worship of a creator God","salvation through one eternal self","rejecting meditation as entirely unnecessary", "Theravada commonly emphasises the arhat path, the Pali Canon and monastic discipline."],
+  ["Mahayana Buddhism commonly presents the bodhisattva as someone who:","delays final liberation to assist other sentient beings","rejects compassion as being any source of wisdom at all","seeks wealth as proof of enlightenment","believes only monks can reach liberation", "The bodhisattva ideal places compassionate activity for all beings at the centre of practice."],
+  ["Nirvana is described in Buddhist teaching as:","the ending of craving, ignorance and the cycle of dukkha","a permanent heaven created and then ruled over by a deity","a reward purchased through wealth","a form of political authority", "Nirvana is liberation from the causes of suffering and the cycle of rebirth."],
 ], "RS-BUDDHISM");
 for (const question of BANKS["RS-1"].questions.slice(-8)) {
   question.specPointId = "eduqas-a-rs-c1";
@@ -27135,7 +27135,7 @@ appendGenerated("GCSE-MATH-P2", [
   ["A bag contains 4 red and 6 blue counters. Two are taken without replacement. What is P(two blue)?","1/3","2/5","1/2","3/5", "The probability is 6/10 × 5/9 = 1/3." ]
 ], "GCSE-PHASE6-MATH2");
 appendGenerated("GCSE-MATH-P3", [
-  ["The median of a dataset is 18. What does this mean?","Half the values are at or below 18 and half are at or above it","18 is the most frequent value","The range is 18","The mean must equal 18", "The median is the central value when data are ordered."],
+  ["The median of a dataset is 18. What does this mean?","Half the values sit at or below 18","18 is the most frequently occurring value","The range is 18","The mean must equal 18", "The median is the central value when data are ordered."],
   ["For y = x² − 6x + 5, the x-coordinate of the turning point is:","3","−3","5","6", "Completing the square gives y = (x − 3)² − 4, so x = 3." ]
 ], "GCSE-PHASE6-MATH3");
 
@@ -28984,22 +28984,22 @@ for (const key of Object.keys(media1ReforgeFixes)) enforceNoUniqueLongestAnswer(
 
 // Hand-written RS-2 Reforge twins for ethics and philosophy coverage.
 const rs2ReforgeFixes = {
-  utilitarianism: {stem:"A hospital chooses the policy expected to produce the greatest overall benefit for patients. Which ethical approach is being used?",options:{A:"Utilitarianism",B:"Natural law",C:"Kantian duty",D:"Emotivism"},correct:"A"},
-  kant: {stem:"A manager refuses to deceive one worker even though doing so would benefit many others. Which Kantian idea supports this?",options:{A:"The greatest happiness principle",B:"Treating people as ends in themselves",C:"The naturalistic fallacy",D:"Preference satisfaction"},correct:"B"},
+  utilitarianism: {stem:"A hospital chooses the policy expected to produce the greatest overall benefit for patients. Which ethical approach is being used?",options:{A:"Utilitarianism",B:"Natural law",C:"Kantian duty ethics",D:"Emotivism"},correct:"A"},
+  kant: {stem:"A manager refuses to deceive one worker even though doing so would benefit many others. Which Kantian idea supports this?",options:{A:"The greatest happiness principle alone",B:"Treating people as ends in themselves",C:"The naturalistic fallacy",D:"Preference satisfaction"},correct:"B"},
   naturalLaw: {stem:"An Aquinas-inspired argument says moral action should support purposes shared by human beings. This is an appeal to:",options:{A:"Situation ethics",B:"Preference utilitarianism",C:"Natural law",D:"Emotivism"},correct:"C"},
   situation: {stem:"A Christian ethicist decides what love requires after considering the particular people and circumstances rather than applying a fixed rule. This is:",options:{A:"Kantian ethics",B:"Act utilitarianism",C:"Natural law",D:"Situation ethics"},correct:"D"},
   emotivism: {stem:"A speaker says 'cruelty is wrong' mainly to express disapproval and influence the listener. Which theory best explains this?",options:{A:"Emotivism",B:"Natural law",C:"Virtue ethics",D:"Divine command theory"},correct:"A"},
-  doubleEffect: {stem:"A treatment saves a patient's life but has a foreseen harmful side effect that the doctor does not intend. Which principle may be relevant?",options:{A:"The categorical imperative",B:"The doctrine of double effect",C:"The verification principle",D:"The veil of ignorance"},correct:"B"},
-  conscience: {stem:"Aquinas would describe conscience as the process of:",options:{A:"Expressing an emotional reaction",B:"Calculating only immediate pleasure",C:"Applying moral knowledge to a particular action",D:"Following whatever a majority prefers"},correct:"C"},
+  doubleEffect: {stem:"A treatment saves a patient's life but has a foreseen harmful side effect that the doctor does not intend. Which principle may be relevant?",options:{A:"The categorical imperative alone",B:"The doctrine of double effect",C:"The verification principle",D:"The veil of ignorance"},correct:"B"},
+  conscience: {stem:"Aquinas would describe conscience as the process of:",options:{A:"Expressing an emotional reaction",B:"Calculating only immediate pleasure",C:"Applying moral knowledge to a particular action",D:"Following whatever the majority happens to prefer"},correct:"C"},
   life: {stem:"An abortion debate asks whether human life has value regardless of usefulness or ability. Which principle is central?",options:{A:"The principle of utility",B:"The principle of linguistic analogy",C:"The principle of cultural discount",D:"The sanctity of life"},correct:"D"},
   virtue: {stem:"A student develops honesty and courage so that good choices become part of their character. Which approach emphasises this?",options:{A:"Virtue ethics",B:"Act utilitarianism",C:"Emotivism",D:"Ethical egoism"},correct:"A"},
-  ruleUtil: {stem:"A policy is judged by whether following it generally produces the best consequences, rather than by calculating every individual act. This is:",options:{A:"Act utilitarianism",B:"Rule utilitarianism",C:"Kantian ethics",D:"Natural law"},correct:"B"},
+  ruleUtil: {stem:"A policy is judged by whether following it generally produces the best consequences, rather than by calculating every individual act. This is:",options:{A:"Act utilitarianism only",B:"Rule utilitarianism",C:"Kantian duty ethics",D:"Natural law theory"},correct:"B"},
   humanity: {stem:"A business refuses to manipulate customers even when it would increase profit. Kant would say it respects people as:",options:{A:"Sources of utility only",B:"Means to an end",C:"Ends in themselves",D:"Objects without autonomy"},correct:"C"},
-  naturalWeakness: {stem:"Which criticism challenges natural law's ability to resolve every modern moral case?",options:{A:"It has no account of reason",B:"It rejects all human purposes",C:"It is identical to preference utilitarianism",D:"People may disagree about purposes and how primary precepts apply"},correct:"D"},
-  fletcher: {stem:"What would Fletcher's situation ethics reject as an approach to moral decisions?",options:{A:"A rule must be followed even when breaking it would be more loving",B:"Agape should guide a decision",C:"Context can affect the right action",D:"Consequences matter to moral judgement"},correct:"A"},
-  preference: {stem:"An ethical calculation gives weight to what affected people want and value, not just to physical pleasure. This resembles:",options:{A:"Kantian ethics",B:"Preference utilitarianism",C:"Natural law",D:"Emotivism"},correct:"B"},
-  naturalistic: {stem:"Which error is Moore's naturalistic fallacy intended to expose?",options:{A:"Using consequences in ethical reasoning",B:"Distinguishing facts from values",C:"Defining 'good' entirely in terms of a natural property",D:"Applying a moral rule to a case"},correct:"C"},
-  ordered: {stem:"Aquinas' precept about living in an ordered society is most closely connected with:",options:{A:"Rejecting all shared rules",B:"Maximising private preference",C:"Suspending moral judgement",D:"Cooperation, law and the common good"},correct:"D"},
+  naturalWeakness: {stem:"Which criticism challenges natural law's ability to resolve every modern moral case?",options:{A:"It has no account of reason",B:"It rejects all human purposes",C:"It is completely identical in every way to preference utilitarianism",D:"People may disagree about purposes and how primary precepts apply"},correct:"D"},
+  fletcher: {stem:"What would Fletcher's situation ethics reject as an approach to moral decisions?",options:{A:"A rule must be followed even when breaking it would be more loving",B:"Agape should guide a decision",C:"Context can affect the right action",D:"Consequences can sometimes matter to any moral judgement made here too"},correct:"A"},
+  preference: {stem:"An ethical calculation gives weight to what affected people want and value, not just to physical pleasure. This resembles:",options:{A:"Kantian duty-based ethics",B:"Preference utilitarianism",C:"Natural law theory",D:"Emotivism"},correct:"B"},
+  naturalistic: {stem:"Which error is Moore's naturalistic fallacy intended to expose?",options:{A:"Using consequences within ethical reasoning more generally",B:"Distinguishing facts from values",C:"Defining 'good' entirely in terms of a natural property",D:"Applying a moral rule to a case"},correct:"C"},
+  ordered: {stem:"Aquinas' precept about living in an ordered society is most closely connected with:",options:{A:"Rejecting all shared rules",B:"Maximising private preference on its own",C:"Suspending moral judgement",D:"Cooperation, law and the common good"},correct:"D"},
   dilemma: {stem:"A doctor must choose between two actions, each protecting one important moral value while compromising another. This is an:",options:{A:"Ethical dilemma",B:"Empirical verification",C:"Audience reading",D:"Aesthetic preference"},correct:"A"},
   anatta: {stem:"A Buddhist teaching denies that a person has a permanent, independent self. This is:",options:{A:"Karma",B:"Anatta",C:"Nirvana",D:"Dukkha"},correct:"B"},
   evil: {stem:"The problem of evil is most directly a challenge to belief in a God who is:",options:{A:"Finite and morally indifferent",B:"Only a symbolic idea",C:"Omnipotent, omnibenevolent and omniscient",D:"Limited to one location"},correct:"C"},
@@ -32324,7 +32324,7 @@ const staticLegacyRepairs = {
   },
   "CHEM-03": {
     "reforge": {
-      "B": "Trigonal planar — three bonds, no lone pairs. The chemical explanation must follow the particles, bonding, quantities and stated conditions; the option identifies a related term but not the feature that makes it the correct answer."
+      "B": "Trigonal planar — three bonds and no lone pairs"
     }
   },
   "BIO-COV-045": {
@@ -32334,42 +32334,42 @@ const staticLegacyRepairs = {
   },
   "CS-06": {
     "reforge": {
-      "C": "By value is only used for integers; by reference for strings. The computing explanation must match the code, data, protocol, algorithm or hardware mechanism described; the answer does not account for the competing factor or trade-off described."
+      "C": "By value is only used for integers; by reference for strings"
     }
   },
   "MATHS-COV-019": {
     "reforge": {
-      "B": "Calculate P(X = 0) + P(X = 1) + ... + P(X = 5) using the binomial formula, or read directly from cumulative binomial tables. The mathematical method must match the operation, scale, algebraic relationship, diagram, units and conditions; the relevant relationship is reversed, so the proposed answer cannot explain the outcome."
+      "B": "Sum the binomial P(X = 0) to P(X = 5)"
     }
   },
   "MATHS-COV-043": {
     "reforge": {
-      "B": "Calculate P(X = 0) + P(X = 1) + ... + P(X = 5) using the binomial formula, or read directly from cumulative binomial tables. The mathematical method must match the operation, scale, algebraic relationship, diagram, units and conditions; the described total omits one of the required probability terms."
+      "B": "Sum the binomial P(X = 0) to P(X = 5)"
     }
   },
   "MATHS-COV-067": {
     "reforge": {
-      "B": "Calculate P(X = 0) + P(X = 1) + ... + P(X = 5) using the binomial formula, or read directly from cumulative binomial tables. The mathematical method must match the operation, scale, algebraic relationship, diagram, units and conditions; the proposed account does not match the scale, timing or conditions stated."
+      "B": "Sum the binomial P(X = 0) to P(X = 5)"
     }
   },
   "MATHS-COV-091": {
     "reforge": {
-      "B": "Calculate P(X = 0) + P(X = 1) + ... + P(X = 5) using the binomial formula, or read directly from cumulative binomial tables. The mathematical method must match the operation, scale, algebraic relationship, diagram, units and conditions; the answer leaves out the condition that determines the result being tested."
+      "B": "Sum the binomial P(X = 0) to P(X = 5)"
     }
   },
   "MATHS-COV-115": {
     "reforge": {
-      "B": "Calculate P(X = 0) + P(X = 1) + ... + P(X = 5) using the binomial formula, or read directly from cumulative binomial tables. The mathematical method must match the operation, scale, algebraic relationship, diagram, units and conditions; the mechanism named in the option cannot produce the result under these conditions."
+      "B": "Sum the binomial P(X = 0) to P(X = 5)"
     }
   },
   "MATHS-COV-139": {
     "reforge": {
-      "B": "Calculate P(X = 0) + P(X = 1) + ... + P(X = 5) using the binomial formula, or read directly from cumulative binomial tables. The mathematical method must match the operation, scale, algebraic relationship, diagram, units and conditions; the option confuses a definition with its application to the specific example."
+      "B": "Sum the binomial P(X = 0) to P(X = 5)"
     }
   },
   "MATHS-COV-163": {
     "reforge": {
-      "B": "Calculate P(X = 0) + P(X = 1) + ... + P(X = 5) using the binomial formula, or read directly from cumulative binomial tables. The mathematical method must match the operation, scale, algebraic relationship, diagram, units and conditions; the answer overlooks the qualifier that determines how the concept applies in this question."
+      "B": "Sum the binomial P(X = 0) to P(X = 5)"
     }
   },
   "DE-07": {
@@ -32439,22 +32439,22 @@ const staticLegacyRepairs = {
   },
   "RS-05": {
     "reforge": {
-      "D": "Rigidity is not a criticism because all ethical theories are rigid. The religious or ethical explanation must fit the tradition, reasoning, evidence, interpretation and consequences involved; the example requires a more precise distinction than this broad statement makes."
+      "D": "Rigidity is not a criticism because all ethical theories are rigid"
     }
   },
   "RS-COV-005": {
     "reforge": {
-      "D": "Rigidity is not a criticism because all ethical theories are rigid. The religious or ethical explanation must fit the tradition, reasoning, evidence, interpretation and consequences involved; the relevant distinction is between the process and its effect, which this option merges."
+      "D": "Rigidity is not a criticism because all ethical theories are rigid"
     }
   },
   "RS-COV-055": {
     "reforge": {
-      "D": "Rigidity is not a criticism because all ethical theories are rigid. The religious or ethical explanation must fit the tradition, reasoning, evidence, interpretation and consequences involved; the option identifies a related term but not the feature that makes it the correct answer."
+      "D": "Rigidity is not a criticism because all ethical theories are rigid"
     }
   },
   "RS-COV-105": {
     "reforge": {
-      "C": "Rigidity is not a criticism because all ethical theories are rigid. The religious or ethical explanation must fit the tradition, reasoning, evidence, interpretation and consequences involved; the answer leaves out the condition that determines the result being tested."
+      "C": "Rigidity is not a criticism because all ethical theories are rigid"
     }
   },
   "HSC-COV-049": {
@@ -32904,7 +32904,7 @@ const staticLegacyRepairs = {
   },
   "CHEM-COV-059": {
     "reforge": {
-      "C": "Chlorine radicals react randomly with any molecule in the mixture. The chemical explanation must follow the particles, bonding, quantities and stated conditions; the answer does not account for the competing factor or trade-off described."
+      "C": "Chlorine radicals react randomly with any molecule in the mixture"
     }
   },
   "BIO-COV-034": {
@@ -32919,7 +32919,7 @@ const staticLegacyRepairs = {
   },
   "CS-COV-006": {
     "reforge": {
-      "B": "Compilers are faster to write programs with; interpreters produce faster programs. The computing explanation must match the code, data, protocol, algorithm or hardware mechanism described; the mechanism named in the option cannot produce the result under these conditions."
+      "B": "Compilers are faster to write programs with; interpreters produce faster programs"
     }
   },
   "GCSE-HIST-AM-21": {
@@ -32998,47 +32998,47 @@ const staticLegacyRepairs = {
   },
   "ORG-07": {
     "reforge": {
-      "C": "Chlorine radicals react randomly with any molecule in the mixture. The chemical explanation must follow the particles, bonding, quantities and stated conditions; the answer leaves out the condition that determines the result being tested."
+      "C": "Chlorine radicals react randomly with any molecule in the mixture"
     }
   },
   "ORG-08": {
     "reforge": {
-      "A": "Aniline has more hydrogen atoms, making it harder to accept a proton. The chemical explanation must follow the particles, bonding, quantities and stated conditions; the option identifies a related term but not the feature that makes it the correct answer."
+      "A": "Aniline has more hydrogen atoms, making it harder to accept a proton"
     }
   },
   "CHEM-COV-003": {
     "reforge": {
-      "A": "Trigonal planar — three bonds, no lone pairs. The chemical explanation must follow the particles, bonding, quantities and stated conditions; the wording describes a different process and would predict a different outcome."
+      "A": "Trigonal planar — three bonds and no lone pairs"
     }
   },
   "CHEM-COV-060": {
     "reforge": {
-      "B": "Aniline has more hydrogen atoms, making it harder to accept a proton. The chemical explanation must follow the particles, bonding, quantities and stated conditions; the option identifies a related term but not the feature that makes it the correct answer."
+      "B": "Aniline has more hydrogen atoms, making it harder to accept a proton"
     }
   },
   "CHEM-COV-090": {
     "reforge": {
-      "B": "Trigonal planar — three bonds, no lone pairs. The chemical explanation must follow the particles, bonding, quantities and stated conditions; the answer treats an exception or consequence as though it were the underlying principle."
+      "B": "Trigonal planar — three bonds and no lone pairs"
     }
   },
   "STAT-03": {
     "reforge": {
-      "C": "No — the normal distribution cannot approximate a discrete distribution. The mathematical method must match the operation, scale, algebraic relationship, diagram, units and conditions; the answer overlooks the qualifier that determines how the concept applies in this question."
+      "C": "No — the normal distribution cannot approximate a discrete distribution"
     }
   },
   "EWQ-08": {
     "reforge": {
-      "C": "Higher voltage increases the number of electrons, improving image brightness. The physical explanation must use the stated quantities, units, forces, energy transfers and assumptions; the option confuses a definition with its application to the specific example."
+      "C": "Higher voltage increases the number of electrons, improving image brightness"
     }
   },
   "PHYS-COV-036": {
     "reforge": {
-      "B": "Higher voltage increases the number of electrons, improving image brightness. The physical explanation must use the stated quantities, units, forces, energy transfers and assumptions; the relevant relationship is reversed, so the proposed answer cannot explain the outcome."
+      "B": "Higher voltage increases the number of electrons, improving image brightness"
     }
   },
   "PHYS-COV-105": {
     "reforge": {
-      "A": "Higher voltage produces brighter electrons that illuminate samples better. The physical explanation must use the stated quantities, units, forces, energy transfers and assumptions; the option confuses a definition with its application to the specific example."
+      "A": "Higher voltage produces brighter electrons that illuminate samples better"
     }
   },
   "PHYS-COV-111": {
@@ -33088,20 +33088,22 @@ const staticLegacyRepairs = {
   },
   "GCSE-PHASE6-MATH3-01": {
     "base": {
-      "B": "18 is the most frequent value The mathematical method must match the operation, scale, algebraic relationship, diagram, units and conditions; the evidence supports a narrower conclusion than the one proposed in this option."
+      "B": "18 is the most frequently occurring value"
     },
     "reforge": {
-      "C": "−2 The mathematical method must match the operation, scale, algebraic relationship, diagram, units and conditions; the proposed conclusion does not follow from the evidence supplied in the question."
+      "B": "18 is the most frequently occurring value",
+      "C": "The range of the data is 18",
+      "D": "The mean of the data must be 18"
     }
   },
   "HIST-BRIT1-25": {
     "reforge": {
-      "A": "It showed the government's difficulty in balancing public order with the political costs of force-feeding The historical explanation must fit the chronology, evidence, provenance, context, change and continuity involved; the evidence supports a narrower conclusion than the one proposed in this option."
+      "A": "It showed the political cost of force-feeding"
     }
   },
   "LAW-CRIM-22": {
     "base": {
-      "A": "A partial defence requiring loss of self-control, a qualifying trigger and the objective normal-person test The legal explanation must apply the relevant rule, elements, authority, evidence, procedure and limits; the option identifies a related term but not the feature that makes it the correct answer."
+      "A": "Loss of self-control with a qualifying trigger"
     }
   },
   "BUS-T4-05": {
@@ -33196,11 +33198,11 @@ const finalLengthCueRepairs = {
   "SPAN-COV-159": { reforge: { D: "Regional governments have refused to implement the national budget in their autonomous communities. The Spanish construction must be judged by its agreement, word order, tense, mood and context; the wording describes a different process and would predict a different outcome. Implementation disputes between regions and the state are a separate issue from whether a budget may be presented nationally." } },
   "SPAN-COV-175": { reforge: { D: "Regional governments have refused to implement the national budget in their autonomous communities. The Spanish construction must be judged by its agreement, word order, tense, mood and context; the option confuses a definition with its application to the specific example. The definition of a constitutional ban is a fixed legal rule, not a description of any single region's behaviour." } },
   "SP-15": { reforge: { B: "The government has been legally prevented from presenting a budget — it is constitutionally banned. The Spanish construction must be judged by its agreement, word order, tense, mood and context; the proposed conclusion does not follow from the evidence supplied in the question. The stem states a constitutional prohibition on presentation, which regional refusal to implement does not establish." } },
-  "CHEM-COV-059": { reforge: { C: "Chlorine radicals react randomly with any molecule in the mixture. The chemical explanation must follow the particles, bonding, quantities and stated conditions; the answer does not account for the competing factor or trade-off described. The competing factor is that further substitution becomes progressively less likely as CH₃Cl is consumed, so the mixture is not produced by random reaction alone." } },
-  "ORG-07": { reforge: { C: "Chlorine radicals react randomly with any molecule in the mixture. The chemical explanation must follow the particles, bonding, quantities and stated conditions; the answer leaves out the condition that determines the result being tested. The missing condition is the ratio of chlorine to methane, which determines how far the substitution proceeds." } },
-  "ORG-08": { reforge: { A: "Aniline has more hydrogen atoms, making it harder to accept a proton. The chemical explanation must follow the particles, bonding, quantities and stated conditions; the option identifies a related term but not the feature that makes it the correct answer, ignoring the resonance effect." } },
-  "CHEM-COV-003": { reforge: { A: "Trigonal planar — three bonds, no lone pairs. The chemical explanation must follow the particles, bonding, quantities and stated conditions; the wording describes a different process and would predict a different outcome, not this molecule's shape." } },
-  "CHEM-COV-060": { reforge: { B: "Aniline has more hydrogen atoms, making it harder to accept a proton. The chemical explanation must follow the particles, bonding, quantities and stated conditions; the option identifies a related term but not the feature that makes it the correct answer, ignoring the resonance effect entirely." } }
+  "CHEM-COV-059": { reforge: { C: "Chlorine radicals react randomly with any molecule in the mixture" } },
+  "ORG-07": { reforge: { C: "Chlorine radicals react randomly with any molecule in the mixture" } },
+  "ORG-08": { reforge: { A: "Aniline has more hydrogen atoms, making it harder to accept a proton" } },
+  "CHEM-COV-003": { reforge: { A: "Trigonal planar — three bonds and no lone pairs" } },
+  "CHEM-COV-060": { reforge: { B: "Aniline has more hydrogen atoms, making it harder to accept a proton" } }
 };
 for (const [id, repairs] of Object.entries(finalLengthCueRepairs)) {
   for (const bank of Object.values(BANKS)) {
@@ -35644,7 +35646,7 @@ const finalCSCorruptionRepairs = {
   "reforge": {
    "A": "by a network router",
    "C": "1 2 3 4 5 6",
-   "D": "Compilers are faster to write programs with; interpreters produce faster programs. The computing explanation must match the code, data, protocol, algorithm or hardware mechanism described; the mechanism named in the option cannot produce the result under these conditions."
+   "D": "Compilers are faster to write programs with; interpreters produce faster programs"
   },
   "base": {
    "B": "the keyboard is disconnected",
@@ -36059,7 +36061,7 @@ const finalCSCorruptionRepairs = {
    "D": "only the programmer's name under the conditions described in the program"
   },
   "reforge": {
-   "A": "By value is only used for integers; by reference for strings. The computing explanation must match the code, data, protocol, algorithm or hardware mechanism described; the answer does not account for the competing factor or trade-off described.",
+   "A": "By value is only used for integers; by reference for strings",
    "C": "always creates a permanent executable first under the conditions described in the program"
   }
  },
@@ -36069,7 +36071,7 @@ const finalCSCorruptionRepairs = {
    "C": "only the programmer's name under the conditions described in the program"
   },
   "reforge": {
-   "A": "By value is only used for integers; by reference for strings. The computing explanation must match the code, data, protocol, algorithm or hardware mechanism described; the answer does not account for the competing factor or trade-off described.",
+   "A": "By value is only used for integers; by reference for strings",
    "B": "always creates a permanent executable first under the conditions described in the program"
   }
  },
@@ -36703,8 +36705,8 @@ const finalCSCorruptionRepairs = {
   },
   "reforge": {
    "D": "1 2 3 4 5 6",
-   "A": "Compilers are faster to write programs with; interpreters produce faster programs. The computing explanation must match the code, data, protocol, algorithm or hardware mechanism described; the mechanism named in the option cannot produce the result under these conditions.",
-   "C": "By value is only used for integers; by reference for strings. The computing explanation must match the code, data, protocol, algorithm or hardware mechanism described; the answer does not account for the competing factor or trade-off described."
+   "A": "Compilers are faster to write programs with; interpreters produce faster programs",
+   "C": "By value is only used for integers; by reference for strings"
   }
  },
  "CS-COV-057": {
@@ -37490,7 +37492,7 @@ const finalCSCorruptionRepairs = {
  "CS-C1B-02": {
   "reforge": {
    "A": "0 1 2 3 4 5",
-   "C": "Compilers are faster to write programs with; interpreters produce faster programs. The computing explanation must match the code, data, protocol, algorithm or hardware mechanism described; the mechanism named in the option cannot produce the result under these conditions."
+   "C": "Compilers are faster to write programs with; interpreters produce faster programs"
   },
   "base": {
    "A": "a type of network cable",
@@ -37563,7 +37565,7 @@ const finalCSCorruptionRepairs = {
   "reforge": {
    "C": "1 2 3 4 5 6",
    "D": "A OR B",
-   "B": "Compilers are faster to write programs with; interpreters produce faster programs. The computing explanation must match the code, data, protocol, algorithm or hardware mechanism described; the mechanism named in the option cannot produce the result under these conditions."
+   "B": "Compilers are faster to write programs with; interpreters produce faster programs"
   }
  },
  "CS-COV-091": {
@@ -37966,8 +37968,8 @@ const finalGCSEMathsCorruptionRepairs = {
  },
  "MATH-P1-20": {
   "base": {
-   "C": "18 is the most frequent value The mathematical method must match the operation, scale, algebraic relationship, diagram, units and conditions; the evidence supports a narrower conclusion than the one proposed in this option.",
-   "B": "−2 The mathematical method must match the operation, scale, algebraic relationship, diagram, units and conditions; the proposed conclusion does not follow from the evidence supplied in the question.",
+   "C": "18 is the most frequently occurring value",
+   "B": "−2",
    "A": "The mean must equal 18"
   },
   "reforge": {
@@ -37976,8 +37978,8 @@ const finalGCSEMathsCorruptionRepairs = {
  },
  "GCSE-MATHS-COV-020": {
   "base": {
-   "D": "18 is the most frequent value The mathematical method must match the operation, scale, algebraic relationship, diagram, units and conditions; the evidence supports a narrower conclusion than the one proposed in this option.",
-   "B": "−2 The mathematical method must match the operation, scale, algebraic relationship, diagram, units and conditions; the proposed conclusion does not follow from the evidence supplied in the question.",
+   "D": "18 is the most frequently occurring value",
+   "B": "−2",
    "A": "The mean must equal 18"
   },
   "reforge": {

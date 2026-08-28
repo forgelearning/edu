@@ -134,11 +134,12 @@ propagates into its `*-COV-*` copies and fixing the source fixes them all.
 
   **Read that number carefully.** It is true of what a student sees, and it is
   produced almost entirely by a runtime patch rather than by authoring. Remove
-  the anti-cue loop and **1,615 of 15,327 items (10.5%)** have the correct
+  the anti-cue loop and **1,456 of 15,327 items (9.5%)** have the correct
   answer as the single longest option — `gcse-psych` 39.9%, `gcse-hist` 34.8%,
-  `bus` 32.6%, `cs` 26.7%, `econ` 26.0%. (Total re-measured 2026-08-28 after the
-  separate-science keys were rewritten; the per-subject shares are from
-  2026-08-26 and were not re-run. The previous
+  `bus` 32.6%, `cs` 26.7%, `econ` 26.1%. (Both the total and the per-subject
+  shares re-measured 2026-08-28 with `dev/audit-source-cues.js`, after the
+  separate-science, law, rs, maths and hist keys were rewritten. `law`, `rs`,
+  `maths` and `hist` no longer appear in the ranking at all. The previous
   figure here was 2,430 / 16.1% naming `gcse-econ` 61.2% as the worst subject;
   `gcse-econ`, `gcse-geo` and `geo` are all at **0** now. Other sessions cleared
   them without updating this file, which is the recurring failure mode — always
@@ -180,7 +181,7 @@ lower the baseline when a fix lands. They live in `CONTENT_BASELINES`.
 | Check | Baseline | Meaning |
 |---|---|---|
 | `NULL OPTION` | **0 — never raise** | A content-free dismissal ("It has no significant relevance to the topic being tested"). Makes a 4-option question a 3-option one, so guessing pays 33% and reported accuracy inflates. |
-| `SHORT CUE` | 301 | The correct answer is uniquely the shortest *and* under 55% of mean distractor length. The mirror of `CUE`. |
+| `SHORT CUE` | 299 | The correct answer is uniquely the shortest *and* under 55% of mean distractor length. The mirror of `CUE`. |
 | `RECYCLED DISTRACTOR` | 1 | One distractor string used in more than 8 distinct source questions. Coverage clones are excluded via the `coverageVariant` flag — an earlier version stripped a `-COV-n` suffix instead, which turned `MAND-COV-011` into `MAND` and collapsed all 80 Mandarin clones into one pseudo-question. |
 
 The audit prints the true count of each next to its baseline. Only the first
@@ -233,7 +234,7 @@ copy of the bank with the loop stripped out:
 
 | Backlog | Created by the loop | Authored in source |
 |---|---|---|
-| `SHORT CUE` (301, was 392 on 2026-08-21) | **1** | **300** |
+| `SHORT CUE` (299, was 392 on 2026-08-21) | **1** | **298** |
 | `RECYCLED DISTRACTOR` (1) | **1** | **0** |
 
 So `SHORT CUE` really is a hand-authoring backlog — that was worth checking and
@@ -515,6 +516,25 @@ etc.) — treat every completion claim in it as stale by default.
   exposed **155 real CUEs** underneath, from 30 source questions. Those were
   fixed by authoring — mostly by shortening keys that had grown into
   mini-essays (one HSC key ran to 209 characters, a Media key to 339).
+
+  **`law`, `rs`, `maths` and `hist` were then rewritten bank-wide (2026-08-28)**
+  so the filler could come out of them too. The trap to avoid: fixing only the
+  questions the audit currently flags chases the tail for ever, because these
+  banks share strings across questions — shortening a key shortens a distractor
+  somewhere else and promotes that question's key. Work instead from the
+  invariant *"no key is longer than its own question's longest distractor,
+  measured with the anti-cue loop stripped"* (`raw` from
+  `dev/lib/source-bank.js`), fix every source question that violates it, and the
+  count converges. It was 129 questions: 6 in law, 15 in hist, 36 in maths and
+  72 in rs.
+
+  Two shapes came up. A-Level keys had grown into mini-essays (one RS key ran to
+  244 characters) — those were shortened. Maths keys were worked solutions
+  against bare numeric distractors ("−2", "9/8"); there the answer belongs in
+  the option and the working in the scaffold, which already had it, so the keys
+  became the bare result. Where a key was a precise definition against one-word
+  distractors (much of RS), the distractors were written out in parallel form
+  instead.
 
   Four subjects (`SOC-FAM`, `CRIM-COURT`, `POL-UKGOV`, `hsc`) build questions
   from a **shared pool of definitions, where each definition is the key in one
