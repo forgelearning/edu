@@ -280,12 +280,17 @@ for the anti-cue loop). `gcse-geo` is at 0 audit issues, and the subject's
 
 Three consequences worth knowing:
 
-- **`compactGeoCorrectOption` and `geoConciseCorrectOverrides` are now dead
-  code.** The loop fires on nothing and all 12 override entries are unused.
-  They are still in the file. Left in place they are a landmine: the next
-  gcse-geo question authored with a long key will be silently mangled again,
-  and `dev/audit-banks.js` cannot see it. Deleting them is the obvious
-  follow-up and was deliberately left as a separate decision.
+- **`compactGeoCorrectOption` and `geoConciseCorrectOverrides` are deleted**,
+  along with `geoOptionRepairs` and the loop beneath it that appended
+  `" in this context"` to a gcse-geo distractor whenever it was not longer than
+  the key. That padding loop still fired 98 times, but every string it produced
+  was overwritten by a later pass: deleting all of it left the rendered bank
+  byte-identical across all 15,327 options, with `CUE` 0, `SHORT CUE` 308 and
+  the source-cue total unchanged. Keep gcse-geo keys no longer than their
+  distractors and nothing needs to grow back.
+  **Six padding loops of the same shape remain elsewhere in the file** (search
+  `in this context";`) for other subjects. They are the mechanism behind the
+  padding bug described further down, and are still live.
 - **Five keys had been surviving by a three-table round trip** — cut by the
   compaction pass, restored by `geoOptionRepairs`, then protected from `CUE` by
   a deliberately inflated distractor in the repair table near the end of the

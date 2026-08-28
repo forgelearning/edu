@@ -10203,76 +10203,22 @@ for (const [bankId, [idPattern]] of Object.entries(geo640BalancePlans)) {
   }
 }
 
-// Geography's earliest banks were authored with full explanations inside the
-// correct option while distractors stayed as short phrases. Keep the detailed
-// explanation in the scaffold and compact only a uniquely-long correct choice
-// so answer length cannot act as a geography shortcut.
-const compactGeoCorrectOption = (text, target) => {
-  const clean = String(text).replace(/\([^)]*\)/g, "").replace(/\s+/g, " ").trim();
-  if (clean.length <= target) return clean;
-  const compactWords = value => value
-    .replace(/\b(the|a|an|that|which|is|are|was|were|of|to|for|in|on|by|with)\b/gi, " ")
-    .replace(/\s+/g, " ").trim();
-  if (/^Fewer Zam trees germinate\b/i.test(clean)) return "Fewer Zam trees germinate";
-  const commaClauses = clean.split(/\s*,\s*/).filter(value => value.length >= 30);
-  const clauses = [
-    ...commaClauses,
-    ...clean.split(/\s*[;—:]\s*/),
-    ...clean.split(/\s*,\s*(?=(?:causing|meaning|so|because|which|leaving|making|therefore|but|while|whereas)\b)/i),
-    ...clean.split(/\s+(?:because|while|whereas|so that|which|leaving|making|although|but|before|after|due to|rather than|in turn|so)\s+/i),
-    clean
-  ].map(value => value.trim()).filter(value => value.length >= 12);
-  const candidates = [...clauses, ...clauses.map(compactWords)]
-    .filter(value => value.length >= 12 && value.length <= target);
-  if (candidates[0]) return candidates[0];
-  const shortened = compactWords(clean).split(" ");
-  while (shortened.length > 1 && shortened.join(" ").length > target) shortened.pop();
-  return shortened.join(" ").trim();
-};
-const geoConciseCorrectOverrides = {
-  "GCSE-HAZ-26:base":"Warmer oceans can fuel stronger storms",
-  "GCSE-UKLAND-06:reforge":"Lower gradient allows lateral erosion",
-  "GCSE-UKLAND-08:reforge":"Two rivers combine, increasing discharge",
-  "GCSE-UKLAND-29:base":"Use zoning to restrict vulnerable development",
-  "GCSE-UKLAND-17:reforge":"High infiltration slows surface runoff",
-  "GCSE-UKLAND-18:base":"Permeability describes water flow through rock",
-  "GCSE-ENQ-19:reforge":"Repeat counts on several weekdays",
-  "GCSE-RVF-01:reforge":"Gradient decreases",
-  "GCSE-URF-03:reforge":"The park was purpose-built with more green space",
-  "GCSE-IND-12:reforge":"Cutting emissions may constrain farming",
-  "GCSE-IND-13:reforge":"Partition caused deaths and lasting tensions",
-  "GCSE-ENE-20:reforge":"Diversify sources and maintain storage"
-};
-for (const bankId of SUBJECTS["gcse-geo"].banks) {
-  for (const question of BANKS[bankId].questions) {
-    for (const item of [question, question.reforge]) {
-      if (!item || !item.options || !item.correct) continue;
-      const lengths = Object.fromEntries(Object.entries(item.options).map(([letter, option]) => [letter, option.length]));
-      const max = Math.max(...Object.values(lengths));
-      if (lengths[item.correct] !== max || Object.values(lengths).filter(length => length === max).length !== 1) continue;
-      const distractorMax = Math.max(...Object.entries(lengths).filter(([letter]) => letter !== item.correct).map(([, length]) => length));
-      const overrideKey = `${question.id}:${item === question ? "base" : "reforge"}`;
-      item.options[item.correct] = geoConciseCorrectOverrides[overrideKey] || compactGeoCorrectOption(item.options[item.correct], distractorMax);
-    }
-  }
-}
-
-// Restore several Geography correct options that were cut into fragments by
-// the old length-equalisation fallback; keep the answer-length safeguard.
-const geoOptionRepairs = {
-};
-for (const bankId of SUBJECTS["gcse-geo"].banks) {
-  for (const question of BANKS[bankId].questions) {
-    for (const [mode, item] of [["base", question], ["reforge", question.reforge]]) {
-      if (!item || !item.options || !item.options[item.correct]) continue;
-      const repair = geoOptionRepairs[`${question.id}:${mode}`];
-      if (repair) item.options[item.correct] = repair;
-      const correctLength = String(item.options[item.correct]).length;
-      const distractor = Object.keys(item.options).filter(key => key !== item.correct).sort((a, b) => String(item.options[b]).length - String(item.options[a]).length)[0];
-      while (String(item.options[distractor]).length <= correctLength) item.options[distractor] += " in this context";
-    }
-  }
-}
+// The pass that used to sit here (compactGeoCorrectOption plus a
+// geoConciseCorrectOverrides escape hatch) mechanically shortened any gcse-geo
+// correct answer that was the uniquely longest option. It cut mid-clause, so
+// students were shown fragments — "and less effective warning systems" as the
+// answer to an earthquake-impact question, a bare "International" as the effect
+// shaping Brick Lane. All 14 banks now author the key short enough that nothing
+// needed compacting, so it was deleted rather than left to mangle the next long
+// key someone writes. Keep gcse-geo correct options no longer than their
+// distractors; dev/audit-banks.js reports CUE if you don't.
+//
+// Deleted with it: geoOptionRepairs, whose table had emptied as those keys were
+// rewritten, and the loop under it that appended " in this context" to a
+// distractor whenever it was not longer than the key. That loop still fired 98
+// times, but every string it produced was overwritten by a later pass — removing
+// it left all 15,327 rendered options byte-identical. It is the mechanism behind
+// the padding bug documented in CLAUDE.md, so it is better gone than dormant.
 
 // Update subject definitions
 // GCSE AQA History (8145) — Paper 1: Understanding the Modern World.
