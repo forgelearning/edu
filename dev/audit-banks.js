@@ -736,7 +736,7 @@ if (taxonomy.length) {
 // existed, which is the argument for pinning it now rather than after the
 // backlog is cleared.
 const CONTENT_BASELINES = {
-  'SHORT CUE': 299,
+  'SHORT CUE': 298,
   'NULL OPTION': 0,
   'RECYCLED DISTRACTOR': 1
 };

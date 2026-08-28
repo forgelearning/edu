@@ -11765,7 +11765,7 @@ addPsychDepth("GCSE-PSY-BRAIN","GCSE-PSY-BRAIN","GCSE-PSY-BR",[
   ["What does the occipital lobe process?","Visual information","Which lobe is primarily visual?"],["What does the temporal lobe support?","Auditory processing and memory","Which lobe processes sound?"],["What does the parietal lobe support?","Somatosensory processing","Which lobe processes body sensations?"],["What is lateralisation?","Different hemispheres specialise","What term describes hemispheric specialisation?"],["What is split-brain research?","Studying severed corpus callosums","Which research examined hemisphere functions?"],["What is the corpus callosum?","Connection between hemispheres","Which structure transfers information between hemispheres?"],["What is a CT scan?","Computerised X-ray image","Which scan provides structural brain images?"],["What is a PET scan?","Image of metabolic activity","Which scan tracks activity using a tracer?"],["What is an EEG?","Recording of electrical activity","Which method records brain waves?"],["What is contralateral control?","Each hemisphere controls the opposite side","Why can left-brain damage affect the right side?"],["What is aphasia?","Language impairment after brain damage","What can follow damage to language areas?"],["What is localisation?","Function linked to a specific area","What does localisation of function mean?"],["What is equipotentiality?","All areas can perform any function","Which view challenges strict localisation?"],["What is brain recovery?","Restoration after injury","What process can follow brain damage?"],["What supports neuroplasticity?","Repeated practice and rehabilitation","What can strengthen new neural pathways?"],["What is a neurotransmitter?","Chemical messenger between neurons","What carries signals across a synapse?"],["What is a synapse?","Gap between neurons","Where do neurotransmitters cross?"]
 ]);
 addPsychDepth("GCSE-PSY-PROBLEMS","GCSE-PSY-PROBLEMS","GCSE-PSY-PP",[
-  ["What is anhedonia?","Loss of pleasure","Which depression symptom means reduced enjoyment?"],["What is a cognitive triad?","Negative views of self, world and future","Which model describes three negative thought patterns?"],["What is learned helplessness?","Expectation that actions cannot change outcomes","Which explanation links depression to lack of control?"],["What is a phobia?","Excessive fear of a specific object or situation","What is an irrational intense fear called?"],["What is a compulsion?","Repetitive act used to reduce anxiety","Which OCD feature is an action?"],["What is a biological treatment?","Medication or physical intervention","Which treatment targets biology directly?"],["What is a psychological treatment?","Therapy changing thoughts or behaviour","Which treatment uses talking or behavioural techniques?"],["What is exposure therapy?","Gradual contact with a feared stimulus","Which treatment confronts a phobia safely?"],["What is a relapse?","Return of symptoms after improvement","What can happen after treatment ends?"],["What is treatment adherence?","Following the treatment plan","Why does taking medication as prescribed matter?"],["What is a placebo effect?","Improvement caused by expectation","What is an apparent treatment effect without an active ingredient?"],["What is comorbidity?","More than one condition together","What is the presence of co-occurring disorders?"],["What is reliability in diagnosis?","Agreement between clinicians","What makes a diagnosis consistent?"],["What is validity in diagnosis?","Accuracy of the diagnosis","What asks whether a diagnosis reflects the real condition?"],["What is cultural bias?","Assuming one culture's norms are universal","How can diagnosis be distorted?"],["What is institutionalisation?","Effects of long-term hospital living","What can prolonged institutional care cause?"],["What is deinstitutionalisation?","Moving care into the community","What policy reduced reliance on large hospitals?"]
+  ["What is anhedonia?","Loss of pleasure","Which depression symptom means reduced enjoyment?"],["What is a cognitive triad?","Negative views of self, world and future","Which model describes three negative thought patterns?"],["What is learned helplessness?","Expectation that actions cannot change outcomes","Which explanation links depression to lack of control?"],["What is a phobia?","Excessive fear of a specific object or situation","What is an irrational intense fear called?"],["What is a compulsion?","Repetitive act used to reduce anxiety","Which OCD feature is an action?"],["What is a biological treatment?","Medication or physical intervention","Which treatment targets biology directly?"],["What is a psychological treatment?","Therapy changing thoughts or behaviour","Which treatment uses talking or behavioural techniques?"],["What is exposure therapy?","Gradual contact with a feared stimulus","Which treatment confronts a phobia safely?"],["What is a relapse?","Return of symptoms after improvement","What can happen after treatment ends?"],["What is treatment adherence?","Following the treatment plan","Why does taking medication as prescribed matter?"],["What is a placebo effect?","Improvement caused by expectation","What is an apparent treatment effect without an active ingredient?"],["What is comorbidity?","More than one condition together","What is the presence of co-occurring disorders?"],["What is reliability in diagnosis?","Agreement between clinicians","What makes a diagnosis consistent?"],["What is validity in diagnosis?","Accuracy of the diagnosis","What asks whether a diagnosis reflects the real condition?"],["What is cultural bias?","Assuming one culture's norms are universal","How can diagnosis be distorted?"],["What is institutionalisation?","Effects of hospital living","What can prolonged institutional care cause?"],["What is deinstitutionalisation?","Moving care into the community","What policy reduced reliance on large hospitals?"]
 ]);
 const psychDepthPlans = {
   "GCSE-PSY-MEMORY":["ABCDABCDABCDABCDAB","CADBBCADDBCADBBCAD"],
@@ -25662,8 +25662,8 @@ appendGenerated("HIST-BRIT2", [
   ["Which development helped change everyday life in Britain during the 1950s?","More cars, televisions and household appliances","The end of all private home ownership","A return to wartime rationing across every product","The removal of secondary education", "Consumer goods became more widely available, although access and prosperity remained uneven."],
   ["Why did the welfare state remain politically significant after 1951?","It had become a widely expected part of social citizenship","Most voters wanted all public services privatised immediately","It applied only to wealthy households","It was replaced by voluntary charity", "The Conservatives maintained major welfare institutions because they had become embedded in expectations about government responsibility."],
   ["What was a limitation of measuring post-war prosperity through average income alone?","It can hide regional and class differences","It always overstated poverty in every region","It measured political participation rather than material conditions","It excluded all changes in consumer spending", "Averages can hide unequal distribution, housing costs, insecurity and differences between regions."],
-  ["How did decolonisation affect Britain's position in the 1950s?","It shrank the empire and shifted focus","It expanded British control over every major colony","It made Britain independent of the United States","It ended all migration to Britain", "Decolonisation reduced formal imperial power while Britain sought influence through diplomacy, trade and alliances."],
-  ["Why did Macmillan's government emphasise that people had 'never had it so good'?","It sold prosperity as Conservative success","It acknowledged that unemployment had reached zero everywhere","It announced the end of the welfare state","It described Britain's defeat at Suez", "The phrase was political messaging that highlighted prosperity while critics pointed to inequality and persistent social problems."],
+  ["How did decolonisation affect Britain's position in the 1950s?","It shrank the empire and shifted Britain's focus towards Europe","It expanded British control over every major colony","It made Britain independent of the United States","It ended all migration to Britain", "Decolonisation reduced formal imperial power while Britain sought influence through diplomacy, trade and alliances."],
+  ["Why did Macmillan's government emphasise that people had 'never had it so good'?","It presented rising prosperity as Conservative success","It acknowledged that unemployment had reached zero everywhere","It announced the end of the welfare state","It described Britain's defeat at Suez", "The phrase was political messaging that highlighted prosperity while critics pointed to inequality and persistent social problems."],
 ], "HIST-2M6-GAPS");
 for (const question of BANKS["HIST-BRIT2"].questions.slice(-8)) question.specPointId = "aqa-a-hist-2m-6";
 
@@ -29192,9 +29192,51 @@ const firstCheckpointPlans = {
   "GCSE-MATH-P1":"AB", "GCSE-MATH-P2":"AB", "GCSE-MATH-P3":"AB", "GCSE-SCI-PHYS-1":"ABC", "GCSE-SCI-BIO-1":"AB", "GCSE-SCI-CHEM-1":"AB", "GCSE-SCI-BIO-2":"AB", "GCSE-SCI-CHEM-2":"AB", "GCSE-SCI-PHYS-2":"AB"
 };
 const firstCheckpointFrames = ["A new examination scenario asks:", "A student applies the idea to this case:", "In a practical example, which answer fits?", "A worked example tests the same principle:"];
+// Reforge twins whose option set merely permutes the parent's are rebuilt from a
+// bank-wide pool of already-authored distractors. Taking the FIRST three usable
+// pool entries gave every question in the bank the same three: in
+// GCSE-PSY-RESEARCH that put "The conclusion" into 25 of 25 questions, and the
+// same happened in Social, Language, Brain and Problems. Prefer the LEAST-USED
+// candidates instead — the fix the anti-cue loop already carries — and count
+// each pick so the spread holds across the bank.
+const bankDistractorUses = bank => {
+  const uses = new Map();
+  for (const question of bank.questions || []) for (const item of [question, question.reforge]) {
+    for (const [letter, value] of Object.entries(item?.options || {})) {
+      if (letter === item.correct) continue;
+      const key = String(value).toLowerCase();
+      uses.set(key, (uses.get(key) || 0) + 1);
+    }
+  }
+  return uses;
+};
+const pickFreshDistractors = (pool, uses, question, answer, wanted = 3) => {
+  const taken = Object.values(question.options).map(value => String(value).toLowerCase());
+  const seen = new Set();
+  const usable = [];
+  for (const candidate of pool) {
+    const key = candidate.toLowerCase();
+    if (key === String(answer).toLowerCase() || taken.includes(key) || seen.has(key)) continue;
+    seen.add(key);
+    usable.push(candidate);
+  }
+  const answerLength = String(answer).length;
+  usable.sort((a, b) => (uses.get(a.toLowerCase()) || 0) - (uses.get(b.toLowerCase()) || 0)
+    || Math.abs(a.length - answerLength) - Math.abs(b.length - answerLength));
+  const picked = usable.slice(0, wanted);
+  // Spreading the pool wider is no good if it leaves the answer as the longest
+  // option: swap the least-used candidate that is long enough into the set.
+  if (picked.length === wanted && !picked.some(value => value.length >= answerLength)) {
+    const longEnough = usable.find(value => value.length >= answerLength && !picked.includes(value));
+    if (longEnough) picked[wanted - 1] = longEnough;
+  }
+  for (const value of picked) uses.set(value.toLowerCase(), (uses.get(value.toLowerCase()) || 0) + 1);
+  return picked;
+};
 for (const [bankId, plan] of Object.entries(firstCheckpointPlans)) {
   const bank = BANKS[bankId];
   const pool = bank.questions.flatMap(question => Object.entries(question.options || {}).filter(([letter]) => letter !== question.correct).map(([, text]) => String(text)));
+  const poolUses = bankDistractorUses(bank);
   let index = 0;
   for (const question of bank.questions) {
     if (!question.options || !question.reforge?.options) continue;
@@ -29203,13 +29245,7 @@ for (const [bankId, plan] of Object.entries(firstCheckpointPlans)) {
     if (parentSet !== reforgeSet) continue;
     const correctLetter = plan[index++];
     const answer = String(question.options[question.correct]);
-    const distractors = [];
-    for (const candidate of pool) {
-      if (candidate.toLowerCase() === answer.toLowerCase()) continue;
-      if (Object.values(question.options).some(value => String(value).toLowerCase() === candidate.toLowerCase())) continue;
-      if (!distractors.some(value => value.toLowerCase() === candidate.toLowerCase())) distractors.push(candidate);
-      if (distractors.length === 3) break;
-    }
+    const distractors = pickFreshDistractors(pool, poolUses, question, answer);
     if (distractors.length < 3) continue;
     const letters = ["A", "B", "C", "D"];
     let distractorIndex = 0;
@@ -29232,6 +29268,7 @@ for (const [bankId, plan] of Object.entries(secondGroupPlans)) {
   const bank = BANKS[bankId];
   const pool = bank.questions.flatMap(question => Object.entries(question.options || {}).filter(([letter]) => letter !== question.correct).map(([, text]) => String(text)));
   const frames = bankId.startsWith("GCSE-PSY") ? psychologyFrames : businessFrames;
+  const poolUses = bankDistractorUses(bank);
   let index = 0;
   for (const question of bank.questions) {
     if (!question.options || !question.reforge?.options) continue;
@@ -29241,13 +29278,7 @@ for (const [bankId, plan] of Object.entries(secondGroupPlans)) {
     const correctLetter = plan[index++];
     if (!correctLetter) continue;
     const answer = String(question.options[question.correct]);
-    const distractors = [];
-    for (const candidate of pool) {
-      if (candidate.toLowerCase() === answer.toLowerCase()) continue;
-      if (Object.values(question.options).some(value => String(value).toLowerCase() === candidate.toLowerCase())) continue;
-      if (!distractors.some(value => value.toLowerCase() === candidate.toLowerCase())) distractors.push(candidate);
-      if (distractors.length === 3) break;
-    }
+    const distractors = pickFreshDistractors(pool, poolUses, question, answer);
     if (distractors.length < 3) continue;
     const letters = ["A", "B", "C", "D"];
     let distractorIndex = 0;
@@ -29304,6 +29335,7 @@ for (const [bankId, plan] of Object.entries(biologyPlans)) {
   const pool = bank.questions.flatMap(question => Object.entries(question.options || {})
     .filter(([letter]) => letter !== question.correct)
     .map(([, text]) => String(text)));
+  const poolUses = bankDistractorUses(bank);
   let index = 0;
   for (const question of bank.questions) {
     if (!question.options || !question.reforge?.options) continue;
@@ -29312,13 +29344,7 @@ for (const [bankId, plan] of Object.entries(biologyPlans)) {
     const correctLetter = plan[index++];
     if (!correctLetter) continue;
     const answer = String(question.options[question.correct]);
-    const distractors = [];
-    for (const candidate of pool) {
-      if (candidate.toLowerCase() === answer.toLowerCase()) continue;
-      if (Object.values(question.options).some(value => String(value).toLowerCase() === candidate.toLowerCase())) continue;
-      if (!distractors.some(value => value.toLowerCase() === candidate.toLowerCase())) distractors.push(candidate);
-      if (distractors.length === 3) break;
-    }
+    const distractors = pickFreshDistractors(pool, poolUses, question, answer);
     if (distractors.length < 3) continue;
     const options = {};
     let distractorIndex = 0;
@@ -30795,17 +30821,36 @@ Object.values(BANKS).forEach(bank => {
 // applied only when the two option sets are otherwise identical.
 const reforgeWords = text => new Set(String(text).toLowerCase().match(/[a-z][a-z'-]{3,}/g) || []);
 const reforgeStopWords = new Set(["what", "which", "that", "this", "from", "with", "when", "where", "does", "means", "used", "most", "main", "purpose", "following", "question", "case", "example", "generally", "usually"]);
+// Picking the replacement by score alone, tie-broken by the SHORTEST candidate,
+// meant that whenever nothing shared a stem word — which is most of the time —
+// the same handful of short strings won for every question in the bank. In
+// gcse-psych that put "Increased energy only" into 23 questions, "Visual acuity
+// only" into 22 and "Obeying a direct order" into 19, all from a single
+// authored occurrence each. This is the same failure the anti-cue loop had, and
+// takes the same fix: count how often each string is already used and prefer
+// the least-used candidate among the best-scoring ones.
 for (const bank of Object.values(BANKS)) {
   const questions = bank.questions || [];
-  const candidates = questions.flatMap(source => {
+  const candidatesByValue = new Map();
+  for (const source of questions) {
     const sourceWords = reforgeWords(source.stem);
-    return Object.entries(source.options || {})
-      .filter(([letter]) => letter !== source.correct)
-      .map(([, value]) => ({
-        value: stripGeneratedOptionPadding(value),
-        words: sourceWords
-      }));
-  });
+    for (const [letter, value] of Object.entries(source.options || {})) {
+      if (letter === source.correct) continue;
+      const clean = stripGeneratedOptionPadding(value);
+      if (!clean) continue;
+      const entry = candidatesByValue.get(clean) || { value: clean, words: new Set() };
+      for (const word of sourceWords) entry.words.add(word);
+      candidatesByValue.set(clean, entry);
+    }
+  }
+  const candidates = [...candidatesByValue.values()];
+  const optionUses = new Map();
+  for (const question of questions) for (const item of [question, question.reforge]) {
+    for (const value of Object.values(item?.options || {})) {
+      const clean = stripGeneratedOptionPadding(value);
+      optionUses.set(clean, (optionUses.get(clean) || 0) + 1);
+    }
+  }
   for (const question of questions) {
     const reforge = question.reforge;
     if (!reforge?.options || !question.options) continue;
@@ -30824,8 +30869,13 @@ for (const bank of Object.values(BANKS)) {
         candidate,
         score: stemWords.reduce((score, word) => score + (candidate.words.has(word) ? 1 : 0), 0)
       }))
-      .sort((a, b) => b.score - a.score || a.candidate.value.length - b.candidate.value.length)[0];
-    if (replacement) reforge.options[target] = replacement.candidate.value;
+      .sort((a, b) => b.score - a.score
+        || (optionUses.get(a.candidate.value) || 0) - (optionUses.get(b.candidate.value) || 0)
+        || a.candidate.value.length - b.candidate.value.length)[0];
+    if (replacement) {
+      reforge.options[target] = replacement.candidate.value;
+      optionUses.set(replacement.candidate.value, (optionUses.get(replacement.candidate.value) || 0) + 1);
+    }
   }
 }
 
