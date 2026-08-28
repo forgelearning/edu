@@ -134,8 +134,8 @@ propagates into its `*-COV-*` copies and fixing the source fixes them all.
 
   **Read that number carefully.** It is true of what a student sees, and it is
   produced almost entirely by a runtime patch rather than by authoring. Remove
-  the anti-cue loop and **1,456 of 15,327 items (9.5%)** have the correct
-  answer as the single longest option — `gcse-psych` 39.9%, `gcse-hist` 34.8%,
+  the anti-cue loop and **1,434 of 15,327 items (9.4%)** have the correct
+  answer as the single longest option — `gcse-psych` 34.4%, `gcse-hist` 34.8%,
   `bus` 32.6%, `cs` 26.7%, `econ` 26.1%. (Both the total and the per-subject
   shares re-measured 2026-08-28 with `dev/audit-source-cues.js`, after the
   separate-science, law, rs, maths and hist keys were rewritten. `law`, `rs`,
@@ -535,6 +535,22 @@ etc.) — treat every completion claim in it as stale by default.
   became the bare result. Where a key was a precise definition against one-word
   distractors (much of RS), the distractors were written out in parallel form
   instead.
+
+  **`gcse-psych` and `gcse-hist` do not yield to this method — stop before you
+  start (checked 2026-08-28).** Their options have a median length of 27-28
+  characters, so a key is "longest" by two or three characters and there is
+  nothing to shorten. Worse, a generation pass sprays a handful of distractors
+  across the bank: in `gcse-psych`, `"Increased energy only"` is authored once,
+  in the depression tuple, and appears as a distractor in **23** questions;
+  `"Visual acuity only"` in 22 and `"Obeying a direct order"` in 19. Those three
+  strings account for 64 of the subject's remaining source cues on their own.
+  Lengthening one therefore changes dozens of questions at once, and any attempt
+  to close the gap string-by-string ends in mechanical padding — which is the
+  bug this whole line of work exists to remove. The real fix is to stop that
+  pass recycling distractors, not to edit the options it produces; until then
+  these two subjects stay in the source-cue backlog, masked by the anti-cue
+  loop. 22 questions in Memory, Perception, Development and Research Methods
+  were fixed by hand first (161 source cues to 139) and are worth keeping.
 
   Four subjects (`SOC-FAM`, `CRIM-COURT`, `POL-UKGOV`, `hsc`) build questions
   from a **shared pool of definitions, where each definition is the key in one

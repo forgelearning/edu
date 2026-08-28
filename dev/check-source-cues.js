@@ -36,7 +36,7 @@ const { loadBankPair, cueItems } = require('./lib/source-bank.js');
 // Lower this as source questions are rewritten; never raise it. Measured
 // 2026-08-26 (CLAUDE.md's 2,430 / 16.1% figure predates work by other sessions
 // and was already stale when this was written — re-measure, don't trust it).
-const SOURCE_CUE_BASELINE = 1456;
+const SOURCE_CUE_BASELINE = 1434;
 
 const filter = process.argv[2];
 const { raw } = loadBankPair();
