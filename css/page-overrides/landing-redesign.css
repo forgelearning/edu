@@ -100,6 +100,7 @@ body.landing-redesign.has-consent-banner{padding-bottom:0!important}
 /* Compact credibility rail. */
 body.landing-redesign .proof-rail{padding:0!important;background:var(--landing-deep)!important;border-top:0!important;color:var(--landing-cream)}
 body.landing-redesign .proof-rail-mobile-summary{display:none}
+body.landing-redesign .proof-rail>.wrap{max-width:1240px}
 body.landing-redesign .proof-rail-grid{display:grid;grid-template-columns:repeat(3,1fr);padding-top:26px;padding-bottom:26px}
 body.landing-redesign .proof-rail-grid>div{padding:0 30px;border-left:1px solid rgba(255,248,238,.16)}
 body.landing-redesign .proof-rail-grid>div:first-child{padding-left:0;border-left:0}
