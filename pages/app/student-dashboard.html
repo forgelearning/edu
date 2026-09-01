@@ -413,14 +413,25 @@ function forgeSignOut(){
           var token = ForgeAuth.accessToken();
           var authUser = ForgeAuth.currentUser();
           if (token && authUser) {
-            // Load only the active class row; other class memberships are
-            // intentionally not part of this dashboard.
-            if (st.studentId) {
-              supaGet('responses', 'student_id=eq.' + encodeURIComponent(st.studentId) + '&order=created_at.desc').then(function(r) {
-                st.responses = r || [];
-                renderDashboard();
-              }).catch(function() { st.loadError=true; renderDashboard(); });
-            } else { renderDashboard(); }
+            /* An account holds one student row per class it has joined, and
+               its responses are spread across them. Read them all, with the
+               access token — a token-less read of `responses` returns [] under
+               RLS rather than an error, which is how a student with a full
+               history was shown zeros. */
+            ForgeClasses.fetchAuthResponses(token, authUser.id, function(rows, error, ids) {
+              st.responses = rows || [];
+              if (error) st.loadError = true;
+              /* Cache an id that actually carries history, so the pages that
+                 still scope themselves to one row pick the useful one. */
+              if (!error && ids && ids.length) {
+                var withHistory = {};
+                (rows || []).forEach(function(r){ withHistory[r.student_id] = true; });
+                var best = ids.filter(function(id){ return withHistory[id]; })[0] || st.studentId || ids[0];
+                st.studentId = best;
+                try { localStorage.setItem('forge-paid-student', JSON.stringify({ studentId: best, name: st.studentName })); } catch(e) {}
+              }
+              renderDashboard();
+            });
           } else if (st.studentId) {
             supaGet('responses','student_id=eq.'+st.studentId+'&order=created_at.desc').then(function(r){
               st.responses = r || [];
@@ -431,25 +442,7 @@ function forgeSignOut(){
           }
         }
 
-        // If still no studentId, look up by auth_user_id
-        if (!st.studentId && ForgeAuth.currentUser()) {
-          (function() {
-            var _token = ForgeAuth.accessToken();
-            var _uid = ForgeAuth.currentUser() ? ForgeAuth.currentUser().id : null;
-            if (!_token || !_uid) return Promise.resolve([]);
-            return ForgeAPI.response(SUPABASE_URL + '/rest/v1/students?select=*&auth_user_id=eq.' + _uid + '&order=created_at.asc&limit=1', {
-              headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + _token }
-            }).then(function(r) { return r.json(); });
-          })().then(function(rows) {
-            if (rows && rows.length > 0) {
-              st.studentId = rows[0].id;
-              try { localStorage.setItem('forge-paid-student', JSON.stringify({ studentId: rows[0].id, name: sub.name })); } catch(e) {}
-            }
-            loadProfileWithId();
-          }).catch(function() { loadProfileWithId(); });
-        } else {
-          loadProfileWithId();
-        }
+        loadProfileWithId();
       } else {
         checkLocalSessionProfile();
       }

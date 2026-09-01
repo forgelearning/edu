@@ -65,6 +65,9 @@ jobs:
       - name: Run Forge persistence recovery tests
         run: node dev/test-persistence.js
 
+      - name: Run signed-in student history tests
+        run: node dev/test-signed-in-student-history.js
+
       - name: Build public site
         run: node scripts/build/build-pages-site.js
 

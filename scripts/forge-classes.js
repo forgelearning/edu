@@ -297,6 +297,37 @@
     }).catch(function () { done(null); });
   }
 
+  /* Responses for a student who is signed in with an account.
+   *
+   * Two things went wrong when a page read this itself. It resolved the
+   * account to a single student row with
+   * `students?auth_user_id=eq.<uid>&order=created_at.asc&limit=1`, but one
+   * account holds one row per class it has joined, and the oldest of those is
+   * usually the empty row created at sign-up — so the read was scoped to a
+   * student id with no responses at all. And it read the responses table
+   * through the plain anon helper, which sends the publishable key: anon has
+   * no SELECT policy on responses, so that read answers 200 with [] rather
+   * than failing. Either one on its own reports "0" to a student with a full
+   * history, which is what the Profile did.
+   *
+   * So: resolve every student row the account owns, and read with the access
+   * token. `done(rows, error, ids)` — the ids let a caller cache an id that
+   * actually carries history instead of the sign-up row.
+   */
+  function fetchAuthResponses(token, authUserId, done) {
+    if (!token || !authUserId) { done([], new Error('Not signed in'), []); return; }
+    var opts = { token: token };
+    global.ForgeAPI.get('students', 'select=id&auth_user_id=eq.' + encodeURIComponent(authUserId), opts)
+      .then(function (rows) {
+        var ids = (Array.isArray(rows) ? rows : []).map(function (r) { return r.id; }).filter(Boolean);
+        if (!ids.length) { done([], null, []); return; }
+        var filter = 'student_id=in.(' + ids.map(function (id) { return encodeURIComponent(id); }).join(',') + ')';
+        return global.ForgeAPI.get('responses', filter + '&order=created_at.asc', opts)
+          .then(function (responses) { done(Array.isArray(responses) ? responses : [], null, ids); });
+      })
+      .catch(function (error) { done([], error || new Error('Response read failed'), []); });
+  }
+
   global.ForgeClasses = {
     use: use, list: list, load: load, save: save,
     add: add, remove: remove, clear: clear,
@@ -304,6 +335,7 @@
     backfillSubjects: backfillSubjects, fetchAllResponses: fetchAllResponses,
     syncFromServer: syncFromServer, linkToServer: linkToServer,
     fetchLinkedResponses: fetchLinkedResponses,
-    fetchFreeResponses: fetchFreeResponses
+    fetchFreeResponses: fetchFreeResponses,
+    fetchAuthResponses: fetchAuthResponses
   };
 })(window);
