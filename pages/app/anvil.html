@@ -562,21 +562,22 @@ function startAnvil(){
           var token = ForgeAuth.accessToken();
           var authUser = ForgeAuth.currentUser();
           if (token && authUser) {
-            ForgeAPI.response(SUPABASE_URL + '/rest/v1/students?select=id&auth_user_id=eq.' + authUser.id, {
-              headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + token }
-            }).then(function(r) { return r.json(); }).then(function(studentRows) {
-              if (!Array.isArray(studentRows) || studentRows.length === 0) {
-                prepareAnvilHome(); return;
+            /* Read every student row the account owns, with the access token.
+               This used to resolve the rows correctly and then read `responses`
+               through the anon publishable key, which has no SELECT policy on
+               that table — so the read answered 200 with [] and the Anvil had
+               no misconceptions to repair for a student who had answered
+               hundreds of questions. */
+            ForgeClasses.fetchAuthResponses(token, authUser.id, function(responses, error, ids) {
+              anvilState.responses = responses || [];
+              if (error) anvilState.loadError = true;
+              if (!error && ids && ids.length) {
+                var withHistory = {};
+                (responses || []).forEach(function(r){ withHistory[r.student_id] = true; });
+                anvilState.studentId = ids.filter(function(id){ return withHistory[id]; })[0] || anvilState.studentId || ids[0];
               }
-              var ids = studentRows.map(function(r) { return r.id; });
-              var filter = ids.length === 1
-                ? 'student_id=eq.' + ids[0]
-                : 'student_id=in.(' + ids.join(',') + ')';
-              supaGet('responses', filter + '&order=created_at.asc').then(function(responses) {
-                anvilState.responses = responses || [];
-                prepareAnvilHome();
-              }).catch(prepareAnvilHome);
-            }).catch(prepareAnvilHome);
+              prepareAnvilHome();
+            });
           } else if (anvilState.studentId) {
             supaGet('responses','student_id=eq.'+anvilState.studentId+'&order=created_at.asc').then(function(responses){
               anvilState.responses = responses || [];
@@ -587,25 +588,7 @@ function startAnvil(){
           }
         }
 
-        // If still no studentId, look up by auth_user_id
-        if (!anvilState.studentId && ForgeAuth.currentUser()) {
-          (function() {
-            var _token = ForgeAuth.accessToken();
-            var _uid = ForgeAuth.currentUser() ? ForgeAuth.currentUser().id : null;
-            if (!_token || !_uid) return Promise.resolve([]);
-            return ForgeAPI.response(SUPABASE_URL + '/rest/v1/students?select=*&auth_user_id=eq.' + _uid + '&order=created_at.asc&limit=1', {
-              headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + _token }
-            }).then(function(r) { return r.json(); });
-          })().then(function(rows) {
-            if (rows && rows.length > 0) {
-              anvilState.studentId = rows[0].id;
-              try { localStorage.setItem('forge-paid-student', JSON.stringify({ studentId: rows[0].id, name: sub.name })); } catch(e) {}
-            }
-            loadAnvilWithId();
-          }).catch(function() { loadAnvilWithId(); });
-        } else {
-          loadAnvilWithId();
-        }
+        loadAnvilWithId();
       } else {
         checkLocalSession();
       }

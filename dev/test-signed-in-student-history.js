@@ -46,12 +46,22 @@ ForgeClasses.fetchAuthResponses('token-abc', 'uid-1', function (rows, error, ids
   assert(/student_id=in\.\(empty-signup-row,econ-row\)/.test(responses.query), 'responses are read across all of the account\'s rows');
 });
 
-// ---- neither page may go back to the single-row, anon-key read ----
-['profile.html', 'student-dashboard.html'].forEach(function (page) {
+// ---- no surface may go back to the single-row, anon-key read ----
+/* The Anvil belongs here for the same reason as the profile: it resolved every
+   student row correctly and then read `responses` with the anon key, so it saw
+   no misconceptions to repair for a student with a full history. */
+['profile.html', 'student-dashboard.html', 'anvil.html'].forEach(function (page) {
   const src = fs.readFileSync(path.join(root, 'pages', 'app', page), 'utf8');
   assert(/ForgeClasses\.fetchAuthResponses\(/.test(src), page + ' must load a signed-in student\'s history through the shared helper');
   assert(!/auth_user_id=eq\.[^\n]*limit=1/.test(src), page + ' must not resolve the account to a single student row');
-  assert(!/if \(token && authUser\)[\s\S]{0,400}supaGet\('responses'/.test(src), page + ' must not read responses with the anon key while signed in');
+  assert(!/if \(token && authUser\)[\s\S]{0,600}supaGet\('responses'/.test(src), page + ' must not read responses with the anon key while signed in');
 });
+
+/* The assignments page reads with the token already, but picked whichever
+   student row PostgREST returned first — including the class-less sign-up row,
+   which made it tell a student in a class that they have no class. */
+const assignments = fs.readFileSync(path.join(root, 'pages', 'app', 'assignments.html'), 'utf8');
+assert(/rows\.filter\(function\(r\)\{return r\.class_id\}\)\[0\]/.test(assignments),
+  'assignments must prefer a student row that names a class over the sign-up row');
 
 console.log('  ok   a signed-in student\'s history reaches the profile and dashboard');
