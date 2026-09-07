@@ -35,13 +35,44 @@ for (const file of pages) {
     return addClass(tag.replace(` style="${style}"`, ''), classFor(style));
   });
   let withSheet = after;
-  if (!withSheet.includes('css/generated-utilities.css')) {
+  // Only link the sheet where the page actually uses one of its classes. This
+  // used to link it unconditionally, which put an extra stylesheet request on
+  // redirect stubs and other pages that reference nothing in it.
+  const needsSheet = /forge-u-[a-z0-9]+/.test(withSheet);
+  if (needsSheet && !withSheet.includes('css/generated-utilities.css')) {
     withSheet = withSheet.replace('</head>', '  <link rel="stylesheet" href="css/generated-utilities.css">\n</head>');
   }
   if (withSheet !== before) fs.writeFileSync(file, withSheet);
 }
 
-const output = ['/* Generated from static style attributes. Run scripts/maintenance/extract-static-styles.js after template changes. */'];
-for (const [className, style] of styles) output.push(`.${className}{${style}}`);
+/* Refuse to shrink the sheet.
+ *
+ * This script used to overwrite css/generated-utilities.css with whatever it
+ * had just extracted. Once the pages had been converted, there were no inline
+ * styles left to find, so a later run wrote an empty sheet -- and 210 classes
+ * the markup still referenced silently stopped resolving. That shipped and went
+ * unnoticed for five weeks.
+ *
+ * Extraction is now additive: existing rules are kept and newly extracted ones
+ * merged in, so a run that finds nothing leaves the sheet intact.
+ *
+ * The matching guard -- that every forge-u-* class a page references actually
+ * resolves -- lives in scripts/checks/check-ui-system.js, so it runs in CI on
+ * every change rather than only when someone happens to run this script. */
+const existing = new Map();
+if (fs.existsSync(cssFile)) {
+  const current = fs.readFileSync(cssFile, 'utf8');
+  for (const match of current.matchAll(/^\.(forge-u-[a-z0-9]+)\{([^}]*)\}$/gm)) existing.set(match[1], match[2]);
+}
+
+const merged = new Map([...existing, ...styles]);
+
+const preserved = fs.existsSync(cssFile)
+  ? fs.readFileSync(cssFile, 'utf8').split(/\n(?=\.forge-u-)/)[0].trimEnd()
+  : '/* Generated from static style attributes. */';
+const output = [preserved];
+for (const [className, style] of [...merged].sort((a, b) => a[0].localeCompare(b[0]))) output.push(`.${className}{${style}}`);
 fs.writeFileSync(cssFile, `${output.join('\n')}\n`);
-console.log(`Extracted ${styles.size} static style declarations into css/generated-utilities.css.`);
+console.log(
+  `Extracted ${styles.size} static style declaration(s); sheet now holds ${merged.size} rule(s).`
+);

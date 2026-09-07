@@ -11,7 +11,7 @@ const maintainedHtmlFiles = [
   ...['dev/sidebar-test.html', 'dev/teacher-dashboard-test.html', 'templates/gcse-subject-template.html'].map(name => path.join(root, name))
 ];
 const failures = [];
-const metrics = { pages: htmlFiles.length, dynamicStyleAttributes: 0, staticStyleAttributes: 0, inlineStyleBlocks: 0, inlineEventAttributes: 0, runtimeInlineHandlerSources: 0, legacyLogoClassAttributes: 0, duplicateClassAttributes: 0, directSupabaseFetches: 0, subjectPagesWithoutSharedCss: 0 };
+const metrics = { pages: htmlFiles.length, dynamicStyleAttributes: 0, staticStyleAttributes: 0, inlineStyleBlocks: 0, inlineEventAttributes: 0, runtimeInlineHandlerSources: 0, undeclaredUtilityClasses: 0, legacyLogoClassAttributes: 0, duplicateClassAttributes: 0, directSupabaseFetches: 0, subjectPagesWithoutSharedCss: 0 };
 
 for (const file of maintainedHtmlFiles) {
   const name = path.relative(root, file);
@@ -52,6 +52,36 @@ for (const file of maintainedHtmlFiles) {
     }
   }
   if (!source.includes('scripts/forge-page-actions.js')) failures.push(`${name}: missing shared action delegate`);
+}
+
+/* Every forge-u-* class a page references must resolve to a rule.
+ *
+ * This check already forbids inline style attributes, which is what pushed the
+ * styling into generated forge-u-* classes in the first place -- but nothing
+ * verified the classes existed. css/generated-utilities.css shipped empty on
+ * 2026-08-02 and 210 classes across 8 pages silently resolved to nothing for
+ * five weeks, costing the school overview its header layout and its tables
+ * their column sizing. A missing rule has no console error and no visual cue
+ * beyond the layout quietly being wrong, so it needs a check. */
+const declaredUtilities = new Set();
+for (const dir of ['css', 'css/page-overrides']) {
+  const directory = path.join(root, dir);
+  if (!fs.existsSync(directory)) continue;
+  for (const name of fs.readdirSync(directory)) {
+    if (!name.endsWith('.css')) continue;
+    const sheet = fs.readFileSync(path.join(directory, name), 'utf8');
+    for (const match of sheet.matchAll(/\.(forge-u-[a-z0-9]+)/g)) declaredUtilities.add(match[1]);
+  }
+}
+for (const file of htmlFiles) {
+  const name = path.relative(root, file);
+  const referenced = new Set();
+  for (const match of fs.readFileSync(file, 'utf8').matchAll(/forge-u-[a-z0-9]+/g)) referenced.add(match[0]);
+  const undeclared = [...referenced].filter(cls => !declaredUtilities.has(cls)).sort();
+  if (undeclared.length) {
+    metrics.undeclaredUtilityClasses += undeclared.length;
+    failures.push(`${name}: ${undeclared.length} forge-u class(es) with no CSS rule (${undeclared.slice(0, 5).join(', ')}${undeclared.length > 5 ? ', …' : ''})`);
+  }
 }
 
 const scriptFiles = fs.readdirSync(path.join(root, 'scripts')).filter(name => name.endsWith('.js') && !/^(migrate|extract)-/.test(name));
