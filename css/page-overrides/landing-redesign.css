@@ -301,7 +301,10 @@ body.landing-redesign .landing-footer-base{border-color:var(--landing-rule);padd
   body.landing-redesign .audience-sidebar>strong{display:none}
   body.landing-redesign .audience-sidebar>span{justify-content:center;gap:6px;min-height:44px;padding:0 10px;white-space:nowrap}
   body.landing-redesign .evidence-layout{grid-template-columns:1fr;gap:52px}
-  body.landing-redesign #waitlist .inner{grid-template-columns:1fr;gap:48px}
+  /* minmax(0,...) not 1fr: the email input carries its default intrinsic
+     width, so a bare 1fr track grows to that min-content and side-scrolls
+     the whole page below ~360px. */
+  body.landing-redesign #waitlist .inner{grid-template-columns:minmax(0,1fr);gap:48px}
   body.landing-redesign .landing-footer-main{grid-template-columns:1fr;gap:44px}
 }
 
@@ -379,7 +382,7 @@ body.landing-redesign .landing-footer-base{border-color:var(--landing-rule);padd
   body.landing-redesign .wait-quiz-link{width:100%}
   body.landing-redesign .wait-form-shell{padding:20px 16px}
   body.landing-redesign #waitlist form{flex-direction:column;border:0;background:transparent;padding:0}
-  body.landing-redesign #waitlist input[type=email]{min-height:50px;border:1px solid rgba(255,248,238,.18);border-radius:9px}
+  body.landing-redesign #waitlist input[type=email]{width:100%;min-height:50px;border:1px solid rgba(255,248,238,.18);border-radius:9px}
   body.landing-redesign #waitlist button{width:100%}
   body.landing-redesign .landing-footer{padding-top:54px}
   body.landing-redesign .landing-footer-main{padding-bottom:42px}

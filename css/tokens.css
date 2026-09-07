@@ -43,6 +43,9 @@
   --glass-blur:20px;
   --glass-bg:rgba(20,18,16,.62);
   --glass-panel:rgba(33,30,27,.7);
+  /* For a fixed bar that scrolling content passes *under*, where .7 lets a
+     bright CTA read straight through the labels. Same hue, less see-through. */
+  --glass-panel-solid:rgba(33,30,27,.94);
 
   /* semantic state surfaces — use these for feedback, not raw colour mixes */
   --surface-success-subtle:rgba(127,217,138,.08);
@@ -79,6 +82,7 @@
 
   --glass-bg:rgba(250,250,248,.62);
   --glass-panel:rgba(255,255,255,.7);
+  --glass-panel-solid:rgba(253,252,250,.94);
 
   --surface-success-subtle:rgba(27,140,42,.08);
   --surface-error-subtle:rgba(212,45,45,.08);

@@ -518,3 +518,32 @@ html:not([data-theme="light"]) body.forge-login-screen .auth-foot{border-top-col
 html:not([data-theme="light"]) body.forge-solo-login .auth-err,
 html:not([data-theme="light"]) body.forge-login-screen .auth-err{color:#ffb4a8;background:rgba(255,90,90,.1);border-color:rgba(255,90,90,.35)}
 html:not([data-theme="light"]) body.forge-solo-login::after{color:var(--forge-login-muted)}
+
+/* ============================================================
+   Phone: fit the question and all four options above the fold.
+
+   The session chrome had grown to seven stacked rows — rep label,
+   header, session note, progress bar, free-quota strip, question
+   meta — which pushed the stem to y=391 on a 390x844 phone and left
+   the last option under the tab bar on every question. Students had
+   to scroll before they could read option D, once per question.
+
+   Everything below only tightens spacing; the one thing that goes is
+   the session note, whose two facts are both already on screen (the
+   question count in .q-meta as "n / N", the save behaviour surfaced
+   by .forge-save-status when a save actually fails).
+
+   These match the ID specificity of the Live Rep block above, which
+   plain class selectors in a media query would lose to.
+   ============================================================ */
+@media(max-width:600px){
+  #app:has(.quiz-header){padding-top:8px}
+  #app:has(.quiz-header)::before{min-height:18px;margin-bottom:2px}
+  #app>.forge-u-lp9fq9{display:none}
+  #app:has(.quiz-header) .quiz-header{gap:6px;padding:8px 0 8px;margin-bottom:10px}
+  #app:has(.quiz-header) .progress-bar{margin-bottom:12px}
+  #app:has(.quiz-header) .forge-u-1p0xeot{margin-bottom:8px;padding:5px 10px}
+  #app:has(.quiz-header) .q-meta{min-height:24px;margin-bottom:10px}
+  #app:has(.quiz-header) .stem{margin-bottom:16px}
+  #app:has(.quiz-header) .options{gap:10px}
+}
