@@ -953,7 +953,9 @@ const gcseSpecRoutes = [
   // until 2026-08-27 — see scripts/checks/check-paper-mapping.js, which pins
   // the mapping so it cannot drift again.
   ["gcse-geo", "Edexcel", "GCSE Geography B (1GB0)", [
-    ["HAZ", "Paper 1", "Hazardous Earth"], ["DEV", "Paper 1", "Development dynamics"],
+    ["HAZ", "Paper 1", "Hazardous Earth: tectonics"],
+    ["CLIMATE", "Paper 1", "Hazardous Earth: atmosphere and climate"],
+    ["DEV", "Paper 1", "Development dynamics"],
     ["IND", "Paper 1", "The development of an emerging country: India"],
     ["URB", "Paper 1", "Challenges of an urbanising world"],
     ["UKLAND", "Paper 2", "The UK's evolving physical landscape"],
@@ -1009,7 +1011,7 @@ for (const [subject, board, qualification, points] of gcseSpecRoutes) {
 }
 const gcseBankMappings = {
   "gcse-econ": ["GCSE-ECON-P1-FOUND","GCSE-ECON-P1-MARKETS","GCSE-ECON-P1-DS","GCSE-ECON-P1-COMP","GCSE-ECON-P1-PROD","GCSE-ECON-P1-LABOUR","GCSE-ECON-P1-MONEY","GCSE-ECON-UK","GCSE-ECON-P2-NATIONAL","GCSE-ECON-P2-GROWTH","GCSE-ECON-P2-UNEMP","GCSE-ECON-P2-INCOME","GCSE-ECON-P2-PRICE","GCSE-ECON-P2-FISCAL","GCSE-ECON-P2-MONETARY","GCSE-ECON-P2-SUPPLY","GCSE-ECON-P2-MARKETFAIL","GCSE-ECON-P2-TRADE","GCSE-ECON-P2-BOP","GCSE-ECON-P2-EXR","GCSE-ECON-P2-GLOBAL"],
-  "gcse-geo": ["GCSE-GEO-HAZ","GCSE-GEO-DEV","GCSE-GEO-INDIA","GCSE-GEO-URB","GCSE-GEO-UKLAND","GCSE-GEO-UKHUMAN","GCSE-GEO-ENQUIRY","GCSE-GEO-RIVERFIELD","GCSE-GEO-URBFIELD","GCSE-GEO-BIOSPHERE","GCSE-GEO-FORESTS","GCSE-GEO-ENERGY","GCSE-GEO-DECISIONS","GCSE-GEO-SKILLS"],
+  "gcse-geo": ["GCSE-GEO-HAZ","GCSE-GEO-CLIMATE","GCSE-GEO-DEV","GCSE-GEO-INDIA","GCSE-GEO-URB","GCSE-GEO-UKLAND","GCSE-GEO-UKHUMAN","GCSE-GEO-ENQUIRY","GCSE-GEO-RIVERFIELD","GCSE-GEO-URBFIELD","GCSE-GEO-BIOSPHERE","GCSE-GEO-FORESTS","GCSE-GEO-ENERGY","GCSE-GEO-DECISIONS","GCSE-GEO-SKILLS"],
   "gcse-hist": ["GCSE-HIST-AMERICA","GCSE-HIST-INTERWAR","GCSE-HIST-HEALTH","GCSE-HIST-ELIZABETH"],
   "gcse-psych": ["GCSE-PSY-MEMORY","GCSE-PSY-PERCEPTION","GCSE-PSY-DEVELOPMENT","GCSE-PSY-RESEARCH","GCSE-PSY-SOCIAL","GCSE-PSY-LANGUAGE","GCSE-PSY-BRAIN","GCSE-PSY-PROBLEMS"],
   "gcse-science": ["GCSE-SCI-BIO-1","GCSE-SCI-CHEM-1","GCSE-SCI-PHYS-1","GCSE-SCI-BIO-2","GCSE-SCI-CHEM-2","GCSE-SCI-PHYS-2"],

@@ -41749,3 +41749,84 @@ for (const [id, variants] of Object.entries(physAnswerLengthRepairs)) {
     }
   }
 }());
+
+/*
+ * Hazardous Earth is split into two assignable banks (2026-09-07).
+ *
+ * Edexcel B Topic 1 covers two largely independent bodies of content —
+ * atmospheric circulation, tropical cyclones and climate change on one side,
+ * plate tectonics, earthquakes and volcanoes on the other — and they are
+ * usually taught as separate units. As one 69-question bank a teacher could
+ * not assign either half on its own.
+ *
+ * This runs LAST, deliberately. Every earlier pass (the geo640 balance plans,
+ * the tag maps, the Year 9 diagnostic tags, the canonical spec-point stamp,
+ * the anti-cue loop and the distractor redistribution) reads
+ * BANKS["GCSE-GEO-HAZ"] and expects the intact 69-question bank. Splitting
+ * earlier would change what those passes see — the balance plan in particular
+ * keys a fixed letter string to a fixed id range. Moving the questions after
+ * all of them leaves every pass byte-identical in its effect.
+ *
+ * GCSE-GEO-HAZ keeps its id and takes the tectonics half. The id is stored in
+ * `responses.bank` and in each assignment's `banks` array, so retiring it
+ * would orphan existing assignments and historical response rows; keeping it
+ * means an assignment set before today still resolves, now covering tectonics
+ * only. Question ids are unchanged throughout, so `responses.question_id`
+ * history is unaffected either way.
+ */
+(function splitHazardousEarth() {
+  const source = BANKS["GCSE-GEO-HAZ"];
+  if (!source) return;
+
+  // Listed explicitly rather than derived from a tag pattern: the membership of
+  // each half is a teaching decision, and a regex over tags would silently
+  // move a question when a tag is renamed. Volcanic-aerosol and Pinatubo
+  // questions sit on the climate side because Edexcel treats them as a natural
+  // cause of climate change (1.2), not as volcano content.
+  const CLIMATE_IDS = new Set([
+    "GCSE-HAZ-04", "GCSE-HAZ-07", "GCSE-HAZ-08", "GCSE-HAZ-FB-04",
+    "GCSE-HAZ-FB-07", "GCSE-HAZ-FB-08", "GCSE-HAZ-16", "GCSE-HAZ-17",
+    "GCSE-HAZ-18", "GCSE-HAZ-19", "GCSE-HAZ-20", "GCSE-HAZ-21",
+    "GCSE-HAZ-22", "GCSE-HAZ-24", "GCSE-HAZ-26", "GCSE-HAZ-27",
+    "GCSE-HAZ-28", "GCSE-HAZ-29", "GCSE-HAZ-30", "GCSE-HAZ-31",
+    "GCSE-HAZ-32", "GCSE-HAZ-35", "GCSE-HAZ-36", "GCSE-HAZ-37",
+    "GCSE-HAZ-38", "GCSE-HAZ-39", "GCSE-HAZ-40", "GCSE-HAZ-41",
+    "GCSE-HAZ-42", "GCSE-HAZ-Y10-05", "GCSE-HAZ-Y10-06", "GCSE-HAZ-Y10-08",
+    "GCSE-HAZ-Y10-09", "GCSE-HAZ-Y10-10"
+  ]);
+
+  const climate = source.questions.filter((q) => CLIMATE_IDS.has(q.id));
+  const tectonic = source.questions.filter((q) => !CLIMATE_IDS.has(q.id));
+
+  // A listed id that no longer exists would silently shrink the climate bank,
+  // so fail loudly instead of shipping a half-empty topic.
+  if (climate.length !== CLIMATE_IDS.size) {
+    const found = new Set(climate.map((q) => q.id));
+    const missing = [...CLIMATE_IDS].filter((id) => !found.has(id));
+    throw new Error("Hazardous Earth split: ids not found in the bank — " + missing.join(", "));
+  }
+
+  // getSpecPoint() reads specPointId first, and gcseCanonicalBankPoints stamped
+  // every question in this bank with the tectonics point. Re-stamp the moved
+  // half so the card and the spec-coverage check attribute it correctly.
+  for (const question of climate) question.specPointId = "edexcel-gcse-geo-climate";
+
+  source.label = "Hazardous Earth — Tectonics";
+  source.questions = tectonic;
+
+  BANKS["GCSE-GEO-CLIMATE"] = {
+    label: "Hazardous Earth — Atmosphere & Climate",
+    color: source.color,
+    questions: climate
+  };
+
+  // Registered here rather than in the SUBJECTS literal for the same reason the
+  // split runs last: rebalanceMCQSubject() and the other subject-wide passes
+  // walk this array and dereference each bank, so listing a bank that does not
+  // exist yet throws. Inserted directly after HAZ so the two halves sit
+  // together in the picker.
+  const banks = SUBJECTS["gcse-geo"].banks;
+  if (!banks.includes("GCSE-GEO-CLIMATE")) {
+    banks.splice(banks.indexOf("GCSE-GEO-HAZ") + 1, 0, "GCSE-GEO-CLIMATE");
+  }
+}());

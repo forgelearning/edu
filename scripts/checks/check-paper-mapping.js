@@ -34,7 +34,7 @@ const registry = context.window.__REGISTRY;
 // with Paper 3 because that is where the decision-making exercise needs them.
 const EXPECTED = {
   'gcse-geo': {
-    HAZ: 'Paper 1', DEV: 'Paper 1', IND: 'Paper 1', URB: 'Paper 1',
+    HAZ: 'Paper 1', CLIMATE: 'Paper 1', DEV: 'Paper 1', IND: 'Paper 1', URB: 'Paper 1',
     UKLAND: 'Paper 2', UKHUMAN: 'Paper 2', ENQ: 'Paper 2', RVF: 'Paper 2', URF: 'Paper 2',
     BIO: 'Paper 3', FOR: 'Paper 3', ENE: 'Paper 3', DEC: 'Paper 3', SKILLS: 'Paper 3'
   }
