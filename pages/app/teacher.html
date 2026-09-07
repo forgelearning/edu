@@ -82,7 +82,7 @@ function mountTeacherSidebar() {
 <script>window.ForgeAssignmentBanks=BANKS;</script><script src="scripts/forge-assignment-progress.js"></script>
 <script src="scripts/forge-misconception-state.js"></script>
 <script src="scripts/forge-metrics.js"></script>
-<script src="data/misconception-labels.js?v=20260813"></script>
+<script src="data/misconception-labels.js?v=20260907-diagnostics"></script>
 <script src="data/starter-activities.js?v=20260813"></script>
 <script>
 // The dashboard depends on ForgeAPI. If a cached or interrupted first load
@@ -1788,6 +1788,14 @@ function dueBadge(dateStr) {
 
 function teacherEsc(value) { return window.ForgeTeacherUI.escape(value); }
 
+function teacherBankLabel(bankId) {
+  return BANK_LABELS[bankId] || bankId;
+}
+
+function teacherMisconceptionLabel(tag) {
+  return (typeof resolveMCLabel === 'function' && resolveMCLabel(tag)) || tag;
+}
+
 function assignmentBanks(asgn) {
   try { return Array.isArray(asgn.banks) ? asgn.banks : (asgn.banks ? JSON.parse(asgn.banks) : []); }
   catch (e) { return []; }
@@ -2178,7 +2186,7 @@ function renderStarters(wrongResponses) {
     h += '<div class="misconception-card__header"><div><div class="card-title">Next interventions</div><h2 id="other-misconceptions-title">Other misconceptions this period</h2></div><span class="misconception-card__hint">Choose one to preview</span></div>';
     h += '<div class="misconception-grid">';
     others.forEach(function(tag) {
-      h += '<button type="button" class="misconception-chip" data-forge-action="show-starter" data-tag="' + teacherEsc(tag) + '"><span><strong>' + teacherEsc(tag) + '</strong><small>' + counts[tag].count + ' fire' + (counts[tag].count !== 1 ? 's' : '') + '</small></span><span aria-hidden="true">→</span></button>';
+      h += '<button type="button" class="misconception-chip" data-forge-action="show-starter" data-tag="' + teacherEsc(tag) + '"><span><strong>' + teacherEsc(teacherMisconceptionLabel(tag)) + '</strong><small>' + counts[tag].count + ' fire' + (counts[tag].count !== 1 ? 's' : '') + '</small></span><span aria-hidden="true">→</span></button>';
     });
     h += '</div></section>';
   }
@@ -2270,8 +2278,8 @@ function renderClassOverview(responses, students) {
     h += '</td>';
     h += '<td class="forge-u-1imlfss" data-label="Answered" data-forge-action="render-student" data-student-id="' + sid + '">' + ps.total + '</td>';
     h += '<td data-label="Accuracy" class="acc" style="color:' + accColor + ';cursor:pointer" data-forge-action="render-student" data-student-id="' + sid + '">' + acc + '%</td>';
-    h += '<td data-label="Weakest topic" class="mono forge-u-gsw1zp" data-forge-action="render-student" data-student-id="' + sid + '">' + (ps.weakBank || '\u2014') + '</td>';
-    h += '<td data-label="Top misconception" class="mono forge-u-gsw1zp" data-forge-action="render-student" data-student-id="' + sid + '">' + (ps.topMC ? ps.topMC + ' \u00d7' + ps.topMCcount : '\u2014') + '</td>';
+    h += '<td data-label="Weakest topic" class="forge-u-gsw1zp" data-forge-action="render-student" data-student-id="' + sid + '">' + (ps.weakBank ? teacherEsc(teacherBankLabel(ps.weakBank)) : '\u2014') + '</td>';
+    h += '<td data-label="Top misconception" class="forge-u-gsw1zp" data-forge-action="render-student" data-student-id="' + sid + '">' + (ps.topMC ? teacherEsc(teacherMisconceptionLabel(ps.topMC)) + ' \u00d7' + ps.topMCcount : '\u2014') + '</td>';
     h += '<td class="forge-u-5goeua" data-label="Access">';
     h += '<label class="forge-sr-only" for="extra-time-' + sid + '">Extra time for ' + teacherEsc(displayName) + '</label><select id="extra-time-' + sid + '" class="extra-time-select forge-u-1ljnzm7" data-sid="' + sid + '">';
     h += '<option value="0"' + (extraTime === 0 ? ' selected' : '') + '>Standard</option>';
