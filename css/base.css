@@ -206,3 +206,11 @@ html:not([data-theme="light"]) .btn-ember:hover:not(:disabled){background:#E8681
 .forge-role-conflict__secondary{padding:11px 16px;border:1px solid var(--line);border-radius:var(--radius-sm);color:var(--muted);font-size:14px;text-align:center;text-decoration:none}
 .forge-role-conflict__secondary:hover{color:var(--white)}
 .forge-role-conflict__primary:focus-visible,.forge-role-conflict__secondary:focus-visible{outline:2px solid var(--hot);outline-offset:2px}
+
+/* The hidden attribute must win over a component's own display.
+   .code-coverage sets display:grid, which overrode the browser default and
+   left an empty bordered box above the teacher dashboard's next-best-action
+   card whenever the note had nothing to say. Components had been patching this
+   one at a time (.level-panel[hidden], #mission-control[hidden]); this makes it
+   hold everywhere. */
+[hidden]{display:none!important}

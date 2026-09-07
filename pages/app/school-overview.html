@@ -560,7 +560,7 @@ function renderDashboard() {
   h += '<p class="school-adoption__lead">' + (stalled.length
     ? '<b>' + stalled.length + '</b> of <b>' + adoption.length + '</b> class' + (adoption.length !== 1 ? 'es' : '') + ' have recorded nothing in the last fortnight.'
     : 'Every class has recorded work in the last fortnight.') + '</p>';
-  h += '<div class="table-scroll"><table><thead><tr><th>Class</th><th>Teacher</th><th>Status</th><th>Last answer</th><th>Answers (14d)</th></tr></thead><tbody>';
+  h += '<div class="table-scroll"><table class="overview-table"><thead><tr><th>Class</th><th>Teacher</th><th>Status</th><th>Last answer</th><th>Answers (14d)</th></tr></thead><tbody>';
   adoption.forEach(function (x) {
     h += '<tr><td>' + esc(x.cls.name || x.cls.code) + '</td>'
       + '<td>' + esc(x.cls.teacher_name || '—') + '</td>'
@@ -615,7 +615,7 @@ function renderDashboard() {
     var out = '<section class="card" aria-label="' + esc(title) + '">';
     out += '<div class="card-title">' + esc(title) + ' <span class="forge-u-1dueybt">· weakest first</span>'
       + ' <button type="button" class="export-btn" data-forge-action="export-csv" data-tab="' + tabKey + '">Export CSV</button></div>';
-    out += '<div class="table-scroll"><table><thead><tr><th>' + esc(firstHeading) + '</th><th>Classes</th><th>Students</th><th>Scored answers</th><th>Accuracy</th></tr></thead><tbody>';
+    out += '<div class="table-scroll"><table class="overview-table"><thead><tr><th>' + esc(firstHeading) + '</th><th>Classes</th><th>Students</th><th>Scored answers</th><th>Accuracy</th></tr></thead><tbody>';
     rows.forEach(function (r) {
       var a = pct(r.correct, r.total);
       out += '<tr><td>' + esc(r.key) + '</td><td>' + r.classes + '</td><td>' + r.students + '</td><td>' + r.total + '</td>'
@@ -657,7 +657,7 @@ function renderDashboard() {
     h += '<p class="ui-meta-muted">Withheld until at least ' + MIN_BAND_COHORT + ' students in this view have extra time recorded — '
       + 'with fewer, the comparison identifies them. Currently ' + cohorts.extra.students + '.</p>';
   } else {
-    h += '<div class="table-scroll"><table><thead><tr><th>Cohort</th><th>Students</th><th>Scored answers</th><th>Accuracy</th></tr></thead><tbody>';
+    h += '<div class="table-scroll"><table class="overview-table"><thead><tr><th>Cohort</th><th>Students</th><th>Scored answers</th><th>Accuracy</th></tr></thead><tbody>';
     ['extra', 'standard'].forEach(function (key) {
       var c = cohorts[key];
       h += '<tr><td>' + c.label + '</td><td>' + c.students + '</td><td>' + c.total + '</td><td>' + showPct(pct(c.correct, c.total)) + '</td></tr>';

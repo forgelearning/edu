@@ -36,6 +36,9 @@ h1,h2,h3{font-family:'Rethink Sans',sans-serif;color:var(--white);line-height:1.
 .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-lg);padding:20px 22px;margin-bottom:16px}
 .card-title{font-family:JetBrains Mono,monospace;font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--ember);margin-bottom:14px}
 .overview-table{width:100%;border-collapse:collapse;font-size:13px}
+/* The wrapper these tables sit in was never styled on this page, so a table
+   wider than the column pushed the page sideways instead of scrolling itself. */
+.table-scroll{overflow-x:auto}
 .overview-table{table-layout:fixed;max-width:100%}
 .overview-table th{font-family:JetBrains Mono,monospace;font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:#8A857E;padding:6px 10px;text-align:left;border-bottom:1px solid var(--line)}
 .overview-table td{padding:10px 10px;border-bottom:1px solid var(--line);color:var(--slate);overflow-wrap:anywhere;word-break:break-word}

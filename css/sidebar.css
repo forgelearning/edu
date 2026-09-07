@@ -5,8 +5,12 @@
 /* Shell geometry changes are intentionally immediate: animating body padding
    and rail width reflows the whole authenticated app on every toggle. The
    inner labels/icons still use opacity and transform transitions below. */
-body.has-forge-sidebar{padding-top:0!important;padding-left:76px}
-body.has-forge-sidebar.forge-sidebar-expanded{padding-left:230px}
+/* Padding clears the rail AND the collapse handle. The handle is a 28px circle
+   centred on the rail edge (left:62px collapsed, 216px expanded), so it reaches
+   14px past the rail; content flush to the rail ran underneath it, which is why
+   the arrow crowded the class dropdown. 98/252 leaves an 8px gap after it. */
+body.has-forge-sidebar{padding-top:0!important;padding-left:98px}
+body.has-forge-sidebar.forge-sidebar-expanded{padding-left:252px}
 /* Authenticated pages use the sidebar shell; any legacy marketing nav left in
    a static entry point must not create a second header or reserve top space. */
 body.has-forge-sidebar #sticky-nav{display:none!important}
