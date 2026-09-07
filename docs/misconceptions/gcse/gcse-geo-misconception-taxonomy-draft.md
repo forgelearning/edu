@@ -1,5 +1,12 @@
 # GCSE Geography — misconception taxonomy (implementation audit)
 
+> **September 2026:** Hazardous Earth, People and the Biosphere, and
+> Development Dynamics now have a second diagnostic layer: 202 questions use
+> 85 specific child tags while their former tags remain as parent groups for
+> roll-up and historical Anvil repair. See `GCSE_GEO_YEAR9_DIAGNOSTIC_TAGS` in
+> `data/forge-data.js`. The category tables below describe the retained parent
+> taxonomy, not the newer teacher-facing child signals.
+
 Subject key `gcse-geo`, 640 questions across 14 banks. Labels and corrective
 starters now resolve for every active tag, but the taxonomy remains largely
 positional rather than concept-based. This document records the remaining

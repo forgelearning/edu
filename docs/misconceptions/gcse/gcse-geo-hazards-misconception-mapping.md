@@ -1,5 +1,12 @@
 # GCSE Geography — Hazardous Earth misconception mapping
 
+> **September 2026 diagnostic pass:** the 16 categories documented below are
+> now retained as parent groups, while the bank's 69 questions use 30 precise
+> child tags. For example, the former `VOLCANO` bucket is now separated into
+> magma viscosity, Pinatubo climate effects and Eyjafjallajokull preparedness.
+> The executable mapping is `GCSE_GEO_YEAR9_DIAGNOSTIC_TAGS` in
+> `data/forge-data.js`; this document remains the record of the parent taxonomy.
+
 First curated bank of the `gcse-geo` retag. Companion to
 `docs/misconceptions/gcse/gcse-geo-misconception-taxonomy-draft.md`, which tracks the subject as a
 whole, and to `docs/misconceptions/gcse/gcse-science-misconception-mapping.md` for the pattern.

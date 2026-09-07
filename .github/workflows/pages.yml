@@ -56,6 +56,9 @@ jobs:
       - name: Run Forge regression tests
         run: node dev/test-forge.js
 
+      - name: Validate GCSE Geography Year 9 diagnostic taxonomy
+        run: node dev/test-gcse-geo-year9-diagnostics.js
+
       - name: Run Forge auth contract tests
         run: node dev/test-auth.js
 

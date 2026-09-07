@@ -29,6 +29,8 @@ function buildQuestionPayloads() {
       const tags = (Array.isArray(question.tag) ? question.tag : [question.tag]).filter(Boolean);
       if (tags.length) questionIndex.tags[question.id] = tags;
       if (subject) for (const tag of tags) questionIndex.misconceptionSubjects[tag] = subject;
+      const groups = (Array.isArray(question.misconceptionGroup) ? question.misconceptionGroup : [question.misconceptionGroup]).filter(Boolean);
+      if (subject) for (const group of groups) questionIndex.misconceptionSubjects[group] = subject;
     }
     bankMeta[id] = {
       label: bank.label,

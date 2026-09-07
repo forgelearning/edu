@@ -1527,6 +1527,9 @@ function _mcStarterQuestion(tag) {
     var questions = BANKS[bankId] && BANKS[bankId].questions || [];
     for (var i = 0; i < questions.length; i++) {
       var questionTags = Array.isArray(questions[i].tag) ? questions[i].tag : [questions[i].tag];
+      if (questions[i].misconceptionGroup) {
+        questionTags = questionTags.concat(Array.isArray(questions[i].misconceptionGroup) ? questions[i].misconceptionGroup : [questions[i].misconceptionGroup]);
+      }
       if (questionTags.indexOf(tag) !== -1) return questions[i];
     }
   }

@@ -1,5 +1,12 @@
 # GCSE Geography — People and the Biosphere misconception mapping
 
+> **September 2026 diagnostic pass:** the 13 categories documented below are
+> now retained as parent groups, while the expanded 57-question bank uses 23
+> precise child tags. Global climate controls, rainfall seasonality and NPP,
+> for example, no longer report as one generic `DISTRIBUTION` misconception.
+> The executable mapping is `GCSE_GEO_YEAR9_DIAGNOSTIC_TAGS` in
+> `data/forge-data.js`; this document remains the record of the parent taxonomy.
+
 Fourth curated bank of the `gcse-geo` retag, after Hazardous Earth, Forests
 Under Threat and Consuming Energy Resources. Same cause:
 `gcseGeoSemanticStem()` derives a tag from the first five content words of each

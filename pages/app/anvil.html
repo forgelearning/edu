@@ -365,6 +365,7 @@ function repairQuestionsFor(tag){
       (bank.questions||[]).forEach(function(q){
         if(!q.reforge||!q.options)return;
         var tags=Array.isArray(q.tag)?q.tag:[q.tag];
+        if(q.misconceptionGroup)tags=tags.concat(Array.isArray(q.misconceptionGroup)?q.misconceptionGroup:[q.misconceptionGroup]);
         if(tags.some(function(value){return String(value||'').toLowerCase()===wanted;})) found.push(q);
       });
     }
