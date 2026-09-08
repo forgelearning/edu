@@ -44,7 +44,7 @@ body.landing-redesign .hero-shell::before{content:"";position:absolute;left:52%;
 body.landing-redesign .hero-shell::after{content:"";position:absolute;left:52%;top:13%;width:34vw;height:34vw;max-width:500px;max-height:500px;border:1px solid color-mix(in srgb,var(--hot) 16%,transparent);border-radius:50%;transform:translateX(8%);pointer-events:none;z-index:0}
 body.landing-redesign .hero-shell .hero-glow{background:radial-gradient(circle at 78% 48%,color-mix(in srgb,var(--ember) 12%,transparent),transparent 28rem)}
 body.landing-redesign .hero-shell .hero-vignette{background:linear-gradient(90deg,color-mix(in srgb,var(--landing-paper) 38%,transparent),transparent 50%,color-mix(in srgb,var(--landing-paper) 12%,transparent))}
-body.landing-redesign .hero{grid-template-columns:1.08fr 1fr;gap:clamp(40px,5vw,64px);align-items:center}
+body.landing-redesign .hero{grid-template-columns:1.08fr 1fr;gap:clamp(40px,5vw,64px);align-items:start}
 body.landing-redesign .hero h1{max-width:16ch;margin:0 0 20px;color:var(--landing-ink);font:700 clamp(52px,5.4vw,72px)/.98 'Rethink Sans',sans-serif;letter-spacing:-.04em;text-wrap:balance}
 body.landing-redesign .hero h1 em{display:inline;color:var(--ember);font-style:normal;text-shadow:none}
 body.landing-redesign .hero p.lede{max-width:56ch;color:var(--landing-muted);font:400 clamp(17px,1.55vw,20px)/1.58 'Poppins',sans-serif}
@@ -254,6 +254,14 @@ body.landing-redesign .landing-footer-links a:hover{color:var(--ember)}
 body.landing-redesign .landing-footer-base{border-color:var(--landing-rule);padding:20px 0 0;color:var(--landing-muted);font-size:11px}
 
 @media(min-width:901px){
+  /* Desktop hero: the demo card grows by ~210px when a student answers, so the
+     grid is top-aligned — centring made the headline jump down as the card grew.
+     The extra top padding keeps the card's "Live practice" tab clear of the
+     floating nav pill, and the nav is widened to the hero's own wrap so the
+     logo lines up with the headline and the nav CTA with the card's edge. */
+  body.landing-redesign #sticky-nav{max-width:1240px}
+  body.landing-redesign .hero-shell{padding-top:132px}
+  body.landing-redesign .hero-copy{padding-top:6px}
   body.landing-redesign #sticky-nav.nav-collapsed{left:24px;right:auto;width:max-content;max-width:calc(100vw - 48px);transform:none;cursor:default;overflow:visible}
   body.landing-redesign #sticky-nav.nav-collapsed nav{justify-content:flex-start;gap:12px;padding:8px 8px 8px 12px}
   body.landing-redesign #sticky-nav.nav-collapsed #nav-shield>img{height:34px}
