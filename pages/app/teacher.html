@@ -24,7 +24,7 @@
 <link rel="stylesheet" href="css/states.css">
   <link rel="stylesheet" href="css/generated-utilities.css">
   <link rel="stylesheet" href="css/page-overrides/teacher.css?v=20260814-pairing1">
-  <link rel="stylesheet" href="css/page-overrides/revision.css?v=20260910-pilot1">
+  <link rel="stylesheet" href="css/page-overrides/revision.css?v=20260910-reporting">
   <link rel="stylesheet" href="css/auth-ember.css?v=20260817-auth2">
   <link rel="stylesheet" href="css/content-status.css">
 </head>
@@ -61,7 +61,8 @@ function mountTeacherSidebar() {
       {key:'dashboard', label:'Overview', onclick:"forgeGoto('heatmap')"},
       {key:'students', label:'Class & students', onclick:"forgeGoto('class')"},
       {key:'assignments', label:'Assignments', onclick:"forgeGoto('assignments')"},
-      {key:'misconceptions', label:'Spec points', onclick:"forgeGoto('spec')"}
+      {key:'misconceptions', label:'Spec points', onclick:"forgeGoto('spec')"},
+      {key:'revision', label:'Revision', onclick:"forgeGoto('revision')"}
     ],
     footerItems: [
       {key:'classes', href:'school-overview.html', label:'School Overview'},
@@ -80,7 +81,7 @@ function mountTeacherSidebar() {
 <!-- Assignment attainment is defined once, in forge-assignment-progress.js, and
      shared with the student's assignment view so the two cannot disagree. -->
 <script>window.ForgeAssignmentBanks=BANKS;</script><script src="scripts/forge-assignment-progress.js"></script>
-<script src="scripts/forge-revision.js?v=20260910-pilot1"></script>
+<script src="scripts/forge-revision.js?v=20260910-reporting"></script>
 <script src="scripts/forge-misconception-state.js"></script>
 <script src="scripts/forge-metrics.js"></script>
 <script src="data/misconception-labels.js?v=20260907-diagnostics"></script>
@@ -385,7 +386,7 @@ function teacherInlineState(target, kind, options) {
   ForgeApp.stateRender(stateNode, kind, options);
   return stateNode.firstElementChild;
 }
-var dashState = { classId: null, className: null, classSubject: null, classCode: null, responses: [], students: [], wrongResponses: [], drillResponses: [], drillStudents: [], assignments: [], assignmentFilter: 'active' };
+var dashState = { classId: null, className: null, classSubject: null, classCode: null, responses: [], students: [], wrongResponses: [], drillResponses: [], drillStudents: [], assignments: [], revisionReviews: [], assignmentFilter: 'active' };
 
 // Loads a given class's dashboard data and remembers it in the sidebar's class
 // switcher, so switching back later doesn't need the code re-entered. Lives at
@@ -411,10 +412,14 @@ window.loadClassDashboard = function(cls) {
         addJoinedClass(cls);
         Promise.all([
           supaGet('students', 'class_id=eq.' + cls.id),
-          supaGet('assignments', 'class_id=eq.' + cls.id + '&order=due_date.asc')
+          supaGet('assignments', 'class_id=eq.' + cls.id + '&order=due_date.asc'),
+          // Revision reporting is additive: older deployments without the
+          // migration still load the dashboard and show an empty state.
+          supaGet('revision_reviews', 'class_id=eq.' + cls.id + '&order=reviewed_at.desc').catch(function(){ return []; })
         ]).then(function(results) {
           dashState.students = rowsOrEmpty(results[0]);
           dashState.assignments = rowsOrEmpty(results[1]);
+          dashState.revisionReviews = rowsOrEmpty(results[2]);
           // Fetch responses by class_id AND by student_id list
           // This catches responses where class_id is null (student played before class was linked)
           var studentIds = dashState.students.map(function(s){ return s.id; });
@@ -1008,6 +1013,7 @@ function renderDashboard() {
   h += '<button type="button" class="tab" role="tab" id="tab-class" aria-controls="panel-class" aria-selected="false" tabindex="-1" data-view="class" data-forge-action="switch-tab" data-tab="class">Class overview</button>';
   h += '<button type="button" class="tab" role="tab" id="tab-spec" aria-controls="panel-spec" aria-selected="false" tabindex="-1" title="Specification areas and accuracy" data-view="spec" data-forge-action="switch-tab" data-tab="spec">Spec points</button>';
   h += '<button type="button" class="tab" role="tab" id="tab-assignments" aria-controls="panel-assignments" aria-selected="false" tabindex="-1" data-view="assignments" data-forge-action="switch-tab" data-tab="assignments">Assignments</button>';
+  h += '<button type="button" class="tab" role="tab" id="tab-revision" aria-controls="panel-revision" aria-selected="false" tabindex="-1" data-view="revision" data-forge-action="switch-tab" data-tab="revision">Revision</button>';
   h += '<button type="button" class="tab" role="tab" id="tab-starters" aria-controls="panel-starters" aria-selected="false" tabindex="-1" data-view="starters" data-forge-action="switch-tab" data-tab="starters">Corrective starters</button>';
   h += '</div>';
 
@@ -1015,6 +1021,7 @@ function renderDashboard() {
   h += '<div class="panel" role="tabpanel" aria-labelledby="tab-class" id="panel-class" hidden></div>';
   h += '<div class="panel" role="tabpanel" aria-labelledby="tab-spec" id="panel-spec" hidden></div>';
   h += '<div class="panel" role="tabpanel" aria-labelledby="tab-assignments" id="panel-assignments" hidden></div>';
+  h += '<div class="panel" role="tabpanel" aria-labelledby="tab-revision" id="panel-revision" hidden></div>';
   h += '<div class="panel" role="tabpanel" aria-labelledby="tab-starters" id="panel-starters" hidden></div>';
   h += '<div class="forge-u-uydnfn" id="panel-student"></div>';
   h += '<div class="teacher-drawer-scrim" id="teacher-drawer-scrim"></div><aside class="teacher-detail-drawer" id="teacher-detail-drawer" aria-hidden="true" aria-labelledby="teacher-detail-title"><div class="teacher-detail-drawer__head"><h2 id="teacher-detail-title">Teaching notes</h2><button type="button" class="teacher-detail-drawer__close" id="teacher-detail-close" aria-label="Close details"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"></path></svg></button></div><div id="teacher-detail-body"></div></aside>';
@@ -1319,6 +1326,7 @@ function renderDashboard() {
   renderPrioritySignals(activeWrongResponses);
   renderClassOverview(responses, students);
   renderAssignments();
+  renderRevisionReporting();
   renderStarters(activeWrongResponses);
 }
 
@@ -1396,7 +1404,7 @@ window.switchTab = function(view, btn) {
   document.getElementById('panel-student').style.display = 'none';
   if (view === 'spec') renderSpecBreakdown(forClassSubject(dashState.responses));
   // Keep the sidebar rail and the mobile tab bar in step with the in-page tabs.
-  var navKey = {heatmap:'dashboard', class:'students', assignments:'assignments', spec:'misconceptions'}[view];
+  var navKey = {heatmap:'dashboard', class:'students', assignments:'assignments', spec:'misconceptions', revision:'revision'}[view];
   if (navKey && window.ForgeSidebar) ForgeSidebar.setActive(navKey);
 };
 
@@ -1939,7 +1947,7 @@ function renderAssignCard(asgn, students, responses, isArchived) {
     revisionHtml += '<div class="assign-meta">' + teacherEsc(bankLabels) + '</div>';
     if (!isArchived) {
       revisionHtml += '<div class="assign-progress-row"><span class="status status-progress">Revision pilot · ' + (revision.mode === 'due' ? 'clear due queue' : revision.target + ' cards') + '</span>' + dueBadge(asgn.due_date) + '</div>';
-      revisionHtml += '<p class="revision-assignment-summary">Students can complete this in Revision. During the pilot, their spaced-review schedule and completion stay on the device they use, so class-level completion is not shown here yet.</p>';
+      revisionHtml += '<p class="revision-assignment-summary">Students complete this in Revision. Their personal spaced-review schedule stays on-device; shared review outcomes appear in the Revision reporting tab.</p>';
     }
     revisionHtml += '<div class="asgn-actions">';
     revisionHtml += isArchived
@@ -2210,6 +2218,45 @@ function renderAssignments() {
       });
     };
   }
+}
+
+function renderRevisionReporting() {
+  var el = document.getElementById('panel-revision');
+  if (!el) return;
+  var reviews = Array.isArray(dashState.revisionReviews) ? dashState.revisionReviews : [];
+  var students = dashState.students || [];
+  if (!reviews.length) {
+    el.innerHTML = '<section class="teacher-revision-report"><header><div><h2>Revision reporting</h2><p>See how confidently students are recalling the topics you set.</p></div><span class="revision-report-note">Live sync</span></header>' + ForgeState.html('empty', { label: 'No revision reviews yet', body: 'When students rate their first revision cards, their progress will appear here. Their personal schedule continues to work offline.' }) + '</section>';
+    return;
+  }
+  var byStudent = {}, byTopic = {};
+  students.forEach(function(s) { byStudent[s.id] = { name: s.display_name || s.name || 'Student', total: 0, got: 0, nearly: 0, again: 0, latest: null }; });
+  reviews.forEach(function(r) {
+    if (!byStudent[r.student_id]) return;
+    var ps = byStudent[r.student_id]; ps.total++;
+    if (r.rating === 'got-it') ps.got++; else if (r.rating === 'nearly') ps.nearly++; else ps.again++;
+    if (!ps.latest || Date.parse(r.reviewed_at || 0) > Date.parse(ps.latest || 0)) ps.latest = r.reviewed_at;
+    var topic = r.bank || 'Unknown topic';
+    if (!byTopic[topic]) byTopic[topic] = { total: 0, got: 0, nearly: 0, again: 0 };
+    byTopic[topic].total++; byTopic[topic][r.rating === 'got-it' ? 'got' : r.rating === 'nearly' ? 'nearly' : 'again']++;
+  });
+  var participating = Object.keys(byStudent).filter(function(id) { return byStudent[id].total; }).length;
+  var got = reviews.filter(function(r) { return r.rating === 'got-it'; }).length;
+  var confident = reviews.length ? Math.round(got / reviews.length * 100) : 0;
+  var h = '<section class="teacher-revision-report"><header><div><h2>Revision reporting</h2><p>Spaced-review signals from this class, updated as students rate each card.</p></div><span class="revision-report-note">' + reviews.length + ' review' + (reviews.length !== 1 ? 's' : '') + '</span></header>';
+  h += '<div class="revision-report-stats"><div><strong>' + participating + '</strong><span>students active</span></div><div><strong>' + reviews.length + '</strong><span>cards reviewed</span></div><div><strong>' + confident + '%</strong><span>marked Got it</span></div></div>';
+  h += '<div class="revision-report-columns"><div><h3>Student progress</h3><div class="revision-report-table-wrap"><table class="revision-report-table"><thead><tr><th>Student</th><th>Reviewed</th><th>Recall signal</th><th>Last review</th></tr></thead><tbody>';
+  Object.keys(byStudent).sort(function(a,b){ return byStudent[b].total - byStudent[a].total; }).forEach(function(id) {
+    var p = byStudent[id], date = p.latest ? new Date(p.latest).toLocaleDateString('en-GB',{day:'numeric',month:'short'}) : 'Not started';
+    h += '<tr><td>' + teacherEsc(p.name) + '</td><td>' + p.total + '</td><td><span class="revision-signal revision-signal--good">' + p.got + ' got it</span><span class="revision-signal revision-signal--warm">' + (p.nearly + p.again) + ' revisit</span></td><td>' + date + '</td></tr>';
+  });
+  h += '</tbody></table></div></div><div><h3>Topic signals</h3><div class="revision-topic-report-list">';
+  Object.keys(byTopic).sort(function(a,b){ return byTopic[b].total - byTopic[a].total; }).forEach(function(topic) {
+    var t = byTopic[topic], pct = Math.round(t.got / t.total * 100);
+    h += '<div class="revision-topic-report-row"><div><strong>' + teacherEsc(teacherBankLabel(topic)) + '</strong><small>' + t.total + ' review' + (t.total !== 1 ? 's' : '') + ' · ' + t.again + ' due sooner</small></div><b>' + pct + '%</b><i><span style="width:' + pct + '%"></span></i></div>';
+  });
+  h += '</div></div></div><p class="revision-report-footnote">“Got it” schedules a longer return; “Nearly” and “Again” keep the idea closer. Revision reporting never changes a student’s personal queue.</p></section>';
+  el.innerHTML = h;
 }
 
 function renderPrioritySignals(wrongResponses) {

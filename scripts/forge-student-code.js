@@ -66,6 +66,22 @@
         if (!result || result.allowed !== true) throw new Error('Student response session is not valid.');
         return result;
       });
+    },
+    recordRevisionReview: function (studentId, classCode, studentCode, review) {
+      review = review || {};
+      return rpc('record_revision_review_with_code', {
+        p_student_id: studentId,
+        p_class_code: String(classCode || '').trim().toUpperCase(),
+        p_student_code: clean(studentCode),
+        p_card_key: review.card_key,
+        p_bank: review.bank,
+        p_rating: review.rating,
+        p_due_at: review.due_at,
+        p_assignment_id: review.assignment_id || null
+      }).then(function (result) {
+        if (!result || result.allowed !== true) throw new Error('Revision session is not valid.');
+        return result;
+      });
     }
   };
 }(window));

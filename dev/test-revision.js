@@ -45,7 +45,7 @@ assert.strictEqual(revision.readState({ studentId: 'student-1' }).assignments['r
 
 const teacherPanel = revision.teacherPanelHtml('gcse-geo');
 assert(teacherPanel.includes('Year 10 Geography pilot'));
-assert(teacherPanel.includes('Class reporting will be added after the pilot.'));
+assert(teacherPanel.includes('Shared progress appears in the Revision tab'));
 assert.strictEqual(revision.teacherPanelHtml('alevel-econ'), '');
 
 console.log('Revision pilot tests passed (11 assertions).');
