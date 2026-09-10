@@ -24,6 +24,7 @@
 <link rel="stylesheet" href="css/states.css">
   <link rel="stylesheet" href="css/generated-utilities.css">
   <link rel="stylesheet" href="css/page-overrides/teacher.css?v=20260814-pairing1">
+  <link rel="stylesheet" href="css/page-overrides/revision.css?v=20260910-pilot1">
   <link rel="stylesheet" href="css/auth-ember.css?v=20260817-auth2">
   <link rel="stylesheet" href="css/content-status.css">
 </head>
@@ -79,6 +80,7 @@ function mountTeacherSidebar() {
 <!-- Assignment attainment is defined once, in forge-assignment-progress.js, and
      shared with the student's assignment view so the two cannot disagree. -->
 <script>window.ForgeAssignmentBanks=BANKS;</script><script src="scripts/forge-assignment-progress.js"></script>
+<script src="scripts/forge-revision.js?v=20260910-pilot1"></script>
 <script src="scripts/forge-misconception-state.js"></script>
 <script src="scripts/forge-metrics.js"></script>
 <script src="data/misconception-labels.js?v=20260907-diagnostics"></script>
@@ -1887,7 +1889,10 @@ function teacherMisconceptionLabel(tag) {
 }
 
 function assignmentBanks(asgn) {
-  try { return Array.isArray(asgn.banks) ? asgn.banks : (asgn.banks ? JSON.parse(asgn.banks) : []); }
+  try {
+    if (window.ForgeAssignmentProgress && ForgeAssignmentProgress.list) return ForgeAssignmentProgress.list(asgn.banks);
+    return Array.isArray(asgn.banks) ? asgn.banks : (asgn.banks ? JSON.parse(asgn.banks) : []);
+  }
   catch (e) { return []; }
 }
 
@@ -1927,6 +1932,22 @@ function assignmentStudentProgress(asgn, studentId, responses) {
 function renderAssignCard(asgn, students, responses, isArchived) {
   var banks = assignmentBanks(asgn);
   var bankLabels = banks.map(function(b) { return BANK_LABELS[b] || b; }).join(', ');
+  var revision = window.ForgeAssignmentProgress && ForgeAssignmentProgress.revisionConfig(asgn);
+  if (revision) {
+    var revisionHtml = '<div class="assign-card' + (isArchived ? ' archived' : '') + '" data-asgn-id="' + asgn.id + '">';
+    revisionHtml += '<div class="assign-card-title">' + teacherEsc(asgn.title) + '</div>';
+    revisionHtml += '<div class="assign-meta">' + teacherEsc(bankLabels) + '</div>';
+    if (!isArchived) {
+      revisionHtml += '<div class="assign-progress-row"><span class="status status-progress">Revision pilot · ' + (revision.mode === 'due' ? 'clear due queue' : revision.target + ' cards') + '</span>' + dueBadge(asgn.due_date) + '</div>';
+      revisionHtml += '<p class="revision-assignment-summary">Students can complete this in Revision. During the pilot, their spaced-review schedule and completion stay on the device they use, so class-level completion is not shown here yet.</p>';
+    }
+    revisionHtml += '<div class="asgn-actions">';
+    revisionHtml += isArchived
+      ? '<button type="button" class="asgn-action-btn" data-action="unarchive" data-id="' + asgn.id + '">Restore</button>'
+      : '<button type="button" class="asgn-action-btn" data-action="archive" data-id="' + asgn.id + '">Archive</button>';
+    revisionHtml += '<button type="button" class="asgn-action-btn danger" data-action="delete" data-id="' + asgn.id + '">Delete</button></div></div>';
+    return revisionHtml;
+  }
   var progress = {};
   students.forEach(function(s) { progress[s.id] = assignmentStudentProgress(asgn, s.id, responses); });
   var completedCount = students.filter(function(s) { return progress[s.id].completed; }).length;
@@ -1996,6 +2017,13 @@ function renderAssignments() {
     h += '<div class="assignment-content-confidence"><div><span class="card-title">Content confidence</span>' + window.ForgeContentConfidence.badge(contentConfidence.tier) + '</div><p>' + window.ForgeContentConfidence.explanations[contentConfidence.tier] + ' ' + window.ForgeContentConfidence.experiences[contentConfidence.tier] + '</p><span class="assignment-content-cta">' + window.ForgeContentConfidence.ctas[contentConfidence.tier] + ' →</span></div>';
   }
 
+  if (dashState.revisionNotice) {
+    h += ForgeState.html('success', { label: 'Revision set', body: dashState.revisionNotice });
+    dashState.revisionNotice = null;
+  }
+
+  if (window.ForgeRevision) h += ForgeRevision.teacherPanelHtml(subject);
+
   if (dashState.selectedStarterTag) {
     h += '<div class="assignment-context"><span><strong>Starter selected:</strong> ' + teacherEsc(resolveMCLabel(dashState.selectedStarterTag) || dashState.selectedStarterTag) + '. Choose the relevant question bank below to assign it.</span><button class="asgn-action-btn" id="clear-starter-context" type="button">Clear</button></div>';
   }
@@ -2048,6 +2076,19 @@ function renderAssignments() {
   }
 
   el.innerHTML = h;
+  if (window.ForgeRevision) {
+    ForgeRevision.wireTeacherPanel(el, {
+      classId: dashState.classId,
+      studentCount: students.length,
+      insert: function(row) { return supaInsert('assignments', row); },
+      onCreated: function(newAsgn) {
+        if (window.forgeTrack) forgeTrack('teacher_revision_created', { bank_count: assignmentBanks(newAsgn).length });
+        dashState.assignments.push(newAsgn);
+        dashState.revisionNotice = 'Students can now see this in Revision and Assigned.';
+        renderAssignments();
+      }
+    });
+  }
   var assignmentFilter = document.getElementById('assignment-status-filter');
   if (assignmentFilter) assignmentFilter.onchange = function() { dashState.assignmentFilter = assignmentFilter.value; renderAssignments(); };
   var clearStarterContext = document.getElementById('clear-starter-context');

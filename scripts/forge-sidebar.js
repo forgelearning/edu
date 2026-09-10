@@ -51,6 +51,7 @@ var _FORGE_LOGO_LIGHT = (window.ForgeLogo || {}).light || '';
 var _FORGE_ICONS = {
   dashboard: '<path d="M3 12l9-9 9 9"></path><path d="M5 10v10a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1V10"></path>',
   forge: '<path d="M12 3c1.2 2 .6 3.2-.3 4.3C10.8 8.5 9.5 9.8 9.5 12a2.5 2.5 0 0 0 5 0c0-.8-.3-1.3-.7-1.8"></path><path d="M8 13.5c-1 1.5-1.3 3-1.3 4.3A5.3 5.3 0 0 0 12 23a5.3 5.3 0 0 0 5.3-5.2c0-1.4-.4-2.9-1.3-4.3"></path>',
+  revision: '<rect x="4" y="5" width="13" height="16" rx="2"></rect><path d="M8 9h5M8 13h5M8 17h3"></path><path d="M17 8h3v11a2 2 0 0 1-2 2h-1"></path>',
   anvil: '<path d="M4 13h16l-1.5-3.5a2 2 0 0 0-1.84-1.22L14 8.2V6h1a1 1 0 0 0 0-2h-6a1 1 0 0 0 0 2h1v2.2l-2.66.08a2 2 0 0 0-1.84 1.22L4 13Z"></path><path d="M9 13v2a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2v-2"></path><path d="M10 17v3M14 17v3M8 20h8"></path>',
   crucible: '<path d="M9 3h6M9 3v3.5a5 5 0 0 1-.7 2.55L5.9 12.9A5 5 0 0 0 5.2 15.45V19a2 2 0 0 0 2 2h9.6a2 2 0 0 0 2-2v-3.55a5 5 0 0 0-.7-2.55l-2.4-3.85A5 5 0 0 1 15 6.5V3"></path><path d="M7 16h10"></path>',
   profile: '<circle cx="12" cy="8" r="4"></circle><path d="M4 21c0-4 4-6 8-6s8 2 8 6"></path>',
@@ -95,7 +96,14 @@ var ForgeSidebar = {
   //            window.forgeSignOut() or window.forgeLogout(), whichever exists.
   mount: function(config) {
     config = config || {};
-    var items = config.items || [];
+    var items = (config.items || []).slice();
+    // Revision is part of the shared student shell. Adding it here keeps the
+    // desktop rail and mobile tab bar consistent across every student route.
+    if (!config.classSwitch && items.some(function(it) { return it.key === 'forge'; }) && !items.some(function(it) { return it.key === 'revision'; })) {
+      var forgeIndex = items.findIndex(function(it) { return it.key === 'forge'; });
+      items.splice(forgeIndex + 1, 0, {key:'revision', href:'revision.html', label:'Revision'});
+    }
+    config.items = items;
     var footerItems = (config.footerItems || []).slice();
     if (!footerItems.some(function(it) { return it.key === 'settings'; })) {
       var defaultSettingsHref = window.ForgeRole && ForgeRole.get && ForgeRole.get() === 'teacher'

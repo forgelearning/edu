@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Curated, spaced revision for completed GCSE Geography topics.">
+  <title>Forge — Revision</title>
+  <link rel="stylesheet" href="css/fonts.css">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css?v=20260808-navpolish">
+  <link rel="stylesheet" href="css/sidebar.css">
+  <link rel="stylesheet" href="css/components.css?v=20260812">
+  <link rel="stylesheet" href="css/states.css">
+  <link rel="stylesheet" href="css/generated-utilities.css">
+  <link rel="stylesheet" href="css/page-overrides/revision.css">
+</head>
+<body>
+<script src="scripts/forge-api.js?v=20260809"></script>
+<script src="scripts/forge-state.js"></script>
+<script src="scripts/forge-logo.js"></script>
+<script src="scripts/forge-role.js"></script>
+<script src="scripts/forge-student-session.js"></script>
+<script src="scripts/forge-theme.js?v=20260808-theme2"></script>
+<script src="scripts/forge-sidebar.js?v=20260910-revision"></script>
+<script src="scripts/forge-product-analytics.js"></script>
+<script src="scripts/forge-classes.js?v=20260813"></script>
+<script src="scripts/forge-student-code.js?v=20260810"></script>
+<script src="forge-auth.js?v=20260808-session-cache2"></script>
+<script>if(window.ForgeRole)ForgeRole.guard('student','teacher.html');</script>
+<script>
+function forgeSignOut(){
+  try{localStorage.removeItem('forge-student');localStorage.removeItem('forge-anvil-open');}catch(e){}
+  if(window.ForgeAuth)ForgeAuth.signOut();
+  location.href='forge-quiz.html';
+}
+ForgeSidebar.mount({
+  active:'revision',
+  items:[
+    {key:'dashboard',href:'student-dashboard.html',label:'Dashboard'},
+    {key:'forge',href:'forge-quiz.html',label:'Forge'},
+    {key:'assignments',href:'assignments.html',label:'Assigned'},
+    {key:'anvil',href:'anvil.html',label:'Anvil'},
+    {key:'crucible',href:'crucible.html',label:'Crucible'}
+  ],
+  footerItems:[{key:'profile',href:'profile.html',label:'Profile'}],
+  signOut:forgeSignOut
+});
+</script>
+<main class="wrap revision-wrap" id="main-content">
+  <div id="revision-app" aria-live="polite"></div>
+</main>
+<script src="data/forge-catalog.js?v=20260823"></script>
+<script src="scripts/forge-data-loader.js?v=20260823"></script>
+<script>window.ForgeAssignmentBanks=BANKS;</script>
+<script src="scripts/forge-assignment-progress.js"></script>
+<script src="scripts/forge-revision.js"></script>
+<script>
+(function(){
+  var app=document.getElementById('revision-app'),saved=null;
+  ForgeState.loading(app,{label:'Preparing revision',body:'Choosing the right knowledge to bring back.'});
+  try{saved=JSON.parse(localStorage.getItem('forge-student')||'null');}catch(e){}
+  if(!saved&&location.hostname==='127.0.0.1'&&new URLSearchParams(location.search).get('preview')==='1'){
+    saved={studentId:'revision-preview',classId:'revision-preview',studentName:'Alex',classSubject:'gcse-geo',subject:'gcse-geo'};
+  }
+
+  function noStudent(){
+    app.innerHTML=ForgeState.html('empty',{label:'Join your class to start revision',body:'Use your class details in Forge first. Your revision schedule will then stay linked to this device.',action:{label:'Open Forge',href:'forge-quiz.html'}});
+  }
+  function contextFromSaved(value){
+    var registry=(window.ForgeClasses&&ForgeClasses.list().find(function(item){return item.classId===value.classId;}))||{};
+    return Object.assign({},registry,value);
+  }
+  function mount(context){
+    var subject=context.classSubject||context.subject;
+    if(subject&&subject!=='gcse-geo'){
+      app.innerHTML=ForgeState.html('empty',{label:'The revision pilot is starting with GCSE Geography',body:'Hazardous Earth, People and the Biosphere, and Development Dynamics are available first. More subjects will follow after the pilot.',action:{label:'Back to dashboard',href:'student-dashboard.html'}});
+      return;
+    }
+    ForgeData.loadBanks(ForgeRevision.PILOT_BANKS).then(function(){
+      return ForgeRevision.loadStudentData(context).catch(function(){return {context:context,assignments:[]};});
+    }).then(function(data){
+      ForgeRevision.mountStudent({root:app,context:data.context,assignments:data.assignments,reload:boot});
+    }).catch(function(){
+      app.innerHTML=ForgeState.html('error',{label:'Revision is unavailable',body:'We couldn’t load the curated cards. Check your connection and refresh.'});
+    });
+  }
+  function boot(){
+    if(saved&&saved.studentId){mount(contextFromSaved(saved));return;}
+    if(!ForgeAuth.hasSession()){noStudent();return;}
+    ForgeAuth.getSession().then(function(){
+      var user=ForgeAuth.currentUser(),token=ForgeAuth.accessToken();
+      if(!user||!token)throw new Error('No student session');
+      return ForgeAPI.get('students','select=id,class_id&auth_user_id=eq.'+encodeURIComponent(user.id),{token:token});
+    }).then(function(rows){
+      if(!rows||!rows[0])throw new Error('No class');
+      saved={studentId:rows[0].id,classId:rows[0].class_id,studentName:((ForgeAuth.currentUser()||{}).user_metadata||{}).name||''};
+      try{localStorage.setItem('forge-student',JSON.stringify(saved));}catch(e){}
+      mount(saved);
+    }).catch(noStudent);
+  }
+  boot();
+}());
+</script>
+<script src="scripts/forge-page-actions.js"></script>
+</body>
+</html>

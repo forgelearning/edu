@@ -5,8 +5,18 @@
     if(payload&&Array.isArray(payload.data)) return payload.data;
     return [];
   }
-  function list(value){
+  var REVISION_PREFIX='__FORGE_REVISION_';
+  function rawList(value){
     try{return Array.isArray(value)?value:(value?JSON.parse(value):[]);}catch(e){return[];}
+  }
+  function revisionConfig(assignment){
+    var marker=rawList(assignment&&assignment.banks).filter(function(item){return String(item).indexOf(REVISION_PREFIX)===0;})[0];
+    if(!marker)return null;
+    var value=String(marker).slice(REVISION_PREFIX.length).replace(/__$/,'');
+    return value==='DUE'?{mode:'due',target:null,marker:marker}:{mode:'count',target:Math.max(1,parseInt(value,10)||10),marker:marker};
+  }
+  function list(value){
+    return rawList(value).filter(function(item){return String(item).indexOf(REVISION_PREFIX)!==0;});
   }
   function key(value){return String(value==null?'':value).trim().toLowerCase();}
   function bankData(){ return window.ForgeAssignmentBanks || window.BANKS || {}; }
@@ -100,6 +110,7 @@
      between the student and teacher surfaces. */
   function counted(assignment,payload){
     var banks=list(assignment&&assignment.banks), allowed={};
+    var revision=revisionConfig(assignment);
     banks.forEach(function(bank){allowed[key(bank)]=bank;});
     var seen={}, countedByBank={}, out=[];
     countable(assignment,payload).forEach(function(entry){
@@ -112,7 +123,8 @@
       // An assignment is one focused session (up to eight questions) per
       // bank. Later free-practice answers from the same bank must not inflate
       // either the numerator or denominator after that session is complete.
-      if(countedByBank[bank]>=bankTotal(bank)) return;
+      if(!revision&&countedByBank[bank]>=bankTotal(bank)) return;
+      if(revision&&revision.mode==='count'&&out.length>=revision.target) return;
       countedByBank[bank]++;
       out.push({id:entry.id,bank:bank,correct:entry.correct,selected:entry.selected,at:entry.at});
     });
@@ -123,7 +135,12 @@
     var banks=list(assignment&&assignment.banks);
     var entries=counted(assignment,payload), correct=0;
     entries.forEach(function(entry){if(entry.correct) correct++;});
-    var total=banks.reduce(function(sum,bank){
+    var revision=revisionConfig(assignment);
+    if(revision&&revision.mode==='due'){
+      var cleared=countable(assignment,payload).some(function(entry){return entry.selected==='revision:queue-complete';});
+      return {answered:cleared?1:0,correct:cleared?1:0,total:1,complete:cleared};
+    }
+    var total=revision&&revision.mode==='count'?revision.target:banks.reduce(function(sum,bank){
       var data=bankData()[bank];
       var available=availableQuestionCount(data);
       return sum+Math.min(8,available);
@@ -188,5 +205,5 @@
     return banks[0]||null;
   }
 
-  window.ForgeAssignmentProgress={rows:rows,progress:progress,review:review,bankProgress:bankProgress,nextBank:nextBank,localSessionRows:localSessionRows};
+  window.ForgeAssignmentProgress={rows:rows,list:list,revisionConfig:revisionConfig,progress:progress,review:review,bankProgress:bankProgress,nextBank:nextBank,localSessionRows:localSessionRows};
 })(window);
