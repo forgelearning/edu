@@ -2048,7 +2048,7 @@ function renderAssignments() {
   h += '<label class="forge-u-1s6s0pt" for="asgn-due">Due date <span class="forge-u-19j2vc3">(required)</span></label>';
   h += '<input type="date" id="asgn-due" aria-describedby="asgn-due-help">';
   h += '<p class="forge-u-ux2pa9" id="asgn-due-help">Students can still see the work after the date, but it will be marked overdue.</p>';
-  h += '<div class="forge-u-1woniy7"><div class="card-title forge-u-3ocpgz">Select banks to include</div><span class="forge-u-18u61ix" id="asgn-selected-count">0 selected</span></div>';
+  h += '<div class="forge-u-1woniy7"><div class="card-title forge-u-3ocpgz">Select banks to include</div><span class="forge-u-18u61ix" id="asgn-selected-count">0 of ' + availableBanks.length + ' selected</span></div>';
   h += '<div class="bank-checklist">';
   availableBanks.forEach(function(bk) {
     var label = BANK_LABELS[bk] || bk;
@@ -2151,7 +2151,7 @@ function renderAssignments() {
     var selectedCount = document.getElementById('asgn-selected-count');
     var refreshAssignmentForm = function() {
       var selected = el.querySelectorAll('.bank-checklist input[type=checkbox]:checked').length;
-      selectedCount.textContent = selected + ' selected';
+      selectedCount.textContent = selected + ' of ' + el.querySelectorAll('.bank-checklist input[type=checkbox]').length + ' selected';
       var ready = !!titleInput.value.trim() && !!dueInput.value && selected > 0;
       createBtn.disabled = !ready;
       createBtn.setAttribute('aria-disabled', ready ? 'false' : 'true');

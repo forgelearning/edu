@@ -238,7 +238,10 @@ h1,h2,h3{font-family:'Rethink Sans',sans-serif;color:var(--white);line-height:1.
 .assign-form input[type=text],.assign-form input[type=date]{width:100%;padding:10px 12px;border-radius:var(--radius-sm);border:1px solid var(--line);background:var(--panel-2);color:var(--white);font-family:'Poppins',sans-serif;font-size:14px;margin-bottom:12px}
 .assign-form input:focus{outline:none;border-color:var(--ember)}
 .assign-form input[type=date]{color-scheme:dark}
-.bank-checklist{display:flex;flex-direction:column;gap:6px;max-height:240px;overflow-y:auto;margin-bottom:14px;padding-right:4px}
+.bank-checklist{display:flex;flex-direction:column;gap:6px;max-height:min(60vh,560px);overflow-y:auto;margin-bottom:14px;padding-right:4px;scrollbar-width:thin;scrollbar-gutter:stable;scrollbar-color:var(--ember) transparent}
+.bank-checklist::-webkit-scrollbar{width:8px}
+.bank-checklist::-webkit-scrollbar-thumb{background:var(--ember);border-radius:4px}
+.bank-checklist::-webkit-scrollbar-track{background:transparent}
 .bank-check-item{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:var(--radius-sm);background:var(--panel-2);border:1px solid var(--line);cursor:pointer;transition:border-color .15s}
 .bank-check-item:hover{border-color:var(--ember)}
 .bank-check-item input[type=checkbox]{accent-color:var(--ember);width:15px;height:15px;cursor:pointer;flex-shrink:0}
