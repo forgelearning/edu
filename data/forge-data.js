@@ -1188,7 +1188,7 @@ const SUBJECTS = {
     label: "GCSE Economics",
     sub: "OCR J205 — Papers 1 & 2",
     color: "#166534",
-    banks: ["GCSE-ECON-P1-FOUND", "GCSE-ECON-P1-MARKETS", "GCSE-ECON-P1-DS", "GCSE-ECON-P1-COMP", "GCSE-ECON-P1-PROD", "GCSE-ECON-P1-LABOUR", "GCSE-ECON-P1-MONEY", "GCSE-ECON-UK", "GCSE-ECON-P2-NATIONAL", "GCSE-ECON-P2-GROWTH", "GCSE-ECON-P2-UNEMP", "GCSE-ECON-P2-INCOME", "GCSE-ECON-P2-PRICE", "GCSE-ECON-P2-FISCAL", "GCSE-ECON-P2-MONETARY", "GCSE-ECON-P2-SUPPLY", "GCSE-ECON-P2-MARKETFAIL", "GCSE-ECON-P2-TRADE", "GCSE-ECON-P2-BOP", "GCSE-ECON-P2-EXR", "GCSE-ECON-P2-GLOBAL"]
+    banks: ["GCSE-ECON-P1-FOUND", "GCSE-ECON-P1-MARKETS", "GCSE-ECON-P1-DS", "GCSE-ECON-P1-COMP", "GCSE-ECON-P1-PROD", "GCSE-ECON-P1-LABOUR", "GCSE-ECON-P1-MONEY", "GCSE-ECON-UK", "GCSE-ECON-P2-NATIONAL", "GCSE-ECON-P2-GROWTH", "GCSE-ECON-P2-UNEMP", "GCSE-ECON-P2-INCOME", "GCSE-ECON-P2-PRICE", "GCSE-ECON-P2-FISCAL", "GCSE-ECON-P2-MONETARY", "GCSE-ECON-P2-SUPPLY", "GCSE-ECON-P2-MARKETFAIL", "GCSE-ECON-P2-TRADE", "GCSE-ECON-P2-BOP", "GCSE-ECON-P2-EXR", "GCSE-ECON-P2-GLOBAL", "GCSE-ECON-RECAP"]
   }
 };
 
@@ -4919,6 +4919,136 @@ BANKS["GCSE-ECON-P2-EXR"].questions.push(
   {id:"GCSE-P2-EXR-19",spec:"GCSE-ECON-P2-EXR",stem:"Which statement defines an exchange rate?",options:{A:"The total value of all imports bought during a year",B:"A government's total tax revenue",C:"The rate of interest paid on a bank loan",D:"The price of one currency in terms of another"},correct:"D",tag:"MC-GCSE-DEF-EXR-19",scaffold:"The exchange rate expresses the value of one currency using another currency, for example dollars per pound.",reforge:{stem:"Which example is a currency?",options:{A:"The price of a single product",B:"A bank rate set by the central bank",C:"A trade deficit with another country",D:"The pound sterling used in the UK"},correct:"D"}},
   {id:"GCSE-P2-EXR-20",spec:"GCSE-ECON-P2-EXR",stem:"What is the pound in the phrase 'the UK currency'?",options:{A:"A balance of payments account",B:"An exchange-rate graph",C:"A tax on foreign goods",D:"A currency used by the UK"},correct:"D",tag:"MC-GCSE-DEF-EXR-20",scaffold:"A currency is the system of money used in a country or group of countries. Sterling is the UK's currency.",reforge:{stem:"What does the exchange rate tell a trader?",options:{A:"The total number of different products that are sold in a market",B:"The overall level of government spending",C:"The total amount of tax that a firm owes",D:"How much of one currency can be exchanged for another"},correct:"D"}}
 );
+
+// GCSE Economics recap bank. Twenty foundation questions a class can be set as
+// a refresher before the topic banks: the core ideas shared by OCR J205 and
+// AQA 8136, one question per idea, reusing the MC-GE-* misconception taxonomy
+// so recap results land on the same heatmap rows as the main banks.
+BANKS["GCSE-ECON-RECAP"] = {
+  label: "Recap: Core Ideas",
+  color: "#166534",
+  questions: [
+    {id:"GCSE-ECON-RECAP-01",spec:"GCSE-ECON-P1-FOUND",tag:"MC-GE-SCARCITY",stem:"A school can spend its budget on new laptops or on refurbishing the library, but not on both. It chooses the laptops. What is the opportunity cost?",
+      options:{A:"The money that was spent on buying the laptops",B:"The library refurbishment that was given up",C:"The total budget the school had available",D:"The laptops and the library added together"},correct:"B",
+      scaffold:"Wants are unlimited but resources are not, so every choice gives something up. Opportunity cost is the next best alternative forgone - here the library refurbishment. It is not the money spent, and it is not every alternative added together.",
+      reforge:{stem:"A council uses a plot of land for a car park rather than a playground or a bus depot. The playground was the next best use. What is the opportunity cost of the car park?",
+        options:{A:"The price that was paid for the plot of land",B:"The bus depot, which ranked below both",C:"The playground, the next best use given up",D:"Every other possible use of the land added up"},correct:"C"}},
+
+    {id:"GCSE-ECON-RECAP-02",spec:"GCSE-ECON-P1-FOUND",tag:"MC-GE-FACTORS",stem:"A bakery buys a new oven. Which factor of production has the bakery added to?",
+      options:{A:"Land",B:"Labour",C:"Capital",D:"Enterprise"},correct:"C",
+      scaffold:"Capital means the man-made things used to produce goods and services - machines, tools, buildings and vehicles - not the money used to buy them. Land is natural resources, labour is human effort, and enterprise organises the other three and carries the risk.",
+      reforge:{stem:"A restaurant owner takes out a loan, hires two chefs and decides which dishes the menu will offer. Which factor of production is the owner supplying?",
+        options:{A:"Capital, because a bank loan was taken out",B:"Enterprise, by organising and risking",C:"Labour, because the chefs do the cooking",D:"Land, because the restaurant needs a site"},correct:"B"}},
+
+    {id:"GCSE-ECON-RECAP-03",spec:"GCSE-ECON-P1-DS",tag:"MC-GE-SHIFT-VS-MOVE",stem:"The price of cinema tickets falls and more tickets are bought each week. On a demand diagram this is shown as:",
+      options:{A:"A movement down along the demand curve",B:"A shift of the whole demand curve to the right",C:"A shift of the whole demand curve to the left",D:"A movement upwards along the supply curve"},correct:"A",
+      scaffold:"A change in the price of the good itself moves you along the demand curve - an extension when price falls, a contraction when price rises. Only a change in something other than that price, such as income, tastes or the price of a substitute, shifts the whole curve.",
+      reforge:{stem:"An advertising campaign makes a brand of trainers more popular at every price. What happens on the demand diagram?",
+        options:{A:"There is an extension along the existing curve",B:"The supply curve shifts to the left instead",C:"There is a contraction along the curve",D:"The demand curve shifts to the right"},correct:"D"}},
+
+    {id:"GCSE-ECON-RECAP-04",spec:"GCSE-ECON-P1-DS",tag:"MC-GE-DS-DETERMINANTS",stem:"Bad weather destroys much of this year's coffee harvest. What happens in the market for coffee?",
+      options:{A:"Demand falls, so the price falls too",B:"Supply rises, so the price falls back",C:"Demand rises, so the quantity falls",D:"Supply falls, so the price rises"},correct:"D",
+      scaffold:"Growing conditions affect producers, so the supply curve shifts left and less is offered at every price. At the old price there is now a shortage, which pushes the price up and the quantity traded down. Demand itself has not changed - only the price buyers face.",
+      reforge:{stem:"Tea and coffee are substitutes. The price of tea rises sharply. In the market for coffee this causes:",
+        options:{A:"Demand for coffee to rise as buyers switch",B:"Supply of coffee to fall because costs rise",C:"Demand for coffee to fall as incomes drop",D:"Supply of coffee to rise as more is grown"},correct:"A"}},
+
+    {id:"GCSE-ECON-RECAP-05",spec:"GCSE-ECON-P1-DS",tag:"MC-GE-EQUILIBRIUM",stem:"In a market, the equilibrium price is the price at which:",
+      options:{A:"Every firm in the market is making a profit",B:"Quantity demanded equals quantity supplied",C:"The government has set a legal maximum price",D:"Consumers are paying the lowest price possible"},correct:"B",
+      scaffold:"Equilibrium is where the demand and supply curves cross, so the amount buyers want to buy equals the amount sellers want to sell and nothing is pushing the price either way. It says nothing about profits being made or about the price being low.",
+      reforge:{stem:"At a price of £8, a cinema wants to sell 200 seats a night but only 120 are bought. What does this show?",
+        options:{A:"The market is in equilibrium at that price",B:"There is a shortage, so the price will rise soon",C:"There is a surplus, so price will tend to fall",D:"Demand for the seats has shifted to the right"},correct:"C"}},
+
+    {id:"GCSE-ECON-RECAP-06",spec:"GCSE-ECON-P1-MARKETS",tag:"MC-GE-DISEQ",stem:"A new games console is priced below its equilibrium price and sells out within hours. This is best described as:",
+      options:{A:"A shortage, because demand exceeds supply",B:"A surplus, because supply exceeds demand",C:"Equilibrium, because every console was sold",D:"Market failure caused by a negative externality"},correct:"A",
+      scaffold:"Below equilibrium the quantity demanded is greater than the quantity supplied, so there is excess demand - a shortage, and selling out is the clue. In a free market that shortage pushes the price up until the two quantities match again.",
+      reforge:{stem:"A government sets a maximum rent for flats that is below the market price. What is the most likely result?",
+        options:{A:"A surplus of empty flats across the whole city",B:"Rents rise quickly to the old market level",C:"No change at all in the market for rented flats",D:"A shortage, with more tenants than flats"},correct:"D"}},
+
+    {id:"GCSE-ECON-RECAP-07",spec:"GCSE-ECON-P1-DS",tag:"MC-GE-ELASTICITY",stem:"A bus company raises fares by 10% and the number of journeys falls by 2%. Demand for the journeys is:",
+      options:{A:"Price elastic, because demand responded",B:"Perfectly elastic, because demand fell to zero",C:"Price inelastic, because demand barely moved",D:"Income elastic, because fares changed by 10%"},correct:"C",
+      scaffold:"Compare the sizes of the two percentage changes. Quantity fell proportionately less than price rose - 2% against 10% - so demand is price inelastic. That is typical where there are few substitutes, as with a journey a passenger has to make.",
+      reforge:{stem:"A cafe cuts the price of its sandwiches by 5% and sales rise by 20%. What does this tell you, and what happens to revenue?",
+        options:{A:"Demand is elastic, so revenue will rise",B:"Demand is inelastic, so revenue will fall",C:"Demand is inelastic, so revenue is unchanged",D:"Demand is perfectly inelastic, so sales cannot move"},correct:"A"}},
+
+    {id:"GCSE-ECON-RECAP-08",spec:"GCSE-ECON-P1-PROD",tag:"MC-GE-SPECIALISATION",stem:"Workers on a car production line each repeat one stage of assembly. One drawback of this division of labour is that:",
+      options:{A:"Output per worker always falls over time",B:"Workers can never be trained to do the job",C:"Firms are then unable to use any machinery at all",D:"Repetitive work bores staff, raising turnover"},correct:"D",
+      scaffold:"Division of labour raises output because workers become quick at one task and training is cheaper. The drawbacks are the other side of the same coin: repetitive work is boring, so quality and staff retention suffer, and the whole line stops if one stage does.",
+      reforge:{stem:"A small country specialises in producing bananas and trades for everything else. Which risk does this create?",
+        options:{A:"It can no longer trade with any other country",B:"A fall in the world banana price hits it hard",C:"Its workers will lose all of their existing skills",D:"The country must give up using money entirely"},correct:"B"}},
+
+    {id:"GCSE-ECON-RECAP-09",spec:"GCSE-ECON-P1-MONEY",tag:"MC-GE-MONEY-FUNC",stem:"A farmer with wheat wants shoes, but the shoemaker does not want wheat. Which function of money solves this problem?",
+      options:{A:"A store of value that can be saved",B:"A medium of exchange accepted by both",C:"A unit of account for comparing prices",D:"A standard for deferred payment on credit"},correct:"B",
+      scaffold:"Barter needs a double coincidence of wants - each side wanting what the other has. Money as a medium of exchange removes that: the farmer sells wheat for money and spends the money on shoes. The other functions are real, but they are not what fails here.",
+      reforge:{stem:"A shop shows one coat at £60 and another at £45, so a customer can see which is dearer. Which function of money is being used?",
+        options:{A:"Medium of exchange, as the coats are traded",B:"Store of value, as money holds its worth",C:"Standard for deferred payment over time",D:"Unit of account, measuring value in pounds"},correct:"D"}},
+
+    {id:"GCSE-ECON-RECAP-10",spec:"GCSE-ECON-P1-COMP",tag:"MC-GE-MARKET-STRUCT",stem:"One firm supplies almost all of a country's rail track and no rival is allowed to enter. This market is best described as:",
+      options:{A:"A monopoly, because one firm dominates",B:"Perfect competition, with many small firms",C:"An oligopoly of several competing firms",D:"A market with no barriers to entry at all"},correct:"A",
+      scaffold:"Market structure is about how many firms compete and how easily a new one can enter. A single dominant firm protected by high barriers is a monopoly. A few large firms sharing the market is an oligopoly, and many small firms selling similar goods is competition.",
+      reforge:{stem:"Four supermarket chains hold most of the grocery market and watch each other's prices closely. This market is:",
+        options:{A:"A pure monopoly held by a single seller",B:"Perfectly competitive with identical goods",C:"An oligopoly, dominated by a few firms",D:"A market with a single price set by the state"},correct:"C"}},
+
+    {id:"GCSE-ECON-RECAP-11",spec:"GCSE-ECON-P1-PROD",tag:"MC-GE-PRODUCTIVITY",stem:"A factory doubles its workforce and its total output rises by 50%. What has happened to labour productivity?",
+      options:{A:"It has risen, because total output is higher",B:"It has doubled, in line with the workforce",C:"It has fallen, as output per worker is lower",D:"It is unchanged, since the factory still produces"},correct:"C",
+      scaffold:"Productivity is output per worker, not total output. Output rose by half while the workforce doubled, so each worker now produces less than before. Total production and productivity move together only when the inputs are held constant.",
+      reforge:{stem:"A firm trains its staff and output per worker per hour rises from 12 units to 15. What is the main benefit to the firm?",
+        options:{A:"Lower average costs for each unit produced",B:"A guaranteed rise in the market price it charges",C:"An automatic increase in consumer demand",D:"A fall in the total output the factory makes"},correct:"A"}},
+
+    {id:"GCSE-ECON-RECAP-12",spec:"GCSE-ECON-P2-NATIONAL",tag:"MC-GE-GDP",stem:"Gross domestic product measures:",
+      options:{A:"The total stock of money held in a country's banks",B:"The total wealth owned by a country's households",C:"The size of the government's budget deficit this year",D:"The value of output produced in a country in a year"},correct:"D",
+      scaffold:"GDP is a flow: the value of all the goods and services produced in a country over a period, usually a year. It is not a stock of money or of wealth. GDP per capita divides it by population, which is what lets two countries of different sizes be compared.",
+      reforge:{stem:"Country X has a larger GDP than Country Y, but a much larger population. Which measure compares living standards better?",
+        options:{A:"Total GDP, since it is the bigger economy",B:"GDP per capita, output divided by population",C:"The government's total spending each year",D:"The number of firms operating in each country"},correct:"B"}},
+
+    {id:"GCSE-ECON-RECAP-13",spec:"GCSE-ECON-P2-PRICE",tag:"MC-GE-INFLATION-DEF",stem:"Inflation in a country falls from 6% to 2%. What has happened to prices?",
+      options:{A:"Prices are still rising, but more slowly",B:"Prices have fallen back to last year's level",C:"Prices are now completely frozen by law",D:"Prices have fallen by four per cent overall"},correct:"A",
+      scaffold:"Inflation is the rate at which the average price level rises. A lower rate still means prices are rising, just more slowly - that is disinflation. Prices only fall when the rate itself goes below zero, which is deflation.",
+      reforge:{stem:"A country reports an inflation rate of minus 1%. What does this tell you about the price level?",
+        options:{A:"It is rising slowly, by about one per cent",B:"It is unchanged from the previous year",C:"It is falling, which is called deflation",D:"It cannot be measured with any accuracy"},correct:"C"}},
+
+    {id:"GCSE-ECON-RECAP-14",spec:"GCSE-ECON-P2-PRICE",tag:"MC-GE-CPI",stem:"The Consumer Prices Index is calculated by tracking:",
+      options:{A:"The wages that firms pay in every industry",B:"The price of a basket of goods households buy",C:"The total amount of money held by the banks",D:"The value of the exports a country sells abroad"},correct:"B",
+      scaffold:"A survey of household spending decides what goes into a representative basket and how much weight each item carries. Those prices are collected each month and compared with a base year, so the items households buy most move the index most.",
+      reforge:{stem:"Households spend far more on housing than on cinema tickets. How does the Consumer Prices Index reflect this?",
+        options:{A:"Housing is given a larger weight in the basket",B:"Cinema tickets are left out of the index",C:"Housing prices are collected once every year",D:"Each item in the basket counts exactly the same"},correct:"A"}},
+
+    {id:"GCSE-ECON-RECAP-15",spec:"GCSE-ECON-P2-UNEMP",tag:"MC-GE-UNEMP-MEASURE",stem:"A retired teacher of 70 is not working and is not looking for a job. In the official statistics this person is:",
+      options:{A:"Unemployed, because no work is being done",B:"Employed, because of the pension received",C:"Counted in the labour force as a jobseeker",D:"Economically inactive, not unemployed"},correct:"D",
+      scaffold:"To count as unemployed you must be out of work, available for work and actively seeking it. People who are retired, studying full time or caring for family are economically inactive: they sit outside the labour force, so they are not in the rate at all.",
+      reforge:{stem:"A country has 30 million people in its labour force and 1.5 million of them are unemployed. What is the unemployment rate?",
+        options:{A:"1.5%, taken from the number out of work",B:"5%, the unemployed share of the labour force",C:"20%, because 30 divided by 1.5 equals twenty",D:"15%, because the figures are given in millions"},correct:"B"}},
+
+    {id:"GCSE-ECON-RECAP-16",spec:"GCSE-ECON-P2-FISCAL",tag:"MC-GE-FISCAL",stem:"During a recession a government cuts income tax and raises spending on road building. This is best described as:",
+      options:{A:"Contractionary fiscal policy to cut demand",B:"Supply-side policy aimed at labour markets",C:"Expansionary fiscal policy to raise demand",D:"Monetary policy, because interest rates change"},correct:"C",
+      scaffold:"Fiscal policy is the government's use of taxation and its own spending. A tax cut leaves households more to spend and extra state spending adds to demand directly, so this is expansionary. Interest rate decisions are monetary policy and belong to the Bank of England.",
+      reforge:{stem:"A government raises VAT and cuts its own departmental spending to reduce a budget deficit. This is:",
+        options:{A:"Expansionary fiscal policy, raising demand",B:"Monetary policy set by the Bank of England's MPC",C:"A trade policy affecting exports and imports",D:"Contractionary fiscal policy, reducing demand"},correct:"D"}},
+
+    {id:"GCSE-ECON-RECAP-17",spec:"GCSE-ECON-P2-MONETARY",tag:"MC-GE-MONETARY",stem:"The Bank of England raises its interest rate. What is the most likely effect on the economy?",
+      options:{A:"Borrowing becomes dearer, so spending slows",B:"Saving becomes less attractive to households",C:"Mortgage payments fall for many homeowners",D:"Firms borrow more and invest more than before"},correct:"A",
+      scaffold:"A higher interest rate raises the cost of borrowing and the reward for saving, so households and firms spend and invest less. Weaker demand takes pressure off prices, which is how the Bank uses rates to meet its 2% inflation target.",
+      reforge:{stem:"Inflation is well above the 2% target. Which decision would the Monetary Policy Committee most likely take?",
+        options:{A:"Cut the interest rate to encourage borrowing",B:"Raise the interest rate to slow down spending",C:"Leave rates alone and raise income tax instead",D:"Increase government spending on new roads"},correct:"B"}},
+
+    {id:"GCSE-ECON-RECAP-18",spec:"GCSE-ECON-P2-INCOME",tag:"MC-GE-TAX-TYPES",stem:"Income tax takes a larger share of income from higher earners than from lower earners. This makes income tax:",
+      options:{A:"An indirect tax charged when goods are bought",B:"A progressive and direct tax on income",C:"A regressive tax that hits low earners hardest",D:"A flat tax taking the same share from everyone"},correct:"B",
+      scaffold:"Direct taxes are paid straight to the government on income or profit; indirect taxes such as VAT are paid when money is spent. Progressive means the share paid rises with income and regressive means it falls, which is why VAT is regressive even at a single rate.",
+      reforge:{stem:"VAT is charged at the same rate whoever buys the item, so it takes a bigger share of a low earner's income. VAT is therefore:",
+        options:{A:"An indirect and regressive tax on spending",B:"A progressive tax rising with earnings",C:"A direct tax collected from wages at source",D:"A tax paid only by firms and not by households"},correct:"A"}},
+
+    {id:"GCSE-ECON-RECAP-19",spec:"GCSE-ECON-P2-MARKETFAIL",tag:"MC-GE-EXTERNALITIES",stem:"A factory discharges waste into a river, and anglers downstream lose their catch. The loss to the anglers is:",
+      options:{A:"A private cost falling on the factory owner",B:"A positive externality enjoyed by the anglers",C:"A subsidy the government pays to the factory owner",D:"A negative externality falling on third parties"},correct:"D",
+      scaffold:"An externality is a cost or benefit falling on someone outside the transaction. The factory's own wages and materials are private costs; the ruined fishing is an external cost, so social cost is greater than private cost and the market overproduces.",
+      reforge:{stem:"More people are vaccinated, so even those who are not vaccinated are less likely to catch the disease. This spillover is:",
+        options:{A:"A private benefit to the person vaccinated",B:"A negative externality imposed on others",C:"A positive externality enjoyed by third parties",D:"A cost that the free market always covers fully"},correct:"C"}},
+
+    {id:"GCSE-ECON-RECAP-20",spec:"GCSE-ECON-P2-TRADE",tag:"MC-GE-EXPORTS-IMPORTS",stem:"A UK firm sells machinery to a buyer in Japan. For the UK this trade counts as:",
+      options:{A:"An import, because the goods leave the UK",B:"An import, because payment arrives from abroad",C:"An export, because UK output is sold abroad",D:"Neither an import nor an export of any kind"},correct:"C",
+      scaffold:"Follow the goods, not the money. Exports are goods and services produced at home and sold abroad, bringing money in; imports are bought from abroad, sending money out. The same trade is a Japanese import and a UK export.",
+      reforge:{stem:"A UK supermarket buys grapes grown in Chile. How does this appear in the UK's trade figures?",
+        options:{A:"As an export, since a UK firm bought them",B:"As an export of money out of the country",C:"It does not appear in the trade figures at all",D:"As an import of goods into the UK"},correct:"D"}}
+  ]
+};
 
 // ===== BUSINESS, CHEMISTRY, CRIMINOLOGY =====
 
