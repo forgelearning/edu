@@ -1,6 +1,6 @@
 /* Forge app shell. Network-first keeps Supabase and live content authoritative;
    the cache is only a resilience layer for the static shell. */
-var FORGE_CACHE = 'forge-shell-v4';
+var FORGE_CACHE = 'forge-shell-v5';
 var FORGE_SHELL = [
   './', './index.html', './role-select.html', './student-dashboard.html', './teacher.html', './settings.html', './teacher-settings.html',
   './forge-signup.html', './forge-quiz.html', './assignments.html',
@@ -25,7 +25,13 @@ self.addEventListener('activate', function (event) {
 self.addEventListener('fetch', function (event) {
   if (event.request.method !== 'GET' || new URL(event.request.url).origin !== self.location.origin) return;
   event.respondWith(fetch(event.request).then(function (response) {
-    if (response.ok && event.request.destination !== 'document') {
+    // Documents are cached too. They used to be skipped, which meant the
+    // offline copy of a page was whatever cache.addAll() fetched when this
+    // cache version was first installed and never moved again — so a device
+    // that failed one fetch could be handed a months-old teacher.html long
+    // after the real page had changed. Network-first still keeps the live
+    // response authoritative; this only keeps the fallback current.
+    if (response.ok) {
       var copy = response.clone();
       caches.open(FORGE_CACHE).then(function (cache) { cache.put(event.request, copy); });
     }
