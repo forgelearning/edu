@@ -688,24 +688,27 @@ function renderLogin(activeTab) {
       });
       sel.innerHTML = opts;
     }
-    // Grey out subjects this teacher already has a class for. This used to be
-    // triggered by blurring the school field and filtered on the typed school;
-    // the school is now fixed per teacher, so filter on the teacher alone and
-    // run it as soon as the form is shown.
+    // A teacher commonly teaches the same subject to more than one cohort (a
+    // Year 12 and a Year 13 A-Level Economics set, say), so subjects they
+    // already have a class for stay selectable. This used to disable them
+    // outright, which made the second set impossible to create. Nothing
+    // downstream requires one class per subject: the dashboard scopes by
+    // class_id and its own student list, and students join by class code.
+    // The count is shown only so an accidental duplicate is obvious.
     (function() {
       if (currentTeacher && currentTeacher.id) {
         supaGet('classes', 'teacher_user_id=eq.' + encodeURIComponent(currentTeacher.id)).then(function(existing) {
-          var usedSubjects = {};
-          (existing || []).forEach(function(c) { if (c.subject) usedSubjects[c.subject] = true; });
+          var subjectCounts = {};
+          (existing || []).forEach(function(c) {
+            if (c.subject) subjectCounts[c.subject] = (subjectCounts[c.subject] || 0) + 1;
+          });
           var sel2 = document.getElementById('c-subj');
           if (!sel2) return;
           var opts2 = '<option value="">— Select subject —</option>';
           SUBJECT_OPTIONS.forEach(function(s) {
-            if (!usedSubjects[s.key]) {
-              opts2 += '<option value="' + s.key + '">' + s.label + ' (' + s.spec + ')</option>';
-            } else {
-              opts2 += '<option class="forge-u-41pj58" value="" disabled>' + s.label + ' — you already have a class for this</option>';
-            }
+            var held = subjectCounts[s.key] || 0;
+            var note = held ? ' — you already have ' + held + ' class' + (held !== 1 ? 'es' : '') + ' for this' : '';
+            opts2 += '<option value="' + s.key + '">' + s.label + ' (' + s.spec + ')' + note + '</option>';
           });
           sel2.innerHTML = opts2;
         }).catch(function() {});
