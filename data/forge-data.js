@@ -4925,7 +4925,7 @@ BANKS["GCSE-ECON-P2-EXR"].questions.push(
 // AQA 8136, one question per idea, reusing the MC-GE-* misconception taxonomy
 // so recap results land on the same heatmap rows as the main banks.
 BANKS["GCSE-ECON-RECAP"] = {
-  label: "Recap: Core Ideas",
+  label: "Recap: Core GCSE Ideas",
   color: "#166534",
   questions: [
     {id:"GCSE-ECON-RECAP-01",spec:"GCSE-ECON-P1-FOUND",tag:"MC-GE-SCARCITY",stem:"A school can spend its budget on new laptops or on refurbishing the library, but not on both. It chooses the laptops. What is the opportunity cost?",

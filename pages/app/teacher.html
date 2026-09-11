@@ -1871,6 +1871,24 @@ Object.keys(BANKS).forEach(function(key) { BANK_LABELS[key] = BANKS[key].label; 
 var SUBJECT_BANKS = {};
 Object.keys(SUBJECTS).forEach(function(key) { SUBJECT_BANKS[key] = SUBJECTS[key].banks; });
 
+// Banks a class can be set even though another subject owns them. A Year 12
+// Economics class is routinely set the GCSE recap as September bridging work,
+// but the bank belongs to GCSE Economics: cross-listing it in SUBJECTS would
+// count 20 GCSE questions towards A Level's totals and put 20 tags that only
+// aggregate within GCSE into A Level's misconception taxonomy. Offering it
+// here instead keeps ownership honest. Delivery needs nothing further —
+// forge-data-loader resolves a bank to its owning subject's payload, so a
+// student opens it whatever their class is studying.
+var BRIDGING_BANKS = { econ: ['GCSE-ECON-RECAP'] };
+
+function assignableBanksFor(subject) {
+  var banks = subject && SUBJECT_BANKS[subject] ? SUBJECT_BANKS[subject] : Object.keys(BANK_LABELS);
+  var bridging = (subject && BRIDGING_BANKS[subject]) || [];
+  return banks.concat(bridging.filter(function(bank) {
+    return BANK_LABELS[bank] && banks.indexOf(bank) === -1;
+  }));
+}
+
 function dueBadge(dateStr) {
   if (!dateStr) return '';
   var due = new Date(dateStr);
@@ -2016,7 +2034,7 @@ function renderAssignments() {
   if (!el) return;
 
   var subject = dashState.classSubject;
-  var availableBanks = subject && SUBJECT_BANKS[subject] ? SUBJECT_BANKS[subject] : Object.keys(BANK_LABELS);
+  var availableBanks = assignableBanksFor(subject);
   var contentConfidence = window.ForgeContentConfidence && window.ForgeContentConfidence.statusFor ? window.ForgeContentConfidence.statusFor(subject) : {tier:'full'};
   var assignments = dashState.assignments || [];
   var students = dashState.students || [];
