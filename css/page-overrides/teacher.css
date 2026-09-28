@@ -796,10 +796,9 @@ html[data-overdrive="control-room"] .tab.active{color:var(--coal)}
 .class-code-pill{min-height:30px;padding:2px 9px;color:var(--hot);background:var(--panel);font-size:12px}
 
 .teacher-overview-grid{display:grid;gap:20px;margin-bottom:24px}
-.teacher-overview-main{display:grid;gap:20px;align-content:start;min-width:0}
 
 .teacher-next-action{padding:28px;border:1px solid var(--line);border-radius:var(--radius-lg);background:var(--panel)}
-.teacher-next-action h2{max-width:28ch;margin:0 0 12px;font-size:clamp(22px,3vw,28px);line-height:1.25;letter-spacing:-.02em}
+.teacher-next-action h2{max-width:none;text-wrap:wrap;margin:0 0 12px;font-size:clamp(22px,3vw,28px);line-height:1.25;letter-spacing:-.02em}
 .teacher-next-action>p{max-width:60ch;margin:0 0 22px;color:var(--slate);font-size:15px;line-height:1.6}
 .teacher-next-action .forge-action-row{display:flex;flex-wrap:wrap;gap:10px;margin:0}
 .teacher-next-action .forge-button{min-height:44px}
@@ -812,8 +811,8 @@ html[data-overdrive="control-room"] .tab.active{color:var(--coal)}
 .teacher-snapshot dl{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;margin:0}
 .teacher-snapshot dt{margin:0 0 6px;color:var(--slate);font-size:13px}
 .teacher-snapshot dd{margin:0;color:var(--white);font:700 24px 'Rethink Sans',sans-serif;font-variant-numeric:tabular-nums}
-.teacher-overview-grid+.dash-explainer{margin:0 0 38px}
-.teacher-overview-grid+.dash-explainer summary{min-height:44px;align-content:center;color:var(--slate);font:500 13px 'Poppins',sans-serif;letter-spacing:0;text-decoration:underline;text-underline-offset:4px}
+.dash-explainer--overview{margin:32px 0 0}
+.dash-explainer--overview summary{min-height:44px;align-content:center;color:var(--slate);font:500 13px 'Poppins',sans-serif;letter-spacing:0;text-decoration:underline;text-underline-offset:4px}
 .teacher-secondary-view .teacher-overview-grid,.teacher-secondary-view>.dash-explainer{display:none}
 .teacher-secondary-view .teacher-dashboard-head{margin-bottom:28px}
 
@@ -862,13 +861,13 @@ html[data-overdrive="control-room"] .tab.active{color:var(--coal)}
 
 @media(prefers-reduced-motion:reduce){.teacher-drawer-scrim,.teacher-detail-drawer{transition:none}}
 @media(max-width:560px){.teacher-dashboard-head__actions{align-items:center}.teacher-dashboard-head__actions .dash-tools{width:auto}.teacher-dashboard-head__actions .dash-tools>summary{min-width:110px;justify-content:center}}
-.teacher-checkin{margin:0}
+.teacher-checkin{margin:0 0 24px}
 .teacher-checkin h2{margin:0 0 10px;font-size:15px}
-.teacher-checkin ul{display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0;list-style:none}
-.teacher-checkin button{display:flex;align-items:baseline;gap:10px;min-height:44px;padding:8px 14px;border:1px solid var(--line);border-radius:var(--radius-md);background:var(--panel);color:var(--white);font:600 14px 'Rethink Sans',sans-serif;cursor:pointer}
+.teacher-checkin ul{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:8px;margin:0;padding:0;list-style:none}
+.teacher-checkin button{display:flex;align-items:baseline;justify-content:space-between;gap:10px;width:100%;text-align:left;min-height:44px;padding:8px 14px;border:1px solid var(--line);border-radius:var(--radius-md);background:var(--panel);color:var(--white);font:600 14px 'Rethink Sans',sans-serif;cursor:pointer}
 .teacher-checkin button:hover{border-color:var(--ember);background:var(--panel-2)}
 .teacher-checkin button:focus-visible{outline:2px solid var(--ember);outline-offset:3px}
-.teacher-checkin small{color:var(--slate);font-size:12px;font-weight:500}
+.teacher-checkin small{flex:none;white-space:nowrap;color:var(--slate);font-size:12px;font-weight:500}
 .teacher-secondary-view .teacher-checkin{display:none}
 .teacher-snapshot .trend{display:block;margin-top:4px;color:var(--slate);font-size:12px;font-weight:600}
 .teacher-snapshot .trend--up{color:var(--good)}
@@ -877,7 +876,7 @@ html[data-overdrive="control-room"] .tab.active{color:var(--coal)}
 /* Wide screens: progress becomes a side panel so the page uses its full width
    instead of leaving an empty band to the right of an 850px column. */
 @media(min-width:1100px){
-  .teacher-overview-grid{grid-template-columns:minmax(0,1fr) minmax(280px,340px);align-items:start}
+  .teacher-overview-grid{grid-template-columns:minmax(0,1fr) minmax(280px,340px);align-items:stretch}
   .teacher-snapshot dl{grid-template-columns:1fr;gap:0}
   .teacher-snapshot dl>div{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:4px 12px;padding:14px 0;border-top:1px solid var(--line)}
   .teacher-snapshot dt{margin:0}
