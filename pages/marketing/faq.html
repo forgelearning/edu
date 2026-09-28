@@ -300,7 +300,8 @@
               <li><strong>Scaffolds on every wrong answer</strong> — no student sees just "incorrect". Every wrong answer triggers a targeted explanation of what went wrong and why the right answer is right</li>
               <li><strong>Re-forge attempts</strong> — after a wrong answer, students get a second chance on a related question testing the same concept. This means every mistake is an opportunity rather than a dead end</li>
               <li><strong>Spaced repetition</strong> — questions the student has previously struggled with are weighted to appear more often, without the student knowing. The system works hardest on their weakest areas</li>
-              <li><strong>Class-only leaderboard</strong> — class-joined students may see display names, XP and rank within their class; no public or cross-school leaderboard is shown</li>
+              <li><strong>Weekly class league</strong> — class-joined students see a league of XP earned that week within their own class, showing classmates as first name and last initial; it resets every Monday, teachers can switch it off, and no public or cross-school league is shown</li>
+              <li><strong>Class friends</strong> — students can send friend requests to classmates; once both agree, each can see the other’s XP, accuracy and practice streak. There is no messaging, either student can remove the connection, and teachers can switch friends off for a class</li>
             </ul>
           </div>
         </div>
@@ -383,7 +384,7 @@
           <div class="faq-a">
             <p>It depends on how they access Forge:</p>
             <ul>
-              <li><strong>Class-joined students</strong> — enter a display name, their teacher's class code, and an individual private student code. The display name may be visible to classmates on the class-only leaderboard; no email address is required</li>
+              <li><strong>Class-joined students</strong> — enter a display name, their teacher's class code, and an individual private student code. Classmates may see the display name in the weekly class league (as first name and last initial) and, in full, if the student accepts them as a friend; no email address is required</li>
               <li><strong>Free-tier students</strong> — enter only a display name. No email, no account</li>
               <li><strong>Pro/trial subscribers</strong> — provide an email address and create a password. This is necessary to enable cross-device login and is stored securely via Supabase Auth (bcrypt hashed; neither Forge nor Supabase can recover a plaintext password)</li>
             </ul>
@@ -453,7 +454,7 @@
             <span class="faq-chevron" aria-hidden="true">▼</span>
           </button>
           <div class="faq-a">
-            <p><strong>Mostly.</strong> Students can only open their own profile, progress and misconception data. Class-joined students can see the class-only leaderboard, which shows display names, XP and rank; it does not expose response details or another student's misconception profile.</p>
+            <p><strong>Mostly.</strong> Students can only open their own profile and misconception data. Class-joined students can see the weekly class league, which shows classmates' first names and last initials with XP earned that week. A student who accepts a classmate as a friend shares their XP, accuracy and practice streak with that one classmate. Neither feature exposes individual answers or another student's misconception profile, and teachers can switch both off for a class.</p>
           </div>
         </div>
 
@@ -464,7 +465,7 @@
           </button>
           <div class="faq-a">
             <p>Students enter a display name when joining. The join form asks for at least a first name and surname, preserves the complete entered name rather than reducing it to a surname initial, and trims excess whitespace.</p>
-            <p>If a student enters an inappropriate name, teachers can <strong>rename any student</strong> from the class overview in the teacher dashboard. The replacement display name is what appears in teacher views and the class-only leaderboard.</p>
+            <p>If a student enters an inappropriate name, teachers can <strong>rename any student</strong> from the class overview in the teacher dashboard. The replacement display name is what appears in teacher views, the weekly class league and friends lists.</p>
             <p>Teachers should ask students to use an appropriate classroom display name and follow their school's naming expectations.</p>
           </div>
         </div>
