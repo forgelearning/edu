@@ -870,7 +870,7 @@ html[data-overdrive="control-room"] .tab.active{color:var(--coal)}
 .teacher-checkin button:hover{border-color:var(--ember);background:var(--panel-2)}
 .teacher-checkin button:focus-visible{outline:2px solid var(--ember);outline-offset:3px}
 .teacher-checkin small{flex:none;white-space:nowrap;color:var(--slate);font-size:12px;font-weight:500}
-.teacher-secondary-view .teacher-checkin{display:none}
+.teacher-secondary-view .teacher-checkin,.teacher-secondary-view #teacher-league{display:none}
 .teacher-snapshot .trend{display:block;margin-top:4px;color:var(--slate);font-size:12px;font-weight:600}
 .teacher-snapshot .trend--up{color:var(--good)}
 .teacher-snapshot .trend--down{color:var(--bad)}

@@ -156,3 +156,22 @@ drop function if exists public.forge_verify_class_student(text, text, text, text
 drop table if exists public.student_friendships;
 alter table public.classes drop column if exists friends_enabled;
 ```
+
+## 20260928 140000 — teacher read access to class friendships
+
+| File | What it does |
+|---|---|
+| `20260928140000_teacher_read_class_friendships.sql` | Grants `select` on `student_friendships` to `authenticated`, with one policy limiting it to rows in classes the caller teaches |
+
+**Applied to production 2026-09-28.** Read only: teachers cannot create,
+accept or remove friendships, `anon` still has no access, and a signed-in
+student teaches no class so the policy returns them nothing. Checked after
+applying: `anon` select false, `authenticated` select true and insert/delete
+false, one policy on the table.
+
+Rollback:
+
+```sql
+drop policy if exists "Teachers can read friendships in their classes" on public.student_friendships;
+revoke select on table public.student_friendships from authenticated;
+```

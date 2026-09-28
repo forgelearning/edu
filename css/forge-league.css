@@ -40,3 +40,9 @@
 .forge-league__empty svg{width:28px;height:28px;margin-bottom:6px;fill:none;stroke:var(--ember);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 .forge-league__empty p{margin:0;color:var(--slate);font-size:13px;line-height:1.5}
 .forge-league__empty .forge-league__empty-title{color:var(--white);font-size:15px;font-weight:700}
+.forge-friends--teacher{margin-top:24px}
+.forge-friends__summary{margin:0 0 8px}
+.forge-friends__waiting{margin-top:10px;color:var(--slate);font-size:13px}
+.forge-friends__waiting summary{min-height:36px;align-content:center;cursor:pointer}
+.forge-friends__waiting ul{margin:4px 0 0;padding-left:18px}
+.forge-friends__profile p{margin:6px 0 0}

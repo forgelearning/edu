@@ -42,4 +42,28 @@ assert(full.includes('Ali</strong> wants to be friends') && full.includes('data-
 assert(full.includes('Waiting for Mo') && full.includes('Cancel'), 'outgoing request can be withdrawn');
 assert(!full.includes('data-friend-add'), 'no add form when every classmate is already linked');
 
+// Teacher read access: select only, authenticated only, scoped to own classes.
+const tsql = fs.readFileSync('supabase/migrations/20260928140000_teacher_read_class_friendships.sql', 'utf8').replace(/--.*$/gm, '');
+assert(/grant select on table public\.student_friendships to authenticated;/.test(tsql));
+assert(!/\banon\b/.test(tsql), 'anon gets nothing');
+assert(!/grant (insert|update|delete|all)/i.test(tsql) && !/for (insert|update|delete|all)/i.test(tsql), 'teachers can only read');
+assert(/using \(class_id in \(select c\.id from public\.classes c where c\.teacher_user_id = auth\.uid\(\)\)\)/.test(tsql), 'scoped to the teacher\'s own classes');
+
+// Teacher views.
+const students = [{ id: 'a', name: 'Jess Best' }, { id: 'b', name: 'Mike' }, { id: 'c', display_name: 'Ali <R>' }, { id: 'd', name: 'Mo' }];
+const rows = [
+  { requester_id: 'a', addressee_id: 'b', status: 'accepted' },
+  { requester_id: 'c', addressee_id: 'a', status: 'accepted' },
+  { requester_id: 'd', addressee_id: 'b', status: 'pending' }
+];
+const th = F.teacherHtml(students, rows, true);
+assert(th.includes('2 friendships · 1 request waiting'), 'summary counts pairs and pending requests');
+assert(th.includes('Friends with Ali &lt;R&gt;, Mike'), 'each student listed once with their friends, escaped');
+assert(th.includes('Mo → Mike'), 'pending requests show who asked whom');
+assert(th.includes('Friends on') && F.teacherHtml(students, rows, false).includes('Friends off'));
+assert(F.teacherHtml(students, [], true).includes('No friend connections'), 'empty class');
+const sp = F.teacherStudentHtml(students, rows, 'b');
+assert(sp.includes('Jess Best') && sp.includes('Mo has sent a request'), 'student profile shows friends and requests to them');
+assert(F.teacherStudentHtml(students, rows, 'd').includes('Waiting for Mike to accept'), 'and requests they sent');
+
 console.log('Friends tests passed (SQL metric rules, locked-down table, same-class check, card states, escaping).');

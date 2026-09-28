@@ -109,5 +109,68 @@
     return load();
   }
 
-  root.ForgeFriends = { html: html, mount: mount, stat: stat };
+  // Teacher view: who is friends with whom, from the class's friendship rows
+  // (readable by the class teacher only, migration 20260928140000).
+  function studentName(byId, id) {
+    var s = byId[id];
+    return s ? (s.display_name || s.name || 'Student') : 'Former student';
+  }
+
+  function teacherLinks(students, rows, studentId) {
+    var byId = {};
+    (students || []).forEach(function (s) { byId[s.id] = s; });
+    var friends = [], waiting = [];
+    (rows || []).forEach(function (r) {
+      if (studentId && r.requester_id !== studentId && r.addressee_id !== studentId) return;
+      var other = r.requester_id === studentId ? r.addressee_id : r.requester_id;
+      if (r.status === 'accepted') friends.push(studentId ? studentName(byId, other) : [studentName(byId, r.requester_id), studentName(byId, r.addressee_id)]);
+      else waiting.push({ from: studentName(byId, r.requester_id), to: studentName(byId, r.addressee_id) });
+    });
+    return { friends: friends, waiting: waiting, byId: byId };
+  }
+
+  function teacherHtml(students, rows, enabled) {
+    var links = teacherLinks(students, rows);
+    var h = '<section class="forge-friends forge-friends--teacher" aria-labelledby="teacher-friends-title">';
+    h += '<div class="forge-league__head"><h2 id="teacher-friends-title">Friendships</h2><span class="forge-league__status' + (enabled ? ' is-on' : '') + '">' + (enabled ? 'Friends on' : 'Friends off') + '</span></div>';
+    if (!links.friends.length && !links.waiting.length) {
+      return h + '<p class="forge-league__note">No friend connections in this class yet. Students add classmates from their dashboard.</p></section>';
+    }
+    // Group accepted pairs by student so each name appears once with its friends.
+    var groups = {};
+    links.friends.forEach(function (pair) {
+      (groups[pair[0]] = groups[pair[0]] || []).push(pair[1]);
+      (groups[pair[1]] = groups[pair[1]] || []).push(pair[0]);
+    });
+    var names = Object.keys(groups).sort(function (a, b) { return a.localeCompare(b); });
+    h += '<p class="forge-league__note forge-friends__summary">' + links.friends.length + ' friendship' + (links.friends.length === 1 ? '' : 's')
+      + (links.waiting.length ? ' · ' + links.waiting.length + ' request' + (links.waiting.length === 1 ? '' : 's') + ' waiting' : '') + '</p>';
+    if (names.length) {
+      h += '<ul class="forge-friends__list">';
+      names.forEach(function (n) {
+        h += '<li class="forge-friends__row"><div><span class="forge-friends__name">' + esc(n) + '</span><span class="forge-friends__stat">Friends with ' + esc(groups[n].sort(function (a, b) { return a.localeCompare(b); }).join(', ')) + '</span></div></li>';
+      });
+      h += '</ul>';
+    }
+    if (links.waiting.length) {
+      h += '<details class="forge-friends__waiting"><summary>Requests waiting (' + links.waiting.length + ')</summary><ul>';
+      links.waiting.forEach(function (w) { h += '<li>' + esc(w.from) + ' → ' + esc(w.to) + '</li>'; });
+      h += '</ul></details>';
+    }
+    return h + '</section>';
+  }
+
+  // One student's connections, for the teacher's student profile.
+  function teacherStudentHtml(students, rows, studentId) {
+    var links = teacherLinks(students, rows, studentId);
+    var me = studentName(links.byId, studentId);
+    var h = '<section class="card forge-friends__profile"><div class="card-title">Friends</div>';
+    h += '<p>' + (links.friends.length ? esc(links.friends.sort(function (a, b) { return a.localeCompare(b); }).join(', ')) : 'No friends added yet.') + '</p>';
+    links.waiting.forEach(function (w) {
+      h += '<p class="forge-league__note">' + (w.from === me ? 'Waiting for ' + esc(w.to) + ' to accept' : esc(w.from) + ' has sent a request') + '</p>';
+    });
+    return h + '</section>';
+  }
+
+  root.ForgeFriends = { html: html, mount: mount, stat: stat, teacherHtml: teacherHtml, teacherStudentHtml: teacherStudentHtml };
 }(typeof window !== 'undefined' ? window : globalThis));
