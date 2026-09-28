@@ -15,7 +15,7 @@
 
 <link rel="stylesheet" href="css/states.css">
   <link rel="stylesheet" href="css/generated-utilities.css">
-<link rel="stylesheet" href="css/page-overrides/forge-quiz.css?v=20260808-save-status1">
+<link rel="stylesheet" href="css/page-overrides/forge-quiz.css?v=20260928-xp1">
 </head>
 <body>
 <script src="scripts/forge-api.js?v=20260809"></script>
@@ -403,7 +403,10 @@ var state = {
   weightMap: {},       // spaced repetition: questionId → priority weight
   bankStats: {},       // latest per-topic accuracy used by the recommendation
   sessionWrongTags: [], // misconceptions that fired in this session
-  sessionReforgedTags: [] // fired misconceptions repaired by their twin
+  sessionReforgedTags: [], // fired misconceptions repaired by their twin
+  baseXP: null,        // lifetime XP from history loaded at page start; null until known
+  pageXP: 0,           // XP earned on this page load, across sessions
+  sessionXP: 0         // XP earned in the current session
 };
 var FORGE_SESSION_SIZE = (window.ForgeApp && ForgeApp.session.defaultQuestionCount) || 8;
 var FORGE_SESSION_PREFIX = 'forge-session:';
@@ -415,7 +418,7 @@ function forgeSaveSession() {
     var saved = forgeSessionStorage(state.bank) || {completedIds: []};
     var currentId = state.questions[state.idx] && state.questions[state.idx].id;
     if (currentId && saved.completedIds.indexOf(currentId) === -1) saved.completedIds.push(currentId);
-    saved.questionIds = state.questions.map(function(q){return q.id;}); saved.idx = state.idx; saved.score = state.score; saved.updatedAt = Date.now();
+    saved.questionIds = state.questions.map(function(q){return q.id;}); saved.idx = state.idx; saved.score = state.score; saved.xp = state.sessionXP; saved.updatedAt = Date.now();
     localStorage.setItem(forgeSessionKey(state.bank), JSON.stringify(saved));
   } catch(e) {}
 }
@@ -424,14 +427,14 @@ function forgeStartSession(bank, rawQs) {
   if (saved.questionIds && saved.questionIds.length && saved.idx < saved.questionIds.length) {
     var byId = {}; rawQs.forEach(function(q){byId[q.id] = q;});
     var resumed = saved.questionIds.map(function(id){return byId[id];}).filter(Boolean);
-    if (resumed.length) { state.questions = resumed; state.idx = saved.idx || 0; state.score = saved.score || 0; return; }
+    if (resumed.length) { state.questions = resumed; state.idx = saved.idx || 0; state.score = saved.score || 0; state.sessionXP = saved.xp || 0; return; }
   }
   var completed = saved.completedIds || [];
   var available = rawQs.filter(function(q){return completed.indexOf(q.id) === -1;});
   if (!available.length) { available = rawQs; completed = []; }
   state.questions = weightedShuffle(available, state.weightMap || {}).slice(0, FORGE_SESSION_SIZE);
   if(window.forgeTrack) forgeTrack('forge_session_started',{bank:bank,question_count:state.questions.length});
-  state.idx = 0; state.score = 0;
+  state.idx = 0; state.score = 0; state.sessionXP = 0;
   state.sessionWrongTags = [];
   state.sessionReforgedTags = [];
   try { localStorage.setItem(forgeSessionKey(bank), JSON.stringify({completedIds: completed, questionIds: state.questions.map(function(q){return q.id;}), idx: 0, score: 0, updatedAt: Date.now()})); } catch(e) {}
@@ -444,6 +447,44 @@ function forgeCompleteSession() {
     localStorage.setItem(forgeSessionKey(state.bank), JSON.stringify({completedIds: completed, updatedAt: Date.now()}));
   } catch(e) {}
 }
+// ── XP feedback ──
+// The amounts mirror calcXPFromResponses (and the dashboard's calcXP): a
+// correct first answer is 10, a correct similar question after a wrong one is
+// 20. Keep them in step, or the number a student sees here will not match the
+// total on their dashboard. Free-tier students do not see XP: the upgrade
+// screen sells XP and ranks as a Pro feature.
+var XP_CORRECT = 10, XP_REFORGE = 20;
+function xpEnabled() { return !isFreeTier(); }
+function setXPHistory(responses) { state.baseXP = calcXPFromResponses(responses || []); }
+function awardXP(amount, host) {
+  if (!xpEnabled() || !amount) return;
+  state.sessionXP += amount;
+  state.pageXP += amount;
+  if (host) host.insertAdjacentHTML('beforeend', ' <span class="xp-gain">+' + amount + ' XP</span>');
+  var counter = document.getElementById('session-xp');
+  if (counter) counter.textContent = state.sessionXP + ' XP';
+}
+function xpResultsHtml() {
+  if (!xpEnabled()) return '';
+  var h = '<section class="xp-result" aria-label="XP earned">';
+  h += '<p class="xp-result__gain"><strong>+' + state.sessionXP + ' XP</strong> this session</p>';
+  if (state.baseXP != null) {
+    var after = state.baseXP + state.pageXP, before = after - state.sessionXP;
+    var rank = getLBRank(after), prevRank = getLBRank(before);
+    var next = LB_RANKS.filter(function(r){ return r.min > after; })[0] || null;
+    if (rank.name !== prevRank.name) h += '<p class="xp-result__rankup">New rank: ' + rank.name + '</p>';
+    h += '<div class="xp-result__rank"><span>' + rank.name + '</span><span>' + after.toLocaleString() + ' XP</span></div>';
+    if (next) {
+      var pct = Math.max(0, Math.min(100, Math.round((after - rank.min) / (next.min - rank.min) * 100)));
+      h += '<div class="xp-result__meter" role="progressbar" aria-label="Progress towards ' + next.name + '" aria-valuemin="' + rank.min + '" aria-valuemax="' + next.min + '" aria-valuenow="' + after + '"><span style="width:' + pct + '%"></span></div>';
+      h += '<p class="xp-result__next">' + (next.min - after).toLocaleString() + ' XP to ' + next.name + '</p>';
+    } else {
+      h += '<p class="xp-result__next">Highest rank reached</p>';
+    }
+  }
+  return h + '</section>';
+}
+
 var requestedBank = new URLSearchParams(location.search).get('bank');
 var requestedClassId = new URLSearchParams(location.search).get('class_id');
 var requestedAssignmentId = new URLSearchParams(location.search).get('assignment_id');
@@ -901,6 +942,7 @@ function renderJoin() {
       ForgeClasses.fetchFreeResponses(SUPABASE_URL, SUPABASE_KEY, existingSession, function(responses) {
         state.weightMap = buildWeightMap(responses || []);
         state.bankStats = buildBankStats(responses || []);
+        setXPHistory(responses);
         if (state.phase === 'banks') render();
       });
 
@@ -1488,7 +1530,7 @@ function renderQuiz(){
   var h='<div class="quiz-header">';
   h+='<button type="button" class="back-btn" id="back-banks">\u2190 Topics</button>';
   h+='<span class="bank-name" style="color:'+bk.color+'">'+bk.label+'</span>';
-  h+='<span>Question '+(state.idx+1)+' of '+state.questions.length+'</span></div>';
+  h+='<span>Question '+(state.idx+1)+' of '+state.questions.length+(xpEnabled()?' · <span id="session-xp">'+state.sessionXP+' XP</span>':'')+'</span></div>';
   h+='<p class="forge-u-lp9fq9">Your progress saves automatically.</p>';
   h+='<div class="progress-bar"><div class="progress-fill" style="width:'+((state.idx/state.questions.length)*100)+'%;background:'+bk.color+'"></div></div>';
 
@@ -1552,6 +1594,7 @@ function renderQuiz(){
 
       var fb=document.getElementById('feedback');
       fb.innerHTML=window.ForgeQuestion.renderFeedback(q,isCorrect);
+      if(isCorrect){ awardXP(XP_CORRECT, fb.querySelector('.praise-box')); forgeSaveSession(); }
       if(!isCorrect){
         if(q.reforge){
           document.getElementById('rf-btn').onclick=function(){
@@ -1687,6 +1730,7 @@ function renderFillBlankQuiz(q,bk,headerHtml){
 
     var fb=document.getElementById('feedback');
     fb.innerHTML=window.ForgeQuestion.renderFeedback(q,allCorrect);
+    if(allCorrect) awardXP(XP_CORRECT, fb.querySelector('.praise-box'));
     if(!allCorrect){
       if(q.reforge){
         document.getElementById('rf-btn').onclick=function(){
@@ -1762,6 +1806,8 @@ function renderReforge(q,el,color){
       if(isCorrect){
         if(q.tag&&state.sessionReforgedTags.indexOf(q.tag)===-1) state.sessionReforgedTags.push(q.tag);
         rfb.innerHTML='<div class="forge-u-1wiwwwz">\u2713 Reforged.</div>';
+        awardXP(XP_REFORGE, rfb.firstChild);
+        forgeSaveSession();
       }else{
         rfb.innerHTML='<div class="forge-u-jm24uy"><div class="forge-u-o1x2qa">Not quite \u2014 the answer is <strong>'+rf.correct+'</strong>.</div><div class="rf-scaffold"><span class="stag">Re-read the scaffold</span><p>'+ForgeQuestion.scaffoldText(q)+'</p></div></div>';
       }
@@ -1780,21 +1826,6 @@ function calcXPFromResponses(responses){
     else if(r.is_correct&&!r.reforge_attempted) xp+=10;
   });
   return xp;
-}
-function calcStreakFromResponses(responses){
-  if(!responses.length) return 0;
-  var dates=[...new Set(responses.map(function(r){return r.created_at?r.created_at.substring(0,10):'';}))].filter(Boolean).sort().reverse();
-  if(!dates.length) return 0;
-  var today=new Date().toISOString().substring(0,10);
-  var yesterday=new Date(Date.now()-86400000).toISOString().substring(0,10);
-  if(dates[0]!==today&&dates[0]!==yesterday) return 0;
-  var streak=1;
-  for(var i=1;i<dates.length;i++){
-    var prev=new Date(dates[i-1]);prev.setDate(prev.getDate()-1);
-    if(dates[i]===prev.toISOString().substring(0,10)) streak++;
-    else break;
-  }
-  return streak;
 }
 var LB_RANKS=[{min:0,name:'Apprentice',color:'var(--slate)'},{min:300,name:'Journeyman',color:'var(--hot)'},{min:1500,name:'Craftsman',color:'var(--ember)'},{min:5000,name:'Forged',color:'var(--good)'},{min:15000,name:'Master',color:'var(--hot)'}];
 function getLBRank(xp){for(var i=LB_RANKS.length-1;i>=0;i--){if(xp>=LB_RANKS[i].min)return LB_RANKS[i];}return LB_RANKS[0];}
@@ -1821,6 +1852,7 @@ function renderResults(){
   h+='<p class="detail">'+bk.label+'</p>';
   h+='<div class="pct" style="color:'+col+'">'+pct+'%</div>';
   h+='<div class="detail">'+state.score+' of '+state.questions.length+' correct</div>';
+  h+=xpResultsHtml();
   h+='<section class="forge-result-story" aria-labelledby="result-next-title">';
   h+='<h2 id="result-next-title">'+(remaining ? 'One idea to revisit' : 'You’ve finished this session')+'</h2>';
   if(remaining) h+='<p class="forge-recommendation__copy">'+remainingLabel+'. Practise it again in Anvil with help.</p>';
@@ -1834,7 +1866,6 @@ function renderResults(){
   h+='<nav class="forge-result-links" aria-label="After practice">';
   if(remaining) h+='<a href="student-dashboard.html">Back to home</a>';
   h+='<a href="profile.html">View my progress</a></nav>';
-  if(state.classId && state.studentId) h+='<details class="result-leaderboard"><summary>Class leaderboard</summary><div id="lb-section"></div></details>';
   h+='</div>';
   app.innerHTML=h;
   document.getElementById('retry').onclick=function(){
@@ -1843,41 +1874,6 @@ function renderResults(){
     state.phase='quiz';render();
   };
   document.getElementById('all-banks').onclick=function(){state.assignmentId=null;state.phase='banks';render();};
-  if(!state.classId||!state.studentId) return;
-  var lbEl=document.getElementById('lb-section');
-  ForgeState.loading(lbEl, { label: 'Loading leaderboard', body: 'Getting the latest class positions ready.' });
-  var hdrs={'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY};
-  ForgeAPI.response(SUPABASE_URL+'/rest/v1/students?select=*&class_id=eq.'+state.classId,{headers:hdrs}).then(function(r){return r.json();}).then(function(students){
-    if(!students||!Array.isArray(students)||!students.length){
-      lbEl.innerHTML=ForgeState.html('empty',{label:'No classmates yet',body:'Your class leaderboard will appear after other students join.'});return;}
-    var ids=students.map(function(s){return s.id;}).join(',');
-    ForgeAPI.response(SUPABASE_URL+'/rest/v1/responses?select=*&class_id=eq.'+encodeURIComponent(state.classId)+'&student_id=in.('+ids+')',{headers:hdrs}).then(function(r){return r.json();}).then(function(responses){
-      if(!responses||!Array.isArray(responses)) responses=[];
-      var byStudent={};
-      students.forEach(function(s){byStudent[s.id]={name:s.name,responses:[]};});
-      responses.forEach(function(r){if(byStudent[r.student_id])byStudent[r.student_id].responses.push(r);});
-      var ranked=students.map(function(s){
-        var xp=calcXPFromResponses(byStudent[s.id].responses);
-        var streak=calcStreakFromResponses(byStudent[s.id].responses);
-        return{id:s.id,name:s.name,xp:xp,streak:streak,rank:getLBRank(xp)};
-      }).sort(function(a,b){return b.xp-a.xp;});
-      var out='<div class="lb-wrap">';
-      out+='<div class="lb-header">Class leaderboard \u2014 visible to your class only</div>';
-      ranked.forEach(function(s,i){
-        var isYou=s.id===state.studentId;
-        out+='<div class="lb-row'+(isYou?' lb-you':'')+(s.xp===0?' lb-dim':'')+'">';
-        out+='<span class="lb-pos">'+(i+1)+'</span>';
-        out+='<span class="lb-name">'+(isYou?'You':s.name)+'</span>';
-        out+='<span class="lb-rank-pill" style="background:'+s.rank.color+'22;color:'+s.rank.color+'">'+s.rank.name+'</span>';
-        out+='<span class="lb-xp">'+s.xp.toLocaleString()+' XP</span>';
-        out+='<span class="lb-streak">\uD83D\uDD25 '+s.streak+'</span>';
-        out+='</div>';
-      });
-      out+='</div>';
-      out+='<p class="forge-u-ig11mh">Leaderboards are class-only. XP is earned by correct thinking, not time logged.</p>';
-      lbEl.innerHTML=out;
-    }).catch(function(){var retry=ForgeState.error(lbEl,{label:'Leaderboard is unavailable',body:'We couldn’t load the latest class responses. Try again in a moment.'});if(retry)retry.onclick=function(){location.reload();};});
-  }).catch(function(){var retry=ForgeState.error(lbEl,{label:'Leaderboard is unavailable',body:'We couldn’t load the latest class list. Try again in a moment.'});if(retry)retry.onclick=function(){location.reload();};});
 }
 
 function forgeLogout(){
@@ -2098,6 +2094,13 @@ if (!openSoloLogin && ForgeAuth.hasSession()) {
         state.isPaid  = false;
         state.isTrial = false;
       }
+      // Signed-in accounts load no history here otherwise; fetch it so the
+      // results screen can show rank progress.
+      var xpToken = ForgeAuth.accessToken && ForgeAuth.accessToken();
+      var xpUser = ForgeAuth.currentUser && ForgeAuth.currentUser();
+      if (xpToken && xpUser && ForgeClasses.fetchAuthResponses) {
+        ForgeClasses.fetchAuthResponses(xpToken, xpUser.id, function(rows, error) { if (!error) setXPHistory(rows); });
+      }
       if (access === 'expired') {
         state.phase = 'trial-expired';
       } else if (state.paidSubjects.length === 1 && SUBJECTS[state.paidSubjects[0]]) {
@@ -2176,6 +2179,7 @@ if (!openSoloLogin && ForgeAuth.hasSession()) {
           var responses = Array.isArray(r) ? r : [];
           state.weightMap = buildWeightMap(responses);
           state.bankStats = buildBankStats(responses);
+          setXPHistory(responses);
           if (state.phase === 'banks') render();
         }).catch(function() { state.weightMap = {}; });
       }
@@ -2197,6 +2201,7 @@ if (!openSoloLogin && ForgeAuth.hasSession()) {
       ForgeClasses.fetchFreeResponses(SUPABASE_URL, SUPABASE_KEY, freeSession, function(responses) {
         state.weightMap = buildWeightMap(responses || []);
         state.bankStats = buildBankStats(responses || []);
+        setXPHistory(responses);
         if (state.phase === 'banks') render();
       });
       restored = true;
