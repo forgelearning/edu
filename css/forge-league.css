@@ -36,3 +36,7 @@
 .forge-friends__add select{flex:1;min-width:0;min-height:40px;padding:0 10px;border:1px solid var(--line);border-radius:var(--radius-sm);background:var(--panel-2);color:var(--white);font:500 14px 'Poppins',sans-serif}
 .forge-friends__add .forge-button{min-height:40px;font-size:13px}
 @media(max-width:480px){.forge-friends__add{flex-direction:column}}
+.forge-league__empty{display:grid;justify-items:center;gap:4px;padding:22px 16px;border:1px dashed var(--line);border-radius:var(--radius-md);text-align:center}
+.forge-league__empty svg{width:28px;height:28px;margin-bottom:6px;fill:none;stroke:var(--ember);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.forge-league__empty p{margin:0;color:var(--slate);font-size:13px;line-height:1.5}
+.forge-league__empty .forge-league__empty-title{color:var(--white);font-size:15px;font-weight:700}

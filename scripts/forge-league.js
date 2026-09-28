@@ -44,6 +44,13 @@
     }, extra || {}), { token: token });
   }
 
+  // Shown when nobody in the class has XP yet this week.
+  function emptyHtml(title, body) {
+    return '<div class="forge-league__empty">'
+      + '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0V4Z"/><path d="M17 5h3v2a4 4 0 0 1-3 3.9M7 5H4v2a4 4 0 0 0 3 3.9"/></svg>'
+      + '<p class="forge-league__empty-title">' + title + '</p><p>' + body + '</p></div>';
+  }
+
   function fetchLeague(ctx) {
     return studentRpc('get_class_weekly_league', ctx).then(function (data) {
       return data && typeof data === 'object' && !Array.isArray(data) ? data : null;
@@ -57,7 +64,7 @@
     var h = '<section class="forge-league" aria-labelledby="forge-league-title">';
     h += '<div class="forge-league__head"><h2 id="forge-league-title">This week’s league</h2><span>Resets Monday</span></div>';
     if (!rows.length) {
-      return h + '<p class="forge-league__note">Nobody in your class has earned XP yet this week. Answer a question to take first place.</p></section>';
+      return h + emptyHtml('No XP yet this week', 'Answer a question to take first place.') + '</section>';
     }
     h += '<ol class="forge-league__rows">';
     var lastSeq = 0, above = null;
@@ -124,7 +131,7 @@
     var h = '<section class="forge-league forge-league--teacher" aria-labelledby="teacher-league-title">';
     h += '<div class="forge-league__head"><h2 id="teacher-league-title">This week’s league</h2><span class="forge-league__status' + (enabled ? ' is-on' : '') + '">' + (enabled ? 'Visible to students' : 'Hidden from students') + '</span></div>';
     if (!ranked.length) {
-      h += '<p class="forge-league__note">No one has earned XP yet this week. It resets every Monday.</p>';
+      h += emptyHtml('No XP yet this week', 'Students appear here as they practise. The league resets every Monday.');
     } else {
       h += '<ol class="forge-league__rows">';
       var prevXp = null, pos = 0;

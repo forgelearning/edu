@@ -32,6 +32,7 @@ const L = ctx.ForgeLeague;
 assert.strictEqual(L.html(null), '', 'no data, no league');
 assert.strictEqual(L.html({ enabled: false }), '', 'switched off by the teacher, no league');
 assert(L.html({ enabled: true, rows: [] }).includes('take first place'), 'empty week invites the first answer');
+assert(L.teacherHtml([{ id: 'a', name: 'A' }], [], true).includes('forge-league__empty'), 'teacher view has a proper empty state');
 
 const data = { enabled: true, ranked: 9, you: { position: 6, xp: 40 }, rows: [
   { seq: 1, position: 1, name: 'Jess B.', xp: 320, is_you: false },
