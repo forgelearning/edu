@@ -103,6 +103,15 @@ var ForgeSidebar = {
       var forgeIndex = items.findIndex(function(it) { return it.key === 'forge'; });
       items.splice(forgeIndex + 1, 0, {key:'revision', href:'revision.html', label:'Revision'});
     }
+    var studentNav = !config.classSwitch && items.some(function(it) { return it.key === 'forge'; });
+    config.studentNav = studentNav;
+    if (studentNav) {
+      var labels = {dashboard:'Home', forge:'Practice', anvil:'Repair mistakes', crucible:'Timed practice', assignments:'Assignments', revision:'Revision'};
+      var descriptions = {forge:'Forge', anvil:'Anvil', crucible:'Crucible'};
+      items = items.map(function(it) {
+        return Object.assign({}, it, {label:labels[it.key] || it.label, description:descriptions[it.key] || ''});
+      });
+    }
     config.items = items;
     var footerItems = (config.footerItems || []).slice();
     if (!footerItems.some(function(it) { return it.key === 'settings'; })) {
@@ -110,6 +119,9 @@ var ForgeSidebar = {
         ? 'teacher-settings.html' : 'student-settings.html';
       footerItems.push({key:'settings', href: config.settingsHref || defaultSettingsHref, label:'Settings'});
     }
+    if (studentNav) footerItems = footerItems.map(function(it) {
+      return it.key === 'profile' ? Object.assign({}, it, {label:'My progress', description:''}) : it;
+    });
     config.footerItems = footerItems;
 
     var itemsHtml = items.map(function(it) {
@@ -133,7 +145,7 @@ var ForgeSidebar = {
         '</div>';
     }
 
-    var badgeHref = config.badgeHref || 'index.html';
+    var badgeHref = config.badgeHref || (studentNav ? 'student-dashboard.html' : 'index.html');
     var badgeHtml =
       '<a id="forge-badge" href="' + _fsEsc(badgeHref) + '" aria-label="Forge — home">' +
         '<span class="badge-mark">' +
@@ -146,7 +158,7 @@ var ForgeSidebar = {
     var sidebarHtml =
       '<aside id="forge-sidebar">' +
         classSwitchHtml +
-        '<nav class="fside-nav">' + itemsHtml +
+        '<nav class="fside-nav" aria-label="Main navigation">' + itemsHtml +
           (footerItemsHtml ? '<div class="fside-divider"></div>' + footerItemsHtml : '') +
         '</nav>' +
         '<div class="fside-footer">' +
@@ -162,8 +174,8 @@ var ForgeSidebar = {
           '</button>' +
         '</div>' +
       '</aside>' +
-      '<button id="forge-sidebar-toggle" data-forge-sidebar-action="toggle-sidebar" aria-label="Toggle sidebar">' +
-        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>' +
+      '<button type="button" id="forge-sidebar-toggle" data-forge-sidebar-action="toggle-sidebar" aria-controls="forge-sidebar" aria-expanded="false" aria-label="Show navigation">' +
+        '<span id="forge-sidebar-toggle-label">Menu</span><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>' +
       '</button>';
 
     document.body.insertAdjacentHTML('afterbegin', sidebarHtml);
@@ -187,10 +199,10 @@ var ForgeSidebar = {
       if (typeof window.forgeLogout === 'function') return window.forgeLogout();
     };
 
-    var expanded = localStorage.getItem('forge-sidebar-expanded') === '1';
-    document.getElementById('forge-sidebar').classList.toggle('expanded', expanded);
-    document.getElementById('forge-badge').classList.toggle('collapsed', !expanded);
-    document.body.classList.toggle('forge-sidebar-expanded', expanded);
+    // Existing explicit choices survive; a new student sees the labels.
+    var preference = null;
+    try { preference = localStorage.getItem('forge-sidebar-expanded'); } catch(e) {}
+    this._setExpanded(preference === null ? studentNav : preference === '1');
 
     var nativeShell = !!(window.Capacitor && (typeof window.Capacitor.isNativePlatform !== 'function' || window.Capacitor.isNativePlatform()));
     if (nativeShell && !this._edgeSwipeBound) {
@@ -361,7 +373,7 @@ var ForgeSidebar = {
         };
         if (actions[actionName] && typeof ForgeSidebar[actions[actionName]] === 'function') {
           e.preventDefault();
-          return ForgeSidebar[actions[actionName]]();
+          return ForgeSidebar[actions[actionName]](action);
         }
       }
       var menu = document.getElementById('fclassswitch-menu');
@@ -395,18 +407,19 @@ var ForgeSidebar = {
   // ---- mobile shell -------------------------------------------------
 
   _tabbarHtml: function(config) {
-    var items = config.items || [];
+    var items = _fsMobileItems(config);
     var tabs = items.slice(0, _FORGE_MAX_TABS);
     var h = tabs.map(function(it) {
       return _fsTabHtml(it, config.active);
     }).join('');
-    h += '<button class="ftab" data-key="__more" data-forge-sidebar-action="open-sheet" aria-label="More">' +
-      _fsIcon('more') + '<span class="ftab-label">More</span>' +
+    var overflowActive = items.slice(_FORGE_MAX_TABS).concat(config.footerItems || []).some(function(it) { return it.key === config.active; });
+    h += '<button class="ftab' + (overflowActive ? ' active' : '') + '" data-key="__more" data-forge-sidebar-action="open-sheet" aria-label="Menu" aria-controls="forge-sheet" aria-expanded="false">' +
+      _fsIcon('more') + '<span class="ftab-label">Menu</span>' +
     '</button>';
-    return '<nav id="forge-tabbar">' + h + '</nav>' +
+    return '<nav id="forge-tabbar" aria-label="Main navigation">' + h + '</nav>' +
       '<div id="forge-sheet-scrim" data-forge-sidebar-action="scrim" aria-hidden="true" hidden>' +
         '<div id="forge-sheet" role="dialog" aria-modal="true" aria-labelledby="forge-sheet-title" tabindex="-1"><div class="fsheet-grip"></div>' +
-        '<h2 id="forge-sheet-title" class="forge-sr-only">More navigation</h2>' +
+        '<div class="fsheet-header"><h2 id="forge-sheet-title">Menu</h2><button type="button" class="fsheet-close" data-forge-sidebar-action="close-sheet">Close</button></div>' +
         '<div id="forge-sheet-body"></div></div>' +
       '</div>';
   },
@@ -415,7 +428,7 @@ var ForgeSidebar = {
   _sheetHtml: function() {
     var config = this._config || {};
     var active = this._active;
-    var overflow = (config.items || []).slice(_FORGE_MAX_TABS);
+    var overflow = _fsMobileItems(config).slice(_FORGE_MAX_TABS);
     var h = '';
 
     if (config.classSwitch) {
@@ -465,6 +478,7 @@ var ForgeSidebar = {
     scrim.removeAttribute('hidden');
     scrim.setAttribute('aria-hidden', 'false');
     scrim.classList.add('open');
+    if (this._sheetTrigger) this._sheetTrigger.setAttribute('aria-expanded', 'true');
     var firstItem = body.querySelector('button, a');
     if (firstItem) firstItem.focus();
   },
@@ -477,7 +491,7 @@ var ForgeSidebar = {
       scrim.setAttribute('hidden', 'hidden');
     }
     var more = this._sheetTrigger || document.querySelector('#forge-tabbar [data-key="__more"]');
-    if (more) more.focus();
+    if (more) { more.setAttribute('aria-expanded', 'false'); more.focus(); }
     this._sheetTrigger = null;
   },
 
@@ -503,8 +517,12 @@ var ForgeSidebar = {
     ['#forge-sidebar .fside-item', '#forge-tabbar .ftab'].forEach(function(sel) {
       document.querySelectorAll(sel).forEach(function(el) {
         el.classList.toggle('active', el.getAttribute('data-key') === key);
+        if (el.getAttribute('data-key') === key) el.setAttribute('aria-current', 'page');
+        else el.removeAttribute('aria-current');
       });
     });
+    var menu = document.querySelector('#forge-tabbar [data-key="__more"]');
+    if(menu) menu.classList.toggle('active', _fsMobileItems(this._config || {}).slice(_FORGE_MAX_TABS).concat((this._config || {}).footerItems || []).some(function(it) { return it.key === key; }));
   },
 
   setClassLabel: function(text) {
@@ -612,13 +630,20 @@ var ForgeSidebar = {
     }
   },
 
-  _toggleSidebar: function() {
-    var sb = document.getElementById('forge-sidebar');
-    var badge = document.getElementById('forge-badge');
-    var expanded = sb.classList.toggle('expanded');
-    badge.classList.toggle('collapsed', !expanded);
+  _setExpanded: function(expanded) {
+    document.getElementById('forge-sidebar').classList.toggle('expanded', expanded);
+    document.getElementById('forge-badge').classList.toggle('collapsed', !expanded);
     document.body.classList.toggle('forge-sidebar-expanded', expanded);
-    localStorage.setItem('forge-sidebar-expanded', expanded ? '1' : '0');
+    var toggle = document.getElementById('forge-sidebar-toggle');
+    toggle.setAttribute('aria-expanded', String(expanded));
+    toggle.setAttribute('aria-label', expanded ? 'Hide navigation labels' : 'Show navigation labels');
+    document.getElementById('forge-sidebar-toggle-label').textContent = expanded ? 'Hide menu' : 'Menu';
+  },
+
+  _toggleSidebar: function() {
+    var expanded = !document.getElementById('forge-sidebar').classList.contains('expanded');
+    this._setExpanded(expanded);
+    try { localStorage.setItem('forge-sidebar-expanded', expanded ? '1' : '0'); } catch(e) {}
   },
 
   _updateThemeUI: function(isLight) {
@@ -694,6 +719,17 @@ function _fsSidebarCall(source) {
   return match ? 'goto:' + match[1] : '';
 }
 
+function _fsMobileItems(config) {
+  var items = (config.items || []).slice();
+  if (!config.studentNav) return items;
+  var order = ['dashboard', 'forge', 'anvil', 'assignments', 'revision', 'crucible'];
+  return items.sort(function(a,b) { return order.indexOf(a.key) - order.indexOf(b.key); });
+}
+
+function _fsDescription(it) {
+  return it.description !== undefined ? it.description : _fsDescriptor(it.key);
+}
+
 function _fsDescriptor(key) {
   return {dashboard:'Home', forge:'Practice', assignments:'Assigned work', anvil:'Repair misconceptions', crucible:'Timed challenge'}[key] || '';
 }
@@ -701,7 +737,7 @@ function _fsDescriptor(key) {
 // Bottom-tab labels have roughly 9 characters before they ellipsise, so they get
 // their own short forms rather than reusing the longer rail descriptors.
 function _fsTabLabel(key) {
-  return {dashboard:'Home', forge:'Practice', assignments:'Assigned', anvil:'Repair', crucible:'Crucible'}[key] || '';
+  return {dashboard:'Home', forge:'Practice', assignments:'Assigned', anvil:'Repair', crucible:'Timed'}[key] || '';
 }
 
 function _fsTabHtml(it, activeKey) {
@@ -710,7 +746,7 @@ function _fsTabHtml(it, activeKey) {
     ? '<span class="ftab-dot' + (it.badgeMuted ? ' badge-muted' : '') + '">' + _fsEsc(it.badge) + '</span>'
     : '';
   return '<' + tag + ' class="ftab' + (it.key === activeKey ? ' active' : '') + '" data-key="' + _fsEsc(it.key) + '"' +
-    _fsLinkAttrs(it) + '>' +
+    _fsLinkAttrs(it) + (it.key === activeKey ? ' aria-current="page"' : '') + '>' +
     _fsIcon(it.key) +
     '<span class="ftab-label">' + _fsEsc(_fsTabLabel(it.key) || it.label) + '</span>' +
     badgeHtml +
@@ -724,9 +760,9 @@ function _fsSheetItemHtml(it, activeKey) {
     ? ' data-forge-sidebar-action="sidebar-call" data-forge-sidebar-call="' + _fsEsc(_fsSidebarCall(it.onclick)) + '"'
     : (it.href ? ' href="' + _fsEsc(it.href) + '" data-forge-sidebar-action="navigate" data-forge-sidebar-href="' + _fsEsc(it.href) + '"' : ' data-forge-sidebar-action="close-sheet"');
   return '<' + tag + ' class="fsheet-item' + (it.key === activeKey ? ' active' : '') + '" data-key="' + _fsEsc(it.key) + '"' +
-    attrs + '>' +
+    attrs + (it.key === activeKey ? ' aria-current="page"' : '') + '>' +
     _fsIcon(it.key) +
-    '<span>' + _fsEsc(it.label) + (_fsDescriptor(it.key) ? '<small class="fsheet-subtitle">' + _fsEsc(_fsDescriptor(it.key)) + '</small>' : '') + '</span>' +
+    '<span>' + _fsEsc(it.label) + (_fsDescription(it) ? '<small class="fsheet-subtitle">' + _fsEsc(_fsDescription(it)) + '</small>' : '') + '</span>' +
   '</' + tag + '>';
 }
 
@@ -738,11 +774,11 @@ function _fsItemHtml(it, activeKey) {
   var badgeHtml = (it.badge !== undefined && it.badge !== null)
     ? '<span class="fside-badge' + (it.badgeMuted ? ' badge-muted' : '') + '">' + _fsEsc(it.badge) + '</span>'
     : '';
-  var descriptor = _fsDescriptor(it.key);
+  var descriptor = _fsDescription(it);
   // The visible label is hidden by CSS while the rail is collapsed, which leaves
   // the control with no accessible name — so name it explicitly.
   var ariaAttr = ' aria-label="' + _fsEsc(it.label + (descriptor ? ' — ' + descriptor : '')) + '"';
-  return '<' + tag + ' class="fside-item' + activeCls + '" data-key="' + _fsEsc(it.key) + '"' + hrefAttr + onclickAttr + ariaAttr + '>' +
+  return '<' + tag + ' class="fside-item' + activeCls + '" data-key="' + _fsEsc(it.key) + '"' + hrefAttr + onclickAttr + ariaAttr + (it.key === activeKey ? ' aria-current="page"' : '') + '>' +
     _fsIcon(it.key) +
     '<span class="fside-label"><span>' + _fsEsc(it.label) + '</span>' + (descriptor ? '<small>' + _fsEsc(descriptor) + '</small>' : '') + '</span>' +
     badgeHtml +

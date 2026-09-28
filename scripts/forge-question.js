@@ -26,7 +26,7 @@
 
   function renderFeedback(question, correct){
     if(correct){
-      return '<div class="praise-box">\u2713 Nailed it.</div><button class="next-btn btn-glass btn-ember" id="next-btn">Next \u2192</button><div class="clear"></div>';
+      return '<div class="praise-box">\u2713 Nailed it.</div><button class="next-btn btn-glass btn-ember" id="next-btn">Next question \u2192</button><div class="clear"></div>';
     }
     // Students used to see the raw taxonomy code here (MC-MICRO-CORRECTIVE-TAX).
     // It means nothing to them, and a readable label already exists for
@@ -37,9 +37,9 @@
     var chip = label ? '<span class="stag">'+label+'</span>' : '';
     var html = '<div class="scaffold-box">'+chip+'<p>'+scaffoldText(question)+'</p></div>';
     if(question.reforge){
-      html += '<button class="reforge-trigger" id="rf-btn">Re-forge \u2192</button><div id="rf-area" class="hidden"></div>';
+      html += '<button class="reforge-trigger" id="rf-btn">Try a similar question \u2192</button><div id="rf-area" class="hidden"></div>';
     }
-    return html + '<button class="next-btn btn-glass btn-ember" id="next-btn">Next \u2192</button><div class="clear"></div>';
+    return html + '<button class="next-btn btn-glass btn-ember" id="next-btn">Next question \u2192</button><div class="clear"></div>';
   }
 
   function renderFillBlank(question, words, sentenceHtml){
