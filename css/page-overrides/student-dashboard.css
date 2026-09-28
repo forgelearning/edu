@@ -253,7 +253,7 @@ html[data-overdrive="control-room"] .mod-row:hover{border-color:var(--hot);box-s
 .dashboard-next h2{font-size:24px;line-height:1.25;margin:0 0 12px}
 .dashboard-next p{max-width:58ch;color:var(--slate);font-size:15px;line-height:1.65;margin:0 0 24px}
 .dashboard-next .forge-button{min-height:44px}
-.dashboard-shortcuts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:12px 0 32px}
+.dashboard-shortcuts{padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:12px 0 32px}
 .dashboard-shortcuts a{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:56px;padding:12px 16px;border:1px solid var(--line);border-radius:var(--radius-md);background:var(--panel);color:var(--white);font:600 14px 'Rethink Sans',sans-serif;text-decoration:none;transition:border-color .16s,background .16s,transform .16s}
 .dashboard-shortcuts a::after{content:'';width:7px;height:7px;flex:none;border-top:2px solid var(--ember);border-right:2px solid var(--ember);transform:rotate(45deg)}
 .dashboard-shortcuts a:hover{border-color:var(--ember);background:var(--panel-2);transform:translateY(-2px)}
@@ -287,3 +287,17 @@ html[data-overdrive="control-room"] .mod-row:hover{border-color:var(--hot);box-s
 @media(prefers-reduced-motion:reduce){.dashboard-shortcuts a{transition:none}.dashboard-shortcuts a:hover{transform:none}}
 .dashboard-next--urgent{border-color:var(--ember)}
 .dashboard-next p strong{color:var(--white)}
+.dashboard-layout{display:grid;gap:0}
+.dashboard-main{min-width:0}
+/* Wide screens: progress becomes a side panel beside the recommendation, so
+   the page uses its width instead of a 760px column with an empty band. */
+@media(min-width:1100px){
+  #app{max-width:none}
+  .dashboard-layout--split{grid-template-columns:minmax(0,1fr) minmax(280px,340px);gap:24px;align-items:start}
+  .dashboard-layout--split .dashboard-shortcuts{margin-bottom:0}
+  .dashboard-layout--split .dashboard-progress dl{grid-template-columns:1fr;gap:0;padding-top:0}
+  .dashboard-layout--split .dashboard-progress dl>div{display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding:14px 0;border-top:1px solid var(--line)}
+  .dashboard-layout--split .dashboard-progress dl>div:first-child{border-top:0}
+  .dashboard-layout--split .dashboard-progress dt{margin:0}
+}
+@media(min-width:1100px){.dashboard-layout:not(.dashboard-layout--split),#app>.forge-state{max-width:760px}}
