@@ -1,0 +1,38 @@
+/* Weekly class league (scripts/forge-league.js) */
+.forge-league{padding:20px 22px;border:1px solid var(--line);border-radius:var(--radius-lg);background:var(--panel);text-align:left}
+.forge-league__head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:12px}
+.forge-league__head h2{margin:0;font-size:17px}
+.forge-league__head span{color:var(--slate);font-size:12px}
+.forge-league__rows{margin:0;padding:0;list-style:none}
+.forge-league__row{display:grid;grid-template-columns:28px minmax(0,1fr) auto;gap:10px;align-items:center;padding:9px 10px;border-radius:var(--radius-sm)}
+.forge-league__row.is-you{background:var(--panel-2);box-shadow:inset 3px 0 0 var(--ember);font-weight:700}
+.forge-league__pos{color:var(--slate);font:600 13px 'JetBrains Mono',monospace}
+.forge-league__name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--white)}
+.forge-league__xp{color:var(--ember);font-weight:700;font-variant-numeric:tabular-nums}
+.forge-league__gap{padding:0 10px;color:var(--slate);line-height:1}
+.forge-league__note{margin:12px 0 0;color:var(--slate);font-size:13px}
+.forge-league__status{padding:2px 8px;border:1px solid var(--line);border-radius:999px;color:var(--slate);font-size:12px}
+.forge-league__status.is-on{border-color:var(--good);color:var(--good)}
+.forge-league--teacher{margin:0 0 24px}
+
+/* Class friends (scripts/forge-friends.js) */
+.forge-friends{padding:20px 22px;border:1px solid var(--line);border-radius:var(--radius-lg);background:var(--panel);text-align:left}
+.forge-friends__status{margin:0;color:var(--good);font-size:13px}
+.forge-friends__status:empty{display:none}
+.forge-friends__status:not(:empty){margin-bottom:10px}
+.forge-friends__request,.forge-friends__pending{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 12px;padding:10px 12px;margin-bottom:8px;border-radius:var(--radius-sm);background:var(--panel-2)}
+.forge-friends__pending{background:transparent;border:1px dashed var(--line);color:var(--slate);font-size:13px}
+.forge-friends__actions{display:flex;gap:8px}
+.forge-friends__actions .forge-button{min-height:36px;font-size:13px}
+.forge-friends__list{margin:0 0 8px;padding:0;list-style:none}
+.forge-friends__row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 0;border-top:1px solid var(--line)}
+.forge-friends__row:first-child{border-top:0}
+.forge-friends__name{display:block;color:var(--white);font-weight:700}
+.forge-friends__stat{display:block;margin-top:2px;color:var(--slate);font-size:13px}
+.forge-friends__remove{min-height:36px;padding:0 10px;border:1px solid transparent;border-radius:var(--radius-sm);background:transparent;color:var(--slate);font:600 12px 'Poppins',sans-serif;cursor:pointer}
+.forge-friends__remove:hover,.forge-friends__remove[data-confirm="true"]{border-color:var(--bad);color:var(--bad)}
+.forge-friends__remove:focus-visible{outline:2px solid var(--ember);outline-offset:2px}
+.forge-friends__add{display:flex;gap:8px;margin-top:12px}
+.forge-friends__add select{flex:1;min-width:0;min-height:40px;padding:0 10px;border:1px solid var(--line);border-radius:var(--radius-sm);background:var(--panel-2);color:var(--white);font:500 14px 'Poppins',sans-serif}
+.forge-friends__add .forge-button{min-height:40px;font-size:13px}
+@media(max-width:480px){.forge-friends__add{flex-direction:column}}

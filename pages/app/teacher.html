@@ -84,6 +84,7 @@ function mountTeacherSidebar() {
 <script src="scripts/forge-revision.js?v=20260910-reporting"></script>
 <script src="scripts/forge-misconception-state.js"></script>
 <script src="scripts/forge-metrics.js"></script>
+<script src="scripts/forge-league.js?v=20260928c"></script>
 <script src="data/misconception-labels.js?v=20260907-diagnostics"></script>
 <script src="data/starter-activities.js?v=20260813"></script>
 <script>
@@ -404,6 +405,10 @@ window.loadClassDashboard = function(cls) {
         dashState.className = cls.name;
         dashState.classSubject = canonicalSubjectKey(cls.subject);
         dashState.classCode = cls.code || null;
+        // Undefined until migration 20260928120000 adds the column; the Class
+        // tools switch only appears once it exists.
+        dashState.leagueEnabled = cls.league_enabled;
+        dashState.friendsEnabled = cls.friends_enabled;
         // The teacher dashboard is a single document with an in-page class
         // view. Give that view its own history entry so browser/native back
         // returns to the class list instead of the public launch screen.
@@ -803,6 +808,8 @@ function renderLogin(activeTab) {
         window._openCreatedDash = function() {
           dashState.classId = createdClassId;
           dashState.className = createdClassName;
+          dashState.leagueEnabled = cls.league_enabled;
+          dashState.friendsEnabled = cls.friends_enabled;
           dashState.classSubject = subj;
           dashState.classCode = code;
           dashState.students = [];
@@ -1022,7 +1029,7 @@ function renderDashboard() {
   h += '<div><h1>' + teacherEsc(dashState.className) + '</h1><p class="teacher-dashboard-meta"><b>' + students.length + '</b> student' + (students.length !== 1 ? 's' : '') + ' · <b>' + totalQs + '</b> scored answer' + (totalQs !== 1 ? 's' : '');
   if (dashState.classCode) h += ' · <button type="button" class="class-code-pill" id="class-code-pill" data-forge-action="copy-class-code" aria-label="Copy class code ' + teacherEsc(dashState.classCode) + '">' + teacherEsc(dashState.classCode) + '</button>';
   h += '</p></div><div class="teacher-dashboard-head__actions"><button type="button" class="back-btn forge-u-gr3ipb" data-forge-action="render-teacher-home">All classes</button>';
-  h += '<div class="dash-tools"><button type="button" class="dash-tools__toggle" id="dash-tools-toggle" aria-expanded="false" aria-controls="dash-tools-menu">Class tools</button><div class="dash-tools__menu" id="dash-tools-menu" hidden><button type="button" class="forge-button forge-button--secondary" id="generate-student-codes" aria-expanded="false" aria-controls="generate-codes-panel">Generate student codes</button><button type="button" class="forge-button forge-button--secondary" id="migrate-existing-students">Migrate existing students</button><button type="button" class="forge-button forge-button--secondary forge-button--danger" id="delete-class">Delete class</button><div class="dash-tool-group"><span class="dash-tool-group__label">Rename a student</span><div class="dash-tool-group__controls"><label class="forge-sr-only" for="rename-select">Student to rename</label><select id="rename-select" class="forge-u-1o9xvhi"><option value="">Select student…</option>' + students.map(function(student) { return '<option value="' + student.id + '">' + teacherEsc(student.display_name || student.name || 'Student') + '</option>'; }).join('') + '</select><label class="forge-sr-only" for="rename-input">New display name</label><input type="text" id="rename-input" class="rename-input" placeholder="New display name"><button type="button" id="rename-btn" class="forge-button forge-button--secondary">Save</button></div><p class="join-err" id="rename-err"></p></div></div></div></div></header>';
+  h += '<div class="dash-tools"><button type="button" class="dash-tools__toggle" id="dash-tools-toggle" aria-expanded="false" aria-controls="dash-tools-menu">Class tools</button><div class="dash-tools__menu" id="dash-tools-menu" hidden><button type="button" class="forge-button forge-button--secondary" id="generate-student-codes" aria-expanded="false" aria-controls="generate-codes-panel">Generate student codes</button><button type="button" class="forge-button forge-button--secondary" id="migrate-existing-students">Migrate existing students</button>' + (typeof dashState.leagueEnabled === 'boolean' ? '<button type="button" class="forge-button forge-button--secondary" id="toggle-league" aria-pressed="' + dashState.leagueEnabled + '">Weekly league: ' + (dashState.leagueEnabled ? 'On' : 'Off') + '</button>' : '') + (typeof dashState.friendsEnabled === 'boolean' ? '<button type="button" class="forge-button forge-button--secondary" id="toggle-friends" aria-pressed="' + dashState.friendsEnabled + '">Friends: ' + (dashState.friendsEnabled ? 'On' : 'Off') + '</button>' : '') + '<button type="button" class="forge-button forge-button--secondary forge-button--danger" id="delete-class">Delete class</button><div class="dash-tool-group"><span class="dash-tool-group__label">Rename a student</span><div class="dash-tool-group__controls"><label class="forge-sr-only" for="rename-select">Student to rename</label><select id="rename-select" class="forge-u-1o9xvhi"><option value="">Select student…</option>' + students.map(function(student) { return '<option value="' + student.id + '">' + teacherEsc(student.display_name || student.name || 'Student') + '</option>'; }).join('') + '</select><label class="forge-sr-only" for="rename-input">New display name</label><input type="text" id="rename-input" class="rename-input" placeholder="New display name"><button type="button" id="rename-btn" class="forge-button forge-button--secondary">Save</button></div><p class="join-err" id="rename-err"></p></div></div></div></div></header>';
   h += '<div id="delete-class-panel" hidden></div><div id="generate-codes-panel" class="code-generation-panel" hidden></div><div id="code-coverage-note" class="code-coverage" role="status" hidden></div>';
 
   var topStudentCount = topSignal ? Object.keys(topSignal.students).length : 0;
@@ -1047,6 +1054,10 @@ function renderDashboard() {
       h += '<li><button type="button" data-forge-action="render-student" data-student-id="' + teacherEsc(row.id) + '"><span>' + teacherEsc(row.name) + '</span><small>' + row.count + ' open idea' + (row.count !== 1 ? 's' : '') + '</small></button></li>';
     });
     h += '</ul></section>';
+  }
+  // Only once the league column exists (migration 20260928120000).
+  if (typeof dashState.leagueEnabled === 'boolean' && window.ForgeLeague) {
+    h += '<div id="teacher-league">' + ForgeLeague.teacherHtml(students, allResponses, dashState.leagueEnabled) + '</div>';
   }
 
   // Tabs
@@ -1157,6 +1168,32 @@ function renderDashboard() {
       });
     }
   }
+
+  // Weekly league and Friends on/off. Teachers can already update their own
+  // class rows, so each is a plain column update.
+  function wireClassSwitch(buttonId, column, stateKey, label, after) {
+    var btn = document.getElementById(buttonId);
+    if (!btn) return;
+    btn.onclick = function() {
+      var next = !dashState[stateKey];
+      var row = {}; row[column] = next;
+      btn.disabled = true;
+      ForgeAPI.patch('classes', dashState.classId, row, teacherApiOptions()).then(function(rows) {
+        if (!Array.isArray(rows) || !rows.length) throw new Error('not updated');
+        dashState[stateKey] = next;
+        btn.textContent = label + ': ' + (next ? 'On' : 'Off');
+        btn.setAttribute('aria-pressed', String(next));
+        if (after) after(next);
+      }).catch(function() {
+        btn.textContent = 'Couldn’t change ' + label.toLowerCase() + '. Try again.';
+      }).then(function() { btn.disabled = false; });
+    };
+  }
+  wireClassSwitch('toggle-league', 'league_enabled', 'leagueEnabled', 'Weekly league', function(next) {
+    var leagueCard = document.getElementById('teacher-league');
+    if (leagueCard) leagueCard.innerHTML = ForgeLeague.teacherHtml(dashState.students, dashState.responses, next);
+  });
+  wireClassSwitch('toggle-friends', 'friends_enabled', 'friendsEnabled', 'Friends');
 
   var generateCodesBtn = document.getElementById('generate-student-codes');
   var generateCodesPanel = document.getElementById('generate-codes-panel');

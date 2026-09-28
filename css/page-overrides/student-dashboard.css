@@ -293,11 +293,25 @@ html[data-overdrive="control-room"] .mod-row:hover{border-color:var(--hot);box-s
    the page uses its width instead of a 760px column with an empty band. */
 @media(min-width:1100px){
   #app{max-width:none}
-  .dashboard-layout--split{grid-template-columns:minmax(0,1fr) minmax(280px,340px);gap:24px;align-items:start}
-  .dashboard-layout--split .dashboard-shortcuts{margin-bottom:0}
+  /* Two rows: recommendation beside progress (equal heights), then the
+     shortcuts beside the league. The column wrappers dissolve so their
+     children share one grid; on narrow screens the wrappers stack as before. */
+  .dashboard-layout--split{grid-template-columns:minmax(0,1fr) minmax(280px,340px);grid-template-areas:"next progress" "nav league" "friends league";grid-template-rows:auto auto 1fr;gap:16px 24px;align-items:start}
+  .dashboard-layout--split .dashboard-main,.dashboard-layout--split .dashboard-side{display:contents}
+  .dashboard-layout--split .dashboard-next{grid-area:next;align-self:stretch;display:flex;flex-direction:column}
+  .dashboard-layout--split .dashboard-next .forge-button{align-self:flex-start;margin-top:auto}
+  .dashboard-layout--split .dashboard-progress{grid-area:progress;align-self:stretch}
+  .dashboard-layout--split .dashboard-shortcuts{grid-area:nav;margin:0}
+  .dashboard-layout--split #dashboard-league{grid-area:league}
+  .dashboard-layout--split #dashboard-friends{grid-area:friends}
   .dashboard-layout--split .dashboard-progress dl{grid-template-columns:1fr;gap:0;padding-top:0}
   .dashboard-layout--split .dashboard-progress dl>div{display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding:14px 0;border-top:1px solid var(--line)}
   .dashboard-layout--split .dashboard-progress dl>div:first-child{border-top:0}
   .dashboard-layout--split .dashboard-progress dt{margin:0}
 }
 @media(min-width:1100px){.dashboard-layout:not(.dashboard-layout--split),#app>.forge-state{max-width:760px}}
+.dashboard-side{display:grid;gap:16px;align-content:start;min-width:0}
+#dashboard-league:empty{display:none}
+#dashboard-friends:empty{display:none}
+#dashboard-friends{margin-top:16px}
+@media(min-width:1100px){.dashboard-layout--split #dashboard-friends{margin-top:0}}

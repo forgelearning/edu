@@ -48,7 +48,7 @@ console.log('Student navigation tests passed (defaults, persistence, mobile dest
 const dashboardSource=fs.readFileSync('pages/app/student-dashboard.html','utf8');
 const render=dashboardSource.slice(dashboardSource.indexOf('function daysUntil('),dashboardSource.indexOf('function forgeSignOut()'));
 const section={innerHTML:'',classList:{toggle(){}}};
-const d={document:{querySelector:()=>section},window:{},st:{studentName:'Alex <preview>',responses:[]},app:{},BANKS:{growth:{label:'Economic growth'}},RANKS:[{name:'Apprentice',min:0},{name:'Journeyman',min:300}],calcXP:()=>120,calcStreak:()=>0,_fsEsc:h.ctx._fsEsc,localStorage:{setItem(){}},ForgeMisconceptions:{summarize:()=>({active:[]})},ForgeApp:{stateHtml:(kind,options)=>options.label},location:{href:'student-dashboard.html'}};
+const d={document:{querySelector:()=>section,getElementById:()=>null},window:{},st:{studentName:'Alex <preview>',responses:[]},app:{},BANKS:{growth:{label:'Economic growth'}},RANKS:[{name:'Apprentice',min:0},{name:'Journeyman',min:300}],calcXP:()=>120,calcStreak:()=>0,_fsEsc:h.ctx._fsEsc,localStorage:{setItem(){}},ForgeMisconceptions:{summarize:()=>({active:[]})},ForgeApp:{stateHtml:(kind,options)=>options.label},location:{href:'student-dashboard.html'}};
 d.getRank=xp=>d.RANKS.slice().reverse().find(rank=>xp>=rank.min);
 vm.createContext(d);vm.runInContext(render,d);d.renderDashboard();
 assert(d.app.innerHTML.includes('Start your first practice'));

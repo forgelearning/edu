@@ -99,3 +99,60 @@ analytics status after the next deploy before spending time on it.
 
 Leaked-password protection is a dashboard setting:
 Authentication → Providers → Email → "Prevent use of leaked passwords".
+
+## 20260928 120000 — weekly class league
+
+| File | What it does |
+|---|---|
+| `20260928120000_weekly_class_league.sql` | Adds `classes.league_enabled` (default on) and `get_class_weekly_league()`, which returns a student's weekly class league after the same identity check as `get_student_assignments()` |
+
+**Applied to production 2026-09-28.** The client code that calls it
+(`scripts/forge-league.js`) hides the league when the function is missing, so
+the two can ship in either order.
+
+What was checked before review, read-only against production: the ranking
+query, XP rules and Monday-00:00-UK week boundary run correctly on real data,
+and the name shortening ("Jess B.") handles single names and repeated spaces.
+After applying: all 27 classes default to on, a real student gets their
+league, a wrong name is rejected, and the security advisors changed only by
+the expected new SECURITY DEFINER entry.
+
+Rollback:
+
+```sql
+drop function if exists public.get_class_weekly_league(text, text, text, text);
+alter table public.classes drop column if exists league_enabled;
+```
+
+## 20260928 130000 — class friends
+
+| File | What it does |
+|---|---|
+| `20260928130000_class_friends.sql` | Adds `classes.friends_enabled` (default on), the `student_friendships` table (RLS on, no policies, no direct grants), an internal identity helper, and `get_class_friends` / `send_friend_request` / `respond_friend_request` / `remove_friend` |
+
+**Applied to production 2026-09-28**, after `20260928120000`. The client
+(`scripts/forge-friends.js`) hides the Friends card when the functions are
+missing, so the order of deploy and migration does not matter.
+
+Friends are classmates only; nothing is shared until the other student
+accepts; accepted friends see each other's XP, accuracy, answers and streak.
+No messaging. Unanswered requests are capped at 20 per student.
+
+Checked before review, read-only against production: the streak calculation
+(consecutive UK days, alive through yesterday, older runs ignored). After
+applying: a real student gets their classmates list, a wrong name is rejected,
+`anon`/`authenticated` hold no privileges on `student_friendships` or on
+`forge_verify_class_student`, and the advisors added only the four expected
+functions plus the intended RLS-without-policies table.
+
+Rollback:
+
+```sql
+drop function if exists public.remove_friend(text, text, text, text, text);
+drop function if exists public.respond_friend_request(text, text, text, text, text, boolean);
+drop function if exists public.send_friend_request(text, text, text, text, text);
+drop function if exists public.get_class_friends(text, text, text, text);
+drop function if exists public.forge_verify_class_student(text, text, text, text);
+drop table if exists public.student_friendships;
+alter table public.classes drop column if exists friends_enabled;
+```

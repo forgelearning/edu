@@ -12,6 +12,7 @@
 <link rel="stylesheet" href="css/auth.css">
 <link rel="stylesheet" href="css/sidebar.css">
 <link rel="stylesheet" href="css/components.css?v=20260812">
+<link rel="stylesheet" href="css/forge-league.css?v=20260928c">
 
 <link rel="stylesheet" href="css/states.css">
   <link rel="stylesheet" href="css/generated-utilities.css">
@@ -381,6 +382,7 @@ var SPEC_TO_SUBJECT = {
 <script src="data/forge-catalog.js?v=20260911-recap"></script>
 <script src="scripts/forge-data-loader.js?v=20260821"></script>
 <script src="scripts/forge-misconception-state.js"></script>
+<script src="scripts/forge-league.js?v=20260928c"></script>
 <script src="data/misconception-labels.js?v=20260907-diagnostics"></script>
 <script>
 
@@ -1853,6 +1855,7 @@ function renderResults(){
   h+='<div class="pct" style="color:'+col+'">'+pct+'%</div>';
   h+='<div class="detail">'+state.score+' of '+state.questions.length+' correct</div>';
   h+=xpResultsHtml();
+  if(state.classId && xpEnabled()) h+='<div id="result-league" class="result-league"></div>';
   h+='<section class="forge-result-story" aria-labelledby="result-next-title">';
   h+='<h2 id="result-next-title">'+(remaining ? 'One idea to revisit' : 'You’ve finished this session')+'</h2>';
   if(remaining) h+='<p class="forge-recommendation__copy">'+remainingLabel+'. Practise it again in Anvil with help.</p>';
@@ -1874,6 +1877,9 @@ function renderResults(){
     state.phase='quiz';render();
   };
   document.getElementById('all-banks').onclick=function(){state.assignmentId=null;state.phase='banks';render();};
+  // Weekly class league, fetched after the session's answers have been sent.
+  var leagueEl=document.getElementById('result-league');
+  if(leagueEl&&window.ForgeLeague) ForgeLeague.mount(leagueEl,{studentId:state.studentId,classId:state.classId,classCode:state.classCode,studentCode:state.studentCode,studentName:state.studentName});
 }
 
 function forgeLogout(){
