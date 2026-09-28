@@ -23,7 +23,7 @@
 </script>
 <link rel="stylesheet" href="css/states.css">
   <link rel="stylesheet" href="css/generated-utilities.css">
-  <link rel="stylesheet" href="css/page-overrides/teacher.css?v=20260928-overview3">
+  <link rel="stylesheet" href="css/page-overrides/teacher.css?v=20260928-home1">
   <link rel="stylesheet" href="css/page-overrides/revision.css?v=20260910-reporting">
   <link rel="stylesheet" href="css/auth-ember.css?v=20260817-auth2">
   <link rel="stylesheet" href="css/content-status.css">
@@ -520,6 +520,7 @@ function forgeSyncTeacherWidgetData(data) {
 
 function drawTeacherHome(classes, loadError) {
   var h = '';
+  var headActions = '';
   if (loadError) {
     h = ForgeApp.stateHtml('error', { label: 'Your classes are unavailable', body: 'We couldn’t retrieve your classes. Check your connection and try again.' });
   } else if (!classes.length) {
@@ -536,16 +537,19 @@ function drawTeacherHome(classes, loadError) {
     h += '</div>';
   }
   if (!loadError) {
-    h += '<div class="home-actions">';
-    if (classes.length) h += '<button type="button" class="home-link" id="home-create">Create a class</button>';
-    h += '<button type="button" class="home-link" id="home-code">Open a class by code</button>';
-    h += '</div>';
-    h += '<section class="insight-list forge-mt-4" id="teacher-adoption"><h2>Teaching activity</h2><p class="forge-meta">Loading recent activity.</p></section>';
+    // Class actions and the 30-day activity summary sit in the page header,
+    // not below the class list, where a teacher with 27 classes never saw them.
+    headActions += '<div class="home-actions">';
+    if (classes.length) headActions += '<button type="button" class="home-link" id="home-create">Create a class</button>';
+    headActions += '<button type="button" class="home-link" id="home-code">Open a class by code</button>';
+    headActions += '</div>';
   }
 
   app.classList.add('teacher-home-view');
-  app.innerHTML = '<header class="teacher-home-heading"><h1>Your classes</h1><p>Choose a class to see what needs attention.</p>' +
+  app.innerHTML = '<header class="teacher-home-heading"><div class="teacher-home-heading__main"><h1>Your classes</h1><p>Choose a class to see what needs attention.</p>' +
     ((currentTeacher && currentTeacher.email) ? '<p class="teacher-home-account">Signed in as ' + esc(currentTeacher.email) + ' · <a href="#" id="ta-signout">Sign out</a></p>' : '') +
+    headActions + '</div>' +
+    (loadError ? '' : '<section class="insight-list" id="teacher-adoption"><h2>Teaching activity</h2><p class="forge-meta">Loading recent activity.</p></section>') +
     '</header>' + h;
 
   if (window.forgeTrack) forgeTrack('teacher_dashboard_viewed', { class_count: classes.length });
@@ -1122,6 +1126,26 @@ function renderDashboard() {
         setTimeout(function () { button.textContent = 'Copy all codes'; }, 2000);
       }).catch(function () { button.textContent = 'Select the codes above to copy'; });
     };
+  }
+
+  // Drive the Class tools menu ourselves: the native <details> toggle was
+  // leaving it open on a second click in some browsers, and a dropdown should
+  // also close on an outside click or Escape.
+  var dashTools = app.querySelector('.dash-tools');
+  if (dashTools) {
+    var dashToolsSummary = dashTools.querySelector('summary');
+    dashToolsSummary.onclick = function(e) { e.preventDefault(); dashTools.open = !dashTools.open; };
+    if (!document._forgeDashToolsBound) {
+      document._forgeDashToolsBound = true;
+      document.addEventListener('click', function(e) {
+        var open = document.querySelector('.dash-tools[open]');
+        if (open && !open.contains(e.target)) open.open = false;
+      });
+      document.addEventListener('keydown', function(e) {
+        var open = document.querySelector('.dash-tools[open]');
+        if (e.key === 'Escape' && open) { open.open = false; open.querySelector('summary').focus(); }
+      });
+    }
   }
 
   var generateCodesBtn = document.getElementById('generate-student-codes');

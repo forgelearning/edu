@@ -184,7 +184,6 @@ h1,h2,h3{font-family:'Rethink Sans',sans-serif;color:var(--white);line-height:1.
 .panel.active{display:block}
 
 /* teacher home — the classes a teacher owns, one card each */
-#app.teacher-home-view{max-width:850px}
 .teacher-home-heading{margin-bottom:28px}
 .teacher-home-heading h1{margin:0 0 8px;font-size:clamp(30px,3.5vw,40px);line-height:1.15}
 .teacher-home-heading p{margin:0;color:var(--slate);font-size:15px}
@@ -883,3 +882,12 @@ html[data-overdrive="control-room"] .tab.active{color:var(--coal)}
   .teacher-snapshot .trend{flex-basis:100%;margin-top:0;text-align:right}
   .teacher-snapshot dl>div:first-child{padding-top:0;border-top:0}
 }
+/* Teacher home: title and class actions on the left, the 30-day activity
+   summary as a compact panel on the right, class cards full width below. */
+.teacher-home-heading{display:grid;gap:20px}
+.teacher-home-heading .home-actions{margin:18px 0 0}
+.teacher-home-heading .insight-list{max-width:none;margin:0;padding:18px 22px}
+.teacher-home-heading .insight-list h2{margin:0 0 12px;font-size:15px}
+.teacher-home-heading .insight-grid{gap:12px;margin:0 0 10px}
+.teacher-home-heading .insight-grid dd{font-size:20px}
+@media(min-width:900px){.teacher-home-heading{grid-template-columns:minmax(0,1fr) minmax(320px,400px);align-items:start;gap:32px}}
