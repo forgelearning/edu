@@ -23,7 +23,7 @@
 </script>
 <link rel="stylesheet" href="css/states.css">
   <link rel="stylesheet" href="css/generated-utilities.css">
-  <link rel="stylesheet" href="css/page-overrides/teacher.css?v=20260911-bankpicker">
+  <link rel="stylesheet" href="css/page-overrides/teacher.css?v=20260928-overview2">
   <link rel="stylesheet" href="css/page-overrides/revision.css?v=20260910-reporting">
   <link rel="stylesheet" href="css/auth-ember.css?v=20260817-auth2">
   <link rel="stylesheet" href="css/content-status.css">
@@ -1013,7 +1013,7 @@ function renderDashboard() {
   h += '<div id="delete-class-panel" hidden></div><div id="generate-codes-panel" class="code-generation-panel" hidden></div><div id="code-coverage-note" class="code-coverage" role="status" hidden></div>';
 
   var topStudentCount = topSignal ? Object.keys(topSignal.students).length : 0;
-  h += '<div class="teacher-overview-grid"><section class="teacher-next-action" aria-labelledby="teacher-next-action-title">';
+  h += '<div class="teacher-overview-grid"><div class="teacher-overview-main"><section class="teacher-next-action" aria-labelledby="teacher-next-action-title">';
   h += '<h2 id="teacher-next-action-title">' + (topSignal ? teacherEsc(topSignalLabel) : 'Set your first assignment') + '</h2>';
   h += '<p>' + (topSignal ? topStudentCount + ' student' + (topStudentCount !== 1 ? 's' : '') + ' share this unresolved idea. Use the teaching notes for a short class starter.' : 'A short assignment will give you evidence to plan the next lesson.') + '</p>';
   if (topSignal) {
@@ -1023,11 +1023,6 @@ function renderDashboard() {
     h += '<button class="forge-button forge-button--primary" type="button" data-forge-action="next-action">Open assignments</button>';
   }
   h += '</section>';
-  h += '<section class="teacher-snapshot" aria-labelledby="teacher-snapshot-title"><h2 id="teacher-snapshot-title">Class progress</h2><dl>';
-  h += '<div><dt>Class accuracy</dt><dd>' + (totalQs === 0 ? '—' : accuracy + '%') + '</dd>' + weeklyTrendHtml(responses) + '</div>';
-  h += '<div><dt>Open ideas to revisit</dt><dd>' + openSignalCount + '</dd></div>';
-  h += '<div><dt>Similar questions repaired</dt><dd>' + (repairPercent == null ? '—' : repairPercent + '%') + '</dd></div>';
-  h += '</dl></section></div>';
   if (attentionRows.length) {
     h += '<section class="teacher-checkin" aria-labelledby="teacher-checkin-title"><h2 id="teacher-checkin-title">Check in with</h2><ul>';
     attentionRows.forEach(function(row) {
@@ -1035,6 +1030,12 @@ function renderDashboard() {
     });
     h += '</ul></section>';
   }
+  h += '</div>';
+  h += '<section class="teacher-snapshot" aria-labelledby="teacher-snapshot-title"><h2 id="teacher-snapshot-title">Class progress</h2><dl>';
+  h += '<div><dt>Class accuracy</dt><dd>' + (totalQs === 0 ? '—' : accuracy + '%') + '</dd>' + weeklyTrendHtml(responses) + '</div>';
+  h += '<div><dt>Open ideas to revisit</dt><dd>' + openSignalCount + '</dd></div>';
+  h += '<div><dt>Similar questions repaired</dt><dd>' + (repairPercent == null ? '—' : repairPercent + '%') + '</dd></div>';
+  h += '</dl></section></div>';
   h += '<details class="dash-explainer"><summary>How these numbers are calculated</summary><p>Class accuracy = correct scored answers ÷ scored answers. The weekly change compares the last 7 days with the 7 before, and only appears once each week has 10 or more answers. Initial Forge, assignment and Crucible answers are scored; Similar-question repair attempts are excluded. Open signals use the shared three-success resolution rule.</p></details>';
 
   // Tabs
