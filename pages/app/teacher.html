@@ -23,7 +23,7 @@
 </script>
 <link rel="stylesheet" href="css/states.css">
   <link rel="stylesheet" href="css/generated-utilities.css">
-  <link rel="stylesheet" href="css/page-overrides/teacher.css?v=20260928-home1">
+  <link rel="stylesheet" href="css/page-overrides/teacher.css?v=20260928-tools2">
   <link rel="stylesheet" href="css/page-overrides/revision.css?v=20260910-reporting">
   <link rel="stylesheet" href="css/auth-ember.css?v=20260817-auth2">
   <link rel="stylesheet" href="css/content-status.css">
@@ -954,6 +954,15 @@ function weeklyTrendHtml(responses) {
   return '<small class="trend trend--' + kind + '" title="Last 7 days (' + a.total + ' answers) against the 7 days before (' + b.total + ' answers)">' + text + '</small>';
 }
 
+function setDashToolsOpen(open) {
+  var toggle = document.getElementById('dash-tools-toggle');
+  var menu = document.getElementById('dash-tools-menu');
+  if (!toggle || !menu) return;
+  toggle.setAttribute('aria-expanded', String(open));
+  menu.hidden = !open;
+  toggle.parentNode.classList.toggle('is-open', open);
+}
+
 function renderDashboard() {
   // Filter responses to this class's subject only
   var allResponses = dashState.responses;
@@ -1013,7 +1022,7 @@ function renderDashboard() {
   h += '<div><h1>' + teacherEsc(dashState.className) + '</h1><p class="teacher-dashboard-meta"><b>' + students.length + '</b> student' + (students.length !== 1 ? 's' : '') + ' · <b>' + totalQs + '</b> scored answer' + (totalQs !== 1 ? 's' : '');
   if (dashState.classCode) h += ' · <button type="button" class="class-code-pill" id="class-code-pill" data-forge-action="copy-class-code" aria-label="Copy class code ' + teacherEsc(dashState.classCode) + '">' + teacherEsc(dashState.classCode) + '</button>';
   h += '</p></div><div class="teacher-dashboard-head__actions"><button type="button" class="back-btn forge-u-gr3ipb" data-forge-action="render-teacher-home">All classes</button>';
-  h += '<details class="dash-tools"><summary>Class tools</summary><div class="dash-tools__menu"><button type="button" class="forge-button forge-button--secondary" id="generate-student-codes" aria-expanded="false" aria-controls="generate-codes-panel">Generate student codes</button><button type="button" class="forge-button forge-button--secondary" id="migrate-existing-students">Migrate existing students</button><button type="button" class="forge-button forge-button--secondary forge-button--danger" id="delete-class">Delete class</button><div class="dash-tool-group"><span class="dash-tool-group__label">Rename a student</span><div class="dash-tool-group__controls"><label class="forge-sr-only" for="rename-select">Student to rename</label><select id="rename-select" class="forge-u-1o9xvhi"><option value="">Select student…</option>' + students.map(function(student) { return '<option value="' + student.id + '">' + teacherEsc(student.display_name || student.name || 'Student') + '</option>'; }).join('') + '</select><label class="forge-sr-only" for="rename-input">New display name</label><input type="text" id="rename-input" class="rename-input" placeholder="New display name"><button type="button" id="rename-btn" class="forge-button forge-button--secondary">Save</button></div><p class="join-err" id="rename-err"></p></div></div></details></div></header>';
+  h += '<div class="dash-tools"><button type="button" class="dash-tools__toggle" id="dash-tools-toggle" aria-expanded="false" aria-controls="dash-tools-menu">Class tools</button><div class="dash-tools__menu" id="dash-tools-menu" hidden><button type="button" class="forge-button forge-button--secondary" id="generate-student-codes" aria-expanded="false" aria-controls="generate-codes-panel">Generate student codes</button><button type="button" class="forge-button forge-button--secondary" id="migrate-existing-students">Migrate existing students</button><button type="button" class="forge-button forge-button--secondary forge-button--danger" id="delete-class">Delete class</button><div class="dash-tool-group"><span class="dash-tool-group__label">Rename a student</span><div class="dash-tool-group__controls"><label class="forge-sr-only" for="rename-select">Student to rename</label><select id="rename-select" class="forge-u-1o9xvhi"><option value="">Select student…</option>' + students.map(function(student) { return '<option value="' + student.id + '">' + teacherEsc(student.display_name || student.name || 'Student') + '</option>'; }).join('') + '</select><label class="forge-sr-only" for="rename-input">New display name</label><input type="text" id="rename-input" class="rename-input" placeholder="New display name"><button type="button" id="rename-btn" class="forge-button forge-button--secondary">Save</button></div><p class="join-err" id="rename-err"></p></div></div></div></div></header>';
   h += '<div id="delete-class-panel" hidden></div><div id="generate-codes-panel" class="code-generation-panel" hidden></div><div id="code-coverage-note" class="code-coverage" role="status" hidden></div>';
 
   var topStudentCount = topSignal ? Object.keys(topSignal.students).length : 0;
@@ -1128,22 +1137,23 @@ function renderDashboard() {
     };
   }
 
-  // Drive the Class tools menu ourselves: the native <details> toggle was
-  // leaving it open on a second click in some browsers, and a dropdown should
-  // also close on an outside click or Escape.
-  var dashTools = app.querySelector('.dash-tools');
-  if (dashTools) {
-    var dashToolsSummary = dashTools.querySelector('summary');
-    dashToolsSummary.onclick = function(e) { e.preventDefault(); dashTools.open = !dashTools.open; };
+  // Class tools is a plain button + menu rather than <details>: the native
+  // disclosure toggle behaved differently across browsers and in one of them
+  // stayed open on a second click. Also closes on outside click or Escape.
+  var dashToolsToggle = document.getElementById('dash-tools-toggle');
+  if (dashToolsToggle) {
+    dashToolsToggle.onclick = function() { setDashToolsOpen(dashToolsToggle.getAttribute('aria-expanded') !== 'true'); };
     if (!document._forgeDashToolsBound) {
       document._forgeDashToolsBound = true;
       document.addEventListener('click', function(e) {
-        var open = document.querySelector('.dash-tools[open]');
-        if (open && !open.contains(e.target)) open.open = false;
+        var tools = document.querySelector('.dash-tools.is-open');
+        if (tools && !tools.contains(e.target)) setDashToolsOpen(false);
       });
       document.addEventListener('keydown', function(e) {
-        var open = document.querySelector('.dash-tools[open]');
-        if (e.key === 'Escape' && open) { open.open = false; open.querySelector('summary').focus(); }
+        if (e.key !== 'Escape' || !document.querySelector('.dash-tools.is-open')) return;
+        setDashToolsOpen(false);
+        var toggle = document.getElementById('dash-tools-toggle');
+        if (toggle) toggle.focus();
       });
     }
   }
@@ -1466,6 +1476,11 @@ window.switchTab = function(view, btn) {
 
 // Sidebar nav items don't have real URLs for these — they're tabs within
 // the same dashboard SPA — so route them through the existing tab switcher.
+window.teacherStudentBack = function() {
+  forgeGoto(dashState.studentReturnView || 'class');
+  window.scrollTo(0, 0);
+};
+
 window.forgeGoto = function(view, contextTag) {
   if (view === 'starters' && contextTag) {
     showStarterFor(contextTag);
@@ -2557,6 +2572,10 @@ function renderClassOverview(responses, students) {
 }
 
 window.renderStudent = function(studentId) {
+  // Remember the view this profile was opened from (the overview's check-in
+  // list, the class table, a signal's student list) so Back returns there.
+  var activeTab = document.querySelector('.tabs[role="tablist"] .tab.active');
+  if (activeTab && document.getElementById('panel-student').style.display !== 'block') dashState.studentReturnView = activeTab.getAttribute('data-view') || 'heatmap';
   var appRoot = document.getElementById('app');
   if (appRoot) appRoot.classList.add('teacher-secondary-view');
   // Hide tabs panels, show student detail

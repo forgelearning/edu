@@ -175,6 +175,7 @@
     if (action === 'quiz-back-banks' && window.state && typeof window.render === 'function') { window.state.phase = 'banks'; return window.render(); }
     if (action === 'quiz-subjects' && window.state && typeof window.render === 'function') { window.state.phase = 'subjects'; return window.render(); }
     if (action === 'mr-reset' && window.state && typeof window.render === 'function') { window.state.mrState = { submitted: {}, tfSel: {}, mcqSel: {}, correct: 0, total: window.state.mrState && window.state.mrState.total || 0, passageIdx: 0 }; return window.render(); }
+    if (action === 'student-back' && typeof window.teacherStudentBack === 'function') return window.teacherStudentBack();
     if (action === 'student-back') { var studentPanel = document.getElementById('panel-student'), classPanel = document.getElementById('panel-class'); if (studentPanel) studentPanel.style.display = 'none'; if (classPanel) classPanel.classList.add('active'); return; }
     if (action === 'signup-step-1') return typeof window.renderStep1 === 'function' ? window.renderStep1() : null;
     if (action === 'signup-step-2') return typeof window.renderStep2 === 'function' ? window.renderStep2() : null;
