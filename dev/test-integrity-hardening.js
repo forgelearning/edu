@@ -22,7 +22,7 @@ assert(writer.includes('var token = root.ForgeAuth && root.ForgeAuth.accessToken
 
 assert(!anvil.includes("subject:'anvil'"), 'new Anvil rows must not create a synthetic subject');
 assert(anvil.includes("subject:m.subject||anvilState.classSubject||null"), 'Anvil rows must retain their curriculum subject');
-assert(dashboard.includes("subj==='anvil'||subj==='crucible'"), 'legacy activity subjects must be excluded from strongest-subject ranking');
+assert(!dashboard.includes('strongest-subject'), 'the simplified dashboard must not resurrect a subject ranking from legacy activity rows');
 assert(profile.includes("if((r.subject==='anvil'||r.subject==='crucible')&&!(cid&&classes[cid])) return;"), 'unscoped legacy activity subjects must be excluded from predicted grades');
 
 console.log('Integrity hardening tests passed (Crucible persistence/access and Anvil subject attribution).');
