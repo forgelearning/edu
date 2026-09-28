@@ -12,8 +12,9 @@
 <link rel="stylesheet" href="css/auth.css">
 <link rel="stylesheet" href="css/sidebar.css">
 <link rel="stylesheet" href="css/components.css?v=20260812">
+<link rel="stylesheet" href="css/forge-league.css?v=20260928c">
 <link rel="stylesheet" href="css/generated-utilities.css">
-<link rel="stylesheet" href="css/page-overrides/student-dashboard.css?v=20260928-layout2">
+<link rel="stylesheet" href="css/page-overrides/student-dashboard.css?v=20260928-grid2">
 <link rel="stylesheet" href="css/auth-ember.css?v=20260817-auth2">
 
 <body class="forge-auth-ember">
@@ -58,6 +59,8 @@ ForgeSidebar.mount({
 <script src="scripts/forge-student-code.js?v=20260809"></script>
 <script src="data/forge-catalog.js?v=20260823"></script>
 <script src="scripts/forge-misconception-state.js"></script>
+<script src="scripts/forge-league.js?v=20260928c"></script>
+<script src="scripts/forge-friends.js?v=20260928"></script>
 
 <main class="wrap" id="main-content">
   <div id="app" aria-live="polite"></div>
@@ -349,11 +352,13 @@ function renderDashboard(){
   h+='<a href="forge-quiz.html">Choose a topic</a>';
   h+='<a href="assignments.html">View assignments</a>';
   h+='<a href="revision.html">Revision cards</a>';
-  h+='</nav></div>';
+  h+='</nav>';
+  if(st.classId) h+='<div id="dashboard-friends"></div>';
+  h+='</div>';
   if(total>0){
     var nextRank=RANKS.filter(function(r){return r.min>xp;})[0]||null;
     var rankProgress=nextRank?Math.max(0,Math.min(100,Math.round((xp-rank.min)/(nextRank.min-rank.min)*100))):100;
-    h+='<section class="dashboard-progress" aria-labelledby="dashboard-progress-title"><div class="dashboard-progress-heading"><h2 id="dashboard-progress-title">Your progress</h2><a href="profile.html">View details</a></div>';
+    h+='<div class="dashboard-side"><section class="dashboard-progress" aria-labelledby="dashboard-progress-title"><div class="dashboard-progress-heading"><h2 id="dashboard-progress-title">Your progress</h2><a href="profile.html">View details</a></div>';
     h+='<div class="dashboard-rank"><div><span class="dashboard-rank-label">Current rank</span><p class="dashboard-rank-name">'+_fsEsc(rank.name)+'</p></div><span class="dashboard-rank-xp">'+xp.toLocaleString()+' XP</span></div>';
     if(nextRank){
       h+='<div class="dashboard-rank-meter" role="progressbar" aria-label="Progress towards '+_fsEsc(nextRank.name)+'" aria-valuemin="'+rank.min+'" aria-valuemax="'+nextRank.min+'" aria-valuenow="'+xp+'"><span style="width:'+rankProgress+'%"></span></div>';
@@ -362,10 +367,17 @@ function renderDashboard(){
       h+='<p class="dashboard-rank-next">Highest rank reached</p>';
     }
     h+='<dl><div><dt>Questions answered</dt><dd>'+total+'</dd></div><div><dt>Practice streak</dt><dd>'+streak+' day'+(streak===1?'':'s')+'</dd></div></dl></section>';
+    if(st.classId) h+='<div id="dashboard-league"></div>';
+    h+='</div>';
   }
 
   h+='</div>';
   app.innerHTML=(st.loadError?ForgeApp.stateHtml('error',{label:'Some dashboard data is unavailable',body:'We couldn’t retrieve the latest progress. Refresh and try again.',action:{label:'Retry dashboard',href:location.href}}):'')+h;
+  var leagueEl=document.getElementById('dashboard-league');
+  var socialCtx={studentId:st.studentId,classId:st.classId,classCode:st.classCode,studentCode:st.studentCode,studentName:st.studentName};
+  if(leagueEl&&window.ForgeLeague) ForgeLeague.mount(leagueEl,socialCtx);
+  var friendsEl=document.getElementById('dashboard-friends');
+  if(friendsEl&&window.ForgeFriends) ForgeFriends.mount(friendsEl,socialCtx);
 }
 
 
