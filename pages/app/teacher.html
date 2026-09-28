@@ -23,7 +23,7 @@
 </script>
 <link rel="stylesheet" href="css/states.css">
   <link rel="stylesheet" href="css/generated-utilities.css">
-  <link rel="stylesheet" href="css/page-overrides/teacher.css?v=20260928-overview2">
+  <link rel="stylesheet" href="css/page-overrides/teacher.css?v=20260928-overview3">
   <link rel="stylesheet" href="css/page-overrides/revision.css?v=20260910-reporting">
   <link rel="stylesheet" href="css/auth-ember.css?v=20260817-auth2">
   <link rel="stylesheet" href="css/content-status.css">
@@ -939,7 +939,7 @@ function weeklyTrendHtml(responses) {
   });
   var a = ForgeMetrics.accuracy(recent), b = ForgeMetrics.accuracy(previous);
   if (a.total < MIN || b.total < MIN || a.percent == null || b.percent == null) {
-    return recent.length ? '<small class="trend trend--flat">' + a.total + ' answer' + (a.total !== 1 ? 's' : '') + ' this week</small>' : '';
+    return a.total ? '<small class="trend trend--flat">' + a.total + ' answer' + (a.total !== 1 ? 's' : '') + ' this week</small>' : '';
   }
   var diff = a.percent - b.percent;
   var kind = diff > 0 ? 'up' : diff < 0 ? 'down' : 'flat';
@@ -1010,7 +1010,7 @@ function renderDashboard() {
   h += '<div id="delete-class-panel" hidden></div><div id="generate-codes-panel" class="code-generation-panel" hidden></div><div id="code-coverage-note" class="code-coverage" role="status" hidden></div>';
 
   var topStudentCount = topSignal ? Object.keys(topSignal.students).length : 0;
-  h += '<div class="teacher-overview-grid"><div class="teacher-overview-main"><section class="teacher-next-action" aria-labelledby="teacher-next-action-title">';
+  h += '<div class="teacher-overview-grid"><section class="teacher-next-action" aria-labelledby="teacher-next-action-title">';
   h += '<h2 id="teacher-next-action-title">' + (topSignal ? teacherEsc(topSignalLabel) : 'Set your first assignment') + '</h2>';
   h += '<p>' + (topSignal ? topStudentCount + ' student' + (topStudentCount !== 1 ? 's' : '') + ' share this unresolved idea. Use the teaching notes for a short class starter.' : 'A short assignment will give you evidence to plan the next lesson.') + '</p>';
   if (topSignal) {
@@ -1020,6 +1020,11 @@ function renderDashboard() {
     h += '<button class="forge-button forge-button--primary" type="button" data-forge-action="next-action">Open assignments</button>';
   }
   h += '</section>';
+  h += '<section class="teacher-snapshot" aria-labelledby="teacher-snapshot-title"><h2 id="teacher-snapshot-title">Class progress</h2><dl>';
+  h += '<div><dt>Class accuracy</dt><dd>' + (totalQs === 0 ? '—' : accuracy + '%') + '</dd>' + weeklyTrendHtml(responses) + '</div>';
+  h += '<div><dt>Open ideas to revisit</dt><dd>' + openSignalCount + '</dd></div>';
+  h += '<div><dt>Similar questions repaired</dt><dd>' + (repairPercent == null ? '—' : repairPercent + '%') + '</dd></div>';
+  h += '</dl></section></div>';
   if (attentionRows.length) {
     h += '<section class="teacher-checkin" aria-labelledby="teacher-checkin-title"><h2 id="teacher-checkin-title">Check in with</h2><ul>';
     attentionRows.forEach(function(row) {
@@ -1027,13 +1032,6 @@ function renderDashboard() {
     });
     h += '</ul></section>';
   }
-  h += '</div>';
-  h += '<section class="teacher-snapshot" aria-labelledby="teacher-snapshot-title"><h2 id="teacher-snapshot-title">Class progress</h2><dl>';
-  h += '<div><dt>Class accuracy</dt><dd>' + (totalQs === 0 ? '—' : accuracy + '%') + '</dd>' + weeklyTrendHtml(responses) + '</div>';
-  h += '<div><dt>Open ideas to revisit</dt><dd>' + openSignalCount + '</dd></div>';
-  h += '<div><dt>Similar questions repaired</dt><dd>' + (repairPercent == null ? '—' : repairPercent + '%') + '</dd></div>';
-  h += '</dl></section></div>';
-  h += '<details class="dash-explainer"><summary>How these numbers are calculated</summary><p>Class accuracy = correct scored answers ÷ scored answers. The weekly change compares the last 7 days with the 7 before, and only appears once each week has 10 or more answers. Initial Forge, assignment and Crucible answers are scored; Similar-question repair attempts are excluded. Open signals use the shared three-success resolution rule.</p></details>';
 
   // Tabs
   h += '<div class="tabs teacher-view-tabs" role="tablist" aria-label="Teacher dashboard views">';
@@ -1051,6 +1049,7 @@ function renderDashboard() {
   h += '<div class="panel" role="tabpanel" aria-labelledby="tab-assignments" id="panel-assignments" hidden></div>';
   h += '<div class="panel" role="tabpanel" aria-labelledby="tab-revision" id="panel-revision" hidden></div>';
   h += '<div class="panel" role="tabpanel" aria-labelledby="tab-starters" id="panel-starters" hidden></div>';
+  h += '<details class="dash-explainer dash-explainer--overview"><summary>How these numbers are calculated</summary><p>Class accuracy = correct scored answers ÷ scored answers. The weekly change compares the last 7 days with the 7 before, and only appears once each week has 10 or more answers. Initial Forge, assignment and Crucible answers are scored; Similar-question repair attempts are excluded. Open signals use the shared three-success resolution rule.</p></details>';
   h += '<div class="forge-u-uydnfn" id="panel-student"></div>';
   h += '<div class="teacher-drawer-scrim" id="teacher-drawer-scrim"></div><aside class="teacher-detail-drawer" id="teacher-detail-drawer" aria-hidden="true" aria-labelledby="teacher-detail-title"><div class="teacher-detail-drawer__head"><h2 id="teacher-detail-title">Teaching notes</h2><button type="button" class="teacher-detail-drawer__close" id="teacher-detail-close" aria-label="Close details"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"></path></svg></button></div><div id="teacher-detail-body"></div></aside>';
 
