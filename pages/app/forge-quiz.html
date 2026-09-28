@@ -16,7 +16,7 @@
 
 <link rel="stylesheet" href="css/states.css">
   <link rel="stylesheet" href="css/generated-utilities.css">
-<link rel="stylesheet" href="css/page-overrides/forge-quiz.css?v=20260928-xp1">
+<link rel="stylesheet" href="css/page-overrides/forge-quiz.css?v=20260928-topics1">
 </head>
 <body>
 <script src="scripts/forge-api.js?v=20260809"></script>
@@ -1341,9 +1341,12 @@ function renderBanks(){
   var recommendedCount = (window.ForgeApp && ForgeApp.session) ? ForgeApp.session.questionsFor(recommendedQuestions.length) : Math.min(FORGE_SESSION_SIZE, recommendedQuestions.length || FORGE_SESSION_SIZE);
   var recommendedMinutes = (window.ForgeApp && ForgeApp.session) ? ForgeApp.session.estimatedMinutesFor(recommendedCount) : Math.max(4, Math.round(recommendedCount * 0.75));
   h += '<dl class="forge-session-detail"><div><dt>Topic</dt><dd>'+(recommended ? recommended.label : 'Current topic')+'</dd></div><div><dt>Questions</dt><dd>'+recommendedCount+'</dd></div><div><dt>Estimated time</dt><dd>~'+recommendedMinutes+' min</dd></div></dl>';
-  h += '<button type="button" class="forge-button forge-button--primary" id="start-recommended">Start practice →</button>';
-  h += '<p class="forge-session-change"><button class="forge-link-button" id="change-session" type="button" aria-expanded="false" aria-controls="all-session-options">Choose another topic</button></p></section>';
-  h+='<div class="bank-list" id="all-session-options" hidden>';
+  // Students told us the old "Choose another topic" link was easy to miss, so
+  // both routes are buttons of equal size and the full list is always shown.
+  h += '<div class="forge-action-row forge-session-actions"><button type="button" class="forge-button forge-button--primary" id="start-recommended">Start practice →</button>';
+  h += '<button type="button" class="forge-button forge-button--secondary" id="change-session" aria-controls="all-session-options">Choose a different topic ↓</button></div></section>';
+  h+='<section class="forge-topic-list" aria-labelledby="all-topics-title"><h2 id="all-topics-title">All topics in '+subj.label+'</h2>';
+  h+='<div class="bank-list" id="all-session-options">';
   subj.banks.forEach(function(key){
     var b=BANKS[key];
     var point = getSpecPoint({}, key);
@@ -1354,7 +1357,7 @@ function renderBanks(){
     h+='<div class="qcount">'+b.questions.length+' questions</div>';
     h+='</button>';
   });
-  h+='</div>';
+  h+='</div></section>';
   // Locked students never see the subject picker, so this is their only
   // route to adding a second class.
   if (locked) h += joinMoreHtml();
@@ -1368,7 +1371,11 @@ function renderBanks(){
   };
   var changeBtn=document.getElementById('change-session');
   var allOptions=document.getElementById('all-session-options');
-  if(changeBtn && allOptions) changeBtn.onclick=function(){var open=allOptions.hidden;allOptions.hidden=!open;changeBtn.setAttribute('aria-expanded',String(open));changeBtn.textContent=open?'Hide other topics':'Choose another topic';};
+  if(changeBtn && allOptions) changeBtn.onclick=function(){
+    var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    allOptions.scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'});
+    var first=allOptions.querySelector('.bank-btn'); if(first) first.focus({preventScroll:true});
+  };
   wireJoinMore();
   var backBtn = document.getElementById('back-subj');
   if (backBtn) backBtn.onclick=function(){state.phase='subjects';render();};

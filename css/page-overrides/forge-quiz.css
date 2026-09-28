@@ -514,3 +514,10 @@ html:not([data-theme="light"]) body.forge-solo-login::after{color:var(--forge-lo
 .xp-result__next{margin:8px 0 0;color:var(--slate);font-size:13px}
 .result-league{max-width:420px;margin:0 auto 28px}
 .result-league:empty{display:none}
+/* Topic choice: two equal buttons, and the full list always visible below. */
+.forge-session-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:4px}
+.forge-session-actions .forge-button{min-height:48px;flex:1 1 200px;justify-content:center}
+.forge-topic-list{margin-top:32px;scroll-margin-top:24px}
+.forge-topic-list h2{margin:0 0 4px;font-size:18px}
+.forge-topic-list .bank-list{margin-top:12px}
+@media(min-width:720px){.forge-topic-list .bank-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}}

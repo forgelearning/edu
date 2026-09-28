@@ -15,6 +15,6 @@ assert.strictEqual(count(/var responseSaved = logResponse\(/g), 2, 'MCQ and fill
 assert.strictEqual(count(/textContent = 'Continue anyway'/g), 4, 'MCQ and fill-in flows should offer explicit recovery for false and rejected saves');
 assert.strictEqual(count(/\.catch\(function\(\)\{\s*showPersistenceStatus/g), 2, 'MCQ and fill-in flows should handle rejected saves');
 assert(quiz.includes('if (result && result.allowed === false) { renderLimitWall(); return; }'), 'server quota rejection must remain authoritative');
-assert(quiz.includes('forge-quiz.css?v=20260928-xp1'), 'quiz stylesheet cache key should match the recovery UI');
+assert(quiz.includes('forge-quiz.css?v=20260928-topics1'), 'quiz stylesheet cache key should match the recovery UI');
 
 console.log('Forge persistence recovery tests passed (visible failure state, both quiz modes, and quota guard checked).');
