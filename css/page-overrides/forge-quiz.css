@@ -131,17 +131,6 @@ h1,h2,h3{font-family:'Rethink Sans',sans-serif;color:var(--white);line-height:1.
 [data-theme="light"] .rf-scaffold .stag{color:#fff}
 .theme-toggle{background:var(--panel);border:1px solid var(--line);color:var(--slate);font-family:'JetBrains Mono',monospace;font-size:12px;padding:6px 12px;border-radius:var(--radius-sm);cursor:pointer;z-index:99}
 .theme-toggle:hover{color:var(--white);border-color:var(--ember)}
-.lb-wrap{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-lg);margin-top:24px;overflow:hidden}
-.lb-header{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--ember);padding:14px 18px;border-bottom:1px solid var(--line)}
-.lb-row{display:grid;grid-template-columns:32px 1fr auto auto auto;gap:10px;align-items:center;padding:12px 18px;border-bottom:1px solid var(--panel-2);font-size:14px}
-.lb-row:last-child{border-bottom:none}
-.lb-row.lb-you{background:rgba(255,107,44,.07);border-left:3px solid var(--ember)}
-.lb-row.lb-dim{opacity:.4}
-.lb-pos{font-family:'JetBrains Mono',monospace;font-size:12px;color:#8A857E;text-align:center}
-.lb-name{font-weight:600;color:var(--white)}
-.lb-rank-pill{font-size:10px;font-family:'JetBrains Mono',monospace;padding:2px 8px;border-radius:var(--radius-xs);white-space:nowrap}
-.lb-xp{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:var(--white);white-space:nowrap}
-.lb-streak{font-size:12px;white-space:nowrap}
 [data-theme="light"] .forge-logo-dark{display:none!important}[data-theme="light"] .forge-logo-light{display:inline!important}
 .forge-result-actions{justify-content:center;flex-wrap:wrap;gap:10px;margin-top:20px}
 .forge-result-links{display:flex;justify-content:center;flex-wrap:wrap;gap:8px 20px;margin:18px auto 0;padding-top:16px;border-top:1px solid var(--line);font-size:13px}
@@ -499,9 +488,8 @@ html:not([data-theme="light"]) body.forge-solo-login::after{color:var(--forge-lo
 
 /* Keep the question and next learning action ahead of optional detail. */
 .question-details{margin:12px 0;color:var(--slate);font-size:13px}
-.question-details summary,.result-leaderboard summary{cursor:pointer;min-height:44px;align-content:center}
+.question-details summary{cursor:pointer;min-height:44px;align-content:center}
 .question-details p{margin:0 0 12px}
-.result-leaderboard{margin-top:24px;text-align:left;border-top:1px solid var(--line);padding-top:8px}
 .results h1{font:700 clamp(26px,4vw,36px) 'Rethink Sans',sans-serif;color:var(--white);margin-bottom:10px}
 .results .forge-result-story{border-color:var(--line);box-shadow:none;background:var(--panel)}
 .quiz-header{flex-wrap:wrap;gap:8px 16px}
@@ -510,3 +498,17 @@ html:not([data-theme="light"]) body.forge-solo-login::after{color:var(--forge-lo
 #feedback:has(#rf-btn:not(.hidden)) .next-btn{background:transparent;color:var(--white);border:1px solid var(--line);box-shadow:none}
 
 #app:has(.quiz-header) .quiz-header .bank-name{color:var(--white)!important}
+/* XP feedback */
+.xp-gain{display:inline-block;margin-left:8px;padding:2px 8px;border-radius:999px;background:var(--ember);color:var(--coal,#1a1410);font:700 12px/1.5 'Rethink Sans',sans-serif;vertical-align:1px}
+@media(prefers-reduced-motion:no-preference){.xp-gain{animation:xp-pop .45s cubic-bezier(.34,1.56,.64,1) both}}
+@keyframes xp-pop{from{opacity:0;transform:translateY(4px) scale(.6)}to{opacity:1;transform:none}}
+#session-xp{color:var(--ember);font-weight:600}
+.xp-result{max-width:420px;margin:0 auto 28px;padding:18px 20px;border:1px solid var(--line);border-radius:var(--radius-lg);background:var(--panel);text-align:left}
+.xp-result__gain{margin:0 0 12px;color:var(--slate);font-size:15px}
+.xp-result__gain strong{color:var(--ember);font:800 22px 'Rethink Sans',sans-serif;margin-right:4px}
+.xp-result__rankup{margin:0 0 12px;padding:8px 12px;border-radius:var(--radius-sm);background:var(--ember);color:var(--coal,#1a1410);font-weight:700;text-align:center}
+@media(prefers-reduced-motion:no-preference){.xp-result__rankup{animation:xp-pop .6s cubic-bezier(.34,1.56,.64,1) .2s both}}
+.xp-result__rank{display:flex;justify-content:space-between;gap:12px;color:var(--white);font-weight:700}
+.xp-result__meter{height:8px;margin-top:10px;border-radius:999px;background:var(--panel-2);overflow:hidden}
+.xp-result__meter span{display:block;height:100%;border-radius:inherit;background:var(--ember)}
+.xp-result__next{margin:8px 0 0;color:var(--slate);font-size:13px}
