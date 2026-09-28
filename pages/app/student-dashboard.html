@@ -104,10 +104,12 @@ function classLevel(className) {
 function calcXP(responses){
   var xp=0;
   responses.forEach(function(r){
-    if(r.question_id&&r.question_id.endsWith('-CRU')&&r.is_correct) xp+=30;
+    // Anvil rows are stored as reforge attempts, so they must be matched first
+    // or a correct one would also earn the +20 reforge bonus (50 in total).
+    if(r.question_id&&r.question_id.endsWith('-ANVIL')){ if(r.is_correct) xp+=30; }
+    else if(r.question_id&&r.question_id.endsWith('-CRU')&&r.is_correct) xp+=30;
     else if(r.reforge_attempted&&r.reforge_correct) xp+=20;
     else if(r.is_correct&&!r.reforge_attempted) xp+=10;
-    if(r.question_id&&r.question_id.endsWith('-ANVIL')&&r.is_correct) xp+=30; // treat anvil correct as 30
   });
   return xp;
 }
@@ -116,13 +118,17 @@ function calcXP(responses){
 
 function calcStreak(responses){
   if(!responses.length) return 0;
-  var dates=new Set(responses.map(function(r){return r.created_at?r.created_at.substring(0,10):''}));
+  var dates=Array.from(new Set(responses.map(function(r){return r.created_at?r.created_at.substring(0,10):'';}))).filter(Boolean).sort().reverse();
+  if(!dates.length) return 0;
+  // A streak stays alive until a whole day is missed: practising yesterday but
+  // not yet today still counts, otherwise it reads 0 every morning.
   var today=new Date().toISOString().substring(0,10);
-  var streak=0;
-  var d=new Date();
-  while(true){
-    var key=d.toISOString().substring(0,10);
-    if(dates.has(key)){streak++;d.setDate(d.getDate()-1);}
+  var yesterday=new Date(Date.now()-86400000).toISOString().substring(0,10);
+  if(dates[0]!==today&&dates[0]!==yesterday) return 0;
+  var streak=1;
+  for(var i=1;i<dates.length;i++){
+    var prev=new Date(dates[i-1]);prev.setDate(prev.getDate()-1);
+    if(dates[i]===prev.toISOString().substring(0,10)) streak++;
     else break;
   }
   return streak;
@@ -207,6 +213,41 @@ function daysAgo(dateStr){
   return diff+' days ago';
 }
 
+// Days from today (local) to a due date; negative when overdue, null if undated.
+function daysUntil(dateStr){
+  if(!dateStr) return null;
+  var p=/^(\d{4})-(\d{2})-(\d{2})/.exec(dateStr);
+  if(!p) return null;
+  var due=new Date(+p[1],+p[2]-1,+p[3]);
+  var now=new Date(); now=new Date(now.getFullYear(),now.getMonth(),now.getDate());
+  return Math.round((due-now)/86400000);
+}
+
+// Teacher-set work outranks self-directed practice: if the class has something
+// open that is overdue, due within a week, or undated, it becomes the main
+// recommendation. Work due further out stays in the sidebar badge only.
+function showAssignmentNext(open){
+  var section=document.querySelector('.dashboard-next');
+  if(!section||!open||!open.length) return;
+  var ranked=open.map(function(a){return {a:a,d:daysUntil(a.due_date)};}).filter(function(x){return x.d===null||x.d<=7;});
+  if(!ranked.length) return;
+  ranked.sort(function(x,y){
+    if(x.d===null&&y.d===null) return String(y.a.created_at||'').localeCompare(String(x.a.created_at||''));
+    if(x.d===null) return 1;
+    if(y.d===null) return -1;
+    return x.d-y.d;
+  });
+  var pick=ranked[0], d=pick.d;
+  var when=d===null?'No due date':d<0?'Overdue by '+(-d)+' day'+(d===-1?'':'s'):d===0?'Due today':d===1?'Due tomorrow':'Due in '+d+' days';
+  var p=pick.a.dashProgress;
+  var done=p&&p.total&&p.answered?' '+p.answered+' of '+p.total+' questions answered.':'';
+  var more=open.length>1?' You have '+(open.length-1)+' other open assignment'+(open.length===2?'':'s')+'.':'';
+  section.classList.toggle('dashboard-next--urgent',d!==null&&d<=1);
+  section.innerHTML='<h2 id="dashboard-next-title">'+_fsEsc(pick.a.title||'Assignment')+'</h2>'
+    +'<p><strong>'+when+'.</strong> Your teacher set this.'+done+more+'</p>'
+    +'<a class="forge-button forge-button--primary" href="assignments.html">'+(d!==null&&d<0?'Catch up now →':done?'Continue assignment →':'Start assignment →')+'</a>';
+}
+
 function renderDashboard(){
   var responses=st.responses||[];
   var total=responses.filter(function(r){return !r.reforge_attempted;}).length;
@@ -223,12 +264,15 @@ function renderDashboard(){
   if (st.classId) {
     ForgeStudentCode.assignments(st.studentId,st.classCode,st.studentCode,st.studentName).then(function(rows){
       var today=new Date(); today.setHours(0,0,0,0);
-      var count=(Array.isArray(rows)?rows:[]).filter(function(a){
+      var open=(Array.isArray(rows)?rows:[]).filter(function(a){
         var banks=[]; try { banks=typeof a.banks==='string'?JSON.parse(a.banks):a.banks||[]; } catch(e) {}
         var created=a.created_at?new Date(a.created_at):null;
-        var incomplete=!banks.length || banks.some(function(bank){
+        // Tally progress across every bank (not .some, which stops early) so
+        // the home card can say "3 of 8 answered".
+        var answered=0, target=0, unknown=!banks.length;
+        banks.forEach(function(bank){
           var bankData=BANKS[bank];
-          if (!bankData) return true;
+          if (!bankData) { unknown=true; return; }
           var ids={};
           responses.forEach(function(response){
             if (created && (!response.created_at || new Date(response.created_at)<created)) return;
@@ -243,10 +287,14 @@ function renderDashboard(){
             });
           } catch(e) {}
           var available=bankData.assignableQuestionCount!=null?bankData.assignableQuestionCount:(bankData.questionCount||0);
-          return Object.keys(ids).length < Math.min(8,available);
+          var cap=Math.min(8,available);
+          answered+=Math.min(Object.keys(ids).length,cap); target+=cap;
         });
-        return incomplete;
-      }).length;
+        a.dashProgress=unknown?null:{answered:answered,total:target};
+        return unknown || answered<target;
+      });
+      var count=open.length;
+      showAssignmentNext(open);
       if (window.ForgeSidebar) ForgeSidebar.setBadge('assignments', count || null);
       try { localStorage.setItem('forge-assigned-open-current', String(count)); } catch(e) {}
       try { localStorage.setItem('forge-assigned-open:'+String(st.studentId||'anon')+':'+String(st.classId||'none'), String(count)); } catch(e) {}

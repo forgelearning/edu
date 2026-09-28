@@ -133,10 +133,12 @@ function calcGrade(acc, activeMCs, totalMCs, isGCSE) {
 function calcXP(responses){
   var xp=0;
   responses.forEach(function(r){
-    if(r.question_id&&r.question_id.endsWith('-CRU')&&r.is_correct) xp+=30;
+    // Anvil rows are stored as reforge attempts, so they must be matched first
+    // or a correct one would also earn the +20 reforge bonus (50 in total).
+    if(r.question_id&&r.question_id.endsWith('-ANVIL')){ if(r.is_correct) xp+=30; }
+    else if(r.question_id&&r.question_id.endsWith('-CRU')&&r.is_correct) xp+=30;
     else if(r.reforge_attempted&&r.reforge_correct) xp+=20;
     else if(r.is_correct&&!r.reforge_attempted) xp+=10;
-    if(r.question_id&&r.question_id.endsWith('-ANVIL')&&r.is_correct) xp+=30; // treat anvil correct as 30
   });
   return xp;
 }
@@ -572,13 +574,17 @@ function renderProfile(){
 
 function calcStreak(responses){
   if(!responses.length) return 0;
-  var dates=new Set(responses.map(function(r){return r.created_at?r.created_at.substring(0,10):''}));
+  var dates=Array.from(new Set(responses.map(function(r){return r.created_at?r.created_at.substring(0,10):'';}))).filter(Boolean).sort().reverse();
+  if(!dates.length) return 0;
+  // A streak stays alive until a whole day is missed: practising yesterday but
+  // not yet today still counts, otherwise it reads 0 every morning.
   var today=new Date().toISOString().substring(0,10);
-  var streak=0;
-  var d=new Date();
-  while(true){
-    var key=d.toISOString().substring(0,10);
-    if(dates.has(key)){streak++;d.setDate(d.getDate()-1);}
+  var yesterday=new Date(Date.now()-86400000).toISOString().substring(0,10);
+  if(dates[0]!==today&&dates[0]!==yesterday) return 0;
+  var streak=1;
+  for(var i=1;i<dates.length;i++){
+    var prev=new Date(dates[i-1]);prev.setDate(prev.getDate()-1);
+    if(dates[i]===prev.toISOString().substring(0,10)) streak++;
     else break;
   }
   return streak;
