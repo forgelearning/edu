@@ -117,14 +117,18 @@
         <table>
           <thead><tr><th>Data</th><th>Purpose</th><th>Legal basis</th></tr></thead>
           <tbody>
-            <tr><td>Display name</td><td>Identify the student in the teacher dashboard and, for class-joined students, the class-only leaderboard</td><td>Legitimate interests (providing the service)</td></tr>
+            <tr><td>Display name</td><td>Identify the student in the teacher dashboard and, for class-joined students, in the weekly class league (shown to classmates as first name and last initial) and to classmates they have accepted as friends</td><td>Legitimate interests (providing the service)</td></tr>
             <tr><td>Private student code</td><td>Authenticate the student's access to their own class-linked work and answer history</td><td>Legitimate interests (providing the service)</td></tr>
             <tr><td>Question responses</td><td>Track accuracy, identify misconceptions, power the Anvil and profile</td><td>Legitimate interests (providing the service)</td></tr>
             <tr><td>Misconception tags</td><td>Derive the Anvil, corrective starters, and student profile</td><td>Legitimate interests (providing the service)</td></tr>
-            <tr><td>XP and streak data</td><td>Power gamification and leaderboard features</td><td>Legitimate interests (providing the service)</td></tr>
+            <tr><td>XP and streak data</td><td>Power XP, ranks, the weekly class league and the friends feature</td><td>Legitimate interests (providing the service)</td></tr>
+            <tr><td>Friend connections</td><td>Record which classmates a student has chosen to connect with, so that accepted friends can see each other’s progress</td><td>Legitimate interests (providing the service)</td></tr>
             <tr><td>Session timestamps</td><td>Calculate streaks, usage patterns</td><td>Legitimate interests (providing the service)</td></tr>
           </tbody>
         </table>
+        <h3>Class friends and the weekly league</h3>
+        <p><strong>Class friends.</strong> Students in the same class can send each other friend requests. Once a request is accepted, both students can see each other's display name, XP, accuracy and practice streak. Either student can remove the connection at any time, and teachers can switch the feature off for a class. There is no messaging between students.</p>
+        <p><strong>Weekly class league.</strong> Students in a class can see a weekly XP league for that class. Classmates appear as first name and last initial, only students who have earned XP that week are listed, and each student sees the top three places plus the places either side of their own. The league resets every Monday, and teachers can switch it off for a class.</p>
 
         <h3>Pro and trial subscribers (account holders)</h3>
         <p>Students who sign up for a 7-day free trial or a paid Pro subscription create an account. We collect:</p>
@@ -172,7 +176,8 @@
             <tr><td>Subscription management</td><td>Email address, subscription status</td></tr>
             <tr><td>Generate the teacher misconception heatmap</td><td>Misconception tags aggregated by class</td></tr>
             <tr><td>Generate corrective starter activities</td><td>Top-firing misconception tags per class</td></tr>
-            <tr><td>Display the class leaderboard</td><td>Class-joined display name, XP, streak and rank within that class</td></tr>
+            <tr><td>Display the weekly class league</td><td>Class-joined first name and last initial, XP earned that week, and position within that class</td></tr>
+            <tr><td>Show a student’s progress to classmates they have accepted as friends</td><td>Display name, XP, accuracy and practice streak, shared only between two classmates who have both agreed</td></tr>
             <tr><td>Provide student drill-down to teacher (only if student links their account to a class)</td><td>Display name, accuracy, misconception profile</td></tr>
             <tr><td>Contact waitlist signups about launch</td><td>Email address</td></tr>
             <tr><td>Billing and support (paid licences)</td><td>Teacher/school contact details</td></tr>
@@ -266,7 +271,7 @@
         <p>Students enrolled in classes created by the Controller's teachers. Teaching and administrative staff of the Controller who access the Teacher Dashboard.</p>
 
         <h3>8.4 Types of personal data</h3>
-        <p>Display names (not necessarily legal names), question response data, misconception tags, XP and streak data, session timestamps. See Section 2 for the full list.</p>
+        <p>Display names (not necessarily legal names), question response data, misconception tags, XP and streak data, friend connections between classmates, session timestamps. See Section 2 for the full list.</p>
 
         <h3>8.5 Processor obligations</h3>
         <p>The Processor shall:</p>
