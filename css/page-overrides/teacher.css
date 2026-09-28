@@ -44,11 +44,12 @@ h1,h2,h3{font-family:'Rethink Sans',sans-serif;color:var(--white);line-height:1.
 .dash-primary{display:inline-flex;align-items:center;min-height:38px;padding:0 13px;border-radius:var(--radius-sm);background:var(--ember);color:#fff;text-decoration:none;font-size:13px;font-weight:700}
 .dash-primary:hover{background:var(--hot);color:var(--coal)}
 .dash-tools{width:fit-content;max-width:100%;margin-top:10px;position:relative}
-.dash-tools summary,.dash-explainer summary{cursor:pointer;color:var(--dim);font:600 11px 'JetBrains Mono',monospace;letter-spacing:.04em;list-style:none}
-.dash-tools summary::-webkit-details-marker,.dash-explainer summary::-webkit-details-marker{display:none}
-.dash-tools summary::before,.dash-explainer summary::before{content:'+';display:inline-block;margin-right:6px;color:var(--ember);font-size:14px;line-height:1}
-.dash-tools[open] summary::before,.dash-explainer[open] summary::before{content:'−'}
+.dash-explainer summary{cursor:pointer;color:var(--dim);font:600 11px 'JetBrains Mono',monospace;letter-spacing:.04em;list-style:none}
+.dash-explainer summary::-webkit-details-marker{display:none}
+.dash-explainer summary::before{content:'+';display:inline-block;margin-right:6px;color:var(--ember);font-size:14px;line-height:1}
+.dash-explainer[open] summary::before{content:'−'}
 .dash-tools__menu{display:flex;flex-wrap:wrap;gap:8px;width:min(560px,calc(100vw - 120px));margin-top:10px;padding:10px;border:1px solid var(--line);border-radius:var(--radius-md);background:var(--panel-2)}
+.dash-tools__menu[hidden]{display:none}
 .dash-tools__menu .forge-button{min-height:36px;font-size:12px}
 .dash-tool-group{flex:1 1 100%;padding-top:10px;border-top:1px solid var(--line)}
 .dash-tool-group__label{display:block;margin-bottom:7px;color:var(--dim);font:11px 'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.05em}
@@ -585,7 +586,7 @@ html[data-overdrive="control-room"] .teacher-entry{position:relative}
 @media(prefers-reduced-motion:no-preference){
   .ui-state-action,.forge-button,.tab,.heat-action{transition:background-color .18s ease,color .18s ease,border-color .18s ease,box-shadow .18s ease,transform .18s ease}
   .ui-state-action:hover,.forge-button--primary:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 14px 28px -20px color-mix(in srgb,var(--ember) 90%,transparent)}
-  .dash-tools[open] .dash-tools__menu{animation:teacher-tools-in .2s cubic-bezier(.16,1,.3,1) both;transform-origin:top left}
+  .dash-tools.is-open .dash-tools__menu{animation:teacher-tools-in .2s cubic-bezier(.16,1,.3,1) both;transform-origin:top left}
   .code-coverage:not([hidden]){animation:teacher-notice-in .36s cubic-bezier(.16,1,.3,1) both}
   .heat-row:nth-of-type(2) .heat-fill,.heat-row:nth-of-type(3) .heat-fill,.heat-row:nth-of-type(4) .heat-fill,.heat-row:nth-of-type(5) .heat-fill,.heat-row:nth-of-type(6) .heat-fill{transform:scaleX(0);animation:teacher-bar-fill .55s cubic-bezier(.16,1,.3,1) both}
   .heat-row:nth-of-type(3) .heat-fill{animation-delay:45ms}
@@ -786,8 +787,9 @@ html[data-overdrive="control-room"] .tab.active{color:var(--coal)}
 .teacher-dashboard-head__actions{display:flex;align-items:flex-start;gap:10px;flex-wrap:wrap;justify-content:flex-end}
 .teacher-dashboard-head__actions .back-btn{margin:0}
 .teacher-dashboard-head__actions .dash-tools{margin:0}
-.teacher-dashboard-head__actions .dash-tools>summary{display:flex;align-items:center;min-height:40px;padding:0 13px;border:1px solid var(--line);border-radius:var(--radius-sm);background:var(--panel);color:var(--slate);font:600 13px/1 'Poppins',sans-serif;letter-spacing:0}
-.teacher-dashboard-head__actions .dash-tools>summary::before{display:none}
+.teacher-dashboard-head__actions .dash-tools__toggle{cursor:pointer;display:flex;align-items:center;min-height:40px;padding:0 13px;border:1px solid var(--line);border-radius:var(--radius-sm);background:var(--panel);color:var(--slate);font:600 13px/1 'Poppins',sans-serif;letter-spacing:0}
+.teacher-dashboard-head__actions .dash-tools__toggle:hover,.teacher-dashboard-head__actions .dash-tools.is-open .dash-tools__toggle{border-color:var(--ember);color:var(--white)}
+.teacher-dashboard-head__actions .dash-tools__toggle:focus-visible{outline:2px solid var(--ember);outline-offset:3px}
 .teacher-dashboard-head__actions .dash-tools__menu{position:absolute;z-index:8;right:0;width:min(560px,calc(100vw - 120px))}
 .class-code-pill{min-height:30px;padding:2px 9px;color:var(--hot);background:var(--panel);font-size:12px}
 
@@ -856,11 +858,11 @@ html[data-overdrive="control-room"] .tab.active{color:var(--coal)}
 @media(max-width:560px){.teacher-dashboard-head{display:block}.teacher-dashboard-head__actions{margin-top:16px}.teacher-dashboard-head h1{font-size:32px}.teacher-next-action{padding:22px 18px}.teacher-snapshot{padding:20px 18px}.teacher-snapshot dl{grid-template-columns:1fr;gap:0}.teacher-snapshot dl>div{display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding:12px 0;border-top:1px solid var(--line)}.teacher-snapshot dt{margin:0}.teacher-snapshot dd{font-size:20px}.teacher-priority__head{align-items:flex-start;flex-direction:column}.teacher-detail-drawer{padding:20px}}
 
 @media(prefers-reduced-motion:reduce){.teacher-drawer-scrim,.teacher-detail-drawer{transition:none}}
-@media(max-width:560px){.teacher-dashboard-head__actions{align-items:center}.teacher-dashboard-head__actions .dash-tools{width:auto}.teacher-dashboard-head__actions .dash-tools>summary{min-width:110px;justify-content:center}}
+@media(max-width:560px){.teacher-dashboard-head__actions{align-items:center}.teacher-dashboard-head__actions .dash-tools{width:auto}.teacher-dashboard-head__actions .dash-tools__toggle{min-width:110px;justify-content:center}}
 .teacher-checkin{margin:0 0 24px}
 .teacher-checkin h2{margin:0 0 10px;font-size:15px}
 .teacher-checkin ul{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:8px;margin:0;padding:0;list-style:none}
-.teacher-checkin button{display:flex;align-items:baseline;justify-content:space-between;gap:10px;width:100%;text-align:left;min-height:44px;padding:8px 14px;border:1px solid var(--line);border-radius:var(--radius-md);background:var(--panel);color:var(--white);font:600 14px 'Rethink Sans',sans-serif;cursor:pointer}
+.teacher-checkin button{display:flex;align-items:baseline;justify-content:center;gap:10px;width:100%;text-align:center;min-height:44px;padding:8px 14px;border:1px solid var(--line);border-radius:var(--radius-md);background:var(--panel);color:var(--white);font:600 14px 'Rethink Sans',sans-serif;cursor:pointer}
 .teacher-checkin button:hover{border-color:var(--ember);background:var(--panel-2)}
 .teacher-checkin button:focus-visible{outline:2px solid var(--ember);outline-offset:3px}
 .teacher-checkin small{flex:none;white-space:nowrap;color:var(--slate);font-size:12px;font-weight:500}
