@@ -285,3 +285,5 @@ html[data-overdrive="control-room"] .mod-row:hover{border-color:var(--hot);box-s
   .dashboard-rank-xp{font-size:18px}
 }
 @media(prefers-reduced-motion:reduce){.dashboard-shortcuts a{transition:none}.dashboard-shortcuts a:hover{transform:none}}
+.dashboard-next--urgent{border-color:var(--ember)}
+.dashboard-next p strong{color:var(--white)}

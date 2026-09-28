@@ -1772,7 +1772,10 @@ function renderReforge(q,el,color){
 function calcXPFromResponses(responses){
   var xp=0;
   responses.forEach(function(r){
-    if(r.question_id&&r.question_id.endsWith('-CRU')&&r.is_correct) xp+=30;
+    // Anvil rows are stored as reforge attempts, so they must be matched first
+    // or a correct one would also earn the +20 reforge bonus (50 in total).
+    if(r.question_id&&r.question_id.endsWith('-ANVIL')){ if(r.is_correct) xp+=30; }
+    else if(r.question_id&&r.question_id.endsWith('-CRU')&&r.is_correct) xp+=30;
     else if(r.reforge_attempted&&r.reforge_correct) xp+=20;
     else if(r.is_correct&&!r.reforge_attempted) xp+=10;
   });

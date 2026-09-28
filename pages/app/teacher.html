@@ -927,13 +927,36 @@ function forClassSubject(rows) {
   });
 }
 
+// Accuracy over the last 7 days against the 7 before, from the responses
+// already loaded for this class. Withheld below MIN answers in either week:
+// a swing from three answers is noise, and a teacher would act on it.
+function weeklyTrendHtml(responses) {
+  var MIN = 10, DAY = 86400000, now = Date.now();
+  var recent = [], previous = [];
+  (responses || []).forEach(function(r) {
+    var t = r && r.created_at ? Date.parse(r.created_at) : NaN;
+    if (isNaN(t)) return;
+    var age = now - t;
+    if (age >= 0 && age < 7 * DAY) recent.push(r);
+    else if (age >= 7 * DAY && age < 14 * DAY) previous.push(r);
+  });
+  var a = ForgeMetrics.accuracy(recent), b = ForgeMetrics.accuracy(previous);
+  if (a.total < MIN || b.total < MIN || a.percent == null || b.percent == null) {
+    return recent.length ? '<small class="trend trend--flat">' + a.total + ' answer' + (a.total !== 1 ? 's' : '') + ' this week</small>' : '';
+  }
+  var diff = a.percent - b.percent;
+  var kind = diff > 0 ? 'up' : diff < 0 ? 'down' : 'flat';
+  var text = diff === 0 ? 'Same as last week' : (diff > 0 ? '\u25b2 ' : '\u25bc ') + Math.abs(diff) + ' pts vs last week';
+  return '<small class="trend trend--' + kind + '" title="Last 7 days (' + a.total + ' answers) against the 7 days before (' + b.total + ' answers)">' + text + '</small>';
+}
+
 function renderDashboard() {
   // Filter responses to this class's subject only
   var allResponses = dashState.responses;
   var responses = forClassSubject(allResponses);
   var students = dashState.students;
   var studentMap = {};
-  students.forEach(function(s) { studentMap[s.id] = s.name; });
+  students.forEach(function(s) { studentMap[s.id] = s.display_name || s.name; });
 
   // Stats
   var classMetric = ForgeMetrics.accuracy(responses);
@@ -958,7 +981,7 @@ function renderDashboard() {
     openSignals: openSignalCount,
     students: students.length,
     responses: totalQs,
-    secondary: openSignalCount ? 'Open priority signals' : 'No open priority signals'
+    secondary: openSignalCount ? 'Open ideas to revisit' : 'No open ideas to revisit'
   });
   var attentionRows=Object.keys(attention).map(function(id){return {id:id,name:(studentMap[id]||'Student'),count:attention[id]};}).sort(function(a,b){return b.count-a.count;}).slice(0,5);
 
@@ -974,7 +997,7 @@ function renderDashboard() {
     overviewCounts[tag].students[row.student_id] = true;
   });
   var overviewTags = Object.keys(overviewCounts).sort(function(a, b) {
-    return overviewCounts[b].count - overviewCounts[a].count;
+    return Object.keys(overviewCounts[b].students).length - Object.keys(overviewCounts[a].students).length || overviewCounts[b].count - overviewCounts[a].count;
   });
   var topSignalTag = overviewTags[0] || '';
   var topSignal = topSignalTag ? overviewCounts[topSignalTag] : null;
@@ -999,17 +1022,24 @@ function renderDashboard() {
   } else {
     h += '<button class="forge-button forge-button--primary" type="button" data-forge-action="next-action">Open assignments</button>';
   }
-  h += '</section><nav class="teacher-shortcuts" aria-label="Other class tasks"><button type="button" data-teacher-view="class">Class &amp; students</button><button type="button" data-teacher-view="assignments">Assignments</button><button type="button" data-teacher-view="spec">Spec points</button></nav>';
+  h += '</section>';
   h += '<section class="teacher-snapshot" aria-labelledby="teacher-snapshot-title"><h2 id="teacher-snapshot-title">Class progress</h2><dl>';
-  h += '<div><dt>Class accuracy</dt><dd>' + (totalQs === 0 ? '—' : accuracy + '%') + '</dd></div>';
+  h += '<div><dt>Class accuracy</dt><dd>' + (totalQs === 0 ? '—' : accuracy + '%') + '</dd>' + weeklyTrendHtml(responses) + '</div>';
   h += '<div><dt>Open ideas to revisit</dt><dd>' + openSignalCount + '</dd></div>';
   h += '<div><dt>Similar questions repaired</dt><dd>' + (repairPercent == null ? '—' : repairPercent + '%') + '</dd></div>';
   h += '</dl></section></div>';
-  h += '<details class="dash-explainer"><summary>How these numbers are calculated</summary><p>Class accuracy = correct scored answers ÷ scored answers. Initial Forge, assignment and Crucible answers are scored; Re-forge repair attempts are excluded. Open signals use the shared three-success resolution rule.</p></details>';
+  if (attentionRows.length) {
+    h += '<section class="teacher-checkin" aria-labelledby="teacher-checkin-title"><h2 id="teacher-checkin-title">Check in with</h2><ul>';
+    attentionRows.forEach(function(row) {
+      h += '<li><button type="button" data-forge-action="render-student" data-student-id="' + teacherEsc(row.id) + '"><span>' + teacherEsc(row.name) + '</span><small>' + row.count + ' open idea' + (row.count !== 1 ? 's' : '') + '</small></button></li>';
+    });
+    h += '</ul></section>';
+  }
+  h += '<details class="dash-explainer"><summary>How these numbers are calculated</summary><p>Class accuracy = correct scored answers ÷ scored answers. The weekly change compares the last 7 days with the 7 before, and only appears once each week has 10 or more answers. Initial Forge, assignment and Crucible answers are scored; Similar-question repair attempts are excluded. Open signals use the shared three-success resolution rule.</p></details>';
 
   // Tabs
   h += '<div class="tabs teacher-view-tabs" role="tablist" aria-label="Teacher dashboard views">';
-  h += '<button type="button" class="tab active" role="tab" id="tab-heatmap" aria-controls="panel-heatmap" aria-selected="true" tabindex="0" data-view="heatmap" data-forge-action="switch-tab" data-tab="heatmap">Priority signals</button>';
+  h += '<button type="button" class="tab active" role="tab" id="tab-heatmap" aria-controls="panel-heatmap" aria-selected="true" tabindex="0" data-view="heatmap" data-forge-action="switch-tab" data-tab="heatmap">Ideas to revisit</button>';
   h += '<button type="button" class="tab" role="tab" id="tab-class" aria-controls="panel-class" aria-selected="false" tabindex="-1" data-view="class" data-forge-action="switch-tab" data-tab="class">Class overview</button>';
   h += '<button type="button" class="tab" role="tab" id="tab-spec" aria-controls="panel-spec" aria-selected="false" tabindex="-1" title="Specification areas and accuracy" data-view="spec" data-forge-action="switch-tab" data-tab="spec">Spec points</button>';
   h += '<button type="button" class="tab" role="tab" id="tab-assignments" aria-controls="panel-assignments" aria-selected="false" tabindex="-1" data-view="assignments" data-forge-action="switch-tab" data-tab="assignments">Assignments</button>';
@@ -1030,9 +1060,6 @@ function renderDashboard() {
   app.classList.remove('teacher-home-view');
   app.classList.remove('teacher-secondary-view');
 
-  app.querySelectorAll('[data-teacher-view]').forEach(function(button) {
-    button.onclick = function() { forgeGoto(button.getAttribute('data-teacher-view')); };
-  });
 
   var detailClose = document.getElementById('teacher-detail-close');
   var detailScrim = document.getElementById('teacher-drawer-scrim');
@@ -1368,7 +1395,7 @@ function openTeacherSignalStudents(tag) {
     var summary = ForgeMisconceptions.summarize(classResponses.filter(function(row) { return row.student_id === student.id; }));
     return summary.active.indexOf(tag) !== -1;
   });
-  var content = '<p class="teacher-detail-intro">Students whose responses contributed to this signal.</p><div class="teacher-detail-students">';
+  var content = '<p class="teacher-detail-intro">Students whose responses contributed to this idea.</p><div class="teacher-detail-students">';
   rows.forEach(function(student) {
     content += '<button type="button" class="teacher-detail-student" data-forge-action="render-student" data-student-id="' + student.id + '"><span>' + teacherEsc(student.display_name || student.name || 'Student') + '</span><small>Open profile</small></button>';
   });
@@ -1813,57 +1840,6 @@ function renderStarterCard(tag, h, context) {
   return h;
 }
 
-function renderBrowseStarters() {
-  // Always-visible starter browser — no class data required. Scoped to this
-  // class's subject so the list is usable rather than a cross-curriculum dump.
-  var el = document.getElementById('panel-heatmap');
-  var allTags = Object.keys(MC_STARTERS).filter(function(tag) {
-    return !dashState.classSubject || MC_TO_SUBJECT[tag] === dashState.classSubject;
-  });
-
-  var h = '<div class="card forge-mb-5">';
-  h += '<div class="card-title">Browse starter activities</div>';
-  if (allTags.length === 0) {
-    h += '<p class="forge-u-1rniwep">There are no starter activities for this subject yet. Once students complete questions, the top-firing misconception will be ranked here and you can build a starter from its scaffold.</p>';
-    h += '</div><div id="browse-starter-slot"></div>';
-    el.innerHTML = h;
-    return;
-  }
-  h += '<p class="forge-u-1rniwep">No class data loaded — pick a misconception tag to preview its starter activity. Once students complete questions, the top-firing tag will be recommended automatically.</p>';
-  h += '<select class="subj-select" id="tag-picker">';
-  h += '<option value="">— pick a misconception tag —</option>';
-
-  // Group by subject prefix
-  var groups = {};
-  allTags.forEach(function(tag) {
-    var parts = tag.split('-');
-    var grp = parts[0] + '-' + parts[1];
-    if (!groups[grp]) groups[grp] = [];
-    groups[grp].push(tag);
-  });
-  Object.keys(groups).sort().forEach(function(grp) {
-    h += '<optgroup label="' + grp + '">';
-    groups[grp].forEach(function(tag) {
-      h += '<option value="' + tag + '">' + tag + (resolveMCLabel(tag) ? ' — ' + resolveMCLabel(tag) : '') + '</option>';
-    });
-    h += '</optgroup>';
-  });
-
-  h += '</select></div>';
-  h += '<div id="browse-starter-slot"></div>';
-
-  el.innerHTML = h;
-
-  document.getElementById('tag-picker').addEventListener('change', function() {
-    var tag = this.value;
-    var slot = document.getElementById('browse-starter-slot');
-    if (!tag) { slot.innerHTML = ''; return; }
-    var out = '';
-    out = renderStarterCard(tag, out, null);
-    slot.innerHTML = out;
-  });
-}
-
 // ===== ASSIGNMENTS =====
 
 // Bank label lookup — derived from the generated lightweight catalogue.
@@ -2286,7 +2262,7 @@ function renderPrioritySignals(wrongResponses) {
   var el = document.getElementById('panel-heatmap');
   if (!el) return;
   if (!wrongResponses.length) {
-    el.innerHTML = '<section class="teacher-priority"><header class="teacher-priority__head"><div><h2>Priority signals</h2><p>No active misconception signals yet.</p></div></header>' + ForgeState.html('empty', { label: 'Keep collecting responses', body: 'A teaching priority will appear after students answer enough questions.' }) + '</section>';
+    el.innerHTML = '<section class="teacher-priority"><header class="teacher-priority__head"><div><h2>Ideas to revisit</h2><p>No ideas to revisit yet.</p></div></header>' + ForgeState.html('empty', { label: 'Keep collecting responses', body: 'A teaching priority will appear after students answer enough questions.' }) + '</section>';
     return;
   }
   var names = {};
@@ -2300,8 +2276,13 @@ function renderPrioritySignals(wrongResponses) {
     counts[tag].banks[row.bank] = true;
     counts[tag].students[row.student_id] = true;
   });
-  var sorted = Object.keys(counts).sort(function(a, b) { return counts[b].count - counts[a].count; });
-  var h = '<section class="teacher-priority" aria-labelledby="teacher-priority-title"><header class="teacher-priority__head"><div><h2 id="teacher-priority-title">Priority signals</h2><p>The strongest opportunities for your next lesson.</p></div>';
+  // Reach beats volume: one student repeating a slip 12 times should not
+  // outrank an idea half the class shares.
+  var sorted = Object.keys(counts).sort(function(a, b) {
+    return Object.keys(counts[b].students).length - Object.keys(counts[a].students).length || counts[b].count - counts[a].count;
+  });
+  var classSize = (dashState.students || []).length;
+  var h = '<section class="teacher-priority" aria-labelledby="teacher-priority-title"><header class="teacher-priority__head"><div><h2 id="teacher-priority-title">Ideas to revisit</h2><p>The strongest opportunities for your next lesson.</p></div>';
   if (sorted.length > 3) h += '<button type="button" class="teacher-priority__toggle" id="teacher-priority-toggle" aria-expanded="false">View all ' + sorted.length + '</button>';
   h += '</header><div class="teacher-signal-list">';
   sorted.forEach(function(tag, index) {
@@ -2314,7 +2295,7 @@ function renderPrioritySignals(wrongResponses) {
     h += '<article class="teacher-signal' + (index > 2 ? ' teacher-signal--hidden' : '') + '">';
     h += '<div class="teacher-signal__name"><h3>' + teacherEsc(label) + '</h3><p>' + teacherEsc(bankLabels || 'Topic not mapped') + '</p></div>';
     h += '<div class="teacher-signal__strength"><p>' + signal.count + ' error' + (signal.count !== 1 ? 's' : '') + '</p></div>';
-    h += '<span class="teacher-signal__impact"><strong><span class="heat-students" tabindex="0" role="button" aria-label="' + studentIds.length + ' student' + (studentIds.length !== 1 ? 's' : '') + ': ' + teacherEsc(studentNames.join(', ')) + '" data-students="' + teacherEsc(studentNames.join('\n')) + '">' + studentIds.length + '</span></strong><small>student' + (studentIds.length !== 1 ? 's' : '') + '</small></span>';
+    h += '<span class="teacher-signal__impact"><strong><span class="heat-students" tabindex="0" role="button" aria-label="' + studentIds.length + ' student' + (studentIds.length !== 1 ? 's' : '') + ': ' + teacherEsc(studentNames.join(', ')) + '" data-students="' + teacherEsc(studentNames.join('\n')) + '">' + studentIds.length + '</span></strong><small>' + (classSize >= studentIds.length ? 'of ' + classSize : 'student' + (studentIds.length !== 1 ? 's' : '')) + '</small></span>';
     h += '<button type="button" class="heat-action" data-starter-tag="' + teacherEsc(tag) + '" aria-label="Open teaching notes for ' + teacherEsc(label) + '"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"></path></svg></button></article>';
   });
   h += '</div></section>';
@@ -2326,71 +2307,6 @@ function renderPrioritySignals(wrongResponses) {
     toggle.textContent = expanded ? 'View all ' + sorted.length : 'Show top 3';
     el.querySelectorAll('.teacher-signal:nth-child(n+4)').forEach(function(row) { row.classList.toggle('teacher-signal--hidden', expanded); });
   };
-}
-
-function renderHeatmap(wrongResponses) {
-  var el = document.getElementById('panel-heatmap');
-  if (wrongResponses.length === 0) {
-    renderBrowseStarters();
-    return;
-  }
-
-  // id -> display name, for the tooltip on each row's student count.
-  var heatStudentNames = {};
-  (dashState.students || []).forEach(function(student) {
-    heatStudentNames[student.id] = student.name || student.display_name || '';
-  });
-
-  // Count by misconception tag
-  var counts = {};
-  wrongResponses.forEach(function(r) {
-    var tag = r.misconception_tag;
-    if (!counts[tag]) counts[tag] = { count: 0, banks: {}, students: {} };
-    counts[tag].count++;
-    counts[tag].banks[r.bank] = true;
-    counts[tag].students[r.student_id] = true;
-  });
-
-  // Sort by count descending
-  var sorted = Object.keys(counts).sort(function(a, b) { return counts[b].count - counts[a].count; });
-  var maxCount = counts[sorted[0]].count;
-
-  var h = '<div class="card forge-card"><div class="card-title">Misconceptions ranked by frequency</div>';
-  sorted.forEach(function(tag) {
-    var c = counts[tag];
-    var pct = Math.round((c.count / maxCount) * 100);
-    var level = pct > 60 ? 'high' : pct > 30 ? 'med' : '';
-    // Tags without a human label fall back to showing the code once, not twice.
-    var label = resolveMCLabel(tag) || '';
-    var banks = Object.keys(c.banks).join(', ');
-    var studentIds = Object.keys(c.students);
-    var studentCount = studentIds.length;
-    // Who is behind the count. The teacher owns this class and sees these names
-    // throughout the dashboard already, so there is nothing to redact here --
-    // the small-cohort suppression applies to the school overview, where a
-    // leader is looking across other people's classes.
-    var studentNames = studentIds
-      .map(function(id) { return heatStudentNames[id] || 'Unnamed student'; })
-      .sort(function(a, b) { return a.localeCompare(b); });
-
-    h += '<div class="heat-row ' + level + '">';
-    h += '<span class="heat-label">' + (label || tag) + '</span>';
-    h += '<span class="heat-tag">' + (label ? tag : 'Unlabelled signal') + '</span>';
-    h += '<span class="heat-spec">' + banks + '</span>';
-    h += '<div class="heat-bar"><div class="heat-fill" style="width:' + pct + '%"></div></div>';
-    // tabindex makes the tooltip reachable by keyboard and, importantly, by tap:
-    // a touch device never fires hover, but it does focus.
-    h += '<span class="heat-count">' + c.count + ' error' + (c.count !== 1 ? 's' : '') + ' \u00b7 '
-      + '<span class="heat-students" tabindex="0" role="button"'
-      + ' aria-label="' + studentCount + ' student' + (studentCount !== 1 ? 's' : '') + ': ' + teacherEsc(studentNames.join(', ')) + '"'
-      + ' data-students="' + teacherEsc(studentNames.join('\n')) + '">'
-      + studentCount + ' student' + (studentCount !== 1 ? 's' : '') + '</span></span>';
-    h += '<a class="heat-action" href="#" data-starter-tag="' + teacherEsc(tag) + '">Starter \u2192</a>';
-    h += '</div>';
-  });
-  h += '</div>';
-
-  el.innerHTML = h;
 }
 
 function renderStarters(wrongResponses) {
@@ -2405,14 +2321,14 @@ function renderStarters(wrongResponses) {
     var h = '<div class="card forge-mb-5">';
     h += '<div class="card-title">Browse starter activities</div>';
     if (allTags.length === 0) {
-      h += '<p class="forge-u-1rniwep">There are no starter activities for this subject yet. Once students answer questions, the top-firing misconception will still be ranked below and you can build a starter from its scaffold.</p>';
+      h += '<p class="forge-u-1rniwep">There are no starter activities for this subject yet. Once students answer questions, the most common idea to revisit will still be ranked below and you can build a starter from its scaffold.</p>';
       h += '</div><div id="browse-starter-slot"></div>';
       el.innerHTML = h;
       return;
     }
-    h += '<p class="forge-u-1rniwep">No class data yet — pick a misconception tag to preview its starter activity.</p>';
+    h += '<p class="forge-u-1rniwep">No class data yet — pick an idea to preview its starter activity.</p>';
     h += '<select class="subj-select" id="tag-picker">';
-    h += '<option value="">— pick a misconception tag —</option>';
+    h += '<option value="">— pick an idea —</option>';
     var groups = {};
     allTags.forEach(function(tag) { var g = tag.split('-')[0]+'-'+tag.split('-')[1]; if(!groups[g])groups[g]=[]; groups[g].push(tag); });
     Object.keys(groups).sort().forEach(function(grp) {
@@ -2450,7 +2366,7 @@ function renderStarters(wrongResponses) {
   var others = sorted.slice(1, 5);
   if (others.length > 0) {
     h += '<section class="card misconception-card" aria-labelledby="other-misconceptions-title">';
-    h += '<div class="misconception-card__header"><div><div class="card-title">Next interventions</div><h2 id="other-misconceptions-title">Other misconceptions this period</h2></div><span class="misconception-card__hint">Choose one to preview</span></div>';
+    h += '<div class="misconception-card__header"><div><div class="card-title">Next interventions</div><h2 id="other-misconceptions-title">Other ideas to revisit</h2></div><span class="misconception-card__hint">Choose one to preview</span></div>';
     h += '<div class="misconception-grid">';
     others.forEach(function(tag) {
       h += '<button type="button" class="misconception-chip" data-forge-action="show-starter" data-tag="' + teacherEsc(tag) + '"><span><strong>' + teacherEsc(teacherMisconceptionLabel(tag)) + '</strong><small>' + counts[tag].count + ' fire' + (counts[tag].count !== 1 ? 's' : '') + '</small></span><span aria-hidden="true">→</span></button>';
@@ -2536,7 +2452,7 @@ function renderClassOverview(responses, students) {
 
   var h = '<div class="card"><div class="card-title">Students \u2014 sorted by accuracy (lowest first) <span class="forge-u-rsj30h">Click a student to see their full profile</span></div>';
   h += '<div class="class-table-wrap"><table class="class-table"><thead><tr>';
-  h += '<th>Student</th><th>Answered</th><th>Accuracy</th><th>Weakest topic</th><th>Top misconception</th><th>Access</th>';
+  h += '<th>Student</th><th>Answered</th><th>Accuracy</th><th>Weakest topic</th><th>Top idea to revisit</th><th>Access</th>';
   h += '</tr></thead><tbody>';
 
   sorted.forEach(function(sid) {
@@ -2650,8 +2566,8 @@ window.renderStudent = function(studentId) {
   h += '<div class="stat-row">';
   h += '<div class="stat"><span class="stat-n" style="color:' + (acc >= 70 ? 'var(--good)' : acc >= 50 ? 'var(--hot)' : 'var(--bad)') + '">' + acc + '%</span><span class="stat-l">Accuracy</span></div>';
   h += '<div class="stat"><span class="stat-n forge-text-white">' + total + '</span><span class="stat-l">Scored answers</span></div>';
-  h += '<div class="stat"><span class="stat-n forge-text-hot">' + activeMCs.length + '</span><span class="stat-l">Active misconceptions</span></div>';
-  h += '<div class="stat"><span class="stat-n forge-text-good">' + reforgePass + '/' + reforgeTotal + '</span><span class="stat-l">Reforges passed</span></div>';
+  h += '<div class="stat"><span class="stat-n forge-text-hot">' + activeMCs.length + '</span><span class="stat-l">Ideas to revisit</span></div>';
+  h += '<div class="stat"><span class="stat-n forge-text-good">' + reforgePass + '/' + reforgeTotal + '</span><span class="stat-l">Similar questions passed</span></div>';
   h += '</div>';
 
   // Active misconceptions (Anvil)
@@ -2664,7 +2580,7 @@ window.renderStudent = function(studentId) {
       h += '<div class="mc-item">';
       h += '<span class="heat-tag">' + mc + '</span>';
       h += '<span class="mc-detail">' + label + '</span>';
-      h += '<span class="mc-fires forge-text-bad">Fired ' + d.fires + '\u00d7 \u00b7 Reforged ' + d.reforgeCorrect + '/' + d.reforgeAttempts + '</span>';
+      h += '<span class="mc-fires forge-text-bad">Fired ' + d.fires + '\u00d7 \u00b7 Similar questions ' + d.reforgeCorrect + '/' + d.reforgeAttempts + '</span>';
       h += '</div>';
     });
     h += '</div></details>';
@@ -2672,7 +2588,7 @@ window.renderStudent = function(studentId) {
 
   // Resolved
   if (resolvedMCs.length > 0) {
-    h += '<details class="card profile-disclosure forge-u-5cp4nn"><summary class="profile-disclosure__summary"><span class="profile-disclosure__label forge-text-good">Resolved misconceptions</span><span class="profile-disclosure__meta">' + resolvedMCs.length + ' resolved</span></summary><div class="profile-disclosure__body">';
+    h += '<details class="card profile-disclosure forge-u-5cp4nn"><summary class="profile-disclosure__summary"><span class="profile-disclosure__label forge-text-good">Ideas resolved</span><span class="profile-disclosure__meta">' + resolvedMCs.length + ' resolved</span></summary><div class="profile-disclosure__body">';
     resolvedMCs.forEach(function(mc) {
       var d = mcData[mc];
       var label = resolveMCLabel(mc) || mc;
@@ -2686,14 +2602,14 @@ window.renderStudent = function(studentId) {
   }
 
   if (activeMCs.length === 0 && resolvedMCs.length === 0) {
-    h += ForgeState.html('empty', { label: 'No misconception data yet', body: 'This student needs to answer more questions before a focus area can appear.' });
+    h += ForgeState.html('empty', { label: 'No ideas to revisit yet', body: 'This student needs to answer more questions before a focus area can appear.' });
   }
 
   // Reforge history — every individual reforge attempt, most recent first
   var reforgeHistory = studentResponses.filter(function(r) { return r.reforge_attempted; })
     .sort(function(a, b) { return new Date(b.created_at) - new Date(a.created_at); });
   if (reforgeHistory.length > 0) {
-    h += '<details class="card profile-disclosure"><summary class="profile-disclosure__summary"><span class="profile-disclosure__label">Reforge history</span><span class="profile-disclosure__meta">' + reforgeHistory.length + ' attempt' + (reforgeHistory.length !== 1 ? 's' : '') + '</span></summary><div class="profile-disclosure__body">';
+    h += '<details class="card profile-disclosure"><summary class="profile-disclosure__summary"><span class="profile-disclosure__label">Similar-question history</span><span class="profile-disclosure__meta">' + reforgeHistory.length + ' attempt' + (reforgeHistory.length !== 1 ? 's' : '') + '</span></summary><div class="profile-disclosure__body">';
     reforgeHistory.forEach(function(r) {
       var mc = r.misconception_tag;
       var label = mc ? (resolveMCLabel(mc) || mc) : (r.bank || 'Unknown topic');

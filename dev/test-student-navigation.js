@@ -46,8 +46,9 @@ const feedback=question.window.ForgeQuestion.renderFeedback({scaffold:'Explanati
 assert(feedback.includes('Try a similar question')&&feedback.includes('id="next-btn"'),'repair and continuation both remain available');
 console.log('Student navigation tests passed (defaults, persistence, mobile destinations, active state, menu routing and repair feedback).');
 const dashboardSource=fs.readFileSync('pages/app/student-dashboard.html','utf8');
-const render=dashboardSource.slice(dashboardSource.indexOf('function renderDashboard()'),dashboardSource.indexOf('function forgeSignOut()'));
-const d={window:{},st:{studentName:'Alex <preview>',responses:[]},app:{},BANKS:{growth:{label:'Economic growth'}},RANKS:[{name:'Apprentice',min:0},{name:'Journeyman',min:300}],calcXP:()=>120,calcStreak:()=>0,_fsEsc:h.ctx._fsEsc,localStorage:{setItem(){}},ForgeMisconceptions:{summarize:()=>({active:[]})},ForgeApp:{stateHtml:(kind,options)=>options.label},location:{href:'student-dashboard.html'}};
+const render=dashboardSource.slice(dashboardSource.indexOf('function daysUntil('),dashboardSource.indexOf('function forgeSignOut()'));
+const section={innerHTML:'',classList:{toggle(){}}};
+const d={document:{querySelector:()=>section},window:{},st:{studentName:'Alex <preview>',responses:[]},app:{},BANKS:{growth:{label:'Economic growth'}},RANKS:[{name:'Apprentice',min:0},{name:'Journeyman',min:300}],calcXP:()=>120,calcStreak:()=>0,_fsEsc:h.ctx._fsEsc,localStorage:{setItem(){}},ForgeMisconceptions:{summarize:()=>({active:[]})},ForgeApp:{stateHtml:(kind,options)=>options.label},location:{href:'student-dashboard.html'}};
 d.getRank=xp=>d.RANKS.slice().reverse().find(rank=>xp>=rank.min);
 vm.createContext(d);vm.runInContext(render,d);d.renderDashboard();
 assert(d.app.innerHTML.includes('Start your first practice'));
@@ -60,4 +61,15 @@ d.ForgeMisconceptions.summarize=()=>({active:[{tag:'test'}]});d.renderDashboard(
 assert(d.app.innerHTML.includes('Repair mistakes →'));
 d.st.responses=[];d.st.loadError=true;d.renderDashboard();
 assert(d.app.innerHTML.includes('Your dashboard data is unavailable')&&!d.app.innerHTML.includes('Start your first practice'),'failed loading is not an empty history');
+const ymd=n=>{const t=new Date();t.setDate(t.getDate()+n);return `${t.getFullYear()}-${String(t.getMonth()+1).padStart(2,'0')}-${String(t.getDate()).padStart(2,'0')}`;};
+d.showAssignmentNext([{title:'Later <work>',due_date:ymd(20)}]);
+assert.equal(section.innerHTML,'','work due in three weeks does not displace practice');
+d.showAssignmentNext([{title:'Later',due_date:ymd(5)},{title:'Late <one>',due_date:ymd(-2)},{title:'Undated'}]);
+assert(section.innerHTML.includes('Late &lt;one&gt;')&&section.innerHTML.includes('Overdue by 2 days')&&section.innerHTML.includes('2 other open assignments')&&section.innerHTML.includes('Catch up now'),'the most overdue assignment leads and titles are escaped');
+d.showAssignmentNext([{title:'Undated'},{title:'Soon',due_date:ymd(1)}]);
+assert(section.innerHTML.includes('Soon')&&section.innerHTML.includes('Due tomorrow'),'a dated assignment outranks an undated one');
+d.showAssignmentNext([{title:'Undated only'}]);
+assert(section.innerHTML.includes('No due date')&&section.innerHTML.includes('Start assignment'),'undated open work is still surfaced');
+d.showAssignmentNext([{title:'Half done',due_date:ymd(3),dashProgress:{answered:3,total:8}}]);
+assert(section.innerHTML.includes('3 of 8 questions answered')&&section.innerHTML.includes('Continue assignment'),'partial progress is shown and the action says continue');
 console.log('Dashboard journeys passed (new student, topic recommendation, repair, escaped name and loading failure).');
