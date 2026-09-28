@@ -792,7 +792,9 @@ html[data-overdrive="control-room"] .tab.active{color:var(--coal)}
 .teacher-dashboard-head__actions .dash-tools__menu{position:absolute;z-index:8;right:0;width:min(560px,calc(100vw - 120px))}
 .class-code-pill{min-height:30px;padding:2px 9px;color:var(--hot);background:var(--panel);font-size:12px}
 
-.teacher-overview-grid{max-width:850px;margin-bottom:24px}
+.teacher-overview-grid{display:grid;gap:20px;margin-bottom:24px}
+.teacher-overview-main{display:grid;gap:20px;align-content:start;min-width:0}
+
 .teacher-next-action{padding:28px;border:1px solid var(--line);border-radius:var(--radius-lg);background:var(--panel)}
 .teacher-next-action h2{max-width:28ch;margin:0 0 12px;font-size:clamp(22px,3vw,28px);line-height:1.25;letter-spacing:-.02em}
 .teacher-next-action>p{max-width:60ch;margin:0 0 22px;color:var(--slate);font-size:15px;line-height:1.6}
@@ -857,7 +859,7 @@ html[data-overdrive="control-room"] .tab.active{color:var(--coal)}
 
 @media(prefers-reduced-motion:reduce){.teacher-drawer-scrim,.teacher-detail-drawer{transition:none}}
 @media(max-width:560px){.teacher-dashboard-head__actions{align-items:center}.teacher-dashboard-head__actions .dash-tools{width:auto}.teacher-dashboard-head__actions .dash-tools>summary{min-width:110px;justify-content:center}}
-.teacher-checkin{max-width:850px;margin:0 0 24px}
+.teacher-checkin{margin:0}
 .teacher-checkin h2{margin:0 0 10px;font-size:15px}
 .teacher-checkin ul{display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0;list-style:none}
 .teacher-checkin button{display:flex;align-items:baseline;gap:10px;min-height:44px;padding:8px 14px;border:1px solid var(--line);border-radius:var(--radius-md);background:var(--panel);color:var(--white);font:600 14px 'Rethink Sans',sans-serif;cursor:pointer}
@@ -869,3 +871,13 @@ html[data-overdrive="control-room"] .tab.active{color:var(--coal)}
 .teacher-snapshot .trend--up{color:var(--good)}
 .teacher-snapshot .trend--down{color:var(--bad)}
 @media(max-width:560px){.teacher-snapshot dl>div{flex-wrap:wrap}.teacher-snapshot .trend{flex-basis:100%;margin-top:2px;text-align:right}}
+/* Wide screens: progress becomes a side panel so the page uses its full width
+   instead of leaving an empty band to the right of an 850px column. */
+@media(min-width:1100px){
+  .teacher-overview-grid{grid-template-columns:minmax(0,1fr) minmax(280px,340px);align-items:start}
+  .teacher-snapshot dl{grid-template-columns:1fr;gap:0}
+  .teacher-snapshot dl>div{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:4px 12px;padding:14px 0;border-top:1px solid var(--line)}
+  .teacher-snapshot dt{margin:0}
+  .teacher-snapshot .trend{flex-basis:100%;margin-top:0;text-align:right}
+  .teacher-snapshot dl>div:first-child{padding-top:0;border-top:0}
+}
