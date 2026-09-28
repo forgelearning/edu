@@ -67,7 +67,6 @@
         el.innerHTML = html(data);
         var status = el.querySelector('.forge-friends__status');
         if (status && message) status.textContent = message;
-        wire();
         return data;
       }).catch(function () { el.innerHTML = ''; return null; });
     }
@@ -81,27 +80,31 @@
         if (status) status.textContent = 'Something went wrong. Try again.';
       });
     }
-    function wire() {
-      el.querySelectorAll('[data-friend-accept]').forEach(function (b) {
-        b.onclick = function () { act('respond_friend_request', { p_other_student_id: b.getAttribute('data-friend-accept'), p_accept: true }, b); };
-      });
-      el.querySelectorAll('[data-friend-decline]').forEach(function (b) {
-        b.onclick = function () { act('respond_friend_request', { p_other_student_id: b.getAttribute('data-friend-decline'), p_accept: false }, b); };
-      });
-      el.querySelectorAll('[data-friend-remove]').forEach(function (b) {
-        // Removing a friend is a two-step click, so it can't happen by accident.
-        b.onclick = function () {
+    // One set of delegated listeners on the card, bound once; the card's
+    // contents are re-rendered after every action.
+    if (!el._forgeFriendsBound) {
+      el._forgeFriendsBound = true;
+      el.addEventListener('click', function (e) {
+        var b = e.target.closest('button');
+        if (!b || !el.contains(b)) return;
+        if (b.hasAttribute('data-friend-accept')) {
+          act('respond_friend_request', { p_other_student_id: b.getAttribute('data-friend-accept'), p_accept: true }, b);
+        } else if (b.hasAttribute('data-friend-decline')) {
+          act('respond_friend_request', { p_other_student_id: b.getAttribute('data-friend-decline'), p_accept: false }, b);
+        } else if (b.hasAttribute('data-friend-remove')) {
+          // Removing a friend is a two-step click, so it can't happen by accident.
           if (b.getAttribute('data-confirm') !== 'true') { b.setAttribute('data-confirm', 'true'); b.textContent = 'Confirm'; return; }
           act('remove_friend', { p_other_student_id: b.getAttribute('data-friend-remove') }, b);
-        };
+        }
       });
-      var form = el.querySelector('[data-friend-add]');
-      if (form) form.onsubmit = function (e) {
+      el.addEventListener('submit', function (e) {
+        var form = e.target.closest('[data-friend-add]');
+        if (!form) return;
         e.preventDefault();
         var pick = form.querySelector('select');
         if (!pick.value) return;
         act('send_friend_request', { p_target_student_id: pick.value }, form.querySelector('button'));
-      };
+      });
     }
     return load();
   }
