@@ -35,7 +35,6 @@
 <script src="scripts/forge-classes.js?v=20260813"></script>
 <script src="scripts/forge-theme.js?v=20260808-theme2"></script>
 <script src="scripts/forge-sidebar.js?v=20260809-gearcenter"></script>
-<script src="scripts/forge-product-analytics.js"></script>
 <script src="scripts/forge-page-actions.js"></script>
 <script>
 ForgeSidebar.mount({
@@ -141,7 +140,7 @@ function renderLogin(){
        +'<p class="auth-err" id="p-err"></p>';
   app.innerHTML=ForgeAuthCard.shell({
     title:'Your Forge dashboard',
-    sub:'Enter your name and class code to see your progress',
+    sub:'Use your name and the class and student codes from your teacher.',
     foot:'No progress yet? <a href="forge-quiz.html">Start with a quiz</a>'
   },f);
   ForgeAuthCard.onSubmit(function(){document.getElementById('p-btn').onclick();});
@@ -211,18 +210,13 @@ function daysAgo(dateStr){
 function renderDashboard(){
   var responses=st.responses||[];
   var total=responses.filter(function(r){return !r.reforge_attempted;}).length;
-  var correct=responses.filter(function(r){return !r.reforge_attempted&&r.is_correct;}).length;
-  var acc=total>0?Math.round((correct/total)*100):0;
   var recent=responses.filter(function(r){return !r.reforge_attempted;}).slice(-20);
-  var recentAcc=recent.length?Math.round(recent.filter(function(r){return r.is_correct;}).length/recent.length*100):acc;
-  var trend=recent.length>=5?(recentAcc>acc+5?'above your usual level':recentAcc<acc-5?'below your usual level':'close to your usual level'):'building a baseline';
   var xp=calcXP(responses);
   var rank=getRank(xp);
   var streak=calcStreak(responses);
 
   // One lifecycle owner keeps Dashboard, Anvil, Profile and Teacher aligned.
   var misconceptionSummary=ForgeMisconceptions.summarize(responses);
-  var mcData=misconceptionSummary.data;
   var activeMCs=misconceptionSummary.active;
   if (window.ForgeSidebar) ForgeSidebar.setBadge('anvil', activeMCs.length || null);
   try { localStorage.setItem('forge-anvil-open', String(activeMCs.length)); } catch(e) {}
@@ -258,27 +252,13 @@ function renderDashboard(){
       try { localStorage.setItem('forge-assigned-open:'+String(st.studentId||'anon')+':'+String(st.classId||'none'), String(count)); } catch(e) {}
     }).catch(function(){});
   }
-  // Strongest subject — highest accuracy among subjects with a real sample size
-  var subjectData={};
-  responses.forEach(function(r){
-    var subj=r.subject||'unknown';
-    // Legacy repair rows used activity names as subjects. Keep them available
-    // to Anvil/Crucible modules, but never rank them as curriculum subjects.
-    if(subj==='unknown'||subj==='anvil'||subj==='crucible')return;
-    if(!subjectData[subj])subjectData[subj]={total:0,correct:0};
-    subjectData[subj].total++;
-    if(r.is_correct)subjectData[subj].correct++;
-  });
-  var subjectRanked=Object.keys(subjectData).filter(function(s){return subjectData[s].total>=3;}).map(function(s){
-    return {key:s,label:SUBJ_LABELS[s]||s,acc:Math.round((subjectData[s].correct/subjectData[s].total)*100)};
-  }).sort(function(a,b){return b.acc-a.acc;});
-  var strongest=subjectRanked[0]||null;
   // Topic-level signal for the recommendation: use recent bank performance,
   // but only surface topics with enough evidence to avoid overreacting to one answer.
   var topicData={};
   recent.forEach(function(r){
     var key=r.bank||r.subject||'unknown';
-    if(!topicData[key]) topicData[key]={total:0,correct:0,label:key};
+    if(!BANKS[key]) return;
+    if(!topicData[key]) topicData[key]={total:0,correct:0,label:BANKS[key].label};
     topicData[key].total++; if(r.is_correct) topicData[key].correct++;
   });
   var topicRanked=Object.keys(topicData).filter(function(k){return topicData[k].total>=3;}).map(function(k){
@@ -286,18 +266,7 @@ function renderDashboard(){
   }).sort(function(a,b){return a.acc-b.acc;});
   var focusTopic=topicRanked[0]||null;
 
-  // Crucible sessions
-  var crucibleResponses=responses.filter(function(r){return r.question_id&&r.question_id.indexOf('-CRU')!==-1;});
-  var lastCrucible=crucibleResponses.length?crucibleResponses.reduce(function(latest,r){return (!latest||(r.created_at||'')>(latest.created_at||''))?r:latest;},null):null;
-
-  var lastActivity=responses.length?responses.reduce(function(latest,r){return (!latest||(r.created_at||'')>(latest.created_at||''))?r:latest;},null):null;
-
-  var h='';
-  h+='<div class="eyebrow">Dashboard</div>';
-  h+='<h1>Welcome back, '+st.studentName+'</h1>';
-
-  h+='<div class="forge-loop" aria-label="Learning loop">';
-  h+='<div class="forge-loop-step is-current"><strong>1. Forge</strong>Practice</div><div class="forge-loop-step"><strong>2. Anvil</strong>Repair</div><div class="forge-loop-step"><strong>3. Crucible</strong>Pressure-test</div></div>';
+  var h='<header class="dashboard-heading"><h1>Welcome back, '+_fsEsc(st.studentName)+'</h1><p>Pick up where you left off.</p></header>';
 
   if(total===0){
     if(st.loadError){
@@ -305,74 +274,46 @@ function renderDashboard(){
       app.innerHTML=h;
       return;
     }
-    h+='<div class="ui-state forge-status">';
-    h+='<div class="ui-state-title">Your first practice session is waiting.</div>';
-    h+='<p class="ui-state-copy">Answer a few questions in Forge to start building your accuracy, strengths, and misconception profile.</p>';
-    h+='<a class="ui-state-action forge-button" href="forge-quiz.html">Start practicing →</a>';
-    h+='</div>';
-    app.innerHTML=h;
-    return;
-  }
-
-  h+='<div class="stat-strip">';
-  h+='<div class="stat"><span class="stat-label">Rank</span><span class="stat-value">'+rank.name+'</span></div>';
-  h+='<div class="stat-sep"></div>';
-  h+='<div class="stat"><span class="stat-label">Streak</span><span class="stat-value">'+streak+' day'+(streak!==1?'s':'')+'</span></div>';
-  h+='<div class="stat-sep"></div>';
-  if(strongest){
-    h+='<div class="stat"><span class="stat-label">Strongest subject</span><span class="stat-value">'+strongest.label+' <span class="stat-value-sub">'+strongest.acc+'%</span></span></div>';
+    h+='<section class="dashboard-next" aria-labelledby="dashboard-next-title">';
+    h+='<h2 id="dashboard-next-title">Start your first practice</h2>';
+    h+='<p>Choose a subject and answer a short set of questions. If you get stuck, we’ll explain the idea and help you try again.</p>';
+    h+='<a class="forge-button forge-button--primary" href="forge-quiz.html">Start practice →</a></section>';
   } else {
-    h+='<div class="stat"><span class="stat-label">Strongest subject</span><span class="stat-value stat-value-muted">Not enough data yet</span></div>';
+    h+='<section class="dashboard-next" aria-labelledby="dashboard-next-title">';
+    if(activeMCs.length>0){
+      h+='<h2 id="dashboard-next-title">Work through your mistakes</h2>';
+      h+='<p>You have '+activeMCs.length+' idea'+(activeMCs.length===1?'':'s')+' to revisit. Open Anvil to practise them with help.</p>';
+      h+='<a class="forge-button forge-button--primary" href="anvil.html">Repair mistakes →</a>';
+    } else if(focusTopic){
+      h+='<h2 id="dashboard-next-title">Practise '+_fsEsc(focusTopic.label)+'</h2>';
+      h+='<p>Revisit this topic from your recent practice with a short set of questions.</p>';
+      h+='<a class="forge-button forge-button--primary" href="forge-quiz.html?bank='+encodeURIComponent(focusTopic.key)+'">Start practice →</a>';
+    } else {
+      h+='<h2 id="dashboard-next-title">Ready for another practice?</h2>';
+      h+='<p>Choose a topic and work through a short set of questions.</p>';
+      h+='<a class="forge-button forge-button--primary" href="forge-quiz.html">Start practice →</a>';
+    }
+    h+='</section>';
   }
-  h+='<a class="stat-strip-link" href="profile.html">View profile →</a>';
-  h+='</div>';
-  h+='<p class="forge-progress-note">You have answered '+total+' question'+(total===1?'':'s')+' so far'+(streak ? ' and built a '+streak+'-day streak' : '')+'. Recent accuracy is '+recentAcc+'% across '+recent.length+' question'+(recent.length===1?'':'s')+' — <strong>'+trend+'</strong>. '+(activeMCs.length ? activeMCs.length+' misconception'+(activeMCs.length===1?' needs':'s need')+' another pass.' : 'No open misconceptions right now.')+' Keep the loop moving: practice, repair, then pressure-test.</p>';
 
-  if(focusTopic){
-    h+='<div class="forge-card forge-card--focus forge-insight-card">';
-    h+='<div class="card-title">Recent focus</div>';
-    h+='<div class="forge-insight-head"><strong>'+focusTopic.label+'</strong><span class="forge-meta">'+focusTopic.acc+'% · '+focusTopic.sample+' recent questions</span></div>';
-    h+='<p class="ui-state-copy">This is the weakest topic in your recent sample. A short Forge session here is the clearest next test.</p>';
-    h+='<a class="ui-state-action forge-button" href="forge-quiz.html?bank='+encodeURIComponent(focusTopic.key)+'">Practise this topic →</a>';
-    h+='</div>';
+  h+='<nav class="dashboard-shortcuts" aria-label="Other learning activities">';
+  h+='<a href="forge-quiz.html">Choose a topic</a>';
+  h+='<a href="assignments.html">View assignments</a>';
+  h+='<a href="revision.html">Revision cards</a>';
+  h+='</nav>';
+  if(total>0){
+    var nextRank=RANKS.filter(function(r){return r.min>xp;})[0]||null;
+    var rankProgress=nextRank?Math.max(0,Math.min(100,Math.round((xp-rank.min)/(nextRank.min-rank.min)*100))):100;
+    h+='<section class="dashboard-progress" aria-labelledby="dashboard-progress-title"><div class="dashboard-progress-heading"><h2 id="dashboard-progress-title">Your progress</h2><a href="profile.html">View details</a></div>';
+    h+='<div class="dashboard-rank"><div><span class="dashboard-rank-label">Current rank</span><p class="dashboard-rank-name">'+_fsEsc(rank.name)+'</p></div><span class="dashboard-rank-xp">'+xp.toLocaleString()+' XP</span></div>';
+    if(nextRank){
+      h+='<div class="dashboard-rank-meter" role="progressbar" aria-label="Progress towards '+_fsEsc(nextRank.name)+'" aria-valuemin="'+rank.min+'" aria-valuemax="'+nextRank.min+'" aria-valuenow="'+xp+'"><span style="width:'+rankProgress+'%"></span></div>';
+      h+='<p class="dashboard-rank-next">'+(nextRank.min-xp).toLocaleString()+' XP to '+_fsEsc(nextRank.name)+'</p>';
+    } else {
+      h+='<p class="dashboard-rank-next">Highest rank reached</p>';
+    }
+    h+='<dl><div><dt>Questions answered</dt><dd>'+total+'</dd></div><div><dt>Practice streak</dt><dd>'+streak+' day'+(streak===1?'':'s')+'</dd></div></dl></section>';
   }
-
-  h+='<div class="ui-recommendation forge-card forge-card--focus">';
-  if(activeMCs.length>0){
-    h+='<div class="ui-state-title">Recommended next: repair '+activeMCs.length+' misconception'+(activeMCs.length===1?'':'s')+'</div>';
-    h+='<p class="ui-state-copy">Anvil has the exact errors that need another pass. Clear one now, then return to Forge to test the improvement.</p>';
-    h+='<a class="ui-state-action forge-button" href="anvil.html">Open Anvil →</a>';
-  } else {
-    h+='<div class="ui-state-title">Recommended next: keep the heat on.</div>';
-    h+='<p class="ui-state-copy">No open misconceptions right now. A short Forge session will keep your recall fresh and surface the next useful focus area.</p>';
-    h+='<a class="ui-state-action forge-button" href="forge-quiz.html">Continue practice →</a>';
-  }
-  h+='</div>';
-
-  h+='<div class="mod-list">';
-
-  // Forge row
-  h+='<a class="mod-row" href="forge-quiz.html">';
-  h+='<span class="mod-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c1.2 2 .6 3.2-.3 4.3C10.8 8.5 9.5 9.8 9.5 12a2.5 2.5 0 0 0 5 0c0-.8-.3-1.3-.7-1.8"></path><path d="M8 13.5c-1 1.5-1.3 3-1.3 4.3A5.3 5.3 0 0 0 12 23a5.3 5.3 0 0 0 5.3-5.2c0-1.4-.4-2.9-1.3-4.3"></path></svg></span>';
-  h+='<div class="mod-body"><div class="mod-name">Forge</div><div class="mod-status">'+acc+'% accuracy overall'+(lastActivity?' · last active '+(daysAgo(lastActivity.created_at)||'').toLowerCase():'')+'</div></div>';
-  h+='<span class="mod-stat">'+total+' answered</span>';
-  h+='<span class="mod-action">Practice →</span></a>';
-
-  // Anvil row
-  h+='<a class="mod-row" href="anvil.html">';
-  h+='<span class="mod-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 13h16l-1.5-3.5a2 2 0 0 0-1.84-1.22L14 8.2V6h1a1 1 0 0 0 0-2h-6a1 1 0 0 0 0 2h1v2.2l-2.66.08a2 2 0 0 0-1.84 1.22L4 13Z"></path><path d="M9 13v2a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2v-2"></path><path d="M10 17v3M14 17v3M8 20h8"></path></svg></span>';
-  h+='<div class="mod-body"><div class="mod-name">Anvil</div><div class="mod-status">'+(activeMCs.length>0?'Needs review — head over to clear these':'All misconceptions cleared')+'</div></div>';
-  h+='<span class="mod-stat'+(activeMCs.length===0?' mod-stat-muted':'')+'">'+activeMCs.length+' open</span>';
-  h+='<span class="mod-action">Review →</span></a>';
-
-  // Crucible row
-  h+='<a class="mod-row" href="crucible.html">';
-  h+='<span class="mod-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6M9 3v3.5a5 5 0 0 1-.7 2.55L5.9 12.9A5 5 0 0 0 5.2 15.45V19a2 2 0 0 0 2 2h9.6a2 2 0 0 0 2-2v-3.55a5 5 0 0 0-.7-2.55l-2.4-3.85A5 5 0 0 1 15 6.5V3"></path><path d="M7 16h10"></path></svg></span>';
-  h+='<div class="mod-body"><div class="mod-name">Crucible</div><div class="mod-status">'+(lastCrucible?'Last session '+daysAgo(lastCrucible.created_at):'No timed sessions yet')+'</div></div>';
-  h+='<span class="mod-stat'+(crucibleResponses.length===0?' mod-stat-muted':'')+'">'+crucibleResponses.length+' Qs</span>';
-  h+='<span class="mod-action">Start →</span></a>';
-
-  h+='</div>';
 
   app.innerHTML=(st.loadError?ForgeApp.stateHtml('error',{label:'Some dashboard data is unavailable',body:'We couldn’t retrieve the latest progress. Refresh and try again.',action:{label:'Retry dashboard',href:location.href}}):'')+h;
 }

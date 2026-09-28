@@ -126,3 +126,12 @@ h1,h2,h3,.logo{font-family:'Rethink Sans',sans-serif}
   .stem{font-size:20px}
 }
 @media(prefers-reduced-motion:reduce){.anvil-card,.opt,.next-btn{transition:none}.anvil-card:hover,.next-btn:hover{transform:none}}
+
+.anvil-summary{margin:0 0 20px;color:var(--slate);text-align:center;font-size:14px}
+.anvil-resolved{margin-top:28px;border-top:1px solid var(--line);padding-top:12px}
+.anvil-resolved summary{cursor:pointer;min-height:44px;align-content:center;color:var(--white)}
+
+.anvil-other-title{font:600 20px 'Rethink Sans',sans-serif;margin:28px 0 16px}
+button.anvil-card{display:block;width:100%;text-align:left;font:inherit;color:inherit}
+.anvil-card .anvil-label,.anvil-card .anvil-norepair{display:block}
+button.anvil-card:focus-visible{outline:2px solid var(--ember);outline-offset:3px}

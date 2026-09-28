@@ -13,14 +13,6 @@
 <link rel="stylesheet" href="css/sidebar.css">
 <link rel="stylesheet" href="css/components.css?v=20260812">
 
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-RGZ9J6Q8H9"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-RGZ9J6Q8H9');
-</script>
 <link rel="stylesheet" href="css/states.css">
   <link rel="stylesheet" href="css/generated-utilities.css">
 <link rel="stylesheet" href="css/page-overrides/forge-quiz.css?v=20260808-save-status1">
@@ -40,7 +32,6 @@
 <script src="scripts/forge-classes.js?v=20260813"></script>
 <script src="scripts/forge-student-code.js?v=20260809"></script>
 <script src="scripts/forge-sidebar.js?v=20260809-gearcenter"></script>
-<script src="scripts/forge-product-analytics.js"></script>
 <script src="scripts/forge-page-actions.js"></script>
 <script>
 ForgeSidebar.mount({
@@ -1287,7 +1278,7 @@ function renderBanks(){
   var h='';
   // Only show back button if not locked to a subject
   if (!locked) h+='<button type="button" class="back-btn" id="back-subj">\u2190 Subjects</button>';
-  h+='<div class="center"><p class="tag" style="color:'+subj.color+';margin-bottom:4px">FORGE</p>';
+  h+='<div class="center">';
   h+='<h2 class="forge-u-1oh0w3h">'+subj.label+'</h2>';
   h+='<p class="forge-u-10yda30">'+subj.sub+'</p></div>';
   var recommendedBank = recommendedBankForSubject(subj);
@@ -1295,9 +1286,8 @@ function renderBanks(){
   var confidence = window.ForgeContentConfidence && window.ForgeContentConfidence.statusFor ? window.ForgeContentConfidence.statusFor(state.subject) : {tier:'full'};
   var recommendedQuestions = recommended ? recommended.questions.filter(function(q){return !q.type||q.type==='fill_blank';}) : [];
   h += '<section class="forge-recommendation" aria-labelledby="recommended-session-title">';
-  h += '<p class="forge-recommendation__eyebrow">Recommended next</p>';
-  h += '<h2 id="recommended-session-title" class="forge-recommendation__title">An eight-question session in '+subj.label+'</h2>';
-  h += '<p class="forge-recommendation__copy">We picked '+(recommended ? recommended.label : 'the next available topic')+' because it is the clearest place to build momentum. You can change the session below.</p>';
+  h += '<h2 id="recommended-session-title" class="forge-recommendation__title">Practise '+(recommended ? recommended.label : subj.label)+'</h2>';
+  h += '<p class="forge-recommendation__copy">Work through a short set of questions, with help when you need it.</p>';
   if (window.ForgeContentConfidence && window.ForgeContentConfidence.badge) {
     // The student reads this directly, so use the second-person wording.
     var cc = window.ForgeContentConfidence;
@@ -1307,8 +1297,8 @@ function renderBanks(){
   var recommendedCount = (window.ForgeApp && ForgeApp.session) ? ForgeApp.session.questionsFor(recommendedQuestions.length) : Math.min(FORGE_SESSION_SIZE, recommendedQuestions.length || FORGE_SESSION_SIZE);
   var recommendedMinutes = (window.ForgeApp && ForgeApp.session) ? ForgeApp.session.estimatedMinutesFor(recommendedCount) : Math.max(4, Math.round(recommendedCount * 0.75));
   h += '<dl class="forge-session-detail"><div><dt>Topic</dt><dd>'+(recommended ? recommended.label : 'Current topic')+'</dd></div><div><dt>Questions</dt><dd>'+recommendedCount+'</dd></div><div><dt>Estimated time</dt><dd>~'+recommendedMinutes+' min</dd></div></dl>';
-  h += '<button type="button" class="forge-button forge-button--primary" id="start-recommended">Start recommended session →</button>';
-  h += '<p class="forge-session-change"><button class="forge-link-button" id="change-session" type="button">Change session</button> to choose a different bank.</p></section>';
+  h += '<button type="button" class="forge-button forge-button--primary" id="start-recommended">Start practice →</button>';
+  h += '<p class="forge-session-change"><button class="forge-link-button" id="change-session" type="button" aria-expanded="false" aria-controls="all-session-options">Choose another topic</button></p></section>';
   h+='<div class="bank-list" id="all-session-options" hidden>';
   subj.banks.forEach(function(key){
     var b=BANKS[key];
@@ -1334,7 +1324,7 @@ function renderBanks(){
   };
   var changeBtn=document.getElementById('change-session');
   var allOptions=document.getElementById('all-session-options');
-  if(changeBtn && allOptions) changeBtn.onclick=function(){allOptions.hidden=false;changeBtn.closest('.forge-session-change').hidden=true;};
+  if(changeBtn && allOptions) changeBtn.onclick=function(){var open=allOptions.hidden;allOptions.hidden=!open;changeBtn.setAttribute('aria-expanded',String(open));changeBtn.textContent=open?'Hide other topics':'Choose another topic';};
   wireJoinMore();
   var backBtn = document.getElementById('back-subj');
   if (backBtn) backBtn.onclick=function(){state.phase='subjects';render();};
@@ -1475,11 +1465,11 @@ function renderLimitWall() {
 }
 
 function revealQuizNext(){
-  var next = document.getElementById('next-btn');
+  var next = document.getElementById('feedback');
   if (!next) return;
   window.requestAnimationFrame(function(){
     window.setTimeout(function(){
-      next.scrollIntoView({behavior:'smooth', block:'center'});
+      next.scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth', block:'nearest'});
     }, 80);
   });
 }
@@ -1496,10 +1486,10 @@ function renderQuiz(){
   if(!q){state.phase='results';render();return;}
 
   var h='<div class="quiz-header">';
-  h+='<button type="button" class="back-btn" id="back-banks">\u2190 Banks</button>';
+  h+='<button type="button" class="back-btn" id="back-banks">\u2190 Topics</button>';
   h+='<span class="bank-name" style="color:'+bk.color+'">'+bk.label+'</span>';
-  h+='<span>'+state.score+' \u2713</span></div>';
-  h+='<p class="forge-u-lp9fq9">Focused session · '+state.questions.length+' questions · progress saves automatically</p>';
+  h+='<span>Question '+(state.idx+1)+' of '+state.questions.length+'</span></div>';
+  h+='<p class="forge-u-lp9fq9">Your progress saves automatically.</p>';
   h+='<div class="progress-bar"><div class="progress-fill" style="width:'+((state.idx/state.questions.length)*100)+'%;background:'+bk.color+'"></div></div>';
 
   // Free tier: show questions remaining
@@ -1514,7 +1504,7 @@ function renderQuiz(){
     h += '</div>';
   }
   var point = getSpecPoint(q, state.bank);
-  h+='<div class="q-meta"><span class="q-id" style="color:'+bk.color+';background:'+bk.color+'14">'+q.id+'</span><span>'+(point ? point.code+' · '+point.title+' · ' : '')+(state.idx+1)+' / '+state.questions.length+'</span></div>';
+  if(point) h+='<details class="question-details"><summary>Topic details</summary><p>'+point.code+' · '+point.title+'</p></details>';
   h+='<div class="stem">'+q.stem+'</div>';
 
   if(q.type==='fill_blank'){
@@ -1741,7 +1731,7 @@ function renderReforge(q,el,color){
   var rf=q.reforge;
   var keys=Object.keys(rf.options);
   var h='<div class="reforge-box" style="border-color:'+color+'30">';
-  h+='<div class="rf-tag" style="color:'+color+'">Re-forge twin</div>';
+  h+='<div class="rf-tag" style="color:'+color+'">Try the idea again</div>';
   h+='<div class="rf-stem">'+rf.stem+'</div>';
   h+='<div class="options" id="rf-opts">';
   keys.forEach(function(k){
@@ -1812,7 +1802,6 @@ function renderResults(){
   if(window.forgeTrack) forgeTrack('forge_session_completed',{bank:state.bank,score:state.score,total:state.questions.length});
   var pct=Math.round((state.score/state.questions.length)*100);
   var col=pct>=75?'var(--good)':pct>=50?'var(--hot)':'var(--bad)';
-  var confidence = pct >= 80 ? 'High confidence' : pct >= 60 ? 'Building confidence' : 'Needs another pass';
   var sessionSignals=ForgeMisconceptions.session(state.sessionWrongTags,state.sessionReforgedTags);
   var repairedTag=sessionSignals.repaired.length?sessionSignals.repaired[0]:null;
   var remaining=sessionSignals.remaining.length?sessionSignals.remaining[0]:null;
@@ -1822,30 +1811,27 @@ function renderResults(){
   var remainingLabel = remaining
     ? (mcLabel(remaining) || 'One idea from this session needs another pass')
     : 'No unresolved error from this session';
-  var nextHref = remaining ? 'anvil.html' : 'crucible.html';
-  var nextLabel = remaining ? 'Repair this in Anvil' : 'Pressure-test in Crucible';
+  var nextHref = remaining ? 'anvil.html' : 'student-dashboard.html';
+  var nextLabel = remaining ? 'Repair mistakes' : 'Back to home';
   var h='<div class="results">';
-  h+='<p class="tag" style="color:'+bk.color+';margin-bottom:6px">'+state.bank+' \u2014 '+bk.label+'</p>';
+  h+='<h1>Practice complete</h1>';
+  h+='<p class="detail">'+bk.label+'</p>';
   h+='<div class="pct" style="color:'+col+'">'+pct+'%</div>';
-  h+='<div class="detail">'+state.score+' / '+state.questions.length+' correct · session complete</div>';
-  h+='<div class="forge-result-grid"><div><span class="forge-result-label">Score</span><strong>'+pct+'%</strong></div><div><span class="forge-result-label">Confidence</span><strong>'+confidence+'</strong></div></div>';
+  h+='<div class="detail">'+state.score+' of '+state.questions.length+' correct</div>';
   h+='<section class="forge-result-story" aria-labelledby="result-next-title">';
-  h+='<p class="forge-recommendation__eyebrow">Session readout</p>';
-  h+='<h2 id="result-next-title">'+(remaining ? 'Your next repair is clear.' : 'Your recall is ready for pressure.')+'</h2>';
-  h+='<dl class="forge-result-facts"><div><dt>Repaired this session</dt><dd>'+(repaired||'No Re-forge completed')+'</dd></div><div><dt>Still needs repair</dt><dd>'+remainingLabel+'</dd></div></dl>';
+  h+='<h2 id="result-next-title">'+(remaining ? 'One idea to revisit' : 'You’ve finished this session')+'</h2>';
+  if(remaining) h+='<p class="forge-recommendation__copy">'+remainingLabel+'. Practise it again in Anvil with help.</p>';
+  else h+='<p class="forge-recommendation__copy">You can finish here or choose another topic.</p>';
+  if(repaired) h+='<p class="forge-recommendation__copy">Reforged this session: '+repaired+'</p>';
   h+='<a class="forge-button forge-button--primary" href="'+nextHref+'" id="result-next-action">'+nextLabel+' →</a></section>';
   h+='<div class="forge-action-row forge-result-actions">';
-  h+='<button type="button" class="forge-button forge-button--secondary" id="retry">Retry session</button>';
-  h+='<button type="button" class="forge-button forge-button--secondary" id="all-banks">All banks</button>';
-  h+='<button type="button" class="forge-button forge-button--secondary" id="all-subj">Subjects</button>';
+  h+='<button type="button" class="forge-button forge-button--secondary" id="retry">Practise again</button>';
+  h+='<button type="button" class="forge-button forge-button--secondary" id="all-banks">Choose a topic</button>';
   h+='</div>';
-  h+='<nav class="forge-result-links" aria-label="Continue learning">';
-  h+='<a class="forge-u-trem2d" href="teacher.html">Teacher? View dashboard \u2192</a>';
-  h+='<a class="forge-u-1j23rnq" href="profile.html">My profile \u2192</a>';
-  h+='<a class="forge-u-1utfzhg" href="anvil.html">Open your Anvil \u2192</a>';
-  h+='<a class="forge-u-1s5jx58" href="crucible.html">Enter the Crucible \u2192</a>';
-  h+='</nav>';
-  h+='<div id="lb-section"></div>';
+  h+='<nav class="forge-result-links" aria-label="After practice">';
+  if(remaining) h+='<a href="student-dashboard.html">Back to home</a>';
+  h+='<a href="profile.html">View my progress</a></nav>';
+  if(state.classId && state.studentId) h+='<details class="result-leaderboard"><summary>Class leaderboard</summary><div id="lb-section"></div></details>';
   h+='</div>';
   app.innerHTML=h;
   document.getElementById('retry').onclick=function(){
@@ -1854,11 +1840,6 @@ function renderResults(){
     state.phase='quiz';render();
   };
   document.getElementById('all-banks').onclick=function(){state.assignmentId=null;state.phase='banks';render();};
-  document.getElementById('all-subj').onclick=function(){
-    state.assignmentId=null;
-    if(state.classSubject){state.phase='banks';}else{state.phase='subjects';}
-    render();
-  };
   if(!state.classId||!state.studentId) return;
   var lbEl=document.getElementById('lb-section');
   ForgeState.loading(lbEl, { label: 'Loading leaderboard', body: 'Getting the latest class positions ready.' });

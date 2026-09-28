@@ -5,10 +5,7 @@
 /* Shell geometry changes are intentionally immediate: animating body padding
    and rail width reflows the whole authenticated app on every toggle. The
    inner labels/icons still use opacity and transform transitions below. */
-/* Padding clears the rail AND the collapse handle. The handle is a 28px circle
-   centred on the rail edge (left:62px collapsed, 216px expanded), so it reaches
-   14px past the rail; content flush to the rail ran underneath it, which is why
-   the arrow crowded the class dropdown. 98/252 leaves an 8px gap after it. */
+/* The labelled menu control sits inside the rail, clear of page content. */
 body.has-forge-sidebar{padding-top:0!important;padding-left:98px}
 body.has-forge-sidebar.forge-sidebar-expanded{padding-left:252px}
 /* Authenticated pages use the sidebar shell; any legacy marketing nav left in
@@ -50,17 +47,18 @@ body.has-forge-sidebar #sticky-nav{display:none!important}
 #forge-badge .badge-name{font-family:'Sora',sans-serif;font-weight:800;font-size:16px;color:var(--white);white-space:nowrap;opacity:1;transition:opacity .2s ease}
 #forge-badge.collapsed .badge-name{opacity:0;width:0;display:none}
 
-#forge-sidebar{position:fixed;top:0;left:0;bottom:0;width:76px;z-index:150;display:flex;flex-direction:column;align-items:center;padding:88px 0 20px;background:var(--glass-panel);backdrop-filter:blur(var(--glass-blur)) saturate(160%);-webkit-backdrop-filter:blur(var(--glass-blur)) saturate(160%);border-right:1px solid var(--line);overflow:hidden}
+#forge-sidebar{position:fixed;top:0;left:0;bottom:0;width:76px;z-index:150;display:flex;flex-direction:column;align-items:center;padding:136px 0 20px;background:var(--glass-panel);backdrop-filter:blur(var(--glass-blur)) saturate(160%);-webkit-backdrop-filter:blur(var(--glass-blur)) saturate(160%);border-right:1px solid var(--line);overflow:hidden}
 #forge-sidebar.expanded{width:230px;align-items:stretch}
 
-#forge-sidebar-toggle{position:fixed;top:78px;left:62px;width:28px;height:28px;border-radius:50%;background:var(--panel);border:1px solid var(--line);color:var(--slate);display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:160;transition:background .15s,color .15s}
-#forge-sidebar.expanded ~ #forge-sidebar-toggle{left:216px}
-#forge-sidebar-toggle:hover{color:var(--white);border-color:var(--ember)}
-#forge-sidebar-toggle svg{width:14px;height:14px;transition:transform .35s cubic-bezier(.4,0,.2,1)}
-#forge-sidebar.expanded ~ #forge-sidebar-toggle svg{transform:rotate(180deg)}
+#forge-sidebar-toggle{position:fixed;top:78px;left:12px;width:52px;min-height:44px;padding:0 4px;border-radius:var(--radius-sm);background:var(--panel);border:1px solid var(--line);color:var(--white);display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;z-index:160;font:600 12px 'Poppins',sans-serif}
+#forge-sidebar.expanded ~ #forge-sidebar-toggle{width:206px;justify-content:space-between;padding:0 14px}
+#forge-sidebar-toggle:hover{background:var(--panel-2);border-color:var(--ember)}
+#forge-sidebar-toggle:focus-visible{outline:2px solid var(--ember);outline-offset:3px}
+#forge-sidebar-toggle svg{display:none;width:16px;height:16px}
+#forge-sidebar.expanded ~ #forge-sidebar-toggle svg{display:block;transform:rotate(180deg)}
 
-.fside-nav{display:flex;flex-direction:column;gap:4px;width:100%;padding:0 12px}
-.fside-item{position:relative;display:flex;align-items:center;gap:12px;height:46px;padding:0 13px;border-radius:var(--radius-md);color:var(--slate);text-decoration:none;cursor:pointer;background:transparent;border:none;font:inherit;font-size:15px;text-align:left;width:100%;white-space:nowrap;overflow:hidden}
+.fside-nav{min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:4px;width:100%;padding:0 12px}
+.fside-item{position:relative;display:flex;align-items:center;gap:12px;height:46px;flex-shrink:0;padding:0 13px;border-radius:var(--radius-md);color:var(--slate);text-decoration:none;cursor:pointer;background:transparent;border:none;font:inherit;font-size:15px;text-align:left;width:100%;white-space:nowrap;overflow:hidden}
 #forge-sidebar:not(.expanded) .fside-item{justify-content:center;padding:0}
 .fside-item:hover{background:var(--panel-2);color:var(--white)}
 .fside-item.active{background:var(--panel-2);color:var(--white)}
@@ -70,7 +68,7 @@ body.has-forge-sidebar #sticky-nav{display:none!important}
 .fside-item .fside-label{font-size:14px;font-weight:600;opacity:0;display:none;transition:opacity .2s ease .1s}
 #forge-sidebar.expanded .fside-item .fside-label{opacity:1;display:flex}
 .fside-label{flex-direction:column;gap:1px;line-height:1.15}
-.fside-label small{font-size:10px;font-weight:500;color:var(--dim);letter-spacing:.01em}
+.fside-label small{font-size:11px;font-weight:500;color:var(--slate);letter-spacing:.01em}
 
 .fside-item .fside-badge{margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;background:var(--ember);color:var(--coal);border-radius:var(--radius-pill);padding:2px 6px;opacity:0;display:none;transition:opacity .2s ease .1s}
 #forge-sidebar.expanded .fside-item .fside-badge{opacity:1;display:inline-block}
@@ -368,3 +366,9 @@ body.has-forge-sidebar #sticky-nav{display:none!important}
     }
   }
 }
+
+/* Explicit menu title and dismissal for touch and keyboard users. */
+.fsheet-header{display:flex;align-items:center;justify-content:space-between;padding:0 14px 10px;gap:16px}
+.fsheet-header h2{margin:0;font:600 20px 'Rethink Sans',sans-serif;color:var(--white)}
+.fsheet-close{min-height:44px;padding:0 12px;border:1px solid var(--line);border-radius:var(--radius-sm);background:transparent;color:var(--white);font:inherit;cursor:pointer}
+.fsheet-close:focus-visible{outline:2px solid var(--ember);outline-offset:2px}

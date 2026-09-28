@@ -258,27 +258,6 @@ h1,h2,h3{font-family:'Rethink Sans',sans-serif;color:var(--white);line-height:1.
   padding-top:18px;
   --rep-accent:var(--ember);
 }
-#app:has(.quiz-header)::before{
-  content:"LIVE REP  /  FOCUSED SESSION";
-  display:flex;
-  align-items:center;
-  gap:10px;
-  min-height:24px;
-  margin-bottom:8px;
-  color:var(--hot);
-  font:600 10px/1 'JetBrains Mono',monospace;
-  letter-spacing:.14em;
-}
-#app:has(.quiz-header)::after{
-  content:"";
-  position:absolute;
-  top:0;
-  left:0;
-  width:52px;
-  height:2px;
-  background:var(--hot);
-  box-shadow:0 0 14px rgba(255,201,60,.55);
-}
 #app:has(.quiz-header) .quiz-header{
   border-top:0;
   border-bottom-color:rgba(255,201,60,.28);
@@ -342,7 +321,6 @@ h1,h2,h3{font-family:'Rethink Sans',sans-serif;color:var(--white);line-height:1.
 
 @media(max-width:600px){
   #app:has(.quiz-header){padding-top:14px}
-  #app:has(.quiz-header)::before{margin-bottom:4px;font-size:9px;letter-spacing:.11em}
   #app:has(.quiz-header) .quiz-header{padding-top:10px}
   #app:has(.quiz-header) .q-meta>span:last-child{font-size:10px}
   #app:has(.quiz-header) .rf-tag::before{font-size:14px}
@@ -518,3 +496,17 @@ html:not([data-theme="light"]) body.forge-login-screen .auth-foot{border-top-col
 html:not([data-theme="light"]) body.forge-solo-login .auth-err,
 html:not([data-theme="light"]) body.forge-login-screen .auth-err{color:#ffb4a8;background:rgba(255,90,90,.1);border-color:rgba(255,90,90,.35)}
 html:not([data-theme="light"]) body.forge-solo-login::after{color:var(--forge-login-muted)}
+
+/* Keep the question and next learning action ahead of optional detail. */
+.question-details{margin:12px 0;color:var(--slate);font-size:13px}
+.question-details summary,.result-leaderboard summary{cursor:pointer;min-height:44px;align-content:center}
+.question-details p{margin:0 0 12px}
+.result-leaderboard{margin-top:24px;text-align:left;border-top:1px solid var(--line);padding-top:8px}
+.results h1{font:700 clamp(26px,4vw,36px) 'Rethink Sans',sans-serif;color:var(--white);margin-bottom:10px}
+.results .forge-result-story{border-color:var(--line);box-shadow:none;background:var(--panel)}
+.quiz-header{flex-wrap:wrap;gap:8px 16px}
+.quiz-header .bank-name{min-width:0;overflow-wrap:anywhere}
+
+#feedback:has(#rf-btn:not(.hidden)) .next-btn{background:transparent;color:var(--white);border:1px solid var(--line);box-shadow:none}
+
+#app:has(.quiz-header) .quiz-header .bank-name{color:var(--white)!important}

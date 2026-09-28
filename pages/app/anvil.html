@@ -13,14 +13,6 @@
 <link rel="stylesheet" href="css/sidebar.css">
 <link rel="stylesheet" href="css/components.css?v=20260812">
 
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-RGZ9J6Q8H9"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-RGZ9J6Q8H9');
-</script>
 <link rel="stylesheet" href="css/states.css">
   <link rel="stylesheet" href="css/generated-utilities.css">
   <link rel="stylesheet" href="css/page-overrides/anvil.css">
@@ -43,7 +35,6 @@
 <script src="scripts/forge-response-writer.js?v=20260817"></script>
 <script src="scripts/forge-theme.js?v=20260808-theme2"></script>
 <script src="scripts/forge-sidebar.js?v=20260809-gearcenter"></script>
-<script src="scripts/forge-product-analytics.js"></script>
 <script>if (window.ForgeRole) ForgeRole.guard('student', 'teacher.html');</script>
 <script>
 ForgeSidebar.mount({
@@ -221,24 +212,17 @@ function renderAnvilHome(){
   var resolved=getResolvedMCs();
   var total=active.length+resolved.length;
 
-  var h='<button type="button" class="back-btn" data-forge-action="anvil-back">\u2190 '+(anvilState.classId ? 'Log out' : 'Back to quiz')+'</button>';
+  var h='<a class="back-btn" href="forge-quiz.html">← Back to practice</a>';
   h+='<div class="center forge-u-1y8kt2f">';
-  h+='<p class="tag forge-u-l8gta7">THE ANVIL</p>';
-  h+='<h1 class="forge-u-1oh0w3h">'+anvilState.studentName+'</h1>';
-  h+='<p class="forge-u-10yda30">'+CLEAR_THRESHOLD+' correct in a row to clear a misconception</p>';
+  h+='<h1 class="forge-u-1oh0w3h">Repair mistakes</h1>';
+  h+='<p class="forge-u-10yda30">Anvil · Practise an idea '+CLEAR_THRESHOLD+' times correctly in a row to clear it.</p>';
   h+='</div>';
-
-  // Stats
-  h+='<div class="stat-row">';
-  h+='<div class="stat"><span class="stat-n forge-text-bad">'+active.length+'</span><span class="stat-l">Active</span></div>';
-  h+='<div class="stat"><span class="stat-n forge-text-good">'+resolved.length+'</span><span class="stat-l">Resolved</span></div>';
-  h+='<div class="stat"><span class="stat-n forge-text-white">'+total+'</span><span class="stat-l">Total tracked</span></div>';
-  h+='</div>';
+  if(total) h+='<p class="anvil-summary">'+active.length+' to revisit · '+resolved.length+' cleared</p>';
 
   var repairable=active.filter(function(m){return canRepair(m.tag);});
   if(repairable.length>0){
     var priority=repairable[0];
-    h+='<section class="forge-recommendation" aria-labelledby="anvil-next-title"><p class="forge-recommendation__eyebrow">Recommended next</p><h2 id="anvil-next-title" class="forge-recommendation__title">Repair '+(resolveMCLabel(priority.tag)||priority.tag)+'</h2><p class="forge-recommendation__copy">This misconception has fired '+priority.fires+' time'+(priority.fires===1?'':'s')+' and is the clearest repair to make now.</p><button type="button" class="forge-button forge-button--primary" data-forge-action="anvil-rework" data-tag="'+priority.tag+'">Start the repair →</button></section>';
+    h+='<section class="forge-recommendation" aria-labelledby="anvil-next-title"><h2 id="anvil-next-title" class="forge-recommendation__title">Repair '+(resolveMCLabel(priority.tag)||'an idea from practice')+'</h2><p class="forge-recommendation__copy">You’ve answered correctly '+priority.streak+' of '+CLEAR_THRESHOLD+' times in a row. Try the next question with help.</p><button type="button" class="forge-button forge-button--primary" data-forge-action="anvil-rework" data-tag="'+priority.tag+'">Practise this idea →</button></section>';
   }
 
   if(active.length===0 && resolved.length===0){
@@ -257,41 +241,32 @@ function renderAnvilHome(){
     h+='<div class="cleared-banner"><h2>\u2713 Anvil clear</h2><p class="forge-u-1ybl9nb">Every misconception has been resolved. Keep doing quizzes \u2014 new ones will land here if they fire.</p></div>';
   }
 
-  // Active misconceptions
-  if(active.length>0){
-    h+='<p class="forge-u-1si02oh">\u26a0 Active \u2014 tap to rework</p>';
-    active.forEach(function(m){
-      var label=resolveMCLabel(m.tag)||'';
+  // The recommendation already covers the first repairable idea.
+  var otherIdeas=active.filter(function(m){return !repairable.length || m.tag!==repairable[0].tag;});
+  if(otherIdeas.length){
+    h+='<h2 class="anvil-other-title">Other ideas to revisit</h2>';
+    otherIdeas.forEach(function(m){
+      var label=resolveMCLabel(m.tag)||'An idea from your practice';
       var hasQs=canRepair(m.tag);
-      // A dimmed card with no cue reads as a broken tap target on touch,
-      // where there is no cursor to say "not clickable" — say it in words.
-      h+='<div class="anvil-card active-mc'+(hasQs?'':' no-repair')+'" '+(hasQs?'data-forge-action="anvil-rework" data-tag="'+m.tag+'"':'aria-disabled="true"')+'>';
-      h+='<div class="anvil-top"><span class="anvil-tag">'+m.tag+'</span><span class="mono forge-u-pmcgs0">'+m.fires+' fire'+(m.fires!==1?'s':'')+'</span></div>';
-      if(label) h+='<div class="anvil-label">'+label+'</div>';
-      h+='<div class="anvil-meta"><span>Reforged '+m.reforgeCorrect+'/'+m.reforgeAttempts+'</span><span>Streak: '+m.streak+'/'+CLEAR_THRESHOLD+'</span></div>';
-      // Streak dots
-      h+='<div class="anvil-streak">';
-      var recent=m.history.slice(-6);
-      recent.forEach(function(ok){
-        h+='<span class="streak-dot" style="background:'+(ok?'var(--good)':'var(--bad)')+'"></span>';
-      });
-      if(recent.length===0) h+='<span class="forge-u-1qdci5l">No attempts yet</span>';
-      h+='</div>';
-      if(!hasQs) h+='<p class="anvil-norepair">No repair question for this one yet — it came from a quiz that has since been rewritten. It stays here as a record; nothing to tap.</p>';
-      h+='</div>';
+      h+='<'+(hasQs?'button type="button"':'div')+' class="anvil-card active-mc'+(hasQs?'':' no-repair')+'" '+(hasQs?'data-forge-action="anvil-rework" data-tag="'+m.tag+'"':'')+'>';
+      h+='<span class="anvil-label">'+label+'</span>';
+      h+='<span class="anvil-meta">'+m.streak+' of '+CLEAR_THRESHOLD+' correct in a row</span>';
+      if(!hasQs) h+='<span class="anvil-norepair">No practice question is available for this idea yet.</span>';
+      h+='</'+(hasQs?'button':'div')+'>';
     });
   }
 
   // Resolved
   if(resolved.length>0){
-    h+='<p class="forge-u-1y2mmc9">\u2713 Resolved</p>';
+    h+='<details class="anvil-resolved"><summary>Cleared ideas ('+resolved.length+')</summary>';
     resolved.forEach(function(m){
       var label=resolveMCLabel(m.tag)||'';
       h+='<div class="anvil-card resolved-mc">';
-      h+='<div class="anvil-top"><span class="anvil-tag forge-u-6uw790">'+m.tag+'</span><span class="mono forge-u-10wft76">\u2713 Cleared</span></div>';
+      h+='<div class="anvil-top">Cleared</div>';
       if(label) h+='<div class="anvil-label forge-u-bed994">'+label+'</div>';
       h+='</div>';
     });
+    h+='</details>';
   }
 
   app.innerHTML=(anvilState.loadError?ForgeApp.stateHtml('error',{label:'Anvil data is unavailable',body:'We couldn’t retrieve your misconceptions. Refresh and try again.',action:{label:'Retry Anvil',href:location.href}}):'')+h;
@@ -403,13 +378,12 @@ function renderReworkQuestion(tag,questions,lap,qIdx){
   // student already knows. The progress bar tracks the clearing streak
   // rather than a question count, which is what "done" means here.
   var h='<div class="quiz-header">';
-  h+='<button type="button" class="back-btn" data-forge-action="anvil-home">\u2190 Anvil</button>';
-  h+='<span class="bank-name">'+(label||tag)+'</span>';
+  h+='<button type="button" class="back-btn" data-forge-action="anvil-home">\u2190 Repair mistakes</button>';
+  h+='<span class="bank-name">'+(label||'Practice this idea')+'</span>';
   h+='<span class="mono" id="rw-streak">'+m.streak+' / '+CLEAR_THRESHOLD+' \u2713</span>';
   h+='</div>';
   h+='<p class="rw-sub">Repair session \u00b7 '+CLEAR_THRESHOLD+' correct in a row clears this misconception</p>';
   h+='<div class="progress-bar"><div class="progress-fill" id="rw-progress" style="width:'+((m.streak/CLEAR_THRESHOLD)*100)+'%;background:var(--ember)"></div></div>';
-  h+='<div class="q-meta"><span class="q-id">'+q.id+'</span><span>'+tag+(useReforge?' \u00b7 re-forge':'')+'</span></div>';
   h+='<div class="stem">'+q.stem+'</div>';
   h+=window.ForgeQuestion.renderOptions(q);
 
