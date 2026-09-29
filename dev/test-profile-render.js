@@ -38,7 +38,16 @@ ctx.ForgeClasses.fetchLinkedResponses('u', 'k', { studentId: 's', classCode: 'C'
   failing.push([rows.length, error && error.message]);
 });
 
+// 4. The signed-in history read has the same guarantee.
+const authCalls = [];
+ctx.ForgeAPI = { get: (table) => Promise.resolve(table === 'students' ? [{ id: 's1' }] : [{ id: 'r1' }, { id: 'r2' }, { id: 'r3' }]) };
+ctx.ForgeClasses.fetchAuthResponses('tok', 'user', function (rows) {
+  authCalls.push(rows.length);
+  if (authCalls.length === 1) throw new Error('render bug');
+});
+
 setTimeout(() => {
+  assert.deepStrictEqual(authCalls, [3], 'signed-in history: callback runs once, even if it throws');
   assert.deepStrictEqual(calls, [2], 'callback runs once with the rows, even if it throws');
   assert.deepStrictEqual(failing, [[0, 'network']], 'a failed read reports empty rows and the error');
   console.log('Profile render tests passed (helper defined, render errors not turned into empty history, read failures still reported).');

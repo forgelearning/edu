@@ -327,12 +327,16 @@
     global.ForgeAPI.get('students', 'select=id&auth_user_id=eq.' + encodeURIComponent(authUserId), opts)
       .then(function (rows) {
         var ids = (Array.isArray(rows) ? rows : []).map(function (r) { return r.id; }).filter(Boolean);
-        if (!ids.length) { done([], null, []); return; }
+        if (!ids.length) return { responses: [], ids: [] };
         var filter = 'student_id=in.(' + ids.map(function (id) { return encodeURIComponent(id); }).join(',') + ')';
         return global.ForgeAPI.get('responses', filter + '&order=created_at.asc', opts)
-          .then(function (responses) { done(Array.isArray(responses) ? responses : [], null, ids); });
+          .then(function (responses) { return { responses: Array.isArray(responses) ? responses : [], ids: ids }; });
       })
-      .catch(function (error) { done([], error || new Error('Response read failed'), []); });
+      /* Success and failure handlers side by side, so an exception thrown by
+         the caller's own render code is not reported as an empty history
+         (the same fault that showed profiles with zero answers). */
+      .then(function (result) { done(result.responses, null, result.ids); },
+            function (error) { done([], error || new Error('Response read failed'), []); });
   }
 
   global.ForgeClasses = {

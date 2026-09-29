@@ -17,10 +17,21 @@
     ctx = ctx || {};
     var out = { studentId: ctx.studentId, classCode: ctx.classCode, studentCode: ctx.studentCode, studentName: ctx.studentName };
     try {
-      var entry = root.ForgeClasses && root.ForgeClasses.list().filter(function (c) {
-        return (ctx.classId && c.classId === ctx.classId) || (ctx.studentId && c.studentId === ctx.studentId);
-      })[0];
+      var FC = root.ForgeClasses;
+      // list() is scoped to the active student name; a signed-in account's
+      // name can differ from the name it joined a class with, so fall back
+      // to every saved class on this device.
+      var pools = FC ? [FC.list(), FC.load ? FC.load() : []] : [];
+      var entry = null;
+      pools.some(function (pool) {
+        entry = (ctx.classId && pool.filter(function (c) { return c.classId === ctx.classId; })[0])
+          || (ctx.studentId && pool.filter(function (c) { return c.studentId === ctx.studentId; })[0]) || null;
+        return !!entry;
+      });
       if (entry) {
+        // One student row per class: when the class matched, its own row is
+        // the right identity, even if the caller passed another class's row.
+        if (ctx.classId && entry.classId === ctx.classId && entry.studentId) out.studentId = entry.studentId;
         out.studentId = out.studentId || entry.studentId;
         out.classCode = out.classCode || entry.classCode;
         out.studentCode = out.studentCode || entry.studentCode;

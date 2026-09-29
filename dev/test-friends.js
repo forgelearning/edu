@@ -66,4 +66,6 @@ const sp = F.teacherStudentHtml(students, rows, 'b');
 assert(sp.includes('Jess Best') && sp.includes('Mo has sent a request'), 'student profile shows friends and requests to them');
 assert(F.teacherStudentHtml(students, rows, 'd').includes('Waiting for Mike to accept'), 'and requests they sent');
 
+assert(!/<select id="friend-pick" required/.test(full + empty), 'no browser-native required bubble on the classmate picker');
+
 console.log('Friends tests passed (SQL metric rules, locked-down table, same-class check, card states, escaping).');

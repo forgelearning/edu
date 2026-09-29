@@ -45,7 +45,7 @@
 
     if (classmates.length) {
       h += '<form class="forge-friends__add" data-friend-add><label class="forge-sr-only" for="friend-pick">Classmate to add</label>'
-        + '<select id="friend-pick" required><option value="">Add a classmate…</option>'
+        + '<select id="friend-pick"><option value="">Add a classmate…</option>'
         + classmates.map(function (c) { return '<option value="' + esc(c.student_id) + '">' + esc(c.name) + '</option>'; }).join('')
         + '</select><button type="submit" class="forge-button forge-button--secondary">Send request</button></form>';
     }
@@ -61,23 +61,23 @@
 
   function mount(el, ctx) {
     if (!el || !L()) return Promise.resolve(null);
-    function load(message) {
+    function load(message, isError) {
       return L().studentRpc('get_class_friends', ctx).then(function (data) {
         data = data && typeof data === 'object' && !Array.isArray(data) ? data : null;
         el.innerHTML = html(data);
         var status = el.querySelector('.forge-friends__status');
-        if (status && message) status.textContent = message;
+        if (status && message) { status.textContent = message; status.classList.toggle('is-error', !!isError); }
         return data;
       }).catch(function () { el.innerHTML = ''; return null; });
     }
     function act(name, extra, button) {
       if (button) button.disabled = true;
       return L().studentRpc(name, ctx, extra).then(function (result) {
-        return load(MESSAGES[result] || 'Something went wrong. Try again.');
+        return load(MESSAGES[result] || 'Something went wrong. Try again.', !/^(requested|accepted|declined|removed)$/.test(result));
       }).catch(function () {
         if (button) button.disabled = false;
         var status = el.querySelector('.forge-friends__status');
-        if (status) status.textContent = 'Something went wrong. Try again.';
+        if (status) { status.textContent = 'Something went wrong. Try again.'; status.classList.add('is-error'); }
       });
     }
     // One set of delegated listeners on the card, bound once; the card's
@@ -102,7 +102,14 @@
         if (!form) return;
         e.preventDefault();
         var pick = form.querySelector('select');
-        if (!pick.value) return;
+        if (!pick.value) {
+          // Our own message, in the card: the browser's "required" bubble
+          // popped up over the friend requests.
+          var status = el.querySelector('.forge-friends__status');
+          if (status) { status.textContent = 'Choose a classmate first.'; status.classList.add('is-error'); }
+          pick.focus();
+          return;
+        }
         act('send_friend_request', { p_target_student_id: pick.value }, form.querySelector('button'));
       });
     }

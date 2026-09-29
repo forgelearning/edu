@@ -12,9 +12,9 @@
 <link rel="stylesheet" href="css/auth.css">
 <link rel="stylesheet" href="css/sidebar.css">
 <link rel="stylesheet" href="css/components.css?v=20260812">
-<link rel="stylesheet" href="css/forge-league.css?v=20260928e">
+<link rel="stylesheet" href="css/forge-league.css?v=20260929a">
 <link rel="stylesheet" href="css/generated-utilities.css">
-<link rel="stylesheet" href="css/page-overrides/student-dashboard.css?v=20260928-topics1">
+<link rel="stylesheet" href="css/page-overrides/student-dashboard.css?v=20260929-accounts1">
 <link rel="stylesheet" href="css/auth-ember.css?v=20260817-auth2">
 
 <body class="forge-auth-ember">
@@ -59,8 +59,8 @@ ForgeSidebar.mount({
 <script src="scripts/forge-student-code.js?v=20260809"></script>
 <script src="data/forge-catalog.js?v=20260911-recap"></script>
 <script src="scripts/forge-misconception-state.js"></script>
-<script src="scripts/forge-league.js?v=20260928d"></script>
-<script src="scripts/forge-friends.js?v=20260928b"></script>
+<script src="scripts/forge-league.js?v=20260929a"></script>
+<script src="scripts/forge-friends.js?v=20260929a"></script>
 
 <main class="wrap" id="main-content">
   <div id="app" aria-live="polite"></div>
@@ -275,6 +275,10 @@ function showAssignmentNext(open){
     +'<a class="forge-button forge-button--primary" href="assignments.html">'+(d!==null&&d<0?'Catch up now →':done?'Continue assignment →':'Start assignment →')+'</a>'+dashboardTopicsHtml;
 }
 
+function dashboardClassContext(){
+  return {studentId:st.studentId,classId:st.classId,classCode:st.classCode,studentCode:st.studentCode,studentName:st.studentName};
+}
+
 function renderDashboard(){
   var responses=st.responses||[];
   var total=responses.filter(function(r){return !r.reforge_attempted;}).length;
@@ -289,7 +293,10 @@ function renderDashboard(){
   if (window.ForgeSidebar) ForgeSidebar.setBadge('anvil', activeMCs.length || null);
   try { localStorage.setItem('forge-anvil-open', String(activeMCs.length)); } catch(e) {}
   if (st.classId) {
-    ForgeStudentCode.assignments(st.studentId,st.classCode,st.studentCode,st.studentName).then(function(rows){
+    // ForgeLeague.studentRpc resolves this class's own student row and code
+    // from the saved class list and sends a signed-in student's own token, so
+    // accounts (one student row per class) get their assignments too.
+    ForgeLeague.studentRpc('get_student_assignments', dashboardClassContext()).then(function(rows){
       var today=new Date(); today.setHours(0,0,0,0);
       var open=(Array.isArray(rows)?rows:[]).filter(function(a){
         var banks=[]; try { banks=typeof a.banks==='string'?JSON.parse(a.banks):a.banks||[]; } catch(e) {}
@@ -400,7 +407,7 @@ function renderDashboard(){
   h+='</div>';
   app.innerHTML=(st.loadError?ForgeApp.stateHtml('error',{label:'Some dashboard data is unavailable',body:'We couldn’t retrieve the latest progress. Refresh and try again.',action:{label:'Retry dashboard',href:location.href}}):'')+h;
   var leagueEl=document.getElementById('dashboard-league');
-  var socialCtx={studentId:st.studentId,classId:st.classId,classCode:st.classCode,studentCode:st.studentCode,studentName:st.studentName};
+  var socialCtx=dashboardClassContext();
   if(leagueEl&&window.ForgeLeague) ForgeLeague.mount(leagueEl,socialCtx);
   var friendsEl=document.getElementById('dashboard-friends');
   if(friendsEl&&window.ForgeFriends) ForgeFriends.mount(friendsEl,socialCtx);

@@ -46,3 +46,4 @@
 .forge-friends__waiting summary{min-height:36px;align-content:center;cursor:pointer}
 .forge-friends__waiting ul{margin:4px 0 0;padding-left:18px}
 .forge-friends__profile p{margin:6px 0 0}
+.forge-friends__status.is-error{color:var(--bad)}
