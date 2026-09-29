@@ -272,7 +272,14 @@
       /* Second argument is the failure, so a caller can tell "read failed" from
          "genuinely nothing answered". Callers that ignore it keep the old
          behaviour. */
-    }).catch(function (error) { done([], error || new Error('Response read failed')); });
+    }, function (error) {
+      /* Read failures only. This used to be a .catch after the success
+         handler, so an exception thrown by the caller's own render code was
+         caught here and reported as an empty history: the profile showed zero
+         answers for students with a full history. A caller bug now surfaces
+         as an error instead of silently wiping the data. */
+      done([], error || new Error('Response read failed'));
+    });
   }
 
   /* Responses for a free, no-account student.

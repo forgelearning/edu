@@ -79,6 +79,15 @@ function supaGet(t,p){return ForgeAPI.get(t,p);}
 
 
 
+// resolveBankLabel used to come from data/forge-data.js, which this page no
+// longer loads (f20ccb0d moved it to the lighter forge-catalog.js). Without it
+// renderProfile threw as soon as a student had a focus area or strength, and
+// the profile showed zero answers. dev/test-profile-render.js guards this.
+function resolveBankLabel(bankId){
+  var bank = (window.BANKS || {})[bankId];
+  return (bank && bank.label) || bankId;
+}
+
 var RANKS = [
   {name:'Apprentice',min:0,max:300,color:'var(--slate)',bg:'var(--panel-2)'},
   {name:'Journeyman',min:300,max:1500,color:'var(--hot)',bg:'rgba(255,201,60,.12)'},

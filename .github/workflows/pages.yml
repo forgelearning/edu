@@ -71,6 +71,9 @@ jobs:
       - name: Run signed-in student history tests
         run: node dev/test-signed-in-student-history.js
 
+      - name: Run profile render tests
+        run: node dev/test-profile-render.js
+
       - name: Build public site
         run: node scripts/build/build-pages-site.js
 
