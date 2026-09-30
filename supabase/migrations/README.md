@@ -175,3 +175,24 @@ Rollback:
 drop policy if exists "Teachers can read friendships in their classes" on public.student_friendships;
 revoke select on table public.student_friendships from authenticated;
 ```
+
+## 20260929 181805 — pause friends until individual codes
+
+| File | What it does |
+|---|---|
+| `20260929181805_pause_class_friends_until_student_codes.sql` | Requires every pupil in a class to have an active private code before friends can be listed or requests sent or accepted. Existing friendships and settings are unchanged. |
+
+**Applied to production 2026-09-29.** Read, send and accept return
+`codes_required` for a class with a name-only student. The renamed unchecked
+functions and readiness helper have no client EXECUTE grants.
+
+## 20260929 190020 — teacher opt-in for class friends
+
+| File | What it does |
+|---|---|
+| `20260929190020_friends_teacher_opt_in.sql` | Defaults new classes to Friends off, switches existing classes off at first application, and prevents a reverse request from silently accepting an incoming one. |
+
+**Applied to production 2026-09-29.** The historical
+`20260928130000_class_friends.sql` default-on rollout remains in the history;
+this migration defines the current default. A replay preserves any class a
+teacher has since enabled. No student or friendship rows are changed.

@@ -16,15 +16,21 @@
   }
 
   function html(data) {
+    if (data && data.reason === 'codes_required') {
+      return '<section class="forge-friends" aria-labelledby="forge-friends-title">'
+        + '<div class="forge-league__head"><h2 id="forge-friends-title">Friends</h2><span>Paused</span></div>'
+        + '<p class="forge-league__note">Your teacher needs to give everyone in this class a private student code before friends can be used.</p></section>';
+    }
     if (!data || !data.enabled) return '';
     var friends = data.friends || [], incoming = data.incoming || [], outgoing = data.outgoing || [], classmates = data.classmates || [];
     var h = '<section class="forge-friends" aria-labelledby="forge-friends-title">';
     h += '<div class="forge-league__head"><h2 id="forge-friends-title">Friends</h2><span>Classmates only</span></div>';
+    h += '<p class="forge-friends__sharing" id="forge-friends-sharing">If you accept a request, you and that classmate can see each other’s weekly and total XP, answer count, accuracy and streak. Either of you can remove the friendship later.</p>';
     h += '<p class="forge-friends__status" role="status" aria-live="polite"></p>';
 
     incoming.forEach(function (p) {
       h += '<div class="forge-friends__request"><span><strong>' + esc(p.name) + '</strong> wants to be friends</span>'
-        + '<span class="forge-friends__actions"><button type="button" class="forge-button forge-button--primary" data-friend-accept="' + esc(p.student_id) + '">Accept</button>'
+        + '<span class="forge-friends__actions"><button type="button" class="forge-button forge-button--primary" data-friend-accept="' + esc(p.student_id) + '" aria-describedby="forge-friends-sharing">Accept</button>'
         + '<button type="button" class="forge-button forge-button--secondary" data-friend-decline="' + esc(p.student_id) + '">Decline</button></span></div>';
     });
 
@@ -44,6 +50,7 @@
     });
 
     if (classmates.length) {
+      h += '<p class="forge-friends__sharing">Sending a request shows your name to that classmate. Your stats stay private until they accept.</p>';
       h += '<form class="forge-friends__add" data-friend-add><label class="forge-sr-only" for="friend-pick">Classmate to add</label>'
         + '<select id="friend-pick"><option value="">Add a classmate…</option>'
         + classmates.map(function (c) { return '<option value="' + esc(c.student_id) + '">' + esc(c.name) + '</option>'; }).join('')
@@ -56,7 +63,9 @@
     requested: 'Request sent.', accepted: 'You’re now friends.', declined: 'Request declined.', removed: 'Removed.',
     already_requested: 'You’ve already sent a request.', already_friends: 'You’re already friends.',
     too_many_pending: 'Wait for some of your requests to be answered first.',
-    disabled: 'Your teacher has switched friends off.', not_in_class: 'That student isn’t in your class.'
+    disabled: 'Your teacher has switched friends off.', codes_required: 'Friends are paused until everyone has a private student code.',
+    request_waiting_for_you: 'This classmate has asked you already. Use Accept on their request to connect.',
+    not_in_class: 'That student isn’t in your class.'
   };
 
   function mount(el, ctx) {
@@ -136,12 +145,22 @@
     return { friends: friends, waiting: waiting, byId: byId };
   }
 
-  function teacherHtml(students, rows, enabled) {
+  function teacherHtml(students, rows, enabled, readError, paused) {
     var links = teacherLinks(students, rows);
     var h = '<section class="forge-friends forge-friends--teacher" aria-labelledby="teacher-friends-title">';
-    h += '<div class="forge-league__head"><h2 id="teacher-friends-title">Friendships</h2><span class="forge-league__status' + (enabled ? ' is-on' : '') + '">' + (enabled ? 'Friends on' : 'Friends off') + '</span></div>';
+    var status = enabled ? (paused ? 'Friends paused' : 'Friends on') : 'Friends off';
+    h += '<div class="forge-league__head"><h2 id="teacher-friends-title">Friendships</h2><span class="forge-league__status' + (enabled && !paused ? ' is-on' : '') + '">' + status + '</span></div>';
+    if (readError) {
+      return h + '<p class="forge-league__note forge-friends__status is-error" role="alert">Couldn’t load friendships. Refresh this class to try again.</p></section>';
+    }
+    h += '<p class="forge-league__note">The teacher chooses whether this class can use friends. Classmates can see each other’s names to send requests; accepted friends share weekly and total XP, answer count, accuracy and streak. Either student can remove a connection.</p>';
+    if (enabled && paused) {
+      h += '<p class="forge-league__note">Friends are paused until every student in this class has a private code.</p>';
+    }
     if (!links.friends.length && !links.waiting.length) {
-      return h + '<p class="forge-league__note">No friend connections in this class yet. Students add classmates from their dashboard.</p></section>';
+      return h + '<p class="forge-league__note">' + (enabled && paused
+        ? 'No friend connections in this class yet.'
+        : 'No friend connections in this class yet. Students add classmates from their dashboard.') + '</p></section>';
     }
     // Group accepted pairs by student so each name appears once with its friends.
     var groups = {};
@@ -168,10 +187,11 @@
   }
 
   // One student's connections, for the teacher's student profile.
-  function teacherStudentHtml(students, rows, studentId) {
+  function teacherStudentHtml(students, rows, studentId, readError) {
     var links = teacherLinks(students, rows, studentId);
     var me = studentName(links.byId, studentId);
     var h = '<section class="card forge-friends__profile"><div class="card-title">Friends</div>';
+    if (readError) return h + '<p class="forge-friends__status is-error" role="alert">Couldn’t load friendships. Refresh this class to try again.</p></section>';
     h += '<p>' + (links.friends.length ? esc(links.friends.sort(function (a, b) { return a.localeCompare(b); }).join(', ')) : 'No friends added yet.') + '</p>';
     links.waiting.forEach(function (w) {
       h += '<p class="forge-league__note">' + (w.from === me ? 'Waiting for ' + esc(w.to) + ' to accept' : esc(w.from) + ' has sent a request') + '</p>';
