@@ -51,6 +51,7 @@ h1,h2,h3{font-family:'Rethink Sans',sans-serif;color:var(--white);line-height:1.
 .dash-tools__menu{display:flex;flex-wrap:wrap;gap:8px;width:min(560px,calc(100vw - 120px));margin-top:10px;padding:10px;border:1px solid var(--line);border-radius:var(--radius-md);background:var(--panel-2)}
 .dash-tools__menu[hidden]{display:none}
 .dash-tools__menu .forge-button{min-height:36px;font-size:12px}
+.dash-tools__explain{flex-basis:100%;margin:0;color:var(--slate);font-size:12px;line-height:1.5}
 .dash-tool-group{flex:1 1 100%;padding-top:10px;border-top:1px solid var(--line)}
 .dash-tool-group__label{display:block;margin-bottom:7px;color:var(--dim);font:11px 'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.05em}
 .dash-tool-group__controls{display:flex;flex-wrap:wrap;gap:8px}
@@ -143,7 +144,7 @@ h1,h2,h3{font-family:'Rethink Sans',sans-serif;color:var(--white);line-height:1.
 
 /* class table */
 .class-table{width:100%;border-collapse:separate;border-spacing:0;font-size:13px;table-layout:auto}
-.class-table-wrap{overflow-x:auto;margin:0 calc(var(--space-2) * -1);padding:0 var(--space-2)}
+.class-table-wrap{clear:both;overflow-x:auto;margin:0 calc(var(--space-2) * -1);padding:0 var(--space-2)}
 .class-table th{font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:#8A857E;font-weight:600;padding:8px 10px;text-align:left;border-bottom:1px solid var(--line)}
 .class-table td{padding:14px 10px;border-bottom:1px solid var(--line);color:var(--white);vertical-align:middle}
 .class-table th:first-child,.class-table td:first-child{padding-left:14px}
@@ -307,7 +308,10 @@ h1,h2,h3{font-family:'Rethink Sans',sans-serif;color:var(--white);line-height:1.
   .heat-bar{order:3}
   .heat-spec{font-size:10px}
 
-  /* table -> one card per student, each cell labelled by its column */
+}
+
+/* Keep student rows readable with the sidebar expanded on a tablet. */
+@media(max-width:1050px){
   .class-table,.class-table tbody,.class-table tr,.class-table td{display:block;width:100%}
   .class-table-wrap{margin:0;padding:0}
   .class-table thead{display:none}

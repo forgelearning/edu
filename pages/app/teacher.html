@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="css/auth.css">
 <link rel="stylesheet" href="css/sidebar.css">
 <link rel="stylesheet" href="css/components.css?v=20260812">
-<link rel="stylesheet" href="css/forge-league.css?v=20260929a">
+<link rel="stylesheet" href="css/forge-league.css?v=20260929f">
 
 <!-- Google tag (gtag.js) -->
 <script src="scripts/analytics-consent.js?v=20260816"></script>
@@ -24,7 +24,7 @@
 </script>
 <link rel="stylesheet" href="css/states.css">
   <link rel="stylesheet" href="css/generated-utilities.css">
-  <link rel="stylesheet" href="css/page-overrides/teacher.css?v=20260928-friends1">
+  <link rel="stylesheet" href="css/page-overrides/teacher.css?v=20260929-friends3">
   <link rel="stylesheet" href="css/page-overrides/revision.css?v=20260910-reporting">
   <link rel="stylesheet" href="css/auth-ember.css?v=20260817-auth2">
   <link rel="stylesheet" href="css/content-status.css">
@@ -86,7 +86,7 @@ function mountTeacherSidebar() {
 <script src="scripts/forge-misconception-state.js"></script>
 <script src="scripts/forge-metrics.js"></script>
 <script src="scripts/forge-league.js?v=20260929a"></script>
-<script src="scripts/forge-friends.js?v=20260929a"></script>
+<script src="scripts/forge-friends.js?v=20260929d"></script>
 <script src="data/misconception-labels.js?v=20260907-diagnostics"></script>
 <script src="data/starter-activities.js?v=20260813"></script>
 <script>
@@ -390,7 +390,7 @@ function teacherInlineState(target, kind, options) {
   ForgeApp.stateRender(stateNode, kind, options);
   return stateNode.firstElementChild;
 }
-var dashState = { classId: null, className: null, classSubject: null, classCode: null, responses: [], students: [], wrongResponses: [], drillResponses: [], drillStudents: [], assignments: [], revisionReviews: [], assignmentFilter: 'active' };
+var dashState = { classId: null, className: null, classSubject: null, classCode: null, responses: [], students: [], wrongResponses: [], drillResponses: [], drillStudents: [], assignments: [], revisionReviews: [], friendships: [], friendshipsError: false, friendsPaused: false, assignmentFilter: 'active' };
 
 // Loads a given class's dashboard data and remembers it in the sidebar's class
 // switcher, so switching back later doesn't need the code re-entered. Lives at
@@ -411,6 +411,7 @@ window.loadClassDashboard = function(cls) {
         // tools switch only appears once it exists.
         dashState.leagueEnabled = cls.league_enabled;
         dashState.friendsEnabled = cls.friends_enabled;
+        dashState.friendsPaused = false;
         // The teacher dashboard is a single document with an in-page class
         // view. Give that view its own history entry so browser/native back
         // returns to the class list instead of the public launch screen.
@@ -424,14 +425,16 @@ window.loadClassDashboard = function(cls) {
           // Revision reporting is additive: older deployments without the
           // migration still load the dashboard and show an empty state.
           supaGet('revision_reviews', 'class_id=eq.' + cls.id + '&order=reviewed_at.desc').catch(function(){ return []; }),
-          // Readable by the class teacher (migration 20260928140000); a refused
-          // read leaves the card empty rather than breaking the dashboard.
-          supaGet('student_friendships', 'class_id=eq.' + cls.id + '&order=created_at.desc').catch(function(){ return []; })
+          // Keep read failures distinct from a class with no friendships.
+          supaGet('student_friendships', 'class_id=eq.' + cls.id + '&order=created_at.desc')
+            .then(function(rows){ return { rows: rows, error: false }; },
+                  function(){ return { rows: [], error: true }; })
         ]).then(function(results) {
           dashState.students = rowsOrEmpty(results[0]);
           dashState.assignments = rowsOrEmpty(results[1]);
           dashState.revisionReviews = rowsOrEmpty(results[2]);
-          dashState.friendships = rowsOrEmpty(results[3]);
+          dashState.friendships = rowsOrEmpty(results[3].rows);
+          dashState.friendshipsError = results[3].error;
           // Fetch responses by class_id AND by student_id list
           // This catches responses where class_id is null (student played before class was linked)
           var studentIds = dashState.students.map(function(s){ return s.id; });
@@ -816,7 +819,9 @@ function renderLogin(activeTab) {
           dashState.className = createdClassName;
           dashState.leagueEnabled = cls.league_enabled;
           dashState.friendsEnabled = cls.friends_enabled;
+          dashState.friendsPaused = false;
           dashState.friendships = [];
+          dashState.friendshipsError = false;
           dashState.classSubject = subj;
           dashState.classCode = code;
           dashState.students = [];
@@ -1191,8 +1196,10 @@ function renderDashboard() {
         btn.textContent = label + ': ' + (next ? 'On' : 'Off');
         btn.setAttribute('aria-pressed', String(next));
         if (after) after(next);
-      }).catch(function() {
-        btn.textContent = 'Couldn’t change ' + label.toLowerCase() + '. Try again.';
+      }).catch(function(error) {
+        btn.textContent = error && error.status === 401
+          ? 'Sign in again to change ' + label.toLowerCase() + '.'
+          : 'Couldn’t change ' + label.toLowerCase() + '. Try again.';
       }).then(function() { btn.disabled = false; });
     };
   }
@@ -1202,8 +1209,14 @@ function renderDashboard() {
   });
   wireClassSwitch('toggle-friends', 'friends_enabled', 'friendsEnabled', 'Friends', function(next) {
     var card = document.getElementById('teacher-friendships');
-    if (card) card.innerHTML = ForgeFriends.teacherHtml(dashState.students, dashState.friendships, next);
+    if (card) card.innerHTML = ForgeFriends.teacherHtml(dashState.students, dashState.friendships, next, dashState.friendshipsError, dashState.friendsPaused);
   });
+
+  var friendsSwitch = document.getElementById('toggle-friends');
+  if (friendsSwitch) {
+    friendsSwitch.setAttribute('aria-describedby', 'friends-setting-explainer');
+    friendsSwitch.insertAdjacentHTML('afterend', '<p class="dash-tools__explain" id="friends-setting-explainer">Optional for this class. Accepted friends can see each other’s XP, answers, accuracy and streak.</p>');
+  }
 
   var generateCodesBtn = document.getElementById('generate-student-codes');
   var generateCodesPanel = document.getElementById('generate-codes-panel');
@@ -1220,19 +1233,24 @@ function renderDashboard() {
   (function renderCodeCoverage() {
     var note = document.getElementById('code-coverage-note');
     if (!note || !dashState.classId) return;
+    var requestedClassId = dashState.classId;
     ForgeAPI.rpc('class_student_code_coverage', { p_class_id: dashState.classId }, teacherApiOptions())
       .then(function (rows) {
+        if (dashState.classId !== requestedClassId) return;
         var row = Array.isArray(rows) ? rows[0] : rows;
         if (!row) return;
         var total = Number(row.students) || 0;
         var covered = Number(row.with_code) || 0;
         var missing = total - covered;
+        dashState.friendsPaused = missing > 0;
+        var friendsCard = document.getElementById('teacher-friendships');
+        if (friendsCard && window.ForgeFriends) friendsCard.innerHTML = ForgeFriends.teacherHtml(dashState.students, dashState.friendships, dashState.friendsEnabled, dashState.friendshipsError, dashState.friendsPaused);
         if (total === 0 || missing <= 0) return;
         note.hidden = false;
         note.innerHTML = '<p class="code-coverage__lead"><b>' + missing + '</b> of <b>' + total + '</b> student'
           + (total !== 1 ? 's' : '') + ' still sign' + (missing === 1 ? 's' : '')
           + ' in by name.</p>'
-          + '<p class="code-coverage__body">A private code lets each student open only their own work and answer history. Existing records stay unchanged.</p>'
+          + '<p class="code-coverage__body">A private code lets each student open only their own work and answer history. Friends can be enabled after everyone has a code. Existing records stay unchanged.</p>'
           + '<button type="button" class="forge-button forge-button--primary" id="code-coverage-action">Issue private codes</button>';
         document.getElementById('code-coverage-action').onclick = function () {
           var migrate = document.getElementById('migrate-existing-students');
@@ -2570,7 +2588,7 @@ function renderClassOverview(responses, students) {
 
   h += '</tbody></table></div></div>';
   if (typeof dashState.friendsEnabled === 'boolean' && window.ForgeFriends) {
-    h += '<div id="teacher-friendships">' + ForgeFriends.teacherHtml(students, dashState.friendships, dashState.friendsEnabled) + '</div>';
+    h += '<div id="teacher-friendships">' + ForgeFriends.teacherHtml(students, dashState.friendships, dashState.friendsEnabled, dashState.friendshipsError, dashState.friendsPaused) + '</div>';
   }
 
   el.innerHTML = h;
@@ -2783,7 +2801,7 @@ window.renderStudent = function(studentId) {
   }
 
   if (typeof dashState.friendsEnabled === 'boolean' && window.ForgeFriends) {
-    h += ForgeFriends.teacherStudentHtml(dashState.students, dashState.friendships, studentId);
+    h += ForgeFriends.teacherStudentHtml(dashState.students, dashState.friendships, studentId, dashState.friendshipsError);
   }
 
   el.innerHTML = h;

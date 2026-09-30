@@ -20,6 +20,7 @@
 .forge-friends__status{margin:0;color:var(--good);font-size:13px}
 .forge-friends__status:empty{display:none}
 .forge-friends__status:not(:empty){margin-bottom:10px}
+.forge-friends__sharing{margin:0 0 12px;color:var(--slate);font-size:13px;line-height:1.5}
 .forge-friends__request,.forge-friends__pending{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 12px;padding:10px 12px;margin-bottom:8px;border-radius:var(--radius-sm);background:var(--panel-2)}
 .forge-friends__pending{background:transparent;border:1px dashed var(--line);color:var(--slate);font-size:13px}
 .forge-friends__actions{display:flex;gap:8px}
