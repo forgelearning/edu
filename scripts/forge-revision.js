@@ -77,7 +77,7 @@
   function assignmentProgress(assignment,state){
     var details=config(assignment),done=state.assignments[String(assignment.id)]||{answered:[]};
     var answered=Array.isArray(done.answered)?done.answered.length:0;
-    return {answered:answered,total:details&&details.mode==='count'?details.target:null,complete:!!done.complete};
+    return {answered:answered,total:details&&details.mode==='count'?details.target:null,complete:!!done.complete||!!(details&&details.mode==='count'&&answered>=details.target)};
   }
 
   function teacherPanelHtml(subject){
@@ -124,10 +124,11 @@
   function loadStudentData(context){
     var registry=(root.ForgeClasses&&ForgeClasses.list().find(function(item){return item.classId===context.classId;}))||{};
     context=Object.assign({},registry,context);
-    var assignments=context.studentId&&context.classCode
-      ?ForgeStudentCode.assignments(context.studentId,context.classCode,context.studentCode,context.studentName)
-      :root.ForgeAuth&&ForgeAuth.accessToken()&&context.classId
-        ?ForgeAPI.get('assignments','class_id=eq.'+encodeURIComponent(context.classId)+'&order=due_date.asc',{token:ForgeAuth.accessToken()})
+    var token=root.ForgeAuth&&ForgeAuth.accessToken&&ForgeAuth.accessToken();
+    var assignments=token&&context.classId
+      ?ForgeAPI.get('assignments','class_id=eq.'+encodeURIComponent(context.classId)+'&order=due_date.asc',{token:token})
+      :context.studentId&&context.classCode
+        ?ForgeStudentCode.assignments(context.studentId,context.classCode,context.studentCode,context.studentName)
         :Promise.resolve([]);
     return assignments.then(function(payload){return {context:context,assignments:(root.ForgeAssignmentProgress?ForgeAssignmentProgress.rows(payload):Array.isArray(payload)?payload:[]).filter(isRevision)};});
   }
@@ -135,7 +136,12 @@
   function mountStudent(options){
     var app=options.root,context=options.context||{},state=readState(context),currentCards=[],currentIndex=0,currentAssignment=null,ratings=[],editingId=null;
     var subjectInfo=(root.SUBJECTS||{})[options.subject]||{},subjectBanks=subjectInfo.banks||[];
-    var syncStatus=options.syncError?'Saved cards on this device are available. Account sync will retry next time you open Revision.':root.ForgePersonalCards&&root.ForgePersonalCards.canSync(context)?'Cards sync with your student record.':'Cards are saved on this device.';
+    var syncStatus=options.syncError?'Saved on this device. Sync will retry when you reconnect or reopen Revision.':root.ForgePersonalCards&&root.ForgePersonalCards.canSync(context)?'Cards and review progress sync with your student record.':'Cards and review progress are saved on this device.';
+    if(options.remoteProgress&&root.ForgeRevisionProgress){
+      var merged=root.ForgeRevisionProgress.merge(state,options.remoteProgress);
+      state.reviews=merged.reviews;state.assignments=merged.assignments;
+      writeState(context,state);
+    }
     if(Array.isArray(options.remoteCards)){
       Object.keys(state.reviews).forEach(function(key){if(key.indexOf('personal|')===0&&!options.remoteCards.some(function(card){return personalKey(card.id)===key;}))delete state.reviews[key];});
       state.personalCards=options.remoteCards.map(function(card){return {id:card.id,front:card.front,back:card.back,bank:card.bank,source:card.source||null,updatedAt:card.updatedAt};});
@@ -148,6 +154,12 @@
     function topicOptions(subject,selected){var banks=(root.SUBJECTS&&root.SUBJECTS[subject]&&root.SUBJECTS[subject].banks)||[];if(!banks.length)return '<option value="personal">General</option>';return (selected&&banks.indexOf(selected)===-1?'<option value="'+escapeHtml(selected)+'" selected>'+escapeHtml(topicLabel(selected))+'</option>':'')+banks.map(function(bank){return '<option value="'+escapeHtml(bank)+'"'+(bank===selected?' selected':'')+'>'+escapeHtml(topicLabel(bank))+'</option>';}).join('');}
     function personalCards(){return state.personalCards.map(personalAsReview);}
     function showSyncStatus(message){syncStatus=message;var node=app.querySelector('#revision-card-sync');if(node)node.textContent=message;}
+    function syncProgress(cardKey,review,assignmentId,assignment){
+      if(!root.ForgeRevisionProgress)return;
+      root.ForgeRevisionProgress.save(context,cardKey,review,assignmentId,assignment).catch(function(){
+        showSyncStatus('Review saved on this device. Sync will retry when you reconnect or reopen Revision.');
+      });
+    }
     function cardFor(id){return state.personalCards.filter(function(card){return card.id===id;})[0]||null;}
     function draft(){try{return JSON.parse(localStorage.getItem(draftKey)||'null');}catch(e){return null;}}
     function clearDraft(){try{localStorage.removeItem(draftKey);}catch(e){}}
@@ -171,7 +183,7 @@
     }
     function start(cards,assignment){
       currentCards=cards;currentIndex=0;currentAssignment=assignment||null;ratings=[];
-      if(!cards.length){if(assignment&&config(assignment).mode==='due'){var record=state.assignments[String(assignment.id)]||{answered:[]};record.complete=true;state.assignments[String(assignment.id)]=record;writeState(context,state);}renderHome(options.assignments||[]);return;}
+      if(!cards.length){if(assignment&&config(assignment).mode==='due'){var record=state.assignments[String(assignment.id)]||{answered:[]};record.complete=true;record.updatedAt=new Date().toISOString();state.assignments[String(assignment.id)]=record;writeState(context,state);syncProgress(null,null,String(assignment.id),record);}renderHome(options.assignments||[]);return;}
       renderCard();
     }
     function renderEditor(card){
@@ -210,8 +222,9 @@
       if(!card.personal)syncReview(context,card,rating,state.reviews[card.key].dueAt,currentAssignment);
       if(card.personal&&root.ForgePersonalCards){var own=cardFor(card.key.slice(9));if(own)root.ForgePersonalCards.save(context,own,state.reviews[card.key]).catch(function(){});}
       ratings.push(rating);
-      if(currentAssignment){var id=String(currentAssignment.id),record=state.assignments[id]||{answered:[]};if(record.answered.indexOf(card.key)===-1)record.answered.push(card.key);var details=config(currentAssignment);record.complete=details.mode==='count'?record.answered.length>=details.target:currentIndex>=currentCards.length-1;state.assignments[id]=record;}
+      if(currentAssignment){var id=String(currentAssignment.id),record=state.assignments[id]||{answered:[]};if(record.answered.indexOf(card.key)===-1)record.answered.push(card.key);var details=config(currentAssignment);record.complete=details.mode==='count'?record.answered.length>=details.target:currentIndex>=currentCards.length-1;record.updatedAt=new Date().toISOString();state.assignments[id]=record;}
       writeState(context,state);
+      if(!card.personal)syncProgress(card.key,state.reviews[card.key],currentAssignment&&String(currentAssignment.id),currentAssignment&&state.assignments[String(currentAssignment.id)]);
       if(currentIndex<currentCards.length-1){currentIndex++;renderCard();}else renderResult();
     }
     function renderResult(){var moved=ratings.filter(function(rating){return rating==='got-it';}).length,sooner=ratings.length-moved;app.innerHTML='<section class="revision-result"><span>✓</span><h1>That review moved your knowledge forward.</h1><p>'+moved+' '+(moved===1?'card is':'cards are')+' ready for a longer gap. '+sooner+' '+(sooner===1?'card will':'cards will')+' return sooner while the knowledge is still forming.</p><dl><div><dt>Moved forward</dt><dd>'+moved+' '+(moved===1?'card':'cards')+'</dd></div><div><dt>Returns sooner</dt><dd>'+sooner+' '+(sooner===1?'card':'cards')+'</dd></div><div><dt>Reviewed</dt><dd>'+ratings.length+' '+(ratings.length===1?'card':'cards')+'</dd></div></dl><div><button type="button" data-revision-action="today">Review another set</button><button type="button" data-revision-action="home">Back to Revision</button></div></section>';focusHeading();}
@@ -236,6 +249,16 @@
       if(name==='topic')start(selectQueue([action.getAttribute('data-bank')],8,false));
       if(name==='assignment'){var assignment=(options.assignments||[]).filter(function(item){return String(item.id)===action.getAttribute('data-assignment-id');})[0];if(assignment){var details=config(assignment),progress=assignmentProgress(assignment,state),record=state.assignments[String(assignment.id)]||{answered:[]},remaining=details.mode==='count'?Math.max(0,details.target-progress.answered):20,queue=selectQueue(banks(assignment),remaining,details.mode==='due').filter(function(card){return record.answered.indexOf(card.key)===-1;});start(queue,assignment);}}
     });
+    if(root.addEventListener&&root.ForgeRevisionProgress){root.addEventListener('online',function(){
+      root.ForgeRevisionProgress.load(context,state,(options.assignments||[]).map(function(item){return String(item.id);})).then(function(remote){
+        if(!remote)return;
+        var merged=root.ForgeRevisionProgress.merge(state,remote);
+        state.reviews=merged.reviews;state.assignments=merged.assignments;
+        writeState(context,state);
+        showSyncStatus('Cards and review progress sync with your student record.');
+        if(app.querySelector('.revision-page-head'))renderHome(options.assignments||[]);
+      }).catch(function(){showSyncStatus('Review saved on this device. Sync will retry when you reopen Revision.');});
+    });}
     var pending=draft();
     if(pending)renderEditor(pending);else renderHome(options.assignments||[]);
   }

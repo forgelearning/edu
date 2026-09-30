@@ -54,7 +54,8 @@ ForgeSidebar.mount({
 <script>window.ForgeAssignmentBanks=BANKS;</script>
 <script src="scripts/forge-assignment-progress.js"></script>
 <script src="scripts/forge-personal-cards.js"></script>
-<script src="scripts/forge-revision.js?v=20260930-allsubjects"></script>
+<script src="scripts/forge-revision-progress.js"></script>
+<script src="scripts/forge-revision.js?v=20260930-progress-sync"></script>
 <script>
 (function(){
   var app=document.getElementById('revision-app'),saved=null;
@@ -89,10 +90,17 @@ ForgeSidebar.mount({
     }).then(function(data){
       var local=ForgeRevision.readState(data.context);
       function changeSubject(next){var url=new URL(location.href);url.searchParams.set('subject',next);location.href=url.href;}
-      return ForgePersonalCards.load(data.context,local.personalCards,local.reviews).then(function(remote){
-        ForgeRevision.mountStudent({root:app,context:data.context,subject:subject,changeSubject:changeSubject,assignments:data.assignments,reload:boot,remoteCards:remote});
-      }).catch(function(){
-        ForgeRevision.mountStudent({root:app,context:data.context,subject:subject,changeSubject:changeSubject,assignments:data.assignments,reload:boot,syncError:true});
+      return Promise.allSettled([
+        ForgePersonalCards.load(data.context,local.personalCards,local.reviews),
+        ForgeRevisionProgress.load(data.context,local,(data.assignments||[]).map(function(item){return String(item.id);}))
+      ]).then(function(results){
+        ForgeRevision.mountStudent({
+          root:app,context:data.context,subject:subject,changeSubject:changeSubject,
+          assignments:data.assignments,reload:boot,
+          remoteCards:results[0].status==='fulfilled'?results[0].value:null,
+          remoteProgress:results[1].status==='fulfilled'?results[1].value:null,
+          syncError:results.some(function(result){return result.status==='rejected';})
+        });
       });
     }).catch(function(){
       app.innerHTML=ForgeState.html('error',{label:'Revision is unavailable',body:'We couldn’t load the curated cards. Check your connection and refresh.'});

@@ -43,6 +43,7 @@ assert.strictEqual(revision.config(assignment).target, 10);
 assert.strictEqual(revision.config({ banks: ['GCSE-GEO-HAZ', revision.markerFor('due')] }).mode, 'due');
 assert.strictEqual(revision.isRevision({ banks: ['GCSE-GEO-HAZ'] }), false);
 assert.strictEqual(revision.assignmentProgress(assignment, { assignments: {}, reviews: {} }).answered, 0);
+assert.strictEqual(revision.assignmentProgress(assignment, { assignments: { 'r-1': { answered: Array.from({length:10}, (_,i) => 'card-'+i), complete: false } }, reviews: {} }).complete, true);
 
 const saved = { reviews: {}, assignments: { 'r-1': { answered: ['a', 'b'], complete: false } } };
 window.localStorage.setItem('forge-revision:student-1', JSON.stringify(saved));
