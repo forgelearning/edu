@@ -25,7 +25,7 @@
 <link rel="stylesheet" href="css/states.css">
   <link rel="stylesheet" href="css/generated-utilities.css">
   <link rel="stylesheet" href="css/page-overrides/teacher.css?v=20260929-friends3">
-  <link rel="stylesheet" href="css/page-overrides/revision.css?v=20260910-reporting">
+  <link rel="stylesheet" href="css/page-overrides/revision.css?v=20260930-allsubjects">
   <link rel="stylesheet" href="css/auth-ember.css?v=20260817-auth2">
   <link rel="stylesheet" href="css/content-status.css">
 </head>
@@ -82,7 +82,7 @@ function mountTeacherSidebar() {
 <!-- Assignment attainment is defined once, in forge-assignment-progress.js, and
      shared with the student's assignment view so the two cannot disagree. -->
 <script>window.ForgeAssignmentBanks=BANKS;</script><script src="scripts/forge-assignment-progress.js"></script>
-<script src="scripts/forge-revision.js?v=20260910-reporting"></script>
+<script src="scripts/forge-revision.js?v=20260930-allsubjects"></script>
 <script src="scripts/forge-misconception-state.js"></script>
 <script src="scripts/forge-metrics.js"></script>
 <script src="scripts/forge-league.js?v=20260929a"></script>
@@ -2049,8 +2049,8 @@ function renderAssignCard(asgn, students, responses, isArchived) {
     revisionHtml += '<div class="assign-card-title">' + teacherEsc(asgn.title) + '</div>';
     revisionHtml += '<div class="assign-meta">' + teacherEsc(bankLabels) + '</div>';
     if (!isArchived) {
-      revisionHtml += '<div class="assign-progress-row"><span class="status status-progress">Revision pilot · ' + (revision.mode === 'due' ? 'clear due queue' : revision.target + ' cards') + '</span>' + dueBadge(asgn.due_date) + '</div>';
-      revisionHtml += '<p class="revision-assignment-summary">Students complete this in Revision. Their personal spaced-review schedule stays on-device; shared review outcomes appear in the Revision reporting tab.</p>';
+      revisionHtml += '<div class="assign-progress-row"><span class="status status-progress">Revision · ' + (revision.mode === 'due' ? 'clear due queue' : revision.target + ' cards') + '</span>' + dueBadge(asgn.due_date) + '</div>';
+      revisionHtml += '<p class="revision-assignment-summary">Students complete this in Revision. Shared review outcomes appear in the Revision reporting tab.</p>';
     }
     revisionHtml += '<div class="asgn-actions">';
     revisionHtml += isArchived

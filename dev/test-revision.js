@@ -5,10 +5,15 @@ const vm = require('vm');
 
 const stored = {};
 const window = {
+  SUBJECTS: {
+    'gcse-geo': { label: 'GCSE Geography', banks: ['GCSE-GEO-HAZ', 'GCSE-GEO-BIOSPHERE', 'GCSE-GEO-DEV'] },
+    'alevel-econ': { label: 'A Level Economics', banks: ['ECON-1.1'] }
+  },
   BANKS: {
     'GCSE-GEO-HAZ': { questionCount: 12, questions: [] },
     'GCSE-GEO-BIOSPHERE': { questionCount: 10, questions: [] },
-    'GCSE-GEO-DEV': { questionCount: 9, questions: [] }
+    'GCSE-GEO-DEV': { questionCount: 9, questions: [] },
+    'ECON-1.1': { label: 'Supply and Demand', questionCount: 20, questions: [] }
   },
   localStorage: {
     getItem(key) { return Object.prototype.hasOwnProperty.call(stored, key) ? stored[key] : null; },
@@ -42,10 +47,23 @@ assert.strictEqual(revision.assignmentProgress(assignment, { assignments: {}, re
 const saved = { reviews: {}, assignments: { 'r-1': { answered: ['a', 'b'], complete: false } } };
 window.localStorage.setItem('forge-revision:student-1', JSON.stringify(saved));
 assert.strictEqual(revision.readState({ studentId: 'student-1' }).assignments['r-1'].answered.length, 2);
+assert.deepStrictEqual(Array.from(revision.readState({ studentId: 'student-1' }).personalCards), []);
+
+const own = revision.cleanPersonalCard({ front: '  What causes earthquakes? ', back: ' Plates move. ', bank: 'GCSE-GEO-HAZ', source: 'Forge question 1' });
+assert.strictEqual(own.front, 'What causes earthquakes?');
+assert.strictEqual(own.back, 'Plates move.');
+assert.strictEqual(revision.personalAsReview(own).key, 'personal|' + own.id);
+assert.strictEqual(revision.personalAsReview(own).question.options.answer, 'Plates move.');
+assert.throws(() => revision.cleanPersonalCard({front:'',back:'answer'}), /Add a question/);
+assert.throws(() => revision.cleanPersonalCard({front:'x',back:'a'.repeat(2001)}), /2,000/);
+const edited = revision.cleanPersonalCard({front:'New front',back:'New back',bank:'GCSE-GEO-HAZ'}, own);
+assert.strictEqual(edited.id, own.id);
+assert.strictEqual(edited.source, 'Forge question 1');
 
 const teacherPanel = revision.teacherPanelHtml('gcse-geo');
-assert(teacherPanel.includes('Year 10 Geography pilot'));
+assert(teacherPanel.includes('GCSE Geography'));
 assert(teacherPanel.includes('Shared progress appears in the Revision tab'));
-assert.strictEqual(revision.teacherPanelHtml('alevel-econ'), '');
+assert(revision.teacherPanelHtml('alevel-econ').includes('Supply and Demand'));
+assert.strictEqual(revision.teacherPanelHtml('unknown'), '');
 
-console.log('Revision pilot tests passed (11 assertions).');
+console.log('All-subject revision and personal card tests passed.');

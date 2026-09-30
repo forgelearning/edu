@@ -514,6 +514,9 @@ html:not([data-theme="light"]) body.forge-solo-login::after{color:var(--forge-lo
 .xp-result__next{margin:8px 0 0;color:var(--slate);font-size:13px}
 .result-league{max-width:420px;margin:0 auto 28px}
 .result-league:empty{display:none}
+.forge-save-card{display:inline-flex;align-items:center;min-height:44px;margin:16px 0 0;padding:0 16px;border:1px solid var(--line);border-radius:var(--radius-pill);background:var(--panel);color:var(--white);font:600 13px 'Poppins',sans-serif;cursor:pointer}
+.forge-save-card:hover{border-color:var(--hot);color:var(--hot)}
+.forge-save-card:focus-visible{outline:2px solid var(--hot);outline-offset:3px}
 /* Topic choice: two equal buttons, and the full list always visible below. */
 .forge-session-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:4px}
 .forge-session-actions .forge-button{min-height:48px;flex:1 1 200px;justify-content:center}

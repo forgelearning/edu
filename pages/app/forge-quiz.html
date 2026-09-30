@@ -16,7 +16,7 @@
 
 <link rel="stylesheet" href="css/states.css">
   <link rel="stylesheet" href="css/generated-utilities.css">
-<link rel="stylesheet" href="css/page-overrides/forge-quiz.css?v=20260928-topics1">
+<link rel="stylesheet" href="css/page-overrides/forge-quiz.css?v=20260930-flashcards">
 </head>
 <body>
 <script src="scripts/forge-api.js?v=20260809"></script>
@@ -1525,6 +1525,22 @@ function revealQuizNext(){
   });
 }
 
+function offerRevisionCard(feedback, question){
+  if(!feedback||!question||!question.options||!question.options[question.correct])return;
+  var button=document.createElement('button');
+  button.type='button';button.className='forge-save-card';button.textContent='Make a flashcard from this';
+  button.onclick=function(){
+    var saved=null;try{saved=JSON.parse(localStorage.getItem('forge-student')||'null');}catch(e){}
+    var studentId=state.studentId||(saved&&saved.studentId);
+    if(!studentId){button.textContent='Join your class to save cards';return;}
+    try{
+      localStorage.setItem('forge-revision-draft:'+studentId,JSON.stringify({front:question.stem,back:question.options[question.correct],bank:state.bank,source:'Forge question '+question.id}));
+      location.href='revision.html';
+    }catch(e){button.textContent='Could not save a draft on this device';}
+  };
+  feedback.appendChild(button);
+}
+
 function renderQuiz(){
   // Check daily limit before showing next question
   if (isAtDailyLimit()) {
@@ -1603,6 +1619,7 @@ function renderQuiz(){
 
       var fb=document.getElementById('feedback');
       fb.innerHTML=window.ForgeQuestion.renderFeedback(q,isCorrect);
+      offerRevisionCard(fb,q);
       if(isCorrect){ awardXP(XP_CORRECT, fb.querySelector('.praise-box')); forgeSaveSession(); }
       if(!isCorrect){
         if(q.reforge){

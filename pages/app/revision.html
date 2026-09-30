@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="Curated, spaced revision for completed GCSE Geography topics.">
+  <meta name="description" content="Create flashcards and practise spaced revision across every Forge subject.">
   <title>Forge — Revision</title>
   <link rel="stylesheet" href="css/fonts.css">
   <link rel="stylesheet" href="css/tokens.css">
@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="css/components.css?v=20260812">
   <link rel="stylesheet" href="css/states.css">
   <link rel="stylesheet" href="css/generated-utilities.css">
-  <link rel="stylesheet" href="css/page-overrides/revision.css">
+  <link rel="stylesheet" href="css/page-overrides/revision.css?v=20260930-allsubjects">
 </head>
 <body>
 <script src="scripts/forge-api.js?v=20260809"></script>
@@ -53,33 +53,47 @@ ForgeSidebar.mount({
 <script src="scripts/forge-data-loader.js?v=20260823"></script>
 <script>window.ForgeAssignmentBanks=BANKS;</script>
 <script src="scripts/forge-assignment-progress.js"></script>
-<script src="scripts/forge-revision.js?v=20260910-reporting"></script>
+<script src="scripts/forge-personal-cards.js"></script>
+<script src="scripts/forge-revision.js?v=20260930-allsubjects"></script>
 <script>
 (function(){
   var app=document.getElementById('revision-app'),saved=null;
   ForgeState.loading(app,{label:'Preparing revision',body:'Choosing the right knowledge to bring back.'});
-  try{saved=JSON.parse(localStorage.getItem('forge-student')||'null');}catch(e){}
+  try{
+    saved=JSON.parse(localStorage.getItem('forge-student')||'null');
+    if(!saved||!saved.studentId){
+      var free=JSON.parse(localStorage.getItem('forge-free-session')||'null');
+      var paid=JSON.parse(localStorage.getItem('forge-paid-student')||'null');
+      if(free&&free.studentId)saved={studentId:free.studentId,freeToken:free.freeToken||null,studentName:free.name||'',subject:'personal'};
+      else if(paid&&paid.studentId)saved=Object.assign({},saved||{},{studentId:paid.studentId,studentName:paid.name||'',subject:'personal'});
+    }
+  }catch(e){}
   if(!saved&&location.hostname==='127.0.0.1'&&new URLSearchParams(location.search).get('preview')==='1'){
     saved={studentId:'revision-preview',classId:'revision-preview',studentName:'Alex',classSubject:'gcse-geo',subject:'gcse-geo'};
   }
 
   function noStudent(){
-    app.innerHTML=ForgeState.html('empty',{label:'Join your class to start revision',body:'Use your class details in Forge first. Your revision schedule will then stay linked to this device.',action:{label:'Open Forge',href:'forge-quiz.html'}});
+    app.innerHTML=ForgeState.html('empty',{label:'Sign in to start revision',body:'Open Forge with your student account or class details to keep your cards together across devices.',action:{label:'Open Forge',href:'forge-quiz.html'}});
   }
   function contextFromSaved(value){
     var registry=(window.ForgeClasses&&ForgeClasses.list().find(function(item){return item.classId===value.classId;}))||{};
     return Object.assign({},registry,value);
   }
   function mount(context){
-    var subject=context.classSubject||context.subject;
-    if(subject&&subject!=='gcse-geo'){
-      app.innerHTML=ForgeState.html('empty',{label:'The revision pilot is starting with GCSE Geography',body:'Hazardous Earth, People and the Biosphere, and Development Dynamics are available first. More subjects will follow after the pilot.',action:{label:'Back to dashboard',href:'student-dashboard.html'}});
-      return;
-    }
-    ForgeData.loadBanks(ForgeRevision.PILOT_BANKS).then(function(){
+    var catalog=window.SUBJECTS||{},requested=new URLSearchParams(location.search).get('subject');
+    var subject=catalog[requested]?requested:catalog[context.classSubject]?context.classSubject:catalog[context.subject]?context.subject:Object.keys(catalog)[0];
+    ForgeData.loadSubject(subject).then(function(){
       return ForgeRevision.loadStudentData(context).catch(function(){return {context:context,assignments:[]};});
     }).then(function(data){
-      ForgeRevision.mountStudent({root:app,context:data.context,assignments:data.assignments,reload:boot});
+      return ForgeData.loadBanks((data.assignments||[]).reduce(function(all,item){return all.concat(ForgeRevision.banks(item));},[])).then(function(){return data;});
+    }).then(function(data){
+      var local=ForgeRevision.readState(data.context);
+      function changeSubject(next){var url=new URL(location.href);url.searchParams.set('subject',next);location.href=url.href;}
+      return ForgePersonalCards.load(data.context,local.personalCards,local.reviews).then(function(remote){
+        ForgeRevision.mountStudent({root:app,context:data.context,subject:subject,changeSubject:changeSubject,assignments:data.assignments,reload:boot,remoteCards:remote});
+      }).catch(function(){
+        ForgeRevision.mountStudent({root:app,context:data.context,subject:subject,changeSubject:changeSubject,assignments:data.assignments,reload:boot,syncError:true});
+      });
     }).catch(function(){
       app.innerHTML=ForgeState.html('error',{label:'Revision is unavailable',body:'We couldn’t load the curated cards. Check your connection and refresh.'});
     });
