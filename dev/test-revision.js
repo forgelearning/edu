@@ -67,4 +67,26 @@ assert(teacherPanel.includes('Shared progress appears in the Revision tab'));
 assert(revision.teacherPanelHtml('alevel-econ').includes('Supply and Demand'));
 assert.strictEqual(revision.teacherPanelHtml('unknown'), '');
 
+const scheduled = [
+  {id:'scheduled-1',front:'First saved question?',back:'First answer',bank:'ECON-1.1'},
+  {id:'scheduled-2',front:'Second saved question?',back:'Second answer',bank:'ECON-1.1'}
+];
+window.localStorage.setItem('forge-revision:scheduled-student', JSON.stringify({
+  assignments:{},personalCards:scheduled,reviews:Object.fromEntries(scheduled.map(card => [
+    'personal|'+card.id,{lastRating:'got-it',dueAt:'2099-01-01T00:00:00.000Z',secureReviews:1}
+  ]))
+}));
+const listeners = {};
+const app = {
+  innerHTML:'',
+  querySelector(){return null;},
+  addEventListener(name,handler){listeners[name]=handler;}
+};
+revision.mountStudent({root:app,context:{studentId:'scheduled-student'},subject:'alevel-econ',assignments:[]});
+assert(app.innerHTML.includes('2 saved</span><span>0 ready today'));
+assert(app.innerHTML.includes('data-revision-action="my-cards">Review my cards</button>'));
+listeners.click({target:{closest(selector){return selector==='[data-revision-action]'?{getAttribute(){return 'my-cards';}}:null;}}});
+assert(app.innerHTML.includes('Card 1 of 2'));
+assert(app.innerHTML.includes('First saved question?') || app.innerHTML.includes('Second saved question?'));
+
 console.log('All-subject revision and personal card tests passed.');
