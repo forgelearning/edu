@@ -22,6 +22,8 @@ h1,h2,h3{font-family:'Rethink Sans',sans-serif;color:var(--white);line-height:1.
 .bank-btn .code{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
 .bank-btn .name{font-size:16px;font-weight:700;color:var(--white);margin-top:1px}
 .bank-btn .qcount{font-size:12px;color:#8A857E;margin-top:1px}
+.forge-chemistry-group{grid-column:1/-1;margin:16px 0 0;color:var(--white);font:700 19px 'Rethink Sans',sans-serif}
+.forge-chemistry-group:first-child{margin-top:0}
 .progress-bar{height:3px;background:var(--line);border-radius:var(--radius-xs);margin-bottom:24px}
 .progress-fill{height:3px;border-radius:var(--radius-xs);transition:width .3s}
 .quiz-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;font-size:13px;color:#8A857E}

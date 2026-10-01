@@ -50,6 +50,8 @@ ForgeSidebar.mount({
   <div id="revision-app" aria-live="polite"></div>
 </main>
 <script src="data/forge-catalog.js?v=20260911-recap"></script>
+<script src="data/spec-registry.js"></script>
+<script src="scripts/forge-chemistry-topics.js"></script>
 <script src="scripts/forge-data-loader.js?v=20260823"></script>
 <script>window.ForgeAssignmentBanks=BANKS;</script>
 <script src="scripts/forge-assignment-progress.js"></script>
@@ -86,7 +88,7 @@ ForgeSidebar.mount({
     ForgeData.loadSubject(subject).then(function(){
       return ForgeRevision.loadStudentData(context).catch(function(){return {context:context,assignments:[]};});
     }).then(function(data){
-      return ForgeData.loadBanks((data.assignments||[]).reduce(function(all,item){return all.concat(ForgeRevision.banks(item));},[])).then(function(){return data;});
+      return ForgeData.loadBanks((data.assignments||[]).reduce(function(all,item){return all.concat(ForgeRevision.banks(item).reduce(function(found,bank){return found.concat(ForgeChemistryTopics.sourceBanks(bank));},[]));},[])).then(function(){return data;});
     }).then(function(data){
       var local=ForgeRevision.readState(data.context);
       function changeSubject(next){var url=new URL(location.href);url.searchParams.set('subject',next);location.href=url.href;}

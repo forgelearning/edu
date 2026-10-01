@@ -26633,6 +26633,33 @@ const chemistryFallbackPoints = {
   "CHEM-2": "aqa-a-chem-3.1.4",
   "CHEM-3": "aqa-a-chem-3.3.1"
 };
+// The broad keyword route below predates topic-level practice. These reviewed
+// exceptions keep cross-topic words (acid, bond, oxide, rate, isomer) from
+// sending a question into a topic a student may not have studied yet.
+const chemistryReviewedTopics = {
+  "3.1.1": ["CHEM-N2-37"],
+  "3.1.2": ["CHEM-N1-07","CHEM-N1-16","CHEM-N1-17","CHEM-N1-32","CHEM-N4-01","CHEM-15","CHEM-N2-34","CHEM-N3-35"],
+  "3.1.3": ["CHEM-03","CHEM-06","CHEM-08","CHEM-E1-07","CHEM-E1-08","CHEM-E1-09","CHEM-N1-10","CHEM-N1-11","CHEM-N1-12","CHEM-N1-13","CHEM-N1-14","CHEM-N1-15","CHEM-N1-24","CHEM-N1-25"],
+  "3.1.5": ["CHEM-N2-01","CHEM-N2-03","CHEM-N2-26"],
+  "3.1.6": ["CHEM-N2-07","CHEM-N2-30"],
+  "3.1.7": ["CHEM-N1-26","CHEM-E2-05"],
+  "3.1.8": ["CHEM-N2-13","CHEM-N2-14","CHEM-N2-15","CHEM-N2-16","CHEM-N4-02"],
+  "3.1.9": ["CHEM-N2-04","CHEM-N2-05","CHEM-N2-27"],
+  "3.1.11": ["CHEM-N2-20"],
+  "3.1.12": ["CHEM-N2-12"],
+  "3.2.2": ["CHEM-E4B-02"],
+  "3.2.1": ["CHEM-N1-22"],
+  "3.2.5": ["CHEM-E4-04","CHEM-N2-24"],
+  "3.2.6": ["CHEM-N1-20","CHEM-E4-02","CHEM-N2-36"],
+  "3.3.1": ["ORG-01","CHEM-N3-03"],
+  "3.3.2": ["CHEM-E4C-01","CHEM-E4C-03","CHEM-N3-16"],
+  "3.3.3": ["CHEM-N3-10","CHEM-N3-11"],
+  "3.3.6": ["CHEM-N3-17","CHEM-N3-18","CHEM-N3-33"],
+  "3.3.7": ["CHEM-N3-04"],
+  "3.3.14": ["CHEM-E4C-04","CHEM-E4C-06","CHEM-E4C-07","CHEM-E4C-08","CHEM-N3-25","CHEM-N3-26"]
+};
+const chemistryPointById = {};
+for (const [code, ids] of Object.entries(chemistryReviewedTopics)) for (const id of ids) chemistryPointById[id] = `aqa-a-chem-${code}`;
 const chemistryPointFor = (bankId, stem) => {
   const text = String(stem || "").toLowerCase();
   const routes = [
@@ -26678,7 +26705,7 @@ const chemistryPointFor = (bankId, stem) => {
 };
 for (const bankId of Object.keys(chemistryFallbackPoints)) {
   for (const question of BANKS[bankId]?.questions || []) {
-    question.specPointId = chemistryPointFor(bankId, question.stem);
+    question.specPointId = chemistryPointById[question.id] || chemistryPointFor(bankId, question.stem);
   }
 }
 
