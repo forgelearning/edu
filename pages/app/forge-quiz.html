@@ -382,6 +382,7 @@ var SPEC_TO_SUBJECT = {
 <script src="data/spec-registry.js"></script>
 <script src="data/forge-catalog.js?v=20260911-recap"></script>
 <script src="scripts/forge-chemistry-topics.js"></script>
+<script src="scripts/forge-chemistry-resources.js"></script>
 <script src="scripts/forge-data-loader.js?v=20260821"></script>
 <script src="scripts/forge-misconception-state.js"></script>
 <script src="scripts/forge-league.js?v=20260929a"></script>
@@ -1644,6 +1645,7 @@ function renderQuiz(){
 
       var fb=document.getElementById('feedback');
       fb.innerHTML=window.ForgeQuestion.renderFeedback(q,isCorrect);
+      if(!isCorrect&&window.ForgeChemistryResources)ForgeChemistryResources.appendTo(fb,q);
       offerRevisionCard(fb,q);
       if(isCorrect){ awardXP(XP_CORRECT, fb.querySelector('.praise-box')); forgeSaveSession(); }
       if(!isCorrect){
@@ -1781,6 +1783,7 @@ function renderFillBlankQuiz(q,bk,headerHtml){
 
     var fb=document.getElementById('feedback');
     fb.innerHTML=window.ForgeQuestion.renderFeedback(q,allCorrect);
+    if(!allCorrect&&window.ForgeChemistryResources)ForgeChemistryResources.appendTo(fb,q);
     if(allCorrect) awardXP(XP_CORRECT, fb.querySelector('.praise-box'));
     if(!allCorrect){
       if(q.reforge){

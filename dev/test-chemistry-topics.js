@@ -9,7 +9,7 @@ page.ForgeData = {register(subject,banks){
   for(const [id,bank] of Object.entries(banks)) page.BANKS[id] = {...page.BANKS[id],...bank};
 }};
 vm.createContext(page);
-for(const file of ['data/spec-registry.js','data/forge-catalog.js','scripts/forge-chemistry-topics.js','data/question-payloads/chem.js']) {
+for(const file of ['data/spec-registry.js','data/forge-catalog.js','scripts/forge-chemistry-topics.js','data/question-payloads/chem.js','scripts/forge-chemistry-resources.js']) {
   vm.runInContext(fs.readFileSync(file,'utf8'),page,{filename:file});
 }
 const topics = page.ForgeChemistryTopics.list();
@@ -20,7 +20,17 @@ for(const topic of topics) {
   assert.strictEqual(items.length,topic.count,topic.label);
   assert(items.every(item=>item.question.specPointId===topic.pointId));
   assert(items.every(item=>page.SUBJECTS.chem.banks.includes(item.bank)));
+  assert(items.every(item=>page.ForgeChemistryResources.forQuestion(item.question).some(resource=>resource.kind==='notes')),topic.label+' needs notes');
 }
+const massSpec=page.ForgeChemistryResources.forQuestion({specPointId:'aqa-a-chem-3.1.1',stem:'How does TOF mass spectrometry work?'});
+assert(massSpec.some(resource=>resource.kind==='video'&&resource.url.includes('WoNzJUu3gKA')));
+assert(massSpec.some(resource=>resource.kind==='notes'&&resource.url.includes('masspecmenu.html')));
+assert(!page.ForgeChemistryResources.forQuestion({specPointId:'aqa-a-chem-3.1.1',stem:'What are isotopes?'}).some(resource=>resource.kind==='video'));
+assert(page.ForgeChemistryResources.forQuestion({specPointId:'aqa-a-chem-3.1.3',stem:'Explain hydrogen bonding'}).some(resource=>resource.kind==='video'));
+assert.strictEqual(page.ForgeChemistryResources.forQuestion({specPointId:'aqa-a-bio-3.1.1',stem:'Atomic structure'}).length,0);
+const quizHtml=fs.readFileSync('pages/app/forge-quiz.html','utf8');
+assert(quizHtml.includes('scripts/forge-chemistry-resources.js'));
+assert(quizHtml.includes('ForgeChemistryResources.appendTo(fb,q)'));
 const atomic=topics.find(topic=>topic.code==='3.1.1');
 assert.strictEqual(atomic.label,'Atomic structure');
 assert.strictEqual(atomic.count,16);
@@ -45,5 +55,6 @@ assert(!app.innerHTML.includes('data-revision-action="today"'));
 assert(app.innerHTML.includes('data-bank="'+atomic.id+'"'));
 listeners.click({target:{closest(selector){return selector==='[data-revision-action]'?{getAttribute(name){return name==='data-revision-action'?'topic':atomic.id;}}:null;}}});
 assert(app.innerHTML.includes('Card 1 of 8'));
-assert(atomic && page.ForgeChemistryTopics.questions(atomic.id).some(item=>app.innerHTML.includes(item.question.stem.replace(/&/g,'&amp;'))));
+const escaped = value => String(value).replace(/[&<>'"]/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[ch]));
+assert(atomic && page.ForgeChemistryTopics.questions(atomic.id).some(item=>app.innerHTML.includes(escaped(item.question.stem))));
 console.log('Chemistry topic mapping passed (202 questions, original bank identities preserved).');
