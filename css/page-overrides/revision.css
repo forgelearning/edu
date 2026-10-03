@@ -7,6 +7,7 @@
 .revision-page-head p{max-width:620px;margin:14px 0 0;color:var(--slate);font-size:16px;line-height:1.65}
 .revision-subject-picker{display:flex;align-items:center;gap:12px;margin-top:20px;color:var(--slate);font-size:13px;font-weight:700}
 .revision-subject-picker select{max-width:min(100%,320px);min-height:40px;padding:7px 12px;border:1px solid var(--line);border-radius:var(--radius-md);background:var(--panel);color:var(--white);font:inherit}
+.revision-subject-picker strong{color:var(--white)}
 .revision-page-head>div:last-child{display:grid;grid-template-columns:auto auto;align-items:center;gap:10px;padding-left:28px;border-left:1px solid var(--line)}
 .revision-page-head>div:last-child strong{font:700 34px/1 'JetBrains Mono',monospace;color:var(--hot)}
 .revision-page-head>div:last-child span{font-size:11px;line-height:1.4;color:var(--dim)}

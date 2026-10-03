@@ -67,6 +67,13 @@ assert(!/Methane|livestock/.test(shortHint),'a short answer hint does not reveal
 assert(/Start with one fact/.test(revision.hintHtml({options:{A:'9/8'},correct:'A'})),'numeric answers keep the general prompt');
 assert(/Start with one fact/.test(revision.hintHtml({options:{A:'了'},correct:'A'})),'character answers keep the general prompt');
 assert(!revision.hintHtml({options:{A:'<b>Plate</b> tectonics'},correct:'A'}).includes('<b>'),'answer text is escaped');
+// The subject menu lists the student's own class subjects, not the whole catalogue.
+const catalog = { econ:{label:'Economics'}, 'gcse-geo':{label:'GCSE Geography'}, psych:{label:'Psychology'}, hist:{label:'History'} };
+assert.deepStrictEqual(Array.from(revision.subjectChoices(catalog, {classId:'c1', classSubject:'gcse-geo'}, [], 'gcse-geo')), ['gcse-geo'], 'one class: one subject');
+assert.deepStrictEqual(Array.from(revision.subjectChoices(catalog, {classId:'c1', classSubject:'gcse-geo'}, [{classId:'c2', subject:'psych'}], 'gcse-geo')), ['gcse-geo','psych'], 'every class the student has joined, in catalogue order');
+assert.deepStrictEqual(Array.from(revision.subjectChoices(catalog, {classId:'c1', classSubject:'gcse-geo'}, [], 'hist')), ['gcse-geo','hist'], 'the subject open now is never missing from its own menu');
+assert.strictEqual(revision.subjectChoices(catalog, {studentId:'free-1', subject:'personal'}, [], 'econ').length, 4, 'independent study keeps every subject');
+assert.strictEqual(revision.subjectChoices(catalog, {classId:'c1'}, [], null).length, 4, 'a class with no known subject falls back to the full list');
 assert.throws(() => revision.cleanPersonalCard({front:'',back:'answer'}), /Add a question/);
 assert.throws(() => revision.cleanPersonalCard({front:'x',back:'a'.repeat(2001)}), /2,000/);
 const edited = revision.cleanPersonalCard({front:'New front',back:'New back',bank:'GCSE-GEO-HAZ'}, own);
