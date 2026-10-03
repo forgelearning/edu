@@ -1039,3 +1039,4 @@ if (csProjectPoint) {
     title: csProjectPoint[1].title
   };
 }
+if (typeof window !== 'undefined') window.ForgeSpecRegistry = SPEC_REGISTRY;

@@ -3,8 +3,18 @@
 -- There are no friendship rows at rollout, and no student records change.
 begin;
 
+-- The live pilot can be enabled after this migration has first run. Guard the
+-- backfill so a later migration replay does not switch that class off again.
+do $block$
+begin
+  if (select column_default from information_schema.columns
+      where table_schema = 'public' and table_name = 'classes'
+        and column_name = 'friends_enabled') is distinct from 'false' then
+    update public.classes set friends_enabled = false where friends_enabled;
+  end if;
+end;
+$block$;
 alter table public.classes alter column friends_enabled set default false;
-update public.classes set friends_enabled = false where friends_enabled;
 comment on column public.classes.friends_enabled is
   'Teacher opt-in for same-class friends; students share progress only after a request is accepted.';
 

@@ -22,6 +22,8 @@ h1,h2,h3{font-family:'Rethink Sans',sans-serif;color:var(--white);line-height:1.
 .bank-btn .code{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
 .bank-btn .name{font-size:16px;font-weight:700;color:var(--white);margin-top:1px}
 .bank-btn .qcount{font-size:12px;color:#8A857E;margin-top:1px}
+.forge-chemistry-group{grid-column:1/-1;margin:16px 0 0;color:var(--white);font:700 19px 'Rethink Sans',sans-serif}
+.forge-chemistry-group:first-child{margin-top:0}
 .progress-bar{height:3px;background:var(--line);border-radius:var(--radius-xs);margin-bottom:24px}
 .progress-fill{height:3px;border-radius:var(--radius-xs);transition:width .3s}
 .quiz-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;font-size:13px;color:#8A857E}
@@ -59,6 +61,14 @@ h1,h2,h3{font-family:'Rethink Sans',sans-serif;color:var(--white);line-height:1.
 @keyframes heat{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 .scaffold-box .stag{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--coal);background:var(--hot);padding:2px 8px;border-radius:var(--radius-xs);font-weight:600;margin-bottom:8px}
 .scaffold-box p{font-size:14px;color:var(--white);line-height:1.5}
+.forge-chemistry-help{margin-top:20px;padding-top:18px;border-top:1px solid var(--line)}
+.forge-chemistry-help h3{font-size:16px;line-height:1.3;margin-bottom:8px}
+.forge-chemistry-help__links{display:grid;gap:0}
+.forge-chemistry-help__link{display:flex;flex-direction:column;justify-content:center;min-height:52px;padding:10px 0;border-bottom:1px solid var(--line);text-decoration:none;color:var(--white)}
+.forge-chemistry-help__link strong{font-size:14px;line-height:1.4;font-weight:600}
+.forge-chemistry-help__link span{font-size:12px;line-height:1.4;color:var(--slate)}
+.forge-chemistry-help__link:hover strong{text-decoration:underline;text-underline-offset:3px;color:var(--hot)}
+.forge-chemistry-help__link:focus-visible{outline:2px solid var(--hot);outline-offset:3px;border-radius:var(--radius-xs)}
 .praise-box{margin-top:16px;padding:14px 16px;border-radius:var(--radius-md);border:1px solid var(--good);background:rgba(127,217,138,.08);color:var(--good);font-weight:600;font-size:14px}
 .reforge-trigger{margin-top:14px;padding:10px 20px;border-radius:var(--radius-sm);background:var(--ember);color:var(--coal);border:none;cursor:pointer;font-weight:600;font-size:14px;font-family:'Poppins',sans-serif}
 .reforge-box{margin-top:20px;padding:18px 16px;border-radius:var(--radius-md);border:1.5px solid var(--line);background:var(--panel)}

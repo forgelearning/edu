@@ -157,24 +157,42 @@ drop table if exists public.student_friendships;
 alter table public.classes drop column if exists friends_enabled;
 ```
 
+## 20260928 140000 — teacher read access to class friendships
+
+| File | What it does |
+|---|---|
+| `20260928140000_teacher_read_class_friendships.sql` | Grants `select` on `student_friendships` to `authenticated`, with one policy limiting it to rows in classes the caller teaches |
+
+**Applied to production 2026-09-28.** Read only: teachers cannot create,
+accept or remove friendships, `anon` still has no access, and a signed-in
+student teaches no class so the policy returns them nothing. Checked after
+applying: `anon` select false, `authenticated` select true and insert/delete
+false, one policy on the table.
+
+Rollback:
+
+```sql
+drop policy if exists "Teachers can read friendships in their classes" on public.student_friendships;
+revoke select on table public.student_friendships from authenticated;
+```
+
 ## 20260929 181805 — pause friends until individual codes
 
 | File | What it does |
 |---|---|
-| `20260929181805_pause_class_friends_until_student_codes.sql` | Wraps the three consent-dependent friend RPCs with a class-wide code coverage check. Classes with any student lacking an active individual code cannot list, send or accept friend requests. Existing friendship rows and class settings are unchanged. The old implementations lose all client EXECUTE grants. |
+| `20260929181805_pause_class_friends_until_student_codes.sql` | Requires every pupil in a class to have an active private code before friends can be listed or requests sent or accepted. Existing friendships and settings are unchanged. |
 
-**Applied to the Forge Supabase project on 29 September 2026.** The student
-card explains the pause; the teacher dashboard's code coverage notice points
-to issuing codes. Verified against an existing name-only class: read, send and
-accept all return `codes_required`. Confirmed `anon` and `authenticated` have
-no EXECUTE grant on the renamed `_unchecked` functions or readiness helper.
+**Applied to production 2026-09-29.** Read, send and accept return
+`codes_required` for a class with a name-only student. The renamed unchecked
+functions and readiness helper have no client EXECUTE grants.
 
 ## 20260929 190020 — teacher opt-in for class friends
 
 | File | What it does |
 |---|---|
-| `20260929190020_friends_teacher_opt_in.sql` | Defaults new classes to Friends off and switches existing classes off. Replaces the guarded send RPC so sending cannot silently accept an incoming request; the recipient must use Accept after seeing the sharing explanation. |
+| `20260929190020_friends_teacher_opt_in.sql` | Defaults new classes to Friends off, switches existing classes off at first application, and prevents a reverse request from silently accepting an incoming one. |
 
-The historical `20260928130000_class_friends.sql` file records the original
-default-on rollout and remains unchanged. This later migration is the source
-of truth for the current default. No friendship or student rows are changed.
+**Applied to production 2026-09-29.** The historical
+`20260928130000_class_friends.sql` default-on rollout remains in the history;
+this migration defines the current default. A replay preserves any class a
+teacher has since enabled. No student or friendship rows are changed.

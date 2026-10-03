@@ -12,7 +12,8 @@
         subject:meta.subject||subject,
         questionCount:meta.questionCount,
         assignableQuestionCount:meta.assignableQuestionCount,
-        crucibleQuestionCount:meta.crucibleQuestionCount
+        crucibleQuestionCount:meta.crucibleQuestionCount,
+        topicCounts:meta.topicCounts
       });
     });
     loaded[subject]=true;

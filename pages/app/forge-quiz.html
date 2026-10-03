@@ -16,7 +16,7 @@
 
 <link rel="stylesheet" href="css/states.css">
   <link rel="stylesheet" href="css/generated-utilities.css">
-<link rel="stylesheet" href="css/page-overrides/forge-quiz.css?v=20260928-xp1">
+<link rel="stylesheet" href="css/page-overrides/forge-quiz.css?v=20261003-interaction">
 </head>
 <body>
 <script src="scripts/forge-api.js?v=20260809"></script>
@@ -136,12 +136,13 @@ function getSpecPoint(question, bankKey) {
 
 function logResponse(q, selectedKey, isCorrect, isReforge, reforgeCorrect) {
   if (!state.studentId) return Promise.resolve(false);
+  var questionBank = state.questionBanks && state.questionBanks[q.id] || state.bank;
   var row = {
     student_id: state.studentId,
     class_id: state.classId,
     question_id: isReforge ? q.id + '-RF' : q.id,
-    bank: state.bank,
-    subject: getSubjectForBank(state.bank),
+    bank: questionBank,
+    subject: getSubjectForBank(questionBank),
     selected_option: selectedKey,
     is_correct: isCorrect,
     // A successful Re-forge still belongs to the misconception it repairs.
@@ -379,11 +380,13 @@ var SPEC_TO_SUBJECT = {
 // ===== DATA =====
 </script>
 <script src="data/spec-registry.js"></script>
-<script src="data/forge-catalog.js?v=20260821"></script>
+<script src="data/forge-catalog.js?v=20260911-recap"></script>
 <script src="scripts/forge-student-focus.js"></script>
+<script src="scripts/forge-chemistry-topics.js"></script>
+<script src="scripts/forge-chemistry-resources.js"></script>
 <script src="scripts/forge-data-loader.js?v=20260821"></script>
 <script src="scripts/forge-misconception-state.js"></script>
-<script src="scripts/forge-league.js?v=20260928d"></script>
+<script src="scripts/forge-league.js?v=20260929a"></script>
 <script src="data/misconception-labels.js?v=20260907-diagnostics"></script>
 <script>
 
@@ -405,6 +408,8 @@ var state = {
   paidSubjects: [],
   weightMap: {},       // spaced repetition: questionId → priority weight
   bankStats: {},       // latest per-topic accuracy used by the recommendation
+  topicSpec: null,      // Chemistry topic chosen for this quiz session
+  questionBanks: null,  // original bank for each Chemistry question
   sessionWrongTags: [], // misconceptions that fired in this session
   sessionReforgedTags: [], // fired misconceptions repaired by their twin
   baseXP: null,        // lifetime XP from history loaded at page start; null until known
@@ -413,7 +418,7 @@ var state = {
 };
 var FORGE_SESSION_SIZE = (window.ForgeApp && ForgeApp.session.defaultQuestionCount) || 8;
 var FORGE_SESSION_PREFIX = 'forge-session:';
-function forgeSessionKey(bank) { return FORGE_SESSION_PREFIX + String(state.studentId || 'anon') + ':' + String(state.classId || 'none') + ':' + bank; }
+function forgeSessionKey(bank) { return FORGE_SESSION_PREFIX + String(state.studentId || 'anon') + ':' + String(state.classId || 'none') + ':' + bank + (state.topicSpec ? ':' + state.topicSpec : ''); }
 function forgeSessionStorage(bank) { try { return JSON.parse(localStorage.getItem(forgeSessionKey(bank)) || 'null'); } catch(e) { return null; } }
 function forgeSaveSession() {
   if (!state.bank || !state.questions.length) return;
@@ -818,6 +823,7 @@ function render(skipMotion) {
       // The authenticated route can arrive before the paid/trial student row
       // has been restored. Do not render a session that cannot log responses.
       state.bank = requestedBank;
+      state.topicSpec=null;state.questionBanks=null;
       forgeStartSession(requestedBank, BANKS[requestedBank].questions.filter(function(q){return !q.type||q.type==='fill_blank';}));
       state.phase = 'quiz';
       requestedBankStarted = true;
@@ -1331,6 +1337,8 @@ function renderBanks(){
   h+='<div class="center">';
   h+='<h2 class="forge-u-1oh0w3h">'+subj.label+'</h2>';
   h+='<p class="forge-u-10yda30">'+subj.sub+'</p></div>';
+  if(state.subject==='chem')h+='<p class="forge-recommendation__copy">Choose a topic you have covered. Each practice set stays within that AQA Chemistry topic.</p>';
+  if(state.subject!=='chem'){
   var recommendedBank = recommendedBankForSubject(subj);
   var recommended = BANKS[recommendedBank];
   var confidence = window.ForgeContentConfidence && window.ForgeContentConfidence.statusFor ? window.ForgeContentConfidence.statusFor(state.subject) : {tier:'full'};
@@ -1351,9 +1359,15 @@ function renderBanks(){
   // both routes are buttons of equal size and the full list is always shown.
   h += '<div class="forge-action-row forge-session-actions"><button type="button" class="forge-button forge-button--primary" id="start-recommended">Start practice →</button>';
   h += '<button type="button" class="forge-button forge-button--secondary" id="change-session" aria-controls="all-session-options">Choose a different topic ↓</button></div></section>';
+  }
   h+='<section class="forge-topic-list" aria-labelledby="all-topics-title"><h2 id="all-topics-title">All topics in '+subj.label+'</h2>';
   h+='<div class="bank-list" id="all-session-options">';
-  subj.banks.forEach(function(key){
+  if(state.subject==='chem'&&window.ForgeChemistryTopics){
+    ForgeChemistryTopics.list().forEach(function(topic){
+      if(['3.1.1','3.2.1','3.3.1'].indexOf(topic.code)!==-1)h+='<h3 class="forge-chemistry-group">'+({'3.1':'Physical chemistry','3.2':'Inorganic chemistry','3.3':'Organic chemistry'}[topic.group])+'</h3>';
+      h+='<button type="button" class="bank-btn" data-topic="'+topic.id+'"><div class="code">'+topic.code+'</div><div class="name">'+topic.label+'</div><div class="qcount">'+topic.count+' '+(topic.count===1?'question':'questions')+'</div></button>';
+    });
+  }else subj.banks.forEach(function(key){
     var b=BANKS[key];
     var point = getSpecPoint({}, key);
     h+='<button type="button" class="bank-btn" data-key="'+key+'">';
@@ -1372,6 +1386,7 @@ function renderBanks(){
   if(recommendedBtn) recommendedBtn.onclick=function(){
     if(!recommended || !recommendedQuestions.length) return;
     state.assignmentId = null;
+    state.topicSpec=null;state.questionBanks=null;
     state.bank=recommendedBank; forgeStartSession(recommendedBank,recommendedQuestions);
     ensurePaidStudentId().then(function(){state.phase='quiz';render();});
   };
@@ -1385,9 +1400,19 @@ function renderBanks(){
   wireJoinMore();
   var backBtn = document.getElementById('back-subj');
   if (backBtn) backBtn.onclick=function(){state.phase='subjects';render();};
+  app.querySelectorAll('[data-topic]').forEach(function(button){button.onclick=function(){
+    var topic=button.getAttribute('data-topic'),items=ForgeChemistryTopics.questions(topic).filter(function(item){return !item.question.type||item.question.type==='fill_blank';});
+    if(!items.length)return;
+    state.assignmentId=null;state.topicSpec=topic;state.bank=items[0].bank;state.questionBanks={};
+    items.forEach(function(item){state.questionBanks[item.question.id]=item.bank;});
+    forgeStartSession(state.bank,items.map(function(item){return item.question;}));
+    ensurePaidStudentId().then(function(){state.phase='quiz';render();});
+  };});
   app.querySelectorAll('.bank-btn').forEach(function(b){
+    if(b.dataset.topic)return;
     b.onclick=function(){
       state.assignmentId = null;
+      state.topicSpec=null;state.questionBanks=null;
       state.bank=b.dataset.key;
       var rawQs=BANKS[b.dataset.key].questions.filter(function(q){return !q.type||q.type==='fill_blank';});
       forgeStartSession(state.bank, rawQs);
@@ -1447,6 +1472,7 @@ function renderBanks(){
             var bk = btn.getAttribute('data-asgn-bank');
             state.assignmentId = btn.getAttribute('data-asgn-id') || null;
             state.bank = bk;
+            state.topicSpec=null;state.questionBanks=null;
             var rawQs = BANKS[bk].questions.filter(function(q){return !q.type||q.type==='fill_blank';});
             forgeStartSession(state.bank, rawQs);
             state.phase='quiz'; render();
@@ -1540,7 +1566,7 @@ function offerRevisionCard(feedback, question){
     var studentId=state.studentId||(saved&&saved.studentId);
     if(!studentId){button.textContent='Join your class to save cards';return;}
     try{
-      localStorage.setItem('forge-revision-draft:'+studentId,JSON.stringify({front:question.stem,back:question.options[question.correct],bank:state.bank,source:'Forge question '+question.id}));
+      localStorage.setItem('forge-revision-draft:'+studentId,JSON.stringify({front:question.stem,back:question.options[question.correct],bank:state.questionBanks&&state.questionBanks[question.id]||state.bank,source:'Forge question '+question.id}));
       location.href='revision.html';
     }catch(e){button.textContent='Could not save a draft on this device';}
   };
@@ -1560,7 +1586,7 @@ function renderQuiz(){
 
   var h='<div class="quiz-header">';
   h+='<button type="button" class="back-btn" id="back-banks">\u2190 Topics</button>';
-  h+='<span class="bank-name" style="color:'+bk.color+'">'+bk.label+'</span>';
+  h+='<span class="bank-name" style="color:'+bk.color+'">'+(state.topicSpec&&window.ForgeChemistryTopics?ForgeChemistryTopics.label(state.topicSpec):bk.label)+'</span>';
   h+='<span>Question '+(state.idx+1)+' of '+state.questions.length+(xpEnabled()?' · <span id="session-xp">'+state.sessionXP+' XP</span>':'')+'</span></div>';
   h+='<p class="forge-u-lp9fq9" id="forge-answer-save" role="status">Your progress saves automatically.</p>';
   h+='<div class="progress-bar"><div class="progress-fill" style="width:'+((state.idx/state.questions.length)*100)+'%;background:'+bk.color+'"></div></div>';
@@ -1634,6 +1660,7 @@ function renderQuiz(){
 
       var fb=document.getElementById('feedback');
       fb.innerHTML=window.ForgeQuestion.renderFeedback(q,isCorrect);
+      if(!isCorrect&&window.ForgeChemistryResources)ForgeChemistryResources.appendTo(fb,q);
       offerRevisionCard(fb,q);
       if(isCorrect){ awardXP(XP_CORRECT, fb.querySelector('.praise-box')); forgeSaveSession(); }
       if(!isCorrect){
@@ -1771,6 +1798,7 @@ function renderFillBlankQuiz(q,bk,headerHtml){
 
     var fb=document.getElementById('feedback');
     fb.innerHTML=window.ForgeQuestion.renderFeedback(q,allCorrect);
+    if(!allCorrect&&window.ForgeChemistryResources)ForgeChemistryResources.appendTo(fb,q);
     if(allCorrect) awardXP(XP_CORRECT, fb.querySelector('.praise-box'));
     if(!allCorrect){
       if(q.reforge){
@@ -1920,7 +1948,7 @@ function renderResults(){
   h+='</div>';
   app.innerHTML=h;
   document.getElementById('retry').onclick=function(){
-    var rawQs2=BANKS[state.bank].questions.filter(function(q){return !q.type||q.type==='fill_blank';});
+    var rawQs2=state.topicSpec&&window.ForgeChemistryTopics?ForgeChemistryTopics.questions(state.topicSpec).map(function(item){return item.question;}).filter(function(q){return !q.type||q.type==='fill_blank';}):BANKS[state.bank].questions.filter(function(q){return !q.type||q.type==='fill_blank';});
     forgeStartSession(state.bank, rawQs2);
     state.phase='quiz';render();
   };

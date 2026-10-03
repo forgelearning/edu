@@ -23,7 +23,7 @@
 <link rel="stylesheet" href="css/states.css">
   <link rel="stylesheet" href="css/generated-utilities.css">
   <link rel="stylesheet" href="css/page-overrides/teacher.css?v=20260929-friends3">
-  <link rel="stylesheet" href="css/page-overrides/revision.css?v=20260910-reporting">
+  <link rel="stylesheet" href="css/page-overrides/revision.css?v=20260930-allsubjects">
   <link rel="stylesheet" href="css/auth-ember.css?v=20260817-auth2">
   <link rel="stylesheet" href="css/content-status.css">
 </head>
@@ -74,15 +74,17 @@ function mountTeacherSidebar() {
   <div id="app"></div>
 </main>
 
-<script src="data/forge-catalog.js?v=20260823"></script>
+<script src="data/forge-catalog.js?v=20260911-recap"></script>
+<script src="data/spec-registry.js"></script>
+<script src="scripts/forge-chemistry-topics.js"></script>
 <script src="data/forge-question-index.js?v=20260823"></script>
 <!-- Assignment attainment is defined once, in forge-assignment-progress.js, and
      shared with the student's assignment view so the two cannot disagree. -->
 <script>window.ForgeAssignmentBanks=BANKS;</script><script src="scripts/forge-assignment-progress.js"></script>
-<script src="scripts/forge-revision.js?v=20260910-reporting"></script>
+<script src="scripts/forge-revision.js?v=20260930-allsubjects"></script>
 <script src="scripts/forge-misconception-state.js"></script>
 <script src="scripts/forge-metrics.js"></script>
-<script src="scripts/forge-league.js?v=20260928d"></script>
+<script src="scripts/forge-league.js?v=20260929a"></script>
 <script src="scripts/forge-friends.js?v=20260929d"></script>
 <script src="data/misconception-labels.js?v=20260907-diagnostics"></script>
 <script src="data/starter-activities.js?v=20260813"></script>
@@ -703,24 +705,27 @@ function renderLogin(activeTab) {
       });
       sel.innerHTML = opts;
     }
-    // Grey out subjects this teacher already has a class for. This used to be
-    // triggered by blurring the school field and filtered on the typed school;
-    // the school is now fixed per teacher, so filter on the teacher alone and
-    // run it as soon as the form is shown.
+    // A teacher commonly teaches the same subject to more than one cohort (a
+    // Year 12 and a Year 13 A-Level Economics set, say), so subjects they
+    // already have a class for stay selectable. This used to disable them
+    // outright, which made the second set impossible to create. Nothing
+    // downstream requires one class per subject: the dashboard scopes by
+    // class_id and its own student list, and students join by class code.
+    // The count is shown only so an accidental duplicate is obvious.
     (function() {
       if (currentTeacher && currentTeacher.id) {
         supaGet('classes', 'teacher_user_id=eq.' + encodeURIComponent(currentTeacher.id)).then(function(existing) {
-          var usedSubjects = {};
-          (existing || []).forEach(function(c) { if (c.subject) usedSubjects[c.subject] = true; });
+          var subjectCounts = {};
+          (existing || []).forEach(function(c) {
+            if (c.subject) subjectCounts[c.subject] = (subjectCounts[c.subject] || 0) + 1;
+          });
           var sel2 = document.getElementById('c-subj');
           if (!sel2) return;
           var opts2 = '<option value="">— Select subject —</option>';
           SUBJECT_OPTIONS.forEach(function(s) {
-            if (!usedSubjects[s.key]) {
-              opts2 += '<option value="' + s.key + '">' + s.label + ' (' + s.spec + ')</option>';
-            } else {
-              opts2 += '<option class="forge-u-41pj58" value="" disabled>' + s.label + ' — you already have a class for this</option>';
-            }
+            var held = subjectCounts[s.key] || 0;
+            var note = held ? ' — you already have ' + held + ' class' + (held !== 1 ? 'es' : '') + ' for this' : '';
+            opts2 += '<option value="' + s.key + '">' + s.label + ' (' + s.spec + ')' + note + '</option>';
           });
           sel2.innerHTML = opts2;
         }).catch(function() {});
@@ -1946,6 +1951,24 @@ Object.keys(BANKS).forEach(function(key) { BANK_LABELS[key] = BANKS[key].label; 
 var SUBJECT_BANKS = {};
 Object.keys(SUBJECTS).forEach(function(key) { SUBJECT_BANKS[key] = SUBJECTS[key].banks; });
 
+// Banks a class can be set even though another subject owns them. A Year 12
+// Economics class is routinely set the GCSE recap as September bridging work,
+// but the bank belongs to GCSE Economics: cross-listing it in SUBJECTS would
+// count 20 GCSE questions towards A Level's totals and put 20 tags that only
+// aggregate within GCSE into A Level's misconception taxonomy. Offering it
+// here instead keeps ownership honest. Delivery needs nothing further —
+// forge-data-loader resolves a bank to its owning subject's payload, so a
+// student opens it whatever their class is studying.
+var BRIDGING_BANKS = { econ: ['GCSE-ECON-RECAP'] };
+
+function assignableBanksFor(subject) {
+  var banks = subject && SUBJECT_BANKS[subject] ? SUBJECT_BANKS[subject] : Object.keys(BANK_LABELS);
+  var bridging = (subject && BRIDGING_BANKS[subject]) || [];
+  return banks.concat(bridging.filter(function(bank) {
+    return BANK_LABELS[bank] && banks.indexOf(bank) === -1;
+  }));
+}
+
 function dueBadge(dateStr) {
   if (!dateStr) return '';
   var due = new Date(dateStr);
@@ -2091,7 +2114,7 @@ function renderAssignments() {
   if (!el) return;
 
   var subject = dashState.classSubject;
-  var availableBanks = subject && SUBJECT_BANKS[subject] ? SUBJECT_BANKS[subject] : Object.keys(BANK_LABELS);
+  var availableBanks = assignableBanksFor(subject);
   var contentConfidence = window.ForgeContentConfidence && window.ForgeContentConfidence.statusFor ? window.ForgeContentConfidence.statusFor(subject) : {tier:'full'};
   var assignments = dashState.assignments || [];
   var students = dashState.students || [];
@@ -2123,7 +2146,7 @@ function renderAssignments() {
   h += '<label class="forge-u-1s6s0pt" for="asgn-due">Due date <span class="forge-u-19j2vc3">(required)</span></label>';
   h += '<input type="date" id="asgn-due" aria-describedby="asgn-due-help">';
   h += '<p class="forge-u-ux2pa9" id="asgn-due-help">Students can still see the work after the date, but it will be marked overdue.</p>';
-  h += '<div class="forge-u-1woniy7"><div class="card-title forge-u-3ocpgz">Select banks to include</div><span class="forge-u-18u61ix" id="asgn-selected-count">0 selected</span></div>';
+  h += '<div class="forge-u-1woniy7"><div class="card-title forge-u-3ocpgz">Select banks to include</div><span class="forge-u-18u61ix" id="asgn-selected-count">0 of ' + availableBanks.length + ' selected</span></div>';
   h += '<div class="bank-checklist">';
   availableBanks.forEach(function(bk) {
     var label = BANK_LABELS[bk] || bk;
@@ -2226,7 +2249,7 @@ function renderAssignments() {
     var selectedCount = document.getElementById('asgn-selected-count');
     var refreshAssignmentForm = function() {
       var selected = el.querySelectorAll('.bank-checklist input[type=checkbox]:checked').length;
-      selectedCount.textContent = selected + ' selected';
+      selectedCount.textContent = selected + ' of ' + el.querySelectorAll('.bank-checklist input[type=checkbox]').length + ' selected';
       var ready = !!titleInput.value.trim() && !!dueInput.value && selected > 0;
       createBtn.disabled = !ready;
       createBtn.setAttribute('aria-disabled', ready ? 'false' : 'true');

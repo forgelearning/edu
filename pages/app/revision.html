@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="css/components.css?v=20260812">
   <link rel="stylesheet" href="css/states.css">
   <link rel="stylesheet" href="css/generated-utilities.css">
-  <link rel="stylesheet" href="css/page-overrides/revision.css">
+  <link rel="stylesheet" href="css/page-overrides/revision.css?v=20261003-interaction">
 </head>
 <body>
 <script src="scripts/forge-api.js?v=20260809"></script>
@@ -48,13 +48,16 @@ ForgeSidebar.mount({
 <main class="wrap revision-wrap" id="main-content">
   <div id="revision-app" aria-live="polite"></div>
 </main>
-<script src="data/forge-catalog.js?v=20260823"></script>
+<script src="data/forge-catalog.js?v=20260911-recap"></script>
 <script src="scripts/forge-student-focus.js"></script>
+<script src="data/spec-registry.js"></script>
+<script src="scripts/forge-chemistry-topics.js"></script>
 <script src="scripts/forge-data-loader.js?v=20260823"></script>
 <script>window.ForgeAssignmentBanks=BANKS;</script>
 <script src="scripts/forge-assignment-progress.js"></script>
 <script src="scripts/forge-personal-cards.js"></script>
-<script src="scripts/forge-revision.js?v=20260910-reporting"></script>
+<script src="scripts/forge-revision-progress.js"></script>
+<script src="scripts/forge-revision.js?v=20261003-interaction"></script>
 <script>
 (function(){
   var app=document.getElementById('revision-app'),saved=null;
@@ -87,14 +90,21 @@ ForgeSidebar.mount({
     ForgeData.loadSubject(subject).then(function(){
       return ForgeRevision.loadStudentData(context).catch(function(){return {context:context,assignments:[]};});
     }).then(function(data){
-      return ForgeData.loadBanks((data.assignments||[]).reduce(function(all,item){return all.concat(ForgeRevision.banks(item));},[])).then(function(){return data;});
+      return ForgeData.loadBanks((data.assignments||[]).reduce(function(all,item){return all.concat(ForgeRevision.banks(item).reduce(function(found,bank){return found.concat(ForgeChemistryTopics.sourceBanks(bank));},[]));},[])).then(function(){return data;});
     }).then(function(data){
       var local=ForgeRevision.readState(data.context);
       function changeSubject(next){ForgeStudentFocus.remember(data.context.studentId,next);var url=new URL(location.href);url.searchParams.set('subject',next);location.href=url.href;}
-      return ForgePersonalCards.load(data.context,local.personalCards,local.reviews).then(function(remote){
-        ForgeRevision.mountStudent({root:app,context:data.context,subject:subject,changeSubject:changeSubject,assignments:data.assignments,reload:boot,remoteCards:remote});
-      }).catch(function(){
-        ForgeRevision.mountStudent({root:app,context:data.context,subject:subject,changeSubject:changeSubject,assignments:data.assignments,reload:boot,syncError:true});
+      return Promise.allSettled([
+        ForgePersonalCards.load(data.context,local.personalCards,local.reviews),
+        ForgeRevisionProgress.load(data.context,local,(data.assignments||[]).map(function(item){return String(item.id);}))
+      ]).then(function(results){
+        ForgeRevision.mountStudent({
+          root:app,context:data.context,subject:subject,changeSubject:changeSubject,
+          assignments:data.assignments,reload:boot,
+          remoteCards:results[0].status==='fulfilled'?results[0].value:null,
+          remoteProgress:results[1].status==='fulfilled'?results[1].value:null,
+          syncError:results.some(function(result){return result.status==='rejected';})
+        });
       });
     }).catch(function(){
       app.innerHTML=ForgeState.html('error',{label:'Revision is unavailable',body:'We couldn’t load the curated cards. Check your connection and refresh.'});
