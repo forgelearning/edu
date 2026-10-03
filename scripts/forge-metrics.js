@@ -8,7 +8,7 @@
   }
   function accuracy(value){
     var answers=scored(value);
-    var correct=answers.filter(function(row){return !!row.is_correct;}).length;
+    var correct=answers.filter(function(row){return !!row.is_correct&&!row.hint_used;}).length;
     return {answers:answers,total:answers.length,correct:correct,percent:answers.length?Math.round(correct/answers.length*100):null};
   }
   root.ForgeMetrics={scored:scored,accuracy:accuracy};

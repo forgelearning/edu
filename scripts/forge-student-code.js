@@ -37,7 +37,7 @@
     recordResponse: function (studentId, classCode, studentCode, row) {
       row = row || {};
       function payload(assignmentId) {
-        return {
+        var p = {
           p_student_id: studentId,
           p_class_code: String(classCode || '').trim().toUpperCase(),
           p_student_code: clean(studentCode),
@@ -52,6 +52,8 @@
           p_reforge_correct: row.reforge_correct == null ? null : !!row.reforge_correct,
           p_assignment_id: assignmentId || null
         };
+        if (row.hint_used) p.p_hint_used = true;
+        return p;
       }
 
       return rpc('record_student_response_with_code', payload(row.assignment_id)).then(function (result) {

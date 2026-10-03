@@ -196,3 +196,17 @@ functions and readiness helper have no client EXECUTE grants.
 `20260928130000_class_friends.sql` default-on rollout remains in the history;
 this migration defines the current default. A replay preserves any class a
 teacher has since enabled. No student or friendship rows are changed.
+
+## 20261003 170000 — Practice hints recorded
+
+| File | What it does |
+|---|---|
+| `20261003170000_responses_hint_used.sql` | Adds `responses.hint_used` (default false). Both answer-writing RPCs gain a `p_hint_used` overload; the existing signatures become wrappers that record false. League and friends XP give a hinted correct first attempt 5 instead of 10, friends accuracy excludes it, and `get_school_overview` returns the flag. |
+
+**Coupled to the client.** Practice sends `p_hint_used` (and `hint_used` on
+direct inserts) only when a hint was used, so unhinted answers work before and
+after. Hinted answers fail to save until this is applied, so apply it before
+the client ships. `dev/test-hint-credit.js` pins the rule in SQL and in every
+client copy of the XP and accuracy calculations.
+
+**Applied to production 2026-10-03.** Checked first in a rolled-back transaction against the live schema. Afterwards: column present with no rows flagged, every function carries the rule, client grants unchanged, and `dev/audit-supabase-security.js` passes.

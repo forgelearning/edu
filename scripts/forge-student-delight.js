@@ -3,7 +3,7 @@
   function topicProgress(rows,bank){
     var days={},latest=null;
     (rows||[]).forEach(function(row){
-      if(!row||row.bank!==bank||!row.is_correct||row.reforge_attempted)return;
+      if(!row||row.bank!==bank||!row.is_correct||row.hint_used||row.reforge_attempted)return;
       var time=Date.parse(row.created_at||'');
       if(!Number.isFinite(time))return;
       var date=new Date(time),day=[date.getFullYear(),date.getMonth()+1,date.getDate()].join('-');

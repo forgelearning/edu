@@ -140,7 +140,7 @@ const server = http.createServer((req, res) => {
           selected_option:body.p_selected_option,is_correct:!!body.p_is_correct,
           misconception_tag:body.p_misconception_tag||null,spec_point:body.p_spec_point||null,
           reforge_attempted:!!body.p_reforge_attempted,reforge_correct:body.p_reforge_correct,
-          assignment_id:body.p_assignment_id||null,created_at:new Date().toISOString()
+          assignment_id:body.p_assignment_id||null,hint_used:!!body.p_hint_used,created_at:new Date().toISOString()
         });
         json(res, 200, {allowed:true});
       });

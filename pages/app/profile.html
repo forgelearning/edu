@@ -87,7 +87,7 @@ function learningTrail(responses,studentId){
     var bank=r.bank||'',day=new Date(when).toDateString(),kind=r.reforge_attempted?'repair':'practice',key=kind+'|'+bank+'|'+day;
     if(seen[key])return;
     if(r.reforge_attempted){if(!r.reforge_correct)return;entries.push({when:when,label:'Re-forged an idea'+(bank?' in '+resolveBankLabel(bank):''),href:'anvil.html'});}
-    else if(r.is_correct&&bank){entries.push({when:when,label:'Recalled '+resolveBankLabel(bank),href:'forge-quiz.html?bank='+encodeURIComponent(bank)});}
+    else if(r.is_correct&&!r.hint_used&&bank){entries.push({when:when,label:'Recalled '+resolveBankLabel(bank),href:'forge-quiz.html?bank='+encodeURIComponent(bank)});}
     else return;
     seen[key]=true;
   });
@@ -157,7 +157,7 @@ function calcXP(responses){
     if(r.question_id&&r.question_id.endsWith('-ANVIL')){ if(r.is_correct) xp+=30; }
     else if(r.question_id&&r.question_id.endsWith('-CRU')&&r.is_correct) xp+=30;
     else if(r.reforge_attempted&&r.reforge_correct) xp+=20;
-    else if(r.is_correct&&!r.reforge_attempted) xp+=10;
+    else if(r.is_correct&&!r.reforge_attempted) xp+=r.hint_used?5:10;
   });
   return xp;
 }
@@ -214,7 +214,7 @@ function mcSummary(rows){
 /* Everything calcGrade needs for one slice of responses. */
 function gradeFor(rows, isGCSE){
   var marked=rows.filter(function(r){return !r.reforge_attempted;});
-  var right=marked.filter(function(r){return r.is_correct;}).length;
+  var right=marked.filter(function(r){return r.is_correct&&!r.hint_used;}).length;
   var acc=marked.length>0?Math.round((right/marked.length)*100):0;
   var mc=mcSummary(rows);
   return {
@@ -248,7 +248,7 @@ function classInfo(){
 function renderProfile(){
   var responses=st.responses;
   var total=responses.filter(function(r){return !r.reforge_attempted;}).length;
-  var correct=responses.filter(function(r){return !r.reforge_attempted&&r.is_correct;}).length;
+  var correct=responses.filter(function(r){return !r.reforge_attempted&&r.is_correct&&!r.hint_used;}).length;
   var acc=total>0?Math.round((correct/total)*100):0;
   var accCol=acc>=75?'var(--good)':acc>=50?'var(--hot)':'var(--bad)';
   var xp=calcXP(responses);
@@ -293,7 +293,7 @@ function renderProfile(){
   responses.filter(function(r){return !r.reforge_attempted&&r.bank&&!r.bank.endsWith('-MIX');}).forEach(function(r){
     if(!bankStats[r.bank])bankStats[r.bank]={t:0,c:0};
     bankStats[r.bank].t++;
-    if(r.is_correct)bankStats[r.bank].c++;
+    if(r.is_correct&&!r.hint_used)bankStats[r.bank].c++;
   });
   var strengths=Object.keys(bankStats).filter(function(b){return bankStats[b].t>=3;}).map(function(b){
     return{bank:b,acc:Math.round((bankStats[b].c/bankStats[b].t)*100)};
@@ -439,7 +439,7 @@ function renderProfile(){
       var subj = r.subject || 'unknown';
       if (!subjectData[subj]) subjectData[subj] = { total:0, correct:0, banks:{}, mcs:{} };
       subjectData[subj].total++;
-      if (r.is_correct) subjectData[subj].correct++;
+      if (r.is_correct&&!r.hint_used) subjectData[subj].correct++;
       if (r.bank) subjectData[subj].banks[r.bank] = true;
       if (!r.is_correct && r.misconception_tag) {
         subjectData[subj].mcs[r.misconception_tag] = (subjectData[subj].mcs[r.misconception_tag]||0)+1;
@@ -492,7 +492,7 @@ function renderProfile(){
     if(recentMain.length===0 && responses.length===0){
       h+=ForgeState.html('empty',{label:'No Forge sessions yet',body:'Complete your first quiz session to see accuracy and grade tracking.'});
     } else {
-      var recentCorrect=recentMain.filter(function(r){return r.is_correct;}).length;
+      var recentCorrect=recentMain.filter(function(r){return r.is_correct&&!r.hint_used;}).length;
       var recentAcc=Math.round((recentCorrect/recentMain.length)*100);
       var recentCol=recentAcc>=75?'var(--good)':recentAcc>=50?'var(--hot)':'var(--bad)';
       h+='<div class="forge-u-elv7v3">';
@@ -572,7 +572,7 @@ function renderProfile(){
     if(crucibleResponses.length===0){
       h+=ForgeState.html('empty',{label:'No Crucible sessions yet',body:'Complete a Crucible session to see your timed performance here.'});
     } else {
-      var cCorrect=crucibleResponses.filter(function(r){return r.is_correct;}).length;
+      var cCorrect=crucibleResponses.filter(function(r){return r.is_correct&&!r.hint_used;}).length;
       var cAcc=Math.round((cCorrect/crucibleResponses.length)*100);
       var cCol=cAcc>=75?'var(--good)':cAcc>=50?'var(--hot)':'var(--bad)';
       h+='<div class="stat-row forge-u-4jqx9p">';

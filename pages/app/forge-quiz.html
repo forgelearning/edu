@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="css/base.css?v=20260808-navpolish">
 <link rel="stylesheet" href="css/auth.css">
 <link rel="stylesheet" href="css/sidebar.css">
-<link rel="stylesheet" href="css/components.css?v=20260812">
+<link rel="stylesheet" href="css/components.css?v=20261003-hints">
 <link rel="stylesheet" href="css/forge-league.css?v=20260929f">
 
 <link rel="stylesheet" href="css/states.css">
@@ -25,7 +25,7 @@
 <script src="scripts/forge-shell.js"></script>
 <script src="scripts/forge-content-status.js?v=20260812"></script>
 <script src="scripts/forge-app.js"></script>
-<script src="scripts/forge-question.js"></script>
+<script src="scripts/forge-question.js?v=20261003-hints"></script>
 <script src="scripts/forge-theme.js?v=20260808-theme2"></script>
 <script src="scripts/forge-logo.js"></script>
 <script src="scripts/forge-role.js"></script>
@@ -135,7 +135,7 @@ function getSpecPoint(question, bankKey) {
   return SPEC_REGISTRY.points[pointId] || null;
 }
 
-function logResponse(q, selectedKey, isCorrect, isReforge, reforgeCorrect) {
+function logResponse(q, selectedKey, isCorrect, isReforge, reforgeCorrect, hintUsed) {
   if (!state.studentId) return Promise.resolve(false);
   var questionBank = state.questionBanks && state.questionBanks[q.id] || state.bank;
   var row = {
@@ -158,6 +158,7 @@ function logResponse(q, selectedKey, isCorrect, isReforge, reforgeCorrect) {
     reforge_correct: isReforge ? reforgeCorrect : null,
     assignment_id: state.assignmentId || null
   };
+  if (hintUsed) row.hint_used = true;
   if (requestedAssignmentId) row.assignment_id = requestedAssignmentId;
   state.responseHistory.push(Object.assign({created_at:new Date().toISOString()},row));
   // Use auth token for trial/paid students so RLS policies pass correctly
@@ -193,7 +194,7 @@ function logResponse(q, selectedKey, isCorrect, isReforge, reforgeCorrect) {
     // row, it enforces the daily quota atomically on the server so clearing
     // localStorage cannot mint another ten-question allowance.
     if (state.studentId && state.classId == null) {
-      return ForgeAPI.rpc('record_free_response', {
+      var freePayload = {
         p_student_id: state.studentId,
         p_free_token: (loadFreeSession() || {}).freeToken || null,
         p_question_id: row.question_id,
@@ -205,7 +206,9 @@ function logResponse(q, selectedKey, isCorrect, isReforge, reforgeCorrect) {
         p_reforge_attempted: row.reforge_attempted,
         p_reforge_correct: row.reforge_correct,
         p_assignment_id: row.assignment_id || null
-      }).then(function(result) {
+      };
+      if (row.hint_used) freePayload.p_hint_used = true;
+      return ForgeAPI.rpc('record_free_response', freePayload).then(function(result) {
         // The server is authoritative. If a stale local meter lets one more
         // question render, stop here and show the same limit wall rather than
         // advancing to a question the server refused to save.
@@ -465,7 +468,7 @@ function forgeCompleteSession() {
 // 20. Keep them in step, or the number a student sees here will not match the
 // total on their dashboard. Free-tier students do not see XP: the upgrade
 // screen sells XP and ranks as a Pro feature.
-var XP_CORRECT = 10, XP_REFORGE = 20;
+var XP_CORRECT = 10, XP_REFORGE = 20, XP_HINTED = 5;
 function xpEnabled() { return !isFreeTier(); }
 function setXPHistory(responses) { state.baseXP = calcXPFromResponses(responses || []); }
 function awardXP(amount, host) {
@@ -1650,6 +1653,8 @@ function renderQuiz(){
     return;
   }
 
+  // Guarded: a cached forge-question.js from before hints must not break Practice.
+  if(window.ForgeQuestion.hintButtonHtml) h += window.ForgeQuestion.hintButtonHtml();
   h += window.ForgeQuestion.renderOptions(q);
 
   app.innerHTML=h;
@@ -1657,11 +1662,23 @@ function renderQuiz(){
 
   var opts=app.querySelectorAll('.opt');
   var answered=false;
+  // "Rule out one option" is recorded as hint_used: the answer still counts
+  // as answered and still opens a misconception if wrong, but a hinted correct
+  // answer is not credited in accuracy and earns XP_HINTED.
+  var hinted=false;
+  var hintBtn=document.getElementById('hint-btn')||document.createElement('button');
+  hintBtn.onclick=function(){
+    if(answered||!window.ForgeQuestion.ruleOutOption(q,document.getElementById('opts')))return;
+    hinted=true;
+    hintBtn.disabled=true;
+    hintBtn.textContent='One option ruled out · half XP for this one';
+  };
 
   opts.forEach(function(o){
     o.onclick=function(){
-      if(answered)return;
+      if(answered||o.classList.contains('ruled-out'))return;
       answered=true;
+      hintBtn.disabled=true;
       var k=o.dataset.k;
       var isCorrect=k===q.correct;
       if(isCorrect) state.score++;
@@ -1678,7 +1695,7 @@ function renderQuiz(){
       if (isCorrect) { state.weightMap[q.id] = Math.max(0.2, (state.weightMap[q.id]||1) * 0.5); }
       else { state.weightMap[q.id] = 3; }
     }
-    var responseSaved = logResponse(q, k, isCorrect, false, null);
+    var responseSaved = logResponse(q, k, isCorrect, false, null, hinted);
     forgeSyncStudentWidgetProgress();
     var saveLabel=document.getElementById('forge-answer-save');
     if(saveLabel){saveLabel.textContent='Saving this answer…';saveLabel.dataset.state='saving';}
@@ -1701,7 +1718,7 @@ function renderQuiz(){
       fb.innerHTML=window.ForgeQuestion.renderFeedback(q,isCorrect);
       if(!isCorrect&&window.ForgeChemistryResources)ForgeChemistryResources.appendTo(fb,q);
       offerRevisionCard(fb,q);
-      if(isCorrect){ awardXP(XP_CORRECT, fb.querySelector('.praise-box')); forgeSaveSession(); }
+      if(isCorrect){ awardXP(hinted?XP_HINTED:XP_CORRECT, fb.querySelector('.praise-box')); forgeSaveSession(); }
       if(!isCorrect){
         if(q.reforge){
           document.getElementById('rf-btn').onclick=function(){
@@ -1949,7 +1966,7 @@ function calcXPFromResponses(responses){
     if(r.question_id&&r.question_id.endsWith('-ANVIL')){ if(r.is_correct) xp+=30; }
     else if(r.question_id&&r.question_id.endsWith('-CRU')&&r.is_correct) xp+=30;
     else if(r.reforge_attempted&&r.reforge_correct) xp+=20;
-    else if(r.is_correct&&!r.reforge_attempted) xp+=10;
+    else if(r.is_correct&&!r.reforge_attempted) xp+=r.hint_used?5:10;
   });
   return xp;
 }
@@ -2030,7 +2047,7 @@ function buildWeightMap(responses) {
     if (!r.question_id || r.reforge_attempted) return;
     var id = r.question_id;
     if (!qData[id]) qData[id] = {correct:0, wrong:0, lastWrong:0};
-    if (r.is_correct) qData[id].correct++;
+    if (r.is_correct&&!r.hint_used) qData[id].correct++;
     else {
       qData[id].wrong++;
       var ts = r.created_at ? new Date(r.created_at).getTime() : 0;
@@ -2055,7 +2072,7 @@ function buildBankStats(responses) {
     var marker = String(r.bank) + '|' + String(r.question_id).replace(/-RF$/, '');
     var timestamp = r.created_at ? new Date(r.created_at).getTime() : 0;
     if (!latest[marker] || timestamp >= latest[marker].timestamp) {
-      latest[marker] = {bank: String(r.bank), correct: !!r.is_correct, timestamp: timestamp};
+      latest[marker] = {bank: String(r.bank), correct: !!(r.is_correct&&!r.hint_used), timestamp: timestamp};
     }
   });
   var stats = {};

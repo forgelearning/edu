@@ -227,7 +227,7 @@ function renderDashboard() {
   var totalResponses = scoredResponses.length;
   var avgAcc = null;
   if (totalResponses > 0) {
-    var correct = scoredResponses.filter(function(r) { return r.is_correct; }).length;
+    var correct = scoredResponses.filter(function(r) { return r.is_correct&&!r.hint_used; }).length;
     avgAcc = Math.round((correct / totalResponses) * 100);
   }
 
@@ -309,7 +309,7 @@ function renderDashboard() {
     // Only count against subjects that have a real class (no phantom rows)
     if (!subjectMap[subj]) return;
     subjectMap[subj].responses++;
-    if (r.is_correct) subjectMap[subj].correct++;
+    if (r.is_correct&&!r.hint_used) subjectMap[subj].correct++;
     var scoredTag=ForgeMisconceptions.tagForRow(r);
     if (!r.is_correct && scoredTag) {
       subjectMap[subj].mcs[scoredTag] = (subjectMap[subj].mcs[scoredTag] || 0) + 1;
@@ -378,7 +378,7 @@ function renderDashboard() {
     }).map(function(r) { return r.student_id; }));
     var acc = 0;
     if (classResponses.length > 0) {
-      acc = Math.round((classResponses.filter(function(r) { return r.is_correct; }).length / classResponses.length) * 100);
+      acc = Math.round((classResponses.filter(function(r) { return r.is_correct&&!r.hint_used; }).length / classResponses.length) * 100);
     }
     return {
       name: cls.name || cls.code,
@@ -479,7 +479,7 @@ function renderDashboard() {
     for (var i = 0; i < weeks.length; i++) {
       if (t > weeks[i].start && t <= weeks[i].end) {
         weeks[i].total++;
-        if (r.is_correct) weeks[i].correct++;
+        if (r.is_correct&&!r.hint_used) weeks[i].correct++;
         weeks[i].students[r.student_id] = true;
         break;
       }
@@ -585,7 +585,7 @@ function renderDashboard() {
       var key = c && keyOf(c);
       if (!key || !map[key]) return;
       map[key].total++;
-      if (r.is_correct) map[key].correct++;
+      if (r.is_correct&&!r.hint_used) map[key].correct++;
     });
     return Object.keys(map).map(function (k) { return map[k]; }).sort(function (a, b) {
       var aa = pct(a.correct, a.total), bb = pct(b.correct, b.total);
@@ -640,7 +640,7 @@ function renderDashboard() {
     var key = cohortOf[r.student_id];
     if (!key) return;
     cohorts[key].total++;
-    if (r.is_correct) cohorts[key].correct++;
+    if (r.is_correct&&!r.hint_used) cohorts[key].correct++;
   });
   h += '<section class="card school-cohort" aria-labelledby="cohort-title">';
   h += '<div class="card-title" id="cohort-title">Access arrangements <span class="forge-u-1dueybt">· extra time vs standard</span></div>';
@@ -808,7 +808,7 @@ function renderDashboard() {
     if (!enrolledStudentIds.has(r.student_id)) return;
     if (!studentStats[r.student_id]) studentStats[r.student_id] = { total: 0, correct: 0 };
     studentStats[r.student_id].total++;
-    if (r.is_correct) studentStats[r.student_id].correct++;
+    if (r.is_correct&&!r.hint_used) studentStats[r.student_id].correct++;
   });
   var rankedStudents = students.filter(function(s) {
     return s.class_id && studentStats[s.id] && studentStats[s.id].total >= 5;
@@ -1033,7 +1033,7 @@ function renderDashboard() {
     if (!sp || sp === 'TECH') return;
     if (!specTotals[sp]) specTotals[sp] = { total: 0, correct: 0, students: {} };
     specTotals[sp].total++;
-    if (r.is_correct) specTotals[sp].correct++;
+    if (r.is_correct&&!r.hint_used) specTotals[sp].correct++;
     if (r.student_id) specTotals[sp].students[r.student_id] = true;
   });
 
@@ -1167,7 +1167,7 @@ window.exportCSV = function(type) {
       var subj = resolved.subject;
       if (!subj || !subjectMap[subj]) return;
       subjectMap[subj].responses++;
-      if (r.is_correct) subjectMap[subj].correct++;
+      if (r.is_correct&&!r.hint_used) subjectMap[subj].correct++;
       var tag=ForgeMisconceptions.tagForRow(r);
       if (!r.is_correct && tag) subjectMap[subj].mcs[tag] = (subjectMap[subj].mcs[tag]||0)+1;
     });
@@ -1189,7 +1189,7 @@ window.exportCSV = function(type) {
       var activeIds = new Set(exportResponses.filter(function(r){
         return (r.class_id===cls.id||(!r.class_id&&csIds.has(r.student_id)))&&new Date(r.created_at)>weekAgo;
       }).map(function(r){return r.student_id;}));
-      var acc = cr.length>0?Math.round((cr.filter(function(r){return r.is_correct;}).length/cr.length)*100):0;
+      var acc = cr.length>0?Math.round((cr.filter(function(r){return r.is_correct&&!r.hint_used;}).length/cr.length)*100):0;
       rows.push([cls.name||cls.code, cls.subject||'', cs.length, cr.length, activeIds.size, acc+'%']);
     });
   } else if (type === 'misconceptions') {

@@ -1825,7 +1825,7 @@ function renderSpecBreakdown(responses) {
     if (!sp || sp === 'TECH') return;
     if (!specData[sp]) specData[sp] = { total: 0, correct: 0, students: {}, subjects: {} };
     specData[sp].total++;
-    if (r.is_correct) specData[sp].correct++;
+    if (r.is_correct&&!r.hint_used) specData[sp].correct++;
     if (r.student_id) specData[sp].students[r.student_id] = true;
     var responseSubject = subjectForResponse(r);
     if (responseSubject) specData[sp].subjects[responseSubject] = true;
@@ -2512,7 +2512,7 @@ function renderClassOverview(responses, students) {
     var ps = perStudent[r.student_id];
     if (!ps) return;
     ps.total++;
-    if (r.is_correct) ps.correct++;
+    if (r.is_correct&&!r.hint_used) ps.correct++;
     if (!r.is_correct && r.misconception_tag) {
       ps.misconceptions[r.misconception_tag] = (ps.misconceptions[r.misconception_tag] || 0) + 1;
     }
@@ -2524,7 +2524,7 @@ function renderClassOverview(responses, students) {
     var key = r.student_id + '|' + r.bank;
     if (!bankByStudent[key]) bankByStudent[key] = { total: 0, correct: 0, bank: r.bank, student_id: r.student_id };
     bankByStudent[key].total++;
-    if (r.is_correct) bankByStudent[key].correct++;
+    if (r.is_correct&&!r.hint_used) bankByStudent[key].correct++;
   });
 
   // Find weakest bank and top MC per student
@@ -2755,7 +2755,7 @@ window.renderStudent = function(studentId) {
       var secs = Math.max(0, Math.round((end - start) / 1000));
       var mins = Math.floor(secs / 60), remSecs = secs % 60;
       var durLabel = mins + ':' + (remSecs < 10 ? '0' : '') + remSecs;
-      var correct = sess.answers.filter(function(a) { return a.is_correct; }).length;
+      var correct = sess.answers.filter(function(a) { return a.is_correct&&!a.hint_used; }).length;
       var pct = Math.round((correct / sess.answers.length) * 100);
       var col = pct >= 75 ? 'var(--good)' : pct >= 50 ? 'var(--hot)' : 'var(--bad)';
       var dateLabel = start.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }) + ' · ' + start.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
@@ -2775,7 +2775,7 @@ window.renderStudent = function(studentId) {
     if (!sp || sp === 'TECH') return;
     if (!specData[sp]) specData[sp] = { total: 0, correct: 0 };
     specData[sp].total++;
-    if (r.is_correct) specData[sp].correct++;
+    if (r.is_correct&&!r.hint_used) specData[sp].correct++;
   });
   var specKeys = Object.keys(specData).sort();
   if (specKeys.length > 0) {

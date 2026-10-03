@@ -91,7 +91,7 @@
       out.push({
         id:rawId,
         bank:response.bank,
-        correct:!!(response.is_correct||response.isCorrect),
+        correct:!!(response.is_correct||response.isCorrect)&&!response.hint_used,
         selected:response.selected_option!=null?response.selected_option:(response.selectedOption!=null?response.selectedOption:null),
         at:response.created_at?new Date(response.created_at).getTime():0
       });

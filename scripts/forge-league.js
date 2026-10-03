@@ -112,7 +112,7 @@
     if (/-ANVIL$/.test(id)) return r.is_correct ? 30 : 0;
     if (/-CRU$/.test(id) && r.is_correct) return 30;
     if (r.reforge_attempted && r.reforge_correct) return 20;
-    if (r.is_correct && !r.reforge_attempted) return 10;
+    if (r.is_correct && !r.reforge_attempted) return r.hint_used ? 5 : 10;
     return 0;
   }
 

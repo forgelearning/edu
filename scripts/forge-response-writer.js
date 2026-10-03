@@ -84,7 +84,7 @@
     /* Free students write through the token-gated RPC, which also enforces the
        daily quota server-side. `allowed:false` is a refusal, not an error. */
     if (session.freeToken) {
-      return root.ForgeAPI.rpc('record_free_response', {
+      var freePayload = {
         p_student_id: session.studentId,
         p_free_token: session.freeToken,
         p_question_id: row.question_id,
@@ -96,7 +96,9 @@
         p_reforge_attempted: row.reforge_attempted,
         p_reforge_correct: row.reforge_correct,
         p_assignment_id: row.assignment_id || null
-      }).then(function (result) {
+      };
+      if (row.hint_used) freePayload.p_hint_used = true;
+      return root.ForgeAPI.rpc('record_free_response', freePayload).then(function (result) {
         if (result && result.allowed === false) return { ok: false, refused: true, result: result };
         return ok(result);
       }).catch(function (e) { return fail(e, row, 'free-response-rpc'); });

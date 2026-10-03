@@ -114,7 +114,7 @@ function calcXP(responses){
     if(r.question_id&&r.question_id.endsWith('-ANVIL')){ if(r.is_correct) xp+=30; }
     else if(r.question_id&&r.question_id.endsWith('-CRU')&&r.is_correct) xp+=30;
     else if(r.reforge_attempted&&r.reforge_correct) xp+=20;
-    else if(r.is_correct&&!r.reforge_attempted) xp+=10;
+    else if(r.is_correct&&!r.reforge_attempted) xp+=r.hint_used?5:10;
   });
   return xp;
 }
@@ -241,7 +241,7 @@ function topicShortcutsHtml(responses, excludeKey){
   (responses||[]).forEach(function(r){
     if(r.reforge_attempted||!r.bank||!BANKS[r.bank]) return;
     var b=byBank[r.bank]||(byBank[r.bank]={key:r.bank,total:0,correct:0,last:''});
-    b.total++; if(r.is_correct) b.correct++;
+    b.total++; if(r.is_correct&&!r.hint_used) b.correct++;
     if((r.created_at||'')>b.last) b.last=r.created_at||'';
   });
   var picks=Object.keys(byBank).map(function(k){return byBank[k];})
@@ -347,7 +347,7 @@ function renderDashboard(){
     var key=r.bank||r.subject||'unknown';
     if(!BANKS[key]) return;
     if(!topicData[key]) topicData[key]={total:0,correct:0,label:BANKS[key].label};
-    topicData[key].total++; if(r.is_correct) topicData[key].correct++;
+    topicData[key].total++; if(r.is_correct&&!r.hint_used) topicData[key].correct++;
   });
   var topicRanked=Object.keys(topicData).filter(function(k){return topicData[k].total>=3;}).map(function(k){
     var d=topicData[k]; return {key:k,label:d.label,acc:Math.round(d.correct/d.total*100),sample:d.total};
