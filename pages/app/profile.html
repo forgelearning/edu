@@ -471,7 +471,7 @@ function renderProfile(){
         var sacc = sd.total>0 ? Math.round((sd.correct/sd.total)*100) : 0;
         var scol = sacc>=75?'var(--good)':sacc>=50?'var(--hot)':'var(--bad)';
         var topMC = Object.keys(sd.mcs).sort(function(a,b){return sd.mcs[b]-sd.mcs[a];})[0]||null;
-        var topMCLabel = topMC?(resolveMCLabel(topMC)||topMC):null;
+        var topMCLabel = topMC?(resolveMCLabel(topMC)||'An idea from this topic'):null;
         var bankCount = Object.keys(sd.banks).length;
         h += '<tr class="forge-u-1jmaj5p">';
         h += '<td class="forge-u-9z781z">'+profileEscape(subjectName(subj))+'</td>';

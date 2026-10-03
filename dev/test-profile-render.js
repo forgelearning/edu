@@ -14,6 +14,22 @@ if (/resolveBankLabel\(/.test(profile)) {
     'profile.html calls resolveBankLabel but neither defines it nor loads forge-data.js');
 }
 
+// 1b. Student-facing text: subject names, escaping, and no internal words.
+function grabFn(name) {
+  const i = profile.indexOf('function ' + name + '(');
+  return profile.slice(i, profile.indexOf('\n}\n', i) + 2);
+}
+const labelCtx = { SUBJECTS: { 'gcse-geo': { label: 'GCSE Geography' } } };
+vm.createContext(labelCtx);
+vm.runInContext(profile.match(/var SUBJ_LABELS = \{[^\n]*\};/)[0] + grabFn('subjectName') + profile.match(/function profileEscape\([^\n]*\n/)[0], labelCtx);
+assert.strictEqual(labelCtx.subjectName('gcse-geo'), 'GCSE Geography', 'subjects missing from SUBJ_LABELS use the catalogue label, not the raw key');
+assert.strictEqual(labelCtx.subjectName('econ'), 'Economics');
+assert.strictEqual(labelCtx.profileEscape("UK's <b>"), 'UK&#39;s &lt;b&gt;', 'apostrophes are escaped, not printed as "undefined"');
+assert(!/\(SUBJ_LABELS\[subj\]\|\|subj\)/.test(profile), 'the subject table does not fall back to the raw key');
+assert(!/' fire'\+/.test(profile), 'focus areas do not say "fire"');
+assert(!/Re-forges passed/.test(profile), 'the cleared-misconceptions stat is not labelled as Re-forges');
+assert(!/resolveMCLabel\(topMC\)\|\|topMC\)/.test(profile), 'the subject table never prints a raw misconception tag');
+
 // 2. An exception in the caller's callback is not reported as an empty history.
 const ctx = {
   console, Promise, setTimeout,
@@ -50,5 +66,5 @@ setTimeout(() => {
   assert.deepStrictEqual(authCalls, [3], 'signed-in history: callback runs once, even if it throws');
   assert.deepStrictEqual(calls, [2], 'callback runs once with the rows, even if it throws');
   assert.deepStrictEqual(failing, [[0, 'network']], 'a failed read reports empty rows and the error');
-  console.log('Profile render tests passed (helper defined, render errors not turned into empty history, read failures still reported).');
+  console.log('Profile render tests passed (helper defined, student-facing labels, render errors not turned into empty history, read failures still reported).');
 }, 50);
