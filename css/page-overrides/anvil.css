@@ -35,6 +35,10 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
 .anvil-tag{font-size:11px;color:var(--coal);background:var(--hot);padding:2px 8px;border-radius:var(--radius-xs);font-weight:600;font-family:'JetBrains Mono',monospace}
 .anvil-label{color:var(--white);font-size:14px;font-weight:600;margin-top:6px}
 .anvil-meta{font-size:12px;color:#8A857E;margin-top:6px;display:flex;gap:16px;flex-wrap:wrap}
+.anvil-mistake{display:block;margin:6px 0 4px;color:var(--slate);font-size:13px;line-height:1.45}
+.forge-recommendation__copy .anvil-mistake{margin:0 0 6px}
+.anvil-idea{margin:10px 0 0;color:var(--white);font-weight:600;line-height:1.45}
+.anvil-idea span{display:block;margin-bottom:2px;color:var(--dim);font:600 10px 'JetBrains Mono',monospace;letter-spacing:.07em;text-transform:uppercase}
 .anvil-streak{font-family:'JetBrains Mono',monospace;font-size:12px;margin-top:8px}
 .streak-dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:3px}
 

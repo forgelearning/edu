@@ -15,7 +15,7 @@
 
 <link rel="stylesheet" href="css/states.css">
   <link rel="stylesheet" href="css/generated-utilities.css">
-  <link rel="stylesheet" href="css/page-overrides/anvil.css?v=20261003-learning-trail">
+  <link rel="stylesheet" href="css/page-overrides/anvil.css?v=20261003-repair-reveal">
   <link rel="stylesheet" href="css/page-overrides/anvil-overdrive.css?v=20260818-overdrive">
   <link rel="stylesheet" href="css/auth-ember.css?v=20260817-auth2">
 <link rel="stylesheet" href="css/student-motion.css?v=20261003-motion1">
@@ -95,6 +95,18 @@ function canRepair(tag){
   return REPAIRABLE[tag];
 }
 
+// Misconception labels are written as the corrected idea ("about 32 times
+// more energy, not one extra unit"), so showing one before or during a repair
+// question hands the student the answer. Name an idea by its topic and by the
+// student's own earlier wrong answer instead; the label is revealed only once
+// they have answered.
+var REPAIR_TOPIC = {};
+function repairTopicFor(tag){
+  if(!(tag in REPAIR_TOPIC)) repairQuestionsFor(tag);
+  if(!(tag in REPAIR_TOPIC)) REPAIR_TOPIC[tag]='';
+  return REPAIR_TOPIC[tag];
+}
+
 var CLEAR_THRESHOLD = 3; // consecutive correct to resolve
 var app = document.getElementById('app');
 // classCode/studentCode are the read *and* write credential for a coded class
@@ -106,6 +118,7 @@ ForgeApp.loading(app, { label: 'Loading Anvil', body: 'Finding the concepts that
 function prepareAnvilHome(){
   ForgeData.loadForResponses(anvilState.responses).then(function(){
     REPAIRABLE={};
+    REPAIR_TOPIC={};
     buildMisconceptions();
     renderAnvilHome();
   }).catch(function(){
@@ -209,12 +222,30 @@ function getResolvedMCs(){
 }
 
 function anvilEscape(value){return String(value==null?'':value).replace(/[&<>"']/g,function(ch){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch];});}
-function repairInsightHtml(tag){
+// The student's most recent scored wrong answer for this idea, with the
+// question it came from, or null.
+function earlierMistake(tag){
   var questions=repairQuestionsFor(tag),byId={};
   questions.forEach(function(q){byId[q.id]=q;});
   var earlier=(anvilState.responses||[]).filter(function(row){return row&&!row.is_correct&&!row.reforge_attempted&&ForgeMisconceptions.tagForRow(row)===tag&&byId[row.question_id]&&byId[row.question_id].options&&byId[row.question_id].options[row.selected_option];}).sort(function(a,b){return Date.parse(b.created_at||'')-Date.parse(a.created_at||'');})[0];
-  if(!earlier)return '';
-  var question=byId[earlier.question_id],oldAnswer=question.options[earlier.selected_option],newAnswer=question.options[question.correct];
+  if(!earlier)return null;
+  var question=byId[earlier.question_id];
+  return {question:question,answer:question.options[earlier.selected_option]};
+}
+// How a not-yet-cleared idea is named before the student answers: its topic,
+// plus what they chose last time, so two ideas from one topic stay distinct.
+function repairTitle(tag){
+  var topic=repairTopicFor(tag);
+  return topic?'An idea from '+anvilEscape(topic):'An idea from your practice';
+}
+function repairMistakeHtml(tag){
+  var mistake=earlierMistake(tag);
+  return mistake?'<span class="anvil-mistake">You answered: “'+anvilEscape(mistake.answer)+'”</span>':'';
+}
+function repairInsightHtml(tag){
+  var mistake=earlierMistake(tag);
+  if(!mistake)return '';
+  var question=mistake.question,oldAnswer=mistake.answer,newAnswer=question.options[question.correct];
   if(!newAnswer)return '';
   return '<div class="anvil-insight"><div><span>Earlier answer</span><p>'+anvilEscape(oldAnswer)+'</p></div><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 14h19m-7-7 7 7-7 7"/></svg><div><span>Secure answer</span><p>'+anvilEscape(newAnswer)+'</p></div></div>';
 }
@@ -234,7 +265,7 @@ function renderAnvilHome(){
   var repairable=active.filter(function(m){return canRepair(m.tag);});
   if(repairable.length>0){
     var priority=repairable[0];
-    h+='<section class="forge-recommendation" aria-labelledby="anvil-next-title"><h2 id="anvil-next-title" class="forge-recommendation__title">Repair '+(resolveMCLabel(priority.tag)||'an idea from practice')+'</h2><p class="forge-recommendation__copy">You’ve answered correctly '+priority.streak+' of '+CLEAR_THRESHOLD+' times in a row. Try the next question with help.</p><button type="button" class="forge-button forge-button--primary" data-forge-action="anvil-rework" data-tag="'+priority.tag+'">Practise this idea →</button></section>';
+    h+='<section class="forge-recommendation" aria-labelledby="anvil-next-title"><h2 id="anvil-next-title" class="forge-recommendation__title">'+repairTitle(priority.tag)+'</h2><p class="forge-recommendation__copy">'+repairMistakeHtml(priority.tag)+'You’ve answered correctly '+priority.streak+' of '+CLEAR_THRESHOLD+' times in a row. Get '+CLEAR_THRESHOLD+' in a row to clear it.</p><button type="button" class="forge-button forge-button--primary" data-forge-action="anvil-rework" data-tag="'+priority.tag+'">Practise this idea →</button></section>';
   }
 
   if(active.length===0 && resolved.length===0){
@@ -258,10 +289,10 @@ function renderAnvilHome(){
   if(otherIdeas.length){
     h+='<h2 class="anvil-other-title">Other ideas to revisit</h2>';
     otherIdeas.forEach(function(m){
-      var label=resolveMCLabel(m.tag)||'An idea from your practice';
       var hasQs=canRepair(m.tag);
       h+='<'+(hasQs?'button type="button"':'div')+' class="anvil-card active-mc'+(hasQs?'':' no-repair')+'" '+(hasQs?'data-forge-action="anvil-rework" data-tag="'+m.tag+'"':'')+'>';
-      h+='<span class="anvil-label">'+label+'</span>';
+      h+='<span class="anvil-label">'+repairTitle(m.tag)+'</span>';
+      h+=repairMistakeHtml(m.tag);
       h+='<span class="anvil-meta">'+m.streak+' of '+CLEAR_THRESHOLD+' correct in a row</span>';
       if(!hasQs) h+='<span class="anvil-norepair">No practice question is available for this idea yet.</span>';
       h+='</'+(hasQs?'button':'div')+'>';
@@ -355,7 +386,10 @@ function repairQuestionsFor(tag){
         if(!q.reforge||!q.options)return;
         var tags=Array.isArray(q.tag)?q.tag:[q.tag];
         if(q.misconceptionGroup)tags=tags.concat(Array.isArray(q.misconceptionGroup)?q.misconceptionGroup:[q.misconceptionGroup]);
-        if(tags.some(function(value){return String(value||'').toLowerCase()===wanted;})) found.push(q);
+        if(tags.some(function(value){return String(value||'').toLowerCase()===wanted;})){
+          found.push(q);
+          if(!(tag in REPAIR_TOPIC)&&bank.label) REPAIR_TOPIC[tag]=bank.label;
+        }
       });
     }
   });
@@ -393,7 +427,7 @@ function renderReworkQuestion(tag,questions,lap,qIdx){
   // rather than a question count, which is what "done" means here.
   var h='<div class="quiz-header">';
   h+='<button type="button" class="back-btn" data-forge-action="anvil-home">\u2190 Repair mistakes</button>';
-  h+='<span class="bank-name">'+(label||'Practice this idea')+'</span>';
+  h+='<span class="bank-name">'+(anvilEscape(repairTopicFor(tag))||'Repair this idea')+'</span>';
   h+='<span class="mono" id="rw-streak">'+m.streak+' / '+CLEAR_THRESHOLD+' \u2713</span>';
   h+='</div>';
   h+='<p class="rw-sub">Repair session \u00b7 '+CLEAR_THRESHOLD+' correct in a row clears this misconception</p>';
@@ -484,15 +518,17 @@ function renderReworkQuestion(tag,questions,lap,qIdx){
 
       var fb=document.getElementById('feedback');
       var fh='';
+      // Now the student has committed to an answer, name the idea.
+      var ideaHtml=label?'<p class="anvil-idea"><span>The idea</span>'+label+'</p>':'';
 
       if(isCorrect && m.streak>=CLEAR_THRESHOLD){
-        fh='<div class="cleared-banner forge-u-f4v9hz"><h2>\u2713 Misconception cleared!</h2><p class="forge-u-1ybl9nb">'+tag+' \u2014 '+label+'<br>'+CLEAR_THRESHOLD+' correct in a row. This one is off your Anvil.</p></div>';
+        fh='<div class="cleared-banner forge-u-f4v9hz"><h2>\u2713 Misconception cleared!</h2><p class="forge-u-1ybl9nb">'+(label?label+'<br>':'')+CLEAR_THRESHOLD+' correct in a row. This one is off your Anvil.</p></div>';
         fh+=repairInsightHtml(tag);
         fh+='<button type="button" class="next-btn btn-glass btn-ember" id="rw-next">Back to Anvil \u2192</button><div class="clear"></div>';
         fb.innerHTML=fh;
         document.getElementById('rw-next').onclick=function(){ renderAnvilHome(); };
       } else if(isCorrect){
-        fh='<div class="praise-box"><strong class="forge-answer-status" role="status">Correct.</strong> You’re '+m.streak+' of '+CLEAR_THRESHOLD+' answers towards clearing this idea.</div>';
+        fh='<div class="praise-box"><strong class="forge-answer-status" role="status">Correct.</strong> You’re '+m.streak+' of '+CLEAR_THRESHOLD+' answers towards clearing this idea.'+ideaHtml+'</div>';
         fh+='<button type="button" class="next-btn btn-glass btn-ember" id="rw-next">Next question \u2192</button><div class="clear"></div>';
         fb.innerHTML=fh;
         document.getElementById('rw-next').onclick=function(){
@@ -501,7 +537,7 @@ function renderReworkQuestion(tag,questions,lap,qIdx){
       } else {
         // scaffoldText() rather than q.scaffold: it rewrites the authoring
         // placeholder some banks still carry, exactly as the quiz does.
-        fh='<div class="scaffold-box"><strong class="forge-answer-status" role="status">Not quite. Start a fresh streak.</strong><p>'+window.ForgeQuestion.scaffoldText(q)+'</p></div>';
+        fh='<div class="scaffold-box"><strong class="forge-answer-status" role="status">Not quite. Start a fresh streak.</strong>'+ideaHtml+'<p>'+window.ForgeQuestion.scaffoldText(q)+'</p></div>';
         fh+='<div class="forge-u-1pk26m3">0 of '+CLEAR_THRESHOLD+' correct in a row</div>';
         fh+='<button type="button" class="next-btn btn-glass btn-ember" id="rw-next">Try again \u2192</button><div class="clear"></div>';
         fb.innerHTML=fh;
@@ -618,7 +654,7 @@ function checkLocalSession(){
   // Check free session
   var freeSession = null;
   try { freeSession = JSON.parse(localStorage.getItem('forge-free-session') || 'null'); } catch(e) {}
-  if (freeSession && freeSession.studentId) {
+  if (freeSession && freeSession.studentId && ForgeStudyMode.isIndependent()) {
     anvilState.studentId   = freeSession.studentId;
     anvilState.studentName = freeSession.name;
     anvilState.classId     = null;
