@@ -135,3 +135,9 @@ h1,h2,h3,.logo{font-family:'Rethink Sans',sans-serif}
 button.anvil-card{display:block;width:100%;text-align:left;font:inherit;color:inherit}
 .anvil-card .anvil-label,.anvil-card .anvil-norepair{display:block}
 button.anvil-card:focus-visible{outline:2px solid var(--ember);outline-offset:3px}
+.forge-answer-status{display:block;margin-bottom:8px;color:var(--white);font:700 16px/1.35 'Rethink Sans',sans-serif}
+.praise-box .forge-answer-status{display:inline;margin:0;color:var(--good)}
+.anvil-streak-track{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:0 0 24px}
+.anvil-streak-step{display:grid;place-items:center;min-height:30px;border:1px solid var(--line);border-radius:var(--radius-sm);background:var(--panel-2);color:var(--dim);font:700 12px 'JetBrains Mono',monospace;transition:background .2s,border-color .2s,color .2s,transform .2s}
+.anvil-streak-step.is-filled{border-color:var(--good);background:var(--surface-success-subtle);color:var(--good)}
+@media(prefers-reduced-motion:no-preference){.anvil-streak-step.is-new{animation:anvil-streak-pop .3s cubic-bezier(.2,1.4,.4,1)}@keyframes anvil-streak-pop{50%{transform:scale(1.05)}}}

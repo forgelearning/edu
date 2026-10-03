@@ -12,7 +12,7 @@
 <link rel="stylesheet" href="css/auth.css">
 <link rel="stylesheet" href="css/sidebar.css">
 <link rel="stylesheet" href="css/components.css?v=20260812">
-<link rel="stylesheet" href="css/forge-league.css?v=20260928c">
+<link rel="stylesheet" href="css/forge-league.css?v=20260929f">
 
 <link rel="stylesheet" href="css/states.css">
   <link rel="stylesheet" href="css/generated-utilities.css">
@@ -380,9 +380,10 @@ var SPEC_TO_SUBJECT = {
 </script>
 <script src="data/spec-registry.js"></script>
 <script src="data/forge-catalog.js?v=20260821"></script>
+<script src="scripts/forge-student-focus.js"></script>
 <script src="scripts/forge-data-loader.js?v=20260821"></script>
 <script src="scripts/forge-misconception-state.js"></script>
-<script src="scripts/forge-league.js?v=20260928c"></script>
+<script src="scripts/forge-league.js?v=20260928d"></script>
 <script src="data/misconception-labels.js?v=20260907-diagnostics"></script>
 <script>
 
@@ -462,7 +463,11 @@ function awardXP(amount, host) {
   if (!xpEnabled() || !amount) return;
   state.sessionXP += amount;
   state.pageXP += amount;
-  if (host) host.insertAdjacentHTML('beforeend', ' <span class="xp-gain">+' + amount + ' XP</span>');
+  if (host) {
+    var repair = amount === XP_REFORGE;
+    var anvil = repair ? '<svg class="xp-gain__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 13h16l-1.5-3.5a2 2 0 0 0-1.84-1.22L14 8.2V6h1a1 1 0 0 0 0-2H9a1 1 0 0 0 0 2h1v2.2l-2.66.08A2 2 0 0 0 5.5 9.5L4 13Z"></path><path d="M9 13v2a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2v-2M10 17v3m4-3v3m-6 0h8"></path></svg>' : '';
+    host.insertAdjacentHTML('beforeend', '<span class="xp-gain'+(repair?' xp-gain--repair':'')+'" role="status">'+anvil+'<span>+' + amount + ' XP</span></span>');
+  }
   var counter = document.getElementById('session-xp');
   if (counter) counter.textContent = state.sessionXP + ' XP';
 }
@@ -1170,6 +1175,7 @@ function renderSubjects(){
       // Answers must land against the student row for the class that owns
       // this subject, so the right teacher sees them.
       activateClass(ForgeClasses.forSubject(b.dataset.key));
+      if(window.ForgeStudentFocus)ForgeStudentFocus.remember(state.studentId,state.subject);
       var s = SUBJECTS[b.dataset.key];
       if (s && s.readerMode) {
         state.phase = 'mandarin-reader';
@@ -1341,9 +1347,12 @@ function renderBanks(){
   var recommendedCount = (window.ForgeApp && ForgeApp.session) ? ForgeApp.session.questionsFor(recommendedQuestions.length) : Math.min(FORGE_SESSION_SIZE, recommendedQuestions.length || FORGE_SESSION_SIZE);
   var recommendedMinutes = (window.ForgeApp && ForgeApp.session) ? ForgeApp.session.estimatedMinutesFor(recommendedCount) : Math.max(4, Math.round(recommendedCount * 0.75));
   h += '<dl class="forge-session-detail"><div><dt>Topic</dt><dd>'+(recommended ? recommended.label : 'Current topic')+'</dd></div><div><dt>Questions</dt><dd>'+recommendedCount+'</dd></div><div><dt>Estimated time</dt><dd>~'+recommendedMinutes+' min</dd></div></dl>';
-  h += '<button type="button" class="forge-button forge-button--primary" id="start-recommended">Start practice →</button>';
-  h += '<p class="forge-session-change"><button class="forge-link-button" id="change-session" type="button" aria-expanded="false" aria-controls="all-session-options">Choose another topic</button></p></section>';
-  h+='<div class="bank-list" id="all-session-options" hidden>';
+  // Students told us the old "Choose another topic" link was easy to miss, so
+  // both routes are buttons of equal size and the full list is always shown.
+  h += '<div class="forge-action-row forge-session-actions"><button type="button" class="forge-button forge-button--primary" id="start-recommended">Start practice →</button>';
+  h += '<button type="button" class="forge-button forge-button--secondary" id="change-session" aria-controls="all-session-options">Choose a different topic ↓</button></div></section>';
+  h+='<section class="forge-topic-list" aria-labelledby="all-topics-title"><h2 id="all-topics-title">All topics in '+subj.label+'</h2>';
+  h+='<div class="bank-list" id="all-session-options">';
   subj.banks.forEach(function(key){
     var b=BANKS[key];
     var point = getSpecPoint({}, key);
@@ -1354,7 +1363,7 @@ function renderBanks(){
     h+='<div class="qcount">'+b.questions.length+' questions</div>';
     h+='</button>';
   });
-  h+='</div>';
+  h+='</div></section>';
   // Locked students never see the subject picker, so this is their only
   // route to adding a second class.
   if (locked) h += joinMoreHtml();
@@ -1368,7 +1377,11 @@ function renderBanks(){
   };
   var changeBtn=document.getElementById('change-session');
   var allOptions=document.getElementById('all-session-options');
-  if(changeBtn && allOptions) changeBtn.onclick=function(){var open=allOptions.hidden;allOptions.hidden=!open;changeBtn.setAttribute('aria-expanded',String(open));changeBtn.textContent=open?'Hide other topics':'Choose another topic';};
+  if(changeBtn && allOptions) changeBtn.onclick=function(){
+    var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    allOptions.scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'});
+    var first=allOptions.querySelector('.bank-btn'); if(first) first.focus({preventScroll:true});
+  };
   wireJoinMore();
   var backBtn = document.getElementById('back-subj');
   if (backBtn) backBtn.onclick=function(){state.phase='subjects';render();};
@@ -1518,6 +1531,22 @@ function revealQuizNext(){
   });
 }
 
+function offerRevisionCard(feedback, question){
+  if(!feedback||!question||!question.options||!question.options[question.correct])return;
+  var button=document.createElement('button');
+  button.type='button';button.className='forge-save-card';button.textContent='Make a flashcard from this';
+  button.onclick=function(){
+    var saved=null;try{saved=JSON.parse(localStorage.getItem('forge-student')||'null');}catch(e){}
+    var studentId=state.studentId||(saved&&saved.studentId);
+    if(!studentId){button.textContent='Join your class to save cards';return;}
+    try{
+      localStorage.setItem('forge-revision-draft:'+studentId,JSON.stringify({front:question.stem,back:question.options[question.correct],bank:state.bank,source:'Forge question '+question.id}));
+      location.href='revision.html';
+    }catch(e){button.textContent='Could not save a draft on this device';}
+  };
+  ((feedback.querySelector&&feedback.querySelector('.forge-feedback-actions'))||feedback).appendChild(button);
+}
+
 function renderQuiz(){
   // Check daily limit before showing next question
   if (isAtDailyLimit()) {
@@ -1533,7 +1562,7 @@ function renderQuiz(){
   h+='<button type="button" class="back-btn" id="back-banks">\u2190 Topics</button>';
   h+='<span class="bank-name" style="color:'+bk.color+'">'+bk.label+'</span>';
   h+='<span>Question '+(state.idx+1)+' of '+state.questions.length+(xpEnabled()?' · <span id="session-xp">'+state.sessionXP+' XP</span>':'')+'</span></div>';
-  h+='<p class="forge-u-lp9fq9">Your progress saves automatically.</p>';
+  h+='<p class="forge-u-lp9fq9" id="forge-answer-save" role="status">Your progress saves automatically.</p>';
   h+='<div class="progress-bar"><div class="progress-fill" style="width:'+((state.idx/state.questions.length)*100)+'%;background:'+bk.color+'"></div></div>';
 
   // Free tier: show questions remaining
@@ -1586,9 +1615,18 @@ function renderQuiz(){
     }
     var responseSaved = logResponse(q, k, isCorrect, false, null);
     forgeSyncStudentWidgetProgress();
+    var saveLabel=document.getElementById('forge-answer-save');
+    if(saveLabel){saveLabel.textContent='Saving this answer…';saveLabel.dataset.state='saving';}
+    Promise.resolve(responseSaved).then(function(result){
+      var current=document.getElementById('forge-answer-save');
+      if(!current||current!==saveLabel)return;
+      current.textContent=result===true?'Answer saved.':result&&result.allowed===false?'Daily limit reached. This answer was not saved.':'Saved on this device. Sync is pending.';
+      current.dataset.state=result===true?'saved':'pending';
+    }).catch(function(){var current=document.getElementById('forge-answer-save');if(current&&current===saveLabel){current.textContent='Saved on this device. Sync is pending.';current.dataset.state='pending';}});
 
       opts.forEach(function(x){
         x.classList.add('answered');
+        x.setAttribute('aria-disabled','true');
         if(x.dataset.k===q.correct) x.classList.add('correct');
         else if(x===o&&!isCorrect) x.classList.add('wrong');
         else x.classList.add('dimmed');
@@ -1596,6 +1634,7 @@ function renderQuiz(){
 
       var fb=document.getElementById('feedback');
       fb.innerHTML=window.ForgeQuestion.renderFeedback(q,isCorrect);
+      offerRevisionCard(fb,q);
       if(isCorrect){ awardXP(XP_CORRECT, fb.querySelector('.praise-box')); forgeSaveSession(); }
       if(!isCorrect){
         if(q.reforge){
@@ -1778,13 +1817,16 @@ function renderReforge(q,el,color){
   var keys=Object.keys(rf.options);
   var h='<div class="reforge-box" style="border-color:'+color+'30">';
   h+='<div class="rf-tag" style="color:'+color+'">Try the idea again</div>';
-  h+='<div class="rf-stem">'+rf.stem+'</div>';
+  h+='<div class="rf-stem" tabindex="-1">'+rf.stem+'</div>';
   h+='<div class="options" id="rf-opts">';
   keys.forEach(function(k){
     h+='<button type="button" class="opt forge-option" data-k="'+k+'"><span class="letter">'+k+'</span><span>'+rf.options[k]+'</span></button>';
   });
   h+='</div><div id="rf-feedback"></div></div>';
   el.innerHTML=h;
+  var repairStem=el.querySelector('.rf-stem');
+  if(repairStem)repairStem.focus({preventScroll:true});
+  window.requestAnimationFrame(function(){el.scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});});
 
   var opts=el.querySelectorAll('.opt');
   var done=false;
@@ -1800,6 +1842,7 @@ function renderReforge(q,el,color){
 
       opts.forEach(function(x){
         x.classList.add('answered');
+        x.setAttribute('aria-disabled','true');
         if(x.dataset.k===rf.correct) x.classList.add('correct');
         else if(x===o&&!isCorrect) x.classList.add('wrong');
         else x.classList.add('dimmed');
@@ -1807,11 +1850,16 @@ function renderReforge(q,el,color){
       var rfb=document.getElementById('rf-feedback');
       if(isCorrect){
         if(q.tag&&state.sessionReforgedTags.indexOf(q.tag)===-1) state.sessionReforgedTags.push(q.tag);
-        rfb.innerHTML='<div class="forge-u-1wiwwwz">\u2713 Reforged.</div>';
+        rfb.innerHTML='<div class="forge-reforge-result" role="status"><span class="forge-reforge-result__mark" aria-hidden="true">\u2713</span><span><strong>Idea repaired.</strong> You got the follow-up right.</span></div>';
         awardXP(XP_REFORGE, rfb.firstChild);
         forgeSaveSession();
       }else{
         rfb.innerHTML='<div class="forge-u-jm24uy"><div class="forge-u-o1x2qa">Not quite \u2014 the answer is <strong>'+rf.correct+'</strong>.</div><div class="rf-scaffold"><span class="stag">Re-read the scaffold</span><p>'+ForgeQuestion.scaffoldText(q)+'</p></div></div>';
+      }
+      var continueBtn=document.getElementById('next-btn');
+      if(continueBtn&&continueBtn.textContent.indexOf('Continue without repair')===0){
+        continueBtn.textContent='Next question \u2192';
+        if(isCorrect)continueBtn.classList.remove('btn-glass');
       }
     };
   });

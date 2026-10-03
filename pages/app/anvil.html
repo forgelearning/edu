@@ -383,7 +383,9 @@ function renderReworkQuestion(tag,questions,lap,qIdx){
   h+='<span class="mono" id="rw-streak">'+m.streak+' / '+CLEAR_THRESHOLD+' \u2713</span>';
   h+='</div>';
   h+='<p class="rw-sub">Repair session \u00b7 '+CLEAR_THRESHOLD+' correct in a row clears this misconception</p>';
-  h+='<div class="progress-bar"><div class="progress-fill" id="rw-progress" style="width:'+((m.streak/CLEAR_THRESHOLD)*100)+'%;background:var(--ember)"></div></div>';
+  h+='<div class="anvil-streak-track" id="rw-progress" role="progressbar" aria-label="Repair streak" aria-valuemin="0" aria-valuemax="'+CLEAR_THRESHOLD+'" aria-valuenow="'+m.streak+'">';
+  for(var step=1;step<=CLEAR_THRESHOLD;step++)h+='<span class="anvil-streak-step'+(step<=m.streak?' is-filled':'')+'" aria-hidden="true">'+step+'</span>';
+  h+='</div>';
   h+='<div class="stem">'+q.stem+'</div>';
   h+=window.ForgeQuestion.renderOptions(q);
 
@@ -446,6 +448,7 @@ function renderReworkQuestion(tag,questions,lap,qIdx){
 
       opts.forEach(function(x){
         x.classList.add('answered');
+        x.setAttribute('aria-disabled','true');
         if(x.dataset.k===q.correct) x.classList.add('correct');
         else if(x===o&&!isCorrect) x.classList.add('wrong');
         else x.classList.add('dimmed');
@@ -457,7 +460,13 @@ function renderReworkQuestion(tag,questions,lap,qIdx){
       var streakEl=document.getElementById('rw-streak');
       if(streakEl) streakEl.textContent=m.streak+' / '+CLEAR_THRESHOLD+' ✓';
       var barEl=document.getElementById('rw-progress');
-      if(barEl) barEl.style.width=((m.streak/CLEAR_THRESHOLD)*100)+'%';
+      if(barEl){
+        barEl.setAttribute('aria-valuenow',String(m.streak));
+        barEl.querySelectorAll('.anvil-streak-step').forEach(function(stepEl,index){
+          stepEl.classList.toggle('is-filled',index<m.streak);
+          stepEl.classList.toggle('is-new',isCorrect&&index===m.streak-1);
+        });
+      }
 
       var fb=document.getElementById('feedback');
       var fh='';
@@ -468,7 +477,7 @@ function renderReworkQuestion(tag,questions,lap,qIdx){
         fb.innerHTML=fh;
         document.getElementById('rw-next').onclick=function(){ renderAnvilHome(); };
       } else if(isCorrect){
-        fh='<div class="praise-box">\u2713 Correct. Streak: '+m.streak+'/'+CLEAR_THRESHOLD+'</div>';
+        fh='<div class="praise-box"><strong class="forge-answer-status" role="status">Correct.</strong> You’re '+m.streak+' of '+CLEAR_THRESHOLD+' answers towards clearing this idea.</div>';
         fh+='<button type="button" class="next-btn btn-glass btn-ember" id="rw-next">Next question \u2192</button><div class="clear"></div>';
         fb.innerHTML=fh;
         document.getElementById('rw-next').onclick=function(){
@@ -477,8 +486,8 @@ function renderReworkQuestion(tag,questions,lap,qIdx){
       } else {
         // scaffoldText() rather than q.scaffold: it rewrites the authoring
         // placeholder some banks still carry, exactly as the quiz does.
-        fh='<div class="scaffold-box"><span class="stag">'+tag+'</span><p>'+window.ForgeQuestion.scaffoldText(q)+'</p></div>';
-        fh+='<div class="forge-u-1pk26m3">Streak reset to 0/'+CLEAR_THRESHOLD+'</div>';
+        fh='<div class="scaffold-box"><strong class="forge-answer-status" role="status">Not quite. Start a fresh streak.</strong><p>'+window.ForgeQuestion.scaffoldText(q)+'</p></div>';
+        fh+='<div class="forge-u-1pk26m3">0 of '+CLEAR_THRESHOLD+' correct in a row</div>';
         fh+='<button type="button" class="next-btn btn-glass btn-ember" id="rw-next">Try again \u2192</button><div class="clear"></div>';
         fb.innerHTML=fh;
         document.getElementById('rw-next').onclick=function(){

@@ -26,7 +26,7 @@
 
   function renderFeedback(question, correct){
     if(correct){
-      return '<div class="praise-box">\u2713 Nailed it.</div><button class="next-btn btn-glass btn-ember" id="next-btn">Next question \u2192</button><div class="clear"></div>';
+      return '<div class="praise-box"><strong class="forge-answer-status" role="status">Correct.</strong><span> Keep going.</span></div><div class="forge-feedback-actions"><button type="button" class="next-btn btn-glass btn-ember" id="next-btn">Next question \u2192</button></div>';
     }
     // Students used to see the raw taxonomy code here (MC-MICRO-CORRECTIVE-TAX).
     // It means nothing to them, and a readable label already exists for
@@ -35,11 +35,13 @@
     // case show no chip rather than falling back to the code.
     var label = (typeof window !== 'undefined' && window.resolveMCLabel) ? window.resolveMCLabel(question.tag) : '';
     var chip = label ? '<span class="stag">'+label+'</span>' : '';
-    var html = '<div class="scaffold-box">'+chip+'<p>'+scaffoldText(question)+'</p></div>';
+    var html = '<div class="scaffold-box"><strong class="forge-answer-status" role="status">Not quite. Here’s the key idea.</strong>'+chip+'<p>'+scaffoldText(question)+'</p></div>';
     if(question.reforge){
-      html += '<button class="reforge-trigger" id="rf-btn">Try a similar question \u2192</button><div id="rf-area" class="hidden"></div>';
+      html += '<div id="rf-area" class="hidden"></div>';
     }
-    return html + '<button class="next-btn btn-glass btn-ember" id="next-btn">Next question \u2192</button><div class="clear"></div>';
+    html += '<div class="forge-feedback-actions">';
+    if(question.reforge)html += '<button type="button" class="reforge-trigger" id="rf-btn">Try a similar question \u2192</button>';
+    return html + '<button type="button" class="next-btn btn-glass btn-ember" id="next-btn">'+(question.reforge?'Continue without repair':'Next question')+' \u2192</button></div>';
   }
 
   function renderFillBlank(question, words, sentenceHtml){

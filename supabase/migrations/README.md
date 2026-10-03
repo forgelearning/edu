@@ -156,3 +156,25 @@ drop function if exists public.forge_verify_class_student(text, text, text, text
 drop table if exists public.student_friendships;
 alter table public.classes drop column if exists friends_enabled;
 ```
+
+## 20260929 181805 — pause friends until individual codes
+
+| File | What it does |
+|---|---|
+| `20260929181805_pause_class_friends_until_student_codes.sql` | Wraps the three consent-dependent friend RPCs with a class-wide code coverage check. Classes with any student lacking an active individual code cannot list, send or accept friend requests. Existing friendship rows and class settings are unchanged. The old implementations lose all client EXECUTE grants. |
+
+**Applied to the Forge Supabase project on 29 September 2026.** The student
+card explains the pause; the teacher dashboard's code coverage notice points
+to issuing codes. Verified against an existing name-only class: read, send and
+accept all return `codes_required`. Confirmed `anon` and `authenticated` have
+no EXECUTE grant on the renamed `_unchecked` functions or readiness helper.
+
+## 20260929 190020 — teacher opt-in for class friends
+
+| File | What it does |
+|---|---|
+| `20260929190020_friends_teacher_opt_in.sql` | Defaults new classes to Friends off and switches existing classes off. Replaces the guarded send RPC so sending cannot silently accept an incoming request; the recipient must use Accept after seeing the sharing explanation. |
+
+The historical `20260928130000_class_friends.sql` file records the original
+default-on rollout and remains unchanged. This later migration is the source
+of truth for the current default. No friendship or student rows are changed.

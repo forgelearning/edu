@@ -12,7 +12,7 @@
 <link rel="stylesheet" href="css/auth.css">
 <link rel="stylesheet" href="css/sidebar.css">
 <link rel="stylesheet" href="css/components.css?v=20260812">
-<link rel="stylesheet" href="css/forge-league.css?v=20260928c">
+<link rel="stylesheet" href="css/forge-league.css?v=20260929f">
 <link rel="stylesheet" href="css/generated-utilities.css">
 <link rel="stylesheet" href="css/page-overrides/student-dashboard.css?v=20260928-grid2">
 <link rel="stylesheet" href="css/auth-ember.css?v=20260817-auth2">
@@ -58,9 +58,10 @@ ForgeSidebar.mount({
 <script src="scripts/forge-assignment-progress.js"></script><script defer src="scripts/forge-student-badges.js?v=20260807"></script>
 <script src="scripts/forge-student-code.js?v=20260809"></script>
 <script src="data/forge-catalog.js?v=20260823"></script>
+<script src="scripts/forge-student-focus.js"></script>
 <script src="scripts/forge-misconception-state.js"></script>
-<script src="scripts/forge-league.js?v=20260928c"></script>
-<script src="scripts/forge-friends.js?v=20260928"></script>
+<script src="scripts/forge-league.js?v=20260928d"></script>
+<script src="scripts/forge-friends.js?v=20260929d"></script>
 
 <main class="wrap" id="main-content">
   <div id="app" aria-live="polite"></div>
@@ -172,7 +173,7 @@ function renderLogin(){
         return legacy;
       }).then(function(match){
         if(!match || !match.student_id) throw new Error('Class or student not found.');
-        st.studentId=match.student_id;st.classId=match.class_id;st.studentName=name;st.isGCSE=classLevel(match.class_name)==='gcse';
+        st.studentId=match.student_id;st.classId=match.class_id;st.classCode=code;st.studentName=name;st.isGCSE=classLevel(match.class_name)==='gcse';
         try { localStorage.setItem('forge-student', JSON.stringify({studentId:st.studentId,classId:st.classId,classCode:code,studentName:st.studentName,classSubject:match.subject||null,isGCSE:st.isGCSE})); } catch(e) {}
         ForgeClasses.add({classId:st.classId,classCode:code,className:match.class_name||null,subject:match.subject||null,studentId:st.studentId,studentName:name});
         ForgeClasses.fetchLinkedResponses(SUPABASE_URL,SUPABASE_KEY,{studentId:st.studentId,classId:st.classId,classCode:code,subject:match.subject,studentName:name},function(r){st.responses=r;renderDashboard();});
@@ -182,6 +183,7 @@ function renderLogin(){
     ForgeStudentCode.join(code, studentCode, name).then(function(match){
       st.studentId=match.student_id;st.classId=match.class_id;st.studentName=name;st.isGCSE=classLevel(match.class_name)==='gcse';
       var cleanStudentCode=ForgeStudentCode.clean(studentCode);
+      st.classCode=code;st.studentCode=cleanStudentCode;
       try { localStorage.setItem('forge-student', JSON.stringify({studentId: st.studentId, classId: st.classId, classCode: code, studentCode: cleanStudentCode, studentName: st.studentName, classSubject: match.subject || null, isGCSE: st.isGCSE})); } catch(e) {}
       ForgeClasses.add({
         classId: st.classId, classCode: code, className: match.class_name || null,
@@ -229,6 +231,29 @@ function daysUntil(dateStr){
 // Teacher-set work outranks self-directed practice: if the class has something
 // open that is overdue, due within a week, or undated, it becomes the main
 // recommendation. Work due further out stays in the sidebar badge only.
+// Other recent topics, shown at the foot of the recommendation card so the
+// student can jump straight to a different topic (and the card's spare height
+// is used). Most recently practised first, excluding the recommended one.
+var dashboardTopicsHtml='';
+function topicShortcutsHtml(responses, excludeKey){
+  var byBank={};
+  (responses||[]).forEach(function(r){
+    if(r.reforge_attempted||!r.bank||!BANKS[r.bank]) return;
+    var b=byBank[r.bank]||(byBank[r.bank]={key:r.bank,total:0,correct:0,last:''});
+    b.total++; if(r.is_correct) b.correct++;
+    if((r.created_at||'')>b.last) b.last=r.created_at||'';
+  });
+  var picks=Object.keys(byBank).map(function(k){return byBank[k];})
+    .filter(function(b){return b.key!==excludeKey;})
+    .sort(function(a,b){return a.last<b.last?1:a.last>b.last?-1:0;}).slice(0,3);
+  if(!picks.length) return '';
+  var h='<div class="dashboard-topics"><p class="dashboard-topics__label">Other topics</p><ul>';
+  picks.forEach(function(b){
+    h+='<li><a href="forge-quiz.html?bank='+encodeURIComponent(b.key)+'"><span>'+_fsEsc(BANKS[b.key].label)+'</span><small>'+Math.round(b.correct/b.total*100)+'%</small></a></li>';
+  });
+  return h+'<li><a class="dashboard-topics__all" href="forge-quiz.html">All topics →</a></li></ul></div>';
+}
+
 function showAssignmentNext(open){
   var section=document.querySelector('.dashboard-next');
   if(!section||!open||!open.length) return;
@@ -246,9 +271,13 @@ function showAssignmentNext(open){
   var done=p&&p.total&&p.answered?' '+p.answered+' of '+p.total+' questions answered.':'';
   var more=open.length>1?' You have '+(open.length-1)+' other open assignment'+(open.length===2?'':'s')+'.':'';
   section.classList.toggle('dashboard-next--urgent',d!==null&&d<=1);
-  section.innerHTML='<h2 id="dashboard-next-title">'+_fsEsc(pick.a.title||'Assignment')+'</h2>'
+  section.innerHTML='<span class="dashboard-next__label">Today · assigned work</span><h2 id="dashboard-next-title">'+_fsEsc(pick.a.title||'Assignment')+'</h2>'
     +'<p><strong>'+when+'.</strong> Your teacher set this.'+done+more+'</p>'
-    +'<a class="forge-button forge-button--primary" href="assignments.html">'+(d!==null&&d<0?'Catch up now →':done?'Continue assignment →':'Start assignment →')+'</a>';
+    +'<a class="forge-button forge-button--primary" href="assignments.html">'+(d!==null&&d<0?'Catch up now →':done?'Continue assignment →':'Start assignment →')+'</a>'+dashboardTopicsHtml;
+}
+
+function dashboardClassContext(){
+  return {studentId:st.studentId,classId:st.classId,classCode:st.classCode,studentCode:st.studentCode,studentName:st.studentName};
 }
 
 function renderDashboard(){
@@ -258,6 +287,10 @@ function renderDashboard(){
   var xp=calcXP(responses);
   var rank=getRank(xp);
   var streak=calcStreak(responses);
+  var subject=window.ForgeStudentFocus&&ForgeStudentFocus.subject(st,responses);
+  var subjectName=subject&&SUBJECTS[subject]&&SUBJECTS[subject].label;
+  var subjectUrl=subject?'forge-quiz.html?subject='+encodeURIComponent(subject):'forge-quiz.html';
+  var due=window.ForgeStudentFocus&&ForgeStudentFocus.due(st,subject)||0;
 
   // One lifecycle owner keeps Dashboard, Anvil, Profile and Teacher aligned.
   var misconceptionSummary=ForgeMisconceptions.summarize(responses);
@@ -265,7 +298,10 @@ function renderDashboard(){
   if (window.ForgeSidebar) ForgeSidebar.setBadge('anvil', activeMCs.length || null);
   try { localStorage.setItem('forge-anvil-open', String(activeMCs.length)); } catch(e) {}
   if (st.classId) {
-    ForgeStudentCode.assignments(st.studentId,st.classCode,st.studentCode,st.studentName).then(function(rows){
+    // ForgeLeague.studentRpc resolves this class's own student row and code
+    // from the saved class list and sends a signed-in student's own token, so
+    // accounts (one student row per class) get their assignments too.
+    ForgeLeague.studentRpc('get_student_assignments', dashboardClassContext()).then(function(rows){
       var today=new Date(); today.setHours(0,0,0,0);
       var open=(Array.isArray(rows)?rows:[]).filter(function(a){
         var banks=[]; try { banks=typeof a.banks==='string'?JSON.parse(a.banks):a.banks||[]; } catch(e) {}
@@ -316,35 +352,46 @@ function renderDashboard(){
     var d=topicData[k]; return {key:k,label:d.label,acc:Math.round(d.correct/d.total*100),sample:d.total};
   }).sort(function(a,b){return a.acc-b.acc;});
   var focusTopic=topicRanked[0]||null;
+  dashboardTopicsHtml=topicShortcutsHtml(responses, focusTopic&&!activeMCs.length?focusTopic.key:null);
 
   var h='<header class="dashboard-heading"><h1>Welcome back, '+_fsEsc(st.studentName)+'</h1><p>Pick up where you left off.</p></header>';
 
   h+='<div class="dashboard-layout'+(total>0?' dashboard-layout--split':'')+'"><div class="dashboard-main">';
-  if(total===0){
+  if(total===0&&!due){
     if(st.loadError){
       h+=ForgeApp.stateHtml('error',{label:'Your dashboard data is unavailable',body:'We couldn’t retrieve your progress. Refresh and try again.',action:{label:'Retry dashboard',href:location.href}});
       app.innerHTML=h+'</div></div>';
       return;
     }
     h+='<section class="dashboard-next" aria-labelledby="dashboard-next-title">';
+    h+='<span class="dashboard-next__label">Today · first step</span>';
     h+='<h2 id="dashboard-next-title">Start your first practice</h2>';
-    h+='<p>Choose a subject and answer a short set of questions. If you get stuck, we’ll explain the idea and help you try again.</p>';
-    h+='<a class="forge-button forge-button--primary" href="forge-quiz.html">Start practice →</a></section>';
+    h+='<p>'+(subjectName?'Start with '+_fsEsc(subjectName)+'. Answer':'Choose a subject, then answer')+' a short set of questions. If you get stuck, we’ll help you try again.</p>';
+    h+='<a class="forge-button forge-button--primary" href="'+subjectUrl+'">Start practice →</a></section>';
   } else {
     h+='<section class="dashboard-next" aria-labelledby="dashboard-next-title">';
     if(activeMCs.length>0){
+      h+='<span class="dashboard-next__label">Today · repair</span>';
       h+='<h2 id="dashboard-next-title">Work through your mistakes</h2>';
       h+='<p>You have '+activeMCs.length+' idea'+(activeMCs.length===1?'':'s')+' to revisit. Open Anvil to practise them with help.</p>';
       h+='<a class="forge-button forge-button--primary" href="anvil.html">Repair mistakes →</a>';
+    } else if(due){
+      h+='<span class="dashboard-next__label">Today · revision due</span>';
+      h+='<h2 id="dashboard-next-title">Bring '+due+' '+(due===1?'card':'cards')+' back to mind</h2>';
+      h+='<p>'+(subjectName?_fsEsc(subjectName)+' has ':'You have ')+due+' '+(due===1?'card':'cards')+' due for review. Try recalling the answer before you turn each one over.</p>';
+      h+='<a class="forge-button forge-button--primary" href="revision.html'+(subject?'?subject='+encodeURIComponent(subject):'')+'">Review due cards →</a>';
     } else if(focusTopic){
+      h+='<span class="dashboard-next__label">Today · practice</span>';
       h+='<h2 id="dashboard-next-title">Practise '+_fsEsc(focusTopic.label)+'</h2>';
-      h+='<p>Revisit this topic from your recent practice with a short set of questions.</p>';
+      h+='<p>Your last '+focusTopic.sample+' answers in this topic: '+focusTopic.acc+'% correct. A short set of questions will help it stick.</p>';
       h+='<a class="forge-button forge-button--primary" href="forge-quiz.html?bank='+encodeURIComponent(focusTopic.key)+'">Start practice →</a>';
     } else {
+      h+='<span class="dashboard-next__label">Today · practice</span>';
       h+='<h2 id="dashboard-next-title">Ready for another practice?</h2>';
-      h+='<p>Choose a topic and work through a short set of questions.</p>';
-      h+='<a class="forge-button forge-button--primary" href="forge-quiz.html">Start practice →</a>';
+      h+='<p>'+(subjectName?'Choose a '+_fsEsc(subjectName)+' topic':'Choose a topic')+' and work through a short set of questions.</p>';
+      h+='<a class="forge-button forge-button--primary" href="'+subjectUrl+'">Start practice →</a>';
     }
+    h+=dashboardTopicsHtml;
     h+='</section>';
   }
 
@@ -374,7 +421,7 @@ function renderDashboard(){
   h+='</div>';
   app.innerHTML=(st.loadError?ForgeApp.stateHtml('error',{label:'Some dashboard data is unavailable',body:'We couldn’t retrieve the latest progress. Refresh and try again.',action:{label:'Retry dashboard',href:location.href}}):'')+h;
   var leagueEl=document.getElementById('dashboard-league');
-  var socialCtx={studentId:st.studentId,classId:st.classId,classCode:st.classCode,studentCode:st.studentCode,studentName:st.studentName};
+  var socialCtx=dashboardClassContext();
   if(leagueEl&&window.ForgeLeague) ForgeLeague.mount(leagueEl,socialCtx);
   var friendsEl=document.getElementById('dashboard-friends');
   if(friendsEl&&window.ForgeFriends) ForgeFriends.mount(friendsEl,socialCtx);
@@ -477,6 +524,10 @@ function forgeSignOut(){
     if (saved && saved.studentId) {
       st.studentId   = saved.studentId;
       st.classId     = saved.classId;
+      // The assignment lookup authenticates with these; without them it sent
+      // an empty class code and the server returned no assignments.
+      st.classCode   = saved.classCode || null;
+      st.studentCode = saved.studentCode || null;
       st.studentName = saved.studentName;
       var applyLevelAndLoad = function(){
         if (!saved.classCode) { renderLogin(); return; } // older cached session predates classCode caching — needs one re-entry

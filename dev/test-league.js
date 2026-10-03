@@ -32,6 +32,7 @@ const L = ctx.ForgeLeague;
 assert.strictEqual(L.html(null), '', 'no data, no league');
 assert.strictEqual(L.html({ enabled: false }), '', 'switched off by the teacher, no league');
 assert(L.html({ enabled: true, rows: [] }).includes('take first place'), 'empty week invites the first answer');
+assert(L.teacherHtml([{ id: 'a', name: 'A' }], [], true).includes('forge-league__empty'), 'teacher view has a proper empty state');
 
 const data = { enabled: true, ranked: 9, you: { position: 6, xp: 40 }, rows: [
   { seq: 1, position: 1, name: 'Jess B.', xp: 320, is_you: false },
@@ -74,5 +75,20 @@ const t = L.teacherHtml(
 assert(t.indexOf('Mike') < t.indexOf('Jess Best') && t.includes('20 XP') && t.includes('10 XP'), 'ranks this week only, highest first');
 assert(!t.includes('Idle') && t.includes('2 of 3 students'), 'students with no XP are counted, not listed');
 assert(t.includes('Hidden from students') && t.includes('switch the league on'), 'shows that students cannot see it');
+
+// 5. A signed-in account has one student row per class; the page's studentId
+//    may belong to another class. The class's own row must be used.
+const calls = [];
+const ctx2 = { ForgeAPI: { config: { key: 'anon' }, rpc: (name, body, opts) => { calls.push({ name, body, opts }); return Promise.resolve({}); } },
+  ForgeAuth: { accessToken: () => 'user-token' },
+  ForgeClasses: { list: () => [], load: () => [
+    { classId: 'geo', classCode: 'GG-1', studentId: 'row-geo', studentName: 'Isaac N' },
+    { classId: 'chem', classCode: 'CH-1', studentId: 'row-chem', studentName: 'Isaac' }] } };
+vm.createContext(ctx2);
+vm.runInContext(fs.readFileSync('scripts/forge-league.js', 'utf8'), ctx2);
+ctx2.ForgeLeague.studentRpc('get_student_assignments', { studentId: 'row-chem', classId: 'geo', studentName: 'Isaac N' });
+assert.strictEqual(calls[0].body.p_student_id, 'row-geo', 'uses the student row for the requested class');
+assert.strictEqual(calls[0].body.p_class_code, 'GG-1', 'finds the class code from the saved classes, even under another name');
+assert.strictEqual(calls[0].opts.token, 'user-token', 'a signed-in student sends their own token');
 
 console.log('League tests passed (XP rules match calcXP, grants, hidden when off, escaping, overtake line, gaps).');

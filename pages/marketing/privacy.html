@@ -12,7 +12,6 @@
 
 <!-- Google tag (gtag.js) -->
 <script src="scripts/analytics-consent.js?v=20260816"></script>
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-RGZ9J6Q8H9"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
@@ -53,8 +52,8 @@
   <div class="page-header">
     <span class="tag">Legal</span>
     <h1>Privacy & Data</h1>
-    <p>How Forge collects, uses and protects personal data — for students, teachers, and the schools that purchase Forge. This document also serves as our Data Processing Agreement for institutional customers.</p>
-    <span class="last-updated">Last updated: August 2026 · Version 2.2</span>
+    <p>How Forge collects, uses and protects personal data — for students, teachers, and schools. Schools should review the proposed processing terms below with their data protection lead before agreeing to a pilot or licence.</p>
+    <span class="last-updated">Last updated: September 2026 · Version 2.3</span>
   </div>
 
   <div class="doc-layout">
@@ -66,7 +65,7 @@
        <a href="#your-rights">Your rights</a>
        <a href="#data-retention">Retention</a>
        <a href="#cookies">Cookies</a>
-       <a href="#dpa">Data Processing Agreement</a>
+       <a href="#dpa">School processing terms</a>
        <a href="#subprocessors">Sub-processors</a>
        <a href="#account-deletion">Delete your account</a>
        <a href="#contact">Contact</a>
@@ -82,7 +81,7 @@
           <a href="#your-rights">Your rights</a>
           <a href="#data-retention">Retention</a>
           <a href="#cookies">Cookies</a>
-          <a href="#dpa">Data Processing Agreement</a>
+          <a href="#dpa">School processing terms</a>
           <a href="#subprocessors">Sub-processors</a>
           <a href="#account-deletion">Delete your account</a>
           <a href="#contact">Contact</a>
@@ -90,14 +89,14 @@
       </div>
 
       <div class="notice good">
-        <strong>Plain-English summary</strong> — Forge collects only what it needs to work. Students using the free tier enter only a name. Students joining a class provide a display name, class code and individual private student code; no email address is required. Students who create a Pro or trial account provide an email address and password — these are stored securely via Supabase Auth and never shared with third parties for commercial purposes. We do not sell data or run advertising profiles. Public Forge pages use Google Analytics 4 only after an analytics consent choice; student quiz data is not used for site analytics. Teachers use authenticated email/password accounts, with invite codes required for new teacher accounts.
+        <strong>Plain-English summary</strong> — Forge collects only what it needs to work. Students using the free tier enter only a name. Students joining a class provide a display name and class code; some classes also require an individual access code. No student email address is required. Students who create a Pro or trial account provide an email address and password — these are stored securely via Supabase Auth and never shared with third parties for commercial purposes. We do not sell data or run advertising profiles. Public Forge pages use Google Analytics 4 only after an analytics consent choice; student quiz data is not used for site analytics. Teachers use authenticated email/password accounts, with invite codes required for new teacher accounts.
       </div>
 
       <!-- 1. WHO WE ARE -->
       <section id="who-we-are">
         <h2>1. Who we are</h2>
-        <p>Forge is operated by <strong>Forge Education</strong> ("we", "us", "our"). For the purposes of UK data protection law, we are the <strong>data controller</strong> for personal data collected directly through the Forge platform (forgelearning.github.io and any successor domain).</p>
-        <p>Where Forge is purchased by a school or multi-academy trust, the school is the <strong>data controller</strong> for student and staff data processed on its behalf, and Forge acts as a <strong>data processor</strong>. The terms governing that relationship are set out in Section 8 (Data Processing Agreement).</p>
+        <p>Forge is operated by <strong>Forge Education</strong> ("we", "us", "our"). We are the <strong>data controller</strong> for information we use for our own purposes, such as direct account, billing and public-site activity (forgelearning.github.io and any successor domain).</p>
+        <p>For a school-directed class pilot or licence, the school normally decides why pupils' learning data is used and is the <strong>data controller</strong>; Forge processes that class data on the school's instructions. Forge may be a separate controller for its own account, billing and public-site activity. The school and Forge should confirm these roles and the processing terms before use.</p>
         <p>Our contact details are set out in Section 11.</p>
       </section>
 
@@ -112,19 +111,24 @@
         </ul>
         <p>A random anonymous identifier is generated and stored in their browser (localStorage) and in our database to persist progress on that device. No email address, password, or personal contact information is collected.</p>
 
-        <h3>Students joining with a class code and private student code</h3>
-        <p>Students joining a teacher's class enter a display name, their teacher's class code, and the individual private student code issued to them by the teacher. The same data as the free tier is collected, plus the class association and the credential used to authenticate that student's class access. No email address is required.</p>
+        <h3>Students joining a class</h3>
+        <p>Students joining a teacher's class enter a display name and class code. Classes with individual student access codes also require the private code issued by the teacher; older classes may allow joining with name and class code alone. A class association and a student identifier are stored so work can be linked to the right pupil. No student email address is required for class access.</p>
+        <p>A first name linked to a class and answer history can identify a pupil to their teacher. Class codes and individual access codes must be kept within the intended class. Where individual codes are enabled, the database stores a hash of the code rather than its plaintext value.</p>
         <table>
           <thead><tr><th>Data</th><th>Purpose</th><th>Legal basis</th></tr></thead>
           <tbody>
-            <tr><td>Display name</td><td>Identify the student in the teacher dashboard and, for class-joined students, the class-only leaderboard</td><td>Legitimate interests (providing the service)</td></tr>
-            <tr><td>Private student code</td><td>Authenticate the student's access to their own class-linked work and answer history</td><td>Legitimate interests (providing the service)</td></tr>
-            <tr><td>Question responses</td><td>Track accuracy, identify misconceptions, power the Anvil and profile</td><td>Legitimate interests (providing the service)</td></tr>
-            <tr><td>Misconception tags</td><td>Derive the Anvil, corrective starters, and student profile</td><td>Legitimate interests (providing the service)</td></tr>
-            <tr><td>XP and streak data</td><td>Power gamification and leaderboard features</td><td>Legitimate interests (providing the service)</td></tr>
-            <tr><td>Session timestamps</td><td>Calculate streaks, usage patterns</td><td>Legitimate interests (providing the service)</td></tr>
+            <tr><td>Display name</td><td>Identify the student in the teacher dashboard and, for class-joined students, in the weekly class league (shown to classmates as first name and last initial) and to classmates they have accepted as friends</td><td>School's chosen lawful basis for class use; Forge processes on its instructions</td></tr>
+            <tr><td>Private student code</td><td>Authenticate the student's access to their own class-linked work and answer history</td><td>School's chosen lawful basis for class use; Forge processes on its instructions</td></tr>
+            <tr><td>Question responses</td><td>Track accuracy, identify misconceptions, power the Anvil and profile</td><td>School's chosen lawful basis for class use; Forge processes on its instructions</td></tr>
+            <tr><td>Misconception tags</td><td>Derive the Anvil, corrective starters, and student profile</td><td>School's chosen lawful basis for class use; Forge processes on its instructions</td></tr>
+            <tr><td>XP and streak data</td><td>Power XP, ranks, the weekly class league and the friends feature</td><td>School's chosen lawful basis for class use; Forge processes on its instructions</td></tr>
+            <tr><td>Friend connections</td><td>Record which classmates a student has chosen to connect with, so that accepted friends can see each other’s progress</td><td>School's chosen lawful basis for class use; Forge processes on its instructions</td></tr>
+            <tr><td>Session timestamps</td><td>Calculate streaks, usage patterns</td><td>School's chosen lawful basis for class use; Forge processes on its instructions</td></tr>
           </tbody>
         </table>
+        <h3>Class friends and the weekly league</h3>
+        <p><strong>Class friends.</strong> This feature is off by default. A teacher may enable it only for their class, and it stays paused until every student in that class has an individual private access code, so a name alone cannot be used to accept a request on someone else's behalf. When enabled, classmates can see names in a classmate picker and send requests. Only after a student accepts a request can the pair see each other's display name, weekly and total XP, answer count, accuracy and practice streak. Either student can remove the connection at any time. Teachers can see their class's connections and switch the feature off. There is no messaging between students.</p>
+        <p><strong>Weekly class league.</strong> Students in a class can see a weekly XP league for that class. Classmates appear as first name and last initial, only students who have earned XP that week are listed, and each student sees the top three places plus the places either side of their own. The league resets every Monday, and teachers can switch it off for a class.</p>
 
         <h3>Pro and trial subscribers (account holders)</h3>
         <p>Students who sign up for a 7-day free trial or a paid Pro subscription create an account. We collect:</p>
@@ -141,7 +145,7 @@
           </tbody>
         </table>
         <div class="notice">
-          <strong>Age and email addresses:</strong> UK GDPR sets the age of digital consent at 13. Most A Level students are 16–18 and may independently provide their email address. GCSE students are typically 14–16 — students under 16 should have parental consent before creating a Pro or trial account with an email address. Class-joined and free-tier use requires no email address at any age. We do not knowingly collect data from children under 13. If you believe a child under 13 has created an account, please contact us for immediate deletion.
+          <strong>Children and accounts:</strong> The UK age of 13 applies when an online service relies on consent as its lawful basis; it is not a general rule that pupils under 16 need parental consent to provide an email address. Class use does not require an email address. Schools should decide and explain the lawful basis for their class pilot. Direct Pro and trial accounts have separate terms and should be reviewed for age-appropriate access.
         </div>
 
         <h3>Teachers (creating a class)</h3>
@@ -157,7 +161,7 @@
         <p>If you submit your email address via the waiting list form, we collect your email address only. It is stored with Formspree (see Section 9) and used only to contact you about Forge pilots and launch. You can request removal at any time by emailing us.</p>
 
         <h3>Technical data</h3>
-        <p>Like all web services, our infrastructure providers may log IP addresses and browser user-agent strings for security and debugging. These logs are not linked to student display names and are retained for a maximum of 30 days.</p>
+        <p>Hosting, database and other infrastructure providers may process IP addresses and browser information to deliver and secure the service. We are confirming each provider's logging and retention settings for the school pilot; these records are separate from pupil answer records.</p>
       </section>
 
       <!-- 3. HOW WE USE IT -->
@@ -172,8 +176,10 @@
             <tr><td>Subscription management</td><td>Email address, subscription status</td></tr>
             <tr><td>Generate the teacher misconception heatmap</td><td>Misconception tags aggregated by class</td></tr>
             <tr><td>Generate corrective starter activities</td><td>Top-firing misconception tags per class</td></tr>
-            <tr><td>Display the class leaderboard</td><td>Class-joined display name, XP, streak and rank within that class</td></tr>
-            <tr><td>Provide student drill-down to teacher (only if student links their account to a class)</td><td>Display name, accuracy, misconception profile</td></tr>
+            <tr><td>Display the weekly class league</td><td>Class-joined first name and last initial, XP earned that week, and position within that class</td></tr>
+            <tr><td>Show a student’s progress to classmates they have accepted as friends</td><td>Display name, weekly and total XP, answer count, accuracy and practice streak, shared only between two classmates who have both agreed</td></tr>
+            <tr><td>Show the class teacher which students in their class are friends</td><td>Friend connections and pending requests for pupils in that class</td></tr>
+            <tr><td>Provide student drill-down to the class teacher</td><td>Display name, accuracy, misconception profile for pupils in that class</td></tr>
             <tr><td>Contact waitlist signups about launch</td><td>Email address</td></tr>
             <tr><td>Billing and support (paid licences)</td><td>Teacher/school contact details</td></tr>
           </tbody>
@@ -204,18 +210,19 @@
         <table>
           <thead><tr><th>Data type</th><th>Retention period</th></tr></thead>
           <tbody>
-            <tr><td>Student question responses and misconception data</td><td>Academic year in which they were collected, plus one additional year, then deleted</td></tr>
-            <tr><td>Display names and class associations (free / class-joined)</td><td>As above — deleted with the response data they relate to</td></tr>
+            <tr><td>Class-linked question responses and misconception data</td><td>Held until the school requests deletion or the class is deleted; an automatic deletion schedule is being agreed with pilot schools</td></tr>
+            <tr><td>Class-linked display names and associations</td><td>Deleted when the associated class is deleted or on an agreed school deletion request</td></tr>
+            <tr><td>Free-tier display names and answer records</td><td>Held until deletion is requested; an automatic deletion schedule is being defined</td></tr>
             <tr><td><strong>Email address and password hash (Pro/trial accounts)</strong></td><td>For the duration of the account. Deleted within 30 days of an account deletion request. Where a subscription existed, we retain a pseudonymised transaction record for 7 years for accounting purposes (no email retained in that record)</td></tr>
             <tr><td>Chosen subjects (Pro/trial accounts)</td><td>Deleted with the account</td></tr>
             <tr><td>Trial start date and subscription status</td><td>Deleted with the account</td></tr>
-            <tr><td>Anonymous free-tier identifier (localStorage token)</td><td>Stored on device until browser data is cleared; server-side record deleted after 12 months of inactivity</td></tr>
+            <tr><td>Anonymous free-tier identifier (localStorage token)</td><td>Stored on the device until browser data is cleared; server-side deletion is available on request</td></tr>
             <tr><td>Waitlist email addresses</td><td>Until the platform launches publicly, or until you request removal, whichever is sooner</td></tr>
             <tr><td>Teacher/school contact details (paid licences)</td><td>Duration of the licence plus two years for legal and accounting purposes</td></tr>
-            <tr><td>Infrastructure access logs</td><td>Maximum 30 days, then automatically purged</td></tr>
+            <tr><td>Infrastructure access logs</td><td>Provider-specific retention; being confirmed for the pilot</td></tr>
           </tbody>
         </table>
-        <p>Schools may request early deletion of all student data associated with their institution at any time by contacting us. We will action deletion requests within 14 days and confirm in writing.</p>
+        <p>Schools may request deletion of student data associated with their classes at any time by contacting us. We will agree the scope and timing with the school and confirm completion in writing. Deleting a class removes its linked pupil and answer records; backups and provider logs need separate retention confirmation.</p>
       </section>
 
       <!-- 6. SECURITY -->
@@ -223,20 +230,20 @@
         <h2>6. Security</h2>
         <p>Application data is stored in <strong>Supabase</strong> (see Section 9), which provides:</p>
         <ul>
-          <li>Encryption at rest (AES-256) and in transit (TLS 1.2+)</li>
+          <li>Encryption in transit and at rest</li>
           <li>Row-level security policies — students can only read their own responses</li>
           <li>SOC 2 Type II certification</li>
-          <li>Data hosted in EU-West (Ireland) by default</li>
+          <li>A project region that must be confirmed for each school pilot</li>
         </ul>
-        <p>Student Pro/trial accounts are authenticated using <strong>Supabase Auth</strong>. Passwords are hashed with bcrypt before storage — neither Forge nor Supabase can recover a plaintext password. Access tokens are short-lived (1 hour) and refreshed automatically using a long-lived refresh token stored in browser localStorage.</p>
-        <p>Teacher dashboard access is controlled by authenticated teacher accounts. Class codes identify a class; private student codes authenticate individual class access. Both should be treated as access credentials and shared only with enrolled students, with each private code given only to its named student.</p>
-        <p>In the event of a personal data breach that is likely to result in risk to individuals, we will notify the ICO within 72 hours and affected schools within the same window, as required by Article 33 UK GDPR.</p>
+        <p>Student Pro/trial accounts are authenticated using <strong>Supabase Auth</strong>. Passwords are stored as non-reversible hashes by the authentication provider. Session tokens are stored in browser localStorage for signed-in accounts.</p>
+        <p>Teacher dashboard access is controlled by authenticated teacher accounts. Class codes identify a class; where enabled, private student codes authenticate individual class access. Codes should be shared only with the intended pupils, and each individual code should go only to its assigned pupil. In older classes without individual codes, anyone with the class code and a pupil's display name may be able to rejoin that pupil's record; schools should enable individual codes for class pilots.</p>
+        <p>If we discover a personal data breach involving school-controlled data, we will notify the school without undue delay and provide information needed for its assessment. The school, as controller, decides whether notification to the ICO or affected people is required. Where Forge is controller, we assess and make any required notifications ourselves.</p>
       </section>
 
       <!-- 7. COOKIES -->
       <section id="cookies">
         <h2>7. Cookies and local storage</h2>
-        <p>Forge does not use cookies. We use <strong>browser localStorage</strong> to:</p>
+        <p>Forge uses <strong>browser localStorage</strong> for essential preferences and sessions. Public-site analytics may use cookies after an analytics consent choice. Local storage is used to:</p>
         <ul>
           <li>Remember your theme preference (dark/light mode)</li>
           <li>Store your session (display name, class code and, for protected class-linked students, private student code) so you do not have to re-enter it when navigating between the Quiz, Assigned, Anvil, Crucible, Dashboard and Profile pages</li>
@@ -244,16 +251,16 @@
           <li>Store your Supabase Auth session token (access token + refresh token) if you have a Pro or trial account — this allows you to stay logged in across visits without re-entering your password</li>
         </ul>
         <p>localStorage data is stored on your device only and is never transmitted to our servers except as part of normal authenticated requests. It can be cleared at any time by clicking "Switch student" / "Sign out" or clearing your browser data.</p>
-        <p>Public Forge pages use Google Analytics 4 to understand aggregate page usage, such as which pages are visited and how visitors navigate the site. Analytics storage is denied until a visitor gives consent through the site banner. You can reject analytics or <button class="privacy-settings" type="button" data-forge-action="analytics-settings">change your choice</button>. Google may process technical request data under its own privacy terms; see the sub-processors section below.</p>
+        <p>Marketing and guide pages use Google Analytics 4 to understand site usage. Analytics storage is denied until a visitor gives consent through the site banner. Pupil learning pages do not load Google Analytics or the separate product event tracker. You can reject analytics or <button class="privacy-settings" type="button" data-forge-action="analytics-settings">change your choice</button>. Google may process technical request data under its own privacy terms; see the sub-processors section below.</p>
       </section>
 
       <!-- 8. DPA -->
       <section id="dpa">
-        <h2>8. Data Processing Agreement for schools</h2>
+        <h2>8. Proposed processing terms for schools</h2>
 
         <div class="dpa-box">
-          <h3>Data Processing Agreement</h3>
-          <p class="forge-u-fta3av">This agreement is entered into between the school or institution purchasing a Forge licence (<strong>"Controller"</strong>) and Forge Education (<strong>"Processor"</strong>). It supplements and forms part of the Forge licence agreement. Where no separate licence agreement exists, acceptance of these terms via the waitlist or pilot sign-up constitutes agreement.</p>
+          <h3>For school review</h3>
+          <p class="forge-u-fta3av">This agreement is entered into between the school or institution purchasing a Forge licence (<strong>"Controller"</strong>) and Forge Education (<strong>"Processor"</strong>). It supplements and forms part of the Forge licence agreement. For a school pilot, these terms require review and agreement by an authorised school representative; a waitlist entry alone does not accept them.</p>
         </div>
 
         <h3>8.1 Subject matter and duration</h3>
@@ -266,7 +273,7 @@
         <p>Students enrolled in classes created by the Controller's teachers. Teaching and administrative staff of the Controller who access the Teacher Dashboard.</p>
 
         <h3>8.4 Types of personal data</h3>
-        <p>Display names (not necessarily legal names), question response data, misconception tags, XP and streak data, session timestamps. See Section 2 for the full list.</p>
+        <p>Display names (not necessarily legal names), question response data, misconception tags, XP and streak data, friend connections between classmates, session timestamps. See Section 2 for the full list.</p>
 
         <h3>8.5 Processor obligations</h3>
         <p>The Processor shall:</p>
@@ -285,13 +292,13 @@
         <p>The Controller grants general authorisation for the Processor to engage the sub-processors listed in Section 9. The Processor shall inform the Controller of any intended changes to sub-processors, giving the Controller the opportunity to object. Where the Controller objects and the parties cannot resolve the objection, the Controller may terminate the licence.</p>
 
         <h3>8.7 International transfers</h3>
-        <p>Application and school data is stored in Supabase's EU-West (Ireland) region. Public-page analytics may involve Google's global service after consent, as described in Section 9; Forge does not send student quiz responses to Google Analytics. Should any transfer of school data be necessary, the Processor shall ensure an appropriate safeguard is in place (UK adequacy decision, SCCs, or equivalent).</p>
+        <p>The active Supabase project region and any transfer safeguards should be confirmed in the school's DPIA and processing agreement. Marketing and guide analytics may involve Google's global service after consent; pupil learning pages do not load Google Analytics. Any restricted transfer of school data requires an appropriate safeguard.</p>
 
         <h3>8.8 Controller obligations</h3>
         <p>The Controller shall:</p>
         <ul>
           <li>Ensure it has a lawful basis for processing student data and has fulfilled any transparency obligations to students and parents under UK GDPR (e.g. by including Forge in its school privacy notice)</li>
-          <li>Ensure that class codes and private student codes are distributed only to enrolled students, with each private code given to its named student</li>
+          <li>Ensure that class codes and, where enabled, private student codes are distributed only to enrolled students, with each private code given to its assigned pupil</li>
           <li>Notify the Processor promptly if it becomes aware of any breach involving Forge data</li>
           <li>Not instruct the Processor to process data in a way that would violate applicable data protection law</li>
         </ul>
@@ -335,8 +342,8 @@
             <tr>
               <td><strong>Supabase</strong></td>
               <td>Database and authentication (stores all question responses, misconception tags, student data, and Pro/trial account credentials via Supabase Auth)</td>
-              <td>EU-West (Ireland)</td>
-              <td>SOC 2 Type II · DPA in place · <a href="https://supabase.com/privacy" target="_blank" rel="noopener">Privacy policy</a></td>
+              <td>Project region to be confirmed with the school</td>
+              <td>SOC 2 Type II provider; project configuration and contract to be checked · <a href="https://supabase.com/privacy" target="_blank" rel="noopener">Privacy policy</a></td>
             </tr>
             <tr>
               <td><strong>Stripe</strong></td>
@@ -348,7 +355,7 @@
               <td><strong>GitHub Pages</strong></td>
               <td>Static file hosting (serves the HTML/JS application files)</td>
               <td>Global CDN (no personal data stored)</td>
-              <td>No personal data processed · <a href="https://docs.github.com/en/site-policy/privacy-policies/github-privacy-statement" target="_blank" rel="noopener">GitHub privacy</a></td>
+              <td>Receives technical request data, such as IP addresses · <a href="https://docs.github.com/en/site-policy/privacy-policies/github-privacy-statement" target="_blank" rel="noopener">GitHub privacy</a></td>
             </tr>
             <tr>
               <td><strong>Formspree</strong></td>
@@ -364,7 +371,7 @@
             </tr>
             <tr>
               <td><strong>Google Analytics 4</strong></td>
-              <td>Aggregate usage analytics on public Forge pages after consent; not used to analyse student quiz responses</td>
+              <td>Usage analytics on marketing and guide pages after consent; not loaded on pupil learning pages</td>
               <td>Global service</td>
               <td>Analytics storage is denied until consent · <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google privacy</a></td>
             </tr>
@@ -382,7 +389,7 @@
           <li>We will delete your account and all associated personal data (email, password hash, subjects, responses) within <strong>30 days</strong> and confirm by email</li>
           <li>A pseudonymised transaction record (no email, no name) will be retained for 7 years if you held a paid subscription, for accounting compliance</li>
         </ul>
-        <p>Free-tier students (no account) can delete their local data by clearing their browser's localStorage or by clicking "Switch student" in the quiz. Their server-side anonymous record will be automatically purged after 12 months of inactivity.</p>
+        <p>Free-tier students (no account) can delete their local data by clearing their browser's localStorage or by clicking "Switch student" in the quiz. Contact us to request deletion of their server-side record; clearing the browser alone does not delete server-side data.</p>
         <p>If you have also linked your account to a teacher's class, deletion of your account will remove you from that teacher's dashboard.</p>
       </section>
 
@@ -393,7 +400,7 @@
         <div class="notice hot forge-mt-4">
           <strong>Forge Education — Data contact</strong><br>
           Email: <a href="mailto:forge.educator@gmail.com">forge.educator@gmail.com</a><br>
-          Response time: within 5 working days for general queries; within 72 hours for breach notifications
+          We will respond to general queries as promptly as possible and notify the school without undue delay after discovering a breach involving its data
         </div>
         <p class="forge-u-f4v9hz">If you are a student or parent and wish to exercise your rights (access, erasure, etc.), please contact your school's data protection lead in the first instance, as the school is the data controller for student data. The school will liaise with us if required.</p>
         <p>If you are not satisfied with our response, you have the right to complain to the <strong>Information Commissioner's Office</strong>:</p>

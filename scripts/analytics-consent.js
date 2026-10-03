@@ -5,6 +5,16 @@
   var measurementId = 'G-RGZ9J6Q8H9';
   var consent = null;
   var settingsTrigger = null;
+  var scriptRequested = false;
+
+  function loadAnalytics() {
+    if (scriptRequested || !document.head) return;
+    scriptRequested = true;
+    var script = document.createElement('script');
+    script.async = true;
+    script.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(measurementId);
+    document.head.appendChild(script);
+  }
 
   try { consent = window.localStorage.getItem(STORAGE_KEY); } catch (e) {}
 
@@ -17,6 +27,7 @@
     ad_personalization: 'denied',
     wait_for_update: 500
   });
+  if (consent === 'granted') loadAnalytics();
 
   function hideBanner() {
     var banner = document.getElementById('analytics-consent-banner');
@@ -29,6 +40,7 @@
     window.gtag('consent', 'update', {
       analytics_storage: value === 'granted' ? 'granted' : 'denied'
     });
+    if (value === 'granted') loadAnalytics();
     hideBanner();
     if (settingsTrigger && document.contains(settingsTrigger)) {
       settingsTrigger.focus();

@@ -7,3 +7,7 @@ android/app/build/
 android/build/
 *.xcuserdata/
 *.xcodeproj/project.xcworkspace/xcuserdata/
+
+# Local tool state: never publish (the repo is public)
+supabase/.temp/
+.impeccable/review/

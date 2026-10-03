@@ -250,6 +250,7 @@ html[data-overdrive="control-room"] .mod-row:hover{border-color:var(--hot);box-s
 .dashboard-heading{margin-bottom:32px}
 .dashboard-heading p{color:var(--slate);font-size:15px}
 .dashboard-next{padding:28px;border:1px solid var(--line);border-radius:var(--radius-lg);background:var(--panel)}
+.dashboard-next__label{display:block;margin:0 0 12px;color:var(--ember);font:700 12px/1.3 'Rethink Sans',sans-serif;letter-spacing:.035em}
 .dashboard-next h2{font-size:24px;line-height:1.25;margin:0 0 12px}
 .dashboard-next p{max-width:58ch;color:var(--slate);font-size:15px;line-height:1.65;margin:0 0 24px}
 .dashboard-next .forge-button{min-height:44px}
@@ -299,7 +300,8 @@ html[data-overdrive="control-room"] .mod-row:hover{border-color:var(--hot);box-s
   .dashboard-layout--split{grid-template-columns:minmax(0,1fr) minmax(280px,340px);grid-template-areas:"next progress" "nav league" "friends league";grid-template-rows:auto auto 1fr;gap:16px 24px;align-items:start}
   .dashboard-layout--split .dashboard-main,.dashboard-layout--split .dashboard-side{display:contents}
   .dashboard-layout--split .dashboard-next{grid-area:next;align-self:stretch;display:flex;flex-direction:column}
-  .dashboard-layout--split .dashboard-next .forge-button{align-self:flex-start;margin-top:auto}
+  .dashboard-layout--split .dashboard-next .forge-button{align-self:flex-start}
+  .dashboard-layout--split .dashboard-topics{margin-top:auto}
   .dashboard-layout--split .dashboard-progress{grid-area:progress;align-self:stretch}
   .dashboard-layout--split .dashboard-shortcuts{grid-area:nav;margin:0}
   .dashboard-layout--split #dashboard-league{grid-area:league}
@@ -310,8 +312,17 @@ html[data-overdrive="control-room"] .mod-row:hover{border-color:var(--hot);box-s
   .dashboard-layout--split .dashboard-progress dt{margin:0}
 }
 @media(min-width:1100px){.dashboard-layout:not(.dashboard-layout--split),#app>.forge-state{max-width:760px}}
-.dashboard-side{display:grid;gap:16px;align-content:start;min-width:0}
+.dashboard-side{display:grid;gap:16px;align-content:start;min-width:0;margin-top:16px}
 #dashboard-league:empty{display:none}
 #dashboard-friends:empty{display:none}
 #dashboard-friends{margin-top:16px}
 @media(min-width:1100px){.dashboard-layout--split #dashboard-friends{margin-top:0}}
+/* Other topics, at the foot of the recommendation card */
+.dashboard-topics{margin-top:24px;padding-top:18px;border-top:1px solid var(--line)}
+.dashboard-topics__label{margin:0 0 10px !important;color:var(--slate);font-size:13px !important}
+.dashboard-topics ul{display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0;list-style:none}
+.dashboard-topics a{display:inline-flex;align-items:center;gap:10px;min-height:40px;padding:8px 14px;border:1px solid var(--line);border-radius:var(--radius-md);background:var(--panel-2);color:var(--white);font-size:14px;font-weight:600;text-decoration:none}
+.dashboard-topics a:hover{border-color:var(--ember)}
+.dashboard-topics a:focus-visible{outline:2px solid var(--ember);outline-offset:3px}
+.dashboard-topics small{flex:none;white-space:nowrap;color:var(--slate);font-weight:500}
+.dashboard-topics .dashboard-topics__all{background:transparent;color:var(--ember)}

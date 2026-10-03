@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en-GB" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Interactive Forge Revision pilot mockup using illustrative Year 10 Geography data.">
+  <title>Forge — Revision pilot</title>
+  <link rel="stylesheet" href="revision-pilot.css">
+</head>
+<body>
+  <svg class="symbol-sheet" aria-hidden="true">
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="m3 11 9-8 9 8M5 10v10h5v-6h4v6h5V10"/></symbol>
+    <symbol id="i-flame" viewBox="0 0 24 24"><path d="M12 3c1.4 2.4.5 3.9-.6 5.2-1 1.3-2.4 2.6-2.4 4.9a3 3 0 0 0 6 0c0-.9-.3-1.6-.8-2.3M8 14c-1 1.5-1.4 3-1.4 4.1A5.4 5.4 0 0 0 12 23a5.4 5.4 0 0 0 5.4-4.9c0-1.2-.4-2.7-1.4-4.1"/></symbol>
+    <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4m8-4v4"/></symbol>
+    <symbol id="i-anvil" viewBox="0 0 24 24"><path d="M4 13h16l-1.5-3.5a2 2 0 0 0-1.8-1.2L14 8V5H9v3l-2.7.3a2 2 0 0 0-1.8 1.2L4 13Zm5 0v3a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2v-3m-5 5v3m4-3v3M8 21h8"/></symbol>
+    <symbol id="i-cards" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6m-6 4h6m-6 4h4M3 7H2v12a2 2 0 0 0 2 2h10"/></symbol>
+    <symbol id="i-crucible" viewBox="0 0 24 24"><path d="M9 3h6M9 3v3.5a5 5 0 0 1-.7 2.5L6 13a5 5 0 0 0-.7 2.5V19a2 2 0 0 0 2 2h9.4a2 2 0 0 0 2-2v-3.5A5 5 0 0 0 18 13l-2.3-4a5 5 0 0 1-.7-2.5V3M7 16h10"/></symbol>
+    <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19m0-14-1.5 1.5m-11 11L5 19"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 15.5A8.5 8.5 0 0 1 8.5 4 8.5 8.5 0 1 0 20 15.5Z"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-5-5 5 5-5 5"/></symbol>
+    <symbol id="i-back" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  </svg>
+
+  <aside class="sidebar" aria-label="Forge navigation">
+    <a class="brand" href="#" data-action="home" aria-label="Forge home"><span class="brand-mark">F</span><span>Forge</span></a>
+    <button class="class-switch" type="button"><svg class="icon"><use href="#i-user"/></svg><span class="class-label">10A Geography</span><span class="class-year">Year 10</span></button>
+    <nav class="side-nav student-nav" aria-label="Student sections">
+      <button class="nav-item" type="button" data-action="home"><svg class="icon"><use href="#i-home"/></svg><span>Dashboard</span></button>
+      <button class="nav-item" type="button"><svg class="icon"><use href="#i-flame"/></svg><span>Forge</span></button>
+      <button class="nav-item" type="button"><svg class="icon"><use href="#i-calendar"/></svg><span>Assigned</span><span class="nav-count">1</span></button>
+      <button class="nav-item" type="button"><svg class="icon"><use href="#i-anvil"/></svg><span>Anvil</span><span class="nav-count nav-count-muted">3</span></button>
+      <button class="nav-item" type="button" data-action="home" aria-current="page"><svg class="icon"><use href="#i-cards"/></svg><span>Revision</span><span class="nav-count">12</span></button>
+      <button class="nav-item" type="button"><svg class="icon"><use href="#i-crucible"/></svg><span>Crucible</span></button>
+    </nav>
+    <nav class="side-nav teacher-nav" aria-label="Teacher sections">
+      <button class="nav-item" type="button"><svg class="icon"><use href="#i-home"/></svg><span>Overview</span></button>
+      <button class="nav-item" type="button"><svg class="icon"><use href="#i-user"/></svg><span>Class &amp; students</span></button>
+      <button class="nav-item" type="button" aria-current="page"><svg class="icon"><use href="#i-calendar"/></svg><span>Assignments</span></button>
+      <button class="nav-item" type="button"><svg class="icon"><use href="#i-cards"/></svg><span>Spec points</span></button>
+    </nav>
+    <div class="side-bottom">
+      <button class="nav-item" type="button"><svg class="icon"><use href="#i-user"/></svg><span>Profile</span></button>
+      <button class="theme-toggle" type="button" data-action="theme" aria-label="Switch to light mode"><svg class="icon theme-dark"><use href="#i-sun"/></svg><svg class="icon theme-light"><use href="#i-moon"/></svg></button>
+    </div>
+  </aside>
+
+  <header class="mobile-top">
+    <a class="brand" href="#" data-action="home"><span class="brand-mark">F</span><span>Forge</span></a>
+    <button class="theme-toggle" type="button" data-action="theme" aria-label="Switch to light mode"><svg class="icon theme-dark"><use href="#i-sun"/></svg><svg class="icon theme-light"><use href="#i-moon"/></svg></button>
+  </header>
+
+  <main class="main" id="main-content">
+    <div class="prototype-bar">
+      <span><strong>Interactive prototype</strong> · Illustrative pilot data</span>
+      <div class="role-switch" aria-label="Preview role">
+        <button type="button" data-role="student" aria-pressed="true">Student</button>
+        <button type="button" data-role="teacher" aria-pressed="false">Teacher</button>
+      </div>
+    </div>
+
+    <section class="screen is-active" id="student-home" aria-labelledby="revision-heading">
+      <header class="page-head">
+        <div><h1 id="revision-heading">Revision</h1><p>Your next review is chosen from what you have learned and what needs another return.</p></div>
+        <div class="week-mark"><strong>3</strong><span>revision days<br>this week</span></div>
+      </header>
+
+      <section class="today-stage" aria-labelledby="today-heading">
+        <div class="today-copy">
+          <h2 id="today-heading">Wednesday: 12 cards are ready to come back.</h2>
+          <p>Mostly rainfall patterns and measures of development. Eight focused minutes should clear today’s queue.</p>
+          <button class="primary-button" type="button" data-action="start-session">Start today’s revision <svg class="icon"><use href="#i-arrow"/></svg></button>
+        </div>
+        <div class="return-path" aria-label="How today's revision moves forward">
+          <div class="return-node is-now"><span>Now</span><strong>12 due</strong><small>Answer from memory</small></div>
+          <div class="return-line"><i></i></div>
+          <div class="return-node"><span>Tomorrow</span><strong>3 likely</strong><small>Anything uncertain</small></div>
+          <div class="return-line"><i></i></div>
+          <div class="return-node"><span>Next week</span><strong>9 move on</strong><small>If recall holds</small></div>
+        </div>
+      </section>
+
+      <section class="assignment-band" aria-labelledby="assignment-heading">
+        <div class="assignment-source"><span class="teacher-avatar">MZ</span><div><span>Set by your teacher</span><strong id="assignment-heading">People and the Biosphere</strong></div></div>
+        <div class="assignment-progress"><span>4 of 10 complete</span><div class="progress-track"><i class="progress-40"></i></div></div>
+        <div class="assignment-due"><span>Due Friday</span><button type="button" data-action="start-assignment">Continue <svg class="icon"><use href="#i-arrow"/></svg></button></div>
+      </section>
+
+      <section class="topic-section" aria-labelledby="topics-heading">
+        <header class="section-head"><div><h2 id="topics-heading">Browse the pilot topics</h2><p>Choose a topic yourself, or let Today mix what is due.</p></div><span>69 misconception concepts</span></header>
+        <div class="topic-list">
+          <button class="topic-row" type="button" data-topic="Hazardous Earth"><span class="topic-swatch tone-ember"></span><span class="topic-copy"><strong>Hazardous Earth</strong><small>Plate boundaries, volcanic processes and hazard response</small></span><span class="topic-state"><b>7</b> due today</span><span class="topic-mastery"><i class="mastery-62"></i></span><svg class="icon"><use href="#i-arrow"/></svg></button>
+          <button class="topic-row" type="button" data-topic="People and the Biosphere"><span class="topic-swatch tone-blue"></span><span class="topic-copy"><strong>People and the Biosphere</strong><small>Biomes, ecosystem services and human pressure</small></span><span class="topic-state"><b>4</b> of 10 assigned</span><span class="topic-mastery"><i class="mastery-48"></i></span><svg class="icon"><use href="#i-arrow"/></svg></button>
+          <button class="topic-row" type="button" data-topic="Development Dynamics"><span class="topic-swatch tone-gold"></span><span class="topic-copy"><strong>Development Dynamics</strong><small>Measures, inequality and models of development</small></span><span class="topic-state"><b>5</b> learning</span><span class="topic-mastery"><i class="mastery-74"></i></span><svg class="icon"><use href="#i-arrow"/></svg></button>
+        </div>
+      </section>
+
+      <section class="memory-ledger" aria-labelledby="ledger-heading">
+        <header class="section-head"><div><h2 id="ledger-heading">Your memory ledger</h2><p>Knowledge moves forward only when you can retrieve it later.</p></div></header>
+        <div class="ledger-rule"><span>New <b>11</b></span><span>Learning <b>18</b></span><span>Secure <b>40</b></span><span>Due again <b>12</b></span></div>
+      </section>
+    </section>
+
+    <section class="screen" id="revision-session" aria-labelledby="card-question">
+      <header class="session-head"><button class="icon-button" type="button" data-action="home" aria-label="Leave revision session"><svg class="icon"><use href="#i-back"/></svg></button><div><strong>Today’s revision</strong><span id="session-position">Card 1 of 3</span></div><button class="text-button" type="button" data-action="home">Save &amp; leave</button></header>
+      <div class="session-progress" aria-hidden="true"><i id="session-progress-bar"></i></div>
+      <div class="session-layout">
+        <article class="recall-card" id="recall-card">
+          <div class="card-context"><span id="card-topic">People and the Biosphere</span><span id="card-kind">Explain the difference</span></div>
+          <h1 id="card-question">Why can a tropical rainforest and a hot desert exist at similar latitudes?</h1>
+          <p class="card-instruction">Answer from memory. One precise sentence is enough.</p>
+          <label class="answer-label" for="recall-answer">Your answer</label>
+          <textarea id="recall-answer" rows="4" placeholder="Type what you can remember…"></textarea>
+          <div class="card-actions"><button class="quiet-button" type="button" data-action="hint">Give me a clue</button><button class="primary-button" type="button" data-action="check-answer">Check answer <svg class="icon"><use href="#i-arrow"/></svg></button></div>
+          <p class="hint-text" id="hint-text" hidden>Think about rainfall amount and seasonality, not latitude alone.</p>
+        </article>
+        <aside class="session-why">
+          <span class="why-label">Why this returned</span>
+          <p id="why-copy">You repaired this misconception in Anvil three days ago. Today checks whether the distinction held.</p>
+          <div class="mini-path"><span class="is-done"><svg class="icon"><use href="#i-check"/></svg>Repaired</span><i></i><span class="is-current"><svg class="icon"><use href="#i-clock"/></svg>Due today</span><i></i><span><svg class="icon"><use href="#i-lock"/></svg>Secure</span></div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="screen" id="answer-review" aria-labelledby="review-question">
+      <header class="session-head"><button class="icon-button" type="button" data-action="home" aria-label="Leave revision session"><svg class="icon"><use href="#i-back"/></svg></button><div><strong>Today’s revision</strong><span id="review-position">Card 1 of 3</span></div><button class="text-button" type="button" data-action="home">Save &amp; leave</button></header>
+      <div class="session-progress" aria-hidden="true"><i id="review-progress-bar"></i></div>
+      <article class="review-sheet">
+        <div class="review-main">
+          <h1 id="review-question">Why can a tropical rainforest and a hot desert exist at similar latitudes?</h1>
+          <span class="review-topic" id="review-topic">People and the Biosphere</span>
+          <div class="your-answer"><span>Your answer</span><p id="student-answer">They have different rainfall.</p></div>
+          <div class="model-answer"><span>What a secure answer includes</span><p id="model-answer">Latitude helps explain temperature, but global atmospheric circulation creates very different rainfall totals and seasonal patterns.</p></div>
+        </div>
+        <footer class="confidence-check">
+          <div><strong>How well did you know it?</strong><span>Your choice sets when this card returns.</span></div>
+          <div class="confidence-actions"><button type="button" data-rating="again"><strong>Again</strong><span>Later today</span></button><button type="button" data-rating="nearly"><strong>Nearly</strong><span>Tomorrow</span></button><button type="button" data-rating="got-it"><strong>Got it</strong><span>In 7 days</span></button></div>
+        </footer>
+      </article>
+    </section>
+
+    <section class="screen" id="session-result" aria-labelledby="result-heading">
+      <div class="result-layout">
+        <div class="result-message"><span class="result-mark"><svg class="icon"><use href="#i-check"/></svg></span><h1 id="result-heading">That review moved your knowledge forward.</h1><p id="result-copy">Your choices have set the next return for each card.</p><div class="result-actions"><button class="primary-button" type="button" data-action="restart">Review another set</button><button class="quiet-button" type="button" data-action="home">Back to Revision</button></div></div>
+        <dl class="result-ledger"><div><dt>Moved forward</dt><dd id="result-forward">0 cards</dd><small>Next review in 7 days</small></div><div><dt>Returns sooner</dt><dd id="result-sooner">0 cards</dd><small id="result-sooner-note">Back tomorrow or later today</small></div><div><dt>Time focused</dt><dd>2 min</dd><small>Illustrative session</small></div></dl>
+      </div>
+    </section>
+
+    <section class="screen" id="teacher-assign" aria-labelledby="teacher-heading">
+      <header class="page-head teacher-head"><div><h1 id="teacher-heading">Set revision</h1><p>Choose curriculum content. Forge selects and schedules the cards.</p></div><button class="quiet-button" type="button" data-action="teacher-overview">Back to dashboard</button></header>
+      <div class="teacher-layout">
+        <form class="assignment-form" id="assignment-form">
+          <fieldset><legend>Class</legend><label class="select-shell"><span>Teaching group</span><select id="teacher-class"><option>10A Geography · 17 students</option></select></label></fieldset>
+          <fieldset><legend>Choose topics</legend><div class="topic-checks"><label><input type="checkbox" name="topic" value="Hazardous Earth" checked><span class="topic-swatch tone-ember"></span><span><strong>Hazardous Earth</strong><small>35 questions · 14 concepts</small></span></label><label><input type="checkbox" name="topic" value="People and the Biosphere" checked><span class="topic-swatch tone-blue"></span><span><strong>People and the Biosphere</strong><small>57 questions · 23 concepts</small></span></label><label><input type="checkbox" name="topic" value="Development Dynamics"><span class="topic-swatch tone-gold"></span><span><strong>Development Dynamics</strong><small>76 questions · 32 concepts</small></span></label></div></fieldset>
+          <fieldset><legend>Set the target</legend><div class="choice-row"><label><input type="radio" name="target" value="10 cards" checked><span><strong>10 cards</strong><small>About 7 minutes</small></span></label><label><input type="radio" name="target" value="20 cards"><span><strong>20 cards</strong><small>About 14 minutes</small></span></label><label><input type="radio" name="target" value="Clear due queue"><span><strong>Clear due queue</strong><small>Personalised length</small></span></label></div></fieldset>
+          <fieldset><legend>Due date</legend><label class="select-shell"><span>Complete by</span><input id="due-date" type="date" value="2026-09-18"></label></fieldset>
+        </form>
+        <aside class="assignment-summary">
+          <h2>Year 10 revision preview</h2><p id="summary-topics">Hazardous Earth + People and the Biosphere</p><div class="summary-rule"><span>Target</span><strong id="summary-target">10 cards</strong></div><div class="summary-rule"><span>Due</span><strong id="summary-date">18 September</strong></div><div class="summary-rule"><span>Students</span><strong>17</strong></div><button class="primary-button" type="submit" form="assignment-form">Set revision <svg class="icon"><use href="#i-arrow"/></svg></button><button class="preview-button" type="button" data-action="preview-cards">Preview selected cards</button><small>Students’ individual schedules continue underneath this assignment.</small>
+        </aside>
+      </div>
+    </section>
+
+    <section class="screen" id="teacher-success" aria-labelledby="success-heading">
+      <div class="success-sheet"><span class="result-mark"><svg class="icon"><use href="#i-check"/></svg></span><h1 id="success-heading">Revision set for 10A Geography.</h1><p id="success-copy">Students will see it in Assigned and inside their Revision queue. Their cards remain personalised within the topics you selected.</p><div class="success-facts"><span><b id="success-students">17</b> students</span><span><b id="success-target">10 cards</b> target</span><span><b id="success-date">18 Sep</b> due</span></div><button class="primary-button" type="button" data-action="teacher-return">Set another revision</button></div>
+    </section>
+  </main>
+
+  <nav class="bottom-nav" aria-label="Student navigation"><button type="button"><svg class="icon"><use href="#i-home"/></svg><span>Home</span></button><button type="button"><svg class="icon"><use href="#i-flame"/></svg><span>Forge</span></button><button type="button" data-action="home" aria-current="page"><svg class="icon"><use href="#i-cards"/></svg><span>Revision</span><b>12</b></button><button type="button"><svg class="icon"><use href="#i-anvil"/></svg><span>Anvil</span></button><button type="button"><svg class="icon"><use href="#i-calendar"/></svg><span>Assigned</span></button></nav>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="revision-pilot.js"></script>
+</body>
+</html>

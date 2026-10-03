@@ -1,5 +1,7 @@
 # Forge analytics contract
 
+**School pilot status (21 September 2026):** The application pages no longer load Google Analytics or `forge-product-analytics.js`. The event ingestion described below is dormant for those pages while school data use is reviewed. Existing `product_events` records, if any, require a separate retention and deletion decision. Marketing and guide pages load Google Analytics only after a visitor accepts analytics.
+
 Forge analytics now has two deliberately different roles:
 
 - **Local diagnostics:** every browser keeps a small, capped history and pending queue in local storage. The internal Product insights page reads this history only.
