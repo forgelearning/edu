@@ -74,7 +74,25 @@
   }
   function dueCards(cards,state){var now=Date.now();return cards.filter(function(card){var r=state.reviews[card.key];return r&&Date.parse(r.dueAt||0)<=now;});}
   function modelAnswer(question){return question&&question.options&&question.options[question.correct]||'';}
-  function thinkingPrompt(question){return String(question&&question.hint||'').trim()||'Start with one fact or process you remember about this topic. How does it answer the question?';}
+  // "Help me start" used to give every card the same sentence, because no
+  // question carries a `hint`. Build one from the card's own answer instead:
+  // the first letter and length of each of its first six words. Opening words
+  // would be too strong — answers are often "Key term — explanation", so they
+  // name the very term being recalled. Numeric and character-based answers
+  // (maths, Mandarin) have no useful letter shape, so they keep the general
+  // prompt and "Show choices" remains the stronger help. Returns HTML.
+  var GENERAL_HINT='Start with one fact or process you remember about this topic. How does it answer the question?';
+  var HINT_WORDS=6;
+  function hintHtml(question){
+    var authored=String(question&&question.hint||'').trim();
+    if(authored)return escapeHtml(authored);
+    var answer=String(modelAnswer(question)).replace(/\s+/g,' ').trim(),words=answer.split(' ');
+    if(!answer||!/[A-Za-z]/.test(answer)||/[\u3400-\u9fff]/.test(answer))return escapeHtml(GENERAL_HINT);
+    var pattern=words.slice(0,HINT_WORDS).map(function(word){
+      return word.split('').map(function(ch,i){return i===0||!/[A-Za-z]/.test(ch)?ch:'_';}).join('');
+    }).join('  ')+(words.length>HINT_WORDS?'  …':'');
+    return 'The answer’s first letters: <span class="revision-hint-pattern">'+escapeHtml(pattern)+'</span>';
+  }
   function personalKey(id){return 'personal|'+id;}
   function personalAsReview(card){return {key:personalKey(card.id),bank:card.bank||'personal',personal:true,question:{stem:card.front,options:{answer:card.back},correct:'answer',scaffold:''},source:card.source||null};}
   function cleanPersonalCard(input,existing){
@@ -251,7 +269,7 @@
       var choices=card.personal?'':Object.keys(question.options||{}).map(function(key){return '<li><label class="revision-choice-option"><input type="radio" name="revision-choice" value="'+escapeHtml(key)+'" data-revision-choice="'+escapeHtml(key)+'" aria-label="'+escapeHtml(key+' '+question.options[key])+'"><b>'+escapeHtml(key)+'</b><span>'+escapeHtml(question.options[key])+'</span></label></li>';}).join('');
       var notice=lastReviewMessage?'<p class="revision-schedule-note" role="status">'+escapeHtml(lastReviewMessage)+'</p>':'';
       lastReviewMessage='';
-      app.innerHTML='<header class="revision-session-head"><button type="button" data-revision-action="home" aria-label="Leave revision">←</button><div><strong>'+escapeHtml(sessionTitle(card))+'</strong><span>Card '+(currentIndex+1)+' of '+currentCards.length+'</span></div></header>'+notice+sessionProgress()+'<article class="revision-recall-card"><div><span>'+escapeHtml(root.ForgeChemistryTopics&&root.ForgeChemistryTopics.pointId(currentSource)?topicLabel(currentSource):topicLabel(card.bank))+'</span><span>Answer from memory</span></div><h1>'+escapeHtml(question.stem)+'</h1><p>Compare your answer with '+(card.personal?'the answer you saved':'Forge’s curated answer')+'.</p><label for="revision-answer">Your answer</label><textarea id="revision-answer" rows="4" placeholder="Type what you can remember…"></textarea><div class="revision-card-actions">'+(card.personal?'':'<button type="button" data-revision-action="hint">Help me start</button><button type="button" data-revision-action="choices">Show choices</button>')+'<button type="button" data-revision-action="reveal">Check answer →</button></div>'+(card.personal?'':'<p class="revision-hint" hidden><strong>Try this</strong> '+escapeHtml(thinkingPrompt(question))+'</p><div class="revision-choice-help" hidden><p>Choose one to put it in your answer, then check it.</p><ol class="revision-choices">'+choices+'</ol><p class="revision-choice-status" role="status" hidden></p></div>')+'</article>';
+      app.innerHTML='<header class="revision-session-head"><button type="button" data-revision-action="home" aria-label="Leave revision">←</button><div><strong>'+escapeHtml(sessionTitle(card))+'</strong><span>Card '+(currentIndex+1)+' of '+currentCards.length+'</span></div></header>'+notice+sessionProgress()+'<article class="revision-recall-card"><div><span>'+escapeHtml(root.ForgeChemistryTopics&&root.ForgeChemistryTopics.pointId(currentSource)?topicLabel(currentSource):topicLabel(card.bank))+'</span><span>Answer from memory</span></div><h1>'+escapeHtml(question.stem)+'</h1><p>Compare your answer with '+(card.personal?'the answer you saved':'Forge’s curated answer')+'.</p><label for="revision-answer">Your answer</label><textarea id="revision-answer" rows="4" placeholder="Type what you can remember…"></textarea><div class="revision-card-actions">'+(card.personal?'':'<button type="button" data-revision-action="hint">Help me start</button><button type="button" data-revision-action="choices">Show choices</button>')+'<button type="button" data-revision-action="reveal">Check answer →</button></div>'+(card.personal?'':'<p class="revision-hint" hidden><strong>Try this</strong> '+hintHtml(question)+'</p><div class="revision-choice-help" hidden><p>Choose one to put it in your answer, then check it.</p><ol class="revision-choices">'+choices+'</ol><p class="revision-choice-status" role="status" hidden></p></div>')+'</article>';
       focusHeading();setTimeout(function(){var answer=app.querySelector('#revision-answer');if(answer)answer.focus();},80);
     }
     function reveal(){
@@ -325,5 +343,5 @@
     if(pending)renderEditor(pending);else renderHome(options.assignments||[]);
   }
 
-  root.ForgeRevision={TOPICS:TOPICS,config:config,banks:banks,isRevision:isRevision,markerFor:markerFor,assignmentProgress:assignmentProgress,readState:readState,cleanPersonalCard:cleanPersonalCard,personalAsReview:personalAsReview,thinkingPrompt:thinkingPrompt,teacherPanelHtml:teacherPanelHtml,wireTeacherPanel:wireTeacherPanel,loadStudentData:loadStudentData,mountStudent:mountStudent};
+  root.ForgeRevision={TOPICS:TOPICS,config:config,banks:banks,isRevision:isRevision,markerFor:markerFor,assignmentProgress:assignmentProgress,readState:readState,cleanPersonalCard:cleanPersonalCard,personalAsReview:personalAsReview,hintHtml:hintHtml,teacherPanelHtml:teacherPanelHtml,wireTeacherPanel:wireTeacherPanel,loadStudentData:loadStudentData,mountStudent:mountStudent};
 })(window);

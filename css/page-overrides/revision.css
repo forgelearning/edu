@@ -166,3 +166,4 @@
 .revision-choices b{flex:none;color:var(--ember)}
 .revision-choice-status:not([hidden]){margin:10px 0 0;color:var(--ember);font-size:13px;font-weight:600}
 @media(max-width:640px){.revision-personal-row>div:last-child{flex-wrap:wrap}.revision-editor-topic{grid-template-columns:1fr}}
+.revision-hint-pattern{display:block;margin-top:4px;font:600 14px 'JetBrains Mono',monospace;letter-spacing:.12em;color:var(--white);white-space:pre-wrap}

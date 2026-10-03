@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="css/base.css?v=20260808-navpolish">
 <link rel="stylesheet" href="css/auth.css">
 <link rel="stylesheet" href="css/sidebar.css">
-<link rel="stylesheet" href="css/components.css?v=20260812">
+<link rel="stylesheet" href="css/components.css?v=20261003-hints">
 
 <link rel="stylesheet" href="css/states.css">
   <link rel="stylesheet" href="css/generated-utilities.css">
@@ -29,7 +29,7 @@
 <script src="scripts/forge-logo.js"></script>
 <script src="scripts/forge-role.js"></script>
 <script src="scripts/forge-student-session.js"></script>
-<script src="scripts/forge-question.js"></script>
+<script src="scripts/forge-question.js?v=20261003-hints"></script>
 <script src="scripts/forge-auth-card.js"></script>
 <script src="scripts/forge-classes.js?v=20260813"></script>
 <script src="scripts/forge-student-code.js?v=20260809"></script>
@@ -435,63 +435,79 @@ function renderReworkQuestion(tag,questions,lap,qIdx){
   for(var step=1;step<=CLEAR_THRESHOLD;step++)h+='<span class="anvil-streak-step'+(step<=m.streak?' is-filled':'')+'" aria-hidden="true">'+step+'</span>';
   h+='</div>';
   h+='<div class="stem">'+q.stem+'</div>';
+  h+=window.ForgeQuestion.hintButtonHtml();
   h+=window.ForgeQuestion.renderOptions(q);
 
   app.innerHTML=h;
 
   var opts=document.querySelectorAll('#opts .opt');
   var answered=false;
+  // A hinted attempt is practice only: it is not saved, so it neither counts
+  // towards clearing the idea nor resets the streak. The streak is rebuilt
+  // from saved responses, so this is the only way to keep it honest without
+  // a column recording hint use.
+  var hinted=false;
+  var hintBtn=document.getElementById('hint-btn');
+  hintBtn.onclick=function(){
+    if(answered||!window.ForgeQuestion.ruleOutOption(q,document.getElementById('opts')))return;
+    hinted=true;
+    hintBtn.disabled=true;
+    hintBtn.textContent='One option ruled out · this answer won’t count towards clearing';
+  };
 
   opts.forEach(function(o){
     o.onclick=function(){
-      if(answered)return;
+      if(answered||o.classList.contains('ruled-out'))return;
       answered=true;
+      hintBtn.disabled=true;
       var k=o.dataset.k;
       var isCorrect=k===q.correct;
 
-      // Log to Supabase. This was a direct `responses` insert, which RLS
-      // rejects for coded students — so a full repair session cleared a
-      // misconception on screen and recorded nothing. The write is routed
-      // through the shared writer and a failure is surfaced, not swallowed.
-      ForgeResponseWriter.save({
-        studentId: m.studentId||anvilState.studentId,
-        classId: m.classId||anvilState.classId,
-        classCode: anvilState.classCode,
-        studentCode: anvilState.studentCode,
-        freeToken: anvilState.freeToken
-      },{
-        student_id:m.studentId||anvilState.studentId,
-        class_id:m.classId||anvilState.classId,
-        question_id:q.id+'-ANVIL',
-        bank:tag,
-        subject:m.subject||anvilState.classSubject||null,
-        selected_option:k,
-        is_correct:isCorrect,
-        misconception_tag:tag,
-        reforge_attempted:true,
-        reforge_correct:isCorrect
-      }).then(function(outcome){
-        if(outcome.ok) return;
-        var host=document.getElementById('rw-feedback')||document.getElementById('app');
-        if(!host||document.getElementById('anvil-save-error')) return;
-        var warn=document.createElement('div');
-        warn.id='anvil-save-error';
-        warn.className='forge-status forge-status--error';
-        warn.setAttribute('role','status');
-        warn.textContent='We couldn’t save this repair. Your progress here won’t reach your teacher until you reconnect.';
-        host.appendChild(warn);
-      });
-
-      // Update local state
-      if(isCorrect){
-        m.streak++;
-        m.reforgeCorrect++;
-        m.reforgeAttempts++;
-        m.history.push(true);
-      } else {
-        m.streak=0;
-        m.reforgeAttempts++;
-        m.history.push(false);
+      if(!hinted){
+        // Log to Supabase. This was a direct `responses` insert, which RLS
+        // rejects for coded students — so a full repair session cleared a
+        // misconception on screen and recorded nothing. The write is routed
+        // through the shared writer and a failure is surfaced, not swallowed.
+        ForgeResponseWriter.save({
+          studentId: m.studentId||anvilState.studentId,
+          classId: m.classId||anvilState.classId,
+          classCode: anvilState.classCode,
+          studentCode: anvilState.studentCode,
+          freeToken: anvilState.freeToken
+        },{
+          student_id:m.studentId||anvilState.studentId,
+          class_id:m.classId||anvilState.classId,
+          question_id:q.id+'-ANVIL',
+          bank:tag,
+          subject:m.subject||anvilState.classSubject||null,
+          selected_option:k,
+          is_correct:isCorrect,
+          misconception_tag:tag,
+          reforge_attempted:true,
+          reforge_correct:isCorrect
+        }).then(function(outcome){
+          if(outcome.ok) return;
+          var host=document.getElementById('rw-feedback')||document.getElementById('app');
+          if(!host||document.getElementById('anvil-save-error')) return;
+          var warn=document.createElement('div');
+          warn.id='anvil-save-error';
+          warn.className='forge-status forge-status--error';
+          warn.setAttribute('role','status');
+          warn.textContent='We couldn’t save this repair. Your progress here won’t reach your teacher until you reconnect.';
+          host.appendChild(warn);
+        });
+  
+        // Update local state
+        if(isCorrect){
+          m.streak++;
+          m.reforgeCorrect++;
+          m.reforgeAttempts++;
+          m.history.push(true);
+        } else {
+          m.streak=0;
+          m.reforgeAttempts++;
+          m.history.push(false);
+        }
       }
 
       opts.forEach(function(x){
@@ -521,7 +537,14 @@ function renderReworkQuestion(tag,questions,lap,qIdx){
       // Now the student has committed to an answer, name the idea.
       var ideaHtml=label?'<p class="anvil-idea"><span>The idea</span>'+label+'</p>':'';
 
-      if(isCorrect && m.streak>=CLEAR_THRESHOLD){
+      if(hinted){
+        fh='<div class="'+(isCorrect?'praise-box':'scaffold-box')+'"><strong class="forge-answer-status" role="status">'+(isCorrect?'Correct, with a hint.':'Not quite.')+'</strong> Hinted answers don’t change your streak — you’re still '+m.streak+' of '+CLEAR_THRESHOLD+'.'+ideaHtml+(isCorrect?'':'<p>'+window.ForgeQuestion.scaffoldText(q)+'</p>')+'</div>';
+        fh+='<button type="button" class="next-btn btn-glass btn-ember" id="rw-next">Next question \u2192</button><div class="clear"></div>';
+        fb.innerHTML=fh;
+        document.getElementById('rw-next').onclick=function(){
+          renderReworkQuestion(tag,questions,lap,qIdx+1);
+        };
+      } else if(isCorrect && m.streak>=CLEAR_THRESHOLD){
         fh='<div class="cleared-banner forge-u-f4v9hz"><h2>\u2713 Misconception cleared!</h2><p class="forge-u-1ybl9nb">'+(label?label+'<br>':'')+CLEAR_THRESHOLD+' correct in a row. This one is off your Anvil.</p></div>';
         fh+=repairInsightHtml(tag);
         fh+='<button type="button" class="next-btn btn-glass btn-ember" id="rw-next">Back to Anvil \u2192</button><div class="clear"></div>';

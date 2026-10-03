@@ -52,8 +52,29 @@
     return html + '</div><button class="fb-check-btn" id="fb-check">Check answer</button><div id="feedback"></div><div class="clear"></div>';
   }
 
+  // A hint for a multiple-choice question: rule out one wrong option at
+  // random. It cannot reveal the answer, and needs no extra authoring, so it
+  // works on every bank. Returns the removed key, or null if none was removed.
+  function hintButtonHtml(){
+    return '<div class="forge-hint-row"><button type="button" class="forge-hint-btn" id="hint-btn">Rule out one option</button></div>';
+  }
+  function ruleOutOption(question, container){
+    var wrong = Array.prototype.filter.call(container.querySelectorAll('.opt'), function(opt){
+      return opt.dataset.k !== question.correct && !opt.classList.contains('ruled-out');
+    });
+    if (wrong.length < 2) return null;
+    var opt = wrong[Math.floor(Math.random() * wrong.length)];
+    opt.classList.add('ruled-out');
+    opt.disabled = true;
+    opt.setAttribute('aria-disabled', 'true');
+    opt.setAttribute('aria-label', 'Ruled out: ' + opt.textContent.trim());
+    return opt.dataset.k;
+  }
+
   window.ForgeQuestion = {
     renderOptions: renderOptions,
+    hintButtonHtml: hintButtonHtml,
+    ruleOutOption: ruleOutOption,
     renderFeedback: renderFeedback,
     renderFillBlank: renderFillBlank
     ,scaffoldText: scaffoldText
