@@ -16,7 +16,7 @@
 
 <link rel="stylesheet" href="css/states.css">
   <link rel="stylesheet" href="css/generated-utilities.css">
-<link rel="stylesheet" href="css/page-overrides/forge-quiz.css?v=20261003-delight">
+<link rel="stylesheet" href="css/page-overrides/forge-quiz.css?v=20261003-independent">
 <link rel="stylesheet" href="css/student-motion.css?v=20261003-motion1">
 </head>
 <body>
@@ -30,6 +30,7 @@
 <script src="scripts/forge-logo.js"></script>
 <script src="scripts/forge-role.js"></script>
 <script src="scripts/forge-student-session.js"></script>
+<script src="scripts/forge-study-mode.js"></script>
 <script src="scripts/forge-auth-card.js"></script>
 <script src="scripts/forge-classes.js?v=20260813"></script>
 <script src="scripts/forge-student-code.js?v=20260809"></script>
@@ -598,20 +599,37 @@ function activateClass(entry) {
       studentName: state.studentName, classSubject: entry.subject || null
     }));
   } catch(e) {}
+  if (window.ForgeStudyMode) ForgeStudyMode.set('class');
 }
 
 // Another teacher hands out another code — students add it here rather than
 // signing out and back in. Rendered on both the subject picker and the bank
 // list, because a student with a single class is taken straight past the
 // picker and would otherwise have no way to reach this.
+function studyContextHtml() {
+  if (!window.ForgeStudyMode || !ForgeStudyMode.freeSession() || !ForgeStudyMode.classSession()) return '';
+  var independent=ForgeStudyMode.isIndependent();
+  return '<section class="forge-study-context" aria-label="Study mode"><div><strong>'+(independent?'Studying independently':'Studying with your class')+'</strong><p>'+(independent?'Your earlier answers and cards are private.':'Your independent answers and cards are still available on this device.')+'</p></div><button type="button" id="switch-study-mode" class="forge-button forge-button--secondary">'+(independent?'Switch to class':'View independent study')+' →</button></section>';
+}
+function wireStudyContext() {
+  var button=document.getElementById('switch-study-mode');
+  if(!button)return;
+  button.onclick=function(){
+    if(ForgeStudyMode.set(ForgeStudyMode.isIndependent()?'class':'independent'))location.href='forge-quiz.html';
+  };
+}
 function joinMoreHtml() {
-  if (!state.classId && ForgeClasses.subjects(SUBJECTS).length === 0) return '';
+  var independent=!state.classId&&window.ForgeStudyMode&&ForgeStudyMode.isIndependent();
+  if(independent&&ForgeStudyMode.classSession())return '';
+  if (!independent && !state.classId && ForgeClasses.subjects(SUBJECTS).length === 0) return '';
   var h = '<div class="forge-u-1kt0xuh" id="join-more">';
   h += '<div class="forge-u-8hgxgk">';
-  h += '<span class="ui-meta-muted">Got a code for another class?</span>';
-  h += '<button type="button" class="forge-u-8q3i1z" id="jm-toggle">Join another class ↓</button>';
+  h += '<span class="ui-meta-muted">'+(independent?'Joining a class later?':'Got a code for another class?')+'</span>';
+  h += '<button type="button" class="forge-u-8q3i1z" id="jm-toggle" aria-controls="jm-form" aria-expanded="false">'+(independent?'Join your class':'Join another class')+' ↓</button>';
   h += '</div>';
   h += '<div class="forge-u-1karbkd" id="jm-form">';
+  if(independent)h+='<p class="forge-join-private-note">Your earlier independent answers and cards stay private and available on this device.</p><label for="jm-name">Your full name</label><input id="jm-name" class="join-input forge-u-dtise6" type="text" autocomplete="name" placeholder="First name and surname"><label for="jm-student-code">Student code (if your teacher gave you one)</label><input id="jm-student-code" class="join-input forge-u-dtise6" type="text" autocomplete="off" placeholder="The code your teacher gave you">';
+  h += '<label for="jm-code">Class code</label>';
   h += '<input id="jm-code" class="join-input forge-u-dtise6" type="text" placeholder="e.g. LH-RVN9">';
   h += '<button type="button" id="jm-btn" class="join-btn btn-glass btn-ember forge-u-1og9mh9">Join class →</button>';
   h += '<p class="join-err" id="jm-err"></p>';
@@ -624,8 +642,10 @@ function wireJoinMore() {
   if (!toggle) return;
   toggle.onclick = function() {
     var f = document.getElementById('jm-form');
-    f.style.display = f.style.display === 'none' ? 'block' : 'none';
-    if (f.style.display === 'block') document.getElementById('jm-code').focus();
+    var open=window.getComputedStyle(f).display==='none';
+    f.style.display=open?'block':'none';
+    toggle.setAttribute('aria-expanded',String(open));
+    if(open)(document.getElementById('jm-name')||document.getElementById('jm-code')).focus();
   };
   document.getElementById('jm-btn').onclick = function() {
     var code = document.getElementById('jm-code').value.trim().toUpperCase();
@@ -633,6 +653,26 @@ function wireJoinMore() {
     var btn  = document.getElementById('jm-btn');
     err.style.display = 'none';
     if (!code) { err.textContent = 'Enter your class code.'; err.style.display = 'block'; return; }
+    if (!state.classId && window.ForgeStudyMode && ForgeStudyMode.isIndependent()) {
+      var nameInput=document.getElementById('jm-name'),studentCodeInput=document.getElementById('jm-student-code');
+      var name=nameInput&&nameInput.value.trim().replace(/\s+/g,' '),studentCode=studentCodeInput&&studentCodeInput.value.trim();
+      if(!name||name.split(' ').length<2){err.textContent='Enter your first name and surname.';err.style.display='block';return;}
+      btn.disabled=true;btn.textContent='Joining…';
+      function joined(row){
+        var entry={classId:row.class_id,classCode:code,className:row.class_name||null,subject:row.subject||null,studentId:row.student_id,studentName:name,studentCode:studentCode?ForgeStudentCode.clean(studentCode):null};
+        ForgeClasses.add(entry);activateClass(entry);
+        ForgeAuth.goToLanding();
+      }
+      if(studentCode){
+        ForgeStudentCode.join(code,studentCode,name).then(joined).catch(function(error){err.textContent=error.message||'Student or class code not recognised.';err.style.display='block';btn.disabled=false;btn.textContent='Join class →';});
+      }else{
+        joinClassByCode(name,code,function(error,result){
+          if(error){err.textContent=error;err.style.display='block';btn.disabled=false;btn.textContent='Join class →';return;}
+          joined({class_id:result.cls.id,class_name:result.cls.name,subject:result.cls.subject,student_id:result.studentId});
+        });
+      }
+      return;
+    }
     btn.disabled = true; btn.textContent = 'Joining…';
     joinClassByCode(state.studentName, code, function(joinErr, res) {
       btn.disabled = false; btn.textContent = 'Join class →';
@@ -863,16 +903,17 @@ function render(skipMotion) {
 function renderJoin() {
   var h = '';
 
-  // Three-tab switcher — free / class code / Pro login
+  // Three clear ways to begin, with a class remaining optional.
   h += '<div class="login-tabs">';
-  h += '<button type="button" class="login-tab active" id="tab-free">Free</button>';
+  h += '<button type="button" class="login-tab active" id="tab-free">Study on my own</button>';
   h += '<button type="button" class="login-tab" id="tab-class">Join class</button>';
   h += '<button type="button" class="login-tab" id="tab-solo">Log in</button>';
   h += '</div>';
 
   // Panel: Free tier
   h += '<div id="panel-free">';
-  h += '<p class="forge-u-1xgpbl">10 free questions per day · no account needed</p>';
+  h += '<p class="forge-u-1xgpbl">Choose a subject and start practising. No class code or account needed.</p>';
+  h += '<p class="forge-independent-detail">10 free questions a day. Your independent work stays private and is available on this device, even if you join a class later.</p>';
   h += '<div class="forge-u-eelu4s">';
   h += '<div class="forge-u-1ce89bl"><span>✓ All subjects &amp; question banks</span><span class="forge-text-dim"> free</span></div>';
   h += '<div class="forge-u-1ce89bl"><span>✓ Scaffolds &amp; re-forge feedback</span><span class="forge-text-dim"> free</span></div>';
@@ -880,7 +921,7 @@ function renderJoin() {
   h += '<div class="forge-u-h6lji0"><span class="forge-text-dim">✕ Unlimited questions</span><span class="forge-text-dim"> Pro</span></div>';
   h += '</div>';
   h += ForgeAuthCard.field('free-name', 'Your first name', {placeholder:'e.g. Alex', autocomplete:'given-name'});
-  h += '<button class="auth-btn" id="free-btn" type="submit">Start for free →</button>';
+  h += '<button class="auth-btn" id="free-btn" type="submit">Start studying →</button>';
   h += '<p class="auth-err" id="free-err"></p>';
   h += '</div>';
 
@@ -912,7 +953,7 @@ function renderJoin() {
 
   app.innerHTML = ForgeAuthCard.shell({
     title: 'Welcome to Forge',
-    sub: 'Start free, join your class, or log in to Pro.',
+    sub: 'Study independently, join your class, or log in.',
     foot: 'Want unlimited? <a href="forge-signup.html">Subscribe — £2.99/mo</a>'
   }, h);
 
@@ -962,6 +1003,7 @@ function renderJoin() {
       state.classId     = null;
       state.isPaid      = false;
       saveFreeSession(name, existingSession.studentId, existingSession.freeToken);
+      if(window.ForgeStudyMode)ForgeStudyMode.set('independent');
 
       // Load their weight map for spaced repetition. This has to go through the
       // token-gated RPC: a direct read as anon returns an empty list, which
@@ -988,6 +1030,7 @@ function renderJoin() {
       state.classId     = null;
       state.isPaid      = false;
       saveFreeSession(name, studentId || token, token);
+      if(window.ForgeStudyMode)ForgeStudyMode.set('independent');
       settleRequestedSubject();
       render();
     }).catch(function() {
@@ -997,6 +1040,7 @@ function renderJoin() {
       state.classId     = null;
       state.isPaid      = false;
       saveFreeSession(name, token, token);
+      if(window.ForgeStudyMode)ForgeStudyMode.set('independent');
       settleRequestedSubject();
       render();
     });
@@ -1127,8 +1171,9 @@ function renderJoin() {
 
 function renderSubjects(){
   var h = '';
+  h += studyContextHtml();
   if (state.studentName) {
-    var statusLabel = state.classId ? ' · class' : state.isPaid ? ' · Pro' : state.isTrial ? ' · trial' : ' · free';
+    var statusLabel = state.classId ? ' · class' : state.isPaid ? ' · Pro' : state.isTrial ? ' · trial' : ' · independent';
     h += '<div class="join-badge"><span class="dot"></span> ' + state.studentName + statusLabel + '</div>';
   }
 
@@ -1157,11 +1202,12 @@ function renderSubjects(){
   h += '<div class="center"><p class="tag forge-u-bhmr11">FORGE</p>';
   h += '<h1 class="forge-u-z7clmb">Pick a subject</h1>';
   h += '<p class="forge-u-1vn3cqv">Choose what to practise</p></div>';
+  if(!state.classId&&ForgeStudyMode.isIndependent())h+=joinMoreHtml();
   h += '<div class="subject-list">';
 
   // Students see the subjects of every class they've joined. Paid/trial
   // students without classes see the subjects in their plan.
-  var joinedSubjects = ForgeClasses.subjects(SUBJECTS);
+  var joinedSubjects = state.classId ? ForgeClasses.subjects(SUBJECTS) : [];
   var subjectKeys = Object.keys(SUBJECTS);
   if (joinedSubjects.length > 0) {
     subjectKeys = joinedSubjects;
@@ -1178,7 +1224,7 @@ function renderSubjects(){
       var n=s.banks.reduce(function(t,b){return t+(BANKS[b].questionCount||BANKS[b].questions.length)},0);
       countLabel = s.banks.length+' banks \u00b7 '+n+' questions';
     }
-    var entry = ForgeClasses.forSubject(k);
+    var entry = state.classId ? ForgeClasses.forSubject(k) : null;
     if (entry && entry.className) countLabel += ' \u00b7 ' + entry.className;
     h+='<button type="button" class="subject-btn" data-key="'+k+'" style="border-color:'+s.color+'25">';
     h+='<h3 style="color:'+s.color+'">'+s.label+'</h3>';
@@ -1188,15 +1234,16 @@ function renderSubjects(){
   });
   h+='</div>';
 
-  h += joinMoreHtml();
+  if(state.classId)h += joinMoreHtml();
 
   app.innerHTML=h + sessionBar();
+  wireStudyContext();
   app.querySelectorAll('.subject-btn').forEach(function(b){
     b.onclick=function(){
       state.subject=b.dataset.key;
       // Answers must land against the student row for the class that owns
       // this subject, so the right teacher sees them.
-      activateClass(ForgeClasses.forSubject(b.dataset.key));
+      if(state.classId)activateClass(ForgeClasses.forSubject(b.dataset.key));
       if(window.ForgeStudentFocus)ForgeStudentFocus.remember(state.studentId,state.subject);
       var s = SUBJECTS[b.dataset.key];
       if (s && s.readerMode) {
@@ -1359,11 +1406,13 @@ function renderBanks(){
              || ((state.isPaid || state.isTrial) ? (state.paidSubjects || []).length : 0);
   var locked = state.classSubject && state.classSubject === state.subject && choices <= 1;
   var h='';
+  h+=studyContextHtml();
   // Only show back button if not locked to a subject
   if (!locked) h+='<button type="button" class="back-btn" id="back-subj">\u2190 Subjects</button>';
   h+='<div class="center forge-subject-intro">';
   h+='<h2 class="forge-u-1oh0w3h">'+subj.label+'</h2>';
   h+='<p class="forge-u-10yda30">'+subj.sub+'</p>'+ForgeStudentDelight.motif(state.subject)+'</div>';
+  if(!state.classId&&ForgeStudyMode.isIndependent())h+=joinMoreHtml();
   if(state.subject==='chem')h+='<p class="forge-recommendation__copy">Choose a topic you have covered. Each practice set stays within that AQA Chemistry topic.</p>';
   if(state.subject!=='chem'){
   var recommendedBank = recommendedBankForSubject(subj);
@@ -1409,6 +1458,7 @@ function renderBanks(){
   // route to adding a second class.
   if (locked) h += joinMoreHtml();
   app.innerHTML=h + sessionBar();
+  wireStudyContext();
   app.querySelectorAll('[data-mastery-key]').forEach(function(button){button.onclick=function(){
     var detail=document.getElementById(button.getAttribute('aria-controls'));
     if(!detail)return;
@@ -2034,7 +2084,7 @@ function forgeLogout(){
 }
 function sessionBar(){
   if (!state.studentName) return '';
-  var statusLabel = state.classId ? ' · class' : state.isPaid ? ' · Pro ⚡' : ' · free';
+  var statusLabel = state.classId ? ' · class' : state.isPaid ? ' · Pro ⚡' : ' · independent';
   return '<div class="forge-u-44gkcw"><span class="forge-u-16oyzks">Signed in as <b class="forge-u-1ybl9nb">' + state.studentName + '</b><span class="forge-u-19j2vc3">' + statusLabel + '</span> \u00b7 <a class="forge-u-1u5pwzm" href="#" data-forge-action="logout">Switch student</a></span></div>';
 }
 
@@ -2267,7 +2317,7 @@ if (!openSoloLogin && ForgeAuth.hasSession()) {
   var restored = false;
   if (!openClassJoin && !openSoloLogin) try {
     var savedSession = JSON.parse(localStorage.getItem('forge-student') || 'null');
-    if (savedSession && savedSession.studentName && savedSession.classId) {
+    if (savedSession && savedSession.studentName && savedSession.classId && !(ForgeStudyMode.isIndependent() && !requestedClassId)) {
       state.studentId    = savedSession.studentId    || null;
       state.classId      = savedSession.classId;
       state.classCode    = savedSession.classCode || null;

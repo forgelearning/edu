@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="css/components.css?v=20260812">
   <link rel="stylesheet" href="css/states.css">
   <link rel="stylesheet" href="css/generated-utilities.css">
-  <link rel="stylesheet" href="css/page-overrides/revision.css?v=20261003-hints">
+  <link rel="stylesheet" href="css/page-overrides/revision.css?v=20261003-card-save">
 <link rel="stylesheet" href="css/student-motion.css?v=20261003-motion1">
 </head>
 <body>
@@ -21,6 +21,7 @@
 <script src="scripts/forge-logo.js"></script>
 <script src="scripts/forge-role.js"></script>
 <script src="scripts/forge-student-session.js"></script>
+<script src="scripts/forge-study-mode.js"></script>
 <script src="scripts/forge-theme.js?v=20260808-theme2"></script>
 <script src="scripts/forge-sidebar.js?v=20260910-revision"></script>
 <script src="scripts/forge-classes.js?v=20260813"></script>
@@ -64,7 +65,7 @@ ForgeSidebar.mount({
   var app=document.getElementById('revision-app'),saved=null;
   ForgeState.loading(app,{label:'Preparing revision',body:'Choosing the right knowledge to bring back.'});
   try{
-    saved=JSON.parse(localStorage.getItem('forge-student')||'null');
+    saved=ForgeStudyMode.isIndependent()?null:JSON.parse(localStorage.getItem('forge-student')||'null');
     if(!saved||!saved.studentId){
       var free=JSON.parse(localStorage.getItem('forge-free-session')||'null');
       var paid=JSON.parse(localStorage.getItem('forge-paid-student')||'null');

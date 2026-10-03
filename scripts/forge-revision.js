@@ -30,7 +30,7 @@
     state.personalCards=Array.isArray(state.personalCards)?state.personalCards:[];
     return state;
   }
-  function writeState(context,state){try{localStorage.setItem(storageKey(context),JSON.stringify(state));}catch(e){}}
+  function writeState(context,state){try{localStorage.setItem(storageKey(context),JSON.stringify(state));return true;}catch(e){return false;}}
   function syncReview(context,card,rating,dueAt,assignment){
     if(!context||!context.classCode||!context.studentCode||!root.ForgeStudentCode||!root.ForgeStudentCode.recordRevisionReview)return;
     root.ForgeStudentCode.recordRevisionReview(context.studentId,context.classCode,context.studentCode,{card_key:card.key,bank:card.bank,rating:rating,due_at:dueAt,assignment_id:assignment&&assignment.id||null}).catch(function(){
@@ -257,8 +257,15 @@
     function saveCard(event){
       event.preventDefault();var form=event.target,error=app.querySelector('#revision-card-error'),old=editingId?cardFor(editingId):null,card;
       try{card=cleanPersonalCard({front:form.elements.front.value,back:form.elements.back.value,bank:form.elements.bank.value,source:draft()&&draft().source},old);}catch(e){error.textContent=e.message;error.hidden=false;return;}
-      if(old){state.personalCards=state.personalCards.map(function(item){return item.id===old.id?card:item;});}else state.personalCards.unshift(card);
-      writeState(context,state);clearDraft();
+      var previousCards=state.personalCards;
+      if(old){state.personalCards=state.personalCards.map(function(item){return item.id===old.id?card:item;});}else state.personalCards=[card].concat(state.personalCards);
+      if(!writeState(context,state)){
+        state.personalCards=previousCards;
+        error.textContent='This card could not be saved on this device. Check your browser storage and try again.';
+        error.hidden=false;
+        return;
+      }
+      clearDraft();
       if(root.ForgePersonalCards)root.ForgePersonalCards.save(context,card,state.reviews[personalKey(card.id)]||null).catch(function(){showSyncStatus('Saved on this device. Account sync will retry next time you open Revision.');});
       if(returnToQuiz){root.location.href=returnToQuiz;return;}
       renderHome(options.assignments||[]);

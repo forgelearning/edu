@@ -17,6 +17,8 @@ const mode = args.get('--mode') || 'save-failure';
 let responseCount = 0;
 const demoStudent = {studentId:'local-motion-student',classId:'local-motion-class',classCode:'LOCAL-MOTION',studentCode:'LOCAL123',studentName:'Motion Tester',classSubject:'gcse-geo'};
 const demoResponses = [];
+const demoFreeResponses = [];
+const demoCards = new Map();
 
 function json(res, status, body) {
   const payload = JSON.stringify(body);
@@ -121,9 +123,40 @@ const server = http.createServer((req, res) => {
     responseCount += 1;
     if (mode === 'quota') return json(res, 200, {allowed:false, reason:'daily_limit', used:10});
     if (mode === 'network-failure' || (failureAfter > 0 && responseCount > failureAfter)) return json(res, 503, {message:'Staging API is intentionally unavailable'});
+    if (mode === 'student-demo') {
+      let raw='';
+      req.on('data', chunk => { raw += chunk; });
+      req.on('end', () => {
+        let body={};try{body=JSON.parse(raw||'{}');}catch(e){}
+        demoFreeResponses.push({id:'local-free-response-'+demoFreeResponses.length,student_id:body.p_student_id,class_id:null,question_id:body.p_question_id,bank:body.p_bank,subject:body.p_subject,selected_option:body.p_selected_option,is_correct:!!body.p_is_correct,misconception_tag:body.p_misconception_tag||null,reforge_attempted:!!body.p_reforge_attempted,created_at:new Date().toISOString()});
+        json(res, 200, {allowed:true, id:'local-free-response-'+demoFreeResponses.length,used:demoFreeResponses.length});
+      });
+      return;
+    }
     return json(res, 200, {allowed:true, id:'staging-response-' + responseCount, used:responseCount});
   }
   if (mode === 'student-demo') {
+    if (url.pathname === '/mock-supabase/rest/v1/rpc/manage_student_revision_card') {
+      let raw='';
+      req.on('data', chunk => { raw += chunk; });
+      req.on('end', () => {
+        let body={};try{body=JSON.parse(raw||'{}');}catch(e){}
+        const studentId=String(body.p_student_id||'');
+        if (!studentId) return json(res, 400, {message:'Missing student'});
+        const cards=demoCards.get(studentId)||new Map();
+        if (body.p_action === 'list') return json(res, 200, [...cards.values()]);
+        const card=body.p_card||{};
+        if (!card.id) return json(res, 400, {message:'Missing card'});
+        if (body.p_action === 'save') cards.set(card.id,{...card,review:body.p_review||null});
+        else if (body.p_action === 'delete') cards.delete(card.id);
+        else return json(res, 400, {message:'Unknown action'});
+        demoCards.set(studentId,cards);
+        json(res, 200, {ok:true});
+      });
+      return;
+    }
+    if (url.pathname === '/mock-supabase/rest/v1/rpc/get_free_student_responses') return json(res, 200, demoFreeResponses);
+    if (url.pathname === '/mock-supabase/rest/v1/rpc/join_class_with_student_code') return json(res, 200, [{student_id:demoStudent.studentId,class_id:demoStudent.classId,class_name:'Motion test class',subject:demoStudent.classSubject}]);
     if (url.pathname === '/mock-supabase/rest/v1/rpc/get_student_own_responses_with_code' || url.pathname === '/mock-supabase/rest/v1/rpc/get_student_own_responses') return json(res, 200, demoResponses);
     if (url.pathname === '/mock-supabase/rest/v1/rpc/get_student_assignments') return json(res, 200, []);
     if (url.pathname === '/mock-supabase/rest/v1/rpc/get_class_by_code') return json(res, 200, [{id:demoStudent.classId,name:'Motion test class',subject:demoStudent.classSubject}]);

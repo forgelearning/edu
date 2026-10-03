@@ -594,3 +594,13 @@ html:not([data-theme="light"]) body.forge-solo-login::after{color:var(--forge-lo
   @keyframes forge-seam-show{from{stroke-dashoffset:16;opacity:.2}to{stroke-dashoffset:0;opacity:1}}
 }
 @media(max-width:600px){.forge-workbench dl{grid-template-columns:1fr;gap:8px}.forge-workbench dl div{display:flex;align-items:baseline;justify-content:space-between;gap:12px}.forge-workbench dd{font-size:16px;text-align:right}}
+.forge-independent-detail{max-width:46ch;margin:0 0 18px;color:var(--slate);font-size:13px;line-height:1.55}
+.forge-study-context{display:flex;align-items:center;justify-content:space-between;gap:18px;margin:0 0 24px;padding:16px 18px;border:1px solid var(--line);border-radius:var(--radius-md);background:var(--panel)}
+.forge-study-context strong{display:block;color:var(--white);font:700 17px/1.25 'Rethink Sans',sans-serif}
+.forge-study-context p{margin:5px 0 0;color:var(--slate);font-size:12px;line-height:1.5}
+.forge-study-context button{flex:none;min-height:44px}
+.forge-join-private-note{margin:0 0 12px;color:var(--slate);font-size:12px;line-height:1.5}
+#jm-form label{display:block;margin:12px 0 5px;color:var(--white);font-size:12px;font-weight:600}
+#jm-form .join-input{display:block;width:100%;max-width:380px}
+#jm-form .join-btn{margin-top:14px}
+@media(max-width:600px){.forge-study-context{align-items:stretch;flex-direction:column}.forge-study-context button{width:100%}}

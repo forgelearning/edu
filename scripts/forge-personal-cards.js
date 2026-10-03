@@ -23,7 +23,14 @@
       p_action:action,
       p_card:card||null,
       p_review:review||null
-    },{token:root.ForgeAuth&&ForgeAuth.accessToken()||root.ForgeAPI.config.key});
+    },{token:root.ForgeAuth&&ForgeAuth.accessToken()||root.ForgeAPI.config.key}).then(function(result){
+      if(action==='list'){
+        if(!Array.isArray(result))throw new Error('Could not verify saved cards.');
+      }else if(!result||result.ok!==true){
+        throw new Error('Card change was not confirmed.');
+      }
+      return result;
+    });
   }
   function drain(context){
     if(!canSync(context))return Promise.resolve();

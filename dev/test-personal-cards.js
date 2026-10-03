@@ -6,6 +6,7 @@ const vm = require('vm');
 const storage = new Map();
 const serverCards = new Map();
 let offline = true;
+let badAck = false;
 let lastRequest;
 const window = {
   Promise, JSON, String, Date,
@@ -18,6 +19,7 @@ const window = {
     rpc(name, body, options) {
       lastRequest = { name, body, options };
       if (offline) return Promise.reject(new Error('offline'));
+      if (badAck && body.p_action === 'save') return Promise.resolve([]);
       if (body.p_action === 'save') serverCards.set(body.p_card.id, { ...body.p_card, review: body.p_review });
       if (body.p_action === 'delete') serverCards.delete(body.p_card.id);
       if (body.p_action === 'list') return Promise.resolve([...serverCards.values()]);
@@ -61,6 +63,13 @@ function anotherDevice() {
   assert.strictEqual(window.ForgePersonalCards.canSync(free), true);
   await window.ForgePersonalCards.save(free, card);
   assert.strictEqual(lastRequest.body.p_free_token, free.freeToken);
+
+  badAck = true;
+  const unconfirmed = { id: 'c-unconfirmed', front: 'Still here?', back: 'On this device.', bank: 'GCSE-GEO-HAZ' };
+  await assert.rejects(window.ForgePersonalCards.save(free, unconfirmed), /not confirmed/);
+  assert.strictEqual(JSON.parse(storage.get('forge-personal-pending:free-student')).length, 1, 'an unconfirmed save stays queued');
+  badAck = false;
+  assert((await window.ForgePersonalCards.load(free)).some(item => item.id === unconfirmed.id));
 
   const oldDevice = anotherDevice();
   const legacy = { id: 'c-legacy', front: 'Before sync?', back: 'Saved locally.', bank: 'GCSE-GEO-HAZ' };

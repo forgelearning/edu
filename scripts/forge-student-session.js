@@ -35,7 +35,6 @@
   // not the only thing that identifies a student to the next person at the
   // keyboard, so an expiry that left these behind would only half-work.
   var DERIVED_KEYS = [
-    'forge-free-session',
     'forge-paid-student',
     'forge-anvil-open',
     'forge-assigned-open-current'
@@ -64,6 +63,9 @@
     drop(SESSION_KEY);
     drop(STAMP_KEY);
     DERIVED_KEYS.forEach(drop);
+    // A personal device may still hold independent study created before the
+    // class join. Shared devices must clear that token with the class session.
+    if (isShared()) drop('forge-free-session');
     try {
       var doomed = [];
       for (var i = 0; i < localStorage.length; i++) {
@@ -107,7 +109,7 @@
     touch: touch,
     sweep: sweep,
     /* Explicit sign-out, for the shell's Sign out control. */
-    end: function () { clearSession(); drop(SHARED_KEY); }
+    end: function () { clearSession(); drop('forge-free-session'); drop(SHARED_KEY); }
   };
 
   sweep();
