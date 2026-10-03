@@ -122,6 +122,38 @@
     if(review.lastRating==='got-it')return {key:'secure',label:'Secure · longer-gap check'};
     return {key:'learning',label:'Learning · last time: '+(RATING_NAMES[review.lastRating]||review.lastRating)};
   }
+  // Match pairs: a round of a topic's questions alongside their own answers.
+  // No new content: the authored distractors are the ambiguity guard. Two
+  // questions share a round only if neither one's answer is offered as an
+  // option in the other, since the writers listed every plausible confusion
+  // there, so each answer on screen fits exactly one question.
+  var MATCH_PAIRS=4,MATCH_STEM_MAX=140,MATCH_ANSWER_MAX=90;
+  // Answers that only make sense beside their own options.
+  var CONTEXT_ANSWER=/\b(all|none|both|neither) of (the|these|them)\b|\b(above|below)\b/i;
+  function matchText(value){return String(value==null?'':value).replace(/\s+/g,' ').trim().toLowerCase();}
+  function matchPairs(cards,count,random){
+    random=random||Math.random;
+    count=count||MATCH_PAIRS;
+    var pool=(cards||[]).filter(function(card){
+      var q=card&&card.question,answer=q&&q.options&&q.options[q.correct];
+      return answer&&!q.type&&String(q.stem||'').length<=MATCH_STEM_MAX&&String(answer).length<=MATCH_ANSWER_MAX&&!CONTEXT_ANSWER.test(answer);
+    }).slice();
+    for(var i=pool.length-1;i>0;i--){var j=Math.floor(random()*(i+1)),swap=pool[i];pool[i]=pool[j];pool[j]=swap;}
+    function answerOf(card){return matchText(card.question.options[card.question.correct]);}
+    function optionsOf(card){return Object.keys(card.question.options).map(function(key){return matchText(card.question.options[key]);});}
+    var picked=[];
+    pool.forEach(function(card){
+      if(picked.length>=count)return;
+      var answer=answerOf(card),options=optionsOf(card);
+      var clash=picked.some(function(other){
+        var otherAnswer=answerOf(other);
+        return otherAnswer===answer||options.indexOf(otherAnswer)!==-1||optionsOf(other).indexOf(answer)!==-1;
+      });
+      if(!clash)picked.push(card);
+    });
+    // Three is still a fair round; fewer is not worth showing.
+    return picked.length>=3?picked:[];
+  }
   function personalKey(id){return 'personal|'+id;}
   function personalAsReview(card){return {key:personalKey(card.id),bank:card.bank||'personal',personal:true,question:{stem:card.front,options:{answer:card.back},correct:'answer',scaffold:''},source:card.source||null};}
   function cleanPersonalCard(input,existing){
@@ -254,7 +286,7 @@
       var later=allCards.filter(function(card){var review=state.reviews[card.key],when=review&&Date.parse(review.dueAt);return Number.isFinite(when)&&when>=dayAfter.getTime();}).length;
       var mine=personalCards(),mineDue=dueCards(mine,state),mineNew=mine.filter(function(card){return !state.reviews[card.key];}),mineReady=mineDue.length+mineNew.length;
       var myRows=state.personalCards.map(function(card){var review=state.reviews[personalKey(card.id)],status=!review?'New':Date.parse(review.dueAt||0)<=Date.now()?'Due':'Scheduled';return '<li class="revision-personal-row"><div><strong>'+escapeHtml(card.front)+'</strong><small>'+escapeHtml(topicLabel(card.bank))+' · '+status+'</small></div><div><button type="button" data-revision-action="edit-card" data-card-id="'+escapeHtml(card.id)+'">Edit</button><button type="button" data-revision-action="confirm-delete" data-card-id="'+escapeHtml(card.id)+'">Delete</button></div></li>';}).join('');
-      app.innerHTML='<header class="revision-page-head"><div><h1>Revision</h1>'+subjectPickerHtml(subjectChoices(root.SUBJECTS,options.context,root.ForgeClasses?root.ForgeClasses.list():[],options.subject),options.subject)+'<p>Your next review is chosen from what you have learned and what needs another return.</p></div><div><strong>'+allReviews.length+'</strong><span>'+ (allReviews.length===1?'card':'cards')+' reviewed</span></div></header><section class="revision-today"><div><h2>'+(ready?ready+' '+(ready===1?'card is':'cards are')+' ready to review.':'Your queue is clear for today.')+'</h2><p>'+(ready?'Review due cards and begin a few new ones. Your own cards join the same queue.':'Return when a card is due, or make one from something you learned today.')+'</p>'+(ready?'<button type="button" data-revision-action="today">Start today’s revision →</button>':'')+'</div><div class="revision-return-path"><div><span>Now</span><strong>'+ready+' ready</strong><small>Answer from memory</small></div><i></i><div><span>Tomorrow</span><strong>'+tomorrow+' due</strong><small>Scheduled for tomorrow</small></div><i></i><div><span>Later</span><strong>'+later+' scheduled</strong><small>On future days</small></div></div></section>'+assignmentHtml+'<section class="revision-personal" aria-labelledby="revision-personal-title"><header><div><h2 id="revision-personal-title">My cards</h2><p>Make a question from your notes or save one while practising.</p><p id="revision-card-sync" role="status">'+escapeHtml(syncStatus)+'</p></div><button type="button" data-revision-action="new-card">Create a card</button></header><div class="revision-personal-summary"><span>'+mine.length+' saved</span><span>'+mineReady+' ready today</span><button type="button" data-revision-action="my-cards"'+(mine.length?'':' disabled')+'>Review my cards</button></div>'+(myRows?'<ul class="revision-personal-list">'+myRows+'</ul>':'<p class="revision-personal-empty">No personal cards yet. Start with one question you want to remember.</p>')+'</section>'+(subjectBanks.some(function(bank){return !!((root.BANKS||{})[bank]||{}).questions;})?'<section class="revision-topics"><header><div><h2>Browse topics</h2><p>Choose a topic yourself, or let Today mix what is due.</p></div><span>'+escapeHtml(subjectInfo.label||'Subject')+'</span></header><div>'+topicHtml+'</div></section>':'')+'<section class="revision-ledger"><h2>Your memory ledger</h2><div><span>Unseen <b>'+unseen.length+'</b></span><span>Learning <b>'+learning+'</b></span><span>Secure <b>'+secure+'</b></span><span>Due again <b>'+due.length+'</b></span></div></section>';
+      app.innerHTML='<header class="revision-page-head"><div><h1>Revision</h1>'+subjectPickerHtml(subjectChoices(root.SUBJECTS,options.context,root.ForgeClasses?root.ForgeClasses.list():[],options.subject),options.subject)+'<p>Your next review is chosen from what you have learned and what needs another return.</p></div><div><strong>'+allReviews.length+'</strong><span>'+ (allReviews.length===1?'card':'cards')+' reviewed</span></div></header><section class="revision-today"><div><h2>'+(ready?ready+' '+(ready===1?'card is':'cards are')+' ready to review.':'Your queue is clear for today.')+'</h2><p>'+(ready?'Review due cards and begin a few new ones. Your own cards join the same queue.':'Return when a card is due, or make one from something you learned today.')+'</p>'+(ready?'<button type="button" data-revision-action="today">Start today’s revision →</button>':'')+'</div><div class="revision-return-path"><div><span>Now</span><strong>'+ready+' ready</strong><small>Answer from memory</small></div><i></i><div><span>Tomorrow</span><strong>'+tomorrow+' due</strong><small>Scheduled for tomorrow</small></div><i></i><div><span>Later</span><strong>'+later+' scheduled</strong><small>On future days</small></div></div></section>'+assignmentHtml+'<section class="revision-personal" aria-labelledby="revision-personal-title"><header><div><h2 id="revision-personal-title">My cards</h2><p>Make a question from your notes or save one while practising.</p><p id="revision-card-sync" role="status">'+escapeHtml(syncStatus)+'</p></div><button type="button" data-revision-action="new-card">Create a card</button></header><div class="revision-personal-summary"><span>'+mine.length+' saved</span><span>'+mineReady+' ready today</span><button type="button" data-revision-action="my-cards"'+(mine.length?'':' disabled')+'>Review my cards</button></div>'+(myRows?'<ul class="revision-personal-list">'+myRows+'</ul>':'<p class="revision-personal-empty">No personal cards yet. Start with one question you want to remember.</p>')+'</section>'+(topicChoices.length?'<section class="revision-match-entry" aria-labelledby="revision-match-title"><div><h2 id="revision-match-title">Match pairs</h2><p>Match questions to their answers. Quick practice: it doesn’t change your scores or when cards return.</p></div><div><label for="revision-match-topic" class="forge-visually-hidden">Topic to match</label><select id="revision-match-topic">'+topicChoices.map(function(bank){return '<option value="'+escapeHtml(bank)+'">'+escapeHtml(topicLabel(bank))+'</option>';}).join('')+'</select><button type="button" data-revision-action="match-start">Start matching →</button></div></section>':'')+(subjectBanks.some(function(bank){return !!((root.BANKS||{})[bank]||{}).questions;})?'<section class="revision-topics"><header><div><h2>Browse topics</h2><p>Choose a topic yourself, or let Today mix what is due.</p></div><span>'+escapeHtml(subjectInfo.label||'Subject')+'</span></header><div>'+topicHtml+'</div></section>':'')+'<section class="revision-ledger"><h2>Your memory ledger</h2><div><span>Unseen <b>'+unseen.length+'</b></span><span>Learning <b>'+learning+'</b></span><span>Secure <b>'+secure+'</b></span><span>Due again <b>'+due.length+'</b></span></div></section>';
       if(options.subject==='chem'){
         var title=app.querySelector('.revision-today h2'),description=app.querySelector('.revision-today p'),topics=app.querySelector('.revision-topics header'),ledger=app.querySelector('.revision-ledger');
         if(title&&!ready)title.textContent='Choose a Chemistry topic to practise.';
@@ -267,6 +299,47 @@
     function selectQueue(selectedBanks,count,dueOnly){
       var all=ordered(availableCards(selectedBanks),context,state),due=dueCards(all,state),unseen=all.filter(function(card){return !state.reviews[card.key];});
       return (dueOnly?due:due.concat(unseen.filter(function(card){return due.indexOf(card)===-1;}))).slice(0,count||8);
+    }
+    var match=null;
+    function renderMatch(bank){
+      var pairs=matchPairs(availableCards([bank]));
+      if(!pairs.length){
+        app.innerHTML='<header class="revision-session-head"><button type="button" data-revision-action="home" aria-label="Back to revision">←</button><div><strong>Match pairs</strong><span>'+escapeHtml(topicLabel(bank))+'</span></div></header><section class="revision-empty"><h1>Not enough to match here yet</h1><p>This topic doesn’t have enough short questions with clearly separate answers. Try another topic.</p><button type="button" data-revision-action="home">Back to revision</button></section>';
+        return;
+      }
+      var order=pairs.map(function(_,index){return index;});
+      for(var i=order.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),swap=order[i];order[i]=order[j];order[j]=swap;}
+      match={bank:bank,pairs:pairs,question:null,answer:null,matched:0,mistakes:0};
+      app.innerHTML='<header class="revision-session-head"><button type="button" data-revision-action="home" aria-label="Back to revision">←</button><div><strong>Match pairs</strong><span>'+escapeHtml(topicLabel(bank))+'</span></div></header>'
+        +'<section class="revision-match"><p class="revision-match-help">Choose a question, then the answer that goes with it.</p><div class="revision-match-grid">'
+        +'<ol class="revision-match-col" aria-label="Questions">'+pairs.map(function(card,index){return '<li><button type="button" class="revision-match-item" data-revision-action="match-pick" data-side="question" data-index="'+index+'" aria-pressed="false">'+escapeHtml(card.question.stem)+'</button></li>';}).join('')+'</ol>'
+        +'<ol class="revision-match-col" aria-label="Answers">'+order.map(function(index){var q=pairs[index].question;return '<li><button type="button" class="revision-match-item revision-match-answer" data-revision-action="match-pick" data-side="answer" data-index="'+index+'" aria-pressed="false">'+escapeHtml(q.options[q.correct])+'</button></li>';}).join('')+'</ol>'
+        +'</div><p class="revision-match-status" role="status"></p></section>';
+    }
+    function pickMatch(button){
+      if(!match||button.disabled)return;
+      var side=button.getAttribute('data-side'),index=Number(button.getAttribute('data-index'));
+      app.querySelectorAll('.revision-match-item[data-side="'+side+'"]').forEach(function(item){item.setAttribute('aria-pressed','false');});
+      button.setAttribute('aria-pressed','true');
+      match[side]=index;
+      if(match.question==null||match.answer==null)return;
+      var status=app.querySelector('.revision-match-status'),chosen=app.querySelectorAll('.revision-match-item[aria-pressed="true"]');
+      if(match.question===match.answer){
+        match.matched++;
+        chosen.forEach(function(item){item.setAttribute('aria-pressed','false');item.classList.add('is-matched');item.disabled=true;});
+        var left=match.pairs.length-match.matched;status.textContent=left?'Matched. '+left+' to go.':'All matched.';
+      } else {
+        match.mistakes++;
+        chosen.forEach(function(item){item.setAttribute('aria-pressed','false');item.classList.add('is-wrong');setTimeout(function(){item.classList.remove('is-wrong');},650);});
+        status.textContent='Not a pair. Try again.';
+      }
+      match.question=null;match.answer=null;
+      if(match.matched===match.pairs.length){
+        var bank=match.bank,mistakes=match.mistakes,total=match.pairs.length;
+        app.querySelector('.revision-match').insertAdjacentHTML('beforeend','<div class="revision-match-done"><h2>All '+total+' matched.</h2><p>'+(mistakes?mistakes+' wrong '+(mistakes===1?'pair':'pairs')+' on the way.':'No wrong pairs.')+'</p><div><button type="button" data-revision-action="match-again" data-bank="'+escapeHtml(bank)+'">Match another set →</button><button type="button" data-revision-action="home">Back to revision</button></div></div>');
+        var again=app.querySelector('[data-revision-action="match-again"]');if(again)again.focus();
+        match=null;
+      }
     }
     function start(cards,assignment,source){
       currentCards=cards;currentIndex=0;currentAssignment=assignment||null;currentSource=source||'today';ratings=[];lastReviewMessage='';
@@ -364,6 +437,9 @@
       if(name==='confirm-delete'){var id=action.getAttribute('data-card-id'),row=action.closest('.revision-personal-row');if(row){row.querySelector('div:last-child').innerHTML='<span class="revision-delete-question">Delete this card?</span><button type="button" data-revision-action="cancel-delete">Cancel</button><button type="button" data-revision-action="delete-card" data-card-id="'+escapeHtml(id)+'">Delete card</button>';}}
       if(name==='cancel-delete')renderHome(options.assignments||[]);
       if(name==='delete-card')deleteCard(action.getAttribute('data-card-id'));
+      if(name==='match-start'){var picker=app.querySelector('#revision-match-topic');if(picker)renderMatch(picker.value);}
+      if(name==='match-again')renderMatch(action.getAttribute('data-bank'));
+      if(name==='match-pick')pickMatch(action);
       if(name==='topic'){var selectedTopic=action.getAttribute('data-bank');start(selectQueue([selectedTopic],8,false),null,selectedTopic);}
       if(name==='assignment'){var assignment=(options.assignments||[]).filter(function(item){return String(item.id)===action.getAttribute('data-assignment-id');})[0];if(assignment){var details=config(assignment),progress=assignmentProgress(assignment,state),record=state.assignments[String(assignment.id)]||{answered:[]},remaining=details.mode==='count'?Math.max(0,details.target-progress.answered):20,queue=selectQueue(banks(assignment),remaining,details.mode==='due').filter(function(card){return record.answered.indexOf(card.key)===-1;});start(queue,assignment);}}
     });
@@ -381,5 +457,5 @@
     if(pending)renderEditor(pending);else renderHome(options.assignments||[]);
   }
 
-  root.ForgeRevision={TOPICS:TOPICS,config:config,banks:banks,isRevision:isRevision,markerFor:markerFor,assignmentProgress:assignmentProgress,readState:readState,cleanPersonalCard:cleanPersonalCard,personalAsReview:personalAsReview,hintHtml:hintHtml,cardStatus:cardStatus,subjectChoices:subjectChoices,teacherPanelHtml:teacherPanelHtml,wireTeacherPanel:wireTeacherPanel,loadStudentData:loadStudentData,mountStudent:mountStudent};
+  root.ForgeRevision={TOPICS:TOPICS,config:config,banks:banks,isRevision:isRevision,markerFor:markerFor,assignmentProgress:assignmentProgress,readState:readState,cleanPersonalCard:cleanPersonalCard,personalAsReview:personalAsReview,hintHtml:hintHtml,matchPairs:matchPairs,cardStatus:cardStatus,subjectChoices:subjectChoices,teacherPanelHtml:teacherPanelHtml,wireTeacherPanel:wireTeacherPanel,loadStudentData:loadStudentData,mountStudent:mountStudent};
 })(window);

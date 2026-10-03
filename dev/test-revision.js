@@ -72,6 +72,27 @@ assert.strictEqual(revision.cardStatus(null).key, 'new');
 assert.strictEqual(revision.cardStatus({lastRating:'again'}).label, 'Learning · last time: Again');
 assert.strictEqual(revision.cardStatus({lastRating:'nearly'}).key, 'learning');
 assert.strictEqual(revision.cardStatus({lastRating:'got-it'}).key, 'secure');
+// Match pairs: no answer on screen may fit two questions.
+const mq = (id, stem, options, correct, extra) => ({ bank:'B', question:Object.assign({ id, stem, options, correct }, extra || {}) });
+const matchCards = [
+  mq('1', 'Which boundary slides past?', {A:'Conservative', B:'Destructive', C:'Constructive', D:'Collision'}, 'A'),
+  mq('2', 'Which boundary forms ocean trenches?', {A:'Conservative', B:'Destructive', C:'Constructive', D:'Collision'}, 'B'),
+  mq('3', 'What is the asthenosphere?', {A:'Semi-molten upper mantle', B:'The crust', C:'The core', D:'The lithosphere'}, 'A'),
+  mq('4', 'Primary impact of an earthquake?', {A:'Buildings collapse', B:'Disease spreads', C:'Prices rise', D:'Tourism falls'}, 'A'),
+  mq('5', 'What does GIS do?', {A:'Maps spatial data', B:'Measures magnitude', C:'Predicts eruptions', D:'Builds shelters'}, 'A'),
+  mq('6', 'Which is correct?', {A:'All of the above', B:'X', C:'Y', D:'Z'}, 'A'),
+  mq('7', 'Fill it', {A:'x'}, 'A', { type:'fill_blank' }),
+  mq('8', 'x'.repeat(200), {A:'Long stem', B:'b', C:'c', D:'d'}, 'A')
+];
+let seed = 7; const rnd = () => { seed = (seed * 16807) % 2147483647; return seed / 2147483647; };
+for (let round = 0; round < 25; round++) {
+  const picked = revision.matchPairs(matchCards, 4, rnd);
+  assert.strictEqual(picked.length, 4, 'a round has four pairs when the topic allows it');
+  const ids = picked.map(c => c.question.id);
+  assert(!(ids.includes('1') && ids.includes('2')), 'two questions offering each other\'s answers never share a round');
+  assert(!ids.some(id => ['6', '7', '8'].includes(id)), 'no "all of the above" answers, fill-blank shapes or very long stems');
+}
+assert.deepStrictEqual(Array.from(revision.matchPairs(matchCards.slice(0, 2), 4, rnd)), [], 'fewer than three clean pairs is not offered');
 // The subject menu lists the student's own class subjects, not the whole catalogue.
 const catalog = { econ:{label:'Economics'}, 'gcse-geo':{label:'GCSE Geography'}, psych:{label:'Psychology'}, hist:{label:'History'} };
 assert.deepStrictEqual(Array.from(revision.subjectChoices(catalog, {classId:'c1', classSubject:'gcse-geo'}, [], 'gcse-geo')), ['gcse-geo'], 'one class: one subject');
