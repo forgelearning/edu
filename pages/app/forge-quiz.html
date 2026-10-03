@@ -16,7 +16,8 @@
 
 <link rel="stylesheet" href="css/states.css">
   <link rel="stylesheet" href="css/generated-utilities.css">
-<link rel="stylesheet" href="css/page-overrides/forge-quiz.css?v=20261003-interaction">
+<link rel="stylesheet" href="css/page-overrides/forge-quiz.css?v=20261003-delight">
+<link rel="stylesheet" href="css/student-motion.css?v=20261003-motion1">
 </head>
 <body>
 <script src="scripts/forge-api.js?v=20260809"></script>
@@ -158,6 +159,7 @@ function logResponse(q, selectedKey, isCorrect, isReforge, reforgeCorrect) {
     assignment_id: state.assignmentId || null
   };
   if (requestedAssignmentId) row.assignment_id = requestedAssignmentId;
+  state.responseHistory.push(Object.assign({created_at:new Date().toISOString()},row));
   // Use auth token for trial/paid students so RLS policies pass correctly
   var token = (state.isPaid || state.isTrial) ? ForgeAuth.accessToken() : null;
   if (token) {
@@ -382,6 +384,7 @@ var SPEC_TO_SUBJECT = {
 <script src="data/spec-registry.js"></script>
 <script src="data/forge-catalog.js?v=20260911-recap"></script>
 <script src="scripts/forge-student-focus.js"></script>
+<script src="scripts/forge-student-delight.js?v=20261003"></script>
 <script src="scripts/forge-chemistry-topics.js"></script>
 <script src="scripts/forge-chemistry-resources.js"></script>
 <script src="scripts/forge-data-loader.js?v=20260821"></script>
@@ -410,6 +413,7 @@ var state = {
   bankStats: {},       // latest per-topic accuracy used by the recommendation
   topicSpec: null,      // Chemistry topic chosen for this quiz session
   questionBanks: null,  // original bank for each Chemistry question
+  responseHistory: [],  // answered questions behind the topic marks
   sessionWrongTags: [], // misconceptions that fired in this session
   sessionReforgedTags: [], // fired misconceptions repaired by their twin
   baseXP: null,        // lifetime XP from history loaded at page start; null until known
@@ -420,19 +424,19 @@ var FORGE_SESSION_SIZE = (window.ForgeApp && ForgeApp.session.defaultQuestionCou
 var FORGE_SESSION_PREFIX = 'forge-session:';
 function forgeSessionKey(bank) { return FORGE_SESSION_PREFIX + String(state.studentId || 'anon') + ':' + String(state.classId || 'none') + ':' + bank + (state.topicSpec ? ':' + state.topicSpec : ''); }
 function forgeSessionStorage(bank) { try { return JSON.parse(localStorage.getItem(forgeSessionKey(bank)) || 'null'); } catch(e) { return null; } }
-function forgeSaveSession() {
+function forgeSaveSession(resumeAt) {
   if (!state.bank || !state.questions.length) return;
   try {
     var saved = forgeSessionStorage(state.bank) || {completedIds: []};
     var currentId = state.questions[state.idx] && state.questions[state.idx].id;
     if (currentId && saved.completedIds.indexOf(currentId) === -1) saved.completedIds.push(currentId);
-    saved.questionIds = state.questions.map(function(q){return q.id;}); saved.idx = state.idx; saved.score = state.score; saved.xp = state.sessionXP; saved.updatedAt = Date.now();
+    saved.questionIds = state.questions.map(function(q){return q.id;}); saved.idx = typeof resumeAt === 'number' ? resumeAt : typeof state.cardReturnResumeAt === 'number' ? state.cardReturnResumeAt : state.idx; saved.score = state.score; saved.xp = state.sessionXP; saved.updatedAt = Date.now();
     localStorage.setItem(forgeSessionKey(state.bank), JSON.stringify(saved));
   } catch(e) {}
 }
 function forgeStartSession(bank, rawQs) {
   var saved = forgeSessionStorage(bank) || {completedIds: []};
-  if (saved.questionIds && saved.questionIds.length && saved.idx < saved.questionIds.length) {
+  if (saved.questionIds && saved.questionIds.length && saved.idx <= saved.questionIds.length) {
     var byId = {}; rawQs.forEach(function(q){byId[q.id] = q;});
     var resumed = saved.questionIds.map(function(id){return byId[id];}).filter(Boolean);
     if (resumed.length) { state.questions = resumed; state.idx = saved.idx || 0; state.score = saved.score || 0; state.sessionXP = saved.xp || 0; return; }
@@ -498,6 +502,7 @@ function xpResultsHtml() {
 }
 
 var requestedBank = new URLSearchParams(location.search).get('bank');
+var requestedTopic = new URLSearchParams(location.search).get('topic');
 var requestedClassId = new URLSearchParams(location.search).get('class_id');
 var requestedAssignmentId = new URLSearchParams(location.search).get('assignment_id');
 var requestedAssignmentTitle = new URLSearchParams(location.search).get('assignment_title');
@@ -823,8 +828,15 @@ function render(skipMotion) {
       // The authenticated route can arrive before the paid/trial student row
       // has been restored. Do not render a session that cannot log responses.
       state.bank = requestedBank;
-      state.topicSpec=null;state.questionBanks=null;
-      forgeStartSession(requestedBank, BANKS[requestedBank].questions.filter(function(q){return !q.type||q.type==='fill_blank';}));
+      var topicItems=requestedTopic&&window.ForgeChemistryTopics?ForgeChemistryTopics.questions(requestedTopic).filter(function(item){return !item.question.type||item.question.type==='fill_blank';}):[];
+      if(topicItems.length&&topicItems[0].bank===requestedBank){
+        state.topicSpec=requestedTopic;state.questionBanks={};
+        topicItems.forEach(function(item){state.questionBanks[item.question.id]=item.bank;});
+        forgeStartSession(requestedBank,topicItems.map(function(item){return item.question;}));
+      }else{
+        state.topicSpec=null;state.questionBanks=null;
+        forgeStartSession(requestedBank, BANKS[requestedBank].questions.filter(function(q){return !q.type||q.type==='fill_blank';}));
+      }
       state.phase = 'quiz';
       requestedBankStarted = true;
       requestedBank = null;
@@ -953,6 +965,7 @@ function renderJoin() {
       // silently gave every returning free student a blank weight map and so
       // no spaced repetition at all.
       ForgeClasses.fetchFreeResponses(SUPABASE_URL, SUPABASE_KEY, existingSession, function(responses) {
+        state.responseHistory = responses || [];
         state.weightMap = buildWeightMap(responses || []);
         state.bankStats = buildBankStats(responses || []);
         setXPHistory(responses);
@@ -1316,6 +1329,17 @@ function renderSubjects(){
   }
 }
 
+function forgeEscape(value){return String(value==null?'':value).replace(/[&<>"']/g,function(ch){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch];});}
+function topicMarksHtml(bank){
+  var progress=ForgeStudentDelight.topicProgress(state.responseHistory,bank);
+  var source=(BANKS[bank]&&BANKS[bank].questions||[]).filter(function(q){return q.id===progress.lastQuestionId;})[0];
+  var answer=source&&source.options&&source.options[source.correct];
+  var marks='';for(var i=0;i<3;i++)marks+='<span class="forge-topic-mark'+(i<progress.marks?' is-earned':'')+'" aria-hidden="true"></span>';
+  var nextAt=ForgeStudentDelight.nextReturn(state.studentId,bank);
+  var nextLabel=nextAt==null&&progress.marks===3?'Three marks earned. Open Revision to keep the idea fresh.':ForgeStudentDelight.returnLabel(nextAt);
+  var detail='<strong>'+progress.visits+' '+(progress.visits===1?'day recalled':'days recalled')+'</strong><p>Each mark comes from a correct answer on a different day.</p>'+(source?'<p>Last recalled: '+forgeEscape(source.stem)+(answer?'<br><b>'+forgeEscape(answer)+'</b>':'')+'</p>':progress.visits?'<p>A correct answer was recorded here.</p>':'<p>Answer a question correctly to start marking this topic.</p>')+'<p>'+forgeEscape(nextLabel)+'</p>';
+  return '<div class="forge-topic-mastery"><button type="button" class="forge-topic-mastery__toggle" data-mastery-key="'+forgeEscape(bank)+'" aria-controls="mastery-'+forgeEscape(bank)+'" aria-expanded="false"><span class="forge-topic-mastery__marks">'+marks+'</span><span>Topic progress</span></button><div class="forge-topic-mastery__detail" id="mastery-'+forgeEscape(bank)+'" hidden>'+detail+'</div></div>';
+}
 function renderBanks(){
   var subj=SUBJECTS[state.subject];
   if(!ForgeData.isLoaded(state.subject)){
@@ -1334,9 +1358,9 @@ function renderBanks(){
   var h='';
   // Only show back button if not locked to a subject
   if (!locked) h+='<button type="button" class="back-btn" id="back-subj">\u2190 Subjects</button>';
-  h+='<div class="center">';
+  h+='<div class="center forge-subject-intro">';
   h+='<h2 class="forge-u-1oh0w3h">'+subj.label+'</h2>';
-  h+='<p class="forge-u-10yda30">'+subj.sub+'</p></div>';
+  h+='<p class="forge-u-10yda30">'+subj.sub+'</p>'+ForgeStudentDelight.motif(state.subject)+'</div>';
   if(state.subject==='chem')h+='<p class="forge-recommendation__copy">Choose a topic you have covered. Each practice set stays within that AQA Chemistry topic.</p>';
   if(state.subject!=='chem'){
   var recommendedBank = recommendedBankForSubject(subj);
@@ -1370,18 +1394,24 @@ function renderBanks(){
   }else subj.banks.forEach(function(key){
     var b=BANKS[key];
     var point = getSpecPoint({}, key);
-    h+='<button type="button" class="bank-btn" data-key="'+key+'">';
+    h+='<div class="forge-topic-card"><button type="button" class="bank-btn" data-key="'+key+'">';
     h+='<div class="code" style="color:'+b.color+'">'+key+'</div>';
     h+='<div class="name">'+(point ? point.title : b.label)+'</div>';
     if (point) h+='<div class="qcount">'+point.code+' · '+point.paper+'</div>';
     h+='<div class="qcount">'+b.questions.length+' questions</div>';
-    h+='</button>';
+    h+='</button>'+topicMarksHtml(key)+'</div>';
   });
   h+='</div></section>';
   // Locked students never see the subject picker, so this is their only
   // route to adding a second class.
   if (locked) h += joinMoreHtml();
   app.innerHTML=h + sessionBar();
+  app.querySelectorAll('[data-mastery-key]').forEach(function(button){button.onclick=function(){
+    var detail=document.getElementById(button.getAttribute('aria-controls'));
+    if(!detail)return;
+    detail.hidden=!detail.hidden;
+    button.setAttribute('aria-expanded',String(!detail.hidden));
+  };});
   var recommendedBtn=document.getElementById('start-recommended');
   if(recommendedBtn) recommendedBtn.onclick=function(){
     if(!recommended || !recommendedQuestions.length) return;
@@ -1548,12 +1578,13 @@ function renderLimitWall() {
 }
 
 function revealQuizNext(){
-  var next = document.getElementById('feedback');
-  if (!next) return;
+  var feedback = document.getElementById('feedback');
+  if (!feedback) return;
   window.requestAnimationFrame(function(){
-    window.setTimeout(function(){
-      next.scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth', block:'nearest'});
-    }, 80);
+    var first=feedback.firstElementChild||feedback;
+    if(first.getBoundingClientRect().top>window.innerHeight-96){
+      first.scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'nearest'});
+    }
   });
 }
 
@@ -1566,7 +1597,15 @@ function offerRevisionCard(feedback, question){
     var studentId=state.studentId||(saved&&saved.studentId);
     if(!studentId){button.textContent='Join your class to save cards';return;}
     try{
-      localStorage.setItem('forge-revision-draft:'+studentId,JSON.stringify({front:question.stem,back:question.options[question.correct],bank:state.questionBanks&&state.questionBanks[question.id]||state.bank,source:'Forge question '+question.id}));
+      var params=new URLSearchParams(location.search);
+      params.set('bank',state.bank);params.set('subject',state.subject);
+      if(state.topicSpec)params.set('topic',state.topicSpec);else params.delete('topic');
+      if(state.classId)params.set('class_id',state.classId);
+      if(state.assignmentId)params.set('assignment_id',state.assignmentId);
+      params.delete('mode');
+      localStorage.setItem('forge-revision-draft:'+studentId,JSON.stringify({front:question.stem,back:question.options[question.correct],bank:state.questionBanks&&state.questionBanks[question.id]||state.bank,source:'Forge question '+question.id,returnTo:'forge-quiz.html?'+params.toString()}));
+      state.cardReturnResumeAt=state.idx+1;
+      forgeSaveSession();
       location.href='revision.html';
     }catch(e){button.textContent='Could not save a draft on this device';}
   };
@@ -1673,6 +1712,9 @@ function renderQuiz(){
       }
 
       document.getElementById('next-btn').onclick=function(){
+        var pressed=this;
+        pressed.disabled=true;
+        pressed.textContent='Saving answer…';
         var next = function() {
           state.idx++;render();
         };
@@ -1682,6 +1724,7 @@ function renderQuiz(){
             showPersistenceStatus();
             var continueBtn = document.getElementById('next-btn');
             if (continueBtn) {
+              continueBtn.disabled=false;
               continueBtn.textContent = 'Continue anyway';
               continueBtn.onclick = next;
               continueBtn.focus();
@@ -1693,6 +1736,7 @@ function renderQuiz(){
           showPersistenceStatus();
           var continueBtn = document.getElementById('next-btn');
           if (continueBtn) {
+            continueBtn.disabled=false;
             continueBtn.textContent = 'Continue anyway';
             continueBtn.onclick = next;
             continueBtn.focus();
@@ -1810,6 +1854,8 @@ function renderFillBlankQuiz(q,bk,headerHtml){
     }
     forgeSaveSession();
     document.getElementById('next-btn').onclick=function(){
+      this.disabled=true;
+      this.textContent='Saving answer…';
       var next = function(){ state.idx++;render(); };
       if (responseSaved && typeof responseSaved.then === 'function') responseSaved.then(function(result){
         if (result && result.allowed === false) { renderLimitWall(); return; }
@@ -1817,6 +1863,7 @@ function renderFillBlankQuiz(q,bk,headerHtml){
           showPersistenceStatus();
           var continueBtn = document.getElementById('next-btn');
           if (continueBtn) {
+            continueBtn.disabled=false;
             continueBtn.textContent = 'Continue anyway';
             continueBtn.onclick = next;
             continueBtn.focus();
@@ -1828,6 +1875,7 @@ function renderFillBlankQuiz(q,bk,headerHtml){
         showPersistenceStatus();
         var continueBtn = document.getElementById('next-btn');
         if (continueBtn) {
+          continueBtn.disabled=false;
           continueBtn.textContent = 'Continue anyway';
           continueBtn.onclick = next;
           continueBtn.focus();
@@ -1854,7 +1902,7 @@ function renderReforge(q,el,color){
   el.innerHTML=h;
   var repairStem=el.querySelector('.rf-stem');
   if(repairStem)repairStem.focus({preventScroll:true});
-  window.requestAnimationFrame(function(){el.scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});});
+  window.requestAnimationFrame(function(){if(el.getBoundingClientRect().top>window.innerHeight-96)el.scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'nearest'});});
 
   var opts=el.querySelectorAll('.opt');
   var done=false;
@@ -1878,7 +1926,7 @@ function renderReforge(q,el,color){
       var rfb=document.getElementById('rf-feedback');
       if(isCorrect){
         if(q.tag&&state.sessionReforgedTags.indexOf(q.tag)===-1) state.sessionReforgedTags.push(q.tag);
-        rfb.innerHTML='<div class="forge-reforge-result" role="status"><span class="forge-reforge-result__mark" aria-hidden="true">\u2713</span><span><strong>Idea repaired.</strong> You got the follow-up right.</span></div>';
+        rfb.innerHTML='<div class="forge-reforge-result" role="status"><svg class="forge-reforge-result__icon" viewBox="0 0 48 48" fill="none" aria-hidden="true" focusable="false"><path class="forge-reforge-result__anvil" d="M7 26h34l-3-9H10l-3 9Zm8 0v7h18v-7M18 33v5m12-5v5M14 38h20"/><path class="forge-reforge-result__crack" d="m25 17-4 5 4 3-2 8"/><path class="forge-reforge-result__seam" d="M24 18v15"/></svg><span><strong>Idea repaired.</strong> You got the follow-up right.</span></div>';
         awardXP(XP_REFORGE, rfb.firstChild);
         forgeSaveSession();
       }else{
@@ -1925,11 +1973,14 @@ function renderResults(){
     : 'No unresolved error from this session';
   var nextHref = remaining ? 'anvil.html' : 'student-dashboard.html';
   var nextLabel = remaining ? 'Repair mistakes' : 'Back to home';
+  var revisionDue=window.ForgeStudentFocus?ForgeStudentFocus.due(state,state.subject):0;
+  var worked=state.questions.length,repairedCount=sessionSignals.repaired.length;
   var h='<div class="results">';
   h+='<h1>Practice complete</h1>';
   h+='<p class="detail">'+bk.label+'</p>';
   h+='<div class="pct" style="color:'+col+'">'+pct+'%</div>';
   h+='<div class="detail">'+state.score+' of '+state.questions.length+' correct</div>';
+  h+='<section class="forge-workbench" aria-labelledby="forge-workbench-title"><h2 id="forge-workbench-title">Your workbench</h2><dl><div><dt>Questions worked</dt><dd>'+worked+'</dd></div><div><dt>Ideas repaired</dt><dd>'+repairedCount+'</dd></div><div><dt>Next return</dt><dd>'+(revisionDue?revisionDue+' '+(revisionDue===1?'card':'cards')+' due':'Open Revision')+'</dd></div></dl></section>';
   h+=xpResultsHtml();
   if(state.classId && xpEnabled()) h+='<div id="result-league" class="result-league"></div>';
   h+='<section class="forge-result-story" aria-labelledby="result-next-title">';
@@ -2259,6 +2310,7 @@ if (!openSoloLogin && ForgeAuth.hasSession()) {
       if (state.studentId && savedSession.classCode) {
         supa.ownResponses(state.studentId, savedSession.classCode, state.studentName).then(function(r) {
           var responses = Array.isArray(r) ? r : [];
+          state.responseHistory = responses;
           state.weightMap = buildWeightMap(responses);
           state.bankStats = buildBankStats(responses);
           setXPHistory(responses);
@@ -2281,6 +2333,7 @@ if (!openSoloLogin && ForgeAuth.hasSession()) {
       state.isTrial       = false;
       settleRequestedSubject();
       ForgeClasses.fetchFreeResponses(SUPABASE_URL, SUPABASE_KEY, freeSession, function(responses) {
+        state.responseHistory = responses || [];
         state.weightMap = buildWeightMap(responses || []);
         state.bankStats = buildBankStats(responses || []);
         setXPHistory(responses);

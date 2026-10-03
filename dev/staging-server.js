@@ -15,6 +15,8 @@ const port = Number(args.get('--port') || 4174);
 const failureAfter = Number(args.get('--failure-after') || 0);
 const mode = args.get('--mode') || 'save-failure';
 let responseCount = 0;
+const demoStudent = {studentId:'local-motion-student',classId:'local-motion-class',classCode:'LOCAL-MOTION',studentCode:'LOCAL123',studentName:'Motion Tester',classSubject:'gcse-geo'};
+const demoResponses = [];
 
 function json(res, status, body) {
   const payload = JSON.stringify(body);
@@ -84,8 +86,23 @@ function serveFile(req, res, pathname) {
   fs.createReadStream(file).pipe(res);
 }
 
+function serveDemoAccount(res) {
+  demoResponses.length = 0;
+  const session = JSON.stringify(demoStudent);
+  const html = '<!doctype html><html lang="en"><meta charset="utf-8"><title>Forge test student</title><p>Opening Forge as a local test student…</p><script>'
+    + '["forge-free-session","forge-paid-student","forge-teacher-session","forge-active-role","forge-auth-session"].forEach(function(key){localStorage.removeItem(key)});'
+    + 'Object.keys(localStorage).filter(function(key){return key.indexOf("forge-session:local-motion-student:")===0||key.indexOf("forge-crucible-run:local-motion-student:")===0||key==="forge-revision:local-motion-student"}).forEach(function(key){localStorage.removeItem(key)});'
+    + 'localStorage.setItem("forge-student",'+JSON.stringify(session)+');'
+    + 'localStorage.setItem("forge-classes",JSON.stringify([{classId:"local-motion-class",classCode:"LOCAL-MOTION",className:"Motion test class",subject:"gcse-geo",studentId:"local-motion-student",studentName:"Motion Tester",studentCode:"LOCAL123"}]));'
+    + 'location.replace("/forge-quiz.html?subject=gcse-geo");'
+    + '</script></html>';
+  res.writeHead(200, {'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-store'});
+  res.end(html);
+}
+
 const server = http.createServer((req, res) => {
   const url = new URL(req.url, 'http://127.0.0.1');
+  if (mode === 'student-demo' && url.pathname === '/test-account') return serveDemoAccount(res);
   if (req.method === 'OPTIONS') {
     res.writeHead(204, {
       'Access-Control-Allow-Origin': '*',
@@ -105,6 +122,30 @@ const server = http.createServer((req, res) => {
     if (mode === 'quota') return json(res, 200, {allowed:false, reason:'daily_limit', used:10});
     if (mode === 'network-failure' || (failureAfter > 0 && responseCount > failureAfter)) return json(res, 503, {message:'Staging API is intentionally unavailable'});
     return json(res, 200, {allowed:true, id:'staging-response-' + responseCount, used:responseCount});
+  }
+  if (mode === 'student-demo') {
+    if (url.pathname === '/mock-supabase/rest/v1/rpc/get_student_own_responses_with_code' || url.pathname === '/mock-supabase/rest/v1/rpc/get_student_own_responses') return json(res, 200, demoResponses);
+    if (url.pathname === '/mock-supabase/rest/v1/rpc/get_student_assignments') return json(res, 200, []);
+    if (url.pathname === '/mock-supabase/rest/v1/rpc/get_class_by_code') return json(res, 200, [{id:demoStudent.classId,name:'Motion test class',subject:demoStudent.classSubject}]);
+    if (url.pathname === '/mock-supabase/rest/v1/rpc/record_revision_review_with_code') return json(res, 200, {allowed:true});
+    if (url.pathname === '/mock-supabase/rest/v1/rpc/record_student_response_with_code') {
+      let raw='';
+      req.on('data', chunk => { raw += chunk; });
+      req.on('end', () => {
+        let body={};try{body=JSON.parse(raw||'{}');}catch(e){}
+        demoResponses.push({
+          id:'local-motion-response-'+(demoResponses.length+1),
+          student_id:demoStudent.studentId,class_id:demoStudent.classId,
+          question_id:body.p_question_id,bank:body.p_bank,subject:body.p_subject,
+          selected_option:body.p_selected_option,is_correct:!!body.p_is_correct,
+          misconception_tag:body.p_misconception_tag||null,spec_point:body.p_spec_point||null,
+          reforge_attempted:!!body.p_reforge_attempted,reforge_correct:body.p_reforge_correct,
+          assignment_id:body.p_assignment_id||null,created_at:new Date().toISOString()
+        });
+        json(res, 200, {allowed:true});
+      });
+      return;
+    }
   }
   if (url.pathname.startsWith('/mock-supabase/')) return json(res, 200, []);
   serveFile(req, res, url.pathname);

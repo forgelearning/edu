@@ -1,0 +1,60 @@
+/* Student interaction rhythm: quick acknowledgment, short result reveals. */
+body{
+  --motion-feedback:100ms;
+  --motion-enter:180ms;
+  --motion-layout:260ms;
+  --glass-blur:10px;
+}
+
+:is(.forge-button,.opt,.pick-btn,.bank-btn,.subject-btn,.next-btn,.reforge-trigger,.revision-topic-row,.revision-choice-option,.dashboard-shortcuts a,.dashboard-return-cue,.topic,.prof-tab,.anvil-card,.mission-control__action){
+  transition-duration:110ms;
+  transition-timing-function:var(--ease-forge);
+  touch-action:manipulation;
+}
+:is(.forge-button,.opt,.pick-btn,.bank-btn,.subject-btn,.next-btn,.reforge-trigger,.revision-topic-row,.revision-choice-option,.dashboard-shortcuts a,.dashboard-return-cue,.topic,.prof-tab,.anvil-card,.mission-control__action):active:not(:disabled){
+  transform:translateY(1px) scale(.985);
+  transition-duration:65ms;
+}
+#app .opt:active:not(.answered){transform:translate(1px,1px) scale(.985)}
+#app:has(.quiz-header) .progress-fill{animation:none}
+
+/* The answer edge acts like a brief struck mark, without moving the text. */
+.opt:is(.correct,.wrong){position:relative;overflow:hidden}
+.opt:is(.correct,.wrong)::before{
+  content:"";
+  position:absolute;
+  inset:0 auto 0 0;
+  width:4px;
+  background:var(--good);
+  transform:scaleY(0);
+  transform-origin:center;
+  pointer-events:none;
+}
+.opt.wrong::before{background:var(--bad)}
+
+@media(prefers-reduced-motion:no-preference){
+  .opt:is(.correct,.wrong)::before{animation:forge-answer-mark 180ms var(--ease-forge) forwards}
+  @keyframes forge-answer-mark{to{transform:scaleY(1)}}
+  .scaffold-box,.praise-box{animation:forge-feedback-fast 190ms var(--ease-forge) both}
+  .next-btn{animation:forge-control-in 160ms var(--ease-forge) both}
+  .reforge-box,.revision-answer-reveal{animation:forge-feedback-fast 210ms var(--ease-forge) both}
+  .revision-result>span{animation:forge-control-in 220ms var(--ease-forge) both}
+  #list>.card{animation-duration:240ms}
+  #list>.card:nth-child(2){animation-delay:25ms}
+  #list>.card:nth-child(3){animation-delay:50ms}
+  #list>.card:nth-child(n+4){animation-delay:75ms}
+  .mission-control{animation:forge-feedback-fast 230ms var(--ease-forge) both}
+  .mission-control__percent{animation:forge-control-in 210ms var(--ease-forge) 40ms both}
+  .xp-gain{animation-duration:180ms}
+  .xp-result__rankup{animation:forge-control-in 240ms var(--ease-forge) both}
+  @keyframes forge-feedback-fast{from{opacity:.65;transform:translateY(4px)}to{opacity:1;transform:none}}
+  @keyframes forge-control-in{from{opacity:.7;transform:scale(.96)}to{opacity:1;transform:scale(1)}}
+}
+
+@media(prefers-reduced-motion:reduce){
+  :is(.forge-button,.opt,.pick-btn,.bank-btn,.subject-btn,.next-btn,.reforge-trigger,.revision-topic-row,.revision-choice-option,.dashboard-shortcuts a,.dashboard-return-cue,.topic,.prof-tab,.anvil-card,.mission-control__action){transition-duration:0ms}
+  :is(.forge-button,.opt,.pick-btn,.bank-btn,.subject-btn,.next-btn,.reforge-trigger,.revision-topic-row,.revision-choice-option,.dashboard-shortcuts a,.dashboard-return-cue,.topic,.prof-tab,.anvil-card,.mission-control__action):active:not(:disabled){transform:none}
+  #app .opt:active:not(.answered){transform:none}
+  .opt:is(.correct,.wrong)::before{transform:scaleY(1)}
+  .scaffold-box,.praise-box,.next-btn,.reforge-box,.revision-answer-reveal,.revision-result>span,#list>.card,.mission-control,.mission-control__percent,.xp-gain,.xp-result__rankup{animation:none!important}
+}

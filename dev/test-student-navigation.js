@@ -65,6 +65,7 @@ const yesterday=new Date(Date.now()-86400000).toISOString(),tomorrow=new Date(Da
 focusValues.set('forge-revision:student-1',JSON.stringify({reviews:{'growth|q1':{dueAt:yesterday},'growth|q2':{dueAt:tomorrow},'hazards|q3':{dueAt:yesterday},'personal|missing':{dueAt:yesterday}}}));
 d.renderDashboard();
 assert(d.app.innerHTML.includes('Bring 1 card back to mind')&&d.app.innerHTML.includes('revision.html?subject=econ'),'due revision beats general topic practice and opens the right subject');
+assert(d.app.innerHTML.includes('dashboard-return-cue')&&d.app.innerHTML.includes('1 idea ready to strengthen'),'due cards also get a compact direct return cue');
 d.ForgeStudentFocus.remember('student-1','geo');
 assert.equal(d.ForgeStudentFocus.subject(d.st,[]),'geo','individual subject choice survives a page change');
 focusValues.set('forge-student',JSON.stringify({studentId:'student-1',classSubject:'econ'}));

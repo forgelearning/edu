@@ -555,3 +555,42 @@ html:not([data-theme="light"]) body.forge-solo-login::after{color:var(--forge-lo
   .forge-feedback-actions{flex-direction:column;align-items:stretch}
   .forge-feedback-actions .reforge-trigger,.forge-feedback-actions .next-btn,.forge-feedback-actions .forge-save-card{width:100%}
 }
+
+/* A small record of learning: each mark represents a different day with a
+   correct first answer in this topic. */
+.forge-subject-intro{position:relative}
+.forge-subject-motif{display:block;width:128px;height:80px;margin:10px auto 0;color:var(--ember);stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;opacity:.8}
+.forge-subject-motif--econ .forge-subject-motif__axis{stroke:var(--slate);opacity:.7}
+.forge-topic-card{min-width:0;border:1px solid var(--line);border-radius:var(--radius-md);background:var(--panel);overflow:hidden}
+.forge-topic-card .bank-btn{display:block;width:100%;border:0;border-radius:0;background:transparent}
+.forge-topic-card .bank-btn:hover{background:var(--panel-2)}
+.forge-topic-card .bank-btn:focus-visible,.forge-topic-mastery__toggle:focus-visible{outline:2px solid var(--ember);outline-offset:-3px}
+.forge-topic-mastery{border-top:1px solid var(--line)}
+.forge-topic-mastery__toggle{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;min-height:44px;padding:8px 16px;border:0;background:transparent;color:var(--slate);font:600 12px 'Poppins',sans-serif;cursor:pointer}
+.forge-topic-mastery__toggle:hover,.forge-topic-mastery__toggle[aria-expanded="true"]{color:var(--white);background:var(--panel-2)}
+.forge-topic-mastery__marks{display:inline-flex;gap:6px;align-items:center}
+.forge-topic-mark{display:block;width:16px;height:5px;border:1px solid var(--dim);border-radius:2px;transform:skewX(-25deg);opacity:.55}
+.forge-topic-mark.is-earned{border-color:var(--ember);background:var(--ember);box-shadow:inset 0 -1px 0 rgba(0,0,0,.28);opacity:1}
+.forge-topic-mastery__detail{padding:12px 16px 16px;border-top:1px solid var(--line);color:var(--slate);font-size:12px;line-height:1.5}
+.forge-topic-mastery__detail strong{color:var(--white)}
+.forge-topic-mastery__detail b{color:var(--white);font-weight:600}
+.forge-topic-mastery__detail p{margin:7px 0 0}
+.forge-reforge-result__icon{width:38px;height:38px;flex:none;stroke:var(--good);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.forge-reforge-result__crack{stroke:var(--ember)}
+.forge-reforge-result__seam{stroke-dasharray:16;stroke-dashoffset:0}
+.forge-workbench{max-width:600px;margin:0 auto 24px;padding:18px 22px;border:1px solid var(--line);border-radius:var(--radius-md);background:var(--panel);text-align:left}
+.forge-workbench h2{margin:0 0 14px;color:var(--white);font:700 20px/1.2 'Rethink Sans',sans-serif}
+.forge-workbench dl{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:0}
+.forge-workbench dl div{min-width:0;padding-top:10px;border-top:1px solid var(--line)}
+.forge-workbench dt{color:var(--slate);font-size:11px;font-weight:600}
+.forge-workbench dd{margin:5px 0 0;color:var(--white);font:700 19px/1.25 'Rethink Sans',sans-serif}
+@media(prefers-reduced-motion:no-preference){
+  .forge-subject-motif--geo path,.forge-subject-motif__line{stroke-dasharray:180;stroke-dashoffset:180;animation:forge-line-draw .7s cubic-bezier(.16,1,.3,1) both}
+  .forge-subject-motif--geo path:nth-child(2){animation-delay:80ms}.forge-subject-motif--geo path:nth-child(3){animation-delay:150ms}
+  @keyframes forge-line-draw{to{stroke-dashoffset:0}}
+  .forge-reforge-result__crack{animation:forge-crack-close .45s cubic-bezier(.16,1,.3,1) .08s both}
+  .forge-reforge-result__seam{animation:forge-seam-show .45s cubic-bezier(.16,1,.3,1) .12s both}
+  @keyframes forge-crack-close{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(3px)}}
+  @keyframes forge-seam-show{from{stroke-dashoffset:16;opacity:.2}to{stroke-dashoffset:0;opacity:1}}
+}
+@media(max-width:600px){.forge-workbench dl{grid-template-columns:1fr;gap:8px}.forge-workbench dl div{display:flex;align-items:baseline;justify-content:space-between;gap:12px}.forge-workbench dd{font-size:16px;text-align:right}}

@@ -130,6 +130,16 @@ h1,h2,h3,.logo{font-family:'Rethink Sans',sans-serif}
 .anvil-summary{margin:0 0 20px;color:var(--slate);text-align:center;font-size:14px}
 .anvil-resolved{margin-top:28px;border-top:1px solid var(--line);padding-top:12px}
 .anvil-resolved summary{cursor:pointer;min-height:44px;align-content:center;color:var(--white)}
+.anvil-insight-details{margin-top:12px}
+.anvil-insight-details summary{min-height:44px;cursor:pointer;color:var(--good);font-size:13px;font-weight:600}
+.anvil-insight-details summary:focus-visible{outline:2px solid var(--ember);outline-offset:3px}
+.anvil-insight{display:grid;grid-template-columns:minmax(0,1fr) 24px minmax(0,1fr);align-items:center;gap:14px;margin-top:14px;padding:16px;border:1px solid var(--line);border-radius:var(--radius-md);background:var(--panel-2);text-align:left}
+.anvil-insight>div{min-width:0}
+.anvil-insight span{color:var(--dim);font:600 11px/1.4 'Poppins',sans-serif}
+.anvil-insight p{margin:6px 0 0;color:var(--white);font-size:13px;line-height:1.5}
+.anvil-insight>div:last-child p{color:var(--good)}
+.anvil-insight svg{width:24px;height:24px;color:var(--ember)}
+@media(max-width:600px){.anvil-insight{grid-template-columns:1fr;gap:10px}.anvil-insight svg{transform:rotate(90deg)}}
 
 .anvil-other-title{font:600 20px 'Rethink Sans',sans-serif;margin:28px 0 16px}
 button.anvil-card{display:block;width:100%;text-align:left;font:inherit;color:inherit}

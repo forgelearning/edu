@@ -15,8 +15,9 @@
 
 <link rel="stylesheet" href="css/states.css">
   <link rel="stylesheet" href="css/generated-utilities.css">
-  <link rel="stylesheet" href="css/page-overrides/crucible.css">
+  <link rel="stylesheet" href="css/page-overrides/crucible.css?v=20261003-learning-trail">
   <link rel="stylesheet" href="css/auth-ember.css?v=20260817-auth2">
+<link rel="stylesheet" href="css/student-motion.css?v=20261003-motion1">
 </head>
 <body class="forge-auth-ember">
 <script src="scripts/forge-api.js"></script>
@@ -98,7 +99,7 @@ var CRUCIBLE_RUN_PREFIX = 'forge-crucible-run:';
 ForgeApp.loading(document.getElementById('app'), { label: 'Loading Crucible', body: 'Getting your timed practice ready.' });
 function crucibleRunKey() { return CRUCIBLE_RUN_PREFIX + String(state.studentId || 'anon') + ':' + String(state.classId || 'none'); }
 function loadCrucibleRun() { try { return JSON.parse(localStorage.getItem(crucibleRunKey()) || 'null'); } catch(e) { return null; } }
-function saveCrucibleRun() { try { localStorage.setItem(crucibleRunKey(), JSON.stringify({status:'active',subject:state.subject,bank:state.bank,questionIds:state.questions.map(function(q){return q.id;}),answers:state.answers.map(function(a){return {id:a.q.id,selected:a.selected,correct:a.correct,timedOut:a.timedOut,saved:!!a.saved};}),idx:state.idx,timeLeft:state.timeLeft,updatedAt:Date.now()})); } catch(e) {} }
+function saveCrucibleRun() { try { localStorage.setItem(crucibleRunKey(), JSON.stringify({status:'active',subject:state.subject,bank:state.bank,questionIds:state.questions.map(function(q){return q.id;}),answers:state.answers.map(function(a){return {id:a.q.id,selected:a.selected,correct:a.correct,timedOut:a.timedOut,saved:!!a.saved,timeSpent:a.timeSpent};}),idx:state.idx,timeLeft:state.timeLeft,questionStartTimeLeft:state.questionStartTimeLeft,updatedAt:Date.now()})); } catch(e) {} }
 function clearCrucibleRun() { try { localStorage.removeItem(crucibleRunKey()); } catch(e) {} }
 function restoreCrucibleRun() {
   var saved=loadCrucibleRun();
@@ -107,9 +108,9 @@ function restoreCrucibleRun() {
   var byId={};pool.forEach(function(q){byId[q.id]=q;});
   var questions=saved.questionIds.map(function(id){return byId[id];}).filter(Boolean);
   if(!questions.length) return false;
-  state.subject=saved.subject; state.bank=saved.bank; state.questions=questions; state.idx=Math.min(saved.idx||0,questions.length-1); state.timeLeft=saved.timeLeft||CRUCIBLE_TIME;
-  state.answers=(saved.answers||[]).map(function(a){return {q:byId[a.id],selected:a.selected,correct:a.correct,timedOut:a.timedOut,saved:!!a.saved};}).filter(function(a){return a.q;});
-  state.phase='quiz'; return true;
+  state.subject=saved.subject; state.bank=saved.bank; state.questions=questions; state.idx=Math.min(saved.idx||0,questions.length-1); state.timeLeft=Number.isFinite(saved.timeLeft)?saved.timeLeft:CRUCIBLE_TIME; state.questionStartTimeLeft=Number.isFinite(saved.questionStartTimeLeft)?saved.questionStartTimeLeft:null;
+  state.answers=(saved.answers||[]).map(function(a){return {q:byId[a.id],selected:a.selected,correct:a.correct,timedOut:a.timedOut,saved:!!a.saved,timeSpent:a.timeSpent};}).filter(function(a){return a.q;});
+  state.restoredRun=true;state.phase='quiz'; return true;
 }
 
 function shuffle(a){var b=[...a];for(var i=b.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
@@ -130,8 +131,12 @@ var state = {
   answers: [], // {q, selected, correct, timeLeft}
   pendingSave: null,
   timeLeft: CRUCIBLE_TIME,
+  questionStartTimeLeft: null,
+  restoredRun: false,
   timer: null
 };
+function crucibleDuration(){return Math.round(CRUCIBLE_TIME*(1+(state.extraTime||0)/100));}
+function crucibleTimeSpent(){return Math.max(0,(state.questionStartTimeLeft==null?state.timeLeft:state.questionStartTimeLeft)-state.timeLeft);}
 
 var app = document.getElementById('app');
 
@@ -327,7 +332,7 @@ function buildQuestions(){
     pool=BANKS[state.bank].questions.filter(function(q){return !q.type&&q.reforge;});
   }
   state.questions=shuffle(pool).slice(0,QUESTIONS_PER_RUN);
-  state.idx=0;state.answers=[];state.timeLeft=CRUCIBLE_TIME;
+  state.idx=0;state.answers=[];state.timeLeft=CRUCIBLE_TIME;state.questionStartTimeLeft=null;state.restoredRun=false;
 }
 
 // ===== READY SCREEN =====
@@ -365,8 +370,8 @@ window.startCrucible=function(){
   state.phase='quiz';
   if(window.forgeTrack) forgeTrack('crucible_started',{bank:state.bank,question_count:state.questions.length});
   // Apply extra time if student has access arrangement
-  var multiplier = 1 + ((state.extraTime || 0) / 100);
-  if(!state.answers.length || !state.timeLeft) state.timeLeft = Math.round(CRUCIBLE_TIME * multiplier);
+  if(!state.restoredRun) state.timeLeft = crucibleDuration();
+  state.restoredRun=false;
   if(state.timer) clearInterval(state.timer);
   state.timer=setInterval(function(){
     state.timeLeft--;
@@ -388,10 +393,13 @@ function updateTimer(){
   var secs=state.timeLeft%60;
   el.textContent=mins+':'+(secs<10?'0':'')+secs;
   el.className='timer-text'+(state.timeLeft<=30?' urgent':'');
-  var pct=state.timeLeft/CRUCIBLE_TIME;
+  var pct=Math.max(0,Math.min(1,state.timeLeft/crucibleDuration()));
   var circ=2*Math.PI*52;
   ring.style.strokeDashoffset=circ*(1-pct);
   ring.style.stroke=state.timeLeft<=30?'var(--bad)':state.timeLeft<=60?'var(--hot)':'var(--ember)';
+  var pace=document.getElementById('crucible-pace'),timeMarker=document.getElementById('crucible-time-marker');
+  if(pace)pace.textContent=state.answers.length+' of '+state.questions.length+' answered · '+Math.round((1-pct)*100)+'% of time used';
+  if(timeMarker)timeMarker.style.left=(1-pct)*100+'%';
 }
 
 function timeUp(){
@@ -407,7 +415,7 @@ function timeUp(){
   var opts=document.querySelectorAll('.opt:not(.answered)');
   if(opts.length>0){
     var q=state.questions[state.idx];
-    var answer={q:q,selected:null,correct:false,timedOut:true,saved:false};
+    var answer={q:q,selected:null,correct:false,timedOut:true,saved:false,timeSpent:crucibleTimeSpent()};
     state.answers.push(answer);
     saveCrucibleRun();
     logAnswer(q,null,false).then(function(outcome){
@@ -424,10 +432,11 @@ function timeUp(){
 
 function renderQuestion(){
   var q=state.questions[state.idx];
+  if(state.questionStartTimeLeft==null)state.questionStartTimeLeft=state.timeLeft;
   var keys=Object.keys(q.options);
   var pct=(state.idx/state.questions.length)*100;
   var circ=2*Math.PI*52;
-  var timeRatio=state.timeLeft/CRUCIBLE_TIME;
+  var timeRatio=Math.max(0,Math.min(1,state.timeLeft/crucibleDuration()));
 
   var h='<div class="progress-bar"><div class="progress-fill" style="width:'+pct+'%"></div></div>';
   h+='<div class="q-header">';
@@ -445,6 +454,7 @@ function renderQuestion(){
   var m=Math.floor(state.timeLeft/60),s=state.timeLeft%60;
   h+=m+':'+(s<10?'0':'')+s;
   h+='</div></div>';
+  h+='<div class="crucible-pace" aria-label="Pace through this run"><div class="crucible-pace-copy"><span>YOUR PACE</span><span id="crucible-pace"></span></div><div class="crucible-pace-track"><span id="crucible-answer-fill" style="width:'+(state.answers.length/state.questions.length*100)+'%"></span><i id="crucible-time-marker" style="left:'+((1-timeRatio)*100)+'%"></i></div><small>Fill shows answers · marker shows time used</small></div>';
 
   h+='<div class="stem">'+q.stem+'</div>';
   h+='<div class="options" id="c-opts">';
@@ -454,6 +464,7 @@ function renderQuestion(){
   h+='</div>';
   h+='<div id="c-feedback"></div><div class="clear"></div>';
   app.innerHTML=h;
+  updateTimer();
 
   var opts=document.querySelectorAll('#c-opts .opt');
   var answered=false;
@@ -464,8 +475,10 @@ function renderQuestion(){
       var k=o.dataset.k;
       var isCorrect=k===q.correct;
       if(window.forgeTrack) forgeTrack('crucible_question_answered',{bank:state.bank,correct:isCorrect});
-      var answer={q:q,selected:k,correct:isCorrect,timedOut:false,saved:false};
+      var answer={q:q,selected:k,correct:isCorrect,timedOut:false,saved:false,timeSpent:crucibleTimeSpent()};
       state.answers.push(answer);
+      var answerFill=document.getElementById('crucible-answer-fill');if(answerFill)answerFill.style.width=(state.answers.length/state.questions.length*100)+'%';
+      updateTimer();
       saveCrucibleRun();
 
       opts.forEach(function(x){
@@ -486,6 +499,7 @@ function renderQuestion(){
       var retryButton=document.getElementById('c-retry-save');
       nextButton.onclick=function(){
         state.idx++;
+        state.questionStartTimeLeft=null;
         saveCrucibleRun();
         if(state.idx>=state.questions.length){
           if(state.timer){clearInterval(state.timer);state.timer=null;}
@@ -546,12 +560,13 @@ function logAnswer(q,selectedKey,isCorrect){
 }
 
 // ===== RESULTS =====
+function crucibleEscape(value){return String(value==null?'':value).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
 function renderResults(){
   var correct=state.answers.filter(function(a){return a.correct;}).length;
   var total=state.answers.length;
   var pct=total>0?Math.round((correct/total)*100):0;
   var col=pct>=75?'var(--good)':pct>=50?'var(--hot)':'var(--bad)';
-  var timeUsed=CRUCIBLE_TIME-state.timeLeft;
+  var timeUsed=Math.max(0,crucibleDuration()-state.timeLeft);
   var mins=Math.floor(timeUsed/60),secs=timeUsed%60;
   var unsaved=state.answers.filter(function(a){return !a.saved;}).length;
 
@@ -566,6 +581,11 @@ function renderResults(){
   h+='</div>';
 
   // Per-question breakdown
+  var measured=state.answers.filter(function(a){return Number.isFinite(a.timeSpent);});
+  if(measured.length){
+    var longest=measured.reduce(function(best,a){return a.timeSpent>best.timeSpent?a:best;},measured[0]);
+    h+='<section class="crucible-time-recap" aria-label="Where time went"><span class="tag">WHERE TIME WENT</span><p>Most time on <strong>'+longest.timeSpent+'s</strong>: '+crucibleEscape(longest.q.stem.substring(0,105))+(longest.q.stem.length>105?'…':'')+'</p><small>Use this to spot which idea needs another look.</small></section>';
+  }
   var wrong=state.answers.filter(function(a){return !a.correct;});
   if(wrong.length>0){
     h+='<div class="forge-u-1qqcf3a">';

@@ -14,9 +14,10 @@
 <link rel="stylesheet" href="css/components.css?v=20260812">
 <link rel="stylesheet" href="css/forge-league.css?v=20260929f">
 <link rel="stylesheet" href="css/generated-utilities.css">
-<link rel="stylesheet" href="css/page-overrides/student-dashboard.css?v=20261003-interaction">
+<link rel="stylesheet" href="css/page-overrides/student-dashboard.css?v=20261003-motion1">
 <link rel="stylesheet" href="css/auth-ember.css?v=20260817-auth2">
 
+<link rel="stylesheet" href="css/student-motion.css?v=20261003-motion1">
 <body class="forge-auth-ember">
 <script>
   (function () {
@@ -355,6 +356,7 @@ function renderDashboard(){
   dashboardTopicsHtml=topicShortcutsHtml(responses, focusTopic&&!activeMCs.length?focusTopic.key:null);
 
   var h='<header class="dashboard-heading"><h1>Welcome back, '+_fsEsc(st.studentName)+'</h1><p>Pick up where you left off.</p></header>';
+  if(due)h+='<a class="dashboard-return-cue" href="revision.html'+(subject?'?subject='+encodeURIComponent(subject):'')+'"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 17h24l-2-5H6l-2 5Zm5 0v5h14v-5M12 22v4m8-4v4M10 26h12"/></svg><span><strong>'+due+' '+(due===1?'idea':'ideas')+' ready to strengthen</strong><small>Open today’s revision</small></span><span aria-hidden="true">→</span></a>';
 
   h+='<div class="dashboard-layout'+(total>0?' dashboard-layout--split':'')+'"><div class="dashboard-main">';
   if(total===0&&!due){
@@ -367,6 +369,7 @@ function renderDashboard(){
     h+='<span class="dashboard-next__label">Today · first step</span>';
     h+='<h2 id="dashboard-next-title">Start your first practice</h2>';
     h+='<p>'+(subjectName?'Start with '+_fsEsc(subjectName)+'. Answer':'Choose a subject, then answer')+' a short set of questions. If you get stuck, we’ll help you try again.</p>';
+    h+='<ol class="dashboard-first-loop" aria-label="What happens in practice"><li><span>1</span>Answer</li><li><span>2</span>See the idea</li><li><span>3</span>Try it again</li></ol>';
     h+='<a class="forge-button forge-button--primary" href="'+subjectUrl+'">Start practice →</a></section>';
   } else {
     h+='<section class="dashboard-next" aria-labelledby="dashboard-next-title">';

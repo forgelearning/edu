@@ -15,9 +15,10 @@
 
 <link rel="stylesheet" href="css/states.css">
   <link rel="stylesheet" href="css/generated-utilities.css">
-  <link rel="stylesheet" href="css/page-overrides/profile.css">
+  <link rel="stylesheet" href="css/page-overrides/profile.css?v=20261003-motion1">
   <link rel="stylesheet" href="css/page-overrides/profile-overdrive.css?v=20260818-overdrive">
   <link rel="stylesheet" href="css/auth-ember.css?v=20260817-auth2">
+<link rel="stylesheet" href="css/student-motion.css?v=20261003-motion1">
 </head>
 <body class="forge-auth-ember">
 <script src="scripts/forge-api.js"></script>
@@ -77,6 +78,24 @@ function supaGet(t,p){return ForgeAPI.get(t,p);}
 function resolveBankLabel(bankId){
   var bank = (window.BANKS || {})[bankId];
   return (bank && bank.label) || bankId;
+}
+function profileEscape(value){return String(value==null?'':value).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function learningTrail(responses,studentId){
+  var entries=[],seen={};
+  (responses||[]).forEach(function(r){
+    var when=Date.parse(r.created_at||'');if(!Number.isFinite(when))return;
+    var bank=r.bank||'',day=new Date(when).toDateString(),kind=r.reforge_attempted?'repair':'practice',key=kind+'|'+bank+'|'+day;
+    if(seen[key])return;
+    if(r.reforge_attempted){if(!r.reforge_correct)return;entries.push({when:when,label:'Re-forged an idea'+(bank?' in '+resolveBankLabel(bank):''),href:'anvil.html'});}
+    else if(r.is_correct&&bank){entries.push({when:when,label:'Recalled '+resolveBankLabel(bank),href:'forge-quiz.html?bank='+encodeURIComponent(bank)});}
+    else return;
+    seen[key]=true;
+  });
+  try{
+    var saved=JSON.parse(localStorage.getItem('forge-revision:'+String(studentId||'anonymous'))||'null');
+    Object.keys(saved&&saved.reviews||{}).forEach(function(key){var review=saved.reviews[key],when=Date.parse(review.updatedAt||'');if(!Number.isFinite(when))return;var day=new Date(when).toDateString(),marker='review|'+day;if(seen[marker])return;seen[marker]=true;entries.push({when:when,label:'Reviewed cards from memory',href:'revision.html'});});
+  }catch(e){}
+  return entries.sort(function(a,b){return b.when-a.when;}).slice(0,5);
 }
 
 var RANKS = [
@@ -405,6 +424,10 @@ function renderProfile(){
     h+='</div>'; // /two-col
 
     h+='<p class="prof-footer">→ Your overview updates after every session. Focus areas tell you where to spend time — strengths confirm what is already locked in.</p>';
+    var trail=learningTrail(responses,st.studentId);
+    h+='<section class="profile-learning-trail" aria-labelledby="profile-learning-trail-title"><div><span class="tag">YOUR WORK</span><h2 id="profile-learning-trail-title">Learning trail</h2><p>Recent steps from your practice and revision.</p></div>';
+    h+=trail.length?'<ol>'+trail.map(function(entry){var date=new Date(entry.when);return '<li><time datetime="'+date.toISOString()+'">'+profileEscape(date.toLocaleDateString('en-GB',{day:'numeric',month:'short'}))+'</time><span>'+profileEscape(entry.label)+'</span><a href="'+profileEscape(entry.href)+'">Open <span aria-hidden="true">→</span></a></li>';}).join('')+'</ol>':'<p class="profile-learning-trail-empty">Your trail will begin after a few questions or a revision card.</p>';
+    h+='</section>';
 
     // Subject breakdown
     var subjectData = {};

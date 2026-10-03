@@ -17,7 +17,7 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
 .join-err{color:var(--bad);font-size:13px;margin-top:10px;display:none}
 /* ── Profile tabs ── */
 .prof-tabs{display:flex;gap:4px;margin-bottom:24px;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-md);padding:5px;width:fit-content;box-shadow:0 10px 28px rgba(0,0,0,.12)}
-.prof-tab{font-size:13px;font-weight:600;font-family:'IBM Plex Sans',sans-serif;padding:8px 16px;border-radius:var(--radius-sm);border:none;background:none;color:var(--slate);cursor:pointer;transition:all .15s}
+.prof-tab{font-size:13px;font-weight:600;font-family:'IBM Plex Sans',sans-serif;padding:8px 16px;border-radius:var(--radius-sm);border:none;background:none;color:var(--slate);cursor:pointer;transition:background-color .11s,color .11s,transform .11s}
 .prof-tab.active{background:var(--ember);color:#fff}
 .prof-tab:hover:not(.active){color:var(--white)}
 /* ── Profile header card ── */
@@ -109,9 +109,23 @@ h1,h2,h3,.prof-name,.rank-title,.grade-letter,.logo{font-family:'Rethink Sans',s
 .focus-detail,.grade-desc,.prof-footer{line-height:1.55}
 .focus-item a,.prof-footer a{color:var(--hot)}
 .mc-item{background:var(--surface-error-subtle)}
+.profile-learning-trail{margin:26px 0;padding:24px 28px;border:1px solid var(--line);border-radius:var(--radius-lg);background:var(--glass-panel)}
+.profile-learning-trail h2{margin:5px 0 4px;font-size:24px}
+.profile-learning-trail>div>p,.profile-learning-trail-empty{color:var(--slate);font-size:13px}
+.profile-learning-trail ol{list-style:none;margin:19px 0 0;padding:0;border-top:1px solid var(--line)}
+.profile-learning-trail li{display:grid;grid-template-columns:72px minmax(0,1fr) auto;align-items:center;gap:14px;padding:12px 0;border-bottom:1px solid var(--line);font-size:13px}
+.profile-learning-trail time{color:var(--dim);font:11px 'JetBrains Mono',monospace}
+.profile-learning-trail li>span{color:var(--white)}
+.profile-learning-trail a{color:var(--hot);text-decoration:none;font-weight:600;white-space:nowrap}
+.profile-learning-trail a:hover{text-decoration:underline}
+.profile-learning-trail a:focus-visible{outline:2px solid var(--hot);outline-offset:3px}
+.profile-learning-trail-empty{margin-top:18px}
 .grade-card{background:var(--panel-2)}
 .prof-tab:focus-visible,.join-input:focus-visible,.join-btn:focus-visible,.focus-item a:focus-visible,.prof-header a:focus-visible{outline:2px solid var(--hot);outline-offset:3px}
 @media(max-width:600px){
+  .profile-learning-trail{padding:20px 16px}
+  .profile-learning-trail li{grid-template-columns:1fr auto;gap:4px 12px}
+  .profile-learning-trail time{grid-column:1/-1}
   .wrap{padding:20px 16px 36px}
   .prof-tabs{width:100%;justify-content:center}
   .prof-tab{flex:1;padding:8px 10px}

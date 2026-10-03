@@ -75,12 +75,14 @@ function anotherDevice() {
   const offer = quizSource.match(/function offerRevisionCard\(feedback, question\)\{[\s\S]*?\n\}\n\nfunction renderQuiz/);
   assert(offer, 'quiz offers card creation after feedback');
   let addedButton;
+  let savedResumeIndex;
   const quiz = {
-    JSON,
-    state: { studentId: 'student-1', bank: 'GCSE-GEO-HAZ' },
+    JSON, URLSearchParams,
+    state: { studentId: 'student-1', bank: 'GCSE-GEO-HAZ', subject: 'gcse-geo', idx: 2, classId: 'class-1', assignmentId: 'assignment-1' },
     localStorage: window.localStorage,
     document: { createElement() { return {}; } },
-    location: { href: '' }
+    location: { href: '', search: '' },
+    forgeSaveSession() { savedResumeIndex = quiz.state.cardReturnResumeAt; }
   };
   vm.createContext(quiz);
   vm.runInContext(offer[0].replace(/\n\nfunction renderQuiz$/, ''), quiz);
@@ -91,6 +93,9 @@ function anotherDevice() {
   assert.strictEqual(addedButton.textContent, 'Make a flashcard from this');
   addedButton.onclick();
   assert.strictEqual(quiz.location.href, 'revision.html');
-  assert.strictEqual(JSON.parse(storage.get('forge-revision-draft:student-1')).back, 'One plate subducts.');
+  const draft = JSON.parse(storage.get('forge-revision-draft:student-1'));
+  assert.strictEqual(draft.back, 'One plate subducts.');
+  assert.strictEqual(draft.returnTo, 'forge-quiz.html?bank=GCSE-GEO-HAZ&subject=gcse-geo&class_id=class-1&assignment_id=assignment-1');
+  assert.strictEqual(savedResumeIndex, 3);
   console.log('Personal card sync tests passed.');
 })().catch(error => { console.error(error); process.exitCode = 1; });

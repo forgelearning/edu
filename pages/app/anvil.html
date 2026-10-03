@@ -15,9 +15,10 @@
 
 <link rel="stylesheet" href="css/states.css">
   <link rel="stylesheet" href="css/generated-utilities.css">
-  <link rel="stylesheet" href="css/page-overrides/anvil.css">
+  <link rel="stylesheet" href="css/page-overrides/anvil.css?v=20261003-learning-trail">
   <link rel="stylesheet" href="css/page-overrides/anvil-overdrive.css?v=20260818-overdrive">
   <link rel="stylesheet" href="css/auth-ember.css?v=20260817-auth2">
+<link rel="stylesheet" href="css/student-motion.css?v=20261003-motion1">
 </head>
 <body class="forge-auth-ember">
 <script src="scripts/forge-api.js"></script>
@@ -207,6 +208,17 @@ function getResolvedMCs(){
   return resolved;
 }
 
+function anvilEscape(value){return String(value==null?'':value).replace(/[&<>"']/g,function(ch){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch];});}
+function repairInsightHtml(tag){
+  var questions=repairQuestionsFor(tag),byId={};
+  questions.forEach(function(q){byId[q.id]=q;});
+  var earlier=(anvilState.responses||[]).filter(function(row){return row&&!row.is_correct&&!row.reforge_attempted&&ForgeMisconceptions.tagForRow(row)===tag&&byId[row.question_id]&&byId[row.question_id].options&&byId[row.question_id].options[row.selected_option];}).sort(function(a,b){return Date.parse(b.created_at||'')-Date.parse(a.created_at||'');})[0];
+  if(!earlier)return '';
+  var question=byId[earlier.question_id],oldAnswer=question.options[earlier.selected_option],newAnswer=question.options[question.correct];
+  if(!newAnswer)return '';
+  return '<div class="anvil-insight"><div><span>Earlier answer</span><p>'+anvilEscape(oldAnswer)+'</p></div><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 14h19m-7-7 7 7-7 7"/></svg><div><span>Secure answer</span><p>'+anvilEscape(newAnswer)+'</p></div></div>';
+}
+
 function renderAnvilHome(){
   var active=getActiveMCs();
   var resolved=getResolvedMCs();
@@ -264,6 +276,8 @@ function renderAnvilHome(){
       h+='<div class="anvil-card resolved-mc">';
       h+='<div class="anvil-top">Cleared</div>';
       if(label) h+='<div class="anvil-label forge-u-bed994">'+label+'</div>';
+      var insight=repairInsightHtml(m.tag);
+      if(insight)h+='<details class="anvil-insight-details"><summary>See what changed</summary>'+insight+'</details>';
       h+='</div>';
     });
     h+='</details>';
@@ -473,6 +487,7 @@ function renderReworkQuestion(tag,questions,lap,qIdx){
 
       if(isCorrect && m.streak>=CLEAR_THRESHOLD){
         fh='<div class="cleared-banner forge-u-f4v9hz"><h2>\u2713 Misconception cleared!</h2><p class="forge-u-1ybl9nb">'+tag+' \u2014 '+label+'<br>'+CLEAR_THRESHOLD+' correct in a row. This one is off your Anvil.</p></div>';
+        fh+=repairInsightHtml(tag);
         fh+='<button type="button" class="next-btn btn-glass btn-ember" id="rw-next">Back to Anvil \u2192</button><div class="clear"></div>';
         fb.innerHTML=fh;
         document.getElementById('rw-next').onclick=function(){ renderAnvilHome(); };

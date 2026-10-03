@@ -97,6 +97,7 @@
 .revision-result dl div:last-child{border-right:0}
 .revision-result dt{color:var(--dim);font:600 10px 'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.07em}
 .revision-result dd{margin:0;color:var(--white);font:700 20px 'Rethink Sans',sans-serif}
+.revision-result .revision-next-return{margin:-10px auto 26px;padding:12px 16px;border-radius:var(--radius-sm);background:var(--surface-focus-subtle);color:var(--white);font-weight:600}
 .revision-result>div{display:flex;justify-content:center;gap:12px}
 .revision-empty{max-width:620px;margin:80px auto;padding:36px;border:1px solid var(--line);border-radius:var(--radius-lg);background:var(--panel);text-align:center}
 .revision-empty h1{font-size:34px}.revision-empty p{color:var(--slate);line-height:1.6}.revision-empty button{min-height:44px;padding:0 18px;border:0;border-radius:var(--radius-pill);background:var(--ember);color:#fff;font-weight:700;cursor:pointer}
