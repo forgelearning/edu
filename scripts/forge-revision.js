@@ -113,6 +113,15 @@
     if(choices.length<=1)return '<p class="revision-subject-picker">Subject <strong>'+escapeHtml(((root.SUBJECTS||{})[current]||{}).label||'')+'</strong></p>';
     return '<label class="revision-subject-picker" for="revision-subject">Subject <select id="revision-subject">'+choices.map(function(key){return '<option value="'+escapeHtml(key)+'"'+(key===current?' selected':'')+'>'+escapeHtml(root.SUBJECTS[key].label)+'</option>';}).join('')+'</select></label>';
   }
+  // Where a card stands, shown on the card so a student can see why it has come
+  // back. Same rule as the memory ledger: no review is New, a last rating of
+  // "Got it" is Secure, anything else is still Learning.
+  var RATING_NAMES={again:'Again',nearly:'Nearly','got-it':'Got it'};
+  function cardStatus(review){
+    if(!review||!review.lastRating)return {key:'new',label:'New card'};
+    if(review.lastRating==='got-it')return {key:'secure',label:'Secure · longer-gap check'};
+    return {key:'learning',label:'Learning · last time: '+(RATING_NAMES[review.lastRating]||review.lastRating)};
+  }
   function personalKey(id){return 'personal|'+id;}
   function personalAsReview(card){return {key:personalKey(card.id),bank:card.bank||'personal',personal:true,question:{stem:card.front,options:{answer:card.back},correct:'answer',scaffold:''},source:card.source||null};}
   function cleanPersonalCard(input,existing){
@@ -298,7 +307,7 @@
       var choices=card.personal?'':Object.keys(question.options||{}).map(function(key){return '<li><label class="revision-choice-option"><input type="radio" name="revision-choice" value="'+escapeHtml(key)+'" data-revision-choice="'+escapeHtml(key)+'" aria-label="'+escapeHtml(key+' '+question.options[key])+'"><b>'+escapeHtml(key)+'</b><span>'+escapeHtml(question.options[key])+'</span></label></li>';}).join('');
       var notice=lastReviewMessage?'<p class="revision-schedule-note" role="status">'+escapeHtml(lastReviewMessage)+'</p>':'';
       lastReviewMessage='';
-      app.innerHTML='<header class="revision-session-head"><button type="button" data-revision-action="home" aria-label="Leave revision">←</button><div><strong>'+escapeHtml(sessionTitle(card))+'</strong><span>Card '+(currentIndex+1)+' of '+currentCards.length+'</span></div></header>'+notice+sessionProgress()+'<article class="revision-recall-card"><div><span>'+escapeHtml(root.ForgeChemistryTopics&&root.ForgeChemistryTopics.pointId(currentSource)?topicLabel(currentSource):topicLabel(card.bank))+'</span><span>Answer from memory</span></div><h1>'+escapeHtml(question.stem)+'</h1><p>Compare your answer with '+(card.personal?'the answer you saved':'Forge’s curated answer')+'.</p><label for="revision-answer">Your answer</label><textarea id="revision-answer" rows="4" placeholder="Type what you can remember…"></textarea><div class="revision-card-actions">'+(card.personal?'':'<button type="button" data-revision-action="hint">Help me start</button><button type="button" data-revision-action="choices">Show choices</button>')+'<button type="button" data-revision-action="reveal">Check answer →</button></div>'+(card.personal?'':'<p class="revision-hint" hidden><strong>Try this</strong> '+hintHtml(question)+'</p><div class="revision-choice-help" hidden><p>Choose one to put it in your answer, then check it.</p><ol class="revision-choices">'+choices+'</ol><p class="revision-choice-status" role="status" hidden></p></div>')+'</article>';
+      app.innerHTML='<header class="revision-session-head"><button type="button" data-revision-action="home" aria-label="Leave revision">←</button><div><strong>'+escapeHtml(sessionTitle(card))+'</strong><span>Card '+(currentIndex+1)+' of '+currentCards.length+'</span></div></header>'+notice+sessionProgress()+'<article class="revision-recall-card"><div><span>'+escapeHtml(root.ForgeChemistryTopics&&root.ForgeChemistryTopics.pointId(currentSource)?topicLabel(currentSource):topicLabel(card.bank))+'</span><span class="revision-card-status revision-card-status--'+cardStatus(state.reviews[card.key]).key+'">'+escapeHtml(cardStatus(state.reviews[card.key]).label)+'</span></div><h1>'+escapeHtml(question.stem)+'</h1><p>Compare your answer with '+(card.personal?'the answer you saved':'Forge’s curated answer')+'.</p><label for="revision-answer">Your answer</label><textarea id="revision-answer" rows="4" placeholder="Type what you can remember…"></textarea><div class="revision-card-actions">'+(card.personal?'':'<button type="button" data-revision-action="hint">Help me start</button><button type="button" data-revision-action="choices">Show choices</button>')+'<button type="button" data-revision-action="reveal">Check answer →</button></div>'+(card.personal?'':'<p class="revision-hint" hidden><strong>Try this</strong> '+hintHtml(question)+'</p><div class="revision-choice-help" hidden><p>Choose one to put it in your answer, then check it.</p><ol class="revision-choices">'+choices+'</ol><p class="revision-choice-status" role="status" hidden></p></div>')+'</article>';
       focusHeading();setTimeout(function(){var answer=app.querySelector('#revision-answer');if(answer)answer.focus();},80);
     }
     function reveal(){
@@ -372,5 +381,5 @@
     if(pending)renderEditor(pending);else renderHome(options.assignments||[]);
   }
 
-  root.ForgeRevision={TOPICS:TOPICS,config:config,banks:banks,isRevision:isRevision,markerFor:markerFor,assignmentProgress:assignmentProgress,readState:readState,cleanPersonalCard:cleanPersonalCard,personalAsReview:personalAsReview,hintHtml:hintHtml,subjectChoices:subjectChoices,teacherPanelHtml:teacherPanelHtml,wireTeacherPanel:wireTeacherPanel,loadStudentData:loadStudentData,mountStudent:mountStudent};
+  root.ForgeRevision={TOPICS:TOPICS,config:config,banks:banks,isRevision:isRevision,markerFor:markerFor,assignmentProgress:assignmentProgress,readState:readState,cleanPersonalCard:cleanPersonalCard,personalAsReview:personalAsReview,hintHtml:hintHtml,cardStatus:cardStatus,subjectChoices:subjectChoices,teacherPanelHtml:teacherPanelHtml,wireTeacherPanel:wireTeacherPanel,loadStudentData:loadStudentData,mountStudent:mountStudent};
 })(window);

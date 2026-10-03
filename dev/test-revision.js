@@ -67,6 +67,11 @@ assert(!/Methane|livestock/.test(shortHint),'a short answer hint does not reveal
 assert(/Start with one fact/.test(revision.hintHtml({options:{A:'9/8'},correct:'A'})),'numeric answers keep the general prompt');
 assert(/Start with one fact/.test(revision.hintHtml({options:{A:'了'},correct:'A'})),'character answers keep the general prompt');
 assert(!revision.hintHtml({options:{A:'<b>Plate</b> tectonics'},correct:'A'}).includes('<b>'),'answer text is escaped');
+// Each card shows where it stands, using the memory ledger's rule.
+assert.strictEqual(revision.cardStatus(null).key, 'new');
+assert.strictEqual(revision.cardStatus({lastRating:'again'}).label, 'Learning · last time: Again');
+assert.strictEqual(revision.cardStatus({lastRating:'nearly'}).key, 'learning');
+assert.strictEqual(revision.cardStatus({lastRating:'got-it'}).key, 'secure');
 // The subject menu lists the student's own class subjects, not the whole catalogue.
 const catalog = { econ:{label:'Economics'}, 'gcse-geo':{label:'GCSE Geography'}, psych:{label:'Psychology'}, hist:{label:'History'} };
 assert.deepStrictEqual(Array.from(revision.subjectChoices(catalog, {classId:'c1', classSubject:'gcse-geo'}, [], 'gcse-geo')), ['gcse-geo'], 'one class: one subject');
