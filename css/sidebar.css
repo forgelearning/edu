@@ -8,6 +8,11 @@
 /* The labelled menu control sits inside the rail, clear of page content. */
 body.has-forge-sidebar{padding-top:0!important;padding-left:98px}
 body.has-forge-sidebar.forge-sidebar-expanded{padding-left:252px}
+/* One app canvas in light mode. Pages on auth-ember.css (Home, Repair, Timed,
+   Profile, teacher) paint the warm #fbf4ec; the rest (Revision, Practice,
+   Assignments, Settings) fell back to the neutral --coal, so the background
+   shifted as students moved between tabs. Dark mode already matches. */
+html[data-theme="light"] body.has-forge-sidebar{background:#fbf4ec}
 /* Authenticated pages use the sidebar shell; any legacy marketing nav left in
    a static entry point must not create a second header or reserve top space. */
 body.has-forge-sidebar #sticky-nav{display:none!important}
