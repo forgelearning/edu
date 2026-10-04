@@ -61,6 +61,7 @@ ForgeSidebar.mount({
 <script src="scripts/forge-classes.js?v=20260813"></script>
 <script src="scripts/forge-student-code.js?v=20260809"></script>
 <script src="scripts/forge-misconception-state.js"></script>
+<script src="scripts/forge-streak.js?v=20261004-freeze"></script>
 <script src="scripts/forge-topic-mastery.js?v=20261004-rings"></script>
 <script>
 var SUPABASE_URL = ForgeAPI.config.url;
@@ -597,23 +598,9 @@ function renderProfile(){
   });
 }
 
-function calcStreak(responses){
-  if(!responses.length) return 0;
-  var dates=Array.from(new Set(responses.map(function(r){return r.created_at?r.created_at.substring(0,10):'';}))).filter(Boolean).sort().reverse();
-  if(!dates.length) return 0;
-  // A streak stays alive until a whole day is missed: practising yesterday but
-  // not yet today still counts, otherwise it reads 0 every morning.
-  var today=new Date().toISOString().substring(0,10);
-  var yesterday=new Date(Date.now()-86400000).toISOString().substring(0,10);
-  if(dates[0]!==today&&dates[0]!==yesterday) return 0;
-  var streak=1;
-  for(var i=1;i<dates.length;i++){
-    var prev=new Date(dates[i-1]);prev.setDate(prev.getDate()-1);
-    if(dates[i]===prev.toISOString().substring(0,10)) streak++;
-    else break;
-  }
-  return streak;
-}
+// Shared with Profile and computed the same way in SQL for friends; includes
+// the one-day freeze (scripts/forge-streak.js).
+function calcStreak(responses){ return window.ForgeStreak ? ForgeStreak.calc(responses).days : 0; }
 
 function forgeSignOut(){
   try { localStorage.removeItem('forge-student'); } catch(e) {}

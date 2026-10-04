@@ -210,3 +210,14 @@ the client ships. `dev/test-hint-credit.js` pins the rule in SQL and in every
 client copy of the XP and accuracy calculations.
 
 **Applied to production 2026-10-03.** Checked first in a rolled-back transaction against the live schema. Afterwards: column present with no rows flagged, every function carries the rule, client grants unchanged, and `dev/audit-supabase-security.js` passes.
+
+## 20261004 120000 — friends streak freeze
+
+| File | What it does |
+|---|---|
+| `20261004120000_friends_streak_freeze.sql` | Applies the one-day streak freeze to a classmate's streak in `get_class_friends_unchecked`: one missed day does not break a run, two do, and a streak stays alive while the latest practice day is within two days. Matches `scripts/forge-streak.js`, used by Home and Profile. |
+
+Not coupled: the client does not depend on it, but until it is applied a
+classmate's streak on the friends card ignores the freeze.
+
+**Not yet applied to production.**

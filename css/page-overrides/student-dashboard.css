@@ -353,3 +353,4 @@ html[data-overdrive="control-room"] .mod-row:hover{border-color:var(--hot);box-s
 .dashboard-plan__step small{display:block;margin-top:2px;color:var(--slate);font-size:12px}
 .dashboard-plan__step .forge-button{min-height:40px;white-space:nowrap}
 @media(max-width:520px){.dashboard-plan__step{grid-template-columns:28px minmax(0,1fr)}.dashboard-plan__step .forge-button{grid-column:2;justify-self:start}}
+.dashboard-streak-freeze{margin:10px 0 0;padding:8px 12px;border-left:3px solid var(--hot);color:var(--white);font-size:13px;line-height:1.45}

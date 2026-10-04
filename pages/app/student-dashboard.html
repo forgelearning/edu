@@ -14,7 +14,7 @@
 <link rel="stylesheet" href="css/components.css?v=20261004-rings">
 <link rel="stylesheet" href="css/forge-league.css?v=20260929f">
 <link rel="stylesheet" href="css/generated-utilities.css">
-<link rel="stylesheet" href="css/page-overrides/student-dashboard.css?v=20261004-plan">
+<link rel="stylesheet" href="css/page-overrides/student-dashboard.css?v=20261004-freeze">
 <link rel="stylesheet" href="css/auth-ember.css?v=20260817-auth2">
 
 <link rel="stylesheet" href="css/student-motion.css?v=20261003-motion1">
@@ -63,6 +63,7 @@ ForgeSidebar.mount({
 <script src="scripts/forge-student-focus.js?v=20261004-plan"></script>
 <script src="scripts/forge-daily-plan.js?v=20261004-plan"></script>
 <script src="scripts/forge-misconception-state.js"></script>
+<script src="scripts/forge-streak.js?v=20261004-freeze"></script>
 <script src="scripts/forge-topic-mastery.js?v=20261004-rings"></script>
 <script src="scripts/forge-league.js?v=20260928d"></script>
 <script src="scripts/forge-friends.js?v=20260929d"></script>
@@ -124,23 +125,9 @@ function calcXP(responses){
 
 
 
-function calcStreak(responses){
-  if(!responses.length) return 0;
-  var dates=Array.from(new Set(responses.map(function(r){return r.created_at?r.created_at.substring(0,10):'';}))).filter(Boolean).sort().reverse();
-  if(!dates.length) return 0;
-  // A streak stays alive until a whole day is missed: practising yesterday but
-  // not yet today still counts, otherwise it reads 0 every morning.
-  var today=new Date().toISOString().substring(0,10);
-  var yesterday=new Date(Date.now()-86400000).toISOString().substring(0,10);
-  if(dates[0]!==today&&dates[0]!==yesterday) return 0;
-  var streak=1;
-  for(var i=1;i<dates.length;i++){
-    var prev=new Date(dates[i-1]);prev.setDate(prev.getDate()-1);
-    if(dates[i]===prev.toISOString().substring(0,10)) streak++;
-    else break;
-  }
-  return streak;
-}
+// Shared with Profile and computed the same way in SQL for friends; includes
+// the one-day freeze (scripts/forge-streak.js).
+function calcStreak(responses){ return window.ForgeStreak ? ForgeStreak.calc(responses).days : 0; }
 
 var st={studentId:null,classId:null,studentName:null,responses:[],isPaid:false,isTrial:false,trialDaysLeft:0,paidSubjects:[],isGCSE:false,loadError:false};
 var app=document.getElementById('app');
@@ -404,7 +391,7 @@ function renderDashboard(){
     } else {
       h+='<p class="dashboard-rank-next">Highest rank reached</p>';
     }
-    h+='<dl><div><dt>Questions answered</dt><dd>'+total+'</dd></div><div><dt>Practice streak</dt><dd>'+streak+' day'+(streak===1?'':'s')+'</dd></div></dl></section>';
+    h+='<dl><div><dt>Questions answered</dt><dd>'+total+'</dd></div><div><dt>Practice streak</dt><dd>'+streak+' day'+(streak===1?'':'s')+'</dd></div></dl>'+(streak&&window.ForgeStreak&&ForgeStreak.calc(responses).frozen?'<p class="dashboard-streak-freeze">You missed yesterday, so your streak is frozen. Practise today to keep it going.</p>':'')+'</section>';
     if(st.classId) h+='<div id="dashboard-league"></div>';
     h+='</div>';
   }
