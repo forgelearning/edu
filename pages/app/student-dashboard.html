@@ -47,8 +47,8 @@ ForgeSidebar.mount({
     {key:'dashboard', href:'student-dashboard.html', label:'Dashboard'},
     {key:'forge', href:'forge-quiz.html', label:'Forge'},
     {key:'assignments', href:'assignments.html', label:'Assigned'},
-    {key:'anvil', href:'anvil.html', label:'Anvil'},
-    {key:'crucible', href:'crucible.html', label:'Crucible'}
+    {key:'anvil', href:'anvil.html', label:'Repair mistakes'},
+    {key:'crucible', href:'crucible.html', label:'Timed practice'}
   ],
   footerItems: [
     {key:'profile', href:'profile.html', label:'Profile'}
@@ -377,7 +377,7 @@ function renderDashboard(){
     if(activeMCs.length>0){
       h+='<span class="dashboard-next__label">Today · repair</span>';
       h+='<h2 id="dashboard-next-title">Work through your mistakes</h2>';
-      h+='<p>You have '+activeMCs.length+' idea'+(activeMCs.length===1?'':'s')+' to revisit. Open Anvil to practise them with help.</p>';
+      h+='<p>You have '+activeMCs.length+' idea'+(activeMCs.length===1?'':'s')+' to revisit. Practise them in Repair mistakes, with a hint if you need one.</p>';
       h+='<a class="forge-button forge-button--primary" href="anvil.html">Repair mistakes →</a>';
     } else if(due){
       h+='<span class="dashboard-next__label">Today · revision due</span>';

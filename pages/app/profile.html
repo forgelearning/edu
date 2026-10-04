@@ -41,8 +41,8 @@ ForgeSidebar.mount({
     {key:'dashboard', href:'student-dashboard.html', label:'Dashboard'},
     {key:'forge', href:'forge-quiz.html', label:'Forge'},
     {key:'assignments', href:'assignments.html', label:'Assigned'},
-    {key:'anvil', href:'anvil.html', label:'Anvil'},
-    {key:'crucible', href:'crucible.html', label:'Crucible'}
+    {key:'anvil', href:'anvil.html', label:'Repair mistakes'},
+    {key:'crucible', href:'crucible.html', label:'Timed practice'}
   ],
   footerItems: [
     {key:'profile', href:'profile.html', label:'Profile'}
@@ -87,7 +87,7 @@ function learningTrail(responses,studentId){
     var when=Date.parse(r.created_at||'');if(!Number.isFinite(when))return;
     var bank=r.bank||'',day=new Date(when).toDateString(),kind=r.reforge_attempted?'repair':'practice',key=kind+'|'+bank+'|'+day;
     if(seen[key])return;
-    if(r.reforge_attempted){if(!r.reforge_correct)return;entries.push({when:when,label:'Re-forged an idea'+(bank?' in '+resolveBankLabel(bank):''),href:'anvil.html'});}
+    if(r.reforge_attempted){if(!r.reforge_correct)return;entries.push({when:when,label:'Repaired an idea'+(bank?' in '+resolveBankLabel(bank):''),href:'anvil.html'});}
     else if(r.is_correct&&!r.hint_used&&bank){entries.push({when:when,label:'Recalled '+resolveBankLabel(bank),href:'forge-quiz.html?bank='+encodeURIComponent(bank)});}
     else return;
     seen[key]=true;
@@ -130,21 +130,21 @@ function calcGrade(acc, activeMCs, totalMCs, isGCSE) {
   var mcClearance = totalMCs > 0 ? Math.max(0, 1 - (activeMCs / totalMCs)) : 1;
   var score = (acc * 0.6) + (mcClearance * 100 * 0.4);
   if (isGCSE) {
-    if (score >= 85) return {grade:'9', next:null, color:'#ffd700', desc:'Exam-ready. Maintain accuracy and keep the Anvil clear.'};
+    if (score >= 85) return {grade:'9', next:null, color:'#ffd700', desc:'Exam-ready. Maintain accuracy and keep Repair mistakes clear.'};
     if (score >= 76) return {grade:'8', next:'9',  color:'var(--good)', desc:'Strong. Clear your remaining misconceptions to break into a 9.'};
-    if (score >= 68) return {grade:'7', next:'8',  color:'var(--good)', desc:'Consistent top-end work. Keep the Anvil clear to push higher.'};
-    if (score >= 60) return {grade:'6', next:'7',  color:'var(--hot)', desc:'Solid. Accuracy and Anvil work will push this into the 7s.'};
-    if (score >= 52) return {grade:'5', next:'6',  color:'var(--hot)', desc:'Strong pass. Focus on the Anvil — misconceptions are costing marks.'};
+    if (score >= 68) return {grade:'7', next:'8',  color:'var(--good)', desc:'Consistent top-end work. Keep Repair mistakes clear to push higher.'};
+    if (score >= 60) return {grade:'6', next:'7',  color:'var(--hot)', desc:'Solid. Accuracy and repair work will push this into the 7s.'};
+    if (score >= 52) return {grade:'5', next:'6',  color:'var(--hot)', desc:'Strong pass. Focus on Repair mistakes — misconceptions are costing marks.'};
     if (score >= 44) return {grade:'4', next:'5',  color:'var(--ember)', desc:'Standard pass. Daily sessions and re-forge work will move this up.'};
     if (score >= 36) return {grade:'3', next:'4',  color:'#b45309', desc:'Keep going. Daily sessions and re-forge work will move this.'};
     if (score >= 28) return {grade:'2', next:'3',  color:'var(--slate)', desc:'Early stage. More questions and misconception rework needed.'};
     if (score >= 18) return {grade:'1', next:'2',  color:'var(--slate)', desc:'Early stage. More questions and misconception rework needed.'};
     return             {grade:'U', next:'1',  color:'var(--bad)', desc:'Not enough data yet — complete more sessions to get a reliable band.'};
   }
-  if (score >= 85) return {grade:'A*', next:null,    color:'#ffd700', desc:'Exam-ready. Maintain accuracy and keep the Anvil clear.'};
+  if (score >= 85) return {grade:'A*', next:null,    color:'#ffd700', desc:'Exam-ready. Maintain accuracy and keep Repair mistakes clear.'};
   if (score >= 72) return {grade:'A',  next:'A*',   color:'var(--good)', desc:'Strong. Clear your remaining misconceptions to break into A*.'};
-  if (score >= 60) return {grade:'B',  next:'A',    color:'var(--hot)', desc:'Consistent. Accuracy and Anvil work will push this to an A.'};
-  if (score >= 50) return {grade:'C',  next:'B',    color:'var(--ember)', desc:'Building. Focus on the Anvil — misconceptions are costing marks.'};
+  if (score >= 60) return {grade:'B',  next:'A',    color:'var(--hot)', desc:'Consistent. Accuracy and repair work will push this to an A.'};
+  if (score >= 50) return {grade:'C',  next:'B',    color:'var(--ember)', desc:'Building. Focus on Repair mistakes — misconceptions are costing marks.'};
   if (score >= 40) return {grade:'D',  next:'C',    color:'#b45309', desc:'Keep going. Daily sessions and re-forge work will move this.'};
   if (score >= 30) return {grade:'E',  next:'D',    color:'var(--slate)', desc:'Early stage. More questions and misconception rework needed.'};
   return             {grade:'U',  next:'E',    color:'var(--bad)', desc:'Not enough data yet — complete more sessions to get a reliable band.'};
@@ -361,9 +361,9 @@ function renderProfile(){
 
   h+='<div class="prof-tabs">';
   h+=tabBtn('overview','My overview');
-  h+=tabBtn('forgemode','Forge mode');
-  h+=tabBtn('anvil','The Anvil');
-  h+=tabBtn('crucible','The Crucible');
+  h+=tabBtn('forgemode','Practice');
+  h+=tabBtn('anvil','Repair mistakes');
+  h+=tabBtn('crucible','Timed practice');
   h+='</div>';
 
   if(activeTab==='overview'){
@@ -410,7 +410,7 @@ function renderProfile(){
         h+='<span class="focus-pill forge-u-1ec8uss">'+label+'</span>';
         h+='<span class="focus-acc forge-text-bad">'+(d.fires===1?'Missed once':'Missed '+d.fires+' times')+'</span>';
         h+='</div>';
-        h+='<div class="focus-detail">Hit the <a class="forge-u-xad1ay" href="anvil.html">Anvil</a> to rework it.</div>';
+        h+='<div class="focus-detail">Practise it in <a class="forge-u-xad1ay" href="anvil.html">Repair mistakes</a>.</div>';
         h+='</div>';
       });
     }
@@ -493,7 +493,7 @@ function renderProfile(){
   } else if(activeTab==='forgemode'){
     // ── FORGE MODE TAB ──
     h+='<div class="card">';
-    h+='<div class="card-title forge-u-1gs3btp">Forge mode — daily accuracy</div>';
+    h+='<div class="card-title forge-u-1gs3btp">Practice — daily accuracy</div>';
     // Recent session breakdown
     var recentMain=responses.filter(function(r){return !r.reforge_attempted;}).slice(-30);
     if(recentMain.length===0 && responses.length===0){
@@ -523,7 +523,7 @@ function renderProfile(){
           h+='<div class="grade-tracking" style="color:'+gr.color+'">Top band ✦</div>';
         }
         h+='<div class="grade-desc">'+gr.desc+'</div>';
-        if(g.total<20){h+='<div class="grade-caveat">Based on '+g.total+' question'+(g.total===1?'':'s')+' — grows more accurate as your bank builds</div>';}
+        if(g.total<20){h+='<div class="grade-caveat">Based on '+g.total+' question'+(g.total===1?'':'s')+' — grows more accurate as you answer more</div>';}
         h+='</div></div>';
       });
     }
@@ -543,27 +543,27 @@ function renderProfile(){
   } else if(activeTab==='anvil'){
     // ── ANVIL TAB ──
     h+='<div class="card">';
-    h+='<div class="card-title"><span class="forge-text-bad">Your Anvil — misconceptions to rework</span></div>';
+    h+='<div class="card-title"><span class="forge-text-bad">Mistakes to repair</span></div>';
     if(activeMCs.length===0){
-      h+=ForgeState.html('success',{label:'Anvil is clear',body:'No active misconceptions right now. Keep going to maintain this.'});
+      h+=ForgeState.html('success',{label:'Nothing to repair',body:'No active misconceptions right now. Keep going to maintain this.'});
     } else {
       activeMCs.forEach(function(tag){
         var d=mcData[tag];
         var label=resolveMCLabel(tag)||'An idea from this topic';
         h+='<div class="mc-item">';
         h+='<span class="mc-detail">'+label+'</span>';
-        h+='<span class="mc-fires forge-text-bad">'+d.fires+'×</span>';
+        h+='<span class="mc-fires forge-text-bad">Missed '+d.fires+'×</span>';
         h+='</div>';
       });
-      h+='<a class="forge-u-14gvs6c" href="anvil.html">Rework these in the Anvil →</a>';
-      h+='<div class="forge-u-1tuzle1">After clearing misconceptions in the Anvil, <a class="forge-u-19j2vc3" href="profile.html">refresh this page</a> to update your list.</div>';
+      h+='<a class="forge-u-14gvs6c" href="anvil.html">Practise these in Repair mistakes →</a>';
+      h+='<div class="forge-u-1tuzle1">After clearing mistakes in Repair mistakes, <a class="forge-u-19j2vc3" href="profile.html">refresh this page</a> to update your list.</div>';
     }
     h+='</div>';
     // Resolved
     var resolvedTags=Object.keys(mcData).filter(function(t){return mcData[t].fires>0&&mcData[t].streak>=3;});
     if(resolvedTags.length>0){
       h+='<div class="card">';
-      h+='<div class="card-title forge-text-good">✓ Cleared from Anvil</div>';
+      h+='<div class="card-title forge-text-good">✓ Cleared</div>';
       resolvedTags.forEach(function(tag){
         var label=resolveMCLabel(tag)||'An idea from this topic';
         h+='<div class="strength-item"><span class="strength-label">'+label+'</span><span class="strength-acc">cleared</span></div>';
@@ -575,19 +575,19 @@ function renderProfile(){
     // ── CRUCIBLE TAB ──
     var crucibleResponses=responses.filter(function(r){return r.question_id&&r.question_id.endsWith('-CRU');});
     h+='<div class="card">';
-    h+='<div class="card-title forge-text-bad">The Crucible — exam pressure sessions</div>';
+    h+='<div class="card-title forge-text-bad">Timed practice</div>';
     if(crucibleResponses.length===0){
-      h+=ForgeState.html('empty',{label:'No Crucible sessions yet',body:'Complete a Crucible session to see your timed performance here.'});
+      h+=ForgeState.html('empty',{label:'No timed practice yet',body:'Complete a timed practice to see your results here.'});
     } else {
       var cCorrect=crucibleResponses.filter(function(r){return r.is_correct&&!r.hint_used;}).length;
       var cAcc=Math.round((cCorrect/crucibleResponses.length)*100);
       var cCol=cAcc>=75?'var(--good)':cAcc>=50?'var(--hot)':'var(--bad)';
       h+='<div class="stat-row forge-u-4jqx9p">';
-      h+='<div class="stat"><span class="stat-n" style="color:'+cCol+'">'+cAcc+'%</span><span class="stat-l">Crucible accuracy</span></div>';
+      h+='<div class="stat"><span class="stat-n" style="color:'+cCol+'">'+cAcc+'%</span><span class="stat-l">Timed accuracy</span></div>';
       h+='<div class="stat"><span class="stat-n forge-text-white">'+crucibleResponses.length+'</span><span class="stat-l">Questions done</span></div>';
       h+='</div>';
-      h+='<p class="ui-meta-muted">The Crucible fires real exam conditions — no hints, no scaffolds. Your accuracy here is the closest prediction of exam day performance.</p>';
-      h+='<a class="forge-u-97wwn0" href="crucible.html">Enter the Crucible →</a>';
+      h+='<p class="ui-meta-muted">Timed practice runs under exam conditions — no hints or explanations. Your accuracy here is the closest prediction of exam day performance.</p>';
+      h+='<a class="forge-u-97wwn0" href="crucible.html">Start timed practice →</a>';
     }
     h+='</div>';
   }

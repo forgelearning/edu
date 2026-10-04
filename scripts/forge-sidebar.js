@@ -107,9 +107,8 @@ var ForgeSidebar = {
     config.studentNav = studentNav;
     if (studentNav) {
       var labels = {dashboard:'Home', forge:'Practice', anvil:'Repair mistakes', crucible:'Timed practice', assignments:'Assignments', revision:'Revision'};
-      var descriptions = {forge:'Forge', anvil:'Anvil', crucible:'Crucible'};
-      items = items.map(function(it) {
-        return Object.assign({}, it, {label:labels[it.key] || it.label, description:descriptions[it.key] || ''});
+            items = items.map(function(it) {
+        return Object.assign({}, it, {label:labels[it.key] || it.label, description:''});
       });
     }
     config.items = items;

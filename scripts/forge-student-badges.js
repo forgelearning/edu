@@ -176,7 +176,7 @@
     if (count < 10) return;
     var today = new Date().toISOString().slice(0, 10);
     if (state.anvilReminder === today) return;
-    send('Anvil tasks waiting', 'You have ' + count + ' open Anvil tasks. Clear a few to keep your progress moving.', 'anvilReminder', { kind: 'anvil-reminder' });
+    send('Mistakes to repair', 'You have ' + count + ' mistakes waiting in Repair mistakes. Clear a few to keep your progress moving.', 'anvilReminder', { kind: 'anvil-reminder' });
     state.anvilReminder = today;
     persist();
   }

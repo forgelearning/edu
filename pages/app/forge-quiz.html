@@ -43,8 +43,8 @@ ForgeSidebar.mount({
     {key:'dashboard', href:'student-dashboard.html', label:'Dashboard'},
     {key:'forge', href:'forge-quiz.html', label:'Forge'},
     {key:'assignments', href:'assignments.html', label:'Assigned'},
-    {key:'anvil', href:'anvil.html', label:'Anvil'},
-    {key:'crucible', href:'crucible.html', label:'Crucible'}
+    {key:'anvil', href:'anvil.html', label:'Repair mistakes'},
+    {key:'crucible', href:'crucible.html', label:'Timed practice'}
   ],
   footerItems: [
     {key:'profile', href:'profile.html', label:'Profile'}
@@ -915,9 +915,9 @@ function renderJoin() {
   h += '<p class="forge-u-1xgpbl">Choose a subject and start practising. No class code or account needed.</p>';
   h += '<p class="forge-independent-detail">10 free questions a day. Your independent work stays private and is available on this device, even if you join a class later.</p>';
   h += '<div class="forge-u-eelu4s">';
-  h += '<div class="forge-u-1ce89bl"><span>✓ All subjects &amp; question banks</span><span class="forge-text-dim"> free</span></div>';
+  h += '<div class="forge-u-1ce89bl"><span>✓ All subjects &amp; topics</span><span class="forge-text-dim"> free</span></div>';
   h += '<div class="forge-u-1ce89bl"><span>✓ Scaffolds &amp; re-forge feedback</span><span class="forge-text-dim"> free</span></div>';
-  h += '<div class="forge-u-1ce89bl"><span class="forge-text-dim">✕ Crucible · full Anvil · XP ranks</span><span class="forge-text-dim"> Pro</span></div>';
+  h += '<div class="forge-u-1ce89bl"><span class="forge-text-dim">✕ Timed practice · full Repair mistakes · XP ranks</span><span class="forge-text-dim"> Pro</span></div>';
   h += '<div class="forge-u-h6lji0"><span class="forge-text-dim">✕ Unlimited questions</span><span class="forge-text-dim"> Pro</span></div>';
   h += '</div>';
   h += ForgeAuthCard.field('free-name', 'Your first name', {placeholder:'e.g. Alex', autocomplete:'given-name'});
@@ -1222,7 +1222,7 @@ function renderSubjects(){
       countLabel = MANDARIN_PASSAGES.length + ' reading passage' + (MANDARIN_PASSAGES.length === 1 ? '' : 's');
     } else {
       var n=s.banks.reduce(function(t,b){return t+(BANKS[b].questionCount||BANKS[b].questions.length)},0);
-      countLabel = s.banks.length+' banks \u00b7 '+n+' questions';
+      countLabel = s.banks.length+' topics \u00b7 '+n+' questions';
     }
     var entry = state.classId ? ForgeClasses.forSubject(k) : null;
     if (entry && entry.className) countLabel += ' \u00b7 ' + entry.className;
@@ -1575,7 +1575,7 @@ function renderTrialExpiredWall() {
   h += '<div class="forge-u-dt9lvq">';
   h += '<p class="tag forge-u-bhmr11">Forge Pro</p>';
   h += '<p class="forge-u-17e49tm">£2.99<span class="forge-u-1uc2u7b">/month</span></p>';
-  h += '<p class="forge-u-1rniwep">Unlimited questions · Anvil · Crucible · XP &amp; Ranks · any device</p>';
+  h += '<p class="forge-u-1rniwep">Unlimited questions · Repair mistakes · Timed practice · XP &amp; ranks · any device</p>';
   h += '<a class="forge-u-mv8v0m" href="forge-signup.html">Subscribe now →</a>';
   h += '</div>';
 
@@ -1610,7 +1610,7 @@ function renderLimitWall() {
   h += '<div class="forge-u-1cukupz">';
   h += '<p class="tag forge-u-bhmr11">Forge Pro</p>';
   h += '<p class="forge-u-1iee4k3">7-day free trial · then £2.99/month</p>';
-  h += '<p class="forge-u-1rniwep">Unlimited questions · full Anvil · The Crucible · XP &amp; Ranks · any device</p>';
+  h += '<p class="forge-u-1rniwep">Unlimited questions · full Repair mistakes · Timed practice · XP &amp; ranks · any device</p>';
   h += '<a class="forge-u-mv8v0m" href="forge-signup.html">Start free trial →</a>';
   h += '<p class="forge-u-815kda">No card needed during trial · cancel anytime</p>';
   h += '</div>';
@@ -2047,14 +2047,14 @@ function renderResults(){
   h+='<p class="detail">'+bk.label+'</p>';
   h+='<div class="pct" style="color:'+col+'">'+pct+'%</div>';
   h+='<div class="detail">'+state.score+' of '+state.questions.length+' correct</div>';
-  h+='<section class="forge-workbench" aria-labelledby="forge-workbench-title"><h2 id="forge-workbench-title">Your workbench</h2><dl><div><dt>Questions worked</dt><dd>'+worked+'</dd></div><div><dt>Ideas repaired</dt><dd>'+repairedCount+'</dd></div><div><dt>Next return</dt><dd>'+(revisionDue?revisionDue+' '+(revisionDue===1?'card':'cards')+' due':'Open Revision')+'</dd></div></dl></section>';
+  h+='<section class="forge-workbench" aria-labelledby="forge-workbench-title"><h2 id="forge-workbench-title">This session</h2><dl><div><dt>Questions answered</dt><dd>'+worked+'</dd></div><div><dt>Ideas repaired</dt><dd>'+repairedCount+'</dd></div><div><dt>Next return</dt><dd>'+(revisionDue?revisionDue+' '+(revisionDue===1?'card':'cards')+' due':'Open Revision')+'</dd></div></dl></section>';
   h+=xpResultsHtml();
   if(state.classId && xpEnabled()) h+='<div id="result-league" class="result-league"></div>';
   h+='<section class="forge-result-story" aria-labelledby="result-next-title">';
   h+='<h2 id="result-next-title">'+(remaining ? 'One idea to revisit' : 'You’ve finished this session')+'</h2>';
-  if(remaining) h+='<p class="forge-recommendation__copy">'+remainingLabel+'. Practise it again in Anvil with help.</p>';
+  if(remaining) h+='<p class="forge-recommendation__copy">'+remainingLabel+'. Practise it again in Repair mistakes.</p>';
   else h+='<p class="forge-recommendation__copy">You can finish here or choose another topic.</p>';
-  if(repaired) h+='<p class="forge-recommendation__copy">Reforged this session: '+repaired+'</p>';
+  if(repaired) h+='<p class="forge-recommendation__copy">Repaired this session: '+repaired+'</p>';
   h+='<a class="forge-button forge-button--primary" href="'+nextHref+'" id="result-next-action">'+nextLabel+' →</a></section>';
   h+='<div class="forge-action-row forge-result-actions">';
   h+='<button type="button" class="forge-button forge-button--secondary" id="retry">Practise again</button>';
