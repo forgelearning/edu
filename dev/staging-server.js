@@ -121,7 +121,7 @@ const server = http.createServer((req, res) => {
   }
   if (url.pathname === '/mock-supabase/rest/v1/rpc/record_free_response') {
     responseCount += 1;
-    if (mode === 'quota') return json(res, 200, {allowed:false, reason:'daily_limit', used:10});
+    if (mode === 'quota') return json(res, 200, {allowed:false, reason:'cooldown', limit:10, retry_at:new Date(Date.now()+30*60*1000).toISOString()});
     if (mode === 'network-failure' || (failureAfter > 0 && responseCount > failureAfter)) return json(res, 503, {message:'Staging API is intentionally unavailable'});
     if (mode === 'student-demo') {
       let raw='';

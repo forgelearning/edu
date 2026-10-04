@@ -31,7 +31,7 @@ const context = {
   fetch: (url, options) => {
     calls.push({ url, options });
     if (mode === 'server-error') return Promise.resolve(response(503, { message: 'database unavailable' }));
-    if (mode === 'quota') return Promise.resolve(response(200, { allowed: false, reason: 'daily_limit', used: 10 }));
+    if (mode === 'quota') return Promise.resolve(response(200, { allowed: false, reason: 'cooldown', limit: 10, retry_at: '2026-10-04T12:30:00Z' }));
     return Promise.reject(Object.assign(new Error('network down'), { name: 'TypeError' }));
   }
 };
@@ -48,7 +48,7 @@ async function run() {
 
   mode = 'quota';
   const quota = await context.ForgeAPI.rpc('record_free_response', { p_student_id: 'test' });
-  assert.deepStrictEqual(quota, { allowed: false, reason: 'daily_limit', used: 10 }, 'quota responses should reach the client unchanged');
+  assert.deepStrictEqual(quota, { allowed: false, reason: 'cooldown', limit: 10, retry_at: '2026-10-04T12:30:00Z' }, 'quota responses should reach the client unchanged');
 
   mode = 'network-error';
   await assert.rejects(

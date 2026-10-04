@@ -262,3 +262,16 @@ transaction (column accepted an archive; function compiled; invalid
 credentials returned nothing). Afterwards the column exists with all nine
 assignments unarchived, `get_student_assignments` skips archived rows and is
 still executable by anon, and `dev/audit-supabase-security.js` passes.
+
+## 20261004 190000 — free tier rounds
+
+| File | What it does |
+|---|---|
+| `20261004190000_free_tier_short_cooldown.sql` | Replaces the free tier's 10-questions-per-day limit with rounds: 10 questions, then a 30-minute break, then another 10. Adds `students.free_cooldown_until`; `record_free_response` locks the student row, refuses with `reason: 'cooldown'` and `retry_at` during a break, and returns `cooldown_until` on the answer that ends a round. Reforge answers stay exempt. |
+
+Order: database first, then the client. The old client still blocks itself
+locally at 10 a day, which is harmless; the new client against the old
+function would promise a 30-minute break the server does not honour.
+
+**Applied to production 2026-10-04.** Afterwards the new body is live, anon
+can still execute it, and a bogus session returns `invalid_session`.

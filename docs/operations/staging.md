@@ -14,7 +14,7 @@ Available modes:
 
 - `save-failure`: returns a successful free-response save until `--failure-after`, then returns HTTP 503.
 - `network-failure`: returns HTTP 503 for every free-response save.
-- `quota`: returns the server-authoritative `daily_limit` response.
+- `quota`: returns the server-authoritative `cooldown` response (free round used up).
 
 Example:
 

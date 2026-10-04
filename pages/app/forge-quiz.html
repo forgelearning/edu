@@ -192,8 +192,8 @@ function logResponse(q, selectedKey, isCorrect, isReforge, reforgeCorrect, hintU
     });
   } else {
     // Free students write through the token-gated RPC. Besides authorising the
-    // row, it enforces the daily quota atomically on the server so clearing
-    // localStorage cannot mint another ten-question allowance.
+    // row, it enforces the free rounds atomically on the server so clearing
+    // localStorage cannot skip the break between them.
     if (state.studentId && state.classId == null) {
       var freePayload = {
         p_student_id: state.studentId,
@@ -214,6 +214,8 @@ function logResponse(q, selectedKey, isCorrect, isReforge, reforgeCorrect, hintU
         // question render, stop here and show the same limit wall rather than
         // advancing to a question the server refused to save.
         if (result && result.allowed === false) return result;
+        // The answer that ends a round carries the server's cooldown end.
+        if (result && result.cooldown_until) syncFreeRoundFromServer(result);
         return true;
       }).catch(function(e) { recordPersistenceError(e, row, 'free-response-rpc'); return false; });
     }
@@ -720,17 +722,67 @@ function wireJoinMore() {
   };
 }
 
-// ── FREE TIER DAILY LIMIT ─────────────────────────────────────
-var FREE_DAILY_LIMIT = 10;
-var DAILY_KEY = 'forge-daily-' + new Date().toISOString().slice(0,10); // resets at midnight
+// ── FREE TIER ROUNDS ──────────────────────────────────────────
+// Free students get a round of 10 questions, then a short cooldown, then
+// another round. record_free_response enforces this on the server; this is
+// only the meter, kept in step with the server's rule and corrected by it.
+var FREE_ROUND_SIZE = 10;
+var FREE_COOLDOWN_MS = 30 * 60 * 1000;
+var FREE_IDLE_RESET_MS = 60 * 60 * 1000; // a round left alone this long starts fresh
+var FREE_ROUND_KEY = 'forge-free-round';
 
-function getDailyCount() {
-  try { return parseInt(localStorage.getItem(DAILY_KEY) || '0', 10); } catch(e) { return 0; }
+function loadFreeRound() {
+  var r = null;
+  try { r = JSON.parse(localStorage.getItem(FREE_ROUND_KEY) || 'null'); } catch(e) {}
+  if (!r || !Array.isArray(r.answers)) r = { answers: [], cooldownUntil: 0 };
+  return r;
 }
 
-function incrementDailyCount() {
-  try { localStorage.setItem(DAILY_KEY, getDailyCount() + 1); } catch(e) {}
+function saveFreeRound(r) {
+  try { localStorage.setItem(FREE_ROUND_KEY, JSON.stringify(r)); } catch(e) {}
+}
+
+function freeRoundSince(r) {
+  return Math.max(r.cooldownUntil || 0, Date.now() - FREE_IDLE_RESET_MS);
+}
+
+function getRoundCount() {
+  var r = loadFreeRound();
+  var since = freeRoundSince(r);
+  return r.answers.filter(function(t) { return t >= since; }).length;
+}
+
+function cooldownRemainingMs() {
+  return Math.max(0, (loadFreeRound().cooldownUntil || 0) - Date.now());
+}
+
+function startFreeCooldown(untilMs) {
+  var r = loadFreeRound();
+  r.cooldownUntil = untilMs || (Date.now() + FREE_COOLDOWN_MS);
+  r.answers = [];
+  saveFreeRound(r);
+}
+
+function incrementRoundCount() {
+  var r = loadFreeRound();
+  var since = freeRoundSince(r);
+  r.answers = r.answers.filter(function(t) { return t >= since; });
+  r.answers.push(Date.now());
+  saveFreeRound(r);
+  if (r.answers.length >= FREE_ROUND_SIZE) startFreeCooldown();
   refreshFreeQuotaDisplay();
+}
+
+// The server's answer wins over the local meter: it is what actually decides
+// whether the next answer is saved.
+function syncFreeRoundFromServer(result) {
+  if (!result || typeof result !== 'object') return;
+  var until = Date.parse(result.retry_at || result.cooldown_until || '');
+  if (until > Date.now()) startFreeCooldown(until);
+}
+
+function freeRemainingLabel(remaining) {
+  return remaining + ' free question' + (remaining !== 1 ? 's' : '') + ' before a break';
 }
 
 // The quota meter sits in the question header, which is not re-rendered when an
@@ -740,15 +792,15 @@ function refreshFreeQuotaDisplay() {
   var label = document.getElementById('free-quota-label');
   var fill  = document.getElementById('free-quota-fill');
   if (!label && !fill) return;
-  var used = getDailyCount();
-  var remaining = Math.max(0, FREE_DAILY_LIMIT - used);
+  var used = cooldownRemainingMs() > 0 ? FREE_ROUND_SIZE : getRoundCount();
+  var remaining = Math.max(0, FREE_ROUND_SIZE - used);
   var col = remaining <= 2 ? 'var(--bad)' : remaining <= 5 ? 'var(--hot)' : 'var(--good)';
   if (label) {
-    label.textContent = remaining + ' free question' + (remaining !== 1 ? 's' : '') + ' left today';
+    label.textContent = freeRemainingLabel(remaining);
     label.style.color = col;
   }
   if (fill) {
-    fill.style.width = Math.min(100, (used / FREE_DAILY_LIMIT) * 100) + '%';
+    fill.style.width = Math.min(100, (used / FREE_ROUND_SIZE) * 100) + '%';
     fill.style.background = col;
   }
 }
@@ -758,22 +810,16 @@ function isFreeTier() {
   return !state.isPaid && !state.isTrial && !state.classId;
 }
 
-function isAtDailyLimit() {
-  return isFreeTier() && getDailyCount() >= FREE_DAILY_LIMIT;
-}
-
-function secondsUntilMidnight() {
-  var now = new Date();
-  var midnight = new Date(now);
-  midnight.setHours(24, 0, 0, 0);
-  return Math.floor((midnight - now) / 1000);
+function isInFreeCooldown() {
+  return isFreeTier() && cooldownRemainingMs() > 0;
 }
 
 function formatCountdown(secs) {
   var h = Math.floor(secs / 3600);
   var m = Math.floor((secs % 3600) / 60);
   var s = secs % 60;
-  return (h > 0 ? h + 'h ' : '') + (m > 0 ? m + 'm ' : '') + s + 's';
+  if (h > 0) return h + 'h ' + m + 'm';
+  return m + ':' + (s < 10 ? '0' : '') + s;
 }
 
 // ── FREE STUDENT PERSISTENCE ──────────────────────────────────
@@ -944,7 +990,7 @@ function renderJoin() {
   // Panel: Free tier
   h += '<div id="panel-free">';
   h += '<p class="forge-u-1xgpbl">Choose a subject and start practising. No class code or account needed.</p>';
-  h += '<p class="forge-independent-detail">10 free questions a day. Your independent work stays private and is available on this device, even if you join a class later.</p>';
+  h += '<p class="forge-independent-detail">10 free questions at a time, with a short break between rounds. Your independent work stays private and is available on this device, even if you join a class later.</p>';
   // The first thing a new student read was a free-versus-Pro price list. It
   // is still one tap away, in plain names, but no longer leads the screen.
   h += '<details class="forge-whats-free"><summary>What’s free?</summary><div class="forge-u-eelu4s">';
@@ -1612,7 +1658,7 @@ function renderTrialExpiredWall() {
 
   h += '<div class="forge-u-xrboeu">';
   h += '<p class="forge-u-hptrzy">Stay on free</p>';
-  h += '<p class="forge-u-1rniwep">10 questions per day · all subjects · explanations included</p>';
+  h += '<p class="forge-u-1rniwep">10 questions a round, short break between · all subjects · explanations included</p>';
   h += '<button type="button" class="forge-u-148bwq4" data-forge-action="quiz-free-tier">Continue for free →</button>';
   h += '</div>';
 
@@ -1621,27 +1667,21 @@ function renderTrialExpiredWall() {
 }
 
 function renderLimitWall() {
-  var used = getDailyCount();
-  var secs = secondsUntilMidnight();
-
   var h = '<div class="limit-wall">';
   h += '<div class="limit-icon">⚒️</div>';
-  h += '<h2>Daily limit reached</h2>';
-  h += '<p>Free accounts get ' + FREE_DAILY_LIMIT + ' questions per day.<br>Your questions reset at midnight.</p>';
+  h += '<h2>Time for a short break</h2>';
+  h += '<p>That\'s ' + FREE_ROUND_SIZE + ' questions done. Free accounts get another ' + FREE_ROUND_SIZE + ' when the timer runs out.<br>Stay on this page and you\'ll carry on where you left off.</p>';
 
-  // Progress bar
-  h += '<div class="limit-bar"><div class="limit-bar-fill forge-u-akjizx"></div></div>';
-  h += '<p class="forge-u-1onnife">' + used + ' / ' + FREE_DAILY_LIMIT + ' questions used today</p>';
-
-  // Countdown
-  h += '<div class="limit-countdown" id="lw-countdown">' + formatCountdown(secs);
-  h += '<span>until your questions reset</span></div>';
+  // Countdown, with a bar that refills as the break runs down
+  h += '<div class="limit-countdown" id="lw-countdown" role="timer" aria-live="off">' + formatCountdown(Math.ceil(cooldownRemainingMs() / 1000));
+  h += '<span>until your next ' + FREE_ROUND_SIZE + ' questions</span></div>';
+  h += '<div class="limit-bar"><div class="limit-bar-fill" id="lw-refill"></div></div>';
 
   // Upgrade CTA
   h += '<div class="forge-u-1cukupz">';
   h += '<p class="tag forge-u-bhmr11">Forge Pro</p>';
   h += '<p class="forge-u-1iee4k3">7-day free trial · then £2.99/month</p>';
-  h += '<p class="forge-u-1rniwep">Unlimited questions · full Repair mistakes · Timed practice · XP &amp; ranks · any device</p>';
+  h += '<p class="forge-u-1rniwep">No breaks · unlimited questions · full Repair mistakes · Timed practice · XP &amp; ranks</p>';
   h += '<a class="forge-u-mv8v0m" href="forge-signup.html">Start free trial →</a>';
   h += '<p class="forge-u-815kda">No card needed during trial · cancel anytime</p>';
   h += '</div>';
@@ -1651,14 +1691,19 @@ function renderLimitWall() {
 
   app.innerHTML = h;
 
-  // Live countdown ticker
-  var ticker = setInterval(function() {
+  function tick() {
     var el = document.getElementById('lw-countdown');
-    if (!el) { clearInterval(ticker); return; }
-    var remaining = secondsUntilMidnight();
-    if (remaining <= 0) { clearInterval(ticker); location.reload(); return; }
-    el.childNodes[0].textContent = formatCountdown(remaining);
-  }, 1000);
+    if (!el) { clearInterval(ticker); return false; }
+    var ms = cooldownRemainingMs();
+    // Back into the same set, at the same question, as soon as the break ends.
+    if (ms <= 0) { clearInterval(ticker); render(); return false; }
+    el.childNodes[0].textContent = formatCountdown(Math.ceil(ms / 1000));
+    var fill = document.getElementById('lw-refill');
+    if (fill) fill.style.width = Math.max(0, Math.min(100, (1 - ms / FREE_COOLDOWN_MS) * 100)) + '%';
+    return true;
+  }
+  var ticker = setInterval(tick, 1000);
+  tick();
 }
 
 function revealQuizNext(){
@@ -1697,8 +1742,8 @@ function offerRevisionCard(feedback, question){
 }
 
 function renderQuiz(){
-  // Check daily limit before showing next question
-  if (isAtDailyLimit()) {
+  // Free tier: hold the next question until the break between rounds is over
+  if (isInFreeCooldown()) {
     renderLimitWall();
     return;
   }
@@ -1716,13 +1761,13 @@ function renderQuiz(){
 
   // Free tier: show questions remaining
   if (isFreeTier()) {
-    var used = getDailyCount();
-    var remaining = Math.max(0, FREE_DAILY_LIMIT - used);
-    var pct = (used / FREE_DAILY_LIMIT) * 100;
+    var used = getRoundCount();
+    var remaining = Math.max(0, FREE_ROUND_SIZE - used);
+    var pct = (used / FREE_ROUND_SIZE) * 100;
     var col = remaining <= 2 ? 'var(--bad)' : remaining <= 5 ? 'var(--hot)' : 'var(--good)';
     h += '<div class="forge-u-1p0xeot">';
     h += '<div class="forge-u-1gsso20"><div id="free-quota-fill" style="height:100%;width:'+pct+'%;background:'+col+';border-radius:var(--radius-xs)"></div></div>';
-    h += '<span id="free-quota-label" style="font-family:\'JetBrains Mono\',monospace;font-size:11px;color:'+col+';white-space:nowrap">'+remaining+' free question'+(remaining!==1?'s':'')+' left today</span>';
+    h += '<span id="free-quota-label" style="font-family:\'JetBrains Mono\',monospace;font-size:11px;color:'+col+';white-space:nowrap">'+freeRemainingLabel(remaining)+'</span>';
     h += '</div>';
   }
   var point = getSpecPoint(q, state.bank);
@@ -1778,8 +1823,8 @@ function renderQuiz(){
       if(window.forgeTrack) forgeTrack('forge_question_answered',{bank:state.bank,correct:isCorrect});
       forgeSaveSession();
 
-      // Increment free tier daily count
-      if (isFreeTier()) incrementDailyCount();
+      // Count this question towards the free round
+      if (isFreeTier()) incrementRoundCount();
 
       // Log to Supabase
       // Update spaced repetition weight in memory
@@ -1792,9 +1837,10 @@ function renderQuiz(){
     var saveLabel=document.getElementById('forge-answer-save');
     if(saveLabel){saveLabel.textContent='Saving this answer…';saveLabel.dataset.state='saving';}
     Promise.resolve(responseSaved).then(function(result){
+      if(isFreeTier())syncFreeRoundFromServer(result);
       var current=document.getElementById('forge-answer-save');
       if(!current||current!==saveLabel)return;
-      current.textContent=result===true?'Answer saved.':result&&result.allowed===false?'Daily limit reached. This answer was not saved.':'Saved on this device. Sync is pending.';
+      current.textContent=result===true?'Answer saved.':result&&result.allowed===false?'Break time. This answer was not saved.':'Saved on this device. Sync is pending.';
       current.dataset.state=result===true?'saved':'pending';
     }).catch(function(){var current=document.getElementById('forge-answer-save');if(current&&current===saveLabel){current.textContent='Saved on this device. Sync is pending.';current.dataset.state='pending';}});
 
@@ -1953,7 +1999,7 @@ function renderFillBlankQuiz(q,bk,headerHtml){
       }
     });
     if(allCorrect) state.score++;
-    if(isFreeTier()) incrementDailyCount();
+    if(isFreeTier()) incrementRoundCount();
     if(state.weightMap){
       if(allCorrect){ state.weightMap[q.id]=Math.max(0.2,(state.weightMap[q.id]||1)*0.5); }
       else{ state.weightMap[q.id]=3; }
