@@ -578,12 +578,7 @@ html:not([data-theme="light"]) body.forge-solo-login::after{color:var(--forge-lo
 .forge-reforge-result__icon{width:38px;height:38px;flex:none;stroke:var(--good);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .forge-reforge-result__crack{stroke:var(--ember)}
 .forge-reforge-result__seam{stroke-dasharray:16;stroke-dashoffset:0}
-.forge-workbench{max-width:600px;margin:0 auto 24px;padding:18px 22px;border:1px solid var(--line);border-radius:var(--radius-md);background:var(--panel);text-align:left}
-.forge-workbench h2{margin:0 0 14px;color:var(--white);font:700 20px/1.2 'Rethink Sans',sans-serif}
-.forge-workbench dl{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:0}
-.forge-workbench dl div{min-width:0;padding-top:10px;border-top:1px solid var(--line)}
-.forge-workbench dt{color:var(--slate);font-size:11px;font-weight:600}
-.forge-workbench dd{margin:5px 0 0;color:var(--white);font:700 19px/1.25 'Rethink Sans',sans-serif}
+.forge-result-repaired{max-width:52ch;margin:6px auto 0;color:var(--good);font-size:14px;line-height:1.5}
 @media(prefers-reduced-motion:no-preference){
   .forge-subject-motif--geo path,.forge-subject-motif__line{stroke-dasharray:180;stroke-dashoffset:180;animation:forge-line-draw .7s cubic-bezier(.16,1,.3,1) both}
   .forge-subject-motif--geo path:nth-child(2){animation-delay:80ms}.forge-subject-motif--geo path:nth-child(3){animation-delay:150ms}
@@ -593,7 +588,6 @@ html:not([data-theme="light"]) body.forge-solo-login::after{color:var(--forge-lo
   @keyframes forge-crack-close{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(3px)}}
   @keyframes forge-seam-show{from{stroke-dashoffset:16;opacity:.2}to{stroke-dashoffset:0;opacity:1}}
 }
-@media(max-width:600px){.forge-workbench dl{grid-template-columns:1fr;gap:8px}.forge-workbench dl div{display:flex;align-items:baseline;justify-content:space-between;gap:12px}.forge-workbench dd{font-size:16px;text-align:right}}
 .forge-independent-detail{max-width:46ch;margin:0 0 18px;color:var(--slate);font-size:13px;line-height:1.55}
 .forge-study-context{display:flex;align-items:center;justify-content:space-between;gap:18px;margin:0 0 24px;padding:16px 18px;border:1px solid var(--line);border-radius:var(--radius-md);background:var(--panel)}
 .forge-study-context strong{display:block;color:var(--white);font:700 17px/1.25 'Rethink Sans',sans-serif}
