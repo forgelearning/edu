@@ -225,7 +225,7 @@
       :context.studentId&&context.classCode
         ?ForgeStudentCode.assignments(context.studentId,context.classCode,context.studentCode,context.studentName)
         :Promise.resolve([]);
-    return assignments.then(function(payload){return {context:context,assignments:(root.ForgeAssignmentProgress?ForgeAssignmentProgress.rows(payload):Array.isArray(payload)?payload:[]).filter(isRevision)};});
+    return assignments.then(function(payload){return {context:context,assignments:(root.ForgeAssignmentProgress?ForgeAssignmentProgress.rows(payload):Array.isArray(payload)?payload:[]).filter(function(a){return !(a&&a.archived);}).filter(isRevision)};});
   }
 
   function mountStudent(options){

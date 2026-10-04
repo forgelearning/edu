@@ -81,7 +81,7 @@ function mountTeacherSidebar() {
 <!-- Assignment attainment is defined once, in forge-assignment-progress.js, and
      shared with the student's assignment view so the two cannot disagree. -->
 <script>window.ForgeAssignmentBanks=BANKS;</script><script src="scripts/forge-assignment-progress.js?v=20261004-challenge"></script>
-<script src="scripts/forge-revision.js?v=20260930-allsubjects"></script>
+<script src="scripts/forge-revision.js?v=20261004-archived"></script>
 <script src="scripts/forge-challenge.js?v=20261004-challenge"></script>
 <script src="scripts/forge-misconception-state.js"></script>
 <script src="scripts/forge-metrics.js"></script>
@@ -2223,25 +2223,28 @@ function renderAssignments() {
             renderAssignments();
           } else {
             btn.disabled = false; btn.textContent = 'Delete';
-            teacherInlineState(btn.closest('.asgn-card') || btn.parentNode, 'error', { label: 'Assignment wasn’t deleted', body: 'Try again in a moment.' });
+            teacherInlineState(btn.closest('.assign-card') || btn.parentNode, 'error', { label: 'Assignment wasn’t deleted', body: 'Try again in a moment.' });
           }
-        }).catch(function() { btn.disabled = false; btn.textContent = 'Delete'; teacherInlineState(btn.closest('.asgn-card') || btn.parentNode, 'error', { label: 'Assignment wasn’t deleted', body: 'Check your connection and try again.' }); });
+        }).catch(function() { btn.disabled = false; btn.textContent = 'Delete'; teacherInlineState(btn.closest('.assign-card') || btn.parentNode, 'error', { label: 'Assignment wasn’t deleted', body: 'Check your connection and try again.' }); });
 
       } else if (action === 'archive') {
         btn.disabled = true; btn.textContent = 'Archiving\u2026';
-        supaPatch('assignments', id, { archived: true }).then(function() {
+        supaPatch('assignments', id, { archived: true }).then(function(rows) {
+          // An update that matched no row returns an empty list, not an error.
+          if (!Array.isArray(rows) || !rows.length) throw new Error('not updated');
           var asgn = dashState.assignments.find(function(a) { return a.id === id; });
           if (asgn) asgn.archived = true;
           renderAssignments();
-        }).catch(function() { btn.disabled = false; btn.textContent = 'Archive'; teacherInlineState(btn.closest('.asgn-card') || btn.parentNode, 'error', { label: 'Assignment wasn’t archived', body: 'Check your connection and try again.' }); });
+        }).catch(function() { btn.disabled = false; btn.textContent = 'Archive'; teacherInlineState(btn.closest('.assign-card') || btn.parentNode, 'error', { label: 'Assignment wasn’t archived', body: 'Try again. If it keeps failing, refresh the page.' }); });
 
       } else if (action === 'unarchive') {
         btn.disabled = true; btn.textContent = 'Restoring\u2026';
-        supaPatch('assignments', id, { archived: false }).then(function() {
+        supaPatch('assignments', id, { archived: false }).then(function(rows) {
+          if (!Array.isArray(rows) || !rows.length) throw new Error('not updated');
           var asgn = dashState.assignments.find(function(a) { return a.id === id; });
           if (asgn) asgn.archived = false;
           renderAssignments();
-        }).catch(function() { btn.disabled = false; btn.textContent = 'Restore'; teacherInlineState(btn.closest('.asgn-card') || btn.parentNode, 'error', { label: 'Assignment wasn’t restored', body: 'Check your connection and try again.' }); });
+        }).catch(function() { btn.disabled = false; btn.textContent = 'Restore'; teacherInlineState(btn.closest('.assign-card') || btn.parentNode, 'error', { label: 'Assignment wasn’t restored', body: 'Try again. If it keeps failing, refresh the page.' }); });
       }
     };
   });

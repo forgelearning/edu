@@ -247,3 +247,14 @@ Afterwards the column exists with all nine existing assignments unchanged,
 the function is executable by anon and authenticated but not PUBLIC, a call
 with invalid credentials returns null, and `dev/audit-supabase-security.js`
 passes.
+
+## 20261004 170000 — assignment archiving
+
+| File | What it does |
+|---|---|
+| `20261004170000_assignments_archived.sql` | Adds `assignments.archived` (default false). The teacher dashboard has always archived and restored by setting it, but the column never existed, so every archive was rejected. `get_student_assignments` now skips archived rows so class-code students stop seeing finished work; signed-in students read the table directly and the client filters them. |
+
+Not coupled: the client changes are safe before or after. Until this is
+applied, archiving still fails, but now with an accurate message.
+
+**Not yet applied to production.**

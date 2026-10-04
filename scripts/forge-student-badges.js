@@ -148,7 +148,8 @@
         ? root.ForgeAPI.get('assignments', 'class_id=eq.' + encodeURIComponent(saved.classId) + '&order=due_date.asc', { token: root.ForgeAuth.accessToken() })
         : Promise.reject(new Error('No verified student session'));
     return assignmentRequest.then(function (rows) {
-      rows = Array.isArray(rows) ? rows : [];
+      // Archived work is finished with: no badge and no "new assignment" nudge.
+      rows = Array.isArray(rows) ? rows.filter(function (a) { return !(a && a.archived); }) : [];
       setAssignmentBadge(rows);
       rows.forEach(function (assignment) {
         var id = idFor(assignment);
