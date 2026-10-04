@@ -20,6 +20,8 @@
 <body>
 <script src="scripts/forge-api.js"></script>
 <script src="scripts/forge-state.js"></script>
+<script src="data/misconception-labels.js?v=20260907-diagnostics"></script>
+<script src="scripts/forge-question.js?v=20261003-hints"></script>
 <script src="scripts/forge-logo.js"></script>
 <script src="scripts/forge-sidebar.js?v=20260809-gearcenter"></script>
 <a class="forge-skip-link" href="#main-content">Skip to main content</a>
@@ -170,7 +172,9 @@ function renderPresent(){
   var h = '<div class="present-header"><button type="button" class="back-btn forge-u-3ocpgz" id="back-banks">← Banks</button><span class="bank-name" style="color:'+bk.color+'">'+bk.label+'</span><span>'+(state.idx+1)+' / '+state.questions.length+'</span></div>';
   h += '<div class="progress-bar"><div class="progress-fill" style="--progress:'+((state.idx/state.questions.length))+';background:'+bk.color+'"></div></div>';
   h += '<div class="stage">';
-  h += '<span class="q-id-big" style="color:'+bk.color+';background:'+bk.color+'1a">'+q.id+'</span>';
+  // The board is projected to the class, so it shows the question number,
+  // not the internal id (GCSE-HAZ-34) it used to.
+  h += '<span class="q-id-big" style="color:'+bk.color+';background:'+bk.color+'1a">Question '+(state.idx+1)+'</span>';
   h += '<div class="stem-big">'+(q.stem||q.template)+'</div>';
 
   if (q.type === 'fill_blank'){
@@ -197,7 +201,12 @@ function renderPresent(){
   }
 
   if (state.revealed){
-    h += '<div class="scaffold-big"><span class="stag">'+(q.tag||'')+'</span><p>'+q.scaffold+'</p></div>';
+    // Readable misconception label, never the raw tag (MC-...); the shared
+    // helper also turns placeholder scaffolds into a usable explanation.
+    var tag = Array.isArray(q.tag) ? q.tag[0] : q.tag;
+    var label = (tag && window.resolveMCLabel) ? window.resolveMCLabel(tag) : '';
+    var explanation = window.ForgeQuestion ? window.ForgeQuestion.scaffoldText(q) : (q.scaffold || '');
+    h += '<div class="scaffold-big">'+(label?'<span class="stag">'+label+'</span>':'')+'<p>'+explanation+'</p></div>';
   }
 
   h += '</div>'; // stage
