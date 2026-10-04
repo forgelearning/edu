@@ -108,8 +108,8 @@
             <p>When a student selects a wrong answer, Forge:</p>
             <ul>
               <li>Identifies the specific misconception triggered</li>
-              <li>Shows a targeted scaffold explaining exactly what went wrong</li>
-              <li>Queues a re-forge question to test whether the misconception has been corrected</li>
+              <li>Shows a short explanation of exactly what went wrong</li>
+              <li>Offers a similar question to test whether the misconception has been corrected</li>
               <li>Logs the pattern so the teacher can see it in their dashboard</li>
             </ul>
             <p>Seneca and Quizlet do not surface misconception data to teachers. Forge does.</p>
@@ -151,7 +151,7 @@
             <ul>
               <li><strong>Misconception heatmap</strong> — which spec points are firing most frequently across the class</li>
               <li><strong>Class overview</strong> — every student's accuracy, weakest topic, and top misconception, sorted by who is struggling most</li>
-              <li><strong>Student drill-down</strong> — click any student to see their full misconception profile and re-forge history</li>
+              <li><strong>Student drill-down</strong> — click any student to see their full misconception profile and repair history</li>
               <li><strong>Corrective starter generator</strong> — Forge proposes a warm-up activity based on the class's top three misconceptions, ready to drop into a lesson</li>
               <li><strong>Assignments</strong> — teachers can set specific banks as homework with a due date; the dashboard shows completed, in-progress and not-started students, question progress and accuracy</li>
               <li><strong>School Overview</strong> — a separate read-only view for SLT and Heads of Department showing cross-class trends, engagement rates, and a school-wide misconception league table</li>
@@ -207,7 +207,7 @@
           </button>
           <div class="faq-a">
             <p><span class="pill pill-no">Not currently</span> Forge focuses on conceptual understanding through multiple-choice. It does not mark free-text responses, essays, or extended answers. Extended writing assessment requires human judgement and is not within Forge's current scope.</p>
-            <p>The Crucible mode introduces timed exam pressure with no scaffolds, which is closer to exam conditions — but it remains multiple-choice.</p>
+            <p>Timed practice adds exam pressure with no explanations, which is closer to exam conditions, but it remains multiple-choice.</p>
           </div>
         </div>
 
@@ -258,14 +258,14 @@
             <span class="faq-chevron" aria-hidden="true">▼</span>
           </button>
           <div class="faq-a">
-            <p>Teachers can set a per-student extra time arrangement directly in the class overview. The options are <strong>Standard</strong>, <strong>+25% extra time</strong>, and <strong>+50% extra time</strong>. This setting affects The Crucible (the timed exam-pressure mode) — a student with +25% gets 375 seconds instead of 300.</p>
+            <p>Teachers can set a per-student extra time arrangement directly in the class overview. The options are <strong>Standard</strong>, <strong>+25% extra time</strong>, and <strong>+50% extra time</strong>. This setting affects Timed practice (the timed exam-pressure mode) — a student with +25% gets 375 seconds instead of 300.</p>
             <p>The arrangement is:</p>
             <ul>
               <li>Set by the teacher in the dashboard — the student does not need to self-declare or opt in</li>
-              <li>Visible to the student on The Crucible ready screen ("your time arrangement has been applied")</li>
+              <li>Visible to the student on the Timed practice ready screen ("your time arrangement has been applied")</li>
               <li>Stored against the student's record and applied automatically on every subsequent session</li>
             </ul>
-            <p>The main quiz (Forge mode) is <strong>untimed</strong> — there is no clock and no penalty for taking longer. Only The Crucible has a timer, and it is an optional mode.</p>
+            <p>The main quiz (Practice) is <strong>untimed</strong> — there is no clock and no penalty for taking longer. Only Timed practice has a timer, and it is an optional mode.</p>
           </div>
         </div>
 
@@ -296,8 +296,8 @@
           <div class="faq-a">
             <p>Several features are specifically designed to prevent low-attaining students from feeling penalised:</p>
             <ul>
-              <li><strong>Scaffolds on every wrong answer</strong> — no student sees just "incorrect". Every wrong answer triggers a targeted explanation of what went wrong and why the right answer is right</li>
-              <li><strong>Re-forge attempts</strong> — after a wrong answer, students get a second chance on a related question testing the same concept. This means every mistake is an opportunity rather than a dead end</li>
+              <li><strong>An explanation on every wrong answer</strong> — no student sees just "incorrect". Every wrong answer triggers a targeted explanation of what went wrong and why the right answer is right</li>
+              <li><strong>Similar-question attempts</strong> — after a wrong answer, students get a second chance on a related question testing the same concept. This means every mistake is an opportunity rather than a dead end</li>
               <li><strong>Spaced repetition</strong> — questions the student has previously struggled with are weighted to appear more often, without the student knowing. The system works hardest on their weakest areas</li>
               <li><strong>Weekly class league</strong> — class-joined students see a league of XP earned that week within their own class, showing classmates as first name and last initial; it resets every Monday, teachers can switch it off, and no public or cross-school league is shown</li>
               <li><strong>Class friends</strong> — off by default and available only when the teacher enables it and everyone in the class has an individual private code. Students can then send requests to classmates; once both agree, each can see the other’s XP, answer count, accuracy and practice streak. There is no messaging, either student can remove the connection, and teachers can see the class’s connections and switch friends off</li>
@@ -530,7 +530,7 @@
           <div class="faq-a">
             <p>Forge has three tiers:</p>
             <ul>
-              <li><strong>Free tier</strong> — 10 questions per day, no account needed, no class features. For individual students trying the platform</li>
+              <li><strong>Free tier</strong> — 10 questions at a time with a 30-minute break between rounds, no account needed, no class features. For individual students trying the platform</li>
               <li><strong>Pro (student, self-funded)</strong> — £2.99/month per student, includes a 7-day free trial with no card required. Unlimited questions, all modes, cross-device login. Students pay directly via Stripe</li>
               <li><strong>School licence</strong> — annual whole-class or whole-school pricing, invoiced to the school. Includes teacher dashboard, school overview, DPA, and priority content requests. Contact forge.educator@gmail.com for a quote</li>
             </ul>

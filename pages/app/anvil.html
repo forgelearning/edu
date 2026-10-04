@@ -18,7 +18,7 @@
   <link rel="stylesheet" href="css/page-overrides/anvil.css?v=20261003-repair-reveal">
   <link rel="stylesheet" href="css/page-overrides/anvil-overdrive.css?v=20260818-overdrive">
   <link rel="stylesheet" href="css/auth-ember.css?v=20260817-auth2">
-<link rel="stylesheet" href="css/student-motion.css?v=20261003-motion1">
+<link rel="stylesheet" href="css/student-motion.css?v=20261004-signin">
 </head>
 <body class="forge-auth-ember">
 <script src="scripts/forge-api.js"></script>
@@ -137,7 +137,7 @@ function renderLogin(){
        +'<p class="auth-err" id="a-err"></p>';
   app.innerHTML=ForgeAuthCard.shell({
     title:'Rework your weaknesses',
-    sub:'Misconceptions that survived the re-forge land here \u2014 sign in to work them off.',
+    sub:'Your mistakes land here so you can fix them \u2014 sign in to work through them.',
     foot:'No progress yet? <a href="forge-quiz.html">Start with a quiz</a>'
   },f);
   ForgeAuthCard.onSubmit(function(){document.getElementById('a-btn').onclick();});

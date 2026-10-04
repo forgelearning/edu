@@ -92,7 +92,7 @@ document.body.classList.add('landing-redesign');
   </div>
 </nav>
 </div></div>
-<script src="scripts/nav.js?v=20260802-ui"></script>
+<script src="scripts/nav.js?v=20261004-fullbar"></script>
 <header class="hero-shell">
 <div class="hero-glow" aria-hidden="true"></div>
 <div class="hero-vignette" aria-hidden="true"></div>
@@ -127,7 +127,7 @@ document.body.classList.add('landing-redesign');
       <div class="scaffold" id="scaffold" tabindex="-1">
         <span class="stag" id="stag">MC-INF-01</span>
         <p id="stext"></p>
-        <div class="next"><button type="button" id="reforge">Re-forge it: same concept, new question</button></div>
+        <div class="next"><button type="button" id="reforge">Try a similar question: same idea, new context</button></div>
       </div>
       <p class="praise" id="praise" tabindex="-1">Correct. Prices are still rising, just more slowly: disinflation.</p>
     </div>
@@ -181,7 +181,7 @@ document.body.classList.add('landing-redesign');
         <div>
           <h3>Repair the missing idea</h3>
           <span class="repair-state">30-second correction</span>
-          <p>A short scaffold separates the concepts: disinflation slows price rises; deflation means prices actually fall.</p>
+          <p>A short explanation separates the concepts: disinflation slows price rises; deflation means prices actually fall.</p>
         </div>
         <div class="repair-signal repair-signal--scaffold" aria-hidden="true">
           <span>Rate of change</span>
@@ -194,7 +194,7 @@ document.body.classList.add('landing-redesign');
         <div>
           <h3>Prove the fix</h3>
           <span class="repair-state">Fresh scenario</span>
-          <p>A re-forged question changes the context. The student has to apply the corrected idea rather than repeat it.</p>
+          <p>A similar question changes the context. The student has to apply the corrected idea rather than repeat it.</p>
         </div>
         <div class="repair-signal repair-signal--proof" aria-hidden="true">
           <span>Same concept</span>
@@ -215,7 +215,7 @@ document.body.classList.add('landing-redesign');
       <div class="section-intro">
         <h2>One learning loop. Two useful views.</h2>
         <p>Students see the weakness they can repair now. Teachers see the pattern worth teaching next. The same misconception data serves both without turning practice into surveillance.</p>
-        <p class="product-language"><strong>Anvil</strong> repairs missed ideas. <strong>Crucible</strong> checks they hold under pressure.</p>
+        <p class="product-language"><strong>Repair mistakes</strong> works on missed ideas until they stick. <strong>Timed practice</strong> checks they hold under exam pressure.</p>
       </div>
       <div class="audience-tabs" role="tablist" aria-label="Choose a Forge product view">
         <button type="button" class="audience-tab is-active" id="audience-student-tab" role="tab" aria-selected="true" aria-controls="audience-student-panel" data-audience="student">Student view</button>
@@ -231,10 +231,11 @@ document.body.classList.add('landing-redesign');
       <div class="audience-panel" id="audience-student-panel" role="tabpanel" aria-labelledby="audience-student-tab" tabindex="0">
         <aside class="audience-sidebar" aria-label="Student product navigation">
           <strong>Forge</strong>
-          <span class="is-current">Dashboard</span>
-          <span>Forge practice</span>
-          <span>Anvil <b>4</b></span>
-          <span>Crucible</span>
+          <span class="is-current">Home</span>
+          <span>Practice</span>
+          <span>Revision</span>
+          <span>Repair mistakes <b>4</b></span>
+          <span>Timed practice</span>
         </aside>
         <div class="audience-product">
           <div class="product-heading">
@@ -245,17 +246,17 @@ document.body.classList.add('landing-redesign');
             <div>
               <strong>Automatic stabilisers</strong>
               <span class="product-label">Recent focus</span>
-              <p>This is the weakest topic in your recent practice. A short Forge session is the clearest next test.</p>
+              <p>This is the weakest topic in your recent practice. A short practice set is the clearest next test.</p>
               <a class="product-action" href="forge-quiz.html">Practise this topic</a>
             </div>
             <div class="focus-score"><strong>20%</strong><span>Recent 5-question sample</span></div>
           </div>
           <div class="product-route" aria-label="Student learning route">
-            <div><strong>Forge</strong><span>Practise</span></div>
+            <div><strong>Practice</strong><span>Answer a set</span></div>
             <i aria-hidden="true"></i>
-            <div class="is-next"><strong>Anvil</strong><span>Repair 4 ideas</span></div>
+            <div class="is-next"><strong>Repair mistakes</strong><span>Fix 4 ideas</span></div>
             <i aria-hidden="true"></i>
-            <div><strong>Crucible</strong><span>Pressure-test</span></div>
+            <div><strong>Timed practice</strong><span>Test under pressure</span></div>
           </div>
         </div>
       </div>
@@ -310,11 +311,11 @@ document.body.classList.add('landing-redesign');
       </dl>
       <div class="subject-directory" aria-label="Featured live subject pages">
         <div class="subject-directory-head"><span>Featured live subjects</span><a href="guides.html">How coverage works</a></div>
-        <a href="economics.html"><span><strong>Economics</strong><small>A Level · Edexcel 9EC0 · Live</small></span><span class="subject-cue">View subject<svg viewBox="0 0 18 18" aria-hidden="true"><path d="M4 9h9M10 5l4 4-4 4"/></svg></span></a>
-        <a href="psychology.html"><span><strong>Psychology</strong><small>A Level · AQA 7182 · Live</small></span><span class="subject-cue">View subject<svg viewBox="0 0 18 18" aria-hidden="true"><path d="M4 9h9M10 5l4 4-4 4"/></svg></span></a>
-        <a href="a-level-biology.html"><span><strong>Biology</strong><small>A Level · OCR A H420 · Live</small></span><span class="subject-cue">View subject<svg viewBox="0 0 18 18" aria-hidden="true"><path d="M4 9h9M10 5l4 4-4 4"/></svg></span></a>
-        <a href="gcse-science.html"><span><strong>Combined Science</strong><small>GCSE · Edexcel 1SC0 · Live</small></span><span class="subject-cue">View subject<svg viewBox="0 0 18 18" aria-hidden="true"><path d="M4 9h9M10 5l4 4-4 4"/></svg></span></a>
-        <a href="gcse-maths.html"><span><strong>Mathematics</strong><small>GCSE · Edexcel 1MA1 · Live</small></span><span class="subject-cue">View subject<svg viewBox="0 0 18 18" aria-hidden="true"><path d="M4 9h9M10 5l4 4-4 4"/></svg></span></a>
+        <a href="gcse-geography.html" data-subject="gcse-geo"><span><strong>Geography</strong><small>GCSE · Edexcel B 1GB0 · Live</small></span><span class="subject-cue">View subject<svg viewBox="0 0 18 18" aria-hidden="true"><path d="M4 9h9M10 5l4 4-4 4"/></svg></span></a>
+        <a href="economics.html" data-subject="econ"><span><strong>Economics</strong><small>A Level · Edexcel 9EC0 · Live</small></span><span class="subject-cue">View subject<svg viewBox="0 0 18 18" aria-hidden="true"><path d="M4 9h9M10 5l4 4-4 4"/></svg></span></a>
+        <a href="gcse-economics.html" data-subject="gcse-econ"><span><strong>Economics</strong><small>GCSE · OCR J205 · Live</small></span><span class="subject-cue">View subject<svg viewBox="0 0 18 18" aria-hidden="true"><path d="M4 9h9M10 5l4 4-4 4"/></svg></span></a>
+        <a href="psychology.html" data-subject="psych"><span><strong>Psychology</strong><small>A Level · AQA 7182 · Live</small></span><span class="subject-cue">View subject<svg viewBox="0 0 18 18" aria-hidden="true"><path d="M4 9h9M10 5l4 4-4 4"/></svg></span></a>
+        <a href="gcse-science.html" data-subject="gcse-science"><span><strong>Combined Science</strong><small>GCSE · Edexcel 1SC0 · Live</small></span><span class="subject-cue">View subject<svg viewBox="0 0 18 18" aria-hidden="true"><path d="M4 9h9M10 5l4 4-4 4"/></svg></span></a>
         <div class="subject-directory-foot"><span>Each subject page shows its current banks and question totals.</span><a href="faq.html">Subject FAQs</a></div>
       </div>
     </div>
@@ -364,6 +365,6 @@ document.body.classList.add('landing-redesign');
 
 <script src="data/forge-catalog.js?v=20260911-recap-production"></script>
 <script src="scripts/forge-page-actions.js?v=20260823-production"></script>
-<script src="scripts/landing-redesign.js?v=20260823-finish-pass"></script>
+<script src="scripts/landing-redesign.js?v=20261004-names"></script>
 </body>
 </html>

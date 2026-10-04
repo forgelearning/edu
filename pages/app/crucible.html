@@ -17,7 +17,7 @@
   <link rel="stylesheet" href="css/generated-utilities.css">
   <link rel="stylesheet" href="css/page-overrides/crucible.css?v=20261003-learning-trail">
   <link rel="stylesheet" href="css/auth-ember.css?v=20260817-auth2">
-<link rel="stylesheet" href="css/student-motion.css?v=20261003-motion1">
+<link rel="stylesheet" href="css/student-motion.css?v=20261004-signin">
 </head>
 <body class="forge-auth-ember">
 <script src="scripts/forge-api.js"></script>
@@ -151,7 +151,7 @@ function renderJoin(){
        +'<a class="auth-btn-ghost" href="forge-quiz.html?mode=solo">Log in with a Pro account</a>'
        +'<a class="forge-u-1u5pwzm" href="forge-signup.html">Start a 7-day Pro trial</a>';
   app.innerHTML=ForgeAuthCard.shell({
-    title:'No hints. No scaffolds.<br>Just the question.',
+    title:'No hints. No explanations.<br>Just the question.',
     sub:'5 minutes. 6 questions. Wrong answers go straight to Repair mistakes.'
   },f);
   ForgeAuthCard.onSubmit(function(){document.getElementById('j-btn').onclick();});
@@ -213,9 +213,9 @@ function renderLocked(){
 // ===== SUBJECT PICKER =====
 function renderSubject(){
   var h='<p class="tag forge-u-1aakxi2">TIMED PRACTICE</p>';
-  h+='<section class="forge-recommendation" aria-labelledby="crucible-next-title"><p class="forge-recommendation__eyebrow">Recommended next</p><h2 id="crucible-next-title" class="forge-recommendation__title">Pressure-test your strongest current topic</h2><p class="forge-recommendation__copy">A short, timed run shows whether your recent practice holds without scaffolds. Choose a subject below to begin.</p></section>';
+  h+='<section class="forge-recommendation" aria-labelledby="crucible-next-title"><p class="forge-recommendation__eyebrow">Recommended next</p><h2 id="crucible-next-title" class="forge-recommendation__title">Pressure-test your strongest current topic</h2><p class="forge-recommendation__copy">A short, timed run shows whether your recent practice holds without explanations. Choose a subject below to begin.</p></section>';
   h+='<h2 class="forge-u-1y4dowp">Choose a subject</h2>';
-  h+='<p class="forge-u-13n81an">You\u2019ll get up to 6 questions from that subject at random. No scaffolds.</p>';
+  h+='<p class="forge-u-13n81an">You\u2019ll get up to 6 questions from that subject at random. No explanations.</p>';
   h+='<div class="subject-list">';
 
   // Subjects of every class joined (in Crucible or Forge \u2014 the list is
@@ -349,10 +349,10 @@ function renderReady(){
   var totalMins = Math.round(totalSecs / 60);
   var timeLabel = totalMins + ' minute' + (totalMins !== 1 ? 's' : '');
   var extraNote = state.extraTime > 0 ? ' <span class="forge-u-mla374">(+' + state.extraTime + '% time arrangement applied)</span>' : '';
-  h+='<p class="forge-u-2vbwk">'+state.questions.length+' questions \u00b7 ' + timeLabel + ' \u00b7 no scaffolds \u00b7 no re-forges' + extraNote + '</p>';
+  h+='<p class="forge-u-2vbwk">'+state.questions.length+' questions \u00b7 ' + timeLabel + ' \u00b7 no explanations \u00b7 no hints' + extraNote + '</p>';
   h+='<div class="forge-u-12xyhzv">';
   h+='<div>\u2715 No hints if you get it wrong</div>';
-  h+='<div>\u2715 No re-forge twin to soften the blow</div>';
+  h+='<div>\u2715 No similar question to soften the blow</div>';
   h+='<div>\u2713 Wrong answers go to Repair mistakes automatically</div>';
   h+='<div>\u2713 Timer stops for no one</div>';
   h+='</div>';

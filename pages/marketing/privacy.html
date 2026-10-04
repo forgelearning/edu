@@ -119,8 +119,8 @@
           <tbody>
             <tr><td>Display name</td><td>Identify the student in the teacher dashboard and, for class-joined students, in the weekly class league (shown to classmates as first name and last initial) and to classmates they have accepted as friends</td><td>Legitimate interests (providing the service)</td></tr>
             <tr><td>Private student code</td><td>Authenticate the student's access to their own class-linked work and answer history</td><td>Legitimate interests (providing the service)</td></tr>
-            <tr><td>Question responses</td><td>Track accuracy, identify misconceptions, power the Anvil and profile</td><td>Legitimate interests (providing the service)</td></tr>
-            <tr><td>Misconception tags</td><td>Derive the Anvil, corrective starters, and student profile</td><td>Legitimate interests (providing the service)</td></tr>
+            <tr><td>Question responses</td><td>Track accuracy, identify misconceptions, power Repair mistakes and the profile</td><td>Legitimate interests (providing the service)</td></tr>
+            <tr><td>Misconception tags</td><td>Derive Repair mistakes, corrective starters, and the student profile</td><td>Legitimate interests (providing the service)</td></tr>
             <tr><td>XP and streak data</td><td>Power XP, ranks, the weekly class league and the friends feature</td><td>Legitimate interests (providing the service)</td></tr>
             <tr><td>Friend connections</td><td>Record which classmates a student has chosen to connect with, so that accepted friends can see each other’s progress</td><td>Legitimate interests (providing the service)</td></tr>
             <tr><td>Session timestamps</td><td>Calculate streaks, usage patterns</td><td>Legitimate interests (providing the service)</td></tr>
@@ -170,7 +170,7 @@
         <table>
           <thead><tr><th>Purpose</th><th>Data used</th></tr></thead>
           <tbody>
-            <tr><td>Power the student profile, Anvil and Crucible</td><td>Responses, misconception tags, XP</td></tr>
+            <tr><td>Power the student profile, Repair mistakes and Timed practice</td><td>Responses, misconception tags, XP</td></tr>
             <tr><td>Account authentication and multi-device login</td><td>Email address, hashed password (Pro/trial only)</td></tr>
             <tr><td>Trial management — calculating expiry and sending reminders</td><td>Email address, trial start date (Pro/trial only)</td></tr>
             <tr><td>Subscription management</td><td>Email address, subscription status</td></tr>
@@ -246,7 +246,7 @@
         <p>Forge uses <strong>browser localStorage</strong> for essential preferences and sessions. Public-site analytics may use cookies after an analytics consent choice. Local storage is used to:</p>
         <ul>
           <li>Remember your theme preference (dark/light mode)</li>
-          <li>Store your session (display name, class code and, for protected class-linked students, private student code) so you do not have to re-enter it when navigating between the Quiz, Assigned, Anvil, Crucible, Dashboard and Profile pages</li>
+          <li>Store your session (display name, class code and, for protected class-linked students, private student code) so you do not have to re-enter it when navigating between the Practice, Assignments, Repair mistakes, Timed practice, Home and Profile pages</li>
           <li>Store your anonymous free-tier identifier (a randomly generated token, not linked to any personal information)</li>
           <li>Store your Supabase Auth session token (access token + refresh token) if you have a Pro or trial account — this allows you to stay logged in across visits without re-entering your password</li>
         </ul>
@@ -264,7 +264,7 @@
         </div>
 
         <h3>8.1 Subject matter and duration</h3>
-        <p>The Processor shall process personal data on behalf of the Controller for the purpose of providing the Forge educational platform, including the Quiz, Anvil, Crucible, and Teacher Dashboard. Processing shall continue for the duration of the licence and for the retention periods set out in Section 5.</p>
+        <p>The Processor shall process personal data on behalf of the Controller for the purpose of providing the Forge educational platform, including Practice, Repair mistakes, Timed practice, and the Teacher Dashboard. Processing shall continue for the duration of the licence and for the retention periods set out in Section 5.</p>
 
         <h3>8.2 Nature of processing</h3>
         <p>Processing includes: collection, storage, retrieval, consultation, use, and disclosure by transmission of student question responses, misconception tags, display names, and XP data, as described in Section 2.</p>

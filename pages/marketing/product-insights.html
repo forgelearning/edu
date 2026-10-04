@@ -33,7 +33,7 @@
   h+='<div class="insight-stat"><span class="tag">Run completion</span><span class="insight-number">'+completionRate+'%</span></div></div>';
   h+='<section class="insight-list"><h2>Event breakdown</h2>';
   Object.keys(counts).sort().forEach(function(name){h+='<div class="event-row"><span class="event-name">'+name+'</span><span class="forge-meta">'+counts[name]+'</span></div>';});
-  if(!events.length)h+=ForgeState.html('empty',{label:'No product events yet',body:'Complete a Forge or Crucible session on this device to see local diagnostics here.'});
+  if(!events.length)h+=ForgeState.html('empty',{label:'No product events yet',body:'Complete a practice or timed session on this device to see local diagnostics here.'});
   var statusLabel=analyticsStatus.mode==='remote'?'Remote ingestion active':analyticsStatus.mode==='remote-ready'?'Remote ingestion ready':'Local fallback active';
   var statusBody=analyticsStatus.mode==='remote'||analyticsStatus.mode==='remote-ready'?'New events are queued locally and submitted to the shared production event stream.':'Events are being kept locally until the production event stream is reachable.';
   h+='<section class="insight-list forge-mt-4">'+ForgeState.html(analyticsStatus.mode==='local-fallback'?'error':'success',{label:statusLabel,body:statusBody})+'<p class="forge-meta forge-mt-3">This browser cannot display cross-user cohorts. Use the protected Supabase analytics queries for retention, adoption, and outcome analysis.</p><button type="button" class="forge-button forge-button--secondary" id="sync">Sync pending events</button></section>';

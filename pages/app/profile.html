@@ -18,7 +18,7 @@
   <link rel="stylesheet" href="css/page-overrides/profile.css?v=20261004-rings">
   <link rel="stylesheet" href="css/page-overrides/profile-overdrive.css?v=20260818-overdrive">
   <link rel="stylesheet" href="css/auth-ember.css?v=20260817-auth2">
-<link rel="stylesheet" href="css/student-motion.css?v=20261003-motion1">
+<link rel="stylesheet" href="css/student-motion.css?v=20261004-signin">
 </head>
 <body class="forge-auth-ember">
 <script src="scripts/forge-api.js"></script>
@@ -137,8 +137,8 @@ function calcGrade(acc, activeMCs, totalMCs, isGCSE) {
     if (score >= 68) return {grade:'7', next:'8',  color:'var(--good)', desc:'Consistent top-end work. Keep Repair mistakes clear to push higher.'};
     if (score >= 60) return {grade:'6', next:'7',  color:'var(--hot)', desc:'Solid. Accuracy and repair work will push this into the 7s.'};
     if (score >= 52) return {grade:'5', next:'6',  color:'var(--hot)', desc:'Strong pass. Focus on Repair mistakes — misconceptions are costing marks.'};
-    if (score >= 44) return {grade:'4', next:'5',  color:'var(--ember)', desc:'Standard pass. Daily sessions and re-forge work will move this up.'};
-    if (score >= 36) return {grade:'3', next:'4',  color:'#b45309', desc:'Keep going. Daily sessions and re-forge work will move this.'};
+    if (score >= 44) return {grade:'4', next:'5',  color:'var(--ember)', desc:'Standard pass. Daily sessions and repair work will move this up.'};
+    if (score >= 36) return {grade:'3', next:'4',  color:'#b45309', desc:'Keep going. Daily sessions and repair work will move this.'};
     if (score >= 28) return {grade:'2', next:'3',  color:'var(--slate)', desc:'Early stage. More questions and misconception rework needed.'};
     if (score >= 18) return {grade:'1', next:'2',  color:'var(--slate)', desc:'Early stage. More questions and misconception rework needed.'};
     return             {grade:'U', next:'1',  color:'var(--bad)', desc:'Not enough data yet — complete more sessions to get a reliable band.'};
@@ -147,7 +147,7 @@ function calcGrade(acc, activeMCs, totalMCs, isGCSE) {
   if (score >= 72) return {grade:'A',  next:'A*',   color:'var(--good)', desc:'Strong. Clear your remaining misconceptions to break into A*.'};
   if (score >= 60) return {grade:'B',  next:'A',    color:'var(--hot)', desc:'Consistent. Accuracy and repair work will push this to an A.'};
   if (score >= 50) return {grade:'C',  next:'B',    color:'var(--ember)', desc:'Building. Focus on Repair mistakes — misconceptions are costing marks.'};
-  if (score >= 40) return {grade:'D',  next:'C',    color:'#b45309', desc:'Keep going. Daily sessions and re-forge work will move this.'};
+  if (score >= 40) return {grade:'D',  next:'C',    color:'#b45309', desc:'Keep going. Daily sessions and repair work will move this.'};
   if (score >= 30) return {grade:'E',  next:'D',    color:'var(--slate)', desc:'Early stage. More questions and misconception rework needed.'};
   return             {grade:'U',  next:'E',    color:'var(--bad)', desc:'Not enough data yet — complete more sessions to get a reliable band.'};
 }
@@ -351,7 +351,7 @@ function renderProfile(){
     h += '<div class="forge-u-1rh0em3">';
     h += '<div style="height:100%;width:100%;background:'+barCol+';border-radius:var(--radius-xs);transform:scaleX('+(barPct / 100)+');transform-origin:left center;transition:transform .4s"></div>';
     h += '</div>';
-    h += '<p class="forge-u-1bzwq9b">After '+days+' day'+(days!==1?'s':'')+', you\'ll drop to 10 free questions/day unless you subscribe · £2.99/month</p>';
+    h += '<p class="forge-u-1bzwq9b">After '+days+' day'+(days!==1?'s':'')+', you\'ll drop to 10 free questions at a time, with breaks, unless you subscribe · £2.99/month</p>';
     h += '</div>';
   } else if (st.isPaid) {
     // Small Pro badge for paying subscribers

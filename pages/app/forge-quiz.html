@@ -16,8 +16,8 @@
 
 <link rel="stylesheet" href="css/states.css">
   <link rel="stylesheet" href="css/generated-utilities.css">
-<link rel="stylesheet" href="css/page-overrides/forge-quiz.css?v=20261004-mixed">
-<link rel="stylesheet" href="css/student-motion.css?v=20261003-motion1">
+<link rel="stylesheet" href="css/page-overrides/forge-quiz.css?v=20261004-signin">
+<link rel="stylesheet" href="css/student-motion.css?v=20261004-signin">
 </head>
 <body>
 <script src="scripts/forge-api.js?v=20260809"></script>
@@ -945,12 +945,15 @@ function renderJoin() {
   h += '<div id="panel-free">';
   h += '<p class="forge-u-1xgpbl">Choose a subject and start practising. No class code or account needed.</p>';
   h += '<p class="forge-independent-detail">10 free questions a day. Your independent work stays private and is available on this device, even if you join a class later.</p>';
-  h += '<div class="forge-u-eelu4s">';
+  // The first thing a new student read was a free-versus-Pro price list. It
+  // is still one tap away, in plain names, but no longer leads the screen.
+  h += '<details class="forge-whats-free"><summary>What’s free?</summary><div class="forge-u-eelu4s">';
   h += '<div class="forge-u-1ce89bl"><span>✓ All subjects &amp; topics</span><span class="forge-text-dim"> free</span></div>';
-  h += '<div class="forge-u-1ce89bl"><span>✓ Scaffolds &amp; re-forge feedback</span><span class="forge-text-dim"> free</span></div>';
+  h += '<div class="forge-u-1ce89bl"><span>✓ Explanations &amp; similar questions</span><span class="forge-text-dim"> free</span></div>';
   h += '<div class="forge-u-1ce89bl"><span class="forge-text-dim">✕ Timed practice · full Repair mistakes · XP ranks</span><span class="forge-text-dim"> Pro</span></div>';
   h += '<div class="forge-u-h6lji0"><span class="forge-text-dim">✕ Unlimited questions</span><span class="forge-text-dim"> Pro</span></div>';
-  h += '</div>';
+  h += '<p class="forge-whats-free__pro">Want unlimited? <a href="forge-signup.html">Subscribe — £2.99/mo</a></p>';
+  h += '</div></details>';
   h += ForgeAuthCard.field('free-name', 'Your first name', {placeholder:'e.g. Alex', autocomplete:'given-name'});
   h += '<button class="auth-btn" id="free-btn" type="submit">Start studying →</button>';
   h += '<p class="auth-err" id="free-err"></p>';
@@ -984,8 +987,7 @@ function renderJoin() {
 
   app.innerHTML = ForgeAuthCard.shell({
     title: 'Welcome to Forge',
-    sub: 'Study independently, join your class, or log in.',
-    foot: 'Want unlimited? <a href="forge-signup.html">Subscribe — £2.99/mo</a>'
+    sub: 'Study independently, join your class, or log in.'
   }, h);
 
   // Tab switching
@@ -1610,7 +1612,7 @@ function renderTrialExpiredWall() {
 
   h += '<div class="forge-u-xrboeu">';
   h += '<p class="forge-u-hptrzy">Stay on free</p>';
-  h += '<p class="forge-u-1rniwep">10 questions per day · all subjects · scaffolds included</p>';
+  h += '<p class="forge-u-1rniwep">10 questions per day · all subjects · explanations included</p>';
   h += '<button type="button" class="forge-u-148bwq4" data-forge-action="quiz-free-tier">Continue for free →</button>';
   h += '</div>';
 
@@ -2051,7 +2053,7 @@ function renderReforge(q,el,color){
         awardXP(XP_REFORGE, rfb.firstChild);
         forgeSaveSession();
       }else{
-        rfb.innerHTML='<div class="forge-u-jm24uy"><div class="forge-u-o1x2qa">Not quite \u2014 the answer is <strong>'+rf.correct+'</strong>.</div><div class="rf-scaffold"><span class="stag">Re-read the scaffold</span><p>'+ForgeQuestion.scaffoldText(q)+'</p></div></div>';
+        rfb.innerHTML='<div class="forge-u-jm24uy"><div class="forge-u-o1x2qa">Not quite \u2014 the answer is <strong>'+rf.correct+'</strong>.</div><div class="rf-scaffold"><span class="stag">Re-read the explanation</span><p>'+ForgeQuestion.scaffoldText(q)+'</p></div></div>';
       }
       var continueBtn=document.getElementById('next-btn');
       if(continueBtn&&continueBtn.textContent.indexOf('Continue without repair')===0){
@@ -2088,7 +2090,7 @@ function renderResults(){
   var remaining=sessionSignals.remaining.length?sessionSignals.remaining[0]:null;
   // Students see the readable label, never the internal MC- code.
   function mcLabel(tag){ return (window.resolveMCLabel && resolveMCLabel(tag)) || ''; }
-  var repaired = repairedTag ? (mcLabel(repairedTag) || 'An error you re-forged correctly') : null;
+  var repaired = repairedTag ? (mcLabel(repairedTag) || 'A mistake you repaired with a similar question') : null;
   var remainingLabel = remaining
     ? (mcLabel(remaining) || 'One idea from this session needs another pass')
     : 'No unresolved error from this session';

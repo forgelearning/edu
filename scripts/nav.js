@@ -29,7 +29,15 @@ document.addEventListener('click', function(e) {
   var lastY = window.scrollY;
   var collapsed = false;
 
-  function collapse() { navEl.classList.add('nav-collapsed'); collapsed = true; }
+  // On the homepage at desktop widths the collapsed pill sat at the top-left
+  // and the page's left-aligned headings scrolled underneath it. The full bar
+  // has its own background, so there it simply stays in place.
+  var keepFullBar = document.body.classList.contains('landing-redesign') && window.matchMedia
+    ? window.matchMedia('(min-width: 901px)') : null;
+  function collapse() {
+    if (keepFullBar && keepFullBar.matches) return;
+    navEl.classList.add('nav-collapsed'); collapsed = true;
+  }
   function expand() { navEl.classList.remove('nav-collapsed'); collapsed = false; }
 
   window.addEventListener('scroll', function(){

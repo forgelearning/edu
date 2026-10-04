@@ -597,3 +597,9 @@ html:not([data-theme="light"]) body.forge-solo-login::after{color:var(--forge-lo
 .forge-recall textarea:focus-visible{outline:2px solid var(--ember);outline-offset:1px}
 .forge-recall .forge-button{justify-self:start;min-height:44px}
 .forge-recall.is-shown p{margin:0;color:var(--white)}
+/* Sign-in: free-versus-Pro list folded away. */
+.forge-whats-free{margin:0 0 16px}
+.forge-whats-free summary{cursor:pointer;color:var(--slate);font-size:13px;font-weight:600}
+.forge-whats-free summary:focus-visible{outline:2px solid var(--ember);outline-offset:2px}
+.forge-whats-free[open] summary{margin-bottom:10px}
+.forge-whats-free__pro{margin:10px 0 0;color:var(--slate);font-size:13px}

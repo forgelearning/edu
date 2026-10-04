@@ -14,7 +14,9 @@ const files = [
   'scripts/forge-sidebar.js', 'scripts/forge-revision.js', 'scripts/forge-student-badges.js',
   'scripts/forge-student-delight.js', 'scripts/forge-question.js'
 ];
-const banned = /\b(Anvil|Crucible|CRUCIBLE|Re-?forge[ds]?|Reforged|Forge mode|(?<!-)[Ww]orkbench(?!-))\b/;
+// Case-insensitive for re-forge: a lowercase "re-forge" survived the first pass.
+// Hyphen-joined CSS names (reforge-box, forge-reforge-result) are not text.
+const banned = /\b(Anvil|Crucible|CRUCIBLE|(?<![-\w])[Rr]e-?forge[ds]?(?!-)|[Rr]eforged|Forge mode|(?<![-.\w])[Ss]caffolds?(?![-\w:])|(?<!-)[Ww]orkbench(?!-))\b/;
 const found = [];
 files.forEach((file) => {
   fs.readFileSync(file, 'utf8').split('\n').forEach((line, index) => {

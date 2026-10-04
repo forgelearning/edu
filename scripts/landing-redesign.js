@@ -137,7 +137,7 @@
         '<button type="button" class="opt">Disinflation</button><button type="button" class="opt" data-right="1">Deflation</button>' +
         '<button type="button" class="opt">Reflation</button><button type="button" class="opt">Stagflation</button>' +
         '<p class="praise" id="praise2" tabindex="-1">Concept repaired. Below-zero inflation means the price level fell.</p>' +
-        '<p class="praise forge-text-bad" id="miss2" tabindex="-1">Not yet. Below zero means deflation: the price level itself fell. The full app would add this idea to Anvil for another pass.</p>';
+        '<p class="praise forge-text-bad" id="miss2" tabindex="-1">Not yet. Below zero means deflation: the price level itself fell. The full app would add this idea to Repair mistakes for another go.</p>';
       focusFeedback(body.querySelector('.q'));
       body.querySelectorAll('.opt').forEach(function (option) {
         option.addEventListener('click', function () {

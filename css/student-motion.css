@@ -58,3 +58,10 @@ body{
   .opt:is(.correct,.wrong)::before{transform:scaleY(1)}
   .scaffold-box,.praise-box,.next-btn,.reforge-box,.revision-answer-reveal,.revision-result>span,#list>.card,.mission-control,.mission-control__percent,.xp-gain,.xp-result__rankup{animation:none!important}
 }
+
+/* Before sign-in, the app menu (Home, Practice, Sign out, …) pointed at pages
+   the visitor cannot use yet. While a sign-in card is on screen, show only
+   the Forge mark. Student pages only: the teacher class picker also uses the
+   card and keeps its sidebar. */
+body.has-forge-sidebar:has(#app .auth-card){padding-left:0!important;padding-bottom:0!important}
+body.has-forge-sidebar:has(#app .auth-card) :is(#forge-sidebar,#forge-sidebar-toggle,#forge-tabbar){display:none!important}
