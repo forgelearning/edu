@@ -338,3 +338,18 @@ html[data-overdrive="control-room"] .mod-row:hover{border-color:var(--hot);box-s
 .dashboard-topics a:focus-visible{outline:2px solid var(--ember);outline-offset:3px}
 .dashboard-topics small{flex:none;white-space:nowrap;color:var(--slate);font-weight:500}
 .dashboard-topics .dashboard-topics__all{background:transparent;color:var(--ember)}
+/* Today's plan (scripts/forge-daily-plan.js). */
+.dashboard-plan__head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:14px}
+.dashboard-plan__head h2{margin:0}
+.dashboard-plan__head span{color:var(--slate);font:600 12px 'JetBrains Mono',monospace}
+.dashboard-plan__done{margin:0 0 14px!important;padding:10px 14px;border-radius:var(--radius-sm);background:var(--surface-focus-subtle);color:var(--white)!important;font-weight:600}
+.dashboard-plan__steps{display:grid;gap:10px;margin:0 0 20px;padding:0;list-style:none}
+.dashboard-plan__step{display:grid;grid-template-columns:32px minmax(0,1fr) auto;align-items:center;gap:12px;padding:12px 14px;border:1px solid var(--line);border-radius:var(--radius-md);background:var(--panel-2)}
+.dashboard-plan__step.is-next{border-color:var(--ember)}
+.dashboard-plan__mark{display:grid;place-items:center;width:28px;height:28px;border:1px solid var(--line);border-radius:50%;color:var(--slate);font:700 13px 'Rethink Sans',sans-serif}
+.dashboard-plan__step.is-done .dashboard-plan__mark{border-color:var(--good);background:var(--good);color:var(--coal)}
+.dashboard-plan__step.is-done strong{color:var(--slate);text-decoration:line-through;text-decoration-thickness:1px}
+.dashboard-plan__step strong{display:block;color:var(--white);font:700 15px/1.3 'Rethink Sans',sans-serif}
+.dashboard-plan__step small{display:block;margin-top:2px;color:var(--slate);font-size:12px}
+.dashboard-plan__step .forge-button{min-height:40px;white-space:nowrap}
+@media(max-width:520px){.dashboard-plan__step{grid-template-columns:28px minmax(0,1fr)}.dashboard-plan__step .forge-button{grid-column:2;justify-self:start}}

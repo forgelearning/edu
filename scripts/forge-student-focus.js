@@ -31,5 +31,13 @@
       return bank==='personal'?!!personal[cardKey]:banks.indexOf(bank)!==-1;
     }).length;
   }
-  root.ForgeStudentFocus={remember:remember,subject:subject,due:due};
+  // Cards rated today on this device, for the daily plan's Revision tick.
+  function reviewedToday(context){
+    var raw=null;
+    try{raw=JSON.parse(localStorage.getItem('forge-revision:'+String(context&&context.studentId||'anonymous'))||'null');}catch(e){}
+    if(!raw||!raw.reviews)return 0;
+    var today=new Date().toDateString();
+    return Object.keys(raw.reviews).filter(function(key){var r=raw.reviews[key];return r&&r.updatedAt&&new Date(r.updatedAt).toDateString()===today;}).length;
+  }
+  root.ForgeStudentFocus={remember:remember,subject:subject,due:due,reviewedToday:reviewedToday};
 })(window);
