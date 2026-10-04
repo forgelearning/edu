@@ -456,7 +456,11 @@ var ForgeSidebar = {
 
     var rest = overflow.concat(config.footerItems || []);
     if (rest.length) {
-      h += rest.map(function(it) { return _fsSheetItemHtml(it, active); }).join('');
+      var badges = this._badges || {};
+      h += rest.map(function(it) {
+        var b = badges[it.key];
+        return _fsSheetItemHtml(b ? Object.assign({}, it, {badge: b.value, badgeMuted: b.muted}) : it, active);
+      }).join('');
       h += '<div class="fsheet-divider"></div>';
     }
 
@@ -592,8 +596,27 @@ var ForgeSidebar = {
     if (typeof window.forgeOnClassSwitch === 'function') window.forgeOnClassSwitch();
   },
 
+  // An item in Menu has no tab of its own, so the Menu tab shows a dot when
+  // anything inside it has a badge (assigned work, for students).
+  _syncMenuBadge: function() {
+    var tab = document.querySelector('#forge-tabbar .ftab[data-key="__more"]');
+    if (!tab) return;
+    var badges = this._badges || {};
+    var inside = _fsMobileItems(this._config || {}).slice(_FORGE_MAX_TABS).filter(function(it) { return badges[it.key]; });
+    var dot = tab.querySelector('.ftab-dot');
+    if (!inside.length) { if (dot) dot.remove(); tab.setAttribute('aria-label', 'Menu'); return; }
+    if (!dot) { dot = document.createElement('span'); dot.className = 'ftab-dot'; tab.appendChild(dot); }
+    var total = inside.reduce(function(sum, it) { return sum + (Number(badges[it.key].value) || 0); }, 0);
+    dot.textContent = total || '•';
+    dot.classList.toggle('badge-muted', inside.every(function(it) { return badges[it.key].muted; }));
+    tab.setAttribute('aria-label', 'Menu, ' + inside.map(function(it) { return it.label + ' ' + badges[it.key].value; }).join(', '));
+  },
+
   setBadge: function(key, value, muted) {
     var hasBadge = value !== null && value !== undefined && value !== '';
+    this._badges = this._badges || {};
+    this._badges[key] = hasBadge ? {value: value, muted: !!muted} : null;
+    this._syncMenuBadge();
     var el = document.querySelector('.fside-item[data-key="' + key + '"] .fside-badge');
     if (!el && hasBadge) {
       var item = document.querySelector('.fside-item[data-key="' + key + '"]');
@@ -721,7 +744,9 @@ function _fsSidebarCall(source) {
 function _fsMobileItems(config) {
   var items = (config.items || []).slice();
   if (!config.studentNav) return items;
-  var order = ['dashboard', 'forge', 'anvil', 'assignments', 'revision', 'crucible'];
+  // Revision is the daily habit, so it gets a tab. Assignments sits in Menu:
+  // Home leads with due assigned work, and the Menu tab carries its badge.
+  var order = ['dashboard', 'forge', 'revision', 'anvil', 'assignments', 'crucible'];
   return items.sort(function(a,b) { return order.indexOf(a.key) - order.indexOf(b.key); });
 }
 
@@ -730,13 +755,13 @@ function _fsDescription(it) {
 }
 
 function _fsDescriptor(key) {
-  return {dashboard:'Home', forge:'Practice', assignments:'Assigned work', anvil:'Repair misconceptions', crucible:'Timed challenge'}[key] || '';
+  return {dashboard:'Home', forge:'Practice', assignments:'Assignments', anvil:'Repair mistakes', crucible:'Timed practice', revision:'Revision'}[key] || '';
 }
 
 // Bottom-tab labels have roughly 9 characters before they ellipsise, so they get
 // their own short forms rather than reusing the longer rail descriptors.
 function _fsTabLabel(key) {
-  return {dashboard:'Home', forge:'Practice', assignments:'Assigned', anvil:'Repair', crucible:'Timed'}[key] || '';
+  return {dashboard:'Home', forge:'Practice', assignments:'Assigned', anvil:'Repair', crucible:'Timed', revision:'Revision'}[key] || '';
 }
 
 function _fsTabHtml(it, activeKey) {
@@ -762,6 +787,7 @@ function _fsSheetItemHtml(it, activeKey) {
     attrs + (it.key === activeKey ? ' aria-current="page"' : '') + '>' +
     _fsIcon(it.key) +
     '<span>' + _fsEsc(it.label) + (_fsDescription(it) ? '<small class="fsheet-subtitle">' + _fsEsc(_fsDescription(it)) + '</small>' : '') + '</span>' +
+    ((it.badge !== undefined && it.badge !== null) ? '<span class="fsheet-badge' + (it.badgeMuted ? ' badge-muted' : '') + '">' + _fsEsc(it.badge) + '</span>' : '') +
   '</' + tag + '>';
 }
 

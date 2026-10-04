@@ -196,6 +196,8 @@ body.has-forge-sidebar #sticky-nav{display:none!important}
     border-radius:var(--radius-md);border:none;background:none;font:inherit;font-size:15px;font-weight:600;
     color:var(--white);text-align:left;text-decoration:none;cursor:pointer}
   .fsheet-item svg{width:19px;height:19px;flex-shrink:0;color:var(--slate)}
+  .fsheet-badge{margin-left:auto;min-width:20px;height:20px;padding:0 6px;border-radius:999px;background:var(--ember);color:#fff;font:700 11px/20px 'Poppins',sans-serif;text-align:center}
+  .fsheet-badge.badge-muted{background:var(--panel-2);color:var(--dim)}
   .fsheet-item:active{background:var(--panel-2)}
   .fsheet-item.active{color:var(--ember)}
   .fsheet-item.active svg{color:var(--ember)}
