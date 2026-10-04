@@ -44,7 +44,7 @@
 .forge-card--glass{background:var(--glass-panel);backdrop-filter:blur(var(--glass-blur)) saturate(160%);-webkit-backdrop-filter:blur(var(--glass-blur)) saturate(160%)}
 .forge-card--focus{border-color:rgba(255,201,60,.42);background:var(--surface-focus-subtle)}
 .forge-button{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 var(--space-4);border:1px solid transparent;border-radius:var(--radius-sm);font:600 13px 'IBM Plex Sans',sans-serif;text-decoration:none;cursor:pointer;transition:background var(--motion-feedback) var(--ease-forge),color var(--motion-feedback) var(--ease-forge),border-color var(--motion-feedback) var(--ease-forge),transform var(--motion-feedback) var(--ease-forge)}
-.forge-button--primary{background:var(--ember);color:#fff}
+.forge-button--primary{background:var(--ember-action);color:#fff}
 .forge-button--primary .forge-meta{color:inherit}
 .forge-button--primary:hover{background:var(--hot);color:var(--coal);transform:translateY(-1px)}
 .forge-button--secondary{background:transparent;border-color:var(--line);color:var(--white)}
@@ -61,7 +61,7 @@
 .forge-visually-hidden{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
 .forge-progress{height:6px;background:var(--line);border-radius:var(--radius-pill);overflow:hidden}
 .forge-progress > span{display:block;height:100%;background:var(--ember);border-radius:inherit;transition:width var(--motion-enter) var(--ease-forge)}
-.ui-state-action{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:0 var(--space-4);border-radius:var(--radius-sm);background:var(--ember);color:#fff;font:600 13px Inter,sans-serif;text-decoration:none;transition:background .15s,color .15s}
+.ui-state-action{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:0 var(--space-4);border-radius:var(--radius-sm);background:var(--ember-action);color:#fff;font:600 13px Inter,sans-serif;text-decoration:none;transition:background .15s,color .15s}
 .ui-state-action:hover{background:var(--hot);color:var(--coal)}
 .ui-recommendation .ui-state-action{margin-top:var(--space-2)}
 .forge-insight-card{margin-bottom:var(--space-5)}

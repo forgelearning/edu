@@ -12,7 +12,7 @@ html.forge-native .role-select{padding-top:calc(24px + env(safe-area-inset-top,0
 .role-select__choices{display:grid;gap:12px;text-align:left}
 .role-choice{display:grid;grid-template-columns:44px minmax(0,1fr) 24px;align-items:center;gap:12px;min-height:82px;padding:14px;border:1px solid var(--line);border-radius:var(--radius-md);background:var(--panel);color:var(--white);text-decoration:none;transition:border-color .15s,background .15s,transform .15s}
 .role-choice:hover,.role-choice:focus-visible{border-color:var(--ember);background:var(--panel-2);transform:translateY(-1px)}
-.role-choice__mark{display:grid;place-items:center;width:44px;height:44px;border-radius:12px;background:var(--ember);color:#fff;font-family:'Sora',sans-serif;font-size:20px;font-weight:800}
+.role-choice__mark{display:grid;place-items:center;width:44px;height:44px;border-radius:12px;background:var(--ember-action);color:#fff;font-family:'Sora',sans-serif;font-size:20px;font-weight:800}
 .role-choice strong,.role-choice small{display:block}.role-choice strong{font-size:17px}.role-choice small{margin-top:3px;color:var(--dim);font-size:12.5px;line-height:1.4}
 .role-choice__arrow{color:var(--ember);font-size:22px;text-align:right}.role-select__back{display:inline-block;margin-top:24px;color:var(--dim);font-size:13px;text-decoration:none}.role-select__back:hover{color:var(--hot)}
 @media(max-width:480px){.role-select{padding-top:calc(16px + env(safe-area-inset-top,0px));padding-bottom:calc(16px + env(safe-area-inset-bottom,0px))}.role-select__card{padding:28px 20px}.role-select__icon{margin-bottom:18px}}

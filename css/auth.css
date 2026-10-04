@@ -65,7 +65,7 @@
 .auth-btn,
 .auth-card .join-btn,
 .auth-card > .btn,
-.auth-card .btn-primary{width:100%;margin-top:6px;padding:12px;border-radius:var(--radius-sm);border:1px solid rgba(255,201,60,.3);background:var(--ember);color:#fff;font-family:'IBM Plex Sans',sans-serif;font-weight:600;font-size:14.5px;cursor:pointer;box-shadow:inset 0 1px 0 rgba(255,201,60,.4),0 12px 28px -14px rgba(213,92,19,.9);transition:transform .15s,box-shadow .15s,filter .15s}
+.auth-card .btn-primary{width:100%;margin-top:6px;padding:12px;border-radius:var(--radius-sm);border:1px solid rgba(255,201,60,.3);background:var(--ember-action);color:#fff;font-family:'IBM Plex Sans',sans-serif;font-weight:600;font-size:14.5px;cursor:pointer;box-shadow:inset 0 1px 0 rgba(255,201,60,.4),0 12px 28px -14px rgba(213,92,19,.9);transition:transform .15s,box-shadow .15s,filter .15s}
 .auth-btn:hover,
 .auth-card .join-btn:hover,
 .auth-card > .btn:hover,
@@ -90,7 +90,7 @@
 /* Segmented tabs inside a card (teacher sign in / quiz join vs log in) */
 .auth-card .login-tabs{display:flex;gap:4px;padding:4px;margin-bottom:18px;background:var(--panel-2);border:1px solid var(--line);border-radius:var(--radius-md)}
 .auth-card .login-tab{flex:1;padding:8px 0;border:none;background:none;border-radius:var(--radius-sm);font-family:'IBM Plex Sans',sans-serif;font-weight:600;font-size:13px;color:var(--slate);cursor:pointer;transition:background .15s,color .15s}
-.auth-card .login-tab.active{background:var(--ember);color:#fff}
+.auth-card .login-tab.active{background:var(--ember-action);color:#fff}
 .auth-card .login-tab:hover:not(.active){color:var(--white)}
 
 /* Light theme — cooler glows, dark ink on the ember button stays white. */

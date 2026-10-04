@@ -9,12 +9,13 @@
   --panel-2:#2A2622;
   --line:#3A342E;
   --ember:#D55C13;
+  --ember-action:#B84A0B;
   --hot:#FFC93C;
   --slate:#B8B4AD;
   --white:#F5F1EA;
   --good:#7FD98A;
   --bad:#FF5A5A;
-  --dim:#8A857E;
+  --dim:#A7A099;
 
   /* spacing — 4pt scale */
   --space-1:4px;
@@ -70,6 +71,7 @@
   --panel-2:#F3F2EF;
   --line:#E0DDD8;
   --ember:#B83E00;
+  --ember-action:#B83E00;
   --hot:#825600;
   --slate:#6B6660;
   --white:#1A1816;

@@ -11,14 +11,14 @@ h1,h2,h3{font-family:'Sora',sans-serif;color:var(--white);line-height:1.1;letter
 .join-input{width:100%;padding:12px 14px;border-radius:var(--radius-sm);border:1px solid var(--line);background:var(--panel);color:var(--white);font-family:'IBM Plex Sans',sans-serif;font-size:15px;margin-bottom:14px;text-transform:uppercase}
 .join-input:focus{outline:none;border-color:var(--ember)}
 .join-input::placeholder{color:#7A756E;text-transform:none}
-.join-btn{width:100%;padding:13px;border-radius:var(--radius-sm);background:var(--ember);color:#fff;border:none;font-family:'IBM Plex Sans',sans-serif;font-weight:600;font-size:15px;cursor:pointer}
+.join-btn{width:100%;padding:13px;border-radius:var(--radius-sm);background:var(--ember-action);color:#fff;border:none;font-family:'IBM Plex Sans',sans-serif;font-weight:600;font-size:15px;cursor:pointer}
 .join-btn:hover{background:var(--hot)}
 .join-btn:disabled{opacity:.5;cursor:wait}
 .join-err{color:var(--bad);font-size:13px;margin-top:10px;display:none}
 /* ── Profile tabs ── */
 .prof-tabs{display:flex;gap:4px;margin-bottom:24px;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-md);padding:5px;width:fit-content;box-shadow:0 10px 28px rgba(0,0,0,.12)}
 .prof-tab{font-size:13px;font-weight:600;font-family:'IBM Plex Sans',sans-serif;padding:8px 16px;border-radius:var(--radius-sm);border:none;background:none;color:var(--slate);cursor:pointer;transition:background-color .11s,color .11s,transform .11s}
-.prof-tab.active{background:var(--ember);color:#fff}
+.prof-tab.active{background:var(--ember-action);color:#fff}
 .prof-tab:hover:not(.active){color:var(--white)}
 /* ── Profile header card ── */
 .prof-header{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-lg);padding:24px 28px;margin-bottom:20px}

@@ -316,7 +316,7 @@ th.forge{color:var(--hot)}
 [data-theme="light"] .wait{background:rgba(229,85,15,.025);border-top-color:rgba(229,85,15,.2)}
 [data-theme="light"] .heat-fill{background:var(--ember)}
 [data-theme="light"] .dtab.active,[data-theme="light"] .stab.active,[data-theme="light"] .ltab.active{background:var(--ember)}
-[data-theme="light"] .btn-hot{background:var(--ember);color:#fff}
+[data-theme="light"] .btn-hot{background:var(--ember-action);color:#fff}
 [data-theme="light"] .btn-hot:hover{background:var(--hot);color:#fff}
 [data-theme="light"] nav .cta{color:#fff}
 [data-theme="light"] .heat-tag{color:#fff}
