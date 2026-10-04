@@ -28,6 +28,8 @@ document.addEventListener('click', function(e) {
 
   var lastY = window.scrollY;
   var collapsed = false;
+  var directionDistance = 0;
+  var scrollFrame = 0;
 
   // On the homepage at desktop widths the collapsed pill sat at the top-left
   // and the page's left-aligned headings scrolled underneath it. The full bar
@@ -40,18 +42,26 @@ document.addEventListener('click', function(e) {
   }
   function expand() { navEl.classList.remove('nav-collapsed'); collapsed = false; }
 
-  window.addEventListener('scroll', function(){
+  function updateOnScroll(){
+    scrollFrame = 0;
     var y = window.scrollY;
-    var goingDown = y > lastY;
+    var delta = y - lastY;
     lastY = y;
 
     if (y < 60) {
+      directionDistance = 0;
       if (collapsed) expand();
-    } else if (goingDown && !collapsed) {
-      collapse();
-    } else if (!goingDown && collapsed) {
-      expand();
+      return;
     }
+    if ((delta > 0 && directionDistance < 0) || (delta < 0 && directionDistance > 0)) directionDistance = 0;
+    directionDistance += delta;
+    // Ignore small reversals from touch momentum so the fixed bar does not
+    // repeatedly resize while the page is still moving.
+    if (directionDistance > 24 && !collapsed) { collapse(); directionDistance = 0; }
+    else if (directionDistance < -24 && collapsed) { expand(); directionDistance = 0; }
+  }
+  window.addEventListener('scroll', function(){
+    if (!scrollFrame) scrollFrame = window.requestAnimationFrame(updateOnScroll);
   }, {passive: true});
 
   // The collapsed logo is still a real navigation link. Do not swallow the

@@ -33,9 +33,9 @@
     if (lastEntries) lastEntries.set(surface, now);
     if (entryAnimations && entryAnimations.get(surface)) entryAnimations.get(surface).cancel();
     var animation = surface.animate([
-      { opacity: 0, filter: 'blur(3px)', clipPath: 'inset(0 0 5% 0)' },
-      { opacity: 1, filter: 'blur(0)', clipPath: 'inset(0)' }
-    ], { duration: 240, easing: 'cubic-bezier(.16,1,.3,1)' });
+      { opacity: 0.72, transform: 'translateY(4px)' },
+      { opacity: 1, transform: 'translateY(0)' }
+    ], { duration: 160, easing: 'cubic-bezier(.16,1,.3,1)' });
     if (entryAnimations) entryAnimations.set(surface, animation);
     animation.finished.then(function () {
       if (entryAnimations && entryAnimations.get(surface) === animation) entryAnimations.delete(surface);
@@ -66,9 +66,9 @@
     if (typeof surface.animate !== 'function') return update();
     activeSurface = surface;
     var exit = surface.animate([
-      { opacity: 1, filter: 'blur(0)', clipPath: 'inset(0)' },
-      { opacity: 0, filter: 'blur(1.5px)', clipPath: 'inset(0 1.5% 0 0)' }
-    ], { duration: 100, easing: 'cubic-bezier(.7,0,.84,0)', fill: 'forwards' });
+      { opacity: 1 },
+      { opacity: 0.82 }
+    ], { duration: 60, easing: 'cubic-bezier(.7,0,.84,0)', fill: 'forwards' });
     function replace() {
       exit.cancel();
       var result;
@@ -85,17 +85,21 @@
     surface.dataset.forgeMotionReady = 'true';
     var ready = false;
     var frame = 0;
-    new MutationObserver(function (records) {
+    var observer = new MutationObserver(function (records) {
       if (!ready || reducedMotion() || activeSurface) return;
       var changed = records.some(function (record) {
         return record.target === surface && (record.addedNodes.length || record.removedNodes.length);
       });
       if (!changed || frame) return;
+      // Animate the first populated surface only. Routine quiz and dashboard
+      // rerenders should paint immediately instead of fading the whole app.
+      observer.disconnect();
       frame = requestAnimationFrame(function () {
         frame = 0;
         enterSurface(surface);
       });
-    }).observe(surface, { childList: true, subtree: false });
+    });
+    observer.observe(surface, { childList: true, subtree: false });
     requestAnimationFrame(function () { ready = true; });
   }
 

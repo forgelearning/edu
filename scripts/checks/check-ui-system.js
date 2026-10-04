@@ -11,7 +11,27 @@ const maintainedHtmlFiles = [
   ...['dev/sidebar-test.html', 'dev/teacher-dashboard-test.html', 'templates/gcse-subject-template.html'].map(name => path.join(root, name))
 ];
 const failures = [];
-const metrics = { pages: htmlFiles.length, dynamicStyleAttributes: 0, staticStyleAttributes: 0, inlineStyleBlocks: 0, inlineEventAttributes: 0, runtimeInlineHandlerSources: 0, undeclaredUtilityClasses: 0, legacyLogoClassAttributes: 0, duplicateClassAttributes: 0, directSupabaseFetches: 0, subjectPagesWithoutSharedCss: 0 };
+const metrics = { pages: htmlFiles.length, dynamicStyleAttributes: 0, staticStyleAttributes: 0, inlineStyleBlocks: 0, inlineEventAttributes: 0, runtimeInlineHandlerSources: 0, undeclaredUtilityClasses: 0, legacyLogoClassAttributes: 0, duplicateClassAttributes: 0, directSupabaseFetches: 0, subjectPagesWithoutSharedCss: 0, fontPagesWithoutLocalAssets: 0, legacyFontDeclarations: 0 };
+
+for (const file of htmlFiles) {
+  const name = path.relative(root, file);
+  const source = fs.readFileSync(file, 'utf8');
+  const fontLinks = source.match(/href="css\/fonts\.css(?:\?[^\"]*)?"/g) || [];
+  if (fontLinks.length !== 1 || /fonts\.(?:googleapis|gstatic)\.com/.test(source)) {
+    metrics.fontPagesWithoutLocalAssets += 1;
+    failures.push(`${name}: expected one local font stylesheet and no Google Fonts request`);
+  }
+}
+for (const directory of [path.join(root, 'css'), path.join(root, 'css/page-overrides')]) {
+  for (const name of fs.readdirSync(directory)) {
+    if (!name.endsWith('.css')) continue;
+    const source = fs.readFileSync(path.join(directory, name), 'utf8');
+    if (/\bSora\b|IBM Plex Sans|\bInter\s*,\s*sans-serif/.test(source)) {
+      metrics.legacyFontDeclarations += 1;
+      failures.push(`${path.relative(root, path.join(directory, name))}: legacy font declaration`);
+    }
+  }
+}
 
 for (const file of maintainedHtmlFiles) {
   const name = path.relative(root, file);

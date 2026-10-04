@@ -1,6 +1,6 @@
 /* Route-specific overrides for evidence.html. Shared rules belong in components.css. */
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Sora',sans-serif;font-size:16px;line-height:1.7}
+body{font-family:'Poppins',sans-serif;font-size:16px;line-height:1.7}
 h1,h2,h3{line-height:1.1}
 a{color:var(--ember)}
 a:hover{text-decoration:underline}
@@ -22,7 +22,7 @@ a:hover{text-decoration:underline}
 
 /* accordion */
 .faq-item{border-bottom:1px solid var(--line)}
-.faq-q{width:100%;background:none;border:none;text-align:left;padding:20px 0;cursor:pointer;display:flex;justify-content:space-between;align-items:flex-start;gap:16px;font-family:'Sora',sans-serif;font-size:18px;font-weight:700;color:var(--white);line-height:1.2}
+.faq-q{width:100%;background:none;border:none;text-align:left;padding:20px 0;cursor:pointer;display:flex;justify-content:space-between;align-items:flex-start;gap:16px;font-family:'Rethink Sans',sans-serif;font-size:18px;font-weight:700;color:var(--white);line-height:1.2}
 .faq-q:hover{color:var(--ember)}
 .faq-chevron{flex-shrink:0;font-size:14px;color:var(--slate);transition:transform .2s;margin-top:3px}
 .faq-q[aria-expanded="true"] .faq-chevron{transform:rotate(180deg)}
@@ -73,7 +73,7 @@ footer a:hover{color:var(--ember)}
 
 .stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:56px}
 .stat-card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:22px 20px}
-.stat-num{font-family:'Sora',sans-serif;font-weight:800;font-size:clamp(28px,3.4vw,38px);color:var(--ember);line-height:1}
+.stat-num{font-family:'Rethink Sans',sans-serif;font-weight:800;font-size:clamp(28px,3.4vw,38px);color:var(--ember);line-height:1}
 .stat-label{font-size:13px;color:var(--slate);margin-top:8px;line-height:1.4}
 .stat-cite{font-family:'JetBrains Mono',monospace;font-size:11px;color:#8A857E;margin-top:6px}
 @media(max-width:700px){.stat-row{grid-template-columns:1fr}}

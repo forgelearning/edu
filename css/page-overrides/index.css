@@ -1037,7 +1037,7 @@ body.audit-test.overdrive-sequence #how .loop::after{content:"";position:absolut
 .forge-sequence-meter{position:fixed;right:18px;bottom:18px;z-index:90;width:238px;padding:16px 18px 18px;border:1px solid rgba(255,201,60,.3);border-radius:14px;background:rgba(20,17,14,.86);backdrop-filter:blur(18px) saturate(150%);-webkit-backdrop-filter:blur(18px) saturate(150%);box-shadow:0 24px 64px -30px rgba(0,0,0,.9);color:#c9c1b8;pointer-events:none;opacity:0;transform:translateY(14px) scale(.98);transition:opacity .35s cubic-bezier(.16,1,.3,1),transform .35s cubic-bezier(.16,1,.3,1)}
 .forge-sequence-meter.is-visible{opacity:1;transform:none}
 .forge-sequence-meter__label{display:block;margin-bottom:8px;color:#d39a50;font:600 9px/1.2 'JetBrains Mono',monospace;letter-spacing:.11em;text-transform:uppercase}
-.forge-sequence-meter__stage{display:block;color:var(--white);font:800 18px/1.15 'Sora',sans-serif;letter-spacing:-.02em}
+.forge-sequence-meter__stage{display:block;color:var(--white);font:800 18px/1.15 'Rethink Sans',sans-serif;letter-spacing:-.02em}
 .forge-sequence-meter__copy{display:block;min-height:34px;margin-top:5px;font-size:11px;line-height:1.5}
 .forge-sequence-meter__rail{display:block;height:2px;margin-top:12px;overflow:hidden;background:rgba(255,255,255,.12)}
 .forge-sequence-meter__rail i{display:block;width:100%;height:100%;background:linear-gradient(90deg,var(--ember),var(--hot));transform:scaleX(var(--sequence-progress));transform-origin:left;box-shadow:0 0 12px rgba(255,201,60,.4)}

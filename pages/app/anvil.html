@@ -5,8 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Forge — Repair mistakes</title>
 <meta name="description" content="Rework the exact misconceptions holding you back — Forge tracks every wrong answer and retests it until it's gone.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&family=Rethink+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/fonts.css">
 <link rel="stylesheet" href="css/tokens.css">
 <link rel="stylesheet" href="css/base.css?v=20260808-navpolish">
 <link rel="stylesheet" href="css/auth.css">
@@ -497,7 +496,7 @@ function renderReworkQuestion(tag,questions,lap,qIdx){
           warn.textContent='We couldn’t save this repair. Your progress here won’t reach your teacher until you reconnect.';
           host.appendChild(warn);
         });
-  
+
         // Update local state
         if(isCorrect){
           m.streak++;
