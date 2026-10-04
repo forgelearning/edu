@@ -1422,12 +1422,15 @@ function renderBanks(){
   h += '<section class="forge-recommendation" aria-labelledby="recommended-session-title">';
   h += '<h2 id="recommended-session-title" class="forge-recommendation__title">Practise '+(recommended ? recommended.label : subj.label)+'</h2>';
   h += '<p class="forge-recommendation__copy">Work through a short set of questions, with help when you need it.</p>';
-  if (window.ForgeContentConfidence && window.ForgeContentConfidence.badge) {
-    // The student reads this directly, so use the second-person wording.
-    var cc = window.ForgeContentConfidence;
-    var learnerNote = (cc.learnerExperiences || cc.experiences)[confidence.tier];
-    h += '<div class="forge-content-selection-status">'+cc.badge(confidence.tier)+' '+cc.explanations[confidence.tier]+' '+learnerNote+'</div>';
-  }
+  // A complete subject is the normal case and needs no note. The shared
+  // explanations are written for teachers ("live bank across the active
+  // specification"), so students get their own sentence.
+  var learnerStatus = {
+    developing: 'More questions are being added to this subject. You can practise what is here now.',
+    pilot: 'This subject is new. Practise what is here while more is added.',
+    preview: 'Questions for this subject are not ready yet.'
+  }[confidence.tier];
+  if (learnerStatus) h += '<div class="forge-content-selection-status">'+learnerStatus+'</div>';
   var recommendedCount = (window.ForgeApp && ForgeApp.session) ? ForgeApp.session.questionsFor(recommendedQuestions.length) : Math.min(FORGE_SESSION_SIZE, recommendedQuestions.length || FORGE_SESSION_SIZE);
   var recommendedMinutes = (window.ForgeApp && ForgeApp.session) ? ForgeApp.session.estimatedMinutesFor(recommendedCount) : Math.max(4, Math.round(recommendedCount * 0.75));
   h += '<dl class="forge-session-detail"><div><dt>Topic</dt><dd>'+(recommended ? recommended.label : 'Current topic')+'</dd></div><div><dt>Questions</dt><dd>'+recommendedCount+'</dd></div><div><dt>Estimated time</dt><dd>~'+recommendedMinutes+' min</dd></div></dl>';
@@ -1447,9 +1450,11 @@ function renderBanks(){
     var b=BANKS[key];
     var point = getSpecPoint({}, key);
     h+='<div class="forge-topic-card"><button type="button" class="bank-btn" data-key="'+key+'">';
-    h+='<div class="code" style="color:'+b.color+'">'+key+'</div>';
-    h+='<div class="name">'+(point ? point.title : b.label)+'</div>';
-    if (point) h+='<div class="qcount">'+point.code+' · '+point.paper+'</div>';
+    // Students saw the bank id (GCSE-GEO-HAZ) and registry abbreviations
+    // (HAZ · Paper 1), and the registry title differed from the name used on
+    // every other page. Use the catalogue name and plain counts.
+    if (point && point.paper) h+='<div class="code" style="color:'+b.color+'">'+point.paper+'</div>';
+    h+='<div class="name">'+b.label+'</div>';
     h+='<div class="qcount">'+b.questions.length+' questions</div>';
     h+='</button>'+topicMarksHtml(key)+'</div>';
   });
