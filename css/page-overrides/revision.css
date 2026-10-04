@@ -178,6 +178,12 @@
 .revision-match-entry h2{margin:0 0 4px;font-size:22px;letter-spacing:-.02em}
 .revision-match-entry p{margin:0;max-width:52ch;color:var(--slate);font-size:14px;line-height:1.5}
 .revision-match-entry>div:last-child{display:flex;flex-wrap:wrap;gap:10px;align-items:center;min-width:0}
+.revision-extras{margin-top:32px;border:1px solid var(--line);border-radius:var(--radius-md);background:var(--panel)}
+.revision-extras>summary{min-height:54px;padding:16px 20px;color:var(--white);font:700 17px/1.3 'Rethink Sans',sans-serif;cursor:pointer}
+.revision-extras>summary:focus-visible{outline:2px solid var(--hot);outline-offset:3px}
+.revision-extras>div{padding:0 20px 20px}
+.revision-extras .revision-match-entry{margin-top:0}
+.revision-extras .revision-topics{margin-top:24px}
 .revision-match-entry select{max-width:min(100%,280px);min-height:44px;padding:8px 12px;border:1px solid var(--line);border-radius:var(--radius-md);background:var(--panel-2);color:var(--white);font:inherit;font-size:14px}
 .revision-match-entry button,.revision-match-done button{min-height:44px;padding:0 18px;border:0;border-radius:var(--radius-pill);background:var(--ember-action);color:#fff;font-weight:700;cursor:pointer}
 .revision-match-done button+button{background:transparent;border:1px solid var(--line);color:var(--white)}

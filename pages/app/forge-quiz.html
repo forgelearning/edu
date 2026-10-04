@@ -1526,14 +1526,16 @@ function renderBanks(){
   if (!locked) h+='<button type="button" class="back-btn" id="back-subj">\u2190 Subjects</button>';
   h+='<div class="center forge-subject-intro">';
   h+='<h2 class="forge-u-1oh0w3h">'+subj.label+'</h2>';
-  h+='<p class="forge-u-10yda30">'+subj.sub+'</p>'+ForgeStudentDelight.motif(state.subject)+'</div>';
+  h+='<details class="forge-subject-spec"><summary>Exam board and papers</summary><p>'+subj.sub+'</p></details>'+ForgeStudentDelight.motif(state.subject)+'</div>';
   if(!state.classId&&ForgeStudyMode.isIndependent())h+=joinMoreHtml();
   if(state.subject==='chem')h+='<p class="forge-recommendation__copy">Choose a topic you have covered. Each practice set stays within that AQA Chemistry topic.</p>';
+  var showTopicsInitially = state.subject==='chem';
   if(state.subject!=='chem'){
   var recommendedBank = recommendedBankForSubject(subj);
   var recommended = BANKS[recommendedBank];
   var confidence = window.ForgeContentConfidence && window.ForgeContentConfidence.statusFor ? window.ForgeContentConfidence.statusFor(state.subject) : {tier:'full'};
   var recommendedQuestions = recommended ? recommended.questions.filter(function(q){return !q.type||q.type==='fill_blank';}) : [];
+  if(!recommendedQuestions.length)showTopicsInitially=true;
   h += '<section class="forge-recommendation" aria-labelledby="recommended-session-title">';
   h += '<h2 id="recommended-session-title" class="forge-recommendation__title">Practise '+(recommended ? recommended.label : subj.label)+'</h2>';
   h += '<p class="forge-recommendation__copy">Work through a short set of questions, with help when you need it.</p>';
@@ -1549,12 +1551,11 @@ function renderBanks(){
   var recommendedCount = (window.ForgeApp && ForgeApp.session) ? ForgeApp.session.questionsFor(recommendedQuestions.length) : Math.min(FORGE_SESSION_SIZE, recommendedQuestions.length || FORGE_SESSION_SIZE);
   var recommendedMinutes = (window.ForgeApp && ForgeApp.session) ? ForgeApp.session.estimatedMinutesFor(recommendedCount) : Math.max(4, Math.round(recommendedCount * 0.75));
   h += '<dl class="forge-session-detail"><div><dt>Topic</dt><dd>'+(recommended ? recommended.label : 'Current topic')+'</dd></div><div><dt>Questions</dt><dd>'+recommendedCount+'</dd></div><div><dt>Estimated time</dt><dd>~'+recommendedMinutes+' min</dd></div></dl>';
-  // Students told us the old "Choose another topic" link was easy to miss, so
-  // both routes are buttons of equal size and the full list is always shown.
-  h += '<div class="forge-action-row forge-session-actions"><button type="button" class="forge-button forge-button--primary" id="start-recommended">Start practice →</button>';
-  h += '<button type="button" class="forge-button forge-button--secondary" id="change-session" aria-controls="all-session-options">Choose a different topic ↓</button></div></section>';
+  // Keep the recommended set first while making the full catalogue explicit.
+  h += '<div class="forge-action-row forge-session-actions">'+(recommendedQuestions.length?'<button type="button" class="forge-button forge-button--primary" id="start-recommended">Start practice →</button>':'');
+  h += '<button type="button" class="forge-button forge-button--secondary" id="change-session" aria-controls="all-topics-section" aria-expanded="'+showTopicsInitially+'">'+(showTopicsInitially?'Hide topics ↑':'Browse all topics ↓')+'</button></div></section>';
   }
-  h+='<section class="forge-topic-list" aria-labelledby="all-topics-title"><h2 id="all-topics-title">All topics in '+subj.label+'</h2>';
+  h+='<section class="forge-topic-list" id="all-topics-section" aria-labelledby="all-topics-title"'+(showTopicsInitially?'':' hidden')+'><h2 id="all-topics-title">All topics in '+subj.label+'</h2>';
   h+='<div class="bank-list" id="all-session-options">';
   if(state.subject==='chem'&&window.ForgeChemistryTopics){
     ForgeChemistryTopics.list().forEach(function(topic){
@@ -1588,11 +1589,15 @@ function renderBanks(){
     ensurePaidStudentId().then(function(){state.phase='quiz';render();});
   };
   var changeBtn=document.getElementById('change-session');
-  var allOptions=document.getElementById('all-session-options');
-  if(changeBtn && allOptions) changeBtn.onclick=function(){
+  var allTopics=document.getElementById('all-topics-section');
+  if(changeBtn && allTopics) changeBtn.onclick=function(){
+    allTopics.hidden=!allTopics.hidden;
+    changeBtn.setAttribute('aria-expanded',String(!allTopics.hidden));
+    changeBtn.textContent=allTopics.hidden?'Browse all topics ↓':'Hide topics ↑';
+    if(allTopics.hidden)return;
     var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    allOptions.scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'});
-    var first=allOptions.querySelector('.bank-btn'); if(first) first.focus({preventScroll:true});
+    allTopics.scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'});
+    var first=allTopics.querySelector('.bank-btn'); if(first) first.focus({preventScroll:true});
   };
   wireJoinMore();
   var backBtn = document.getElementById('back-subj');

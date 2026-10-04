@@ -39109,7 +39109,7 @@ const finalMediaCorruptionRepairs = {
   "base": {
    "B": "Gatekeeping",
    "A": "The tendency for audiences to undervalue cultural products compared to their production cost",
-   "C": "The tendency for audiences to undervalue cultural products compared to their production cost"
+   "C": "removing the need for local content"
   },
   "reforge": {
    "D": "Rating"

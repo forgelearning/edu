@@ -537,6 +537,7 @@ html:not([data-theme="light"]) body.forge-solo-login::after{color:var(--forge-lo
 .forge-session-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:4px}
 .forge-session-actions .forge-button{min-height:48px;flex:1 1 200px;justify-content:center}
 .forge-topic-list{margin-top:32px;scroll-margin-top:24px}
+.forge-topic-list[hidden]{display:none}
 .forge-topic-list h2{margin:0 0 4px;font-size:18px}
 .forge-topic-list .bank-list{margin-top:12px}
 @media(min-width:720px){.forge-topic-list .bank-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}}
@@ -559,6 +560,11 @@ html:not([data-theme="light"]) body.forge-solo-login::after{color:var(--forge-lo
 /* A small record of learning: each mark represents a different day with a
    correct first answer in this topic. */
 .forge-subject-intro{position:relative}
+.forge-subject-spec{margin:8px auto 0;max-width:65ch;color:var(--slate);font-size:13px;line-height:1.55}
+.forge-subject-spec summary{display:list-item;width:fit-content;min-height:44px;margin:auto;padding:10px 12px;border-radius:var(--radius-sm);color:var(--dim);cursor:pointer}
+.forge-subject-spec summary:hover{color:var(--white)}
+.forge-subject-spec summary:focus-visible{outline:2px solid var(--hot);outline-offset:2px}
+.forge-subject-spec p{margin:4px 0 0}
 .forge-subject-motif{display:block;width:128px;height:80px;margin:10px auto 0;color:var(--ember);stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;opacity:.8}
 .forge-subject-motif--econ .forge-subject-motif__axis{stroke:var(--slate);opacity:.7}
 .forge-topic-card{min-width:0;border:1px solid var(--line);border-radius:var(--radius-md);background:var(--panel);overflow:hidden}
