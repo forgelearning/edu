@@ -50,4 +50,23 @@ assert(/<form id="waitform">/.test(index), 'the pilot sign-up form is still ther
 const roleSelect = fs.readFileSync('pages/auth/role-select.html', 'utf8');
 assert(roleSelect.includes('scripts/forge-theme.js') && roleSelect.includes('css/fonts.css'), 'role-select follows the visitor’s theme and uses the homepage fonts');
 assert(/\[data-theme="light"\] \.role-select\{/.test(fs.readFileSync('css/role-select.css', 'utf8')), 'role-select has a light theme matching the homepage');
-console.log('Public page tests passed (' + publicPages.length + ' pages, plain names, featured subjects complete, sign-in tidy).');
+// Header: every page using the shared public header carries the markup the
+// script writes, so it does not change on load, and its links match the
+// homepage's. The script once kept old names ("The Anvil") and dead anchors
+// long after the static markup was fixed, because nothing compared them.
+require('../scripts/forge-discovery-nav.js');
+const headerHtml = globalThis.ForgeDiscoveryNav.html();
+const headerPages = publicPages.filter((f) => fs.readFileSync(f, 'utf8').includes('forge-discovery-nav.js'));
+assert(headerPages.length >= 40, 'the shared header is used across the public pages');
+headerPages.forEach((f) => assert(fs.readFileSync(f, 'utf8').includes('<div class="nav-right">' + headerHtml + '</div>'), f + ' has the current header markup'));
+assert(!banned.test(headerHtml.replace(/<[^>]+>/g, ' ')), 'the header uses plain names');
+const homeAnchors = new Set([...index.matchAll(/\bid="([^"]+)"/g)].map((m) => m[1]));
+[...headerHtml.matchAll(/href="([^"]+)"/g)].forEach(([, href]) => {
+  const [file, hash] = href.split('#');
+  assert(publicPages.concat(files('pages/app')).some((f) => path.basename(f) === file), href + ' points at a page that exists');
+  if (hash) assert(file === 'index.html' && homeAnchors.has(hash), href + ' points at a homepage section that exists');
+});
+['index.html#how', 'index.html#subjects', 'index.html#teachers', 'evidence.html', 'role-select.html', 'forge-quiz.html']
+  .forEach((href) => assert(index.includes('href="' + href.replace('index.html', '') + '"') || index.includes('href="' + href + '"'), 'the homepage header also links ' + href));
+
+console.log('Public page tests passed (' + publicPages.length + ' pages, plain names, featured subjects complete, sign-in tidy, ' + headerPages.length + ' shared headers).');

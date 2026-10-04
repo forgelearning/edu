@@ -48,6 +48,7 @@ body.forge-modern-nav .audit-mobile-nav-wrap{display:none}
   body.forge-modern-nav .audit-nav-action{display:none}
   body.forge-modern-nav .audit-mobile-nav-wrap{display:block;position:relative}
   body.forge-modern-nav .audit-mobile-menu{right:0;min-width:205px;padding:8px}
+  body.forge-modern-nav #sticky-nav .audit-mobile-menu{background:var(--panel)}
   body.forge-modern-nav .audit-mobile-menu.open{display:flex;flex-direction:column}
   body.forge-modern-nav .audit-mobile-menu a{padding:9px 10px}
 }
