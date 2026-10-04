@@ -12,7 +12,7 @@
     'signup-step-1': true, 'signup-step-2': true, 'switch-level': true, 'switch-tab': true,
     'anvil-home': true, 'crucible-start': true, 'crucible-build': true, 'crucible-subject': true,
     'crucible-bank': true, 'crucible-back': true, 'render-student': true,
-    'render-teacher-home': true, 'render-starters': true, 'show-starter': true, 'anvil-rework': true
+    'render-starters': true, 'show-starter': true, 'anvil-rework': true
   };
 
   function reducedMotion() {
