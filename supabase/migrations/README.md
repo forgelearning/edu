@@ -275,3 +275,20 @@ function would promise a 30-minute break the server does not honour.
 
 **Applied to production 2026-10-04.** Afterwards the new body is live, anon
 can still execute it, and a bogus session returns `invalid_session`.
+
+## 20261004 200000 — free tier daily cap
+
+| File | What it does |
+|---|---|
+| `20261004200000_free_tier_daily_cap.sql` | Adds a 40-question UK-day cap on top of the 10-question rounds. Reaching it sets `free_cooldown_until` to the next Europe/London midnight, so the existing cooldown check does the refusing. Responses now carry `today`, `daily_limit` and `daily_cap` so the client can tell "come back tomorrow" from "30-minute break". Reforge answers stay exempt. |
+
+Not order-sensitive with the client: an older client just shows the 30-minute
+break screen for a cap refusal and then gets refused again.
+
+**Applied to production 2026-10-04.** Checked first in a transaction that
+always raised (and so rolled back) against production: with 39 answers
+already today, the 40th was saved and returned `daily_cap: true` with
+`cooldown_until` at 23:00 UTC (UK midnight, BST); the 41st was refused; a
+reforge answer was still saved; with the day's count cleared, an ordinary
+answer went through. Nothing persisted. Afterwards the new body is live, anon
+can execute it, and a bogus session returns `invalid_session`.

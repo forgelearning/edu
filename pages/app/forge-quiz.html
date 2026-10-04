@@ -724,9 +724,11 @@ function wireJoinMore() {
 
 // ── FREE TIER ROUNDS ──────────────────────────────────────────
 // Free students get a round of 10 questions, then a short cooldown, then
-// another round. record_free_response enforces this on the server; this is
-// only the meter, kept in step with the server's rule and corrected by it.
+// another round, up to 40 a day. record_free_response enforces this on the
+// server; this is only the meter, kept in step with the server's rule and
+// corrected by it.
 var FREE_ROUND_SIZE = 10;
+var FREE_DAILY_CAP = 40;
 var FREE_COOLDOWN_MS = 30 * 60 * 1000;
 var FREE_IDLE_RESET_MS = 60 * 60 * 1000; // a round left alone this long starts fresh
 var FREE_ROUND_KEY = 'forge-free-round';
@@ -735,11 +737,27 @@ function loadFreeRound() {
   var r = null;
   try { r = JSON.parse(localStorage.getItem(FREE_ROUND_KEY) || 'null'); } catch(e) {}
   if (!r || !Array.isArray(r.answers)) r = { answers: [], cooldownUntil: 0 };
+  if (r.day !== freeToday()) { r.day = freeToday(); r.today = 0; }
   return r;
 }
 
 function saveFreeRound(r) {
   try { localStorage.setItem(FREE_ROUND_KEY, JSON.stringify(r)); } catch(e) {}
+}
+
+function freeToday() {
+  var d = new Date();
+  return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
+}
+
+function nextMidnightMs() {
+  var d = new Date();
+  d.setHours(24, 0, 0, 0);
+  return d.getTime();
+}
+
+function getTodayCount() {
+  return loadFreeRound().today || 0;
 }
 
 function freeRoundSince(r) {
@@ -756,11 +774,17 @@ function cooldownRemainingMs() {
   return Math.max(0, (loadFreeRound().cooldownUntil || 0) - Date.now());
 }
 
-function startFreeCooldown(untilMs) {
+function startFreeCooldown(untilMs, dailyCap) {
   var r = loadFreeRound();
   r.cooldownUntil = untilMs || (Date.now() + FREE_COOLDOWN_MS);
+  r.dailyCap = !!dailyCap;
   r.answers = [];
   saveFreeRound(r);
+}
+
+function isAtDailyCap() {
+  var r = loadFreeRound();
+  return !!r.dailyCap && (r.cooldownUntil || 0) > Date.now();
 }
 
 function incrementRoundCount() {
@@ -768,8 +792,10 @@ function incrementRoundCount() {
   var since = freeRoundSince(r);
   r.answers = r.answers.filter(function(t) { return t >= since; });
   r.answers.push(Date.now());
+  r.today = (r.today || 0) + 1;
   saveFreeRound(r);
-  if (r.answers.length >= FREE_ROUND_SIZE) startFreeCooldown();
+  if (r.today >= FREE_DAILY_CAP) startFreeCooldown(nextMidnightMs(), true);
+  else if (r.answers.length >= FREE_ROUND_SIZE) startFreeCooldown();
   refreshFreeQuotaDisplay();
 }
 
@@ -777,12 +803,26 @@ function incrementRoundCount() {
 // whether the next answer is saved.
 function syncFreeRoundFromServer(result) {
   if (!result || typeof result !== 'object') return;
+  if (typeof result.today === 'number') {
+    var r = loadFreeRound();
+    r.today = result.today;
+    saveFreeRound(r);
+  }
   var until = Date.parse(result.retry_at || result.cooldown_until || '');
-  if (until > Date.now()) startFreeCooldown(until);
+  if (until > Date.now()) startFreeCooldown(until, result.daily_cap === true);
 }
 
-function freeRemainingLabel(remaining) {
-  return remaining + ' free question' + (remaining !== 1 ? 's' : '') + ' before a break';
+// Whichever limit comes first: the end of this round, or the end of the day.
+function freeRemaining() {
+  if (cooldownRemainingMs() > 0) return { remaining: 0, ofDay: isAtDailyCap() };
+  var round = FREE_ROUND_SIZE - getRoundCount();
+  var day = FREE_DAILY_CAP - getTodayCount();
+  return { remaining: Math.max(0, Math.min(round, day)), ofDay: day < round };
+}
+
+function freeRemainingLabel(left) {
+  return left.remaining + ' free question' + (left.remaining !== 1 ? 's' : '') +
+    (left.ofDay ? ' left today' : ' before a break');
 }
 
 // The quota meter sits in the question header, which is not re-rendered when an
@@ -792,11 +832,12 @@ function refreshFreeQuotaDisplay() {
   var label = document.getElementById('free-quota-label');
   var fill  = document.getElementById('free-quota-fill');
   if (!label && !fill) return;
-  var used = cooldownRemainingMs() > 0 ? FREE_ROUND_SIZE : getRoundCount();
-  var remaining = Math.max(0, FREE_ROUND_SIZE - used);
+  var left = freeRemaining();
+  var remaining = left.remaining;
+  var used = FREE_ROUND_SIZE - Math.min(FREE_ROUND_SIZE, remaining);
   var col = remaining <= 2 ? 'var(--bad)' : remaining <= 5 ? 'var(--hot)' : 'var(--good)';
   if (label) {
-    label.textContent = freeRemainingLabel(remaining);
+    label.textContent = freeRemainingLabel(left);
     label.style.color = col;
   }
   if (fill) {
@@ -990,7 +1031,7 @@ function renderJoin() {
   // Panel: Free tier
   h += '<div id="panel-free">';
   h += '<p class="forge-u-1xgpbl">Choose a subject and start practising. No class code or account needed.</p>';
-  h += '<p class="forge-independent-detail">10 free questions at a time, with a short break between rounds. Your independent work stays private and is available on this device, even if you join a class later.</p>';
+  h += '<p class="forge-independent-detail">10 free questions at a time, with a short break between rounds, up to 40 a day. Your independent work stays private and is available on this device, even if you join a class later.</p>';
   // The first thing a new student read was a free-versus-Pro price list. It
   // is still one tap away, in plain names, but no longer leads the screen.
   h += '<details class="forge-whats-free"><summary>What’s free?</summary><div class="forge-u-eelu4s">';
@@ -1658,7 +1699,7 @@ function renderTrialExpiredWall() {
 
   h += '<div class="forge-u-xrboeu">';
   h += '<p class="forge-u-hptrzy">Stay on free</p>';
-  h += '<p class="forge-u-1rniwep">10 questions a round, short break between · all subjects · explanations included</p>';
+  h += '<p class="forge-u-1rniwep">10 questions a round, up to 40 a day · all subjects · explanations included</p>';
   h += '<button type="button" class="forge-u-148bwq4" data-forge-action="quiz-free-tier">Continue for free →</button>';
   h += '</div>';
 
@@ -1667,15 +1708,21 @@ function renderTrialExpiredWall() {
 }
 
 function renderLimitWall() {
+  var dailyCap = isAtDailyCap();
   var h = '<div class="limit-wall">';
   h += '<div class="limit-icon">⚒️</div>';
-  h += '<h2>Time for a short break</h2>';
-  h += '<p>That\'s ' + FREE_ROUND_SIZE + ' questions done. Free accounts get another ' + FREE_ROUND_SIZE + ' when the timer runs out.<br>Stay on this page and you\'ll carry on where you left off.</p>';
+  if (dailyCap) {
+    h += '<h2>That\'s ' + FREE_DAILY_CAP + ' questions today</h2>';
+    h += '<p>Great work. Free accounts get ' + FREE_DAILY_CAP + ' questions a day, and yours come back at midnight.</p>';
+  } else {
+    h += '<h2>Time for a short break</h2>';
+    h += '<p>That\'s ' + FREE_ROUND_SIZE + ' questions done. Free accounts get another ' + FREE_ROUND_SIZE + ' when the timer runs out.<br>Stay on this page and you\'ll carry on where you left off.</p>';
+  }
 
-  // Countdown, with a bar that refills as the break runs down
+  // Countdown; for a short break, with a bar that refills as it runs down
   h += '<div class="limit-countdown" id="lw-countdown" role="timer" aria-live="off">' + formatCountdown(Math.ceil(cooldownRemainingMs() / 1000));
-  h += '<span>until your next ' + FREE_ROUND_SIZE + ' questions</span></div>';
-  h += '<div class="limit-bar"><div class="limit-bar-fill" id="lw-refill"></div></div>';
+  h += '<span>' + (dailyCap ? 'until your questions come back' : 'until your next ' + FREE_ROUND_SIZE + ' questions') + '</span></div>';
+  if (!dailyCap) h += '<div class="limit-bar"><div class="limit-bar-fill" id="lw-refill"></div></div>';
 
   // Upgrade CTA
   h += '<div class="forge-u-1cukupz">';
@@ -1761,13 +1808,14 @@ function renderQuiz(){
 
   // Free tier: show questions remaining
   if (isFreeTier()) {
-    var used = getRoundCount();
-    var remaining = Math.max(0, FREE_ROUND_SIZE - used);
+    var left = freeRemaining();
+    var remaining = left.remaining;
+    var used = FREE_ROUND_SIZE - Math.min(FREE_ROUND_SIZE, remaining);
     var pct = (used / FREE_ROUND_SIZE) * 100;
     var col = remaining <= 2 ? 'var(--bad)' : remaining <= 5 ? 'var(--hot)' : 'var(--good)';
     h += '<div class="forge-u-1p0xeot">';
     h += '<div class="forge-u-1gsso20"><div id="free-quota-fill" style="height:100%;width:'+pct+'%;background:'+col+';border-radius:var(--radius-xs)"></div></div>';
-    h += '<span id="free-quota-label" style="font-family:\'JetBrains Mono\',monospace;font-size:11px;color:'+col+';white-space:nowrap">'+freeRemainingLabel(remaining)+'</span>';
+    h += '<span id="free-quota-label" style="font-family:\'JetBrains Mono\',monospace;font-size:11px;color:'+col+';white-space:nowrap">'+freeRemainingLabel(left)+'</span>';
     h += '</div>';
   }
   var point = getSpecPoint(q, state.bank);
