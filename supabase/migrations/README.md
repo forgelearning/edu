@@ -257,4 +257,8 @@ passes.
 Not coupled: the client changes are safe before or after. Until this is
 applied, archiving still fails, but now with an accurate message.
 
-**Not yet applied to production.**
+**Applied to production 2026-10-04.** Checked first in a rolled-back
+transaction (column accepted an archive; function compiled; invalid
+credentials returned nothing). Afterwards the column exists with all nine
+assignments unarchived, `get_student_assignments` skips archived rows and is
+still executable by anon, and `dev/audit-supabase-security.js` passes.
