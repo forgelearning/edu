@@ -17,3 +17,12 @@ html.forge-native .role-select{padding-top:calc(24px + env(safe-area-inset-top,0
 .role-choice__arrow{color:var(--ember);font-size:22px;text-align:right}.role-select__back{display:inline-block;margin-top:24px;color:var(--dim);font-size:13px;text-decoration:none}.role-select__back:hover{color:var(--hot)}
 @media(max-width:480px){.role-select{padding-top:calc(16px + env(safe-area-inset-top,0px));padding-bottom:calc(16px + env(safe-area-inset-bottom,0px))}.role-select__card{padding:28px 20px}.role-select__icon{margin-bottom:18px}}
 @media(prefers-reduced-motion:reduce){.role-choice{transition:none}}
+/* Light theme: the homepage's warm paper rather than a dark-tuned shadow on
+   white, so going from the homepage to sign-in does not change mood. */
+[data-theme="light"] .role-select{background:radial-gradient(circle at 50% 12%,rgba(213,92,19,.1),transparent 38%),#f7f4ef}
+[data-theme="light"] .role-select__card{background:#fffdf9;box-shadow:0 24px 60px rgba(92,44,18,.12)}
+[data-theme="light"] .role-choice{background:#fffdf9}
+[data-theme="light"] .role-choice:hover,[data-theme="light"] .role-choice:focus-visible{background:#fbf4ec}
+/* Same type as the homepage (fonts.css): Rethink Sans headings, Poppins text. */
+body:has(.role-select){font-family:'Poppins',sans-serif}
+.role-select__card h1,.role-choice strong{font-family:'Rethink Sans',sans-serif;letter-spacing:-.025em}
