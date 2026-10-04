@@ -240,4 +240,10 @@ and responses through RLS, so nothing else changes on the server.
 `challenge_question_ids`, which fails until this is applied. Ordinary
 assignments are unaffected either way.
 
-**Not yet applied to production.**
+**Applied to production 2026-10-04.** Checked first in a rolled-back
+transaction, including the counting query on synthetic answers (six
+students, a later second attempt and a repair attempt correctly ignored).
+Afterwards the column exists with all nine existing assignments unchanged,
+the function is executable by anon and authenticated but not PUBLIC, a call
+with invalid credentials returns null, and `dev/audit-supabase-security.js`
+passes.
