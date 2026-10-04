@@ -65,6 +65,41 @@ concepts now has a hand-written scaffold keyed by topic, shared by both
 questions in the pair. A concept added to those tables without an entry silently
 falls back to the old template, so add the scaffold at the same time.
 
+## Free tier limits (since 2026-10-04)
+
+Free (independent, no class, not Pro/trial) students get **rounds of 10
+questions with a 30-minute break between them, capped at 40 a day**. Class,
+Pro and trial students have no limits. Answers to the "similar question"
+(Reforge) after a mistake count towards neither limit.
+
+- **The server is the authority.** `record_free_response` (12-argument form;
+  the 10- and 11-argument forms are wrappers) refuses answers during a break.
+  The current body is in
+  `supabase/migrations/20261004200000_free_tier_daily_cap.sql`. The quiz
+  page's meter in `pages/app/forge-quiz.html` (`forge-free-round` in
+  localStorage) is only a display, and the server's `retry_at` /
+  `cooldown_until` override it. Clearing the browser does not skip a break.
+- **One column holds both limits:** `students.free_cooldown_until`. A full
+  round sets it to now + 30 min; the 40th answer of the day sets it to the
+  next **Europe/London** midnight. Responses carry `daily_cap: true` so the
+  client knows which break screen to show.
+- **A round** counts answers since the later of the last break ending and one
+  hour ago, so a student who wanders off mid-round comes back to a fresh 10.
+- **The numbers live in two places and must match:** `c_round_size`,
+  `c_cooldown`, `c_idle_reset`, `c_daily_cap` in the SQL function, and
+  `FREE_ROUND_SIZE`, `FREE_COOLDOWN_MS`, `FREE_IDLE_RESET_MS`,
+  `FREE_DAILY_CAP` in `forge-quiz.html`. The limits are also written out in
+  public copy: `faq.html`, `pricing.html`, `guides-forge-mode.html`,
+  `guides-getting-started.html`, `profile.html` and the free-tier text in
+  `forge-quiz.html`. Change them together.
+- **Changing the rule: database first, then the page.** A new page against
+  the old function promises breaks the server doesn't honour; the reverse is
+  harmless. To test a new function body against production without changing
+  anything, run it inside a `do` block that `execute`s the
+  `create or replace`, probes with a throwaway student, and ends with
+  `raise exception` carrying the results, so everything rolls back. That
+  is how the daily cap was checked; see `supabase/migrations/README.md`.
+
 ## Concurrent sessions — read this
 
 More than one session often has this repo open, and `data/forge-data.js` is the
