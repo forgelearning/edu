@@ -220,4 +220,9 @@ client copy of the XP and accuracy calculations.
 Not coupled: the client does not depend on it, but until it is applied a
 classmate's streak on the friends card ignores the freeze.
 
-**Not yet applied to production.**
+**Applied to production 2026-10-04.** Checked first in a rolled-back
+transaction, including the streak rule on synthetic practice days (3 in a
+row → 3, one missed day → 3, two missed → 1, missed yesterday → 2, missed
+the last two → 0, matching `scripts/forge-streak.js`). Afterwards the live
+function carries the freeze, still has no client EXECUTE grant, and
+`dev/audit-supabase-security.js` passes.
