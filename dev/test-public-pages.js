@@ -40,6 +40,12 @@ assert(/<details class="forge-whats-free"><summary>What’s free\?<\/summary>/.t
 assert(!/foot: 'Want unlimited\?/.test(quiz), 'the subscribe line is no longer pinned under the sign-in card');
 assert(/body\.has-forge-sidebar:has\(#app \.auth-card\)/.test(fs.readFileSync('css/student-motion.css', 'utf8')), 'the app menu is hidden while a student sign-in card shows');
 assert(/landing-redesign/.test(fs.readFileSync('scripts/nav.js', 'utf8')), 'the homepage keeps its full header on desktop');
+// Homepage (Part B): students first, short, no price, readable demo labels.
+assert(!/data-mc="MC-/.test(index), 'the homepage demo shows misconception labels, not tags');
+assert(!/£/.test(index), 'the price lives on the pricing page, not the homepage');
+assert(/id="teachers"/.test(index) && /For teachers\./.test(index), 'there is one "For teachers" section');
+assert(!/audience-story/.test(index), 'the large product mock-up section is gone');
+assert(/<form id="waitform">/.test(index), 'the pilot sign-up form is still there (inside For teachers)');
 const roleSelect = fs.readFileSync('pages/auth/role-select.html', 'utf8');
 assert(roleSelect.includes('scripts/forge-theme.js') && roleSelect.includes('css/fonts.css'), 'role-select follows the visitor’s theme and uses the homepage fonts');
 assert(/\[data-theme="light"\] \.role-select\{/.test(fs.readFileSync('css/role-select.css', 'utf8')), 'role-select has a light theme matching the homepage');
