@@ -15,43 +15,6 @@
     });
   }
 
-  function initAudienceTabs() {
-    var tabs = Array.prototype.slice.call(document.querySelectorAll('.audience-tab'));
-    if (!tabs.length) return;
-
-    function showAudience(tab, moveFocus) {
-      var target = document.getElementById('audience-' + tab.getAttribute('data-audience') + '-panel');
-      if (!target) return;
-      function commit() {
-        tabs.forEach(function (item) {
-          var active = item === tab;
-          item.classList.toggle('is-active', active);
-          item.setAttribute('aria-selected', active ? 'true' : 'false');
-          item.tabIndex = active ? 0 : -1;
-        });
-        document.querySelectorAll('.audience-panel').forEach(function (panel) { panel.hidden = panel !== target; });
-        if (moveFocus) target.focus({ preventScroll: true });
-      }
-      commit();
-    }
-
-    tabs.forEach(function (tab, index) {
-      tab.tabIndex = tab.classList.contains('is-active') ? 0 : -1;
-      tab.addEventListener('click', function () { showAudience(tab, false); });
-      tab.addEventListener('keydown', function (event) {
-        if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
-        event.preventDefault();
-        var nextIndex = index;
-        if (event.key === 'ArrowLeft') nextIndex = (index - 1 + tabs.length) % tabs.length;
-        if (event.key === 'ArrowRight') nextIndex = (index + 1) % tabs.length;
-        if (event.key === 'Home') nextIndex = 0;
-        if (event.key === 'End') nextIndex = tabs.length - 1;
-        tabs[nextIndex].focus();
-        showAudience(tabs[nextIndex], false);
-      });
-    });
-  }
-
   function initNavigation() {
     var toggle = document.getElementById('landing-menu-toggle');
     var menu = document.getElementById('landing-menu');
@@ -207,6 +170,5 @@
   initSkipLink();
   initNavigation();
   initDemo();
-  initAudienceTabs();
   initPilotForm();
 })();

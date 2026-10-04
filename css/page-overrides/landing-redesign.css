@@ -110,70 +110,8 @@ body.landing-redesign .proof-rail span{display:block;color:rgba(255,248,238,.78)
 
 /* NexaCore's before/after logic translated into Forge's real learning loop. */
 body.landing-redesign .repair-story .section-intro{margin-bottom:56px}
-body.landing-redesign .repair-sequence{overflow:hidden;border-top:1px solid var(--landing-rule);border-bottom:1px solid var(--landing-rule)}
-body.landing-redesign .repair-stage{position:relative;display:grid;grid-template-columns:54px minmax(0,1fr) minmax(220px,280px);gap:26px;align-items:center;min-height:184px;padding:30px 24px;border-top:1px solid var(--landing-rule)}
-body.landing-redesign .repair-stage:first-child{border-top:0}
-body.landing-redesign .repair-stage--scaffold{background:color-mix(in srgb,var(--ember) 7%,var(--landing-paper-raised))}
-body.landing-redesign .repair-stage-number{display:grid;place-items:center;width:42px;height:42px;border:1px solid var(--landing-rule);border-radius:50%;color:var(--landing-muted);font:700 16px/1 'Rethink Sans',sans-serif}
-body.landing-redesign .repair-stage--scaffold .repair-stage-number{background:var(--ember);border-color:var(--ember);color:#fff}
-body.landing-redesign .repair-state{display:block;margin:7px 0 8px;color:var(--ember);font:600 12px/1.3 'Poppins',sans-serif;letter-spacing:.025em}
-body.landing-redesign .repair-stage h3{margin:0 0 8px;color:var(--landing-ink);font:650 clamp(24px,3vw,34px)/1.05 'Rethink Sans',sans-serif;letter-spacing:-.025em}
-body.landing-redesign .repair-stage p{max-width:58ch;margin:0;color:var(--landing-muted);font:400 14px/1.6 'Poppins',sans-serif}
-body.landing-redesign .repair-signal{display:grid;grid-template-columns:1fr 42px auto;align-items:center;gap:10px;padding:16px 18px;background:var(--landing-paper-raised);border:1px solid var(--landing-rule);border-radius:14px;color:var(--landing-muted);font:500 12px/1.4 'Poppins',sans-serif}
-body.landing-redesign .repair-signal i{position:relative;height:1px;background:var(--landing-rule)}
-body.landing-redesign .repair-signal i::after{content:"";position:absolute;right:-1px;top:-3px;width:6px;height:6px;border-top:1px solid var(--landing-muted);border-right:1px solid var(--landing-muted);transform:rotate(45deg)}
-body.landing-redesign .repair-signal b{color:var(--bad);font-weight:600}
-body.landing-redesign .repair-signal--scaffold b{color:var(--ember)}
-body.landing-redesign .repair-signal--proof b{color:var(--good)}
-body.landing-redesign .repair-summary{max-width:54ch;margin:28px 0 0 auto;color:var(--landing-muted);font:500 13px/1.5 'Poppins',sans-serif;text-align:right}
 
 /* One product window, switched by audience instead of two long screenshots. */
-body.landing-redesign .audience-heading{display:flex;align-items:end;justify-content:space-between;gap:42px;margin-bottom:42px}
-body.landing-redesign .product-language{margin-top:16px!important;color:var(--landing-muted)!important;font-size:13px!important;line-height:1.55!important}
-body.landing-redesign .product-language strong{color:var(--landing-ink);font-weight:600}
-body.landing-redesign .audience-tabs{display:inline-flex;flex:0 0 auto;gap:4px;padding:4px;border:1px solid var(--landing-rule);border-radius:999px;background:var(--landing-paper)}
-body.landing-redesign .audience-tab{min-height:44px;padding:0 18px;border:0;border-radius:999px;background:transparent;color:var(--landing-muted);font:600 13px/1 'Poppins',sans-serif;cursor:pointer}
-body.landing-redesign .audience-tab:hover{color:var(--landing-ink)}
-body.landing-redesign .audience-tab.is-active{background:var(--landing-deep);color:var(--landing-cream)}
-body.landing-redesign .audience-window{overflow:hidden;border:1px solid var(--landing-rule);border-radius:16px;background:var(--landing-paper-raised);box-shadow:none}
-body.landing-redesign .audience-window-bar{display:flex;justify-content:space-between;gap:20px;padding:12px 18px;border-bottom:1px solid var(--landing-rule);color:var(--landing-muted);font:500 11px/1.3 'Poppins',sans-serif;letter-spacing:.04em;text-transform:uppercase}
-body.landing-redesign .audience-panel{display:grid;grid-template-columns:184px minmax(0,1fr);min-height:510px}
-body.landing-redesign .audience-panel[hidden]{display:none!important}
-body.landing-redesign .audience-sidebar{display:flex;flex-direction:column;gap:6px;padding:24px 16px;background:var(--landing-deep);color:rgba(255,248,238,.72)}
-body.landing-redesign .audience-sidebar>strong{margin:0 10px 22px;color:var(--landing-cream);font:700 19px/1 'Rethink Sans',sans-serif}
-body.landing-redesign .audience-sidebar>span{display:flex;align-items:center;justify-content:space-between;min-height:44px;padding:0 11px;border-radius:10px;font:500 13px/1 'Poppins',sans-serif}
-body.landing-redesign .audience-sidebar>span.is-current{background:rgba(255,248,238,.1);color:var(--landing-cream)}
-body.landing-redesign .audience-sidebar b{display:grid;place-items:center;min-width:20px;height:20px;padding:0 5px;border-radius:999px;background:var(--ember);color:#fff;font-size:10px}
-body.landing-redesign .audience-product{padding:clamp(24px,4vw,48px)}
-body.landing-redesign .product-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:24px;margin-bottom:30px}
-body.landing-redesign .product-heading span{display:block;margin-top:8px;color:var(--landing-muted);font:500 13px/1.35 'Poppins',sans-serif}
-body.landing-redesign .product-heading h3{margin:0;color:var(--landing-ink);font:650 clamp(28px,3.6vw,42px)/1.02 'Rethink Sans',sans-serif;letter-spacing:-.03em}
-body.landing-redesign .product-heading>a{display:inline-flex;align-items:center;flex:0 0 auto;min-height:44px;color:var(--ember);font:600 13px/1.4 'Poppins',sans-serif;text-decoration:none}
-body.landing-redesign .student-focus,
-body.landing-redesign .teacher-priority{display:flex;align-items:center;justify-content:space-between;gap:30px;padding:26px;background:color-mix(in srgb,var(--ember) 7%,var(--landing-paper));border-radius:14px}
-body.landing-redesign .product-label{display:block;margin:7px 0 10px;color:var(--ember);font:600 11px/1.3 'Poppins',sans-serif;letter-spacing:.025em}
-body.landing-redesign .student-focus strong,
-body.landing-redesign .teacher-priority strong{display:block;color:var(--landing-ink);font:650 20px/1.15 'Rethink Sans',sans-serif}
-body.landing-redesign .student-focus p,
-body.landing-redesign .teacher-priority p{max-width:58ch;margin:8px 0 16px;color:var(--landing-muted);font:400 13px/1.6 'Poppins',sans-serif}
-body.landing-redesign .product-action{display:inline-flex;align-items:center;min-height:44px;padding:0 16px;border-radius:9px;background:var(--ember);color:#fff;font:600 12px/1 'Poppins',sans-serif;text-decoration:none}
-body.landing-redesign .product-action:hover{background:color-mix(in srgb,var(--ember) 86%,#000)}
-body.landing-redesign .focus-score{flex:0 0 140px;padding-left:24px;border-left:1px solid color-mix(in srgb,var(--ember) 22%,var(--landing-rule));text-align:right}
-body.landing-redesign .focus-score strong{font-size:48px;letter-spacing:-.04em}
-body.landing-redesign .focus-score span{display:block;margin-top:5px;color:var(--landing-muted);font:500 12px/1.4 'Poppins',sans-serif}
-body.landing-redesign .product-route{display:grid;grid-template-columns:1fr 34px 1fr 34px 1fr;align-items:center;gap:8px;margin-top:22px}
-body.landing-redesign .product-route>div{padding:16px 18px;border-top:1px solid var(--landing-rule)}
-body.landing-redesign .product-route>div.is-next{border-top-color:var(--ember)}
-body.landing-redesign .product-route strong{display:block;color:var(--landing-ink);font:650 15px/1.2 'Rethink Sans',sans-serif}
-body.landing-redesign .product-route span{display:block;margin-top:4px;color:var(--landing-muted);font:400 12px/1.35 'Poppins',sans-serif}
-body.landing-redesign .product-route i{height:1px;background:var(--landing-rule)}
-body.landing-redesign .teacher-priority{align-items:end}
-body.landing-redesign .teacher-priority>.product-action{flex:0 0 auto}
-body.landing-redesign .signal-table{margin-top:18px;border-top:1px solid var(--landing-rule)}
-body.landing-redesign .signal-table>div{display:grid;grid-template-columns:100px minmax(0,1fr) auto;gap:18px;align-items:center;padding:15px 4px;border-bottom:1px solid var(--landing-rule);font:500 12px/1.4 'Poppins',sans-serif}
-body.landing-redesign .signal-table span{color:var(--ember);font-variant-numeric:tabular-nums}
-body.landing-redesign .signal-table strong{color:var(--landing-ink);font-weight:600}
-body.landing-redesign .signal-table b{color:var(--landing-muted);font-weight:500}
 
 /* Evidence and subject coverage become one inspectable directory. */
 body.landing-redesign .evidence-intro{max-width:1040px;margin-bottom:clamp(44px,6vw,68px)}
@@ -182,10 +120,6 @@ body.landing-redesign .evidence-layout{display:grid;grid-template-columns:minmax
 body.landing-redesign .evidence-actions{display:flex;align-items:center;gap:20px;flex-wrap:wrap;margin-top:30px}
 body.landing-redesign .evidence-actions .btn{background:var(--ember);color:#fff;border-color:var(--ember)}
 body.landing-redesign .text-action{display:inline-flex;align-items:center;min-height:44px;color:var(--ember);font:600 13px/1.4 'Poppins',sans-serif;text-decoration:none}
-body.landing-redesign .evidence-facts{margin:0;border-top:1px solid var(--landing-rule)}
-body.landing-redesign .evidence-facts>div{display:grid;grid-template-columns:122px minmax(0,1fr);gap:20px;padding:16px 0;border-bottom:1px solid var(--landing-rule)}
-body.landing-redesign .evidence-facts dt{color:var(--landing-muted);font:600 11px/1.4 'Poppins',sans-serif;text-transform:uppercase;letter-spacing:.04em}
-body.landing-redesign .evidence-facts dd{margin:0;color:var(--landing-ink);font:500 13px/1.55 'Poppins',sans-serif}
 body.landing-redesign .subject-directory{overflow:hidden;border:1px solid var(--landing-rule);border-radius:16px;background:var(--landing-paper-raised);box-shadow:none}
 body.landing-redesign .subject-directory-head,
 body.landing-redesign .subject-directory-foot{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:16px 20px;background:var(--landing-deep);color:rgba(255,248,238,.76);font:500 12px/1.45 'Poppins',sans-serif}
@@ -274,10 +208,6 @@ body.landing-redesign .landing-footer-base{border-color:var(--landing-rule);padd
   body.landing-redesign #sticky-nav.nav-collapsed .landing-menu{right:auto;left:0}
 }
 
-@media(max-width:1180px){
-  body.landing-redesign .product-route{grid-template-columns:repeat(3,1fr);gap:18px}
-  body.landing-redesign .product-route i{display:none}
-}
 
 @media(max-width:900px){
   body.landing-redesign #sticky-nav,
@@ -301,13 +231,6 @@ body.landing-redesign .landing-footer-base{border-color:var(--landing-rule);padd
   body.landing-redesign .proof-rail-grid{grid-template-columns:1fr}
   body.landing-redesign .proof-rail-grid>div{padding:18px 0;border-left:0;border-top:1px solid rgba(255,248,238,.16)}
   body.landing-redesign .proof-rail-grid>div:first-child{border-top:0}
-  body.landing-redesign .repair-stage{grid-template-columns:46px minmax(0,1fr)}
-  body.landing-redesign .repair-signal{grid-column:2;margin-top:4px}
-  body.landing-redesign .audience-heading{align-items:flex-start;flex-direction:column}
-  body.landing-redesign .audience-panel{grid-template-columns:1fr;min-height:0}
-  body.landing-redesign .audience-sidebar{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));padding:12px;background:var(--landing-deep)}
-  body.landing-redesign .audience-sidebar>strong{display:none}
-  body.landing-redesign .audience-sidebar>span{justify-content:center;gap:6px;min-height:44px;padding:0 10px;white-space:nowrap}
   body.landing-redesign .evidence-layout{grid-template-columns:1fr;gap:52px}
   body.landing-redesign #waitlist .inner{grid-template-columns:1fr;gap:48px}
   body.landing-redesign .landing-footer-main{grid-template-columns:1fr;gap:44px}
@@ -350,32 +273,7 @@ body.landing-redesign .landing-footer-base{border-color:var(--landing-rule);padd
   body.landing-redesign .analytics-consent-actions{display:grid;grid-template-columns:1fr 1fr}
   body.landing-redesign .analytics-consent-actions button{width:100%}
   body.landing-redesign .repair-story .section-intro{margin-bottom:38px}
-  body.landing-redesign .repair-stage{grid-template-columns:36px minmax(0,1fr);gap:16px;padding:24px 4px}
-  body.landing-redesign .repair-stage-number{width:34px;height:34px;font-size:13px}
-  body.landing-redesign .repair-stage h3{font-size:27px}
-  body.landing-redesign .repair-signal{grid-column:1 / -1;margin-top:2px;padding:14px}
-  body.landing-redesign .repair-summary{text-align:left}
-  body.landing-redesign .audience-tabs{width:100%;border-radius:14px}
-  body.landing-redesign .audience-tab{flex:1;border-radius:10px}
-  body.landing-redesign .audience-window{width:100%;margin-left:0;background:#241d18;border-color:#443a32}
-  [data-theme="light"] body.landing-redesign .audience-window{background:#fffdf9;border-color:var(--landing-rule)}
-  body.landing-redesign .audience-window-bar{padding:10px 14px;background:#2b231d;border-bottom-color:#443a32;color:#c7beb4}
-  [data-theme="light"] body.landing-redesign .audience-window-bar{background:#f3eee6;border-bottom-color:var(--landing-rule);color:var(--landing-muted)}
-  body.landing-redesign .audience-sidebar{display:none}
-  body.landing-redesign .audience-product{padding:26px 18px 28px;background:#241d18}
-  [data-theme="light"] body.landing-redesign .audience-product{background:#fffdf9}
-  body.landing-redesign .product-heading{flex-direction:column;margin-bottom:22px}
-  body.landing-redesign .product-heading h3{font-size:clamp(29px,8.5vw,36px)}
-  body.landing-redesign .student-focus,
-  body.landing-redesign .teacher-priority{align-items:flex-start;flex-direction:column;padding:20px;background:#30271f}
-  [data-theme="light"] body.landing-redesign .student-focus,
-  [data-theme="light"] body.landing-redesign .teacher-priority{background:#f5efe7}
-  body.landing-redesign .focus-score{width:100%;padding:16px 0 0;border-top:1px solid color-mix(in srgb,var(--ember) 22%,var(--landing-rule));border-left:0;text-align:left}
-  body.landing-redesign .focus-score strong{font-size:40px}
-  body.landing-redesign .product-route,
-  body.landing-redesign .signal-table{display:none}
   body.landing-redesign .evidence-layout{gap:38px}
-  body.landing-redesign .evidence-facts>div{grid-template-columns:1fr;gap:5px}
   body.landing-redesign .subject-directory-head,
   body.landing-redesign .subject-directory-foot{align-items:flex-start;flex-direction:column}
   body.landing-redesign .subject-directory>a{min-height:72px;padding:14px 16px}
