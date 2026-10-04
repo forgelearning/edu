@@ -564,17 +564,9 @@ html:not([data-theme="light"]) body.forge-solo-login::after{color:var(--forge-lo
 .forge-topic-card{min-width:0;border:1px solid var(--line);border-radius:var(--radius-md);background:var(--panel);overflow:hidden}
 .forge-topic-card .bank-btn{display:block;width:100%;border:0;border-radius:0;background:transparent}
 .forge-topic-card .bank-btn:hover{background:var(--panel-2)}
-.forge-topic-card .bank-btn:focus-visible,.forge-topic-mastery__toggle:focus-visible{outline:2px solid var(--ember);outline-offset:-3px}
-.forge-topic-mastery{border-top:1px solid var(--line)}
-.forge-topic-mastery__toggle{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;min-height:44px;padding:8px 16px;border:0;background:transparent;color:var(--slate);font:600 12px 'Poppins',sans-serif;cursor:pointer}
-.forge-topic-mastery__toggle:hover,.forge-topic-mastery__toggle[aria-expanded="true"]{color:var(--white);background:var(--panel-2)}
-.forge-topic-mastery__marks{display:inline-flex;gap:6px;align-items:center}
-.forge-topic-mark{display:block;width:16px;height:5px;border:1px solid var(--dim);border-radius:2px;transform:skewX(-25deg);opacity:.55}
-.forge-topic-mark.is-earned{border-color:var(--ember);background:var(--ember);box-shadow:inset 0 -1px 0 rgba(0,0,0,.28);opacity:1}
-.forge-topic-mastery__detail{padding:12px 16px 16px;border-top:1px solid var(--line);color:var(--slate);font-size:12px;line-height:1.5}
-.forge-topic-mastery__detail strong{color:var(--white)}
-.forge-topic-mastery__detail b{color:var(--white);font-weight:600}
-.forge-topic-mastery__detail p{margin:7px 0 0}
+.forge-topic-card .bank-btn:focus-visible{outline:2px solid var(--ember);outline-offset:-3px}
+.forge-topic-mastery{display:flex;flex-wrap:wrap;align-items:center;gap:4px 12px;padding:10px 16px;border-top:1px solid var(--line)}
+.forge-topic-mastery small{color:var(--slate);font-size:12px}
 .forge-reforge-result__icon{width:38px;height:38px;flex:none;stroke:var(--good);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .forge-reforge-result__crack{stroke:var(--ember)}
 .forge-reforge-result__seam{stroke-dasharray:16;stroke-dashoffset:0}

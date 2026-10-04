@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="css/base.css?v=20260808-navpolish">
 <link rel="stylesheet" href="css/auth.css">
 <link rel="stylesheet" href="css/sidebar.css">
-<link rel="stylesheet" href="css/components.css?v=20260812">
+<link rel="stylesheet" href="css/components.css?v=20261004-rings">
 <link rel="stylesheet" href="css/forge-league.css?v=20260929f">
 <link rel="stylesheet" href="css/generated-utilities.css">
 <link rel="stylesheet" href="css/page-overrides/student-dashboard.css?v=20261004-plan">
@@ -63,6 +63,7 @@ ForgeSidebar.mount({
 <script src="scripts/forge-student-focus.js?v=20261004-plan"></script>
 <script src="scripts/forge-daily-plan.js?v=20261004-plan"></script>
 <script src="scripts/forge-misconception-state.js"></script>
+<script src="scripts/forge-topic-mastery.js?v=20261004-rings"></script>
 <script src="scripts/forge-league.js?v=20260928d"></script>
 <script src="scripts/forge-friends.js?v=20260929d"></script>
 
@@ -252,7 +253,7 @@ function topicShortcutsHtml(responses, excludeKey){
   if(!picks.length) return '';
   var h='<div class="dashboard-topics"><p class="dashboard-topics__label">Other topics</p><ul>';
   picks.forEach(function(b){
-    h+='<li><a href="forge-quiz.html?bank='+encodeURIComponent(b.key)+'"><span>'+_fsEsc(BANKS[b.key].label)+'</span><small>'+Math.round(b.correct/b.total*100)+'%</small></a></li>';
+    h+='<li><a href="forge-quiz.html?bank='+encodeURIComponent(b.key)+'"><span>'+_fsEsc(BANKS[b.key].label)+'</span>'+(window.ForgeTopicMastery?ForgeTopicMastery.ringHtml(ForgeTopicMastery.status(responses,b.key)):'')+'</a></li>';
   });
   return h+'<li><a class="dashboard-topics__all" href="forge-quiz.html">All topics →</a></li></ul></div>';
 }

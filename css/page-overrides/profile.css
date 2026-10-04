@@ -135,3 +135,10 @@ h1,h2,h3,.prof-name,.rank-title,.grade-letter,.logo{font-family:'Rethink Sans',s
   .stat-row{gap:10px}
   .stat-n{font-size:28px}
 }
+/* Your topics: the same readiness ring as Practice and Home. */
+.profile-topic-map{display:grid;gap:8px;margin:0;padding:0;list-style:none}
+.profile-topic-map a{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 12px;align-items:center;padding:10px 12px;border:1px solid var(--line);border-radius:var(--radius-sm);color:var(--white);text-decoration:none;transition:border-color .15s}
+.profile-topic-map a:hover{border-color:var(--slate)}
+.profile-topic-map a:focus-visible{outline:2px solid var(--ember);outline-offset:2px}
+.profile-topic-map__name{font-weight:600;font-size:14px;min-width:0}
+.profile-topic-map small{grid-column:1/-1;color:var(--slate);font-size:12px}

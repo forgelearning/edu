@@ -11,11 +11,11 @@
 <link rel="stylesheet" href="css/base.css?v=20260808-navpolish">
 <link rel="stylesheet" href="css/sidebar.css">
 <link rel="stylesheet" href="css/auth.css">
-<link rel="stylesheet" href="css/components.css?v=20260812">
+<link rel="stylesheet" href="css/components.css?v=20261004-rings">
 
 <link rel="stylesheet" href="css/states.css">
   <link rel="stylesheet" href="css/generated-utilities.css">
-  <link rel="stylesheet" href="css/page-overrides/profile.css?v=20261003-motion1">
+  <link rel="stylesheet" href="css/page-overrides/profile.css?v=20261004-rings">
   <link rel="stylesheet" href="css/page-overrides/profile-overdrive.css?v=20260818-overdrive">
   <link rel="stylesheet" href="css/auth-ember.css?v=20260817-auth2">
 <link rel="stylesheet" href="css/student-motion.css?v=20261003-motion1">
@@ -61,6 +61,7 @@ ForgeSidebar.mount({
 <script src="scripts/forge-classes.js?v=20260813"></script>
 <script src="scripts/forge-student-code.js?v=20260809"></script>
 <script src="scripts/forge-misconception-state.js"></script>
+<script src="scripts/forge-topic-mastery.js?v=20261004-rings"></script>
 <script>
 var SUPABASE_URL = ForgeAPI.config.url;
 var SUPABASE_KEY = ForgeAPI.config.key;
@@ -385,24 +386,15 @@ function renderProfile(){
     // Two-col: focus areas + strengths
     h+='<div class="two-col">';
 
-    // Focus areas
+    // Mistakes to repair (left) and every topic with its readiness ring
+    // (right). Weak topics used to be listed here by accuracy and strong ones
+    // as "Strengths"; the topic list now shows both the same way as Practice.
     h+='<div class="card">';
-    h+='<div class="card-title"><span class="forge-text-bad">▲ Focus areas — where marks are lost</span></div>';
-    if(weakBanks.length===0&&activeMCs.length===0){
-      h+=ForgeState.html('empty',{label:'No focus areas yet',body:'Answer more questions by topic and Forge will show where your next marks are available.'});
+    h+='<div class="card-title"><span class="forge-text-bad">Mistakes to repair</span></div>';
+    if(activeMCs.length===0){
+      h+=ForgeState.html('empty',{label:'Nothing to repair',body:'Mistakes you make in practice will appear here until you clear them.'});
     } else {
-      weakBanks.slice(0,3).forEach(function(s){
-        var pct=s.acc;
-        var col=pct<40?'var(--bad)':'var(--hot)';
-        h+='<div class="focus-item">';
-        h+='<div class="focus-head">';
-        h+='<span class="focus-pill" title="'+s.bank+'" style="background:'+col+'20;color:'+col+';border:1px solid '+col+'40">'+resolveBankLabel(s.bank)+'</span>';
-        h+='<span class="focus-acc" style="color:'+col+'">'+pct+'% accuracy</span>';
-        h+='</div>';
-        h+='<div class="focus-detail">Keep practising — accuracy below 60%.</div>';
-        h+='</div>';
-      });
-      activeMCs.slice(0,3).forEach(function(tag){
+      activeMCs.slice(0,4).forEach(function(tag){
         var d=mcData[tag];
         var label=resolveMCLabel(tag)||'An idea from this topic';
         h+='<div class="focus-item">';
@@ -410,22 +402,25 @@ function renderProfile(){
         h+='<span class="focus-pill forge-u-1ec8uss">'+label+'</span>';
         h+='<span class="focus-acc forge-text-bad">'+(d.fires===1?'Missed once':'Missed '+d.fires+' times')+'</span>';
         h+='</div>';
-        h+='<div class="focus-detail">Practise it in <a class="forge-u-xad1ay" href="anvil.html">Repair mistakes</a>.</div>';
         h+='</div>';
       });
+      h+='<div class="focus-detail"><a class="forge-u-xad1ay" href="anvil.html">Practise them in Repair mistakes →</a></div>';
     }
     h+='</div>';
 
-    // Strengths
     h+='<div class="card">';
-    h+='<div class="card-title"><span class="forge-text-good">✓ Strengths — ready for the exam</span></div>';
-    if(goodBanks.length===0){
-      h+=ForgeState.html('empty',{label:'Strengths will appear soon',body:'Answer at least three questions in a topic to confirm a strength.'});
+    h+='<div class="card-title">Your topics</div>';
+    var topicBanks=((typeof SUBJECTS!=='undefined'&&SUBJECTS[subjectKey])||{}).banks||Object.keys(responses.reduce(function(m,r){if(r.bank&&!r.reforge_attempted)m[r.bank]=true;return m;},{}));
+    var openTags=ForgeTopicMastery.openTags(responses);
+    if(!topicBanks.length){
+      h+=ForgeState.html('empty',{label:'No topics yet',body:'Answer a few questions and each topic will show how ready you are.'});
     } else {
-      goodBanks.slice(0,6).forEach(function(s){
-        var col=s.acc>=90?'var(--good)':s.acc>=80?'var(--hot)':'var(--slate)';
-        h+='<div class="strength-item"><span class="strength-label" title="'+s.bank+'">'+resolveBankLabel(s.bank)+'</span><span class="strength-acc" style="color:'+col+'">'+s.acc+'%</span></div>';
+      h+='<ul class="profile-topic-map">';
+      topicBanks.forEach(function(bank){
+        var m=ForgeTopicMastery.status(responses,bank,openTags);
+        h+='<li><a href="forge-quiz.html?bank='+encodeURIComponent(bank)+'"><span class="profile-topic-map__name">'+profileEscape(resolveBankLabel(bank))+'</span>'+ForgeTopicMastery.ringHtml(m,true)+'<small>'+profileEscape(ForgeTopicMastery.detail(m))+'</small></a></li>';
       });
+      h+='</ul>';
     }
     h+='</div>';
     h+='</div>'; // /two-col
