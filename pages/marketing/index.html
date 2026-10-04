@@ -39,7 +39,7 @@
 <link rel="stylesheet" href="css/discovery.css?v=20260808-navpolish">
   <link rel="stylesheet" href="css/generated-utilities.css">
 <link rel="stylesheet" href="css/page-overrides/index.css?v=20260810-overdrive-fusion-light">
-<link rel="stylesheet" href="css/page-overrides/landing-redesign.css?v=20261004-partb">
+<link rel="stylesheet" href="css/page-overrides/landing-redesign.css?v=20261004-strip">
 </head>
 <body>
 <!--
@@ -156,54 +156,17 @@ document.body.classList.add('landing-redesign');
   </div>
 </section>
 
-<section class="landing-new repair-story" id="how">
+<section class="landing-new repair-story repair-story--strip" id="how">
   <div class="wrap">
     <div class="section-intro">
       <h2>A mistake should change what happens next.</h2>
-      <p>Forge does not simply reveal the right answer and move on. It identifies the mistaken idea, repairs it while the reasoning is still fresh, and asks the student to prove the fix in a new situation.</p>
+      <p>Forge doesn’t just show the right answer and move on.</p>
     </div>
-    <div class="repair-sequence" aria-label="The Forge learning loop">
-      <article class="repair-stage repair-stage--trigger">
-        <div class="repair-stage-number" aria-hidden="true">1</div>
-        <div>
-          <h3>Expose the misconception</h3>
-          <span class="repair-state">Wrong answer selected</span>
-          <p>The distractor points to the exact idea that broke down, not just the topic the student was revising.</p>
-        </div>
-        <div class="repair-signal" aria-hidden="true">
-          <span>“Inflation fell, so prices fell.”</span>
-          <i></i>
-          <b>Inflation signal</b>
-        </div>
-      </article>
-      <article class="repair-stage repair-stage--scaffold">
-        <div class="repair-stage-number" aria-hidden="true">2</div>
-        <div>
-          <h3>Repair the missing idea</h3>
-          <span class="repair-state">30-second correction</span>
-          <p>A short explanation separates the concepts: disinflation slows price rises; deflation means prices actually fall.</p>
-        </div>
-        <div class="repair-signal repair-signal--scaffold" aria-hidden="true">
-          <span>Rate of change</span>
-          <i></i>
-          <b>Price level</b>
-        </div>
-      </article>
-      <article class="repair-stage repair-stage--proof">
-        <div class="repair-stage-number" aria-hidden="true">3</div>
-        <div>
-          <h3>Prove the fix</h3>
-          <span class="repair-state">Fresh scenario</span>
-          <p>A similar question changes the context. The student has to apply the corrected idea rather than repeat it.</p>
-        </div>
-        <div class="repair-signal repair-signal--proof" aria-hidden="true">
-          <span>Same concept</span>
-          <i></i>
-          <b>New frame</b>
-        </div>
-      </article>
-    </div>
-    <p class="repair-summary">One misconception becomes a correction, a second attempt, and a clearer next step.</p>
+    <ol class="loop-strip" aria-label="How Forge handles a wrong answer">
+      <li><span class="loop-strip__n" aria-hidden="true">1</span><div><h3>Spot the idea</h3><p>Each wrong option points to the specific idea that broke down.</p></div></li>
+      <li><span class="loop-strip__n" aria-hidden="true">2</span><div><h3>Fix it</h3><p>A short explanation separates the two ideas while the reasoning is fresh.</p></div></li>
+      <li><span class="loop-strip__n" aria-hidden="true">3</span><div><h3>Prove it</h3><p>A similar question in a new context, then it comes back until it sticks.</p></div></li>
+    </ol>
   </div>
 </section>
 

@@ -414,3 +414,14 @@ body.landing-redesign #waitlist .teacher-points strong{color:var(--landing-cream
   body.landing-redesign .evidence-story--compact .evidence-intro h2{font-size:clamp(34px,4vw,52px)}
   body.landing-redesign .evidence-story--compact .evidence-layout--single{grid-template-columns:minmax(0,1fr)}
 }
+/* How it works as one strip: the hero demo already shows the loop, so three
+   short steps are enough (was three tall cards with diagrams). */
+body.landing-redesign .repair-story--strip{padding-top:clamp(56px,7vw,88px)!important;padding-bottom:clamp(56px,7vw,88px)!important}
+body.landing-redesign .repair-story--strip .section-intro{margin-bottom:clamp(24px,3vw,36px)}
+body.landing-redesign .repair-story--strip .section-intro h2{font-size:clamp(32px,4vw,48px)}
+body.landing-redesign .loop-strip{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin:0;padding:0;list-style:none}
+body.landing-redesign .loop-strip li{display:flex;gap:14px;align-items:flex-start;padding:20px;border:1px solid var(--landing-rule);border-radius:14px;background:var(--landing-paper-raised)}
+body.landing-redesign .loop-strip__n{display:grid;place-items:center;flex:none;width:32px;height:32px;border-radius:50%;background:var(--ember);color:#fff;font:700 14px 'Rethink Sans',sans-serif}
+body.landing-redesign .loop-strip h3{margin:2px 0 4px;color:var(--landing-ink);font:700 18px/1.2 'Rethink Sans',sans-serif;letter-spacing:-.01em}
+body.landing-redesign .loop-strip p{margin:0;color:var(--landing-muted);font:400 14px/1.5 'Poppins',sans-serif}
+@media(max-width:760px){body.landing-redesign .loop-strip{grid-template-columns:1fr;gap:10px}body.landing-redesign .loop-strip li{padding:16px}}

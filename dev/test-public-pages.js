@@ -45,6 +45,7 @@ assert(!/data-mc="MC-/.test(index), 'the homepage demo shows misconception label
 assert(!/£/.test(index), 'the price lives on the pricing page, not the homepage');
 assert(/id="teachers"/.test(index) && /For teachers\./.test(index), 'there is one "For teachers" section');
 assert(!/audience-story/.test(index), 'the large product mock-up section is gone');
+assert(/class="loop-strip"/.test(index) && !/repair-stage/.test(index), 'How it works is one short strip, not three tall cards');
 assert(/<form id="waitform">/.test(index), 'the pilot sign-up form is still there (inside For teachers)');
 const roleSelect = fs.readFileSync('pages/auth/role-select.html', 'utf8');
 assert(roleSelect.includes('scripts/forge-theme.js') && roleSelect.includes('css/fonts.css'), 'role-select follows the visitor’s theme and uses the homepage fonts');
