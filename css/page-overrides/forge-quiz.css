@@ -590,3 +590,10 @@ html:not([data-theme="light"]) body.forge-solo-login::after{color:var(--forge-lo
 #jm-form .join-input{display:block;width:100%;max-width:380px}
 #jm-form .join-btn{margin-top:14px}
 @media(max-width:600px){.forge-study-context{align-items:stretch;flex-direction:column}.forge-study-context button{width:100%}}
+/* Answer from memory first (forgeRecallIndex). */
+.forge-recall{display:grid;gap:10px;margin:0 0 16px;padding:14px 16px;border:1px dashed var(--line);border-radius:var(--radius-md);background:var(--panel)}
+.forge-recall label,.forge-recall span{color:var(--slate);font:600 11px 'JetBrains Mono',monospace;letter-spacing:.06em;text-transform:uppercase}
+.forge-recall textarea{width:100%;min-height:64px;padding:10px 12px;border:1px solid var(--line);border-radius:var(--radius-sm);background:var(--panel-2);color:var(--white);font:inherit;font-size:15px;resize:vertical}
+.forge-recall textarea:focus-visible{outline:2px solid var(--ember);outline-offset:1px}
+.forge-recall .forge-button{justify-self:start;min-height:44px}
+.forge-recall.is-shown p{margin:0;color:var(--white)}

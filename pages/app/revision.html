@@ -59,7 +59,7 @@ ForgeSidebar.mount({
 <script src="scripts/forge-assignment-progress.js"></script>
 <script src="scripts/forge-personal-cards.js"></script>
 <script src="scripts/forge-revision-progress.js"></script>
-<script src="scripts/forge-revision.js?v=20261004-rings"></script>
+<script src="scripts/forge-revision.js?v=20261004-mixed"></script>
 <script>
 (function(){
   var app=document.getElementById('revision-app'),saved=null;
@@ -101,7 +101,7 @@ ForgeSidebar.mount({
         ForgeRevisionProgress.load(data.context,local,(data.assignments||[]).map(function(item){return String(item.id);}))
       ]).then(function(results){
         ForgeRevision.mountStudent({
-          root:app,context:data.context,subject:subject,changeSubject:changeSubject,
+          root:app,context:data.context,subject:subject,changeSubject:changeSubject,startMatch:new URLSearchParams(location.search).get('match'),
           assignments:data.assignments,reload:boot,
           remoteCards:results[0].status==='fulfilled'?results[0].value:null,
           remoteProgress:results[1].status==='fulfilled'?results[1].value:null,

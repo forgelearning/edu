@@ -454,7 +454,9 @@
       }).catch(function(){showSyncStatus('Review saved on this device. Sync will retry when you reopen Revision.');});
     });}
     var pending=draft();
-    if(pending)renderEditor(pending);else renderHome(options.assignments||[]);
+    // A link from the end of a practice set can open a match round directly.
+    var matchBank=options.startMatch&&availableCards([options.startMatch]).length?options.startMatch:null;
+    if(pending)renderEditor(pending);else if(matchBank){renderHome(options.assignments||[]);renderMatch(matchBank);}else renderHome(options.assignments||[]);
   }
 
   root.ForgeRevision={TOPICS:TOPICS,config:config,banks:banks,isRevision:isRevision,markerFor:markerFor,assignmentProgress:assignmentProgress,readState:readState,cleanPersonalCard:cleanPersonalCard,personalAsReview:personalAsReview,hintHtml:hintHtml,matchPairs:matchPairs,cardStatus:cardStatus,subjectChoices:subjectChoices,teacherPanelHtml:teacherPanelHtml,wireTeacherPanel:wireTeacherPanel,loadStudentData:loadStudentData,mountStudent:mountStudent};

@@ -16,7 +16,7 @@
 
 <link rel="stylesheet" href="css/states.css">
   <link rel="stylesheet" href="css/generated-utilities.css">
-<link rel="stylesheet" href="css/page-overrides/forge-quiz.css?v=20261004-rings">
+<link rel="stylesheet" href="css/page-overrides/forge-quiz.css?v=20261004-mixed">
 <link rel="stylesheet" href="css/student-motion.css?v=20261003-motion1">
 </head>
 <body>
@@ -455,6 +455,19 @@ function forgeStartSession(bank, rawQs) {
   state.sessionWrongTags = [];
   state.sessionReforgedTags = [];
   try { localStorage.setItem(forgeSessionKey(bank), JSON.stringify({completedIds: completed, questionIds: state.questions.map(function(q){return q.id;}), idx: 0, score: 0, updatedAt: Date.now()})); } catch(e) {}
+}
+// One question per set is answered from memory first: the student types
+// what they remember, then picks from the options. It is still scored as the
+// multiple-choice answer; writing first means the answer has to be recalled
+// rather than recognised. Chosen by rule, not stored, so a resumed set picks
+// the same question.
+var RECALL_ANSWER_MAX = 60;
+function forgeRecallIndex(questions) {
+  for (var i = 2; i < (questions || []).length; i++) {
+    var q = questions[i];
+    if (q && !q.type && q.options && String(q.options[q.correct] || '').length <= RECALL_ANSWER_MAX) return i;
+  }
+  return -1;
 }
 function forgeCompleteSession() {
   try {
@@ -1698,11 +1711,22 @@ function renderQuiz(){
     return;
   }
 
+  var recall = state.idx === forgeRecallIndex(state.questions);
+  if(recall) h += '<div class="forge-recall" id="forge-recall"><label for="forge-recall-answer">Answer from memory first</label><textarea id="forge-recall-answer" rows="2" placeholder="Type what you remember…"></textarea><button type="button" class="forge-button forge-button--secondary" id="forge-recall-show">Show the options</button></div><div id="forge-recall-options" hidden>';
   // Guarded: a cached forge-question.js from before hints must not break Practice.
   if(window.ForgeQuestion.hintButtonHtml) h += window.ForgeQuestion.hintButtonHtml();
   h += window.ForgeQuestion.renderOptions(q);
+  if(recall) h += '</div>';
 
   app.innerHTML=h;
+  if(recall) document.getElementById('forge-recall-show').onclick=function(){
+    var written=document.getElementById('forge-recall-answer').value.trim();
+    var box=document.getElementById('forge-recall');
+    box.innerHTML='<span>Your answer from memory</span><p>'+(written?forgeEscape(written):'Nothing written. That is fine: pick the option you think is right.')+'</p>';
+    box.classList.add('is-shown');
+    document.getElementById('forge-recall-options').hidden=false;
+    var first=document.querySelector('#opts .opt'); if(first) first.focus();
+  };
   document.getElementById('back-banks').onclick=function(){state.phase='banks';render();};
 
   var opts=app.querySelectorAll('.opt');
@@ -2057,6 +2081,8 @@ function renderResults(){
     : '<a class="forge-button forge-button--primary" href="'+next.href+'" id="result-next-action">'+next.label+' →</a>';
   h+='<div class="forge-action-row forge-result-actions">';
   if(!next.again) h+='<button type="button" class="forge-button forge-button--secondary" id="retry">Another set</button>';
+  // A clean set ends with a quick change of format in the same topic.
+  else if(state.subject!=='chem') h+='<a class="forge-button forge-button--secondary" href="revision.html?subject='+encodeURIComponent(state.subject||'')+'&amp;match='+encodeURIComponent(state.bank)+'">Match pairs</a>';
   h+='<button type="button" class="forge-button forge-button--secondary" id="all-banks">Choose a topic</button>';
   h+='</div>';
   h+='<nav class="forge-result-links" aria-label="After practice"><a href="student-dashboard.html">Done for now</a></nav>';
