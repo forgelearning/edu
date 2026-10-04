@@ -159,6 +159,21 @@ const server = http.createServer((req, res) => {
     if (url.pathname === '/mock-supabase/rest/v1/rpc/join_class_with_student_code') return json(res, 200, [{student_id:demoStudent.studentId,class_id:demoStudent.classId,class_name:'Motion test class',subject:demoStudent.classSubject}]);
     if (url.pathname === '/mock-supabase/rest/v1/rpc/get_student_own_responses_with_code' || url.pathname === '/mock-supabase/rest/v1/rpc/get_student_own_responses') return json(res, 200, demoResponses);
     if (url.pathname === '/mock-supabase/rest/v1/rpc/get_student_assignments') return json(res, 200, []);
+    if (url.pathname === '/mock-supabase/rest/v1/rpc/get_challenge_answers') {
+      // Mirrors the server's answer-first rule, then reports a pretend class of
+      // six: the demo student's own answer plus five classmates.
+      let raw='';
+      req.on('data', chunk => { raw += chunk; });
+      req.on('end', () => {
+        let body={};try{body=JSON.parse(raw||'{}');}catch(e){}
+        const mine=demoResponses.find(r=>r.question_id===body.p_question_id&&r.assignment_id===body.p_assignment_id&&!r.reforge_attempted);
+        if(!mine) return json(res, 200, {allowed:false,reason:'answer_first'});
+        const options={A:1,B:2,C:1,D:1};
+        options[mine.selected_option]=(options[mine.selected_option]||0)+1;
+        json(res, 200, {allowed:true,answered:6,options});
+      });
+      return;
+    }
     if (url.pathname === '/mock-supabase/rest/v1/rpc/get_class_by_code') return json(res, 200, [{id:demoStudent.classId,name:'Motion test class',subject:demoStudent.classSubject}]);
     if (url.pathname === '/mock-supabase/rest/v1/rpc/record_revision_review_with_code') return json(res, 200, {allowed:true});
     if (url.pathname === '/mock-supabase/rest/v1/rpc/record_student_response_with_code') {

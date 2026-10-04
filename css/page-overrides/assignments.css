@@ -171,3 +171,5 @@ body{font-family:'Poppins',sans-serif;color:var(--slate)}h1,h2{font-family:'Reth
   #list>.card .assignment-progress-label{align-items:flex-start;flex-direction:column;gap:4px}
   #list>.card>div:last-of-type{padding-top:4px}
 }
+.assignment-challenge-note{margin:10px 0 0;color:var(--slate);font-size:13px;line-height:1.5}
+.assignment-challenge-note strong{color:var(--white)}

@@ -11,17 +11,18 @@
 <link rel="stylesheet" href="css/tokens.css">
 <link rel="stylesheet" href="css/base.css?v=20260808-navpolish">
 <link rel="stylesheet" href="css/sidebar.css">
-<link rel="stylesheet" href="css/components.css?v=20260812">
+<link rel="stylesheet" href="css/components.css?v=20261004-challenge">
 
 <link rel="stylesheet" href="css/states.css">
   <link rel="stylesheet" href="css/generated-utilities.css">
-  <link rel="stylesheet" href="css/page-overrides/present.css">
+  <link rel="stylesheet" href="css/page-overrides/present.css?v=20261004-challenge2">
 </head>
 <body>
 <script src="scripts/forge-api.js"></script>
 <script src="scripts/forge-state.js"></script>
 <script src="data/misconception-labels.js?v=20260907-diagnostics"></script>
 <script src="scripts/forge-question.js?v=20261003-hints"></script>
+<script src="scripts/forge-challenge.js?v=20261004-challenge"></script>
 <script src="scripts/forge-logo.js"></script>
 <script src="scripts/forge-sidebar.js?v=20260809-gearcenter"></script>
 <a class="forge-skip-link" href="#main-content">Skip to main content</a>
@@ -74,7 +75,8 @@ requireTeacherSession(function() {
     state.banks = window.__FORGE_DATA__.BANKS;
     state.subjects = window.__FORGE_DATA__.SUBJECTS;
     state.phase = 'subjects';
-    render();
+    var linked = new URLSearchParams(location.search).get('challenge');
+    if (linked) openChallenge(linked); else render();
   }).catch(function(e){
     var retry = ForgeState.error(app, { label: 'Question banks are unavailable', body: 'We couldn’t load the teaching material. Check your connection and try again.' });
     if (retry) retry.onclick = function () { location.reload(); };
@@ -87,6 +89,110 @@ function render(){
   if (state.phase === 'subjects') return renderSubjects();
   if (state.phase === 'banks') return renderBanks();
   if (state.phase === 'present') return renderPresent();
+  if (state.phase === 'challenges') return renderChallengeList();
+  if (state.phase === 'challenge') return renderChallenge();
+}
+
+// ===== Class Challenge results =====
+// Students answered on their own; this shows the class's answers question by
+// question, so the lesson can teach from them without student devices. Counts
+// come from responses the teacher can already read; a question with fewer
+// than ForgeChallenge.MIN_SHOWN answers shows no breakdown.
+function teacherToken(){ try { return (JSON.parse(localStorage.getItem(TEACHER_SESSION_KEY) || 'null') || {}).access_token || null; } catch (e) { return null; } }
+function findQuestion(id){
+  for (var key in state.banks) { var qs = state.banks[key].questions || []; for (var i = 0; i < qs.length; i++) if (qs[i].id === id) return qs[i]; }
+  return null;
+}
+function presentEsc(v){ return String(v == null ? '' : v).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+function listChallenges(){
+  state.phase = 'challenges'; state.challenges = null; render();
+  var token = teacherToken();
+  Promise.all([
+    ForgeAPI.get('assignments', 'select=id,title,class_id,due_date,challenge_question_ids&challenge_question_ids=not.is.null&order=created_at.desc', { token: token }),
+    ForgeAPI.get('classes', 'select=id,name', { token: token })
+  ]).then(function(r){
+    var names = {}; (r[1] || []).forEach(function(c){ names[c.id] = c.name; });
+    state.challenges = (r[0] || []).map(function(a){ return Object.assign({}, a, { className: names[a.class_id] || '' }); });
+    render();
+  }).catch(function(){ state.challenges = []; state.challengeError = true; render(); });
+}
+function renderChallengeList(){
+  var h = '<button type="button" class="back-btn forge-u-3ocpgz" id="challenge-back">← Class Mode</button>';
+  h += '<h1 class="forge-u-17llymi">Class Challenge results</h1>';
+  if (!state.challenges) { app.innerHTML = h + '<p class="forge-u-1avfpoj">Loading challenges…</p>'; }
+  else if (!state.challenges.length) { app.innerHTML = h + '<p class="forge-u-1avfpoj">' + (state.challengeError ? 'We couldn’t load your challenges. Check your connection and try again.' : 'No challenges yet. Set one from Assignments on the Teacher Dashboard by ticking “Make this a Class Challenge”.') + '</p>'; }
+  else {
+    h += '<div class="subject-list">';
+    state.challenges.forEach(function(a){
+      h += '<button type="button" class="pick-btn" data-challenge="' + presentEsc(a.id) + '"><h3>' + presentEsc(a.title) + '</h3><div class="sub">' + presentEsc(a.className) + '</div><div class="count">' + a.challenge_question_ids.length + ' questions' + (a.due_date ? ' · due ' + new Date(a.due_date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }) : '') + '</div></button>';
+    });
+    app.innerHTML = h + '</div>';
+    app.querySelectorAll('[data-challenge]').forEach(function(b){ b.onclick = function(){ openChallenge(b.getAttribute('data-challenge')); }; });
+  }
+  document.getElementById('challenge-back').onclick = function(){ state.phase = 'subjects'; render(); };
+}
+function openChallenge(id){
+  var token = teacherToken();
+  state.phase = 'challenge'; state.challenge = null; render();
+  Promise.all([
+    ForgeAPI.get('assignments', 'select=id,title,class_id,challenge_question_ids&id=eq.' + encodeURIComponent(id), { token: token }),
+    ForgeAPI.get('responses', 'select=student_id,question_id,selected_option,is_correct,misconception_tag,reforge_attempted,created_at&assignment_id=eq.' + encodeURIComponent(id), { token: token })
+  ]).then(function(r){
+    var a = (r[0] || [])[0];
+    if (!a || !ForgeChallenge.isChallenge(a)) throw new Error('missing');
+    var questions = a.challenge_question_ids.map(findQuestion).filter(Boolean);
+    state.challenge = { assignment: a, questions: questions, tally: ForgeChallenge.tally(r[1] || [], questions.map(function(q){ return q.id; })) };
+    state.idx = 0; state.revealed = false; render();
+  }).catch(function(){ state.challenge = { error: true }; render(); });
+}
+function renderChallenge(){
+  var c = state.challenge;
+  if (!c) { app.innerHTML = '<p class="forge-u-1avfpoj">Loading challenge results…</p>'; return; }
+  if (c.error) { app.innerHTML = ForgeState.html('error', { label: 'Challenge results are unavailable', body: 'We couldn’t load this challenge. Check your connection and try again.', action: { label: 'Back to challenges', href: 'present.html' } }); return; }
+  var q = c.questions[state.idx];
+  var h = '<div class="present-header"><button type="button" class="back-btn forge-u-3ocpgz" id="challenge-list">← Challenges</button><span class="bank-name">' + presentEsc(c.assignment.title) + '</span><span>' + (q ? (state.idx + 1) + ' / ' + c.questions.length : 'Summary') + '</span></div>';
+  if (!q) {
+    // Summary: weakest questions first, with the misconception behind each.
+    h += '<div class="stage"><h1 class="forge-u-17llymi">How the class did</h1><ol class="challenge-summary">';
+    c.questions.map(function(qq, i){
+      var t = c.tally[qq.id], right = (t.options[qq.correct] || 0), pct = t.answered ? Math.round(right / t.answered * 100) : null;
+      var top = Object.keys(t.tags).sort(function(x, y){ return t.tags[y] - t.tags[x]; })[0];
+      return { i: i, pct: pct, n: t.answered, label: top && window.resolveMCLabel ? resolveMCLabel(top) : '' };
+    }).sort(function(a, b){ return (a.pct == null ? 101 : a.pct) - (b.pct == null ? 101 : b.pct); }).forEach(function(row){
+      h += '<li><strong>Question ' + (row.i + 1) + '</strong> · ' + (row.n < ForgeChallenge.MIN_SHOWN ? 'fewer than ' + ForgeChallenge.MIN_SHOWN + ' answers' : row.pct + '% correct') + (row.label && row.n >= ForgeChallenge.MIN_SHOWN ? '<br><span>' + row.label + '</span>' : '') + '</li>';
+    });
+    h += '</ol><p class="hint">Students who chose a wrong answer already have that idea in Repair mistakes.</p></div>';
+    h += '<div class="controls"><button type="button" class="ctrl-btn" id="prev-btn">← Previous</button><div></div><div></div></div>';
+    app.innerHTML = h;
+  } else {
+    var t = c.tally[q.id];
+    h += '<div class="progress-bar"><div class="progress-fill" style="--progress:' + (state.idx / c.questions.length) + '"></div></div>';
+    h += '<div class="stage"><span class="q-id-big">Question ' + (state.idx + 1) + '</span><div class="stem-big">' + q.stem + '</div>';
+    var keys = Object.keys(q.options);
+    h += '<div class="opts-big">';
+    keys.forEach(function(k){ h += '<div class="opt-big' + (state.revealed ? (k === q.correct ? ' reveal-correct' : ' reveal-dim') : '') + '"><span class="letter-big">' + k + '</span><span>' + q.options[k] + '</span></div>'; });
+    h += '</div>';
+    if (t.answered < ForgeChallenge.MIN_SHOWN) {
+      h += '<p class="challenge-few">' + t.answered + ' answered. The class breakdown appears once ' + ForgeChallenge.MIN_SHOWN + ' students have answered.</p>';
+    } else {
+      h += '<div class="challenge-bars"><p><strong>' + t.answered + ' students answered</strong></p>' + ForgeChallenge.barsHtml(q, t, { reveal: state.revealed }) + '</div>';
+    }
+    if (state.revealed) {
+      var wrong = keys.filter(function(k){ return k !== q.correct; }).sort(function(x, y){ return (t.options[y] || 0) - (t.options[x] || 0); })[0];
+      var topTag = Object.keys(t.tags).sort(function(x, y){ return t.tags[y] - t.tags[x]; })[0];
+      var label = topTag && window.resolveMCLabel ? resolveMCLabel(topTag) : '';
+      var lead = (t.answered >= ForgeChallenge.MIN_SHOWN && wrong && t.options[wrong]) ? '<p class="challenge-lead">' + t.options[wrong] + ' chose ' + wrong + '.' + (label ? ' The idea to fix:' : '') + '</p>' : '';
+      h += '<div class="scaffold-big">' + lead + (label ? '<span class="stag">' + label + '</span>' : '') + '<p>' + ForgeQuestion.scaffoldText(q) + '</p></div>';
+    }
+    h += '</div><div class="controls"><button type="button" class="ctrl-btn" id="prev-btn"' + (state.idx === 0 ? ' disabled' : '') + '>← Previous</button>';
+    h += state.revealed ? '<button type="button" class="reveal-btn next-btn-style" id="next-btn">' + (state.idx + 1 < c.questions.length ? 'Next question →' : 'See summary →') + '</button>' : '<button type="button" class="reveal-btn" id="reveal-btn">Reveal answer</button>';
+    h += '<div></div></div>';
+    app.innerHTML = h;
+    var rb = document.getElementById('reveal-btn'); if (rb) rb.onclick = function(){ state.revealed = true; render(); };
+    var nb = document.getElementById('next-btn'); if (nb) nb.onclick = function(){ state.idx++; state.revealed = false; render(); };
+  }
+  document.getElementById('challenge-list').onclick = listChallenges;
+  var pb = document.getElementById('prev-btn'); if (pb) pb.onclick = function(){ if (state.idx > 0) { state.idx--; state.revealed = false; render(); } };
 }
 
 function howtoStrip(){
@@ -113,6 +219,7 @@ function renderSubjects(){
   h += '<h1 class="forge-u-17llymi">Forge Class Mode</h1>';
   h += '<p class="forge-u-1avfpoj">Run a question bank from the front of the room — no student devices needed.</p>';
   h += howtoStrip();
+  h += '<p class="challenge-entry"><button type="button" class="ctrl-btn" id="open-challenges">Class Challenge results →</button> Show how the class answered a challenge they did on their own.</p>';
   h += '<div class="subject-list">';
   Object.keys(state.subjects).forEach(function(key){
     var s = state.subjects[key];
@@ -121,6 +228,7 @@ function renderSubjects(){
   });
   h += '</div>';
   app.innerHTML = h;
+  document.getElementById('open-challenges').onclick = listChallenges;
   app.querySelectorAll('.pick-btn').forEach(function(b){
     b.onclick = function(){
       state.subjectKey = b.dataset.key;
@@ -233,6 +341,13 @@ function renderPresent(){
 }
 
 document.addEventListener('keydown', function(e){
+  if (state.phase === 'challenge' && state.challenge && state.challenge.questions) {
+    var total = state.challenge.questions.length;
+    if (e.code === 'Space' || e.code === 'Enter') { e.preventDefault(); if (state.idx < total && !state.revealed) state.revealed = true; else if (state.idx < total) { state.idx++; state.revealed = false; } render(); }
+    else if (e.code === 'ArrowLeft' && state.idx > 0) { state.idx--; state.revealed = false; render(); }
+    else if (e.code === 'Escape') listChallenges();
+    return;
+  }
   if (state.phase !== 'present') return;
   if (e.code === 'Space' || e.code === 'Enter'){
     e.preventDefault();

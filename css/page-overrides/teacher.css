@@ -898,3 +898,10 @@ html[data-overdrive="control-room"] .tab.active{color:var(--coal)}
 .teacher-home-heading .insight-grid{gap:12px;margin:0 0 10px}
 .teacher-home-heading .insight-grid dd{font-size:20px}
 @media(min-width:900px){.teacher-home-heading{grid-template-columns:minmax(0,1fr) minmax(320px,400px);align-items:start;gap:32px}}
+/* Class Challenge option and card note (scripts/forge-challenge.js). */
+.asgn-challenge{display:flex;align-items:flex-start;gap:10px;margin:0 0 14px;padding:12px 14px;border:1px solid var(--line);border-radius:var(--radius-sm);background:var(--panel-2);cursor:pointer}
+.asgn-challenge input{margin-top:3px;accent-color:var(--ember)}
+.asgn-challenge strong{display:block;color:var(--white);font-size:14px}
+.asgn-challenge small{display:block;margin-top:3px;color:var(--slate);font-size:12px;line-height:1.5}
+.assign-challenge-note{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;margin:8px 0 0}
+.assign-challenge-note a{color:var(--hot);font-size:13px;font-weight:600}

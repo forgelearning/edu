@@ -19,6 +19,14 @@
     return rawList(value).filter(function(item){return String(item).indexOf(REVISION_PREFIX)!==0;});
   }
   function key(value){return String(value==null?'':value).trim().toLowerCase();}
+  // A Class Challenge fixes its questions, so only those count and the total
+  // is their number, not "up to eight per bank".
+  function challengeSet(assignment){
+    var ids=assignment&&assignment.challenge_question_ids;
+    if(!Array.isArray(ids)||!ids.length) return null;
+    var set={}; ids.forEach(function(id){set[String(id)]=true;}); set.__size=ids.length;
+    return set;
+  }
   function bankData(){ return window.ForgeAssignmentBanks || window.BANKS || {}; }
   function availableQuestionCount(data){
     if(!data) return 0;
@@ -110,10 +118,11 @@
      between the student and teacher surfaces. */
   function counted(assignment,payload){
     var banks=list(assignment&&assignment.banks), allowed={};
-    var revision=revisionConfig(assignment);
+    var revision=revisionConfig(assignment), challenge=challengeSet(assignment);
     banks.forEach(function(bank){allowed[key(bank)]=bank;});
     var seen={}, countedByBank={}, out=[];
     countable(assignment,payload).forEach(function(entry){
+      if(challenge&&!challenge[entry.id]) return;
       var bank=allowed[key(entry.bank)]||bankForQuestion(entry.id);
       if(!bank||!allowed[key(bank)]) return;
       var marker=bank+'|'+entry.id;
@@ -123,7 +132,7 @@
       // An assignment is one focused session (up to eight questions) per
       // bank. Later free-practice answers from the same bank must not inflate
       // either the numerator or denominator after that session is complete.
-      if(!revision&&countedByBank[bank]>=bankTotal(bank)) return;
+      if(!revision&&!challenge&&countedByBank[bank]>=bankTotal(bank)) return;
       if(revision&&revision.mode==='count'&&out.length>=revision.target) return;
       countedByBank[bank]++;
       out.push({id:entry.id,bank:bank,correct:entry.correct,selected:entry.selected,at:entry.at});
@@ -140,7 +149,8 @@
       var cleared=countable(assignment,payload).some(function(entry){return entry.selected==='revision:queue-complete';});
       return {answered:cleared?1:0,correct:cleared?1:0,total:1,complete:cleared};
     }
-    var total=revision&&revision.mode==='count'?revision.target:banks.reduce(function(sum,bank){
+    var challenge=challengeSet(assignment);
+    var total=challenge?challenge.__size:revision&&revision.mode==='count'?revision.target:banks.reduce(function(sum,bank){
       var data=bankData()[bank];
       var available=availableQuestionCount(data);
       return sum+Math.min(8,available);
@@ -182,8 +192,10 @@
   }
   function bankProgress(assignment,bank,payload){
     var wanted=key(bank), seen={}, answered=0, correct=0;
-    var total=bankTotal(bank);
+    var challenge=challengeSet(assignment);
+    var total=challenge?challenge.__size:bankTotal(bank);
     countable(assignment,payload).forEach(function(entry){
+      if(challenge&&!challenge[entry.id]) return;
       var responseBank=key(entry.bank)===wanted?bank:bankForQuestion(entry.id);
       if(!responseBank||key(responseBank)!==wanted) return;
       if(seen[entry.id]) return;
@@ -205,5 +217,5 @@
     return banks[0]||null;
   }
 
-  window.ForgeAssignmentProgress={rows:rows,list:list,revisionConfig:revisionConfig,progress:progress,review:review,bankProgress:bankProgress,nextBank:nextBank,localSessionRows:localSessionRows};
+  window.ForgeAssignmentProgress={challengeSet:challengeSet,rows:rows,list:list,revisionConfig:revisionConfig,progress:progress,review:review,bankProgress:bankProgress,nextBank:nextBank,localSessionRows:localSessionRows};
 })(window);

@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="css/base.css?v=20260808-navpolish">
 <link rel="stylesheet" href="css/auth.css">
 <link rel="stylesheet" href="css/sidebar.css">
-<link rel="stylesheet" href="css/components.css?v=20261004-rings">
+<link rel="stylesheet" href="css/components.css?v=20261004-challenge">
 <link rel="stylesheet" href="css/forge-league.css?v=20260929f">
 
 <link rel="stylesheet" href="css/states.css">
@@ -52,7 +52,7 @@ ForgeSidebar.mount({
 });
 </script>
 <script src="forge-auth.js?v=20260808-session-cache2"></script>
-<script src="scripts/forge-assignment-progress.js"></script><script defer src="scripts/forge-student-badges.js?v=20260808"></script>
+<script src="scripts/forge-assignment-progress.js?v=20261004-challenge"></script><script defer src="scripts/forge-student-badges.js?v=20260808"></script>
 <script>
 // Keep the native edge gesture inside the quiz flow before allowing the
 // WebView/browser to leave Forge entirely.
@@ -394,6 +394,7 @@ var SPEC_TO_SUBJECT = {
 <script src="scripts/forge-data-loader.js?v=20260821"></script>
 <script src="scripts/forge-misconception-state.js"></script>
 <script src="scripts/forge-topic-mastery.js?v=20261004-rings"></script>
+<script src="scripts/forge-challenge.js?v=20261004-challenge"></script>
 <script src="scripts/forge-league.js?v=20260929a"></script>
 <script src="data/misconception-labels.js?v=20260907-diagnostics"></script>
 <script>
@@ -427,7 +428,7 @@ var state = {
 };
 var FORGE_SESSION_SIZE = (window.ForgeApp && ForgeApp.session.defaultQuestionCount) || 8;
 var FORGE_SESSION_PREFIX = 'forge-session:';
-function forgeSessionKey(bank) { return FORGE_SESSION_PREFIX + String(state.studentId || 'anon') + ':' + String(state.classId || 'none') + ':' + bank + (state.topicSpec ? ':' + state.topicSpec : ''); }
+function forgeSessionKey(bank) { return FORGE_SESSION_PREFIX + String(state.studentId || 'anon') + ':' + String(state.classId || 'none') + ':' + bank + (state.topicSpec ? ':' + state.topicSpec : '') + (state.challenge ? ':challenge:' + state.challenge.id : ''); }
 function forgeSessionStorage(bank) { try { return JSON.parse(localStorage.getItem(forgeSessionKey(bank)) || 'null'); } catch(e) { return null; } }
 function forgeSaveSession(resumeAt) {
   if (!state.bank || !state.questions.length) return;
@@ -449,7 +450,7 @@ function forgeStartSession(bank, rawQs) {
   var completed = saved.completedIds || [];
   var available = rawQs.filter(function(q){return completed.indexOf(q.id) === -1;});
   if (!available.length) { available = rawQs; completed = []; }
-  state.questions = weightedShuffle(available, state.weightMap || {}).slice(0, FORGE_SESSION_SIZE);
+  state.questions = state.challenge ? rawQs.slice() : weightedShuffle(available, state.weightMap || {}).slice(0, FORGE_SESSION_SIZE);
   if(window.forgeTrack) forgeTrack('forge_session_started',{bank:bank,question_count:state.questions.length});
   state.idx = 0; state.score = 0; state.sessionXP = 0;
   state.sessionWrongTags = [];
@@ -520,6 +521,22 @@ function xpResultsHtml() {
 }
 
 var requestedBank = new URLSearchParams(location.search).get('bank');
+// A Class Challenge arrives with its fixed question ids (?challenge=id1,id2,...).
+var requestedChallenge = (new URLSearchParams(location.search).get('challenge') || '').split(',').filter(Boolean);
+function challengeQuestions(bank, ids) {
+  var byId = {};
+  ((BANKS[bank] || {}).questions || []).forEach(function(q){ byId[q.id] = q; });
+  return ids.map(function(id){ return byId[id]; }).filter(function(q){ return q && !q.type; });
+}
+function startChallenge(bank, assignmentId, ids) {
+  var questions = challengeQuestions(bank, ids);
+  if (!questions.length) return false;
+  state.challenge = { id: assignmentId, ids: ids };
+  state.assignmentId = assignmentId;
+  state.bank = bank; state.topicSpec = null; state.questionBanks = null;
+  forgeStartSession(bank, questions);
+  return true;
+}
 var requestedTopic = new URLSearchParams(location.search).get('topic');
 var requestedClassId = new URLSearchParams(location.search).get('class_id');
 var requestedAssignmentId = new URLSearchParams(location.search).get('assignment_id');
@@ -890,8 +907,8 @@ function render(skipMotion) {
         state.topicSpec=requestedTopic;state.questionBanks={};
         topicItems.forEach(function(item){state.questionBanks[item.question.id]=item.bank;});
         forgeStartSession(requestedBank,topicItems.map(function(item){return item.question;}));
-      }else{
-        state.topicSpec=null;state.questionBanks=null;
+      }else if(!(requestedChallenge.length&&state.assignmentId&&startChallenge(requestedBank,state.assignmentId,requestedChallenge))){
+        state.challenge=null;state.topicSpec=null;state.questionBanks=null;
         forgeStartSession(requestedBank, BANKS[requestedBank].questions.filter(function(q){return !q.type||q.type==='fill_blank';}));
       }
       state.phase = 'quiz';
@@ -1476,7 +1493,7 @@ function renderBanks(){
   var recommendedBtn=document.getElementById('start-recommended');
   if(recommendedBtn) recommendedBtn.onclick=function(){
     if(!recommended || !recommendedQuestions.length) return;
-    state.assignmentId = null;
+    state.assignmentId = null; state.challenge = null;
     state.topicSpec=null;state.questionBanks=null;
     state.bank=recommendedBank; forgeStartSession(recommendedBank,recommendedQuestions);
     ensurePaidStudentId().then(function(){state.phase='quiz';render();});
@@ -1494,7 +1511,7 @@ function renderBanks(){
   app.querySelectorAll('[data-topic]').forEach(function(button){button.onclick=function(){
     var topic=button.getAttribute('data-topic'),items=ForgeChemistryTopics.questions(topic).filter(function(item){return !item.question.type||item.question.type==='fill_blank';});
     if(!items.length)return;
-    state.assignmentId=null;state.topicSpec=topic;state.bank=items[0].bank;state.questionBanks={};
+    state.assignmentId=null;state.challenge=null;state.topicSpec=topic;state.bank=items[0].bank;state.questionBanks={};
     items.forEach(function(item){state.questionBanks[item.question.id]=item.bank;});
     forgeStartSession(state.bank,items.map(function(item){return item.question;}));
     ensurePaidStudentId().then(function(){state.phase='quiz';render();});
@@ -1502,7 +1519,7 @@ function renderBanks(){
   app.querySelectorAll('.bank-btn').forEach(function(b){
     if(b.dataset.topic)return;
     b.onclick=function(){
-      state.assignmentId = null;
+      state.assignmentId = null; state.challenge = null;
       state.topicSpec=null;state.questionBanks=null;
       state.bank=b.dataset.key;
       var rawQs=BANKS[b.dataset.key].questions.filter(function(q){return !q.type||q.type==='fill_blank';});
@@ -1550,7 +1567,7 @@ function renderBanks(){
         bh += '<div class="forge-u-1hm6ozo">';
         relevantBanks.forEach(function(bk){
           var bankLabel = BANKS[bk] ? BANKS[bk].label : bk;
-          bh += '<button type="button" class="forge-u-1h97zoi" data-asgn-bank="'+bk+'" data-asgn-id="'+asgn.id+'">';
+          bh += '<button type="button" class="forge-u-1h97zoi" data-asgn-bank="'+bk+'" data-asgn-id="'+asgn.id+'"'+(window.ForgeChallenge&&ForgeChallenge.isChallenge(asgn)?' data-challenge="'+forgeEscape(asgn.challenge_question_ids.join(','))+'"':'')+'>';
           bh += bankLabel+' \u2192</button>';
         });
         bh += '</div></div>';
@@ -1562,10 +1579,14 @@ function renderBanks(){
           btn.onclick = function(){
             var bk = btn.getAttribute('data-asgn-bank');
             state.assignmentId = btn.getAttribute('data-asgn-id') || null;
-            state.bank = bk;
-            state.topicSpec=null;state.questionBanks=null;
-            var rawQs = BANKS[bk].questions.filter(function(q){return !q.type||q.type==='fill_blank';});
-            forgeStartSession(state.bank, rawQs);
+            var ids = (btn.getAttribute('data-challenge') || '').split(',').filter(Boolean);
+            if (!(ids.length && startChallenge(bk, state.assignmentId, ids))) {
+              state.challenge = null;
+              state.bank = bk;
+              state.topicSpec=null;state.questionBanks=null;
+              var rawQs = BANKS[bk].questions.filter(function(q){return !q.type||q.type==='fill_blank';});
+              forgeStartSession(state.bank, rawQs);
+            }
             state.phase='quiz'; render();
           };
         });
@@ -1788,6 +1809,20 @@ function renderQuiz(){
       if(!isCorrect&&window.ForgeChemistryResources)ForgeChemistryResources.appendTo(fb,q);
       offerRevisionCard(fb,q);
       if(isCorrect){ awardXP(hinted?XP_HINTED:XP_CORRECT, fb.querySelector('.praise-box')); forgeSaveSession(); }
+      if(state.challenge && window.ForgeChallenge){
+        var panel=document.createElement('div');
+        panel.innerHTML='<div class="forge-class-answers" role="status"><strong>How your class answered</strong><p>Loading your class’s answers…</p></div>';
+        fb.insertBefore(panel.firstChild, fb.querySelector('.forge-feedback-actions'));
+        var challengeId=state.challenge.id;
+        Promise.resolve(responseSaved).then(function(saved){
+          var box=fb.querySelector('.forge-class-answers'); if(!box) return null;
+          // The server only shows the class's answers once yours is saved.
+          if(saved!==true){ box.innerHTML='<strong>How your class answered</strong><p>Your answer will be compared with the class once it has saved.</p>'; return null; }
+          return ForgeChallenge.fetchClassAnswers({studentId:state.studentId,classCode:state.classCode,studentCode:state.studentCode,studentName:state.studentName}, challengeId, q.id).then(function(result){
+            var current=fb.querySelector('.forge-class-answers'); if(current) current.outerHTML=ForgeChallenge.classAnswersHtml(q, result, k);
+          });
+        }).catch(function(){});
+      }
       if(!isCorrect){
         if(q.reforge){
           document.getElementById('rf-btn').onclick=function(){
@@ -2062,7 +2097,9 @@ function renderResults(){
   // One next step, chosen in order: repair this set's unrepaired mistake, then
   // due revision, then another set. The old screen offered five equal exits
   // and its main button went back to Home, ending the session.
-  var next = remaining
+  var next = state.challenge
+    ? {title:'Challenge complete', copy:'Your teacher will go through how the class answered.'+((state.sessionWrongTags||[]).length?' Your mistakes from it are waiting in Repair mistakes.':''), label:'Back to assignments', href:'assignments.html'}
+    : remaining
     ? {title:'One idea to repair', copy:remainingLabel+'. Fix it now while it is fresh.', label:'Repair it now', href:'anvil.html'}
     : revisionDue
       ? {title:revisionDue+' revision '+(revisionDue===1?'card is':'cards are')+' due', copy:'A few minutes of recall keeps what you have learned.', label:'Review '+(revisionDue===1?'it':'them')+' now', href:'revision.html?subject='+encodeURIComponent(state.subject||'')}
@@ -2080,9 +2117,9 @@ function renderResults(){
     ? '<button type="button" class="forge-button forge-button--primary" id="result-next-action">'+next.label+' →</button>'
     : '<a class="forge-button forge-button--primary" href="'+next.href+'" id="result-next-action">'+next.label+' →</a>';
   h+='<div class="forge-action-row forge-result-actions">';
-  if(!next.again) h+='<button type="button" class="forge-button forge-button--secondary" id="retry">Another set</button>';
+  if(!next.again&&!state.challenge) h+='<button type="button" class="forge-button forge-button--secondary" id="retry">Another set</button>';
   // A clean set ends with a quick change of format in the same topic.
-  else if(state.subject!=='chem') h+='<a class="forge-button forge-button--secondary" href="revision.html?subject='+encodeURIComponent(state.subject||'')+'&amp;match='+encodeURIComponent(state.bank)+'">Match pairs</a>';
+  else if(next.again&&state.subject!=='chem') h+='<a class="forge-button forge-button--secondary" href="revision.html?subject='+encodeURIComponent(state.subject||'')+'&amp;match='+encodeURIComponent(state.bank)+'">Match pairs</a>';
   h+='<button type="button" class="forge-button forge-button--secondary" id="all-banks">Choose a topic</button>';
   h+='</div>';
   h+='<nav class="forge-result-links" aria-label="After practice"><a href="student-dashboard.html">Done for now</a></nav>';
@@ -2091,13 +2128,13 @@ function renderResults(){
   if(state.classId && xpEnabled()) h+='<div id="result-league" class="result-league"></div>';
   h+='</div>';
   app.innerHTML=h;
-  var again=document.getElementById('retry')||(next.again&&document.getElementById('result-next-action'));
+  var again=document.getElementById('retry')||(next.again&&document.getElementById('result-next-action'))||document.createElement('button');
   again.onclick=function(){
     var rawQs2=state.topicSpec&&window.ForgeChemistryTopics?ForgeChemistryTopics.questions(state.topicSpec).map(function(item){return item.question;}).filter(function(q){return !q.type||q.type==='fill_blank';}):BANKS[state.bank].questions.filter(function(q){return !q.type||q.type==='fill_blank';});
     forgeStartSession(state.bank, rawQs2);
     state.phase='quiz';render();
   };
-  document.getElementById('all-banks').onclick=function(){state.assignmentId=null;state.phase='banks';render();};
+  document.getElementById('all-banks').onclick=function(){state.assignmentId=null;state.challenge=null;state.phase='banks';render();};
   // Weekly class league, fetched after the session's answers have been sent.
   var leagueEl=document.getElementById('result-league');
   if(leagueEl&&window.ForgeLeague) ForgeLeague.mount(leagueEl,{studentId:state.studentId,classId:state.classId,classCode:state.classCode,studentCode:state.studentCode,studentName:state.studentName});

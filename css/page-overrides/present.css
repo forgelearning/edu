@@ -90,3 +90,14 @@ h1,h2,h3{font-family:'Rethink Sans',sans-serif}
 @media(max-width:700px){.wrap{padding:24px 16px 52px}.howto{padding:18px}.howto-step{min-width:100%}.stage{min-height:52vh;padding:16px 0}.stem-big{font-size:clamp(28px,8vw,42px)}.opt-big{padding:16px 18px;min-height:60px}.controls{margin-top:28px}.reveal-btn,.ctrl-btn{min-height:50px}}
 @media(pointer:coarse){.pick-btn,.ctrl-btn,.reveal-btn,.back-btn{min-height:48px}}
 @media(prefers-reduced-motion:reduce){.pick-btn,.opt-big{transition:none}.pick-btn:hover,.opt-big:hover{transform:none}.progress-fill{transition:none}}
+/* Class Challenge results on the board. */
+.challenge-entry{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;margin:0 0 20px;color:var(--slate)}
+.challenge-bars{width:100%;max-width:720px;margin:20px auto 0;text-align:left}
+.challenge-bars .forge-class-bar{grid-template-columns:32px minmax(0,1fr) 64px}
+.challenge-bars .forge-class-bar__track{height:20px}
+.challenge-bars .forge-class-bar__key,.challenge-bars .forge-class-bar__n{font-size:16px}
+.challenge-few{margin:18px auto 0;color:var(--slate);text-align:center}
+.challenge-lead{margin:0 0 8px;color:var(--white);font-weight:700}
+.challenge-summary{display:grid;gap:10px;max-width:720px;margin:20px auto;padding:0;list-style:none}
+.challenge-summary li{padding:12px 16px;border:1px solid var(--line);border-radius:var(--radius-md);background:var(--panel);color:var(--white)}
+.challenge-summary li span{color:var(--slate);font-size:14px}

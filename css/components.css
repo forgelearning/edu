@@ -162,3 +162,18 @@
 .forge-ring--red .forge-ring__label{color:var(--bad)}
 .forge-ring--amber .forge-ring__label{color:var(--hot)}
 .forge-ring--green .forge-ring__label{color:var(--good)}
+
+/* Class Challenge answer bars (scripts/forge-challenge.js), used in Practice
+   after each challenge answer and on the Class Mode results board. */
+.forge-class-answers{margin:14px 0;padding:14px 16px;border:1px solid var(--line);border-radius:var(--radius-md);background:var(--panel)}
+.forge-class-answers strong{display:block;color:var(--white);font:700 14px 'Rethink Sans',sans-serif}
+.forge-class-answers p{margin:4px 0 10px;color:var(--slate);font-size:13px}
+.forge-class-bars{display:grid;gap:8px;margin:0;padding:0;list-style:none}
+.forge-class-bar{display:grid;grid-template-columns:22px minmax(0,1fr) 52px;align-items:center;gap:10px}
+.forge-class-bar__key{color:var(--slate);font:700 13px 'JetBrains Mono',monospace;text-align:center}
+.forge-class-bar__track{height:12px;border-radius:var(--radius-pill);background:var(--panel-2);overflow:hidden}
+.forge-class-bar__track span{display:block;height:100%;border-radius:inherit;background:var(--slate)}
+.forge-class-bar__n{color:var(--slate);font:600 12px 'JetBrains Mono',monospace;text-align:right}
+.forge-class-bar.is-correct .forge-class-bar__track span{background:var(--good)}
+.forge-class-bar.is-correct .forge-class-bar__key{color:var(--good)}
+.forge-class-bar.is-chosen .forge-class-bar__key{outline:2px solid var(--ember);outline-offset:2px;border-radius:4px}

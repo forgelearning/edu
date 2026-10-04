@@ -226,3 +226,18 @@ row → 3, one missed day → 3, two missed → 1, missed yesterday → 2, misse
 the last two → 0, matching `scripts/forge-streak.js`). Afterwards the live
 function carries the freeze, still has no client EXECUTE grant, and
 `dev/audit-supabase-security.js` passes.
+
+## 20261004 150000 — Class Challenge
+
+| File | What it does |
+|---|---|
+| `20261004150000_class_challenge.sql` | Adds `assignments.challenge_question_ids` (null for an ordinary assignment) and `get_challenge_answers`, which returns how a student's class answered one challenge question: each classmate's first attempt, counted per option. It answers only after the caller has answered that question, and gives no breakdown until five classmates have. |
+
+Students already receive whole assignment rows and teachers read assignments
+and responses through RLS, so nothing else changes on the server.
+
+**Coupled to the client for one action only:** setting a challenge writes
+`challenge_question_ids`, which fails until this is applied. Ordinary
+assignments are unaffected either way.
+
+**Not yet applied to production.**

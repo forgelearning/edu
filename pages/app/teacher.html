@@ -22,7 +22,7 @@
 </script>
 <link rel="stylesheet" href="css/states.css">
   <link rel="stylesheet" href="css/generated-utilities.css">
-  <link rel="stylesheet" href="css/page-overrides/teacher.css?v=20260929-friends3">
+  <link rel="stylesheet" href="css/page-overrides/teacher.css?v=20261004-challenge">
   <link rel="stylesheet" href="css/page-overrides/revision.css?v=20260930-allsubjects">
   <link rel="stylesheet" href="css/auth-ember.css?v=20260817-auth2">
   <link rel="stylesheet" href="css/content-status.css">
@@ -80,8 +80,9 @@ function mountTeacherSidebar() {
 <script src="data/forge-question-index.js?v=20260823"></script>
 <!-- Assignment attainment is defined once, in forge-assignment-progress.js, and
      shared with the student's assignment view so the two cannot disagree. -->
-<script>window.ForgeAssignmentBanks=BANKS;</script><script src="scripts/forge-assignment-progress.js"></script>
+<script>window.ForgeAssignmentBanks=BANKS;</script><script src="scripts/forge-assignment-progress.js?v=20261004-challenge"></script>
 <script src="scripts/forge-revision.js?v=20260930-allsubjects"></script>
+<script src="scripts/forge-challenge.js?v=20261004-challenge"></script>
 <script src="scripts/forge-misconception-state.js"></script>
 <script src="scripts/forge-metrics.js"></script>
 <script src="scripts/forge-league.js?v=20260929a"></script>
@@ -2072,6 +2073,9 @@ function renderAssignCard(asgn, students, responses, isArchived) {
   var h = '<div class="assign-card' + (isArchived ? ' archived' : '') + '" data-asgn-id="' + asgn.id + '">';
   h += '<div class="assign-card-title">' + teacherEsc(asgn.title) + '</div>';
   h += '<div class="assign-meta">' + teacherEsc(bankLabels) + '</div>';
+  if (window.ForgeChallenge && ForgeChallenge.isChallenge(asgn)) {
+    h += '<p class="assign-challenge-note"><span class="status status-progress">Class Challenge · ' + asgn.challenge_question_ids.length + ' questions</span> <a href="present.html?challenge=' + encodeURIComponent(asgn.id) + '">Show results in Class Mode →</a></p>';
+  }
   if (!isArchived) {
     h += '<div class="assign-progress-row">';
     h += '<div class="assign-progress forge-progress" role="progressbar" aria-label="Assignment completion" aria-valuemin="0" aria-valuemax="100" aria-valuenow="' + pct + '"><span style="width:' + pct + '%"></span></div>';
@@ -2157,6 +2161,7 @@ function renderAssignments() {
     h += '</div>';
   });
   h += '</div>';
+  h += '<label class="asgn-challenge" for="asgn-challenge"><input type="checkbox" id="asgn-challenge"> <span><strong>Make this a Class Challenge</strong><small>Everyone answers the same ' + ForgeChallenge.SIZE + ' questions from one topic. After each answer, students see how the class answered (once ' + ForgeChallenge.MIN_SHOWN + ' have). Show the results on the board in Class Mode.</small></span></label>';
   h += '<button type="button" class="join-btn" id="asgn-create-btn" disabled aria-disabled="true">Set assignment \u2192</button>';
   h += '<p class="join-err" id="asgn-err"></p>';
   h += '</div>';
@@ -2247,15 +2252,19 @@ function renderAssignments() {
     var titleInput = document.getElementById('asgn-title');
     var dueInput = document.getElementById('asgn-due');
     var selectedCount = document.getElementById('asgn-selected-count');
+    var challengeInput = document.getElementById('asgn-challenge');
     var refreshAssignmentForm = function() {
       var selected = el.querySelectorAll('.bank-checklist input[type=checkbox]:checked').length;
       selectedCount.textContent = selected + ' of ' + el.querySelectorAll('.bank-checklist input[type=checkbox]').length + ' selected';
-      var ready = !!titleInput.value.trim() && !!dueInput.value && selected > 0;
+      // A challenge compares everyone on the same questions, so one topic.
+      var challenge = challengeInput && challengeInput.checked;
+      var ready = !!titleInput.value.trim() && !!dueInput.value && (challenge ? selected === 1 : selected > 0);
       createBtn.disabled = !ready;
       createBtn.setAttribute('aria-disabled', ready ? 'false' : 'true');
     };
     titleInput.addEventListener('input', refreshAssignmentForm);
     dueInput.addEventListener('change', refreshAssignmentForm);
+    if (challengeInput) challengeInput.addEventListener('change', refreshAssignmentForm);
     el.querySelectorAll('.bank-checklist input[type=checkbox]').forEach(function(cb) { cb.addEventListener('change', refreshAssignmentForm); });
     refreshAssignmentForm();
     createBtn.onclick = function() {
@@ -2268,14 +2277,20 @@ function renderAssignments() {
       if (!title) { err.textContent = 'Enter a title.'; err.style.display = 'block'; return; }
       if (checked.length === 0) { err.textContent = 'Select at least one bank.'; err.style.display = 'block'; return; }
       if (!due) { err.textContent = 'Set a due date.'; err.style.display = 'block'; return; }
+      var challenge = challengeInput && challengeInput.checked;
+      if (challenge && checked.length !== 1) { err.textContent = 'A Class Challenge uses one topic. Select just one.'; err.style.display = 'block'; return; }
 
       createBtn.disabled = true; createBtn.textContent = 'Saving...';
 
-      supaInsert('assignments', {
-        class_id: dashState.classId,
-        title: title,
-        banks: JSON.stringify(checked),
-        due_date: due
+      // A challenge fixes its questions now, so every student gets the same set.
+      var questionsReady = challenge
+        ? ForgeData.loadBanks(checked).then(function() { return ForgeChallenge.pickQuestions((BANKS[checked[0]] || {}).questions); })
+        : Promise.resolve(null);
+      questionsReady.then(function(ids) {
+        if (challenge && (!ids || ids.length < 5)) throw new Error('This topic does not have enough multiple-choice questions for a challenge.');
+        var row = { class_id: dashState.classId, title: title, banks: JSON.stringify(checked), due_date: due };
+        if (challenge) row.challenge_question_ids = ids;
+        return supaInsert('assignments', row);
       }).then(function(rows) {
         createBtn.disabled = false; createBtn.textContent = 'Set assignment \u2192';
         var newAsgn = Array.isArray(rows) ? rows[0] : rows;
@@ -2314,7 +2329,7 @@ function renderAssignments() {
         setTimeout(function() { if(toast.parentNode) toast.parentNode.removeChild(toast); }, 8000);
       }).catch(function(e) {
         createBtn.disabled = false; createBtn.textContent = 'Set assignment \u2192';
-        err.textContent = 'We couldn’t save this assignment. Check your connection and try again.';
+        err.textContent = (e && /enough multiple-choice/.test(e.message)) ? e.message : 'We couldn’t save this assignment. Check your connection and try again.';
         err.style.display = 'block';
       });
     };
