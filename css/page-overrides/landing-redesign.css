@@ -241,28 +241,25 @@ body.landing-redesign .landing-footer-base{border-color:var(--landing-rule);padd
   body.landing-redesign .section-intro h2,
   body.landing-redesign .evidence-intro h2{max-width:none;font-size:clamp(34px,9vw,40px);line-height:1.04;text-wrap:balance}
   body.landing-redesign .repair-story .section-intro h2{font-size:clamp(31px,8vw,36px)}
-  body.landing-redesign .hero-shell{padding:116px 0 56px}
+  body.landing-redesign .hero-shell{padding:100px 0 56px}
   body.landing-redesign .hero-shell::before{left:42%;top:7%;width:88vw;height:88vw}
   body.landing-redesign .hero-shell::after{left:44%;top:12%;width:64vw;height:64vw}
-  body.landing-redesign .hero{gap:38px;padding-top:0}
+  body.landing-redesign .hero{gap:0;padding-top:0}
   body.landing-redesign .hero-copy>h1{grid-row:1}
   body.landing-redesign .hero-copy>.lede{display:block;grid-row:2;opacity:1!important;transform:none!important}
   body.landing-redesign .hero p.lede .lede-desktop{display:none}
   body.landing-redesign .hero p.lede .lede-mobile{display:inline}
-  body.landing-redesign .hero-copy>.hero-proofline{display:flex;grid-row:3}
-  body.landing-redesign .hero-copy>.hero-proofline span{display:none}
-  body.landing-redesign .hero-copy>.hero-proofline span:first-child{display:block}
+  body.landing-redesign .hero-copy>.hero-proofline{display:none}
   body.landing-redesign .hero-copy>.ctas{grid-row:4}
   body.landing-redesign .hero>.demo{grid-row:5}
   body.landing-redesign .hero-copy>.sub{grid-row:6}
-  body.landing-redesign .hero h1{font-size:clamp(44px,13.4vw,58px);line-height:.96}
+  body.landing-redesign .hero h1{margin-bottom:14px;font-size:clamp(44px,13.4vw,58px);line-height:.96}
   body.landing-redesign .hero p.lede{font-size:16px;line-height:1.5}
-  body.landing-redesign .hero-proofline{gap:8px 15px;margin-top:18px}
-  body.landing-redesign .hero .ctas{align-items:stretch;flex-direction:column;margin-top:24px}
+  body.landing-redesign .hero .ctas{align-items:stretch;flex-direction:column;gap:4px;margin-top:22px}
   body.landing-redesign .hero .btn{width:100%;text-align:center}
   body.landing-redesign .hero-secondary-link{justify-content:center;min-height:44px}
-  body.landing-redesign .hero .sub{text-align:center}
-  body.landing-redesign .hero .demo{padding:22px 16px 18px}
+  body.landing-redesign .hero .sub{margin-top:18px;text-align:center}
+  body.landing-redesign .hero .demo{margin-top:26px;padding:22px 16px 18px}
   body.landing-redesign .hero .demo-float{display:none}
   body.landing-redesign .hero .demo .head{padding-top:5px}
   body.landing-redesign .hero .demo .head>.tag{display:none}
