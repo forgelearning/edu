@@ -367,6 +367,7 @@ function renderDashboard(){
       responses:responses, activeMistakes:activeMCs.length,
       revisionDue:due, reviewedToday:window.ForgeStudentFocus&&ForgeStudentFocus.reviewedToday?ForgeStudentFocus.reviewedToday(st):0,
       revisionHref:'revision.html'+(subject?'?subject='+encodeURIComponent(subject):''),
+      practiceSetSize:!st.classId&&!st.isPaid&&!st.isTrial?10:undefined,
       practiceTitle:focusTopic?'Practise '+focusTopic.label:(subjectName?'Practise '+subjectName:'Practise a topic'),
       practiceHref:focusTopic?'forge-quiz.html?bank='+encodeURIComponent(focusTopic.key):subjectUrl
     };

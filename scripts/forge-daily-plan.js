@@ -19,6 +19,7 @@
   function plural(n, one, many) { return n + ' ' + (n === 1 ? one : many); }
 
   function build(input) {
+    var setSize = Number(input.practiceSetSize) || SET_SIZE;
     var now = input.now || new Date();
     var rows = (input.responses || []).filter(function (r) { return r && isToday(r.created_at, now); });
     var practised = rows.filter(function (r) {
@@ -52,8 +53,8 @@
 
     if (steps.length < 3) steps.push({
       key: 'practice', title: input.practiceTitle || 'Practise a topic',
-      detail: practised >= SET_SIZE ? plural(practised, 'question', 'questions') + ' answered today' : 'A short set of ' + SET_SIZE + ' questions',
-      href: input.practiceHref || 'forge-quiz.html', cta: 'Start practice', done: practised >= SET_SIZE
+      detail: practised >= setSize ? plural(practised, 'question', 'questions') + ' answered today' : 'A short set of ' + setSize + ' questions',
+      href: input.practiceHref || 'forge-quiz.html', cta: 'Start practice', done: practised >= setSize
     });
 
     steps = steps.slice(0, 3);
