@@ -1027,14 +1027,14 @@ function renderJoin() {
   h += '<div class="forge-u-h6lji0"><span class="forge-text-dim">✕ Unlimited questions</span><span class="forge-text-dim"> Pro</span></div>';
   h += '<p class="forge-whats-free__pro">Want unlimited? <a href="forge-signup.html">Subscribe — £2.99/mo</a></p>';
   h += '</div></details>';
-  h += '<button class="auth-btn" id="free-btn" type="submit">Start studying →</button>';
+  h += '<button class="auth-btn" id="free-btn" type="button">Start studying →</button>';
   h += '<p class="auth-err" id="free-err"></p>';
   h += '</div>';
 
   h += '<div class="forge-u-uydnfn" id="panel-email">';
   h += '<p class="forge-u-152cbjr">Enter your email to save progress or return on another device. We will send a one-time sign-in link.</p>';
   h += ForgeAuthCard.field('email-address', 'Email address', {type:'email', placeholder:'you@example.com', autocomplete:'email'});
-  h += '<button class="auth-btn" id="email-btn" type="submit">Email me a sign-in link →</button>';
+  h += '<button class="auth-btn" id="email-btn" type="button">Email me a sign-in link →</button>';
   h += '<p class="auth-err" id="email-err"></p>';
   h += '<details class="forge-email-code"><summary>Have a six-digit code?</summary>';
   h += ForgeAuthCard.field('email-code', 'One-time code', {placeholder:'123456', autocomplete:'one-time-code'});
@@ -1053,7 +1053,7 @@ function renderJoin() {
   h += '<label class="join-shared" for="join-shared">' +
        '<input type="checkbox" id="join-shared">' +
        '<span>This is a shared device — forget me after the lesson</span></label>';
-  h += '<button class="auth-btn" id="join-btn" type="submit">Join class →</button>';
+  h += '<button class="auth-btn" id="join-btn" type="button">Join class →</button>';
   h += '<p class="auth-err" id="join-err"></p>';
   h += '</div>';
 
@@ -1062,7 +1062,7 @@ function renderJoin() {
   h += '<p class="forge-u-152cbjr">Log in with your Forge email and password</p>';
   h += ForgeAuthCard.field('solo-email', 'Email address', {type:'email', placeholder:'e.g. alex@gmail.com', autocomplete:'email'});
   h += ForgeAuthCard.field('solo-pass', 'Password', {type:'password', placeholder:'Your Forge password', autocomplete:'current-password'});
-  h += '<button class="auth-btn" id="solo-btn" type="submit">Log in →</button>';
+  h += '<button class="auth-btn" id="solo-btn" type="button">Log in →</button>';
   h += '<p class="auth-err" id="solo-err"></p>';
   h += '<p class="forge-u-gtw5fv"><a class="forge-u-elt0p9" href="reset-password.html">Forgot your password?</a></p>';
   h += '</div>';
@@ -1093,10 +1093,17 @@ function renderJoin() {
   });
   activateTab(activeTab);
 
-  // Enter submits whichever panel is showing.
-  ForgeAuthCard.onSubmit(function() {
+  // These panels share one form. A hidden submit button can become the browser's
+  // implicit Enter target, so route Enter to the visible panel explicitly.
+  function submitActiveTab() {
     var btn = activeTab === 'tab-class' ? 'join-btn' : activeTab === 'tab-solo' ? 'solo-btn' : activeTab === 'tab-email' ? 'email-btn' : 'free-btn';
-    document.getElementById(btn).onclick();
+    document.getElementById(btn).click();
+  }
+  ForgeAuthCard.onSubmit(submitActiveTab);
+  document.getElementById('auth-form').addEventListener('keydown', function(event) {
+    if (event.key !== 'Enter' || event.target.tagName !== 'INPUT' || event.target.id === 'email-code') return;
+    event.preventDefault();
+    submitActiveTab();
   });
 
   // Free tier handler
@@ -1170,7 +1177,12 @@ function renderJoin() {
       err.textContent = 'Check your email and open the sign-in link on this device. Your progress will be saved after you sign in.';
       err.dataset.state = 'success';
       err.style.display = 'block';
-    }).catch(function(e) { err.textContent = e.message || 'Could not send email. Please try again.'; err.style.display = 'block'; })
+    }).catch(function(e) {
+      err.textContent = e.status === 429 || /\b429\b/.test(e.message || '')
+        ? 'Too many sign-in emails requested. Wait a little, then use the latest link or code we sent.'
+        : e.message || 'Could not send email. Please try again.';
+      err.style.display = 'block';
+    })
       .finally(function() { btn.disabled = false; });
   };
   document.getElementById('code-btn').onclick = function() {
