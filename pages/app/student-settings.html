@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en-GB">
+<html lang="en-GB" data-accent-scope="student">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -48,8 +48,16 @@
       <div class="settings-section-heading"><div><p class="settings-kicker">APPEARANCE</p><h2 id="appearance-title">Choose your atmosphere</h2></div><span class="settings-section-mark" aria-hidden="true">◐</span></div>
       <div class="settings-options" role="radiogroup" aria-label="Theme preference">
         <label class="settings-option"><input type="radio" name="theme" value="system"><span><strong>Use device setting</strong><small>Follow light and dark mode automatically.</small></span></label>
-        <label class="settings-option"><input type="radio" name="theme" value="light"><span><strong>Light Forge</strong><small>Bright surfaces and ember accents.</small></span></label>
+        <label class="settings-option"><input type="radio" name="theme" value="light"><span><strong>Light Forge</strong><small>Bright surfaces with your chosen accent.</small></span></label>
         <label class="settings-option"><input type="radio" name="theme" value="dark"><span><strong>Dark Forge</strong><small>Low-light contrast for focused sessions.</small></span></label>
+      </div>
+    </section>
+    <section class="settings-section" aria-labelledby="accent-title">
+      <div class="settings-section-heading"><div><h2 id="accent-title">Accent colour</h2><p class="settings-copy settings-accent-intro">Choose the colour used for actions and highlights. Your light or dark setting stays the same.</p></div></div>
+      <div class="settings-options settings-accent-options" role="radiogroup" aria-label="Accent colour">
+        <label class="settings-option settings-accent-option"><input type="radio" name="accent" value="ember"><span class="settings-accent-swatch settings-accent-swatch--ember" aria-hidden="true"></span><span><strong>Ember</strong></span></label>
+        <label class="settings-option settings-accent-option"><input type="radio" name="accent" value="ocean"><span class="settings-accent-swatch settings-accent-swatch--ocean" aria-hidden="true"></span><span><strong>Ocean</strong></span></label>
+        <label class="settings-option settings-accent-option"><input type="radio" name="accent" value="violet"><span class="settings-accent-swatch settings-accent-swatch--violet" aria-hidden="true"></span><span><strong>Violet</strong></span></label>
       </div>
     </section>
     <section class="settings-section" aria-labelledby="account-title">
@@ -69,6 +77,14 @@
           var light = window.forgeThemeLightFor ? window.forgeThemeLightFor(this.value) : this.value === 'light';
           if (window.setForgeTheme) window.setForgeTheme(light, false);
           location.reload();
+        });
+      });
+      var accent = localStorage.getItem('forge-accent') || 'ember';
+      if (!/^(ember|ocean|violet)$/.test(accent)) accent = 'ember';
+      document.querySelectorAll('input[name="accent"]').forEach(function (radio) {
+        radio.checked = radio.value === accent;
+        radio.addEventListener('change', function () {
+          if (this.checked && window.setForgeAccent) window.setForgeAccent(this.value);
         });
       });
       document.getElementById('settings-sign-out').addEventListener('click', studentSettingsSignOut);

@@ -7,6 +7,26 @@
     try { return localStorage.getItem('forge-theme'); } catch (e) { return null; }
   }
 
+  var accents = { ember: true, ocean: true, violet: true };
+  function storedAccent() {
+    try { return localStorage.getItem('forge-accent'); } catch (e) { return null; }
+  }
+  function renderAccent(accent) {
+    if (!root.hasAttribute('data-accent-scope')) return;
+    if (accent && accents[accent] && accent !== 'ember') root.setAttribute('data-accent', accent);
+    else root.removeAttribute('data-accent');
+  }
+
+  window.setForgeAccent = function (accent) {
+    if (!accents[accent]) return false;
+    try {
+      if (accent === 'ember') localStorage.removeItem('forge-accent');
+      else localStorage.setItem('forge-accent', accent);
+    } catch (e) {}
+    renderAccent(accent);
+    return true;
+  };
+
   function renderTheme(light) {
     if (light) root.setAttribute('data-theme', 'light');
     else root.removeAttribute('data-theme');
@@ -41,6 +61,7 @@
 
   var saved = storedTheme();
   renderTheme(saved === 'light' || (saved !== 'dark' && systemIsLight()));
+  renderAccent(storedAccent());
 
   if (media) {
     var onSystemChange = function () {

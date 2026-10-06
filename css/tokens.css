@@ -87,3 +87,34 @@
   --surface-focus-subtle:rgba(200,133,0,.08);
   --surface-action-subtle:rgba(229,85,15,.07);
 }
+
+/* Student accent choices change action and selection colours only. Feedback
+   colours and the light/dark reading surfaces keep their semantic roles. */
+html[data-accent-scope="student"][data-accent="ocean"]{
+  --ember:#58BCEB;
+  --ember-action:#17618E;
+  --hot:#86D9FF;
+  --surface-focus-subtle:rgba(134,217,255,.09);
+  --surface-action-subtle:rgba(88,188,235,.09);
+}
+html[data-accent-scope="student"][data-accent="violet"]{
+  --ember:#B69BF0;
+  --ember-action:#63419A;
+  --hot:#D6C2FF;
+  --surface-focus-subtle:rgba(214,194,255,.09);
+  --surface-action-subtle:rgba(182,155,240,.09);
+}
+html[data-accent-scope="student"][data-theme="light"][data-accent="ocean"]{
+  --ember:#08648F;
+  --ember-action:#075B84;
+  --hot:#075B84;
+  --surface-focus-subtle:rgba(8,100,143,.08);
+  --surface-action-subtle:rgba(8,100,143,.07);
+}
+html[data-accent-scope="student"][data-theme="light"][data-accent="violet"]{
+  --ember:#65409C;
+  --ember-action:#5C368E;
+  --hot:#583386;
+  --surface-focus-subtle:rgba(101,64,156,.08);
+  --surface-action-subtle:rgba(101,64,156,.07);
+}
