@@ -413,10 +413,15 @@ body.forge-login-screen .auth-badge .auth-shield{width:34px;height:34px;border-r
 body.forge-login-screen .auth-badge .auth-wordmark{font-family:'Poppins',sans-serif;color:var(--forge-login-ink);font-size:17px;font-weight:650}
 body.forge-login-screen .auth-title{font-family:'Rethink Sans',sans-serif;color:var(--forge-login-ink);text-align:left;font-size:30px;font-weight:500;letter-spacing:-.035em;line-height:1.05}
 body.forge-login-screen .auth-sub{color:var(--forge-login-muted);text-align:left;margin:8px 0 27px;font-size:13px;line-height:1.5}
-body.forge-login-screen .auth-card .login-tabs{display:flex;gap:0;padding:0;margin:0 0 24px;border:0;border-bottom:1px solid var(--forge-login-line);border-radius:0;background:transparent}
-body.forge-login-screen .auth-card .login-tab{flex:0 0 auto;margin-right:22px;padding:0 0 10px;border-radius:0;color:#9b887d;font-family:'Poppins',sans-serif;font-size:12px;font-weight:500}
+body.forge-login-screen .auth-card .login-tabs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0;padding:0;margin:0 0 24px;border:0;border-bottom:1px solid var(--forge-login-line);border-radius:0;background:transparent}
+body.forge-login-screen .auth-card .login-tab{min-height:44px;margin:0;padding:8px 6px;border-radius:0;color:#9b887d;font-family:'Poppins',sans-serif;font-size:12px;font-weight:500}
 body.forge-login-screen .auth-card .login-tab.active{background:transparent;color:var(--forge-login-ember);box-shadow:inset 0 -2px 0 var(--forge-login-ember)}
 body.forge-login-screen .auth-card .login-tab:hover:not(.active){color:var(--forge-login-ember)}
+body.forge-login-screen .forge-email-code{margin-top:18px;border-top:1px solid var(--forge-login-line);padding-top:14px}
+body.forge-login-screen .forge-email-code summary{min-height:44px;cursor:pointer;color:var(--forge-login-muted);font-size:13px}
+body.forge-login-screen .forge-email-code[open] summary{margin-bottom:12px}
+body.forge-login-screen .forge-email-code .auth-btn--secondary{background:transparent;border:1px solid var(--forge-login-ember);color:var(--forge-login-ember);box-shadow:none}
+body.forge-login-screen #email-err[data-state="success"]{color:var(--good)}
 body.forge-login-screen .auth-card #panel-free>p,
 body.forge-login-screen .auth-card #panel-class>p,
 body.forge-login-screen .auth-card #panel-solo>p{color:var(--forge-login-muted);font-size:13px;line-height:1.5;margin-bottom:20px}

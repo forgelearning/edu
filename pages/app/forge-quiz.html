@@ -191,8 +191,7 @@ function logResponse(q, selectedKey, isCorrect, isReforge, reforgeCorrect, hintU
     });
   } else {
     // Free students write through the token-gated RPC. Besides authorising the
-    // row, it enforces the free rounds atomically on the server so clearing
-    // localStorage cannot skip the break between them.
+    // row, it enforces the daily allowance on the server.
     if (state.studentId && state.classId == null) {
       var freePayload = {
         p_student_id: state.studentId,
@@ -213,8 +212,7 @@ function logResponse(q, selectedKey, isCorrect, isReforge, reforgeCorrect, hintU
         // question render, stop here and show the same limit wall rather than
         // advancing to a question the server refused to save.
         if (result && result.allowed === false) return result;
-        // The answer that ends a round carries the server's cooldown end.
-        if (result && result.cooldown_until) syncFreeRoundFromServer(result);
+        if (!freePayload.p_reforge_attempted) syncFreeRoundFromServer(result);
         return true;
       }).catch(function(e) { recordPersistenceError(e, row, 'free-response-rpc'); return false; });
     }
@@ -428,6 +426,7 @@ var state = {
   sessionXP: 0         // XP earned in the current session
 };
 var FORGE_SESSION_SIZE = (window.ForgeApp && ForgeApp.session.defaultQuestionCount) || 8;
+function forgeQuestionCount() { return isFreeTier() ? 10 : FORGE_SESSION_SIZE; }
 var FORGE_SESSION_PREFIX = 'forge-session:';
 function forgeSessionKey(bank) { return FORGE_SESSION_PREFIX + String(state.studentId || 'anon') + ':' + String(state.classId || 'none') + ':' + bank + (state.topicSpec ? ':' + state.topicSpec : '') + (state.challenge ? ':challenge:' + state.challenge.id : ''); }
 function forgeSessionStorage(bank) { try { return JSON.parse(localStorage.getItem(forgeSessionKey(bank)) || 'null'); } catch(e) { return null; } }
@@ -451,7 +450,7 @@ function forgeStartSession(bank, rawQs) {
   var completed = saved.completedIds || [];
   var available = rawQs.filter(function(q){return completed.indexOf(q.id) === -1;});
   if (!available.length) { available = rawQs; completed = []; }
-  state.questions = state.challenge ? rawQs.slice() : weightedShuffle(available, state.weightMap || {}).slice(0, FORGE_SESSION_SIZE);
+  state.questions = state.challenge ? rawQs.slice() : weightedShuffle(available, state.weightMap || {}).slice(0, forgeQuestionCount());
   if(window.forgeTrack) forgeTrack('forge_session_started',{bank:bank,question_count:state.questions.length});
   state.idx = 0; state.score = 0; state.sessionXP = 0;
   state.sessionWrongTags = [];
@@ -551,6 +550,7 @@ var requestedAssignmentId = new URLSearchParams(location.search).get('assignment
 var requestedSubject = new URLSearchParams(location.search).get('subject');
 var openClassJoin = new URLSearchParams(location.search).get('mode') === 'class';
 var openSoloLogin = new URLSearchParams(location.search).get('mode') === 'solo';
+var openEmailLogin = new URLSearchParams(location.search).get('mode') === 'email';
 if (openSoloLogin) document.body.classList.add('forge-solo-login');
 var requestedBankStarted = false;
 
@@ -722,20 +722,15 @@ function wireJoinMore() {
 }
 
 // ── FREE TIER ROUNDS ──────────────────────────────────────────
-// Free students get a round of 10 questions, then a short cooldown, then
-// another round, up to 40 a day. record_free_response enforces this on the
-// server; this is only the meter, kept in step with the server's rule and
-// corrected by it.
-var FREE_ROUND_SIZE = 10;
+// Free students can continue immediately after each ten-question set. The
+// server enforces 40 new questions per UK day; this local meter is only UX.
 var FREE_DAILY_CAP = 40;
-var FREE_COOLDOWN_MS = 30 * 60 * 1000;
-var FREE_IDLE_RESET_MS = 60 * 60 * 1000; // a round left alone this long starts fresh
 var FREE_ROUND_KEY = 'forge-free-round';
 
 function loadFreeRound() {
   var r = null;
   try { r = JSON.parse(localStorage.getItem(FREE_ROUND_KEY) || 'null'); } catch(e) {}
-  if (!r || !Array.isArray(r.answers)) r = { answers: [], cooldownUntil: 0 };
+  if (!r || typeof r !== 'object') r = { cooldownUntil: 0 };
   if (r.day !== freeToday()) { r.day = freeToday(); r.today = 0; }
   return r;
 }
@@ -745,39 +740,35 @@ function saveFreeRound(r) {
 }
 
 function freeToday() {
-  var d = new Date();
-  return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
+  return new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/London', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date());
 }
 
 function nextMidnightMs() {
-  var d = new Date();
-  d.setHours(24, 0, 0, 0);
-  return d.getTime();
+  var low = Date.now(), high = low + 48 * 3600000, today = freeToday();
+  while (high - low > 1) {
+    var mid = Math.floor((low + high) / 2);
+    if (freeTodayAt(mid) === today) low = mid; else high = mid;
+  }
+  return high;
+}
+
+function freeTodayAt(time) {
+  return new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/London', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date(time));
 }
 
 function getTodayCount() {
   return loadFreeRound().today || 0;
 }
 
-function freeRoundSince(r) {
-  return Math.max(r.cooldownUntil || 0, Date.now() - FREE_IDLE_RESET_MS);
-}
-
-function getRoundCount() {
-  var r = loadFreeRound();
-  var since = freeRoundSince(r);
-  return r.answers.filter(function(t) { return t >= since; }).length;
-}
-
 function cooldownRemainingMs() {
-  return Math.max(0, (loadFreeRound().cooldownUntil || 0) - Date.now());
+  var round = loadFreeRound();
+  return round.dailyCap ? Math.max(0, (round.cooldownUntil || 0) - Date.now()) : 0;
 }
 
 function startFreeCooldown(untilMs, dailyCap) {
   var r = loadFreeRound();
-  r.cooldownUntil = untilMs || (Date.now() + FREE_COOLDOWN_MS);
+  r.cooldownUntil = dailyCap ? (untilMs || nextMidnightMs()) : 0;
   r.dailyCap = !!dailyCap;
-  r.answers = [];
   saveFreeRound(r);
 }
 
@@ -788,13 +779,9 @@ function isAtDailyCap() {
 
 function incrementRoundCount() {
   var r = loadFreeRound();
-  var since = freeRoundSince(r);
-  r.answers = r.answers.filter(function(t) { return t >= since; });
-  r.answers.push(Date.now());
   r.today = (r.today || 0) + 1;
   saveFreeRound(r);
   if (r.today >= FREE_DAILY_CAP) startFreeCooldown(nextMidnightMs(), true);
-  else if (r.answers.length >= FREE_ROUND_SIZE) startFreeCooldown();
   refreshFreeQuotaDisplay();
 }
 
@@ -808,20 +795,19 @@ function syncFreeRoundFromServer(result) {
     saveFreeRound(r);
   }
   var until = Date.parse(result.retry_at || result.cooldown_until || '');
-  if (until > Date.now()) startFreeCooldown(until, result.daily_cap === true);
+  if (until > Date.now() && result.daily_cap === true) startFreeCooldown(until, true);
 }
 
-// Whichever limit comes first: the end of this round, or the end of the day.
+// The free allowance refreshes at UK midnight.
 function freeRemaining() {
-  if (cooldownRemainingMs() > 0) return { remaining: 0, ofDay: isAtDailyCap() };
-  var round = FREE_ROUND_SIZE - getRoundCount();
+  if (cooldownRemainingMs() > 0) return { remaining: 0 };
   var day = FREE_DAILY_CAP - getTodayCount();
-  return { remaining: Math.max(0, Math.min(round, day)), ofDay: day < round };
+  return { remaining: Math.max(0, day) };
 }
 
 function freeRemainingLabel(left) {
   return left.remaining + ' free question' + (left.remaining !== 1 ? 's' : '') +
-    (left.ofDay ? ' left today' : ' before a break');
+    ' left today';
 }
 
 // The quota meter sits in the question header, which is not re-rendered when an
@@ -833,14 +819,14 @@ function refreshFreeQuotaDisplay() {
   if (!label && !fill) return;
   var left = freeRemaining();
   var remaining = left.remaining;
-  var used = FREE_ROUND_SIZE - Math.min(FREE_ROUND_SIZE, remaining);
+  var used = FREE_DAILY_CAP - Math.min(FREE_DAILY_CAP, remaining);
   var col = remaining <= 2 ? 'var(--bad)' : remaining <= 5 ? 'var(--hot)' : 'var(--good)';
   if (label) {
     label.textContent = freeRemainingLabel(left);
     label.style.color = col;
   }
   if (fill) {
-    fill.style.width = Math.min(100, (used / FREE_ROUND_SIZE) * 100) + '%';
+    fill.style.width = Math.min(100, (used / FREE_DAILY_CAP) * 100) + '%';
     fill.style.background = col;
   }
 }
@@ -936,11 +922,9 @@ function saveFreeSession(name, studentId, freeToken) {
 }
 
 function generateFreeId() {
-  // Random 12-char alphanumeric token
-  var chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
-  var id = 'free-';
-  for (var i = 0; i < 12; i++) id += chars[Math.floor(Math.random() * chars.length)];
-  return id;
+  var bytes = new Uint8Array(24);
+  window.crypto.getRandomValues(bytes);
+  return 'free-' + Array.from(bytes, function(b) { return b.toString(16).padStart(2, '0'); }).join('');
 }
 
 // Register a free student in Supabase (or reuse existing record)
@@ -955,8 +939,9 @@ function registerFreeStudent(name, token) {
     headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY, 'Content-Type': 'application/json' },
     body: JSON.stringify({ p_name: name, p_free_token: token })
   }).then(function(r) { return r.json(); }).then(function(rows) {
-    return (Array.isArray(rows) && rows[0]) ? rows[0].student_id : null;
-  }).catch(function() { return null; });
+    if (!Array.isArray(rows) || !rows[0] || !rows[0].student_id) throw new Error('Could not start your session.');
+    return rows[0].student_id;
+  });
 }
 
 var app = document.getElementById('app');
@@ -1020,17 +1005,18 @@ function render(skipMotion) {
 function renderJoin() {
   var h = '';
 
-  // Three clear ways to begin, with a class remaining optional.
+  // A student can start immediately, then choose an account or class later.
   h += '<div class="login-tabs">';
   h += '<button type="button" class="login-tab active" id="tab-free">Study on my own</button>';
   h += '<button type="button" class="login-tab" id="tab-class">Join class</button>';
-  h += '<button type="button" class="login-tab" id="tab-solo">Log in</button>';
+  h += '<button type="button" class="login-tab" id="tab-email">Email sign in</button>';
+  h += '<button type="button" class="login-tab" id="tab-solo">Password login</button>';
   h += '</div>';
 
   // Panel: Free tier
   h += '<div id="panel-free">';
-  h += '<p class="forge-u-1xgpbl">Choose a subject and start practising. No class code or account needed.</p>';
-  h += '<p class="forge-independent-detail">10 free questions at a time, with a short break between rounds, up to 40 a day. Your independent work stays private and is available on this device, even if you join a class later.</p>';
+  h += '<p class="forge-u-1xgpbl">Choose a subject and start practising. No name, account or class code needed.</p>';
+  h += '<p class="forge-independent-detail">Practise in sets of 10, with no wait between sets, up to 40 new questions a day. Save your progress with an email link whenever you are ready.</p>';
   // The first thing a new student read was a free-versus-Pro price list. It
   // is still one tap away, in plain names, but no longer leads the screen.
   h += '<details class="forge-whats-free"><summary>What’s free?</summary><div class="forge-u-eelu4s">';
@@ -1040,9 +1026,18 @@ function renderJoin() {
   h += '<div class="forge-u-h6lji0"><span class="forge-text-dim">✕ Unlimited questions</span><span class="forge-text-dim"> Pro</span></div>';
   h += '<p class="forge-whats-free__pro">Want unlimited? <a href="forge-signup.html">Subscribe — £2.99/mo</a></p>';
   h += '</div></details>';
-  h += ForgeAuthCard.field('free-name', 'Your first name', {placeholder:'e.g. Alex', autocomplete:'given-name'});
   h += '<button class="auth-btn" id="free-btn" type="submit">Start studying →</button>';
   h += '<p class="auth-err" id="free-err"></p>';
+  h += '</div>';
+
+  h += '<div class="forge-u-uydnfn" id="panel-email">';
+  h += '<p class="forge-u-152cbjr">Enter your email to save progress or return on another device. We will send a one-time sign-in link.</p>';
+  h += ForgeAuthCard.field('email-address', 'Email address', {type:'email', placeholder:'you@example.com', autocomplete:'email'});
+  h += '<button class="auth-btn" id="email-btn" type="submit">Email me a sign-in link →</button>';
+  h += '<p class="auth-err" id="email-err"></p>';
+  h += '<details class="forge-email-code"><summary>Have a six-digit code?</summary>';
+  h += ForgeAuthCard.field('email-code', 'One-time code', {placeholder:'123456', autocomplete:'one-time-code'});
+  h += '<button class="auth-btn auth-btn--secondary" id="code-btn" type="button">Use code →</button></details>';
   h += '</div>';
 
   // Panel: Join class
@@ -1081,8 +1076,9 @@ function renderJoin() {
     {btn: 'tab-free',  panel: 'panel-free'},
     {btn: 'tab-class', panel: 'panel-class'},
     {btn: 'tab-solo',  panel: 'panel-solo'},
+    {btn: 'tab-email', panel: 'panel-email'},
   ];
-  var activeTab = openClassJoin ? 'tab-class' : openSoloLogin ? 'tab-solo' : 'tab-free';
+  var activeTab = openClassJoin ? 'tab-class' : openSoloLogin ? 'tab-solo' : openEmailLogin ? 'tab-email' : 'tab-free';
   function activateTab(which) {
     activeTab = which;
     tabs.forEach(function(t) {
@@ -1098,24 +1094,23 @@ function renderJoin() {
 
   // Enter submits whichever panel is showing.
   ForgeAuthCard.onSubmit(function() {
-    var btn = activeTab === 'tab-class' ? 'join-btn' : activeTab === 'tab-solo' ? 'solo-btn' : 'free-btn';
+    var btn = activeTab === 'tab-class' ? 'join-btn' : activeTab === 'tab-solo' ? 'solo-btn' : activeTab === 'tab-email' ? 'email-btn' : 'free-btn';
     document.getElementById(btn).onclick();
   });
 
   // Free tier handler
   document.getElementById('free-btn').onclick = function() {
-    var name = document.getElementById('free-name').value.trim();
+    var name = 'Student';
     var err  = document.getElementById('free-err');
     var btn  = document.getElementById('free-btn');
-    if (!name) { err.textContent = 'Enter your first name.'; err.style.display = 'block'; return; }
 
     btn.disabled = true; btn.textContent = 'Starting\u2026';
-
-    ForgeClasses.use(name);
 
     // Check for existing free session on this device
     var existingSession = loadFreeSession();
     if (existingSession && existingSession.studentId) {
+      name = existingSession.name || name;
+      ForgeClasses.use(name);
       // Returning free student on same device — restore their ID, update name
       state.studentName = name;
       state.studentId   = existingSession.studentId;
@@ -1142,6 +1137,7 @@ function renderJoin() {
     }
 
     // New free student — generate token and register
+    ForgeClasses.use(name);
     var token = generateFreeId();
     registerFreeStudent(name, token).then(function(studentId) {
       state.studentName = name;
@@ -1153,16 +1149,40 @@ function renderJoin() {
       settleRequestedSubject();
       render();
     }).catch(function() {
-      // Supabase failed — proceed without ID, progress won't persist server-side
-      state.studentName = name;
-      state.studentId   = null;
-      state.classId     = null;
-      state.isPaid      = false;
-      saveFreeSession(name, token, token);
-      if(window.ForgeStudyMode)ForgeStudyMode.set('independent');
-      settleRequestedSubject();
-      render();
+      err.textContent = 'We couldn’t start your practice session. Check your connection and try again.';
+      err.style.display = 'block';
+      btn.disabled = false;
+      btn.textContent = 'Start studying →';
     });
+  };
+
+  document.getElementById('email-btn').onclick = function() {
+    var email = document.getElementById('email-address').value.trim();
+    var err = document.getElementById('email-err');
+    err.dataset.state = 'error';
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+      err.textContent = 'Enter a valid email address.'; err.style.display = 'block'; return;
+    }
+    var btn = this;
+    btn.disabled = true;
+    ForgeAuth.sendEmailLink(email, !!loadFreeSession()).then(function() {
+      err.textContent = 'Check your email and open the sign-in link on this device. Your progress will be saved after you sign in.';
+      err.dataset.state = 'success';
+      err.style.display = 'block';
+    }).catch(function(e) { err.textContent = e.message || 'Could not send email. Please try again.'; err.style.display = 'block'; })
+      .finally(function() { btn.disabled = false; });
+  };
+  document.getElementById('code-btn').onclick = function() {
+    var email = document.getElementById('email-address').value.trim();
+    var code = document.getElementById('email-code').value.trim();
+    var err = document.getElementById('email-err');
+    if (!email || !/^\d{6}$/.test(code)) { err.textContent = 'Enter your email and six-digit code.'; err.style.display = 'block'; return; }
+    var btn = this; btn.disabled = true;
+    ForgeAuth.verifyEmailCode(email, code).then(function() { location.href = 'student-dashboard.html'; })
+      .catch(function(e) { err.textContent = e.message || 'Could not sign in.'; err.style.display = 'block'; btn.disabled = false; });
+  };
+  document.getElementById('email-code').onkeydown = function(event) {
+    if (event.key === 'Enter') { event.preventDefault(); document.getElementById('code-btn').click(); }
   };
 
   // Join class handler
@@ -1547,7 +1567,7 @@ function renderBanks(){
     preview: 'Questions for this subject are not ready yet.'
   }[confidence.tier];
   if (learnerStatus) h += '<div class="forge-content-selection-status">'+learnerStatus+'</div>';
-  var recommendedCount = (window.ForgeApp && ForgeApp.session) ? ForgeApp.session.questionsFor(recommendedQuestions.length) : Math.min(FORGE_SESSION_SIZE, recommendedQuestions.length || FORGE_SESSION_SIZE);
+  var recommendedCount = Math.min(forgeQuestionCount(), recommendedQuestions.length || forgeQuestionCount());
   var recommendedMinutes = (window.ForgeApp && ForgeApp.session) ? ForgeApp.session.estimatedMinutesFor(recommendedCount) : Math.max(4, Math.round(recommendedCount * 0.75));
   h += '<dl class="forge-session-detail"><div><dt>Topic</dt><dd>'+(recommended ? recommended.label : 'Current topic')+'</dd></div><div><dt>Questions</dt><dd>'+recommendedCount+'</dd></div><div><dt>Estimated time</dt><dd>~'+recommendedMinutes+' min</dd></div></dl>';
   // Keep the recommended set first while making the full catalogue explicit.
@@ -1703,7 +1723,7 @@ function renderTrialExpiredWall() {
 
   h += '<div class="forge-u-xrboeu">';
   h += '<p class="forge-u-hptrzy">Stay on free</p>';
-  h += '<p class="forge-u-1rniwep">10 questions a round, up to 40 a day · all subjects · explanations included</p>';
+  h += '<p class="forge-u-1rniwep">Sets of 10, no wait between sets · up to 40 a day · all subjects</p>';
   h += '<button type="button" class="forge-u-148bwq4" data-forge-action="quiz-free-tier">Continue for free →</button>';
   h += '</div>';
 
@@ -1712,27 +1732,20 @@ function renderTrialExpiredWall() {
 }
 
 function renderLimitWall() {
-  var dailyCap = isAtDailyCap();
   var h = '<div class="limit-wall">';
   h += '<div class="limit-icon">⚒️</div>';
-  if (dailyCap) {
-    h += '<h2>That\'s ' + FREE_DAILY_CAP + ' questions today</h2>';
-    h += '<p>Great work. Free accounts get ' + FREE_DAILY_CAP + ' questions a day, and yours come back at midnight.</p>';
-  } else {
-    h += '<h2>Time for a short break</h2>';
-    h += '<p>That\'s ' + FREE_ROUND_SIZE + ' questions done. Free accounts get another ' + FREE_ROUND_SIZE + ' when the timer runs out.<br>Stay on this page and you\'ll carry on where you left off.</p>';
-  }
+  h += '<h2>That\'s ' + FREE_DAILY_CAP + ' questions today</h2>';
+  h += '<p>Great work. Free practice gives you ' + FREE_DAILY_CAP + ' new questions a day. Yours come back at midnight UK time.</p>';
 
-  // Countdown; for a short break, with a bar that refills as it runs down
+  // Countdown until the UK-day allowance refreshes.
   h += '<div class="limit-countdown" id="lw-countdown" role="timer" aria-live="off">' + formatCountdown(Math.ceil(cooldownRemainingMs() / 1000));
-  h += '<span>' + (dailyCap ? 'until your questions come back' : 'until your next ' + FREE_ROUND_SIZE + ' questions') + '</span></div>';
-  if (!dailyCap) h += '<div class="limit-bar"><div class="limit-bar-fill" id="lw-refill"></div></div>';
+  h += '<span>until your questions come back</span></div>';
 
   // Upgrade CTA
   h += '<div class="forge-u-1cukupz">';
   h += '<p class="tag forge-u-bhmr11">Forge Pro</p>';
   h += '<p class="forge-u-1iee4k3">7-day free trial · then £2.99/month</p>';
-  h += '<p class="forge-u-1rniwep">No breaks · unlimited questions · full Repair mistakes · Timed practice · XP &amp; ranks</p>';
+  h += '<p class="forge-u-1rniwep">Unlimited questions · full Repair mistakes · Timed practice · XP &amp; ranks</p>';
   h += '<a class="forge-u-mv8v0m" href="forge-signup.html">Start free trial →</a>';
   h += '<p class="forge-u-815kda">No card needed during trial · cancel anytime</p>';
   h += '</div>';
@@ -1746,11 +1759,9 @@ function renderLimitWall() {
     var el = document.getElementById('lw-countdown');
     if (!el) { clearInterval(ticker); return false; }
     var ms = cooldownRemainingMs();
-    // Back into the same set, at the same question, as soon as the break ends.
+    // Resume at the same question after midnight.
     if (ms <= 0) { clearInterval(ticker); render(); return false; }
     el.childNodes[0].textContent = formatCountdown(Math.ceil(ms / 1000));
-    var fill = document.getElementById('lw-refill');
-    if (fill) fill.style.width = Math.max(0, Math.min(100, (1 - ms / FREE_COOLDOWN_MS) * 100)) + '%';
     return true;
   }
   var ticker = setInterval(tick, 1000);
@@ -1793,7 +1804,7 @@ function offerRevisionCard(feedback, question){
 }
 
 function renderQuiz(){
-  // Free tier: hold the next question until the break between rounds is over
+  // Free tier: hold the next question after the daily allowance is used.
   if (isInFreeCooldown()) {
     renderLimitWall();
     return;
@@ -1814,8 +1825,8 @@ function renderQuiz(){
   if (isFreeTier()) {
     var left = freeRemaining();
     var remaining = left.remaining;
-    var used = FREE_ROUND_SIZE - Math.min(FREE_ROUND_SIZE, remaining);
-    var pct = (used / FREE_ROUND_SIZE) * 100;
+    var used = FREE_DAILY_CAP - Math.min(FREE_DAILY_CAP, remaining);
+    var pct = (used / FREE_DAILY_CAP) * 100;
     var col = remaining <= 2 ? 'var(--bad)' : remaining <= 5 ? 'var(--hot)' : 'var(--good)';
     h += '<div class="forge-u-1p0xeot">';
     h += '<div class="forge-u-1gsso20"><div id="free-quota-fill" style="height:100%;width:'+pct+'%;background:'+col+';border-radius:var(--radius-xs)"></div></div>';
@@ -1875,7 +1886,7 @@ function renderQuiz(){
       if(window.forgeTrack) forgeTrack('forge_question_answered',{bank:state.bank,correct:isCorrect});
       forgeSaveSession();
 
-      // Count this question towards the free round
+      // Count this question towards the free daily allowance.
       if (isFreeTier()) incrementRoundCount();
 
       // Log to Supabase
@@ -1892,7 +1903,7 @@ function renderQuiz(){
       if(isFreeTier())syncFreeRoundFromServer(result);
       var current=document.getElementById('forge-answer-save');
       if(!current||current!==saveLabel)return;
-      current.textContent=result===true?'Answer saved.':result&&result.allowed===false?'Break time. This answer was not saved.':'Saved on this device. Sync is pending.';
+      current.textContent=result===true?'Answer saved.':result&&result.allowed===false?'Daily limit reached. This answer was not saved.':'Saved on this device. Sync is pending.';
       current.dataset.state=result===true?'saved':'pending';
     }).catch(function(){var current=document.getElementById('forge-answer-save');if(current&&current===saveLabel){current.textContent='Saved on this device. Sync is pending.';current.dataset.state='pending';}});
 
@@ -2209,6 +2220,7 @@ function renderResults(){
   h+='<p class="detail">'+bk.label+'</p>';
   h+='<div class="pct" style="color:'+col+'">'+pct+'%</div>';
   h+='<div class="detail">'+state.score+' of '+worked+' correct'+(repairedCount?' · '+repairedCount+' '+(repairedCount===1?'idea':'ideas')+' repaired':'')+'</div>';
+  if (isFreeTier() && !ForgeAuth.hasSession()) h+='<p class="forge-save-progress">Want your progress on another device? <a href="forge-quiz.html?mode=email">Save it with your email</a>.</p>';
   if(repaired) h+='<p class="forge-result-repaired">Repaired: '+repaired+'</p>';
   h+='<section class="forge-result-story" aria-labelledby="result-next-title">';
   h+='<h2 id="result-next-title">'+next.title+'</h2>';
@@ -2249,7 +2261,8 @@ function forgeLogout(){
 function sessionBar(){
   if (!state.studentName) return '';
   var statusLabel = state.classId ? ' · class' : state.isPaid ? ' · Pro ⚡' : ' · independent';
-  return '<div class="forge-u-44gkcw"><span class="forge-u-16oyzks">Signed in as <b class="forge-u-1ybl9nb">' + state.studentName + '</b><span class="forge-u-19j2vc3">' + statusLabel + '</span> \u00b7 <a class="forge-u-1u5pwzm" href="#" data-forge-action="logout">Switch student</a></span></div>';
+  var save = isFreeTier() && !ForgeAuth.hasSession() ? ' · <a href="forge-quiz.html?mode=email">Save progress</a>' : '';
+  return '<div class="forge-u-44gkcw"><span class="forge-u-16oyzks">' + (ForgeAuth.hasSession() ? 'Signed in as ' : 'Practising as ') + '<b class="forge-u-1ybl9nb">' + state.studentName + '</b><span class="forge-u-19j2vc3">' + statusLabel + '</span>' + save + ' · <a class="forge-u-1u5pwzm" href="#" data-forge-action="logout">Switch student</a></span></div>';
 }
 
 // ===== SPACED REPETITION ENGINE =====
@@ -2426,7 +2439,7 @@ var MANDARIN_PASSAGES = [
   }
 ];
 
-if (!openSoloLogin && ForgeAuth.hasSession()) {
+if (!openSoloLogin && !openEmailLogin && ForgeAuth.hasSession()) {
   ForgeAuth.getSession().then(function(result) {
     if (result && result.subscriber) {
       var sub    = result.subscriber;
@@ -2474,12 +2487,35 @@ if (!openSoloLogin && ForgeAuth.hasSession()) {
       } else {
         state.phase = 'subjects';
       }
+      render();
+      return;
+    }
+    if (result) {
+      ForgeAuth.restoreFreeStudent().then(function(freeSession) {
+        state.studentName = freeSession.name;
+        state.studentId = freeSession.studentId;
+        state.classId = null;
+        state.isPaid = false;
+        state.isTrial = false;
+        ForgeClasses.use(freeSession.name);
+        settleRequestedSubject();
+        ForgeClasses.fetchAuthResponses(ForgeAuth.accessToken(), ForgeAuth.currentUser().id, function(responses, error) {
+          if (error) { render(); return; }
+          state.responseHistory = responses || [];
+          state.weightMap = buildWeightMap(responses || []);
+          state.bankStats = buildBankStats(responses || []);
+          setXPHistory(responses);
+          if (state.phase === 'banks') render();
+        });
+        render();
+      }).catch(function() { render(); });
+      return;
     }
     render();
   }).catch(function() { render(); });
 } else {
   var restored = false;
-  if (!openClassJoin && !openSoloLogin) try {
+  if (!openClassJoin && !openSoloLogin && !openEmailLogin) try {
     var savedSession = JSON.parse(localStorage.getItem('forge-student') || 'null');
     if (savedSession && savedSession.studentName && savedSession.classId && !(ForgeStudyMode.isIndependent() && !requestedClassId)) {
       state.studentId    = savedSession.studentId    || null;
@@ -2552,7 +2588,7 @@ if (!openSoloLogin && ForgeAuth.hasSession()) {
     }
   } catch(e) {}
 
-  if (!openClassJoin && !openSoloLogin && !restored) {
+  if (!openClassJoin && !openSoloLogin && !openEmailLogin && !restored) {
     var freeSession = loadFreeSession();
 
     if (freeSession && freeSession.studentId) {

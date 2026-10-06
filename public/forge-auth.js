@@ -18,6 +18,7 @@ function _authHeaders(token) {
 
 var FORGE_SESSION_KEY = 'forge-auth-session';
 var FORGE_REFRESH_ATTEMPT_KEY = 'forge-auth-refresh-at';
+var FORGE_FREE_CLAIM_KEY = 'forge-free-claim-pending';
 
 function _saveAuthSession(session) {
   try { localStorage.setItem(FORGE_SESSION_KEY, JSON.stringify(session)); } catch(e) {}
@@ -111,23 +112,26 @@ var ForgeAuth = {
     });
     if (!params.access_token || params.type === 'recovery') return false;
 
+    _clearDerivedStudentState();
     _saveAuthSession({ access_token: params.access_token, refresh_token: params.refresh_token, user: null });
     return ForgeAPI.auth.user(params.access_token)
     .then(function(user) {
       if (user && user.id) {
         _saveAuthSession({ access_token: params.access_token, refresh_token: params.refresh_token, user: user });
       }
-      if (window.history && window.history.replaceState) {
-        window.history.replaceState(null, '', window.location.pathname + window.location.search);
-      }
-      // Already on the landing page (e.g. index.html forwarded the hash here)?
-      // The session is stored and the URL is clean — nothing left to do.
-      var path = window.location.pathname;
-      if (path.slice(-ForgeAuth.LANDING_PAGE.length) !== ForgeAuth.LANDING_PAGE) {
-        ForgeAuth.goToLanding();
-      } else {
-        window.location.reload();
-      }
+      return ForgeAuth.claimPendingFreeStudent().catch(function() { return null; }).then(function() {
+        if (window.history && window.history.replaceState) {
+          window.history.replaceState(null, '', window.location.pathname + window.location.search);
+        }
+        // Already on the landing page (e.g. index.html forwarded the hash here)?
+        // The session is stored and the URL is clean — nothing left to do.
+        var path = window.location.pathname;
+        if (path.slice(-ForgeAuth.LANDING_PAGE.length) !== ForgeAuth.LANDING_PAGE) {
+          ForgeAuth.goToLanding();
+        } else {
+          window.location.reload();
+        }
+      });
     })
     .catch(function() { _clearAuthSession(); });
   },
@@ -168,7 +172,71 @@ var ForgeAuth = {
       _clearDerivedStudentState();
       _saveAuthSession({ access_token: data.access_token, refresh_token: data.refresh_token, user: data.user });
       if (window.ForgeRole) ForgeRole.set('student');
-      return data;
+      return ForgeAuth.claimPendingFreeStudent().catch(function() { return null; }).then(function() { return data; });
+    });
+  },
+
+  // The default Supabase email template sends a one-time link. If the project
+  // uses an OTP template, students can instead enter its code on this page.
+  sendEmailLink: function(email, saveCurrentFreeWork) {
+    try { localStorage.removeItem(FORGE_FREE_CLAIM_KEY); } catch(e) {}
+    if (saveCurrentFreeWork) {
+      try {
+        var free = JSON.parse(localStorage.getItem('forge-free-session') || 'null');
+        if (free && free.studentId && free.freeToken) localStorage.setItem(FORGE_FREE_CLAIM_KEY, JSON.stringify({
+          studentId: free.studentId, freeToken: free.freeToken, email: email.toLowerCase()
+        }));
+      } catch(e) {}
+    }
+    return ForgeAPI.auth.sendEmailLink(email, new URL('student-dashboard.html', window.location.href).href);
+  },
+  verifyEmailCode: function(email, code) {
+    return ForgeAPI.auth.verifyEmailCode(email, code).then(function(data) {
+      if (!data || !data.access_token) throw new Error('The code was not recognised. Please request a new one.');
+      _clearDerivedStudentState();
+      _saveAuthSession({ access_token: data.access_token, refresh_token: data.refresh_token, user: data.user });
+      if (window.ForgeRole) ForgeRole.set('student');
+      return ForgeAuth.claimPendingFreeStudent().catch(function() { return null; }).then(function() { return data; });
+    });
+  },
+  claimPendingFreeStudent: function() {
+    var token = ForgeAuth.accessToken();
+    if (!token) return Promise.resolve();
+    var pending = null;
+    try { pending = JSON.parse(localStorage.getItem(FORGE_FREE_CLAIM_KEY) || 'null'); } catch(e) {}
+    if (!pending) return Promise.resolve();
+    var identity = ForgeAuth.currentUser() && ForgeAuth.currentUser().email
+      ? Promise.resolve(ForgeAuth.currentUser()) : ForgeAPI.auth.user(token);
+    return identity.then(function(user) {
+      if (user && user.id && !ForgeAuth.currentUser()) {
+        var saved = _loadAuthSession();
+        if (saved) { saved.user = user; _saveAuthSession(saved); }
+      }
+      if (!pending || !pending.studentId || !pending.freeToken ||
+          String(pending.email || '').toLowerCase() !== String(user && user.email || '').toLowerCase()) {
+        try { localStorage.removeItem(FORGE_FREE_CLAIM_KEY); } catch(e) {}
+        return;
+      }
+      return ForgeAPI.rpc('claim_free_student', {
+          p_student_id: pending.studentId, p_free_token: pending.freeToken
+        }, { token: token }).then(function(result) {
+          if (!result || result.linked !== true) throw new Error('This device’s guest progress could not be linked.');
+          localStorage.removeItem(FORGE_FREE_CLAIM_KEY);
+        });
+    });
+  },
+  restoreFreeStudent: function() {
+    var token = ForgeAuth.accessToken();
+    if (!token) return Promise.resolve(null);
+    return ForgeAuth.claimPendingFreeStudent().then(function() {
+      return ForgeAPI.rpc('get_my_free_student', {}, { token: token });
+    }).then(function(rows) {
+      var row = Array.isArray(rows) && rows[0];
+      if (!row || !row.student_id || !row.free_token) throw new Error('Your saved progress is unavailable right now.');
+      var session = { name: row.student_name || 'Student', studentId: row.student_id, freeToken: row.free_token };
+      localStorage.setItem('forge-free-session', JSON.stringify(session));
+      if (window.ForgeStudyMode) ForgeStudyMode.set('independent');
+      return session;
     });
   },
 
@@ -230,6 +298,7 @@ var ForgeAuth = {
       ForgeAPI.auth.signOut(saved.access_token).catch(function() {});
     }
     _clearAuthSession();
+    try { localStorage.removeItem(FORGE_FREE_CLAIM_KEY); } catch(e) {}
     _clearDerivedStudentState();
     if (window.ForgeRole) ForgeRole.clear('student');
     // Derived navigation state must never survive into the next student's

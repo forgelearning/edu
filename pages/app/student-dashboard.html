@@ -133,15 +133,16 @@ var app=document.getElementById('app');
 ForgeApp.loading(app, { label: 'Loading your dashboard', body: 'Getting your progress and focus areas ready.' });
 
 function renderLogin(){
-  var f=ForgeAuthCard.field('p-name','Your name',{placeholder:'e.g. Alex',autocomplete:'given-name'})
+  var f='<div class="dashboard-entry-actions"><a class="auth-btn" href="forge-quiz.html">Start practising free →</a><a href="forge-quiz.html?mode=email">Sign in with email</a></div>'
+       +'<details class="dashboard-class-entry"><summary>I have class codes</summary>'
+       +ForgeAuthCard.field('p-name','Your name',{placeholder:'e.g. Alex',autocomplete:'given-name'})
        +ForgeAuthCard.field('p-student-code','Student code',{placeholder:'e.g. A1B2C3D4E5',upper:true})
        +ForgeAuthCard.field('p-code','Class code',{placeholder:'e.g. ECON-Y12-A',upper:true})
        +'<button class="auth-btn" id="p-btn" type="submit">View my dashboard \u2192</button>'
-       +'<p class="auth-err" id="p-err"></p>';
+       +'<p class="auth-err" id="p-err"></p></details>';
   app.innerHTML=ForgeAuthCard.shell({
     title:'Your Forge dashboard',
-    sub:'Use your name and the class and student codes from your teacher.',
-    foot:'No progress yet? <a href="forge-quiz.html">Start with a quiz</a>'
+    sub:'Start practising, return to your saved progress, or join your class.'
   },f);
   ForgeAuthCard.onSubmit(function(){document.getElementById('p-btn').onclick();});
 
@@ -471,7 +472,17 @@ function forgeSignOut(){
 
         loadProfileWithId();
       } else {
-        checkLocalSessionProfile();
+        ForgeAuth.restoreFreeStudent().then(function(freeSession) {
+          st.studentId = freeSession.studentId;
+          st.studentName = freeSession.name;
+          st.classId = null;
+          ForgeClasses.fetchAuthResponses(ForgeAuth.accessToken(), ForgeAuth.currentUser().id, function(rows, error) {
+            st.responses = rows || [];
+            st.loadError = !!error;
+            renderDashboard();
+          });
+        })
+          .catch(function() { checkLocalSessionProfile(); });
       }
     }).catch(function() { checkLocalSessionProfile(); });
   } else {

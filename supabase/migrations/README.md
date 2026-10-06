@@ -292,3 +292,21 @@ already today, the 40th was saved and returned `daily_cap: true` with
 reforge answer was still saved; with the day's count cleared, an ordinary
 answer went through. Nothing persisted. Afterwards the new body is live, anon
 can execute it, and a bogus session returns `invalid_session`.
+
+## 20261006 175857 — independent student accounts
+
+| File | What it does |
+|---|---|
+| `20261006175857_student_free_accounts.sql` | Lets a signed-in student claim a guest study record and restore it on another device. Adds own-row read policies for free students and their responses. Removes the timed break while retaining 10-question sets and a server-enforced limit of 40 new answers per UK day. Reforge answers remain exempt. |
+
+Apply this migration before publishing the matching client. Supabase Auth must
+allow the deployed `student-dashboard.html` URL as an email redirect. The
+default Supabase email template supplies a sign-in link; entering a six-digit
+code on the same page requires an OTP email template.
+
+**Applied to production 2026-10-06.** First compiled and exercised in a
+rolled-back transaction: a guest row was claimed by an account, restored by
+the owner, 40 new answers were accepted, the 41st was refused, and a repair
+answer remained available. The migration version, functions, policies, quota
+body, and authenticated-only grants were then checked live. The deployed
+student dashboard URL was added to the Auth redirect allow list.

@@ -354,3 +354,9 @@ html[data-overdrive="control-room"] .mod-row:hover{border-color:var(--hot);box-s
 .dashboard-plan__step .forge-button{min-height:40px;white-space:nowrap}
 @media(max-width:520px){.dashboard-plan__step{grid-template-columns:28px minmax(0,1fr)}.dashboard-plan__step .forge-button{grid-column:2;justify-self:start}}
 .dashboard-streak-freeze{margin:10px 0 0;padding:8px 12px;border-left:3px solid var(--hot);color:var(--white);font-size:13px;line-height:1.45}
+.dashboard-entry-actions{display:grid;gap:14px;margin:0 0 24px}
+.dashboard-entry-actions .auth-btn{display:block;text-align:center;text-decoration:none}
+.dashboard-entry-actions>a:not(.auth-btn){text-align:center;color:var(--ember-action);font-weight:600;text-underline-offset:3px}
+.dashboard-class-entry{border-top:1px solid var(--line);padding-top:18px}
+.dashboard-class-entry summary{cursor:pointer;font-weight:600;min-height:44px;color:var(--white)}
+.dashboard-class-entry[open] summary{margin-bottom:18px}
