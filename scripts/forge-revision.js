@@ -230,6 +230,7 @@
 
   function mountStudent(options){
     var app=options.root,context=options.context||{},state=readState(context),currentCards=[],currentIndex=0,currentAssignment=null,currentSource='today',ratings=[],editingId=null,lastReviewMessage='';
+    if(root.ForgeRewards&&context.studentId)root.ForgeRewards.load(context).catch(function(){});
     var subjectInfo=(root.SUBJECTS||{})[options.subject]||{},subjectBanks=subjectInfo.banks||[];
     var syncStatus=options.syncError?'Saved on this device. Sync will retry when you reconnect or reopen Revision.':root.ForgePersonalCards&&root.ForgePersonalCards.canSync(context)?'Cards and review progress sync with your student record.':'Cards and review progress are saved on this device.';
     if(options.remoteProgress&&root.ForgeRevisionProgress){
@@ -340,8 +341,9 @@
       if(match.matched===match.pairs.length){
         var bank=match.bank,mistakes=match.mistakes,total=match.pairs.length;
         var xpAvailable=!(context&&context.freeToken&&!context.classId);
-        var earned=xpAvailable&&root.ForgeRewards&&root.ForgeRewards.awardMatch(context&&context.studentId,bank,total)||0;
-        app.querySelector('.revision-match').insertAdjacentHTML('beforeend','<div class="revision-match-done"><h2>All '+total+' matched.</h2><p>'+(mistakes?mistakes+' wrong '+(mistakes===1?'pair':'pairs')+' on the way.':'No wrong pairs.')+'</p><p class="revision-match-xp">'+(xpAvailable?(earned?'+'+earned+' XP earned':'Today’s XP for this topic already earned'):'Practice round complete')+'</p><div><button type="button" data-revision-action="match-again" data-bank="'+escapeHtml(bank)+'">Match another set →</button><button type="button" data-revision-action="home">Back to revision</button></div></div>');
+        var reward=xpAvailable&&root.ForgeRewards?root.ForgeRewards.awardMatch(context,bank,total):Promise.resolve({xp:0,synced:true});
+        app.querySelector('.revision-match').insertAdjacentHTML('beforeend','<div class="revision-match-done"><h2>All '+total+' matched.</h2><p>'+(mistakes?mistakes+' wrong '+(mistakes===1?'pair':'pairs')+' on the way.':'No wrong pairs.')+'</p><p class="revision-match-xp">'+(xpAvailable?'Saving XP…':'Practice round complete')+'</p><div><button type="button" data-revision-action="match-again" data-bank="'+escapeHtml(bank)+'">Match another set →</button><button type="button" data-revision-action="home">Back to revision</button></div></div>');
+        reward.then(function(result){var el=app.querySelector('.revision-match-xp');if(el&&xpAvailable)el.textContent=result.xp?'+'+result.xp+' XP '+(result.synced?'earned':'saved on this device · syncs when you reconnect'):'Today’s XP for this topic already earned';});
         var again=app.querySelector('[data-revision-action="match-again"]');if(again)again.focus();
         match=null;
       }

@@ -492,6 +492,10 @@ function setXPHistory(responses) {
   var quizXp=calcXPFromResponses(responses || []);
   if(typeof ForgeRewards!=='undefined')ForgeRewards.rememberQuizXp(state.studentId,quizXp);
   state.baseXP=quizXp+(typeof ForgeRewards!=='undefined'?ForgeRewards.read(state.studentId).matchXp:0);
+  if(typeof ForgeRewards!=='undefined'&&state.studentId&&state.rewardLoadedFor!==state.studentId){
+    state.rewardLoadedFor=state.studentId;
+    ForgeRewards.load({studentId:state.studentId,classCode:state.classCode,studentCode:state.studentCode,studentName:state.studentName}).then(function(){state.baseXP=quizXp+ForgeRewards.read(state.studentId).matchXp;}).catch(function(){});
+  }
 }
 function awardXP(amount, host) {
   if (!xpEnabled() || !amount) return;

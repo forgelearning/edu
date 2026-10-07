@@ -1,39 +1,53 @@
-/* Student-owned local rewards. Match XP is kept separate from answer rows so
- * it never changes accuracy, teacher reports, or revision scheduling. */
+/* Match rewards sync across devices; pending claims survive offline play. */
 (function(root){
   'use strict';
   var PREFIX='forge-rewards:';
-  var MILESTONES={ember:0,ocean:0,violet:0,meadow:300,coral:1500,gold:3000,plain:0,folio:500,nightfall:5000};
-  function key(studentId){return PREFIX+String(studentId||'anonymous');}
-  function read(studentId){
-    try{
-      var value=JSON.parse(root.localStorage.getItem(key(studentId))||'{}');
-      return {matchXp:Math.max(0,Number(value.matchXp)||0),quizXp:Math.max(0,Number(value.quizXp)||0),rounds:value.rounds&&typeof value.rounds==='object'?value.rounds:{}};
-    }catch(e){return {matchXp:0,quizXp:0,rounds:{}};}
+  var MILESTONES={ember:0,ocean:0,violet:0,meadow:100,coral:750,gold:1500,plain:0,folio:300,nightfall:3000};
+  function key(id){return PREFIX+String(id||'anonymous');}
+  function read(id){
+    var v={};try{v=JSON.parse(root.localStorage.getItem(key(id))||'{}')||{};}catch(e){}
+    var rounds=v.rounds&&typeof v.rounds==='object'?v.rounds:{},pending=Array.isArray(v.pending)?v.pending:[];
+    if(!('serverMatchXp' in v)&&!pending.length){
+      var keys=Object.keys(rounds).sort(),short=Math.max(0,Math.round((keys.length*20-(Number(v.matchXp)||0))/5));
+      pending=keys.map(function(k,i){var j=k.indexOf('|');return {day:k.slice(0,j),bank:k.slice(j+1),pairs:i<short?3:4};});
+    }
+    pending=pending.filter(function(p){return p&&/^\d{4}-\d\d-\d\d$/.test(p.day)&&/^[A-Za-z0-9._-]{2,80}$/.test(p.bank)&&[3,4].indexOf(p.pairs)!==-1;});
+    var server=Math.max(0,Number(v.serverMatchXp)||0);
+    return {quizXp:Math.max(0,Number(v.quizXp)||0),serverMatchXp:server,pending:pending,rounds:rounds,matchXp:server+pending.reduce(function(n,p){return n+p.pairs*5;},0)};
   }
-  function write(studentId,value){try{root.localStorage.setItem(key(studentId),JSON.stringify(value));return true;}catch(e){return false;}}
-  function total(studentId){var data=read(studentId);return data.quizXp+data.matchXp;}
-  function quizXpFromResponses(responses){
-    return (responses||[]).reduce(function(xp,row){
-      var id=String(row.question_id||'');
-      if(id.endsWith('-ANVIL')||id.endsWith('-CRU'))return xp+(row.is_correct?30:0);
-      if(row.reforge_attempted)return xp+(row.reforge_correct?20:0);
-      return xp+(row.is_correct?(row.hint_used?5:10):0);
-    },0);
+  function write(id,v){try{root.localStorage.setItem(key(id),JSON.stringify(v));return true;}catch(e){return false;}}
+  function total(id){var d=read(id);return d.quizXp+d.matchXp;}
+  function quizXpFromResponses(rows){return (rows||[]).reduce(function(xp,r){var id=String(r.question_id||'');if(id.endsWith('-ANVIL')||id.endsWith('-CRU'))return xp+(r.is_correct?30:0);if(r.reforge_attempted)return xp+(r.reforge_correct?20:0);return xp+(r.is_correct?(r.hint_used?5:10):0);},0);}
+  function rememberQuizXp(id,xp){if(!id||!Number.isFinite(Number(xp)))return;var d=read(id);d.quizXp=Math.max(0,Number(xp));write(id,d);}
+  function today(){var parts=new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/London',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date());var values={};parts.forEach(function(p){values[p.type]=p.value;});return values.year+'-'+values.month+'-'+values.day;}
+  function context(c){
+    c=typeof c==='string'?{studentId:c}:Object.assign({},c||{});
+    try{var saved=JSON.parse(root.localStorage.getItem('forge-student')||'null')||JSON.parse(root.localStorage.getItem('forge-paid-student')||'null');if(saved&&saved.studentId===c.studentId){c.classCode=c.classCode||saved.classCode;c.studentCode=c.studentCode||saved.studentCode;c.studentName=c.studentName||saved.studentName||saved.name;}}catch(e){}
+    return c;
   }
-  function rememberQuizXp(studentId,xp){
-    if(!studentId||!Number.isFinite(Number(xp)))return;
-    var data=read(studentId);data.quizXp=Math.max(0,Number(xp));write(studentId,data);
+  function rpc(name,c,extra){
+    c=context(c);var token=root.ForgeAuth&&root.ForgeAuth.accessToken&&root.ForgeAuth.accessToken();
+    if(!c.studentId||!root.ForgeAPI||!token&&!c.classCode)return Promise.reject(new Error('No verified student session'));
+    return root.ForgeAPI.rpc(name,Object.assign({p_student_id:String(c.studentId),p_class_code:c.classCode||null,p_student_code:c.studentCode||null,p_name:c.studentName||null},extra||{}),{token:token||root.ForgeAPI.config.key});
   }
-  function awardMatch(studentId,bank,pairs,date){
-    if(!studentId||!bank||!pairs)return 0;
-    var now=new Date(),today=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0');
-    var data=read(studentId),day=date||today,round=day+'|'+bank;
-    if(data.rounds[round])return 0;
-    var amount=Math.min(20,Math.max(0,pairs)*5);
-    data.rounds[round]=true;data.matchXp+=amount;
-    return write(studentId,data)?amount:0;
+  var syncing={};
+  function load(c){
+    c=context(c);if(!c.studentId)return Promise.resolve(null);
+    if(syncing[c.studentId])return syncing[c.studentId];
+    var id=c.studentId,d=read(id),work=Promise.resolve();
+    d.pending.slice().forEach(function(p){work=work.then(function(){return rpc('claim_student_match_xp',c,{p_bank:p.bank,p_pairs:p.pairs,p_day:p.day}).then(function(result){var f=read(id);f.pending=f.pending.filter(function(x){return x.day!==p.day||x.bank!==p.bank;});f.serverMatchXp=Number(result.xp_total)||0;write(id,f);});});});
+    syncing[id]=work.then(function(){return rpc('get_student_match_xp',c).then(function(result){var f=read(id);f.serverMatchXp=Number(result.xp_total)||0;write(id,f);return f;});}).finally(function(){delete syncing[id];});
+    return syncing[id];
   }
-  function unlocked(studentId,reward){return total(studentId)>=(MILESTONES[reward]||0);}
-  root.ForgeRewards={MILESTONES:MILESTONES,read:read,total:total,quizXpFromResponses:quizXpFromResponses,rememberQuizXp:rememberQuizXp,awardMatch:awardMatch,unlocked:unlocked};
+  function awardMatch(c,bank,pairs,date){
+    c=context(c);pairs=Number(pairs);if(!c.studentId||!bank||[3,4].indexOf(pairs)===-1)return Promise.resolve({xp:0,synced:false});
+    var day=date||today(),round=day+'|'+bank,d=read(c.studentId);
+    if(d.rounds[round])return Promise.resolve({xp:0,synced:true});
+    return load(c).catch(function(){return null;}).then(function(){
+      var f=read(c.studentId);if(f.rounds[round])return {xp:0,synced:true};
+      return rpc('claim_student_match_xp',c,{p_bank:bank,p_pairs:pairs,p_day:day}).then(function(result){f=read(c.studentId);f.rounds[round]=true;f.serverMatchXp=Number(result.xp_total)||0;write(c.studentId,f);return {xp:Number(result.xp)||0,synced:true};}).catch(function(){f=read(c.studentId);f.rounds[round]=true;f.pending.push({day:day,bank:bank,pairs:pairs});write(c.studentId,f);return {xp:pairs*5,synced:false};});
+    });
+  }
+  function unlocked(id,reward){return total(id)>=(MILESTONES[reward]||0);}
+  root.ForgeRewards={MILESTONES:MILESTONES,read:read,total:total,quizXpFromResponses:quizXpFromResponses,rememberQuizXp:rememberQuizXp,awardMatch:awardMatch,load:load,unlocked:unlocked};
 })(window);

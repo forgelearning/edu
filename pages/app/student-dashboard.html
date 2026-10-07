@@ -130,6 +130,7 @@ function calcXP(responses){
 function calcStreak(responses){ return window.ForgeStreak ? ForgeStreak.calc(responses).days : 0; }
 
 var st={studentId:null,classId:null,studentName:null,responses:[],isPaid:false,isTrial:false,trialDaysLeft:0,paidSubjects:[],isGCSE:false,loadError:false};
+var rewardsLoadedFor=null;
 var app=document.getElementById('app');
 ForgeApp.loading(app, { label: 'Loading your dashboard', body: 'Getting your progress and focus areas ready.' });
 
@@ -275,6 +276,10 @@ function dashboardClassContext(){
 }
 
 function renderDashboard(){
+  if(window.ForgeRewards&&st.studentId&&rewardsLoadedFor!==st.studentId){
+    rewardsLoadedFor=st.studentId;
+    ForgeRewards.load(dashboardClassContext()).then(function(){if(st.studentId===rewardsLoadedFor)renderDashboard();}).catch(function(){});
+  }
   var responses=st.responses||[];
   var total=responses.filter(function(r){return !r.reforge_attempted;}).length;
   var recent=responses.filter(function(r){return !r.reforge_attempted;}).slice(-20);

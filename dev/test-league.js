@@ -7,6 +7,9 @@ const vm = require('vm');
 
 // 1. XP rules in the migration match calcXP in the dashboard.
 const sql = fs.readFileSync('supabase/migrations/20260928120000_weekly_class_league.sql', 'utf8');
+const rewardSql = fs.readFileSync('supabase/migrations/20261007175306_student_match_xp.sql', 'utf8');
+assert(/student_match_rewards m where m.student_id = s.id/.test(rewardSql), 'student league includes match rewards');
+assert(/'xp_week'.*student_match_rewards m/.test(rewardSql), 'friends weekly XP includes match rewards');
 const expected = [
   /question_id like '%-ANVIL' then case when r\.is_correct then 30 else 0 end/,
   /question_id like '%-CRU' and r\.is_correct then 30/,
@@ -33,6 +36,7 @@ assert.strictEqual(L.html(null), '', 'no data, no league');
 assert.strictEqual(L.html({ enabled: false }), '', 'switched off by the teacher, no league');
 assert(L.html({ enabled: true, rows: [] }).includes('take first place'), 'empty week invites the first answer');
 assert(L.teacherHtml([{ id: 'a', name: 'A' }], [], true).includes('forge-league__empty'), 'teacher view has a proper empty state');
+assert(L.teacherHtml([{ id: 'a', name: 'A' }], [], true, new Date('2026-10-07T12:00:00Z'), [{student_id:'a',reward_day:'2026-10-07',xp:20}]).includes('20 XP'), 'teacher league counts match-only XP');
 
 const data = { enabled: true, ranked: 9, you: { position: 6, xp: 40 }, rows: [
   { seq: 1, position: 1, name: 'Jess B.', xp: 320, is_you: false },

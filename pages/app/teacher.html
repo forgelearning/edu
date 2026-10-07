@@ -406,6 +406,7 @@ window.loadClassDashboard = function(cls) {
         document.body.scrollTop = 0;
         setTeacherTitle(cls.name || 'Class dashboard');
         dashState.classId = cls.id;
+        dashState.matchRewardClassId = null;
         dashState.className = cls.name;
         dashState.classSubject = canonicalSubjectKey(cls.subject);
         dashState.classCode = cls.code || null;
@@ -854,6 +855,7 @@ function renderLogin(activeTab) {
 
         window._openCreatedDash = function() {
           dashState.classId = createdClassId;
+          dashState.matchRewardClassId = null;
           dashState.className = createdClassName;
           dashState.leagueEnabled = cls.league_enabled;
           dashState.friendsEnabled = cls.friends_enabled;
@@ -1021,6 +1023,18 @@ function setDashToolsOpen(open) {
 }
 
 function renderDashboard() {
+  if(dashState.classId&&dashState.matchRewardClassId!==dashState.classId){
+    var rewardClassId=dashState.classId;
+    dashState.matchRewardClassId=rewardClassId;
+    dashState.matchRewards=[];
+    ForgeAPI.rpc('get_teacher_class_match_rewards',{p_class_id:rewardClassId},teacherApiOptions()).then(function(rows){
+      if(dashState.classId===rewardClassId){
+        dashState.matchRewards=Array.isArray(rows)?rows:[];
+        var leagueCard=document.getElementById('teacher-league');
+        if(leagueCard)leagueCard.innerHTML=ForgeLeague.teacherHtml(dashState.students,dashState.responses,dashState.leagueEnabled,null,dashState.matchRewards);
+      }
+    }).catch(function(){});
+  }
   // Filter responses to this class's subject only
   var allResponses = dashState.responses;
   var responses = forClassSubject(allResponses);
@@ -1107,7 +1121,7 @@ function renderDashboard() {
   }
   // Only once the league column exists (migration 20260928120000).
   if (typeof dashState.leagueEnabled === 'boolean' && window.ForgeLeague) {
-    h += '<div id="teacher-league">' + ForgeLeague.teacherHtml(students, allResponses, dashState.leagueEnabled) + '</div>';
+    h += '<div id="teacher-league">' + ForgeLeague.teacherHtml(students, allResponses, dashState.leagueEnabled, null, dashState.matchRewards) + '</div>';
   }
 
   // Tabs
@@ -1243,7 +1257,7 @@ function renderDashboard() {
   }
   wireClassSwitch('toggle-league', 'league_enabled', 'leagueEnabled', 'Weekly league', function(next) {
     var leagueCard = document.getElementById('teacher-league');
-    if (leagueCard) leagueCard.innerHTML = ForgeLeague.teacherHtml(dashState.students, dashState.responses, next);
+    if (leagueCard) leagueCard.innerHTML = ForgeLeague.teacherHtml(dashState.students, dashState.responses, next, null, dashState.matchRewards);
   });
   wireClassSwitch('toggle-friends', 'friends_enabled', 'friendsEnabled', 'Friends', function(next) {
     var card = document.getElementById('teacher-friendships');

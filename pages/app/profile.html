@@ -166,6 +166,7 @@ function calcXP(responses){
 }
 
 var st={studentId:null,classId:null,studentName:null,responses:[],isPaid:false,isTrial:false,trialDaysLeft:0,paidSubjects:[],activeTab:'overview',isGCSE:false,loadError:false};
+var rewardsLoadedFor=null;
 var app=document.getElementById('app');
 ForgeState.loading(app, { label: 'Loading your profile', body: 'Getting your progress, strengths, and focus areas ready.' });
 
@@ -255,6 +256,10 @@ function classInfo(){
 }
 
 function renderProfile(){
+  if(window.ForgeRewards&&st.studentId&&rewardsLoadedFor!==st.studentId){
+    rewardsLoadedFor=st.studentId;
+    ForgeRewards.load({studentId:st.studentId,studentName:st.studentName}).then(function(){if(st.studentId===rewardsLoadedFor)renderProfile();}).catch(function(){});
+  }
   var responses=st.responses;
   var total=responses.filter(function(r){return !r.reforge_attempted;}).length;
   var correct=responses.filter(function(r){return !r.reforge_attempted&&r.is_correct&&!r.hint_used;}).length;

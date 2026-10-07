@@ -127,13 +127,17 @@
 
   // Teacher's view of the same league: full names (the teacher knows who
   // they are), every student with XP this week, and whether students can see it.
-  function teacherHtml(students, responses, enabled, now) {
+  function teacherHtml(students, responses, enabled, now, rewards) {
     var start = weekStart(now).getTime();
     var byId = {};
     (students || []).forEach(function (s) { byId[s.id] = { name: s.display_name || s.name || 'Student', xp: 0 }; });
     (responses || []).forEach(function (r) {
       if (!byId[r.student_id] || !r.created_at || Date.parse(r.created_at) < start) return;
       byId[r.student_id].xp += xpFor(r);
+    });
+    (rewards || []).forEach(function (r) {
+      if (!byId[r.student_id] || !r.reward_day || Date.parse(r.reward_day + 'T00:00:00') < start) return;
+      byId[r.student_id].xp += Number(r.xp) || 0;
     });
     var ranked = Object.keys(byId).map(function (id) { return byId[id]; })
       .filter(function (s) { return s.xp > 0; })
