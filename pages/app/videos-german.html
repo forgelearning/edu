@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Choose a Forge subject to watch selected topic explanation videos.">
-  <title>Forge — Videos</title>
+  <meta name="description" content="Find Forge's selected German explanation videos.">
+  <title>Forge — German videos</title>
   <link rel="stylesheet" href="css/fonts.css">
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/base.css">
@@ -29,11 +29,11 @@
     {key:'crucible',href:'crucible.html',label:'Timed practice'}
   ],footerItems:[{key:'profile',href:'profile.html',label:'Profile'}]});</script>
   <main class="wrap videos-page" id="main-content">
-    <header class="settings-hero"><h1>Videos</h1><p>Choose a subject to find topic explanations. Videos open on YouTube.</p></header>
+    <header class="settings-hero"><h1>Videos</h1><p>Edexcel A-level German: cases, word order and the complex structures that come up in translation, plus background to reunification. Videos open on YouTube.</p></header>
     <div class="videos-picker">
       <label for="video-subject">Subject</label>
       <select id="video-subject" name="subject">
-        <option value="" disabled selected>Choose a subject</option>
+        <option value="" disabled>Choose a subject</option>
         <optgroup label="A Level">
           <option value="videos-biology.html">Biology (38 videos)</option>
           <option value="videos-business.html">Business (22 videos)</option>
@@ -44,7 +44,7 @@
           <option value="videos-english-literature.html">English Literature (18 videos)</option>
           <option value="videos-french.html">French (14 videos)</option>
           <option value="videos-geography.html">Geography (20 videos)</option>
-          <option value="videos-german.html">German (11 videos)</option>
+          <option value="videos-german.html" selected>German (11 videos)</option>
           <option value="videos-health-social-care.html">Health and Social Care (11 videos)</option>
           <option value="videos-history.html">History (41 videos)</option>
           <option value="videos-law.html">Law (15 videos)</option>
@@ -75,6 +75,40 @@
         </optgroup>
       </select>
     </div>
+    <section class="videos-subject" aria-labelledby="german-videos-title">
+      <div class="videos-subject-heading"><h2 id="german-videos-title">German</h2><p>Edexcel 9GN0 · Easy German, YourGermanTeacher and others</p></div>
+      <div class="videos-group">
+        <h3>Cases and adjective endings</h3>
+        <ul class="videos-list">
+          <li><a href="https://www.youtube.com/watch?v=_F_zkRPRX6A" target="_blank" rel="noopener noreferrer"><span><strong>All the German cases</strong><small>Grammar · Easy German</small></span><span class="videos-open">Open video</span></a></li>
+          <li><a href="https://www.youtube.com/watch?v=-XjraxIEzrk" target="_blank" rel="noopener noreferrer"><span><strong>Accusative or dative?</strong><small>Grammar · YourGermanTeacher</small></span><span class="videos-open">Open video</span></a></li>
+          <li><a href="https://www.youtube.com/watch?v=SXKD5bQl-zQ" target="_blank" rel="noopener noreferrer"><span><strong>Adjective endings: the complete system</strong><small>Grammar · YourGermanTeacher</small></span><span class="videos-open">Open video</span></a></li>
+        </ul>
+      </div>
+      <div class="videos-group">
+        <h3>Word order</h3>
+        <ul class="videos-list">
+          <li><a href="https://www.youtube.com/watch?v=m36urPvYD0A" target="_blank" rel="noopener noreferrer"><span><strong>German word order</strong><small>Grammar · YourGermanTeacher</small></span><span class="videos-open">Open video</span></a></li>
+          <li><a href="https://www.youtube.com/watch?v=om-K1Z2U89w" target="_blank" rel="noopener noreferrer"><span><strong>Subordinating conjunctions</strong><small>Grammar · Bausteine eins</small></span><span class="videos-open">Open video</span></a></li>
+          <li><a href="https://www.youtube.com/watch?v=shP_fHFCHIo" target="_blank" rel="noopener noreferrer"><span><strong>Relative clauses</strong><small>Grammar · Bausteine eins</small></span><span class="videos-open">Open video</span></a></li>
+        </ul>
+      </div>
+      <div class="videos-group">
+        <h3>Complex structures</h3>
+        <ul class="videos-list">
+          <li><a href="https://www.youtube.com/watch?v=QBBlMrj0lTw" target="_blank" rel="noopener noreferrer"><span><strong>Modal verbs</strong><small>Grammar · Easy German</small></span><span class="videos-open">Open video</span></a></li>
+          <li><a href="https://www.youtube.com/watch?v=5DcelIoemzA" target="_blank" rel="noopener noreferrer"><span><strong>The passive</strong><small>Grammar · Easy German</small></span><span class="videos-open">Open video</span></a></li>
+          <li><a href="https://www.youtube.com/watch?v=uMlagwZP9dw" target="_blank" rel="noopener noreferrer"><span><strong>Konjunktiv II</strong><small>Grammar · Easy German</small></span><span class="videos-open">Open video</span></a></li>
+        </ul>
+      </div>
+      <div class="videos-group">
+        <h3>Background to reunification</h3>
+        <ul class="videos-list">
+          <li><a href="https://www.youtube.com/watch?v=A9fQPzZ1-hg" target="_blank" rel="noopener noreferrer"><span><strong>The rise and fall of the Berlin Wall</strong><small>Theme 4 · TED-Ed</small></span><span class="videos-open">Open video</span></a></li>
+          <li><a href="https://www.youtube.com/watch?v=A6UXMUbsiT8" target="_blank" rel="noopener noreferrer"><span><strong>Who opposed German reunification?</strong><small>Theme 4 · History Matters</small></span><span class="videos-open">Open video</span></a></li>
+        </ul>
+      </div>
+    </section>
   </main>
   <script src="scripts/videos.js"></script>
   <script src="scripts/forge-page-actions.js"></script>

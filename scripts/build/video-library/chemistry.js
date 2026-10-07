@@ -1,0 +1,71 @@
+module.exports = {
+  slug: 'chemistry',
+  name: 'Chemistry',
+  level: 'A Level',
+  intro: 'AQA A-level Chemistry explanations, grouped by topic. Videos open on YouTube.',
+  heading: 'AQA A-level · Eliot Rintoul',
+  groups: [
+    { title: 'Atomic structure and amount of substance', videos: [
+      { id: 'oH0tpyrIcSY', title: 'Atomic structure and electron configuration', tag: '3.1.1 · Eliot Rintoul' },
+      { id: 'PNZV862SN6Q', title: 'Ionisation energies explained', tag: '3.1.1 · Eliot Rintoul' },
+      { id: 'WoNzJUu3gKA', title: 'TOF mass spectrometry explained', tag: '3.1.1 · Eliot Rintoul' },
+      { id: 'UQV9tLkQI3k', title: 'Moles, concentrations and masses', tag: '3.1.2 · Eliot Rintoul' },
+      { id: 'Wwu1o5lAMcQ', title: 'The ideal gas equation', tag: '3.1.2 · Eliot Rintoul' },
+    ] },
+    { title: 'Bonding', videos: [
+      { id: 'EBcaw8SA5kw', title: 'Ionic, covalent and metallic bonding', tag: '3.1.3 · Eliot Rintoul' },
+      { id: 'Tz4gzoqxvCQ', title: 'Shapes of molecules', tag: '3.1.3 · Eliot Rintoul' },
+      { id: '6EePsoVMO_4', title: 'Intermolecular forces explained', tag: '3.1.3 · Eliot Rintoul' },
+    ] },
+    { title: 'Energetics and thermodynamics', videos: [
+      { id: 'Ks1CtqsafSg', title: 'Enthalpy and bond energies explained', tag: '3.1.4 · Eliot Rintoul' },
+      { id: 'pQAND6QlLNQ', title: 'Hess’s law', tag: '3.1.4 · Eliot Rintoul' },
+      { id: 'IM2JubP3agE', title: 'Born–Haber cycles', tag: '3.1.8 · Eliot Rintoul' },
+      { id: '2ruYJvDVISE', title: 'Entropy and Gibbs free energy', tag: '3.1.8 · Eliot Rintoul' },
+    ] },
+    { title: 'Rates and equilibria', videos: [
+      { id: 'jctsM6ISVDA', title: 'Kinetics and rates of reaction', tag: '3.1.5 · Eliot Rintoul' },
+      { id: 'vRxPMSGS1sI', title: 'Equilibria and Le Chatelier’s principle', tag: '3.1.6 · Eliot Rintoul' },
+      { id: 'kkKVY2vl3XM', title: 'The equilibrium constant, Kc', tag: '3.1.6 · Eliot Rintoul' },
+      { id: 'xDLYCsqZZoE', title: 'Rate equations', tag: '3.1.9 · Eliot Rintoul' },
+    ] },
+    { title: 'Redox and electrochemistry', videos: [
+      { id: 'imjB1D2Jgic', title: 'Redox and oxidation states', tag: '3.1.7 · Eliot Rintoul' },
+      { id: 'n61P_AaWuwk', title: 'Electrode potentials', tag: '3.1.11 · Eliot Rintoul' },
+      { id: 'OEIvnqBruvc', title: 'The electrochemical series', tag: '3.1.11 · Eliot Rintoul' },
+    ] },
+    { title: 'Acids and bases', videos: [
+      { id: 'iW3LwM_RBXY', title: 'Acids, bases and pH', tag: '3.1.12 · Eliot Rintoul' },
+      { id: 'fNGQ7E6mXQ8', title: 'Kw and bases', tag: '3.1.12 · Eliot Rintoul' },
+      { id: '37bTWrKy4Ds', title: 'Buffer solutions', tag: '3.1.12 · Eliot Rintoul' },
+    ] },
+    { title: 'Inorganic chemistry', videos: [
+      { id: 'VOcY9zGsSFs', title: 'Periodicity', tag: '3.2.1 · Eliot Rintoul' },
+      { id: 'pUwoRy_iHlw', title: 'Group 2, the alkaline earth metals', tag: '3.2.2 · Eliot Rintoul' },
+      { id: 'XqAZgH6APcM', title: 'Group 7, the halogens', tag: '3.2.3 · Eliot Rintoul' },
+      { id: 'tZSdBZ3bhy8', title: 'Catalysis by transition metals', tag: '3.2.5 · Eliot Rintoul' },
+      { id: 'wateu4swMuA', title: 'Reactions of ions in aqueous solution', tag: '3.2.6 · Eliot Rintoul' },
+    ] },
+    { title: 'Organic chemistry: core reactions', videos: [
+      { id: '6mEO-3ogOA0', title: 'Naming organic compounds', tag: '3.3.1 · Eliot Rintoul' },
+      { id: 'NXZ1--ihc1c', title: 'Free-radical substitution', tag: '3.3.2 · Eliot Rintoul' },
+      { id: '9mlBux7-sJM', title: 'Nucleophilic substitution', tag: '3.3.3 · Eliot Rintoul' },
+      { id: 'SD7Ci-xnsZ4', title: 'Elimination', tag: '3.3.3 · Eliot Rintoul' },
+      { id: '3QGSShSKYeQ', title: 'Alkenes and E–Z isomerism', tag: '3.3.4 · Eliot Rintoul' },
+      { id: 'iWnBE0OiZ1s', title: 'Electrophilic addition', tag: '3.3.4 · Eliot Rintoul' },
+      { id: 'MX2IWFBO5fM', title: 'Alcohols', tag: '3.3.5 · Eliot Rintoul' },
+    ] },
+    { title: 'Organic chemistry: further topics', videos: [
+      { id: 'KBFJytBk0io', title: 'Optical isomerism', tag: '3.3.7 · Eliot Rintoul' },
+      { id: 'SfNihK9QbpU', title: 'Aldehydes, ketones and nucleophilic addition', tag: '3.3.8 · Eliot Rintoul' },
+      { id: 'X_pqKiHKL-w', title: 'The structure of benzene', tag: '3.3.10 · Eliot Rintoul' },
+      { id: 'JGrS8nood8U', title: 'Amines', tag: '3.3.11 · Eliot Rintoul' },
+      { id: 'ge6lUsbSux0', title: 'Polymers', tag: '3.3.12 · Eliot Rintoul' },
+    ] },
+    { title: 'Analysis and spectroscopy', videos: [
+      { id: '4G_RU51t_UM', title: 'Organic analysis', tag: '3.3.6 · Eliot Rintoul' },
+      { id: 'r4u3Vi2Af1c', title: 'Carbon-13 NMR', tag: '3.3.15 · Eliot Rintoul' },
+      { id: 'ZeTbWAqtLos', title: 'Proton NMR', tag: '3.3.15 · Eliot Rintoul' },
+    ] },
+  ],
+};

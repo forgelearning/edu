@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Choose a Forge subject to watch selected topic explanation videos.">
-  <title>Forge — Videos</title>
+  <meta name="description" content="Find Forge's selected Health and Social Care explanation videos.">
+  <title>Forge — Health and Social Care videos</title>
   <link rel="stylesheet" href="css/fonts.css">
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/base.css">
@@ -29,11 +29,11 @@
     {key:'crucible',href:'crucible.html',label:'Timed practice'}
   ],footerItems:[{key:'profile',href:'profile.html',label:'Profile'}]});</script>
   <main class="wrap videos-page" id="main-content">
-    <header class="settings-hero"><h1>Videos</h1><p>Choose a subject to find topic explanations. Videos open on YouTube.</p></header>
+    <header class="settings-hero"><h1>Videos</h1><p>Health and Social Care explanations for lifespan development, care values, communication and safeguarding. Most were made for BTEC, which covers the same content. Videos open on YouTube.</p></header>
     <div class="videos-picker">
       <label for="video-subject">Subject</label>
       <select id="video-subject" name="subject">
-        <option value="" disabled selected>Choose a subject</option>
+        <option value="" disabled>Choose a subject</option>
         <optgroup label="A Level">
           <option value="videos-biology.html">Biology (38 videos)</option>
           <option value="videos-business.html">Business (22 videos)</option>
@@ -45,7 +45,7 @@
           <option value="videos-french.html">French (14 videos)</option>
           <option value="videos-geography.html">Geography (20 videos)</option>
           <option value="videos-german.html">German (11 videos)</option>
-          <option value="videos-health-social-care.html">Health and Social Care (11 videos)</option>
+          <option value="videos-health-social-care.html" selected>Health and Social Care (11 videos)</option>
           <option value="videos-history.html">History (41 videos)</option>
           <option value="videos-law.html">Law (15 videos)</option>
           <option value="videos-maths.html">Mathematics (35 videos)</option>
@@ -75,6 +75,30 @@
         </optgroup>
       </select>
     </div>
+    <section class="videos-subject" aria-labelledby="health-social-care-videos-title">
+      <div class="videos-subject-heading"><h2 id="health-social-care-videos-title">Health and Social Care</h2><p>OCR H125 · Alan’s lessons, tutor2u and others</p></div>
+      <div class="videos-group">
+        <h3>Human lifespan development</h3>
+        <ul class="videos-list">
+          <li><a href="https://www.youtube.com/watch?v=fxrTCveqPYE" target="_blank" rel="noopener noreferrer"><span><strong>Life stages and PIES</strong><small>Lifespan development · Alan’s lessons (BTEC)</small></span><span class="videos-open">Open video</span></a></li>
+          <li><a href="https://www.youtube.com/watch?v=cwEJybH5CZk" target="_blank" rel="noopener noreferrer"><span><strong>PIES growth and development across the life stages</strong><small>Lifespan development · tutor2u (BTEC)</small></span><span class="videos-open">Open video</span></a></li>
+          <li><a href="https://www.youtube.com/watch?v=mqno2JTTNUM" target="_blank" rel="noopener noreferrer"><span><strong>Nature versus nurture and genetic factors</strong><small>Lifespan development · Alan’s lessons (BTEC)</small></span><span class="videos-open">Open video</span></a></li>
+          <li><a href="https://www.youtube.com/watch?v=ZMoykY_WDY0" target="_blank" rel="noopener noreferrer"><span><strong>Genetic, environmental and social factors</strong><small>Lifespan development · Alan’s lessons (BTEC)</small></span><span class="videos-open">Open video</span></a></li>
+          <li><a href="https://www.youtube.com/watch?v=COJAWmJrWOc" target="_blank" rel="noopener noreferrer"><span><strong>Major life events</strong><small>Lifespan development · Alan’s lessons (BTEC)</small></span><span class="videos-open">Open video</span></a></li>
+        </ul>
+      </div>
+      <div class="videos-group">
+        <h3>Care values, communication and safeguarding</h3>
+        <ul class="videos-list">
+          <li><a href="https://www.youtube.com/watch?v=Ptg5YCupLZc" target="_blank" rel="noopener noreferrer"><span><strong>Person-centred values</strong><small>Care values · JustLearnIt (OCR GCSE)</small></span><span class="videos-open">Open video</span></a></li>
+          <li><a href="https://www.youtube.com/watch?v=h20SIhv2Fdw" target="_blank" rel="noopener noreferrer"><span><strong>The person-centred approach</strong><small>Care values · tutor2u (BTEC)</small></span><span class="videos-open">Open video</span></a></li>
+          <li><a href="https://www.youtube.com/watch?v=2Sv0NntfJkw" target="_blank" rel="noopener noreferrer"><span><strong>Health and social care workers and their roles</strong><small>Care values · tutor2u (BTEC)</small></span><span class="videos-open">Open video</span></a></li>
+          <li><a href="https://www.youtube.com/watch?v=Hx29dL6s_NI" target="_blank" rel="noopener noreferrer"><span><strong>Argyle’s communication cycle</strong><small>Communication · Inspire London College</small></span><span class="videos-open">Open video</span></a></li>
+          <li><a href="https://www.youtube.com/watch?v=K1B06RBRmT8" target="_blank" rel="noopener noreferrer"><span><strong>Communication in health and social care</strong><small>Communication · SLN Connect</small></span><span class="videos-open">Open video</span></a></li>
+          <li><a href="https://www.youtube.com/watch?v=oWTxt16L75s" target="_blank" rel="noopener noreferrer"><span><strong>Safeguarding adults and children</strong><small>Safeguarding · Leeds and York PFT</small></span><span class="videos-open">Open video</span></a></li>
+        </ul>
+      </div>
+    </section>
   </main>
   <script src="scripts/videos.js"></script>
   <script src="scripts/forge-page-actions.js"></script>
