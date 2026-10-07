@@ -15,7 +15,10 @@
 <body>
   <script src="scripts/forge-api.js"></script>
   <script src="scripts/forge-role.js"></script>
-  <script src="scripts/forge-theme.js?v=20260808-theme2"></script>
+  <script src="scripts/forge-classes.js"></script>
+  <script src="scripts/forge-student-code.js"></script>
+  <script src="scripts/forge-rewards.js"></script>
+<script src="scripts/forge-theme.js?v=20260808-theme2"></script>
   <script src="scripts/forge-logo.js"></script>
   <script src="scripts/forge-sidebar.js?v=20260809-gearcenter"></script>
   <script src="scripts/forge-page-actions.js"></script>
@@ -53,11 +56,22 @@
       </div>
     </section>
     <section class="settings-section" aria-labelledby="accent-title">
-      <div class="settings-section-heading"><div><h2 id="accent-title">Accent colour</h2><p class="settings-copy settings-accent-intro">Choose the colour used for actions and highlights. Your light or dark setting stays the same.</p></div></div>
+      <div class="settings-section-heading"><div><h2 id="accent-title">Earn your look</h2><p class="settings-copy settings-accent-intro">Ember, Ocean and Violet are yours from the start. Earn XP to unlock more colours and backgrounds.</p></div></div>
+      <p class="settings-rewards-progress" id="settings-rewards-progress" role="status"></p>
+      <h3 class="settings-rewards-subtitle">Accent colour</h3>
       <div class="settings-options settings-accent-options" role="radiogroup" aria-label="Accent colour">
         <label class="settings-option settings-accent-option"><input type="radio" name="accent" value="ember"><span class="settings-accent-swatch settings-accent-swatch--ember" aria-hidden="true"></span><span><strong>Ember</strong></span></label>
-        <label class="settings-option settings-accent-option"><input type="radio" name="accent" value="ocean"><span class="settings-accent-swatch settings-accent-swatch--ocean" aria-hidden="true"></span><span><strong>Ocean</strong></span></label>
-        <label class="settings-option settings-accent-option"><input type="radio" name="accent" value="violet"><span class="settings-accent-swatch settings-accent-swatch--violet" aria-hidden="true"></span><span><strong>Violet</strong></span></label>
+        <label class="settings-option settings-accent-option"><input type="radio" name="accent" value="ocean"><span class="settings-accent-swatch settings-accent-swatch--ocean" aria-hidden="true"></span><span><strong>Ocean</strong><small>Available now</small></span></label>
+        <label class="settings-option settings-accent-option"><input type="radio" name="accent" value="violet"><span class="settings-accent-swatch settings-accent-swatch--violet" aria-hidden="true"></span><span><strong>Violet</strong><small>Available now</small></span></label>
+        <label class="settings-option settings-accent-option"><input type="radio" name="accent" value="meadow"><span class="settings-accent-swatch settings-accent-swatch--meadow" aria-hidden="true"></span><span><strong>Meadow</strong><small>300 XP</small></span></label>
+        <label class="settings-option settings-accent-option"><input type="radio" name="accent" value="coral"><span class="settings-accent-swatch settings-accent-swatch--coral" aria-hidden="true"></span><span><strong>Coral</strong><small>1,500 XP</small></span></label>
+        <label class="settings-option settings-accent-option"><input type="radio" name="accent" value="gold"><span class="settings-accent-swatch settings-accent-swatch--gold" aria-hidden="true"></span><span><strong>Gold</strong><small>3,000 XP</small></span></label>
+      </div>
+      <h3 class="settings-rewards-subtitle">Background</h3>
+      <div class="settings-options settings-background-options" role="radiogroup" aria-label="Background">
+        <label class="settings-option settings-background-option"><input type="radio" name="background" value="plain"><span class="settings-background-preview settings-background-preview--plain" aria-hidden="true"><i></i><b></b><em></em></span><span><strong>Classic</strong><small>Always available</small></span></label>
+        <label class="settings-option settings-background-option"><input type="radio" name="background" value="folio"><span class="settings-background-preview settings-background-preview--folio" aria-hidden="true"><i></i><b></b><em></em></span><span><strong>Folio</strong><small>500 XP · warm paper tint</small></span></label>
+        <label class="settings-option settings-background-option"><input type="radio" name="background" value="nightfall"><span class="settings-background-preview settings-background-preview--nightfall" aria-hidden="true"><i></i><b></b><em></em></span><span><strong>Nightfall</strong><small>5,000 XP · deeper contrast</small></span></label>
       </div>
     </section>
     <section class="settings-section" aria-labelledby="account-title">
@@ -68,6 +82,47 @@
   </main>
   <script>
     (function () {
+      var savedStudent=null;
+      try{savedStudent=JSON.parse(localStorage.getItem('forge-student')||'null')||JSON.parse(localStorage.getItem('forge-paid-student')||'null')||JSON.parse(localStorage.getItem('forge-free-session')||'null');}catch(e){}
+      var studentId=savedStudent&&savedStudent.studentId;
+      function updateRewards(){
+        var xp=window.ForgeRewards?ForgeRewards.total(studentId):0;
+        var next=[300,500,1500,3000,5000].find(function(value){return value>xp;});
+        document.getElementById('settings-rewards-progress').textContent=xp.toLocaleString()+' XP earned'+(next?' · '+(next-xp).toLocaleString()+' XP to your next unlock':' · all looks unlocked');
+        document.querySelectorAll('input[name="accent"],input[name="background"]').forEach(function(radio){
+          var unlocked=!window.ForgeRewards||ForgeRewards.unlocked(studentId,radio.value);
+          radio.disabled=!unlocked;
+          radio.closest('label').classList.toggle('is-locked',!unlocked);
+          if(!unlocked&&radio.checked){radio.checked=false;document.querySelector('input[name="'+radio.name+'"][value="'+(radio.name==='accent'?'ember':'plain')+'"]').checked=true;}
+        });
+      }
+      updateRewards();
+      function rememberResponses(rows){
+        if(!Array.isArray(rows)||!window.ForgeRewards)return;
+        window.ForgeRewardStudentId=studentId;
+        ForgeRewards.rememberQuizXp(studentId,ForgeRewards.quizXpFromResponses(rows));
+        updateRewards();
+        if(window.refreshForgeAppearance)refreshForgeAppearance();
+      }
+      if(window.ForgeAuth&&ForgeAuth.hasSession()){
+        ForgeAuth.getSession().then(function(){
+          var user=ForgeAuth.currentUser(),token=ForgeAuth.accessToken();
+          if(user&&token)ForgeClasses.fetchAuthResponses(token,user.id,function(rows,error,ids){
+            if(error)return;
+            if(ids&&ids.length){
+              var withHistory={};
+              (rows||[]).forEach(function(row){if(row.student_id)withHistory[row.student_id]=true;});
+              studentId=ids.find(function(id){return withHistory[id];})||studentId||ids[0];
+              try{localStorage.setItem('forge-paid-student',JSON.stringify({studentId:studentId,name:(savedStudent&&savedStudent.name)||''}));}catch(e){}
+            }
+            rememberResponses(rows);
+          });
+        }).catch(function(){});
+      }else if(savedStudent&&savedStudent.classCode&&savedStudent.studentId){
+        ForgeClasses.fetchLinkedResponses(ForgeAPI.config.url,ForgeAPI.config.key,savedStudent,rememberResponses);
+      }else if(savedStudent&&savedStudent.freeToken){
+        ForgeClasses.fetchFreeResponses(ForgeAPI.config.url,ForgeAPI.config.key,savedStudent,rememberResponses);
+      }
       var selected = localStorage.getItem('forge-theme') || 'system';
       document.querySelectorAll('input[name="theme"]').forEach(function (radio) {
         radio.checked = radio.value === selected;
@@ -80,12 +135,22 @@
         });
       });
       var accent = localStorage.getItem('forge-accent') || 'ember';
-      if (!/^(ember|ocean|violet)$/.test(accent)) accent = 'ember';
+      if (!/^(ember|ocean|violet|meadow|coral|gold)$/.test(accent) || (window.ForgeRewards && !ForgeRewards.unlocked(studentId,accent))) accent = 'ember';
       document.querySelectorAll('input[name="accent"]').forEach(function (radio) {
+        var unlocked=!window.ForgeRewards||ForgeRewards.unlocked(studentId,radio.value);
+        radio.disabled=!unlocked;
+        if(!unlocked)radio.closest('label').classList.add('is-locked');
         radio.checked = radio.value === accent;
         radio.addEventListener('change', function () {
           if (this.checked && window.setForgeAccent) window.setForgeAccent(this.value);
         });
+      });
+      document.querySelectorAll('input[name="background"]').forEach(function(radio){
+        var unlocked=!window.ForgeRewards||ForgeRewards.unlocked(studentId,radio.value);
+        radio.disabled=!unlocked;
+        if(!unlocked)radio.closest('label').classList.add('is-locked');
+        radio.checked=radio.value===((window.ForgeRewards && !ForgeRewards.unlocked(studentId,localStorage.getItem('forge-background')||'plain'))?'plain':(localStorage.getItem('forge-background')||'plain'));
+        radio.addEventListener('change',function(){if(this.checked&&window.setForgeBackground)window.setForgeBackground(this.value);});
       });
       document.getElementById('settings-sign-out').addEventListener('click', studentSettingsSignOut);
     }());

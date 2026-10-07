@@ -104,6 +104,18 @@ html[data-accent-scope="student"][data-accent="violet"]{
   --surface-focus-subtle:rgba(214,194,255,.09);
   --surface-action-subtle:rgba(182,155,240,.09);
 }
+html[data-accent-scope="student"][data-accent="meadow"]{
+  --ember:#78D8A8;--ember-action:#1E7D58;--hot:#A4EBC5;
+  --surface-focus-subtle:rgba(164,235,197,.09);--surface-action-subtle:rgba(120,216,168,.09);
+}
+html[data-accent-scope="student"][data-accent="coral"]{
+  --ember:#F28D7C;--ember-action:#B44E45;--hot:#FFB5A6;
+  --surface-focus-subtle:rgba(255,181,166,.09);--surface-action-subtle:rgba(242,141,124,.09);
+}
+html[data-accent-scope="student"][data-accent="gold"]{
+  --ember:#E5BC62;--ember-action:#916A13;--hot:#F9DA92;
+  --surface-focus-subtle:rgba(249,218,146,.09);--surface-action-subtle:rgba(229,188,98,.09);
+}
 html[data-accent-scope="student"][data-theme="light"][data-accent="ocean"]{
   --ember:#08648F;
   --ember-action:#075B84;
@@ -118,3 +130,19 @@ html[data-accent-scope="student"][data-theme="light"][data-accent="violet"]{
   --surface-focus-subtle:rgba(101,64,156,.08);
   --surface-action-subtle:rgba(101,64,156,.07);
 }
+html[data-accent-scope="student"][data-theme="light"][data-accent="meadow"]{
+  --ember:#13754D;--ember-action:#126B47;--hot:#0D6542;
+  --surface-focus-subtle:rgba(19,117,77,.08);--surface-action-subtle:rgba(19,117,77,.07);
+}
+html[data-accent-scope="student"][data-theme="light"][data-accent="coral"]{
+  --ember:#A7433F;--ember-action:#943A36;--hot:#943A36;
+  --surface-focus-subtle:rgba(167,67,63,.08);--surface-action-subtle:rgba(167,67,63,.07);
+}
+html[data-accent-scope="student"][data-theme="light"][data-accent="gold"]{
+  --ember:#7A5B0F;--ember-action:#715209;--hot:#715209;
+  --surface-focus-subtle:rgba(122,91,15,.08);--surface-action-subtle:rgba(122,91,15,.07);
+}
+html[data-accent-scope="student"][data-background="folio"]{--coal:#231d18;--panel:#302922;--panel-2:#393027;--glass-panel:rgba(48,41,34,.7)}
+html[data-accent-scope="student"][data-theme="light"][data-background="folio"]{--coal:#f4ebdb;--panel:#fff8eb;--panel-2:#eee2cd;--glass-panel:rgba(255,248,235,.8)}
+html[data-accent-scope="student"][data-background="nightfall"]{--coal:#0b101b;--panel:#141c2a;--panel-2:#1d2738;--glass-panel:rgba(20,28,42,.75)}
+html[data-accent-scope="student"][data-theme="light"][data-background="nightfall"]{--coal:#e5edf7;--panel:#f4f8fe;--panel-2:#dbe6f4;--glass-panel:rgba(244,248,254,.8)}

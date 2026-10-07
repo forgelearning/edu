@@ -35,6 +35,7 @@
 <script src="scripts/forge-study-mode.js"></script>
 <script src="scripts/forge-auth-card.js"></script>
 <script src="scripts/forge-classes.js?v=20260813"></script>
+<script src="scripts/forge-rewards.js"></script>
 <script src="scripts/forge-theme.js?v=20260808-theme2"></script>
 <script src="scripts/forge-sidebar.js?v=20260809-gearcenter"></script>
 <script src="scripts/forge-page-actions.js"></script>
@@ -277,7 +278,9 @@ function renderDashboard(){
   var responses=st.responses||[];
   var total=responses.filter(function(r){return !r.reforge_attempted;}).length;
   var recent=responses.filter(function(r){return !r.reforge_attempted;}).slice(-20);
-  var xp=calcXP(responses);
+  var quizXp=calcXP(responses);
+  if(window.ForgeRewards)ForgeRewards.rememberQuizXp(st.studentId,quizXp);
+  var xp=quizXp+(window.ForgeRewards?ForgeRewards.read(st.studentId).matchXp:0);
   var rank=getRank(xp);
   var streak=calcStreak(responses);
   var subject=window.ForgeStudentFocus&&ForgeStudentFocus.subject(st,responses);

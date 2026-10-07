@@ -10,6 +10,11 @@ body.forge-auth-ember{
   --forge-auth-hot:#ffc93c;
   background:var(--forge-auth-canvas);color:var(--forge-auth-ink)
 }
+html[data-accent-scope="student"][data-background] body.forge-auth-ember{
+  --forge-auth-canvas:var(--coal);
+  --forge-auth-surface:var(--panel);
+  --forge-auth-surface-soft:var(--panel-2);
+}
 body.forge-auth-ember .auth-stage{padding:34px 0 54px}
 body.forge-auth-ember .auth-stage::before,
 body.forge-auth-ember .auth-stage::after,

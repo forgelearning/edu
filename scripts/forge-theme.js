@@ -7,24 +7,47 @@
     try { return localStorage.getItem('forge-theme'); } catch (e) { return null; }
   }
 
-  var accents = { ember: true, ocean: true, violet: true };
+  var accents = { ember: true, ocean: true, violet: true, meadow: true, coral: true, gold: true };
+  var backgrounds = {plain:true,folio:true,nightfall:true};
+  function studentId(){
+    if(window.ForgeRewardStudentId)return window.ForgeRewardStudentId;
+    try{
+      var value=JSON.parse(localStorage.getItem('forge-student')||'null')||JSON.parse(localStorage.getItem('forge-paid-student')||'null')||JSON.parse(localStorage.getItem('forge-free-session')||'null');
+      return value&&value.studentId;
+    }catch(e){return null;}
+  }
+  function canUse(choice){return !window.ForgeRewards||window.ForgeRewards.unlocked(studentId(),choice);}
   function storedAccent() {
     try { return localStorage.getItem('forge-accent'); } catch (e) { return null; }
   }
   function renderAccent(accent) {
     if (!root.hasAttribute('data-accent-scope')) return;
-    if (accent && accents[accent] && accent !== 'ember') root.setAttribute('data-accent', accent);
+    if (accent && accents[accent] && canUse(accent) && accent !== 'ember') root.setAttribute('data-accent', accent);
     else root.removeAttribute('data-accent');
   }
 
   window.setForgeAccent = function (accent) {
-    if (!accents[accent]) return false;
+    if (!accents[accent] || !canUse(accent)) return false;
     try {
       if (accent === 'ember') localStorage.removeItem('forge-accent');
       else localStorage.setItem('forge-accent', accent);
     } catch (e) {}
     renderAccent(accent);
     return true;
+  };
+  window.setForgeBackground = function(background){
+    if(!backgrounds[background]||!canUse(background))return false;
+    try{if(background==='plain')localStorage.removeItem('forge-background');else localStorage.setItem('forge-background',background);}catch(e){}
+    renderBackground(background);return true;
+  };
+  function renderBackground(background){
+    if(!root.hasAttribute('data-accent-scope'))return;
+    if(backgrounds[background]&&canUse(background)&&background!=='plain')root.setAttribute('data-background',background);
+    else root.removeAttribute('data-background');
+  }
+  window.refreshForgeAppearance=function(){
+    renderAccent(storedAccent());
+    try{renderBackground(localStorage.getItem('forge-background'));}catch(e){}
   };
 
   function renderTheme(light) {
@@ -61,7 +84,7 @@
 
   var saved = storedTheme();
   renderTheme(saved === 'light' || (saved !== 'dark' && systemIsLight()));
-  renderAccent(storedAccent());
+  window.refreshForgeAppearance();
 
   if (media) {
     var onSystemChange = function () {

@@ -25,6 +25,7 @@
 <script src="scripts/forge-content-status.js?v=20260812"></script>
 <script src="scripts/forge-app.js"></script>
 <script src="scripts/forge-question.js?v=20261003-hints"></script>
+<script src="scripts/forge-rewards.js"></script>
 <script src="scripts/forge-theme.js?v=20260808-theme2"></script>
 <script src="scripts/forge-logo.js"></script>
 <script src="scripts/forge-role.js"></script>
@@ -487,7 +488,11 @@ function forgeCompleteSession() {
 // screen sells XP and ranks as a Pro feature.
 var XP_CORRECT = 10, XP_REFORGE = 20, XP_HINTED = 5;
 function xpEnabled() { return !isFreeTier(); }
-function setXPHistory(responses) { state.baseXP = calcXPFromResponses(responses || []); }
+function setXPHistory(responses) {
+  var quizXp=calcXPFromResponses(responses || []);
+  if(typeof ForgeRewards!=='undefined')ForgeRewards.rememberQuizXp(state.studentId,quizXp);
+  state.baseXP=quizXp+(typeof ForgeRewards!=='undefined'?ForgeRewards.read(state.studentId).matchXp:0);
+}
 function awardXP(amount, host) {
   if (!xpEnabled() || !amount) return;
   state.sessionXP += amount;
