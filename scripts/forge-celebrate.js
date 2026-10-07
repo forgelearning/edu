@@ -36,7 +36,8 @@
 
   // What is new since the last visit, as a list of events. Pure, so it can be
   // tested: `seen` is the stored record (or null), the rest is the current state.
-  // opts.xp: lifetime XP, or null when ranks are not shown (free tier).
+  // opts.xp: lifetime XP, or null to leave the rank alone (the quiz passes
+  // none when it is not showing XP).
   // opts.badges: ForgeAchievements.compute() output, or null to leave alone.
   function diff(seen, opts) {
     var next = { rank: seen && seen.rank || null, badges: Object.assign({}, seen && seen.badges), badgesSeen: !!(seen && seen.badgesSeen) };

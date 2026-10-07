@@ -111,12 +111,11 @@ function getRank(xp){ return ForgeRanks.rankFor(xp); }
 
 // A new rank or badge tier since this student last saw it opens a popup
 // (scripts/forge-celebrate.js). Only on complete data: answers loaded without
-// error and match XP synced. Ranks are part of Pro, so the free tier (no
-// class, no subscription, no trial) is celebrated for badges only.
+// error and match XP synced. Ranks and badges are for every student, free
+// tier included.
 function celebrateProfile(xp,badges){
   if(!window.ForgeCelebrate||!st.studentId||st.loadError||rewardsReadyFor!==st.studentId)return;
-  var freeTier=!st.isPaid&&!st.isTrial&&!st.classId;
-  ForgeCelebrate.check({studentId:st.studentId,name:st.studentName,xp:freeTier?null:xp,badges:badges});
+  ForgeCelebrate.check({studentId:st.studentId,name:st.studentName,xp:xp,badges:badges});
 }
 
 // Classes are named "<year><letter>/<subject code>" (e.g. "12B/Bs" for a

@@ -273,15 +273,14 @@ function dashboardClassContext(){
   return {studentId:st.studentId,classId:st.classId,classCode:st.classCode,studentCode:st.studentCode,studentName:st.studentName};
 }
 
-// Same rule as the profile's celebrateProfile(): complete data only, and the
-// free tier is celebrated for badges, not ranks. Badges use the profile's
+// Same rule as the profile's celebrateProfile(): complete data only, for
+// every student. Badges use the profile's
 // subject and topic list (ForgeAchievements.subjectTopics), so the targets
 // match what the profile shows.
 function celebrateDashboard(responses,xp,resolved){
   if(!window.ForgeCelebrate||!window.ForgeAchievements||!st.studentId||st.loadError||rewardsReadyFor!==st.studentId)return;
   var badges=ForgeAchievements.compute(responses,{resolved:resolved,topicBanks:ForgeAchievements.subjectTopics(responses,typeof SUBJECTS!=='undefined'?SUBJECTS:null)});
-  var freeTier=!st.isPaid&&!st.isTrial&&!st.classId;
-  ForgeCelebrate.check({studentId:st.studentId,name:st.studentName,xp:freeTier?null:xp,badges:badges});
+  ForgeCelebrate.check({studentId:st.studentId,name:st.studentName,xp:xp,badges:badges});
 }
 
 function renderDashboard(){

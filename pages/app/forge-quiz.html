@@ -487,8 +487,9 @@ function forgeCompleteSession() {
 // The amounts mirror calcXPFromResponses (and the dashboard's calcXP): a
 // correct first answer is 10, a correct similar question after a wrong one is
 // 20. Keep them in step, or the number a student sees here will not match the
-// total on their dashboard. Free-tier students do not see XP: the upgrade
-// screen sells XP and ranks as a Pro feature.
+// total on their dashboard. Free-tier students do not see XP during a quiz:
+// pricing lists full XP tracking as part of Pro. Ranks are not Pro-only; free
+// students see theirs on Home and Profile, which also celebrate a new one.
 var XP_CORRECT = 10, XP_REFORGE = 20, XP_HINTED = 5;
 function xpEnabled() { return !isFreeTier(); }
 function setXPHistory(responses) {
@@ -1035,7 +1036,7 @@ function renderJoin() {
   h += '<details class="forge-whats-free"><summary>What’s free?</summary><div class="forge-u-eelu4s">';
   h += '<div class="forge-u-1ce89bl"><span>✓ All subjects &amp; topics</span><span class="forge-text-dim"> free</span></div>';
   h += '<div class="forge-u-1ce89bl"><span>✓ Explanations &amp; similar questions</span><span class="forge-text-dim"> free</span></div>';
-  h += '<div class="forge-u-1ce89bl"><span class="forge-text-dim">✕ Timed practice · full Repair mistakes · XP ranks</span><span class="forge-text-dim"> Pro</span></div>';
+  h += '<div class="forge-u-1ce89bl"><span class="forge-text-dim">✕ Timed practice · full Repair mistakes</span><span class="forge-text-dim"> Pro</span></div>';
   h += '<div class="forge-u-h6lji0"><span class="forge-text-dim">✕ Unlimited questions</span><span class="forge-text-dim"> Pro</span></div>';
   h += '<p class="forge-whats-free__pro">Want unlimited? <a href="forge-signup.html">Subscribe — £2.99/mo</a></p>';
   h += '</div></details>';
