@@ -24,6 +24,13 @@
 
   function clampXp(xp) { xp = Number(xp); return Number.isFinite(xp) && xp > 0 ? Math.floor(xp) : 0; }
 
+  // The league returns a rank key ('apprentice' ... 'master') rather than
+  // lifetime XP, since league classmates are not necessarily friends.
+  function byKey(key) {
+    for (var i = 0; i < RANKS.length; i++) if (RANKS[i].key === key) return RANKS[i];
+    return null;
+  }
+
   function rankFor(xp) {
     xp = clampXp(xp);
     for (var i = RANKS.length - 1; i >= 0; i--) if (xp >= RANKS[i].min) return RANKS[i];
@@ -88,7 +95,7 @@
   }
 
   root.ForgeRanks = {
-    RANKS: RANKS, rankFor: rankFor, nextRank: nextRank, progress: progress,
+    RANKS: RANKS, byKey: byKey, rankFor: rankFor, nextRank: nextRank, progress: progress,
     initials: initials, avatarHtml: avatarHtml, chipHtml: chipHtml, ladderHtml: ladderHtml
   };
 }(typeof window !== 'undefined' ? window : globalThis));

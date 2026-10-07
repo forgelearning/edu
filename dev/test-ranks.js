@@ -33,4 +33,14 @@ const ladder=R.ladderHtml('Sam',1600);
 assert.strictEqual((ladder.match(/forge-rank-ladder__step[^"]*is-locked/g)||[]).length,2,'Forged and Master still locked at 1,600 XP');
 assert.strictEqual((ladder.match(/is-current/g)||[]).length,1);
 assert(ladder.includes('3,400 XP to go'));
-console.log('Rank and frame tests passed.');
+// The league computes rank keys in SQL. Its thresholds must match RANKS, or a
+// classmate's frame in the league would disagree with the friends list.
+const migrations=fs.readdirSync('supabase/migrations').filter(f=>/^\d+_.*\.sql$/.test(f)).sort();
+const latestLeague=migrations.filter(f=>fs.readFileSync('supabase/migrations/'+f,'utf8').includes('function public.get_class_weekly_league')).pop();
+const sql=fs.readFileSync('supabase/migrations/'+latestLeague,'utf8');
+const sqlRanks=[...sql.matchAll(/when total_xp >= (\d+) then '([a-z]+)'/g)].map(m=>[m[2],Number(m[1])]);
+sqlRanks.push([(sql.match(/else '([a-z]+)' end as rank_key/)||[])[1],0]);
+assert.deepStrictEqual(sqlRanks.sort((a,b)=>a[1]-b[1]),JSON.parse(JSON.stringify(R.RANKS.map(r=>[r.key,r.min]))),'league SQL ('+latestLeague+') rank thresholds match scripts/forge-ranks.js');
+assert.strictEqual(R.byKey('forged').name,'Forged');
+assert.strictEqual(R.byKey('nonsense'),null);
+console.log('Rank and frame tests passed (including league SQL thresholds in '+latestLeague+').');

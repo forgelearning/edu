@@ -310,3 +310,23 @@ the owner, 40 new answers were accepted, the 41st was refused, and a repair
 answer remained available. The migration version, functions, policies, quota
 body, and authenticated-only grants were then checked live. The deployed
 student dashboard URL was added to the Auth redirect allow list.
+
+## 20261007 195804 — league ranks
+
+| File | What it does |
+|---|---|
+| `20261007195804_league_ranks.sql` | Adds `rank` (`apprentice` … `master`) to every row of `get_class_weekly_league` and to `you`, computed from lifetime XP with the same formula `get_class_friends` uses for `xp_total`. Thresholds match `scripts/forge-ranks.js`; `dev/test-ranks.js` checks they stay in step. |
+
+League classmates are not necessarily friends, and only accepted friends share
+lifetime XP, so the function returns the rank band only — never the lifetime
+total.
+
+Not coupled: the field is additive, so the old client ignores it and the new
+client shows no frame for a row without one.
+
+**Applied to production 2026-10-07.** Checked first in a rolled-back
+transaction with a throwaway coded student (350 XP this week plus 1,200 from
+two months ago): the league showed 350 XP and rank `craftsman`, every row
+carried a rank, and no lifetime total appeared in the response. Afterwards
+the live body matches this file and `anon`/`authenticated` EXECUTE is
+unchanged.

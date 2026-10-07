@@ -148,6 +148,15 @@ const server = http.createServer((req, res) => {
         friend(3, 'Priya S.', 95, 2100, 71, 5), friend(4, 'Leo M.', 60, 650, 64, 2), friend(5, 'Sam R.', 20, 90, 58, 0)
       ]});
     }
+    // A weekly league whose rows carry rank keys, as get_class_weekly_league
+    // returns them since 20261007195804_league_ranks.sql.
+    if (url.pathname === '/mock-supabase/rest/v1/rpc/get_class_weekly_league') {
+      const row = (seq, position, name, xp, rank, isYou) => ({seq, position, name, xp, rank, is_you: !!isYou});
+      return json(res, 200, {enabled:true, ranked:9, you:{position:4, xp:180, rank:'craftsman'}, rows:[
+        row(1, 1, 'Amira K.', 340, 'master'), row(2, 2, 'Josh T.', 210, 'forged'), row(3, 3, 'Priya S.', 195, 'craftsman'),
+        row(4, 4, 'Motion T.', 180, 'craftsman', true), row(5, 5, 'Leo M.', 60, 'journeyman'), row(6, 6, 'Sam R.', 20, 'apprentice')
+      ]});
+    }
     if (url.pathname === '/mock-supabase/rest/v1/rpc/get_student_match_xp') {
       return json(res, 200, {xp_total:demoStartingMatchXp+[...demoMatchRewards.values()].reduce((xp, reward) => xp + reward.xp, 0)});
     }

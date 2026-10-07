@@ -82,8 +82,12 @@
     rows.forEach(function (r) {
       if (r.seq > lastSeq + 1) h += '<li class="forge-league__gap" aria-hidden="true">…</li>';
       if (r.is_you) above = rows.filter(function (x) { return x.seq === r.seq - 1; })[0] || null;
+      // Rank comes from get_class_weekly_league as a key; rows from a server
+      // without it simply show no frame (scripts/forge-ranks.js).
+      var rank = root.ForgeRanks && root.ForgeRanks.byKey(r.rank);
       h += '<li class="forge-league__row' + (r.is_you ? ' is-you' : '') + '"><span class="forge-league__pos">' + esc(r.position) + '</span>'
-        + '<span class="forge-league__name">' + (r.is_you ? 'You' : esc(r.name)) + '</span>'
+        + '<span class="forge-league__name">' + (rank ? root.ForgeRanks.avatarHtml(r.name, 0, { size: 'sm', rank: rank }) : '')
+        + '<span>' + (r.is_you ? 'You' : esc(r.name)) + (rank ? ' ' + root.ForgeRanks.chipHtml(0, rank) : '') + '</span></span>'
         + '<span class="forge-league__xp">' + Number(r.xp || 0).toLocaleString() + ' XP</span></li>';
       lastSeq = r.seq;
     });
