@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en-GB" data-accent-scope="student">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Find Forge's selected History explanation videos.">
+  <title>Forge — History videos</title>
+  <link rel="stylesheet" href="css/fonts.css">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/sidebar.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/page-overrides/settings.css">
+  <link rel="stylesheet" href="css/page-overrides/videos.css">
+</head>
+<body>
+  <script src="scripts/forge-logo.js"></script>
+  <script src="scripts/forge-role.js"></script>
+  <script src="scripts/forge-rewards.js"></script>
+  <script src="scripts/forge-theme.js"></script>
+  <script src="scripts/forge-sidebar.js"></script>
+  <script>if(window.ForgeRole)ForgeRole.guard('student','teacher.html');
+  ForgeSidebar.mount({active:'videos',items:[
+    {key:'dashboard',href:'student-dashboard.html',label:'Dashboard'},
+    {key:'forge',href:'forge-quiz.html',label:'Forge'},
+    {key:'assignments',href:'assignments.html',label:'Assigned'},
+    {key:'anvil',href:'anvil.html',label:'Repair mistakes'},
+    {key:'crucible',href:'crucible.html',label:'Timed practice'}
+  ],footerItems:[{key:'profile',href:'profile.html',label:'Profile'}]});</script>
+  <main class="wrap videos-page" id="main-content">
+    <header class="settings-hero"><h1>Videos</h1><p>AQA A-level History explanations for Britain, the USA and Tudor investigation context. Videos open on YouTube.</p></header>
+    <div class="videos-picker">
+      <label for="video-subject">Subject</label>
+      <select id="video-subject" name="subject">
+        <option value="" disabled>Choose a subject</option>
+        <option value="videos-chemistry.html">Chemistry (18 videos)</option>
+        <option value="videos-economics.html">Economics (12 videos)</option>
+        <option value="videos-history.html" selected>History (8 videos)</option>
+      </select>
+    </div>
+    <section class="videos-subject" aria-labelledby="history-videos-title">
+      <div class="videos-subject-heading"><h2 id="history-videos-title">History</h2><p>AQA A-level topics · Britain, USA and Tudors</p></div>
+      <div class="videos-group">
+        <h3>Wars and Welfare: Britain, 1906–1957</h3>
+        <ul class="videos-list">
+          <li><a href="https://www.youtube.com/watch?v=abpbFtVB3xU" target="_blank" rel="noopener noreferrer"><span><strong>The Liberal reforms, 1906–1912</strong><small>2M.1 · Ian Murdoch-Smith</small></span><span class="videos-open">Open video</span></a></li>
+          <li><a href="https://www.youtube.com/watch?v=SvFG-rRxLkc" target="_blank" rel="noopener noreferrer"><span><strong>Britain in the 1930s</strong><small>2M.4 · Sorcha Hannigan</small></span><span class="videos-open">Open video</span></a></li>
+          <li><a href="https://www.youtube.com/watch?v=r30XDrcIqOY" target="_blank" rel="noopener noreferrer"><span><strong>Britain in 1945 and the welfare state</strong><small>2M.5 · RogersHistory</small></span><span class="videos-open">Open video</span></a></li>
+        </ul>
+      </div>
+      <div class="videos-group">
+        <h3>The making of a superpower: USA, 1865–1975</h3>
+        <ul class="videos-list">
+          <li><a href="https://www.youtube.com/watch?v=nowsS7pMApI" target="_blank" rel="noopener noreferrer"><span><strong>Reconstruction and 1876</strong><small>1K.1 · CrashCourse</small></span><span class="videos-open">Open video</span></a></li>
+          <li><a href="https://www.youtube.com/watch?v=gIXpvx2eGEw" target="_blank" rel="noopener noreferrer"><span><strong>The USA by 1920</strong><small>1K.2 · The Learning Academy Education</small></span><span class="videos-open">Open video</span></a></li>
+          <li><a href="https://www.youtube.com/watch?v=HpjCwWdqbRU" target="_blank" rel="noopener noreferrer"><span><strong>The USA by 1945</strong><small>1K.3 · The Learning Academy Education</small></span><span class="videos-open">Open video</span></a></li>
+        </ul>
+      </div>
+      <div class="videos-group">
+        <h3>Tudor investigation context</h3>
+        <ul class="videos-list">
+          <li><a href="https://www.youtube.com/watch?v=fTi67SU6JF0" target="_blank" rel="noopener noreferrer"><span><strong>Henry VII’s consolidation of power</strong><small>Tudors · The Learning Academy Education</small></span><span class="videos-open">Open video</span></a></li>
+          <li><a href="https://www.youtube.com/watch?v=GasQP6qOGzM" target="_blank" rel="noopener noreferrer"><span><strong>Henry VIII: religion, arts and learning</strong><small>Tudors · The Learning Academy Education</small></span><span class="videos-open">Open video</span></a></li>
+        </ul>
+      </div>
+    </section>
+  </main>
+  <script src="scripts/videos.js"></script>
+  <script src="scripts/forge-page-actions.js"></script>
+</body>
+</html>

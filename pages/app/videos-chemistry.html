@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en-GB" data-accent-scope="student">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Find Forge's selected Chemistry explanation videos.">
+  <title>Forge — Chemistry videos</title>
+  <link rel="stylesheet" href="css/fonts.css">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/sidebar.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/page-overrides/settings.css">
+  <link rel="stylesheet" href="css/page-overrides/videos.css">
+</head>
+<body>
+  <script src="scripts/forge-logo.js"></script>
+  <script src="scripts/forge-role.js"></script>
+  <script src="scripts/forge-rewards.js"></script>
+  <script src="scripts/forge-theme.js"></script>
+  <script src="scripts/forge-sidebar.js"></script>
+  <script>if(window.ForgeRole)ForgeRole.guard('student','teacher.html');
+  ForgeSidebar.mount({active:'videos',items:[
+    {key:'dashboard',href:'student-dashboard.html',label:'Dashboard'},
+    {key:'forge',href:'forge-quiz.html',label:'Forge'},
+    {key:'assignments',href:'assignments.html',label:'Assigned'},
+    {key:'anvil',href:'anvil.html',label:'Repair mistakes'},
+    {key:'crucible',href:'crucible.html',label:'Timed practice'}
+  ],footerItems:[{key:'profile',href:'profile.html',label:'Profile'}]});</script>
+  <main class="wrap videos-page" id="main-content">
+    <header class="settings-hero"><h1>Videos</h1><p>AQA A-level Chemistry explanations, grouped by topic. Videos open on YouTube.</p></header>
+    <div class="videos-picker">
+      <label for="video-subject">Subject</label>
+      <select id="video-subject" name="subject">
+        <option value="" disabled>Choose a subject</option>
+        <option value="videos-chemistry.html" selected>Chemistry (18 videos)</option>
+        <option value="videos-economics.html">Economics (12 videos)</option>
+        <option value="videos-history.html">History (8 videos)</option>
+      </select>
+    </div>
+    <section class="videos-subject" aria-labelledby="chemistry-videos-title">
+      <div class="videos-subject-heading"><h2 id="chemistry-videos-title">Chemistry</h2><p>AQA A-level · Eliot Rintoul</p></div>
+      <div class="videos-group">
+        <h3>Atomic structure</h3>
+        <ul class="videos-list">
+          <li><a href="https://www.youtube.com/watch?v=oH0tpyrIcSY" target="_blank" rel="noopener noreferrer"><span><strong>Atomic structure and electron configuration</strong><small>3.1.1 · Eliot Rintoul</small></span><span class="videos-open">Open video</span></a></li>
+          <li><a href="https://www.youtube.com/watch?v=PNZV862SN6Q" target="_blank" rel="noopener noreferrer"><span><strong>Ionisation energies explained</strong><small>3.1.1 · Eliot Rintoul</small></span><span class="videos-open">Open video</span></a></li>
+          <li><a href="https://www.youtube.com/watch?v=WoNzJUu3gKA" target="_blank" rel="noopener noreferrer"><span><strong>TOF mass spectrometry explained</strong><small>3.1.1 · Eliot Rintoul</small></span><span class="videos-open">Open video</span></a></li>
+        </ul>
+      </div>
+      <div class="videos-group">
+        <h3>Bonding and energetics</h3>
+        <ul class="videos-list">
+          <li><a href="https://www.youtube.com/watch?v=6EePsoVMO_4" target="_blank" rel="noopener noreferrer"><span><strong>Intermolecular forces explained</strong><small>3.1.3 · Eliot Rintoul</small></span><span class="videos-open">Open video</span></a></li>
+          <li><a href="https://www.youtube.com/watch?v=Ks1CtqsafSg" target="_blank" rel="noopener noreferrer"><span><strong>Enthalpy and bond energies explained</strong><small>3.1.4 · Eliot Rintoul</small></span><span class="videos-open">Open video</span></a></li>
+        </ul>
+      </div>
+      <div class="videos-group">
+        <h3>Rates and equilibria</h3>
+        <ul class="videos-list">
+          <li><a href="https://www.youtube.com/watch?v=jctsM6ISVDA" target="_blank" rel="noopener noreferrer"><span><strong>Kinetics and rates of reaction</strong><small>3.1.5 · Eliot Rintoul</small></span><span class="videos-open">Open video</span></a></li>
+          <li><a href="https://www.youtube.com/watch?v=vRxPMSGS1sI" target="_blank" rel="noopener noreferrer"><span><strong>Equilibria and Le Chatelier’s principle</strong><small>3.1.6 · Eliot Rintoul</small></span><span class="videos-open">Open video</span></a></li>
+          <li><a href="https://www.youtube.com/watch?v=kkKVY2vl3XM" target="_blank" rel="noopener noreferrer"><span><strong>The equilibrium constant, Kc</strong><small>3.1.6 · Eliot Rintoul</small></span><span class="videos-open">Open video</span></a></li>
+          <li><a href="https://www.youtube.com/watch?v=xDLYCsqZZoE" target="_blank" rel="noopener noreferrer"><span><strong>Rate equations</strong><small>3.1.9 · Eliot Rintoul</small></span><span class="videos-open">Open video</span></a></li>
+        </ul>
+      </div>
+      <div class="videos-group">
+        <h3>Organic and inorganic chemistry</h3>
+        <ul class="videos-list">
+          <li><a href="https://www.youtube.com/watch?v=9mlBux7-sJM" target="_blank" rel="noopener noreferrer"><span><strong>Nucleophilic substitution</strong><small>3.3.3 · Eliot Rintoul</small></span><span class="videos-open">Open video</span></a></li>
+          <li><a href="https://www.youtube.com/watch?v=tZSdBZ3bhy8" target="_blank" rel="noopener noreferrer"><span><strong>Catalysis by transition metals</strong><small>3.2.5 · Eliot Rintoul</small></span><span class="videos-open">Open video</span></a></li>
+        </ul>
+      </div>
+      <div class="videos-group">
+        <h3>Acids and bases</h3>
+        <ul class="videos-list">
+          <li><a href="https://www.youtube.com/watch?v=iW3LwM_RBXY" target="_blank" rel="noopener noreferrer"><span><strong>Acids, bases and pH</strong><small>3.1.12 · Eliot Rintoul</small></span><span class="videos-open">Open video</span></a></li>
+          <li><a href="https://www.youtube.com/watch?v=fNGQ7E6mXQ8" target="_blank" rel="noopener noreferrer"><span><strong>Kw and bases</strong><small>3.1.12 · Eliot Rintoul</small></span><span class="videos-open">Open video</span></a></li>
+          <li><a href="https://www.youtube.com/watch?v=37bTWrKy4Ds" target="_blank" rel="noopener noreferrer"><span><strong>Buffer solutions</strong><small>3.1.12 · Eliot Rintoul</small></span><span class="videos-open">Open video</span></a></li>
+        </ul>
+      </div>
+      <div class="videos-group">
+        <h3>Electrochemistry</h3>
+        <ul class="videos-list">
+          <li><a href="https://www.youtube.com/watch?v=n61P_AaWuwk" target="_blank" rel="noopener noreferrer"><span><strong>Electrode potentials</strong><small>3.1.11 · Eliot Rintoul</small></span><span class="videos-open">Open video</span></a></li>
+          <li><a href="https://www.youtube.com/watch?v=OEIvnqBruvc" target="_blank" rel="noopener noreferrer"><span><strong>The electrochemical series</strong><small>3.1.11 · Eliot Rintoul</small></span><span class="videos-open">Open video</span></a></li>
+        </ul>
+      </div>
+      <div class="videos-group">
+        <h3>Spectroscopy</h3>
+        <ul class="videos-list">
+          <li><a href="https://www.youtube.com/watch?v=r4u3Vi2Af1c" target="_blank" rel="noopener noreferrer"><span><strong>Carbon-13 NMR</strong><small>3.3.15 · Eliot Rintoul</small></span><span class="videos-open">Open video</span></a></li>
+          <li><a href="https://www.youtube.com/watch?v=ZeTbWAqtLos" target="_blank" rel="noopener noreferrer"><span><strong>Proton NMR</strong><small>3.3.15 · Eliot Rintoul</small></span><span class="videos-open">Open video</span></a></li>
+        </ul>
+      </div>
+    </section>
+  </main>
+  <script src="scripts/videos.js"></script>
+  <script src="scripts/forge-page-actions.js"></script>
+</body>
+</html>
