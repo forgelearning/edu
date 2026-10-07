@@ -90,8 +90,29 @@ function serveFile(req, res, pathname) {
   fs.createReadStream(file).pipe(res);
 }
 
-function serveDemoAccount(res) {
+// /test-account?history=1 starts the demo student with a few weeks of practice,
+// so the profile's achievement badges show a mix of tiers. Deterministic, so
+// the same badges appear every time.
+function seedDemoHistory() {
+  const banks = ['GCSE-GEO-HAZ', 'GCSE-GEO-CLIMATE', 'GCSE-GEO-DEV', 'GCSE-GEO-URB'];
+  const row = (n, daysAgo, o) => Object.assign({
+    id:'local-motion-history-'+n, student_id:demoStudent.studentId, class_id:demoStudent.classId,
+    question_id:'HIST-'+n, bank:banks[n % banks.length], subject:demoStudent.classSubject, selected_option:'A',
+    is_correct:true, misconception_tag:null, spec_point:null, reforge_attempted:false, reforge_correct:null,
+    assignment_id:null, hint_used:false, created_at:new Date(Date.now() - daysAgo * 86400000).toISOString()
+  }, o);
+  let n = 0;
+  // Eight practice days in a row ending three weeks ago, then three recent days.
+  [28,27,26,25,24,23,22,21,3,2,1].forEach(daysAgo => {
+    for (let i = 0; i < 12; i++) demoResponses.push(row(n++, daysAgo, {is_correct:(n % 5) !== 0}));
+    demoResponses.push(row(n++, daysAgo, {reforge_attempted:true, reforge_correct:true}));
+  });
+  for (let i = 0; i < 14; i++) demoResponses.push(row(n++, 2, {question_id:'TIMED-'+i+'-CRU', is_correct:i % 4 !== 0}));
+}
+
+function serveDemoAccount(res, url) {
   demoResponses.length = 0;
+  if (url && url.searchParams.get('history') === '1') seedDemoHistory();
   demoMatchRewards.clear();
   const session = JSON.stringify(demoStudent);
   const html = '<!doctype html><html lang="en"><meta charset="utf-8"><title>Forge test student</title><p>Opening Forge as a local test student…</p><script>'
@@ -108,7 +129,7 @@ function serveDemoAccount(res) {
 
 const server = http.createServer((req, res) => {
   const url = new URL(req.url, 'http://127.0.0.1');
-  if (mode === 'student-demo' && url.pathname === '/test-account') return serveDemoAccount(res);
+  if (mode === 'student-demo' && url.pathname === '/test-account') return serveDemoAccount(res, url);
   if (req.method === 'OPTIONS') {
     res.writeHead(204, {
       'Access-Control-Allow-Origin': '*',

@@ -31,6 +31,7 @@
 <script src="scripts/forge-auth-card.js"></script>
 <script src="scripts/forge-rewards.js"></script>
 <script src="scripts/forge-ranks.js"></script>
+<script src="scripts/forge-achievements.js"></script>
 <script src="scripts/forge-theme.js?v=20260808-theme2"></script>
 <script src="scripts/forge-sidebar.js?v=20260809-gearcenter"></script>
 <script>if (window.ForgeRole) ForgeRole.guard('student', 'teacher.html');</script>
@@ -385,12 +386,11 @@ function renderProfile(){
     h+='<div class="stat"><span class="stat-n forge-text-good">'+resolved+'</span><span class="stat-l">Mistakes cleared</span></div>';
     h+='</div></div>';
 
-    // Two-col: focus areas + strengths
-    h+='<div class="two-col">';
-
-    // Mistakes to repair (left) and every topic with its readiness ring
-    // (right). Weak topics used to be listed here by accuracy and strong ones
-    // as "Strengths"; the topic list now shows both the same way as Practice.
+    // Mistakes to repair, then every topic with its readiness ring. They used
+    // to sit side by side, which stretched the short repair card to the full
+    // height of a long topic list, so each now takes the full width. Weak
+    // topics used to be listed by accuracy and strong ones as "Strengths";
+    // the topic list shows both the same way as Practice.
     h+='<div class="card">';
     h+='<div class="card-title"><span class="forge-text-bad">Mistakes to repair</span></div>';
     if(activeMCs.length===0){
@@ -410,7 +410,7 @@ function renderProfile(){
     }
     h+='</div>';
 
-    h+='<div class="card">';
+    h+='<div class="card profile-topics-card">';
     h+='<div class="card-title">Your topics</div>';
     var topicBanks=((typeof SUBJECTS!=='undefined'&&SUBJECTS[subjectKey])||{}).banks||Object.keys(responses.reduce(function(m,r){if(r.bank&&!r.reforge_attempted)m[r.bank]=true;return m;},{}));
     var openTags=ForgeTopicMastery.openTags(responses);
@@ -425,7 +425,12 @@ function renderProfile(){
       h+='</ul>';
     }
     h+='</div>';
-    h+='</div>'; // /two-col
+
+    // Achievement badges (scripts/forge-achievements.js), from saved answers.
+    // The topic badges scale with this subject's topic list, the same list
+    // the "Your topics" card above shows.
+    var subjectTopics=((typeof SUBJECTS!=='undefined'&&SUBJECTS[subjectKey])||{}).banks||[];
+    if(window.ForgeAchievements) h+=ForgeAchievements.html(ForgeAchievements.compute(responses,{resolved:resolved,topicBanks:subjectTopics}));
 
     h+='<p class="prof-footer">→ Your overview updates after every session. Focus areas tell you where to spend time — strengths confirm what is already locked in.</p>';
     var trail=learningTrail(responses,st.studentId);

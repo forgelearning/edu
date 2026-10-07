@@ -149,3 +149,5 @@ h1,h2,h3,.prof-name,.rank-title,.grade-letter,.logo{font-family:'Rethink Sans',s
 .rank-display .forge-avatar{margin-bottom:12px}
 .rank-ladder-card .card-title{margin:0 0 8px}
 .rank-ladder-intro{margin:0 0 14px;color:var(--slate);font-size:13px;line-height:1.55}
+/* Topics take the full width, so lay them out in columns. */
+.profile-topics-card .profile-topic-map{grid-template-columns:repeat(auto-fill,minmax(240px,1fr))}
