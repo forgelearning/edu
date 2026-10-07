@@ -30,6 +30,7 @@
 <script src="scripts/forge-study-mode.js"></script>
 <script src="scripts/forge-auth-card.js"></script>
 <script src="scripts/forge-rewards.js"></script>
+<script src="scripts/forge-ranks.js"></script>
 <script src="scripts/forge-theme.js?v=20260808-theme2"></script>
 <script src="scripts/forge-sidebar.js?v=20260809-gearcenter"></script>
 <script>if (window.ForgeRole) ForgeRole.guard('student', 'teacher.html');</script>
@@ -101,18 +102,10 @@ function learningTrail(responses,studentId){
   return entries.sort(function(a,b){return b.when-a.when;}).slice(0,5);
 }
 
-var RANKS = [
-  {name:'Apprentice',min:0,max:300,color:'var(--slate)',bg:'var(--panel-2)'},
-  {name:'Journeyman',min:300,max:1500,color:'var(--hot)',bg:'rgba(255,201,60,.12)'},
-  {name:'Craftsman',min:1500,max:5000,color:'var(--ember)',bg:'rgba(255,107,44,.12)'},
-  {name:'Forged',min:5000,max:15000,color:'var(--good)',bg:'rgba(127,217,138,.12)'},
-  {name:'Master',min:15000,max:99999,color:'var(--coal)',bg:'var(--ember)'}
-];
-
-function getRank(xp){
-  for(var i=RANKS.length-1;i>=0;i--){if(xp>=RANKS[i].min)return RANKS[i];}
-  return RANKS[0];
-}
+// Ranks, thresholds and avatar frames live in scripts/forge-ranks.js so the
+// dashboard, friends list and settings show the same rank as this page.
+var RANKS = ForgeRanks.RANKS;
+function getRank(xp){ return ForgeRanks.rankFor(xp); }
 
 // Classes are named "<year><letter>/<subject code>" (e.g. "12B/Bs" for a
 // Year 12 A-Level class, "10A/Gg" for a Year 10 GCSE class). There's no
@@ -379,8 +372,9 @@ function renderProfile(){
     // ── OVERVIEW TAB ──
     h+='<div class="prof-header">';
     h+='<div class="prof-header-top">';
-    h+='<div><div class="prof-name">'+st.studentName+' profile</div>';
-    h+='<div class="prof-subject">'+subjectLabel+'</div></div>';
+    h+='<div class="prof-identity">'+ForgeRanks.avatarHtml(st.studentName,xp,{size:'lg',rank:rank});
+    h+='<div><div class="prof-name">'+profileEscape(st.studentName)+' profile</div>';
+    h+='<div class="prof-subject">'+subjectLabel+'</div>'+ForgeRanks.chipHtml(xp,rank)+'</div></div>';
     h+='<span class="always-updating">Always updating</span>';
     h+='</div>';
     // Stat row
@@ -535,13 +529,17 @@ function renderProfile(){
     var xpToNext=nextRank?nextRank.min-xp:0;
     var pct=nextRank?Math.round(((xp-rank.min)/(nextRank.min-rank.min))*100):100;
     h+='<div class="rank-display">';
-    h+='<p class="tag forge-u-1x3vyu3">'+st.studentName+' — Forge Rank</p>';
+    h+=ForgeRanks.avatarHtml(st.studentName,xp,{size:'lg',rank:rank,label:true});
+    h+='<p class="tag forge-u-1x3vyu3">'+profileEscape(st.studentName)+' — Forge Rank</p>';
     h+='<div class="rank-title" style="color:'+rank.color+'">'+rank.name+'</div>';
     h+='<div class="rank-xp">'+xp.toLocaleString()+' XP</div>';
     h+='<div class="xp-bar-wrap"><div class="xp-bar-fill" style="width:'+pct+'%"></div></div>';
     if(nextRank){h+='<div class="xp-bar-label"><span>'+rank.name+'</span><span>'+xpToNext.toLocaleString()+' XP to '+nextRank.name+'</span></div>';}
     else{h+='<div class="forge-u-1a7i38n">Maximum rank achieved ✦</div>';}
     h+='</div>';
+    h+='<section class="card rank-ladder-card" aria-labelledby="rank-ladder-title"><h2 id="rank-ladder-title" class="card-title">Ranks and frames</h2>';
+    h+='<p class="rank-ladder-intro">Each rank brings a new frame for your avatar. Friends see your rank and frame next to your name.</p>';
+    h+=ForgeRanks.ladderHtml(st.studentName,xp)+'</section>';
 
   } else if(activeTab==='anvil'){
     // ── ANVIL TAB ──

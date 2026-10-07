@@ -360,3 +360,9 @@ html[data-overdrive="control-room"] .mod-row:hover{border-color:var(--hot);box-s
 .dashboard-class-entry{border-top:1px solid var(--line);padding-top:18px}
 .dashboard-class-entry summary{cursor:pointer;font-weight:600;min-height:44px;color:var(--white)}
 .dashboard-class-entry[open] summary{margin-bottom:18px}
+
+/* Rank avatar beside the welcome (scripts/forge-ranks.js). */
+.dashboard-heading--ranked{display:flex;align-items:center;gap:20px}
+#app .dashboard-heading--ranked h1{margin-bottom:8px}
+.dashboard-heading__rank{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;margin:0}
+@media(max-width:560px){.dashboard-heading--ranked{gap:14px}.dashboard-heading--ranked .forge-avatar--lg{--avatar-size:58px;--avatar-ring:3px}}

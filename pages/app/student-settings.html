@@ -18,6 +18,7 @@
   <script src="scripts/forge-classes.js"></script>
   <script src="scripts/forge-student-code.js"></script>
   <script src="scripts/forge-rewards.js"></script>
+  <script src="scripts/forge-ranks.js"></script>
 <script src="scripts/forge-theme.js?v=20260808-theme2"></script>
   <script src="scripts/forge-logo.js"></script>
   <script src="scripts/forge-sidebar.js?v=20260809-gearcenter"></script>
@@ -56,7 +57,7 @@
       </div>
     </section>
     <section class="settings-section" aria-labelledby="accent-title">
-      <div class="settings-section-heading"><div><h2 id="accent-title">Earn your look</h2><p class="settings-copy settings-accent-intro">Ember, Ocean and Violet are yours from the start. Earn XP to unlock more colours and backgrounds.</p></div></div>
+      <div class="settings-section-heading"><div><h2 id="accent-title">Earn your look</h2><p class="settings-copy settings-accent-intro">Ember, Ocean and Violet are yours from the start. Earn XP to unlock more colours, backgrounds and avatar frames.</p></div></div>
       <p class="settings-rewards-progress" id="settings-rewards-progress" role="status"></p>
       <h3 class="settings-rewards-subtitle">Accent colour</h3>
       <div class="settings-options settings-accent-options" role="radiogroup" aria-label="Accent colour">
@@ -73,6 +74,9 @@
         <label class="settings-option settings-background-option"><input type="radio" name="background" value="folio"><span class="settings-background-preview settings-background-preview--folio" aria-hidden="true"><i></i><b></b><em></em></span><span><strong>Folio</strong><small>300 XP · warm paper tint</small></span></label>
         <label class="settings-option settings-background-option"><input type="radio" name="background" value="nightfall"><span class="settings-background-preview settings-background-preview--nightfall" aria-hidden="true"><i></i><b></b><em></em></span><span><strong>Nightfall</strong><small>3,000 XP · deeper contrast</small></span></label>
       </div>
+      <h3 class="settings-rewards-subtitle">Rank and avatar frame</h3>
+      <p class="settings-copy settings-rank-intro">Your frame comes with your rank and changes as you earn XP. Friends see it next to your name.</p>
+      <div id="settings-rank-ladder"></div>
     </section>
     <section class="settings-section" aria-labelledby="account-title">
       <div class="settings-section-heading"><div><p class="settings-kicker">SESSION</p><h2 id="account-title">Student session</h2></div><span class="settings-section-mark" aria-hidden="true">S</span></div>
@@ -87,7 +91,7 @@
       var studentId=savedStudent&&savedStudent.studentId;
       function updateRewards(){
         var xp=window.ForgeRewards?ForgeRewards.total(studentId):0;
-        var next=[100,300,750,1500,3000].find(function(value){return value>xp;});
+        var next=[100,300,750,1500,3000,5000,15000].find(function(value){return value>xp;});
         document.getElementById('settings-rewards-progress').textContent=xp.toLocaleString()+' XP earned'+(next?' · '+(next-xp).toLocaleString()+' XP to your next unlock':' · all looks unlocked');
         document.querySelectorAll('input[name="accent"],input[name="background"]').forEach(function(radio){
           var unlocked=!window.ForgeRewards||ForgeRewards.unlocked(studentId,radio.value);
@@ -95,6 +99,8 @@
           radio.closest('label').classList.toggle('is-locked',!unlocked);
           if(!unlocked&&radio.checked){radio.checked=false;document.querySelector('input[name="'+radio.name+'"][value="'+(radio.name==='accent'?'ember':'plain')+'"]').checked=true;}
         });
+        var ladder=document.getElementById('settings-rank-ladder');
+        if(ladder&&window.ForgeRanks)ladder.innerHTML=ForgeRanks.ladderHtml(savedStudent&&(savedStudent.studentName||savedStudent.name)||'You',xp);
       }
       updateRewards();
       function rememberResponses(rows){

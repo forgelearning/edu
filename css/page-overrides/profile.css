@@ -142,3 +142,10 @@ h1,h2,h3,.prof-name,.rank-title,.grade-letter,.logo{font-family:'Rethink Sans',s
 .profile-topic-map a:focus-visible{outline:2px solid var(--ember);outline-offset:2px}
 .profile-topic-map__name{font-weight:600;font-size:14px;min-width:0}
 .profile-topic-map small{grid-column:1/-1;color:var(--slate);font-size:12px}
+
+/* Rank avatar and frame ladder (scripts/forge-ranks.js). */
+.prof-identity{display:flex;align-items:center;gap:16px;min-width:0}
+.prof-identity .forge-rank-chip{margin-top:8px}
+.rank-display .forge-avatar{margin-bottom:12px}
+.rank-ladder-card .card-title{margin:0 0 8px}
+.rank-ladder-intro{margin:0 0 14px;color:var(--slate);font-size:13px;line-height:1.55}

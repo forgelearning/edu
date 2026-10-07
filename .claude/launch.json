@@ -4,8 +4,25 @@
     {
       "name": "forge-staging",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "staging"],
+      "runtimeArgs": [
+        "run",
+        "staging"
+      ],
       "port": 4174
+    },
+    {
+      "name": "forge-staging-demo",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "staging",
+        "--",
+        "--mode",
+        "student-demo",
+        "--port",
+        "4175"
+      ],
+      "port": 4175
     }
   ]
 }

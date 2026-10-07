@@ -48,3 +48,5 @@
 .forge-friends__waiting ul{margin:4px 0 0;padding-left:18px}
 .forge-friends__profile p{margin:6px 0 0}
 .forge-friends__status.is-error{color:var(--bad)}
+.forge-friends__who{display:flex;align-items:center;gap:12px;min-width:0}
+.forge-friends__name .forge-rank-chip{margin-left:6px;padding:1px 9px 1px 7px;font-size:11px;vertical-align:1px}

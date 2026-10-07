@@ -54,7 +54,7 @@ const focusValues=new Map();
 const d={document:{querySelector:()=>section,getElementById:()=>null},st:{studentId:'student-1',studentName:'Alex <preview>',responses:[]},app:{},BANKS:{growth:{label:'Economic growth'}},SUBJECTS:{econ:{label:'Economics',banks:['growth']},geo:{label:'Geography',banks:['hazards']}},RANKS:[{name:'Apprentice',min:0},{name:'Journeyman',min:300}],calcXP:()=>120,calcStreak:()=>0,_fsEsc:h.ctx._fsEsc,localStorage:{getItem:k=>focusValues.get(k)||null,setItem:(k,v)=>focusValues.set(k,v)},ForgeMisconceptions:{summarize:()=>({active:[]})},ForgeApp:{stateHtml:(kind,options)=>options.label},location:{href:'student-dashboard.html'}};
 d.window=d;
 d.getRank=xp=>d.RANKS.slice().reverse().find(rank=>xp>=rank.min);
-vm.createContext(d);vm.runInContext(fs.readFileSync('scripts/forge-student-focus.js','utf8'),d);vm.runInContext(fs.readFileSync('scripts/forge-daily-plan.js','utf8'),d);vm.runInContext(render,d);d.renderDashboard();
+vm.createContext(d);vm.runInContext(fs.readFileSync('scripts/forge-ranks.js','utf8'),d);vm.runInContext(fs.readFileSync('scripts/forge-student-focus.js','utf8'),d);vm.runInContext(fs.readFileSync('scripts/forge-daily-plan.js','utf8'),d);vm.runInContext(render,d);d.renderDashboard();
 assert(d.app.innerHTML.includes('Start your first practice'));
 assert(d.app.innerHTML.includes('Alex &lt;preview&gt;'),'student names remain text');
 d.st.responses=Array.from({length:4},()=>({bank:'growth',is_correct:true}));d.renderDashboard();

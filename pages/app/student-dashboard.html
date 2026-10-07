@@ -36,6 +36,7 @@
 <script src="scripts/forge-auth-card.js"></script>
 <script src="scripts/forge-classes.js?v=20260813"></script>
 <script src="scripts/forge-rewards.js"></script>
+<script src="scripts/forge-ranks.js"></script>
 <script src="scripts/forge-theme.js?v=20260808-theme2"></script>
 <script src="scripts/forge-sidebar.js?v=20260809-gearcenter"></script>
 <script src="scripts/forge-page-actions.js"></script>
@@ -81,18 +82,10 @@ function supaGet(t,p){return ForgeAPI.get(t,p);}
 
 
 
-var RANKS = [
-  {name:'Apprentice',min:0,max:300,color:'var(--slate)',bg:'var(--panel-2)'},
-  {name:'Journeyman',min:300,max:1500,color:'var(--hot)',bg:'rgba(255,201,60,.12)'},
-  {name:'Craftsman',min:1500,max:5000,color:'var(--ember)',bg:'rgba(255,107,44,.12)'},
-  {name:'Forged',min:5000,max:15000,color:'var(--good)',bg:'rgba(127,217,138,.12)'},
-  {name:'Master',min:15000,max:99999,color:'var(--coal)',bg:'var(--ember)'}
-];
-
-function getRank(xp){
-  for(var i=RANKS.length-1;i>=0;i--){if(xp>=RANKS[i].min)return RANKS[i];}
-  return RANKS[0];
-}
+// Ranks, thresholds and avatar frames live in scripts/forge-ranks.js so the
+// profile, friends list and settings show the same rank as this page.
+var RANKS = ForgeRanks.RANKS;
+function getRank(xp){ return ForgeRanks.rankFor(xp); }
 
 // Classes are named "<year><letter>/<subject code>" (e.g. "12B/Bs" for a
 // Year 12 A-Level class, "10A/Gg" for a Year 10 GCSE class). There's no
@@ -355,7 +348,8 @@ function renderDashboard(){
   var focusTopic=topicRanked[0]||null;
   dashboardTopicsHtml=topicShortcutsHtml(responses, focusTopic&&!activeMCs.length?focusTopic.key:null);
 
-  var h='<header class="dashboard-heading"><h1>Welcome back, '+_fsEsc(st.studentName)+'</h1><p>Pick up where you left off.</p></header>';
+  var h='<header class="dashboard-heading dashboard-heading--ranked">'+ForgeRanks.avatarHtml(st.studentName,xp,{size:'lg',rank:rank})
+    +'<div><h1>Welcome back, '+_fsEsc(st.studentName)+'</h1><p class="dashboard-heading__rank">'+ForgeRanks.chipHtml(xp,rank)+'<span>Pick up where you left off.</span></p></div></header>';
 
   h+='<div class="dashboard-layout'+(total>0?' dashboard-layout--split':'')+'"><div class="dashboard-main">';
   if(total===0&&!due){

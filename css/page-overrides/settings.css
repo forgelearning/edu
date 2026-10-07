@@ -62,3 +62,4 @@ html[data-theme="light"] .settings-background-preview--nightfall{--preview-bg:#e
 .settings-danger h3{margin:0 0 8px;color:var(--white);font-size:16px}
 .settings-danger code{padding:1px 6px;border-radius:var(--radius-xs);background:var(--panel);font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--hot)}
 .settings-field [role="status"]:not(:empty){margin-top:10px}
+.settings-rank-intro{margin-bottom:12px}

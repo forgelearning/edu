@@ -140,6 +140,14 @@ const server = http.createServer((req, res) => {
     return json(res, 200, {allowed:true, id:'staging-response-' + responseCount, used:responseCount});
   }
   if (mode === 'student-demo') {
+    // Accepted friends at every rank, so the avatar frames can be seen together.
+    if (url.pathname === '/mock-supabase/rest/v1/rpc/get_class_friends') {
+      const friend = (n, name, week, total, accuracy, streak) => ({student_id:'local-friend-'+n, name, xp_week:week, xp_total:total, answered:Math.round(total/9), accuracy, streak});
+      return json(res, 200, {enabled:true, incoming:[], outgoing:[], classmates:[], friends:[
+        friend(1, 'Amira K.', 340, 16200, 88, 41), friend(2, 'Josh T.', 210, 6400, 79, 12),
+        friend(3, 'Priya S.', 95, 2100, 71, 5), friend(4, 'Leo M.', 60, 650, 64, 2), friend(5, 'Sam R.', 20, 90, 58, 0)
+      ]});
+    }
     if (url.pathname === '/mock-supabase/rest/v1/rpc/get_student_match_xp') {
       return json(res, 200, {xp_total:demoStartingMatchXp+[...demoMatchRewards.values()].reduce((xp, reward) => xp + reward.xp, 0)});
     }

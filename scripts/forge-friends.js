@@ -37,7 +37,11 @@
     if (friends.length) {
       h += '<ul class="forge-friends__list">';
       friends.forEach(function (f) {
-        h += '<li class="forge-friends__row"><div><span class="forge-friends__name">' + esc(f.name) + '</span><span class="forge-friends__stat">' + esc(stat(f)) + '</span></div>'
+        // Rank and frame come from the friend's lifetime XP, which accepted
+        // friends already share (scripts/forge-ranks.js).
+        var R = root.ForgeRanks, rank = R ? R.rankFor(f.xp_total) : null;
+        h += '<li class="forge-friends__row"><div class="forge-friends__who">' + (R ? R.avatarHtml(f.name, f.xp_total, { size: 'sm', rank: rank }) : '')
+          + '<div><span class="forge-friends__name">' + esc(f.name) + (R ? ' ' + R.chipHtml(f.xp_total, rank) : '') + '</span><span class="forge-friends__stat">' + esc(stat(f)) + '</span></div></div>'
           + '<button type="button" class="forge-friends__remove" data-friend-remove="' + esc(f.student_id) + '" aria-label="Remove ' + esc(f.name) + ' as a friend">Remove</button></li>';
       });
       h += '</ul>';

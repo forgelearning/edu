@@ -177,3 +177,35 @@
 .forge-class-bar.is-correct .forge-class-bar__track span{background:var(--good)}
 .forge-class-bar.is-correct .forge-class-bar__key{color:var(--good)}
 .forge-class-bar.is-chosen .forge-class-bar__key{outline:2px solid var(--ember);outline-offset:2px;border-radius:4px}
+
+/* Rank avatars and frames (scripts/forge-ranks.js). The frame follows the
+   rank: Iron, Bronze, Silver, Gold, then a slowly turning Ember ring for
+   Master. Each frame sets three stops; the avatar draws them as a metallic
+   ring and the rank chip uses the middle one as its marker. */
+.forge-frame--iron{--frame-a:#3A3734;--frame-b:#5F5A55;--frame-c:#8A847D}
+.forge-frame--bronze{--frame-a:#7A4A22;--frame-b:#C98A4B;--frame-c:#F2C38E}
+.forge-frame--silver{--frame-a:#8A95A1;--frame-b:#D3DAE1;--frame-c:#FFFFFF}
+.forge-frame--gold{--frame-a:#94660A;--frame-b:#E3AE2E;--frame-c:#FFE79A}
+.forge-frame--ember{--frame-a:#A42A06;--frame-b:#FF6B2C;--frame-c:#FFC93C}
+.forge-avatar{--avatar-size:46px;--avatar-ring:3px;position:relative;isolation:isolate;display:inline-grid;flex:none;place-items:center;width:var(--avatar-size);height:var(--avatar-size);padding:var(--avatar-ring);border-radius:50%;vertical-align:middle}
+.forge-avatar::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:50%;background:conic-gradient(from 200deg,var(--frame-a),var(--frame-c) 18%,var(--frame-b) 34%,var(--frame-a) 52%,var(--frame-c) 70%,var(--frame-b) 86%,var(--frame-a))}
+.forge-avatar__initials{display:grid;place-items:center;width:100%;height:100%;border-radius:50%;background:var(--panel-2);box-shadow:inset 0 0 0 1px rgba(0,0,0,.28);color:var(--white);font:800 calc(var(--avatar-size) * .34)/1 'Rethink Sans',sans-serif;letter-spacing:.02em}
+.forge-avatar--sm{--avatar-size:32px;--avatar-ring:2px}
+.forge-avatar--lg{--avatar-size:76px;--avatar-ring:4px}
+.forge-avatar.forge-frame--ember{box-shadow:0 0 calc(var(--avatar-size) * .28) rgba(255,107,44,.38)}
+.forge-avatar.forge-frame--ember::before{animation:forge-ember-turn 7s linear infinite}
+.forge-avatar.is-locked{filter:grayscale(1);opacity:.45;box-shadow:none}
+.forge-avatar.is-locked::before{animation:none}
+@keyframes forge-ember-turn{to{transform:rotate(1turn)}}
+@media(prefers-reduced-motion:reduce){.forge-avatar.forge-frame--ember::before{animation:none}}
+.forge-rank-chip{display:inline-flex;align-items:center;gap:7px;padding:3px 11px 3px 9px;border:1px solid var(--line);border-radius:var(--radius-pill);background:var(--panel-2);color:var(--white);font:700 12px/1.4 'Rethink Sans',sans-serif;white-space:nowrap}
+.forge-rank-chip::before{content:"";width:8px;height:8px;border-radius:50%;background:linear-gradient(135deg,var(--frame-c),var(--frame-b) 55%,var(--frame-a))}
+.forge-rank-ladder{display:grid;gap:8px;margin:0;padding:0;list-style:none}
+.forge-rank-ladder__step{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:12px;padding:10px 14px;border:1px solid var(--line);border-radius:var(--radius-md);background:var(--panel)}
+.forge-rank-ladder__step.is-current{border-color:var(--ember);box-shadow:inset 3px 0 0 var(--ember)}
+.forge-rank-ladder__text strong,.forge-rank-ladder__text small{display:block}
+.forge-rank-ladder__text strong{color:var(--white);font:700 14px/1.3 'Rethink Sans',sans-serif}
+.forge-rank-ladder__text small{margin-top:2px;color:var(--slate);font-size:12px}
+.forge-rank-ladder__state{color:var(--slate);font:600 12px 'JetBrains Mono',monospace;text-align:right}
+.forge-rank-ladder__step.is-current .forge-rank-ladder__state{color:var(--ember)}
+.forge-rank-ladder__step.is-locked .forge-rank-ladder__text strong{color:var(--slate)}
