@@ -154,6 +154,23 @@
     cleared: '<path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4.5"/>'
   };
 
+  // The medal on its own: the badge icon inside a ring in the tier's colours.
+  // Used by the badge list and by scripts/forge-celebrate.js.
+  function medalHtml(icon, tierKey, size) {
+    return '<span class="forge-badge__medal' + (size === 'lg' ? ' forge-badge__medal--lg' : '') + (tierKey ? ' forge-frame--' + tierKey : '') + '" aria-hidden="true">'
+      + '<svg viewBox="0 0 24 24">' + (ICONS[icon] || '') + '</svg></span>';
+  }
+
+  // The profile's topic list for this student: the subject of their first
+  // saved answer, as the "Your topics" card has always chosen it. Shared so the
+  // dashboard's celebration and the profile's badges use the same targets.
+  function subjectTopics(responses, subjects) {
+    var first = (responses || [])[0];
+    var key = first && first.subject;
+    var subject = key && subjects && subjects[key];
+    return subject && Array.isArray(subject.banks) ? subject.banks : [];
+  }
+
   function badgeHtml(b) {
     var status, progress = '';
     if (b.next) {
@@ -164,12 +181,16 @@
       status = b.value.toLocaleString() + ' ' + b.unit + ' · every tier earned';
     }
     var tierText = b.tier ? b.tier.name : 'Not yet earned';
+    // An earned badge can be shared again later (scripts/forge-celebrate.js).
+    var share = b.tier && root.ForgeCelebrate
+      ? '<button type="button" class="forge-badge__share" data-forge-share="badge" data-badge="' + esc(b.key) + '" data-tier="' + esc(b.tier.key) + '" aria-label="Share ' + esc(b.tier.name + ': ' + b.name) + '">Share</button>'
+      : '';
     return '<li class="forge-badge' + (b.tier ? ' forge-frame--' + b.tier.key : ' is-locked') + '">'
-      + '<span class="forge-badge__medal" aria-hidden="true"><svg viewBox="0 0 24 24">' + (ICONS[b.icon] || '') + '</svg></span>'
+      + medalHtml(b.icon)
       + '<span class="forge-badge__text"><strong>' + esc(b.name) + '</strong>'
       + '<span class="forge-badge__tier">' + esc(tierText) + '</span>'
       + '<small>' + esc(status) + '</small>' + progress
-      + '<span class="forge-badge__about">' + esc(b.about) + '</span></span></li>';
+      + '<span class="forge-badge__about">' + esc(b.about) + '</span>' + share + '</span></li>';
   }
 
   function html(list) {
@@ -179,5 +200,5 @@
       + '<ul class="forge-badges__grid">' + list.map(badgeHtml).join('') + '</ul></section>';
   }
 
-  root.ForgeAchievements = { BADGES: BADGES, TIERS: TIERS, tiersFor: tiersFor, measure: measure, compute: compute, html: html };
+  root.ForgeAchievements = { BADGES: BADGES, TIERS: TIERS, ICONS: ICONS, tiersFor: tiersFor, measure: measure, compute: compute, subjectTopics: subjectTopics, medalHtml: medalHtml, html: html };
 }(typeof window !== 'undefined' ? window : globalThis));

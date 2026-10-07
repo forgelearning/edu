@@ -241,3 +241,40 @@
 .forge-badge.is-locked .forge-badge__medal{filter:grayscale(1);opacity:.55}
 .forge-badge.is-locked .forge-badge__text strong{color:var(--slate)}
 @media(max-width:560px){.forge-badges{padding:18px 16px}}
+
+/* Rank and badge celebration popup (scripts/forge-celebrate.js). */
+.forge-celebrate{position:fixed;inset:0;margin:auto;height:fit-content;width:min(420px,calc(100vw - 32px));max-height:calc(100dvh - 32px);overflow:auto;padding:30px 26px 24px;border:1px solid var(--line);border-radius:var(--radius-lg);background:var(--panel);color:var(--white);text-align:center;box-shadow:0 30px 80px rgba(0,0,0,.45)}
+.forge-celebrate::backdrop{background:rgba(10,8,6,.62);backdrop-filter:blur(3px)}
+.forge-celebrate[open]{animation:forge-celebrate-in .32s cubic-bezier(.2,.9,.3,1.25) both}
+@keyframes forge-celebrate-in{from{opacity:0;transform:translateY(14px) scale(.94)}to{opacity:1;transform:none}}
+.forge-celebrate__kicker{margin:0 0 16px;color:var(--ember);font:700 12px 'JetBrains Mono',monospace;letter-spacing:.12em;text-transform:uppercase}
+.forge-celebrate__visual{display:grid;place-items:center;margin-bottom:16px}
+.forge-celebrate__visual .forge-avatar--lg{--avatar-size:104px;--avatar-ring:5px}
+.forge-badge__medal--lg{width:104px;height:104px;padding:5px}
+.forge-badge__medal--lg svg{padding:20px;stroke-width:1.6}
+.forge-celebrate h2{margin:0 0 8px;color:var(--white);font:800 24px/1.25 'Rethink Sans',sans-serif}
+.forge-celebrate__body{margin:0 auto 18px;max-width:34ch;color:var(--slate);font-size:14px;line-height:1.55}
+.forge-celebrate__also{margin:0 0 8px;color:var(--slate);font:700 11px 'JetBrains Mono',monospace;letter-spacing:.08em;text-transform:uppercase}
+.forge-celebrate__more{display:grid;gap:6px;margin:0 0 16px;padding:0;list-style:none;text-align:left}
+.forge-celebrate__more li{display:flex;align-items:center;gap:10px;padding:8px 10px;border:1px solid var(--line);border-radius:var(--radius-md);background:var(--panel-2);font-size:13px;font-weight:600}
+.forge-celebrate__more .forge-badge__medal{width:32px;height:32px;padding:2px}
+.forge-celebrate__more .forge-badge__medal svg{padding:6px}
+.forge-celebrate__status{min-height:1.2em;margin:0 0 12px;color:var(--good);font-size:13px}
+.forge-celebrate__status:empty{margin:0}
+.forge-celebrate__actions{display:flex;justify-content:center;gap:10px}
+.forge-celebrate__actions .forge-button{min-width:120px;min-height:44px}
+.forge-celebrate__sparks{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.forge-celebrate__sparks i{position:absolute;top:118px;left:50%;width:6px;height:6px;border-radius:50%;background:var(--hot);opacity:0;animation:forge-spark 1.1s .15s ease-out both}
+.forge-celebrate__sparks i:nth-child(2){background:var(--ember);--dx:-120px;--dy:-60px}
+.forge-celebrate__sparks i:nth-child(1){--dx:110px;--dy:-70px}
+.forge-celebrate__sparks i:nth-child(3){--dx:-90px;--dy:40px}
+.forge-celebrate__sparks i:nth-child(4){background:var(--ember);--dx:130px;--dy:30px}
+.forge-celebrate__sparks i:nth-child(5){--dx:-30px;--dy:-110px}
+.forge-celebrate__sparks i:nth-child(6){background:var(--ember);--dx:40px;--dy:-115px}
+@keyframes forge-spark{0%{opacity:1;transform:translate(-50%,0) scale(1)}100%{opacity:0;transform:translate(calc(-50% + var(--dx,0px)),var(--dy,0px)) scale(.4)}}
+@media(prefers-reduced-motion:reduce){.forge-celebrate[open]{animation:none}.forge-celebrate__sparks{display:none}}
+.forge-badge__share{justify-self:start;margin-top:6px;padding:3px 10px;border:1px solid var(--line);border-radius:var(--radius-pill);background:transparent;color:var(--slate);font:600 12px 'Rethink Sans',sans-serif;cursor:pointer}
+.forge-badge__share:hover{border-color:var(--frame-ink,var(--slate));color:var(--white)}
+.forge-badge__share:focus-visible{outline:2px solid var(--hot);outline-offset:2px}
+.forge-share-status{display:block;margin-top:4px;color:var(--good);font-size:12px}
+.forge-share-status:empty{display:none}

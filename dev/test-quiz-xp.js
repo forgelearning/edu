@@ -13,6 +13,9 @@ const code = grab('function calcXPFromResponses(', 'function renderResults(')
 const ctx = { state: { classId: 'c1', isPaid: false, isTrial: false, baseXP: null, pageXP: 0, sessionXP: 0 }, document: { getElementById: () => null } };
 ctx.isFreeTier = () => !ctx.state.isPaid && !ctx.state.isTrial && !ctx.state.classId;
 vm.createContext(ctx);
+// The page loads the shared rank table before its own code.
+ctx.window = ctx;
+vm.runInContext(fs.readFileSync('scripts/forge-ranks.js', 'utf8'), ctx);
 vm.runInContext(code, ctx);
 
 // In-quiz awards match the response-based total.

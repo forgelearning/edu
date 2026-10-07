@@ -27,6 +27,8 @@
 <script src="scripts/forge-question.js?v=20261003-hints"></script>
 <script src="scripts/forge-rewards.js"></script>
 <script src="scripts/forge-ranks.js"></script>
+<script src="scripts/forge-achievements.js"></script>
+<script src="scripts/forge-celebrate.js"></script>
 <script src="scripts/forge-theme.js?v=20260808-theme2"></script>
 <script src="scripts/forge-logo.js"></script>
 <script src="scripts/forge-role.js"></script>
@@ -2208,8 +2210,9 @@ function calcXPFromResponses(responses){
   });
   return xp;
 }
-var LB_RANKS=[{min:0,name:'Apprentice',color:'var(--slate)'},{min:300,name:'Journeyman',color:'var(--hot)'},{min:1500,name:'Craftsman',color:'var(--ember)'},{min:5000,name:'Forged',color:'var(--good)'},{min:15000,name:'Master',color:'var(--hot)'}];
-function getLBRank(xp){for(var i=LB_RANKS.length-1;i>=0;i--){if(xp>=LB_RANKS[i].min)return LB_RANKS[i];}return LB_RANKS[0];}
+// Ranks live in scripts/forge-ranks.js, shared with Home, Profile and the league.
+var LB_RANKS=ForgeRanks.RANKS;
+function getLBRank(xp){return ForgeRanks.rankFor(xp);}
 
 function renderResults(){
   var bk=BANKS[state.bank];
@@ -2263,6 +2266,9 @@ function renderResults(){
   if(state.classId && xpEnabled()) h+='<div id="result-league" class="result-league"></div>';
   h+='</div>';
   app.innerHTML=h;
+  // A rank reached this session opens the celebration (scripts/forge-celebrate.js).
+  // Badges are checked on Home and Profile, which hold the full history.
+  if(window.ForgeCelebrate&&xpEnabled()&&state.baseXP!=null) ForgeCelebrate.check({studentId:state.studentId,name:state.studentName,xp:state.baseXP+state.pageXP});
   var again=document.getElementById('retry')||(next.again&&document.getElementById('result-next-action'))||document.createElement('button');
   again.onclick=function(){
     var rawQs2=state.topicSpec&&window.ForgeChemistryTopics?ForgeChemistryTopics.questions(state.topicSpec).map(function(item){return item.question;}).filter(function(q){return !q.type||q.type==='fill_blank';}):BANKS[state.bank].questions.filter(function(q){return !q.type||q.type==='fill_blank';});

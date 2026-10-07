@@ -37,6 +37,8 @@
 <script src="scripts/forge-classes.js?v=20260813"></script>
 <script src="scripts/forge-rewards.js"></script>
 <script src="scripts/forge-ranks.js"></script>
+<script src="scripts/forge-achievements.js"></script>
+<script src="scripts/forge-celebrate.js"></script>
 <script src="scripts/forge-theme.js?v=20260808-theme2"></script>
 <script src="scripts/forge-sidebar.js?v=20260809-gearcenter"></script>
 <script src="scripts/forge-page-actions.js"></script>
@@ -87,6 +89,7 @@ function supaGet(t,p){return ForgeAPI.get(t,p);}
 var RANKS = ForgeRanks.RANKS;
 function getRank(xp){ return ForgeRanks.rankFor(xp); }
 
+
 // Classes are named "<year><letter>/<subject code>" (e.g. "12B/Bs" for a
 // Year 12 A-Level class, "10A/Gg" for a Year 10 GCSE class). There's no
 // separate level column, so level is derived from the year-group prefix:
@@ -124,6 +127,8 @@ function calcStreak(responses){ return window.ForgeStreak ? ForgeStreak.calc(res
 
 var st={studentId:null,classId:null,studentName:null,responses:[],isPaid:false,isTrial:false,trialDaysLeft:0,paidSubjects:[],isGCSE:false,loadError:false};
 var rewardsLoadedFor=null;
+// Set once match XP has synced (or failed to); see celebrateDashboard().
+var rewardsReadyFor=null;
 var app=document.getElementById('app');
 ForgeApp.loading(app, { label: 'Loading your dashboard', body: 'Getting your progress and focus areas ready.' });
 
@@ -268,10 +273,23 @@ function dashboardClassContext(){
   return {studentId:st.studentId,classId:st.classId,classCode:st.classCode,studentCode:st.studentCode,studentName:st.studentName};
 }
 
+// Same rule as the profile's celebrateProfile(): complete data only, and the
+// free tier is celebrated for badges, not ranks. Badges use the profile's
+// subject and topic list (ForgeAchievements.subjectTopics), so the targets
+// match what the profile shows.
+function celebrateDashboard(responses,xp,resolved){
+  if(!window.ForgeCelebrate||!window.ForgeAchievements||!st.studentId||st.loadError||rewardsReadyFor!==st.studentId)return;
+  var badges=ForgeAchievements.compute(responses,{resolved:resolved,topicBanks:ForgeAchievements.subjectTopics(responses,typeof SUBJECTS!=='undefined'?SUBJECTS:null)});
+  var freeTier=!st.isPaid&&!st.isTrial&&!st.classId;
+  ForgeCelebrate.check({studentId:st.studentId,name:st.studentName,xp:freeTier?null:xp,badges:badges});
+}
+
 function renderDashboard(){
   if(window.ForgeRewards&&st.studentId&&rewardsLoadedFor!==st.studentId){
     rewardsLoadedFor=st.studentId;
-    ForgeRewards.load(dashboardClassContext()).then(function(){if(st.studentId===rewardsLoadedFor)renderDashboard();}).catch(function(){});
+    var loadingFor=st.studentId;
+    var ready=function(){rewardsReadyFor=loadingFor;if(st.studentId===loadingFor)renderDashboard();};
+    ForgeRewards.load(dashboardClassContext()).then(ready,ready);
   }
   var responses=st.responses||[];
   var total=responses.filter(function(r){return !r.reforge_attempted;}).length;
@@ -289,6 +307,7 @@ function renderDashboard(){
   // One lifecycle owner keeps Dashboard, Anvil, Profile and Teacher aligned.
   var misconceptionSummary=ForgeMisconceptions.summarize(responses);
   var activeMCs=misconceptionSummary.active;
+  celebrateDashboard(responses,xp,(misconceptionSummary.resolved||[]).length);
   if (window.ForgeSidebar) ForgeSidebar.setBadge('anvil', activeMCs.length || null);
   try { localStorage.setItem('forge-anvil-open', String(activeMCs.length)); } catch(e) {}
   if (st.classId) {

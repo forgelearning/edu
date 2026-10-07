@@ -32,6 +32,7 @@
 <script src="scripts/forge-rewards.js"></script>
 <script src="scripts/forge-ranks.js"></script>
 <script src="scripts/forge-achievements.js"></script>
+<script src="scripts/forge-celebrate.js"></script>
 <script src="scripts/forge-theme.js?v=20260808-theme2"></script>
 <script src="scripts/forge-sidebar.js?v=20260809-gearcenter"></script>
 <script>if (window.ForgeRole) ForgeRole.guard('student', 'teacher.html');</script>
@@ -108,6 +109,16 @@ function learningTrail(responses,studentId){
 var RANKS = ForgeRanks.RANKS;
 function getRank(xp){ return ForgeRanks.rankFor(xp); }
 
+// A new rank or badge tier since this student last saw it opens a popup
+// (scripts/forge-celebrate.js). Only on complete data: answers loaded without
+// error and match XP synced. Ranks are part of Pro, so the free tier (no
+// class, no subscription, no trial) is celebrated for badges only.
+function celebrateProfile(xp,badges){
+  if(!window.ForgeCelebrate||!st.studentId||st.loadError||rewardsReadyFor!==st.studentId)return;
+  var freeTier=!st.isPaid&&!st.isTrial&&!st.classId;
+  ForgeCelebrate.check({studentId:st.studentId,name:st.studentName,xp:freeTier?null:xp,badges:badges});
+}
+
 // Classes are named "<year><letter>/<subject code>" (e.g. "12B/Bs" for a
 // Year 12 A-Level class, "10A/Gg" for a Year 10 GCSE class). There's no
 // separate level column, so level is derived from the year-group prefix:
@@ -161,6 +172,9 @@ function calcXP(responses){
 
 var st={studentId:null,classId:null,studentName:null,responses:[],isPaid:false,isTrial:false,trialDaysLeft:0,paidSubjects:[],activeTab:'overview',isGCSE:false,loadError:false};
 var rewardsLoadedFor=null;
+// Set once match XP has synced (or failed to), so a celebration never runs on
+// a partial total: see celebrateProfile().
+var rewardsReadyFor=null;
 var app=document.getElementById('app');
 ForgeState.loading(app, { label: 'Loading your profile', body: 'Getting your progress, strengths, and focus areas ready.' });
 
@@ -252,7 +266,9 @@ function classInfo(){
 function renderProfile(){
   if(window.ForgeRewards&&st.studentId&&rewardsLoadedFor!==st.studentId){
     rewardsLoadedFor=st.studentId;
-    ForgeRewards.load({studentId:st.studentId,studentName:st.studentName}).then(function(){if(st.studentId===rewardsLoadedFor)renderProfile();}).catch(function(){});
+    var loadingFor=st.studentId;
+    var ready=function(){rewardsReadyFor=loadingFor;if(st.studentId===loadingFor)renderProfile();};
+    ForgeRewards.load({studentId:st.studentId,studentName:st.studentName}).then(ready,ready);
   }
   var responses=st.responses;
   var total=responses.filter(function(r){return !r.reforge_attempted;}).length;
@@ -430,7 +446,9 @@ function renderProfile(){
     // The topic badges scale with this subject's topic list, the same list
     // the "Your topics" card above shows.
     var subjectTopics=((typeof SUBJECTS!=='undefined'&&SUBJECTS[subjectKey])||{}).banks||[];
-    if(window.ForgeAchievements) h+=ForgeAchievements.html(ForgeAchievements.compute(responses,{resolved:resolved,topicBanks:subjectTopics}));
+    var badges=window.ForgeAchievements?ForgeAchievements.compute(responses,{resolved:resolved,topicBanks:subjectTopics}):null;
+    if(badges) h+=ForgeAchievements.html(badges);
+    celebrateProfile(xp,badges);
 
     h+='<p class="prof-footer">→ Your overview updates after every session. Focus areas tell you where to spend time — strengths confirm what is already locked in.</p>';
     var trail=learningTrail(responses,st.studentId);
@@ -538,6 +556,7 @@ function renderProfile(){
     h+='<p class="tag forge-u-1x3vyu3">'+profileEscape(st.studentName)+' — Forge Rank</p>';
     h+='<div class="rank-title" style="color:'+rank.color+'">'+rank.name+'</div>';
     h+='<div class="rank-xp">'+xp.toLocaleString()+' XP</div>';
+    if(window.ForgeCelebrate)h+='<button type="button" class="forge-badge__share rank-share" data-forge-share="rank" data-rank="'+rank.key+'" aria-label="Share your '+rank.name+' rank">Share rank</button>';
     h+='<div class="xp-bar-wrap"><div class="xp-bar-fill" style="width:'+pct+'%"></div></div>';
     if(nextRank){h+='<div class="xp-bar-label"><span>'+rank.name+'</span><span>'+xpToNext.toLocaleString()+' XP to '+nextRank.name+'</span></div>';}
     else{h+='<div class="forge-u-1a7i38n">Maximum rank achieved ✦</div>';}

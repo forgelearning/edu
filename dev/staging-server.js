@@ -20,7 +20,9 @@ const demoResponses = [];
 const demoFreeResponses = [];
 const demoCards = new Map();
 const demoMatchRewards = new Map();
-const demoStartingMatchXp = 3000;
+// Starting match XP for the demo student. /test-account?matchxp=4990 starts
+// them just below a rank so a single correct answer crosses it.
+let demoStartingMatchXp = 3000;
 
 function json(res, status, body) {
   const payload = JSON.stringify(body);
@@ -112,14 +114,16 @@ function seedDemoHistory() {
 
 function serveDemoAccount(res, url) {
   demoResponses.length = 0;
+  const startXp = Number(url && url.searchParams.get('matchxp'));
+  demoStartingMatchXp = Number.isInteger(startXp) && startXp >= 0 && startXp <= 100000 ? startXp : 3000;
   if (url && url.searchParams.get('history') === '1') seedDemoHistory();
   demoMatchRewards.clear();
   const session = JSON.stringify(demoStudent);
   const html = '<!doctype html><html lang="en"><meta charset="utf-8"><title>Forge test student</title><p>Opening Forge as a local test student…</p><script>'
     + '["forge-free-session","forge-paid-student","forge-teacher-session","forge-active-role","forge-auth-session"].forEach(function(key){localStorage.removeItem(key)});'
-    + 'Object.keys(localStorage).filter(function(key){return key.indexOf("forge-session:local-motion-student:")===0||key.indexOf("forge-crucible-run:local-motion-student:")===0||key==="forge-revision:local-motion-student"}).forEach(function(key){localStorage.removeItem(key)});'
+    + 'Object.keys(localStorage).filter(function(key){return key.indexOf("forge-session:local-motion-student:")===0||key.indexOf("forge-crucible-run:local-motion-student:")===0||key==="forge-revision:local-motion-student"||key==="forge-celebrated:local-motion-student"}).forEach(function(key){localStorage.removeItem(key)});'
     + 'localStorage.setItem("forge-student",'+JSON.stringify(session)+');'
-    + 'localStorage.setItem("forge-rewards:local-motion-student",JSON.stringify({quizXp:0,serverMatchXp:3000,pending:[],rounds:{}}));'
+    + 'localStorage.setItem("forge-rewards:local-motion-student",JSON.stringify({quizXp:0,serverMatchXp:'+demoStartingMatchXp+',pending:[],rounds:{}}));'
     + 'localStorage.setItem("forge-classes",JSON.stringify([{classId:"local-motion-class",classCode:"LOCAL-MOTION",className:"Motion test class",subject:"gcse-geo",studentId:"local-motion-student",studentName:"Motion Tester",studentCode:"LOCAL123"}]));'
     + 'location.replace("/forge-quiz.html?subject=gcse-geo");'
     + '</script></html>';
