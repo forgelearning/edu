@@ -19,6 +19,8 @@ const demoStudent = {studentId:'local-motion-student',classId:'local-motion-clas
 const demoResponses = [];
 const demoFreeResponses = [];
 const demoCards = new Map();
+const demoMatchRewards = new Map();
+const demoStartingMatchXp = 3000;
 
 function json(res, status, body) {
   const payload = JSON.stringify(body);
@@ -90,11 +92,13 @@ function serveFile(req, res, pathname) {
 
 function serveDemoAccount(res) {
   demoResponses.length = 0;
+  demoMatchRewards.clear();
   const session = JSON.stringify(demoStudent);
   const html = '<!doctype html><html lang="en"><meta charset="utf-8"><title>Forge test student</title><p>Opening Forge as a local test student…</p><script>'
     + '["forge-free-session","forge-paid-student","forge-teacher-session","forge-active-role","forge-auth-session"].forEach(function(key){localStorage.removeItem(key)});'
     + 'Object.keys(localStorage).filter(function(key){return key.indexOf("forge-session:local-motion-student:")===0||key.indexOf("forge-crucible-run:local-motion-student:")===0||key==="forge-revision:local-motion-student"}).forEach(function(key){localStorage.removeItem(key)});'
     + 'localStorage.setItem("forge-student",'+JSON.stringify(session)+');'
+    + 'localStorage.setItem("forge-rewards:local-motion-student",JSON.stringify({quizXp:0,serverMatchXp:3000,pending:[],rounds:{}}));'
     + 'localStorage.setItem("forge-classes",JSON.stringify([{classId:"local-motion-class",classCode:"LOCAL-MOTION",className:"Motion test class",subject:"gcse-geo",studentId:"local-motion-student",studentName:"Motion Tester",studentCode:"LOCAL123"}]));'
     + 'location.replace("/forge-quiz.html?subject=gcse-geo");'
     + '</script></html>';
@@ -136,6 +140,22 @@ const server = http.createServer((req, res) => {
     return json(res, 200, {allowed:true, id:'staging-response-' + responseCount, used:responseCount});
   }
   if (mode === 'student-demo') {
+    if (url.pathname === '/mock-supabase/rest/v1/rpc/get_student_match_xp') {
+      return json(res, 200, {xp_total:demoStartingMatchXp+[...demoMatchRewards.values()].reduce((xp, reward) => xp + reward.xp, 0)});
+    }
+    if (url.pathname === '/mock-supabase/rest/v1/rpc/claim_student_match_xp') {
+      let raw='';
+      req.on('data', chunk => { raw += chunk; });
+      req.on('end', () => {
+        let body={};try{body=JSON.parse(raw||'{}');}catch(e){}
+        if (body.p_student_id !== demoStudent.studentId || ![3,4].includes(body.p_pairs)) return json(res, 400, {message:'Invalid match reward'});
+        const rewardKey=body.p_day+'|'+body.p_bank;
+        const awarded=!demoMatchRewards.has(rewardKey);
+        if (awarded) demoMatchRewards.set(rewardKey,{xp:body.p_pairs*5});
+        json(res, 200, {awarded, xp:awarded?body.p_pairs*5:0, xp_total:demoStartingMatchXp+[...demoMatchRewards.values()].reduce((xp, reward) => xp + reward.xp, 0)});
+      });
+      return;
+    }
     if (url.pathname === '/mock-supabase/rest/v1/rpc/manage_student_revision_card') {
       let raw='';
       req.on('data', chunk => { raw += chunk; });
