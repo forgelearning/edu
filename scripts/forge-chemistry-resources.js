@@ -75,8 +75,12 @@
       link.appendChild(name);link.appendChild(provider);list.appendChild(link);
     });
     section.appendChild(list);
-    var next=feedback.querySelector('#rf-btn, #next-btn');
-    feedback.insertBefore(section,next||null);
+    // Sit above the action buttons. The buttons live inside
+    // .forge-feedback-actions, so insert before that wrapper: inserting before
+    // a button that is not a direct child throws, and the throw stopped the
+    // quiz wiring up "Try a similar question" and "Continue".
+    var actions=feedback.querySelector('.forge-feedback-actions');
+    feedback.insertBefore(section,actions&&actions.parentNode===feedback?actions:null);
   }
   root.ForgeChemistryResources={forQuestion:forQuestion,appendTo:appendTo};
 })(window);

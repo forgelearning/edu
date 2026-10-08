@@ -31,6 +31,32 @@ assert.strictEqual(page.ForgeChemistryResources.forQuestion({specPointId:'aqa-a-
 const quizHtml=fs.readFileSync('pages/app/forge-quiz.html','utf8');
 assert(quizHtml.includes('scripts/forge-chemistry-resources.js'));
 assert(quizHtml.includes('ForgeChemistryResources.appendTo(fb,q)'));
+// The help panel is added to wrong-answer feedback before the quiz wires up
+// its buttons, so a throw here leaves "Try a similar question" and "Continue"
+// dead. The buttons sit inside .forge-feedback-actions, not directly in the
+// feedback box, and insertBefore throws on a reference node that is not a
+// direct child — enforce that rule in the fake DOM.
+{
+  const el = (cls, parent) => ({className:cls, parentNode:parent||null, children:[], appendChild(child){child.parentNode=this;this.children.push(child);return child;}, setAttribute(){}});
+  const feedback = el('feedback');
+  feedback.appendChild(el('scaffold-box'));
+  const actions = feedback.appendChild(el('forge-feedback-actions'));
+  const rfBtn = actions.appendChild(el('reforge-trigger'));
+  feedback.querySelector = selector => selector === '.forge-feedback-actions' ? actions : selector.includes('#rf-btn') ? rfBtn : null;
+  feedback.insertBefore = function(node, ref){
+    if (ref && ref.parentNode !== this) throw new Error('NotFoundError: reference node is not a child');
+    const at = ref ? this.children.indexOf(ref) : this.children.length;
+    node.parentNode = this; this.children.splice(at, 0, node); return node;
+  };
+  const domPage = {document:{createElement:tag => el(tag)}};
+  domPage.window = domPage;
+  vm.createContext(domPage);
+  vm.runInContext(fs.readFileSync('scripts/forge-chemistry-resources.js','utf8'), domPage);
+  domPage.ForgeChemistryResources.appendTo(feedback, {specPointId:'aqa-a-chem-3.1.1', stem:'What is the first ionisation energy?'});
+  assert.strictEqual(feedback.children.length, 3);
+  assert.strictEqual(feedback.children[1].className, 'forge-chemistry-help', 'help panel sits above the action buttons');
+  assert.strictEqual(feedback.children[2], actions);
+}
 const atomic=topics.find(topic=>topic.code==='3.1.1');
 assert.strictEqual(atomic.label,'Atomic structure');
 assert.strictEqual(atomic.count,16);
