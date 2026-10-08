@@ -44,4 +44,13 @@ assert(html.includes('1,180 XP to Craftsman'), 'shows the distance to the next r
 ctx.state.classId = null;
 assert.strictEqual(ctx.xpResultsHtml(), '', 'free-tier students see no XP, matching the Pro upsell');
 
+// A class student's lifetime XP comes from their own response history. The
+// quiz page used to read it through the legacy get_student_own_responses,
+// which answers [] for a class with student codes, so the results card
+// showed Apprentice beside a league that ranked the same student Journeyman.
+// Load it the way Home and Profile do.
+const quizPage = fs.readFileSync('pages/app/forge-quiz.html', 'utf8');
+assert(!quizPage.includes("'get_student_own_responses'"), 'quiz page must not call the legacy response RPC directly');
+assert(/ForgeClasses\.fetchLinkedResponses\([^)]*studentCode: state\.studentCode/.test(quizPage), 'quiz page loads class history with the student code');
+
 console.log('Quiz XP tests passed (matches dashboard total, session awards, rank progress, rank-up, free tier hidden).');
