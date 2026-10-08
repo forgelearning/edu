@@ -354,3 +354,39 @@ XP this week still received their top-level count. Afterwards the live body
 contains the trophy logic, `anon`/`authenticated` EXECUTE is unchanged, and no
 test rows remained. Backdating awards one trophy across all classes (one class
 qualified in the week of 28 September; three had fewer than three students).
+
+## 20261008 — friends for independent students (switched off)
+
+| File | What it does |
+|---|---|
+| `20261008162807_independent_friends.sql` | `app_flags` (site-wide switches, `independent_friends` stored **false**), `independent_friend_profiles`, `independent_friendships`, and three internal helpers. All with RLS on, no policies, grants revoked. |
+| `20261008163725_independent_friends_read.sql` | `get_independent_friends()`. |
+| `*_independent_friends_actions.sql` | Switch on (13+ and a name) / off, new code, send, respond, remove. |
+
+Friends for signed-in students who are not in a class, keyed by the account
+so it follows them across devices. Rules agreed with the product owner on
+2026-10-08 and written out at the top of the first file: off until
+`app_flags.independent_friends` is true; 13+ confirmed by the student; opt-in
+from Settings; add only by private code (no search, no list); nothing about the
+other student, not even a name, until they accept; no messaging; a new code
+stops the old one; turning off deletes every friendship and request; at most
+10 failed codes an hour and 5 waiting requests.
+
+**The switch stays off until safeguarding / DPO sign-off.** To switch on:
+
+```sql
+update public.app_flags set enabled = true, updated_at = now() where key = 'independent_friends';
+```
+
+Every function returns `available: false` / `unavailable` while it is off, so
+the Settings section and Home card do not appear and nothing can be written.
+Switching it off again hides everything without deleting anyone's data.
+
+Applied to production in parts because the connector asks for approval on any
+statement containing `delete`: the tables and helpers, then the read function
+(2026-10-08). **The actions file is not applied yet**: it needs that approval
+in the Supabase connector, or can be run as-is in the dashboard SQL editor.
+Once applied, rename it to the version production records. Until then the
+feature cannot be switched on usefully, and with the switch off it makes no
+difference either way.
+

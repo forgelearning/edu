@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="css/auth.css">
 <link rel="stylesheet" href="css/sidebar.css">
 <link rel="stylesheet" href="css/components.css?v=20261004-rings">
-<link rel="stylesheet" href="css/forge-league.css?v=20261008a">
+<link rel="stylesheet" href="css/forge-league.css?v=20261008b">
 <link rel="stylesheet" href="css/generated-utilities.css">
 <link rel="stylesheet" href="css/page-overrides/student-dashboard.css?v=20261006-entry">
 <link rel="stylesheet" href="css/auth-ember.css?v=20260817-auth2">
@@ -70,6 +70,7 @@ ForgeSidebar.mount({
 <script src="scripts/forge-topic-mastery.js?v=20261004-rings"></script>
 <script src="scripts/forge-league.js?v=20261008a"></script>
 <script src="scripts/forge-friends.js?v=20260929d"></script>
+<script src="scripts/forge-independent-friends.js"></script>
 
 <main class="wrap" id="main-content">
   <div id="app" aria-live="polite"></div>
@@ -403,6 +404,7 @@ function renderDashboard(){
   h+='<a href="revision.html">Revision cards</a>';
   h+='</nav>';
   if(st.classId) h+='<div id="dashboard-friends"></div>';
+  else if(window.ForgeIndependentFriends&&window.ForgeAuth&&ForgeAuth.hasSession()) h+='<div id="dashboard-independent-friends"></div>';
   h+='</div>';
   if(total>0){
     var nextRank=RANKS.filter(function(r){return r.min>xp;})[0]||null;
@@ -432,6 +434,8 @@ function renderDashboard(){
   });
   var friendsEl=document.getElementById('dashboard-friends');
   if(friendsEl&&window.ForgeFriends) ForgeFriends.mount(friendsEl,socialCtx);
+  var independentFriendsEl=document.getElementById('dashboard-independent-friends');
+  if(independentFriendsEl) ForgeIndependentFriends.mountHome(independentFriendsEl);
 }
 
 
