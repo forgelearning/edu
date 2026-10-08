@@ -6,7 +6,7 @@
   <title>Forge — Student Settings</title>
   <link rel="stylesheet" href="css/fonts.css">
   <link rel="stylesheet" href="css/tokens.css">
-  <link rel="stylesheet" href="css/base.css?v=20260808-navpolish">
+  <link rel="stylesheet" href="css/base.css?v=20261008-handoff">
   <link rel="stylesheet" href="css/sidebar.css">
   <link rel="stylesheet" href="css/components.css?v=20260812">
   <link rel="stylesheet" href="css/page-overrides/settings.css">
@@ -24,7 +24,7 @@
   <script src="scripts/forge-logo.js"></script>
   <script src="scripts/forge-sidebar.js?v=20260809-gearcenter"></script>
   <script src="scripts/forge-page-actions.js"></script>
-  <script src="forge-auth.js"></script>
+  <script src="forge-auth.js?v=20261008-name"></script>
   <script>if (window.ForgeRole) ForgeRole.guard('student', 'student-dashboard.html');</script>
   <script>
     function studentSettingsSignOut() {
@@ -78,6 +78,18 @@
       <h3 class="settings-rewards-subtitle">Rank and avatar frame</h3>
       <p class="settings-copy settings-rank-intro">Your frame comes with your rank and changes as you earn XP. Friends see it next to your name.</p>
       <div id="settings-rank-ladder"></div>
+    </section>
+    <!-- Independent students only: class students' names are set when they
+         join, and are what the teacher sees on the register. -->
+    <section class="settings-section" id="settings-name" aria-labelledby="name-title" hidden>
+      <div class="settings-section-heading"><div><p class="settings-kicker">PROFILE</p><h2 id="name-title">Your name</h2></div><span class="settings-section-mark" aria-hidden="true">A</span></div>
+      <p class="settings-copy">Shown on your dashboard. Your first name is enough.</p>
+      <div class="settings-field">
+        <label class="settings-label" for="settings-student-name">Name</label>
+        <input class="settings-input" type="text" id="settings-student-name" autocomplete="given-name" maxlength="40" placeholder="e.g. Alex">
+        <button class="forge-button" type="button" id="settings-save-name">Save name</button>
+        <p class="settings-help" id="settings-name-status" role="status"></p>
+      </div>
     </section>
     <!-- Friends for independent students. Filled in only when signed in and the
          feature is switched on server-side (scripts/forge-independent-friends.js). -->
@@ -165,6 +177,24 @@
         radio.checked=radio.value===((window.ForgeRewards && !ForgeRewards.unlocked(studentId,localStorage.getItem('forge-background')||'plain'))?'plain':(localStorage.getItem('forge-background')||'plain'));
         radio.addEventListener('change',function(){if(this.checked&&window.setForgeBackground)window.setForgeBackground(this.value);});
       });
+      (function mountName(){
+        var free=null,classStudent=null;
+        try{free=JSON.parse(localStorage.getItem('forge-free-session')||'null');classStudent=JSON.parse(localStorage.getItem('forge-student')||'null');}catch(e){}
+        if(!free||!free.freeToken||(classStudent&&classStudent.classId)||!window.ForgeAuth||!ForgeAuth.setFreeStudentName)return;
+        var input=document.getElementById('settings-student-name'),status=document.getElementById('settings-name-status'),btn=document.getElementById('settings-save-name');
+        input.value=free.name&&free.name!=='Student'?free.name:'';
+        document.getElementById('settings-name').hidden=false;
+        function save(){
+          var name=input.value.trim();
+          if(!name){status.textContent='Enter your name.';return;}
+          btn.disabled=true;status.textContent='Saving…';
+          ForgeAuth.setFreeStudentName(name).then(function(saved){input.value=saved;status.textContent='Saved.';})
+            .catch(function(e){status.textContent=e.message||'Your name could not be saved.';})
+            .finally(function(){btn.disabled=false;});
+        }
+        btn.addEventListener('click',save);
+        input.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();save();}});
+      }());
       document.getElementById('settings-sign-out').addEventListener('click', studentSettingsSignOut);
     }());
   </script>

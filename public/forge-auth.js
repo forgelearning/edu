@@ -244,6 +244,30 @@ var ForgeAuth = {
       return session;
     });
   },
+  // Independent students only. The free token authorises it, so a guest can
+  // name themselves too; on an email account the server renames every free
+  // row the account owns. Resolves with the saved (cleaned) name.
+  setFreeStudentName: function(name) {
+    var free = null;
+    try { free = JSON.parse(localStorage.getItem('forge-free-session') || 'null'); } catch(e) {}
+    if (!free || !free.studentId || !free.freeToken) return Promise.reject(new Error('Start studying on your own first, then add your name.'));
+    return ForgeAPI.rpc('set_free_student_name', {
+      p_student_id: free.studentId, p_free_token: free.freeToken, p_name: name
+    }).then(function(result) {
+      if (result && result.result === 'invalid') throw new Error('Use letters only, for example Alex or Alex Morgan.');
+      if (!result || result.result !== 'saved') throw new Error('Your name could not be saved. Please try again.');
+      free.name = result.name;
+      try {
+        localStorage.setItem('forge-free-session', JSON.stringify(free));
+        var paid = JSON.parse(localStorage.getItem('forge-paid-student') || 'null');
+        if (paid && String(paid.studentId) === String(free.studentId)) {
+          paid.name = result.name;
+          localStorage.setItem('forge-paid-student', JSON.stringify(paid));
+        }
+      } catch(e) {}
+      return result.name;
+    });
+  },
 
   // Refresh an expired access token
   refreshSession: function(refreshToken) {
