@@ -7,7 +7,7 @@ module.exports = {
   slug: 'business',
   name: 'Business',
   level: 'A Level',
-  intro: 'Edexcel A-level Business explanations for Themes 1 to 4. Videos open on YouTube.',
+  intro: 'Edexcel A-level Business explanations for Themes 1 to 4. Videos play here in Forge.',
   heading: 'Edexcel 9BS0 · TakingTheBiz, Bizconsesh and others',
   groups: [
     { title: 'Marketing and people', videos: [

@@ -62,13 +62,19 @@
 
   // The avatar is decorative wherever the name is printed beside it, which is
   // everywhere it is used today; pass {label: true} for a standalone avatar.
+  // opts.emblem: an icon's <svg> markup from scripts/forge-emblems.js (a fixed
+  // table, never user text) to show instead of the initials. opts.own marks
+  // the student's own avatar so a new emblem can redraw it in place.
   function avatarHtml(name, xp, opts) {
     opts = opts || {};
     var rank = opts.rank || rankFor(xp);
     var size = /^(sm|md|lg)$/.test(opts.size) ? opts.size : 'md';
     var a11y = opts.label ? ' role="img" aria-label="' + esc(name + ', ' + rank.name + ' (' + rank.frameName + ' frame)') + '"' : ' aria-hidden="true"';
-    return '<span class="forge-avatar forge-avatar--' + size + ' forge-frame--' + rank.frame + (opts.locked ? ' is-locked' : '') + '"' + a11y + '>'
-      + '<span class="forge-avatar__initials">' + esc(initials(name)) + '</span></span>';
+    var inner = opts.emblem
+      ? '<span class="forge-avatar__emblem">' + opts.emblem + '</span>'
+      : '<span class="forge-avatar__initials">' + esc(initials(name)) + '</span>';
+    return '<span class="forge-avatar forge-avatar--' + size + ' forge-frame--' + rank.frame + (opts.locked ? ' is-locked' : '') + '"' + (opts.own ? ' data-forge-own' : '') + a11y + '>'
+      + inner + '</span>';
   }
 
   function chipHtml(xp, rank) {
@@ -76,9 +82,10 @@
     return '<span class="forge-rank-chip forge-frame--' + rank.frame + '">' + esc(rank.name) + '</span>';
   }
 
-  // Every rank, with the student's own initials in each frame so they can see
+  // Every rank, with the student's own initials (or emblem) in each frame so they can see
   // what they are working towards.
-  function ladderHtml(name, xp) {
+  function ladderHtml(name, xp, opts) {
+    opts = opts || {};
     xp = clampXp(xp);
     var current = rankFor(xp);
     var h = '<ol class="forge-rank-ladder">';
@@ -86,7 +93,7 @@
       var earned = xp >= rank.min, isCurrent = rank === current;
       var state = isCurrent ? 'Your rank' : earned ? 'Earned' : (rank.min - xp).toLocaleString() + ' XP to go';
       h += '<li class="forge-rank-ladder__step' + (isCurrent ? ' is-current' : '') + (earned ? '' : ' is-locked') + '">'
-        + avatarHtml(name, xp, { rank: rank, size: 'sm', locked: !earned })
+        + avatarHtml(name, xp, { rank: rank, size: 'sm', locked: !earned, emblem: opts.emblem, own: opts.own })
         + '<span class="forge-rank-ladder__text"><strong>' + esc(rank.name) + '</strong>'
         + '<small>' + esc(rank.frameName) + ' frame · ' + (rank.min ? rank.min.toLocaleString() + ' XP' : 'from the start') + '</small></span>'
         + '<span class="forge-rank-ladder__state">' + esc(state) + '</span></li>';

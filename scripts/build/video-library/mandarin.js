@@ -6,7 +6,7 @@ module.exports = {
   slug: 'mandarin',
   name: 'Mandarin',
   level: 'Other qualifications',
-  intro: 'IB Mandarin B: key grammar patterns, text types and the Identities theme. Videos open on YouTube.',
+  intro: 'IB Mandarin B: key grammar patterns, text types and the Identities theme. Videos play here in Forge.',
   heading: 'IB Language B SL · Twin Cities Chinese Tutor and others',
   groups: [
     { title: 'Aspect and sentence patterns', videos: [
@@ -20,7 +20,7 @@ module.exports = {
       g('xTTOHJv-RzU', 'Comparisons with 比', TCCT),
       g('4Rbe-LGWYO4', 'Which de: 的, 得 or 地?', 'Chinese Zero to Hero'),
       g('5BNxDj_h9iQ', 'Common measure words', 'Grace Mandarin Chinese'),
-      g('o8mj7V2fZjE', 'Paired conjunctions: 因为……所以 and 虽然……但是', 'jiangjiang mandarin'),
+      { ...g('o8mj7V2fZjE', 'Paired conjunctions: 因为……所以 and 虽然……但是', 'jiangjiang mandarin'), noEmbed: true },
     ] },
     { title: 'Text handling, writing and identities', videos: [
       ib('1Yj8ls-sm2Y', 'Paper 2 reading tips', 'Mandarin Feast'),

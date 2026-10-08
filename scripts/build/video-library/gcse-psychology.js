@@ -7,7 +7,7 @@ module.exports = {
   slug: 'gcse-psychology',
   name: 'Psychology',
   level: 'GCSE',
-  intro: 'AQA GCSE Psychology explanations for Papers 1 and 2, grouped by topic. Videos open on YouTube.',
+  intro: 'AQA GCSE Psychology explanations for Papers 1 and 2, grouped by topic. Videos play here in Forge.',
   heading: 'AQA 8182 · Psych Boost, PsychSuccess and others',
   groups: [
     { title: 'Memory', videos: [

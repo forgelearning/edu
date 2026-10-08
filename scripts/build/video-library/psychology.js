@@ -7,7 +7,7 @@ module.exports = {
   slug: 'psychology',
   name: 'Psychology',
   level: 'A Level',
-  intro: 'AQA A-level Psychology explanations for Papers 1 to 3, grouped by topic. Videos open on YouTube.',
+  intro: 'AQA A-level Psychology explanations for Papers 1 to 3, grouped by topic. Videos play here in Forge.',
   heading: 'AQA 7182 · Psych Boost, Bear it in MIND and SMCartledge',
   groups: [
     { title: 'Social influence', videos: [

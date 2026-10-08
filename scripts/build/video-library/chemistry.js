@@ -2,7 +2,7 @@ module.exports = {
   slug: 'chemistry',
   name: 'Chemistry',
   level: 'A Level',
-  intro: 'AQA A-level Chemistry explanations, grouped by topic. Videos open on YouTube.',
+  intro: 'AQA A-level Chemistry explanations, grouped by topic. Videos play here in Forge.',
   heading: 'AQA A-level · Eliot Rintoul',
   groups: [
     { title: 'Atomic structure and amount of substance', videos: [

@@ -236,9 +236,11 @@
           <li>Store your session (display name, class code and, for protected class-linked students, private student code) so you do not have to re-enter it when navigating between the Practice, Assignments, Repair mistakes, Timed practice, Home and Profile pages</li>
           <li>Store your anonymous free-tier identifier (a randomly generated token, not linked to any personal information)</li>
           <li>Store your Supabase Auth session token (access token + refresh token) if you have a Pro or trial account — this allows you to stay logged in across visits without re-entering your password</li>
+          <li>Remember appearance choices (accent colour, background and avatar character) and which library videos you have opened, so the Videos page can mark them as watched</li>
         </ul>
         <p>localStorage data is stored on your device only and is never transmitted to our servers except as part of normal authenticated requests. It can be cleared at any time by clicking "Switch student" / "Sign out" or clearing your browser data.</p>
         <p>Marketing and guide pages use Google Analytics 4 to understand site usage. Analytics storage is denied until a visitor gives consent through the site banner. Pupil learning pages do not load Google Analytics or the separate product event tracker. You can reject analytics or <button class="privacy-settings" type="button" data-forge-action="analytics-settings">change your choice</button>. Google may process technical request data under its own privacy terms; see the sub-processors section below.</p>
+        <p>The Videos library plays YouTube videos inside Forge using YouTube's privacy-enhanced mode (youtube-nocookie.com). Nothing is loaded from YouTube until a student presses a video; from then on, YouTube receives technical request data such as the IP address, and processes it under <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google's privacy policy</a>, as it would on youtube.com. Forge does not send YouTube a student's name, class or answers. A few videos whose owners do not allow embedding open on youtube.com instead.</p>
       </section>
 
       <!-- 8. DPA -->

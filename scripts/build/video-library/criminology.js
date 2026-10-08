@@ -5,7 +5,7 @@ module.exports = {
   slug: 'criminology',
   name: 'Criminology',
   level: 'Other qualifications',
-  intro: 'WJEC Level 3 Applied Criminology explanations for Units 1 to 4. Videos open on YouTube.',
+  intro: 'WJEC Level 3 Applied Criminology explanations for Units 1 to 4. Videos play here in Forge.',
   heading: 'WJEC Level 3 Applied Criminology · tutor2u and others',
   groups: [
     { title: 'Unit 1: Changing awareness of crime', videos: [

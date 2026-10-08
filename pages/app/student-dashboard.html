@@ -38,6 +38,7 @@
 <script src="scripts/forge-rewards.js"></script>
 <script src="scripts/forge-ranks.js"></script>
 <script src="scripts/forge-achievements.js"></script>
+<script src="scripts/forge-emblems.js"></script>
 <script src="scripts/forge-celebrate.js"></script>
 <script src="scripts/forge-theme.js?v=20260808-theme2"></script>
 <script src="scripts/forge-sidebar.js?v=20260809-gearcenter"></script>
@@ -370,7 +371,7 @@ function renderDashboard(){
   var focusTopic=topicRanked[0]||null;
   dashboardTopicsHtml=topicShortcutsHtml(responses, focusTopic&&!activeMCs.length?focusTopic.key:null);
 
-  var h='<header class="dashboard-heading dashboard-heading--ranked">'+ForgeRanks.avatarHtml(st.studentName,xp,{size:'lg',rank:rank})
+  var h='<header class="dashboard-heading dashboard-heading--ranked">'+(window.ForgeEmblems?ForgeEmblems.ownAvatarHtml(st.studentId,st.studentName,xp,{size:'lg',rank:rank}):ForgeRanks.avatarHtml(st.studentName,xp,{size:'lg',rank:rank}))
     +'<div><h1>Welcome back, '+_fsEsc(st.studentName)+'</h1><p class="dashboard-heading__rank">'+ForgeRanks.chipHtml(xp,rank)+'<span>Pick up where you left off.</span></p></div></header>';
 
   h+='<div class="dashboard-layout'+(total>0?' dashboard-layout--split':'')+'"><div class="dashboard-main">';

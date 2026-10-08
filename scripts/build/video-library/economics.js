@@ -2,7 +2,7 @@ module.exports = {
   slug: 'economics',
   name: 'Economics',
   level: 'A Level',
-  intro: 'Edexcel A-level Economics explanations, grouped by topic. Videos open on YouTube.',
+  intro: 'Edexcel A-level Economics explanations, grouped by topic. Videos play here in Forge.',
   heading: 'Edexcel A-level topics · EconplusDal',
   groups: [
     { title: 'Markets', videos: [

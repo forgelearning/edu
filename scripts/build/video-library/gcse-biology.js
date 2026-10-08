@@ -8,7 +8,7 @@ module.exports = {
   slug: 'gcse-biology',
   name: 'Biology',
   level: 'GCSE',
-  intro: 'Edexcel GCSE Biology explanations, grouped by topic. Videos open on YouTube.',
+  intro: 'Edexcel GCSE Biology explanations, grouped by topic. Videos play here in Forge.',
   heading: 'Edexcel 1BI0 · Freesciencelessons and Cognito',
   groups: [
     { title: 'Key concepts', videos: [

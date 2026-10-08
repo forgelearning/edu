@@ -200,6 +200,71 @@
 .forge-avatar{--avatar-size:46px;--avatar-ring:3px;position:relative;isolation:isolate;display:inline-grid;flex:none;place-items:center;width:var(--avatar-size);height:var(--avatar-size);padding:var(--avatar-ring);border-radius:50%;vertical-align:middle}
 .forge-avatar::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:50%;background:conic-gradient(from 200deg,var(--frame-a),var(--frame-c) 18%,var(--frame-b) 34%,var(--frame-a) 52%,var(--frame-c) 70%,var(--frame-b) 86%,var(--frame-a))}
 .forge-avatar__initials{display:grid;place-items:center;width:100%;height:100%;border-radius:50%;background:var(--panel-2);box-shadow:inset 0 0 0 1px rgba(0,0,0,.28);color:var(--white);font:800 calc(var(--avatar-size) * .34)/1 'Rethink Sans',sans-serif;letter-spacing:.02em}
+.forge-avatar__emblem{display:block;width:100%;height:100%;border-radius:50%;overflow:hidden;box-shadow:inset 0 0 0 1px rgba(0,0,0,.28)}
+.forge-avatar__emblem svg{display:block;width:100%;height:100%}
+/* Characters blink now and then; the eyes are .fe-eyes in scripts/forge-emblems.js. */
+.forge-avatar--lg .fe-eyes,.forge-emblems__option:hover .fe-eyes,.forge-emblems__option.is-current .fe-eyes{transform-box:fill-box;transform-origin:center;animation:forge-blink 4.6s infinite}
+.forge-avatar.is-popping,.forge-emblems__option.is-popping .forge-avatar{animation:forge-avatar-pop .45s cubic-bezier(.34,1.56,.64,1)}
+@keyframes forge-blink{0%,92%,100%{transform:scaleY(1)}95%{transform:scaleY(.1)}}
+@keyframes forge-avatar-pop{0%{transform:scale(1)}40%{transform:scale(1.18) rotate(-6deg)}100%{transform:scale(1) rotate(0)}}
+.card.forge-emblems{padding:0}
+.forge-emblems__summary{display:flex;align-items:center;gap:14px;padding:16px 20px;list-style:none;cursor:pointer;border-radius:inherit}
+.forge-emblems__summary::-webkit-details-marker{display:none}
+.forge-emblems__summary:focus-visible{outline:2px solid var(--hot);outline-offset:2px}
+.forge-emblems__head{display:grid;gap:2px;min-width:0;flex:1}
+.forge-emblems__title{color:var(--white);font:700 16px/1.3 'Rethink Sans',sans-serif}
+.forge-emblems__current{color:var(--slate);font-size:13px}
+.forge-emblems__toggle{display:inline-flex;align-items:center;gap:6px;padding:7px 12px;border:1px solid var(--line);border-radius:var(--radius-pill);color:var(--white);font:700 13px/1 'Rethink Sans',sans-serif}
+.forge-emblems__summary:hover .forge-emblems__toggle{border-color:var(--ember)}
+.forge-emblems__toggle svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;transition:transform .2s}
+.forge-emblems[open] .forge-emblems__toggle svg{transform:rotate(180deg)}
+.forge-emblems__body{padding:0 20px 20px;border-top:1px solid var(--line)}
+.forge-emblems__body .forge-emblems__intro{margin-top:14px}
+.forge-emblems__option.is-legendary.is-locked .forge-avatar{filter:saturate(.35) brightness(.8);opacity:.75}
+.forge-emblems__option.is-legendary small{color:var(--hot)}
+/* Legendary avatars (scripts/forge-emblems.js). */
+.fe-legendary .lg-spark{transform-box:fill-box;animation:lg-spark 1.9s ease-out infinite}
+.fe-legendary .lg-pulse{animation:lg-pulse 2.2s ease-in-out infinite}
+.fe-legendary .lg-float{animation:lg-float 3.2s ease-in-out infinite}
+.fe-legendary .lg-shine{animation:lg-shine 3.6s ease-in-out infinite}
+.fe-legendary .lg-twinkle{transform-box:fill-box;transform-origin:center;animation:lg-twinkle 2.4s ease-in-out infinite}
+.fe-legendary .lg-glimmer{animation:lg-pulse 1.7s ease-in-out infinite}
+.fe-legendary .lg-wing{transform-box:view-box;transform-origin:44px 50px;animation:lg-flap 1.4s ease-in-out infinite}
+.fe-legendary .lg-sway{transform-box:view-box;transform-origin:50px 60px;animation:lg-sway 2.6s ease-in-out infinite}
+.fe-legendary .lg-flicker{transform-box:fill-box;transform-origin:50% 100%;animation:lg-flicker 1.1s ease-in-out infinite}
+.fe-legendary .lg-drift{animation:lg-drift 7s ease-in-out infinite}
+.fe-legendary .lg-haze{transform-box:fill-box;transform-origin:50% 100%;animation:lg-haze 2.4s ease-in-out infinite}
+.fe-legendary .lg-flash{animation:lg-flash 3.2s linear infinite}
+.fe-legendary .lg-breath{transform-box:fill-box;transform-origin:0 50%;animation:lg-breath 3.2s ease-in-out infinite}
+@keyframes lg-spark{0%{transform:translate(0,0);opacity:0}10%{opacity:1}100%{transform:translate(var(--dx,8px),var(--dy,-30px));opacity:0}}
+@keyframes lg-pulse{50%{opacity:.5}}
+@keyframes lg-float{50%{transform:translateY(-3px)}}
+@keyframes lg-shine{0%,30%{transform:translateX(-30px)}75%,100%{transform:translateX(75px)}}
+@keyframes lg-twinkle{0%,100%{transform:scale(.3);opacity:.3}50%{transform:scale(1);opacity:1}}
+@keyframes lg-flap{50%{transform:rotate(12deg) scaleY(.92)}}
+@keyframes lg-sway{50%{transform:rotate(-4deg)}}
+@keyframes lg-flicker{0%,100%{transform:scaleY(1);opacity:.9}35%{transform:scaleY(.9);opacity:.65}65%{transform:scaleY(1.08);opacity:1}}
+@keyframes lg-drift{50%{transform:translateX(4px)}}
+@keyframes lg-haze{0%,100%{transform:translateY(0) scaleY(1)}50%{transform:translateY(-4px) scaleY(1.25)}}
+@keyframes lg-flash{0%,60%,100%{opacity:0}62%{opacity:1}65%{opacity:.1}68%{opacity:1}74%{opacity:0}}
+@keyframes lg-breath{0%,45%{transform:scale(0);opacity:0}58%{transform:scale(1);opacity:1}85%{transform:scale(1.08);opacity:.95}100%{transform:scale(1.2);opacity:0}}
+@media(prefers-reduced-motion:reduce){.fe-legendary *{animation:none!important}.fe-legendary .lg-flash{opacity:0}.fe-legendary .lg-breath{opacity:0}}
+.forge-emblems__intro{margin:0 0 6px;color:var(--slate);font-size:14px;line-height:1.5}
+.forge-emblems__group{margin:20px 0 4px;color:var(--white);font:700 15px/1.3 'Rethink Sans',sans-serif}
+.forge-emblems__note{margin:0 0 10px;color:var(--slate);font-size:13px}
+.forge-emblems__group+.forge-emblems__grid{margin-top:10px}
+.forge-emblems__grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:8px;margin:0;padding:0;list-style:none}
+.forge-emblems__option{display:grid;justify-items:center;align-content:start;gap:5px;width:100%;min-height:104px;padding:12px 6px 10px;border:1px solid var(--line);border-radius:var(--radius-md);background:var(--panel);color:var(--white);font:inherit;text-align:center;cursor:pointer;transition:border-color .15s,transform .15s}
+.forge-emblems__option .forge-avatar{transition:transform .2s cubic-bezier(.34,1.56,.64,1)}
+.forge-emblems__option:hover:not(:disabled){border-color:var(--ember)}
+.forge-emblems__option:hover:not(:disabled) .forge-avatar{transform:translateY(-2px) rotate(-5deg)}
+.forge-emblems__option:focus-visible{outline:2px solid var(--hot);outline-offset:2px}
+.forge-emblems__option.is-current{border-color:var(--ember);box-shadow:inset 0 0 0 1px var(--ember)}
+.forge-emblems__option:disabled{cursor:not-allowed}
+.forge-emblems__name{font:700 12.5px/1.25 'Rethink Sans',sans-serif}
+.forge-emblems__option small{min-height:15px;color:var(--slate);font-size:11.5px;line-height:1.3}
+.forge-emblems__option.is-current small{color:var(--hot);font-weight:700}
+@media(prefers-reduced-motion:reduce){.fe-eyes,.forge-avatar.is-popping,.forge-emblems__option.is-popping .forge-avatar{animation:none!important}.forge-emblems__option .forge-avatar{transition:none}.forge-emblems__option:hover:not(:disabled) .forge-avatar{transform:none}}
 .forge-avatar--sm{--avatar-size:32px;--avatar-ring:2px}
 .forge-avatar--lg{--avatar-size:76px;--avatar-ring:4px}
 .forge-avatar.forge-frame--ember{box-shadow:0 0 calc(var(--avatar-size) * .28) rgba(255,107,44,.38)}

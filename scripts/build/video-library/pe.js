@@ -8,7 +8,7 @@ module.exports = {
   slug: 'pe',
   name: 'Physical Education',
   level: 'A Level',
-  intro: 'AQA A-level PE explanations for anatomy and physiology, exercise physiology, biomechanics, skill and sport psychology. Videos open on YouTube.',
+  intro: 'AQA A-level PE explanations for anatomy and physiology, exercise physiology, biomechanics, skill and sport psychology. Videos play here in Forge.',
   heading: 'AQA 7582 · Super PE Online, The EverLearner and others',
   groups: [
     { title: 'Applied anatomy and physiology', videos: [

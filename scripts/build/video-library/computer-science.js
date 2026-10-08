@@ -7,7 +7,7 @@ module.exports = {
   slug: 'computer-science',
   name: 'Computer Science',
   level: 'A Level',
-  intro: 'Eduqas A-level Computer Science explanations for Components 1 and 2. Videos open on YouTube.',
+  intro: 'Eduqas A-level Computer Science explanations for Components 1 and 2. Videos play here in Forge.',
   heading: 'Eduqas A500QS · Craig’n’Dave',
   groups: [
     { title: 'Programming and software development', videos: [

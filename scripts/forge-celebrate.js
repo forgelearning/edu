@@ -57,6 +57,19 @@
       // Only ever moves up: a lower total from a partial load or another
       // device must not reset it, or the real total would be announced again.
       if (!next.rank || rankIndex(rank.key) > rankIndex(next.rank)) next.rank = rank.key;
+      // Legendary avatars (scripts/forge-emblems.js) unlock with lifetime XP.
+      // Recorded silently the first time, like a rank, and only moves up.
+      var E = root.ForgeEmblems;
+      if (E) {
+        var reached = E.legendary().filter(function (a) { return opts.xp >= a.xp; });
+        var top = reached.length ? reached[reached.length - 1].xp : 0;
+        if (seen && seen.legendaryXp != null) {
+          reached.forEach(function (a) { if (a.xp > seen.legendaryXp) events.push({ type: 'avatar', avatar: a }); });
+        }
+        next.legendaryXp = Math.max(top, Number(seen && seen.legendaryXp) || 0);
+      }
+    } else if (seen && seen.legendaryXp != null) {
+      next.legendaryXp = seen.legendaryXp;
     }
     (opts.badges || []).forEach(function (b) {
       if (!b.tier) return;
@@ -82,12 +95,22 @@
     if (!opts.studentId) return [];
     var result = diff(read(opts.studentId), opts);
     write(opts.studentId, result.record);
-    if (result.events.length) show(result.events, opts.name);
+    if (result.events.length) show(result.events, opts.name, opts.studentId);
     return result.events;
   }
 
   // ── Words ───────────────────────────────────────────────────────────────
   function words(event) {
+    if (event.type === 'avatar') {
+      var xp = event.avatar.xp.toLocaleString('en-GB');
+      return {
+        kicker: 'Legendary avatar',
+        title: 'You’ve unlocked the ' + event.avatar.name,
+        body: 'An animated avatar for reaching ' + xp + ' XP. Choose it on your profile.',
+        short: event.avatar.name,
+        share: 'I’ve unlocked the legendary ' + event.avatar.name + ' avatar on Forge, the revision app that helps you fix your mistakes.'
+      };
+    }
     if (event.type === 'trophy') {
       var n = event.count;
       return {
@@ -112,29 +135,33 @@
         share: 'I’ve reached the ' + event.rank.name + ' rank on Forge, the revision app that helps you fix your mistakes.'
       };
     }
+    // A badge's first tier also unlocks an avatar (scripts/forge-emblems.js).
+    var avatar = event.tier.key === 'bronze' && root.ForgeEmblems && root.ForgeEmblems.forBadge(event.badge.key);
+    var emblem = avatar ? ' You’ve unlocked the ' + avatar.name + ' avatar: choose it on your profile.' : '';
     return {
       kicker: 'Achievement unlocked',
       title: event.tier.name + ': ' + event.badge.name,
-      body: (Number(event.badge.value) > 0 ? Number(event.badge.value).toLocaleString() + ' ' + event.badge.unit + '. ' : '') + event.badge.about,
+      body: (Number(event.badge.value) > 0 ? Number(event.badge.value).toLocaleString() + ' ' + event.badge.unit + '. ' : '') + event.badge.about + emblem,
       short: event.tier.name + ' · ' + event.badge.name,
       share: 'I’ve earned the ' + event.tier.name + ' “' + event.badge.name + '” badge on Forge, the revision app that helps you fix your mistakes.'
     };
   }
 
-  function visual(event, name, size) {
+  function visual(event, name, size, studentId) {
+    if (event.type === 'avatar') return R().avatarHtml(name || '', 0, { rank: R().RANKS[R().RANKS.length - 1], size: size === 'sm' ? 'sm' : 'lg', emblem: root.ForgeEmblems.svg(event.avatar.key) });
     if (event.type === 'trophy') return A().medalHtml('trophy', 'gold', size === 'sm' ? '' : 'lg');
-    if (event.type === 'rank') return R().avatarHtml(name || '', 0, { rank: event.rank, size: size === 'sm' ? 'sm' : 'lg' });
+    if (event.type === 'rank') return R().avatarHtml(name || '', 0, { rank: event.rank, size: size === 'sm' ? 'sm' : 'lg', emblem: root.ForgeEmblems ? root.ForgeEmblems.svg(root.ForgeEmblems.get(studentId)) : '' });
     return A().medalHtml(event.badge.icon, event.tier.key, size === 'sm' ? '' : 'lg');
   }
 
   // ── Popup ───────────────────────────────────────────────────────────────
   var current = null;
-  function show(events, name) {
+  function show(events, name, studentId) {
     if (!doc || !R() || !A()) return;
     if (current) current.close();
     // Ranks first, then a league trophy, then higher tiers, so the biggest
     // news leads.
-    var order = function (e) { return e.type === 'rank' ? 0 : e.type === 'trophy' ? 1 : 2; };
+    var order = function (e) { return e.type === 'rank' ? 0 : e.type === 'avatar' ? 1 : e.type === 'trophy' ? 2 : 3; };
     events = events.slice().sort(function (a, b) {
       return order(a) - order(b) || tierIndex(b.tier && b.tier.key) - tierIndex(a.tier && a.tier.key);
     });
@@ -144,11 +171,11 @@
     dialog.setAttribute('aria-labelledby', 'forge-celebrate-title');
     dialog.setAttribute('aria-describedby', 'forge-celebrate-body');
     var more = events.slice(1).map(function (e) {
-      return '<li>' + visual(e, name, 'sm') + '<span>' + esc(words(e).short) + '</span></li>';
+      return '<li>' + visual(e, name, 'sm', studentId) + '<span>' + esc(words(e).short) + '</span></li>';
     }).join('');
     dialog.innerHTML = '<div class="forge-celebrate__sparks" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>'
       + '<p class="forge-celebrate__kicker">' + esc(w.kicker) + '</p>'
-      + '<div class="forge-celebrate__visual">' + visual(lead, name) + '</div>'
+      + '<div class="forge-celebrate__visual">' + visual(lead, name, null, studentId) + '</div>'
       + '<h2 id="forge-celebrate-title">' + esc(w.title) + '</h2>'
       + '<p id="forge-celebrate-body" class="forge-celebrate__body">' + esc(w.body) + '</p>'
       + (more ? '<p class="forge-celebrate__also">Also new</p><ul class="forge-celebrate__more">' + more + '</ul>' : '')
@@ -187,12 +214,14 @@
 
   function cardSvg(event) {
     var w = words(event);
-    var trophy = event.type === 'trophy';
-    var frame = trophy ? 'gold' : event.type === 'rank' ? event.rank.frame : event.tier.key;
+    var trophy = event.type === 'trophy', avatar = event.type === 'avatar';
+    var frame = trophy ? 'gold' : avatar ? 'ember' : event.type === 'rank' ? event.rank.frame : event.tier.key;
     var stops = FRAME_STOPS[frame] || FRAME_STOPS.iron;
-    var icon = trophy ? A().ICONS.trophy : event.type === 'rank' ? ANVIL : (A().ICONS[event.badge.icon] || '');
-    var title = trophy ? 'League winner' : event.type === 'rank' ? event.rank.name : event.badge.name;
-    var sub = trophy ? (event.count === 1 ? '1st in the class this week' : event.count + ' weekly wins') : event.type === 'rank' ? event.rank.frameName + ' frame' : event.tier.name + ' tier';
+    var icon = trophy ? A().ICONS.trophy : avatar ? '' : event.type === 'rank' ? ANVIL : (A().ICONS[event.badge.icon] || '');
+    var title = trophy ? 'League winner' : avatar ? event.avatar.name : event.type === 'rank' ? event.rank.name : event.badge.name;
+    var sub = trophy ? (event.count === 1 ? '1st in the class this week' : event.count + ' weekly wins') : avatar ? 'Legendary avatar' : event.type === 'rank' ? event.rank.frameName + ' frame' : event.tier.name + ' tier';
+    // A legendary avatar is drawn whole inside the ring, still frame of its animation.
+    var art = avatar ? root.ForgeEmblems.svg(event.avatar.key).replace(/^<svg viewBox="([^"]+)"[^>]*>/, '<svg x="364" y="254" width="352" height="352" viewBox="$1">') : '';
     var font = "font-family='Rethink Sans, Helvetica Neue, Arial, sans-serif'";
     return '<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1080" viewBox="0 0 1080 1080">'
       + '<defs><radialGradient id="glow" cx="50%" cy="38%" r="60%"><stop offset="0" stop-color="' + stops[1] + '" stop-opacity=".28"/><stop offset="1" stop-color="#141210" stop-opacity="0"/></radialGradient>'
@@ -200,7 +229,7 @@
       + '<rect width="1080" height="1080" fill="#141210"/><rect width="1080" height="1080" fill="url(#glow)"/>'
       + '<text x="540" y="150" text-anchor="middle" ' + font + ' font-size="34" font-weight="700" letter-spacing="6" fill="#B8B4AD">' + esc(w.kicker.toUpperCase()) + '</text>'
       + '<circle cx="540" cy="430" r="190" fill="#211E1B" stroke="url(#ring)" stroke-width="30"/>'
-      + '<g transform="translate(400 290) scale(11.6667)" fill="none" stroke="' + stops[1] + '" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">' + icon + '</g>'
+      + (art || '<g transform="translate(400 290) scale(11.6667)" fill="none" stroke="' + stops[1] + '" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">' + icon + '</g>')
       + '<text x="540" y="770" text-anchor="middle" ' + font + ' font-size="84" font-weight="800" fill="#F5F1EA">' + esc(title) + '</text>'
       + '<text x="540" y="840" text-anchor="middle" ' + font + ' font-size="40" font-weight="600" fill="' + stops[1] + '">' + esc(sub) + '</text>'
       + '<text x="540" y="990" text-anchor="middle" ' + font + ' font-size="32" font-weight="700" fill="#D55C13">Forge</text>'
@@ -232,7 +261,7 @@
     var w = words(event), text = w.share + ' ' + SITE;
     var nav = root.navigator || {};
     return cardPng(event).then(function (blob) {
-      var file = typeof File === 'function' ? new File([blob], 'forge-' + (event.type === 'trophy' ? 'trophy' : event.type === 'rank' ? event.rank.key : event.badge.key) + '.png', { type: 'image/png' }) : null;
+      var file = typeof File === 'function' ? new File([blob], 'forge-' + (event.type === 'trophy' ? 'trophy' : event.type === 'avatar' ? event.avatar.key : event.type === 'rank' ? event.rank.key : event.badge.key) + '.png', { type: 'image/png' }) : null;
       if (file && nav.canShare && nav.canShare({ files: [file] })) return nav.share({ files: [file], title: 'Forge', text: text });
       if (nav.share) return nav.share({ title: 'Forge', text: w.share, url: SITE });
       var a = doc.createElement('a');

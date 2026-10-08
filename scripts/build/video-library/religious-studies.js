@@ -5,7 +5,7 @@ module.exports = {
   slug: 'religious-studies',
   name: 'Religious Studies',
   level: 'A Level',
-  intro: 'Eduqas A-level Religious Studies explanations for Buddhism, philosophy of religion and religion and ethics. Videos open on YouTube.',
+  intro: 'Eduqas A-level Religious Studies explanations for Buddhism, philosophy of religion and religion and ethics. Videos play here in Forge.',
   heading: 'Eduqas A120QS · Saint Ben RS Revision and others',
   groups: [
     { title: 'Buddhism', videos: [

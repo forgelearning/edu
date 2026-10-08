@@ -4,7 +4,7 @@ module.exports = {
   slug: 'media',
   name: 'Media Studies',
   level: 'A Level',
-  intro: 'Eduqas A-level Media Studies: short guides to every theorist in the theoretical framework. Videos open on YouTube.',
+  intro: 'Eduqas A-level Media Studies: short guides to every theorist in the theoretical framework. Videos play here in Forge.',
   heading: 'Eduqas A680QS · Mrs Fisher',
   groups: [
     { title: 'Media language', videos: [

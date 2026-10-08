@@ -9,8 +9,13 @@
  *   node scripts/build/build-video-pages.js           write the pages
  *   node scripts/build/build-video-pages.js --check   fail if a page is stale
  *   node scripts/build/build-video-pages.js --verify-links [slug]
- *       ask YouTube (oEmbed) whether every video is still available. Needs the
- *       network, so it is not part of `npm run check`.
+ *       ask YouTube (oEmbed) whether every video is still available, and
+ *       whether `noEmbed` is set on exactly the videos whose owners have
+ *       disabled embedding. Needs the network, so it is not part of
+ *       `npm run check`.
+ *
+ * Videos play inside Forge (scripts/videos.js opens a youtube-nocookie embed).
+ * A video marked `noEmbed: true` cannot be embedded, so it links to YouTube.
  */
 const fs = require('fs');
 const path = require('path');
@@ -41,6 +46,7 @@ function loadLibrary() {
       for (const v of g.videos) {
         if (!/^[A-Za-z0-9_-]{11}$/.test(v.id)) throw new Error(`video library: ${s.slug} has bad video id ${v.id}`);
         if (!v.title || !v.tag) throw new Error(`video library: ${s.slug}/${v.id} needs a title and tag`);
+        if ('noEmbed' in v && v.noEmbed !== true) throw new Error(`video library: ${s.slug}/${v.id} noEmbed must be true or absent`);
         if (ids.has(v.id)) throw new Error(`video library: ${s.slug} lists ${v.id} twice`);
         ids.add(v.id);
       }
@@ -82,7 +88,11 @@ function section(s) {
   for (const g of s.groups) {
     lines.push('      <div class="videos-group">', `        <h3>${esc(g.title)}</h3>`, '        <ul class="videos-list">');
     for (const v of g.videos) {
-      lines.push(`          <li><a href="https://www.youtube.com/watch?v=${v.id}" target="_blank" rel="noopener noreferrer"><span><strong>${esc(v.title)}</strong><small>${esc(v.tag)}</small></span><span class="videos-open">Open video</span></a></li>`);
+      // The link still goes to YouTube, so the page works without scripts;
+      // scripts/videos.js turns a data-video link into the in-page player.
+      const play = v.noEmbed ? '' : ` data-video="${v.id}"`;
+      const action = v.noEmbed ? 'Opens on YouTube' : 'Watch';
+      lines.push(`          <li><a href="https://www.youtube.com/watch?v=${v.id}"${play} target="_blank" rel="noopener noreferrer"><span><strong>${esc(v.title)}</strong><small>${esc(v.tag)}</small></span><span class="videos-open">${action}</span></a></li>`);
     }
     lines.push('        </ul>', '      </div>');
   }
@@ -137,7 +147,7 @@ function render(subjects) {
     'videos.html': page({
       title: 'Forge — Videos',
       description: 'Choose a Forge subject to watch selected topic explanation videos.',
-      intro: 'Choose a subject to find topic explanations. Videos open on YouTube.',
+      intro: 'Choose a subject to find topic explanations. Videos play here in Forge.',
       body: picker(subjects, null),
     }),
   };
@@ -167,9 +177,9 @@ function oembed(id) {
   });
 }
 
-// oEmbed answers 401 for a video whose owner has disabled embedding, which is
-// harmless here because the library links to youtube.com rather than embedding.
-// Fall back to the watch page's playability status before calling it broken.
+// oEmbed answers 401 for a video whose owner has disabled embedding. Such a
+// video still plays on YouTube, so check the watch page's playability status
+// before calling it broken; it must then be marked noEmbed in the library.
 function watchPageStatus(id) {
   return new Promise((resolve) => {
     https.get(`https://www.youtube.com/watch?v=${id}`, { timeout: 20000, headers: { 'User-Agent': 'Mozilla/5.0', 'Accept-Language': 'en-GB' } }, (res) => {
@@ -187,7 +197,7 @@ async function check(id) {
   const r = await oembed(id);
   if (r.ok || r.status !== 401) return r;
   const status = await watchPageStatus(id);
-  return status === 'OK' ? { ok: true, title: '(embedding disabled)', channel: '' } : { ok: false, status: `401, watch page ${status}` };
+  return status === 'OK' ? { ok: true, noEmbed: true, title: '(embedding disabled)', channel: '' } : { ok: false, status: `401, watch page ${status}` };
 }
 
 async function verifyLinks(subjects, only) {
@@ -200,10 +210,16 @@ async function verifyLinks(subjects, only) {
     batch.forEach((v, j) => {
       const r = results[j];
       if (!r.ok) { bad++; console.log(`UNAVAILABLE ${v.slug} ${v.id} (${r.status}) "${v.title}"`); }
+      else if (!!r.noEmbed !== !!v.noEmbed) {
+        bad++;
+        console.log(r.noEmbed
+          ? `EMBEDDING DISABLED ${v.slug} ${v.id} "${v.title}": mark it noEmbed: true so it opens on YouTube`
+          : `EMBEDDABLE ${v.slug} ${v.id} "${v.title}": remove noEmbed so it plays in Forge`);
+      }
       else if (process.env.VERBOSE) console.log(`ok ${v.slug} ${v.id} ${r.title} | ${r.channel}`);
     });
   }
-  console.log(`${videos.length - bad}/${videos.length} videos available`);
+  console.log(`${videos.length - bad}/${videos.length} videos available and correctly marked`);
   if (bad) process.exitCode = 1;
 }
 

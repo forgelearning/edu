@@ -6,7 +6,7 @@ module.exports = {
   slug: 'gcse-maths',
   name: 'Maths',
   level: 'GCSE',
-  intro: 'Edexcel GCSE Maths explanations, grouped by topic. Videos open on YouTube.',
+  intro: 'Edexcel GCSE Maths explanations, grouped by topic. Videos play here in Forge.',
   heading: 'Edexcel 1MA1 · Corbettmaths',
   groups: [
     { title: 'Number', videos: [

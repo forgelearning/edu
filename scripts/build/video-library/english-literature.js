@@ -5,7 +5,7 @@ module.exports = {
   slug: 'english-literature',
   name: 'English Literature',
   level: 'A Level',
-  intro: 'AQA A-level English Literature: literary terminology and exam technique. Videos open on YouTube.',
+  intro: 'AQA A-level English Literature: literary terminology and exam technique. Videos play here in Forge.',
   heading: 'AQA 7712 · Mr Bruff, Oregon State University and others',
   groups: [
     literaryTerms,

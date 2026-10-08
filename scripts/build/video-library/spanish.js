@@ -7,7 +7,7 @@ module.exports = {
   slug: 'spanish',
   name: 'Spanish',
   level: 'A Level',
-  intro: 'Edexcel A-level Spanish: grammar traps, translation and background to the themes. Videos open on YouTube.',
+  intro: 'Edexcel A-level Spanish: grammar traps, translation and background to the themes. Videos play here in Forge.',
   heading: 'Edexcel 9SP0 · Breakthrough Spanish, The Language Tutor and others',
   groups: [
     { title: 'Grammar traps', videos: [

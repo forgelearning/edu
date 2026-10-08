@@ -7,7 +7,7 @@ module.exports = {
   slug: 'gcse-history',
   name: 'History',
   level: 'GCSE',
-  intro: 'AQA GCSE History explanations for America, Conflict and Tension, Health and the People, and Elizabethan England. Videos open on YouTube.',
+  intro: 'AQA GCSE History explanations for America, Conflict and Tension, Health and the People, and Elizabethan England. Videos play here in Forge.',
   heading: 'AQA 8145 · MrClokeHistory and others',
   groups: [
     { title: 'America, 1920–1973: opportunity and inequality', videos: [

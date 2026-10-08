@@ -9,7 +9,7 @@ module.exports = {
   slug: 'maths',
   name: 'Mathematics',
   level: 'A Level',
-  intro: 'Edexcel A-level Maths explanations for Pure and Statistics. Videos open on YouTube.',
+  intro: 'Edexcel A-level Maths explanations for Pure and Statistics. Videos play here in Forge.',
   heading: 'Edexcel 9MA0 · TLMaths and Bicen Maths',
   groups: [
     { title: 'Algebra and functions', videos: [
