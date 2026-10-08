@@ -113,13 +113,53 @@ function seedDemoHistory() {
   for (let i = 0; i < 14; i++) demoResponses.push(row(n++, 2, {question_id:'TIMED-'+i+'-CRU', is_correct:i % 4 !== 0}));
 }
 
+// /test-account?all=1 starts the demo student with everything unlocked: Master
+// rank and every legendary avatar (20,000 XP), five league trophies, and Gold in
+// all seven achievement badges, so every avatar and appearance can be tried.
+// The history uses real GCSE Geography questions and misconception tags, so
+// topic names and cleared misconceptions read as they would for a student.
+function seedCompleteHistory() {
+  const vm = require('vm');
+  const ctx = {window:{}}; ctx.window.window = ctx.window;
+  vm.createContext(ctx);
+  vm.runInContext(fs.readFileSync(path.join(__dirname, '..', 'data', 'forge-data.js'), 'utf8') + ';window.__S=SUBJECTS;window.__B=BANKS;', ctx);
+  const banks = ctx.window.__S[demoStudent.classSubject].banks.filter(b => ctx.window.__B[b]);
+  const questions = b => (ctx.window.__B[b].questions || []).filter(q => q.id && q.correct);
+  const tagOf = q => Array.isArray(q.tag) ? q.tag[0] : q.tag;
+  const rows = [];
+  const add = (o) => rows.push(Object.assign({student_id:demoStudent.studentId, class_id:demoStudent.classId, subject:demoStudent.classSubject,
+    selected_option:'A', is_correct:true, misconception_tag:null, spec_point:null, reforge_attempted:false, reforge_correct:null, assignment_id:null, hint_used:false}, o));
+  // 32 misconceptions met and then cleared: a wrong answer, then four right
+  // similar questions (Gold needs 30 cleared and 100 repairs).
+  const tagged = [], seen = new Set();
+  banks.forEach(b => questions(b).forEach(q => { const t = tagOf(q); if (t && !seen.has(t)) { seen.add(t); tagged.push({b, q, t}); } }));
+  const cleared = tagged.slice(0, 32);
+  cleared.forEach(({b, q, t}) => add({question_id:q.id, bank:b, selected_option:q.correct === 'A' ? 'B' : 'A', is_correct:false, misconception_tag:t}));
+  cleared.forEach(({b, q, t}) => { for (let i = 0; i < 4; i++) add({question_id:q.id + '-RF', bank:b, misconception_tag:t, reforge_attempted:true, reforge_correct:true}); });
+  // 40 right first answers in every topic (Gold: 500 answers, every topic explored and sharpened).
+  banks.forEach(b => { const qs = questions(b); for (let i = 0; i < 40; i++) add({question_id:qs[i % qs.length].id, bank:b}); });
+  // 210 right answers in Timed practice (Gold: 200).
+  for (let i = 0; i < 210; i++) { const b = banks[i % banks.length], qs = questions(b); add({question_id:qs[i % qs.length].id + '-CRU', bank:b}); }
+  // Spread over the last 24 days in order, so every day has practice (Gold
+  // streak: 21) and each misconception's error comes before its repairs.
+  const days = 24, start = Date.now() - (days - 1) * 86400000 - 3600000;
+  rows.forEach((r, n) => {
+    r.id = 'local-motion-all-' + n;
+    r.created_at = new Date(start + Math.floor(n * days / rows.length) * 86400000 + (n % 40) * 60000).toISOString();
+    demoResponses.push(r);
+  });
+}
+
 function serveDemoAccount(res, url) {
   demoResponses.length = 0;
-  const startXp = Number(url && url.searchParams.get('matchxp'));
-  demoStartingMatchXp = Number.isInteger(startXp) && startXp >= 0 && startXp <= 100000 ? startXp : 3000;
-  const trophies = Number(url && url.searchParams.get('trophies'));
-  demoTrophies = Number.isInteger(trophies) && trophies >= 0 && trophies <= 50 ? trophies : 0;
-  if (url && url.searchParams.get('history') === '1') seedDemoHistory();
+  const all = !!(url && url.searchParams.get('all') === '1');
+  const xpParam = url && url.searchParams.get('matchxp'), trophyParam = url && url.searchParams.get('trophies');
+  const startXp = Number(xpParam);
+  demoStartingMatchXp = xpParam !== null && Number.isInteger(startXp) && startXp >= 0 && startXp <= 100000 ? startXp : all ? 20000 : 3000;
+  const trophies = Number(trophyParam);
+  demoTrophies = trophyParam !== null && Number.isInteger(trophies) && trophies >= 0 && trophies <= 50 ? trophies : all ? 5 : 0;
+  if (all) seedCompleteHistory();
+  else if (url && url.searchParams.get('history') === '1') seedDemoHistory();
   demoMatchRewards.clear();
   const session = JSON.stringify(demoStudent);
   const html = '<!doctype html><html lang="en"><meta charset="utf-8"><title>Forge test student</title><p>Opening Forge as a local test student…</p><script>'
@@ -128,7 +168,7 @@ function serveDemoAccount(res, url) {
     + 'localStorage.setItem("forge-student",'+JSON.stringify(session)+');'
     + 'localStorage.setItem("forge-rewards:local-motion-student",JSON.stringify({quizXp:0,serverMatchXp:'+demoStartingMatchXp+',pending:[],rounds:{}}));'
     + 'localStorage.setItem("forge-classes",JSON.stringify([{classId:"local-motion-class",classCode:"LOCAL-MOTION",className:"Motion test class",subject:"gcse-geo",studentId:"local-motion-student",studentName:"Motion Tester",studentCode:"LOCAL123"}]));'
-    + 'location.replace("/forge-quiz.html?subject=gcse-geo");'
+    + 'location.replace(' + JSON.stringify(all ? '/profile.html' : '/forge-quiz.html?subject=gcse-geo') + ');'
     + '</script></html>';
   res.writeHead(200, {'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-store'});
   res.end(html);
