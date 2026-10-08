@@ -226,6 +226,10 @@
 .forge-badges__head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:16px}
 .forge-badges__head h2{margin:0;color:var(--white);font:700 18px/1.3 'Rethink Sans',sans-serif}
 .forge-badges__head span{color:var(--slate);font:600 12px 'JetBrains Mono',monospace}
+.forge-badges__head a{display:inline-flex;align-items:center;min-height:44px;color:var(--white);font-size:14px;text-underline-offset:4px}
+.forge-badges__head a:hover{color:var(--hot)}
+.forge-badges--almost{margin-top:20px}
+.forge-badges__almost{display:grid;gap:10px;margin:0;padding:0;list-style:none}
 .forge-badges__grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px;margin:0;padding:0;list-style:none}
 .forge-badge{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:start;padding:14px;border:1px solid var(--line);border-radius:var(--radius-md);background:var(--panel-2)}
 .forge-badge__medal{position:relative;isolation:isolate;display:grid;place-items:center;width:46px;height:46px;border-radius:50%;padding:3px}

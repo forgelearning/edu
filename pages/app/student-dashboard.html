@@ -413,6 +413,8 @@ function renderDashboard(){
       h+='<p class="dashboard-rank-next">Highest rank reached</p>';
     }
     h+='<dl><div><dt>Questions answered</dt><dd>'+total+'</dd></div><div><dt>Practice streak</dt><dd>'+streak+' day'+(streak===1?'':'s')+'</dd></div></dl>'+(streak&&window.ForgeStreak&&ForgeStreak.calc(responses).frozen?'<p class="dashboard-streak-freeze">You missed yesterday, so your streak is frozen. Practise today to keep it going.</p>':'')+'</section>';
+    // Home shows only the badges nearest their next tier; Profile has them all.
+    if(window.ForgeAchievements) h+=ForgeAchievements.almostHtml(ForgeAchievements.compute(responses,{resolved:(misconceptionSummary.resolved||[]).length,topicBanks:ForgeAchievements.subjectTopics(responses,typeof SUBJECTS!=='undefined'?SUBJECTS:null)}));
     if(st.classId) h+='<div id="dashboard-league"></div>';
     h+='</div>';
   }

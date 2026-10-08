@@ -73,4 +73,23 @@ assert.strictEqual(explored(five('c1'),chem).next.goal,2);
 const sharpIn=bank=>[...Array(10)].map((_,i)=>ans({bank,created_at:day(i)}));
 assert.strictEqual(A.compute(sharpIn('c1').concat(sharpIn('c2'),sharpIn('c3')),{topicBanks:chem}).find(b=>b.key==='sharpened').tier.name,'Gold');
 assert.strictEqual(A.compute(sharpIn('zz'),{topicBanks:chem}).find(b=>b.key==='sharpened').tier,null,'sharpening another subject does not count');
+// Home's "Almost there": started badges only, nearest their next tier first.
+{
+  const list=[
+    {key:'a',name:'A',icon:'answers',unit:'questions',value:90,tier:{key:'bronze',name:'Bronze'},next:{tier:{key:'silver',name:'Silver'},goal:100}},
+    {key:'b',name:'B',icon:'streak',unit:'days',value:0,tier:null,next:{tier:{key:'bronze',name:'Bronze'},goal:3}},
+    {key:'c',name:'C',icon:'repair',unit:'repairs',value:4,tier:null,next:{tier:{key:'bronze',name:'Bronze'},goal:5}},
+    {key:'d',name:'D',icon:'timed',unit:'correct answers',value:300,tier:{key:'gold',name:'Gold'},next:null},
+    {key:'e',name:'E',icon:'topics',unit:'topics',value:1,tier:null,next:{tier:{key:'bronze',name:'Bronze'},goal:3}},
+    {key:'f',name:'F',icon:'target',unit:'topics',value:9,tier:{key:'bronze',name:'Bronze'},next:{tier:{key:'silver',name:'Silver'},goal:10}}
+  ];
+  assert.deepStrictEqual(A.almost(list).map(b=>b.key),['f','a','c'],'90% with 1 left beats 90% with 10 left; 0-progress and maxed badges are skipped');
+  const near=A.almostHtml(list);
+  assert(near.includes('1 more topic for Silver'),'says how many are left, singular for one');
+  assert(near.includes('10 more questions for Silver'));
+  assert(near.includes('aria-valuenow="4"')&&near.includes('href="profile.html"'));
+  assert(/forge-badge is-locked/.test(near),'a badge with no tier yet keeps a grey medal');
+  assert.strictEqual(A.almostHtml([list[1],list[3]]),'','nothing started and unfinished: no card');
+  assert(!A.almostHtml([Object.assign({},list[0],{name:'<b>x</b>'})]).includes('<b>x'),'names are escaped');
+}
 console.log('Achievement badge tests passed.');

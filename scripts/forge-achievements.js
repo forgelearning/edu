@@ -200,5 +200,35 @@
       + '<ul class="forge-badges__grid">' + list.map(badgeHtml).join('') + '</ul></section>';
   }
 
-  root.ForgeAchievements = { BADGES: BADGES, TIERS: TIERS, ICONS: ICONS, tiersFor: tiersFor, measure: measure, compute: compute, subjectTopics: subjectTopics, medalHtml: medalHtml, html: html };
+  // The badges closest to their next tier, for Home. Only badges the student
+  // has started (value above 0) count: "0 / 3 days" is not almost there.
+  // Ordered by share of the way to the next tier, then by fewest still to go.
+  function almost(list, limit) {
+    return (list || []).filter(function (b) { return b.next && b.value > 0 && b.value < b.next.goal; })
+      .map(function (b) { return { badge: b, share: b.value / b.next.goal, left: b.next.goal - b.value }; })
+      .sort(function (a, b) { return b.share - a.share || a.left - b.left; })
+      .slice(0, limit == null ? 3 : limit)
+      .map(function (x) { return x.badge; });
+  }
+
+  function almostHtml(list, opts) {
+    var near = almost(list, opts && opts.limit);
+    if (!near.length) return '';
+    var h = '<section class="forge-badges forge-badges--almost" aria-labelledby="forge-almost-title">'
+      + '<div class="forge-badges__head"><h2 id="forge-almost-title">Almost there</h2><a href="profile.html">All achievements</a></div><ul class="forge-badges__almost">';
+    near.forEach(function (b) {
+      var left = b.next.goal - b.value;
+      var pct = Math.max(0, Math.min(100, Math.round(b.value / b.next.goal * 100)));
+      // The medal shows the tier already held (grey if none); only the meter
+      // takes the colour of the tier being worked towards.
+      h += '<li class="forge-badge' + (b.tier ? '' : ' is-locked') + '">' + medalHtml(b.icon, b.tier && b.tier.key)
+        + '<span class="forge-badge__text"><strong>' + esc(b.name) + '</strong>'
+        + '<small>' + esc(left.toLocaleString() + ' more ' + (left === 1 ? b.unit.replace(/s$/, '') : b.unit) + ' for ' + b.next.tier.name) + '</small>'
+        + '<span class="forge-badge__meter" role="progressbar" aria-label="' + esc(b.name + ' progress towards ' + b.next.tier.name) + '" aria-valuemin="0" aria-valuemax="' + b.next.goal + '" aria-valuenow="' + b.value + '"><span class="forge-frame--' + b.next.tier.key + '" style="width:' + pct + '%"></span></span>'
+        + '</span></li>';
+    });
+    return h + '</ul></section>';
+  }
+
+  root.ForgeAchievements = { BADGES: BADGES, TIERS: TIERS, ICONS: ICONS, tiersFor: tiersFor, measure: measure, compute: compute, subjectTopics: subjectTopics, medalHtml: medalHtml, html: html, almost: almost, almostHtml: almostHtml };
 }(typeof window !== 'undefined' ? window : globalThis));
