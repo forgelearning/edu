@@ -1198,7 +1198,9 @@ function renderJoin() {
     var email = document.getElementById('email-address').value.trim();
     var code = document.getElementById('email-code').value.trim();
     var err = document.getElementById('email-err');
+    err.dataset.state = 'error';
     if (!email || !/^\d{8}$/.test(code)) { err.textContent = 'Enter your email and eight-digit code.'; err.style.display = 'block'; return; }
+    err.style.display = 'none';
     var btn = this; btn.disabled = true;
     ForgeAuth.verifyEmailCode(email, code).then(function() { location.href = 'student-dashboard.html'; })
       .catch(function(e) { err.textContent = e.message || 'Could not sign in.'; err.style.display = 'block'; btn.disabled = false; });
