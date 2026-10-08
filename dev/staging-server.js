@@ -23,6 +23,7 @@ const demoMatchRewards = new Map();
 // Starting match XP for the demo student. /test-account?matchxp=4990 starts
 // them just below a rank so a single correct answer crosses it.
 let demoStartingMatchXp = 3000;
+let demoTrophies = 0;
 
 function json(res, status, body) {
   const payload = JSON.stringify(body);
@@ -116,6 +117,8 @@ function serveDemoAccount(res, url) {
   demoResponses.length = 0;
   const startXp = Number(url && url.searchParams.get('matchxp'));
   demoStartingMatchXp = Number.isInteger(startXp) && startXp >= 0 && startXp <= 100000 ? startXp : 3000;
+  const trophies = Number(url && url.searchParams.get('trophies'));
+  demoTrophies = Number.isInteger(trophies) && trophies >= 0 && trophies <= 50 ? trophies : 0;
   if (url && url.searchParams.get('history') === '1') seedDemoHistory();
   demoMatchRewards.clear();
   const session = JSON.stringify(demoStudent);
@@ -173,13 +176,14 @@ const server = http.createServer((req, res) => {
         friend(3, 'Priya S.', 95, 2100, 71, 5), friend(4, 'Leo M.', 60, 650, 64, 2), friend(5, 'Sam R.', 20, 90, 58, 0)
       ]});
     }
-    // A weekly league whose rows carry rank keys, as get_class_weekly_league
-    // returns them since 20261007195804_league_ranks.sql.
+    // A weekly league whose rows carry rank keys and trophy counts, as
+    // get_class_weekly_league returns them since 20261008123202_league_trophies.sql.
+    // /test-account?trophies=2 gives the demo student two weekly wins.
     if (url.pathname === '/mock-supabase/rest/v1/rpc/get_class_weekly_league') {
-      const row = (seq, position, name, xp, rank, isYou) => ({seq, position, name, xp, rank, is_you: !!isYou});
-      return json(res, 200, {enabled:true, ranked:9, you:{position:4, xp:180, rank:'craftsman'}, rows:[
-        row(1, 1, 'Amira K.', 340, 'master'), row(2, 2, 'Josh T.', 210, 'forged'), row(3, 3, 'Priya S.', 195, 'craftsman'),
-        row(4, 4, 'Motion T.', 180, 'craftsman', true), row(5, 5, 'Leo M.', 60, 'journeyman'), row(6, 6, 'Sam R.', 20, 'apprentice')
+      const row = (seq, position, name, xp, rank, trophies, isYou) => ({seq, position, name, xp, rank, trophies, is_you: !!isYou});
+      return json(res, 200, {enabled:true, ranked:9, trophies:demoTrophies, you:{position:4, xp:180, rank:'craftsman', trophies:demoTrophies}, rows:[
+        row(1, 1, 'Amira K.', 340, 'master', 3), row(2, 2, 'Josh T.', 210, 'forged', 1), row(3, 3, 'Priya S.', 195, 'craftsman', 0),
+        row(4, 4, 'Motion T.', 180, 'craftsman', demoTrophies, true), row(5, 5, 'Leo M.', 60, 'journeyman', 0), row(6, 6, 'Sam R.', 20, 'apprentice', 0)
       ]});
     }
     if (url.pathname === '/mock-supabase/rest/v1/rpc/get_student_match_xp') {

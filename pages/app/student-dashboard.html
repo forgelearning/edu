@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="css/auth.css">
 <link rel="stylesheet" href="css/sidebar.css">
 <link rel="stylesheet" href="css/components.css?v=20261004-rings">
-<link rel="stylesheet" href="css/forge-league.css?v=20260929f">
+<link rel="stylesheet" href="css/forge-league.css?v=20261008a">
 <link rel="stylesheet" href="css/generated-utilities.css">
 <link rel="stylesheet" href="css/page-overrides/student-dashboard.css?v=20261006-entry">
 <link rel="stylesheet" href="css/auth-ember.css?v=20260817-auth2">
@@ -68,7 +68,7 @@ ForgeSidebar.mount({
 <script src="scripts/forge-misconception-state.js"></script>
 <script src="scripts/forge-streak.js?v=20261004-freeze"></script>
 <script src="scripts/forge-topic-mastery.js?v=20261004-rings"></script>
-<script src="scripts/forge-league.js?v=20260928d"></script>
+<script src="scripts/forge-league.js?v=20261008a"></script>
 <script src="scripts/forge-friends.js?v=20260929d"></script>
 
 <main class="wrap" id="main-content">
@@ -423,7 +423,10 @@ function renderDashboard(){
   app.innerHTML=(st.loadError?ForgeApp.stateHtml('error',{label:'Some dashboard data is unavailable',body:'We couldn’t retrieve the latest progress. Refresh and try again.',action:{label:'Retry dashboard',href:location.href}}):'')+h;
   var leagueEl=document.getElementById('dashboard-league');
   var socialCtx=dashboardClassContext();
-  if(leagueEl&&window.ForgeLeague) ForgeLeague.mount(leagueEl,socialCtx);
+  // A weekly league win is only known once the league has loaded.
+  if(leagueEl&&window.ForgeLeague) ForgeLeague.mount(leagueEl,socialCtx).then(function(data){
+    if(data&&data.enabled&&window.ForgeCelebrate&&st.studentId) ForgeCelebrate.check({studentId:st.studentId,name:st.studentName,trophies:Number(data.trophies)||0});
+  });
   var friendsEl=document.getElementById('dashboard-friends');
   if(friendsEl&&window.ForgeFriends) ForgeFriends.mount(friendsEl,socialCtx);
 }

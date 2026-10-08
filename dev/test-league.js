@@ -55,6 +55,23 @@ assert((h.match(/forge-league__gap/g) || []).length === 1, 'marks the one gap in
 assert(L.html(Object.assign({}, data, { you: { position: 1, xp: 320 }, rows: [Object.assign({}, data.rows[0], { is_you: true })] })).includes('top of the class'));
 assert(L.html(Object.assign({}, data, { you: null })).includes('join the league'), 'a student with no XP this week is invited, not ranked');
 
+// 2b. Weekly league trophies (20261008123202_league_trophies.sql).
+const trophySql = fs.readFileSync('supabase/migrations/20261008123202_league_trophies.sql', 'utf8');
+assert(/c_league_start constant timestamptz := timestamptz '2026-09-28 00:00:00 Europe\/London'/.test(trophySql), 'trophies count from the league launch');
+assert(/r\.created_at >= c_league_start and r\.created_at < v_week_start/.test(trophySql), 'only closed weeks since launch count');
+assert(/having count\(\*\) >= 3/.test(trophySql), 'a week needs three students with XP');
+assert(/p\.xp = t\.top/.test(trophySql), 'every student tied on the top score wins');
+assert(/student_match_rewards m\s+join public\.students s/.test(trophySql), 'match XP counts towards a week, as it does in the league');
+expected.forEach(re => assert(re.test(trophySql.replace(/then case when r\.hint_used then 5 else 10 end/g, 'then 10')), 'trophy weeks use the league XP rule ' + re));
+const withWins = L.html(Object.assign({}, data, { rows: data.rows.map((r, i) => Object.assign({}, r, { trophies: i === 0 ? 3 : i === 1 ? 1 : 0 })) }));
+assert(withWins.includes('aria-label="3 weekly wins"') && withWins.includes('aria-label="1 weekly win"'), 'trophy counts are labelled, singular for one');
+assert.strictEqual((withWins.match(/forge-league__trophies/g) || []).length, 2, 'no trophy mark for a student with none');
+assert(!h.includes('forge-league__trophies'), 'rows from an older server show no trophies');
+assert.strictEqual(L.trophiesHtml(null), '', 'no league, no shelf');
+assert.strictEqual(L.trophiesHtml({ enabled: false, trophies: 2 }), '', 'league switched off, no shelf');
+assert(L.trophiesHtml({ enabled: true, trophies: 0 }).includes('No trophies yet'), 'an empty shelf says how to win one');
+assert(L.trophiesHtml({ enabled: true, trophies: 2 }).includes('2 weekly wins'));
+
 // 3. The shared xpFor (teacher view) agrees with calcXP row by row.
 [
   { question_id: 'Q-ANVIL', is_correct: true, reforge_attempted: true, reforge_correct: true },

@@ -151,7 +151,10 @@
     timed: '<circle cx="12" cy="13" r="7"/><path d="M12 9v4l2.5 2.5M10 3h4"/>',
     topics: '<circle cx="12" cy="12" r="8"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/>',
     target: '<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r=".6"/>',
-    cleared: '<path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4.5"/>'
+    cleared: '<path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4.5"/>',
+    // Weekly league trophy (scripts/forge-league.js), the same cup as the
+    // league's empty state.
+    trophy: '<path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0V4Z"/><path d="M17 5h3v2a4 4 0 0 1-3 3.9M7 5H4v2a4 4 0 0 0 3 3.9"/>'
   };
 
   // The medal on its own: the badge icon inside a ring in the tier's colours.

@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="css/auth.css">
 <link rel="stylesheet" href="css/sidebar.css">
 <link rel="stylesheet" href="css/components.css?v=20261004-challenge">
-<link rel="stylesheet" href="css/forge-league.css?v=20260929f">
+<link rel="stylesheet" href="css/forge-league.css?v=20261008a">
 
 <link rel="stylesheet" href="css/states.css">
   <link rel="stylesheet" href="css/generated-utilities.css">
@@ -395,7 +395,7 @@ var SPEC_TO_SUBJECT = {
 <script src="scripts/forge-misconception-state.js"></script>
 <script src="scripts/forge-topic-mastery.js?v=20261004-rings"></script>
 <script src="scripts/forge-challenge.js?v=20261004-challenge"></script>
-<script src="scripts/forge-league.js?v=20260929a"></script>
+<script src="scripts/forge-league.js?v=20261008a"></script>
 <script src="data/misconception-labels.js?v=20260907-diagnostics"></script>
 <script>
 
@@ -2275,7 +2275,9 @@ function renderResults(){
   document.getElementById('all-banks').onclick=function(){state.assignmentId=null;state.challenge=null;state.phase='banks';render();};
   // Weekly class league, fetched after the session's answers have been sent.
   var leagueEl=document.getElementById('result-league');
-  if(leagueEl&&window.ForgeLeague) ForgeLeague.mount(leagueEl,{studentId:state.studentId,classId:state.classId,classCode:state.classCode,studentCode:state.studentCode,studentName:state.studentName});
+  if(leagueEl&&window.ForgeLeague) ForgeLeague.mount(leagueEl,{studentId:state.studentId,classId:state.classId,classCode:state.classCode,studentCode:state.studentCode,studentName:state.studentName}).then(function(data){
+    if(data&&data.enabled&&window.ForgeCelebrate&&state.studentId) ForgeCelebrate.check({studentId:state.studentId,name:state.studentName,trophies:Number(data.trophies)||0});
+  });
 }
 
 function forgeLogout(){

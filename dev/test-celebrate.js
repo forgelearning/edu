@@ -46,6 +46,21 @@ assert.strictEqual(r.record.badgesSeen,true);
 // Ranks newly shown (a student joins a class): recorded, not announced.
 assert.deepStrictEqual(types(C.diff({rank:null,badges:{},badgesSeen:true},{xp:6000,badges:[]})),[]);
 
+// League trophies: a new win is announced, even one already held the first
+// time trophies are seen (a closed week nobody announced), and never twice.
+const ttypes=r=>JSON.parse(JSON.stringify(r.events.map(e=>e.type+(e.count?':'+e.count:''))));
+r=C.diff({rank:'journeyman',badges:{},badgesSeen:true},{trophies:0});
+assert.deepStrictEqual(ttypes(r),[]);
+r=C.diff(JSON.parse(JSON.stringify(r.record)),{trophies:1});
+assert.deepStrictEqual(ttypes(r),['trophy:1']);
+assert.deepStrictEqual(ttypes(C.diff(JSON.parse(JSON.stringify(r.record)),{trophies:1})),[],'never repeats');
+assert.deepStrictEqual(ttypes(C.diff(JSON.parse(JSON.stringify(r.record)),{trophies:0})),[],'a partial load does not reset it');
+assert.strictEqual(C.diff(JSON.parse(JSON.stringify(r.record)),{trophies:0}).record.trophies,1);
+assert.deepStrictEqual(ttypes(C.diff({rank:'journeyman',badges:{},badgesSeen:true},{trophies:2})),['trophy:2'],'backdated wins are announced once');
+assert.strictEqual(C.diff({rank:'forged',badges:{},badgesSeen:true,trophies:1},{xp:6000}).record.trophies,1,'a rank check keeps the trophy record');
+const trophyCard=C.cardSvg({type:'trophy',count:2});
+assert(trophyCard.includes('League winner')&&trophyCard.includes('2 weekly wins')&&!/Motion|Tester/.test(trophyCard));
+
 // The share card names the achievement and Forge, never the student.
 const rankCard=C.cardSvg({type:'rank',rank:ctx.ForgeRanks.byKey('master')});
 assert(rankCard.includes('Master')&&rankCard.includes('forgelearning.github.io/edu'));

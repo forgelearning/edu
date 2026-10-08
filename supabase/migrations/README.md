@@ -330,3 +330,27 @@ two months ago): the league showed 350 XP and rank `craftsman`, every row
 carried a rank, and no lifetime total appeared in the response. Afterwards
 the live body matches this file and `anon`/`authenticated` EXECUTE is
 unchanged.
+
+## 20261008 123202 — league trophies
+
+| File | What it does |
+|---|---|
+| `20261008123202_league_trophies.sql` | Adds `trophies` to every row of `get_class_weekly_league`, to `you`, and at the top level for the caller (present even when `you` is null). A trophy is 1st place in a closed week (Monday 00:00 Europe/London) since the league launched on 2026-09-28, in a week where at least three students in the class earned XP; tied 1st places each win one. Weekly XP uses the league's own rules, match rewards included. |
+
+Rules agreed with the product owner on 2026-10-08. Nothing is stored: the
+count is derived from `responses` and `student_match_rewards` on each call, so
+it cannot be set from the browser and cannot disagree with the league that
+awarded it. Classmates see only the count.
+
+Not coupled: the fields are additive, so the old client ignores them and the
+new client shows no trophies for a server without them.
+
+**Applied to production 2026-10-08.** Checked first in two rolled-back
+transactions with throwaway students in quiet classes: a student 1st on
+answers alone and a student tied with them through match-pairs XP both won one
+trophy; third place won none; a 3-player week before launch awarded nothing;
+a week with only two students earning XP awarded nothing; a student with no
+XP this week still received their top-level count. Afterwards the live body
+contains the trophy logic, `anon`/`authenticated` EXECUTE is unchanged, and no
+test rows remained. Backdating awards one trophy across all classes (one class
+qualified in the week of 28 September; three had fewer than three students).
