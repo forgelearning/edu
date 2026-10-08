@@ -219,7 +219,11 @@ const server = http.createServer((req, res) => {
     }
     if (url.pathname === '/mock-supabase/rest/v1/rpc/get_free_student_responses') return json(res, 200, demoFreeResponses);
     if (url.pathname === '/mock-supabase/rest/v1/rpc/join_class_with_student_code') return json(res, 200, [{student_id:demoStudent.studentId,class_id:demoStudent.classId,class_name:'Motion test class',subject:demoStudent.classSubject}]);
-    if (url.pathname === '/mock-supabase/rest/v1/rpc/get_student_own_responses_with_code' || url.pathname === '/mock-supabase/rest/v1/rpc/get_student_own_responses') return json(res, 200, demoResponses);
+    if (url.pathname === '/mock-supabase/rest/v1/rpc/get_student_own_responses_with_code') return json(res, 200, demoResponses);
+    // As in production since 20260810133000: the legacy RPC answers [] for a
+    // class that uses student codes, which the demo class does. Answering it
+    // with the history hid a quiz page that never sent the code.
+    if (url.pathname === '/mock-supabase/rest/v1/rpc/get_student_own_responses') return json(res, 200, []);
     if (url.pathname === '/mock-supabase/rest/v1/rpc/get_student_assignments') return json(res, 200, []);
     if (url.pathname === '/mock-supabase/rest/v1/rpc/get_challenge_answers') {
       // Mirrors the server's answer-first rule, then reports a pretend class of

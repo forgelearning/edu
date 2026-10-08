@@ -9,11 +9,11 @@
   'use strict';
 
   var RANKS = [
-    { key: 'apprentice', name: 'Apprentice', min: 0, frame: 'iron', frameName: 'Iron', color: 'var(--slate)' },
-    { key: 'journeyman', name: 'Journeyman', min: 300, frame: 'bronze', frameName: 'Bronze', color: 'var(--hot)' },
-    { key: 'craftsman', name: 'Craftsman', min: 1500, frame: 'silver', frameName: 'Silver', color: 'var(--ember)' },
-    { key: 'forged', name: 'Forged', min: 5000, frame: 'gold', frameName: 'Gold', color: 'var(--good)' },
-    { key: 'master', name: 'Master', min: 15000, frame: 'ember', frameName: 'Ember', color: 'var(--ember)' }
+    { key: 'apprentice', name: 'Apprentice', min: 0, frame: 'iron', frameName: 'Iron' },
+    { key: 'journeyman', name: 'Journeyman', min: 300, frame: 'bronze', frameName: 'Bronze' },
+    { key: 'craftsman', name: 'Craftsman', min: 1500, frame: 'silver', frameName: 'Silver' },
+    { key: 'forged', name: 'Forged', min: 5000, frame: 'gold', frameName: 'Gold' },
+    { key: 'master', name: 'Master', min: 15000, frame: 'ember', frameName: 'Ember' }
   ];
 
   function esc(value) {

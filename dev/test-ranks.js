@@ -43,4 +43,10 @@ sqlRanks.push([(sql.match(/else '([a-z]+)' end as rank_key/)||[])[1],0]);
 assert.deepStrictEqual(sqlRanks.sort((a,b)=>a[1]-b[1]),JSON.parse(JSON.stringify(R.RANKS.map(r=>[r.key,r.min]))),'league SQL ('+latestLeague+') rank thresholds match scripts/forge-ranks.js');
 assert.strictEqual(R.byKey('forged').name,'Forged');
 assert.strictEqual(R.byKey('nonsense'),null);
+// The XP guide spells the ladder out for students; it must match RANKS.
+const guide=fs.readFileSync('pages/guides/guides-xp-ranks.html','utf8');
+const ladderText=R.RANKS.map((r,i)=>{const next=R.RANKS[i+1];return r.name+' ('+r.min.toLocaleString('en-GB')+(next?'–'+next.min.toLocaleString('en-GB'):'+')+(i===0?' XP':'')+')';}).join(' → ');
+assert(guide.includes(ladderText),'guides-xp-ranks.html lists the ranks as '+ladderText);
+// Rank names mean lifetime XP. Nothing else may use them as a score grade.
+assert(!/'[^']*\b(Forged|Craftsman|Journeyman)'\s*:/.test(fs.readFileSync('pages/app/forge-quiz.html','utf8')),'forge-quiz.html does not grade a score with a rank name');
 console.log('Rank and frame tests passed (including league SQL thresholds in '+latestLeague+').');

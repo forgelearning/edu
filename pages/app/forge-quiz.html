@@ -117,10 +117,6 @@ var supa = {
       query = parts.join('&');
     }
     return ForgeAPI.get(table, query).catch(function() { return []; });
-  },
-  ownResponses: function(studentId, code, name) {
-    return ForgeAPI.rpc('get_student_own_responses', {p_student_id: studentId, p_code: code, p_name: name})
-      .catch(function() { return []; });
   }
 };
 
@@ -2605,14 +2601,22 @@ if (!openSoloLogin && !openEmailLogin && ForgeAuth.hasSession()) {
         studentId: state.studentId, classCode: savedSession.classCode, studentName: state.studentName
       }, function() { settlePhase(); render(); });
       if (state.studentId && savedSession.classCode) {
-        supa.ownResponses(state.studentId, savedSession.classCode, state.studentName).then(function(r) {
-          var responses = Array.isArray(r) ? r : [];
+        // Same loader as Home and Profile. It sends the student code, which a
+        // coded class requires: the legacy get_student_own_responses answers []
+        // there, so this page used to start every coded student from zero XP
+        // (the results card disagreed with the league's rank) and with no
+        // spaced-repetition history.
+        ForgeClasses.fetchLinkedResponses(SUPABASE_URL, SUPABASE_KEY, {
+          studentId: state.studentId, classId: state.classId, classCode: savedSession.classCode,
+          studentCode: state.studentCode, studentName: state.studentName, subject: state.classSubject
+        }, function(responses, error) {
+          if (error) { state.weightMap = {}; return; }
           state.responseHistory = responses;
           state.weightMap = buildWeightMap(responses);
           state.bankStats = buildBankStats(responses);
           setXPHistory(responses);
           if (state.phase === 'banks') render();
-        }).catch(function() { state.weightMap = {}; });
+        });
       }
       restored = true;
     }
@@ -2704,14 +2708,16 @@ function renderMandarinReader() {
   // Score panel if complete
   if (done >= qs.length) {
     var spct = Math.round(mrs.correct / qs.length * 100);
-    var grade = spct >= 80 ? '🔥 Forged' : spct >= 60 ? '⚒️ Craftsman' : '🔨 Keep forging';
+    // Not rank names: ranks come from lifetime XP (scripts/forge-ranks.js), and a
+    // reading score labelled "Forged" contradicted the rank shown everywhere else.
+    var grade = spct >= 80 ? '🔥 Excellent' : spct >= 60 ? '⚒️ Good' : '🔨 Keep forging';
     h += '<div class="forge-u-1j8pxz2">';
     h += '<div class="forge-u-1ndegov">'+mrs.correct+'/'+qs.length+'</div>';
     h += '<div class="forge-u-1gda80a">Questions answered correctly</div>';
     h += '<div class="forge-u-tp123k">';
     h += '<div class="forge-u-1950rq5"><div class="forge-u-pn05gc">'+mrs.correct+'</div><div class="forge-u-qqzwkq">Correct</div></div>';
     h += '<div class="forge-u-1950rq5"><div class="forge-u-pn05gc">'+(qs.length-mrs.correct)+'</div><div class="forge-u-qqzwkq">Review</div></div>';
-    h += '<div class="forge-u-1950rq5"><div class="forge-u-pn05gc">'+grade+'</div><div class="forge-u-qqzwkq">Rank</div></div>';
+    h += '<div class="forge-u-1950rq5"><div class="forge-u-pn05gc">'+grade+'</div><div class="forge-u-qqzwkq">Result</div></div>';
     h += '</div>';
     h += '<button type="button" class="forge-u-1qc89jz" data-forge-action="mr-reset">Try again</button>';
     h += '</div>';
