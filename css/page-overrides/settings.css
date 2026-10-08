@@ -63,3 +63,18 @@ html[data-theme="light"] .settings-background-preview--nightfall{--preview-bg:#e
 .settings-danger code{padding:1px 6px;border-radius:var(--radius-xs);background:var(--panel);font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--hot)}
 .settings-field [role="status"]:not(:empty){margin-top:10px}
 .settings-rank-intro{margin-bottom:12px}
+/* Friends for independent students (scripts/forge-independent-friends.js). */
+.settings-friends-form{display:grid;gap:14px;max-width:420px}
+.settings-friends-field{display:grid;gap:6px;color:var(--white);font-size:14px;font-weight:600}
+.settings-friends-field input{min-height:44px;padding:0 12px;border:1px solid var(--line);border-radius:var(--radius-sm);background:var(--panel-2);color:var(--white);font:500 15px 'Poppins',sans-serif}
+.settings-friends-check{display:flex;align-items:center;gap:10px;min-height:44px;color:var(--white);font-size:14px}
+.settings-friends-check input{width:20px;height:20px;accent-color:var(--ember)}
+.settings-friends-form .forge-button{justify-self:start}
+.settings-friends-code{display:grid;gap:4px;margin:0 0 16px;padding:16px;border:1px solid var(--line);border-radius:var(--radius-md);background:var(--panel-2)}
+.settings-friends-code span{color:var(--slate);font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.08em}
+.settings-friends-code strong{color:var(--white);font:700 26px/1.2 'JetBrains Mono',monospace;letter-spacing:.08em}
+.settings-friends-code small{color:var(--slate);font-size:13px;line-height:1.5}
+.settings-friends-actions{display:flex;flex-wrap:wrap;gap:10px}
+.settings-friends-status{margin:12px 0 0;color:var(--good);font-size:14px}
+.settings-friends-status:empty{display:none}
+.settings-friends-status.is-error{color:var(--bad)}
