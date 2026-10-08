@@ -7,7 +7,7 @@ module.exports = {
   slug: 'french',
   name: 'French',
   level: 'A Level',
-  intro: 'Edexcel A-level French: the grammar that comes up in translation, plus background to the themes. Videos open on YouTube.',
+  intro: 'Edexcel A-level French: the grammar that comes up in translation, plus background to the themes. Videos play here in Forge.',
   heading: 'Edexcel 9FR0 · Learn French With Alexa and others',
   groups: [
     { title: 'Tenses', videos: [

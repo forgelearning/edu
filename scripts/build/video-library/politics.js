@@ -7,7 +7,7 @@ module.exports = {
   slug: 'politics',
   name: 'Politics',
   level: 'A Level',
-  intro: 'Edexcel A-level Politics explanations for UK politics, UK government, ideas and US politics. Videos open on YouTube.',
+  intro: 'Edexcel A-level Politics explanations for UK politics, UK government, ideas and US politics. Videos play here in Forge.',
   heading: 'Edexcel 9PL0 · PEBL Lessons, Politics Explained and others',
   groups: [
     { title: 'UK politics', videos: [

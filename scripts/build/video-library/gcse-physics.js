@@ -7,7 +7,7 @@ module.exports = {
   slug: 'gcse-physics',
   name: 'Physics',
   level: 'GCSE',
-  intro: 'Edexcel GCSE Physics explanations, grouped by topic. Videos open on YouTube.',
+  intro: 'Edexcel GCSE Physics explanations, grouped by topic. Videos play here in Forge.',
   heading: 'Edexcel 1PH0 · Freesciencelessons',
   groups: [
     { title: 'Motion and forces', videos: [

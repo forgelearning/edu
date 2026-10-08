@@ -7,7 +7,7 @@ module.exports = {
   slug: 'physics',
   name: 'Physics',
   level: 'A Level',
-  intro: 'AQA A-level Physics explanations, grouped by topic. Videos open on YouTube.',
+  intro: 'AQA A-level Physics explanations, grouped by topic. Videos play here in Forge.',
   heading: 'AQA 7408 · Physics Online, ZPhysics and others',
   groups: [
     { title: 'Measurements, particles and quantum phenomena', videos: [

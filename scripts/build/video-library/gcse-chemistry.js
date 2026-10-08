@@ -7,7 +7,7 @@ module.exports = {
   slug: 'gcse-chemistry',
   name: 'Chemistry',
   level: 'GCSE',
-  intro: 'Edexcel GCSE Chemistry explanations, grouped by topic. Videos open on YouTube.',
+  intro: 'Edexcel GCSE Chemistry explanations, grouped by topic. Videos play here in Forge.',
   heading: 'Edexcel 1CH0 · Freesciencelessons',
   groups: [
     { title: 'Key concepts in chemistry', videos: [

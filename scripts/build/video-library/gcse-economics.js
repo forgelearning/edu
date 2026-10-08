@@ -4,7 +4,7 @@ module.exports = {
   slug: 'gcse-economics',
   name: 'Economics',
   level: 'GCSE',
-  intro: 'OCR GCSE Economics explanations for Papers 1 and 2. Videos open on YouTube.',
+  intro: 'OCR GCSE Economics explanations for Papers 1 and 2. Videos play here in Forge.',
   heading: 'OCR J205 · Mr Goff',
   groups: [
     { title: 'Economic foundations', videos: [

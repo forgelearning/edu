@@ -7,7 +7,7 @@ module.exports = {
   slug: 'law',
   name: 'Law',
   level: 'A Level',
-  intro: 'OCR A-level Law explanations for the legal system, criminal law, tort and contract. Videos open on YouTube.',
+  intro: 'OCR A-level Law explanations for the legal system, criminal law, tort and contract. Videos play here in Forge.',
   heading: 'OCR H418 · PEBL Lessons, LawWithAnna and others',
   groups: [
     { title: 'The legal system and law making', videos: [

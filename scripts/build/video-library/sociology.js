@@ -6,7 +6,7 @@ module.exports = {
   slug: 'sociology',
   name: 'Sociology',
   level: 'A Level',
-  intro: 'AQA A-level Sociology explanations for Papers 1 to 3, grouped by topic. Videos open on YouTube.',
+  intro: 'AQA A-level Sociology explanations for Papers 1 to 3, grouped by topic. Videos play here in Forge.',
   heading: 'AQA 7192 · tutor2u and others',
   groups: [
     { title: 'Education', videos: [

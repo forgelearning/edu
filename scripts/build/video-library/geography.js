@@ -8,7 +8,7 @@ module.exports = {
   slug: 'geography',
   name: 'Geography',
   level: 'A Level',
-  intro: 'Edexcel A-level Geography topic overviews and revision for Papers 1 to 3. Videos open on YouTube.',
+  intro: 'Edexcel A-level Geography topic overviews and revision for Papers 1 to 3. Videos play here in Forge.',
   heading: 'Edexcel 9GE0 · SWA Geography and others',
   groups: [
     { title: 'Tectonic processes and hazards', videos: [

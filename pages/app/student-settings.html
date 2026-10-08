@@ -19,6 +19,8 @@
   <script src="scripts/forge-student-code.js"></script>
   <script src="scripts/forge-rewards.js"></script>
   <script src="scripts/forge-ranks.js"></script>
+  <script src="scripts/forge-achievements.js"></script>
+  <script src="scripts/forge-emblems.js"></script>
   <script src="scripts/forge-independent-friends.js"></script>
 <script src="scripts/forge-theme.js?v=20260808-theme2"></script>
   <script src="scripts/forge-logo.js"></script>
@@ -116,7 +118,7 @@
           if(!unlocked&&radio.checked){radio.checked=false;document.querySelector('input[name="'+radio.name+'"][value="'+(radio.name==='accent'?'ember':'plain')+'"]').checked=true;}
         });
         var ladder=document.getElementById('settings-rank-ladder');
-        if(ladder&&window.ForgeRanks)ladder.innerHTML=ForgeRanks.ladderHtml(savedStudent&&(savedStudent.studentName||savedStudent.name)||'You',xp);
+        if(ladder&&window.ForgeRanks)ladder.innerHTML=window.ForgeEmblems?ForgeEmblems.ownLadderHtml(studentId,savedStudent&&(savedStudent.studentName||savedStudent.name)||'You',xp):ForgeRanks.ladderHtml(savedStudent&&(savedStudent.studentName||savedStudent.name)||'You',xp);
       }
       updateRewards();
       function rememberResponses(rows){

@@ -8,7 +8,7 @@ module.exports = {
   slug: 'german',
   name: 'German',
   level: 'A Level',
-  intro: 'Edexcel A-level German: cases, word order and the complex structures that come up in translation, plus background to reunification. Videos open on YouTube.',
+  intro: 'Edexcel A-level German: cases, word order and the complex structures that come up in translation, plus background to reunification. Videos play here in Forge.',
   heading: 'Edexcel 9GN0 · Easy German, YourGermanTeacher and others',
   groups: [
     { title: 'Cases and adjective endings', videos: [

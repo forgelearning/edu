@@ -32,6 +32,7 @@
 <script src="scripts/forge-rewards.js"></script>
 <script src="scripts/forge-ranks.js"></script>
 <script src="scripts/forge-achievements.js"></script>
+<script src="scripts/forge-emblems.js"></script>
 <script src="scripts/forge-celebrate.js"></script>
 <script src="scripts/forge-league.js?v=20261008a"></script>
 <script src="scripts/forge-theme.js?v=20260808-theme2"></script>
@@ -109,6 +110,11 @@ function learningTrail(responses,studentId){
 // dashboard, friends list and settings show the same rank as this page.
 var RANKS = ForgeRanks.RANKS;
 function getRank(xp){ return ForgeRanks.rankFor(xp); }
+// The student's own avatar shows their chosen emblem (scripts/forge-emblems.js).
+function ownAvatar(xp,opts){
+  return window.ForgeEmblems?ForgeEmblems.ownAvatarHtml(st.studentId,st.studentName,xp,opts):ForgeRanks.avatarHtml(st.studentName,xp,opts);
+}
+if(window.ForgeEmblems)ForgeEmblems.bind(function(){return {studentId:st.studentId,name:st.studentName};});
 
 // A new rank or badge tier since this student last saw it opens a popup
 // (scripts/forge-celebrate.js). Only on complete data: answers loaded without
@@ -389,7 +395,7 @@ function renderProfile(){
     // ── OVERVIEW TAB ──
     h+='<div class="prof-header">';
     h+='<div class="prof-header-top">';
-    h+='<div class="prof-identity">'+ForgeRanks.avatarHtml(st.studentName,xp,{size:'lg',rank:rank});
+    h+='<div class="prof-identity">'+ownAvatar(xp,{size:'lg',rank:rank});
     h+='<div><div class="prof-name">'+profileEscape(st.studentName)+' profile</div>';
     h+='<div class="prof-subject">'+subjectLabel+'</div>'+ForgeRanks.chipHtml(xp,rank)+'</div></div>';
     h+='<span class="always-updating">Always updating</span>';
@@ -448,6 +454,7 @@ function renderProfile(){
     var subjectTopics=((typeof SUBJECTS!=='undefined'&&SUBJECTS[subjectKey])||{}).banks||[];
     var badges=window.ForgeAchievements?ForgeAchievements.compute(responses,{resolved:resolved,topicBanks:subjectTopics}):null;
     if(badges) h+=ForgeAchievements.html(badges);
+    if(badges&&window.ForgeEmblems&&st.studentId) h+=ForgeEmblems.pickerHtml(st.studentId,st.studentName,xp,badges,{subject:subjectKey});
     celebrateProfile(xp,badges);
     // Weekly league trophies come from the class league, fetched once below.
     if(st.classId&&window.ForgeLeague) h+='<div id="profile-trophies">'+(st.leagueFor===st.studentId&&st.league?ForgeLeague.trophiesHtml(st.league):'')+'</div>';
@@ -554,7 +561,7 @@ function renderProfile(){
     var xpToNext=nextRank?nextRank.min-xp:0;
     var pct=nextRank?Math.round(((xp-rank.min)/(nextRank.min-rank.min))*100):100;
     h+='<div class="rank-display">';
-    h+=ForgeRanks.avatarHtml(st.studentName,xp,{size:'lg',rank:rank,label:true});
+    h+=ownAvatar(xp,{size:'lg',rank:rank,label:true});
     h+='<p class="tag forge-u-1x3vyu3">'+profileEscape(st.studentName)+' — Forge Rank</p>';
     h+='<div class="rank-title forge-frame--'+rank.frame+'">'+rank.name+'</div>';
     h+='<div class="rank-xp">'+xp.toLocaleString()+' XP</div>';
@@ -565,7 +572,7 @@ function renderProfile(){
     h+='</div>';
     h+='<section class="card rank-ladder-card" aria-labelledby="rank-ladder-title"><h2 id="rank-ladder-title" class="card-title">Ranks and frames</h2>';
     h+='<p class="rank-ladder-intro">Each rank brings a new frame for your avatar. Friends see your rank and frame next to your name.</p>';
-    h+=ForgeRanks.ladderHtml(st.studentName,xp)+'</section>';
+    h+=(window.ForgeEmblems?ForgeEmblems.ownLadderHtml(st.studentId,st.studentName,xp):ForgeRanks.ladderHtml(st.studentName,xp))+'</section>';
 
   } else if(activeTab==='anvil'){
     // ── ANVIL TAB ──

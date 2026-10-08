@@ -2,7 +2,7 @@ module.exports = {
   slug: 'history',
   name: 'History',
   level: 'A Level',
-  intro: 'AQA A-level History explanations for Britain, the USA and Tudor investigation context. Videos open on YouTube.',
+  intro: 'AQA A-level History explanations for Britain, the USA and Tudor investigation context. Videos play here in Forge.',
   heading: 'AQA A-level topics · Britain, USA and Tudors',
   groups: [
     { title: 'Wars and Welfare: Britain, 1906–1929', videos: [

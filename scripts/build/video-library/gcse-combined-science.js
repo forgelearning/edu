@@ -11,7 +11,7 @@ module.exports = {
   slug: 'gcse-combined-science',
   name: 'Combined Science',
   level: 'GCSE',
-  intro: 'Edexcel GCSE Combined Science explanations for Biology, Chemistry and Physics. Videos open on YouTube.',
+  intro: 'Edexcel GCSE Combined Science explanations for Biology, Chemistry and Physics. Videos play here in Forge.',
   heading: 'Edexcel 1SC0 · Freesciencelessons and Cognito',
   groups: sciences.flatMap(([science, subject]) => subject.groups
     .map((g) => ({ title: `${science}: ${g.title.charAt(0).toLowerCase()}${g.title.slice(1)}`, videos: g.videos.filter((v) => !v.triple) }))

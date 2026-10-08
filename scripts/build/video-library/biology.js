@@ -7,7 +7,7 @@ module.exports = {
   slug: 'biology',
   name: 'Biology',
   level: 'A Level',
-  intro: 'OCR A A-level Biology explanations, grouped by module. Videos open on YouTube.',
+  intro: 'OCR A A-level Biology explanations, grouped by module. Videos play here in Forge.',
   heading: 'OCR A H420 · BioRach, Miss Estruch and others',
   groups: [
     { title: 'Module 2: Cells and biological molecules', videos: [
@@ -15,8 +15,8 @@ module.exports = {
       v('8d2Edz46UF4', 'Protein structure', '2.1.2', ME),
       v('1ibWOa-S4bI', 'Monosaccharides and disaccharides', '2.1.2', 'Cognito'),
       v('55oCUwxKpsk', 'Lipids: triglycerides', '2.1.2', 'Launchpad Learning'),
-      v('eRAGWeEoOXc', 'DNA replication', '2.1.3', 'Freesciencelessons'),
-      v('ChC_30uF1m8', 'Protein synthesis', '2.1.3', 'Freesciencelessons'),
+      { ...v('eRAGWeEoOXc', 'DNA replication', '2.1.3', 'Freesciencelessons'), noEmbed: true },
+      { ...v('ChC_30uF1m8', 'Protein synthesis', '2.1.3', 'Freesciencelessons'), noEmbed: true },
     ] },
     { title: 'Module 2: Enzymes, membranes and cell division', videos: [
       v('KTK7KUuFiow', 'The basics of enzymes', '2.1.4', BR),
