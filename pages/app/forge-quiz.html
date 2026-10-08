@@ -1041,12 +1041,12 @@ function renderJoin() {
   h += '</div>';
 
   h += '<div class="forge-u-uydnfn" id="panel-email">';
-  h += '<p class="forge-u-152cbjr">Enter your email to save progress or return on another device. Follow the instructions in the email we send.</p>';
+  h += '<p class="forge-u-152cbjr">Enter your email to save progress or return on another device. We’ll email you a six-digit sign-in code.</p>';
   h += ForgeAuthCard.field('email-address', 'Email address', {type:'email', placeholder:'you@example.com', autocomplete:'email'});
-  h += '<button class="auth-btn" id="email-btn" type="button">Send sign-in email →</button>';
+  h += '<button class="auth-btn" id="email-btn" type="button">Send sign-in code →</button>';
   h += '<p class="auth-err" id="email-err"></p>';
   h += '<div class="forge-email-code">';
-  h += ForgeAuthCard.field('email-code', 'One-time code (if included in your email)', {placeholder:'123456', autocomplete:'one-time-code'});
+  h += ForgeAuthCard.field('email-code', 'Six-digit sign-in code', {placeholder:'123456', autocomplete:'one-time-code'});
   h += '<button class="auth-btn auth-btn--secondary" id="code-btn" type="button">Use code →</button></div>';
   h += '</div>';
 
@@ -1183,7 +1183,7 @@ function renderJoin() {
     var btn = this;
     btn.disabled = true;
     ForgeAuth.sendEmailLink(email, !!loadFreeSession()).then(function() {
-      err.textContent = 'Check your email. Follow its link or enter a six-digit code below if one is included. Your progress will be saved after you sign in.';
+      err.textContent = 'Check your email for a six-digit code, then enter it below. Your progress will be saved after you sign in.';
       err.dataset.state = 'success';
       err.style.display = 'block';
     }).catch(function(e) {

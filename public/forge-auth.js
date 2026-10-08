@@ -182,8 +182,7 @@ var ForgeAuth = {
     });
   },
 
-  // The email template may send either a magic link or a six-digit OTP.
-  // The page accepts a code when the template includes one.
+  // Supabase sends a six-digit OTP through the project's code-only template.
   sendEmailLink: function(email, saveCurrentFreeWork) {
     try { localStorage.removeItem(FORGE_FREE_CLAIM_KEY); } catch(e) {}
     if (saveCurrentFreeWork) {
