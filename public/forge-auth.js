@@ -182,7 +182,7 @@ var ForgeAuth = {
     });
   },
 
-  // Supabase sends a six-digit OTP through the project's code-only template.
+  // Supabase sends an eight-digit OTP through the project's code-only template.
   sendEmailLink: function(email, saveCurrentFreeWork) {
     try { localStorage.removeItem(FORGE_FREE_CLAIM_KEY); } catch(e) {}
     if (saveCurrentFreeWork) {

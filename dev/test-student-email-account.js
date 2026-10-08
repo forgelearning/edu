@@ -45,7 +45,7 @@ async function run() {
   await context.ForgeAuth.sendEmailLink('Alex@Example.com', true);
   assert.deepStrictEqual(calls[0], ['send', 'Alex@Example.com', 'https://forge.example/student-dashboard.html']);
   assert.strictEqual(JSON.parse(values.get('forge-free-claim-pending')).email, 'alex@example.com');
-  await context.ForgeAuth.verifyEmailCode('Alex@Example.com', '123456');
+  await context.ForgeAuth.verifyEmailCode('Alex@Example.com', '12345678');
   assert.strictEqual(values.has('forge-free-session'), false, 'old device state is cleared before account restoration');
   const restored = await context.ForgeAuth.restoreFreeStudent();
   assert.strictEqual(restored.studentId, 'guest-row');
@@ -56,7 +56,7 @@ async function run() {
   // A different device has no guest token; email sign-in restores the account row.
   context.ForgeAuth.signOut();
   calls.length = 0;
-  await context.ForgeAuth.verifyEmailCode('alex@example.com', '654321');
+  await context.ForgeAuth.verifyEmailCode('alex@example.com', '87654321');
   await context.ForgeAuth.restoreFreeStudent();
   assert.strictEqual(calls.some(call => call[0] === 'claim_free_student'), false);
   assert.strictEqual(calls.some(call => call[0] === 'get_my_free_student'), true);
@@ -67,7 +67,7 @@ async function run() {
   values.set('forge-free-session', JSON.stringify({ studentId: 'other-guest', freeToken: 'another-secure-token' }));
   await context.ForgeAuth.sendEmailLink('other@example.com', true);
   calls.length = 0;
-  await context.ForgeAuth.verifyEmailCode('alex@example.com', '123456');
+  await context.ForgeAuth.verifyEmailCode('alex@example.com', '12345678');
   await context.ForgeAuth.restoreFreeStudent();
   assert.strictEqual(calls.some(call => call[0] === 'claim_free_student'), false);
 
