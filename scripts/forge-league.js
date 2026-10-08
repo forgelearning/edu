@@ -62,6 +62,34 @@
       + '<p class="forge-league__empty-title">' + title + '</p><p>' + body + '</p></div>';
   }
 
+  // Weekly wins (get_class_weekly_league, 20261008123202_league_trophies):
+  // 1st place when a week closes, in a week where at least three classmates
+  // earned XP. Rows from an older server carry no count and show nothing.
+  var TROPHY = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0V4Z"/><path d="M17 5h3v2a4 4 0 0 1-3 3.9M7 5H4v2a4 4 0 0 0 3 3.9"/></svg>';
+  function winsLabel(n) { return n + ' weekly ' + (n === 1 ? 'win' : 'wins'); }
+  function trophyCount(n) {
+    n = Number(n) || 0;
+    if (n < 1) return '';
+    return '<span class="forge-league__trophies forge-frame--gold" role="img" aria-label="' + winsLabel(n) + '" title="' + winsLabel(n) + '">' + TROPHY + '<span aria-hidden="true">' + n + '</span></span>';
+  }
+
+  // The profile's trophy shelf. Empty when the class has no league, as the
+  // league card itself is.
+  function trophiesHtml(data) {
+    if (!data || !data.enabled) return '';
+    var n = Math.max(0, Number(data.trophies) || 0);
+    var A = root.ForgeAchievements;
+    var h = '<section class="forge-badges forge-trophies" aria-labelledby="forge-trophies-title">'
+      + '<div class="forge-badges__head"><h2 id="forge-trophies-title">League trophies</h2><span>' + esc(winsLabel(n)) + '</span></div>'
+      + '<div class="forge-badge' + (n ? ' forge-frame--gold' : ' is-locked') + '">'
+      + (A ? A.medalHtml('trophy', n ? 'gold' : null) : '')
+      + '<span class="forge-badge__text"><strong>' + (n ? (n === 1 ? 'Weekly league winner' : n + '× weekly league winner') : 'No trophies yet') + '</strong>'
+      + '<small>Finish 1st in your class’s weekly league to win one. A week counts when at least three classmates earn XP.</small>'
+      + (n && root.ForgeCelebrate ? '<button type="button" class="forge-badge__share" data-forge-share="trophy" data-count="' + n + '" aria-label="Share your league trophies">Share</button>' : '')
+      + '</span></div></section>';
+    return h;
+  }
+
   function fetchLeague(ctx) {
     return studentRpc('get_class_weekly_league', ctx).then(function (data) {
       return data && typeof data === 'object' && !Array.isArray(data) ? data : null;
@@ -87,7 +115,8 @@
       var rank = root.ForgeRanks && root.ForgeRanks.byKey(r.rank);
       h += '<li class="forge-league__row' + (r.is_you ? ' is-you' : '') + '"><span class="forge-league__pos">' + esc(r.position) + '</span>'
         + '<span class="forge-league__name">' + (rank ? root.ForgeRanks.avatarHtml(r.name, 0, { size: 'sm', rank: rank }) : '')
-        + '<span>' + (r.is_you ? 'You' : esc(r.name)) + (rank ? ' ' + root.ForgeRanks.chipHtml(0, rank) : '') + '</span></span>'
+        // The trophy count sits outside the label, which truncates on a phone.
+        + '<span class="forge-league__label">' + (r.is_you ? 'You' : esc(r.name)) + (rank ? ' ' + root.ForgeRanks.chipHtml(0, rank) : '') + '</span>' + trophyCount(r.trophies) + '</span>'
         + '<span class="forge-league__xp">' + Number(r.xp || 0).toLocaleString() + ' XP</span></li>';
       lastSeq = r.seq;
     });
@@ -165,5 +194,5 @@
     return h + '</section>';
   }
 
-  root.ForgeLeague = { fetch: fetchLeague, html: html, mount: mount, xpFor: xpFor, weekStart: weekStart, teacherHtml: teacherHtml, studentRpc: studentRpc, esc: esc };
+  root.ForgeLeague = { fetch: fetchLeague, html: html, trophiesHtml: trophiesHtml, mount: mount, xpFor: xpFor, weekStart: weekStart, teacherHtml: teacherHtml, studentRpc: studentRpc, esc: esc };
 }(typeof window !== 'undefined' ? window : globalThis));

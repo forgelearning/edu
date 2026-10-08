@@ -1,6 +1,8 @@
-/* Celebrations for a new rank or badge tier, and sharing them.
+/* Celebrations for a new rank, badge tier or weekly league trophy, and
+   sharing them.
 
-   check() compares what a page has just worked out (lifetime XP, badge tiers)
+   check() compares what a page has just worked out (lifetime XP, badge tiers,
+   league trophies)
    with what this student has already been congratulated on, which is kept per
    student on this device. Anything new opens one popup listing it all. The
    first time a student is seen, their current state is recorded silently, so
@@ -41,6 +43,7 @@
   // opts.badges: ForgeAchievements.compute() output, or null to leave alone.
   function diff(seen, opts) {
     var next = { rank: seen && seen.rank || null, badges: Object.assign({}, seen && seen.badges), badgesSeen: !!(seen && seen.badgesSeen) };
+    if (seen && seen.trophies != null) next.trophies = seen.trophies;
     var events = [];
     // Ranks and badges are first recorded independently: the quiz records
     // only a rank, so a student whose first visit is a quiz must not then be
@@ -62,6 +65,15 @@
       if (had == null || tierIndex(b.tier.key) > tierIndex(had)) next.badges[b.key] = b.tier.key;
     });
     if (opts.badges) next.badgesSeen = true;
+    // opts.trophies: weekly league wins from get_class_weekly_league, or null
+    // to leave alone. Unlike a rank, a win already held when trophies first
+    // appear is still celebrated: it was earned in a week that has closed and
+    // never been announced. Only ever moves up, like the rank.
+    if (opts.trophies != null) {
+      var won = Math.max(0, Math.floor(Number(opts.trophies) || 0)), had = Number(next.trophies) || 0;
+      if (won > had) events.push({ type: 'trophy', count: won });
+      if (next.trophies == null || won > had) next.trophies = Math.max(won, had);
+    }
     return { events: events, record: next };
   }
 
@@ -76,6 +88,19 @@
 
   // ── Words ───────────────────────────────────────────────────────────────
   function words(event) {
+    if (event.type === 'trophy') {
+      var n = event.count;
+      return {
+        kicker: 'Weekly league',
+        title: n === 1 ? 'You won the week' : 'You’ve won ' + n + ' weekly leagues',
+        body: (n === 1 ? 'You finished 1st in your class’s weekly league.' : 'You’ve finished 1st in your class’s weekly league ' + n + ' times.')
+          + ' Your trophies show next to your name in the league and on your profile.',
+        short: n === 1 ? 'League trophy' : n + ' league trophies',
+        share: n === 1
+          ? 'I finished 1st in my class’s weekly league on Forge, the revision app that helps you fix your mistakes.'
+          : 'I’ve won my class’s weekly league ' + n + ' times on Forge, the revision app that helps you fix your mistakes.'
+      };
+    }
     if (event.type === 'rank') {
       return {
         kicker: 'New rank',
@@ -97,6 +122,7 @@
   }
 
   function visual(event, name, size) {
+    if (event.type === 'trophy') return A().medalHtml('trophy', 'gold', size === 'sm' ? '' : 'lg');
     if (event.type === 'rank') return R().avatarHtml(name || '', 0, { rank: event.rank, size: size === 'sm' ? 'sm' : 'lg' });
     return A().medalHtml(event.badge.icon, event.tier.key, size === 'sm' ? '' : 'lg');
   }
@@ -106,9 +132,11 @@
   function show(events, name) {
     if (!doc || !R() || !A()) return;
     if (current) current.close();
-    // Ranks first, then higher tiers, so the biggest news leads.
+    // Ranks first, then a league trophy, then higher tiers, so the biggest
+    // news leads.
+    var order = function (e) { return e.type === 'rank' ? 0 : e.type === 'trophy' ? 1 : 2; };
     events = events.slice().sort(function (a, b) {
-      return (a.type === 'rank' ? -1 : 0) - (b.type === 'rank' ? -1 : 0) || tierIndex(b.tier && b.tier.key) - tierIndex(a.tier && a.tier.key);
+      return order(a) - order(b) || tierIndex(b.tier && b.tier.key) - tierIndex(a.tier && a.tier.key);
     });
     var lead = events[0], w = words(lead);
     var dialog = doc.createElement('dialog');
@@ -159,11 +187,12 @@
 
   function cardSvg(event) {
     var w = words(event);
-    var frame = event.type === 'rank' ? event.rank.frame : event.tier.key;
+    var trophy = event.type === 'trophy';
+    var frame = trophy ? 'gold' : event.type === 'rank' ? event.rank.frame : event.tier.key;
     var stops = FRAME_STOPS[frame] || FRAME_STOPS.iron;
-    var icon = event.type === 'rank' ? ANVIL : (A().ICONS[event.badge.icon] || '');
-    var title = event.type === 'rank' ? event.rank.name : event.badge.name;
-    var sub = event.type === 'rank' ? event.rank.frameName + ' frame' : event.tier.name + ' tier';
+    var icon = trophy ? A().ICONS.trophy : event.type === 'rank' ? ANVIL : (A().ICONS[event.badge.icon] || '');
+    var title = trophy ? 'League winner' : event.type === 'rank' ? event.rank.name : event.badge.name;
+    var sub = trophy ? (event.count === 1 ? '1st in the class this week' : event.count + ' weekly wins') : event.type === 'rank' ? event.rank.frameName + ' frame' : event.tier.name + ' tier';
     var font = "font-family='Rethink Sans, Helvetica Neue, Arial, sans-serif'";
     return '<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1080" viewBox="0 0 1080 1080">'
       + '<defs><radialGradient id="glow" cx="50%" cy="38%" r="60%"><stop offset="0" stop-color="' + stops[1] + '" stop-opacity=".28"/><stop offset="1" stop-color="#141210" stop-opacity="0"/></radialGradient>'
@@ -203,7 +232,7 @@
     var w = words(event), text = w.share + ' ' + SITE;
     var nav = root.navigator || {};
     return cardPng(event).then(function (blob) {
-      var file = typeof File === 'function' ? new File([blob], 'forge-' + (event.type === 'rank' ? event.rank.key : event.badge.key) + '.png', { type: 'image/png' }) : null;
+      var file = typeof File === 'function' ? new File([blob], 'forge-' + (event.type === 'trophy' ? 'trophy' : event.type === 'rank' ? event.rank.key : event.badge.key) + '.png', { type: 'image/png' }) : null;
       if (file && nav.canShare && nav.canShare({ files: [file] })) return nav.share({ files: [file], title: 'Forge', text: text });
       if (nav.share) return nav.share({ title: 'Forge', text: w.share, url: SITE });
       var a = doc.createElement('a');
@@ -221,6 +250,10 @@
   // Share buttons outside the popup (profile rank card and earned badges).
   function fromButton(button) {
     var kind = button.getAttribute('data-forge-share');
+    if (kind === 'trophy') {
+      var count = Math.floor(Number(button.getAttribute('data-count')) || 0);
+      return count > 0 ? { type: 'trophy', count: count } : null;
+    }
     if (kind === 'rank') {
       var rank = R() && R().byKey(button.getAttribute('data-rank'));
       return rank ? { type: 'rank', rank: rank } : null;

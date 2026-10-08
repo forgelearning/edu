@@ -55,3 +55,11 @@
 .forge-league__name > span:last-child{min-width:0;overflow:hidden;text-overflow:ellipsis}
 .forge-league__name .forge-rank-chip{margin-left:6px;padding:1px 9px 1px 7px;font-size:11px;vertical-align:1px}
 @media(max-width:360px){.forge-league__name .forge-rank-chip{display:none}}
+/* Weekly wins beside a name (20261008123202_league_trophies). */
+.forge-league__name > .forge-league__label{min-width:0;overflow:hidden;text-overflow:ellipsis}
+.forge-league__name > .forge-league__trophies{flex:none;overflow:visible}
+.forge-league__trophies{display:inline-flex;align-items:center;gap:3px;margin-left:-4px;color:var(--frame-ink);font:700 12px/1 'JetBrains Mono',monospace;vertical-align:1px}
+.forge-league__trophies svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+/* On a phone a row with trophies drops the rank chip rather than the name;
+   the avatar frame still shows the rank. */
+@media(max-width:480px){.forge-league__name:has(.forge-league__trophies) .forge-rank-chip{display:none}}
