@@ -7,7 +7,7 @@
 <meta name="description" content="Practise GCSE and A Level questions mapped to your exam board's spec, with instant misconception-tagged feedback.">
 <link rel="stylesheet" href="css/fonts.css">
 <link rel="stylesheet" href="css/tokens.css">
-<link rel="stylesheet" href="css/base.css?v=20260808-navpolish">
+<link rel="stylesheet" href="css/base.css?v=20261008-handoff">
 <link rel="stylesheet" href="css/auth.css">
 <link rel="stylesheet" href="css/sidebar.css">
 <link rel="stylesheet" href="css/components.css?v=20261004-challenge">
@@ -55,7 +55,7 @@ ForgeSidebar.mount({
   ]
 });
 </script>
-<script src="forge-auth.js?v=20260808-session-cache2"></script>
+<script src="forge-auth.js?v=20261008-name"></script>
 <script src="scripts/forge-assignment-progress.js?v=20261004-challenge"></script><script defer src="scripts/forge-student-badges.js?v=20261004-archived"></script>
 <script>
 // Keep the native edge gesture inside the quiz flow before allowing the
@@ -962,6 +962,14 @@ function render(skipMotion) {
     return window.ForgeMotion.update(app, function () { return render(true); });
   }
   hasRenderedForgeSurface = true;
+  // A new question starts at the top. Otherwise the page kept the scroll
+  // position from the previous question's feedback, so a long question opened
+  // with its header out of view, or jumped as the shorter one clamped it.
+  // Inside the transition's update, so the new snapshot is taken at the top.
+  if (state.scrollToQuestion) {
+    state.scrollToQuestion = false;
+    if (window.scrollY > 0) window.scrollTo({ top: 0, behavior: 'instant' });
+  }
   document.body.classList.toggle('forge-login-screen', state.phase === 'join');
   if (requestedBank && BANKS[requestedBank] && (state.studentName || state.classId) && state.phase !== 'quiz') {
     // Assignment links are bank-specific. Establish both the bank and its
@@ -1019,7 +1027,7 @@ function renderJoin() {
   h += '<div class="login-tabs">';
   h += '<button type="button" class="login-tab active" id="tab-free">Study on my own</button>';
   h += '<button type="button" class="login-tab" id="tab-class">Join class</button>';
-  h += '<button type="button" class="login-tab" id="tab-email">Email sign in</button>';
+  h += '<button type="button" class="login-tab" id="tab-email">Email sign in or sign up</button>';
   h += '<button type="button" class="login-tab" id="tab-solo">Password login</button>';
   h += '</div>';
 
@@ -1041,8 +1049,9 @@ function renderJoin() {
   h += '</div>';
 
   h += '<div class="forge-u-uydnfn" id="panel-email">';
-  h += '<p class="forge-u-152cbjr">Enter your email to save progress or return on another device. We’ll email you an eight-digit sign-in code.</p>';
+  h += '<p class="forge-u-152cbjr">New to Forge? This creates your free account. Already have one? The same steps sign you in. We’ll email you an eight-digit code, and anything you’ve practised on this device is saved to your account.</p>';
   h += ForgeAuthCard.field('email-address', 'Email address', {type:'email', placeholder:'you@example.com', autocomplete:'email'});
+  h += ForgeAuthCard.field('email-name', 'Your name (optional)', {placeholder:'e.g. Alex', autocomplete:'given-name'});
   h += '<button class="auth-btn" id="email-btn" type="button">Send sign-in code →</button>';
   h += '<p class="auth-err" id="email-err"></p>';
   h += '<div class="forge-email-code">';
@@ -1202,7 +1211,13 @@ function renderJoin() {
     if (!email || !/^\d{8}$/.test(code)) { err.textContent = 'Enter your email and eight-digit code.'; err.style.display = 'block'; return; }
     err.style.display = 'none';
     var btn = this; btn.disabled = true;
-    ForgeAuth.verifyEmailCode(email, code).then(function() { location.href = 'student-dashboard.html'; })
+    var name = (document.getElementById('email-name').value || '').trim();
+    ForgeAuth.verifyEmailCode(email, code).then(function() {
+      // Optional, and never blocks sign-in: a name that fails to save can be
+      // set again from Settings.
+      if (!name) return;
+      return ForgeAuth.restoreFreeStudent().then(function() { return ForgeAuth.setFreeStudentName(name); }).catch(function() {});
+    }).then(function() { location.href = 'student-dashboard.html'; })
       .catch(function(e) { err.textContent = e.message || 'Could not sign in.'; err.style.display = 'block'; btn.disabled = false; });
   };
   document.getElementById('email-code').onkeydown = function(event) {
@@ -1972,7 +1987,7 @@ function renderQuiz(){
         pressed.disabled=true;
         pressed.textContent='Saving answer…';
         var next = function() {
-          state.idx++;render();
+          state.idx++;state.scrollToQuestion=true;render();
         };
         if (responseSaved && typeof responseSaved.then === 'function') responseSaved.then(function(result){
           if (result && result.allowed === false) { renderLimitWall(); return; }
@@ -2112,7 +2127,7 @@ function renderFillBlankQuiz(q,bk,headerHtml){
     document.getElementById('next-btn').onclick=function(){
       this.disabled=true;
       this.textContent='Saving answer…';
-      var next = function(){ state.idx++;render(); };
+      var next = function(){ state.idx++;state.scrollToQuestion=true;render(); };
       if (responseSaved && typeof responseSaved.then === 'function') responseSaved.then(function(result){
         if (result && result.allowed === false) { renderLimitWall(); return; }
         if (result === false) {

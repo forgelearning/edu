@@ -399,3 +399,13 @@ stops the old one; remove works once; switching off removes every friendship.
 A test that reads `get_independent_friends()` in the same statement as a write
 sees the old state, since it is `stable`; use a separate statement.
 
+
+## 20261008 180000 — independent students can set a name
+
+| File | What it does |
+|---|---|
+| `20261008180000_free_student_name.sql` | Adds `set_free_student_name(student_id, free_token, name)`. The free token authorises it; on an email account it renames every free row the account owns. Class rows are never touched. |
+
+Applied to production. Probed first inside a rolled-back `do` block: cleans
+the name to letters, spaces, `'` and `-` (max 40), refuses a wrong or short
+token, and renames sibling free rows on the same account.
