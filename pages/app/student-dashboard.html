@@ -75,7 +75,10 @@ ForgeSidebar.mount({
   <div id="app" aria-live="polite"></div>
 </main>
 
-<script>if(window.ForgeAuth)ForgeAuth.adoptHashSession();</script>
+<script>
+var forgeEmailLinkError = /(?:^|&)error=/.test(window.location.hash.slice(1));
+var forgeEmailLinkAdoption = window.ForgeAuth && ForgeAuth.adoptHashSession();
+</script>
 <script>
 var SUPABASE_URL = ForgeAPI.config.url;
 var SUPABASE_KEY = ForgeAPI.config.key;
@@ -439,7 +442,22 @@ function forgeSignOut(){
   location.reload();
 }
 
-(function(){
+function renderAccountLoadError(){
+  app.innerHTML=ForgeAuthCard.shell({
+    title:'We couldn’t load your account',
+    sub:'Your email sign-in was received, but your dashboard is unavailable right now.'
+  },'<div class="dashboard-entry-actions"><button class="auth-btn" type="button" id="dashboard-retry">Try again</button></div>');
+  document.getElementById('dashboard-retry').onclick=function(){ location.reload(); };
+}
+
+function renderEmailLinkError(){
+  app.innerHTML=ForgeAuthCard.shell({
+    title:'This email sign-in couldn’t be completed',
+    sub:'Request a fresh sign-in email and follow its instructions.'
+  },'<div class="dashboard-entry-actions"><a class="auth-btn" href="forge-quiz.html?mode=email">Try email sign-in</a></div>');
+}
+
+function loadDashboard(){
   if (ForgeAuth.hasSession()) {
     ForgeAuth.getSession().then(function(result) {
       if (result && result.subscriber) {
@@ -508,9 +526,9 @@ function forgeSignOut(){
             renderDashboard();
           });
         })
-          .catch(function() { checkLocalSessionProfile(); });
+          .catch(function() { renderAccountLoadError(); });
       }
-    }).catch(function() { checkLocalSessionProfile(); });
+    }).catch(function() { renderAccountLoadError(); });
   } else {
     checkLocalSessionProfile();
   }
@@ -573,7 +591,21 @@ function forgeSignOut(){
       renderLogin();
     }
   }
-})();
+}
+if (forgeEmailLinkAdoption) {
+  forgeEmailLinkAdoption.then(function(adopted) {
+    if (!adopted) renderEmailLinkError();
+  });
+} else {
+  if (forgeEmailLinkError) {
+    if (window.history && window.history.replaceState) {
+      window.history.replaceState(null, '', window.location.pathname + window.location.search);
+    }
+    renderEmailLinkError();
+  } else {
+    loadDashboard();
+  }
+}
 </script>
 <script src="scripts/nav.js"></script>
 </body>

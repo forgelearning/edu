@@ -70,6 +70,18 @@ async function run() {
   await context.ForgeAuth.verifyEmailCode('alex@example.com', '123456');
   await context.ForgeAuth.restoreFreeStudent();
   assert.strictEqual(calls.some(call => call[0] === 'claim_free_student'), false);
+
+  // A magic link must finish storing the user before the dashboard continues.
+  let reloads = 0;
+  context.location.hash = '#access_token=link-access&refresh_token=link-refresh&type=magiclink';
+  context.location.pathname = '/student-dashboard.html';
+  context.location.search = '';
+  context.location.reload = () => { reloads++; };
+  context.history = { replaceState: () => { context.location.hash = ''; } };
+  assert.strictEqual(await context.ForgeAuth.adoptHashSession(), true);
+  assert.strictEqual(context.ForgeAuth.currentUser().id, user.id);
+  assert.strictEqual(context.ForgeAuth.accessToken(), 'link-access');
+  assert.strictEqual(reloads, 1);
   console.log('Student email account handoff tests passed.');
 }
 run().catch(error => { console.error(error.stack || error); process.exitCode = 1; });

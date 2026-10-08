@@ -116,9 +116,8 @@ var ForgeAuth = {
     _saveAuthSession({ access_token: params.access_token, refresh_token: params.refresh_token, user: null });
     return ForgeAPI.auth.user(params.access_token)
     .then(function(user) {
-      if (user && user.id) {
-        _saveAuthSession({ access_token: params.access_token, refresh_token: params.refresh_token, user: user });
-      }
+      if (!user || !user.id) throw new Error('Email link did not return an account.');
+      _saveAuthSession({ access_token: params.access_token, refresh_token: params.refresh_token, user: user });
       return ForgeAuth.claimPendingFreeStudent().catch(function() { return null; }).then(function() {
         if (window.history && window.history.replaceState) {
           window.history.replaceState(null, '', window.location.pathname + window.location.search);
@@ -131,9 +130,16 @@ var ForgeAuth = {
         } else {
           window.location.reload();
         }
+        return true;
       });
     })
-    .catch(function() { _clearAuthSession(); });
+    .catch(function() {
+      _clearAuthSession();
+      if (window.history && window.history.replaceState) {
+        window.history.replaceState(null, '', window.location.pathname + window.location.search);
+      }
+      return false;
+    });
   },
 
   // Sign up — creates Supabase auth user + subscriber record (trial, not yet paying)
@@ -176,8 +182,8 @@ var ForgeAuth = {
     });
   },
 
-  // The default Supabase email template sends a one-time link. If the project
-  // uses an OTP template, students can instead enter its code on this page.
+  // The email template may send either a magic link or a six-digit OTP.
+  // The page accepts a code when the template includes one.
   sendEmailLink: function(email, saveCurrentFreeWork) {
     try { localStorage.removeItem(FORGE_FREE_CLAIM_KEY); } catch(e) {}
     if (saveCurrentFreeWork) {
