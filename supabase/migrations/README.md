@@ -361,7 +361,7 @@ qualified in the week of 28 September; three had fewer than three students).
 |---|---|
 | `20261008162807_independent_friends.sql` | `app_flags` (site-wide switches, `independent_friends` stored **false**), `independent_friend_profiles`, `independent_friendships`, and three internal helpers. All with RLS on, no policies, grants revoked. |
 | `20261008163725_independent_friends_read.sql` | `get_independent_friends()`. |
-| `*_independent_friends_actions.sql` | Switch on (13+ and a name) / off, new code, send, respond, remove. |
+| `20261008165136_independent_friends_actions.sql` | Switch on (13+ and a name) / off, new code, send, respond, remove. |
 
 Friends for signed-in students who are not in a class, keyed by the account
 so it follows them across devices. Rules agreed with the product owner on
@@ -383,10 +383,19 @@ the Settings section and Home card do not appear and nothing can be written.
 Switching it off again hides everything without deleting anyone's data.
 
 Applied to production in parts because the connector asks for approval on any
-statement containing `delete`: the tables and helpers, then the read function
-(2026-10-08). **The actions file is not applied yet**: it needs that approval
-in the Supabase connector, or can be run as-is in the dashboard SQL editor.
-Once applied, rename it to the version production records. Until then the
-feature cannot be switched on usefully, and with the switch off it makes no
-difference either way.
+statement containing `delete`: the tables and helpers, then the read function,
+then the actions file (all 2026-10-08). The actions file was renamed from
+`20261008170000` to the version production recorded. All three are applied,
+and the switch is still off.
+
+Tested end to end on production in a rolled-back transaction (throwaway
+accounts, flag set true inside the block): refuses while off, for anon and for
+a class-only account; 13+ required; 8-character code, name cut to first name
+and initial; own and unknown codes refused, dashes and lower case accepted; no
+name to the requester until accepted; accepted friends see XP, accuracy and
+streak; a declined student's re-ask reads as an unknown code while the student
+who declined can reopen; 10 failed codes block the 11th attempt; a new code
+stops the old one; remove works once; switching off removes every friendship.
+A test that reads `get_independent_friends()` in the same statement as a write
+sees the old state, since it is `stable`; use a separate statement.
 
