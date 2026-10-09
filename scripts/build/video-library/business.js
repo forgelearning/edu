@@ -5,6 +5,7 @@ const BAU = 'Business As Usual';
 
 module.exports = {
   slug: 'business',
+  subjects: ['bus'],
   name: 'Business',
   level: 'A Level',
   intro: 'Edexcel A-level Business explanations for Themes 1 to 4. Videos play here in Forge.',

@@ -4,6 +4,7 @@ const H = 'Higher';
 
 module.exports = {
   slug: 'gcse-maths',
+  subjects: ['gcse-maths'],
   name: 'Maths',
   level: 'GCSE',
   intro: 'Edexcel GCSE Maths explanations, grouped by topic. Videos play here in Forge.',

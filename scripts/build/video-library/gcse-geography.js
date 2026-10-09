@@ -4,6 +4,7 @@ const JC = 'JCgeogsupport';
 
 module.exports = {
   slug: 'gcse-geography',
+  subjects: ['gcse-geo'],
   name: 'Geography',
   level: 'GCSE',
   intro: 'Edexcel B GCSE Geography explanations and case studies for Papers 1 to 3. Videos play here in Forge.',

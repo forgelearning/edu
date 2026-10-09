@@ -6,6 +6,7 @@ const BE = 'Bausteine eins';
 
 module.exports = {
   slug: 'german',
+  subjects: ['german'],
   name: 'German',
   level: 'A Level',
   intro: 'Edexcel A-level German: cases, word order and the complex structures that come up in translation, plus background to reunification. Videos play here in Forge.',

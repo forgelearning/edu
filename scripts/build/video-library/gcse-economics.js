@@ -2,6 +2,7 @@ const v = (id, title, paper) => ({ id, title, tag: `Paper ${paper} · Mr Goff` }
 
 module.exports = {
   slug: 'gcse-economics',
+  subjects: ['gcse-econ'],
   name: 'Economics',
   level: 'GCSE',
   intro: 'OCR GCSE Economics explanations for Papers 1 and 2. Videos play here in Forge.',

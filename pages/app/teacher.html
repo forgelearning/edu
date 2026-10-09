@@ -1757,7 +1757,7 @@ var QID_TO_SPEC = (function() {
 function baseQuestionId(qid) {
   if (!qid) return '';
   var out = qid, prev;
-  do { prev = out; out = out.replace(/-(RF|ANVIL|CRU\d*)$/, ''); } while (out !== prev);
+  do { prev = out; out = out.replace(/-(RF|ANVIL|CHK|CRU\d*)$/, ''); } while (out !== prev);
   return out;
 }
 

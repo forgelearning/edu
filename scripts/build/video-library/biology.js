@@ -5,6 +5,7 @@ const BC = 'Biology with Christine';
 
 module.exports = {
   slug: 'biology',
+  subjects: ['bio'],
   name: 'Biology',
   level: 'A Level',
   intro: 'OCR A A-level Biology explanations, grouped by module. Videos play here in Forge.',

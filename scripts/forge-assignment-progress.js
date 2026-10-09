@@ -86,7 +86,7 @@
       if(!response) return;
       var rawId=String(response.question_id||response.questionId||response.id||'');
       // Rule 1 and 2: only base attempts at the assignment's own questions.
-      if(/-RF$/.test(rawId)||/-ANVIL$/.test(rawId)||/-CRU$/.test(rawId)) return;
+      if(/-RF$/.test(rawId)||/-ANVIL$/.test(rawId)||/-CHK$/.test(rawId)||/-CRU$/.test(rawId)) return;
       var linked=response.assignment_id!=null?String(response.assignment_id):null;
       if(assignmentId&&linked){
         // Rule 3, exact form: the row says which assignment it belongs to.

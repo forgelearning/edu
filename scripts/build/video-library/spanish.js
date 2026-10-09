@@ -5,6 +5,7 @@ const MDS = 'My Daily Spanish';
 
 module.exports = {
   slug: 'spanish',
+  subjects: ['span'],
   name: 'Spanish',
   level: 'A Level',
   intro: 'Edexcel A-level Spanish: grammar traps, translation and background to the themes. Videos play here in Forge.',

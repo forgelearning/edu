@@ -5,6 +5,7 @@ const SMC = 'SMCartledge';
 
 module.exports = {
   slug: 'psychology',
+  subjects: ['psych'],
   name: 'Psychology',
   level: 'A Level',
   intro: 'AQA A-level Psychology explanations for Papers 1 to 3, grouped by topic. Videos play here in Forge.',

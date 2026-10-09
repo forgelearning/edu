@@ -2,6 +2,7 @@ const mf = (id, title, area) => ({ id, title, tag: `${area} · Mrs Fisher` });
 
 module.exports = {
   slug: 'media',
+  subjects: ['media'],
   name: 'Media Studies',
   level: 'A Level',
   intro: 'Eduqas A-level Media Studies: short guides to every theorist in the theoretical framework. Videos play here in Forge.',

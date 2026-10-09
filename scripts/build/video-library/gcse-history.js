@@ -5,6 +5,7 @@ const CLOKE = 'MrClokeHistory';
 
 module.exports = {
   slug: 'gcse-history',
+  subjects: ['gcse-hist'],
   name: 'History',
   level: 'GCSE',
   intro: 'AQA GCSE History explanations for America, Conflict and Tension, Health and the People, and Elizabethan England. Videos play here in Forge.',

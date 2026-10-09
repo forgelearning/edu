@@ -5,6 +5,7 @@ const triple = { triple: true };
 
 module.exports = {
   slug: 'gcse-chemistry',
+  subjects: ['gcse-sep-chem'],
   name: 'Chemistry',
   level: 'GCSE',
   intro: 'Edexcel GCSE Chemistry explanations, grouped by topic. Videos play here in Forge.',

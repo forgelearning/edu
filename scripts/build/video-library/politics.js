@@ -5,6 +5,7 @@ const AHN = 'Alan History Nerd';
 
 module.exports = {
   slug: 'politics',
+  subjects: ['pol'],
   name: 'Politics',
   level: 'A Level',
   intro: 'Edexcel A-level Politics explanations for UK politics, UK government, ideas and US politics. Videos play here in Forge.',

@@ -9,6 +9,7 @@ const sciences = [
 
 module.exports = {
   slug: 'gcse-combined-science',
+  subjects: ['gcse-science'],
   name: 'Combined Science',
   level: 'GCSE',
   intro: 'Edexcel GCSE Combined Science explanations for Biology, Chemistry and Physics. Videos play here in Forge.',

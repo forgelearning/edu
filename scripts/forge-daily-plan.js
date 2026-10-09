@@ -2,8 +2,9 @@
    has actually done today. Replaces a single "Today" card that named one
    activity and said nothing once it was done.
 
-   Order: assigned work, a mistake to repair, due revision cards, then a
-   practice set to fill any spare place. A step is ticked from saved answers
+   Order: assigned work, a mistake to repair, a "Did it stick?" check on last
+   week's fixes (scripts/forge-fixed.js), due revision cards, then a practice
+   set to fill any spare place. A step is ticked from saved answers
    (practice and repair) or today's card ratings (revision). */
 (function (root) {
   var SET_SIZE = 8;
@@ -42,6 +43,14 @@
       key: 'repair', title: 'Work on a mistake',
       detail: mistakes ? plural(mistakes, 'idea', 'ideas') + ' to repair' : 'All repaired',
       href: 'anvil.html', cta: 'Repair mistakes', done: repairedToday > 0
+    });
+
+    var fixesDue = input.fixesDue || 0;
+    var checkedToday = rows.filter(function (r) { return /-CHK$/.test(String(r.question_id || '')); }).length;
+    if (fixesDue || checkedToday) steps.push({
+      key: 'check', title: 'Did it stick?',
+      detail: fixesDue ? plural(fixesDue, 'repaired idea', 'repaired ideas') + ' to check' : plural(checkedToday, 'fix', 'fixes') + ' checked today',
+      href: input.checkHref || 'forge-quiz.html?check=1', cta: 'Check fixes', done: !fixesDue && checkedToday > 0
     });
 
     var due = input.revisionDue || 0, reviewed = input.reviewedToday || 0;

@@ -14,8 +14,8 @@ const ans=(o={})=>Object.assign({question_id:'Q-'+(seq++),bank:'b1',is_correct:t
 // Nothing earned on an empty history; the section says so.
 const empty=A.compute([]);
 assert(empty.every(b=>b.tier===null));
-assert(A.html(empty).includes('0 of 7 earned'));
-assert.strictEqual((A.html(empty).match(/is-locked/g)||[]).length,7);
+assert(A.html(empty).includes('0 of '+A.BADGES.length+' earned'));
+assert.strictEqual((A.html(empty).match(/is-locked/g)||[]).length,A.BADGES.length);
 
 // Only first attempts count as answers; Reforge, repair-mode and timed do not.
 const mixed=[ans(),ans(),ans({reforge_attempted:true,reforge_correct:true}),ans({question_id:'X-ANVIL'}),ans({question_id:'X-CRU'}),ans({question_id:'Y-CRU',is_correct:false})];

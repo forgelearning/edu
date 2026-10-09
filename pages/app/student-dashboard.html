@@ -67,6 +67,7 @@ ForgeSidebar.mount({
 <script src="scripts/forge-student-focus.js?v=20261004-plan"></script>
 <script src="scripts/forge-daily-plan.js?v=20261004-plan"></script>
 <script src="scripts/forge-misconception-state.js"></script>
+<script src="scripts/forge-fixed.js"></script>
 <script src="scripts/forge-streak.js?v=20261004-freeze"></script>
 <script src="scripts/forge-topic-mastery.js?v=20261004-rings"></script>
 <script src="scripts/forge-league.js?v=20261008a"></script>
@@ -388,8 +389,10 @@ function renderDashboard(){
     h+='<ol class="dashboard-first-loop" aria-label="What happens in practice"><li><span>1</span>Answer</li><li><span>2</span>See the idea</li><li><span>3</span>Try it again</li></ol>';
     h+='<a class="forge-button forge-button--primary" href="'+subjectUrl+'">Start practice →</a></section>';
   } else {
+    var fixed=window.ForgeFixed?ForgeFixed.summarize(responses):null;
     planInput={
       responses:responses, activeMistakes:activeMCs.length,
+      fixesDue:fixed?fixed.due.length:0, checkHref:fixed?ForgeFixed.href(fixed,subject):undefined,
       revisionDue:due, reviewedToday:window.ForgeStudentFocus&&ForgeStudentFocus.reviewedToday?ForgeStudentFocus.reviewedToday(st):0,
       revisionHref:'revision.html'+(subject?'?subject='+encodeURIComponent(subject):''),
       practiceSetSize:!st.classId&&!st.isPaid&&!st.isTrial?10:undefined,

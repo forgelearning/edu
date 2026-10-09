@@ -143,7 +143,9 @@ function logResponse(q, selectedKey, isCorrect, isReforge, reforgeCorrect, hintU
   var row = {
     student_id: state.studentId,
     class_id: state.classId,
-    question_id: isReforge ? q.id + '-RF' : q.id,
+    // A "Did it stick?" check (scripts/forge-fixed.js) is saved as -CHK with
+    // its tag, right or wrong, so the check can be read back without banks.
+    question_id: isReforge ? q.id + '-RF' : state.check ? q.id + '-CHK' : q.id,
     bank: questionBank,
     subject: getSubjectForBank(questionBank),
     selected_option: selectedKey,
@@ -152,7 +154,7 @@ function logResponse(q, selectedKey, isCorrect, isReforge, reforgeCorrect, hintU
     // Older builds dropped the tag on correct twins, so the Anvil — which skips
     // untagged rows — never advanced the streak and the signal could not be
     // cleared from the quiz, while a failed twin still counted and reset it.
-    misconception_tag: isReforge ? (q.tag || null) : (isCorrect ? null : (q.tag || null)),
+    misconception_tag: isReforge || state.check ? (q.tag || null) : (isCorrect ? null : (q.tag || null)),
     // Fall back to the tag map: most banks carry a tag but no explicit spec, and
     // without this correct answers logged no spec point at all.
     spec_point: q.spec || MC_TO_SPEC[q.tag] || null,
@@ -392,8 +394,11 @@ var SPEC_TO_SUBJECT = {
 <script src="scripts/forge-student-delight.js?v=20261003"></script>
 <script src="scripts/forge-chemistry-topics.js"></script>
 <script src="scripts/forge-chemistry-resources.js"></script>
+<script src="scripts/forge-video-player.js"></script>
+<script src="scripts/forge-video-match.js"></script>
 <script src="scripts/forge-data-loader.js?v=20260821"></script>
 <script src="scripts/forge-misconception-state.js"></script>
+<script src="scripts/forge-fixed.js"></script>
 <script src="scripts/forge-topic-mastery.js?v=20261004-rings"></script>
 <script src="scripts/forge-challenge.js?v=20261004-challenge"></script>
 <script src="scripts/forge-league.js?v=20261008a"></script>
@@ -433,7 +438,7 @@ var FORGE_SESSION_PREFIX = 'forge-session:';
 function forgeSessionKey(bank) { return FORGE_SESSION_PREFIX + String(state.studentId || 'anon') + ':' + String(state.classId || 'none') + ':' + bank + (state.topicSpec ? ':' + state.topicSpec : '') + (state.challenge ? ':challenge:' + state.challenge.id : ''); }
 function forgeSessionStorage(bank) { try { return JSON.parse(localStorage.getItem(forgeSessionKey(bank)) || 'null'); } catch(e) { return null; } }
 function forgeSaveSession(resumeAt) {
-  if (!state.bank || !state.questions.length) return;
+  if (!state.bank || !state.questions.length || state.check) return;
   try {
     var saved = forgeSessionStorage(state.bank) || {completedIds: []};
     var currentId = state.questions[state.idx] && state.questions[state.idx].id;
@@ -443,6 +448,8 @@ function forgeSaveSession(resumeAt) {
   } catch(e) {}
 }
 function forgeStartSession(bank, rawQs) {
+  // Any ordinary set ends a "Did it stick?" set: its answers are not checks.
+  state.check = null;
   var saved = forgeSessionStorage(bank) || {completedIds: []};
   if (saved.questionIds && saved.questionIds.length && saved.idx <= saved.questionIds.length) {
     var byId = {}; rawQs.forEach(function(q){byId[q.id] = q;});
@@ -473,6 +480,7 @@ function forgeRecallIndex(questions) {
   return -1;
 }
 function forgeCompleteSession() {
+  if (state.check) return;
   try {
     var saved = forgeSessionStorage(state.bank) || {completedIds: []};
     var completed = saved.completedIds || [];
@@ -490,6 +498,9 @@ function forgeCompleteSession() {
 var XP_CORRECT = 10, XP_REFORGE = 20, XP_HINTED = 5;
 function xpEnabled() { return !isFreeTier(); }
 function setXPHistory(responses) {
+  // Every history loader ends here. responseHistory starts as [], so this is
+  // what tells "not loaded yet" apart from "no answers".
+  state.historyLoaded = true;
   var quizXp=calcXPFromResponses(responses || []);
   if(typeof ForgeRewards!=='undefined')ForgeRewards.rememberQuizXp(state.studentId,quizXp);
   state.baseXP=quizXp+(typeof ForgeRewards!=='undefined'?ForgeRewards.read(state.studentId).matchXp:0);
@@ -559,6 +570,9 @@ var requestedAssignmentTitle = new URLSearchParams(location.search).get('assignm
 // before an assignment existed counted towards it.
 var requestedAssignmentId = new URLSearchParams(location.search).get('assignment_id');
 var requestedSubject = new URLSearchParams(location.search).get('subject');
+// forge-quiz.html?check=1: the "Did it stick?" set (scripts/forge-fixed.js),
+// started once the student's answers and the subject's questions are loaded.
+var requestedCheck = new URLSearchParams(location.search).get('check') === '1';
 var openClassJoin = new URLSearchParams(location.search).get('mode') === 'class';
 var openSoloLogin = new URLSearchParams(location.search).get('mode') === 'solo';
 var openEmailLogin = new URLSearchParams(location.search).get('mode') === 'email';
@@ -972,6 +986,7 @@ function render(skipMotion) {
     if (window.scrollY > 0) window.scrollTo({ top: 0, behavior: 'instant' });
   }
   document.body.classList.toggle('forge-login-screen', state.phase === 'join');
+  if (requestedCheck && (state.studentName || state.classId) && state.phase !== 'quiz' && startFixedCheck() === 'wait') return;
   if (requestedBank && BANKS[requestedBank] && (state.studentName || state.classId) && state.phase !== 'quiz') {
     // Assignment links are bank-specific. Establish both the bank and its
     // subject before starting so restoration cannot fall back to the full
@@ -1019,6 +1034,39 @@ function render(skipMotion) {
   else if (state.phase === 'quiz') renderQuiz();
   else if (state.phase === 'results') renderResults();
   else if (state.phase === 'mandarin-reader') renderMandarinReader();
+}
+
+// One fresh question for each idea whose check is due. 'wait' while the
+// answers or questions are still loading; false when nothing is due.
+function startFixedCheck() {
+  var subject = requestedSubject || state.subject || state.classSubject;
+  if (!subject || !SUBJECTS[subject] || !window.ForgeFixed) { requestedCheck = false; return false; }
+  if (!state.historyLoaded) {
+    app.innerHTML = '<div class="forge-status forge-status--loading" role="status" aria-live="polite">Finding last week’s fixes…</div>' + sessionBar();
+    return 'wait';
+  }
+  if (!ForgeData.isLoaded(subject)) {
+    app.innerHTML = '<div class="forge-status forge-status--loading" role="status" aria-live="polite">Loading questions…</div>' + sessionBar();
+    ForgeData.loadSubject(subject).then(render).catch(function () { requestedCheck = false; render(); });
+    return 'wait';
+  }
+  requestedCheck = false;
+  var banks = {};
+  SUBJECTS[subject].banks.forEach(function (b) { if (BANKS[b]) banks[b] = BANKS[b]; });
+  var summary = ForgeFixed.summarize(state.responseHistory);
+  var picks = ForgeFixed.pickQuestions(summary.due, banks, state.responseHistory);
+  if (!picks.length) return false;
+  state.subject = subject;
+  state.check = { total: picks.length };
+  state.assignmentId = null; state.challenge = null; state.topicSpec = null;
+  state.questionBanks = {};
+  picks.forEach(function (p) { state.questionBanks[p.question.id] = p.bank; });
+  state.bank = picks[0].bank;
+  state.questions = picks.map(function (p) { return p.question; });
+  state.idx = 0; state.score = 0; state.sessionXP = 0;
+  state.sessionWrongTags = []; state.sessionReforgedTags = [];
+  state.phase = 'quiz';
+  return true;
 }
 
 function renderJoin() {
@@ -1155,7 +1203,7 @@ function renderJoin() {
         state.weightMap = buildWeightMap(responses || []);
         state.bankStats = buildBankStats(responses || []);
         setXPHistory(responses);
-        if (state.phase === 'banks') render();
+        if (state.phase === 'banks' || requestedCheck) render();
       });
 
       settleRequestedSubject();
@@ -1808,15 +1856,49 @@ function renderLimitWall() {
   tick();
 }
 
+// Bring the feedback and its Continue button into view after an answer.
+// Scrolling only when the feedback itself started off screen left the button
+// just below the fold on a laptop, where the feedback's first line was
+// visible but Continue was not. Scroll far enough to show the button, but
+// never so far that the start of the feedback leaves the top of the screen:
+// a long explanation is read first, and Continue follows it.
 function revealQuizNext(){
   var feedback = document.getElementById('feedback');
   if (!feedback) return;
   window.requestAnimationFrame(function(){
     var first=feedback.firstElementChild||feedback;
-    if(first.getBoundingClientRect().top>window.innerHeight-96){
-      first.scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'nearest'});
-    }
+    var next=document.getElementById('next-btn');
+    // Anything fixed along the bottom (the phone tab bar) covers the page.
+    var bar=document.getElementById('forge-tabbar');
+    var barTop=bar&&getComputedStyle(bar).display!=='none'?bar.getBoundingClientRect().top:window.innerHeight;
+    var bottom=Math.min(window.innerHeight,barTop)-20;
+    var want=next?next.getBoundingClientRect().bottom-bottom:first.getBoundingClientRect().top-(bottom-76);
+    var room=first.getBoundingClientRect().top-88;
+    var by=Math.min(want,room);
+    if(by>0)window.scrollBy({top:by,behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
   });
+}
+
+// In a "Did it stick?" set, say what the answer means for the idea.
+function markFixedCheck(feedback, correct){
+  var box=feedback.querySelector(correct?'.praise-box':'.scaffold-box');
+  if(!box)return;
+  var note=document.createElement('p');
+  note.className='forge-fixed-result'+(correct?' is-fixed':'');
+  note.textContent=correct?'Fixed for good. You still had it a week after repairing it.':'This one slipped since you repaired it. It’s back in Repair mistakes, or try the similar question now.';
+  box.appendChild(note);
+}
+
+// After a wrong answer, a video that explains this question's idea, when the
+// library has one that clearly matches (scripts/forge-video-match.js). The
+// A-level Chemistry help above already offers its own reviewed video.
+function offerVideo(feedback, question){
+  if(!window.ForgeVideoMatch||!feedback||!question)return;
+  if(feedback.querySelector('.forge-chemistry-help a[href*="youtube.com"]'))return;
+  // The same subject logResponse records for this question.
+  var bank=state.questionBanks&&state.questionBanks[question.id]||state.bank;
+  var subject=state.subject&&SUBJECTS[state.subject]&&SUBJECTS[state.subject].banks.indexOf(bank)!==-1?state.subject:getSubjectForBank(bank);
+  ForgeVideoMatch.appendTo(feedback,question,subject,BANKS[bank]&&BANKS[bank].label||'').then(function(found){if(found)revealQuizNext();}).catch(function(){});
 }
 
 function offerRevisionCard(feedback, question){
@@ -1958,6 +2040,8 @@ function renderQuiz(){
       var fb=document.getElementById('feedback');
       fb.innerHTML=window.ForgeQuestion.renderFeedback(q,isCorrect);
       if(!isCorrect&&window.ForgeChemistryResources)ForgeChemistryResources.appendTo(fb,q);
+      if(!isCorrect)offerVideo(fb,q);
+      if(state.check)markFixedCheck(fb,isCorrect);
       offerRevisionCard(fb,q);
       if(isCorrect){ awardXP(hinted?XP_HINTED:XP_CORRECT, fb.querySelector('.praise-box')); forgeSaveSession(); }
       if(state.challenge && window.ForgeChallenge){
@@ -2115,6 +2199,7 @@ function renderFillBlankQuiz(q,bk,headerHtml){
     var fb=document.getElementById('feedback');
     fb.innerHTML=window.ForgeQuestion.renderFeedback(q,allCorrect);
     if(!allCorrect&&window.ForgeChemistryResources)ForgeChemistryResources.appendTo(fb,q);
+    if(!allCorrect)offerVideo(fb,q);
     if(allCorrect) awardXP(XP_CORRECT, fb.querySelector('.praise-box'));
     if(!allCorrect){
       if(q.reforge){
@@ -2249,7 +2334,11 @@ function renderResults(){
   // One next step, chosen in order: repair this set's unrepaired mistake, then
   // due revision, then another set. The old screen offered five equal exits
   // and its main button went back to Home, ending the session.
-  var next = state.challenge
+  var next = state.check
+    ? (remaining
+      ? {title:'One idea slipped', copy:remainingLabel+'. Repair it again now, and it will come back for another check in a week.', label:'Repair it now', href:'anvil.html'}
+      : {title:state.score===worked?'All fixed for good':'Checks done', copy:'Each idea you got right is fixed for good. You can see them on your profile.', label:'Back to Home', href:'student-dashboard.html'})
+    : state.challenge
     ? {title:'Challenge complete', copy:'Your teacher will go through how the class answered.'+((state.sessionWrongTags||[]).length?' Your mistakes from it are waiting in Repair mistakes.':''), label:'Back to assignments', href:'assignments.html'}
     : remaining
     ? {title:'One idea to repair', copy:remainingLabel+'. Fix it now while it is fresh.', label:'Repair it now', href:'anvil.html'}
@@ -2257,8 +2346,8 @@ function renderResults(){
       ? {title:revisionDue+' revision '+(revisionDue===1?'card is':'cards are')+' due', copy:'A few minutes of recall keeps what you have learned.', label:'Review '+(revisionDue===1?'it':'them')+' now', href:'revision.html?subject='+encodeURIComponent(state.subject||'')}
       : {title:'Keep going', copy:'Another short set in this topic builds on what you just did.', label:'Another set', again:true};
   var h='<div class="results">';
-  h+='<h1>Practice complete</h1>';
-  h+='<p class="detail">'+bk.label+'</p>';
+  h+='<h1>'+(state.check?'Did it stick?':'Practice complete')+'</h1>';
+  h+='<p class="detail">'+(state.check?state.score+' of '+worked+' fixed for good':bk.label)+'</p>';
   h+='<div class="pct" style="color:'+col+'">'+pct+'%</div>';
   h+='<div class="detail">'+state.score+' of '+worked+' correct'+(repairedCount?' · '+repairedCount+' '+(repairedCount===1?'idea':'ideas')+' repaired':'')+'</div>';
   if (isFreeTier() && !ForgeAuth.hasSession()) h+='<p class="forge-save-progress">Want your progress on another device? <a href="forge-quiz.html?mode=email">Save it with your email</a>.</p>';
@@ -2546,12 +2635,12 @@ if (!openSoloLogin && !openEmailLogin && ForgeAuth.hasSession()) {
         ForgeClasses.use(freeSession.name);
         settleRequestedSubject();
         ForgeClasses.fetchAuthResponses(ForgeAuth.accessToken(), ForgeAuth.currentUser().id, function(responses, error) {
-          if (error) { render(); return; }
+          if (error) { requestedCheck = false; render(); return; }
           state.responseHistory = responses || [];
           state.weightMap = buildWeightMap(responses || []);
           state.bankStats = buildBankStats(responses || []);
           setXPHistory(responses);
-          if (state.phase === 'banks') render();
+          if (state.phase === 'banks' || requestedCheck) render();
         });
         render();
       }).catch(function() { render(); });
@@ -2630,12 +2719,13 @@ if (!openSoloLogin && !openEmailLogin && ForgeAuth.hasSession()) {
           studentId: state.studentId, classId: state.classId, classCode: savedSession.classCode,
           studentCode: state.studentCode, studentName: state.studentName, subject: state.classSubject
         }, function(responses, error) {
-          if (error) { state.weightMap = {}; return; }
+          // A check set cannot be chosen without the history; open practice.
+          if (error) { state.weightMap = {}; if (requestedCheck) { requestedCheck = false; render(); } return; }
           state.responseHistory = responses;
           state.weightMap = buildWeightMap(responses);
           state.bankStats = buildBankStats(responses);
           setXPHistory(responses);
-          if (state.phase === 'banks') render();
+          if (state.phase === 'banks' || requestedCheck) render();
         });
       }
       restored = true;
@@ -2658,7 +2748,7 @@ if (!openSoloLogin && !openEmailLogin && ForgeAuth.hasSession()) {
         state.weightMap = buildWeightMap(responses || []);
         state.bankStats = buildBankStats(responses || []);
         setXPHistory(responses);
-        if (state.phase === 'banks') render();
+        if (state.phase === 'banks' || requestedCheck) render();
       });
       restored = true;
     }

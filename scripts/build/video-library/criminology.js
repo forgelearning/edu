@@ -3,6 +3,7 @@ const T2U = 'tutor2u';
 
 module.exports = {
   slug: 'criminology',
+  subjects: ['crim'],
   name: 'Criminology',
   level: 'Other qualifications',
   intro: 'WJEC Level 3 Applied Criminology explanations for Units 1 to 4. Videos play here in Forge.',

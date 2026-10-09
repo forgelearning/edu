@@ -5,6 +5,7 @@ const DAVE = 'Understanding A Level Physics by Dave';
 
 module.exports = {
   slug: 'physics',
+  subjects: ['phys'],
   name: 'Physics',
   level: 'A Level',
   intro: 'AQA A-level Physics explanations, grouped by topic. Videos play here in Forge.',

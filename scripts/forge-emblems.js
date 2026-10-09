@@ -361,6 +361,14 @@
         + '<path d="M24 8v32c-7-4-13-10.5-13-19v-8.3z" fill="#E5484D"/><path d="M24 7l14 5v9c0 9-6 16-14 20-8-4-14-11-14-20v-9z" fill="none"' + S + '/>'
         + '<path d="' + star5(24, 22, 6.5) + '" fill="#FFC93C" stroke="' + INK + '" stroke-width="1.5" stroke-linejoin="round"/>' },
 
+    { key: 'horseshoe', name: 'Horseshoe', set: 'forge', badge: 'fixed', bg: '#2E8B57',
+      art: '<path d="M15 10v13a9 9 0 0 0 18 0V10" fill="none" stroke="' + INK + '" stroke-width="10"/>'
+        + '<path d="M15 11v12a9 9 0 0 0 18 0V11" fill="none" stroke="#A9B4BE" stroke-width="6.5"/>'
+        + '<path d="M13.5 9.5h3M31.5 9.5h3" stroke="' + INK + '" stroke-width="3" stroke-linecap="round"/>'
+        + [[15, 15], [15, 22], [17.5, 29], [30.5, 29], [33, 22], [33, 15]].map(function (p) { return '<circle cx="' + p[0] + '" cy="' + p[1] + '" r="1" fill="' + INK + '"/>'; }).join('')
+        + '<path d="M17 25a7 7 0 0 0 4 5" fill="none" stroke="#F2F6F9" stroke-width="1.4" stroke-linecap="round"/>'
+        + '<path d="' + star4(38, 34, 3) + '" fill="#FFE07A"/>' },
+
     // ── Subjects: all free ───────────────────────────────────────────────
     { key: 'cell', name: 'Cell', set: 'subject', subjects: ['bio', 'gcse-sep-bio', 'gcse-science'], bg: '#2E7D5B',
       art: '<path d="M24 9c9 0 15 6 15 14 0 9-6 16-15 16S9 33 9 24c0-8 6-15 15-15z" fill="#9BE29B"' + S + '/>'

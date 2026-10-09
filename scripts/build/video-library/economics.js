@@ -1,5 +1,6 @@
 module.exports = {
   slug: 'economics',
+  subjects: ['econ'],
   name: 'Economics',
   level: 'A Level',
   intro: 'Edexcel A-level Economics explanations, grouped by topic. Videos play here in Forge.',

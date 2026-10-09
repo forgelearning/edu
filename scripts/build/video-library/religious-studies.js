@@ -3,6 +3,7 @@ const SB = 'Saint Ben RS Revision';
 
 module.exports = {
   slug: 'religious-studies',
+  subjects: ['rs'],
   name: 'Religious Studies',
   level: 'A Level',
   intro: 'Eduqas A-level Religious Studies explanations for Buddhism, philosophy of religion and religion and ethics. Videos play here in Forge.',

@@ -12,7 +12,7 @@
 
   function baseQuestionId(value){
     var out=String(value||''),previous;
-    do { previous=out; out=out.replace(/-(RF|ANVIL|CRU\d*)$/,''); } while(out!==previous);
+    do { previous=out; out=out.replace(/-(RF|ANVIL|CHK|CRU\d*)$/,''); } while(out!==previous);
     return out;
   }
 

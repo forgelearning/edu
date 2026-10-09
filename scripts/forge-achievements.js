@@ -78,7 +78,11 @@
     { key: 'sharpened', name: 'Topics sharpened', icon: 'target', unit: 'topics', tiers: [1, 5, 15], shares: [0, 0.5, 1],
       about: 'In a topic, get 8 out of 10 questions in a row right, without hints. Do it in every topic for Gold.' },
     { key: 'cleared', name: 'Misconceptions cleared', icon: 'cleared', unit: 'cleared', tiers: [1, 10, 30],
-      about: 'Answer correctly the ideas you used to get wrong until they clear.' }
+      about: 'Answer correctly the ideas you used to get wrong until they clear.' },
+    // The repair that lasted: a fresh question right a week after repairing
+    // the idea (scripts/forge-fixed.js).
+    { key: 'fixed', name: 'Fixed for good', icon: 'fixed', unit: 'ideas', tiers: [1, 10, 30],
+      about: 'A week after repairing a mistake, get a fresh question on it right.' }
   ];
 
   // The subject's topics, when the page knows them. Answers in other banks
@@ -116,7 +120,8 @@
       timed: responses.filter(function (r) { return isTimed(r) && r.is_correct; }).length,
       topics: Object.keys(perBank).filter(function (b) { return perBank[b] >= 5; }).length,
       sharpened: sharpenedTopics(first, inSubject),
-      cleared: Math.max(0, Number(opts.resolved) || 0)
+      cleared: Math.max(0, Number(opts.resolved) || 0),
+      fixed: root.ForgeFixed ? root.ForgeFixed.summarize(responses).fixed.length : 0
     };
   }
 
@@ -152,6 +157,7 @@
     topics: '<circle cx="12" cy="12" r="8"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/>',
     target: '<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r=".6"/>',
     cleared: '<path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4.5"/>',
+    fixed: '<path d="M7 4v8a5 5 0 0 0 10 0V4"/><path d="M5 4h4M15 4h4M7 8h0M17 8h0"/>',
     // Weekly league trophy (scripts/forge-league.js), the same cup as the
     // league's empty state.
     trophy: '<path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0V4Z"/><path d="M17 5h3v2a4 4 0 0 1-3 3.9M7 5H4v2a4 4 0 0 0 3 3.9"/>'
