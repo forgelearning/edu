@@ -1,7 +1,7 @@
 /* "Report a problem with this question", after an answer.
 
    A short form: what looks wrong, and an optional note. Saved by the
-   report_question RPC (supabase/migrations/20261009180000_question_reports.sql)
+   report_question RPC (supabase/migrations/20261009184149_question_reports.sql)
    with the credential the student's other calls use: the account's sign-in,
    a class session's codes, or a free session's token. One report per
    question per student; sending again replaces it.

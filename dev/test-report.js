@@ -23,7 +23,7 @@ assert.deepStrictEqual(json(R.REASONS.map((r) => r[0])), ['wrong_answer', 'two_a
 // The migration: the same reasons, every kind of student verified, one report
 // per student per question, a daily limit, a bounded note, nothing readable
 // from the browser.
-const sql = fs.readFileSync('supabase/migrations/20261009180000_question_reports.sql', 'utf8');
+const sql = fs.readFileSync('supabase/migrations/20261009184149_question_reports.sql', 'utf8');
 assert(sql.includes("reason in ('wrong_answer', 'two_answers', 'unclear', 'typo', 'other')"));
 assert(sql.includes('unique (student_id, question_id)') && sql.includes('on conflict (student_id, question_id) do update'));
 assert(sql.includes('public.forge_verify_class_student(') && sql.includes('auth.uid()') && sql.includes('v_student.free_token is distinct from p_free_token'));

@@ -16,7 +16,8 @@
      - plus 5 for each idea in the topic fixed for good (at most 10)
    Subject score: the average over every topic in the course. Topics not yet
    started count as 0, so the number means the whole exam; the card says how
-   many topics are started so a low score early in the course reads fairly.
+   many topics are started and the average in those ("4 of 15 topics started
+   · 84% in those"), so a low score early in a course reads fairly.
 
    Bands: 0-39 Getting started, 40-69 Building, 70-89 Strong, 90+ Exam-ready.
 
@@ -92,7 +93,11 @@
       : fresh ? { bank: fresh.bank, score: 0, why: 'start' }
       : started.length ? { bank: started.slice().sort(function (a, b) { return a.score - b.score; })[0].bank, why: 'top-up' } : null;
     if (next && next.why === 'top-up') next.score = topics.filter(function (t) { return t.bank === next.bank; })[0].score;
-    return { score: score, band: band(score), topics: topics, started: started.length, total: topics.length, next: next, aim: AIM };
+    // The average over started topics only. Not the score (that would call a
+    // student who has done four topics well "ready"), but said beside it, so a
+    // low score early in a course is explained by coverage, not by the work.
+    var startedAvg = started.length ? Math.round(started.reduce(function (n, t) { return n + t.score; }, 0) / started.length) : null;
+    return { score: score, band: band(score), topics: topics, started: started.length, startedAvg: startedAvg, total: topics.length, next: next, aim: AIM };
   }
 
   function ringSvg(score, size, key) {
@@ -128,7 +133,8 @@
       + '<span class="forge-readiness__num">' + s.score + '<small>%</small></span></div>'
       + '<div><h2 id="forge-readiness-title">Readiness' + (opts.subjectName ? ' · ' + esc(opts.subjectName) : '') + '</h2>'
       + '<p class="forge-readiness__band">' + esc(s.band.label) + '<span> · aim for ' + s.aim + '%</span></p>'
-      + '<p class="forge-readiness__topics">' + s.started + ' of ' + s.total + ' topics started</p></div></div>';
+      + '<p class="forge-readiness__topics">' + s.started + ' of ' + s.total + ' topics started'
+      + (s.startedAvg != null && s.started < s.total ? ' · ' + s.startedAvg + '% in those' : '') + '</p></div></div>';
     if (s.next) {
       h += '<a class="forge-readiness__next" href="' + esc(href(s.next.bank)) + '"><span><small>Raise it next</small><strong>' + esc(label(s.next.bank))
         + (s.next.why === 'start' ? '' : ' · ' + s.next.score + '%') + '</strong><span>' + esc(WHY[s.next.why]) + '</span></span><span aria-hidden="true">→</span></a>';
