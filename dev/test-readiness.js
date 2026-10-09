@@ -53,7 +53,14 @@ assert.deepStrictEqual([0, 39, 40, 69, 70, 89, 90, 100].map((x) => R.band(x).key
 
 // The card says what it means.
 const card = R.cardHtml(R.subject(many('B', 6, 4, 1), ['B', 'C'], now), { subjectName: 'GCSE <b>Geo</b>', label: (b) => 'Topic ' + b });
-assert(card.includes('aim for 90%') && card.includes('1 of 2 topics started') && card.includes('Topic B'));
+assert(card.includes('aim for 90%') && card.includes('1 of 2 topics started · 60% in those') && card.includes('Topic B'));
+// Started topics' average is said beside the score, never instead of it, and
+// not at all once every topic is started.
+s = R.subject([...many('A', 10, 0, 1), ...many('B', 6, 4, 1)], ['A', 'B', 'C', 'D'], now);
+assert.strictEqual(s.startedAvg, 80);
+assert.strictEqual(s.score, 40);
+assert(!R.cardHtml(R.subject(many('A', 10, 0, 1), ['A'], now)).includes('in those'));
+assert.strictEqual(R.subject([], ['A'], now).startedAvg, null);
 assert(!card.includes('<b>Geo'), 'subject name is escaped');
 assert(card.includes('How it’s worked out'));
 
