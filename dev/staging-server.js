@@ -20,6 +20,7 @@ const demoResponses = [];
 const demoFreeResponses = [];
 const demoCards = new Map();
 const demoMatchRewards = new Map();
+const demoReports = [];
 // Starting match XP for the demo student. /test-account?matchxp=4990 starts
 // them just below a rank so a single correct answer crosses it.
 let demoStartingMatchXp = 3000;
@@ -265,6 +266,22 @@ const server = http.createServer((req, res) => {
       });
       return;
     }
+    // report_question (20261009180000_question_reports.sql): kept in memory,
+    // and listed at /mock-supabase/question-reports to check what was sent.
+    if (url.pathname === '/mock-supabase/rest/v1/rpc/report_question') {
+      let raw='';
+      req.on('data', chunk => { raw += chunk; });
+      req.on('end', () => {
+        let body={};try{body=JSON.parse(raw||'{}');}catch(e){}
+        if (!body.p_student_id || !['wrong_answer','two_answers','unclear','typo','other'].includes(body.p_reason)) return json(res, 400, {message:'invalid_question_report'});
+        const i = demoReports.findIndex(r => r.p_student_id === body.p_student_id && r.p_question_id === body.p_question_id);
+        if (i >= 0) demoReports.splice(i, 1);
+        demoReports.push(body);
+        json(res, 200, {saved:true});
+      });
+      return;
+    }
+    if (url.pathname === '/mock-supabase/question-reports') return json(res, 200, demoReports);
     if (url.pathname === '/mock-supabase/rest/v1/rpc/get_free_student_responses') return json(res, 200, demoFreeResponses);
     if (url.pathname === '/mock-supabase/rest/v1/rpc/join_class_with_student_code') return json(res, 200, [{student_id:demoStudent.studentId,class_id:demoStudent.classId,class_name:'Motion test class',subject:demoStudent.classSubject}]);
     if (url.pathname === '/mock-supabase/rest/v1/rpc/get_student_own_responses_with_code') return json(res, 200, demoResponses);

@@ -409,3 +409,18 @@ sees the old state, since it is `stable`; use a separate statement.
 Applied to production. Probed first inside a rolled-back `do` block: cleans
 the name to letters, spaces, `'` and `-` (max 40), refuses a wrong or short
 token, and renames sibling free rows on the same account.
+
+## 20261009 180000 — students can report a question
+
+| File | What it does |
+|---|---|
+| `20261009180000_question_reports.sql` | Adds `question_reports` (RLS on, no browser access) and `report_question(...)`. Accepts the owner account, a verified class session or a free session's token; one report per student per question (a re-report replaces it and reopens it); at most 20 a day; note capped at 500 characters; rows deleted with the student. |
+
+**Not yet applied to production.** Until it is, "Report a problem with this
+question" shows its "couldn't send" message; nothing else depends on it.
+Read open reports with:
+
+```sql
+select r.question_id, r.bank, r.reason, r.selected_option, r.note, r.created_at
+from public.question_reports r where r.status = 'open' order by r.created_at desc;
+```
