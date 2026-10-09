@@ -60,6 +60,11 @@
         activeSurface = null;
       }
       transition.finished.then(clean, clean);
+      // A transition skipped by a quicker update (a double tap, a page
+      // change) rejects ready and updateCallbackDone. The update still runs;
+      // without these handlers each skip logged an uncaught error.
+      transition.ready.catch(function () {});
+      transition.updateCallbackDone.catch(function () {});
       return transition;
     }
 

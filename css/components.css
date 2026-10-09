@@ -480,3 +480,9 @@
 .forge-readiness-result em{color:var(--good);font-style:normal;font-size:14px}
 .forge-readiness-result span span{color:var(--slate);font-size:12px}
 @media(prefers-reduced-motion:reduce){.forge-readiness-ring__fill{transition:none}}
+/* A loading message appears only when loading is slow. Shown at once, it
+   flashed for a moment on every page that loads quickly and was then
+   replaced by the content, a visible step for nothing. Held invisible for
+   350ms, then faded in; under reduced motion it shows at once. */
+.forge-state--loading,.forge-status--loading{animation:forge-loading-appear .2s .35s both}
+@keyframes forge-loading-appear{from{opacity:0;visibility:hidden}to{opacity:1;visibility:visible}}

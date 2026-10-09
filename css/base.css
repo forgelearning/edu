@@ -23,14 +23,26 @@ a{color:var(--hot);text-underline-offset:.18em;text-decoration-thickness:from-fo
    thesis: old content clears quickly, then the new surface resolves into
    focus. Content remains visible when view transitions are unavailable. */
 @view-transition{navigation:auto}
-::view-transition-old(root){animation:forge-page-out var(--motion-exit) var(--ease-forge-in) both}
-::view-transition-new(root){animation:forge-page-in 200ms var(--ease-forge) both}
+/* Between pages the old page stays fully visible and the new one fades in
+   over it. Fading the old page out as well (to 0 in 130ms) showed a black
+   frame whenever the new page was slower than that to paint, on every
+   navigation on a school laptop. Normal blending: the default plus-lighter
+   adds the two pages together mid-fade, which reads as a flash. Each app
+   page also holds its first paint until #main-content is parsed
+   (<link rel="expect">), so the page fading in already has its sidebar. */
+::view-transition-old(root){animation:none;mix-blend-mode:normal}
+::view-transition-new(root){animation:forge-page-in 180ms var(--ease-forge) both;mix-blend-mode:normal}
+/* The sidebar and the phone tab bar are the same on every page: named, they
+   are carried across as they are instead of fading with the page. */
+#forge-sidebar{view-transition-name:forge-sidebar}
+#forge-tabbar{view-transition-name:forge-tabbar}
+::view-transition-group(forge-sidebar),::view-transition-group(forge-tabbar){animation-duration:0s}
 ::view-transition-group(forge-surface){animation-duration:var(--motion-enter);animation-timing-function:var(--ease-forge)}
 ::view-transition-old(forge-surface){animation:forge-surface-out var(--motion-exit) var(--ease-forge-in) both}
 ::view-transition-new(forge-surface){animation:forge-surface-in var(--motion-enter) var(--ease-forge) both}
 html.forge-motion-local::view-transition-old(root),html.forge-motion-local::view-transition-new(root){animation:none;mix-blend-mode:normal}
 @keyframes forge-page-out{to{opacity:0}}
-@keyframes forge-page-in{from{opacity:.72}to{opacity:1}}
+@keyframes forge-page-in{from{opacity:0}to{opacity:1}}
 /* The old surface must reach 0: fading it only part-way left two quiz
    questions overlaid at near-full opacity for the length of the transition,
    then the old one vanished at the end, which read as a stutter. */
