@@ -381,3 +381,45 @@
 .forge-fixed-result{margin:10px 0 0;font-weight:600}
 .forge-fixed-result.is-fixed{color:var(--good)}
 .forge-fixed-empty{margin:8px 0 0;color:var(--slate);font-size:14px}
+/* Daily XP goal (scripts/forge-goals.js). */
+.forge-goal-ring{flex:none;transform:rotate(-90deg)}
+.forge-goal-ring__track,.forge-goal-ring__fill{fill:none;stroke-width:4}
+.forge-goal-ring__track{stroke:var(--line)}
+.forge-goal-ring__fill{stroke:var(--ember);stroke-linecap:round;transition:stroke-dashoffset .6s cubic-bezier(.22,1,.36,1)}
+.is-met .forge-goal-ring__fill{stroke:var(--good)}
+.forge-goal{margin:0 0 16px;padding:18px;border:1px solid var(--line);border-radius:var(--radius-md);background:var(--panel)}
+.forge-goal.is-met{border-color:color-mix(in srgb,var(--good) 45%,var(--line))}
+.forge-goal__top{display:flex;align-items:center;gap:14px}
+.forge-goal__ring{position:relative;display:grid;place-items:center;flex:none;width:64px;height:64px}
+.forge-goal__ring-text{position:absolute;color:var(--white);font:800 14px/1 'Rethink Sans',sans-serif}
+.is-met .forge-goal__ring-text{color:var(--good);font-size:20px}
+.forge-goal__text{min-width:0}
+.forge-goal__text h2{margin:0;color:var(--slate);font:700 12px/1.3 'Rethink Sans',sans-serif;letter-spacing:.06em;text-transform:uppercase}
+.forge-goal__xp{margin:2px 0;color:var(--white);font-size:15px}
+.forge-goal__xp strong{font:800 22px/1.2 'Rethink Sans',sans-serif}
+.forge-goal__next{margin:0;color:var(--slate);font-size:13px;line-height:1.4}
+.forge-goal__week{margin-top:14px}
+.forge-goal__week p{margin:0 0 8px;color:var(--slate);font-size:13px}
+.forge-goal__week strong{color:var(--white)}
+.forge-goal__days{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin:0;padding:0;list-style:none}
+.forge-goal__days li{display:grid;place-items:center;height:30px;border:1px solid var(--line);border-radius:8px;color:var(--slate);font:700 12px/1 'Rethink Sans',sans-serif}
+.forge-goal__days li.is-met{border-color:transparent;background:var(--good);color:#fff}
+.forge-goal__days li.is-today{border-color:var(--ember);color:var(--white)}
+.forge-goal__days li.is-future{opacity:.45}
+.forge-goal__change{margin-top:12px}
+.forge-goal__change summary{display:inline-block;color:var(--hot);font-size:13px;font-weight:700;cursor:pointer;list-style:none}
+.forge-goal__change summary::-webkit-details-marker{display:none}
+.forge-goal__change summary:focus-visible{outline:2px solid var(--hot);outline-offset:2px}
+.forge-goal__levels{display:grid;gap:8px;margin-top:10px}
+.forge-goal__level{display:grid;gap:2px;width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:var(--radius-sm,10px);background:var(--panel-2);color:var(--white);font:inherit;text-align:left;cursor:pointer}
+.forge-goal__level:hover{border-color:var(--ember)}
+.forge-goal__level:focus-visible{outline:2px solid var(--hot);outline-offset:2px}
+.forge-goal__level.is-current{border-color:var(--ember);box-shadow:inset 0 0 0 1px var(--ember)}
+.forge-goal__level strong{font-size:14px}
+.forge-goal__level small{color:var(--slate);font-size:12px}
+.forge-goal-row{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;margin:-4px 0 10px}
+.forge-goal-chip{display:inline-flex;align-items:center;gap:7px;padding:4px 10px 4px 6px;border:1px solid var(--line);border-radius:var(--radius-pill);color:var(--slate);font:600 12px/1.3 'Rethink Sans',sans-serif}
+.forge-goal-chip.is-met{border-color:color-mix(in srgb,var(--good) 50%,var(--line));color:var(--good)}
+.forge-goal-reached{padding:4px 12px;border-radius:var(--radius-pill);background:var(--good);color:#fff;font:700 12px/1.3 'Rethink Sans',sans-serif;animation:forge-goal-pop .5s cubic-bezier(.34,1.56,.64,1)}
+@keyframes forge-goal-pop{0%{transform:scale(.6);opacity:0}100%{transform:scale(1);opacity:1}}
+@media(prefers-reduced-motion:reduce){.forge-goal-ring__fill{transition:none}.forge-goal-reached{animation:none}}
