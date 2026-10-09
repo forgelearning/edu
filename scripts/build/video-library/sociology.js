@@ -4,6 +4,7 @@ const ESHER = 'Esher Sociology';
 
 module.exports = {
   slug: 'sociology',
+  subjects: ['soc'],
   name: 'Sociology',
   level: 'A Level',
   intro: 'AQA A-level Sociology explanations for Papers 1 to 3, grouped by topic. Videos play here in Forge.',

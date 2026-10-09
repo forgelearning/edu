@@ -3,6 +3,7 @@ const v = (id, title, area, channel) => ({ id, title, tag: `${area} · ${channel
 
 module.exports = {
   slug: 'english-language-literature',
+  subjects: ['engll'],
   name: 'English Language and Literature',
   level: 'A Level',
   intro: 'AQA A-level English Language and Literature: linguistic and literary terminology, spoken language and exam technique. Videos play here in Forge.',

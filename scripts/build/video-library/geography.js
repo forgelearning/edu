@@ -6,6 +6,7 @@ const GG = 'Geography Geyser';
 
 module.exports = {
   slug: 'geography',
+  subjects: ['geo'],
   name: 'Geography',
   level: 'A Level',
   intro: 'Edexcel A-level Geography topic overviews and revision for Papers 1 to 3. Videos play here in Forge.',

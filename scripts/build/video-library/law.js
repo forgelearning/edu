@@ -5,6 +5,7 @@ const ALLT = 'The A Level Law Teacher';
 
 module.exports = {
   slug: 'law',
+  subjects: ['law'],
   name: 'Law',
   level: 'A Level',
   intro: 'OCR A-level Law explanations for the legal system, criminal law, tort and contract. Videos play here in Forge.',

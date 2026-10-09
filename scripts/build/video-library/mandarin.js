@@ -4,6 +4,7 @@ const TCCT = 'Twin Cities Chinese Tutor';
 
 module.exports = {
   slug: 'mandarin',
+  subjects: ['mand'],
   name: 'Mandarin',
   level: 'Other qualifications',
   intro: 'IB Mandarin B: key grammar patterns, text types and the Identities theme. Videos play here in Forge.',

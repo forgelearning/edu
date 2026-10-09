@@ -66,6 +66,7 @@ ForgeSidebar.mount({
 <script src="scripts/forge-classes.js?v=20260813"></script>
 <script src="scripts/forge-student-code.js?v=20260809"></script>
 <script src="scripts/forge-misconception-state.js"></script>
+<script src="scripts/forge-fixed.js"></script>
 <script src="scripts/forge-streak.js?v=20261004-freeze"></script>
 <script src="scripts/forge-topic-mastery.js?v=20261004-rings"></script>
 <script>
@@ -602,6 +603,18 @@ function renderProfile(){
         var label=resolveMCLabel(tag)||'An idea from this topic';
         h+='<div class="strength-item"><span class="strength-label">'+label+'</span><span class="strength-acc">cleared</span></div>';
       });
+      h+='</div>';
+    }
+    // Ideas that passed their check a week after repair (scripts/forge-fixed.js).
+    var fixedSummary=window.ForgeFixed?ForgeFixed.summarize(responses):null;
+    if(fixedSummary&&(fixedSummary.fixed.length||fixedSummary.due.length)){
+      h+='<div class="card">';
+      h+='<div class="card-title forge-text-good">Fixed for good</div>';
+      if(fixedSummary.due.length)h+=ForgeFixed.cardHtml(fixedSummary,ForgeFixed.href(fixedSummary,st.classSubject||subjectKey));
+      fixedSummary.fixed.forEach(function(idea){
+        h+='<div class="strength-item"><span class="strength-label">'+(resolveMCLabel(idea.tag)||'An idea from this topic')+'</span><span class="strength-acc">fixed for good</span></div>';
+      });
+      if(!fixedSummary.fixed.length)h+='<p class="forge-fixed-empty">None yet. Get a check right and the idea is listed here.</p>';
       h+='</div>';
     }
 

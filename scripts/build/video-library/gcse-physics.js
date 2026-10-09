@@ -5,6 +5,7 @@ const triple = { triple: true };
 
 module.exports = {
   slug: 'gcse-physics',
+  subjects: ['gcse-sep-phys'],
   name: 'Physics',
   level: 'GCSE',
   intro: 'Edexcel GCSE Physics explanations, grouped by topic. Videos play here in Forge.',

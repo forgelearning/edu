@@ -5,6 +5,7 @@ const SHARPE = 'Mr Sharpe Psychology GCSE';
 
 module.exports = {
   slug: 'gcse-psychology',
+  subjects: ['gcse-psych'],
   name: 'Psychology',
   level: 'GCSE',
   intro: 'AQA GCSE Psychology explanations for Papers 1 and 2, grouped by topic. Videos play here in Forge.',

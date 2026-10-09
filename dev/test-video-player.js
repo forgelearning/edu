@@ -14,14 +14,14 @@ for(const f of fs.readdirSync('pages/app').filter(f=>/^videos-.+\.html$/.test(f)
     if(noEmbed.has(m[1]))assert(!m[2],f+': '+m[1]+' cannot be embedded, so it must link out');
     else{assert.strictEqual(m[3],m[1],f+': '+m[1]+' plays in Forge');embedded++;}
   }
-  assert(html.includes('scripts/videos.js'),f+' loads the player');
+  assert(html.includes('scripts/forge-video-player.js')&&html.includes('scripts/videos.js'),f+' loads the player');
   assert(!/open on YouTube\./i.test(html.match(/<header class="settings-hero">[\s\S]*?<\/header>/)[0]),f+' intro no longer says videos open on YouTube');
 }
 assert(embedded>800);
 
 // The player: privacy-enhanced domain, a referrer (YouTube refuses to play
 // embeds without one), playback stops on close, and a way out to YouTube.
-const js=fs.readFileSync('scripts/videos.js','utf8');
+const js=fs.readFileSync('scripts/forge-video-player.js','utf8');
 assert(js.includes("'https://www.youtube-nocookie.com/embed/'"));
 assert(js.includes("referrerPolicy = 'strict-origin-when-cross-origin'"));
 assert(js.includes('playsinline=1'),'plays inline in the iOS app');

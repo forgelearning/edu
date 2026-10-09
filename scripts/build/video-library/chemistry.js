@@ -1,5 +1,6 @@
 module.exports = {
   slug: 'chemistry',
+  subjects: ['chem'],
   name: 'Chemistry',
   level: 'A Level',
   intro: 'AQA A-level Chemistry explanations, grouped by topic. Videos play here in Forge.',

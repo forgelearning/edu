@@ -5,6 +5,7 @@ const DYLANE = 'The perfect French with Dylane';
 
 module.exports = {
   slug: 'french',
+  subjects: ['french'],
   name: 'French',
   level: 'A Level',
   intro: 'Edexcel A-level French: the grammar that comes up in translation, plus background to the themes. Videos play here in Forge.',

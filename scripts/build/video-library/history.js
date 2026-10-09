@@ -1,5 +1,6 @@
 module.exports = {
   slug: 'history',
+  subjects: ['hist'],
   name: 'History',
   level: 'A Level',
   intro: 'AQA A-level History explanations for Britain, the USA and Tudor investigation context. Videos play here in Forge.',

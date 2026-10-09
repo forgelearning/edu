@@ -6,6 +6,7 @@ const triple = { triple: true };
 
 module.exports = {
   slug: 'gcse-biology',
+  subjects: ['gcse-sep-bio'],
   name: 'Biology',
   level: 'GCSE',
   intro: 'Edexcel GCSE Biology explanations, grouped by topic. Videos play here in Forge.',

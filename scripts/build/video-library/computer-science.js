@@ -5,6 +5,7 @@ const cd = (id, title, component) => ({ id, title, tag: `Component ${component} 
 
 module.exports = {
   slug: 'computer-science',
+  subjects: ['cs'],
   name: 'Computer Science',
   level: 'A Level',
   intro: 'Eduqas A-level Computer Science explanations for Components 1 and 2. Videos play here in Forge.',

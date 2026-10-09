@@ -8,6 +8,7 @@ const T2U = 'tutor2u (BTEC)';
 
 module.exports = {
   slug: 'health-social-care',
+  subjects: ['hsc'],
   name: 'Health and Social Care',
   level: 'A Level',
   intro: 'Health and Social Care explanations for lifespan development, care values, communication and safeguarding. Most were made for BTEC, which covers the same content. Videos play here in Forge.',

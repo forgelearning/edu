@@ -7,6 +7,7 @@ const S2 = 'Statistics Year 2';
 
 module.exports = {
   slug: 'maths',
+  subjects: ['maths'],
   name: 'Mathematics',
   level: 'A Level',
   intro: 'Edexcel A-level Maths explanations for Pure and Statistics. Videos play here in Forge.',

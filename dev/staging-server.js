@@ -140,6 +140,10 @@ function seedCompleteHistory() {
   banks.forEach(b => { const qs = questions(b); for (let i = 0; i < 40; i++) add({question_id:qs[i % qs.length].id, bank:b}); });
   // 210 right answers in Timed practice (Gold: 200).
   for (let i = 0; i < 210; i++) { const b = banks[i % banks.length], qs = questions(b); add({question_id:qs[i % qs.length].id + '-CRU', bank:b}); }
+  // A week or more after those repairs, 30 of the 32 ideas pass their
+  // "Did it stick?" check (Gold: 30 fixed for good); two are left due, so the
+  // check can be tried. Last in the list, so they fall on the latest days.
+  cleared.slice(0, 30).forEach(({b, q, t}) => add({question_id:q.id + '-CHK', bank:b, misconception_tag:t}));
   // Spread over the last 24 days in order, so every day has practice (Gold
   // streak: 21) and each misconception's error comes before its repairs.
   const days = 24, start = Date.now() - (days - 1) * 86400000 - 3600000;
