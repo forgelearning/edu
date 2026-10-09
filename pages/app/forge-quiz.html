@@ -398,6 +398,8 @@ var SPEC_TO_SUBJECT = {
 <script src="scripts/forge-chemistry-resources.js"></script>
 <script src="scripts/forge-video-player.js"></script>
 <script src="scripts/forge-video-match.js"></script>
+<script src="scripts/forge-report.js"></script>
+<script src="scripts/forge-readiness.js"></script>
 <script src="scripts/forge-data-loader.js?v=20260821"></script>
 <script src="scripts/forge-misconception-state.js"></script>
 <script src="scripts/forge-fixed.js"></script>
@@ -452,6 +454,7 @@ function forgeSaveSession(resumeAt) {
 function forgeStartSession(bank, rawQs) {
   // Any ordinary set ends a "Did it stick?" set: its answers are not checks.
   state.check = null;
+  state.readinessStart = null;
   var saved = forgeSessionStorage(bank) || {completedIds: []};
   if (saved.questionIds && saved.questionIds.length && saved.idx <= saved.questionIds.length) {
     var byId = {}; rawQs.forEach(function(q){byId[q.id] = q;});
@@ -1082,6 +1085,7 @@ function startFixedCheck() {
   if (!picks.length) return false;
   state.subject = subject;
   state.check = { total: picks.length };
+  state.readinessStart = null;
   state.assignmentId = null; state.challenge = null; state.topicSpec = null;
   state.questionBanks = {};
   picks.forEach(function (p) { state.questionBanks[p.question.id] = p.bank; });
@@ -1903,6 +1907,39 @@ function revealQuizNext(){
   });
 }
 
+// The subject's readiness (scripts/forge-readiness.js), from the history,
+// which logResponse appends each answer to. Null until the history loads.
+function subjectReadiness(){
+  if(!window.ForgeReadiness||!state.historyLoaded)return null;
+  var subject=getSubjectForBank(state.bank);
+  if(!SUBJECTS[subject]||!SUBJECTS[subject].banks.length)return null;
+  return {subject:subject,summary:ForgeReadiness.subject(state.responseHistory,SUBJECTS[subject].banks)};
+}
+function readinessResultHtml(){
+  var now=subjectReadiness();
+  if(!now)return '';
+  var start=state.readinessStart&&state.readinessStart.subject===now.subject?state.readinessStart.summary.score:null;
+  var s=now.summary,delta=start==null?0:s.score-start;
+  // One set moves one topic, which is a fifteenth of a course's score, so
+  // say how far the topic moved too.
+  var topicOf=function(sum){return sum.topics.filter(function(t){return t.bank===state.bank;})[0];};
+  var before=start==null?null:topicOf(state.readinessStart.summary),after=topicOf(s);
+  var topicLine=before&&after&&after.score>before.score&&BANKS[state.bank]?forgeEscape(BANKS[state.bank].label)+' '+before.score+'% → '+after.score+'%':forgeEscape(s.band.label)+' · aim for '+s.aim+'%';
+  return '<a class="forge-readiness-result forge-readiness--'+s.band.key+'" href="profile.html">'+ForgeReadiness.ringSvg(s.score,44,s.band.key)
+    +'<span><small>Readiness · '+forgeEscape(SUBJECTS[now.subject].label)+'</small><strong>'+s.score+'%'+(delta>0?' <em>+'+delta+'</em>':'')+'</strong><span>'+topicLine+'</span></span></a>';
+}
+
+// "Report a problem with this question" (scripts/forge-report.js), with the
+// credential this session's other calls use.
+function offerReport(feedback, question, selected){
+  if(!window.ForgeReport||!state.studentId)return;
+  ForgeReport.attach(feedback,function(){
+    return {studentId:state.studentId,classCode:state.classCode,studentCode:state.studentCode,studentName:state.studentName,
+      freeToken:state.classId?null:(loadFreeSession()||{}).freeToken||null,
+      question:question,bank:state.questionBanks&&state.questionBanks[question.id]||state.bank,selected:selected};
+  });
+}
+
 // In a "Did it stick?" set, say what the answer means for the idea.
 function markFixedCheck(feedback, correct){
   var box=feedback.querySelector(correct?'.praise-box':'.scaffold-box');
@@ -1960,6 +1997,8 @@ function renderQuiz(){
   var q=state.questions[state.idx];
   if(!q){state.phase='results';render();return;}
 
+  // Readiness before this set's first answer, for the results' "+n".
+  if(state.idx===0&&!state.readinessStart)state.readinessStart=subjectReadiness();
   var h='<div class="quiz-header">';
   h+='<button type="button" class="back-btn" id="back-banks">\u2190 Topics</button>';
   h+='<span class="bank-name" style="color:'+bk.color+'">'+(state.topicSpec&&window.ForgeChemistryTopics?ForgeChemistryTopics.label(state.topicSpec):bk.label)+'</span>';
@@ -2067,6 +2106,7 @@ function renderQuiz(){
       if(!isCorrect&&window.ForgeChemistryResources)ForgeChemistryResources.appendTo(fb,q);
       if(!isCorrect)offerVideo(fb,q);
       if(state.check)markFixedCheck(fb,isCorrect);
+      offerReport(fb,q,k);
       offerRevisionCard(fb,q);
       if(isCorrect){ awardXP(hinted?XP_HINTED:XP_CORRECT, fb.querySelector('.praise-box')); forgeSaveSession(); }
       if(state.challenge && window.ForgeChallenge){
@@ -2225,6 +2265,7 @@ function renderFillBlankQuiz(q,bk,headerHtml){
     fb.innerHTML=window.ForgeQuestion.renderFeedback(q,allCorrect);
     if(!allCorrect&&window.ForgeChemistryResources)ForgeChemistryResources.appendTo(fb,q);
     if(!allCorrect)offerVideo(fb,q);
+    offerReport(fb,q,null);
     if(allCorrect) awardXP(XP_CORRECT, fb.querySelector('.praise-box'));
     if(!allCorrect){
       if(q.reforge){
@@ -2373,10 +2414,12 @@ function renderResults(){
   var h='<div class="results">';
   h+='<h1>'+(state.check?'Did it stick?':'Practice complete')+'</h1>';
   h+='<p class="detail">'+(state.check?state.score+' of '+worked+' fixed for good':bk.label)+'</p>';
+  var readinessResult=readinessResultHtml();
   h+='<div class="pct" style="color:'+col+'">'+pct+'%</div>';
   h+='<div class="detail">'+state.score+' of '+worked+' correct'+(repairedCount?' · '+repairedCount+' '+(repairedCount===1?'idea':'ideas')+' repaired':'')+'</div>';
   if (isFreeTier() && !ForgeAuth.hasSession()) h+='<p class="forge-save-progress">Want your progress on another device? <a href="forge-quiz.html?mode=email">Save it with your email</a>.</p>';
   if(repaired) h+='<p class="forge-result-repaired">Repaired: '+repaired+'</p>';
+  h+=readinessResult;
   h+='<section class="forge-result-story" aria-labelledby="result-next-title">';
   h+='<h2 id="result-next-title">'+next.title+'</h2>';
   h+='<p class="forge-recommendation__copy">'+next.copy+'</p>';

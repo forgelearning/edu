@@ -70,6 +70,7 @@ ForgeSidebar.mount({
 <script src="scripts/forge-fixed.js"></script>
 <script src="scripts/forge-streak.js?v=20261004-freeze"></script>
 <script src="scripts/forge-goals.js"></script>
+<script src="scripts/forge-readiness.js"></script>
 <script src="scripts/forge-topic-mastery.js?v=20261004-rings"></script>
 <script src="scripts/forge-league.js?v=20261008a"></script>
 <script src="scripts/forge-friends.js?v=20260929d"></script>
@@ -407,6 +408,11 @@ function renderDashboard(){
     // The daily XP goal the student chose (scripts/forge-goals.js), next to
     // the plan so it is in view on a phone too.
     if(window.ForgeGoals) h+=ForgeGoals.cardHtml(st.studentId,responses);
+    // One readiness score for the subject (scripts/forge-readiness.js).
+    var readinessBanks=subject&&typeof SUBJECTS!=='undefined'&&SUBJECTS[subject]?SUBJECTS[subject].banks:null;
+    if(window.ForgeReadiness&&readinessBanks&&readinessBanks.length) h+=ForgeReadiness.cardHtml(ForgeReadiness.subject(responses,readinessBanks),{
+      subjectName:subjectName,label:function(b){return BANKS[b]?BANKS[b].label:b;}
+    });
   }
 
   h+='<nav class="dashboard-shortcuts" aria-label="Other learning activities">';
