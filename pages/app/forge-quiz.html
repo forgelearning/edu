@@ -26,6 +26,8 @@
 <script src="scripts/forge-app.js"></script>
 <script src="scripts/forge-question.js?v=20261003-hints"></script>
 <script src="scripts/forge-rewards.js"></script>
+<script src="scripts/forge-streak.js?v=20261004-freeze"></script>
+<script src="scripts/forge-goals.js"></script>
 <script src="scripts/forge-ranks.js"></script>
 <script src="scripts/forge-achievements.js"></script>
 <script src="scripts/forge-emblems.js"></script>
@@ -520,6 +522,28 @@ function awardXP(amount, host) {
   }
   var counter = document.getElementById('session-xp');
   if (counter) counter.textContent = state.sessionXP + ' XP';
+  updateGoalChip();
+}
+// The daily XP goal (scripts/forge-goals.js), from the loaded history, which
+// logResponse also appends each new answer to.
+function goalProgress() {
+  if (!xpEnabled() || !window.ForgeGoals || !state.historyLoaded) return null;
+  return ForgeGoals.progress(state.responseHistory, ForgeGoals.get(state.studentId).xp, new Date());
+}
+function goalChipHtml() {
+  var p = goalProgress();
+  return p ? '<div class="forge-goal-row">' + ForgeGoals.chipHtml(p) + '</div>' : '';
+}
+function updateGoalChip() {
+  var p = goalProgress(), chip = document.getElementById('forge-goal-chip');
+  if (!p || !chip) return;
+  var wasMet = chip.classList.contains('is-met');
+  chip.outerHTML = ForgeGoals.chipHtml(p);
+  // Once a day, the moment the goal is reached.
+  if (p.met && !wasMet && ForgeGoals.claimCelebration(state.studentId)) {
+    var row = document.querySelector('.forge-goal-row');
+    if (row) row.insertAdjacentHTML('beforeend', '<span class="forge-goal-reached" role="status">Daily goal reached · ' + p.today + ' XP today</span>');
+  }
 }
 function xpResultsHtml() {
   if (!xpEnabled()) return '';
@@ -1940,6 +1964,7 @@ function renderQuiz(){
   h+='<button type="button" class="back-btn" id="back-banks">\u2190 Topics</button>';
   h+='<span class="bank-name" style="color:'+bk.color+'">'+(state.topicSpec&&window.ForgeChemistryTopics?ForgeChemistryTopics.label(state.topicSpec):bk.label)+'</span>';
   h+='<span>Question '+(state.idx+1)+' of '+state.questions.length+(xpEnabled()?' · <span id="session-xp">'+state.sessionXP+' XP</span>':'')+'</span></div>';
+  h+=goalChipHtml();
   h+='<p class="forge-u-lp9fq9" id="forge-answer-save" role="status">Your progress saves automatically.</p>';
   h+='<div class="progress-bar"><div class="progress-fill" style="width:'+((state.idx/state.questions.length)*100)+'%;background:'+bk.color+'"></div></div>';
 

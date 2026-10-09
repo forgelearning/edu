@@ -69,6 +69,7 @@ ForgeSidebar.mount({
 <script src="scripts/forge-misconception-state.js"></script>
 <script src="scripts/forge-fixed.js"></script>
 <script src="scripts/forge-streak.js?v=20261004-freeze"></script>
+<script src="scripts/forge-goals.js"></script>
 <script src="scripts/forge-topic-mastery.js?v=20261004-rings"></script>
 <script src="scripts/forge-league.js?v=20261008a"></script>
 <script src="scripts/forge-friends.js?v=20260929d"></script>
@@ -289,6 +290,9 @@ function celebrateDashboard(responses,xp,resolved){
   ForgeCelebrate.check({studentId:st.studentId,name:st.studentName,xp:xp,badges:badges});
 }
 
+// Choosing a different daily goal redraws Home with it.
+if(window.ForgeGoals) ForgeGoals.bind(function(){return st.studentId;},function(){renderDashboard();});
+
 function renderDashboard(){
   if(window.ForgeRewards&&st.studentId&&rewardsLoadedFor!==st.studentId){
     rewardsLoadedFor=st.studentId;
@@ -400,6 +404,9 @@ function renderDashboard(){
       practiceHref:focusTopic?'forge-quiz.html?bank='+encodeURIComponent(focusTopic.key):subjectUrl
     };
     h+='<div class="dashboard-next dashboard-plan-slot">'+ForgeDailyPlan.html(ForgeDailyPlan.build(planInput))+dashboardTopicsHtml+'</div>';
+    // The daily XP goal the student chose (scripts/forge-goals.js), next to
+    // the plan so it is in view on a phone too.
+    if(window.ForgeGoals) h+=ForgeGoals.cardHtml(st.studentId,responses);
   }
 
   h+='<nav class="dashboard-shortcuts" aria-label="Other learning activities">';
