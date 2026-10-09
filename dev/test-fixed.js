@@ -82,6 +82,10 @@ assert(quiz.includes("state.check ? q.id + '-CHK' : q.id"));
 assert(quiz.includes('misconception_tag: isReforge || state.check ?'));
 assert(/function forgeSaveSession[^{]*\{\s*if \([^)]*state\.check\) return;/.test(quiz));
 assert(/function forgeStartSession[\s\S]{0,140}state\.check = null;/.test(quiz), 'an ordinary set ends check mode');
+// The history starts as [], so a check set waits for it to load rather than
+// finding nothing due in an empty list.
+assert(/function setXPHistory\(responses\) \{[\s\S]{0,200}state\.historyLoaded = true;/.test(quiz));
+assert(quiz.includes('if (!state.historyLoaded) {'));
 for (const page of ['forge-quiz', 'student-dashboard', 'anvil', 'profile']) assert(fs.readFileSync('pages/app/' + page + '.html', 'utf8').includes('scripts/forge-fixed.js'), page + ' loads forge-fixed.js');
 assert(fs.readFileSync('scripts/forge-achievements.js', 'utf8').includes("key: 'fixed', name: 'Fixed for good'"));
 console.log('Fixed for good tests passed.');

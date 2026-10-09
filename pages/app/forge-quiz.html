@@ -498,6 +498,9 @@ function forgeCompleteSession() {
 var XP_CORRECT = 10, XP_REFORGE = 20, XP_HINTED = 5;
 function xpEnabled() { return !isFreeTier(); }
 function setXPHistory(responses) {
+  // Every history loader ends here. responseHistory starts as [], so this is
+  // what tells "not loaded yet" apart from "no answers".
+  state.historyLoaded = true;
   var quizXp=calcXPFromResponses(responses || []);
   if(typeof ForgeRewards!=='undefined')ForgeRewards.rememberQuizXp(state.studentId,quizXp);
   state.baseXP=quizXp+(typeof ForgeRewards!=='undefined'?ForgeRewards.read(state.studentId).matchXp:0);
@@ -1038,7 +1041,7 @@ function render(skipMotion) {
 function startFixedCheck() {
   var subject = requestedSubject || state.subject || state.classSubject;
   if (!subject || !SUBJECTS[subject] || !window.ForgeFixed) { requestedCheck = false; return false; }
-  if (!state.responseHistory) {
+  if (!state.historyLoaded) {
     app.innerHTML = '<div class="forge-status forge-status--loading" role="status" aria-live="polite">Finding last week’s fixes…</div>' + sessionBar();
     return 'wait';
   }
@@ -2632,12 +2635,12 @@ if (!openSoloLogin && !openEmailLogin && ForgeAuth.hasSession()) {
         ForgeClasses.use(freeSession.name);
         settleRequestedSubject();
         ForgeClasses.fetchAuthResponses(ForgeAuth.accessToken(), ForgeAuth.currentUser().id, function(responses, error) {
-          if (error) { render(); return; }
+          if (error) { requestedCheck = false; render(); return; }
           state.responseHistory = responses || [];
           state.weightMap = buildWeightMap(responses || []);
           state.bankStats = buildBankStats(responses || []);
           setXPHistory(responses);
-          if (state.phase === 'banks') render();
+          if (state.phase === 'banks' || requestedCheck) render();
         });
         render();
       }).catch(function() { render(); });
@@ -2716,7 +2719,8 @@ if (!openSoloLogin && !openEmailLogin && ForgeAuth.hasSession()) {
           studentId: state.studentId, classId: state.classId, classCode: savedSession.classCode,
           studentCode: state.studentCode, studentName: state.studentName, subject: state.classSubject
         }, function(responses, error) {
-          if (error) { state.weightMap = {}; return; }
+          // A check set cannot be chosen without the history; open practice.
+          if (error) { state.weightMap = {}; if (requestedCheck) { requestedCheck = false; render(); } return; }
           state.responseHistory = responses;
           state.weightMap = buildWeightMap(responses);
           state.bankStats = buildBankStats(responses);
