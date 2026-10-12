@@ -9,6 +9,7 @@ const fs = require('fs');
 const path = require('path');
 
 const root = path.join(path.resolve(__dirname, '..'), '_site');
+const teacherDemo = require('./staging-teacher-demo');
 const args = new Map();
 for (let i = 2; i < process.argv.length; i += 2) args.set(process.argv[i], process.argv[i + 1]);
 const port = Number(args.get('--port') || 4174);
@@ -59,14 +60,14 @@ function apiScript() {
           return { ok: true, status: 200, json: function () { return Promise.resolve(body); }, text: function () { return Promise.resolve(typeof body === 'string' ? body : JSON.stringify(body)); } };
         });
       },
-      get: function(){ return Promise.resolve([]); },
+      get: ${mode === 'teacher-demo' ? "function(name, query){ return request('/rest/v1/' + name + (query ? '?' + query : ''), {method:'GET'}); }" : "function(){ return Promise.resolve([]); }"},
       patch: function(){ return Promise.resolve([]); },
       remove: function(){ return Promise.resolve([]); },
       auth: {
         signUp: function(){ return Promise.reject(new Error('Staging auth is intentionally disabled')); },
         signIn: function(){ return Promise.reject(new Error('Staging auth is intentionally disabled')); },
         refresh: function(){ return Promise.reject(new Error('Staging auth is intentionally disabled')); },
-        user: function(){ return Promise.reject(new Error('Staging auth is intentionally disabled')); },
+        user: ${mode === 'teacher-demo' ? "function(){ return request('/auth/v1/user', {method:'GET'}); }" : "function(){ return Promise.reject(new Error('Staging auth is intentionally disabled')); }"},
         updatePassword: function(){ return Promise.reject(new Error('Staging auth is intentionally disabled')); },
         signOut: function(){ return Promise.resolve(null); },
         recover: function(){ return Promise.resolve(null); }
@@ -182,6 +183,15 @@ function serveDemoAccount(res, url) {
 const server = http.createServer((req, res) => {
   const url = new URL(req.url, 'http://127.0.0.1');
   if (mode === 'student-demo' && url.pathname === '/test-account') return serveDemoAccount(res, url);
+  if (mode === 'teacher-demo' && url.pathname === '/teacher-account') {
+    res.writeHead(200, {'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-store'});
+    res.end(teacherDemo.accountPage());
+    return;
+  }
+  if (mode === 'teacher-demo' && url.pathname.startsWith('/mock-supabase/') && req.method !== 'OPTIONS') {
+    const handled = teacherDemo.handle(url, req.method);
+    if (handled) return json(res, handled[0], handled[1]);
+  }
   if (req.method === 'OPTIONS') {
     res.writeHead(204, {
       'Access-Control-Allow-Origin': '*',

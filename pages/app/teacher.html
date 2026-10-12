@@ -23,7 +23,7 @@
 </script>
 <link rel="stylesheet" href="css/states.css">
   <link rel="stylesheet" href="css/generated-utilities.css">
-  <link rel="stylesheet" href="css/page-overrides/teacher.css?v=20261004-home-return">
+  <link rel="stylesheet" href="css/page-overrides/teacher.css?v=20261012-rework">
   <link rel="stylesheet" href="css/page-overrides/revision.css?v=20261012-width">
   <link rel="stylesheet" href="css/auth-ember.css?v=20260817-auth2">
   <link rel="stylesheet" href="css/content-status.css">
@@ -42,7 +42,7 @@
 <script src="scripts/forge-role.js"></script>
 <script src="scripts/forge-auth-card.js"></script>
 <script src="scripts/forge-theme.js?v=20260808-theme2"></script>
-<script src="scripts/forge-sidebar.js?v=20260809-gearcenter"></script>
+<script src="scripts/forge-sidebar.js?v=20261012-teacher"></script>
 <script src="scripts/forge-teacher-ui.js"></script>
 <script src="scripts/forge-page-actions.js?v=20261004-home-return"></script>
 <script src="scripts/forge-shell.js"></script>
@@ -54,14 +54,17 @@ window.forgeOnClassSelect = function(cls){ loadClassDashboard(cls); };
 function mountTeacherSidebar() {
   ForgeSidebar.mount({
     active: 'dashboard',
+    expandedByDefault: true,
     settingsHref: 'teacher-settings.html',
     classSwitch: { label: 'Loading class…', addLabel: '↩ All your classes' },
     items: [
-      {key:'dashboard', label:'Overview', onclick:"forgeGoto('heatmap')"},
+      // description:'' drops the rail's second line, which repeats the label
+      // (or says "Home") for these keys on the student nav.
+      {key:'dashboard', label:'Overview', description:'', onclick:"forgeGoto('heatmap')"},
       {key:'students', label:'Class & students', onclick:"forgeGoto('class')"},
-      {key:'assignments', label:'Assignments', onclick:"forgeGoto('assignments')"},
+      {key:'assignments', label:'Assignments', description:'', onclick:"forgeGoto('assignments')"},
       {key:'misconceptions', label:'Spec points', onclick:"forgeGoto('spec')"},
-      {key:'revision', label:'Revision', onclick:"forgeGoto('revision')"}
+      {key:'revision', label:'Revision', description:'', onclick:"forgeGoto('revision')"}
     ],
     footerItems: [
       {key:'classes', href:'school-overview.html', label:'School Overview'},
@@ -86,7 +89,7 @@ function mountTeacherSidebar() {
 <script src="scripts/forge-challenge.js?v=20261004-challenge"></script>
 <script src="scripts/forge-misconception-state.js"></script>
 <script src="scripts/forge-metrics.js"></script>
-<script src="scripts/forge-league.js?v=20261008a"></script>
+<script src="scripts/forge-league.js?v=20261012-teacher"></script>
 <script src="scripts/forge-friends.js?v=20260929d"></script>
 <script src="data/misconception-labels.js?v=20260907-diagnostics"></script>
 <script src="data/starter-activities.js?v=20260813"></script>
@@ -1091,14 +1094,18 @@ function renderDashboard() {
   var repairPercent = reforgeAttempts.length ? Math.round((reforgeCorrect.length / reforgeAttempts.length) * 100) : null;
 
   var h = '<header class="teacher-dashboard-head">';
-  h += '<div><h1>' + teacherEsc(dashState.className) + '</h1><p class="teacher-dashboard-meta"><b>' + students.length + '</b> student' + (students.length !== 1 ? 's' : '') + ' · <b>' + totalQs + '</b> scored answer' + (totalQs !== 1 ? 's' : '');
-  if (dashState.classCode) h += ' · <button type="button" class="class-code-pill" id="class-code-pill" data-forge-action="copy-class-code" aria-label="Copy class code ' + teacherEsc(dashState.classCode) + '">' + teacherEsc(dashState.classCode) + '</button>';
-  h += '</p></div><div class="teacher-dashboard-head__actions"><button type="button" class="back-btn forge-u-gr3ipb" data-forge-action="render-teacher-home">All classes</button>';
+  h += '<div class="teacher-dashboard-head__title"><span class="teacher-class-badge" aria-hidden="true">' + teacherEsc(teacherInitials(dashState.className)) + '</span><div><h1>' + teacherEsc(dashState.className) + '</h1><p class="teacher-dashboard-meta"><span class="teacher-meta-chip">' + teacherEsc(subjectLabel(dashState.classSubject)) + '</span><span><b>' + students.length + '</b> student' + (students.length !== 1 ? 's' : '') + '</span><span><b>' + totalQs.toLocaleString() + '</b> scored answer' + (totalQs !== 1 ? 's' : '') + '</span>';
+  if (dashState.classCode) h += '<button type="button" class="class-code-pill" id="class-code-pill" data-forge-action="copy-class-code" aria-label="Copy class code ' + teacherEsc(dashState.classCode) + '">' + teacherEsc(dashState.classCode) + '</button>';
+  h += '</p></div></div><div class="teacher-dashboard-head__actions"><button type="button" class="back-btn forge-u-gr3ipb" data-forge-action="render-teacher-home">All classes</button>';
   h += '<div class="dash-tools"><button type="button" class="dash-tools__toggle" id="dash-tools-toggle" aria-expanded="false" aria-controls="dash-tools-menu">Class tools</button><div class="dash-tools__menu" id="dash-tools-menu" hidden><button type="button" class="forge-button forge-button--secondary" id="generate-student-codes" aria-expanded="false" aria-controls="generate-codes-panel">Generate student codes</button><button type="button" class="forge-button forge-button--secondary" id="migrate-existing-students">Migrate existing students</button>' + (typeof dashState.leagueEnabled === 'boolean' ? '<button type="button" class="forge-button forge-button--secondary" id="toggle-league" aria-pressed="' + dashState.leagueEnabled + '">Weekly league: ' + (dashState.leagueEnabled ? 'On' : 'Off') + '</button>' : '') + (typeof dashState.friendsEnabled === 'boolean' ? '<button type="button" class="forge-button forge-button--secondary" id="toggle-friends" aria-pressed="' + dashState.friendsEnabled + '">Friends: ' + (dashState.friendsEnabled ? 'On' : 'Off') + '</button>' : '') + '<button type="button" class="forge-button forge-button--secondary forge-button--danger" id="delete-class">Delete class</button><div class="dash-tool-group"><span class="dash-tool-group__label">Rename a student</span><div class="dash-tool-group__controls"><label class="forge-sr-only" for="rename-select">Student to rename</label><select id="rename-select" class="forge-u-1o9xvhi"><option value="">Select student…</option>' + students.map(function(student) { return '<option value="' + student.id + '">' + teacherEsc(student.display_name || student.name || 'Student') + '</option>'; }).join('') + '</select><label class="forge-sr-only" for="rename-input">New display name</label><input type="text" id="rename-input" class="rename-input" placeholder="New display name"><button type="button" id="rename-btn" class="forge-button forge-button--secondary">Save</button></div><p class="join-err" id="rename-err"></p></div><div class="dash-tool-group"><span class="dash-tool-group__label">Reset a lost student code</span><div class="dash-tool-group__controls"><label class="forge-sr-only" for="reset-code-select">Student whose code to reset</label><select id="reset-code-select" class="forge-u-1o9xvhi"><option value="">Select student…</option>' + students.map(function(student) { return '<option value="' + student.id + '">' + teacherEsc(student.display_name || student.name || 'Student') + '</option>'; }).join('') + '</select><button type="button" id="reset-code-btn" class="forge-button forge-button--secondary" aria-controls="generate-codes-panel">Reset code</button></div><p class="join-err" id="reset-code-err"></p></div></div></div></div></header>';
   h += '<div id="delete-class-panel" hidden></div><div id="generate-codes-panel" class="code-generation-panel" hidden></div><div id="code-coverage-note" class="code-coverage" role="status" hidden></div>';
 
   var topStudentCount = topSignal ? Object.keys(topSignal.students).length : 0;
-  h += '<div class="teacher-overview-grid"><section class="teacher-next-action" aria-labelledby="teacher-next-action-title">';
+  // Same shape as the student Home: a main column of actions and a side
+  // column of class-wide numbers. Secondary views drop the side column.
+  h += '<div class="teacher-layout"><div class="teacher-main">';
+  h += '<section class="teacher-next-action" aria-labelledby="teacher-next-action-title">';
+  h += '<span class="teacher-next-action__label">' + (topSignal ? 'Today’s focus' : 'Get started') + '</span>';
   h += '<h2 id="teacher-next-action-title">' + (topSignal ? teacherEsc(topSignalLabel) : 'Set your first assignment') + '</h2>';
   h += '<p>' + (topSignal ? topStudentCount + ' student' + (topStudentCount !== 1 ? 's' : '') + ' share this unresolved idea. Use the teaching notes for a short class starter.' : 'A short assignment will give you evidence to plan the next lesson.') + '</p>';
   if (topSignal) {
@@ -1108,22 +1115,11 @@ function renderDashboard() {
     h += '<button class="forge-button forge-button--primary" type="button" data-forge-action="next-action">Open assignments</button>';
   }
   h += '</section>';
-  h += '<section class="teacher-snapshot" aria-labelledby="teacher-snapshot-title"><h2 id="teacher-snapshot-title">Class progress</h2><dl>';
-  h += '<div><dt>Class accuracy</dt><dd>' + (totalQs === 0 ? '—' : accuracy + '%') + '</dd>' + weeklyTrendHtml(responses) + '</div>';
-  h += '<div><dt>Open ideas to revisit</dt><dd>' + openSignalCount + '</dd></div>';
-  h += '<div><dt>Similar questions repaired</dt><dd>' + (repairPercent == null ? '—' : repairPercent + '%') + '</dd></div>';
-  h += '</dl></section></div>';
-  if (attentionRows.length) {
-    h += '<section class="teacher-checkin" aria-labelledby="teacher-checkin-title"><h2 id="teacher-checkin-title">Check in with</h2><ul>';
-    attentionRows.forEach(function(row) {
-      h += '<li><button type="button" data-forge-action="render-student" data-student-id="' + teacherEsc(row.id) + '"><span>' + teacherEsc(row.name) + '</span><small>' + row.count + ' open idea' + (row.count !== 1 ? 's' : '') + '</small></button></li>';
-    });
-    h += '</ul></section>';
-  }
-  // Only once the league column exists (migration 20260928120000).
-  if (typeof dashState.leagueEnabled === 'boolean' && window.ForgeLeague) {
-    h += '<div id="teacher-league">' + ForgeLeague.teacherHtml(students, allResponses, dashState.leagueEnabled, null, dashState.matchRewards) + '</div>';
-  }
+  h += '<nav class="teacher-shortcuts" aria-label="Class views">'
+    + '<button type="button" data-teacher-goto="class">Students</button>'
+    + '<button type="button" data-teacher-goto="assignments">Assignments</button>'
+    + '<button type="button" data-teacher-goto="spec">Spec points</button>'
+    + '<button type="button" data-teacher-goto="revision">Revision</button></nav>';
 
   // Tabs
   h += '<div class="tabs teacher-view-tabs" role="tablist" aria-label="Teacher dashboard views">';
@@ -1143,6 +1139,26 @@ function renderDashboard() {
   h += '<div class="panel" role="tabpanel" aria-labelledby="tab-starters" id="panel-starters" hidden></div>';
   h += '<details class="dash-explainer dash-explainer--overview"><summary>How these numbers are calculated</summary><p>Class accuracy = correct scored answers ÷ scored answers. The weekly change compares the last 7 days with the 7 before, and only appears once each week has 10 or more answers. Initial Forge, assignment and Crucible answers are scored; Similar-question repair attempts are excluded. Open signals use the shared three-success resolution rule.</p></details>';
   h += '<div class="forge-u-uydnfn" id="panel-student"></div>';
+  h += '</div><aside class="teacher-side" aria-label="Class summary">';
+  h += '<section class="teacher-snapshot" aria-labelledby="teacher-snapshot-title"><h2 id="teacher-snapshot-title">Class progress</h2>';
+  h += '<div class="teacher-snapshot__lead"><span>Class accuracy</span><strong>' + (totalQs === 0 ? '—' : accuracy + '%') + '</strong></div>';
+  if (totalQs > 0) h += '<div class="teacher-snapshot__meter" aria-hidden="true"><span style="width:' + Math.max(0, Math.min(100, accuracy)) + '%"></span></div>';
+  h += weeklyTrendHtml(responses) + '<dl>';
+  h += '<div><dt>Open ideas to revisit</dt><dd>' + openSignalCount + '</dd></div>';
+  h += '<div><dt>Similar questions repaired</dt><dd>' + (repairPercent == null ? '—' : repairPercent + '%') + '</dd></div>';
+  h += '</dl></section>';
+  if (attentionRows.length) {
+    h += '<section class="teacher-checkin" aria-labelledby="teacher-checkin-title"><div class="teacher-card-head"><h2 id="teacher-checkin-title">Check in with</h2><button type="button" class="teacher-card-link" data-teacher-goto="class">All students</button></div><ul>';
+    attentionRows.forEach(function(row) {
+      h += '<li><button type="button" data-forge-action="render-student" data-student-id="' + teacherEsc(row.id) + '"><span class="teacher-initials" aria-hidden="true">' + teacherEsc(teacherInitials(row.name)) + '</span><span class="teacher-checkin__name">' + teacherEsc(row.name) + '</span><small>' + row.count + ' open idea' + (row.count !== 1 ? 's' : '') + '</small></button></li>';
+    });
+    h += '</ul></section>';
+  }
+  // Only once the league column exists (migration 20260928120000).
+  if (typeof dashState.leagueEnabled === 'boolean' && window.ForgeLeague) {
+    h += '<div id="teacher-league">' + ForgeLeague.teacherHtml(students, allResponses, dashState.leagueEnabled, null, dashState.matchRewards) + '</div>';
+  }
+  h += '</aside></div>';
   h += '<div class="teacher-drawer-scrim" id="teacher-drawer-scrim"></div><aside class="teacher-detail-drawer" id="teacher-detail-drawer" aria-hidden="true" aria-labelledby="teacher-detail-title"><div class="teacher-detail-drawer__head"><h2 id="teacher-detail-title">Teaching notes</h2><button type="button" class="teacher-detail-drawer__close" id="teacher-detail-close" aria-label="Close details"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"></path></svg></button></div><div id="teacher-detail-body"></div></aside>';
 
   app.innerHTML = h;
@@ -1154,6 +1170,9 @@ function renderDashboard() {
   var detailScrim = document.getElementById('teacher-drawer-scrim');
   if (detailClose) detailClose.onclick = closeTeacherDetail;
   if (detailScrim) detailScrim.onclick = closeTeacherDetail;
+  app.querySelectorAll('[data-teacher-goto]').forEach(function(button) {
+    button.onclick = function() { forgeGoto(button.getAttribute('data-teacher-goto')); window.scrollTo(0, 0); };
+  });
   app.querySelectorAll('[data-teacher-signal-students]').forEach(function(button) {
     button.onclick = function() { openTeacherSignalStudents(button.getAttribute('data-teacher-signal-students')); };
   });
@@ -2088,6 +2107,13 @@ function dueBadge(dateStr) {
 }
 
 function teacherEsc(value) { return window.ForgeTeacherUI.escape(value); }
+// "Year 12 Economics" -> "YE", "Isaac Novak" -> "IN": the badge beside a class
+// or student name. Digits are skipped so a year group does not become "1".
+function teacherInitials(name) {
+  var words = String(name || '').split(/\s+/).filter(function(w) { return /^[A-Za-z]/.test(w); });
+  if (!words.length) return '?';
+  return (words[0][0] + (words.length > 1 ? words[words.length - 1][0] : '')).toUpperCase();
+}
 
 function teacherBankLabel(bankId) {
   var legacyGcseGeographyTopics = {

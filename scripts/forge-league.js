@@ -158,6 +158,13 @@
     return d;
   }
 
+  // "Jess Best" -> "JB", for the badge beside a name in the teacher's view.
+  function initials(name) {
+    var words = String(name || '').split(/\s+/).filter(function (w) { return /^[A-Za-z]/.test(w); });
+    if (!words.length) return '?';
+    return (words[0][0] + (words.length > 1 ? words[words.length - 1][0] : '')).toUpperCase();
+  }
+
   // Teacher's view of the same league: full names (the teacher knows who
   // they are), every student with XP this week, and whether students can see it.
   function teacherHtml(students, responses, enabled, now, rewards) {
@@ -186,7 +193,7 @@
       ranked.slice(0, 10).forEach(function (s, i) {
         if (s.xp !== prevXp) pos = i + 1;
         prevXp = s.xp;
-        h += '<li class="forge-league__row"><span class="forge-league__pos">' + pos + '</span><span class="forge-league__name">' + esc(s.name) + '</span><span class="forge-league__xp">' + s.xp.toLocaleString() + ' XP</span></li>';
+        h += '<li class="forge-league__row"><span class="forge-league__pos">' + pos + '</span><span class="forge-league__name"><span class="forge-league__initials" aria-hidden="true">' + esc(initials(s.name)) + '</span><span>' + esc(s.name) + '</span></span><span class="forge-league__xp">' + s.xp.toLocaleString() + ' XP</span></li>';
       });
       h += '</ol>';
       h += '<p class="forge-league__note">' + ranked.length + ' of ' + total + ' students have earned XP this week' + (ranked.length > 10 ? '; showing the top 10' : '') + '. Students see first name and initial only' + (enabled ? '' : ' — switch the league on in Class tools') + '.</p>';

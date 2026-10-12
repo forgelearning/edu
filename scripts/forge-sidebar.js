@@ -202,10 +202,11 @@ var ForgeSidebar = {
       if (typeof window.forgeLogout === 'function') return window.forgeLogout();
     };
 
-    // Existing explicit choices survive; a new student sees the labels.
+    // Existing explicit choices survive; a new student, or a page that asks
+    // for it (the teacher dashboard), sees the labels.
     var preference = null;
     try { preference = localStorage.getItem('forge-sidebar-expanded'); } catch(e) {}
-    this._setExpanded(preference === null ? studentNav : preference === '1');
+    this._setExpanded(preference === null ? (studentNav || !!config.expandedByDefault) : preference === '1');
 
     var nativeShell = !!(window.Capacitor && (typeof window.Capacitor.isNativePlatform !== 'function' || window.Capacitor.isNativePlatform()));
     if (nativeShell && !this._edgeSwipeBound) {

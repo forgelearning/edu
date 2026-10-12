@@ -23,6 +23,20 @@
         "4175"
       ],
       "port": 4175
+    },
+    {
+      "name": "forge-staging-teacher",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "staging",
+        "--",
+        "--mode",
+        "teacher-demo",
+        "--port",
+        "4176"
+      ],
+      "port": 4176
     }
   ]
 }
