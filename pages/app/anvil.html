@@ -35,7 +35,7 @@
 <script src="scripts/forge-video-match.js"></script>
 <script src="scripts/forge-report.js"></script>
 <script src="scripts/forge-auth-card.js"></script>
-<script src="scripts/forge-classes.js?v=20260813"></script>
+<script src="scripts/forge-classes.js?v=20261012-classes"></script>
 <script src="scripts/forge-student-code.js?v=20260809"></script>
 <script src="scripts/forge-response-writer.js?v=20260817"></script>
 <script src="scripts/forge-theme.js?v=20260808-theme2"></script>
@@ -174,7 +174,7 @@ function renderLogin(){
       // different code.
       ForgeClasses.syncFromServer(SUPABASE_URL, SUPABASE_KEY,
         {studentId: anvilState.studentId, classCode: code, studentName: name, studentCode: cleanStudentCode}, function(){});
-      ForgeClasses.fetchLinkedResponses(SUPABASE_URL, SUPABASE_KEY,
+      ForgeClasses.fetchStudentResponses(SUPABASE_URL, SUPABASE_KEY,
         {studentId: anvilState.studentId, classCode: code, studentName: name, studentCode: cleanStudentCode}, function(responses){
         anvilState.responses = responses;
         prepareAnvilHome();
@@ -475,11 +475,14 @@ function renderReworkQuestion(tag,questions,lap,qIdx){
         // rejects for coded students — so a full repair session cleared a
         // misconception on screen and recorded nothing. The write is routed
         // through the shared writer and a failure is surfaced, not swallowed.
+        // The mistake may come from another of the student's classes; a coded
+        // class only accepts the write with that class's own codes.
+        var mClass=m.classId&&window.ForgeClasses?ForgeClasses.forClass(m.classId):null;
         ForgeResponseWriter.save({
           studentId: m.studentId||anvilState.studentId,
           classId: m.classId||anvilState.classId,
-          classCode: anvilState.classCode,
-          studentCode: anvilState.studentCode,
+          classCode: mClass?mClass.classCode:anvilState.classCode,
+          studentCode: mClass?mClass.studentCode:anvilState.studentCode,
           freeToken: anvilState.freeToken
         },{
           student_id:m.studentId||anvilState.studentId,
@@ -731,7 +734,7 @@ function checkLocalSession(){
     // classes and returns [] — indistinguishable from "no misconceptions yet".
     var anchor = {studentId: anvilState.studentId, classCode: saved.classCode, studentCode: saved.studentCode, studentName: anvilState.studentName};
     ForgeClasses.syncFromServer(SUPABASE_URL, SUPABASE_KEY, anchor, function(){});
-    ForgeClasses.fetchLinkedResponses(SUPABASE_URL, SUPABASE_KEY, anchor, function(responses, error){
+    ForgeClasses.fetchStudentResponses(SUPABASE_URL, SUPABASE_KEY, anchor, function(responses, error){
       // A failed read must not render as "no misconceptions yet".
       if (error) anvilState.loadError = true;
       anvilState.responses = responses;

@@ -14,7 +14,7 @@
 <link rel="stylesheet" href="css/components.css?v=20261004-rings">
 <link rel="stylesheet" href="css/forge-league.css?v=20261008b">
 <link rel="stylesheet" href="css/generated-utilities.css">
-<link rel="stylesheet" href="css/page-overrides/student-dashboard.css?v=20261012-width">
+<link rel="stylesheet" href="css/page-overrides/student-dashboard.css?v=20261012-classes">
 <link rel="stylesheet" href="css/auth-ember.css?v=20260817-auth2">
 
 <link rel="stylesheet" href="css/student-motion.css?v=20261004-signin">
@@ -35,7 +35,7 @@
 <script src="scripts/forge-student-session.js"></script>
 <script src="scripts/forge-study-mode.js"></script>
 <script src="scripts/forge-auth-card.js"></script>
-<script src="scripts/forge-classes.js?v=20260813"></script>
+<script src="scripts/forge-classes.js?v=20261012-classes"></script>
 <script src="scripts/forge-rewards.js"></script>
 <script src="scripts/forge-ranks.js"></script>
 <script src="scripts/forge-achievements.js"></script>
@@ -176,7 +176,7 @@ function renderLogin(){
         st.studentId=match.student_id;st.classId=match.class_id;st.classCode=code;st.studentName=name;st.isGCSE=classLevel(match.class_name)==='gcse';
         try { localStorage.setItem('forge-student', JSON.stringify({studentId:st.studentId,classId:st.classId,classCode:code,studentName:st.studentName,classSubject:match.subject||null,isGCSE:st.isGCSE})); } catch(e) {}
         ForgeClasses.add({classId:st.classId,classCode:code,className:match.class_name||null,subject:match.subject||null,studentId:st.studentId,studentName:name});
-        ForgeClasses.fetchLinkedResponses(SUPABASE_URL,SUPABASE_KEY,{studentId:st.studentId,classId:st.classId,classCode:code,subject:match.subject,studentName:name},function(r){st.responses=r;renderDashboard();});
+        ForgeClasses.fetchStudentResponses(SUPABASE_URL,SUPABASE_KEY,{studentId:st.studentId,classId:st.classId,classCode:code,subject:match.subject,studentName:name},function(r){st.responses=r;renderDashboard();});
       }).catch(function(e){err.textContent=e.message||'Class or student not found.';err.style.display='block';btn.disabled=false;btn.textContent='View my dashboard →';});
       return;
     }
@@ -194,7 +194,7 @@ function renderLogin(){
       ForgeClasses.syncFromServer(SUPABASE_URL, SUPABASE_KEY,
         {studentId: st.studentId, classId: st.classId, classCode: code,
          subject: match.subject, className: match.class_name, studentName: name, studentCode: cleanStudentCode}, function(){});
-      ForgeClasses.fetchLinkedResponses(SUPABASE_URL, SUPABASE_KEY,
+      ForgeClasses.fetchStudentResponses(SUPABASE_URL, SUPABASE_KEY,
         {studentId: st.studentId, classId: st.classId, classCode: code,
          subject: match.subject, studentName: name, studentCode: cleanStudentCode}, function(r){
         st.responses = r;
@@ -295,6 +295,41 @@ function celebrateDashboard(responses,xp,resolved){
 // Choosing a different daily goal redraws Home with it.
 if(window.ForgeGoals) ForgeGoals.bind(function(){return st.studentId;},function(){renderDashboard();});
 
+function responsesForSubject(responses,subject){
+  if(!subject||!SUBJECTS[subject])return responses;
+  var banks=SUBJECTS[subject].banks||[];
+  return responses.filter(function(r){return banks.indexOf(r.bank)!==-1||r.subject===subject||r._subject===subject;});
+}
+// The classes a code-signed-in student has joined, one button each. Choosing
+// one makes it the active class: its plan, readiness, league, friends and
+// assignments show here, and new practice is saved against it.
+function dashboardClasses(){
+  if(!st.classCode||!window.ForgeClasses)return [];
+  var seen={};
+  return ForgeClasses.list().filter(function(c){
+    if(!c.classId||!c.studentId||!c.subject||!SUBJECTS[c.subject]||seen[c.classId])return false;
+    return seen[c.classId]=true;
+  });
+}
+function classSwitcherHtml(){
+  var classes=dashboardClasses();
+  if(classes.length<2)return '';
+  return '<nav class="dashboard-classes" aria-label="Your classes"><span>Your classes</span>'+classes.map(function(c){
+    var active=String(c.classId)===String(st.classId);
+    return '<button type="button" class="dashboard-class-chip'+(active?' is-active':'')+'" data-class-id="'+_fsEsc(c.classId)+'" aria-pressed="'+active+'">'+_fsEsc(SUBJECTS[c.subject].label)+'</button>';
+  }).join('')+'</nav>';
+}
+function switchDashboardClass(classId){
+  var entry=window.ForgeClasses&&ForgeClasses.forClass(classId);
+  if(!entry||String(entry.classId)===String(st.classId))return;
+  var isGCSE=classLevel(entry.className)==='gcse';
+  ForgeClasses.activate(entry,{isGCSE:isGCSE});
+  st.studentId=entry.studentId;st.classId=entry.classId;st.classCode=entry.classCode||null;st.studentCode=entry.studentCode||null;st.isGCSE=isGCSE;
+  // The league and friends panels belong to the old class; let them reload.
+  ['dashboard-league','dashboard-friends'].forEach(function(id){var el=document.getElementById(id);if(el)el.innerHTML='';});
+  renderDashboard();
+}
+
 function renderDashboard(){
   if(window.ForgeRewards&&st.studentId&&rewardsLoadedFor!==st.studentId){
     rewardsLoadedFor=st.studentId;
@@ -304,13 +339,15 @@ function renderDashboard(){
   }
   var responses=st.responses||[];
   var total=responses.filter(function(r){return !r.reforge_attempted;}).length;
-  var recent=responses.filter(function(r){return !r.reforge_attempted;}).slice(-20);
   var quizXp=calcXP(responses);
   if(window.ForgeRewards)ForgeRewards.rememberQuizXp(st.studentId,quizXp);
-  var xp=quizXp+(window.ForgeRewards?ForgeRewards.read(st.studentId).matchXp:0);
+  var xp=quizXp+(window.ForgeRewards?ForgeRewards.matchXpFor(st.studentId):0);
   var rank=getRank(xp);
   var streak=calcStreak(responses);
   var subject=window.ForgeStudentFocus&&ForgeStudentFocus.subject(st,responses);
+  // XP, streak, badges and mistakes count every class; the plan and topic
+  // suggestions are about the subject in view.
+  var subjectResponses=responsesForSubject(responses,subject);
   var subjectName=subject&&SUBJECTS[subject]&&SUBJECTS[subject].label;
   var subjectUrl=subject?'forge-quiz.html?subject='+encodeURIComponent(subject):'forge-quiz.html';
   var due=window.ForgeStudentFocus&&ForgeStudentFocus.due(st,subject)||0;
@@ -366,6 +403,7 @@ function renderDashboard(){
   // Topic-level signal for the recommendation: use recent bank performance,
   // but only surface topics with enough evidence to avoid overreacting to one answer.
   var topicData={};
+  var recent=subjectResponses.filter(function(r){return !r.reforge_attempted;}).slice(-20);
   recent.forEach(function(r){
     var key=r.bank||r.subject||'unknown';
     if(!BANKS[key]) return;
@@ -376,10 +414,10 @@ function renderDashboard(){
     var d=topicData[k]; return {key:k,label:d.label,acc:Math.round(d.correct/d.total*100),sample:d.total};
   }).sort(function(a,b){return a.acc-b.acc;});
   var focusTopic=topicRanked[0]||null;
-  dashboardTopicsHtml=topicShortcutsHtml(responses, focusTopic&&!activeMCs.length?focusTopic.key:null);
+  dashboardTopicsHtml=topicShortcutsHtml(subjectResponses, focusTopic&&!activeMCs.length?focusTopic.key:null);
 
   var h='<header class="dashboard-heading dashboard-heading--ranked">'+(window.ForgeEmblems?ForgeEmblems.ownAvatarHtml(st.studentId,st.studentName,xp,{size:'lg',rank:rank}):ForgeRanks.avatarHtml(st.studentName,xp,{size:'lg',rank:rank}))
-    +'<div><h1>Welcome back, '+_fsEsc(st.studentName)+'</h1><p class="dashboard-heading__rank">'+ForgeRanks.chipHtml(xp,rank)+'<span>Pick up where you left off.</span></p></div></header>';
+    +'<div><h1>Welcome back, '+_fsEsc(st.studentName)+'</h1><p class="dashboard-heading__rank">'+ForgeRanks.chipHtml(xp,rank)+'<span>Pick up where you left off.</span></p></div></header>'+classSwitcherHtml();
 
   h+='<div class="dashboard-layout'+(total>0?' dashboard-layout--split':'')+'"><div class="dashboard-main">';
   if(total===0&&!due){
@@ -397,7 +435,7 @@ function renderDashboard(){
   } else {
     var fixed=window.ForgeFixed?ForgeFixed.summarize(responses):null;
     planInput={
-      responses:responses, activeMistakes:activeMCs.length,
+      responses:subjectResponses, activeMistakes:activeMCs.length,
       fixesDue:fixed?fixed.due.length:0, checkHref:fixed?ForgeFixed.href(fixed,subject):undefined,
       revisionDue:due, reviewedToday:window.ForgeStudentFocus&&ForgeStudentFocus.reviewedToday?ForgeStudentFocus.reviewedToday(st):0,
       revisionHref:'revision.html'+(subject?'?subject='+encodeURIComponent(subject):''),
@@ -451,6 +489,7 @@ function renderDashboard(){
   ['dashboard-league','dashboard-friends','dashboard-independent-friends'].forEach(function(id){var el=document.getElementById(id);if(el&&el.innerHTML)keptPanels[id]=el.innerHTML;});
   app.innerHTML=(st.loadError?ForgeApp.stateHtml('error',{label:'Some dashboard data is unavailable',body:'We couldn’t retrieve the latest progress. Refresh and try again.',action:{label:'Retry dashboard',href:location.href}}):'')+h;
   Object.keys(keptPanels).forEach(function(id){var el=document.getElementById(id);if(el&&!el.innerHTML)el.innerHTML=keptPanels[id];});
+  if(app.querySelectorAll)Array.prototype.forEach.call(app.querySelectorAll('.dashboard-class-chip'),function(chip){chip.onclick=function(){switchDashboardClass(chip.getAttribute('data-class-id'));};});
   var leagueEl=document.getElementById('dashboard-league');
   var socialCtx=dashboardClassContext();
   // A weekly league win is only known once the league has loaded.
@@ -596,10 +635,13 @@ function loadDashboard(){
         // studentCode is required: without it the read falls through to the
         // legacy RPC, which is disabled for coded classes and returns [], so a
         // returning student is told "Your first practice session is waiting."
-        var anchor = {studentId: st.studentId, classCode: saved.classCode, studentCode: saved.studentCode, studentName: st.studentName};
-        ForgeClasses.syncFromServer(SUPABASE_URL, SUPABASE_KEY, anchor, function(){});
-        ForgeClasses.fetchLinkedResponses(SUPABASE_URL, SUPABASE_KEY, anchor, function(r){
-          st.responses = r;
+        var anchor = {studentId: st.studentId, classId: st.classId, classCode: saved.classCode, studentCode: saved.studentCode, studentName: st.studentName, subject: saved.classSubject || null};
+        // Home shows the student's own progress across every class they have
+        // joined; the class switcher picks which class's plan, league and
+        // assignments sit alongside it.
+        ForgeClasses.fetchStudentResponses(SUPABASE_URL, SUPABASE_KEY, anchor, function(r, error){
+          st.responses = r || [];
+          if (error) st.loadError = true;
           renderDashboard();
         });
       };

@@ -16,7 +16,7 @@
 <body>
   <script src="scripts/forge-api.js"></script>
   <script src="scripts/forge-role.js"></script>
-  <script src="scripts/forge-classes.js"></script>
+  <script src="scripts/forge-classes.js?v=20261012-classes"></script>
   <script src="scripts/forge-student-code.js"></script>
   <script src="scripts/forge-rewards.js"></script>
   <script src="scripts/forge-ranks.js"></script>
@@ -147,7 +147,7 @@
           });
         }).catch(function(){});
       }else if(savedStudent&&savedStudent.classCode&&savedStudent.studentId){
-        ForgeClasses.fetchLinkedResponses(ForgeAPI.config.url,ForgeAPI.config.key,savedStudent,rememberResponses);
+        ForgeClasses.fetchStudentResponses(ForgeAPI.config.url,ForgeAPI.config.key,savedStudent,rememberResponses);
       }else if(savedStudent&&savedStudent.freeToken){
         ForgeClasses.fetchFreeResponses(ForgeAPI.config.url,ForgeAPI.config.key,savedStudent,rememberResponses);
       }

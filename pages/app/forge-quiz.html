@@ -39,7 +39,7 @@
 <script src="scripts/forge-student-session.js"></script>
 <script src="scripts/forge-study-mode.js"></script>
 <script src="scripts/forge-auth-card.js"></script>
-<script src="scripts/forge-classes.js?v=20260813"></script>
+<script src="scripts/forge-classes.js?v=20261012-classes"></script>
 <script src="scripts/forge-student-code.js?v=20260809"></script>
 <script src="scripts/forge-sidebar.js?v=20260809-gearcenter"></script>
 <script src="scripts/forge-page-actions.js"></script>
@@ -509,10 +509,10 @@ function setXPHistory(responses) {
   state.historyLoaded = true;
   var quizXp=calcXPFromResponses(responses || []);
   if(typeof ForgeRewards!=='undefined')ForgeRewards.rememberQuizXp(state.studentId,quizXp);
-  state.baseXP=quizXp+(typeof ForgeRewards!=='undefined'?ForgeRewards.read(state.studentId).matchXp:0);
+  state.baseXP=quizXp+(typeof ForgeRewards!=='undefined'?ForgeRewards.matchXpFor(state.studentId):0);
   if(typeof ForgeRewards!=='undefined'&&state.studentId&&state.rewardLoadedFor!==state.studentId){
     state.rewardLoadedFor=state.studentId;
-    ForgeRewards.load({studentId:state.studentId,classCode:state.classCode,studentCode:state.studentCode,studentName:state.studentName}).then(function(){state.baseXP=quizXp+ForgeRewards.read(state.studentId).matchXp;}).catch(function(){});
+    ForgeRewards.load({studentId:state.studentId,classCode:state.classCode,studentCode:state.studentCode,studentName:state.studentName}).then(function(){state.baseXP=quizXp+ForgeRewards.matchXpFor(state.studentId);}).catch(function(){});
   }
 }
 function awardXP(amount, host) {
@@ -2804,7 +2804,7 @@ if (!openSoloLogin && !openEmailLogin && ForgeAuth.hasSession()) {
         // there, so this page used to start every coded student from zero XP
         // (the results card disagreed with the league's rank) and with no
         // spaced-repetition history.
-        ForgeClasses.fetchLinkedResponses(SUPABASE_URL, SUPABASE_KEY, {
+        ForgeClasses.fetchStudentResponses(SUPABASE_URL, SUPABASE_KEY, {
           studentId: state.studentId, classId: state.classId, classCode: savedSession.classCode,
           studentCode: state.studentCode, studentName: state.studentName, subject: state.classSubject
         }, function(responses, error) {

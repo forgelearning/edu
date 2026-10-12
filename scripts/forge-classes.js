@@ -102,6 +102,15 @@
     if (!session || !session.classId) return list();
     if (session.studentName) use(session.studentName);
     if (list().some(function (c) { return c.classId === session.classId; })) return list();
+    /* An entry for the same student row with no class id is what the old
+       syncFromServer left behind; fill it in rather than add a second one. */
+    if (session.studentName && session.studentId && list().some(function (c) { return String(c.studentId) === String(session.studentId); })) {
+      return syncFromServer('', '', {
+        studentId: session.studentId, classId: session.classId, classCode: session.classCode || null,
+        className: session.className || null, subject: session.classSubject || null,
+        studentName: session.studentName, studentCode: session.studentCode || null
+      }) || list();
+    }
     return add({
       classId:     session.classId,
       classCode:   session.classCode   || null,
@@ -147,6 +156,7 @@
     if (fallbackName) use(fallbackName);
     var mine = list().filter(function (c) { return c.studentId && c.classCode; });
     if (!mine.length) { done([]); return; }
+    var failed = null;
 
     Promise.all(mine.map(function (c) {
       var responsePromise = c.studentCode && global.ForgeStudentCode
@@ -159,7 +169,7 @@
           row._subject   = c.subject || null;
           return row;
         });
-      }).catch(function () { return []; });
+      }).catch(function (error) { failed = failed || error || new Error('Response read failed'); return []; });
     })).then(function (sets) {
       var all = [], seen = {};
       sets.forEach(function (rows) {
@@ -173,7 +183,7 @@
       /* Chronological — Anvil replays these in order to work out which
          misconceptions are still live. */
       all.sort(function (a, b) { return (a.created_at || '') < (b.created_at || '') ? -1 : 1; });
-      done(all);
+      done(all, failed);
     });
   }
 
@@ -192,27 +202,68 @@
     return Promise.reject(new Error('ForgeAPI is unavailable'));
   }
 
-  /* Make the signed-in class the only active class context.
+  /* Record the class a page was opened with, keeping every other class.
    *
-   * Class rows and responses are intentionally isolated. A student may join
-   * several classes, but a teacher must only ever see the student row and
-   * responses created through that teacher's class code. Do not restore or
-   * merge linked rows here: doing so leaks history from another class into
-   * the current class dashboard. */
+   * This used to rebuild the student's list as that one class, which deleted
+   * every other class they had joined the moment any page loaded: a student
+   * who joined Psychology lost Chemistry from Practice, Home and Profile, and
+   * the only way back was to re-enter the Chemistry codes. The privacy rule it
+   * was protecting still holds without that: each class keeps its own student
+   * row, and every answer is written against the row of the class it was
+   * answered in, so a teacher only ever sees their own class's responses.
+   *
+   * Fields the caller leaves out (several pages pass only id, code and name)
+   * never overwrite what the list already knows about the class. */
   function syncFromServer(supabaseUrl, supabaseKey, anchor, done) {
     if (!anchor || !anchor.studentId || !anchor.classCode || !anchor.studentName) { done && done(list()); return; }
     use(anchor.studentName);
-    var others = load().filter(function (c) { return norm(c.studentName) !== norm(anchor.studentName); });
-    save(others.concat([{
-      classId: anchor.classId || null,
-      classCode: anchor.classCode,
-      className: anchor.className || null,
-      subject: anchor.subject || null,
-      studentId: anchor.studentId,
-      studentName: anchor.studentName,
-      studentCode: anchor.studentCode || null
-    }]));
+    var all = load();
+    var at = all.findIndex(function (c) {
+      return norm(c.studentName) === norm(anchor.studentName) &&
+        (String(c.studentId) === String(anchor.studentId) || (!c.studentId && c.classCode === anchor.classCode));
+    });
+    var entry = at === -1 ? { studentName: anchor.studentName } : all[at];
+    ['classId', 'classCode', 'className', 'subject', 'studentId', 'studentCode'].forEach(function (field) {
+      if (anchor[field] != null && anchor[field] !== '') entry[field] = anchor[field];
+      else if (entry[field] === undefined) entry[field] = null;
+    });
+    if (at === -1) all.push(entry); else all[at] = entry;
+    save(all);
     done && done(list());
+  }
+
+  /* Make one of the student's classes the active one: the class new answers
+     are saved against, and whose league, friends and assignments Home shows. */
+  function activate(entry, extra) {
+    if (!entry || !entry.studentId || !entry.classId) return null;
+    var session = {
+      studentId: entry.studentId, classId: entry.classId, classCode: entry.classCode || null,
+      studentCode: entry.studentCode || null, studentName: entry.studentName || null,
+      classSubject: entry.subject || null
+    };
+    Object.keys(extra || {}).forEach(function (key) { session[key] = extra[key]; });
+    try { global.localStorage.setItem('forge-student', JSON.stringify(session)); } catch (e) {}
+    return session;
+  }
+
+  /* The student's own answers across every class they have joined, for the
+   * pages that show the student their own progress (Home, Profile, Repair,
+   * Practice). Each row keeps the class it was answered in (_studentId,
+   * _classId, _subject), so anything written back goes to that class.
+   * Falls back to the one class when it is the only one on the device.
+   * done(rows, error): error is set when any class's read failed, so a page
+   * can say some data is missing rather than show a short history as whole. */
+  function fetchStudentResponses(supabaseUrl, supabaseKey, anchor, done) {
+    if (anchor && anchor.studentId && anchor.classCode && anchor.studentName) syncFromServer(supabaseUrl, supabaseKey, anchor);
+    var mine = list().filter(function (c) { return c.studentId && c.classCode; });
+    if (mine.length < 2) { fetchLinkedResponses(supabaseUrl, supabaseKey, anchor, done); return; }
+    fetchAllResponses(supabaseUrl, supabaseKey, anchor && anchor.studentName, done);
+  }
+
+  /* The class entry a response row or class id belongs to, for writing back
+     against that class with its own codes. */
+  function forClass(classId) {
+    return list().filter(function (c) { return classId && String(c.classId) === String(classId); })[0] || null;
   }
 
   /* Record that the same person holds both codes. */
@@ -346,6 +397,8 @@
     backfillSubjects: backfillSubjects, fetchAllResponses: fetchAllResponses,
     syncFromServer: syncFromServer, linkToServer: linkToServer,
     fetchLinkedResponses: fetchLinkedResponses,
+    fetchStudentResponses: fetchStudentResponses,
+    activate: activate, forClass: forClass,
     fetchFreeResponses: fetchFreeResponses,
     fetchAuthResponses: fetchAuthResponses
   };

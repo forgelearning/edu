@@ -51,6 +51,6 @@ assert.strictEqual(ctx.xpResultsHtml(), '', 'free-tier students see no XP, match
 // Load it the way Home and Profile do.
 const quizPage = fs.readFileSync('pages/app/forge-quiz.html', 'utf8');
 assert(!quizPage.includes("'get_student_own_responses'"), 'quiz page must not call the legacy response RPC directly');
-assert(/ForgeClasses\.fetchLinkedResponses\([^)]*studentCode: state\.studentCode/.test(quizPage), 'quiz page loads class history with the student code');
+assert(/ForgeClasses\.fetchStudentResponses\([^)]*studentCode: state\.studentCode/.test(quizPage), 'quiz page loads class history with the student code');
 
 console.log('Quiz XP tests passed (matches dashboard total, session awards, rank progress, rank-up, free tier hidden).');
