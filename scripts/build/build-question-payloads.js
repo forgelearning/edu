@@ -39,7 +39,7 @@ function buildQuestionPayloads() {
       questionCount: questions.length,
       assignableQuestionCount: questions.filter(question => !question.type || question.type === 'fill_blank').length,
       crucibleQuestionCount: questions.filter(question => !question.type && question.reforge).length,
-      topicCounts: subject === 'chem' ? questions.reduce((counts, question) => {
+      topicCounts: subject === 'chem' || subject === 'phys' ? questions.reduce((counts, question) => {
         if (question.specPointId) counts[question.specPointId] = (counts[question.specPointId] || 0) + 1;
         return counts;
       }, {}) : undefined,
