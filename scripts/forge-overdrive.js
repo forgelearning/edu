@@ -139,7 +139,7 @@
     var stages = [
       {node: document.querySelector('.hero-shell'), name: 'Trigger', copy: 'A misconception becomes visible.'},
       {node: document.getElementById('how'), name: 'Repair', copy: 'The missing idea is corrected.'},
-      {node: document.querySelector('#how + section'), name: 'Re-forge', copy: 'The fix is proved in a new frame.'},
+      {node: document.querySelector('#how + section'), name: 'Prove it', copy: 'The fix is proved on a fresh question.'},
       {node: document.getElementById('audit-subject-picker'), name: 'Map', copy: 'Practice meets the exam specification.'},
       {node: document.getElementById('students'), name: 'Student signal', copy: 'The next useful action stays visible.'},
       {node: document.getElementById('teachers'), name: 'Teacher action', copy: 'A pattern becomes the next lesson.'},

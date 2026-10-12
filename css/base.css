@@ -69,9 +69,9 @@ body{padding-top:88px}
    source image dictate the size of the whole navbar. */
 #sticky-nav #nav-shield > img{display:block;width:auto;height:38px;max-width:none}
 #sticky-nav #nav-logotext > img{display:block;width:auto;height:34px;max-width:none}
-#sticky-nav #nav-logo{line-height:1;display:inline-flex;align-items:center;gap:20px;text-decoration:none}
+#sticky-nav #nav-logo{line-height:1;display:inline-flex;align-items:center;gap:12px;text-decoration:none}
 #sticky-nav #nav-shield{display:inline-flex;align-items:center;flex-shrink:0;transition:transform var(--motion-layout) var(--ease-forge)}
-#sticky-nav #nav-logotext{display:inline-flex;align-items:center;overflow:hidden;transition:opacity var(--motion-layout) var(--ease-forge),transform var(--motion-layout) var(--ease-forge)}
+#sticky-nav #nav-logotext{display:inline-flex;align-items:center;overflow:hidden;color:var(--white);font:800 22px/1 'Rethink Sans',sans-serif;letter-spacing:-.015em;white-space:nowrap;transition:opacity var(--motion-layout) var(--ease-forge),transform var(--motion-layout) var(--ease-forge)}
 @media(min-width:900px){
   body{padding-top:96px}
   #sticky-nav{top:max(16px,env(safe-area-inset-top));width:calc(100% - 32px)}

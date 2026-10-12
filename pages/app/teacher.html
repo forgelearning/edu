@@ -1148,7 +1148,7 @@ function renderDashboard() {
   h += '<div class="panel" role="tabpanel" aria-labelledby="tab-assignments" id="panel-assignments" hidden></div>';
   h += '<div class="panel" role="tabpanel" aria-labelledby="tab-revision" id="panel-revision" hidden></div>';
   h += '<div class="panel" role="tabpanel" aria-labelledby="tab-starters" id="panel-starters" hidden></div>';
-  h += '<details class="dash-explainer dash-explainer--overview"><summary>How these numbers are calculated</summary><p>Class accuracy = correct scored answers ÷ scored answers. The weekly change compares the last 7 days with the 7 before, and only appears once each week has 10 or more answers. Initial Forge, assignment and Crucible answers are scored; Similar-question repair attempts are excluded. Open signals use the shared three-success resolution rule.</p></details>';
+  h += '<details class="dash-explainer dash-explainer--overview"><summary>How these numbers are calculated</summary><p>Class accuracy = correct scored answers ÷ scored answers. The weekly change compares the last 7 days with the 7 before, and only appears once each week has 10 or more answers. First answers in practice, assignments and timed practice are scored; answers to a similar question after a mistake are not. Open signals use the shared three-success resolution rule.</p></details>';
   h += '<div class="forge-u-uydnfn" id="panel-student"></div>';
   h += '</div><aside class="teacher-side" aria-label="Class summary">';
   h += '<section class="teacher-snapshot" aria-labelledby="teacher-snapshot-title"><h2 id="teacher-snapshot-title">Class progress</h2>';
@@ -2867,7 +2867,7 @@ window.renderStudent = function(studentId) {
 
   // Active misconceptions (Anvil)
   if (activeMCs.length > 0) {
-    h += '<details class="card profile-disclosure forge-u-1ce7cf7"><summary class="profile-disclosure__summary"><span class="profile-disclosure__label forge-text-bad">Anvil — still active</span><span class="profile-disclosure__meta">' + activeMCs.length + ' active</span></summary><div class="profile-disclosure__body">';
+    h += '<details class="card profile-disclosure forge-u-1ce7cf7"><summary class="profile-disclosure__summary"><span class="profile-disclosure__label forge-text-bad">Ideas still to fix</span><span class="profile-disclosure__meta">' + activeMCs.length + ' open</span></summary><div class="profile-disclosure__body">';
     activeMCs.sort(function(a, b) { return mcData[b].fires - mcData[a].fires; });
     activeMCs.forEach(function(mc) {
       var d = mcData[mc];
@@ -2875,7 +2875,7 @@ window.renderStudent = function(studentId) {
       h += '<div class="mc-item">';
       h += '<span class="heat-tag">' + mc + '</span>';
       h += '<span class="mc-detail">' + label + '</span>';
-      h += '<span class="mc-fires forge-text-bad">Fired ' + d.fires + '\u00d7 \u00b7 Similar questions ' + d.reforgeCorrect + '/' + d.reforgeAttempts + '</span>';
+      h += '<span class="mc-fires forge-text-bad">Missed ' + d.fires + '\u00d7 \u00b7 Similar questions ' + d.reforgeCorrect + '/' + d.reforgeAttempts + '</span>';
       h += '</div>';
     });
     h += '</div></details>';
@@ -2934,7 +2934,7 @@ window.renderStudent = function(studentId) {
   });
   crucibleSessions.reverse();
   if (crucibleSessions.length > 0) {
-    h += '<details class="card profile-disclosure"><summary class="profile-disclosure__summary"><span class="profile-disclosure__label">Crucible sessions</span><span class="profile-disclosure__meta">' + crucibleSessions.length + ' run' + (crucibleSessions.length !== 1 ? 's' : '') + ' · estimated duration</span></summary><div class="profile-disclosure__body">';
+    h += '<details class="card profile-disclosure"><summary class="profile-disclosure__summary"><span class="profile-disclosure__label">Timed practice sessions</span><span class="profile-disclosure__meta">' + crucibleSessions.length + ' run' + (crucibleSessions.length !== 1 ? 's' : '') + ' · estimated duration</span></summary><div class="profile-disclosure__body">';
     crucibleSessions.slice(0, 10).forEach(function(sess) {
       var start = new Date(sess.answers[0].created_at);
       var end = new Date(sess.answers[sess.answers.length - 1].created_at);

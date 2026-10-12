@@ -320,3 +320,39 @@ body.landing-redesign .loop-strip__n{display:grid;place-items:center;flex:none;w
 body.landing-redesign .loop-strip h3{margin:2px 0 4px;color:var(--landing-ink);font:700 18px/1.2 'Rethink Sans',sans-serif;letter-spacing:-.01em}
 body.landing-redesign .loop-strip p{margin:0;color:var(--landing-muted);font:400 14px/1.5 'Poppins',sans-serif}
 @media(max-width:760px){body.landing-redesign .loop-strip{grid-template-columns:1fr;gap:10px}body.landing-redesign .loop-strip li{padding:16px}}
+
+/* 2026-10-12: aligned with the app. Labels are plain orange caps rather than
+   pills, cards use the app's quiet border, and the teacher section shows a
+   small preview of the real class overview. */
+body.landing-redesign .hero .demo{border-color:var(--landing-rule)}
+body.landing-redesign .hero .demo::before{position:static;display:block;margin:0 0 14px;padding:0;border:0;border-radius:0;background:none;color:var(--ember);font:700 12px/1.3 'Rethink Sans',sans-serif;letter-spacing:.035em}
+body.landing-redesign .hero .demo .tag{font-family:'Poppins',sans-serif;letter-spacing:0;text-transform:none}
+body.landing-redesign .hero-shell .hero-glow{opacity:.55}
+body.landing-redesign .hero .btn{box-shadow:none!important}
+body.landing-redesign #sticky-nav .nav-quiz-cta{box-shadow:none!important}
+body.landing-redesign #waitlist{background:linear-gradient(135deg,var(--landing-deep),var(--landing-deep-2))!important}
+
+body.landing-redesign .wait-side{display:grid;gap:16px;min-width:0}
+.home-teacher-preview{margin:0;padding:20px;border:1px solid rgba(255,248,238,.13);border-radius:16px;background:#1b1916;color:#f5f1ea;font-family:'Poppins',sans-serif}
+.htp-head{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.htp-head strong{display:block;font:700 18px/1.2 'Rethink Sans',sans-serif}
+.htp-badge{display:grid;flex:none;place-items:center;width:44px;height:44px;border:2px solid color-mix(in srgb,#1e3a5f 55%,#fff 45%);border-radius:50%;background:#1e3a5f;color:#fff}
+.htp-badge svg{width:46%;height:46%;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.htp-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:5px}
+.htp-chips span{padding:1px 9px;border:1px solid rgba(255,248,238,.16);border-radius:999px;color:rgba(255,248,238,.78);font-size:11px;font-weight:600}
+.htp-focus{padding:16px;border:1px solid rgba(255,248,238,.12);border-radius:12px;background:#24211d}
+.htp-label{display:block;margin-bottom:8px;color:#e8743b;font:700 11px/1.3 'Rethink Sans',sans-serif;letter-spacing:.035em;text-transform:uppercase}
+.htp-title{margin:0 0 6px;font:700 16px/1.3 'Rethink Sans',sans-serif}
+.htp-copy{margin:0;color:rgba(255,248,238,.66);font-size:12px;line-height:1.5}
+.htp-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.htp-stat{padding:14px;border:1px solid rgba(255,248,238,.12);border-radius:12px;background:#24211d}
+.htp-stat>span{display:block;color:rgba(255,248,238,.66);font-size:11px}
+.htp-stat>strong{display:block;margin:4px 0 8px;font:700 22px/1 'Rethink Sans',sans-serif}
+.htp-stat i{display:block;height:6px;border-radius:999px;background:rgba(255,248,238,.1);overflow:hidden}
+.htp-stat i b{display:block;width:68%;height:100%;border-radius:inherit;background:#e8743b}
+.htp-stat ul{display:grid;gap:6px;margin:8px 0 0;padding:0;list-style:none}
+.htp-stat li{display:flex;align-items:center;gap:8px;font:600 12px 'Rethink Sans',sans-serif}
+.htp-stat li em{display:grid;place-items:center;width:22px;height:22px;border:1.5px solid rgba(255,248,238,.2);border-radius:50%;color:rgba(255,248,238,.7);font:700 8px 'Rethink Sans',sans-serif;font-style:normal}
+.htp-stat li small{margin-left:auto;color:rgba(255,248,238,.55);font-size:10px;font-weight:500}
+.home-teacher-preview figcaption{margin-top:12px;color:rgba(255,248,238,.5);font-size:11px}
+@media(max-width:420px){.htp-row{grid-template-columns:1fr}}

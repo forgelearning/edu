@@ -14,7 +14,7 @@ document.addEventListener('click', function(e) {
 
   var logoLink = navEl.querySelector('#nav-logo');
   if (logoLink && !logoLink.getAttribute('aria-label')) {
-    logoLink.setAttribute('aria-label', 'Forge Learning home');
+    logoLink.setAttribute('aria-label', 'Forge home');
   }
 
   // Older static marketing markup contained duplicate class attributes on

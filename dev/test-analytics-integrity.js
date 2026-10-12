@@ -54,6 +54,6 @@ const school = fs.readFileSync('pages/app/school-overview.html', 'utf8');
 assert(school.includes('classEngagement.filter(function(cls){return cls.responses>=5;})'), 'leadership focus must require a reliable class sample');
 assert(school.includes('Build a reliable baseline'), 'leadership focus must explain the small-sample fallback');
 assert(school.includes('Accuracy = correct scored answers ÷ scored answers'), 'leadership metrics must state their denominator');
-assert(school.includes('Relative volume compares each signal'), 'misconception bars must define their comparison');
+assert(school.includes('Relative volume compares each idea'), 'misconception bars must define their comparison');
 
 console.log('Analytics integrity tests passed (misconception lifecycle, denominators, and leadership sample rules).');
