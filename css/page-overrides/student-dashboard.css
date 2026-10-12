@@ -241,7 +241,10 @@ html[data-overdrive="control-room"] .mod-row:hover{border-color:var(--hot);box-s
    should occupy the available reading width instead of floating in a narrow
    column on wide screens. Keep the content itself bounded at a comfortable
    application width and let the existing mobile rules take over below 820px. */
-.wrap{max-width:1120px}
+/* 1280px of content (plus the 20px gutters): on a 1920px monitor 1080px left
+   ~300px empty either side; much wider spreads each row's label and button too
+   far apart. Below ~1420px the screen, not this cap, sets the width. */
+.wrap{max-width:1320px}
 
 /* Core journey: one next action, followed by clear alternatives and progress. */
 #app{max-width:760px}
@@ -323,6 +326,9 @@ html[data-overdrive="control-room"] .mod-row:hover{border-color:var(--hot);box-s
   .dashboard-layout--split .dashboard-progress dl>div:first-child{border-top:0}
   .dashboard-layout--split .dashboard-progress dt{margin:0}
 }
+/* The side column grows only once the page is past its old 1080px cap, so
+   laptops keep the main column exactly as wide as before. */
+@media(min-width:1500px){.dashboard-layout--split{grid-template-columns:minmax(0,1fr) minmax(280px,380px)}}
 @media(min-width:1100px){.dashboard-layout:not(.dashboard-layout--split),#app>.forge-state{max-width:760px}}
 .dashboard-side{display:grid;gap:16px;align-content:start;min-width:0;margin-top:16px}
 #dashboard-league:empty{display:none}
