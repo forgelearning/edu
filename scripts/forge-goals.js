@@ -15,7 +15,9 @@
    fixing mistakes is the quickest way to the goal, which the card says.
 
    The chosen level is kept per student on this device, like the colour
-   theme. Days and weeks are local calendar days, weeks Monday to Sunday. */
+   theme. A class student has one student row per class they have joined;
+   the goal is shared across all of them (see owner()), so it does not change
+   when they switch class on Home. Days and weeks are local calendar days, weeks Monday to Sunday. */
 (function (root) {
   'use strict';
 
@@ -38,14 +40,30 @@
     for (var i = 0; i < LEVELS.length; i++) if (LEVELS[i].key === key) return LEVELS[i];
     return null;
   }
+  function stored(id) {
+    try { return root.localStorage.getItem(PREFIX + id); } catch (e) { return null; }
+  }
+  // The id a student's goal is stored under: the row of the first class they
+  // joined, for every one of their classes. Goals set before this was shared
+  // sit under whichever class was active, so the first one found is adopted.
+  function owner(studentId) {
+    var id = String(studentId || 'anonymous');
+    var classes = root.ForgeClasses && root.ForgeClasses.list ? root.ForgeClasses.list() : [];
+    var rows = classes.map(function (c) { return c.studentId ? String(c.studentId) : null; }).filter(Boolean);
+    if (rows.indexOf(id) === -1) return id;
+    var first = rows[0];
+    if (!level(stored(first))) {
+      var found = rows.map(stored).filter(level)[0];
+      if (found) try { root.localStorage.setItem(PREFIX + first, found); } catch (e) {}
+    }
+    return first;
+  }
   function get(studentId) {
-    var key = null;
-    try { key = root.localStorage.getItem(PREFIX + (studentId || 'anonymous')); } catch (e) {}
-    return level(key) || level(DEFAULT);
+    return level(stored(owner(studentId))) || level(DEFAULT);
   }
   function set(studentId, key) {
     if (!level(key)) return false;
-    try { root.localStorage.setItem(PREFIX + (studentId || 'anonymous'), key); return true; } catch (e) { return false; }
+    try { root.localStorage.setItem(PREFIX + owner(studentId), key); return true; } catch (e) { return false; }
   }
 
   // Local calendar day number, as the streak counts them.
@@ -98,7 +116,7 @@
 
   // Once per day per student: has today's goal already been celebrated?
   function claimCelebration(studentId, now) {
-    var key = MET + (studentId || 'anonymous'), today = String(dayOf(now || new Date()));
+    var key = MET + owner(studentId), today = String(dayOf(now || new Date()));
     try {
       if (root.localStorage.getItem(key) === today) return false;
       root.localStorage.setItem(key, today);
