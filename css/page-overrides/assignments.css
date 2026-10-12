@@ -70,7 +70,10 @@ body{font-family:'Poppins',sans-serif;color:var(--slate)}h1,h2{font-family:'Reth
 }
 
 /* Overdrive: Mission Control — orient the student before the queue. */
-.wrap{max-width:1040px}
+.wrap{max-width:1336px}
+/* The body carries the page colour; without a minimum height a short page
+   showed a different band below its content. */
+body{min-height:100vh}
 #mission-control[hidden]{display:none}
 .mission-control{
   display:grid;

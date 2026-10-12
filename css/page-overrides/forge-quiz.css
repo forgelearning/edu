@@ -614,3 +614,16 @@ html:not([data-theme="light"]) body.forge-solo-login::after{color:var(--forge-lo
 .forge-whats-free summary:focus-visible{outline:2px solid var(--ember);outline-offset:2px}
 .forge-whats-free[open] summary{margin-bottom:10px}
 .forge-whats-free__pro{margin:10px 0 0;color:var(--slate);font-size:13px}
+
+/* Wide screens: the subject and topic pickers lay their cards out in a grid
+   at the app's 1280px width instead of one 720px column. The question, results
+   and sign-in screens keep their narrower reading width. */
+@media(min-width:1100px){
+  body.forge-picker-screen .wrap{max-width:1320px}
+  body.forge-picker-screen #app{max-width:1280px}
+  body.forge-picker-screen .subject-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+  body.forge-picker-screen .forge-topic-list .bank-list{grid-template-columns:repeat(3,minmax(0,1fr))}
+  /* The single recommendation and the join bar read as one card, so they keep
+     the old centred width; only the card grids below spread out. */
+  body.forge-picker-screen .forge-recommendation,body.forge-picker-screen #join-more,body.forge-picker-screen .forge-study-context{max-width:760px;margin-left:auto;margin-right:auto}
+}

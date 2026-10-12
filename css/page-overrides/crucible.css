@@ -156,3 +156,11 @@ h1,h2,h3,.logo{font-family:'Rethink Sans',sans-serif}
   .crucible-ready .forge-u-1vwx933{width:100%}
 }
 @media(prefers-reduced-motion:reduce){.crucible-begin-btn{transition:none}.crucible-begin-btn:hover{transform:none}}
+
+/* Wide screens: subject and topic pickers become a grid at the app's 1280px
+   width instead of one 640px column of a dozen stacked rows. */
+@media(min-width:1100px){
+  body.crucible-picker-screen .wrap{max-width:1320px}
+  body.crucible-picker-screen #app{max-width:1280px}
+  body.crucible-picker-screen .subject-list,body.crucible-picker-screen .bank-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
+}

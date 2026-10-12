@@ -15,7 +15,7 @@
 
 <link rel="stylesheet" href="css/states.css">
   <link rel="stylesheet" href="css/generated-utilities.css">
-  <link rel="stylesheet" href="css/page-overrides/crucible.css?v=20261003-learning-trail">
+  <link rel="stylesheet" href="css/page-overrides/crucible.css?v=20261012-width">
   <link rel="stylesheet" href="css/auth-ember.css?v=20260817-auth2">
 <link rel="stylesheet" href="css/student-motion.css?v=20261004-signin">
 </head>
@@ -636,6 +636,8 @@ function renderResults(){
 }
 
 function render(){
+  // Subject and topic pickers use the full app width; the timed run does not.
+  document.body.classList.toggle('crucible-picker-screen', state.phase === 'subject' || state.phase === 'bank');
   if(state.phase==='join') renderJoin();
   else if(state.phase==='locked') renderLocked();
   else if(state.phase==='subject') renderSubject();
