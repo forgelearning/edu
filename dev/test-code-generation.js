@@ -31,6 +31,11 @@ assert(!/insert into public\.student_access_codes/.test(resetSql), 'reset must n
 assert(/revoke all on function public\.reset_student_access_code\(uuid\) from public, anon/.test(resetSql), 'reset must not be callable anonymously');
 console.log('  ok   a lost student code can be reset by the class owner');
 
+assert(/id="print-generated-codes"/.test(teacher) && /printCodeSlips\(rows, withNames\)/.test(teacher), 'generated codes can be printed as slips');
+assert(/assets\/brand\/forge-crest\.png/.test(teacher) && fs.existsSync(path.join(root, 'assets', 'brand', 'forge-crest.png')), 'code slips carry the Forge crest');
+assert(!/window\.open\(/.test(teacher.slice(teacher.indexOf('function printCodeSlips'), teacher.indexOf('function renderGeneratedCodes'))), 'code slips print from a frame, not a popup');
+console.log('  ok   generated codes print as branded slips');
+
 assert(/assignment_id=/.test(assignments), 'assignment links must carry their assignment id');
 assert(/requestedAssignmentId/.test(quiz) && /state\.assignmentId/.test(quiz), 'quiz route must retain the assignment id');
 assert(/p_assignment_id: row\.assignment_id \|\| null/.test(quiz), 'quiz writes must send the assignment id');
@@ -38,4 +43,4 @@ assert(/data-asgn-id/.test(quiz) && /state\.assignmentId = btn\.getAttribute\('d
 assert(/state\.assignmentId=null/.test(quiz), 'leaving an assigned session must clear stale assignment attribution');
 console.log('  ok   assignment links and quiz writes carry assignment_id');
 
-console.log('\nCode-generation tests passed (3 cases).');
+console.log('\nCode-generation tests passed (4 cases).');

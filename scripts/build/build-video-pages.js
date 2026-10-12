@@ -118,7 +118,7 @@ function page({ title, description, intro, body }) {
   <title>${esc(title)}</title>
   <link rel="stylesheet" href="css/fonts.css">
   <link rel="stylesheet" href="css/tokens.css">
-  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/base.css?v=20261012-logo">
   <link rel="stylesheet" href="css/sidebar.css">
   <link rel="stylesheet" href="css/components.css">
   <link rel="stylesheet" href="css/page-overrides/settings.css">
