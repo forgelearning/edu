@@ -52,13 +52,11 @@
     });
     return out;
   }
-  function label(topic){
-    var config=configFor(topic);if(!config)return topic;
-    for(var subject in SUBJECTS)if(SUBJECTS[subject]===config){
-      var item=list(subject).filter(function(entry){return entry.id===topic;})[0];
-      return item?item.label:topic;
-    }
-    return topic;
+  function find(topic){
+    var config=configFor(topic);if(!config)return null;
+    for(var subject in SUBJECTS)if(SUBJECTS[subject]===config)return list(subject).filter(function(entry){return entry.id===topic;})[0]||null;
+    return null;
   }
-  root.ForgeChemistryTopics={list:list,has:has,pointId:pointId,sourceBanks:sourceBanks,questions:questions,label:label};
+  function label(topic){var item=find(topic);return item?item.label:topic;}
+  root.ForgeChemistryTopics={list:list,has:has,find:find,pointId:pointId,sourceBanks:sourceBanks,questions:questions,label:label};
 })(window);

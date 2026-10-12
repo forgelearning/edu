@@ -2044,6 +2044,7 @@ function teacherBankLabel(bankId) {
   for (var prefix in legacyGcseGeographyTopics) {
     if (String(bankId || '').indexOf(prefix) === 0) return legacyGcseGeographyTopics[prefix];
   }
+  if (window.ForgeChemistryTopics && ForgeChemistryTopics.pointId(bankId)) return ForgeChemistryTopics.label(bankId);
   return BANK_LABELS[bankId] || bankId;
 }
 
@@ -2094,7 +2095,7 @@ function assignmentStudentProgress(asgn, studentId, responses) {
 
 function renderAssignCard(asgn, students, responses, isArchived) {
   var banks = assignmentBanks(asgn);
-  var bankLabels = banks.map(function(b) { return BANK_LABELS[b] || b; }).join(', ');
+  var bankLabels = banks.map(teacherBankLabel).join(', ');
   var revision = window.ForgeAssignmentProgress && ForgeAssignmentProgress.revisionConfig(asgn);
   if (revision) {
     var revisionHtml = '<div class="assign-card' + (isArchived ? ' archived' : '') + '" data-asgn-id="' + asgn.id + '">';

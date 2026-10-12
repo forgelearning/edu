@@ -26757,37 +26757,94 @@ for (const bankId of Object.keys(biologyFallbackPoints)) {
   }
 }
 
-// Map the live AQA 7408 Physics banks to the numbered content sections. The
-// existing banks are mixed revision sets, so the route is based on the topic
-// language in each question and keeps a bank-level fallback for broad items.
+// Map the live AQA 7408 Physics banks to the numbered content sections.
+// Each question is assigned by hand, since the practice and revision pages list
+// Physics by these sections. A keyword router used to do this and misfiled
+// about a third of the bank ("electromotive force" read as mechanics, a NAND
+// gate as waves, capacitors as circuits rather than fields). Photoelectric
+// effect, energy levels and de Broglie sit in core 3.2, because every student
+// sits them there; 3.12 keeps only the two framed as that option frames them
+// (why the wave model failed, and λ = h/√(2meV) for an accelerated electron).
+// dev/test-chemistry-topics.js fails if a Physics question has no entry, so add
+// one with every new question.
+const physicsSectionQuestions = {
+  "3.1": [
+    "PHYS-N1-23", "PHYS-N1-24", "PHYS-N1-35", "PHYS-N1-41", "PHYS-N1-42", "PHYS-E3-06",
+    "PHYS-E3B-04", "PHYS-MEASURE-01", "PHYS-MEASURE-02", "PHYS-MEASURE-03", "PHYS-MEASURE-04", "PHYS-MEASURE-05",
+    "PHYS-MEASURE-06", "PHYS-MEASURE-07", "PHYS-MEASURE-08", "PHYS-MEASURE-09", "PHYS-MEASURE-10", "PHYS-N3-41"
+  ],
+  "3.2": [
+    "PHYS-E3-01", "PHYS-E3-02", "PHYS-E3-08", "PHYS-E3B-01",
+    "PHYS-N3-01", "PHYS-N3-02", "PHYS-N3-03", "PHYS-N3-04", "PHYS-N3-05", "PHYS-N3-06",
+    "PHYS-N3-07", "PHYS-N3-08", "PHYS-N3-09", "PHYS-N3-17", "PHYS-N3-18", "PHYS-N3-19",
+    "PHYS-N3-38", "PHYS-N3-39"
+  ],
+  "3.3": [
+    "PHYS-11", "PHYS-N2-10", "PHYS-N2-11", "PHYS-N2-12", "PHYS-N2-13", "PHYS-N2-14",
+    "PHYS-N2-15", "PHYS-N2-16", "PHYS-N2-17", "PHYS-N2-18", "PHYS-N2-19", "PHYS-N2-39",
+    "PHYS-N2-40", "PHYS-N2-44", "EWQ-03", "EWQ-04", "EWQ-07", "PHYS-E3-03",
+    "PHYS-E3B-03", "PHYS-E3B-06", "PHYS-N3-25", "PHYS-N3-26", "PHYS-N3-27", "PHYS-N3-28"
+  ],
+  "3.4": [
+    "PHYS-01", "PHYS-02", "PHYS-03", "PHYS-04", "PHYS-05", "PHYS-06",
+    "PHYS-07", "PHYS-08", "PHYS-E1-01", "PHYS-E1-02", "PHYS-E1-03", "PHYS-E1-05",
+    "PHYS-N1-01", "PHYS-N1-02", "PHYS-N1-03", "PHYS-N1-04", "PHYS-N1-05", "PHYS-N1-06",
+    "PHYS-N1-07", "PHYS-N1-08", "PHYS-N1-09", "PHYS-N1-10", "PHYS-N1-11", "PHYS-N1-12",
+    "PHYS-N1-13", "PHYS-N1-14", "PHYS-N1-15", "PHYS-N1-16", "PHYS-N1-17", "PHYS-N1-18",
+    "PHYS-N1-22", "PHYS-N1-25", "PHYS-N1-26", "PHYS-N1-27", "PHYS-N1-28", "PHYS-N1-29",
+    "PHYS-N1-30", "PHYS-N1-31", "PHYS-N1-32", "PHYS-N1-33", "PHYS-N1-34", "PHYS-N1-36",
+    "PHYS-N1-37", "PHYS-N1-38", "PHYS-N1-43", "PHYS-N1-44", "PHYS-N1-45", "PHYS-09",
+    "PHYS-12", "PHYS-13", "PHYS-15", "PHYS-16", "PHYS-GAPS-05"
+  ],
+  "3.5": [
+    "PHYS-E1-04", "PHYS-10", "PHYS-14", "PHYS-N2-01", "PHYS-N2-02", "PHYS-N2-03",
+    "PHYS-N2-04", "PHYS-N2-05", "PHYS-N2-06", "PHYS-N2-07", "PHYS-N2-08", "PHYS-N2-09",
+    "PHYS-N2-36", "PHYS-N2-37", "PHYS-N2-38", "PHYS-N2-41", "EWQ-01", "EWQ-02",
+    "EWQ-06"
+  ],
+  "3.6": [
+    "PHYS-N1-19", "PHYS-E2-04", "PHYS-E2-05", "PHYS-N2-20", "PHYS-N2-21", "PHYS-N2-22",
+    "PHYS-N2-23", "PHYS-N2-24", "PHYS-N2-25", "PHYS-N2-42", "PHYS-N2-43", "PHYS-N2-45"
+  ],
+  "3.7": [
+    "PHYS-N1-20", "PHYS-N1-21", "PHYS-N1-39", "PHYS-N1-40", "PHYS-E2-01", "PHYS-E2-02",
+    "PHYS-E2-03", "PHYS-E2-06", "PHYS-N2-26", "PHYS-N2-27", "PHYS-N2-28", "PHYS-N2-29",
+    "PHYS-N2-30", "PHYS-N2-31", "PHYS-N2-32", "PHYS-N2-33", "PHYS-N2-34", "PHYS-N2-35",
+    "PHYS-E3B-02", "PHYS-N3-23", "PHYS-N3-24", "PHYS-N3-36", "PHYS-N3-37"
+  ],
+  "3.8": [
+    "PHYS-E1-06", "PHYS-E3-07", "PHYS-N3-10", "PHYS-N3-11", "PHYS-N3-12", "PHYS-N3-13",
+    "PHYS-N3-14", "PHYS-N3-15", "PHYS-N3-16", "PHYS-N3-21", "PHYS-N3-22", "PHYS-N3-40"
+  ],
+  "3.9": [
+    "PHYS-E3-04", "PHYS-E3-05", "PHYS-E3B-05", "PHYS-N3-29", "PHYS-N3-30", "PHYS-N3-31",
+    "PHYS-N3-32", "PHYS-N3-33", "PHYS-N3-34", "PHYS-N3-35"
+  ],
+  "3.10": [
+    "PHYS-GAPS-01", "PHYS-GAPS-02", "PHYS-GAPS-03", "PHYS-N3-20"
+  ],
+  "3.11": [
+    "PHYS-GAPS-04"
+  ],
+  "3.12": [
+    "EWQ-05", "EWQ-08"
+  ],
+  "3.13": [
+    "PHYS-GAPS-06", "PHYS-GAPS-07", "PHYS-GAPS-08", "PHYS-GAPS-09"
+  ]
+};
+const physicsSectionFor = {};
+for (const [section, ids] of Object.entries(physicsSectionQuestions)) {
+  for (const id of ids) physicsSectionFor[id] = `aqa-a-phys-${section}`;
+}
 const physicsFallbackPoints = {
   "PHYS-1": "aqa-a-phys-3.4",
   "PHYS-2": "aqa-a-phys-3.5",
   "PHYS-3": "aqa-a-phys-3.3"
 };
-const physicsPointFor = (bankId, stem) => {
-  const text = String(stem || "").toLowerCase();
-  const routes = [
-    [/medical|ultrasound|x-ray|mri|radiotherapy|half-value thickness/, "3.10"],
-    [/astrophys|star|galaxy|red-shift|redshift|luminosity|parallax|hubble|geostationary satellite/, "3.9"],
-    [/electronics|logic gate|transistor|op-amp|operational amplifier|diode|truth table/, "3.13"],
-    [/engineering physics|safety factor|engineering design/, "3.11"],
-    [/turning point|de broglie|photoelectric effect|wave-particle|quantum/, "3.12"],
-    [/nuclear|radioactive|fission|fusion|half-life|binding energy/, "3.8"],
-    [/electric field|magnetic field|gravitational field|potential at a point|orbital|escape velocity/, "3.7"],
-    [/thermal|internal energy|ideal gas|specific heat|gas law|simple harmonic|oscillation|periodic motion/, "3.6"],
-    [/current|resistance|resistivity|ohm|potential difference|emf|capacitor|transformer|electric circuit/, "3.5"],
-    [/mechanics|velocity|acceleration|newton|force|momentum|work done|energy|power|hooke|young modulus|stoke|materials|displacement-time|projectile/, "3.4"],
-    [/diffraction|interference|standing wave|polarisation|refraction|lens|wave|intensity of a wave/, "3.3"],
-    [/standard model|fundamental particle|quark|lepton|photon|electron|positron|particle|radiation|threshold frequency|work function/, "3.2"],
-    [/uncertainty|percentage uncertainty|error|repeat|reliab|validity|resolution|significant figure|gradient|practical conclusion/, "3.1"]
-  ];
-  for (const [pattern, code] of routes) if (pattern.test(text)) return `aqa-a-phys-${code}`;
-  return physicsFallbackPoints[bankId];
-};
 for (const bankId of Object.keys(physicsFallbackPoints)) {
   for (const question of BANKS[bankId]?.questions || []) {
-    question.specPointId = physicsPointFor(bankId, question.stem);
+    question.specPointId = physicsSectionFor[question.id] || physicsFallbackPoints[bankId];
   }
 }
 
