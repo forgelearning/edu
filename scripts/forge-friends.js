@@ -194,7 +194,7 @@
   function teacherStudentHtml(students, rows, studentId, readError) {
     var links = teacherLinks(students, rows, studentId);
     var me = studentName(links.byId, studentId);
-    var h = '<section class="card forge-friends__profile"><div class="card-title">Friends</div>';
+    var h = '<section class="card forge-friends__profile"><div class="forge-league__head"><h2>Friends</h2></div>';
     if (readError) return h + '<p class="forge-friends__status is-error" role="alert">Couldn’t load friendships. Refresh this class to try again.</p></section>';
     h += '<p>' + (links.friends.length ? esc(links.friends.sort(function (a, b) { return a.localeCompare(b); }).join(', ')) : 'No friends added yet.') + '</p>';
     links.waiting.forEach(function (w) {

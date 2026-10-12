@@ -23,7 +23,7 @@
 </script>
 <link rel="stylesheet" href="css/states.css">
   <link rel="stylesheet" href="css/generated-utilities.css">
-  <link rel="stylesheet" href="css/page-overrides/teacher.css?v=20261012-rework">
+  <link rel="stylesheet" href="css/page-overrides/teacher.css?v=20261012-rework2">
   <link rel="stylesheet" href="css/page-overrides/revision.css?v=20261012-width">
   <link rel="stylesheet" href="css/auth-ember.css?v=20260817-auth2">
   <link rel="stylesheet" href="css/content-status.css">
@@ -90,7 +90,8 @@ function mountTeacherSidebar() {
 <script src="scripts/forge-misconception-state.js"></script>
 <script src="scripts/forge-metrics.js"></script>
 <script src="scripts/forge-league.js?v=20261012-teacher"></script>
-<script src="scripts/forge-friends.js?v=20260929d"></script>
+<script src="scripts/forge-subject-badge.js?v=20261012"></script>
+<script src="scripts/forge-friends.js?v=20261012-teacher"></script>
 <script src="data/misconception-labels.js?v=20260907-diagnostics"></script>
 <script src="data/starter-activities.js?v=20260813"></script>
 <script>
@@ -586,9 +587,11 @@ function drawTeacherHome(classes, loadError) {
     h += '<div class="home-grid">';
     classes.forEach(function(c) {
       h += '<button type="button" class="class-card" data-class-id="' + esc(c.id) + '">' +
-        '<span class="cc-subj">' + esc(subjectLabel(c.subject)) + '</span>' +
-        '<span class="cc-name">' + esc(c.name || 'Untitled class') + '</span>' +
-        '<span class="cc-meta">Code <span class="cc-code">' + esc(c.code || '—') + '</span></span>' +
+        teacherSubjectBadge(canonicalSubjectKey(c.subject), c.name, 'md') +
+        '<span class="cc-body"><span class="cc-name">' + esc(c.name || 'Untitled class') + '</span>' +
+        '<span class="cc-subj">' + esc(subjectLabel(canonicalSubjectKey(c.subject))) + '</span>' +
+        '<span class="cc-meta"><span class="cc-code">' + esc(c.code || '—') + '</span><span class="cc-count" data-class-count="' + esc(c.id) + '"></span></span></span>' +
+        '<span class="cc-arrow" aria-hidden="true"></span>' +
       '</button>';
     });
     h += '</div>';
@@ -603,17 +606,25 @@ function drawTeacherHome(classes, loadError) {
   }
 
   app.classList.add('teacher-home-view');
+  // Same shape as the class overview: classes in the main column, the
+  // 30-day activity summary in the side column on wide screens.
   app.innerHTML = '<header class="teacher-home-heading"><div class="teacher-home-heading__main"><h1>Your classes</h1><p>Choose a class to see what needs attention.</p>' +
     ((currentTeacher && currentTeacher.email) ? '<p class="teacher-home-account">Signed in as ' + esc(currentTeacher.email) + ' · <a href="#" id="ta-signout">Sign out</a></p>' : '') +
-    headActions + '</div>' +
-    (loadError ? '' : '<section class="insight-list" id="teacher-adoption"><h2>Teaching activity</h2><p class="forge-meta">Loading recent activity.</p></section>') +
-    '</header>' + h;
+    headActions + '</div></header>' +
+    '<div class="teacher-layout teacher-home-layout"><div class="teacher-main">' + h + '</div>' +
+    (loadError ? '' : '<aside class="teacher-side"><section class="insight-list" id="teacher-adoption"><h2>Teaching activity</h2><p class="forge-meta">Loading recent activity.</p></section></aside>') +
+    '</div>';
+  fillClassCounts(classes);
 
   if (window.forgeTrack) forgeTrack('teacher_dashboard_viewed', { class_count: classes.length });
   if (!loadError) ForgeAPI.rpc('get_teacher_adoption_snapshot', {}, teacherApiOptions()).then(function(snapshot) {
     var target = document.getElementById('teacher-adoption');
     if (!target || !snapshot || snapshot.authorized !== true) return;
-    target.innerHTML = '<h2>Teaching activity</h2><dl class="insight-grid"><div><dt>Classes</dt><dd>' + snapshot.classes + '</dd></div><div><dt>Active students</dt><dd>' + snapshot.active_students_30d + '</dd></div><div><dt>Accuracy</dt><dd>' + snapshot.accuracy_30d + '%</dd></div></dl><p class="forge-meta">Last 30 days · ' + snapshot.responses + ' response' + (snapshot.responses !== 1 ? 's' : '') + ' · ' + snapshot.assignments + ' assignment' + (snapshot.assignments !== 1 ? 's' : '') + '</p>';
+    var acc = Math.max(0, Math.min(100, Number(snapshot.accuracy_30d) || 0));
+    target.innerHTML = '<h2>Teaching activity</h2><p class="insight-list__sub">Last 30 days, across your classes</p>'
+      + '<div class="teacher-snapshot__lead"><span>Accuracy</span><strong>' + snapshot.accuracy_30d + '%</strong></div>'
+      + '<div class="teacher-snapshot__meter" aria-hidden="true"><span style="width:' + acc + '%"></span></div>'
+      + '<dl class="insight-grid"><div><dt>Classes</dt><dd>' + snapshot.classes + '</dd></div><div><dt>Active students</dt><dd>' + snapshot.active_students_30d + '</dd></div><div><dt>Answers</dt><dd>' + Number(snapshot.responses || 0).toLocaleString() + '</dd></div><div><dt>Assignments</dt><dd>' + snapshot.assignments + '</dd></div></dl>';
   }).catch(function() {});
 
   var signOutLink = document.getElementById('ta-signout');
@@ -1094,7 +1105,7 @@ function renderDashboard() {
   var repairPercent = reforgeAttempts.length ? Math.round((reforgeCorrect.length / reforgeAttempts.length) * 100) : null;
 
   var h = '<header class="teacher-dashboard-head">';
-  h += '<div class="teacher-dashboard-head__title"><span class="teacher-class-badge" aria-hidden="true">' + teacherEsc(teacherInitials(dashState.className)) + '</span><div><h1>' + teacherEsc(dashState.className) + '</h1><p class="teacher-dashboard-meta"><span class="teacher-meta-chip">' + teacherEsc(subjectLabel(dashState.classSubject)) + '</span><span><b>' + students.length + '</b> student' + (students.length !== 1 ? 's' : '') + '</span><span><b>' + totalQs.toLocaleString() + '</b> scored answer' + (totalQs !== 1 ? 's' : '') + '</span>';
+  h += '<div class="teacher-dashboard-head__title">' + teacherSubjectBadge(dashState.classSubject, dashState.className, 'lg') + '<div><h1>' + teacherEsc(dashState.className) + '</h1><p class="teacher-dashboard-meta"><span class="teacher-meta-chip">' + teacherEsc(subjectLabel(dashState.classSubject)) + '</span><span><b>' + students.length + '</b> student' + (students.length !== 1 ? 's' : '') + '</span><span><b>' + totalQs.toLocaleString() + '</b> scored answer' + (totalQs !== 1 ? 's' : '') + '</span>';
   if (dashState.classCode) h += '<button type="button" class="class-code-pill" id="class-code-pill" data-forge-action="copy-class-code" aria-label="Copy class code ' + teacherEsc(dashState.classCode) + '">' + teacherEsc(dashState.classCode) + '</button>';
   h += '</p></div></div><div class="teacher-dashboard-head__actions"><button type="button" class="back-btn forge-u-gr3ipb" data-forge-action="render-teacher-home">All classes</button>';
   h += '<div class="dash-tools"><button type="button" class="dash-tools__toggle" id="dash-tools-toggle" aria-expanded="false" aria-controls="dash-tools-menu">Class tools</button><div class="dash-tools__menu" id="dash-tools-menu" hidden><button type="button" class="forge-button forge-button--secondary" id="generate-student-codes" aria-expanded="false" aria-controls="generate-codes-panel">Generate student codes</button><button type="button" class="forge-button forge-button--secondary" id="migrate-existing-students">Migrate existing students</button>' + (typeof dashState.leagueEnabled === 'boolean' ? '<button type="button" class="forge-button forge-button--secondary" id="toggle-league" aria-pressed="' + dashState.leagueEnabled + '">Weekly league: ' + (dashState.leagueEnabled ? 'On' : 'Off') + '</button>' : '') + (typeof dashState.friendsEnabled === 'boolean' ? '<button type="button" class="forge-button forge-button--secondary" id="toggle-friends" aria-pressed="' + dashState.friendsEnabled + '">Friends: ' + (dashState.friendsEnabled ? 'On' : 'Off') + '</button>' : '') + '<button type="button" class="forge-button forge-button--secondary forge-button--danger" id="delete-class">Delete class</button><div class="dash-tool-group"><span class="dash-tool-group__label">Rename a student</span><div class="dash-tool-group__controls"><label class="forge-sr-only" for="rename-select">Student to rename</label><select id="rename-select" class="forge-u-1o9xvhi"><option value="">Select student…</option>' + students.map(function(student) { return '<option value="' + student.id + '">' + teacherEsc(student.display_name || student.name || 'Student') + '</option>'; }).join('') + '</select><label class="forge-sr-only" for="rename-input">New display name</label><input type="text" id="rename-input" class="rename-input" placeholder="New display name"><button type="button" id="rename-btn" class="forge-button forge-button--secondary">Save</button></div><p class="join-err" id="rename-err"></p></div><div class="dash-tool-group"><span class="dash-tool-group__label">Reset a lost student code</span><div class="dash-tool-group__controls"><label class="forge-sr-only" for="reset-code-select">Student whose code to reset</label><select id="reset-code-select" class="forge-u-1o9xvhi"><option value="">Select student…</option>' + students.map(function(student) { return '<option value="' + student.id + '">' + teacherEsc(student.display_name || student.name || 'Student') + '</option>'; }).join('') + '</select><button type="button" id="reset-code-btn" class="forge-button forge-button--secondary" aria-controls="generate-codes-panel">Reset code</button></div><p class="join-err" id="reset-code-err"></p></div></div></div></div></header>';
@@ -1971,9 +1982,8 @@ function renderSpecBreakdown(responses) {
     return accA - accB;
   });
 
-  var h = '<div class="card-title forge-mb-4">Spec Point Accuracy — weakest first</div>';
-  h += '<p class="forge-u-12m5q32">Only spec points with logged responses are shown. Questions answered before the latest update will not appear here.</p>';
-  h += '<table class="forge-u-k85mqv">';
+  var h = '<section class="card teacher-section" aria-labelledby="teacher-spec-title"><header class="teacher-section__head"><div><h2 id="teacher-spec-title">Spec points</h2><p>Accuracy by specification point, weakest first. Only spec points with logged answers appear; answers from before the latest update are not included.</p></div></header>';
+  h += '<div class="teacher-section__scroll"><table class="forge-u-k85mqv">';
   h += '<thead><tr class="forge-u-yzojjb">';
   h += '<th class="forge-u-qvnuss">Spec point</th><th>Subject</th><th>Questions</th><th>Students</th><th>Accuracy</th><th class="forge-u-naz5e1">Bar</th>';
   h += '</tr></thead><tbody>';
@@ -1997,7 +2007,7 @@ function renderSpecBreakdown(responses) {
     h += '<td><div class="forge-u-1lpc5ot"><div style="background:' + col + ';border-radius:var(--radius-xs);height:8px;width:' + acc + '%"></div></div></td>';
     h += '</tr>';
   });
-  h += '</tbody></table>';
+  h += '</tbody></table></div></section>';
   el.innerHTML = h;
 }
 
@@ -2107,6 +2117,26 @@ function dueBadge(dateStr) {
 }
 
 function teacherEsc(value) { return window.ForgeTeacherUI.escape(value); }
+// The class badge follows the class's subject (scripts/forge-subject-badge.js):
+// its colour and icon. Falls back to the class name's initials.
+function teacherSubjectBadge(subject, className, size) {
+  if (window.ForgeSubjectBadge && subject && window.SUBJECTS && SUBJECTS[subject]) return ForgeSubjectBadge.html(subject, { size: size || 'md' });
+  return '<span class="teacher-class-badge" aria-hidden="true">' + teacherEsc(teacherInitials(className)) + '</span>';
+}
+// Student counts on the class cards: one read for every class, ids only.
+// Best effort, so a card simply shows no count if it fails.
+function fillClassCounts(classes) {
+  var ids = (classes || []).map(function(c) { return c && c.id; }).filter(Boolean);
+  if (!ids.length) return;
+  supaGet('students', 'class_id=in.(' + ids.join(',') + ')&select=class_id').then(function(rows) {
+    var counts = {};
+    rowsOrEmpty(rows).forEach(function(r) { counts[r.class_id] = (counts[r.class_id] || 0) + 1; });
+    Array.prototype.forEach.call(document.querySelectorAll('[data-class-count]'), function(el) {
+      var n = counts[el.getAttribute('data-class-count')] || 0;
+      el.textContent = n + ' student' + (n !== 1 ? 's' : '');
+    });
+  }).catch(function() {});
+}
 // "Year 12 Economics" -> "YE", "Isaac Novak" -> "IN": the badge beside a class
 // or student name. Digits are skipped so a year group does not become "1".
 function teacherInitials(name) {
@@ -2277,7 +2307,7 @@ function renderAssignments() {
 
   // ── Create assignment form ──
   h += '<div class="assign-form">';
-  h += '<div class="card-title forge-u-dfjwb8">New assignment</div>';
+  h += '<header class="teacher-section__head"><div><h2>New assignment</h2><p>Choose the question banks to set and a due date.</p></div></header>';
   h += '<label class="forge-u-1s6s0pt" for="asgn-title">Assignment title</label>';
   h += '<input type="text" id="asgn-title" aria-describedby="asgn-title-help" placeholder="e.g. Inflation revision">';
   h += '<p class="forge-u-l9adfb" id="asgn-title-help">Use a name students will recognise.</p>';
@@ -2313,12 +2343,12 @@ function renderAssignments() {
     h += '<option value="all"' + (dashState.assignmentFilter === 'all' ? ' selected' : '') + '>All assignments</option></select></div>';
 
     if (dashState.assignmentFilter !== 'archived' && active.length > 0) {
-      h += '<div class="card-title forge-mb-3">Active assignments</div>';
+      h += '<h2 class="teacher-list-title">Active assignments</h2>';
       active.forEach(function(asgn) { h += renderAssignCard(asgn, students, responses, false); });
     }
 
     if (dashState.assignmentFilter !== 'active' && archived.length > 0) {
-      h += '<div class="card-title forge-u-j2cfmy">Archived</div>';
+      h += '<h2 class="teacher-list-title">Archived</h2>';
       archived.forEach(function(asgn) { h += renderAssignCard(asgn, students, responses, true); });
     }
   }
@@ -2704,7 +2734,7 @@ function renderClassOverview(responses, students) {
     return accA - accB;
   });
 
-  var h = '<div class="card"><div class="card-title">Students \u2014 sorted by accuracy (lowest first) <span class="forge-u-rsj30h">Click a student to see their full profile</span></div>';
+  var h = '<div class="card teacher-section"><header class="teacher-section__head"><div><h2>Students</h2><p>Sorted by accuracy, lowest first. Choose a student to see their profile.</p></div></header>';
   h += '<div class="class-table-wrap"><table class="class-table"><thead><tr>';
   h += '<th>Student</th><th>Answered</th><th>Accuracy</th><th>Weakest topic</th><th>Top idea to revisit</th><th>Access</th>';
   h += '</tr></thead><tbody>';
@@ -2719,7 +2749,7 @@ function renderClassOverview(responses, students) {
 
     h += '<tr>';
     h += '<td class="forge-u-1imlfss" data-label="Student" data-forge-action="render-student" data-student-id="' + sid + '">';
-    h += '<span class="student-name-display" data-sid="' + sid + '">' + teacherEsc(displayName) + '</span>';
+    h += '<span class="teacher-student-cell"><span class="teacher-initials" aria-hidden="true">' + teacherEsc(teacherInitials(displayName)) + '</span><span class="student-name-display" data-sid="' + sid + '">' + teacherEsc(displayName) + '</span></span>';
     if (extraTime > 0) h += '<span class="extra-time-badge">+' + extraTime + '%</span>';
     h += '</td>';
     h += '<td class="forge-u-1imlfss" data-label="Answered" data-forge-action="render-student" data-student-id="' + sid + '">' + ps.total + '</td>';
@@ -2796,6 +2826,9 @@ window.renderStudent = function(studentId) {
   if (activeTab && document.getElementById('panel-student').style.display !== 'block') dashState.studentReturnView = activeTab.getAttribute('data-view') || 'heatmap';
   var appRoot = document.getElementById('app');
   if (appRoot) appRoot.classList.add('teacher-secondary-view');
+  // A student belongs under Class & students in the sidebar, whichever
+  // view the profile was opened from.
+  if (window.ForgeSidebar) ForgeSidebar.setActive('students');
   // Hide tabs panels, show student detail
   document.querySelectorAll('.panel').forEach(function(p) { p.classList.remove('active'); });
   var el = document.getElementById('panel-student');
@@ -2822,14 +2855,15 @@ window.renderStudent = function(studentId) {
 
   var h = '<button type="button" class="back-btn" data-forge-action="student-back">\u2190 Back to class</button>';
 
-  h += '<div class="dash-header student-profile-header forge-mb-4"><div><p class="tag forge-u-l8gta7">Student Profile</p><h1>' + studentName + (extraTime > 0 ? ' <span class="extra-time-badge forge-u-1nzryid">+' + extraTime + '% time</span>' : '') + '</h1></div></div>';
+  // Same header shape as the class: a badge, the name, and chips.
+  h += '<header class="teacher-student-head"><span class="teacher-initials teacher-initials--lg" aria-hidden="true">' + teacherEsc(teacherInitials(studentName)) + '</span><div><h2 class="teacher-student-head__name">' + studentName + '</h2><p class="teacher-dashboard-meta"><span class="teacher-meta-chip">Student profile</span>' + (extraTime > 0 ? '<span class="teacher-meta-chip teacher-meta-chip--accent">+' + extraTime + '% extra time</span>' : '') + '</p></div></header>';
 
-  h += '<div class="stat-row">';
-  h += '<div class="stat"><span class="stat-n" style="color:' + (acc >= 70 ? 'var(--good)' : acc >= 50 ? 'var(--hot)' : 'var(--bad)') + '">' + acc + '%</span><span class="stat-l">Accuracy</span></div>';
-  h += '<div class="stat"><span class="stat-n forge-text-white">' + total + '</span><span class="stat-l">Scored answers</span></div>';
-  h += '<div class="stat"><span class="stat-n forge-text-hot">' + activeMCs.length + '</span><span class="stat-l">Ideas to revisit</span></div>';
-  h += '<div class="stat"><span class="stat-n forge-text-good">' + reforgePass + '/' + reforgeTotal + '</span><span class="stat-l">Similar questions passed</span></div>';
-  h += '</div>';
+  h += '<section class="teacher-stat-card" aria-label="Summary"><dl>';
+  h += '<div><dt>Accuracy</dt><dd style="color:' + (total === 0 ? 'var(--white)' : acc >= 70 ? 'var(--good)' : acc >= 50 ? 'var(--hot)' : 'var(--bad)') + '">' + (total === 0 ? '\u2014' : acc + '%') + '</dd></div>';
+  h += '<div><dt>Scored answers</dt><dd>' + total + '</dd></div>';
+  h += '<div><dt>Ideas to revisit</dt><dd>' + activeMCs.length + '</dd></div>';
+  h += '<div><dt>Similar questions passed</dt><dd>' + reforgePass + '/' + reforgeTotal + '</dd></div>';
+  h += '</dl></section>';
 
   // Active misconceptions (Anvil)
   if (activeMCs.length > 0) {
