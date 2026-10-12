@@ -356,3 +356,6 @@ body.landing-redesign .wait-side{display:grid;gap:16px;min-width:0}
 .htp-stat li small{margin-left:auto;color:rgba(255,248,238,.55);font-size:10px;font-weight:500}
 .home-teacher-preview figcaption{margin-top:12px;color:rgba(255,248,238,.5);font-size:11px}
 @media(max-width:420px){.htp-row{grid-template-columns:1fr}}
+/* One line on progress under "How it works": XP, streaks and ranks. */
+body.landing-redesign .loop-reward{max-width:none;margin:22px 0 0;color:var(--landing-muted,var(--slate));font:400 15px/1.6 'Poppins',sans-serif;text-align:center}
+body.landing-redesign .loop-reward a{margin-left:6px;color:var(--ember);font-weight:600;text-underline-offset:3px;white-space:nowrap}
