@@ -16,7 +16,7 @@
 
 <link rel="stylesheet" href="css/states.css">
   <link rel="stylesheet" href="css/generated-utilities.css">
-<link rel="stylesheet" href="css/page-overrides/forge-quiz.css?v=20261004-signin">
+<link rel="stylesheet" href="css/page-overrides/forge-quiz.css?v=20261012-width">
 <link rel="stylesheet" href="css/student-motion.css?v=20261004-signin">
 </head>
 <body>
@@ -1031,6 +1031,9 @@ function render(skipMotion) {
     if (window.scrollY > 0) window.scrollTo({ top: 0, behavior: 'instant' });
   }
   document.body.classList.toggle('forge-login-screen', state.phase === 'join');
+  // Subject and topic pickers are lists of cards, so they use the full app
+  // width; questions keep the narrow reading column.
+  document.body.classList.toggle('forge-picker-screen', state.phase === 'subjects' || state.phase === 'banks');
   if (requestedCheck && (state.studentName || state.classId) && state.phase !== 'quiz' && startFixedCheck() === 'wait') return;
   if (requestedBank && BANKS[requestedBank] && (state.studentName || state.classId) && state.phase !== 'quiz') {
     // Assignment links are bank-specific. Establish both the bank and its

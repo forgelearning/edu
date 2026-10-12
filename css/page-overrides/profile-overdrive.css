@@ -1,7 +1,7 @@
 /* High-intent profile pass: make readiness legible at a glance, then invite a next move. */
 body{background:radial-gradient(circle at 78% -12%,rgba(213,92,19,.14),transparent 34%),var(--coal)}
-.wrap{max-width:1080px;padding-top:48px;padding-bottom:72px}
-#app{max-width:1080px}
+.wrap{max-width:1320px;padding-top:48px;padding-bottom:72px}
+#app{max-width:1280px}
 /* --glass-panel, not a hardcoded near-black: the plate has to follow the
    theme or the inactive tab labels sit grey-on-black in light mode. */
 .prof-tabs{position:relative;isolation:isolate;padding:6px;background:var(--glass-panel);backdrop-filter:blur(var(--glass-blur));-webkit-backdrop-filter:blur(var(--glass-blur));box-shadow:0 18px 46px -34px rgba(0,0,0,.9)}
