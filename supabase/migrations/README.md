@@ -441,3 +441,17 @@ rolled-back `do` block: refuses a teacher who does not
 own the class, replaces the hash in place (still one row per student), the new
 code signs in to the same student record, refuses a student with no code, and
 grants execute to `authenticated` only.
+
+## 20261012 184445 — one rank per student in every class
+
+| File | What it does |
+|---|---|
+| `20261012184445_one_rank_across_classes.sql` | The weekly league's rank badge now uses lifetime XP across all of a student's class rows (`forge_student_lifetime_xp`, over rows sharing a `link_group` or email account), so it matches Home. Weekly XP and trophies still count only that class. Adds `link_class_student_rows(...)`, which links two rows only when the caller proves both by private code or as the signed-in owner (never by name); `scripts/forge-classes.js` calls it once per pair of coded classes on a device. |
+
+Applied to production on 2026-10-12 (recorded as version 20261012184445,
+which is why the file carries that number). Probed first inside a rolled-back
+`do` block with two throwaway students in two coded classes: Apprentice before
+linking, refused a wrong code, missing codes and a row linked to itself,
+Journeyman after linking with both codes while the weekly XP stayed at that
+class's 10, and the two helpers are not executable by `anon` or
+`authenticated`. `get_class_friends` still computes `xp_total` per row.

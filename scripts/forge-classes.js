@@ -257,7 +257,37 @@
     if (anchor && anchor.studentId && anchor.classCode && anchor.studentName) syncFromServer(supabaseUrl, supabaseKey, anchor);
     var mine = list().filter(function (c) { return c.studentId && c.classCode; });
     if (mine.length < 2) { fetchLinkedResponses(supabaseUrl, supabaseKey, anchor, done); return; }
+    linkCodedClasses(supabaseUrl, supabaseKey);
     fetchAllResponses(supabaseUrl, supabaseKey, anchor && anchor.studentName, done);
+  }
+
+  /* Tell the server that this student's class rows are one person, so the
+     league ranks them on the same lifetime XP Home shows. Each pair needs both
+     private codes (link_class_student_rows refuses a name alone), and each
+     pair is sent once per device. Best effort: a failure just means the
+     league keeps using that class's XP until the next load. */
+  var LINKED_KEY = 'forge-linked-pairs';
+  function linkCodedClasses(supabaseUrl, supabaseKey) {
+    var coded = list().filter(function (c) { return c.studentId && c.classCode && c.studentCode; });
+    if (coded.length < 2) return;
+    var done = {};
+    try { done = JSON.parse(localStorage.getItem(LINKED_KEY) || '{}') || {}; } catch (e) {}
+    var first = coded[0];
+    var token = (global.ForgeAuth && global.ForgeAuth.accessToken && global.ForgeAuth.accessToken()) || supabaseKey;
+    coded.slice(1).forEach(function (other) {
+      var pair = [String(first.studentId), String(other.studentId)].sort().join('|');
+      if (done[pair]) return;
+      rpc(supabaseUrl, token, 'link_class_student_rows', {
+        p_student_id: first.studentId, p_class_code: first.classCode, p_student_code: first.studentCode,
+        p_other_student_id: other.studentId, p_other_class_code: other.classCode, p_other_student_code: other.studentCode
+      }).then(function (ok) {
+        if (ok !== true) return;
+        var latest = {};
+        try { latest = JSON.parse(localStorage.getItem(LINKED_KEY) || '{}') || {}; } catch (e) {}
+        latest[pair] = true;
+        try { localStorage.setItem(LINKED_KEY, JSON.stringify(latest)); } catch (e) {}
+      }).catch(function () {});
+    });
   }
 
   /* The class entry a response row or class id belongs to, for writing back

@@ -135,5 +135,25 @@ const psych = { classId: 'c-psych', classCode: 'PSY-12', className: '12C/Py', su
     assert(home.includes('classSwitcherHtml()'), 'Home offers the class switcher');
   }
 
-  console.log('Multi-class tests passed (joining keeps every class, combined history with per-class codes, switching, XP, repair writes).');
+  // Loading Home with two coded classes links the rows once, with both codes,
+  // so the league ranks the student on the same XP Home shows.
+  {
+    const { ctx, C } = page();
+    const links = [];
+    ctx.ForgeAPI.rpc = (fn, body) => {
+      if (fn === 'link_class_student_rows') { links.push(body); return Promise.resolve(true); }
+      return Promise.resolve([]);
+    };
+    C.add(chem); C.add(psych);
+    await new Promise(resolve => C.fetchStudentResponses('', 'anon-key', chem, resolve));
+    await new Promise(resolve => setImmediate(resolve));
+    assert.strictEqual(links.length, 1, 'two classes are linked with one call');
+    assert.strictEqual(links[0].p_student_code, chem.studentCode, 'the link proves the first class by its code');
+    assert.strictEqual(links[0].p_other_student_code, psych.studentCode, 'and the second by its own code');
+    await new Promise(resolve => C.fetchStudentResponses('', 'anon-key', chem, resolve));
+    await new Promise(resolve => setImmediate(resolve));
+    assert.strictEqual(links.length, 1, 'a linked pair is not sent again on the next load');
+  }
+
+  console.log('Multi-class tests passed (joining keeps every class, combined history with per-class codes, switching, XP, repair writes, server linking).');
 })().catch(error => { console.error(error); process.exit(1); });
