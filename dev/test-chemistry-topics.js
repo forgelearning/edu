@@ -101,4 +101,36 @@ for(const topic of physTopics){
   assert.strictEqual(page.ForgeChemistryTopics.label(topic.id),topic.label);
 }
 assert(quizHtml.includes('ForgeChemistryTopics.has(state.subject)'));
+// Every Physics question needs a hand-assigned section in data/forge-data.js;
+// otherwise it silently falls back to its paper's default topic.
+{
+  const source=fs.readFileSync('data/forge-data.js','utf8');
+  const block=source.slice(source.indexOf('const physicsSectionQuestions = {'),source.indexOf('const physicsSectionFor = {};'));
+  const assigned=new Set(block.match(/"[A-Z0-9-]+"(?=[,\n\s]*[\],])/g).map(id=>id.slice(1,-1)));
+  const missing=page.SUBJECTS.phys.banks.flatMap(bank=>page.BANKS[bank].questions.map(question=>question.id)).filter(id=>!assigned.has(id));
+  assert.strictEqual(missing.join(', '),'','Physics questions without a section in physicsSectionQuestions');
+}
+// Revision: the teacher panel and the student's topic list offer Physics by
+// AQA section, a set of cards stays inside the chosen section, and a set
+// revision counts its topic's questions rather than 0.
+{
+  const mechanics=physTopics.find(topic=>topic.code==='3.4');
+  const physPanel=page.ForgeRevision.teacherPanelHtml('phys');
+  assert(physPanel.includes('value="'+mechanics.id+'"'));
+  assert(physPanel.includes('Mechanics and materials'));
+  assert(!physPanel.includes('value="PHYS-1"'),'teacher picks Physics topics, not papers');
+  assert(!/value="phys-topic:[^"]*" checked/.test(physPanel),'no topic pre-selected');
+  assert.strictEqual(page.ForgeRevision.assignmentProgress({id:'p1',banks:[mechanics.id,page.ForgeRevision.markerFor(500)]},page.ForgeRevision.readState({studentId:'phys-test'})).total,mechanics.count);
+  const physListeners={};
+  const physApp={innerHTML:'',querySelector(selector){return selector==='.revision-today h2'?{textContent:''}:null;},addEventListener(name,handler){physListeners[name]=handler;}};
+  page.ForgeRevision.mountStudent({root:physApp,context:{studentId:'phys-test'},subject:'phys',assignments:[]});
+  assert(physApp.innerHTML.includes('data-bank="'+mechanics.id+'"'));
+  assert(physApp.innerHTML.includes('>Core content</h3>')&&physApp.innerHTML.includes('>Optional topics</h3>'));
+  assert(physApp.innerHTML.includes('data-revision-action="today"'),'Physics keeps its mixed Today set');
+  physListeners.click({target:{closest(selector){return selector==='[data-revision-action]'?{getAttribute(name){return name==='data-revision-action'?'topic':mechanics.id;}}:null;}}});
+  const mechanicsStems=page.ForgeChemistryTopics.questions(mechanics.id).map(item=>escaped(item.question.stem));
+  const otherStems=physTopics.filter(topic=>topic!==mechanics).flatMap(topic=>page.ForgeChemistryTopics.questions(topic.id)).map(item=>escaped(item.question.stem)).filter(stem=>!mechanicsStems.includes(stem));
+  assert(mechanicsStems.some(stem=>physApp.innerHTML.includes(stem)));
+  assert(!otherStems.some(stem=>physApp.innerHTML.includes(stem)),'a Mechanics set shows only Mechanics cards');
+}
 console.log('Chemistry topic mapping passed (202 questions, original bank identities preserved).');
