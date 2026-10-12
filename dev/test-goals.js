@@ -71,4 +71,24 @@ assert(quiz.includes('scripts/forge-goals.js') && quiz.includes('h+=goalChipHtml
 assert(/function goalProgress\(\)[\s\S]{0,260}ForgeGoals\.progress\(state\.responseHistory, ForgeGoals\.get\(state\.studentId\)\.xp, new Date\(\)\)/.test(quiz), 'no double counting');
 assert(/function setXPHistory\(responses\) \{[\s\S]{0,200}state\.historyLoaded = true;/.test(quiz));
 assert(/function awardXP[\s\S]{0,1500}updateGoalChip\(\);/.test(quiz), 'the chip updates as XP is earned');
+// A class student has one student row per class; the goal is shared, so
+// switching class on Home does not change it.
+{
+  const keep = Object.assign({}, store);
+  Object.keys(store).forEach(k => delete store[k]);
+  const list = [{ studentId: 'chem-row', studentName: 'Isaac N' }, { studentId: 'psych-row', studentName: 'Isaac N' }];
+  win.ForgeClasses = { list: () => list };
+  // A goal chosen earlier while Psychology was active is adopted, not lost.
+  store['forge-goal:psych-row'] = 'steady';
+  assert.strictEqual(G.get('chem-row').xp, 100, 'adopted from the class it was set in');
+  assert.strictEqual(G.get('psych-row').xp, 100);
+  assert(G.set('psych-row', 'strong'));
+  assert.strictEqual(G.get('chem-row').xp, 150, 'set in one class, shown in the other');
+  assert.strictEqual(G.get('other-row').xp, 50, 'a row outside the class list keeps its own goal');
+  assert.strictEqual(G.claimCelebration('chem-row', now), true);
+  assert.strictEqual(G.claimCelebration('psych-row', now), false, 'goal met celebrates once a day across classes');
+  delete win.ForgeClasses;
+  Object.keys(store).forEach(k => delete store[k]);
+  Object.assign(store, keep);
+}
 console.log('Daily goal tests passed.');
