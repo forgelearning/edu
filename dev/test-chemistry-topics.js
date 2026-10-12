@@ -133,4 +133,32 @@ assert(quizHtml.includes('ForgeChemistryTopics.has(state.subject)'));
   assert(mechanicsStems.some(stem=>physApp.innerHTML.includes(stem)));
   assert(!otherStems.some(stem=>physApp.innerHTML.includes(stem)),'a Mechanics set shows only Mechanics cards');
 }
+// Psychology's Approaches splits into parts by tag. Every question must land
+// in exactly one part (an untagged new question would silently vanish from
+// them), each part needs enough questions for a session, and a part keeps
+// the real bank id so responses still record against PSY-APP.
+{
+  vm.runInContext(fs.readFileSync('data/question-payloads/psych.js','utf8'),page,{filename:'data/question-payloads/psych.js'});
+  assert(!page.ForgeChemistryTopics.has('psych'),'Psychology keeps its topic cards');
+  assert.strictEqual(page.ForgeChemistryTopics.parts('PSY-SI').length,0);
+  const parts=page.ForgeChemistryTopics.parts('PSY-APP');
+  assert.strictEqual(parts.length,8);
+  const app=page.BANKS['PSY-APP'].questions;
+  const seen=new Map();
+  for(const part of parts){
+    assert(part.count>=8,part.label+' has only '+part.count+' questions');
+    const items=page.ForgeChemistryTopics.questions(part.id);
+    assert.strictEqual(items.length,part.count,part.label);
+    assert(items.every(item=>item.bank==='PSY-APP'));
+    assert.deepStrictEqual(Array.from(page.ForgeChemistryTopics.sourceBanks(part.id)),['PSY-APP']);
+    assert.strictEqual(page.ForgeChemistryTopics.label(part.id),part.label);
+    assert.strictEqual(page.ForgeChemistryTopics.find(part.id).count,part.count);
+    assert(page.ForgeChemistryTopics.pointId(part.id),'revision treats a part as a topic');
+    for(const item of items)seen.set(item.question.id,(seen.get(item.question.id)||0)+1);
+  }
+  const unplaced=app.filter(question=>seen.get(question.id)!==1).map(question=>question.id);
+  assert.strictEqual(unplaced.join(', '),'','Approaches questions not in exactly one part');
+  assert.strictEqual(page.ForgeChemistryTopics.questions('part:PSY-APP:nope').length,0);
+  assert(quizHtml.includes('topicPartsHtml(key)'));
+}
 console.log('Chemistry topic mapping passed (202 questions, original bank identities preserved).');

@@ -16,7 +16,7 @@
 
 <link rel="stylesheet" href="css/states.css">
   <link rel="stylesheet" href="css/generated-utilities.css">
-<link rel="stylesheet" href="css/page-overrides/forge-quiz.css?v=20261012-width">
+<link rel="stylesheet" href="css/page-overrides/forge-quiz.css?v=20261012-parts">
 <link rel="stylesheet" href="css/student-motion.css?v=20261004-signin">
 </head>
 <body>
@@ -425,7 +425,7 @@ var state = {
   paidSubjects: [],
   weightMap: {},       // spaced repetition: questionId → priority weight
   bankStats: {},       // latest per-topic accuracy used by the recommendation
-  topicSpec: null,      // Chemistry topic chosen for this quiz session
+  topicSpec: null,      // Spec topic or bank part chosen for this quiz session
   questionBanks: null,  // original bank for each Chemistry question
   responseHistory: [],  // answered questions behind the topic marks
   sessionWrongTags: [], // misconceptions that fired in this session
@@ -1453,6 +1453,17 @@ function topicMarksHtml(bank, openTags){
   var m=ForgeTopicMastery.status(state.responseHistory,bank,openTags);
   return '<div class="forge-topic-mastery">'+ForgeTopicMastery.ringHtml(m,true)+'<small>'+forgeEscape(ForgeTopicMastery.detail(m))+'</small></div>';
 }
+// Lets a student practise one part of a broad topic, such as a single
+// approach in Psychology. The buttons use the data-topic handler below.
+function topicPartsHtml(bank){
+  var parts=window.ForgeChemistryTopics&&ForgeChemistryTopics.parts?ForgeChemistryTopics.parts(bank):[];
+  if(!parts.length)return '';
+  var h='<div class="forge-topic-parts"><p class="forge-topic-parts__title">Or practise one part</p><div class="forge-topic-parts__list">';
+  parts.forEach(function(part){
+    h+='<button type="button" class="forge-topic-part" data-topic="'+forgeEscape(part.id)+'">'+forgeEscape(part.label)+' <span>'+part.count+'</span></button>';
+  });
+  return h+'</div></div>';
+}
 function renderBanks(){
   var subj=SUBJECTS[state.subject];
   if(!ForgeData.isLoaded(state.subject)){
@@ -1520,7 +1531,7 @@ function renderBanks(){
     if (point && point.paper) h+='<div class="code" style="color:'+b.color+'">'+point.paper+'</div>';
     h+='<div class="name">'+b.label+'</div>';
     h+='<div class="qcount">'+b.questions.length+' questions</div>';
-    h+='</button>'+topicMarksHtml(key,topicOpenTags)+'</div>';
+    h+='</button>'+topicMarksHtml(key,topicOpenTags)+topicPartsHtml(key)+'</div>';
   });}
   h+='</div></section>';
   // Locked students never see the subject picker, so this is their only

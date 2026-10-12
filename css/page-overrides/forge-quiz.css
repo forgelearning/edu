@@ -578,6 +578,13 @@ html:not([data-theme="light"]) body.forge-solo-login::after{color:var(--forge-lo
 .forge-topic-card .bank-btn:focus-visible{outline:2px solid var(--ember);outline-offset:-3px}
 .forge-topic-mastery{display:flex;flex-wrap:wrap;align-items:center;gap:4px 12px;padding:10px 16px;border-top:1px solid var(--line)}
 .forge-topic-mastery small{color:var(--slate);font-size:12px}
+.forge-topic-parts{padding:10px 16px 14px;border-top:1px solid var(--line)}
+.forge-topic-parts__title{margin:0 0 8px;color:var(--slate);font-size:12px;font-weight:600}
+.forge-topic-parts__list{display:flex;flex-wrap:wrap;gap:6px}
+.forge-topic-part{display:inline-flex;align-items:center;gap:6px;min-height:36px;padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:transparent;color:var(--white);font:inherit;font-size:13px;cursor:pointer}
+.forge-topic-part span{color:var(--slate);font-size:12px}
+.forge-topic-part:hover{background:var(--panel-2)}
+.forge-topic-part:focus-visible{outline:2px solid var(--ember);outline-offset:2px}
 .forge-reforge-result__icon{width:38px;height:38px;flex:none;stroke:var(--good);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .forge-reforge-result__crack{stroke:var(--ember)}
 .forge-reforge-result__seam{stroke-dasharray:16;stroke-dashoffset:0}

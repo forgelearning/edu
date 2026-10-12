@@ -12430,6 +12430,526 @@ BANKS["PSY-APP"] = {
       correct:"A",tag:"MC-APP-COMPARE",
       scaffold:"Token economies apply operant conditioning directly: desirable behaviour earns tokens (secondary reinforcers) that are exchanged for privileges (primary reinforcers), so the behaviour is positively reinforced and increases. They are used in prisons and psychiatric settings and are strong evidence for the behaviourist approach's practical value. Keep the therapy-to-approach map straight, because it is examined constantly: token economy and systematic desensitisation are behaviourist (operant and classical respectively), CBT is cognitive, drug therapy is biological, psychoanalysis and dream analysis are psychodynamic, and client-centred therapy is humanistic.",
       reforge:{stem:"Which therapy is derived from classical rather than operant conditioning?",options:{A:"Token economy programmes in psychiatric hospitals",B:"Drug therapy using SSRI antidepressants",C:"Cognitive behavioural therapy for depression",D:"Systematic desensitisation for treating phobias"},correct:"D"}
+    },
+    {
+      id:"APP-25",
+      stem:"Why is 1879 regarded as the starting point of psychology as a separate discipline?",
+      options:{
+        A:"Freud published his first account of the unconscious mind that year",
+        B:"Watson set out the manifesto of behaviourism in that same year",
+        C:"Wundt opened the first lab devoted to psychology in Leipzig",
+        D:"Darwin's theory of evolution was first applied to human thought"
+      },
+      correct:"C",tag:"MC-APP-ORIGINS",
+      scaffold:"Before 1879 questions about the mind belonged to philosophy and were settled by argument. In 1879 Wilhelm Wundt opened the first laboratory devoted to psychology in Leipzig, Germany, and began studying the mind with controlled, repeatable procedures. That is what made psychology a separate discipline: it acquired its own method and its own institution. Check the dates on the distractors: Watson's behaviourist manifesto was 1913, Freud's major work on the unconscious came around 1900, and Darwin published in 1859. Examiner tip: Wundt is credited for setting up the lab and the method, not for producing results that later psychology kept.",
+      reforge:{stem:"What was Wundt's approach, which aimed to break conscious experience into its basic parts, called?",options:{A:"Functionalism",B:"Behaviourism",C:"Psychoanalysis",D:"Structuralism"},correct:"D"}
+    },
+    {
+      id:"APP-26",
+      stem:"Which feature of science is shown when another researcher repeats a study and gets the same results?",
+      options:{
+        A:"Replicability",
+        B:"Falsifiability",
+        C:"Objectivity",
+        D:"Empiricism"
+      },
+      correct:"A",tag:"MC-APP-ORIGINS",
+      scaffold:"Replicability means a study can be repeated, under the same conditions, by someone else, and produce the same findings. It matters because a single result could be a fluke or the product of one researcher's bias; a result that repeats is one we can trust. The other three are also features of science, which is why they are tempting: falsifiability is being open to disproof, objectivity is keeping the researcher's expectations out of the data, and empiricism is basing claims on observation. Examiner tip: introspection fails replicability because two trained observers could report the same stimulus differently, and there was no way to decide between them.",
+      reforge:{stem:"What does the empirical method require of a scientific psychology?",options:{A:"Claims must be agreed by a panel of senior psychologists first",B:"Claims must be based on direct observation and measurement",C:"Claims must be derived logically from philosophical first principles",D:"Claims must reflect the researcher's own introspective experience"},correct:"B"}
+    },
+    {
+      id:"APP-27",
+      stem:"Which development in the early twentieth century did most to establish psychology as a science?",
+      options:{
+        A:"Freud's case studies of patients treated in his Vienna clinic",
+        B:"Rogers' development of client-centred counselling sessions",
+        C:"Maslow's ranking of human needs into a five-level hierarchy",
+        D:"Behaviourists' insistence on measuring observable behaviour"
+      },
+      correct:"D",tag:"MC-APP-ORIGINS",
+      scaffold:"Watson's 1913 behaviourist manifesto argued that psychology could only be a science if it studied what anyone could observe and measure: behaviour, not private conscious experience. Behaviourists then ran tightly controlled laboratory experiments, which gave psychology the cause-and-effect evidence that earlier introspection could not. Freud's case studies were influential but are criticised as unscientific, and Rogers and Maslow came later and deliberately rejected the scientific method in favour of subjective experience. Examiner tip: the story of psychology as a science runs Wundt, then behaviourism, then the cognitive approach reintroducing the mind through experiments.",
+      reforge:{stem:"How did the cognitive approach claim to be scientific while studying processes it cannot observe?",options:{A:"It inferred mental processes from controlled experiments",B:"It used introspective reports collected from trained observers",C:"It relied on case studies of unusual individual patients",D:"It rejected the need for any kind of empirical evidence"},correct:"A"}
+    },
+    {
+      id:"APP-28",
+      stem:"A researcher claims a theory is scientific because no possible evidence could ever disprove it. What is wrong with this?",
+      options:{
+        A:"A scientific theory must first be accepted by every working psychologist",
+        B:"A scientific theory must be open to being shown false by evidence",
+        C:"A scientific theory must be based on one single case study",
+        D:"A scientific theory must avoid using any laboratory experiments"
+      },
+      correct:"B",tag:"MC-APP-ORIGINS",
+      scaffold:"Karl Popper argued that what separates science from non-science is falsifiability: a scientific theory makes predictions that could turn out to be wrong. A theory that fits every possible outcome is not strong, it is untestable. So the researcher has the logic backwards: being impossible to disprove is a weakness. This is the main criticism of Freud — if a patient accepts an interpretation it is confirmed, and if they reject it that is denial, which also confirms it. Examiner tip: use 'unfalsifiable' precisely; it means no possible evidence could count against the claim, not that the evidence happens to be weak.",
+      reforge:{stem:"Which approach is most often criticised as unfalsifiable?",options:{A:"Behaviourism, because it studies only behaviour",B:"Cognitive psychology, because it uses computers",C:"Psychodynamic theory, because of the unconscious",D:"Biological psychology, because it uses brain scans"},correct:"C"}
+    },
+    {
+      id:"APP-29",
+      stem:"What made Wundt's procedure more scientific than earlier philosophical approaches to the mind?",
+      options:{
+        A:"Participants' reports were checked against brain recordings",
+        B:"Stimuli and instructions were standardised for all participants",
+        C:"Each participant was observed at length in their own home setting",
+        D:"Results were analysed using inferential statistical tests"
+      },
+      correct:"B",tag:"MC-APP-ORIGINS",
+      scaffold:"Wundt's participants all received the same stimulus — the same metronome beat or light — and the same instructions, under the same laboratory conditions. Standardisation is what made his work a step towards science: it meant the procedure could in principle be repeated. Brain recordings and inferential statistics did not exist in the form described, and Wundt worked in the laboratory, not in homes. The limitation sits elsewhere: the data were still private reports of conscious experience, which nobody could check. Examiner tip: in a 'how scientific was Wundt?' answer, praise the procedure and criticise the data.",
+      reforge:{stem:"Why did Wundt's findings prove difficult for other laboratories to replicate?",options:{A:"The equipment he used was destroyed during the First World War",B:"He refused to describe his procedures in any of his published work",C:"Different observers gave different reports of the same stimulus",D:"His participants were all children too young to give reports"},correct:"C"}
+    },
+    {
+      id:"APP-30",
+      stem:"Which statement about psychology's scientific status is most accurate?",
+      options:{
+        A:"All approaches now use only tightly controlled laboratory experiments",
+        B:"No approach has ever produced findings that can be replicated",
+        C:"Psychology became a science the moment Freud's theory was published",
+        D:"Approaches differ: some use experiments, others rely on case studies"
+      },
+      correct:"D",tag:"MC-APP-ORIGINS",
+      scaffold:"Psychology is not uniformly scientific; it depends on the approach. The behaviourist, cognitive and biological approaches use controlled experiments, brain scans and twin studies, so their claims can be tested and replicated. The psychodynamic approach rests on case studies interpreted by the therapist, and the humanistic approach deliberately prefers subjective experience to experiments. So 'Is psychology a science?' has no single answer. The distractors are absolutes, which is usually a warning sign: plenty of findings have replicated, and Freud is the standard example of unscientific theory, not the moment psychology became a science. Examiner tip: in essays, compare approaches on method.",
+      reforge:{stem:"Which approach relies least on scientific methods in the empirical sense?",options:{A:"Humanistic, as it focuses on each person's subjective experience",B:"Behaviourist, as it measures responses under controlled conditions",C:"Biological, as it uses scans and controlled drug trials",D:"Cognitive, as it tests models with laboratory experiments"},correct:"A"}
+    },
+    {
+      id:"APP-31",
+      stem:"In classical conditioning, what is extinction?",
+      options:{
+        A:"The CR fades when the CS is repeatedly presented without the UCS",
+        B:"The CR suddenly returns after a rest period once it had faded away",
+        C:"A similar stimulus to the CS also begins to produce the CR",
+        D:"The UCS stops producing its natural, unlearned response"
+      },
+      correct:"A",tag:"MC-APP-CLASSICAL",
+      scaffold:"A conditioned response only lasts while the association lasts. If Pavlov rang the bell again and again without ever following it with food, the dogs salivated less each time until they stopped: the CS had lost its link to the UCS. That is extinction. The distractors are the neighbouring terms: a CR returning after a rest is spontaneous recovery, which shows the learning was suppressed rather than erased; a similar stimulus producing the CR is generalisation. The UCS never stops working — salivating to food is innate. Examiner tip: extinction is the principle behind exposure therapies for phobias, so expect it in Psychopathology too.",
+      reforge:{stem:"A dog salivates to a bell and also to a slightly higher-pitched buzzer. What is this called?",options:{A:"Spontaneous recovery",B:"Stimulus generalisation",C:"Stimulus discrimination",D:"Higher-order extinction"},correct:"B"}
+    },
+    {
+      id:"APP-32",
+      stem:"A teenager's phone is taken away for swearing, and the swearing decreases. What is this?",
+      options:{
+        A:"Positive punishment",
+        B:"Negative reinforcement",
+        C:"Negative punishment",
+        D:"Positive reinforcement"
+      },
+      correct:"C",tag:"MC-APP-OPERANT",
+      scaffold:"Work it out in two steps. First, did the behaviour go up or down? Swearing decreased, so it is punishment, not reinforcement. Second, was something added or taken away? The phone was removed, so it is negative. Negative punishment means removing something pleasant to reduce a behaviour. The most common mistake is to pick negative reinforcement because 'negative' sounds like a penalty — but reinforcement always increases behaviour. Positive punishment would be adding something unpleasant, such as extra chores. Examiner tip: in application questions, name the process and explain both steps; the second mark usually goes for saying what was added or removed.",
+      reforge:{stem:"Why did Skinner argue that punishment is less effective than reinforcement for changing behaviour?",options:{A:"It always strengthens the very behaviour that it is meant to remove",B:"It has no effect at all on animals tested inside a Skinner box",C:"It works only when it is delivered by someone the learner admires",D:"It shows only what not to do, not which behaviour should replace it"},correct:"D"}
+    },
+    {
+      id:"APP-33",
+      stem:"Which evaluation point is a strength of the behaviourist approach?",
+      options:{
+        A:"It explains every human behaviour, including language, fully",
+        B:"Its research findings come mostly from humans in everyday life",
+        C:"It gives a central place to thought and to conscious choice",
+        D:"Its use of controlled experiments supports claims about cause"
+      },
+      correct:"D",tag:"MC-APP-BEHAV",
+      scaffold:"Behaviourism's main strength is its method. Laboratory studies such as Skinner's isolate one variable — the consequence of a response — and hold everything else constant, so a change in behaviour can be put down to that variable. That is why behaviourism is often called the most scientific approach. The distractors describe what behaviourism does not do: it struggles with language (Chomsky's famous criticism), its evidence comes mainly from animals in artificial settings, and it deliberately ignores thought and choice. Examiner tip: a strength paragraph needs the point, the evidence (Skinner box, Pavlov) and why it matters (causal conclusions, real-world therapies).",
+      reforge:{stem:"Why is behaviourism criticised as environmentally deterministic?",options:{A:"It sees behaviour as shaped by past conditioning, not free choice",B:"It sees behaviour as caused by genes inherited from both parents",C:"It sees behaviour as caused by unconscious conflicts from childhood",D:"It sees behaviour as freely chosen by each person in each moment"},correct:"A"}
+    },
+    {
+      id:"APP-34",
+      stem:"Which schedule of reinforcement produces behaviour that is most resistant to extinction?",
+      options:{
+        A:"Continuous reinforcement, rewarding after every single response",
+        B:"Variable ratio, rewarding after an unpredictable number",
+        C:"Fixed interval, rewarding after a set length of time",
+        D:"Fixed ratio, rewarding after a set number of responses"
+      },
+      correct:"B",tag:"MC-APP-OPERANT",
+      scaffold:"Skinner found that how often a reward arrives matters as much as whether it arrives. Continuous reinforcement teaches a behaviour fastest but it also extinguishes fastest: once the rewards stop, the animal notices at once. On a variable ratio schedule the reward comes after an unpredictable number of responses, so a long run without one is normal and gives no signal that rewards have ended. The animal keeps responding. Fixed schedules sit in between, and a fixed interval produces a pause after each reward. Examiner tip: variable ratio is the standard explanation for why gambling is so hard to stop.",
+      reforge:{stem:"Why are gambling machines so effective at keeping people playing?",options:{A:"They pay out on every play, so the gambler is continuously reinforced",B:"They pay out at fixed times, so the gambler learns when to play",C:"They pay out on a variable ratio schedule, so the next play could win",D:"They punish losing, so gamblers keep playing to avoid that feeling"},correct:"C"}
+    },
+    {
+      id:"APP-35",
+      stem:"In social learning theory, what is identification?",
+      options:{
+        A:"Recognising which of a model's behaviours were rewarded or punished",
+        B:"Copying a behaviour exactly as soon as it has been seen performed",
+        C:"Wanting to be like a model and adopting their behaviour and attitudes",
+        D:"Storing a mental image of a model's behaviour for use at a later time"
+      },
+      correct:"C",tag:"MC-APP-SLT",
+      scaffold:"Bandura argued that people do not imitate just anyone. We are most likely to copy a model we identify with — someone we want to be like, usually because they are similar to us (same gender, similar age) or have status in our eyes (a celebrity, an older sibling). Identification is a motivational link between observer and model. The distractors describe other parts of the theory: noticing consequences is vicarious reinforcement, and storing an image is retention. Copying straight away is imitation, which identification makes more likely but is not the same thing. Examiner tip: name identification when explaining why a role model matters.",
+      reforge:{stem:"Which type of model is a child most likely to identify with?",options:{A:"One who is a complete stranger from a different age group",B:"One who is punished each time the behaviour is shown",C:"One who is unknown to them and seen only once briefly",D:"One who is similar to them and has status in their eyes"},correct:"D"}
+    },
+    {
+      id:"APP-36",
+      stem:"Which mediational process is described as the desire to perform a behaviour?",
+      options:{
+        A:"Motivation",
+        B:"Attention",
+        C:"Retention",
+        D:"Motor reproduction"
+      },
+      correct:"A",tag:"MC-APP-SLT",
+      scaffold:"Bandura's four mediational processes are the thinking that happens between seeing a behaviour and copying it. Attention: the observer must notice the behaviour. Retention: they must remember it. Motor reproduction: they must be physically able to do it. Motivation: they must want to, which depends on the rewards and punishments they expect, often learned vicariously. The first two are about learning; the last two decide whether learning becomes performance. This is what separates social learning theory from behaviourism: it puts cognition between stimulus and response. Examiner tip: learn the four in order — attention, retention, reproduction, motivation — and give an example for each.",
+      reforge:{stem:"A child watches a gymnast's routine closely and remembers it, but cannot copy it. Which process is lacking?",options:{A:"Attention paid to the model's routine",B:"Physical ability to reproduce it",C:"Retention of what was seen",D:"Motivation to imitate the model"},correct:"B"}
+    },
+    {
+      id:"APP-37",
+      stem:"In a follow-up Bobo doll study, children saw the model rewarded, punished or with no consequence. What happened?",
+      options:{
+        A:"Children who saw the model punished showed the least imitation",
+        B:"Children who saw the model rewarded showed the least imitation",
+        C:"All three groups imitated the model to exactly the same degree",
+        D:"Children in no group imitated the model in any of the conditions"
+      },
+      correct:"A",tag:"MC-APP-SLT",
+      scaffold:"In Bandura's 1965 study, children watched a film of an adult attacking a Bobo doll. In one version the adult was praised, in another told off, and in a third nothing happened. When then left with the doll, children who had seen the model punished were the least aggressive. This is vicarious punishment: the child learns the likely consequence without experiencing it. The study then went further, and it is the second stage that is most often examined — see the similar question. Examiner tip: this study is your evidence that consequences to the model, not just the model's behaviour, shape imitation.",
+      reforge:{stem:"When later offered rewards to copy the model, children in all three groups imitated equally. What does this show?",options:{A:"The punished group had not paid any attention to the model at all",B:"Learning had occurred in all groups but was not always performed",C:"Rewards are needed for any learning to take place in the first place",D:"Children cannot store behaviour they have observed for later use"},correct:"B"}
+    },
+    {
+      id:"APP-38",
+      stem:"Which is a strength of social learning theory compared with behaviourism?",
+      options:{
+        A:"It shows that learning happens only through direct reinforcement",
+        B:"It explains behaviour wholly in terms of inherited brain chemistry",
+        C:"It recognises cognitive factors between stimulus and response",
+        D:"It relies only on research with rats and pigeons in boxes"
+      },
+      correct:"C",tag:"MC-APP-SLT",
+      scaffold:"Social learning theory is often described as a bridge between behaviourism and the cognitive approach. It keeps reinforcement but adds the mediational processes — attention, retention, reproduction and motivation — so it can explain why two people who see the same behaviour respond differently. Behaviourism cannot, because it treats the mind as a black box. The distractors reverse the theory: the whole point of vicarious reinforcement is that learning does not need direct reward, the theory is environmental not biological, and its key evidence comes from children. Examiner tip: use 'more complete explanation than behaviourism' and back it with the mediational processes.",
+      reforge:{stem:"What is a limitation of social learning theory's explanation of behaviour?",options:{A:"It ignores cognitive factors altogether, like the behaviourists did",B:"It cannot be tested with experiments of any kind on children",C:"It claims that people never imitate the behaviour of others",D:"It underplays biological factors, such as hormones in aggression"},correct:"D"}
+    },
+    {
+      id:"APP-39",
+      stem:"Bandura later described reciprocal determinism. What does it propose?",
+      options:{
+        A:"Behaviour is determined solely by the genes passed on by parents",
+        B:"People influence their environment as well as being shaped by it",
+        C:"Each behaviour is caused by a single reinforcement from the past",
+        D:"The environment has no role once a child has reached adulthood"
+      },
+      correct:"B",tag:"MC-APP-SLT",
+      scaffold:"Behaviourism sees the influence running one way: the environment conditions the person. Bandura argued it runs both ways. A person's behaviour changes their environment — the friends they choose, the situations they seek out — and that environment then shapes their behaviour in turn. So behaviour is still determined, but the person is an active part of what determines it. This makes social learning theory less deterministic than behaviourism, which is a useful evaluation point in a free will and determinism comparison. Examiner tip: use reciprocal determinism to show SLT is a softer form of environmental determinism, not a theory of free will.",
+      reforge:{stem:"A student who works hard earns praise, which leads them to choose harder classes. Which idea does this illustrate?",options:{A:"Classical conditioning, as praise is paired with an innate reflex",B:"Psychic determinism, as the student's actions have hidden causes",C:"Reciprocal determinism: person and environment shape each other",D:"Biological determinism, as hard work reflects inherited ability"},correct:"C"}
+    },
+    {
+      id:"APP-40",
+      stem:"What do cognitive psychologists mean by a theoretical model?",
+      options:{
+        A:"A detailed scan showing which brain areas are active during tasks",
+        B:"A real person whose behaviour other people choose to imitate",
+        C:"A therapy plan that changes behaviour by reinforcing it",
+        D:"A simplified diagram representing how a mental process works"
+      },
+      correct:"D",tag:"MC-APP-COG",
+      scaffold:"Because mental processes cannot be observed, cognitive psychologists build models of them — usually a flow diagram of boxes and arrows showing stages of processing, such as the multi-store model of memory (sensory register, short-term store, long-term store). A model makes predictions that can be tested by experiment; if the predictions fail, the model is revised, as the working memory model revised the short-term store. A scan is cognitive neuroscience, a person to imitate is a model in social learning theory, and reinforcement is behaviourism. Examiner tip: the spec names both theoretical and computer models, so be ready to explain each.",
+      reforge:{stem:"Which is an example of a theoretical model in cognitive psychology?",options:{A:"The multi-store model of memory",B:"Maslow's five-level hierarchy of needs",C:"The Skinner box apparatus",D:"Freud's iceberg of the mind"},correct:"A"}
+    },
+    {
+      id:"APP-41",
+      stem:"How does the computer analogy describe human information processing?",
+      options:{
+        A:"Unconscious drives, like a computer's hidden operating code",
+        B:"Learned responses, like a computer that is fully pre-programmed",
+        C:"Input, storage and retrieval, like a computer handles data",
+        D:"Self-directed growth, like a computer that upgrades itself"
+      },
+      correct:"C",tag:"MC-APP-COG",
+      scaffold:"Computer models treat the mind as an information processor. Information comes in through the senses (input), is encoded and held in memory (storage), and is later brought back to guide behaviour (retrieval and output). The analogy gave cognitive psychology a vocabulary — encoding, capacity, processing — and it underpins artificial intelligence research. Its weakness is that people are not computers: human memory is reconstructive, influenced by emotion and motivation, and often inaccurate in systematic ways. Examiner tip: when evaluating the analogy, the term to use is 'machine reductionism' — it reduces thinking to mechanical processing and leaves out emotion.",
+      reforge:{stem:"In what way does human memory differ from computer memory?",options:{A:"Human memory never loses any information that has been stored",B:"Human memory has no limit on how much it can hold briefly",C:"Human recall is a perfect copy of the original experience",D:"Human recall is reconstructive and can be shaped by emotion"},correct:"D"}
+    },
+    {
+      id:"APP-42",
+      stem:"What has brain imaging contributed to the cognitive approach?",
+      options:{
+        A:"It shows that thought has no physical basis in the brain at all",
+        B:"It replaced the need for any behavioural experiments on memory",
+        C:"It proves that all cognitive processes are learned from others",
+        D:"It links mental processes to activity in specific brain areas"
+      },
+      correct:"D",tag:"MC-APP-COG",
+      scaffold:"Cognitive neuroscience is the study of how biological structures carry out cognitive processes. Scanning techniques such as fMRI and PET let researchers watch which brain areas become more active while a person remembers, decides or recognises faces. This reduces the problem of inference: instead of only deducing a mental process from behaviour, researchers can see its physical correlate. Tulving's work showing episodic and semantic memory activate different regions is the classic example. Examiner tip: present cognitive neuroscience as a strength that makes the approach more scientific, then note that a scan shows correlation with activity, not the thought itself.",
+      reforge:{stem:"Which study is an example of cognitive neuroscience?",options:{A:"Scans showing the hippocampus is active during memory recall",B:"Rats learning to press a lever for food pellets in a Skinner box",C:"Children copying an adult who hit an inflatable doll with a mallet",D:"A therapist interpreting the hidden meaning of a dream"},correct:"A"}
+    },
+    {
+      id:"APP-43",
+      stem:"Which is a limitation of the cognitive approach?",
+      options:{
+        A:"It is machine reductionist, ignoring emotion's role in thought",
+        B:"It refuses to use controlled experiments in any of its research",
+        C:"It explains behaviour only through unconscious childhood conflict",
+        D:"It denies that any mental processes take place inside the mind"
+      },
+      correct:"A",tag:"MC-APP-COG",
+      scaffold:"Machine reductionism is the criticism that the computer analogy reduces human thought to mechanical information processing. A computer does not get anxious, tired or motivated, but people do, and those states change how we attend, remember and decide — anxiety affects eyewitness recall, for instance. By leaving them out, the approach can describe processing well while missing why it varies. The distractors describe other approaches or reverse the cognitive one: it relies heavily on experiments, the unconscious is psychodynamic, and denying mental processes is behaviourism. Examiner tip: pair this with low ecological validity for a two-point evaluation of the cognitive approach.",
+      reforge:{stem:"Why is the cognitive approach said to lack ecological validity?",options:{A:"Its studies take place only in participants' own homes and schools",B:"Its experiments often use artificial tasks such as word lists",C:"Its research relies only on interviews about people's dreams",D:"Its findings are always drawn from studies of animals in boxes"},correct:"B"}
+    },
+    {
+      id:"APP-44",
+      stem:"According to the cognitive approach, what happens between a stimulus and a response?",
+      options:{
+        A:"Nothing worth studying, as the mind is a closed black box",
+        B:"Internal mental processes such as perception and memory",
+        C:"A reflex that is triggered automatically by the spinal cord",
+        D:"An unconscious wish breaking through from the id"
+      },
+      correct:"B",tag:"MC-APP-COG",
+      scaffold:"The cognitive approach exists because behaviourism left a gap. Behaviourists studied stimulus and response and called what happens in between a black box not worth opening. Cognitive psychologists argue that the black box is the interesting part: the stimulus is perceived, attended to, compared with schemas in memory and interpreted, and only then is a response chosen. Two people can respond differently to the same stimulus because they process it differently. The black-box distractor is the behaviourist position, the reflex is biological, and the id is psychodynamic. Examiner tip: 'internal mental processes' is the phrase examiners look for when you define the cognitive approach.",
+      reforge:{stem:"How does the cognitive approach differ from behaviourism in what it studies?",options:{A:"It studies only behaviour that can be directly observed and timed",B:"It studies hormones and genes rather than learned behaviour",C:"It studies mental processes that behaviourists left unexamined",D:"It studies dreams and slips of the tongue as signs of conflict"},correct:"C"}
+    },
+    {
+      id:"APP-45",
+      stem:"Which assumption is central to the biological approach?",
+      options:{
+        A:"Behaviour is learned through the consequences it produces",
+        B:"Everything psychological is at some level biological",
+        C:"People have free will and strive to reach their potential",
+        D:"Behaviour reflects conflict between unconscious forces"
+      },
+      correct:"B",tag:"MC-APP-BIO",
+      scaffold:"The biological approach assumes the mind lives in the brain: every thought, feeling and behaviour has a physical basis in genes, neurochemistry and brain structure. So to understand behaviour, study those. It also assumes behaviour has an evolutionary history, and that because humans share biology with other animals, animal research can be informative. Each distractor is another approach's assumption — consequences (behaviourist), free will (humanistic), unconscious conflict (psychodynamic) — so this question tests whether you can match approach to assumption. Examiner tip: name the four levels the approach works at — genes, neurochemistry, structure and evolution — and use one in every explanation.",
+      reforge:{stem:"A researcher explains depression by low serotonin levels. Which approach is this?",options:{A:"Behaviourist, as it focuses on reinforcement",B:"Cognitive, as it focuses on faulty thinking",C:"Biological, as it focuses on neurochemistry",D:"Humanistic, as it focuses on incongruence"},correct:"C"}
+    },
+    {
+      id:"APP-46",
+      stem:"What is a neurotransmitter?",
+      options:{
+        A:"A chemical messenger that carries signals across a synapse",
+        B:"A hormone released into the bloodstream by an endocrine gland",
+        C:"A gene that is passed on from parents and shapes behaviour",
+        D:"A nerve cell that carries signals from the senses to the brain"
+      },
+      correct:"A",tag:"MC-APP-BIO",
+      scaffold:"Neurons do not touch. When an electrical impulse reaches the end of one neuron, it releases a chemical — a neurotransmitter — into the synapse, the gap between neurons. The chemical binds to receptors on the next neuron and makes it more or less likely to fire. Serotonin, dopamine and noradrenaline are the ones you will meet most. The biological approach argues that too much or too little of a neurotransmitter can explain behaviour: low serotonin in depression, high dopamine in schizophrenia. A hormone is the endocrine system's equivalent, carried in the blood and much slower. Examiner tip: 'neurochemistry' is the umbrella term.",
+      reforge:{stem:"Which finding supports a neurochemical explanation of behaviour?",options:{A:"Children imitate aggressive behaviour after watching an adult model",B:"Drugs that raise serotonin reduce symptoms of OCD in many patients",C:"Patients improve when a therapist offers unconditional regard",D:"Dreams are found to contain symbols of unresolved childhood wishes"},correct:"B"}
+    },
+    {
+      id:"APP-47",
+      stem:"What do DZ twins share genetically, on average?",
+      options:{
+        A:"100% of their genes, as they come from one egg",
+        B:"About 25% of their genes, as half-siblings do",
+        C:"About 50% of their genes, as any siblings do",
+        D:"None of their genes beyond those of strangers"
+      },
+      correct:"C",tag:"MC-APP-BIO",
+      scaffold:"Monozygotic (MZ, identical) twins develop from one fertilised egg that splits, so they share 100% of their genes. Dizygotic (DZ, non-identical) twins develop from two eggs fertilised separately, so genetically they are ordinary siblings who happen to be born together, sharing about 50% on average. That difference is what makes twin studies work: both kinds of twin usually share an upbringing, so if MZ twins are more alike than DZ twins on a trait, the extra similarity is put down to genes. Examiner tip: always state the 100% versus 50% figures before drawing a conclusion from concordance rates.",
+      reforge:{stem:"Why do researchers compare MZ and DZ concordance rates?",options:{A:"If DZs are more alike, genes are likely to be involved",B:"If both are equally alike, genes must be the only cause",C:"If MZs are more alike, upbringing must be the only cause",D:"If MZs are more alike, genes are likely to be involved"},correct:"D"}
+    },
+    {
+      id:"APP-48",
+      stem:"Which is a strength of the biological approach?",
+      options:{
+        A:"It shows that the environment never has any influence on behaviour",
+        B:"It gives a holistic account of the whole person and their choices",
+        C:"It proves that every mental disorder is caused by a single gene",
+        D:"It has led to drug treatments that help many people with disorders"
+      },
+      correct:"D",tag:"MC-APP-BIO",
+      scaffold:"The biological approach has real-world application: understanding neurochemistry led to drugs such as SSRIs for depression and OCD and antipsychotics for schizophrenia, which have let many people live outside hospital. It is also scientific — brain scans, drug trials and twin studies produce objective, replicable data. The distractors are overstatements or belong elsewhere: concordance below 100% shows the environment does matter, holism is the humanistic approach, and most disorders involve many genes. Examiner tip: balance the drug-therapy strength with its standard counterpoint — drugs treat symptoms, and that a drug works does not prove the chemical caused the problem.",
+      reforge:{stem:"Why is the biological approach described as biologically deterministic?",options:{A:"It sees behaviour as caused by genes and neurochemistry, not choice",B:"It sees behaviour as caused by rewards and punishments, not genes",C:"It sees behaviour as caused by unconscious drives formed in early life",D:"It sees behaviour as freely chosen by people seeking self-growth"},correct:"A"}
+    },
+    {
+      id:"APP-49",
+      stem:"What is natural selection, as used by the biological approach?",
+      options:{
+        A:"Behaviours that are rewarded by others become more frequent",
+        B:"Individuals choose which of their traits to pass on to children",
+        C:"Traits acquired during a lifetime are inherited by offspring",
+        D:"Traits that aid survival and reproduction become more common"
+      },
+      correct:"D",tag:"MC-APP-BIO",
+      scaffold:"Darwin's idea is simple. Individuals vary, and some of that variation is inherited. Individuals with traits that help them survive and reproduce leave more offspring, so those traits become more common over generations. The biological approach applies this to behaviour: attachment, fear of predators and aggression may exist because they helped our ancestors' genes get passed on. Behaviour becoming more frequent because others reward it is operant conditioning, which happens within one lifetime. Nobody chooses which traits to pass on, and inheriting acquired traits is Lamarck's idea, which Darwin's replaced. Examiner tip: an evolutionary explanation always needs the survival or reproductive advantage spelled out.",
+      reforge:{stem:"How might evolution explain why phobias of snakes are more common than phobias of cars?",options:{A:"Fear of snakes aided ancestors' survival, so it was selected",B:"Snakes are seen more often than cars in everyday modern life",C:"Cars are associated with reward, so fear of them is extinguished",D:"Snake phobias are learned only by watching parents react to snakes"},correct:"A"}
+    },
+    {
+      id:"APP-50",
+      stem:"Which part of the personality operates on the pleasure principle?",
+      options:{
+        A:"The ego, which balances demands against what reality allows",
+        B:"The superego, which holds the moral standards of the parents",
+        C:"The id, present from birth and seeking instant gratification",
+        D:"The preconscious, holding thoughts that can easily be recalled"
+      },
+      correct:"C",tag:"MC-APP-PSYDYN",
+      scaffold:"Freud's tripartite personality has three parts that develop in order. The id is there from birth: it is unconscious, selfish and works on the pleasure principle — it wants what it wants now. The ego develops at around two and works on the reality principle, finding realistic ways to satisfy the id. The superego forms at the end of the phallic stage, around five, and is our internalised sense of right and wrong. The preconscious is a level of the mind, not a part of the personality. Examiner tip: link each part to its principle and approximate age in one sentence.",
+      reforge:{stem:"According to Freud, what happens when the superego dominates the personality?",options:{A:"The person acts on every selfish impulse with no thought for others",B:"The person becomes entirely free of all anxiety and inner conflict",C:"The person gains direct access to all of their unconscious",D:"The person may feel excessive guilt and be overly self-critical"},correct:"D"}
+    },
+    {
+      id:"APP-51",
+      stem:"What is repression?",
+      options:{
+        A:"Redirecting an emotion away from its source onto a safer target",
+        B:"Pushing a distressing memory out of conscious awareness",
+        C:"Refusing to accept that a painful event has really happened",
+        D:"Returning to behaviour typical of an earlier stage of life"
+      },
+      correct:"B",tag:"MC-APP-PSYDYN",
+      scaffold:"Defence mechanisms are unconscious strategies the ego uses to reduce anxiety from conflict between the id and superego, or from distressing events. Repression forces a threatening memory or desire into the unconscious, so the person is not aware of it — but Freud argued it still influences behaviour. The spec names three mechanisms and the distractors cover the others: displacement redirects feeling to a safer target, and denial refuses to accept reality. Regression is a real mechanism too, but not one the spec names. Examiner tip: for each mechanism, learn a definition and a one-line example you can apply to a scenario.",
+      reforge:{stem:"A person cannot remember a car crash they were in, though they were not injured. Which defence mechanism might Freud propose?",options:{A:"Displacement of the fear onto other people in the family",B:"Regression to an earlier, more childlike way of behaving",C:"Repression of the traumatic memory into the unconscious",D:"Denial that the crash was ever serious enough to matter"},correct:"C"}
+    },
+    {
+      id:"APP-52",
+      stem:"What is the Oedipus complex, according to Freud?",
+      options:{
+        A:"A boy's desire for his mother and rivalry with his father",
+        B:"A conflict between the ego and reality during toilet training",
+        C:"A child's fear of being abandoned during the oral stage",
+        D:"An adult's wish to return to the security of the womb"
+      },
+      correct:"A",tag:"MC-APP-PSYDYN",
+      scaffold:"The Oedipus complex happens during the phallic stage, at around three to five years. Freud claimed a boy develops unconscious desire for his mother and sees his father as a rival, then fears the father will punish him (castration anxiety). Freud's main evidence was the case of Little Hans. The girls' version, later called the Electra complex, involves penis envy. Toilet training is the anal stage and the oral stage is about feeding. Examiner tip: the Oedipus complex matters because it explains how the superego forms and is also the standard example of an unfalsifiable claim, so be ready to use it both ways.",
+      reforge:{stem:"How did Freud believe the Oedipus complex is resolved?",options:{A:"The boy represses all memory of his parents until adulthood",B:"The boy identifies with his father and takes on his values",C:"The boy moves on to the oral stage, ending the conflict",D:"The boy redirects his desires onto his closest siblings"},correct:"B"}
+    },
+    {
+      id:"APP-53",
+      stem:"What is the correct order of Freud's psychosexual stages?",
+      options:{
+        A:"Oral, anal, phallic, latency, genital",
+        B:"Oral, phallic, anal, genital, latency",
+        C:"Anal, oral, latency, phallic, genital",
+        D:"Oral, anal, latency, phallic, genital"
+      },
+      correct:"A",tag:"MC-APP-PSYDYN",
+      scaffold:"Freud argued that the libido (sexual energy) focuses on a different part of the body at each stage. Oral, birth to 18 months: the mouth, feeding. Anal, 18 months to 3 years: control of the bowel, toilet training. Phallic, 3 to 5 or 6 years: the genitals, the Oedipus complex. Latency, from about 6 to puberty: conflicts are repressed and the child is focused on school and friends. Genital, from puberty: mature sexual relationships. Unresolved conflict at a stage causes fixation and adult traits linked to that stage. Examiner tip: a mnemonic like 'Old Age Pensioners Love Gardening' locks in the order.",
+      reforge:{stem:"Which is the main scientific criticism of Freud's theory?",options:{A:"It was based on large samples of randomly selected adults",B:"Its concepts, like the id, cannot be measured or falsified",C:"It ignores the influence of childhood on adult personality",D:"It relies on controlled experiments that lack ecological validity"},correct:"B"}
+    },
+    {
+      id:"APP-54",
+      stem:"Which is a strength of the psychodynamic approach?",
+      options:{
+        A:"It is supported by large, controlled experiments with clear results",
+        B:"It introduced the idea of talking therapy, such as psychoanalysis",
+        C:"It explains behaviour wholly in terms of conscious, rational choices",
+        D:"It avoids determinism by stressing personal free will in all things"
+      },
+      correct:"B",tag:"MC-APP-PSYDYN",
+      scaffold:"Freud's lasting contribution is psychoanalysis, the first talking therapy. The idea that talking about problems with a trained listener can help is now everywhere, from counselling to many modern therapies, even those that reject Freud's theory. The approach also drew attention to the influence of childhood on adult personality. The distractors are the reverse of the truth: Freud relied on case studies, not experiments; he argued behaviour is driven by unconscious, irrational forces; and the approach is strongly deterministic (psychic determinism). Examiner tip: credit Freud's influence and explanatory reach, then criticise the evidence base and falsifiability.",
+      reforge:{stem:"Why is the evidence for Freud's theory criticised?",options:{A:"It came from experiments on thousands of randomly selected adults",B:"It was gathered entirely from brain scans of his own patients",C:"It relied on case studies of a small number of patients",D:"It drew only on rats observed in controlled laboratory boxes"},correct:"C"}
+    },
+    {
+      id:"APP-55",
+      stem:"What is at the top of Maslow's hierarchy of needs?",
+      options:{
+        A:"Esteem",
+        B:"Love and belongingness",
+        C:"Safety and security",
+        D:"Self-actualisation"
+      },
+      correct:"D",tag:"MC-APP-HUM",
+      scaffold:"Maslow arranged human needs as a pyramid. From the bottom: physiological needs (food, water, sleep), safety and security, love and belongingness, esteem, and at the top self-actualisation — becoming the most complete version of yourself and fulfilling your potential. The lower four are deficiency needs: you notice them when they are not met. Self-actualisation is a growth need. Maslow argued each level must be largely satisfied before a person is motivated by the next. Examiner tip: use the hierarchy to illustrate the humanistic assumption that people have an innate drive towards growth, and remember Maslow thought few people actually reach the top.",
+      reforge:{stem:"According to Maslow, why do many people never reach self-actualisation?",options:{A:"Lower needs, such as safety or esteem, have not yet been met",B:"They have too few unconscious conflicts left to work through now",C:"Self-actualisation is reached only through drug treatment",D:"Higher needs must be met before lower ones can be satisfied"},correct:"A"}
+    },
+    {
+      id:"APP-56",
+      stem:"What does the humanistic approach mean by free will?",
+      options:{
+        A:"People's choices are fully determined by past reinforcement",
+        B:"People's behaviour is controlled by unconscious childhood forces",
+        C:"People are active agents who can make choices about their lives",
+        D:"People act as genes and brain chemistry dictate they should"
+      },
+      correct:"C",tag:"MC-APP-HUM",
+      scaffold:"Every other approach on the spec is deterministic to some degree: behaviour is caused by conditioning, genes, the unconscious or information processing. The humanistic approach rejects that. It sees people as self-determining — able to reflect on their lives and choose how to act, while still being influenced by their circumstances. This is why it focuses on personal responsibility and growth rather than on causes. Each distractor is a form of determinism: environmental, psychic and biological. Examiner tip: in a free will and determinism essay, use the humanistic approach as your clearest example of free will and contrast it with the other approaches.",
+      reforge:{stem:"Why does the humanistic approach reject general laws of behaviour?",options:{A:"It is nomothetic, seeking laws that apply to all",B:"It is reductionist, breaking behaviour into parts",C:"It is deterministic, seeing behaviour as caused",D:"It is idiographic, seeing each person as unique"},correct:"D"}
+    },
+    {
+      id:"APP-57",
+      stem:"In Rogers' client-centred therapy, what is unconditional positive regard?",
+      options:{
+        A:"Praising the client only when they make progress",
+        B:"Challenging the client's irrational beliefs directly",
+        C:"Accepting the client fully, whatever they say or do",
+        D:"Interpreting what the client's dreams reveal"
+      },
+      correct:"C",tag:"MC-APP-HUM",
+      scaffold:"Rogers believed psychological problems come from conditions of worth: as children we learn that love depends on behaving in certain ways, so we hide parts of ourselves and become incongruent. The therapist reverses this by offering unconditional positive regard — complete acceptance, without judgement, of whatever the client says. Alongside empathy and genuineness, this lets the client explore their feelings and move towards congruence. Praise that depends on progress is itself conditional, challenging irrational beliefs is CBT, and dream interpretation is psychoanalysis. Examiner tip: link unconditional positive regard to conditions of worth — it is the remedy for the problem they cause.",
+      reforge:{stem:"Which feature of Rogers' therapy reflects its non-directive approach?",options:{A:"The therapist sets weekly homework tasks to test beliefs",B:"The therapist interprets hidden meanings in speech",C:"The client follows a fixed programme of exposure",D:"The client, not the therapist, leads what is discussed"},correct:"D"}
+    },
+    {
+      id:"APP-58",
+      stem:"Why is the humanistic approach described as anti-reductionist?",
+      options:{
+        A:"It studies the whole person instead of breaking them into parts",
+        B:"It explains behaviour by reducing it to stimulus-response links",
+        C:"It tests behaviour in controlled experiments with large samples",
+        D:"It locates behaviour in particular structures of the brain"
+      },
+      correct:"A",tag:"MC-APP-HUM",
+      scaffold:"Reductionism explains complex behaviour by breaking it into smaller parts: conditioned responses, neurotransmitters, information-processing stages. Humanistic psychologists argue this loses what matters. A person is more than the sum of their parts, so behaviour has to be understood in the context of the whole person and their subjective experience. This is holism. The distractors describe reductionist approaches — behaviourism, experimental cognitive psychology and the biological approach. The benefit is validity: it looks at real people in their real lives. The cost is that holistic concepts are hard to test. Examiner tip: holism and anti-reductionism are the same point from two directions.",
+      reforge:{stem:"What is a limitation of the humanistic approach being holistic?",options:{A:"It ignores the person's subjective experience completely",B:"Its broad concepts are hard to test in controlled studies",C:"It reduces people to genes and brain chemistry alone",D:"It focuses too narrowly on single stimulus-response links"},correct:"B"}
+    },
+    {
+      id:"APP-59",
+      stem:"Which is a criticism of the humanistic approach?",
+      options:{
+        A:"It sees people as passive and controlled by their environment",
+        B:"Its focus on personal growth reflects individualist cultures",
+        C:"It relies too heavily on experiments using laboratory animals",
+        D:"It explains behaviour in terms of inherited brain chemistry"
+      },
+      correct:"B",tag:"MC-APP-HUM",
+      scaffold:"Ideas like self-actualisation, personal growth and individual freedom are central values in individualist cultures such as the USA and much of Western Europe, where Rogers and Maslow worked. In collectivist cultures, which value the needs of the group and interdependence, a good life may look quite different, so the theory may not apply universally. This is cultural bias. The distractors describe the very things humanistic psychology rejects: passivity is behaviourism, animal experiments are behaviourism too, and brain chemistry is biological. Examiner tip: a strong humanistic evaluation pairs cultural bias with untestable concepts, then credits its positive influence on counselling.",
+      reforge:{stem:"How has the humanistic approach influenced psychology in practice?",options:{A:"It led to token economies used in psychiatric hospitals",B:"It led to drug therapies that alter neurotransmitters",C:"It shaped modern counselling and person-centred therapy",D:"It shaped the dream analysis used in psychoanalysis"},correct:"C"}
+    },
+    {
+      id:"APP-60",
+      stem:"In Rogers' theory, what is the ideal self?",
+      options:{
+        A:"The person others believe them to be",
+        B:"The person they were as a child",
+        C:"The person they are at present",
+        D:"The person they would like to be"
+      },
+      correct:"D",tag:"MC-APP-HUM",
+      scaffold:"Rogers described two versions of the self. The self-concept is how a person actually sees themselves now. The ideal self is the person they would like to be. When the two are close the person is congruent, and their self-worth is high. When there is a large gap, they are incongruent, and they experience low self-worth and anxiety. How others see you is not part of the model; what matters is your own view of yourself. Therapy aims to reduce the gap, partly by helping the client accept their self-concept and partly by making the ideal self realistic. Examiner tip: define congruence in terms of these two selves.",
+      reforge:{stem:"Where does Rogers believe low self-worth comes from?",options:{A:"Growing up with love that depended on meeting conditions",B:"Unresolved conflict between the id and the superego",C:"Inherited low levels of the neurotransmitter serotonin",D:"Being reinforced too frequently for behaviour in early childhood"},correct:"A"}
+    },
+    {
+      id:"APP-61",
+      stem:"Which pair of approaches both take a nurture view of behaviour?",
+      options:{
+        A:"Biological approach and cognitive neuroscience",
+        B:"Biological approach and evolutionary theory",
+        C:"Genetic explanations and neurochemistry",
+        D:"Behaviourism and social learning theory"
+      },
+      correct:"D",tag:"MC-APP-COMPARE",
+      scaffold:"Place each approach on the nature–nurture spectrum. Behaviourism is the extreme nurture position: we are born a blank slate and everything is learned through conditioning. Social learning theory is also nurture, adding observation and imitation. The biological approach, including genetics, neurochemistry and evolution, sits at the nature end. The others are interactionist: the psychodynamic approach combines innate drives with childhood experience, the cognitive approach has innate processing capacities shaped by experience, and the humanistic approach stresses the environment around an innate drive to grow. Examiner tip: comparison questions reward a clear position for each approach plus a reason, not just a label.",
+      reforge:{stem:"Which approach takes an interactionist view, combining innate drives with childhood experience?",options:{A:"Psychodynamic",B:"Behaviourist",C:"Biological",D:"Social learning"},correct:"A"}
+    },
+    {
+      id:"APP-62",
+      stem:"Which approach is most nomothetic in its aims?",
+      options:{
+        A:"Humanistic, focusing on each individual's unique experience",
+        B:"Behaviourism, seeking laws of learning that apply to all",
+        C:"Psychodynamic, built from a few detailed case studies",
+        D:"Rogerian counselling, tailored to each individual client"
+      },
+      correct:"B",tag:"MC-APP-COMPARE",
+      scaffold:"A nomothetic approach looks for general laws that apply to everyone, usually by studying large groups and comparing them. An idiographic approach studies individuals in depth to understand what is unique about them. Behaviourism is the clearest nomothetic case: Skinner's laws of reinforcement were meant to apply to all organisms. The biological and cognitive approaches are nomothetic too. The humanistic approach is the clearest idiographic case, and the psychodynamic approach is mixed — it uses individual case studies but proposed universal stages. Examiner tip: this links Approaches to Issues and Debates, so the same comparison can earn marks on Paper 3.",
+      reforge:{stem:"Which approach mainly uses idiographic methods?",options:{A:"Behaviourist, using controlled animal experiments",B:"Biological, using twin studies and brain scans",C:"Humanistic, using interviews and personal diaries",D:"Cognitive, using laboratory memory experiments"},correct:"C"}
+    },
+    {
+      id:"APP-63",
+      stem:"Which approach would explain a phobia as the result of a frightening event paired with an object?",
+      options:{
+        A:"Psychodynamic, through repressed childhood conflict",
+        B:"Biological, through an inherited genetic vulnerability",
+        C:"Behaviourist, through classical conditioning",
+        D:"Humanistic, through blocked personal growth"
+      },
+      correct:"C",tag:"MC-APP-COMPARE",
+      scaffold:"Pairing a neutral object with a frightening event is classical conditioning: the object becomes a conditioned stimulus that triggers fear. Mowrer's two-process model adds operant conditioning to explain why the phobia lasts — avoiding the object reduces anxiety, which negatively reinforces the avoidance. Every approach can say something about phobias, which is why they make good comparison questions: a psychodynamic account would point to displaced unconscious anxiety, as in Little Hans, a biological account to inherited vulnerability or evolved preparedness, and a cognitive account to irrational beliefs about danger. Examiner tip: match on the mechanism in the scenario — pairing means classical conditioning.",
+      reforge:{stem:"Which approach would explain a phobia as the result of irrational thinking?",options:{A:"Behaviourist, through negative reinforcement of avoidance",B:"Humanistic, through conditions of worth set by parents",C:"Biological, through an overactive amygdala response",D:"Cognitive, through distorted beliefs about danger"},correct:"D"}
+    },
+    {
+      id:"APP-64",
+      stem:"How does the behaviourist view of therapy differ from the psychodynamic view?",
+      options:{
+        A:"Behaviourists change the symptom; Freudians seek its hidden cause",
+        B:"Behaviourists explore dreams; Freudians reward desired behaviour",
+        C:"Behaviourists prescribe drugs; Freudians use token economies",
+        D:"Behaviourists offer empathy; Freudians challenge irrational beliefs"
+      },
+      correct:"A",tag:"MC-APP-COMPARE",
+      scaffold:"For a behaviourist, the behaviour is the problem: a phobia is a learned response, so unlearn it through systematic desensitisation, flooding or a token economy. There is nothing underneath to find. For Freud, the behaviour is a symptom of unconscious conflict, so treating it directly misses the cause. Psychoanalysis uses free association and dream analysis to bring the conflict into awareness. Freudians predicted symptom substitution, a new symptom appearing if only the old one is removed, though evidence for this is weak. The distractors mix up therapies: drugs are biological, empathy is humanistic, and challenging beliefs is cognitive. Examiner tip: compare approaches through their therapies.",
+      reforge:{stem:"Which pair of approaches would most likely agree that childhood experience shapes adult behaviour?",options:{A:"Biological and cognitive neuroscience",B:"Psychodynamic and behaviourist",C:"Biological and evolutionary",D:"Humanistic and genetic"},correct:"B"}
     }
   ]
 };
