@@ -1094,7 +1094,7 @@ function renderDashboard() {
   h += '<div><h1>' + teacherEsc(dashState.className) + '</h1><p class="teacher-dashboard-meta"><b>' + students.length + '</b> student' + (students.length !== 1 ? 's' : '') + ' · <b>' + totalQs + '</b> scored answer' + (totalQs !== 1 ? 's' : '');
   if (dashState.classCode) h += ' · <button type="button" class="class-code-pill" id="class-code-pill" data-forge-action="copy-class-code" aria-label="Copy class code ' + teacherEsc(dashState.classCode) + '">' + teacherEsc(dashState.classCode) + '</button>';
   h += '</p></div><div class="teacher-dashboard-head__actions"><button type="button" class="back-btn forge-u-gr3ipb" data-forge-action="render-teacher-home">All classes</button>';
-  h += '<div class="dash-tools"><button type="button" class="dash-tools__toggle" id="dash-tools-toggle" aria-expanded="false" aria-controls="dash-tools-menu">Class tools</button><div class="dash-tools__menu" id="dash-tools-menu" hidden><button type="button" class="forge-button forge-button--secondary" id="generate-student-codes" aria-expanded="false" aria-controls="generate-codes-panel">Generate student codes</button><button type="button" class="forge-button forge-button--secondary" id="migrate-existing-students">Migrate existing students</button>' + (typeof dashState.leagueEnabled === 'boolean' ? '<button type="button" class="forge-button forge-button--secondary" id="toggle-league" aria-pressed="' + dashState.leagueEnabled + '">Weekly league: ' + (dashState.leagueEnabled ? 'On' : 'Off') + '</button>' : '') + (typeof dashState.friendsEnabled === 'boolean' ? '<button type="button" class="forge-button forge-button--secondary" id="toggle-friends" aria-pressed="' + dashState.friendsEnabled + '">Friends: ' + (dashState.friendsEnabled ? 'On' : 'Off') + '</button>' : '') + '<button type="button" class="forge-button forge-button--secondary forge-button--danger" id="delete-class">Delete class</button><div class="dash-tool-group"><span class="dash-tool-group__label">Rename a student</span><div class="dash-tool-group__controls"><label class="forge-sr-only" for="rename-select">Student to rename</label><select id="rename-select" class="forge-u-1o9xvhi"><option value="">Select student…</option>' + students.map(function(student) { return '<option value="' + student.id + '">' + teacherEsc(student.display_name || student.name || 'Student') + '</option>'; }).join('') + '</select><label class="forge-sr-only" for="rename-input">New display name</label><input type="text" id="rename-input" class="rename-input" placeholder="New display name"><button type="button" id="rename-btn" class="forge-button forge-button--secondary">Save</button></div><p class="join-err" id="rename-err"></p></div></div></div></div></header>';
+  h += '<div class="dash-tools"><button type="button" class="dash-tools__toggle" id="dash-tools-toggle" aria-expanded="false" aria-controls="dash-tools-menu">Class tools</button><div class="dash-tools__menu" id="dash-tools-menu" hidden><button type="button" class="forge-button forge-button--secondary" id="generate-student-codes" aria-expanded="false" aria-controls="generate-codes-panel">Generate student codes</button><button type="button" class="forge-button forge-button--secondary" id="migrate-existing-students">Migrate existing students</button>' + (typeof dashState.leagueEnabled === 'boolean' ? '<button type="button" class="forge-button forge-button--secondary" id="toggle-league" aria-pressed="' + dashState.leagueEnabled + '">Weekly league: ' + (dashState.leagueEnabled ? 'On' : 'Off') + '</button>' : '') + (typeof dashState.friendsEnabled === 'boolean' ? '<button type="button" class="forge-button forge-button--secondary" id="toggle-friends" aria-pressed="' + dashState.friendsEnabled + '">Friends: ' + (dashState.friendsEnabled ? 'On' : 'Off') + '</button>' : '') + '<button type="button" class="forge-button forge-button--secondary forge-button--danger" id="delete-class">Delete class</button><div class="dash-tool-group"><span class="dash-tool-group__label">Rename a student</span><div class="dash-tool-group__controls"><label class="forge-sr-only" for="rename-select">Student to rename</label><select id="rename-select" class="forge-u-1o9xvhi"><option value="">Select student…</option>' + students.map(function(student) { return '<option value="' + student.id + '">' + teacherEsc(student.display_name || student.name || 'Student') + '</option>'; }).join('') + '</select><label class="forge-sr-only" for="rename-input">New display name</label><input type="text" id="rename-input" class="rename-input" placeholder="New display name"><button type="button" id="rename-btn" class="forge-button forge-button--secondary">Save</button></div><p class="join-err" id="rename-err"></p></div><div class="dash-tool-group"><span class="dash-tool-group__label">Reset a lost student code</span><div class="dash-tool-group__controls"><label class="forge-sr-only" for="reset-code-select">Student whose code to reset</label><select id="reset-code-select" class="forge-u-1o9xvhi"><option value="">Select student…</option>' + students.map(function(student) { return '<option value="' + student.id + '">' + teacherEsc(student.display_name || student.name || 'Student') + '</option>'; }).join('') + '</select><button type="button" id="reset-code-btn" class="forge-button forge-button--secondary" aria-controls="generate-codes-panel">Reset code</button></div><p class="join-err" id="reset-code-err"></p></div></div></div></div></header>';
   h += '<div id="delete-class-panel" hidden></div><div id="generate-codes-panel" class="code-generation-panel" hidden></div><div id="code-coverage-note" class="code-coverage" role="status" hidden></div>';
 
   var topStudentCount = topSignal ? Object.keys(topSignal.students).length : 0;
@@ -1490,6 +1490,60 @@ function renderDashboard() {
           stateHost.textContent = (error && error.message) || 'Could not migrate existing students.';
         })
         .finally(function () { submitBtn.disabled = false; cancelBtn.disabled = false; });
+    };
+  };
+
+  /* Reset one student's lost code. The server keeps only a hash, so a code
+     cannot be looked up again; this replaces it instead. The old code stops
+     working, the student keeps their record and history, and the new code is
+     shown once through renderGeneratedCodes like any other batch. */
+  var resetCodeBtn = document.getElementById('reset-code-btn');
+  if (resetCodeBtn && generateCodesPanel) resetCodeBtn.onclick = function () {
+    var select = document.getElementById('reset-code-select');
+    var err = document.getElementById('reset-code-err');
+    var sid = select.value;
+    err.style.display = 'none';
+    if (!sid) { err.textContent = 'Select a student.'; err.style.display = 'block'; return; }
+    var name = select.options[select.selectedIndex].text;
+    generateCodesPanel.hidden = false;
+    generateCodesPanel.innerHTML = '<div class="card code-generation-card" role="dialog" aria-labelledby="reset-code-title">'
+      + '<h3 id="reset-code-title">Reset ' + teacherEsc(name) + '’s code?</h3>'
+      + '<p>Their old code will stop working straight away, on every device. Their work and answer history are kept, and the new code signs them back into the same record.</p>'
+      + '<div class="forge-action-row"><button type="button" class="forge-button forge-button--secondary" id="reset-code-cancel">Cancel</button>'
+      + '<button type="button" class="forge-button forge-button--primary" id="reset-code-submit">Reset code</button></div>'
+      + '<div id="reset-code-state" class="code-generation-status" role="status" aria-live="polite"></div></div>';
+    var cancelBtn = document.getElementById('reset-code-cancel');
+    var submitBtn = document.getElementById('reset-code-submit');
+    var stateHost = document.getElementById('reset-code-state');
+    submitBtn.focus();
+    cancelBtn.onclick = function () {
+      generateCodesPanel.hidden = true;
+      generateCodesPanel.innerHTML = '';
+      resetCodeBtn.focus();
+    };
+    submitBtn.onclick = function () {
+      submitBtn.disabled = true; cancelBtn.disabled = true;
+      stateHost.className = 'code-generation-status';
+      stateHost.textContent = 'Resetting…';
+      ForgeAPI.rpc('reset_student_access_code', { p_student_id: sid }, teacherApiOptions())
+        .then(function (rows) {
+          var row = Array.isArray(rows) ? rows[0] : rows;
+          if (!row || !row.student_code) throw new Error('The server returned an invalid reset response.');
+          stateHost.className = 'code-generation-status code-generation-status--success';
+          stateHost.textContent = 'New code for ' + (row.student_name || name) + '. Their old code no longer works.';
+          submitBtn.hidden = true;
+          cancelBtn.textContent = 'Done';
+          renderGeneratedCodes([row], true);
+        })
+        .catch(function (error) {
+          var message = String((error && error.message) || '');
+          stateHost.className = 'code-generation-status code-generation-status--error';
+          stateHost.textContent = /no_code/.test(message)
+            ? 'This student has no code yet. Use Migrate existing students to give them one.'
+            : 'Could not reset this code. Check your connection and try again.';
+          submitBtn.disabled = false;
+        })
+        .finally(function () { cancelBtn.disabled = false; });
     };
   };
   var dashAction = document.getElementById('dash-action');

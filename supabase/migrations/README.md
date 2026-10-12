@@ -428,3 +428,16 @@ Read open reports with:
 select r.question_id, r.bank, r.reason, r.selected_option, r.note, r.created_at
 from public.question_reports r where r.status = 'open' order by r.created_at desc;
 ```
+
+## 20261012 183559 — teachers can reset a lost student code
+
+| File | What it does |
+|---|---|
+| `20261012183559_reset_student_access_code.sql` | Adds `reset_student_access_code(student_id)`. The class owner gets a new code for one student, returned once; the new hash overwrites the old one on the student's existing row, so the old code stops working and the student keeps their record. Refuses a student with no code row (`no_code`) rather than switching a name-only class over to codes. |
+
+Applied to production on 2026-10-12 (recorded as version 20261012183559,
+which is why the file carries that number). Probed first inside a
+rolled-back `do` block: refuses a teacher who does not
+own the class, replaces the hash in place (still one row per student), the new
+code signs in to the same student record, refuses a student with no code, and
+grants execute to `authenticated` only.
