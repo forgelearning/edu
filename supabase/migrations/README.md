@@ -454,4 +454,15 @@ which is why the file carries that number). Probed first inside a rolled-back
 linking, refused a wrong code, missing codes and a row linked to itself,
 Journeyman after linking with both codes while the weekly XP stayed at that
 class's 10, and the two helpers are not executable by `anon` or
-`authenticated`. `get_class_friends` still computes `xp_total` per row.
+`authenticated`. `get_class_friends` followed in 20261012190009.
+
+## 20261012 190009 — friends show the same rank badge
+
+| File | What it does |
+|---|---|
+| `20261012190009_friends_rank_across_classes.sql` | `get_class_friends_unchecked` returns a friend's `xp_total` from `forge_student_lifetime_xp`, so their badge and frame match their Home and the league. Weekly XP, accuracy and streak still count only this class. Otherwise identical to the body in `20261007175306_student_match_xp.sql`. |
+
+Applied to production on 2026-10-12 (recorded as version 20261012190009).
+Probed first inside a rolled-back `do` block: a friend with 310 XP in another
+class and 10 here read `xp_total` 10 before their rows were linked and 320
+after, with `xp_week` and `answered` unchanged and the same keys returned.
