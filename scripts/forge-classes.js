@@ -159,7 +159,7 @@
     var failed = null;
 
     Promise.all(mine.map(function (c) {
-      var responsePromise = c.studentCode && global.ForgeStudentCode
+      var responsePromise = (c.studentCode || (global.ForgeAuth && global.ForgeAuth.accessToken && global.ForgeAuth.accessToken())) && global.ForgeStudentCode
         ? global.ForgeStudentCode.responses(c.studentId, c.classCode, c.studentCode)
         : rpc(supabaseUrl, supabaseKey, 'get_student_own_responses', { p_student_id: c.studentId, p_code: c.classCode, p_name: c.studentName || fallbackName });
       return responsePromise.then(function (rows) {
@@ -302,7 +302,8 @@
         console.warn('ForgeClasses.fetchLinkedResponses: anchor was missing studentCode for a coded student; recovered it from the cached session. Fix the caller.', anchor);
       }
     }
-    var responseRequest = studentCode && global.ForgeStudentCode
+    var accountToken = global.ForgeAuth && global.ForgeAuth.accessToken && global.ForgeAuth.accessToken();
+    var responseRequest = (studentCode || accountToken) && global.ForgeStudentCode
       ? global.ForgeStudentCode.responses(anchor.studentId, anchor.classCode, studentCode)
       : rpc(supabaseUrl, supabaseKey, 'get_student_own_responses', {
         p_student_id: anchor.studentId, p_code: anchor.classCode, p_name: anchor.studentName

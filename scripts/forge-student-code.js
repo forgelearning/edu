@@ -5,7 +5,8 @@
     return String(value || '').trim().toUpperCase().replace(/[^A-Z0-9]/g, '');
   }
   function rpc(name, body) {
-    return root.ForgeAPI.rpc(name, body, { token: root.SUPABASE_KEY || root.ForgeAPI.config.key });
+    var token = root.ForgeAuth && root.ForgeAuth.accessToken && root.ForgeAuth.accessToken();
+    return root.ForgeAPI.rpc(name, body, { token: token || root.SUPABASE_KEY || root.ForgeAPI.config.key });
   }
   root.ForgeStudentCode = {
     clean: clean,
@@ -16,6 +17,11 @@
         p_name: String(name || '').trim()
       }).then(function (rows) {
         if (!Array.isArray(rows) || !rows[0]) throw new Error('Student code or class code not recognised.');
+        if (rows[0].needs_name) {
+          var error = new Error('This code has not been used yet. Enter your name to claim it.');
+          error.needsName = true;
+          throw error;
+        }
         return rows[0];
       });
     },

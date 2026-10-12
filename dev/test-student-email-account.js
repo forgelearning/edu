@@ -18,6 +18,7 @@ const context = {
   location: { href: 'https://forge.example/forge-quiz.html' },
   ForgeAPI: {
     config: { url: 'https://api.example', key: 'public-key' },
+    get: () => Promise.resolve([{id:'guest-row'}]),
     auth: {
       sendEmailLink: (email, redirect) => { calls.push(['send', email, redirect]); return Promise.resolve({}); },
       verifyEmailCode: () => Promise.resolve({ access_token: 'access', refresh_token: 'refresh', user }),
@@ -29,6 +30,15 @@ const context = {
       if (name === 'claim_free_student') return Promise.resolve({ linked: true });
       if (name === 'get_my_free_student') return Promise.resolve([{
         student_id: 'guest-row', student_name: 'Student', free_token: 'secure-guest-token'
+      }]);
+      if (name === 'join_class_with_student_code') return Promise.resolve([{
+        student_id: 'existing-class-row', student_name: 'Alex Morgan',
+        class_id: 'class-1', class_code: 'HISTORY-Y10', class_name: 'History Y10',
+        subject: 'hist', linked_to_account: true
+      }]);
+      if (name === 'get_my_class_students') return Promise.resolve([{
+        student_id: 'existing-class-row', student_name: 'Alex Morgan',
+        class_id: 'class-1', class_code: 'HISTORY-Y10', class_name: 'History Y10', subject: 'hist'
       }]);
       throw new Error('Unexpected RPC: ' + name);
     }
@@ -82,6 +92,35 @@ async function run() {
   assert.strictEqual(context.ForgeAuth.currentUser().id, user.id);
   assert.strictEqual(context.ForgeAuth.accessToken(), 'link-access');
   assert.strictEqual(reloads, 1);
+
+  // Saving a coded class to email claims the existing row; another device
+  // restores that same ID without needing either code in local storage.
+  context.ForgeAuth.signOut();
+  values.set('forge-student', JSON.stringify({
+    studentId: 'existing-class-row', classId: 'class-1',
+    classCode: 'HISTORY-Y10', studentCode: 'A1B2C3D4E5', studentName: 'Alex Morgan'
+  }));
+  await context.ForgeAuth.sendEmailLink('alex@example.com', false);
+  assert.strictEqual(JSON.parse(values.get('forge-class-claim-pending')).studentCode, 'A1B2C3D4E5');
+  await context.ForgeAuth.verifyEmailCode('alex@example.com', '12345678');
+  assert.strictEqual(values.has('forge-class-claim-pending'), false);
+  assert.strictEqual(calls.filter(call => call[0] === 'join_class_with_student_code').length, 1);
+  const classSession = await context.ForgeAuth.restoreClassStudent();
+  assert.strictEqual(classSession.studentId, 'existing-class-row');
+  assert.strictEqual(classSession.studentCode, undefined);
+  assert.strictEqual(JSON.parse(values.get('forge-student')).classCode, 'HISTORY-Y10');
+  values.delete('forge-free-session');
+  values.delete('forge-student');
+  await context.ForgeAuth.restoreStudentContexts();
+  assert.strictEqual(JSON.parse(values.get('forge-free-session')).studentId, 'guest-row', 'free history remains available');
+  assert.strictEqual(JSON.parse(values.get('forge-student')).studentId, 'existing-class-row', 'class history remains separate');
+
+  vm.runInContext(fs.readFileSync('scripts/forge-student-code.js', 'utf8'), context);
+  calls.length = 0;
+  const resumed = await context.ForgeStudentCode.join('HISTORY-Y10', 'A1B2C3D4E5', '');
+  assert.strictEqual(resumed.student_id, 'existing-class-row');
+  assert.strictEqual(resumed.student_name, 'Alex Morgan');
+  assert.strictEqual(calls[0][2].token, 'access', 'a linked class call uses the email session');
   console.log('Student email account handoff tests passed.');
 }
 run().catch(error => { console.error(error.stack || error); process.exitCode = 1; });

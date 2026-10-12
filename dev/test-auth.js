@@ -74,6 +74,7 @@ async function run() {
   assert.ok(calls.some(call => call.url.includes('grant_type=refresh_token')), 'refresh endpoint should be called after a 401');
 
   store.set('forge-student', 'student-cache');
+  store.set('forge-classes', 'class-credentials-cache');
   store.set('forge-free-session', 'free-cache');
   store.set('forge-paid-student', 'paid-cache');
   store.set('forge-anvil-open', '2');
@@ -84,6 +85,7 @@ async function run() {
   store.set('forge-notification-state:old-student:old-class', '{}');
   context.ForgeAuth.signOut();
   assert.strictEqual(context.ForgeAuth.hasSession(), false, 'sign out should remove the auth session');
+  assert.strictEqual(store.has('forge-classes'), false, 'sign out should remove saved class credentials');
   assert.strictEqual(store.has('forge-anvil-open'), false, 'sign out should clear derived Anvil state');
   assert.strictEqual(store.has('forge-assigned-open:old-student:old-class'), false, 'sign out should clear per-student assignment state');
   assert.strictEqual(store.has('forge-notification-state:old-student:old-class'), false, 'sign out should clear per-student notification state');

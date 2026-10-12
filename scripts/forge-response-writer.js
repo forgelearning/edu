@@ -50,6 +50,13 @@
       ? root.ForgeAuth.accessToken()
       : null;
 
+    if (session.classId && session.classCode && (session.studentCode || token) && root.ForgeStudentCode) {
+      return root.ForgeStudentCode
+        .recordResponse(session.studentId, session.classCode, session.studentCode, row)
+        .then(function (result) { return ok(result); })
+        .catch(function (e) { return fail(e, row, 'class-response'); });
+    }
+
     if (token) {
       return root.ForgeAPI.response(root.ForgeAPI.config.url + '/rest/v1/responses', {
         method: 'POST',
@@ -67,13 +74,6 @@
     /* Class-code students are anonymous, but their student/class pair is the
        ownership boundary for the write. This branch must stay explicit: if it
        silently fell through to a direct insert the row would be rejected. */
-    if (session.classId && session.studentCode && root.ForgeStudentCode) {
-      return root.ForgeStudentCode
-        .recordResponse(session.studentId, session.classCode, session.studentCode, row)
-        .then(function (result) { return ok(result); })
-        .catch(function (e) { return fail(e, row, 'class-response'); });
-    }
-
     /* Legacy class students predate access codes and still write directly. */
     if (session.classId) {
       return root.ForgeAPI.insert('responses', row, { headers: { 'Prefer': 'return=minimal' } })

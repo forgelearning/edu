@@ -290,134 +290,24 @@ function renderStep3() {
 function renderSuccess() {
   var pending = null;
   try { pending = JSON.parse(localStorage.getItem('forge-pending') || 'null'); localStorage.removeItem('forge-pending'); } catch(e) {}
-
-  var name     = (pending && pending.name)     || '';
+  var name = (pending && pending.name) || '';
   var subjects = (pending && pending.subjects) || [];
-  var subjLabels = subjects.map(subjLabel);
-
   var h = '';
-
-  if (subjLabels.length > 0) {
-    h += '<div class="success-card"><b>Subjects unlocked:</b><br>';
-    h += '<div class="forge-u-1m78g7r">';
-    subjLabels.forEach(function(l) {
-      h += '<span class="forge-u-kcpvsf">' + l + '</span>';
+  if (subjects.length) {
+    h += '<div class="success-card"><b>Subjects unlocked:</b><br><div class="forge-u-1m78g7r">';
+    subjects.map(subjLabel).forEach(function(label) {
+      h += '<span class="forge-u-kcpvsf">' + label + '</span>';
     });
     h += '</div></div>';
   }
-
-  // Class linking card
-  h += '<div class="already-box" id="class-link-box">';
-  h += '<div class="forge-u-w2df8o"><b class="forge-text-white">Is your teacher using Forge?</b></div>';
-  h += '<p class="forge-u-1hzqkjr">Enter their class code to share your progress — they\'ll be able to see your misconceptions and set you assignments.</p>';
-  h += '<input class="forge-u-3s1qs0" id="link-code" type="text" placeholder="e.g. ECON-Y12-A">';
-  h += '<button type="button" id="link-btn" class="btn-primary btn-glass btn-ember forge-u-bhmr11"><span>Link to class →</span></button>';
-  h += '<p class="err" id="link-err"></p>';
-  h += '<button type="button" data-forge-action="signup-dashboard" class="btn-ghost btn-glass"><span>Skip — my teacher isn\'t on Forge yet</span></button>';
-  h += '</div>';
-
+  h += '<div class="already-box"><b class="forge-text-white">Is your teacher using Forge?</b>';
+  h += '<p>Use your class code and individual student code to join. Your independent answers stay in your account.</p>';
+  h += '<a class="btn-primary btn-glass btn-ember" href="forge-quiz.html?mode=class">Join my class →</a>';
+  h += '<button type="button" data-forge-action="signup-dashboard" class="btn-ghost btn-glass"><span>Go to my dashboard</span></button></div>';
   mount({
     title: (name ? name + ', you\'re in.' : 'You\'re in.'),
-    sub:   'Your 7-day Pro trial has started. Log in from any device with your email and password.',
-    tag:   'Welcome to Forge'
-  }, h);
-
-  ForgeAuthCard.onSubmit(function(){ document.getElementById('link-btn').onclick(); });
-
-  document.getElementById('link-btn').onclick = function() {
-    var code = document.getElementById('link-code').value.trim().toUpperCase();
-    var err  = document.getElementById('link-err');
-    var btn  = document.getElementById('link-btn');
-    err.style.display = 'none';
-    if (!code) { err.textContent = 'Enter your class code.'; err.style.display = 'block'; return; }
-
-    btn.disabled = true; setBtnLabel(btn, 'Linking…');
-
-    // Look up the class via RPC — classes table itself is no longer
-    // directly readable by anon/student sessions, only by the owning teacher.
-    ForgeAPI.response(SUPABASE_URL + '/rest/v1/rpc/get_class_by_code', {
-      method: 'POST',
-      headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ p_code: code })
-    }).then(function(r) { return r.json(); }).then(function(classes) {
-      if (!Array.isArray(classes) || classes.length === 0) {
-        err.textContent = 'Class code not found. Check with your teacher.';
-        err.style.display = 'block';
-        btn.disabled = false; setBtnLabel(btn, 'Link to class →');
-        return;
-      }
-      var cls = classes[0];
-      var token = ForgeAuth.accessToken();
-      var authHdrs = { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + (token || SUPABASE_KEY), 'Content-Type': 'application/json', 'Prefer': 'return=representation' };
-
-      function saveAndLink(studentId) {
-        try {
-          localStorage.setItem('forge-student', JSON.stringify({ studentId: studentId, classId: cls.id, studentName: name, classSubject: cls.subject || null }));
-          localStorage.setItem('forge-paid-student', JSON.stringify({ studentId: studentId, name: name }));
-        } catch(e) {}
-        renderLinked(cls, name);
-      }
-
-      // Check if student already has a row (from prior quiz sessions) — PATCH it rather than creating a duplicate
-      var existingCache = null;
-      try { existingCache = JSON.parse(localStorage.getItem('forge-paid-student') || 'null'); } catch(e) {}
-
-      var authUser = ForgeAuth.currentUser();
-      if (existingCache && existingCache.studentId) {
-        // Patch existing row with class_id — all prior responses carry over
-        var anonHdrs2 = { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY, 'Content-Type': 'application/json', 'Prefer': 'return=representation' };
-        ForgeAPI.response(SUPABASE_URL + '/rest/v1/students?id=eq.' + existingCache.studentId, {
-          method: 'PATCH', headers: anonHdrs2, body: JSON.stringify({ class_id: cls.id })
-        }).then(function(r) {
-          if (!r.ok) { console.error('PATCH failed', r.status); return saveAndLink(existingCache.studentId); }
-          saveAndLink(existingCache.studentId);
-        }).catch(function(e) { console.error('PATCH error', e); saveAndLink(existingCache.studentId); });
-      } else {
-        // First time — look up by auth_user_id first
-        var lookupUrl = SUPABASE_URL + '/rest/v1/students?select=*&auth_user_id=eq.' + (authUser ? authUser.id : 'null') + '&order=created_at.asc&limit=1';
-        ForgeAPI.response(lookupUrl, { headers: authHdrs }).then(function(r) { return r.json(); }).then(function(rows) {
-          if (rows && rows.length > 0) {
-            // Existing row — patch it
-            var anonHdrs3 = { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY, 'Content-Type': 'application/json', 'Prefer': 'return=representation' };
-            return ForgeAPI.response(SUPABASE_URL + '/rest/v1/students?id=eq.' + rows[0].id, {
-              method: 'PATCH', headers: anonHdrs3, body: JSON.stringify({ class_id: cls.id })
-            }).then(function(r) {
-              if (!r.ok) { console.error('PATCH failed', r.status); }
-              saveAndLink(rows[0].id);
-            });
-          }
-          // No existing row — create new
-          return ForgeAPI.response(SUPABASE_URL + '/rest/v1/students', {
-            method: 'POST', headers: authHdrs,
-            body: JSON.stringify({ name: name || 'Student', class_id: cls.id, auth_user_id: authUser ? authUser.id : null })
-          }).then(function(r) { return r.json(); }).then(function(inserted) {
-            saveAndLink((Array.isArray(inserted) && inserted[0]) ? inserted[0].id : null);
-          });
-        }).catch(function() {
-          err.textContent = 'We couldn’t link you to this class. Check your connection and try again.';
-          err.style.display = 'block';
-          btn.disabled = false; setBtnLabel(btn, 'Link to class →');
-        });
-      }
-    }).catch(function() {
-      err.textContent = 'We couldn’t link you to this class. Check your connection and try again.';
-      err.style.display = 'block';
-      btn.disabled = false; setBtnLabel(btn, 'Link to class →');
-    });
-  };
-}
-
-function renderLinked(cls, name) {
-  var h = '<div class="success-icon">🔗</div>';
-  h += '<div class="success-card">';
-  h += '<b>What your teacher can see:</b> your accuracy per spec point, misconceptions you\'ve triggered, and whether you\'ve completed any assignments they set. They cannot see your password or personal details.';
-  h += '</div>';
-  h += '<button type="button" class="btn-primary btn-glass btn-ember" data-forge-action="go-landing"><span>Go to my dashboard →</span></button>';
-
-  mount({
-    title: 'Linked to ' + (cls.name || 'your class'),
-    sub:   'Your teacher can now see your progress and set you assignments.',
-    tag:   'All set'
+    sub: 'Your 7-day Pro trial has started. Log in from any device with your email and password.',
+    tag: 'Welcome to Forge'
   }, h);
 }
 

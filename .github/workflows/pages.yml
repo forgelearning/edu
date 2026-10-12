@@ -62,6 +62,9 @@ jobs:
       - name: Run Forge auth contract tests
         run: node dev/test-auth.js
 
+      - name: Run student sign-in and session tests
+        run: node dev/test-student-session.js && node dev/test-student-email-account.js && node dev/test-independent-study.js && node dev/test-multi-class.js
+
       - name: Run Forge API failure-contract tests
         run: node dev/test-forge-api.js
 

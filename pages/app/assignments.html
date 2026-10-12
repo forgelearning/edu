@@ -116,12 +116,12 @@ var context={studentId:s.studentId||registry.studentId,classId:s.classId,classCo
       // rows. Treat that the same as a failed read and use the anon-safe RPC,
       // otherwise completed work is displayed as not started.
       if(direct.length||!context.classCode)return direct;
-      return context.studentCode
+      return (context.studentCode||ForgeAuth.accessToken())
         ?ForgeStudentCode.responses(context.studentId,context.classCode,context.studentCode).then(responseRows)
         :jsonFetch(API+'/rest/v1/rpc/get_student_own_responses',{method:'POST',headers:headers(),body:JSON.stringify({p_student_id:context.studentId,p_code:context.classCode,p_name:context.studentName})}).then(function(rows){return responseRows(rows)}).catch(function(){return[]});
     }).catch(function(){
       return context.classCode
-        ?(context.studentCode
+        ?((context.studentCode||ForgeAuth.accessToken())
           ?ForgeStudentCode.responses(context.studentId,context.classCode,context.studentCode).then(responseRows)
           :jsonFetch(API+'/rest/v1/rpc/get_student_own_responses',{method:'POST',headers:headers(),body:JSON.stringify({p_student_id:context.studentId,p_code:context.classCode,p_name:context.studentName})}).then(function(rows){return responseRows(rows)}).catch(function(){return[]}))
         :[];
@@ -143,6 +143,11 @@ var context={studentId:s.studentId||registry.studentId,classId:s.classId,classCo
       ?viaCode()
       :Promise.reject(new Error('No verified student session'));
   Promise.all([assignmentPromise,responsePromise]).then(function(d){var assignmentRows=responseRows(d[0]),serverResponses=responseRows(d[1]),localResponses=localSessionResponses(context,assignmentRows),seen={};serverResponses.concat(localResponses).forEach(function(r){var marker=String(r.bank)+'|'+String(r.question_id||r.id);if(!seen[marker])seen[marker]=r;});var mergedResponses=Object.keys(seen).map(function(k){return seen[k]});var assignedBanks=[];assignmentRows.forEach(function(a){assignedBanks=assignedBanks.concat(banks(a.banks));});return ForgeData.loadBanks(assignedBanks).then(function(){render(assignmentRows,mergedResponses,serverResponses);if(context.studentId&&context.classCode){ForgeClasses.adopt(context);ForgeClasses.syncFromServer(API,KEY,context,function(){})}})}).catch(showAssignmentError)}
-if(saved&&saved.classId)load(saved);else if(ForgeAuth.hasSession())ForgeAuth.getSession().then(function(){var token=ForgeAuth.accessToken(),user=ForgeAuth.currentUser();return ForgeAPI.response(API+'/rest/v1/students?select=id,class_id&auth_user_id=eq.'+user.id,{headers:{apikey:KEY,Authorization:'Bearer '+token}})}).then(function(r){return r.json()}).then(function(rows){if(!rows[0])throw Error('No class');saved={studentId:rows[0].id,classId:rows[0].class_id,studentName:(ForgeAuth.currentUser()||{}).user_metadata?.name||''};try{localStorage.setItem('forge-student',JSON.stringify(saved))}catch(e){}load(saved)}).catch(showNoClass);else showNoClass();
+if(saved&&saved.classId)load(saved);
+else if(ForgeAuth.hasSession()) {
+  ForgeAuth.getSession().then(function(){return ForgeAuth.restoreClassStudent();})
+    .then(function(classSession){if(!classSession){showNoClass();return;}saved=classSession;load(saved);})
+    .catch(showNoClass);
+} else showNoClass();
 </script>  <script src="scripts/forge-page-actions.js"></script>
 </body></html>

@@ -39,5 +39,5 @@ for (const page of ['forge-quiz', 'revision', 'student-dashboard', 'profile', 'a
 const quiz = fs.readFileSync('pages/app/forge-quiz.html', 'utf8');
 assert(quiz.includes('Study on my own'));
 assert(quiz.includes('View independent study'));
-assert(quiz.includes('ForgeStudentCode.join(code,studentCode,name)'), 'independent students can join a coded class');
+assert(quiz.includes('href="forge-quiz.html?mode=class"'), 'independent students can open the unified class join form');
 console.log('Independent study and class switching tests passed.');

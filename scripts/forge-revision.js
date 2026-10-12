@@ -32,7 +32,7 @@
   }
   function writeState(context,state){try{localStorage.setItem(storageKey(context),JSON.stringify(state));return true;}catch(e){return false;}}
   function syncReview(context,card,rating,dueAt,assignment){
-    if(!context||!context.classCode||!context.studentCode||!root.ForgeStudentCode||!root.ForgeStudentCode.recordRevisionReview)return;
+    if(!context||!context.classCode||(!context.studentCode&&!(root.ForgeAuth&&root.ForgeAuth.accessToken&&root.ForgeAuth.accessToken()))||!root.ForgeStudentCode||!root.ForgeStudentCode.recordRevisionReview)return;
     root.ForgeStudentCode.recordRevisionReview(context.studentId,context.classCode,context.studentCode,{card_key:card.key,bank:card.bank,rating:rating,due_at:dueAt,assignment_id:assignment&&assignment.id||null}).catch(function(){
       // Local progress remains authoritative for continuity if the network is unavailable.
     });

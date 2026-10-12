@@ -143,12 +143,12 @@ var app = document.getElementById('app');
 
 // ===== JOIN =====
 function renderJoin(){
-  var f=ForgeAuthCard.field('j-name','Your name',{placeholder:'e.g. Alex',autocomplete:'given-name'})
+  var f='<div id="j-name-wrap" class="forge-first-name">'+ForgeAuthCard.field('j-name','Your name — first time only',{placeholder:'e.g. Alex',autocomplete:'name'})+'</div>'
        +ForgeAuthCard.field('j-student-code','Student code',{placeholder:'e.g. A1B2C3D4E5',upper:true})
        +ForgeAuthCard.field('j-code','Class code',{placeholder:'e.g. ECON-Y12',upper:true})
        +'<button class="auth-btn danger" id="j-btn" type="submit">Start timed practice \u2192</button>'
        +'<p class="auth-err" id="j-err"></p>'
-       +'<a class="auth-btn-ghost" href="forge-quiz.html?mode=solo">Log in with a Pro account</a>'
+       +'<a class="auth-btn-ghost" href="forge-quiz.html?mode=email">Sign in with email</a>'
        +'<a class="forge-u-1u5pwzm" href="forge-signup.html">Start a 7-day Pro trial</a>';
   app.innerHTML=ForgeAuthCard.shell({
     title:'No hints. No explanations.<br>Just the question.',
@@ -162,11 +162,12 @@ function renderJoin(){
     var code=document.getElementById('j-code').value.trim().toUpperCase();
     var err=document.getElementById('j-err');
     var btn=document.getElementById('j-btn');
-    if(!name||!studentCode||!code){err.textContent='Enter your name, student code and class code.';err.style.display='block';return;}
+    if(!studentCode||!code){err.textContent='Enter your student code and class code.';err.style.display='block';return;}
     btn.disabled=true;btn.textContent='Joining...';
     // Look up via RPC \u2014 classes/students tables are no longer directly
     // readable by an anonymous (no login) name+code session.
     ForgeStudentCode.join(code, studentCode, name).then(function(match){
+      name=match.student_name||name;
       state.studentId=match.student_id;state.classId=match.class_id;state.studentName=name;
       ForgeClasses.use(name);
       state.classSubject=match.subject||null;
@@ -194,7 +195,7 @@ function renderJoin(){
         state.phase='subject';
       }
       render();
-    }).catch(function(e){err.textContent=e.message||'Student code or class code not recognised.';err.style.display='block';btn.disabled=false;btn.textContent='Start timed practice \u2192';});
+    }).catch(function(e){if(e.needsName){document.getElementById('j-name-wrap').style.display='block';document.getElementById('j-name').focus();}err.textContent=e.message||'Student code or class code not recognised.';err.style.display='block';btn.disabled=false;btn.textContent='Start timed practice \u2192';});
   };
 }
 
@@ -752,6 +753,8 @@ function restoreSession() {
             render();
           }).catch(function() { state.phase = 'subject'; render(); });
         }).catch(function() { checkLocalSessionCrucible(); });
+      } else if (result) {
+        ForgeAuth.restoreStudentContexts().then(checkLocalSessionCrucible).catch(checkLocalSessionCrucible);
       } else {
         checkLocalSessionCrucible();
       }

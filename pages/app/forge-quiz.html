@@ -170,7 +170,12 @@ function logResponse(q, selectedKey, isCorrect, isReforge, reforgeCorrect, hintU
   state.responseHistory.push(Object.assign({created_at:new Date().toISOString()},row));
   // Use auth token for trial/paid students so RLS policies pass correctly
   var token = (state.isPaid || state.isTrial) ? ForgeAuth.accessToken() : null;
-  if (token) {
+  if (state.classId && state.classCode && (state.studentCode || ForgeAuth.hasSession())) {
+    return ForgeStudentCode.recordResponse(state.studentId,state.classCode,state.studentCode,row).then(function() { return true; }).catch(function(e) {
+      recordPersistenceError(e, row, 'class-response');
+      return false;
+    });
+  } else if (token) {
     return ForgeAPI.response(SUPABASE_URL + '/rest/v1/responses', {
       method: 'POST',
       headers: {
@@ -181,14 +186,6 @@ function logResponse(q, selectedKey, isCorrect, isReforge, reforgeCorrect, hintU
       },
       body: JSON.stringify(row)
     }).then(function() { return true; }).catch(function(e) { recordPersistenceError(e, row, 'authenticated-response'); return false; });
-  } else if (state.classId && state.studentCode) {
-    // Class-code students are anonymous, but their student/class pair is the
-    // ownership boundary for response writes. Keep this path explicit so a
-    // class session cannot silently fall through as a local-only quiz.
-    return ForgeStudentCode.recordResponse(state.studentId,state.classCode,state.studentCode,row).then(function() { return true; }).catch(function(e) {
-      recordPersistenceError(e, row, 'class-response');
-      return false;
-    });
   } else if (state.classId) {
     return ForgeAPI.insert('responses', row, {
       headers: {'Prefer': 'return=minimal'}
@@ -707,88 +704,7 @@ function joinMoreHtml() {
   var independent=!state.classId&&window.ForgeStudyMode&&ForgeStudyMode.isIndependent();
   if(independent&&ForgeStudyMode.classSession())return '';
   if (!independent && !state.classId && ForgeClasses.subjects(SUBJECTS).length === 0) return '';
-  var h = '<div class="forge-u-1kt0xuh" id="join-more">';
-  h += '<div class="forge-u-8hgxgk">';
-  h += '<span class="ui-meta-muted">'+(independent?'Joining a class later?':'Got a code for another class?')+'</span>';
-  h += '<button type="button" class="forge-u-8q3i1z" id="jm-toggle" aria-controls="jm-form" aria-expanded="false">'+(independent?'Join your class':'Join another class')+' ↓</button>';
-  h += '</div>';
-  h += '<div class="forge-u-1karbkd" id="jm-form">';
-  if(independent)h+='<p class="forge-join-private-note">Your earlier independent answers and cards stay private and available on this device.</p><label for="jm-name">Your full name</label><input id="jm-name" class="join-input forge-u-dtise6" type="text" autocomplete="name" placeholder="First name and surname"><label for="jm-student-code">Student code (if your teacher gave you one)</label><input id="jm-student-code" class="join-input forge-u-dtise6" type="text" autocomplete="off" placeholder="The code your teacher gave you">';
-  // Classes that use individual student codes refuse a bare class code, and
-  // each class issues its own: a code from the first class won't open a second.
-  else h+='<label for="jm-student-code">Student code for this class (if your teacher gave you one)</label><input id="jm-student-code" class="join-input forge-u-dtise6" type="text" autocomplete="off" placeholder="The code your teacher gave you">';
-  h += '<label for="jm-code">Class code</label>';
-  h += '<input id="jm-code" class="join-input forge-u-dtise6" type="text" placeholder="e.g. LH-RVN9">';
-  h += '<button type="button" id="jm-btn" class="join-btn btn-glass btn-ember forge-u-1og9mh9">Join class →</button>';
-  h += '<p class="join-err" id="jm-err"></p>';
-  h += '</div></div>';
-  return h;
-}
-
-function wireJoinMore() {
-  var toggle = document.getElementById('jm-toggle');
-  if (!toggle) return;
-  toggle.onclick = function() {
-    var f = document.getElementById('jm-form');
-    var open=window.getComputedStyle(f).display==='none';
-    f.style.display=open?'block':'none';
-    toggle.setAttribute('aria-expanded',String(open));
-    if(open)(document.getElementById('jm-name')||document.getElementById('jm-code')).focus();
-  };
-  document.getElementById('jm-btn').onclick = function() {
-    var code = document.getElementById('jm-code').value.trim().toUpperCase();
-    var err  = document.getElementById('jm-err');
-    var btn  = document.getElementById('jm-btn');
-    err.style.display = 'none';
-    if (!code) { err.textContent = 'Enter your class code.'; err.style.display = 'block'; return; }
-    if (!state.classId && window.ForgeStudyMode && ForgeStudyMode.isIndependent()) {
-      var nameInput=document.getElementById('jm-name'),studentCodeInput=document.getElementById('jm-student-code');
-      var name=nameInput&&nameInput.value.trim().replace(/\s+/g,' '),studentCode=studentCodeInput&&studentCodeInput.value.trim();
-      if(!name||name.split(' ').length<2){err.textContent='Enter your first name and surname.';err.style.display='block';return;}
-      btn.disabled=true;btn.textContent='Joining…';
-      function joined(row){
-        var entry={classId:row.class_id,classCode:code,className:row.class_name||null,subject:row.subject||null,studentId:row.student_id,studentName:name,studentCode:studentCode?ForgeStudentCode.clean(studentCode):null};
-        ForgeClasses.add(entry);activateClass(entry);
-        ForgeAuth.goToLanding();
-      }
-      if(studentCode){
-        ForgeStudentCode.join(code,studentCode,name).then(joined).catch(function(error){err.textContent=error.message||'Student or class code not recognised.';err.style.display='block';btn.disabled=false;btn.textContent='Join class →';});
-      }else{
-        joinClassByCode(name,code,function(error,result){
-          if(error){err.textContent=error;err.style.display='block';btn.disabled=false;btn.textContent='Join class →';return;}
-          joined({class_id:result.cls.id,class_name:result.cls.name,subject:result.cls.subject,student_id:result.studentId});
-        });
-      }
-      return;
-    }
-    btn.disabled = true; btn.textContent = 'Joining…';
-    var extraCodeInput = document.getElementById('jm-student-code');
-    var extraCode = extraCodeInput ? extraCodeInput.value.trim() : '';
-    var onJoined = function(joinErr, res) {
-      btn.disabled = false; btn.textContent = 'Join class →';
-      if (joinErr) { err.textContent = joinErr; err.style.display = 'block'; return; }
-      if (!res.cls.subject || !SUBJECTS[res.cls.subject]) {
-        err.textContent = 'Joined ' + (res.cls.name || code) + ', but that subject has no questions yet.';
-        err.style.display = 'block';
-        return;
-      }
-      // Land on the picker so the newly added subject is visible.
-      settleRequestedSubject();
-      render();
-    };
-    if (extraCode) {
-      ForgeStudentCode.join(code, extraCode, state.studentName).then(function(row) {
-        ForgeClasses.add({
-          classId: row.class_id, classCode: code, className: row.class_name || null,
-          subject: row.subject || null, studentId: row.student_id, studentName: state.studentName,
-          studentCode: ForgeStudentCode.clean(extraCode)
-        });
-        onJoined(null, { cls: { id: row.class_id, name: row.class_name, subject: row.subject }, studentId: row.student_id });
-      }).catch(function(error) { onJoined(error.message || 'Student code or class code not recognised.'); });
-    } else {
-      joinClassByCode(state.studentName, code, onJoined);
-    }
-  };
+  return '<div class="forge-u-1kt0xuh" id="join-more"><span class="ui-meta-muted">'+(independent?'Joining a class later?':'Got a code for another class?')+'</span> <a class="forge-u-8q3i1z" href="forge-quiz.html?mode=class">'+(independent?'Join your class':'Join another class')+' →</a></div>';
 }
 
 // ── FREE TIER ROUNDS ──────────────────────────────────────────
@@ -1125,8 +1041,6 @@ function renderJoin() {
   h += '<div class="login-tabs">';
   h += '<button type="button" class="login-tab active" id="tab-free">Study on my own</button>';
   h += '<button type="button" class="login-tab" id="tab-class">Join class</button>';
-  h += '<button type="button" class="login-tab" id="tab-email">Email sign in or sign up</button>';
-  h += '<button type="button" class="login-tab" id="tab-solo">Password login</button>';
   h += '</div>';
 
   // Panel: Free tier
@@ -1144,6 +1058,7 @@ function renderJoin() {
   h += '</div></details>';
   h += '<button class="auth-btn" id="free-btn" type="button">Start studying →</button>';
   h += '<p class="auth-err" id="free-err"></p>';
+  h += '<div class="forge-login-links"><span>Already saved your progress?</span><button type="button" id="tab-email">Sign in with email</button><button type="button" id="tab-solo">Use a password</button></div>';
   h += '</div>';
 
   h += '<div class="forge-u-uydnfn" id="panel-email">';
@@ -1155,14 +1070,16 @@ function renderJoin() {
   h += '<div class="forge-email-code">';
   h += ForgeAuthCard.field('email-code', 'Eight-digit sign-in code', {placeholder:'12345678', autocomplete:'one-time-code'});
   h += '<button class="auth-btn auth-btn--secondary" id="code-btn" type="button">Use code →</button></div>';
+  h += '<button type="button" class="auth-btn auth-btn--secondary" id="back-email">← Back</button>';
   h += '</div>';
 
   // Panel: Join class
   h += '<div class="forge-u-uydnfn" id="panel-class">';
-  h += '<p class="forge-u-152cbjr">Enter the three details your teacher gave you</p>';
-  h += ForgeAuthCard.field('join-name', 'Your name', {placeholder:'First name and surname — e.g. James Morgan'});
+  h += '<p class="forge-u-152cbjr">Enter the class code and your individual student code. On a personal device, Forge will remember you.</p>';
   h += ForgeAuthCard.field('join-student-code', 'Student code', {placeholder:'e.g. A1B2C3D4E5', upper:true});
   h += ForgeAuthCard.field('join-code', 'Class code', {placeholder:'e.g. ECON-Y12-A', upper:true});
+  h += '<div id="join-name-wrap" class="forge-first-name">' + ForgeAuthCard.field('join-name', 'Your name — first time only', {placeholder:'First name and surname — e.g. James Morgan'}) + '</div>';
+  h += '<div class="forge-login-links forge-login-links--legacy"><span>Older class without a student code?</span><button type="button" id="join-legacy">Use your name instead</button></div>';
   // Your student code is kept on this device so you don't retype it. On a
   // shared machine that would hand the next person your account, so offer the
   // short-lived option — see scripts/forge-student-session.js.
@@ -1181,6 +1098,7 @@ function renderJoin() {
   h += '<button class="auth-btn" id="solo-btn" type="button">Log in →</button>';
   h += '<p class="auth-err" id="solo-err"></p>';
   h += '<p class="forge-u-gtw5fv"><a class="forge-u-elt0p9" href="reset-password.html">Forgot your password?</a></p>';
+  h += '<button type="button" class="auth-btn auth-btn--secondary" id="back-solo">← Back</button>';
   h += '</div>';
 
   app.innerHTML = ForgeAuthCard.shell({
@@ -1207,6 +1125,12 @@ function renderJoin() {
   tabs.forEach(function(t) {
     document.getElementById(t.btn).onclick = function() { activateTab(t.btn); };
   });
+  document.getElementById('back-email').onclick = function() { activateTab('tab-free'); };
+  document.getElementById('back-solo').onclick = function() { activateTab('tab-free'); };
+  document.getElementById('join-legacy').onclick = function() {
+    document.getElementById('join-name-wrap').style.display = 'block';
+    document.getElementById('join-name').focus();
+  };
   activateTab(activeTab);
 
   // These panels share one form. A hidden submit button can become the browser's
@@ -1331,14 +1255,13 @@ function renderJoin() {
     var btn  = document.getElementById('join-btn');
 
     err.style.display = 'none';
-    if (!rawName) { err.textContent = 'Enter your name.'; err.style.display = 'block'; return; }
     if (!code) { err.textContent = 'Enter your class code.'; err.style.display = 'block'; return; }
 
     // Require at least a first name and surname, but preserve the entered
     // display name so teachers can distinguish students with similar initials.
     var parts = rawName.trim().split(/\s+/);
     var name;
-    if (parts.length < 2) {
+    if (rawName && parts.length < 2) {
       err.textContent = 'Enter your first name and surname — e.g. James Morgan';
       err.style.display = 'block'; return;
     }
@@ -1358,6 +1281,7 @@ function renderJoin() {
 
     state.studentName = name;
     if (!studentCode) {
+      if (!name) { err.textContent = 'Enter your individual student code. For an older class, enter your name instead.'; err.style.display = 'block'; btn.disabled = false; btn.textContent = 'Join class →'; return; }
       // Compatibility for classes created before private student codes were
       // introduced. The database refuses this route once a class has active
       // student codes, so it cannot bypass the protected flow.
@@ -1376,18 +1300,21 @@ function renderJoin() {
       return;
     }
     ForgeStudentCode.join(code, studentCode, name).then(function(row) {
+      if (ForgeAuth.hasSession() && row.linked_to_account === false) throw new Error('This student code is linked to another email account. Sign out to use the code on this device.');
+      name = row.student_name || name;
       var res = { studentId: row.student_id, cls: { id: row.class_id, name: row.class_name, subject: row.subject } };
       var cleanStudentCode = ForgeStudentCode.clean(studentCode);
       // Start the session clock, and remember whether this device is shared.
       var sharedBox = document.getElementById('join-shared');
-      if (window.ForgeStudentSession) ForgeStudentSession.begin(!!(sharedBox && sharedBox.checked));
       ForgeClasses.add({ classId: res.cls.id, classCode: code, className: res.cls.name || null, subject: res.cls.subject || null, studentId: res.studentId, studentName: name, studentCode: cleanStudentCode });
       try { localStorage.setItem('forge-student', JSON.stringify({ studentId: res.studentId, classId: res.cls.id, classCode: code, studentCode: cleanStudentCode, studentName: name, classSubject: res.cls.subject || null })); } catch (e) {}
+      if (window.ForgeStudentSession) ForgeStudentSession.begin(!!(sharedBox && sharedBox.checked));
       ForgeClasses.syncFromServer(SUPABASE_URL, SUPABASE_KEY, { studentId: res.studentId, classId: res.cls.id, classCode: code, className: res.cls.name, subject: res.cls.subject, studentName: name, studentCode: cleanStudentCode }, function() {
         activateClass(ForgeClasses.forSubject(res.cls.subject) || { classId: res.cls.id, classCode: code, subject: res.cls.subject, studentId: res.studentId, studentName: name, studentCode: cleanStudentCode });
         ForgeAuth.goToLanding();
       });
     }).catch(function(joinErr) {
+      if (joinErr.needsName) { document.getElementById('join-name-wrap').style.display = 'block'; document.getElementById('join-name').focus(); }
       err.textContent = joinErr.message || 'Student code or class code not recognised.';
       err.style.display = 'block';
       btn.disabled = false; btn.textContent = 'Join class →';
@@ -1411,14 +1338,8 @@ function renderJoin() {
       return ForgeAuth.getSession();
     }).then(function(result) {
       btn.disabled = false; btn.textContent = 'Log in \u2192';
-      if (!result || !result.subscriber || (result.access !== 'pro' && result.access !== 'trial')) {
-        err.textContent = result && result.access === 'expired'
-          ? 'Your free trial has ended. Subscribe to keep Pro access.'
-          : 'No active Forge access found for this account.';
-        err.style.display = 'block';
-        ForgeAuth.signOut();
-        return;
-      }
+      if (!result) throw new Error('Account unavailable');
+      if (!result.subscriber) { ForgeAuth.goToLanding(); return; }
       var sub = result.subscriber;
       state.studentName  = sub.name;
       ForgeClasses.use(sub.name);
@@ -1453,19 +1374,9 @@ function renderSubjects(){
     h += '<div class="join-badge"><span class="dot"></span> ' + state.studentName + statusLabel + '</div>';
   }
 
-  // Class link prompt for trial/paid students not yet in a class
+  // Give subscribed students the same class join flow as everyone else.
   if ((state.isPaid || state.isTrial) && !state.classId) {
-    h += '<div class="forge-u-1rz1eg2" id="class-link-banner">';
-    h += '<div class="forge-between-row">';
-    h += '<span class="forge-u-1qo1pg">Optional</span>';
-    h += '<button type="button" class="forge-u-1f5fxqy" data-forge-action="toggle-class-link">Link to class ↓</button>';
-    h += '</div>';
-    h += '<p class="forge-u-1tg6uy0">Is your teacher using Forge? <b class="forge-text-white">Enter their class code</b> to share your progress.</p>';
-    h += '<div class="forge-u-1karbkd" id="class-link-form">';
-    h += '<input id="ql-code" class="join-input forge-u-dtise6" type="text" placeholder="e.g. ECON-Y12-A">';
-    h += '<button type="button" id="ql-btn" class="join-btn btn-glass btn-ember forge-u-1og9mh9">Link to class →</button>';
-    h += '<p class="join-err" id="ql-err"></p>';
-    h += '</div></div>';
+    h += '<div class="forge-u-1rz1eg2" id="class-link-banner"><p class="forge-u-1tg6uy0">Is your teacher using Forge? Join their class to share your progress.</p><a class="join-btn btn-glass btn-ember forge-u-1og9mh9" href="forge-quiz.html?mode=class">Join my class →</a></div>';
   }
 
   // Trial days remaining nudge
@@ -1532,127 +1443,8 @@ function renderSubjects(){
     };
   });
 
-  wireJoinMore();
 
-  // Wire up class link form if visible
-  var qlBtn = document.getElementById('ql-btn');
-  if (qlBtn) {
-    qlBtn.onclick = function() {
-      var code = document.getElementById('ql-code').value.trim().toUpperCase();
-      var err  = document.getElementById('ql-err');
-      var btn  = qlBtn;
-      err.style.display = 'none';
-      if (!code) { err.textContent = 'Enter your class code.'; err.style.display = 'block'; return; }
 
-      btn.disabled = true; btn.textContent = 'Linking…';
-
-      ForgeAPI.response(SUPABASE_URL + '/rest/v1/rpc/get_class_by_code', {
-        method: 'POST',
-        headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ p_code: code })
-      }).then(function(r) { return r.json(); }).then(function(classes) {
-        if (!Array.isArray(classes) || classes.length === 0) {
-          err.textContent = 'Class code not found. Check with your teacher.';
-          err.style.display = 'block';
-          btn.disabled = false; btn.textContent = 'Link to class →';
-          return;
-        }
-        var cls = classes[0];
-        var token = ForgeAuth.accessToken();
-        var authHdrs = { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + (token || SUPABASE_KEY), 'Content-Type': 'application/json', 'Prefer': 'return=representation' };
-
-        function finishLink(studentId) {
-          state.classId      = cls.id;
-          state.studentId    = studentId;
-          state.classSubject = cls.subject || null;
-          try { localStorage.setItem('forge-student', JSON.stringify({ studentId: studentId, classId: cls.id, classCode: code, studentName: state.studentName, classSubject: cls.subject || null })); } catch(e) {}
-          try { localStorage.setItem('forge-paid-student', JSON.stringify({ studentId: studentId, name: state.studentName })); } catch(e) {}
-          ForgeClasses.add({
-            classId: cls.id, classCode: code, className: cls.name || null,
-            subject: cls.subject || null, studentId: studentId, studentName: state.studentName
-          });
-
-          // Backfill responses — update student_id to the new class row AND set class_id
-          // This ensures teacher dashboard shows the student's history correctly
-          if (authUser && token) {
-            var subjectFilter = cls.subject ? '&subject=eq.' + encodeURIComponent(cls.subject) : '';
-            var userAuthHdrs = { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' };
-            // Find ALL student rows for this auth user
-            ForgeAPI.response(SUPABASE_URL + '/rest/v1/students?select=id&auth_user_id=eq.' + authUser.id, {
-              headers: userAuthHdrs
-            }).then(function(r) { return r.json(); }).then(function(studentRows) {
-              if (!Array.isArray(studentRows) || studentRows.length === 0) return;
-              // For each existing student row, move matching subject responses to the new class row
-              studentRows.forEach(function(sr) {
-                if (sr.id === studentId) return; // skip the new row itself
-                ForgeAPI.response(SUPABASE_URL + '/rest/v1/responses?student_id=eq.' + sr.id + subjectFilter, {
-                  method: 'PATCH',
-                  headers: userAuthHdrs,
-                  body: JSON.stringify({ student_id: studentId, class_id: cls.id })
-                }).catch(function(e) { console.error('Backfill failed:', sr.id, e); });
-              });
-            }).catch(function(e) { console.error('Backfill lookup failed:', e); });
-          }
-          var banner = document.getElementById('class-link-banner');
-          if (banner) {
-            banner.innerHTML = '<p class="forge-u-iyagyp">✓ Linked to <b>' + (cls.name || code) + '</b> — your teacher can now see your progress and your quiz history has carried over.</p>';
-          }
-          setTimeout(function() { render(); }, 1500);
-        }
-
-        // Insert as the signed-in user, not anon: the new row carries their
-        // auth_user_id, which is what lets them read it back. Under the anon
-        // key there's no SELECT policy, so asking for the row returned fails
-        // the whole insert and no row is created.
-        var anonHdrs = authHdrs;
-
-        // Always look up existing student row first by auth_user_id to find canonical row
-        var authUser = ForgeAuth.currentUser();
-        var lookupHdrs = { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + (token || SUPABASE_KEY) };
-
-        function lookupAndLink() {
-          if (!authUser) {
-            insertNewStudent();
-            return;
-          }
-          // Look for an existing row already linked to THIS specific class
-          ForgeAPI.response(SUPABASE_URL + '/rest/v1/students?select=*&auth_user_id=eq.' + authUser.id + '&class_id=eq.' + cls.id, {
-            headers: lookupHdrs
-          }).then(function(r) { return r.json(); }).then(function(rows) {
-            if (Array.isArray(rows) && rows.length > 0) {
-              // Already linked to this class — just finish
-              finishLink(rows[0].id);
-              return;
-            }
-            // No row for this class yet — create one
-            insertNewStudent();
-          }).catch(function() { insertNewStudent(); });
-        }
-
-        function insertNewStudent() {
-          ForgeAPI.response(SUPABASE_URL + '/rest/v1/students', {
-            method: 'POST',
-            headers: anonHdrs,
-            body: JSON.stringify({ name: state.studentName, class_id: cls.id, auth_user_id: authUser ? authUser.id : null })
-          }).then(function(r) { return r.json(); }).then(function(rows) {
-            var studentId = (Array.isArray(rows) && rows[0]) ? rows[0].id : null;
-            finishLink(studentId);
-          }).catch(function(e) {
-            console.error('INSERT error:', e);
-            err.textContent = 'We couldn’t link you to this class. Check your connection and try again.';
-            err.style.display = 'block';
-            btn.disabled = false; btn.textContent = 'Link to class →';
-          });
-        }
-
-        lookupAndLink();
-      }).catch(function() {
-        err.textContent = 'We couldn’t link you to this class. Check your connection and try again.';
-        err.style.display = 'block';
-        btn.disabled = false; btn.textContent = 'Link to class →';
-      });
-    };
-  }
 }
 
 function forgeEscape(value){return String(value==null?'':value).replace(/[&<>"']/g,function(ch){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch];});}
@@ -1755,7 +1547,6 @@ function renderBanks(){
     allTopics.scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'});
     var first=allTopics.querySelector('.bank-btn'); if(first) first.focus({preventScroll:true});
   };
-  wireJoinMore();
   var backBtn = document.getElementById('back-subj');
   if (backBtn) backBtn.onclick=function(){state.phase='subjects';render();};
   app.querySelectorAll('[data-topic]').forEach(function(button){button.onclick=function(){
@@ -2485,7 +2276,8 @@ function forgeLogout(){
 function sessionBar(){
   if (!state.studentName) return '';
   var statusLabel = state.classId ? ' · class' : state.isPaid ? ' · Pro ⚡' : ' · independent';
-  var save = isFreeTier() && !ForgeAuth.hasSession() ? ' · <a href="forge-quiz.html?mode=email">Save progress</a>' : '';
+  var save = !ForgeAuth.hasSession() && (isFreeTier() || state.classId)
+    ? ' · <a href="forge-quiz.html?mode=email">Save progress with email</a>' : '';
   return '<div class="forge-u-44gkcw"><span class="forge-u-16oyzks">' + (ForgeAuth.hasSession() ? 'Signed in as ' : 'Practising as ') + '<b class="forge-u-1ybl9nb">' + state.studentName + '</b><span class="forge-u-19j2vc3">' + statusLabel + '</span>' + save + ' · <a class="forge-u-1u5pwzm" href="#" data-forge-action="logout">Switch student</a></span></div>';
 }
 
@@ -2663,7 +2455,7 @@ var MANDARIN_PASSAGES = [
   }
 ];
 
-if (!openSoloLogin && !openEmailLogin && ForgeAuth.hasSession()) {
+if (!openClassJoin && !openSoloLogin && !openEmailLogin && ForgeAuth.hasSession()) {
   ForgeAuth.getSession().then(function(result) {
     if (result && result.subscriber) {
       var sub    = result.subscriber;
@@ -2711,11 +2503,47 @@ if (!openSoloLogin && !openEmailLogin && ForgeAuth.hasSession()) {
       } else {
         state.phase = 'subjects';
       }
-      render();
+      ForgeAuth.restoreStudentContexts().then(function(classSession) {
+        if (classSession) {
+          state.studentId = classSession.studentId;
+          state.studentName = classSession.studentName;
+          state.classId = classSession.classId;
+          state.classCode = classSession.classCode;
+          state.classSubject = classSession.classSubject;
+        }
+        render();
+      }).catch(function() { render(); });
       return;
     }
     if (result) {
-      ForgeAuth.restoreFreeStudent().then(function(freeSession) {
+      ForgeAuth.restoreStudentContexts().then(function(classSession) {
+        if (classSession) {
+          state.studentName = classSession.studentName;
+          state.studentId = classSession.studentId;
+          state.classId = classSession.classId;
+          state.classCode = classSession.classCode;
+          state.classSubject = classSession.classSubject;
+          ForgeClasses.use(classSession.studentName);
+          settleRequestedSubject();
+          if (classSession.classSubject && SUBJECTS[classSession.classSubject]) {
+            state.subject = classSession.classSubject;
+            state.phase = 'banks';
+          }
+          ForgeClasses.fetchStudentResponses(SUPABASE_URL, SUPABASE_KEY, {
+            studentId: state.studentId, classId: state.classId,
+            classCode: state.classCode, studentName: state.studentName,
+            subject: state.classSubject
+          }, function(responses) {
+            state.responseHistory = responses || [];
+            state.weightMap = buildWeightMap(responses || []);
+            state.bankStats = buildBankStats(responses || []);
+            setXPHistory(responses || []);
+            render();
+          });
+          render();
+          return null;
+        }
+        return ForgeAuth.restoreFreeStudent().then(function(freeSession) {
         state.studentName = freeSession.name;
         state.studentId = freeSession.studentId;
         state.classId = null;
@@ -2732,6 +2560,7 @@ if (!openSoloLogin && !openEmailLogin && ForgeAuth.hasSession()) {
           if (state.phase === 'banks' || requestedCheck) render();
         });
         render();
+        });
       }).catch(function() { render(); });
       return;
     }
@@ -3042,7 +2871,7 @@ function mrSubmit(qid) {
   // Log to Supabase
   if (state.studentId) {
     var row = { student_id: state.studentId, class_id: state.classId, question_id: qid, bank: 'MAN-EXP-1', subject: 'mandarin', selected_option: isCorrect ? q.answer : '?', is_correct: isCorrect, misconception_tag: isCorrect ? null : 'MC-MAN-01', reforge_attempted: false, reforge_correct: null };
-    if (state.classId && state.studentCode) {
+    if (state.classId && (state.studentCode || ForgeAuth.hasSession())) {
       ForgeStudentCode.recordResponse(state.studentId,state.classCode,state.studentCode,row).catch(function() {});
     } else {
       supa.insert('responses', row);

@@ -35,6 +35,7 @@
   // not the only thing that identifies a student to the next person at the
   // keyboard, so an expiry that left these behind would only half-work.
   var DERIVED_KEYS = [
+    'forge-classes',
     'forge-paid-student',
     'forge-anvil-open',
     'forge-assigned-open-current'
@@ -65,7 +66,10 @@
     DERIVED_KEYS.forEach(drop);
     // A personal device may still hold independent study created before the
     // class join. Shared devices must clear that token with the class session.
-    if (isShared()) drop('forge-free-session');
+    if (isShared()) {
+      drop('forge-free-session');
+      drop('forge-auth-session');
+    }
     try {
       var doomed = [];
       for (var i = 0; i < localStorage.length; i++) {
@@ -77,13 +81,13 @@
   }
 
   function touch() {
-    if (!read(SESSION_KEY)) return;
+    if (!read(SESSION_KEY) && !(isShared() && read('forge-auth-session'))) return;
     write(STAMP_KEY, String(Date.now()));
   }
 
   // Returns true when a stale session was found and removed.
   function sweep() {
-    if (!read(SESSION_KEY)) {
+    if (!read(SESSION_KEY) && !(isShared() && read('forge-auth-session'))) {
       // Signed out elsewhere: the pages each clear `forge-student` directly.
       // Tidy the stamp and the shared-device flag so the next student starts
       // clean without every sign-out path needing to know about them.

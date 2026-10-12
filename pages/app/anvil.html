@@ -134,7 +134,7 @@ function prepareAnvilHome(){
 }
 
 function renderLogin(){
-  var f=ForgeAuthCard.field('a-name','Your name',{placeholder:'e.g. Alex',autocomplete:'given-name'})
+  var f='<div id="a-name-wrap" class="forge-first-name">'+ForgeAuthCard.field('a-name','Your name — first time only',{placeholder:'e.g. Alex',autocomplete:'name'})+'</div>'
        +ForgeAuthCard.field('a-student-code','Student code',{placeholder:'e.g. A1B2C3D4E5',upper:true})
        +ForgeAuthCard.field('a-code','Class code',{placeholder:'e.g. ECON-Y12',upper:true})
        +'<button class="auth-btn" id="a-btn" type="submit">Open Repair mistakes \u2192</button>'
@@ -152,12 +152,13 @@ function renderLogin(){
     var code=document.getElementById('a-code').value.trim().toUpperCase();
     var err=document.getElementById('a-err');
     var btn=document.getElementById('a-btn');
-    if(!name||!studentCode||!code){err.textContent='Enter your name, student code and class code.';err.style.display='block';return;}
+    if(!studentCode||!code){err.textContent='Enter your student code and class code.';err.style.display='block';return;}
     btn.disabled=true;btn.textContent='Checking details…';
 
     // Look up via RPC \u2014 classes/students tables are no longer directly
     // readable by an anonymous (no login) name+code session.
     ForgeStudentCode.join(code, studentCode, name).then(function(match){
+      name=match.student_name||name;
       anvilState.studentId=match.student_id;
       anvilState.classId=match.class_id;
       anvilState.studentName=name;
@@ -179,7 +180,7 @@ function renderLogin(){
         anvilState.responses = responses;
         prepareAnvilHome();
       });
-    }).catch(function(e){err.textContent=e.message||'Student code or class code not recognised.';err.style.display='block';btn.disabled=false;btn.textContent='Open Repair mistakes \u2192';});
+    }).catch(function(e){if(e.needsName){document.getElementById('a-name-wrap').style.display='block';document.getElementById('a-name').focus();}err.textContent=e.message||'Student code or class code not recognised.';err.style.display='block';btn.disabled=false;btn.textContent='Open Repair mistakes \u2192';});
   };
 }
 
@@ -679,6 +680,8 @@ function startAnvil(){
         } else {
           loadAnvilWithId();
         }
+      } else if (result) {
+        ForgeAuth.restoreStudentContexts().then(checkLocalSession).catch(checkLocalSession);
       } else {
         checkLocalSession();
       }
