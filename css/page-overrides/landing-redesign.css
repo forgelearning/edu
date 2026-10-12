@@ -359,3 +359,6 @@ body.landing-redesign .wait-side{display:grid;gap:16px;min-width:0}
 /* One line on progress under "How it works": XP, streaks and ranks. */
 body.landing-redesign .loop-reward{max-width:none;margin:22px 0 0;color:var(--landing-muted,var(--slate));font:400 15px/1.6 'Poppins',sans-serif;text-align:center}
 body.landing-redesign .loop-reward a{margin-left:6px;color:var(--ember);font-weight:600;text-underline-offset:3px;white-space:nowrap}
+/* The Forge crest at the head of the footer brand column. */
+body.landing-redesign .footer-crest{display:block;width:96px;height:96px;margin:0 0 18px}
+body.landing-redesign .footer-crest img{width:100%;height:100%}

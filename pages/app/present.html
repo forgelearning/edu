@@ -15,7 +15,7 @@
 
 <link rel="stylesheet" href="css/states.css">
   <link rel="stylesheet" href="css/generated-utilities.css">
-  <link rel="stylesheet" href="css/page-overrides/present.css?v=20261004-challenge2">
+  <link rel="stylesheet" href="css/page-overrides/present.css?v=20261012-seal">
 </head>
 <body>
 <script src="scripts/forge-api.js"></script>
@@ -216,7 +216,7 @@ function startBank(bankKey){
 
 function renderSubjects(){
   var h = '<p class="step-label">Step 1 of 2 — choose a subject</p>';
-  h += '<h1 class="forge-u-17llymi">Forge Class Mode</h1>';
+  h += '<div class="present-title"><span class="present-crest"><img class="forge-logo-dark" src="assets/brand/forge-seal-orange.png" alt="" width="88" height="88"><img class="forge-logo-light" src="assets/brand/forge-seal-navy.png" alt="" width="88" height="88"></span><h1 class="forge-u-17llymi">Forge Class Mode</h1></div>';
   h += '<p class="forge-u-1avfpoj">Run a question bank from the front of the room — no student devices needed.</p>';
   h += howtoStrip();
   h += '<p class="challenge-entry"><button type="button" class="ctrl-btn" id="open-challenges">Class Challenge results →</button> Show how the class answered a challenge they did on their own.</p>';
@@ -271,7 +271,7 @@ function renderPresent(){
   var q = state.questions[state.idx];
 
   if (!q){
-    app.innerHTML = '<div class="done-box"><h1 class="forge-u-89sf81">Bank complete</h1><p class="forge-u-1mu62ua">'+state.questions.length+' questions covered.</p><button type="button" class="reveal-btn" id="restart-btn">Run again</button><br><br><button type="button" class="ctrl-btn" id="banks-btn">← Choose a different bank</button></div>';
+    app.innerHTML = '<div class="done-box"><span class="present-crest present-crest--done"><img class="forge-logo-dark" src="assets/brand/forge-seal-orange.png" alt="" width="160" height="160"><img class="forge-logo-light" src="assets/brand/forge-seal-navy.png" alt="" width="160" height="160"></span><h1 class="forge-u-89sf81">Bank complete</h1><p class="forge-u-1mu62ua">'+state.questions.length+' questions covered.</p><button type="button" class="reveal-btn" id="restart-btn">Run again</button><br><br><button type="button" class="ctrl-btn" id="banks-btn">← Choose a different bank</button></div>';
     document.getElementById('restart-btn').onclick = function(){ state.idx=0; state.revealed=false; if(state.shuffle) state.questions=shuffleArr(state.questions); render(); };
     document.getElementById('banks-btn').onclick = function(){ state.phase='banks'; render(); };
     return;

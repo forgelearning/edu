@@ -101,3 +101,9 @@ h1,h2,h3{font-family:'Rethink Sans',sans-serif}
 .challenge-summary{display:grid;gap:10px;max-width:720px;margin:20px auto;padding:0;list-style:none}
 .challenge-summary li{padding:12px 16px;border:1px solid var(--line);border-radius:var(--radius-md);background:var(--panel);color:var(--white)}
 .challenge-summary li span{color:var(--slate);font-size:14px}
+/* The Forge crest beside the Class Mode title and on the end screen. */
+.present-title{display:flex;align-items:center;gap:16px}
+.present-title h1{margin:0}
+.present-crest{display:block;flex:none;width:88px;height:88px}
+.present-crest img{width:100%;height:100%}
+.present-crest--done{width:160px;height:160px;margin:0 auto 18px}
