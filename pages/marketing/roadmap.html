@@ -49,7 +49,7 @@
   <div class="rm-item"><div class="rm-item-head"><h3>Phase 12 — A complete state system</h3><span class="mono">Empty · loading · error · success</span></div><p>Every data-driven surface must explain what is happening, what went wrong and what to do next. Add consistent retry, recovery, progress and completion states without relying on colour alone.</p></div>
   <div class="rm-item"><div class="rm-item-head"><h3>Phase 13 — Session and assignment resilience</h3><span class="mono">Pause · resume · abandon · complete</span></div><p>Make bounded Practice and Timed practice sessions explicit in the student experience, preserve partial work, distinguish unfinished from completed work, and make teacher assignment progress reflect the same states.</p></div>
   <div class="rm-item"><div class="rm-item-head"><h3>Phase 14 — Teacher decision support</h3><span class="mono">Signal → intervention → follow-up</span></div><p>Turn misconception volume and assignment progress into an actionable queue: identify who needs attention, choose an intervention, create or update an assignment, and see whether the next attempt improved the signal.</p></div>
-  <div class="rm-item"><div class="rm-item-head"><h3>Phase 15 — Release-quality hardening</h3><span class="mono">Accessibility · responsive · QA</span></div><p>Run the main flows at mobile width and with keyboard navigation, parse every inline script, check broken links and missing assets, verify reduced motion and focus visibility, and keep local product diagnostics useful without pretending they are production analytics.</p></div>
+  <div class="rm-item"><div class="rm-item-head"><h3>Phase 15 — Release-quality hardening</h3><span class="mono">Accessibility · responsive · QA</span></div><p>Finish the accessibility pass (keyboard navigation, form labels, focus, contrast and screen-reader announcements), run the main flows at mobile width, parse every inline script, check broken links and missing assets, verify reduced motion and focus visibility, and keep local product diagnostics useful without pretending they are production analytics.</p></div>
 </section>
 
 <section class="rm-bucket">
@@ -69,12 +69,28 @@
     <p>Live banks cover both Introduction to Economics and The UK Economy. The catalogue is still expanding across the specification.</p>
   </div>
   <div class="rm-item">
-    <div class="rm-item-head"><h3>Repair mistakes, Timed practice, and Class Mode</h3><span class="mono">Product features</span></div>
-    <p>Repair mistakes, Timed practice and Class Mode are live. Their exact availability depends on the student's access tier and class setup; the guides explain the current behaviour.</p>
+    <div class="rm-item-head"><h3>Practice that repairs mistakes</h3><span class="mono">Practice · Repair mistakes · Timed practice</span></div>
+    <p>Practice sets of 8 questions, an explanation and a similar question after every mistake, optional hints, and a check a week later that a repaired idea has stuck. Timed practice runs for 5 minutes and 6 questions, and its wrong answers go straight to Repair mistakes.</p>
   </div>
   <div class="rm-item">
-    <div class="rm-item-head"><h3>Teacher and school dashboards</h3><span class="mono">Product features</span></div>
-    <p>Class creation, the misconception heatmap, and the school-wide GCSE/A-Level overview are running against real data, not a demo.</p>
+    <div class="rm-item-head"><h3>Revision</h3><span class="mono">Every subject</span></div>
+    <p>Flashcards for every subject, synced across devices and scheduled for spaced review, plus Match pairs rounds.</p>
+  </div>
+  <div class="rm-item">
+    <div class="rm-item-head"><h3>Home, progress and motivation</h3><span class="mono">Students</span></div>
+    <p>Today's plan, a daily XP goal, a practice streak that survives one missed day, a readiness score for each topic, XP and ranks from Apprentice to Master, achievement badges and avatars. Students in more than one class see one set of progress and one rank across all of them.</p>
+  </div>
+  <div class="rm-item">
+    <div class="rm-item-head"><h3>Classes</h3><span class="mono">Teachers and students</span></div>
+    <p>Private codes for every student, which a teacher can reset if one is lost and print as slips for the class. Assignments with archiving, Class Challenge, Class Mode for the board, a weekly class league and class friends, both off until the teacher switches them on.</p>
+  </div>
+  <div class="rm-item">
+    <div class="rm-item-head"><h3>Teacher and school dashboards</h3><span class="mono">Real data, not a demo</span></div>
+    <p>Each class opens on today's focus, the ideas to revisit, the students to check in with and the class's progress, with corrective starters, spec point accuracy and revision reporting. School Overview gives leaders a read-only view across classes.</p>
+  </div>
+  <div class="rm-item">
+    <div class="rm-item-head"><h3>Videos and question reports</h3><span class="mono">Every subject</span></div>
+    <p>A library of 912 curated videos across 33 subjects, played inside Forge, and a way for students to report a problem with any question.</p>
   </div>
   <div class="rm-item">
     <div class="rm-item-head"><h3>Additional subject banks</h3><span class="mono">Business · Chemistry · Criminology · Biology · History · Law · Physics · Politics · Computer Science · Maths · German · Religious Studies · Health &amp; Social Care · French · Media Studies · PE · Spanish · English Literature · English Language &amp; Literature · IB Mandarin</span></div>
@@ -104,40 +120,23 @@
 
 <section class="rm-bucket">
   <div class="rm-bucket-head"><span class="pill pill-live">Recently completed</span><h2>Core product loop and interface foundation</h2></div>
-  <p class="rm-bucket-desc">These phases are now built and being exercised against real student and teacher flows. The next work is content depth, evidence from use, and further refinement.</p>
+  <p class="rm-bucket-desc">These phases are built and in use by real students and teachers. The next work is content depth, evidence from use, and the completion pass above.</p>
 
   <div class="rm-item">
-    <div class="rm-item-head"><h3>Phase 5 — Bounded Forge sessions and progress continuity</h3><span class="mono">Highest priority · next build</span></div>
-    <p>Question banks will become content pools rather than single sittings. Forge will default to a focused session of around 8 questions or 10 minutes, while smaller banks will use the questions available. Students will see session progress, save work after every answer, and be able to resume, start a new session, or change topic without losing their history.</p>
+    <div class="rm-item-head"><h3>Phase 5 — Bounded sessions and progress continuity</h3><span class="mono">Done</span></div>
+    <p>Question banks became content pools rather than single sittings. Practice now runs in sets of 8 questions (10 on the free tier), saves after every answer, and ends with one clear next step, so a student can stop, resume or change topic without losing their history.</p>
   </div>
   <div class="rm-item">
-    <div class="rm-item-head"><h3>Phase 5 — More realistic Timed practice</h3><span class="mono">Same session model · timed practice</span></div>
-    <p>Timed practice will remain the pressure-testing mode, but five minutes should produce roughly 5–6 questions rather than 12. Longer runs can scale to 10–12 questions for 10 minutes or 20–24 for 20 minutes. Timed-out, abandoned and completed runs will be distinguishable, with partial results preserved for review in Repair mistakes.</p>
+    <div class="rm-item-head"><h3>Phase 5 — More realistic Timed practice</h3><span class="mono">Done</span></div>
+    <p>Timed practice is now 5 minutes and 6 questions, and every wrong answer goes to Repair mistakes for review.</p>
   </div>
   <div class="rm-item">
-    <div class="rm-item-head"><h3>Phase 6 — Teacher intervention loop</h3><span class="mono">After session continuity</span></div>
-    <p>Assignment editing, clearer draft/active/completed states, stronger visibility into partial progress, and better identification of students who are repeatedly struggling.</p>
+    <div class="rm-item-head"><h3>Phase 6 — Teacher intervention loop</h3><span class="mono">Done</span></div>
+    <p>The class overview leads with one focus for the next lesson and a list of students to check in with. Assignments can be archived, Class Challenge lets a class answer the same questions and compare, and teachers can reset a lost student code.</p>
   </div>
   <div class="rm-item">
-    <div class="rm-item-head"><h3>Phase 7 — Accessibility and responsive hardening</h3><span class="mono">Student and teacher surfaces</span></div>
-    <p>Complete keyboard navigation, form labels, focus treatment, contrast checks, mobile layouts and screen-reader announcements across the main learning and teacher flows.</p>
-  </div>
-  <div class="rm-item">
-    <div class="rm-item-head"><h3>Phase 8 — Design-system consolidation</h3><span class="mono">Revisit earlier UI work</span></div>
-    <p>Consolidate repeated inline styles and shared components, standardise buttons, cards, badges, progress indicators, spacing and typography, and reduce unnecessary glow, borders and motion so Forge feels intentionally designed rather than assembled feature by feature.</p>
-  </div>
-  <div class="rm-item">
-    <div class="rm-item-head"><h3>Phase 9 — Deeper product intelligence</h3><span class="mono">Longer-term</span></div>
-    <p>Adaptive question selection, stronger insight screens, better analytics, onboarding improvements and performance work once the core session model is reliable.</p>
-  </div>
-
-  <div class="rm-item">
-    <div class="rm-item-head"><h3>Deeper coverage for the one-bank-deep subjects</h3><span class="mono">Content track</span></div>
-    <p>Business, Chemistry, Biology, Physics, Maths, and the modern languages each have their first bank live — the priority now is widening each to the same depth as Economics and Psychology, prioritised by pilot-school requests.</p>
-  </div>
-  <div class="rm-item">
-    <div class="rm-item-head"><h3>Parent-facing summaries</h3></div>
-    <p>A read-only view of a child's misconception profile for parents' evenings — reusing the same data the teacher dashboard already has, not a new data model.</p>
+    <div class="rm-item-head"><h3>Phase 8 — Design-system consolidation</h3><span class="mono">Done</span></div>
+    <p>One set of fonts, colours, cards and headings across the student pages, the teacher dashboard and the home page, with better contrast and less glow. Classes carry a badge in their subject’s colour.</p>
   </div>
 </section>
 
@@ -148,6 +147,14 @@
   <div class="rm-item">
     <div class="rm-item-head"><h3>Adaptive difficulty within a topic</h3></div>
     <p>Right now the daily session weights topics by weakness. A longer-term idea is weighting individual questions within a topic by difficulty, not just by topic-level accuracy.</p>
+  </div>
+  <div class="rm-item">
+    <div class="rm-item-head"><h3>Parent-facing summaries</h3></div>
+    <p>A read-only view of a child's progress for parents' evenings, reusing the data the teacher dashboard already has rather than a new data model.</p>
+  </div>
+  <div class="rm-item">
+    <div class="rm-item-head"><h3>Deeper product intelligence</h3></div>
+    <p>Adaptive question selection, stronger insight screens and better analytics, building on the readiness score and Today’s plan.</p>
   </div>
 </section>
 
