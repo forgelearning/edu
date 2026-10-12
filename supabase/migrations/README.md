@@ -466,3 +466,11 @@ Applied to production on 2026-10-12 (recorded as version 20261012190009).
 Probed first inside a rolled-back `do` block: a friend with 310 XP in another
 class and 10 here read `xp_total` 10 before their rows were linked and 320
 after, with `xp_week` and `answered` unchanged and the same keys returned.
+
+## 20261012 204355 — new classes start with the league off
+
+| File | What it does |
+|---|---|
+| `20261012204355_league_off_by_default.sql` | Changes the default of `classes.league_enabled` to `false`, so a teacher opts in to the weekly league from Class tools. Existing classes keep their setting (all 29 had it on when this was applied). The create-class insert does not send the column, so the default is what applies. |
+
+Applied to production on 2026-10-12 (recorded as version 20261012204355).

@@ -112,4 +112,9 @@ assert.strictEqual(calls[0].body.p_student_id, 'row-geo', 'uses the student row 
 assert.strictEqual(calls[0].body.p_class_code, 'GG-1', 'finds the class code from the saved classes, even under another name');
 assert.strictEqual(calls[0].opts.token, 'user-token', 'a signed-in student sends their own token');
 
+// New classes opt in: the league is off until the teacher switches it on.
+const offByDefault = fs.readFileSync('supabase/migrations/20261012204355_league_off_by_default.sql', 'utf8');
+assert(/alter column league_enabled set default false/.test(offByDefault), 'new classes start with the league off');
+assert(/Off until you switch it on/.test(fs.readFileSync('pages/marketing/index.html', 'utf8')), 'home page states the league starts off');
+
 console.log('League tests passed (XP rules match calcXP, grants, hidden when off, escaping, overtake line, gaps).');
