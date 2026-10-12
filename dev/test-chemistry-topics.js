@@ -83,4 +83,22 @@ listeners.click({target:{closest(selector){return selector==='[data-revision-act
 assert(app.innerHTML.includes('Card 1 of 8'));
 const escaped = value => String(value).replace(/[&<>'"]/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[ch]));
 assert(atomic && page.ForgeChemistryTopics.questions(atomic.id).some(item=>app.innerHTML.includes(escaped(item.question.stem))));
+// A-Level Physics uses the same mapping, at the AQA section level. Every
+// question must land in exactly one topic, and topic ids must not collide with
+// chemistry's.
+vm.runInContext(fs.readFileSync('data/question-payloads/phys.js','utf8'),page,{filename:'data/question-payloads/phys.js'});
+const physTopics=page.ForgeChemistryTopics.list('phys');
+assert(page.ForgeChemistryTopics.has('phys'));
+assert(!page.ForgeChemistryTopics.has('bio'));
+assert.strictEqual(physTopics.reduce((total,topic)=>total+topic.count,0),page.SUBJECTS.phys.banks.reduce((total,bank)=>total+page.BANKS[bank].questions.length,0));
+assert.strictEqual(physTopics.map(topic=>topic.code).slice(0,3).join(','),'3.1,3.2,3.3');
+assert.strictEqual(physTopics.find(topic=>topic.code==='3.10').heading,null,'3.10 sorts after 3.9, not after 3.1');
+for(const topic of physTopics){
+  assert(topic.id.startsWith('phys-topic:'));
+  const items=page.ForgeChemistryTopics.questions(topic.id);
+  assert.strictEqual(items.length,topic.count,topic.label);
+  assert(items.every(item=>page.SUBJECTS.phys.banks.includes(item.bank)));
+  assert.strictEqual(page.ForgeChemistryTopics.label(topic.id),topic.label);
+}
+assert(quizHtml.includes('ForgeChemistryTopics.has(state.subject)'));
 console.log('Chemistry topic mapping passed (202 questions, original bank identities preserved).');

@@ -651,7 +651,7 @@ function joinClassByCode(name, code, cb) {
     body: JSON.stringify({ p_code: code, p_name: name })
   }).then(function(r) { return r.json(); }).then(function(rows) {
     if (!Array.isArray(rows) || rows.length === 0 || !rows[0].student_id) {
-      cb('Class code not found. Check with your teacher.');
+      cb('Class code not found. If your teacher gave you a student code for this class, enter that too.');
       return;
     }
     var row = rows[0];
@@ -714,6 +714,9 @@ function joinMoreHtml() {
   h += '</div>';
   h += '<div class="forge-u-1karbkd" id="jm-form">';
   if(independent)h+='<p class="forge-join-private-note">Your earlier independent answers and cards stay private and available on this device.</p><label for="jm-name">Your full name</label><input id="jm-name" class="join-input forge-u-dtise6" type="text" autocomplete="name" placeholder="First name and surname"><label for="jm-student-code">Student code (if your teacher gave you one)</label><input id="jm-student-code" class="join-input forge-u-dtise6" type="text" autocomplete="off" placeholder="The code your teacher gave you">';
+  // Classes that use individual student codes refuse a bare class code, and
+  // each class issues its own: a code from the first class won't open a second.
+  else h+='<label for="jm-student-code">Student code for this class (if your teacher gave you one)</label><input id="jm-student-code" class="join-input forge-u-dtise6" type="text" autocomplete="off" placeholder="The code your teacher gave you">';
   h += '<label for="jm-code">Class code</label>';
   h += '<input id="jm-code" class="join-input forge-u-dtise6" type="text" placeholder="e.g. LH-RVN9">';
   h += '<button type="button" id="jm-btn" class="join-btn btn-glass btn-ember forge-u-1og9mh9">Join class →</button>';
@@ -759,7 +762,9 @@ function wireJoinMore() {
       return;
     }
     btn.disabled = true; btn.textContent = 'Joining…';
-    joinClassByCode(state.studentName, code, function(joinErr, res) {
+    var extraCodeInput = document.getElementById('jm-student-code');
+    var extraCode = extraCodeInput ? extraCodeInput.value.trim() : '';
+    var onJoined = function(joinErr, res) {
       btn.disabled = false; btn.textContent = 'Join class →';
       if (joinErr) { err.textContent = joinErr; err.style.display = 'block'; return; }
       if (!res.cls.subject || !SUBJECTS[res.cls.subject]) {
@@ -770,7 +775,19 @@ function wireJoinMore() {
       // Land on the picker so the newly added subject is visible.
       settleRequestedSubject();
       render();
-    });
+    };
+    if (extraCode) {
+      ForgeStudentCode.join(code, extraCode, state.studentName).then(function(row) {
+        ForgeClasses.add({
+          classId: row.class_id, classCode: code, className: row.class_name || null,
+          subject: row.subject || null, studentId: row.student_id, studentName: state.studentName,
+          studentCode: ForgeStudentCode.clean(extraCode)
+        });
+        onJoined(null, { cls: { id: row.class_id, name: row.class_name, subject: row.subject }, studentId: row.student_id });
+      }).catch(function(error) { onJoined(error.message || 'Student code or class code not recognised.'); });
+    } else {
+      joinClassByCode(state.studentName, code, onJoined);
+    }
   };
 }
 
@@ -1693,9 +1710,9 @@ function renderBanks(){
   }
   h+='<section class="forge-topic-list" id="all-topics-section" aria-labelledby="all-topics-title"'+(showTopicsInitially?'':' hidden')+'><h2 id="all-topics-title">All topics in '+subj.label+'</h2>';
   h+='<div class="bank-list" id="all-session-options">';
-  if(state.subject==='chem'&&window.ForgeChemistryTopics){
-    ForgeChemistryTopics.list().forEach(function(topic){
-      if(['3.1.1','3.2.1','3.3.1'].indexOf(topic.code)!==-1)h+='<h3 class="forge-chemistry-group">'+({'3.1':'Physical chemistry','3.2':'Inorganic chemistry','3.3':'Organic chemistry'}[topic.group])+'</h3>';
+  if(window.ForgeChemistryTopics&&ForgeChemistryTopics.has(state.subject)){
+    ForgeChemistryTopics.list(state.subject).forEach(function(topic){
+      if(topic.heading)h+='<h3 class="forge-chemistry-group">'+topic.heading+'</h3>';
       h+='<button type="button" class="bank-btn" data-topic="'+topic.id+'"><div class="code">'+topic.code+'</div><div class="name">'+topic.label+'</div><div class="qcount">'+topic.count+' '+(topic.count===1?'question':'questions')+'</div></button>';
     });
   }else{ var topicOpenTags=ForgeTopicMastery.openTags(state.responseHistory); subj.banks.forEach(function(key){
