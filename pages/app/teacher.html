@@ -23,7 +23,7 @@
 </script>
 <link rel="stylesheet" href="css/states.css">
   <link rel="stylesheet" href="css/generated-utilities.css">
-  <link rel="stylesheet" href="css/page-overrides/teacher.css?v=20261012-rework2">
+  <link rel="stylesheet" href="css/page-overrides/teacher.css?v=20261012-rework4">
   <link rel="stylesheet" href="css/page-overrides/revision.css?v=20261012-width">
   <link rel="stylesheet" href="css/auth-ember.css?v=20260817-auth2">
   <link rel="stylesheet" href="css/content-status.css">
@@ -2027,7 +2027,7 @@ function renderStarterCard(tag, h, context) {
 
   h += '<article class="card forge-card forge-card--focus starter-card" id="starter-card">';
   h += '<div class="starter-card__header">';
-  h += '<div><div class="card-title">' + (context ? 'Recommended starter' : 'Starter activity') + ' · ' + typeLabel + '</div>';
+  h += '<div><span class="teacher-eyebrow">' + (context ? 'Recommended starter' : 'Starter activity') + ' · ' + typeLabel + '</span>';
   h += '<h2 class="starter-card__title">' + starterData.title + '</h2></div>';
   h += '<span class="starter-card__tag">' + tag + '</span>';
   h += '</div>';
@@ -2291,7 +2291,7 @@ function renderAssignments() {
   var h = '';
 
   if (window.ForgeContentConfidence && window.ForgeContentConfidence.badge) {
-    h += '<div class="assignment-content-confidence"><div><span class="card-title">Content confidence</span>' + window.ForgeContentConfidence.badge(contentConfidence.tier) + '</div><p>' + window.ForgeContentConfidence.explanations[contentConfidence.tier] + ' ' + window.ForgeContentConfidence.experiences[contentConfidence.tier] + '</p><span class="assignment-content-cta">' + window.ForgeContentConfidence.ctas[contentConfidence.tier] + ' →</span></div>';
+    h += '<div class="assignment-content-confidence"><div><span class="teacher-eyebrow">Content confidence</span>' + window.ForgeContentConfidence.badge(contentConfidence.tier) + '</div><p>' + window.ForgeContentConfidence.explanations[contentConfidence.tier] + ' ' + window.ForgeContentConfidence.experiences[contentConfidence.tier] + '</p><span class="assignment-content-cta">' + window.ForgeContentConfidence.ctas[contentConfidence.tier] + ' →</span></div>';
   }
 
   if (dashState.revisionNotice) {
@@ -2314,7 +2314,7 @@ function renderAssignments() {
   h += '<label class="forge-u-1s6s0pt" for="asgn-due">Due date <span class="forge-u-19j2vc3">(required)</span></label>';
   h += '<input type="date" id="asgn-due" aria-describedby="asgn-due-help">';
   h += '<p class="forge-u-ux2pa9" id="asgn-due-help">Students can still see the work after the date, but it will be marked overdue.</p>';
-  h += '<div class="forge-u-1woniy7"><div class="card-title forge-u-3ocpgz">Select banks to include</div><span class="forge-u-18u61ix" id="asgn-selected-count">0 of ' + availableBanks.length + ' selected</span></div>';
+  h += '<div class="teacher-field-head"><h3>Question banks</h3><span id="asgn-selected-count">0 of ' + availableBanks.length + ' selected</span></div>';
   h += '<div class="bank-checklist">';
   availableBanks.forEach(function(bk) {
     var label = BANK_LABELS[bk] || bk;
@@ -2602,8 +2602,8 @@ function renderStarters(wrongResponses) {
     var allTags = Object.keys(MC_STARTERS).filter(function(tag) {
       return !dashState.classSubject || MC_TO_SUBJECT[tag] === dashState.classSubject;
     });
-    var h = '<div class="card forge-mb-5">';
-    h += '<div class="card-title">Browse starter activities</div>';
+    var h = '<div class="card teacher-section forge-mb-5">';
+    h += '<header class="teacher-section__head"><div><h2>Starter activities</h2><p>Short class activities that reteach a common misunderstanding.</p></div></header>';
     if (allTags.length === 0) {
       h += '<p class="forge-u-1rniwep">There are no starter activities for this subject yet. Once students answer questions, the most common idea to revisit will still be ranked below and you can build a starter from its scaffold.</p>';
       h += '</div><div id="browse-starter-slot"></div>';
@@ -2650,10 +2650,10 @@ function renderStarters(wrongResponses) {
   var others = sorted.slice(1, 5);
   if (others.length > 0) {
     h += '<section class="card misconception-card" aria-labelledby="other-misconceptions-title">';
-    h += '<div class="misconception-card__header"><div><div class="card-title">Next interventions</div><h2 id="other-misconceptions-title">Other ideas to revisit</h2></div><span class="misconception-card__hint">Choose one to preview</span></div>';
+    h += '<header class="teacher-section__head"><div><h2 id="other-misconceptions-title">Other ideas to revisit</h2><p>Choose one to preview its starter.</p></div></header>';
     h += '<div class="misconception-grid">';
     others.forEach(function(tag) {
-      h += '<button type="button" class="misconception-chip" data-forge-action="show-starter" data-tag="' + teacherEsc(tag) + '"><span><strong>' + teacherEsc(teacherMisconceptionLabel(tag)) + '</strong><small>' + counts[tag].count + ' fire' + (counts[tag].count !== 1 ? 's' : '') + '</small></span><span aria-hidden="true">→</span></button>';
+      h += '<button type="button" class="misconception-chip" data-forge-action="show-starter" data-tag="' + teacherEsc(tag) + '"><span><strong>' + teacherEsc(teacherMisconceptionLabel(tag)) + '</strong><small>' + counts[tag].count + ' error' + (counts[tag].count !== 1 ? 's' : '') + '</small></span><span aria-hidden="true">→</span></button>';
     });
     h += '</div></section>';
   }
