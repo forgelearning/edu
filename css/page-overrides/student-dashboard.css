@@ -372,3 +372,11 @@ html[data-overdrive="control-room"] .mod-row:hover{border-color:var(--hot);box-s
 #app .dashboard-heading--ranked h1{margin-bottom:8px}
 .dashboard-heading__rank{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;margin:0}
 @media(max-width:560px){.dashboard-heading--ranked{gap:14px}.dashboard-heading--ranked .forge-avatar--lg{--avatar-size:58px;--avatar-ring:3px}}
+/* Class switcher: one chip per joined class. XP, streak and badges count every
+   class; the chip picks whose plan, league and assignments Home shows. */
+.dashboard-classes{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-start;gap:8px;margin:-8px 0 20px;padding:0}
+.dashboard-classes>span{margin-right:4px;color:var(--slate);font-size:13px}
+.dashboard-class-chip{min-height:36px;padding:6px 14px;border:1px solid var(--line);border-radius:var(--radius-pill);background:var(--panel);color:var(--white);font:600 14px 'Rethink Sans',sans-serif;cursor:pointer}
+.dashboard-class-chip:hover{border-color:var(--ember)}
+.dashboard-class-chip:focus-visible{outline:2px solid var(--hot);outline-offset:2px}
+.dashboard-class-chip.is-active{border-color:var(--ember);background:var(--ember);color:#fff}

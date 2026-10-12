@@ -16,7 +16,16 @@
     return {quizXp:Math.max(0,Number(v.quizXp)||0),serverMatchXp:server,pending:pending,rounds:rounds,matchXp:server+pending.reduce(function(n,p){return n+p.pairs*5;},0)};
   }
   function write(id,v){try{root.localStorage.setItem(key(id),JSON.stringify(v));return true;}catch(e){return false;}}
-  function total(id){var d=read(id);return d.quizXp+d.matchXp;}
+  // Match XP is held per class row. A class student in several classes has one
+  // row per class, so their XP counts all of them; quizXp is already stored
+  // from the answers of every class.
+  function matchXpFor(id){
+    var ids={};ids[id]=true;
+    var classes=root.ForgeClasses&&root.ForgeClasses.list?root.ForgeClasses.list():[];
+    if(classes.some(function(c){return String(c.studentId)===String(id);}))classes.forEach(function(c){if(c.studentId)ids[c.studentId]=true;});
+    return Object.keys(ids).reduce(function(n,k){return n+read(k).matchXp;},0);
+  }
+  function total(id){return read(id).quizXp+matchXpFor(id);}
   function quizXpFromResponses(rows){return (rows||[]).reduce(function(xp,r){var id=String(r.question_id||'');if(id.endsWith('-ANVIL')||id.endsWith('-CRU'))return xp+(r.is_correct?30:0);if(r.reforge_attempted)return xp+(r.reforge_correct?20:0);return xp+(r.is_correct?(r.hint_used?5:10):0);},0);}
   function rememberQuizXp(id,xp){if(!id||!Number.isFinite(Number(xp)))return;var d=read(id);d.quizXp=Math.max(0,Number(xp));write(id,d);}
   function today(){var parts=new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/London',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date());var values={};parts.forEach(function(p){values[p.type]=p.value;});return values.year+'-'+values.month+'-'+values.day;}
@@ -49,5 +58,5 @@
     });
   }
   function unlocked(id,reward){return total(id)>=(MILESTONES[reward]||0);}
-  root.ForgeRewards={MILESTONES:MILESTONES,read:read,total:total,quizXpFromResponses:quizXpFromResponses,rememberQuizXp:rememberQuizXp,awardMatch:awardMatch,load:load,unlocked:unlocked};
+  root.ForgeRewards={MILESTONES:MILESTONES,read:read,total:total,matchXpFor:matchXpFor,quizXpFromResponses:quizXpFromResponses,rememberQuizXp:rememberQuizXp,awardMatch:awardMatch,load:load,unlocked:unlocked};
 })(window);

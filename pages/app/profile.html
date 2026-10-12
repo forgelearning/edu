@@ -64,7 +64,7 @@ ForgeSidebar.mount({
 <script>if(window.ForgeAuth)ForgeAuth.adoptHashSession();</script>
 <script src="data/forge-catalog.js?v=20260911-recap"></script>
 <script src="data/misconception-labels.js?v=20260907-diagnostics"></script>
-<script src="scripts/forge-classes.js?v=20260813"></script>
+<script src="scripts/forge-classes.js?v=20261012-classes"></script>
 <script src="scripts/forge-student-code.js?v=20260809"></script>
 <script src="scripts/forge-misconception-state.js"></script>
 <script src="scripts/forge-fixed.js"></script>
@@ -286,7 +286,7 @@ function renderProfile(){
   var accCol=acc>=75?'var(--good)':acc>=50?'var(--hot)':'var(--bad)';
   var quizXp=calcXP(responses);
   if(window.ForgeRewards)ForgeRewards.rememberQuizXp(st.studentId,quizXp);
-  var xp=quizXp+(window.ForgeRewards?ForgeRewards.read(st.studentId).matchXp:0);
+  var xp=quizXp+(window.ForgeRewards?ForgeRewards.matchXpFor(st.studentId):0);
   var rank=getRank(xp);
   var nextRank=RANKS[RANKS.indexOf(rank)+1];
   var streak=calcStreak(responses);
@@ -786,7 +786,7 @@ function forgeSignOut(){
         // the profile reports 0% for a student with a full response history.
         var anchor = {studentId: st.studentId, classCode: saved.classCode, studentCode: saved.studentCode, studentName: st.studentName};
         ForgeClasses.syncFromServer(SUPABASE_URL, SUPABASE_KEY, anchor, function(){
-          ForgeClasses.fetchLinkedResponses(SUPABASE_URL, SUPABASE_KEY, anchor, function(r){
+          ForgeClasses.fetchStudentResponses(SUPABASE_URL, SUPABASE_KEY, anchor, function(r){
             st.responses = Array.isArray(r) ? r : [];
             renderProfile();
           });
