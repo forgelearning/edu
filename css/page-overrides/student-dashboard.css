@@ -339,7 +339,7 @@ html[data-overdrive="control-room"] .mod-row:hover{border-color:var(--hot);box-s
 .dashboard-topics{margin-top:24px;padding-top:18px;border-top:1px solid var(--line)}
 .dashboard-topics__label{margin:0 0 10px !important;color:var(--slate);font-size:13px !important}
 .dashboard-topics ul{display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0;list-style:none}
-.dashboard-topics a{display:inline-flex;align-items:center;gap:10px;min-height:40px;padding:8px 14px;border:1px solid var(--line);border-radius:var(--radius-md);background:var(--panel-2);color:var(--white);font-size:14px;font-weight:600;text-decoration:none}
+.dashboard-topics a{display:inline-flex;align-items:center;gap:10px;min-height:44px;padding:8px 14px;border:1px solid var(--line);border-radius:var(--radius-md);background:var(--panel-2);color:var(--white);font-size:14px;font-weight:600;text-decoration:none}
 .dashboard-topics a:hover{border-color:var(--ember)}
 .dashboard-topics a:focus-visible{outline:2px solid var(--ember);outline-offset:3px}
 .dashboard-topics small{flex:none;white-space:nowrap;color:var(--slate);font-weight:500}
@@ -357,7 +357,7 @@ html[data-overdrive="control-room"] .mod-row:hover{border-color:var(--hot);box-s
 .dashboard-plan__step.is-done strong{color:var(--slate);text-decoration:line-through;text-decoration-thickness:1px}
 .dashboard-plan__step strong{display:block;color:var(--white);font:700 15px/1.3 'Rethink Sans',sans-serif}
 .dashboard-plan__step small{display:block;margin-top:2px;color:var(--slate);font-size:12px}
-.dashboard-plan__step .forge-button{min-height:40px;white-space:nowrap}
+.dashboard-plan__step .forge-button{min-height:44px;white-space:nowrap}
 @media(max-width:520px){.dashboard-plan__step{grid-template-columns:28px minmax(0,1fr)}.dashboard-plan__step .forge-button{grid-column:2;justify-self:start}}
 .dashboard-streak-freeze{margin:10px 0 0;padding:8px 12px;border-left:3px solid var(--hot);color:var(--white);font-size:13px;line-height:1.45}
 .dashboard-entry-actions{display:grid;gap:14px;margin:0 0 24px}
@@ -376,7 +376,7 @@ html[data-overdrive="control-room"] .mod-row:hover{border-color:var(--hot);box-s
    class; the chip picks whose plan, league and assignments Home shows. */
 .dashboard-classes{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-start;gap:8px;margin:-8px 0 20px;padding:0}
 .dashboard-classes>span{margin-right:4px;color:var(--slate);font-size:13px}
-.dashboard-class-chip{min-height:36px;padding:6px 14px;border:1px solid var(--line);border-radius:var(--radius-pill);background:var(--panel);color:var(--white);font:600 14px 'Rethink Sans',sans-serif;cursor:pointer}
+.dashboard-class-chip{min-height:44px;padding:6px 14px;border:1px solid var(--line);border-radius:var(--radius-pill);background:var(--panel);color:var(--white);font:600 14px 'Rethink Sans',sans-serif;cursor:pointer}
 .dashboard-class-chip:hover{border-color:var(--ember)}
 .dashboard-class-chip:focus-visible{outline:2px solid var(--hot);outline-offset:2px}
 .dashboard-class-chip.is-active{border-color:var(--ember);background:var(--ember);color:#fff}
