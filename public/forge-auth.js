@@ -193,7 +193,12 @@ var ForgeAuth = {
   // Supabase sends an eight-digit OTP through the project's code-only template.
   sendEmailLink: function(email, saveCurrentFreeWork) {
     try { localStorage.removeItem(FORGE_FREE_CLAIM_KEY); } catch(e) {}
-    try { localStorage.removeItem(FORGE_CLASS_CLAIM_KEY); } catch(e) {}
+    var priorClassClaim = null;
+    try { priorClassClaim = JSON.parse(localStorage.getItem(FORGE_CLASS_CLAIM_KEY) || 'null'); } catch(e) {}
+    if (!priorClassClaim || priorClassClaim.email !== email.toLowerCase()) {
+      priorClassClaim = null;
+      try { localStorage.removeItem(FORGE_CLASS_CLAIM_KEY); } catch(e) {}
+    }
     if (saveCurrentFreeWork) {
       try {
         var free = JSON.parse(localStorage.getItem('forge-free-session') || 'null');
@@ -205,10 +210,24 @@ var ForgeAuth = {
     try {
       var cls = JSON.parse(localStorage.getItem('forge-student') || 'null');
       if (cls && cls.classCode && cls.studentCode) {
-        localStorage.setItem(FORGE_CLASS_CLAIM_KEY, JSON.stringify({
-          classCode: cls.classCode, studentCode: cls.studentCode,
-          email: email.toLowerCase()
-        }));
+        var joined = [];
+        try { joined = JSON.parse(localStorage.getItem('forge-classes') || '[]'); } catch(e) {}
+        var classes = priorClassClaim && Array.isArray(priorClassClaim.classes) ? priorClassClaim.classes.slice() :
+          (priorClassClaim && priorClassClaim.classCode && priorClassClaim.studentCode ?
+            [{ classCode: priorClassClaim.classCode, studentCode: priorClassClaim.studentCode }] : []);
+        var seen = {};
+        classes.forEach(function(item) { seen[String(item.classCode)] = true; });
+        [cls].concat(Array.isArray(joined) ? joined : []).forEach(function(item) {
+          if (!item || !item.classCode || !item.studentCode ||
+              String(item.studentName || '').trim().toLowerCase() !== String(cls.studentName || '').trim().toLowerCase()) return;
+          var key = String(item.classCode);
+          if (seen[key]) return;
+          seen[key] = true;
+          classes.push({ classCode: item.classCode, studentCode: item.studentCode });
+        });
+        localStorage.setItem(FORGE_CLASS_CLAIM_KEY, JSON.stringify({ email: email.toLowerCase(), classes: classes }));
+      } else if (priorClassClaim) {
+        localStorage.setItem(FORGE_CLASS_CLAIM_KEY, JSON.stringify(priorClassClaim));
       }
     } catch(e) {}
     return ForgeAPI.auth.sendEmailLink(email, new URL('student-dashboard.html', window.location.href).href);
@@ -236,13 +255,26 @@ var ForgeAuth = {
         localStorage.removeItem(FORGE_CLASS_CLAIM_KEY);
         return null;
       }
-      return ForgeAPI.rpc('join_class_with_student_code', {
-        p_class_code: pending.classCode, p_student_code: pending.studentCode, p_name: ''
-      }, {token: token}).then(function(rows) {
-        var row = Array.isArray(rows) && rows[0];
-        if (!row || !row.linked_to_account) throw new Error('This class could not be linked to your email.');
+      // Older pending handoffs stored one class directly on the object.
+      var classes = Array.isArray(pending.classes) ? pending.classes :
+        (pending.classCode && pending.studentCode ? [{ classCode: pending.classCode, studentCode: pending.studentCode }] : []);
+      pending.classes = classes.slice();
+      var claimed = [];
+      return classes.reduce(function(chain, item) {
+        return chain.then(function() {
+          return ForgeAPI.rpc('join_class_with_student_code', {
+            p_class_code: item.classCode, p_student_code: item.studentCode, p_name: ''
+          }, {token: token}).then(function(rows) {
+            var row = Array.isArray(rows) && rows[0];
+            if (!row || !row.linked_to_account) throw new Error('This class could not be linked to your email.');
+            claimed.push(row);
+            pending.classes = pending.classes.filter(function(other) { return other !== item; });
+            localStorage.setItem(FORGE_CLASS_CLAIM_KEY, JSON.stringify(pending));
+          });
+        });
+      }, Promise.resolve()).then(function() {
         localStorage.removeItem(FORGE_CLASS_CLAIM_KEY);
-        return row;
+        return claimed;
       });
     });
   },
@@ -277,7 +309,7 @@ var ForgeAuth = {
     if (!token) return Promise.resolve(null);
     var user = ForgeAuth.currentUser();
     var identity = user && user.id ? Promise.resolve(user) : ForgeAPI.auth.user(token);
-    return identity.then(function(account) {
+    return ForgeAuth.claimPendingClassStudent().catch(function() { return null; }).then(function() { return identity; }).then(function(account) {
       if (!account || !account.id) return null;
       return ForgeAPI.get('students', 'class_id=is.null&auth_user_id=eq.' + encodeURIComponent(account.id), {token: token})
         .then(function(rows) {

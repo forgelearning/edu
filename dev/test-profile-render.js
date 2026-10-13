@@ -13,6 +13,8 @@ if (/resolveBankLabel\(/.test(profile)) {
   assert(/function resolveBankLabel\(/.test(profile) || /data\/forge-data\.js/.test(profile),
     'profile.html calls resolveBankLabel but neither defines it nor loads forge-data.js');
 }
+assert(/ForgeClasses\.fetchStudentResponses\([^]*?function\(r, error\)\{[^]*?if \(error\) st\.loadError = true;[^]*?renderProfile\(\)/.test(profile),
+  'class profile must show a load error when any joined class history fails');
 
 // 1b. Student-facing text: subject names, escaping, and no internal words.
 function grabFn(name) {

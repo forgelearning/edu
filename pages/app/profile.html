@@ -789,8 +789,9 @@ function forgeSignOut(){
         // the profile reports 0% for a student with a full response history.
         var anchor = {studentId: st.studentId, classCode: saved.classCode, studentCode: saved.studentCode, studentName: st.studentName};
         ForgeClasses.syncFromServer(SUPABASE_URL, SUPABASE_KEY, anchor, function(){
-          ForgeClasses.fetchStudentResponses(SUPABASE_URL, SUPABASE_KEY, anchor, function(r){
+          ForgeClasses.fetchStudentResponses(SUPABASE_URL, SUPABASE_KEY, anchor, function(r, error){
             st.responses = Array.isArray(r) ? r : [];
+            if (error) st.loadError = true;
             renderProfile();
           });
         });

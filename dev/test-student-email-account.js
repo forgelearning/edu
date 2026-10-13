@@ -6,6 +6,14 @@ const vm = require('vm');
 const values = new Map();
 const calls = [];
 let user = { id: 'account-1', email: 'alex@example.com' };
+const ownedClasses = new Map();
+let failClassCode = null;
+const classRows = {
+  'HISTORY-Y10': { student_id: 'existing-class-row', student_name: 'Alex Morgan',
+    class_id: 'class-1', class_code: 'HISTORY-Y10', class_name: 'History Y10', subject: 'hist' },
+  'CHEMISTRY-Y10': { student_id: 'chemistry-row', student_name: 'Alex Morgan',
+    class_id: 'class-2', class_code: 'CHEMISTRY-Y10', class_name: 'Chemistry Y10', subject: 'chem' }
+};
 const localStorage = {
   getItem: key => values.has(key) ? values.get(key) : null,
   setItem: (key, value) => values.set(key, String(value)),
@@ -31,15 +39,14 @@ const context = {
       if (name === 'get_my_free_student') return Promise.resolve([{
         student_id: 'guest-row', student_name: 'Student', free_token: 'secure-guest-token'
       }]);
-      if (name === 'join_class_with_student_code') return Promise.resolve([{
-        student_id: 'existing-class-row', student_name: 'Alex Morgan',
-        class_id: 'class-1', class_code: 'HISTORY-Y10', class_name: 'History Y10',
-        subject: 'hist', linked_to_account: true
-      }]);
-      if (name === 'get_my_class_students') return Promise.resolve([{
-        student_id: 'existing-class-row', student_name: 'Alex Morgan',
-        class_id: 'class-1', class_code: 'HISTORY-Y10', class_name: 'History Y10', subject: 'hist'
-      }]);
+      if (name === 'join_class_with_student_code') {
+        if (args.p_class_code === failClassCode) return Promise.reject(new Error('temporary network failure'));
+        const row = classRows[args.p_class_code];
+        if (!row) return Promise.resolve([]);
+        ownedClasses.set(args.p_class_code, row);
+        return Promise.resolve([{ ...row, linked_to_account: true }]);
+      }
+      if (name === 'get_my_class_students') return Promise.resolve(Array.from(ownedClasses.values()));
       throw new Error('Unexpected RPC: ' + name);
     }
   },
@@ -100,12 +107,28 @@ async function run() {
     studentId: 'existing-class-row', classId: 'class-1',
     classCode: 'HISTORY-Y10', studentCode: 'A1B2C3D4E5', studentName: 'Alex Morgan'
   }));
+  values.set('forge-classes', JSON.stringify([
+    { studentId: 'existing-class-row', classId: 'class-1', classCode: 'HISTORY-Y10', studentCode: 'A1B2C3D4E5', studentName: 'Alex Morgan' },
+    { studentId: 'chemistry-row', classId: 'class-2', classCode: 'CHEMISTRY-Y10', studentCode: 'F6G7H8J9K0', studentName: 'Alex Morgan' },
+    { studentId: 'another-student', classId: 'class-3', classCode: 'MATHS-Y10', studentCode: 'L1M2N3P4Q5', studentName: 'Sam Lee' }
+  ]));
   await context.ForgeAuth.sendEmailLink('alex@example.com', false);
-  assert.strictEqual(JSON.parse(values.get('forge-class-claim-pending')).studentCode, 'A1B2C3D4E5');
+  assert.deepStrictEqual(JSON.parse(values.get('forge-class-claim-pending')).classes.map(item => item.classCode),
+    ['HISTORY-Y10', 'CHEMISTRY-Y10'], 'only the current student’s classes are queued');
+  failClassCode = 'CHEMISTRY-Y10';
   await context.ForgeAuth.verifyEmailCode('alex@example.com', '12345678');
+  assert.deepStrictEqual(JSON.parse(values.get('forge-class-claim-pending')).classes.map(item => item.classCode),
+    ['CHEMISTRY-Y10'], 'an unsuccessful claim remains available for retry');
+  failClassCode = null;
+  await context.ForgeAuth.restoreStudentContexts();
   assert.strictEqual(values.has('forge-class-claim-pending'), false);
-  assert.strictEqual(calls.filter(call => call[0] === 'join_class_with_student_code').length, 1);
+  assert.strictEqual(ownedClasses.size, 2, 'both class records are linked to the account');
+  assert.strictEqual(values.has('forge-classes'), false, 'old shared-device class cache was cleared');
+  const restoredClasses = [];
+  context.ForgeClasses = { add: item => restoredClasses.push(item) };
   const classSession = await context.ForgeAuth.restoreClassStudent();
+  assert.deepStrictEqual(restoredClasses.map(item => item.classCode), ['HISTORY-Y10', 'CHEMISTRY-Y10'],
+    'another device restores both class records');
   assert.strictEqual(classSession.studentId, 'existing-class-row');
   assert.strictEqual(classSession.studentCode, undefined);
   assert.strictEqual(JSON.parse(values.get('forge-student')).classCode, 'HISTORY-Y10');
