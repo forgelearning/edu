@@ -163,16 +163,24 @@ propagates into its `*-COV-*` copies and fixing the source fixes them all.
 
   **Read that number carefully.** It is true of what a student sees, and it is
   produced almost entirely by a runtime patch rather than by authoring. Remove
-  the anti-cue loop and **1,262 of 15,327 items (8.2%)** have the correct
-  answer as the single longest option — `bus` 31.6%, `gcse-psych` 26.7%, `cs` 26.7%,
-  `bus` 32.6%, `cs` 26.7%, `econ` 26.1%. (Both the total and the per-subject
-  shares re-measured 2026-08-28 with `dev/audit-source-cues.js`, after the
-  separate-science, law, rs, maths and hist keys were rewritten. `law`, `rs`,
-  `maths` and `hist` no longer appear in the ranking at all. The previous
-  figure here was 2,430 / 16.1% naming `gcse-econ` 61.2% as the worst subject;
-  `gcse-econ`, `gcse-geo` and `geo` are all at **0** now. Other sessions cleared
-  them without updating this file, which is the recurring failure mode — always
-  re-measure.)
+  the anti-cue loop and **643 of 15,447 items (4.2%)** have the correct
+  answer as the single longest option — `bio` 19.1%, `french` 17.6%, `chem`
+  15.8%, `span` 15.2%, then `pe`, `englit`, `german`, `hsc` and `phys` at
+  12-14%. (Re-measured 2026-10-17 with `dev/audit-source-cues.js`, after
+  `bus`, `cs`, `gcse-psych` and `econ`, the previous four worst at 26-32%,
+  were all taken to **0**. The figure before that was 1,262 / 8.2%. Other
+  sessions have cleared subjects without updating this file, which is the
+  recurring failure mode — always re-measure.)
+
+  How those four were cleared, in case the same shapes recur: the CS,
+  Business and GCSE Psychology Reforge twins built by the pool walks
+  (`secondGroupPlans` and the CS pool) got off-topic distractors, so the cued
+  ones are replaced by hand-written scenario-twin tables (`csScenarioTwins`,
+  `gcsePsychScenarioTwins`) applied straight after the generator. Uncued
+  pool-built twins still carry off-topic distractors and are worth the same
+  treatment. In Economics, nine questions had options copied from a different
+  question, so the key did not answer the stem; a cue audit will not find
+  that, only reading the options will.
 
   Two tools read this, both loading the bank with and without the loop via
   `dev/lib/source-bank.js`:
@@ -611,8 +619,8 @@ etc.) — treat every completion claim in it as stale by default.
   banks reuse every answer as a distractor elsewhere, so check before editing.
 
   `gcse-hist` and A-Level `hist` are now both at 0. Subject total 1410 → 1262
-  (8.2%); the worst subjects are now `bus` 31.6%, `gcse-psych` 26.7%, `cs` 26.7%
-  and `econ` 26.1%.
+  (8.2%), and 643 (4.2%) once `bus`, `gcse-psych`, `cs` and `econ` were
+  cleared on 2026-10-17 (see the top of this section for the current ranking).
 
   Four subjects (`SOC-FAM`, `CRIM-COURT`, `POL-UKGOV`, `hsc`) build questions
   from a **shared pool of definitions, where each definition is the key in one
