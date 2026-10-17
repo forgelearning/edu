@@ -115,8 +115,9 @@
       var rank = root.ForgeRanks && root.ForgeRanks.byKey(r.rank);
       h += '<li class="forge-league__row' + (r.is_you ? ' is-you' : '') + '"><span class="forge-league__pos">' + esc(r.position) + '</span>'
         + '<span class="forge-league__name">' + (rank ? root.ForgeRanks.avatarHtml(r.name, 0, { size: 'sm', rank: rank }) : '')
-        // The trophy count sits outside the label, which truncates on a phone.
-        + '<span class="forge-league__label">' + (r.is_you ? 'You' : esc(r.name)) + (rank ? ' ' + root.ForgeRanks.chipHtml(0, rank) : '') + '</span>' + trophyCount(r.trophies) + '</span>'
+        // The rank chip and trophy count sit outside the label, which truncates,
+        // so the ellipsis cuts the name rather than clipping the chip.
+        + '<span class="forge-league__label">' + (r.is_you ? 'You' : esc(r.name)) + '</span>' + (rank ? root.ForgeRanks.chipHtml(0, rank) : '') + trophyCount(r.trophies) + '</span>'
         + '<span class="forge-league__xp">' + Number(r.xp || 0).toLocaleString() + ' XP</span></li>';
       lastSeq = r.seq;
     });

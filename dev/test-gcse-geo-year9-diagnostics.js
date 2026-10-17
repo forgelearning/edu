@@ -25,12 +25,14 @@ function assert(condition, message) {
 }
 
 // Hazardous Earth was split into two assignable banks on 2026-09-07, so its 30
-// diagnostic tags now sit 14 in the tectonics half and 16 in the climate half.
-// The totals below are asserted separately, and the split itself is checked at
-// the end of this file.
+// diagnostic tags now sit 14 in the tectonics half and 19 in the climate half.
+// Three are shared: monitoring, vulnerability and response apply to cyclones as
+// much as to earthquakes, and the cyclone questions moved to the climate half on
+// 2026-10-17 keep the tags of their tectonic counterparts. The totals below are
+// asserted separately, and the split itself is checked at the end of this file.
 const expected = {
   'GCSE-GEO-HAZ': 14,
-  'GCSE-GEO-CLIMATE': 16,
+  'GCSE-GEO-CLIMATE': 19,
   'GCSE-GEO-BIOSPHERE': 23,
   'GCSE-GEO-DEV': 32
 };
@@ -70,8 +72,8 @@ assert(new Set([byId['GCSE-HAZ-33'].tag, byId['GCSE-HAZ-04'].tag, byId['GCSE-HAZ
 // The split moves questions between banks at the very end of forge-data.js. A
 // dropped or duplicated id there would be invisible to the audit — both banks
 // would still be internally well-formed — so pin the totals and the partition.
-assert(hazard.length === 35, `Hazardous Earth tectonics: expected 35 questions, found ${hazard.length}`);
-assert(climate.length === 34, `Hazardous Earth climate: expected 34 questions, found ${climate.length}`);
+assert(hazard.length === 31, `Hazardous Earth tectonics: expected 31 questions, found ${hazard.length}`);
+assert(climate.length === 38, `Hazardous Earth climate: expected 38 questions, found ${climate.length}`);
 const hazardIds = new Set(hazard.map(question => question.id));
 const overlap = climate.filter(question => hazardIds.has(question.id));
 assert(overlap.length === 0, `a question is in both halves: ${overlap.map(q => q.id).join(', ')}`);
