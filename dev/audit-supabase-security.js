@@ -100,4 +100,14 @@ function assertStatus(name, result, accepted) {
   assertStatus('invite claim needs a teacher session', claim, [401, 403, 404]);
 
   console.log('Supabase security smoke tests passed.');
-})().catch(error => { console.error(error.message); process.exit(1); });
+})().catch(error => {
+  // No route to Supabase at all (a sandbox or an offline laptop) says nothing
+  // about the boundary, so skip locally rather than stopping `npm run check`
+  // before the checks after it. CI must reach Supabase, so it still fails.
+  if (error instanceof TypeError && error.message === 'fetch failed' && !process.env.CI) {
+    console.log('Supabase security smoke tests skipped: Supabase is unreachable from here (they still run in CI).');
+    return;
+  }
+  console.error(error.message);
+  process.exit(1);
+});

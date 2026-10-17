@@ -42525,7 +42525,8 @@ for (const [id, variants] of Object.entries(physAnswerLengthRepairs)) {
     "GCSE-HAZ-28", "GCSE-HAZ-29", "GCSE-HAZ-30", "GCSE-HAZ-31",
     "GCSE-HAZ-32", "GCSE-HAZ-35", "GCSE-HAZ-36", "GCSE-HAZ-37",
     "GCSE-HAZ-38", "GCSE-HAZ-39", "GCSE-HAZ-40", "GCSE-HAZ-41",
-    "GCSE-HAZ-42", "GCSE-HAZ-Y10-05", "GCSE-HAZ-Y10-06", "GCSE-HAZ-Y10-08",
+    "GCSE-HAZ-42", "GCSE-HAZ-43", "GCSE-HAZ-44", "GCSE-HAZ-45",
+    "GCSE-HAZ-Y10-05", "GCSE-HAZ-Y10-06", "GCSE-HAZ-Y10-07", "GCSE-HAZ-Y10-08",
     "GCSE-HAZ-Y10-09", "GCSE-HAZ-Y10-10"
   ]);
 

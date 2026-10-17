@@ -52,6 +52,7 @@ function apiScript() {
     }
     root.ForgeAPI = {
       config: {url: base, key: 'staging-anon-key'},
+      headers: function(token, extra){ return Object.assign({apikey:'staging-anon-key', Authorization:'Bearer ' + (token || 'staging-anon-key')}, extra || {}); },
       request: request,
       rpc: function(name, payload){ return request('/rest/v1/rpc/' + name, {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload || {})}); },
       insert: function(name, row){ return request('/rest/v1/' + name, {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(row || {})}); },
