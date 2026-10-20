@@ -62,14 +62,23 @@
     });
     return out;
   }
-  function hash(value){var h=2166136261;for(var i=0;i<value.length;i++){h^=value.charCodeAt(i);h=Math.imul(h,16777619);}return h>>>0;}
-  function ordered(cards,context,state){
-    var today=new Date().toISOString().slice(0,10),seed=String(context&&context.studentId||'student')+'|'+today;
+  // Cards a student has not been scheduled on yet used to tie-break on a hash
+  // of their id and the date, so a topic served the same cards in the same
+  // order all day, and a small topic every time. Students learned the
+  // sequence instead of the chemistry. Due cards still come first, but which
+  // unseen cards fill a set is now drawn fresh each time.
+  function shuffle(cards,random){
+    var out=cards.slice(),rand=random||Math.random;
+    for(var i=out.length-1;i>0;i--){var j=Math.floor(rand()*(i+1)),swap=out[i];out[i]=out[j];out[j]=swap;}
+    return out;
+  }
+  function ordered(cards,context,state,random){
+    var rank=new Map();shuffle(cards,random).forEach(function(card,index){rank.set(card,index);});
     return cards.slice().sort(function(a,b){
       var ar=state.reviews[a.key],br=state.reviews[b.key];
       var ad=ar?Date.parse(ar.dueAt||0):Infinity,bd=br?Date.parse(br.dueAt||0):Infinity;
       if(ad!==bd)return ad-bd;
-      return hash(seed+a.key)-hash(seed+b.key);
+      return rank.get(a)-rank.get(b);
     });
   }
   function dueCards(cards,state){var now=Date.now();return cards.filter(function(card){var r=state.reviews[card.key];return r&&Date.parse(r.dueAt||0)<=now;});}
@@ -351,7 +360,9 @@
       }
     }
     function start(cards,assignment,source){
-      currentCards=cards;currentIndex=0;currentAssignment=assignment||null;currentSource=source||'today';ratings=[];lastReviewMessage='';
+      // Selection decides which cards are due; the order they are shown in is
+      // shuffled so a set never replays in the sequence it was reviewed.
+      currentCards=shuffle(cards);currentIndex=0;currentAssignment=assignment||null;currentSource=source||'today';ratings=[];lastReviewMessage='';
       if(!cards.length){if(assignment&&config(assignment).mode==='due'){var record=state.assignments[String(assignment.id)]||{answered:[]};record.complete=true;record.updatedAt=new Date().toISOString();state.assignments[String(assignment.id)]=record;writeState(context,state);syncProgress(null,null,String(assignment.id),record);}renderHome(options.assignments||[]);return;}
       renderCard();
     }
@@ -468,5 +479,5 @@
     if(pending)renderEditor(pending);else if(matchBank){renderHome(options.assignments||[]);renderMatch(matchBank);}else renderHome(options.assignments||[]);
   }
 
-  root.ForgeRevision={TOPICS:TOPICS,config:config,banks:banks,isRevision:isRevision,markerFor:markerFor,assignmentProgress:assignmentProgress,readState:readState,cleanPersonalCard:cleanPersonalCard,personalAsReview:personalAsReview,hintHtml:hintHtml,matchPairs:matchPairs,cardStatus:cardStatus,subjectChoices:subjectChoices,teacherPanelHtml:teacherPanelHtml,wireTeacherPanel:wireTeacherPanel,loadStudentData:loadStudentData,mountStudent:mountStudent};
+  root.ForgeRevision={TOPICS:TOPICS,shuffle:shuffle,ordered:ordered,config:config,banks:banks,isRevision:isRevision,markerFor:markerFor,assignmentProgress:assignmentProgress,readState:readState,cleanPersonalCard:cleanPersonalCard,personalAsReview:personalAsReview,hintHtml:hintHtml,matchPairs:matchPairs,cardStatus:cardStatus,subjectChoices:subjectChoices,teacherPanelHtml:teacherPanelHtml,wireTeacherPanel:wireTeacherPanel,loadStudentData:loadStudentData,mountStudent:mountStudent};
 })(window);

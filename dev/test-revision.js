@@ -134,4 +134,23 @@ listeners.click({target:{closest(selector){return selector==='[data-revision-act
 assert(app.innerHTML.includes('Card 1 of 2'));
 assert(app.innerHTML.includes('First saved question?') || app.innerHTML.includes('Second saved question?'));
 
+// A set used to come out in the same order every time it was opened, so a
+// student could memorise the sequence. Due cards still lead; everything else
+// is drawn afresh.
+{
+  const cards = Array.from({length: 12}, (_, i) => ({key: 'k' + i}));
+  const reviews = {k3: {dueAt: '2020-01-02T00:00:00Z'}, k7: {dueAt: '2020-01-01T00:00:00Z'}};
+  const orders = new Set();
+  for (let run = 0; run < 30; run++) {
+    const out = revision.ordered(cards, {studentId: 's1'}, {reviews});
+    assert.deepStrictEqual(out.slice(0, 2).map(card => card.key), ['k7', 'k3'], 'earliest-due cards lead the queue');
+    assert.strictEqual(new Set(out).size, 12);
+    orders.add(out.map(card => card.key).join());
+  }
+  assert(orders.size > 20, 'unseen cards come out in a different order each time, not a fixed daily one');
+  const shown = new Set();
+  for (let run = 0; run < 30; run++) shown.add(revision.shuffle(cards.slice(0, 8)).map(card => card.key).join());
+  assert(shown.size > 20, 'a chosen set is shown in a fresh order each session');
+}
+
 console.log('All-subject revision and personal card tests passed.');
