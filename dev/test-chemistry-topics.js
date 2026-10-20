@@ -14,7 +14,8 @@ for(const file of ['data/spec-registry.js','data/forge-catalog.js','scripts/forg
 }
 const topics = page.ForgeChemistryTopics.list();
 assert(topics.length > 25);
-assert.strictEqual(topics.reduce((total,topic)=>total+topic.count,0),202);
+assert.strictEqual(topics.reduce((total,topic)=>total+topic.count,0),364);
+assert(topics.every(topic=>topic.count>=10),"every Chemistry topic has at least ten revision cards");
 for(const topic of topics) {
   const items = page.ForgeChemistryTopics.questions(topic.id);
   assert.strictEqual(items.length,topic.count,topic.label);
@@ -161,4 +162,4 @@ assert(quizHtml.includes('ForgeChemistryTopics.has(state.subject)'));
   assert.strictEqual(page.ForgeChemistryTopics.questions('part:PSY-APP:nope').length,0);
   assert(quizHtml.includes('topicPartsHtml(key)'));
 }
-console.log('Chemistry topic mapping passed (202 questions, original bank identities preserved).');
+console.log('Chemistry topic mapping passed (364 questions, original bank identities preserved).');
