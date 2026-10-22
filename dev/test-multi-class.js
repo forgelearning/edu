@@ -9,8 +9,7 @@ const assert = require('assert');
 const fs = require('fs');
 const vm = require('vm');
 
-function page() {
-  const store = {};
+function page(store = {}) {
   const calls = [];
   const ctx = {
     console,
@@ -153,6 +152,23 @@ const psych = { classId: 'c-psych', classCode: 'PSY-12', className: '12C/Py', su
     await new Promise(resolve => C.fetchStudentResponses('', 'anon-key', chem, resolve));
     await new Promise(resolve => setImmediate(resolve));
     assert.strictEqual(links.length, 1, 'a linked pair is not sent again on the next load');
+  }
+
+  // The reported sequence: signed in to Chemistry, signed out, signed back in
+  // with the Psychology codes. Sign-out used to wipe the class list, so Home
+  // showed Psychology alone. ForgeAuth.signOut now keeps the list on a
+  // personal device (dev/test-auth.js); a fresh page with the same storage
+  // must then show both classes, and only to the student who joined them.
+  {
+    const first = page();
+    first.C.add(chem);
+    delete first.store['forge-student'];
+    const next = page(first.store);
+    next.C.add(psych);
+    assert.strictEqual(next.C.list().map(c => c.subject).join(','), 'chem,psych', 'signing back in with one class brings back the others');
+    const other = page(first.store);
+    other.C.add({ classId: 'c-psych', classCode: 'PSY-12', className: '12C/Py', subject: 'psych', studentId: 's-other', studentName: 'Ada L', studentCode: 'CCCC3333' });
+    assert.strictEqual(other.C.list().map(c => c.studentId).join(','), 's-other', 'another student on the device sees only their own classes');
   }
 
   console.log('Multi-class tests passed (joining keeps every class, combined history with per-class codes, switching, XP, repair writes, server linking).');

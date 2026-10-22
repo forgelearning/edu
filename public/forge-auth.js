@@ -37,7 +37,8 @@ function _clearAuthSession() {
 // Student identity is also reflected in local caches used by the dashboard
 // and sidebar. Clear those caches whenever an identity changes so a fresh
 // account cannot inherit another student's class, assignment, or Anvil state.
-function _clearDerivedStudentState() {
+// keepClasses leaves `forge-classes` in place: see signOut().
+function _clearDerivedStudentState(keepClasses) {
   var exact = [
     'forge-student',
     'forge-classes',
@@ -47,7 +48,10 @@ function _clearDerivedStudentState() {
     'forge-assigned-open-current'
   ];
   try {
-    exact.forEach(function (key) { localStorage.removeItem(key); });
+    exact.forEach(function (key) {
+      if (keepClasses && key === 'forge-classes') return;
+      localStorage.removeItem(key);
+    });
     var remove = [];
     for (var i = 0; i < localStorage.length; i++) {
       var key = localStorage.key(i);
@@ -442,7 +446,15 @@ var ForgeAuth = {
     _clearAuthSession();
     try { localStorage.removeItem(FORGE_FREE_CLAIM_KEY); } catch(e) {}
     try { localStorage.removeItem(FORGE_CLASS_CLAIM_KEY); } catch(e) {}
-    _clearDerivedStudentState();
+    // A student in several classes signs back in with one class's codes and
+    // expects the rest to still be there. Wiping the class list here showed a
+    // Chemistry and Psychology student only whichever class she signed in to
+    // last. The list is filtered to the student signed in (ForgeClasses.use),
+    // so the next student on a personal device does not see these entries; a
+    // device marked shared at join time still forgets everything.
+    var sharedDevice = false;
+    try { sharedDevice = localStorage.getItem('forge-student-shared-device') === '1'; } catch(e) {}
+    _clearDerivedStudentState(!sharedDevice);
     if (window.ForgeRole) ForgeRole.clear('student');
     // Derived navigation state must never survive into the next student's
     // session. The Anvil count is only a local display cache.
