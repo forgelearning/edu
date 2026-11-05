@@ -42741,3 +42741,454 @@ for (const [id, variants] of Object.entries(physAnswerLengthRepairs)) {
     banks.splice(banks.indexOf("GCSE-GEO-HAZ") + 1, 0, "GCSE-GEO-CLIMATE");
   }
 }());
+
+
+
+// Individually authored Science and History options, applied after legacy
+// shortening and recycling passes so they remain complete and topic-specific.
+(function repairReviewedScienceHistoryOptions() {
+  const repairs = {
+  "GCSE-HIST-AM-05": {
+    "base": {
+      "A": "To prohibit alcohol production and sale",
+      "B": "To reduce taxes on imported alcohol",
+      "C": "To place breweries under state ownership",
+      "D": "To restrict alcohol sales to rural areas"
+    }
+  },
+  "GCSE-HIST-AM-31": {
+    "base": {
+      "C": "Chain stores selling standardised goods",
+      "A": "Local shops selling only handmade goods",
+      "B": "Tariffs preventing trade between states",
+      "D": "Rationing that restricted household purchases"
+    }
+  },
+  "GCSE-HIST-AM-32": {
+    "base": {
+      "D": "Southern cotton farmers",
+      "A": "Northern automobile workers",
+      "B": "Western railway companies",
+      "C": "Urban department-store owners"
+    }
+  },
+  "GCSE-HIST-AM-34": {
+    "base": {
+      "B": "Prices received for farm produce",
+      "A": "Wages paid to industrial workers",
+      "C": "Interest charged on household loans",
+      "D": "Tariffs charged on imported machinery"
+    },
+    "reforge": {
+      "D": "Prices received for farm produce",
+      "A": "Output produced per factory worker",
+      "B": "Interest paid on savings",
+      "C": "Sales of imported machinery"
+    }
+  },
+  "GCSE-HIST-AM-44": {
+    "base": {
+      "D": "Television broadcasting",
+      "A": "Private telephone conversations",
+      "B": "Local handwritten newsletters",
+      "C": "Silent films without soundtracks"
+    },
+    "reforge": {
+      "B": "Television broadcasting",
+      "A": "Notices displayed on village boards",
+      "C": "Private family letters",
+      "D": "Local council minutes"
+    }
+  },
+  "GCSE-HIST-IW-02": {
+    "base": {
+      "B": "Germany had to accept imposed terms",
+      "A": "Germany had written the final terms",
+      "C": "Germany could veto every settlement",
+      "D": "Germany received all disputed colonies"
+    }
+  },
+  "GCSE-HIST-IW-20": {
+    "reforge": {
+      "B": "They lacked reliable enforcement",
+      "A": "They prohibited diplomatic negotiations",
+      "C": "They excluded both Britain and France",
+      "D": "They required all disputes to lead to war"
+    }
+  },
+  "GCSE-HIST-IW-32": {
+    "reforge": {
+      "B": "Alsace-Lorraine",
+      "A": "The Polish Corridor",
+      "C": "The Sudetenland",
+      "D": "The Saar coalfield permanently"
+    }
+  },
+  "GCSE-HIST-IW-36": {
+    "base": {
+      "D": "The United States",
+      "A": "The United Kingdom",
+      "B": "The French Republic",
+      "C": "The Kingdom of Italy"
+    }
+  },
+  "GCSE-HIST-IW-37": {
+    "base": {
+      "A": "Economic and trade sanctions",
+      "B": "Compulsory military occupation",
+      "C": "Automatic removal of national leaders",
+      "D": "Direct control of national elections"
+    },
+    "reforge": {
+      "C": "Restrict trade through sanctions",
+      "A": "Increase loans to its government",
+      "B": "Guarantee markets for its exports",
+      "D": "Reduce tariffs on its manufactured goods"
+    }
+  },
+  "GCSE-HIST-IW-45": {
+    "base": {
+      "A": "International communism",
+      "B": "Parliamentary liberalism",
+      "C": "Territorial nationalism",
+      "D": "Constitutional monarchism"
+    },
+    "reforge": {
+      "C": "International communism",
+      "A": "Liberal democracy",
+      "B": "Absolute monarchy",
+      "D": "Competitive free-market capitalism"
+    }
+  },
+  "GCSE-HIST-HP-40": {
+    "reforge": {
+      "D": "Bacterial infections",
+      "A": "Viral respiratory infections",
+      "B": "Inherited blood disorders",
+      "C": "Dietary deficiency diseases"
+    }
+  },
+  "GCSE-HIST-HP-50": {
+    "base": {
+      "D": "Smoke from burning coal",
+      "A": "Sewage entering drinking water",
+      "B": "Lead contamination in water pipes",
+      "C": "Bacteria contaminating fresh milk"
+    },
+    "reforge": {
+      "B": "Smoke from burning coal",
+      "A": "Untreated household sewage",
+      "C": "Industrial noise pollution",
+      "D": "Contaminated surgical instruments"
+    }
+  },
+  "GCSE-HIST-HP-22": {
+    "reforge": {
+      "D": "Vaccination before infection",
+      "A": "Amputation after a serious injury",
+      "B": "Antibiotics after bacterial infection",
+      "C": "Surgery to remove an existing tumour"
+    }
+  },
+  "GCSE-HIST-EL-51": {
+    "base": {
+      "A": "Defeat of the Spanish Armada",
+      "B": "Defeat of the Northern Rebellion",
+      "C": "Execution of Mary, Queen of Scots",
+      "D": "Establishment of the Religious Settlement"
+    },
+    "reforge": {
+      "C": "Defeat of the Spanish Armada",
+      "A": "The accession of James I",
+      "B": "The execution of the Earl of Essex",
+      "D": "The defeat of the Spanish at Cadiz"
+    }
+  },
+  "GCSE-HIST-EL-53": {
+    "base": {
+      "C": "He was executed for treason",
+      "A": "He was appointed Lord Treasurer",
+      "B": "He was exiled to govern Ireland",
+      "D": "He was restored to royal favour"
+    },
+    "reforge": {
+      "A": "He was executed for treason",
+      "B": "He became governor of Ireland",
+      "C": "He fled to the court of Spain",
+      "D": "He received a royal pardon"
+    }
+  },
+  "SCI-BIO1-07": {
+    "reforge": {
+      "A": "Mutations can create genetic variation",
+      "B": "Mutations always improve survival",
+      "C": "Mutations occur only in reproductive cells",
+      "D": "Mutations always change the visible phenotype"
+    }
+  },
+  "SCI-BIO1-19": {
+    "reforge": {
+      "A": "Low genetic diversity can leave many susceptible",
+      "B": "High genetic diversity makes all equally susceptible",
+      "C": "Selective breeding prevents immune cells developing",
+      "D": "Inherited alleles stop pathogens entering the body"
+    }
+  },
+  "SCI-BIO1-20": {
+    "base": {
+      "D": "In droplets released by coughing",
+      "A": "In genes inherited from a parent",
+      "B": "In mineral ions absorbed from soil",
+      "C": "In antibodies passed between people"
+    }
+  },
+  "SCI-BIO1-24": {
+    "reforge": {
+      "B": "Loss of suitable habitat",
+      "A": "Increased genetic diversity",
+      "C": "Restoration of breeding sites",
+      "D": "Protection from overhunting"
+    }
+  },
+  "GCSE-SCIENCE-COV-007": {
+    "reforge": {
+      "D": "Mutations can create genetic variation",
+      "A": "Mutations always improve survival",
+      "B": "Mutations occur only in reproductive cells",
+      "C": "Mutations always change the visible phenotype"
+    }
+  },
+  "GCSE-SCIENCE-COV-019": {
+    "reforge": {
+      "B": "Low genetic diversity can leave many susceptible",
+      "A": "High genetic diversity makes all equally susceptible",
+      "C": "Selective breeding prevents immune cells developing",
+      "D": "Inherited alleles stop pathogens entering the body"
+    }
+  },
+  "GCSE-SCIENCE-COV-037": {
+    "base": {
+      "C": "Ions can move when molten",
+      "A": "Electrons become free when molten",
+      "B": "Neutral molecules carry the current",
+      "D": "Solid ions have no electric charge"
+    }
+  },
+  "SCI-CHEM1-13": {
+    "base": {
+      "A": "Ions can move when molten",
+      "B": "Electrons become free when molten",
+      "C": "Neutral molecules carry the current",
+      "D": "Solid ions have no electric charge"
+    }
+  },
+  "SCI-CHEM1-23": {
+    "base": {
+      "C": "A gaseous product escapes",
+      "A": "Atoms are destroyed by the reaction",
+      "B": "Cooling removes mass from the atoms",
+      "D": "A catalyst absorbs the missing mass"
+    },
+    "reforge": {
+      "A": "Oxygen from air joins the solid",
+      "B": "Heating creates extra metal atoms",
+      "C": "Energy turns directly into metal mass",
+      "D": "The solid absorbs nitrogen instead"
+    }
+  },
+  "GCSE-SCIENCE-COV-020": {
+    "base": {
+      "D": "In droplets released by coughing",
+      "A": "In genes inherited from a parent",
+      "B": "In mineral ions absorbed from soil",
+      "C": "In antibodies passed between people"
+    }
+  },
+  "GCSE-SCIENCE-COV-056": {
+    "reforge": {
+      "D": "4 Hz",
+      "A": "0.25 Hz",
+      "B": "25 Hz",
+      "C": "0.04 Hz"
+    }
+  },
+  "SCI-PHYS1-19": {
+    "base": {
+      "C": "Incidence and reflection angles are equal",
+      "A": "The reflection angle is twice the incidence angle",
+      "B": "Both angles are measured from the mirror surface",
+      "D": "The reflected ray always follows the normal"
+    }
+  },
+  "SCI-PHYS1-23": {
+    "base": {
+      "C": "To reduce exposure to radiation",
+      "A": "To stop nuclei undergoing radioactive decay",
+      "B": "To increase the half-life of the isotope",
+      "D": "To remove radioactivity from the source"
+    }
+  },
+  "GCSE-SCIENCE-COV-033": {
+    "reforge": {
+      "D": "Iron oxide ore",
+      "A": "Aluminium oxide ore",
+      "B": "Copper carbonate ore",
+      "C": "Calcium carbonate rock"
+    }
+  },
+  "SCI-BIO2-02": {
+    "reforge": {
+      "D": "By osmosis across its membrane",
+      "A": "By active transport using ATP",
+      "B": "By diffusion through the xylem only",
+      "C": "By transpiration through the stomata"
+    }
+  },
+  "SCI-BIO2-16": {
+    "base": {
+      "D": "Regulate blood water and ion levels",
+      "A": "Regulate blood sugar by releasing insulin",
+      "B": "Regulate body temperature by sweating",
+      "C": "Regulate oxygen supply by pumping blood"
+    },
+    "reforge": {
+      "B": "Urea",
+      "A": "Starch",
+      "C": "Oxygen",
+      "D": "Glycogen"
+    }
+  },
+  "SCI-BIO2-19": {
+    "reforge": {
+      "A": "Extra oxygen supports removal of lactic acid",
+      "B": "Extra oxygen stops all further muscle respiration",
+      "C": "Fast breathing prevents gas exchange in the lungs",
+      "D": "Fast breathing replaces the need for blood flow"
+    }
+  },
+  "SCI-BIO2-21": {
+    "reforge": {
+      "C": "A reduced food supply",
+      "A": "More suitable nesting sites",
+      "B": "A more reliable water supply",
+      "D": "Reduced pressure from predators"
+    }
+  },
+  "SCI-BIO2-22": {
+    "reforge": {
+      "D": "Decomposition",
+      "A": "Transpiration",
+      "B": "Photosynthesis",
+      "C": "Pollination"
+    }
+  },
+  "SCI-BIO2-23": {
+    "base": {
+      "C": "Fewer trees remove CO2 by photosynthesis",
+      "A": "Fewer trees release oxygen during respiration",
+      "B": "Cleared soil stops all decomposer respiration",
+      "D": "Remaining trees stop absorbing mineral ions"
+    }
+  },
+  "SCI-CHEM2-02": {
+    "base": {
+      "B": "The solution turns orange-brown",
+      "A": "The solution becomes pale green",
+      "C": "A white precipitate appears",
+      "D": "A blue precipitate appears"
+    }
+  },
+  "SCI-CHEM2-16": {
+    "base": {
+      "D": "Particles collide more frequently",
+      "A": "Particles gain energy at the same temperature",
+      "B": "The activation energy becomes much lower",
+      "C": "Each collision transfers more kinetic energy"
+    }
+  },
+  "SCI-CHEM2-19": {
+    "reforge": {
+      "A": "An addition polymer",
+      "B": "A condensation polymer",
+      "C": "A saturated monomer",
+      "D": "An ionic compound"
+    }
+  },
+  "SCI-CHEM2-20": {
+    "base": {
+      "D": "Too little oxygen for complete oxidation",
+      "A": "Too much oxygen for complete oxidation",
+      "B": "Too little nitrogen to react with the fuel",
+      "C": "Too much water to dissolve the carbon"
+    }
+  },
+  "SCI-CHEM2-22": {
+    "reforge": {
+      "D": "Carbon dioxide",
+      "A": "Molecular oxygen",
+      "B": "Molecular nitrogen",
+      "C": "Argon gas"
+    }
+  },
+  "GCSE-SCIENCE-COV-029": {
+    "reforge": {
+      "C": "Hydrogen",
+      "A": "Oxygen",
+      "B": "Nitrogen",
+      "D": "Carbon dioxide"
+    }
+  },
+  "GCSE-SCIENCE-COV-047": {
+    "base": {
+      "D": "A gaseous product escapes",
+      "A": "Atoms are destroyed by the reaction",
+      "B": "Cooling removes mass from the atoms",
+      "C": "A catalyst absorbs the missing mass"
+    },
+    "reforge": {
+      "B": "Oxygen from air joins the solid",
+      "A": "Heating creates extra metal atoms",
+      "C": "Energy turns directly into metal mass",
+      "D": "The solid absorbs nitrogen instead"
+    }
+  },
+  "GCSE-SCIENCE-COV-053": {
+    "reforge": {
+      "C": "12 N",
+      "A": "1.3 N",
+      "B": "0.75 N",
+      "D": "7 N"
+    }
+  },
+  "SCI-PHYS2-16": {
+    "base": {
+      "D": "The same through every component",
+      "A": "Smaller after each successive component",
+      "B": "Largest through the highest resistance",
+      "C": "Zero on the return wire to the battery"
+    }
+  },
+  "SCI-PHYS2-20": {
+    "base": {
+      "D": "Lower current reduces cable heating",
+      "A": "Higher current reduces cable resistance",
+      "B": "Higher voltage prevents all energy transfer",
+      "C": "Lower current increases energy lost as heat"
+    }
+  },
+  "GCSE-SCIENCE-COV-024": {
+    "reforge": {
+      "B": "Loss of suitable habitat",
+      "A": "Increased genetic diversity",
+      "C": "Restoration of breeding sites",
+      "D": "Protection from overhunting"
+    }
+  }
+};
+  for (const bank of Object.values(BANKS)) for (const question of bank.questions || []) {
+    for (const [label, options] of Object.entries(repairs[question.id] || {})) {
+      const item = label === "base" ? question : question.reforge;
+      item.options = options;
+    }
+  }
+}());
